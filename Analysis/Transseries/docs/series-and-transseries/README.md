@@ -2,7 +2,9 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file).
+2026-09-04 (see the end of this file). Beside them are six unmerged
+arrivals of 2026-09-29, each filed whole with its PDF (see "Arrivals of
+2026-09-29" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -258,5 +260,144 @@ natural follow-up.  Note for future filing: on Windows a directory named
 `Combinatorial_Transseries_And_Inverses/` is the same directory as the
 deleted `combinatorial_transseries_and_inverses/`, which is why the
 companion's directory omits the "And".
+
+## Arrivals of 2026-09-29 (unmerged)
+
+Six research packages arrived through the repository drop zone
+`docs/incoming/` on 2026-09-29 (its batch 45). Each is filed whole, with its
+PDF, verification program and recorded outputs, in a directory named after
+the document. None has been reviewed claim by claim, and none is merged into
+either volume; merging is deferred. None contains Lean, and none of its
+statements is formalized. All six were written against the pre-split tree,
+so they cite the volumes under
+`Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/`;
+the passages they cite are unchanged here apart from that path.
+
+[`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
+holds *Support-Controlled Reversion and the Exact One-Exponential
+Substitution Group* (23-page A4 PDF, 1,559-line source, an exact SymPy and
+100-digit mpmath check program). It continues the canonical volume's
+extension chapter and answers three of its open-problem remarks. For
+`plt:rmk:ext-open-burmann` (`transseries_and_inversion.tex:29941-29952`) it
+shows that the ordinary positive-integer Lagrange–Bürmann sum stays valid on
+a Hahn power–log class with a dense exponent group, with a finite outer
+index bound for each coefficient. For `plt:rmk:ext-open-denominators`
+(`:29955-29969`) it shows that every Newton iterate stays in the input
+Puiseux lattice, so `σ(s) = s`. It answers the formal, algebraic part of
+`plt:rmk:ext-open-resurgence` (`:30002-30015`) negatively for unrestricted
+"verbatim" closure. It gives an exact admissibility criterion (`P(L) = aL + b`
+with `μa ∈ Γ`), a maximal substitution group, and exact-core inversion. It
+proves the leading block of every inverse exponential sector (coefficients
+`n^{n−1}/n!`) and works through the inverse of `X + log X + e^{−X}`.
+Resurgence and Borel summability are not claimed. It names no commit; it
+read the pre-split `main` source on 2026-09-29.
+
+[`Critical_Transseries_Moving_Fold/`](Critical_Transseries_Moving_Fold/)
+holds *Critical Transseries at a Moving Fold: a uniform two-sheet atlas,
+large-sector crossover, and resonant action splitting* (24-page A4 PDF,
+1,661-line source, an exact SymPy and 100-digit check program). It
+continues the reversion article directly above, filed with it. It answers
+that article's Research question 11.8 ("Sharp complex transition near the
+core critical point", `reversion_and_one_exponential.tex:1459-1465`) for
+`δ + log(1 + δ/w) + wz e^{−δ} = 0` in the independent-parameter local chart.
+The results are an exact holomorphic two-sheet atlas, the moving critical
+value `z_c(s) = s²/2 + s³/3 + 5s⁴/8 + ⋯` (`s = w + 1`), all-order profiles
+with a geometric error bound at the branch point, and the crossover
+`a_n(τ/n)/a_n(0) → e^{−2τ/3}`. For analytic folds driven by finitely many
+exponential actions (the article's question on several actions and
+resonances, `:1396-1404`) it gives a convergent, resonance-aware
+representation with a finite positive support grid. The fixed-coupling
+specialization `z = e^{−w}/w` at its core critical point is explicitly not
+covered. It read the reversion article from Vladimir's library before
+either was filed, and cites
+`Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCoreCatalan.lean`
+(the finite Catalan core of the volume's `p6:prop:quadratic-core-catalan`)
+as related finite algebra only.
+
+[`Exponential_Feedback_Regularity_Classification/`](Exponential_Feedback_Regularity_Classification/)
+holds *A Sharp Regularity Classification for Countable Exponential-Feedback
+Transseries* (23-page A4 PDF, 1,659-line source, an exact standard-library
+coefficient program with NumPy/SciPy envelope diagnostics). For
+`U(q) = Σ_{j≥1} q^j exp(λ_j U(q))` it proves the following: the solution
+converges exactly when `λ_j = O(j)`; there is an exact factorial-normalized
+Gevrey-type identity with constant `((s+1)/s)^{s+1}` times
+`limsup λ_j/(j log j)^{s+1}`; regularly varying slopes give logarithmic
+coefficient asymptotics and concentration; and the quadratic model's Borel
+transform is entire but not Laplace-summable on the positive ray. It also
+constructs left-sector analytic realizations and transfers the Gevrey class
+to compositional inverses. The canonical volume motivates it, and it
+answers none of that volume's questions by name. The nearest passages are
+the formal-versus-analytic remarks `q0:rem:euler` and `q0:rem:beyond`
+(`transseries_and_inversion.tex:487-507`), the Gevrey-1 hypothesis of
+`p0:thm:optimal-truncation` (`:39359-39399`), and the open realization and
+resurgence remarks (`:29986-30015`).
+
+[`Uniform_q_Multinomial_Certified_Inversion/`](Uniform_q_Multinomial_Certified_Inversion/)
+holds *Uniform q-Multinomial Transseries and Certified Inversion* (24-page A4
+PDF, 1,521-line source, a 240-digit mpmath check program that also writes
+the table the article inputs). It continues the companion's chapter "The
+singular transition `q → 1`" (`Combinatorial_Transseries_Inverses.tex:4076`).
+There, `t3:prop:double-A` (`:4103-4114`) holds only for `τ ≥ τ₀ > 0`, and
+the text after `t3:eq:Slarge` (`:4205`) leaves "matching it uniformly
+all the way to `τ = 0`" to "a different error analysis". The article
+supplies that analysis for every positive multinomial ray: a signed
+Bernoulli remainder bounded by the first omitted term for every `h ≥ 0`, the
+Borel transform with nearest poles `±2πi a_*`, the least-term bound
+`2r e^{−2π a_* x}`, sharp `h = 0` and resonant (`h = 2π/m`) equivalents, and
+inverse enclosures that are not outward-rounded.
+
+[`Uniform_Resurgent_Crossover_Gaussian_Binomials/`](Uniform_Resurgent_Crossover_Gaussian_Binomials/)
+holds *Uniform Resurgent Crossover for Gaussian Binomial Coefficients: exact
+remainders, a sharp modular-visibility threshold, and certified inversion*
+(22-page A4 PDF, 1,495-line source, an exact SymPy and 110-digit check
+program). It answers the same gap as the q-multinomial article directly
+above (`Combinatorial_Transseries_Inverses.tex:4103-4114`, `:4205`),
+for the central Gaussian coefficient only. Its interpolation is the
+`r = 2`, `a = (1, 1)` case of that article's. It adds the sharp uniform
+optimal remainder `e^{−2πx}/(π√x)·(1 + O_T(1/x))` for `0 ≤ hx ≤ T`, with
+minimizing index `K = πx + O(1)`, and the modular-visibility boundary layer
+`τ = 2π − (log x)/(2x) + s/x`. It also gives a convergent modular inverse
+series about the Borel-summed carrier. The two articles share their method
+(a Bose-kernel partial-fraction remainder) and their `h = 0` constant, and
+should be merged together into the companion's `q → 1` chapter. They also
+bear on the `τ ≥ τ₀` restriction of the Gaussian-binomial double scaling in
+`Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/`
+(`q3:thm:double-scaling`), which neither article cites.
+
+[`Inverse_Harmonic_Stokes_Transport/`](Inverse_Harmonic_Stokes_Transport/)
+holds *Exponential Accuracy and Stokes Transport for Inverse Harmonic
+Transseries* (23-page A4 PDF, 1,119-line source, a 190-digit check program,
+an exact-rational certificate program and a figure script). It continues
+the companion's harmonic-inverse section, `t2:thm:harmonic-inverse`
+(`Combinatorial_Transseries_Inverses.tex:4285-4303`), whose coefficient
+series "remains generally divergent" with "no convergence claim"
+(`:4325`), and `t2:thm:general-harmonic-inverse` (`:4352-4368`). It
+proves the complete large-order expansion
+`h_n ∼ 2(−1)^n Γ(2n)/(2π)^{2n}`, exact-rational inverse certificates, and
+the sharp error `(−1)^M √X e^{−2πX}(1 + O(1/X))` for the root of the
+forward expansion truncated at `M = πX + O(1)`. It gives an explicit
+convergent expansion of every inverse Stokes sector, and credits Borel
+summability to Sauzin's closure theorems. The sharp remainder of a direct
+partial sum of the inverse series is not claimed. The Lean module
+`TransseriesHarmonicIncrement.lean` concerns the unrelated harmonic
+increment `plt:lem:mot-harmonic`.
+
+The four remainder articles (q-multinomial, Gaussian binomial, inverse
+harmonic and moving fold) are sharp instances of the canonical volume's
+`p0:thm:optimal-truncation` (`transseries_and_inversion.tex:39359`). Their
+inverse enclosures use the mechanism that
+`Fabius.exists_eq_in_residual_interval`
+(`Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean`)
+machine-checks. None of them cites either.
+
+The packages retain their delivered layouts. Four checksum ledgers were
+verified in full and not filed: the two `SHA256SUMS.txt` of the regularity
+and inverse-harmonic packages and the `SHA256SUMS` of the moving-fold
+package. Those packages' READMEs still mention them. The three CRLF CSV
+tables (the reversion package's `numeric_checks.csv` and the regularity
+package's `data/quadratic_*.csv`) were normalized to LF on filing. The
+inverse-harmonic package's `verification/run.log` and
+`verification/certification.log` are byte-identical to its `results.json`
+and `certificates.json`, and were added past the `*.log` ignore rule.
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

@@ -1,0 +1,1659 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\usepackage{listings}
+\definecolor{ink}{RGB}{27,49,70}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Countable exponential-feedback transseries}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.6em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\val}{\operatorname{ord}_q}
+\newcommand{\Gev}{\mathcal G}
+\newcommand{\Borel}{\mathcal B}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lam}{\boldsymbol\lambda}
+\newcommand{\mm}{\boldsymbol m}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\PhiL}{\Phi_{\lam}}
+\newcommand{\Uhat}{\widehat U}
+\newcommand{\Qhat}{\widehat Q}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\hypersetup{pdftitle={A sharp regularity classification for countable exponential-feedback transseries},pdfauthor={Research draft prepared with ChatGPT},pdfsubject={Convergence, exact Gevrey type, condensation, Borel growth and sectorial realization}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{ink} A sharp regularity classification for\par countable exponential-feedback transseries\par}
+\vspace{0.6em}
+{\large Convergence, exact Gevrey type, coefficient condensation,\par and sectorial realization}
+\vspace{0.8em}
+
+Research note prepared for Vladimir Reshetnikov\\
+29 September 2026
+\end{center}
+
+\begin{abstract}
+We study the formally well-defined equation
+\[
+ \Uhat(q)=\sum_{j\ge1}q^j\exp\!\bigl(\lambda_j\Uhat(q)\bigr),
+ \qquad \lambda_j\ge0,
+\]
+as a model of countably many exponentially delayed corrections in transseries
+inversion.  Formal existence alone imposes no growth restriction on the slopes
+$\lambda_j$.  We derive a sharp separation between formal, analytic, and
+Gevrey regularity.  The solution has positive radius of convergence exactly
+when $\lambda_j=O(j)$.  More precisely, writing
+$\Uhat=\sum_{n\ge1}u_nq^n$, for every $s>0$ we prove the exact identity
+\[
+ \limsup_{n\to\infty}\left(\frac{u_n}{(n!)^s}\right)^{1/n}
+ =\left(\frac{s+1}{s}\right)^{s+1}
+   \limsup_{j\to\infty}
+      \frac{\lambda_j}{\bigl(j\log j\bigr)^{s+1}}.
+\]
+For $\lambda_j\sim a j^p(\log j)^\beta$, $p>1$, we determine
+$\log u_n$ through its term of order $n$, and prove concentration of the
+Lagrange weights on configurations with one large action of size
+$\frac{p}{p-1}\frac{n}{\log n}$.  The quadratic model has an entire ordinary
+Borel transform with $\log\log\Borel\Uhat(t)\sim2\sqrt t$, hence is not
+Borel--Laplace summable on the positive ray.  Nevertheless, every nonnegative
+slope sequence, even one of superpolynomial growth, admits a holomorphic
+solution with this Poincar\'e expansion on proper subsectors of the left
+half-plane.  We give explicit action-truncation bounds, transfer the Gevrey
+classification to formal compositional inverses, and provide exact-arithmetic
+checks and a focused research program.
+\end{abstract}
+
+\noindent\textbf{Status and scope.}
+The results are proved here as conventional mathematical statements, not as
+Lean theorems.  The sharp classification and its quantitative consequences
+are the proposed contribution of this research draft.  Lagrange inversion,
+Gevrey closure under reversion, and contraction arguments are classical
+methods, not claimed inventions.  A priority claim against the entire
+literature is not established, and no named longstanding conjecture is
+claimed solved.
+
+\clearpage
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\tableofcontents
+\clearpage
+
+\section{Problem selection and connection with ProveIt}
+\label{sec:context}
+
+\subsection{The repository boundary being investigated}
+
+The ProveIt repository's consolidated \emph{Transseries: the
+polynomial--logarithmic calculus and its inversions} connects formal
+asymptotic scales, composition and reversal, Lambert-type equations,
+analytic realization, and remainder certificates.  Its README explicitly
+separates the human mathematics from the scope of the existing Lean APIs
+\cite{repo}.  In particular, formal support control and analytic realization
+are distinct tasks.  This paper investigates that distinction for a concrete
+countable implicit kernel, rather than adding another finite list of
+Lambert coefficients.
+
+The repository snapshot consulted is commit
+\texttt{04e06e032dff1966513bfba316966d52db3646b4}.  The relevant directory is
+\begin{quote}\small\ttfamily
+Analysis/FabiusFunction/docs/\\
+semi-formalized-research-frontiers/drafts/\\
+series-and-transseries/Transseries\_And\_Inversion/.
+\end{quote}
+We use its documented program as motivation.  None of the proofs below
+requires accepting an unverified frontier theorem from that repository.
+Nor do we assert that the particular classification problem formulated here
+was already posed there verbatim.
+
+The central question is the following:
+\begin{quote}
+When countably many formally admissible exponential corrections feed back
+into an implicit inverse, what growth of their feedback slopes is compatible
+with convergence, with a specified Gevrey class, and with an actual
+sectorial solution?
+\end{quote}
+A single-grid model already exhibits all three phenomena.  Thus the
+obstruction does not depend on exotic supports or a failure of Hahn
+summability.
+
+\subsection{The model and its transseries interpretation}
+
+Fix any sequence of finite real numbers $\lambda_j\ge0$.  Put
+\begin{equation}
+ \PhiL(q,u)=\sum_{j\ge1}q^j e^{\lambda_j u},
+ \qquad \Uhat=\PhiL(q,\Uhat).
+ \label{eq:kernel}
+\end{equation}
+Initially this is a \emph{formal} identity.  No analytic convergence of
+$\PhiL$ near $(0,0)$ is assumed.  On writing $q=e^{-x}$, the solution becomes
+\begin{equation}
+ \Uhat(e^{-x})=\sum_{n\ge1}u_n e^{-nx}.
+ \label{eq:transseries}
+\end{equation}
+This is a well-based, one-generator exponential transseries.  Each primitive
+term has action $j$ and feedback slope $\lambda_j$.  Formal transseries
+allow arbitrary real coefficients on such a support; coefficient growth
+is a separate analytic question.  This distinction is part of the general
+formal framework described by van der Hoeven \cite{vdh}.
+
+The model is a nonlinear implicit inversion problem: one solves
+$u-\PhiL(q,u)=0$ for $u$, and the resulting tangent-to-identity series itself
+has a formal compositional inverse.  Section~\ref{sec:inverse} transfers the
+classification to that inverse.
+
+\subsection{What is classical and what is obtained here}
+
+The coefficient formula in Section~\ref{sec:formal} is an application of
+classical Lagrange inversion \cite{gessel}.  Infinite-colour inversion and
+convergence theorems exist in much more general settings, including the
+work of Jansen, Kuna, and Tsagkarogiannis \cite{jktcolors,jktvirial}.
+We do not claim a first infinite-variable inversion theorem.
+
+The specific contribution is the exact relationship between slope growth
+and coefficient growth for \eqref{eq:kernel}, including the constant in the
+Gevrey-type identity.  Its proof is an elementary but quantitative
+optimization of the positive Lagrange formula.  The same argument produces
+logarithmic coefficient asymptotics and a concentration theorem.  A second,
+independent construction realizes the formal solution in left-hand sectors
+without any slope-growth hypothesis.
+
+Existing Gevrey implicit-function theorems require analytic or sectorial
+uniformity hypotheses on the defining equation.  For example, Nikolaev's
+theorem assumes suitable uniform Gevrey asymptotics in a genuine
+neighborhood of the dependent variable \cite{nikolaev}.  Our rapidly growing
+slopes prevent such a neighborhood at $(0,0)$.  The counterexamples below
+therefore do not contradict those theorems.  Likewise, an entire Borel
+transform is not by itself a Borel--Laplace summation theorem: growth at
+infinity must also be controlled \cite{sauzin}.
+
+\section{Main results and conventions}
+\label{sec:main}
+
+Throughout, $\log$ denotes the natural logarithm, $0^0=1$ in coefficient
+formulas, and $\N$ includes zero.  All limits involving $\log j$ start at
+$j\ge2$.  A multi-index $\mm=(m_1,m_2,\ldots)$ always has finite support.
+Write
+\[
+ |\mm|=\sum_jm_j,\qquad w(\mm)=\sum_jjm_j,\qquad
+ \lambda\cdot\mm=\sum_j\lambda_jm_j,\qquad
+ \mm!=\prod_jm_j!.
+\]
+
+\begin{definition}
+For $s\ge0$, a formal series $\widehat f=\sum f_nq^n$ is in $\Gev_s$ if
+there are $C,A>0$ such that $|f_n|\le CA^n(n!)^s$ for every $n$.
+For $s>0$ its factorial-normalized type is
+\[
+ T_s(\widehat f)=\limsup_{n\to\infty}
+       \left(\frac{|f_n|}{(n!)^s}\right)^{1/n}.
+\]
+Types may be zero or infinite.  The class $\Gev_0$ is precisely the class
+of convergent power series.
+\end{definition}
+
+\begin{theorem}[Sharp regularity classification]
+\label{thm:classification}
+Equation~\eqref{eq:kernel} has a unique solution
+$\Uhat\in q\R[[q]]$, with $u_1=1$ and $u_n\ge1$.
+Its radius of convergence is positive if and only if
+\begin{equation}
+ \sup_{j\ge1}\frac{\lambda_j}{j}<\infty.
+ \label{eq:analyticcriterion}
+\end{equation}
+For every $s>0$, the following exact identity holds in $[0,\infty]$:
+\begin{equation}
+ \boxed{\quad
+ T_s(\Uhat)=C_s A_s(\lam),\qquad
+ C_s=\left(\frac{s+1}{s}\right)^{s+1},\qquad
+ A_s(\lam)=\limsup_{j\to\infty}
+  \frac{\lambda_j}{(j\log j)^{s+1}}.
+ \quad}
+ \label{eq:exacttype}
+\end{equation}
+Consequently,
+\begin{equation}
+ \Uhat\in\Gev_s
+ \quad\Longleftrightarrow\quad
+ \lambda_j=O\!\left((j\log(j+1))^{s+1}\right),
+ \qquad s>0.
+ \label{eq:gevcriterion}
+\end{equation}
+\end{theorem}
+
+There is a real endpoint distinction: \eqref{eq:gevcriterion} must not be
+extrapolated to $s=0$.  For example, $\lambda_j=j\log(j+1)$ gives a divergent
+series that belongs to every positive Gevrey class.
+
+\begin{theorem}[Regularly varying slopes]
+\label{thm:regular}
+Suppose, for constants $a>0$, $p>1$, and $\beta\in\R$, that
+\[
+ \lambda_j\sim a j^p(\log j)^\beta.
+\]
+Then, as $n\to\infty$,
+\begin{align}
+ \log u_n={}&(p-1)n\log n+(\beta-p)n\log\log n
+ \notag\\
+ &+\left[\log a+p\log\frac{p}{p-1}-(p-1)\right]n+o(n).
+ \label{eq:logasymptotic}
+\end{align}
+Under the probability distribution on $w(\mm)=n$ proportional to
+\[
+ W(\mm)=\frac{(\lambda\cdot\mm)^{|\mm|-1}}{\mm!},
+\]
+let $K=|\mm|$, $R_n=n-K+1$, and
+$J_{\max}=\max\{j:m_j>0\}$.  Then
+\begin{equation}
+ \frac{R_n\log n}{n}\longrightarrow\frac{p}{p-1},
+ \qquad
+ \frac{J_{\max}}{R_n}\longrightarrow1
+ \label{eq:condensationintro}
+\end{equation}
+in probability.  Each fixed positive deviation in either statement has
+probability bounded by $\exp(-c n+o(n))$ for some $c>0$.
+\end{theorem}
+
+The concentration statement concerns precisely this finite Lagrange-weight
+probability space.  It is not a blanket assertion about all models of
+random rooted trees.
+
+\begin{theorem}[An entire Borel transform with excessive growth]
+\label{thm:borelintro}
+For $\lambda_j\sim a j^p$, $p>1$, set $s=p-1$ and define
+\[
+ B_s(t)=\sum_{n\ge1}\frac{u_n}{(n!)^s}t^n.
+\]
+Then $B_s$ is entire and
+\begin{equation}
+ \lim_{t\to+\infty}\frac{\log\log B_s(t)}{t^{1/p}}
+ =a^{1/p}\frac{p}{p-1}.
+ \label{eq:doublelog}
+\end{equation}
+In particular, for $\lambda_j=j^2$ the ordinary integrated Borel transform
+$B_1$ satisfies $\log\log B_1(t)\sim2\sqrt t$.  The ordinary positive-ray
+Laplace integral of $B_1$ diverges for every positive value of $q$.
+\end{theorem}
+
+\begin{theorem}[Universal left-sector realization]
+\label{thm:sectorintro}
+For every sequence $\lambda_j\ge0$ and every $\eta\in(0,1)$, there is
+$r_0>0$ such that the sector
+\[
+ S_{\eta,r_0}=\{q:0<|q|<r_0,\ \Re q<-\eta|q|\}
+\]
+supports a holomorphic solution $U$ of the literal, absolutely convergent
+identity $U=\PhiL(q,U)$, with $U=q+O(q^2)$.  It has Poincar\'e expansion
+$\Uhat$ on that sector.  Its finite-action approximations satisfy an
+explicit error bound of order $|q|^{N+1}$, uniformly in the number $N$ of
+retained actions.
+\end{theorem}
+
+Theorems~\ref{thm:classification}--\ref{thm:sectorintro} address different
+questions.  Sectorial existence does not assert convergence at the origin;
+Poincar\'e asymptotics does not assert uniform Gevrey remainder bounds;
+and an entire Borel transform does not assert adequate Laplace growth.
+
+\section{Formal existence and the positive coefficient formula}
+\label{sec:formal}
+
+\begin{lemma}[Admissibility and coefficientwise contraction]
+\label{lem:formal}
+For any $u\in q\R[[q]]$, the right-hand side of \eqref{eq:kernel} is a
+well-defined element of $q\R[[q]]$.  If $u-v$ has order $m\ge1$, then
+\[
+ \val\bigl(\PhiL(q,u)-\PhiL(q,v)\bigr)\ge m+1.
+\]
+Consequently the iterates $U^{[0]}=0$ and
+$U^{[h+1]}=\PhiL(q,U^{[h]})$ stabilize coefficientwise, with the coefficient
+of $q^n$ stable once $h\ge n$.
+\end{lemma}
+
+\begin{proof}
+At coefficient $q^n$, only $j\le n$ can occur.  In the exponential attached
+to such a $j$, only powers $u^k$ with $k\le n-j$ contribute.  Thus every
+coefficient is a finite sum.  The formal difference
+$e^{\lambda_j u}-e^{\lambda_j v}$ is divisible by $u-v$; multiplication by
+$q^j$ raises order by at least one.  This proves the contraction estimate.
+Completeness of $\R[[q]]$ in the coefficientwise, or $q$-adic, topology gives
+a fixed point.  If two fixed points differed first in degree $m$, the same
+estimate would make their difference have order at least $m+1$, a
+contradiction.  Iteration also proves the stabilization assertion.
+\end{proof}
+
+\begin{proposition}[Two equivalent Lagrange formulas]
+\label{prop:coefficients}
+The coefficients of $\Uhat$ are
+\begin{align}
+ u_n
+ &=\sum_{\substack{\mm\ge0\\w(\mm)=n}}
+       \frac{(\lambda\cdot\mm)^{|\mm|-1}}{\mm!},
+ \label{eq:partitionformula}\\
+ &=\sum_{k=1}^n\frac1{k!}
+       \sum_{\substack{j_1+\cdots+j_k=n\\j_i\ge1}}
+       (\lambda_{j_1}+\cdots+\lambda_{j_k})^{k-1}.
+ \label{eq:compositionformula}
+\end{align}
+In particular, $u_n\ge1$, and each $u_n$ is nondecreasing in every slope.
+\end{proposition}
+
+\begin{proof}
+Introduce a marker $t$ for the number of primitive factors and solve
+$V=t\PhiL(q,V)$.  Classical formal Lagrange inversion \cite{gessel} gives
+\[
+ [t^k]V=\frac1k[z^{k-1}]\PhiL(q,z)^k.
+\]
+For the ordered tuple $(j_1,\ldots,j_k)$, the product of exponentials is
+$\exp((\sum_i\lambda_{j_i})z)$, whose coefficient of $z^{k-1}$ is
+$(\sum_i\lambda_{j_i})^{k-1}/(k-1)!$.  This proves
+\eqref{eq:compositionformula}.  Setting $t=1$ is legitimate coefficientwise
+because $k\le n$ in degree $q^n$.  Grouping ordered tuples by their
+multiplicities gives $k!/\mm!$ tuples in each group and proves
+\eqref{eq:partitionformula}.  The tuple $(n)$ contributes one, and all
+terms are nonnegative.  Monotonicity is immediate.
+\end{proof}
+
+\subsection{A useful lower bound}
+For integers $r\ge2$ and $k\ge1$ with $r+k-1=n$, retain the multiplicities
+$m_r=1$, $m_1=k-1$.  Equation~\eqref{eq:partitionformula} yields
+\begin{equation}
+ u_n\ge
+ \frac{(\lambda_r+(k-1)\lambda_1)^{k-1}}{(k-1)!}
+ \ge\frac{\lambda_r^{k-1}}{(k-1)!}.
+ \label{eq:singlelarge}
+\end{equation}
+This one-large-action contribution will determine the sharp exponential
+scale.  The case $r=1$ must be treated separately: then there is only one
+multiplicity vector, not $k$ distinct placements of a distinguished action.
+
+\subsection{Finite truncations}
+Let $\Uhat_N$ solve
+\begin{equation}
+ \Uhat_N=\sum_{j=1}^Nq^j e^{\lambda_j\Uhat_N}.
+ \label{eq:finitekernel}
+\end{equation}
+Its defining function is analytic near $(0,0)$, and its derivative with
+respect to the left-hand unknown at the origin is one.  Thus $\Uhat_N$
+is a convergent germ.  The formal locality above gives
+\begin{equation}
+ [q^n]\Uhat_N=[q^n]\Uhat\qquad(n\le N).
+ \label{eq:finiteagreement}
+\end{equation}
+It is precisely the lack of a uniform analytic neighborhood as $N$ grows
+that allows the infinite formal limit to diverge.
+
+\section{The exact convergence criterion and positive certificates}
+\label{sec:convergence}
+
+\begin{proposition}[Convergence at a positive point]
+\label{prop:majorant}
+For $0<q<1$, the nonnegative series $\sum_nu_nq^n$ is finite if and only if
+there exists $r>0$ such that
+\begin{equation}
+ \sum_{j\ge1}q^j e^{\lambda_jr}\le r.
+ \label{eq:supersolution}
+\end{equation}
+When finite, its sum is the least nonnegative fixed point of
+$r\mapsto\PhiL(q,r)$.
+\end{proposition}
+
+\begin{proof}
+Assume \eqref{eq:supersolution}.  Monotone real iteration from zero remains
+in $[0,r]$.  Its coefficients are those of the formal iterates in
+Lemma~\ref{lem:formal}, are nonnegative, and increase to $u_n$.
+The monotone convergence theorem, applied to these nonnegative series,
+gives $\sum_nu_nq^n\le r$.  Applying the same theorem to the exponential
+expansions verifies the fixed-point identity.  Iteration from zero is
+below every nonnegative fixed point, proving minimality.
+
+Conversely, if $u=\sum_nu_nq^n<\infty$, substitute the sum into the formal
+identity and use Tonelli's theorem for the nonnegative terms.  It gives
+$u=\sum_jq^je^{\lambda_ju}$.  Since $u\ge q>0$, the value $r=u$ is an
+admissible supersolution.
+\end{proof}
+
+\begin{proof}[Proof of the convergence part of Theorem~\ref{thm:classification}]
+If $\lambda_j\le Mj$ for all $j$, then for sufficiently small $|q|$ and
+bounded $|u|$,
+\[
+ \sum_j |q|^j e^{\lambda_j|u|}
+ \le\sum_j\bigl(|q|e^{M|u|}\bigr)^j.
+\]
+Hence $\PhiL$ is holomorphic in a product neighborhood of $(0,0)$.
+The analytic implicit-function theorem applies to $u-\PhiL(q,u)$ because
+its $u$-derivative at the origin is one.
+
+If $\sup_j\lambda_j/j=\infty$, take any $0<q<1$ and $r>0$.
+Along a subsequence,
+\[
+ j\log q+\lambda_jr
+ =j\left(\log q+r\frac{\lambda_j}{j}\right)\longrightarrow+\infty.
+\]
+The summands in \eqref{eq:supersolution} do not even tend to zero.
+Proposition~\ref{prop:majorant} excludes convergence at every positive
+$q$.  Nonnegativity of the coefficients then implies radius zero.
+\end{proof}
+
+\begin{remark}
+The divergence proof is not merely an upper-majorant failure.  Positivity
+makes the supersolution criterion necessary as well as sufficient.
+For signed or complex coefficients this equivalence generally disappears.
+\end{remark}
+
+\subsection{Quantitative certificates inside a convergence domain}
+Suppose, for $Q,r>0$, that
+\begin{equation}
+ \PhiL(Q,r)\le r,
+ \qquad
+ \kappa=\partial_u\PhiL(Q,r)
+       =\sum_jQ^j\lambda_j e^{\lambda_jr}<1.
+ \label{eq:contractcertificate}
+\end{equation}
+Then the fixed-point map is a contraction on $|u|\le r$ for $|q|\le Q$.
+The infinite solution and the solution $U_N$ of the first $N$ actions obey
+\begin{equation}
+ |U(q)-U_N(q)|\le
+ \frac{\sum_{j>N}Q^j e^{\lambda_jr}}{1-\kappa},
+ \qquad |q|\le Q.
+ \label{eq:positivetail}
+\end{equation}
+This follows by subtracting the two fixed-point equations and bounding
+the derivative on the line segment joining their values.
+
+A different certificate bounds truncation by total action rather than by
+primitive action.  If merely $\PhiL(Q,r)\le r$, then for $|q|<Q$,
+\begin{equation}
+ \left|U(q)-\sum_{n=1}^Nu_nq^n\right|
+ \le r\left(\frac{|q|}{Q}\right)^{N+1}.
+ \label{eq:taylortail}
+\end{equation}
+Indeed, factor $(|q|/Q)^{N+1}$ from the nonnegative coefficient tail and use
+$\sum_nu_nQ^n\le r$.  Equations~\eqref{eq:positivetail} and
+\eqref{eq:taylortail} certify different truncation operations; they should
+not be interchanged without checking their hypotheses.
+
+\section{A coefficient-envelope lemma}
+\label{sec:envelope}
+
+This section contains the quantitative step behind both the asymptotic
+formula and the exact Gevrey type.  The details matter: replacing the number
+of compositions by $2^n$ throughout would lose a constant of order $n$ and
+would not prove \eqref{eq:exacttype}.
+
+Fix $p>1$, $\beta\in\R$, and write
+\[
+ s=p-1,\qquad f(r)=r^p\bigl(\log(r+1)\bigr)^\beta.
+\]
+For $A>0$ define
+\begin{equation}
+ X_n(A)=s n\log n+(\beta-p)n\log\log n
+       +\left[\log A+p\log\frac p s-s\right]n.
+ \label{eq:Xn}
+\end{equation}
+
+\begin{lemma}[Sharp logarithmic envelope]
+\label{lem:envelope}
+For every $A>0$ and $D\ge0$,
+\begin{align}
+ \max_{2\le r\le n}
+ \log\frac{(A f(r))^{n-r}}{(n-r)!}
+ &=X_n(A)+o(n),
+ \label{eq:lowerenvelope}\\
+ \log\sum_{r=1}^n
+ \binom{n-1}{r-1}
+ \frac{\bigl(A f(r)+D(n-r+1)\bigr)^{n-r}}{(n-r+1)!}
+ &=X_n(A)+o(n).
+ \label{eq:upperenvelope}
+\end{align}
+The relevant values of $r$ satisfy $r\log n/n\to p/s$ at the
+exponential scale.  More precisely, restricting the upper sum to
+$|r\log n/n-p/s|\ge\varepsilon$ lowers its logarithm by
+$c_\varepsilon n+o(n)$ for some $c_\varepsilon>0$.
+\end{lemma}
+
+\begin{proof}
+Put $L=\log n$, $k=n-r+1$, and
+$M=A f(r)+Dk$.  The logarithm of an upper-sum term is
+\begin{equation}
+ E_n(r)=\log\binom{n-1}{r-1}+(k-1)\log M-\log k!.
+ \label{eq:En}
+\end{equation}
+All occurrences of $M$ have polynomial growth in $n$ times a power of
+$\log n$, and $M$ is bounded away from zero.  Uniform Stirling estimates
+therefore permit errors $O(\log n)$ when replacing factorials by their
+leading logarithms.
+
+\paragraph{A lower comparison.}
+Choose
+\[
+ r=\left\lfloor\frac p s\frac nL\right\rfloor.
+\]
+Then $r\to\infty$, $r/n\to0$, and
+\[
+ \log f(r)=pL+(\beta-p)\log L+p\log(p/s)+o(1).
+\]
+Substituting this into the lower expression and using Stirling gives
+$X_n(A)+o(n)$.  Since the corresponding upper term differs from this
+lower term by the factor $\binom{n-1}{r-1}/k$ and by replacing
+$Af(r)$ with a larger quantity, its logarithm is also at least
+$X_n(A)+o(n)$.  Here $\log k=o(n)$.
+
+\paragraph{Localization of any maximizing row.}
+For $r\ge\delta n$ with fixed $\delta>0$, we have
+$k\le(1-\delta)n+1$ and
+\[
+ E_n(r)\le(1-\delta)s nL+O(n\log L)+O(n).
+\]
+The entropy bound $\log\binom{n-1}{r-1}\le n\log2$ is sufficient
+\emph{at this preliminary step}.  Such rows are smaller than the lower
+comparison by a positive multiple of $nL$.  A maximizing row thus has
+$r/n\to0$.  For these rows
+\begin{equation}
+ \log\binom{n-1}{r-1}=o(n).
+ \label{eq:smallentropy}
+\end{equation}
+Write $\delta_n=r/n$.  Comparing with the lower value now forces
+$\log M\ge pL-O(\log L)$.  Consequently $M/n\to\infty$, the term $Dk$
+is negligible in $M$, and
+\[
+ \log r=L-O(\log L),\qquad
+ \log\log(r+1)=\log L+o(1).
+\]
+At such a row, Stirling and \eqref{eq:smallentropy} give
+\begin{align*}
+ \frac{E_n(r)}n
+  &=(1-\delta_n)\bigl[sL+p\log\delta_n+\beta\log L
+             +\log A-\log(1-\delta_n)+1\bigr]+o(1).
+\end{align*}
+The same comparison, using $\log\delta_n\le0$, implies
+$\delta_n L=O(\log L)$.  Hence
+$\delta_n\log L=o(1)$ and $\delta_n\log\delta_n=o(1)$.
+The previous display reduces to
+\begin{equation}
+ \frac{E_n(r)}n
+ =sL+(\beta-p)\log L+\log A+1
+      +p\log y-sy+o(1),
+ \qquad y=\frac{rL}{n}.
+ \label{eq:saddlefunctional}
+\end{equation}
+
+\paragraph{The one-dimensional maximum.}
+The function
+\[
+ g(y)=p\log y-sy\qquad(y>0)
+\]
+is strictly concave, tends to $-\infty$ at both ends, and has its unique
+maximum at $y_*=p/s$.  Its maximum value is $p\log(p/s)-p$.
+Substitution into \eqref{eq:saddlefunctional} proves that the largest
+upper term has logarithm at most $X_n(A)+o(n)$.  A sum of $n$ terms changes
+the logarithm by at most $\log n=o(n)$, proving
+\eqref{eq:upperenvelope}.  The upper expression also bounds every lower
+expression up to the harmless factor $k$, because the binomial factor is
+at least one.  This proves \eqref{eq:lowerenvelope}.
+
+For the restricted sum, a contradiction argument gives the same
+localization for any sequence of rows whose values are within $O(n)$ of
+the maximum.  On the closed set $|y-y_*|\ge\varepsilon$, strict concavity
+and the behavior at the ends give
+$g(y)\le g(y_*)-c_\varepsilon$.  Rows outside the localized range have
+already lost more than a fixed multiple of $n$.  Applying
+\eqref{eq:saddlefunctional} proves the final assertion.  This argument also
+makes the $o(n)$ estimates uniform over the rows needed for that assertion.
+\end{proof}
+
+\subsection{From eventual convexity to a uniform upper bound}
+
+\begin{lemma}[Convex majorant]
+\label{lem:convex}
+Suppose $\lambda_j\sim a f(j)$.  For every $A>a$, there is $D\ge0$ such
+that every composition $j_1+\cdots+j_k=n$, $j_i\ge1$, satisfies
+\begin{equation}
+ \lambda_{j_1}+\cdots+\lambda_{j_k}
+ \le A f(n-k+1)+Dk.
+ \label{eq:convexmajorant}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Direct differentiation gives
+$f''(t)\sim p(p-1)t^{p-2}(\log t)^\beta>0$.
+Thus $f$ is convex and increasing eventually.  Extend its tail to a convex
+function $h$ on $[1,\infty)$ by continuing a tangent line to the left.
+Then $h=f$ on a tail.  Since $A>a$, increasing a constant $D_0$ handles
+the finitely many exceptional indices and gives
+$\lambda_j\le Ah(j)+D_0$ for all $j$.
+
+For a convex function, shifting mass from the smaller of two arguments
+larger than one to the larger cannot decrease their sum.  Repeating gives
+\[
+ \sum_{i=1}^kh(j_i)\le h(n-k+1)+(k-1)h(1).
+\]
+On the finite interval where $h\ne f$, their difference is bounded.
+Absorbing this bound and $Ah(1)+D_0$ into a nonnegative $D$ proves the
+claim.  This also explains why arbitrarily large but finitely many initial
+slopes do not alter the asymptotic constant.
+\end{proof}
+
+\section{Logarithmic asymptotics and concentration}
+\label{sec:asymptotics}
+
+\begin{proof}[Proof of the coefficient part of Theorem~\ref{thm:regular}]
+For any $A>a$, apply Lemma~\ref{lem:convex} in
+\eqref{eq:compositionformula}.  There are
+$\binom{n-1}{k-1}=\binom{n-1}{r-1}$ compositions with $k=n-r+1$ parts.
+Lemma~\ref{lem:envelope} therefore gives
+\[
+ \log u_n\le X_n(A)+o(n).
+\]
+For a lower bound, choose $r=\lfloor (p/s)n/\log n\rfloor$ in
+\eqref{eq:singlelarge}.  Since $\lambda_r/(a f(r))\to1$, the lower
+calculation in Lemma~\ref{lem:envelope} gives
+\[
+ \log u_n\ge X_n(a)+o(n).
+\]
+Letting $A\downarrow a$ proves \eqref{eq:logasymptotic}.
+\end{proof}
+
+\subsection{Concentration of the total excess action}
+
+The integer $n-K=\sum_j(j-1)m_j$ is the total action remaining after giving
+one unit to each of the $K$ factors.  It is a more useful variable than
+$K$ itself: almost all factors have unit action on the leading scale.
+
+\begin{proposition}
+\label{prop:excess}
+Under the assumptions of Theorem~\ref{thm:regular}, for every
+$\varepsilon>0$ there is $c_\varepsilon>0$ such that
+\[
+ \Pr\!\left(\left|\frac{(n-K+1)\log n}{n}-\frac p{p-1}\right|
+                \ge\varepsilon\right)
+ \le\exp(-c_\varepsilon n+o(n)).
+\]
+\end{proposition}
+
+\begin{proof}
+The total unnormalized weight at a fixed value of $K=k$ is exactly the
+$k$-row of \eqref{eq:compositionformula}.  Bound the rows by
+Lemma~\ref{lem:convex}.  The restricted-envelope conclusion in
+Lemma~\ref{lem:envelope} gives a strict exponential loss outside the stated
+window.  Choose $A>a$ sufficiently close to $a$ that the increase
+$n\log(A/a)$ is smaller than half that loss.  Divide by the lower estimate
+$u_n=\exp(X_n(a)+o(n))$.
+\end{proof}
+
+\subsection{Concentration on one large action}
+
+\begin{proposition}
+\label{prop:giant}
+Under the same assumptions, for every $\varepsilon>0$ there is
+$c_\varepsilon>0$ such that
+\[
+ \Pr\!\left(J_{\max}\le(1-\varepsilon)(n-K+1)\right)
+ \le\exp(-c_\varepsilon n+o(n)).
+\]
+\end{proposition}
+
+\begin{proof}
+It suffices to consider $0<\varepsilon<1/2$, since increasing
+$\varepsilon$ makes the event smaller.  By Proposition~\ref{prop:excess},
+we may restrict to
+$r=n-k+1$ in a fixed compact multiple of $n/\log n$, losing only an
+exponentially small probability.  In this range $k\sim n$ and
+$f(r)/n\to\infty$.
+
+Set $b=\lfloor(1-\varepsilon)r\rfloor$.  For a convex function $h$ as in
+Lemma~\ref{lem:convex}, maximize $\sum_i h(j_i)$ subject to
+$1\le j_i\le b$ and $\sum_i(j_i-1)=r-1$.  Since $b>r/2$ for large $r$,
+a maximizing configuration has at most two entries greater than one:
+one at $b$, the other at $r-b+1$.  This follows by the same pairwise
+mass-transfer argument, stopping when an entry reaches the cap.  Thus
+\[
+ \sum_i\lambda_{j_i}
+ \le A\{f(b)+f(r-b+1)\}+D'k.
+\]
+Uniformly in the restricted range of $r$,
+\[
+ \frac{f(b)+f(r-b+1)}{f(r)}
+ \longrightarrow d_\varepsilon
+ :=(1-\varepsilon)^p+\varepsilon^p<1.
+\]
+The $D'k$ term is negligible.  Choose $A>a$ close enough that
+$(A/a)d_\varepsilon<1$.  Compared with the unrestricted row bound, the
+capped slope sum has a fixed multiplicative loss.  Its power is $k-1\sim n$,
+so the row loses $c n+o(n)$ in its logarithm.  The composition-count entropy
+is $o(n)$ in this range and cannot repair the loss.  Summing the at most
+$n$ rows and dividing by $u_n=\exp(X_n(a)+o(n))$ completes the proof.
+\end{proof}
+
+Together these propositions finish Theorem~\ref{thm:regular}.  They justify
+the one-large-action mechanism at exponential precision.  They do
+\emph{not} give a local limit theorem, a fluctuation scale about the true
+finite-$n$ center, or a full multiplicative asymptotic for $u_n$.
+
+\section{The exact Gevrey-type identity}
+\label{sec:gevrey}
+
+\begin{proof}[Proof of \eqref{eq:exacttype}]
+Fix $s>0$ and put $p=s+1$.  Denote $A_s(\lam)$ by $A_*$.  First suppose
+$A_*<\infty$.  For every $A>A_*$ there is $D\ge0$ such that
+\[
+ \lambda_j\le\widetilde\lambda_j
+ :=A\bigl(j\log(j+1)\bigr)^p+D
+\]
+for every $j$.  Coefficientwise monotonicity gives
+$u_n(\lam)\le u_n(\widetilde\lam)$.  Apply
+Theorem~\ref{thm:regular} to $\widetilde\lambda_j$ with $\beta=p$:
+\[
+ \log u_n(\widetilde\lam)
+ =s n\log n+\left[\log A+p\log(p/s)-s\right]n+o(n).
+\]
+Since $\log n!=n\log n-n+o(n)$,
+\[
+ T_s(\Uhat)\le A(p/s)^p.
+\]
+Let $A\downarrow A_*$.  This also proves the upper bound when $A_*=0$.
+
+For the lower bound, take any $b>0$ with $b<A_*$; when $A_*=\infty$,
+$b$ is arbitrary.  Infinitely many $j$ satisfy
+\[
+ \lambda_j\ge b(j\log j)^p.
+\]
+Along these indices, choose
+\[
+ k=\left\lfloor\frac s p j\log j\right\rfloor,
+ \qquad n=j+k.
+\]
+The multiplicities $m_j=1$ and $m_1=k$ give
+$u_n\ge\lambda_j^k/k!$.  To record the sharp constant explicitly, put
+$c=s/p$ and $L=\log j$.  Then
+\[
+ k=cjL+O(1),\quad n=cjL+j+O(1),\quad
+ \log n=L+\log L+\log c+o(1).
+\]
+Stirling's formula, with the relative difference $j/n$ retained, gives
+\begin{align}
+ \frac1n\log\frac{\lambda_j^k}{k!(n!)^s}
+ &\ge \log b-p\log c+p-\frac s c+o(1)
+ \notag\\
+ &=\log b+p\log(p/s)+o(1).
+ \label{eq:typelowercalc}
+\end{align}
+Therefore $T_s(\Uhat)\ge b(p/s)^p$.  Letting $b\uparrow A_*$ proves the
+lower bound, including infinity.  When $A_*=0$, the lower bound is simply
+nonnegativity.  This proves the identity in every case.
+\end{proof}
+
+\subsection{Consequences and endpoint behavior}
+
+\begin{corollary}[Borel radii and zero type]
+\label{cor:borelradius}
+For $s>0$, the factorial-normalized transform
+$\sum_nu_nt^n/(n!)^s$ has radius
+\begin{equation}
+ R_s=\frac{1}{C_s A_s(\lam)},
+ \label{eq:borelradius}
+\end{equation}
+with $1/0=\infty$ and $1/\infty=0$.  In particular it is entire exactly
+when $\lambda_j=o((j\log j)^{s+1})$.
+For the normalization $\Gamma(1+sn)$, the radius is instead
+$s^s/(C_sA_s(\lam))$.
+\end{corollary}
+
+\begin{proof}
+The first statement is Cauchy--Hadamard and
+Theorem~\ref{thm:classification}.  Stirling gives
+$\Gamma(1+sn)^{1/n}/(n!)^{s/n}\to s^s$, which proves the last assertion.
+\end{proof}
+
+\begin{corollary}[The least Gevrey index]
+\label{cor:index}
+Let
+\[
+ \rho=\limsup_{j\to\infty}\frac{\log(1+\lambda_j)}{\log j}.
+\]
+Then
+\begin{equation}
+ \inf\{s\ge0:\Uhat\in\Gev_s\}=\max(0,\rho-1),
+ \label{eq:index}
+\end{equation}
+with value infinity when $\rho=\infty$.  Membership at the infimum is
+not automatic.
+\end{corollary}
+
+\begin{proof}
+For $s>\max(0,\rho-1)$, a positive power of $j$ separates
+$\lambda_j$ from $(j\log j)^{s+1}$ eventually, so
+\eqref{eq:gevcriterion} applies.  If $0<s<\rho-1$, the reverse separation
+holds on a subsequence and excludes $\Gev_s$.  The case $s=0$ is covered
+by the convergence criterion.  These implications prove the infimum,
+without making an unwarranted assertion about its attainment.
+\end{proof}
+
+For $\lambda_j\sim a j^p(\log j)^\beta$ with $p>1$, the critical index is
+$s=p-1$.  At that index the type is zero when $\beta<p$, is
+$a(p/(p-1))^p$ when $\beta=p$, and is infinite when $\beta>p$.
+Thus the logarithmic factor decides whether the critical Gevrey class is
+attained, and whether its Borel radius is infinite, finite, or zero.
+
+\begin{example}[Sparse spikes are detected sharply]
+Fix $s>0$ and $a>0$, and let
+\[
+ \lambda_j=\begin{cases}
+ a(j\log j)^{s+1},&j=2^{2^m},\ m\ge1,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Then $T_s(\Uhat)=aC_s$.  The density of the large slopes is irrelevant to
+this limsup statement.  We do not infer a full coefficient asymptotic
+from this sparse example; the regular-variation hypothesis of
+Theorem~\ref{thm:regular} does not hold.
+\end{example}
+
+\section{Borel growth and the positive-direction obstruction}
+\label{sec:borel}
+
+\subsection{An elementary entire-function lemma}
+
+\begin{lemma}
+\label{lem:entiregrowth}
+Let $b_n\ge0$ for all $n$, with $b_n>0$ eventually, and suppose, for $p>0$ and $D\in\R$, that
+\begin{equation}
+ \log b_n=-p n\log\log n+Dn+o(n).
+ \label{eq:bnassumption}
+\end{equation}
+Then $B(t)=\sum_{n\ge1}b_nt^n$ is entire and
+\begin{equation}
+ \lim_{t\to+\infty}\frac{\log\log B(t)}{t^{1/p}}=e^{D/p}.
+ \label{eq:entiregrowth}
+\end{equation}
+The same conclusion holds after changing finitely many coefficients to
+arbitrary nonnegative values.
+\end{lemma}
+
+\begin{proof}
+Equation~\eqref{eq:bnassumption} gives $b_n^{1/n}\to0$, so $B$ is entire.
+Put $c=e^{D/p}$.  For any $0<c_-<c<c_+$, eventually
+\[
+ \left(\frac{c_-}{\log n}\right)^{pn}
+ \le b_n\le
+ \left(\frac{c_+}{\log n}\right)^{pn}.
+\]
+Write $T=t^{1/p}$.  For a lower bound, fix $0<d<c_-$ and select
+$n=\lfloor e^{dT}\rfloor$.  The logarithm of this single term satisfies
+\[
+ \log(b_nt^n)\ge pn\log(c_-/d)+o(n).
+\]
+It follows that $\liminf\log\log B(t)/T\ge d$.  Let $d\uparrow c$ through
+admissible choices of $c_-$.
+
+For an upper bound choose $d>c_+$ and $N=\lceil e^{dT}\rceil$.
+When $n>N$, the upper bound gives
+$b_nt^n\le(c_+/d)^{pn}$, up to an immaterial adjustment at the cutoff.
+The tail is bounded by a convergent geometric series.  Since the entire
+coefficient sequence has bounded $n$th roots, there is $K\ge1$ such that
+$b_n\le K^n$ for all $n$.  Therefore the first $N$ terms are bounded by
+$N\max(1,Kt)^N$.  Taking two logarithms yields
+\[
+ \log\log B(t)\le dT+O(\log\log(t+e)).
+\]
+Let $d\downarrow c$ through choices of $c_+$.  Finite initial terms do not
+change either estimate.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:borelintro}]
+Take $\beta=0$ in Theorem~\ref{thm:regular} and put $s=p-1$.
+After subtracting $s\log n!$, it gives
+\[
+ \log\frac{u_n}{(n!)^s}
+ =-p n\log\log n+
+   \left[\log a+p\log\frac p{p-1}\right]n+o(n).
+\]
+Lemma~\ref{lem:entiregrowth} gives \eqref{eq:doublelog}.
+For $p=2$ and $a=1$, the resulting growth is faster than
+$\exp(Kt)$ for every fixed $K$.  In fact
+$\log B_1(t)=\exp((2+o(1))\sqrt t)$, which dominates $t/q$ for every
+$q>0$.  Thus the positive integrand in
+\[
+ \frac1q\int_0^\infty e^{-t/q}B_1(t)\,\dd t
+\]
+eventually tends to infinity, so the integral diverges.
+\end{proof}
+
+\subsection{The standard Gamma normalization}
+For general $s=p-1$, another common normalization is
+\[
+ \widetilde B_s(t)=\sum_{n\ge1}\frac{u_n}{\Gamma(1+sn)}t^n.
+\]
+Stirling changes the constant $D$ in
+Lemma~\ref{lem:entiregrowth} by $-s\log s$.  Consequently
+\begin{equation}
+ \lim_{t\to+\infty}
+ \frac{\log\log\widetilde B_s(t)}{t^{1/p}}
+ =a^{1/p}\frac p s\,s^{-s/p}.
+ \label{eq:gammaborelgrowth}
+\end{equation}
+It follows that $\widetilde B_s$ grows faster on the positive ray than
+$\exp(Kt^d)$ for every finite $d,K>0$.  In particular it fails the growth
+requirement for the usual order-$1/s$ Borel--Laplace summation procedure.
+This is a directional conclusion.  No corresponding assertion about the
+negative ray is proved here.
+
+\subsection{Why positivity makes the obstruction especially transparent}
+For the quadratic case, Tonelli gives a second proof of the failure:
+if the displayed positive-ray Laplace integral were finite, then
+\[
+ \frac1q\int_0^\infty e^{-t/q}
+       \sum_{n\ge1}\frac{u_n t^n}{n!}\,\dd t
+ =\sum_{n\ge1}u_nq^n
+\]
+would be finite.  The convergence criterion says the right-hand side is
+infinite.  The explicit double-logarithmic asymptotic is stronger: it
+identifies how the growth condition fails rather than merely proving a
+contradiction.
+
+\begin{remark}[What ``entire'' does not settle]
+The Borel transform here has no finite-plane singularities, but has very
+large growth at infinity.  We therefore do not infer ordinary summability
+from endless analytic continuation alone, nor do we assign finite Borel
+singularities or Stokes constants without an additional argument.  The
+separation between analytic continuation and Laplace growth is essential
+in the summability framework \cite{sauzin}.
+\end{remark}
+
+\section{Sectorial analytic realization without slope bounds}
+\label{sec:sector}
+
+The formal series may have zero convergence radius and may fail every
+finite Gevrey bound.  Nevertheless its defining equation has a literal
+analytic realization in suitable directions.  The reason is a different
+estimate: in the left half-plane, $e^{\lambda_j u}$ suppresses rather than
+amplifies large positive slopes.
+
+\begin{theorem}[Quantitative left-sector construction]
+\label{thm:sector}
+Let $\lambda_j\ge0$ be arbitrary and fix $\eta\in(0,1)$.  Set
+\[
+ K=2e\lambda_1+2.
+\]
+Choose $r_0>0$ sufficiently small that
+\begin{equation}
+ r_0\le\frac14,\qquad
+ Kr_0\le\min(1,\eta/2),\qquad
+ 2\lambda_1r_0\le1,
+ \label{eq:sectorradius1}
+\end{equation}
+and
+\begin{equation}
+ \kappa_0:=r_0\left(\lambda_1+
+              \frac{2}{e\eta(1-r_0)}\right)\le\frac12.
+ \label{eq:sectorradius2}
+\end{equation}
+For every $q\in S_{\eta,r_0}$, the map $u\mapsto\PhiL(q,u)$ is a
+contraction of the closed disk
+\[
+ D_q=\{u:|u-q|\le K|q|^2\}
+\]
+into itself.  Its fixed point $U(q)$ is holomorphic in $q$, satisfies
+$U(q)=q+O(q^2)$, and is the unique solution with this latter behavior on
+sufficiently small proper subsectors.
+
+Let $U_N(q)$ be the fixed point in the same disk for the first $N$ actions.
+Then, for $r=|q|$,
+\begin{equation}
+ \boxed{\qquad
+ |U(q)-U_N(q)|\le
+ \frac{r^{N+1}}{(1-r)(1-\kappa_0)}.
+ \qquad}
+ \label{eq:sectorerror}
+\end{equation}
+For each fixed $N$, $U_N$ agrees near the origin in the sector with the
+analytic germ defined by \eqref{eq:finitekernel}.  The function $U$ has
+Poincar\'e expansion $\Uhat$.
+\end{theorem}
+
+\begin{proof}
+Write $r=|q|$.  If $u\in D_q$, the choices above imply
+\[
+ |u|\le2r,\qquad \Re u\le-\eta r/2<0.
+\]
+The infinite sum defining $\PhiL$ is locally normally convergent on
+$|q|<1$, $\Re u<0$, since $|q^je^{\lambda_ju}|\le|q|^j$.
+It is therefore jointly holomorphic there.
+
+Separate the first action from the rest.  The bound
+$|e^z-1|\le|z|e^{|z|}$ gives
+\begin{align*}
+ |\PhiL(q,u)-q|
+ &\le r|e^{\lambda_1u}-1|+\sum_{j\ge2}r^j
+ \\
+ &\le2e\lambda_1r^2+\frac{r^2}{1-r}
+ \le Kr^2.
+\end{align*}
+Thus the disk is invariant.  For $a>0$ and $t\ge0$,
+$t e^{-at}\le1/(ea)$.  Using this with $a=\eta r/2$ gives
+\begin{align*}
+ |\partial_u\PhiL(q,u)|
+ &\le\lambda_1r+
+       \sum_{j\ge2}r^j\lambda_j e^{-\lambda_j\eta r/2}
+ \\
+ &\le\lambda_1r+
+       \frac{2}{e\eta r}\frac{r^2}{1-r}
+ \le\kappa_0.
+\end{align*}
+The same estimates hold after truncating the sum at any $N\ge1$.
+Banach's contraction theorem supplies the fixed points.  Picard iterates
+starting at $q$ are holomorphic on the sector and converge uniformly on
+compact subsets, so their limit is holomorphic.
+
+Any other solution $V=q+O(q^2)$ in a proper left subsector has
+$|V|\le2r$ and $\Re V\le-\eta r/2$ after reducing $r_0$ if necessary.
+The invariance estimate then places $V=\PhiL(q,V)$ in $D_q$, where
+uniqueness has already been proved.
+
+Subtract the infinite and finite fixed-point equations.  The segment
+joining $U$ and $U_N$ lies in $D_q$, so
+\[
+ |U-U_N|\le\kappa_0|U-U_N|+
+       \sum_{j>N}r^j e^{\lambda_j\Re U}
+ \le\kappa_0|U-U_N|+\frac{r^{N+1}}{1-r}.
+\]
+This proves \eqref{eq:sectorerror}.
+
+For a fixed $N$, the analytic implicit-function theorem at $(0,0)$ gives
+the finite-action germ.  It has expansion $q+O(q^2)$ and hence coincides
+with the disk fixed point near the origin in the sector.  By
+\eqref{eq:finiteagreement}, its first $N$ coefficients are $u_1,\ldots,u_N$.
+For that fixed $N$,
+\[
+ U_N(q)=\sum_{n=1}^Nu_nq^n+O_N(q^{N+1}).
+\]
+Combining this with \eqref{eq:sectorerror} proves the Poincar\'e assertion.
+The constants hidden in $O_N$ may depend on $N$; no uniform Gevrey
+remainder estimate has been used or claimed.
+\end{proof}
+
+\subsection{The direction of approach is substantive}
+If $\sup_j\lambda_j/j=\infty$, no branch satisfying $U(q)/q\to1$ as
+$q\downarrow0$ on the positive real axis can solve the literal identity.
+Indeed, then $\Re U(q)>0$ for sufficiently small positive $q$, and the
+terms $q^je^{\lambda_jU(q)}$ fail to tend to zero along a subsequence.
+By contrast, Theorem~\ref{thm:sector} gives a real negative solution when
+$q$ is real negative, because the equation and the invariant disk are
+preserved by complex conjugation.
+
+Under $q=e^{-x}$, negative $q$ corresponds to a complex horizontal line
+with $\Im x$ an odd multiple of $\pi$, rather than to real $x\to+\infty$.
+Thus the left-sector construction is a complex realization of the same
+formal exponential transseries, not a positive-real realization hidden
+by a change of notation.
+
+\subsection{A practical implication for summation algorithms}
+The sequence $U_N(q)$, obtained by retaining primitive actions and solving
+a finite implicit equation, converges geometrically on these sectors with
+the explicit certificate \eqref{eq:sectorerror}.  The Taylor partial sums
+$\sum_{n\le N}u_nq^n$ may diverge at every nonzero $q$.  These are different
+approximation schemes.  An implementation should record which scheme it
+uses, rather than labeling both merely as ``truncation of the transseries.''
+
+\section{Transfer to genuine compositional inversion}
+\label{sec:inverse}
+
+Because $u_1=1$, the formal solution has a unique inverse
+$\Qhat\in q+q^2\R[[q]]$ under composition.  In particular,
+\begin{equation}
+ \Qhat(\Uhat(q))=q,
+ \qquad
+ u=\sum_{j\ge1}\Qhat(u)^j e^{\lambda_j u}
+ \label{eq:inverseidentity}
+\end{equation}
+as formal identities.  The following classical stability fact is proved
+here to keep the application independent of analytic realization choices.
+
+\begin{proposition}[Gevrey stability under formal reversion]
+\label{prop:reversion}
+If $\widehat f(q)=q+\sum_{n\ge2}f_nq^n$ and $s\ge0$, then
+\[
+ \widehat f\in\Gev_s
+ \quad\Longleftrightarrow\quad
+ \widehat f^{\langle-1\rangle}\in\Gev_s.
+\]
+\end{proposition}
+
+\begin{proof}
+For $s=0$ this is the ordinary analytic inverse-function theorem in both
+directions.  We give a coefficient proof valid also for $s>0$.
+Assume $|f_n|\le CA^n(n!)^s$, increasing $A,C$ to at least one.
+Write $\widehat f=q(1+h(q))$, where
+$h(q)=\sum_{m\ge1}f_{m+1}q^m$.  Lagrange inversion gives, for $n\ge2$,
+\begin{align*}
+ [q^n]\widehat f^{\langle-1\rangle}
+ &=\frac1n[z^{n-1}](1+h(z))^{-n}\\
+ &=\frac1n\sum_{k=1}^{n-1}(-1)^k\binom{n+k-1}{k}
+       \sum_{\substack{m_1+\cdots+m_k=n-1\\m_i\ge1}}
+            \prod_i f_{m_i+1}.
+\end{align*}
+For positive integers $m_i$ with sum $n-1$,
+\begin{equation}
+ \prod_{i=1}^k(m_i+1)!
+ \le2^{k-1}(n-k+1)!\le2^n n!.
+ \label{eq:factorialmerge}
+\end{equation}
+One way to see the first inequality is to transfer a unit from a smaller
+factorial argument greater than two to a larger one; this cannot decrease
+the product, and it leaves all but one argument equal to two.
+
+The binomial coefficient in the reversion formula is at most $4^n$,
+the number of compositions is at most $2^n$, and
+$\prod_i CA^{m_i+1}\le C^nA^{2n}$.  Equation~\eqref{eq:factorialmerge}
+therefore bounds the inverse coefficient by
+$B^n(n!)^s$ for a fixed $B>0$, after absorbing all exponential factors.
+This proves one implication.  Apply it again to the inverse series to
+obtain the other.
+\end{proof}
+
+\begin{corollary}[The classification survives inversion]
+\label{cor:inverse}
+The inverse $\Qhat$ has positive convergence radius exactly when
+$\lambda_j=O(j)$.  For each $s>0$,
+\[
+ \Qhat\in\Gev_s
+ \quad\Longleftrightarrow\quad
+ \lambda_j=O((j\log(j+1))^{s+1}).
+\]
+Its least Gevrey index is the value in \eqref{eq:index}.
+\end{corollary}
+
+\begin{remark}
+This corollary transfers \emph{class membership}, not the numerical type
+$T_s$.  The inverse coefficients need not be nonnegative.  We have not
+proved that $T_s(\Qhat)=T_s(\Uhat)$, nor that the concentration theorem
+transfers through the cancellations in reversion.
+\end{remark}
+
+\section{Examples, benchmarks, and sharp boundaries}
+\label{sec:examples}
+
+\subsection{Analytic benchmark kernels}
+
+When all slopes vanish, $U=q/(1-q)$ has radius one.  If $\lambda_j=1$
+for every $j$, then
+\[
+ U=\frac{q}{1-q}e^U,
+ \qquad U=-W_0\!\left(-\frac q{1-q}\right).
+\]
+Its positive critical point is $U=1$, $q=1/(1+e)$; the positive
+supersolution criterion and the nonzero quadratic derivative at the
+critical point show that this is its radius of convergence.
+
+For $\lambda_j=j$, the kernel is geometric in $qe^U$, and
+\begin{equation}
+ U=\frac{qe^U}{1-qe^U}
+ \quad\Longleftrightarrow\quad U=q(1+U)e^U.
+ \label{eq:linearbenchmark}
+\end{equation}
+Writing $q=Ue^{-U}/(1+U)$, the positive maximum occurs at
+\[
+ \tau=\frac{\sqrt5-1}{2},\qquad
+ R=\frac{\tau e^{-\tau}}{1+\tau}=\tau^2e^{-\tau}.
+\]
+The branch at the origin reaches this simple critical point.  Local
+analytic inversion gives
+\begin{equation}
+ U(q)=\tau-
+ \sqrt{\frac{2(1+\tau)}{3+\tau}}\sqrt{1-q/R}
+ +O(1-q/R).
+ \label{eq:linearsqrt}
+\end{equation}
+This is a familiar analytic implicit-function singularity; the new
+phenomena begin when the countable slopes outgrow their actions.
+
+\subsection{Quadratic feedback}
+For $\lambda_j=j^2$,
+\begin{align*}
+ \Uhat(q)={}&q+2q^2+\frac{15}{2}q^3+\frac{107}{3}q^4
+ +\frac{1555}{8}q^5+\frac{17362}{15}q^6\\
+ &+\frac{5288311}{720}q^7+\frac{15414767}{315}q^8+\cdots.
+\end{align*}
+It has radius zero, is Gevrey-$1$ of type zero, and is not Gevrey-$s$
+for any $s<1$.  Its coefficients satisfy
+\begin{equation}
+ \log u_n=n\log n-2n\log\log n+(2\log2-1)n+o(n).
+ \label{eq:quadraticasymptotic}
+\end{equation}
+Thus ``Gevrey-$1$ of type zero'' is compatible with divergence: the
+normalization by $n!$ is stronger than the normalization by an exponential.
+The ordinary Borel transform is entire but has the positive-ray growth
+proved in Section~\ref{sec:borel}.
+
+\subsection{The critical logarithmic correction}
+For $\lambda_j=a(j\log(j+1))^2$, the exact type identity gives
+\[
+ T_1(\Uhat)=4a,
+ \qquad R_{\mathrm{Borel}}=\frac1{4a}.
+\]
+This finite Borel radius is obtained without a full multiplicative
+asymptotic for the coefficients.  Increasing the logarithmic exponent to
+$2+\varepsilon$ destroys Gevrey-$1$ membership; decreasing it below two
+makes the ordinary Borel transform entire.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.30\textwidth}p{0.19\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Slope sequence & Convergence & Gevrey conclusion\\
+\midrule
+$\lambda_j=O(j)$ & Positive radius & $\Gev_0$\\
+$j\log(j+1)$ & Radius zero & Every $\Gev_s$, $s>0$; not $\Gev_0$\\
+$j^2$ & Radius zero & Critical class $\Gev_1$, type zero\\
+$a(j\log(j+1))^2$ & Radius zero & Critical class $\Gev_1$, type $4a$\\
+$j^2(\log(j+1))^3$ & Radius zero & Every $\Gev_s$, $s>1$; not $\Gev_1$\\
+$j^3$ & Radius zero & Critical class $\Gev_2$, type zero\\
+$e^{\sqrt j}$ & Radius zero & No finite Gevrey class\\
+\bottomrule
+\end{tabular}
+\end{center}
+All rows nevertheless admit the left-sector realization of
+Theorem~\ref{thm:sector}.  The last row is a particularly strong warning
+against inferring coefficient regularity from sectorial existence alone.
+
+\subsection{Why a complete black-box decision procedure is impossible}
+The sharp criteria are mathematical equivalences, not a claim that their
+asymptotic conditions can be decided from an arbitrary program for
+$\lambda_j$.
+
+\begin{proposition}
+\label{prop:undecidable}
+There is no algorithm that takes an arbitrary program computing a
+nonnegative integer slope sequence and always decides whether its formal
+solution is convergent.  For any fixed $s>0$, there is likewise no such
+algorithm deciding membership in $\Gev_s$.
+\end{proposition}
+
+\begin{proof}
+Given a machine $M$, define a total computable sequence by running $M$
+for $j$ steps and setting
+\[
+ \lambda_j=\begin{cases}
+ j^2,&M\text{ has not halted within those steps},\\
+ 0,&M\text{ has halted within those steps}.
+ \end{cases}
+\]
+If $M$ halts, only finitely many slopes are nonzero and the solution is
+convergent.  If $M$ never halts, the sequence is $j^2$ and the solution is
+divergent.  A proposed decision procedure would decide the halting problem.
+For a fixed positive $s$, replace $j^2$ by $j^m$ for an integer $m>s+1$.
+The nonhalting case is not in $\Gev_s$, while the halting case remains
+convergent.  The same reduction applies.
+\end{proof}
+
+The appropriate implementation goal is consequently a sound certificate
+system for structured input families, not an unconditional classifier for
+arbitrary programs.  This reduction is a standard use of undecidability;
+it is not presented as a new theorem of computability theory.
+
+\section{Reproducible coefficient checks and numerical diagnostics}
+\label{sec:computations}
+
+The supplementary script \texttt{code/verify.py} uses exact integers for
+coefficient generation when the slopes are nonnegative integers.  It also
+uses an independent partition enumeration to check the Lagrange formula.
+No numerical experiment is used as a substitute for a proof above.
+
+\subsection{An exact recurrence}
+Put
+\[
+ A_n=n!u_n,
+ \qquad E_{j,k}=k![q^k]e^{\lambda_j\Uhat(q)},\qquad E_{j,0}=1.
+\]
+Differentiating the exponential formally gives
+\begin{equation}
+ E_{j,k}=\lambda_j\sum_{r=1}^k
+           \binom{k-1}{r-1}A_rE_{j,k-r}.
+ \label{eq:exactrecurrence1}
+\end{equation}
+The original fixed-point identity gives
+\begin{equation}
+ A_n=\sum_{j=1}^n\frac{n!}{(n-j)!}E_{j,n-j}.
+ \label{eq:exactrecurrence2}
+\end{equation}
+All quantities needed on the right have smaller index than $n$, except
+for the already known constant $E_{n,0}=1$.  Integer slopes therefore
+produce integer $A_n$, even when $u_n$ is not integral.  The supplied
+implementation takes $O(N^3)$ integer arithmetic operations and
+$O(N^2)$ stored integers through order $N$; this is an arithmetic-operation
+count, not a bit-complexity bound.
+
+The executed checks were as follows.  For $\lambda_j=j^2$, coefficients
+through order $120$ were computed exactly.  The first twelve were checked
+against direct partition enumeration.  Twelve zero-slope coefficients
+were checked against $q/(1-q)$, and twelve linear-slope coefficients
+against an independent Lagrange formula for \eqref{eq:linearbenchmark}.
+All thirty-six comparisons passed.  The exact values and the verification
+record are included in \texttt{data/}.
+
+\subsection{A rigorous sandwich, evaluated approximately}
+For the quadratic model and $k=n-r+1$, convexity gives the exact maximum
+\[
+ \sum_{i=1}^k j_i^2\le r^2+k-1.
+\]
+Consequently
+\begin{align}
+ u_n&\ge
+ \max_{2\le r\le n}
+ \frac{(r^2+n-r)^{n-r}}{(n-r)!},
+ \label{eq:quadraticlower}\\
+ u_n&\le\sum_{r=1}^n\binom{n-1}{r-1}
+       \frac{(r^2+n-r)^{n-r}}{(n-r+1)!}.
+ \label{eq:quadraticupper}
+\end{align}
+For numerical work the all-unit contribution can also be included in the
+lower maximum, with its correct denominator $n!$.  The mathematical
+inequalities are rigorous.  The decimal evaluations below use ordinary
+floating-point logarithms, not directed rounding, and are diagnostics
+rather than interval certificates.
+
+Define the normalized logarithm
+\[
+ H_n=\frac{\log u_n}{n}-\log n+2\log\log n.
+\]
+Theorem~\ref{thm:regular} proves $H_n\to2\log2-1\approx0.38629436$.
+Applying the normalization to the lower and upper bounds gives:
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$n$ & Lower value & Upper value & Lower-bound maximizing $r$ & $r\log n/n$\\
+\midrule
+$100$ & $1.017199$ & $1.626109$ & $38$ & $1.749965$\\
+$1\,000$ & $1.059262$ & $1.666026$ & $292$ & $2.017065$\\
+$10\,000$ & $1.031046$ & $1.587396$ & $2\,332$ & $2.147851$\\
+$100\,000$ & $0.990011$ & $1.493908$ & $19\,183$ & $2.208524$\\
+$1\,000\,000$ & $0.949010$ & $1.406654$ & $161\,926$ & $2.237090$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values make an important caution visible: convergence of the
+normalized logarithm and of the leading saddle scale is slow.  A moderate
+coefficient table would not reliably identify the limiting constant or
+justify a full coefficient asymptotic.  The table is not evidence that the
+finite-$n$ maximizing action is already close to its limiting value two.
+
+\subsection{Reproduction commands}
+From the archive root, run
+\begin{quote}\ttfamily\small
+python -m pip install -r requirements.txt\\
+python code/verify.py --order 120\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The exact computation uses only the Python standard library.  NumPy and
+SciPy are used for the large-$n$ floating-point envelope tables.
+The article has no external figure or bibliography-file dependency.
+
+\section{A focused further-research program}
+\label{sec:future}
+
+The following questions extend proved results rather than presupposing
+unproved summability or novelty claims.  Their priority refers to their
+usefulness for the repository's transseries-inversion program.
+
+\subsection{Directional summability of the quadratic model}
+Determine the growth of $B_1(t)$ on nonpositive rays and in sectors, not
+only on the positive axis.  Is the left-sector solution of
+Theorem~\ref{thm:sector} the ordinary Borel sum of $\Uhat$ in direction
+$\pi$?  A successful proof must establish the required sectorial Borel
+growth and compare the Laplace sum with the literal fixed point.
+The coefficient Gevrey bound and Poincar\'e realization alone do not imply
+this comparison.  Cancellation in $B_1(-t)$ is the central new issue.
+
+\subsection{Acceleration and the choice of analytic equation}
+The law $\log\log B_1(t)\sim2\sqrt t$ suggests that ordinary Laplace
+summation is not the appropriate positive-direction operation.  Develop an
+accelerated transform adapted to this growth and state explicitly which
+analytic continuation of the countable kernel it respects.  A literal
+positive-real solution of \eqref{eq:kernel} is impossible when
+$\lambda_j/j$ is unbounded, so an accelerated value cannot be claimed to
+solve that divergent literal sum without specifying an additional
+continuation or regularization rule.  Existence, uniqueness, and dependence
+on that choice are separate research questions.
+
+\subsection{Beyond logarithmic coefficient asymptotics}
+Refine \eqref{eq:logasymptotic} to include its sublinear terms and eventually
+a full multiplicative equivalent.  The exact composition entropy, the
+small nonunit actions, and the shift of the large-action saddle all become
+relevant below order $n$.  Establish a local limit theorem for $K$ and
+$J_{\max}$ with a correctly centered fluctuation law.  The exponential
+concentration proved here supplies localization, but not the necessary
+subleading analysis.
+
+\subsection{The near-linear transition}
+Analyze slopes such as $j(\log j)^\beta$ with $\beta>0$ and
+$jL(j)$ with a slowly varying unbounded $L$.  The present classification
+already proves divergence together with membership in every positive
+Gevrey class.  What are the sharp coefficient asymptotics and the natural
+summation scales in this zero-index, nonconvergent regime?  The saddle
+balance changes because the $(p-1)n\log n$ term disappears at $p=1$.
+
+\subsection{Exact type under compositional inversion}
+For $\Qhat=\Uhat^{\langle-1\rangle}$, determine whether the exact type
+$T_s$ is preserved and under which hypotheses.  We have proved only class
+membership and equality of the least Gevrey index.  A proof of a sharper
+claim must control cancellations in the reversion formula rather than
+import the positive-weight argument unchanged.
+
+\subsection{Amplitudes, general actions, and multiple scales}
+Replace the unit amplitudes and integer actions by
+\[
+ U=\sum_j c_j q^{a_j}e^{\lambda_j U},
+ \qquad c_j\ge0,
+\]
+first with positive integer $a_j$ and then with well-based real actions.
+Determine the analogues of the exact type identity in terms of the
+interaction between $c_j$, $a_j$, and $\lambda_j$.  The proof here uses the
+availability of arbitrarily many action-one factors in an essential way.
+For true multilevel transseries, one must also state which filtration is
+used for formal summability and which parameter controls the analytic
+normalization.  A weight estimate in the wrong filtration is not an
+analytic certificate.
+
+\subsection{Signed and vector-valued feedback}
+For complex amplitudes or slopes, positivity no longer identifies the
+absolute majorant with the actual coefficient growth.  Seek phase or
+noncancellation conditions under which a sharp lower bound survives.
+For vector systems, investigate whether a scalar slope budget should be
+replaced by spectral radii of nonnegative feedback matrices.  An adequate
+theorem should include both a finite-dimensional reduction and a
+countable-tail hypothesis, rather than silently use a finite-dimensional
+implicit-function theorem on an infinite system.
+
+\subsection{Uniform Gevrey remainder bounds for the sectorial solution}
+Our left-sector construction has an explicit primitive-action truncation
+error, while its Poincar\'e remainder constants are allowed to depend
+arbitrarily on order.  Determine when the actual solution satisfies
+uniform estimates of the form
+\[
+ \left|U(q)-\sum_{n<N}u_nq^n\right|
+ \le CA^N(N!)^s|q|^N
+\]
+on proper sectors.  The sharp coefficient criterion is necessary for
+such a statement, but its sufficiency for this particular realization
+requires a new argument.  This is the most direct bridge to the Gevrey
+implicit-function and summability literature.
+
+\subsection{Formalization and certified computation}
+A useful Lean development can be staged without first formalizing all of
+transseries theory.  The finite coefficient formula, coefficientwise
+monotonicity, the one-large-action lower bound, and the convex composition
+bound are natural initial targets.  A second stage should formalize the
+logarithmic envelope and its limit estimates.  A third stage can address
+Tonelli, normal convergence, and sectorial contraction.
+
+For computation, replace the illustrative logarithmic tables by directed
+interval arithmetic, and attach proof objects to verified slope bounds.
+The positive and left-sector certificates should remain separate in the
+API.  A result should record whether it establishes formal support,
+coefficient Gevrey growth, an analytic germ, a sectorial solution,
+a uniform asymptotic expansion, or Borel summability.  These are genuinely
+different outputs.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+The countable kernel \eqref{eq:kernel} is simple enough to admit exact
+coefficient formulas yet rich enough to distinguish several regularity
+notions that can otherwise be conflated in transseries inversion.
+Its formal solution always exists.  Linear slope growth is exactly the
+threshold for ordinary convergence.  For every positive Gevrey order,
+the sharp threshold is instead $(j\log j)^{s+1}$, and the type is given
+by the explicit constant in \eqref{eq:exacttype}.  The threshold survives
+formal compositional inversion at the level of class membership.
+
+For regularly varying superlinear slopes, the coefficients are generated
+at leading exponential precision by one large action together with many
+unit-action factors.  This gives both the term of order $n$ in
+$\log u_n$ and an exponential concentration theorem.  In the quadratic
+case, the Borel transform is entire but too large for positive-direction
+Laplace summation.  Finally, suppression of large slopes in the left
+half-plane gives a constructive analytic realization for every
+nonnegative slope sequence, with a uniform action-truncation certificate.
+
+The resulting improvement to an inversion workflow is concrete: formal
+well-basedness should be accompanied by an explicit slope budget before
+analytic or Gevrey regularity is asserted.  When a positive majorant fails,
+a direction-sensitive analytic construction may still be available, but
+its output must not be confused with a convergent Taylor series or a
+proved Borel sum.
+
+\appendix
+\section{Dependency map and proof-audit checklist}
+\label{app:audit}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.34\textwidth}p{0.53\textwidth}@{}}
+\toprule
+Result & Main dependencies and boundary\\
+\midrule
+Formal fixed point & Finite coefficient support and $q$-adic contraction; no analytic assumption.\\
+Positive coefficient formula & Classical formal Lagrange inversion; $k\le n$ makes specialization finite.\\
+Convergence equivalence & Positivity, Tonelli, and a product-neighborhood analytic argument.\\
+Logarithmic asymptotic & Eventual convexity, one-large-action lower bound, sharp envelope lemma.\\
+Exact Gevrey type & Logarithmic asymptotic for an upper comparison sequence; sparse-subsequence lower bound.\\
+Concentration & Strict concavity of the envelope and a capped convex composition bound.\\
+Entire Borel growth & Positive coefficients and an elementary maximum-term estimate.\\
+Sectorial realization & Suppression for $\Re u<0$, disk contraction, normal convergence.\\
+Poincar\'e expansion & Finite-action germs plus the uniform action-tail bound; no uniform Gevrey remainder claim.\\
+Reversion classification & Classical coefficient inversion and factorial bounds; no exact-type transfer claimed.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For independent review, the most important points to check are the
+localization steps in Lemma~\ref{lem:envelope}, the retention of the
+$j/n$ correction in \eqref{eq:typelowercalc}, and the distinction between
+primitive-action truncation and Taylor truncation.  The constant in
+\eqref{eq:exacttype} is sensitive to the second of these points.
+The positivity assumption is used in the necessity direction of the
+convergence criterion and in all sharp lower bounds.
+
+\section{Repository integration note}
+
+A natural location for this note is a new research subdirectory adjacent
+to the consolidated transseries volume, with its own proof-status record.
+No existing repository source or branch was modified in preparing this
+archive.  The package contains the article source and compiled PDF,
+a verification script, machine-readable coefficient and envelope tables,
+and a README explaining reproduction and limitations.
+
+The bibliography distinguishes the repository motivation from external
+classical tools.  The sharp classification theorems are derived within
+this article; they are not quoted from the repository.  The literature
+check located established infinite-colour inversion and Gevrey implicit
+function theory, but was not an exhaustive priority search.  Independent
+mathematical review and further bibliographic comparison are required
+before treating the proposed results as a publication-level novelty claim.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{repo}
+V. Reshetnikov,
+\emph{ProveIt: Transseries---the polynomial--logarithmic calculus and its
+inversions}, repository source and README,
+commit \texttt{04e06e032dff1966513bfba316966d52db3646b4},
+consulted 29 September 2026.
+\newblock
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion}{Pinned transseries directory on GitHub}.
+
+\bibitem{vdh}
+J. van der Hoeven,
+\emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics 1888, Springer, 2006.
+\newblock Author-hosted text:
+\url{https://www.texmacs.org/joris/ln/ln.html}.
+
+\bibitem{gessel}
+I. M. Gessel,
+Lagrange inversion,
+\emph{Journal of Combinatorial Theory, Series A} \textbf{144} (2016),
+212--249.
+\newblock DOI: \href{https://doi.org/10.1016/j.jcta.2016.06.018}{10.1016/j.jcta.2016.06.018}.
+\newblock Author preprint: \url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{jktcolors}
+S. Jansen, T. Kuna, and D. Tsagkarogiannis,
+Lagrange inversion and combinatorial species with uncountable color palette,
+\emph{Annales Henri Poincar\'e} \textbf{22} (2021), 1499--1534.
+\newblock DOI: \href{https://doi.org/10.1007/s00023-020-01013-0}{10.1007/s00023-020-01013-0}.
+\newblock Preprint: \url{https://arxiv.org/abs/2008.10862}.
+
+\bibitem{jktvirial}
+S. Jansen, T. Kuna, and D. Tsagkarogiannis,
+Virial inversion and density functionals,
+\emph{Journal of Functional Analysis} \textbf{284}, no. 1 (2023), 109731.
+\newblock DOI: \href{https://doi.org/10.1016/j.jfa.2022.109731}{10.1016/j.jfa.2022.109731}.
+\newblock Preprint: \url{https://arxiv.org/abs/1906.02322}.
+
+\bibitem{nikolaev}
+N. Nikolaev,
+Gevrey asymptotic implicit function theorem,
+\emph{L'Enseignement Math\'ematique} \textbf{70}, no. 1/2 (2024), 251--282.
+\newblock DOI: \href{https://doi.org/10.4171/LEM/1061}{10.4171/LEM/1061}.
+\newblock Preprint: \url{https://arxiv.org/abs/2112.08792}.
+
+\bibitem{sauzin}
+D. Sauzin,
+\emph{Introduction to 1-summability and resurgence},
+2014 lecture notes.
+\newblock \url{https://arxiv.org/abs/1405.0356}.
+
+\end{thebibliography}
+\end{document}

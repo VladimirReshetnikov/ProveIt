@@ -1,0 +1,1661 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Critical Transseries at a Moving Fold},
+ pdfauthor={Research continuation for the ProveIt project}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Critical transseries at a moving fold}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setcounter{tocdepth}{2}
+\setlist[enumerate]{itemsep=4pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}[section]
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\tc}{t_{\mathrm c}}
+\newcommand{\zc}{z_{\mathrm c}}
+\newcommand{\vc}{v_{\mathrm c}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\repoLabel}[1]{\texttt{\small\detokenize{#1}}}
+
+\makeatletter
+\newcommand{\tableinput}[1]{\@@input #1 }
+\makeatother
+
+\begin{document}
+\begin{titlepage}
+\vspace*{13mm}
+\begin{center}
+{\small\scshape Transseries, analytic inversion, and critical asymptotics}\par
+\vspace{10mm}
+{\LARGE\bfseries Critical Transseries\par at a Moving Fold}\par
+\vspace{7mm}
+{\large A uniform two-sheet atlas,\par large-sector crossover, and resonant action splitting}\par
+\vspace{12mm}
+{\normalsize Research continuation for the ProveIt project}\par
+\vspace{3mm}
+{\normalsize 29 September 2026}
+\end{center}
+\vspace{9mm}
+\begin{abstract}
+The exponential sectors in the inverse of a logarithmic--exponential map
+have poles of order $2n-1$ at a critical core value. Their deepest-pole sum
+is a square root, but that formal sum does not locate the moving branch
+point and is not a uniform approximation at the transition. We resolve
+this explicitly posed project-local problem for
+\[
+ \delta+\log(1+\delta/w)+wz e^{-\delta}=0.
+\]
+Writing $s=w+1$ and $z=s^2\zeta$, we construct an exact holomorphic two-sheet
+atlas on an explicit complex domain. Its discriminant gives
+$\zc(s)=s^2/2+s^3/3+5s^4/8+\cdots$ and an all-order polynomial profile
+expansion with a geometric error bound valid at the branch point itself.
+A uniform coefficient theorem then proves the double-scaling law
+$a_n(\tau/n)/a_n(0)\to e^{-2\tau/3}$ and its first correction, where
+$a_n(s)=s^{2n-1}b_n(-1+s)$ normalizes the $n$th exponential sector.
+Finally, for general analytic folds driven by finitely many exponential
+actions, we prove an absolutely convergent, resonance-aware transseries
+representation and give a constructive finite positive generating set for
+its support. Explicit cancellations can change the first fractional
+action or remove the splitting altogether. The arguments use classical
+local analytic and coefficient-extraction methods; the contribution is
+the quantitative specialization, crossover calculation, and support
+construction, not a new general theory of analytic folds.
+\end{abstract}
+\vfill
+\noindent\fbox{\begin{minipage}{0.93\textwidth}
+\small\textbf{Scope and verification.}
+This manuscript answers Research question 11.8 of the predecessor
+\emph{Support-Controlled Reversion and the Exact One-Exponential
+Substitution Group} in its independent-parameter local setting.
+The new results are not Lean-formalized. Exact symbolic checks and
+100-digit numerical diagnostics are supplied, but are not substitutes
+for the proofs or for independent review. Worldwide priority is not claimed.
+\end{minipage}}
+\end{titlepage}
+
+{\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+}
+\newpage
+
+\section{Research target, contribution, and boundaries}
+\label{sec:intro}
+
+\subsection{The gap between a formal pole sum and a uniform inverse}
+The ProveIt transseries program separates several logically different
+levels: finite algebraic identities, formal support-controlled operations,
+analytic realization, and quantitative error bounds. This separation is
+particularly important near a zero of the derivative of the function
+being inverted. A coefficientwise expansion can be perfectly correct
+while its truncations fail precisely where infinitely many of its
+singular coefficients compete.
+
+The inspected repository module \texttt{QuadraticCoreCatalan.lean}
+formalizes the finite Catalan algebra underlying the quadratic equation
+\[
+ A\varepsilon+c\varepsilon^2+\sigma q=0.
+\]
+The package README and the module itself distinguish that algebra from
+the assembled power-series existence statement and from the identification
+of deepest poles in special-function inversions
+\cite{repo-readme,repo-catalan}. We maintain that distinction here.
+
+The predecessor manuscript \cite{predecessor} applies exact-core inversion
+to the logarithmic--exponential example. It proves an exact rational
+formula for the sector functions $b_n(w)$ and identifies their leading
+poles at $w=-1$. Its Research question 11.8 asks whether the resulting
+formal square-root expression can be promoted to a uniform complex
+transition approximation, with error bounds and the nearby branch points
+actually located. This is the central target of the present article.
+
+The answer is affirmative, but the branch point must move. Keeping the
+quadratic model's branch point fixed gives an approximation whose error
+is of order $s^{3/2}$ on a natural test path, rather than the $s^2$ order
+one might infer from a regular correction expansion. The corrected
+coordinate is
+\begin{equation}\label{eq:intro-q}
+ q^2=1-\frac{z}{\zc(s)},\qquad s=w+1,
+\end{equation}
+not $1-2z/s^2$.
+
+\subsection{What is established here}
+The main results have three complementary forms.
+
+First, an explicit two-sheet analytic representation is proved for
+$|s|\le 10^{-2}$ and $|z/s^2|<3/4$. It yields a convergent expansion
+\[
+ \delta=s\left(\sum_{j\ge0}s^jV_j(q)-1\right),
+ \qquad V_j\in\Q[q],\qquad \deg V_j\le j+1,
+\]
+with a bound uniform in the truncation order and valid for $|q|\le1/2$,
+including $q=0$. The first five profiles are given explicitly.
+
+Second, the same atlas controls the limit of large sector index. If
+$a_n(s)=s^{2n-1}b_n(-1+s)$, then uniformly for bounded complex $\tau$,
+\begin{equation}\label{eq:intro-crossover}
+ \frac{a_n(\tau/n)}{a_n(0)}
+ =e^{-2\tau/3}
+ \left[1+\frac{\tau/3-37\tau^2/36}{n}+\OO(n^{-2})\right].
+\end{equation}
+Thus the first drift of the branch point has an order-one effect on high
+sectors in the window $s\asymp n^{-1}$.
+
+Third, an analytic fold perturbed by finitely many exponentials admits an
+absolutely convergent transseries whose leading splitting action is half
+the first \emph{noncancelled} action in its discriminant. Equal actions
+must be combined before selecting this first term. We give a finite,
+explicitly enumerable positive generating set for all subsequent action
+gaps. This answers a substantial analytic subclass of the predecessor's
+multi-action questions, not its unrestricted formal or resurgent versions.
+
+\subsection{Classical input and the meaning of novelty}
+Square-root branching at a simple critical point is classical. The
+Lambert $W$ branch expansion is an especially relevant example
+\cite{corless}. Extraction of coefficient asymptotics from such a
+singularity is also classical \cite{flajolet-odlyzko}. General transseries
+background, including the need for appropriate support conditions, can
+be found in \cite{edgar}.
+
+We do not claim to replace these theories. Instead, we prove the precise
+uniform analytic statement that the earlier formal calculation left open,
+compute its moving discriminant and polynomial profiles, and derive a
+specific joint critical/large-sector limit. The proofs below are
+self-contained at the level of elementary complex analysis, including
+Cauchy's formula, Rouch\'e's theorem, the holomorphic implicit-function
+theorem, and the gamma-function coefficient formula. A constructive
+finite-grid refinement is then added for analytic finite-action folds.
+
+\subsection{An essential parameter qualification}
+\label{sec:qualification}
+The variable $z$ is an \emph{independent analytic perturbation parameter}.
+For the original fixed map $y+\log y+e^{-y}$, putting
+$x=w+\log w$ gives the specialization $z=e^{-x}=e^{-w}/w$.
+As $w\to-1$ on a local logarithm branch, that value tends to $-e$, not to
+zero. Therefore our small-$(s,z)$ critical chart is not, by itself, an
+analysis of the fixed-coupling map at $w=-1$.
+
+More generally the equation studied here is the local form of
+\[
+ y+\log y+\lambda e^{-y}=w+\log w,
+ \qquad \lambda=we^wz.
+\]
+It is a small-coupling, independent-parameter analytic family. Its sector
+functions are exactly those of the predecessor, so its singularity
+analysis directly controls their critical behavior. Global continuation
+to the physical specialization $\lambda=1$ is a different question and
+is not claimed in this article.
+
+\section{From the sector equation to a regular critical chart}
+\label{sec:chart}
+
+\subsection{The known sector functions}
+For $w\ne0,-1$, let $\delta(w,z)$ denote the solution near $z=0$ with
+$\delta(w,0)=0$ of
+\begin{equation}\label{eq:delta}
+ \delta+\log\left(1+\frac{\delta}{w}\right)+wz e^{-\delta}=0.
+\end{equation}
+The logarithm in this equation is the local branch equal to zero when
+$\delta=0$. Write
+\begin{equation}\label{eq:sectors}
+ \delta(w,z)=\sum_{n\ge1} b_n(w)z^n.
+\end{equation}
+The predecessor gives
+\begin{equation}\label{eq:known-bn}
+ b_n(w)=\frac{(-1)^n}{n!}(T-n)^{n-1}\frac{w^{n+1}}{w+1},
+ \qquad T=\frac{w}{w+1}\frac{\mathrm d}{\mathrm dw}.
+\end{equation}
+For reference,
+\begin{align}
+ b_1(w)&=-\frac{w^2}{w+1},\nonumber\\
+ b_2(w)&=-\frac{w^3(2w^2+2w-1)}{2(w+1)^3},\label{eq:first-bn}\\
+ b_3(w)&=-\frac{w^4(9w^4+18w^3-11w+1)}{6(w+1)^5}.\nonumber
+\end{align}
+Its deepest-pole identity is
+\begin{equation}\label{eq:old-poles}
+ \lim_{s\to0}s^{2n-1}b_n(-1+s)
+ =-\frac{(2n-3)!!}{n!},\qquad (-1)!!=1.
+\end{equation}
+Consequently the most singular part of every sector has the formal sum
+\begin{equation}\label{eq:old-sqrt}
+ -\sum_{n\ge1}\frac{(2n-3)!!}{n!}\frac{z^n}{s^{2n-1}}
+ =s\left(\sqrt{1-\frac{2z}{s^2}}-1\right).
+\end{equation}
+Equations \eqref{eq:known-bn}--\eqref{eq:old-sqrt} are predecessor results,
+not new assertions of priority here.
+
+\subsection{Blowing up the coalescing point}
+Set
+\begin{equation}\label{eq:coordinates}
+ s=w+1,\qquad t=y+1=s+\delta,
+ \qquad h(t)=t+\log(1-t)=-\sum_{j\ge2}\frac{t^j}{j}.
+\end{equation}
+For $|s|,|t|<1$, direct substitution in \eqref{eq:delta} gives
+\begin{equation}\label{eq:Z}
+ z=Z(s,t):=\frac{e^{t-s}}{1-s}\bigl(h(t)-h(s)\bigr).
+\end{equation}
+Indeed $1+\delta/w=(1-t)/(1-s)$, so the logarithmic difference in
+\eqref{eq:delta} is exactly the local difference used in \eqref{eq:Z}.
+
+The variables $t$ and $s$ vanish at the same scale. Put $t=sv$ and
+$z=s^2\zeta$. Define
+\begin{equation}\label{eq:Phi}
+ \Phi(s,v)=\frac{e^{s(v-1)}}{1-s}
+ \frac{h(sv)-h(s)}{s^2}.
+\end{equation}
+The apparent singularity at $s=0$ is removable because
+\begin{equation}\label{eq:H-series}
+ \frac{h(sv)-h(s)}{s^2}
+ =-\sum_{j\ge2}\frac{v^j-1}{j}s^{j-2}.
+\end{equation}
+Thus
+\begin{equation}\label{eq:Phi-zero}
+ \Phi(0,v)=P(v):=\frac{1-v^2}{2},\qquad
+ \Phi(s,1)=0,\qquad \Phi_v(s,1)=-\frac1{(1-s)^2}.
+\end{equation}
+There is a unique inverse germ $v(s,\zeta)$ near $\zeta=0$ satisfying
+$v(s,0)=1$. Write
+\begin{equation}\label{eq:an}
+ v(s,\zeta)=1+\sum_{n\ge1}a_n(s)\zeta^n.
+\end{equation}
+The analytic dependence on $s$ removes the original coefficient poles:
+\begin{equation}\label{eq:normalization}
+ b_n(-1+s)=s^{1-2n}a_n(s)\quad(s\ne0),\qquad
+ a_n(0)=-\frac{(2n-3)!!}{n!}.
+\end{equation}
+The latter identity follows from $v(0,\zeta)=\sqrt{1-2\zeta}$, with the
+square root equal to one at zero.
+
+\section{An explicit holomorphic two-sheet atlas}
+\label{sec:atlas}
+
+\subsection{Quantitative perturbation estimates}
+\begin{lemma}\label{lem:bounds}
+For $|s|\le r:=1/100$ and $|v|\le2$,
+\begin{equation}\label{eq:Phi-bounds}
+ |\Phi(s,v)-P(v)|<\frac7{50},\qquad
+ |\Phi_v(s,v)+v|<\frac4{25}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $H=(h(sv)-h(s))/s^2$ and $E=e^{s(v-1)}/(1-s)$, so $\Phi=EH$.
+The series \eqref{eq:H-series} gives
+\[
+ |H-P|\le R_h:=\frac r3\left(\frac8{1-2r}+\frac1{1-r}\right).
+\]
+Since $|s(v-1)|\le3r$, the elementary bound
+$e^u\le(1-u)^{-1}$ for $0\le u<1$ yields
+\[
+ |E|\le E_0:=\frac1{(1-3r)(1-r)},\qquad |E-1|\le E_0-1.
+\]
+Also $|P|\le5/2$, hence
+\[
+ |\Phi-P|\le\frac52(E_0-1)+E_0R_h
+ =\frac{37787705}{279504918}<\frac7{50}.
+\]
+Differentiating the convergent series for $H$ gives
+$|H_v+v|\le4r/(1-2r)$. Since $E_v=sE$,
+\begin{align*}
+ |\Phi_v+v|
+ &\le2(E_0-1)+E_0\left[\frac{4r}{1-2r}
+                  +r\left(\frac52+R_h\right)\right]\\
+ &=\frac{21177832}{139752459}<\frac4{25}.
+\end{align*}
+All estimates are absolute complex estimates; no real positivity of $s$
+is assumed.
+\end{proof}
+
+\begin{lemma}\label{lem:two-roots}
+For $|s|\le1/100$ and $|\zeta|<3/4$, the equation
+$\Phi(s,v)=\zeta$ has exactly two roots in $|v|<2$, counted with
+multiplicity. There is exactly one critical point $\vc(s)$ in $|v|<2$,
+and it is simple as a zero of $\Phi_v$. Its critical value is denoted by
+$\rho(s)=\Phi(s,\vc(s))$.
+\end{lemma}
+\begin{proof}
+On $|v|=2$,
+\[
+ |P(v)-\zeta|=\frac12|v^2-(1-2\zeta)|\ge\frac34
+ \quad\text{when }|\zeta|\le\frac34.
+\]
+The first estimate in Lemma~\ref{lem:bounds} and Rouch\'e's theorem compare
+$\Phi-\zeta$ with $P-\zeta$. Both roots of the latter lie strictly within
+$|v|=2$. The second estimate compares $\Phi_v$ with $-v$ on the same
+circle, proving that the total number of critical points, with
+multiplicity, is one. The unique zero must consequently be simple.
+Holomorphic dependence of $\vc$ follows from the implicit-function theorem.
+\end{proof}
+
+\subsection{The critical value and a useful enclosure}
+Differentiate \eqref{eq:Z}. The critical-point equation is
+\begin{equation}\label{eq:k}
+ k(\tc(s))=h(s),\qquad
+ k(t):=h(t)+h'(t)=t+\log(1-t)-\frac{t}{1-t}.
+\end{equation}
+Here $k(0)=0$ and $k'(0)=-1$, so $\tc$ is holomorphic near zero. Moreover,
+\begin{equation}\label{eq:rho-exact}
+ \vc(s)=\frac{\tc(s)}s,\qquad
+ \zc(s)=s^2\rho(s)=\frac{e^{\tc(s)-s}}{1-s}
+                          \frac{\tc(s)}{1-\tc(s)}.
+\end{equation}
+The quotients have removable singularities at $s=0$.
+
+\begin{lemma}\label{lem:rho-enclosure}
+For $0<|s|\le1/100$, the critical point satisfies
+$|\tc(s)|<|s|^2$. Its normalized critical value obeys
+\begin{equation}\label{eq:rho-enclosure}
+ \left|\rho(s)-\frac12\right|<\frac1{250}.
+\end{equation}
+In particular, $\rho$ is nonzero throughout this disk and $|\rho|<0.504$.
+\end{lemma}
+\begin{proof}
+The exact series
+\[
+ k(t)=-t-\sum_{j\ge2}\frac{j+1}{j}t^j
+\]
+implies, on $|t|=|s|^2$,
+\[
+ |k(t)+t|\le\frac{3|s|^4}{2(1-|s|^2)},\qquad
+ |h(s)|\le\frac{|s|^2}{2(1-|s|)}.
+\]
+The sum of these bounds is strictly smaller than $|s|^2$ for
+$|s|\le1/100$. Rouch\'e's theorem applied to $k(t)-h(s)$ and $-t$
+therefore proves the asserted location. This solution is the critical
+point of Lemma~\ref{lem:two-roots} because $|\tc/s|<|s|<2$.
+
+Dividing \eqref{eq:k} by $s^2$ and separating the first term of $h(s)$
+also gives
+\begin{equation}\label{eq:tc-half-bound}
+ \left|\frac{\tc(s)}{s^2}-\frac12\right|
+ \le\frac{|s|}{3(1-r)}+\frac{3|s|^2}{2(1-r^2)}.
+\end{equation}
+In the exponential factor of \eqref{eq:rho-exact}, write
+\[
+ \frac{e^{\tc-s}}{1-s}=\exp(\tc-s-\log(1-s)).
+\]
+The exponent has absolute value at most
+$L=r^2(1+1/[2(1-r)])$. Put $E_c=(1-L)^{-1}$. The same exponential
+estimate gives a bound $E_c$ for this factor and $E_c-1$ for its
+difference from one. Substitution of \eqref{eq:tc-half-bound} into
+\eqref{eq:rho-exact} now bounds $|\rho-1/2|$ by
+\[
+ \left[\frac r{3(1-r)}+\frac{3r^2}{2(1-r^2)}\right]
+       \frac{E_c}{1-r^2}
+ +\frac12\left(\frac{E_c}{1-r^2}-1\right)
+ =\frac{21851394853}{5997897210294}<\frac1{250}.
+\]
+The estimate extends to $s=0$ by continuity.
+\end{proof}
+
+\subsection{Exact preparation by contour moments}
+\begin{theorem}[Uniform two-sheet atlas]\label{thm:atlas}
+There are holomorphic functions $A(s,\zeta)$ and $B(s,\zeta)$ on
+\[
+ |s|<\frac1{100},\qquad |\zeta|<\frac34,
+\]
+with $B$ nowhere zero, such that the two roots in $|v|<2$ are exactly
+\begin{equation}\label{eq:atlas}
+ v_\pm(s,\zeta)=A(s,\zeta)
+       \pm B(s,\zeta)\sqrt{1-\frac{\zeta}{\rho(s)}}.
+\end{equation}
+The normalization is $A(0,\zeta)=0$, $B(0,\zeta)=1$. The plus branch,
+with the square root equal to one at $\zeta=0$, is the inverse germ
+$v(s,0)=1$. Its only branch value within this disk is $\rho(s)$; that
+branching is genuinely square-root. Its Taylor series about $\zeta=0$
+has radius of convergence exactly $|\rho(s)|$.
+\end{theorem}
+\begin{proof}
+For $j=1,2$ define
+\begin{equation}\label{eq:contour-moments}
+ S_j(s,\zeta)=\frac1{2\pi i}\int_{|v|=2}
+            v^j\frac{\Phi_v(s,v)}{\Phi(s,v)-\zeta}\dd v.
+\end{equation}
+The denominator never vanishes on the contour in the parameter domain,
+so these are holomorphic functions. By the argument principle they equal
+$v_1^j+v_2^j$, with multiplicities, even though the individual roots need
+not be single-valued. Set
+\[
+ A=\frac{S_1}{2},\qquad
+ \Delta=\frac{S_2}{2}-A^2.
+\]
+For distinct roots $\Delta=(v_1-v_2)^2/4$, and this identity extends
+through a double root. A zero of $\Delta$ occurs precisely when both
+roots coalesce, hence precisely at $\zeta=\rho(s)$.
+
+For completeness, simplicity of this discriminant zero follows directly
+from a local change of variable. Write
+$\Phi(s,v)-\rho(s)=(v-\vc(s))^2G(s,v)$, where
+$G(s,\vc(s))=\Phi_{vv}(s,\vc(s))/2\ne0$.
+The coordinate $\eta=(v-\vc)\sqrt{G(s,v)}$ has nonzero derivative
+at the critical point and therefore an analytic local inverse.
+The two roots are obtained by setting $\eta=\pm\sqrt{\zeta-\rho}$.
+Squaring their half-difference shows
+$\Delta=2(\zeta-\rho)/\Phi_{vv}(s,\vc)+\OO((\zeta-\rho)^2)$.
+Thus the zero is simple. It follows that
+\[
+ C(s,\zeta):=\frac{\Delta(s,\zeta)}{1-\zeta/\rho(s)}
+\]
+extends holomorphically and never vanishes. The extension is joint in
+$(s,\zeta)$: a holomorphic function vanishing on
+$\zeta=\rho(s)$ is divisible by $\zeta-\rho(s)$, for example by integrating
+its $\zeta$ derivative along the segment from $\rho(s)$ to $\zeta$ in a
+local neighborhood. Nonvanishing at the zero follows from simplicity.
+
+The parameter polydisk is simply connected, so the nonvanishing function
+$C$ has a holomorphic square root $B$. At $s=0$ the roots are
+$\pm\sqrt{1-2\zeta}$, hence $C(0,\zeta)=1$; choose $B=1$ there.
+This proves \eqref{eq:atlas}. At $\zeta=0$ the plus branch agrees with
+$v=1$ at $s=0$, and remains that simple root by holomorphic continuation.
+
+On $|\zeta|<|\rho(s)|$ the square root normalized at zero is single-valued
+and holomorphic, proving the lower bound on the Taylor radius. At
+$\zeta=\rho(s)$ its coefficient $B(s,\rho(s))$ is nonzero, so this inverse
+has a nonremovable square-root singularity there. The opposite inequality
+follows. The contour argument also excludes any additional local root
+collision or singularity of this two-root inverse inside $|\zeta|<3/4$.
+\end{proof}
+
+\begin{corollary}\label{cor:z-radius}
+For $0<|s|<1/100$, the series \eqref{eq:sectors} at $w=-1+s$ has radius
+of convergence exactly $|\zc(s)|$. This is a statement about the
+independent variable $z$, with $w$ fixed.
+\end{corollary}
+
+\section{The moving discriminant and the nearby branch points}
+\label{sec:critical}
+
+\subsection{Critical-point expansions}
+Equation \eqref{eq:k} is both an exact definition and a recursive method.
+Because the linear coefficient of $k$ is $-1$, the coefficient of each
+successive power of $s$ in $\tc$ is determined by the already known ones.
+The result begins
+\begin{align}
+ \tc(s)={}&\frac{s^2}{2}+\frac{s^3}{3}-\frac{s^4}{8}
+ -\frac{3s^5}{10}+\frac{s^6}{48}
+ +\frac{323s^7}{840}+\frac{1123s^8}{5760}+\OO(s^9),
+ \label{eq:tc-series}\\
+ \rho(s)={}&\frac12+\frac s3+\frac{5s^2}{8}
+ +\frac{7s^3}{10}+\frac{19s^4}{24}
+ +\frac{361s^5}{420}+\OO(s^6).
+ \label{eq:rho-series}
+\end{align}
+The second series follows by substituting the first in
+\eqref{eq:rho-exact}. In particular,
+\begin{equation}\label{eq:zc-series}
+ \zc(s)=\frac{s^2}{2}+\frac{s^3}{3}+\frac{5s^4}{8}
+                  +\frac{7s^5}{10}+\OO(s^6).
+\end{equation}
+The first omitted correction in the deepest-pole model is therefore
+already cubic in $s$. Although smaller than the quadratic term as a
+function value, it is not uniformly negligible after taking the square
+root near its zero.
+
+The logarithm of the normalized discriminant is also useful:
+\begin{equation}\label{eq:log-rho}
+ \log(2\rho(s))=\frac{2s}{3}+\frac{37s^2}{36}
+                    +\frac{539s^3}{810}+\OO(s^4).
+\end{equation}
+All displayed coefficients in \eqref{eq:tc-series}--\eqref{eq:log-rho}
+are checked independently by exact rational symbolic substitution in the
+accompanying script.
+
+\subsection{Branch points when the perturbation parameter is fixed}
+The equation for branch values in the $(s,z)$ plane is
+$z=\zc(s)=s^2\rho(s)$. It can be inverted without an ambiguous formal
+choice of a square root. Define
+\[
+ U(s)=s\sqrt{2\rho(s)},\qquad U'(0)=1,
+\]
+using the holomorphic square root equal to one at $s=0$. Let $J$ be its
+local holomorphic inverse.
+
+\begin{proposition}\label{prop:branch-points}
+For every sufficiently small nonzero $z$, the two nearby branch points
+in the $w$ plane of the independent-parameter equation are
+\begin{equation}\label{eq:branch-points}
+ w_\pm(z)=-1+J(\pm\sqrt{2z}),
+\end{equation}
+where
+\begin{equation}\label{eq:J}
+ J(u)=u-\frac{u^2}{3}-\frac{25u^3}{72}
+               +\frac{137u^4}{540}+\frac{6529u^5}{17280}+\OO(u^6).
+\end{equation}
+They are simple square-root branch points and coalesce at $w=-1$ as
+$z\to0$. There are exactly two such points in a sufficiently small fixed
+neighborhood of $w=-1$.
+\end{proposition}
+\begin{proof}
+The equation $z=s^2\rho(s)$ is exactly $U(s)^2=2z$. Since $U$ is
+biholomorphic near zero, it has precisely the two solutions in
+\eqref{eq:branch-points}. Series substitution verifies \eqref{eq:J}.
+For nonzero small $s$, $\zc'(s)=s+\OO(s^2)\ne0$, so the discriminant
+zero is transverse to the fixed-$z$ slice. The factor $B$ in
+Theorem~\ref{thm:atlas} is nonzero. Multiplication by $s$ in
+$\delta=s(v-1)$ does not remove the square-root singularity because
+$s\ne0$ at these points.
+\end{proof}
+
+This proposition locates actual local branch points of the two-variable
+family, not merely zeros of a truncated quadratic surrogate. The
+qualification in Section~\ref{sec:qualification} remains in force: it is
+not a global classification for the map with coupling fixed at one.
+
+\section{Polynomial profiles with an error bound at the fold}
+\label{sec:profiles}
+
+\subsection{The regular sheet coordinate}
+Substitute $\zeta=\rho(s)(1-q^2)$ into the atlas and define
+\begin{equation}\label{eq:V}
+ V(s,q)=A\bigl(s,\rho(s)(1-q^2)\bigr)
+       +qB\bigl(s,\rho(s)(1-q^2)\bigr).
+\end{equation}
+Changing $q$ to $-q$ gives the other sheet. Since
+$|\rho(s)(1-q^2)|<0.504\cdot1.25<3/4$ for $|q|\le1/2$, this expression
+is holomorphic for $|s|<1/100$, $|q|\le1/2$, and
+\begin{equation}\label{eq:V-bound}
+ |V(s,q)|<2,\qquad V(0,q)=q.
+\end{equation}
+At $q=0$ it equals the double root $\tc(s)/s$. The coalescence has become
+an ordinary point of the $(s,q)$ parametrization.
+
+\begin{theorem}[Polynomial profiles and uniform remainder]
+\label{thm:profiles}
+There are polynomials $V_j(q)\in\Q[q]$ such that
+\begin{equation}\label{eq:profile-series}
+ V(s,q)=\sum_{j\ge0}s^jV_j(q),\qquad
+ V_0(q)=q,\qquad \deg V_j\le j+1.
+\end{equation}
+For $j\ge1$, $V_j(1)=0$ as a polynomial identity. The first five are
+\begin{align}
+ V_0(q)&=q,\nonumber\\
+ V_1(q)&=\frac12+\frac q3-\frac{5q^2}{6},\nonumber\\
+ V_2(q)&=\frac13-\frac{49q}{72}-\frac{5q^2}{9}
+                                      +\frac{65q^3}{72},\label{eq:profiles}\\
+ V_3(q)&=-\frac18-\frac{799q}{1080}+\frac{9q^2}{8}
+                     +\frac{65q^3}{72}-\frac{157q^4}{135},\nonumber\\
+ V_4(q)&=-\frac3{10}+\frac{22739q}{51840}+\frac{31q^2}{18}
+          -\frac{3373q^3}{1728}-\frac{628q^4}{405}
+          +\frac{28369q^5}{17280}.\nonumber
+\end{align}
+For $N\ge0$, put
+\begin{equation}\label{eq:delta-N}
+ \delta_N(s,q)=s\left(\sum_{j=0}^{N}s^jV_j(q)-1\right).
+\end{equation}
+Then for $|s|<1/100$ and $|q|\le1/2$,
+\begin{equation}\label{eq:uniform-error}
+ \left|s(V(s,q)-1)-\delta_N(s,q)\right|
+ \le\frac{2|s|(100|s|)^{N+1}}{1-100|s|}.
+\end{equation}
+The estimate is valid at the branch point $q=0$ and is independent of the
+sheet once its sign of $q$ has been chosen.
+\end{theorem}
+\begin{proof}
+Holomorphy gives a convergent $s$ expansion with coefficients initially
+holomorphic in $q$. We prove their stronger polynomial property from
+\[
+ \Phi(s,V(s,q))=\rho(s)(1-q^2).
+\]
+Write $\Phi(s,v)=\sum_{i\ge0}s^i\Phi_i(v)$. Equation
+\eqref{eq:H-series} and the exponential factor show that
+$\Phi_i\in\Q[v]$ and $\deg\Phi_i\le i+2$, with
+$\Phi_0(v)=(1-v^2)/2$.
+
+Suppose $V_0,\ldots,V_{j-1}$ are known. At order $s^j$ the only occurrence
+of $V_j$ is $\Phi_0'(q)V_j=-qV_j$. Let $R_j(q)$ be the coefficient of
+$s^j$ in
+\begin{equation}\label{eq:profile-recursion}
+ \Phi\left(s,\sum_{\ell=0}^{j-1}s^\ell V_\ell(q)\right)
+                     -\rho(s)(1-q^2).
+\end{equation}
+Thus $qV_j=R_j$. By induction $R_j$ is a rational polynomial. For a term
+of degree $d\le i+2$ in $\Phi_i$, the coefficient at total order $j$
+after substitution has degree at most $d+(j-i)\le j+2$. The subtraction
+on the right also obeys this bound. Hence $\deg R_j\le j+2$.
+
+The analytically constructed coefficient $V_j$ is regular at $q=0$.
+Consequently $R_j(0)=0$ and the polynomial $R_j$ is divisible by $q$.
+It follows that $V_j\in\Q[q]$ and $\deg V_j\le j+1$. This argument is
+important: formal division by $q$ alone would not justify regularity at
+the fold. The exact atlas supplies that missing fact.
+
+Near $q=1$ the same expression \eqref{eq:V} is defined for small $s$,
+because its argument $\zeta$ is near zero. At $q=1$ it equals the root
+$v=1$, proving $V_j(1)=0$. This is a statement about the coefficient
+polynomials; the quantitative error domain asserted here remains
+$|q|\le1/2$. Direct execution of the recurrence gives
+\eqref{eq:profiles}.
+
+Finally, \eqref{eq:V-bound} and Cauchy's estimate on circles $|s|=r'<r$
+give $|V_j(q)|\le2(r')^{-j}$ uniformly for $|q|\le1/2$. Let $r'\uparrow r$,
+sum the geometric tail, and multiply by $|s|$. This proves
+\eqref{eq:uniform-error} for every $N$.
+\end{proof}
+
+\begin{remark}[What the error bound does and does not require]
+The estimate concerns an exact input value of $q$, equivalently an exact
+moving critical value $\zc(s)$. It does not silently include errors in
+computing $\zc$, nor does it include a separate asymptotic truncation of
+an exact logarithmic core at infinity. Errors in those quantities need
+additional propagation bounds, especially when $q$ is small. A
+residual-based bound valid at a fold is given in Section~\ref{sec:residual}.
+\end{remark}
+
+\section{Failure of the unshifted model and fractional actions}
+\label{sec:failure}
+
+\subsection{A sharp diagnostic path}
+\begin{proposition}\label{prop:failure}
+Let $s\to0^+$ and set $z=s^2/2$. On the sheet with positive $q$,
+\begin{equation}\label{eq:failure}
+ \delta=-s+\sqrt{\frac23}\,s^{3/2}+\frac{s^2}{2}
+                        +\OO(s^{5/2}).
+\end{equation}
+The deepest-pole sum \eqref{eq:old-sqrt} equals $-s$ on this path.
+Its error is therefore asymptotic to $\sqrt{2/3}\,s^{3/2}$ and is not
+$\OO(s^2)$.
+\end{proposition}
+\begin{proof}
+Equation \eqref{eq:rho-series} gives
+\[
+ q^2=1-\frac1{2\rho(s)}
+       =\frac23s+\frac{29}{36}s^2+\OO(s^3),
+ \qquad
+ q=\sqrt{\frac23}s^{1/2}\bigl(1+\OO(s)\bigr).
+\]
+The polynomial profiles give
+$\delta=s(q-1)+s^2(1/2+q/3-5q^2/6)+\OO(s^3)$ uniformly as $q\to0$.
+Substitution proves \eqref{eq:failure}. The leading nonzero error divided
+by $s^2$ diverges, proving the last assertion.
+\end{proof}
+
+This does not contradict the predecessor's coefficientwise pole theorem.
+At each fixed $n$, all less singular Laurent terms disappear under the
+normalization $s^{2n-1}$. On a path where $z/s^2$ approaches $1/2$, however,
+infinitely many sectors are relevant and those discarded corrections move
+the singularity itself. The interchange of these two operations is the
+invalid step.
+
+\subsection{An explicit convergent critical transseries}
+Choose a real $a>0$ and specialize
+\[
+ s=e^{-aX},\qquad z=\frac12e^{-2aX},\qquad X\to+\infty.
+\]
+The plus branch has the convergent exponential transseries
+\begin{equation}\label{eq:half-action}
+ \delta(X)=-e^{-aX}+\sqrt{\frac23}\,e^{-3aX/2}
+                       +\frac12e^{-2aX}+\OO(e^{-5aX/2}).
+\end{equation}
+Convergence, not just formal asymptotic validity, follows because $q$ is
+$s^{1/2}$ times a holomorphic unit and $V$ is holomorphic in $(s,q)$.
+After setting $r=s^{1/2}$, the whole expression is an ordinary convergent
+power series in $r$ near zero.
+
+On the exact critical curve $z=\zc(s)$, by contrast, $q=0$ and
+\[
+ \delta=\tc(s)-s=-s+\frac12s^2+\frac13s^3-\frac18s^4+\cdots.
+\]
+There are only integer multiples of the action $a$ on this curve. The
+fractional action in \eqref{eq:half-action} is caused by detuning from the
+moving critical curve, not by a failure of the analytic parametrization.
+
+\subsection{How much discriminant accuracy is needed?}
+Let $\zc^{[M]}(s)$ be the Taylor polynomial of $\zc(s)$ through degree
+$M\ge2$, and suppose
+\[
+ \zc(s)-\zc^{[M]}(s)=c_{M+1}s^{M+1}+\OO(s^{M+2}),
+ \qquad c_{M+1}\ne0.
+\]
+On the path $z=\zc^{[M]}(s)$ one has
+\[
+ q^2=2c_{M+1}s^{M-1}(1+\OO(s)).
+\]
+Since the half-difference between the two roots $\delta_\pm$ is
+$sqB(s,\zeta)$ and $B\to1$, it follows that
+\begin{equation}\label{eq:truncated-discriminant}
+ \frac{\delta_+-\delta_-}{2}
+ \sim\sqrt{2c_{M+1}}\,s^{(M+1)/2},
+\end{equation}
+with the chosen square-root convention. This statement concerns splitting
+about the analytic center, so center shifts do not contaminate it.
+
+For $M=2$, the coefficient is $c_3=1/3$ and the exponent is $3/2$.
+For $M=3$, $c_4=5/8$ and the splitting is asymptotic to
+$(\sqrt5/2)s^2$. This gives a simple accuracy rule: losing one order in
+the critical value can lose half that order in the inverse near the fold.
+
+\section{Uniform high-sector asymptotics and a crossover law}
+\label{sec:crossover}
+
+\subsection{The singular amplitude}
+Let
+\begin{equation}\label{eq:beta-gamma}
+ \beta(s)=B(s,\rho(s))=\partial_qV(s,0),\qquad
+ \gamma(s)=-\rho(s)B_\zeta(s,\rho(s))=\coeff{q}{3}V(s,q).
+\end{equation}
+The second identity for $\gamma$ follows by substituting
+$\zeta=\rho(s)(1-q^2)$ into \eqref{eq:V}; the contribution from $A$ is
+even in $q$.
+
+\begin{lemma}\label{lem:beta}
+The amplitude $\beta$ is holomorphic and nonzero for $|s|<1/100$,
+with $\beta(0)=1$ and
+\begin{equation}\label{eq:beta-exact}
+ \beta(s)^2=
+ \frac{2\tc(s)(1-\tc(s))}{s^2(1+\tc(s)-\tc(s)^2)}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:beta-series}
+ \beta(s)=1+\frac s3-\frac{49s^2}{72}-\frac{799s^3}{1080}
+                         +\frac{22739s^4}{51840}+\OO(s^5),
+ \qquad \gamma(s)=\OO(s^2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expand $\Phi$ in $v$ at the critical point. If
+$v=\vc+\beta q+\OO(q^2)$ and
+$\zeta=\rho(1-q^2)$, comparison of quadratic terms gives
+\[
+ \beta^2=-\frac{2\rho}{\Phi_{vv}(s,\vc)}.
+\]
+Writing $E=e^{\tc-s}/(1-s)$, differentiation of \eqref{eq:Phi} and use of
+\eqref{eq:k} yield
+\[
+ \Phi_{vv}(s,\vc)=E k'(\tc),\qquad
+ k'(t)=-\frac{1+t-t^2}{(1-t)^2}.
+\]
+Combine this with \eqref{eq:rho-exact} to obtain
+\eqref{eq:beta-exact}. The analytic choice of its square root is fixed
+by $\beta(0)=1$. Equation \eqref{eq:beta-series} also follows by taking
+the coefficients of $q$ and $q^3$ in \eqref{eq:profiles}.
+\end{proof}
+
+\subsection{A uniform coefficient lemma}
+We record the elementary transfer argument needed below. It is a
+specialized version of the coefficient-transfer principle in
+\cite{flajolet-odlyzko}, with the uniformity made explicit.
+
+\begin{lemma}\label{lem:transfer}
+Suppose $\mathcal A_s(Z)$ and $\mathcal B_s(Z)$ are holomorphic in
+$|Z|<R$ for some $R>1$, uniformly bounded on smaller closed disks, with
+$s$ in a compact parameter set. Suppose
+\[
+ f_s(Z)=\mathcal A_s(Z)+\mathcal B_s(Z)(1-Z)^{1/2}
+\]
+as germs at zero. Set
+$\beta_s=\mathcal B_s(1)$ and
+$\gamma_s=-\mathcal B_s'(1)$. Then, uniformly in $s$,
+\begin{equation}\label{eq:transfer}
+ \coeff{Z}{n}f_s(Z)
+ =-\frac{\beta_s}{2\sqrt\pi}n^{-3/2}
+   +\left(-\frac{3\beta_s}{16\sqrt\pi}
+          +\frac{3\gamma_s}{4\sqrt\pi}\right)n^{-5/2}
+   +\OO(n^{-7/2}).
+\end{equation}
+An expansion to every algebraic order in $1/n$ follows from higher
+Taylor coefficients of $\mathcal B_s$ at one.
+\end{lemma}
+\begin{proof}
+The binomial coefficient identity, for the half-integers used here, is
+\begin{equation}\label{eq:gamma-coeff}
+ \coeff{Z}{n}(1-Z)^\alpha
+ =\frac{\Gamma(n-\alpha)}{\Gamma(-\alpha)\Gamma(n+1)}.
+\end{equation}
+It follows either by multiplying the factors of the generalized binomial
+coefficient or by induction in $n$. The gamma-ratio expansion gives
+\begin{align*}
+ \coeff{Z}{n}(1-Z)^{1/2}
+   &=-\frac1{2\sqrt\pi}n^{-3/2}
+                          \left(1+\frac3{8n}+\OO(n^{-2})\right),\\
+ \coeff{Z}{n}(1-Z)^{3/2}
+   &=\frac3{4\sqrt\pi}n^{-5/2}(1+\OO(n^{-1})).
+\end{align*}
+The needed constants are also obtained directly from the first two terms
+of Stirling's formula; no parameter occurs in these scalar estimates.
+
+Taylor division at $Z=1$ gives
+\[
+ \mathcal B_s(Z)=\beta_s+\gamma_s(1-Z)+(1-Z)^2\mathcal C_s(Z),
+\]
+where $\mathcal C_s$ is holomorphic on the same disk and uniformly bounded
+on every smaller disk. To justify the coefficient remainder, fix
+$1<R_1<R$. Its coefficients satisfy
+$|\coeff{Z}{j}\mathcal C_s|\le M R_1^{-j}$ uniformly in $s$.
+The coefficients $d_k$ of $(1-Z)^{5/2}$ satisfy
+$|d_k|\le M'(k+1)^{-7/2}$, after enlarging $M'$ for finitely many small
+indices. The convolution is bounded by
+\[
+ MM'\sum_{j=0}^nR_1^{-j}(n-j+1)^{-7/2}.
+\]
+For $j\le n/2$ this is $\OO(n^{-7/2})$ by a geometric sum. For
+$j>n/2$ it is exponentially small, hence has the same bound. The analytic
+term $\mathcal A_s$ likewise has exponentially small coefficients.
+This proves \eqref{eq:transfer} with a uniform remainder. Repeating
+Taylor division to any fixed order gives the final assertion by exactly
+the same convolution estimate.
+\end{proof}
+
+\subsection{Application to the normalized sector functions}
+\begin{theorem}[Uniform large-sector expansion]\label{thm:large-n}
+Uniformly for $|s|\le1/200$, as $n\to\infty$,
+\begin{equation}\label{eq:large-n}
+ a_n(s)=-\frac{\beta(s)}{2\sqrt\pi}\rho(s)^{-n}n^{-3/2}
+ \left[1+\frac{1}{n}
+      \left(\frac38-\frac{3\gamma(s)}{2\beta(s)}\right)
+       +\OO(n^{-2})\right].
+\end{equation}
+The expansion extends to every fixed algebraic order, with coefficients
+holomorphic in $s$ and a remainder uniform on this closed disk.
+\end{theorem}
+\begin{proof}
+Put $Z=\zeta/\rho(s)$. Theorem~\ref{thm:atlas} gives
+\[
+ v(s,\rho(s)Z)
+ =\mathcal A_s(Z)+\mathcal B_s(Z)(1-Z)^{1/2},
+\]
+where $\mathcal A_s(Z)=A(s,\rho(s)Z)$ and
+$\mathcal B_s(Z)=B(s,\rho(s)Z)$.
+By Lemma~\ref{lem:rho-enclosure}, these functions are holomorphic in
+$|Z|<7/5$ since $0.504\cdot7/5<3/4$. Restricting $|s|\le1/200$
+leaves a compact subset of the $s$ domain, so the uniform boundedness
+hypotheses of Lemma~\ref{lem:transfer} hold on smaller $Z$ disks.
+
+The coefficient of $Z^n$ is $\rho(s)^n a_n(s)$ for $n\ge1$. Apply the
+lemma and factor out the leading term. The division is uniform because
+$\beta$ is nonzero and therefore bounded away from zero on the compact
+$s$ disk. The all-order statement follows from the last assertion of the
+lemma and holomorphic dependence of every local Taylor coefficient.
+\end{proof}
+
+The theorem includes $s=0$, where the coefficients are exactly
+\begin{equation}\label{eq:a0-gamma}
+ a_n(0)=-\frac{2^{n-1}\Gamma(n-1/2)}{\sqrt\pi\,\Gamma(n+1)}.
+\end{equation}
+For nonzero $s$, multiplication by $s^{1-2n}$ gives the corresponding
+uniformly normalized asymptotic statement for the original rational
+functions $b_n(-1+s)$.
+
+\begin{theorem}[Critical/large-sector crossover]\label{thm:crossover}
+For every $T>0$, uniformly for complex $|\tau|\le T$, one has
+\begin{equation}\label{eq:crossover}
+ \frac{a_n(\tau/n)}{a_n(0)}
+ =e^{-2\tau/3}
+ \left[1+\frac{\tau/3-37\tau^2/36}{n}
+                       +\OO_T(n^{-2})\right]
+ \qquad(n\to\infty).
+\end{equation}
+In particular, the limit is $e^{-2\tau/3}$, not one unless this
+exponential happens to equal one.
+\end{theorem}
+\begin{proof}
+For $n$ sufficiently large in terms of $T$, $s=\tau/n$ lies in the disk
+of Theorem~\ref{thm:large-n}. Dividing that theorem by its value at $s=0$
+and using \eqref{eq:beta-series} gives
+\[
+ \frac{a_n(s)}{a_n(0)}
+ =\beta(s)(2\rho(s))^{-n}\bigl(1+\OO_T(n^{-2})\bigr).
+\]
+Indeed the coefficient of $1/n$ in \eqref{eq:large-n} is $3/8+\OO(s^2)$,
+so its change contributes no larger error; the uniform remainders suffice.
+The logarithm in \eqref{eq:log-rho} is the analytic one vanishing at zero.
+Hence
+\begin{align*}
+ \beta(\tau/n)&=1+\frac{\tau}{3n}+\OO_T(n^{-2}),\\
+ (2\rho(\tau/n))^{-n}
+ &=\exp\left(-\frac{2\tau}{3}-\frac{37\tau^2}{36n}
+                          +\OO_T(n^{-2})\right).
+\end{align*}
+Multiplication proves \eqref{eq:crossover}.
+\end{proof}
+
+\subsection{Why the exponential crossover is structurally stable}
+The phenomenon is not tied to the particular coefficients above. Suppose
+an analytic family has an atlas of the same form, with a unique dominant
+simple square-root singularity at $\rho(s)$, nonzero amplitude $\beta(s)$,
+and a common continuation disk after normalizing the singularity to one.
+The proof of Theorem~\ref{thm:large-n} then gives
+\[
+ \frac{a_n(s)}{a_n(0)}\sim
+ \frac{\beta(s)}{\beta(0)}
+       \left(\frac{\rho(s)}{\rho(0)}\right)^{-n}
+\]
+uniformly for small $s$ as $n\to\infty$.
+If
+$\rho(s)/\rho(0)=1+\kappa s^k+\OO(s^{k+1})$, with
+$\kappa\ne0$ and $k\ge1$, then any regime with $s\to0$ and
+$ns^k\to\tau$ yields the limit $e^{-\kappa\tau}$.
+This follows by taking an analytic logarithm; $ns^{k+1}\to0$ in such a
+regime. It is a conditional universality statement with the analytic
+continuation and nonvanishing hypotheses stated explicitly, not a claim
+about arbitrary formal transseries.
+
+\section{Analytic folds with finitely many exponential actions}
+\label{sec:actions}
+
+The previous example produces fractional exponential actions along a
+critical path. We now isolate the general analytic mechanism and address
+resonances without pretending that independent formal multi-indices
+remain distinct after exponential specialization.
+
+\subsection{Exact quadratic preparation without an unproved normal form}
+\begin{lemma}[Local analytic fold preparation]\label{lem:fold}
+Let $F(u,\bm q)$ be holomorphic near $(0,\bm0)\in\C\times\C^d$ and suppose
+\begin{equation}\label{eq:fold-hyp}
+ F(0,\bm0)=F_u(0,\bm0)=0,\qquad F_{uu}(0,\bm0)\ne0.
+\end{equation}
+After shrinking the neighborhood, there are holomorphic functions
+$A(\bm q)$, $D(\bm q)$ and a nonvanishing holomorphic function
+$\mathcal U(u,\bm q)$ such that
+\begin{equation}\label{eq:fold-preparation}
+ F(u,\bm q)=\mathcal U(u,\bm q)
+             \bigl((u-A(\bm q))^2-D(\bm q)\bigr),
+ \qquad A(\bm0)=D(\bm0)=0.
+\end{equation}
+The two nearby roots, with multiplicity, are
+$u_\pm=A(\bm q)\pm\sqrt{D(\bm q)}$.
+\end{lemma}
+\begin{proof}
+Choose a sufficiently small circle $|u|=r$ on which $F(u,\bm0)$ is
+nonzero and encloses no zero other than its double zero at zero.
+For sufficiently small $\bm q$, Rouch\'e's theorem preserves the count
+of two zeros. Define the first two root moments by the integrals of
+$u^jF_u/F$ over this circle, exactly as in
+\eqref{eq:contour-moments}. Their symmetric combinations define
+$A$ and $D$, and the monic quadratic
+$P(u,\bm q)=(u-A)^2-D$ has exactly these two zeros with their
+multiplicities.
+
+For each fixed $\bm q$, $F/P$ is holomorphic within the circle after
+removing its apparent zero-over-zero singularities. Joint holomorphy
+can be verified without choosing the individual roots: for $|u|<r$ set
+\[
+ \mathcal U(u,\bm q)=\frac1{2\pi i}\int_{|\xi|=r}
+  \frac{F(\xi,\bm q)}{P(\xi,\bm q)(\xi-u)}\dd\xi.
+\]
+The denominator on the contour is nonzero, so this is jointly holomorphic.
+For fixed $\bm q$, Cauchy's formula identifies it with $F/P$ where the
+quotient is already defined, and the equality extends everywhere inside.
+At the origin its value is $F_{uu}(0,\bm0)/2\ne0$; shrink the neighborhood
+once more to make it nonvanishing. This proves the factorization and
+root formula.
+\end{proof}
+
+The lemma is the classical quadratic preparation mechanism, included
+with a proof to make the later support construction independent of any
+unstated normal-form theorem. No novelty is claimed for analytic
+quadratic preparation itself.
+
+\subsection{Grouping equal actions before taking a square root}
+Fix real $\mu_1,\ldots,\mu_d>0$ and specialize
+\begin{equation}\label{eq:action-specialization}
+ q_i(X)=e^{-\mu_iX},\qquad X\to+\infty.
+\end{equation}
+Let
+\begin{equation}\label{eq:S}
+ S=\{\bm n\cdot\bm\mu:\bm n\in\N^d\}.
+\end{equation}
+This monoid is locally finite: for $\bm n\cdot\bm\mu\le M$, each
+coordinate satisfies $n_i\le M/\mu_i$, so there are only finitely many
+possible multi-indices. In particular, each action has only finitely
+many representations by such a multi-index.
+
+Expand the discriminant of Lemma~\ref{lem:fold} as
+\[
+ D(\bm q)=\sum_{\bm n\in\N^d}d_{\bm n}\bm q^{\bm n}.
+\]
+The expansion is absolutely convergent in a small polydisk. Under
+\eqref{eq:action-specialization}, combine terms with the same action:
+\begin{equation}\label{eq:grouped-D}
+ D(X)=\sum_{\nu\in S}d_\nu e^{-\nu X},\qquad
+ d_\nu=\sum_{\bm n\cdot\bm\mu=\nu}d_{\bm n}.
+\end{equation}
+These finite sums are the relevant coefficients. They are independent
+of how the original monomials representing a given action are listed.
+Because $D(\bm0)=0$, the coefficient $d_0$ is zero.
+
+\begin{theorem}[Resonance-aware action splitting]\label{thm:actions}
+Under \eqref{eq:fold-hyp} and \eqref{eq:action-specialization}, exactly one
+of the following alternatives holds.
+
+If all grouped coefficients $d_\nu$ vanish, then $D(X)=0$ for all
+sufficiently large $X$, and the two roots coincide there.
+
+Otherwise there is a least $\lambda>0$ with $d_\lambda\ne0$. Then the
+roots have absolutely convergent exponential transseries
+\begin{equation}\label{eq:action-root}
+ u_\pm(X)=A(X)\pm\sqrt{d_\lambda}\,e^{-\lambda X/2}
+       \sum_{k\ge0}\binom{1/2}{k}R(X)^k,
+ \quad
+ R(X)=\sum_{\nu>\lambda}\frac{d_\nu}{d_\lambda}
+                              e^{-(\nu-\lambda)X}.
+\end{equation}
+For either consistent choice of $\sqrt{d_\lambda}$,
+\begin{equation}\label{eq:splitting}
+ u_+(X)-u_-(X)\sim2\sqrt{d_\lambda}\,e^{-\lambda X/2}.
+\end{equation}
+The expansions in \eqref{eq:action-root}, including expansion of each
+power $R^k$ and grouping equal output actions, are absolutely convergent
+for all sufficiently large $X$.
+\end{theorem}
+\begin{proof}
+Absolute convergence of the original multivariable Taylor expansion for
+large $X$ justifies grouping by action. Local finiteness of $S$ implies
+that every nonempty subset of $S$ has a least member: choose one member,
+then minimize over the finite set of smaller members. Thus the second
+alternative has a well-defined first action $\lambda$.
+
+Factor $d_\lambda e^{-\lambda X}$ from \eqref{eq:grouped-D}. All exponents
+remaining in $R$ are positive. More is needed than pointwise smallness:
+we establish smallness of the absolute coefficient sum. Choose $X_0$
+large enough that the original expansion converges absolutely. If the
+tail is nonempty, it has a least positive gap
+$\eta=\min\{\nu-\lambda:\nu>\lambda,\ d_\nu\ne0\}$.
+Then
+\begin{align*}
+ \sum_{\nu>\lambda}\left|\frac{d_\nu}{d_\lambda}\right|
+                       e^{-(\nu-\lambda)X}
+ &\le e^{-\eta(X-X_0)}
+       \sum_{\nu>\lambda}\left|\frac{d_\nu}{d_\lambda}\right|
+                       e^{-(\nu-\lambda)X_0}\\
+ &\longrightarrow0.
+\end{align*}
+When the tail is empty the conclusion is immediate.
+For large $X$ this absolute sum is less than one. Therefore the binomial
+series in \eqref{eq:action-root} converges absolutely even after all its
+products are expanded: it is majorized by
+$\sum_k|\binom{1/2}{k}|\|R\|_X^k$, with $\|R\|_X<1$.
+It is exactly a square root of $1+R(X)$ tending to one. Substitution in
+Lemma~\ref{lem:fold} proves the root formula and leading splitting.
+If every grouped coefficient vanishes, the absolutely convergent sum
+for $D(X)$ is identically zero, proving the first alternative.
+\end{proof}
+
+\subsection{A constructive finite positive support grid}
+There is a useful stronger conclusion than mere local finiteness of the
+resulting support. Although the differences $\nu-\lambda$ need not
+belong to the original positive monoid $S$, they lie in a finitely
+generated positive extension that can be constructed explicitly.
+
+\begin{theorem}[Finite-grid support after a fold]\label{thm:grid}
+In the nonzero-discriminant alternative of Theorem~\ref{thm:actions},
+put $\mu_{\max}=\max_i\mu_i$ and define
+\[
+ E_\lambda=\{\bm n\in\N^d:\bm n\cdot\bm\mu>\lambda\}.
+\]
+Let $M_\lambda$ be its componentwise minimal elements. Then $M_\lambda$
+is finite and is contained in the explicit box
+\begin{equation}\label{eq:minimal-box}
+ 0\le m_i\le
+ \left\lfloor\frac{\lambda+\mu_{\max}}{\mu_i}\right\rfloor
+ \qquad(1\le i\le d).
+\end{equation}
+Define the positive numbers
+$\beta_{\bm m}=\bm m\cdot\bm\mu-\lambda$ for
+$\bm m\in M_\lambda$, and let $H$ be the additive monoid generated by
+\begin{equation}\label{eq:grid-generators}
+ \mu_1,\ldots,\mu_d,
+ \quad \{\beta_{\bm m}:\bm m\in M_\lambda\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:grid-support}
+ \supp A(X)\subseteq H,\qquad
+ \supp\sqrt{D(X)}\subseteq\lambda/2+H,\qquad
+ \supp u_\pm\subseteq H\cup(\lambda/2+H).
+\end{equation}
+In particular, adjoining $\lambda/2$ to the finite list
+\eqref{eq:grid-generators} gives a single finite positive generating set
+containing both root supports. If all $\mu_i$ lie in
+$(a/N)\N$ for some $a>0$ and positive integer $N$, both supports lie in
+$(a/(2N))\N$.
+\end{theorem}
+\begin{proof}
+The set $E_\lambda$ is upward closed under the componentwise order.
+If $\bm m$ is minimal and $m_i>0$, then
+$(\bm m-\bm e_i)\cdot\bm\mu\le\lambda$, for otherwise minimality would
+fail. Hence
+$\bm m\cdot\bm\mu\le\lambda+\mu_i\le\lambda+\mu_{\max}$.
+Every coordinate obeys \eqref{eq:minimal-box}, so the set of minimal
+indices is finite. This also gives a direct finite search for it, once
+$\lambda$ and exact comparisons among the actions are available.
+
+For each $\bm n\in E_\lambda$, decrease coordinates while remaining in
+$E_\lambda$ until no further decrease is possible. The process terminates
+because the sum of coordinates decreases. It produces
+$\bm m\in M_\lambda$ with $\bm m\le\bm n$. Therefore
+\[
+ \bm n\cdot\bm\mu-\lambda
+ =\beta_{\bm m}+(\bm n-\bm m)\cdot\bm\mu\in H.
+\]
+Every positive gap appearing in $R$ has this form. Thus $\supp R\subseteq H$,
+and every expanded power $R^k$ has support in $H$. The absolute
+convergence proved in Theorem~\ref{thm:actions} justifies collecting
+these powers; local finiteness also follows because $H$ has finitely many
+strictly positive generators. Multiplication by $e^{-\lambda X/2}$ gives
+the second inclusion in \eqref{eq:grid-support}.
+The Taylor expansion of $A$ has support in $S\subseteq H$, proving the
+other inclusions. If the original actions lie in $(a/N)\N$, then so do
+$\lambda$ and all the positive differences $\beta_{\bm m}$; halving
+$\lambda$ only requires the stated doubled denominator.
+\end{proof}
+
+The finite box is a sufficient construction, not an assertion that its
+resulting generating list is minimal. A smaller list may be obtained
+from the actual support of the discriminant. Also, identifying the first
+nonzero grouped coefficient is not claimed to be an automatically
+decidable operation for an arbitrary analytic input. When the nonzero
+case is known and exact coefficient and action comparisons are available,
+a search in increasing action terminates; the identically zero case may
+require a separate identity proof.
+
+\subsection{A cancellation that changes the first fractional action}
+\begin{example}\label{ex:resonance}
+Consider
+\[
+ F(u,q_1,q_2)=u^2-(q_1^2-q_2+q_1^3),
+ \qquad (\mu_1,\mu_2)=(1,2).
+\]
+Before specialization, the terms $q_1^2$ and $-q_2$ are distinct monomials.
+After specialization they have the same action and cancel exactly:
+\[
+ D(X)=e^{-2X}-e^{-2X}+e^{-3X}=e^{-3X}.
+\]
+Consequently $u_\pm=\pm e^{-3X/2}$. A rule that selected one monomial of
+smallest action before combining resonances would incorrectly predict
+splitting at action $1$ instead of $3/2$.
+If the term $q_1^3$ is removed, the discriminant vanishes identically on
+the specialized curve and the two roots coincide there, even though the
+multivariable discriminant $q_1^2-q_2$ is not the zero function.
+\end{example}
+
+This example distinguishes an analytic identity in all perturbation
+variables from an identity after restriction to an exponential curve.
+The action theorem needs only the latter, and its grouping prescription
+makes that distinction explicit.
+
+\subsection{Relation to the broader transseries questions}
+Theorems~\ref{thm:actions} and \ref{thm:grid} concern analytic germs in a
+\emph{finite} collection of exponentially small parameters. Their
+convergence follows from ordinary Taylor convergence and a binomial
+majorant. They do not assert convergence for arbitrary Hahn series,
+realization of unrestricted formal supports, Borel summability of
+Gevrey series, or preservation of resurgent Stokes data. Those are
+separate problems. The result is nevertheless more than a formal
+square-root manipulation: it proves representation-independent handling
+of resonances, absolute summability after all regroupings, and a finite
+positive support grid with a concrete search bound.
+
+\section{Residual certificates that remain valid at the fold}
+\label{sec:residual}
+
+A derivative-based inverse error bound usually divides by a quantity
+that tends to zero at a critical point. Quadratic preparation gives a
+replacement that is uniform across the collision.
+
+\begin{proposition}[Root-set residual bound]\label{prop:residual}
+Assume a factorization \eqref{eq:fold-preparation} is known on a domain
+containing a candidate $\widetilde u$ and both local roots. Suppose
+$|\mathcal U(\widetilde u,\bm q)|\ge m>0$, and put
+\[
+ r=F(\widetilde u,\bm q),\qquad R=|r|/m,
+ \qquad d=\min\{|\widetilde u-u_+|,|\widetilde u-u_-|\}.
+\]
+Then
+\begin{equation}\label{eq:residual}
+ d\le\sqrt R.
+\end{equation}
+If $D(\bm q)\ne0$, the stronger combined estimate is
+\begin{equation}\label{eq:residual-combined}
+ d\le\min\left\{\sqrt R,\frac{R}{|\sqrt{D(\bm q)}|}\right\}.
+\end{equation}
+The square-root exponent in \eqref{eq:residual} is optimal at a double
+root in general.
+\end{proposition}
+\begin{proof}
+The preparation gives
+\[
+ |(\widetilde u-u_+)(\widetilde u-u_-)|\le R.
+\]
+The product is at least $d^2$, proving \eqref{eq:residual}. If the roots
+are distinct, their separation is $2|\sqrt D|$. By the triangle
+inequality at least one of the two candidate-to-root distances is at
+least $|\sqrt D|$. Multiplying the smaller distance by this lower bound
+proves $d\le R/|\sqrt D|$.
+For $F(u)=u^2$, the exact distance to the root is $\sqrt{|F(u)|}$, so no
+uniform replacement by a higher power of the residual is possible.
+\end{proof}
+
+The estimate certifies proximity to the \emph{root set}, not a preferred
+sheet. A sheet-specific certificate requires continuation from a known
+base point, an isolating region, or other branch information. This
+qualification is necessary near a collision: the residual alone cannot
+distinguish two very close roots.
+
+A practical verification pipeline can therefore combine a polynomial
+profile to obtain a candidate with a rigorous enclosure of the residual
+and the unit factor. Away from the fold, the second term in
+\eqref{eq:residual-combined} recovers linear error transport. At the fold,
+the first term remains finite. The accompanying script does not implement
+interval enclosures of the unit factor; the proposition gives the
+mathematical certificate that such an implementation should check.
+
+\section{Computation, reproducibility, and proof status}
+\label{sec:computation}
+
+\subsection{What the symbolic checks verify}
+The package contains \texttt{verify.py}, using SymPy and mpmath. The
+exact part checks the critical-point equation through degree eight,
+$\rho$ through degree five, the first five profile polynomials, the
+amplitude formula through degree four, the logarithm
+\eqref{eq:log-rho}, and the branch-point reversion \eqref{eq:J}.
+The rational inequalities used for the explicit domain are checked as
+exact rational comparisons, not by a floating-point threshold test.
+
+These tests can detect incorrect coefficients or arithmetic. They do not
+prove the existence of the holomorphic atlas, all-order polynomiality,
+the uniform coefficient theorem, or the finite-grid result. Those claims
+are established by the arguments in the preceding sections. The script
+also independently evaluates the first three known sector formulas
+\eqref{eq:first-bn} as a consistency check on the normalization.
+
+\subsection{Computing high sector indices without symbolic expression swell}
+A scalar Lagrange formula provides an $\OO(n^2)$ arithmetic algorithm for
+$a_n(s)$ at a fixed numerical value of $s$. Put $u=v-1$. Direct expansion
+of \eqref{eq:Phi} gives
+\begin{equation}\label{eq:J-unit}
+ \Phi(s,1+u)=-\frac{e^{su}u}{(1-s)^2}J_s(u),\qquad
+ J_s(u)=1+\sum_{j\ge1}
+     \frac{(s/(1-s))^{j-1}}{(1-s)(j+1)}u^j.
+\end{equation}
+For $s=0$, the removable interpretation is $J_0(u)=1+u/2$.
+To verify the formula directly, use
+\[
+ h(s(1+u))-h(s)
+ =su+\log\left(1-\frac{s}{1-s}u\right)
+\]
+and separate its linear term in $u$.
+
+Since $\Phi_v(s,1)\ne0$, ordinary scalar Lagrange inversion gives
+\begin{equation}\label{eq:lagrange-numeric}
+ a_n(s)=\frac{(-1)^n(1-s)^{2n}}n
+         \coeff{u}{n-1}\left(e^{-nsu}J_s(u)^{-n}\right).
+\end{equation}
+This formula is also a purely formal identity in $u$ over the rational
+function field in $s$; it does not require a convergence assumption to
+extract a fixed coefficient.
+
+Write $J_s(u)=\sum_{j\ge0}J_j u^j$, $J_0=1$, and
+$J_s(u)^{-n}=\sum_{k\ge0}C_k u^k$. Differentiating
+$C=J_s^{-n}$ gives $JC'=-nJ'C$. Comparing coefficients yields
+\begin{equation}\label{eq:unit-recurrence}
+ C_0=1,\qquad
+ C_k=\frac1k\sum_{j=1}^k\bigl((1-n)j-k\bigr)J_jC_{k-j}.
+\end{equation}
+Computing $C_0,\ldots,C_{n-1}$ takes $\OO(n^2)$ arithmetic operations;
+a final convolution with $e^{-nsu}$ evaluates
+\eqref{eq:lagrange-numeric}. This is an operation count, not a claim of
+quadratic bit complexity or numerical stability at arbitrary precision.
+The supplied numerical calculations use 100 decimal digits.
+
+\subsection{Numerical checks at and close to the branch point}
+Table~\ref{tab:profiles} compares the order-$N=4$ profile truncation with
+a high-precision root. At $q=0$ the reference root is the independently
+computed $\tc(s)-s$. For $q\ne0$, the local root is computed directly
+from \eqref{eq:Z}, initialized on the sheet selected by the profile.
+
+\begin{table}[htbp]
+\centering
+\sisetup{exponent-mode=scientific,round-mode=none}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$s$ & $q$ & {Observed absolute error} & {Bound \eqref{eq:uniform-error}}\\
+\midrule
+\tableinput{data/profile_table.tex}
+\bottomrule
+\end{tabular}
+\caption{Order-four profile checks, including the exact branch point and
+an extremely close point. The bound column is rounded upward at the
+shown precision. The observations are floating-point diagnostics, not
+interval-arithmetic certificates.}
+\label{tab:profiles}
+\end{table}
+
+The proved bound is intentionally conservative: its coefficient majorant
+comes from a common complex domain and the simple root bound $|v|<2$,
+not from optimized estimates for these particular real inputs. Its
+purpose is to prove uniform validity through coalescence, rather than to
+predict the actual error sharply.
+
+\subsection{Numerical checks of the joint limit}
+Table~\ref{tab:crossover} evaluates
+$a_n(\tau/n)/a_n(0)$ by \eqref{eq:lagrange-numeric} and compares it with
+both the limiting exponential and the first corrected expression in
+Theorem~\ref{thm:crossover}. The decreasing corrected errors are
+consistent with the proved $\OO_T(n^{-2})$ remainder.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$\tau$ & $n$ & $a_n(\tau/n)/a_n(0)$ & $e^{-2\tau/3}$
+ & {Corrected error}\\
+\midrule
+\tableinput{data/crossover_table.tex}
+\bottomrule
+\end{tabular}
+\caption{Large-sector crossover diagnostics. ``Corrected error'' is the
+absolute difference from the full displayed right-hand side of
+\eqref{eq:crossover} with its $\OO_T(n^{-2})$ term omitted.}
+\label{tab:crossover}
+\end{table}
+
+The JSON output records the decimal precision, package versions, exact
+expressions, and all test rows. The code writes its output relative to
+its own directory, so running it from another working directory does not
+silently overwrite unrelated data files.
+
+\subsection{Formalization boundaries and a feasible first tranche}
+No new Lean file is included or claimed verified. The repository's
+existing Catalan module supplies useful finite algebra, but it does not
+prove the complex analytic statements of this manuscript. The following
+separation would keep a future formalization honest and manageable.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
+\toprule
+Layer & Mathematical content & Present status\\
+\midrule
+Finite algebra & Displayed rational coefficients, polynomial recurrences,
+Catalan normalization & Exact symbolic checks; related Catalan core
+already has a repository Lean module.\\[4pt]
+Local analysis & Root count, holomorphic moments, moving discriminant,
+uniform profile remainder & Proofs here; no new machine-checked proof.\\[4pt]
+Coefficient asymptotics & Common continuation disk, half-integer transfer,
+joint scaling limit & Proofs here and numerical diagnostics; not formalized.\\[4pt]
+Action support & Resonance grouping, finite positive grid, absolute
+summability & Proofs here; only the toy resonance is numerically checked.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A useful first formalization target is the finite polynomial recurrence,
+together with a theorem that an independently supplied analytic solution
+forces the divisibility by $q$. A second target is the purely ordered
+finite-box argument in Theorem~\ref{thm:grid}. These avoid claiming that
+formal coefficient identities already imply analytic convergence. The
+contour atlas and uniform transfer theorem are substantial later targets.
+
+\section{Further research questions and concrete next steps}
+\label{sec:questions}
+
+The following questions distinguish genuine continuations from results
+already proved above. They range from implementable certification tasks
+to broader analytic and transseries problems.
+
+\begin{question}[Sharp domains and practical certified evaluation]
+How far can the explicit atlas domain be enlarged while retaining a
+single simple critical value and a common contour enclosing precisely two
+roots? Replace the conservative constants by interval-certified bounds,
+and implement evaluation of $\tc$, $\rho$, the profiles, and the residual
+certificate without losing reliability when $q$ is close to zero.
+A useful deliverable is a branch-aware evaluator with an absolute error
+guarantee, not merely a higher-order symbolic expansion.
+\end{question}
+
+\begin{question}[The fixed-coupling global continuation problem]
+Determine the singularity geometry of the inverse of
+$y+\log y+e^{-y}$ under its actual fixed coupling. Which critical points
+and asymptotic values obstruct continuation of the positive real inverse?
+How does the small-coupling chart here continue as $\lambda$ approaches
+one? The relation $\lambda=we^wz$ must be enforced rather than treating
+$z$ as independent at the end of a local argument.
+\end{question}
+
+\begin{question}[Two-stage truncation at infinity]
+For the real positive inverse, replace the exact logarithmic core $w$ by
+a truncated power--logarithmic expansion while also truncating the
+exponential sectors. Prove a bound uniform in both truncation orders and
+specify how they may grow with the large argument. The present theorem
+is uniform near a critical auxiliary chart and does not settle the
+predecessor's distinct two-stage uniformity question at infinity.
+\end{question}
+
+\begin{question}[Higher critical multiplicity]
+For analytic equations with $F_u=\cdots=F_{u^{m-1}}=0$ and
+$F_{u^m}\ne0$, construct quantitative $m$-sheet profiles analogous to
+Theorem~\ref{thm:profiles}. Identify precisely which coefficients remain
+polynomial after a moving-discriminant normalization and when genuinely
+multivariate Newton polygons are unavoidable. Determine sharp support
+grid enlargements beyond the simple denominator doubling of a fold.
+\end{question}
+
+\begin{question}[Competing singularities and new coefficient windows]
+Extend the uniform large-sector theorem to a family in which two or more
+critical values have comparable modulus, or themselves collide. Derive
+joint limits that include interference among their coefficient
+contributions. The common single-singularity continuation disk used here
+will generally fail, so simply adding two fixed-parameter asymptotic
+formulas is not sufficient.
+\end{question}
+
+\begin{question}[Resurgence beyond analytic perturbation parameters]
+Replace convergent Taylor coefficients in the perturbation variables by
+Gevrey or resurgent coefficient series. Under what explicit hypotheses
+does moving-core inversion preserve Borel summability, and how are
+singular locations and Stokes constants transformed? The absolute
+convergence proof in Section~\ref{sec:actions} supplies none of these
+conclusions for a divergent input and should not be used as a substitute
+for them.
+\end{question}
+
+\begin{question}[Effective cancellation and minimal action grids]
+For an effectively represented analytic discriminant, design certificates
+for the first nonzero grouped action and for exact vanishing on a given
+exponential curve. In the rationally dependent case, identify useful
+algebraic classes where the resonance identities reduce to a finite
+ideal-membership problem. In the incommensurate case, specify exact
+comparison assumptions. Minimize the sufficient grid
+\eqref{eq:grid-generators} without erasing cancellations or introducing
+negative generators.
+\end{question}
+
+\begin{question}[Actions depending on the large parameter]
+What remains true when $\mu_i=\mu_i(X)$ or when an external parameter
+makes distinct actions approach one another? The positive gap in the
+proof of Theorem~\ref{thm:actions} may cease to be uniform. Develop a
+joint scaling theory that distinguishes a genuine resonance from a
+near-resonance and identifies when a fixed finite support grid must be
+replaced by a parameter-dependent description.
+\end{question}
+
+\begin{question}[Proof-producing critical inversion]
+Build an implementation that emits a finite certificate for the root
+count, critical-value enclosure, polynomial-profile residual, and
+root-set error bound. A small trusted checker should reject unsupported
+sheet choices and unproved nonvanishing assumptions. Begin with the
+rational majorants and finite support-grid construction; then connect
+these certificates to a Lean formalization of the analytic hypotheses.
+\end{question}
+
+\begin{question}[Gamma and Barnes cores]
+Apply the method to analytic families genuinely underlying the
+repository's Gamma and Barnes deepest-pole calculations. Determine the
+moving critical values and corresponding joint large-sector limits.
+Matching a quadratic coefficient recurrence is not enough: the analytic
+family, its continuation domain, and the nonvanishing singular amplitude
+must each be supplied and verified for those special functions.
+\end{question}
+
+\section{Conclusion}
+The coefficientwise pole hierarchy and its formal square-root sum do
+not by themselves provide a uniform inverse near a critical point.
+For the mixed logarithmic--exponential sector equation, the missing
+object is now explicit: a moving discriminant, an exact two-sheet
+holomorphic atlas, and a convergent polynomial profile expansion with an
+error bound valid at the collision itself. This resolves the predecessor's
+stated local critical-transition question within its independent-parameter
+family.
+
+The same atlas controls a different limit that the fixed-sector pole
+calculation does not see. High sector index amplifies the cubic drift of
+the critical value, producing the nontrivial crossover
+$e^{-2\tau/3}$ when $s=\tau/n$. The proof identifies both the leading
+limit and its first finite-$n$ correction.
+
+For analytic folds with several exponential inputs, the decisive datum
+is the first nonzero \emph{grouped} discriminant action. Its half controls
+branch splitting, while a constructive finite positive grid controls all
+higher terms. Resonances can delay the first splitting action or remove
+it altogether. The resulting series are absolutely convergent for the
+analytic finite-action class considered here.
+
+These conclusions do not solve general transseries realization,
+unrestricted resurgence, or the global singularity geometry of the
+fixed-coupling original map. They do provide a proved, quantitative
+bridge from formal deepest poles to local analytic inversion, and a
+concrete next set of questions with their remaining hypotheses visible.
+
+\appendix
+\section{Dependency map and source audit}
+\label{app:audit}
+
+The principal proof dependencies are
+\[
+ \text{explicit bounds}\ \Longrightarrow\ \text{two-root contour atlas}
+ \ \Longrightarrow\
+ \begin{cases}
+   \text{uniform polynomial profiles},\\
+   \text{uniform high-sector transfer},
+ \end{cases}
+\]
+followed by the explicit critical-value expansion for the crossover.
+The general action theorem uses a separate local fold-preparation lemma,
+absolute Taylor convergence, and the finite positive-gap construction.
+No general theorem of formal transseries composition or inversion is
+assumed in either chain.
+
+The repository was inspected at commit
+\begin{center}
+\small\texttt{20301601562cf84173f2b503b0dc9c3fbf21cd0c}.
+\end{center}
+The package README and \texttt{QuadraticCoreCatalan.lean} were read at that
+pinned revision. The large canonical transseries source could not be
+retrieved in full through the available repository fetch operation;
+therefore this manuscript does not claim a complete audit of that
+volume or the whole repository. The directly inspected status materials
+are sufficient for the limited formalization distinctions made here.
+
+The predecessor source \texttt{reversion\_and\_one\_exponential.tex} was
+retrieved independently from the user's saved document library. Its
+mixed-inverse equation, exact sector formula, leading-pole statement,
+uniform real-positive sector bound, and critical-transition research
+question were read directly. It is cited as a supplied research
+manuscript, not as an externally peer-reviewed result. The main local
+critical analysis in this article is proved from equation
+\eqref{eq:delta}, so its validity does not require accepting any broader
+claims of that predecessor.
+
+\section{Reproduction instructions}
+\label{app:reproduction}
+The package is self-contained for compilation: all tables used by the
+article are included. From the package directory, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python verify.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The verification script has no network dependency after installation.
+Its default run includes sector indices up to 400; \texttt{--quick}
+omits those final large-index diagnostics. The symbolic checks are
+identical in both modes. Re-running the script intentionally replaces
+the package's own \texttt{data/verification.json} and table fragments;
+it does not modify any repository or Library source.
+
+The supplied PDF was compiled from this source and visually checked.
+The package records a mathematical proof manuscript and reproducible
+checks, not a claim of independent peer review, a formal verification
+certificate, or established worldwide priority.
+
+\begingroup
+\small
+\begin{thebibliography}{9}
+
+\bibitem{repo-readme}
+Vladimir Reshetnikov, \emph{ProveIt: Transseries\_And\_Inversion package
+README}, inspected at commit
+\texttt{20301601562cf84173f2b503b0dc9c3fbf21cd0c}, 29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/20301601562cf84173f2b503b0dc9c3fbf21cd0c/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/README.md}{Pinned repository source}.
+The cited status concerns the distinctions between finite algebra,
+assembled formal-series theorems, and analytic identification.
+
+\bibitem{repo-catalan}
+Vladimir Reshetnikov, ProveIt module
+\emph{QuadraticCoreCatalan.lean}, same pinned revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/20301601562cf84173f2b503b0dc9c3fbf21cd0c/Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCoreCatalan.lean}{Pinned Lean source}.
+Relevant volume labels are
+\repoLabel{p6:prop:quadratic-core-catalan},
+\repoLabel{p6:lem:quadratic-core}, and
+\repoLabel{p6:thm:deepest-pole}; the module states its formalization boundaries.
+
+\bibitem{predecessor}
+\emph{Support-Controlled Reversion and the Exact One-Exponential
+Substitution Group}, supplied research manuscript, 29 September 2026.
+Source file \texttt{reversion\_and\_one\_exponential.tex}; retrieved from
+the user's saved documents. In particular, the mixed inverse example,
+its deepest-pole resummation, and Research question 11.8.
+This is project-local predecessor material, not a claim of peer-reviewed
+publication.
+
+\bibitem{corless}
+R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,
+\emph{On the Lambert W function}, Advances in Computational Mathematics
+\textbf{5} (1996), 329--359.
+\href{https://doi.org/10.1007/BF02124750}{doi:10.1007/BF02124750}.
+The branch-point expansion is discussed on pp.~350--351.
+
+\bibitem{flajolet-odlyzko}
+P. Flajolet and A. Odlyzko,
+\emph{Singularity analysis of generating functions},
+SIAM Journal on Discrete Mathematics \textbf{3}, no.~2 (1990), 216--240.
+\href{https://algo.inria.fr/flajolet/Publications/FlOd90b.pdf}{Author-hosted article}.
+The half-integer coefficient identity and its asymptotic expansion are
+special cases of the coefficient formulas on p.~219.
+
+\bibitem{edgar}
+G.~A. Edgar, \emph{Transseries for beginners},
+Real Analysis Exchange \textbf{35} (2010), 253--310.
+\href{https://arxiv.org/abs/0801.4877v5}{arXiv:0801.4877v5}, revised 15 July 2009.
+
+\end{thebibliography}
+\endgroup
+\end{document}

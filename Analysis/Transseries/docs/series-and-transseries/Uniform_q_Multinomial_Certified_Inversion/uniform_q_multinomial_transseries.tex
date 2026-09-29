@@ -1,0 +1,1521 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,hyperref,fancyhdr}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Uniform q-Multinomial Transseries and Certified Inversion},pdfauthor={OpenAI, research draft prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Uniform $q$-multinomial transseries}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\arccoth}{arccoth}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\avec}{\boldsymbol a}
+\newcommand{\amin}{a_*}
+\newcommand{\mmin}{m_*}
+\newcommand{\calA}{\mathcal A}
+\newcommand{\calP}{\mathcal P}
+\newcommand{\calB}{\mathscr B}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\qmulti}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
+
+\title{\textbf{Uniform $q$-Multinomial Transseries\ and Certified Inversion}\\[5pt]
+\large Closing the $q\to1$ endpoint gap, locating Borel singularities,\\
+and proving a sharp least-term exponential rate}
+\author{Research article prepared for Vladimir Reshetnikov\\
+\small OpenAI}
+\date{29 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The combinatorial-transseries companion in \repo\ derives an all-order
+$q\to1$ expansion of central Gaussian coefficients, but its estimates require
+$\tau=hx\ge\tau_0>0$. It explicitly leaves uniform matching to $\tau=0$
+for a different error analysis. We supply that analysis and extend it to every
+positive multinomial ray. A partial-fraction identity for the Bose kernel gives
+an exact signed remainder. After reorganizing the coefficients in powers of
+$1/x$, the resulting estimates hold simultaneously for every $h\ge0$, with no
+restriction on $hx$. The error is smaller than the first omitted term and is
+bounded by an explicit Bernoulli expression independent of $h$.
+
+We derive the meromorphic Borel transform, prove its exact Laplace-summation
+formula, and show that the nearest singularities in the $1/x$ Borel plane are
+always $\pm2\pi i a_*$, where $a_*$ is the smallest ray parameter and $m_*$ below is its multiplicity. A least-term
+choice gives the uniform bound $2r\e^{-2\pi a_*x}$, retaining the modular
+Euler-product contribution separately. At $h=0$ the actual remainder is
+asymptotic to $m_*(2\pi\sqrt{a_*x})^{-1}\e^{-2\pi a_*x}$; hence its exponential
+rate is sharp for this truncation rule. At the resonant values $h=2\pi/m$,
+the remainder instead has equivalent $m_*(2\pi m)^{-1}\e^{-2\pi a_*x}$;
+therefore no factor tending to zero with $x$ can multiply a bound uniform
+in all $h$. A uniform lower bound on the exact
+forward derivative transports these estimates to explicit inverse enclosures.
+Complete proofs, endpoint formulas, finite evaluation bounds, numerical
+checks, and ten further research directions are included.
+
+\medskip\noindent
+\textbf{Status.} The endpoint-uniform theorem package is developed and proved
+here. It resolves an explicitly recorded repository gap, not a named general
+conjecture about transseries. The elementary kernels and the general resurgence
+framework have substantial prior literature. Global publication-level novelty
+has not been established. This is an unrefereed research draft, not a
+Lean-verified development.
+\end{abstract}
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The research target and the precise contribution}
+\label{sec:target}
+
+\subsection{What the repository already supplies}
+The relevant source is \emph{Combinatorial Transseries and Their Inverses},
+in the series and transseries group of the Fabius-function documents
+\cite{repo-companion,repo-readme}. Its chapter on the singular $q\to1$
+transition uses $q=\e^h$, $Q=\e^{-h}$ and the finite-size coordinate $\tau=hx$.
+It contains a dilogarithmic dominant phase, Bernoulli--polylogarithm corrections,
+an exact modular Euler-product factor, and formal all-order inversion formulas.
+Its proposition labelled \texttt{t3:prop:double-A} assumes $\tau\ge\tau_0>0$.
+The paragraph following \texttt{t3:eq:Slarge} explicitly identifies the missing
+uniform analysis at $\tau=0$. The modular-factor discussion also carefully
+avoids claiming a full beyond-all-orders description of the Bernoulli tail.
+
+Those are the two starting points of this article. We do not claim the
+repository's dilogarithmic phase or its inverse coefficient formula as new.
+Nor do we infer analytic theorems from a module inventory: the present proofs
+are independent of the status of the repository's formalization.
+
+The inspected snapshot is commit
+\begin{center}\small\texttt{04e06e032dff1966513bfba316966d52db3646b4}.\end{center}
+The companion's inspected source blob is
+\begin{center}\small\texttt{77e494fbd30587b61b36f0e0e010c85cae3c7fa7}.\end{center}
+The source ranges used most directly are lines 4080--4280, including the labels
+just specified. The provenance file in this package records the full path.
+
+\subsection{Why another finite-order expansion is not enough}
+Three limits must be distinguished. At fixed $h>0$, finite-size corrections
+are exponentially small in $x$. In the interior crossover, $h\to0$ and
+$hx\to\tau\in(0,\infty)$; those corrections contribute to the leading
+$1/h$ phase. At the classical endpoint, $h\to0$ with $hx\to0$ and $x\to\infty$,
+the coefficient functions themselves become singular in the old coordinate.
+A remainder constant depending on a positive lower bound for $hx$ cannot
+control the third regime.
+
+The cure is not to discard the singular coefficients. It is to absorb their
+powers of $hx$ into the $1/x$ scale and to estimate the exact remainder before
+passing to any limit. Positivity of the multinomial weight will preserve its
+sign. This produces a single expansion with a rigorous meaning throughout
+all three regimes, even when $h$ depends on $x$ in an arbitrary way.
+
+\subsection{Relation to established analysis}
+The partial fractions for $\coth$ and the eta modular transformation are
+classical \cite{dlmf-hyperbolic,dlmf-eta}. Binet's integral and the Stirling
+remainder are classical as well \cite{dlmf-gamma-int,dlmf-gamma-asymp}.
+The resurgence of Euler--Maclaurin expansions was studied by Costin and
+Garoufalidis \cite{costin-garoufalidis}; Garoufalidis and Kashaev give an explicit
+Borel-plane description and Stokes analysis of Faddeev's quantum dilogarithm
+\cite{garoufalidis-kashaev}. In particular, locating a lattice of Borel poles
+for a $q$-product is not, in itself, a new phenomenon.
+
+Our specific contribution is the combination of a positive multinomial
+remainder, endpoint-uniform normalization, an $h$-independent error envelope,
+the precise smallest-parameter Borel geometry, sharp endpoint and resonant
+remainder equivalents, and a uniform inverse certificate. The targeted literature check
+establishes relevant precedents, not an exhaustive priority search. The
+statements below are mathematical claims with proofs; the assertion that this
+package resolves the stated repository gap is narrower than an assertion of
+worldwide priority.
+
+\section{The family and the endpoint-uniform expansion}
+\label{sec:definitions}
+
+Fix $r\ge2$ and positive real numbers $\avec=(a_1,\ldots,a_r)$. Write
+\begin{equation}
+ A=\sum_{j=1}^r a_j,\qquad d=r-1,\qquad
+ \kappa=\frac{A^2-\sum_j a_j^2}{2}>0,
+ \qquad \amin=\min_j a_j.
+ \label{eq:parameters}
+\end{equation}
+The multiplicity of the smallest parameter is
+$\mmin=\#\{j:a_j=\amin\}$. Also put
+\begin{equation}
+ H_{\avec}=A\log A-\sum_j a_j\log a_j>0.
+ \label{eq:entropy}
+\end{equation}
+The positivity follows on writing $a_j=A p_j$ and using
+$H_{\avec}=-A\sum_j p_j\log p_j$.
+
+For $h>0$, let
+\begin{align}
+ \calP(h)&=\prod_{n\ge1}(1-\e^{-hn}),\label{eq:product}\\
+ \calA_h(s)&=\sum_{m\ge1}\frac{\e^{-ms}}{m(\e^{hm}-1)},
+ \qquad s>0.\label{eq:tail}
+\end{align}
+Both converge absolutely. Define the logarithmic interpolation
+\begin{equation}
+ F_h(x)=\kappa h x^2-d\log\calP(h)
+      +\calA_h(Ahx)-\sum_j\calA_h(a_jhx),\qquad x>0.
+ \label{eq:exact-F}
+\end{equation}
+At $h=0$ define
+\begin{equation}
+ F_0(x)=\log\Gamma(Ax+1)-\sum_j\log\Gamma(a_jx+1).
+ \label{eq:gamma-F}
+\end{equation}
+We prove continuity at $h=0$ below, rather than assuming it.
+
+If all $a_jx$ are nonnegative integers, exponentiating \eqref{eq:exact-F}
+gives the ordinary Gaussian multinomial coefficient
+\begin{equation}
+ \exp F_h(x)=\qmulti{Ax}{a_1x,\ldots,a_rx},\qquad q=\e^h.
+ \label{eq:qmulti}
+\end{equation}
+Indeed, if $P_n=\prod_{j=1}^n(1-\e^{-hj})$, then
+$P_n=\calP(h)\exp\calA_h(hn)$; extracting the powers of $q$ from the
+Gaussian factorials gives the quadratic factor in \eqref{eq:exact-F}.
+For arbitrary positive parameters, \eqref{eq:exact-F} is our specified real
+interpolation. Nothing in the limiting argument requires a finite field whose
+order tends to one.
+
+\subsection{The phase, amplitude and modular term}
+For $\tau>0$ set
+\begin{align}
+ S_{\avec}(\tau)
+ &=\kappa\tau^2+\frac{d\pi^2}{6}
+   +\Li_2(\e^{-A\tau})-\sum_j\Li_2(\e^{-a_j\tau}),\label{eq:S}\\
+ f(u)&=\frac{1-\e^{-u}}{u},\qquad f(0)=1,\label{eq:f}\\
+ B_{\avec}(\tau)
+ &=\frac12\left(\log f(A\tau)-\sum_j\log f(a_j\tau)\right),\label{eq:B}\\
+ M(h)&=-\log\calP(4\pi^2/h),\qquad M(0)=0.\label{eq:M}
+\end{align}
+All logarithms in these real formulas are real. The leading phase satisfies
+$S_{\avec}(0)=0$ and
+\begin{equation}
+ S'_{\avec}(0)=H_{\avec}.
+ \label{eq:S-endpoint}
+\end{equation}
+The modular term must not be silently discarded: it is flat as $h\downarrow0$
+but is a nonzero constant in the fixed-$h$, large-$x$ problem.
+
+Our unperturbed expression is
+\begin{align}
+ \Phi_h(x)={}&\frac{S_{\avec}(hx)}{h}
+ -\frac d2\log(2\pi x)+\frac12\log\frac{A}{\prod_j a_j}
+ +B_{\avec}(hx)-\frac{dh}{24}+dM(h),\quad h>0,\label{eq:core}\\
+ \Phi_0(x)={}&H_{\avec}x-\frac d2\log(2\pi x)
+              +\frac12\log\frac{A}{\prod_j a_j}.\label{eq:core-zero}
+\end{align}
+For $k\ge1$, the normalized coefficients are
+\begin{equation}
+ D_k(\tau)=\frac{B_{2k}}{(2k)!}\tau^{2k-1}
+ \left(\Li_{2-2k}(\e^{-A\tau})
+            -\sum_j\Li_{2-2k}(\e^{-a_j\tau})\right).
+ \label{eq:D}
+\end{equation}
+Here $B_{2k}$ denotes a Bernoulli number, not the amplitude $B_{\avec}$.
+At the endpoint the definition is continued by
+\begin{equation}
+ D_k(0)=\frac{B_{2k}}{2k(2k-1)}
+       \left(A^{1-2k}-\sum_j a_j^{1-2k}\right).
+ \label{eq:Dzero}
+\end{equation}
+Define
+\begin{equation}
+ T_K(h,x)=\Phi_h(x)+\sum_{k=1}^K\frac{D_k(hx)}{x^{2k-1}},
+ \qquad R_K(h,x)=F_h(x)-T_K(h,x).
+ \label{eq:TK}
+\end{equation}
+The empty sum defines $T_0=\Phi_h$.
+
+\begin{theorem}[Endpoint-uniform signed expansion]
+\label{thm:uniform}
+For every positive ray $\avec$, every integer $K\ge0$, every $h\ge0$ and every
+$x>0$, the expansion \eqref{eq:TK} obeys
+\begin{equation}
+ 0<(-1)^{K+1}R_K(h,x)
+   <\frac{|D_{K+1}(hx)|}{x^{2K+1}}
+   \le E_K(x),
+ \label{eq:main-bound}
+\end{equation}
+where
+\begin{equation}
+ E_K(x)=\frac{|B_{2K+2}|}{2K+2}\,
+           x^{-(2K+1)}\sum_{j=1}^r a_j^{-(2K+1)}.
+ \label{eq:EK}
+\end{equation}
+The coefficient functions are smooth at $\tau=0$, bounded on $[0,\infty)$,
+and tend to zero as $\tau\to\infty$. The normalized core tends to
+\eqref{eq:core-zero} as $h\downarrow0$ at fixed $x$.
+Consequently the expansion is uniform along every choice $h=h(x)\ge0$ as
+$x\to\infty$. In addition,
+\begin{equation}
+ |\partial_xR_K(h,x)|\le\frac{2K+2}{x}E_K(x),\qquad
+ (-1)^K\partial_xR_K(h,x)>0.
+ \label{eq:derivative-error}
+\end{equation}
+\end{theorem}
+
+The theorem is a real-axis result. It makes no assertion of uniformity in a
+complex sector whose Borel poles pinch the integration contour. That distinct
+problem is discussed in Section~\ref{sec:questions}.
+
+\section{The signed kernel and the proof of uniformity}
+\label{sec:proof-uniform}
+
+\subsection{An exact remainder before asymptotic expansion}
+The classical partial fraction identity for $\coth$ \cite{dlmf-hyperbolic}
+can be written, for $v>0$, as
+\begin{equation}
+ \frac1{\e^v-1}=\frac1v-\frac12
+              +2v\sum_{\ell\ge1}\frac1{(2\pi\ell)^2+v^2}.
+ \label{eq:bose-pf}
+\end{equation}
+Let $b_\ell=2\pi\ell$. A finite geometric expansion in each denominator gives
+\begin{align}
+ \frac1{\e^v-1}
+ &=\frac1v-\frac12+
+   \sum_{k=1}^K\frac{B_{2k}}{(2k)!}v^{2k-1}+r_K(v),\label{eq:kernel-exp}\\
+ r_K(v)&=2(-1)^K v^{2K+1}
+        \sum_{\ell\ge1}\frac{b_\ell^{-2K}}{b_\ell^2+v^2}.
+ \label{eq:kernel-remainder}
+\end{align}
+The coefficient identity follows from
+\begin{equation}
+ \frac{B_{2k}}{(2k)!}
+   =\frac{2(-1)^{k-1}\zeta(2k)}{(2\pi)^{2k}}.
+ \label{eq:bernoulli-zeta}
+\end{equation}
+All series in this calculation converge absolutely for a fixed positive $v$.
+Since every denominator in \eqref{eq:kernel-remainder} is positive,
+\begin{equation}
+ 0<(-1)^K r_K(v)
+ <\frac{|B_{2K+2}|}{(2K+2)!}v^{2K+1}.
+ \label{eq:kernel-signed}
+\end{equation}
+No limiting interchange is needed to obtain this strict inequality.
+
+\subsection{The multinomial weight}
+The crucial positive function is
+\begin{equation}
+ W_{\avec}(s)=\sum_j\e^{-a_js}-\e^{-As}>0,
+ \qquad s\ge0.
+ \label{eq:W}
+\end{equation}
+At zero its value is $r-1$. For $s>0$, every $a_j<A$, so positivity is immediate.
+Moreover,
+\begin{equation}
+ -W'_{\avec}(s)=\sum_j a_j\e^{-a_js}-A\e^{-As}
+              =\sum_j a_j(\e^{-a_js}-\e^{-As})>0,\qquad s>0.
+ \label{eq:W-derivative}
+\end{equation}
+Substitution of \eqref{eq:kernel-exp} into \eqref{eq:tail} now yields the exact
+remainder identity
+\begin{equation}
+ R_K(h,x)=-\sum_{m\ge1}\frac{W_{\avec}(mhx)}{m}\,r_K(hm),
+ \qquad h>0.
+ \label{eq:Rexact}
+\end{equation}
+It simultaneously proves the sign and explains why taking separate absolute
+values of the individual factorial remainders would be an unnecessary loss.
+
+For completeness, the non-remainder terms assemble as follows. The $1/v$
+term gives the dilogarithms divided by $h$; the constant $-1/2$ gives
+\begin{equation}
+ J_{\avec}(\tau)=\frac12\left(\log(1-\e^{-A\tau})
+                  -\sum_j\log(1-\e^{-a_j\tau})\right).
+ \label{eq:J}
+\end{equation}
+The eta modular identity \cite{dlmf-eta} is
+\begin{equation}
+ \calP(h)=\sqrt{\frac{2\pi}{h}}
+          \exp\left(-\frac{\pi^2}{6h}+\frac h{24}\right)
+          \calP(4\pi^2/h).
+ \label{eq:eta}
+\end{equation}
+Finally,
+\begin{equation}
+ J_{\avec}(\tau)=B_{\avec}(\tau)-\frac d2\log\tau
+                       +\frac12\log\frac{A}{\prod_j a_j}.
+ \label{eq:J-normalized}
+\end{equation}
+Equations \eqref{eq:eta} and \eqref{eq:J-normalized} give precisely the core
+\eqref{eq:core}. The finite Bernoulli terms give \eqref{eq:D}.
+
+\subsection{A uniform moment estimate}
+\begin{lemma}
+\label{lem:moment}
+For every integer $p\ge0$ and every $s>0$,
+\begin{equation}
+ s^{p+1}\Li_{-p}(\e^{-s})\le(p+1)!.
+ \label{eq:moment-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+On the interval $[(m-1)s,ms]$ one has $\e^{-t}\ge\e^{-ms}$, and hence
+\begin{align*}
+ \int_{(m-1)s}^{ms}t^p\e^{-t}\dd t
+ &\ge\frac{s^{p+1}\e^{-ms}}{p+1}
+          \bigl(m^{p+1}-(m-1)^{p+1}\bigr)\\
+ &\ge\frac{s^{p+1}}{p+1}m^p\e^{-ms}.
+\end{align*}
+The second inequality follows from
+$(m-1)^{p+1}\le(m-1)m^p$. Summing the integrals gives $p!$, proving the claim.
+\end{proof}
+
+Apply \eqref{eq:kernel-signed} in \eqref{eq:Rexact}. The resulting first-omitted
+term is
+\begin{align}
+ |R_K(h,x)|<&\frac{|B_{2K+2}|}{(2K+2)!}h^{2K+1}
+ \left(\sum_j\Li_{-2K}(\e^{-a_jhx})
+                    -\Li_{-2K}(\e^{-Ahx})\right)\notag\\
+ =&\frac{|D_{K+1}(hx)|}{x^{2K+1}}.
+ \label{eq:next-bound}
+\end{align}
+Discard the negative last polylogarithm and use Lemma~\ref{lem:moment} at
+$s=a_jhx$. The result is exactly \eqref{eq:EK}, with no dependence on $h$.
+Differentiating \eqref{eq:Rexact} is justified by exponential convergence.
+Equation \eqref{eq:W-derivative} gives the derivative's sign. The same argument
+with $p=2K+1$ gives
+\begin{equation}
+ |\partial_xR_K|\le |B_{2K+2}|x^{-(2K+2)}
+                               \sum_j a_j^{-(2K+1)},
+\end{equation}
+which is \eqref{eq:derivative-error}.
+
+\subsection{Regularity of the coefficient functions}
+The function $(\e^s-1)^{-1}$ is meromorphic near $s=0$, with principal part
+$1/s$. Repeated differentiation shows
+\begin{equation}
+ \Li_{-p}(\e^{-s})=p!s^{-p-1}+\text{a function analytic at }s=0.
+ \label{eq:li-endpoint}
+\end{equation}
+Multiplying by $\tau^{p+1}$ in \eqref{eq:D} removes the pole and gives
+\eqref{eq:Dzero}. The coefficient functions thus extend analytically near zero.
+At positive infinity they are a polynomial in $\tau$ times exponentially
+small functions, so they tend to zero. Continuity on compact intervals then
+proves boundedness.
+
+Likewise $f$ is analytic and nonzero near zero, and the balanced relation
+$A=\sum_j a_j$ cancels the linear term of its logarithm. Consequently
+$B_{\avec}(\tau)=O(\tau^2)$. Differentiating \eqref{eq:S} gives
+\begin{equation}
+ S'_{\avec}(\tau)=2\kappa\tau+A\log(1-\e^{-A\tau})
+                         -\sum_j a_j\log(1-\e^{-a_j\tau}).
+ \label{eq:Sprime}
+\end{equation}
+Writing the logarithms as $\log(a_j\tau)+\log f(a_j\tau)$ proves
+\eqref{eq:S-endpoint}. Also $M(h)\to0$, directly from its rapidly convergent
+product representation. This establishes the core limit.
+
+\subsection{The classical endpoint and continuity in \texorpdfstring{$h$}{h}}
+Binet's integral for $z>0$ \cite{dlmf-gamma-int} reads
+\begin{equation}
+ \log\Gamma(z+1)=\left(z+\frac12\right)\log z-z
+ +\frac12\log(2\pi)
+ +\int_0^\infty\frac{\e^{-zt}}{t}
+   \left(\frac1{\e^t-1}-\frac1t+\frac12\right)\dd t.
+ \label{eq:Binet}
+\end{equation}
+Combining the gamma factors and using the same finite kernel expansion yields
+\begin{equation}
+ R_K(0,x)=2(-1)^{K+1}\sum_{\ell\ge1}b_\ell^{-2K}
+ \int_0^\infty\frac{t^{2K}W_{\avec}(xt)}{b_\ell^2+t^2}\dd t.
+ \label{eq:Rzero}
+\end{equation}
+Its sign is strict. Replacing its denominator by $b_\ell^2$ proves the strict
+first-omitted-term estimate at $h=0$. The weaker bound $E_K(x)$ follows at once;
+it also follows by taking the endpoint limit in the already normalized bound.
+The derivative argument is identical.
+
+There is a useful direct continuity check. Set $N=2K+1$ and $t=hm$ in
+\eqref{eq:Rexact}. Its absolute value is
+\begin{equation}
+ 2h\sum_{m\ge1}(hm)^{N-1}W_{\avec}(xhm)
+         \sum_{\ell\ge1}\frac{b_\ell^{-(N-1)}}{b_\ell^2+(hm)^2}.
+ \label{eq:R-riemann}
+\end{equation}
+This is a Riemann sum for the positive integral in \eqref{eq:Rzero}. The
+integrand is continuous at zero and has exponential decay at infinity; the
+$\ell$-sum is locally uniform and dominated by a convergent constant series.
+A compact-interval Riemann-sum argument followed by an exponential tail bound
+therefore gives convergence to \eqref{eq:Rzero}. Together with the finite
+coefficient and core limits, this proves $F_h(x)\to F_0(x)$ for each $x>0$.
+All assertions of Theorem~\ref{thm:uniform} are now established.
+
+\section{Explicit specializations and the three limiting regimes}
+\label{sec:examples}
+
+\subsection{Central Gaussian coefficients}
+For $\avec=(1,1)$, $A=2$, $\kappa=1$, $d=1$, and
+\begin{align}
+ S(\tau)&=\tau^2+\frac{\pi^2}{6}
+                +\Li_2(\e^{-2\tau})-2\Li_2(\e^{-\tau}),\label{eq:Scentral}\\
+ S'(\tau)&=2\log(1+\e^\tau),\label{eq:Scentral-prime}\\
+ B(\tau)&=\frac12\log\left(\frac\tau2\coth\frac\tau2\right),\label{eq:Bcentral}\\
+ \Phi_h(x)&=\frac{S(hx)}h-\frac12\log(\pi x)
+                  +B(hx)-\frac h{24}+M(h).\label{eq:central-core}
+\end{align}
+Thus the repository phase is preserved exactly; the new feature is its
+endpoint-uniform interpretation and error law.
+The endpoint coefficients begin
+\begin{equation}
+ D_1(0)=-\frac18,\qquad D_2(0)=\frac1{192},\qquad
+ D_3(0)=-\frac1{640},\qquad D_4(0)=\frac{17}{14336}.
+ \label{eq:central-coeffs}
+\end{equation}
+Accordingly,
+\begin{equation}
+ \log\frac{\Gamma(2x+1)}{\Gamma(x+1)^2}
+ \sim x\log4-\frac12\log(\pi x)-\frac1{8x}
+             +\frac1{192x^3}-\frac1{640x^5}+\cdots.
+\end{equation}
+This classical expansion is not a novelty claim. It is the required endpoint
+of the new uniform formula.
+
+For every $h\ge0$, the first correction gives the rigorous enclosure
+\begin{equation}
+ 0<F_h(x)-T_1(h,x)
+   <\frac{|D_2(hx)|}{x^3}\le\frac1{60x^3}.
+ \label{eq:first-simple-bound}
+\end{equation}
+The last constant is intentionally simple, not sharp: at $h=0$ the sharper
+next-term bound is $1/(192x^3)$.
+
+\subsection{A genuinely noncentral ray}
+For $\avec=(1,2)$, the lattice values are $\qmulti{3x}{x,2x}$ and
+\begin{equation}
+ \kappa=2,\qquad H_{\avec}=3\log3-2\log2,\qquad
+ D_1(0)=\frac1{12}\left(\frac13-1-\frac12\right)=-\frac7{72}.
+\end{equation}
+The smallest parameter has multiplicity one. This changes the sharp remainder
+constant by a factor of two compared with the central ray, while leaving the
+exponential rate $2\pi x$ unchanged. For $\avec=(1,1,1)$ the smallest parameter
+has multiplicity three, so the sharp constant is three times the single-factor
+one. These distinctions emerge directly from Borel residues, not from the
+quadratic dominant phase.
+
+\subsection{Classical, crossover, and fixed-\texorpdfstring{$q$}{q} limits}
+At the classical endpoint,
+\begin{equation}
+ S_{\avec}(\tau)=H_{\avec}\tau+\frac\kappa2\tau^2
+        +\frac{A^3-\sum_j a_j^3}{72}\tau^3+O(\tau^5).
+ \label{eq:Ssmall}
+\end{equation}
+The term $\kappa\tau^2/(2h)$ explains the first deviation from the classical
+multinomial phase. A regime such as $hx\to0$ does not imply that $hx^2\to0$;
+retaining the complete phase avoids imposing this extra, unnecessary condition.
+
+For $hx\to\tau\in(0,\infty)$, the terms in \eqref{eq:D} are bounded functions
+of $\tau$ multiplying $x^{-1},x^{-3},\ldots$. This is the interior crossover
+previously treated in the repository, now with explicit global constants.
+
+For fixed $h>0$ and $x\to\infty$, the dilogarithms and all $D_k(hx)$ decay
+exponentially. The core recombines by \eqref{eq:eta} into
+$\kappa hx^2-d\log\calP(h)$ plus the appropriate finite-size terms. Thus no
+spurious power correction is introduced into the fixed-$q$ problem. The
+uniform bound is then often conservative, but remains valid.
+
+\section{The exact Borel transform and its smallest action}
+\label{sec:borel}
+
+\subsection{Conventions and a single tail}
+For a formal series without constant term use
+\begin{equation}
+ \calB\!\left(\sum_{n\ge0}c_nh^{n+1}\right)(\xi)
+       =\sum_{n\ge0}\frac{c_n}{n!}\xi^n,
+ \qquad (\calL\beta)(h)=\int_0^\infty\e^{-\xi/h}\beta(\xi)\dd\xi.
+ \label{eq:Borel-convention}
+\end{equation}
+In particular there is no extra factor $1/h$ in the Laplace transform.
+For $s>0$ define
+\begin{equation}
+ \beta_s(\xi)=\sum_{\ell\ge1}\frac1{b_\ell^2}
+ \left(\frac1{\exp(s-i\xi/b_\ell)-1}
+       +\frac1{\exp(s+i\xi/b_\ell)-1}\right).
+ \label{eq:beta-single}
+\end{equation}
+
+\begin{theorem}[Meromorphic Borel summation]
+\label{thm:borel}
+The series \eqref{eq:beta-single} is locally uniformly convergent away from its
+poles and is the Borel transform of
+\begin{equation}
+ \sum_{k\ge1}\frac{B_{2k}}{(2k)!}\Li_{2-2k}(\e^{-s})h^{2k-1}.
+ \label{eq:formal-single}
+\end{equation}
+Its poles are simple and lie at
+\begin{equation}
+ \xi=4\pi^2\ell j\ \pm\ 2\pi i\ell s,
+ \qquad \ell\ge1,\quad j\in\mathbb Z.
+ \label{eq:single-poles}
+\end{equation}
+The residue at an upper-half-plane pole is $-i/(2\pi\ell)$ and at a
+lower-half-plane pole is $+i/(2\pi\ell)$. For every $h,s>0$,
+\begin{equation}
+ \calA_h(s)=\frac{\Li_2(\e^{-s})}{h}
+      +\frac12\log(1-\e^{-s})+(\calL\beta_s)(h).
+ \label{eq:exact-borel}
+\end{equation}
+\end{theorem}
+\begin{proof}
+In a neighborhood of $\xi=0$, expand the two denominators in exponentials:
+\begin{equation}
+ \beta_s(\xi)=2\sum_{\ell\ge1}b_\ell^{-2}
+                       \sum_{m\ge1}\e^{-ms}\cos(m\xi/b_\ell).
+ \label{eq:beta-cos}
+\end{equation}
+The Taylor coefficient of $\xi^{2k-2}$ is
+\[
+ \frac{2(-1)^{k-1}}{(2k-2)!}
+       \sum_{\ell\ge1}b_\ell^{-2k}
+       \sum_{m\ge1}m^{2k-2}\e^{-ms},
+\]
+which is exactly the Borel coefficient in \eqref{eq:formal-single} by
+\eqref{eq:bernoulli-zeta}. For a compact set of $\xi$ values, the terms with
+large $\ell$ are uniformly $O(\ell^{-2})$. Only finitely many remaining terms
+can have poles in that compact set. This proves meromorphic continuation and
+local uniform convergence away from the poles. Solving the denominator equations
+and differentiating them gives \eqref{eq:single-poles} and the stated residues.
+
+On the positive real axis the absolute value of \eqref{eq:beta-cos} is at most
+$2\zeta(2)(2\pi)^{-2}(\e^s-1)^{-1}$. Hence its Laplace integral is absolutely
+convergent and summation may be interchanged with integration. Since
+\[
+ \int_0^\infty\e^{-\xi/h}\cos(m\xi/b_\ell)\dd\xi
+              =\frac{h}{1+(hm/b_\ell)^2},
+\]
+the result is the partial-fraction correction in \eqref{eq:bose-pf}, inserted
+into \eqref{eq:tail}. This proves \eqref{eq:exact-borel}.
+\end{proof}
+
+\subsection{The multinomial Borel plane}
+At fixed $\tau>0$ put
+\begin{equation}
+ \beta_{\avec,\tau}(\xi)=\beta_{A\tau}(\xi)-\sum_j\beta_{a_j\tau}(\xi).
+ \label{eq:beta-multi}
+\end{equation}
+The correct Borel transform for the normalized $1/x$ series is
+\begin{equation}
+ \calB_{\avec,\tau}(\eta)=\tau\beta_{\avec,\tau}(\tau\eta).
+ \label{eq:scaled-Borel}
+\end{equation}
+The prefactor $\tau$ is essential: it accounts for replacing $h$ by $\tau/x$.
+The exact summation identity becomes
+\begin{equation}
+ F_h(x)-\Phi_h(x)=\int_0^\infty\e^{-x\eta}
+                              \calB_{\avec,hx}(\eta)\dd\eta.
+ \label{eq:scaled-Laplace}
+\end{equation}
+
+\begin{theorem}[Universal nearest Borel singularities]
+\label{thm:nearest}
+For every $\tau>0$, the Taylor series of $\calB_{\avec,\tau}$ at zero has
+radius of convergence exactly $2\pi\amin$. Its nearest singularities are
+\begin{equation}
+ \eta=\pm2\pi i\amin,
+ \label{eq:nearest}
+\end{equation}
+with residues $+i\mmin/(2\pi)$ at the upper pole and $-i\mmin/(2\pi)$ at the
+lower pole. They cannot cancel.
+Other candidate poles have the form
+\begin{equation}
+ \eta=\frac{4\pi^2\ell j}{\tau}\ \pm\ 2\pi i\ell\lambda,
+ \qquad \lambda\in\{A,a_1,\ldots,a_r\}.
+ \label{eq:scaled-poles}
+\end{equation}
+At coincident poles the residues are added, and cancellation is possible.
+As $\tau\downarrow0$, the meromorphic functions converge locally uniformly,
+away from the limiting poles, to
+\begin{equation}
+ \calB_{\avec,0}(\eta)=\sum_{\ell\ge1}
+ \left(\frac{2A}{b_\ell^2A^2+\eta^2}
+           -\sum_j\frac{2a_j}{b_\ell^2a_j^2+\eta^2}\right).
+ \label{eq:Borel-gamma}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation \eqref{eq:scaled-poles} follows by scaling
+\eqref{eq:single-poles}. Every such point has modulus at least
+$2\pi\ell\lambda\ge2\pi\amin$. Equality is possible only when $j=0$,
+$\ell=1$ and $\lambda=\amin$. The numerator parameter $A$ is strictly greater
+than $\amin$. Thus exactly the $\mmin$ negative denominator contributions
+occur there, and their residues add rather than cancel. This proves the exact
+radius and the residues.
+
+For the endpoint limit, each finite-$\ell$ term uses
+\[
+ \frac{\tau}{\exp\{\tau(\lambda\pm i\eta/b_\ell)\}-1}
+       \longrightarrow\frac1{\lambda\pm i\eta/b_\ell}.
+\]
+On a fixed compact set and for sufficiently large $\ell$, the real part of
+$\lambda\pm i\eta/b_\ell$ is at least $\lambda/2$. The corresponding terms
+are uniformly bounded by a constant times $\ell^{-2}$, for all sufficiently
+small positive $\tau$. Dominated convergence of the tail, together with
+uniform convergence of finitely many analytic terms away from their limiting
+poles, proves \eqref{eq:Borel-gamma}.
+\end{proof}
+
+This gives a precise geometric interpretation of the endpoint normalization.
+The poles with $j\ne0$ move off to infinity as $\tau\to0$, while the nearest
+imaginary poles remain fixed. The limiting kernel is exactly the Borel kernel
+of the gamma-multinomial Stirling correction. Endpoint uniformity therefore
+corresponds to a controlled meromorphic limit, not to removal of the leading
+factorial divergence.
+
+\subsection{Large-order coefficients and what is not being claimed}
+For each fixed $\tau>0$, the residue pair in Theorem~\ref{thm:nearest} gives
+\begin{equation}
+ D_k(\tau)\sim
+ \frac{2\mmin(-1)^k(2k-2)!}
+      {(2\pi)^{2k}\amin^{2k-1}},\qquad k\to\infty.
+ \label{eq:large-order}
+\end{equation}
+The same equivalent holds at $\tau=0$. To justify it directly, subtract the
+two nearest principal parts from \eqref{eq:scaled-Borel}. For fixed $\tau$,
+there is a strictly larger disk free of the remaining singularities; Cauchy
+estimates make their coefficient contribution exponentially smaller in $k$.
+Expanding the two principal parts gives \eqref{eq:large-order}.
+
+The relative error implicit in \eqref{eq:large-order} is not asserted to be
+uniform as $\tau\to\infty$, when other poles approach the same modulus. The
+uniform truncation bound in Theorem~\ref{thm:uniform} does not depend on such
+a coefficient equivalent and remains valid there.
+
+The pole lattice determines residue contributions under an admissible
+contour deformation: a positively oriented small contour around a pole
+$\omega$ contributes
+$2\pi i\,\Res(\beta_{\avec,\tau},\omega)\e^{-\omega/h}$.
+This local statement is exact. A full global Stokes theorem would additionally
+specify lateral contours, growth estimates and all collision cases. We do not
+replace those requirements by a formal list of exponentials.
+
+\section{Uniform exponential accuracy and a sharp endpoint equivalent}
+\label{sec:optimal}
+
+\begin{theorem}[An explicit least-term envelope]
+\label{thm:exponential}
+Let $z=\amin x\ge1$. Choose an odd integer $N$ nearest to $2\pi z$, breaking
+an exact tie either way, and set $K=(N-1)/2$. Then for every $h\ge0$,
+\begin{equation}
+ |R_K(h,x)|\le E_K(x)
+       <3r\sqrt z\,\e^{-2\pi z}.
+ \label{eq:exponential}
+\end{equation}
+In particular, for the central Gaussian ray,
+\begin{equation}
+ |R_K(h,x)|<6\sqrt x\,\e^{-2\pi x},\qquad h\ge0,\quad x\ge1.
+ \label{eq:central-exponential}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Because $a_j\ge\amin$, \eqref{eq:EK} and \eqref{eq:bernoulli-zeta} imply
+\begin{equation}
+ E_K(x)\le\frac{2r\zeta(N+1)}{2\pi}\,
+                  \frac{N!}{(2\pi z)^N}.
+ \label{eq:factorial-bound}
+\end{equation}
+Write $u=2\pi z$ and $N=u+\delta$, $|\delta|\le1$. The elementary real Stirling
+upper bound $N!\le\sqrt{2\pi N}(N/\e)^N\e^{1/(12N)}$ follows, for example,
+from Binet's positive first remainder \cite{dlmf-gamma-asymp}. The function
+$v\log(v/u)-v$ has value $-u$ and derivative zero at $v=u$, with second
+derivative $1/v$. Hence
+\[
+ N\log(N/u)-N\le-u+\frac1{2(u-1)}.
+\]
+It follows that
+\begin{equation}
+ \frac{N!}{u^N}\le\sqrt{2\pi(u+1)}\,
+        \exp\left(-u+\frac7{12(u-1)}\right).
+ \label{eq:near-stirling}
+\end{equation}
+Here $u\ge2\pi$, $N\ge5$, and $\zeta(N+1)\le\zeta(6)<1.02$.
+Dividing the combination of \eqref{eq:factorial-bound} and
+\eqref{eq:near-stirling} by $r\sqrt z\e^{-2\pi z}$ bounds the ratio by
+\[
+ 2(1.02)\sqrt{1+\frac1{2\pi}}
+           \exp\left(\frac7{12(2\pi-1)}\right)<3.
+\]
+This proves the stated constant without an unspecified asymptotic threshold.
+\end{proof}
+
+\subsection{Removing the polynomial loss uniformly}
+The preceding bound follows directly from the simple all-order expression
+$E_K$. A sharper lattice-moment estimate removes its factor $\sqrt{x}$.
+
+\begin{lemma}[A peak-sensitive lattice moment]
+\label{lem:peak-moment}
+For every integer $N\ge5$ and every $s>0$,
+\begin{equation}
+ s^N\Li_{1-N}(\e^{-s})\le 3N^N\e^{-N}.
+ \label{eq:peak-moment}
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $f$ is a nonnegative integrable unimodal function on $[0,\infty)$,
+\begin{equation}
+ s\sum_{m\ge1}f(ms)\le\int_0^\infty f(t)\dd t+s\sup f.
+ \label{eq:unimodal-sum}
+\end{equation}
+Indeed, every positive superlevel set is an interval. The number of positive
+lattice points of spacing $s$ in an interval is at most its length divided
+by $s$, plus one. Integrating this inequality over the superlevel height
+proves \eqref{eq:unimodal-sum} by the layer-cake formula.
+
+Apply it to $f(t)=t^{N-1}\e^{-t}$. If $s\le N+1$, the left side of
+\eqref{eq:peak-moment} is at most
+\[
+ \Gamma(N)+(N+1)(N-1)^{N-1}\e^{-(N-1)}.
+\]
+After division by $N^N\e^{-N}$, Stirling's upper bound makes the first term
+at most $\sqrt{2\pi/N}\e^{1/(12N)}<1.15$. The second term is
+\[
+ \e(1+1/N)(1-1/N)^{N-1}
+ \le(1+1/N)\e^{1/N}\le1.2\e^{1/5}<1.47.
+\]
+Their sum is less than 3. If $s\ge N+1$, successive terms of
+$\sum m^{N-1}\e^{-ms}$ have ratio at most
+$2^{N-1}\e^{-s}\le16\e^{-6}<1/25$. Thus
+\[
+ s^N\Li_{1-N}(\e^{-s})
+ \le\frac{25}{24}s^N\e^{-s}
+ \le\frac{25}{24}N^N\e^{-N}<3N^N\e^{-N}.
+\]
+The last inequality uses the maximum of $t^N\e^{-t}$ at $t=N$.
+\end{proof}
+
+\begin{theorem}[Uniform exponential bound without a polynomial loss]
+\label{thm:constant-envelope}
+With $z$, $N$ and $K$ chosen as in Theorem~\ref{thm:exponential},
+\begin{equation}
+ \boxed{\quad |R_K(h,x)|<2r\e^{-2\pi z},
+           \qquad h\ge0,\quad z=\amin x\ge1.\quad}
+ \label{eq:constant-envelope}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use the first-omitted-term inequality in \eqref{eq:main-bound} and discard
+the negative numerator contribution in its positive weight. For $h>0$,
+Lemma~\ref{lem:peak-moment} and \eqref{eq:bernoulli-zeta} give
+\begin{align*}
+ |R_K(h,x)|
+ &<\frac{2\zeta(N+1)}{(2\pi)^{N+1}}
+     h^N\sum_j\Li_{1-N}(\e^{-a_jhx})\\
+ &\le\frac{3r\zeta(N+1)}{\pi}
+                   \left(\frac{N}{2\pi z}\right)^N\e^{-N}.
+\end{align*}
+The same estimate at $h=0$ follows by continuity. Writing $u=2\pi z$ and
+using $|N-u|\le1$ as before, the right side is at most
+\[
+ \frac{3r\zeta(6)}{\pi}
+       \exp\left(-u+\frac1{2(u-1)}\right)<2r\e^{-u},
+ \qquad u\ge2\pi.
+\]
+The numerical constant 2 is deliberately simple rather than best possible.
+\end{proof}
+
+The exponential here is a bound on optimally truncated remainders. The nearest
+Borel singularities are imaginary, not positive real. It would be incorrect
+to describe $\e^{-2\pi\amin x}$ as a positive-real Stokes sector solely from
+this estimate. The following theorem gives the precise sharpness assertion.
+
+\begin{theorem}[Sharp endpoint remainder]
+\label{thm:sharp}
+Fix a positive ray $\avec$. Use the same nearest-odd rule for $N$ and $K$ as
+in Theorem~\ref{thm:exponential}. As $x\to\infty$,
+\begin{equation}
+ |R_K(0,x)|\sim\frac{\mmin}{2\pi\sqrt{\amin x}}
+                         \e^{-2\pi\amin x}.
+ \label{eq:sharp}
+\end{equation}
+Consequently, for this least-term truncation rule, no uniform estimate over
+$h\ge0$ can replace the exponential rate $2\pi\amin$ by
+$2\pi\amin+\varepsilon$, even allowing an arbitrary fixed polynomial
+prefactor in $x$.
+\end{theorem}
+\begin{proof}
+Let $b=2\pi$ and $z=\amin x$. In \eqref{eq:Rzero}, the terms with $\ell\ge2$
+are exponentially smaller in $N$: their denominator is larger, and the
+coefficient ratio to $\ell=1$ is at most $\ell^{-(N-1)}$. The sum of these
+ratios is $O(2^{-N})$.
+
+Within the $\ell=1$ integral, the terms with $a_j>\amin$, and the numerator
+term with $A>\amin$, are likewise negligible. To see this quantitatively,
+write
+\begin{equation}
+ I_N(y)=\int_0^\infty\frac{t^{N-1}\e^{-yt}}{b^2+t^2}\dd t
+       =\frac{\Gamma(N)}{y^N}\,
+            \mathbb E\frac1{b^2+T_y^2},
+ \label{eq:gamma-expectation}
+\end{equation}
+where $T_y$ has gamma shape $N$ and rate $y$. If $y=z$, its mean is
+$N/z\to b$ and its variance is $N/z^2\to0$. The bounded continuous integrand
+therefore has expectation tending to $1/(2b^2)$. In particular this expectation
+is bounded below by a positive constant for large $x$. For $y=a_jx>z$, its
+expectation is bounded above by $1/b^2$, so
+$I_N(a_jx)/I_N(z)=O((\amin/a_j)^N)$. The same applies to $A$.
+
+Thus \eqref{eq:Rzero} is asymptotic in absolute value to
+\begin{align}
+ 2\mmin b^{-(N-1)}I_N(z)
+ &\sim\frac{\mmin\Gamma(N)}{b^{N+1}z^N}.\label{eq:sharp-middle}
+\end{align}
+Since $N=bz+O(1)$, Stirling's formula gives
+\[
+ \frac{\Gamma(N)}{(bz)^N}
+     \sim\sqrt{\frac{2\pi}{bz}}\e^{-bz}.
+\]
+Substitute $b=2\pi$ in \eqref{eq:sharp-middle} to obtain \eqref{eq:sharp}.
+The final assertion follows by evaluating any proposed stronger uniform bound
+at $h=0$: an extra factor $\e^{-\varepsilon x}$ cannot dominate the nonzero
+right-hand side of \eqref{eq:sharp} up to a fixed polynomial.
+\end{proof}
+
+\subsection{Discrete resonances obstruct an endpoint-sized uniform prefactor}
+The $x^{-1/2}$ factor at $h=0$ comes from a continuous saddle integral.
+At fixed $h>0$, the exact remainder is a lattice sum. A lattice point can
+coincide with that saddle and remove the shrinking Gaussian-width factor.
+This gives a second sharpness result.
+
+\begin{theorem}[Resonant fixed-$h$ remainder]
+\label{thm:resonance}
+Fix an integer $m_0\ge1$ and set $h=2\pi/m_0$. For a fixed positive ray,
+and the same nearest-odd rule as above,
+\begin{equation}
+ |R_K(2\pi/m_0,x)|\sim\frac{\mmin}{2\pi m_0}
+                  \e^{-2\pi\amin x},\qquad x\to\infty.
+ \label{eq:resonance}
+\end{equation}
+In particular, no estimate of the form
+$C_{\avec}g(x)\e^{-2\pi\amin x}$ with $g(x)\to0$ can hold uniformly for
+all $h\ge0$ for this truncation rule. Combined with
+Theorem~\ref{thm:constant-envelope}, this proves that the uniform remainder
+has precisely the order $\e^{-2\pi\amin x}$ up to positive ray-dependent
+constant factors.
+\end{theorem}
+\begin{proof}
+Write $b=2\pi$, $z=\amin x$ and $N=bz+\delta$, $|\delta|\le1$.
+The absolute version of \eqref{eq:Rexact} is
+\begin{equation}
+ |R_K(h,x)|=2h\sum_{m\ge1}(mh)^{N-1}W_{\avec}(mhx)
+       \sum_{\ell\ge1}\frac{(b\ell)^{-(N-1)}}{(b\ell)^2+(mh)^2}.
+ \label{eq:discrete-remainder}
+\end{equation}
+The $\ell\ge2$ contributions are at most
+$\sum_{\ell\ge2}\ell^{-(N-1)}=O(2^{-N})$ times the $\ell=1$
+contribution, since every weight is positive.
+
+First retain only the $\mmin\e^{-\amin mhx}$ part of $W_{\avec}$.
+At $m=m_0$ the product $mh$ equals $b$ exactly, and its contribution for
+$\ell=1$ is
+\[
+ \frac{\mmin h}{b^2}\e^{-bz}
+       =\frac{\mmin}{b m_0}\e^{-bz}.
+\]
+For any other $m$, put $v=m/m_0$. The ratio of its contribution to the
+$m_0$ contribution is
+\begin{equation}
+ \frac{2v^{\delta-1}}{1+v^2}
+       \exp\{-bz(v-1-\log v)\}.
+ \label{eq:resonance-ratio}
+\end{equation}
+The function $v-1-\log v$ is positive away from $v=1$. On this fixed lattice
+its infimum for $m\ne m_0$ is positive; it grows at least linearly for large
+$m$. The prefactor is bounded, and summing the exponentially decaying tail
+shows that the sum of \eqref{eq:resonance-ratio} is $O(\e^{-c z})$ for some
+$c>0$ depending on $m_0$.
+
+It remains to bound the terms in $W_{\avec}$ with parameter
+$\lambda>\amin$, including its negative numerator term. Replacing the
+rational denominator in \eqref{eq:discrete-remainder} by $b^{-2}$ and
+using Lemma~\ref{lem:peak-moment} bounds each such absolute contribution by
+\[
+ \frac{6}{b}\left(\frac{N}{b\lambda x}\right)^N\e^{-N}
+       =O\left(\e^{-bz}(\amin/\lambda)^N\right).
+\]
+This is negligible relative to the displayed $m_0$ contribution. It proves
+\eqref{eq:resonance}. The obstruction follows already from $m_0=1$.
+The lower bound on the supremum over $h$ is supplied by that same value;
+Theorem~\ref{thm:constant-envelope} supplies the upper bound.
+\end{proof}
+
+\begin{remark}
+Both sharpness claims concern the specified Bernoulli truncation rule, not
+all possible numerical algorithms or hyperasymptotic corrections. Subtracting
+a resolved leading remainder can improve the error. The resonances occur at
+fixed positive $h$, so they do not contradict the endpoint equivalent or a
+possible improved estimate restricted to a sufficiently fine lattice
+$h=h(x)\to0$. Such a restriction requires quantitative control of the lattice
+spacing relative to the saddle width.
+\end{remark}
+
+\section{Uniform conditioning and inverse certificates}
+\label{sec:inverse}
+
+An asymptotic formula for a forward function is not automatically an equally
+accurate inverse formula. A small derivative can amplify a residual. Here the
+multinomial structure gives a derivative bound valid uniformly in $h$.
+
+\begin{theorem}[Uniform lower bound on the inverse slope]
+\label{thm:slope}
+Set
+\begin{equation}
+ x_0=\amin^{-1},\qquad
+ c_{\avec}=A\psi(Ax_0+1)-\sum_j a_j\psi(a_jx_0+1)>0,
+ \label{eq:c}
+\end{equation}
+where $\psi$ is the digamma function. Then
+\begin{equation}
+ F_h'(x)\ge F_0'(x)\ge c_{\avec},
+ \qquad h\ge0,\quad x\ge x_0.
+ \label{eq:slope}
+\end{equation}
+For $\avec=(1,1)$ one has $x_0=1$ and $c_{\avec}=1$.
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{eq:exact-F} at fixed $h$ and put
+\begin{equation}
+ g_x(t)=\frac{\sum_j a_j\e^{-a_jxt}-A\e^{-Axt}}{\e^t-1}.
+ \label{eq:g}
+\end{equation}
+Then
+\begin{equation}
+ F_h'(x)=2\kappa hx+h\sum_{m\ge1}g_x(hm),\qquad
+ g_x(0)=2\kappa x.
+ \label{eq:Fprime-sum}
+\end{equation}
+For $x\ge x_0$, $g_x$ is decreasing. Indeed it is the sum of the positive
+functions
+\begin{equation}
+ a_j\e^{-(a_jx+1)t}
+       \frac{1-\e^{-(A-a_j)xt}}{1-\e^{-t}}.
+ \label{eq:g-positive}
+\end{equation}
+Here $(A-a_j)x\ge1$. For any $v\ge1$,
+\[
+ \frac{\dd}{\dd t}\log\frac{1-\e^{-vt}}{1-\e^{-t}}
+      =\frac{v}{\e^{vt}-1}-\frac1{\e^t-1}\le0,
+\]
+because $v\mapsto v/(\e^{vt}-1)$ is decreasing. Thus every summand in
+\eqref{eq:g-positive} is decreasing.
+
+The lower Riemann sum inequality is
+\[
+ h\sum_{m\ge1}g_x(hm)\ge\int_0^\infty g_x(t)\dd t-hg_x(0).
+\]
+The subtracted term cancels the quadratic derivative in
+\eqref{eq:Fprime-sum}. The remaining integral is $F_0'(x)$, by the elementary
+integral representation of digamma differences. Hence $F_h'(x)\ge F_0'(x)$.
+
+It remains to show that $F_0'$ is strictly increasing and positive. The
+trigamma integral gives
+\begin{equation}
+ F_0''(x)=\int_0^\infty s\e^{-xs}
+ \left(\frac1{\e^{s/A}-1}
+             -\sum_j\frac1{\e^{s/a_j}-1}\right)\dd s.
+ \label{eq:F0-second}
+\end{equation}
+For fixed $s>0$, the function
+$u\mapsto [u(\e^{s/u}-1)]^{-1}$ is strictly increasing. Since $a_j<A$,
+\[
+ \sum_j\frac1{\e^{s/a_j}-1}
+ <\sum_j\frac{a_j}{A}\frac1{\e^{s/A}-1}
+ =\frac1{\e^{s/A}-1}.
+\]
+Therefore $F_0''(x)>0$. Also $F_0'(0)=0$, since $A=\sum_j a_j$.
+This proves \eqref{eq:c} and \eqref{eq:slope}. In the central case,
+$2\psi(3)-2\psi(2)=1$.
+\end{proof}
+
+For $h>0$, the numerator in \eqref{eq:g} is positive for every $x>0$.
+Thus $F_h$ is increasing already below $x_0$; the threshold is used only for
+the uniform numerical slope bound. Moreover $F_h(0)=0$ by continuous extension
+of \eqref{eq:exact-F}, and $F_h(x)\to\infty$. The same statements hold for
+$F_0$. Each has an unambiguous inverse on positive logarithmic targets.
+
+\begin{theorem}[Residual-to-inverse transport]
+\label{thm:certificate}
+Let $L\ge F_h(x_0)$, and let $x_*$ be the unique solution of $F_h(x_*)=L$.
+For any $s\ge x_0$, put
+\begin{equation}
+ \rho=T_K(h,s)-L,\qquad e=E_K(s).
+\end{equation}
+Then
+\begin{equation}
+ |x_*-s|\le\frac{|\rho|+e}{c_{\avec}}.
+ \label{eq:general-certificate}
+\end{equation}
+When $\rho=0$, the sharper one-sided enclosures are
+\begin{align}
+ s\le x_*\le s+e/c_{\avec},&\qquad K\ \text{even},\label{eq:inverse-even}\\
+ \max\{x_0,s-e/c_{\avec}\}\le x_*\le s,&\qquad K\ \text{odd}.
+ \label{eq:inverse-odd}
+\end{align}
+One may replace $e$ throughout by the smaller next-term bound in
+\eqref{eq:main-bound}. If $K$ is chosen by the least-term rule at $s$, then
+\begin{equation}
+ |x_*-s|\le\frac{|\rho|+2r\e^{-2\pi\amin s}}
+                    {c_{\avec}}.
+ \label{eq:inverse-exp}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact residual is $F_h(s)-L=\rho+R_K(h,s)$. Theorem~\ref{thm:uniform}
+bounds its magnitude by $|\rho|+e$. Both $s$ and $x_*$ lie in $[x_0,\infty)$,
+so the mean value theorem and Theorem~\ref{thm:slope} give
+\eqref{eq:general-certificate}. When $\rho=0$, the sign in
+\eqref{eq:main-bound} determines which side of $s$ contains $x_*$. Finally use
+Theorem~\ref{thm:constant-envelope}.
+\end{proof}
+
+\subsection{Existence and monotonicity of truncated inverse equations}
+For an odd $K$, \eqref{eq:derivative-error} says $\partial_xR_K<0$.
+Consequently
+\begin{equation}
+ \partial_xT_K(h,x)=F_h'(x)-\partial_xR_K(h,x)\ge c_{\avec}
+ \quad(x\ge x_0).
+\end{equation}
+Also $T_K(h,x_0)<F_h(x_0)$ and $T_K(h,x)\to\infty$. Thus an odd truncation
+has a unique root $T_K(h,s)=L$ in $[x_0,\infty)$ for every target in
+Theorem~\ref{thm:certificate}. This is a globally well-conditioned approximate
+inverse on that range.
+
+For an even $K$, monotonicity is guaranteed wherever
+$(2K+2)E_K(x)/x<c_{\avec}$. This is an explicit, checkable threshold.
+The general residual certificate does not require solving any truncated
+equation exactly, and therefore remains useful for Newton iterates, interval
+bisection, or a formal inverse series generated by another method.
+
+\subsection{Using formal reversion without confusing it with certification}
+Suppose a chosen core $\Phi$ is locally invertible, with $\Phi(s)=L$, and write
+$\Delta=F-\Phi$. Classical inverse perturbation gives, formally in an auxiliary
+parameter multiplying $\Delta$,
+\begin{equation}
+ x=s+\sum_{j\ge1}\frac{(-1)^j}{j!}
+ \left(\frac1{\Phi'(s)}\frac\dd{\dd s}\right)^{j-1}
+                 \frac{\Delta(s)^j}{\Phi'(s)}.
+ \label{eq:inverse-formal}
+\end{equation}
+The repository already develops this kind of reversion calculus
+\cite{repo-readme,repo-companion}. The first terms are
+\begin{equation}
+ x=s-\frac\Delta{\Phi'}
+     +\frac{\Delta\Delta'}{(\Phi')^2}
+     -\frac{\Delta^2\Phi''}{2(\Phi')^3}+\cdots.
+\end{equation}
+In the present setting a finite candidate produced from this identity can be
+substituted into $T_K$ and certified by \eqref{eq:general-certificate}. We do
+not assert convergence of a Bernoulli-based infinite inverse series. The
+separation between coefficient production and error certification is precisely
+what makes the uniform result usable at the endpoint.
+
+\section{Modular sectors, finite evaluation, and integer decisions}
+\label{sec:computation}
+
+\subsection{Two different exponential phenomena}
+The modular correction has the convergent expansion
+\begin{equation}
+ M(h)=\sum_{n\ge1}\sigma_{-1}(n)\e^{-4\pi^2n/h},\qquad
+ \sigma_{-1}(n)=\sum_{d\mid n}\frac1d.
+ \label{eq:modular-sectors}
+\end{equation}
+It follows by expanding $-\log(1-\widehat Q^j)$ and grouping terms with the
+same product of indices, where $\widehat Q=\e^{-4\pi^2/h}$.
+Theorem~\ref{thm:borel} sums the finite-size Bernoulli tail exactly. The full
+forward function is that Borel sum plus the separately specified modular
+contribution $dM(h)$ and the elementary phase and amplitude.
+
+In the crossover $x=\tau/h$, the uniform least-term envelope has exponential
+size $\e^{-2\pi\amin\tau/h}$, whereas the first modular sector has size
+$\e^{-4\pi^2/h}$. Their exponents meet at $\tau=2\pi/\amin$. This comparison
+is useful for budgeting guaranteed errors; it is not an assertion that an
+actual remainder is asymptotic to its upper envelope for all $\tau$. In
+particular, keeping the modular exponential while leaving an uncontrolled
+algebraic tail does not establish beyond-all-orders accuracy.
+
+\subsection{A finite evaluation budget for the modular factor}
+For $0<q<1$,
+\begin{equation}
+ -\log\prod_{j\ge1}(1-q^j)
+          =\sum_{m\ge1}\frac{q^m}{m(1-q^m)}.
+\end{equation}
+If this sum is cut after $m=J$, its positive remainder is bounded by
+\begin{equation}
+ \frac{q^{J+1}}{(J+1)(1-q)^2}.
+ \label{eq:mod-tail-bound}
+\end{equation}
+Indeed $m\ge J+1$ and $1-q^m\ge1-q$, after which a geometric sum finishes
+the estimate. For small $h$, use $q=\widehat Q$. For large $h$, use
+\begin{equation}
+ M(h)=-\log\calP(h)+\frac12\log\frac{2\pi}{h}
+                  -\frac{\pi^2}{6h}+\frac h{24},
+ \label{eq:M-switch}
+\end{equation}
+so that a product with parameter at least $2\pi$ is always available.
+Thus retaining $M$ exactly in the theorem does not require an infinite
+computation in a finite certificate.
+
+\subsection{Coefficient evaluation and cancellation control}
+For a nonnegative integer $p$,
+\begin{equation}
+ \Li_{-p}(z)=\frac{zP_p(z)}{(1-z)^{p+1}},
+ \label{eq:Eulerian-poly}
+\end{equation}
+where for $p\ge1$ the coefficients of $P_p$ are Eulerian numbers; $p=0$ is
+handled as $z/(1-z)$. The recurrence
+\begin{equation}
+ \left\langle\genfrac{}{}{0pt}{}{n}{k}\right\rangle
+ =(k+1)\left\langle\genfrac{}{}{0pt}{}{n-1}{k}\right\rangle
+ +(n-k)\left\langle\genfrac{}{}{0pt}{}{n-1}{k-1}\right\rangle
+\end{equation}
+gives exact integer coefficient arrays. Thus every correction $D_k$ is
+computable by rational operations and real exponentials once the Bernoulli
+number is known. Near zero one should evaluate $1-\e^{-s}$ with
+\texttt{expm1}, or use the removable-singularity expansion directly.
+
+The remaining dilogarithms can be evaluated by their defining series; for
+$0\le z<1$ the tail after $J$ terms is bounded by
+\begin{equation}
+ \sum_{m>J}\frac{z^m}{m^2}\le
+           \frac{z^{J+1}}{(J+1)^2(1-z)}.
+\end{equation}
+Near $z=1$ this is inefficient. It is preferable to evaluate the balanced phase
+via \eqref{eq:Sprime}, its local Taylor series, or standard dilogarithm
+functional identities. Fixed working precision without cancellation control
+is not a certificate, even when the analytic truncation error is tiny.
+
+\subsection{From a real inverse interval to an integer answer}
+When the ray parameters are positive integers, the lattice values at integer
+$x$ form an increasing sequence. Let $x_*=F_h^{-1}(\log Y)$. The least index
+whose value is at least $Y$ is $\lceil x_*\rceil$. A certified interval
+$[u,v]$ determines that index whenever it lies in a single ceiling cell
+$(n-1,n]$. If an endpoint touches an integer, the convention at equality must
+be respected; exact or validated comparison with that lattice value resolves
+the boundary.
+
+This is an application of the repository's general distinction between real
+inversion and staircase inversion \cite{repo-readme}, not a replacement for
+it. An interval of width less than one alone does not suffice: it may still
+straddle an integer threshold.
+
+\section{Verification and reproducibility}
+\label{sec:verification}
+
+The accompanying \texttt{verify.py} implements the normalized coefficients,
+core, analytic bounds, least-term rule and inverse enclosure formulas using
+\texttt{mpmath}. The reference forward values on integral rays are computed
+from the finite Gaussian product, independently of the asymptotic expansion;
+at $h=0$ the reference is the gamma quotient. This avoids validating an
+expansion only against a second evaluation of the same truncated expression.
+
+The recorded run used 240 decimal digits. It checked 812 instances of the
+signed forward and first-omitted-term inequalities, including $h=0$,
+$h=10^{-8}$, crossover values and $h=10$, for rays $(1,1)$, $(1,2)$,
+$(1,1,1)$ and $(1,3,5)$ and indices from 1 to 20. It also checked 24 inverse
+enclosures, 36 resonant least-term remainders, 48 peak-sensitive lattice
+moments, and auxiliary moment inequalities. Every assertion passed. The
+largest observed ratio $|R_K|/E_K$ was approximately $0.92747955$.
+
+\begin{table}[htbp]
+\centering\small
+\input{numerical_table.tex}
+\caption{Central-ray least-term checks. The target is the exact finite-product
+value at the displayed integral $x$ (the gamma value for $h=0$). Entries are
+rounded numerical observations, not outward-rounded interval endpoints.}
+\label{tab:numeric}
+\end{table}
+
+At $h=0$, $\avec=(1,1)$ and $x=40$, the ratio of the measured absolute error to
+the sharp equivalent in \eqref{eq:sharp} is approximately $1.00448044$.
+The nearest-odd rule changes discretely with $x$, so the finite-$x$ ratio need
+not approach one monotonically. For the fixed resonance $h=2\pi/3$ at
+$x=40$, the ratio to \eqref{eq:resonance} is approximately $1.00000514$;
+for $h=2\pi$ it agrees with one to the 14 displayed digits.
+
+For a simple inverse example, use the central ray, $h=0$, and target
+$L=F_0(5)=\log252$. Solving $T_3(0,s)=L$ gives
+$s-5\approx1.1141787\times10^{-8}$; the one-sided analytic enclosure has
+width about $1.06666665\times10^{-7}$. For the same index and $h=10^{-4}$,
+the observed displacement is $1.1137474\times10^{-8}$. This illustrates the
+continuous endpoint transition without changing the certification method.
+
+\paragraph{What these checks establish.}
+They are high-precision consistency tests for formulas and signs. They are
+not proofs of the theorems, not interval arithmetic, and not Lean kernel
+checks. The package's numerical enclosure routine prints high-precision
+approximations to analytic enclosure endpoints; those printed endpoints are
+not themselves machine-certified until elementary evaluations and rounding
+are validated. The mathematical certificate is Theorem~\ref{thm:certificate}.
+
+\paragraph{Reproduction.}
+From the package directory run
+\begin{lstlisting}
+python -m pip install -r requirements.txt
+python verify.py
+pdflatex -interaction=nonstopmode -halt-on-error uniform_q_multinomial_transseries.tex
+pdflatex -interaction=nonstopmode -halt-on-error uniform_q_multinomial_transseries.tex
+\end{lstlisting}
+The Python run regenerates \texttt{verification\_results.json} and
+\texttt{numerical\_table.tex}. The build does not depend on repository-local
+notation files or external images. No repository files were modified.
+
+\section{A proposed formalization route}
+\label{sec:formalization}
+
+The proof divides naturally into a finite algebraic layer, a real-analysis
+layer, and an optional complex-analysis layer. This makes the uniform theorem
+a practical next target for the repository's existing residual-certificate
+architecture, without requiring a complete formal datatype for transseries.
+
+At the finite layer, formalize the geometric identity that produces
+\eqref{eq:kernel-remainder}; the Bernoulli--zeta coefficient identity may be
+supplied through a separate analytic theorem. Establish positivity of
+$W_{\avec}$ and $-W'_{\avec}$ using only the strict inequalities $a_j<A$.
+The moment estimate in Lemma~\ref{lem:moment} is an independent reusable lemma.
+
+At the real-analysis layer, formalize the convergent Bose partial fractions,
+the dominated summations in \eqref{eq:Rexact}, and the exact modular identity
+as separately named dependencies. Prove Theorem~\ref{thm:uniform} first for
+$h>0$, then add the Binet endpoint. A finite truncation object with fields
+\texttt{value}, \texttt{errorBound} and \texttt{errorSign} would already support
+all inverse certificates. It should not be represented as a convergent
+infinite Bernoulli series.
+
+The slope theorem is particularly useful independently of transseries.
+Its proof needs decreasing-function Riemann sums and a positive integral
+representation of the trigamma combination. Once it is available, the
+inverse theorem is a direct mean-value argument; the repository already has
+related residual-transport interfaces \cite{repo-readme}.
+
+The Borel pole lattice and the sharp endpoint equivalent are additional
+analytic layers. They are not prerequisites for the finite-order inverse
+certificate. Separating them avoids inflating a useful elementary theorem's
+formal dependency graph. No Lean implementation or successful Lean build is
+claimed in this package.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+
+The following questions are proposed next steps, not claims that each is an
+established open problem in the published literature. Their exact status
+would require a focused literature review before being advertised that way.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{Q\arabic*.},itemsep=6pt]
+\item \textbf{The lattice-to-integral transition of the least remainder.}
+Theorem~\ref{thm:resonance} disproves an $x^{-1/2}$ prefactor uniform in all
+$h$. Determine a full transition formula when $h\sqrt{\amin x}$ is bounded,
+including the fractional position of the saddle $2\pi/h$ relative to the
+integer lattice. A Gaussian lattice sum suggests theta-function factors,
+but a uniform theorem must control both the tails and the next partial-fraction
+poles. This would interpolate between \eqref{eq:sharp} and the discrete
+resonance law rather than incorrectly extrapolating either one.
+
+\item \textbf{A uniform first hyperasymptotic correction.}
+Resolve the $\ell=1$, smallest-parameter contribution of
+\eqref{eq:Rexact} explicitly, including its dependence on $h$, and then bound
+the remainder after subtracting it. The next relevant scales may come from
+$2\amin$, the second-smallest ray parameter, and off-axis Borel poles.
+A proof should distinguish those mechanisms instead of taking the minimum
+of a guessed list of exponents.
+
+\item \textbf{Growing or degenerating rays.}
+The theorem fixes $r$ and the positive $a_j$. Determine useful uniform
+statements when $r\to\infty$, when $a_*\to0$, or when several parameters
+coalesce at an $x$-dependent rate. The explicit sums in $E_K$ expose the
+possible loss of constants, but do not by themselves provide an optimal
+joint scaling theorem.
+
+\item \textbf{Positive signed product ratios beyond multinomials.}
+For a general finite signed exponential weight
+$W(s)=\sum_\nu c_\nu\e^{-\lambda_\nu s}$, characterize tractable sufficient
+conditions for $W\ge0$ and $-W'\ge0$. Such conditions would transfer the
+present remainder and conditioning arguments to wider balanced
+$q$-gamma quotients. Necessity of these conditions for alternating remainder
+laws is a separate, more delicate question.
+
+\item \textbf{Complex sectors and pole pinching.}
+Develop uniform lateral Laplace estimates when $\tau$ approaches zero through
+complex directions. The real theorem exploits positivity; it does not cover
+contours pinched by moving poles. The meromorphic limit in
+Theorem~\ref{thm:nearest} supplies explicit local data for this analysis.
+
+\item \textbf{Complete collision and Stokes-factor classification.}
+For commensurable ray parameters, classify all cancellations among the poles
+in \eqref{eq:scaled-poles}, including residues at nonzero real translates.
+Then prove global Stokes formulas with specified contours and convergence
+regions. The nearest pole cannot cancel, but later singularities can.
+
+\item \textbf{Uniform explicit inverse expansions.}
+Turn \eqref{eq:inverse-formal} into a single coefficient calculus with
+explicit derivative bounds uniform in $h\ge0$. The present article certifies
+finite inverse candidates; it does not prove a complete resurgent expansion
+of the inverse across every endpoint and complex sector.
+
+\item \textbf{Validated fast computation.}
+Implement the phase and coefficient evaluation with directed rounding,
+adaptive precision and cancellation-aware formulas. Compare direct products,
+$q$-gamma evaluation, normalized asymptotics and hyperasymptotics. The goal
+is a fully verified enclosure routine, not merely more digits from an
+unvalidated evaluator.
+
+\item \textbf{Summed $q$-multinomials and theta transitions.}
+Extend the approach from one multinomial ray to the generalized Galois
+numbers and root-lattice theta sectors treated elsewhere in the companion.
+Summing over a moving lattice introduces a width transition absent from the
+fixed-ray problem. It should not be assumed that the same smallest-parameter
+law survives unchanged.
+
+\item \textbf{A formal optimal-truncation certificate.}
+Formalize the complete chain from the signed kernel through the explicit
+Bernoulli bound and nearest-odd rule to the inverse enclosure. The sharp
+endpoint equivalent can be a second-stage target. This would convert the
+repository's supporting least-term results into an assembled theorem for a
+nontrivial analytic family.
+\end{enumerate}
+
+\section{Conclusion}
+
+The explicit repository gap at $hx=0$ can be closed without a new abstract
+transseries field. The decisive step is an exact signed kernel identity that
+survives the multinomial combination. Normalizing in powers of $1/x$ removes
+the artificial endpoint singularities from the coefficient functions and
+produces an error bound uniform for every $h\ge0$.
+
+The Borel analysis explains the resulting exponential scale. The nearest
+singularities are fixed at $\pm2\pi i a_*$ in the normalized Borel plane;
+the gamma endpoint retains them and gives the sharp least-term equivalent.
+The peak-sensitive moment bound removes the polynomial loss uniformly, while
+fixed lattice resonances prove that a vanishing uniform prefactor is
+impossible for the specified truncation rule. The modular Euler-product sectors are separate data and must remain in the
+forward model when exponentially small accuracy is requested. Finally, the
+uniform derivative comparison turns the forward expansion into a practical
+inverse certificate, including the classical endpoint and the fixed-$q$
+regime.
+
+These results are a concrete extension of the repository's transseries
+program. They do not settle general resurgence or global inversion questions,
+and their worldwide novelty is not certified. The strongest claims made here
+are the precisely stated theorems with the proofs above.
+
+\appendix
+\section{A compact theorem and dependency ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.22\textwidth}>{\raggedright\arraybackslash}p{.42\textwidth}>{\raggedright\arraybackslash}p{.28\textwidth}@{}}
+\toprule
+Result & Content & Main inputs\\\midrule
+\endfirsthead
+\toprule Result & Content & Main inputs\\\midrule\endhead
+Theorem~\ref{thm:uniform} & All-$h$ signed expansion, explicit remainder and derivative bounds & Bose partial fractions, positive weight, moment lemma, eta identity, Binet endpoint\\[4pt]
+Theorem~\ref{thm:borel} & Exact single-tail Borel transform and Laplace sum & Geometric series, cosine transform, normally convergent meromorphic sums\\[4pt]
+Theorem~\ref{thm:nearest} & Universal nearest poles and endpoint kernel & Explicit Borel formula, residue addition, dominated convergence\\[4pt]
+Theorem~\ref{thm:exponential} & Explicit uniform least-term envelope & Bernoulli--zeta identity and real Stirling bound\\[4pt]
+Theorem~\ref{thm:constant-envelope} & Uniform $O(\e^{-2\pi a_*x})$ error & Peak-sensitive lattice moment\\[4pt]
+Theorem~\ref{thm:resonance} & Sharp fixed-$h$ resonances and the obstruction to a vanishing uniform prefactor & Discrete positive remainder, saddle separation\\[4pt]
+Theorem~\ref{thm:sharp} & Sharp endpoint equivalent & Exact Binet remainder, gamma concentration, Stirling formula\\[4pt]
+Theorem~\ref{thm:slope} & $F_h'\ge F_0'\ge c_{\avec}$ & Decreasing Riemann sums, digamma and trigamma integrals\\[4pt]
+Theorem~\ref{thm:certificate} & One-sided inverse enclosures & Uniform forward error and exact slope bound\\
+\bottomrule
+\end{longtable}
+
+\section{Conventions and common failure modes}
+
+The expansion variable in Theorem~\ref{thm:uniform} is $1/x$; $hx$ is retained
+inside the coefficient functions. The Borel variable $\xi$ initially refers
+to $h$, whereas $\eta=\xi/\tau$ refers to $1/x$. Confusing these variables
+changes the apparent nearest action.
+
+The approximation $T_K$ contains $K$ Bernoulli terms, ending at $x^{-(2K-1)}$.
+The first omitted power is $N=2K+1$. Choosing $N\approx2\pi a_*x$ is therefore
+consistent with $K\approx\pi a_*x$, not $K\approx2\pi a_*x$.
+
+The signs are also worth recording. $R_K$ has sign $(-1)^{K+1}$, so odd
+truncations lie below the exact forward function and yield upper inverse
+approximations. Even truncations lie above it and yield lower inverse
+approximations whenever the relevant truncated root is used. The derivative
+of $R_K$ has the opposite sign.
+
+The interpolation is fixed by \eqref{eq:exact-F}; a different real
+interpolation of the same sequence can have a different inverse between
+integer points. All staircase conclusions must use that convention or an
+explicit comparison theorem.
+
+Finally, a list of high-precision decimal values is not an interval proof.
+A computationally certified inverse needs both the analytic truncation
+bound and validated evaluation of the finite expression and its residual.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+\bibitem{repo-companion}
+Vladimir Reshetnikov, \emph{ProveIt repository: Combinatorial Transseries and
+Their Inverses}, source
+\texttt{Combinatorial\_Transseries\_Inverses.tex}, inspected at commit
+\texttt{04e06e032dff1966513bfba316966d52db3646b4}, 29 September 2026.
+Full repository path and inspected labels are recorded in
+\texttt{source\_provenance.md}. Repository:
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-readme}
+Vladimir Reshetnikov, \emph{ProveIt repository: Series and transseries},
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/}
+\path{drafts/series-and-transseries/README.md}, inspected 29 September 2026,
+source blob \texttt{516aaa30e84cb0036a00f803cb6e8e3026febb8e}.
+
+\bibitem{costin-garoufalidis}
+Ovidiu Costin and Stavros Garoufalidis,
+\emph{Resurgence of the Euler--MacLaurin summation formula},
+arXiv:math/0703641, version 2 (2007).
+\url{https://arxiv.org/abs/math/0703641}.
+
+\bibitem{garoufalidis-kashaev}
+Stavros Garoufalidis and Rinat Kashaev,
+\emph{Resurgence of Faddeev's quantum dilogarithm},
+arXiv:2008.12465 (2020).
+\url{https://arxiv.org/abs/2008.12465}.
+
+\bibitem{dlmf-hyperbolic}
+NIST Digital Library of Mathematical Functions,
+\S4.36, \emph{Infinite Products and Partial Fractions}.
+\url{https://dlmf.nist.gov/4.36}.
+
+\bibitem{dlmf-eta}
+NIST Digital Library of Mathematical Functions,
+\S23.18, \emph{Modular Transformations}.
+\url{https://dlmf.nist.gov/23.18}.
+
+\bibitem{dlmf-gamma-int}
+NIST Digital Library of Mathematical Functions,
+\S5.9, \emph{Integral Representations}.
+\url{https://dlmf.nist.gov/5.9}.
+
+\bibitem{dlmf-gamma-asymp}
+NIST Digital Library of Mathematical Functions,
+\S5.11, \emph{Asymptotic Expansions}.
+\url{https://dlmf.nist.gov/5.11}.
+\end{thebibliography}
+\end{document}

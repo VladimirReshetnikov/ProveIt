@@ -1,0 +1,20 @@
+Verification report
+Exact symbolic checks plus non-interval numerical regression tests.
+Python 3.13.5; SymPy 1.14.0; mpmath 1.3.0
+
+PASS: mixed 1/2, 2/3, logarithmic Hahn Lagrange formula modulo t^4
+PASS: three Newton steps agree with Lagrange; denominator remains 6
+PASS: exact pole order, pole coefficient, and Cayley leading term for n=1..6
+PASS: implicit equation delta+log(1+delta/w)+w*z*exp(-delta)=0 through z^6
+PASS: 100-digit numerical tests at w=4,5,8,12 and N=1..6 satisfy the proved bound
+
+Coefficients for X+log(X)+exp(-X):
+b_1(w) = -w**2/(w + 1)
+b_2(w) = -w**3*(2*w**2 + 2*w - 1)/(2*(w + 1)**3)
+b_3(w) = -w**4*(9*w**4 + 18*w**3 - 11*w + 1)/(6*(w + 1)**5)
+b_4(w) = -w**5*(64*w**6 + 192*w**5 + 96*w**4 - 160*w**3 - 106*w**2 + 36*w - 1)/(24*(w + 1)**7)
+b_5(w) = -w**6*(625*w**8 + 2500*w**7 + 2500*w**6 - 1750*w**5 - 3650*w**4 - 374*w**3 + 908*w**2 - 97*w + 1)/(120*(w + 1)**9)
+b_6(w) = -w**7*(7776*w**10 + 38880*w**9 + 58320*w**8 - 8640*w**7 - 92880*w**6 - 52488*w**5 + 26724*w**4 + 17760*w**3 - 5134*w**2 + 238*w - 1)/(720*(w + 1)**11)
+
+These finite checks do not replace the proofs in the article.
+No Lean, Coq, or other proof-assistant verification is claimed.

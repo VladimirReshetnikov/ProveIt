@@ -1,0 +1,1495 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem,fancyhdr,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Uniform Gaussian-binomial crossover}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Borel}{\mathcal B}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\Jcal}{\mathcal J}
+\newcommand{\Dcal}{\mathcal D}
+\newcommand{\Pcal}{\mathcal P}
+\DeclareMathOperator{\csch}{csch}
+\title{\textbf{Uniform Resurgent Crossover for\\Gaussian Binomial Coefficients}\\[5pt]
+\large Exact remainders, a sharp modular-visibility threshold,\\and certified inversion}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The transseries companion in the ProveIt repository develops the singular
+$q\to1$ crossover of central Gaussian coefficients, but explicitly leaves
+uniform matching at the classical endpoint and the finite-size tail's
+beyond-all-orders accuracy untreated. We address these questions for the
+specified analytic interpolation, rather than for arbitrary interpolations
+of the same sequence. A positive double-kernel representation supplies an
+exact signed remainder after every Bernoulli truncation. It yields an
+all-order expansion uniform for $x\to\infty$ and $0\le hx\le T$, including the
+ordinary central-binomial endpoint. We compute the meromorphic Borel
+transform, its parity cancellations, and its imaginary-axis residue jump.
+The principal quantitative result is the uniform sharp estimate
+\[
+ \min_{K\ge0}r_K(\tau/x,\tau)
+ =\frac{\e^{-2\pi x}}{\pi\sqrt{x}}\bigl(1+O_T(x^{-1})\bigr),
+ \qquad 0\le\tau\le T,
+\]
+with every minimizing index $K=\pi x+O_T(1)$. Comparison with the exact
+modular correction $\Ecal(h)\sim\e^{-4\pi^2/h}$ gives a transition at
+$\tau=hx=2\pi$, and a resolved boundary layer
+$\tau=2\pi-(\log x)/(2x)+s/x$ in which the error-to-signal ratio tends to
+$\e^{-s}/\pi$. This is a truncation-accuracy transition, not a Stokes
+transition. Finally, a uniform slope bound transfers residual certificates
+to inverse errors, and inversion about the exact Borel-summed carrier gives
+a convergent modular series with finite divisor-sum coefficients. Full
+proofs, reproducible numerical checks, a source audit, and further research
+questions are included. General $q$-Pochhammer resurgence is established
+prior work; the contribution claimed here is the explicit uniform,
+sharp-remainder, and inversion package, not priority for that general theory.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Status.} Conventional mathematical proofs and exact symbolic
+checks; no Lean verification or peer review is claimed. Novelty relative to
+the inspected repository chapter is identified below. Literature-wide
+priority has not been established.
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{Problem, source boundary, and principal contributions}
+\label{sec:context}
+
+\subsection{The precise repository question}
+The repository snapshot used here is commit
+\texttt{04e06e032dff1966513bfba316966d52db3646b4} of ProveIt. The directly
+relevant source is the chapter \emph{The singular transition $q\to1$} in
+\emph{Combinatorial Transseries and Their Inverses}; see
+\cite{repo,reporeadme}. Its finite-order tail proposition
+\texttt{t3:prop:double-A} is uniform only for $\tau\ge\tau_0>0$.
+The discussion following \texttt{t3:eq:Ssmall} explicitly says that uniform
+matching at $\tau=0$ requires another error analysis. The discussion of
+\texttt{t3:eq:modularsectors} and
+\texttt{t3:eq:central-double-asympt} separates an exact modular product from
+an algebraic remainder and does not claim to have resolved the finite-size
+tail's entire beyond-all-orders contribution. Those are the two scoped
+questions developed in this paper.
+
+We inspected the companion's relevant source ranges, approximately
+lines 4090--4250, and the two group READMEs. The much larger canonical
+\emph{Transseries and Inversion} source could not be retrieved through the
+available file endpoint. Its README and the group concordance were read,
+but no exhaustive nonduplication audit of that entire volume is claimed.
+The repository itself carefully distinguishes human mathematical statements
+from its narrower Lean crosswalk; this manuscript preserves that distinction.
+
+The crossover already has the correct dilogarithmic leading phase, a
+positive phase derivative, formal higher inverse coefficients, and an exact
+eta-modular factor in the companion. These are starting points, not results
+claimed as discoveries here. The questions are quantitative: can one cross
+the singular endpoint uniformly, what is the \emph{smallest actual}
+truncation error, and when can the much smaller modular contribution be
+resolved by that representation?
+
+\subsection{What is proved, and what is not}
+Our main results are as follows; all refer to the explicitly defined
+interpolation in \cref{sec:normalization}.
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item \Cref{thm:remainder,thm:uniform} give an exact positive remainder and
+an all-order expansion uniform on the closed crossover range $0\le hx\le T$.
+\item \Cref{thm:borel,prop:scaledborel} give the explicit Borel pole divisor,
+its central parity cancellation, and its classical endpoint limit.
+\item \Cref{thm:optimal,thm:visibility} determine the optimal error including
+its leading constant and the logarithmically shifted modular-visibility
+boundary layer. The lower bound concerns all ordinary truncations, not only
+a suggested least-term index.
+\item \Cref{thm:slope,thm:inverse} provide real residual certificates and a
+convergent modular inverse series about the exact, nonmodular carrier.
+\end{enumerate}
+The proofs do not establish resurgence of every inverse formal series,
+a general Hahn-field construction, or a solution of the wider median-sum
+conjectures in the literature. Nor does a lower bound for ordinary
+truncations prohibit a more accurate integral, hyperasymptotic, or exact
+product algorithm. An exact positive remainder is itself a way around the
+truncation limitation.
+
+\subsection{Relation to established literature}
+Costin and Garoufalidis developed resurgence for Euler--Maclaurin
+summation \cite{costingaroufalidis}. Garoufalidis and Kashaev give an explicit
+meromorphic Borel transform, poles, residues, and Stokes behavior for
+Faddeev's quantum dilogarithm \cite{garoufalidiskashaev}. Fantini and Rella
+study $q$-Pochhammer summability, quantum modularity, and character-weighted
+modular resurgent series; the version reviewed here is dated 1 April 2026
+\cite{fantinirella}. Thus neither the use of Borel transforms for
+$q$-products nor the existence of their pole lattices is new in itself.
+
+The elementary derivation below is included to fix all signs and
+normalizations and to make the central quotient's cancellations available
+for the uniform remainder theorem. The narrow contribution advanced for
+further expert checking is the assembled theorem with a uniform endpoint,
+the sharp $1/(\pi\sqrt{x})$ error constant, its precision boundary layer,
+and the explicitly certified inverse construction. The source comparison
+identifies a genuine extension of the inspected chapter; it is not a claim
+that no equivalent theorem exists elsewhere.
+
+\section{Normalization and the two small scales}
+\label{sec:normalization}
+For $h>0$ put $Q=\e^{-h}$ and define
+\begin{equation}
+ (a;Q)_\infty=\prod_{j=0}^{\infty}(1-aQ^j),\qquad
+ P(Q)=(Q;Q)_\infty.
+ \label{eq:poch}
+\end{equation}
+Our real interpolation, for $x>0$, is
+\begin{equation}
+ H_h(x)=\e^{hx^2}
+ \frac{(Q^{x+1};Q)_\infty^2}
+ {P(Q)(Q^{2x+1};Q)_\infty},\qquad F_h(x)=\log H_h(x).
+ \label{eq:H}
+\end{equation}
+For integer $n\ge0$, it is exactly the central Gaussian coefficient
+$\bigl[\begin{smallmatrix}2n\\n\end{smallmatrix}\bigr]_{q}$ with $q=\e^h$:
+the usual $q\leftrightarrow q^{-1}$ factor is $q^{n^2}$. All logarithms in
+real-variable formulas are real logarithms of positive quantities.
+
+The standard $q$-gamma definition gives
+\begin{equation}
+ H_h(x)=\e^{hx^2}\frac{\Gamma_Q(2x+1)}{\Gamma_Q(x+1)^2},
+ \qquad
+ H_0(x):=\frac{\Gamma(2x+1)}{\Gamma(x+1)^2}.
+ \label{eq:qgamma}
+\end{equation}
+The fixed-$x$ limit as $h\downarrow0$ is $H_0(x)$, by the $q$-gamma limit
+\cite{dlmfqgamma}. The parameter $q$ here is continuous; the limit $q\to1$
+is not a limit through orders of finite fields.
+
+Write $\tau=hx$. The tail and modular correction are
+\begin{align}
+ A(h,\tau)&=\sum_{m\ge1}\frac{\e^{-m\tau}}{m(\e^{hm}-1)}
+          =-\log(Q\e^{-\tau};Q)_\infty,\label{eq:A}\\
+ z(h)&=\e^{-4\pi^2/h},\qquad
+ \Ecal(h)=-\log P(z(h))
+   =\sum_{j\ge1}\sigma_{-1}(j)z(h)^j,\label{eq:modular}\\
+ \sigma_{-1}(j)&=\sum_{d\mid j}\frac1d.\notag
+\end{align}
+We set $\Ecal(0)=0$. Absolute convergence proves the divisor sum by
+expanding $-\log(1-z^m)$ and grouping the product of the two indices.
+The eta transformation \cite{dlmfeta} yields
+\begin{equation}
+ P(\e^{-h})=\sqrt{\frac{2\pi}{h}}
+ \exp\!\left(-\frac{\pi^2}{6h}+\frac h{24}\right)P(z(h)).
+ \label{eq:eta}
+\end{equation}
+Consequently, exactly,
+\begin{equation}
+ F_h(x)=\frac{\tau^2+\pi^2/6}{h}
+ -\frac12\log\frac{2\pi}{h}-\frac h{24}
+ +A(h,2\tau)-2A(h,\tau)+\Ecal(h).
+ \label{eq:exactforward}
+\end{equation}
+
+The repository's phase and amplitude are
+\begin{align}
+ S(\tau)&=\tau^2+\frac{\pi^2}{6}
+          +\Li_2(\e^{-2\tau})-2\Li_2(\e^{-\tau}),\label{eq:S}\\
+ J(\tau)&=\frac12\log(1-\e^{-2\tau})-\log(1-\e^{-\tau})
+          =\frac12\log\coth(\tau/2).\label{eq:J}
+\end{align}
+Differentiating the dilogarithms gives
+\begin{equation}
+ S'(\tau)=2\log(1+\e^\tau),\qquad
+ S''(\tau)=\frac{2\e^\tau}{1+\e^\tau},\qquad S(0)=0.
+ \label{eq:Sder}
+\end{equation}
+The phase $S$ is strictly increasing. The two potentially competing
+exponentials in the crossover are $\e^{-2\pi x}$ and
+$\e^{-4\pi^2/h}$. The former will arise as a \emph{minimal remainder size};
+the latter is an actual, separately specified term in an exact identity.
+These interpretations must not be interchanged.
+
+\section{An exact positive remainder}
+\label{sec:remainder}
+
+\subsection{From a partial fraction identity to a signed error}
+The standard partial fractions for $\coth$ \cite{dlmfcoth} give, for $v>0$,
+\begin{equation}
+ \frac1{\e^v-1}=\frac1v-\frac12
+       +2v\sum_{n\ge1}\frac1{(2\pi n)^2+v^2}.
+ \label{eq:coth}
+\end{equation}
+The positive summands permit Tonelli's theorem in \eqref{eq:A}. Thus
+\begin{equation}
+ A(h,\tau)=\frac{\Li_2(\e^{-\tau})}{h}
+ +\frac12\log(1-\e^{-\tau})
+ +2h\sum_{m,n\ge1}\frac{\e^{-m\tau}}{(2\pi n)^2+(mh)^2}.
+ \label{eq:Akernel}
+\end{equation}
+Define
+\begin{align}
+ w_m(\tau)&=2\e^{-m\tau}-\e^{-2m\tau}>0,\label{eq:weights}\\
+ R(h,\tau)&=2h\sum_{m,n\ge1}
+        \frac{w_m(\tau)}{(2\pi n)^2+(mh)^2},\label{eq:R}\\
+ a_k(\tau)&=\frac{|B_{2k}|}{(2k)!}
+  \left(2\Li_{2-2k}(\e^{-\tau})-\Li_{2-2k}(\e^{-2\tau})\right)>0.
+ \label{eq:ak}
+\end{align}
+Here $v/(\e^v-1)=\sum_{j\ge0}B_jv^j/j!$ fixes the Bernoulli convention.
+The elementary equality
+$|B_{2k}|/(2k)!=2\zeta(2k)/(2\pi)^{2k}$ can also be obtained by comparing
+Taylor coefficients in \eqref{eq:coth}.
+
+\begin{theorem}[Exact signed remainder and enveloping bounds]
+\label{thm:remainder}
+For every $h,\tau>0$ and integer $K\ge0$, put
+\begin{equation}
+ r_K(h,\tau)=2h^{2K+1}\sum_{m,n\ge1}
+ \frac{w_m(\tau)m^{2K}}
+ {(2\pi n)^{2K}\bigl((2\pi n)^2+(mh)^2\bigr)}.
+ \label{eq:rK}
+\end{equation}
+Then
+\begin{align}
+ R(h,\tau)&=\sum_{k=1}^K(-1)^{k-1}a_k(\tau)h^{2k-1}
+                      +(-1)^K r_K(h,\tau),\label{eq:exactR}\\
+ 0&<r_K(h,\tau)<a_{K+1}(\tau)h^{2K+1}.\label{eq:nextterm}
+\end{align}
+In particular, adjacent partial sums bracket $R$. The exact forward
+identity is
+\begin{align}
+ F_h(x)={}&\frac{S(\tau)}h-\frac12\log\frac{2\pi}{h}
+ +J(\tau)-\frac h{24}\notag\\
+ &+\sum_{k=1}^K(-1)^ka_k(\tau)h^{2k-1}
+ +\Ecal(h)+(-1)^{K+1}r_K(h,\tau).
+ \label{eq:forwardK}
+\end{align}
+\end{theorem}
+\begin{proof}
+For $a,b>0$, finite geometric division gives
+\[
+ \frac1{a^2+b^2}
+ =\sum_{j=0}^{K-1}\frac{(-1)^jb^{2j}}{a^{2j+2}}
+  +\frac{(-1)^Kb^{2K}}{a^{2K}(a^2+b^2)}.
+\]
+Apply this with $a=2\pi n$, $b=mh$, and multiply by $2h w_m$.
+Each coefficient sum is absolutely convergent: its $m$-part is an
+exponentially weighted polynomial, and its $n$-part is a zeta value of
+order at least two. Summing gives \eqref{eq:exactR} and \eqref{eq:rK}.
+Replacing the final denominator $a^2+b^2$ by $a^2$ proves the strict
+upper bound \eqref{eq:nextterm}. Positivity is immediate. Substituting
+\eqref{eq:Akernel} into \eqref{eq:exactforward} proves
+\eqref{eq:forwardK} with the displayed sign.
+\end{proof}
+
+\subsection{Why this is stronger than a formal Bernoulli expansion}
+A finite-order $O(h^{2K+1})$ estimate does not identify the sign, is not
+necessarily uniform as $\tau\downarrow0$, and cannot justify choosing
+$K$ of order $1/h$. In contrast, \eqref{eq:rK} is an exact identity for
+\emph{every} $K$, with no restriction relating $K,h,\tau$. We may therefore
+study the simultaneous limit $K\asymp x$ directly rather than substitute a
+moving $K$ into a theorem proved only for fixed $K$.
+
+There is an additional structural advantage. As a function of $z=h^2$,
+$R(h,\tau)/h$ is a positive Stieltjes-type sum of kernels
+$1/(a+bz)$. The resulting remainder sequence is a moment sequence.
+
+\begin{lemma}[Strict log-convexity in the truncation index]
+\label[lemma]{lem:logconvex}
+For fixed $h,\tau>0$,
+\begin{equation}
+ r_K^2<r_{K-1}r_{K+1}\quad(K\ge1).
+ \label{eq:logconvex}
+\end{equation}
+The quotients $r_{K+1}/r_K$ are strictly increasing, and $r_K\to\infty$
+as $K\to\infty$. In particular, a minimum over $K\ge0$ exists, with at
+most two adjacent minimizing indices.
+\end{lemma}
+\begin{proof}
+Let
+\[
+ \nu_{m,n}=\frac{2h w_m}{(2\pi n)^2+(mh)^2},\qquad
+ t_{m,n}=\left(\frac{mh}{2\pi n}\right)^2.
+\]
+Equation \eqref{eq:rK} says $r_K=\sum\nu_{m,n}t_{m,n}^K$.
+Cauchy--Schwarz applied to the two powers $K-1$ and $K+1$ gives
+\eqref{eq:logconvex}; equality would force all $t_{m,n}$ with positive
+weight to coincide, which they do not. A single summand with $t_{m,n}>1$
+proves divergence. Increasing successive quotients prove the final claim.
+\end{proof}
+
+\section{Uniform closure of the classical endpoint}
+\label{sec:uniform}
+Define the normalized coefficient functions
+\begin{align}
+ \Acal(\tau)&=\frac{S(\tau)}\tau, &\Acal(0)&=2\log2,\label{eq:Ac}\\
+ \Jcal(\tau)&=\frac12\log\!\left(\frac\tau2\coth\frac\tau2\right),
+ &\Jcal(0)&=0,\label{eq:Jc}\\
+ D_k(\tau)&=\frac{B_{2k}\tau^{2k-1}}{(2k)!}
+ \left(\Li_{2-2k}(\e^{-2\tau})-2\Li_{2-2k}(\e^{-\tau})\right)
+ -\boldsymbol1_{k=1}\frac\tau{24}.
+ \label{eq:Dk}
+\end{align}
+The factor $-\tau/24$ must be kept in $D_1$; it comes from eta modularity,
+not from the finite-size kernel.
+
+\begin{theorem}[All orders uniformly through $\tau=0$]
+\label{thm:uniform}
+The functions in \eqref{eq:Ac}--\eqref{eq:Dk} extend real-analytically to
+$\tau=0$. For $k\ge1$,
+\begin{equation}
+ D_k(0)=\frac{B_{2k}}{2k(2k-1)}(2^{1-2k}-2).
+ \label{eq:Dzero}
+\end{equation}
+For every fixed $T>0$ and integer $K\ge0$, uniformly for $0\le\tau\le T$
+as $x\to\infty$,
+\begin{align}
+ F_{\tau/x}(x)={}&x\Acal(\tau)-\frac12\log(\pi x)+\Jcal(\tau)
+ +\sum_{k=1}^K\frac{D_k(\tau)}{x^{2k-1}}
+ +\Ecal(\tau/x)+O_{T,K}(x^{-2K-1}).
+ \label{eq:uniform}
+\end{align}
+For $K=0$ the term $-\tau/(24x)$ may be absorbed in the stated remainder.
+For $K\ge1$ the remainder is exactly $(-1)^{K+1}r_K(\tau/x,\tau)$.
+The endpoint interpretation is $F_0(x)=\log H_0(x)$ and $\Ecal(0)=0$.
+\end{theorem}
+\begin{proof}
+The derivative \eqref{eq:Sder} is analytic at zero, and $S(0)=0$;
+therefore $S(\tau)/\tau$ has the asserted removable singularity.
+Also $(\tau/2)\coth(\tau/2)$ is a positive even analytic function with
+value one at zero, so \eqref{eq:Jc} is analytic there.
+
+For an integer $p\ge0$,
+\[
+ \Li_{-p}(\e^{-\tau})=
+ \left(-\frac{\mathrm d}{\mathrm d\tau}\right)^p\frac1{\e^\tau-1}.
+\]
+The Laurent expansion at zero has leading term $p!\tau^{-p-1}$;
+there are no other negative powers. Taking $p=2k-2$ in \eqref{eq:Dk}
+proves removability and \eqref{eq:Dzero}. The elementary simplification
+\[
+ D_1(\tau)=\frac\tau{24}\left(\coth\tau-2\coth\frac\tau2\right)
+\]
+also displays the cancellation of its apparent linear term.
+
+For $\tau>0$, rearranging \eqref{eq:forwardK} with $h=\tau/x$ gives
+\eqref{eq:uniform}. Define
+\[
+ b_{K+1}(\tau)=\tau^{2K+1}a_{K+1}(\tau).
+\]
+The same Laurent argument shows that $b_{K+1}$ has a finite continuous
+limit at zero. Thus $b_{K+1}$ is bounded on $[0,T]$, and
+\eqref{eq:nextterm} supplies the required uniform constant. For $K=0$,
+include the bounded term $\tau/(24x)$ separately. For fixed $x$, pass to
+$\tau=0$ using \eqref{eq:qgamma}; alternatively, the Riemann-sum limit
+below passes directly in the exact kernel identity.
+\end{proof}
+
+For example,
+\begin{align*}
+ \Acal(\tau)&=2\log2+\frac\tau2+\frac{\tau^2}{12}
+                          -\frac{\tau^4}{480}+O(\tau^6),\\
+ D_1(0)&=-\frac18, & D_2(0)&=\frac1{192}, &D_3(0)&=-\frac1{640},\\
+ D_4(0)&=\frac{17}{14336},&D_5(0)&=-\frac{31}{18432},
+ &D_6(0)&=\frac{691}{180224}.
+\end{align*}
+Hence the expansion reduces to the logarithmic central-binomial Stirling
+series at the endpoint, with the correct normalization
+$2x\log2-\tfrac12\log(\pi x)$.
+
+\begin{proposition}[Continuous exact endpoint remainder]
+\label[proposition]{prop:endrem}
+For $x>0$ and $p=2K$, set $L=2\pi x$. The continuous extension of
+$r_K(\tau/x,\tau)$ at $\tau=0$ is
+\begin{equation}
+ r_K^{(0)}(x)=\frac1{2\pi^2xL^p}
+ \sum_{n\ge1}\frac1{n^{p+2}}
+ \int_0^\infty
+ \frac{(2\e^{-u}-\e^{-2u})u^p}{1+(u/(nL))^2}\dd u.
+ \label{eq:endrem}
+\end{equation}
+It is strictly positive, satisfies the same first-omitted-term bound, and
+is strictly log-convex as a sequence in $K$.
+\end{proposition}
+\begin{proof}
+After the change $u=m\tau$, \eqref{eq:rK} is the corresponding Riemann sum
+with mesh $\tau$. The exponential decay gives an integrable dominating
+bound for each fixed $K,x$; the $n$-sum is dominated by $\sum n^{-p-2}$.
+This proves the limit. The inequalities pass to the integral (strictness
+also follows inside it). Rewriting the integrand as a positive measure
+against $(u/(nL))^{2K}$ proves strict log-convexity exactly as in
+\cref{lem:logconvex}.
+\end{proof}
+
+\begin{remark}[Scope of the endpoint assertion]
+The uniform estimate is a large-$x$ statement for the whole closed range
+$0\le hx\le T$. It does not require $hx$ to remain bounded away from zero,
+and it is not merely a fixed-$x$ continuity statement for $q$-gamma.
+Conversely, it does not assert uniformity as $T\to\infty$; the proof and
+optimal-truncation constants below allow dependence on $T$.
+\end{remark}
+
+\section{Borel geometry and the cancellation of even axial poles}
+\label{sec:borel}
+
+\subsection{Convention and an explicit meromorphic transform}
+For a formal series without constant term our convention is
+\begin{equation}
+ \Borel\!\left[\sum_{j\ge0}c_jh^{j+1}\right](\xi)
+ =\sum_{j\ge0}\frac{c_j\xi^j}{j!},\qquad
+ \mathcal L_0 b(h)=\int_0^\infty\e^{-\xi/h}b(\xi)\dd\xi.
+ \label{eq:borelconv}
+\end{equation}
+Thus there is no extra $1/h$ in the Laplace integral. The perturbative
+correction in \eqref{eq:forwardK}, apart from phase and amplitude, is
+\begin{equation}
+ \widetilde P(h,\tau)=-\frac h{24}
+             +\sum_{k\ge1}(-1)^ka_k(\tau)h^{2k-1}.
+ \label{eq:Pformal}
+\end{equation}
+The word perturbative here includes its full divergent Bernoulli series;
+it excludes the separately prescribed modular term $\Ecal(h)$.
+
+\begin{theorem}[Borel transform, pole divisor, and exact sum]
+\label{thm:borel}
+For fixed $\tau>0$, define
+\begin{equation}
+ \beta(\xi;\tau)=\frac1{4\pi^2}\sum_{n\ge1}\frac1{n^2}
+ \left\{\frac1{\e^{\tau+\ii\xi/(2\pi n)}-1}
+             +\frac1{\e^{\tau-\ii\xi/(2\pi n)}-1}\right\}.
+ \label{eq:beta}
+\end{equation}
+Then the Borel transform of \eqref{eq:Pformal} is the meromorphic function
+\begin{align}
+ B_\tau(\xi)&=-\frac1{24}+\beta(\xi;2\tau)-2\beta(\xi;\tau)\label{eq:Btau}\\
+ &=-\frac1{24}-\frac1{2\pi^2}\sum_{n\ge1}\frac1{n^2}
+ \left\{\frac1{\e^{\tau+\ii\xi/(2\pi n)}-\epsilon_n}
+             +\frac1{\e^{\tau-\ii\xi/(2\pi n)}-\epsilon_n}\right\},\notag\\
+ \epsilon_n&=\begin{cases}1,&n\text{ odd},\\-1,&n\text{ even}.
+                    \end{cases}\notag
+\end{align}
+All poles are simple. With $\ell\in\mathbb Z$, they are
+\begin{equation}
+ \begin{cases}
+ 4\pi^2 n\ell\ \pm 2\pi\ii n\tau,&n\text{ odd},\\
+ 2\pi^2 n(2\ell+1)\ \pm 2\pi\ii n\tau,&n\text{ even}.
+ \end{cases}
+ \label{eq:poles}
+\end{equation}
+At an upper-half-plane pole the residue is $\ii/(\pi n)$ for odd $n$
+and $-\ii/(\pi n)$ for even $n$; the lower residues have the opposite
+signs. In particular, the nearest poles are $\pm2\pi\ii\tau$ and every
+even-indexed pure imaginary candidate has cancelled.
+
+The series in \eqref{eq:Btau} converges normally away from its poles.
+There are no poles on the positive real axis, and for all $h>0$,
+\begin{equation}
+ \mathcal L_0 B_\tau(h)=-\frac h{24}-R(h,\tau).
+ \label{eq:exactborelsum}
+\end{equation}
+Consequently the phase, amplitude, and positive-direction Borel sum of the
+Bernoulli block reconstruct $F_h(x)-\Ecal(h)$ exactly.
+\end{theorem}
+\begin{proof}
+Expand the exponentials in \eqref{eq:beta} geometrically for real $\xi$.
+Their sum is
+\[2\sum_{m\ge1}\e^{-m\tau}\cos(m\xi/(2\pi n)).\]
+The identity
+\[
+ \int_0^\infty\e^{-\xi/h}\cos\!\left(\frac{m\xi}{2\pi n}\right)\dd\xi
+ =\frac{h}{1+(mh/(2\pi n))^2}
+\]
+shows that its Laplace transform is the last double sum in
+\eqref{eq:Akernel}. Interchanging sums and integral is legitimate because
+$\sum_n n^{-2}\sum_m\e^{-m\tau}<\infty$ and the Laplace weight is
+integrable. This proves \eqref{eq:exactborelsum}.
+
+The Taylor expansion of the cosine gives the Borel transform of the
+Bernoulli coefficients. Equivalently, comparison with
+\eqref{eq:coth} identifies those coefficients directly. The nearest
+poles give a positive Taylor radius, so these coefficient identifications
+are analytic identities near zero, not merely manipulations of a divergent
+Taylor series in $h$.
+
+To obtain the parity form, reindex the terms of $\beta(\xi;2\tau)$ by
+$n=2j$ and use
+\[
+ \frac1{\e^{2u}-1}
+ =\frac12\left(\frac1{\e^u-1}-\frac1{\e^u+1}\right).
+\]
+Its even-index Bose denominator cancels against $-2\beta(\xi;\tau)$,
+leaving the stated alternating denominator. Solving for its zeros gives
+\eqref{eq:poles}. At an upper odd pole the derivative of the denominator
+is $\ii/(2\pi n)$, and at an upper even pole it is
+$-\ii/(2\pi n)$; multiplication by $-1/(2\pi^2n^2)$ gives the residues.
+The two signs of the imaginary part do not overlap, and different positive
+$n$ have different imaginary parts. Thus no further pole collisions occur.
+
+On a compact set in the $\xi$-plane, the large-$n$ denominators tend
+uniformly to $\e^\tau-\epsilon_n$, both bounded away from zero. The factor
+$n^{-2}$ proves normal convergence. This also proves that the displayed
+pole list is complete.
+\end{proof}
+
+\subsection{A precisely oriented residue jump}
+Only odd $n$ contribute on the positive imaginary axis. Let two admissible
+Laplace contours pass on opposite sides of this ray. Fix their oriented
+difference to enclose its poles by \emph{positive} small circles, so that
+the residue theorem supplies $+2\pi\ii$ times each residue. In a common
+convergence sector put
+\[
+ \zeta=\exp(-2\pi\ii\tau/h),\qquad |\zeta|<1.
+\]
+Then the perturbative contour difference is
+\begin{equation}
+ \Delta P=2\pi\ii\sum_{\substack{n\ge1\\n\text{ odd}}}
+ \frac{\ii}{\pi n}\zeta^n
+ =-2\sum_{n\text{ odd}}\frac{\zeta^n}{n}
+ =\log\frac{1-\zeta}{1+\zeta}.
+ \label{eq:jump}
+\end{equation}
+The logarithm is the branch analytic at $\zeta=0$ with value zero there.
+One can first deform contours past finitely many poles and then pass to
+the absolutely convergent residue sum; reversing the orientation reverses
+the sign. The ray has a gap from the other rays in \eqref{eq:poles}, so
+no undisclosed poles enter this deformation.
+
+Equation \eqref{eq:jump} concerns the Borel sum of
+\eqref{eq:Pformal}. It is not a claim that the original product and its
+eta factor possess an unrestricted common analytic continuation across
+$\Re h=0$. Keeping this boundary avoids identifying a valid local
+residue calculation with a substantially stronger global continuation
+theorem.
+
+\subsection{The classical Borel transform emerges uniformly}
+Use the actual endpoint expansion variable $\varepsilon=1/x$, so
+$h=\tau\varepsilon$. Its Borel transform is
+\begin{equation}
+ \mathscr B_\tau(s)=\tau B_\tau(\tau s).
+ \label{eq:scaledB}
+\end{equation}
+
+\begin{proposition}[Scaled Borel endpoint]
+\label[proposition]{prop:scaledborel}
+As $\tau\downarrow0$, locally uniformly away from the indicated poles,
+\begin{equation}
+ \mathscr B_\tau(s)\longrightarrow
+ \mathscr B_0(s)=-4\sum_{\substack{n\ge1\\n\text{ odd}}}
+                       \frac1{s^2+(2\pi n)^2}.
+ \label{eq:Bzero}
+\end{equation}
+For every $T>0$ and $s\ge0$,
+\begin{equation}
+ |\mathscr B_\tau(s)|\le \frac T{24}+\frac16,
+ \qquad 0<\tau\le T.
+ \label{eq:Bbound}
+\end{equation}
+In particular, the positive-direction Laplace sums pass to the classical
+endpoint by dominated convergence. The nearest scaled poles are always
+$\pm2\pi\ii$, explaining the scale that appears in optimal truncation.
+\end{proposition}
+\begin{proof}
+For odd $n$, the two fractions multiplied by $\tau$ tend to
+$(1+\ii s/(2\pi n))^{-1}+(1-\ii s/(2\pi n))^{-1}$.
+For even $n$, both tend to zero. The odd expression, multiplied by
+$-1/(2\pi^2n^2)$, is exactly the summand in \eqref{eq:Bzero}.
+Uniform domination by $C n^{-2}$ on compact sets away from the limit
+poles proves local normal convergence. Poles with nonzero real part in
+\eqref{eq:poles}, after division by $\tau$, escape to infinity.
+
+For real $s$,
+$|\e^{\tau\pm\ii\tau s/(2\pi n)}-\epsilon_n|\ge\e^\tau-1$.
+Since $\tau/(\e^\tau-1)\le1$, summation yields
+$\tau/24+\zeta(2)/\pi^2\le T/24+1/6$. The Laplace weight
+$\e^{-xs}$ is integrable, which proves the final convergence statement.
+\end{proof}
+
+\begin{remark}[The missing flat term is not a summation ambiguity]
+The positive real Borel ray has no singularity and its sum is unambiguous.
+Nevertheless the exact normalized answer is that sum plus $\Ecal(h)$.
+The formal power series alone cannot determine an independently added
+flat function. Here the product normalization and eta identity determine
+it. This example is therefore a useful concrete distinction between
+uniqueness of a chosen Borel sum and uniqueness among all functions sharing
+the same Poincar\'e expansion.
+\end{remark}
+
+\section{Sharp optimal truncation, including the leading constant}
+\label{sec:optimal}
+The nearest Borel singularity suggests the exponential size, but does not
+by itself prove the actual minimum or its prefactor. We prove both from
+the positive remainder.
+
+\subsection{A uniform discrete saddle estimate}
+We use the notation
+\begin{equation}
+ p=2K,\qquad L=2\pi x,\qquad
+ g_{n,L}(u)=\frac1{1+(u/(nL))^2}.
+ \label{eq:pL}
+\end{equation}
+A direct rescaling of \eqref{eq:rK} gives
+\begin{equation}
+ r_K(\tau/x,\tau)=\frac1{2\pi^2xL^p}
+ \sum_{n\ge1}n^{-p-2}\,
+ \tau\sum_{m\ge1}
+ (2\e^{-m\tau}-\e^{-2m\tau})(m\tau)^p g_{n,L}(m\tau).
+ \label{eq:rescaledr}
+\end{equation}
+At $\tau=0$ the inner Riemann sum means its integral as in
+\eqref{eq:endrem}.
+
+\begin{lemma}[Uniform gamma-saddle approximation]
+\label[lemma]{lem:saddle}
+Fix $T>0$ and $0<c<C<\infty$. As $p\to\infty$, uniformly for
+$0\le\tau\le T$ and $c\le p/L\le C$,
+\begin{equation}
+ r_K(\tau/x,\tau)=
+ \frac{p!}{\pi^2xL^p\bigl(1+(p/L)^2\bigr)}
+ \left(1+O_{T,c,C}(p^{-1})\right).
+ \label{eq:saddle}
+\end{equation}
+\end{lemma}
+\begin{proof}
+We first justify a relative, not merely absolute, Riemann-sum estimate.
+For a twice differentiable, decaying function whose endpoint derivatives
+and endpoint values vanish, the first periodic-Bernoulli remainder in the
+trapezoidal formula gives
+\begin{equation}
+ \left|\tau\sum_{m\ge1}f(m\tau)-\int_0^\infty f(u)\dd u\right|
+ \le\frac{\tau^2}{12}\int_0^\infty|f''(u)|\dd u.
+ \label{eq:riemannbound}
+\end{equation}
+For completeness this follows by applying the finite-interval
+Euler--Maclaurin identity through the $B_2$ term, letting its upper endpoint
+go to infinity, and using $\sup_{0\le t\le1}|B_2(t)|=1/6$.
+Here $f(u)=f_0(u)g_{1,L}(u)$ and $f_0(u)=\e^{-u}u^p$, with $p>2$,
+so all the required endpoint terms vanish.
+
+Normalize $f_0$ by $p!$ and let $U$ have this gamma density. Since
+$f_0'/f_0=p/u-1$, the exact inverse moments of $U$ give
+\begin{align}
+ \int_0^\infty|f_0'(u)|\dd u&\le\frac{p!}{\sqrt{p-1}},\label{eq:fp}\\
+ \int_0^\infty|f_0''(u)|\dd u&\le\frac{2p!}{p-1}.
+ \label{eq:fpp}
+\end{align}
+Indeed, $\mathbb E(p/U-1)^2=1/(p-1)$ and
+$\mathbb E(p/U^2)=1/(p-1)$; Cauchy--Schwarz and the formula for
+$f_0''$ prove the bounds. The derivatives of $g_{1,L}$ satisfy
+$\|g'_{1,L}\|_\infty=O(L^{-1})$ and
+$\|g''_{1,L}\|_\infty=O(L^{-2})$. The product rule, with $L\asymp p$,
+therefore gives
+\begin{equation}
+ \int|f''|\le C_1\frac{p!}{p}.
+ \label{eq:fproduct}
+\end{equation}
+The integral $\int f=p!\,\mathbb E g_{1,L}(U)$ is bounded below by a
+positive constant times $p!$ when $p/L\in[c,C]$: for example, the event
+$U\le2(p+1)$ has probability at least $1/2$ by Markov's inequality,
+and $g_{1,L}$ has a uniform positive lower bound on that event.
+Equations \eqref{eq:riemannbound} and \eqref{eq:fproduct} prove a relative
+$O_T(p^{-1})$ error, also uniformly as $\tau\downarrow0$.
+
+The $n\ge2$ contribution in \eqref{eq:rescaledr} is
+$O(2^{-p})$ relative to the $n=1$ contribution: discard its kernel by
+$g_{n,L}\le1$, use the just-established upper moment bound, and sum
+$\sum_{n\ge2}n^{-p-2}=O(2^{-p})$. The negative exponential
+$\e^{-2u}$ contributes only $O_T(2^{-p})$ relatively. To see this without
+assuming a fixed mesh, put $v=2u$ and apply the same Riemann estimate at
+mesh $2\tau\le2T$; its unweighted integral is $p!/2^{p+1}$.
+Hence \eqref{eq:rescaledr} reduces to
+\begin{equation}
+ \frac1{\pi^2xL^p}\int_0^\infty
+       \frac{\e^{-u}u^p}{1+(u/L)^2}\dd u
+       \left(1+O_T(p^{-1})\right).
+ \label{eq:reducedsaddle}
+\end{equation}
+Finally, $\mathbb EU=p+1$ and $\operatorname{Var}U=p+1$.
+Taylor's theorem applied to $g_{1,L}$ about $p$ gives
+\[
+ \mathbb E g_{1,L}(U)
+ =g_{1,L}(p)+O(L^{-1})+O((p+2)L^{-2})
+ =\frac1{1+(p/L)^2}+O(p^{-1}).
+\]
+The leading value is bounded away from zero on $[c,C]$, so this is a
+relative estimate. Substitution into \eqref{eq:reducedsaddle} proves
+\eqref{eq:saddle}. The integral case $\tau=0$ is included throughout.
+\end{proof}
+
+\subsection{Locating the true minimum}
+\begin{theorem}[Uniform sharp minimum]
+\label{thm:optimal}
+For every $T>0$, uniformly for $0\le\tau\le T$ as $x\to\infty$,
+\begin{equation}
+ \boxed{\displaystyle
+ \min_{K\ge0}r_K(\tau/x,\tau)
+ =\frac{\e^{-2\pi x}}{\pi\sqrt{x}}
+       \left(1+O_T(x^{-1})\right).}
+ \label{eq:optimal}
+\end{equation}
+Every minimizing index satisfies
+\begin{equation}
+ K=\pi x+O_T(1).
+ \label{eq:optimalK}
+\end{equation}
+More generally, the asymptotic expression in \eqref{eq:optimal} holds
+for any integer $K=\pi x+O(1)$, uniformly when the implied displacement
+bound is fixed.
+\end{theorem}
+\begin{proof}
+Take the quotient of \eqref{eq:saddle} at $p+2$ and $p$. Uniformly when
+$p/L$ stays in a fixed compact subinterval of $(0,\infty)$,
+\begin{align}
+ \frac{r_{K+1}}{r_K}
+ &=\frac{(p+1)(p+2)}{L^2}
+   \frac{1+(p/L)^2}{1+((p+2)/L)^2}
+   \left(1+O_T(p^{-1})\right)\notag\\
+ &=\left(\frac pL\right)^2\left(1+O_T(L^{-1})\right)
+ \quad\text{when }p\asymp L.
+ \label{eq:quotient}
+\end{align}
+Choose a sufficiently large fixed $C_T$. At an even integer $p$ within
+two of $L-C_T$, the quotient is less than one; at an even integer within
+two of $L+C_T$, it is greater than one. This follows by expanding
+$(1\pm C_T/L)^2$, with $C_T$ larger than the uniform constant in the error
+term. Strict log-convexity from \cref{lem:logconvex,prop:endrem} then puts
+every global minimum between these two indices. This is the step that
+upgrades a local least-term heuristic to a statement about all $K\ge0$.
+
+For $p=L+O_T(1)$, Stirling's formula gives
+\begin{equation}
+ \frac{p!}{L^p}=\sqrt{2\pi L}\,\e^{-L}
+                 \left(1+O_T(L^{-1})\right).
+ \label{eq:stirlingsaddle}
+\end{equation}
+Also $1+(p/L)^2=2+O_T(L^{-1})$. Since
+$\sqrt{2\pi L}/(2\pi^2x)=1/(\pi\sqrt{x})$, substitution into
+\eqref{eq:saddle} proves \eqref{eq:optimal}. The same computation proves
+the assertion for any bounded displacement from $\pi x$.
+\end{proof}
+
+\begin{remark}[What fixes the universal constant]
+Three effects contribute. The $n=1$ partial-fraction kernel dominates;
+$2\e^{-u}$ dominates $2\e^{-u}-\e^{-2u}$ at the large-order saddle; and
+the kernel denominator is asymptotically $1+(p/L)^2=2$. Its factor $1/2$
+is essential. Replacing the exact remainder by the first omitted term
+would give a different prefactor and would not prove the sharp minimum.
+The finite mesh becomes invisible to relative order $O_T(1/x)$ because
+the gamma saddle has width of order $\sqrt{x}$ while $\tau\le T$.
+\end{remark}
+
+\section{A sharp modular-visibility boundary}
+\label{sec:visibility}
+
+\begin{lemma}[Elementary bounds for the modular series]
+\label[lemma]{lem:modbounds}
+For $0<z<1$, writing $\Ecal(z)=\sum_{j\ge1}\sigma_{-1}(j)z^j$,
+\begin{align}
+ z\le\Ecal(z)&\le\frac{z}{(1-z)^2},\label{eq:modbound}\\
+ 0\le\Ecal(z)-\sum_{j=1}^M\sigma_{-1}(j)z^j
+ &\le\frac{z^{M+1}((M+1)-Mz)}{(1-z)^2}.
+ \label{eq:modtail}
+\end{align}
+In particular $\Ecal(z)=z+O(z^2)$.
+\end{lemma}
+\begin{proof}
+The coefficient is positive, equals one at $j=1$, and satisfies
+$\sigma_{-1}(j)\le j$. Sum $\sum jz^j$ and its tail.
+\end{proof}
+The notation $\Ecal(z)$ in this lemma is its generating function; elsewhere
+$\Ecal(h)$ means its value at $z=\e^{-4\pi^2/h}$.
+
+\begin{theorem}[Visibility threshold and resolved boundary layer]
+\label{thm:visibility}
+Let $r_*(x,\tau)=\min_K r_K(\tau/x,\tau)$. For fixed $\tau>0$,
+\begin{equation}
+ \frac{r_*(x,\tau)}{\Ecal(\tau/x)}
+ =\frac1{\pi\sqrt{x}}
+  \exp\!\left[x\left(\frac{4\pi^2}{\tau}-2\pi\right)\right]
+  \left(1+O_\tau(x^{-1})\right).
+ \label{eq:ratio}
+\end{equation}
+Thus the ratio tends to infinity for $0<\tau<2\pi$, to zero for
+$\tau>2\pi$, and is asymptotic to $1/(\pi\sqrt{x})$ at $\tau=2\pi$.
+For fixed real $s$, define
+\begin{equation}
+ \tau_x(s)=2\pi-\frac{\log x}{2x}+\frac{s}{x}.
+ \label{eq:boundary}
+\end{equation}
+Then, uniformly for $s$ in compact subsets of $\R$,
+\begin{equation}
+ \boxed{\displaystyle
+ \frac{r_*(x,\tau_x(s))}{\Ecal(\tau_x(s)/x)}
+ \longrightarrow \frac{\e^{-s}}\pi.}
+ \label{eq:boundarylimit}
+\end{equation}
+The same limit holds with any $K=\pi x+O(1)$ in place of the minimizer.
+\end{theorem}
+\begin{proof}
+Combine \eqref{eq:optimal} with \eqref{eq:modbound}. In the boundary layer
+put $\delta=\tau_x-2\pi$. The exact expansion of the reciprocal gives
+\[
+ x\left(\frac{4\pi^2}{2\pi+\delta}-2\pi\right)
+ =-x\delta+O(x\delta^2)
+ =\frac12\log x-s+O\!\left(\frac{(\log x)^2}{x}\right).
+\]
+The error is uniform for bounded $s$. Substitution proves
+\eqref{eq:boundarylimit}; \cref{thm:optimal} supplies the last assertion.
+\end{proof}
+
+The equal-size boundary occurs, to this accuracy, at
+\begin{equation}
+ \tau=2\pi-\frac{\log x}{2x}-\frac{\log\pi}{x}+o(x^{-1}).
+ \label{eq:equalboundary}
+\end{equation}
+More generally, to make the best truncation residual a fraction $\eta>0$
+of the leading modular signal in the boundary scaling, the limiting
+condition is $s>-\log(\pi\eta)$. This is a quantitative precision budget,
+not merely a comparison of two exponentials with their polynomial
+prefactors discarded.
+
+\subsection{Interpretation and limitations}
+Suppose one approximates the nonmodular carrier by truncating its Bernoulli
+series, retaining phase and amplitude exactly. The smallest possible
+absolute forward error among such approximants is $r_*$. For
+$\tau<2\pi$ fixed, every such truncation has error much larger than the
+modular correction. Simply appending a modular term to an algebraically
+truncated expression therefore does not resolve that term in absolute
+accuracy. At and above the threshold, near-optimal truncation does resolve
+it asymptotically.
+
+This is not a positive-axis Stokes phenomenon: \cref{thm:borel} shows that
+there are no Borel poles on that axis. Nor is it a claim that a real
+exponential with action $2\pi$ must be inserted as an independent sector
+in the exact answer. It is the scale of the error left by optimal
+truncation of a Borel-summable block whose nearest poles are imaginary.
+Exact integration of that block, or direct evaluation of the positive
+remainder, can achieve accuracy below $r_*$. The theorem is sharp for its
+stated family of approximants, not for every conceivable algorithm.
+
+\section{Certified inversion and a convergent modular inverse series}
+\label{sec:inverse}
+All derivatives in this section are taken with $h$ \emph{fixed}. Although
+we use $\tau=hx$ to state uniform bounds, differentiating along the curve
+$h=\tau/x$ with $\tau$ fixed would be a different operation and would give
+the wrong inverse sensitivity.
+
+\subsection{A uniform lower bound for the exact slope}
+\begin{theorem}[Monotonicity and quantitative inverse sensitivity]
+\label{thm:slope}
+For $h>0$ and $x>0$, the derivative is
+\begin{equation}
+ F'_h(x)=2hx+2h\sum_{m\ge1}
+           \frac{\e^{-mhx}-\e^{-2mhx}}{\e^{hm}-1}>0.
+ \label{eq:slope}
+\end{equation}
+Writing $\tau=hx$,
+\begin{equation}
+ S'(\tau)-\frac{h}{2\sinh\tau}
+ \le F'_h(x)\le S'(\tau),
+ \qquad
+ F'_h(x)\ge S'(\tau)-\frac1{2x}.
+ \label{eq:slopebounds}
+\end{equation}
+For $x\ge1$ this gives the uniform positive constant
+\begin{equation}
+ F'_h(x)\ge d_0:=2\log2-\frac12>0.
+ \label{eq:d0}
+\end{equation}
+The bounds extend to $h=0$ by continuity. If $F_h(x)=L$ and
+$x,\widehat x\ge1$, then
+\begin{equation}
+ |x-\widehat x|\le\frac{|F_h(\widehat x)-L|}{d_0}.
+ \label{eq:certificate}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Differentiate the absolutely locally convergent series
+\eqref{eq:exactforward}. Each summand in \eqref{eq:slope} is positive.
+For $v>0$, \eqref{eq:coth} and $\e^v\ge1+v$ imply
+\[
+ \frac1v-\frac12\le\frac1{\e^v-1}\le\frac1v.
+\]
+The upper comparison in \eqref{eq:slope} sums to
+$2\tau+2\log(1+\e^{-\tau})=S'(\tau)$. The loss in the lower comparison is
+\[
+ h\sum_{m\ge1}(\e^{-m\tau}-\e^{-2m\tau})
+ =\frac{h}{2\sinh\tau}\le\frac1{2x}.
+\]
+This proves \eqref{eq:slopebounds} and \eqref{eq:d0}. For fixed $x$, the sum in \eqref{eq:slope} is a Riemann sum
+with mesh $h$ for the continuous, integrable function
+$(\e^{-xt}-\e^{-2xt})/(\e^t-1)$. Its limit is
+$2\int_0^\infty(\e^{-xt}-\e^{-2xt})/(\e^t-1)\dd t
+=2\psi(2x+1)-2\psi(x+1)=F_0'(x)$,
+which proves the endpoint derivative bound without differentiating a
+merely pointwise limit. Finally the mean value
+theorem on the interval between $x$ and $\widehat x$ proves
+\eqref{eq:certificate}.
+\end{proof}
+
+A certificate should also certify existence, not merely an error
+conditional on a root. Suppose a computable approximation $T_h(t)$ has
+known bounds $|F_h(t)-T_h(t)|\le\epsilon(t)$ at two points $1\le a<b$.
+If
+\begin{equation}
+ T_h(a)+\epsilon(a)\le L\le T_h(b)-\epsilon(b),
+ \label{eq:existbracket}
+\end{equation}
+continuity and strict monotonicity give one and only one root in $[a,b]$.
+At an interior trial point, \eqref{eq:certificate} then gives
+\[
+ |x-\widehat x|\le
+ \frac{|T_h(\widehat x)-L|+\epsilon(\widehat x)}{d_0}.
+\]
+The positive kernel and \eqref{eq:modtail} supply such $\epsilon$ without
+making an asymptotic remainder into an unsupported numerical assertion.
+
+\subsection{Inverting the exact nonmodular carrier}
+Define
+\begin{equation}
+ F_h^0(x)=F_h(x)-\Ecal(h),\qquad G_h^0=(F_h^0)^{-1}.
+ \label{eq:carrier}
+\end{equation}
+By \cref{thm:borel}, $F_h^0$ consists of the exact phase and amplitude and
+the Borel-summed Bernoulli block. It is not a finite truncation of that
+block. Since $\Ecal(h)$ is independent of $x$, both carriers have the
+same derivative. If $x_0=G_h^0(L)$, then the exact inverse relation is
+\begin{equation}
+ F_h^{-1}(L)=G_h^0(L-\Ecal(h)).
+ \label{eq:inverseexact}
+\end{equation}
+A shift in target therefore encodes every modular inverse sector.
+
+\begin{theorem}[Uniformly convergent modular inverse expansion]
+\label{thm:inverse}
+Fix $T>0$. Let $x_0\ge1$, $h>0$, $hx_0\le T$, and $L=F_h^0(x_0)$.
+Put
+\begin{equation}
+ M_T=2T+8,\quad
+ r=\min\left\{\frac14,\frac{d_0}{4M_T}\right\},\quad
+ \rho=\frac{d_0r}{2},\qquad
+ \Dcal_h=\frac1{F'_h(x)}\frac{\mathrm d}{\mathrm dx}.
+ \label{eq:radii}
+\end{equation}
+For $\Ecal(h)<\rho$,
+\begin{equation}
+ F_h^{-1}(L)=x_0+
+ \sum_{n\ge1}\frac{(-1)^n\Ecal(h)^n}{n!}
+ \left[\Dcal_h^{\,n-1}\frac1{F'_h(x)}\right]_{x=x_0}.
+ \label{eq:inverseE}
+\end{equation}
+The series converges absolutely, and its tail after $n=N$ is at most
+\begin{equation}
+ r\,\frac{(\Ecal(h)/\rho)^{N+1}}{1-\Ecal(h)/\rho}.
+ \label{eq:inverseEtail}
+\end{equation}
+It may also be collected into a convergent series in $z=\e^{-4\pi^2/h}$:
+\begin{equation}
+ F_h^{-1}(L)=x_0+\sum_{m\ge1}C_m(h,x_0)z^m,
+ \label{eq:inversez}
+\end{equation}
+where every coefficient is the finite expression
+\begin{align}
+ C_m(h,x_0)={}&\sum_{n=1}^m\frac{(-1)^n}{n!}
+ \left[\Dcal_h^{\,n-1}\frac1{F'_h(x)}\right]_{x=x_0}\notag\\
+ &\hspace{8mm}\times
+ \sum_{\substack{j_1+\cdots+j_n=m\\j_i\ge1}}
+        \prod_{i=1}^n\sigma_{-1}(j_i).
+ \label{eq:Cm}
+\end{align}
+If $0<r_z<1$ satisfies $r_z/(1-r_z)^2<\rho$, then for $z<r_z$ the tail
+of \eqref{eq:inversez} after degree $M$ is at most
+\begin{equation}
+ r\,\frac{(z/r_z)^{M+1}}{1-z/r_z}.
+ \label{eq:inverseztail}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The product logarithms, hence $F_h^0$, are holomorphic when $\Re x>0$;
+the series provides a single-valued branch there. For $|w|\le1/4$,
+$\Re(x_0+w)\ge3/4$. Differentiating \eqref{eq:slope} once and estimating the result gives
+\begin{align*}
+ |F_h''(x_0+w)|
+ &\le 2h+2h^2\sum_{m\ge1}
+     \frac{m(\e^{-mh a}+2\e^{-2mh a})}{\e^{hm}-1}\\
+ &\le2h+2h\left(\frac1{\e^{ha}-1}
+                    +\frac2{\e^{2ha}-1}\right)
+ \le2h+\frac4a\le M_T,
+\end{align*}
+where $a=\Re(x_0+w)$ and $h\le T$ follows from $x_0\ge1$.
+Consequently, on $|w|=r$,
+\[
+ |F_h^0(x_0+w)-L-F'_h(x_0)w|\le\tfrac12M_Tr^2.
+\]
+For $|s|<\rho$, the right side plus $|s|$ is strictly less than
+$d_0r\le|F'_h(x_0)w|$. Rouch\'e's theorem gives a unique root of
+$F_h^0(x_0+w)=L+s$ in $|w|<r$.
+Moreover $|F'_h(x_0+w)-F'_h(x_0)|\le M_Tr\le d_0/4$,
+so the derivative never vanishes there. The roots form one holomorphic
+inverse $G_h^0(L+s)$ on $|s|<\rho$, with
+$|G_h^0(L+s)-x_0|<r$.
+
+Cauchy's coefficient bound is therefore
+$|[s^n](G_h^0(L+s)-x_0)|\le r\rho^{-n}$.
+Repeated differentiation of an inverse gives
+\[
+ (G_h^0)^{(n)}(L)
+ =\left[\Dcal_h^{\,n-1}(1/F'_h)\right]_{x_0}\quad(n\ge1).
+\]
+Taylor expansion at $s=-\Ecal(h)$ proves \eqref{eq:inverseE}, and the
+geometric sum gives \eqref{eq:inverseEtail}.
+
+For the collection into $z$, temporarily regard $z$ as an independent
+complex variable, holding $h,x_0$ fixed in the carrier. By
+\cref{lem:modbounds}, $|\sum\sigma_{-1}(j)z^j|<\rho$ for $|z|\le r_z$.
+Absolute convergence of \eqref{eq:inverseE} and positivity of the
+coefficients of $\Ecal(z)$ justify collecting powers at every positive
+$z$ with $\Ecal(z)<\rho$. On the indicated disk, the analytic composition
+is bounded by $r$ relative to $x_0$, and its coefficients are exactly \eqref{eq:Cm} by the Cauchy product. A second
+Cauchy estimate gives \eqref{eq:inverseztail}. Evaluating the auxiliary
+variable at its physical value $z(h)$ completes the proof.
+\end{proof}
+
+The first two coefficients illustrate the separate sources of nonlinear
+mixing:
+\begin{align}
+ C_1&=-\frac1{F'_h(x_0)},\label{eq:C1}\\
+ C_2&=-\frac{3}{2F'_h(x_0)}
+      -\frac{F_h''(x_0)}{2(F'_h(x_0))^3}.
+ \label{eq:C2}
+\end{align}
+The $3/2$ is the divisor sum $\sigma_{-1}(2)$; the second term is inverse
+curvature. Suppressing either changes the second modular sector.
+
+Uniformly for $hx_0\le T$ as $x_0\to\infty$ and $h\downarrow0$,
+\begin{equation}
+ F_h^{-1}(L)-x_0
+ =-\frac{\e^{-4\pi^2/h}}{S'(hx_0)}
+ \left(1+O_T(x_0^{-1})+O_T(\e^{-4\pi^2/h})\right).
+ \label{eq:inverseleading}
+\end{equation}
+The shift is negative because adding a positive $x$-independent term to an
+increasing function lowers its inverse at a fixed target.
+
+\subsection{What the visibility theorem says for inverse accuracy}
+For a small forward residual $\delta$, the exact local inverse displacement
+obeys
+\begin{equation}
+ G_h^0(L+\delta)-x_0
+ =\frac{\delta}{F'_h(x_0)}+O_T(\delta^2).
+ \label{eq:residualtransport}
+\end{equation}
+In particular, compare the transported near-optimal residual of magnitude
+$r_K$ with the modular target shift $\Ecal(h)$, at the same center. Their
+inverse displacement ratio is
+\begin{equation}
+ \frac{|G_h^0(L\pm r_K)-x_0|}
+ {|G_h^0(L-\Ecal(h))-x_0|}
+ =\frac{r_K}{\Ecal(h)}\left(1+O_T(r_K+\Ecal(h))\right).
+ \label{eq:inverseratio}
+\end{equation}
+Thus \cref{thm:visibility} persists under this exact local transport.
+This does not assert an optimal-truncation theorem for a separately
+constructed formal inverse series. Such a theorem would need its own
+large-order analysis. The convergent series in \cref{thm:inverse} instead
+uses the \emph{exact} carrier and so has a different, explicitly controlled
+source of error.
+
+\section{Reproducible computations and an executable error budget}
+\label{sec:checks}
+
+\subsection{Cancellation-free evaluation of a tiny remainder}
+Subtracting a truncated series from a function can destroy all significant
+digits at optimal truncation. The positive representation avoids that
+problem. With $p=2K$, $s=p+2$, and
+\[
+ c=\frac{2h^{p+1}}{(2\pi)^{p+2}},\qquad
+ W_m=(2\e^{-m\tau}-\e^{-2m\tau})m^p,
+\]
+it reads
+\begin{equation}
+ r_K=c\sum_{m\ge1}W_m
+        \sum_{n\ge1}\frac{n^{-s}}{1+(mh/(2\pi n))^2}.
+ \label{eq:computesum}
+\end{equation}
+Let $R_{M,N}$ be the positive partial sum through $m=M$, $n=N$.
+If
+\[
+ \theta_M=\e^{-\tau}\left(\frac{M+2}{M+1}\right)^p<1,
+\]
+then the exact omitted-tail estimate is
+\begin{align}
+ 0\le r_K-R_{M,N}\le c\Bigg(&\zeta(s,N+1)\sum_{m=1}^M W_m\notag\\
+ &+\zeta(s)\frac{2\e^{-(M+1)\tau}(M+1)^p}{1-\theta_M}\Bigg).
+ \label{eq:computetail}
+\end{align}
+Here $\zeta(s,N+1)=\sum_{n>N}n^{-s}$ is the Hurwitz-zeta tail.
+To prove this, discard each kernel by one. The missing $n$-tail on retained
+$m$ gives the first term. For omitted $m$, use $W_m\le2\e^{-m\tau}m^p$;
+its successive ratios decrease once the first omitted index is reached,
+and are at most $\theta_M$. Summing the resulting geometric majorant
+gives the second term. No subtraction of nearly equal large quantities
+occurs.
+
+The supplied \texttt{verify.py} implements \eqref{eq:computesum} and
+\eqref{eq:computetail}. It uses 110 decimal digits. Tail inequalities are
+proved in exact real arithmetic in this article; the program evaluates
+them with ordinary high-precision rounding, \emph{not} outward-rounded
+interval arithmetic. Accordingly the reported runs are reproducible
+checks, not independently certified interval computations.
+
+\subsection{Actual results of the supplied run}
+The full script was run in preparing this manuscript. Exact symbolic
+arithmetic checks the six endpoint coefficients displayed after
+\cref{thm:uniform}. Eight exact identities also compare the endpoint Borel Taylor
+coefficients with the odd-pole lattice. Ten rational residue-cancellation
+checks are included. Independent finite products at integer indices check
+\eqref{eq:exactforward}; the four absolute discrepancies were all below
+$3\times10^{-110}$. This is an independent normalization test because it
+does not evaluate both sides from the same infinite-product tail.
+
+\begin{table}[htbp]
+\centering
+\caption{Positive remainders checked against direct high-precision
+subtraction at nonoptimal orders.}
+\label{tab:positive}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$x$&$\tau$&$K$&$r_K$&$r_K/(a_{K+1}h^{2K+1})$\\
+\midrule
+5&1&4&$7.91517695222\cdot10^{-10}$&0.9191817471\\
+7&2&6&$1.21204088308\cdot10^{-13}$&0.9160370429\\
+8&0.5&6&$2.17819186412\cdot10^{-14}$&0.9340864521\\
+\bottomrule
+\end{tabular}
+\end{table}
+Each remainder in \cref{tab:positive} was positive, had the proved sign in
+the forward identity, and lay below the first omitted term. The positive
+partial-sum bounds enclosed the directly computed value at the stated
+working precision.
+
+\begin{table}[htbp]
+\centering
+\caption{Near-optimal truncation at $\tau=1$. The script uses
+$K=\operatorname{round}(\pi x)$, not an unverified claim to have found the
+exact minimizing integer.}
+\label{tab:optimal}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$x$&$K$&$r_K$&$r_K\pi\sqrt{x}\,\e^{2\pi x}$\\
+\midrule
+5&16&$3.17973793023\cdot10^{-15}$&0.9835348221\\
+10&31&$5.21956022965\cdot10^{-29}$&1.0053351399\\
+20&63&$1.88567218808\cdot10^{-56}$&0.9958300329\\
+40&126&$3.55472089880\cdot10^{-111}$&0.9979153044\\
+\bottomrule
+\end{tabular}
+\end{table}
+The mathematical relative upper bounds on omitted positive summands in
+these four evaluations, as evaluated by the program, are respectively
+below $4.2\cdot10^{-31}$, $6.1\cdot10^{-39}$, $1.3\cdot10^{-39}$, and
+$1.7\cdot10^{-38}$. This illustrates why a value below $10^{-110}$ can
+still be computed \emph{relatively} at 110 digits: the computation uses
+positive small terms, not subtraction from a number of order one.
+At $x=20$, tests with $\tau=0.1$, $2\pi$, and $10$ give normalized ratios
+0.9958300329, 0.9958300329, and 0.9958300327, respectively.
+
+\begin{table}[htbp]
+\centering
+\caption{Resolved boundary layer. The same near-optimal rule for $K$ is
+used. Finite-$x$ values need not approach their limits monotonically.}
+\label{tab:boundary}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$x$&ratio at $s=0$&ratio at $s=1$\\
+\midrule
+10&0.3269592979&0.1177674042\\
+20&0.3227622917&0.1168425200\\
+40&0.3220074088&0.1171886859\\
+80&0.3214572071&0.1174603693\\
+\midrule
+Limit&$1/\pi=0.3183098862$&$\e^{-1}/\pi=0.1170996630$\\
+\bottomrule
+\end{tabular}
+\end{table}
+The error in the exponent of \eqref{eq:boundarylimit} is of order
+$(\log x)^2/x$, so the visible approach in \cref{tab:boundary} is slower
+than the $O(1/x)$ accuracy of the pure optimal-remainder formula.
+
+For an inverse check, take $h=1.2$, $x_0=5$, and the exact target
+$L=F_h(5)-\Ecal(h)$. The independently computed inverse shift and its
+first-order prediction are
+\begin{align*}
+ F_h^{-1}(L)-5&=-4.29546689467745006556\cdot10^{-16},\\
+ -\Ecal(h)/F'_h(5)&=-4.29546689467744988132\cdot10^{-16}.
+\end{align*}
+Their ratio is $1.00000000000000004289\ldots$, with the correct negative
+sign. Separate slope checks at $(h,x)=(0.01,1),(0.1,20),(0.25,4),(1,3)$
+satisfy both sides of \eqref{eq:slopebounds}.
+
+\subsection{Using the results rather than only inspecting coefficients}
+For a prescribed target $L$, a usable workflow is to choose a center from
+the repository's monotone dilogarithmic phase, bracket the exact root by
+\eqref{eq:existbracket}, and then refine using the exact slope. A finite
+Bernoulli expansion is adequate when its first-omitted-term bound fits the
+error budget. Near exponential precision, evaluate the positive remainder
+or the exact Borel kernel and retain as many modular sectors as
+\eqref{eq:modtail} requires. Equation \eqref{eq:certificate} converts that
+forward budget into an inverse budget. The modular inverse series is useful
+when an exact carrier center is already available; it is not a replacement
+for obtaining that center accurately.
+
+To reproduce the supplied computations, run
+\begin{verbatim}
+python verify.py
+\end{verbatim}
+from the package directory. This writes \texttt{verification\_results.json}.
+The optional \texttt{--quick} switch omits the larger cases. Python 3.10
+or later, mpmath, and SymPy are required. The source was run with mpmath
+1.3.0 and SymPy 1.14.0. The script raises an exception if an asserted test
+fails and uses no network service or proprietary computer algebra system.
+
+\section{Further research questions}
+\label{sec:questions}
+The following questions separate extensions plausibly accessible from this
+kernel method from broader problems requiring additional ideas. They are
+proposed research targets, not claims that the corresponding statements
+are already proved.
+
+\subsection{Higher optimal-remainder coefficients and the minimizing integer}
+\textbf{Question.} Can one compute a complete expansion for
+$r_K\pi\sqrt{x}\e^{2\pi x}$ in inverse powers of $x$, uniformly for bounded
+$K-\pi x$ and $0\le\tau\le T$, and determine the exact minimizing integer
+outside an explicitly described tie set?
+The proof of \cref{lem:saddle} keeps only a first relative error. Higher
+gamma moments and a sharper discrete-sum estimate should expose the
+integer-rounding dependence. It is important to distinguish a smooth
+large-order expansion from exponentially small mesh effects, particularly
+when two adjacent truncation orders nearly tie.
+
+\subsection{The range of a growing crossover parameter}
+\textbf{Question.} What is the largest growth range $T=T(x)$ for which the
+universal constant in \eqref{eq:optimal} remains valid?
+The proof gives an initial diagnostic: the mesh error from
+\eqref{eq:riemannbound} is $O(\tau^2/x)$ near the saddle. Thus
+$\tau=o(\sqrt{x})$ is a natural first range to investigate, but a sharp
+statement needs uniform constants and may be improved by exploiting
+analyticity rather than a twice-differentiable estimate. When the mesh is
+comparable to the saddle width, a genuinely discrete correction may remain.
+This is not covered by the fixed-$T$ theorem.
+
+\subsection{General Gaussian quotients and positivity criteria}
+\textbf{Question.} For products of shifted $q$-gamma functions with balanced
+slopes, which combinations give a positive kernel analogous to
+$2\e^{-u}-\e^{-2u}$? What replaces the optimal error constant when the
+kernel changes sign?
+For positive kernels, moment log-convexity may survive and make a global
+minimum accessible. With sign-changing kernels, cancellation can defeat
+the present lower-bound argument even if the nearest Borel singularities
+are known. A useful classification should state both the slope data and
+the kernel-positivity condition, rather than infer one from the other.
+
+\subsection{Arithmetic descriptions of pole cancellations}
+\textbf{Question.} Can pole cancellation in finite products of
+$q$-Pochhammer factors be expressed as an explicit finite arithmetic
+transform of the slope and shift multiplicities?
+The central case reduces Bose denominators to alternating Bose/Fermi
+ones and removes even axial poles. Rational slope ratios suggest a finite
+residue-class calculation, whereas irrational slopes may create
+nonperiodic pole configurations. Establishing a criterion would turn a
+case-by-case cancellation into a reusable transseries operation.
+
+\subsection{Resurgence of the independently reverted crossover series}
+\textbf{Question.} Determine the Borel singularities and Stokes data of the
+formal inverse obtained by reverting the full polynomial--logarithmic
+crossover series, including its $\log h$ coefficients.
+The exact-carrier construction in \cref{thm:inverse} does not answer this.
+Composition, moving singularities, and nonlinear sector mixing must be
+controlled. A satisfactory result should also identify which singularities
+are inherited from the forward kernel and which can arise from zeros of
+the analytically continued derivative.
+
+\subsection{A hyperasymptotic algorithm below the visibility threshold}
+\textbf{Question.} Can the positive remainder be expanded again, using the
+nearest pole pair, to produce a rigorously certified algorithm resolving
+$\Ecal(h)$ for fixed $\tau<2\pi$ with fewer operations than direct tail
+summation?
+There is no impossibility obstruction: exact kernel integration already
+contains the missing information. The question is computational complexity
+and stable error accounting. A useful result would specify the number of
+retained pole pairs and arithmetic precision as functions of $h,\tau$ and
+the requested relative accuracy of the modular term.
+
+\subsection{Root-of-unity and complex-parameter crossover}
+\textbf{Question.} Which versions of the endpoint and sharp-remainder
+arguments persist near nontrivial roots of unity, where several Borel rays
+and residue classes interact?
+The real positive kernel is lost in general. The comparison with the
+$q$-Pochhammer literature \cite{garoufalidiskashaev,fantinirella} suggests
+natural complex variants but not a proof of the positivity-based minimum.
+A first tractable task is a contour-specific remainder bound away from
+coalescing rays, before attempting a uniform transition across them.
+
+\subsection{Machine-checked inequalities and interval implementation}
+\textbf{Question.} Can the exact kernel identity, finite geometric remainder,
+log-convexity, and residual certificate be formalized as a small reusable
+Lean module, independently of a full transseries datatype?
+The finite geometric identity and positive-sum estimates are promising
+first targets. Tonelli interchange, the endpoint Riemann estimate, and the
+uniform gamma-saddle constants should then be separate theorems. In
+parallel, an outward-rounded implementation of \eqref{eq:computetail}
+would turn the present executable checks into numerical certificates.
+Neither deliverable is included as already completed here.
+
+\subsection{Recovering a modular sector from additional functional data}
+\textbf{Question.} Which minimal functional relations, normalization, and
+growth conditions determine the flat modular correction uniquely from the
+Borel-summed carrier?
+The exact eta identity supplies such data for this example. Abstractly,
+the same asymptotic power series admits additions of flat functions.
+A useful uniqueness theorem should state the extra hypotheses explicitly;
+formal coefficients alone cannot provide them.
+
+\section{Conclusion}
+The main mechanism is elementary but stronger than a fixed-order
+asymptotic expansion. A positive partial-fraction remainder remains exact
+when the truncation order grows with the large parameter. That permits a
+uniform endpoint theorem, a global optimal-truncation argument through
+moment log-convexity, and a sharp comparison with an independently
+normalized modular sector. The resulting transition occurs at $hx=2\pi$
+with a logarithmic displacement of order $(\log x)/x$, and is preserved by
+exact local inverse transport.
+
+The Borel calculation explains the scale through a stable nearest pole
+pair, while the remainder calculation fixes the prefactor and the true
+minimum. The inverse construction then separates a divergent but exactly
+summable carrier from a genuinely convergent modular correction series.
+These distinctions are precisely what is needed to extend the inspected
+repository chapter without conflating a formal all-order formula,
+an asymptotic error estimate, a Borel sum, and an exact normalized function.
+
+\appendix
+\section{Source and claim audit}
+\label{app:audit}
+\begin{longtable}{@{}p{0.27\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Item & Status in this manuscript\\
+\midrule
+\endfirsthead
+\toprule
+Item & Status in this manuscript\\
+\midrule
+\endhead
+Exact interpolation and phase & Taken from the inspected ProveIt companion;
+normalization and derivative rederived in \cref{sec:normalization}.\\[5pt]
+Eta modular factor & Classical identity, already used in the companion;
+not a novelty claim.\\[5pt]
+Fixed-order Bernoulli coefficients & Already in the companion;
+regularized at the endpoint here.\\[5pt]
+Uniform $\tau=0$ matching & Proved in \cref{thm:uniform}, addressing the
+explicit boundary of the companion's fixed-$\tau_0$ result.\\[5pt]
+General $q$-product resurgence & Established antecedents
+\cite{costingaroufalidis,garoufalidiskashaev,fantinirella}; not claimed new.\\[5pt]
+Central Borel pole cancellations & Explicitly derived here, with signs,
+residues, and scaled endpoint fixed. No literature-wide priority claim.\\[5pt]
+Sharp minimum and visibility layer & Full proofs in
+\cref{thm:optimal,thm:visibility}; the central quantitative extension
+advanced for independent checking.\\[5pt]
+Modular inverse sectors & Proved convergent about the exact carrier, with
+explicit radii and tails. Does not prove general inverse resurgence.\\[5pt]
+Numerical verification & Actual run of supplied code; exact symbolic
+subchecks and 110-digit numerical checks. Not interval-certified.\\[5pt]
+Lean status & No new Lean file supplied, and no claim of machine-checking
+these analytic theorems.\\[5pt]
+Repository coverage & Relevant companion ranges and READMEs inspected;
+the full oversized canonical TeX was not read.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproduction and file inventory}
+The package contains \texttt{article.tex}, the compiled \texttt{article.pdf},
+\texttt{verify.py}, the actual \texttt{verification\_results.json}, a short
+\texttt{README.md}, and pinned numerical dependencies in
+\texttt{requirements.txt}. The article is self-contained and does not
+require the repository's notation file. It can be compiled using
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The PDF was rendered and visually inspected during preparation. The
+LaTeX source is the editable mathematical record; the numerical script is
+supplementary evidence and an implementation of the displayed positive
+sum, not a replacement for the proofs.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V.~Reshetnikov, \emph{ProveIt: Combinatorial Transseries and Their Inverses},
+chapter ``The singular transition $q\to1$,'' source labels
+\texttt{t3:prop:double-A}, \texttt{t3:eq:central-double-exact},
+\texttt{t3:eq:central-double-asympt}, and \texttt{t3:eq:crossover-all}.
+Repository snapshot 29 September 2026, commit
+\texttt{04e06e032dff1966513bfba316966d52db3646b4}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
+
+\bibitem{reporeadme}
+V.~Reshetnikov, \emph{ProveIt: Series and transseries}, group README and
+\emph{Transseries and Inversion} package README, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/04e06e032dff1966513bfba316966d52db3646b4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/README.md}.
+
+\bibitem{costingaroufalidis}
+O.~Costin and S.~Garoufalidis, Resurgence of the Euler--MacLaurin summation
+formula, \emph{Annales de l'Institut Fourier} \textbf{58} (2008), 893--914.
+DOI: \href{https://doi.org/10.5802/aif.2373}{10.5802/aif.2373}.
+Preprint \url{https://arxiv.org/abs/math/0703641}.
+
+\bibitem{garoufalidiskashaev}
+S.~Garoufalidis and R.~Kashaev, \emph{Resurgence of Faddeev's quantum
+dilogarithm}, arXiv:2008.12465v2, 5 October 2020.
+\url{https://arxiv.org/abs/2008.12465v2}.
+
+\bibitem{fantinirella}
+V.~Fantini and C.~Rella, \emph{Modular resurgence, $q$-Pochhammer symbols,
+and quantum operators from mirror curves}, arXiv:2506.08265v2,
+1 April 2026. \url{https://arxiv.org/abs/2506.08265v2}.
+
+\bibitem{dlmfcoth}
+NIST Digital Library of Mathematical Functions, \S4.36,
+Infinite Products and Partial Fractions for Hyperbolic Functions.
+\url{https://dlmf.nist.gov/4.36}. Accessed 29 September 2026.
+
+\bibitem{dlmfqgamma}
+NIST Digital Library of Mathematical Functions, \S5.18,
+$q$-Gamma and $q$-Beta Functions.
+\url{https://dlmf.nist.gov/5.18}. Accessed 29 September 2026.
+
+\bibitem{dlmfeta}
+NIST Digital Library of Mathematical Functions, \S23.18,
+Modular Transformations, including Dedekind's eta transformation.
+\url{https://dlmf.nist.gov/23.18}. Accessed 29 September 2026.
+\end{thebibliography}
+\end{document}
