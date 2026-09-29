@@ -29,6 +29,10 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{remark}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\Li}{\operatorname{Li}}
 \newcommand{\E}{\mathbb E}
@@ -49,6 +53,8 @@
 \DeclareMathOperator{\supp}{supp}
 \hypersetup{pdftitle={Through the Stable--Gaussian Endpoint: Uniform Critical Transseries, Prefix-Independent Cutoff Corrections, and Conditional Extremes},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Joint tail-index and large-order asymptotics at alpha=2}}
 \begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which the titlepage environment numbers 1 like the following page (removes a duplicate-destination warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{9mm}
 {\color{teal}\large RESEARCH ARTICLE\par}
@@ -89,6 +95,7 @@ been established. The article contains conventional proofs, not a new Lean
 formalization or an independently peer-reviewed result. The numerical checks
 are diagnostics, not interval certificates.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \tableofcontents
 \clearpage
 
@@ -108,6 +115,24 @@ Its first proposed research question asks for joint inverse and coefficient
 expansions when \((2-\alpha)\log n\) remains bounded, and specifically asks
 whether the prefix-independent correction has a uniform interpolating form.
 That is the target of this article.
+% ed. (2026-09-29): the companion is now filed, the same question is posed in a second package, and an independent second answer was filed with this package (batch 49).
+\begin{ednote}
+The marginal companion is now filed in this series (batch~48) as
+\path{Marginal_Critical_Transseries_Action_Budgets/}. The same question is
+Question~1 of the logarithmic-endpoint package filed beside it
+\cite{ed:lce}, an independent treatment of the same endpoint, which this
+article did not see. The confluent package \cite{ed:cct}, filed with this
+one and written independently of it, answers the question at leading order
+for every rate \(\eps_n\to0\) of either sign. The two agree term by term:
+its \(A_n\) and \(B_n\) are \(N\) and \(B\) here, its window forms are
+those of Section~\ref{sec:interpretation}, its minimal budget is the
+leading term of Corollary~\ref{cor:budget} at \(\alpha=2\), its cutoff profile
+\(e^{-1/(2s^2)}\) is the \(\alpha\to2\) limit of \(\exp(-\ell^{-\alpha}/\alpha)\),
+and both prove the conditioned Poisson limit. Inside the window this article
+goes one order further. At \(\eps=0\) its first cutoff correction is the
+marginal companion's critical correction and, after a change of
+logarithmic normalization, that of the logarithmic-endpoint package.
+\end{ednote}
 
 The difficulty is not solved by substituting \(\alpha=2\) in a stable formula.
 Two terms, one involving \(\Gamma(-\alpha)\) and the other involving
@@ -1450,6 +1475,25 @@ prepared for Vladimir Reshetnikov, 29 September 2026. Inspected in the user's
 file library as \texttt{Marginal\_Critical\_Transseries.tex}, especially the
 main-result summary and the first further-research question. No public
 publication or independent review is asserted.
+% ed. (2026-09-29): filed location added.
+Editorial note (ProveIt, 2026-09-29): now filed (batch~48) in the group of
+\cite{repo-index} as the package
+\path{Marginal_Critical_Transseries_Action_Budgets/}; the question answered
+here is its Question~1.
+
+% ed. (2026-09-29): the two entries below are editorial additions for the editorial note in Section 1.1.
+\bibitem{ed:lce}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{The Logarithmic Critical Endpoint: Convergent Lambert Charts,
+All-Order Sector Laws, and Sharp Action-Cutoff Corrections}, research
+package filed in batch~48 in the group of \cite{repo-index} as
+\path{Logarithmic_Critical_Endpoint_Lambert_Charts/}.
+
+\bibitem{ed:cct}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Confluent Critical Transseries Across the Exponent-Two Boundary},
+research package filed in batch~49 in the group of \cite{repo-index} as
+\path{Confluent_Critical_Transseries_Exponent_Two_Boundary/}.
 
 \bibitem{dlmf-polylog}
 F. W. J. Olver et al. (eds.), \emph{NIST Digital Library of Mathematical

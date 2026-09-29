@@ -61,7 +61,8 @@ def main() -> None:
                'drift_prediction':fmt(2*M*M*pred/model.A),
                'curvature_over_A_L':fmt(curvature/(model.A*L)),
                'M2L_root_error':fmt(M*M*L*(v-Snum/M))})
-    (ROOT/'data'/'supplementary.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+    # ProveIt edit (2026-09-29): LF line endings on every platform.
+    (ROOT/'data'/'supplementary.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'status':'all supplementary assertions passed','exact_checks':9}))
 
 if __name__=='__main__':

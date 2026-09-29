@@ -30,6 +30,9 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -120,6 +123,28 @@ exact-tail version of that remaining problem. The restriction to an exact
 power tail makes it possible to combine an explicit analytic chart with a
 self-contained Fourier proof. A finite-prefix robustness result is proved
 separately; no general slowly varying triangular array is silently included.
+
+% ed. (2026-09-29): the two drafts are now filed, and an independent second answer was filed with this package (batch 49).
+\begin{ednote}
+Both drafts are now filed in this series (batch~48): \cite{prior-endpoint}
+as \path{Logarithmic_Critical_Endpoint_Lambert_Charts/} and
+\cite{prior-marginal} as \path{Marginal_Critical_Transseries_Action_Budgets/}.
+Each lists the present joint limit as its own Question~1; this article
+answers the chart and leading-order parts of both, for every rate, without
+citing them by number, but not the uniform first cutoff correction that the
+marginal draft's question also asks for. The stable--Gaussian package \cite{ed:sge}, filed with this one,
+answers the same question independently in the window
+\(|\eps|\log n\le K\), without having seen this article. The two agree term
+by term: the same scales (its \(B^2=nc_\eps F(\log B)\) and \(N\) are
+\eqref{eq:scales-intro}), the same window forms
+\eqref{eq:B-window}--\eqref{eq:A-window}, the same minimal budget
+\eqref{eq:min-budget} at \(\alpha=2\), the same profile (its
+\(\exp(-\ell^{-\alpha}/\alpha)\) tends to \(e^{-1/(2s^2)}\)) and the same
+conditioned Poisson limit. Inside the window it goes one order further (a
+two-term uniform inverse, the first coefficient correction, a uniform first
+cutoff correction without finite-prefix moments, a two-term minimal
+budget); this article covers every rate \(\eps_n\to0\) at leading order.
+\end{ednote}
 
 The existing manuscripts are used to identify a research target, not as
 unverified premises. The coefficient representation, normal form, scale
@@ -1635,6 +1660,10 @@ Inspected in the user's Library under
 \path{article(20260929-201315).tex}. The scope statement explicitly treats
 the fixed endpoint and excludes the joint exponent/order limit. Used for
 scope comparison, not as a proof dependency.
+% ed. (2026-09-29): filed location added.
+Editorial note (ProveIt, 2026-09-29): now filed (batch~48) as
+\path{Analysis/Transseries/docs/series-and-transseries/Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex};
+the joint limit treated here is its Question~1.
 
 \bibitem{prior-marginal}
 \emph{Marginal Critical Transseries: Convergent Lambert--W Charts,
@@ -1643,6 +1672,18 @@ research draft prepared for Vladimir Reshetnikov, 29 September 2026.
 Inspected in the user's Library under
 \path{Marginal_Critical_Transseries.tex}. Its conclusion identifies uniform
 endpoint crossover as a further task. Used for scope comparison only.
+% ed. (2026-09-29): filed location added.
+Editorial note (ProveIt, 2026-09-29): now filed (batch~48) as
+\path{Analysis/Transseries/docs/series-and-transseries/Marginal_Critical_Transseries_Action_Budgets/Marginal_Critical_Transseries.tex};
+the joint limit treated here is its Question~1.
+
+% ed. (2026-09-29): editorial bibliography entry for the editorial note in Section 1.1.
+\bibitem{ed:sge}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Through the Stable--Gaussian Endpoint: Uniform Critical Transseries,
+Prefix-Independent Cutoff Corrections, and Conditional Extremes}, research
+package filed in batch~49:
+\path{Analysis/Transseries/docs/series-and-transseries/Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/article.tex}.
 
 \bibitem{dlmf}
 NIST Digital Library of Mathematical Functions, Chapter~25, especially

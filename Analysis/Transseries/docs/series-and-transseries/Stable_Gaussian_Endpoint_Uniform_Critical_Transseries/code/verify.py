@@ -181,14 +181,27 @@ def inverse_diagnostic(D, theta, eta=0):
 
 def save_csv(name,rows):
     with (DATA/name).open('w',newline='') as f:
-        wr=csv.DictWriter(f,fieldnames=list(rows[0]));wr.writeheader();wr.writerows(rows)
+        # ProveIt edit (2026-09-29): LF line endings (the csv default is CRLF).
+        wr=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');wr.writeheader();wr.writerows(rows)
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--max-n',type=int,default=4096)
+    # ProveIt edit (2026-09-29): a run with --max-n other than the recorded
+    # 4096 writes into data/max-n-<N>/ (or --output-dir) instead of replacing
+    # the recorded data; the script itself writes run_summary.txt (the text it
+    # prints) only after a successful run, so no shell redirection is needed
+    # and a failed run cannot truncate the recorded summary.
+    ap.add_argument('--output-dir',type=Path,default=None,
+                    help='output directory (default: data/ for --max-n 4096, else data/max-n-<N>/)')
     args=ap.parse_args()
     if args.max_n < 512:
         ap.error('--max-n must be at least 512; use 512 for the portable small run')
-    DATA.mkdir(exist_ok=True)
+    global DATA
+    if args.output_dir is not None:
+        DATA=args.output_dir.resolve()
+    elif args.max_n!=4096:
+        DATA=ROOT/'data'/f'max-n-{args.max_n}'
+    DATA.mkdir(parents=True,exist_ok=True)
     checks=exact_checks()
     rows=[]; discrepancies=[]
     for n in sorted(set([512,min(2048,args.max_n),args.max_n])):
@@ -223,9 +236,11 @@ def main():
             'python':platform.python_version(),'numpy':np.__version__,
             'mpmath':mp.__version__,'scipy':scipy.__version__,'sympy':sp.__version__,
             'precision_digits':mp.mp.dps,'numerical_results_are_not_interval_certificates':True}
-    (DATA/'verification.json').write_text(json.dumps(report,indent=2)+'\n')
-    print(json.dumps(report,indent=2))
-    print('\nLarge-n diagnostics:')
+    (DATA/'verification.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
+    summary=[json.dumps(report,indent=2),'','Large-n diagnostics:']
     for x in large:
-        print(x['n'],x['theta'],x['observed_ratio'],x['leading_ratio'],x['corrected_ratio'])
+        summary.append(' '.join(str(v) for v in (x['n'],x['theta'],x['observed_ratio'],x['leading_ratio'],x['corrected_ratio'])))
+    text='\n'.join(summary)+'\n'
+    print(text,end='')
+    (DATA/'run_summary.txt').write_text(text,encoding='utf-8',newline='\n')
 if __name__=='__main__': main()

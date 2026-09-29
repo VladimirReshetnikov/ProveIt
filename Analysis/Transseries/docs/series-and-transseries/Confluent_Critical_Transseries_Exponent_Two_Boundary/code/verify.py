@@ -91,7 +91,7 @@ def exact_audit() -> dict:
         "proof_assistant_verification": False,
         "rational_coefficients_full": [str(x) for x in all_u[1:]],
     }
-    (DATA/"exact_checks.json").write_text(json.dumps(report, indent=2)+"\n")
+    (DATA/"exact_checks.json").write_text(json.dumps(report, indent=2)+"\n",encoding='utf-8',newline='\n')
     return report
 
 
@@ -181,7 +181,7 @@ def coefficient_diagnostics() -> dict:
                 row["ratio_"+key] = float(ratio)
             rows.append(row)
     with (DATA/"coefficient_diagnostics.csv").open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n'); w.writeheader(); w.writerows(rows)
     # Independent higher-precision recurrence checks.
     maxrel = mp.mpf(0)
     comparisons = 0
@@ -199,11 +199,11 @@ def coefficient_diagnostics() -> dict:
     for row in rows:
         text.append(f"{row['n']} & {row['lambda']} & {row['A_over_B']:.5f} & {row['normal_mass_ratio']:.5f} & {row['ratio_1.0']:.5f} & {row['ratio_1.5']:.5f}" + " " + chr(92)*2)
     text += [r"\bottomrule",r"\end{tabular}"]
-    (DATA/"coefficient_table.tex").write_text('\n'.join(text)+'\n')
+    (DATA/"coefficient_table.tex").write_text('\n'.join(text)+'\n',encoding='utf-8',newline='\n')
     out={"status":"completed", "rows":len(rows), "independent_mp_comparisons":comparisons,
          "max_relative_disagreement":mp.nstr(maxrel,12),
          "interval_certified":False, "asymptotic_limits_not_asserted_by_tests":True}
-    (DATA/"coefficient_checks.json").write_text(json.dumps(out,indent=2)+'\n')
+    (DATA/"coefficient_checks.json").write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8',newline='\n')
     return out
 
 
@@ -241,29 +241,38 @@ def inversion_diagnostics() -> dict:
             rows.append({"L":L,"tau":tau,"epsilon":float(e),"v":float(v),
                          "V":float(V),"degree1_error":float(err1),"degree2_error":float(err2)})
     with (DATA/"inversion_diagnostics.csv").open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
     text=[r"\begin{tabular}{rrrrr}",r"\toprule",
           r"$\log(1/r)$ & $\varepsilon\log(1/r)$ & $t/r$ & degree-1 error & degree-2 error\\",r"\midrule"]
     for row in rows:
         text.append(f"{row['L']} & {row['tau']} & {row['V']:.9f} & {latex_scientific(row['degree1_error'])} & {latex_scientific(row['degree2_error'])}" + " " + chr(92)*2)
     text += [r"\bottomrule",r"\end{tabular}"]
-    (DATA/"inversion_table.tex").write_text('\n'.join(text)+'\n')
+    (DATA/"inversion_table.tex").write_text('\n'.join(text)+'\n',encoding='utf-8',newline='\n')
     out={"status":"completed","rows":len(rows),"working_decimal_digits":160,
          "root_relative_residual_threshold":"1e-55", "interval_certified":False}
-    (DATA/"inversion_checks.json").write_text(json.dumps(out,indent=2)+'\n')
+    (DATA/"inversion_checks.json").write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8',newline='\n')
     return out
 
 
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--part',choices=['all','exact','coefficients','inversion'],default='all')
+    # ProveIt edit (2026-09-29): optional output directory, so that a rerun
+    # need not rewrite the recorded data/ files (including the two tables the
+    # article inputs); every output is now written with LF line endings.
+    parser.add_argument('--output-dir',type=Path,default=None,
+                        help='write outputs here instead of the package data/ directory')
     args=parser.parse_args()
+    global DATA
+    if args.output_dir is not None:
+        DATA=args.output_dir.resolve()
+        DATA.mkdir(parents=True,exist_ok=True)
     report={"python":platform.python_version(),"numpy":np.__version__,
             "sympy":sp.__version__,"mpmath":mp.__version__}
     if args.part in ('all','exact'): report['exact']=exact_audit()
     if args.part in ('all','coefficients'): report['coefficients']=coefficient_diagnostics()
     if args.part in ('all','inversion'): report['inversion']=inversion_diagnostics()
-    (DATA/f"run_{args.part}.json").write_text(json.dumps(report,indent=2)+'\n')
+    (DATA/f"run_{args.part}.json").write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(report,indent=2))
 
 if __name__=='__main__': main()

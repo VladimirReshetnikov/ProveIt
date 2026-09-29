@@ -6,7 +6,8 @@ Research draft prepared for Vladimir Reshetnikov, 29 September 2026.
 
 ## Contents
 
-- `Confluent_Critical_Transseries.pdf`: 23-page article.
+- `Confluent_Critical_Transseries.pdf`: 24-page article (23 pages as delivered;
+  rebuilt on filing, see the amendments below).
 - `Confluent_Critical_Transseries.tex`: main LaTeX source.
 - `data/coefficient_table.tex` and `data/inversion_table.tex`: included table fragments.
 - `code/verify.py`: exact algebraic checks and numerical diagnostics.
@@ -14,7 +15,10 @@ Research draft prepared for Vladimir Reshetnikov, 29 September 2026.
 - `data/*checks.json` and `data/run_all.json`: recorded checks and package versions.
 - `SOURCES.md`: repository snapshot, research target, and reference provenance.
 - `BUILD_VALIDATION.json`: compilation, rendering, and test status.
-- `SHA256SUMS`: checksums of the distributed files except the checksum file itself.
+
+The delivered checksum ledger `SHA256SUMS` was verified in full on filing
+(batch 49) and not kept; the delivered archive remains in the repository
+history (see `docs/incoming/README.md`, batch 49 row).
 
 ## Mathematical scope
 
@@ -108,8 +112,11 @@ python code/verify.py --part inversion
 
 Do not pass Python's `-O` option: the exact checks intentionally use assertions.
 Running the program overwrites the corresponding CSV, JSON, and table files
-inside `data/`. The recorded data are included so that the article remains
-readable and compilable without rerunning any diagnostics.
+inside `data/`, including the two tables the article inputs, and a run of a
+single part also writes a new `data/run_<part>.json`. Since filing,
+`--output-dir DIR` sends every output to `DIR` instead; use it, or a copy of
+the package, for reruns. The recorded data are included so that the article
+remains readable and compilable without rerunning any diagnostics.
 
 The large-order probability recurrence uses extended-range `numpy.longdouble`.
 On platforms where `longdouble` has the same exponent range as binary64
@@ -120,6 +127,13 @@ probability audits. Large-order coefficient runs on such systems require an
 environment with extended-range long double, such as a suitable Linux/WSL
 installation, or adapting the arbitrary-precision recurrence with the
 corresponding runtime cost.
+
+On Windows (2026-09-29, on a copy) `--part exact` and `--part inversion`
+passed and reproduced `exact_checks.json`, `inversion_checks.json`,
+`inversion_diagnostics.csv` and `inversion_table.tex` byte for byte;
+`--part coefficients` stopped with the documented `RuntimeError` before
+writing anything, so the recorded coefficient data could not be regenerated
+there.
 
 ## Recorded outcomes
 
@@ -135,3 +149,36 @@ corresponding runtime cost.
 
 None of the numerical tests is a proof of an asymptotic limit. No repository
 files were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+These changes were made on filing, after the batch-49 delivery. Every change
+to the article text is marked in `Confluent_Critical_Transseries.tex` by a
+comment beginning `% ed. (2026-09-29)`; visible additions are headed
+"Editorial note (ProveIt, 2026-09-29)" or, in the bibliography, "[Editorial
+addition, ProveIt, 2026-09-29.]".
+
+- `Confluent_Critical_Transseries.tex`:
+  - an unnumbered `ednote` environment for editorial notes (no numbering
+    changes);
+  - an editorial note in Section 1.1: the two drafts it read from the
+    library are now filed as the logarithmic-endpoint and marginal packages,
+    each of which lists this joint limit as its Question 1; this article
+    answers the chart and leading-order parts of both, for every rate, but
+    not the uniform first cutoff correction; the stable–Gaussian package
+    filed with it answers the same question independently in the window
+    `|eps| log n <= K`, one order further, and the two agree term by term
+    (scales, window forms, minimal budget, profile, conditioned Poisson
+    limit);
+  - the filed locations of the two drafts in their bibliography entries, and
+    an editorial bibliography entry `ed:sge`.
+- `Confluent_Critical_Transseries.pdf`: rebuilt from the amended source
+  (24 pages; the delivered PDF had 23). `BUILD_VALIDATION.json` still
+  describes the delivered build.
+- `code/verify.py`: every CSV, JSON and table output is written with LF line
+  endings (the CSV writer emitted CRLF on every platform, `write_text` CRLF
+  on Windows); new option `--output-dir`. The default behaviour is otherwise
+  unchanged.
+- `README.md`: the retired checksum ledger is no longer listed; rerun
+  behaviour and the Windows rerun documented; page count updated; this
+  section.

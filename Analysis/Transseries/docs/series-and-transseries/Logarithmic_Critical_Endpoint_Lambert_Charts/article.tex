@@ -29,6 +29,9 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \DeclareMathOperator{\Li}{Li}
 \DeclareMathOperator{\Log}{Log}
 \DeclareMathOperator{\Var}{Var}
@@ -133,6 +136,25 @@ rate refinement relevant to that article's Question~2, an all-order
 finite-fold drift chart relevant to Question~7, and a defined slowly varying
 subclass relevant to Question~1. These are scoped resolutions, not a claim
 that all of those broader research questions are settled.
+% ed. (2026-09-29): an independent second treatment of the same endpoint was filed beside this package (batch 48).
+\begin{ednote}
+The marginal package \cite{ed:mct}, filed beside this one, treats the same
+endpoint (the same model, tail $a j^{-3}$ outside a finite prefix) and was
+written independently of this article, also from a library copy of the
+earlier article. Its core coincides with this article's: the same
+Lambert-$W_{-1}$ core (this article's $(v,T,\eta)$, $h$ and $c$ are its
+$(w,t,2r)$, $b$ and $A$), the same chart coefficients and
+inverse diagnostics, the same fold functions, and the same critical cutoff
+correction, which it states with the sharper error $O(H_n^{-3/2})$. Its
+sector constants $\kappa_1,\kappa_2$ are $g_1,g_2$ of
+Corollary~\ref{cor:criticalcoeff} rewritten in the normalization
+$H_n=\log B_n$ in place of $\ell_n=\log b_n+h$; in particular
+$\kappa_1=g_1-h/2=(2-\gamma-\log2-2b)/4$. It is one theorem with two
+independent proofs. The Poisson process, the log-weighted tails, the
+finite-fold local limit and the exponentiation criterion are only here; its
+explicit contraction radii, three-generator logarithmic grid, two-term
+minimal budget and finite retention inequality are only there.
+\end{ednote}
 
 \subsection{Classical background and the contribution developed here}
 The substitution $t=qe^U$ gives $t=q\exp(\beta A(t))$, a classical implicit
@@ -1435,7 +1457,8 @@ bound and is not rigorously enclosed.
 
 An independent 80-decimal-digit coefficient recurrence at $n=128$
 agreed with the FFT value to a relative discrepancy of about
-$6.76\times10^{-15}$. The recurrence is
+% ed. (2026-09-29): 6.76 corrected to 6.75; the recorded value is 6.75228185529e-15 (data/verification_run.txt, BUILD_REPORT.json).
+$6.75\times10^{-15}$. The recurrence is
 \begin{equation}\label{eq:coeffrecurrence}
  p_0=e^{-n\beta d_0},\qquad
  p_k=\frac{n\beta}{k}\sum_{j=1}^{\min(k,M)}j a_jp_{k-j},
@@ -1618,6 +1641,22 @@ $(b^{2-\alpha}-1)/(2-\alpha)$; this suggests a transition parameter,
 but neither the critical chart nor the cutoff kernel follows by
 substitution. The target is a uniform chart and a uniform coefficient
 law connecting the fractional stable regime to this fixed endpoint.
+% ed. (2026-09-29): answered by two later sibling packages (batch 49); recorded on filing.
+\begin{ednote}
+Answered, pending review, by two later packages of this series written
+independently of each other. The stable--Gaussian package \cite{ed:sge}
+works in exactly this window, $|2-\alpha_n|\log n\le K$, from both sides,
+and gives a two-term uniform inverse, a convergent chart about a
+desingularized core, the uniform coefficient law with its first
+correction, and a uniform first cutoff correction without finite-prefix
+moments; it did not see this article. The confluent package \cite{ed:cct}
+allows $2-\alpha_n\to0$ at any rate and of either sign, with one
+convergent chart in three variables and a leading-order coefficient law;
+it read this article but does not cite this question by number. Where both
+apply they agree term by term, and at $\alpha=2$ the stable--Gaussian
+first cutoff correction is \eqref{eq:criticalcutoffcorrection}, up to the
+change of logarithmic normalization.
+\end{ednote}
 
 \paragraph{2. Explicit finite-$n$ constants for action selection.}
 Turn Theorem~\ref{thm:refined} into an inequality with numerical
@@ -1625,6 +1664,14 @@ constants, threshold values, and interval-enclosed $G_1$. Given $n$,
 $\beta$, and a relative loss tolerance, return the smallest certified
 cutoff or a certified near-minimal interval. Formula
 \eqref{eq:selection} is an asymptotic design rule, not that algorithm.
+% ed. (2026-09-29): partial progress in the sibling package filed beside this one (batch 48).
+\begin{ednote}
+Partial progress: for the same model the marginal package \cite{ed:mct}
+proves an explicit finite-$n$ lower bound on the retained fraction (its
+\texttt{thm:finite-certificate}) and a two-term minimal budget (its
+\texttt{thm:min-budget}). Its recorded evaluations use no directed rounding,
+and the certified selection algorithm remains open there too.
+\end{ednote}
 
 \paragraph{3. Large orders of the Gaussian--logarithmic kernels.}
 Determine the growth of $G_j(\lambda)$ as $j\to\infty$, uniformly on
@@ -1727,7 +1774,8 @@ separated from the statements proved here.
 \label{app:audit}
 
 \subsection{Repository snapshot and inspected scope}
-The repository was accessed at the pinned tree
+% ed. (2026-09-29): "pinned tree" corrected to "pinned commit"; the identifier below is a commit.
+The repository was accessed at the pinned commit
 \begin{center}
 \small\texttt{db68f0853c3c69cd930caedab6f6ad9addb11eaf}.
 \end{center}
@@ -1746,7 +1794,8 @@ statements, and research-question section were read. In particular,
 its Section~11, Question~4 asks for endpoint logarithmic charts and
 cutoff laws, and Questions~1, 2, and 7 motivate the extensions above.
 Its presence in the Library does not establish that it was merged into
-the pinned GitHub tree. This provenance is kept separate from the
+% ed. (2026-09-29): "tree" corrected to "snapshot" (the pin is a commit).
+the pinned GitHub snapshot. This provenance is kept separate from the
 repository snapshot.
 
 This was a targeted research audit, not a line-by-line review of the
@@ -1852,14 +1901,16 @@ doi:10.1080/15326349.2012.646551. arXiv:1001.3218.
 \bibitem{repo}
 VladimirReshetnikov/ProveIt.
 \emph{Series and transseries}, group README and package inventory.
-Pinned tree and audit boundary: Appendix~\ref{app:audit}.
+% ed. (2026-09-29): "Pinned tree" corrected to "Pinned commit".
+Pinned commit and audit boundary: Appendix~\ref{app:audit}.
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/db68f0853c3c69cd930caedab6f6ad9addb11eaf/Analysis/Transseries/docs/series-and-transseries}.
 
 \bibitem{fold}
 \repo{} repository, research package.
 \emph{Critical Transseries at a Moving Fold: A uniform two-sheet atlas,
 large-sector crossover, and resonant action splitting}. September 2026.
-Package README inspected at the pinned tree, subdirectory
+% ed. (2026-09-29): "pinned tree" corrected to "pinned commit".
+Package README inspected at the pinned commit, subdirectory
 \texttt{Critical\_Transseries\_Moving\_Fold} of \cite{repo}.
 
 \bibitem{previous}
@@ -1869,6 +1920,31 @@ for Vladimir Reshetnikov, 29 September 2026. Editable source inspected
 in the user's Library as \texttt{article(20260929-193550).tex};
 see especially Section~11, Questions~1, 2, 4, and 7.
 Repository inclusion at the pinned snapshot is not assumed.
+% ed. (2026-09-29): editorial note on the filed location of the preceding article.
+Editorial note (ProveIt, 2026-09-29): the article is now filed as
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}
+(batch~47).
+
+% ed. (2026-09-29): the three entries below are editorial additions for the editorial notes.
+\bibitem{ed:mct}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Marginal Critical Transseries: Convergent Lambert-W Charts, Universal
+Cutoff Corrections, and Certified Action Budgets}, research package filed
+in batch~48 in the group of \cite{repo}:
+\path{Marginal_Critical_Transseries_Action_Budgets/Marginal_Critical_Transseries.tex}.
+
+\bibitem{ed:cct}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Confluent Critical Transseries Across the Exponent-Two Boundary},
+research package filed in batch~49 in the group of \cite{repo}:
+\path{Confluent_Critical_Transseries_Exponent_Two_Boundary/Confluent_Critical_Transseries.tex}.
+
+\bibitem{ed:sge}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Through the Stable--Gaussian Endpoint: Uniform Critical Transseries,
+Prefix-Independent Cutoff Corrections, and Conditional Extremes}, research
+package filed in batch~49 in the group of \cite{repo}:
+\path{Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/article.tex}.
 
 \end{thebibliography}
 \end{document}
