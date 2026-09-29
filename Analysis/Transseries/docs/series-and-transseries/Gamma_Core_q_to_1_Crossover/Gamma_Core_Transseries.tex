@@ -1,0 +1,1435 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={A Gamma Core Across the q to 1 Crossover},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Uniform q-binomial asymptotics, optimal truncation, inverse stability and arithmetic convergence}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Gamma-core transseries}
+\fancyhead[R]{\small Uniformity, inversion, and flat terms}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Act}{\mathfrak a}
+\newcommand{\Pq}{\mathcal P}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\fracpart}[1]{\left\{#1\right\}}
+\newcommand{\bB}{\widetilde B}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\qbin}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\snap}{\texttt{aa06d3e29498aaa37a5b7924764d8a7b6f9d9ce0}}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\color{MidnightBlue}\large TRANSSERIES RESEARCH / PROVEIT COMPANION\par}
+\vspace{13mm}
+{\LARGE\bfseries A Gamma Core Across the\par}
+\vspace{2mm}
+{\LARGE\bfseries $q\to1$ Crossover\par}
+\vspace{8mm}
+{\Large Uniform exponential accuracy, inverse stability,\par
+and arithmetic convergence\par}
+\vspace{14mm}
+{\large Research manuscript prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+{September 29, 2026\par}
+\vspace{13mm}
+\begin{abstract}
+The central Gaussian-binomial interpolation has a dilogarithmic expansion in the double-scaling variable $\tau=x\log q$, but its usual coefficients become singular as $\tau\to0$. We retain the classical Gamma quotient exactly and derive a regularized expansion with an explicit Euler--Maclaurin remainder valid simultaneously for every real $x\ge0$. Optimally truncating this expansion gives a uniform logarithmic error at most $(8+o(1))\exp(-4\pi^2/\log q)$. The exponential action is sharp for this truncation scheme: the error at the far end of the index range tends to an exact modular Euler-product contribution. A derivative-sensitive argument transports the same exponential action through inversion, uniformly over all nonnegative logarithmic targets, including the quadratic endpoint where the forward derivative vanishes.
+
+A complementary fixed-index analysis gives a precise arithmetic distinction. The formal expansion in $\log q$ has positive convergence radius exactly when twice the index is an integer. At nonintegral half-integers the convergent series nevertheless misses a nonzero flat term, identical on every such half-integer sheet. Its exact value is a simple combination of two modular Euler products. The proofs, computational audits, qualifications on novelty, and further research questions are included.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} A self-contained research derivation, not a peer-reviewed paper or a Lean-checked proof. It answers a specified uniform-matching question in the inspected repository for the central Gaussian family. Priority over the broader $q$-asymptotics literature is not asserted. Supporting computations are reproducibility checks, not interval certificates.
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The research target and the contribution}
+\label{sec:target}
+
+\subsection{A concrete gap in the repository}
+The inspected ProveIt snapshot has a separate \path{Analysis/Transseries} development for transseries. Its combinatorial companion treats $q$-products, Gaussian coefficients, theta sectors, and inversion, alongside many other families \cite{repo,reporeadme}. In its chapter on the singular transition $q\to1$, a uniform finite-order expansion is established only for $\tau\ge\tau_0>0$. Immediately after the small-$\tau$ phase expansion, the source explicitly leaves uniform matching to $\tau=0$ for a different error analysis. This is the question addressed here.
+
+The issue is not a missing formal coefficient. The coefficient formulas away from the endpoint are already available. The issue is whether a single representation can cover bounded real indices, diverging indices with $hx\to0$, indices of order $1/h$, and the far regime $hx\to\infty$, where $h=\log q\downarrow0$. Expanding the classical Gamma function by Stirling's formula too early destroys precisely the information needed at the small-index endpoint.
+
+We therefore use the exact Gamma quotient as the leading analytic block. The resulting correction functions are regular at $\tau=0$. More importantly, their remainders admit estimates independent of the index, including an explicit optimal-truncation estimate and a globally valid inverse estimate.
+
+\subsection{Four main conclusions}
+For $h>0$, set $Q=\ee^{-h}$ and define the interpolation $H_h$ precisely in \cref{sec:exact}. Write $L_h=\log H_h$, and let
+\[
+L_0(x)=\log\Gamma(2x+1)-2\log\Gamma(x+1).
+\]
+The central results are the following.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Uniform Gamma-core expansion.} Explicit functions $A,B,C_k$, all regular at $\tau=0$, give
+\[
+F_{h,K}(x)=L_0(x)+\frac{A(hx)}h+B(hx)
+                 +\sum_{k=1}^K h^{2k-1}C_k(hx).
+\]
+An exact integral formula for $L_h-F_{h,K}$ is valid for all real $x\ge0$, not merely the integer lattice. This yields uniform finite-order asymptotics and explicit derivative bounds.
+\item \textbf{Sharp exponential action.} For
+\[
+\Act=4\pi^2,\qquad K(h)=\max\{2,\lceil2\pi^2/h\rceil\},
+\]
+we prove
+\[
+\sup_{x\ge0}|L_h(x)-F_{h,K(h)}(x)|
+   \le (8+o(1))\ee^{-\Act/h}.
+\]
+For every finite truncation, the supremum is at least
+$-\log(\ee^{-\Act/h};\ee^{-\Act/h})_\infty\sim\ee^{-\Act/h}$.
+Thus the action, though not the upper-bound constant, is optimal for this approximation family.
+\item \textbf{Uniform inversion through a degenerate endpoint.} The approximant is increasing for sufficiently small $h$. With $X_h=L_h^{-1}$ and $X_{h,K}=F_{h,K}^{-1}$,
+\[
+\sup_{\ell\ge0}|X_{h,K(h)}(\ell)-X_h(\ell)|
+\le (24\pi^2+o(1))\ee^{-\Act/h}.
+\]
+This includes $\ell\downarrow0$, although $L_h'(0)=0$.
+\item \textbf{Arithmetic convergence and a flat defect.} At a fixed real index $x\ge0$, the formal $h$-series converges in a nonzero disk exactly when $2x\in\Z$. At $x\in\Z_{\ge0}$ it represents the function. At every $x\in\tfrac12+\Z_{\ge0}$ its analytic sum differs from $L_h(x)$ by the same nonzero term
+\[
+4M(h)-2M(h/2),\qquad
+M(h)=-\log(\ee^{-\Act/h};\ee^{-\Act/h})_\infty.
+\]
+\end{enumerate}
+
+These conclusions are proved in \cref{sec:uniform,sec:optimal,sec:inverse,sec:arithmetic,sec:half}. They form a linked answer rather than a collection of unrelated expansions: the action $4\pi^2$ appears in a uniform remainder, a modular obstruction, fixed-index coefficient growth, and an exact invisible term.
+
+\subsection{What is inherited and what is claimed}
+The dilogarithmic crossover phase and its inversion away from $\tau=0$ are inherited from the repository, not presented as new here. Euler--Maclaurin summation, the Gamma and $q$-Gamma identities, the Dedekind eta transformation, Mellin inversion, and Bernoulli Fourier series are classical ingredients \cite{dlmfem,dlmfqgamma,dlmfeta,dlmfhurwitz,dlmfbern}. McIntosh's work already provides broad all-order $q$-shifted-factorial asymptotics \cite{mcintosh}. Resurgent analysis of related quantum dilogarithms is also established literature \cite{gk,sauzin}.
+
+The contribution of this manuscript is the explicit assembly and proof of the global Gamma-core remainder, its sharp exponential scale, its endpoint-stable inverse transport, and the stated arithmetic classification and defect formula for this interpolation. The repository comparison is specific and checkable. The literature search is not exhaustive, and neither an isolated coefficient formula nor the use of a classical method establishes historical novelty. No solution of a general open problem about all transseries, all $q$-products, or all inverse asymptotics is claimed.
+
+\section{The exact interpolation and its scales}
+\label{sec:exact}
+
+\subsection{Definitions and the integer specialization}
+For $0<Q<1$, let
+\[
+(a;Q)_\infty=\prod_{j=0}^{\infty}(1-aQ^j),\qquad
+\Pq_Q=(Q;Q)_\infty,
+\]
+and define the positive real interpolation
+\begin{equation}
+\Pq_Q(x)=\frac{\Pq_Q}{(Q^{x+1};Q)_\infty},\qquad x\ge0.
+\label{eq:factorialinterp}
+\end{equation}
+Our central object is
+\begin{equation}
+H_h(x)=\ee^{hx^2}\frac{\Pq_Q(2x)}{\Pq_Q(x)^2},
+\qquad Q=\ee^{-h},\quad L_h(x)=\log H_h(x).
+\label{eq:H}
+\end{equation}
+At a nonnegative integer $n$,
+\[
+H_h(n)=\qbin{2n}{n}{\ee^h}
+      =\prod_{j=1}^n\frac{\ee^{h(n+j)}-1}{\ee^{hj}-1}.
+\]
+Thus the interpolation agrees with the central Gaussian binomial coefficient. The limit $q\to1^+$ is a limit of analytic $q$-functions, not a limit of orders of finite fields.
+
+The standard $q$-Gamma definition also gives
+\[
+H_h(x)=\ee^{hx^2}\frac{\Gamma_Q(2x+1)}{\Gamma_Q(x+1)^2}.
+\]
+The powers of $1-Q$ cancel. Keeping this exact interpolation fixed is important: agreement at integer indices alone would not determine its values at nonintegers.
+
+\begin{proposition}[A positive Lambert representation]
+\label{prop:positive}
+For every $h>0$ and $x\ge0$,
+\begin{equation}
+L_h(x)=hx^2+\sum_{m=1}^{\infty}
+      \frac{(1-\ee^{-hmx})^2}{m(\ee^{hm}-1)}.
+\label{eq:positive}
+\end{equation}
+The sum and each fixed number of its $x$-derivatives converge locally uniformly. In particular $L_h(0)=L_h'(0)=0$, $L_h'(x)>0$ for $x>0$, and $L_h(x)\to\infty$ as $x\to\infty$.
+\end{proposition}
+\begin{proof}
+Expand $-\log(1-z)=\sum_{m\ge1}z^m/m$ in each product in \eqref{eq:H}. Absolute convergence permits changing the order of summation. The coefficient after cancellation is
+\[
+\frac{1-2Q^{mx}+Q^{2mx}}{m(\ee^{hm}-1)},
+\]
+which is \eqref{eq:positive}. The exponential denominator controls every fixed power of $m$ introduced by differentiation, uniformly for $x$ in compact subsets of $[0,\infty)$. Differentiating a summand gives a nonnegative quantity for $x\ge0$. The strictly positive derivative of $hx^2$ settles strict increase for $x>0$, and the same term gives unboundedness.
+\end{proof}
+
+\subsection{The previously available crossover phase}
+Put $\tau=hx$. The repository's phase is
+\begin{equation}
+S(\tau)=\tau^2+\frac{\pi^2}{6}
+       +\Li_2(\ee^{-2\tau})-2\Li_2(\ee^{-\tau}).
+\label{eq:S}
+\end{equation}
+Differentiation gives
+\[
+S'(\tau)=2\log(1+\ee^\tau),\qquad S(0)=0.
+\]
+Consequently $S$ is strictly increasing. Away from zero, the usual expansion begins
+\begin{equation}
+L_h(\tau/h)\sim\frac{S(\tau)}h
+ -\frac12\log\frac{2\pi}{h}+J(\tau)
+ +\sum_{k\ge1}h^{2k-1}E_k(\tau),
+\label{eq:outer}
+\end{equation}
+where
+\[
+J(\tau)=\frac12\log\coth(\tau/2),
+\]
+\begin{align}
+E_1(\tau)&=-\frac1{24}+\frac1{12}
+ \left(\frac1{\ee^{2\tau}-1}-\frac2{\ee^\tau-1}\right),\label{eq:E1}\\
+E_k(\tau)&=\frac{B_{2k}}{(2k)!}
+ \left(\Li_{2-2k}(\ee^{-2\tau})-2\Li_{2-2k}(\ee^{-\tau})\right),
+ \quad k\ge2.\label{eq:Ek}
+\end{align}
+These are the source formulas with notation adapted to this paper \cite{repo}.
+
+The apparent singularities have a recognizable origin. Stirling's expansion of the classical core is
+\begin{equation}
+L_0(x)\sim 2x\log2-\frac12\log(\pi x)
+ +\sum_{k\ge1}b_kx^{1-2k},\qquad
+b_k=\frac{B_{2k}(2^{1-2k}-2)}{2k(2k-1)}.
+\label{eq:stirlingcore}
+\end{equation}
+For example $b_1=-1/8$ and $b_2=1/192$. The singular terms in $E_k(\tau)$ are exactly $b_k\tau^{1-2k}$. Rather than truncate them at an endpoint where they are not small, we restore $L_0$ exactly.
+
+\section{The regular kernel and quantitative derivative control}
+\label{sec:kernel}
+
+\begin{definition}
+Let
+\begin{equation}
+f(t)=\log\frac{\ee^t-1}{t}\quad(t>0),\qquad f(0)=0.
+\label{eq:f}
+\end{equation}
+All logarithms on the positive real axis denote their real values.
+\end{definition}
+The singularity at zero is removable. Locally,
+\begin{equation}
+f(t)=\frac t2+\sum_{m\ge1}
+       \frac{B_{2m}}{2m(2m)!}t^{2m},\qquad |t|<2\pi.
+\label{eq:ftaylor}
+\end{equation}
+In particular $f'(0)=1/2$, and $f^{(r)}(0)=0$ for odd $r\ge3$.
+
+\begin{lemma}[Signs and the nearest complex singularities]
+\label{lem:kernel}
+For $t\ge0$, $f'$ increases from $1/2$ to $1$. For $t>0$,
+\[
+f''(t)>0,\qquad f'''(t)<0.
+\]
+For every integer $r\ge2$,
+\begin{equation}
+f^{(r)}(t)=(-1)^{r-1}(r-1)!
+\sum_{n=1}^{\infty}\left((t+2\pi\ii n)^{-r}
+                         +(t-2\pi\ii n)^{-r}\right).
+\label{eq:derivativepoles}
+\end{equation}
+The sum is absolutely and locally uniformly convergent for real $t\ge0$.
+\end{lemma}
+\begin{proof}
+The product for the hyperbolic sine gives
+\[
+f(t)=\frac t2+\log\frac{\sinh(t/2)}{t/2}
+=\frac t2+\sum_{n\ge1}\log\left(1+\frac{t^2}{4\pi^2n^2}\right).
+\]
+Differentiation twice or more proves \eqref{eq:derivativepoles}; uniform convergence follows by comparison with $\sum n^{-r}$. Direct differentiation also gives
+\[
+f'(t)=\frac12+\frac12\coth(t/2)-\frac1t,\qquad
+f''(t)=\frac1{t^2}-\frac1{4\sinh^2(t/2)}.
+\]
+Since $\sinh(t/2)>t/2$, $f''>0$. The endpoint limits of $f'$ follow from its displayed formula.
+
+To prove $f'''<0$, put $u=t/2$. The required inequality is
+\[
+\sinh^3u>u^3\cosh u\qquad(u>0).
+\]
+Using $\sinh^3u=(\sinh3u-3\sinh u)/4$, the coefficients of $u^3$ and $u^5$ in the difference are zero. For $j\ge2$, the coefficient of $u^{2j+3}$ is
+\[
+\frac{3^{2j+3}-3}{4(2j+3)!}-\frac1{(2j)!}>0.
+\]
+The inequality follows at $j=2$ directly and persists by induction: the ratio of the first numerator at consecutive indices exceeds $9$, whereas the ratio of the cubic polynomial $(2j+3)(2j+2)(2j+1)$ is less than $9$. Thus the difference is positive. Substitution into the derivative formula proves the claim.
+\end{proof}
+
+\begin{lemma}[Explicit integrable derivative bounds]
+\label{lem:dbounds}
+Define
+\begin{equation}
+d_2=\frac12,\qquad
+d_r=\frac{(r-1)!\sqrt\pi\,\Gamma((r-1)/2)\zeta(r-1)}
+ {\Gamma(r/2)(2\pi)^{r-1}},\quad r\ge3.
+\label{eq:dr}
+\end{equation}
+Then $\norm{f^{(r)}}_{L^1(0,\infty)}\le d_r$ for all $r\ge2$. Moreover, for $r\ge2$,
+\begin{equation}
+\sup_{t\ge0}|f^{(r)}(t)|
+ \le u_r:=\frac{2(r-1)!\zeta(r)}{(2\pi)^r}.
+\label{eq:ur}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The $r=2$ integral is exactly $f'(\infty)-f'(0)=1/2$. For $r\ge3$, take absolute values in \eqref{eq:derivativepoles} and integrate termwise. The elementary beta integral is
+\[
+\int_0^\infty(t^2+a^2)^{-r/2}\dd t
+=\frac{\sqrt\pi\,\Gamma((r-1)/2)}{2\Gamma(r/2)a^{r-1}}.
+\]
+Summing over $a=2\pi n$ proves \eqref{eq:dr}. The pointwise estimate follows instead from $|t\pm2\pi\ii n|\ge2\pi n$.
+\end{proof}
+
+Two different factors of $2\pi$ will matter. The kernel's closest nonzero complex singularities have distance $2\pi$ from the real endpoint. Euler--Maclaurin's Bernoulli coefficients contribute a second $2\pi$. Their product, not either distance alone, produces the action $4\pi^2$.
+
+\section{A real-index Euler--Maclaurin identity}
+\label{sec:EM}
+
+An Euler--Maclaurin formula for the finite sum $\sum_{j=1}^n f(hj)$ would prove a result only at integer $n$. Extending that conclusion to the canonical real interpolation without an additional argument would be invalid. We obtain the real-index formula from a differentiated infinite tail instead.
+
+\subsection{The single-factorial correction}
+Define
+\begin{equation}
+\Phi_h(x)=\frac h2 x(x+1)+\log\Pq_Q(x)
+                         -x\log h-\log\Gamma(x+1).
+\label{eq:Phi}
+\end{equation}
+At integer $n$, product cancellation gives
+\[
+\Phi_h(n)=\sum_{j=1}^n f(hj).
+\]
+For every real $x\ge0$,
+\begin{equation}
+L_h(x)-L_0(x)=\Phi_h(2x)-2\Phi_h(x),\qquad \Phi_h(0)=0.
+\label{eq:Phicentral}
+\end{equation}
+
+\begin{lemma}[Tail identity and convexity information]
+\label{lem:Phi}
+For all $x\ge0$,
+\begin{equation}
+\Phi_h''(x)=h-h^2\sum_{j=1}^{\infty}f''(h(x+j)).
+\label{eq:Phisecond}
+\end{equation}
+Furthermore
+\begin{equation}
+\frac h2\le h f'(hx)\le\Phi_h''(x)\le h,
+\qquad \Phi_h'''(x)>0.
+\label{eq:Phibounds}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiate the product in \eqref{eq:factorialinterp} twice, and use
+\[
+\psi'(x+1)=\sum_{j\ge1}(x+j)^{-2},\qquad
+f''(t)=t^{-2}-\frac{\ee^t}{(\ee^t-1)^2}.
+\]
+The inverse-square terms combine with the trigamma term to give \eqref{eq:Phisecond}. All differentiations are justified by local uniform convergence.
+
+Since $f''$ is positive and decreasing, its right-endpoint Riemann sum satisfies
+\[
+h\sum_{j\ge1}f''(hx+hj)
+ \le\int_{hx}^{\infty}f''(t)\dd t=1-f'(hx).
+\]
+Substitute this into \eqref{eq:Phisecond}. The upper bound follows from positivity of the sum. Finally,
+\[
+\Phi_h'''(x)=-h^3\sum_{j\ge1}f'''(h(x+j))>0
+\]
+by \cref{lem:kernel}.
+\end{proof}
+
+\subsection{The exact remainder, including its affine ambiguity}
+Let $\bB_r(u)=B_r(\fracpart{u})$ be the periodic Bernoulli function. For $K\ge1$, define
+\begin{align}
+\mathcal E_{h,K}(x)
+={}&\frac1h\int_0^{hx}f(t)\dd t+\frac{f(hx)-f(0)}2 \notag\\
+&+\sum_{k=1}^K\frac{B_{2k}h^{2k-1}}{(2k)!}
+       \bigl(f^{(2k-1)}(hx)-f^{(2k-1)}(0)\bigr),
+\label{eq:Eprimitive}\\
+T_{h,K}(\tau)
+={}&\frac{h^{2K-1}}{(2K)!}\int_0^{\infty}
+ \bB_{2K}(v/h)f^{(2K)}(\tau+v)\dd v.
+\label{eq:T}
+\end{align}
+The integral in \eqref{eq:T} is absolutely convergent by \cref{lem:dbounds}.
+
+\begin{theorem}[Exact real-index identity]
+\label{thm:exactEM}
+For each $h>0$ and $K\ge1$, there is a real constant $a_{h,K}$ such that
+\begin{equation}
+\Phi_h(x)=\mathcal E_{h,K}(x)+T_{h,K}(hx)
+                     +a_{h,K}x-T_{h,K}(0),\qquad x\ge0.
+\label{eq:PhiEM}
+\end{equation}
+Consequently
+\begin{align}
+L_h(x)={}&L_0(x)+\mathcal E_{h,K}(2x)-2\mathcal E_{h,K}(x)
+                     +R_{h,K}(x),\label{eq:centralEM}\\
+R_{h,K}(x)={}&T_{h,K}(2hx)-2T_{h,K}(hx)+T_{h,K}(0).
+\label{eq:Rexact}
+\end{align}
+\end{theorem}
+\begin{proof}
+For a smooth decaying $g$ with the needed integrable derivatives, the infinite-tail Euler--Maclaurin formula is
+\begin{align}
+\sum_{j\ge1}g(\tau+hj)
+={}&\frac1h\int_\tau^\infty g(t)\dd t-\frac{g(\tau)}2
+ -\sum_{k=1}^K\frac{B_{2k}h^{2k-1}}{(2k)!}g^{(2k-1)}(\tau)\notag\\
+&-\frac{h^{2K-1}}{(2K)!}\int_0^\infty
+           \bB_{2K}(v/h)g^{(2K)}(\tau+v)\dd v.
+\label{eq:tailEM}
+\end{align}
+This follows by applying the finite-interval formula and sending its upper endpoint to infinity; the derivative bounds established above justify that limit for $g=f''$. The sign in the last line is important. It is the standard remainder after retaining the endpoint term involving $B_{2K}$ \cite{dlmfem}.
+
+Set $g=f''$, use $\int_\tau^\infty f''=1-f'(\tau)$, and insert \eqref{eq:tailEM} into \eqref{eq:Phisecond}. The result is
+\begin{align*}
+\Phi_h''(x)
+={}&h f'(hx)+\frac{h^2}2 f''(hx)
+ +\sum_{k=1}^K\frac{B_{2k}h^{2k+1}}{(2k)!}f^{(2k+1)}(hx)\\
+&+\frac{h^{2K+1}}{(2K)!}\int_0^\infty
+          \bB_{2K}(v/h)f^{(2K+2)}(hx+v)\dd v.
+\end{align*}
+The first line is $\mathcal E_{h,K}''(x)$; the second is the second $x$-derivative of $T_{h,K}(hx)$. Differentiation under the integral is justified by the integrable bounds for the higher derivatives. Thus the difference between $\Phi_h$ and $\mathcal E_{h,K}+T_{h,K}(h\,\cdot)$ is affine. At $x=0$, both $\Phi_h$ and $\mathcal E_{h,K}$ vanish, fixing its constant term as $-T_{h,K}(0)$ and proving \eqref{eq:PhiEM}.
+
+Apply the central difference in \eqref{eq:Phicentral}. The unknown linear term cancels exactly. The constant term does not cancel by itself, but combines to give the last $+T_{h,K}(0)$ in \eqref{eq:Rexact}. This proves the real-index result without interpolating an integer identity.
+\end{proof}
+
+\section{The uniform Gamma-core expansion}
+\label{sec:uniform}
+
+\subsection{Regularized phase, amplitude, and coefficients}
+Define
+\begin{align}
+A(\tau)&=S(\tau)-2\tau\log2
+ =\frac{\tau^2}{2}+2\int_0^\tau\log\cosh(t/2)\dd t,\label{eq:A}\\
+B(\tau)&=\frac12\log\bigl((\tau/2)\coth(\tau/2)\bigr),\quad B(0)=0,
+\label{eq:B}\\
+C_k(\tau)&=\frac{B_{2k}}{(2k)!}
+ \left(f^{(2k-1)}(2\tau)-2f^{(2k-1)}(\tau)
+                                      +f^{(2k-1)}(0)\right).
+\label{eq:C}
+\end{align}
+Both forms of $A$ are useful: the integral is stable near zero, while the dilogarithmic expression in \eqref{eq:S} is convenient away from zero. The desired approximation is
+\begin{equation}
+\boxed{\displaystyle
+F_{h,K}(x)=L_0(x)+\frac{A(hx)}h+B(hx)
+                      +\sum_{k=1}^K h^{2k-1}C_k(hx).}
+\label{eq:F}
+\end{equation}
+
+\begin{lemma}[Endpoint cancellation]
+\label{lem:regular}
+The functions $A,B,C_k$ are real analytic at zero and on $[0,\infty)$. Each $C_k(0)=0$, and indeed $C_k(\tau)=O(\tau^3)$ as $\tau\to0$. Moreover
+\begin{equation}
+C_k(\tau)=E_k(\tau)-b_k\tau^{1-2k},\qquad \tau>0,
+\label{eq:subtractStirling}
+\end{equation}
+with $E_k,b_k$ from \eqref{eq:E1}--\eqref{eq:stirlingcore}. The apparent poles on the right are removable.
+\end{lemma}
+\begin{proof}
+The integral in \eqref{eq:A} and the even analytic function $(\tau/2)\coth(\tau/2)$ prove regularity of $A$ and $B$. Write $f(t)=t/2+g(t)$ with $g$ even and analytic near zero. For odd $r$, $f^{(r)}(t)$ is a constant, possibly zero, plus an odd analytic function. In the central combination at $2\tau,\tau,0$, the constant and linear terms cancel. The first possible term is cubic, proving the claim about $C_k$.
+
+For the explicit comparison, use
+\[
+f'(t)=1+\frac1{\ee^t-1}-\frac1t.
+\]
+For odd $r\ge3$, differentiation $r-1$ times gives
+\[
+f^{(r)}(t)=\Li_{1-r}(\ee^{-t})-(r-1)!t^{-r}.
+\]
+Substitution into \eqref{eq:C} proves \eqref{eq:subtractStirling}; the case $r=1$ includes the remaining constant $-1/24$ in \eqref{eq:E1}.
+\end{proof}
+
+For example,
+\begin{align}
+A(\tau)&=\frac{\tau^2}{2}+\frac{\tau^3}{12}
+                          -\frac{\tau^5}{480}+O(\tau^7),\label{eq:Asmall}\\
+B(\tau)&=\frac{\tau^2}{24}-\frac{7\tau^4}{2880}+O(\tau^6),\label{eq:Bsmall}\\
+C_1(\tau)&=-\frac1{24}+\frac1{12}
+ \left(\frac1{\ee^{2\tau}-1}-\frac2{\ee^\tau-1}\right)+\frac1{8\tau}
+ =-\frac{\tau^3}{1440}+O(\tau^5).
+\label{eq:C1}
+\end{align}
+The second form of $C_1$ should be evaluated through its removable continuation near zero, not through cancellation of large inverse powers in fixed precision.
+
+\subsection{Uniform value and derivative bounds}
+Set
+\begin{equation}
+p_K=\frac{2\zeta(2K)}{(2\pi)^{2K}},\qquad
+\eps_K(h)=4p_Kh^{2K-1}d_{2K}.
+\label{eq:epsilon}
+\end{equation}
+
+\begin{theorem}[Global Gamma-core remainder]
+\label{thm:uniform}
+For every $h>0$, every integer $K\ge1$, and every real $x\ge0$,
+\begin{equation}
+L_h(x)=F_{h,K}(x)+R_{h,K}(x),
+\label{eq:uniformidentity}
+\end{equation}
+where $R_{h,K}$ is the exact integral expression \eqref{eq:Rexact}. It satisfies
+\begin{equation}
+\sup_{x\ge0}|R_{h,K}(x)|\le\eps_K(h)
+\label{eq:uniformbound}
+\end{equation}
+and
+\begin{equation}
+|R_{h,K}'(x)|\le
+\min\left\{4p_Kh^{2K}d_{2K+1},\;
+           2p_Kh^{2K+1}x\,d_{2K+2}\right\}.
+\label{eq:derivativebound}
+\end{equation}
+In particular $R_{h,K}(0)=R_{h,K}'(0)=0$.
+\end{theorem}
+\begin{proof}
+In the central difference of \eqref{eq:Eprimitive}, the integral contribution is
+\[
+\frac1h\left(\int_0^{2\tau}f(t)\dd t
+                           -2\int_0^\tau f(t)\dd t\right).
+\]
+Its derivative in $\tau$ is $2f(2\tau)-2f(\tau)=2\log((1+\ee^\tau)/2)=A'(\tau)$, and both expressions vanish at zero. The endpoint contribution is $(f(2\tau)-2f(\tau))/2=B(\tau)$. The higher derivative contributions are exactly $h^{2k-1}C_k(\tau)$. Thus \cref{thm:exactEM} gives \eqref{eq:uniformidentity}.
+
+Bernoulli's Fourier series implies
+\[
+\frac{\norm{\bB_{2K}}_\infty}{(2K)!}\le p_K.
+\]
+For each integer $j\ge0$, \eqref{eq:T} and \cref{lem:dbounds} give
+\begin{equation}
+\sup_{\tau\ge0}|T_{h,K}^{(j)}(\tau)|
+ \le p_Kh^{2K-1}d_{2K+j}.
+\label{eq:Tbounds}
+\end{equation}
+The coefficients $1,-2,1$ in \eqref{eq:Rexact} have absolute sum $4$, proving \eqref{eq:uniformbound}. Differentiation gives
+\[
+R_{h,K}'(x)=2h\bigl(T_{h,K}'(2hx)-T_{h,K}'(hx)\bigr).
+\]
+Bounding the two terms separately proves the first bound in \eqref{eq:derivativebound}. Applying the mean value theorem over an interval of length $hx$, and then using the bound for $T''$, proves the second. The endpoint identities are immediate from the exact formula.
+\end{proof}
+
+\begin{corollary}[Uniform finite-order asymptotics]
+\label{cor:fixedK}
+For every fixed $K\ge1$,
+\begin{equation}
+\sup_{x\ge0}|L_h(x)-F_{h,K}(x)|=O_K(h^{2K+1})
+\qquad(h\downarrow0).
+\label{eq:fixedK}
+\end{equation}
+Thus the regularized expansion matches the entire endpoint $hx=0$ uniformly.
+\end{corollary}
+\begin{proof}
+The displayed bound $\eps_K$ alone is of order $h^{2K-1}$; it does not imply the claimed stronger fixed-order estimate. Instead apply \cref{thm:uniform} at $K+1$:
+\[
+L_h-F_{h,K}=h^{2K+1}C_{K+1}(hx)+R_{h,K+1}(x).
+\]
+For $K\ge1$, \eqref{eq:ur} and the vanishing odd derivative at zero show
+\[
+\sup_{\tau\ge0}|C_{K+1}(\tau)|\le3p_{K+1}u_{2K+1}.
+\]
+The remainder at level $K+1$ is at most $4p_{K+1}d_{2K+2}h^{2K+1}$. This proves \eqref{eq:fixedK}, with the explicit constant
+$p_{K+1}(3u_{2K+1}+4d_{2K+2})$.
+\end{proof}
+
+\subsection{What has been matched}
+For bounded $x$, \eqref{eq:Asmall}--\eqref{eq:C1} yield
+\[
+L_h(x)=L_0(x)+\frac{hx^2}{2}
+        +\frac{h^2x^2(2x+1)}{24}+O_x(h^4).
+\]
+For $x\to\infty$ with $hx$ fixed and positive, expanding $L_0$ by \eqref{eq:stirlingcore} recovers the repository's formula \eqref{eq:outer}: every restored Stirling term cancels its subtraction in \eqref{eq:subtractStirling}. If $x\to\infty$ but $hx\to0$, no separate matching limit needs to be interchanged; \eqref{eq:uniformbound} already applies along the chosen path. Finally, if $hx\to\infty$, the exact product contributes the modular term examined next.
+
+This is a composite asymptotic representation with an exact special-function block. It is not a claim that a power series in $h$ converges uniformly for unbounded $x$. Those are different questions, and the fixed-index power series can itself diverge.
+
+\section{Optimal truncation and the sharp exponential action}
+\label{sec:optimal}
+
+\subsection{An explicit optimal-order choice}
+Define
+\begin{equation}
+\Act=4\pi^2,\qquad
+K(h)=\max\{2,\lceil 2\pi^2/h\rceil\}.
+\label{eq:Koptimal}
+\end{equation}
+The rounding is not an optimization claim about the exact integer minimizer. It is a fully explicit choice with the optimal leading exponential scale and the asymptotic bound below.
+
+\begin{theorem}[Exponential uniform accuracy]
+\label{thm:optimal}
+As $h\downarrow0$,
+\begin{equation}
+\eps_{K(h)}(h)=(8+o(1))\ee^{-\Act/h}.
+\label{eq:epsasympt}
+\end{equation}
+Hence
+\begin{equation}
+\sup_{x\ge0}|L_h(x)-F_{h,K(h)}(x)|
+ \le(8+o(1))\ee^{-\Act/h}.
+\label{eq:optimaluniform}
+\end{equation}
+The corresponding multiplicative approximation satisfies
+\[
+\sup_{x\ge0}\left|\frac{H_h(x)}{\exp(F_{h,K(h)}(x))}-1\right|
+ \le\exp(\eps_{K(h)}(h))-1.
+\]
+\end{theorem}
+\begin{proof}
+Let $n=2K-1$. The definitions and the asymptotic Gamma ratio give
+\begin{align*}
+\eps_K(h)
+&=\frac{8\zeta(2K)\zeta(2K-1)\Gamma(2K)\sqrt\pi\,
+             \Gamma(K-1/2)}
+ {\Gamma(K)(2\pi)^{4K-1}}\,h^{2K-1}\\
+&=(8+o(1))\left(\frac{nh}{4\pi^2}\right)^n\ee^{-n}
+\end{align*}
+when $K\to\infty$. In the second line, Stirling's factor $\sqrt{2\pi n}$ and the Gamma-ratio factor $\sqrt{2\pi/(n+1)}$ cancel the remaining $2\pi$ in the denominator. With \eqref{eq:Koptimal}, $n=\Act/h+O(1)$. Writing $n=\Act/h+\delta$, with bounded $\delta$, gives
+\[
+n\log(nh/\Act)-n=-\Act/h+O(h).
+\]
+This proves \eqref{eq:epsasympt}. The value estimate is \cref{thm:uniform}, and exponentiating $|L_h-F_{h,K}|\le\eps_K$ proves the multiplicative bound.
+\end{proof}
+
+\subsection{The modular lower bound}
+Define the positive modular correction
+\begin{align}
+M(h)&=-\log(\ee^{-\Act/h};\ee^{-\Act/h})_\infty\label{eq:M}\\
+&=\sum_{m\ge1}\frac{\ee^{-m\Act/h}}{m(1-\ee^{-m\Act/h})}
+ =\sum_{N\ge1}\sigma_{-1}(N)\ee^{-N\Act/h},\notag
+\end{align}
+where $\sigma_{-1}(N)=\sum_{d\mid N}d^{-1}$. In particular
+$M(h)=\ee^{-\Act/h}+O(\ee^{-2\Act/h})$.
+
+\begin{theorem}[Sharpness for the uncorrected Gamma-core truncation]
+\label{thm:sharp}
+For every $h>0$ and every finite $K\ge1$,
+\begin{equation}
+\lim_{x\to\infty}\bigl(L_h(x)-F_{h,K}(x)\bigr)=M(h).
+\label{eq:farerror}
+\end{equation}
+Consequently, for any choice of finite $K=K(h)\ge1$,
+\begin{equation}
+\sup_{x\ge0}|L_h(x)-F_{h,K(h)}(x)|\ge M(h).
+\label{eq:lower}
+\end{equation}
+For the choice \eqref{eq:Koptimal}, the exponential action is exactly $4\pi^2$ in the sense that the uniform error is bounded below by $(1+o(1))\ee^{-\Act/h}$ and above by $(8+o(1))\ee^{-\Act/h}$.
+\end{theorem}
+\begin{proof}
+The eta transformation yields the exact identity \cite{dlmfeta}
+\begin{equation}
+\Pq_{\ee^{-h}}=
+ \sqrt{\frac{2\pi}{h}}
+ \exp\left(-\frac{\pi^2}{6h}+\frac h{24}\right)
+ \Pq_{\ee^{-\Act/h}}.
+\label{eq:eta}
+\end{equation}
+For completeness, substitute $z=\ii h/(2\pi)$ into
+$\eta(-1/z)=\sqrt{-\ii z}\,\eta(z)$, and use
+$\eta(\ii h/(2\pi))=\ee^{-h/24}\Pq_{\ee^{-h}}$.
+
+From \eqref{eq:H}, the tails with arguments $Q^{x+1}$ tend to one, so
+\[
+L_h(x)=hx^2-\log\Pq_Q+o(1).
+\]
+Meanwhile, as $x\to\infty$ at fixed $h$,
+\begin{align*}
+L_0(x)&=2x\log2-\tfrac12\log(\pi x)+o(1),\\
+A(hx)/h&=hx^2+\pi^2/(6h)-2x\log2+o(1),\\
+B(hx)&=\tfrac12\log(hx/2)+o(1).
+\end{align*}
+The derivative formulas give $C_1(\infty)=-1/24$ and $C_k(\infty)=0$ for $k\ge2$. Thus
+\[
+F_{h,K}(x)=hx^2+\frac{\pi^2}{6h}
+                 -\frac12\log\frac{2\pi}{h}-\frac h{24}+o(1).
+\]
+Subtract and apply \eqref{eq:eta} to obtain \eqref{eq:farerror}. Taking a supremum proves \eqref{eq:lower}. The conclusion holds even when $K$ depends on $h$, since the limit in $x$ is taken separately for each fixed $h$ and its finite $K(h)$.
+\end{proof}
+
+\begin{corollary}[An exact value of the endpoint remainder integral]
+\label{cor:Tzero}
+For every $h>0$ and $K\ge1$,
+\[
+T_{h,K}(0)=M(h).
+\]
+\end{corollary}
+\begin{proof}
+The integrable derivative bounds imply $T_{h,K}(\tau)\to0$ as $\tau\to\infty$. Take $x\to\infty$ in \eqref{eq:Rexact} and use \cref{thm:sharp}.
+\end{proof}
+
+The word ``sharp'' here concerns the exponential action for the displayed family $F_{h,K}$. Adding modular sectors or a more refined two-variable remainder profile changes the approximation family and is not excluded by the lower bound. Nor does a sharp remainder action alone establish a complete Borel-plane or Stokes description.
+
+\section{Uniform inversion, including the quadratic endpoint}
+\label{sec:inverse}
+
+\subsection{Forward geometry}
+The positive representation proves monotonicity, but inverse stability needs stronger information. The following bounds isolate the exact degeneracy at zero and provide global control elsewhere.
+
+\begin{proposition}[Convexity and two-sided growth bounds]
+\label{prop:geometry}
+For $x\ge0$,
+\begin{align}
+L_h''(x)&\ge L_0''(x)+h>0,\label{eq:convex}\\
+L_h'(x)&\ge L_0'(x)+hx,
+&L_0'(x)&\ge\frac{2x}{2x+1},\label{eq:derlower}\\
+L_0(x)+\frac{hx^2}{2}&\le L_h(x)\le L_0(x)+hx^2.
+\label{eq:growthbracket}
+\end{align}
+All inequalities at zero are interpreted by continuity. In particular $L_h$ is convex, maps $[0,\infty)$ bijectively onto $[0,\infty)$, and has positive derivative except at zero.
+\end{proposition}
+\begin{proof}
+Gamma duplication gives
+\[
+L_0'(x)=2\log2+\psi(x+1/2)-\psi(x+1).
+\]
+The trigamma integral yields
+\begin{equation}
+L_0''(x)=\int_0^\infty
+ \frac{t\ee^{-(x+1/2)t}}{1+\ee^{-t/2}}\dd t
+ \ge\frac1{2(x+1/2)^2}>0.
+\label{eq:coreconvex}
+\end{equation}
+Since $L_0'(0)=0$, integration gives $L_0'(x)\ge2x/(2x+1)$.
+
+Differentiate \eqref{eq:Phicentral} twice. The increasing property of $\Phi_h''$ from \cref{lem:Phi} implies
+\[
+L_h''(x)-L_0''(x)=4\Phi_h''(2x)-2\Phi_h''(x)
+ \ge2\Phi_h''(x)\ge h.
+\]
+Both first derivatives vanish at zero, so integration proves \eqref{eq:derlower}. For the upper growth bound, a separate second-difference identity is useful:
+\[
+\Phi_h(2x)-2\Phi_h(x)+\Phi_h(0)
+ =\int_0^x\int_0^x\Phi_h''(s+t)\dd s\dd t.
+\]
+Use $h/2\le\Phi_h''\le h$ inside this integral to obtain both sides of \eqref{eq:growthbracket}. The range assertion follows from strict increase and unboundedness.
+\end{proof}
+
+\subsection{Relative derivative control}
+Define
+\begin{equation}
+\eta_K(h)=\max\left\{
+3p_Kh^{2K+1}d_{2K+2},\;
+6p_Kh^{2K}d_{2K+1}\right\}.
+\label{eq:etaK}
+\end{equation}
+
+\begin{lemma}[The error vanishes at the correct endpoint order]
+\label{lem:relativeerror}
+For all $x\ge0$,
+\begin{equation}
+|R_{h,K}'(x)|\le\eta_K(h)L_0'(x)
+                    \le\eta_K(h)L_h'(x),
+\label{eq:relativederiv}
+\end{equation}
+and
+\begin{equation}
+|R_{h,K}(x)|\le\eta_K(h)L_0(x)
+                    \le\eta_K(h)L_h(x).
+\label{eq:relativevalue}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $0<x\le1$, use the bound proportional to $x$ in \eqref{eq:derivativebound}, divide by $L_0'(x)\ge2x/(2x+1)$, and bound $2x+1\le3$. The result is the first quantity in the maximum \eqref{eq:etaK}. For $x\ge1$, use the constant bound in \eqref{eq:derivativebound}; division by the same lower bound gives at most $6p_Kh^{2K}d_{2K+1}$. At zero both derivatives vanish, so the inequality extends there. Integrate from zero and use $R_{h,K}(0)=L_0(0)=0$ to obtain \eqref{eq:relativevalue}. The inequalities involving $L_h$ follow from \cref{prop:geometry}.
+\end{proof}
+
+A uniform absolute residual of size $\delta$ at a quadratic endpoint would in general give only an $O(\sqrt\delta)$ inverse error. The estimate just proved contains the missing information: the residual vanishes at least quadratically at the same endpoint. It is this relative control, not a globally positive constant derivative, that preserves the exponential action.
+
+\subsection{The inverse theorem}
+Let $\ell=\log Y\ge0$ denote an unscaled logarithmic target. This notation is intentionally different from the scaled target $h\log Y$ used in some crossover formulas in the repository. Set
+\[
+X_h(\ell)=L_h^{-1}(\ell).
+\]
+
+\begin{theorem}[Global inverse stability]
+\label{thm:inverse}
+Suppose $h>0$, $K\ge1$, and $\eta:=\eta_K(h)<1$. Then $F_{h,K}$ is strictly increasing on $[0,\infty)$, has the same range $[0,\infty)$, and admits an inverse $X_{h,K}$. For every $\ell\ge0$,
+\begin{equation}
+\frac{X_h(\ell)}{1+\eta}
+ \le X_{h,K}(\ell)
+ \le\frac{X_h(\ell)}{1-\eta}.
+\label{eq:relativeinverse}
+\end{equation}
+There is also the absolute bound, uniform over the unbounded target range,
+\begin{equation}
+\boxed{\displaystyle
+\sup_{\ell\ge0}|X_{h,K}(\ell)-X_h(\ell)|
+ \le\max\left\{\frac{\eta_K(h)}{1-\eta_K(h)},\,2\eps_K(h)\right\}.}
+\label{eq:inverseabsolute}
+\end{equation}
+For the order $K(h)$ in \eqref{eq:Koptimal},
+\begin{equation}
+\eta_{K(h)}(h)=(24\pi^2+o(1))\ee^{-\Act/h},
+\label{eq:etaasympt}
+\end{equation}
+so the right-hand side of \eqref{eq:inverseabsolute} is
+$(24\pi^2+o(1))\ee^{-\Act/h}$.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:relativederiv},
+\[
+F_{h,K}'=L_h'-R_{h,K}'\ge(1-\eta)L_h'>0
+\qquad(x>0).
+\]
+By \eqref{eq:relativevalue},
+\begin{equation}
+(1-\eta)L_h(x)\le F_{h,K}(x)\le(1+\eta)L_h(x).
+\label{eq:Fsqueeze}
+\end{equation}
+Since $F_{h,K}(0)=0$ and $L_h$ is unbounded, the asserted range and inverse follow.
+
+Write $X=X_h(\ell)$. For a convex function $L$ with $L(0)=0$, one has
+$L(aX)\le aL(X)$ for $0\le a\le1$ and $L(bX)\ge bL(X)$ for $b\ge1$. With $a=(1+\eta)^{-1}$ and $b=(1-\eta)^{-1}$, \eqref{eq:Fsqueeze} therefore gives
+\[
+F_{h,K}(aX)\le\ell\le F_{h,K}(bX).
+\]
+Monotonicity proves \eqref{eq:relativeinverse}, including $\ell=0$.
+
+If $X\le1$, the relative enclosure gives
+\[
+|X_{h,K}(\ell)-X|\le\eta/(1-\eta).
+\]
+If $X\ge1$, the same enclosure implies $X_{h,K}(\ell)\ge1/(1+\eta)>1/2$. On the segment between the two roots, \eqref{eq:derlower} gives $L_h'\ge1/2$. Since
+\[
+|L_h(X_{h,K}(\ell))-\ell|
+=|R_{h,K}(X_{h,K}(\ell))|\le\eps_K(h),
+\]
+the mean value theorem gives an error at most $2\eps_K(h)$. These two cases prove \eqref{eq:inverseabsolute}.
+
+Finally, put $r=2K(h)$. Formula \eqref{eq:dr} gives
+\[
+\frac{d_{r+1}}{d_r}\sim\frac r{2\pi},\qquad
+\frac{d_{r+2}}{d_r}\sim\frac{r^2}{4\pi^2}.
+\]
+Divide \eqref{eq:etaK} by $\eps_K=4p_Kh^{2K-1}d_{2K}$ and use $rh\to4\pi^2$. The ratio tends to
+\[
+\max\{3\pi^2,3\pi\}=3\pi^2.
+\]
+Together with \eqref{eq:epsasympt}, this proves \eqref{eq:etaasympt} and the final bound.
+\end{proof}
+
+\subsection{The endpoint's exact modular curvature}
+The endpoint is itself informative about exponentially small terms.
+
+\begin{proposition}[Quadratic coefficient and endpoint inverse]
+\label{prop:endpoint}
+For fixed $h>0$,
+\begin{equation}
+L_h(x)=a(h)x^2+O_h(x^3),\qquad
+X_h(\ell)=\sqrt{\frac{\ell}{a(h)}}+O_h(\ell)
+\quad(\ell\downarrow0),
+\label{eq:endpointinverse}
+\end{equation}
+where
+\begin{align}
+a(h)&=h+h^2\sum_{m\ge1}\frac{m}{\ee^{hm}-1}>0\label{eq:acoeff}\\
+&=\frac{\pi^2}{6}+\frac h2+\frac{h^2}{24}
+ -4\pi^2\sum_{N\ge1}\sigma_1(N)\ee^{-4\pi^2N/h}.
+\label{eq:amodular}
+\end{align}
+Here $\sigma_1(N)=\sum_{d\mid N}d$. Thus the algebraic expansion of this coefficient terminates, but the exact coefficient has a nonzero modular correction.
+\end{proposition}
+\begin{proof}
+Expand the numerator in \eqref{eq:positive} at $x=0$ and differentiate the locally uniformly convergent series. This gives \eqref{eq:acoeff}. The inverse expansion follows by taking a square root in $L_h(x)=a(h)x^2(1+O_h(x))$ and then reverting a regular first-order map.
+
+On the other hand,
+\[
+\frac{\mathrm d}{\mathrm dh}\log\Pq_{\ee^{-h}}
+=\sum_{m\ge1}\frac{m}{\ee^{hm}-1}.
+\]
+Taking the logarithmic derivative of \eqref{eq:eta} gives
+\[
+a(h)=\frac{\pi^2}{6}+\frac h2+\frac{h^2}{24}-h^2M'(h).
+\]
+Differentiate the absolutely convergent series \eqref{eq:M} and use $N\sigma_{-1}(N)=\sigma_1(N)$ to obtain \eqref{eq:amodular}.
+\end{proof}
+
+\subsection{Using the result for integer thresholds}
+For the integer threshold
+\[
+N_h(Y)=\min\{n\in\Z_{\ge0}:H_h(n)\ge Y\},\qquad Y\ge1,
+\]
+strict monotonicity gives $N_h(Y)=\lceil X_h(\log Y)\rceil$. Let $\Delta$ denote the bound in \eqref{eq:inverseabsolute}. An approximation to the real inverse, with its own numerical error also included, gives the enclosure
+\[
+X_h(\log Y)\in
+[\max\{0,X_{h,K}(\log Y)-\Delta\},\;X_{h,K}(\log Y)+\Delta].
+\]
+If both endpoints have the same ceiling, the threshold is determined. Otherwise the original sequence must be evaluated at the candidate integer. Equality cannot be discarded: a threshold using $>$ instead of $\ge$ has a different rule at exact integer roots. This is an application of the repository's residual-and-rounding framework, not a new rounding principle \cite{reporeadme}.
+
+\section{Fixed-index series and arithmetic convergence}
+\label{sec:arithmetic}
+
+The global expansion retains $L_0$ and treats $hx$ as a separate variable. We now ask a different question: for one fixed real $x\ge0$, what is the formal power series in $h$, and when does it converge? The answer shows why formal convergence alone is not a complete reconstruction criterion.
+
+\subsection{All coefficients from Mellin residues}
+Let $B_n(z)$ denote the Bernoulli polynomial, with convention
+$t\ee^{zt}/(\ee^t-1)=\sum_{n\ge0}B_n(z)t^n/n!$.
+
+\begin{theorem}[Fixed-index coefficient formula]
+\label{thm:coefficients}
+For fixed $x\ge0$, as $h\downarrow0$,
+\begin{equation}
+L_h(x)\sim L_0(x)+\frac{hx^2}{2}
+                   +\sum_{m\ge1}a_m(x)h^{2m},
+\label{eq:fixedseries}
+\end{equation}
+where
+\begin{equation}
+\boxed{\displaystyle
+a_m(x)=\frac{B_{2m}}{2m(2m+1)!}
+ \left(B_{2m+1}(2x+1)-2B_{2m+1}(x+1)\right).}
+\label{eq:am}
+\end{equation}
+After retaining terms through $m=M\ge0$, the error is $O_{M,x}(h^{2M+2})$. The constant and linear terms are retained also when $M=0$.
+\end{theorem}
+\begin{proof}
+For $c>1$, Mellin inversion of the exponentials in \eqref{eq:positive} yields
+\begin{equation}
+L_h(x)-hx^2=\frac1{2\pi\ii}\int_{c-\ii\infty}^{c+\ii\infty}
+ \Gamma(s)\zeta(s+1)D(s;x)h^{-s}\dd s,
+\label{eq:Mellin}
+\end{equation}
+with
+\[
+D(s;x)=\zeta(s)-2\zeta(s,x+1)+\zeta(s,2x+1).
+\]
+Indeed, expanding $(\ee^{hm}-1)^{-1}=\sum_{j\ge1}\ee^{-hmj}$ produces the three shifts $j,j+x,j+2x$; absolute convergence for $c>1$ justifies the interchange. The Hurwitz zeta poles at $s=1$ cancel in $D$.
+
+At $s=0$, $D(0;x)=0$. The standard identity
+$\zeta'(0,a)=\log\Gamma(a)-\tfrac12\log(2\pi)$ gives $D'(0;x)=L_0(x)$ \cite{dlmfhurwitz}. Since $\Gamma(s)\zeta(s+1)$ has a double pole at zero, the residue of the integrand there is $L_0(x)$.
+
+At $s=-1$, one has $D(-1;x)=-x^2$, $\operatorname{res}_{-1}\Gamma=-1$, and $\zeta(0)=-1/2$. The residue is therefore $-hx^2/2$; combining it with the initial $hx^2$ gives the linear term in \eqref{eq:fixedseries}. At $s=-2m$,
+\[
+\zeta(1-2m)=-\frac{B_{2m}}{2m},\qquad
+\zeta(-2m,a)=-\frac{B_{2m+1}(a)}{2m+1}.
+\]
+Also $B_{2m+1}(1)=0$ for $m\ge1$. Multiplying by the Gamma residue $1/(2m)!$ gives exactly \eqref{eq:am}. At negative odd integers below $-1$, the Gamma pole is canceled by the trivial zero of $\zeta(s+1)$.
+
+To make the expansion asymptotic, move the integration line left past finitely many poles. For fixed positive Hurwitz parameters, the zeta functions have at most polynomial growth on each such vertical line, while $\Gamma(s)$ decays exponentially. Horizontal connecting integrals therefore vanish along a sequence of heights. Moving past $s=-2M-2$ and stopping, for example, at $\Re s=-2M-5/2$ gives the next coefficient times $h^{2M+2}$ plus an $O_{M,x}(h^{2M+5/2})$ integral. Absorb both after the truncation at $M$. At $x=0$ everything is identically zero. This establishes the stated remainder rather than only a formal residue calculation.
+\end{proof}
+
+The first three polynomials are
+\begin{align}
+a_1(x)&=\frac{x^2(2x+1)}{24},\label{eq:a1}\\
+a_2(x)&=-\frac{x^3(2x+1)(3x+2)}{2880},\label{eq:a2}\\
+a_3(x)&=\frac{x^3(2x+1)(9x^3+11x^2+2x-1)}{181440}.
+\label{eq:a3}
+\end{align}
+At integer $x=n$, the formula reduces by Faulhaber's identity to
+\[
+a_m(n)=\frac{B_{2m}}{2m(2m)!}
+\left(\sum_{j=1}^{2n}j^{2m}-2\sum_{j=1}^{n}j^{2m}\right).
+\]
+This agrees directly with Taylor expansion of the finite product and is included as an exact symbolic audit.
+
+\subsection{Factorial growth outside a half-integer lattice}
+
+\begin{theorem}[Arithmetic classification of convergence]
+\label{thm:classification}
+Fix $x\ge0$. The formal power series in \eqref{eq:fixedseries} has a positive radius of convergence in the complex variable $h$ if and only if $2x\in\Z$.
+
+If $2x\notin\Z$, its coefficients satisfy the precise large-order asymptotic
+\begin{equation}
+\boxed{\displaystyle
+a_m(x)\sim\frac2\pi\bigl(\sin(4\pi x)-2\sin(2\pi x)\bigr)
+              \frac{(2m-1)!}{(4\pi^2)^{2m}}.}
+\label{eq:largeorder}
+\end{equation}
+In particular the series has zero radius and is of exact Gevrey order one in $h$.
+\end{theorem}
+\begin{proof}
+For $0\le u\le1$ and $m\ge1$, Bernoulli's Fourier formula is \cite{dlmfbern}
+\begin{equation}
+B_{2m+1}(u)=
+\frac{(-1)^{m+1}2(2m+1)!}{(2\pi)^{2m+1}}
+\sum_{n\ge1}\frac{\sin(2\pi nu)}{n^{2m+1}}.
+\label{eq:BernFourier}
+\end{equation}
+To apply it at $x+1$ and $2x+1$, first reduce the arguments to a unit interval using
+\begin{equation}
+B_j(u+N)=B_j(u)+j\sum_{k=0}^{N-1}(u+k)^{j-1},
+\qquad N\in\Z_{\ge0}.
+\label{eq:Bernshift}
+\end{equation}
+The finite sums in \eqref{eq:Bernshift} contribute only geometrically growing coefficients to $a_m(x)$. More explicitly, for some constants $C_x,R_x>0$ independent of $m$, their contribution is bounded by
+$C_xR_x^{2m}/m$. This follows by multiplying $(2m+1)\sum(u+k)^{2m}$ by the factor in \eqref{eq:am} and using
+\[
+B_{2m}=\frac{(-1)^{m+1}2(2m)!}{(2\pi)^{2m}}\zeta(2m).
+\]
+
+The periodic Fourier part of \eqref{eq:am} is exactly
+\begin{equation}
+\frac2\pi\frac{(2m-1)!\zeta(2m)}{(4\pi^2)^{2m}}
+\sum_{n\ge1}\frac{\sin(4\pi nx)-2\sin(2\pi nx)}{n^{2m+1}}.
+\label{eq:periodiccoeff}
+\end{equation}
+The terms with $n\ge2$ are $O(2^{-2m})$, and $\zeta(2m)\to1$. If
+\[
+D_1(x):=\sin(4\pi x)-2\sin(2\pi x)
+       =2\sin(2\pi x)(\cos(2\pi x)-1)
+\]
+is nonzero, the factorial factor dominates every geometric contribution from the shifts. This proves \eqref{eq:largeorder}. For real $x$, $D_1(x)=0$ exactly when $2x\in\Z$. Thus every other index has zero convergence radius. The factorial upper and nonzero factorial lower asymptotics also establish exact Gevrey order one: a bound by $C A^n n!$ holds, but no such bound with $(n!)^s$, $s<1$, can hold.
+
+If $2x\in\Z$, then $\sin(2\pi nx)=\sin(4\pi nx)=0$ for every positive integer $n$. The entire Fourier part \eqref{eq:periodiccoeff} vanishes, not merely its first term. Only the geometric shift contributions remain. They give a positive convergence radius. At $x=0$ all coefficients vanish. This proves both directions.
+\end{proof}
+
+\begin{remark}[What the Gevrey conclusion does not prove]
+The large-order law locates a natural factorial scale and is compatible with an obstruction at action $4\pi^2$. It does not by itself prove analytic continuation of a Borel transform, locate all its singularities, or determine a summation prescription. Those stronger statements require a separate argument. We do not infer a full resurgence theorem from coefficient growth alone.
+\end{remark}
+
+\section{Convergent series with an exact invisible correction}
+\label{sec:half}
+
+\subsection{The base half-integer}
+
+\begin{theorem}[The exact half-integer defect]
+\label{thm:half}
+For every real $h>0$,
+\begin{equation}
+\boxed{\displaystyle
+L_h(1/2)=\log\frac4\pi+\frac h8
+ +\log\bigl((h/4)\coth(h/4)\bigr)+4M(h)-2M(h/2).}
+\label{eq:halfexact}
+\end{equation}
+The first three terms form a function analytic at $h=0$, with Taylor radius $2\pi$. Its Taylor series is the convergent formal series \eqref{eq:fixedseries} at $x=1/2$. The remaining term is positive and satisfies
+\begin{equation}
+4M(h)-2M(h/2)=4\ee^{-4\pi^2/h}+O(\ee^{-8\pi^2/h}).
+\label{eq:halfleading}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Split the product at half-integer powers:
+\[
+\Pq_{\sqrt Q}=(Q^{1/2};Q)_\infty\Pq_Q.
+\]
+The $q$-Gamma definition therefore gives
+\[
+\Gamma_Q(1/2)=(1-Q)^{1/2}\frac{\Pq_Q^2}{\Pq_{\sqrt Q}}.
+\]
+Use $\Gamma_Q(3/2)=\Gamma_Q(1/2)/(1+\sqrt Q)$ and $\Gamma_Q(2)=1$ in \eqref{eq:H}. After cancellation,
+\begin{equation}
+H_h(1/2)=\ee^{h/4}\coth(h/4)
+                      \frac{\Pq_{\ee^{-h/2}}^2}{\Pq_{\ee^{-h}}^4}.
+\label{eq:halfproduct}
+\end{equation}
+Apply \eqref{eq:eta} at $h/2$ and $h$. With $r=\ee^{-4\pi^2/h}$, the ratio becomes
+\[
+\frac{\Pq_{\ee^{-h/2}}^2}{\Pq_{\ee^{-h}}^4}
+ =\frac h\pi\ee^{-h/8}\frac{\Pq_{r^2}^2}{\Pq_r^4}.
+\]
+Taking logarithms in \eqref{eq:halfproduct} proves \eqref{eq:halfexact}.
+
+The function $(h/4)\coth(h/4)$ has a removable singularity and value $1$ at zero. It has its nearest zeros at $h=\pm2\pi\ii$ and no zeros or poles inside that disk. Its logarithm is consequently analytic in $|h|<2\pi$, and the zeros on the boundary show that the Taylor radius is exactly $2\pi$. By \eqref{eq:M}, the remaining term is flat as $h\downarrow0$: it is $O(h^N)$ for every fixed $N$. Uniqueness of the coefficients in a power asymptotic expansion identifies the Taylor series with \eqref{eq:fixedseries}.
+
+Finally, $M(h/2)$ uses the parameter $r^2$, whereas $M(h)$ uses $r$. Termwise comparison in \eqref{eq:M} shows $M(h)>M(h/2)>0$. Thus $4M(h)-2M(h/2)>0$, and its first exponential term is \eqref{eq:halfleading}.
+\end{proof}
+
+\subsection{Transport to every nonintegral half-integer}
+
+\begin{corollary}[The same defect on every half-integer sheet]
+\label{cor:allsheets}
+For each $n\in\Z_{\ge0}$ there is a function $G_n(h)$ analytic near zero whose Taylor series is \eqref{eq:fixedseries} at $x=n+1/2$, and
+\begin{equation}
+L_h(n+1/2)=G_n(h)+4M(h)-2M(h/2)
+\qquad(h>0).
+\label{eq:allsheets}
+\end{equation}
+Here $G_n$ is continued along the positive real axis by the finite formula below. At integral $x=n$, in contrast, the analytic sum of the formal series equals $L_h(n)$ exactly near zero.
+\end{corollary}
+\begin{proof}
+The interpolation has the exact recurrence
+\begin{equation}
+\frac{H_h(x+1)}{H_h(x)}
+ =\ee^{h(2x+1)}
+ \frac{(1-\ee^{-h(2x+1)})(1-\ee^{-h(2x+2)})}
+      {(1-\ee^{-h(x+1)})^2}.
+\label{eq:recurrence}
+\end{equation}
+Each factor in this finite ratio, after canceling its powers of $h$, is analytic and nonzero near $h=0$. Let $\mathcal R_h(x)$ denote the right-hand side. One explicit choice is
+\begin{equation}
+G_n(h)=\log\frac4\pi+\frac h8+
+ \log\bigl((h/4)\coth(h/4)\bigr)
+ +\sum_{j=0}^{n-1}\log\mathcal R_h(j+1/2).
+\label{eq:Gn}
+\end{equation}
+Each logarithm is chosen by its positive real value near $h=0$. Iterating \eqref{eq:recurrence} proves \eqref{eq:allsheets}; no additional flat term is introduced by any finite ratio. The coefficient identification again follows from uniqueness of power asymptotic coefficients. For integer $n$, the finite product in \cref{sec:exact} is itself analytic and positive at $h=0$, so its logarithm has a convergent Taylor series representing the function.
+\end{proof}
+
+The conclusion is stronger than merely saying that asymptotic expansions can miss flat functions. Here the formal expansion actually converges; the exceptional set on which it converges is characterized exactly; and the missing function is explicitly known on one of its two arithmetic sublattices. This gives a concrete test case for any symbolic transseries system that conflates the analytic sum of a formal block with the originally specified $q$-product.
+
+\subsection{A first inverse consequence of the flat defect}
+A simple local consequence makes the distinction operational. Fix $n\ge0$ and set $x_*=n+1/2$. Let $\ell_h=G_n(h)$. For sufficiently small $h$, $\ell_h>0$, since $G_n(h)\to L_0(x_*)>0$. The exact inverse of this target satisfies
+\begin{equation}
+X_h(\ell_h)=x_*
+ -\frac{4M(h)-2M(h/2)}{L_0'(x_*)}
+ +o(\ee^{-4\pi^2/h}).
+\label{eq:halfinverse}
+\end{equation}
+Indeed $L_h(x_*)-\ell_h=4M(h)-2M(h/2)$, and $L_h'$ tends to $L_0'$ locally near the positive point $x_*$. Indeed \eqref{eq:Phibounds} also gives $0\le L_h'(x)-L_0'(x)\le3hx$. The mean value theorem first bounds the displacement by the flat defect and then gives \eqref{eq:halfinverse}. Thus omission of the invisible forward term produces a definite, explicitly signed inverse displacement. No algebraic order in the convergent fixed-index block can detect it.
+
+\section{A balanced-product extension: Gaussian multinomials}
+\label{sec:multinomial}
+
+The mechanism behind the central result is cancellation of the affine ambiguity in \eqref{eq:PhiEM}. It therefore extends to every finite balanced factorial ratio of the following type. This extension concerns values and their uniform remainders; the stronger inverse theorem has been proved above only for the central family.
+
+Let $r\ge2$, choose positive weights $\lambda_1,\ldots,\lambda_r$, and put $\Lambda=\sum_i\lambda_i$. Define
+\begin{align}
+H_{h,\boldsymbol\lambda}(x)
+ &=\exp\left(\frac h2\Bigl(\Lambda^2-\sum_i\lambda_i^2\Bigr)x^2\right)
+       \frac{\Pq_Q(\Lambda x)}{\prod_i\Pq_Q(\lambda_i x)},\label{eq:multiH}\\
+L_{0,\boldsymbol\lambda}(x)
+ &=\log\Gamma(\Lambda x+1)-\sum_i\log\Gamma(\lambda_i x+1).
+\label{eq:multicore}
+\end{align}
+Whenever all $\lambda_i x$ are nonnegative integers, \eqref{eq:multiH} is the corresponding Gaussian multinomial coefficient at $q=\ee^h$.
+
+For a function $g$ on $[0,\infty)$, use the endpoint-balanced combination
+\begin{equation}
+\mathcal D_{\boldsymbol\lambda}g(\tau)
+ =g(\Lambda\tau)-\sum_i g(\lambda_i\tau)+(r-1)g(0).
+\label{eq:Dmulti}
+\end{equation}
+This operator annihilates every affine function. Define $I(t)=\int_0^t f(s)\dd s$ and
+\begin{align}
+F_{h,K,\boldsymbol\lambda}(x)
+={}&L_{0,\boldsymbol\lambda}(x)
+ +h^{-1}\mathcal D_{\boldsymbol\lambda}I(hx)
+ +\tfrac12\mathcal D_{\boldsymbol\lambda}f(hx)\notag\\
+&+\sum_{k=1}^K\frac{B_{2k}h^{2k-1}}{(2k)!}
+             \mathcal D_{\boldsymbol\lambda}f^{(2k-1)}(hx).
+\label{eq:multiF}
+\end{align}
+
+\begin{theorem}[Uniform balanced multinomial remainder]
+\label{thm:multinomial}
+For all $h>0$, $K\ge1$, and $x\ge0$,
+\begin{equation}
+\log H_{h,\boldsymbol\lambda}(x)-F_{h,K,\boldsymbol\lambda}(x)
+ =\mathcal D_{\boldsymbol\lambda}T_{h,K}(hx),
+\label{eq:multiR}
+\end{equation}
+and
+\begin{equation}
+\sup_{x\ge0}
+|\log H_{h,\boldsymbol\lambda}(x)-F_{h,K,\boldsymbol\lambda}(x)|
+ \le 2r p_Kh^{2K-1}d_{2K}.
+\label{eq:multibound}
+\end{equation}
+The bound is independent of the positive weights, so it is also uniform as some weights approach zero. For each fixed positive weight vector,
+\begin{equation}
+\lim_{x\to\infty}
+ \bigl(\log H_{h,\boldsymbol\lambda}(x)-F_{h,K,\boldsymbol\lambda}(x)\bigr)
+ =(r-1)M(h).
+\label{eq:multilower}
+\end{equation}
+With $K=K(h)$, the upper bound is $(4r+o(1))\ee^{-4\pi^2/h}$, whereas the lower bound on the supremum is $(r-1)M(h)$.
+\end{theorem}
+\begin{proof}
+The definitions give
+\[
+\log H_{h,\boldsymbol\lambda}(x)-L_{0,\boldsymbol\lambda}(x)
+ =\Phi_h(\Lambda x)-\sum_i\Phi_h(\lambda_i x).
+\]
+The quadratic terms in \eqref{eq:Phi} yield the exponential prefactor in \eqref{eq:multiH}; all terms linear in $x$ cancel because $\Lambda=\sum_i\lambda_i$. Apply \eqref{eq:PhiEM} to every term. The unknown slopes cancel for the same reason, and the constants combine into $(r-1)T_{h,K}(0)$. The remaining finite terms are exactly \eqref{eq:multiF}. This proves \eqref{eq:multiR}.
+
+The absolute sum of the coefficients of $\mathcal D_{\boldsymbol\lambda}$ is at most $1+r+(r-1)=2r$. Apply \eqref{eq:Tbounds} with $j=0$ to obtain \eqref{eq:multibound}. Since every weight is strictly positive, all the nonconstant $T$ terms tend to zero when $x\to\infty$. Their remaining constant is $(r-1)T_{h,K}(0)=(r-1)M(h)$ by \cref{cor:Tzero}. Finally the upper bound is $r/2$ times $\eps_K(h)$, so \cref{thm:optimal} gives its stated asymptotic value.
+\end{proof}
+
+The uniform upper estimate survives a degenerating weight without any singular coefficient estimates. The lower-limit formula, however, must not be applied uniformly after first setting a weight to zero: an exactly zero weight reduces the effective number of nontrivial factorials. This is another instance where the order of limits matters, even though the common upper bound remains valid.
+
+\section{Computational audits and reproducibility}
+\label{sec:computations}
+
+\subsection{What was checked}
+The accompanying program \texttt{code/verify.py} implements the exact positive Lambert sum, the Gamma-core approximation, all explicit error bounds, the coefficient polynomials, and the half-integer defect. The recorded run used 100 decimal digits with \texttt{mpmath 1.3.0}, \texttt{SymPy 1.14.0}, and Python 3.13.5. The command reproducing the recorded suite is
+\begin{quote}\ttfamily
+python code/verify.py --quick
+\end{quote}
+The word \texttt{quick} identifies the recorded parameter grid; it does not reduce arithmetic to machine precision. The program also offers a larger exploratory grid, whose output is not used in the tables in this article.
+
+The successful recorded suite contains 42 exact rational Faulhaber comparisons; three independent finite-product comparisons; six forward-error checks spanning small, intermediate, and large $hx$; two inverse checks; two exact half-integer-identity checks evaluated numerically; and five large-order comparisons. The first five coefficient polynomials are also saved. Every assertion in this recorded suite passed. The supplemental program checks the balanced multinomial extension and the exact endpoint curvature.
+
+These are finite checks of formulas and implementations, not proofs of universal quantifiers. None uses outward-rounded interval arithmetic. The analytic bounds in the preceding sections are proved independently of the computations, and the stored floating-point evaluations of those bounds are not themselves certified enclosures.
+
+\subsection{Independent evaluation and an explicit tail bound}
+For the positive sum \eqref{eq:positive}, truncation after $N$ terms has tail bounded by
+\begin{equation}
+0\le\operatorname{Tail}_N\le
+\frac{\ee^{-h(N+1)}}{(N+1)(1-\ee^{-h})(1-\ee^{-h(N+1)})}.
+\label{eq:numerictail}
+\end{equation}
+Indeed, discard $(1-\ee^{-hmx})^2\le1$, use
+\[
+\frac1{\ee^{hm}-1}=\frac{\ee^{-hm}}{1-\ee^{-hm}}
+ \le\frac{\ee^{-hm}}{1-\ee^{-h(N+1)}}\quad(m\ge N+1),
+\]
+bound $1/m\le1/(N+1)$, and sum the geometric series. The bound is uniform in $x$.
+
+The approximate formula is evaluated independently using \eqref{eq:F}. For high derivatives, direct repeated symbolic differentiation is avoided. The pole expansion \eqref{eq:derivativepoles} is evaluated through a conjugate Hurwitz-zeta pair:
+\begin{equation}
+f^{(r)}(t)=(-1)^{r-1}(r-1)!
+\,2\Re\left((2\pi\ii)^{-r}
+               \zeta\left(r,1-\frac{\ii t}{2\pi}\right)\right),\quad r\ge2.
+\label{eq:Hurwitzderivative}
+\end{equation}
+For $A(\tau)$ close to zero, the integral form in \eqref{eq:A} avoids the subtraction of nearly equal dilogarithms. Both precautions concern numerical stability; neither changes the mathematical approximation.
+
+\subsection{Uniform error bounds and observed errors}
+\begin{table}[htbp]
+\centering\small
+\caption{Explicit global bounds for the recorded truncation orders. The inverse bound is \eqref{eq:inverseabsolute}. Values are rounded for display.}
+\label{tab:bounds}
+\begin{tabular}{@{}ccccc@{}}\toprule
+$h$&$K$&$\eps_K(h)$&$\eta_K(h)$&Inverse bound\\\midrule
+$1$&$20$&$5.79171\cdot10^{-17}$&$1.75937\cdot10^{-15}$&$1.75937\cdot10^{-15}$\\
+$1/2$&$40$&$4.11538\cdot10^{-34}$&$1.25073\cdot10^{-32}$&$1.25073\cdot10^{-32}$\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Observed forward errors. The scale column divides the absolute error by $\exp(-4\pi^2/h)$.}
+\label{tab:forward}
+\begin{tabular}{@{}ccccr@{}}\toprule
+$h$&$\tau=hx$&$x$&$|L_h-F_{h,K}|$&Error / scale\\\midrule
+$1$&$0.05$&$0.05$&$5.72938\cdot10^{-19}$&$0.0800510$\\
+$1$&$1$&$1$&$2.90715\cdot10^{-18}$&$0.4061874$\\
+$1$&$10$&$10$&$7.15717\cdot10^{-18}$&$1.0000000$\\
+$1/2$&$0.05$&$0.1$&$1.19731\cdot10^{-35}$&$0.2337351$\\
+$1/2$&$1$&$2$&$3.51512\cdot10^{-35}$&$0.6862110$\\
+$1/2$&$10$&$20$&$5.12250\cdot10^{-35}$&$1.0000000$\\\bottomrule
+\end{tabular}
+\end{table}
+
+The far-index rows approach the modular lower-limit value, as \cref{thm:sharp} predicts. The upper-bound-to-scale ratios are approximately $8.09218$ and $8.03392$, consistent with the proved limiting constant $8$. The derivative-bound ratios are approximately $245.819$ and $244.164$, approaching the proved $24\pi^2\approx236.871$. These finite samples illustrate convergence of the bounds, but are not used to establish it.
+
+For the inverse tests, targets were generated from the exact Lambert representation at known roots. At $h=1$, the roots $x=0.1$ and $x=2$ gave approximate-inverse errors $4.09209\cdot10^{-18}$ and $1.56252\cdot10^{-18}$, respectively, below the common global bound $1.75937\cdot10^{-15}$. A secant solver was used for this audit; a production certificate should instead enclose the approximate root with directed rounding or rigorously evaluated sign brackets.
+
+\subsection{Arithmetic and flat-term checks}
+At $x=1/3$, the ratio of the exact rational coefficient to the leading expression in \eqref{eq:largeorder} was
+\begin{center}\small
+\begin{tabular}{@{}cr@{}}\toprule
+$m$&Ratio\\\midrule
+$5$&$0.4468963033$\\
+$10$&$1.0000018516$\\
+$20$&$1.0000000000004547$\\
+$40$&$1+4.1359\cdot10^{-25}$\\\bottomrule
+\end{tabular}
+\end{center}
+The relatively poor value at $m=5$ is informative: the finite Bernoulli-shift contributions can dominate preasymptotic orders even though they are eventually negligible compared with factorial growth.
+
+At $x=1/2$, the observed defects were
+\[
+\begin{array}{c|c}
+h&L_h(1/2)-\bigl(\log(4/\pi)+h/8+\log((h/4)\coth(h/4))\bigr)\\\hline
+1&2.8628663340744164750\cdot10^{-17}\\
+1/2&2.0490009116941720702\cdot10^{-34}
+\end{array}
+\]
+and agreed with $4M(h)-2M(h/2)$ to the numerical tolerance in the recorded run. The ratios to $\ee^{-4\pi^2/h}$ approach $4$, as required by \eqref{eq:halfleading}.
+
+\subsection{A practical evaluation policy}
+The theory suggests three complementary modes, not one universally fastest formula. For modest integer indices, evaluate the finite product directly. For small $h$ with general real indices, the Gamma-core representation gives a uniformly controlled approximation, and a user-specified tolerance may require substantially fewer terms than $K(h)$. For extremely high accuracy, the exact Lambert representation and its tail bound provide an independent route, while modular identities expose terms lost to naive subtraction.
+
+The present reference implementation emphasizes clarity and independent verification. It is not an optimized asymptotic engine, a validated interval package, or a proof assistant. In particular, special-function evaluations themselves must be enclosed before a floating-point result is advertised as a numerical certificate.
+
+\section{Connection to the transseries and formalization program}
+\label{sec:program}
+
+\subsection{Three layers of information that should remain distinct}
+The analysis separates an exact analytic block, a formal asymptotic block, and a flat correction. The exact block $L_0$ is retained because its unexpanded behavior matters near the endpoint. The formal corrections have an explicit finite-order meaning through \cref{thm:uniform}; their notation is not a convergence claim. A flat sector such as $M(h)$ is invisible to all powers of $h$, even on a sheet where the power series converges.
+
+This distinction directly complements the repository's scale and flatness interfaces \cite{reporeadme}. A symbolic representation should record not only a list of coefficients but also which exact function or germ is being approximated, the parameter domain, the interpretation of the truncation order, and the admissible remainder. The half-integer example supplies a rigorous regression test: replacing the canonical $q$-product by the analytic sum of its convergent power block must be reported as changing the represented function by a known flat sector.
+
+The balanced-product theorem further suggests that affine cancellation should be exposed as a reusable operation. A library need not reprove the real-index interpolation argument for each factorial ratio. It can prove one primitive remainder identity and then verify a finite linear-balance condition.
+
+\subsection{A staged formalization route}
+No Lean file in the archive claims to prove these theorems. A credible formalization would proceed through independently useful layers.
+
+First, formalize the real kernel $f$ with its removable endpoint, the signs of $f''$ and $f'''$, and the explicit derivative bounds. This stage needs real and complex analytic facts beyond a datatype for formal transseries. Second, establish the differentiated product identity \eqref{eq:Phisecond} and the integrable Euler--Maclaurin tail, including hypotheses justifying every derivative and limit. Third, package the exact primitive identity and a general finite affine-cancellation lemma; the central and multinomial remainders then become finite algebraic combinations.
+
+The inverse theorem can be formalized largely independently of the special functions. Its abstract hypotheses are an increasing convex map $L$ with $L(0)=0$, a vanishing residual, a relative derivative estimate, and a lower derivative estimate away from zero. The proof splits the endpoint and bulk regimes and transports a value error without a global nonzero slope. The arithmetic classification then forms a separate layer using Bernoulli shift identities, Fourier coefficients, factorial-versus-geometric growth, and analytic germs.
+
+The source repository already emphasizes statement-level distinctions between exact Lean counterparts and human proofs. The same standard should be retained here: checking coefficient identities or special cases does not formalize the global remainder, and formalizing an abstract inverse lemma does not verify that its special-function hypotheses hold.
+
+\section{Further research questions and concrete next targets}
+\label{sec:questions}
+
+The following are proposed research directions arising from the proved results. They are not presented as solved conclusions, and their status as globally open literature problems has not been exhaustively checked.
+
+\subsection{The exact two-variable exponential remainder profile}
+Determine a useful leading formula for
+\[
+\ee^{4\pi^2/h}\,R_{h,K(h)}(x)
+\]
+that is uniform over the transition between fixed $x$, fixed $hx$, and $hx\to\infty$. The large-$x$ limit is $1$ at leading exponential order, but the finite-index behavior is not determined by that constant. The periodic Bernoulli kernel in \eqref{eq:T} and the nearest complex poles in \eqref{eq:derivativepoles} supply a concrete starting point. A successful result should state how the rounding of $K(h)$ affects any leading profile, rather than silently treating the truncation order as continuous.
+
+\subsection{Hyperasymptotic correction beyond the first action}
+Can an explicit endpoint-compatible correction improve the global error from action $4\pi^2$ to a larger action? Adding $M(h)$ alone repairs the far-index limit but breaks the exact value at $x=0$, where the residual must vanish. The correction must therefore depend on the index. The half-integer identity supplies additional exact constraints: all nonintegral half-integer sheets share the defect $4M(h)-2M(h/2)$ in their fixed-index analytic representation. These constraints should be reconciled with, not substituted for, the uniform remainder profile.
+
+\subsection{A complete Borel description at fixed index}
+Compute the Borel transform of \eqref{eq:fixedseries} explicitly, continue it, and locate all singularities and their residues or local types. Formula \eqref{eq:periodiccoeff} suggests a tractable separation into periodic factorial terms and entire contributions from Bernoulli shifts. A precise comparison with quantum-dilogarithm resurgence \cite{gk} is needed before asserting an independent Stokes theorem. The half-integer cancellation should appear as disappearance of the factorial Fourier part, while the canonical flat sector still requires a summation or boundary prescription.
+
+\subsection{Arithmetic classification for general balanced products}
+For \eqref{eq:multiH}, determine exactly which fixed weight-index configurations give convergent algebraic series. The central condition $2x\in\Z$ arose because a single trigonometric amplitude could vanish only on the half-integer lattice. With several weights, the relevant Fourier coefficients involve a finite combination of $\sin(2\pi n\lambda_i x)$ and $\sin(2\pi n\Lambda x)$. Vanishing of the first harmonic need not force all harmonics to vanish. A useful classification should distinguish complete cancellation, delayed first nonzero action, and finite-product cases.
+
+\subsection{Global inversion for noncentral and multinomial families}
+The value theorem \cref{thm:multinomial} is uniform in the weights, but the central inverse proof used specific convexity and derivative inequalities. Determine the correct inverse condition numbers when weights approach a face of the simplex. Some limits reduce the effective number of factorials, and the limiting map may lose growth. The desired theorem should state explicitly which normalization gives a uniform inverse estimate and which degenerations make such an estimate impossible.
+
+\subsection{Complex sectors and inverse branch geometry}
+Extend the real-positive theory to sectors of complex $h$ and complex indices. The nearest singularities of $f$ and the zeros of the finite-product factors then become geometric constraints rather than merely sources of derivative bounds. A complete statement would specify branches, sector widths, uniformity near Stokes directions, and the location of critical points of the inverse map. The real estimates alone do not justify such an extension.
+
+\subsection{Theta and Galois-number crossover regimes}
+The repository's Galois-number formulas involve root-lattice theta factors and residue-class sheets. Investigate whether a Gamma-core regularization can be combined with Poisson summation to handle simultaneous $q\to1$, large index, and changing lattice width. The main obstacle is not only a factorial endpoint singularity: the dominant theta contribution and the finite-size correction can reorganize together. A first target is a two-parameter uniform theorem for the ordinary two-block Galois numbers before tackling higher-rank flags.
+
+\subsection{Sharp inverse constants and lower bounds}
+The forward action is sharp for the uncorrected approximation, but this manuscript proves only an upper bound for the inverse. Determine the actual supremum of the inverse error, its leading constant, and the index scale at which it is attained. Large-index residuals approach $M(h)$ while the derivative grows, so the point controlling the forward supremum need not control the inverse supremum. The endpoint-sensitive estimate may also admit a much smaller constant than $24\pi^2$.
+
+\subsection{Certified algorithms and proof-producing implementations}
+Build an outward-rounded implementation of the positive Lambert sum, the conjugate Hurwitz-zeta derivative formula, the regularized phase, and the approximate inverse. The result should emit an enclosure with a separately accounted truncation error, special-function evaluation error, and root-solver error. A practical algorithm should choose among the integer finite product, low-order Gamma-core expansion, optimal truncation, and modular formulas. Formal certificates for the finite inequalities could be the first bridge to the repository's Lean development.
+
+\subsection{Exact blocks as a general transseries design principle}
+The successful regularization suggests a broader question: when can singular coefficients in a multi-scale expansion be absorbed into a known exact special-function block so that the remaining coefficient family has globally integrable derivative bounds? Gamma quotients, Barnes functions, incomplete Gamma functions, and theta functions are candidate blocks, but each case needs its own exact remainder identity. A useful general theorem would identify the required endpoint singularity structure and the finite cancellation conditions, not merely recommend keeping more terms unexpanded.
+
+\section{Conclusion}
+
+The repository's endpoint-matching question can be answered for the central Gaussian interpolation without introducing a new formal scale by fiat. The essential step is to keep the classical Gamma quotient exact and apply Euler--Maclaurin only to a regularized kernel. A differentiated infinite-tail argument makes this legitimate for real indices. Explicit integrable derivative bounds then yield a uniform exponentially accurate approximation, while the eta transformation proves that its exponential action cannot be improved by changing only the finite truncation order.
+
+The inverse analysis adds a second ingredient: a residual that vanishes to the correct order at a zero-slope endpoint can be transported without losing half the exponential action. Finally, the fixed-index arithmetic classification shows that convergence of the power block does not determine the canonical function. At nonintegral half-integers, an exactly computable modular correction survives beyond every algebraic order. These results provide both new work within the repository's stated research program and concrete tests for future symbolic, numerical, and formal transseries machinery.
+
+\appendix
+\section{Repository provenance and scope ledger}
+\label{app:provenance}
+
+The repository was inspected through its GitHub connector at the pinned tree
+\begin{center}\small\snap\end{center}
+The comparison does not claim to cover unpublished conversations or commits added after that snapshot. The paths directly relevant to this work are:
+\begin{quote}\small\ttfamily\raggedright
+Analysis/Transseries/README.md\par
+Analysis/Transseries/docs/series-and-transseries/README.md\par
+Analysis/Transseries/docs/series-and-transseries/\allowbreak
+Combinatorial\_Transseries\_Inverses/\allowbreak
+Combinatorial\_Transseries\_Inverses.tex
+\end{quote}
+The companion source blob was
+\begin{center}\small\texttt{17647298fa31d61c061d556a3b1e451a228ae20e}.\end{center}
+The relevant chapter label is \path{ct:ch:double}. Its finite-order tail theorem is \path{t3:prop:double-A}; the modular identity is \path{t3:eq:modularP}; and the central exact crossover identity is \path{t3:eq:central-double-exact}. The explicit endpoint qualification follows the equations labeled \path{t3:eq:Ssmall} and \path{t3:eq:Slarge}, around source lines 4195--4210 of the inspected file. The source's existing inverse expansion is labeled \path{t3:eq:crossover-inverse}, with all-order coefficients at \path{t3:eq:crossover-all}.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.29\linewidth}p{.64\linewidth}@{}}\toprule
+Item&Status in this manuscript\\\midrule
+Dilogarithmic phase and outer expansion&Inherited from the companion, restated to identify the endpoint problem.\\
+Gamma-core global remainder&Proved here from an exact real-index primitive identity.\\
+Optimal exponential bound&Proved here with explicit constants and a modular lower bound for this scheme.\\
+Uniform inverse theorem&Proved here, including the degenerate endpoint. No sharp inverse lower bound is claimed.\\
+Fixed-index coefficients&Derived here using classical Mellin and Bernoulli identities; broad $q$-asymptotic methods are credited to prior literature.\\
+Convergence classification and flat defect&Proved here for the specified canonical interpolation; literature priority remains unestablished.\\
+Balanced multinomial extension&Value and remainder theorem proved here. A general uniform inverse theorem is proposed, not proved.\\
+Numerical checks&Recorded finite symbolic and high-precision tests; no interval arithmetic or Lean verification.\\\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Notation and dependencies}
+\label{app:notation}
+\begin{center}\small
+\begin{tabular}{@{}p{.22\linewidth}p{.71\linewidth}@{}}\toprule
+Symbol&Meaning\\\midrule
+$h,q,Q$&$h>0$, $q=\ee^h>1$, $Q=\ee^{-h}\in(0,1)$.\\
+$x,\tau$&Real index $x\ge0$; crossover variable $\tau=hx$.\\
+$L_h,L_0$&Logarithmic Gaussian interpolation and exact classical Gamma core.\\
+$f$&Regular kernel $\log((\ee^t-1)/t)$ with removable value at zero.\\
+$S,A,B,C_k$&Outer phase; regularized phase, amplitude, and coefficients.\\
+$F_{h,K},R_{h,K}$&Finite Gamma-core approximation and its exact error.\\
+$T_{h,K}$&Periodic-Bernoulli tail integral defining the error.\\
+$d_r,p_K$&Explicit derivative-integral and periodic-Bernoulli bounds.\\
+$\eps_K,\eta_K$&Uniform absolute value bound and relative derivative bound.\\
+$\Act,M(h)$&Action $4\pi^2$ and exact modular Euler-product correction.\\
+$\ell,X_h,X_{h,K}$&Unscaled target $\ell=\log Y$ and exact/approximate inverse indices.\\
+$a_m(x),a(h)$&Fixed-index coefficient of $h^{2m}$; separately, endpoint coefficient of $x^2$.\\\bottomrule
+\end{tabular}
+\end{center}
+
+The logical dependency chain for the uniform result is
+\[
+\begin{aligned}
+\text{kernel bounds}&\ \Longrightarrow\ \text{real-index remainder identity}\\
+&\ \Longrightarrow\ \text{global error bounds}\\
+&\ \Longrightarrow\ \text{optimal truncation}.
+\end{aligned}
+\]
+The inverse theorem additionally uses convexity and relative derivative control. The modular lower bound uses the eta identity. The arithmetic classification uses the Mellin coefficient formula and Bernoulli Fourier series, while the half-integer defect uses a separate exact product identity. None of these proof dependencies is replaced by the numerical tables.
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+V.~Reshetnikov, \emph{ProveIt: Combinatorial Transseries and Their Inverses},
+source path and snapshot specified in \cref{app:provenance},
+inspected September 29, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/aa06d3e29498aaa37a5b7924764d8a7b6f9d9ce0/Analysis/Transseries}.
+
+\bibitem{reporeadme}
+V.~Reshetnikov, \emph{ProveIt: Transseries and series-and-transseries README files},
+same snapshot and inspection date as \cite{repo}. These documents record the
+source consolidation and the scope of the Lean crosswalk.
+
+\bibitem{mcintosh}
+R.~J. McIntosh, Some asymptotic formulae for $q$-shifted factorials,
+\emph{The Ramanujan Journal} \textbf{3} (1999), 205--214.
+\url{https://doi.org/10.1023/A:1006949508631}.
+The publisher's abstract and bibliographic record were inspected; no claim
+of an exhaustive theorem-by-theorem comparison with the full article is made.
+
+\bibitem{dlmfem}
+NIST Digital Library of Mathematical Functions, \S2.10(i),
+Euler--Maclaurin formula. \url{https://dlmf.nist.gov/2.10}.
+Accessed September 29, 2026.
+
+\bibitem{dlmfqgamma}
+NIST Digital Library of Mathematical Functions, \S5.18,
+$q$-Gamma and $q$-Beta functions. \url{https://dlmf.nist.gov/5.18}.
+Accessed September 29, 2026.
+
+\bibitem{dlmfeta}
+NIST Digital Library of Mathematical Functions, \S27.14,
+Unrestricted partitions, Euler products, and the Dedekind eta function.
+\url{https://dlmf.nist.gov/27.14}. Accessed September 29, 2026.
+
+\bibitem{dlmfhurwitz}
+NIST Digital Library of Mathematical Functions, \S25.11,
+Hurwitz zeta function. \url{https://dlmf.nist.gov/25.11}.
+Accessed September 29, 2026.
+
+\bibitem{dlmfbern}
+NIST Digital Library of Mathematical Functions, \S24.8(i),
+Fourier series of Bernoulli polynomials.
+\url{https://dlmf.nist.gov/24.8}. Accessed September 29, 2026.
+
+\bibitem{gk}
+S.~Garoufalidis and R.~Kashaev,
+\emph{Resurgence of Faddeev's quantum dilogarithm},
+arXiv:2008.12465, version 2, 2020.
+\url{https://arxiv.org/abs/2008.12465}.
+Cited for related resurgent context, not used as a substitute for a proof of
+any theorem in this manuscript.
+
+\bibitem{sauzin}
+D.~Sauzin, \emph{Introduction to 1-summability and resurgence},
+arXiv:1405.0356, 2014.
+\url{https://arxiv.org/abs/1405.0356}.
+\end{thebibliography}
+\end{document}

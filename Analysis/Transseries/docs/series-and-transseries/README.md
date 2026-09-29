@@ -2,7 +2,7 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are six unmerged
+2026-09-04 (see the end of this file). Beside them are twelve unmerged
 arrivals of 2026-09-29, each filed whole with its PDF (see "Arrivals of
 2026-09-29" below).
 
@@ -263,15 +263,19 @@ companion's directory omits the "And".
 
 ## Arrivals of 2026-09-29 (unmerged)
 
-Six research packages arrived through the repository drop zone
-`docs/incoming/` on 2026-09-29 (its batch 45). Each is filed whole, with its
-PDF, verification program and recorded outputs, in a directory named after
-the document. None has been reviewed claim by claim, and none is merged into
-either volume; merging is deferred. None contains Lean, and none of its
-statements is formalized. All six were written against the pre-split tree,
-so they cite the volumes under
+Twelve research packages arrived through the repository drop zone
+`docs/incoming/` on 2026-09-29, in two deliveries (its batches 45 and 46).
+Each is filed whole, with its PDF, verification program and recorded
+outputs, in a directory named after the document. None has been reviewed
+claim by claim, and none is merged into either volume; merging is deferred.
+None contains Lean, and none of its statements is formalized. Ten were
+written against the tree before the transseries split and cite the volumes
+under
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/`;
-the passages they cite are unchanged here apart from that path.
+the passages they cite are unchanged here apart from that path. The
+gamma-core and residue-obstruction articles cite the current paths. No
+article saw the others in the repository; where one continues another, it
+read it from Vladimir's library, as noted below.
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -364,6 +368,68 @@ bear on the `τ ≥ τ₀` restriction of the Gaussian-binomial double scaling i
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/`
 (`q3:thm:double-scaling`), which neither article cites.
 
+[`Theta_Resolved_Optimal_Truncation_q_Multinomial/`](Theta_Resolved_Optimal_Truncation_q_Multinomial/)
+holds *Theta-Resolved Optimal Truncation of q-Multinomial Transseries*
+(26-page A4 PDF, 1,691-line source, a 75-digit check program, an
+independent 150–400-digit endpoint check and a plotting script). It
+continues the q-multinomial article above, which it read from Vladimir's
+library before either was filed. It answers that article's questions Q1,
+the lattice-to-integral transition of the least remainder, and Q2, a
+uniform first hyperasymptotic correction
+(`uniform_q_multinomial_transseries.tex:1328-1343`). It proves an
+all-order expansion of the exact positive remainder at bounded
+saddle-scaled mesh, governed by a Gaussian lattice (theta) sum in the
+lattice phase and order tilt. It optimizes over all integer orders, which
+gives a phase-dependent order shift of size `√z` and the corrected
+minimum. At fixed nonresonant mesh it finds an exact arithmetic action
+above the first unresolved pole, with a periodic prefactor, and it proves
+a mesoscopic overlap between the two laws. Resolving `L` pole components
+exactly moves the first unresolved action to `2π(L+1)a_min x`. Finite and
+inverse certificates follow from positive tail bounds. General resurgent
+completion, complex sectors and a growing pole count are not claimed.
+
+[`Certified_Inversion_q_to_1_Transition/`](Certified_Inversion_q_to_1_Transition/)
+holds *Certified Inversion Through the q→1 Transition: signed remainders,
+optimal truncation, and a modular cancellation window* (24-page A4 PDF,
+1,714-line source, an exact-rational and 80-digit check program). It
+answers the same gap of the companion (`t3:prop:double-A`,
+`Combinatorial_Transseries_Inverses.tex:4103-4114`; `:4205`) for the same
+central Gaussian interpolation as the Gaussian-binomial article above. It
+gives an exact positive-kernel remainder with signed first-omitted-term
+bounds for every `h, x > 0`, a determinate Stieltjes measure with
+convergent two-sided Padé bounds, and the optimal remainder
+`(−1)^{M+1} e^{−2πx}/(π√x)` at `M = πx + O(1)` with its first relative
+correction. Its principal new result is the additive law for inverse
+errors against the modular term `e^{−4π²/h}`, with a parity-sensitive
+cancellation window at `hx = 2π + (h log h)/(4π) + O(h)`: even orders
+cancel there and odd orders reinforce. A shortest-block law extends the
+leading remainder to Gaussian multinomials. The optimal remainder and the
+window agree with the Gaussian-binomial article's theorem, which this
+article re-derives independently under the narrower hypothesis that `hx`
+stays in a compact subset of `(0, ∞)`. The fixed-`h`, `hx → ∞` regime is
+not covered.
+
+[`Gamma_Core_q_to_1_Crossover/`](Gamma_Core_q_to_1_Crossover/)
+holds *A Gamma Core Across the q → 1 Crossover: uniform exponential
+accuracy, inverse stability, and arithmetic convergence* (30-page A4 PDF,
+1,435-line source, 100-digit main and supplementary check programs with
+exact SymPy coefficient audits). It answers the same gap for the same
+interpolation by a different truncation family: it keeps the Gamma
+quotient `Γ(2x+1)/Γ(x+1)²` exact and expands the rest in `h = log q`.
+With `K = max(2, ⌈2π²/h⌉)` terms, the logarithmic error is at most
+`(8 + o(1)) e^{−4π²/h}` uniformly for all real `x ≥ 0`. A modular lower
+bound shows that this action is sharp for the family. The inverse error
+is at most `(24π² + o(1)) e^{−4π²/h}`, including the degenerate endpoint.
+At a fixed index the `h`-series converges exactly when `2x` is an
+integer; on every nonintegral half-integer sheet its sum misses the same
+flat term `4M(h) − 2M(h/2)`, a combination of modular Euler products.
+
+These three articles and the two above them answer the companion's
+`q → 1` gap together and form one unit for the deferred merge into its
+chapter "The singular transition `q → 1`". The q-multinomial article is the
+most general of them. The five use different normalizations of the same
+interpolation, so a notation dictionary must come first.
+
 [`Inverse_Harmonic_Stokes_Transport/`](Inverse_Harmonic_Stokes_Transport/)
 holds *Exponential Accuracy and Stokes Transport for Inverse Harmonic
 Transseries* (23-page A4 PDF, 1,119-line source, a 190-digit check program,
@@ -382,20 +448,96 @@ partial sum of the inverse series is not claimed. The Lean module
 `TransseriesHarmonicIncrement.lean` concerns the unrelated harmonic
 increment `plt:lem:mot-harmonic`.
 
-The four remainder articles (q-multinomial, Gaussian binomial, inverse
-harmonic and moving fold) are sharp instances of the canonical volume's
+[`Nonlinear_Stokes_Transport_Logarithmic_Inversion/`](Nonlinear_Stokes_Transport_Logarithmic_Inversion/)
+holds *Nonlinear Stokes Transport under Logarithmic Inversion: convergent
+sector expansions, exact-core resurgence, real reconstruction, and
+curvature-shifted fold scaling* (24-page A4 PDF, 1,103-line source, an
+exact SymPy and 100-digit check program and a figure script). The canonical
+volume motivates it, and it answers questions it poses itself. It proves an
+inverse-transport theorem for an analytic map perturbed by finitely many
+actions, with every mixed coefficient and a tail bound, and a weighted
+countable extension. For one action it has the form of the inverse-sector
+expansion that the inverse-harmonic article proves for its function, and
+the two should be merged together. For `z + a log z` plus finitely many Euler terms it proves that
+the inverse correction in the core coordinate `y + a log y = x` is Gevrey-1
+and resurgent, by verifying Sauzin's closure hypotheses with an explicit
+Borel kernel. It determines the finite inverse Stokes jump, and it shows a
+sign-definite `O(e^{−2x}x^{2a})` defect between averaging and inversion. It
+also recovers primitive amplitudes at nonlinear resonances and locates the
+real fold of the amplitude expansion near `e^{−1}` with its curvature
+shift. That model result bears on the reversion article's question on
+analytic subclasses stable under exact-core inversion
+(`reversion_and_one_exponential.tex:1406-1413`), and the fold on the
+moving-fold article; it cites neither. The real core
+`aX + b log X` is machine-checked in
+`Analysis/FabiusFunction/Lean/FabiusFunction/LinLogCoreInversion.lean`.
+
+[`Action_Accumulation_Nonlinear_Inversion/`](Action_Accumulation_Nonlinear_Inversion/)
+holds *Action Accumulation and Nonlinear Inversion: a Laplace–measure
+calculus, hidden oscillations, and limits of Hardy-field realization*
+(28-page A4 PDF, 1,247-line source, a 120-digit check program). It gives a
+composition and inversion calculus for exponentially weighted action
+measures, with the explicit inverse `−Σ s^{n−1}μ^{*n}/n!`, geometric
+remainders and no positive action gap required, and a rooted-tree bound
+for compact support. The function `A(x) = Σ_{j≥1} j^{−2} e^{−x/j}` has an
+exact Poisson–Bessel resolution; `A(x) − 1/x` is smaller than every power
+but has zeros `x_m = (π/4)(m + 5/8)² − 3/(32π) + O(1/m)`. Hence `A` lies
+in no Hardy field with the identity and is not definable in any
+o-minimal expansion of the reals; the zeros survive inversion of
+`x + κe^{−ax}A(x)`, and at zero gap the inverse has a convergent Catalan
+expansion yet is not its sum. It poses its own questions. It is an
+analytic counterpart to the companion's necklace frontier, where actions
+accumulate at `log q` (`Combinatorial_Transseries_Inverses.tex:2848-2852`,
+`:4971`), and to the inverse-harmonic article's problem on action
+accumulation (`inverse_harmonic_transseries.tex:994-997`). It does not
+retain divisibility indicators, so it does not supply the arithmetic
+algebra those passages ask for. It cites the Neumann well-basedness
+declarations of `Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean`
+(under their pre-split path) only to note that its supports lie outside
+them.
+
+[`Residue_Obstructions_Logarithmic_Depth_Promotion/`](Residue_Obstructions_Logarithmic_Depth_Promotion/)
+holds *Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn
+Transseries* (26-page A4 PDF, 1,170-line source, an exact-rational block
+and matrix check program). It extends
+`Analysis/Transseries/Lean/Transseries/TransseriesBlockAntiderivative.lean`
+(the canonical volume's `plt:lem:mot-block-antiderivative`) from
+polynomial blocks to well-based Hahn blocks. In the real Hahn field of
+`x, log x, …, log_n x`, the image of the `m`-th derivative is cut out by
+exactly `m` residue moments. For `P(xD)` perturbed by terms that lower the
+outer exponent uniformly, solvability at fixed depth reduces to a finite
+residue matrix with an explicit cutoff, and kernel and cokernel have
+dimension `r − rank M`. One more logarithm removes every obstruction:
+particular solutions have degree at most `s` in it and homogeneous ones at
+most `s − 1`, where `s` counts the distinct real roots. A Jordan-shift
+family attains both bounds. Its `m = 1` case sharpens the canonical
+volume's `plt:thm:ext-tower-strict`
+(`transseries_and_inversion.tex:29092`) to an exact sequence; the article
+does not cite that theorem. It concerns differential operators, not the
+compositional inverses of `plt:rmk:ext-open-depth` (`:29918-29938`).
+
+The optimal-truncation articles (q-multinomial, Gaussian binomial,
+theta-resolved, certified inversion, gamma core, inverse harmonic and
+moving fold) are sharp instances of the canonical volume's
 `p0:thm:optimal-truncation` (`transseries_and_inversion.tex:39359`). Their
 inverse enclosures use the mechanism that
 `Fabius.exists_eq_in_residual_interval`
 (`Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean`)
 machine-checks. None of them cites either.
 
-The packages retain their delivered layouts. Four checksum ledgers were
-verified in full and not filed: the two `SHA256SUMS.txt` of the regularity
-and inverse-harmonic packages and the `SHA256SUMS` of the moving-fold
-package. Those packages' READMEs still mention them. The three CRLF CSV
-tables (the reversion package's `numeric_checks.csv` and the regularity
-package's `data/quadratic_*.csv`) were normalized to LF on filing. The
+The packages retain their delivered layouts. Seven checksum ledgers were
+verified in full and not filed. From the first delivery, these are the two
+`SHA256SUMS.txt` of the regularity and inverse-harmonic packages and the
+`SHA256SUMS` of the moving-fold package. From the second, they are the
+`SHA256SUMS` of the gamma-core package, the `MANIFEST.sha256` of the
+certified-inversion package, and the `SHA256SUMS.txt` of the
+Stokes-transport and action-accumulation packages. The READMEs of all
+these packages except the gamma-core one still mention them. Eight CSV
+tables written with CRLF line endings were normalized to LF on filing: the
+reversion package's `numeric_checks.csv`, the regularity package's
+`data/quadratic_*.csv`, the Stokes-transport package's
+`figures/fold_scaling.csv`, and the theta-resolved package's four
+`data/*.csv`. Their programs write CRLF again when rerun. The
 inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`
 and `certificates.json`, and were added past the `*.log` ignore rule.

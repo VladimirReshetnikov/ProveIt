@@ -1,0 +1,1247 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark,fancyhdr,xurl}
+\usepackage{listings}
+\hypersetup{pdftitle={Action Accumulation and Nonlinear Inversion},pdfauthor={Research manuscript prepared for the ProveIt programme},pdfsubject={Laplace measures, accumulating exponential actions, oscillatory asymptotics, and analytic realization}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Action accumulation and nonlinear inversion}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Lap}{\mathcal L}
+\newcommand{\Inv}{\mathcal I}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\normx}[2]{\lVert #1\rVert_{#2}}
+\newcommand{\rise}[2]{(#1)_{#2}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\DeclareMathOperator{\Var}{Var}
+\numberwithin{equation}{section}
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\begin{document}
+\begin{center}
+{\small\scshape Transseries, asymptotic inversion, and analytic realization}\par\vspace{12pt}
+{\LARGE\bfseries Action Accumulation and Nonlinear Inversion}\par\vspace{9pt}
+{\Large A Laplace--measure calculus, hidden oscillations,\par and limits of Hardy-field realization}\par\vspace{12pt}
+{\normalsize Research manuscript prepared for the ProveIt programme}\par
+{\normalsize 29 September 2026}
+\end{center}
+\vspace{8pt}
+\begin{abstract}
+An absolutely convergent family of exponentially small functions need not be a well-based Hahn family, and its analytic sum need not belong to a nonoscillatory differential field. We investigate both issues together. First, exponentially weighted complex measures on the nonnegative action axis give a class of near-identity holomorphic germs closed under composition and inversion. The inverse has the explicit measure formula
+\[
+ \Inv(\mu)=-\sum_{n\ge1}\frac{s^{n-1}}{n!}\mu^{*n},
+\]
+with a geometric weighted-variation remainder, no positive action-gap hypothesis, and a sharp universal rooted-tree majorant for compact action support. Positive measures yield completely monotone inverse displacements and one-sided enclosures.
+
+Second, the positive entire function
+\[
+ A(x)=\sum_{j\ge1}j^{-2}\e^{-x/j}
+\]
+has an exact Poisson--Bessel resolution. Although its complete inverse-power expansion is only $x^{-1}$, its remainder has leading envelope $x^{-3/4}\e^{-2\sqrt{\pi x}}$ and an oscillating phase. We prove all-orders finite-mode error bounds and locate all sufficiently large zeros:
+\[
+ x_m=\frac\pi4\left(m+\frac58\right)^2-\frac{3}{32\pi}+O(m^{-1}).
+\]
+Consequently, $A$ cannot coexist with the identity germ in a Hardy field and is not definable on a tail in any o-minimal expansion of the real field. For $F(x)=x+\kappa\e^{-ax}A(x)$, these hidden oscillations survive nonlinear inversion; their zeros are transported exactly by the inverse's nonoscillatory core. At zero action gap and $\kappa=1$, the inverse has a convergent Catalan asymptotic expansion yet is excluded from Hardy fields containing the identity. This provides a quantitative test case for the boundary between formal support calculus, analytic summation, and tame realization. All proofs, numerical methods, limitations, and further research targets are stated explicitly.
+\end{abstract}
+\noindent\textbf{Status.} This is a proof-based research contribution with computational checks, not a peer-reviewed or Lean-verified result. The questions answered below are posed in this investigation. An exhaustive historical-priority claim, a solution of a named general transseries conjecture, and a complete audit of the repository's large consolidated volume are not asserted.
+\newpage
+\tableofcontents
+\newpage
+
+\section{The questions and the contribution}\label{sec:overview}
+
+\subsection{Why action accumulation is a useful frontier}
+A familiar inverse-transseries problem begins with finitely many small generators, for example $\e^{-a_1x},\ldots,\e^{-a_dx}$, and reverses a perturbation of an exactly invertible core. Finite generation makes coefficient enumeration particularly transparent. The situation changes when infinitely many actions move down toward an endpoint. Consider
+\begin{equation}\label{eq:model}
+ F(x)=x+\kappa\sum_{j=1}^{\infty}\frac{\e^{-(a+1/j)x}}{j^2},
+ \qquad a,\kappa>0.
+\end{equation}
+The atomic actions $a+1/j$ have no least element. Thus the displayed monomial family has no greatest monomial in the ordinary asymptotic ordering. It is not a Hahn-supported sum in that literal representation. Nevertheless, its analytic sum converges absolutely, and $F$ is a strictly increasing near-identity function sufficiently far to the right.
+
+The issue is not simply whether an inverse exists. The more informative questions are whether its coefficients can be organized without illicit formal summation, whether there are usable uniform error bounds, and what becomes of the infinitesimal information hidden by grouping infinitely many actions into one endpoint contribution.
+
+We answer four precise questions.
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item Can one give an explicit, quantitatively controlled inversion and composition calculus for accumulating action measures, including measures with no positive action gap?
+\item What effective asymptotic scales arise from the endpoint accumulation in \eqref{eq:model}, and can the small remainder be bounded rather than merely designated ``flat''?
+\item Do analyticity, positivity, and complete monotonicity force such a sum into a Hardy field or an o-minimal function class?
+\item How do the small oscillatory contributions and their zeros behave under nonlinear inversion?
+\end{enumerate}
+The answers are respectively: a weighted-measure group with explicit norm bounds; a Poisson--Bessel resolution with stretched-exponential oscillations; no; and an explicit coupling expansion together with exact zero transport.
+
+\subsection{Theorem map and boundaries of the claims}
+The central results are Theorems~\ref{thm:inverse}, \ref{thm:composition}, and \ref{thm:tree} for the measure calculus; Theorems~\ref{thm:poisson}, \ref{thm:finiteerror}, and \ref{thm:zeros} for the accumulating spectrum; and Theorems~\ref{thm:tameness} and \ref{thm:transport} for realization and inversion. The zero-gap strengthening, Theorem~\ref{thm:catalan}, gives the parameter-free Catalan-core obstruction. These statements are proved in the article, without treating numerical agreement as proof.
+
+Several ingredients are classical. Lagrange--B\"urmann inversion, convolution of Laplace transforms, Poisson summation, and the large-argument expansion of $K_1$ are not new. The contribution developed here is their precise assembly for a class extending beyond literal well-based atomic support, including norm estimates, an explicit accumulation example, and the resulting nonlinear realization obstruction. Individual statements may have antecedents in Laplace-transform, implicit-function, probability, or special-function literature; the limited bibliographic investigation does not establish priority. The counterexample resolves the overbroad implication in Q3, not an attributed conjecture of a particular author.
+
+\section{Relation to ProveIt and to existing theory}\label{sec:repo}
+
+\subsection{The repository baseline actually inspected}
+The targeted repository inspection used the snapshot
+\begin{center}
+\small\code{ae28ea2db3c01a0b777cffa6295b8fe9c4628f27}.
+\end{center}
+The relevant documentation lies under
+\begin{quote}\small\ttfamily
+Analysis/FabiusFunction/docs/\\
+semi-formalized-research-frontiers/drafts/\\
+series-and-transseries/.
+\end{quote}
+The group README and the canonical-volume README describe a consolidated polynomial--logarithmic calculus, special-function inversion, residual certificates, and a companion containing convergent finite multiexponential inversions \cite{repo-group,repo-main}. They explicitly distinguish editorial completion from complete formalization. They also state that some composition and reversion constructions remain outside the assembled Lean coverage. Such a formalization gap is not itself an unsolved mathematical problem.
+
+The inspected Lean module \code{TransseriesWellBased.lean} bridges Dickson and Neumann results to the repository's order convention \cite{repo-neumann}. In particular, its finite-factorization statements require partially well-ordered supports, with order-dual wrappers for the manuscript convention. Our action family $\{a+1/j\}$ does not satisfy that support condition. We do not weaken Neumann's theorem, contradict it, or pretend that its formal proof justifies an analytically summed family outside its hypotheses. Instead, we replace finite coefficient sums by absolutely convergent weighted-measure convolutions.
+
+The large canonical TeX source was identified but its complete contents were not retrievable through the available GitHub file interface. The comparison is consequently a targeted one based on the two READMEs and the named Lean module, not a line-by-line nonduplication audit. In particular, we make no claim that every theorem here is absent from every repository manuscript.
+
+\subsection{Four different mathematical objects}
+It is helpful to separate four settings.
+
+\paragraph{Formal Hahn and transseries calculus.}
+A formal series is defined by its support and coefficient rules. Well-basedness permits products and other operations without an analytic limit. This is the setting of the repository's Neumann bridge and of standard transseries expositions such as Edgar's \cite{edgar}. Mere absolute convergence of an expression for real $x$ is not a substitute for its formal support hypotheses.
+
+\paragraph{Analytic Laplace--measure calculus.}
+Here a measure is part of the data. Products use convolution, and infinite sums converge in explicitly weighted total variation. Its correctness is analytic. It includes some non-well-based atomic displays, but does not thereby define them as ordinary Hahn sums.
+
+\paragraph{Resurgence.}
+Analytic continuation in a Borel plane and the structure of its singularities are additional assertions. General composition and inversion results in resurgent settings are already established, for example by Sauzin and by Kamimoto--Sauzin \cite{sauzin,kamimoto}. Our weighted norm estimates alone do not prove resurgence, endless continuability, or a Stokes theorem. The Bessel resolution supplies a tractable example, not a general resurgent-completion theorem.
+
+\paragraph{Hardy-field and o-minimal realization.}
+These concern actual real germs and nonoscillation. A Poincar\'e expansion may forget an oscillating, beyond-all-orders remainder. The existence of an analytic Hardy-field realization of the abstract transseries field, proved by Aschenbrenner--van den Dries \cite{hardy}, does not require that an arbitrarily prescribed analytic summation of a formal expansion be that realization. Our obstruction concerns specified germs, not an abstract embedding theorem.
+
+\section{Exponentially weighted action measures}\label{sec:measures}
+
+\begin{definition}
+For a locally finite complex Borel measure $\mu$ on $[0,\infty)$ and a real number $X$, put
+\begin{equation}\label{eq:norm}
+ m_\mu(X)=\normx{\mu}{X}:=\int_{[0,\infty)}\e^{-Xs}\dd|\mu|(s).
+\end{equation}
+Let $\mathcal M$ be the class of such measures for which $m_\mu(X_0)<\infty$ for some $X_0\in\R$, and $\mu(\{0\})=0$. Define
+\begin{equation}\label{eq:lap}
+ h_\mu(z)=\Lap\mu(z)=\int\e^{-sz}\dd\mu(s),
+ \qquad F_\mu(z)=z+h_\mu(z).
+\end{equation}
+All germs in this article are taken on sufficiently far right half-planes, or on sufficiently far right real intervals when explicitly stated.
+\end{definition}
+For a complex measure, $\mu(\{0\})=0$ also means $|\mu|(\{0\})=0$. Its topological support may still contain $0$. Likewise, a support endpoint can lie in the support without being an atom; this distinction matters later.
+
+\begin{lemma}[Basic estimates]\label{lem:basic}
+If $m_\mu(X_0)<\infty$, then $h_\mu$ is holomorphic on $\Rea z>X_0$, and for every integer $r\ge0$,
+\begin{equation}\label{eq:derivative}
+ h_\mu^{(r)}(z)=\int(-s)^r\e^{-sz}\dd\mu(s).
+\end{equation}
+For $X>X_0$ the right side converges absolutely and uniformly on $\Rea z\ge X$. If $\mu\in\mathcal M$, then $m_\mu(X)\to0$ as $X\to\infty$, and all fixed derivatives of $h_\mu$ tend to zero uniformly on these half-planes.
+\end{lemma}
+\begin{proof}
+For $\delta>0$,
+\[
+ s^r\e^{-\delta s}\le r!\delta^{-r}\quad(s\ge0),
+\]
+by the exponential series. Multiplying this inequality by $\e^{-X_0s}$ supplies a common integrable majorant on any strictly smaller half-plane. Differentiation under the integral is therefore justified. Dominated convergence gives $m_\mu(X)\to |\mu|(\{0\})=0$. Applying dominated convergence to $s^r\e^{-(X-X_0)s}$ gives the derivative assertions; the case $r=0$ uses the zero-atom condition.
+\end{proof}
+
+\begin{lemma}[Convolution and faithful evaluation]\label{lem:convolution}
+Whenever both norms are finite,
+\begin{equation}\label{eq:convnorm}
+ \normx{\mu*\eta}{X}\le m_\mu(X)m_\eta(X),
+ \qquad \Lap(\mu*\eta)=(\Lap\mu)(\Lap\eta).
+\end{equation}
+The Laplace transform is injective on the union of exponentially weighted measure spaces: equality of two transforms on a real tail implies equality of their measures.
+\end{lemma}
+\begin{proof}
+Convolution on a compact action interval is well defined because $s,t\ge0$ and $s+t$ in a compact interval force both $s,t$ to be bounded. The variation inequality $|\mu*\eta|\le|\mu|*|\eta|$ and Tonelli's theorem give \eqref{eq:convnorm}; absolute Fubini gives the transform identity.
+
+For injectivity, subtract the measures and take $X$ so far right that the exponentially tilted measure $\sigma(\dd s)=\e^{-Xs}\mu(\dd s)$ is finite and its transform vanishes at every $X+n$, $n\ge0$. Push $\sigma$ forward by $t=\e^{-s}$ and extend the resulting finite measure to $[0,1]$ with zero mass at $0$. Every moment $\int_0^1 t^n\dd\sigma_*(t)$ vanishes. Polynomial density in $C([0,1])$ implies $\sigma_*=0$, hence $\sigma=0$ and $\mu=0$.
+\end{proof}
+
+\begin{remark}[What the norm replaces]
+The convolution coefficient at an action can now be an absolutely convergent analytic sum, not necessarily a finite formal coefficient sum. This is the deliberate change of model. For instance, bounded positive actions and summable weights cause no difficulty even when their atomic set is not well ordered. The estimates do not assert an order-theoretic property of that set.
+\end{remark}
+
+\section{Explicit inversion with a geometric certificate}\label{sec:inverse}
+
+\begin{theorem}[Weighted-measure inverse]\label{thm:inverse}
+Let $\mu\in\mathcal M$. Suppose $r>0$ and $X\in\R$ satisfy
+\begin{equation}\label{eq:theta}
+ M:=m_\mu(X-r)<r,\qquad \theta:=M/r<1.
+\end{equation}
+Then $F_\mu$ has a holomorphic inverse germ $G$ at right infinity. On $\Rea z>X$ it is given by
+\begin{align}
+ G(z)-z
+ &=\sum_{n\ge1}\frac{(-1)^n}{n!}
+       D^{n-1}\bigl(h_\mu(z)^n\bigr)\label{eq:lagrange}\\
+ &=-\sum_{n\ge1}\frac1{n!}
+       \int s^{n-1}\e^{-sz}\dd\mu^{*n}(s).\label{eq:inverseintegral}
+\end{align}
+Equivalently, $G=F_{\Inv(\mu)}$, where
+\begin{equation}\label{eq:inversemeasure}
+ \Inv(\mu)=-\sum_{n\ge1}\frac{s^{n-1}}{n!}\mu^{*n}\in\mathcal M.
+\end{equation}
+Here $s^{n-1}\mu^{*n}$ denotes multiplication of a measure by the indicated function. The series converges in $\normx{\cdot}{X}$, and its tail after $N$ terms satisfies
+\begin{equation}\label{eq:geometricbound}
+ \left\|\Inv(\mu)+\sum_{n=1}^{N}\frac{s^{n-1}}{n!}\mu^{*n}\right\|_X
+ \le \frac{r\theta^{N+1}}{(N+1)(1-\theta)}.
+\end{equation}
+Such an $X$ exists for every fixed $r>0$. No positive lower bound on the support is required.
+\end{theorem}
+\begin{proof}
+The zero measure is immediate, so assume $M>0$. Fix $z$ with $\Rea z>X$ and introduce a scalar coupling parameter $\lambda$. On $|w|=r$,
+\[
+ |h_\mu(z+w)|\le m_\mu(X-r)=M.
+\]
+For $|\lambda|<r/M$, Rouch\'e's theorem gives exactly one zero, counted with multiplicity, of
+\[
+ w+\lambda h_\mu(z+w)=0
+\]
+in $|w|<r$. It is consequently simple and varies holomorphically with $(z,\lambda)$. At $\lambda=1$, write it as $w(z)$ and put $G(z)=z+w(z)$. Then $F_\mu(G(z))=z$.
+
+For completeness, we derive the coefficient form of the inversion formula. On the circle the function $1+\lambda h_\mu(z+u)/u$ has a logarithm given by its power series. The argument principle, followed by integration by parts around the closed contour, gives
+\[
+ w(z,\lambda)=-\frac1{2\pi\ii}\oint_{|u|=r}
+       \log\left(1+\lambda\frac{h_\mu(z+u)}u\right)\dd u.
+\]
+Indeed, integrate $u\,\partial_u\log(u+\lambda h_\mu(z+u))$; the contribution from $\log u$ is zero after integration, and the remaining integration by parts has no endpoint term because the displayed logarithm is single valued along the circle. Uniformly expanding it gives
+\[
+ [\lambda^n]w(z,\lambda)
+ =\frac{(-1)^n}{n}[u^{n-1}]h_\mu(z+u)^n
+ =\frac{(-1)^n}{n!}D^{n-1}h_\mu(z)^n.
+\]
+The convergence disk in $\lambda$ contains $1$, proving \eqref{eq:lagrange}. Convolution and differentiation from Lemmas~\ref{lem:basic}--\ref{lem:convolution} give \eqref{eq:inverseintegral}: the two signs multiply to $-1$ for every $n$.
+
+Independently, the measure series itself has the bound
+\begin{align*}
+ \left\|\frac{s^{n-1}}{n!}\mu^{*n}\right\|_X
+ &\le\frac{(n-1)!}{n!r^{n-1}}
+       \normx{\mu^{*n}}{X-r}\\
+ &\le \frac{M^n}{nr^{n-1}}=\frac{r\theta^n}{n}.
+\end{align*}
+Thus it converges in weighted total variation, and summing the geometric upper bound for $n\ge N+1$ yields \eqref{eq:geometricbound}. Its limit has no atom at $0$, because none of its terms has such an atom and evaluation of the mass at $0$ is continuous in the weighted norm.
+
+It remains to verify the two-sided germ statement. For $z$ sufficiently far to the right, $F_\mu(z)$ is in the domain of $G$, and $z-F_\mu(z)=-h_\mu(z)$ lies in the uniqueness disk of radius $r$. Hence the equation solved above at $F_\mu(z)$ identifies $G(F_\mu(z))=z$. Finally, Lemma~\ref{lem:basic} gives \eqref{eq:theta} for sufficiently large $X$.
+\end{proof}
+
+\begin{corollary}[Positive displacement and one-sided bounds]\label{cor:positive}
+If $\mu\ge0$, then $\nu=-\Inv(\mu)\ge0$, and
+\[
+ d(y):=y-G(y)=\Lap\nu(y)
+\]
+is completely monotone on a real tail: $(-1)^r d^{(r)}(y)\ge0$ for every $r\ge0$. If $d_N$ is the first $N$ terms of \eqref{eq:inverseintegral}, with its positive sign, and $E_N$ is the bound in \eqref{eq:geometricbound}, then
+\begin{equation}\label{eq:onesided}
+ y-d_N(y)-E_N\le G(y)\le y-d_N(y),\qquad y\ge X.
+\end{equation}
+In particular $G'\ge1$, $G''\le0$, and $G'''\ge0$ on a sufficiently far right interval.
+\end{corollary}
+\begin{proof}
+Every measure in the defining sum for $\nu$ is positive. Differentiation of its Laplace transform proves complete monotonicity. Positive partial sums are below the full displacement, and their norm tail bounds their transform tail. The derivative signs for $G=y-d$ follow directly.
+\end{proof}
+
+\begin{remark}[A gap is optional; a summation rule is not]
+If $\supp\mu\subset[a,\infty)$ with $a>0$, the $n$th convolution is supported in $[na,\infty)$. Only finitely many coupling degrees can contribute on a bounded action interval. When $a=0$, that local finiteness need not hold. The proof still works because weighted absolute convergence replaces it. These are different mechanisms and should not be identified.
+\end{remark}
+
+\section{Composition and the group of measure germs}\label{sec:group}
+
+\begin{theorem}[Composition law]\label{thm:composition}
+For $\eta,\mu\in\mathcal M$, define, at any sufficiently large weight $X$,
+\begin{equation}\label{eq:star}
+ \eta\star\mu
+ =\mu+\sum_{k\ge0}\frac{(-1)^k}{k!}
+       (s^k\eta)*\mu^{*k},\qquad \mu^{*0}=\delta_0.
+\end{equation}
+The sum converges in weighted variation provided
+\[
+ m_\mu(X)<\infty,\qquad m_\eta\bigl(X-m_\mu(X)\bigr)<\infty,
+\]
+and it satisfies
+\begin{equation}\label{eq:compositionnorm}
+ \normx{\eta\star\mu}{X}
+ \le m_\mu(X)+m_\eta\bigl(X-m_\mu(X)\bigr).
+\end{equation}
+Moreover
+\begin{equation}\label{eq:composition}
+ F_{\eta\star\mu}=F_\eta\circ F_\mu
+\end{equation}
+as germs. Thus $\mathcal M$ is a group under $\star$, with identity $0$ and inverse $\Inv(\mu)$ from Theorem~\ref{thm:inverse}.
+\end{theorem}
+\begin{proof}
+Let $M=m_\mu(X)$. Using variation and Tonelli,
+\begin{align*}
+ \sum_{k\ge0}\frac1{k!}
+ \normx{(s^k\eta)*\mu^{*k}}{X}
+ &\le \sum_{k\ge0}\frac{M^k}{k!}
+             \int s^k\e^{-Xs}\dd|\eta|(s)\\
+ &=\int\e^{-(X-M)s}\dd|\eta|(s).
+\end{align*}
+This proves convergence and \eqref{eq:compositionnorm}. Expanding the exponential under an absolutely integrable majorant now gives
+\begin{align*}
+ h_\eta(z+h_\mu(z))
+ &=\int\e^{-sz}\exp(-s h_\mu(z))\dd\eta(s)\\
+ &=\Lap\left(\sum_{k\ge0}\frac{(-1)^k}{k!}
+          (s^k\eta)*\mu^{*k}\right)(z).
+\end{align*}
+Adding $z+h_\mu(z)$ gives \eqref{eq:composition}. The composition measure has no atom at zero and has a finite weighted norm, so it belongs to $\mathcal M$. The assumptions hold for all sufficiently large $X$ by Lemma~\ref{lem:basic}.
+
+Associativity follows from associativity of composition and injectivity of the Laplace transform. The zero measure represents the identity germ. The two inverse identities follow from Theorem~\ref{thm:inverse} and the same injectivity. These arguments also show that choosing a larger admissible weight does not change the resulting measure.
+\end{proof}
+
+\begin{proposition}[Support control]\label{prop:support}
+Let $S$ be the closed additive semigroup generated by $\supp\mu\cup\supp\eta$. Then
+\[
+ \supp(\eta\star\mu)\subset S,
+ \qquad
+ \supp\Inv(\mu)\subset
+ \overline{\bigcup_{n\ge1}n\supp\mu}.
+\]
+The assertions allow cancellation and do not assert that every displayed action occurs with nonzero mass.
+\end{proposition}
+\begin{proof}
+Multiplication of a measure by $s^k$ does not enlarge support. Convolution adds supports, and a weighted-variation limit of measures supported in a fixed closed set remains supported there. Apply these facts term by term.
+\end{proof}
+
+\begin{remark}[Not a single fixed-weight Banach group]
+The inverse bound uses $X-r$, and the composition bound uses $X-m_\mu(X)$. Operations may therefore require moving to a smaller right half-plane domain, equivalently a larger admissible weight. The group is a group of germs over the union of weighted measure spaces. No claim of a group structure on one arbitrarily fixed norm ball is intended.
+\end{remark}
+
+\section{Compact actions: a sharp rooted-tree majorant}\label{sec:compact}
+
+\begin{theorem}[Compact-support certificate]\label{thm:tree}
+Suppose $\mu\in\mathcal M$ is supported in $[0,b]$, where $b>0$. At a fixed real $X$, set
+\[
+ q=b\,m_\mu(X),\qquad q<\e^{-1},
+\]
+and let $t=T(q)\in[0,1)$ be the solution of
+\begin{equation}\label{eq:tree}
+ T=q\e^T,\qquad
+ T(q)=\sum_{n\ge1}\frac{n^{n-1}}{n!}q^n=-W_0(-q).
+\end{equation}
+Then the inverse displacement is bounded by $t/b$ on $\Rea z\ge X$. Its $n$th measure term satisfies
+\begin{equation}\label{eq:treecoefficient}
+ \left\|\frac{s^{n-1}}{n!}\mu^{*n}\right\|_X
+ \le\frac1b\frac{n^{n-1}}{n!}q^n.
+\end{equation}
+In particular, after $N$ terms a valid uniform bound is
+\begin{equation}\label{eq:treetail}
+ E_N^{\mathrm{tree}}(X)=
+ \frac{(\e q)^{N+1}}{b(N+1)(1-\e q)}.
+\end{equation}
+The threshold $q<\e^{-1}$ cannot be increased as a universal convergence threshold for the coupling series using only $b$ and $m_\mu(X)$.
+\end{theorem}
+\begin{proof}
+The case $q=0$ is immediate. The $n$th convolution is supported in $[0,nb]$, and its weighted norm is at most $m_\mu(X)^n$. This immediately gives \eqref{eq:treecoefficient}. Applying the coefficient formula already derived in Theorem~\ref{thm:inverse} to $T=q\e^T$ gives the coefficients in \eqref{eq:tree}; the implicit function has its first positive branch point at $(q,T)=(\e^{-1},1)$. The positive series therefore converges for $q<\e^{-1}$, and its sum bounds the displacement by $t/b$.
+
+One may also see existence directly. On the closed disk $|w|\le t/b$,
+\[
+ |h_\mu(z+w)|\le m_\mu(X)\e^t=t/b,
+ \qquad
+ |h_\mu'(z+w)|\le b m_\mu(X)\e^t=t<1.
+\]
+The fixed-point map $w\mapsto-h_\mu(z+w)$ is a contraction. A slightly larger disk satisfies the strict hypothesis of Theorem~\ref{thm:inverse}, so the fixed point agrees with that analytic inverse.
+
+The elementary inequality $n!\ge(n/\e)^n$ yields
+\[
+ \sum_{n\ge N+1}\frac1b\frac{n^{n-1}}{n!}q^n
+ \le \frac1b\sum_{n\ge N+1}\frac{(\e q)^n}{n},
+\]
+which is bounded by \eqref{eq:treetail}.
+
+For sharpness, take $\mu=M\delta_b$, $M>0$, and include the coupling $\lambda$. At real $z=X$ the displacement is
+\[
+ w=\frac1bW_0(-\lambda bM\e^{-bX})=\frac1bW_0(-\lambda q).
+\]
+Its first coupling singularity is at $\lambda=1/(\e q)$. If $q>1/\e$, its Taylor series cannot converge at $\lambda=1$. This is a worst-case sharpness statement, not a claim that every distributed measure reaches this singularity.
+\end{proof}
+
+\begin{proposition}[Stability under action-measure approximation]\label{prop:stability}
+Suppose $\mu,\widetilde\mu$ are supported in $[0,b]$, have no atom at $0$, and
+\[
+ b\max\{m_\mu(X),m_{\widetilde\mu}(X)\}\le q<1/\e.
+\]
+Put $t=T(q)$ and $r=t/b$. Then their inverse germs satisfy
+\begin{equation}\label{eq:stability}
+ |G_\mu(z)-G_{\widetilde\mu}(z)|
+ \le\frac{\e^t}{1-t}\normx{\mu-\widetilde\mu}{X},
+ \qquad \Rea z\ge X.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Both fixed points lie in $|w|\le r$ and have contraction constant at most $t$. On that disk,
+\[
+ |h_\mu(z+w)-h_{\widetilde\mu}(z+w)|
+ \le\e^{br}\normx{\mu-\widetilde\mu}{X}.
+\]
+Subtract the two fixed-point equations and move the $t$ times the displacement difference to the left.
+\end{proof}
+
+This estimate handles deleting a small tail of atoms without tracking the individual action collisions created by convolution. For positive truncations, $m_{\widetilde\mu}(X)\le m_\mu(X)$ automatically. Moving atoms continuously need not be small in total variation, so \eqref{eq:stability} is not a claim of total-variation continuity under arbitrary shifts of atomic locations. Such approximations require a different metric or direct transform bounds.
+
+\section{Endpoint accumulation and the leading inverse sectors}\label{sec:endpoint}
+
+The measure calculus does not by itself identify the best asymptotic scale. A simple family shows how the endpoint of an atomic spectrum supplies a new algebraic prefactor.
+
+\begin{theorem}[Endpoint transfer]\label{thm:endpoint}
+Let $p>1$, $\rho>0$, and $a,c,\kappa>0$. Define
+\begin{equation}\label{eq:endpointfamily}
+ \mu=\kappa\sum_{j\ge1}j^{-p}\delta_{a+c/j^\rho},
+ \qquad \beta=\frac{p-1}{\rho},\qquad
+ C=\frac{\kappa\Gamma(\beta)}{\rho c^\beta}.
+\end{equation}
+Then
+\begin{equation}\label{eq:endpointasympt}
+ h_\mu(x)\sim C\e^{-ax}x^{-\beta}.
+\end{equation}
+For every fixed $n\ge1$, the positive inverse-displacement sector
+\[
+ d_n(x)=\frac1{n!}\int s^{n-1}\e^{-sx}\dd\mu^{*n}(s)
+\]
+satisfies
+\begin{equation}\label{eq:dnleading}
+ d_n(x)\sim\frac{(na)^{n-1}}{n!}C^n\e^{-nax}x^{-n\beta}.
+\end{equation}
+The assertion is for each fixed $n$ and makes no unproved uniform claim as $n\to\infty$ with $x$.
+\end{theorem}
+\begin{proof}
+Set $L=(cx)^{1/\rho}$ and $f(t)=t^{-p}\exp(-t^{-\rho})$ for $t>0$. Then
+\[
+ \sum_{j\ge1}j^{-p}\e^{-cx/j^\rho}
+ =L^{1-p}\left(\frac1L\sum_{j\ge1}f(j/L)\right).
+\]
+The parenthesis tends to $\int_0^\infty f(t)\dd t$. To justify the improper Riemann sum, first restrict to a compact interval $[\epsilon,R]$. The tail at infinity is dominated by $t^{-p}$ and its integral. Near zero, $f$ tends rapidly to zero and is increasing on a sufficiently small interval, so its Riemann sum there is bounded by the corresponding integral plus a vanishing endpoint term. This gives uniform control as $\epsilon\downarrow0$ and $R\uparrow\infty$. The substitution $u=t^{-\rho}$ gives
+\[
+ \int_0^\infty f(t)\dd t=\frac1\rho\Gamma\left(\frac{p-1}{\rho}\right),
+\]
+proving \eqref{eq:endpointasympt}.
+
+Normalize the exponentially tilted measure to a probability measure:
+\[
+ P_x(\dd s)=\frac{\e^{-sx}\mu(\dd s)}{h_\mu(x)}.
+\]
+For every $\epsilon>0$, $P_x([a+\epsilon,a+c])\to0$. Indeed the numerator is bounded by a constant times $\e^{-(a+\epsilon)x}$, whereas a nonzero portion of $\mu$ lies below $a+\epsilon/2$ and gives a denominator bounded below by a positive constant times $\e^{-(a+\epsilon/2)x}$. Thus $P_x$ concentrates at $a$. For $n$ independent variables with law $P_x$, their sum $S_n$ concentrates at $na$ and remains bounded by $n(a+c)$. Hence
+\[
+ \frac{n!\,d_n(x)}{h_\mu(x)^n}
+ =\mathbb E_x[S_n^{n-1}]\longrightarrow(na)^{n-1}.
+\]
+Combine this with \eqref{eq:endpointasympt}.
+\end{proof}
+
+For $p=2$, $\rho=c=1$, the leading term is $\kappa\e^{-ax}/x$. This term is larger than every fixed atomic term $\e^{-(a+1/j)x}$. The largest summands of $j^{-2}\e^{-x/j}$ occur around $j=x/2$; roughly $x$ summands of size $x^{-2}$ contribute to the $x^{-1}$ endpoint scale. There is no fixed leading atom to extract. The next section determines exactly what remains after this collective endpoint contribution.
+
+\section{An exact resolution of the accumulating spectrum}\label{sec:poisson}
+
+Put
+\begin{equation}\label{eq:Adef}
+ A(z)=\sum_{j=1}^{\infty}\frac{\e^{-z/j}}{j^2},
+ \qquad E(x)=A(x)-\frac1x\quad(x>0).
+\end{equation}
+The series for $A$ is locally uniformly convergent on all of $\C$, because its terms are bounded on a compact set by a fixed multiple of $j^{-2}$. Thus $A$ is entire. On the positive real axis,
+\[
+ (-1)^rA^{(r)}(x)=\sum_{j\ge1}j^{-r-2}\e^{-x/j}>0,
+\]
+so $A$ is strictly completely monotone there.
+
+\begin{theorem}[Poisson--Bessel resolution]\label{thm:poisson}
+For every $x>0$,
+\begin{equation}\label{eq:poissonbessel}
+ E(x)=4\Rea\sum_{k=1}^{\infty}
+ \sqrt{\frac{2\pi\ii k}{x}}\,
+ K_1\left(2\sqrt{2\pi\ii kx}\right).
+\end{equation}
+All square roots are principal. The series converges absolutely and locally uniformly on the positive real axis, together with each fixed number of derivatives.
+\end{theorem}
+\begin{proof}
+Define a smooth function on the full real line by
+\[
+ f_x(t)=
+ \begin{cases}
+ t^{-2}\e^{-x/t},&t>0,\\
+ 0,&t\le0.
+ \end{cases}
+\]
+At $t=0$ all one-sided derivatives from the right vanish. At infinity the function is $O(t^{-2})$, and each derivative decays by additional powers. Thus its derivatives are integrable. The periodization $\sum_{n\in\mathbb Z}f_x(t+n)$ is smooth with uniformly convergent differentiated sums on a unit interval. Its Fourier coefficients are $\widehat f_x(k)$, which decay faster than any prescribed fixed inverse power of $|k|$ by repeated integration by parts. Evaluating its absolutely convergent Fourier series at $0$ proves Poisson summation here, without assuming a Schwartz bound for $f_x$ itself.
+
+The zero Fourier coefficient is
+\[
+ \widehat f_x(0)=\int_0^\infty t^{-2}\e^{-x/t}\dd t=1/x.
+\]
+For $k>0$, introduce $\epsilon>0$. The classical integral representation of $K_1$ gives
+\begin{equation}\label{eq:dampedbessel}
+ \int_0^\infty t^{-2}\e^{-x/t-(\epsilon+2\pi\ii k)t}\dd t
+ =2\sqrt{\frac{\epsilon+2\pi\ii k}{x}}
+ K_1\left(2\sqrt{x(\epsilon+2\pi\ii k)}\right).
+\end{equation}
+For positive real $\epsilon+2\pi\ii k$ the identity follows by a direct change of variable in the standard integral; holomorphic continuation gives it in the right half-plane of that parameter. These integral representations are recorded in DLMF~10.32 \cite{dlmf-integrals}.
+
+Dominated convergence on the left of \eqref{eq:dampedbessel} permits $\epsilon\downarrow0$, since $t^{-2}\e^{-x/t}$ is integrable. Continuity of the right side gives
+\[
+ \widehat f_x(k)=2\sqrt{2\pi\ii k/x}\,
+ K_1(2\sqrt{2\pi\ii kx}).
+\]
+Negative Fourier coefficients are complex conjugates. Adding them proves \eqref{eq:poissonbessel}. The bounds established next imply exponential decay in $\sqrt{k}$ uniformly for $x$ in a compact positive interval. Differentiating the integral representations gives only additional fixed powers of $k$ and $x^{-1}$, so the same summability justifies all fixed derivatives.
+\end{proof}
+
+\subsection{An integral proof of the all-orders Bessel bound}
+We record the precise bound needed for both computation and zero location, rather than citing a purely formal asymptotic symbol.
+
+\begin{lemma}[Complex right-half-plane remainder]\label{lem:bessel}
+For $\Rea w>0$, define
+\begin{equation}\label{eq:bm}
+ b_m=\binom{1/2}{m}\frac{\Gamma(m+3/2)}{2^m\Gamma(3/2)}
+ =\frac{\prod_{j=1}^m(4-(2j-1)^2)}{m!\,8^m},\qquad b_0=1.
+\end{equation}
+For every integer $N\ge1$,
+\begin{equation}\label{eq:Kbound}
+ \left|K_1(w)-\sqrt{\frac\pi{2w}}\e^{-w}
+       \sum_{m=0}^{N-1}b_mw^{-m}\right|
+ \le\sqrt{\frac\pi{2|w|}}\e^{-\Rea w}|b_N||w|^{-N}.
+\end{equation}
+In particular $b_1=3/8$, $b_2=-15/128$, and $b_3=105/1024$.
+\end{lemma}
+\begin{proof}
+The $\nu=1$ case of the integral over $[1,\infty)$ in DLMF~10.32.8 gives, first for positive real $w$ and then by holomorphic continuation to $\Rea w>0$,
+\begin{equation}\label{eq:Klap}
+ K_1(w)=\sqrt{\frac\pi{2w}}\e^{-w}
+ \frac1{\Gamma(3/2)}\int_0^\infty
+       \e^{-t}t^{1/2}\left(1+\frac{t}{2w}\right)^{1/2}\dd t.
+\end{equation}
+The right side is holomorphic there: $\Rea(1/w)>0$ keeps the square-root argument away from its cut, and exponential decay supplies local integrable majorants. This also justifies the continuation argument.
+
+Taylor's formula with integral remainder, along the segment from $0$ to $u$, says
+\[
+ (1+u)^{1/2}=\sum_{m=0}^{N-1}\binom{1/2}{m}u^m+R_N(u).
+\]
+If $\Rea u\ge0$, then $|1+vu|\ge1$ for $0\le v\le1$. Since the $N$th derivative has exponent $1/2-N<0$, the integral remainder implies
+\[
+ |R_N(u)|\le\left|\binom{1/2}{N}\right||u|^N.
+\]
+Substitute $u=t/(2w)$ into \eqref{eq:Klap} and integrate the polynomial and remainder. The gamma moments produce \eqref{eq:bm}, and the remainder integral gives exactly \eqref{eq:Kbound}.
+\end{proof}
+
+This agrees with the classical $K_\nu$ expansion in DLMF~10.40 \cite{dlmf-asympt}. The proof above specifies an absolute complex bound adequate on the rays $\arg w=\pm\pi/4$, including at points where a resulting real cosine vanishes. The inner inverse-$w$ series is asymptotic; we do not claim that it converges as $N\to\infty$.
+
+\section{Finite-mode certificates and the hidden oscillation}\label{sec:bounds}
+For $x>0$, abbreviate
+\begin{equation}\label{eq:scales}
+ c_x=2\sqrt{\pi x},\qquad
+ C_x=2\sqrt\pi(2\pi)^{1/4}x^{-3/4},\qquad
+ d_x=\frac3{16\sqrt{2\pi x}}.
+\end{equation}
+For integers $K,N\ge1$, define the entirely elementary finite expression
+\begin{align}\label{eq:EK-N}
+ E_{K,N}(x)=C_x\sum_{k=1}^{K}k^{1/4}\e^{-c_x\sqrt k}
+ \sum_{m=0}^{N-1}
+ \frac{b_m}{(2\sqrt{2\pi kx})^m}
+ \cos\left(c_x\sqrt k-\frac\pi8+\frac{m\pi}4\right).
+\end{align}
+For $c>0$, an integer $L\ge1$, and $\alpha=\pm1/4$, put
+\begin{equation}\label{eq:Jalpha}
+ J_\alpha(c,L)=L^\alpha\e^{-c\sqrt L}
+ +2c^{-2\alpha-2}\Gamma(2\alpha+2,c\sqrt L),
+\end{equation}
+where $\Gamma(v,u)=\int_u^\infty t^{v-1}\e^{-t}\dd t$ is the upper incomplete gamma function. Set
+\begin{equation}\label{eq:BK}
+ B_K(x)=C_x\left[J_{1/4}(c_x,K+1)+d_xJ_{-1/4}(c_x,K+1)\right].
+\end{equation}
+
+\begin{theorem}[Explicit finite-mode, finite-order error]\label{thm:finiteerror}
+For $x\ge1$ and $K,N\ge1$,
+\begin{align}\label{eq:finiteerror}
+ |E(x)-E_{K,N}(x)|
+ &\le C_x |b_N|(2\sqrt{2\pi x})^{-N}
+       \sum_{k=1}^{K}k^{1/4-N/2}\e^{-c_x\sqrt k}
+       +B_K(x).
+\end{align}
+If the first $K$ Bessel functions in \eqref{eq:poissonbessel} are retained exactly, their omitted tail is bounded just by $B_K(x)$.
+\end{theorem}
+\begin{proof}
+Write $w_k=2\sqrt{2\pi\ii kx}=(1+\ii)c_x\sqrt k$. Inserting Lemma~\ref{lem:bessel} into \eqref{eq:poissonbessel} and taking real parts gives \eqref{eq:EK-N}, including its phase $m\pi/4$. Taking absolute values of the first $K$ Bessel remainders gives the first term of \eqref{eq:finiteerror}.
+
+For the omitted modes, the case $N=1$ of Lemma~\ref{lem:bessel} bounds the absolute value of the $k$th real contribution by
+\[
+ C_x k^{1/4}\e^{-c_x\sqrt k}
+       (1+d_x k^{-1/2}).
+\]
+For $x\ge1$, both $t^{1/4}\e^{-c_x\sqrt t}$ and $t^{-1/4}\e^{-c_x\sqrt t}$ are decreasing for $t\ge1$. Therefore, with $L=K+1$,
+\[
+ \sum_{k=L}^\infty k^\alpha\e^{-c_x\sqrt k}
+ \le L^\alpha\e^{-c_x\sqrt L}+
+       \int_L^\infty t^\alpha\e^{-c_x\sqrt t}\dd t
+ =J_\alpha(c_x,L).
+\]
+The substitution $u=c_x\sqrt t$ evaluates the integral. This proves \eqref{eq:BK} and the theorem.
+\end{proof}
+
+\begin{corollary}[The first hidden scale]\label{cor:hidden}
+As $x\to+\infty$,
+\begin{align}\label{eq:leadingE}
+ E(x)={}&C_x\e^{-c_x}
+ \left\{\cos\left(c_x-\frac\pi8\right)
+       +d_x\cos\left(c_x+\frac\pi8\right)+O(x^{-1})\right\}\\
+ &\quad+O\left(x^{-3/4}\e^{-\sqrt2c_x}\right).\notag
+\end{align}
+In particular $E(x)=o(x^{-M})$ for every real $M$, and
+\begin{equation}\label{eq:Eprime}
+ E'(x)=O\left(x^{-5/4}\e^{-2\sqrt{\pi x}}\right).
+\end{equation}
+All remainders in \eqref{eq:leadingE} are absolute envelope estimates, not relative errors at the zeros of the cosines.
+\end{corollary}
+\begin{proof}
+Take $K=1$, $N=2$ in Theorem~\ref{thm:finiteerror}. The incomplete-gamma tail in \eqref{eq:BK} is $O(C_x\e^{-\sqrt2c_x})$ as $x\to\infty$; this follows either by one integration by parts in its integral or by the elementary exponential tail estimate for that integral. Since $c_x$ is a positive constant times $\sqrt{x}$, every displayed envelope is smaller than every inverse power of $x$.
+
+For the derivative, differentiate \eqref{eq:Klap} along $w_k=(1+\ii)c_x\sqrt{k}$. The derivative of the exponential contributes $O(\sqrt{k/x})$, and derivatives of the algebraic prefactors contribute $O(x^{-1})$ times a fixed polynomial bound in $k$. The first mode is consequently $O(x^{-5/4}\e^{-c_x})$. All remaining modes are bounded by a convergent polynomially weighted sum of $\e^{-c_x\sqrt{k}}$, with strictly larger first exponent. Differentiating the integral remainder proves the same bounds for its derivatives, so this operation is not an unlicensed differentiation of a bare $O$ symbol.
+\end{proof}
+
+There are three different summations here. The atomic $j$ sum is an absolutely convergent analytic sum with a non-well-based literal action display. The dual Bessel $k$ sum is again convergent, now with explicitly ordered decay envelopes. The inverse-power index $m$ inside a Bessel mode is an asymptotic, generally divergent expansion. Convergence of the first two does not imply convergence of the third.
+
+\section{All large zeros and the obstruction to tame realization}\label{sec:zeros}
+
+\begin{theorem}[Zero location and simplicity]\label{thm:zeros}
+For every sufficiently large integer $m$, $E$ has exactly one zero $x_m$ corresponding to a neighborhood of
+\[
+ 2\sqrt{\pi x}=(m+5/8)\pi.
+\]
+These zeros are simple, they account for all sufficiently large positive zeros, and
+\begin{equation}\label{eq:zerolaw}
+ x_m=\frac\pi4\left(m+\frac58\right)^2
+       -\frac3{32\pi}+O(m^{-1}).
+\end{equation}
+In particular $E$ has infinitely many sign changes and is not identically zero on any tail.
+\end{theorem}
+\begin{proof}
+Use $c=2\sqrt{\pi x}$ and normalize by the nonzero envelope:
+\[
+ H(c)=\frac{E(c^2/(4\pi))}{C_{c^2/(4\pi)}\e^{-c}}.
+\]
+Corollary~\ref{cor:hidden} yields
+\begin{equation}\label{eq:Hexp}
+ H(c)=\cos(c-\pi/8)
+       +\frac{3\sqrt2}{16c}\cos(c+\pi/8)+O(c^{-2}).
+\end{equation}
+We also need differentiated control. The binomial integral remainder used in Lemma~\ref{lem:bessel} can be differentiated along $w=(1+\ii)c$: each derivative of $w^{-N}$ contributes $O(c^{-1})$, and
+\[
+ \left|\frac{v u}{1+v u}\right|\le1
+ \quad\text{when }\Rea u\ge0,\ 0\le v\le1
+\]
+bounds the differentiated remainder factor. Integrating the resulting gamma majorant shows that its derivative is $O(c^{-N-1})$ before multiplication by the oscillating phase. After that multiplication the normalized remainder and its first derivative are both $O(c^{-N})$. The omitted $k\ge2$ modes and their first derivatives are exponentially small after normalization. Thus
+\begin{equation}\label{eq:Hder}
+ H'(c)=-\sin(c-\pi/8)+O(c^{-1}).
+\end{equation}
+
+Put $c_m^0=(m+5/8)\pi$. Outside fixed small disjoint intervals around the $c_m^0$, the first cosine is bounded away from zero. Equation~\eqref{eq:Hexp} rules out zeros there for large $c$. In each such interval, \eqref{eq:Hder} gives a derivative of constant nonzero sign for sufficiently large $m$, while the endpoint values have opposite signs. There is therefore exactly one simple zero $c_m$ in the interval.
+
+Equation~\eqref{eq:Hexp} first implies $c_m-c_m^0=O((c_m^0)^{-1})$. Substituting $c_m=c_m^0+\delta_m$ and using
+\[
+ \sin(c_m^0-\pi/8)=(-1)^m,
+ \qquad \cos(c_m^0+\pi/8)=(-1)^{m+1}/\sqrt2
+\]
+gives
+\[
+ \delta_m=-\frac3{16c_m^0}+O((c_m^0)^{-2}).
+\]
+Since $x_m=c_m^2/(4\pi)$, expansion of the square proves \eqref{eq:zerolaw}. The alternating derivative signs give sign changes.
+\end{proof}
+
+\begin{definition}
+A Hardy field is a field of germs at $+\infty$ of real differentiable functions, closed under differentiation. An o-minimal expansion of the real ordered field is a first-order expansion in which every definable subset of the real line is a finite union of points and intervals. Definability in what follows allows real parameters.
+\end{definition}
+
+\begin{theorem}[Positive analytic sums need not be tame]\label{thm:tameness}
+The function $A$ in \eqref{eq:Adef} has the following properties.
+\begin{enumerate}[label=(\roman*)]
+\item Its germ cannot belong to a Hardy field that contains the identity germ $x$.
+\item It is not definable on any tail in any o-minimal expansion of the real ordered field.
+\item Its finite truncations are finite exponential expressions and converge, together with every fixed derivative, uniformly on each positive real tail. For $h(x)=\kappa\e^{-ax}A(x)$ and its atomic truncation $h_J$, the stronger estimate
+\begin{equation}\label{eq:strongconv}
+ \sup_{x\ge X}\e^{ax}|D^r(h-h_J)(x)|
+ \le \kappa(a+1)^r\sum_{j>J}j^{-2}
+\end{equation}
+holds for $X\ge0$ and every integer $r\ge0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+If a Hardy field contained both $A$ and $x$, it would contain $E=A-1/x$. By Theorem~\ref{thm:zeros}, $E$ is a nonzero germ with zeros arbitrarily far to the right. But every nonzero field element has a reciprocal germ; the identity $E\cdot E^{-1}=1$ on a tail rules out such zeros. This contradiction proves (i). Notice that even the field property suffices once the two specified germs are included.
+
+If $A$ were definable on a tail, then so would $E$ and its zero set. That set is infinite and unbounded. It contains no interval, since $E$ is analytic on $(0,\infty)$ and is not identically zero. This violates o-minimality and proves (ii).
+
+Finally, direct termwise differentiation gives
+\[
+ |D^r(h-h_J)(x)|
+ \le\kappa\sum_{j>J}(a+1/j)^rj^{-2}\e^{-(a+1/j)x},
+\]
+which implies \eqref{eq:strongconv}. The analogous estimate without the factor $\e^{-ax}$ proves uniform derivative convergence for $A$.
+\end{proof}
+
+\begin{remark}[The exact conclusion]
+Neither $A$ nor $h$ changes sign; both are positive and completely monotone. The obstruction is revealed by subtracting their natural endpoint core. Thus positivity and complete monotonicity are not reliable substitutes for nonoscillation of all field expressions. Finite exponential formulas can converge normally to a function that cannot be added to the intended tame function class.
+
+This does not refute a formal-transseries closure theorem. Nor does it refute the existence of analytic Hardy-field models of transseries \cite{hardy}. It shows that a realization map cannot be required, without further hypotheses, to preserve these prescribed analytic sums. The Poincar\'e expansion $A\sim x^{-1}$ by itself forgets precisely the obstruction.
+\end{remark}
+
+\section{The nonlinear inverse of the accumulating example}\label{sec:modelinverse}
+
+Fix $a,\kappa>0$, and consider the actual analytic functions
+\begin{equation}\label{eq:Fcore}
+ F(x)=x+\kappa\e^{-ax}A(x),\qquad
+ F_0(x)=x+\kappa\frac{\e^{-ax}}x.
+\end{equation}
+Both derivatives tend to $1$. They are consequently strictly increasing on sufficiently far right intervals, and have real inverse germs $G$ and $G_0$ there. The associated action measure for $F$ is
+\[
+ \mu=\kappa\sum_{j\ge1}j^{-2}\delta_{a+1/j}.
+\]
+Its topological support includes $a$, although $\mu(\{a\})=0$; all its atoms are in $(a,a+1]$.
+
+\subsection{An exact multiple-sum formula and certificates}
+Theorem~\ref{thm:inverse} gives the convergent positive-displacement expansion
+\begin{equation}\label{eq:Gdn}
+ G(y)=y-\sum_{n\ge1}d_n(y),
+\end{equation}
+where
+\begin{equation}\label{eq:multiple}
+ d_n(y)=\frac{\kappa^n}{n!}
+ \sum_{j_1,\ldots,j_n\ge1}
+ \frac{\left(na+\sum_{\ell=1}^n j_\ell^{-1}\right)^{n-1}
+       \exp\left[-\left(na+\sum_{\ell=1}^n j_\ell^{-1}\right)y\right]}
+      {j_1^2\cdots j_n^2}.
+\end{equation}
+Every summand is positive. An immediately evaluable compact-support criterion is
+\begin{equation}\label{eq:modelcriterion}
+ q=(a+1)\kappa\e^{-aX}A(X)<1/\e.
+\end{equation}
+For $y\ge X$, the first $N$ coupling sectors give the enclosure \eqref{eq:onesided} with $b=a+1$ and the explicit tail \eqref{eq:treetail}. This is a convergent analytic inverse, not merely a formal declaration of a series.
+
+The endpoint theorem gives, for each fixed $n$,
+\[
+ d_n(y)\sim\frac{(na)^{n-1}}{n!}
+              \kappa^n\e^{-nay}y^{-n}.
+\]
+However, this leading formula does not recover the hidden oscillations inside each sector. They are determined by the exact identity $A=1/y+E$.
+
+\subsection{The nonoscillatory core to all coupling orders}
+The core perturbation has its own measure representation:
+\[
+ \kappa\frac{\e^{-az}}z=\Lap\bigl(\kappa\mathbf1_{[a,\infty)}(s)\dd s\bigr)(z),
+ \qquad\Rea z>0.
+\]
+Theorem~\ref{thm:inverse} applies although this measure has unbounded support. Its $n$th displacement sector is
+\begin{equation}\label{eq:coresector}
+ d_n^{(0)}(y)=\frac{\kappa^n\e^{-nay}}{n!}
+ \sum_{r=0}^{n-1}\binom{n-1}{r}(na)^{n-1-r}\rise{n}{r}y^{-n-r},
+\end{equation}
+where $\rise{n}{r}=n(n+1)\cdots(n+r-1)$ and $\rise{n}{0}=1$.
+Indeed, differentiate $\e^{-nay}y^{-n}$ exactly $n-1$ times in the Lagrange formula. Each derivative contributes a negative sign; Leibniz's rule leaves precisely \eqref{eq:coresector}. Thus
+\begin{align}\label{eq:corefirst}
+ G_0(y)=y
+ &-\kappa\e^{-ay}y^{-1}\\
+ &-\kappa^2\e^{-2ay}(ay^{-2}+y^{-3})\notag\\
+ &-\kappa^3\e^{-3ay}
+    \left(\tfrac32a^2y^{-3}+3ay^{-4}+2y^{-5}\right)\notag\\
+ &-\kappa^4\e^{-4ay}
+    \left(\tfrac83a^3y^{-4}+8a^2y^{-5}+10ay^{-6}+5y^{-7}\right)
+ -\cdots.\notag
+\end{align}
+The dots here mean a convergent coupling sum for sufficiently large $y$, not an assertion that the full oscillatory inverse $G$ equals this core.
+
+\subsection{Exact zero transport and the leading inverse oscillation}
+
+\begin{theorem}[Nonlinear transport of the hidden remainder]\label{thm:transport}
+For all sufficiently large $x$, set $y=F_0(x)$. Then
+\begin{equation}\label{eq:exactsign}
+ \sgn\bigl(G(F_0(x))-x\bigr)=-\sgn E(x).
+\end{equation}
+In particular
+\begin{equation}\label{eq:exactzeros}
+ G(y)=G_0(y)\quad\Longleftrightarrow\quad E(G_0(y))=0.
+\end{equation}
+All sufficiently large zeros of $G-G_0$ are simple and are exactly
+\begin{equation}\label{eq:yzeros}
+ y_m=F_0(x_m)=x_m+\kappa\frac{\e^{-ax_m}}{x_m},
+\end{equation}
+with $x_m$ as in Theorem~\ref{thm:zeros}.
+Moreover, with constants depending on $a,\kappa$,
+\begin{equation}\label{eq:inverseEerror}
+ G(y)-G_0(y)
+ =-\kappa\e^{-ay}E(y)
+   +O\left(y^{-7/4}\e^{-2ay-2\sqrt{\pi y}}\right).
+\end{equation}
+Consequently
+\begin{align}\label{eq:inverseleading}
+ G(y)-G_0(y)
+ ={}&-2\kappa\sqrt\pi(2\pi)^{1/4}y^{-3/4}
+       \e^{-ay-2\sqrt{\pi y}}
+       \cos\left(2\sqrt{\pi y}-\frac\pi8\right)\\
+ &\quad+O\left(y^{-5/4}\e^{-ay-2\sqrt{\pi y}}\right).\notag
+\end{align}
+\end{theorem}
+\begin{proof}
+Since $F$ is increasing on the chosen tail,
+\[
+ F(x)-F_0(x)=\kappa\e^{-ax}E(x)
+\]
+has the opposite sign to $G(F_0(x))-x$. This proves \eqref{eq:exactsign} and both directions of \eqref{eq:exactzeros}. The map $F_0$ is a diffeomorphism on that tail, so the zero set is exactly \eqref{eq:yzeros}. At a zero $x_m$, differentiation of $G(F_0(x))-x$ gives
+\[
+ \frac{F_0'(x_m)}{F'(x_m)}-1
+ =-\frac{\kappa\e^{-ax_m}E'(x_m)}{F'(x_m)}\ne0.
+\]
+Thus the transported zeros are simple.
+
+For the quantitative formula, put $x_0=G_0(y)$ and
+\[
+ R(x)=F(x)-F_0(x)=\kappa\e^{-ax}E(x).
+\]
+Since $F_0(x_0)=y$,
+\[
+ x_0-y=O(\e^{-ay}/y).
+\]
+From Corollary~\ref{cor:hidden}, uniformly on the small interval around $y$ that contains $x_0$,
+\[
+ R(x)=O(\e^{-ay-c_y}y^{-3/4}),\qquad
+ R'(x)=O(\e^{-ay-c_y}y^{-3/4}).
+\]
+Both $F'$ and $F_0'$ equal $1+O(\e^{-ay}/y)$ there; the derivative of $R$ is smaller than this error. The mean-value theorem first gives
+\[
+ G(y)-x_0=O(R(x_0))
+\]
+and then, from $F(G(y))-F(x_0)=-R(x_0)$,
+\[
+ G(y)-x_0=-R(x_0)\bigl(1+O(\e^{-ay}/y)\bigr).
+\]
+Replacing $R(x_0)$ by $R(y)$ costs at most
+\[
+ O\left(\frac{\e^{-ay}}y\right)
+ O\left(\e^{-ay-c_y}y^{-3/4}\right)
+ =O(\e^{-2ay-c_y}y^{-7/4}),
+\]
+proving \eqref{eq:inverseEerror}. Inserting the leading term of \eqref{eq:leadingE} proves \eqref{eq:inverseleading}. The second Bessel mode and the nonlinear error are smaller than its displayed remainder for fixed positive $a$.
+\end{proof}
+
+\begin{corollary}[Realization obstruction persists under inversion]\label{cor:inverseobstruction}
+The two germs $G$ and $G_0$ cannot both belong to one Hardy field. Neither $F$ nor its inverse germ $G$ is definable on a tail in an o-minimal expansion of the real exponential field.
+\end{corollary}
+\begin{proof}
+The difference $G-G_0$ is a nonzero germ with arbitrarily large zeros, so it cannot be a nonzero field element. For the definability claim, if $F$ were definable in such an expansion, then
+\[
+ A(x)=\kappa^{-1}\e^{ax}(F(x)-x)
+\]
+would be definable, contrary to Theorem~\ref{thm:tameness}. If $G$ were definable, interchanging coordinates in its graph would make its inverse $F$ definable on a tail. The core and its inverse are themselves definable by their displayed formula and by the same graph argument.
+\end{proof}
+
+The Hardy-field assertion deliberately concerns the pair $(G,G_0)$. It does not claim that $G$ by itself belongs to no conceivable Hardy field with a different choice of other germs.
+
+\section{Zero-gap strengthening: a convergent Catalan expansion is not the germ}\label{sec:zerogap}
+The condition ``no positive action gap required'' has a concrete consequence, not merely a technical one. Remove the shift $a$ and put
+\begin{equation}\label{eq:zerogapmaps}
+ F_*(x)=x+\kappa A(x),\qquad F_{*,0}(x)=x+\frac\kappa x,
+ \qquad\kappa>0.
+\end{equation}
+The positive measure is now $\mu_* =\kappa\sum j^{-2}\delta_{1/j}$. Its support contains $0$, but it has no atom at $0$ and belongs to $\mathcal M$. Let $G_*$ and $G_{*,0}$ denote the inverse germs at $+\infty$.
+
+\begin{theorem}[Algebraic-core obstruction]\label{thm:catalan}
+For all sufficiently large real $y$,
+\begin{equation}\label{eq:catalancore}
+ G_{*,0}(y)=\frac{y+\sqrt{y^2-4\kappa}}2
+ =y-\sum_{n\ge1}\operatorname{Cat}_{n-1}\kappa^n y^{1-2n},
+\end{equation}
+where $\operatorname{Cat}_r=\frac1{r+1}\binom{2r}{r}$ and the displayed series converges for $y>2\sqrt\kappa$. The actual inverse satisfies
+\begin{equation}\label{eq:zerogapdifference}
+ G_*(y)-G_{*,0}(y)
+ =-\kappa E(y)+O\left(y^{-9/4}\e^{-2\sqrt{\pi y}}\right).
+\end{equation}
+Consequently its complete real inverse-power asymptotic expansion is the convergent series \eqref{eq:catalancore}, but $G_*$ is not its sum. For $\kappa=1$, $G_*$ cannot belong to any Hardy field containing the identity germ; more generally this exclusion holds for Hardy fields containing both the identity and the constant $\kappa$. For every $\kappa>0$, it is not definable on a tail in any o-minimal expansion of the real ordered field.
+\end{theorem}
+\begin{proof}
+Solving the quadratic $x^2-yx+\kappa=0$ and choosing the root asymptotic to $y$ gives the first formula in \eqref{eq:catalancore}. The binomial series for the square root gives the Catalan coefficients and its stated convergence radius.
+
+The weighted inverse theorem proves existence of $G_*$. For example, the compact-support criterion is $\kappa A(X)<1/\e$, which holds for sufficiently large $X$. Put $x_0=G_{*,0}(y)$. Then $x_0-y=O(y^{-1})$, $F_{*,0}'=1+O(y^{-2})$, and $R(x)=F_*(x)-F_{*,0}(x)=\kappa E(x)$ has derivative $O(x^{-5/4}\e^{-2\sqrt{\pi x}})$. The same mean-value argument as in Theorem~\ref{thm:transport} first bounds $G_*-x_0=O(E(x_0))$. The error in replacing the reciprocal slope by $1$ is $O(y^{-11/4}\e^{-2\sqrt{\pi y}})$. The error in replacing $E(x_0)$ by $E(y)$ is
+\[
+ O(y^{-1})\,O(y^{-5/4}\e^{-2\sqrt{\pi y}})
+ =O(y^{-9/4}\e^{-2\sqrt{\pi y}}).
+\]
+This proves \eqref{eq:zerogapdifference}. Since $E$ and this error are flat in every inverse-power scale, the full asymptotic expansion is \eqref{eq:catalancore}. Exact sign transport as before shows the difference is not identically zero.
+
+For the stronger Hardy-field conclusion, no assumption that the field contains the algebraic core is needed. The exact inverse equation implies
+\begin{equation}\label{eq:polynomialobstruction}
+ G_*(y)^2-yG_*(y)+\kappa
+ =-\kappa G_*(y)E(G_*(y)).
+\end{equation}
+The right side is a nonzero germ with zeros arbitrarily far to the right. Indeed $G_*$ is a diffeomorphism of tails, and $E$ has that property. If a Hardy field contained $G_*$, $y$, and the constant $\kappa$, then the left side would be a nonzero element of that field with arbitrarily large zeros, impossible. For $\kappa=1$ the constant is automatically present in every such field, so no extra constant-field assumption is needed.
+
+For o-minimality, definability of $G_*$ would imply definability of its inverse $F_*$, hence of $A=(F_*-x)/\kappa$, contradicting Theorem~\ref{thm:tameness}.
+\end{proof}
+
+\begin{remark}[A parameter-free example]
+Taking $\kappa=1$ yields the inverse germ solving
+\[
+ y=x+\sum_{j\ge1}j^{-2}\e^{-x/j}.
+\]
+It cannot be added to a Hardy field containing $y$. Only the identity and the constant $1$ are needed in the polynomial obstruction; neither the algebraic core nor an algebraic-closure assumption is required.
+\end{remark}
+
+\begin{proposition}[The zero-gap endpoint law]\label{prop:zerogapleading}
+In the family \eqref{eq:endpointfamily}, allow $a=0$ while retaining $p>1$ and $\rho,c,\kappa>0$. For each fixed $n\ge1$,
+\begin{equation}\label{eq:zerogapdn}
+ d_n(x)\sim\frac{\rise{n\beta}{n-1}}{n!}
+                C^n x^{-n\beta-n+1}.
+\end{equation}
+In particular $\beta=1$, $C=\kappa$ gives the Catalan coefficients in \eqref{eq:catalancore}.
+\end{proposition}
+\begin{proof}
+The Riemann-sum proof of Theorem~\ref{thm:endpoint}, applied with $p$ replaced by $p+r\rho$, gives
+\[
+ h_\mu^{(r)}(x)\sim(-1)^r C\rise{\beta}{r}x^{-\beta-r}
+\]
+for every fixed $r$. Apply the finite Leibniz formula to $D^{n-1}(h_\mu^n)$: the sum of leading coefficients is exactly the coefficient obtained by differentiating $(Cx^{-\beta})^n$. The inverse formula then gives \eqref{eq:zerogapdn}. For $\beta=1$,
+\[
+ \frac{\rise n{n-1}}{n!}
+ =\frac{(2n-2)!}{n!(n-1)!}=\operatorname{Cat}_{n-1}.
+\]
+\end{proof}
+
+\section{Nested modes, phase cancellation, and legitimate truncation}\label{sec:nested}
+
+\subsection{The exact coupling grading}
+For the positive-gap example, all coupling coefficients can be written in one formula:
+\begin{equation}\label{eq:nestedexact}
+ G(y)-y=\sum_{n\ge1}\frac{(-1)^n\kappa^n}{n!}
+ D^{n-1}\left\{\e^{-nay}\bigl(y^{-1}+E(y)\bigr)^n\right\}.
+\end{equation}
+The outer sum is convergent in its stated domain. For each fixed $n$, expand the finite binomial and insert the absolutely convergent Bessel expansion for $E$. Products and any fixed number of derivatives remain absolutely convergent. Each retained Bessel factor may then be expanded to a finite asymptotic order using Lemma~\ref{lem:bessel}.
+
+The order of these operations is important. We have proved convergence in $n$ for the exact coefficient functions and convergence in $k$ for exact Bessel modes. We have not proved unrestricted interchange of the convergent $n$ sum with infinitely many divergent inner asymptotic expansions. A valid approximation fixes a coupling truncation, a mode budget, and an inner asymptotic order, with separate error control.
+
+\subsection{The action geometry after regrouping}
+A product of $r$ Bessel modes selected from the $n$th coupling sector has complex exponential factors of the form
+\begin{equation}\label{eq:complexactions}
+ \exp\left[-nay-2\sqrt{\pi y}
+             \sum_{\ell=1}^{r}(1+\ii\epsilon_\ell)\sqrt{k_\ell}\right],
+ \qquad \epsilon_\ell\in\{-1,1\},\quad r\le n.
+\end{equation}
+Differentiation supplies reciprocal powers of $y^{1/2}$ and $y$, but does not change the displayed exponential actions. Thus the linear action is $na$, the stretched-exponential decay action is $\sum\sqrt{k_\ell}$, and the phase action is $\sum\epsilon_\ell\sqrt{k_\ell}$.
+
+For fixed $n$ and bounded stretched decay action, only finitely many such mode choices occur: every $k_\ell$ is bounded by the square of the action budget and $r\le n$. This is a useful finite enumeration rule. It is not a total Hardy-field ordering of real cosines. Equal-envelope oscillatory phases must be retained as a block, since a cosine is not eventually bounded away from zero.
+
+\subsection{A concrete nonlinear nonoscillatory contribution}
+Let
+\[
+ C_*=2\sqrt\pi(2\pi)^{1/4},\qquad c=2\sqrt{\pi y},
+\]
+and retain only the leading $k=1$ term
+\[
+ E_1(y)=C_*y^{-3/4}\e^{-c}\cos(c-\pi/8).
+\]
+Within the $n=2$ sector, the part quadratic in $E$ is
+\[
+ \frac{\kappa^2}{2}D(\e^{-2ay}E^2)
+ =\kappa^2\e^{-2ay}(EE'-aE^2).
+\]
+For fixed $a>0$, inserting $E_1$ shows the leading contribution from that selected product to be
+\begin{equation}\label{eq:phasecancellation}
+ -\frac{a\kappa^2C_*^2}{2}
+ y^{-3/2}\e^{-2ay-2c}
+ \left\{1+\cos(2c-\pi/4)\right\}.
+\end{equation}
+There is a nonoscillatory component because conjugate phases cancel, although their positive decay actions add. Equation~\eqref{eq:phasecancellation} describes one identified nonlinear contribution, not the leading term of the entire residual after the core. Other single and mixed Bessel modes must be accounted for at a specified precision. In particular, the $k=4$ single mode has the same stretched decay action $2$ and can interact in a complete bookkeeping scheme.
+
+\subsection{Discontinuity of asymptotic extraction}
+
+\begin{proposition}[Normal convergence does not preserve asymptotic coefficients]\label{prop:discontinuity}
+Let $A_J(x)=\sum_{j=1}^Jj^{-2}\e^{-x/j}$. Each $A_J$ has the zero full inverse-power Poincar\'e expansion at $+\infty$, whereas their locally uniform entire limit $A$ has the full expansion $x^{-1}$. The convergence also holds uniformly with every fixed derivative on each positive real tail. Therefore coefficient extraction for full Poincar\'e expansions is not continuous for either of these natural analytic convergence modes on this family.
+\end{proposition}
+\begin{proof}
+For fixed $J$, every term of $A_J$ decays exponentially, hence $A_J=o(x^{-M})$ for every $M$. The convergence assertions were proved above. Corollary~\ref{cor:hidden} gives $A-x^{-1}=o(x^{-M})$ for every $M$, so its coefficient of $x^{-1}$ is $1$, not $0$. A constant sequence of zero coefficient vectors cannot converge to this vector in any Hausdorff coefficient topology.
+\end{proof}
+
+This supplies a specific failure mode for an automatic asymptotic pipeline: compute each finite atomic asymptotic expansion, then pass to the analytic limit. The missing hypothesis is a remainder estimate uniform in the truncation index $J$. Absolute or even normal analytic convergence does not supply it.
+
+\begin{corollary}[Inverse limits can leave every exponential o-minimal class]\label{cor:inverselimits}
+Let $F_J(x)=x+\kappa\e^{-ax}A_J(x)$ and let $G_J$ be their far-right inverse branches. Choose $X$ so that \eqref{eq:modelcriterion} holds. Then $G_J\to G$ uniformly on $\Rea z\ge X$, and their derivatives of every fixed order converge uniformly on $\Rea z\ge X+\delta$ for each $\delta>0$. Every real $G_J$ is definable by a finite exponential formula and inversion of its graph, whereas $G$ is not definable on a tail in any o-minimal expansion of the real exponential field.
+\end{corollary}
+\begin{proof}
+The weighted norm of the omitted positive atomic tail is at most $\kappa\e^{-aX}\sum_{j>J}j^{-2}$. Proposition~\ref{prop:stability} gives uniform inverse convergence. Cauchy's derivative estimates on disks lying in the larger half-plane give the derivative convergence. Finite exponential formulas define $F_J$, and coordinate interchange defines its inverse branch. Corollary~\ref{cor:inverseobstruction} excludes the limit from every stated o-minimal expansion.
+\end{proof}
+
+\section{From formulas to certified numerical workflows}\label{sec:computations}
+
+\subsection{An independent evaluation of the atomic sum}
+Computing $A(x)-1/x$ by naive subtraction loses many digits once $x$ is large. An independent representation of $A$ is useful for checking the Poisson--Bessel identity. For integers $J,M\ge1$, expand only the tail $j>J$:
+\begin{equation}\label{eq:zetacheck}
+ A(x)=\sum_{j=1}^{J}j^{-2}\e^{-x/j}
+ +\sum_{m=0}^{M-1}\frac{(-x)^m}{m!}\zeta(m+2,J+1)+R_{J,M}(x),
+\end{equation}
+where $\zeta(s,q)=\sum_{j\ge0}(j+q)^{-s}$ is the Hurwitz zeta function and
+\begin{equation}\label{eq:zetabound}
+ |R_{J,M}(x)|\le\frac{x^M}{M!}\zeta(M+2,J+1),\qquad x>0.
+\end{equation}
+The bound follows from the real exponential Taylor remainder $|\e^{-u}-\sum_{m<M}(-u)^m/m!|\le u^M/M!$, $u\ge0$, followed by absolute summation. For $A^{(r)}$, replace each zeta argument $m+2$ by $m+r+2$ and multiply the expression by $(-1)^r$.
+
+The accompanying script uses $J=\max(40,\lceil2x\rceil)$ and $M=75$. It evaluates the atomic/zeta side at 120 decimal digits and the Bessel side at 65 decimal digits. The higher precision on the former is needed for cancellation in special-function evaluation as well as in subtracting $1/x$. These working precisions are implementation choices, not a theorem about machine rounding.
+
+\subsection{Recorded checks}
+Table~\ref{tab:besselchecks} compares \eqref{eq:zetacheck} with the first twelve exact Bessel modes. The independent Taylor-tail bounds are smaller than $2\cdot10^{-136}$ for the three cases, so the displayed discrepancy is governed by the omitted Bessel modes rather than that analytic remainder.
+
+\begin{table}[ht]
+\centering\small
+\caption{Independent atomic/zeta and twelve-mode Bessel evaluations.}\label{tab:besselchecks}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$x$ & $E(x)$ & Absolute discrepancy & Bound $B_{12}(x)$\\
+\midrule
+10 & $-2.367488317961218\cdot10^{-6}$ & $4.34917\cdot10^{-18}$ & $8.89430\cdot10^{-18}$\\
+40 & $-6.514702573550637\cdot10^{-11}$ & $1.66773\cdot10^{-36}$ & $6.97938\cdot10^{-36}$\\
+100 & $-6.286725538557126\cdot10^{-17}$ & $1.87044\cdot10^{-57}$ & $1.26222\cdot10^{-56}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two positive inverse checks are recorded in Table~\ref{tab:inversechecks}. The first measure is $0.12\delta_1+0.07\delta_{3/2}$, evaluated at $y=2$ with $N=7$. The second is the accumulating example with $a=\kappa=1$, evaluated at $y=5$ with $N=6$. The reported error is the upper approximation $y-d_N(y)$ minus the independently found root, hence should be positive.
+
+\begin{table}[ht]
+\centering\small
+\caption{One-sided inverse truncation tests.}\label{tab:inversechecks}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Measure & $q$ & Actual upper error & Tree bound\\
+\midrule
+Two atoms & $0.02958799316$ & $2.46709\cdot10^{-12}$ & $1.58677\cdot10^{-10}$\\
+Accumulating atoms & $0.002697591244$ & $6.16478\cdot10^{-19}$ & $8.20281\cdot10^{-17}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the accumulating example the computed inverse is
+\[
+ G(5)=4.9986490106708453120811948568167907\ldots,
+\]
+whereas the nonoscillatory core inverse is
+\[
+ G_0(5)=4.9986502260530461334418644382613848\ldots.
+\]
+These values illustrate that the hidden remainder is a genuine functional difference, not a change of notation for the same inverse.
+
+The symbolic checks verify \eqref{eq:coresector} by independent differentiation for $n=1,\ldots,6$, and verify the Bessel coefficient product/recurrence agreement through $b_8$. The finite-atomic inverse is evaluated by exact rational action keys and numerical convolution weights. The accumulating inverse coefficients are evaluated from finite Taylor jets of $h$, without enumerating all multi-indices in \eqref{eq:multiple}. The composition law is also tested for two finite measures, with an exponential Taylor cutoff at degree ten: the error is about $3.29549\cdot10^{-27}$ against the bound $3.43936\cdot10^{-27}$. Elementary finite-mode evaluations with $K=8$, $N=16$ give sign brackets around the zeros indexed by $m=5,10,20$, at approximate locations $24.8195597065$, $88.6346808272$, and $334.0714021245$. The brackets have radius $10^{-8}$ in the phase variable $c$, and their normalized analytic truncation bounds are below $1.37\cdot10^{-15}$. These are floating-point evaluations of analytically bounded brackets, with the same rounding qualification as the other tests. All assertions in the supplied check program passed in the recorded run.
+
+\paragraph{What these computations do not establish.}
+The code uses \code{mpmath} floating-point arithmetic and \code{sympy} symbolic simplification. It does not use outward-rounded interval arithmetic, and it is not a Lean proof. The mathematical inequalities are proved in the text; the tables are high-precision consistency checks of their implementation and of the formulas. A production numerical certificate must additionally enclose every evaluated special function and rounding error. In particular, the printed decimal endpoints are not being advertised as machine-verified interval endpoints.
+
+\subsection{A posteriori residual certification}
+The repository already treats residual-to-root certificates \cite{repo-main}; the following elementary formulation explains how to use our new tail bounds with that existing architecture.
+
+\begin{proposition}[Residual bracket with an uncertain function evaluation]\label{prop:residual}
+Let $f$ be continuously differentiable on $[g-r,g+r]$, with $f'(x)\ge m>0$ there. Suppose a computable approximation $\widetilde f(g)$ satisfies $|f(g)-\widetilde f(g)|\le\epsilon$ and
+\[
+ |\widetilde f(g)-y|+\epsilon\le mr.
+\]
+Then $f(x)=y$ has exactly one solution in that interval.
+\end{proposition}
+\begin{proof}
+The slope bound gives
+\[
+ f(g-r)\le f(g)-mr\le y,
+ \qquad f(g+r)\ge f(g)+mr\ge y.
+\]
+Continuity gives existence, and strict monotonicity gives uniqueness.
+\end{proof}
+
+For the accumulating example, evaluate $A(g)$ by the Bessel representation and bound the missing modes by $B_K(g)$; finite inner asymptotic evaluation may instead use \eqref{eq:finiteerror}. Multiplication by $\kappa\e^{-ag}$ gives the function-evaluation error $\epsilon$. A lower derivative bound can be obtained directly from the positive action measure:
+\[
+ F'(x)=1-\int s\e^{-sx}\dd\mu(s)
+ \ge1-b\,m_\mu(g-r),\qquad x\in[g-r,g+r],
+\]
+with $b=a+1$. The certificate is meaningful when this last bound is positive. Outward-rounded evaluation of these explicit quantities would complete a fully numerical implementation.
+
+\subsection{Recommended representation and truncation order}
+For a bounded-action input, the atomic measure is best for positivity, convolution coefficients, and global contraction bounds. For a large real evaluation point in the accumulation example, the endpoint plus Bessel representation is best for resolving tiny residuals. A practical implementation should therefore keep both representations rather than insisting on a single finite monomial grid.
+
+A safe workflow is to obtain a root neighborhood from the tree or geometric certificate; choose a coupling order using its tail bound; choose a Bessel mode cutoff using $B_K$; and use a finite inner asymptotic order only when \eqref{eq:finiteerror} improves the requested error. Near a cosine zero, absolute residual bounds remain valid, whereas a relative approximation to the first mode does not. The final residual bracket checks the assembled approximation against the actual equation.
+
+\section{A formalization plan with explicit dependency boundaries}\label{sec:lean}
+The results above suggest a small sequence of formalization targets rather than an assertion that the existing transseries development already proves them.
+
+\paragraph{Layer 1: weighted measures and faithful Laplace evaluation.}
+Define the space of complex measures with finite $\int\e^{-Xs}\dd|\mu|$, and prove convolution's weighted norm inequality. A first useful theorem is injectivity by the compact moment argument of Lemma~\ref{lem:convolution}. This is independent of an assembled full transseries datatype. It requires measure integration and continuous-function approximation, not well-based supports.
+
+\paragraph{Layer 2: the quantitative inverse.}
+Formalize the Rouch\'e or analytic-contraction construction, the contour coefficient identity, and the elementary estimate
+\[
+ s^{n-1}\e^{-rs}\le(n-1)!r^{1-n}.
+\]
+These yield Theorem~\ref{thm:inverse}. A smaller first milestone is a finite-support version with a uniform norm tail; the tree majorant then gives concrete numerical examples without infinite action measures. The composition formula can be proved separately from absolute convergence and Fubini.
+
+\paragraph{Layer 3: endpoint limits and special functions.}
+The fixed-$n$ endpoint theorem can be separated into an improper Riemann-sum lemma and bounded-moment concentration. For the explicit example, formalize the smooth one-sided test function used in Poisson summation, its Fourier transform, and the integral Taylor remainder for $K_1$. The analytic continuation at the damped Fourier boundary is a genuine proof obligation and must not be replaced by an unchecked integral table identity.
+
+\paragraph{Layer 4: obstruction and inverse transport.}
+Once the zero theorem is available, the field-of-germs contradiction and exact sign transport are short. The parameter-free polynomial identity
+\[
+ G_*^2-yG_*+1=-G_*E(G_*)\quad(\kappa=1)
+\]
+is a particularly compact target: it isolates the final obstruction from all special-function analysis. A full model-theoretic formalization is unnecessary to prove the algebraic field-of-germs exclusion; o-minimality can be added as a separate consequence of the zero-set axiom.
+
+\paragraph{How the inspected repository results enter.}
+The declarations \code{neumann_isPWO}, \code{neumann_finite_factorizations}, and their order-dual forms \cite{repo-neumann} remain useful for a separate finite-factorization model and for comparing representations where both models apply. They do not discharge the new measure convergence obligations. The README's residual existence certificate is reusable after verifying its hypotheses, as illustrated by Proposition~\ref{prop:residual}. No new Lean file is included in this package, and no unexecuted code is labeled machine-checked.
+
+\section{Further research questions and proposed targets}\label{sec:future}
+The following problems are proposals for further work. They are not claimed solved by the preceding theorems, nor all claimed historically open.
+
+\subsection{General power-law accumulation and its dual actions}
+For
+\[
+ A_{p,\rho}(x)=\sum_{j\ge1}j^{-p}\e^{-x/j^\rho},
+\]
+Theorem~\ref{thm:endpoint} gives the leading algebraic endpoint term. Poisson analysis suggests saddle actions from the phase $x/t^\rho+2\pi\ii kt$. A stationary-point calculation gives the candidate action
+\begin{equation}\label{eq:proposedsaddle}
+ (\rho+1)\rho^{-\rho/(\rho+1)}
+ (2\pi\ii k)^{\rho/(\rho+1)}x^{1/(\rho+1)}.
+\end{equation}
+For a coefficient $c$ in the original exponential, replace $x$ by $cx$. A substantive next target is to determine the admissible contours and branches, endpoint contributions, and uniform remainder bounds for general real $\rho>0$. Formula~\eqref{eq:proposedsaddle} is a candidate saddle value, not a proved complete asymptotic expansion. The cases where several saddle contributions have equal decay are especially important for sign changes.
+
+\subsection{Characterizing tame positive Laplace transforms}
+Positivity of the action measure and complete monotonicity of its transform are insufficient for Hardy-field or o-minimal membership. Seek sufficient structural conditions on endpoint densities or atomic spacings that imply membership in a specified tame class. A useful target would distinguish regularly varying continuous densities with controlled expansions from discrete endpoint lattices whose dual modes force oscillation. A general decision procedure is not implied by our counterexample.
+
+\subsection{Distribution-valued actions and polynomial amplitudes}
+The present measure calculus naturally represents $\e^{-ax}x^{-\beta}$ for $\beta>0$ by gamma densities, but positive powers of $x$ multiplying an exponential suggest derivatives of point masses. Extending the group to distributions of bounded order requires a norm or seminorm scale that controls convolution and multiplication by $s^k$ with explicit derivative loss. An exact target is a version of Theorems~\ref{thm:inverse}--\ref{thm:composition} for finite-order compactly supported distributions, with a transparent domain loss and a usable remainder estimate.
+
+\subsection{Uniform coupling order and near-critical inversion}
+The endpoint sector laws are fixed-$n$ theorems. To optimize computation, one wants simultaneous estimates when $n$ grows with $x$, perhaps near the critical tree regime $q\uparrow1/\e$. For a distributed measure the true branch boundary can be better than the universal point-mass bound. Determine which tilted action moments govern the first improvement and whether an effective local large-deviation estimate gives a sharp joint $(n,x)$ approximation.
+
+\subsection{Summability and Stokes data of the regrouped inverse}
+The exact Bessel representation and convergent coupling series provide a starting point, not a proof, for the full resurgent structure of the inverse. Determine which Borel singularities and Stokes multipliers arise after nonlinear composition of infinitely many Bessel modes. This should be compared with existing nonlinear resurgence theorems \cite{sauzin,kamimoto}, checking their support and continuation hypotheses rather than treating their titles as automatic applicability.
+
+\subsection{Action-budget algorithms and phase collisions}
+For a fixed coupling degree and bounded stretched decay action, the mode enumeration in \eqref{eq:complexactions} is finite. Develop an algorithm that groups equal actions, retains independent phases, and bounds all unenumerated terms. The square-root sums create exact resonances and conjugate-phase cancellations; numerical near-equality must not be substituted for exact equality. A satisfactory algorithm should report absolute envelope bounds near zeros, where relative error is ill conditioned.
+
+\subsection{Uniform asymptotic extraction under analytic limits}
+Proposition~\ref{prop:discontinuity} identifies a missing hypothesis in a tempting limit argument. Seek practical conditions on a family of measures that make coefficient extraction commute with a limit: for example uniform endpoint exclusions at each required precision, or a uniform asymptotic density model with controlled transform remainders. The desired theorem should state the topology and the remainder quantifiers explicitly, rather than simply saying ``normal convergence''.
+
+\subsection{Proof-producing numerical inversion}
+The final implementation target is a routine returning a root interval, a finite action or Bessel certificate, and machine-checkable bounds. It should combine rational action convolution, interval evaluations of $K_1$ or its integral representation, the tail bounds of Theorem~\ref{thm:finiteerror}, and a residual bracket. The included floating-point tests are a prototype of the computational organization, not this final proof-producing implementation.
+
+\section{Conclusion}
+There is a useful enlargement of the usual finite-action inverse calculus that does not require pretending an ill-ordered atomic display is a Hahn series. Exponentially weighted measures give exact inversion and composition, with an explicit inverse measure, support control, positive displacement, and quantitative truncation certificates. These conclusions remain valid when the action support accumulates at zero without an atom there.
+
+The enlargement has a nontrivial boundary. An analytic sum of positive, completely monotone exponential terms can conceal infinitely many sign changes after subtraction of its endpoint core. For the explicit series $A(x)=\sum j^{-2}\e^{-x/j}$, Poisson summation reveals the hidden scale, a Bessel integral supplies all-orders absolute bounds, and the large zeros can be located. Nonlinear inversion preserves the obstruction, in an exact sense at the zeros. In the zero-gap case, even a convergent Catalan asymptotic expansion fails to identify the actual inverse germ, and, for $\kappa=1$, a polynomial identity excludes that inverse from Hardy fields containing the identity.
+
+The practical lesson for a transseries system is precise: retain the distinction between a formal support rule, an analytic summation rule, and a nonoscillatory realization. Each needs its own hypotheses and certificates. The results here supply one complete analytic test case, together with several next steps toward a more general theory and a formal implementation.
+
+\appendix
+\section{Coefficient and implementation details}\label{app:coeff}
+The Bessel coefficients satisfy the exact rational recurrence
+\[
+ b_0=1,\qquad b_{m+1}=\frac{4-(2m+1)^2}{8(m+1)}b_m.
+\]
+The first nine are
+\[
+\begin{gathered}
+1,\quad \frac38,\quad-\frac{15}{128},\quad\frac{105}{1024},
+\quad-\frac{4725}{32768},\quad\frac{72765}{262144},\\
+-\frac{2837835}{4194304},\quad\frac{66891825}{33554432},
+\quad-\frac{14783093325}{2147483648}.
+\end{gathered}
+\]
+For the fifth and sixth core sectors of \eqref{eq:coresector}, after removing the factor $\kappa^n\e^{-nay}$, the polynomials are
+\begin{align*}
+ P_5(y)&=\frac{125a^4}{24y^5}+\frac{125a^3}{6y^6}
+       +\frac{75a^2}{2y^7}+\frac{35a}{y^8}+\frac{14}{y^9},\\
+ P_6(y)&=\frac{54a^5}{5y^6}+\frac{54a^4}{y^7}
+       +\frac{126a^3}{y^8}+\frac{168a^2}{y^9}
+       +\frac{126a}{y^{10}}+\frac{42}{y^{11}}.
+\end{align*}
+Setting $a=0$ leaves the Catalan coefficients $14$ and $42$, respectively.
+
+For an arbitrary finite Taylor jet $h(y+u)=\sum_{r=0}^{N-1}h_r u^r+O(u^N)$, the inverse-displacement sector is obtained without symbolic high derivatives:
+\[
+ d_n(y)=\frac{(-1)^{n+1}}n
+ [u^{n-1}]\left(\sum_{r=0}^{n-1}h_r u^r\right)^n,
+ \qquad1\le n\le N.
+\]
+Truncated polynomial multiplication is enough. The supplied implementation uses this for the accumulating example and explicit rational-key convolution for the finite-atomic example. In either case, the infinite tail bound is a separate analytic assertion, not inferred from the magnitude of the last computed term.
+
+\section{Reproducibility and source scope}\label{app:reproduce}
+The package contains the standalone TeX source, the compiled PDF, \code{verify.py}, \code{verification_results.json}, a README, and source notes. The article does not depend on the repository's notation macros or on external images. Build it with two or three passes of \code{pdflatex}; no BibTeX run is required. Reproduce the checks with
+\begin{quote}\small\ttfamily
+python verify.py --output verification\_results.json
+\end{quote}
+The recorded environment was Python 3.13.5, mpmath 1.3.0, and SymPy 1.14.0. These are the versions used for the supplied run, not a claim about the latest available releases. The script rejects a requested global precision below 110 digits because the independent zeta evaluation is cancellation sensitive.
+
+The bibliographic search verified standard transseries background, the existing nonlinear resurgence literature, the Bessel integral and asymptotic formulas, and the analytic Hardy-field realization reference. It did not establish absence of earlier work on the particular Laplace sum or measure inversion identities. Likewise, only the repository sources listed below were actually read for the targeted comparison. An independent literature and proof review remains appropriate before a submission making historical novelty claims.
+
+\begin{thebibliography}{99}
+\small\raggedright
+\bibitem{repo-group}
+V. Reshetnikov, \emph{ProveIt: Series and transseries}, group README,
+inspected at commit \code{ae28ea2db3c01a0b777cffa6295b8fe9c4628f27},
+29 September 2026. Repository path:
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/README.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-main}
+V. Reshetnikov, \emph{Transseries: the polynomial--logarithmic calculus and its inversions}, canonical-volume README in \repo, same inspected commit and date. Under the preceding group path:
+\path{Transseries_And_Inversion/README.md}.
+The large canonical TeX file was identified but not fully retrieved; this reference is to the inspected README, not an assertion of having read the entire volume.
+
+\bibitem{repo-neumann}
+V. Reshetnikov, \emph{Well-based supports: Dickson's lemma and Neumann's lemma},
+\repo\ Lean source, same inspected commit and date.
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/TransseriesWellBased.lean}.
+The source explicitly describes itself as a bridge to Mathlib results with the required order conventions.
+
+\bibitem{edgar}
+G. A. Edgar, \emph{Transseries for beginners}, arXiv:0801.4877.
+\url{https://arxiv.org/abs/0801.4877}.
+
+\bibitem{sauzin}
+D. Sauzin, \emph{Nonlinear analysis with resurgent functions},
+Annales scientifiques de l'\'Ecole normale sup\'erieure (4) \textbf{48} (2015), 667--702.
+DOI: 10.24033/asens.2255. arXiv:1212.4477.
+\url{https://arxiv.org/abs/1212.4477}.
+
+\bibitem{kamimoto}
+S. Kamimoto and D. Sauzin, \emph{Nonlinear analysis with endlessly continuable functions}, arXiv:1509.01473.
+\url{https://arxiv.org/abs/1509.01473}.
+
+\bibitem{hardy}
+M. Aschenbrenner and L. van den Dries, \emph{Analytic Hardy fields},
+arXiv:2311.07352, version 3 (2025).
+\url{https://arxiv.org/abs/2311.07352}.
+
+\bibitem{dlmf-integrals}
+NIST Digital Library of Mathematical Functions, \S10.32,
+\emph{Integral representations of modified Bessel functions},
+in particular formulas 10.32.8 and 10.32.10.
+\url{https://dlmf.nist.gov/10.32}.
+Accessed 29 September 2026.
+
+\bibitem{dlmf-asympt}
+NIST Digital Library of Mathematical Functions, \S10.40,
+\emph{Asymptotic expansions for large argument of modified Bessel functions}.
+\url{https://dlmf.nist.gov/10.40}.
+Accessed 29 September 2026.
+\end{thebibliography}
+\end{document}

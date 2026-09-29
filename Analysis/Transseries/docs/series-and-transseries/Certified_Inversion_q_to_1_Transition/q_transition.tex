@@ -1,0 +1,1714 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype,mathtools,bm}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Certified Inversion Through the q-to-1 Transition},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\E}{\mathcal E}
+\newcommand{\D}{\mathcal D}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\qpoch}[2]{(#1;#2)_\infty}
+\newcommand{\repo}{\textsc{ProveIt}}
+\newcommand{\commit}{20301601562cf84173f2b503b0dc9c3fbf21cd0c}
+\DeclareMathOperator{\diag}{diag}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtcolorbox{resultbox}{colback=MidnightBlue!3,colframe=MidnightBlue!45,
+ boxrule=.6pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Certified inversion through the $q\to1$ transition}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=4pt,topsep=5pt}
+\emergencystretch=2em
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{13mm}
+{\color{MidnightBlue}\large TRANSSERIES \enspace / \enspace ASYMPTOTIC INVERSION}\par
+\vspace{12mm}
+{\Huge\bfseries Certified Inversion Through the\par $q\to1$ Transition}\par
+\vspace{7mm}
+{\Large Signed remainders, optimal truncation,\par and a modular cancellation window}\par
+\vspace{8mm}
+{\large With a shortest-block law for Gaussian multinomials}\par
+\vspace{12mm}
+\hrule
+\vspace{5mm}
+Prepared for Vladimir Reshetnikov\par
+29 September 2026\par
+Repository snapshot: \texttt{20301601562cf8}\par
+\vspace{9mm}
+\begin{abstract}
+The simultaneous limit $q=\ee^h\to1^+$ and $x\to\infty$ reorganizes the
+transseries of Gaussian binomial coefficients: the finite-product tail enters a
+dilogarithmic dominant phase, while the Euler product contributes a separate
+modular exponential. We prove an exact positive-kernel remainder formula for
+the canonical real interpolation of the central Gaussian binomial. It yields
+signed first-omitted-term bounds for every $h,x>0$, a fixed-order bound uniform
+up to $hx=0$, and two-sided rational approximations from a determinate
+Stieltjes measure.
+
+The main quantitative result identifies the optimally truncated finite-size
+remainder, including its first relative correction. Its leading value is
+$(-1)^{M+1}\ee^{-2\pi x}/(\pi\sqrt{x})$ when $M=\pi x+O(1)$ and $hx$ stays
+in a compact positive interval. Combining it with the modular term
+$\ee^{-4\pi^2/h}$ gives a stable additive law for inverse errors. Their true
+balance occurs in a logarithmically shifted window, not exactly at $hx=2\pi$;
+even and odd truncations respectively cancel and reinforce. A multinomial
+extension shows that the shortest block and its multiplicity determine the
+leading optimal remainder. Complete proofs, reproducible exact-rational and
+high-precision checks, a repository crosswalk, and a further-research agenda
+are included.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\small\textbf{Status and scope.} This is a proof-based research manuscript,
+not an independently refereed or Lean-checked result. The explicit refinements
+are developed relative to the inspected repository chapter. Classical
+partial-fraction, modular, moment, and summation machinery is attributed;
+worldwide priority for the refinements has not been established. No general
+open conjecture about all transseries is claimed solved.
+\end{resultbox}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The problem, the contribution, and the boundary of novelty}
+\label{sec:scope}
+
+\subsection{A concrete gap rather than a generic request for a breakthrough}
+The \repo\ companion \emph{Combinatorial Transseries and Their Inverses}
+already contains a detailed chapter on the singular transition $q\to1$
+\cite{repo}. Its forward expansion isolates a dilogarithmic phase, a logarithmic
+amplitude, Bernoulli corrections, and an exact modular factor. It also gives
+finite-order inverse corrections and an all-order formal inverse formula.
+Those are starting points here, not new results of this manuscript.
+
+Two distinctions in that chapter are particularly important. Its uniform
+finite-order error theorem assumes $\tau=hx\ge\tau_0>0$, and it explicitly
+leaves uniform matching to $\tau=0$ to a different analysis. It also states
+that the modular factor is not the whole beyond-all-orders structure of the
+finite-size tail. Consequently, retaining a modular term next to an unspecified
+algebraic error does not establish which exponential actually controls an
+inverse approximation. The present paper supplies a positive remainder kernel
+and uses it to answer that more precise question.
+
+The resulting advances are linked rather than a collection of unrelated
+coefficient calculations. Positivity makes the divergent expansion enveloping.
+The same positivity yields a Stieltjes measure and rational enclosures. A
+large-moment analysis then determines the exact leading optimal remainder,
+which permits a signed comparison with the modular correction. Finally,
+inverse-error transport preserves that comparison because the interpolation
+has a uniformly positive slope.
+
+\subsection{What is proved here}
+The principal results are the following. \Cref{thm:signed} gives an exact
+signed remainder and a strict first-omitted-term bound. \Cref{cor:uniform}
+extends fixed-order control to $0<hx\le\tau_1$ in the natural variable $x$.
+\Cref{thm:stieltjes,thm:pade} give a positive Stieltjes representation and
+convergent two-sided Pad\'e bounds. \Cref{thm:optimal} determines the optimal
+remainder through relative order $x^{-1}$. \Cref{thm:inverse,thm:window}
+give the two-exponential inverse-error law and its logarithmically shifted
+cancellation window. \Cref{thm:shortest} extends the leading law to arbitrary
+fixed positive multinomial block proportions.
+
+These are assertions with proofs below. The numerical checks are separate:
+they test signs, constants, rational bounds, and nonlinear residuals, but do not
+replace the arguments. In particular, no unexecuted Lean code is presented as
+formal verification.
+
+\subsection{Relation to existing analysis}
+The partial-fraction expansion of the hyperbolic cotangent and the modular
+transformation of the Dedekind eta function are classical; convenient precise
+references are DLMF~4.36.3 and~23.18.5 \cite{dlmf-hyper,dlmf-eta}. Modular
+representations of general $q$-Pochhammer products involving the dilogarithm
+and Laplace integrals were developed by Zhang \cite{zhang}. Modern resurgence
+and summability results for weighted $q$-Pochhammer sums appear in Fantini and
+Rella \cite{fantini-rella}. The existence of a Borel description of a
+$q$-product is therefore not a novelty claim here.
+
+Likewise, positivity, quadrature, moment determinacy, and Pad\'e convergence
+belong to classical Stieltjes theory; Simon gives a substantial treatment of
+its operator and approximation aspects \cite{simon}. Here the specific
+measure, the resulting certificates for this interpolation, and their
+connection to the inverse cancellation calculation are made explicit.
+
+The sharp parity-sensitive inverse comparison is the main proposed research
+contribution. A targeted comparison with the cited sources and the pinned
+repository does not constitute an exhaustive priority search. The assertions
+are deliberately formulated so that their correctness can be assessed without
+accepting a claim that they are unprecedented.
+
+\section{Exact interpolation and the two small mechanisms}
+\label{sec:model}
+
+For $0<Q<1$, write
+\[
+ \qpoch{z}{Q}=\prod_{j=0}^{\infty}(1-zQ^j).
+\]
+Throughout the central-binomial analysis,
+\begin{equation}
+ h>0,\qquad Q=\ee^{-h},\qquad q=\ee^h,\qquad x>0,
+ \qquad \tau=hx,\qquad t=\ee^{-\tau}.
+ \label{eq:parameters}
+\end{equation}
+All logarithms of positive quantities are real logarithms. Define
+\begin{equation}
+ P_h=\qpoch{Q}{Q},\qquad
+ P_h(x)=\frac{\qpoch{Q}{Q}}{\qpoch{Q^{x+1}}{Q}},\qquad
+ H_h(x)=\ee^{hx^2}\frac{P_h(2x)}{P_h(x)^2},\qquad
+ L_h(x)=\log H_h(x).
+ \label{eq:H}
+\end{equation}
+The distinction between the constant $P_h$ and the function $P_h(x)$ is
+maintained throughout. At an integer $n\ge0$, $P_h(n)=\prod_{j=1}^n(1-Q^j)$,
+and elementary reversal of the factors gives
+\[
+ H_h(n)=\genfrac{[}{]}{0pt}{}{2n}{n}_{q}.
+\]
+Thus \eqref{eq:H} specifies an interpolation, rather than assuming that an
+integer sequence has a unique analytic continuation.
+
+Introduce the exact tail
+\begin{equation}
+ A_h(t)=\sum_{m=1}^{\infty}\frac{t^m}{m(\ee^{hm}-1)}.
+ \label{eq:A}
+\end{equation}
+Expanding $-\log(1-z)$ inside absolutely convergent products proves
+\begin{equation}
+ L_h(x)=hx^2-\log P_h+A_h(t^2)-2A_h(t).
+ \label{eq:exactL}
+\end{equation}
+The modular identity supplies the other mechanism:
+\begin{align}
+ P_h&=\sqrt{\frac{2\pi}{h}}\,
+       \exp\left(-\frac{\pi^2}{6h}+\frac h{24}\right)
+       \qpoch{r_h}{r_h},&
+ r_h&=\ee^{-4\pi^2/h},\label{eq:modular}\\
+ \E(h)&=-\log\qpoch{r_h}{r_h}
+        =\sum_{n=1}^{\infty}\sigma_{-1}(n)r_h^n,&
+ \sigma_{-1}(n)&=\sum_{d\mid n}\frac1d.\label{eq:E}
+\end{align}
+For completeness, apply $\eta(-1/z)=\sqrt{-iz}\eta(z)$ at
+$z=ih/(2\pi)$ and use $\eta(ih/(2\pi))=\ee^{-h/24}P_h$ to obtain
+\eqref{eq:modular}. Expanding each logarithm in the residual Euler product
+and grouping equal products of indices proves \eqref{eq:E}. In particular,
+\begin{equation}
+ \E(h)=r_h+O(r_h^2),\qquad
+ 0<\E(h)\le\frac{r_h}{(1-r_h)^2}.
+ \label{eq:Ebound}
+\end{equation}
+The inequality follows from $\sigma_{-1}(n)\le n$.
+
+Define the known phase and combined amplitude
+\begin{align}
+ S(\tau)&=\tau^2+\frac{\pi^2}{6}
+          +\Li_2(\ee^{-2\tau})-2\Li_2(\ee^{-\tau}),\label{eq:S}\\
+ G(h,\tau)&=\frac12\log\left(\frac{h}{2\pi}
+                                  \coth\frac\tau2\right).\label{eq:G}
+\end{align}
+Differentiation gives useful elementary identities:
+\begin{equation}
+ S'(\tau)=2\log(1+\ee^\tau),\qquad
+ S''(\tau)=\frac{2\ee^\tau}{1+\ee^\tau},\qquad S(0)=0.
+ \label{eq:Sder}
+\end{equation}
+Hence $S$ maps $(0,\infty)$ increasingly onto $(0,\infty)$. These phase
+identities and the formal inverse based on them already occur in the
+repository \cite{repo}.
+
+Let the Bernoulli numbers be specified by
+$z/(\ee^z-1)=\sum_{n\ge0}B_nz^n/n!$ near zero. For an integer $M\ge0$ set
+\begin{align}
+ B_M(h,x)={}&\frac{S(\tau)}h+G(h,\tau)-\frac h{24}\nonumber\\
+ &+\sum_{k=1}^{M}\frac{B_{2k}h^{2k-1}}{(2k)!}
+       \left(\Li_{2-2k}(t^2)-2\Li_{2-2k}(t)\right).
+ \label{eq:BM}
+\end{align}
+An empty sum means zero. Our remainder is defined by the exact equation
+\begin{equation}
+ L_h(x)=B_M(h,x)+\E(h)+R_M(h,x).
+ \label{eq:Rdef}
+\end{equation}
+The notation $B_M$ denotes a truncation, not a Bernoulli number when supplied
+with arguments $(h,x)$.
+
+\section{A global signed remainder formula}
+\label{sec:signed}
+
+\begin{lemma}[Finite thermal-kernel remainder]
+\label{lem:thermal}
+For every real $z>0$ and integer $M\ge0$,
+\begin{align}
+ \frac1{\ee^z-1}
+ &=\frac1z-\frac12+\sum_{j=1}^{M}\frac{B_{2j}z^{2j-1}}{(2j)!}
+       +\rho_M(z),\label{eq:thermal}\\
+ \rho_M(z)
+ &=(-1)^M2z^{2M+1}\sum_{k=1}^{\infty}
+   \frac{1}{(2\pi k)^{2M+2}\{1+(z/(2\pi k))^2\}}.
+ \label{eq:rho}
+\end{align}
+\end{lemma}
+\begin{proof}
+The cotangent partial fraction, with its argument halved, yields
+\[
+ \frac1{\ee^z-1}=\frac1z-\frac12+
+              2z\sum_{k\ge1}\frac1{(2\pi k)^2+z^2}.
+\]
+In each summand use the finite identity
+\[
+ \frac1{1+u}=\sum_{j=0}^{M-1}(-u)^j+\frac{(-u)^M}{1+u}.
+\]
+The coefficients agree with the Taylor coefficients at zero; equivalently,
+\[\frac{B_{2j}}{(2j)!}=(-1)^{j-1}\frac{2\zeta(2j)}{(2\pi)^{2j}}.\]
+The residual sum converges absolutely. This argument uses a \emph{finite}
+geometric identity at arbitrary positive $z$, not an invalid globally
+convergent Bernoulli expansion.
+\end{proof}
+
+\begin{theorem}[Exact signed envelope]
+\label{thm:signed}
+Let
+\begin{equation}
+ w_m(\tau)=2\ee^{-m\tau}-\ee^{-2m\tau}>0.
+ \label{eq:w}
+\end{equation}
+For all $h,x>0$ and all integers $M\ge0$,
+\begin{equation}
+ \boxed{R_M(h,x)=(-1)^{M+1}2h^{2M+1}
+ \sum_{k,m\ge1}\frac{w_m(\tau)m^{2M}}
+ {(2\pi k)^{2M+2}\{1+(hm/(2\pi k))^2\}}.}
+ \label{eq:exactR}
+\end{equation}
+In particular, with
+\begin{equation}
+ T_{M+1}(h,x)=\frac{|B_{2M+2}|h^{2M+1}}{(2M+2)!}
+       \left(2\Li_{-2M}(t)-\Li_{-2M}(t^2)\right),
+ \label{eq:T}
+\end{equation}
+one has the strict inequalities
+\begin{equation}
+ 0<(-1)^{M+1}R_M(h,x)<T_{M+1}(h,x).
+ \label{eq:envelope}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Insert \eqref{eq:thermal} into \eqref{eq:A}. The terms $1/(hm)$ and
+$-1/2$ sum to $\Li_2(t)/h$ and $\tfrac12\log(1-t)$.
+The finite polynomial terms give the polylogarithms in \eqref{eq:BM}.
+The remaining combination is
+\[
+ -\sum_{m\ge1}\frac{w_m(\tau)}m\rho_M(hm),
+\]
+which gives \eqref{eq:exactR}. All absolute sums are finite because
+$w_m\le2\ee^{-m\tau}$ and the $k$-sum is bounded by a zeta value.
+Every factor of the unsigned remainder is positive. Replacing
+$\{1+(hm/(2\pi k))^2\}^{-1}$ by $1$ strictly increases every summand.
+Summation and the Bernoulli--zeta identity give \eqref{eq:T}.
+\end{proof}
+
+For even $M$ the exact logarithm lies \emph{below} $B_M+\E$; for odd $M$ it
+lies above. More explicitly,
+\begin{align}
+ B_M+\E-T_{M+1}<L_h<B_M+\E,
+       &&M\text{ even},\label{eq:evenenv}\\
+ B_M+\E<L_h<B_M+\E+T_{M+1},
+       &&M\text{ odd}.\label{eq:oddenv}
+\end{align}
+This is stronger than an unspecified asymptotic $O$-term: it is valid before
+taking any limit and records the sign needed later for cancellation.
+
+\subsection{Uniform control at the classical endpoint}
+\begin{corollary}[No positive lower cutoff on $hx$]
+\label{cor:uniform}
+For fixed $\tau_1>0$ and $M\ge0$, throughout $0<hx\le\tau_1$,
+\begin{equation}
+ |R_M(h,x)|\le
+ \frac{4\zeta(2M+2)\ee^{\tau_1}(2M)!}
+      {(2\pi)^{2M+2}x^{2M+1}}.
+ \label{eq:uniform}
+\end{equation}
+Thus the same composite expansion has a uniform fixed-order remainder as
+$x\to\infty$, even when $hx\to0$.
+\end{corollary}
+\begin{proof}
+For every integer $p\ge0$ and $\tau>0$,
+\[
+ \sum_{m\ge1}m^p\ee^{-m\tau}
+ \le\ee^\tau\int_0^\infty u^p\ee^{-\tau u}\dd u
+ =\ee^\tau\frac{p!}{\tau^{p+1}}.
+\]
+Indeed on $[m,m+1]$, $u^p\ge m^p$ and
+$\ee^{-\tau u}\ge\ee^{-\tau(m+1)}$. Apply this inequality with $p=2M$
+to \eqref{eq:T}, use $w_m\le2\ee^{-m\tau}$ and $\tau=hx$.
+\end{proof}
+
+The endpoint is best understood with $S$ and $G$ retained intact. Their small
+$\tau$ expansions are
+\begin{align}
+ S(\tau)&=2(\log2)\tau+\frac{\tau^2}{2}
+                    +\frac{\tau^3}{12}+O(\tau^5),\label{eq:Ssmall}\\
+ G(h,\tau)&=-\frac12\log(\pi x)+O(\tau^2).
+ \label{eq:Gsmall}
+\end{align}
+For each fixed $k\ge1$,
+\begin{equation}
+ \frac{B_{2k}h^{2k-1}}{(2k)!}
+ \left(\Li_{2-2k}(\ee^{-2\tau})-2\Li_{2-2k}(\ee^{-\tau})\right)
+ \sim\frac{(2^{1-2k}-2)B_{2k}}
+ {2k(2k-1)x^{2k-1}}
+ \quad(\tau\downarrow0).
+ \label{eq:classicalcoefs}
+\end{equation}
+These are the central-binomial Stirling coefficients. At $k=1$ the constant
+part of the polylogarithm combination cancels the separately retained
+$-h/24$. In fact their sum is
+\begin{equation}
+ -\frac h{24}+\frac h{12}\left(\Li_0(t^2)-2\Li_0(t)\right)
+ =-h\frac{\ee^{2\tau}+4\ee^\tau+1}{24(\ee^{2\tau}-1)}
+ =-\frac1{8x}-\frac{h\tau^3}{1440}+O(h\tau^5).
+ \label{eq:firstcoefficient}
+\end{equation}
+
+\begin{remark}[What endpoint matching does not say]
+The condition $hx\to0$ alone does not permit dropping all $q$-dependent
+phase corrections. For example $\tau^2/(2h)=hx^2/2$ can be large even when
+$hx$ is small. The uniform statement is \eqref{eq:uniform} for the composite
+expression $B_M$, not an assertion that $H_h(x)$ is relatively close to the
+classical binomial under only $hx\to0$. This distinction avoids a common
+nonuniform interchange of limits.
+\end{remark}
+
+\section{Monotonicity and certified inverse transport}
+\label{sec:inversecert}
+
+\begin{proposition}[A slope bound independent of $h$]
+\label{prop:slope}
+The function $L_h$ is strictly increasing on $(0,\infty)$, extends
+continuously with $L_h(0)=0$, and tends to infinity. For $x\ge1$,
+\begin{equation}
+ \mu:=2\log\frac32\ \le L_h'(x)\le S'(hx).
+ \label{eq:slopebounds}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiate \eqref{eq:exactL}, justified by exponential convergence on
+compact positive $x$-intervals:
+\begin{equation}
+ L_h'(x)=2hx+2h\sum_{m\ge1}
+       \frac{\ee^{-hmx}-\ee^{-2hmx}}{\ee^{hm}-1}>0.
+ \label{eq:exactderiv}
+\end{equation}
+The product definition gives continuity at zero; the $hx^2$ term in
+\eqref{eq:exactL} gives divergence at infinity. The inequalities
+\[
+ \frac{\ee^{-hm}}m\le\frac h{\ee^{hm}-1}\le\frac1m
+\]
+follow from $1-\ee^{-z}\le z\le\ee^z-1$. Summing the lower estimate in
+\eqref{eq:exactderiv} and combining the $2hx$ term with the logarithms gives
+\[
+ L_h'(x)\ge2\log\frac{\ee^{h(2x+1)}-1}{\ee^{h(x+1)}-1}
+ \ge2\log\frac{2x+1}{x+1}.
+\]
+The second inequality follows because $(\ee^u-1)/u$ increases for $u>0$.
+For $x\ge1$ the last ratio is at least $3/2$. The upper estimate sums to
+$2hx+2\log(1+\ee^{-hx})=S'(hx)$.
+\end{proof}
+
+Given a positive target $Y$, put $y=\log Y$. The real inverse exists uniquely
+when $Y\ge1$. For an inverse $x_*$ and a trial point $z$, both at least one,
+\begin{equation}
+ |z-x_*|\le\frac{|L_h(z)-y|}{\mu}.
+ \label{eq:residual}
+\end{equation}
+This follows directly from the mean value theorem. With any rigorous
+logarithmic enclosure $\ell_-(z)\le L_h(z)\le\ell_+(z)$, a usable bound is
+\begin{equation}
+ |z-x_*|\le\frac{\max\{|\ell_-(z)-y|,|\ell_+(z)-y|\}}{\mu}.
+ \label{eq:intervaltransport}
+\end{equation}
+The assumption that the interval of interest lies in $[1,\infty)$ is explicit;
+for smaller indices one uses a positive local slope minimum instead.
+
+The signed envelopes \eqref{eq:evenenv}--\eqref{eq:oddenv} give immediate
+choices of $\ell_\pm$. A bracket $u<v$ with $\ell_+(u)<y<\ell_-(v)$ contains
+the unique inverse. This bracketing method does not require a truncated
+expression itself to be globally monotone.
+
+For the integer threshold $\min\{n:H_h(n)\ge Y\}$, the answer is
+$\lceil x_*\rceil$. A certified bracket determines it when its endpoint
+ceilings agree. If the bracket crosses an integer, evaluate the exact finite
+Gaussian product there. Equality must not be decided from a rounded
+floating-point approximation. These order-theoretic principles already
+belong to the repository's inversion architecture \cite{repo}; the explicit
+forward envelopes above are the additional input.
+
+\section{A positive Stieltjes transform and rational enclosures}
+\label{sec:stieltjes}
+
+\begin{theorem}[The finite-size correction is Stieltjes]
+\label{thm:stieltjes}
+Fix $\tau>0$. Define, for $s\ge0$,
+\begin{equation}
+ \D_\tau(s)=2\sum_{k,m\ge1}\frac{w_m(\tau)}{(2\pi k)^2+s m^2}.
+ \label{eq:D}
+\end{equation}
+Then
+\begin{equation}
+ L_h(\tau/h)=\frac{S(\tau)}h+G(h,\tau)-\frac h{24}
+               +\E(h)-h\D_\tau(h^2).
+ \label{eq:stieltjesL}
+\end{equation}
+More precisely,
+\begin{align}
+ \D_\tau(s)&=\int_{[0,\infty)}\frac{\dd\nu_\tau(u)}{1+su},\label{eq:measureD}\\
+ \nu_\tau&=2\sum_{k,m\ge1}\frac{w_m(\tau)}{(2\pi k)^2}
+                     \delta_{m^2/(2\pi k)^2},\label{eq:measure}\\
+ \mu_j(\tau):=\int u^j\dd\nu_\tau(u)
+ &=\frac{|B_{2j+2}|}{(2j+2)!}
+       \left(2\Li_{-2j}(t)-\Li_{-2j}(t^2)\right).\label{eq:moments}
+\end{align}
+The measure is finite and positive, has infinite support, has all moments,
+and is uniquely determined among measures on $[0,\infty)$ by those moments.
+\end{theorem}
+\begin{proof}
+The case $M=0$ of \cref{lem:thermal} gives \eqref{eq:stieltjesL}. Factoring
+$(2\pi k)^2$ from each denominator proves \eqref{eq:measureD}. Tonelli's
+theorem evaluates the moments as a product of a zeta value and an exponential
+power sum, giving \eqref{eq:moments}. Positivity is strict on infinitely many
+support points, for example the points with $k=1$.
+
+Here is a direct determinacy argument. For $0<c<2\pi\tau$,
+\begin{equation}
+ \int\ee^{c\sqrt u}\dd\nu_\tau(u)
+ \le 4\sum_{k,m\ge1}\frac{\ee^{-m\tau+cm/(2\pi k)}}{(2\pi k)^2}<\infty.
+ \label{eq:expsqrt}
+\end{equation}
+Also \cref{cor:uniform}'s moment estimate implies
+$\mu_j\le C A^{2j}(2j)!$ for constants depending on $\tau$.
+For any other positive measure with these moments, the monotone expansion of
+$\cosh(c\sqrt u)$ gives a finite integral for sufficiently small $c$.
+Its symmetric square-root lift to $\R$ therefore has an exponential moment
+near zero. The moment generating function of that lift is analytic there
+and determined by the moments; equality of the analytic transforms, followed
+by uniqueness of the Fourier transform after exponential tilting, determines
+the lift and hence the original measure. Equivalently, the Stieltjes
+Carleman sum $\sum_j\mu_j^{-1/(2j)}$ diverges.
+\end{proof}
+
+For $s>0$, differentiation under the integral gives
+\begin{equation}
+ (-1)^j\D_\tau^{(j)}(s)
+    =j!\int\frac{u^j\dd\nu_\tau(u)}{(1+su)^{j+1}}>0.
+ \label{eq:complete}
+\end{equation}
+Thus $\D_\tau$ is completely monotone. All Hankel moment matrices are
+positive definite: for any nonzero polynomial $p$,
+$\int p(u)^2\dd\nu_\tau(u)>0$. The formal expansion is
+\begin{equation}
+ \D_\tau(s)\sim\sum_{j\ge0}(-1)^j\mu_j(\tau)s^j.
+ \label{eq:formalD}
+\end{equation}
+It is generally divergent at every nonzero $s$ as a power series. Positivity
+nevertheless gives convergent rational approximations.
+
+\begin{theorem}[Two-sided Pad\'e certificates]
+\label{thm:pade}
+Let $[L/N]_\tau$ denote the Pad\'e approximant to \eqref{eq:formalD}, normalized
+with denominator constant term one. For $N\ge1$ and $s>0$,
+\begin{equation}
+ [N-1/N]_\tau(s)<\D_\tau(s)<[N/N]_\tau(s).
+ \label{eq:padebound}
+\end{equation}
+Both approximants exist, have no pole on $(0,\infty)$, and converge pointwise
+to $\D_\tau(s)$ as $N\to\infty$. Consequently, replacing $\D_\tau$ in
+\eqref{eq:stieltjesL} by the upper and lower rational bounds gives respectively
+lower and upper bounds for $L_h$.
+\end{theorem}
+\begin{proof}
+Take the $N$-node Gaussian quadrature for $\nu_\tau$. Its nodes are positive,
+its weights are positive, and it is exact through degree $2N-1$. These facts
+follow from the positive definite moment form and its degree-$N$ orthogonal
+polynomial. Applied to $f_s(u)=(1+su)^{-1}$, it is a rational function with
+numerator degree at most $N-1$ and denominator degree $N$, whose expansion
+agrees through $s^{2N-1}$. It is therefore $[N-1/N]_\tau$.
+
+The polynomial Hermite interpolant matching $f_s$ and $f_s'$ at the Gaussian
+nodes lies below $f_s$ on $[0,\infty)$: its error has the sign of
+$f_s^{(2N)}$ times a squared node polynomial, which is positive. Integrating
+and using quadrature exactness proves the lower inequality. This argument is
+valid on each finite interval containing the evaluation point; its global
+integral is permitted because all moments exist.
+
+For the upper bound use Gauss--Radau quadrature with the prescribed node zero
+and $N$ further positive nodes. The latter are the zeros of the degree-$N$
+orthogonal polynomial for $u\dd\nu_\tau(u)$. The quadrature is exact through
+degree $2N$. The interpolant matches at zero and matches values and
+derivatives at the other nodes. Its error has the sign of
+$f_s^{(2N+1)}u$ times a squared polynomial, which is negative. Thus the
+interpolant, and after integration the quadrature, is an upper bound. Its
+rational expression is $[N/N]_\tau$. Infinite support makes both inequalities
+strict.
+
+For convergence, regard either sequence of quadratures as positive discrete
+measures. Their total mass is $\mu_0$ and their first moment is eventually
+$\mu_1$, so they are tight. Each higher moment is eventually exact; the next
+higher exact moment supplies uniform integrability for passing that moment
+to a weak limit. Every subsequential limit therefore has all moments
+$\mu_j$. Determinacy in \cref{thm:stieltjes} forces the limit to be
+$\nu_\tau$. The bounded continuous function $f_s$ then gives convergence of
+the quadrature values. Positive nodes ensure the absence of positive poles.
+\end{proof}
+
+\begin{example}[Rational certificates at $t=1/2$]
+With $\tau=\log2$,
+\[
+ \mu_0=\frac5{36},\qquad \mu_1=\frac{19}{1215},\qquad
+ [0/1]_\tau(s)=\frac{5/36}{1+(76/675)s}.
+\]
+Every moment is rational, since negative-integer polylogarithms are rational
+functions of $t$. Hence every finite Pad\'e bound can be built in exact
+rational arithmetic. The computation in \cref{sec:computation} uses this fact;
+it does not infer rigorous inequalities from decimal agreement.
+\end{example}
+
+\section{Borel reconstruction and the relevant singularity scale}
+\label{sec:borel}
+
+The measure also exposes the exponential scale without making a claim that
+the entire modular completion is encoded in the algebraic coefficients.
+Use the Borel convention
+\[
+ \mathcal B\!\left(\sum_{n\ge0}a_nh^{n+1}\right)(\xi)
+   =\sum_{n\ge0}\frac{a_n}{n!}\xi^n.
+\]
+For the finite-size series $F_\tau(h)\sim-h\sum_{j\ge0}(-1)^j\mu_jh^{2j}$,
+its Borel transform is initially
+\begin{equation}
+ \widehat F_\tau(\xi)
+ =-2\sum_{k,m\ge1}\frac{w_m(\tau)}{(2\pi k)^2}
+                       \cos\frac{m\xi}{2\pi k}.
+ \label{eq:borel}
+\end{equation}
+This converges normally for $|\operatorname{Im}\xi|<2\pi\tau$.
+
+\begin{proposition}[Real Borel sum and nearest singularities]
+\label{prop:borel}
+For $h>0$,
+\begin{equation}
+ \int_0^\infty\ee^{-\xi/h}\widehat F_\tau(\xi)\dd\xi
+       =-h\D_\tau(h^2).
+ \label{eq:borelsum}
+\end{equation}
+The transform admits a meromorphic continuation whose possible poles lie in
+\begin{equation}
+ \{4\pi^2k\ell\pm2\pi i k\tau:k\ge1,\ \ell\in\Z\}
+ \ \cup
+ \{4\pi^2k\ell\pm4\pi i k\tau:k\ge1,\ \ell\in\Z\}.
+ \label{eq:poleset}
+\end{equation}
+The nearest singularities to the origin are the nonzero simple poles
+$\xi=\pm2\pi i\tau$.
+\end{proposition}
+\begin{proof}
+On the real $\xi$-axis, the absolute value of the double series is bounded by
+$2\sum_{k,m}w_m/(2\pi k)^2<\infty$. Fubini and
+\[
+ \int_0^\infty\ee^{-\xi/h}\cos(b\xi)\dd\xi
+       =\frac h{1+h^2b^2}
+\]
+prove \eqref{eq:borelsum}. For continuation write
+\[
+ C_r(z)=\frac12\left(\frac{r\ee^{iz}}{1-r\ee^{iz}}
+                       +\frac{r\ee^{-iz}}{1-r\ee^{-iz}}\right).
+\]
+Then
+\[
+ \widehat F_\tau(\xi)=-2\sum_{k\ge1}(2\pi k)^{-2}
+      \left\{2C_t(\xi/(2\pi k))-C_{t^2}(\xi/(2\pi k))\right\}.
+\]
+For sufficiently large $k$, the argument lies uniformly in a small
+neighborhood of zero on any fixed compact set; the remaining $k^{-2}$
+series converges normally. The finite set of small-$k$ summands gives the
+listed possible poles. At $\pm2\pi i\tau$, only the $k=1$, $C_t$ term has a
+pole, so cancellation is impossible. No listed pole has smaller modulus.
+\end{proof}
+
+Some farther poles in \eqref{eq:poleset} can cancel, so that set is not
+asserted to be an exact divisor. The distance $2\pi\tau$ from the origin
+predicts the magnitude $\ee^{-2\pi\tau/h}=\ee^{-2\pi x}$ of a least-term
+error. It does not imply that a new independent positive-real transseries
+parameter of that size occurs in the exact function: on the positive axis
+\eqref{eq:borelsum} already defines the finite-size contribution unambiguously.
+The optimal error is the difference between that sum and a finite truncation.
+The modular term $\E(h)$ is a separate, exactly specified flat contribution.
+
+This distinction between a truncation error, a Borel singularity, and a
+separately normalized nonperturbative term is essential. The cancellation
+studied below is a real approximation-error phenomenon, not by itself a
+Stokes jump.
+
+\section{Sharp optimal truncation, with a first correction}
+\label{sec:optimal}
+
+In this section $h\downarrow0$, $\tau=hx$ belongs to a fixed compact set
+$K\subset(0,\infty)$, and the integer $M$ satisfies $|M-\pi x|\le C$ for a
+fixed constant $C$. Define
+\begin{equation}
+ a=2\pi x,\qquad d=2M-a,\qquad
+ C_1(d)=\frac{d^2}{2}-\frac d2-\frac5{12},\qquad
+ a_x=\frac{\ee^{-2\pi x}}{\pi\sqrt{x}}.
+ \label{eq:ad}
+\end{equation}
+Here $a_x$ is an error scale; it is unrelated to the block lengths introduced
+later.
+
+\begin{lemma}[Uniform large exponential moments]
+\label{lem:moments}
+For integers $p\ge1$, let $Z_p(\tau)=\sum_{m\ge1}m^p\ee^{-m\tau}$. Then
+\begin{equation}
+ Z_p(\tau)=p!\sum_{\ell\in\Z}(\tau+2\pi i\ell)^{-p-1}.
+ \label{eq:Zexact}
+\end{equation}
+For $\tau\in K$, there is $0<\rho_K<1$ such that, as $p\to\infty$,
+\begin{equation}
+ Z_p(\tau)=\frac{p!}{\tau^{p+1}}
+                       \left(1+O_K(\rho_K^p)\right).
+ \label{eq:Zasym}
+\end{equation}
+The same assertion holds for $Z_{p+j}/Z_p$ with each fixed nonnegative $j$,
+after dividing by the corresponding factorial and power ratio.
+\end{lemma}
+\begin{proof}
+The bilateral partial fraction for the derivative of the thermal kernel is
+\[
+ \frac{\ee^{-\tau}}{(1-\ee^{-\tau})^2}
+       =\sum_{\ell\in\Z}(\tau+2\pi i\ell)^{-2}.
+\]
+It is also the $\operatorname{csch}^2$ partial fraction. Differentiating
+$p-1$ times gives \eqref{eq:Zexact}; all derivative series converge normally
+on compact positive $\tau$-intervals. The $\ell=0$ term is the displayed
+leading term. For the rest, the ratios
+$|\tau/(\tau+2\pi i\ell)|$ are uniformly below one for $\ell\ne0$.
+Bounding two powers by a summable $\ell^{-2}$ sequence and the remaining
+powers by a constant less than one proves \eqref{eq:Zasym}. The same estimate
+with $p+j$ proves the final assertion.
+\end{proof}
+
+\begin{theorem}[Leading optimal remainder and its relative correction]
+\label{thm:optimal}
+Under the compactness and bounded-offset hypotheses above,
+\begin{equation}
+ \boxed{R_M(h,x)=(-1)^{M+1}a_x
+       \left(1+\frac{C_1(d)}{2\pi x}+O_{K,C}(x^{-2})\right).}
+ \label{eq:optimal}
+\end{equation}
+The first omitted term satisfies
+\begin{equation}
+ T_{M+1}(h,x)=2a_x
+ \left(1+\frac{d^2/2+d/2+1/12}{2\pi x}
+                         +O_{K,C}(x^{-2})\right).
+ \label{eq:optimalT}
+\end{equation}
+In particular $|R_M|/T_{M+1}\to1/2$, uniformly in this regime.
+\end{theorem}
+\begin{proof}
+Put $p=2M=a+d$. In \eqref{eq:exactR}, the contribution with $k=1$ and
+$w_m$ replaced by $2\ee^{-m\tau}$ is
+\begin{equation}
+ V=\frac{4h^{p+1}}{(2\pi)^{p+2}}Z_p(\tau)
+     \mathbb E_p f(Y),\qquad
+ f(v)=\frac1{1+v^2},\quad Y=\frac{hm}{2\pi},
+ \label{eq:V}
+\end{equation}
+where $\mathbb P_p(m)=m^p\ee^{-m\tau}/Z_p(\tau)$.
+
+First control the discarded contributions. Replacing $\ee^{-m\tau}$ by
+$\ee^{-2m\tau}$ reduces the leading large moment by $2^{-p-1}$, up to a
+uniform relative error exponentially small in $p$. The sum over $k\ge2$ is
+bounded by its unattenuated moment times
+$\sum_{k\ge2}k^{-p-2}=O(2^{-p})$. The main expectation tends to $1/2$, as
+shown next, so both discarded parts are exponentially small relative to $V$.
+This also justifies keeping a sign when computing the main contribution.
+
+The moment-ratio statement in \cref{lem:moments} gives
+\begin{align*}
+ \mathbb E_p(Y-1)&=\frac{d+1}{a}+O_{K,C}(\rho^p),\\
+ \mathbb E_p(Y-1)^2&=\frac1a+O_{K,C}(a^{-2}),\\
+ \mathbb E_p(Y-1)^3&=O_{K,C}(a^{-2}),\qquad
+ \mathbb E_p(Y-1)^4=O_{K,C}(a^{-2}).
+\end{align*}
+Polynomial factors multiplying the exponential errors may be absorbed by
+increasing $\rho<1$. All derivatives of $f$ needed here are bounded on
+$[0,\infty)$. Taylor expansion through degree three at one, with the fourth
+moment bounding the remainder, therefore yields
+\begin{equation}
+ \mathbb E_p f(Y)=\frac12-
+rac{d/2+1/4}{a}
+                         +O_{K,C}(a^{-2}),
+ \label{eq:Ef}
+\end{equation}
+since $f'(1)=-1/2$ and $f''(1)=1/2$.
+
+Using \eqref{eq:Zasym} in the factor before the expectation gives
+\[
+ \frac{4h^{p+1}}{(2\pi)^{p+2}}Z_p(\tau)
+ =\frac2\pi\frac{\Gamma(p+1)}{a^{p+1}}
+                  \left(1+O_K(\rho^p)\right).
+\]
+Stirling's formula at $p=a+d$, uniformly for bounded $d$, reads
+\begin{equation}
+ \frac{\Gamma(a+d+1)}{a^{a+d+1}}
+ =\frac{\ee^{-a}}{\sqrt{x}}
+   \left(1+\frac{d^2/2+d/2+1/12}{a}+O_C(a^{-2})\right).
+ \label{eq:stirlingshift}
+\end{equation}
+Multiplying \eqref{eq:Ef} by this expansion gives precisely
+$C_1(d)=d^2/2-d/2-5/12$ and proves \eqref{eq:optimal}. Without the factor
+$f(Y)$, the same calculation gives \eqref{eq:optimalT}. All omitted
+exponential errors are smaller than $a^{-2}$ uniformly on $K$.
+\end{proof}
+
+\begin{remark}[Choosing the index and choosing a parity]
+The theorem permits the nearest integer to $\pi x$, or the nearest even or
+odd integer. An offset bounded independently of $x$ changes only the
+relative correction, not the leading exponential or its prefactor. The
+quadratic polynomial in \eqref{eq:optimal} also distinguishes minimizing the
+actual remainder from minimizing just the first omitted term. At the
+continuous-offset level their first correction has its minimum at $d=1/2$
+and $d=-1/2$, respectively. This observation does not assert a global discrete
+minimum for every finite $h,x$.
+\end{remark}
+
+\begin{remark}[A regime not covered by this theorem]
+Fixed $h$ with $x\to\infty$ forces $\tau\to\infty$ and is not covered by the
+compactness hypothesis. The power-sum saddle then need not be approximated
+uniformly by its continuous gamma analogue. The fixed-order signed bounds
+remain valid, but the sharp prefactor in \eqref{eq:optimal} is not asserted in
+that different limiting regime.
+\end{remark}
+
+\section{The two-exponential law for inverse error}
+\label{sec:competition}
+
+\subsection{Local inverse approximants}
+Fix an exact inverse point by setting $y=L_h(x)$. The truncation order is
+held fixed while the approximate equation is solved. Let $\widehat x_M$ solve
+\begin{equation}
+ B_M(h,\widehat x_M)=y
+ \label{eq:uncorrectedroot}
+\end{equation}
+near $x$; this approximation omits the modular completion. Let
+$\widetilde x_M$ solve the corrected equation
+\begin{equation}
+ B_M(h,\widetilde x_M)+\E(h)=y.
+ \label{eq:correctedroot}
+\end{equation}
+These are local roots; no global invertibility of every truncation is needed.
+The next theorem proves their existence and uniqueness in a neighborhood
+containing the relevant exponentially small displacement.
+
+\begin{lemma}[Derivative control near optimal truncation]
+\label{lem:dercontrol}
+Under the hypotheses of \cref{thm:optimal}, uniformly on a sufficiently small
+fixed neighborhood of $x$,
+\begin{equation}
+ L_h'(z)=S'(hz)+O_K(h),\qquad
+ |\partial_z^jR_M(h,z)|=O_{K,C}(a_x)\quad(j=0,1,2),
+ \label{eq:dercontrol}
+\end{equation}
+and $\partial_z B_M(h,z)=S'(hz)+O_{K,C}(h)>0$ for sufficiently small $h$.
+\end{lemma}
+\begin{proof}
+Differentiate \eqref{eq:stieltjesL} along $\tau=hz$. The derivative of its
+amplitude is $O_K(h)$; the derivative of $-h\D_\tau(h^2)$ is $O_K(h^2)$,
+by exponential domination of each differentiated weight. This proves the
+first assertion. In \eqref{eq:exactR}, $z$ enters only through $w_m(hz)$.
+Each derivative adds at most a fixed power of $hm$, and the derivatives of
+$w_m$ are bounded by fixed multiples of $h^jm^j\ee^{-hmz}$ on the stated
+neighborhood. The proof of \cref{thm:optimal}, with $p$ replaced by $p+j$,
+bounds the resulting moments by a constant times $a_x$. Their denominator
+factors are positive and at most one. Finally differentiate \eqref{eq:Rdef}.
+The modular term is independent of $z$, and $S'$ has a positive compact
+minimum.
+\end{proof}
+
+\begin{theorem}[Stable additive inverse-error law]
+\label{thm:inverse}
+Let $\tau=hx\in K\Subset(0,\infty)$ and $|M-\pi x|\le C$ as $h\downarrow0$.
+The local roots \eqref{eq:uncorrectedroot} and \eqref{eq:correctedroot} exist
+and are unique in a fixed small neighborhood of $x$. With
+$\sigma_M=(-1)^{M+1}$,
+\begin{align}
+ \boxed{\widehat x_M-x
+ =\frac{r_h+\sigma_M a_x}{S'(\tau)}
+                         +O_{K,C}\bigl(h(r_h+a_x)\bigr),}
+ \label{eq:inverseerror}\\
+ \widetilde x_M-x
+ &=\frac{\sigma_M a_x}{S'(\tau)}(1+O_{K,C}(h)).
+ \label{eq:correctederror}
+\end{align}
+The first formula is an \emph{additive} estimate, valid even when its two
+leading contributions nearly cancel.
+\end{theorem}
+\begin{proof}
+At $x$, the residual for \eqref{eq:uncorrectedroot} is
+$B_M(h,x)-y=-\E(h)-R_M(h,x)$. By \cref{lem:dercontrol} the derivative is
+bounded below on a small fixed interval. Evaluating at points at distance
+$C_0(r_h+a_x)$ on each side, with $C_0$ sufficiently large, brackets a zero;
+strict positivity of the derivative proves uniqueness. The mean value
+theorem then gives
+\[
+ \widehat x_M-x=\frac{\E(h)+R_M(h,x)}
+                         {\partial_zB_M(h,\xi)}
+\]
+for an intermediate $\xi$. Since $\xi-x=O(r_h+a_x)$, the denominator is
+$S'(\tau)+O(h)$, uniformly. Insert \eqref{eq:Ebound} and
+\eqref{eq:optimal}. Here $x^{-1}=O_K(h)$ and $r_h^2$ is absorbed by $hr_h$.
+This proves \eqref{eq:inverseerror}, with an error proportional to the sum
+of the magnitudes rather than to their possibly vanishing difference.
+For the corrected equation the residual is only $-R_M$ and the same proof
+applies.
+\end{proof}
+
+If $\tau$ remains in a compact subinterval of $(0,2\pi)$, then
+$a_x/r_h\to\infty$, so optimal finite-size truncation error dominates.
+If it remains in a compact subinterval of $(2\pi,\infty)$, the modular term
+dominates. At the nominal crossing $\tau=2\pi$, however,
+\begin{equation}
+ \frac{a_x}{r_h}=\frac1{\pi\sqrt{x}}
+          =\frac{\sqrt h}{\pi\sqrt{2\pi}}\longrightarrow0.
+ \label{eq:nominalcross}
+\end{equation}
+Equal exponential actions do not mean equal errors; their algebraic
+prefactors matter.
+
+\subsection{The logarithmically shifted window}
+Define the exact balance coordinate
+\begin{equation}
+ s=s(h,x):=2\pi x-\frac{4\pi^2}{h}
+                   +\frac12\log x+\log\pi.
+ \label{eq:swindow}
+\end{equation}
+It is chosen so that
+\begin{equation}
+ \frac{a_x}{r_h}=\ee^{-s}
+ \label{eq:balanceratio}
+\end{equation}
+holds identically, not merely asymptotically.
+
+\begin{theorem}[Parity-sensitive cancellation window]
+\label{thm:window}
+Suppose $s$ stays in a fixed bounded interval and $|M-\pi x|\le C$.
+Then
+\begin{equation}
+ \boxed{\frac{S'(hx)}{r_h}(\widehat x_M-x)
+         =1+(-1)^{M+1}\ee^{-s}+O_C(h).}
+ \label{eq:profile}
+\end{equation}
+For even $M$, the leading profile is $1-\ee^{-s}$; for odd $M$, it is
+$1+\ee^{-s}$. Let $x_c(h)$ be the unique positive solution of $s(h,x)=0$.
+Then
+\begin{align}
+ x_c(h)&=\frac{2\pi}{h}+\frac{\log h}{4\pi}
+            -\frac{\log(\pi\sqrt{2\pi})}{2\pi}
+              +O(h|\log h|),\label{eq:xc}\\
+ hx_c(h)&=2\pi+\frac{h\log h}{4\pi}
+            -\frac{h\log(\pi\sqrt{2\pi})}{2\pi}
+              +O(h^2|\log h|).\label{eq:tauc}
+\end{align}
+At $x=x_c(h)$ and even $M$,
+\begin{equation}
+ \frac{S'(hx)}{r_h}(\widehat x_M-x)
+       =-\frac{C_1(2M-2\pi x)}{2\pi x}+O_C(h^2).
+ \label{eq:refinedwindow}
+\end{equation}
+In particular the uncorrected inverse error is $O(hr_h)$ there.
+\end{theorem}
+\begin{proof}
+Bounded $s$ implies $hx\to2\pi$, as follows immediately from
+\eqref{eq:swindow}; in particular the compactness assumptions of
+\cref{thm:inverse} hold. Divide \eqref{eq:inverseerror} by $r_h/S'(hx)$ and
+use \eqref{eq:balanceratio}. The function $s(h,x)$ strictly increases from
+$-\infty$ to $+\infty$ in $x$, giving the unique center.
+
+For its expansion write $x=2\pi/h+u$. The defining equation becomes
+\[
+ 2\pi u+\frac12\log(2\pi/h)+\log\pi
+         +\frac12\log\left(1+\frac{hu}{2\pi}\right)=0.
+\]
+It first gives $u=O(|\log h|)$ and then \eqref{eq:xc}; multiplication by
+$h$ proves \eqref{eq:tauc}.
+
+At $s=0$, $a_x=r_h$. For even $M$, \cref{thm:optimal} and
+\eqref{eq:Ebound} give
+\[
+ \E(h)+R_M(h,x)=-r_h\frac{C_1(d)}{2\pi x}+O_C(h^2r_h).
+\]
+The root displacement is already $O(hr_h)$. Dividing its residual by
+$S'(hx)+O(h)$ changes the normalized result only by $O(h^2)$, which proves
+\eqref{eq:refinedwindow}.
+\end{proof}
+
+The gain $O(r_h)\to O(hr_h)$ is an algebraic gain at the same exponential
+action. It is not a proof that an entire exponential sector disappears.
+The dependence on $2M-2\pi x$ also explains why the refined error oscillates
+with integer truncation choices instead of varying monotonically in $h$.
+
+\subsection{An exact cancellation point, not only a formal one}
+\begin{proposition}[Unique exact cancellation for fixed even order]
+\label{prop:exactcancel}
+For every fixed $h>0$ and every even integer $M\ge2$, there is a unique
+$x_{h,M}>0$ such that
+\begin{equation}
+ B_M(h,x_{h,M})=L_h(x_{h,M}).
+ \label{eq:exactcancel}
+\end{equation}
+Choose even $M=M(h)$ with $|M-\pi x_c(h)|\le C$. Then, with
+$d_c=2M-2\pi x_c(h)$,
+\begin{equation}
+ x_{h,M}=x_c(h)+\frac{C_1(d_c)}{4\pi^2x_c(h)}+O_C(h^2).
+ \label{eq:exactcancellocation}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $U_M=(-1)^{M+1}R_M>0$. For fixed $h,M$, every $w_m(hx)$ strictly
+ decreases in $x$, since
+$\partial_xw_m=-2hm(\ee^{-hmx}-\ee^{-2hmx})<0$.
+Therefore \eqref{eq:exactR} makes $U_M$ continuous and strictly decreasing.
+It tends to zero at infinity. For $M\ge1$, its $k=1$ part tends to infinity
+at zero: for large $m$ the polynomial factor
+$m^{2M}/(1+(hm/(2\pi))^2)$ is bounded below by a positive multiple of
+$m^{2M-2}$, and $w_m(hx)\to1$ for each $m$. Monotone convergence then gives
+divergence. Thus $U_M=\E(h)$ has exactly one solution. For even $M$ this is
+\eqref{eq:exactcancel}.
+
+Under the bounded-offset choice, the window theorem and monotonicity first
+put the solution at $s=O(h)$. Use \eqref{eq:optimal} there to get
+\[
+ s(h,x_{h,M})=\log\left(1+\frac{C_1(2M-2\pi x_{h,M})}{2\pi x_{h,M}}
+                                  +O_C(h^2)\right)
+               =\frac{C_1(d_c)}{2\pi x_c}+O_C(h^2).
+\]
+Here moving $x$ by $O(h)$ changes the displayed coefficient by $O(h^2)$.
+Since $\partial_xs=2\pi+1/(2x)$, expansion around $x_c$ proves
+\eqref{eq:exactcancellocation}.
+\end{proof}
+
+There is no corresponding zero for an odd truncation: then
+$\E+R_M>0$ everywhere. The exact cancellation point concerns the logarithmic
+forward residual and consequently any local inverse built at that target.
+It does not require the truncated expression to be globally invertible.
+
+\section{Gaussian multinomials and the shortest-block law}
+\label{sec:multi}
+
+Let $b\ge2$ be the number of blocks, let
+$\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_b)$ be fixed positive real
+numbers, and put
+\begin{equation}
+ A=\sum_{i=1}^b\alpha_i,\quad
+ c=\frac12\left(A^2-\sum_{i=1}^b\alpha_i^2\right),\quad
+ \alpha=\min_i\alpha_i,\quad m_* =\#\{i:\alpha_i=\alpha\}.
+ \label{eq:alphas}
+\end{equation}
+Define
+\begin{equation}
+ H_{h,\boldsymbol\alpha}(x)=\ee^{hc x^2}
+                   \frac{P_h(Ax)}{\prod_iP_h(\alpha_i x)},\qquad
+ L_{h,\boldsymbol\alpha}(x)=\log H_{h,\boldsymbol\alpha}(x).
+ \label{eq:multidef}
+\end{equation}
+When the block sizes $\alpha_i x$ are integers, this is the usual Gaussian
+multinomial at $q=\ee^h$. Real positive block lengths specify its interpolation.
+The central case is $b=2$ and $(\alpha_1,\alpha_2)=(1,1)$.
+
+The exact phase and amplitude are
+\begin{align}
+ S_{\boldsymbol\alpha}(\tau)
+ &=c\tau^2+(b-1)\frac{\pi^2}{6}
+       +\Li_2(\ee^{-A\tau})-\sum_i\Li_2(\ee^{-\alpha_i\tau}),
+       \label{eq:multiS}\\
+ G_{\boldsymbol\alpha}(h,\tau)
+ &=\frac12\log\left\{
+  \left(\frac h{2\pi}\right)^{b-1}
+   \frac{1-\ee^{-A\tau}}{\prod_i(1-\ee^{-\alpha_i\tau})}\right\}.
+       \label{eq:multiG}
+\end{align}
+Replace the corresponding phase, amplitude, and polylogarithm combination in
+\eqref{eq:BM} to define
+\begin{align}
+ B_M^{\boldsymbol\alpha}(h,x)
+ ={}&\frac{S_{\boldsymbol\alpha}(\tau)}h+
+ G_{\boldsymbol\alpha}(h,\tau)-\frac{(b-1)h}{24}\nonumber\\
+ &+\sum_{k=1}^{M}\frac{B_{2k}h^{2k-1}}{(2k)!}
+ \left\{\Li_{2-2k}(\ee^{-A\tau})-
+                        \sum_i\Li_{2-2k}(\ee^{-\alpha_i\tau})\right\}.
+ \label{eq:multiB}
+\end{align}
+Define $R_M^{\boldsymbol\alpha}$ by
+\begin{equation}
+ L_{h,\boldsymbol\alpha}(x)=B_M^{\boldsymbol\alpha}(h,x)
+                    +(b-1)\E(h)+R_M^{\boldsymbol\alpha}(h,x).
+ \label{eq:multiRdef}
+\end{equation}
+
+\begin{proposition}[Positive kernel and uniform inverse slope]
+\label{prop:multikernel}
+All signed-envelope and Stieltjes conclusions above hold for the multinomial
+on replacing $w_m$ by
+\begin{equation}
+ w_m^{\boldsymbol\alpha}(\tau)=\sum_i\ee^{-\alpha_i\tau m}
+                                   -\ee^{-A\tau m}>0.
+ \label{eq:multiw}
+\end{equation}
+The phase slope is
+\begin{equation}
+ S_{\boldsymbol\alpha}'(\tau)=
+ \sum_i\alpha_i\log\frac{\ee^{A\tau}-1}{\ee^{\alpha_i\tau}-1}>0.
+ \label{eq:multislope}
+\end{equation}
+For $x\ge1/\alpha$,
+\begin{equation}
+ 0<\mu_{\boldsymbol\alpha}:=
+   \sum_i\alpha_i\log\frac{A+\alpha}{\alpha_i+\alpha}
+ \le L_{h,\boldsymbol\alpha}'(x)
+ \le S_{\boldsymbol\alpha}'(hx).
+ \label{eq:multislopebound}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The exact logarithm is
+$hc x^2+(1-b)\log P_h+A_h(\ee^{-A\tau})-
+\sum_iA_h(\ee^{-\alpha_i\tau})$. Inserting the thermal remainder gives
+exactly \eqref{eq:exactR} with the new weight. It is positive, and is bounded
+above by $b\ee^{-\alpha\tau m}$; every convergence, moment, and quadrature
+argument therefore applies. The modular multiplicity is $b-1$.
+
+Differentiating the phase and using $A=\sum_i\alpha_i$ and
+$2c=A^2-\sum_i\alpha_i^2$ proves \eqref{eq:multislope}. For the exact
+logarithm the positive derivative correction is
+\[
+ h\sum_{m\ge1}\sum_i\alpha_i
+  \frac{\ee^{-\alpha_i hxm}-\ee^{-Ahxm}}{\ee^{hm}-1}.
+\]
+The same lower thermal bound as in \cref{prop:slope}, combined with the
+quadratic derivative, yields
+\[
+ L_{h,\boldsymbol\alpha}'(x)
+ \ge\sum_i\alpha_i\log
+       \frac{\ee^{h(Ax+1)}-1}{\ee^{h(\alpha_i x+1)}-1}
+ \ge\sum_i\alpha_i\log\frac{Ax+1}{\alpha_i x+1}.
+\]
+Every last ratio increases with $x$. Evaluating at $x=1/\alpha$ gives the
+lower bound. The upper thermal bound gives the phase slope.
+\end{proof}
+
+\begin{theorem}[Shortest-block universality]
+\label{thm:shortest}
+Fix $\boldsymbol\alpha$ and $K\Subset(0,\infty)$. Suppose $h\downarrow0$,
+$hx\in K$, and $|M-\pi\alpha x|\le C$. Then
+\begin{equation}
+ \boxed{R_M^{\boldsymbol\alpha}(h,x)
+ =(-1)^{M+1}\frac{m_*}{2\pi\sqrt{\alpha x}}\ee^{-2\pi\alpha x}
+                         (1+O_{K,C,\boldsymbol\alpha}(h)).}
+ \label{eq:shortest}
+\end{equation}
+For a target $y=L_{h,\boldsymbol\alpha}(x)$, the local root of
+$B_M^{\boldsymbol\alpha}(h,\widehat x)=y$ satisfies
+\begin{align}
+ \widehat x-x
+ ={}&\frac{(b-1)r_h+(-1)^{M+1}a_{\boldsymbol\alpha,x}}
+             {S_{\boldsymbol\alpha}'(hx)}\nonumber\\
+ &+O_{K,C,\boldsymbol\alpha}\left(h\{r_h+a_{\boldsymbol\alpha,x}\}\right),
+ \qquad
+ a_{\boldsymbol\alpha,x}:=
+        \frac{m_*\ee^{-2\pi\alpha x}}{2\pi\sqrt{\alpha x}}.
+ \label{eq:multiinverse}
+\end{align}
+The normalized cancellation coordinate is
+\begin{equation}
+ s_{\boldsymbol\alpha}
+ =2\pi\alpha x-\frac{4\pi^2}{h}+\frac12\log(\alpha x)
+                       +\log\frac{2\pi(b-1)}{m_*}.
+ \label{eq:multis}
+\end{equation}
+On bounded $s_{\boldsymbol\alpha}$-intervals the profile is again
+$1+(-1)^{M+1}\ee^{-s_{\boldsymbol\alpha}}$, after normalizing the inverse
+error by $S_{\boldsymbol\alpha}'(hx)/((b-1)r_h)$.
+\end{theorem}
+\begin{proof}
+In the power moment of \eqref{eq:multiw}, the $m_*$ shortest blocks contribute
+$m_* Z_p(\alpha\tau)$. Every other block contributes a relative factor
+$(\alpha/\alpha_i)^{p+1}$, up to an exponentially small relative error;
+the subtracted total block contributes $(\alpha/A)^{p+1}$. The fixed positive
+gaps make these negligible. The $k\ge2$ remainder is again exponentially
+small in $p$.
+
+Apply the calculation \eqref{eq:V}--\eqref{eq:Ef} with
+$a=2\pi\alpha x$ and the leading weight multiplicity $m_*$ instead of two.
+The prefactor before its limiting expectation $1/2$ is
+$(m_*/\pi)\Gamma(p+1)/a^{p+1}$, giving \eqref{eq:shortest}.
+The same differentiated-moment estimates and \cref{prop:multikernel}
+justify local inverse transport exactly as in \cref{thm:inverse}.
+Finally $a_{\boldsymbol\alpha,x}/((b-1)r_h)=\ee^{-s_{\boldsymbol\alpha}}$
+is an identity, proving the profile.
+\end{proof}
+
+This law says more than that a multinomial has a similar kind of expansion.
+At optimal order, the longest and intermediate blocks disappear from the
+leading finite-size error; the shortest block controls the exponential action,
+and its multiplicity controls the prefactor. The remaining blocks still
+influence the phase slope and the modular multiplicity. Uniformity as two
+shortest lengths coalesce is a different, explicitly open problem below.
+
+\section{Reproducible checks and an implementation route}
+\label{sec:computation}
+
+\subsection{What the supplied program actually verifies}
+The package includes the script \texttt{verify.py} and its recorded output,
+\texttt{results.json}, in the \texttt{verification} directory. The script uses exact rational
+arithmetic for Pad\'e coefficients and Hankel determinants, and variable
+high-precision arithmetic for the analytic checks. It checks positive
+remainders against the direct thermal series, compares optimal remainder
+constants, checks the parity-even inverse window with a nonlinear residual,
+and checks three multinomial examples. All included assertions passed in the
+recorded run.
+
+The analytic computations use \texttt{mpmath}, not outward-rounded interval
+arithmetic. Thus the output is evidence of reproducibility and error
+localization, not a certified numerical proof of every reported decimal.
+The inequalities are justified by the preceding theorems. A production
+certifier must combine them with interval evaluations of elementary functions,
+polylogarithms, and the modular product.
+
+\subsection{Signed remainder checks}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$h$ & $x$ & $M$ & $|R_M|$ & $|R_M|/T_{M+1}$\\
+\midrule
+$0.4$ & $2.5$ & $0$ & $3.3262523812\cdot10^{-2}$ & $0.9905105051$\\
+$0.4$ & $2.5$ & $1$ & $3.1866855465\cdot10^{-4}$ & $0.9567940861$\\
+$0.1$ & $10$ & $3$ & $1.1693752480\cdot10^{-10}$ & $0.9861299427$\\
+$0.001$ & $10$ & $4$ & $1.6447426745\cdot10^{-12}$ & $0.9779321605$\\
+$1$ & $3$ & $6$ & $5.4858162652\cdot10^{-9}$ & $0.6822534171$\\
+\bottomrule
+\end{tabular}
+\caption{Direct thermal-series remainders obey the signed first-omitted-term
+bound. The fourth row probes $hx=0.01$, outside any fixed lower cutoff such
+as $hx\ge0.1$.}
+\label{tab:signed}
+\end{table}
+
+The direct reference value sums
+\begin{equation}
+ -\sum_{m\ge1}\frac{w_m(\tau)}m
+ \left\{\frac1{\ee^{hm}-1}-\frac1{hm}+\frac12\right\},
+ \label{eq:thermalreference}
+\end{equation}
+not the Bernoulli expansion being tested. Subtraction from the truncated
+expression checks both the residual sign and its magnitude. A truncated
+positive double sum is separately compared using the analytic tail bounds in
+\cref{app:tails}.
+
+\subsection{The sharp prefactor and half-next-term rule}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$\tau$ & $h$ & $M$ & $|R_M|/a_x$ & $|R_M|/T_{M+1}$ & $1+C_1(d)/(2\pi x)$\\
+\midrule
+$1$ & $0.5$ & $6$ & $0.9999174546$ & $0.5015392405$ & $1.0021411494$\\
+$1$ & $0.25$ & $13$ & $0.9822109593$ & $0.4742323085$ & $0.9811311007$\\
+$1$ & $0.125$ & $25$ & $0.9950194354$ & $0.4976484589$ & $0.9950525697$\\
+$6$ & $0.5$ & $38$ & $0.9930042272$ & $0.4928088283$ & $0.9928846141$\\
+$6$ & $0.25$ & $75$ & $1.0019534997$ & $0.5009693722$ & $1.0019809567$\\
+$6$ & $0.125$ & $151$ & $0.9982247493$ & $0.4985013113$ & $0.9982182871$\\
+\bottomrule
+\end{tabular}
+\caption{Optimal orders use the nearest integer to $\pi x$. The bounded
+rounding offset explains nonmonotonicity between rows. The last column is a
+prediction, not a fitted constant.}
+\label{tab:optimal}
+\end{table}
+
+The relatively small value $x=2$ in the first row is not in a very deep
+asymptotic regime; the refined prediction need not improve the leading one
+at every such point. At larger $x$ the explicit correction consistently
+tracks the bounded-offset behavior. No monotonic rate of convergence in $h$
+is claimed.
+
+\subsection{The inverse cancellation window}
+For each row of \cref{tab:window}, the script solves the scalar balance
+coordinate for $x$, chooses the nearest even $M$ to $\pi x$, forms the exact
+thermal-series target $y=L_h(x)$, and takes one Newton displacement for the
+truncated inverse equation. It then reevaluates the \emph{nonlinear} equation
+at the displaced point. The normalized residual magnitudes in the recorded
+run are below $1.1\cdot10^{-44}$, $1.3\cdot10^{-70}$, and
+$1.1\cdot10^{-51}$ for $h=0.5,0.25,0.125$, respectively. These are
+floating-point residuals, not formal root certificates.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$h$ & $s$ & $M$ & $S'(hx)\,\delta/r_h$ & $1-\ee^{-s}$\\
+\midrule
+$0.5$ & $0$ & $38$ & $-0.0002188003$ & $0$\\
+$0.25$ & $-1$ & $78$ & $-1.7244251297$ & $-1.7182818285$\\
+$0.25$ & $0$ & $78$ & $0.0031005179$ & $0$\\
+$0.25$ & $1$ & $78$ & $0.6329037362$ & $0.6321205588$\\
+$0.125$ & $0$ & $156$ & $-0.0006764509$ & $0$\\
+\bottomrule
+\end{tabular}
+\caption{Normalized Newton inverse displacements in the parity-even window.
+The first relative correction predicts the nonzero small values at $s=0$.}
+\label{tab:window}
+\end{table}
+
+The computed centers are
+\[
+ x_c(0.5)=12.1852197127\ldots,\quad
+ x_c(0.25)=24.6953774093\ldots,\quad
+ x_c(0.125)=49.7723472861\ldots.
+\]
+For $h=0.25$, the refined normalized prediction at $s=0$ is
+$0.0031306279$, compared with the observed $0.0031005179$.
+This tests the polynomial $C_1(d)$ independently of the leading zero.
+
+\subsection{Rational enclosures and multinomial checks}
+At $t=1/2$ and $s=1/4$, a direct evaluation gives
+$\D_{\log2}(1/4)=0.1354393270783473107\ldots$.
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$N$ & $[N-1/N](1/4)$ & $[N/N](1/4)$ & Width\\
+\midrule
+$1$ & $0.135086455331412$ & $0.135507348193646$ & $4.20893\cdot10^{-4}$\\
+$2$ & $0.135420747012517$ & $0.135445883566755$ & $2.51366\cdot10^{-5}$\\
+$3$ & $0.135436670206401$ & $0.135440575785848$ & $3.90558\cdot10^{-6}$\\
+$4$ & $0.135438702706998$ & $0.135439673658955$ & $9.70952\cdot10^{-7}$\\
+$5$ & $0.135439129751585$ & $0.135439449154842$ & $3.19403\cdot10^{-7}$\\
+\bottomrule
+\end{tabular}
+\caption{Decimal displays of exact rational Pad\'e bounds. The JSON output
+contains the full rational numbers; rounded table entries themselves are not
+outward-rounded enclosures.}
+\label{tab:pade}
+\end{table}
+
+For $h=0.2$ and $x=10$, the ratio of the positive multinomial remainder to
+the shortest-block prediction is $1.0053351399$ for both $(1,2,3)$ and
+$(1,1,2)$, with orders $M=31$, and $0.9958300329$ for $(2,2,3)$, with
+$M=63$. The first two ratios agree to the displayed precision although their
+shortest-block multiplicities differ; the predicted multiplicity was divided
+out before comparison.
+
+\subsection{How to choose an order without knowing the inverse}
+In the compact crossover regime, first solve the zeroth-order composite
+ equation $B_0(h,z_0)=y$ locally. The exact residual is
+$\E(h)+R_0=O_K(h)$, while its derivative is bounded below, so
+$z_0-x=O_K(h)$. Choosing $M$ to be the nearest integer of the desired parity
+to $\pi z_0$ therefore ensures $|M-\pi x|=O(1)$, as required by the sharp
+ theorem. This is stronger than using only the phase center, whose missing
+logarithmic amplitude would cause an $O(|\log h|)$ index displacement.
+
+For ordinary accuracy, solve with the modular completion retained and use
+signed or Pad\'e enclosures. Deliberately omitting it to exploit cancellation
+is a specialized diagnostic, not the default recommendation for a robust
+numeric inverse. A certified implementation should adapt the order using the
+actual remainder enclosure rather than rely on asymptotic balance alone.
+
+\section{Repository integration and proof-assistant boundaries}
+\label{sec:integration}
+
+The inspected snapshot is the full commit \texttt{\commit}. The source
+chapter is in
+\begin{quote}\small\ttfamily
+Analysis/FabiusFunction/docs/\\
+semi-formalized-research-frontiers/drafts/\\
+series-and-transseries/\\
+Combinatorial\_Transseries\_Inverses/\\
+Combinatorial\_Transseries\_Inverses.tex.
+\end{quote}
+The following crosswalk prevents a formal coefficient identity from being
+silently upgraded into an analytic theorem.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.35\textwidth}@{}}
+\toprule
+Repository item & Already present there & Added here\\
+\midrule
+\endhead
+\texttt{t3:prop:double-A}
+& Fixed-order tail expansion for $\tau\ge\tau_0>0$.
+& Exact sign, explicit next-term majorant, and uniform endpoint estimate
+\eqref{eq:uniform}.\\[4pt]
+\texttt{t3:eq:modularP} and \texttt{t3:eq:modularsectors}
+& Exact modular identity and divisor-sum completion.
+& Quantitative competition with the optimal finite-size error; no claim to a
+new modular identity.\\[4pt]
+\texttt{t3:eq:Sphase} and \texttt{t3:eq:Sderivative}
+& Dilogarithmic phase and elementary positive derivative.
+& Uniform lower bound for the \emph{exact} inverse slope and exponentially
+accurate residual transport.\\[4pt]
+\texttt{t3:eq:crossover-all}
+& All formal finite-order inverse coefficients and fixed-order asymptotics.
+& Sharp optimal-order remainder, parity profile, and exact cancellation
+location.\\[4pt]
+Canonical inverse certification framework
+& Residual brackets and order-theoretic threshold principles, with stated
+formalization scopes.
+& Explicit signed and rational analytic forward envelopes suitable as inputs
+to that framework.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+A useful formalization can be modular. The finite identity in
+\cref{lem:thermal} after the coth expansion is supplied is algebraic.
+Positivity and finite-cutoff monotonicity of the remainder kernel are
+straightforward ordered-field statements. Summability and passage to the
+infinite sums form the analytic layer. The residual transport theorem then
+uses only a derivative lower bound and a root-existence bracket.
+
+The hardest new formal components are the bilateral large-moment identity,
+its uniform exponential estimate, the moment expansion with a bounded integer
+offset, and the quadrature construction. They should not be bundled into one
+opaque ``transseries theorem''. The repository's existing distinction between
+formal identities, conditional analytic lemmas, and assembled asymptotic
+statements is the appropriate design discipline \cite{repo-readme}.
+
+No repository files were modified for this deliverable. The present proofs
+were not compiled in Lean, and no external repository theorem was accepted
+solely because a README called it proved. The argument uses the printed
+classical identities and reproduces the mathematical derivations needed for
+its own claims.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+
+The following are proposed problems, not results claimed in the present
+paper. Each is narrow enough to expose a verifiable output.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=13mm]
+\item \textbf{Sharp optimal remainders uniformly down to $hx=0$.}
+The fixed-order bound is already uniform there. Can the prefactor and
+$C_1(d)$ in \cref{thm:optimal} be made uniform for $0<hx\le\tau_1$, assuming
+only $x\to\infty$? The exact power-sum identity suggests that a strengthened
+version should be possible, but all differentiated and discarded-weight
+estimates must be uniform simultaneously.
+
+\item \textbf{The discrete-saddle transition at large $hx$.}
+The relevant moment distribution has center approximately $2\pi/h$ and
+width approximately $\sqrt{2\pi x}/(hx)$. Analyze the transition where this
+width is bounded, rather than large. A theta-modulated prefactor, depending
+on the fractional position of the saddle, is a concrete candidate. This
+would connect the present double-scaling theorem to fixed-$q$ asymptotics
+without an unjustified continuum replacement.
+
+\item \textbf{Higher cancellation corrections and parity optimization.}
+Compute the $x^{-2}$ and $x^{-3}$ relative corrections to \eqref{eq:optimal},
+with uniform remainders, and propagate them to $x_{h,M}$. The dependence on
+integer rounding must remain explicit. A practical goal is a certified rule
+selecting the best of two nearby even orders from the first few correction
+polynomials.
+
+\item \textbf{Coalescing shortest blocks.}
+For multinomials with $\alpha_2-\alpha_1=O(1/x)$, a second block is no longer
+exponentially negligible in the large moment. Derive a uniform replacement
+for the discrete multiplicity $m_*$, with a continuous transition profile
+in $x(\alpha_2-\alpha_1)$. Fixed block proportions in \cref{thm:shortest}
+do not cover this problem.
+
+\item \textbf{Which signed $q$-product quotients have a positive kernel?}
+For a general finite quotient, the weight is an exponential polynomial
+$\sum_jc_j\ee^{-a_j u}$. Characterize useful, algorithmically testable
+conditions ensuring nonnegativity for every $u>0$. Majorization and Laplace
+transform ordering are possible approaches, but neither is assumed to give
+a complete criterion.
+
+\item \textbf{Quantitative Pad\'e convergence in joint limits.}
+\Cref{thm:pade} proves convergence for fixed $\tau,s$. Obtain computable
+rates that remain useful as $\tau\to0$, $s\to0$, and $N\to\infty$ together.
+The measure has an unbounded support and factorial moments, so compact-support
+Pad\'e estimates cannot be imported unchanged.
+
+\item \textbf{An interval-arithmetic inverse and exact integer thresholds.}
+Implement outward-rounded evaluation of the signed kernel or Pad\'e bounds,
+including modular-product tails. Prove termination of a bracket-refinement
+algorithm away from exact thresholds, and use exact finite products to
+resolve the equality cases. The supplied script is a test harness, not this
+certifier.
+
+\item \textbf{Complex $h$, actual Stokes data, and inverse resurgence.}
+Determine the uncancelled divisor of \eqref{eq:poleset}, compute lateral
+continuations where necessary, and propagate their differences through
+compositionally inverted functions. Such a theory should explicitly
+separate Stokes jumps from the real truncation-error cancellation established
+here.
+
+\item \textbf{Normalization and flat-completion uniqueness.}
+The algebraic series cannot by itself determine the modular term.
+Identify a minimal combination of a $q$-difference equation, growth
+conditions, and a boundary normalization that uniquely recovers the chosen
+Gaussian interpolation among functions sharing the same algebraic expansion.
+
+\item \textbf{Shifted quotients such as $q$-Catalan families.}
+Block lengths of the form $\alpha_i x+\beta_i$ introduce fixed shifts in the
+exponential weights. Determine the leading optimal remainder and cancellation
+window including the shift-dependent prefactor. This is not obtained by
+simply replacing $x$ with $x+1$ in the central-binomial answer.
+
+\item \textbf{Theta-weighted finite-field enumeration.}
+Extend the positive-kernel viewpoint to the theta-modulated Galois and flag
+families already studied in the companion. Establish precisely when a
+positive measure survives the additional lattice sum, and when oscillatory
+or signed kernels require a different certification method.
+
+\item \textbf{A composable Lean certificate library.}
+Formalize a finite geometric remainder interface, positive summation bounds,
+residual-to-root transport, and a symbolic truncation checker before attempting
+full Borel or quadrature formalization. A concrete first milestone is a
+machine-checked finite-cutoff version of \eqref{eq:exactR} with an explicit
+analytic tail supplied as a hypothesis.
+\end{enumerate}
+
+\section{Conclusion}
+
+The singular $q\to1$ transition is not adequately described by a formal
+inverse expansion plus an isolated modular term. Its finite-size Bernoulli
+series has a structured, signed remainder of its own. A positive thermal
+kernel makes that structure explicit and gives three kinds of control:
+fixed-order bounds uniform toward the classical endpoint, rational
+Stieltjes enclosures, and sharp optimal-order asymptotics.
+
+The central quantitative conclusion is the stable inverse-error law
+\[
+ \widehat x_M-x=
+ \frac{\ee^{-4\pi^2/h}+(-1)^{M+1}\ee^{-2\pi x}/(\pi\sqrt{x})}
+      {2\log(1+\ee^{hx})}
+ +O\!\left(h\left\{\ee^{-4\pi^2/h}
+              +\frac{\ee^{-2\pi x}}{\pi\sqrt{x}}\right\}\right),
+\]
+under the precisely stated compact double-scaling hypotheses. Its balance
+coordinate includes a logarithmic prefactor shift, its sign depends on
+truncation parity, and its refined cancellation location is explicit.
+The multinomial version shows that the shortest block and its multiplicity
+control the leading finite-size error, while the full composition controls
+the inverse slope.
+
+These are delimited analytic refinements of an existing transseries program.
+They do not settle general questions about transseries fields or every
+$q$-product regime. They do turn an explicitly unresolved error-analysis
+boundary in the inspected chapter into a collection of proved formulas and
+testable, reusable inversion tools.
+
+\appendix
+\section{Explicit bounds for finite computation}
+\label{app:tails}
+
+These estimates make the positive formulas numerically usable without
+pretending that a finite sum is an infinite one. Let $p=2M$, let the positive
+weight satisfy $0<w_m\le b\ee^{-\lambda m}$, and choose an integer
+$N\ge p/\lambda$. For a multinomial, $\lambda=\alpha hx$; in the central
+case $b=2$ and $\lambda=hx$.
+
+Since $u^p\ee^{-\lambda u}$ decreases for $u\ge N$,
+\begin{equation}
+ \sum_{m>N}m^p\ee^{-\lambda m}
+ \le\int_N^\infty u^p\ee^{-\lambda u}\dd u
+ =\frac{\Gamma(p+1,\lambda N)}{\lambda^{p+1}}.
+ \label{eq:mtail}
+\end{equation}
+Here $\Gamma(a,z)=\int_z^\infty u^{a-1}\ee^{-u}\dd u$ is the upper incomplete
+gamma function, a finite exponential-polynomial expression when $a=p+1$
+is a positive integer. The corresponding absolute remainder-tail bound is
+\begin{equation}
+ E_m\le
+ \frac{h\zeta(p+2)}{2\pi^2}
+      \left(\frac h{2\pi}\right)^p
+      \frac{b\Gamma(p+1,\lambda N)}{\lambda^{p+1}}.
+ \label{eq:Rmtail}
+\end{equation}
+For the omitted $k>K$ terms at retained $m\le N$, write
+$z_m=(hm/(2\pi))^2$ and $v_m=w_m z_m^M$. Then
+\begin{equation}
+ E_k\le\frac h{2\pi^2}
+           \frac{\sum_{m\le N}v_m}{(p+1)K^{p+1}}.
+ \label{eq:Rktail}
+\end{equation}
+This is the integral test for $\sum_{k>K}k^{-p-2}$. The positive rectangular
+partial sum of \eqref{eq:exactR}, without its parity sign, is a lower bound;
+adding $E_m+E_k$ is an upper bound. No cancellation of huge numbers is needed
+for the small remainder itself.
+
+For the independent thermal reference \eqref{eq:thermalreference}, the
+bracketed kernel lies between zero and $1/2$, since
+$\ee^z-1>z$ and its cotangent representation is positive after the first two
+terms are removed. Therefore the $m>N$ tail is at most
+\begin{equation}
+ \frac{b\ee^{-\lambda(N+1)}}{2(N+1)(1-\ee^{-\lambda})}.
+ \label{eq:Ftail}
+\end{equation}
+Finally, if the modular divisor sum is stopped after $J$ terms,
+\begin{equation}
+ 0<\E(h)-\sum_{n=1}^{J}\sigma_{-1}(n)r_h^n
+ \le\frac{r_h^{J+1}\{(J+1)-Jr_h\}}{(1-r_h)^2}.
+ \label{eq:Etail}
+\end{equation}
+All these are analytic inequalities. Outward rounding is still necessary
+when implementing their right-hand sides as rigorous numerical enclosures.
+
+\section{Coefficient construction and checks of normalization}
+\label{app:coefficients}
+
+The moments needed by the Pad\'e construction can be evaluated without
+symbolic differentiation of large rational expressions. For $n\ge0$,
+\begin{equation}
+ \Li_{-n}(t)=\sum_{j=0}^{n}j!\left\{\begin{matrix}n+1\\j+1\end{matrix}\right\}
+                         \left(\frac t{1-t}\right)^{j+1},
+ \label{eq:stirlingpolylog}
+\end{equation}
+where braces denote Stirling numbers of the second kind. To prove the
+identity, start with $\Li_0(t)=t/(1-t)$, apply $t\,d/dt$, and use the Stirling
+recurrence. At $t=1/2$, \eqref{eq:moments} becomes the explicitly rational
+finite sum
+\begin{equation}
+ \mu_j=\frac{|B_{2j+2}|}{(2j+2)!}
+ \sum_{k=0}^{2j}k!\left\{\begin{matrix}2j+1\\k+1\end{matrix}\right\}
+                    \left(2-3^{-(k+1)}\right).
+ \label{eq:rationalmoments}
+\end{equation}
+This is the formula executed in the script.
+
+For a formal series $f(s)=\sum_{j\ge0}c_js^j$, a normalized Pad\'e denominator
+$q(s)=1+\sum_{j=1}^Nq_js^j$ for numerator degree $L$ is found from
+\begin{equation}
+ \sum_{j=1}^{N}q_jc_{k-j}=-c_k,\qquad k=L+1,\ldots,L+N,
+ \label{eq:padelinear}
+\end{equation}
+with $c_j=0$ for $j<0$. The numerator coefficients are
+$p_k=\sum_{j=0}^{\min(k,N)}q_jc_{k-j}$. In our application
+$c_j=(-1)^j\mu_j$. Positive definiteness of the moment form gives the
+nondegeneracy needed in \cref{thm:pade}; the program additionally checks the
+relevant finite determinants exactly.
+
+Several normalization traps are worth recording. The Bernoulli sum in
+$B_M$ contains $M$ terms, whereas the first omitted moment has power $2M$.
+The remainder sign is $(-1)^{M+1}$, not $(-1)^M$, because the tail enters as
+$A_h(t^2)-2A_h(t)$. The next-term leading prefactor is \emph{twice} the
+actual optimal remainder prefactor. The modular contribution to $L_h$ is
+positive, because it is $-\log\qpoch{r_h}{r_h}$. Finally, the inverse
+approximation omitting that contribution is shifted by $+\E/S'$ to leading
+order; interchanging the exact and approximate inverse reverses the sign.
+
+\section{Package contents and build instructions}
+\label{app:build}
+
+The archive is self-contained and does not require the repository's shared
+notation file. It contains the editable \texttt{q\_transition.tex}, its
+compiled PDF, this manuscript's verification script and recorded JSON output,
+a minimal dependency file, a provenance record, and a README.
+
+Compile the document with a current TeX Live installation containing
+\texttt{newpx}, \texttt{tcolorbox}, \texttt{hyperref}, and \texttt{cleveref}:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error q_transition.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_transition.tex
+pdflatex -interaction=nonstopmode -halt-on-error q_transition.tex
+\end{verbatim}
+The bibliography is embedded, so BibTeX is unnecessary. To reproduce the
+checks, install the versions in \texttt{verification/requirements.txt} and run
+\begin{verbatim}
+python verification/verify.py
+\end{verbatim}
+The program overwrites only its local \texttt{verification/results.json}.
+It makes no network request and does not alter the user's repository.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot
+\texttt{\commit}. Companion manuscript,
+\emph{Combinatorial Transseries and Their Inverses}, chapter
+``The singular transition $q\to1$'', labels
+\texttt{t3:prop:double-A}, \texttt{t3:eq:modularP},
+\texttt{t3:eq:Sphase}, \texttt{t3:eq:crossover-all}.
+Inspected 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/20301601562cf84173f2b503b0dc9c3fbf21cd0c}.
+
+\bibitem{repo-readme}
+V. Reshetnikov, \emph{ProveIt}, ``Series and transseries'' and
+``Transseries: the polynomial--logarithmic calculus and its inversions'',
+repository README files at the same snapshot. The source inventory explicitly
+separates formal identities, partial analytic crosswalks, and absent assembled
+formalizations. See the source path in \cref{sec:integration}.
+
+\bibitem{dlmf-hyper}
+NIST Digital Library of Mathematical Functions,
+\S4.36, ``Infinite Products and Partial Fractions'', especially equations
+4.36.3 and 4.36.4. Accessed 29 September 2026.
+\url{https://dlmf.nist.gov/4.36}.
+
+\bibitem{dlmf-eta}
+NIST Digital Library of Mathematical Functions,
+\S23.18, ``Modular Transformations'', especially equation 23.18.5.
+Accessed 29 September 2026.
+\url{https://dlmf.nist.gov/23.18}.
+
+\bibitem{zhang}
+C. Zhang, ``A modular-type formula for $(x;q)_\infty$'',
+\emph{The Ramanujan Journal} \textbf{46} (2018), 269--305.
+\url{https://doi.org/10.1007/s11139-017-9967-5}.
+
+\bibitem{fantini-rella}
+V. Fantini and C. Rella, ``Modular resurgence, $q$-Pochhammer symbols, and
+quantum operators from mirror curves'', \emph{Letters in Mathematical Physics}
+\textbf{116} (2026), article 39.
+\url{https://doi.org/10.1007/s11005-026-02063-x}.
+Preprint \url{https://arxiv.org/abs/2506.08265}, version 2, 1 April 2026.
+
+\bibitem{simon}
+B. Simon, ``The classical moment problem as a self-adjoint finite difference
+operator'', \emph{Advances in Mathematics} \textbf{137} (1998), 82--203.
+\url{https://arxiv.org/abs/math-ph/9906008}.
+\end{thebibliography}
+\end{document}
