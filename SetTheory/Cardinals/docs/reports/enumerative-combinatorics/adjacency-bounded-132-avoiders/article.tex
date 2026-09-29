@@ -15,6 +15,9 @@
 \usepackage{aliascnt}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \definecolor{Forest}{HTML}{294D3D}
+% Part II (batch 38): let long file names break at hyphens; stretch as a last resort.
+\makeatletter\g@addto@macro\UrlBreaks{\do\-}\makeatother
+\setlength{\emergencystretch}{1.5em}
 \definecolor{OliveLight}{HTML}{F0F2E7}
 \definecolor{InkGray}{HTML}{555D57}
 \titleformat{\section}{\Large\sffamily\bfseries\color{Forest}}{\thesection}{.7em}{}
@@ -55,6 +58,7 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\shift}{\Phi}
 \newcommand{\dd}{\mathrm d}
+\newcommand{\Bformal}{\mathcal B}% Part II (batch 38)
 \allowdisplaybreaks[2]
 \setlength{\parindent}{1.1em}
 \setlength{\parskip}{.25em}
@@ -102,6 +106,12 @@ encoded family of variable-length skew blocks. A truncated-series root lemma
 also bounds the possible constant term. Complete proofs, exact generating
 functions for $m\le4$, integer sequences, and independently checked rational
 Perron certificates accompany the report.
+
+\emph{Addition of 28 September 2026 (batch 38).} Part~II, from a later
+manuscript, proves $\alpha_m<\beta_m$ for the root $\beta_m^{-1}$ of
+$\sum_{k=1}^mC_{k-1}x^k=1$ and $\beta_m-\alpha_m=O((\log m)^2/m^2)$; hence the
+constant term converges, $m(4-\alpha_m)-2\log m-4\log\log m\to2\log\pi$, and
+the growth deficit has an expansion to every inverse-logarithmic order.
 \end{abstract}
 \begin{resultbox}
 \textbf{Scope and attribution.}
@@ -119,6 +129,7 @@ certificate files, and CSV tables.}
 \newpage
 \tableofcontents
 \newpage
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Strict growth and the two-term asymptotic}
 
 \section{The problem and the results}
 \label{sec:results}
@@ -191,6 +202,10 @@ Define $E_m=m(4-\alpha_m)-2\log m-4\log\log m$ for $m\ge2$. Then
 \end{equation}
 No convergence of $E_m$ is asserted.
 \end{theorem}
+\noindent[Added 28 September 2026, batch 38: the last sentence describes the
+report at its pinned state \texttt{6c9175a54}. Part~II proves that $E_m$
+converges to the upper endpoint, $E_m\to2\log\pi$
+(\cref{crem:thm:main-quantitative,crem:cor:constant}).]
 
 The strict comparison uses a finite-state embedding. The asymptotic results
 use scalar comparison series and do not require deciding which finite-state
@@ -911,6 +926,10 @@ above $2\log\pi$. This is compatible with the theorem: a fixed $d$ has
 limit $4\gamma_d$, and the root expansion also has a slowly vanishing
 error.
 \end{remark}
+\noindent[Added 28 September 2026, batch 38: with the sharper upper bound and
+the growing cutoff of Part~II, the computed corridor for $E_m$ at $m=10^6$ is
+about $[3.1495,3.1503]$, still far above the proved limit $2\log\pi$; see
+\cref{crem:rem:numerics-not-evidence}.]
 
 \section{Exact computations and reproducible certificates}
 \label{sec:computation}
@@ -1115,6 +1134,11 @@ problem formulated in \cite[Problem~P3]{MayamaAkita}. Strict increase in
 both sequences is compatible with crossings, so it cannot settle their
 ordering. The finite certificates here establish the pattern only through
 $m=20$.
+[Added 28 September 2026, batch 38: this question remains open. Part~II
+shows only that a dominant $V$ can lead by at most
+$(\lambda_V(m)-\lambda_U(m))_+=O((\log m)^2/m^2)$
+(\cref{crem:cor:component-gap}), which is why the ordering is invisible to
+every inverse-logarithmic term; see \cref{crem:sec:future}.]
 
 A second question is whether $E_m$ converges, and, if so, to which constant.
 The scalar majorant discards endpoint compatibility, while the lower
@@ -1124,6 +1148,13 @@ requires controlling more of the endpoint information, not merely taking
 more terms of the same scalar expansions. A growing-$d$ analysis could
 improve finite bounds, but our argument deliberately takes $d$ fixed and
 then sends $d$ to infinity only after a limsup.
+[Added 28 September 2026, batch 38: the preceding paragraph describes the
+report at its pinned state \texttt{6c9175a54}. The question is answered in
+Part~II: $E_m\to2\log\pi$ (\cref{crem:cor:constant}). As anticipated here,
+the upper side keeps last-endpoint information, through a Catalan-weighted
+positive vector (\cref{crem:lem:V-vector}), and the lower side lets the
+cutoff grow, $d=\lceil\log_2m\rceil$, using a tail bound uniform in $d$
+(\cref{crem:lem:uniform-tail,crem:thm:corridor-quantitative}).]
 
 Finally, the minimal recurrence order and uniform denominator factorization
 of $A_m(x)$ remain outside the scope of this report. The exact $m\le4$
@@ -1131,6 +1162,1497 @@ artifacts are useful examples, not a claimed solution of that general
 algebraic problem. The new strict-growth argument is valuable precisely
 because it avoids needing such a formula.
 
+%% ====================================================================
+%% Batch-38 addition (manuscript 04, "Closing the Catalan growth-constant
+%% gap"). All labels of Part II carry the prefix crem: (centered remainder).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad The exact constant: an endpoint renewal comparison}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } The exact constant: an endpoint renewal comparison}
+
+\noindent\emph{Sections~\ref{sec:results}--\ref{sec:remaining} and the
+appendices form the original report (Part~I) of 19 September 2026,
+unchanged except for dated pointers to this addition. Part~II was added on
+28 September 2026 in batch~38 of ProveIt's incoming-report intake, from one
+manuscript written against the pinned state of Part~I. It answers the
+question Part~I left open in \cref{sec:remaining}: $E_m$ converges, and its
+limit is $2\log\pi$. \Cref{crem:sec:intro} records the provenance and fixes
+the notation of the addition.}
+
+\section{Provenance, conventions and the answer}
+\label{crem:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{crem:sec:source}
+Part~II is batch-38 manuscript~04, \emph{Closing the Catalan growth-constant
+gap: Endpoint renewal comparison for adjacency-bounded 132-avoiding
+permutations}, an AI-assisted research manuscript prepared for Vladimir
+Reshetnikov and dated September 28, 2026 (23 pages as delivered). It arrived
+as the archive \texttt{Closing\_Catalan\_Growth\_Gap.zip} (inner directory
+\texttt{Adjacency\_Growth\_Constant/}) in ProveIt commit \texttt{fbba58593}
+and was placed in \texttt{938b2f74e}. It was written against ProveIt commit
+\texttt{6c9175a54}, at which Part~I's \texttt{article.tex} had the Git blob
+\texttt{5ec75ee4}; that blob is unchanged at the placement commit, so every
+statement the manuscript makes about Part~I refers to the text printed above.
+Its code and data are shipped beside Part~I's files with the prefix
+\texttt{02-centered-remainder-} (Part~I's unprefixed files count as~01); its
+manuscript, README and PDF are not shipped and survive in the arrival commit.
+Its two figures were added to \texttt{figures/} in the write phase
+(\cref{crem:sec:merge}).
+
+The manuscript contributes, in the order printed here: a Catalan-weighted
+spectral upper bound $\alpha_m<\beta_m$ (\cref{crem:sec:renewal}); a uniform
+first-deficiency tail bound and a lower bound for the first component rate
+(\cref{crem:sec:blocks}); a uniform endpoint expansion of the truncated
+Catalan root (\cref{crem:sec:scalar}); a corridor of width
+$O((\log m)^2/m^2)$ from a logarithmically growing cutoff, and with it the
+exact constant (\cref{crem:sec:quantitative}); an all-orders
+inverse-logarithmic expansion (\cref{crem:sec:inversion}); exact checks and
+numerical illustrations (\cref{crem:sec:verification}); an $m=2$ example with a
+non-implication (\cref{crem:sec:m2}); nine research directions
+(\cref{crem:sec:future}); and its proof boundaries and provenance
+(\cref{crem:sec:audit}). Every result, proof, example, remark, limitation and
+question of the manuscript is printed. The manuscript re-derives the finite
+endpoint structure, the first-entry lemma and the injective block
+construction of Part~I; those are printed once, in Part~I, and credited
+where Part~II uses them.
+
+\begin{resultbox}
+\textbf{Status (manuscript 04).} The manuscript presents mathematical proofs
+of a repository-open asymptotic question and stronger approximation results.
+It is not externally refereed and contains no new Lean certification. Novelty
+is assessed against the inspected repository snapshot and the primary papers
+cited here, not against an exhaustive literature census. Nothing in Part~II
+is formalized in any proof assistant.
+\end{resultbox}
+
+\subsection{Notation of Part~II}
+\label{crem:sec:notation}
+Part~I's symbols keep their meanings: $a_n^{(m)}$, $A_m$, $\alpha_m$,
+$C_j$, $\Cat$, $B_m$, $c_{k,p}$, $W_m$, $U_m$, $V_m$, $r_C(m)$,
+$\lambda_C(m)$, $h(k,j)$, $K_{m,d}$, $s_{m,d}$, $\preceqc$, and the centered
+remainder $E_m$ of \cref{thm:window-main}. The manuscript uses the same
+symbols with the same meanings. Its new symbols, and the ones renamed here to
+avoid a clash with Part~I, are listed in \cref{crem:tab:notation}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~II. ``Renamed'' gives the manuscript's own symbol.
+The last column prints the tempting false reading.}
+\label{crem:tab:notation}
+\begin{tabular}{>{\raggedright}p{.19\linewidth}>{\raggedright}p{.36\linewidth}>{\raggedright\arraybackslash}p{.37\linewidth}}
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+$K_m(x)$ (one index) & $\sum_{k=1}^mC_{k-1}x^k$ & Part~I's block polynomial
+ $K_{m,d}$ (two indices). In particular $K_{m-d}$ is the Catalan polynomial
+ truncated at $m-d$, and $K_{m,d}\preceqc K_{m-d}$. Part~I's majorant is
+ $R_m=x+K_m$.\\
+$r_m$, $\beta_m=r_m^{-1}$ & positive root of $K_m(r_m)=1$ & the component
+ roots $r_U(m)$, $r_V(m)$, and the local $r_m$ inside
+ \cref{lem:tailroot}. Since $R_m=x+K_m$, $q_m<r_m$ and
+ $\beta_m<q_m^{-1}$.\\
+$t_m$ & $m\log(4r_m)=m\log(4/\beta_m)$ & Part~I's $t_m^*=m\log(4/\alpha_m)$;
+ $t_m<t_m^*$ for $m\ge2$.\\
+$b_k$ & $C_{k-1}4^{-k}$ for all $k\ge1$, so $b_1=\frac14$ & the
+ coefficients of $R_m$ in \cref{sec:asympt}, where $b_1=\frac12$.\\
+$\Lambda$ (renamed from $L$) & $\frac12\log m$ & Part~I's
+ $L_m=\frac12\log m+\log\log m$.\\
+$z$ & $\log\Lambda+\log(2\sqrt\pi)=\log\log m+\frac12\log\pi$ & ---\\
+$\mathcal P_j(z)$ (renamed from $P_j$) & correction polynomials,
+ \cref{crem:prop:P-recursion} & the numerator polynomials $P_3$, $P_4$ of
+ \cref{app:algebra}.\\
+$\Bformal(w)$, $\Bformal_N(t)$ (renamed from $B_N$) & the formal series
+ $\sum_j(3/2)_jw^j$ and its truncation $\sum_{j<N}(3/2)_jt^{-j}$ & $B_m$
+ (thresholds), $B_d$ of \eqref{eq:Bd}, $B$ of \cref{lem:tailroot}.\\
+$H_q(x)$ & $\sum_{j=0}^qC_jx^j$ & the expanded adjacency matrix $H$ in the
+ proof of \cref{prop:growth}.\\
+$\eps_d$ & $(d+2)2^{-d}$ & Part~I's $a_d$; $1-a_d=\eps_d/2$
+ (\cref{crem:rem:ad}).\\
+$d=d_m$ & $\lceil\log_2m\rceil$ in \cref{crem:sec:quantitative} & Part~I,
+ where $d$ is fixed while $m\to\infty$.\\
+$\Delta_m$ (renamed from $T_m$) & mass of the last $d$ tilted terms &
+ Part~I's endpoint counts $T^{(m)}_{p,q}(n)$.\\
+$C_\ast$, $c_\ast$ (renamed from $C$, $c$) & absolute constants & Catalan
+ numbers $C_j$; the component letter $C\in\{U,V\}$.\\
+$W_{U_m}$, $W_{V_m}$ (manuscript: $W_U$, $W_V$) & component matrices of
+ Part~I & ---\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly the
+manuscript's quantity. Logarithms are natural.
+
+\subsection{The question and the answer}
+\label{crem:sec:answer}
+Part~I proved $4-\alpha_m=(2\log m+4\log\log m+O(1))/m$
+(\cref{thm:asympt-main}) and, for the centered remainder
+$E_m=m(4-\alpha_m)-2\log m-4\log\log m$, the window
+\eqref{eq:constant-window} of width $4\log2$. Its concluding discussion asks
+whether $E_m$ converges and, if so, to which constant. That is the question
+resolved here. It was an open question in the inspected report (Part~I), not
+a claim that every open problem in the original enumeration papers has been
+settled.
+
+The older upper comparison was based on $R_m(x)=x+\sum_{k=1}^mC_{k-1}x^k$.
+The extra $x$ accounts for appending a maximum when endpoint restrictions are
+discarded. One cannot simply delete that term from the counting recurrence.
+Instead, we retain the last-endpoint information and assign a different
+positive weight to each endpoint threshold. A Catalan convolution then
+incorporates the append transition without paying for it as an independent
+unconstrained scalar choice. Part~I's diagnosis in \cref{sec:remaining}, that
+closing the window needs more endpoint information than the scalar series
+carry, is exactly what this weighting supplies on the upper side; on the
+lower side a cutoff $d$ growing with $m$ is used, made legitimate by a bound
+uniform in $d$.
+
+Write
+\begin{equation}
+ C_j=\frac1{j+1}\binom{2j}{j},\qquad
+ K_m(x)=\sum_{k=1}^m C_{k-1}x^k,
+ \qquad K_m(r_m)=1,
+ \qquad \beta_m=r_m^{-1}.
+ \label{crem:eq:scalar-root}
+\end{equation}
+The polynomial $K_m$ is strictly increasing on the positive real axis. Thus
+$r_m$ is well defined. Since $K_m(1/4)<\sum_{k\ge1}C_{k-1}4^{-k}=1/2$, we have
+$r_m>1/4$. For $m\ge2$, $K_m(1)>1$, so $r_m<1$.
+
+\begin{theorem}[Finite renewal upper bound]\label{crem:thm:main-upper}
+For every $m\ge2$,
+\[
+ \alpha_m<\beta_m<4.
+\]
+For $m=1$, $\alpha_1=\beta_1=1$.
+\end{theorem}
+
+\begin{theorem}[Quantitative scalar universality]\label{crem:thm:main-quantitative}
+As $m\to\infty$,
+\begin{equation}
+ 0\le\beta_m-\alpha_m
+ \le\beta_m-\lambda_U(m)
+ =O\!\left(\frac{(\log m)^2}{m^2}\right),
+ \label{crem:eq:main-quantitative}
+\end{equation}
+where $\lambda_U(m)$ is the first cyclic-component growth rate of
+\eqref{eq:component-root}. In particular,
+\begin{equation}
+ \boxed{\displaystyle\lim_{m\to\infty}E_m=2\log\pi.}
+ \label{crem:eq:main-constant}
+\end{equation}
+\end{theorem}
+
+For the all-orders statement, put
+\begin{equation}
+ \Lambda=\tfrac12\log m,\qquad
+ z=\log\Lambda+\log(2\sqrt\pi)
+   =\log\log m+\tfrac12\log\pi.
+ \label{crem:eq:Lz}
+\end{equation}
+\begin{theorem}[All inverse-logarithmic orders]\label{crem:thm:main-allorders}
+There are explicitly computable polynomials $\mathcal P_j\in\mathbb Q[z]$, of
+degree $j$, such that for every fixed integer $J\ge0$,
+\begin{equation}
+ m(4-\alpha_m)
+ =4\Lambda+4z+4\sum_{j=1}^{J}\frac{\mathcal P_j(z)}{\Lambda^j}
+ +O_J\!\left(\frac{(1+|z|)^{J+1}}{\Lambda^{J+1}}\right).
+ \label{crem:eq:main-allorders}
+\end{equation}
+The first three are
+\begin{align}
+ \mathcal P_1(z)&=z-\tfrac32,\notag\\
+ \mathcal P_2(z)&=-\tfrac12z^2+\tfrac52z-\tfrac{33}{8},\notag\\
+ \mathcal P_3(z)&=\tfrac13z^3-3z^2+\tfrac{43}{4}z-15.
+ \label{crem:eq:first-polynomials}
+\end{align}
+The same expansion holds with $\alpha_m$ replaced by $\lambda_U(m)$ or
+$\beta_m$.
+\end{theorem}
+
+Since $4\Lambda+4z=2\log m+4\log\log m+2\log\pi$, the case $J=0$ is again
+$E_m\to2\log\pi$: the upper endpoint of Part~I's window
+\eqref{eq:constant-window}. Part~II refutes nothing in Part~I; it sharpens
+the window to a point.
+
+\subsection{What is inherited and what is added}
+\begin{table}[htbp]
+\centering\small
+\caption{Attribution and scope. ``Here'' means proved in Part~II
+(manuscript~04).}
+\label{crem:tab:attribution}
+\begin{tabular}{p{.47\linewidth}p{.43\linewidth}}
+\toprule
+Ingredient or conclusion & Provenance\\
+\midrule
+Endpoint recurrence and two cyclic components & Mayama--Akita; rederived in
+ Part~I and again in manuscript~04\\
+Strict increase of $\alpha_m$ and the window \eqref{eq:constant-window}
+ & Part~I; not claimed anew\\
+Injective skew blocks with fixed endpoint cutoff & Part~I; recalled\\
+Catalan-weighted spectral upper bound $\alpha_m<\beta_m$ & Here\\
+Uniform tail control and $O((\log m)^2/m^2)$ approximation & Here\\
+Exact constant $2\log\pi$ and the transferred all-orders expansion & Here\\
+Ordering of $U$ and $V$ for every $m\ge5$ & Not resolved here\\
+\bottomrule
+\end{tabular}
+\end{table}
+The inspected repository path, commit and source blob are recorded in
+\cref{crem:sec:provenance}. This matters because the repository is an active
+research collection: an unpinned statement about what it contains would not
+be a reproducible novelty comparison.
+
+\section{The finite interface}
+\label{crem:sec:finite}
+This section collects the input to the new comparison. Its finite-state
+structure is established work \cite{MayamaAkita} and is proved in Part~I;
+manuscript~04 rederives it, to make its argument independent of undocumented
+implementation details, and its proofs coincide with Part~I's except where a
+second route is marked below.
+
+The endpoint recurrence is \cref{prop:endpoint}. In the language of edges,
+$W_m(x)$ of \eqref{eq:matrix} has a split edge
+\begin{equation}
+ (p,q)\longrightarrow(m-k,q-k)
+ \quad\text{with weight }c_{k,p}x^k,
+ \label{crem:eq:split-edge}
+\end{equation}
+and an append edge
+\begin{equation}
+ (p,q)\longrightarrow(p-1,m-1)
+ \quad\text{with weight }x,
+ \label{crem:eq:append-edge}
+\end{equation}
+invalid negative thresholds being omitted. By \eqref{eq:c-monotone},
+\begin{equation}
+ 0\le c_{k,p}\le C_{k-1},\qquad
+ c_{k,p}\le c_{k,p+1},\qquad c_{k,\infty}=C_{k-1}.
+ \label{crem:eq:c-basic}
+\end{equation}
+
+\begin{proposition}[Spectral interface]\label{crem:prop:spectral}
+For $m\ge2$, both $W_{U_m}(x)$ and $W_{V_m}(x)$ are irreducible for $x>0$.
+Their spectral radii are continuous and strictly increasing from zero to
+infinity. With $r_C(m)$ and $\lambda_C(m)$ as in \eqref{eq:component-root},
+\begin{equation}
+ \alpha_m=\max\{\lambda_U(m),\lambda_V(m)\},
+ \qquad \lambda_U(m)>1.
+ \label{crem:eq:spectral-interface}
+\end{equation}
+\end{proposition}
+\begin{proof}
+This is \cref{lem:components}, the paragraph after \cref{lem:PF}, and
+\cref{prop:growth}. Manuscript~04's Appendix~A gives the same graph and
+transfer-matrix proof: the same strong-connectivity induction on the gap
+$p-q$, the same classification of cyclic components, the same expansion of
+every edge into unit-length edges, and the same closed walks of lengths two
+and five for primitivity. Its argument for $\lambda_U(m)>1$ differs and is
+printed next.
+\end{proof}
+
+\begin{proof}[Second proof of $\lambda_U(m)>1$ (manuscript~04)]
+Let $e_U=(m-1,\infty)$. At $x=1$, the column of $W_{U_m}$ indexed by $e_U$
+consists of ones, from the $k=1$ edges. Consequently
+$W_{U_m}(1)\delta_{e_U}=\one\ge\delta_{e_U}$, strictly in another coordinate
+when $m\ge2$. A positive left Perron vector gives $\spr(W_{U_m}(1))>1$, and
+hence $r_U(m)<1$.
+\end{proof}
+
+\begin{remark}[Constants depend on $m$]\label{crem:rem:fixed-m}
+All constants in the proof of \cref{prop:growth} (the $c$, $C$ and $D$ of
+its last paragraph) may depend on $m$; no joint-limit uniformity is claimed,
+in Part~I or here. The interface is all that Part~II uses: not explicit
+determinants, a conjectural ordering of components, or a simple-pole
+assertion about $A_m$.
+\end{remark}
+
+We will repeatedly use two elementary consequences of Perron--Frobenius
+positivity.
+
+\begin{lemma}[Positivity tools]\label{crem:lem:positivity}
+\begin{enumerate}[label=(\roman*)]
+\item If $M$ is irreducible and nonnegative, and $v>0$ satisfies $Mv\le v$
+ with a strict inequality in at least one coordinate, then $\spr(M)<1$.
+\item For any nonnegative matrix, the spectral radius is at least its
+ minimum row sum, and it is monotone under entrywise increase and under
+ principal extension.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For (i), multiply by a positive left Perron vector $u$:
+$\spr(M)u^{\mathsf T}v=u^{\mathsf T}Mv<u^{\mathsf T}v$. For (ii), the
+row-sum bound follows by iterating $M\one\ge a\one$; the monotonicity
+follows by comparing powers. The mechanism of (i) is the one used in
+\cref{lem:PF}.
+\end{proof}
+
+\section{The endpoint renewal comparison}
+\label{crem:sec:renewal}
+The essential new finite observation is a positive vector adapted to the
+last threshold. Before applying it, it is useful to isolate its algebraic
+mechanism.
+
+\subsection{A renewal system with a reset}
+\begin{lemma}[Renewal--reset identity]\label{crem:lem:reset}
+Let $w_1,\ldots,w_{m-1}\ge0$ and $a\ge0$. On indices $0,\ldots,m-1$, let
+$L$ be the strictly lower triangular matrix with $L_{q,q-k}=w_k$ for
+$1\le k\le q$, and put
+\[
+ N=L+a\one e_{m-1}^{\mathsf T}.
+\]
+Define $u_0=1$, $u_n=\sum_{k=1}^n w_ku_{n-k}$ for $1\le n<m$, and
+$H_q=\sum_{j=0}^q u_j$. Then
+\begin{align}
+ (I-L)H&=\one,\label{crem:eq:renewalH}\\
+ NH&=H+(aH_{m-1}-1)\one,\label{crem:eq:reset-vector}\\
+ \det(I-N)&=1-aH_{m-1}.\label{crem:eq:reset-det}
+\end{align}
+\end{lemma}
+\begin{proof}
+For each $q$,
+\[
+ \sum_{k=1}^q w_kH_{q-k}
+ =\sum_{n=1}^q\sum_{k=1}^n w_ku_{n-k}
+ =\sum_{n=1}^q u_n=H_q-1.
+\]
+This proves \eqref{crem:eq:renewalH}; the reset term gives
+\eqref{crem:eq:reset-vector}. Since $L$ is strictly triangular,
+$\det(I-L)=1$. The determinant identity for a rank-one update, or direct
+elimination of $(I-L)$, gives
+\[
+ \det(I-N)=\det(I-L)
+ \bigl(1-ae_{m-1}^{\mathsf T}(I-L)^{-1}\one\bigr)
+ =1-aH_{m-1}.
+\]
+All identities also hold over a commutative coefficient ring when the
+nonnegativity assertions are omitted.
+\end{proof}
+
+For the Catalan application, take $w_k=C_{k-1}x^k$ and $a=x$. The Catalan
+recurrence gives $u_j=C_jx^j$. Thus
+\begin{equation}
+ H_q(x)=\sum_{j=0}^q C_jx^j,
+ \qquad xH_{m-1}(x)=K_m(x).
+ \label{crem:eq:H}
+\end{equation}
+Equivalently, the formal identity $\Cat(x)=1+x\Cat(x)^2$ gives
+$(1-x\Cat(x))^{-1}=\Cat(x)$. The finite version we need is
+\begin{equation}
+ \sum_{k=1}^q C_{k-1}x^kH_{q-k}(x)=H_q(x)-1.
+ \label{crem:eq:catalan-renewal}
+\end{equation}
+There is no convergence issue in this polynomial identity.
+
+\subsection{A positive vector for the true two-endpoint component}
+\begin{lemma}[Last-threshold supersolution]\label{crem:lem:V-vector}
+For a state $(p,q)\in V_m$, set $v_{p,q}(x)=H_q(x)$. For every $x>0$,
+\begin{equation}
+ (W_{V_m}(x)v(x))_{p,q}
+ \le H_q(x)-1+K_m(x).
+ \label{crem:eq:V-domination}
+\end{equation}
+At $x=r_m$, at least one coordinate inequality is strict.
+\end{lemma}
+\begin{proof}
+A valid split from $(p,q)$ has $k\le q$, and its target has last threshold
+$q-k$. We may bound $c_{k,p}$ by $C_{k-1}$ and include every $1\le k\le q$.
+If an append edge exists, its target has last threshold $m-1$; including
+such an edge even when it is absent can only increase the result. Therefore
+\begin{align*}
+ (W_{V_m}v)_{p,q}
+ &\le\sum_{k=1}^q C_{k-1}x^kH_{q-k}(x)+xH_{m-1}(x)\\
+ &=H_q(x)-1+K_m(x),
+\end{align*}
+by \eqref{crem:eq:catalan-renewal}. At the state $(0,m-1)$, which belongs to
+$V_m$ for $m\ge2$, there is no append edge. The positive term
+$xH_{m-1}(x)$ was consequently added strictly. This proves strictness, in
+fact for every $x>0$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{crem:thm:main-upper}]
+At $x=r_m$, \cref{crem:lem:V-vector} gives $W_{V_m}v\le v$, with a strict
+coordinate and $v>0$. Irreducibility and
+\cref{crem:lem:positivity}(i) imply $\spr(W_{V_m}(r_m))<1$.
+
+In $U_m$, append edges leave the component. Its row at first threshold $p$
+has sum $\sum_{k=1}^m c_{k,p}r_m^k\le K_m(r_m)=1$. The row $p=0$ has sum
+$r_m<1$, since only the $k=1$ coefficient survives. Thus
+$\spr(W_{U_m}(r_m))<1$ by the same positivity argument, now with vector
+$\one$.
+
+Strict increase of each spectral radius gives $r_U(m),r_V(m)>r_m$. Taking
+reciprocals and using \eqref{crem:eq:spectral-interface} proves
+$\alpha_m<\beta_m$. The already established $r_m>1/4$ gives $\beta_m<4$.
+For $m=1$, the only permutations of length at least two with jumps of
+absolute value one are the increasing and decreasing permutations; a change
+of direction would repeat a value. Hence $\alpha_1=1=\beta_1$.
+\end{proof}
+
+\begin{remark}[Comparison with Part~I's majorant]\label{crem:rem:vs-upper}
+Since $R_m=x+K_m$, one has $R_m(r_m)=1+r_m>1$, so $q_m<r_m$ and
+$\beta_m<q_m^{-1}$ for every $m\ge1$: \cref{crem:thm:main-upper} is
+strictly sharper than \cref{prop:upper}. At $m=100$, for instance, the
+upper bound drops from $3.8581\ldots$ (\cref{tab:scalar}) to
+$3.8201\ldots$ (\cref{crem:tab:certified}). Part~I's bound is
+coefficientwise, \cref{crem:thm:main-upper} only spectral; see the next
+remark.
+\end{remark}
+
+\begin{remark}[What this comparison does not say]\label{crem:rem:not-quotient}
+The scalar polynomial is not asserted to be a denominator of $A_m$, and
+$\det(I-W_{V_m})$ is not asserted to equal $1-K_m$. The determinant identity
+\eqref{crem:eq:reset-det} belongs to the \emph{majorizing reset system}, not
+to the full endpoint system. Nor does the proof assert the coefficientwise
+inequality $A_m(x)\preceqc(1-K_m(x))^{-1}$; it is false
+(\cref{crem:sec:m2}). Our comparison is a spectral one, witnessed by a
+positive vector. These distinctions prevent a valid growth bound from being
+misread as a solution of state minimization or exact enumeration.
+\end{remark}
+
+\section{A uniform lower approximation from recoverable blocks}
+\label{crem:sec:blocks}
+The block construction itself is that of \cref{prop:lower} in Part~I.
+The additional ingredients of manuscript~04 are a component version of the lower
+bound, an estimate uniform in the cutoff, and its use with a cutoff growing
+with $m$.
+
+\subsection{Block and component lower bounds}
+Fix integers $1\le d<m$, and let $K_{m,d}$ and $s_{m,d}$ be as in
+\eqref{eq:K} and \cref{prop:lower}:
+\begin{equation}
+ K_{m,d}(x)=\sum_{k=1}^{m-d}c_{k,d}x^k,
+ \qquad K_{m,d}(s_{m,d})=1.
+ \label{crem:eq:block-root}
+\end{equation}
+The coefficient of $x$ is one, so a unique positive root exists.
+
+\begin{proposition}[Block and component lower bounds]\label{crem:prop:block-lower}
+For every $1\le d<m$,
+\begin{equation}
+ \frac1{1-K_{m,d}(x)}\preceqc A_m(x),
+ \qquad s_{m,d}^{-1}\le\lambda_U(m)\le\alpha_m<\beta_m.
+ \label{crem:eq:corridor}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The coefficientwise inequality is \cref{prop:lower}: skew sums of blocks
+ending at their maximum, with the boundary jump $k+j\le m$, and injectivity
+because the skew cuts recover the block boundaries. Manuscript~04 reproves it
+by the same argument.
+
+For the sharper component statement, restrict $W_{U_m}(x)$ to first
+thresholds $p\in\{d,\ldots,m-1\}$. For every $1\le k\le m-d$, the split
+target $m-k$ is in that subset and its coefficient satisfies
+$c_{k,p}\ge c_{k,d}$. Every row sum of this principal submatrix is at least
+$K_{m,d}(x)$. At $x=s_{m,d}$ its spectral radius is at least one. Principal
+comparison (\cref{crem:lem:positivity}(ii)) implies
+$\spr(W_{U_m}(s_{m,d}))\ge1$, so $r_U(m)\le s_{m,d}$ and
+$\lambda_U(m)\ge s_{m,d}^{-1}$. The remaining inequalities are
+\eqref{crem:eq:spectral-interface} and \cref{crem:thm:main-upper}.
+\end{proof}
+
+\subsection{First-entry counts and a uniform tail}
+The first-entry formula is \cref{lem:firstentry}:
+$h(k,j)=\frac{j}{k-1}\binom{2k-j-3}{k-2}$ for $1\le j<k$, with generating
+function \eqref{eq:h}. Manuscript~04 reproves it with the same slot
+decomposition and the same Lagrange inversion. Consequently
+$c_{k,d}=\sum_{j=1}^{\min(d,k-1)}h(k,j)$ for $k\ge2$, as in
+\eqref{eq:c-formula}.
+
+\begin{lemma}[Uniform deficiency-tail estimate]\label{crem:lem:uniform-tail}
+For all $d\ge1$ and $k\ge1$,
+\begin{equation}
+ 0\le C_{k-1}-c_{k,d}
+ \le\eps_d C_{k-1},
+ \qquad \eps_d=(d+2)2^{-d}.
+ \label{crem:eq:uniform-tail}
+\end{equation}
+Hence, whenever $1\le d<m$ and $\eps_d<1$,
+\begin{equation}
+ (1-\eps_d)K_{m-d}(x)\le K_{m,d}(x)\le K_{m-d}(x)
+ \quad(x\ge0).
+ \label{crem:eq:uniform-polynomial}
+\end{equation}
+The corresponding derivative inequalities also hold for $x\ge0$.
+\end{lemma}
+\begin{proof}
+There is nothing to prove if $k=1$ or $k\le d+1$. For the remaining cases,
+formula \eqref{eq:h} gives
+\begin{equation}
+ \frac{h(k,j)}{C_{k-2}}
+ =j\prod_{r=0}^{j-2}\frac{k-2-r}{2k-4-r}
+ \le\frac{j}{2^{j-1}}.
+ \label{crem:eq:h-product}
+\end{equation}
+The product is empty for $j=1$. Each displayed factor is at most $1/2$.
+For a missing deficiency $j\ge d+1\ge2$, we have $k\ge3$ and
+\[
+ \frac{C_{k-2}}{C_{k-1}}=\frac{k}{4k-6}\le\frac12.
+\]
+Thus $h(k,j)/C_{k-1}\le j2^{-j}$. Summing missing deficiencies and extending
+the tail to infinity gives
+\[
+ \frac{C_{k-1}-c_{k,d}}{C_{k-1}}
+ \le\sum_{j=d+1}^{\infty}\frac{j}{2^j}
+ =\frac{d+2}{2^d}.
+\]
+For the final equality, differentiate the finite-tail geometric sum or
+subtract its successive terms. Multiplying coefficientwise by $x^k$ and
+summing proves \eqref{crem:eq:uniform-polynomial}. Differentiation preserves
+a coefficientwise inequality between these nonnegative polynomials.
+\end{proof}
+
+The identity in \eqref{crem:eq:h-product} is Part~I's \eqref{eq:h-ratio};
+the inequality is new.
+
+\begin{remark}[Merge note: the uniform bound against Part~I's limit]
+\label{crem:rem:ad}
+By \eqref{eq:cd-tail} and $C_{k-1}4^{-k}\sim(4\sqrt\pi)^{-1}k^{-3/2}$, the
+missing fraction $1-c_{k,d}/C_{k-1}$ tends to
+$1-a_d=(d+2)2^{-(d+1)}=\eps_d/2$ as $k\to\infty$. The uniform bound
+$\eps_d$ of \cref{crem:lem:uniform-tail} therefore loses at most a factor two
+against the limit, the factor coming from $C_{k-2}/C_{k-1}\le\frac12$ where
+the limit is $\frac14$. This observation is the merge's, not the
+manuscript's.
+\end{remark}
+
+The role of uniformity is decisive. A fixed-$d$ asymptotic for $c_{k,d}$,
+such as \eqref{eq:cd-tail}, would not justify substituting $d=d(m)$.
+Inequality \eqref{crem:eq:uniform-tail} holds simultaneously for all $k,d$, so
+the growing cutoff used below requires no interchange of unproved uniform
+limits.
+
+\section{The truncated Catalan root at all orders}
+\label{crem:sec:scalar}
+The remaining analysis begins with the scalar root alone. Normalize its
+coefficients by
+\begin{equation}
+ b_k=C_{k-1}4^{-k},\qquad
+ \sum_{k\ge1}b_k=\frac12,\qquad
+ b_k=\frac1{4\sqrt\pi}k^{-3/2}\bigl(1+O(k^{-1})\bigr).
+ \label{crem:eq:bk}
+\end{equation}
+The last estimate follows from Stirling's formula. In particular,
+$b_k\le C_\ast k^{-3/2}$ with one absolute constant $C_\ast$. If
+\begin{equation}
+ t_m=m\log(4r_m),
+ \label{crem:eq:tm}
+\end{equation}
+then
+\begin{equation}
+ \sum_{k=1}^m b_ke^{t_mk/m}=1,
+ \qquad \beta_m=4e^{-t_m/m}.
+ \label{crem:eq:tilted-root}
+\end{equation}
+The tail is summable but has total mass only $1/2$. A positive tilt must
+supply the missing half. It does so in a thin layer near $k=m$.
+
+\subsection{A uniform endpoint expansion}
+For $a\in\R$ and $j\ge0$, write $(a)_0=1$ and $(a)_j=a(a+1)\cdots(a+j-1)$.
+
+\begin{lemma}[Tilted Catalan endpoint expansion]\label{crem:lem:watson}
+Fix $M>0$ and an integer $N\ge1$. Uniformly for
+\begin{equation}
+ t=\tfrac12\log m+\log\log m+s,\qquad |s|\le M,
+ \label{crem:eq:t-window}
+\end{equation}
+as $m\to\infty$,
+\begin{equation}
+ \sum_{k=1}^m b_ke^{tk/m}
+ =\frac12+\frac{e^t}{4\sqrt{\pi m}\,t}
+ \left(\sum_{j=0}^{N-1}\frac{(3/2)_j}{t^j}
+       +O_{M,N}(t^{-N})\right).
+ \label{crem:eq:watson}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Split the sum at $m/2$. For the lower half, the unweighted partial sum is
+$1/2+O(m^{-1/2})$. Since $e^u-1\le ue^u$ for $u\ge0$, its tilt increment is
+at most
+\begin{align*}
+ \sum_{k\le m/2}b_k(e^{tk/m}-1)
+ &\le \frac{C_\ast t}{m}e^{t/2}\sum_{k\le m/2}k^{-1/2}\\
+ &=O\!\left(\frac{te^{t/2}}{\sqrt m}\right)
+ =O_M\!\left(m^{-1/4}(\log m)^{3/2}\right).
+\end{align*}
+This is smaller than every fixed negative power of $t$. Thus the lower half
+contributes $1/2$ plus an error that can be absorbed into the remainder in
+\eqref{crem:eq:watson}.
+
+On the upper half, Stirling's estimate is uniform:
+\[
+ b_k=\frac1{4\sqrt\pi}k^{-3/2}(1+O(m^{-1})).
+\]
+A Riemann-sum comparison, using that $y^{-3/2}e^{ty}$ is increasing on
+$[1/2,1]$ for all sufficiently large $t$, gives
+\begin{align*}
+ \sum_{m/2<k\le m}b_ke^{tk/m}
+ &=\frac1{4\sqrt{\pi m}}
+   \int_{1/2}^1 y^{-3/2}e^{ty}\,\dd y
+   +O\!\left(\frac{e^t}{m^{3/2}}\right)\\
+ &=\frac{e^t}{4\sqrt{\pi m}\,t}
+   \int_0^{t/2}(1-v/t)^{-3/2}e^{-v}\,\dd v
+   +O\!\left(\frac{e^t}{m^{3/2}}\right).
+\end{align*}
+A possible half-integer lower endpoint changes only the same error term.
+For $0\le v\le t/2$, Taylor's theorem with a uniform remainder gives
+\[
+ (1-v/t)^{-3/2}
+ =\sum_{j=0}^{N-1}\frac{(3/2)_j}{j!}(v/t)^j
+   +O_N((v/t)^N).
+\]
+Integrating each monomial against $e^{-v}$ and extending its upper limit to
+infinity produces $j!$; the extension error is exponentially small in $t$.
+The integral is therefore $\sum_{j=0}^{N-1}(3/2)_jt^{-j}+O_N(t^{-N})$.
+
+In the window \eqref{crem:eq:t-window}, the prefactor $e^t/(\sqrt m\,t)$ is
+bounded above and below by positive constants depending on $M$. The relative
+Riemann error is $O(t/m)$, and all lower-half errors are smaller than any
+fixed $t^{-N}$. Combining the estimates proves the uniform expansion.
+\end{proof}
+
+\begin{corollary}[Scalar root location]\label{crem:cor:scalar-location}
+As $m\to\infty$,
+\begin{equation}
+ t_m=\tfrac12\log m+\log\log m+\tfrac12\log\pi+o(1).
+ \label{crem:eq:t-leading}
+\end{equation}
+In particular, $t_m=O(\log m)$, $e^{t_m}=O(\sqrt m\log m)$, and
+$r_m\to1/4$.
+\end{corollary}
+\begin{proof}
+For a fixed real $s$, the $N=1$ case of \cref{crem:lem:watson} gives
+\[
+ \sum_{k=1}^m b_k
+ \exp\!\left(\frac{k}{m}
+ [\tfrac12\log m+\log\log m+s]\right)
+ \longrightarrow \frac12+\frac{e^s}{2\sqrt\pi}.
+\]
+The limit equals one precisely at $s_0=\tfrac12\log\pi$. For every
+$\delta>0$, its values at $s_0-\delta$ and $s_0+\delta$ lie strictly on
+opposite sides of one. The finite sum is strictly increasing in $t$, so its
+root lies between those trial values for all sufficiently large $m$. Let
+$\delta\downarrow0$. The remaining assertions follow directly from
+\eqref{crem:eq:t-leading} and \eqref{crem:eq:tm}.
+\end{proof}
+
+\begin{proof}[Second proof (merge note, from Part~I)]
+Apply \cref{lem:tailroot} to $b_k=C_{k-1}4^{-k}$, $h=0$: then $B=\frac12$,
+$c=1/(4\sqrt\pi)$, and $\log\frac{1-B}{2c}=\log\sqrt\pi$, which is
+\eqref{crem:eq:t-leading}. Part~I applied the same lemma to the coefficients
+of $R_m$ ($B=\frac34$), which gave the lower endpoint of its window; the
+extra $x$ of $R_m$ alone accounts for the loss of $4\log2$ there, as
+$4\log\frac{1-3/4}{1-1/2}=-4\log2$.
+\end{proof}
+
+\begin{remark}[An immediate resolution using the earlier window]
+\label{crem:rem:immediate}
+Already \cref{crem:thm:main-upper,crem:cor:scalar-location} imply
+$\liminf E_m\ge2\log\pi$. Combined with the upper bound on $\limsup E_m$ in
+\eqref{eq:constant-window}, this closes Part~I's question. The next section
+proves a substantially stronger quantitative result and provides an
+independent lower argument rather than relying on that asymptotic window.
+\end{remark}
+
+\section{A logarithmically growing cutoff gives a sharp corridor}
+\label{crem:sec:quantitative}
+Take, for all sufficiently large $m$,
+\begin{equation}
+ d=d_m=\lceil\log_2m\rceil,
+ \qquad \eps_d=(d+2)2^{-d}=O(\log m/m).
+ \label{crem:eq:choice-d}
+\end{equation}
+In particular, $d<m$, $d=O(\log m)$, and $\eps_d<1$.
+
+\begin{lemma}[Value deficit and slope]\label{crem:lem:deficit-slope}
+At the scalar root $r_m$, with $d$ as in \eqref{crem:eq:choice-d},
+\begin{align}
+ 0\le1-K_{m,d}(r_m)
+    &=O\!\left(\frac{(\log m)^2}{m}\right),
+       \label{crem:eq:deficit}\\
+ K_{m,d}'(r_m)&\ge c_\ast m
+       \quad\text{for all sufficiently large }m,
+       \label{crem:eq:slope}
+\end{align}
+for an absolute constant $c_\ast>0$.
+\end{lemma}
+\begin{proof}
+Set $t=t_m$. The lost last $d$ terms of $K_m(r_m)$ satisfy
+\begin{align}
+ \Delta_m&:=K_m(r_m)-K_{m-d}(r_m)
+       =\sum_{k=m-d+1}^m b_ke^{tk/m}\notag\\
+ &\le C_\ast d(m-d)^{-3/2}e^t
+       =O\!\left(\frac{d\log m}{m}\right)
+       =O\!\left(\frac{(\log m)^2}{m}\right),
+ \label{crem:eq:last-d-tail}
+\end{align}
+using \cref{crem:cor:scalar-location}. Since $K_m(r_m)=1$,
+\cref{crem:lem:uniform-tail} gives
+\[
+ K_{m,d}(r_m)\ge(1-\eps_d)(1-\Delta_m),
+ \qquad 1-K_{m,d}(r_m)\le\eps_d+\Delta_m.
+\]
+This proves \eqref{crem:eq:deficit}.
+
+The lower-half estimate in the proof of \cref{crem:lem:watson}, now
+evaluated at $t_m$, shows
+\[
+ \sum_{k\le m/2}b_ke^{t_mk/m}\longrightarrow\frac12.
+\]
+The whole sum is one, and $\Delta_m\to0$. Consequently
+\begin{equation}
+ \sum_{m/2<k\le m-d}b_ke^{t_mk/m}\longrightarrow\frac12.
+ \label{crem:eq:upper-mass}
+\end{equation}
+Every term in this range has $k>m/2$, so
+\[
+ K_{m-d}'(r_m)
+ =\frac1{r_m}\sum_{k=1}^{m-d}k b_ke^{t_mk/m}
+ \ge\frac{m}{2r_m}
+       \sum_{m/2<k\le m-d}b_ke^{t_mk/m}.
+\]
+As $r_m\to1/4$, the right side is bounded below by a positive constant
+times $m$. The derivative version of \eqref{crem:eq:uniform-polynomial},
+together with $\eps_d\to0$, proves \eqref{crem:eq:slope}.
+\end{proof}
+
+\begin{theorem}[Quantitative scalar corridor]\label{crem:thm:corridor-quantitative}
+With $d=\lceil\log_2m\rceil$,
+\begin{equation}
+ 0\le s_{m,d}-r_m
+    =O\!\left(\frac{(\log m)^2}{m^2}\right),
+ \qquad
+ 0\le\beta_m-s_{m,d}^{-1}
+    =O\!\left(\frac{(\log m)^2}{m^2}\right).
+ \label{crem:eq:root-error}
+\end{equation}
+In particular, \eqref{crem:eq:main-quantitative} holds.
+\end{theorem}
+\begin{proof}
+Since $K_{m,d}\le K_m$, we have $s_{m,d}\ge r_m$. Its derivative is
+nondecreasing on the positive axis, since all coefficients are nonnegative.
+Writing $s=s_{m,d}$, integration or the mean-value inequality gives
+\[
+ 1-K_{m,d}(r_m)
+ =K_{m,d}(s)-K_{m,d}(r_m)
+ \ge K_{m,d}'(r_m)(s-r_m).
+\]
+Divide the estimate \eqref{crem:eq:deficit} by \eqref{crem:eq:slope} to
+obtain the first part of \eqref{crem:eq:root-error}. Because $s,r_m\ge1/4$,
+\[
+ 0\le r_m^{-1}-s^{-1}
+ =\frac{s-r_m}{r_ms}\le16(s-r_m),
+\]
+which proves the second part. Finally, use the entire chain
+\eqref{crem:eq:corridor}:
+\[
+ 0\le\beta_m-\alpha_m
+ \le\beta_m-\lambda_U(m)
+ \le\beta_m-s_{m,d}^{-1}.
+ \qedhere
+\]
+\end{proof}
+
+\begin{corollary}[The exact constant]\label{crem:cor:constant}
+The centered remainder of \cref{thm:window-main} satisfies $E_m\to2\log\pi$.
+Equivalently,
+\begin{equation}
+ 4-\alpha_m
+ =\frac{2\log m+4\log\log m+2\log\pi+o(1)}m.
+ \label{crem:eq:constant-final}
+\end{equation}
+\end{corollary}
+\begin{proof}
+By \cref{crem:thm:corridor-quantitative} and $\beta_m=4e^{-t_m/m}$,
+\begin{align}
+ m(4-\alpha_m)
+ &=4m(1-e^{-t_m/m})+O((\log m)^2/m)\notag\\
+ &=4t_m+O((\log m)^2/m).
+ \label{crem:eq:transfer}
+\end{align}
+Here Taylor's theorem applies since $t_m=O(\log m)$. Substitute
+\eqref{crem:eq:t-leading}. This proves \eqref{crem:eq:constant-final} and
+\cref{crem:thm:main-quantitative} in full.
+\end{proof}
+
+\begin{corollary}[A one-sided constraint on component competition]
+\label{crem:cor:component-gap}
+Regardless of which component dominates,
+\begin{equation}
+ 0\le\alpha_m-\lambda_U(m)
+   =\bigl(\lambda_V(m)-\lambda_U(m)\bigr)_+
+   =O\!\left(\frac{(\log m)^2}{m^2}\right).
+ \label{crem:eq:component-gap}
+\end{equation}
+\end{corollary}
+This is deliberately a one-sided conclusion. We have not proved a
+corresponding lower approximation for $\lambda_V(m)$ when it is below
+$\lambda_U(m)$, and do not claim an absolute bound on
+$|\lambda_V(m)-\lambda_U(m)|$ in that case. The result does show that
+whenever $V$ wins, its advantage is invisible to every inverse-logarithmic
+term in the scaled deficit.
+
+\section{Inverting the scalar expansion to every logarithmic order}
+\label{crem:sec:inversion}
+The quantitative corridor is what makes a scalar asymptotic expansion a
+statement about the actual permutation class. We now derive the
+coefficients, including their error interpretation.
+
+\subsection{Finite asymptotic equations, not a convergent series}
+Introduce the \emph{formal} power series
+\begin{equation}
+ \Bformal(w)=\sum_{j\ge0}(3/2)_j w^j.
+ \label{crem:eq:Bformal}
+\end{equation}
+Its coefficients grow factorially. The series has radius of convergence
+zero and is never evaluated as an ordinary convergent series at $w>0$. For
+each fixed $N\ge1$, instead use the finite polynomial in $1/t$
+\[
+ \Bformal_N(t)=\sum_{j=0}^{N-1}(3/2)_jt^{-j}.
+\]
+Substituting $t=t_m$ into \cref{crem:lem:watson} gives
+\begin{equation}
+ t_m-\log t_m+\log\Bformal_N(t_m)
+ =\tfrac12\log m+\log(2\sqrt\pi)+O_N(t_m^{-N}).
+ \label{crem:eq:finite-root-equation}
+\end{equation}
+Indeed the missing mass is $1/2$, so
+$e^{t_m}\Bformal_N(t_m)/t_m=2\sqrt{\pi m}\,(1+O_N(t_m^{-N}))$. The
+polynomial $\Bformal_N(t)$ is positive for $t>0$, and its logarithm is
+unambiguous.
+
+Formal logarithms are used below only as a finite coefficient-extraction
+device. To compute a coefficient of degree $j$, only coefficients through
+degree $j$ of \eqref{crem:eq:Bformal} are needed. Thus the divergent notation
+organizes an unlimited sequence of finite, justified asymptotic statements;
+it is not an analytic summation prescription.
+
+\subsection{A triangular recursion for all coefficients}
+\begin{proposition}[Coefficient recursion]\label{crem:prop:P-recursion}
+Set $\mathcal P_0$ aside and define $\mathcal P_j$ recursively as follows.
+At step $j\ge1$, put
+\[
+ T_{j-1}(u,z)=1+zu+\sum_{h=1}^{j-1}\mathcal P_h(z)u^{h+1},
+\]
+and define
+\begin{equation}
+ \mathcal P_j(z)=[u^j]\left\{
+  \log T_{j-1}(u,z)
+  -\log\Bformal\!\left(\frac{u}{T_{j-1}(u,z)}\right)
+ \right\}.
+ \label{crem:eq:P-recursion}
+\end{equation}
+These are well-defined rational polynomials of degree $j$, with leading
+coefficient $(-1)^{j+1}/j$. For every fixed $J\ge0$,
+\begin{equation}
+ t_m=\Lambda+z+\sum_{j=1}^{J}\frac{\mathcal P_j(z)}{\Lambda^j}
+ +O_J\!\left(\frac{(1+|z|)^{J+1}}{\Lambda^{J+1}}\right),
+ \label{crem:eq:t-allorders}
+\end{equation}
+with $\Lambda,z$ as in \eqref{crem:eq:Lz}.
+\end{proposition}
+\begin{proof}
+Write $u=1/\Lambda$ and seek $t=\Lambda T$, with
+\[
+ T=1+zu+\sum_{j=1}^{J}\mathcal P_j(z)u^{j+1}.
+\]
+Since $z=\log\Lambda+\log(2\sqrt\pi)$, substitution into the formal version
+of \eqref{crem:eq:finite-root-equation} leaves the residual
+\begin{equation}
+ \sum_{j=1}^{J}\mathcal P_j(z)u^j-\log T
+       +\log\Bformal(u/T).
+ \label{crem:eq:formal-residual}
+\end{equation}
+The coefficient of $u^j$ in the last two terms depends only on
+$\mathcal P_1,\ldots,\mathcal P_{j-1}$: $\mathcal P_j$ first enters $T$ at
+order $u^{j+1}$. Cancelling the coefficient of $u^j$ therefore gives exactly
+\eqref{crem:eq:P-recursion}, proving existence and uniqueness of the
+recursion.
+
+Induction shows $\deg\mathcal P_j\le j$. The only term of degree $j$ in $z$
+at order $u^j$ comes from $\log(1+zu)$ and equals $(-1)^{j+1}z^j/j$. Terms
+involving an earlier $\mathcal P_hu^{h+1}$ spend at least one more power of
+$u$ than their possible degree in $z$; terms from $\log\Bformal(u/T)$ have
+the same strict deficit. Thus the degree is exactly $j$ and its leading
+coefficient has the stated value.
+
+To justify the error, fix $J$ and take $N\ge J+2$ in the finite equation
+\eqref{crem:eq:finite-root-equation}. For the trial value $t_*$ obtained by
+truncating \eqref{crem:eq:t-allorders}, we have
+$T=1+O_J((1+|z|)/\Lambda)$ and $z=O(\log\Lambda)$. Finite Taylor expansions
+of the logarithms, with remainders uniform for $|T-1|\le1/2$, turn the formal
+cancellations into the numerical residual estimate
+\[
+ t_*-\log t_*+\log\Bformal_N(t_*)-\Lambda-\log(2\sqrt\pi)
+ =O_J((1+|z|)^{J+1}\Lambda^{-J-1}).
+\]
+Both $t_*$ and $t_m$ lie in a window with bounded shift of the form
+\eqref{crem:eq:t-window}, by \cref{crem:cor:scalar-location} and
+$\sum_{j\le J}\mathcal P_j(z)\Lambda^{-j}=o(1)$. The derivative of
+$t-\log t+\log\Bformal_N(t)$ is
+\[
+ 1-\frac1t+O_N(t^{-2}),
+\]
+so it is at least $1/2$ throughout the interval between them for large $m$.
+Apply the mean-value theorem to the residuals of $t_*$ and $t_m$. The
+$O_N(t_m^{-N})$ term is smaller than the claimed bound. This proves
+\eqref{crem:eq:t-allorders}.
+\end{proof}
+
+The first four polynomials are
+\begin{align}
+ \mathcal P_1(z)&=z-\frac32,\notag\\
+ \mathcal P_2(z)&=-\frac12z^2+\frac52z-\frac{33}{8},\notag\\
+ \mathcal P_3(z)&=\frac13z^3-3z^2+\frac{43}{4}z-15,\notag\\
+ \mathcal P_4(z)&=-\frac14z^4+\frac{10}{3}z^3-\frac{153}{8}z^2
+              +\frac{223}{4}z-\frac{4461}{64}.
+ \label{crem:eq:P-four}
+\end{align}
+For an independent algebraic check, the formal logarithm begins
+\begin{equation}
+ \log\Bformal(w)=\frac32w+\frac{21}{8}w^2
+                 +\frac{69}{8}w^3+\frac{2529}{64}w^4+O(w^5).
+ \label{crem:eq:logB}
+\end{equation}
+The bundled symbolic verifier constructs the polynomials from the recursion
+and confirms that \eqref{crem:eq:formal-residual} vanishes through degree
+four using exact rational polynomial arithmetic.
+
+\subsection{Transfer to the true growth constant}
+\begin{proof}[Proof of \cref{crem:thm:main-allorders}]
+Equation \eqref{crem:eq:transfer} gives
+$m(4-\alpha_m)=4t_m+O((\log m)^2/m)$. For each fixed $J$, this error is
+smaller than every fixed power of $1/\log m$, and hence is absorbed by the
+remainder in \eqref{crem:eq:t-allorders}. Multiply that expansion by four.
+The same proof applies to $\lambda_U(m)$ by
+\eqref{crem:eq:main-quantitative}. For $\beta_m$, the direct Taylor
+expansion of $4e^{-t_m/m}$ supplies the transfer.
+\end{proof}
+
+With $z=\log\log m+\frac12\log\pi$, the first three corrections can also be
+written in powers of $1/\log m$ (the manuscript abbreviates $\log m$ as $H$,
+which Part~II avoids):
+\begin{align}
+ m(4-\alpha_m)
+ ={}&2\log m+4\log\log m+2\log\pi
+       +\frac{8z-12}{\log m}\notag\\
+ &+\frac{-8z^2+40z-66}{(\log m)^2}\notag\\
+ &+\frac{\frac{32}{3}z^3-96z^2+344z-480}{(\log m)^3}
+       +O\!\left(\frac{(1+|\log\log m|)^4}{(\log m)^4}\right).
+ \label{crem:eq:explicit-expansion}
+\end{align}
+The assertion is asymptotic for each fixed truncation order. It does not
+promise that adding another term improves a numerical approximation at a
+particular small or moderate value of $m$.
+
+\subsection{Two different error scales}
+There are two conceptually distinct approximations. The scalar surrogate
+$\beta_m$ differs from $\alpha_m$ by at most order $(\log m)^2/m^2$. A fixed
+truncation of the logarithmic expansion generally has a much larger error,
+of order a power of $1/\log m$ after multiplying the growth deficit by $m$.
+Thus a scalar root can be numerically extremely accurate while its first few
+asymptotic terms are still inaccurate.
+
+This also explains the component issue. The proof does not need to decide
+whether $\alpha_m=\lambda_U(m)$ or $\lambda_V(m)$. When $V$ is dominant,
+\cref{crem:cor:component-gap} confines its extra growth to a scale smaller
+than all the terms in \eqref{crem:eq:explicit-expansion}. A calculation
+retaining only those terms has discarded the very information needed to
+settle that component ordering.
+
+\section{Exact checks and numerical evidence}
+\label{crem:sec:verification}
+The universal results above are proved analytically. The companion
+computations have three separate roles: exact checks of finite algebra and
+combinatorics, exact root enclosures in finite examples, and numerical
+illustrations. They are deliberately not merged into a single ambiguous
+notion of verification. File names below are the shipped ones; the scripts
+themselves still read and write their delivered names, so they are rerun on
+a copy (\cref{crem:sec:reproduce}).
+
+\subsection{Exact finite checks}
+The exact verifier, the standard-library program
+\path{code/02-centered-remainder-verify.py}, uses integers and
+\texttt{fractions.Fraction}; it needs no floating-point library. Its successful run is recorded in
+\path{data/02-centered-remainder-verification_report.json}.
+\begin{table}[htbp]
+\centering\small
+\caption{Executed exact checks (manuscript~04). Finite ranges do not replace
+the all-$m$ proofs.}
+\label{crem:tab:exact-checks}
+\begin{tabular}{p{.61\linewidth}p{.29\linewidth}}
+\toprule
+Check & Executed range or count\\
+\midrule
+Direct triple-definition avoidance versus recursive Catalan generation
+ & All permutations for $0\le n\le7$\\
+First-entry formula against explicit maximum-ending blocks & 55 counts, $1\le k\le10$\\
+Actual $V$-row polynomial domination by the Catalan witness & 4,930 rows, $2\le m\le30$\\
+Uniform deficiency-tail inequality & 9,000 pairs, $k\le300$, $d\le30$\\
+Restricted $U$-row coefficient comparisons & 67,425 comparisons, $m\le30$\\
+Exact scalar-root corridors & Five $(m,d)$ pairs\\
+\bottomrule
+\end{tabular}
+\end{table}
+The row check verifies coefficientwise that $H_q-(W_{V_m}v)_{p,q}-(1-K_m)$
+has nonnegative coefficients. This is stronger than testing the inequality
+at a list of decimal values of $x$. The tail check clears the denominator
+$2^d$ and verifies an integer inequality. The direct avoidance test provides
+a separate combinatorial check of the recursive generator before its blocks
+are used to test the first-entry formula. The first two rows repeat, with
+independent code and the same ranges, checks of Part~I's verifier
+(\cref{sec:computation}); the other four are new.
+
+The symbolic program \path{code/02-centered-remainder-verify_expansion.py}
+uses SymPy but no floating-point coefficients. It verifies
+\eqref{crem:eq:P-four}, \eqref{crem:eq:logB}, and the vanishing residual
+through degree four. Its output is
+\path{data/02-centered-remainder-expansion_verification.json}. Symbolic
+cancellation proves these finite coefficient identities, not the analytic
+error estimate; that estimate is the content of
+\cref{crem:lem:watson,crem:prop:P-recursion}.
+
+\subsection{Certified finite corridors}
+For a positive polynomial $P$ with zero constant term, exact bisection
+encloses the root of $P(x)=1$ by fractions $\ell,u$ satisfying
+$P(\ell)\le1\le P(u)$. Apply this separately to $K_m$ and $K_{m,d}$. If the
+enclosures are $[\ell_r,u_r]$ and $[\ell_s,u_s]$, then
+\begin{equation}
+ \frac1{u_s}\le\alpha_m\le\frac1{\ell_r}.
+ \label{crem:eq:certified-corridor}
+\end{equation}
+The rational certificate file
+\path{data/02-centered-remainder-rational_certificates.json} retains the full
+fractions and can be regenerated by the exact verifier. The following
+decimal endpoints are rounded \emph{outwards} from those fractions, not
+nearest-rounded approximations to unknown values of $\alpha_m$.
+\begin{table}[htbp]
+\centering\small
+\caption{Rigorous finite intervals from exact scalar bisection.}
+\label{crem:tab:certified}
+\begin{tabular}{rrrr}
+\toprule
+$m$ & $d$ & Lower endpoint for $\alpha_m$ & Upper endpoint for $\alpha_m$\\
+\midrule
+5 &1 &2.0000000000 &2.4580325859\\
+10 &2 &2.7001330054 &2.9828910906\\
+20 &3 &3.2335773659 &3.3677623965\\
+50 &5 &3.6481708456 &3.6845734707\\
+100 &7 &3.8074760932 &3.8201232724\\
+\bottomrule
+\end{tabular}
+\end{table}
+These intervals are not advertised as optimal small-$m$ estimates. Their
+purpose is to provide simple, independently checkable examples of the new
+all-$m$ scalar corridor without computing a large characteristic polynomial.
+For $m\le20$, Part~I's rational Perron certificates (\cref{sec:computation})
+are much sharper.
+
+\subsection{Floating-point component and large-bound calculations}
+The separate program \path{code/02-centered-remainder-compute.py} evaluates
+sparse component matrices and scalar roots. Its component values reproduce
+the known small-bound pattern (compare \cref{tab:growth}) and illustrate the
+new upper bound.
+\begin{table}[htbp]
+\centering\small
+\caption{Numerical growth rates; displayed digits are not interval
+certificates. The source file
+\texttt{data/02-centered-remainder-component\_numerics.csv} also has a row
+for $m=30$.}
+\label{crem:tab:components-numerical}
+\begin{tabular}{rrrrr}
+\toprule
+$m$ & $\lambda_U(m)$ & $\lambda_V(m)$ & $\alpha_m$ & $\beta_m$\\
+\midrule
+2 &1.465571232&1.000000000&1.465571232&1.618033989\\
+3 &1.826515772&1.691402554&1.826515772&2.000000000\\
+4 &2.100456128&2.091476748&2.100456128&2.263408655\\
+5 &2.312119493&2.351509000&2.351509000&2.458032586\\
+10&2.902174743&2.952689154&2.952689154&2.982891091\\
+20&3.333400105&3.356795518&3.356795518&3.367762396\\
+50&3.675866778&3.681914231&3.681914231&3.684573471\\
+\bottomrule
+\end{tabular}
+\end{table}
+For larger $m$, no matrix eigensolver is needed to evaluate the scalar
+corridor. Normalized coefficients $b_k$ are generated by
+\[
+ b_1=\frac14,\qquad \frac{b_{k+1}}{b_k}=\frac{2k-1}{2(k+1)}.
+\]
+Solving for $t=m\log(4x)$ avoids subtracting a tiny root displacement from
+$1/4$. The block coefficients are also normalized, using the consecutive
+first-deficiency ratio obtained from \eqref{eq:h}.
+\begin{table}[htbp]
+\centering\small
+\caption{Floating-point evaluations with $d=\lceil\log_2m\rceil$. The
+mathematical endpoints are rigorous bounds; these nearest-rounded numerical
+evaluations are not themselves certified intervals. From
+\texttt{data/02-centered-remainder-scalar\_numerics.csv} (63 values of $m$).}
+\label{crem:tab:large-m}
+\begin{tabular}{rrrrr}
+\toprule
+$m$ &$d$ &$s_{m,d}^{-1}$ &$\beta_m$ & Corridor width\\
+\midrule
+$10^2$&7 &3.807476093297&3.820123272395&$1.265\cdot10^{-2}$\\
+$10^3$&10&3.975171751563&3.975423985146&$2.522\cdot10^{-4}$\\
+$10^4$&14&3.996950887245&3.996955062448&$4.175\cdot10^{-6}$\\
+$10^5$&17&3.999640264705&3.999640325443&$6.074\cdot10^{-8}$\\
+$10^6$&20&3.999958715503&3.999958716333&$8.301\cdot10^{-10}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\linewidth]{figures/02-centered-remainder-remainder_corridor.pdf}
+\caption{Numerical evaluations of the lower and upper bounds for $E_m$, not
+direct evaluations of the unknown large-$m$ component maximum. The dotted
+line is the proved limiting constant. The asymptotic bounds need not be
+monotone, and the visible range has not reached the limit. (Manuscript~04's
+figure; compare \cref{fig:remainder}, whose bounds are Part~I's.)}
+\label{crem:fig:remainder}
+\end{figure}
+At $m=10^6$, the two numerical bounds for $E_m$ are approximately $3.149478$
+and $3.150308$, although $2\log\pi\approx2.289460$. This is compatible with
+the theorem: the leading correction to the constant is $(8z-12)/\log m$,
+which decays very slowly. A close upper and lower corridor is not evidence
+that its center is already near its limit.
+
+\begin{remark}[Merge note: the numerics are not evidence for the value of
+the limit]\label{crem:rem:numerics-not-evidence}
+The corridor in \cref{crem:fig:remainder} sits about $0.86$ above
+$2\log\pi$ at $m=10^6$, and its lower endpoint is not even monotone in the
+computed range: it rises to about $3.168$ near $m=73{,}920$ and then
+decreases slowly. At $m=10^6$ the first correction term $(8z-12)/\log m$ of
+\eqref{crem:eq:explicit-expansion} is about $0.983$, and the three displayed
+corrections together give $2\log\pi+0.983-0.104-0.005\approx3.164$, within
+$0.015$ of the corridor. That agreement shows that the computations are
+consistent with the inverse-logarithmic corrections. It is \emph{not}
+evidence for the value $2\log\pi$ of the limit: no computation in the range
+$m\le10^6$ distinguishes that constant from nearby ones, and a slowly
+drifting corridor centred near $3.15$ would look the same whatever the limit
+were. The value $2\log\pi$ rests on the proofs of
+\cref{crem:sec:renewal,crem:sec:blocks,crem:sec:scalar,crem:sec:quantitative}
+alone. The decimals quoted in this remark were computed for the merge from
+\path{data/02-centered-remainder-scalar_numerics.csv}.
+\end{remark}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\linewidth]{figures/02-centered-remainder-corridor_width.pdf}
+\caption{The numerical width $\beta_m-s_{m,d}^{-1}$ and the comparison scale
+$(\log m)^2/m^2$. The dashed curve has coefficient one solely for scale
+comparison; no claim is made that it is a finite-$m$ upper bound or the
+optimal asymptotic equivalent.}
+\label{crem:fig:width}
+\end{figure}
+The computations do not estimate an exact leading constant for the scalar
+defect, certify component ordering beyond the tested values, or validate an
+infinite asymptotic expansion by numerical fitting.
+
+\section{A complete small example and a useful non-implication}
+\label{crem:sec:m2}
+At $m=2$, order the $U$ states by $p=0,1$, and the $V$ states as
+$(1,0),(0,1)$. Then
+\[
+ W_{U_2}(x)=\begin{pmatrix}0&x\\x^2&x\end{pmatrix},
+ \qquad
+ W_{V_2}(x)=\begin{pmatrix}0&x\\x&0\end{pmatrix}.
+\]
+Thus $\lambda_U(2)$ is the positive root of $\lambda^3-\lambda^2-1=0$, while
+$\lambda_V(2)=1$ (the matrix $W_{U_2}$ also appears in the proof of
+\cref{thm:strict-main}). The scalar polynomial is $K_2(x)=x+x^2$, and
+$\beta_2=(1+\sqrt5)/2$.
+
+The last-threshold vector is $v=(1,1+x)^{\mathsf T}$. At the root
+$K_2(r_2)=1$,
+\[
+ W_{V_2}(r_2)v=
+ \begin{pmatrix}r_2+r_2^2\\r_2\end{pmatrix}
+ =\begin{pmatrix}1\\r_2\end{pmatrix}
+ <_{\mathrm{some}}\begin{pmatrix}1\\1+r_2\end{pmatrix}=v,
+\]
+where $<_{\mathrm{some}}$ means coordinatewise inequality with at least one
+strict coordinate. The separate reset comparator of \cref{crem:lem:reset} is
+\[
+ N(x)=\begin{pmatrix}0&x\\x&x\end{pmatrix},
+ \qquad \det(I-N(x))=1-x-x^2.
+\]
+This differs from $\det(I-W_{V_2}(x))=1-x^2$, illustrating exactly why a
+spectral comparison is not an equality of state systems.
+
+There is also an immediate counterexample to the tempting coefficientwise
+interpretation. For length three and $m=2$, every $132$-avoider meets the
+adjacency bound, so $[x^3]A_2(x)=C_3=5$ (\cref{tab:counts}). But
+\[
+ [x^3]\frac1{1-K_2(x)}
+ =[x^3]\frac1{1-x-x^2}=3.
+\]
+The upper bound on exponential growth is valid even though this proposed
+coefficientwise majorant is false. This example is a useful diagnostic when
+transporting the renewal argument to another combinatorial class.
+
+\section{Further research questions and proposed approaches}
+\label{crem:sec:future}
+The exact constant is no longer the first obstruction. The quantitative
+corridor changes which questions are mathematically distinguishable and
+which tools are likely to be useful. The second question below is Part~I's
+first open question (\cref{sec:remaining}), now constrained by
+\cref{crem:cor:component-gap}; the eighth continues Part~I's remark on
+minimal recurrence orders and denominators.
+
+\subsection{The first term beyond scalar universality}
+Determine the true order and leading behavior of $\beta_m-\alpha_m$. Our
+upper bound is $O((\log m)^2/m^2)$, obtained by discarding a logarithmic
+number of terminal block lengths and controlling a deficiency tail
+uniformly. Those losses need not be optimal. A sharper approach would keep
+the compatibility between a block length and the next first deficiency
+rather than impose a single worst-case cutoff. A small matrix of deficiency
+classes, with a positive-vector comparison analogous to
+\cref{crem:lem:V-vector}, is a concrete candidate. No asymptotic equivalent
+for this defect is asserted here.
+
+\subsection{The eventual ordering of the two components}
+Resolve whether $\lambda_V(m)>\lambda_U(m)$ for every $m\ge5$, the ordering
+suggested by finite computations and related to Problem P3 in
+\cite{MayamaAkita}. By \cref{crem:cor:component-gap}, a proof cannot be
+obtained merely by comparing their shared inverse-logarithmic expansion with
+the scalar root. It must detect finer endpoint losses or construct a
+comparison preserving more information than the present supersolution. One
+possibility is to compare first-return operators after isolating the
+large-threshold states, where long blocks are compatible with nearly all
+first entries.
+
+\subsection{The geometry of near-critical Perron vectors}
+Describe the positive eigenvectors of $W_{U_m}$ and $W_{V_m}$ at their
+critical roots as $m\to\infty$. The scalar tilted mass is concentrated in a
+layer of width about $m/t_m$ near the maximal block length, while the chosen
+cutoff is only of order $\log m$. A useful question is whether endpoint
+coordinates admit a scaling limit connecting these two regimes. Such a limit
+could explain the loss of the scalar upper bound and supply an analytic
+route to the sign of the component gap. The present test vector is a
+supersolution, not a proved approximation to the true eigenvector.
+
+\subsection{Poles, amplitudes, and a uniform spectral gap}
+For each fixed $m$, determine when the dominant pole of $A_m$ is simple and
+obtain a usable expression for the leading amplitude. An equality of
+component rates could interact with paths between components and alter pole
+order. Our argument identifies only their maximal exponential rate. A
+uniform analysis of subdominant singularities would be needed to turn
+fixed-$m$ spectral information into estimates with useful error constants as
+$m$ grows. This is distinct from the scalar root's own simple zero, which
+follows immediately from $K_m'(r_m)>0$.
+
+\subsection{Joint growth of length and adjacency bound}
+Study $a_n^{(m(n))}/C_n$ when $m=m(n)$ grows with $n$. The fixed-$m$ limit
+used here is not automatically uniform, so substituting $m(n)$ into
+$\alpha_m^n$ is not justified. Candidate regimes should compare the
+exponential penalty $n\log(4/\alpha_m)$ with the finite-state mixing scale
+and the Catalan polynomial factor. A satisfactory result would establish an
+explicit range of uniformity before proposing a transition law. The identity
+$a_n^{(m)}=C_n$ when $m\ge n-1$ provides an exact boundary condition for such
+a theory.
+
+\subsection{Renewal comparisons for other constrained tree classes}
+The reset identity \cref{crem:lem:reset} is not specifically Catalan. It
+applies whenever a monotone threshold is lowered by weighted steps and
+restored by a reset. Identify other pattern-avoidance or tree-enumeration
+problems where the associated renewal sequence is explicitly controlled. If
+a truncated scalar coefficient law has a summable power tail, an analogous
+endpoint tilt should be investigated. The necessary research task is to
+prove a matching combinatorial lower construction; a scalar majorant alone
+does not make its asymptotic constant universal.
+
+\subsection{Weighted statistics and multivariate perturbations}
+Refine the endpoint recurrence with variables recording descents, records,
+or block statistics, in the direction of Problem P4 of \cite{MayamaAkita}.
+The central question is whether a positive last-threshold witness persists
+under a parameter perturbation. A successful extension might permit
+derivative bounds for a weighted growth rate and limit laws at fixed $m$.
+Positivity and irreducibility must be checked in the perturbed system;
+formal differentiation of an unproved multivariate analogue of $K_m$ would
+be insufficient.
+
+\subsection{State minimization versus a spectral majorant}
+Investigate whether the renewal witness can guide an exact reduction of the
+endpoint system without confusing domination with equality. Problems P1 and
+P2 in \cite{MayamaAkita} concern issues such as state complexity and
+rational denominators. Our $m$-state reset comparator has determinant
+$1-K_m$, but it forgets first-endpoint compatibility. One concrete goal is a
+characterization of the lost information as a correction operator of small
+rank or controlled support. An exact operator identity would be a
+substantive advance beyond the present scalar comparison.
+
+\subsection{Certified computation and formalization}
+Build an adaptive exact or interval algorithm choosing $d$ to meet a
+requested error tolerance, using $K_m$ and $K_{m,d}$ directly. This would
+avoid large component determinants and would certify large-$m$ growth
+intervals with clear cost accounting. For formalization, the finite renewal
+polynomial identity, the spectral supersolution argument, the skew-cut
+injection, and the uniform deficiency-tail inequality are natural first
+targets. The analytic tail splitting and all-orders inversion can then be
+formalized as separate lemmas with explicit uniform quantifiers. None of
+this formalization has been started.
+
+\section{Proof boundaries, reproducibility and provenance}
+\label{crem:sec:audit}
+
+\subsection{What the manuscript has established}
+The proof route can be read as a dependency chain:
+\[
+ \text{endpoint system}
+ \ \Longrightarrow\ \alpha_m<\beta_m
+ \ \Longrightarrow\ \text{sharp scalar corridor}
+ \ \Longrightarrow\ \text{exact constant and all orders}.
+\]
+The lower arrow uses both recoverable skew blocks and the uniform
+first-entry tail; the analytic arrow uses the finite endpoint expansion with
+its stated remainder. No repository assertion about strict monotonicity is
+needed for the new theorems: \cref{thm:strict-main} is not used. The
+finite-state growth interface is proved in Part~I and was rederived in the
+manuscript, so it is also not being accepted solely on the authority of a
+software claim.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Trust and scope ledger of Part~II.}
+\label{crem:tab:ledger}
+\begin{tabular}{p{.47\linewidth}p{.43\linewidth}}
+\toprule
+Statement or artifact & Validation status\\
+\midrule
+All-$m$ upper bound and asymptotic theorems & Written mathematical proofs here\\
+Finite row, block, and tail tests & Executed exact integer/rational checks\\
+First four inverse-log polynomials & Executed exact symbolic checks\\
+Large-$m$ numerical figures and component table & Floating-point illustrations only\\
+New Lean or Rocq theorem declarations & None supplied or claimed\\
+External peer review or exhaustive novelty verification & Not performed\\
+Component ordering, optimal scalar defect, joint limits & Open directions (\cref{crem:sec:future})\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Reproducing Part~II's computations}
+\label{crem:sec:reproduce}
+Part~II's files are
+\begin{lstlisting}
+code/02-centered-remainder-model.py         Exact Catalan, endpoint, and block objects
+code/02-centered-remainder-verify.py        Standard-library exact verification
+code/02-centered-remainder-verify_expansion.py  Exact symbolic coefficient check
+code/02-centered-remainder-compute.py       Floating-point numerical illustrations
+code/02-centered-remainder-plot_results.py  The two figures from the CSV data
+data/02-centered-remainder-*                Check reports, rational certificates,
+                                            CSVs, environment, requirements,
+                                            records of the delivered PDF
+figures/02-centered-remainder-*.pdf         The two figures of this part
+\end{lstlisting}
+The scripts are shipped byte-identical to the delivery and still use the
+delivered names. They write
+\begin{lstlisting}
+data/verification_report.json    data/rational_certificates.json
+data/expansion_verification.json data/scalar_numerics.csv
+data/component_numerics.csv      figures/remainder_corridor.{pdf,png}
+                                 figures/corridor_width.{pdf,png}
+\end{lstlisting}
+and the verifier and the numerical program execute
+\texttt{from model import}. Run in place, that import would load Part~I's
+different \texttt{code/model.py} and fail with \texttt{ImportError}, and the
+outputs would land beside Part~I's unprefixed files. The report's README gives a
+recipe that restores the delivered layout in a scratch copy. There, the exact
+checks need Python~3.10 or newer and no third-party packages
+(\texttt{python code/verify.py}; do not use \texttt{-O}, the verifier uses
+assertions); the symbolic check needs SymPy; the numerical programs need
+NumPy, SciPy and, for the plots, Matplotlib (versions in
+\path{data/02-centered-remainder-environment.json}). A POSIX
+\texttt{OPENBLAS\_NUM\_THREADS=1} prefix on the numerical command is optional;
+it limits numerical-library threading rather than changing any mathematical
+assertion. The retained figures suffice to rebuild the article without
+rerunning any computation.
+
+\subsection{Points checked in the written argument}
+The sharp upper bound is not obtained by dropping a legitimate append term:
+that term is incorporated by the last-threshold vector. The first-entry tail
+estimate is uniform in both parameters, which permits a growing cutoff. The
+conversion from a polynomial value deficit to a root displacement uses a
+proved derivative lower bound, not a heuristic linearization. The order of
+inequalities is preserved when reciprocal roots become growth bounds and
+when growth bounds become deficit bounds. Finally, the factorially divergent
+formal series is used only to define finite coefficient calculations, while
+each analytic statement has its own fixed-order remainder.
+
+These checks identify the parts of the proof most worth independent
+scrutiny. They do not replace that scrutiny, but they make its targets
+explicit and keep finite experiments distinct from universal arguments.
+
+\subsection{Repository provenance and novelty boundary}
+\label{crem:sec:provenance}
+The manuscript inspected Part~I at the repository-relative path
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+enumerative-combinatorics/\\
+adjacency-bounded-132-avoiders/article.tex
+\end{quote}
+at the ProveIt commit
+\begin{quote}\small\ttfamily
+6c9175a54bcaad3bfc2d416257d2b7d3dff2c1e0
+\end{quote}
+where its Git blob identifier was
+\begin{quote}\small\ttfamily
+5ec75ee48df94b6d12804a26ba109c08564df5c7
+\end{quote}
+Its section ``What is resolved, and what remains'' (\cref{sec:remaining})
+explicitly asks whether $E_m$ converges and describes the unresolved
+constant window; the opening theorem statements specify the window in
+\eqref{eq:constant-window}. The finite endpoint system and lower block
+construction used here are attributed to their prior sources, with
+independent proofs supplied in the manuscript.
+
+The manuscript's primary-paper check used the arXiv version-one records and
+HTML sources for \cite{Nadler,MayamaAkita}, accessed on September 28, 2026.
+The inspected materials did not contain the last-threshold supersolution,
+the sharp scalar corridor, or the exact constant proved here. This is a
+bounded provenance statement. It does not certify the absence of an
+independent unpublished argument, a later repository change, or an
+uninspected paper.
+
+\subsection{Where the merge had to choose}
+\label{crem:sec:merge}
+\begin{itemize}
+\item \emph{Placement.} Part~II follows Part~I's last main section and
+ precedes Part~I's appendices, which contain no numbered equations, tables or
+ figures; no number of Part~I changed.
+\item \emph{Duplicates.} The endpoint recurrence, the component
+ classification and spectral interface (the manuscript's Section~2 and
+ Appendix~A), the first-entry lemma and the injective skew-block
+ construction are printed once, in Part~I, and credited in
+ \cref{crem:sec:finite,crem:sec:blocks}. The manuscript's different argument
+ for $\lambda_U(m)>1$ is kept as a second proof. The second proof of
+ \cref{crem:cor:scalar-location} and \cref{crem:rem:vs-upper,crem:rem:ad,crem:rem:numerics-not-evidence}
+ are the merge's.
+\item \emph{Notation.} $L\to\Lambda$, $P_j\to\mathcal P_j$,
+ $B_N\to\Bformal_N$, $T_m\to\Delta_m$, $C,c\to C_\ast,c_\ast$ (absolute
+ constants), $W_U,W_V\to W_{U_m},W_{V_m}$, and $H=\log m$ written out
+ (\cref{crem:tab:notation}). No normalization changed.
+\item \emph{References to Part~I.} The manuscript cites Part~I as a
+ repository report; here those citations are internal cross-references, and
+ the manuscript's bibliography entries for \cite{Nadler,MayamaAkita} are
+ Part~I's.
+\item \emph{Reproduction.} The manuscript's archive listing and commands are
+ replaced by the shipped names and the copy recipe
+ (\cref{crem:sec:reproduce}); its \texttt{article.tex}, \texttt{article.pdf},
+ \texttt{README.md} and the PNG versions of its figures are not shipped.
+\item \emph{Figures.} In the write phase the manuscript's two figure PDFs
+ were copied byte-identically into \texttt{figures/}, under their delivered
+ names with the prefix \path{02-centered-remainder-}
+ (\cref{crem:fig:remainder,crem:fig:width}).
+\item \emph{Stale sentences in Part~I.} The abstract, \cref{thm:window-main},
+ the remark after \cref{thm:window-main}'s proof, \cref{sec:remaining} and
+ \cref{app:reproduction} carry dated pointers to Part~II; their original
+ wording is kept.
+\end{itemize}
+
+\clearpage
+\phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
 \section{Exact small-bound algebra}
 \label{app:algebra}
@@ -1179,6 +2701,9 @@ data/symbolic_certificate_m*.json  Polynomial state certificates, m = 1..4
 data/generating_functions.json     Reduced rational functions, m = 1..4
 data/large_m_scalar_bounds.csv     Scalar evaluations through m = 1000000
 \end{lstlisting}
+[Added 28 September 2026, batch 38: Part~II's code, data and figures carry
+the prefix \path{02-centered-remainder-} and are listed in
+\cref{crem:sec:reproduce}.]
 
 The primary reproducibility command needs no third-party Python packages:
 \begin{lstlisting}
