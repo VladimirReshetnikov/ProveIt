@@ -11,6 +11,7 @@
 \usepackage{hyperref}
 \usepackage{bookmark}
 \usepackage{xurl}
+\usepackage{listings}% Part II (batch 44)
 \definecolor{inkblue}{HTML}{183D59}
 \definecolor{linkblue}{HTML}{215F87}
 \hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
@@ -51,6 +52,12 @@
 \newcommand{\dd}{\mathrm d}
 \newcommand{\wtag}{\textup{[write]}}% text added when the report was written into ProveIt
 \newcommand{\rpath}[1]{\nolinkurl{#1}}
+% Part II (batch 44, manuscript 04)
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\Dcap}{\mathsf D}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!20},xleftmargin=5pt,xrightmargin=5pt}
 
 \begin{document}
 \hypersetup{pageanchor=false}
@@ -107,7 +114,9 @@ formalized; labels carry the prefix \texttt{wkr:}. The weighted
 determinant identity and the collision mechanism are the project's own
 (Section~\ref{wkr:sub:project}); Gao's three-dimensional map has
 \emph{geometric} degree four (Section~\ref{wkr:sub:gao}). Provenance:
-Appendix~\ref{wkr:app:report}.
+Appendix~\ref{wkr:app:report}. [Added 29 September 2026, batch~44:]
+Part~II (Section~\ref{wkr:as:sec:provenance}, labels \texttt{wkr:as:},
+not formalized) answers Section~\ref{wkr:as:q:slope}.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
@@ -858,6 +867,11 @@ The first invariant coefficient is the important distinction here. The
 coefficient of $v$ in $r$ is still required to be a scalar, not a
 nonconstant polynomial in $t$. No assertion is made for
 $r=R(t)+G(t)v$ with nonconstant $G$.
+[Added 29 September 2026, batch~44: when $p$ and $q$ are affine in $v$,
+a nonconstant $G$ is impossible (Part~II,
+Theorem~\ref{wkr:as:thm:slope}), so Theorem~\ref{wkr:thm:triangular}
+classifies every such map with $r$ affine in $v$
+(Theorem~\ref{wkr:as:thm:classification}).]
 
 \section{Reduced parameter geometry and invertible degenerations}
 \label{wkr:sec:geometry}
@@ -1239,6 +1253,9 @@ computing its unique source shear. For $\gamma\ne0$, compute $h$ from
 the affine-$r$ procedure. For $\gamma=0$, a nonconstant $R(t)$ is excluded
 by that theorem. Inputs with nonconstant $v$-coefficient in $r$ remain
 outside the classified scope.
+[Added 29 September 2026, batch~44: they are now classified, and
+rejected, by Part~II's Theorem~\ref{wkr:as:thm:slope}; the extended
+procedure is in Section~\ref{wkr:as:sec:algorithm}.]
 
 For canonical sparse input, reading and comparing the coefficient lists
 requires a number of field operations linear in the input support size,
@@ -1321,6 +1338,7 @@ separate immediately testable extensions from much broader classification
 problems.
 
 \subsection{Allow quadratic dependence on the second invariant}
+\label{wkr:as:q:quadratic}% label added in batch 44
 
 Keep $r$ affine but allow $\deg_vp,\deg_vq\le2$. Does the nonconstant
 branch admit genuinely new diagonal-equivalence classes? After the change
@@ -1332,8 +1350,13 @@ coefficient system and identify whether an analogue of
 Lemma~\ref{wkr:lem:wronskian} gives an a priori degree bound. A finite search
 would be useful evidence, but an all-degree conclusion needs such a bound
 or another structural argument.
+[Added 29 September 2026, batch~44: still open. Part~II's
+Proposition~\ref{wkr:as:prop:quadratic-repair} shows that a $v^2$ term is
+needed, and suffices, to lift its obstructed slope directions at the tame
+point to second order; that is not a classification of this class.]
 
 \subsection{\texorpdfstring{Allow a nonconstant second-invariant coefficient in $r$}{Allow a nonconstant second-invariant coefficient in r}}
+\label{wkr:as:q:slope}% label added in batch 44
 
 Theorem~\ref{wkr:thm:triangular} settles arbitrary polynomial $t$-dependence
 when the coefficient of $v$ in $r$ is constant. The next case is
@@ -1343,8 +1366,15 @@ appear? The substitution $s=r$ now requires division by $G$ and is not a
 global polynomial coordinate change. Track the behavior at the zeros of
 $G$ and determine whether the constant-Wronskian argument has a localized
 analogue. Allowing a quadratic term in $v$ is a further, distinct extension.
+[Added 29 September 2026, batch~44: \emph{answered}. With $p,q$ affine in
+$v$, $G$ must be constant, in all degrees
+(Theorem~\ref{wkr:as:thm:slope}); the zeros of $G$ are controlled by a
+rational pole equation (Lemma~\ref{wkr:as:lem:pole}). No new normal forms
+appear (Theorem~\ref{wkr:as:thm:classification}). The quadratic extension
+remains open (Section~\ref{wkr:as:q:quadratic}).]
 
 \subsection{Does the nonreduced structure stabilize with degree?}
+\label{wkr:as:q:stabilize}% label added in batch 44
 
 For each $d\ge7$, form the normalized coefficient scheme with
 $r=1+t+v$, $p,q$ affine in $v$, and lifted ordinary degree at most $d$.
@@ -1355,8 +1385,14 @@ is to linearize the three identities in $(A,B,C,D)$ around the explicit
 solution without truncating their degrees, solve the resulting polynomial
 linear differential system, and then examine its obstruction maps.
 This is a particularly well-targeted extension of the present work.
+[Added 29 September 2026, batch~44: still open. Part~II's nilpotent
+slopes (Theorem~\ref{wkr:as:thm:dual},
+Corollary~\ref{wkr:as:cor:schemes}) live at the tame point with $r$ free,
+not in this scheme with $r=1+t+v$ fixed; they neither extend nor
+contradict Theorem~\ref{wkr:thm:double}.]
 
 \subsection{Scheme-theoretic gluing at the invertible boundary}
+\label{wkr:as:q:gluing}% label added in batch 44
 
 Theorem~\ref{wkr:thm:torusdouble} settles the full degree-seven coefficient
 scheme on $\beta\gamma\ne0$: it is the parameter torus times a double
@@ -1368,6 +1404,9 @@ nodal boundary in Theorem~\ref{wkr:thm:plane} do not decide this gluing problem.
 A concrete first step is to saturate the coefficient ideal by
 $\beta\gamma$, then study its specialization on each axis with explicit
 ideal-membership certificates.
+[Added 29 September 2026, batch~44: still open; Part~II's
+Theorem~\ref{wkr:as:thm:obstruction} constrains the tame end of the
+gluing (Section~\ref{wkr:as:sec:future-glue}).]
 
 \subsection{Other weights and other Wronskian exponents}
 
@@ -1446,6 +1485,1731 @@ explicit nonzero second-order obstruction. Restoring the two nonconstant
 parameters gives the torus times this double point. These distinctions are essential
 both for further searches and for a trustworthy formalization.
 
+% ==== Part II begins
+%% ====================================================================
+%% Batch-44 addition (manuscript 04, "All-Degree Classification of
+%% Affine-in-z Weighted Keller Maps"). All labels of Part II carry the
+%% prefix wkr:as: (affine slope). Manuscript section k is printed here as
+%% Section k+12; its Appendices A and B are Sections 24 and 25.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad All-degree classification of affine-in-\texorpdfstring{$z$}{z} weighted Keller maps}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Affine-in-\texorpdfstring{$z$}{z} weighted Keller maps}
+\fancyhead[L]{\small\color{inkblue}Part II: affine-in-$z$ weighted Keller maps}
+
+\noindent\emph{Sections~1--11 and Appendices~A--D form
+the original report (Part~I) of 24 September 2026, unchanged except for
+dated pointers to this addition. Part~II was added on 29 September 2026 in
+batch~44 of ProveIt's incoming-report intake, from one manuscript written
+against Part~I as printed above. It answers the question of
+Section~\ref{wkr:as:q:slope} affirmatively: when all three invariant
+numerators are affine in $v$, the Keller condition forces the coefficient
+of $v$ in $r$ to be constant, with no bound on ordinary degree.
+Section~\ref{wkr:as:sec:provenance} records the provenance, fixes the
+notation against Part~I and states what is answered and what is not.}
+
+\section{Provenance, conventions and what Part~II answers}
+\label{wkr:as:sec:provenance}
+
+\subsection{One manuscript, one addition}\label{wkr:as:sec:source}
+Part~II is batch-44 manuscript~04, dated 29~September 2026:
+\emph{All-Degree Classification of Affine-in-$z$ Weighted Keller Maps:
+Constant-slope rigidity and obstructed nilpotent deformations}. Its author
+line is ``Prepared for Vladimir Reshetnikov'' (PDF metadata:
+``AI-assisted research draft prepared for Vladimir Reshetnikov''). It was
+delivered as the archive
+\texttt{ProveIt\_Affine\_Weighted\_Keller\_Classification} (inner directory
+of the same name, main file \texttt{article.tex}, a 22-page A4 PDF). It is
+pinned to the ProveIt commit
+\begin{center}
+\texttt{9b24a3a8d545af9624f6ac455f5b548be62818b6}
+\end{center}
+(committed 2026-09-29 16:02:05~UTC). The archive arrived in commit
+\texttt{ae28ea2db} and was placed in \texttt{203016015} as an
+\emph{addition} to this report rather than as a new report, because it
+answers Part~I's Section~\ref{wkr:as:q:slope} and restates Part~I's normal
+forms. Neither Part~I nor the Jacobian project
+\rpath{Algebra/JacobianConjecture} changed between the pin and the
+placement commit, so the manuscript read exactly the text printed above.
+
+Its companion files are shipped with the prefix \texttt{02-affine-slope-}
+(Section~\ref{wkr:as:sec:repro}); its manuscript, README and PDF are not
+shipped, this Part being their written form. Every result, proof, example,
+table, question and limitation of the manuscript is printed; the few items
+that duplicate Part~I are printed once
+(Section~\ref{wkr:as:sec:duplicates}). Text added at the write, beyond the
+present section, is marked \textup{[write]}. The manuscript's title page
+and abstract read as follows.
+
+\begin{quote}\small
+\textbf{Main result.} In characteristic zero, the Keller condition forces
+the coefficient of $v=x^2z$ in the third invariant numerator to be
+constant, provided all three invariant numerators are affine in $v$. This
+closes the explicit extension question in Section~10.2 of ProveIt's
+\emph{All-Degree Rigidity of a Weighted Keller Class} (Part~I). The
+resulting classification has no ordinary degree bound.
+
+\textbf{A second result.} The field-level rigidity does not hold over dual
+numbers. Nonconstant nilpotent slopes exist in arbitrarily high degrees,
+but every nonzero slope direction at the simplest tame map is obstructed
+at second order, even when arbitrary affine-in-$v$ second-order
+corrections are allowed.
+
+\textbf{Status.} Complete written proofs and reproducible exact symbolic
+checks are supplied. The new results are not formalized in Lean or Rocq,
+not independently refereed, and not asserted to have established
+worldwide priority. The known counterexample and the previously
+classified constant-slope family are credited separately.
+
+\textbf{Abstract.} Let $K$ be a field of characteristic zero, let $t=xy$
+and $v=x^2z$, and consider polynomial lifts
+\[
+F(x,y,z)=\left(x^{-2}p(t,v),\,x^{-1}q(t,v),\,xr(t,v)\right),
+\qquad \deg_v p,\deg_v q,\deg_v r\leq1.
+\]
+These are exactly the maps affine in $z$ with source weights $(-1,1,2)$
+and target weights $(2,1,-1)$. We prove that a nonzero constant Jacobian
+forces $r_v$ to be constant. The proof is not a bounded coefficient
+search: a highest-coefficient identity gives a cube--square
+factorization; a rational moving coordinate produces an equation
+$LL'=\alpha/U^3$; pole orders and polynomiality at the coordinate
+hyperplane then exclude every nonconstant slope. Combined with an
+explicit reconstruction, this gives all maps in the class: a tame family,
+or one fixed noninjective map up to diagonal scalings and a single
+equivariant source shear. We supply an exact coefficient-only recognition
+algorithm, inverses or collision certificates, and the degree spectrum
+$\{7\}\cup\{8,10,12,\ldots\}$ for the noninjective branch.
+
+We also determine a sharp limitation of this rigidity. It persists over
+reduced $\Q$-algebras, but fails over dual numbers. At the map $(z,y,x)$,
+any nonzero first-order variation of the third slope has a nonvanishing
+second-order obstruction, independent of all second-order corrections
+inside the affine-in-$z$ class. In bounded coefficient schemes, this gives
+nonzero nilpotent slope coordinates and arbitrarily large spaces of
+obstructed tangent directions. Full proofs, source comparisons, twelve
+exact-check groups, and a further research program are included.
+\end{quote}
+
+\subsection{What Part~II answers, and what it does not}
+\label{wkr:as:sec:answers}
+\begin{itemize}
+\item \emph{Section~\ref{wkr:as:q:slope} is answered, affirmatively.}
+With $p,q$ affine in $v$ and $r=R(t)+G(t)v$ in Part~I's notation,
+Theorem~\ref{wkr:as:thm:slope} proves that $G$ is constant, with no bound
+on ordinary degree. Part~I's Theorem~\ref{wkr:thm:triangular} then
+applies, so Part~I's classification covers every affine-in-$z$ weighted
+Keller map (Theorem~\ref{wkr:as:thm:classification}). The exclusions
+stated at the end of Section~\ref{wkr:sec:triangular} and in
+Section~\ref{wkr:sec:verification} are lifted accordingly (dated pointers
+there).
+\item \emph{Section~\ref{wkr:as:q:quadratic} ($v^2$ terms in $p,q$) is not
+answered.} Proposition~\ref{wkr:as:prop:quadratic-repair} shows that a
+$v^2$ term is needed, and suffices, to lift the canonical obstructed
+directions at the tame point to second order; it is not a classification
+of the quadratic class.
+\item \emph{Section~\ref{wkr:as:q:stabilize} is not answered.} The
+nilpotent results of Section~\ref{wkr:as:sec:deformations} concern slope
+directions at the tame point $(v,t,1)$, in coefficient schemes in which
+$r$ varies; Theorem~\ref{wkr:thm:double} concerns the noninjective point
+with $r=1+t+v$ fixed. They neither extend nor contradict the double point,
+as the manuscript says itself (Section~\ref{wkr:as:sec:future-thick}).
+\item \emph{Section~\ref{wkr:as:q:gluing} is not answered};
+Theorem~\ref{wkr:as:thm:obstruction} is a constraint on it
+(Section~\ref{wkr:as:sec:future-glue}).
+\end{itemize}
+
+\subsection{Notation: Part~I against Part~II}\label{wkr:as:sec:notation}
+Part~II keeps the manuscript's letters, which were chosen before it was
+joined to Part~I, so several letters mean different things in the two
+Parts. Table~\ref{wkr:as:tab:notation} fixes them; within Part~II only the
+Part~II column applies. The tempting false readings are printed in the
+last column.
+
+\begingroup\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright}p{0.10\textwidth}>{\raggedright}p{0.27\textwidth}>{\raggedright}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
+\caption{Symbols whose meaning differs between the Parts.}
+\label{wkr:as:tab:notation}\\
+\toprule
+Symbol & Part I & Part II & Not to be read as\\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Part I & Part II & Not to be read as\\
+\midrule
+\endhead
+$a,b$ & family parameters of $F_{a,b}$, $a=\beta^2/\gamma$, $b=\gamma/\beta$ &
+coefficient polynomials, $p=a(t)v+b(t)$; Part~I's parameters are written
+$a_{\mathrm I},b_{\mathrm I}$ & the parameters of \eqref{wkr:eq:family}\\
+$c,d$ & scalars in $C=cE^2$, $D=dt-c$ \eqref{wkr:eq:linearforms}; $c$ also
+the coefficient vector, $\cstar$ its point & coefficient polynomials,
+$q=c(t)v+d(t)$ & scalars\\
+$e,g$ & $e$: the square-zero element of Corollary~\ref{wkr:cor:functor} &
+$r=g(t)v+e(t)$: $e=r(t,0)$, and $g=r_v$ is the \emph{third slope}; they
+are Part~I's $R(t)$ and $G(t)$ of Section~\ref{wkr:as:q:slope} & nilpotents\\
+$G$ & coefficient of $v$ in $r$ (Sections~\ref{wkr:sec:triangular},
+\ref{wkr:as:q:slope}); $G_{\mathrm{Gao}}$ is Gao's map & a first-order
+slope variation (Theorems~\ref{wkr:as:thm:dual},
+\ref{wkr:as:thm:obstruction}); the manuscript's valuation
+$G=\ord(g)$ is written $o_g$; Section~\ref{wkr:as:sec:intro}
+quotes Part~I's $G$, which is $g$ here & Gao's map\\
+$A,B,C,D$ & $p=As+B$, $q=Cs+D$ \eqref{wkr:eq:ABCD} & the same in
+\eqref{wkr:as:eq:moving}--\eqref{wkr:as:eq:movingcoeff}, with rational
+$A,\ldots,D$; first-order variations of $a,b,c,d$ in
+Theorem~\ref{wkr:as:thm:obstruction}. The manuscript's $A=\ord(a)$,
+$C=\ord(c)$, its collision points $A,B$, its reduced algebra $A$ and its
+coefficient algebras $A_D$ are written $o_a,o_c$, $X_1,X_2$, $\Lambda$ and
+$\Lambda_{\Dcap}$ & the same objects in every section\\
+$U$ & an output coordinate \eqref{wkr:eq:tameinverse} & a polynomial in
+$t$; at the end $U=1-2\beta t/3$, which is Part~I's $E$ of
+\eqref{wkr:eq:compactendpoint} & a coordinate\\
+$k$ & $E=1+kt$ & the scalar in $c=kHU^2$; at the end $k=9/\beta$, which is
+Part~I's scalar $c$ of \eqref{wkr:eq:endpoint} & Part~I's $k=-2\beta/3$\\
+$H$ & $B=t^2H(t)$ \eqref{wkr:eq:tameF}; the residual vector
+\eqref{wkr:eq:H} & the cube root in $g=H^3$ & either\\
+$s,S$ & $s=1+\beta t+v$ & $s=e+H^3v$ and $S=e+\gamma v$; each is $r$ & a
+constant\\
+$L$, $\mathcal L$ & $L$: the row functional \eqref{wkr:eq:ell};
+$\mathcal L$: the lift & $L=\delta-\alpha T$, a rational function;
+$\mathcal L$ is the same lift & a functional\\
+$\alpha$ & (write notes) the project's coefficient $[t^2]p$ & $\alpha=2k/3$
+in \eqref{wkr:as:eq:VT} & $[t^2]p$\\
+$T$ & only in $T_h$ & $T=B/w^2$ (Section~\ref{wkr:as:sec:rigidity}); the
+indeterminate of the cubic \eqref{wkr:as:eq:cubic}; $T_h$ as in Part~I &
+one object\\
+$P,Q,R$ & $R(t)$: the $t$-part of $r$ in Theorem~\ref{wkr:thm:triangular}
+& the components of $F$, and target coordinates in the cubic model;
+Section~\ref{wkr:as:sec:intro} quotes Part~I's $R(t)$ &
+Part~I's $R(t)$, which is $e$ here\\
+$\Dcap$ & --- & the degree cap of $\Lambda_{\Dcap}$ and the input degree of
+the algorithm (the manuscript writes $D$) & the polynomial $D$\\
+$\tau$ & --- & $y+1/x$ (Section~\ref{wkr:as:sec:cubic}) & $t=xy$\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The field, the weights, the invariants $t=xy$, $v=x^2z$, the lift
+$\mathcal L$, the Jacobian $\J$, the normalization to determinant $-1$,
+the pair $\beta,\gamma$ (for $e=1+\beta t$ and $g=\gamma$), the source
+shear $T_h$ and its polynomial $h$, the map $F_0$ and its normalization
+$F_*$, and the dual-number variable $\eps$ mean the same in both Parts.
+``Degree'' means ordinary polynomial degree unless qualified as
+function-field or geometric degree. Renamed from the manuscript: its field
+$\mathbb K$ is printed $K$; its valuations $A,C,G$ are $o_a,o_c,o_g$; its
+collision points $A,B$ are $X_1,X_2$; its reduced algebra $A$ is
+$\Lambda$; its degree cap $D$ and coefficient algebras $A_D$ are $\Dcap$
+and $\Lambda_{\Dcap}$; Part~I's parameters in its comparison sentence are
+$a_{\mathrm I},b_{\mathrm I}$. No normalization was changed. Equations are
+numbered by section, as in Part~I; the manuscript numbered them
+consecutively, (1)--(59), and its section~$k$ is Section~$k+12$ here.
+
+\subsection{What is printed once}\label{wkr:as:sec:duplicates}
+The manuscript restates several items of Part~I to be self-contained. They
+are printed once, and where they occur Part~II points to them.
+\begin{itemize}
+\item The map $F_0$, its determinant $-2$ and its integral collision
+(manuscript equations (1)--(2)) are \eqref{wkr:eq:original},
+\eqref{wkr:eq:oldcollision}; the normalization $F_*=\diag\circ F_0\circ
+\diag$ (manuscript equation (39)) is \eqref{wkr:eq:originalnormalization}.
+\item The lift and the weighted Jacobian identity with its chain-rule
+proof (manuscript equation (4) and Proposition~2.2 with equation (7)) are
+\eqref{wkr:eq:lift} and Proposition~\ref{wkr:prop:jacobian}, which are in
+turn the project's (Section~\ref{wkr:sub:project}). The manuscript's
+coefficient expansion \eqref{wkr:as:eq:J0}--\eqref{wkr:as:eq:J2} is new
+and printed.
+\item The tame inverse and its decomposition into two elementary shears
+and a permutation (manuscript Section~6.1, equations (34)--(35), with output
+coordinates $(X,Y,Z)$) are \eqref{wkr:eq:tameF}--\eqref{wkr:eq:tameinverse}
+(output coordinates $(U,V,W)$).
+\item The proof of the degree spectrum (manuscript Corollary~6.4) repeats
+Part~I's proof of Corollary~\ref{wkr:cor:degreespectrum}; the statement is
+printed as Corollary~\ref{wkr:as:cor:degrees} because its scope is larger,
+and its proof refers to Part~I.
+\item Printed although partly known, because they carry the argument:
+the determinant expansion \eqref{wkr:as:eq:movingcoeff}, which is Part~I's
+\eqref{wkr:eq:threeidentities} with \eqref{wkr:eq:E0}--\eqref{wkr:eq:E2}
+(here with rational coefficients); Lemma~\ref{wkr:as:lem:constants},
+which Part~I proves inside Lemma~\ref{wkr:lem:powers}; the normal forms
+of Theorem~\ref{wkr:as:thm:classification}, which restate
+Theorems~\ref{wkr:thm:classification} and~\ref{wkr:thm:triangular} in the
+coordinates $\beta,\gamma,e$ over the enlarged class
+(Remark~\ref{wkr:as:rem:partI}); and the cubic model of
+Section~\ref{wkr:as:sec:cubic}, which the manuscript does not advertise
+as new (see the \textup{[write]} note there).
+\end{itemize}
+The manuscript's reconstruction of the noninjective branch
+(Section~\ref{wkr:as:sec:reconstruction}) is a genuinely different route
+from Part~I's Section~\ref{wkr:sec:proof}: it reuses the moving-coordinate
+equations with $H=1$ instead of the constant weighted Wronskian lemmas.
+It is printed in full as a second proof.
+
+\subsection{The formal project and Part~II}\label{wkr:as:sec:formal}
+Check group~4 of the companion script (\texttt{original\_map}) rechecks in
+SymPy statements that the project has \emph{kernel-checked} (Lean
+namespace \texttt{LeanProofs.JacobianCounterexample}; verified at the
+write in the files at the placement commit):
+\begin{itemize}
+\item $\det DF_0=-2$: Lean \texttt{jacobianDet\_counterexample}
+(\rpath{Algebra/JacobianConjecture/Lean/JacobianConjecture/Counterexample.lean},
+line~134), a polynomial identity over every commutative ring; Rocq
+\texttt{jacobian\_det\_is\_minus\_two}
+(\rpath{Algebra/JacobianConjecture/Coq/Counterexample.v}, line~182), at
+every point;
+\item the collision $F_0(-1,1,5)=F_0(0,-2,-16)=(0,-2,0)$: Lean
+\texttt{collision\textsubscript{0}}, \texttt{collision\textsubscript{1}},
+\texttt{collisionValue}, \texttt{collision} and
+\texttt{collision\_points\_distinct} (\rpath{Counterexample.lean}, lines
+143--170); Rocq \texttt{integral\_collision\_0\_value},
+\texttt{integral\_collision\_1\_value} and
+\texttt{integral\_collision\_points\_distinct} (\rpath{Counterexample.v},
+lines 249--265); and the refutation
+\texttt{jacobianConjectureInDimensionThree\_false}
+(\rpath{Counterexample.lean}, line~201; Rocq
+\texttt{jacobian\_conjecture\_dimension\_three\_is\_false},
+\rpath{Counterexample.v}, line~331).
+\end{itemize}
+The weighted torus action on which the whole class rests is
+\texttt{counterexample\_scaling}
+(\rpath{Algebra/JacobianConjecture/Lean/JacobianConjecture/Scaling.lean},
+line~35; Rocq \rpath{Scaling.v}, line~32). The same group also checks the
+normalization \eqref{wkr:eq:originalnormalization}, which is \emph{not}
+formalized, and nothing else of Part~II is: not the weighted Jacobian
+identity, not the normal forms (T) and (N), and none of the theorems,
+propositions or corollaries of Sections~\ref{wkr:as:sec:main}--%
+\ref{wkr:as:sec:algorithm}. The package contains no Lean or Rocq file.
+Placement of this report beside the Lean/Rocq development confers no
+formal status on it; the manuscript says so correctly (its source ledger:
+the package ``neither edits the repository nor inherits the formal status
+of declarations stored elsewhere in it'').
+\section{The question, the contribution, and its boundaries}
+\label{wkr:as:sec:intro}
+
+\subsection{A specific unresolved question in the repository}
+
+ProveIt's Jacobian project records the polynomial map $F_0$ of
+\eqref{wkr:eq:original}. The project attributes the map to Alp\"oge's July
+2026 announcement and contains Lean and Rocq developments for its constant
+Jacobian and explicit collisions \cite{repo-9b24}. The identities needed
+here are elementary: $\det DF_0=-2$ and the collision
+\eqref{wkr:eq:oldcollision}. We check them independently in the companion
+code. They are not new results of this article.
+\textup{[write]} The map and these two identities are printed once, in
+Part~I; their kernel-checked status is in
+Section~\ref{wkr:as:sec:formal}.
+
+A subsequent repository report, \emph{All-Degree Rigidity of a Weighted
+Keller Class} (Part~I), classifies a normalized weighted class when the
+third invariant numerator is $r=R(t)+\gamma v$ with $\gamma\in K$. Its
+Section~\ref{wkr:as:q:slope} explicitly asks whether allowing
+\[
+r=R(t)+G(t)v
+\]
+with a nonconstant polynomial $G$ produces new normal forms, or whether
+the Keller and polynomiality conditions force $G$ to be constant. The
+obstacle identified there is real: the substitution $s=r$ divides by $G$
+and is not a global polynomial coordinate change.
+
+Theorem~\ref{wkr:as:thm:slope} resolves that question under the report's
+retained hypotheses on $p$ and $q$: \emph{$G$ must be constant}. No bound
+on the ordinary degree is added. The proof explicitly controls the zeros
+of $G$; it never treats the rational substitution as a polynomial
+automorphism.
+
+\subsection{What is new here, and what is inherited}
+
+The new field-level result is constant-slope rigidity for the full
+three-numerator affine-in-$v$ class. The new infinitesimal results are the
+reduced-base extension, nonconstant dual-number examples, universal
+second-order obstruction at the simplest tame point, and the resulting
+nilpotent directions in finite coefficient schemes.
+
+The constant-slope normal forms, their tame inverse, diagonal
+equivalence, source-shear extension, core support profile, and degree
+spectrum already occur in Part~I. We rederive them after proving the
+missing rigidity step, both to make this article self-contained and to
+extend their \emph{scope} to every affine-in-$z$ map with the specified
+weights. The weighted determinant identity and its localization proof were
+already present in the project's research notes, as acknowledged by that
+report. The cubic function-field calculation in
+Section~\ref{wkr:as:sec:cubic} is likewise not advertised as new for
+$F_0$; its role is to make the geometric consequences of the enlarged
+classification explicit.
+
+\subsection{Relation to the current primary literature}
+
+Shaska's revised paper \cite{shaska} studies the graded structure of the
+counterexample, quotient coordinates, and coefficient schemes. Gao
+\cite{gao} develops a broader construction of noninjective Keller maps
+from curves, including maps of different geometric degrees. Those works
+supply important context for why a structural classification inside a
+specified graded class is useful; neither is needed as a black-box
+classification theorem in our proof.
+
+The source check for this article used the repository pin
+(Section~\ref{wkr:as:sec:source}), the precise prior report and its stated
+exclusions, Shaska's version~2, and Gao's version~1. This is a targeted
+comparison, not an exhaustive bibliographic priority determination. In
+particular, the present work is \emph{not} a new disproof of the Jacobian
+conjecture, a classification of arbitrary Keller maps, or a
+minimum-degree theorem without symmetry and linearity hypotheses.
+``Degree'' below always means ordinary polynomial degree unless
+explicitly qualified as function-field or geometric degree.
+
+\section{Weighted coordinates and the exact coefficient equations}
+\label{wkr:as:sec:coordinates}
+
+Throughout Sections~\ref{wkr:as:sec:coordinates}--\ref{wkr:as:sec:algorithm},
+$K$ is a field of characteristic zero. We write primes for
+differentiation with respect to $t$.
+
+\begin{definition}
+A map $F=(P,Q,R):\A^3_K\to\A^3_K$ is \emph{weighted} in this article if
+\begin{equation}\label{wkr:as:eq:weights}
+F(\rho^{-1}x,\rho y,\rho^2z)
+ =\bigl(\rho^2P(x,y,z),\rho Q(x,y,z),\rho^{-1}R(x,y,z)\bigr)
+\end{equation}
+as an identity with an invertible indeterminate $\rho$. It is
+\emph{Keller} if $\det DF\in K^\times$.
+\end{definition}
+
+Set $t=xy$ and $v=x^2z$. A monomial $x^iy^jz^k$ of weight $2$ satisfies
+$i=j+2k-2$, so multiplying it by $x^2$ gives $t^jv^k$. The corresponding
+exponents for weights $1$ and $-1$ are $j+2k-1$ and $j+2k+1$.
+Consequently every map satisfying \eqref{wkr:as:eq:weights} has a unique
+expression $F=\mathcal L(p,q,r)$ in the localization at $x$, as in
+\eqref{wkr:eq:lift}. It is affine in $z$ in each coordinate if and only if
+\begin{equation}\label{wkr:as:eq:abcdef}
+p=a(t)v+b(t),\qquad q=c(t)v+d(t),\qquad r=g(t)v+e(t)
+\end{equation}
+with all six coefficients in $K[t]$. The lift is polynomial exactly when
+\begin{equation}\label{wkr:as:eq:polynomiality}
+b\in t^2K[t],\qquad d\in tK[t].
+\end{equation}
+Indeed, a monomial $t^iv^j$ in $p$ or $q$ must satisfy respectively
+$i+2j\ge2$ or $i+2j\ge1$; for $j\le1$ these are precisely
+\eqref{wkr:as:eq:polynomiality}. There is no analogous restriction on $e$
+or $g$.
+
+For every polynomial lift, $\det DF=\J(p,q,r)$ with $\J$ the weighted
+determinant \eqref{wkr:eq:J} evaluated at $(t,v)=(xy,x^2z)$
+(Proposition~\ref{wkr:prop:jacobian}).
+\textup{[write]} The manuscript states and proves this again as its
+Proposition~2.2, by the same chain-rule computation in the localization
+at $x$; it is printed once, in Part~I, and is the project's
+(Section~\ref{wkr:sub:project}).
+
+The substitution $K[t,v]\to K[x,y,z]$ is injective: distinct $t^iv^j$
+produce distinct monomials $x^{i+2j}y^iz^j$. Thus we may work with $\J$
+as a polynomial in $t,v$. Its value at $t=v=0$ is
+\begin{equation}\label{wkr:as:eq:normalization}
+\J(0,0)=-a(0)d'(0)e(0).
+\end{equation}
+For a Keller map, all three factors are nonzero. Dividing the first,
+second, and third target coordinates respectively by these factors
+normalizes
+\begin{equation}\label{wkr:as:eq:normalized}
+a(0)=d'(0)=e(0)=1,\qquad \J=-1.
+\end{equation}
+This normalization loses no Keller map and preserves the structural class.
+
+For reference, direct expansion gives
+\begin{equation}\label{wkr:as:eq:Jcoeff}
+\J=J_0+J_1v+J_2v^2,
+\end{equation}
+where
+\begin{align}
+J_0={}&(ce+dg)b'+2b(ce'-gd')-a(de)',\label{wkr:as:eq:J0}\\
+J_1={}&(ce+dg)a'+2b(cg'-gc')\notag\\
+ &\quad+a(ce'-dg'-ec'-3gd')+2cgb',\label{wkr:as:eq:J1}\\
+J_2={}&2cga'-3agc'+acg'.\label{wkr:as:eq:J2}
+\end{align}
+These identities will also make the deformation calculation transparent.
+
+\section{The main classification}
+\label{wkr:as:sec:main}
+
+\begin{theorem}[Constant-slope rigidity]\label{wkr:as:thm:slope}
+Let \eqref{wkr:as:eq:abcdef} satisfy polynomiality
+\eqref{wkr:as:eq:polynomiality} and the normalized Keller identities
+\eqref{wkr:as:eq:normalized}. Then $g$ is constant. Equivalently, every
+weighted Keller map affine in $z$ has a constant third invariant slope
+$r_v$, after or before target normalization.
+\end{theorem}
+
+\begin{theorem}[Complete normal forms]\label{wkr:as:thm:classification}
+Under the hypotheses of Theorem~\ref{wkr:as:thm:slope}, exactly one of the
+following two cases occurs.
+
+\smallskip
+\noindent\textup{(T) Tame branch.} There are unique
+$\lambda\in K$ and $B\in t^2K[t]$ such that
+\begin{equation}\label{wkr:as:eq:tame-normal}
+p=v+B(t),\qquad q=t+\lambda\bigl(v+B(t)\bigr),\qquad r=1.
+\end{equation}
+
+\smallskip
+\noindent\textup{(N) Noninjective branch.} There are unique
+$\beta,\gamma\in K^\times$ and $e\in K[t]$ with
+$e(0)=1$ and $e'(0)=\beta$ such that, on setting
+\begin{equation}\label{wkr:as:eq:US}
+U=1-\frac{2\beta}{3}t,\qquad S=e(t)+\gamma v,
+\end{equation}
+one has
+\begin{align}
+p&=\frac{U^3S-(U^2+U)/2}{\gamma},\label{wkr:as:eq:normalp}\\
+q&=\frac9\beta\left(U^2S-\frac{2U+1}{3}\right),\label{wkr:as:eq:normalq}\\
+r&=S.\label{wkr:as:eq:normalr}
+\end{align}
+Conversely every displayed triple gives a normalized polynomial Keller
+map. The maps in \textup{(T)} are tame automorphisms, and those in
+\textup{(N)} are noninjective over the ground field $K$.
+\end{theorem}
+
+Here no ordinary degree bound is imposed on $a,b,c,d,e,g$. The
+classification is therefore not an extrapolation from finitely many
+coefficient schemes. The parameters of (N) are read directly from $r$:
+$\gamma=r_v$, $e=r(t,0)$, and $\beta=e'(0)$. The inverse and collision
+assertions are proved in Section~\ref{wkr:as:sec:consequences}.
+
+\begin{remark}[\textup{[write]} Relation to Part~I]\label{wkr:as:rem:partI}
+Branch (T) is Part~I's case~\ref{wkr:case:tame}, equation
+\eqref{wkr:eq:tamepq}, verbatim. For $e=1+\beta t$, branch (N) is Part~I's
+$F_{a_{\mathrm I},b_{\mathrm I}}$ of \eqref{wkr:eq:family} with
+$a_{\mathrm I}=\beta^2/\gamma$, $b_{\mathrm I}=\gamma/\beta$: $U$ is
+Part~I's $E$ and \eqref{wkr:as:eq:normalp}--\eqref{wkr:as:eq:normalq}
+expand to \eqref{wkr:eq:compactendpoint} before the $\gamma$-rescaling,
+since $-(U^2+U)/2=-1+\beta t-\tfrac{2\beta^2}{9}t^2$ and
+$-\tfrac9\beta\cdot\tfrac{2U+1}{3}=4t-\tfrac9\beta$. For general $e$ it is
+Part~I's $F_{a_{\mathrm I},b_{\mathrm I}}\circ T_h$ of
+Theorem~\ref{wkr:thm:triangular} (see \eqref{wkr:as:eq:core-shear}). What
+is new is that Theorem~\ref{wkr:as:thm:slope} makes these the \emph{only}
+forms once $r$ is merely affine in $v$. The normal form (N) with symbolic
+$\beta,\gamma,e$ was rechecked at the write (Jacobian $-1$ identically).
+\end{remark}
+
+\section{Proof of constant-slope rigidity}
+\label{wkr:as:sec:rigidity}
+
+The proof separates three issues that a formal coefficient search would
+not settle: arbitrary degree cancellations, poles of the moving
+coordinate, and polynomiality across the coordinate hyperplane.
+
+\subsection{Two elementary rational-function facts}
+
+\begin{lemma}[Constants of differentiation]\label{wkr:as:lem:constants}
+If $f\in K(t)$ and $f'=0$, then $f\in K$.
+\end{lemma}
+\begin{proof}
+Write $f=A/B$ with coprime polynomials. The identity $A'B-AB'=0$ implies
+$A\mid A'$ if $A\ne0$ and $B\mid B'$. A nonconstant polynomial in
+characteristic zero has derivative of strictly smaller degree, so both
+must be constant. The zero function is immediate.
+\end{proof}
+
+\begin{lemma}[A rational pole equation]\label{wkr:as:lem:pole}
+Let $K$ be algebraically closed of characteristic zero. Suppose
+$U\in K[t]\setminus\{0\}$, $L\in K(t)$, and
+$\alpha\in K^\times$ satisfy
+\begin{equation}\label{wkr:as:eq:pole}
+LL'=\frac{\alpha}{U^3}.
+\end{equation}
+Then for some $\xi\in K$ and nonzero scalars $u,\ell$,
+\[
+U=u(t-\xi)^m,\qquad L=\ell(t-\xi)^{-n},
+\qquad m,n\ge1,\qquad 3m=2n+1.
+\]
+If, in addition, $H\in K[t]$ is coprime to $U$ and
+$\frac UH(\delta_0-L)$ is regular at $\xi$ for a scalar $\delta_0$,
+then $m=n=1$.
+\end{lemma}
+\begin{proof}
+The right side is nonzero, so $L$ and $L'$ are nonzero. If $L$ had a
+finite zero of order $j\ge1$, the order of $LL'$ there would be $2j-1>0$.
+The right side of \eqref{wkr:as:eq:pole} has order either $0$ or a
+negative multiple of $3$. This is impossible. A rational function over an
+algebraically closed field with no finite zero has constant numerator in
+reduced form. Thus $L=\ell_0/V$ for a nonzero scalar $\ell_0$ and a
+nonconstant polynomial $V$.
+
+Substitution gives
+\begin{equation}\label{wkr:as:eq:critical}
+U^3V'=-\frac{\alpha}{\ell_0^2}V^3.
+\end{equation}
+Every root of $V'$ is therefore a root of $V$. If $V$ has degree $N$ and
+$r$ distinct roots, the total multiplicity of those roots in $V'$ is
+$N-r$: a root of multiplicity $j$ contributes exactly $j-1$ in
+characteristic zero. Since all $N-1$ roots of $V'$ occur there, $r=1$.
+Write $V=c(t-\xi)^n$. Equation~\eqref{wkr:as:eq:critical} then forces
+$U=u(t-\xi)^m$ and $3m=2n+1$. In particular $m,n\ge1$.
+
+Since $H(\xi)\ne0$ and $L$ has a pole, the order at $\xi$ of
+$(U/H)(\delta_0-L)$ is exactly $m-n=(1-m)/2$. Regularity forces $m\le1$,
+so $m=n=1$.
+\end{proof}
+\noindent\textup{[write]} Inside this proof only, $r$ counts distinct
+roots and $c$ is a scalar; neither is the numerator $r$ or the
+coefficient polynomial $c$.
+
+\subsection{The nonzero-slope case has nonzero second slope}
+
+Assume $g\ne0$. If $c=0$, the equation $J_1=0$ reduces to
+\[
+dga'-adg'-3agd'=0.
+\]
+Here $a,d,g$ are nonzero: $a(0)=1$ and $d'(0)=1$. Dividing in $K(t)$
+shows that
+\[
+\left(\frac{a}{gd^3}\right)'=0.
+\]
+Lemma~\ref{wkr:as:lem:constants} gives $a=\kappa gd^3$ with
+$\kappa\in K^\times$. But $d(0)=0$, contradicting $a(0)=1$.
+Hence
+\begin{equation}\label{wkr:as:eq:nonzeroacg}
+a\ne0,\qquad c\ne0,\qquad g\ne0.
+\end{equation}
+
+\subsection{Cube--square factorization with coprime factors}
+
+We may extend scalars to an algebraic closure for this part of the proof.
+A polynomial proved constant after this extension was already constant
+over the original field. Equation $J_2=0$ gives
+\[
+\left(\frac{a^2g}{c^3}\right)'=0,
+\qquad \frac{a^2g}{c^3}\in K^\times
+\]
+by Lemma~\ref{wkr:as:lem:constants}. At a finite point, write
+$o_a=\ord(a)$, $o_c=\ord(c)$, $o_g=\ord(g)$. Then
+\begin{equation}\label{wkr:as:eq:valuationrelation}
+2o_a+o_g=3o_c.
+\end{equation}
+The three polynomials $a,c,g$ cannot vanish at the same point: otherwise
+the last column of the determinant \eqref{wkr:eq:J} would vanish there
+for every $v$, contradicting $\J=-1$.
+
+If $o_g>0$, equation~\eqref{wkr:as:eq:valuationrelation} and the
+preceding observation force $o_a=0$ and $o_g=3o_c$. If $o_a>0$, then
+$o_g=0$ and $2o_a=3o_c$, so $o_a$ is a multiple of $3$. Unique
+factorization, including nonzero scalar factors, therefore gives
+\begin{equation}\label{wkr:as:eq:UHfactor}
+a=U^3,\qquad c=kHU^2,\qquad g=H^3,
+\qquad (U,H)=1,
+\end{equation}
+for polynomials $U,H$ and a scalar $k\ne0$. We choose the cube root in $U$
+so that $U(0)=1$, which is possible because $a(0)=1$. Choosing a cube
+root of the scalar in $g$ is harmless over the algebraic closure. Scalar
+descent will be automatic once $g$ is proved constant.
+
+\subsection{A rational moving coordinate and its differential invariant}
+
+Work temporarily over $K(t)$, and set
+\[
+w=\frac UH,\qquad s=e+H^3v.
+\]
+Then uniquely
+\begin{equation}\label{wkr:as:eq:moving}
+p=w^3s+B,\qquad q=kw^2s+D,\qquad r=s,
+\end{equation}
+where
+\[
+B=b-w^3e,\qquad D=d-kw^2e.
+\]
+The substitution $(t,v)\mapsto(t,s)$ has Jacobian $H^3$. Accordingly the
+old determinant equals $H^3$ times the weighted determinant computed in
+$(t,s)$. For arbitrary $A,B,C,D$, the latter is
+\begin{align}
+&\J(As+B,Cs+D,s)\notag\\
+&\quad=DB'-2BD'
++s\bigl(DA'+2CB'-3AD'-2BC'\bigr)
++s^2\bigl(2CA'-3AC'\bigr).\label{wkr:as:eq:movingcoeff}
+\end{align}
+This identity is just a determinant expansion; the change of variables is
+being used only rationally. \textup{[write]} It is Part~I's
+\eqref{wkr:eq:threeidentities}, whose coefficients are the left sides of
+\eqref{wkr:eq:E0}--\eqref{wkr:eq:E2}; there $A,\ldots,D$ are
+polynomials, here rational functions.
+
+Put $A=w^3$, $C=kw^2$, and then write
+\[
+B=w^2T,\qquad D=wV.
+\]
+The $s^2$ coefficient vanishes identically. The $s$ coefficient becomes
+\[
+w^4(2kT'-3V').
+\]
+It follows that
+\begin{equation}\label{wkr:as:eq:VT}
+V=\alpha T+\delta,\qquad \alpha=\frac{2k}{3}\ne0,\qquad \delta\in K.
+\end{equation}
+The constant coefficient satisfies
+\[
+DB'-2BD'=w^3(VT'-2TV')=w^3(\delta-\alpha T)T'.
+\]
+Multiplying by $H^3$ and using $\J=-1$ gives
+\begin{equation}\label{wkr:as:eq:TU}
+-1=U^3(\delta-\alpha T)T'.
+\end{equation}
+Therefore
+\[
+L:=\delta-\alpha T
+\quad\hbox{satisfies}\quad
+LL'=\frac{\alpha}{U^3}.
+\]
+
+\subsection{Regularity collapses every higher-degree pole pattern}
+
+Lemma~\ref{wkr:as:lem:pole} applies. Its additional regularity condition
+also holds:
+\[
+D=d-kw^2e=w(2\delta-L)
+\]
+is regular at any root of $U$, because $d,e$ are polynomials and $H$ is
+coprime to $U$. Thus $U$ is linear and $L$ is a nonzero scalar multiple
+of $1/U$. Rewriting the constants, we obtain
+\begin{equation}\label{wkr:as:eq:eta-theta}
+T=\eta+\frac{\theta}{U},\qquad
+\delta=\alpha\eta,\qquad
+\alpha\theta^2U'=-1.
+\end{equation}
+In particular $U'\ne0$ and $\theta\ne0$.
+
+This is the all-degree step: the initial numerator polynomials could have
+arbitrarily large degree, but the pole equation and regularity force a
+single simple pole and a single linear common factor.
+
+\subsection{Polynomiality at the origin forces the remaining slope constant}
+
+Recovering the original constant terms from
+\eqref{wkr:as:eq:moving}--\eqref{wkr:as:eq:eta-theta} gives
+\begin{align}
+b&=\frac{U^3e+H(\eta U^2+\theta U)}{H^3},\label{wkr:as:eq:breconstruct}\\
+d&=\frac{kU^2e+(k/3)H(4\eta U+2\theta)}{H^2}.\label{wkr:as:eq:dreconstruct}
+\end{align}
+Since $b,d$ are polynomials and $(U,H)=1$, these identities imply
+\begin{align*}
+H^3&\mid U^2e+H(\eta U+\theta),\\
+H^2&\mid U^2e+\frac H3(4\eta U+2\theta).
+\end{align*}
+Subtracting modulo $H^2$ yields
+\begin{equation}\label{wkr:as:eq:Hdivides}
+H\mid\eta U-\theta.
+\end{equation}
+
+We next show $H(0)\ne0$. Multiplying \eqref{wkr:as:eq:breconstruct} by
+$H^3$ and evaluating at $0$, a hypothetical $H(0)=0$ would give
+$0=U(0)^3e(0)=1$. Set $h_0=H(0)\ne0$. The conditions $b(0)=d(0)=0$,
+$U(0)=e(0)=1$ now give
+\[
+1+h_0(\eta+\theta)=0,\qquad
+1+\frac{h_0}{3}(4\eta+2\theta)=0.
+\]
+Subtracting three times the first equation from the second after clearing
+its denominator shows $\eta=\theta$. Both are nonzero. Therefore
+\eqref{wkr:as:eq:Hdivides} says $H\mid U-1$. Since $U$ is linear with
+$U(0)=1$, $U-1$ is a nonzero scalar multiple of $t$. But $H(0)\ne0$, so
+$H$ is constant. Thus $g=H^3$ is constant.
+
+This proves Theorem~\ref{wkr:as:thm:slope} when $g\ne0$; the case $g=0$
+was already constant. The algebraic-closure argument proves vanishing of
+all positive-degree coefficients of the original $g$, so it descends to
+every characteristic-zero field.\qed
+
+\section{Reconstruction and the exceptional branch}
+\label{wkr:as:sec:reconstruction}
+
+\subsection{Zero slope forces the tame form}
+
+Suppose $g=0$. Equation $J_1=0$ becomes
+\[
+e'ac+e(a'c-ac')=0.
+\]
+If $c\ne0$, Lemma~\ref{wkr:as:lem:constants} applied to $c/(ea)$ shows
+$c=\lambda ea$ for a scalar $\lambda$. The same expression holds for
+$c=0$ with $\lambda=0$. The constant coefficient equation becomes
+\begin{equation}\label{wkr:as:eq:zero-slope}
+a\bigl(\lambda e^2b-ed\bigr)'=-1.
+\end{equation}
+The two factors are polynomials, so both are constant. Since $a(0)=1$,
+$a=1$. Integrating and using $b(0)=d(0)=0$ gives
+\[
+\lambda e^2b-ed=-t.
+\]
+Consequently $e\mid t$. The condition $e(0)=1$ forces $e=1$, whence
+$c=\lambda$ and $d=t+\lambda b$. Together with $b\in t^2K[t]$, this is
+exactly \eqref{wkr:as:eq:tame-normal}.
+\textup{[write]} This is the argument of Part~I's
+Theorem~\ref{wkr:thm:triangular}, case $\gamma=0$, in the present
+notation.
+
+\subsection{Nonzero slope gives the explicit noninjective family}
+
+Let $g=\gamma\ne0$. The replacement
+\begin{equation}\label{wkr:as:eq:gamma-normalization}
+\widetilde p(t,v)=\gamma p(t,v/\gamma),\quad
+\widetilde q(t,v)=q(t,v/\gamma),\quad
+\widetilde r(t,v)=r(t,v/\gamma)
+\end{equation}
+preserves polynomiality, the normalized origin coefficients, and the
+Jacobian $-1$. It reduces the third numerator to $e+v$.
+
+We may therefore use the proof above with $H=1$. The two origin equations
+now give
+\[
+\eta=\theta=-\frac12.
+\]
+Put $\beta=e'(0)$. Differentiating \eqref{wkr:as:eq:breconstruct} at
+zero and using $b'(0)=0$ gives
+\[
+0=\frac32U'+\beta.
+\]
+Thus $U=1-2\beta t/3$ and $\beta\ne0$, since $U'\ne0$. The last identity
+in \eqref{wkr:as:eq:eta-theta} gives $kU'=-6$, hence $k=9/\beta$. We
+recover
+\[
+\widetilde p=U^3(e+v)-\frac{U^2+U}{2},\qquad
+\widetilde q=\frac9\beta\left(U^2(e+v)-\frac{2U+1}{3}\right).
+\]
+Undoing \eqref{wkr:as:eq:gamma-normalization} yields
+\eqref{wkr:as:eq:normalp}--\eqref{wkr:as:eq:normalr}. Every coefficient is
+expressed over the original field, so no algebraic-extension parameter
+remains.
+\textup{[write]} This is a second proof of Part~I's nonconstant branch
+(Section~\ref{wkr:sec:proof}, case $\gamma\ne0$), and of
+Theorem~\ref{wkr:thm:triangular}(ii) without the source shear: Part~I
+bounds degrees by the weighted Wronskian lemmas, the manuscript by the
+pole equation.
+
+\subsection{Converse and uniqueness}
+
+For \eqref{wkr:as:eq:tame-normal}, direct substitution gives $\J=-1$.
+For \eqref{wkr:as:eq:normalp}--\eqref{wkr:as:eq:normalr}, first set
+$\gamma=1$ as above. Then
+\[
+A=U^3,\quad C=\frac9\beta U^2,\quad
+B=-\frac{U^2+U}{2},\quad D=-\frac3\beta(2U+1).
+\]
+Equation~\eqref{wkr:as:eq:movingcoeff} has zero $s^2$ and $s$
+coefficients, and constant coefficient $-1$, using $U'=-2\beta/3$. This
+argument is independent of $e$. Restoring $\gamma$ preserves the
+determinant.
+
+At $t=0$ the formulas give $b(0)=d(0)=0$. Differentiation gives
+$b'(0)=0$, $d'(0)=1$, and $a(0)=1$, while $e(0)=1$ by hypothesis.
+Thus the lift is polynomial and normalized. In (T), the parameters are
+$B=p(t,0)$ and $\lambda=q_v$; in (N), they are read from $r$ as stated
+above. The branches are disjoint because $r_v=0$ in (T) and $r_v\ne0$
+in (N). This proves the algebraic assertions of
+Theorem~\ref{wkr:as:thm:classification}.
+\section{Equivalence, certificates, and exact degree consequences}
+\label{wkr:as:sec:consequences}
+
+\subsection{An explicit inverse on the tame branch}
+
+Write $B=t^2H$. The tame lift of \eqref{wkr:as:eq:tame-normal} is
+\eqref{wkr:eq:tameF}, and its inverse is \eqref{wkr:eq:tameinverse}.
+Substitution in either order gives the identity. Moreover the map is the
+composition of the elementary shear $z\mapsto z+y^2H(xy)$, the elementary
+shear $y\mapsto y+\lambda xz$ in the updated coordinates, and the
+permutation $(x,y,z)\mapsto(z,y,x)$. Hence it is tame, not merely
+invertible.
+\textup{[write]} The manuscript displays the lift and the inverse again,
+with output coordinates $(X,Y,Z)$ where Part~I writes $(U,V,W)$; they are
+printed once, in Part~I. Here $H$ is Part~I's $H$ with $B=t^2H$, not the
+cube root of Section~\ref{wkr:as:sec:rigidity}.
+
+\subsection{One core and one source shear on the noninjective branch}
+
+Let $F_{\beta,\gamma}^{\mathrm{core}}$ denote the form (N) with
+$e=1+\beta t$, and let $F_*=F_{1,1}^{\mathrm{core}}$. Define
+\begin{equation}\label{wkr:as:eq:source-shear}
+h(t)=\frac{e(t)-1-\beta t}{\gamma t^2},\qquad
+T_h(x,y,z)=\bigl(x,y,z+y^2h(xy)\bigr).
+\end{equation}
+The numerator defining $h$ vanishes to order at least two, so
+$h\in K[t]$. The map $T_h$ is an equivariant elementary shear with
+inverse $T_{-h}$, and on invariants it replaces $v$ by $v+t^2h(t)$.
+Therefore
+\begin{equation}\label{wkr:as:eq:core-shear}
+F=F_{\beta,\gamma}^{\mathrm{core}}\circ T_h.
+\end{equation}
+The core itself satisfies
+\begin{equation}\label{wkr:as:eq:diagonal-core}
+F_{\beta,\gamma}^{\mathrm{core}}
+=\diag(\gamma^{-1},\beta^{-1},1)
+\circ F_*\circ\diag(1,\beta,\gamma),
+\end{equation}
+and $F_*$ is the normalization \eqref{wkr:eq:originalnormalization} of
+$F_0$. These are exact polynomial identities. They also explain the
+relationship with the previous report's parameters $a_{\mathrm I},
+b_{\mathrm I}$: there $\beta=a_{\mathrm I}b_{\mathrm I}$ and
+$\gamma=a_{\mathrm I}b_{\mathrm I}^2$, so
+$a_{\mathrm I}=\beta^2/\gamma$ and $b_{\mathrm I}=\gamma/\beta$. We avoid
+using $a,b$ as family parameters here because they already name the first
+numerator coefficients in \eqref{wkr:as:eq:abcdef}.
+\textup{[write]} \eqref{wkr:as:eq:source-shear} is Part~I's $h$ of
+\eqref{wkr:eq:triangular-normal} with $R=e$, \eqref{wkr:as:eq:core-shear}
+is Theorem~\ref{wkr:thm:triangular}(ii), and \eqref{wkr:as:eq:diagonal-core}
+is \eqref{wkr:eq:diagonal} with $F^{\mathrm{core}}_{\beta,\gamma}=
+F_{a_{\mathrm I},b_{\mathrm I}}$.
+
+\begin{corollary}[Two tame source--target equivalence classes]
+\label{wkr:as:cor:twoclasses}
+Every map in the stated weighted affine-in-$z$ Keller class is tame
+source--target equivalent either to the identity or to $F_0$, and the two
+classes are distinct.
+\end{corollary}
+\begin{proof}
+Undo target normalization. The tame branch consists of tame
+automorphisms, so lies in the identity class.
+Equations~\eqref{wkr:as:eq:core-shear}, \eqref{wkr:as:eq:diagonal-core}
+and \eqref{wkr:eq:originalnormalization} put the other branch in the class
+of $F_0$. Noninjectivity, shown next, is preserved by source and target
+automorphisms and separates the two classes.
+\end{proof}
+
+\subsection{Ground-field collision certificates}
+
+The core has the collision
+\[
+F_{\beta,\gamma}^{\mathrm{core}}(1,0,-1/\gamma)
+=F_{\beta,\gamma}^{\mathrm{core}}(0,-9/\beta,71/\gamma)
+=(-1/\gamma,-9/\beta,0).
+\]
+Transporting by $T_{-h}$ gives the following certificate for the full
+class.
+
+\begin{proposition}\label{wkr:as:prop:collision}
+For every normalized map in (N), the distinct points
+\begin{align}
+X_1&=(1,0,-1/\gamma),\notag\\
+X_2&=\left(0,-9/\beta,\frac{71}{\gamma}-\frac{81h(0)}{\beta^2}\right)
+\label{wkr:as:eq:collision}
+\end{align}
+have common image $(-1/\gamma,-9/\beta,0)$.
+\end{proposition}
+\begin{proof}
+At $t=0$, the invariant numerators are $p=v$, $q=9\gamma v/\beta$,
+and $r=1+\gamma v$. This gives the image of $X_1$ directly. On $x=0$, the
+core is
+\[
+(0,y,z)\longmapsto
+\left(z-\frac{8\beta^2}{9\gamma}y^2,\ y,\ 0\right).
+\]
+Putting $y=-9/\beta$, $z=71/\gamma$ gives the same image. The shear does
+not move $X_1$ and sends $X_2$ to that core point. The first coordinates
+of $X_1$ and $X_2$ differ, so they are distinct over every
+characteristic-zero field.
+\end{proof}
+\noindent\textup{[write]} This is Part~I's collision
+\eqref{wkr:eq:newcollision} (with $\gamma=a_{\mathrm I}b_{\mathrm I}^2$,
+$\ell=9b_{\mathrm I}=9\gamma/\beta$), made explicit after the shear that
+Part~I's proof of Theorem~\ref{wkr:thm:triangular} only mentions; the
+mechanism is the project's (Section~\ref{wkr:sub:project}). The
+proposition was rechecked at the write with symbolic $\beta,\gamma$ and
+$e=1+\beta t+e_2t^2+e_3t^3$.
+
+Unnormalizing the target changes the common output by a diagonal scaling,
+but not the colliding source points. Thus the classifier supplies rational
+collision certificates whenever the input coefficients are rational.
+
+\begin{example}\label{wkr:as:ex:shear}
+Take $\beta=\gamma=1$ and $e=1+t+t^2+t^3$. Then $h=1+t$, and the
+collision is
+\[
+F(1,0,-1)=F(0,-9,-10)=(-1,-9,0).
+\]
+Its coordinate degrees are $(10,9,7)$, even though its underlying core has
+degrees $(7,6,4)$. The additional degree comes entirely from the source
+shear, not from a new equivalence class.
+\end{example}
+
+\subsection{The exact ordinary degree spectrum}
+
+\begin{corollary}\label{wkr:as:cor:degrees}
+For every normalized noninjective map in this class, $h=0$ gives
+coordinate degrees $(7,6,4)$ and core support sizes $(7,6,3)$. If $h\ne0$
+has degree $m$, the coordinate degrees are exactly
+\begin{equation}\label{wkr:as:eq:degreeprofile}
+(2m+8,\ 2m+7,\ 2m+5).
+\end{equation}
+Consequently the possible maximum ordinary degrees of noninjective maps
+in the full weighted affine-in-$z$ class are exactly
+\[
+\{7\}\cup\{8,10,12,14,\ldots\}.
+\]
+\end{corollary}
+\begin{proof}
+\textup{[write]} By Theorem~\ref{wkr:as:thm:slope} and
+\eqref{wkr:as:eq:core-shear}, every such map is one of Part~I's
+Theorem~\ref{wkr:thm:triangular}, so this is
+Corollary~\ref{wkr:cor:degreespectrum} together with
+Corollary~\ref{wkr:cor:support}. The manuscript's proof repeats Part~I's:
+expansion of the core formulas gives the degree and support profiles
+($\beta\gamma\ne0$ makes every listed core coefficient nonzero); the
+coefficients of $z$ in the three coordinates have degrees $6,5,3$;
+substituting $z+y^2h(xy)$ adds nonzero leading terms of degrees
+$6+(2+2m)$, $5+(2+2m)$, $3+(2+2m)$, which no old term can cancel; and
+$h=t^m$ realizes every $m\ge0$.
+\end{proof}
+
+This is a structural exclusion of ordinary degrees $4,5,6$ for
+\emph{noninjective maps in this class}, not for all three-variable Keller
+maps. Likewise the sixteen-term assertion concerns the unsheared core;
+we make no unsupported claim that arbitrary shears preserve total support
+size or that sixteen terms are globally minimal.
+
+\section{Function-field consequences and a cubic model}
+\label{wkr:as:sec:cubic}
+
+The constant-slope core and its cubic geometry were already part of the
+post-announcement discussion reflected in \cite{shaska,gao}. The enlarged
+classification now transfers that geometry to every noninjective map of
+our class. For completeness we give a direct calculation for $F_0$.
+
+\begin{proposition}\label{wkr:as:prop:cubic}
+Let $(P,Q,R)=F_0(x,y,z)$. Then
+\[
+[K(x,y,z):K(P,Q,R)]=3,
+\]
+and the Galois group of the normal closure is $S_3$. The same statements
+hold after extending $K$ to its algebraic closure, and for every map in
+branch \textup{(N)}. In branch \textup{(T)} the degree is $1$.
+\end{proposition}
+\begin{proof}
+The nonzero Jacobian implies algebraic independence of $P,Q,R$ in
+characteristic zero. To see this directly, choose a nonzero polynomial
+relation of least positive degree if one exists. Differentiating it and
+inverting the Jacobian over $K(x,y,z)$ shows that every partial
+derivative of the relation is another relation. Minimality makes all
+those partial derivatives zero; characteristic zero then makes the
+relation constant, a contradiction.
+
+Set $\tau=y+1/x$. Expansion of \eqref{wkr:eq:original} gives
+\begin{equation}\label{wkr:as:eq:cubic}
+f(\tau)=0,\qquad f(T)=RT^3-2T^2+QT-2P,
+\end{equation}
+and
+\begin{equation}\label{wkr:as:eq:cubic-inverse}
+\frac1x=\frac{Q-4\tau+3R\tau^2}{2}=\frac{f'(\tau)}2,
+\quad y=\tau-\frac1x,
+\quad z=\frac{2x-3x^2y-R}{x^3}.
+\end{equation}
+Thus $K(x,y,z)=K(P,Q,R,\tau)$.
+
+As a polynomial in $K[P,Q,R,T]$, $f$ is irreducible: it is linear in $P$
+with invertible coefficient $-2$, and its quotient ring is the polynomial
+ring $K[Q,R,T]$. Viewed as a polynomial in $T$ over $K[P,Q,R]$, it is
+primitive because its $T^2$ coefficient is $-2$. Gauss's lemma therefore
+gives irreducibility in $K(P,Q,R)[T]$. The extension degree is three.
+
+Its discriminant is
+\begin{equation}\label{wkr:as:eq:discriminant}
+\Delta=4\bigl(Q^2-RQ^3-16P-27R^2P^2+18PQR\bigr).
+\end{equation}
+It is not a square in $K(P,Q,R)$. Indeed, a polynomial that is a rational
+square over a unique factorization domain is a polynomial square: a
+coprime denominator would have to divide the numerator. But specializing
+such a square identity at $R=0$ would make $4(Q^2-16P)$ a square in
+$K[P,Q]$, impossible because its degree in $P$ is one.
+
+An irreducible separable cubic has a transitive subgroup of $S_3$ as its
+normal-closure group. Its discriminant is a square exactly when the group
+lies in $A_3$: the product of the three pairwise root differences changes
+by the sign of a permutation. The nonsquare discriminant therefore forces
+$S_3$. The argument is unchanged over the algebraic closure of $K$.
+Source and target polynomial automorphisms preserve these function-field
+invariants, so \eqref{wkr:as:eq:core-shear},
+\eqref{wkr:as:eq:diagonal-core} and \eqref{wkr:eq:originalnormalization}
+transfer them to (N). The explicit inverse gives degree one in (T).
+\end{proof}
+
+This statement concerns generic function-field degree. It does not assert
+that every special fiber has three points, that the map is finite, or
+that its restriction over an unspecified open set is already a covering.
+
+\noindent\textup{[write]} The cubic is not new in ProveIt either. The
+sibling report \rpath{jacobian-conjecture/arithmetic-local-global-fibers}
+uses the same variable $\tau$ (its $t=y+1/x$), the same cubic
+$g_{A,B,C}(T)=CT^3-2T^2+BT-2A$ with $(A,B,C)=(P,Q,R)$, the same
+derivative identity $f'(\tau)=2/x$ and the same discriminant (its
+Section~2, equation (2.9), equal to \eqref{wkr:as:eq:discriminant} after
+expansion);
+it credits the cubic inverse model to an archived note of
+\texttt{royvanrijn/jacobian-research} and the complex fiber law to Gao's
+Theorems~3.3--3.4, and Gao's Theorem~3.3 gives geometric degree three for
+this map (Section~\ref{wkr:sub:gao}). The sibling report does not state
+that the generic Galois group is $S_3$. The cubic relation, the discriminant identity and the
+degree profile of Example~\ref{wkr:as:ex:shear} were rechecked at the
+write.
+
+\section{Reduced bases and nilpotent slope directions}
+\label{wkr:as:sec:deformations}
+
+Field-valued classification and scheme-theoretic classification are not
+interchangeable. This section determines an explicit part of the
+difference, rather than assuming that the field theorem automatically
+eliminates all coefficient directions.
+
+\subsection{Constancy over every reduced base}
+
+\begin{theorem}[Reduced-base rigidity]\label{wkr:as:thm:reduced}
+Let $\Lambda$ be a reduced commutative $\Q$-algebra with identity.
+Suppose $a,b,c,d,e,g\in\Lambda[t]$ satisfy
+\[
+b(0)=b'(0)=d(0)=0,\qquad a(0)=d'(0)=e(0)=1,
+\qquad \J=-1.
+\]
+Then $g\in\Lambda$: every positive-degree coefficient of $g$ vanishes.
+\end{theorem}
+\begin{proof}
+For each prime ideal $\mathfrak p$ of $\Lambda$, reduce the identities
+modulo $\mathfrak p$ and pass to $\Frac(\Lambda/\mathfrak p)$, a field of
+characteristic zero. Theorem~\ref{wkr:as:thm:slope} makes every
+positive-degree coefficient of $g$ zero there, hence zero in the domain
+$\Lambda/\mathfrak p$. Thus each such coefficient belongs to every prime
+ideal of $\Lambda$, that is, to its nilradical. Reducedness makes it zero.
+\end{proof}
+
+We assert only slope constancy over reduced bases, not a global
+two-branch normal-form theorem for arbitrary rings. For example, a
+constant slope can be a zero divisor on a disconnected base, and division
+by it need not be allowed.
+\textup{[write]} Part~I's Corollary~\ref{wkr:cor:reduced} is the same
+argument for $r=1+t+v$ fixed; here $r$ is free.
+
+\subsection{Explicit dual-number solutions in every slope degree}
+
+Let $\eps^2=0$. For $G\in K[t]$, define
+\begin{equation}\label{wkr:as:eq:CG}
+C_G(t)=-tG(t)-2\int_0^tG(s)\,ds.
+\end{equation}
+The integral here is formal polynomial antiderivation in characteristic
+zero; in particular $C_G(0)=0$ and
+\begin{equation}\label{wkr:as:eq:CGprime}
+C_G'=-tG'-3G.
+\end{equation}
+
+\begin{theorem}[Nonconstant infinitesimal slopes]\label{wkr:as:thm:dual}
+For every $G\in K[t]$, the triple over $K[\eps]/(\eps^2)$
+\begin{equation}\label{wkr:as:eq:dual-example}
+p=v,\qquad q=t+\eps C_G(t)v,\qquad r=1+\eps G(t)v
+\end{equation}
+is polynomial, normalized, and satisfies $\J=-1$. If $G$ is nonconstant,
+its third invariant slope is a nonconstant polynomial over this
+nonreduced coefficient ring.
+\end{theorem}
+\begin{proof}
+Polynomiality and the origin conditions are immediate. Over the
+untruncated polynomial ring $K[\eps,t,v]$, formulas
+\eqref{wkr:as:eq:J0}--\eqref{wkr:as:eq:J2} give the exact identity
+\begin{equation}\label{wkr:as:eq:exact-dual}
+\J=-1+\eps^2v^2\mathcal O(G),\qquad
+\mathcal O(G)=C_GG'-3GC_G'.
+\end{equation}
+The first-order term vanishes by \eqref{wkr:as:eq:CGprime}. Modulo
+$\eps^2$, the displayed determinant is $-1$.
+\end{proof}
+
+For the monomial $G=t^m$ with $m\ge0$, these formulas read
+\begin{align}
+C_G&=-\frac{m+3}{m+1}t^{m+1},\label{wkr:as:eq:monomialC}\\
+\mathcal O(G)&=\frac{(m+3)(2m+3)}{m+1}t^{2m}.\label{wkr:as:eq:monomialO}
+\end{align}
+When $m\ge1$, the third slope is genuinely nonconstant. In source
+coordinates the dual-number map is
+\begin{equation}\label{wkr:as:eq:dual-lift}
+\left(z,\ y+\eps xz C_G(xy),\ x+\eps x^3zG(xy)\right).
+\end{equation}
+For $G=t^m$, its maximum ordinary degree is $2m+4$.
+
+\subsection{Every nonzero slope direction is obstructed at second order}
+
+One might try to repair \eqref{wkr:as:eq:exact-dual} by adding
+second-order terms. The next theorem rules out \emph{all} such repairs
+inside the structural class, not merely the obvious ones.
+
+\begin{theorem}[Universal second-order slope obstruction]
+\label{wkr:as:thm:obstruction}
+Start from the normalized tame point $(p_0,q_0,r_0)=(v,t,1)$, whose lift
+is $(z,y,x)$. Consider any normalized first-order deformation, affine in
+$v$,
+\begin{align}
+p&=v+\eps\bigl(A(t)v+B(t)\bigr),\notag\\
+q&=t+\eps\bigl(C(t)v+D(t)\bigr),\label{wkr:as:eq:generalfirst}\\
+r&=1+\eps\bigl(E(t)+G(t)v\bigr)\notag
+\end{align}
+that satisfies $\J=-1$ modulo $\eps^2$. If $G\ne0$, this deformation
+has no lift to a Keller solution over $K[\eps]/(\eps^3)$ with all three
+numerators still affine in $v$. This remains true with no bound on the
+$t$-degrees of the second-order correction polynomials.
+\end{theorem}
+\begin{proof}
+Linearizing \eqref{wkr:as:eq:J0}--\eqref{wkr:as:eq:J2} gives
+\begin{align}
+[\eps]J_0&=-\bigl(A+D'+E+tE'\bigr),\label{wkr:as:eq:linear0}\\
+[\eps]J_1&=-\bigl(C'+tG'+3G\bigr),\label{wkr:as:eq:linear1}\\
+[\eps]J_2&=0.\notag
+\end{align}
+Thus every first-order solution satisfies
+\begin{equation}\label{wkr:as:eq:Cconstraint}
+C'=-tG'-3G.
+\end{equation}
+If $G$ has degree $m\ge0$ and leading coefficient $g_m\ne0$, then $C$
+has degree $m+1$ and leading coefficient
+\[
+-\frac{m+3}{m+1}g_m.
+\]
+The integration constant in $C$ is arbitrary and does not affect this
+statement.
+
+Now add arbitrary affine-in-$v$ second-order terms. In the notation of
+\eqref{wkr:as:eq:abcdef}, write
+\[
+a=1+\eps A+\eps^2A_2,\qquad
+c=\eps C+\eps^2C_2,\qquad
+g=\eps G+\eps^2G_2,
+\]
+with equally arbitrary $b,d,e$ corrections. The coefficient $J_2$ depends
+only on $a,c,g$. Its formula \eqref{wkr:as:eq:J2} gives
+\begin{equation}\label{wkr:as:eq:obstruction-universal}
+[\eps^2]J_2=CG'-3GC'.
+\end{equation}
+In particular no second-order correction occurs in this expression, and
+neither do $A,B,D,E$.
+
+The leading coefficient of \eqref{wkr:as:eq:obstruction-universal}, in
+degree $2m$, is
+\begin{equation}\label{wkr:as:eq:leading-obstruction}
+\frac{(m+3)(2m+3)}{m+1}g_m^2.
+\end{equation}
+For $m=0$, the same expression follows directly from $G'=0$ and
+$C'=-3G$. Characteristic zero makes \eqref{wkr:as:eq:leading-obstruction}
+nonzero. Therefore $J_2$ cannot vanish modulo $\eps^3$, as the Keller
+identity would require. This contradiction proves the theorem.
+\end{proof}
+\noindent\textup{[write]} In this theorem $A,\ldots,E,G$ are first-order
+variations and $g_m$ is the leading coefficient of $G$; the coefficients
+$g_i$ of Corollary~\ref{wkr:as:cor:schemes} are those of the universal
+slope $g$.
+
+The obstruction includes \emph{constant} nonzero $G$, not just the
+nonconstant slopes that contradict reduced-base rigidity. It concerns
+first-order directions at the particular tame point $(z,y,x)$; it does
+not say that the noninjective constant-slope branch is absent from the
+coefficient space. A branch can meet a point with its slope vanishing to
+higher order in a parameter.
+
+\subsection{The obstruction is sharp at the linearity boundary}
+
+The failure to lift is caused by the affine-in-$v$ restriction, not by an
+intrinsic failure of the infinitesimal volume-preserving deformation.
+There is an explicit minimal-degree repair.
+
+\begin{proposition}[A quadratic repair]\label{wkr:as:prop:quadratic-repair}
+For the canonical direction \eqref{wkr:as:eq:dual-example}, set
+\[
+I_G(t)=\int_0^t\mathcal O(G)(s)\,ds.
+\]
+Then, over $K[\eps]/(\eps^3)$,
+\begin{equation}\label{wkr:as:eq:quadratic-repair}
+p=v,\qquad q=t+\eps C_Gv+\eps^2 I_Gv^2,\qquad
+r=1+\eps Gv
+\end{equation}
+is a normalized polynomial Keller map. For $G\ne0$, maximum $v$-degree
+two is the smallest possible for a second-order repair of this direction.
+\end{proposition}
+\begin{proof}
+At $(p,q,r)=(v,t,1)$, the linearized weighted determinant for arbitrary
+polynomial variations $(P_1,Q_1,R_1)$ is
+\begin{equation}\label{wkr:as:eq:unrestricted-linearization}
+-\partial_vP_1-\partial_tQ_1-R_1-t\partial_tR_1-2v\partial_vR_1.
+\end{equation}
+The second-order addition in \eqref{wkr:as:eq:quadratic-repair} therefore
+contributes $-I_G'v^2=-\mathcal O(G)v^2$, canceling
+\eqref{wkr:as:eq:exact-dual} modulo $\eps^3$. The extra monomial powers
+lift polynomially and do not affect the normalized origin conditions.
+Theorem~\ref{wkr:as:thm:obstruction} rules out every degree-one repair
+when $G\ne0$, whereas the displayed one has degree two.
+\end{proof}
+\noindent\textup{[write]} Theorem~\ref{wkr:as:thm:dual} with
+\eqref{wkr:as:eq:monomialC}--\eqref{wkr:as:eq:monomialO} and this
+repair were rechecked at the write for $G=t^m$, $0\le m\le4$.
+
+\begin{proposition}[Formal integration after removing the degree cap]
+\label{wkr:as:prop:formalflow}
+Every canonical direction \eqref{wkr:as:eq:dual-example} extends to a
+weighted formal Keller family over $K[x,y,z][[\eps]]$. No uniform bound
+on the $z$-degree of its coefficients is asserted.
+\end{proposition}
+\begin{proof}
+Consider the polynomial derivation
+\[
+\mathcal D=x^3zG(xy)\frac{\partial}{\partial x}
+          +xzC_G(xy)\frac{\partial}{\partial y},\qquad \mathcal D(z)=0.
+\]
+Its divergence is $x^2z(3G+tG'+C_G')=0$. It preserves weights, and its
+coefficients have no linear terms. The formal exponential
+$\Phi_\eps=\exp(\eps\mathcal D)$ is a well-defined automorphism of
+$K[x,y,z][[\eps]]$, with inverse $\Phi_{-\eps}$: every coefficient in
+$\eps$ is a polynomial, and the exponential identities hold
+coefficientwise. The formal flow preserves the Jacobian determinant. More
+explicitly, differentiating its Jacobian matrix in $\eps$ and applying
+the determinant product rule gives
+\[
+\frac{\partial}{\partial\eps}\det D\Phi_\eps
+  = (\operatorname{div}\mathcal D)\circ\Phi_\eps\,
+    \det D\Phi_\eps=0.
+\]
+The initial determinant is one. Thus
+$F_\eps=(z,y,x)\circ\Phi_\eps$ has determinant $-1$, preserves the
+required weights, and retains the normalized linear part. Its first-order
+term is exactly \eqref{wkr:as:eq:dual-lift}. This is the standard
+formal-flow construction applied to the present divergence-free
+direction, not a claim of a polynomial family in $\eps$ or analytic
+convergence.
+\end{proof}
+
+\subsection{Nonzero nilpotents in finite coefficient schemes}
+
+For $\Dcap\ge2$, let $\Lambda_{\Dcap}$ be the universal $\Q$-algebra of
+coefficients of six polynomials $a,b,c,d,e,g$ of $t$-degree at most
+$\Dcap$, modulo polynomiality, normalization, and the coefficient
+equations $\J=-1$. This is a finite presentation: only finitely many
+coefficients occur in \eqref{wkr:as:eq:J0}--\eqref{wkr:as:eq:J2}. Write
+\[
+g(t)=g_0+g_1t+\cdots+g_{\Dcap}t^{\Dcap}
+\]
+for its universal third slope, and let $\mathfrak m$ be the rational
+point corresponding to $(p,q,r)=(v,t,1)$.
+
+\begin{corollary}[Arbitrarily many nilpotent slope directions]
+\label{wkr:as:cor:schemes}
+For every $\Dcap\ge2$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every $g_i$ with $i\ge1$ is nilpotent in $\Lambda_{\Dcap}$.
+\item For $1\le i\le \Dcap-1$, $g_i$ is nonzero both in $\Lambda_{\Dcap}$
+and in the local ring $(\Lambda_{\Dcap})_{\mathfrak m}$.
+\item The tangent space at $\mathfrak m$ contains a
+$(\Dcap-1)$-dimensional subspace of nonconstant-slope directions, every
+nonzero member of which is obstructed from lifting to order two inside
+the affine-in-$v$ class, even if the degree cap is subsequently removed.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{wkr:as:thm:reduced} to $\Lambda_{\Dcap}$ modulo its
+nilradical to prove (i). For (ii), the dual-number example with $G=t^i$
+uses $C_G$ of degree $i+1$, so lies inside the degree cap when
+$i\le \Dcap-1$. Its evaluation homomorphism
+$\Lambda_{\Dcap}\to\Q[\eps]/(\eps^2)$ sends $g_i$ to $\eps\ne0$. Since
+the residue point is $\mathfrak m$, every element outside $\mathfrak m$
+maps to a unit; the homomorphism extends to the local ring. Thus $g_i$ is
+also nonzero there.
+
+The first derivatives of these evaluation maps are tangent vectors whose
+values on the coordinates $g_1,\ldots,g_{\Dcap-1}$ form the identity
+matrix. They are therefore linearly independent. A nonzero linear
+combination has a nonzero polynomial $G$ with no constant term, and
+Theorem~\ref{wkr:as:thm:obstruction} applies. This proves (iii).
+\end{proof}
+
+Thus a field-valued classification does not describe the full coefficient
+scheme: nonconstant slopes are invisible at all field-valued points but
+survive as genuine nilpotents. We have not determined the nilpotence
+indices, all relations among these nilpotents, or the full local algebra.
+Those are separate problems rather than consequences of the present
+calculation.
+\textup{[write]} These are statements at the \emph{tame} point
+$(v,t,1)$ with $r$ free. Part~I's Theorem~\ref{wkr:thm:double} fixes
+$r=1+t+v$ at the noninjective point; the two coefficient problems are
+different, and neither result bears on the other's scheme structure.
+
+\section{An exact recognition algorithm and its verification boundary}
+\label{wkr:as:sec:algorithm}
+
+\subsection{Recognition without a determinant search}
+
+Assume the input consists of six densely encoded univariate polynomials
+of maximum degree $\Dcap$ over a characteristic-zero field with exact
+field operations. The following algorithm decides the Keller condition
+inside the stated structural class.
+
+\begin{enumerate}[label=\arabic*.]
+\item Check $b(0)=b'(0)=d(0)=0$. A failure means the proposed lift is not
+a polynomial map in the class.
+\item Compute $a(0)$, $d'(0)$, and $e(0)$. A zero factor implies that the
+Jacobian vanishes at the origin, so the map is not Keller. Otherwise
+normalize the three outputs by these factors.
+\item Check whether $g$ is constant. If not, reject by
+Theorem~\ref{wkr:as:thm:slope}.
+\item If $g=0$, test $r=1$, $p=v+B$, and $q=t+\lambda(v+B)$ with
+$B=p(t,0)$ and $\lambda=q_v(0)$. On success, return the inverse
+\eqref{wkr:eq:tameinverse} and undo output normalization.
+\item If $g=\gamma\ne0$, compute $\beta=e'(0)$. Reject if $\beta=0$;
+otherwise compare the input with
+\eqref{wkr:as:eq:normalp}--\eqref{wkr:as:eq:normalr}. On success return
+$\beta,\gamma,e,h$ and the collision \eqref{wkr:as:eq:collision}.
+\end{enumerate}
+
+Theorem~\ref{wkr:as:thm:classification} proves correctness in both
+directions. No polynomial factorization, extraction of roots, algebraic
+closure, or unbounded search is required by the algorithm. Those tools
+are used in the proof of the theorem, not by an implementation of the
+normal-form test.
+\textup{[write]} This extends Part~I's procedure of
+Section~\ref{wkr:sec:verification}, whose scope stopped at a constant
+coefficient of $v$ in $r$.
+
+\begin{proposition}[Arithmetic-operation complexity]
+\label{wkr:as:prop:complexity}
+The normal-form recognition algorithm uses $O(\Dcap)$ field operations
+for dense univariate coefficient arrays, in addition to reading the
+input.
+\end{proposition}
+\begin{proof}
+All origin tests, scalar normalizations, derivative coefficient reads,
+and coefficient comparisons take linear time. The only polynomial
+multiplications needed in (N) are by $U^2$ and $U^3$, of fixed degrees
+two and three. The shift defining $h$ is a subtraction followed by scalar
+and monomial division. Each operation is linear in the input degree.
+\end{proof}
+
+This is an arithmetic model bound, not a bit-complexity bound over $\Q$.
+Nor is it a performance guarantee for a general-purpose symbolic
+expression engine. The companion SymPy program implements the same tests
+exactly but uses expression expansion and polynomial conversion for
+clarity.
+
+\subsection{The executable companion}
+
+The package contains \rpath{code/weighted_keller.py}, restricted to
+rational input coefficients. Its public functions provide weighted
+Jacobians, polynomial lifting, normalized noninjective forms,
+classification, collision points, and infinitesimal obstruction
+polynomials. Inputs outside the structural class raise a descriptive
+\texttt{ValueError}; a valid polynomial input in the class that is not
+Keller returns a negative classification.
+
+For example:
+\begin{lstlisting}[language=Python]
+from code.weighted_keller import t, normal_form, classify
+p, q, r = normal_form(1, 1, 1 + t + t**2 + t**3)
+result = classify(p, q, r)
+assert result.kind == "noninjective"
+\end{lstlisting}
+The executable implementation accepts rational coefficients rather than
+arbitrary abstract characteristic-zero fields. This restriction belongs
+to the software, not to the theorem.
+\textup{[write]} In ProveIt the module is shipped as
+\rpath{code/02-affine-slope-weighted_keller.py}, which is not an
+importable module name; the example works in a copy with the delivered
+names (Section~\ref{wkr:as:sec:rerun}).
+
+\subsection{Twelve exact-check groups}
+
+The script \rpath{code/verify_results.py} was run with SymPy~1.14.0.
+It records its Python and SymPy versions and all results in
+\rpath{data/verification.json}, with a compact text summary alongside.
+Every group passed:
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.08\textwidth}p{0.84\textwidth}@{}}
+\toprule
+Group & Exact assertion checked\\
+\midrule
+1 & The three generic coefficients of the weighted determinant.\\
+2 & The rational moving-coordinate and pole-equation reductions.\\
+3 & The noninjective normal form with symbolic $\beta,\gamma,e(t)$.\\
+4 & $\det DF_0=-2$, the integral collision, and the exact normalization.\\
+5 & Rational diagonal equivalence and source-shear examples.\\
+6 & Both tame inverse identities for a symbolic function $H$.\\
+7 & Eighteen noninjective rational cases, eighteen rejected mutations,
+ twelve tame cases, and three exceptional rejections.\\
+8 & The core degree/support profiles and shears of degrees $0$ through
+ $10$.\\
+9 & Generic first-order equations and independence of the second-order
+ obstruction from all second-order affine-in-$v$ corrections.\\
+10 & Dual-number examples $G=t^m$ for $0\le m\le12$ and three mixed
+ polynomials; the quadratic second-order repair.\\
+11 & Cubic elimination, the inverse $x$ formula, and the discriminant.\\
+12 & Input-domain, polynomiality, and singular-origin validation.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The randomized rational examples use the fixed seed $20260929$. Generic
+symbolic identities are distinguished from finite examples in the JSON
+output. The root-multiplicity, pole, nilradical, and all-degree arguments
+are written proofs; finite verification is not substituted for them.
+\textup{[write]} The paths in this subsection are the delivered ones; in
+ProveIt they are \rpath{code/02-affine-slope-verify_results.py} and
+\rpath{data/02-affine-slope-verification.json} (and \texttt{.txt}).
+Part~I's own script is the unprefixed \rpath{code/verify_results.py}.
+Group~4 rechecks kernel-checked statements
+(Section~\ref{wkr:as:sec:formal}).
+\section{Further research questions and concrete next steps}
+\label{wkr:as:sec:future}
+
+The original nonconstant-slope question is settled by
+Theorem~\ref{wkr:as:thm:slope}; it should not remain on the open-problem
+list under the same hypotheses. The following extensions remain distinct.
+
+\subsection{Quadratic dependence on the second invariant}
+
+Allow $\deg_v p,\deg_v q\le2$, initially retaining $\deg_v r\le1$.
+Must the third slope still be constant? If not, classify the smallest
+new families up to equivariant tame equivalence. The present pole
+argument uses both the linear moving-coordinate expansion and the
+exponent pattern in $J_2$; neither automatically survives an added $v^2$
+coefficient. A useful first milestone is an all-degree description of the
+highest two coefficient equations, rather than a fixed ordinary-degree
+search alone. This is the next linearity extension proposed in Part~I
+(Section~\ref{wkr:as:q:quadratic}).
+
+\subsection{How does leaving the affine class remove the obstruction?}
+
+Proposition~\ref{wkr:as:prop:quadratic-repair} settles the second-order
+question sharply: a quadratic term suffices and an affine repair is
+impossible. Proposition~\ref{wkr:as:prop:formalflow} also gives
+unrestricted formal integration. What remains is the bounded-degree
+problem: can a given nonzero direction be continued to every order with a
+fixed bound, such as two, on the $v$-degree? Which directions lie on an
+actual polynomial parameter family rather than only a formal one with
+increasing degrees? These questions cannot be answered merely by taking
+the formal exponential.
+
+\subsection{The local nilpotent algebra at the tame boundary}
+
+For the finite coefficient rings $\Lambda_{\Dcap}$, determine the
+nilpotence indices of $g_1,\ldots,g_{\Dcap}$ and their mutual products.
+Corollary~\ref{wkr:as:cor:schemes} shows that many are nonzero nilpotents
+and supplies tangent directions; it does not identify a complete
+local-ring presentation. A concrete task is to compute a small $\Dcap$
+presentation, isolate relations forced by the universal obstruction, and
+prove a pattern by explicit ideal-membership certificates. In particular,
+does the nilpotence order stay bounded as $\Dcap$ increases?
+
+\subsection{Higher-degree thickening at a noninjective point}
+\label{wkr:as:sec:future-thick}
+
+Part~I gives a double-point coefficient scheme under an ordinary
+degree-seven cap with $r=1+t+v$ (Theorem~\ref{wkr:thm:double}), and asks
+whether that thickening stabilizes as the degree cap increases
+(Section~\ref{wkr:as:q:stabilize}). Our theorem about slope directions at
+$(v,t,1)$ does not answer this different question at a noninjective
+point. Solve the untruncated linearized system there, then its
+obstruction equations, while keeping the fixed-third-numerator condition
+explicit.
+
+\subsection{Scheme-theoretic gluing of the branches}
+\label{wkr:as:sec:future-glue}
+
+Field-valued normal forms and tame equivalence do not determine how the
+noninjective branch approaches the tame locus inside coefficient space.
+The second-order theorem is a useful constraint: at the simplest tame
+point, a nonzero first-order slope cannot occur along an honest
+second-order deformation within the affine class. Determine which higher
+orders of slope vanishing occur on actual arcs, and how they depend on
+the remaining first jets. This should be compared with the
+parameter-plane and boundary calculations in Part~I
+(Theorem~\ref{wkr:thm:plane}, Section~\ref{wkr:as:q:gluing}), without
+equating a reduced parameterization with the full coefficient scheme.
+
+\subsection{Other mixed weights and generalized pole equations}
+
+Replace $(-1,1,2)$ by $(-1,1,m)$, or more general primitive mixed-sign
+triples compatible with a nonsingular linear term. The highest
+determinant coefficient should give different power relations and
+equations resembling $L^rL'=\alpha/U^s$. Which exponent pairs force a
+single critical root, and which permit several? A classification should
+track polynomiality along the coordinate hyperplane, not just solve the
+localized equations. The arithmetic of the pole orders may provide a
+systematic dividing line between rigid and flexible weighted classes.
+\textup{[write]} Part~I's Section~10.5 asks the analogous question for
+its Wronskian exponents; here $r$ and $s$ in $L^rL'$ are exponents.
+
+\subsection{Positive characteristic under degree hypotheses}
+
+Several proof steps fail in characteristic $p$: derivatives of $p$th
+powers vanish, multiplicity drops can change, and coefficients such as
+$(m+3)(2m+3)/(m+1)$ need not be nonzero. Determine explicit degree ranges
+and excluded primes for which versions of constant-slope rigidity and
+the obstruction theorem remain valid. Then construct and classify the
+first Frobenius-driven failures. Simply reducing the characteristic-zero
+formulas does not prove an unrestricted positive-characteristic theorem.
+
+\subsection{A formal verification route}
+
+A compact formalization can be organized around the actual dependencies:
+weighted monomial encoding and localization; the three determinant
+coefficients; rational constants of differentiation; valuation
+factorization; the one-critical-root pole lemma; polynomial divisibility
+and origin constraints; and reconstruction. The nilpotent obstruction
+then reduces to coefficient extraction and a leading-term argument.
+The companion symbolic identities are suitable targets for kernel-checked
+normalization certificates, but a proof assistant must still verify the
+all-degree pole and factorization steps. No Lean or Rocq file in this
+package is presented as already proving them.
+
+\subsection{Recognition, sparsity, and arithmetic optimization}
+
+The coefficient-only test separates structural classification from
+coefficient optimization. Over $\Q$, one can now optimize denominator
+height, integral coefficient height, or collision height within the
+explicit diagonal-and-shear orbit. Such a project should specify its
+normalization and cost function: minimizing ordinary degree, number of
+expanded monomials, coefficient height, and the size of a formal
+certificate are different problems. Extending the software to sparse
+arrays and exact algebraic number fields is also useful, but does not
+change the field theorem.
+
+\section{Conclusion of Part~II}
+\label{wkr:as:sec:conclusion}
+
+The passage from a scalar third slope to a polynomial third slope was a
+real missing case in the repository's weighted classification. It is now
+excluded without a degree cap. The mechanism is a rational differential
+invariant whose poles are rigid enough that global polynomiality forces
+the slope constant. This completes the field-valued classification of
+all affine-in-$z$ Keller maps with the specified weights and turns it
+into a direct recognition procedure with concrete inverse or collision
+certificates.
+
+At the same time, the coefficient schemes retain information that no
+field-valued normal-form theorem can see. Nonconstant slopes exist over
+dual numbers in arbitrarily high degrees, and every nonzero slope
+direction at the simplest tame point has a computable, unavoidable
+second-order obstruction inside the class. The combination of exact
+rigidity and explicit nilpotent failure gives both a completed result and
+a sharply defined next research program.
+
+\section{Proof audit and dependency ledger}
+\label{wkr:as:app:audit}
+
+\textup{[write]} This section is the manuscript's Appendix~A.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Claim & What the proof uses\\
+\midrule
+Constant slope & Characteristic zero; all three numerators affine in $v$;
+ polynomial lift; unit normalized origin factors; rational factorization
+ over an algebraic closure; regularity at roots of $U$; origin
+ constraints.\\
+Full classification & Constant-slope theorem; the explicit zero-slope
+ calculation; reconstruction and determinant expansion.\\
+Tame/noninjective split & Written inverse and two explicitly distinct
+ ground-field source points; no topological argument.\\
+Degree spectrum & Exact core leading terms and a nonzero source-shear
+ leading term; no enumeration.\\
+Cubic degree and $S_3$ & Direct identities; algebraic independence from
+ nonzero Jacobian; Gauss's lemma; discriminant criterion for a cubic.\\
+Reduced-base rigidity & Field theorem in residue fraction fields;
+ intersection of prime ideals equals the nilradical.\\
+Second-order obstruction & Generic determinant coefficient $J_2$;
+ first-order slope equation; nonzero leading coefficient.\\
+Coefficient-scheme nilpotents & Reduced-base rigidity; dual-number
+ evaluation maps; their linearly independent tangent values.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Potential gaps explicitly avoided.}
+The moving coordinate is used in a rational function field, not declared
+a global automorphism. The root argument is performed over an algebraic
+closure and descended only after showing coefficient vanishing. The case
+$c=0$ is ruled out before division by $c$, and the case $g=0$ is treated
+separately. A constant Jacobian is not inferred from finite examples.
+The reduced-base theorem is not extended without qualification to
+nonreduced rings. The obstruction theorem allows arbitrary second-order
+coefficients rather than testing only the displayed family. Ordinary
+polynomial degree is kept separate from geometric degree.
+
+\paragraph{What has not been certified.}
+The written proofs have not been checked by a proof-assistant kernel or
+an independent referee. The exact computation checks do not establish
+literature priority, a global minimum degree, a classification beyond the
+linearity and weight hypotheses, or a presentation of the entire
+coefficient scheme. The source comparison is restricted to the materials
+listed in the references and in \rpath{SOURCES.md}
+(\textup{[write]} shipped as \rpath{02-affine-slope-SOURCES.md}).
+
+\section{Reproducibility of Part~II}
+\label{wkr:as:sec:repro}
+
+\textup{[write]} The first paragraph is the manuscript's Appendix~B,
+with the delivered paths.
+
+The package contains the complete \LaTeX{} source, the compiled PDF,
+\rpath{code/weighted_keller.py}, \rpath{code/verify_results.py},
+\rpath{requirements.txt}, and the recorded check output. From the
+package root:
+\begin{lstlisting}[language=bash]
+python -m pip install -r requirements.txt
+python code/verify_results.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The article uses standard \LaTeX{} packages and embedded Computer Modern
+family fonts through Latin Modern. No external bibliography processor or
+network access is required to rebuild the PDF once the packages are
+installed. The verification scripts perform exact rational and symbolic
+arithmetic; they do not download or modify the repository.
+
+\subsection{Shipped names}\label{wkr:as:sec:shipped}
+\textup{[write]} In ProveIt the package's companion files carry the
+prefix \texttt{02-affine-slope-}, the next number in this report's local
+sequence (Part~I's files are unprefixed):
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.40\textwidth}p{0.52\textwidth}@{}}
+\toprule
+Delivered & Shipped\\
+\midrule
+\rpath{code/verify_results.py} & \rpath{code/02-affine-slope-verify_results.py}\\
+\rpath{code/weighted_keller.py} & \rpath{code/02-affine-slope-weighted_keller.py}\\
+\rpath{code/__init__.py} & \rpath{code/02-affine-slope-__init__.py}\\
+\rpath{data/verification.json}, \rpath{.txt} &
+\rpath{data/02-affine-slope-verification.json}, \rpath{.txt}\\
+\rpath{requirements.txt} & \rpath{data/02-affine-slope-requirements.txt}\\
+\rpath{SOURCES.md}, \rpath{STATUS.md} &
+\rpath{02-affine-slope-SOURCES.md}, \rpath{02-affine-slope-STATUS.md}\\
+\bottomrule
+\end{tabular}
+\end{center}
+They are byte-identical to the delivery. The manuscript, its README and
+its PDF are not shipped: this Part is the manuscript, and the report's
+\rpath{article.pdf} is a build of this text.
+
+\subsection{Rerunning the checks}\label{wkr:as:sec:rerun}
+\textup{[write]} Do not run the prefixed script in place. It imports its
+helper by the delivered name (\texttt{from weighted\_keller import}),
+which does not exist under the shipped names, so it stops with an
+\texttt{ImportError}; and if that import were satisfied it would write
+\rpath{data/verification.json} and \rpath{data/verification.txt} next to
+the \rpath{code/} directory, which in this report are \emph{Part~I's}
+records. The package's \rpath{__init__.py} also makes \rpath{code/} a
+package that shadows Python's standard module \texttt{code}. Rerun it on
+a copy with the delivered names instead:
+\begin{lstlisting}[language=bash]
+mkdir -p <scratch>/pkg/code
+cp code/02-affine-slope-verify_results.py <scratch>/pkg/code/verify_results.py
+cp code/02-affine-slope-weighted_keller.py <scratch>/pkg/code/weighted_keller.py
+cp code/02-affine-slope-__init__.py <scratch>/pkg/code/__init__.py
+cp data/02-affine-slope-requirements.txt <scratch>/pkg/requirements.txt
+cd <scratch>/pkg && python code/verify_results.py
+\end{lstlisting}
+It writes \rpath{data/verification.json} and \rpath{data/verification.txt}
+inside the copy; compare them with the shipped
+\rpath{data/02-affine-slope-verification.json} and \rpath{.txt}. At the
+write this was done from the shipped files with SymPy~1.14.0 (under
+\texttt{uv}, Python~3.13.5) in about 11~seconds: all twelve groups passed
+and both records equal the shipped ones apart from line endings. The JSON
+embeds the Python version, so a run under another version differs in
+that field.
+
+%% End of Part II. The appendices below belong to Part I.
+\clearpage
+\fancyhead[L]{\small\color{inkblue}All-degree rigidity of a weighted Keller class}
+\phantomsection\addcontentsline{toc}{part}{Appendices to Part~I}
 \appendix
 \section{An explicit presentation of the coefficient ideal}
 \label{wkr:app:presentation}
@@ -1613,6 +3377,12 @@ report. Nothing was merged and nothing was selected away: every result,
 proof, example, table, question and limitation of the manuscript is
 printed. The manuscript contributed everything except the text marked
 \wtag.
+[Added 29 September 2026, batch~44: this appendix describes Part~I. The
+report is now built from \emph{two} manuscripts; Part~II is batch-44
+manuscript~04, pinned to \nolinkurl{9b24a3a8d545af9624f6ac455f5b548be62818b6},
+and its provenance, shipped files and editorial changes are in
+Sections~\ref{wkr:as:sec:source}, \ref{wkr:as:sec:duplicates}
+and~\ref{wkr:as:sec:repro}.]
 
 The editorial changes are these.
 \begin{enumerate}[label=(\arabic*)]
@@ -1698,17 +3468,33 @@ Vladimir Reshetnikov, \emph{verify\_equivariant\_sparsity.py}.
 Same repository snapshot and inspection date.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9/Algebra/JacobianConjecture/Research/verify_equivariant_sparsity.py}.
 
+\bibitem{repo-9b24}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: Algebra/JacobianConjecture}, repository development and
+research notes, inspected at commit
+\nolinkurl{9b24a3a8d545af9624f6ac455f5b548be62818b6},
+29 September 2026 (cited by Part~II).
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9b24a3a8d545af9624f6ac455f5b548be62818b6/Algebra/JacobianConjecture}.
+The formal status asserted by the repository concerns its own
+declarations, not the new theorems of Part~II.
+
 \bibitem{shaska}
 T.~Shaska, \emph{Graded Keller maps and the Jacobian Conjecture},
 arXiv:2607.20210, 2026. Version 2 dated July 25, 2026;
 consulted September 24, 2026.
 \url{https://arxiv.org/abs/2607.20210}.
+Part~II consulted the HTML of the same version on September 29, 2026,
+for graded coordinates, the known counterexample and coefficient-scheme
+geometry.
 
 \bibitem{gao}
 Shuhong Gao, \emph{Counterexamples to the Jacobian conjecture in dimensions
 greater than two}, arXiv:2608.00222, 2026. Version 1 dated July 31, 2026;
 consulted September 24, 2026.
 \url{https://arxiv.org/abs/2608.00222}.
+Part~II consulted the HTML of the same version on September 29, 2026,
+for broader constructions and generic fiber degrees; it is not used there
+as a classification theorem.
 
 \bibitem{nullstellensatz}
 The Stacks Project Authors, \emph{The Stacks Project},
