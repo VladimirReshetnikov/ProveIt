@@ -1,0 +1,1789 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Resonance-Block Summation of Transseries},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\im}{\operatorname{Im}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\bw}{\boldsymbol\omega}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\exprel}{\operatorname{exprel}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Resonance-block summation of transseries}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\begin{document}
+\begin{titlepage}
+\vspace*{17mm}
+\noindent{\large\scshape Transseries / Resurgence / Certified Inversion}\par
+\vspace{12mm}
+\noindent{\Huge\bfseries Resonance-Block\par Summation of Transseries}\par
+\vspace{7mm}
+\noindent{\Large Small divisors, coalescing Stokes actions,\par and nonlinear inversion}\par
+\vspace{12mm}
+\noindent Research report prepared for Vladimir Reshetnikov\par
+\noindent 29 September 2026\par
+\vspace{12mm}
+\begin{abstract}
+A countable Stokes expansion can have locally finite, finitely generated
+positive action support and still fail to converge at every positive value
+of the large variable. We establish this obstruction, and a constructive
+repair, for the meromorphic Borel kernels
+\[
+ \widehat F_{\bw}(t)=\frac{t^d}{\prod_{j=1}^{d}\sin(\pi\omega_jt)},
+ \qquad \omega_j>0.
+\]
+Nearby poles are grouped into blocks of at most $d$ nodes. Each block is a
+confluent divided difference and admits a bound independent of every
+internal pole separation. The block series equals the lateral Stokes jump,
+converges normally throughout the right half-plane, and has an explicit
+uniform action-cutoff error. For two incommensurate lattices, the ungrouped
+series has the exact abscissa determined by exponential Diophantine
+approximation; this abscissa can be infinite even though the original
+series has exact Gevrey order one. We also prove a uniform coalescence
+profile, characterize rational-exponential compression, and transport the
+block sums through analytic inversion with an explicit geometric tail.
+These results supply a concrete extension beyond a weighted individual-sector
+hypothesis in the ProveIt repository. Complete conventional proofs and
+reproducible checks are included; the claims are not Lean-formalized and
+independent research priority is not asserted.
+\end{abstract}
+\vfill
+\noindent\small Repository snapshot:
+\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.\par
+\noindent\small Source, PDF, verification programs, executed results, and build instructions
+are distributed together. No repository files were modified.
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The question and the contribution}
+\label{sec:intro}
+
+\subsection{A gap between formal support and analytic realization}
+A familiar transseries calculation assigns an exponentially small term to
+each Borel singularity. When the singularities lie at positive actions
+$a$, the expected Stokes correction has the schematic form
+\begin{equation}
+ J(x)=2\pi\ii\sum_a p_a(x)\e^{-ax},\qquad x\longrightarrow+\infty.
+ \label{eq:schematic}
+\end{equation}
+The polynomial $p_a$ records the principal part of a pole. Three different
+questions must be kept separate. Is the support legitimate for formal
+asymptotic bookkeeping? Does a function with these asymptotics exist? Does
+the displayed infinite sum converge numerically at fixed $x$? In the model
+studied here the first two answers are yes, while the third can be no for
+every positive $x$.
+
+The obstruction does not involve actions accumulating at a finite point.
+Our actions form a finite union of positive lattices. Every bounded action
+interval contains finitely many poles, and all actions belong to the
+additive monoid generated by $1/\omega_1,\ldots,1/\omega_d$. The obstruction
+is instead that distinct lattices can have extremely close nodes at
+arbitrarily large actions. Their individual residues contain small
+denominators. The corresponding finite group of residues cancels these
+denominators, but an infinite expansion that estimates the residues
+separately does not see the cancellation.
+
+This observation leads to a concrete extension problem:
+\begin{quote}
+Can one construct a normally convergent Stokes representation, with
+explicit uniform error bounds and a usable nonlinear inversion calculus,
+without imposing a Diophantine condition on the periods?
+\end{quote}
+The answer is affirmative for every fixed finite number of lattices in
+\eqref{eq:kernel} below. We also determine exactly when the ungrouped
+representation converges in the two-lattice case.
+
+\subsection{Relationship to the repository}
+The repository's article \emph{Nonlinear Stokes Transport under Logarithmic
+Inversion} proves a contour-based inverse formula and a countable extension
+under a weighted summability assumption
+\cite{repo-stokes}. Its label \texttt{cor:countable} requires the sum of
+individual perturbation norms to be finite and sufficiently small. Its
+finite-action collision proposition, \texttt{prop:collision}, treats
+bounded amplitudes that combine by addition when actions coincide. These
+are appropriate hypotheses and conclusions; this report does not correct
+an error in them.
+
+The present problem starts one step earlier. We obtain perturbations from
+Borel residues whose amplitudes can individually diverge as two poles
+approach one another. The weighted individual-residue norm can be infinite.
+A finite resonance block, unlike either of its constituent residues, has
+a controlled analytic norm. We prove the estimate that makes the
+repository's analytic inversion method applicable after this change of
+representation. The inverse coefficient formula itself remains classical.
+
+The series-and-transseries inventory also contains recent studies of
+finite-action folds, arithmetic action accumulation, and inverse harmonic
+Stokes data \cite{repo-index}. The mechanism here is distinct: the number
+of lattices is finite, their positive poles have no finite accumulation,
+and the near-collisions occur at unbounded action. The source comparison is
+limited to the inspected inventory and the cited Stokes article. It is not
+a claim-by-claim audit of the repository's entire corpus.
+
+\subsection{Classical ingredients and the boundary of the novelty claim}
+Borel--Laplace summation and nonlinear closure are established subjects;
+Sauzin's exposition is a suitable reference \cite{sauzin}. Divided
+differences, including confluent nodes and their integral representations,
+are classical \cite{deboor}. Small-divisor phenomena for quantum logarithms
+and parameter-dependent functional equations are treated by Marmi and
+Sauzin \cite{marmi-sauzin}. Meromorphic Borel transforms, residue expansions,
+and Stokes jumps in quantum-dilogarithm problems are treated explicitly by
+Garoufalidis and Kashaev \cite{garoufalidis-kashaev}.
+
+Accordingly, neither cancellation of coalescing poles nor the general
+existence of useful integral representations when some separated
+expansions fail is claimed as a discovery. The contribution developed here
+is a specific quantitative package: finite block cardinality, explicit
+separation-independent bounds in arbitrary finite dimension, the exact
+raw-series threshold for two lattices, a uniform collision law,
+rational-exponential rigidity, and a blockwise inverse certificate. The
+proofs establish the stated results. Whether every refinement is new to
+the literature requires a broader priority review.
+
+\subsection{Results at a glance}
+The central theorem is Theorem~\ref{thm:block}: for a block $C$ with smallest
+action $a_C$ and $m_C\le d$ pole occurrences, its contribution satisfies
+\[
+ |S_C(z)|\le K(1+a_C)^d\e^{-a_C\re z}
+ \sum_{j=0}^{m_C-1}\frac{|z|^j}{j!\rho^{m_C-1-j}}.
+\]
+All constants are explicit and uniform on a compact positive period box.
+No factor involves the separation of two nodes in the same block.
+Theorem~\ref{thm:arithmetic} identifies the ungrouped abscissa as
+\[
+ \beta(\alpha)=\limsup_{n\to\infty}\frac1n
+ \log\frac1{\dist(n\alpha,\Z)}.
+\]
+Theorems~\ref{thm:coalescence}, \ref{thm:rational}, and \ref{thm:inverse}
+then give, respectively, the collision profile, the exact compression
+criterion, and nonlinear transport. Section~\ref{sec:questions} records
+further questions rather than treating these finite-lattice results as a
+complete theory of countable-action resurgence.
+
+\section{The Borel model and its lateral sums}
+\label{sec:borel}
+
+\subsection{Conventions}
+Fix $d\ge1$ and positive real periods $\bw=(\omega_1,\ldots,\omega_d)$.
+The starting point is
+\begin{equation}
+ \widehat F_{\bw}(t)=
+ \frac{t^d}{\prod_{j=1}^{d}\sin(\pi\omega_jt)}.
+ \label{eq:kernel}
+\end{equation}
+The value at zero is filled in by continuity:
+\[
+ \widehat F_{\bw}(0)=\frac1{\pi^d\omega_1\cdots\omega_d}.
+\]
+The function is even. Write its Taylor series as
+\begin{equation}
+ \widehat F_{\bw}(t)=\sum_{n\ge0}b_n t^n,
+ \qquad
+ \widetilde F_{\bw}(z)=\sum_{n\ge0}n!b_n z^{-n-1}.
+ \label{eq:borel-convention}
+\end{equation}
+Thus our formal Borel map sends $z^{-n-1}$ to $t^n/n!$.
+All odd $b_n$ vanish. The positive poles, counted with multiplicity, are
+\begin{equation}
+ \mathcal P_{\bw}=\{n/\omega_j:j=1,\ldots,d,\ n=1,2,\ldots\}.
+ \label{eq:poles}
+\end{equation}
+Different occurrences at the same location represent a higher-order pole,
+not separate simple residues. The numerator does not cancel any positive
+or negative pole.
+
+For $0<\theta<\pi/2$, define
+\begin{equation}
+ F_\pm(z)=\int_0^{\e^{\pm\ii\theta}\infty}
+       \e^{-zt}\widehat F_{\bw}(t)\dd t.
+ \label{eq:lateral}
+\end{equation}
+Initially the corresponding sufficient condition is
+$\re(z\e^{\pm\ii\theta})>0$. Integrals with different admissible angles
+on the same side agree on their common domains by contour deformation.
+For any $z$ in the right half-plane, a sufficiently small positive
+$\theta$ satisfies both inequalities. These choices patch to two
+holomorphic functions on $\re z>0$. Throughout the article,
+\begin{equation}
+ J_{\bw}(z)=F_-(z)-F_+(z),
+ \qquad S_{\bw}(z)=\frac{J_{\bw}(z)}{2\pi\ii}.
+ \label{eq:jump-sign}
+\end{equation}
+This sign convention matters in every residue formula below.
+
+\subsection{Uniform Gevrey estimates}
+\begin{proposition}[Exact Gevrey order and off-ray realization]
+\label{prop:gevrey}
+The series $\widetilde F_{\bw}$ has Gevrey order one and no smaller
+nonnegative Gevrey order. Its Borel transform is meromorphic with a locally
+finite pole set. Fix
+\begin{equation}
+ 0<m_0\le\omega_j\le M_0<\infty
+ \quad(j=1,\ldots,d).
+ \label{eq:box}
+\end{equation}
+There are constants $C,A>0$, uniform on this box, such that
+$|n!b_n|\le CA^n n!$. For fixed $\theta\in(0,\pi/2)$ there are uniform
+$C_\theta,A_\theta>0$ for which, for $x>0$ and $N\ge0$,
+\begin{equation}
+ \left|F_\pm(x)-\sum_{n=0}^{N-1}n!b_n x^{-n-1}\right|
+ \le C_\theta A_\theta^N N!x^{-N-1}.
+ \label{eq:gevrey-remainder}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Choose $0<r<1/M_0$. On $|t|\le r$ the origin is removable and no other
+zero of a denominator occurs. Compactness of the period box gives a
+uniform bound there. Cauchy's inequality yields $|b_n|\le Cr^{-n}$.
+For each fixed $\bw$, the nearest poles are at
+$\pm1/\max_j\omega_j$ and they are genuine. The Borel Taylor radius is
+therefore finite and equal to $1/\max_j\omega_j$.
+If $|n!b_n|\le CB^n(n!)^s$ held with $s<1$, then
+$|b_n|^{1/n}\le CB(n!)^{(s-1)/n}$ up to an inessential factor tending to
+one. The right side tends to zero, making the Borel transform entire.
+This is a contradiction.
+
+On the ray $t=u\e^{\ii\theta}$ one has
+\[
+ |\sin(\pi\omega_jt)|^2
+ =\sin^2(\pi\omega_ju\cos\theta)
+  +\sinh^2(\pi\omega_ju\sin\theta).
+\]
+Consequently $\widehat F$ is uniformly bounded along that ray: it is
+regular near zero and decreases exponentially, up to the factor $u^d$,
+at infinity. The same holds below the axis.
+Let $r_0=r/2$. Taylor's estimate on $u\le r_0$ and the coefficient bound
+on $u\ge r_0$ imply a global ray estimate
+\[
+ \left|\widehat F(u\e^{\pm\ii\theta})
+       -\sum_{n<N}b_n(u\e^{\pm\ii\theta})^n\right|
+ \le C A^N u^N.
+\]
+For the second range, bound each polynomial term by
+$Cu^N r_0^{-N}(r_0/r)^n$ and sum the resulting geometric series;
+bound the function itself by its ray supremum. This proves the displayed
+estimate with constants independent of $N$.
+Integrating it against $\e^{-xu\cos\theta}$ gives
+$CA^NN!/(x\cos\theta)^{N+1}$, which has the form
+\eqref{eq:gevrey-remainder}. Integration of each Taylor monomial along
+the ray gives $n!x^{-n-1}$. The same decay estimates justify the contour
+patching in \eqref{eq:lateral}.
+\end{proof}
+
+\begin{remark}[What Gevrey regularity does not say]
+The coefficient bound concerns the Borel germ near the origin. It does not
+bound the residues at arbitrarily remote, nearly colliding singularities.
+No inference from \eqref{eq:gevrey-remainder} to absolute convergence of
+\eqref{eq:schematic} will be made. The counterexample in
+Section~\ref{sec:arithmetic} shows why such an inference would be false.
+\end{remark}
+
+\section{A separation-independent resonance-block theorem}
+\label{sec:blocks}
+
+\subsection{The partition and explicit constants}
+Continue to assume the compact box \eqref{eq:box}. Set
+\begin{equation}
+ \delta=\frac1{4dM_0},\qquad \rho=\frac\delta4.
+ \label{eq:delta}
+\end{equation}
+List the positive pole occurrences in increasing order, keeping repeated
+nodes. Join two consecutive occurrences precisely when their gap is less
+than $\delta$. The connected components are called \emph{resonance
+blocks}. This is a fixed deterministic partition once the periods and the
+box are specified; it is not necessary to optimize the value of $\delta$.
+For a block $C$, denote its ordered nodes by $a_1,\ldots,a_m$, its size by
+$m=m_C$, and its minimum by $a_C$.
+
+We use the deliberately conservative constants
+\begin{align}
+ B_0&=\max\left\{1,\frac2{\pi m_0},\frac1{m_0\delta}\right\},
+ &L_0&=1+\frac1{4M_0},\notag\\
+ K&=(L_0B_0)^d,
+ &D_0&=d(\lceil M_0\rceil+2),\label{eq:constants}\\
+ P_d(v)&=\sum_{m=1}^{d}\sum_{j=0}^{m-1}
+          \frac{v^j}{j!\rho^{m-1-j}}.\notag
+\end{align}
+Sharper constants are possible. Their advantage here is that they require
+no number-theoretic information about the periods.
+
+\begin{lemma}[Finite block geometry]
+\label{lem:geometry}
+Every block contains at most $d$ occurrences and at most one occurrence
+from each lattice. Its diameter is less than $(d-1)\delta$. Distinct blocks
+are separated by at least $\delta$. The number of block minima in any
+interval of length one is at most $D_0$.
+\end{lemma}
+\begin{proof}
+Suppose $d+1$ consecutive occurrences were connected. Their span would be
+less than $d\delta=1/(4M_0)$. Two of the occurrences would come from the
+same one of the $d$ lattices. Distinct nodes in that lattice are separated
+by at least $1/M_0$, a contradiction. The same argument excludes two
+occurrences from one lattice in any block. The diameter and separation
+claims follow from the construction.
+A lattice of spacing $1/\omega_j$ has at most
+$\lceil M_0\rceil+2$ nodes in any unit interval. Every block minimum is a
+node of one of the lattices, so summing this bound proves the final claim.
+\end{proof}
+
+\subsection{Removing the nearby poles before estimating}
+For each block define
+\begin{equation}
+ H_C(t)=\widehat F_{\bw}(t)\prod_{\nu=1}^{m_C}(t-a_\nu).
+ \label{eq:HC}
+\end{equation}
+All factors associated with repeated nodes are retained in the product.
+The point of \eqref{eq:HC} is that $H_C$, rather than any individual
+residue, has a uniform local bound.
+
+\begin{lemma}[Uniform regular-factor bounds]
+\label{lem:regular}
+The function $H_C$ is holomorphic in a neighborhood of the closed tube
+\[
+ \{t\in\C:\dist(t,[a_1,a_m])\le2\rho\}.
+\]
+Throughout this tube,
+\begin{equation}
+ |H_C(t)|\le K(1+a_C)^d.
+ \label{eq:Hbound}
+\end{equation}
+For real $u\in[a_1,a_m]$ and every integer $k\ge0$,
+\begin{equation}
+ |H_C^{(k)}(u)|\le k!K(1+a_C)^d\rho^{-k}.
+ \label{eq:derivativeH}
+\end{equation}
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:geometry}, each lattice either contributes one canceled
+zero to the block or contributes none. For a contributing lattice, call
+its node $a$. On the stated tube,
+\[
+ |t-a|\le(d-1)\delta+2\rho=(d-\tfrac12)\delta<\frac1{4M_0}.
+\]
+After removing the harmless sign $(-1)^n$,
+$\sin(\pi\omega_jt)=\sin(\pi\omega_j(t-a))$. If $|w|\le\pi/4$, the
+power series gives
+\[
+ \left|\frac{\sin w}{w}-1\right|
+ \le\frac{\sinh|w|}{|w|}-1<\frac14.
+\]
+It follows, with a slightly relaxed constant, that
+\[
+ \left|\frac{t-a}{\sin(\pi\omega_jt)}\right|
+ \le\frac2{\pi m_0}.
+\]
+The canceled quotient is holomorphic, including at $t=a$.
+
+For a noncontributing lattice, no node lies in the block interval, and
+all its positive nodes outside that interval are at least $\delta$ away.
+Zero and negative nodes are farther away still, because the first positive
+node of any lattice is at least $1/M_0$. Thus, throughout the tube,
+\[
+ \dist(\re t,\omega_j^{-1}\Z)\ge\delta-2\rho=\delta/2.
+\]
+For real $v$, $|\sin(\pi v)|\ge2\dist(v,\Z)$. Together with
+$|\sin(u+\ii v)|\ge|\sin u|$, this yields
+$|\sin(\pi\omega_jt)|\ge m_0\delta$.
+Finally $|t|\le a_C+1/(4M_0)\le L_0(1+a_C)$.
+Multiplying the bounds for the $d$ denominator factors and the numerator
+proves \eqref{eq:Hbound}. Cauchy's estimate on a circle of radius $\rho$
+centered at $u$ proves \eqref{eq:derivativeH}.
+\end{proof}
+
+\subsection{The cancellation identity}
+For a function $f$ holomorphic near the nodes, its confluent divided
+difference is characterized by
+\begin{equation}
+ [a_1,\ldots,a_m]f
+ =\frac1{2\pi\ii}\int_\Gamma
+      \frac{f(t)}{\prod_{\nu=1}^m(t-a_\nu)}\dd t,
+ \label{eq:DDcontour}
+\end{equation}
+where $\Gamma$ surrounds the nodes and no singularity of $f$. At distinct
+nodes this is
+\begin{equation}
+ [a_1,\ldots,a_m]f
+ =\sum_{\nu=1}^m\frac{f(a_\nu)}{\prod_{\mu\ne\nu}(a_\nu-a_\mu)}.
+ \label{eq:DDdistinct}
+\end{equation}
+At repeated nodes it is defined by continuous confluence; for $m$ equal
+nodes it is $f^{(m-1)}(a)/(m-1)!$.
+
+For real nodes we need the Hermite--Genocchi formula
+\begin{equation}
+ [a_1,\ldots,a_m]f
+ =\int_{\Delta_{m-1}}f^{(m-1)}\!\left(\sum_{\nu=1}^m
+                 \lambda_\nu a_\nu\right)\dd\lambda.
+ \label{eq:HG}
+\end{equation}
+Here $\lambda_\nu\ge0$, $\sum\lambda_\nu=1$, and the coordinate measure
+on the simplex has volume $1/(m-1)!$; it is not the induced Euclidean
+surface measure. For completeness, the formula for $m=2$ is the
+fundamental theorem of calculus after a linear change of variable.
+For general $m$, integrate first along a simplex coordinate joining the
+first and last nodes. The fundamental theorem gives the difference of the
+two $(m-2)$-simplex integrals divided by $a_m-a_1$. Induction gives the
+usual divided-difference recursion. Distinct nodes suffice for this
+argument; continuity of the compact simplex integral gives repeated nodes.
+Formula \eqref{eq:DDcontour} satisfies the same recursion, by subtracting
+the two rational denominators, and the same initial case. This proves the
+identities, including the confluent case. See also \cite{deboor}.
+
+\begin{definition}[Block contribution]
+The contribution of a block is the finite sum over its distinct locations
+\begin{equation}
+ S_C(z)=\sum_{a\in C\ \mathrm{distinct}}
+            \Res_{t=a}\bigl(\e^{-zt}\widehat F_{\bw}(t)\bigr).
+ \label{eq:blockdef}
+\end{equation}
+Equivalently, without any separation denominator,
+\begin{equation}
+ S_C(z)=[a_1,\ldots,a_m]\bigl(\e^{-zt}H_C(t)\bigr).
+ \label{eq:blockDD}
+\end{equation}
+\end{definition}
+Equation \eqref{eq:blockDD} follows immediately by substituting
+\eqref{eq:HC} into \eqref{eq:DDcontour}. It is an exact identity, not an
+asymptotic cancellation.
+
+\subsection{Normal convergence, Stokes equality, and the tail}
+\begin{theorem}[Uniform resonance-block summation]
+\label{thm:block}
+Under \eqref{eq:box}, for $z$ with $x=\re z>0$ and every block $C$,
+\begin{equation}
+ |S_C(z)|\le K(1+a_C)^d\e^{-a_Cx}
+     \sum_{j=0}^{m_C-1}\frac{|z|^j}{j!\rho^{m_C-1-j}}.
+ \label{eq:block-bound}
+\end{equation}
+The series $\sum_C S_C(z)$ converges absolutely and locally uniformly on
+$x>0$, and
+\begin{equation}
+ F_-(z)-F_+(z)=2\pi\ii\sum_C S_C(z).
+ \label{eq:Stokes-block}
+\end{equation}
+For $T\ge0$, retaining every block with $a_C<T$ gives the explicit bound
+\begin{equation}
+ \left|S_{\bw}(z)-\sum_{a_C<T}S_C(z)\right|
+ \le
+ \frac{KD_0d!(T+2)^dP_d(|z|)}{(1-\e^{-x})^{d+1}}\e^{-Tx}.
+ \label{eq:tail}
+\end{equation}
+Every assertion and constant is uniform over the period box. The cutoff
+is block-complete: a retained block may contain a node slightly above $T$.
+\end{theorem}
+\begin{proof}
+Put $m=m_C$ and $f(t)=\e^{-zt}H_C(t)$. On the real block interval,
+Leibniz's rule and \eqref{eq:derivativeH} give
+\begin{align*}
+ |f^{(m-1)}(u)|
+ &\le K(1+a_C)^d\e^{-a_Cx}
+ \sum_{j=0}^{m-1}\binom{m-1}{j}|z|^j(m-1-j)!\rho^{-(m-1-j)}\\
+ &=(m-1)!K(1+a_C)^d\e^{-a_Cx}
+   \sum_{j=0}^{m-1}\frac{|z|^j}{j!\rho^{m-1-j}}.
+\end{align*}
+The simplex volume in \eqref{eq:HG} proves \eqref{eq:block-bound}.
+In particular the bound depends on the size of a block, not the distance
+between any two of its nodes.
+
+There are at most $D_0$ block minima in each interval
+$[T+k,T+k+1)$. Hence
+\begin{align*}
+ \sum_{a_C\ge T}|S_C(z)|
+ &\le KD_0P_d(|z|)\e^{-Tx}
+       \sum_{k\ge0}(T+k+2)^d\e^{-kx}\\
+ &\le KD_0P_d(|z|)(T+2)^d\e^{-Tx}
+       \sum_{k\ge0}(k+1)^d\e^{-kx}.
+\end{align*}
+The elementary generating function for $(k+1)^d$ is an Eulerian
+polynomial divided by $(1-q)^{d+1}$; the polynomial has nonnegative
+coefficients summing to $d!$. Thus
+$\sum_{k\ge0}(k+1)^d q^k\le d!/(1-q)^{d+1}$ for $0<q<1$.
+Alternatively this inequality follows by expanding the powers in rising
+factorials. This proves \eqref{eq:tail} and local uniform convergence.
+
+It remains to identify the sum with the actual jump. Choose radii $R_
+\ell\to\infty$ at midpoints of the gaps between successive blocks.
+Each such radius is at least $\delta/2$ from every positive pole.
+For fixed $z$ in the right half-plane choose a small $\theta>0$ with
+$\re(z\e^{\ii\varphi})\ge c>0$ on $|\varphi|\le\theta$.
+On the outer arc $t=R_\ell\e^{\ii\varphi}$, the denominator is uniformly
+bounded away from zero when $|\im t|$ is small, and grows exponentially
+when $|\im t|$ is not small. More explicitly, for a fixed small $h>0$,
+if $|\im t|\le h$, then
+$|R_\ell-\re t|=O(h^2/R_\ell)$; for large $\ell$ the real part stays at
+least $\delta/4$ from every pole. If $|\im t|\ge h$, use
+$|\sin(\pi\omega_jt)|\ge\sinh(\pi m_0h)$.
+Thus $|\widehat F(t)|\le C R_\ell^d$ everywhere on these arcs.
+Their integrals are $O(R_\ell^{d+1}\e^{-cR_\ell})$ and tend to zero.
+
+Apply the residue theorem to the contour that travels out along the lower
+ray, traverses the outer arc counterclockwise, and returns along the upper
+ray. All enclosed poles form complete blocks. There is no pole at zero.
+The limiting identity is \eqref{eq:Stokes-block}, with the sign prescribed
+in \eqref{eq:jump-sign}. The same argument works locally uniformly in $z$.
+\end{proof}
+
+\begin{corollary}[Regularity across rational resonances]
+\label{cor:parameter}
+The total jump is real-analytic in the positive periods, including at
+coincidences of any multiplicity at most $d$. Its values are independent
+of which sufficiently small admissible block threshold is used.
+\end{corollary}
+\begin{proof}
+For periods in a sufficiently small complex neighborhood of any fixed
+positive vector, fixed upper and lower rays avoid every zero of the
+corresponding denominators. Their imaginary parts remain bounded away
+from zero relative to the ray parameter outside a neighborhood of the
+origin. The integrals \eqref{eq:lateral} therefore depend holomorphically
+on the periods, by locally uniform exponential domination. Their
+difference has the same property. Theorem~\ref{thm:block} identifies every
+admissible partition with this one difference. Individual blocks can
+split or join when the partition changes; the total does not change.
+\end{proof}
+
+\begin{remark}[Not an unconditional rearrangement theorem]
+When the raw residue series is divergent, \eqref{eq:Stokes-block} is not a
+rearrangement of an already convergent series. It is a grouping prescription
+justified by contour exhaustion and a new absolute block estimate.
+Deleting one member of each close pair can destroy the conclusion. The
+finite grouping is part of the analytic representation.
+\end{remark}
+
+\section{The exact arithmetic obstruction for two lattices}
+\label{sec:arithmetic}
+
+\subsection{Individual residues and the approximation exponent}
+Specialize to $d=2$ and $(\omega_1,\omega_2)=(1,\alpha)$, where
+$\alpha>0$ is irrational. All positive poles are simple. At the integer
+poles and the second-lattice poles the residues of the Borel kernel are
+\begin{equation}
+ r_n=\frac{(-1)^n n^2}{\pi\sin(\pi\alpha n)},\qquad
+ r'_m=\frac{(-1)^m(m/\alpha)^2}{\pi\alpha\sin(\pi m/\alpha)}.
+ \label{eq:rawres}
+\end{equation}
+The ungrouped candidate for the normalized jump is
+\begin{equation}
+ \sum_{n\ge1}r_n\e^{-nz}
+ +\sum_{m\ge1}r'_m\e^{-(m/\alpha)z}.
+ \label{eq:rawseries}
+\end{equation}
+One may either ask that both series converge or order all their terms by
+increasing action. The absolute convergence criterion is the same, and
+the failure of the term test established below applies to either ordinary
+interpretation.
+
+Let $\|u\|=\dist(u,\Z)$, and define the exponential approximation exponent
+\begin{equation}
+ \beta(\alpha)=\limsup_{n\to\infty}\frac1n\log\frac1{\|n\alpha\|}
+ \in[0,\infty].
+ \label{eq:beta}
+\end{equation}
+This exponent measures exponential, not merely polynomial,
+approximation. In particular, calling a number Liouville is not enough
+to determine whether its $\beta$ is zero, finite positive, or infinite.
+
+\begin{lemma}[Reciprocal covariance]
+\label{lem:reciprocal}
+For every positive irrational $\alpha$,
+\begin{equation}
+ \alpha\beta(1/\alpha)=\beta(\alpha).
+ \label{eq:beta-reciprocal}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Suppose first that $0<b<\beta(\alpha)$, so there are infinitely many $n$
+with $\|n\alpha\|<\e^{-bn}$. Let $m$ be the nearest integer to
+$n\alpha$. Then $m/n\to\alpha$, and for these sufficiently large $n$,
+$n$ is the nearest integer to $m/\alpha$. Hence
+\[
+ \|m/\alpha\|=\frac{\|n\alpha\|}{\alpha},\qquad
+ \limsup\frac1m\log\frac1{\|m/\alpha\|}\ge\frac b\alpha.
+\]
+Letting $b$ tend to $\beta(\alpha)$ proves
+$\beta(1/\alpha)\ge\beta(\alpha)/\alpha$ whenever the latter is positive,
+including the case of infinity. Interchanging $\alpha$ and $1/\alpha$
+gives the reverse inequality. If one exponent is zero and the other were
+positive, the same positive-exponent argument in the reverse direction
+would give a contradiction. This covers all cases.
+\end{proof}
+
+\begin{theorem}[Exact ungrouped abscissa]
+\label{thm:arithmetic}
+For irrational $\alpha>0$, the raw residue series
+\eqref{eq:rawseries} converges absolutely when $\re z>\beta(\alpha)$.
+When $\re z<\beta(\alpha)$, its individual terms do not tend to zero.
+Consequently its abscissa of absolute convergence is exactly
+$\beta(\alpha)$, possibly infinite. No assertion is made here about
+convergence on the boundary $\re z=\beta(\alpha)$.
+In every case, the block representation of the same Stokes jump converges
+normally on the whole half-plane $\re z>0$.
+\end{theorem}
+\begin{proof}
+For real $u$,
+\[
+ 2\|u\|\le|\sin(\pi u)|\le\pi\|u\|.
+\]
+The factors $n^2$ and constant denominators in \eqref{eq:rawres} do not
+contribute to logarithmic growth after division by $n$. Therefore
+\[
+ \limsup_{n\to\infty}\frac1n\log|r_n|=\beta(\alpha).
+\]
+The root test proves absolute convergence of the first series for
+$\re z>\beta(\alpha)$. If $\re z<\beta(\alpha)$, choose a number
+strictly between them. Infinitely many coefficients grow faster than its
+exponential, and the corresponding terms fail to tend to zero.
+For the second lattice, the same root test in the index $m$ gives the
+threshold $\re z>\alpha\beta(1/\alpha)$, which is identical by
+Lemma~\ref{lem:reciprocal}. The terms of the first lattice already prove
+failure below the common threshold, regardless of how the two lattices
+are interleaved in an ordinary series. The final statement follows from
+Theorem~\ref{thm:block} after choosing any compact positive box containing
+$1$ and $\alpha$.
+\end{proof}
+
+\subsection{A benign irrational and an extreme irrational}
+For $\alpha=\sqrt2$, let $m$ be nearest to $n\sqrt2$. Since
+$2n^2-m^2$ is a nonzero integer,
+\[
+ \|n\sqrt2\|=|n\sqrt2-m|
+ =\frac{|2n^2-m^2|}{n\sqrt2+m}\ge\frac c n
+\]
+for a fixed $c>0$ and all $n\ge1$. Hence $\beta(\sqrt2)=0$. The raw
+residue sum converges absolutely for every $\re z>0$, although block
+summation still improves conditioning near close poles.
+
+In the opposite direction, define integers and a real number by
+\begin{equation}
+ N_1=2,\qquad N_{k+1}=10^{2N_k},\qquad
+ \alpha_*=1+\sum_{k\ge1}10^{-N_k}.
+ \label{eq:superliouville}
+\end{equation}
+This decimal has infinitely many nonzero digits and unbounded gaps
+between them, so it is not eventually periodic and is irrational. It
+lies strictly between one and two. Put $q_k=10^{N_k}$. The first $k$
+terms of $q_k\alpha_*$ are integers, while the tail satisfies
+\[
+ 0<\|q_k\alpha_*\|\le
+   2\,10^{N_k-N_{k+1}}.
+\]
+For sufficiently large $k$ the tail is less than $1/2$, justifying the
+nearest-integer notation. Since $N_{k+1}=q_k^2$,
+\begin{equation}
+ \frac1{q_k}\log\frac1{\|q_k\alpha_*\|}
+ \ge\frac{(q_k^2-N_k)\log10-\log2}{q_k}
+ \longrightarrow\infty.
+ \label{eq:beta-infinity}
+\end{equation}
+Thus $\beta(\alpha_*)=\infty$.
+
+\begin{corollary}[A simultaneous counterexample]
+\label{cor:counterexample}
+There is a formal series with all of the following properties:
+\begin{enumerate}[label=(\roman*)]
+\item exact Gevrey order one and upper and lower Borel--Laplace sums;
+\item a meromorphic Borel transform having only simple poles, with no finite
+accumulation of poles;
+\item positive Stokes actions contained in a finitely generated, locally
+finite additive monoid;
+\item a raw individual-residue Stokes series that diverges at every
+$z$ with $\re z>0$;
+\item an absolutely normally convergent finite-block Stokes representation
+on that same half-plane, with an explicit tail estimate.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Take \eqref{eq:kernel} with $d=2$ and periods $(1,\alpha_*)$.
+Proposition~\ref{prop:gevrey} gives (i) and (ii). The support lies in
+$\{n+m/\alpha_*:n,m\in\Z_{\ge0}\}$; its positive generators ensure local
+finiteness. Equations \eqref{eq:beta-infinity} and
+Theorem~\ref{thm:arithmetic} prove (iv), while
+Theorem~\ref{thm:block} proves (v).
+\end{proof}
+The corollary isolates a limitation of a possible general principle,
+not of resurgence itself. Meromorphic continuation and Laplace
+summation still work; the pointwise sum of the individually resolved
+Stokes sectors is the operation that fails.
+
+\section{Finite-cut transseries remain valid}
+\label{sec:finitecut}
+For a distinct positive pole $a$, let $m_a$ be its multiplicity and write
+its principal part as
+\begin{equation}
+ \widehat F_{\bw}(t)=\sum_{\ell=1}^{m_a}
+            \frac{c_{a,-\ell}}{(t-a)^\ell}+O(1).
+ \label{eq:principal}
+\end{equation}
+Then its exact residue contribution is
+\begin{equation}
+ \Res_{t=a}(\e^{-zt}\widehat F_{\bw}(t))
+ =\e^{-az}p_a(z),\qquad
+ p_a(z)=\sum_{\ell=1}^{m_a}
+        c_{a,-\ell}\frac{(-z)^{\ell-1}}{(\ell-1)!}.
+ \label{eq:pa}
+\end{equation}
+The polynomial has degree exactly $m_a-1$, because the pole has that
+multiplicity and its highest principal coefficient is nonzero.
+
+\begin{theorem}[Finite-cut asymptotics and uniqueness]
+\label{thm:finitecut}
+Fix the positive periods. List their distinct positive poles increasingly
+as $a^{(1)}<a^{(2)}<\cdots$. For each fixed $L\ge0$ and real
+$x\to+\infty$,
+\begin{equation}
+ S_{\bw}(x)-\sum_{\ell=1}^{L}
+       \e^{-a^{(\ell)}x}p_{a^{(\ell)}}(x)
+ =\e^{-a^{(L+1)}x}p_{a^{(L+1)}}(x)
+  +O\!\left(x^{d-1}\e^{-b_Lx}\right)
+ \label{eq:finitecut}
+\end{equation}
+for some $b_L>a^{(L+1)}$. The coefficients in this polynomial-exponential
+asymptotic expansion are unique. These statements hold even when the
+infinite individual-residue series diverges at every fixed positive $x$.
+\end{theorem}
+\begin{proof}
+Only finitely many blocks meet the finite set of nodes through
+$a^{(L+1)}$. Include those entire blocks and, if necessary, the block
+containing the next node as well. A finite collection of individual
+residues accounts for all splitting of blocks caused by the desired
+cutoff. Within that finite collection, every node beyond
+$a^{(L+1)}$ has a strictly larger action. After it, the remaining
+complete blocks have a minimum action bounded strictly above
+$a^{(L+1)}$. Apply \eqref{eq:tail} at that latter fixed cutoff. Since
+$P_d(x)=O(x^{d-1})$ and $(1-\e^{-x})^{-d-1}$ is bounded for $x\ge1$,
+this proves \eqref{eq:finitecut} for a suitable $b_L$.
+
+For uniqueness, suppose two such expansions on locally finite positive
+action supports disagree. Their union is still locally finite and has a
+smallest action at which the polynomial coefficients differ. Subtract
+the expansions and multiply by the exponential of that action times $x$.
+The nonzero difference polynomial would be exponentially small times a
+fixed power of $x$, which is impossible as $x\to+\infty$. If the two
+supports include an action zero, the same argument starts there. Repeating
+at each finite cutoff proves uniqueness.
+\end{proof}
+
+The constants in \eqref{eq:finitecut} may be enormous for a poorly
+approximable cutoff choice, because a fixed near-collision may be split.
+They are finite, which is all an asymptotic expansion at a fixed cutoff
+requires. In contrast, \eqref{eq:tail} supplies useful uniform constants
+when whole blocks are retained. This is the distinction between a formal
+or Poincar\'e-style expansion and a numerical evaluation scheme.
+
+One should also distinguish finite-generation of the action monoid from
+finite-generation of a \emph{function field}. Formal products have locally
+finite action support because sums of finitely many positive generators
+have only finitely many exponent tuples below any bound. This support
+fact alone does not give any analytic norm estimate for a product or an
+inverse. The block norms in Section~\ref{sec:inverse} supply that missing
+information.
+
+\section{Coalescence and its universal scaled profile}
+\label{sec:coalescence}
+
+\subsection{An entire divided-difference profile}
+For $m\ge1$, define
+\begin{equation}
+ \Phi_m(\lambda_1,\ldots,\lambda_m)
+ =[\lambda_1,\ldots,\lambda_m]\e^{-u}.
+ \label{eq:Phi}
+\end{equation}
+At distinct nodes,
+\begin{equation}
+ \Phi_m(\lambda_1,\ldots,\lambda_m)
+ =\sum_{j=1}^m\frac{\e^{-\lambda_j}}
+                 {\prod_{k\ne j}(\lambda_j-\lambda_k)}.
+ \label{eq:Phi-simple}
+\end{equation}
+The apparent singularities in \eqref{eq:Phi-simple} are removable. The
+representation
+\begin{equation}
+ \Phi_m(\lambda)=(-1)^{m-1}
+       \int_{\Delta_{m-1}}\e^{-\sum\lambda_jv_j}\dd v
+ \label{eq:Phi-integral}
+\end{equation}
+makes it entire and symmetric in its $m$ complex arguments. In particular,
+\begin{equation}
+ \Phi_m(\lambda,\ldots,\lambda)
+   =\frac{(-1)^{m-1}}{(m-1)!}\e^{-\lambda}.
+ \label{eq:Phi-confluent}
+\end{equation}
+For real arguments its sign is $(-1)^{m-1}$. These properties are useful
+both for asymptotic analysis and for stable numerical evaluation.
+
+\begin{theorem}[Uniform $x^{-1}$ action-coalescence law]
+\label{thm:coalescence}
+Let $x\to+\infty$, and suppose an $m$-node cluster has nodes
+\begin{equation}
+ a_j(x)=a+\frac{\lambda_j}{x}+O(x^{-2}),\qquad j=1,\ldots,m,
+ \label{eq:movingnodes}
+\end{equation}
+uniformly for $\lambda$ in a fixed compact subset of $\R^m$, with repeated
+nodes allowed. Suppose its regular factor $H_x$ is holomorphic on a
+fixed neighborhood of $a$, its derivatives through order $m-1$ are
+uniformly bounded there, and $H_x(a)=H_0+O(x^{-1})$, uniformly in those
+parameters. Its residue block then satisfies
+\begin{equation}
+ S_C(x)=\e^{-ax}x^{m-1}
+       \left(H_0\Phi_m(\lambda_1,\ldots,\lambda_m)+O(x^{-1})\right),
+ \label{eq:coalescence}
+\end{equation}
+uniformly on the compact parameter set. The conclusion does not require
+a positive lower bound on $|\lambda_j-\lambda_k|$.
+\end{theorem}
+\begin{proof}
+Let $\mu_j=x(a_j(x)-a)=\lambda_j+O(x^{-1})$. The affine change of variable
+$u=x(t-a)$ in a divided difference gives exactly
+\[
+ S_C(x)=\e^{-ax}x^{m-1}
+ [\mu_1,\ldots,\mu_m]\bigl(\e^{-u}H_x(a+u/x)\bigr).
+\]
+On any fixed compact set containing the convex hulls of the $\mu_j$,
+the function $H_x(a+u/x)-H_0$ is $O(x^{-1})$, as are its derivatives
+in $u$ of orders up to $m-1$. This follows from the assumed derivative
+bounds and the chain rule; for order zero also use
+$H_x(a)-H_0=O(x^{-1})$.
+The integral formula \eqref{eq:HG} therefore changes the last divided
+difference by $O(x^{-1})$ when this function is replaced by $H_0$.
+Formula \eqref{eq:Phi-integral} is uniformly Lipschitz on compact sets,
+so replacing $\mu_j$ by $\lambda_j$ creates another $O(x^{-1})$ error.
+No estimate has divided by a node separation. This proves the result.
+\end{proof}
+
+Theorem~\ref{thm:coalescence} explains the polynomial factor generated by a
+multiple Borel pole. When $m$ actions approach one another on the
+$x^{-1}$ scale, the combined contribution is of order
+$x^{m-1}\e^{-ax}$, with a finite profile interpolating all collision
+patterns. Exact coincidence is not a singular limit of the block.
+
+For the sine-product model, the regular-factor hypotheses follow locally
+by canceling the selected lattice zeros before varying the periods.
+One must specify the collision under study and keep any other zeros out
+of the chosen neighborhood; arbitrary additional collisions would change
+$m$. Lemma~\ref{lem:regular} supplies uniform bounds for full blocks.
+
+\subsection{Two coincident lattices}
+For $d=2$, suppose $a=n=m/\alpha$ is a common positive node. Expanding
+around $t=a+u$ gives
+\[
+ \widehat F_{(1,\alpha)}(a+u)
+ =\frac{(-1)^{n+m}(a+u)^2}
+        {\sin(\pi u)\sin(\pi\alpha u)}.
+\]
+The coefficient of $u^{-1}$ after multiplication by $\e^{-x(a+u)}$ is
+\begin{equation}
+ S_{\{a,a\}}(x)=
+ \frac{(-1)^{n+m}}{\pi^2\alpha}
+       \e^{-ax}(2a-a^2x).
+ \label{eq:double-residue}
+\end{equation}
+At $\alpha=1$ every positive node is double. Summing the elementary
+geometric derivatives yields the exact expression
+\begin{equation}
+ S_{(1,1)}(x)=\frac1{\pi^2}
+ \left\{\frac{2q}{(1-q)^2}
+       -\frac{xq(1+q)}{(1-q)^3}\right\},\qquad q=\e^{-x}.
+ \label{eq:alpha1}
+\end{equation}
+It is valid for every $\re x>0$.
+
+As a moving example take $\alpha=1+\lambda/x$ and the first two poles
+$1$ and $1/\alpha$. Their scaled offsets are $0$ and $-\lambda$, and
+$H_0=1/\pi^2$. Therefore
+\begin{equation}
+ \frac{\pi^2\e^x}{x}S_{\{1,1/\alpha\}}(x)
+ \longrightarrow-\frac{\e^\lambda-1}{\lambda},
+ \label{eq:two-profile}
+\end{equation}
+with value $-1$ at $\lambda=0$. This is a uniform compact-$\lambda$
+limit, not just a statement for distinct limiting actions.
+At $\lambda=0$, the finite-$x$ expression on the left is exactly
+$-1+2/x$.
+
+\subsection{A triple-pole check}
+For $(\omega_1,\omega_2,\omega_3)=(1,1,1)$,
+\[
+ \frac1{\sin^3(\pi u)}
+ =\frac1{\pi^3u^3}\left(1+\frac{\pi^2u^2}{2}+O(u^4)\right).
+\]
+Extracting the residue at the integer $n$ gives
+\begin{equation}
+ S_{\{n,n,n\}}(x)
+ =\frac{(-1)^n\e^{-nx}}{\pi^3}
+ \left(3n-3n^2x+\frac{n^3}{2}(x^2+\pi^2)\right).
+ \label{eq:triple-residue}
+\end{equation}
+The leading term has the $x^2\e^{-nx}$ behavior predicted by
+\eqref{eq:coalescence} and
+$\Phi_3(0,0,0)=1/2$. This example also shows why limiting residues must
+be taken as higher-order residues rather than by substituting a resonant
+parameter into either simple-pole formula.
+
+\section{Rational-exponential compression and its converse}
+\label{sec:rational}
+
+\begin{definition}
+A function on a positive half-line has a \emph{finite single-base
+rational-exponential representation} if for some $h>0$, some integer
+$N\ge0$, and rational functions $R_k$ holomorphic at the origin, it can
+be written
+\begin{equation}
+ S(x)=\sum_{k=0}^{N}x^k R_k(\e^{-hx}).
+ \label{eq:rationalform}
+\end{equation}
+This is a specific compression class. It does not include arbitrary
+rational functions of several independent exponential bases, nor every
+special-function representation.
+\end{definition}
+
+\begin{theorem}[Exact two-lattice compression criterion]
+\label{thm:rational}
+For the two-lattice kernel $\widehat F_{(1,\alpha)}$, the normalized jump
+$S_{(1,\alpha)}$ has a representation \eqref{eq:rationalform} if and only
+if $\alpha$ is rational. If $\alpha=p/q$ in lowest terms with $p,q>0$,
+one may take $h=1/p$ and $N\le1$.
+More generally, for $d$ commensurate positive periods one may take
+$N\le d-1$ with a suitable $h$.
+\end{theorem}
+\begin{proof}
+Suppose first that the lattice spacings are commensurate. There are
+$h>0$ and positive integers $r_j$ with $1/\omega_j=hr_j$. All nodes have
+the form $h\ell$, and the multiplicity at that node is the number of
+indices for which $r_j$ divides $\ell$. This pattern is periodic in
+$\ell$.
+Expand each denominator around $t=h\ell+u$. Whether its sine vanishes,
+and every coefficient needed from its Laurent or Taylor expansion,
+depend periodically on $\ell$, with a common period dividing a multiple
+of $2\operatorname{lcm}(r_1,\ldots,r_d)$. The numerator $(h\ell+u)^d$
+is polynomial in $\ell$. The residue polynomial \eqref{eq:pa} thus has
+the form
+\[
+ p_{h\ell}(x)=\sum_{k=0}^{d-1}x^k A_k(\ell),
+\]
+where each $A_k$ is polynomial in $\ell$ separately on each of finitely
+many residue classes. Terms at locations that are not poles are set to
+zero. For $Q=\e^{-hx}$, every series
+$\sum_{\ell\ge1}A_k(\ell)Q^\ell$ is rational in $Q$: split into residue
+classes and apply powers of $Q\partial_Q$ to geometric series.
+The coefficients have only polynomial growth, so these sums converge
+absolutely when $|Q|<1$. This proves \eqref{eq:rationalform} with
+$N\le d-1$ and rational functions holomorphic at zero.
+For $(1,p/q)$ the spacings are $1$ and $q/p$, so $h=1/p$ works and
+$d-1=1$.
+
+Conversely suppose $\alpha$ is irrational and
+\eqref{eq:rationalform} holds. Expanding the rational functions at zero
+gives a convergent polynomial-exponential expansion supported on
+$\{h\ell:\ell\ge0\}$. The zero-action polynomial vanishes because
+$S_{(1,\alpha)}(x)$ is exponentially small. Every pole in the actual
+kernel is simple and has a nonzero residue. By
+Theorem~\ref{thm:finitecut}, its asymptotic action expansion is unique.
+In particular the actions $1$ and $1/\alpha$ must both be positive integer
+multiples of $h$. Their ratio would then be rational, contradicting the
+irrationality of $\alpha$. This argument uses finite-cut asymptotics,
+not convergence of the raw infinite series, so it also applies when
+$\beta(\alpha)=\infty$.
+\end{proof}
+
+The theorem gives a precise contrast. The total jump varies analytically
+through rational periods by Corollary~\ref{cor:parameter}, yet admitting a
+finite single-base representation is an arithmetic property attained
+exactly on rational two-lattice ratios. Smooth dependence of a function
+on a parameter does not imply uniform finite symbolic compressibility.
+
+\section{Nonlinear inversion in the block norm}
+\label{sec:inverse}
+
+\subsection{The analytic space that survives the small divisors}
+The appropriate norm is taken after finite cancellation. Let $D$ be a
+closed disk in the right half-plane. Theorem~\ref{thm:block} gives
+\begin{equation}
+ \sum_C\sup_{z\in D}|S_C(z)|<\infty.
+ \label{eq:normalnorm}
+\end{equation}
+The corresponding sum over individual residues need not be finite.
+For the example $\alpha_*$, it is infinite on every such disk with
+nonempty interior, because even evaluation at any one point produces
+terms that do not tend to zero.
+
+We shall call \eqref{eq:normalnorm} the \emph{block norm}. This terminology
+refers to a chosen representation in a Banach space of holomorphic
+functions on a disk. It does not assert the construction of a new full
+field of formal transseries. In particular, different decompositions can
+have different norms even when their sums are the same function.
+
+\subsection{A branch certificate and all-order inverse transport}
+\begin{theorem}[Blockwise inverse transport and two truncation errors]
+\label{thm:inverse}
+Let $\phi$ be univalent and holomorphic on a neighborhood of
+$\overline D(y_0,R)$, let $z_0=\phi(y_0)$, and let $G=\phi^{-1}$ be the
+corresponding local core. Suppose
+\begin{equation}
+ j(y)=J(\phi(y))=\sum_C j_C(y),\qquad
+ B=\sum_C\sup_{|y-y_0|\le R}|j_C(y)|<\infty,
+ \label{eq:Bnorm}
+\end{equation}
+where the $j_C$ are holomorphic on a common neighborhood of the closed
+disk, and the sum is holomorphic there or on an open neighborhood of the
+disk after an arbitrarily small reduction of $R$. Put
+\[
+ M=\sup_{|y-y_0|\le R}|\phi'(y)|.
+\]
+If $r=|\lambda|B/R<1$, the equation
+\begin{equation}
+ G(z_\lambda)+\lambda J(z_\lambda)=y_0
+ \label{eq:inverse-equation}
+\end{equation}
+has a unique solution in $\phi(D(y_0,R))$. It depends holomorphically on
+$\lambda$ and satisfies
+\begin{equation}
+ z_\lambda-z_0
+ =\sum_{n\ge1}\frac{(-\lambda)^n}{n!}
+   \left.\partial_y^{n-1}\bigl(\phi'(y)j(y)^n\bigr)\right|_{y=y_0}.
+ \label{eq:inverse-series}
+\end{equation}
+Expanding each $j^n$ over ordered $n$-tuples of blocks is absolutely
+convergent. The sum of absolute values of all degree-$n$ contributions
+is at most $MRr^n/n$, and the tail beyond degree $N\ge0$ is bounded by
+\begin{equation}
+ \frac{MR}{N+1}\frac{r^{N+1}}{1-r}.
+ \label{eq:inverse-tail}
+\end{equation}
+
+For a subfamily of retained blocks let $j_T$ be its sum, and assume
+\begin{equation}
+ \Delta_T=\sum_{C\ \mathrm{omitted}}
+        \sup_{|y-y_0|\le R}|j_C(y)|.
+ \label{eq:Delta}
+\end{equation}
+The full inverse and the inverse formed with $j_T$ differ by at most
+\begin{equation}
+ \frac{M|\lambda|\Delta_T}{1-r}.
+ \label{eq:action-inverse-tail}
+\end{equation}
+Thus truncating both the blocks and the amplitude degree gives a total
+error bounded by the sum of \eqref{eq:action-inverse-tail} and
+\eqref{eq:inverse-tail}. If $B=0$, all statements have the trivial
+interpretation $z_\lambda=z_0$.
+\end{theorem}
+\begin{proof}
+Use the core coordinate $y=G(z)$. The equation becomes
+$y+\lambda j(y)=y_0$. On $|y-y_0|=R$, its perturbation has modulus at
+most $|\lambda|B<R$. Rouch\'e's theorem gives exactly one zero in the
+disk, counted with multiplicity. It is therefore simple. The implicit
+function theorem and uniqueness give a single holomorphic branch in
+$|\lambda|<R/B$.
+
+The argument principle, applied with the holomorphic weight $\phi(y)$,
+expresses the difference of the roots after applying $\phi$ as
+\[
+ \frac1{2\pi\ii}\int_{|y-y_0|=R}\phi(y)
+ \left(\frac{1+\lambda j'(y)}{y-y_0+\lambda j(y)}
+              -\frac1{y-y_0}\right)\dd y.
+\]
+The logarithm $\log(1+\lambda j(y)/(y-y_0))$ is single-valued on a thin
+annulus containing the contour, by its uniformly convergent power series.
+Integration by parts changes the preceding expression to
+\begin{equation}
+ -\frac1{2\pi\ii}\int_{|y-y_0|=R}
+        \phi'(y)\log\left(1+\frac{\lambda j(y)}{y-y_0}\right)\dd y.
+ \label{eq:inverse-contour}
+\end{equation}
+Expanding the logarithm and applying Cauchy's formula proves
+\eqref{eq:inverse-series}.
+
+For the absolute estimate, retain the contour form of each homogeneous
+term. The sum of the moduli of all ordered products of block factors is
+bounded on the contour by
+$(\sum_C\|j_C\|)^n=B^n$. The contour length is $2\pi R$, the core
+denominator has modulus $R^n$, and the logarithmic coefficient is $1/n$.
+Consequently the total degree-$n$ bound is $MRr^n/n$. It justifies every
+interchange of sums, derivatives, and contour integrals. Summing for
+$n\ge N+1$ and using $1/n\le1/(N+1)$ proves
+\eqref{eq:inverse-tail}.
+
+For the second statement use \eqref{eq:inverse-contour} for $j$ and
+$j_T$. Along the segment between their two contour values the arguments
+of the logarithm remain in $|w-1|\le r$. Hence the difference of the two
+logarithms has modulus at most
+$|\lambda|\Delta_T/(R(1-r))$. Multiplying by the contour length and
+$M/(2\pi)$ gives \eqref{eq:action-inverse-tail}. Both equations have a
+unique root by the same strict boundary bound. This finishes the proof.
+\end{proof}
+
+The contour proof is a form of Lagrange inversion, and the corresponding
+weighted-family result already appears in the repository
+\cite{repo-stokes}. We included the proof to make the logical dependence
+and constants explicit. The new input is the finite-block estimate that
+verifies the norm hypothesis in examples where the individual-sector
+version fails.
+
+\subsection{Explicit certificates for the sine-product family}
+Take $J=J_{\bw}$ from \eqref{eq:jump-sign} and
+$j_C(y)=2\pi\ii S_C(\phi(y))$. Suppose the core image satisfies
+\begin{equation}
+ \re\phi(y)\ge x_*>0,\qquad |\phi(y)|\le V
+ \quad (|y-y_0|\le R).
+ \label{eq:core-image}
+\end{equation}
+Since every block minimum is at least $1/M_0$, the proof of
+Theorem~\ref{thm:block} gives the directly evaluable certificate
+\begin{equation}
+ B\le
+ \frac{2\pi KD_0d!(2+M_0^{-1})^dP_d(V)}
+      {(1-\e^{-x_*})^{d+1}}\,
+       \e^{-x_*/M_0}.
+ \label{eq:Bcertificate}
+\end{equation}
+For the block-complete cutoff $a_C<T$,
+\begin{equation}
+ \Delta_T\le
+ \frac{2\pi KD_0d!(T+2)^dP_d(V)}
+      {(1-\e^{-x_*})^{d+1}}\e^{-Tx_*}.
+ \label{eq:Deltacertificate}
+\end{equation}
+These are bounds on sums of suprema, not merely bounds on the absolute
+value of the total perturbation. This distinction is essential to
+absolute mixed-block convergence.
+
+Equations \eqref{eq:Bcertificate}, \eqref{eq:inverse-tail}, and
+\eqref{eq:Deltacertificate} provide two independent accuracy controls.
+Increasing $T$ reduces the unresolved action tail; increasing $N$ reduces
+the nonlinear amplitude tail. Neither control requires a lower bound on
+an internal action separation or an estimate of $\beta(\alpha)$.
+
+\begin{corollary}[A genuine extension beyond individual-sector inversion]
+\label{cor:inverse-obstruction}
+For the irrational $\alpha_*$ in \eqref{eq:superliouville}, the
+block-indexed inverse expansion of Theorem~\ref{thm:inverse} is applicable
+whenever its branch certificate holds. In contrast, an inverse expansion
+resolved into the raw individual residues fails the term test already
+in its first homogeneous degree at every base point $z_0$ with
+$\re z_0>0$.
+\end{corollary}
+\begin{proof}
+The block norm is finite by \eqref{eq:Bcertificate}. The degree-one
+coefficient is
+\begin{equation}
+ -\lambda\phi'(y_0)J(z_0).
+ \label{eq:first-inverse}
+\end{equation}
+Expanding $J(z_0)$ into individual residues yields terms equal to the
+raw terms in Theorem~\ref{thm:arithmetic}, multiplied by the nonzero
+constant $-2\pi\ii\lambda\phi'(y_0)$. For nonzero $\lambda$ they fail
+to tend to zero. In block form the same degree-one coefficient is an
+absolutely convergent sum. Higher-order rearrangements cannot repair
+failure of absolute convergence at the first homogeneous degree.
+\end{proof}
+
+\subsection{Formal action preservation with analytic realization}
+Let $\mathcal A$ be the distinct positive pole set, let
+$a_*=\min\mathcal A$, and put $q_a(x)=2\pi\ii p_a(x)$, with $p_a$ from
+\eqref{eq:pa}. The formally resolved jump is
+$\widetilde J(x)=\sum_{a\in\mathcal A}q_a(x)\e^{-ax}$.
+
+\begin{theorem}[An explicit finite formula at each inverse action]
+\label{thm:formal-inverse}
+For the identity core, the formal inverse of
+$x\mapsto x+\lambda\widetilde J(x)$ is well-defined on the additive action
+monoid $\langle\mathcal A\rangle$. Its correction has coefficients
+\begin{align}
+ \widetilde Z_\lambda(x)-x
+   &=\sum_{A\in\langle\mathcal A\rangle\setminus\{0\}}
+                   Q_A(x;\lambda)\e^{-Ax},\label{eq:formal-inverse}\\
+ Q_A(x;\lambda)
+   &=\sum_{1\le n\le A/a_*}\frac{(-\lambda)^n}{n!}
+       \sum_{\substack{a_1,\ldots,a_n\in\mathcal A\\
+                       a_1+\cdots+a_n=A}}
+       (\partial_x-A)^{n-1}\prod_{j=1}^{n}q_{a_j}(x).
+       \label{eq:action-coefficient}
+\end{align}
+Every sum defining $Q_A$ is finite. Thus $Q_A$ is polynomial in $x$ and
+$\lambda$, and no new action outside the additive input monoid is needed.
+For fixed $\lambda\in\C$, the actual inverse near large positive $x$ of
+$z\mapsto z+\lambda J_{\bw}(z)$ has this expansion at every fixed finite
+action cutoff. Its block-indexed amplitude series is convergent for all
+sufficiently large $x$, even in the counterexample of
+Corollary~\ref{cor:counterexample}.
+\end{theorem}
+\begin{proof}
+The monoid generated by the $d$ positive spacings is locally finite, and
+$\mathcal A$ is contained in it. A product of $n$ positive-action terms
+has action at least $na_*$. Hence only $n\le A/a_*$ and finitely many
+action tuples can contribute at action $A$. Differentiation does not
+change an action and satisfies
+\[
+ \partial_x^{n-1}\bigl(\e^{-Ax}P(x)\bigr)
+   =\e^{-Ax}(\partial_x-A)^{n-1}P(x).
+\]
+The identity-core case of the Lagrange formula therefore gives
+\eqref{eq:action-coefficient}. It can also be verified in each finite
+action quotient: substitution by a positive-action displacement raises
+its filtration, so the usual recursive inverse is unique, and the finite
+Lagrange identities hold at each such quotient. This proves formal
+existence and uniqueness without an analytic convergence assumption on
+$\widetilde J$.
+
+For the analytic assertion take a fixed-radius disk about real $x$ and
+apply Theorem~\ref{thm:inverse} with $\phi(y)=y$. Its block norm is
+$O(x^{d-1}\e^{-a_*x})$; a constant factor from the disk radius is harmless.
+It tends to zero, so every fixed $\lambda$ eventually satisfies the branch
+certificate. Fix an action bound $A_0$. Choose $N$ with
+$(N+1)a_*>A_0$. The amplitude tail \eqref{eq:inverse-tail} is then bounded
+by a fixed power of $x$ times $\e^{-(N+1)a_*x}$ and is smaller than every
+retained term at action at most $A_0$.
+For each of the finitely many degrees $n\le N$, retain finitely many
+whole jump blocks through an action strictly above $A_0$. The omitted
+jump tail is exponentially smaller, uniformly on a slightly larger
+fixed-radius disk, by \eqref{eq:tail}. Cauchy's formula preserves this
+exponential margin after the finitely many derivatives. The retained
+finite products give exactly \eqref{eq:action-coefficient} through
+$A_0$. This proves finite-cut realization. It does not assert convergence
+of the infinite raw action sum at fixed $x$.
+\end{proof}
+
+\subsection{Actual lateral maps}
+For a fixed scalar $\varepsilon$, consider
+\begin{equation}
+ T_\pm(z)=z+\varepsilon F_\pm(z).
+ \label{eq:actual-maps}
+\end{equation}
+On a fixed-width neighborhood of a sufficiently large positive real
+point, the ray estimates give $F_\pm(z)=O(z^{-1})$ and
+$F_\pm'(z)=O(z^{-2})$. These follow either by differentiating the
+convergent ray integral or by its first Taylor-remainder estimate on a
+slightly larger disk. Thus $T_+$ is a small derivative perturbation of
+the identity and has a local inverse core $\phi$ on a disk of fixed
+positive radius, after moving the base point sufficiently far right.
+
+Set $G=T_+$ and $\lambda=\varepsilon$ in
+Theorem~\ref{thm:inverse}. Since $T_-=T_++\varepsilon J$, its solution is
+$T_-^{-1}(y_0)$ on the certified branch. This realizes the inverse Stokes
+transport as an actual comparison of lateral inverse maps, not merely
+as a formal coefficient calculation. The bound \eqref{eq:Bcertificate}
+is exponentially small as the base point moves right in a bounded
+imaginary strip, so the branch condition eventually holds uniformly on
+a compact period box. No global univalence or a complete description of
+the inverse's Borel singularities is being asserted.
+
+\section{A more general local criterion}
+\label{sec:abstract}
+The sine product is useful because it supplies all geometric and analytic
+constants explicitly. The cancellation step itself does not depend on
+trigonometric functions.
+
+\begin{proposition}[Bounded-cluster meromorphic kernels]
+\label{prop:abstract}
+Let $\widehat H$ be meromorphic near the positive axis and regular at
+zero. Suppose its positive pole occurrences admit consecutive blocks
+$C$ satisfying the following conditions. Their multiplicities obey
+$m_C\le d$, their real nodes lie in intervals $I_C$, and the number of
+block minima in every unit interval is at most $D$. For a fixed $\rho>0$,
+the functions
+\[
+ H_C(t)=\widehat H(t)\prod_{a\in C}(t-a)
+\]
+are holomorphic on the $2\rho$ tubes around $I_C$ and satisfy
+$|H_C(t)|\le K(1+a_C)^p$, where $p$ is a nonnegative integer.
+Then the associated residue blocks obey
+\begin{equation}
+ |S_C(z)|\le K(1+a_C)^p\e^{-a_C\re z}
+       \sum_{j=0}^{m_C-1}\frac{|z|^j}{j!\rho^{m_C-1-j}}.
+ \label{eq:abstractbound}
+\end{equation}
+They have a normally convergent sum on the right half-plane and the tail
+bound
+\begin{equation}
+ \sum_{a_C\ge T}|S_C(z)|\le
+ \frac{KDp!(T+2)^pP_d(|z|)}{(1-\e^{-\re z})^{p+1}}
+       \e^{-T\re z}.
+ \label{eq:abstracttail}
+\end{equation}
+If upper and lower Laplace integrals exist and a block-complete sequence
+of closing contours encloses exactly the specified positive poles, no
+other singularities, and has vanishing outer integrals, this sum is their
+Stokes difference divided by $2\pi\ii$.
+\end{proposition}
+\begin{proof}
+Cauchy's derivative bound on each interval and the confluent
+Hermite--Genocchi formula prove \eqref{eq:abstractbound} exactly as in
+Theorem~\ref{thm:block}. Binning minima into unit intervals and using
+$\sum_{k\ge0}(k+1)^pq^k\le p!/(1-q)^{p+1}$ proves
+\eqref{eq:abstracttail}, including $p=0$. The stated contour hypothesis
+then gives the residue identity by the residue theorem. Each hypothesis
+is used explicitly; no conclusion about lateral Laplace sums follows
+from the local block bound alone without the contour conditions.
+\end{proof}
+
+This criterion separates two tasks in applications. One must first find
+clusters of bounded multiplicity and bound their pole-canceled regular
+factors. One must then identify their normal sum with the intended
+analytic realization. In the sine-product model these tasks were proved
+in Lemmas~\ref{lem:geometry}--\ref{lem:regular} and
+Theorem~\ref{thm:block}, respectively. Holomorphic multipliers with
+suitable polynomial tube bounds can be accommodated by changing $p$ and
+$K$. Arbitrary multipliers, arbitrary pole densities, or unbounded
+cluster cardinality require new estimates and are not covered for free.
+
+\section{Stable evaluation and reproducible checks}
+\label{sec:computation}
+
+\subsection{A cancellation-free two-pole formula}
+Suppose two distinct near-colliding nodes are
+$a=n$ and $b=m/\alpha$, and put
+\[
+ \epsilon=b-a,\qquad \sigma=(-1)^{n+m}.
+\]
+For this finite pair, elementary sine identities transform the residue
+sum into
+\begin{equation}
+ S_{\{a,b\}}(x)=\frac{\sigma\e^{-ax}}{\pi^2\alpha}
+ \left\{
+ \frac{2a+\epsilon-xb^2\exprel(-x\epsilon)}{\sinc(\pi\epsilon)}
+       +a^2K_\alpha(\epsilon)\right\},
+ \label{eq:stable-pair}
+\end{equation}
+where
+\begin{align}
+ \sinc u&=\frac{\sin u}{u},& \sinc0&=1,\notag\\
+ \exprel v&=\frac{\e^v-1}{v},& \exprel0&=1,\label{eq:stable-functions}\\
+ K_\alpha(\epsilon)
+ &=\frac{\sinc(\pi\epsilon)^{-1}
+            -\sinc(\pi\alpha\epsilon)^{-1}}{\epsilon},
+ &K_\alpha(0)&=0.\notag
+\end{align}
+In numerical code, $\exprel$ is evaluated through \texttt{expm1}, not by
+subtracting one from an exponential near one.
+
+To verify \eqref{eq:stable-pair}, use $\alpha a=m-\alpha\epsilon$ and
+$b=n+\epsilon$ in \eqref{eq:rawres}. The two contributions become
+\[
+ \frac{\sigma}{\pi^2\alpha\epsilon}
+ \left(\frac{b^2\e^{-bx}}{\sinc(\pi\epsilon)}
+       -\frac{a^2\e^{-ax}}{\sinc(\pi\alpha\epsilon)}\right).
+\]
+Now split the difference into the change in $b^2\e^{-bx}$ and the
+change in reciprocal sinc. The first difference divided by $\epsilon$
+is exactly
+$\e^{-ax}(2a+\epsilon-xb^2\exprel(-x\epsilon))$.
+This proves the formula. At $\epsilon=0$ it becomes the exact
+higher-order residue \eqref{eq:double-residue}.
+
+The remaining difference in $K_\alpha$ should also not be evaluated by
+subtraction when $\epsilon$ is tiny. Its convergent series is
+\begin{equation}
+ K_\alpha(\epsilon)=\sum_{k\ge1}
+ c_k\pi^{2k}(1-\alpha^{2k})\epsilon^{2k-1},\qquad
+ c_k=\frac{(-1)^{k+1}(2^{2k}-2)B_{2k}}{(2k)!},
+ \label{eq:Kseries}
+\end{equation}
+valid for $\max(1,\alpha)|\epsilon|<1$. Here $B_{2k}$ are Bernoulli
+numbers, and $c_k$ is the coefficient of $u^{2k}$ in $u/\sin u$.
+Near $\alpha=1$, the factor $1-\alpha^{2k}$ can be evaluated as
+$-\operatorname{expm1}(2k\log\alpha)$. This formula exposes the smooth
+limit before finite-precision arithmetic is applied.
+
+For larger blocks one can use the simplex integral, a confluent
+divided-difference algorithm with Taylor data, or contour quadrature
+around the whole block. The stable two-pole formula is an explicit
+implementation for $d=2$, not a claim that ordinary divided-difference
+recursion is uniformly stable at arbitrarily close nodes.
+
+\subsection{An explicit action budget}
+For a target normalized-jump error $\eta>0$ at real $x>0$, a sufficient
+cutoff is any $T$ satisfying
+\begin{equation}
+ Tx\ge\log\frac{KD_0d!P_d(x)}{\eta(1-\e^{-x})^{d+1}}
+                +d\log(T+2).
+ \label{eq:budget}
+\end{equation}
+The right side grows only logarithmically in $T$, so a finite value is
+always available. Its sufficiency is proved by \eqref{eq:tail}; evaluating
+the displayed bound using ordinary floating-point arithmetic is not by
+itself an outward-rounded certificate. A rigorous numerical implementation
+would evaluate it and all retained blocks with interval arithmetic.
+
+There are $O_{d,M_0}(T+1)$ pole occurrences below $T$ and at most $d$ per
+block. Merging the $d$ ordered lattice lists and evaluating each block
+gives an action-linear enumeration cost for fixed $d$, before accounting
+for arithmetic precision and special-function evaluation. A claim of
+uniform bit complexity would require a representation of the periods and
+certified comparisons of the gaps. Arbitrary exact real inputs do not
+provide such an algorithm automatically.
+
+\subsection{Executed verification}
+The accompanying program \texttt{verify.py} uses SymPy 1.14.0 and mpmath
+1.3.0 under Python 3.13.5. The recorded run contains \textbf{36 exact
+symbolic assertions and 15 numerical assertions}, all passing. The
+symbolic checks cover the first Borel coefficients, vanishing odd
+coefficients, double and triple residues, nine cosecant--Bernoulli
+coefficients, geometric-series identities, twelve inverse coefficients
+for an exactly solvable nonlinear core, and divided differences at three
+sets of rational nodes. The numerical checks compare upper-ray Laplace
+integrals with block residue sums and test the stable pair formula near
+resonance.
+
+For $d=2$ on the period box $[1/2,2]$, the chosen constants become
+\begin{equation}
+ \delta=\frac1{16},\qquad\rho=\frac1{64},\qquad
+ K=1296,\qquad D_0=8,\qquad P_2(v)=65+v.
+ \label{eq:testconstants}
+\end{equation}
+At $x=3$ and $T=25$, \eqref{eq:tail} evaluates to approximately
+$3.2093159381\times10^{-24}$. Direct comparisons at 90 decimal digits
+give the following discrepancies. The independently evaluated contour
+quantity is $-\im F_+(x)/\pi$, because the two lateral integrals are
+complex conjugates for these real parameters.
+\begin{center}
+\begin{tabular}{l r}
+\toprule
+Period ratio $\alpha$ & Absolute contour--block discrepancy\\
+\midrule
+$1$ & $5.2353\times10^{-31}$\\
+$\sqrt2$ & $5.1155\times10^{-31}$\\
+$3/2$ & $3.9773\times10^{-31}$\\
+$3/2+10^{-30}$ & $3.9773\times10^{-31}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These discrepancies are consistent with the proved bound, which is
+intentionally conservative. For $\alpha=1$ the contour was also compared
+with the exact rational expression \eqref{eq:alpha1}.
+
+The stable pair was tested at $\alpha=1+10^{-k}$ for
+$k\in\{4,10,25,40,60\}$, with 200-digit reference calculations.
+A separate 50-digit demonstration at $\alpha=1+10^{-40}$ gave relative
+error about $6.43\times10^{28}$ for direct evaluation of the two raw sine
+residues, but about $2.88\times10^{-51}$ for \eqref{eq:stable-pair}.
+The disastrous raw error reflects both evaluation near zeros of sine and
+subtraction of very large contributions. It is a demonstration of one
+unstable formula at a specified precision, not a universal lower bound
+on required precision.
+
+Table~\ref{tab:coalescence} displays the scaled pair in
+\eqref{eq:two-profile}. It is generated by the supplied code. At the
+smallest values of $x$, a selected pair need not yet belong to a single
+block for the fixed threshold \eqref{eq:testconstants}; the two-pole
+formula itself is still exact. For sufficiently large $x$ it is a single
+resonance block, as required by the limiting interpretation.
+\begin{table}[htbp]
+\centering\small
+\input{results/coalescence_table.tex}
+\caption{Scaled first-pair contribution for $\alpha=1+\lambda/x$ and its
+uniform coalescence limit.}\label{tab:coalescence}
+\end{table}
+
+Recorded numerical values, package versions, and assertion counts are
+stored in \path{results/verification.json}. These computations do not use
+outward-rounded intervals, do not prove the infinite tail estimates, and
+do not verify all theorem hypotheses for arbitrary input periods. The
+mathematical proofs, not a finite number of experiments, establish the
+claims for arbitrary positive periods.
+
+\section{Further research questions and proposed projects}
+\label{sec:questions}
+The following questions are proposed research tasks, not claims that
+specific long-standing conjectures have been settled here. Several may
+have answers in specialized small-divisor or special-function literature;
+the first step of each project should include a targeted priority search.
+The sharp boundaries of the proved results are indicated in the questions.
+
+\subsection*{1. The boundary of the raw-series half-plane}
+Theorem~\ref{thm:arithmetic} leaves $\re z=\beta(\alpha)$ open. Determine
+necessary and sufficient criteria for absolute and conditional convergence
+there in terms of the continued-fraction denominators of $\alpha$.
+The polynomial factor $n^2$ matters on the boundary and is deliberately
+invisible to the exponent $\beta$. A useful result would distinguish the
+two separately indexed series from the increasing-action ordering and
+would include explicit examples at every attainable convergence type.
+
+\subsection*{2. Sharp absolute bounds for blocks}
+The constants in \eqref{eq:constants} sacrifice sharpness for uniformity.
+For $d=2$, optimize the pair and singleton estimates and identify the best
+leading tail constant for a fixed compact period interval. The exact
+profile \eqref{eq:Phi-integral} should permit substantially smaller bounds
+than replacing every derivative by a common Cauchy majorant. A first
+concrete target is a tail estimate whose leading power of $T$ is sharp
+both near and away from rational ratios.
+
+\subsection*{3. All-order moving-resonance expansions}
+Theorem~\ref{thm:coalescence} proves the leading profile with a uniform
+$O(x^{-1})$ correction. Derive an all-order expansion when the periods
+have complete asymptotic expansions in $1/x$, expressing every term
+through derivatives of $\Phi_m$ and Taylor coefficients of the regular
+factor. The algebraic calculation is accessible, but a useful theorem
+must give a uniform remainder on compact sets crossing every partial
+collision stratum. Uniformity on growing parameter windows would then
+connect this expansion with well-separated residue asymptotics.
+
+\subsection*{4. Unbounded multiplicity and countably many lattices}
+A finite $d$ bounds the number of nodes in a block. For infinitely many
+lattices that argument fails: clusters can contain arbitrarily many nodes,
+while the factors $x^{m-1}$, derivative estimates, and simplex dimensions
+all change. Find a weighted condition balancing cluster cardinality,
+regular-factor norms, and action growth that yields a nontrivial
+countable-lattice analogue of \eqref{eq:abstracttail}. This is a genuine
+extension beyond the hypotheses of Proposition~\ref{prop:abstract}, not
+an immediate consequence of the finite-dimensional result.
+
+\subsection*{5. Nonmeromorphic singularities in a resonance block}
+Replace simple and higher-order poles by algebraic or logarithmic Borel
+singularities. Seek a block analogue of divided differences in which
+Hankel-contour contributions remain uniformly controlled as their branch
+points collide. The correct collision profile may involve beta integrals
+rather than the simplex exponential in \eqref{eq:Phi-integral}. One must
+also specify branch choices and allowed continuation paths, which are
+absent in the meromorphic model.
+
+\subsection*{6. Quantitative resurgence of the nonlinear inverse}
+Theorem~\ref{thm:formal-inverse} provides formal action preservation and an
+analytic realization near the positive axis. It does not give an explicit
+continuation theorem for the Borel transform of the inverse on all relevant
+sheets. Determine the singularity types, local coefficients, and
+continuation bounds created by nonlinear convolution when the primitive
+Borel poles have arbitrarily close neighbors. Established resurgent
+closure theorems provide a framework; the target is quantitative control
+uniform in the period parameters, rather than closure in name alone.
+
+\subsection*{7. Multiple exponential bases and differential algebra}
+Theorem~\ref{thm:rational} classifies one-base rational-exponential
+representations. Determine what changes if a finite number of independent
+bases is allowed, or if one permits algebraic, differential-algebraic,
+or multiple-sine special functions. In particular, a useful obstruction
+should not merely restate the irrational ratio of two generators, since
+that obstruction disappears when two bases are admitted.
+
+\subsection*{8. Certified and precision-adaptive computation}
+Implement interval-arithmetic versions of \eqref{eq:stable-pair} and
+\eqref{eq:tail}. A full certificate must cover input period uncertainty,
+pole ordering, grouping decisions, local residue evaluation, and the
+unresolved tail. If an uncertain gap straddles the grouping threshold,
+merge a larger certified cluster rather than guessing its order, and
+track the resulting multiplicity bound. Analyze bit complexity for
+algebraic periods and for computable periods supplied with certified
+approximants.
+
+\subsection*{9. Other exact special-function realizations}
+The sine-product kernels are close in structure to kernels appearing in
+multiple-gamma, multiple-sine, and quantum-dilogarithm integral formulas.
+Identify exact parameter and differentiation correspondences rather than
+relying on formal resemblance. Then compare the resulting block sums with
+known product and modular representations, including the normalization
+polynomials and lateral sign conventions. This may reveal which parts of
+the present quantitative package are refinements of established
+special-function identities.
+
+\subsection*{10. Negative and genuinely complex actions}
+Our right-half-plane norm exploits positive real actions. Study clusters
+on several complex rays and the geometry of the common Laplace domains.
+Products can create cancellation of complex actions, including action
+zero, so positivity-based finite-cut arguments may fail. A useful
+extension would give a cone condition that simultaneously controls
+cluster summation, nonlinear products, and inverse support.
+
+\subsection*{11. Optimal groupings and representation invariants}
+Different admissible partitions produce the same jump but different
+block norms. Is there a canonical or near-optimal grouping for numerical
+work or for a specified inverse disk? Determine which information is
+invariant under finite refinement and coarsening, and whether a
+representation-independent analytic norm can retain the useful
+separation-free estimates. The goal is a useful analytic structure, not
+merely a new name for an existing contour integral.
+
+\subsection*{12. A focused Lean formalization}
+Formalize the finite geometric and algebraic core first: the pigeonhole
+bound on block size, confluent residue identities for double and triple
+poles, and the finite action-coefficient formula
+\eqref{eq:action-coefficient}. Next connect a finite divided-difference
+API to an analytic norm estimate. The full theorem additionally requires
+complex contour integration, a normally convergent infinite block sum,
+and a branch-sensitive inverse construction. These layers should be
+reported separately; formalizing the finite algebra alone would not
+formalize the Stokes theorem.
+
+\section{Conclusion}
+The distinction established by the model can be summarized without a
+summability slogan. The Borel germ is uniformly Gevrey-one. Its positive
+singularities have a locally finite, finitely generated action support.
+Their individual residue amplitudes can nevertheless grow so quickly
+that no positive value of the large variable makes the raw Stokes sum
+converge. The failure is arithmetic and its two-lattice abscissa is exactly
+$\beta(\alpha)$.
+
+Canceling nearby poles before estimating gives a different conclusion.
+Every resonance block has bounded cardinality, a controlled holomorphic
+regular factor, and an exact divided-difference representation. The
+resulting block sum converges normally, equals the lateral jump, and
+varies regularly across rational resonances. It admits both an explicit
+action-cutoff error and an analytic inverse expansion with a separate
+amplitude-degree error. At every fixed formal action cutoff the original
+polynomial-exponential transseries remains meaningful, even in examples
+where its raw infinite evaluation fails everywhere.
+
+Thus the natural analytic datum for this class is not the support alone,
+nor the list of individual residues with an imposed absolute-summability
+condition. It is the support together with a finite cancellation structure
+and a norm on its blocks. This is the specific extension to the
+repository's transseries and inverse-transport program proved here.
+
+\clearpage
+\appendix
+\section{Proof dependencies and scope audit}
+\label{app:audit}
+\begin{longtable}{>{\raggedright\arraybackslash}p{.23\linewidth}>{\raggedright\arraybackslash}p{.40\linewidth}>{\raggedright\arraybackslash}p{.28\linewidth}}
+\toprule
+Result & Main ingredients & Boundary of the claim\\
+\midrule
+\endhead
+Gevrey realization, Proposition~\ref{prop:gevrey}
+& Cauchy coefficients, nonreal-ray sine bounds, Laplace remainder
+& Does not control individual remote residues.\\[5pt]
+Block summation, Theorem~\ref{thm:block}
+& Finite block geometry, canceled regular factors, divided differences,
+contour exhaustion
+& Finite $d$ and positive real periods.\\[5pt]
+Raw abscissa, Theorem~\ref{thm:arithmetic}
+& Explicit residues, root test, reciprocal approximation identity
+& Irrational two-lattice ratio; boundary line unclassified.\\[5pt]
+Finite-cut uniqueness, Theorem~\ref{thm:finitecut}
+& Block tail and finite splitting of the cutoff block
+& Asymptotic statement; not raw-series convergence.\\[5pt]
+Coalescence, Theorem~\ref{thm:coalescence}
+& Affine divided-difference scaling and the simplex integral
+& Compact scaled offsets and bounded regular-factor derivatives.\\[5pt]
+Compression, Theorem~\ref{thm:rational}
+& Periodic polynomial sequences and action uniqueness
+& Necessity concerns finite single-base rational forms in $d=2$.\\[5pt]
+Inverse certificate, Theorem~\ref{thm:inverse}
+& Classical contour Lagrange inversion applied in the block norm
+& Local certified branch, not global inverse univalence.\\[5pt]
+Inverse action formula, Theorem~\ref{thm:formal-inverse}
+& Positive-action filtration, finite coefficient extraction, analytic tails
+& No complete inverse Borel continuation theorem.\\[5pt]
+Abstract criterion, Proposition~\ref{prop:abstract}
+& Local canceled-factor bounds and explicit contour hypotheses
+& Does not manufacture those hypotheses for a general kernel.\\
+\bottomrule
+\end{longtable}
+
+All theorem statements in this report have conventional proofs.
+The computations corroborate selected identities and examples but are
+not a formal proof assistant or a numerical substitute for the infinite
+estimates. In particular, the report does not claim to settle a named
+community-wide conjecture, establish priority over all special-function
+literature, or supply a Lean-checked development.
+
+\section{Source provenance and reproduction}
+The repository was inspected through its GitHub connection. The frozen
+snapshot used for the explicit comparison is
+\begin{center}
+\small\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.
+\end{center}
+The most directly relevant file is
+\begin{quote}\small
+\path{Analysis/Transseries/docs/series-and-transseries/}\\
+\path{Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex}
+\end{quote}
+The inspected source lines 180--360 include the contour proof, derivative-disk
+certificate, weighted countable extension, collision proposition, and
+exponential-action transport discussion. The neighboring README states
+that its countable analytic extension is not by itself a countable-action
+resurgence theorem. The comparison in Section~\ref{sec:intro} refers to
+these specific statements. The inventory was also consulted to avoid
+repeating the recent moving-fold, countable-feedback, harmonic-inverse,
+and action-accumulation topics. Repository documents were treated as
+mathematical sources to inspect, not as automatically verified facts.
+
+The package has no dependency on a local checkout of ProveIt. The
+bibliography is embedded in this source, and the one numerical table is
+included as a generated TeX file. To reproduce the checks and the PDF:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python verify.py --stage all
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+\end{minipage}
+
+The supplied \texttt{build.sh} performs the same steps after changing to
+its own directory. The verification program accesses no network services
+and writes only local output files. See \texttt{SOURCES.md} for direct
+source links and \texttt{QA\_REPORT.md} for the actual PDF build and visual
+inspection record. No external source corpus or font files are included.
+
+\begin{thebibliography}{9}
+\bibitem{repo-stokes}
+Vladimir Reshetnikov's ProveIt repository,
+\emph{Nonlinear Stokes Transport under Logarithmic Inversion},
+research article and README, 29 September 2026.
+Snapshot \texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14};
+source path recorded in Appendix B.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-index}
+Vladimir Reshetnikov's ProveIt repository,
+\emph{Series and transseries}, inventory and formalization crosswalk,
+\texttt{Analysis/Transseries/docs/series-and-transseries/README.md},
+accessed 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{sauzin}
+David Sauzin,
+\emph{Introduction to 1-summability and resurgence}, 2014.
+\url{https://arxiv.org/abs/1405.0356}.
+
+\bibitem{deboor}
+Carl de Boor,
+\emph{Divided Differences},
+Surveys in Approximation Theory \textbf{1} (2005), 46--69.
+\url{https://arxiv.org/abs/math/0502036}.
+
+\bibitem{marmi-sauzin}
+Stefano Marmi and David Sauzin,
+\emph{Quasianalytic monogenic solutions of a cohomological equation},
+arXiv preprint, 2001.
+\url{https://arxiv.org/abs/math/0101149}.
+
+\bibitem{garoufalidis-kashaev}
+Stavros Garoufalidis and Rinat Kashaev,
+\emph{Resurgence of Faddeev's quantum dilogarithm},
+2020, version 2.
+\url{https://arxiv.org/abs/2008.12465}.
+\end{thebibliography}
+\end{document}

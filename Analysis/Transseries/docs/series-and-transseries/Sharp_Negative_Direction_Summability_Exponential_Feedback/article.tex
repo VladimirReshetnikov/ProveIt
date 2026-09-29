@@ -1,0 +1,1287 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,unicode]{hyperref}
+\usepackage{bookmark,listings}
+\hypersetup{pdftitle={Sharp negative-direction summability for countable exponential feedback},pdfauthor={Research article prepared with ChatGPT for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Countable exponential feedback}
+\fancyhead[R]{\small Sectorial asymptotics and summability}
+\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=4pt,topsep=6pt,leftmargin=1.7em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\Uhat}{\widehat U}\newcommand{\Qhat}{\widehat Q}\newcommand{\Vhat}{\widehat V}
+\newcommand{\M}{\mathbb M}\newcommand{\CM}{\mathcal C_{\M}}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ee}{\mathrm e}
+\DeclareMathOperator{\Rea}{Re}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single,showstringspaces=false}
+\begin{document}
+\begin{titlepage}\centering
+\vspace*{12mm}
+{\small\scshape Research article\par}\vspace{9mm}
+{\LARGE\bfseries Sharp negative-direction summability\par
+for countable exponential feedback\par}\vspace{6mm}
+{\Large A coefficient-to-remainder principle,\par
+optimal logarithmic scales, and sectorial inversion\par}\vspace{10mm}
+{\large Prepared for Vladimir Reshetnikov\par}\vspace{3mm}
+29 September 2026\vspace{10mm}
+\begin{minipage}{0.93\textwidth}
+\begin{abstract}
+Consider the formal and sectorial equation
+\[
+ U(q)=\sum_{j\ge1}q^j\exp(\lambda_jU(q)),\qquad \lambda_j\ge0.
+\]
+A recent ProveIt draft establishes coefficient regularity and a left-sector
+realization but explicitly leaves uniform Gevrey remainders unproved.
+We close that gap for a broad class of weights. The change of unknown
+$U=qV$ gives a fixed dependent-variable disk about $V=1$. An exact
+exponential-remainder estimate links the kernel to a positive subfamily
+of the Lagrange coefficients. We prove that the canonical sectorial
+solution has strong $\mathbb M$-asymptotics if and only if its formal
+coefficients belong to $\mathcal C_{\mathbb M}$, under explicit elementary
+weight hypotheses. In particular, strong Gevrey-$s$ asymptotics are
+equivalent to $\lambda_j=O((j\log(j+1))^{s+1})$ for every $s>0$.
+The classical sectorial characterization of summability then gives a
+sharp application: for every $k>1$, negative-direction $k$-summability
+holds if and only if $\lambda_j=O((j\log(j+1))^{1+1/k})$.
+For $\lambda_j\asymp j^p(\log(\ee+j))^\beta$, $p>1$, we determine
+the optimal factorial--logarithmic weight, up to geometric factors, and
+prove actual truncation errors on the scale
+$\exp[-c|q|^{-1/(p-1)}(\log(1/|q|))^{(p-\beta)/(p-1)}]$.
+The results extend to the sectorial compositional inverse. Detailed
+proofs, error certificates, exact checks, limitations, and further
+research questions are included.
+\end{abstract}
+\end{minipage}\vfill
+\begin{minipage}{0.93\textwidth}\small
+\textbf{Status.} These are conventional mathematical proofs, not
+Lean-verified theorems. The model-specific coefficient-to-remainder and
+summability conclusions are the proposed contribution. General weighted
+implicit-function methods and the classical summability theorem are not
+claimed as inventions. Global novelty and priority have not been
+certified. No named longstanding conjecture is claimed solved.
+\end{minipage}
+\end{titlepage}
+\tableofcontents\clearpage
+
+\section{The research gap and the main conclusions}
+\label{sec:intro}
+\subsection{A precise continuation of the repository}
+The ProveIt snapshot used here is commit
+\begin{center}\small\texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.\end{center}
+Its transseries documentation is in
+\path{Analysis/Transseries/docs/series-and-transseries/}.
+The directory README distinguishes the consolidated volumes from nineteen
+unmerged research arrivals dated 29 September 2026, and warns that those
+arrivals have not been reviewed claim by claim or formalized \cite{repo}.
+
+The immediate predecessor is \emph{A sharp regularity classification for
+countable exponential-feedback transseries}, in
+\path{Exponential_Feedback_Regularity_Classification/} \cite{feedback}.
+It studies
+\begin{equation}
+ \Uhat(q)=\sum_{j\ge1}q^j\exp(\lambda_j\Uhat(q)),\qquad
+ \Uhat(q)=\sum_{n\ge1}u_nq^n,\quad \lambda_j\ge0.
+ \label{eq:model}
+\end{equation}
+Its README and sectorial-realization proof explicitly distinguish
+Poincar\'e asymptotics from uniform Gevrey remainder estimates. For each
+fixed $N$, the assertion $R_N(q)=O_N(q^N)$ alone says nothing useful about
+how the constant grows with $N$.
+
+The neighboring \emph{Finite-Core Universality and Sharp Large Order}
+draft develops multiplicative coefficient asymptotics and finite-core
+condensation \cite{finitecore}. We do not repeat its saddle analysis.
+The present question is to control the actual error of a sectorial
+solution and identify which summation procedures reconstruct it.
+
+\subsection{Principal statements}
+\begin{theorem}[Sharp sectorial Gevrey and summability classification]
+\label{thm:headline}
+Let $(\lambda_j)$ be any sequence of finite nonnegative real numbers.
+There is a canonical holomorphic germ $U$ on a left sectorial region of
+opening $\pi$, characterized by \eqref{eq:model} and $U=q+O(q^2)$.
+For every $s>0$, the following conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\lambda_j=O((j\log(j+1))^{s+1})$;
+\item $|u_n|\le CA^n(n!)^s$ for some $C,A>0$;
+\item on every proper left sector, after choosing a sufficiently small
+radius, there are $C,A>0$ such that for all $N\ge1$,
+\begin{equation}
+ \left|U(q)-\sum_{n=1}^{N-1}u_nq^n\right|
+ \le CA^N(N!)^s|q|^N.
+ \label{eq:headline-remainder}
+\end{equation}
+\end{enumerate}
+For every $k>1$, these conditions with $s=1/k$ are also equivalent to
+$\Uhat$ being $k$-summable in direction $\pi$. Its sum is $U$.
+The same equivalences hold for the formal and sectorial compositional
+inverses of $U$.
+\end{theorem}
+The summability conclusion deliberately assumes $k>1$; the case $k=1$
+is not settled here. The remainder assertion holds for every $s>0$.
+
+\begin{theorem}[Optimal logarithmic scale]
+\label{thm:logheadline}
+Suppose, for some $p>1$, $\beta\in\R$, and $c,C>0$, that
+\begin{equation}
+ cj^p(\log(\ee+j))^\beta\le\lambda_j
+ \le Cj^p(\log(\ee+j))^\beta
+ \quad\text{for all sufficiently large }j.
+ \label{eq:twosidedslopes}
+\end{equation}
+Set $s=p-1$, $\tau=\beta-p$, and, up to a finite initial quotient
+adjustment, define
+\begin{equation}
+ M_n=(n!)^s\prod_{\ell=1}^n(\log(\ee+\ell))^\tau.
+ \label{eq:logweight}
+\end{equation}
+Then $U$ and its sectorial inverse have strong $\M$-asymptotic expansions.
+This weight cannot be replaced by $M_{s,\tau-\varepsilon}$,
+$\varepsilon>0$, or by $M_{s',\tau'}$ with $0<s'<s$ and fixed $\tau'$.
+On every proper left sector there is a truncation order $N=N(|q|)$ giving
+\begin{equation}
+ \left|U(q)-\sum_{n<N}u_nq^n\right|
+ \le C_1\exp\!\left[-c_1|q|^{-1/s}
+                        (\log(1/|q|))^{-\tau/s}\right].
+ \label{eq:optimized-headline}
+\end{equation}
+The inverse has the same error scale, with possibly different constants.
+If $1<p<2$, both series are also $\M$-summable in direction $\pi$ in the
+standard generalized sense.
+\end{theorem}
+Here optimality is within the factorial--logarithmic weight scale, up to
+geometric factors. It is not a lower bound on each pointwise remainder,
+and does not specify the sharp numerical constant $c_1$.
+
+\subsection{Why a change of unknown is necessary}
+If $\lambda_j/j$ is unbounded, the original kernel is not analytic in a
+product neighborhood of $(q,U)=(0,0)$. At fixed positive $U$, its terms
+fail to tend to zero along a subsequence for every positive $q$.
+An implicit-function theorem applied directly in these coordinates would
+therefore lack a required hypothesis.
+Instead put
+\begin{equation}
+ U=qV,\qquad F(q,v)=\sum_{j\ge1}q^{j-1}e^{\lambda_jqv},
+ \qquad V=F(q,V).
+ \label{eq:desing}
+\end{equation}
+On a proper left sector, $qv$ remains in the left half-plane throughout
+one fixed disk about $v=1$. All exponentials are bounded by one,
+independently of the slope sizes. This fixed dependent-variable disk is
+the essential missing hypothesis, not a new formal inversion formula.
+
+Gevrey asymptotic implicit-function theory is classical; for example
+Nikolaev establishes a Gevrey implicit-function and resummation theorem
+under appropriate uniform assumptions \cite{nikolaev}. We verify a
+weighted version directly for this countable singular kernel and use
+positivity to obtain an equivalence rather than only sufficiency.
+
+\section{Conventions and admissible weights}
+\label{sec:weights}
+For $0<\eta<1$ and $r>0$, write
+\begin{equation}
+ S_{\eta,r}=\{q\in\C:0<|q|<r,\ \Rea q<-\eta|q|\}.
+ \label{eq:sector}
+\end{equation}
+Its opening is $2\arccos\eta<\pi$. A left sectorial germ means compatible
+functions on these sectors, with radii allowed to depend on $\eta$.
+No radius uniform as $\eta\downarrow0$ is asserted.
+
+\begin{definition}[Admissible weights]
+A sequence $\M=(M_n)_{n\ge0}$ is admissible here if $M_0=1$, its quotients
+$\mu_n=M_n/M_{n-1}$ satisfy
+\begin{equation}
+ 1\le\mu_1\le\mu_2\le\cdots,\qquad \mu_n\longrightarrow\infty,
+ \label{eq:quotients}
+\end{equation}
+and, for some $D,E\ge1$,
+\begin{equation}
+ \mu_n^n\le D^nM_n\quad(n\ge1),\qquad
+ M_{n+1}\le E^{n+1}M_n\quad(n\ge0).
+ \label{eq:weightconditions}
+\end{equation}
+\end{definition}
+These are the precise hypotheses used in our proof, not a proposed
+replacement for the standard definition of strong regularity. Familiar
+factorial--logarithmic weights satisfy them; standard strongly regular
+weights provide many examples \cite{lms}.
+
+\begin{definition}[Coefficient and strong asymptotic classes]
+A formal series $\widehat f=\sum f_nq^n$ belongs to $\CM$ if
+$|f_n|\le CA^nM_n$ for some constants. A function $f$ has a strong
+$\M$-asymptotic expansion $\widehat f$ on $S_{\eta,r}$ if
+\begin{equation}
+ \left|f(q)-\sum_{n=0}^{N-1}f_nq^n\right|
+ \le CA^NM_N|q|^N\quad(N\ge1,\ q\in S_{\eta,r}),
+ \label{eq:strong}
+\end{equation}
+with constants independent of $N$ and $q$. For a sectorial germ this is
+required on every proper left sector, allowing the radius and constants
+to depend on that sector.
+\end{definition}
+
+\begin{lemma}[Elementary weight facts]
+\label{lem:weightfacts}
+For an admissible weight,
+\begin{equation}
+ M_aM_b\le M_{a+b},\qquad M_n\le\mu_N^n\quad(0\le n\le N).
+ \label{eq:weightfacts}
+\end{equation}
+Multiplication by $q$ and, for zero-constant-term expansions, division by
+$q$ preserve the coefficient and strong asymptotic classes. Strong
+$\M$-asymptotics imply formal membership in $\CM$.
+\end{lemma}
+\begin{proof}
+Multiply the ordered quotients to obtain the inequalities. Multiplication
+by $q$ shifts an index down, and $M_{n-1}\le M_n$; division shifts up,
+which is absorbed by the bound involving $E$. For coefficient necessity,
+divide the remainder after degree $N-1$ by $q^N$ and approach zero along
+an interior ray. The expansion one order further identifies the limit
+as $f_N$, and gives $|f_N|\le CA^NM_N$.
+\end{proof}
+
+\begin{lemma}[Factorial--logarithmic weights]
+\label{lem:logweights}
+For $s>0$ and $\tau\in\R$, the weight \eqref{eq:logweight}, with a finite
+initial quotient adjustment if needed, is admissible, and
+\begin{align}
+ \mu_n&\sim n^s(\log n)^\tau,\label{eq:muasymp}\\
+ \log M_n&=sn\log n-sn+\tau n\log\log n+o(n).
+ \label{eq:Masymp}
+\end{align}
+It is geometrically equivalent to
+$(n!)^s(\log(\ee+n))^{\tau n}$.
+\end{lemma}
+\begin{proof}
+The function $x^s(\log(\ee+x))^\tau$ is increasing and at least one
+for all sufficiently large $x$. Keep these quotients from an index $J$
+onward and choose nondecreasing quotients between $1$ and $\mu_J$
+before that index. This changes the later weights by a constant factor.
+Stirling's formula and
+\[
+ \sum_{\ell=1}^n\log\log(\ee+\ell)
+ =n\log\log n+O(n/\log n)
+\]
+give \eqref{eq:Masymp}. The sum estimate follows by splitting at $\sqrt n$
+and comparing with an integral, then integrating by parts.
+Thus $n\log\mu_n-\log M_n=sn+o(n)$, which proves the $D$ bound.
+The quotient $\mu_{n+1}$ has polynomial times logarithmic growth and is
+bounded by $E^{n+1}$ after enlarging $E$. The same sum estimate proves
+geometric equivalence with the simpler weight.
+\end{proof}
+
+\section{A weighted implicit remainder theorem}
+\label{sec:implicit}
+The uniform-in-order step uses only Cauchy estimates, contraction, and
+an analytic majorant. No summability hypothesis on the kernel is used.
+
+\begin{theorem}[Uniform weighted implicit expansion]
+\label{thm:implicit}
+Let $\M$ be admissible. Suppose $F$ is holomorphic on
+$S_{\eta,r_0}\times D(1,\delta)$, with coefficient functions $a_n$
+holomorphic in the disk, $a_0=1$, and uniform bounds
+\begin{align}
+ |a_n(v)|&\le CA^nM_n\quad(n\ge1),\label{eq:implicit-coeff}\\
+ \left|F(q,v)-\sum_{n=0}^{N-1}a_n(v)q^n\right|
+ &\le CA^NM_N|q|^N\quad(N\ge1).\label{eq:implicit-rem}
+\end{align}
+After shrinking the radius, the fixed point $V=F(q,V)$ near $1$ exists,
+is holomorphic, and has a strong $\M$-expansion equal to the unique
+formal solution. Constants can be obtained from the stated data.
+\end{theorem}
+\begin{proof}
+Increase constants so that $A,C,D\ge1$.
+
+\paragraph{Fixed-disk existence.}
+The $N=1$ estimate gives $F(q,v)=1+O(q)$ uniformly. Cauchy's estimate
+gives $\partial_vF=O(q)$ on $D(1,\delta/2)$. Shrinking the radius makes
+$F$ preserve the closed smaller disk with Lipschitz constant at most
+$1/2$. Iteration gives a unique fixed point, holomorphic by locally
+uniform convergence.
+
+\paragraph{Formal majorization.}
+Write $V=1+w$. Cauchy's estimate gives
+\[
+ a_n(1+w)=\sum_{j\ge0}a_{n,j}w^j,
+ \qquad |a_{n,j}|\le CA^nM_n\delta^{-j}.
+\]
+In total degree $N$, the weights of a term $q^nw_{i_1}\cdots w_{i_j}$
+are bounded by $M_nM_{i_1}\cdots M_{i_j}\le M_N$. Induction therefore
+dominates $|w_N|/M_N$ by $[z^N]H(z)$, where
+\begin{equation}
+ H=\frac{CAz}{1-Az}\frac1{1-H/\delta},\qquad H(0)=0.
+ \label{eq:analyticmajorant}
+\end{equation}
+This analytic scalar equation is contractive on $|H|\le\delta/2$ for
+$|z|\le\min\{(2A)^{-1},\delta/(16CA)\}$. Its coefficients are
+nonnegative. Thus there are $K,B\ge1$ such that the unique formal solution
+$\Vhat=\sum v_nq^n$ satisfies
+\begin{equation}
+ |v_n|\le KB^nM_n\quad(n\ge0).
+ \label{eq:Vcoeff}
+\end{equation}
+Formal uniqueness follows because every nonconstant kernel term has
+positive $q$-order.
+
+\paragraph{Shrinking analytic disks.}
+Put $F_{<N}=\sum_{n<N}a_n(v)q^n$ and
+$\rho_N=c/(A\mu_N)$, where
+$0<c\le\min\{1/4,\delta/(16C)\}$. On $|q|\le\rho_N$,
+\[
+ \sum_{n=1}^{N-1}CA^nM_n|q|^n\le C\sum_{n\ge1}c^n
+ \le Cc/(1-c).
+\]
+Cauchy's estimate in $v$ makes $F_{<N}$ contractive on
+$\overline D(1,\delta/2)$, decreasing $c$ if needed. Its fixed point
+$V_N$ is analytic in $D(0,\rho_N)$ and has the same Taylor coefficients
+as $\Vhat$ through degree $N-1$.
+For sectorial $q$ with $|q|\le\rho_N/2$, subtract the fixed-point
+equations to get
+\begin{equation}
+ |V-V_N|\le2CA^NM_N|q|^N.
+ \label{eq:compareVN}
+\end{equation}
+Cauchy's estimate for $V_N-1$, bounded by $\delta/2$, gives
+\begin{equation}
+ \left|V_N-\sum_{n<N}v_nq^n\right|
+ \le\delta(|q|/\rho_N)^N
+ \le\delta(AD/c)^NM_N|q|^N.
+ \label{eq:VNtail}
+\end{equation}
+This proves the estimate in the small-$q$ range associated with $N$.
+
+\paragraph{The complementary range.}
+When $|q|\ge\rho_N/2$, for $0\le n<N$,
+\begin{equation}
+ \frac{M_n|q|^n}{M_N|q|^N}
+ =\frac{M_n}{\mu_N^n}\frac{\mu_N^N}{M_N}
+      (|q|\mu_N)^{-(N-n)}
+ \le D^N(2A/c)^{N-n}.
+ \label{eq:largerange}
+\end{equation}
+Combine this with \eqref{eq:Vcoeff} and the boundedness of $V$.
+Summing and using $N+1\le2^N$ bounds the normalized remainder by a
+constant times $[2D\max\{B,2A/c,1\}]^N$. Together with
+\eqref{eq:compareVN}--\eqref{eq:VNtail}, this is a single all-orders
+strong remainder estimate on the smaller sector.
+\end{proof}
+
+\begin{remark}
+This proof permits a geometric enlargement of the weight. It preserves
+class membership, not necessarily the optimal numerical coefficient or
+remainder type. The shrinking-disk Cauchy estimate is one explicit source
+of such a loss of constants.
+\end{remark}
+
+\section{The desingularized countable kernel}
+\label{sec:kernel}
+Fix $0<\eta<1$, choose $0<\delta<\eta$, and put
+$c=\eta-\delta>0$, $B=1+\delta$. For $q\in S_{\eta,r}$ and
+$|v-1|<\delta$,
+\begin{equation}
+ \Rea(qv)\le-c|q|.
+ \label{eq:negativeproduct}
+\end{equation}
+All the following estimates are uniform on this product domain.
+
+\begin{proposition}[Sectorial existence with arbitrary slopes]
+\label{prop:existence}
+For every nonnegative slope sequence, $F$ in \eqref{eq:desing} is
+holomorphic on $S_{\eta,r}\times D(1,\delta)$ when $r<1$, and
+\begin{align}
+ |F(q,v)-1|&\le\lambda_1B|q|+\frac{|q|}{1-|q|},\label{eq:Fclose}\\
+ |\partial_vF(q,v)|&\le\lambda_1|q|
+                  +\frac{|q|}{\ee c(1-|q|)}.\label{eq:Fderivative}
+\end{align}
+For a sufficiently small radius it has a unique fixed point near $1$.
+The corresponding $U=qV$ solves \eqref{eq:model}, has $U=q+O(q^2)$,
+and is unique among solutions with that behavior on a proper left sector.
+Constructions on different sectors agree near zero on their overlaps.
+\end{proposition}
+\begin{proof}
+The $j$th term is bounded by $|q|^{j-1}$, giving normal convergence.
+For $j=1$ use $e^z-1=z\int_0^1e^{tz}\dd t$ and
+$\Rea z\le0$; the remaining terms have a geometric majorant.
+For the derivative handle $j=1$ directly. For $j\ge2$, the inequality
+$t e^{-ct|q|}\le1/(\ee c|q|)$, $t\ge0$, bounds the derivative term
+by $|q|^{j-1}/(\ee c)$. Summing proves the two estimates.
+They tend to zero, giving contraction on a fixed closed disk about $1$.
+The first estimate then gives $V=1+O(q)$. Any other solution with the
+stated behavior has $U/q$ in the same disk near zero, proving uniqueness
+and compatibility.
+\end{proof}
+
+\begin{proposition}[Exact uniform kernel remainder]
+\label{prop:kernelremainder}
+Define
+\begin{equation}
+ a_n(v)=\sum_{j=1}^{n+1}
+        \frac{(\lambda_jv)^{n+1-j}}{(n+1-j)!},\qquad n\ge0.
+ \label{eq:an}
+\end{equation}
+Then $a_0=1$, $|a_n(v)|\le a_n(B)$, and for every $N\ge1$,
+\begin{equation}
+ \boxed{\quad
+ \left|F(q,v)-\sum_{n=0}^{N-1}a_n(v)q^n\right|
+ \le\frac{a_N(B)}{1-|q|}|q|^N.
+ \quad}
+ \label{eq:exactkernelremainder}
+\end{equation}
+No growth restriction on the slopes is needed.
+\end{proposition}
+\begin{proof}
+For $\Rea z\le0$, $m\ge1$, the integral Taylor remainder gives
+\begin{equation}
+ \left|e^z-\sum_{h=0}^{m-1}\frac{z^h}{h!}\right|
+ =\left|\frac{z^m}{(m-1)!}
+       \int_0^1(1-t)^{m-1}e^{tz}\dd t\right|
+ \le\frac{|z|^m}{m!}.
+ \label{eq:exptail}
+\end{equation}
+For $j\le N$, apply this with $z=\lambda_jqv$ and $m=N+1-j$,
+then multiply by $q^{j-1}$. The combined bound is
+\[
+ |q|^N\sum_{j=1}^N\frac{(B\lambda_j)^{N+1-j}}{(N+1-j)!}.
+\]
+The terms $j>N$ contribute at most $|q|^N/(1-|q|)$.
+The missing $j=N+1$ summand of $a_N(B)$ equals $1$, so their sum is
+bounded by \eqref{eq:exactkernelremainder}.
+\end{proof}
+
+The estimate holds on a fixed disk of dependent-variable values, not
+only along the unknown solution. This is the uniformity required in
+Theorem~\ref{thm:implicit}. Substitution of a formal polynomial into the
+original kernel would not establish it.
+
+\section{Positivity and the coefficient-to-remainder principle}
+\label{sec:bridge}
+The following algebraic comparison does not depend on the sharper
+coefficient asymptotics in the predecessor drafts.
+
+\begin{lemma}[Formal coefficients and a positive subfamily]
+\label{lem:positivity}
+Equation~\eqref{eq:model} has a unique solution in $q\R[[q]]$.
+It has $u_1=1$, $u_n\ge1$, and
+\begin{equation}
+ u_n=\sum_{\substack{\boldsymbol m\text{ finite}\\\sum j m_j=n}}
+ \frac{(\sum_j\lambda_jm_j)^{|\boldsymbol m|-1}}{\prod_jm_j!},
+ \qquad |\boldsymbol m|=\sum_jm_j,
+ \label{eq:Lagrange}
+\end{equation}
+where $0^0=1$. In particular,
+\begin{equation}
+ a_n(1)\le u_{n+1}\quad(n\ge0),
+ \label{eq:positivesubfamily}
+\end{equation}
+and for $j\ge2$, $h\ge0$,
+\begin{equation}
+ u_{j+h}\ge\frac{\lambda_j^h}{h!}.
+ \label{eq:oneactionlower}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The defining map raises the order of a difference of formal candidate
+solutions by at least one, giving existence and uniqueness by iteration.
+Introduce a parameter $t$ and solve $U=t\Phi(q,U)$, where
+$\Phi(q,z)=\sum_{j\ge1}q^je^{\lambda_jz}$. Lagrange inversion gives
+\[
+ U=\sum_{k\ge1}\frac{t^k}{k}[z^{k-1}]\Phi(q,z)^k.
+\]
+At each $q$-degree all sums are finite. Expanding by multiplicities
+cancels the multinomial and derivative factorials, yielding
+\eqref{eq:Lagrange} when $t=1$.
+
+All terms are nonnegative. One action $j$ and $h$ actions $1$ contribute
+$(\lambda_j+h\lambda_1)^h/h!$, proving \eqref{eq:oneactionlower}.
+For \eqref{eq:positivesubfamily}, put $N=n+1$. The configurations with
+one action $j\ge2$ and $N-j$ actions $1$ are distinct as $j$ varies.
+They dominate the corresponding terms of $a_{N-1}(1)$. The all-action-$1$
+configuration contributes $(N\lambda_1)^{N-1}/N!$, at least
+$\lambda_1^{N-1}/(N-1)!$ for $N\ge2$, since their ratio when nonzero
+is $N^{N-2}$. The case $N=1$ is equality. The single action $n$ also
+proves $u_n\ge1$.
+\end{proof}
+
+\begin{theorem}[Coefficient-to-remainder equivalence]
+\label{thm:bridge}
+Let $\M$ be admissible and $U$ the canonical left-sector solution.
+The following statements are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\Uhat\in\CM$;
+\item $a_n(1)\le CA^nM_n$ for some $C,A>0$;
+\item $U$ has strong $\M$-asymptotics $\Uhat$ on every proper left sector;
+\item $U$ has that strong expansion on at least one proper left sector.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By \eqref{eq:positivesubfamily} and the shift bound for $M_{n+1}$,
+(i) implies (ii). Since $a_n(B)\le B^na_n(1)$ for $B\ge1$,
+Proposition~\ref{prop:kernelremainder} and Theorem~\ref{thm:implicit}
+turn (ii) into strong $\M$-asymptotics of $V=U/q$ on every proper left
+sector. Multiplication by $q$ preserves the class, and formal uniqueness
+identifies the coefficients; hence (iii). The implication (iii) to (iv)
+is immediate, and (iv) to (i) is coefficient necessity from
+Lemma~\ref{lem:weightfacts}.
+\end{proof}
+
+The theorem proves that the canonical realization introduces no loss of
+weight class beyond geometric constants. Conversely, failure of formal
+membership rules out the corresponding strong expansion on every proper
+left sector. Positivity is essential in the present proof: it prevents
+cancellation from hiding a large kernel coefficient.
+
+\section{Determining the factorial--logarithmic scale}
+\label{sec:classification}
+We prove the class estimates independently, without invoking an exact
+numerical Gevrey type or a multiplicative saddle equivalent from the repo.
+
+\begin{lemma}[Growth of the kernel coefficients]
+\label{lem:kernelgrowth}
+Fix $p>1$, $\beta\in\R$. If
+$\lambda_j\le Cj^p(\log(\ee+j))^\beta$ eventually, then for each
+fixed $B\ge1$ there are $K,A>0$ such that
+\begin{equation}
+ a_n(B)\le KA^nM_{p-1,\beta-p;n}.
+ \label{eq:kernelgrowthupper}
+\end{equation}
+Under the two-sided estimate \eqref{eq:twosidedslopes},
+\begin{equation}
+ \log a_n(1)=(p-1)n\log n+(\beta-p)n\log\log n+O(n).
+ \label{eq:kernelgrowthlog}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Enlarge a constant to cover all exceptional slopes. Put $L=\log n$ and
+consider the term with index $j$ and exponent $h=n+1-j$. The term $h=0$
+is $1$. For $h\ge1$, using $\log h!\ge h\log h-h$ gives
+\begin{equation}
+ \log\frac{(B\lambda_j)^h}{h!}
+ \le h\{C_0+p\log j+\beta\log\log(\ee+j)-\log h\}.
+ \label{eq:optimization-start}
+\end{equation}
+We bound the maximum uniformly in $j$.
+
+For $j<\sqrt n$, the right side is at most
+$(p/2-1)nL+O(n\log L)$, smaller than the claimed bound by a positive
+multiple of $nL$. For $j>n/2$, $h\le n/2+1$ and
+$\log\lambda_j\le pL+O(\log L)$. The function
+$h(pL+O(\log L)-\log h+1)$ increases on this range for large $n$,
+so its maximum is at most
+$\tfrac12(p-1)nL+O(n\log L)$, also smaller than required.
+
+In the middle range $\sqrt n\le j\le n/2$,
+$\log\log(\ee+j)=\log L+O(1)$ and $\log h=L+O(1)$.
+Expanding $h=n+1-j$, with $s=p-1$, gives
+\begin{align*}
+ \log\frac{(B\lambda_j)^h}{h!}
+ \le{}&snL+\beta n\log L+pn\log(j/n)-sjL\\
+      &+|\beta|j\log L-pj\log(j/n)+O(n)\\
+ \le{}&snL+\beta n\log L+pn\log(j/n)-\tfrac s2jL+O(n).
+\end{align*}
+We used $-j\log(j/n)\le n/\ee$ and
+$|\beta|\log L\le sL/2$ eventually. Setting $t=jL/n$ turns the last
+line into
+\[
+ snL+(\beta-p)n\log L+n\{p\log t-st/2\}+O(n).
+\]
+The expression in braces is bounded above for $t>0$. Summing $n+1$
+terms changes the logarithm by at most $\log(n+1)$, and
+Lemma~\ref{lem:logweights} proves the upper bound.
+
+For a lower bound, take $j=\lfloor n/\log n\rfloor$ and $h=n+1-j$.
+The two-sided slope assumption gives
+\[
+ \log\lambda_j=p\log n+(\beta-p)\log\log n+O(1),
+ \qquad h=n+O(n/\log n).
+\]
+Stirling's formula for $h!$ yields the matching lower bound in
+\eqref{eq:kernelgrowthlog}. Zero slopes in the upper-bound argument are
+simply omitted.
+\end{proof}
+
+\begin{theorem}[Exact Gevrey class criterion]
+\label{thm:gevrey}
+For every $s>0$,
+\begin{equation}
+ \Uhat\in\mathcal C_{(n!)^s}
+ \quad\Longleftrightarrow\quad
+ \lambda_j=O((j\log(j+1))^{s+1}).
+ \label{eq:gevreycriterion}
+\end{equation}
+Both conditions are equivalent to strong Gevrey-$s$ asymptotics of the
+canonical left-sector solution.
+\end{theorem}
+\begin{proof}
+For sufficiency use Lemma~\ref{lem:kernelgrowth} with $p=s+1$,
+$\beta=p$, giving logarithmic exponent zero, and then
+Theorem~\ref{thm:bridge}.
+For necessity suppose $u_n\le CA^n(n!)^s$. For each large $j\ge2$ set
+$h=\lceil j\log j\rceil$ and $n=j+h$. By \eqref{eq:oneactionlower},
+\[
+ \lambda_j^h\le h!CA^n(n!)^s,
+ \qquad
+ \lambda_j\le C^{1/h}A^{n/h}h\,n^{sn/h}.
+\]
+Now $n/h=1+O(1/\log j)$, $n\asymp j\log j$, and
+$n^{s(n/h-1)}=O(1)$. Thus
+$\lambda_j\le C'(j\log j)^{s+1}$.
+\end{proof}
+
+\begin{proposition}[The analytic endpoint]
+\label{prop:analytic}
+The formal solution has positive convergence radius exactly when
+$\lambda_j=O(j)$.
+\end{proposition}
+\begin{proof}
+If $\lambda_j\le Cj$, the original kernel converges normally in a small
+bidisk, its terms bounded by $(|q|e^{C|U|})^j$. The analytic implicit-
+function theorem applies at $(0,0)$. Conversely an exponential bound
+$u_n\le CA^n$ and \eqref{eq:oneactionlower} with $h=j$ give
+$\lambda_j\le C^{1/j}A^2(j!)^{1/j}=O(j)$.
+\end{proof}
+The positive-$s$ criterion must not be extrapolated to $s=0$.
+For $\lambda_j=j\log(j+1)$ the series is divergent but belongs to
+every positive Gevrey class, and its canonical realization has each
+corresponding strong expansion.
+
+\begin{theorem}[Optimality within the logarithmic scale]
+\label{thm:logoptimal}
+Under \eqref{eq:twosidedslopes}, with $s=p-1$, $\tau=\beta-p$,
+\begin{equation}
+ \log u_n=sn\log n+\tau n\log\log n+O(n).
+ \label{eq:ulog}
+\end{equation}
+The canonical solution has strong $\M_{s,\tau}$-asymptotics, but no
+strong $\M_{s,\tau-\varepsilon}$-asymptotics for $\varepsilon>0$ on
+any proper left sector. Decreasing $s$ cannot be compensated by any fixed
+logarithmic exponent.
+\end{theorem}
+\begin{proof}
+The upper bound follows from Lemma~\ref{lem:kernelgrowth} and the formal
+majorant in Theorem~\ref{thm:implicit}; the lower bound follows from
+$a_{n-1}(1)\le u_n$ and \eqref{eq:kernelgrowthlog}. Shifting the index
+by one changes the expression by $o(n)$. Strong membership follows from
+Theorem~\ref{thm:bridge}.
+Reducing $\tau$ by $\varepsilon$ subtracts
+$\varepsilon n\log\log n$ from the logarithm of the weight, which no
+geometric factor can absorb. Reducing $s$ creates a larger deficit of
+order $n\log n$. Coefficient necessity rules out both improvements.
+\end{proof}
+
+\section{Actual optimal-truncation bounds}
+\label{sec:optimal}
+Define the associated function
+\begin{equation}
+ h_{\M}(t)=\inf_{N\ge0}M_Nt^N,\qquad t>0.
+ \label{eq:hM}
+\end{equation}
+The all-orders estimates now allow the truncation index to vary with $q$.
+
+\begin{proposition}[Associated error scale]
+\label{prop:hM}
+For $\M_{s,\tau}$ let $n(t)$ be an integer minimizing $M_Nt^N$.
+As $t\downarrow0$,
+\begin{align}
+ n(t)&\sim s^{\tau/s}t^{-1/s}(\log(1/t))^{-\tau/s},\label{eq:nt}\\
+ \log h_{\M}(t)&\sim-sn(t).\label{eq:hMasymp}
+\end{align}
+\end{proposition}
+\begin{proof}
+Consecutive terms have ratio $t\mu_{N+1}$; a minimum occurs at the
+crossing of one. Since adjacent quotient ratios tend to one,
+$t n(t)^s(\log n(t))^\tau\to1$. Substituting the right side of
+\eqref{eq:nt} verifies this inverse asymptotic. Its logarithm has leading
+term $\log(1/t)/s$. At that index, \eqref{eq:Masymp} gives
+\[
+ \log(M_{n(t)}t^{n(t)})
+ =n(t)\{s\log n(t)+\tau\log\log n(t)+\log t-s\}+o(n(t))
+ =-sn(t)+o(n(t)).
+\]
+A one-index tie does not affect the equivalent.
+\end{proof}
+
+\begin{corollary}[Realized small errors]
+\label{cor:actualerror}
+If $U$ has a strong $\M_{s,\tau}$ bound with geometric constant $A$,
+choose $N=n(A|q|)$. Then
+\begin{equation}
+ \left|U(q)-\sum_{n<N}u_nq^n\right|
+ \le C\exp[-c|q|^{-1/s}(\log(1/|q|))^{-\tau/s}]
+ \label{eq:actualerror}
+\end{equation}
+for sufficiently small $q$ on the chosen proper sector.
+\end{corollary}
+\begin{proof}
+Take the infimum of the strong all-orders estimate and apply
+Proposition~\ref{prop:hM}. The geometric constant changes the positive
+constant in the exponential, not its power or logarithmic correction.
+\end{proof}
+
+For quadratic slopes $\lambda_j=j^2$, $s=1$, $\tau=-2$, so
+\begin{equation}
+ \left|U(q)-\sum_{n<N(q)}u_nq^n\right|
+ \le C\exp\left[-c\frac{(\log(1/|q|))^2}{|q|}\right],
+ \qquad N(q)\asymp\frac{(\log(1/|q|))^2}{|q|}.
+ \label{eq:quadraticactual}
+\end{equation}
+This is an actual error estimate, not merely a formal least-term law.
+It implies strong Gevrey-$1$ bounds with arbitrarily small positive
+geometric type, since
+$A^N(\log(N+\ee))^{-2N}\le C_\varepsilon\varepsilon^N$ for every
+$\varepsilon>0$. The Taylor series is nevertheless divergent.
+
+Under $q=e^{-x}$ the formal solution is
+$\sum_{n\ge1}u_ne^{-nx}$. Proper left sectors correspond to horizontal
+strips about odd multiples of $\pi$ in $\Im x$. With $X=\Rea x$,
+\eqref{eq:actualerror} becomes
+\begin{equation}
+ O(\exp[-c e^{X/s}X^{-\tau/s}]),\qquad
+ N(X)\asymp e^{X/s}X^{-\tau/s}.
+ \label{eq:transserieserror}
+\end{equation}
+These are complex-strip realizations, not claims on the real-$x$ axis.
+
+\section{Sharp negative-direction summability}
+\label{sec:summability}
+We use one classical external analytic characterization, with its
+hypotheses verified by the preceding proofs.
+
+\paragraph{Classical sectorial characterization.}
+For $s=1/k>0$, a formal series is $k$-summable in direction $d$ exactly
+when it is the strong Gevrey-$s$ expansion of a holomorphic function on a
+sectorial region centered at $d$ with opening strictly greater than
+$\pi s$. The function is the unique sum there. Equivalently its
+moment-normalized Borel transform
+\begin{equation}
+ \mathcal B_k\widehat f(\xi)
+ =\sum_{n\ge0}\frac{f_n\xi^n}{\Gamma(1+n/k)}
+ \label{eq:kBorel}
+\end{equation}
+has the required analytic continuation and exponential-order-$k$ growth
+near direction $d$, and generalized Laplace reconstruction recovers the
+function. We use the local-sector formulation in Lastra--Malek--Sanz,
+Definition 3.3, Theorem 3.18, and Remark 3.19(i) \cite{lms}. The weights
+$(n!)^{1/k}$ and $\Gamma(1+n/k)$ are geometrically equivalent.
+
+\begin{theorem}[Exact summability criterion for $k>1$]
+\label{thm:ksum}
+For every $k>1$,
+\begin{equation}
+ \boxed{\quad
+ \Uhat\text{ is $k$-summable in direction }\pi
+ \quad\Longleftrightarrow\quad
+ \lambda_j=O((j\log(j+1))^{1+1/k}).
+ \quad}
+ \label{eq:ksumcriterion}
+\end{equation}
+Whenever these conditions hold, its sum is the canonical solution $U$.
+\end{theorem}
+\begin{proof}
+Set $s=1/k<1$. The slope condition and Theorem~\ref{thm:gevrey} give
+strong Gevrey-$s$ asymptotics on every proper left sector. Choose $\eta$
+so small that $2\arccos\eta>\pi s$. The classical characterization
+applies there and identifies the sum with $U$.
+Conversely $k$-summability implies a Gevrey-$1/k$ coefficient bound.
+Necessity in Theorem~\ref{thm:gevrey} gives the slope condition.
+\end{proof}
+
+\begin{corollary}[A logarithmically refined sum]
+\label{cor:Msum}
+Under \eqref{eq:twosidedslopes} with $1<p<2$, the formal solution is
+$\M_{p-1,\beta-p}$-summable in direction $\pi$ in the standard
+generalized ultraholomorphic sense. Its generalized sum is $U$.
+\end{corollary}
+\begin{proof}
+The factorial--logarithmic weights, with equivalent initial normalization,
+are strongly regular and have opening index $s=p-1$; these weight facts
+and their generalized reconstruction theory are established in
+\cite{lms,sanz}. Theorem~\ref{thm:logoptimal} supplies strong asymptotics
+for this weight. Since $s<1$, an available left sector has opening
+greater than $\pi s$, so the characterization applies.
+\end{proof}
+
+For $\lambda_j=j^p$, $1<p<2$, the critical ordinary summation order is
+$k=1/(p-1)$. For slopes comparable to
+$j^p(\log(\ee+j))^\beta$, ordinary summability at that critical order
+holds exactly when $\beta\le p$. When $\beta>p$ it fails, but the
+logarithmically refined sum still exists. Every ordinary order satisfying
+$p-1<1/k<1$ remains available.
+
+\subsection{The critical aperture is not resolved by this argument}
+For $s=1$ the directly available sectorial region has opening $\pi$, not
+strictly greater. Strong Gevrey-$1$ estimates on its proper subsectors
+therefore do not establish ordinary Borel summability by this theorem.
+The quadratic type-zero improvement does not give uniform control up to
+the imaginary boundary rays.
+
+A Nevanlinna--Sokal criterion on a suitable tangent-disk domain could be
+relevant, but its geometric and uniformity hypotheses have not been
+established here \cite{sokal}. Thus ordinary negative-direction Borel
+summability for $\lambda_j=j^2$ remains a stated research question, not
+an implicit corollary.
+
+\subsection{The literal positive-real obstruction}
+\begin{proposition}
+\label{prop:positive}
+If $\sup_j\lambda_j/j=\infty$, the literal infinite sum
+\eqref{eq:model} has no solution for all sufficiently small positive
+real $q$ with $U(q)/q\to1$.
+\end{proposition}
+\begin{proof}
+Such a solution would have $\Rea U(q)>0$ for sufficiently small positive
+$q$. Fix one such $q$ and choose a subsequence with
+$\lambda_j/j\to\infty$. Then
+\[
+ \log|q^je^{\lambda_jU(q)}|=j\log q+\lambda_j\Rea U(q)
+ \longrightarrow+\infty
+\]
+along that subsequence, so the summands do not tend to zero.
+\end{proof}
+This concerns convergence of the defining kernel. Analytic continuation
+of a function constructed elsewhere, or a generalized sum in another
+direction, is a different question. We do not infer failure of every
+possible continuation from this test.
+
+\section{Sectorial compositional inversion}
+\label{sec:inverse}
+The inverse result gives an actual inverse germ with strong remainders,
+not merely a transfer of a formal regularity label.
+
+\begin{lemma}[Formal weighted reversion]
+\label{lem:formalreversion}
+For an admissible weight and
+$\widehat f(q)=q+\sum_{n\ge2}f_nq^n$,
+\[
+ \widehat f\in\CM\quad\Longleftrightarrow\quad
+ \widehat f^{\langle-1\rangle}\in\CM.
+\]
+\end{lemma}
+\begin{proof}
+Write $\widehat f(q)=q(1+\widehat h(q))$ and its proposed inverse as
+$q=zW(z)$, $W(0)=1$. The inverse equation is
+\begin{equation}
+ W=1-W\widehat h(zW).
+ \label{eq:inverse-formal}
+\end{equation}
+The coefficient of each positive power of $z$ is a polynomial in $W$.
+On a fixed disk about $1$ it is bounded by a geometric factor times the
+corresponding coefficient of $\widehat h$. Division by $q$ preserves the
+weight class, so the formal-majorant step of
+Theorem~\ref{thm:implicit} proves $W\in\CM$. Multiplication by $z$
+proves one implication; applying it again to the inverse proves the other.
+\end{proof}
+
+\begin{theorem}[Strong inverse realization]
+\label{thm:inverse}
+There is a canonical sectorial inverse $Q$ on a left sectorial germ,
+with $Q(z)=z+O(z^2)$. For every admissible weight,
+\begin{equation}
+ \Uhat\in\CM\quad\Longleftrightarrow\quad
+ \Qhat\in\CM\quad\Longleftrightarrow\quad
+ Q\text{ has strong $\M$-asymptotics}.
+ \label{eq:inverseequiv}
+\end{equation}
+The Gevrey, summability, and optimal logarithmic-scale conclusions all
+hold for the inverse. When directional sums are asserted, they are actual
+compositional inverses.
+\end{theorem}
+\begin{proof}
+Choose nested proper left sectors. On the larger one $U(q)-q=O(q^2)$;
+Cauchy's estimate on disks of radius proportional to $|q|$ gives
+$U'(q)-1=O(q)$ on the smaller one. For $z$ in a still smaller sector,
+solve $q=z-(U(q)-q)$ in a disk centered at $z$ of radius $K|z|^2$.
+For fixed sufficiently large $K$ and small $z$, the disk stays in the
+preceding sector, the map preserves it, and its derivative has modulus
+less than $1/2$. This constructs a holomorphic $Q=z+O(z^2)$ satisfying
+$U(Q(z))=z$. Local inverse uniqueness gives the other composition identity
+on compatible domains and the compatibility of sectorial restrictions.
+
+Suppose now $\Uhat\in\CM$. Theorem~\ref{thm:bridge} gives a strong
+$\M$-expansion for $V=U/q$. Choose a sufficiently small fixed disk
+$D(1,\delta)$ so that $zv$ stays in the larger sector for $z$ in the
+chosen smaller sector and $v$ in that disk. For $Q=zW$, the equation is
+\begin{equation}
+ W=1-W(V(zW)-1).
+ \label{eq:inverse-analytic}
+\end{equation}
+If $V(q)\sim\sum v_nq^n$, the right side has coefficient polynomials
+$-v_nW^{n+1}$ for $n\ge1$. These satisfy the required weighted estimates
+on the fixed disk. Its remainder is bounded by
+$CA^NM_N|zW|^N|W|$, hence by the same weight with a geometric enlargement.
+Theorem~\ref{thm:implicit} yields strong asymptotics for $W$, and then
+for $Q$.
+
+Strong asymptotics imply $\Qhat\in\CM$, and formal weighted reversion
+returns $\Uhat\in\CM$. A smaller weight for $Q$ would therefore give a
+smaller weight for $U$, contrary to Theorem~\ref{thm:logoptimal}.
+The summability statement follows by the same sector-opening argument
+and uniqueness of the corresponding sum.
+\end{proof}
+
+\begin{remark}[Cancellation is not ignored]
+We have proved weight-class optimality for the inverse, not a pointwise
+asymptotic formula for its signed coefficients. Equation \eqref{eq:ulog}
+is proved for the positive coefficients of $\Uhat$ and is not silently
+transferred to $\Qhat$. Equality of their sharp numerical Gevrey types
+is likewise not asserted.
+\end{remark}
+
+\section{Finite-action evaluation and executable checks}
+\label{sec:numerics}
+\subsection{A uniform analytic certificate}
+Define
+\begin{equation}
+ F_L(q,v)=\sum_{j=1}^Lq^{j-1}e^{\lambda_jqv},\qquad V_L=F_L(q,V_L).
+ \label{eq:finitekernel}
+\end{equation}
+The same disk and derivative bounds hold. One may choose
+$\delta=\eta/4$, $c=3\eta/4$, $B=1+\delta$, and a radius such that
+\begin{equation}
+ \lambda_1Br+\frac r{1-r}\le\delta/2,
+ \qquad \kappa(r):=\lambda_1r+\frac r{\ee c(1-r)}<1.
+ \label{eq:numericconditions}
+\end{equation}
+Both finite and infinite maps preserve the chosen disk and have
+Lipschitz constant at most $\kappa(r)$.
+
+\begin{proposition}[Action and iteration error bounds]
+\label{prop:certificate}
+Under \eqref{eq:numericconditions}, with $|q|=r$,
+\begin{equation}
+ |U(q)-qV_L(q)|\le\frac{r^{L+1}}{(1-\kappa(r))(1-r)}.
+ \label{eq:actioncertificate}
+\end{equation}
+If $v_0=1$, $v_{m+1}=F_L(q,v_m)$, then
+\begin{equation}
+ \boxed{\quad
+ |U(q)-qv_m|\le
+ \frac{r\kappa(r)^m}{1-\kappa(r)}|v_1-v_0|
+ +\frac{r^{L+1}}{(1-\kappa(r))(1-r)}.
+ \quad}
+ \label{eq:fullcertificate}
+\end{equation}
+The action-tail bound and $\kappa$ are independent of the slopes
+$\lambda_j$ for $j\ge2$. In the iteration bound, replacing the computed
+increment $|v_1-v_0|$ by $\lambda_1Br+r/(1-r)$ makes the entire
+right side independent of those slopes.
+\end{proposition}
+\begin{proof}
+The kernel tail is at most $r^L/(1-r)$. Subtract the fixed-point equations,
+use contraction, and multiply by $r$ to prove
+\eqref{eq:actioncertificate}. Summing the geometric bound on successive
+iteration increments gives
+$|V_L-v_m|\le\kappa^m|v_1-v_0|/(1-\kappa)$; add the estimates.
+\end{proof}
+
+Finite-action truncation and Taylor truncation are different. The former
+converges geometrically at fixed $q$ even when the Taylor series diverges;
+the latter has the optimally chosen error bounds proved above.
+For end-to-end certified numerics the finite exponential evaluations and
+the right side of \eqref{eq:fullcertificate} must also be enclosed with
+rounding errors. The supplied high-precision diagnostics do not use
+interval arithmetic. Their reported error bounds are floating-point
+evaluations of the proved analytic certificate.
+
+\subsection{An integer recurrence}
+For integer slopes let $b_n=n!u_n$ and
+$E_{j,n}=n![q^n]e^{\lambda_j\Uhat(q)}$, with $E_{j,0}=1$.
+Formal differentiation gives
+\begin{align}
+ b_n&=\sum_{j=1}^n\frac{n!}{(n-j)!}E_{j,n-j},\label{eq:integerU}\\
+ E_{j,n}&=\lambda_j\sum_{m=1}^n
+              \binom{n-1}{m-1}b_mE_{j,n-m}.\label{eq:integerexp}
+\end{align}
+At stage $n$ the first line uses previously computed exponential
+coefficients; the second is then evaluated for every needed $j$.
+All arithmetic is integral. Independent partition enumeration checks
+\eqref{eq:Lagrange} at small orders.
+
+\subsection{Recorded verification}
+The bundled program was executed through degree $120$ for each of
+$\lambda_j=0,j,j^2,j^3$. Its exact checks were:
+\begin{center}
+\begin{tabular}{@{}lr@{}}\toprule
+Check & Number passed\\\midrule
+Independent partition-formula comparisons & 48\\
+Positive-subfamily inequalities $a_n(1)\le u_{n+1}$ & 480\\
+Independent zero- and linear-slope benchmarks & 240\\\midrule
+Total exact comparisons & 768\\\bottomrule
+\end{tabular}
+\end{center}
+All passed. The linear benchmark uses the separate identity
+$U=q(1+U)e^U$ and its one-variable Lagrange coefficient formula.
+Full exact integer-normalized coefficients are included in CSV files.
+For the quadratic model,
+\begin{align*}
+ \Uhat(q)={}&q+2q^2+\tfrac{15}{2}q^3+\tfrac{107}{3}q^4
+ +\tfrac{1555}{8}q^5+\tfrac{17362}{15}q^6\\
+ &+\tfrac{5288311}{720}q^7+\tfrac{15414767}{315}q^8+\cdots;
+\end{align*}
+for the cubic model the first terms are
+\[
+ q+2q^2+\tfrac{23}{2}q^3+\tfrac{269}{3}q^4
+        +\tfrac{21433}{24}q^5+\tfrac{53144}{5}q^6+\cdots.
+\]
+
+At $100$ decimal digits the program also checked the kernel remainder
+inequality in $48$ cases and compared six finite-action solves with
+longer, more accurate solves. The reported approximations use $L=18$,
+$m=24$. A sample is
+\begin{center}\small
+\begin{tabular}{@{}clll@{}}\toprule
+$p$ & $q$ & Approximate $U(q)$ & Analytic bound\\\midrule
+2 & $-0.01$ & $-0.0098071616822383391168465501$ & $1.031\cdot10^{-38}$\\
+2 & $-0.005$ & $-0.0049509157982251340457345151$ & $1.937\cdot10^{-44}$\\
+3 & $-0.01$ & $-0.0098106832787087467452630685$ & $1.031\cdot10^{-38}$\\
+3 & $-0.005$ & $-0.0049513840936461045663286861$ & $1.937\cdot10^{-44}$\\
+\bottomrule\end{tabular}
+\end{center}
+The bound concerns the internally retained high-precision approximation,
+not the shortened printed decimal. CSV files record additional digits,
+complex tests, and observed comparison errors. Numerical agreement does
+not prove an asymptotic or summability theorem.
+
+\section{Examples and boundary cases}
+\label{sec:examples}
+For $\lambda_j=j^{3/2}$ the optimal weight has $s=1/2$, $\tau=-3/2$.
+The series is $2$-summable in direction $\pi$, with sum equal to the
+literal left-sector fixed point. Optimized Taylor truncation gives
+\[
+ O(\exp[-c|q|^{-2}(\log(1/|q|))^3]).
+\]
+The logarithmically refined sum records the sharper natural weight.
+
+Fix $k>1$. For slopes $(j\log(j+1))^{1+1/k}$, negative-direction
+$k$-summability holds. Multiplication by $(\log(j+1))^\varepsilon$,
+$\varepsilon>0$, destroys it by the necessary slope criterion.
+The sectorial solution still exists, and a logarithmically refined
+summation method or slightly smaller ordinary summation order remains
+available.
+
+For $\lambda_j=j^2$, strong Gevrey-$1$ asymptotics and
+\eqref{eq:quadraticactual} are proved, but ordinary negative-direction
+Borel summability is not decided here. For $\lambda_j=j^3$, the
+natural weight is $M_{2,-3}$, giving
+\[
+ O(\exp[-c|q|^{-1/2}(\log(1/|q|))^{3/2}]).
+\]
+The directly available sector opening does not suffice to deduce
+summability at the critical order. No failure of summability is inferred
+merely from that limitation of the argument.
+
+For $\lambda_j=e^{\sqrt j}$, the slope condition fails for every finite
+$s>0$. No proper left sector therefore has a strong finite-order Gevrey
+expansion of the canonical solution. The sectorial existence theorem and
+finite-action certificate nevertheless remain valid. Other weight
+classes may apply, but their hypotheses must be checked.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.24\textwidth}p{0.34\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Slopes & Strong remainder information & Summability proved here\\\midrule
+$O(j)$ & Convergent Taylor series & Analytic germ\\
+$j\log(j+1)$ & Every positive Gevrey class & Every $k>1$, direction $\pi$\\
+$j^p$, $1<p<2$ & $M_{p-1,-p}$, optimal in scale & Critical $k=1/(p-1)$ and refined sum\\
+$j^2$ & $M_{1,-2}$ and \eqref{eq:quadraticactual} & Critical case left open\\
+$j^3$ & $M_{2,-3}$, optimal in scale & No critical-order conclusion\\
+$e^{\sqrt j}$ & No finite Gevrey order & No finite-order claim\\\bottomrule
+\end{tabular}
+\end{center}
+After the first row all formal series are divergent. Every row still
+has the canonical left-sector solution.
+
+\section{Proof status and further research}
+\label{sec:future}
+\subsection{Statement-level proof ledger}
+The sectorial construction, kernel remainder estimate, weighted implicit
+theorem, positive coefficient comparison, coefficient-to-remainder
+equivalence, Gevrey criterion, logarithmic optimality, action certificate,
+and strong inverse theorem have self-contained proofs here. The
+summability conclusions use the explicitly cited classical sectorial
+characterization and generalized reconstruction theorem. Formal Lagrange
+inversion, Cauchy estimates, and contraction are used in their standard
+forms.
+
+No statement is claimed Lean-verified. The repository's formal inventory
+does not certify this article, and numerical testing does not upgrade its
+proofs into machine-checked mathematics. The sharper exact numerical
+type formulas and saddle equivalents in neighboring drafts are not needed
+and have not been audited here.
+The advance is specific: formal coefficient classes now control the
+canonical sectorial remainders, and the subquadratic-opening regime gives
+an exact directional summability classification. This is not a solution
+to analytic realization in arbitrary transseries fields.
+
+\subsection{A formalization decomposition}
+The finite layer consists of the integer recurrence, partition formula,
+marked positive subfamily, and log-convex weight inequalities. It needs
+ordinary formal power series and finite partitions, not a new transseries
+datatype. The analytic layer consists of the half-plane exponential
+Taylor bound, compact normal convergence, fixed-disk contraction, and the
+shrinking-disk weighted implicit theorem. A further module can package
+coefficient-to-remainder equivalence. A summability layer should import
+an explicit sectorial characterization rather than imply that existing
+power-series APIs already prove Borel reconstruction.
+
+\subsection{Further questions with concrete targets}
+\paragraph{1. Critical negative-ray Borel summability.}
+Decide ordinary negative-direction Borel summability for quadratic
+feedback. The missing step is uniform control on an appropriate boundary
+domain, not another coefficient-growth estimate. Inverse coordinates,
+where the literal kernel is analytic for $\Rea U<0$, may help construct
+a Nevanlinna--Sokal domain after returning to $q$.
+
+\paragraph{2. Sharp numerical remainder types.}
+Compare the infimal geometric constant in strong remainders with the
+coefficient type. A no-loss argument could sharpen the exponential
+constant in \eqref{eq:quadraticactual} and determine whether precise type
+is invariant under the inverse. Our proof establishes class equality only.
+
+\paragraph{3. Curved boundary layers.}
+Since $U=q+u_2q^2+\cdots$ with $u_2>0$, the boundary $\Rea U=0$ need
+not be $\Rea q=0$. Analyze the layer $\Rea q=O(|q|^2)$ and the maximal
+domain of the literal canonical solution. A fixed $v$-disk does not
+provide uniformity there; a curved or shrinking dependent-variable domain
+may be required.
+
+\paragraph{4. Summation and acceleration for $p\ge2$.}
+The natural opening index is $p-1$, while the directly constructed germ
+has opening $1$ in units of $\pi$. Investigate continuation, acceleration,
+and singular barriers. Divergence of the literal positive-real kernel
+does not settle analytically continued or generalized summation questions.
+
+\paragraph{5. Signed and complex feedback.}
+For $U=\sum c_jq^je^{\lambda_jU}$, find hypotheses replacing the positive
+subfamily estimate. Absolute convergence can preserve the analytic disk
+argument, but coefficient cancellations may conceal large kernel terms.
+Identify the exact obstruction to coefficient-to-remainder equivalence.
+
+\paragraph{6. Vector systems.}
+For $U_i=\sum_jq^{a_{ij}}c_{ij}
+\exp(\langle\lambda_{ij},U\rangle)$, seek a common dissipative cone,
+normalize each leading component, and prove a multitype counterpart of
+the bridge. The positivity argument would require a marked-tree comparison
+that respects the coupled components.
+
+\paragraph{7. Faster weights.}
+The hypothesis $\mu_n^n\le D^nM_n$ excludes weights such as
+$M_n=a^{n^2}$, $a>1$. Determine whether a modified shrinking-domain
+argument yields a bridge in these regimes or whether the feedback model
+provides counterexamples. This localizes a potential boundary of control
+by formal coefficient growth.
+
+\paragraph{8. Fully verified evaluation.}
+Combine exact coefficients, interval exponential evaluation, the action
+certificate, and effective weighted constants into an algorithm choosing
+between action truncation and Taylor truncation. Its output should record
+the method and provide a machine-checkable numerical enclosure.
+
+\section{Conclusion}
+The original coordinates really do lack an analytic dependent-variable
+neighborhood when feedback slopes grow too rapidly. That failure does
+not prevent uniform sectorial asymptotics. Factoring out the leading
+variable exposes a fixed disk on which the exponentials are bounded;
+positivity identifies its remainders with a controlled subfamily of the
+formal coefficients.
+This proves an exact bridge from formal regularity to canonical strong
+sectorial regularity, optimal factorial--logarithmic classes, and a
+complete negative-direction $k$-summability criterion for $k>1$.
+The actual inverse shares the structure. Remaining problems are now
+localized to sharp constants, critical aperture, angular continuation,
+cancellation, and faster weights.
+
+\appendix
+\section{Reproduction and file inventory}
+The source is self-contained and loads no repository notation files.
+A standard TeX installation with the preamble packages suffices:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The exact checks require only Python's standard library; optional numerical
+checks use mpmath:
+\begin{lstlisting}
+python code/verify.py --order 120 --exact-only
+python -m pip install mpmath
+python code/verify.py --order 120
+\end{lstlisting}
+The full run regenerates \path{data/verification.json}, four exact
+coefficient CSVs, and the sectorial diagnostics CSV. The CSV column
+\texttt{n\_factorial\_times\_u\_n} contains $n!u_n$, not $u_n$.
+Numerator and denominator columns give the ordinary coefficients exactly.
+The package also contains a README, source/provenance notes, proof-status
+summary, recorded output, and a Makefile. No repository changes were made
+and no external font files are distributed.
+
+\clearpage
+\begingroup\raggedright
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, transseries documentation README,
+snapshot \texttt{0c973d8f5e7ef4550f4df1bf486d890037fd9f14},
+consulted 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries}.
+
+\bibitem{feedback}
+\emph{A sharp regularity classification for countable exponential-feedback
+transseries}, research draft prepared for V. Reshetnikov, 29 September
+2026. In \cite{repo}, directory
+\path{Exponential_Feedback_Regularity_Classification/},
+\path{article.tex} and \path{README.md}. Its left-sector realization
+proof explicitly does not claim uniform Gevrey remainders.
+
+\bibitem{finitecore}
+\emph{Finite-Core Universality and Sharp Large Order: Countable
+exponential-feedback transseries}, research draft prepared for
+V. Reshetnikov, 29 September 2026. In \cite{repo}, directory
+\path{Finite_Core_Universality_Exponential_Feedback/}; README consulted
+for scope and non-duplication.
+
+\bibitem{nikolaev}
+N. Nikolaev, \emph{Gevrey asymptotic implicit function theorem},
+L'Enseignement Math\'ematique \textbf{70} (2024), no.~1/2, 251--282.
+\url{https://doi.org/10.4171/LEM/1061}.
+Preprint: \url{https://arxiv.org/abs/2112.08792}.
+
+\bibitem{lms}
+A. Lastra, S. Malek, and J. Sanz,
+\emph{Summability in general Carleman ultraholomorphic classes},
+Journal of Mathematical Analysis and Applications \textbf{430} (2015),
+no.~2, 1175--1206.
+\url{https://doi.org/10.1016/j.jmaa.2015.05.046}.
+Preprint: \url{https://arxiv.org/abs/1402.1669}.
+We use the preprint's Example 2.2, Definition 3.3, Theorem 3.18,
+and Remark 3.19(i), with ordinary coefficient notation.
+
+\bibitem{sanz}
+J. Sanz, \emph{Flat functions in Carleman ultraholomorphic classes via
+proximate orders}, Journal of Mathematical Analysis and Applications
+\textbf{415} (2014), no.~2, 623--643.
+\url{https://doi.org/10.1016/j.jmaa.2014.01.083}.
+Preprint: \url{https://arxiv.org/abs/1402.2627}.
+
+\bibitem{sokal}
+A. D. Sokal, \emph{An improvement of Watson's theorem on Borel
+summability}, Journal of Mathematical Physics \textbf{21} (1980),
+no.~2, 261--263. \url{https://doi.org/10.1063/1.524408}.
+Cited as a possible boundary-domain route, not an already verified
+hypothesis for this model.
+\end{thebibliography}
+\endgroup
+\end{document}

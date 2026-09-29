@@ -1,0 +1,1637 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\usepackage{xurl}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sharp weighted type under formal reversion}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.6em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{inputtheorem}[theorem]{Repository input}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\typ}{\tau_M}
+\newcommand{\Tg}{T_s}
+\newcommand{\B}{\mathcal B}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\Q}{\widehat Q}
+\newcommand{\U}{\widehat U}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\commit}{\nolinkurl{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}}
+\hypersetup{pdftitle={Sharp Weighted Type Under Formal Reversion},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},pdfsubject={Exact weighted type, formal inversion, feedback transseries, Borel growth, non-D-finiteness}}
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{13mm}
+{\Large\scshape Transseries and nonlinear inversion\par}
+\vspace{12mm}
+{\Huge\bfseries Sharp Weighted Type\\[3mm] Under Formal Reversion\par}
+\vspace{9mm}
+{\Large Zero-loss inversion, exact Borel radii, and\\[2mm]
+non-D-finiteness in countable exponential feedback\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+29 September 2026
+\vspace{13mm}
+\begin{minipage}{0.9\textwidth}
+\begin{abstract}
+Let $M_0=1$ and let $(M_n)$ be a positive log-convex sequence. We prove
+that the weighted coefficient type
+\[
+ \tau_M(f)=\limsup_{n\to\infty}
+       \left(\frac{|[z^n]f|}{M_n}\right)^{1/n}
+\]
+is preserved by every tangent-to-identity formal compositional inverse
+if and only if $M_n^{1/n}\to\infty$. A finite Lagrange majorant gives an
+explicit overhead $\exp\{O(n/\sqrt{M_n^{1/n}})\}$, hence no loss in the
+exponential constant. Analytic coordinate changes obey an exact scaling
+law, without a moderate-growth assumption on the weight.
+
+Using two explicitly stated forward estimates from ProveIt's
+countable exponential-feedback report, we obtain the missing sharp type
+of its inverse, exact inverse Borel radii, and a logarithmically refined
+inverse type. For $\lambda_j=j^2$, this yields
+\[
+ \limsup_{n\to\infty}
+ \left(\frac{|[u^n]\widehat Q(u)|\,\log(n+\ee)^{2n}}{n!}\right)^{1/n}=4.
+\]
+Its ordinary Borel transform is entire but has infinite classical order,
+with an exact iterated-logarithmic maximum-modulus limsup. An elementary
+holonomic obstruction proves that both the forward series and its inverse
+are non-D-finite. All new arguments are proved in the article; the two
+repository inputs, finite computational checks, and remaining research
+questions are distinguished explicitly.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.9\textwidth}\small
+\textbf{Status.} Conventional mathematical proofs and reproducible exact
+finite checks; not Lean-verified or peer-reviewed. The theorem is a proposed
+contribution and resolves a documented repository-level gap. Global
+publication priority, and a solution of a named longstanding conjecture,
+are not claimed.
+\end{minipage}
+\end{titlepage}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\vspace{9mm}
+\noindent\textbf{Reading guide.}
+Sections~\ref{sec:weights}--\ref{sec:weightspecial} form the independent
+core: a finite coefficient estimate, exact inversion invariance, its
+necessary-and-sufficient weight condition, and analytic coordinate
+covariance. Section~\ref{sec:feedback} states the two repository inputs
+and derives the feedback applications. Sections~\ref{sec:growth} and
+\ref{sec:holonomic} convert the refined coefficient type into entire
+growth and a non-D-finiteness obstruction. Finite verification and the
+proposed research program are kept separate in
+Sections~\ref{sec:verification} and~\ref{sec:questions}.
+\clearpage
+
+\section{Research target, contribution, and dependency boundaries}
+\label{sec:context}
+
+\subsection{The precise gap being addressed}
+
+The current ProveIt development separates its transseries library from the
+Fabius-function library. The relevant research directory is now
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/.
+\end{quote}
+The repository was inspected at commit \commit. Its transseries README
+separates the existing Lean development from the accompanying research
+articles \cite{repo,reporeadme}. This article continues the package
+\emph{A sharp regularity classification for countable exponential-feedback
+transseries} \cite{feedback}, rather than treating another special-function
+inverse by a finite coefficient calculation.
+
+That package studies
+\begin{equation}
+ \U(q)=\sum_{j\ge1}q^j\exp\bigl(\lambda_j\U(q)\bigr),
+ \qquad \lambda_j\ge0,\qquad \Q=\U^{-1},
+ \label{eq:modelintro}
+\end{equation}
+where the inverse is compositional. It gives an exact forward Gevrey type
+and logarithmic forward coefficient asymptotics, but its README explicitly
+limits the reversion theorem to class membership, not the sharp numerical
+type. This is a substantive distinction. Knowing that coefficients are
+bounded by $CA^n(n!)^s$ for some $A$ does not determine the smallest possible
+exponential rate, nor the exact radius of the factorial-normalized Borel
+series.
+
+The gap is resolved here by a theorem that is independent of the feedback
+model. We preserve the \emph{exact limsup type} under formal inversion for a
+large class of coefficient weights, determine precisely when this universal
+preservation property holds within the log-convex class, and apply it to
+\eqref{eq:modelintro}. The forward coefficients are positive, while inverse
+coefficients can have cancellations. The theorem shows that cancellation
+cannot lower their weighted exponential limsup.
+
+\subsection{Why a general weight theorem is useful}
+
+A factorial scale alone loses the information relevant to the quadratic
+model. Its series have Gevrey order one but zero ordinary Gevrey-one type.
+The finer scale
+\[
+ M_n=\frac{n!}{\log(n+\ee)^{2n}}
+\]
+has nonzero finite type. Preservation on this scale is substantially more
+informative than preservation of Gevrey membership. The same proof applies
+to weights growing much more slowly than every positive factorial power,
+and also to very rapidly growing weights for which no moderate-growth
+property is available.
+
+The proof uses only finite coefficient algebra, log-convexity, and a
+subexponential estimate. It does not require an analytic solution of the
+feedback equation, a summation operator, positivity of inverse coefficients,
+or a description of their signs. This makes the result suitable as an
+independent formalization target.
+
+\subsection{What is proved here and what is imported}
+
+All results in Sections~\ref{sec:weights}--\ref{sec:weightspecial} are proved
+from elementary formal power-series identities. In
+Section~\ref{sec:feedback}, two forward estimates are restated as
+\emph{Repository inputs}: the exact forward Gevrey type and the regularly
+varying forward coefficient asymptotic. Those two results are used as
+mathematical inputs from \cite{feedback};
+their full proofs are not independently re-audited in this article.
+The inverse consequences and the growth and non-D-finiteness arguments
+are proved here from those stated inputs.
+
+The status of each family of assertions is summarized in
+Table~\ref{tab:dependencies}. In particular, no application is presented as
+Lean-verified merely because it continues a repository that also contains
+Lean code.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{p{0.37\textwidth}p{0.55\textwidth}}
+\toprule
+Result & Dependency and status\\
+\midrule
+Weight concentration; finite inverse majorant & Proved here by finite
+inequalities and formal Lagrange inversion.\\[2mm]
+Exact type and sharp threshold & Proved here from the finite majorant; no
+feedback theorem used.\\[2mm]
+Analytic coordinate covariance & Proved here from concentration and the
+inverse theorem.\\[2mm]
+Forward feedback types and asymptotics & Two explicitly restated results
+from the conventional research report \cite{feedback}.\\[2mm]
+Inverse feedback types and exact Borel radii & New deductions here from
+those inputs and the general inverse theorem.\\[2mm]
+Entire growth and non-D-finiteness & Elementary proofs here; application
+to feedback uses its imported forward asymptotic.\\[2mm]
+Computational evidence & Exact checks at finite orders; neither asymptotic
+proof nor formal verification.\\
+\bottomrule
+\end{tabular}
+\caption{Dependency and verification ledger.}
+\label{tab:dependencies}
+\end{table}
+
+\subsection{Relationship to the literature}
+
+Lagrange inversion is classical; Gessel's survey \cite{gessel} describes
+its formal forms and proofs. Stability of ultradifferentiable classes
+under composition and inversion is an established subject, including the
+weight-sequence and weight-matrix results of Rainer and Schindl
+\cite{rainerschindl,stability}. The present object is the exact coefficient
+limsup of a \emph{single formal germ}; no realization as an
+ultradifferentiable function is presumed. This distinction specifies our
+statement, but is not a claim that the literature contains no related or
+stronger formulation.
+
+Borel convergence, Borel continuation, and Borel--Laplace summability are
+different properties; see Sauzin \cite{sauzin}. We maintain that distinction
+throughout. The negative-ray package already in ProveIt \cite{negativeray}
+addresses fine negative-direction summation. The present article does not
+replace that result with a maximum-modulus assertion or claim angular
+summability from a coefficient bound.
+
+The source review was targeted: the current directory inventory, the
+transseries README, the classification report's stated theorems and scope,
+and the negative-ray report's summary were consulted. It was not a
+claim-by-claim audit of the full canonical volume or a complete publication
+priority search. The general theorem and its applications are proposed for
+independent mathematical review.
+
+\section{Log-convex weights and coefficient type}
+\label{sec:weights}
+
+\subsection{Definitions and elementary type rules}
+
+All formal power series are over $\C$, unless otherwise stated. A formal
+diffeomorphism is a series $f(z)=a z+O(z^2)$ with $a\ne0$. Such a series
+has a unique compositional inverse. A \emph{weight} is a positive sequence
+$M=(M_n)_{n\ge0}$ with $M_0=1$.
+
+\begin{definition}
+A weight is log-convex if
+\begin{equation}
+ M_n^2\le M_{n-1}M_{n+1}\qquad(n\ge1).
+ \label{eq:logconvex}
+\end{equation}
+For $n\ge1$, write $r_n=M_n^{1/n}$. The weight is called
+superexponential when $r_n\to\infty$.
+For $f=\sum_{n\ge0}a_nz^n$, set
+\begin{equation}
+ \typ(f)=\limsup_{n\to\infty}
+       \left(\frac{|a_n|}{M_n}\right)^{1/n}\in[0,\infty].
+ \label{eq:type}
+\end{equation}
+\end{definition}
+
+The choice of $M_n$ refers to \emph{coefficients}, not derivatives. Thus
+$M_n=(n!)^s$ gives the factorial-normalized Gevrey type used in this
+article. All equalities involving types permit zero and infinity. Positive
+finite scalar multiplication of an extended type is interpreted in the
+usual way.
+
+\begin{lemma}[Elementary type calculus]
+\label{lem:typecalculus}
+Finite changes of coefficients or weights do not affect \eqref{eq:type}.
+For $c\ne0$,
+\[
+ \typ(cf)=\typ(f),\qquad \typ(f(cz))=|c|\typ(f).
+\]
+Furthermore,
+\[
+ \typ(f+h)\le\max\{\typ(f),\typ(h)\}.
+\]
+If the two types on the right are unequal, equality holds. If $M$ is
+superexponential, every convergent power series has type zero, and adding
+any convergent power series preserves the type of an arbitrary formal
+series.
+\end{lemma}
+\begin{proof}
+The first statements follow directly by taking $n$th roots. For the sum,
+$|a_n+b_n|\le2\max(|a_n|,|b_n|)$ and $2^{1/n}\to1$. If the types are
+unequal, write $f=(f+h)-h$ to rule out strict inequality below the larger
+one. A convergent series has coefficients bounded by $CR^{-n}$, so its
+normalized $n$th root is at most $C^{1/n}R^{-1}/r_n\to0$. When both types
+are zero, the sum also has type zero; this completes the last assertion.
+\end{proof}
+
+\subsection{The two concentration inequalities}
+
+\begin{lemma}[Log-convex concentration]
+\label{lem:concentration}
+Let $M$ be log-convex. Then $\mu_n=M_n/M_{n-1}$ and $r_n$ are
+nondecreasing. For $0\le\ell\le n$,
+\begin{equation}
+ \frac{M_{n-\ell}}{M_n}\le r_n^{-\ell}.
+ \label{eq:ratio}
+\end{equation}
+For positive integers $m_1,\ldots,m_k$ with sum $n-1$,
+\begin{equation}
+ \prod_{i=1}^k M_{m_i+1}
+       \le M_{n-k+1}M_2^{k-1}.
+ \label{eq:concentrate2}
+\end{equation}
+For positive integers $j_1,\ldots,j_k$ with sum $n$,
+\begin{equation}
+ \prod_{i=1}^k M_{j_i}
+       \le M_{n-k+1}M_1^{k-1}.
+ \label{eq:concentrate1}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Log-convexity is equivalent to monotonicity of $\mu_n$. Since
+$\log r_n$ is the average of the first $n$ terms of the nondecreasing
+sequence $\log\mu_n$, it is nondecreasing. The polygonal function with
+values $\log M_n$ at the integers is convex and is zero at the origin.
+Its value at $n-\ell$ is therefore at most
+$(n-\ell)\log M_n/n$. Exponentiating proves \eqref{eq:ratio}.
+
+For \eqref{eq:concentrate2}, consider the indices $m_i+1\ge2$.
+If two indices $a\ge b$ satisfy $b>2$, transfer one unit from $b$ to
+$a$. The product cannot decrease, because
+\[
+ \frac{M_{a+1}M_{b-1}}{M_aM_b}
+      =\frac{\mu_{a+1}}{\mu_b}\ge1.
+\]
+Repeat until all but one index equal two. The remaining index is
+$n-k+1$, since the original total is $n-1+k$. This proves
+\eqref{eq:concentrate2}. The same argument, with lower bound one in
+place of two, proves \eqref{eq:concentrate1}.
+\end{proof}
+
+These inequalities do not require $M_1\ge1$ or monotonicity of the
+weights themselves. Only positivity and log-convexity are used. The
+factor $r_n^{-(k-1)}$ obtained from \eqref{eq:ratio} is the mechanism that
+suppresses the combinatorial multiplicity of nonlinear inverse terms.
+
+\section{A finite coefficient bound for formal reversion}
+\label{sec:majorant}
+
+\subsection{The coefficient formula}
+
+Write
+\begin{equation}
+ f(z)=z+\sum_{j\ge2}a_jz^j=z(1+h(z)),\qquad
+ g(z)=f^{-1}(z)=z+\sum_{n\ge2}b_nz^n.
+ \label{eq:fg}
+\end{equation}
+Lagrange inversion gives, for $n\ge1$,
+\begin{equation}
+ b_n=\frac1n[z^{n-1}](1+h(z))^{-n}.
+ \label{eq:lagrange}
+\end{equation}
+A formal residue proof is included in Appendix~\ref{app:lagrange}; no
+analytic convergence is required. Expanding the negative integer power
+in \eqref{eq:lagrange}, for $n\ge2$ one obtains the finite identity
+\begin{equation}
+ b_n=\frac1n\sum_{k=1}^{n-1}(-1)^k\binom{n+k-1}{k}
+ \sum_{\substack{m_1+\cdots+m_k=n-1\\m_i\ge1}}
+       \prod_{i=1}^k a_{m_i+1}.
+ \label{eq:inversefinite}
+\end{equation}
+The term $k=1$ equals $-a_n$. The other terms can be large and can cancel;
+it would be invalid to infer a lower bound for $|b_n|$ by keeping only
+that first term. Our proof instead obtains a one-sided upper bound that
+can be applied twice, once in each direction of inversion.
+
+\begin{theorem}[Finite inverse majorant]
+\label{thm:finite}
+Assume $M$ is log-convex and
+\begin{equation}
+ |a_j|\le CA^jM_j\qquad(j\ge2),\qquad C,A>0.
+ \label{eq:inputbound}
+\end{equation}
+Set $D=CA$. For every $n\ge2$,
+\begin{equation}
+ |b_n|\le\frac{A^{n-1}}n
+ \sum_{k=1}^{n-1}\binom{n+k-1}{k}\binom{n-2}{k-1}
+       D^kM_{n-k+1}M_2^{k-1}.
+ \label{eq:finitemajorant}
+\end{equation}
+In particular, with
+\begin{equation}
+ X_n=\frac{2DM_2n^2}{r_n},
+ \label{eq:X}
+\end{equation}
+one has the explicit bound
+\begin{align}
+ |b_n|&\le2DA^{n-1}M_n
+       \sum_{\ell=0}^{n-2}\frac{X_n^\ell}{\ell!(\ell+1)!}
+ \notag\\
+ &\le2DA^{n-1}M_n\exp\left(2n\sqrt{\frac{2DM_2}{r_n}}\right).
+ \label{eq:explicitmajorant}
+\end{align}
+\end{theorem}
+\begin{proof}
+The number of positive ordered compositions of $n-1$ into $k$ parts
+is $\binom{n-2}{k-1}$. Each summand in the inner sum of
+\eqref{eq:inversefinite} is bounded by
+\[
+ C^k A^{n-1+k}\prod_iM_{m_i+1}
+ \le A^{n-1}D^kM_{n-k+1}M_2^{k-1},
+\]
+by Lemma~\ref{lem:concentration}. Taking absolute values proves
+\eqref{eq:finitemajorant}.
+
+For $1\le k\le n-1$, use
+\[
+ \binom{n+k-1}{k}\le\frac{(2n)^k}{k!},\qquad
+ \binom{n-2}{k-1}\le\frac{n^{k-1}}{(k-1)!},\qquad
+ \frac{M_{n-k+1}}{M_n}\le r_n^{-(k-1)}.
+\]
+Substitution in \eqref{eq:finitemajorant}, followed by $\ell=k-1$,
+gives the first inequality in \eqref{eq:explicitmajorant}.
+For $X\ge0$,
+\begin{align*}
+ \sum_{\ell\ge0}\frac{X^\ell}{\ell!(\ell+1)!}
+ &\le\sum_{\ell\ge0}\frac{X^\ell}{(\ell!)^2}\\
+ &=\sum_{\ell\ge0}\binom{2\ell}{\ell}\frac{X^\ell}{(2\ell)!}
+ \le\sum_{\ell\ge0}\frac{(2\sqrt X)^{2\ell}}{(2\ell)!}
+ \le\exp(2\sqrt X).
+\end{align*}
+This proves the second inequality.
+\end{proof}
+
+\subsection{An effective zero-loss interpretation}
+
+The finite sum \eqref{eq:finitemajorant} is an exact-arithmetic bound when
+the data are rational. The exponential simplification is more convenient
+for asymptotics. In particular,
+\begin{equation}
+ \left(\frac{|b_n|}{M_n}\right)^{1/n}
+ \le A\left(\frac{2D}{A}\right)^{1/n}
+       \exp\left(2\sqrt{\frac{2DM_2}{r_n}}\right).
+ \label{eq:nthrootbound}
+\end{equation}
+Every factor beyond $A$ tends to one if $r_n\to\infty$.
+
+For a concrete tolerance $\varepsilon>0$, the condition
+\[
+ r_n\ge\frac{8DM_2}{\log(1+\varepsilon)^2}
+\]
+makes the exponential factor in \eqref{eq:nthrootbound} at most
+$1+\varepsilon$. A separate finite lower bound on $n$ makes
+$(2D/A)^{1/n}\le1+\varepsilon$ as well. Thus the theorem gives a
+computable onset for an inverse rate $A(1+\varepsilon)^2$, provided a
+verified input bound and growth bound for $r_n$ are supplied. A mere
+limsup statement need not supply those bounds effectively.
+
+\section{Exact type invariance and its sharp boundary}
+\label{sec:invariance}
+
+\begin{theorem}[Zero-loss reversion]
+\label{thm:zeroloss}
+Let $M$ be positive and log-convex, with $M_0=1$ and $r_n\to\infty$.
+For every formal diffeomorphism $f(z)=az+O(z^2)$,
+\begin{equation}
+ \boxed{\displaystyle
+ \typ(f^{-1})=\frac{\typ(f)}{|a|}.}
+ \label{eq:zeroloss}
+\end{equation}
+In particular, tangent-to-identity inversion preserves type exactly,
+including zero and infinite type.
+\end{theorem}
+\begin{proof}
+First suppose $a=1$ and $\typ(f)<\infty$. For every $A>\typ(f)$,
+definition \eqref{eq:type} gives a constant $C>0$ such that
+\eqref{eq:inputbound} holds at every $j\ge2$: finitely many initial
+coefficients are absorbed in $C$. Theorem~\ref{thm:finite} and
+\eqref{eq:nthrootbound} give $\typ(f^{-1})\le A$. Letting $A$ decrease
+to $\typ(f)$ proves
+\[
+ \typ(f^{-1})\le\typ(f).
+\]
+This includes $\typ(f)=0$, since every $A>0$ may be used. The inverse
+also has finite type, so apply the same argument to $f^{-1}$, whose
+inverse is $f$, to obtain the reverse inequality.
+
+If $\typ(f)=\infty$ but $\typ(f^{-1})<\infty$, the already proved
+finite-type upper bound applied to $f^{-1}$ would imply
+$\typ(f)<\infty$, a contradiction. This handles the infinite case.
+
+For arbitrary $a\ne0$, set $F=f/a$. Output scaling does not change
+type and $F'(0)=1$. Since
+\[
+ F^{-1}(z)=f^{-1}(az),
+\]
+Lemma~\ref{lem:typecalculus} and the tangent case give
+$|a|\typ(f^{-1})=\typ(F^{-1})=\typ(F)=\typ(f)$.
+\end{proof}
+
+\begin{theorem}[Necessary and sufficient weight condition]
+\label{thm:iff}
+For a positive log-convex weight $M_0=1$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $M_n^{1/n}\to\infty$.
+\item Every tangent-to-identity formal diffeomorphism satisfies
+$\typ(f^{-1})=\typ(f)$.
+\item The inverse of every tangent-to-identity polynomial has type zero.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The implication (i)$\Rightarrow$(ii) is Theorem~\ref{thm:zeroloss},
+and (ii)$\Rightarrow$(iii) follows because polynomials have type zero.
+For the converse, the roots $r_n$ are positive and nondecreasing, so
+failure of (i) means $r_n\to L$ for some $0<L<\infty$. Take
+$f(z)=z-z^2$. Its inverse is
+\begin{equation}
+ f^{-1}(z)=\frac{1-\sqrt{1-4z}}2
+ =\sum_{n\ge1}\frac1n\binom{2n-2}{n-1}z^n.
+ \label{eq:catalan}
+\end{equation}
+The coefficients have $n$th-root limit $4$, by Stirling's formula.
+Consequently $\typ(f^{-1})=4/L>0$, contradicting (iii).
+\end{proof}
+
+\begin{remark}[The analytic endpoint is genuinely different]
+For $M_n=1$, type is the reciprocal of the ordinary radius of
+convergence. In \eqref{eq:catalan}, a polynomial of type zero has an
+inverse of type four. Thus no version of exact type preservation that
+includes all analytic radii can hold. Superexponential normalization
+makes every analytic germ type zero and removes this analytic
+singularity obstruction from the coefficient scale.
+\end{remark}
+
+\subsection{What exact type does and does not say}
+
+If $0<\typ(f)=T<\infty$, the equality in
+Theorem~\ref{thm:zeroloss} says that no uniform exponential improvement
+of the inverse coefficients is possible. For every $0<\varepsilon<T$,
+infinitely many indices satisfy
+\[
+ |b_n|\ge (T-\varepsilon)^nM_n
+\]
+in the tangent case, while for every $\varepsilon>0$ all sufficiently
+large indices satisfy
+\[
+ |b_n|\le (T+\varepsilon)^nM_n.
+\]
+These statements are compatible with zeros, sign changes, sparse large
+coefficients, and substantial subexponential cancellation. They do not
+imply that $|b_n|^{1/n}/r_n$ has a limit. Reversion twice is what proves
+the sharp lower limsup; no unproved sign assumption enters.
+
+\section{Exact covariance under analytic coordinate changes}
+\label{sec:coordinates}
+
+\subsection{Postcomposition: a second finite estimate}
+
+\begin{proposition}[Analytic outer functions]
+\label{prop:post}
+Assume $M$ satisfies the hypotheses of Theorem~\ref{thm:zeroloss}.
+Let $f(0)=0$ be any formal series and let $H$ be analytic near zero.
+Then
+\begin{equation}
+ \typ(H\circ f)\le\typ(f).
+ \label{eq:post}
+\end{equation}
+If $H'(0)\ne0$, equality holds.
+More explicitly, suppose
+\[
+ |[z^j]f|\le CA^jM_j\quad(j\ge1),\qquad
+ |[w^k]H|\le BR^{-k}\quad(k\ge1).
+\]
+For $n\ge1$,
+\begin{equation}
+ |[z^n]H(f(z))|
+ \le\frac{BC}{R}A^nM_n
+ \exp\left(\frac{CM_1n}{Rr_n}\right).
+ \label{eq:postbound}
+\end{equation}
+\end{proposition}
+\begin{proof}
+There are $\binom{n-1}{k-1}$ positive compositions of $n$ into $k$
+parts. Lemma~\ref{lem:concentration} gives
+\begin{align*}
+ |[z^n]H(f(z))|
+ &\le B A^n\sum_{k=1}^n (C/R)^k
+    \binom{n-1}{k-1}M_{n-k+1}M_1^{k-1}\\
+ &\le\frac{BC}{R}A^nM_n
+    \left(1+\frac{CM_1}{Rr_n}\right)^{n-1},
+\end{align*}
+which implies \eqref{eq:postbound}. For finite $\typ(f)$, choose any
+$A>\typ(f)$ and absorb all initial coefficients in $C$. Taking $n$th
+roots and then the limsup proves \eqref{eq:post}; if the right side is
+infinite there is nothing to prove. If $H'(0)\ne0$, the analytic inverse
+germ of $H-H(0)$ exists. Apply the upper inequality to this inverse and
+to $H(f)-H(0)$, then use invariance under finite coefficient changes.
+\end{proof}
+
+\subsection{Precomposition and conjugacy}
+
+\begin{theorem}[Analytic coordinate covariance]
+\label{thm:coordinates}
+Let $M$ satisfy the hypotheses of Theorem~\ref{thm:zeroloss}.
+Let $f$ be any formal series, let $g$ be analytic with $g(0)=0$ and
+$g'(0)=c\ne0$, and let $H$ be analytic near $f(0)$ with
+$H'(f(0))\ne0$. Then
+\begin{equation}
+ \boxed{\displaystyle
+ \typ(H\circ f\circ g)=|c|\typ(f).}
+ \label{eq:coordinates}
+\end{equation}
+In particular, conjugacy by an analytic tangent-to-identity change of
+variable preserves exact type.
+\end{theorem}
+\begin{proof}
+Start with a formal diffeomorphism $f$ and write $a=f'(0)\ne0$.
+The inverse factorization is
+\[
+ (f\circ g)^{-1}=g^{-1}\circ f^{-1}.
+\]
+The germ $g^{-1}$ is analytic and has nonzero derivative, so
+Proposition~\ref{prop:post} and Theorem~\ref{thm:zeroloss} give
+\[
+ \frac{\typ(f\circ g)}{|ac|}
+ =\typ((f\circ g)^{-1})
+ =\typ(f^{-1})
+ =\frac{\typ(f)}{|a|}.
+\]
+Thus $\typ(f\circ g)=|c|\typ(f)$.
+
+For general $f$, subtract its constant term and choose a linear
+polynomial $\ell$ so that $F=f-f(0)+\ell$ has nonzero linear
+coefficient. Both $F-f$ and $F\circ g-f\circ g$ are analytic.
+Lemma~\ref{lem:typecalculus} therefore transfers the equality from $F$
+to $f$. Finally apply Proposition~\ref{prop:post} to the analytic outer
+function translated to the constant term $f(0)$.
+\end{proof}
+
+The theorem does not assert a type formula for composition of two
+arbitrary divergent series. Analyticity of the coordinate maps is an
+essential part of the statement proved here. It also does not assert
+invariance under changes with zero derivative, such as ramification
+$z\mapsto z^d$; those changes rescale coefficient indices rather than
+merely the exponential type.
+
+\section{Gevrey and logarithmically refined weights}
+\label{sec:weightspecial}
+
+\subsection{A family extending all positive Gevrey orders}
+
+For real parameters $s,\beta$, define for $n\ge1$
+\begin{equation}
+ W_n(s,\beta)=(n!)^s\bigl(\log(n+\ee)\bigr)^{\beta n},
+ \qquad W_0=1.
+ \label{eq:logweight}
+\end{equation}
+The logarithmic shift ensures positivity at small indices; changing it
+does not affect any type considered below.
+
+\begin{lemma}[Admissibility of the refined weights]
+\label{lem:refinedweight}
+Suppose either $s>0$ and $\beta\in\R$, or $s=0$ and $\beta>0$.
+After changing only finitely many initial terms, \eqref{eq:logweight}
+is a log-convex superexponential weight. Moreover,
+\begin{equation}
+ W_n(s,\beta)^{1/n}\sim(n/\ee)^s(\log n)^\beta.
+ \label{eq:weightroot}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $F_n=\log W_n$ and $B(x)=x\log\log(x+\ee)$. Then
+\[
+ F_{n+1}-2F_n+F_{n-1}
+ =s\log\frac{n+1}{n}+\beta\bigl(B(n+1)-2B(n)+B(n-1)\bigr).
+\]
+Elementary differentiation gives
+\[
+ B''(x)=\frac1{x\log x}\left(1+O((\log x)^{-1})\right).
+\]
+The discrete second difference of $B$ is the integral of $B''$ against
+a nonnegative triangular kernel of total mass one on $[n-1,n+1]$.
+Consequently the second difference of $F_n$ is
+\[
+ \frac{s}{n}+O(n^{-2})+
+ \frac{\beta}{n\log n}\left(1+O((\log n)^{-1})\right),
+\]
+which is eventually positive under either hypothesis. Moreover, using
+Stirling's formula only for $\log(n!)$, for $s>0$ one gets
+\[
+ F_{n+1}-F_n-\frac{F_n}{n}=s+o(1)>0
+\]
+for sufficiently large $n$. For $s=0$, $\beta>0$, the eventual
+convexity of $B$ and the exact identity
+\[
+ B'(x)-\frac{B(x)}x=\frac{x}{(x+\ee)\log(x+\ee)}>0
+\]
+give the same positivity directly. Thus there is an integer $N$ in
+the convex tail such that
+\[
+ \frac{F_N}{N}\le F_{N+1}-F_N.
+\]
+Keep $W_n$ for $n\ge N$, and set $\widetilde M_n=W_N^{n/N}$ for
+$0\le n<N$. The initial logarithms lie on a straight line; the displayed
+inequality makes their join with the convex tail convex. Thus
+$\widetilde M$ is a globally log-convex weight with the same tail.
+Stirling's formula proves \eqref{eq:weightroot}, which tends to infinity
+under the stated hypotheses.
+\end{proof}
+
+\begin{corollary}[Exact refined-type inversion]
+\label{cor:refinedgeneral}
+Under either hypothesis in Lemma~\ref{lem:refinedweight}, let
+\[
+ T_{s,\beta}(f)=\limsup_n
+ \left(\frac{|[z^n]f|}{(n!)^s\log(n+\ee)^{\beta n}}\right)^{1/n}.
+\]
+For every formal diffeomorphism with derivative $a\ne0$,
+\begin{equation}
+ T_{s,\beta}(f^{-1})=\frac{T_{s,\beta}(f)}{|a|}.
+ \label{eq:refinedgeneral}
+\end{equation}
+The analytic coordinate law \eqref{eq:coordinates} holds for these
+refined types as well.
+\end{corollary}
+\begin{proof}
+Use the finite modification from Lemma~\ref{lem:refinedweight} in
+Theorems~\ref{thm:zeroloss} and \ref{thm:coordinates}. Finite changes
+of weights do not alter type.
+\end{proof}
+
+For $s>0$, $\beta=0$, this gives exact Gevrey-type preservation, not
+merely closure of the Gevrey class. For $s=0$, $\beta>0$, it gives the
+same exact preservation on a scale slower than every positive Gevrey
+weight. By contrast, $s=\beta=0$ is the analytic endpoint excluded by
+Theorem~\ref{thm:iff}.
+
+\subsection{Size of the explicit overhead}
+
+Fix an admissible globally log-convex modification and a bound
+\eqref{eq:inputbound}. From \eqref{eq:explicitmajorant} and
+\eqref{eq:weightroot},
+\begin{equation}
+ \log\frac{|b_n|}{A^{n-1}M_n}
+ \le O(1)+O\left(n^{1-s/2}(\log n)^{-\beta/2}\right),
+ \label{eq:overheadrefined}
+\end{equation}
+with the convention that a zero coefficient satisfies the inequality.
+The constants depend on the fixed input bound and the finite weight
+modification. In the sub-Gevrey case $s=0$, $\beta>0$, the overhead is
+$O(n/(\log n)^{\beta/2})$, still $o(n)$.
+
+This is a \emph{proved upper bound}, not a sharp asymptotic for nonlinear
+inverse corrections. Its role is to retain the exponential constant, and
+its optimization is a separate research question.
+
+\section{Application to countable exponential feedback}
+\label{sec:feedback}
+
+\subsection{Formal existence and a positive coefficient formula}
+
+Fix finite real numbers $\lambda_j\ge0$, without any growth assumption.
+Consider
+\begin{equation}
+ \Phi(q,u)=\sum_{j\ge1}q^j e^{\lambda_j u},\qquad
+ \U(q)=\Phi(q,\U(q)).
+ \label{eq:feedback}
+\end{equation}
+The coefficient of $q^n$ on the right depends only on coefficients of
+$\U$ below degree $n$. Therefore the equation determines a unique series
+$\U\in q\R[[q]]$, with $u_1=1$ if
+$\U=\sum_{n\ge1}u_nq^n$. The countable kernel need not converge in a
+complex neighborhood of $(0,0)$; formal existence does not require such
+convergence.
+
+\begin{proposition}[Finite positive Lagrange formula]
+\label{prop:feedbackcoef}
+Let $\mathbf m=(m_1,m_2,\ldots)$ have finite support, and write
+$|\mathbf m|=\sum m_j$, $w(\mathbf m)=\sum jm_j$. Then
+\begin{equation}
+ u_n=\sum_{w(\mathbf m)=n}
+ \frac{\bigl(\sum_j\lambda_jm_j\bigr)^{|\mathbf m|-1}}
+      {\prod_jm_j!},\qquad n\ge1,
+ \label{eq:positiveformula}
+\end{equation}
+where $0^0=1$. In particular $u_n\ge1$.
+\end{proposition}
+\begin{proof}
+Introduce a marker $t$ and solve $V=t\Phi(q,V)$ formally. Lagrange
+inversion in $t$ gives
+\[
+ [t^k]V=\frac1k[u^{k-1}]\Phi(q,u)^k.
+\]
+Every term has $q$-order at least $k$, so setting $t=1$ is coefficientwise
+well-defined. For an ordered $k$-tuple $(j_1,\ldots,j_k)$, the contribution
+is
+\[
+ \frac1{k!}\bigl(\lambda_{j_1}+\cdots+\lambda_{j_k}\bigr)^{k-1}
+ q^{j_1+\cdots+j_k}.
+\]
+Grouping tuples by their multiplicities gives
+\eqref{eq:positiveformula}. All terms are nonnegative, and the tuple of
+length one with entry $n$ contributes one.
+\end{proof}
+
+With $q=e^{-x}$, the formal series becomes
+$\sum_{n\ge1}u_ne^{-nx}$. It already has a simple well-based
+one-generator exponential support. The questions below concern the
+coefficient growth on that support, not a failure of support
+well-ordering. Since $u_1=1$, the inverse $\Q(u)=\sum_{n\ge1}q_nu^n$
+exists formally and satisfies the literal formal identity
+\begin{equation}
+ u=\sum_{j\ge1}\Q(u)^j e^{\lambda_j u}.
+ \label{eq:inversekernel}
+\end{equation}
+
+\subsection{The two forward inputs}
+
+The following are the precise results taken from \cite{feedback}. They
+are labeled as inputs to avoid attributing their proofs to the present
+article.
+
+\begin{inputtheorem}[Exact forward Gevrey type]
+\label{input:forwardtype}
+For the nonnegative-slope model \eqref{eq:feedback} and every $s>0$,
+\begin{equation}
+ T_s(\U):=\limsup_n\left(\frac{u_n}{(n!)^s}\right)^{1/n}
+ =\left(\frac{s+1}{s}\right)^{s+1}
+   \limsup_{j\to\infty}\frac{\lambda_j}{(j\log j)^{s+1}}.
+ \label{eq:forwardtype}
+\end{equation}
+The equality holds in $[0,\infty]$.
+\end{inputtheorem}
+
+\begin{inputtheorem}[Regularly varying forward slopes]
+\label{input:forwardasymptotic}
+Suppose $a>0$, $p>1$, $\beta\in\R$, and
+$\lambda_j\sim a j^p(\log j)^\beta$. Then
+\begin{align}
+ \log u_n={}&(p-1)n\log n+(\beta-p)n\log\log n
+ \notag\\
+ &+\left(\log a+p\log\frac{p}{p-1}-(p-1)\right)n+o(n).
+ \label{eq:forwardasymptotic}
+\end{align}
+\end{inputtheorem}
+
+In the cited source these are the statements labeled
+\texttt{thm:classification}, equation \texttt{eq:exacttype}, and
+\texttt{thm:regular}, equation \texttt{eq:logasymptotic}, respectively.
+They are conventional research results, not formalized statements.
+Neither our abstract inverse theorem nor its coordinate-change theorem
+uses these inputs; the remaining feedback applications do.
+
+\subsection{The sharp inverse classification}
+
+\begin{theorem}[Exact inverse Gevrey type]
+\label{thm:inversefeedback}
+For \eqref{eq:feedback} and its formal inverse, for every $s>0$,
+\begin{equation}
+ \boxed{\displaystyle
+ T_s(\Q)=T_s(\U)
+ =\left(\frac{s+1}{s}\right)^{s+1}
+   \limsup_{j\to\infty}\frac{\lambda_j}{(j\log j)^{s+1}}.}
+ \label{eq:inversefeedback}
+\end{equation}
+Consequently $\Q$ belongs to Gevrey class $s$ exactly when
+$\lambda_j=O((j\log(j+1))^{s+1})$, and its exact type is the constant
+in \eqref{eq:inversefeedback}.
+\end{theorem}
+\begin{proof}
+For $M_n=(n!)^s$, the weight is log-convex and superexponential.
+Theorem~\ref{thm:zeroloss} gives $T_s(\Q)=T_s(\U)$ because $u_1=1$.
+Insert Repository input~\ref{input:forwardtype}. A finite type is
+equivalent to a bound $CA^n(n!)^s$, and the limsup on the right is
+finite exactly under the stated big-$O$ condition, since every individual
+slope is finite.
+\end{proof}
+
+The class-membership equivalence was already available in
+\cite{feedback}; the addition in \eqref{eq:inversefeedback} is the exact
+constant for the inverse, including the zero and infinite cases.
+Nonnegativity is an assumption on the primitive slopes and the imported
+forward results, not on the inverse coefficients.
+
+\begin{corollary}[Exact inverse Borel radius]
+\label{cor:borelradius}
+Define the integrated ordinary Borel series by
+\begin{equation}
+ (\B\Q)(\zeta)=\sum_{n\ge1}\frac{q_n}{n!}\zeta^n.
+ \label{eq:boreldef}
+\end{equation}
+Writing
+\[
+ A_*:=\limsup_{j\to\infty}\frac{\lambda_j}{(j\log j)^2},
+\]
+its exact radius of convergence is
+\begin{equation}
+ \boxed{\displaystyle R_{\B\Q}=\frac1{4A_*},}
+ \label{eq:borelradius}
+\end{equation}
+with $1/0=\infty$ and $1/\infty=0$.
+More generally, the series
+$\sum q_n\zeta^n/(n!)^s$ has radius $1/T_s(\Q)$.
+\end{corollary}
+\begin{proof}
+Apply Cauchy--Hadamard to \eqref{eq:boreldef}, followed by
+Theorem~\ref{thm:inversefeedback} with $s=1$. The general assertion
+is the same root test with the stated normalization.
+\end{proof}
+
+For example, if $\lambda_j\sim A(j\log j)^2$ with $A>0$, the exact
+radius is $1/(4A)$. If $\lambda_j=j^2$, the Borel transform is entire.
+If $A_*=\infty$, it has zero radius as a formal Borel series.
+A finite positive radius implies at least one obstruction to analyticity
+on the boundary circle, but does not identify its angle or its local
+nature. An infinite radius says nothing by itself about a Laplace
+integral on any prescribed ray. For nonintegral $s$, the factorial
+normalization above is the one explicitly defined here, and should not
+be confused with a different $k$-summability convention involving
+$\Gamma(1+sn)$.
+
+\subsection{A sharp logarithmically refined inverse invariant}
+
+\begin{theorem}[Regularly varying inverse type]
+\label{thm:refinedfeedback}
+Under Repository input~\ref{input:forwardasymptotic}, put
+\begin{equation}
+ s=p-1,\qquad \gamma=\beta-p,\qquad
+ K=a\left(\frac{p}{p-1}\right)^p.
+ \label{eq:parameters}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ \limsup_{n\to\infty}
+ \left(\frac{|q_n|}{(n!)^{p-1}\log(n+\ee)^{(\beta-p)n}}\right)^{1/n}
+ =K.}
+ \label{eq:refinedfeedback}
+\end{equation}
+For the forward coefficients, the corresponding normalized $n$th roots
+have an actual limit equal to $K$.
+\end{theorem}
+\begin{proof}
+Stirling's formula gives
+\[
+ \log\bigl((n!)^{p-1}\log(n+\ee)^{(\beta-p)n}\bigr)
+ =(p-1)n\log n-(p-1)n
+   +(\beta-p)n\log\log n+o(n).
+\]
+Subtract this from \eqref{eq:forwardasymptotic} and divide by $n$.
+The resulting limit is $\log K$. Thus the forward refined type is $K$,
+and in fact the forward normalized roots converge to it. The weight
+satisfies Lemma~\ref{lem:refinedweight} because $p-1>0$.
+Corollary~\ref{cor:refinedgeneral} transfers its exact type to $\Q$.
+\end{proof}
+
+An immediate consequence is a two-sided exponential envelope in the
+limsup sense: for each $\varepsilon>0$,
+\[
+ |q_n|\le(K+\varepsilon)^n(n!)^{p-1}
+             \log(n+\ee)^{(\beta-p)n}
+\]
+for all sufficiently large $n$; if $0<\varepsilon<K$, the reversed bound
+with $K-\varepsilon$ holds at infinitely many $n$. Modifying finitely
+many slopes does not change this invariant when the same regularly
+varying tail is retained. The theorem does not say that such a
+modification preserves each coefficient or each analytic summation.
+
+\begin{corollary}[Quadratic feedback]
+\label{cor:quadratic}
+For $\lambda_j=j^2$,
+\begin{equation}
+ \limsup_{n\to\infty}
+ \left(\frac{|q_n|\log(n+\ee)^{2n}}{n!}\right)^{1/n}=4.
+ \label{eq:quadratic}
+\end{equation}
+Both $\U$ and $\Q$ have Gevrey-one type zero, belong to no Gevrey
+class $s<1$ with $s>0$, and have entire ordinary Borel transforms.
+\end{corollary}
+\begin{proof}
+Use $a=1,p=2,\beta=0$ in Theorem~\ref{thm:refinedfeedback}.
+The exact ordinary Gevrey types also follow from
+\eqref{eq:inversefeedback}: the slope ratio tends to zero for $s=1$
+and to infinity for $0<s<1$. The Borel conclusion follows from
+Corollary~\ref{cor:borelradius}.
+\end{proof}
+
+\section{Entire Borel growth from the refined type}
+\label{sec:growth}
+
+\subsection{A coefficient-to-growth lemma that permits cancellation}
+
+For an entire function $F$, write
+$\mathcal M_F(r)=\max_{|z|=r}|F(z)|$.
+In iterated logarithms, replacing $\mathcal M_F(r)$ by
+$\max(\ee,\mathcal M_F(r))$ at small radii makes all expressions
+defined and does not affect any limit below.
+
+\begin{lemma}[Iterated-logarithmic growth]
+\label{lem:entiregrowth}
+Suppose $F(z)=\sum_{n\ge0}c_nz^n$, $d>0$, $K>0$, and
+\begin{equation}
+ \limsup_{n\to\infty}|c_n|^{1/n}\log(n+\ee)^d=K.
+ \label{eq:rootdecay}
+\end{equation}
+Then $F$ is entire and
+\begin{equation}
+ \limsup_{r\to\infty}
+ \frac{\log\log\mathcal M_F(r)}{r^{1/d}}=K^{1/d}.
+ \label{eq:entiregrowth}
+\end{equation}
+In particular $F$ has infinite classical entire order.
+\end{lemma}
+\begin{proof}
+Equation~\eqref{eq:rootdecay} implies $\limsup|c_n|^{1/n}=0$,
+so $F$ is entire. For an upper bound choose $L>K$ and $\eta>0$.
+For all sufficiently large $n$,
+\[
+ |c_n|\le\frac{L^n}{\log(n+\ee)^{dn}}.
+\]
+For sufficiently large $r$, set
+\[
+ N=\left\lceil\exp\bigl((1+\eta)(Lr)^{1/d}\bigr)\right\rceil.
+\]
+For $n\ge N$, one has
+$Lr/\log(n+\ee)^d\le(1+\eta)^{-d}=:\rho<1$.
+The tail is at most $\sum_{n\ge N}\rho^n$ in absolute value on
+$|z|=r$. The terms before $N$ are at most a fixed polynomial in $r$
+plus $N\max(1,Lr)^N$. Consequently
+\[
+ \log\log\mathcal M_F(r)
+ \le (1+\eta)(Lr)^{1/d}+O(\log\log r).
+\]
+Taking the limsup and then $L\downarrow K$, $\eta\downarrow0$
+gives the upper bound in \eqref{eq:entiregrowth}.
+
+For the lower bound, choose $0<\varepsilon<K$ and $\eta>0$.
+There are infinitely many $n$ for which
+\[
+ |c_n|\ge\frac{(K-\varepsilon)^n}{\log(n+\ee)^{dn}}.
+\]
+At the radii
+\[
+ r_n=\frac{\ee^{d\eta}\log(n+\ee)^d}{K-\varepsilon},
+\]
+Cauchy's coefficient inequality gives
+$\mathcal M_F(r_n)\ge|c_n|r_n^n\ge\ee^{d\eta n}$.
+It follows that
+\[
+ \limsup_{r\to\infty}
+ \frac{\log\log\mathcal M_F(r)}{r^{1/d}}
+ \ge \ee^{-\eta}(K-\varepsilon)^{1/d}.
+\]
+Let $\eta\downarrow0$ and $\varepsilon\downarrow0$.
+The positive finite value in \eqref{eq:entiregrowth} implies
+$\limsup\log\log\mathcal M_F(r)/\log r=\infty$, which is infinite
+classical order.
+\end{proof}
+
+No positivity assumption is present in this lemma. The lower bound uses
+Cauchy's inequality for a coefficient, rather than a value of the
+function on a prescribed ray. This distinction is particularly important
+for a signed inverse series.
+
+\subsection{Feedback transforms of integer factorial order}
+
+\begin{theorem}[Exact inverse Borel maximum-modulus type]
+\label{thm:borelgrowth}
+Assume
+\[
+ \lambda_j\sim a j^p(\log j)^\beta,\qquad
+ p=m+1,\quad m\in\N,\ m\ge1,\quad a>0,\quad\beta<p.
+\]
+Set $d=p-\beta>0$ and $K=a(p/(p-1))^p$. Define
+\begin{equation}
+ B_{m,Q}(z)=\sum_{n\ge1}\frac{q_n}{(n!)^m}z^n,\qquad
+ B_{m,U}(z)=\sum_{n\ge1}\frac{u_n}{(n!)^m}z^n.
+ \label{eq:Bmq}
+\end{equation}
+Both are entire, and each satisfies
+\begin{equation}
+ \limsup_{r\to\infty}
+ \frac{\log\log\mathcal M_{B}(r)}{r^{1/d}}
+ =K^{1/d}.
+ \label{eq:Bmgrowth}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:refinedfeedback}, with $m=p-1$, says that the
+coefficients of $B_{m,Q}$ satisfy \eqref{eq:rootdecay}. For $B_{m,U}$
+the normalized root even has a limit, so the same hypothesis holds.
+Apply Lemma~\ref{lem:entiregrowth} to each transform.
+\end{proof}
+
+For $m=1$ this is the ordinary integrated Borel transform; for larger
+integer $m$ it is the explicitly defined repeated factorial
+normalization, not an unstated alternative convention. In the quadratic
+case, \eqref{eq:Bmgrowth} becomes
+\begin{equation}
+ \boxed{\displaystyle
+ \limsup_{r\to\infty}
+ \frac{\log\log\mathcal M_{\B\Q}(r)}{\sqrt r}=2.}
+ \label{eq:quadraticgrowth}
+\end{equation}
+
+The coefficient information proved here justifies a \emph{limsup} for
+the inverse. It does not justify replacing that limsup by a limit or
+$\mathcal M_{\B\Q}(r)$ by $|(\B\Q)(r)|$. In particular, infinite
+maximum-modulus order does not contradict summability on a direction
+where the same entire function grows much more slowly. This is
+consistent with the separate negative-direction result in
+\cite{negativeray}.
+
+\section{Non-D-finiteness and analytic-normal-form obstructions}
+\label{sec:holonomic}
+
+\subsection{Two elementary holonomic facts}
+
+\begin{definition}
+A formal series $F(z)$ is D-finite if it satisfies a nonzero linear
+differential equation
+\begin{equation}
+ p_r(z)F^{(r)}(z)+\cdots+p_0(z)F(z)=0,
+ \qquad p_j\in\C[z],\quad p_r\ne0.
+ \label{eq:Dfinite}
+\end{equation}
+A sequence is P-recursive if, for all sufficiently large $n$, it
+satisfies a nonzero linear recurrence with polynomial coefficients in $n$.
+\end{definition}
+
+\begin{lemma}[Factorial division preserves D-finiteness]
+\label{lem:factorialD}
+If $F(z)=\sum a_nz^n$ is a D-finite formal series and $m$ is a
+nonnegative integer, then $\sum a_nz^n/(n!)^m$ is D-finite formally.
+\end{lemma}
+\begin{proof}
+Coefficient extraction in \eqref{eq:Dfinite} gives a polynomial-coefficient
+recurrence for $a_n$, after shifting its indices to be nonnegative.
+Write it as
+\[
+ \sum_{j=0}^rP_j(n)a_{n+j}=0
+\]
+for all sufficiently large $n$, with not all $P_j$ zero. Put
+$a_n=(n!)^m c_n$ and divide by $(n!)^m$. This gives
+\[
+ \sum_{j=0}^r P_j(n)\bigl((n+1)\cdots(n+j)\bigr)^m c_{n+j}=0.
+\]
+Every coefficient is polynomial because $m$ is an integer, and the
+recurrence is nonzero. Such a recurrence yields a linear differential
+equation for $\sum c_nz^n$ by multiplying by powers of $z$, summing in
+$n$, and replacing $n$ by the Euler operator $z\,\dd/\dd z$.
+Finitely many exceptional initial indices contribute a polynomial
+inhomogeneous term, which is annihilated by a sufficiently high
+derivative. This yields a nonzero homogeneous linear differential
+operator, proving D-finiteness.
+\end{proof}
+
+\begin{lemma}[Entire D-finite functions have finite order]
+\label{lem:finiteorder}
+Every entire D-finite function has finite classical entire order.
+\end{lemma}
+\begin{proof}
+The zero function is harmless. A nonzero entire solution has an equation
+\eqref{eq:Dfinite} of order $r\ge1$. Choose $R$ so large that all zeros
+of $p_r$ lie in $|z|<R$. Outside that disk, the vector
+\[
+ Y=(F,F',\ldots,F^{(r-1)})^{\mathsf T}
+\]
+satisfies a companion system $Y'=A(z)Y$ whose entries are rational
+functions. There exist $C>0$ and an integer $L\ge0$ with
+$\|A(z)\|\le C|z|^L$ for $|z|\ge R$. The initial values
+$Y(R\ee^{i\theta})$ are uniformly bounded in $\theta$, since all
+components are entire. Along a radial segment, Gronwall's inequality
+therefore gives, uniformly in $\theta$,
+\[
+ \|Y(r\ee^{i\theta})\|
+ \le C_0\exp\left(C\int_R^r t^L\,\dd t\right)
+ \le C_0\exp(C_1r^{L+1}).
+\]
+Thus $\mathcal M_F(r)\le C_0\exp(C_1r^{L+1})$, which is finite
+classical order.
+\end{proof}
+
+\subsection{An obstruction valid for signed coefficient sequences}
+
+\begin{theorem}[Logarithmic factorial obstruction]
+\label{thm:obstruction}
+Let $m\ge1$ be an integer, $d>0$, and $K>0$. Suppose a formal series
+$F(z)=\sum a_nz^n$ satisfies
+\begin{equation}
+ \limsup_{n\to\infty}
+ \left(\frac{|a_n|\log(n+\ee)^{dn}}{(n!)^m}\right)^{1/n}=K.
+ \label{eq:obstructionhyp}
+\end{equation}
+Then $F$ is not D-finite, and its coefficient sequence is not
+P-recursive.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:entiregrowth} says that
+$B(z)=\sum a_nz^n/(n!)^m$ is entire and of infinite order. If $F$
+were D-finite, Lemma~\ref{lem:factorialD} would make $B$ D-finite as
+a formal series. Since $B$ is entire, its formal differential identity
+holds analytically by termwise differentiation near zero and then by
+the identity theorem. Lemma~\ref{lem:finiteorder} gives a contradiction.
+The equivalence between D-finite series and P-recursive coefficients
+follows from the coefficient/operator translations in the proof of
+Lemma~\ref{lem:factorialD}; hence the second conclusion.
+\end{proof}
+
+\begin{corollary}[Non-D-finiteness of feedback and its inverse]
+\label{cor:nondfinite}
+Under the hypotheses of Theorem~\ref{thm:borelgrowth}, neither $\U$
+nor $\Q$ is D-finite. In particular, for $\lambda_j=j^2$ neither
+series satisfies a nonzero linear differential equation with polynomial
+coefficients, and neither coefficient sequence is P-recursive.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:obstruction} to the forward and inverse refined
+types given by Theorem~\ref{thm:refinedfeedback}, with $d=p-\beta$.
+\end{proof}
+
+\begin{corollary}[No analytic change to a D-finite normal form]
+\label{cor:normalform}
+Let $F$ satisfy \eqref{eq:obstructionhyp}. Let $g$ be analytic with
+$g(0)=0$, $g'(0)\ne0$, and let $H$ be analytic near $F(0)$ with
+$H'(F(0))\ne0$. Then $H\circ F\circ g$ is not D-finite.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:coordinates} to the weight
+$(n!)^m\log(n+\ee)^{-dn}$, with a finite log-convex modification as
+in Lemma~\ref{lem:refinedweight}. The transformed type is
+$|g'(0)|K$, which is positive and finite. Thus the transformed series
+again satisfies the hypothesis of Theorem~\ref{thm:obstruction}.
+\end{proof}
+
+The last corollary is a growth obstruction, not a claimed general
+closure property of the D-finite class under arbitrary analytic
+composition. It says that the particular divergent growth profile
+cannot be removed by invertible analytic coordinate changes.
+
+\subsection{Limits of the obstruction}
+
+Non-D-finiteness does \emph{not} mean differential transcendence. A
+series can fail every linear polynomial-coefficient differential
+equation and still satisfy a nonlinear algebraic differential equation.
+No exclusion of such nonlinear equations is proved here.
+
+The logarithmic deficit $d>0$ is also essential to this proof. At
+$\beta=p$, the normalized Borel series has a finite positive radius
+rather than being entire. For $\beta>p$, the same normalization has
+zero radius. Lemma~\ref{lem:finiteorder} cannot be applied in either
+case. Likewise, for noninteger $p-1$, the polynomial-recurrence
+argument for dividing by $(n!)^{p-1}$ is unavailable as stated. These
+are boundaries of the present theorem, not assertions that the series
+at those boundaries are D-finite.
+
+\section{Exact computations and reproducibility}
+\label{sec:verification}
+
+\subsection{Independent finite constructions}
+
+The accompanying program \texttt{code/verify.py} uses only the Python
+standard library. All identity and inequality checks use
+\texttt{fractions.Fraction}; decimal diagnostics are generated
+separately and labeled as floating point.
+
+The forward coefficients are computed by a triangular exponential
+recurrence. If
+\[
+ E_j(q)=\exp(\lambda_j\U(q))=\sum_{r\ge0}E_{j,r}q^r,
+\]
+then
+\begin{equation}
+ E_{j,0}=1,\qquad
+ E_{j,r}=\frac{\lambda_j}{r}\sum_{k=1}^r k u_kE_{j,r-k},\qquad
+ u_n=\sum_{j=1}^nE_{j,n-j}.
+ \label{eq:verificationrecurrence}
+\end{equation}
+This construction is separate from the inverse construction, which uses
+\eqref{eq:lagrange}. Both inverse compositions are subsequently checked
+by direct polynomial multiplication. Equation~\eqref{eq:inversekernel}
+is checked independently by substituting the computed inverse into the
+literal finite truncation of the feedback kernel.
+
+The finite majorant \eqref{eq:finitemajorant} is tested on signed rational
+input series for four different log-convex weights: $n!$, $(n!)^2$,
+$2^{n^2}$, and a slowly growing weight with nondecreasing quotients
+$1+\operatorname{bitlength}(n)$. That last choice tests the mechanism
+beyond factorial growth without using transcendental arithmetic.
+The geometric-mean weight inequalities are checked after raising to
+integer powers, avoiding numerical roots.
+
+\subsection{Recorded results}
+
+The recorded command was
+\begin{quote}\ttfamily
+python code/verify.py --order 70
+\end{quote}
+and it completed successfully. The exact report contains:
+\begin{itemize}
+\item Forward and inverse quadratic coefficients through degree $70$;
+both inverse compositions, the literal inverse kernel, linear rescaling,
+and the Catalan endpoint example verified through degree $30$.
+\item Twelve seeded signed-series cases, with $180$ exact checks of the
+finite inverse majorant and $8\,188$ exact concentration inequalities.
+\item Geometric-mean weight checks for four weights through degree $12$,
+and an analytic postcomposition/inverse factorization through degree $30$.
+\end{itemize}
+The random seed is $20260929$. The program raises an exception on a failed
+check; it does not silently convert failed tests into warnings.
+Table~\ref{tab:coefficients} gives the first ten exact coefficients.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rll}
+\toprule
+$n$ & $u_n=[q^n]\U(q)$ & $q_n=[u^n]\Q(u)$\\
+\midrule
+1 & $1$ & $1$ \\
+2 & $2$ & $-2$ \\
+3 & $15/2$ & $1/2$ \\
+4 & $107/3$ & $-2/3$ \\
+5 & $1555/8$ & $-29/8$ \\
+6 & $17362/15$ & $-743/60$ \\
+7 & $5288311/720$ & $-8491/144$ \\
+8 & $15414767/315$ & $-92726/315$ \\
+9 & $2734575197/8064$ & $-611063/384$ \\
+10 & $983674676/405$ & $-1667615261/181440$ \\
+\bottomrule
+\end{tabular}
+\caption{Quadratic feedback $\lambda_j=j^2$: exact rational coefficients.}
+\label{tab:coefficients}
+\end{table}
+
+These tests cannot verify a limsup over all indices or a statement about
+entire growth at infinite radius. In particular, the floating-point
+refined-root diagnostics at degree $70$ are approximately $7.59947$ for
+$\U$ and $6.75803$ for $\Q$, not close to the asymptotic invariant $4$.
+This slow preasymptotic behavior is recorded rather than hidden. No
+monotone convergence claim or extrapolation of the constant is based on
+that table. The asymptotic conclusions depend on the proofs and on the
+two stated forward inputs, not on finite numerical proximity.
+
+\subsection{Contents and build procedure}
+
+The package contains the article source and PDF, the verification
+program, exact coefficient data, numerical diagnostics, the recorded
+verification report, a source-provenance file, and a Makefile. The TeX
+source includes an embedded bibliography and the exact coefficient table
+generated by the program. It compiles independently of the data directory
+and has no network dependency.
+
+To rebuild from the package directory, run
+\begin{quote}\ttfamily
+python code/verify.py --order 70\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The verification program does not modify ProveIt or contact external
+services. The emitted \texttt{verification.json} distinguishes exact
+checks from non-certified floating-point diagnostics. PDF layout checks
+and build status are recorded separately in
+\texttt{data/build\_validation.json}.
+
+\section{Further research questions and a formalization program}
+\label{sec:questions}
+
+The following questions are proposed by this article. They are not all
+claimed to be previously published open problems. Each specifies a
+concrete next theorem or obstruction to investigate.
+
+\subsection{Optimal subexponential cost of reversion}
+
+The bound $\exp\{O(n/\sqrt{r_n})\}$ is sufficient for exact type but
+comes from deliberately coarse composition counts. What is the smallest
+universal overhead for a fixed weight and fixed input constants? Can
+one replace the square-root loss by an expression involving the local
+quotients $M_n/M_{n-1}$, and construct signed or nonnegative examples
+that attain it? A useful first target is $M_n=(n!)^s$ with $0<s<1$,
+where many small nonlinear blocks may still contribute a visible
+subexponential factor.
+
+\subsection{Full inverse asymptotics for quadratic feedback}
+
+For $\lambda_j=j^2$, determine whether the normalized inverse roots in
+\eqref{eq:quadratic} actually converge to four. A stronger target is
+an asymptotic equivalent for $q_n$, including its sign and
+subexponential amplitude. The small-order sign pattern in
+Table~\ref{tab:coefficients} is not a proof of an eventual sign law.
+The two-sided inverse argument used here deliberately avoids that issue;
+a complete answer likely requires control of cancellation between
+Lagrange blocks.
+
+\subsection{Angular Borel growth and summation}
+
+Determine the directional growth of $\B\Q(re^{i\theta})$ rather than
+its maximum over the circle. Theorem~\ref{thm:borelgrowth} supplies an
+exact global limsup scale, while \cite{negativeray} supplies a different,
+directional summation result. Can these be joined into an angular
+indicator theory, including the transition between the left and right
+half-planes? This is also a route toward testing angular rather than
+fine tubular summability.
+
+\subsection{Critical Borel singularities}
+
+For $\lambda_j\sim A(j\log j)^2$, the radius $1/(4A)$ is now fixed
+for the inverse. Which boundary points are singular, what are their
+local singularity types, and how do they depend on lower-order slope
+terms? Positivity of the forward coefficients helps locate a forward
+singularity, but cannot be transferred to a signed inverse without a
+separate argument. A radius theorem is not yet a Stokes-constant theorem.
+
+\subsection{Weights beyond log-convexity}
+
+Theorem~\ref{thm:iff} gives a complete answer \emph{within} the
+log-convex class. Find necessary and sufficient conditions for arbitrary
+positive weights to have the same exact reversion invariant. A possible
+approach is to compare a weight with a log-convex envelope up to
+$\exp(o(n))$ factors. The difficult cases are oscillatory weights whose
+deep dips occur precisely at indices populated by nonlinear
+compositions.
+
+\subsection{Two divergent composition arguments}
+
+Analytic pre- and postcomposition are controlled exactly here. Determine
+what can be said when both series are divergent. A naive equality in
+terms of the two types alone cannot ignore cancellations, since a series
+composed with its inverse is analytic. A useful replacement may be a
+filtered composition estimate together with a noncancellation condition,
+or a two-parameter profile that retains the position of large
+coefficients.
+
+\subsection{Multivariate and operator-valued inversion}
+
+Extend the zero-loss theorem to formal maps in several variables,
+where the derivative is an invertible matrix and homogeneous degrees
+have many monomials. The natural question is whether an exact type
+transforms by a directional norm of the inverse Jacobian rather than a
+single scalar. A Banach-space formulation should distinguish constants
+coming from multilinear operator norms from combinatorial losses that
+are only subexponential in the degree.
+
+\subsection{Hahn supports and accumulating action sets}
+
+For a well-based exponential support not identified with the positive
+integers, choose a meaningful replacement for degree and for $M_n$.
+Can an action filtration support an analogue of the concentration
+inequality? If infinitely many primitive actions lie below a finite
+cut, the finite ordered-composition count used in
+Theorem~\ref{thm:finite} is no longer available verbatim. A theorem
+there must explicitly separate support summability from coefficient
+majorization.
+
+\subsection{Differential transcendence and the critical boundary}
+
+Strengthen Corollary~\ref{cor:nondfinite} from a linear obstruction to
+an obstruction against nonlinear algebraic differential equations, or
+find a nonlinear equation that the feedback model does satisfy. In
+parallel, determine non-D-finiteness at $\beta\ge p$, where the entire
+normalization argument fails, and for noninteger $p-1$. These are
+separate questions; none is settled merely by the terminology
+``non-holonomic.''
+
+\subsection{Summation compatible with refined inversion}
+
+For logarithmic Gevrey deficits, identify a moment or acceleration
+procedure that matches the full weight rather than just its factorial
+order. Under what analytic continuation and growth hypotheses does its
+sum commute with inversion and retain the exact type? Such a theorem
+would have to add analytic hypotheses absent from the purely formal
+result proved here, and must not infer summability from a zero type.
+
+\subsection{A staged Lean formalization target}
+
+A practical formalization can be divided into four theorem-sized stages.
+First prove the finite log-convex concentration inequalities and the
+geometric-mean ratio bound over positive real sequences. Next formalize
+\eqref{eq:inversefinite} and \eqref{eq:finitemajorant} for coefficients
+of an inverse formal power series, with the sum over positive
+compositions made explicit. Third obtain the subexponential bound and
+extended-real limsup theorem, including zero and infinite cases and the
+Catalan necessity example. Finally connect the result to the particular
+feedback construction and formally prove or import verified versions of
+Repository inputs~\ref{input:forwardtype} and
+\ref{input:forwardasymptotic}.
+
+The general theorem is independent of those last two inputs, so it is a
+useful standalone milestone. The finite exact checks in this package
+supply examples and regression tests, not substitutes for those Lean
+proofs.
+
+\section{Conclusion}
+
+The central result is a complete zero-loss criterion for log-convex
+coefficient weights: universal exact type preservation under formal
+reversion is equivalent to superexponential growth of the weight roots.
+The proof provides a finite majorant rather than only an existence
+statement, and yields exact analytic-coordinate covariance without
+moderate-growth or summability assumptions.
+
+Applied to the stated forward feedback estimates, this resolves the
+repository's sharp inverse-type gap. It fixes the inverse Borel radius,
+preserves logarithmically refined constants despite signed cancellation,
+and yields a non-D-finiteness obstruction for an integer-order family,
+including quadratic feedback. The next genuinely unresolved steps are
+finer inverse asymptotics, angular Borel growth, and extensions beyond
+log-convex degree weights; they are not concealed inside the proved
+limsup statements.
+
+\appendix
+\section{A formal residue derivation of Lagrange reversion}
+\label{app:lagrange}
+
+For completeness, let $f(t)=at+O(t^2)$, $a\ne0$, and let $g=f^{-1}$.
+For a formal Laurent series with a finite principal part, denote by
+$\res_t$ the coefficient of $t^{-1}$. Formal substitution gives
+\begin{equation}
+ \res_z A(z)=\res_t A(f(t))f'(t).
+ \label{eq:reschange}
+\end{equation}
+It is enough to check monomials $A(z)=z^k$. For $k\ne-1$ the right
+side is the residue of $(f^{k+1})'/(k+1)$ and is zero. For $k=-1$,
+write $f=at(1+h)$; then
+$f'/f=t^{-1}+h'/(1+h)$ has residue one. At each coefficient only
+finitely many relevant terms enter, justifying linear extension.
+
+For $n\ge1$, apply \eqref{eq:reschange} to
+$A(z)=g(z)z^{-n-1}$:
+\[
+ [z^n]g(z)=\res_t t f'(t)f(t)^{-n-1}.
+\]
+The residue of the derivative of $t f(t)^{-n}$ is zero. Since
+\[
+ (t f^{-n})'=f^{-n}-ntf'f^{-n-1},
+\]
+we obtain
+\begin{equation}
+ [z^n]g(z)=\frac1n\res_t f(t)^{-n}
+ =\frac1n[t^{n-1}]\left(\frac{t}{f(t)}\right)^n.
+ \label{eq:lagrangegeneral}
+\end{equation}
+This gives \eqref{eq:lagrange} at $a=1$ and also makes the scaling
+factor $a^{-n}$ visible. The usual marker form
+$V=t\Phi(V)$ follows by putting $f(v)=v/\Phi(v)$ when $\Phi(0)$
+is a unit. For Proposition~\ref{prop:feedbackcoef}, work first over
+$\C((q))$: the constant $\Phi(q,0)=q/(1-q)$ is a unit in this
+Laurent-series field, so the argument applies verbatim to inversion in
+the marker variable. Its displayed coefficient formula has $q$-order
+at least $k$ in marker degree $k$, and therefore descends to the
+coefficientwise specialization at marker value one in $\C[[q]]$.
+Thus the calculation remains formal even when the resulting series
+diverges everywhere except zero.
+
+\section{Pinned source record and scope of novelty review}
+\label{app:sources}
+
+The snapshot is \commit, timestamped 29 September 2026,
+20:14:16 UTC. Repository bibliography links are pinned to that commit.
+The project README and these files under
+\texttt{Analysis/Transseries/docs/series-and-transseries/} were the
+principal sources:
+\begin{quote}\small\ttfamily
+Exponential\_Feedback\_Regularity\_Classification/article.tex\\
+Exponential\_Feedback\_Regularity\_Classification/README.md\\
+Negative\_Ray\_Summation\_Exponential\_Feedback/README.md.
+\end{quote}
+The first predecessor retains older internal snapshot references from
+before the directory migration; those are not substituted for the
+snapshot above. No upstream files were changed. Full links, retrieval
+scope, and dependency boundaries are recorded in \texttt{PROVENANCE.json}.
+
+The documented boundary resolved here is exact inverse type, not merely
+Gevrey membership. This does not establish absence of every result from
+all previous publications or concurrent notes. The classical ingredients
+are Lagrange inversion, log-convex majorization, root tests, and D-finite
+coefficient translations. The proposed contribution is their zero-loss
+combination, the sharp weight threshold, and the feedback consequences.
+
+\begin{thebibliography}{9}
+\small
+\addcontentsline{toc}{section}{References}
+
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt}, repository snapshot
+\commit, 29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries}{Pinned transseries repository}.
+
+\bibitem{reporeadme}
+ProveIt contributors, \emph{Transseries}, project README, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/README.md}{Pinned project README}.
+
+\bibitem{feedback}
+\emph{A sharp regularity classification for countable exponential-feedback
+transseries}, AI-assisted research report prepared for Vladimir Reshetnikov,
+29 September 2026, ProveIt research package. Conventional, non-Lean
+results; precise input labels are recorded in Section~\ref{sec:feedback}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}{Pinned article source}.
+Companion scope statement:
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/README.md}{Pinned scope statement}.
+
+\bibitem{negativeray}
+\emph{Negative-Ray Summation of Countable Exponential-Feedback
+Transseries}, AI-assisted research report prepared for Vladimir Reshetnikov,
+29 September 2026, ProveIt research package; README consulted.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/README.md}{Pinned negative-ray README}.
+
+\bibitem{gessel}
+Ira M. Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory,
+Series A \textbf{144} (2016), 212--249.
+\href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018}.
+\url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{rainerschindl}
+Armin Rainer and Gerhard Schindl, \emph{Composition in ultradifferentiable
+classes}, Studia Mathematica \textbf{224} (2014), no.~2, 97--131.
+\href{https://doi.org/10.4064/sm224-2-1}{doi:10.4064/sm224-2-1}.
+\url{https://arxiv.org/abs/1210.5102}.
+
+\bibitem{stability}
+Armin Rainer and Gerhard Schindl, \emph{Equivalence of stability
+properties for ultradifferentiable function classes}, Revista de la Real
+Academia de Ciencias Exactas, F\'isicas y Naturales, Serie A,
+Matem\'aticas \textbf{110} (2016), no.~1, 17--32.
+\href{https://doi.org/10.1007/s13398-014-0216-0}{doi:10.1007/s13398-014-0216-0}.
+\url{https://arxiv.org/abs/1407.6673}.
+
+\bibitem{sauzin}
+David Sauzin, \emph{Introduction to 1-summability and resurgence},
+lecture notes, 2014, arXiv:1405.0356.
+\url{https://arxiv.org/abs/1405.0356}.
+\end{thebibliography}
+\end{document}

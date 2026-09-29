@@ -1,0 +1,1387 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec,xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{27,49,70}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Poisson layers in feedback transseries}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=5pt,itemsep=3pt,leftmargin=1.6em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\C}{\mathbb C}
+\newcommand{\ee}{\mathrm e}\newcommand{\dd}{\mathrm d}
+\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
+\newcommand{\U}{\widehat U}\newcommand{\Acal}{\mathcal A}
+\newcommand{\Normal}{\mathcal N}\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\core}{\Phi_M}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\hypersetup{pdftitle={Poisson Layers at the Finite-Core Boundary of Exponential-Feedback Transseries},pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Uniform marked coefficient asymptotics, critical windows, finite-core repair, and joint Gaussian-Poisson limits}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{ink} Poisson Layers at the Finite-Core Boundary\par of Exponential-Feedback Transseries\par}
+\vspace{.65em}
+{\large An explicit missing factor, a logarithmically shifted critical window,\par and joint fluctuations of the rare layer and the giant action\par}
+\vspace{.8em}
+Research article prepared for Vladimir Reshetnikov\\
+29 September 2026
+\end{center}
+\begin{abstract}
+Consider the formal equation
+\[
+ \U(q)=\sum_{j\ge1}q^j\exp(a j^p\U(q)),\qquad a>0,\quad p>1.
+\]
+A recent ProveIt manuscript proves that a core containing actions
+$1,\ldots,M$, together with exactly one larger action, captures the full
+$n$th coefficient precisely when $M(p-1)>1$. It leaves the distribution
+of the omitted background actions and finite transition corrections open.
+We prove a uniform marked-coefficient theorem throughout the larger range
+$(M+1)(p-1)>1$. If $w_{n,M}$ is the exact one-tail coefficient and $u_n(s)$
+marks each occurrence of action $M+1$ by $s$, then
+\[
+ u_n(s)=w_{n,M}\exp(s\nu_{n,M})(1+o(1)),\qquad
+ \nu_{n,M}=\frac{nr_n}{1+r_n}\ee^{-Mp r_n},
+\]
+uniformly for real $s$ in compact subsets of $[0,\infty)$. Here
+$r_n(1+r_n)^{p-1}\ee^{p r_n}=a n^{p-1}$.
+The result is uniform on compact parameter sets with a strict margin, and
+survives bounded nonnegative changes to every action inside the core.
+Thus one fewer action in the implicit core can be compensated by a single
+explicit exponential factor.
+
+At the boundary $p=1+1/M$, the missing factor is exactly
+$\exp(r_n^{M+1}/a^M)$ up to relative error tending to zero, not a constant.
+A finite Poisson limit instead occurs when
+$p=1+1/M+((M+1)\log\log n+\theta)/(M\log n)$; its parameter is
+$\ee^{-\theta}/(a^M(M+1)^{M+1})$.
+We prove total-variation convergence for bounded intensities, a central
+limit theorem and a large-deviation principle for diverging intensities,
+relative asymptotics for fixed rare counts, and independence from the
+Gaussian fluctuation of the giant action. The proof separates the existing
+finite-core method from the new uniform saddle perturbation. Exact
+coefficient identities, numerical diagnostics, and further research
+questions complete the article.
+\end{abstract}
+\noindent\textbf{Status and scope.}
+This is an AI-assisted research draft with conventional mathematical proofs,
+not a Lean-verified development. The results are proposed additions to the
+inspected repository work. Global originality and publication priority have
+not been established. No general resurgence theorem or signed inverse
+conjecture is claimed solved.
+\clearpage
+\setcounter{tocdepth}{1}\hypersetup{bookmarksdepth=2}
+\tableofcontents
+\clearpage
+
+\section{The repository question and the contribution}
+\label{sec:context}
+\subsection{A specific gap in the existing finite-core theory}
+The ProveIt repository now keeps its generic transseries work under
+\path{Analysis/Transseries/}. Its documentation distinguishes the canonical
+transseries volume, focused Lean modules, and recent unmerged research
+manuscripts \cite{repo-readme}. The present paper continues
+\emph{Finite-Core Universality and Sharp Large Order for Countable
+Exponential-Feedback Transseries} \cite{finite-core}, rather than attempting
+to replace the entire transseries program by a new survey.
+
+The inspected source is pinned to commit
+\begin{center}\small
+\path{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.
+\end{center}
+Its file is \path{Finite_Core_Universality_Exponential_Feedback/article.tex}
+inside the transseries documentation directory, with blob
+\path{c2b6faf623003111e9d9e6bbb162a67429f3ce42}.
+Its research subsections ``Regularly varying feedback and critical
+logarithmic boundaries'' and ``Joint laws for the finite background cloud''
+explicitly ask for finite nonzero corrections at a critical cutoff and for
+Poisson/Gaussian laws of the small actions. Its necessity argument treats
+only one additional occurrence of the first omitted action. A one-occurrence
+lower bound proves failure of a cutoff, but does not determine the entire
+missing factor.
+
+We sum that layer to relative precision. The result answers the first-omitted-
+action part of the cloud question and supplies a moving-power critical
+window. It does \emph{not} settle the proposed generalization to arbitrary
+regularly varying slopes. It also does not settle the signed quadratic
+inverse conjecture in the same source. These boundaries are important:
+positivity is used in the proof, and a fixed-parameter theorem cannot be
+substituted into a moving-parameter regime without establishing uniformity.
+
+\subsection{What is inherited and what is added}
+The positive Lagrange coefficient formula, the giant-action localization,
+the strict finite-core cutoff, and the two-stage saddle method originate in
+the repository manuscript \cite{finite-core}. We re-establish the forms
+needed here, with compact-uniform estimates. They are supporting arguments,
+not independent novelty claims.
+
+The additions are the uniform marked ratio, its reduction to a scalar
+core-independent intensity, the explicit correction at every reciprocal
+cutoff boundary, the shifted Poisson window with its constant, and the joint
+rare-layer/giant-action limits. In particular, our coefficient equivalent is
+stronger than a logarithmic equivalent: an error $o(1)$ occurs \emph{after}
+taking the logarithm of the ratio, not merely after dividing that logarithm
+by $n$ or by the diverging intensity.
+
+\subsection{Relation to established mathematics}
+Lagrange inversion itself is classical; see Gessel \cite{gessel}. Formal
+transseries provide the algebraic context, including the distinction between
+formal operations and analytic realization \cite{edgar}. In the present
+model, the substitution $q=\ee^{-x}$ produces a one-generator exponential
+transseries. Its support is simple; the difficult phenomenon is the growth
+and organization of its coefficients.
+
+Poisson layers, condensation, and Gaussian clouds are not new phenomena in
+probability. Janson, Jonsson, and Stef\'ansson prove Poisson boundary laws and
+joint Gaussian/Poisson limits for superexponentially weighted random trees
+\cite{jjs}. Their weights are products of degree weights. Ours contain a
+power of the \emph{sum} of action slopes and have a giant of order
+$n/\log n$. The logarithmic displacement of the cutoff and the scalar
+intensity below are features of this feedback model, not consequences of
+identifying the two probability ensembles.
+
+There is also an established notion of mod-Poisson convergence
+\cite{modpoisson}. We prove a positive-real-marker exponential approximation.
+We do not silently promote it to a relative approximation on an arbitrary
+complex marker domain when the intensity diverges. The probabilistic
+consequences claimed below are proved from the estimates actually available.
+
+\section{Model, coefficient ensemble, and main theorem}
+\label{sec:main}
+\subsection{A finite core and a power tail}
+Fix an integer $M\ge1$ and put $d=M+1$. To display the universality precisely,
+allow a finite nonnegative core
+\begin{equation}
+ \Phi_M(q,u)=\sum_{j=1}^{M} b_jq^j\ee^{\ell_j u},
+ \qquad b_1=1,\quad b_j,\ell_j\ge0.
+ \label{eq:core-kernel}
+\end{equation}
+For a real marker $s\ge0$, let
+\begin{equation}
+ \U_s(q)=\Phi_M(q,\U_s(q))
+       +s q^d\ee^{a d^p\U_s(q)}
+       +\sum_{j>d}q^j\ee^{a j^p\U_s(q)},
+ \qquad u_n(s)=[q^n]\U_s(q).
+ \label{eq:marked-model}
+\end{equation}
+Every infinite identity involving $\U_s$ is formal. The pure model is
+$b_j=1$, $\ell_j=a j^p$, with $s=1$. No evaluation of the divergent infinite
+kernel at positive numerical arguments is used.
+
+The parameters may vary with $n$. Uniformity will always mean
+\begin{equation}
+\begin{gathered}
+ a\in[a_-,a_+],\qquad p\in[p_-,p_+],\qquad
+ 0<a_-\le a_+<\infty,\\
+ 1<p_-\le p_+<\infty,\qquad d(p_--1)>1,\\
+ 0\le b_j,\ell_j\le C_0\quad(j\le M),\qquad b_1=1,
+ \qquad 0\le s\le S<\infty.
+\end{gathered}
+\label{eq:uniform-domain}
+\end{equation}
+Here $M,C_0,S$ and the compact intervals are fixed. This is a strict-margin
+condition; no assertion is made at $d(p_--1)=1$.
+
+\subsection{The exact one-tail series}
+Let $G=G_M$ and $R=R_M$ be the small analytic branches
+\begin{equation}
+ G(q)=\Phi_M(q,G(q)),\qquad
+ R(q)=\frac{1}{1-\partial_u\Phi_M(q,G(q))}.
+ \label{eq:core}
+\end{equation}
+They satisfy $G(q)=q+O(q^2)$ and $R(q)=1+O(q)$, with nonnegative
+Taylor coefficients. Define
+\begin{equation}
+ W_M(q)=R(q)\sum_{j>M}q^j\ee^{a j^pG(q)},\qquad
+ w_{n,M}=[q^n]W_M(q).
+ \label{eq:onetail}
+\end{equation}
+The large-action sum in \eqref{eq:onetail} is formal. The coefficient
+$w_{n,M}$ counts exactly one primitive action above $M$, not simply the
+coefficient of the finite truncation $G_M$.
+
+\subsection{The scalar intensity}
+For $n>0$, let $r=r_n(a,p)>0$ be the unique solution of
+\begin{equation}
+ r(1+r)^{p-1}\ee^{pr}=a n^{p-1}.
+ \label{eq:r}
+\end{equation}
+Existence and uniqueness follow because the left side increases strictly
+from zero to infinity. Set
+\begin{equation}
+ j_0=\frac{n}{1+r},\qquad k_0=\frac{nr}{1+r},\qquad
+ t_0=\ee^{-pr},\qquad
+ \boxed{\ \nu_{n,M}=k_0t_0^M=\frac{nr}{1+r}\ee^{-Mp r}.\ }
+ \label{eq:nu}
+\end{equation}
+The intensity depends only on $a,p,n,M$, not on the finite core coefficients.
+The root equation is often numerically better evaluated after taking logs.
+
+\begin{theorem}[Uniform Poisson-layer coefficient theorem]
+\label{thm:main}
+Under \eqref{eq:uniform-domain},
+\begin{equation}
+ \boxed{\quad
+ \sup\left|\frac{u_n(s)}{w_{n,M}\ee^{s\nu_{n,M}}}-1\right|
+ \longrightarrow0.
+ \quad}
+ \label{eq:main}
+\end{equation}
+The supremum is over all parameters in that domain. In particular,
+\begin{equation}
+ u_n(1)=w_{n,M}\ee^{\nu_{n,M}}(1+o(1)),\qquad
+ u_n(0)=w_{n,M}(1+o(1)).
+ \label{eq:repair}
+\end{equation}
+These are multiplicative equivalents, including when $\nu_{n,M}\to\infty$.
+\end{theorem}
+
+\begin{remark}[One fewer implicit core action]
+The earlier uncorrected criterion is $M(p-1)>1$. The corrected formula
+requires only $(M+1)(p-1)>1$. For $1<p\le2$, the smallest sufficient
+uncorrected core has $\lfloor1/(p-1)\rfloor+1$ actions. The present formula
+uses $\lfloor1/(p-1)\rfloor$ core actions plus the scalar factor
+$\ee^{\nu_{n,M}}$. It does not remove the need to evaluate the one-tail
+coefficient or its saddle equivalent.
+\end{remark}
+
+\subsection{A directly computable coefficient equivalent}
+The one-tail coefficient has a finite-core saddle formula. Let $(z,\tau)$
+be the unique saddle in its small-radius asymptotic region:
+\begin{equation}
+ n=z+a z^p\tau G'(\tau),\qquad
+ -\log\tau=apz^{p-1}G(\tau).
+ \label{eq:saddle}
+\end{equation}
+Put $k=n-z$, $\Lambda=a z^p$, and
+\begin{align}
+ A&=ap(p-1)z^{p-2}G(\tau),\qquad
+ B=\Lambda\bigl(\tau G'(\tau)+\tau^2G''(\tau)\bigr),\notag\\
+ C&=1+pk/z,\qquad \Delta=C^2-AB,\qquad
+ \sigma^2=B/\Delta.
+ \label{eq:det}
+\end{align}
+For large $n$, $\Delta>0$. Define
+\begin{equation}
+ \Acal_{n,M}=
+ \frac{R(\tau)}{\sqrt{\Delta}}
+ \exp\bigl(\Lambda G(\tau)-k\log\tau\bigr).
+ \label{eq:A}
+\end{equation}
+We will prove, uniformly on the stated domain,
+\begin{equation}
+ w_{n,M}\sim\Acal_{n,M},\qquad
+ u_n(1)\sim\Acal_{n,M}\ee^{\nu_{n,M}}.
+ \label{eq:computable}
+\end{equation}
+Thus the final formula needs a fixed finite implicit core, one two-variable
+saddle, and one increasing scalar equation. It never sums the original
+infinite kernel as an analytic function.
+
+\section{Exact formal algebra and probability}
+\label{sec:formal}
+\begin{lemma}[Positive coefficient identity]
+\label{lem:positive}
+For nonnegative slopes $\lambda_j$ and amplitudes $c_j$ with $c_1=1$, the
+formal equation
+$U=\sum_{j\ge1}c_jq^j\ee^{\lambda_jU}$ has a unique solution with
+$[q]U=1$. Its coefficients are
+\begin{equation}
+ [q^n]U=
+ \sum_{m=1}^{n}\frac1{m!}
+ \sum_{\substack{j_1+\cdots+j_m=n\\j_i\ge1}}
+ \left(\prod_{i=1}^{m}c_{j_i}\right)
+ \left(\sum_{i=1}^{m}\lambda_{j_i}\right)^{m-1}.
+ \label{eq:positive}
+\end{equation}
+The zeroth power in the one-part term is interpreted as one.
+\end{lemma}
+\begin{proof}
+The coefficient of degree $n$ on the right uses coefficients of $U$ only
+through degree $n-1$, which proves triangular existence and uniqueness.
+Introduce an auxiliary marker $v$ and solve
+$U_v=v\sum c_jq^j\ee^{\lambda_jU_v}$. Formal Lagrange inversion gives
+\[
+ [v^m]U_v=\frac1m[u^{m-1}]
+       \left(\sum_{j\ge1}c_jq^j\ee^{\lambda_j u}\right)^m.
+\]
+Expanding the exponentials gives \eqref{eq:positive}. Setting $v=1$ is
+legitimate coefficientwise, because $m\le n$ for the coefficient of $q^n$.
+\end{proof}
+
+For the unmarked model $s=1$, normalize the summands in
+\eqref{eq:positive} by $u_n(1)$. This defines a probability measure on
+ordered compositions of $n$. Write $K_n$ for the number of parts,
+$J_n$ for the largest part, and
+\begin{equation}
+ E_n=n-K_n+1=1+\sum_i(j_i-1),\qquad
+ N_{d,n}=\#\{i:j_i=d\}.
+ \label{eq:counts}
+\end{equation}
+$E_n$ is the total excess plus one; it is not generally the largest part.
+Marking in \eqref{eq:marked-model} gives the exact probability generating
+function
+\begin{equation}
+ \E s^{N_{d,n}}=\frac{u_n(s)}{u_n(1)}.
+ \label{eq:pgf}
+\end{equation}
+All distributions in this paper refer to this coefficient ensemble.
+
+Let $\mathcal E_M$ be the event that exactly one part exceeds $M$.
+\begin{lemma}[Exact marking interpretation]
+\label{lem:onetail}
+The branches in \eqref{eq:core} are uniformly analytic near zero on compact
+core parameter sets, with nonnegative coefficients, and
+\begin{equation}
+ \Prob(\mathcal E_M)=w_{n,M}/u_n(1).
+ \label{eq:exact-event}
+\end{equation}
+\end{lemma}
+\begin{proof}
+On a sufficiently small fixed polydisc, $\partial_u\Phi_M=O(q)$ uniformly.
+The analytic implicit function theorem, or a uniform contraction, gives
+$G$. Iteration from zero shows positivity. The geometric series defining
+$R$ then has nonnegative coefficients as well.
+
+Mark all actions above $M$ by $v$. Differentiating the formal equation at
+$v=0$ gives
+\[
+ (1-\partial_u\Phi_M(q,G))\,\partial_vU_v|_{v=0}
+   =\sum_{j>M}q^j\ee^{a j^pG}.
+\]
+The derivative is $W_M$. Its coefficient counts exactly one marked action
+in \eqref{eq:positive}, proving \eqref{eq:exact-event}.
+\end{proof}
+
+\section{Compact-uniform finite-core reduction}
+\label{sec:uniform}
+The following details justify using moving exponents $p=p_n$. They also
+isolate the role of positivity. No conclusion about a signed formal inverse
+is obtained by this argument.
+
+\subsection{Macroscopic localization}
+Let $L=\log n$ and
+\begin{equation}
+ X_n=(p-1)nL-pn\log L+
+ \left(\log a+p\log\frac p{p-1}-(p-1)\right)n.
+ \label{eq:X}
+\end{equation}
+\begin{lemma}[Uniform localization]
+\label{lem:macro}
+For the marked models with $s\in[0,S]$, $\log u_n(s)=X_n+o(n)$ uniformly.
+For any sufficiently small fixed $\varepsilon,\delta>0$, the complement of
+\begin{equation}
+ \left|E_nL/n-p/(p-1)\right|\le\delta,
+ \qquad J_n\ge(1-\varepsilon)E_n
+ \label{eq:good}
+\end{equation}
+has probability at most $\exp(-cn+o(n))$ for a uniform $c>0$. The
+probability here is under the $s$-weighted coefficient measure, including
+$s=0$. The same logarithmic equivalent holds for any fixed one-tail core.
+\end{lemma}
+\begin{proof}
+Choose uniform constants $D,W$ so that
+$\lambda_j\le a j^p+D$ and $c_j\le W$ for all $j$, while $c_1=1$.
+A composition with $m$ parts and $r=n-m+1$ has at most $r-1$ nonunit
+parts. Convexity and successive transfers to a largest part give
+$\sum j_i^p\le r^p+m-1$. Its entire $m$-part row therefore has weight at
+most
+\begin{equation}
+ \binom{n-1}{r-1}W^{r-1}
+ \frac{(a r^p+D'm)^{m-1}}{m!}.
+ \label{eq:row}
+\end{equation}
+Conversely, a giant $r>d$ together with unit parts contributes at least
+$(a r^p)^{n-r}/(n-r)!$, independent of $s$.
+
+Stirling's formula for the lower configuration at
+$r=\lfloor pn/((p-1)L)\rfloor$ gives $X_n+o(n)$, uniformly on compact
+parameter sets. We record the upper localization argument to avoid an
+unstated uniformity assumption. Rows with $r\ge\eta n$ lose a fixed
+multiple of $nL$ for any fixed $\eta>0$. Any remaining row within $O(n)$
+of the lower bound must have $r/n\to0$ and
+$\log r=L-O(\log L)$; otherwise its slope term is too small.
+Thus $D'm=o(r^p)$ and the binomial and amplitude entropies are $o(n)$.
+For $\alpha=r/n$, the preceding row estimate is
+$(1-\alpha)\{(p-1)L+p\log\alpha+\log a-\log(1-\alpha)+1\}+o(1)$
+after division by $n$. Comparing this with the lower bound first gives
+$\alpha L=O(\log L)$. Hence $\alpha\log\alpha=o(1)$ and the
+quadratic expansion errors also tend to zero. Writing $y=rL/n$, the
+row logarithm divided by $n$ becomes
+\begin{equation}
+ (p-1)L-p\log L+\log a+1+p\log y-(p-1)y+o(1).
+ \label{eq:variational}
+\end{equation}
+The error is uniform in the localized range. Since
+$p\log y-(p-1)y$ tends uniformly to minus infinity at both ends of
+$(0,\infty)$, comparison with the lower bound now confines $y$ to a
+fixed compact interval. This function has its unique maximum at $p/(p-1)$; its maximum gap
+outside a fixed neighborhood is bounded below uniformly for $p$ in a
+compact interval. Summing at most $n$ rows adds only $O(\log n)$.
+
+If every part is at most $(1-\varepsilon)r$, convexity concentrates the
+excess into two extremal parts and bounds the slope sum by
+\[
+ a r^p\bigl((1-\varepsilon)^p+\varepsilon^p+o(1)\bigr).
+\]
+The factor in parentheses is uniformly below one. Raising it to
+$m-1\sim n$ gives an exponential loss that the $\exp(o(n))$ entropy
+cannot offset. This proves the giant estimate. The one-tail lower
+configuration and the full coefficient upper bound give the last assertion.
+\end{proof}
+
+\subsection{A uniform strict cutoff}
+\begin{lemma}[Uniform sufficient core]
+\label{lem:cutoff}
+For a fixed core size $L_0$ containing all exceptional amplitudes and slopes,
+if $L_0(p_--1)>1$, its one-tail coefficient divided by the full coefficient
+tends to one uniformly on the compact parameter set.
+\end{lemma}
+\begin{proof}
+On \eqref{eq:good}, the largest part $J$ is unique. If a second part
+$i>L_0$ exists, replace $(J,i)$ in their original slots by $(J+i-1,1)$.
+The number of parts and their total sum stay fixed; the primitive amplitude
+product stays fixed because both large parts are in the unit-amplitude tail.
+For any fixed small $\eta>0$, choosing $\varepsilon$ sufficiently small
+gives the uniform slope gain
+\[
+ S'-S\ge a(p-\eta)r^{p-1}(i-1),\qquad r=E_n.
+\]
+Indeed, the mean-value theorem at the giant gives
+$ap(1-\varepsilon)^{p-1}r^{p-1}(i-1)$, and the lost slope of the smaller
+part is absorbed by making $\varepsilon$ small. Also
+$S'\le a r^p+D'm=a r^p(1+o(1))$. Thus the old weight divided by the
+new one is at most
+\[
+ \exp\left(-\frac{(p-2\eta)(n-r)(i-1)}{r}\right).
+\]
+Given an image, a chosen slot, and $i$, the preimage is recovered uniquely.
+There are at most $n$ slots. Summing over $i>L_0$ bounds the bad weight by
+\[
+ n\sum_{i>L_0}
+ \exp\left(-\frac{(p-2\eta)(n-r)(i-1)}r\right)
+ \le n^{1-L_0(p-1)+\epsilon_0+o(1)}
+\]
+for an arbitrarily small uniform $\epsilon_0>0$, after narrowing the
+macroscopic window. The strict compact margin makes this tend to zero.
+The exceptional macroscopic set is exponentially negligible. The argument
+also works at zero values of exceptional amplitudes, because the transferred
+parts are beyond the exceptional core.
+\end{proof}
+
+Apply this lemma to the core of size $d=M+1$ in the marked model. Define
+\begin{align}
+ G_s(q)&=\Phi_M(q,G_s(q))+s q^d\ee^{a d^pG_s(q)},\notag\\
+ R_s(q)&=\left(1-\partial_u\Phi_M(q,G_s(q))
+               -s a d^p q^d\ee^{a d^pG_s(q)}\right)^{-1},\notag\\
+ T_s(q)&=R_s(q)\sum_{j>d}q^j\ee^{a j^pG_s(q)},\qquad
+ t_n(s)=[q^n]T_s(q).
+ \label{eq:augmented}
+\end{align}
+Then, uniformly for real $s\in[0,S]$,
+\begin{equation}
+ u_n(s)=t_n(s)(1+o(1)).
+ \label{eq:uniform-reduction}
+\end{equation}
+At $s=0$, $G_s=G$ and $R_s=R$. The only difference between $T_0$ and
+$W_M$ is the fixed $j=d$ summand. That summand is analytic near zero and
+has at most exponential coefficient growth. Since $\log w_{n,M}=X_n+o(n)$,
+it is negligible, and
+\begin{equation}
+ t_n(0)\sim w_{n,M}.
+ \label{eq:Tzero}
+\end{equation}
+
+\section{Two saddles and their uniform perturbation}
+\label{sec:saddles}
+\subsection{The shrinking Cauchy saddle}
+We provide the analytic estimates used later. They involve only a finite
+analytic core; the infinite tail is never exchanged with a contour integral.
+
+For $j$ in a compact multiple of $n/\log n$, put $k_j=n-j$ and
+$\Lambda_j=a j^p$. Let $t_j$ solve
+\begin{equation}
+ \Lambda_jt_jG'(t_j)=k_j.
+ \label{eq:inner}
+\end{equation}
+Uniformly, $t_j\sim k_j/\Lambda_j\to0$. Write
+$B_j=\Lambda_j(t_jG'(t_j)+t_j^2G''(t_j))\sim n$.
+Cauchy's formula gives
+\begin{equation}
+ [q^{k_j}]R(q)\ee^{\Lambda_jG(q)}
+ =\frac{R(t_j)\ee^{\Lambda_jG(t_j)}t_j^{-k_j}}
+        {\sqrt{2\pi B_j}}(1+o(1)).
+ \label{eq:inner-formula}
+\end{equation}
+Here and below these assertions hold also for $G_s,R_s$, uniformly in
+$s\in[0,S]$.
+
+For completeness, on $q=t_j\ee^{i\theta}$ the linear phase vanishes by
+\eqref{eq:inner}. The operator $D=q\,\dd/\dd q$ satisfies
+$\Lambda_jD^hG(t_j)=O(n)$ for each fixed positive $h$. On
+$|\theta|\le n^{-2/5}$, Taylor expansion therefore gives a Gaussian
+quadratic term and an $O(n^{-1/5})$ cubic error. Outside that arc,
+nonnegative Taylor coefficients and $[q]G=1$ imply
+\[
+ \Re\bigl(G(t_j\ee^{i\theta})-G(t_j)\bigr)
+ \le t_j(\cos\theta-1).
+\]
+Since $\Lambda_jt_j\asymp n$, the remaining integral is negligible.
+Uniform analyticity controls the amplitude $R$. This proves
+\eqref{eq:inner-formula}, including its compact-uniform version.
+
+\subsection{The giant-action saddle}
+Define
+\[
+ f_n(j)=\Lambda_jG(t_j)-(n-j)\log t_j.
+\]
+Implicit differentiation of \eqref{eq:inner} gives
+\begin{align}
+ \frac{t_j'}{t_j}&=-\frac{C_j}{B_j},\qquad
+ C_j=1+p(n-j)/j,\notag\\
+ f_n'(j)&=apj^{p-1}G(t_j)+\log t_j,\notag\\
+ f_n''(j)&=ap(p-1)j^{p-2}G(t_j)-C_j^2/B_j.
+ \label{eq:derivatives}
+\end{align}
+Thus, uniformly for $j\asymp n/\log n$,
+\begin{equation}
+ f_n''(j)=-\frac{pn}{j^2}(1+o(1)),\qquad
+ f_n'''(j)=O\left(\frac{(\log n)^3}{n^2}\right).
+ \label{eq:curvature}
+\end{equation}
+At $j=c n/\log n$,
+$f_n'(j)/\log n=p/c-(p-1)+o(1)$. The endpoint signs and strict
+negative curvature give a unique saddle $z$ in the coarse region, precisely
+\eqref{eq:saddle}. Its scales are
+\begin{equation}
+ z\sim\frac p{p-1}\frac n{\log n},\qquad
+ \tau\sim\frac1a\left(\frac{p-1}{p}\right)^p
+             \frac{(\log n)^p}{n^{p-1}}.
+ \label{eq:scales}
+\end{equation}
+The equivalences are uniform on compact parameter sets.
+
+Macroscopic localization removes the complementary coarse region with
+exponentially small relative error. On $|j-z|\le\sigma\log n$, with
+$\sigma^2=B/\Delta\asymp n/(\log n)^2$, Taylor expansion gives
+\[
+ f_n(j)=f_n(z)-(j-z)^2/(2\sigma^2)+o(1).
+\]
+The cubic error is $O((\log n)^3/\sqrt n)$. Outside this window, curvature
+supplies an $\exp(-c(\log n)^2)$ loss. The prefactor in
+\eqref{eq:inner-formula} varies by a relative $o(1)$ on the window.
+The lattice Gaussian sum is asymptotic to $\sqrt{2\pi}\sigma$.
+Consequently,
+\begin{equation}
+ w_{n,M}=\Acal_{n,M}(1+o(1)),\qquad
+ t_n(s)=\Acal_n(G_s,R_s)(1+o(1)),
+ \label{eq:saddle-uniform}
+\end{equation}
+uniformly. The $\sqrt{2\pi}$ factors from the two saddles cancel.
+All assertions about uniqueness here concern the small-radius coarse region,
+not unrelated distant solutions of the saddle equations.
+
+\subsection{A normalized Hessian that remains invertible}
+The main new comparison can now be made at finite dimension. Define
+\begin{equation}
+ H_G(j,y)=a j^pG(\ee^y)-(n-j)y.
+ \label{eq:H}
+\end{equation}
+The saddle equations say $\partial_jH_G=\partial_yH_G=0$. Its Hessian at
+$(z,\log\tau)$ is
+\[
+ \begin{pmatrix} A&C\\ C&B\end{pmatrix},\qquad AB-C^2=-\Delta.
+\]
+It is indefinite, as expected from a Cauchy saddle followed by a maximum
+in the action variable. It must not be treated as a positive quadratic form.
+
+Use local coordinates $\xi=(j-z)/z$ and $\eta=y-\log\tau$.
+The normalized Hessian is
+\begin{equation}
+ \frac1n\begin{pmatrix}z^2A&zC\\zC&B\end{pmatrix}
+ \longrightarrow
+ \begin{pmatrix}p(p-1)&p\\p&1\end{pmatrix}.
+ \label{eq:Hnorm}
+\end{equation}
+The limiting determinant is $-p$, uniformly bounded away from zero.
+Derivatives through any fixed order, in these normalized local coordinates,
+are $O(n)$ on a fixed small neighborhood. These facts permit ordinary
+quantitative implicit-function estimates even though the saddle is indefinite.
+
+\begin{lemma}[First omitted layer perturbs the optimized exponent linearly]
+\label{lem:perturb}
+Let
+\begin{equation}
+ \mu=k\tau^M,\qquad k=n-z,
+ \label{eq:mu}
+\end{equation}
+using the $M$-core saddle. Uniformly for $s\in[0,S]$,
+\begin{equation}
+ \log\frac{\Acal_n(G_s,R_s)}{\Acal_n(G,R)}
+ =s\mu+O\left(n\tau^{M+1}+\frac{\mu^2}{n}
+                  +\frac{\mu}{n}+\tau^{M+1}\right).
+ \label{eq:perturb}
+\end{equation}
+Every error term tends to zero on \eqref{eq:uniform-domain}.
+\end{lemma}
+\begin{proof}
+Uniform analytic implicit differentiation, or a Taylor expansion of
+\eqref{eq:augmented}, yields
+\begin{equation}
+ G_s(q)-G(q)=s q^d+O(q^{d+1}),\qquad
+ R_s(q)-R(q)=O(q^d),\qquad d=M+1.
+ \label{eq:jet}
+\end{equation}
+The same orders hold after any fixed number of Euler derivatives. At the
+unperturbed saddle,
+\begin{align*}
+ H_{G_s}(z,\log\tau)-H_G(z,\log\tau)
+ &=s\Lambda\tau^d+O(\Lambda\tau^{d+1})\\
+ &=s k\tau^{d-1}+O(n\tau^d),
+\end{align*}
+because $\Lambda\tau G'(\tau)=k$ and $G'(\tau)=1+O(\tau)$.
+
+The gradient of this perturbation in $(\xi,\eta)$ is $O(\mu)$.
+The inverse normalized Hessian is $O(1/n)$ by \eqref{eq:Hnorm}.
+The perturbed saddle therefore moves by
+\begin{equation}
+ (z_s-z)/z=O(\mu/n),\qquad
+ \log(\tau_s/\tau)=O(\mu/n).
+ \label{eq:shift}
+\end{equation}
+One can justify these bounds by applying the quantitative inverse-function
+argument on a ball of radius $C\mu/n$: the Hessian varies by $o(n)$ there,
+and the rescaled Newton map is a contraction. Uniqueness from
+\eqref{eq:curvature} identifies the resulting saddle with the one already
+used in the coefficient formula. Evaluating at the displaced stationary
+point changes the optimized exponent by $O(\mu^2/n)$.
+
+The relative changes of $B$, $\Delta$, and the prefactor are
+$O(\mu/n+\tau^d)$, by the derivative bounds and \eqref{eq:jet}.
+This proves \eqref{eq:perturb}.
+
+Finally \eqref{eq:scales} gives, up to fixed logarithmic powers,
+$n\tau^d=O(n^{1-d(p_--1)}(\log n)^{dp_+})\to0$.
+Also $\mu^2/n\le C n\tau^{2M}\to0$, since
+$2M(p_--1)>1$: this follows from $d(p_--1)>1$ and $2M\ge M+1$.
+The remaining errors are smaller. All margins are strict and uniform.
+\end{proof}
+
+\subsection{Why the intensity loses all finite-core dependence}
+\begin{lemma}[Additively accurate bare intensity]
+\label{lem:bare}
+With $\mu$ as in \eqref{eq:mu} and $\nu$ as in \eqref{eq:nu},
+\begin{equation}
+ \mu-\nu=O(n t_0^{M+1})=o(1)
+ \label{eq:bare}
+\end{equation}
+uniformly under \eqref{eq:uniform-domain}.
+\end{lemma}
+\begin{proof}
+For the bare core $G_0(q)=q$, the saddle equations are solved exactly by
+$(j_0,t_0)$ in \eqref{eq:nu}: $a j_0^pt_0=k_0$ and
+$-\log t_0=apj_0^{p-1}t_0=pr$.
+Every allowed finite core satisfies $G(q)-q=O(q^2)$ uniformly.
+The perturbation of its optimized exponent is $O(n t_0)$, and its
+normalized gradient is $O(n t_0)$. Applying the same invertible-Hessian
+argument as above gives
+\[
+ (z-j_0)/j_0=O(t_0),\qquad \log(\tau/t_0)=O(t_0).
+\]
+It follows that
+$k\tau^M-k_0t_0^M=O(k_0t_0^{M+1})=O(n t_0^{M+1})$.
+The last expression tends to zero by the strict margin.
+\end{proof}
+
+\begin{remark}[Two different accuracies]
+It is not enough that $\mu/\nu\to1$: both can diverge, and an
+$\exp(o(\nu))$ ambiguity would destroy a multiplicative coefficient
+formula. Lemma~\ref{lem:bare} gives the stronger \emph{additive} $o(1)$.
+By contrast, the bare giant location $j_0$ need not be accurate on the
+Gaussian scale. The actual core saddle $z$ remains the center in our joint
+limit theorem.
+\end{remark}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Combine the uniform cutoff \eqref{eq:uniform-reduction}, the saddle
+formula \eqref{eq:saddle-uniform}, and Lemma~\ref{lem:perturb}:
+\[
+ u_n(s)=\Acal_{n,M}\exp(s\mu+o(1)).
+\]
+The errors are uniform even at $s=0$. By Lemma~\ref{lem:bare}, replace
+$\mu$ by $\nu$ with additive $o(1)$ in the exponent. Finally
+$w_{n,M}\sim\Acal_{n,M}$. Exponentiating a uniform additive $o(1)$ proves
+the asserted relative estimate and also \eqref{eq:computable}.
+\end{proof}
+
+\section{Every cutoff boundary has an explicit missing factor}
+\label{sec:boundary}
+\begin{theorem}[Reciprocal-boundary repair]
+\label{thm:boundary}
+Fix $M\ge1$, $a>0$, and set $p=1+1/M$. Let $r_n>0$ solve
+\begin{equation}
+ r_n^M(1+r_n)\ee^{(M+1)r_n}=a^M n.
+ \label{eq:boundary-r}
+\end{equation}
+For any fixed allowed finite core,
+\begin{equation}
+ \boxed{\qquad
+ u_n(1)\sim w_{n,M}\exp\left(\frac{r_n^{M+1}}{a^M}\right)
+ \sim\Acal_{n,M}\exp\left(\frac{r_n^{M+1}}{a^M}\right).
+ \qquad}
+ \label{eq:boundary-repair}
+\end{equation}
+Consequently
+\begin{equation}
+ \log\frac{u_n(1)}{w_{n,M}}
+ \sim\frac{(\log n)^{M+1}}{a^M(M+1)^{M+1}}.
+ \label{eq:boundary-log}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Here $(M+1)(p-1)=(M+1)/M>1$, so Theorem~\ref{thm:main} applies.
+Raising \eqref{eq:r} to the $M$th power gives
+\eqref{eq:boundary-r}. That equation gives the exact cancellation
+\[
+ \nu_{n,M}=\frac{nr_n}{1+r_n}\ee^{-(M+1)r_n}
+           =\frac{r_n^{M+1}}{a^M}.
+\]
+Substitution proves \eqref{eq:boundary-repair}. Since
+$r_n\sim\log n/(M+1)$, the logarithmic equivalent follows.
+\end{proof}
+
+\begin{example}[The first two boundaries]
+For $M=1$, $p=2$, the extra factor beyond the one-action core is
+$\exp(r_n^2/a)$, where $r_n(1+r_n)\ee^{2r_n}=an$.
+This agrees with, and decomposes, the quadratic correction already found
+in \cite{finite-core}; it is a consistency check, not a new quadratic
+forward coefficient theorem.
+
+For $M=2$, $p=3/2$, the two-action core misses
+$\exp(r_n^3/a^2)$, where $r_n^2(1+r_n)\ee^{3r_n}=a^2n$.
+For $M=3$, $p=4/3$, the corresponding factor is
+$\exp(r_n^4/a^3)$. The same conclusion holds at every reciprocal boundary.
+\end{example}
+
+\subsection{Why the leading logarithm is not a replacement for the root}
+Taking logarithms of \eqref{eq:boundary-r}, with $L=\log n$, gives
+\[
+ (M+1)r_n+M\log r_n+\log(1+r_n)=L+M\log a.
+\]
+The first two scales are
+\begin{equation}
+ r_n=\frac{L}{M+1}-\log L+\log(M+1)
+             +\frac{M}{M+1}\log a+o(1).
+ \label{eq:r-expansion}
+\end{equation}
+Replacing $r_n$ by $L/(M+1)$ changes $r_n^{M+1}/a^M$ by order
+$L^M\log L$, which diverges. Even a relative asymptotic for $r_n$ is
+therefore not a relative asymptotic for the missing factor.
+The scalar equation is a convenient exact resummation of all logarithmic
+terms needed for a coefficient equivalent.
+
+\section{The logarithmically shifted Poisson window}
+\label{sec:window}
+\begin{theorem}[Critical window and finite survival fraction]
+\label{thm:window}
+Fix $M\ge1$, $a>0$, and $\theta\in\R$. Let
+\begin{equation}
+ p_n=1+\frac1M+
+ \frac{(M+1)\log\log n+\theta}{M\log n}.
+ \label{eq:window}
+\end{equation}
+Then
+\begin{equation}
+ \nu_{n,M}\longrightarrow
+ \lambda(\theta):=\frac{\ee^{-\theta}}{a^M(M+1)^{M+1}},
+ \qquad
+ \frac{w_{n,M}}{u_n(1)}\longrightarrow\ee^{-\lambda(\theta)}.
+ \label{eq:window-limit}
+\end{equation}
+The number $N_{M+1,n}$ of first-omitted actions converges in total variation
+to $\Pois(\lambda(\theta))$. The conclusions are uniform for $\theta$ in
+compact sets and for bounded allowed finite-core perturbations.
+\end{theorem}
+\begin{proof}
+Let $p_0=1+1/M$. On compact parameter sets,
+$r_n\sim((p-1)/p)\log n$. From \eqref{eq:r} and \eqref{eq:nu},
+\begin{equation}
+ \nu_{n,M}
+ =a^{-M}n^{1-M(p-1)}r_n^{M+1}
+                  (1+r_n)^{M(p-1)-1}.
+ \label{eq:nu-power}
+\end{equation}
+Equivalently,
+\begin{align}
+ \log\nu_{n,M}
+ ={}&[1-M(p-1)]\log n+Mp\log\log n-M\log a\notag\\
+ &+Mp\log\frac{p-1}{p}+o(1).
+ \label{eq:nu-log}
+\end{align}
+The $o(1)$ is uniform for the particular moving window, as follows from
+the logarithmic root equation and $r_n/\log n\to1/(M+1)$.
+Substitute \eqref{eq:window}. The $\log\log n$ terms cancel; terms
+involving $(p_n-p_0)\log\log n$ tend to zero. Thus
+\[
+ \log\nu_{n,M}\to
+ -\theta-M\log a-(M+1)\log(M+1).
+\]
+The coefficient fraction follows from Theorem~\ref{thm:main}; the
+probabilistic assertion is proved in Theorem~\ref{thm:probability} below.
+\end{proof}
+
+\begin{remark}[The window is not centered at the bare power threshold]
+At $p=p_0$ the intensity diverges like a positive power of $\log n$.
+Merely setting $p=p_0+\theta/\log n$ still leaves that divergence.
+The center must first be moved upward by
+$((M+1)/M)\log\log n/\log n$. Only after this displacement does a width
+of order $1/\log n$ produce a finite transition profile.
+\end{remark}
+
+The constant in \eqref{eq:window-limit} is easily absorbed into a centered
+coordinate. With
+\[
+ \theta=x-M\log a-(M+1)\log(M+1),
+\]
+the limiting intensity is $\ee^{-x}$ and the surviving one-tail fraction is
+$\exp(-\ee^{-x})$. This familiar profile is a consequence of a Poisson
+zero-count probability; no extremal-value interpretation is assumed.
+
+\subsection{Finite-size calibration}
+Formula \eqref{eq:window} describes a limit, not a high-accuracy numerical
+calibration at moderate $n$. The term
+$(p_n-p_0)\log\log n$ in \eqref{eq:nu-log} can decay very slowly.
+For computation it is preferable to solve
+\begin{equation}
+ \nu_{n,M}(a,p)=\lambda_*
+ \label{eq:calibration}
+\end{equation}
+using the scalar root \eqref{eq:r}, or to use the exact core intensity
+$\mu=k\tau^M$ if the core saddle is already available. This article does
+not assert global uniqueness of every finite-$n$ calibration problem.
+The numerical routine brackets and checks the chosen local branch.
+
+\section{Poisson, Gaussian, and rare-event consequences}
+\label{sec:probability}
+Theorem~\ref{thm:main} and \eqref{eq:pgf} give the strong real-marker law
+\begin{equation}
+ \boxed{\qquad
+ \E s^{N_{d,n}}=
+ \exp\bigl((s-1)\nu_{n,M}+o(1)\bigr),
+ \qquad 0\le s\le S.
+ \qquad}
+ \label{eq:real-pgf}
+\end{equation}
+The remainder in the exponent is uniform. In particular it is an additive
+$o(1)$ even when the exponent itself diverges.
+
+\begin{theorem}[Distributional and rare-count laws]
+\label{thm:probability}
+Write $N_n=N_{M+1,n}$ and $\nu_n=\nu_{n,M}$ along any sequence allowed by
+\eqref{eq:uniform-domain}.
+\begin{enumerate}[label=(\roman*)]
+\item If $\nu_n$ stays bounded, then
+$\TV(\mathcal L(N_n),\Pois(\nu_n))\to0$.
+\item If $\nu_n\to\infty$, then
+\[
+ \frac{N_n-\nu_n}{\sqrt{\nu_n}}\ \Longrightarrow\ \Normal(0,1).
+\]
+\item For every regime,
+\[
+ \Prob(N_n=0)=\exp(-\nu_n)(1+o(1)),\qquad
+ \Prob(\mathcal E_M\mid N_n=0)\to1.
+\]
+\item If $\nu_n\to\infty$, then for each fixed integer $m\ge0$,
+\[
+ \Prob(N_n=m)\sim\ee^{-\nu_n}\frac{\nu_n^m}{m!}.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For (i), first pass to any subsequence on which $\nu_n\to\lambda<\infty$.
+The pgfs converge on the positive real axis by \eqref{eq:real-pgf}.
+For any $S>1$, positivity bounds their absolute values on $|s|\le S$ by
+their values at $S$, which remain bounded. Every analytic subsequential
+limit therefore equals $\exp(\lambda(s-1))$ by the identity theorem.
+Cauchy's coefficient formula gives convergence of every point probability.
+The bound at $S>1$ also gives uniform exponentially decreasing tails, so
+pointwise convergence upgrades to total variation. Compactness of the
+bounded sequence of intensities proves the claim without assuming that
+$\nu_n$ itself converges. This includes $\lambda=0$.
+
+For (ii), put $s=\exp(t/\sqrt{\nu_n})$ in \eqref{eq:real-pgf} and subtract
+the centering term. For each bounded real $t$,
+\[
+ \log\E\exp\left(t\frac{N_n-\nu_n}{\sqrt{\nu_n}}\right)
+ =\nu_n\left(\ee^{t/\sqrt{\nu_n}}-1-\frac{t}{\sqrt{\nu_n}}\right)+o(1)
+ \longrightarrow t^2/2.
+\]
+The moment-generating-function continuity theorem proves the Gaussian limit.
+
+Setting $s=0$ proves the first part of (iii). For large $n$, configurations
+in $\mathcal E_M$ whose unique large part equals $d$ have at most
+exponential total coefficient growth and are negligible relative to
+$w_{n,M}$. Apart from these, $\mathcal E_M$ implies $N_n=0$.
+The identity $u_n(0)\sim w_{n,M}$ therefore proves the conditional claim,
+including when the conditioning event is exponentially rare in $\nu_n$.
+
+For (iv), define an analytic polynomial
+\[
+ F_n(t)=\frac{u_n(t/\nu_n)}{w_{n,M}}.
+\]
+For every bounded positive real $t$, Theorem~\ref{thm:main} gives
+$F_n(t)\to\ee^t$. Positivity gives $|F_n(t)|\le F_n(R)$ on $|t|\le R$.
+Normal-family compactness and uniqueness on the positive axis yield
+locally uniform analytic convergence to $\ee^t$. Therefore
+\[
+ [s^m]u_n(s)\sim w_{n,M}\frac{\nu_n^m}{m!}.
+\]
+Divide by $u_n(1)\sim w_{n,M}\ee^{\nu_n}$.
+\end{proof}
+
+\begin{remark}[What is not a consequence here]
+For diverging $\nu_n$, we have not proved a total-variation approximation
+to $\Pois(\nu_n)$ over \emph{all} counts, a uniform local central limit
+theorem, or relative complex-marker control on fixed discs. The Gaussian
+limit and the fixed-count relative estimates do not by themselves imply
+any of those stronger statements.
+\end{remark}
+
+\begin{theorem}[Poisson-rate large deviations]
+\label{thm:ldp}
+If $\nu_n\to\infty$, the variables $N_n/\nu_n$ satisfy a large-deviation
+principle with speed $\nu_n$ and good rate function
+\begin{equation}
+ I(x)=\begin{cases}x\log x-x+1,&x\ge0,\\+\infty,&x<0,
+ \end{cases}\qquad I(0)=1.
+ \label{eq:rate}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For every real $t$, \eqref{eq:real-pgf} gives
+$\nu_n^{-1}\log\E\ee^{tN_n}\to\ee^t-1$.
+Chernoff's inequality gives the upper bounds after optimizing over $t$;
+for $x>0$, the optimizing value is $t=\log x$ and yields \eqref{eq:rate}.
+Positive $t$ also gives exponential tightness.
+
+For the matching lower bound at $x>0$, tilt the measure by $x^{N_n}$.
+Its normalized moment generating function follows by taking the ratio of
+\eqref{eq:real-pgf} at $x\ee^t$ and at $x$. Chernoff bounds under this
+measure show $N_n/\nu_n\to x$ in probability. On a small interval around
+$x$, undoing the tilt costs
+$\exp(-\nu_n x\log x+o(\nu_n))$, while its normalizer is
+$\exp(\nu_n(x-1)+o(\nu_n))$. Let the interval shrink to obtain the lower
+bound. At zero the exact relative law for $N_n=0$ supplies the lower bound
+$-I(0)=-1$. Standard finite coverings on compact intervals, followed by
+exponential tightness, give the full closed-set/open-set formulation.
+\end{proof}
+
+\section{The rare layer decouples from the giant action}
+\label{sec:joint}
+Use the $M$-core saddle $(z,\tau)$ and $\sigma^2=B/\Delta$ from
+\eqref{eq:saddle}--\eqref{eq:det}. In particular,
+\begin{equation}
+ \sigma^2\sim\frac{z^2}{pn}
+ \sim\frac{p}{(p-1)^2}\frac{n}{(\log n)^2}.
+ \label{eq:sigma}
+\end{equation}
+
+\begin{theorem}[Uniform joint transform and independent limits]
+\label{thm:joint}
+For $s$ in a compact subset of $[0,\infty)$ and real $t$ in a bounded
+interval,
+\begin{equation}
+ \E\left[s^{N_{d,n}}
+    \exp\left(t\frac{J_n-z}{\sigma}\right)\right]
+ =\exp\left((s-1)\nu_{n,M}+\frac{t^2}{2}+o(1)\right)
+ \label{eq:joint}
+\end{equation}
+uniformly on \eqref{eq:uniform-domain}. Thus:
+\begin{enumerate}[label=(\roman*)]
+\item If $\nu_n\to\lambda<\infty$, then
+\[
+ \left(N_{d,n},\frac{J_n-z}{\sigma}\right)
+ \Longrightarrow(P,Z),
+ \qquad P\sim\Pois(\lambda),\quad Z\sim\Normal(0,1),
+\]
+with independent limits.
+\item If $\nu_n\to\infty$, then
+\[
+ \left(\frac{N_{d,n}-\nu_n}{\sqrt{\nu_n}},
+       \frac{J_n-z}{\sigma}\right)
+ \Longrightarrow(Z_1,Z_2),
+\]
+where $Z_1,Z_2$ are independent standard Gaussians.
+\item Conditional on $N_{d,n}=0$, the standardized giant still converges
+to $\Normal(0,1)$, even when $\Prob(N_{d,n}=0)\to0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+First work in the one-tail representation for the augmented $d$-core. The
+largest action is its unique tail index $j$. Multiplying its outer saddle
+sum by $\exp(t(j-z)/\sigma)$ tilts a lattice Gaussian. Taylor expansion
+on the same window as before gives the factor
+\[
+ \exp\left(t\frac{z_s-z}{\sigma}
+              +\frac{t^2\sigma_s^2}{2\sigma^2}\right)(1+o(1)).
+\]
+By \eqref{eq:shift} and \eqref{eq:sigma},
+\[
+ \frac{z_s-z}{\sigma}=O(\mu/\sqrt n)=o(1),\qquad
+ \sigma_s/\sigma\to1.
+\]
+Thus the factor is $\exp(t^2/2)(1+o(1))$, uniformly in both markers.
+
+We justify transferring this tilted estimate to the full positive
+coefficient model, rather than appealing to convergence in probability of
+the cutoff event alone. The giant tilt changes any weight by at most
+$\exp(O(n/\sigma))=\exp(O(\sqrt n\log n))$, which cannot overcome the
+macroscopic exponential loss in Lemma~\ref{lem:macro}. In the transfer map
+of Lemma~\ref{lem:cutoff}, the giant changes by $i-1$. The extra ratio is
+at most $\exp(|t|(i-1)/\sigma)$. Its exponent per transferred unit is
+$O(\log n/\sqrt n)$, negligible against the existing suppression of order
+$\log n$. The strict cutoff estimate therefore remains uniform for the
+positively tilted weights. This proves the required relative reduction.
+
+Combining the tilted saddle factor with Theorem~\ref{thm:main} proves
+\eqref{eq:joint}. Substituting $s=\ee^v$ in the bounded-intensity case
+identifies the product limiting mgf. In the diverging case substitute
+$s=\exp(v/\sqrt{\nu_n})$ and center as in
+Theorem~\ref{thm:probability}; the limit is
+$\exp((v^2+t^2)/2)$. Finally set $s=0$ in \eqref{eq:joint} and divide by
+the zero-count probability to obtain the conditional Gaussian mgf.
+\end{proof}
+
+\begin{remark}[The center must retain the core]
+The leading estimate $z\sim pn/((p-1)\log n)$ does not determine a valid
+Gaussian center. Even ordinary next logarithmic corrections can exceed
+$\sigma$ by an unbounded factor. Likewise the core-to-bare shift can be
+large relative to $\sigma$. Core independence of the scalar intensity
+$\nu$ does not imply core independence of the finely centered giant.
+\end{remark}
+
+\section{Computation and checks}
+\label{sec:checks}
+\subsection{Two independent exact coefficient algorithms}
+For the power slope $\lambda_j=a j^p$, set
+$E_{j,m}=[q^m]\exp(\lambda_jU(q))$. The triangular recurrence is
+\begin{equation}
+ u_n=\sum_{j=1}^{n}c_jE_{j,n-j},\qquad
+ E_{j,0}=1,\qquad
+ E_{j,m}=\frac{\lambda_j}{m}
+       \sum_{k=1}^{m}k u_kE_{j,m-k}.
+ \label{eq:recurrence}
+\end{equation}
+For a finite core, compute $G$ by the same recurrence with $c_j=0$ above
+$M$. Then compute the coefficients of
+$P=\partial_u\Phi_M(q,G)$, $R=(1-P)^{-1}$, and the convolution
+\eqref{eq:onetail}. All these calculations are finite to each requested
+order.
+
+The independent check enumerates integer partitions. For a multiplicity
+vector $(m_j)$ with $\sum j m_j=n$, its contribution is
+\begin{equation}
+ \frac{\prod_j c_j^{m_j}}{\prod_jm_j!}
+       \left(\sum_j\lambda_jm_j\right)^{\sum_jm_j-1}.
+ \label{eq:partition}
+\end{equation}
+To check the one-tail series, retain only vectors with
+$\sum_{j>M}m_j=1$. This is not a recurrence enforcing the same identity;
+it is a separate finite enumeration based on the formal coefficient formula.
+
+The supplied program uses exact rational arithmetic for $a=1$, $p=2,3$,
+and degrees through $16$. It compares the triangular recurrence with the
+partition sum for markers on action $2$ or $3$, at marker values $0,1,2$;
+it separately compares the one-tail recurrence with the restricted partition
+sum for $M=1,2,3$. All \textbf{288 exact assertions passed}. A further
+32 comparisons of the log-domain numerical recurrence with the exact
+coefficients had maximum absolute logarithmic discrepancy
+$7.11\times10^{-15}$ in the recorded run.
+
+For example, at $a=1,p=2$, the first eight forward coefficients are
+\[
+ 1,\ 2,\ \frac{15}{2},\ \frac{107}{3},\ \frac{1555}{8},\
+ \frac{17362}{15},\ \frac{5288311}{720},\ \frac{15414767}{315}.
+\]
+These checks detect normalization and marking mistakes. They do not prove
+an asymptotic theorem or certify a floating-point saddle.
+
+\subsection{Coefficient diagnostics with finite-size calibration}
+For each row of Table~\ref{tab:diagnostics}, the exponent $p$ was chosen
+numerically so that the core intensity $\mu=k\tau^M$ equals $1/2$.
+The table compares exact-event coefficients computed by the positive
+log-domain recurrence, not by the asymptotic formula itself. Values are
+ordinary floating-point diagnostics, not outward-rounded enclosures.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Calibrated coefficient diagnostics, $a=1$. The prediction is
+$\ee^{-\nu}$ with the bare scalar intensity.}
+\label{tab:diagnostics}
+\begin{tabular}{rrrrrr}
+\toprule
+$M$&$n$&$p$&$w_{n,M}/u_n(1)$&$\Prob(N_{d,n}=0)$&$\ee^{-\nu}$\\
+\midrule
+1&80 &2.562513&0.592485&0.595906&0.607610\\
+1&160&2.554385&0.600168&0.601666&0.607037\\
+1&320&2.539670&0.603573&0.604266&0.606770\\
+2&80 &1.707730&0.377341&0.449096&0.596771\\
+2&160&1.728827&0.471136&0.508385&0.596605\\
+2&320&1.739877&0.520370&0.541980&0.598192\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The slower convergence for $M=2$ is visible and should not be concealed.
+The normalized coefficient ratio $u_n/(\Acal_{n,M}\ee^{\nu})$ is
+$1.02495,1.01113,1.00514$ in the first three rows and
+$1.58321,1.26638,1.14950$ in the last three. The theory asserts a limit,
+not that a minimal corrected core is already highly accurate at $n=80$.
+The auxiliary CSV files retain the unrounded values and residuals.
+
+\subsection{A warning from the explicit window}
+The second diagnostic table evaluates the scalar/core saddles at very large
+$n$, using \eqref{eq:window} with
+$\theta=-(M+1)\log(M+1)$ and $a=1$. The limiting intensity is then one.
+Even at these large values, the finite-size intensity need not be close to
+one: for $M=1$, the computed core intensity is approximately $1.24932$ at
+$n=10^6$, $1.33102$ at $10^{12}$, and $1.23906$ at $10^{48}$.
+This is consistent with slowly vanishing logarithmic corrections; it is not
+evidence of a monotone convergence theorem. The full diagnostic file records
+$M=1,2,3$. For numerical work the root-defined $\nu$ or the calibrated
+$\mu$ should be used instead of the limiting constant alone.
+
+\subsection{Reproducibility and complexity}
+The bundle contains \path{verification/verify.py}, recorded JSON/CSV outputs,
+and a run log. The exact checks require Python's standard rational arithmetic;
+the same script also imports NumPy and SciPy for the numerical part. The
+recorded environment used Python 3.13.5, NumPy 2.3.5, and SciPy 1.17.0.
+The direct triangle takes $O(N^3)$ arithmetic operations and $O(N^2)$
+storage; this is not an exact-arithmetic bit-complexity estimate.
+
+The saddle routine checks the implicit residual, the regular core branch,
+and the determinant sign. These checks are necessary but not interval
+certificates. A small floating residual alone is not a proof that a numerical
+root has been enclosed. No external service is used by the verification
+program, and no repository file was modified in producing this package.
+
+\section{Further research questions}
+\label{sec:future}
+\subsection{A full local Poisson approximation at diverging intensity}
+The real-marker theorem gives a central limit theorem, fixed rare-count
+equivalents, and large deviations. Prove a uniform local approximation for
+$m=\nu+O(\sqrt\nu\log\nu)$ and then total-variation convergence to
+$\Pois(\nu)$ when $\nu\to\infty$. A promising approach is to extract the
+marker coefficient within the two-saddle calculation, controlling the
+conditioning correction $\nu^2/n$ directly. This would be stronger than
+merely invoking the Gaussian weak limit.
+
+\subsection{The next omitted layer and interaction corrections}
+Our compact margin makes $n\tau^{M+1}$ and $\mu^2/n$ vanish. At the next
+boundary these terms can survive. Determine the joint law of actions
+$M+1$ and $M+2$ and the first interaction correction to the exponential
+factor. The normalized Hessian in \eqref{eq:Hnorm} gives a concrete starting
+point: the optimized second-order correction is a quadratic form in the
+marked perturbation gradients. It need not have the sign of a covariance
+matrix, because the underlying two-variable saddle is indefinite.
+
+\subsection{Fixed logarithmic corrections to the power tail}
+For slopes $a j^p(\log j)^\gamma$, the repository predicts a new cutoff
+behavior at $M(p-1)=1$. Extend the compact-uniform transfer and saddle
+estimates to a differentiably regularly varying tail. The delicate target
+is the finite correction at $\gamma=p$, including its constant and
+Poisson parameter. The present moving-$p$ theorem does not prove this
+fixed-tail statement, although its perturbation mechanism suggests what to
+measure.
+
+\subsection{All finite cloud coordinates and the correct centers}
+Study the joint vector of counts of actions $2,\ldots,M+1$, together with
+the giant. Some counts diverge on different scales, and leading equivalents
+for their means may be too inaccurate for central limits. Introduce several
+markers in the finite core, solve the corresponding marked saddle equations,
+and compute the complete covariance and centering corrections. The present
+paper resolves the first omitted coordinate, not this whole multiscale vector.
+
+\subsection{The signed quadratic inverse conjecture}
+The source \cite{finite-core} conjectures a sharp equivalent for the formal
+inverse at $p=2$. Its exact inverse one-tail response is known, but positivity
+is lost. A signed finite-core reduction must control cancellations before a
+Poisson-type exponent can be trusted. Our transfer estimates cannot simply
+be applied with absolute values: doing so may swamp the proposed inverse
+coefficient. An analytic-core regrouping of the inverse Lagrange formula is
+still a focused and worthwhile next problem.
+
+\subsection{Quantified error bounds and certified coefficient budgets}
+Replace the compact-uniform $o(1)$ terms by explicit bounds with numerical
+onset values. The perturbation estimates already identify two obstruction
+scales, $n\tau^{M+1}$ and $\nu^2/n$; the cutoff and contour bounds must
+supply computable constants as well. Combine these with interval evaluation
+of the finite core and a certified saddle enclosure. The objective is an
+actual coefficient interval, not merely a residual-based diagnostic.
+
+\subsection{A growing core near the linear-feedback boundary}
+As $p\downarrow1$, the required core size grows. A theorem allowing
+$M=M_n\to\infty$ would require uniform analytic radii and uniform control of
+all finite-core derivatives. The present proof fixes $M$ throughout. The
+interaction between a growing core and the scale $(p-1)\log n$ is not
+captured by taking a formal limit in \eqref{eq:main}.
+
+\subsection{Formalization and analytic realization}
+A useful Lean development can begin with the finite marking identities,
+the scalar monotonicity in \eqref{eq:r}, the exact boundary cancellation,
+and a reusable parameter-uniform saddle-perturbation lemma. The later
+probability and contour arguments should be separate modules with explicit
+hypotheses. In parallel, investigate whether these coefficient-layer laws
+control optimally truncated analytic realizations on the negative ray.
+A least formal term or a coefficient probability law is not automatically
+an analytic remainder theorem.
+
+\section{Conclusion}
+The strict finite-core cutoff leaves a quantitatively structured remainder.
+In the range where one more core action would suffice, the entire first
+omitted layer contributes a single exponential factor with an explicit
+scalar intensity. That intensity is insensitive, to additive $o(1)$, to
+bounded nonnegative changes inside the core.
+
+At every reciprocal boundary the correction grows like the exponential of a
+power of $\log n$. A finite nonzero survival fraction emerges only after a
+$\log\log n/\log n$ displacement of the exponent. The same coefficient
+theorem yields Poisson limits, Gaussian fluctuations, exponentially small
+fixed-count probabilities, and a joint limit in which the rare layer and
+the giant fluctuation decouple.
+
+These results extend specific repository questions without confusing formal
+coefficient analysis with analytic summability, signed reversion, or a
+machine-checked development. The unresolved extensions above are stated as
+separate mathematical tasks rather than conclusions inferred by analogy.
+
+\appendix
+\section{Proof-dependency and scope audit}
+\label{app:audit}
+\begin{longtable}{>{\raggedright\arraybackslash}p{.25\textwidth}
+                  >{\raggedright\arraybackslash}p{.42\textwidth}
+                  >{\raggedright\arraybackslash}p{.24\textwidth}}
+\toprule
+Statement & Main inputs & Status here\\
+\midrule\endhead
+Positive coefficients and one-tail identity & Formal Lagrange inversion;
+finite marking & Proved; classical tools\\[5pt]
+Compact-uniform sufficient core & Positive transfer, preimage count,
+uniform convex localization & Re-established from repository method\\[5pt]
+Uniform finite-core saddle & Cauchy Gaussian estimate, action saddle,
+lattice summation & Re-established in needed scope\\[5pt]
+Marked exponential repair & Uniform core jet and invertible normalized
+indefinite Hessian & Main extension\\[5pt]
+Core-independent intensity & Additive bare-saddle comparison & Main extension\\[5pt]
+Boundary correction and shifted window & Exact scalar cancellations and
+uniform theorem & Main extension\\[5pt]
+Bounded-intensity total variation & Positive pgfs, analytic compactness,
+exponential tightness & Proved\\[5pt]
+Diverging-intensity CLT and fixed counts & Real-marker theorem; scaled
+analytic compactness & Proved\\[5pt]
+Giant/layer independence & Positive tilt, uniform cutoff, shifted Gaussian
+saddle & Proved\\[5pt]
+Signed inverse; general regular variation; growing core & Additional
+cancellation or uniformity arguments required & Not claimed\\
+\bottomrule
+\end{longtable}
+The full power tail is exact outside the specified finite core. A merely
+asymptotically equivalent tail, unbounded signed amplitudes, a growing $M$,
+or approach to the excluded lower boundary require additional work.
+All asymptotic assertions are as $n\to\infty$. Computations in this package
+are checks of formulas and diagnostics, not additional hypotheses in a proof.
+
+\clearpage
+\section{Notation and an implementation checklist}
+\begin{longtable}{>{\raggedright\arraybackslash}p{.2\textwidth}
+                  >{\raggedright\arraybackslash}p{.71\textwidth}}
+\toprule
+Symbol & Meaning\\\midrule\endhead
+$M$, $d=M+1$ & Core size and first omitted primitive action\\[3pt]
+$\U_s$, $u_n(s)$ & Formal marked feedback solution and its $n$th coefficient\\[3pt]
+$G,R$ & Analytic finite-core solution and linear response\\[3pt]
+$W_M,w_{n,M}$ & Formal exactly-one-tail series and coefficient\\[3pt]
+$G_s,R_s,T_s$ & Augmented $d$-core and its exactly-one-tail response\\[3pt]
+$z,\tau,k$ & Actual $M$-core saddle action, radius, and $n-z$\\[3pt]
+$r,j_0,t_0,k_0$ & Scalar bare root and bare saddle quantities\\[3pt]
+$\mu=k\tau^M$ & Core-dependent intensity used in the perturbation proof\\[3pt]
+$\nu=k_0t_0^M$ & Explicit core-independent intensity; $\mu-\nu=o(1)$\\[3pt]
+$A,B,C,\Delta$ & Hessian entries and positive saddle determinant factor\\[3pt]
+$\Acal_{n,M}$ & Finite-core saddle equivalent for $w_{n,M}$\\[3pt]
+$N_{d,n}$ & Number of primitive action-$d$ occurrences in the coefficient ensemble\\[3pt]
+$J_n,\sigma$ & Largest action and its Gaussian scale\\
+\bottomrule
+\end{longtable}
+
+For numerical use, first choose a core with $(M+1)(p-1)>1$ and a positive
+margin. Solve \eqref{eq:r} in logarithms, solve the finite-core saddle on
+its regular small branch, and evaluate \eqref{eq:A} in logarithms. Add
+$\nu$ to its logarithm, not a leading asymptotic replacement for $\nu$.
+Check the branch and residual, but do not interpret those checks as an
+interval enclosure. Increase the core or use a more accurate correction
+when the finite-size residual scales are not small.
+
+\begingroup\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{repo-readme}
+V. Reshetnikov, \emph{ProveIt: transseries documentation and source inventory},
+repository documentation inspected 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries}.
+
+\bibitem{finite-core}
+\emph{Finite-Core Universality and Sharp Large Order for Countable
+Exponential-Feedback Transseries}, AI-assisted research draft prepared for
+V. Reshetnikov, 29 September 2026. ProveIt source at the pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/0c973d8f5e7ef4550f4df1bf486d890037fd9f14/Analysis/Transseries/docs/series-and-transseries/Finite_Core_Universality_Exponential_Feedback/article.tex}.
+In particular, the strict cutoff and saddle theorems, the one-omitted-action
+necessity proof, and the research subsections on logarithmic boundaries and
+finite background clouds.
+
+\bibitem{gessel}
+I. M. Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory,
+Series A \textbf{144} (2016), 212--249.
+\url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{edgar}
+G. A. Edgar, \emph{Transseries for beginners}, Real Analysis Exchange
+\textbf{35} (2009/2010), 253--310.
+\url{https://arxiv.org/abs/0801.4877}.
+
+\bibitem{jjs}
+S. Janson, T. Jonsson, and S. \"O. Stef\'ansson,
+\emph{Random trees with superexponential branching weights},
+Journal of Physics A: Mathematical and Theoretical \textbf{44} (2011), 485002.
+\url{https://arxiv.org/abs/1104.2810}.
+Theorems 2.5--2.6 and Remark 2.7 provide the relevant comparison with
+Poisson and Gaussian degree-count limits in a different ensemble.
+
+\bibitem{modpoisson}
+E. Kowalski and A. Nikeghbali, \emph{Mod-Poisson convergence in probability
+and number theory}, International Mathematics Research Notices
+\textbf{2010}, no. 18, 3549--3587.
+\url{https://arxiv.org/abs/0905.0318}.
+\end{thebibliography}
+\endgroup
+\end{document}

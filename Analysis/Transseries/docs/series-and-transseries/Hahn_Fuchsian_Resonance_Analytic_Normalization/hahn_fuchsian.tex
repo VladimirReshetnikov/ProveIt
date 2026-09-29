@@ -1,0 +1,1561 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Finite Resonance Certificates and Sharp Analytic Normalization for Hahn--Fuchsian Systems},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov},
+ pdfsubject={Hahn series, Fuchsian systems, accumulation of exponents, normal forms and logarithmic obstructions}}
+\urlstyle{same}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\K}{\mathcal K}
+\newcommand{\G}{\Gamma}
+\newcommand{\Res}{\mathcal R}
+\newcommand{\ad}{\operatorname{ad}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\Aplus}{A_{+}}
+\newcommand{\Hhat}{\widehat H}
+\newcommand{\Ph}{\mathcal P}
+\newcommand{\Th}{\mathcal T}
+\newcommand{\Dg}{\mathcal D}
+\newcommand{\Id}{\mathrm{id}}
+\newcommand{\snap}{\texttt{04473354a0f3edff2d6c365caf26170ca6b88735}}
+\DeclareMathOperator{\Sol}{Sol}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.7em}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\linespread{1.025}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Hahn--Fuchsian systems}
+\fancyhead[R]{\small Resonance and analytic normalization}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setcounter{tocdepth}{1}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{10mm}
+\noindent{\large\scshape Transseries research}\par
+\vspace{9mm}
+\noindent{\LARGE\bfseries Finite Resonance Certificates\par}
+\vspace{3mm}
+\noindent{\LARGE\bfseries and Sharp Analytic Normalization\par}
+\vspace{3mm}
+\noindent{\LARGE\bfseries for Hahn--Fuchsian Systems\par}
+\vspace{7mm}
+\noindent{\large Accumulating exponents, unavoidable logarithms,\par
+and a summability-threshold crossover}
+\vspace{10mm}
+\hrule
+\vspace{6mm}
+\noindent Research article prepared for Vladimir Reshetnikov\par
+\noindent 29 September 2026
+\vspace{8mm}
+\begin{abstract}
+We study linear systems $xY'=(A_0+\Aplus(x))Y$ whose positive real exponents
+form a well-ordered set, without requiring local finiteness. For real-spectrum
+$A_0$, we construct a normalized Hahn-series gauge and a finite resonant
+normal form. A single nilpotent matrix determines the complete filtration by
+logarithmic degree. Its entries depend on only finitely many original
+coefficients, even when infinitely many exponents lie below the largest
+resonance.
+
+The central analytic result is a sharp universal criterion. Every absolutely
+convergent, semigroup-supported coefficient series has an absolutely
+convergent normalized gauge if and only if the nonresonant semigroup
+exponents are uniformly separated from the eigenvalue differences. For a
+well-ordered real semigroup, failure means accumulation from below at a
+positive eigenvalue difference. A rank-one matrix perturbation gives
+arbitrarily small counterexamples whenever this condition fails.
+
+An explicit two-dimensional family has coefficient weights $n^{-p}$ and
+exponents $2-1/n$. Its formal normalizer converges exactly when $p>2$,
+although a renormalized analytic solution exists for every $p>1$ and realizes
+all finite asymptotic prefixes. We derive its truncation crossover on the
+scale $N\asymp\log(1/x)$, including a uniform Euler--Maclaurin error bound.
+All general claims are proved conventionally. Reproducible finite symbolic
+checks and numerical illustrations accompany the article. Classical
+Fuchsian normal forms and the repository's earlier finite-obstruction work
+are explicitly acknowledged; an exhaustive claim of historical priority is
+not made.
+\end{abstract}
+\vfill
+\noindent\small
+\textbf{Scope.} Positive real Hahn exponents; a constant matrix with real
+spectrum; one logarithmic indeterminate. This is not a solution of arbitrary
+transseries differential equations and is not a Lean formalization.\par
+\vspace{2mm}
+\noindent\small
+\textbf{Repository snapshot.}\quad\snap
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The research question and its place in ProveIt}
+\label{sec:intro}
+
+A formal transseries calculation and an analytic solution are different
+objects. A well-ordered support makes coefficientwise algebra meaningful;
+it does not bound the coefficients produced by division. This distinction
+becomes decisive when exponents accumulate at a finite value. The familiar
+Frobenius recurrence then meets a phenomenon absent from ordinary Taylor
+series: infinitely many different exponents can approach one fixed
+resonance.
+
+The relevant ProveIt materials already develop asymptotic scales,
+flatness, polynomial--logarithmic block calculus, Hahn-support lemmas, and
+inversion methods. Their status documentation distinguishes actual Lean
+results from human proofs and unformalized extensions
+\cite{repo-index,repo-wellbased,repo-block}. A recently filed companion,
+\emph{Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn
+Transseries}, treats scalar differential operators by a finite obstruction
+matrix under a uniform outer-exponent decrease \cite{repo-residue}.
+Consequently, the mere assertion that resonances can have finite
+obstruction data would not be a substantive new contribution to this
+repository.
+
+Here the principal question is instead the following:
+\begin{quote}
+When does a support-controlled formal Fuchsian normalization automatically
+preserve absolute convergence, and what exactly goes wrong when it does
+not?
+\end{quote}
+Two additional questions make the answer useful. Can all unavoidable
+logarithms be certified from finite input data even for non-locally-finite
+supports? Can a divergent normalizer nevertheless describe the finite
+asymptotic prefixes of a genuine analytic solution, with an explicit
+truncation law near an accumulation exponent?
+
+These are concrete extension questions formulated in this article. They
+are not attributed to the repository as verbatim named open problems, and
+we do not claim to settle a famous general conjecture in transseries theory.
+Theorems~\ref{thm:universal}, \ref{thm:ancestry}, and
+\ref{thm:crossover} answer them in the class specified below.
+
+\subsection{What is classical and what is proposed here}
+For ordinary integer exponents, reduction of a Fuchsian system to a
+resonant polynomial normal form is classical. The entrywise resonance
+rule and a product of two constant-matrix powers are recorded, for example,
+in Tanny and Yakovenko's discussion of local normal forms
+\cite[p.~6]{tanny-yakovenko}. Our construction has that theory as a special
+case; neither the Frobenius method nor its integer-exponent normal form is
+claimed as a discovery.
+
+General fixed-point methods for generalized series are also established;
+van der Hoeven proves an implicit-function theorem for Noetherian
+operators \cite{vdh}. We give the particular support and valuation arguments
+needed here rather than claiming a new general Hahn fixed-point theorem.
+Convergence for Hahn series is itself an established subject, studied in
+other settings by Joswig and Smith \cite{joswig-smith}.
+
+The proposed contribution is the combination of an exact semigroup--spectrum
+criterion for \emph{universal absolute convergence}, its arbitrarily small
+counterexamples, a finite-ancestry refinement of the resonance certificate,
+and the explicit crossover analysis of a normalizer at an accumulation
+threshold. Full proofs are supplied; historical novelty beyond the sources
+inspected remains to be independently assessed. In particular, the article
+should not be cited as an independently peer-reviewed breakthrough.
+
+\subsection{Results in one view}
+Write $D=x\,d/dx$ and decompose the constant matrix as $A_0=S+N$, where
+$S$ is diagonal with real entries and $N$ is nilpotent and commutes with
+$S$. The formal construction produces
+\begin{equation}\label{eq:intro-solution}
+ Y=H(x)x^S\exp(B\log x),\qquad B^m=0.
+\end{equation}
+The coefficient support of $H-I$ stays in the additive semigroup generated
+by that of $\Aplus$. The complete logarithmic filtration is
+\begin{equation}\label{eq:intro-filtration}
+ \dim_\C\{\text{solutions of logarithmic degree at most }d\}
+   =\dim_\C\ker B^{d+1}.
+\end{equation}
+Moreover, $B$ is a polynomial in finitely many input coefficients once the
+constant matrix and exponent data are fixed.
+
+For a fixed positive well-ordered semigroup $\G$, the analytic criterion is
+\begin{equation}\label{eq:intro-gap}
+ \inf_{\substack{\gamma\in\G_{>0},\ 1\leq i,j\leq m\\
+                  \gamma\ne\lambda_i-\lambda_j}}
+       \abs{\gamma-(\lambda_i-\lambda_j)}>0.
+\end{equation}
+There are two essential qualifications. This is a universal assertion over
+all coefficient series supported in $\G_{>0}$, not just a specified smaller
+generating set. It concerns the normalized gauge constructed here and
+absolute generalized-series convergence, not the existence of arbitrary
+analytic solutions of the differential equation.
+
+\section{Hahn supports and the differential model}
+\label{sec:support}
+
+\subsection{Orientation and allowed supports}
+Throughout, $x$ is a positive infinitesimal; analytically it tends to zero
+through positive values or lies on a chosen logarithmic cover of a punctured
+disk. A Hahn series is written
+\[
+ f=\sum_{\alpha\in\R}f_\alpha x^\alpha
+\]
+with well-ordered support in the usual order on $\R$. Thus smaller
+exponents are dominant. This is the reverse of the common large-variable
+monomial convention, and converting between the two reverses the support
+order.
+
+Let $E\subset\R_{>0}$ be nonempty and well ordered, and set
+\begin{equation}\label{eq:semigroup}
+ \delta=\min E>0,\qquad
+ \G=\langle E\rangle
+  =\{0\}\cup\bigcup_{k\geq1}
+       \{\alpha_1+\cdots+\alpha_k:\alpha_i\in E\}.
+\end{equation}
+Neither $E$ nor $\G$ is assumed locally finite. For instance,
+$E=\{2-1/n:n\geq1\}$ is well ordered but has infinitely many members below
+$2$. This type of support is indispensable for the sharpness result.
+
+\begin{lemma}[Support and finite words]\label{lem:words}
+The semigroup $\G$ is well ordered. For each $\gamma\in\G$, there are
+only finitely many ordered words $(\alpha_1,\ldots,\alpha_k)$ in $E$ whose
+sum is $\gamma$. Every such word has length at most
+$\lfloor\gamma/\delta\rfloor$.
+\end{lemma}
+\begin{proof}
+The two-set form of Neumann's lemma says that the sum of two well-ordered
+subsets of an ordered abelian group is well ordered and that any fixed
+element has only finitely many decompositions with one term in each set.
+The repository's additive support lemmas provide precisely this two-factor
+bridge \cite{repo-wellbased}. Induction therefore proves both assertions
+for each fixed word length $k$.
+
+Positivity gives $k\delta\leq\gamma$. Hence only finitely many lengths
+can represent a fixed $\gamma$, proving the finite-word assertion.
+To prove well ordering of $\G$, let $U\subset\G$ be nonempty and choose
+$u\in U$. All elements of $U\cap[0,u]$ belong to the finite union
+$\bigcup_{0\leq k\leq\lfloor u/\delta\rfloor}kE$, which is well ordered.
+The least element of this intersection is also the least element of $U$.
+\end{proof}
+
+The proof uses the Archimedean order of the real exponents in an essential
+way: the common positive lower bound controls word length under a finite
+cutoff. The analogous assertion with an infinitesimal lower bound in a
+higher-rank ordered group requires a different hypothesis.
+
+\subsection{The ambient differential algebra}
+Let
+\[
+ \K=\C((x^\R))
+\]
+be the Hahn field, and let $\K[L]$ be the polynomial ring in an
+algebraically independent variable $L$. Define the strong derivation
+\begin{equation}\label{eq:derivation}
+ D\!\left(\sum f_\alpha x^\alpha\right)
+   =\sum \alpha f_\alpha x^\alpha,\qquad DL=1.
+\end{equation}
+The multiplication rule is meaningful because the coefficient convolutions
+are finite. The Leibniz rule follows by the equality
+$\alpha+\beta=\gamma$ in each such convolution. Analytically, $L$ will be
+$\log x$.
+
+Let $\mathscr H_\G$ denote the Hahn-series subring with support in $\G$,
+and let $\mathfrak m_\G$ be its positive-support ideal. For a nonzero
+series or matrix series, $\val(f)$ is the least exponent with nonzero
+coefficient, with $\val(0)=+\infty$. Then
+\[
+ \val(f+g)\geq\min(\val(f),\val(g)),\qquad
+ \val(fg)\geq\val(f)+\val(g).
+\]
+Matrices need the inequality, rather than equality, because leading matrix
+products can vanish.
+
+\begin{lemma}[Positive-support limits and inverses]\label{lem:limits}
+Suppose $F_n$ are matrix series supported in $\G$ and
+$\val(F_{n+1}-F_n)\to+\infty$. Each coefficient eventually stabilizes,
+and the coefficientwise limit is a Hahn series supported in $\G$.
+If $h\in\Mat_m(\mathfrak m_\G)$, then
+\[
+ (I+h)^{-1}=\sum_{k\geq0}(-h)^k
+\]
+is a well-defined matrix Hahn series supported in $\G$.
+\end{lemma}
+\begin{proof}
+Any fixed exponent lies below the valuations of all sufficiently late
+differences. The limit support is a subset of the well-ordered set $\G$.
+For the inverse, $\val(h^k)\geq k\delta$, so the displayed sum is
+coefficientwise finite. Multiplication by $I+h$ telescopes, and the
+remaining power tends coefficientwise to zero.
+\end{proof}
+
+\begin{lemma}[Constants and the missing Euler residue]\label{lem:constants}
+The constant field of $\K$ under $D$ is $\C$, and no derivative in
+$\K$ has a nonzero coefficient at $x^0$. The constants of $\K[L]$ are
+also exactly $\C$.
+\end{lemma}
+\begin{proof}
+The first two statements follow immediately from
+$[x^\alpha]Df=\alpha f_\alpha$. For the third, suppose
+$g=\sum_{j=0}^d g_jL^j$ is nonzero and $Dg=0$. Its highest coefficient
+satisfies $Dg_d=0$, hence $g_d\in\C$. If $d>0$, the coefficient of
+$L^{d-1}$ gives $Dg_{d-1}=-dg_d$, impossible because the right side has a
+nonzero $x^0$ coefficient. Thus $d=0$ and $g\in\C$.
+\end{proof}
+
+This elementary residue obstruction is the scalar mechanism behind the
+logarithmic variable. The matrix certificate below records how different
+spectral levels couple that mechanism.
+
+\section{The homological equation and normalized gauge}
+\label{sec:normal}
+
+\subsection{The constant matrix and its spectral blocks}
+Consider
+\begin{equation}\label{eq:system}
+ DY=(A_0+\Aplus(x))Y,\qquad
+ \Aplus(x)=\sum_{\alpha\in E}A_\alpha x^\alpha.
+\end{equation}
+Zero coefficients are allowed. Assume $A_0\in\Mat_m(\C)$ has only real
+eigenvalues. Choose once and for all a Jordan basis and write
+\begin{equation}\label{eq:jordan}
+ A_0=S+N,\qquad S=\diag(\lambda_1,\ldots,\lambda_m),\qquad
+ [S,N]=0,\quad N^m=0.
+\end{equation}
+Changing this constant basis changes the normalization convention; all
+uniqueness assertions below refer to the chosen basis and projections.
+
+For $\gamma>0$, let $P_\gamma$ be the coordinate projection
+\begin{equation}\label{eq:projection}
+ (P_\gamma M)_{ij}=
+ \begin{cases}M_{ij},&\lambda_i-\lambda_j=\gamma,\\0,&\text{otherwise},\end{cases}
+ \qquad Q_\gamma=I-P_\gamma.
+\end{equation}
+Here the $I$ in $Q_\gamma$ is the identity operator on matrix space.
+Define the finite resonance set
+\begin{equation}\label{eq:resonances}
+ \Res=\{\lambda_i-\lambda_j>0:1\leq i,j\leq m\}\cap\G,
+ \qquad r_* = \max(\Res\cup\{0\}).
+\end{equation}
+
+The homological operator is
+\[
+ \mathcal L_\gamma=\gamma I-\ad(A_0),\qquad
+ \ad(A_0)M=A_0M-MA_0.
+\]
+Both $\ad(N)$ and $\mathcal L_\gamma$ preserve every eigenspace of
+$\ad(S)$ because $[S,N]=0$.
+
+\begin{lemma}[Explicit nonresonant inverse]\label{lem:inverse}
+Define the operator $\Dg_\gamma$ by
+\[
+ (\Dg_\gamma M)_{ij}=
+ \begin{cases}
+ \displaystyle\frac{M_{ij}}{\gamma-(\lambda_i-\lambda_j)},
+    &\gamma\ne\lambda_i-\lambda_j,\\[6pt]
+ 0,&\gamma=\lambda_i-\lambda_j.
+ \end{cases}
+\]
+Then
+\begin{equation}\label{eq:T}
+ T_\gamma=\sum_{k=0}^{2m-2}
+       \Dg_\gamma^{\,k+1}(\ad N)^k
+\end{equation}
+satisfies
+\[
+ \mathcal L_\gamma T_\gamma=Q_\gamma,
+ \qquad P_\gamma T_\gamma=0.
+\]
+For each $F$, the unique pair $(H,R)$ satisfying
+$P_\gamma H=0$, $R=P_\gamma R$, and
+$\mathcal L_\gamma H+R=F$ is
+$H=T_\gamma F$, $R=P_\gamma F$.
+\end{lemma}
+\begin{proof}
+Left and right multiplication by $N$ commute, so the binomial expansion of
+$(\ad N)^{2m-1}$ has in every term either at least $m$ left factors or at
+least $m$ right factors. Thus $(\ad N)^{2m-1}=0$. On the range of
+$Q_\gamma$, $\gamma I-\ad(S)$ is invertible with inverse
+$\Dg_\gamma$, which commutes with $\ad N$. The finite geometric sum
+\eqref{eq:T} is therefore the inverse of
+$(\gamma I-\ad S)-\ad N$ on that range.
+
+The resonant projection of $\mathcal L_\gamma H$ vanishes when
+$P_\gamma H=0$, since the operator preserves the spectral blocks.
+Projecting the equation gives $R=P_\gamma F$. The complementary equation
+has the stated unique solution.
+\end{proof}
+
+The finite geometric sum parallels the repository's explicit inverse of
+$\partial_L-c$ on bounded-degree logarithmic polynomials
+\cite{repo-block}; here the nilpotent operator is $\ad N$ instead of
+polynomial differentiation.
+
+\subsection{The formal normalization theorem}
+\begin{theorem}[Normalized Hahn--Fuchsian form]\label{thm:normal}
+For \eqref{eq:system}--\eqref{eq:jordan}, there is a unique pair
+\begin{equation}\label{eq:HR}
+ H=I+\sum_{\gamma\in\G_{>0}}H_\gamma x^\gamma,
+ \qquad R(x)=\sum_{\rho\in\Res}R_\rho x^\rho
+\end{equation}
+with $P_\gamma H_\gamma=0$ and $P_\rho R_\rho=R_\rho$, such that
+\begin{equation}\label{eq:gauge}
+ DH=(A_0+\Aplus)H-H(A_0+R).
+\end{equation}
+All series are well-defined Hahn series. No exponent outside $\G$ is
+introduced into $H$ or $R$.
+\end{theorem}
+\begin{proof}
+Extend $A_\gamma$ to be zero outside $E$. Equating the coefficient of
+$x^\gamma$ in \eqref{eq:gauge} gives
+\begin{align}
+ F_\gamma={}&A_\gamma+
+   \sum_{\substack{\alpha+\beta=\gamma\\\alpha,\beta>0}}
+          A_\alpha H_\beta
+   -\sum_{\substack{\beta+\eta=\gamma\\\beta,\eta>0}}
+          H_\beta R_\eta,                                      \label{eq:F-coeff}\\
+ H_\gamma={}&T_\gamma F_\gamma,\qquad
+ R_\gamma=P_\gamma F_\gamma.                                  \label{eq:recurrence}
+\end{align}
+Every coefficient on the right of \eqref{eq:F-coeff}, except the input
+$A_\gamma$, has exponent strictly less than $\gamma$. The sums are
+finite by Lemma~\ref{lem:words}. Well-ordered recursion and
+Lemma~\ref{lem:inverse} give existence and uniqueness. If
+$\gamma\notin\Res$, then $P_\gamma=0$, so $R_\gamma=0$. The resulting
+supports are subsets of $\G$, proving their admissibility.
+
+For a second construction that will also give an analytic estimate, let
+$\Ph$ and $\Th$ act coefficientwise by $P_\gamma$ and $T_\gamma$ on
+positive-support matrix series. Set
+\begin{equation}\label{eq:fixed-point}
+ \Phi(F)=\Aplus+\Aplus(\Th F)-(\Th F)(\Ph F),\qquad F_0=0,
+ \quad F_{n+1}=\Phi(F_n).
+\end{equation}
+All $F_n$ have support in $\G_{>0}$. Both coefficientwise operators
+preserve or increase valuation. If $F,G$ have positive support, then
+\[
+ \Phi(F)-\Phi(G)=\Aplus\Th(F-G)
+  -\Th(F-G)\Ph F-(\Th G)\Ph(F-G).
+\]
+Consequently,
+\begin{equation}\label{eq:valuation-contraction}
+ \val(\Phi(F)-\Phi(G))\geq\val(F-G)+\delta.
+\end{equation}
+It follows by induction that
+$\val(F_{n+1}-F_n)\geq(n+1)\delta$. Lemma~\ref{lem:limits} gives a
+limit $F$; finite coefficient convolutions show $F=\Phi(F)$. Take
+$H=I+\Th F$ and $R=\Ph F$. Lemma~\ref{lem:inverse} yields
+\eqref{eq:gauge}. A difference of two fixed points would have its finite
+valuation increased by at least $\delta$, a contradiction. This also
+proves uniqueness without invoking transfinite recursion separately.
+\end{proof}
+
+\begin{corollary}[Finite iteration count for the normal form]
+\label{cor:iterations}
+The iterates in \eqref{eq:fixed-point} satisfy
+\[
+ \val(F-F_n)\geq(n+1)\delta.
+\]
+In particular, $R=\Ph F_n$ as soon as $(n+1)\delta>r_*$.
+\end{corollary}
+\begin{proof}
+All differences in the tail beginning with $F_{n+1}-F_n$ have valuation
+at least $(n+1)\delta$. The projection $\Ph$ retains only exponents at
+most $r_*$.
+\end{proof}
+
+\begin{remark}
+A finite number of formal iterations does not mean that each whole
+iterate has finite support. When exponents accumulate, even its part below
+$r_*$ can be infinite. The genuinely finite input certificate is proved
+in Section~\ref{sec:ancestry}, not by silently replacing well ordering
+with local finiteness.
+\end{remark}
+
+\section{A finite matrix controls every logarithm}
+\label{sec:logs}
+
+\begin{theorem}[Fundamental matrix and logarithmic filtration]
+\label{thm:logs}
+For the normalized pair $(H,R)$, put
+\begin{equation}\label{eq:B}
+ B=N+\sum_{\rho\in\Res}R_\rho.
+\end{equation}
+Then $B^m=0$, and
+\begin{equation}\label{eq:Y}
+ Y=H(x)x^S e^{BL},\qquad
+ x^S=\diag(x^{\lambda_1},\ldots,x^{\lambda_m}),\quad
+ e^{BL}=\sum_{k=0}^{m-1}\frac{B^kL^k}{k!}
+\end{equation}
+is a fundamental matrix over $\K[L]$. Every solution vector with entries
+in $\K[L]$ is uniquely $Yc$ for $c\in\C^m$.
+
+For each integer $d\geq0$, the space of solutions of logarithmic degree
+at most $d$ has dimension
+\begin{equation}\label{eq:filtration}
+ \dim_\C\Sol_{\leq d}=\dim_\C\ker B^{d+1}.
+\end{equation}
+A logarithm-free fundamental matrix exists in this class if and only if
+$B=0$. If $\nu(B)$ is the least positive integer with $B^{\nu(B)}=0$
+(with $\nu(0)=1$), then every fundamental matrix in $\K[L]$ has maximum
+logarithmic degree exactly $\nu(B)-1\leq m-1$.
+\end{theorem}
+\begin{proof}
+The matrix $N$ preserves each eigenspace of $S$, whereas $R_\rho$ maps
+the $\lambda$ eigenspace into the $\lambda+\rho$ eigenspace. Order the
+distinct eigenvalues increasingly. The matrix $B$ is block triangular,
+with nilpotent diagonal blocks inherited from $N$. Its characteristic
+polynomial is $z^m$, so the Cayley--Hamilton theorem gives $B^m=0$.
+
+The spectral support rule gives
+\begin{equation}\label{eq:conjugateB}
+ x^S Bx^{-S}=N+\sum_{\rho\in\Res}x^\rho R_\rho=N+R(x).
+\end{equation}
+Differentiating $x^S e^{BL}$, using $DL=1$, yields
+\[
+ D(x^S e^{BL})=(S+N+R)x^S e^{BL}=(A_0+R)x^S e^{BL}.
+\]
+Combining this with \eqref{eq:gauge} proves that $Y$ solves
+\eqref{eq:system}. The inverse
+\[
+ Y^{-1}=e^{-BL}x^{-S}H^{-1}
+\]
+has entries in $\K[L]$ by Lemma~\ref{lem:limits}; hence $Y$ is a
+fundamental matrix.
+
+If $y$ is any other solution in this algebra, then
+$D(Y^{-1}y)=0$. Lemma~\ref{lem:constants} gives $Y^{-1}y=c\in\C^m$.
+The coefficient of $L^k$ in $Yc$ is $Hx^SB^kc/k!$. Because $Hx^S$ is
+invertible and independent of $L$, this coefficient is zero exactly when
+$B^kc=0$. Thus $\deg_L(Yc)\leq d$ is equivalent to $B^{d+1}c=0$,
+which proves \eqref{eq:filtration}.
+
+Any fundamental matrix is $YC$ with $C\in\mathrm{GL}_m(\C)$. Its top
+nonzero logarithmic coefficient is
+$Hx^SB^{\nu(B)-1}C/(\nu(B)-1)!$, which cannot vanish. The remaining
+assertions follow.
+\end{proof}
+
+\begin{corollary}[Invariance under log-free gauges]
+Multiplication of a solution vector by an invertible matrix over $\K$
+preserves its logarithmic degree. Hence the dimensions in
+\eqref{eq:filtration} are invariants of log-free gauge equivalence, even
+though the entries of the normalized matrix $B$ depend on the chosen
+normalization.
+\end{corollary}
+\begin{proof}
+An invertible log-free matrix cannot kill the highest nonzero coefficient
+of a polynomial in $L$.
+\end{proof}
+
+\begin{example}[The bound $m-1$ is attained]\label{ex:chain}
+Let $S=\diag(0,1,\ldots,m-1)$, $N=0$, and
+$J=\sum_{j=1}^{m-1}E_{j+1,j}$, where $E_{ij}$ is a matrix unit.
+For $\Aplus=xJ$, all entries are resonant. The normalized gauge is
+$H=I$, the normal form is $R=xJ$, and $B=J$. Since
+$J^{m-1}\ne0$ and $J^m=0$, logarithmic degree $m-1$ is unavoidable.
+The result is an exact identity, not a merely asymptotic model.
+\end{example}
+
+\begin{remark}[The ambient algebra matters]
+The assertion is about polynomial dependence on the one indeterminate
+$L$ over the log-free Hahn field $\K$. It does not identify $L$ with an
+element already in $\K$, nor does it claim that every possible analytic
+representation must visibly display a logarithm. An unrestricted special
+function can hide one. The filtration is meaningful because the coefficient
+algebra and allowed log-free gauges have been fixed.
+\end{remark}
+
+\section{Finite ancestry despite infinitely many low exponents}
+\label{sec:ancestry}
+
+Define the critical ancestry set
+\begin{equation}\label{eq:critical-set}
+ E_{\mathrm{crit}}=
+ \bigcup_{\rho\in\Res}
+ \bigcup_{\substack{k\geq1,\ \alpha_1,\ldots,\alpha_k\in E\\
+                       \alpha_1+\cdots+\alpha_k=\rho}}
+       \{\alpha_1,\ldots,\alpha_k\}.
+\end{equation}
+The union over an empty resonance set is empty.
+
+\begin{theorem}[Finite-ancestry certificate]\label{thm:ancestry}
+The set $E_{\mathrm{crit}}$ is finite. For fixed $S,N,E$, each matrix
+$R_\rho$ is an ordinary polynomial in the entries of
+$\{A_\alpha:\alpha\in E_{\mathrm{crit}}\}$, of degree at most
+$\lfloor\rho/\delta\rfloor$. Its scalar coefficients depend on the
+constant matrix and the finitely many intermediate exponent differences.
+In particular, all logarithmic obstruction data are independent of input
+coefficients outside $E_{\mathrm{crit}}$.
+
+For a family obtained by varying these finitely many matrix entries,
+\begin{equation}\label{eq:algebraic-locus}
+ \{\text{maximum logarithmic degree}\leq d\}
+       =\{B^{d+1}=0\}
+\end{equation}
+is an algebraic locus. The ranks of the powers of $B$, and hence the entire
+logarithmic filtration, are determined by polynomial minors.
+\end{theorem}
+\begin{proof}
+There are finitely many resonances. Lemma~\ref{lem:words} gives finitely
+many words ending at each one, so \eqref{eq:critical-set} is finite.
+
+Expand the recurrence \eqref{eq:F-coeff}--\eqref{eq:recurrence} by
+repeated substitution. The operators $T_\gamma$ and $P_\gamma$ are
+linear and do not shift exponents. Every product term therefore has input
+leaves $A_{\alpha_1},\ldots,A_{\alpha_k}$ whose exponent sum is the
+output exponent. Each further substitution replaces a positive exponent
+by positive smaller exponents. The expansion ends after at most
+$\lfloor\gamma/\delta\rfloor$ input leaves. Finiteness of the possible
+words also gives finiteness of all partial exponent sums, so the expression
+at each fixed output exponent is an ordinary finite polynomial, not an
+infinite coefficient formula.
+
+At output $\rho$, all leaves belong to $E_{\mathrm{crit}}$ by
+definition. The only divisions are the nonzero scalar denominators in
+$T_\gamma$, which depend on $S$ and intermediate exponents rather than on
+input coefficient variables. Thus the polynomial degree is bounded by the
+number of leaves. Since $B=N+\sum R_\rho$, its entries are polynomials in
+finite data. Theorem~\ref{thm:logs} proves \eqref{eq:algebraic-locus};
+the standard minor criteria for matrix rank prove the last assertion.
+\end{proof}
+
+\subsection{What the finite statement does not assert}
+For an arbitrary infinitely presented set of real exponents, it can be
+impossible to decide whether a proposed number is a finite sum of members.
+The theorem supplies finite mathematical dependence; it does not supply an
+unconditional terminating algorithm for discovering the critical set from
+an arbitrary oracle. The accompanying implementation restricts to finite
+rational input supports, where exact equality and bounded enumeration are
+decidable.
+
+There is a useful distinction between three cutoffs. The largest resonance
+$r_*$ bounds where normal-form output can occur. The number
+$\lfloor r_*/\delta\rfloor$ bounds the number of input factors in an
+obstruction. Neither statement says that all exponents below $r_*$ must be
+enumerated. The critical ancestry set selects just the finitely many
+exponents that can actually reach a resonance by addition.
+
+\subsection{Relation to the earlier residue-matrix method}
+The repository's residue-obstruction article already uses a positive
+exponent decrement to bound perturbative paths between finitely many real
+roots \cite{repo-residue}. Our finite-ancestry theorem is aligned with that
+principle. The distinction is the present matrix normal form, the complete
+log-degree filtration via powers of $B$, and especially the analytic
+criterion in the next section. The previous scalar fixed-depth problem and
+the present universal absolute-convergence problem are not interchangeable.
+
+\section{A sharp criterion for universal analytic normalization}
+\label{sec:analytic}
+
+\subsection{The absolute generalized-series algebra}
+Use the induced column-sum matrix norm
+\[
+ \norm{M}_1=\max_j\sum_i|M_{ij}|,
+\]
+so $\norm I_1=1$, matrix multiplication is submultiplicative, and every
+coordinate mask $P_\gamma$ or $Q_\gamma$ is contractive. For $r>0$ set
+\begin{equation}\label{eq:analytic-norm}
+ \norm F_r=\sum_{\gamma\in\G_{>0}}\norm{F_\gamma}_1r^\gamma.
+\end{equation}
+A series is called absolutely convergent at radius $r$ when this norm is
+finite. Together with a constant term, these series form a Banach algebra
+under convolution. A well-ordered subset of $\R$ is countable, so the
+notation is an ordinary countable absolute sum; equivalently it can be
+read as a supremum over finite subsums.
+
+For real exponents and a chosen branch, $|x^\gamma|=|x|^\gamma$.
+Absolute convergence therefore gives holomorphic evaluation on the
+logarithmic cover of $0<|x|<r$. The Euler derivative converges normally on
+every smaller radius $r'<r$, because
+$\sup_{\gamma\geq0}\gamma(r'/r)^\gamma<\infty$. Products and the
+Euler derivative may then be evaluated termwise.
+
+Define
+\begin{equation}\label{eq:eta}
+ \eta(\G,S)=
+ \inf\left\{
+ |\gamma-(\lambda_i-\lambda_j)|:
+ \begin{array}{l}
+ \gamma\in\G_{>0},\ 1\leq i,j\leq m,\\[-2pt]
+ \gamma\ne\lambda_i-\lambda_j
+ \end{array}\right\}.
+\end{equation}
+The exclusion of exact resonances is crucial: exact resonances are put in
+$R$, not divided by.
+
+\begin{lemma}[Which accumulations matter]\label{lem:gap}
+The number $\eta(\G,S)$ is positive if and only if no positive
+eigenvalue difference is a limit of a strictly increasing sequence of
+nonresonant exponents in $\G$.
+\end{lemma}
+\begin{proof}
+Such an increasing sequence forces the infimum to be zero. Conversely,
+if the infimum is zero, finiteness of the set of eigenvalue differences
+provides one difference $\rho$ and distinct exponents
+$\gamma_n\in\G_{>0}$ tending to $\rho$, none equal to it. Since
+$\gamma_n\geq\delta$, the difference $\rho$ is positive. A subsequence
+approaching $\rho$ from above would contain an infinite strictly decreasing
+subsequence, contrary to well ordering of $\G$. There are therefore
+infinitely many terms below $\rho$, from which one extracts a strictly
+increasing subsequence tending to $\rho$.
+\end{proof}
+
+\begin{theorem}[Universal convergence: necessary and sufficient]
+\label{thm:universal}
+Fix a nontrivial semigroup $\G\subset\R_{\geq0}$ generated as in
+\eqref{eq:semigroup}, and fix $A_0=S+N$ as in \eqref{eq:jordan}. The
+following statements are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\eta(\G,S)>0$.
+\item For every matrix series $\Aplus$ supported in $\G_{>0}$ that is
+absolutely convergent at some radius, the normalized formal gauge $H$ of
+Theorem~\ref{thm:normal} is absolutely convergent at some positive radius.
+\end{enumerate}
+If \textup{(i)} fails, counterexamples in \textup{(ii)} can have arbitrarily
+small norm at radius $1$ and can be chosen proportional to one square-zero
+rank-one constant matrix. Their coefficient series are absolutely
+convergent at every positive radius.
+\end{theorem}
+
+\subsection{Proof of sufficiency with quantitative bounds}
+Assume $\eta>0$ and put
+\begin{equation}\label{eq:C}
+ C=\sum_{k=0}^{2m-2}\frac{(2\norm N_1)^k}{\eta^{k+1}}.
+\end{equation}
+The powers are ordinary nonnegative real numbers; for $N=0$, the formula
+reduces to $C=1/\eta$. Since
+$\norm{\ad(N)M}_1\leq2\norm N_1\norm M_1$, the finite inverse
+\eqref{eq:T} gives
+\begin{equation}\label{eq:operator-bounds}
+ \norm{\Th F}_r\leq C\norm F_r,\qquad
+ \norm{\Ph F}_r\leq\norm F_r.
+\end{equation}
+Suppose $a_0=\norm{\Aplus}_{r_0}<\infty$. For $0<r\leq r_0$,
+\begin{equation}\label{eq:radius-decay}
+ a:=\norm{\Aplus}_r\leq a_0(r/r_0)^\delta.
+\end{equation}
+Choose $r>0$ with $Ca\leq1/8$. If $a_0>0$, one explicit permissible
+choice is
+\begin{equation}\label{eq:explicit-radius}
+ r=r_0\min\left\{1,(8Ca_0)^{-1/\delta}\right\}.
+\end{equation}
+The zero-input case is immediate.
+
+On the closed ball $\norm F_r\leq2a$, the same map $\Phi$ as in
+\eqref{eq:fixed-point} satisfies
+\begin{align*}
+ \norm{\Phi(F)}_r
+ &\leq a+aC(2a)+C(2a)(2a)
+ =a+6Ca^2\leq\tfrac74a<2a,\\
+ \norm{\Phi(F)-\Phi(G)}_r
+ &\leq(Ca+4Ca)\norm{F-G}_r
+ =5Ca\norm{F-G}_r.
+\end{align*}
+Thus $q:=5Ca\leq5/8$ is a contraction constant. The Banach fixed-point
+theorem yields an absolutely convergent $F$ in this ball. Its coefficient
+identity is the formal fixed-point equation, so formal uniqueness identifies
+it with the Hahn solution constructed earlier. Consequently,
+\begin{equation}\label{eq:analytic-estimates}
+ \norm{H-I}_r\leq2Ca\leq\tfrac14,
+ \qquad\norm R_r\leq2a,
+ \qquad\norm{H^{-1}}_r\leq\frac1{1-2Ca},
+\end{equation}
+where the last norm includes the constant term.
+
+The Picard iterates provide the additional error certificate
+\begin{equation}\label{eq:picard-bound}
+ \norm{F-F_n}_r\leq\frac{a q^n}{1-q},\qquad
+ \norm{H-(I+\Th F_n)}_r\leq\frac{Ca q^n}{1-q}.
+\end{equation}
+Indeed, the first iterate is $F_1=\Aplus$ and the differences decrease by
+at least the factor $q$. This proves the analytic assertion and supplies a
+constructive bound rather than just a qualitative convergence theorem.
+
+All identities now hold analytically on smaller punctured radii. In
+particular, \eqref{eq:Y} is an actual fundamental matrix on any fixed
+logarithmic branch there. The word ``Fuchsian'' here refers to the Euler
+form and limiting constant coefficient; we do not assume that
+$\Aplus$ has an ordinary Taylor expansion at zero.
+
+\subsection{Proof of necessity and small counterexamples}
+Assume $\eta=0$. By Lemma~\ref{lem:gap}, choose a positive difference
+$\rho=\lambda_i-\lambda_j$ and a strictly increasing sequence
+$\gamma_n\in\G_{>0}$ with limit $\rho$, with no term equal to
+$\rho$. Passing to a subsequence, arrange
+\begin{equation}\label{eq:dn}
+ d_n:=\rho-\gamma_n\leq2^{-n}.
+\end{equation}
+Choose a nonzero right eigenvector $u$ of $A_0$ at $\lambda_i$ and a
+nonzero left eigenvector $v^T$ at $\lambda_j$. Normalize
+$U=uv^T$ so that $\norm U_1=1$. Distinct eigenvalues imply $v^Tu=0$,
+so
+\begin{equation}\label{eq:rank-one}
+ U^2=0,\qquad [A_0,U]=[S,U]=\rho U,\qquad[N,U]=0.
+\end{equation}
+For any $\varepsilon>0$ define
+\begin{equation}\label{eq:counter-general}
+ \Aplus(x)=\varepsilon\sum_{n\geq1}\frac{d_n}{n}x^{\gamma_n}U.
+\end{equation}
+The exponents remain in a bounded interval, and
+$\sum d_n/n\leq\sum2^{-n}/n<\infty$. Thus the input is absolutely
+convergent at every radius, with norm at radius $1$ tending to zero as
+$\varepsilon\to0$.
+
+The normalized formal gauge is exactly
+\begin{equation}\label{eq:counter-H}
+ H=I-\varepsilon\sum_{n\geq1}\frac{x^{\gamma_n}}nU,
+ \qquad R=0.
+\end{equation}
+To check this, write $H=I+hU$. The nonlinear products vanish because
+$U^2=0$, and the gauge equation reduces to
+$(D-\rho)h=\varepsilon\sum d_nx^{\gamma_n}/n$. Its coefficient
+solution is $h_{\gamma_n}=-\varepsilon/n$. All these coefficients are
+nonresonant, so the gauge is normalized; uniqueness proves the assertion.
+For every $r>0$, the factors $r^{\gamma_n}$ tend to $r^\rho>0$.
+Consequently
+$\sum r^{\gamma_n}/n=\infty$, and the normalized gauge is not
+absolutely convergent at any radius. This proves necessity and the
+smallness statement in Theorem~\ref{thm:universal}.\hfill$\square$
+
+\subsection{Consequences and exact boundaries}
+\begin{corollary}[Finite positive generators need no arithmetic condition]
+\label{cor:finite-grid}
+If $\G$ is generated by finitely many positive real numbers, every
+absolutely convergent $\G$-supported coefficient series has a convergent
+normalized gauge. Rational relations among the generators are irrelevant.
+\end{corollary}
+\begin{proof}
+Below any fixed bound, the nonnegative integer coefficient of each positive
+generator is bounded. Hence $\G$ is locally finite. No finite positive
+eigenvalue difference can be an accumulation point.
+\end{proof}
+
+For example, $\langle1,\sqrt2\rangle$ is locally finite even though the
+additive \emph{group} generated by $1$ and $\sqrt2$ is dense in $\R$.
+Replacing the positive semigroup by that group would give the wrong
+small-divisor diagnosis. The dangerous event is not irrationality, nor
+non-local-finiteness by itself: it is a semigroup accumulation specifically
+at a positive spectral difference.
+
+In dimension one, there is no positive eigenvalue difference and
+$\eta\geq\delta$. Thus rank two is the smallest dimension for the
+failure mechanism. Exact resonances and near-resonances also have opposite
+roles. Exact resonances produce finitely many logarithmic data. An infinite
+sequence of near-resonances can destroy convergence while producing no
+additional exact resonant term at all.
+
+\begin{remark}[Universal quantifiers cannot be weakened silently]
+The counterexample uses a sequence from $\G$, which need not lie in a
+prescribed proper generating subset $E$. The theorem quantifies over all
+inputs supported in $\G_{>0}$. For one fixed input, $\eta=0$ does not
+force divergence: its coefficients may decay enough, or matrix products
+may suppress the bad divisors. A theorem quantifying only over series
+supported in a smaller $E$ is a separate problem.
+\end{remark}
+
+\section{Indirect resonance and a finite-data example}
+\label{sec:indirect}
+
+A direct inspection of the original coefficient at a resonant exponent is
+insufficient: earlier nonresonant terms can generate a logarithm. This is
+already visible in a two-dimensional system with ordinary integer powers.
+
+Let
+\begin{equation}\label{eq:indirect-input}
+ S=\begin{pmatrix}0&0\\0&2\end{pmatrix},\quad N=0,\quad
+ A_1=\begin{pmatrix}a&b\\c&d\end{pmatrix},\quad
+ A_2=\begin{pmatrix}0&0\\e&0\end{pmatrix}.
+\end{equation}
+The only positive resonance is $2$, in the lower-left entry. At exponent
+$1$, the recurrence gives
+\[
+ H_1=\begin{pmatrix}a&b/3\\-c&d\end{pmatrix},\qquad R_1=0.
+\]
+At exponent $2$, the lower-left entry of $A_2+A_1H_1$ is
+$e+c(a-d)$. Therefore
+\begin{equation}\label{eq:indirect-B}
+ B=\bigl(e+c(a-d)\bigr)E_{21}.
+\end{equation}
+The exact no-log condition is the algebraic equation
+$e+c(a-d)=0$, not merely $e=0$. When it fails, the log-free solution
+subspace has dimension one, and a fundamental matrix has logarithmic
+degree one.
+
+For a fully explicit example, take $a=c=1$ and $b=d=e=0$. The system is
+\begin{equation}\label{eq:indirect-concrete}
+ Dy_1=xy_1,\qquad Dy_2=2y_2+xy_1.
+\end{equation}
+A fundamental matrix is
+\begin{equation}\label{eq:indirect-Y}
+ Y(x)=
+ \begin{pmatrix}
+ e^x&0\\[2pt]
+ \displaystyle -x+x^2\log x+
+    \sum_{k=2}^{\infty}\frac{x^{k+1}}{(k-1)k!}&x^2
+ \end{pmatrix}.
+\end{equation}
+The series is entire. Direct application of $D-2$ to its lower-left entry
+gives $xe^x$, including the $x^2$ term supplied by $x^2\log x$.
+The normalized gauge has $H_{22}=1$, $H_{12}=0$ and
+\[
+ H_{11}=e^x,\qquad
+ H_{21}=-x+\sum_{n=3}^{\infty}\frac{x^n}{(n-2)(n-1)!}.
+\]
+In particular its resonant $x^2E_{21}$ coefficient vanishes, as required,
+and $B=E_{21}$.
+
+Now allow an arbitrary extra tail with exponents in
+\[
+ \{3-1/n:n\geq2\}.
+\]
+Every new exponent exceeds $2$. Its coefficient matrices may be arbitrary
+Hahn data: none can appear in a word ending at the sole resonance $2$.
+Thus the obstruction \eqref{eq:indirect-B} is unchanged. The augmented
+semigroup has an accumulation at $3$, but this is not a positive spectral
+difference for this system. There are only finitely many semigroup elements
+in a sufficiently small neighborhood of $2$, so the uniform divisor gap
+remains positive. Absolutely convergent tails therefore also preserve
+analytic normalizability. This example separates support accumulation,
+finite logarithmic data, and analytic failure in a single calculation.
+
+\section{An explicit summability threshold at an accumulation exponent}
+\label{sec:model}
+
+\subsection{The family and its divergent formal normalizer}
+Let $p>1$ and
+\begin{equation}\label{eq:ap}
+ a_p(x)=\sum_{n=1}^{\infty}\frac{x^{2-1/n}}{n^p},\qquad
+ S=\begin{pmatrix}2&0\\0&0\end{pmatrix},\qquad U=E_{12}.
+\end{equation}
+Consider
+\begin{equation}\label{eq:p-system}
+ DY=(S+a_p(x)U)Y.
+\end{equation}
+The input series is absolutely convergent at every positive radius:
+its exponents belong to $[1,2)$ and $\sum n^{-p}$ converges. It is
+holomorphic on the logarithmic cover and tends to zero as $x\to0^+$.
+Its well-ordered support approaches the positive spectral difference $2$
+from below.
+
+\begin{proposition}[Exact threshold]\label{prop:threshold}
+The normalized formal gauge and resonant matrix are
+\begin{equation}\label{eq:hhatp}
+ \widehat H_p=I+\widehat h_p U,
+ \qquad\widehat h_p=-\sum_{n=1}^{\infty}n^{1-p}x^{2-1/n},
+ \qquad R=0,
+\end{equation}
+and $B=0$. The gauge is absolutely convergent at some positive radius if
+and only if $p>2$; in that case it converges at every positive radius.
+\end{proposition}
+\begin{proof}
+Since $[S,U]=2U$ and $U^2=0$, the coefficient equation is
+$(D-2)\widehat h_p=a_p$. Dividing the coefficient at $2-1/n$ by
+$-1/n$ gives $-n^{1-p}$. There are no product terms and no input at the
+resonance itself, so $R=0$. At any fixed positive radius, $r^{2-1/n}$
+tends to $r^2$, so absolute convergence is equivalent to that of
+$\sum n^{1-p}$.
+\end{proof}
+
+Although the generated semigroup contains $2=1+1$, the exact resonant
+coefficient remains zero: the only possible matrix product is a multiple
+of $U^2=0$. This illustrates why membership of a resonance in the
+semigroup alone is not the obstruction certificate.
+
+\subsection{Renormalized analytic solutions for every $p>1$}
+The formal series can diverge while the actual differential equation still
+has a particularly explicit solution. For $t=-\log x$ define
+\begin{align}
+ \Psi_p(t)
+   &=\sum_{n=1}^{\infty}n^{1-p}(e^{t/n}-1),                       \label{eq:Psi}\\
+ h_p(x)&=-x^2\Psi_p(-\log x).                                   \label{eq:hp}
+\end{align}
+The subtraction is made \emph{before} summation.
+
+\begin{theorem}[Analytic realization by renormalization]
+\label{thm:renorm}
+For every $p>1$, $\Psi_p$ is entire and
+\begin{equation}\label{eq:zeta-expansion}
+ \Psi_p(t)=\sum_{k=1}^{\infty}\zeta(p+k-1)\frac{t^k}{k!}.
+\end{equation}
+The function $h_p$ is holomorphic on the logarithmic cover, satisfies
+$(D-2)h_p=a_p$ and $h_p(1)=0$, and gives the fundamental matrix
+\begin{equation}\label{eq:actual-p}
+ Y_p=(I+h_pU)x^S.
+\end{equation}
+For $p>2$, it agrees with the convergent formal normalizer up to the
+homogeneous term
+\begin{equation}\label{eq:p-comparison}
+ h_p=\widehat h_p+\zeta(p-1)x^2.
+\end{equation}
+For $1<p\leq2$, the defining difference series still converges, but its
+two pieces cannot be separately summed absolutely.
+\end{theorem}
+\begin{proof}
+For $|t|\leq T$,
+\[
+ n^{1-p}|e^{t/n}-1|\leq T e^T n^{-p}.
+\]
+The series \eqref{eq:Psi} therefore converges uniformly on compact sets,
+proving that $\Psi_p$ is entire. Expanding each exponential and using
+absolute convergence gives
+\[
+ \sum_{n\geq1}\sum_{k\geq1}
+   \frac{|t|^k}{k!n^{p+k-1}}
+ \leq\zeta(p)(e^{|t|}-1)<\infty.
+\]
+Interchanging the sums proves \eqref{eq:zeta-expansion}.
+
+Since $D=-d/dt$ on functions of $t$ and $x^2=e^{-2t}$,
+\[
+ (D-2)(-x^2\Psi_p(t))=x^2\Psi_p'(t)
+   =x^2\sum_{n\geq1}n^{-p}e^{t/n}=a_p(x).
+\]
+The value at $x=1$ is zero. This scalar equation and $U^2=0$ verify
+\eqref{eq:actual-p} directly. If $p>2$, one can split
+\eqref{eq:Psi} into two absolutely convergent sums; their difference
+is precisely \eqref{eq:p-comparison}. If $p\leq2$, the series of
+subtracted constants is $\sum n^{1-p}$ and diverges, so that split is
+not legitimate.
+\end{proof}
+
+\subsection{Every finite asymptotic prefix is nevertheless correct}
+For $N\geq1$, set
+\begin{equation}\label{eq:hN}
+ h_{p,N}(x)=-\sum_{n=1}^{N}n^{1-p}(x^{2-1/n}-x^2),\qquad
+ S_{p,N}(t)=\sum_{n>N}n^{1-p}(e^{t/n}-1).
+\end{equation}
+For $0<x<1$, $t=-\log x>0$ and
+\begin{equation}\label{eq:error-exact}
+ h_p-h_{p,N}=-x^2 S_{p,N}(t).
+\end{equation}
+
+\begin{lemma}[Elementary two-sided tail certificate]\label{lem:tail}
+For $p>1$, $N\geq1$, $t>0$,
+\begin{equation}\label{eq:tail-bounds}
+ \frac{t}{p-1}(N+1)^{1-p}
+ \leq S_{p,N}(t)
+ \leq\frac{t e^{t/(N+1)}}{p-1}N^{1-p}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $u\geq0$, $u\leq e^u-1\leq ue^u$. Thus
+\[
+ t\sum_{n>N}n^{-p}\leq S_{p,N}(t)
+   \leq t e^{t/(N+1)}\sum_{n>N}n^{-p}.
+\]
+The integral test bounds the final sum between
+$(N+1)^{1-p}/(p-1)$ and $N^{1-p}/(p-1)$.
+\end{proof}
+
+\begin{proposition}[Asymptotic realization without absolute summation]
+\label{prop:prefix}
+For every fixed $N\geq1$ and every $p>1$,
+\begin{equation}\label{eq:prefix}
+ h_p(x)+\sum_{n=1}^{N}n^{1-p}x^{2-1/n}
+ \sim -(N+1)^{1-p}x^{2-1/(N+1)}
+ \quad(x\to0^+).
+\end{equation}
+In particular, $h_p$ realizes all finite Poincare prefixes of
+$\widehat h_p$, including in the divergent range $1<p\leq2$.
+Adding any constant multiple of $x^2$ leaves every such prefix unchanged.
+\end{proposition}
+\begin{proof}
+For fixed $N$, isolate the first term of the tail:
+\[
+ S_{p,N}(t)=(N+1)^{1-p}(e^{t/(N+1)}-1)+S_{p,N+1}(t).
+\]
+The upper estimate in Lemma~\ref{lem:tail} shows that the last term is
+$O(t e^{t/(N+2)})$, which is little-oh of $e^{t/(N+1)}$.
+Consequently $S_{p,N}(t)\sim(N+1)^{1-p}e^{t/(N+1)}$.
+The left side of \eqref{eq:prefix} equals
+$x^2\sum_{n\leq N}n^{1-p}-x^2S_{p,N}(t)$. The finite constant sum is
+negligible compared with $e^{t/(N+1)}$, proving the formula.
+Finally, $x^2=o(x^{2-1/n})$ for every fixed $n$.
+\end{proof}
+
+This is a precise boundary between three assertions often conflated in
+transseries manipulations. The series is formally valid. It is asymptotically
+realized to each fixed finite order. It is absolutely summable only for
+$p>2$. Neither of the first two assertions implies the third. The
+undetectable $Cx^2$ term is also the natural analogue, for this accumulating
+scale, of the repository's flat-function ambiguity.
+
+\section{The truncation crossover and an explicit uniform remainder}
+\label{sec:crossover}
+
+Fixed $N$ describes successive asymptotic prefixes; $N\to\infty$ at
+fixed $x$ describes convergence of the renormalized sum. The interesting
+transition occurs when both grow and $N$ is proportional to
+$t=\log(1/x)$. Set
+\begin{equation}\label{eq:fPhi}
+ f_p(s)=s^{1-p}(e^{1/s}-1),\qquad
+ \Phi_p(c)=\int_c^\infty f_p(s)\,ds
+          =\int_0^{1/c}u^{p-3}(e^u-1)\,du.
+\end{equation}
+Both integrals converge for $p>1$ and $c>0$.
+
+\begin{theorem}[Certified accumulation-scale crossover]
+\label{thm:crossover}
+Let $p>1$, $t>0$, $N\geq1$, and $c=N/t$. Then
+\begin{equation}\label{eq:crossover}
+ S_{p,N}(t)=t^{2-p}
+ \left(\Phi_p(c)-\frac{f_p(c)}{2t}
+             -\frac{f_p'(c)}{12t^2}+\mathcal E_{p,N,t}\right),
+\end{equation}
+with the explicit bound
+\begin{equation}\label{eq:EM-bound}
+ |\mathcal E_{p,N,t}|
+       \leq\frac{|f_p'''(c)|}{360t^4}.
+\end{equation}
+In particular, the expansion is uniform when $c$ ranges over a compact
+subinterval of $(0,\infty)$, with $p$ fixed. If $c>0$ is fixed and
+$t\to\infty$ along values with $ct\in\N$, then
+\begin{equation}\label{eq:EM-limit}
+ t^4\mathcal E_{p,ct,t}\longrightarrow\frac{f_p'''(c)}{720}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+From the definition,
+\[
+ S_{p,N}(t)=t^{1-p}\sum_{n>N} f_p(n/t).
+\]
+Thus $t^{p-2}S_{p,N}(t)$ is a right-endpoint Riemann sum with mesh
+$h=1/t$ beginning strictly after $c=Nh$.
+
+We record the needed half-line Euler--Maclaurin formula, including the
+constants. For a smooth integrable function $f$ whose relevant derivatives are
+integrable and decay at infinity,
+\begin{align}
+ h\sum_{k=1}^{\infty}f(c+kh)
+   ={}&\int_c^\infty f(s)\,ds-\frac h2f(c)
+      -\frac{h^2}{12}f'(c)+\frac{h^4}{720}f'''(c)
+      +\mathcal R_4,                                         \label{eq:EM}\\
+ |\mathcal R_4|\leq{}&\frac{h^4}{720}
+                          \int_c^\infty|f^{(4)}(s)|\,ds.     \label{eq:EM-rem}
+\end{align}
+This follows by integrating by parts with the periodic Bernoulli
+polynomials on successive mesh intervals. The coefficients are
+$B_2/2!=1/12$ and $B_4/4!=-1/720$; the boundary terms at infinity vanish.
+The periodic fourth Bernoulli polynomial divided by $4!$ has absolute
+value at most $1/720$, giving \eqref{eq:EM-rem}. This also proves the
+version on an infinite interval by first using a finite number of mesh
+intervals and passing to the limit.
+
+For our function,
+\begin{equation}\label{eq:complete-monotone}
+ f_p(s)=\sum_{k=1}^{\infty}\frac{s^{-(p+k-1)}}{k!}.
+\end{equation}
+The series and each derivative converge uniformly on $[c,\infty)$ after
+the appropriate integrable power bound. Every summand is completely
+monotone, so $f_p^{(4)}\geq0$ and $f_p'''\leq0$. Its derivatives tend
+to zero at infinity; hence
+\[
+ \int_c^\infty|f_p^{(4)}(s)|\,ds=-f_p'''(c)=|f_p'''(c)|.
+\]
+Combining the explicit fourth-order term in \eqref{eq:EM} with its
+remainder gives the factor $2/720=1/360$ in \eqref{eq:EM-bound}.
+Substituting $h=1/t$ proves \eqref{eq:crossover}.
+
+For the limit, apply the same formula two derivatives further. The
+sixth-derivative remainder is $O(h^6)$ for fixed $c$, since the positive
+inverse-power expansion gives integrability of every derivative from the
+first onward. Thus the fourth-order coefficient is
+$f_p'''(c)/720$ and the unrecorded terms are $O(h^6)$, proving
+\eqref{eq:EM-limit}. Bounds on these derivatives are uniform on a compact
+$c$-interval, which also proves the stated uniformity.
+\end{proof}
+
+\subsection{Reading the three regimes}
+If $N/t\to\infty$ and $N\to\infty$, the elementary bounds already
+imply
+\begin{equation}\label{eq:large-N}
+ S_{p,N}(t)\sim\frac{tN^{1-p}}{p-1}.
+\end{equation}
+Indeed, the ratio of the upper and lower bounds tends to one. When
+$N/t\to c\in(0,\infty)$, the leading term is instead
+$t^{2-p}\Phi_p(c)$. The exponent $p=2$ is critical: after factoring out
+$x^2$ in the solution error \eqref{eq:error-exact}, the transition scale
+has no extra power of $t$ at $p=2$, grows for $1<p<2$, and decays for
+$p>2$.
+
+At the critical exponent,
+\begin{equation}\label{eq:Phi2}
+ \Phi_2(c)=\int_0^{1/c}\frac{e^u-1}{u}\,du
+          =\sum_{k=1}^{\infty}\frac{c^{-k}}{k\,k!}.
+\end{equation}
+For general $p>1$, the corresponding absolutely convergent series is
+\begin{equation}\label{eq:Phi-series}
+ \Phi_p(c)=\sum_{k=1}^{\infty}
+   \frac{c^{-(p+k-2)}}{k!\,(p+k-2)}.
+\end{equation}
+These formulas also supply stable numerical evaluations of the transition
+function.
+
+The crossover is a joint truncation statement. It does not append a new
+canonical term at exponent $2$ to the formal series, nor does it justify
+exchanging an infinite Hahn sum with analytic evaluation. The dependence
+on how $N$ grows with $t$ is exactly the information that a fixed finite
+prefix leaves unresolved.
+
+\subsection{Numerical illustration}
+Table~\ref{tab:crossover} uses $p=2$, $c=1$, so $N=t$. Write
+\[
+ Q(t)=\Phi_2(1)-\frac{f_2(1)}{2t}-\frac{f'_2(1)}{12t^2}.
+\]
+The error column is computed from the convergent Hurwitz-zeta expansion
+\begin{equation}\label{eq:hurwitz}
+ S_{p,N}(t)=\sum_{k=1}^{\infty}
+                  \frac{t^k}{k!}\zeta(p+k-1,N+1),
+\end{equation}
+which follows by absolute summation exactly as in
+\eqref{eq:zeta-expansion}. The bound is a theorem, while the displayed
+decimals are high-precision floating-point illustrations, not interval
+certificates.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{rrrr}
+\toprule
+$t=N$ & $S_{2,N}(t)$ & $S_{2,N}(t)-Q(t)$ & Proved error bound\\
+\midrule
+20 & 1.275868641749 & $-7.48089\times10^{-7}$ & $1.50037\times10^{-6}$\\
+40 & 1.296654652769 & $-4.68538\times10^{-8}$ & $9.37734\times10^{-8}$\\
+80 & 1.307220654853 & $-2.92990\times10^{-9}$ & $5.86084\times10^{-9}$\\
+160 & 1.312546962496 & $-1.83143\times10^{-10}$ & $3.66302\times10^{-10}$\\
+\bottomrule
+\end{tabular}
+\caption{The critical accumulation crossover. Decimal computations use
+85-digit working precision; the bound is \eqref{eq:EM-bound}.}
+\label{tab:crossover}
+\end{table}
+
+\section{Computation, verification, and a route to Lean}
+\label{sec:verification}
+
+\subsection{Finite exact normalizer}
+The supplied \path{verification/verify.py} represents a matrix series as a
+dictionary from rational exponents to exact SymPy matrices. For a finite
+positive rational support and a rational cutoff, it enumerates the generated
+semigroup below the cutoff, processes exponents in increasing order, and
+uses \eqref{eq:T} and \eqref{eq:recurrence}. After constructing $H$ and
+$R$, it checks the complete coefficient residual of \eqref{eq:gauge},
+including all matrix products, at every enumerated exponent. It also
+checks the normalization masks and nilpotence of $B$.
+
+The code accepts commuting nilpotent $N$ rather than assuming a semisimple
+constant matrix. This matters: the finite geometric inverse and its
+noncommutative products are among the places most susceptible to a sign
+or projection error. Exact checks include the symbolic polynomial
+$e+c(a-d)$, sharp chains of ranks $1$ through $7$, and examples with a
+nontrivial repeated-eigenvalue Jordan block.
+
+The recorded run, with seed $20260929$, has the following scope:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Verification item & Count\\
+\midrule
+Exact finite gauge systems & 33\\
+Exact coefficient checks, including scalar counterexample checks & 292\\
+Crossover parameter cases & 36\\
+\bottomrule
+\end{tabular}
+\end{center}
+The numerical cases use $p\in\{1.5,2,2.5\}$,
+$c\in\{0.5,1,2\}$, and $t\in\{20,40,80,160\}$. They compare
+\eqref{eq:hurwitz} with both \eqref{eq:tail-bounds} and
+\eqref{eq:EM-bound}, and record convergence toward
+\eqref{eq:EM-limit}. The environment was Python~3.13.5,
+SymPy~1.14.0, and mpmath~1.3.0.
+
+These are reproducible finite consistency checks, not substitutes for the
+proofs. They do not establish the infinite-support recursion, the universal
+quantifiers in Theorem~\ref{thm:universal}, or arbitrary-support
+well-ordering. No Lean code in this package has been claimed to prove those
+statements.
+
+\subsection{A formalization decomposition}
+A direct Lean development can be organized around four interfaces, each
+with a narrow mathematical contract.
+
+\paragraph{Support arithmetic.}
+Reuse the repository's two-factor additive Neumann bridge to prove the
+positive-semigroup finite-word lemma. The additional content is the real
+lower bound $\delta$ and the conversion of a fixed exponent bound into a
+natural-number word-length bound. Do not assume that bounded supports are
+finite.
+
+\paragraph{Finite-dimensional homological algebra.}
+Formalize the spectral-difference masks, their commutation with $\ad N$,
+the identity $(\ad N)^{2m-1}=0$, and the finite inverse
+\eqref{eq:T}. This component is independent of Hahn series and can be
+checked over a characteristic-zero field with suitable eigenvalue data.
+
+\paragraph{Strong Hahn derivation and recursive gauge.}
+Lift those operators coefficientwise and prove the valuation improvement
+\eqref{eq:valuation-contraction}. The derivative's product rule, the
+normal-form equation, and constants in $\K[L]$ should be explicit
+interfaces, not informal consequences of a field name. The repository's
+block-antiderivative API is related algebra, but it is not already a
+formalization of this matrix construction.
+
+\paragraph{Analytic realization.}
+Build the weighted $\ell^1$ convolution algebra, prove the operator norm
+bounds and contraction estimates, and only then supply a branchwise
+analytic evaluation map. The universal converse can be formalized
+separately with the rank-one family. This prevents analytic summation from
+being silently built into the formal Hahn datatype.
+
+The suggested theorem targets are therefore finite-word support,
+normalized gauge existence and uniqueness, nilpotent log filtration,
+finite ancestry, absolute-convergence preservation, and its sharp failure
+criterion. None is asserted to be present in the inspected repository
+merely because related names already exist there.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+
+\subsection{Universal convergence for a fixed smaller input support}
+Theorem~\ref{thm:universal} quantifies over all inputs supported in $\G$.
+Fix instead a generating set $E\subsetneq\G$ and allow coefficients only
+on $E$. Is the absence of a left-accumulating spectral difference in $\G$
+still necessary? A bad exponent might be reachable only through a long
+product whose coefficients or matrix directions are constrained. A useful
+first target is a triangular three-dimensional system with two permitted
+matrix units and an accumulating two-letter sumset. This asks whether an
+additive obstruction must have a realizable noncommutative path.
+
+\subsection{Weighted convergence in the zero-gap case}
+For the square-zero family, convergence is exactly a weighted summability
+condition after division by $\gamma-\rho$. For general matrices, products
+of several small divisors appear. Construct a weight on exponent paths that
+is both sufficient for a Banach fixed-point argument and close to necessary.
+One candidate is the least submultiplicative majorant of the homological
+inverse norms. The main issue is whether cancellations permit substantially
+larger classes than any absolute path majorant can capture.
+
+\subsection{Renormalization compatible with multiplication and gauge change}
+The difference sum in \eqref{eq:Psi} gives one natural analytic realization
+of a divergent normalizer, selected by a boundary value at $x=1$. Can this
+be extended to a summation operation on an algebra of accumulating-support
+series that commutes with $D$ and respects products? Different normalizing
+conditions add resonant homogeneous terms. A precise first task is to
+classify all such realizations for upper-triangular rank-three systems and
+identify the additional compatibility identities caused by nonzero
+products of matrix units.
+
+\subsection{Uniform spectral parameters and moving accumulation resonances}
+Let the positive eigenvalue difference vary through an accumulation point
+of $\G$. The constant $C$ in \eqref{eq:C} blows up, even though individual
+solutions may continue after renormalization. Determine a uniform scaling
+limit with $\rho-\gamma_n$ and the spectral displacement competing. The
+model $\gamma_n=2-1/n$ suggests transition parameters involving both
+$N/\log(1/x)$ and the displacement times $N$. A uniform theorem should
+separate exact resonance, near-resonance, and the accumulation boundary.
+
+\subsection{Iterated-logarithmic coefficient fields}
+Replace the constant matrices $A_\alpha$ by controlled Hahn series in
+$\log(1/x)$ and further iterated logarithms. Which parts of the finite
+matrix certificate survive, and when does one additional logarithmic level
+suffice? This connects directly with the earlier residue-depth results in
+ProveIt. A first tractable case keeps the outer exponent gap positive and
+allows one rational function of $\log(1/x)$ in each coefficient. The
+scalar block inverse then interacts with the matrix spectral inverse.
+
+\subsection{Higher-rank exponent groups and the loss of finite word depth}
+In a non-Archimedean exponent group, a positive generator can be smaller
+than every positive real multiple of another scale. The bound
+$k\delta\leq r_*$ need not bound $k$. Find an intrinsic replacement for
+the finite-ancestry hypothesis, perhaps a no-infinite-resonant-path
+condition. The intended conclusion is not necessarily a finite ordinary
+matrix but a controlled transfinite filtration. A counterexample to a naive
+finite-depth extension would be as informative as a sufficient theorem.
+
+\subsection{Effective critical ancestry and exact real presentations}
+For finite rational generators, the included algorithm is elementary.
+For finite algebraic generators, exact comparison and equality are still
+available but implementation costs differ. For infinite computable supports,
+identify representation hypotheses under which $E_{\mathrm{crit}}$ can
+actually be extracted. A useful deliverable would be a theorem separating
+finite dependence, semidecidable resonance detection, and decidable complete
+certificates, rather than conflating these three levels.
+
+\subsection{Geometry of the logarithmic strata}
+The loci $B^{d+1}=0$ are algebraic in critical coefficient data. Determine
+their irreducible components and generic codimensions for a prescribed
+spectral graph. Even a three- or four-level chain can have cancellation
+between several paths. The polynomial $e+c(a-d)$ is the first nontrivial
+example. Higher-rank cases could give a useful classification of when
+logarithms disappear under parameter tuning and when a small perturbation
+necessarily restores them.
+
+\subsection{Irregular systems and exponential transseries sectors}
+For an irregular system, exponentially small or large normal-form sectors
+introduce a second source of divergence, distinct from accumulation at a
+finite spectral difference. Develop a model in which one irregular
+exponential sector and one accumulating real-exponent support coexist.
+The immediate goal is a theorem separating a Borel-summation obstruction
+from the absolute small-divisor obstruction proved here. Existing
+resurgence terminology alone does not identify which mechanism is active.
+
+\subsection{Formal verification of the sharp equivalence}
+The most valuable initial proof-assistant target is not the numerical
+crossover but Theorem~\ref{thm:universal}: its quantifiers expose the
+formal/analytic distinction particularly clearly. A staged project can
+first verify the square-zero counterexample and the finite-dimensional
+inverse, then the $\ell^1$ contraction, and finally the positive-Hahn
+support layer. The finite-ancestry certificate would make a natural exact
+computational interface on top of that verified core.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The formal normal form and the analytic convergence problem have different
+answers. Positive well-ordered supports suffice for a unique normalized
+Hahn gauge. Exact resonances reduce to a finite nilpotent matrix, and even
+an infinitely populated low-exponent region contributes only finitely many
+ancestors to its logarithmic obstruction. But absolute convergence depends
+on an additional relation between the exponent semigroup and the spectrum.
+The required relation is exactly a uniform gap from the nonresonant
+spectral differences.
+
+The explicit family with exponents $2-1/n$ demonstrates all the distinctions
+at once. Its coefficients converge for $p>1$, its formal normalizer
+converges only for $p>2$, and its renormalized analytic solution realizes
+every finite asymptotic prefix throughout the whole range $p>1$. The
+transition $N\asymp\log(1/x)$ quantifies the information lost when an
+accumulating formal expansion is treated as an ordinary convergent sum.
+
+These results offer a specific extension of the repository's support,
+resonance, and flatness calculus. They also delimit that extension: the
+proofs concern the stated real-exponent Fuchsian class, not general
+transseries equations; the certificate is mathematically finite but not
+automatically computable from arbitrary infinite presentations; and
+historical priority remains a separate question from the correctness of
+the supplied proofs.
+
+\appendix
+\section{Proof and provenance audit}
+\label{sec:audit}
+
+\subsection{Assumptions that must not be dropped}
+The formal construction uses positive real input exponents with a common
+positive least element, well ordering, finite matrix dimension, and a
+real-spectrum constant matrix. The log-degree classification fixes the
+ambient algebra $\K[L]$. The analytic criterion uses absolute
+$\ell^1$ convergence in a fixed Jordan basis and quantifies over the whole
+positive semigroup. The uniform crossover holds for $p>1$ and for $N\geq1$;
+its compact-parameter assertion keeps $N/t$ away from zero and infinity.
+
+Each restriction has a role. The positive lower bound controls the number
+of input factors. Well ordering controls finite coefficient convolution.
+Real eigenvalues allow real monomials $x^{\lambda_i}$ in the chosen Hahn
+field. Absolute norms justify products and analytic evaluation. The
+whole-semigroup quantifier is needed for the converse construction. The
+fixed logarithmic algebra makes minimal log degree a well-posed invariant.
+
+\subsection{Dependency map}
+Lemma~\ref{lem:words} and Lemma~\ref{lem:inverse} imply the formal
+normalization. The normal form, the constant-field lemma, and the
+nilpotence of $B$ imply the log filtration. Finite-word dependence gives
+the ancestry certificate. The analytic forward direction adds a uniform
+operator bound and Banach contraction; the converse uses only the spectral
+gap characterization and a rank-one eigenmatrix. The model and crossover
+are proved independently by scalar summation and Euler--Maclaurin, so they
+do not depend on unproved analytic realization of arbitrary Hahn series.
+
+\subsection{Repository inspection boundary}
+The snapshot was pinned to \snap. The group index, canonical-package
+status documentation, the two-factor Hahn-support Lean module, the
+block-antiderivative module, and the earlier residue-obstruction package
+README were inspected through the connected GitHub tools. The canonical
+large TeX volume exceeded the connector's content limit; no claim of an
+exhaustive line-by-line audit of that volume or the whole repository is made.
+The supplied provenance JSON records file paths, blob identifiers, and the
+scope of inspected ranges. No repository file was modified.
+
+\subsection{Novelty and verification boundary}
+The normal-form architecture specializes to classical Fuchsian theory, and
+the finite-obstruction philosophy has an explicit repository antecedent.
+The spectral accumulation equivalence, its sharp analytic examples, the
+finite-ancestry formulation, and the uniform crossover are the proposed
+research additions developed here. The literature check was targeted, not
+exhaustive; no independent peer review has occurred. The exact scripts
+check finite algebraic instances, while the numerical results illustrate
+bounds proved in the text. Neither is represented as a machine proof of
+the general theorems.
+
+\begin{thebibliography}{99}
+\bibitem{repo-index}
+Vladimir Reshetnikov, \emph{ProveIt: Series and transseries}, repository
+group index, snapshot \snap, inspected 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/04473354a0f3edff2d6c365caf26170ca6b88735/Analysis/Transseries/docs/series-and-transseries/README.md}.
+
+\bibitem{repo-wellbased}
+Vladimir Reshetnikov, ProveIt contributors,
+\emph{TransseriesWellBased.lean}, same repository snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/04473354a0f3edff2d6c365caf26170ca6b88735/Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}.
+The additive two-factor interfaces used for the crosswalk are
+\texttt{Fabius.neumann\_add\_isPWO} and
+\texttt{Fabius.neumann\_finite\_decompositions}.
+
+\bibitem{repo-block}
+Vladimir Reshetnikov, ProveIt contributors,
+\emph{TransseriesBlockAntiderivative.lean}, same repository snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/04473354a0f3edff2d6c365caf26170ca6b88735/Analysis/Transseries/Lean/Transseries/TransseriesBlockAntiderivative.lean}.
+
+\bibitem{repo-residue}
+\emph{Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn
+Transseries}, ProveIt research-package README, dated 29 September 2026,
+same repository snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/04473354a0f3edff2d6c365caf26170ca6b88735/Analysis/Transseries/docs/series-and-transseries/Residue_Obstructions_Logarithmic_Depth_Promotion/README.md}.
+The comparison in this article is with the results and scope stated in
+that package's README.
+
+\bibitem{tanny-yakovenko}
+Shira Tanny and Sergei Yakovenko,
+\emph{On local Weyl equivalence of higher order Fucshian equations},
+arXiv:1412.7830 (2014).
+\url{https://arxiv.org/abs/1412.7830}.
+The spelling of ``Fucshian'' follows the arXiv title; p.~6 of the PDF
+records the classical resonant polynomial normal form.
+
+\bibitem{vdh}
+Joris van der Hoeven,
+\emph{Operators on generalized power series},
+Illinois Journal of Mathematics \textbf{45} (2001), no.~4,
+DOI: 10.1215/ijm/1258138061.
+\url{https://www.texmacs.org/joris/noeth/noeth.html}.
+
+\bibitem{joswig-smith}
+Michael Joswig and Ben Smith,
+\emph{Convergent Hahn Series and Tropical Geometry of Higher Rank},
+arXiv:1809.01457.
+\url{https://arxiv.org/abs/1809.01457}.
+Cited for the broader study of convergent Hahn series, not as a source for
+the differential-equation criterion proved here.
+\end{thebibliography}
+\end{document}

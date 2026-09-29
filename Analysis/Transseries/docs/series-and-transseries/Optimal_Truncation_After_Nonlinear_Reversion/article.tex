@@ -1,0 +1,1094 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext}
+\usepackage{mathtools,amsthm}
+\usepackage{newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,fancyhdr,enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Optimal Truncation after Nonlinear Reversion},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={A sharp cutoff-transfer theorem and the inverse harmonic function}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks[2]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Optimal truncation after nonlinear reversion}
+\fancyhead[R]{\small ProveIt research extension}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{problem}{Research question}
+\numberwithin{equation}{section}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\mathop{}\!\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\Oh}{\mathcal O}
+\newcommand{\cF}{\mathcal C}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\trunc}[2]{[\,#1\,]_{\le #2}}
+\newcommand{\scal}{\mathcal E}
+\newcommand{\rising}[2]{(#1)_{#2}}
+\newcommand{\repo}{\textit{ProveIt}}
+\begin{document}
+\pagenumbering{roman}
+\begin{titlepage}
+\vspace*{8mm}
+\noindent{\large\scshape Transseries, asymptotic inversion, and exponential accuracy}\par
+\vspace{10mm}
+\noindent{\huge\bfseries\raggedright Optimal Truncation\\[2mm] after Nonlinear Reversion\par}
+\vspace{7mm}
+\noindent{\Large A sharp cutoff-transfer theorem and the\\inverse harmonic function\par}
+\vspace{10mm}
+\noindent Research article prepared for Vladimir Reshetnikov\par
+\noindent 29 September 2026\par
+\vspace{7mm}\hrule\vspace{5mm}
+\begin{abstract}
+Inverting a truncated asymptotic expansion and truncating its formal inverse are different operations. The \repo\ article on inverse harmonic transseries explicitly leaves open the sharp error of the latter. We resolve that optimal-scale question by proving a general nonlinear cutoff-transfer theorem for factorially growing logarithmic corrections. A low/high coefficient decomposition isolates the contribution of the moving cutoff; at every relative algebraic order, only finitely many coefficients next to that cutoff contribute.
+
+For $\psi(W(X)+\tfrac12)=\log X$ and its direct inverse partial sum $S_M(X)$, put $\sigma=M+1-\pi X$. Uniformly for bounded $\sigma$, we obtain
+\[
+ S_M-W=(-1)^M\sqrt X\,\e^{-2\pi X}
+ \left[1+\frac1X\left\{-\frac\pi{12}
+ +\frac{2\sigma^2-3\sigma+7/12}{2\pi}\right\}
+ +\Oh(X^{-2})\right].
+\]
+We prove a complete, effectively computable expansion of its algebraic amplitude, display the second correction, and obtain an eventual signed first-omitted-term bound in the least-term window. A corrected adjacent-partial-sum average improves the error by any prescribed fixed algebraic factor without solving a truncated nonlinear equation. Exact-rational shifted-digamma certificates and 312-digit numerical checks accompany the proofs.
+\end{abstract}
+\vspace{3mm}
+\noindent\textbf{Status.} This is a proof-focused research draft. It resolves the stated repository question in the bounded-offset regime, not a global enveloping conjecture for every truncation order. The classical inverse coefficients and special-function identities are credited. Global priority for the cutoff-transfer theorem has not been established; no new Lean verification or independent refereeing is claimed.
+\vfill
+\noindent\small Inspected repository reference:\par
+\noindent\small\texttt{04473354a0f3edff2d6c365caf26170ca6b88735}.\par
+\noindent\small Standalone LaTeX, PDF, verification programs, and recorded results are supplied together.
+\end{titlepage}
+\begingroup
+\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\pagenumbering{arabic}
+\section{The question resolved and the contribution boundary}
+\label{sec:scope}
+
+\subsection{A specific unresolved question in the repository}
+The starting point is the document \emph{Exponential Accuracy and Stokes Transport for Inverse Harmonic Transseries}, in
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/\\
+Inverse\_Harmonic\_Stokes\_Transport/
+\end{quote}
+of \repo\ \cite{prior,group}. Its problem labelled \texttt{prob:direct} asks for an enveloping estimate for direct inverse partial sums and, specifically, their sharp remainder when $M-\pi X$ is bounded. The distinction is explicit: the sharp theorem already proved there concerns the root of a truncated \emph{forward} expansion, not a partial sum of the inverse series. We retain that distinction throughout.
+
+The present result answers the bounded-offset part of that question, including a signed first-omitted-term bound on that asymptotic window. It also supplies a reusable theorem explaining how nonlinear reversion interacts with a factorially moving cutoff. The proof does not assume that positivity of a forward integral survives inversion. Rather, it controls the difference between the two approximations and derives the sign afterward.
+
+The current repository places generic transseries work under \path{Analysis/Transseries}; some earlier articles still cite the old Fabius-based path. All repository references here use the inspected reference printed on the title page. A subsequent branch check showed that the repository had advanced; no claim is made that the pinned reference remains the current branch head.
+
+\subsection{What is, and is not, new in the argument}
+The inverse-digamma coefficient problem has an established history. Issaka derives coefficient formulas and coefficient asymptotics for Ramanujan's inverse-digamma expansion \cite{issaka,thesis}. General formal Lagrange inversion is classical; Gessel provides a systematic account \cite{gessel}. Fabijonas and Olver emphasize the distinction between asymptotic reversion and actual error bounds \cite{fo}. These works are relevant antecedents, not results superseded by a new name.
+
+The repository predecessor supplies a centered positive integral, the sharp forward-truncation inverse error, and an explicit large-order analysis. We reproduce the necessary real-variable arguments below so that the present result does not depend on an unproved invocation of that draft. We do \emph{not} count the known formula for $h_n$, its first coefficients, or its factorial scale as new results.
+
+The additional ingredient is \cref{thm:cutoff}: an all-orders estimate for the error made by commuting reversion and a moving coefficient cutoff. Its proof separates a safely convergent low-degree core from an exponentially small high-degree perturbation. Two high-degree factors cannot contribute to the retained polynomial, and are exponentially smaller at the evaluation point. This yields the finite diagonal formula \eqref{eq:diagonal}. Its specialization gives the sharp direct error, the correction polynomials, and the local enveloping and extrapolation laws.
+
+General resurgence and Borel--Laplace closure under inversion belong to existing theory, including Sauzin's work \cite{sauzin}. Those theorems are not needed in our positive-real proof. In particular, we do not infer a precise optimal-truncation error merely from a summability assertion.
+
+\subsection{The logical structure}
+The argument has three layers. The forward function supplies an exact remainder integral. A general cutoff theorem supplies the difference between the inverse of the truncated forward function and the direct inverse partial sum. Combining the two produces the actual direct error. Finally, adjacent partial sums convert that error expansion into finite, explicitly weighted approximations with smaller algebraic amplitudes.
+
+The computational layer is separate. Symbolic identities test the finite algebra. High-precision evaluations test the asymptotic constants. Exact-rational enclosures test six particular real values without floating-point premises. None of these finite tests substitutes for the arbitrary-order proofs.
+
+\section{Normalization and the formal inverse}
+\label{sec:normalization}
+
+Let $\psi=\Gamma'/\Gamma$ be the digamma function, and define
+\begin{equation}
+ F(w)=\psi(w+\tfrac12),\qquad C(w)=F(w)-\log w.
+ \label{eq:F}
+\end{equation}
+For sufficiently large real $X$, let $W(X)>0$ be the solution of
+\begin{equation}
+ F(W(X))=\log X.
+ \label{eq:inverse}
+\end{equation}
+The customary harmonic interpolation $H(x)=\psi(x+1)+\gamma$ is recovered by
+\begin{equation}
+ H^{-1}(y)=W(\e^{y-\gamma})-\tfrac12.
+ \label{eq:harmonic}
+\end{equation}
+Thus every error statement for $W$ is immediately an error statement for that harmonic inverse, with $X=\e^{y-\gamma}$.
+
+Use $C$ for the exact function and $\cF$ for its formal expansion in $z=w^{-2}$:
+\begin{equation}
+ \cF(z)=\sum_{j\ge1}c_jz^j,
+ \qquad c_j=-\frac{B_{2j}(1/2)}{2j}.
+ \label{eq:Cformal}
+\end{equation}
+Here $B_n(x)$ is the Bernoulli polynomial. The first coefficients are
+\begin{equation}
+ c_1=\frac1{24},\qquad c_2=-\frac7{960},\qquad
+ c_3=\frac{31}{8064},\qquad c_4=-\frac{127}{30720}.
+ \label{eq:cfirst}
+\end{equation}
+The centered expansion and the identities used below follow from standard gamma-function formulas \cite{dlmf}.
+
+\begin{proposition}[Formal coefficients]
+\label{prop:formal}
+There is a unique formal series $q(z)=1+\sum_{n\ge1}h_nz^n$ satisfying
+\begin{equation}
+ \log q(z)+\cF\bigl(z/q(z)^2\bigr)=0.
+ \label{eq:qformal}
+\end{equation}
+Its coefficients are
+\begin{equation}
+ h_n=-\frac1{2n-1}\coef{u}{n}
+          \exp\bigl((2n-1)\cF(u)\bigr),\qquad n\ge1.
+ \label{eq:hformula}
+\end{equation}
+For every fixed $N$, the actual inverse has the expansion
+\begin{equation}
+ W(X)=X+\sum_{n=1}^{N}h_nX^{1-2n}+\Oh_N(X^{-2N-1}).
+ \label{eq:fixed}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $v=1/W$ and $t=1/X$. The formal inverse relation is
+$v=t\exp(\cF(v^2))$. Lagrange inversion, equivalently a change of variable in a formal residue, gives
+\[
+ \coef{t}{2n-1}\frac1{v(t)}
+ =-\frac1{2n-1}\coef{u}{2n}
+              \exp\bigl((2n-1)\cF(u^2)\bigr).
+\]
+This proves \eqref{eq:hformula}; coefficient recursion in \eqref{eq:qformal} also proves uniqueness. For a fixed $N$, substitution of the finite inverse candidate into a sufficiently long finite forward expansion cancels the residual through order $X^{-2N}$. The remaining residual is $\Oh_N(X^{-2N-2})$. The integral representation in the next section justifies the forward expansion and gives $F'(w)\asymp X^{-1}$ near $w=X$. The mean value theorem then yields \eqref{eq:fixed}.
+\end{proof}
+
+In particular,
+\begin{equation}
+ h_1=-\frac1{24},\quad h_2=\frac3{640},\quad
+ h_3=-\frac{1525}{580608},\quad h_4=\frac{615881}{199065600}.
+ \label{eq:hfirst}
+\end{equation}
+Define the two approximations that must not be conflated:
+\begin{align}
+ S_M(X)&=X+\sum_{n=1}^M h_nX^{1-2n},\label{eq:SM}\\
+ P_M(w)&=\log w+\sum_{j=1}^Mc_jw^{-2j},
+ \qquad P_M(u_M(X))=\log X,\quad u_M(X)\sim X.
+ \label{eq:uM}
+\end{align}
+The branch in the last equation is specified locally near $X$. A high-degree $P_M$ need not be globally monotone.
+
+Throughout the harmonic application,
+\begin{equation}
+ \sigma=M+1-\pi X,\qquad
+ \scal(X)=\sqrt X\,\e^{-2\pi X}.
+ \label{eq:scale}
+\end{equation}
+Uniformity for bounded $\sigma$ means that for every compact $K\subset\R$, the indicated constants work simultaneously for all integers $M$ and all sufficiently large real $X$ with $\sigma\in K$.
+
+\section{The forward remainder and its sharp inverse transport}
+\label{sec:forward}
+
+\subsection{An exact positive integral}
+\begin{lemma}[Centered Binet remainder]
+\label{lem:fermi}
+For $w>0$,
+\begin{equation}
+ C(w)=2\int_0^\infty
+   \frac{t}{(w^2+t^2)(\e^{2\pi t}+1)}\,\dd t.
+ \label{eq:fermi}
+\end{equation}
+Put $a_j=|c_j|$. Then
+\begin{equation}
+ a_j=\frac{2\Gamma(2j)}{(2\pi)^{2j}}\eta(2j),
+ \qquad c_j=(-1)^{j+1}a_j,
+ \label{eq:eta}
+\end{equation}
+where $\eta(s)=\sum_{k\ge1}(-1)^{k-1}k^{-s}$. The remainder $R_M=F-P_M$ is
+\begin{equation}
+ R_M(w)=2(-1)^Mw^{-2M}
+ \int_0^\infty\frac{t^{2M+1}}{(w^2+t^2)(\e^{2\pi t}+1)}\,\dd t,
+ \label{eq:remainder}
+\end{equation}
+and satisfies
+\begin{align}
+ 0<(-1)^MR_M(w)&<a_{M+1}w^{-2M-2},\label{eq:rembound}\\
+ |R'_M(w)|&\le\frac{2M+2}{w}|R_M(w)|.
+ \label{eq:remderivative}
+\end{align}
+\end{lemma}
+\begin{proof}
+The duplication identity gives
+$\psi(w+1/2)=2\psi(2w)-\psi(w)-2\log2$. Insert Binet's integral for $\psi$, rescale the integral with argument $2w$, and use
+\[
+ \frac1{\e^s-1}-\frac2{\e^{2s}-1}=\frac1{\e^s+1}.
+\]
+This proves \eqref{eq:fermi}. Finite geometric expansion of $(w^2+t^2)^{-1}$ gives \eqref{eq:remainder}. Its moments are
+$2\int_0^\infty t^{2j-1}(\e^{2\pi t}+1)^{-1}\dd t$.
+Expanding the kernel as an alternating exponential sum and integrating yields \eqref{eq:eta}; the integrated absolute sum converges for $2j>1$.
+
+Positivity gives the sign, and replacing the denominator $w^2+t^2$ by $w^2$ gives the upper bound. Differentiating the integral gives a relative contribution $2M/w$ from its prefactor and at most $2/w$ from its denominator, proving \eqref{eq:remderivative}. Exponential decay justifies differentiation on every compact positive $w$-interval.
+\end{proof}
+
+The trigamma series also gives
+\begin{equation}
+ F'(w)=\sum_{k\ge0}(w+\tfrac12+k)^{-2}>\frac1{w+1/2}.
+ \label{eq:slope}
+\end{equation}
+For $X\ge1$, the inverse lies in
+\begin{equation}
+ I_X=[a,X],\qquad a=X-\frac1{12X}.
+ \label{eq:bracket}
+\end{equation}
+Indeed, \eqref{eq:rembound} gives $F(X)>\log X$ and
+\[
+ F(a)-\log X<\log(a/X)+\frac1{24a^2}
+ \le-\frac1{12X^2}+\frac1{24a^2}<0,
+\]
+since $a\ge11X/12$. Strict monotonicity then proves existence and uniqueness in $I_X$.
+
+\subsection{Gamma concentration at the least term}
+\begin{lemma}[Uniform forward expansion]
+\label{lem:gamma}
+Let $n=M+1$, $b=2\pi w$ and $\tau=n-\pi w$. Uniformly for bounded $\tau$,
+\begin{equation}
+ R_M(w)=(-1)^Mw^{-1/2}\e^{-2\pi w}
+ \left[1+\frac{2\tau^2-3\tau+7/12}{2\pi w}
+ +\Oh(w^{-2})\right].
+ \label{eq:gammafirst}
+\end{equation}
+There is a full expansion in integral powers of $w^{-1}$, with polynomial coefficients in $\tau$ and a uniform remainder at every fixed order.
+\end{lemma}
+\begin{proof}
+Set $s=2n=b+2\tau$. Substitution $u=2\pi t$ in \eqref{eq:remainder} gives
+\begin{equation}
+ R_M(w)=(-1)^M\frac{2\Gamma(s)}{b^s}
+ \left[\mathbb E f(U/b)+\Oh(2^{-s})\right],
+ \quad f(v)=\frac1{1+v^2},
+ \label{eq:expectation}
+\end{equation}
+where $U$ is gamma distributed with shape $s$ and unit scale. The normalized error is at most $2^{-s}$ because
+$0<\e^{-u}-(\e^u+1)^{-1}<\e^{-2u}$ and $0<f\le1$.
+
+At $v=1$, the first four derivative values needed are
+$f(1)=1/2$, $f'(1)=-1/2$, $f''(1)=1/2$, $f'''(1)=0$.
+The exact gamma moments imply
+\[
+ \mathbb E(U/b-1)=\frac{2\tau}{b},\qquad
+ \mathbb E(U/b-1)^2=\frac1b+\Oh(b^{-2}),\qquad
+ \mathbb E(U/b-1)^4=\Oh(b^{-2}).
+\]
+All derivatives of $f$ are bounded on $[0,\infty)$. Taylor's theorem therefore gives
+\[
+ \mathbb E f(U/b)=\frac12+\frac{1/4-\tau}{b}+\Oh(b^{-2}).
+\]
+The shifted Stirling expansion \cite{dlmf} is
+\begin{equation}
+ \frac{\Gamma(b+d)}{b^{b+d}}=
+ \sqrt{2\pi}\,b^{-1/2}\e^{-b}
+ \left[1+\frac{d^2/2-d/2+1/12}{b}+\Oh(b^{-2})\right].
+ \label{eq:stirling1}
+\end{equation}
+Taking $d=2\tau$ proves \eqref{eq:gammafirst}.
+
+For any fixed order $J$, expand $f$ through degree $2J-1$. Its Taylor remainder is bounded by a constant times $|U/b-1|^{2J}$, whose expectation is $\Oh(b^{-J})$. Every moment is an explicit polynomial expression:
+\begin{equation}
+ \mathbb E(U/b-1)^j=
+ \sum_{\ell=0}^j\binom j\ell(-1)^{j-\ell}
+             \frac{\rising{s}{\ell}}{b^\ell}.
+ \label{eq:moments}
+\end{equation}
+The full shifted logarithmic Stirling expansion is
+\begin{equation}
+ \log\frac{\Gamma(b+d)}{\sqrt{2\pi}\e^{-b}b^{b+d-1/2}}
+ \sim\sum_{r\ge1}\frac{(-1)^{r+1}B_{r+1}(d)}{r(r+1)b^r}.
+ \label{eq:stirlingall}
+\end{equation}
+Its fixed-order remainders are uniform for bounded $d$. Multiplication of the finite expansions proves the assertion to every fixed order. Polynomiality follows from \eqref{eq:moments} and \eqref{eq:stirlingall}.
+\end{proof}
+
+\begin{proposition}[Forward-truncation inverse, with its own correction]
+\label{prop:forwardinverse}
+For sufficiently large $X$ and bounded $\sigma$, the local root $u_M$ in \eqref{eq:uM} exists in $I_X$. There are polynomials $B_j(\sigma)$, $B_0=1$, such that for every fixed $J\ge1$,
+\begin{equation}
+ u_M-W=(-1)^M\scal(X)
+ \left[\sum_{j=0}^{J-1}\frac{B_j(\sigma)}{X^j}+\Oh_J(X^{-J})\right].
+ \label{eq:Bexp}
+\end{equation}
+The first correction is
+\begin{equation}
+ B_1(\sigma)=\frac\pi{12}
+       +\frac{2\sigma^2-3\sigma+7/12}{2\pi}.
+ \label{eq:B1}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The endpoint signs used in \eqref{eq:bracket} have margins bounded below by a constant times $X^{-2}$. By \eqref{eq:eta}, Stirling's formula and bounded $\sigma$, the bound for $R_M$ throughout $I_X$ is $\Oh(X^{-1/2}\e^{-2\pi X})$. Equation \eqref{eq:remderivative} gives the same exponential scale for its derivative. Hence the endpoint signs persist for $P_M$, and $P'_M=F'-R'_M>0$ on $I_X$ for sufficiently large $X$.
+
+Put $w=W(X)$ and $\delta=u_M-w$. The mean value theorem first gives $\delta=\Oh(\scal(X))$. Taylor expansion of
+$F(w+\delta)-F(w)=R_M(w+\delta)$ then gives
+\begin{equation}
+ \delta=\frac{R_M(w)}{F'(w)}+\Oh(X\e^{-4\pi X}).
+ \label{eq:transport}
+\end{equation}
+For this estimate, use $F'\asymp X^{-1}$, $F''=\Oh(X^{-2})$, and the bound for $R'_M$. The error in \eqref{eq:transport} is smaller than $\scal(X)X^{-J}$ for every fixed $J$.
+
+Now $w=X-1/(24X)+\Oh(X^{-3})$ and
+$1/F'(w)=w(1+\Oh(w^{-2}))$. Consequently
+\[
+ \sqrt w\e^{-2\pi w}=\scal(X)
+   \left[1+\frac\pi{12X}+\Oh(X^{-2})\right],
+ \qquad
+ M+1-\pi w=\sigma+\frac\pi{24X}+\Oh(X^{-3}).
+\]
+Insert \cref{lem:gamma} into \eqref{eq:transport}. This proves \eqref{eq:B1}. At any higher fixed order, the same calculation uses sufficiently many terms of \eqref{eq:fixed}, \eqref{eq:moments}, \eqref{eq:stirlingall}, and the reciprocal expansion for $F'$. All substitutions are finite; the corresponding fixed-order remainders can be chosen smaller than the requested final order.
+\end{proof}
+
+\begin{remark}
+\Cref{prop:forwardinverse} is the predecessor's forward-inverse result, re-established here as an input. Its $+\pi/12$ is not the direct-series correction. Replacing it by the latter requires the next theorem.
+\end{remark}
+
+\section{A general nonlinear cutoff-transfer theorem}
+\label{sec:cutoff}
+
+We now leave the digamma function temporarily. Fix a sequence $c_j\in\C$ and a number $A>0$ such that, for some constants $K_+,K_->0$,
+\begin{align}
+ |c_j|&\le K_+ A^{-2j}\Gamma(2j)\quad(j\ge1),\label{eq:upper}\\
+ |c_j|&\ge K_- A^{-2j}\Gamma(2j)\quad(j\text{ sufficiently large}).
+ \label{eq:lower}
+\end{align}
+No common sign is assumed. Write $\cF(z)=\sum c_jz^j$ formally, define $h_n$ by \eqref{eq:hformula}, and let $u_M$ be the branch near $X$ solving
+\begin{equation}
+ \log(u_M/X)+\sum_{j=1}^M c_ju_M^{-2j}=0.
+ \label{eq:genericinverse}
+\end{equation}
+All logarithms in this local complex statement are taken near $u_M/X=1$. The exact function whose expansion might be $\cF$ is irrelevant to this theorem.
+
+For integers $j\ge1$ and $\ell\ge0$, define the finite polynomial
+\begin{equation}
+ \alpha_{j,\ell}=
+ \coef{v}{\ell}\exp\bigl((2j+2\ell-1)\cF(v)\bigr).
+ \label{eq:alpha}
+\end{equation}
+It involves only $c_1,\ldots,c_\ell$ and is a polynomial in $j$ of degree at most $\ell$. In particular,
+\begin{equation}
+ \alpha_{j,0}=1,\qquad
+ \alpha_{j,1}=(2j+1)c_1,\qquad
+ \alpha_{j,2}=(2j+3)c_2+\frac{(2j+3)^2c_1^2}{2}.
+ \label{eq:alphafirst}
+\end{equation}
+
+\begin{theorem}[Sharp cutoff transfer]
+\label{thm:cutoff}
+Assume \eqref{eq:upper}--\eqref{eq:lower}. Let $X\to+\infty$ and let $M$ be an integer with $M-AX/2$ in a fixed bounded interval. The local branch $u_M$ in \eqref{eq:genericinverse} exists for sufficiently large $X$. For every fixed integer $J\ge1$,
+\begin{align}
+ u_M(X)-S_M(X)
+ ={}&-X\sum_{k=0}^{J-2}c_{M-k}X^{-2(M-k)}
+       \sum_{\ell=k+1}^{J-1}\alpha_{M-k,\ell}X^{-2\ell}
+ \notag\\
+ &\quad+\Oh_J\bigl(|c_M|X^{1-2M-J}\bigr).
+ \label{eq:diagonal}
+\end{align}
+An empty sum is zero. The remainder is uniform on the prescribed offset interval. In particular,
+\begin{equation}
+ u_M-S_M=-(2M+1)c_1c_MX^{-2M-1}
+             +\Oh\bigl(|c_M|X^{-2M-1}\bigr).
+ \label{eq:cutofffirst}
+\end{equation}
+The displayed leading term in \eqref{eq:cutofffirst} is of order
+$|c_M|X^{-2M}$; its error is smaller by a factor $X^{-1}$ when $c_1\ne0$.
+\end{theorem}
+
+The apparent similarity of the powers in the last formula should not obscure the factor $2M+1\asymp X$. In a less compressed form, with $b_M=|c_M|X^{-2M}$,
+\[
+ u_M-S_M=-Xc_MX^{-2M}\frac{(2M+1)c_1}{X^2}
+                +\Oh(Xb_MX^{-2}).
+\]
+This is the $J=2$ case of \eqref{eq:diagonal}. The theorem is a statement about the commutation defect, not about the error of either approximation relative to an unspecified exact function.
+
+\section{Proof of the cutoff theorem}
+\label{sec:cutoffproof}
+
+\subsection{A low-degree core with a safe complex disk}
+Set
+\begin{equation}
+ z_0=X^{-2},\quad L=\lfloor M/2\rfloor,\quad
+ C_L(z)=\sum_{j=1}^Lc_jz^j,\quad
+ D_M(z)=\sum_{j=L+1}^Mc_jz^j.
+ \label{eq:split}
+\end{equation}
+The number $L$ is an auxiliary proof cutoff, not the actual truncation order.
+
+\begin{lemma}[Uniform estimates for the low core]
+\label{lem:low}
+For every fixed integer $r\ge0$,
+\begin{equation}
+ \sup_{|z|\le12z_0}\left|z^rC_L^{(r)}(z)\right|=\Oh_r(X^{-2}).
+ \label{eq:lowderivative}
+\end{equation}
+For every fixed integer $d\ge0$,
+\begin{equation}
+ \sup_{|z|\le12z_0}
+ \left|C_L(z)-\sum_{j=1}^dc_jz^j\right|
+ =\Oh_d(X^{-2d-2}),
+ \label{eq:lowtail}
+\end{equation}
+where the finite sum is understood to stop at $L$ if necessary. For all sufficiently large $X$, the equation
+\begin{equation}
+ \log q_L(z)+C_L\bigl(z/q_L(z)^2\bigr)=0
+ \label{eq:lowinverse}
+\end{equation}
+has a holomorphic solution on $|z|\le10z_0$, with
+$q_L(z)=1+\Oh(X^{-2})$ uniformly. Its Taylor expansion through any fixed degree has a uniform remainder of the corresponding ordinary power of $z_0$.
+\end{lemma}
+\begin{proof}
+Use the factorial majorant from \eqref{eq:upper}. For $j\le M/5$, the ratio of successive majorant terms on $|z|=12z_0$ is
+\[
+ 12\frac{(2j+1)(2j)}{(AX)^2},
+\]
+which is bounded above by a number strictly less than one for large $M$. Thus the beginning of each tail is bounded by a geometric series times its first term. Fixed factors $j^r$ do not change the resulting estimate; alternatively, increase the geometric ratio slightly.
+
+For $M/5\le j\le M/2$, write $y=j/M$. Uniform Stirling estimates give the exponential factor
+\[
+ \exp\{2My(\log(\sqrt{12}\,y)-1)+\Oh_r(\log M)\}.
+\]
+The continuous function $2y(\log(\sqrt{12}y)-1)$ is strictly negative on $[1/5,1/2]$. This part of the sum is exponentially small, even after any fixed polynomial weight in $j$. This proves \eqref{eq:lowderivative} and \eqref{eq:lowtail}.
+
+On $|z|\le10z_0$, solve
+$q=\exp[-C_L(z/q^2)]$ in a disk $|q-1|\le KX^{-2}$. For sufficiently large fixed $K$ and large $X$, the argument $z/q^2$ lies in $|u|\le11z_0$. The map sends the disk into itself by \eqref{eq:lowderivative}; its derivative with respect to $q$ is $\Oh(X^{-2})$. Uniform contraction gives the solution, and its iterates are holomorphic in $z$.
+
+To justify fixed-degree Taylor estimates without presuming a common fixed radius for all $L$, compare this solution with the inverse defined by a fixed polynomial $\sum_{j=1}^dc_jz^j$. The latter is analytic on a fixed disk about zero. The contraction estimate and \eqref{eq:lowtail} show that their difference on the shrinking disk is $\Oh_d(X^{-2d-2})$. Their first $d$ Taylor coefficients agree formally. This proves the last assertion.
+\end{proof}
+
+The numerical disk constants are convenient, not intrinsic. The proof needs a Cauchy radius whose logarithm exceeds the least-term action in the $M$ variable, while the half-length core remains small there. Here $\log9>2$, and $12<4\e^2$, so both requirements have room to spare.
+
+\subsection{The high part is exponentially small and nonlinear terms are smaller still}
+\begin{lemma}[High-part perturbation]
+\label{lem:high}
+Let $q_M$ denote the branch for the polynomial $C_L+D_M$. At $z=z_0$,
+\begin{equation}
+ q_M(z_0)=q_L(z_0)+V_M(z_0)+\Oh(Me^{-3M}),
+ \label{eq:linearhigh}
+\end{equation}
+where
+\begin{align}
+ V_M(z)&=-\sum_{j=L+1}^Mc_jz^jA_j(z),\label{eq:V}\\
+ A_j(z)&=\frac{q_L(z)^{1-2j}}
+          {1-2uC_L'(u)},\qquad u=z/q_L(z)^2.
+ \label{eq:Aj}
+\end{align}
+The functions $A_j$ are holomorphic on $|z|\le10z_0$ for large $X$. Moreover,
+\begin{equation}
+ \trunc{q_M}{M}=\trunc{q_L+V_M}{M}.
+ \label{eq:formalcut}
+\end{equation}
+\end{lemma}
+\begin{proof}
+At arguments $u=z_0(1+\Oh(X^{-2}))$, Stirling's formula and \eqref{eq:upper} imply
+\[
+ |D_M(u)|+|uD_M'(u)|/M
+ \le \exp\{-(1+\log2)M+\Oh(\log M)\}
+ =\Oh(\e^{-3M/2}).
+\]
+Indeed, the largest exponential size among indices $j\in[L+1,M]$ occurs at the lower endpoint: the exponent $2j(\log(j/M)-1)$ has that maximum on this interval. Bounded offsets and the factor $1+\Oh(X^{-2})$ affect only the harmless error term.
+
+Insert a parameter $\varepsilon$ multiplying $D_M$ in the implicit equation. For $|\varepsilon|\le2$, contraction in a neighborhood of $q_L(z_0)$ gives a solution $q(z_0,\varepsilon)$. Implicit differentiation at $\varepsilon=0$ gives exactly \eqref{eq:V}--\eqref{eq:Aj}. The denominator is $1+\Oh(X^{-2})$ by \cref{lem:low}. A second differentiation gives a bound $\Oh(M\|D_M\|^2)$ for the second parameter derivative: a derivative of the high polynomial costs at most a factor $M$, while both parameter differentiations supply a high-part factor. The low-core derivatives are uniformly bounded as in \eqref{eq:lowderivative}. Taylor's theorem in $\varepsilon$ at $\varepsilon=1$ proves \eqref{eq:linearhigh}.
+
+The same bounds and contraction apply uniformly for $|z|\le z_0$ (and on a slightly larger disk), so these parameter solutions form the branch connected analytically to $q(0,\varepsilon)=1$. The formal series $D_M$ begins at degree $L+1$. Every term of parameter degree at least two in the implicit expansion has $z$-degree at least $2L+2$. One can see this directly by substituting the parameter series into the equation: differentiation of a monomial with respect to $q$ does not lower its $z$-degree, and each such term contains at least two high factors. Since $2L+2>M$, all nonlinear high terms vanish under truncation at degree $M$. This proves \eqref{eq:formalcut}.
+\end{proof}
+
+Because $b_M=|c_M|z_0^M\asymp M^{-1/2}\e^{-2M}$ under the two-sided envelope, the error in \eqref{eq:linearhigh} is $o(b_MX^{-J})$ for every fixed $J$. This is where the lower bound in \eqref{eq:lower} is used. Without it, a relative estimate normalized by a potentially vanishing $c_M$ need not make sense.
+
+\subsection{Finite Taylor jets with a growing index}
+\begin{lemma}[Jets of the linear response]
+\label{lem:jets}
+For every fixed $J\ge1$, uniformly for $L<j\le M$ and $|z|\le9z_0$,
+\begin{equation}
+ A_j(z)=\sum_{\ell=0}^{J-1}\alpha_{j,\ell}z^\ell
+                +\Oh_J(X^{-J}).
+ \label{eq:Ajjet}
+\end{equation}
+For large $X$, the coefficients in this finite sum are those of \eqref{eq:alpha}, independently of $L$. The remainder is holomorphic and vanishes to order at least $J$ at zero.
+\end{lemma}
+\begin{proof}
+The coefficient identity can be obtained without expanding \eqref{eq:Aj}. Differentiate the Lagrange formula \eqref{eq:hformula} with respect to the coefficient of a high monomial $z^j$, at the base polynomial $C_L$. At index $n=j+\ell$, the derivative is
+\[
+ -\coef{v}{\ell}\exp\bigl((2j+2\ell-1)C_L(v)\bigr).
+\]
+Comparison with \eqref{eq:V} gives the stated coefficient. If $\ell\le J-1\le L$, this coefficient uses only $c_1,\ldots,c_\ell$, so it agrees with \eqref{eq:alpha}.
+
+For the estimate, \cref{lem:low} permits replacement of $q_L$ and the denominator in \eqref{eq:Aj} by their analogues from a fixed polynomial core of degree at least $J$. The resulting errors, even multiplied by $j=\Oh(X)$, are smaller than $X^{-J}$. For that fixed core, write $\log q_*(z)=z\lambda(z)$ with $\lambda$ analytic near zero. Then the growing exponential factor has the form
+\[
+ \exp\bigl((1-2j)z\lambda(z)\bigr).
+\]
+Regard it as an analytic function of two variables $z$ and $v=jz$. On our disk, $|z|=\Oh(X^{-2})$ and $|v|=\Oh(X^{-1})$. Its two-variable Taylor remainder of total degree $J$ is $\Oh_J(X^{-J})$. Substitution $v=jz$ identifies the retained terms with the ordinary Taylor polynomial through degree $J-1$ in $z$. Multiplication by the analytic denominator factor preserves the estimate. The exact Taylor coefficients were already identified, so the difference vanishes through degree $J-1$.
+\end{proof}
+
+\subsection{Only finitely many diagonals survive}
+\begin{proof}[Proof of \cref{thm:cutoff}]
+At $z_0$, subtract \eqref{eq:formalcut} from \eqref{eq:linearhigh}. The low-core tail satisfies, by Cauchy's estimate on $|z|=9z_0$,
+\begin{equation}
+ |q_L(z_0)-\trunc{q_L}{M}(z_0)|
+ \le C X^{-2}9^{-M}.
+ \label{eq:lowcauchy}
+\end{equation}
+As $\log9>2$, this is $o(b_MX^{-J})$ for every fixed $J$. The nonlinear high error has the same negligible status by \cref{lem:high}.
+
+For a high index $j=M-k$, the part of $-c_jz^jA_j(z)$ beyond total degree $M$ is
+\begin{equation}
+ -c_{M-k}z_0^{M-k}
+ \left[A_{M-k}(z_0)-\trunc{A_{M-k}}{k}(z_0)\right].
+ \label{eq:singlehigh}
+\end{equation}
+The factorial envelope gives, for all $0\le k<M-L$,
+\begin{equation}
+ |c_{M-k}|z_0^{M-k}\le C\,5^k b_M.
+ \label{eq:ratio5}
+\end{equation}
+To verify this, divide the upper factorial bound at $M-k$ by the lower bound at $M$ and pair the $2k$ denominator factors. As $M-k\ge L+1$ and $AX=2M+\Oh(1)$, each pair contributes at most $4+o(1)$; the constant $5$ is a uniform convenient upper bound.
+
+For $k\le J-2$, retain the terms with $k+1\le\ell\le J-1$ in \cref{lem:jets}. Their contribution is the finite sum in \eqref{eq:diagonal}. The remaining finitely many remainders total $\Oh_J(b_MX^{-J})$ by \eqref{eq:ratio5}.
+
+For $k\ge J-1$, the Taylor polynomial in \cref{lem:jets} is already removed by truncation at degree $k$. Apply Cauchy's estimate to its holomorphic remainder on the radius $9z_0$. The bracket in \eqref{eq:singlehigh} is at most
+\[
+ C_JX^{-J}\frac{9^{-k-1}}{1-1/9}.
+\]
+Together with \eqref{eq:ratio5}, the sum over these $k$ is bounded by a constant times
+$b_MX^{-J}\sum_{k\ge J-1}(5/9)^k$.
+
+Thus the asserted diagonal formula holds for $q_M(z_0)-\trunc{q_M}{M}(z_0)$. Multiplication by $X$ gives \eqref{eq:diagonal} because $u_M=Xq_M(z_0)$ and $S_M=X\trunc{q_M}{M}(z_0)$. Existence of the required branch was included in the contraction argument of \cref{lem:high}. Finally, \eqref{eq:alphafirst} gives \eqref{eq:cutofffirst}.
+\end{proof}
+
+\begin{remark}[Why a single crude Cauchy estimate is insufficient]
+Applying a Cauchy tail estimate to the full inverse polynomial core loses the small factor that distinguishes the two approximations. The high coefficients force that core's natural disk toward the least-term boundary. The half-length split avoids this: the low inverse is analytic on a disk larger than the exponential threshold, while the high contribution is retained linearly and its exact degree is visible. The gain comes from that degree information, not from an assumption that all formal tails converge.
+\end{remark}
+
+\section{The direct inverse-harmonic error}
+\label{sec:direct}
+
+\subsection{The main theorem}
+\begin{theorem}[Sharp direct optimal-scale truncation]
+\label{thm:direct}
+Let $W$ and $S_M$ be defined by \eqref{eq:inverse} and \eqref{eq:SM}. Uniformly for $\sigma=M+1-\pi X$ in a fixed compact set,
+\begin{equation}
+ S_M(X)-W(X)=(-1)^M\scal(X)
+ \left[1+\frac{D_1(\sigma)}X+\frac{D_2(\sigma)}{X^2}
+                  +\Oh(X^{-3})\right],
+ \label{eq:direct2}
+\end{equation}
+where
+\begin{equation}
+ D_1(\sigma)=-\frac\pi{12}
+       +\frac{2\sigma^2-3\sigma+7/12}{2\pi},
+ \label{eq:D1}
+\end{equation}
+and
+\begin{align}
+ D_2(\sigma)={}&
+ \frac{\sigma^4}{2\pi^2}-\frac{11\sigma^3}{6\pi^2}
+ -\frac{\sigma^2}{12}+\frac{5\sigma^2}{3\pi^2}
+ +\frac{\sigma}{48\pi^2}+\frac{5\sigma}{24}
+ \notag\\
+ &\hspace{8mm}-\frac{43}{288}-\frac{203}{1152\pi^2}
+                         +\frac{\pi^2}{288}.
+ \label{eq:D2}
+\end{align}
+More generally, polynomials $D_j(\sigma)$ with $D_0=1$ are effectively computable, and for every fixed integer $J\ge1$,
+\begin{equation}
+ S_M-W=(-1)^M\scal(X)
+ \left[\sum_{j=0}^{J-1}\frac{D_j(\sigma)}{X^j}
+                  +\Oh_J(X^{-J})\right].
+ \label{eq:directall}
+\end{equation}
+The construction gives $\deg D_j\le2j$.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{eq:eta} verifies the two-sided factorial hypotheses with $A=2\pi$, since $\eta(2j)=1+\Oh(4^{-j})$. The leading cutoff formula yields
+\begin{equation}
+ u_M-S_M=(-1)^M\scal(X)
+       \left[\frac\pi{6X}+\Oh(X^{-2})\right].
+ \label{eq:cutoffharmonic1}
+\end{equation}
+Indeed, $X a_MX^{-2M}=2\scal(X)(1+\Oh(X^{-1}))$, while
+$(2M+1)c_1X^{-2}=\pi/(12X)+\Oh(X^{-2})$.
+Subtract \eqref{eq:cutoffharmonic1} from \eqref{eq:Bexp}. The result is \eqref{eq:D1}, with $+\pi/12-\pi/6=-\pi/12$.
+
+For the next order, the $J=3$ diagonal formula gives
+\begin{equation}
+ \frac{u_M-S_M}{(-1)^M\scal(X)}
+ =\frac\pi{6X}
+  +\frac{\sigma^2/6-\sigma/4+25/144}{X^2}
+  +\Oh(X^{-3}).
+ \label{eq:cutoffharmonic2}
+\end{equation}
+Here is a direct coefficient check of that formula. The $k=0,\ell=1$ term is the leading term of \eqref{eq:cutofffirst}; after a one-term shifted Stirling expansion of $a_M$, its second correction is
+\[
+ 2c_1\left(2\sigma^2-3\sigma+\frac{25}{12}\right)
+ =\frac{\sigma^2}{6}-\frac\sigma4+\frac{25}{144}.
+\]
+The remaining possible second-order terms, $k=0,\ell=2$ and $k=1,\ell=2$, cancel at their leading order. They have opposite coefficient signs and the same leading factor $(2M)^2c_1^2/2$. The $c_2$ part and their shift differences first appear at order $X^{-3}$.
+
+The gamma-moment calculation of \cref{prop:forwardinverse}, taken one order further, gives
+\begin{align}
+ B_2(\sigma)=\frac1{1152\pi^2}\bigl(&576\sigma^4-2112\sigma^3
+ +96\pi^2\sigma^2+1920\sigma^2
+ \notag\\
+ &-48\pi^2\sigma+24\sigma-203+28\pi^2+4\pi^4\bigr).
+ \label{eq:B2}
+\end{align}
+Subtracting the second coefficient of \eqref{eq:cutoffharmonic2} yields \eqref{eq:D2}. A finite symbolic derivation of \eqref{eq:B2} is detailed in \cref{sec:algorithm} and independently implemented in the archive.
+
+At every higher fixed order, \cref{thm:cutoff} retains only finitely many $c_{M-k}$ and $\alpha_{M-k,\ell}$. The former have shifted Stirling expansions with an exponentially negligible eta factor, while the latter are explicit polynomials in $M$. Combine them with \eqref{eq:Bexp}. This proves \eqref{eq:directall}. The degree bound follows from the shifted Bernoulli polynomials and the finite coefficient formula: at relative order $j$, the gamma contribution has degree at most $2j$ in the bounded shift, and the additional diagonal operations preserve that bound.
+\end{proof}
+
+\subsection{An effective all-orders construction}
+\label{sec:algorithm}
+The statement ``effectively computable'' in \cref{thm:direct} refers to finite rational and polynomial operations with $\pi$ adjoined, not to extracting coefficients from an unknown exact inverse. The following formulas specify the construction.
+
+Let $r=b^{-1}$ and $d=s-b$. Define, as a finite expansion to the required order,
+\begin{align}
+ \mu_j(r,d)&=\sum_{\ell=0}^j\binom j\ell(-1)^{j-\ell}
+                      r^\ell\rising{r^{-1}+d}{\ell},\label{eq:mualg}\\
+ L(r,d)&=\sum_{m\ge1}
+       \frac{(-1)^{m+1}B_{m+1}(d)}{m(m+1)}r^m,\label{eq:Lalg}\\
+ G(r,d)&=2\exp L(r,d)
+            \sum_{j\ge0}\frac{f^{(j)}(1)}{j!}\mu_j(r,d).
+ \label{eq:Galg}
+\end{align}
+To compute through $r^p$, retain $j\le2p$ and $m\le p$; larger indices cannot change those coefficients. The proof of \cref{lem:gamma}, with two additional Taylor degrees when estimating a remainder after that coefficient, supplies the rigorous remainder interpretation.
+
+The first three coefficients of $G$ are
+\begin{align}
+ G_0(d)&=1,\notag\\
+ G_1(d)&=\frac{6d^2-18d+7}{12},\notag\\
+ G_2(d)&=\frac{36d^4-264d^3+480d^2+12d-203}{288}.
+ \label{eq:Gfirst}
+\end{align}
+Put $\varepsilon=X^{-1}$ and take a sufficiently long fixed jet of
+\[
+ v(\varepsilon)=W(X)/X
+ =1-\frac{\varepsilon^2}{24}+\frac{3\varepsilon^4}{640}+\cdots.
+\]
+Then the forward-inverse amplitude is the formal series
+\begin{equation}
+ B(\varepsilon,\sigma)=
+ \frac{\sqrt v\,\exp\{2\pi(1-v)/\varepsilon\}}
+ {1-2\sum_{j\ge1}j c_j(\varepsilon/v)^{2j}}
+ G\left(\frac{\varepsilon}{2\pi v},
+                 2\sigma+\frac{2\pi(1-v)}\varepsilon\right).
+ \label{eq:Balgorithm}
+\end{equation}
+Every operation is truncated at the requested degree. Inserting \eqref{eq:Gfirst} in \eqref{eq:Balgorithm} proves \eqref{eq:B1} and \eqref{eq:B2} by finite expansion.
+
+For the cutoff part, use \eqref{eq:diagonal}, set
+$M=\pi/\varepsilon+\sigma-1$, and replace each $a_{M-k}$ by its shifted gamma expansion from \eqref{eq:stirlingall}. Discard the exponentially small eta correction. Subtract this cutoff amplitude from \eqref{eq:Balgorithm}. The resulting coefficient of $\varepsilon^j$ is $D_j(\sigma)$.
+
+This is an all-orders algorithm in the usual fixed-order asymptotic sense. The theorem does not assert uniformity when the number $J$ of retained amplitude coefficients itself grows with $X$.
+
+\section{Enveloping laws and corrected adjacent averages}
+\label{sec:averages}
+
+\subsection{A signed first-omitted-term bound in the least-term window}
+\begin{corollary}[Eventual local enveloping]
+\label{cor:enveloping}
+Fix $K>0$. For all sufficiently large $X$, uniformly for integers $M$ with $|M-\pi X|\le K$, consecutive partial sums $S_M,S_{M+1}$ lie on opposite sides of $W$, and
+\begin{equation}
+ 0<(-1)^M(S_M-W)
+       <|h_{M+1}|X^{-2M-1}.
+ \label{eq:envelope}
+\end{equation}
+Moreover,
+\begin{equation}
+ \frac{|S_M-W|}{|h_{M+1}|X^{-2M-1}}\longrightarrow\frac12
+ \label{eq:half}
+\end{equation}
+uniformly on that window.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:direct} to $M$ and $M+1$. Their bounded offsets are $\sigma$ and $\sigma+1$. Their errors have respective leading terms $(-1)^M\scal(X)$ and $(-1)^{M+1}\scal(X)$. Thus their signs are opposite for sufficiently large $X$. Their difference is exactly
+$S_{M+1}-S_M=h_{M+1}X^{-2M-1}$, which has magnitude $2\scal(X)(1+\Oh(X^{-1}))$. The actual inverse is strictly between them, proving \eqref{eq:envelope} and \eqref{eq:half}.
+\end{proof}
+
+This answers a useful local version of the predecessor's enveloping question. It does not assert that \eqref{eq:envelope} holds for every $M$ at a fixed $X$, nor give an explicit universal threshold for ``sufficiently large.'' The certificates of \cref{sec:certificates} handle selected finite values independently.
+
+\subsection{Fixed-order exponential improvement without a root solve}
+Write
+\begin{equation}
+ T_{M+1}=h_{M+1}X^{-2M-1}=S_{M+1}-S_M.
+ \label{eq:Tnext}
+\end{equation}
+An ordinary midpoint already cancels the leading error:
+\begin{equation}
+ \frac{S_M+S_{M+1}}2-W
+ =(-1)^M\scal(X)
+ \left[\frac{1-4\sigma}{4\pi X}+\Oh(X^{-2})\right].
+ \label{eq:midpoint}
+\end{equation}
+Its next correction can also be removed explicitly.
+
+\begin{theorem}[All-orders corrected next-term rule]
+\label{thm:corrected}
+There are polynomials in $\sigma$ with coefficients in $\mathbb Q[\pi,\pi^{-1}]$, denoted $\theta_j(\sigma)$, such that for every fixed $J\ge1$,
+\begin{equation}
+ \widehat W_{M,J}=S_M+
+       \left(\sum_{j=0}^{J-1}\theta_j(\sigma)X^{-j}\right)T_{M+1}
+ \label{eq:corrected}
+\end{equation}
+satisfies
+\begin{equation}
+ \widehat W_{M,J}-W=\Oh_J\bigl(X^{1/2-J}\e^{-2\pi X}\bigr)
+ \label{eq:correctedbound}
+\end{equation}
+uniformly for bounded $\sigma$. The first coefficients are
+\begin{align}
+ \theta_0&=\frac12,\notag\\
+ \theta_1(\sigma)&=\frac{1-4\sigma}{8\pi},\notag\\
+ \theta_2(\sigma)&=\frac{24\sigma^2+12\sigma-9-2\pi^2}{96\pi^2}.
+ \label{eq:theta}
+\end{align}
+For large $X$, any fixed-order weight in \eqref{eq:corrected} is between zero and one, so the approximation is a convex combination of consecutive partial sums.
+\end{theorem}
+\begin{proof}
+Let $D(\varepsilon,\sigma)=\sum_{j\ge0}D_j(\sigma)\varepsilon^j$ be the formal amplitude from \cref{thm:direct}. The error expansion at the neighboring index implies
+\begin{equation}
+ T_{M+1}\sim(-1)^{M+1}\scal(X)
+       \bigl[D(\varepsilon,\sigma)+D(\varepsilon,\sigma+1)\bigr].
+ \label{eq:Tamp}
+\end{equation}
+The constant term of the bracket is $2$. Therefore formal division defines
+\begin{equation}
+ \Theta(\varepsilon,\sigma)=
+ \frac{D(\varepsilon,\sigma)}
+      {D(\varepsilon,\sigma)+D(\varepsilon,\sigma+1)}.
+ \label{eq:thetaquotient}
+\end{equation}
+Take its Taylor polynomial through degree $J-1$. Equations \eqref{eq:directall} and \eqref{eq:Tamp} show that the error in \eqref{eq:corrected} is $\Oh_J(\scal(X)\varepsilon^J)$. The constants are uniform because the denominator stays bounded away from zero on bounded offset sets for large $X$.
+
+For the coefficients, $\theta_0=1/2$ and
+\[
+ \theta_1=\frac{D_1(\sigma)-D_1(\sigma+1)}4
+          =\frac{1-4\sigma}{8\pi}.
+\]
+Expanding \eqref{eq:thetaquotient} one order further using \eqref{eq:D2} gives $\theta_2$ in \eqref{eq:theta}. Finally, every fixed polynomial weight is $1/2+\Oh(X^{-1})$, proving the convex-combination assertion.
+\end{proof}
+
+In particular, the practical two-coefficient rule is
+\begin{equation}
+ \boxed{\quad
+ \widehat W_{M,2}=S_M+
+   \left(\frac12+\frac{1-4\sigma}{8\pi X}\right)h_{M+1}X^{-2M-1},
+ \qquad
+ \widehat W_{M,2}-W=\Oh(X^{-3/2}\e^{-2\pi X}).\quad}
+ \label{eq:practical}
+\end{equation}
+The same weight may be written $1-(4M+3)/(8\pi X)$. The formula needs one additional inverse coefficient, not the numerical solution of $P_M(u)=\log X$.
+
+\subsection{What the first correction says about order selection}
+The only $\sigma$-dependent part of $D_1$ is a convex quadratic, minimized at $\sigma=3/4$. Thus, within a bounded least-term window, the continuous first-correction optimizer is
+\begin{equation}
+ M=\pi X-\frac14.
+ \label{eq:orderchoice}
+\end{equation}
+For integer $M$, a nearest-integer choice is the resulting asymptotic guide. Where two neighboring choices are almost tied, further corrections are necessary to decide between them. No statement about the global minimizing order over all nonnegative $M$ follows solely from a bounded-window expansion.
+
+The midpoint has a different distinguished offset: the coefficient in \eqref{eq:midpoint} vanishes at $\sigma=1/4$. Since $X$ is continuous, one can examine that subsequence exactly; for a general given $X$, the corrected weight in \eqref{eq:practical} avoids needing such an arithmetic coincidence.
+
+\section{Exact-rational certificates by shifting the digamma argument}
+\label{sec:certificates}
+
+An asymptotic theorem with an unspecified threshold is not a finite numerical certificate. Here an elementary recurrence produces exact-rational residual enclosures for any rational candidate, including the direct partial sum and its midpoint.
+
+\begin{proposition}[Shifted residual enclosure]
+\label{prop:shiftcertificate}
+Let $X\ge1$ and $v>0$ be rational. Let $L_s\ge0$, $K\ge0$, and $N\ge1$ be integers, and put $w=v+L_s$. Define
+\begin{equation}
+ A_{K,L_s}(v,X)=\log(w/X)+\sum_{j=1}^Kc_jw^{-2j}
+                -\sum_{r=0}^{L_s-1}\frac1{v+1/2+r}.
+ \label{eq:shiftresidual}
+\end{equation}
+Then
+\begin{equation}
+ F(v)-\log X=A_{K,L_s}(v,X)+R_K(w).
+ \label{eq:shiftidentity}
+\end{equation}
+The interval for $R_K(w)$ is $(0,a_{K+1}w^{-2K-2})$ for even $K$ and its negative for odd $K$. In addition, with $t=(w/X-1)/(w/X+1)$,
+\begin{align}
+ \log(w/X)&=2\sum_{j=0}^{N-1}\frac{t^{2j+1}}{2j+1}+\rho_N,\notag\\
+ |\rho_N|&\le\frac{2|t|^{2N+1}}{(2N+1)(1-t^2)}.
+ \label{eq:rationallog}
+\end{align}
+All endpoints produced by these formulas are rational.
+\end{proposition}
+\begin{proof}
+Apply the exact recurrence
+$\psi(z+L_s)=\psi(z)+\sum_{r=0}^{L_s-1}(z+r)^{-1}$
+with $z=v+1/2$, then use \cref{lem:fermi} at $w$. This proves \eqref{eq:shiftidentity}. The remainder interval is \eqref{eq:rembound}. Finally, $|t|<1$ and integration of the geometric series for $(1-t^2)^{-1}$ gives the logarithm series. Bounding every remaining denominator by $2N+1$ yields \eqref{eq:rationallog}.
+\end{proof}
+
+For $v,W\in I_X$, a two-sided derivative bound is available:
+\begin{equation}
+ m_X=\frac1{X+1/2}<F'(s)<
+ L_X=\frac1{a+1/2}+\frac1{(a+1/2)^2},\qquad s\in I_X.
+ \label{eq:twoslope}
+\end{equation}
+The upper bound follows by separating the first summand of the trigamma series and bounding the rest by its decreasing integral. If a rational residual enclosure is $[r_-,r_+]$ with $0<r_-\le r_+$, the mean value theorem gives
+\begin{equation}
+ \frac{r_-}{L_X}\le v-W\le\frac{r_+}{m_X}.
+ \label{eq:positivecertificate}
+\end{equation}
+For $r_-\le r_+<0$, it gives instead
+\begin{equation}
+ \frac{r_-}{m_X}\le v-W\le\frac{r_+}{L_X}.
+ \label{eq:negativecertificate}
+\end{equation}
+These intervals can be written as exact fractions or rounded outward using integer division alone.
+
+Shifting has a concrete purpose. If the candidate error is of size $\e^{-2\pi X}$, evaluating a least-term forward remainder at $v\approx X$ may give an enclosure of comparable width. Evaluating at $v+L_s$ with $L_s\approx X$ reduces that forward uncertainty to a much smaller exponential scale, while the recurrence correction is exact rational arithmetic. This does not change the inverse approximation; it only improves its verification.
+
+\section{Reproducible calculations and their limits}
+\label{sec:verification}
+
+\subsection{High-precision asymptotic checks}
+The archive's \texttt{verify.py} computes inverse coefficients by the triangular recurrence
+\begin{equation}
+ e_0=1,\qquad
+ e_k=\frac{2n-1}{k}\sum_{j=1}^k j c_je_{k-j},\qquad
+ h_n=-\frac{e_n}{2n-1},
+ \label{eq:exprecurrence}
+\end{equation}
+with $n$ fixed while $k$ runs from $1$ to $n$. This is the coefficient recurrence for the exponential in \eqref{eq:hformula}. The default run computes through $n=241$ at 312 decimal digits.
+
+The exact inverse is evaluated by high-precision root finding for the digamma equation, and the forward-truncation inverse by Newton iteration on its explicit finite polynomial-log equation. These are numerical diagnostics, not interval calculations. The cancellation of two quantities of size $X$ to an error near $\e^{-2\pi X}$ is why the precision includes a large guard-digit allowance.
+
+For $\sigma=3/4$, define
+\[
+ R_0=\frac{S_M-W}{(-1)^M\scal(X)},\qquad
+ R_2=X^2\left(R_0-1-\frac{D_1(3/4)}X\right).
+\]
+The prediction is $R_0\to1$ and
+$R_2\to D_2(3/4)=0.0107200417167906635\ldots$.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+$M$ & $X=(M+1/4)/\pi$ & $R_0$ & $R_2$\\
+\midrule
+30  & 9.62887406  & 0.9639434543 & 0.0079378283\\
+60  & 19.17817064 & 0.9818794830 & 0.0093962929\\
+120 & 38.27676381 & 0.9909149806 & 0.0100734865\\
+180 & 57.37535698 & 0.9939376599 & 0.0102922826\\
+240 & 76.47395016 & 0.9954511005 & 0.0104004349\\
+\bottomrule
+\end{tabular}
+\caption{Direct-series error and the second correction. Values are rounded from the recorded numerical run, not certified intervals.}
+\label{tab:asymptotic}
+\end{table}
+
+The same run checks offsets $-1/2$, $1/4$, and $5/4$, the cutoff difference \eqref{eq:cutoffharmonic2}, the midpoint law \eqref{eq:midpoint}, and the bounded normalized error of \eqref{eq:practical}. The full values, including the third scaled residual, are retained in \texttt{results.csv}. For example, at $M=60$ and $\sigma=3/4$, the direct error is about $2.00\cdot10^{-52}$ and the corrected error about $7.40\cdot10^{-57}$.
+
+These data are consistent with the formulas; they do not prove uniformity or an all-orders statement. That work is done by the estimates in \cref{sec:cutoffproof} and the gamma-moment expansion.
+
+\subsection{Exact algebra and finite rational enclosures}
+The program \texttt{exact\_checks.py} uses only Python's standard library and exact rational arithmetic. It constructs Bernoulli numbers by their defining recurrence, computes the first inverse coefficients, and independently substitutes them into \eqref{eq:qformal}. All thirteen coefficients through degree twelve of the residual vanish exactly.
+
+It then applies \cref{prop:shiftcertificate} at $(X,M)=(3,9),(5,15),(8,25)$ to both the direct partial sum and the midpoint. The shifts are $L_s=X$, the forward orders $K=6X$, and the logarithm orders $N=20X$. All six resulting residual intervals have a definite sign. Exact candidate fractions, exact error endpoints, and outward-rounded decimal endpoints are stored in \texttt{exact\_certificates.json}.
+
+For instance, at $X=5$, $M=15$, the computed intervals imply the simpler outward enclosures
+\begin{align}
+ -5.247\cdot10^{-14}&<S_{15}(5)-W(5)<-4.424\cdot10^{-14},\notag\\
+ 2.101\cdot10^{-16}&<\frac{S_{15}(5)+S_{16}(5)}2-W(5)
+                      <2.493\cdot10^{-16}.
+ \label{eq:finiteexample}
+\end{align}
+The decimal endpoints in \eqref{eq:finiteexample} are deliberately rounded outward more coarsely than the stored endpoints. Their verification uses the analytic identities proved above and exact integer arithmetic, not the high-precision root finder.
+
+Finally, \texttt{derive\_coefficients.py} uses SymPy to expand \eqref{eq:Galg} and \eqref{eq:Balgorithm} and check $D_1,D_2,\theta_1,\theta_2$. The symbolic and numerical software versions used in this run were SymPy 1.14.0 and mpmath 1.3.0. These version numbers describe the executed environment, not a claim about the latest available releases.
+
+\subsection{What the files certify}
+The exact program verifies particular rational inequalities conditional on the mathematical identities and bounds proved in the article. It is not a Lean kernel certificate for those analytic identities. The mpmath program checks much smaller errors at much larger orders but has no outward-rounding guarantee. The two tests serve different purposes and are intentionally labelled differently.
+
+No repository file was modified in producing this package. The deliverable is a standalone article and its local reproducibility materials.
+
+\section{Consequences for transseries and formalization}
+\label{sec:consequences}
+
+\subsection{A quantitative obstruction to naively commuting two operations}
+The identity
+\begin{equation}
+ u_M-W=(S_M-W)+(u_M-S_M)
+ \label{eq:decomposition}
+\end{equation}
+is elementary; controlling its third term at an exponentially small scale is not. The cutoff theorem shows that the third term is one relative power of $X^{-1}$ below the common leading exponential scale, and explicitly identifies it. Therefore a leading-order transfer happens to be valid in this example, but the first correction cannot be transferred unchanged.
+
+This supplies a practical audit rule for transseries inversion. A fixed-order formal computation identifies which coefficients agree. It does not control the tail generated by the finite forward model. Before using a forward-inverse remainder theorem for a direct partial sum, either prove a cutoff-transfer estimate of the needed strength or keep the two approximations distinct.
+
+\subsection{Finite diagonal dependence}
+At each fixed relative order, \eqref{eq:diagonal} needs only finitely many coefficients next to $M$ and finitely many small-index coefficients. This is stronger than merely knowing that the two errors share an action. It makes the correction algorithm local in the coefficient array: increasing the desired relative accuracy enlarges a finite triangular set of pairs $(k,\ell)$, rather than requiring an uncontrolled infinite re-expansion.
+
+The result accommodates complex signs under a two-sided factorial envelope. It does not accommodate arbitrary cancellations that make $c_M$ exceptionally small along a subsequence. For such a family the normalization itself must be changed, for example to a sum of absolute contributions from several factorial sources.
+
+\subsection{Power-series order and exponential action}
+The expansion in $z=X^{-2}$ has coefficient scale $\Gamma(2n)$, whereas the same displacement viewed as a sparse Laurent series in $X^{-1}$ has factorial order one. The small error $\e^{-2\pi X}$ is the positive-real optimal-truncation scale. It should not be called a positive-real Stokes jump: the classical centered digamma Borel singularities relevant to the predecessor's complex analysis lie in imaginary directions \cite{prior,dlmf}. Nothing in the present argument changes those directions.
+
+Similarly, \eqref{eq:correctedbound} improves the algebraic amplitude of the same exponential action. For a fixed $J$, it does not turn the remainder into $\Oh(\e^{-4\pi X})$. A second exponential level would require control of a growing number of amplitude terms or an exact treatment of the first remainder block.
+
+\subsection{A staged Lean route}
+The repository's README distinguishes exact finite algebra from broader analytic statements and points to existing coefficient, asymptotic, and remainder-transport interfaces \cite{group,canonical}. The present proof admits the same separation.
+
+A first stage would formalize the finite coefficient identity \eqref{eq:alpha} by differentiating a parameterized formal power-series inverse, then the valuation statement behind \eqref{eq:formalcut}. A second stage would formalize the rational logarithm bound and the shifted recurrence certificate. Those are small, concrete interfaces with clear executable tests.
+
+The analytic core is a larger stage: a uniform family of shrinking disks, holomorphic contraction, Cauchy tail estimates, and factorial envelopes with a moving integer order. Its hypotheses should be represented explicitly rather than hidden in informal big-O manipulations. The gamma concentration proof additionally needs uniform Taylor remainders and exact moments of a gamma distribution, or an equivalent integral-only development. No theorem in this article is labelled Lean-verified merely because a related finite ingredient already exists in the repository.
+
+\section{Further research questions and proposed projects}
+\label{sec:questions}
+
+The following are precise next questions left unresolved here. They are research targets suggested by the proof, not claims that each formulation is an established open problem in the wider literature.
+
+\begin{problem}[Global enveloping of the direct inverse]
+For which pairs $(X,M)$ does the strict inequality \eqref{eq:envelope} hold? Is there a simple half-plane $X\ge X_0$, $M\ge0$ on which all direct partial sums envelop the inverse?
+\end{problem}
+The present theorem answers this only for bounded $M-\pi X$ and sufficiently large $X$. A promising first step is exact-rational testing over a two-dimensional grid using the shifted certificate, followed by a search for an integral or Pick-function representation of the inverse correction. A counterexample would identify the correct global formulation.
+
+\begin{problem}[Explicit uniform thresholds]
+Replace the implicit large-$X$ threshold in \cref{thm:direct,cor:enveloping} by explicit constants depending on an offset bound $K$ and a requested order $J$.
+\end{problem}
+Every proof estimate is quantitative in principle. The challenge is to keep the constants useful after the low/high split, Cauchy bounds, and gamma Taylor bounds. This project would turn the asymptotic theorem into an automatically checkable a priori numerical certificate rather than only an eventual statement.
+
+\begin{problem}[Optimal integer order beyond the first correction]
+Determine the exact asymptotic switching curves between the two best adjacent integer orders, and prove that the global minimizing order lies in a bounded least-term window.
+\end{problem}
+Equation \eqref{eq:orderchoice} supplies only the continuous first-correction optimizer. The polynomial $D_2$ already allows a finer candidate switching curve. Global localization requires error information for offsets that grow with $X$, which this article does not provide.
+
+\begin{problem}[A growing relative order and the next exponential action]
+Determine the growth of $D_j(\sigma)$ as $j\to\infty$, uniformly on bounded offset sets, and analyze the corrected rule with $J=J(X)$ growing.
+\end{problem}
+A fixed-order algebraic improvement leaves the action $2\pi$ unchanged. To reach a second exponential layer, one needs a new optimal-truncation analysis for the amplitude itself, with a uniform version of the finite diagonal theorem. The exact gamma expectation offers a natural comparison object.
+
+\begin{problem}[Complex least-term windows and Stokes smoothing]
+Extend the cutoff-transfer theorem and the direct inverse error to complex $X$ in sectors, including the transition near imaginary Borel directions.
+\end{problem}
+The low-core estimates are already complex, but the harmonic forward remainder used here is positive-real. A sectorial exact remainder and a suitable steepest-descent analysis must replace gamma concentration on the positive axis. One should retain the correct branch information and not infer it from the real alternating signs.
+
+\begin{problem}[Several factorial actions and cancellation]
+Develop a version of \cref{thm:cutoff} for coefficients that are sums of several equally near oscillatory factorial contributions, without the pointwise lower envelope \eqref{eq:lower}.
+\end{problem}
+The present proof gives an absolute estimate relative to a factorial majorant, but its sharp relative statement uses $|c_M|$ as a denominator. A vector of action amplitudes, or a norm that survives cancellation, may be the correct invariant. Centered gamma quotients are natural explicit test cases.
+
+\begin{problem}[Generalized harmonic transition]
+Combine cutoff transfer with a uniform expansion for $\zeta(s)-\zeta(s,x+1)$ as $s\downarrow1$ and $x\to\infty$ jointly.
+\end{problem}
+This is a different unresolved question already identified in the predecessor. The forward phase changes as $(s-1)\log x$ varies. A proof would need a uniform core and moment representation before the present theorem could be applied; substitution of $s=1$ into a fixed-parameter remainder is not sufficient.
+
+\begin{problem}[A faster coefficient and certificate engine]
+Obtain a provable arithmetic and bit-complexity bound for computing $S_M$, a corrected average, and a certified error to a prescribed number of digits.
+\end{problem}
+The transparent recurrence \eqref{eq:exprecurrence} is not intended as an optimal algorithm. Fast series reversion, binary splitting for rational sums, and reuse of neighboring exponential coefficients could reduce cost. Any improvement should preserve the small independent certificate checker.
+
+\begin{problem}[A reusable formal cutoff-transfer library]
+Formalize the low/high valuation decomposition and package the shrinking-disk analytic estimates as a general theorem about parameterized finite inverses.
+\end{problem}
+The most reusable abstraction is not the digamma example itself. It is the separation between a convergent low core, a high perturbation with a degree barrier, and a norm controlling the remaining tails. Such an interface could support other asymptotic inversion projects in \repo\ without duplicating the analytic proof.
+
+\begin{problem}[Necessity and optimality of the cutoff hypotheses]
+Find the weakest coefficient-envelope conditions under which a finite diagonal expansion still controls $u_M-S_M$ at all fixed relative orders.
+\end{problem}
+The two-sided $\Gamma(2j)$ envelope is convenient and covers the centered digamma family. Regularly varying prefactors, stretched-factorial growth, non-even powers, or irregular sparse supports may alter the safe split and the degree of locality. A classification would clarify which parts of the method are universal and which depend on this particular growth scale.
+
+\section{Conclusion}
+\label{sec:conclusion}
+The bounded-offset direct inverse-harmonic truncation question has a definite answer. Its error has leading constant one at the scale $\sqrt X\e^{-2\pi X}$, and its first correction contains $-\pi/12$, not the $+\pi/12$ of the forward-truncation inverse. The difference comes from a nonlinear cutoff contribution with leading amplitude $\pi/(6X)$.
+
+The general cutoff theorem makes that statement rigorous to every fixed relative order and identifies a finite coefficient calculation for each correction. In the harmonic specialization, it yields eventual consecutive bracketing, a half-next-term law, and corrected convex combinations whose errors gain any prescribed fixed algebraic power. Exact-rational shifted certificates provide a complementary finite-value verification route.
+
+The remaining boundaries are substantive: global enveloping, explicit asymptotic thresholds, growing amplitude order, complex transition regions, and cancellation between factorial actions require additional arguments. Those are proposed next projects, not assumptions used to conceal a gap in the theorems proved here.
+
+\appendix
+\section{Repository provenance and verification map}
+\label{app:provenance}
+The repository inspection used the reference
+\texttt{04473354a0f3edff2d6c365caf26170ca6b88735}. The focused inputs were the transseries-group README, the canonical-volume README, and the predecessor's complete normalization, integral, forward optimal-truncation proof, and direct-partial-sum problem. The large canonical volume was not read exhaustively, and no exhaustive nonduplication audit of all repository documents is claimed.
+
+The precise predecessor targets are \texttt{prob:direct}, \texttt{thm:optimal}, \texttt{lem:fermi}, and its distinction between $S_M$ and $u_M$. The gap resolved is the bounded-offset sharp direct remainder and its associated eventual local enveloping law. The general global portion of \texttt{prob:direct} remains open here.
+
+\begin{longtable}{p{0.30\textwidth}p{0.62\textwidth}}
+\toprule
+Item & Status in this article\\\midrule\endhead
+Formal inverse coefficients & Existing formula, restated and proved; exact degree-12 residual audit included.\\
+Centered positive integral & Derived from classical duplication and Binet formulas.\\
+Forward-inverse exponential error & Existing repository result, re-established as an input.\\
+Finite diagonal cutoff transfer & Proved here under an explicit two-sided factorial envelope.\\
+Direct error and $D_1,D_2$ & Proved here by combining forward transport and cutoff transfer.\\
+All-orders corrected averaging & Proved here by formal division of the two adjacent error amplitudes.\\
+312-digit experiments & Numerical consistency checks without interval guarantees.\\
+Six rational certificates & Exact arithmetic checks of finite real enclosures, using proved analytic inequalities.\\
+Lean verification & Not supplied; a staged route is proposed.\\
+Global priority & Not established by the targeted literature search.\\
+\bottomrule
+\end{longtable}
+
+\section{Rebuilding and rerunning the package}
+The article is self-contained and uses standard TeX Live packages. From the package directory, run
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+python exact_checks.py
+python derive_coefficients.py
+python verify.py --max-order 240 --output results.csv
+\end{verbatim}
+The first verification program needs only the Python standard library; the next two need SymPy and mpmath respectively. Recorded outputs are included so that the article can be read without rerunning the calculations. The PDF is compiled from the supplied \texttt{article.tex}; no downloaded font files or external figure assets are required in the archive.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{prior}
+\repo, \emph{Exponential Accuracy and Stokes Transport for Inverse Harmonic Transseries}, research draft, 29 September 2026.
+At repository reference \texttt{04473354a0f3edff2d6c365caf26170ca6b88735}, file
+\path{Analysis/Transseries/docs/series-and-transseries/Inverse_Harmonic_Stokes_Transport/inverse_harmonic_transseries.tex}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{group}
+\repo, \emph{Series and transseries}, group README, same inspected reference, file
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+
+\bibitem{canonical}
+\repo, \emph{Transseries: the polynomial--logarithmic calculus and its inversions}, canonical-volume README, same inspected reference, file
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
+
+\bibitem{issaka}
+A.~Issaka, \emph{On Ramanujan's inverse digamma approximation}, The Ramanujan Journal \textbf{39} (2016), 291--302; first published online 8 January 2015.
+\url{https://doi.org/10.1007/s11139-014-9659-3}.
+
+\bibitem{thesis}
+A.~Issaka, \emph{Some Results on Two Asymptotic Series of Ramanujan}, master's thesis, Central European University, 2014. Chapter 2 concerns inverse-digamma coefficients and their asymptotics.
+\url{https://www.etd.ceu.edu/2014/issaka_aziz.pdf}.
+
+\bibitem{gessel}
+I.~M.~Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory, Series A \textbf{144} (2016), 212--249.
+\url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{fo}
+B.~R.~Fabijonas and F.~W.~J.~Olver, \emph{On the reversion of an asymptotic expansion and the zeros of the Airy functions}, SIAM Review \textbf{41} (1999), 762--773.
+\url{https://doi.org/10.1137/S0036144598349538}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions, Chapter 5, especially \S5.5 (functional relations), \S5.9 (integral representations), and \S5.11 (asymptotic expansions). Accessed 29 September 2026.
+\url{https://dlmf.nist.gov/5.9}; \url{https://dlmf.nist.gov/5.11}.
+
+\bibitem{sauzin}
+D.~Sauzin, \emph{Nonlinear analysis with resurgent functions}, Annales scientifiques de l'\'Ecole Normale Sup\'erieure, S\'erie 4, \textbf{48} (2015), 667--702.
+\url{https://doi.org/10.24033/asens.2255}; \url{https://arxiv.org/abs/1212.4477}.
+\end{thebibliography}
+\end{document}

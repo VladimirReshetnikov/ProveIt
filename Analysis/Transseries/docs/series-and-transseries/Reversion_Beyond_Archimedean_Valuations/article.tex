@@ -1,0 +1,1974 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem,xurl,needspace}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Reversion Beyond Archimedean Valuations},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Hahn power-logarithmic reversion, support-depth Newton iteration and finite certificates}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Reversion beyond Archimedean valuations}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\emergencystretch=2em
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\HH}{\mathscr H}
+\newcommand{\AS}{\mathscr A_S}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\depth}{\mathsf H}
+\newcommand{\Div}{\mathsf D}
+\newcommand{\coef}[1]{\left[#1\right]}
+\newcommand{\Ocal}{\mathcal O}
+\newcommand{\rising}[2]{\prod_{j=#1}^{#2}}
+\newcommand{\pathcode}[1]{\nolinkurl{#1}}
+\title{\textbf{Reversion Beyond Archimedean Valuations}\\[0.65em]
+\large Strong Hahn convergence, sharp Newton depth,\\
+and minimal finite coefficient certificates}
+\author{Research article prepared for Vladimir Reshetnikov\\
+\small Based on the ProveIt transseries research program}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A positive valuation gain need not become cofinal in a non-Archimedean
+ordered group. Consequently, an argument that proves reversion by sending
+that gain to infinity can fail even when the inverse exists and every one
+of its coefficients has a finite exact computation. We resolve the
+fixed-shift Hahn power--logarithmic version of the ProveIt research question
+on reversion beyond Archimedean exponent groups.
+
+The replacement invariant is the maximum length of a positive support word
+representing a prescribed exponent. The all-word form of Neumann's lemma
+makes this length finite without any Archimedean hypothesis. It yields a
+complete support filtration, a finite-dimensional implicit-system theorem,
+and the ordinary integer-indexed Lagrange--B\"urmann inverse. For Newton
+iteration we prove the sharper support-depth law $r\mapsto2r+1$ and the
+uniform bound $r_n=2^{n+1}-1$, with an example attaining every bound.
+We characterize exactly when valuation convergence holds uniformly for
+this class: the multiples of its least support exponent must be cofinal.
+In contrast, strong Hahn convergence always holds under the stated support
+hypotheses.
+
+For any finite set of requested coefficients we construct a finite-rank
+quotient algebra that is minimal among algebra quotients retaining those
+coefficient maps. This gives terminating exact certificates even when a
+valuation cutoff contains infinitely many monomials. A rank-two infinite
+support has depth $n^2+k+1$ at $(n,k)$ and admits no positive real-valued
+additive grading. More generally, every positive-integer superadditive
+profile is realized by such a rank-two support, allowing arbitrarily fast
+depth growth. Proofs, exact symbolic checks, a statement-level formalization
+plan, and further research questions are supplied. Generalized-series
+implicit functions are classical; the contribution here is the explicit
+repository resolution, sharp precision theory, and certificate construction,
+not a claim of first discovery of Hahn-series inversion.
+\end{abstract}
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research target, contribution, and scope}
+\label{sec:scope}
+
+\subsection{The repository question}
+The inspected repository snapshot is ProveIt commit
+\pathcode{3f2d57344dc6f0b3dfa376f9490bfe13d1beb81e}, retrieved on
+29 September 2026. Its transseries development has moved to
+\pathcode{Analysis/Transseries}. The recent article
+\emph{Support-Controlled Reversion and the Exact One-Exponential
+Substitution Group} asks, in its further-research section, what replaces
+the real-valued support bound and the sequential fixed-point argument when
+the exponent group is arbitrary. It explicitly separates failure of
+cofinal valuation improvement from failure of existence
+\cite{RepoReversion,RepoReadme}.
+
+That is the principal target here. The same article also proposes
+proof-producing support and precision inference. Our finite quotient
+construction addresses a precise algebraic part of that second target:
+which coefficients must be retained, why the retained set is finite, and
+what finite precision suffices for exact Newton inversion.
+
+The inspection was targeted: the recent article, the transseries README,
+and the well-based-support Lean module were read. The much larger canonical
+volume was not exhaustively audited. The immutable source addresses in the
+bibliography and the accompanying provenance file identify the exact
+materials used. We make no claim to have compared every statement against
+every document in the repository.
+
+\subsection{What is classical and what is established here}
+Higman's word theorem and the associated positive-support summability
+principle are classical \cite{Higman}. General implicit-function methods
+for generalized series already exist: van der Hoeven develops Noetherian
+operators and an implicit-function theorem, including summable recursive
+expansions \cite{vdH}. Composition and different modes of transseries
+convergence are treated by Edgar \cite{Edgar}; a recent general Taylor
+expansion framework is developed by Bagayoko and Mantova \cite{BM}.
+The coefficient Lagrange inversion identity is classical as well
+\cite{Gessel}.
+
+Accordingly, the claim here is not that non-Archimedean formal inversion was
+previously unknown. We give a self-contained, quantitatively precise answer
+in the coefficient algebra used by the repository, with the extra data
+needed to define its derivative outside a real exponent group. The central
+outputs are as follows.
+
+\begin{center}
+\begin{tabular}{@{}p{0.26\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Output & Precise content\\
+\midrule
+Existence and reversion & Arbitrary ordered-group supports are allowed;
+ordinary integer Lagrange indices suffice; the normalized inverse stays in
+the positive monoid generated by the input support.\\[0.45em]
+Sharp precision & Newton error depth improves from $r$ to $2r+1$;
+$r_n=2^{n+1}-1$ is attained by an explicit scalar inverse.\\[0.45em]
+Topology boundary & Cofinality of multiples of the minimum support is
+necessary and sufficient for valuation convergence uniformly over the
+small-coefficient implicit systems considered here.\\[0.45em]
+Finite certification & Each finite coefficient request factors through a
+minimal finite-rank quotient; a finite-support instance has a rational
+separating-functional certificate.\\[0.45em]
+Infinite-support obstruction & A well-ordered rank-two support has exact
+quadratic depth and no positive real additive grading.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All these statements are proved below. The precise extent to which their
+combined formulation is new in the wider literature has not been established
+by a comprehensive priority search. The finite verification program audits
+examples and formulas; it is not a substitute for the proofs and is not a
+Lean formalization.
+
+\subsection{Four notions that must be distinguished}
+An inverse may exist as a Hahn series without its successive approximations
+converging in the full valuation topology. A finite list of coefficients
+may be computable even when all coefficients below a chosen valuation
+cutoff cannot be listed finitely. Finally, a formal Hahn series is not
+automatically a germ of a real or complex function.
+
+We therefore keep four questions separate: formal existence; strong Hahn
+summation; valuation convergence; and analytic realization. The first three
+are addressed under explicit hypotheses. Borel summability, resurgence,
+Hardy-field realization, and a general natural derivation on a full
+logarithmic--exponential transseries field are not consequences claimed here.
+
+\section{Hahn series and the all-word support lemma}
+\label{sec:words}
+
+\subsection{Conventions}
+Throughout, $\Gamma$ is a set-sized totally ordered abelian group, written
+additively, and $K$ is a field of characteristic zero. The order is
+translation invariant. We write $R=K[L]$, where $L$ is an indeterminate, and
+\[
+ \HH=R((t^\Gamma))
+ =\left\{\sum_{\gamma\in T}p_\gamma(L)t^\gamma:
+            T\subseteq\Gamma\text{ well ordered},\ p_\gamma\in R\right\}.
+\]
+Zero coefficients are omitted from the support. Our orientation is that
+larger exponents represent smaller monomials. For $f\ne0$ let
+$v(f)=\min\supp f$, and set $v(0)=+\infty$.
+
+A family $(f_i)_{i\in I}$ is \emph{Hahn summable} if its union of supports is
+well ordered and, for each exponent, only finitely many family members
+have a nonzero coefficient there. Its sum is defined using those finite
+coefficient sums. Convergence of an infinite sum of scalars does not make
+an otherwise inadmissible family Hahn summable.
+
+In this article, a sequence $f_n$ \emph{converges strongly in the Hahn sense}
+to $f$ if its supports and that of $f$ lie in one well-ordered set and every
+coefficient is eventually exactly the corresponding coefficient of $f$.
+For such a sequence the successive-difference family is Hahn summable, and
+\[
+ f=f_0+\sum_{n\ge0}(f_{n+1}-f_n).
+\]
+This is the explicitly used sequential notion; it must not be replaced by
+valuation convergence without proof.
+
+\begin{lemma}[Binary support calculus]\label{lem:binary}
+If $T,U\subseteq\Gamma$ are well ordered, then $T+U$ is well ordered and,
+for every $\alpha\in\Gamma$, there are only finitely many pairs
+$(\tau,u)\in T\times U$ satisfying $\tau+u=\alpha$.
+\end{lemma}
+\begin{proof}
+Every sequence in a well-ordered set has an infinite nondecreasing
+subsequence. Indeed, if some value occurs infinitely often use it; otherwise
+successively choose a minimum of a remaining tail and pass beyond its last
+occurrence. If a strictly decreasing sequence in $T+U$ existed, choose one
+representation of each member and pass to a nondecreasing subsequence of
+first coordinates. The second coordinates would strictly decrease, a
+contradiction.
+
+For infinitely many different representations of a fixed $\alpha$, the
+first coordinates are different. A nondecreasing subsequence is then
+strictly increasing, forcing the corresponding second coordinates to
+strictly decrease. This proves finiteness of the fiber.
+\end{proof}
+
+It follows that the Cauchy product is well defined on $\HH$. It is an
+integral domain, with $v(fg)=v(f)+v(g)$ for nonzero $f,g$. The following
+stronger statement concerns words of \emph{unbounded length}, not merely a
+fixed finite product.
+
+\begin{lemma}[Positive all-word lemma]\label{lem:words}
+Let $S\subseteq\Gamma_{>0}$ be well ordered. Its additive monoid
+\[
+ M(S)=\{0\}\cup\bigcup_{n\ge1}nS
+\]
+is well ordered. Each $\alpha\in\Gamma$ is the sum of only finitely many
+ordered finite words over $S$. The empty word is permitted and has sum zero.
+\end{lemma}
+\begin{proof}
+Order finite words by subsequence embedding with coordinatewise comparison:
+$(a_1,\ldots,a_m)$ embeds in $(b_1,\ldots,b_n)$ if there are
+$1\le j_1<\cdots<j_m\le n$ with $a_i\le b_{j_i}$.
+The word theorem says that every infinite sequence of words has an earlier
+word embedding in a later one. For completeness, its well-ordered-alphabet
+case is proved here by the minimal-bad-sequence argument.
+
+Suppose a bad sequence exists. Choose its first word of minimal possible
+length among words beginning a bad sequence, then its second word of
+minimal length among continuations of the chosen prefix, and continue.
+No word is empty. Write $w_i=v_i a_i$, separating the last letter, and
+choose indices $i_0<i_1<\cdots$ on which $a_{i_j}$ is nondecreasing.
+The sequence
+\[
+ w_0,\ldots,w_{i_0-1},v_{i_0},v_{i_1},v_{i_2},\ldots
+\]
+cannot be bad, because its first new word is shorter than the word chosen
+minimally at that position. An embedding among its old words contradicts
+badness of the original sequence. An old word embedding in $v_{i_j}$ also
+embeds in $w_{i_j}$. Finally, an embedding $v_{i_j}\preceq v_{i_k}$ extends,
+using $a_{i_j}\le a_{i_k}$, to $w_{i_j}\preceq w_{i_k}$. Each possibility
+is impossible. This proves the word theorem in the needed case.
+
+Now an embedding of words makes their sums nondecreasing. Moreover, their
+sums are \emph{strictly} increasing unless the two words are identical:
+an omitted letter is positive, and a strictly larger matched letter also
+strictly increases the sum. Therefore words representing a strictly
+decreasing sequence of sums would be a bad sequence. This proves that
+$M(S)$ is well ordered. Infinitely many different words with one fixed sum
+would also be a bad sequence. This proves the finite-word assertion.
+\end{proof}
+
+The combinatorial mechanism is the classical Higman--Neumann support
+principle \cite{Higman}. The proof makes clear why no real-valued lower bound
+on word length is required.
+
+\begin{corollary}[Anchored words]\label{cor:anchored}
+For well-ordered $T\subseteq\Gamma$ and positive well-ordered $S$, the set
+$T+M(S)$ is well ordered. For each $\alpha$, there are only finitely many
+pairs consisting of an anchor $\tau\in T$ and an ordered word over $S$
+whose sum with $\tau$ is $\alpha$.
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{lem:binary} to $T$ and $M(S)$. There are finitely many
+possible pairs of anchor and word sum, and Lemma~\ref{lem:words} supplies
+finitely many words for each such sum.
+\end{proof}
+
+\begin{remark}[Where the Archimedean proof breaks]\label{rem:archbreak}
+If $\Gamma\subseteq\R$, $\delta=\min S>0$, and a word has sum $\alpha$, then
+its length is at most $\alpha/\delta$. In an arbitrary group, the inequalities
+$n\delta\le\alpha$ may hold for every $n$. This invalidates that numerical
+bound, not Lemma~\ref{lem:words}. Replacing the lemma by the failed bound
+would discard valid inverses.
+\end{remark}
+
+\section{Support depth and a complete filtration}
+\label{sec:filtration}
+
+Assume from now on that $S$ is nonempty, positive, and well ordered, and put
+$M=M(S)$. Define
+\begin{equation}\label{eq:depth}
+ \depth_S(\alpha)=\max\{n\in\N:\alpha\in nS\},\qquad \alpha\in M,
+ \qquad 0S=\{0\}.
+\end{equation}
+Thus $\depth_S(0)=0$. This is the \emph{maximum} representation length, not
+the minimum number of generators. Maximum length is the relevant invariant
+when a coefficient may receive contributions from many nonlinear orders.
+Lemma~\ref{lem:words} makes it finite.
+
+For $r\ge0$ define
+\begin{equation}\label{eq:Ir}
+ S_{\ge r}=\bigcup_{n\ge r}nS,\qquad
+ \AS=\{f\in\HH:\supp f\subseteq M\},\qquad
+ I_r=\{f\in\AS:\supp f\subseteq S_{\ge r}\}.
+\end{equation}
+Here $I_0=\AS$, and $I_1$ is its augmentation ideal: it consists precisely
+of the series with no exponent-zero block. We call $I_r$ the support-depth
+filtration. We do not identify $I_r$ with an ordinary algebraic ideal power
+without additional justification.
+
+\begin{proposition}[Complete support filtration]\label{prop:complete}
+The sets $I_r$ are ideals of $\AS$, and
+\[
+ I_{r+1}\subseteq I_r,\qquad I_pI_q\subseteq I_{p+q},\qquad
+ \bigcap_{r\ge0}I_r=\{0\}.
+\]
+The ring $\AS$ is complete for this filtration. If $f_n\in I_{r_n}$ and
+$r_n\to+\infty$ as integers, then $(f_n)$ is Hahn summable. Every element
+of $1+I_1$ is a unit, with inverse given by its geometric series.
+\end{proposition}
+\begin{proof}
+Concatenating words gives $S_{\ge p}+S_{\ge q}\subseteq S_{\ge p+q}$;
+concatenating an arbitrary additional word shows that each $I_r$ is an
+ideal. If $f$ belongs to every $I_r$, its coefficient at $\alpha$ must vanish
+as soon as $r>\depth_S(\alpha)$, proving separatedness.
+
+For the family $(f_n)$, the union of supports lies in the well-ordered set
+$M$. A fixed $\alpha$ can occur only for indices with
+$r_n\le\depth_S(\alpha)$, of which there are finitely many. Hence the family
+is Hahn summable.
+
+For completeness, let $(g_n)$ be filtration-Cauchy. For every $\alpha$, the
+coefficients of $g_n$ at $\alpha$ eventually stabilize: use any filtration
+index greater than $\depth_S(\alpha)$. Let $g$ consist of these stabilized
+coefficients. Its support is a subset of $M$, so it lies in $\AS$. Fix $r$.
+Beyond a Cauchy index, $g_n-g_m\in I_r$ for all $n,m$. Passing coefficientwise
+to the stabilized values gives $g_n-g\in I_r$. This proves completeness.
+
+Finally, if $a\in I_1$, then $a^n\in I_n$, so $\sum_{n\ge0}(-a)^n$ is
+summable. The usual finite geometric identity, followed coefficientwise,
+shows that this is $(1+a)^{-1}$.
+\end{proof}
+
+The same conclusions hold entrywise for finite vectors and matrices. In
+particular, $\Id+J$ is invertible whenever every entry of $J$ is in $I_1$.
+
+\begin{lemma}[Coefficient stopping rule]\label{lem:stop}
+If $f-g\in I_r$ and $r>\depth_S(\alpha)$, then
+$\coef{t^\alpha}f=\coef{t^\alpha}g$. For a finite nonempty target set
+$E\subseteq M$, it suffices that
+\[
+ r>H_E,\qquad H_E=\max_{\alpha\in E}\depth_S(\alpha).
+\]
+\end{lemma}
+\begin{proof}
+No exponent of depth less than $r$ is in $S_{\ge r}$.
+\end{proof}
+
+Notice that this is a coefficient certificate, not a claim that every
+initial segment of $M$ is finite. The distinction persists even when $S$
+itself is finite.
+
+\section{Small-coefficient implicit systems}
+\label{sec:implicit}
+
+The support mechanism is not restricted to one inverse equation. A finite
+system makes the source of the extra Newton gain particularly transparent.
+
+Fix $d\ge1$ and formal series in $d$ unknowns
+\begin{equation}\label{eq:A}
+ A_i(U)=\sum_{\nu\in\N^d}a_{i,\nu}U^\nu,
+ \qquad \supp a_{i,\nu}\subseteq S,
+ \qquad 1\le i\le d.
+\end{equation}
+There need not be a uniform bound on the degrees of the coefficient
+polynomials in $L$. The coefficients need not be summable as $\nu$ varies
+before evaluation. Their common positive support bound is the hypothesis.
+Set
+\[
+ \Psi(U)=U+A(U).
+\]
+
+\begin{lemma}[Evaluation and nonlinear estimates]\label{lem:nonlinear}
+For $U\in I_1^d$, the expressions $A(U)$ and all their formal partial
+derivatives are defined by Hahn-summable families. Their values and all
+entries of $A'(U)$ lie in $I_1$. For $U,V\in I_1^d$ with
+$U-V\in I_r^d$, $r\ge1$, one has
+\begin{align}
+ A(U)-A(V)&\in I_{r+1}^d,\label{eq:lipschitz}\\
+ A(U)-A(V)-A'(V)(U-V)&\in I_{2r+1}^d.\label{eq:quadratic}
+\end{align}
+\end{lemma}
+\begin{proof}
+A term with $|\nu|=m$ in $A(U)$ belongs to $I_{m+1}$. There are finitely
+many multi-indices of each total degree because $d$ is finite. The common
+support is contained in $M$, and a fixed exponent permits only finitely many
+such degrees by its finite depth. Each fixed-degree expression is an
+ordinary finite sum of Hahn products. This proves summability. The same
+argument applies after any fixed number of partial differentiations;
+the coefficient still supplies at least one support letter.
+
+For each monomial, $U^\nu-V^\nu$ is a sum of terms with at least one factor
+from $U-V$, and the associated coefficient supplies a letter from $S$.
+This proves \eqref{eq:lipschitz}. Subtracting the linear part leaves at
+least two factors from $U-V$, so its support depth is at least $2r+1$.
+All expansions are legitimate by the preceding fixed-coefficient finiteness
+argument.
+\end{proof}
+
+\begin{theorem}[Implicit solution and sharp Newton estimate]
+\label{thm:implicit}
+Under \eqref{eq:A}, the equation $\Psi(U)=0$ has a unique solution
+$U_*\in I_1^d$. Picard iteration
+\[
+ P_0=0,\qquad P_{n+1}=-A(P_n)
+\]
+converges strongly in the Hahn sense to $U_*$, with
+\begin{equation}\label{eq:picarderr}
+ P_n-U_*\in I_{n+1}^d.
+\end{equation}
+Newton iteration
+\begin{equation}\label{eq:newton}
+ N_0=0,\qquad
+ N_{n+1}=N_n-[\Id+A'(N_n)]^{-1}\Psi(N_n)
+\end{equation}
+is well defined and converges strongly to the same solution. Its error
+satisfies
+\begin{equation}\label{eq:newtondepth}
+ N_n-U_*\in I_{r_n}^d,\qquad r_n=2^{n+1}-1.
+\end{equation}
+More generally, one Newton step sends an error in $I_r^d$ into
+$I_{2r+1}^d$.
+\end{theorem}
+\begin{proof}
+Picard iteration stays in $I_1^d$. Its first increment belongs to $I_1^d$,
+and \eqref{eq:lipschitz} shows inductively that
+$P_{n+1}-P_n\in I_{n+1}^d$. Proposition~\ref{prop:complete} gives a strong
+limit $U_*\in I_1^d$. The same Lipschitz estimate permits passage to the
+limit in $P_{n+1}=-A(P_n)$, yielding $\Psi(U_*)=0$.
+The tail of the increment family gives \eqref{eq:picarderr}.
+
+If $U,V\in I_1^d$ are solutions, their difference first belongs to $I_1^d$.
+Equation \eqref{eq:lipschitz} and the fixed-point equation then put it in
+$I_2^d$, then in $I_3^d$, and so forth. Separatedness makes it zero.
+No valuation cofinality enters this argument.
+
+For Newton iteration, $J(U)=\Id+A'(U)$ is a matrix over $\AS$ congruent to
+$\Id$ modulo $I_1$, hence is invertible by its matrix geometric series.
+The correction belongs to $I_1^d$, so the iteration stays in that domain.
+Suppose $e=U-U_*\in I_r^d$. Taylor expansion about $U$, evaluated at $U_*$,
+gives
+\[
+ 0=\Psi(U_*)=\Psi(U)-J(U)e+R,
+ \qquad R\in I_{2r+1}^d.
+\]
+The linear part $U$ of $\Psi$ has no quadratic remainder; all higher
+terms come from $A$, whose coefficients carry the additional support
+letter. Consequently,
+\[
+ U-J(U)^{-1}\Psi(U)-U_*=J(U)^{-1}R\in I_{2r+1}^d.
+\]
+Initially $N_0-U_*\in I_1^d$. The recurrence
+$r_{n+1}=2r_n+1$, $r_0=1$, has solution $r_n=2^{n+1}-1$.
+The resulting errors and increments form Hahn-summable families, and each
+coefficient eventually agrees with $U_*$. This proves strong convergence.
+\end{proof}
+
+\begin{corollary}[Exact Newton round count]\label{cor:rounds}
+For a finite nonempty set of requested exponents $E\subseteq M$, all those
+coefficients of $N_n$ are exact whenever
+\begin{equation}\label{eq:rounds}
+ 2^{n+1}-1>H_E.
+\end{equation}
+In particular,
+\[
+ n=\left\lfloor\log_2(H_E+1)\right\rfloor
+\]
+is sufficient, including $n=0$ when $H_E=0$.
+\end{corollary}
+\begin{proof}
+Combine \eqref{eq:newtondepth} with Lemma~\ref{lem:stop}. The displayed
+integer is the least nonnegative $n$ satisfying \eqref{eq:rounds}.
+\end{proof}
+
+\begin{proposition}[Uniqueness beyond the generated monoid]
+\label{prop:allpositive}
+The solution in Theorem~\ref{thm:implicit} is the only solution whose
+components are arbitrary positive-support Hahn series, even if their
+supports were not initially assumed to lie in $M(S)$.
+\end{proposition}
+\begin{proof}
+For any finite collection of positive-support inputs, their combined
+support is well ordered and positive. The anchored-word lemma justifies
+evaluation of \eqref{eq:A} on these inputs. Write $\delta=\min S$.
+If $U,V$ are such inputs, and
+$\epsilon=\min_i v(U_i-V_i)$ is finite, the monomial difference
+factorization gives
+\[
+ v\bigl(A_i(U)-A_i(V)\bigr)\ge\epsilon+\delta
+ \quad\text{for every }i.
+\]
+All other factors have nonnegative valuations, and every coefficient of
+$A$ has valuation at least $\delta$. If both inputs were solutions, some
+component of $U-V$ would have valuation $\epsilon$, whereas its equal
+negative feedback difference would have strictly larger valuation.
+This is impossible. A \emph{single} strict gain suffices for uniqueness;
+its multiples need not be cofinal.
+\end{proof}
+
+\section{An explicit finite-tree coefficient formula}
+\label{sec:trees}
+
+The fixed-point proof has a useful nonrecursive interpretation. Write
+\[
+ a_{i,\nu}=\sum_{s\in S}a_{i,\nu,s}(L)t^s.
+\]
+Consider finite rooted trees whose vertices have types in
+$\{1,\ldots,d\}$. A vertex of type $i$ has $\nu_j$ ordered child slots of
+type $j$, grouped in increasing order of $j$, for some $\nu\in\N^d$.
+Give this vertex an additional label $s\in S$ and weight
+$-a_{i,\nu,s}(L)$. Zero-weight decorations may simply be omitted.
+The exponent of a decorated tree is the sum of its vertex labels; its
+coefficient weight is the product of its vertex weights.
+
+\begin{theorem}[Finite tree formula]\label{thm:trees}
+For $\alpha\in M$ and root type $i$,
+\begin{equation}\label{eq:treeformula}
+ \coef{t^\alpha}U_{*,i}
+ =\sum_{\substack{\mathcal T\text{ decorated tree of root type }i\\
+                    \sum_{v\in\mathcal T}s_v=\alpha}}
+       \prod_{v\in\mathcal T}\bigl(-a_{i_v,\nu_v,s_v}(L)\bigr).
+\end{equation}
+This is a finite sum, and every contributing tree has at most
+$\depth_S(\alpha)$ vertices. There is no automorphism-group denominator:
+child slots are ordered as specified above.
+\end{theorem}
+\begin{proof}
+List the vertices in depth-first order. Their labels form an ordered word
+over $S$ with sum $\alpha$. There are finitely many such words and a finite
+upper bound on their lengths. For a fixed number of vertices there are
+finitely many rooted ordered tree shapes, finitely many vertex types, and
+finitely many possible child-count vectors. Thus the displayed family is
+finite at each exponent and has support in $M$.
+
+Decompose a tree at its root. The root supplies one coefficient of $-A_i$;
+the ordered subtrees in its child slots supply the factors
+$U_1^{\nu_1}\cdots U_d^{\nu_d}$. This is exactly the fixed-point equation.
+Conversely, expanding a product in that equation independently chooses a
+subtree for each slot, producing every decorated tree with precisely its
+multiplicity. Hence the Hahn sum over all trees is a solution in $I_1^d$.
+Uniqueness proves \eqref{eq:treeformula}.
+\end{proof}
+
+The tree formula is not presented as a new general theory of implicit
+functions. Its role here is to exhibit a finite certificate for an
+individual coefficient: the dependence on arbitrarily high nonlinear
+orders disappears once the target exponent is fixed. Picard iteration
+organizes the same trees by height. The support-depth bound instead
+controls their number of vertices, and remains useful when infinitely many
+support exponents lie below a valuation cutoff.
+
+\section{The fixed-shift power--logarithmic differential algebra}
+\label{sec:differential}
+
+\subsection{The necessary additional data}
+In a real exponent group, the exponent $\gamma$ can also be used as a scalar
+coefficient. This is not meaningful in an arbitrary ordered abelian group
+without a specified map. We therefore fix
+\begin{equation}\label{eq:character}
+ h\in\Gamma_{>0},\qquad \chi:\Gamma\longrightarrow(K,+)
+ \text{ additive},\qquad \chi(h)=1.
+\end{equation}
+No order compatibility of $\chi$ is assumed. Put $X=t^{-h}$, and define
+\begin{equation}\label{eq:D}
+ D\bigl(t^\gamma p(L)\bigr)
+ =t^{\gamma+h}\bigl(p'(L)-\chi(\gamma)p(L)\bigr).
+\end{equation}
+Then $DX=1$ and $DL=t^h$. When $\Gamma\subseteq\R$, $K=\R$, $h=1$ and
+$\chi(\gamma)=\gamma$, this is exactly the power--logarithmic derivative
+used by the repository source.
+
+The data \eqref{eq:character} can always be supplied after a suitable choice
+of scalar map: an ordered abelian group is torsion free, hence embeds in
+$\Gamma\otimes_\Z\Q$; extend $h$ to a rational vector-space basis and send
+it to $1$. Sending the other basis elements to zero gives a map into $\Q$.
+If an injective additive map is desired, send them instead to algebraically
+independent indeterminates and take a corresponding rational-function
+field. These choices need not be canonical and need not provide an
+analytic interpretation.
+
+\begin{proposition}[Derivative and Euler operator]\label{prop:derivative}
+Equation \eqref{eq:D} extends to a strongly summation-preserving derivation
+of $\HH$. For every $j\ge0$,
+\begin{equation}\label{eq:Diter}
+ D^j\bigl(t^\gamma p(L)\bigr)
+ =t^{\gamma+jh}\prod_{i=0}^{j-1}
+       (\partial_L-\chi(\gamma)-i)p(L).
+\end{equation}
+In particular $v(D^j f)\ge v(f)+jh$. The Euler operator
+\begin{equation}\label{eq:Euler}
+ \nabla=XD=t^{-h}D
+\end{equation}
+is a derivation preserving each support exponent, with
+$\nabla(t^\gamma p)=t^\gamma(p'-\chi(\gamma)p)$.
+\end{proposition}
+\begin{proof}
+Translation by $h$ preserves well ordering and finite support fibers, so
+termwise application is strong. The product rule follows on two monomial
+blocks from additivity of $\chi$ and the ordinary polynomial product rule;
+strong summation extends it to all series. Induction on $j$, using
+$\chi(\gamma+jh)=\chi(\gamma)+j$, gives \eqref{eq:Diter}.
+Multiplication of a derivation by an element of a commutative ring is again
+a derivation; multiplying \eqref{eq:D} by $t^{-h}$ gives the last formula.
+\end{proof}
+
+\begin{remark}[The scope is deliberate]
+The ordered exponent group controls support; the character $\chi$ controls
+the differential weights. A character with kernel gives additional
+constant monomials. Nothing in the reversion proof requires the constant
+field to equal $K$. A full transseries field can have a more complicated
+derivative whose support shifts vary with the monomial. Such a derivative
+is outside the fixed-shift theorem and is a further research direction,
+not silently covered by \eqref{eq:D}.
+\end{remark}
+
+\section{Strong Taylor substitution without cofinality}
+\label{sec:substitution}
+
+Let $B\in\HH$ satisfy $v(B)>-h$, and put
+\[
+ b=t^hB,\qquad H_B=X+B.
+\]
+The support $S=\supp b$ is positive and well ordered. The zero case $B=0$
+is understood separately as the identity substitution. Define
+\begin{equation}\label{eq:Taylor}
+ T_Bf=f\circ H_B:=\sum_{j\ge0}\frac{B^j}{j!}D^jf.
+\end{equation}
+Here the notation $\circ$ denotes the substitution being constructed,
+not an assumed analytic composition operation.
+
+\begin{theorem}[Strong substitution calculus]\label{thm:substitution}
+For every $f\in\HH$, formula \eqref{eq:Taylor} is Hahn summable. If
+$T=\supp f$, its support is contained in $T+M(S)$. The map $T_B$ is a
+strongly summation-preserving $K$-algebra homomorphism. It acts by
+\begin{equation}\label{eq:generators}
+ T_B(t^\gamma)=t^\gamma(1+b)^{-\chi(\gamma)},\qquad
+ T_B(L)=L+\log(1+b).
+\end{equation}
+It preserves the leading coefficient block and valuation of every nonzero
+series. Moreover,
+\begin{align}
+ D(T_Bf)&=(1+DB)T_B(Df),\label{eq:chain}\\
+ T_C(T_Bf)&=T_{C+T_CB}f\label{eq:association}
+\end{align}
+whenever $v(C)>-h$.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:Diter}, the $j$th Taylor summand has support in
+\[
+ j(\supp B)+(T+jh)=T+jS.
+\]
+The anchored-word lemma proves that the union is well ordered and that a
+fixed target receives contributions from only finitely many Taylor orders
+and finitely many input anchors. This proves summability. For an arbitrary
+Hahn-summable input family, its combined anchors form a well-ordered set
+and each anchor occurs in only finitely many members. The same argument
+therefore permits both orders of summation and proves strong preservation.
+
+For $t^\gamma$, the iterated derivative formula gives the binomial series
+in \eqref{eq:generators}. For $L$, its positive derivatives are
+\[
+ D^jL=(-1)^{j-1}(j-1)!t^{jh}\quad(j\ge1),
+\]
+which give the logarithm. The binomial and logarithmic series are themselves
+summable because $b$ has positive support. On monomial blocks,
+\eqref{eq:generators} respects products, by additivity of $\chi$ and the
+identity $(1+b)^{a+c}=(1+b)^a(1+b)^c$. It respects polynomial operations in
+$L$ as well. These formal identities may be checked in one ordinary
+power-series variable and specialized using the word lemma. Strong
+summation then proves the homomorphism assertion on $\HH$.
+
+Every positive Taylor order shifts an anchor by a positive support word.
+It therefore contributes nothing to the least exponent of $f$.
+The leading block is unchanged.
+
+For the chain rule, differentiating the summable Taylor family gives
+\[
+ \begin{split}
+ D(T_Bf)
+ &=\sum_{j\ge0}\frac{B^j}{j!}D^{j+1}f
+   +(DB)\sum_{j\ge1}\frac{B^{j-1}}{(j-1)!}D^jf\\
+ &=(1+DB)T_B(Df).
+ \end{split}
+\]
+The derivative is strong and products of the relevant families are
+summable, justifying the displayed manipulation.
+
+For associativity, let $c=t^hC$ and set $E=C+T_CB$.
+Since $T_C$ preserves valuation, $v(E)>-h$. Also
+\[
+ t^hE=c+(1+c)T_Cb,
+ \qquad 1+t^hE=(1+c)(1+T_Cb).
+\]
+Applying $T_C$ to \eqref{eq:generators}, and using this product identity,
+shows that $T_CT_B$ and $T_E$ agree on every $t^\gamma$ and on $L$.
+For $L$ use $\log(uv)=\log u+\log v$ for commuting elements of $1+I_1$
+in the monoid generated by the combined positive supports. Both sides
+preserve Hahn sums, so they agree on every series. This proves
+\eqref{eq:association}.
+\end{proof}
+
+\begin{proposition}[A difference estimate requiring only one gain]
+\label{prop:difference}
+If $v(B)>-h$ and $v(C),v(E)>-h$, then
+\begin{equation}\label{eq:diffv}
+ v(T_CB-T_EB)\ge v(C-E)+v(B)+h.
+\end{equation}
+In particular, $H_B\circ H_C=H_B\circ H_E$ implies $C=E$.
+\end{proposition}
+\begin{proof}
+Subtract Taylor expansions and use
+$C^j-E^j=(C-E)\sum_{a=0}^{j-1}C^aE^{j-1-a}$ for $j\ge1$.
+Each resulting term has valuation at least
+\[
+ v(C-E)+v(B)+h
+ +(j-1)\bigl(h+\min\{v(C),v(E)\}\bigr).
+\]
+The last summand is nonnegative. All families are summable by applying the
+word lemma to the union of the normalized input supports. This proves
+\eqref{eq:diffv}. If $C-E=-(T_CB-T_EB)$ and $C\ne E$, the right side would
+have strictly larger valuation than the left, because $v(B)+h>0$.
+\end{proof}
+
+\section{Reversion and the ordinary Lagrange index}
+\label{sec:reversion}
+
+\subsection{Reduction to a small-coefficient equation}
+Write the normalized input as
+\begin{equation}\label{eq:binput}
+ b=t^hB=\sum_{s\in S}b_s(L)t^s.
+\end{equation}
+Seek $G=X+C$ and put $U=t^hC$. By \eqref{eq:generators}, the equation
+$H_B\circ G=X$ is equivalent to
+\begin{equation}\label{eq:normalinverse}
+ \Psi_B(U)=U+A_B(U)=0,
+\end{equation}
+where
+\begin{equation}\label{eq:AB}
+ A_B(U)=\sum_{s\in S}t^s(1+U)^{1-\chi(s)}
+                    b_s\bigl(L+\log(1+U)\bigr).
+\end{equation}
+Indeed, a block of $B$ has exponent $s-h$ and hence differential weight
+$\chi(s)-1$. The formal coefficient of every power of $U$ in $A_B$ has
+support contained in $S$. Thus \eqref{eq:AB} is a scalar instance of
+\eqref{eq:A}.
+
+\begin{theorem}[Non-Archimedean power--logarithmic reversion]
+\label{thm:reversion}
+Assume \eqref{eq:character}. Every $H_B=X+B$ with $v(B)>-h$ has a unique
+two-sided inverse of the form $G=X+C$, $v(C)>-h$. Its normalized correction
+$U=t^hC$ belongs to $I_1$ for $S=\supp(t^hB)$. In particular, its support
+is contained in $M(S)\setminus\{0\}$.
+
+The inverse is given by the ordinary positive-integer Lagrange sum
+\begin{equation}\label{eq:LB}
+ G=X+\sum_{n\ge1}\frac{(-1)^n}{n!}D^{n-1}(B^n).
+\end{equation}
+The normalized $n$th summand has support in $nS$. Consequently, the
+coefficient at exponent $\alpha$ of $U$ uses at most the outer orders
+$1\le n\le\depth_S(\alpha)$, whether or not $n\min S$ is cofinal in
+$\Gamma$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:implicit}, applied to \eqref{eq:AB}, gives a solution
+$U\in I_1$, hence a right substitution inverse $G=X+t^{-h}U$ with
+$H_B\circ G=X$. It lies in the same near-identity class. Apply the same
+existence argument to $G$ to obtain $H$ with $G\circ H=X$.
+Associativity from Theorem~\ref{thm:substitution} gives
+\[
+ H_B=H_B\circ(G\circ H)=(H_B\circ G)\circ H=H.
+\]
+Therefore $G\circ H_B=X$, proving two-sided inversion.
+Proposition~\ref{prop:difference} proves uniqueness among all near-identity
+corrections, not only those with a prespecified generated support.
+
+To derive \eqref{eq:LB}, introduce an independent ordinary formal variable
+$z$ and solve
+\[
+ C(z)=-z\,\Phi(C(z)),\qquad
+ \Phi(y)=\sum_{j\ge0}\frac{D^jB}{j!}y^j
+ \quad\text{in }\HH[[y]].
+\]
+Classical coefficient Lagrange inversion, over any commutative
+$\Q$-algebra, gives
+\[
+ [z^n]C(z)=\frac{(-1)^n}{n}[y^{n-1}]\Phi(y)^n.
+\]
+A proof of the exact form used here is included in
+Appendix~\ref{app:lagrange}. The formal Taylor map
+$f\mapsto\sum_jD^jf\,y^j/j!$ is a ring homomorphism, by the iterated
+Leibniz formula. Hence
+\[
+ [y^{n-1}]\Phi(y)^n=\frac{1}{(n-1)!}D^{n-1}(B^n),
+\]
+which proves the coefficient formula with $z$ retained.
+
+It remains essential to justify setting $z=1$. The normalized $n$th
+coefficient has support in $nS$: $B^n$ shifts $nS$ by $-nh$,
+$D^{n-1}$ shifts it by $(n-1)h$, and multiplication by $t^h$ removes the
+remaining shift. Lemma~\ref{lem:words} therefore makes the normalized
+coefficient family Hahn summable. The parameter equation can be written
+\[
+ U(z)+zA_B(U(z))=0,\qquad U(z)=t^hC(z).
+\]
+Upon fully expanding a coefficient of this equation, each occurrence of
+$z$ is accompanied by one input support letter. For any target exponent
+there are only finitely many decorated words, so substitution $z=1$
+commutes with every sum and product in the equation. The resulting Hahn
+sum solves \eqref{eq:normalinverse}; uniqueness identifies it with $U$.
+Finally, no normalized $n$th term can contribute at $\alpha$ for
+$n>\depth_S(\alpha)$.
+\end{proof}
+
+\subsection{A normalized Euler formula}
+The derivative formula can be kept entirely inside the generated support
+algebra, an advantage for finite quotient computation.
+
+\begin{corollary}[Euler-operator reversion]\label{cor:EulerLB}
+With $b=t^hB$ and $\nabla=XD$, the normalized inverse is
+\begin{equation}\label{eq:EulerLB}
+ \boxed{\quad
+ U=\sum_{n\ge1}\frac{(-1)^n}{n!}
+       \left(\prod_{j=2}^{n}(\nabla+j)\right)b^n.
+ \quad}
+\end{equation}
+The empty product at $n=1$ is the identity. Each factor preserves support,
+and the $n$th term is supported in $nS$.
+\end{corollary}
+\begin{proof}
+Since $B^n=t^{-nh}b^n$, repeated use of
+$D(t^\gamma f)=t^{\gamma+h}(\nabla f-\chi(\gamma)f)$ gives
+\[
+ t^hD^{n-1}(B^n)
+  =(\nabla+2)(\nabla+3)\cdots(\nabla+n)b^n.
+\]
+The factors commute because each is a polynomial in the same operator.
+Insert this identity in \eqref{eq:LB}.
+\end{proof}
+
+For example, the first three normalized orders are
+\[
+ U=-b+\tfrac12(\nabla+2)b^2
+      -\tfrac16(\nabla+2)(\nabla+3)b^3+\cdots.
+\]
+These are nonlinear support orders. With resonances, several such orders
+can contribute to the same exponent; the formula neither chooses a free
+multi-index representation nor ignores these identifications.
+
+\subsection{Support and exponent-lattice stability}
+
+\begin{corollary}[No new exponent lattice]\label{cor:lattice}
+If $S$ lies in a subgroup $\Lambda\subseteq\Gamma$, then the normalized
+inverse support lies in $\Lambda$. Every normalized Picard and Newton
+iterate also has support in $M(S)$. If $h\in\Lambda$, the unnormalized
+corrections remain in $\Lambda$ as well.
+\end{corollary}
+\begin{proof}
+The monoid $M(S)$ is contained in $\Lambda$, and every construction takes
+place in $\AS$. Multiplication by $t^{-h}$ shifts exponents by $-h$.
+\end{proof}
+
+Thus the denominator-stability conclusion in a fixed Puiseux lattice
+extends to arbitrary ordered-group sublattices with the stated shift
+qualification. This is a support assertion. It supplies neither an
+algorithm for an unpresented group nor an analytic realization of its
+monomials.
+
+\section{Sharp Newton depth and the exact valuation boundary}
+\label{sec:sharp}
+
+\subsection{The Newton iteration attached to reversion}
+Differentiating \eqref{eq:AB} with respect to $U$ gives
+\begin{equation}\label{eq:ABderiv}
+ A'_B(U)=\sum_{s\in S}t^s(1+U)^{-\chi(s)}
+ \left[b'_s\bigl(L+\log(1+U)\bigr)
+ +(1-\chi(s))b_s\bigl(L+\log(1+U)\bigr)\right].
+\end{equation}
+Equivalently, if $C=t^{-h}U$, then $A'_B(U)=T_C(DB)$.
+Thus the Newton iteration of Theorem~\ref{thm:implicit} is exactly
+\begin{equation}\label{eq:NewtonC}
+ C_0=0,\qquad
+ C_{n+1}=C_n-\frac{C_n+T_{C_n}B}{1+T_{C_n}(DB)}.
+\end{equation}
+The denominator is $1+$ a positive-support series, so it is a unit.
+The normalized error $t^h(C_n-C)$ lies in $I_{2^{n+1}-1}$.
+
+\subsection{A scalar model attaining every support bound}
+
+\begin{theorem}[Sharpness at every Newton stage]\label{thm:sharp}
+Let $z$ be an ordinary formal variable and consider
+\begin{equation}\label{eq:scalar}
+ \Psi(u)=u+\frac{z}{1+u}=0.
+\end{equation}
+Its zero-constant solution is
+\begin{equation}\label{eq:Catalan}
+ u_* =\frac{-1+\sqrt{1-4z}}2
+      =-\sum_{m\ge1}\frac1m\binom{2m-2}{m-1}z^m.
+\end{equation}
+Newton iteration for the rational function \eqref{eq:scalar}, starting at
+$u_0=0$, satisfies
+\begin{equation}\label{eq:sharpseries}
+ u_n-u_*=z^{r_n}+\Ocal(z^{r_n+1}),\qquad r_n=2^{n+1}-1.
+\end{equation}
+Consequently, the uniform support-depth bound in
+Theorem~\ref{thm:implicit} cannot be increased by even one at any stage.
+\end{theorem}
+\begin{proof}
+The root formula follows from $u_*^2+u_*+z=0$ and the branch with constant
+term zero. Its coefficient expansion is obtained by the formal binomial
+series.
+
+Write $e=u-u_*$. A direct algebraic simplification of the Newton update,
+using $z=-u_*(1+u_*)$, gives the exact error identity
+\begin{equation}\label{eq:exactNewtonError}
+ e_{\rm new}
+ =\frac{-u_*e^2}{(1+u)^2-z}.
+\end{equation}
+The denominator has constant term $1$, and $-u_*=z+\Ocal(z^2)$.
+Thus an error $e=z^r+\Ocal(z^{r+1})$ becomes
+$z^{2r+1}+\Ocal(z^{2r+2})$, with leading coefficient still $1$.
+Since $e_0=-u_*=z+\Ocal(z^2)$, induction proves
+\eqref{eq:sharpseries}. Take the support set to consist of the single
+exponent of $z$; its depth is ordinary power degree. Every asserted bound
+is then attained.
+\end{proof}
+
+\begin{remark}[Do not change the equation before comparing Newton rates]
+The rational equation $u+z/(1+u)=0$ and the polynomial equation
+$u^2+u+z=0$ have the same small root but different Newton maps.
+Multiplying an equation by a nonconstant unit need not preserve Newton
+iterates. The support gain $2r+1$ and the verification program concern
+\eqref{eq:scalar}, which is the equation arising from normalized reversion.
+\end{remark}
+
+\subsection{A complete criterion for uniform valuation convergence}
+The valuation topology on $\HH$ has zero-neighborhoods
+$\{f:v(f)>\beta\}$ for $\beta\in\Gamma$. For finite vectors use the
+minimum component valuation. Say that $\delta>0$ is \emph{cofinal by
+multiples} if, for every $\beta\in\Gamma$, some $n\in\N$ satisfies
+$n\delta>\beta$.
+
+\begin{theorem}[Exact uniform valuation criterion]
+\label{thm:valuationcriterion}
+Fix a nonempty positive well-ordered support set $S$, and let
+$\delta=\min S$. The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The multiples of $\delta$ are cofinal in $\Gamma$.
+\item For every finite-dimensional small-coefficient system
+\eqref{eq:A} with coefficient supports contained in $S$, its Newton
+sequence starting at zero converges in the full valuation topology.
+\item For every such system, its Picard sequence starting at zero
+converges in the full valuation topology.
+\end{enumerate}
+Strong Hahn convergence holds for every one of these systems even when
+these equivalent conditions fail.
+\end{theorem}
+\begin{proof}
+Every exponent in $S_{\ge r}$ is at least $r\delta$. Therefore
+\eqref{eq:picarderr} and \eqref{eq:newtondepth} imply valuation convergence
+when $n\delta$ is cofinal. This proves (i)$\Rightarrow$(ii),(iii).
+
+Conversely, put $z=t^\delta$ and use the scalar system
+$u+z/(1+u)=0$. Its feedback power-series coefficients are $(-1)^jz$,
+all supported on $\{\delta\}\subseteq S$, so it is in the stated class.
+By Theorem~\ref{thm:sharp}, its Newton error has valuation $r_n\delta$.
+If the multiples of $\delta$ are not cofinal, choose $\beta$ bounding them
+above. None of these errors has valuation greater than $\beta$; hence the
+Newton sequence does not converge in the valuation topology.
+
+For Picard iteration $p_{n+1}=-z/(1+p_n)$, subtraction of the fixed-point
+equation gives
+\[
+ p_{n+1}-u_*
+ =\frac{z(p_n-u_*)}{(1+p_n)(1+u_*)}.
+\]
+Starting from $p_0-u_*=z+\Ocal(z^2)$, this implies
+$p_n-u_*=z^{n+1}+\Ocal(z^{n+2})$. The same bound $\beta$ prevents valuation
+convergence. Thus (ii) and (iii) each imply (i). Strong convergence follows
+from Theorem~\ref{thm:implicit} without any cofinality assumption.
+\end{proof}
+
+The quantifier ``for every system'' is essential. A particular equation
+can have a finite exact iteration even if $\delta$ is noncofinal; for
+example, $u+a=0$ is solved by one Newton update. The theorem classifies the
+uniform guarantee supplied by the support class, not the behavior of every
+individual equation separately.
+
+\subsection{An actual reversion that is not valuation-Cauchy}
+Take $\Gamma=\Z^2$ in lexicographic order and set
+\[
+ h=(0,1),\qquad \eta=(1,0).
+\]
+Then $nh<\eta$ for every integer $n$. One may take
+$K=\Q(\omega)$ with $\omega$ an indeterminate and
+$\chi(a,b)=a\omega+b$, so the character can be injective; the following
+example does not depend on a large kernel of $\chi$.
+
+Let
+\begin{equation}\label{eq:ranktwoF}
+ F=X+X^{-1},\qquad X=t^{-h},\qquad z=t^{2h}.
+\end{equation}
+Its normalized inverse equation is exactly \eqref{eq:scalar}, with
+$G=X(1+u_*)$. Hence
+\begin{equation}\label{eq:ranktwoinverse}
+ G=\frac{X+\sqrt{X^2-4}}2,
+\end{equation}
+where the square root means $X\sqrt{1-4X^{-2}}$ in the near-identity branch.
+The Newton corrections satisfy
+\begin{equation}\label{eq:ranktwov}
+ v(C_n-C_*)=(2r_n-1)h=(2^{n+2}-3)h<\eta.
+\end{equation}
+They are not even valuation-Cauchy: the leading exponent of
+$C_{n+1}-C_n$ is the leading exponent of $C_n-C_*$, since the error at the
+next stage has strictly larger exponent. Nevertheless, they converge
+strongly to the exact inverse, and any specified coefficient becomes exact
+after finitely many stages.
+
+The formal closed expression \eqref{eq:ranktwoinverse} is perfectly finite.
+What fails is a particular topological convergence requirement and the
+possibility of listing the infinitely many nonzero terms below the cutoff
+$\eta$ in a finite monomial list. These are not failures of the inverse.
+
+\section{When is an entire valuation cutoff finite?}
+\label{sec:cuts}
+
+The support criterion for a finite coefficient request is automatic, but
+that for a whole valuation cutoff is not.
+
+\begin{theorem}[Exact cut-finiteness criterion]\label{thm:cut}
+Let $S\subseteq\Gamma_{>0}$ be nonempty and well ordered, let
+$\delta=\min S$, and let $\beta\ge0$. Then
+\begin{equation}\label{eq:cutiff}
+ M(S)\cap(-\infty,\beta]\text{ is finite}
+\end{equation}
+if and only if both conditions hold:
+\[
+ S\cap(-\infty,\beta]\text{ is finite},
+ \qquad N\delta>\beta\text{ for some }N\ge1.
+\]
+\end{theorem}
+\begin{proof}
+If \eqref{eq:cutiff} holds, its subset of generators is finite.
+Also, the distinct elements $n\delta$ belong to $M(S)$. If every
+$n\delta\le\beta$, the cutoff would contain infinitely many of them,
+a contradiction.
+
+Conversely, suppose the two conditions hold. A word of sum at most
+$\beta$ has length less than $N$, because each letter is at least
+$\delta$. Every letter of such a word is at most $\beta$, because all
+letters are positive. There are only finitely many permitted letters and
+finitely many permitted lengths, hence only finitely many words and sums.
+\end{proof}
+
+For $\beta<0$ the intersection is empty. For finite $S$, only the
+cofinality-across-that-cut condition remains. In the rank-two example,
+$S=\{2h\}$ is finite but no multiple of $2h$ crosses $\eta$, so the cutoff
+is infinite.
+
+\begin{remark}[Existential finiteness is not an input representation]
+For an arbitrary infinite support supplied with no effective description,
+Lemma~\ref{lem:words} proves that a coefficient has finitely many
+contributors; it does not provide an algorithm to discover them. Effective
+computation requires a presentation of the support and exponent arithmetic,
+or a finite certificate that its relevant part is complete. The next
+section supplies such certificates for finite generator lists, and
+Section~\ref{sec:infinite} gives an explicit infinite-support family.
+\end{remark}
+
+\section{Minimal finite coefficient quotients and certificates}
+\label{sec:certificates}
+
+\subsection{The exact dependence set}
+Let $E\subseteq M(S)$ be finite and nonempty. Define its monoid-divisor
+closure by
+\begin{equation}\label{eq:divisors}
+ \Div_S(E)=\{\beta\in M(S):\alpha-\beta\in M(S)
+                              \text{ for some }\alpha\in E\}.
+\end{equation}
+The notation involves group subtraction, but both summands in a permitted
+decomposition must lie in the positive monoid. This is not an order
+interval: a smaller exponent need not be a monoid divisor.
+
+\begin{lemma}[Finite dependence closure]\label{lem:divisors}
+The set $\Div_S(E)$ is finite, contains $0$ and $E$, and is downward closed
+under monoid divisibility. Every $\beta\in\Div_S(E)$ satisfies
+$\depth_S(\beta)\le H_E$.
+\end{lemma}
+\begin{proof}
+For each target $\alpha$, Lemma~\ref{lem:binary} gives finitely many pairs
+$(\beta,\gamma)\in M\times M$ with $\beta+\gamma=\alpha$.
+Taking the finite union over $E$ proves finiteness. The containment
+assertions follow by using zero as a summand. If $\beta$ divides $\alpha$
+and $\beta'$ divides $\beta$, then $\beta'$ divides $\alpha$, proving
+downward closure. A maximum-length word for $\beta$ can be concatenated
+with a word for $\alpha-\beta$; its length is at most
+$\depth_S(\alpha)\le H_E$.
+\end{proof}
+
+Put $D_E=\Div_S(E)$ and define
+\begin{equation}\label{eq:JE}
+ J_E=\{f\in\AS:\coef{t^\beta}f=0\text{ for all }\beta\in D_E\}.
+\end{equation}
+
+\begin{theorem}[Minimal coefficient-retaining quotient]
+\label{thm:minquotient}
+The set $J_E$ is an ideal, and
+\begin{equation}\label{eq:QE}
+ Q_E=\AS/J_E
+ \cong\bigoplus_{\beta\in D_E}R\,t^\beta
+\end{equation}
+as $R$-modules. Multiplication is ordinary convolution followed by
+restriction to $D_E$. This quotient is the coarsest algebra quotient that
+retains the coefficient maps at every target in $E$: if an ideal $J$ has
+\[
+ \coef{t^\alpha}f=0\quad\text{for every }f\in J\text{ and }\alpha\in E,
+\]
+then $J\subseteq J_E$. Thus every algebra quotient through which those
+coefficient maps descend surjects onto $Q_E$.
+
+The image of $I_1$ in $Q_E$ is nilpotent of exponent at most $H_E+1$, and
+the image of $I_{H_E+1}$ is zero. The Euler derivation $\nabla$ descends
+to $Q_E$.
+\end{theorem}
+\begin{proof}
+If $\beta\notin D_E$ and $\gamma\in M$, then
+$\beta+\gamma\notin D_E$: otherwise adding its complement to a target
+would also make $\beta$ a divisor of that target. The complement of $D_E$
+is therefore closed under addition of $M$. It follows that $J_E$ is an
+ideal. Restriction to $D_E$ identifies every coset with a unique finite
+sum of the displayed basis monomials, proving \eqref{eq:QE} and the
+multiplication formula. Associativity is inherited from the quotient;
+discarding exponents outside $D_E$ cannot remove a contribution that later
+returns to a retained exponent.
+
+For minimality, take $f\in J$ and any $\beta\in D_E$. Choose
+$\alpha\in E$ and $\gamma\in M$ with $\beta+\gamma=\alpha$.
+Since $J$ is an ideal, $t^\gamma f\in J$. Its coefficient at $\alpha$
+is exactly the coefficient of $f$ at $\beta$, and must be zero. Therefore
+$f\in J_E$. This proves the universal quotient property for all such
+ideals, not only monomial ideals.
+
+Every exponent in $D_E$ has depth at most $H_E$ by
+Lemma~\ref{lem:divisors}. Hence $I_{H_E+1}$ maps to zero, and
+$I_1^{H_E+1}\subseteq I_{H_E+1}$ proves nilpotence.
+Finally, $\nabla$ preserves each support exponent. Thus it preserves
+$J_E$ and induces a $K$-derivation on the quotient.
+\end{proof}
+
+The qualifier ``finite'' refers to rank over $R=K[L]$. Polynomial blocks
+can have arbitrary degree, so $Q_E$ need not be finite-dimensional over
+$K$. This is exactly the useful distinction for power--logarithmic
+computation: finitely many exponent blocks, each represented by a finite
+polynomial.
+
+\begin{corollary}[Finite residual certificate]\label{cor:residual}
+For a system \eqref{eq:A}, let $\overline\Psi$ be its induced system in
+$Q_E$. It has a unique solution in the image of $I_1^d$.
+Any candidate $\overline U$ in that ideal satisfying
+\[
+ \overline\Psi(\overline U)=0
+\]
+has the exact target coefficients of $U_*$. Only input nonlinear degrees
+$|\nu|\le H_E-1$ can contribute when $H_E\ge1$.
+The Newton iterate with $2^{n+1}-1>H_E$ automatically supplies such a
+candidate. For reversion, the Euler formula \eqref{eq:EulerLB} truncates
+exactly after $n=H_E$ in this quotient.
+\end{corollary}
+\begin{proof}
+The image of the original solution is a solution. The Lipschitz estimate
+raises support depth by one, and after $H_E+1$ increases the error is
+zero in $Q_E$; hence a solution in the augmentation ideal is unique.
+A nonlinear term of degree $|\nu|$ has support depth at least
+$|\nu|+1$, so terms with $|\nu|\ge H_E$ vanish. The Newton and Lagrange
+claims follow from their support-depth bounds.
+\end{proof}
+
+This provides an independently checkable certificate: the checker need not
+reproduce the Newton trajectory. It can validate the finite dependence
+set, the complete relevant input coefficients, and a finite residual
+identity in $Q_E$. Such a certificate is only as effective as the supplied
+support-completeness proof; the next result makes that proof concrete for
+finite generators.
+
+\subsection{A rational certificate for finite supports}
+
+\begin{theorem}[Finite supports admit a positive rational grading]
+\label{thm:separator}
+Suppose $S=\{s_1,\ldots,s_k\}$ is finite and positive. The subgroup
+$H=\langle S\rangle\subseteq\Gamma$ is a finitely generated free abelian
+group. There exists an additive map
+\[
+ w:H\longrightarrow\Q,\qquad w(s_i)\ge1\quad(1\le i\le k).
+\]
+This map need not preserve the ambient order. For every $\alpha\in M(S)$,
+\begin{equation}\label{eq:weightbound}
+ \depth_S(\alpha)\le\lfloor w(\alpha)\rfloor.
+\end{equation}
+Given integer coordinates for the $s_i$ and a rational vector representing
+$w$, checking the $k$ inequalities supplies a finite certificate of this
+word-length bound.
+\end{theorem}
+\begin{proof}
+Ordered abelian groups are torsion free, so their finitely generated
+subgroups are free abelian. Choose a basis of $H$ and regard $s_i$ as
+integer vectors in $\R^r$. Their convex hull does not contain zero.
+Indeed, a convex representation of zero by rational vectors would admit
+one with rational coefficients: reduce to an affinely independent subset
+of minimal size and solve its rational linear system. Clearing denominators
+would give a nontrivial relation
+$\sum_i n_is_i=0$ with all $n_i\ge0$, impossible because every $s_i>0$ in
+$\Gamma$.
+
+A compact convex polytope not containing zero is strictly separated from
+zero by a real linear functional. One direct construction uses its
+nearest point $p$ to zero: for every point $x$ of the polytope,
+$p\cdot x\ge\|p\|^2>0$. Approximate the finitely many coefficients of
+this functional by rationals closely enough to preserve its strict
+positivity at the finitely many $s_i$. Then multiply by a positive rational
+constant so that all values are at least one. This gives $w$.
+For a word of length $n$ summing to $\alpha$, additivity gives
+$w(\alpha)\ge n$, proving \eqref{eq:weightbound}.
+\end{proof}
+
+Let the integer coordinate matrix have columns $s_i$. For a target
+$\alpha\in H$, all its generator-count representations occur among
+\begin{equation}\label{eq:enumeration}
+ m\in\N^k,\qquad \sum_i m_i\le\lfloor w(\alpha)\rfloor,
+ \qquad \sum_i m_is_i=\alpha.
+\end{equation}
+This is a finite search. It gives the exact depth by maximizing $\sum_i m_i$.
+The ordered words need not all be listed: for each count vector, its
+subcount vectors generate all corresponding divisor exponents. Their union
+over the target representations is exactly $D_E$.
+
+\subsection{A practical certificate format}
+For finite-support reversion, a support certificate can contain an integer
+basis for $H$, the generator columns, the rational row $w$, the target
+coordinates, and the complete count-vector lists in
+\eqref{eq:enumeration}. An exact checker verifies the matrix identities,
+the inequalities $w(s_i)\ge1$, and exhaustive enumeration within the finite
+budget. It then constructs $D_E$, its projected multiplication table, and
+the induced Euler operator from the character values and polynomial
+coefficient differentiation.
+
+A solution certificate is a vector of polynomial blocks indexed by $D_E$.
+The checker verifies that its exponent-zero block is zero and its residual
+in the finite quotient is zero. Corollary~\ref{cor:residual} then certifies
+the requested coefficients. Alternatively, the checker may evaluate the
+finite Euler formula directly and compare it with a Newton output.
+
+This design cleanly separates trusted finite arithmetic from support
+reasoning. It does not assert polynomial total running time. The number
+of exponent blocks, the number of support representations, and the bit
+sizes of coefficients can be large. The logarithmic claim concerns the
+number of Newton rounds in \eqref{eq:rounds}, not the cost of a round or the
+size of the final answer.
+
+\begin{example}[A resonant finite quotient]\label{ex:finitequotient}
+In lexicographic $\Z^2$, take
+\[
+ S=\{(0,1),(1,-2),(1,0)\},\qquad \alpha=(2,1).
+\]
+All generators are positive, although one second coordinate is negative.
+The functional $w(a,b)=3a+b$ takes values $1,1,3$ on them and gives
+$w(\alpha)=7$. The three count vectors representing $\alpha$ are
+\[
+ (1,0,2),\quad(3,1,1),\quad(5,2,0).
+\]
+Their lengths are $3,5,7$, so $\depth_S(\alpha)=7$. The monoid is
+$\{(a,b):a\ge0,\ b\ge-2a\}$. Its target-divisor set is
+\[
+ D_{\{\alpha\}}=
+ \{(a,b):a=0,1,2,\ -2a\le b\le5-2a\},
+\]
+which has $18$ elements. Thus the exact coefficient problem factors through
+an $18$-dimensional free module over $K[L]$, even though the ambient
+valuation cutoff below $(2,1)$ contains infinitely many powers of $(0,1)$.
+Three Newton updates, reaching depth $15>7$, suffice uniformly in this
+quotient. The count-vector and quotient-rank assertions are checked by
+\pathcode{verify.py} using exact integer arithmetic.
+\end{example}
+
+\section{An infinite rank-two support with quadratic depth}
+\label{sec:infinite}
+
+The positive rational grading of Theorem~\ref{thm:separator} cannot in
+general be chosen on an infinite positive well-ordered support. A concrete
+family also shows how an exact nonlinear depth function replaces it.
+
+Let $\Gamma=\Z\eta\oplus\Z\delta$ be lexicographically ordered, with
+$\eta=(1,0)$ and $\delta=(0,1)$. Define
+\begin{equation}\label{eq:infiniteS}
+ S=\{\delta\}\cup\{s_n:n\ge1\},\qquad
+ s_n=n\eta-n^2\delta.
+\end{equation}
+The set is positive and well ordered: $\delta$ is first, and the $s_n$ are
+strictly increasing by their first coordinates. It has order type
+$1+\omega$.
+
+\begin{theorem}[Exact monoid and nonlinear depth]\label{thm:quadraticdepth}
+For the support \eqref{eq:infiniteS},
+\begin{equation}\label{eq:infiniteM}
+ M(S)=\{k\delta:k\ge0\}
+ \ \cup\ \{n\eta+k\delta:n\ge1,\ k\ge-n^2\}.
+\end{equation}
+Its depth is
+\begin{equation}\label{eq:quadraticdepth}
+ \depth_S(k\delta)=k\quad(k\ge0),\qquad
+ \boxed{\ \depth_S(n\eta+k\delta)=n^2+k+1\ }
+ \quad(n\ge1,\ k\ge-n^2).
+\end{equation}
+There is no additive map $w:\Gamma\to\R$ that is strictly positive on
+all of $S$.
+\end{theorem}
+\begin{proof}
+Consider a word with $a$ copies of $\delta$ and $r\ge1$ remaining letters
+$s_{n_1},\ldots,s_{n_r}$. Its coordinates are
+\[
+ n=\sum_{j=1}^r n_j,\qquad
+ k=a-\sum_{j=1}^r n_j^2.
+\]
+Since $\sum n_j^2\le n^2$, it has $k\ge-n^2$. Conversely, every point
+with $n\ge1$ and $k\ge-n^2$ is represented by one $s_n$ and $k+n^2$
+copies of $\delta$. Words with first coordinate zero consist only of
+$\delta$'s. This proves \eqref{eq:infiniteM}.
+
+For the displayed word, its length is
+\[
+ a+r=k+\sum_{j=1}^r n_j^2+r.
+\]
+For positive integers with sum $n$,
+\[
+ n^2-\sum_{j=1}^r n_j^2
+ =2\sum_{i<j}n_in_j\ge r-1.
+\]
+For $r=1$ the inequality is equality; for $r\ge2$ it follows, for example,
+from $n_in_j\ge1$ and $r(r-1)\ge r-1$.
+Thus every representation length is at most $n^2+k+1$. The one-letter
+choice $s_n$ followed by $k+n^2$ copies of $\delta$ attains the bound.
+For $n=0$ the depth is plainly $k$. This proves \eqref{eq:quadraticdepth}.
+
+Finally, if an additive $w$ were positive on $S$, put
+$c=w(\delta)>0$ and $d=w(\eta)\in\R$. Then
+\[
+ w(s_n)=nd-n^2c<0
+\]
+for all sufficiently large $n$, a contradiction.
+\end{proof}
+
+The obstruction is not simply that $S$ is infinite, or that its exponent
+group has high rank. It is the impossibility of assigning finite real
+weights compatible with this entire infinite family. The depth function
+is still finite at every exponent and is explicitly computable.
+
+
+\begin{corollary}[A target-adaptive sharp rational certificate]
+\label{cor:adaptive}
+For the quadratic support, fix a target $n\eta+k\delta$ with $n\ge1$.
+All its word representations use only
+$\{\delta,s_1,\ldots,s_n\}$. The rational functional
+\[
+ w_n(\delta)=1,\qquad w_n(\eta)=n+\frac1n
+\]
+is at least one on these generators and gives the exact target depth:
+\[
+ w_n(n\eta+k\delta)=n^2+k+1.
+\]
+\end{corollary}
+\begin{proof}
+First coordinates are nonnegative and add, so a word representing the
+chosen target cannot use $s_j$ with $j>n$. For $1\le j\le n$,
+\[
+ w_n(s_j)-1=(n-j)\left(j-\frac1n\right)\ge0.
+\]
+The asserted target value follows by substitution. It agrees with the
+attained depth in Theorem~\ref{thm:quadraticdepth}.
+\end{proof}
+
+Thus a single positive real grading is impossible globally, while a sharp
+rational certificate exists for every finite target individually. The
+functional is allowed to depend on the target; suppressing that dependence
+would change the theorem.
+
+\subsection{Arbitrarily fast depth profiles in rank two}
+The quadratic example belongs to a larger family.
+
+\begin{theorem}[Superadditive depth-profile realization]
+\label{thm:profiles}
+Let $(b_n)_{n\ge1}$ be positive integers satisfying
+\[
+ b_{m+n}\ge b_m+b_n\qquad(m,n\ge1).
+\]
+In lexicographic $\Z\eta\oplus\Z\delta$, put
+\[
+ S_b=\{\delta\}\cup\{n\eta-(b_n-1)\delta:n\ge1\}.
+\]
+This is a positive well-ordered support. Its monoid and depth are
+\begin{align*}
+ M(S_b)&=\{k\delta:k\ge0\}\ \cup\
+ \{n\eta+k\delta:n\ge1,\ k\ge1-b_n\},\\
+ \depth_{S_b}(k\delta)&=k,\\
+ \depth_{S_b}(n\eta+k\delta)&=k+b_n
+       \quad(n\ge1,\ k\ge1-b_n).
+\end{align*}
+A real-valued additive functional strictly positive on all of $S_b$ exists
+if and only if $\sup_n b_n/n<\infty$.
+\end{theorem}
+\begin{proof}
+Positivity and well ordering follow from the first coordinates exactly as
+for \eqref{eq:infiniteS}. A word with $a$ copies of $\delta$ and $r\ge1$
+other letters of indices $n_1,\ldots,n_r$ has
+\[
+ n=\sum_jn_j,\qquad k=a-\sum_j(b_{n_j}-1),\qquad
+ \text{length}=k+\sum_j b_{n_j}.
+\]
+Repeated superadditivity gives $\sum_j b_{n_j}\le b_n$.
+It also gives $k=a+r-\sum_j b_{n_j}\ge1-b_n$.
+Conversely, a single letter of index $n$ and $k+b_n-1$ copies of
+$\delta$ realize every permitted $(n,k)$ and attain length $k+b_n$.
+Words with first coordinate zero contain only $\delta$'s.
+This proves the monoid and depth formulas.
+
+If a functional is positive on $S_b$, write its values on $\delta,\eta$
+as $c>0,d\in\R$. Positivity requires
+$b_n-1<nd/c$, so $b_n/n<d/c+1/n$ is bounded above.
+Conversely, if $M=\sup_n b_n/n$ is finite, the functional with
+$w(\delta)=1$ and $w(\eta)=M+1$ satisfies
+\[
+ w\bigl(n\eta-(b_n-1)\delta\bigr)=n(M+1)-b_n+1\ge n+1>0.
+\]
+\end{proof}
+
+\begin{corollary}[No rank-two growth ceiling]\label{cor:arbitrarygrowth}
+Given any function $g:\N_{\ge1}\to\N_{\ge1}$, there is a positive
+well-ordered support in lexicographic $\Z^2$ such that
+\[
+ \depth_S(n\eta)\ge g(n)\quad\text{for every }n\ge1.
+\]
+\end{corollary}
+\begin{proof}
+Set $c_n=\max_{1\le j\le n}g(j)$ and $b_n=nc_n$.
+Because $c_n$ is nondecreasing,
+\[
+ b_{m+n}=(m+n)c_{m+n}\ge mc_m+nc_n=b_m+b_n.
+\]
+Theorem~\ref{thm:profiles} gives depth $b_n\ge g(n)$ at $n\eta$.
+\end{proof}
+
+For example, $b_n=n!$ is superadditive: for $m,n\ge1$,
+$(m+n)!\ge2m!n!\ge m!+n!$. It gives the exact depth
+$\depth_{S_b}(n\eta)=n!$. The quadratic support corresponds to
+$b_n=n^2+1$, which is also superadditive. These examples show that finite
+coefficient dependence does not imply a rank-dependent polynomial bound
+on the required nonlinear order.
+
+\begin{proposition}[The maximum depth can be noncancelling]
+\label{prop:noncancelling}
+For any positive well-ordered $S$, put
+$\sigma=\sum_{s\in S}t^s$ over the coefficient field $\Q$.
+The small-coefficient equation
+\[
+ V=\frac{\sigma}{1-V}
+\]
+has solution
+\[
+ V=\sum_{m\ge1}\frac1m\binom{2m-2}{m-1}\sigma^m.
+\]
+For every nonzero $\alpha\in M(S)$, the term with
+$m=\depth_S(\alpha)$ makes a strictly positive contribution to
+$\coef{t^\alpha}V$.
+\end{proposition}
+\begin{proof}
+The equation is equivalent to $V^2-V+\sigma=0$; its zero-constant branch
+gives the displayed Catalan series. Positive-word summability justifies
+specializing an ordinary formal variable to $\sigma$.
+The coefficient of $t^\alpha$ in $\sigma^m$ counts ordered support words
+of length $m$ with that sum. It is a nonnegative integer, finite by the
+word lemma, and is positive when $m=\depth_S(\alpha)$. The multiplying
+Catalan coefficient is positive. Thus the maximum-depth contribution is
+realized without cancellation.
+\end{proof}
+
+\subsection{A genuine infinite-support inverse}
+Choose $h=\delta$ and any character with $\chi(\delta)=1$, for example
+$\chi(n\eta+k\delta)=n\omega+k$ over $K=\Q(\omega)$. Let
+\begin{equation}\label{eq:infiniteB}
+ b=t^\delta+\sum_{n\ge1}t^{n\eta-n^2\delta},\qquad
+ B=Xb,
+ \qquad F=X+B.
+\end{equation}
+Then $v(b)=\delta>0$, so Theorem~\ref{thm:reversion} applies. The inverse
+has normalized support in \eqref{eq:infiniteM}. For any $n\ge1$ and
+$k\ge-n^2$, its coefficient at $n\eta+k\delta$ is determined by the
+Lagrange orders
+\[
+ 1\le m\le n^2+k+1,
+\]
+and by Newton stage
+\begin{equation}\label{eq:infiniteRounds}
+ j=\left\lfloor\log_2(n^2+k+2)\right\rfloor.
+\end{equation}
+These are guaranteed support bounds, not assertions that every possible
+coefficient is nonzero or that cancellation cannot improve the round count
+for a particular coefficient.
+
+There is also a direct effective enumeration. A target with first
+coordinate $n$ can use only $s_1,\ldots,s_n$. Enumerate integer partitions
+of $n$ to determine their multiplicities; the required number of
+$\delta$'s is then $a=k+\sum n_i^2$, which must be nonnegative.
+This finite calculation gives the exact depth and the relevant divisor
+set, without searching all support terms below a valuation cut. The
+verification program independently performs this partition enumeration
+for $1\le n\le10$ and $-n^2\le k\le10$.
+
+\begin{remark}[What this example rules out]
+One cannot replace the arbitrary-group theory by an argument that always
+first assigns a positive real additive weight to every input exponent.
+Such a weight exists for finite supports but not for \eqref{eq:infiniteS}.
+The word-depth proof and the finite target quotient remain valid, so this
+is an obstruction to a proposed proof and precision representation, not
+to inversion itself.
+\end{remark}
+
+\section{Exact verification and reproducibility}
+\label{sec:verification}
+
+\subsection{What was executed}
+The accompanying \pathcode{verify.py} uses Python's exact rational
+arithmetic and polynomial arithmetic over $\Q[L]$ in SymPy. It performs no
+floating-point tests and makes no network requests. The recorded run used
+Python 3.13.5 and SymPy 1.14.0. It writes
+\pathcode{verification_results.json}, including the tested ranges,
+coefficients, support lists, and assertions.
+
+Four groups of checks were executed successfully. They concern the scalar
+sharpness example, a resonant power--logarithmic inverse, the finite
+quotient in Example~\ref{ex:finitequotient}, and the quadratic-depth formula
+in Theorems~\ref{thm:quadraticdepth} and~\ref{thm:profiles}. These are finite audits of signs,
+indexing, normalization, resonance handling, and support enumeration.
+The quantified theorems depend on the proofs, not on extending a finite
+pattern by assumption.
+
+\subsection{Scalar sharpness through degree 130}
+The program represents ordinary power series through degree $130$ by
+arrays of rational coefficients. It checks the exact root residual, then
+performs Newton updates for the rational equation
+$u+z/(1+u)=0$. The first nonzero errors are:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Newton index $n$ & Error degree $r_n$ & Leading coefficient & $(2r_n-1)$\\
+\midrule
+0 & 1 & 1 & 1\\
+1 & 3 & 1 & 5\\
+2 & 7 & 1 & 13\\
+3 & 15 & 1 & 29\\
+4 & 31 & 1 & 61\\
+5 & 63 & 1 & 125\\
+6 & 127 & 1 & 253\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last column is the multiple of $h$ in the displacement-error valuation
+for \eqref{eq:ranktwoF}. Every entry agrees with the proven formulas.
+
+\subsection{A resonant power--logarithmic example}
+For an independent block calculation, take lexicographic $\Gamma=\Z^2$,
+$h=(0,1)$, and $\chi(a,b)=b$. Let
+\[
+ s_1=(0,2),\quad s_2=(1,-3),\quad s_3=s_1+s_2=(1,-1),
+ \qquad q_i=t^{s_i}\ (i=1,2),
+\]
+and set
+\begin{equation}\label{eq:verifiedb}
+ b=q_1(L+1)+q_2(L^2-2)+q_1q_2L.
+\end{equation}
+The third input block is a primitive coefficient at the same exponent as
+the product of the first two generators. It therefore tests a genuine
+support resonance, rather than a freely indexed three-variable model.
+The normalized feedback equation is
+\begin{align*}
+ A_B(U)={}&q_1(1+U)^{-1}\bigl(L+\log(1+U)+1\bigr)\\
+ &+q_2(1+U)^4\bigl((L+\log(1+U))^2-2\bigr)\\
+ &+q_1q_2(1+U)^2\bigl(L+\log(1+U)\bigr).
+\end{align*}
+The program computes all $27$ nonconstant blocks of total $q_1,q_2$
+degree at most six. It compares the Euler--Lagrange formula, six Picard
+updates, and two Newton updates. All three results agree exactly. Both
+composition residuals vanish through the cutoff. In particular, it checks
+not only $F\circ G=X$ but also $G\circ F=X$, whose normalized residual is
+\[
+ b+(1+b)T_B(U).
+\]
+\Needspace{12\baselineskip}
+Some resulting blocks are:
+\begin{center}
+\begin{tabular}{@{}lp{0.74\textwidth}@{}}
+\toprule
+Monomial & Coefficient in $U$\\
+\midrule
+$q_1$ & $-L-1$\\[0.2em]
+$q_2$ & $2-L^2$\\[0.2em]
+$q_1q_2$ & $3L^3+6L^2-5L-8$\\[0.2em]
+$q_1^2$ & $-L^2-L$\\[0.2em]
+$q_2^2$ & $4L^4+2L^3-16L^2-4L+16$\\[0.2em]
+$q_1^2q_2$ & $-L^4-8L^3-13L^2+4L+10$\\
+\bottomrule
+\end{tabular}
+\end{center}
+No finite total-degree cutoff is claimed to represent the full valuation
+cut below an arbitrary lexicographic exponent. It is the finite quotient
+appropriate to this particular block audit.
+
+\subsection{Support and depth checks}
+For Example~\ref{ex:finitequotient}, exhaustive enumeration under the
+certified weight budget $7$ gives exactly the three stated count vectors,
+maximum length $7$, and $18$ divisor exponents. A separate downward-closure
+check confirms that projected multiplication cannot discard a future
+contribution to a target.
+
+For \eqref{eq:infiniteS}, the program enumerates the integer partitions of
+$n$ and computes each feasible representation length independently of the
+closed formula. It checks $495$ pairs with
+$1\le n\le10$ and $-n^2\le k\le10$. All maximum lengths equal
+$n^2+k+1$. A further exact partition audit tests the factorial profile
+$b_n=n!$ at $49$ selected boundary and interior targets for $1\le n\le9$.
+
+\subsection{Rebuilding the package}
+From the package directory, run
+\begin{verbatim}
+python verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The supplied build script performs the same steps. The TeX source contains
+its bibliography and tables; it does not require the repository checkout,
+external images, or a bibliography database. The verification output is a
+separate audit record rather than a hidden source of unstated hypotheses.
+
+\section{A statement-level formalization plan}
+\label{sec:formalization}
+
+The inspected Lean module
+\pathcode{Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}
+contains the binary support bridge: the named multiplicative declarations
+\pathcode{neumann_isPWO} and
+\pathcode{neumann_finite_factorizations}, their generated additive
+counterparts \pathcode{neumann_add_isPWO} and
+\pathcode{neumann_finite_decompositions}, Dickson-type declarations, and
+order-dual wrappers. Its namespace remains \pathcode{Fabius}
+\cite{RepoLean}. These are relevant foundations, not a formal proof of
+this article's inverse or Newton theorem.
+
+\Needspace{22\baselineskip}
+A realistic extension proceeds through mathematical interfaces rather than
+marking an entire chapter as formalized because it mentions Hahn series.
+\begin{center}
+\begin{tabular}{@{}p{0.23\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Layer & Statements to formalize\\
+\midrule
+All-word support & Higman embedding for finite words; positive-sum
+strictness; well-ordering of $M(S)$; finite all-length fibers.\\[0.4em]
+Depth filtration & Maximum representation length; support ideals $I_r$;
+separatedness; completeness and strong summation of rising-depth families.\\[0.4em]
+Implicit systems & Summable evaluation; the one-factor and two-factor
+remainder estimates; unipotent matrix inverse; Newton depth $2r+1$.\\[0.4em]
+Differential blocks & Character data $(h,\chi)$; strong derivative;
+iterated block identity; induced support-preserving Euler derivation.\\[0.4em]
+Substitution and reversion & Strong Taylor map; generator identities;
+associativity; justified parameter specialization; normalized Euler formula.\\[0.4em]
+Finite certificates & Divisor closure; largest coefficient-annihilating
+ideal; finite quotient multiplication; nilpotence; residual checker.\\[0.4em]
+Sharp boundaries & Exact scalar Newton error identity; noncofinal rank-two
+counterexample; uniform valuation criterion; quadratic-depth family.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The finite quotient theorem suggests a particularly manageable first
+implementation target. A checker for finite exponent lists, rational
+characters, polynomial blocks, and a supplied rational weight certificate
+can be separated from the more difficult abstract Hahn infrastructure.
+Its soundness theorem would explicitly invoke the completed support
+lemmas, rather than infer them from finite examples.
+
+No new Lean module was compiled for this package. The exact Python checks
+are reproducible executable tests, and the mathematical arguments are
+conventional proofs. The distinction is important both for the current
+status report and for deciding which formalization dependencies remain.
+
+\section{Further research questions}
+\label{sec:questions}
+
+The questions below are proposed continuations with explicit mathematical
+targets. Their appearance here does not assert that every formulation is
+an established open problem in the whole literature.
+
+\begin{question}[Variable-shift derivations and genuine multi-scale calculus]
+Replace \eqref{eq:D} by a strong derivation for which differentiating a
+monomial can produce several exponent shifts depending on that monomial.
+Which well-founded condition on the resulting support-dependency graph
+replaces the common positive monoid? Seek a substitution theorem with
+finite anchored-dependency fibers and a computable analogue of
+$\depth_S$, without requiring all shifts to lie in one Archimedean class.
+\end{question}
+The current proof uses a fixed shift to cancel the $-h$ normalization in
+every Taylor order. A variable-shift extension needs a replacement for that
+cancellation, not merely a change of notation.
+
+\begin{question}[When does ordinary sequential iteration suffice?]
+For the small-coefficient systems here, an ordinary sequence indexed by
+$\N$ reaches every coefficient; transfinite Newton stages are unnecessary.
+Characterize strong nonlinear operators outside this class for which the
+same statement remains true. Can one isolate an intrinsic finite
+coefficient-dependency condition equivalent to stabilization after ordinary
+sequential iteration, and distinguish it from the existence of an abstract
+fixed point obtained by a different construction?
+\end{question}
+
+\begin{question}[Cancellation-sensitive precision]
+The depth $\depth_S$ is a support-only invariant and ignores coefficients.
+Find efficiently checkable hypotheses under which the coefficient at a
+maximum-depth target is nonzero, and a certificate format for cancellations
+that reduce the necessary Newton depth. The scalar sharpness theorem shows
+that no unconditional improvement is possible, but structured families
+may admit much smaller certified dependence sets.
+\end{question}
+
+\begin{question}[Effective infinite supports]
+For which computable descriptions of infinite well-ordered supports can
+one decide membership in $M(S)$, compute $\depth_S(\alpha)$, and enumerate
+$\Div_S(E)$? Presburger descriptions, finite-state descriptions, and
+polynomially parameterized lexicographic supports are natural test classes.
+The quadratic family gives a nontrivial solvable example; existential
+finiteness alone is not an algorithm.
+\end{question}
+
+\begin{question}[Compressed infinite cuts]
+When Theorem~\ref{thm:cut} rules out a finite monomial list, determine when
+a cutoff nevertheless admits a finite algebraic, rational, or differential
+block representation that is stable under substitution. A useful objective
+is a certificate calculus whose objects combine finite divisor quotients
+with exact infinite lower-rank blocks, so that crossing a noncofinal cut
+does not force term-by-term enumeration.
+\end{question}
+
+\begin{question}[Bit complexity of minimal coefficient quotients]
+Give output-sensitive complexity bounds for constructing $D_E$, multiplying
+in $Q_E$, and checking residual certificates. Determine when resonance
+compression saves work compared with a free multi-index expansion. The
+logarithmic number of Newton rounds is established here; polynomial total
+complexity is not.
+\end{question}
+
+\begin{question}[Analytic realization and differential characters]
+Identify coefficient fields, characters, support classes, and evaluation
+maps for which the formal substitution and inverse agree with operations
+on actual Hardy-field or sectorial analytic germs. In a non-Archimedean
+support hierarchy, an injective character into an abstract coefficient
+field need not be an analytic exponent assignment. A successful realization
+theorem must address both the ordered monomial hierarchy and the coefficient
+field, not only the formal support estimates.
+\end{question}
+
+\begin{question}[Divided powers and positive characteristic]
+The word-support and finite-quotient arguments do not intrinsically require
+factorials. Can the reversion theorem be expressed using Hasse--Schmidt
+operators or divided-power structures so as to isolate exactly what
+survives in positive characteristic? In particular, distinguish the
+support-theoretic implicit theorem from the characteristic-zero Euler and
+Lagrange formulas.
+\end{question}
+
+\begin{question}[An independently checked finite certificate engine]
+Implement the quotient certificate of Section~\ref{sec:certificates} in a
+proof assistant, beginning with integer-coordinate exponents, rational
+characters, and polynomial logarithmic blocks. The first milestone should
+be a kernel-checked implication from a complete finite support certificate
+and a zero residual to exact target coefficients, including resonances.
+A subsequent milestone is certificate synthesis rather than merely
+certificate checking.
+\end{question}
+
+\section{Conclusion}
+The repository's non-Archimedean reversion question has a positive answer
+in the stated fixed-shift Hahn power--logarithmic setting: cofinal valuation
+improvement is not needed for existence, the ordinary integer Lagrange
+index is sufficient, and the inverse remains inside the normalized input
+support monoid. The correct coefficientwise finiteness invariant is
+maximum positive-word length.
+
+That invariant produces more than an existence proof. It yields the sharp
+Newton law $r\mapsto2r+1$, an exact uniform criterion for valuation
+convergence, and a minimal finite quotient for any finite coefficient
+request. The quadratic-depth example demonstrates that no global positive
+real additive grading can always replace this combinatorics, even in a
+rank-two group. The superadditive-profile construction allows arbitrary
+depth growth in that same rank. The result is a support and precision calculus that
+separates valid formal computation from stronger topological or analytic
+claims and supplies a concrete next target for verified symbolic
+implementation.
+
+\appendix
+\section{The coefficient Lagrange identity over a general \texorpdfstring{$\Q$}{Q}-algebra}
+\label{app:lagrange}
+
+For clarity, we record a proof that does not assume the constant coefficient
+of the relevant series is invertible after specialization.
+
+\begin{lemma}[Formal coefficient inversion]\label{lem:ordinaryLB}
+Let $A$ be any commutative $\Q$-algebra and $\phi(y)\in A[[y]]$.
+There is a unique $c(z)\in zA[[z]]$ satisfying $c=z\phi(c)$, and
+\[
+ [z^n]c(z)=\frac1n[y^{n-1}]\phi(y)^n\qquad(n\ge1).
+\]
+\end{lemma}
+\begin{proof}
+Successive comparison of coefficients gives existence and uniqueness:
+the coefficient at $z^n$ on the right depends only on coefficients of
+$c$ of degrees less than $n$. Moreover, each coefficient is a polynomial
+with rational coefficients in finitely many coefficients of $\phi$.
+
+First work in the universal polynomial ring
+$A_0=\Q[a_0,a_1,a_2,\ldots]$, with
+$\phi(y)=\sum_{j\ge0}a_jy^j$, and localize by inverting $a_0$.
+Then $z=y/\phi(y)$ is a formal change of parameter with invertible linear
+coefficient. Formal residues obey change of variable:
+\[
+ \Res_z f(z)\,dz=\Res_y f(z(y))z'(y)\,dy.
+\]
+For Laurent monomials other than $z^{-1}$ this follows because the
+substituted expression is a derivative and has zero residue; for
+$z^{-1}$ the logarithmic derivative has residue one. Linearity gives the
+identity for a Laurent series with finite principal part, as used below.
+
+Using $c(z(y))=y$, we obtain
+\begin{align*}
+ [z^n]c(z)
+ &=\Res_z c(z)z^{-n-1}\,dz\\
+ &=\Res_y y^{-n}\bigl(\phi(y)^n-y\phi(y)^{n-1}\phi'(y)\bigr)\,dy\\
+ &=[y^{n-1}]\phi(y)^n-[y^{n-2}]\phi(y)^{n-1}\phi'(y)\\
+ &=\frac1n[y^{n-1}]\phi(y)^n.
+\end{align*}
+The last equality follows by differentiating $\phi^n$; it also holds at
+$n=1$ with the negative-index coefficient interpreted as zero.
+Both sides of the resulting coefficient identity lie in $A_0$, and
+$A_0$ injects into its localization. Hence the identity already holds in
+$A_0$. Specialize its finitely many relevant indeterminates to any
+coefficients in $A$ to obtain the asserted formula without any invertibility
+condition on $\phi(0)$. Replacing $\phi$ by $-\phi$ supplies the sign
+$(-1)^n$ used in \eqref{eq:LB}.
+\end{proof}
+
+\Needspace{28\baselineskip}
+\section{Source and verification status ledger}
+\label{app:ledger}
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.62\textwidth}@{}}
+\toprule
+Item & Status and boundary\\
+\midrule
+\endfirsthead
+\toprule
+Item & Status and boundary\\
+\midrule
+\endhead
+Repository snapshot & Pinned to commit
+\pathcode{3f2d57344dc6f0b3dfa376f9490bfe13d1beb81e}.
+The recent reversion question, README, and support Lean module were
+inspected; no exhaustive repository audit is claimed.\\[0.5em]
+Classical support background & Higman word embeddings, Hahn finite-fiber
+summation, and ordinary coefficient Lagrange inversion. Proofs of the
+specific versions used here are included.\\[0.5em]
+Conventional proofs & Theorems on support depth, implicit systems,
+fixed-shift substitution and reversion, Newton precision, valuation and
+cut criteria, minimal finite quotients, and the quadratic-depth family.\\[0.5em]
+Executed exact checks & Scalar Newton through ordinary degree $130$;
+resonant block inversion through total degree $6$; the $18$-block finite
+quotient; $495$ quadratic-profile and $49$ factorial-profile depth comparisons.\\[0.5em]
+Not executed or not claimed & No new Lean compilation, no universal
+analytic realization, no Borel or resurgence theorem, no complete
+literature-priority determination, and no polynomial-time complexity
+claim.\\[0.5em]
+Reproducible materials & Standalone \pathcode{article.tex}, compiled PDF,
+\pathcode{verify.py}, exact JSON results, build script, requirements,
+README, and provenance record.\\
+\bottomrule
+\end{longtable}
+
+\begingroup
+\small
+\begin{thebibliography}{99}
+\bibitem{RepoReversion}
+ProveIt research corpus,
+\emph{Support-Controlled Reversion and the Exact One-Exponential
+Substitution Group}, 29 September 2026.
+In particular, the further-research question on non-Archimedean exponent
+groups and the question on proof-producing support inference.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3f2d57344dc6f0b3dfa376f9490bfe13d1beb81e/Analysis/Transseries/docs/series-and-transseries/Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex}{Pinned TeX source, commit \texttt{3f2d57344dc6}}.
+
+\bibitem{RepoReadme}
+ProveIt contributors, \emph{Transseries}, repository README and
+series-and-transseries documentation README, snapshot of 29 September 2026.\\
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3f2d57344dc6f0b3dfa376f9490bfe13d1beb81e/Analysis/Transseries/README.md}{Project README};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3f2d57344dc6f0b3dfa376f9490bfe13d1beb81e/Analysis/Transseries/docs/series-and-transseries/README.md}{documentation README}.
+
+\bibitem{RepoLean}
+ProveIt contributors, \emph{TransseriesWellBased.lean},
+Lean source, same pinned snapshot.\\
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3f2d57344dc6f0b3dfa376f9490bfe13d1beb81e/Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}{Pinned Lean source}.
+
+\bibitem{Higman}
+G.~Higman, Ordering by divisibility in abstract algebras,
+\emph{Proceedings of the London Mathematical Society} (3) \textbf{2}
+(1952), 326--336.
+\href{https://doi.org/10.1112/plms/s3-2.1.326}{doi:10.1112/plms/s3-2.1.326}.
+
+\bibitem{vdH}
+J.~van der Hoeven, Operators on generalized power series,
+\emph{Illinois Journal of Mathematics} \textbf{45} (2001), 1161--1190.
+\href{https://doi.org/10.1215/ijm/1258138061}{doi:10.1215/ijm/1258138061}.
+Author's version:\\
+\url{https://www.texmacs.org/joris/noeth/noeth.html}.
+
+\bibitem{Edgar}
+G.~A.~Edgar, \emph{Transseries: Composition, Recursion, and Convergence},
+arXiv:0909.1259.\\
+\url{https://arxiv.org/abs/0909.1259}.
+
+\bibitem{BM}
+V.~Bagayoko and V.~Mantova,
+\emph{Taylor expansions over generalised power series},
+arXiv:2509.08473 (2025).\\
+\url{https://arxiv.org/abs/2509.08473}.
+
+\bibitem{Gessel}
+I.~M.~Gessel, Lagrange inversion,
+\emph{Journal of Combinatorial Theory, Series A} \textbf{144} (2016),
+212--249.
+\href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018}.
+\url{https://arxiv.org/abs/1609.05988}.
+\end{thebibliography}
+\endgroup
+\end{document}

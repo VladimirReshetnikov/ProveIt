@@ -1,0 +1,1554 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exponential-feedback transseries}
+\fancyhead[R]{\small Sharp large-order asymptotics}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\U}{\widehat U}
+\newcommand{\calM}{\mathcal M}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\epsn}{\varepsilon_n}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Var}{Var}
+\numberwithin{equation}{section}
+\hypersetup{pdftitle={Microscopic Condensation in Exponential-Feedback Transseries},pdfauthor={Research draft prepared for Vladimir Reshetnikov},pdfsubject={Sharp coefficients, Gaussian-Poisson limits, finite-perturbation universality, and Borel growth}}
+\title{\textbf{Microscopic Condensation in\\Exponential-Feedback Transseries}\\[7pt]
+\large Sharp coefficients, Gaussian--Poisson limits,\\finite-perturbation universality, and refined Borel growth}
+\author{Research draft prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Consider the formal fixed point
+\(\U(q)=\sum_{j\ge1}q^j\exp(\lambda_j\U(q))\), with nonnegative slopes.
+The ProveIt research article on this model leaves open a full multiplicative
+coefficient equivalent and correctly centered fluctuation laws beyond its
+logarithmic asymptotic. We resolve that question for an asymptotically quadratic
+class, including every finite perturbation of \(\lambda_j=j^2\).
+If
+\(\lambda_j=j^2+\alpha j+\eta j/\log j+o(j/\log j)\),
+\(b=1+\lambda_1\), and \(r_n(r_n+1)e^{2r_n}=n\), then
+\[
+ [q^n]\U(q)\sim
+ \frac{\exp\!\left((2r_n+1)\frac{nr_n}{r_n+1}
+                 +br_n^2+\alpha r_n+\eta/2\right)}
+      {\sqrt{2r_n^2+4r_n+1}}.
+\]
+The proof identifies the full microscopic configuration: one large action,
+a Poisson number of action-two factors, and otherwise action-one factors.
+The large action has Gaussian fluctuations, asymptotically independent of the
+Poisson cloud. This yields a three-level universality law, a multiplicative
+positive-axis Borel-growth equivalent, and an equivalent for the least term.
+In particular, changing only the first slope changes coefficients by a
+lognormal-size factor, although it leaves the previously known logarithmic
+asymptotic and Gevrey classification unchanged. All main results are proved
+here by positive Lagrange weights and two discrete saddle analyses. Exact
+finite computations accompany, but do not replace, the proofs.
+\end{abstract}
+\noindent\textbf{Scope and status.}
+This is a mathematical research draft, not a Lean verification or a claim of
+settling a named longstanding conjecture. It strengthens the specific
+repository article identified in \cref{sec:context}. General publication
+priority has not been established. The least-term result is not asserted to
+be the remainder of an analytically summed solution.
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Repository context and the question being resolved}
+\label{sec:context}
+The relevant model is developed in ProveIt's
+\emph{A Sharp Regularity Classification for Countable Exponential-Feedback
+Transseries} \cite{repo-classification}. The inspected repository snapshot is
+\begin{center}
+\texttt{04473354a0f3edff2d6c365caf26170ca6b88735}.
+\end{center}
+The article lies under
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/\\
+Exponential\_Feedback\_Regularity\_Classification/article.tex.
+\end{quote}
+Its subsection \emph{Beyond logarithmic coefficient asymptotics} explicitly
+asks for sublinear terms, a full multiplicative equivalent, and a local limit
+law for the number of factors and the largest action. It points out that
+small nonunit actions and the displacement of the large-action saddle become
+relevant at that precision. Those are exactly the effects analyzed here.
+
+For the quadratic model the previous logarithmic result is
+\begin{equation}
+ \log u_n=n\log n-2n\log\log n+(\log4-1)n+o(n).
+ \label{eq:old-log}
+\end{equation}
+The previous concentration results locate the largest action at
+\(2n/\log n\), up to a relative error tending to zero, and the previous Borel
+result is \(\log\log B(t)\sim2\sqrt t\).
+None of these assertions determines a multiplicative equivalent. In
+particular, the factor \(e^{2r_n^2}\) obtained below is invisible in
+\eqref{eq:old-log}, yet grows faster than every fixed power of \(n\).
+
+The broader transseries volume supplies the formal-versus-analytic context
+\cite{repo-volume}. Its own status inventory distinguishes theorems with
+precise Lean counterparts from manuscript-level results. The present article
+makes no status promotion for either that volume or the research package.
+Only selected, relevant repository documents were inspected; this is not an
+exhaustive audit of the repository.
+
+\subsection{Relationship to standard methods}
+The positive coefficient formula is classical Lagrange inversion, for which
+Gessel's survey is a convenient reference \cite{gessel}. The idea of
+condensation---one component carrying an unusually large share of a total---has
+a substantial literature; Janson treats it for simply generated trees and
+random allocations \cite{janson}. We do not claim to introduce condensation,
+Lagrange inversion, Poisson approximation, or the saddle-point method.
+
+The model here has the non-product weight
+\((\sum_j\lambda_jm_j)^{\sum_jm_j-1}/\prod_jm_j!\).
+Its large action is of order \(n/\log n\), not of order \(n\), and its
+microscopic cloud has logarithmically growing size. The explicit equivalent,
+the one-large-action/ones/twos reduction, and the resulting universality
+constants are the model-specific refinements proved below. All necessary
+estimates are supplied, rather than importing a random-allocation theorem
+whose hypotheses have not been checked.
+
+\section{Model, assumptions, and main theorems}
+\label{sec:main}
+Let \(\lambda_j\ge0\) be finite real numbers. We work first in
+\(\R[[q]]\), with
+\begin{equation}
+ \U(q)=\sum_{j\ge1}q^j e^{\lambda_j\U(q)}
+       =\sum_{n\ge1}u_nq^n.
+ \label{eq:model}
+\end{equation}
+The identity is formal: no analytic convergence near \((q,u)=(0,0)\) is
+presupposed. On writing \(q=e^{-x}\), it becomes a one-grid exponential
+transseries \(\sum_nu_ne^{-nx}\). Well-based support and growth of its
+coefficients are different questions.
+
+The principal asymptotic hypothesis is
+\begin{equation}
+ \boxed{\quad
+ \lambda_j=j^2+\alpha j+\eta\frac{j}{\log j}
+                  +o\!\left(\frac{j}{\log j}\right)
+ \quad(j\longrightarrow\infty),\qquad \lambda_j\ge0.
+ \quad}
+ \tag{Q}\label{eq:Q}
+\end{equation}
+The expression involving \(\log j\) is used only on a tail. The finitely many
+initial slopes, especially \(\lambda_1\), are arbitrary nonnegative numbers.
+Set
+\begin{equation}
+ b=1+\lambda_1,\qquad
+ D(r)=2r^2+4r+1,
+ \qquad r_n(r_n+1)e^{2r_n}=n,
+ \label{eq:parameters}
+\end{equation}
+where the last equation has one positive real solution. Define
+\begin{equation}
+ x_n=\frac{n}{r_n+1},\qquad
+ m_n=\frac{nr_n}{r_n+1},\qquad
+ \sigma_n^2=\frac{m_n}{D(r_n)}.
+ \label{eq:center}
+\end{equation}
+For later comparison,
+\begin{align}
+ r_n&=\frac12\log n-\log\log n+\log2
+       +O\!\left(\frac{\log\log n}{\log n}\right),\label{eq:r-expansion}\\
+ x_n&\sim\frac{2n}{\log n},\qquad
+ \sigma_n^2\sim\frac{2n}{(\log n)^2}.
+ \label{eq:rough-scales}
+\end{align}
+The implicit definition of \(r_n\), not a finite truncation of
+\eqref{eq:r-expansion}, is to be used in the multiplicative formulas.
+
+\begin{theorem}[Full coefficient equivalent]
+\label[theorem]{thm:coefficient}
+Under \eqref{eq:Q}, the formal solution exists uniquely, has \(u_1=1\) and
+\(u_n\ge1\), and
+\begin{equation}
+ \boxed{\quad
+ u_n\sim
+ F_n:=\frac{\exp\!\left((2r_n+1)m_n+br_n^2
+                              +\alpha r_n+\eta/2\right)}
+                    {\sqrt{D(r_n)}}.
+ \quad}
+ \label{eq:main-equivalent}
+\end{equation}
+If \(\lambda_j=j^2\) for all sufficiently large \(j\), then
+\(\alpha=\eta=0\) and the stronger bound
+\begin{equation}
+ u_n=F_n\left(1+O_\lambda\!\left(
+                     \frac{(\log n)^2}{\sqrt n}\right)\right)
+ \label{eq:rate}
+\end{equation}
+is valid. The constant may depend on the fixed exceptional slopes.
+\end{theorem}
+
+To state the probabilistic refinement, let
+\begin{equation}
+ \calM_n=\left\{\boldsymbol m=(m_1,m_2,\ldots):
+                m_j\in\N,\ \sum_jjm_j=n\right\}.
+ \label{eq:config-space}
+\end{equation}
+Here \(\N\) includes zero and only finitely many entries are nonzero. Put
+\begin{equation}
+ K=\sum_jm_j,\qquad S=\sum_j\lambda_jm_j,\qquad
+ W(\boldsymbol m)=\frac{S^{K-1}}{\prod_jm_j!},\qquad
+ \Prob_n(\boldsymbol m)=\frac{W(\boldsymbol m)}{u_n},
+ \label{eq:probability}
+\end{equation}
+with \(0^0=1\). The coefficient formula below proves that this is a
+probability distribution. Write
+\(J=\max\{j:m_j>0\}\) and \(D_2=m_2\).
+
+\begin{definition}
+The discrete Gaussian \(G_n\) has law on \(\Z\)
+\begin{equation}
+ \Prob(G_n=k)=\frac{1}{Z_n}
+       \exp\!\left(-\frac{(k-x_n)^2}{2\sigma_n^2}\right),\qquad
+ Z_n=\sum_{k\in\Z}\exp\!\left(-\frac{(k-x_n)^2}{2\sigma_n^2}\right).
+ \label{eq:discrete-gaussian}
+\end{equation}
+Let \(P_n\) be independent of \(G_n\), with distribution \(\Pois(r_n^2)\).
+\end{definition}
+
+\begin{theorem}[Microscopic condensation and joint local approximation]
+\label[theorem]{thm:probability}
+Under \eqref{eq:Q}, with probability
+\begin{equation}
+ 1-O_\lambda\!\left(\frac{(\log n)^4}{n}\right),
+ \label{eq:good-prob}
+\end{equation}
+there is exactly one part of size at least three. Its size is \(J\),
+and all remaining parts have sizes one or two. Moreover,
+\begin{equation}
+ \TV\bigl(\mathcal L_n(J,D_2),\mathcal L(G_n,P_n)\bigr)\longrightarrow0.
+ \label{eq:joint-TV}
+\end{equation}
+For eventually exact quadratic slopes the distance in \eqref{eq:joint-TV}
+is \(O_\lambda((\log n)^2/\sqrt n)\).
+Consequently,
+\begin{equation}
+ \left(\frac{J-x_n}{\sigma_n},\frac{D_2-r_n^2}{r_n}\right)
+       \ \Longrightarrow\ (Z_1,Z_2),
+ \label{eq:independent-normals}
+\end{equation}
+where \(Z_1,Z_2\) are independent standard normal random variables.
+\end{theorem}
+
+Thus a Poisson law, not merely a negligible relative error, describes the
+small nonunit cloud. Its mean is asymptotic to \((\log n)^2/4\), while the
+large-action variance is asymptotic to \(2n/(\log n)^2\).
+
+\begin{corollary}[A three-level universality law]
+\label[corollary]{cor:universality}
+Let two nonnegative slope sequences satisfy \eqref{eq:Q}, with parameters
+\((\lambda_1,\alpha,\eta)\) and
+\((\widetilde\lambda_1,\widetilde\alpha,\widetilde\eta)\). Then
+\begin{equation}
+ \frac{u_n}{\widetilde u_n}\sim
+ \exp\!\left((\lambda_1-\widetilde\lambda_1)r_n^2
+       +(\alpha-\widetilde\alpha)r_n
+       +\frac{\eta-\widetilde\eta}{2}\right).
+ \label{eq:universality}
+\end{equation}
+In particular, finite changes to slopes with indices \(j\ge2\) do not alter
+the multiplicative equivalent when the first slope is held fixed. A change
+of the first slope does alter it, by the lognormal-size factor
+\(e^{(\lambda_1-\widetilde\lambda_1)r_n^2}\).
+\end{corollary}
+
+\begin{theorem}[Refined positive-axis Borel growth]
+\label[theorem]{thm:borel}
+The integrated ordinary Borel transform
+\begin{equation}
+ B(t)=\sum_{n\ge1}\frac{u_n}{n!}t^n
+ \label{eq:borel-def}
+\end{equation}
+is entire. Put \(s=s(t)=(\sqrt{1+4t}-1)/2\), so \(s(s+1)=t\). As
+\(t\longrightarrow+\infty\),
+\begin{equation}
+ \boxed{\quad
+ B(t)\sim
+ \frac{\exp\!\left(s e^{2s}+bs^2+\alpha s+\eta/2\right)}
+      {\sqrt{2s+1}}.
+ \quad}
+ \label{eq:borel-full}
+\end{equation}
+This is a multiplicative equivalent, not only an equivalent for a logarithm
+or a double logarithm.
+\end{theorem}
+
+\begin{theorem}[Least-term equivalent]
+\label[theorem]{thm:least}
+For \(t>0\) let \(L(t)=\min_{n\ge1}u_nt^n\). As \(t\downarrow0\), put
+\(R=\tfrac12\log(1/t)\). Then
+\begin{equation}
+ \boxed{\quad
+ L(t)\sim
+ \frac{\exp\!\left(-R^2/t+bR^2+\alpha R+\eta/2\right)}
+      {\sqrt{2R^2+4R+1}}.
+ \quad}
+ \label{eq:least-full}
+\end{equation}
+Every minimizing index is asymptotic to
+\begin{equation}
+ N_0(t)=\frac{R(R+1)}{t}.
+ \label{eq:least-index}
+\end{equation}
+Choosing a nearest integer to \(N_0(t)\) already gives a term asymptotic to
+\(L(t)\).
+\end{theorem}
+
+\section{Formal solution and positive Lagrange weights}
+\label{sec:lagrange}
+For \(V\in q\R[[q]]\), every coefficient of
+\(\sum_jq^je^{\lambda_jV}\) receives contributions only from \(j\le n\).
+If \(V-W\) has order \(h\ge1\), then
+\(e^{\lambda_jV}-e^{\lambda_jW}\) has order at least \(h\), and the
+outer factor \(q^j\) raises it to at least \(h+1\). Picard iteration
+therefore determines a unique formal solution coefficient by coefficient.
+Its first coefficient is one.
+
+\begin{lemma}[Coefficient identity]
+\label[lemma]{lem:lagrange}
+For every \(n\ge1\),
+\begin{align}
+ u_n&=\sum_{k=1}^n\frac1{k!}
+       \sum_{\substack{j_1+\cdots+j_k=n\\j_i\ge1}}
+                   (\lambda_{j_1}+\cdots+\lambda_{j_k})^{k-1}
+       \label{eq:composition}\\
+ &=\sum_{\boldsymbol m\in\calM_n}
+       \frac{(\sum_j\lambda_jm_j)^{\sum_jm_j-1}}{\prod_jm_j!}.
+       \label{eq:partition}
+\end{align}
+In particular all weights are nonnegative, and the \(k=1\) term gives
+\(u_n\ge1\).
+\end{lemma}
+\begin{proof}
+Introduce an auxiliary variable \(z\) and solve
+\(V=z\Phi(q,V)\), where \(\Phi(q,v)=\sum_jq^je^{\lambda_jv}\).
+Formal Lagrange inversion gives
+\[
+ V=\sum_{k\ge1}\frac{z^k}{k!}
+      \left.\frac{\partial^{k-1}}{\partial v^{k-1}}
+                   \Phi(q,v)^k\right|_{v=0}.
+\]
+At coefficient \(q^n\), only \(k\le n\) occurs, so setting \(z=1\) is
+legitimate coefficientwise. Differentiating the product of exponentials
+produces \eqref{eq:composition}. Grouping ordered compositions by their
+multiplicities cancels the factor \(k!\) and yields \eqref{eq:partition}.
+\end{proof}
+
+For the unperturbed quadratic sequence the first coefficients are
+\begin{equation}
+ u_1=1,\quad u_2=2,\quad u_3=\frac{15}{2},\quad
+ u_4=\frac{107}{3},\quad u_5=\frac{1555}{8},\quad
+ u_6=\frac{17362}{15}.
+ \label{eq:first-coefficients}
+\end{equation}
+In general \(u_2=1+\lambda_1=b\). Its reappearance as the coefficient of
+\(r_n^2\) in the large-order equivalent is a concrete link between the first
+nonlinear coefficient and the distant tail.
+
+\section{Coarse localization, proved at exponential precision}
+\label{sec:coarse}
+This section supplies the localization needed for a self-contained proof.
+It is a quadratic specialization of the envelope mechanism in the source
+article, but no unproved concentration statement is needed subsequently.
+Write \(\ell=\log n\) in estimates as \(n\to\infty\).
+
+\begin{lemma}[Coarse large-action localization]
+\label[lemma]{lem:coarse}
+Suppose \(\lambda_j=j^2+O(j)\), with nonnegative slopes. With
+\(R_n=n-K+1\), every fixed \(\epsilon>0\) satisfies
+\begin{equation}
+ \Prob_n\left(\left|\frac{R_n\ell}{n}-2\right|>\epsilon\right)
+       \le e^{-c_\epsilon n+o(n)}.
+ \label{eq:R-coarse}
+\end{equation}
+For every fixed \(\delta>0\),
+\begin{equation}
+ \Prob_n(J\le(1-\delta)R_n)\le e^{-c_\delta n+o(n)}.
+ \label{eq:J-coarse}
+\end{equation}
+In particular, for any fixed \(1<a<2<c<\infty\),
+\begin{equation}
+ \Prob_n\left(J\notin\mathcal I_n\right)\le e^{-c_0n+o(n)},
+ \qquad
+ \mathcal I_n=\left[\frac{an}{\ell},\frac{cn}{\ell}\right]\cap\Z.
+ \label{eq:macro-window}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose \(C\) so that \(\lambda_j\le j^2+Cj\) for all \(j\).
+For a composition with \(k\) parts, put \(R=n-k+1\). If
+\(d_i=j_i-1\), then \(\sum_i d_i=R-1\) and
+\[
+ \sum_i j_i^2=\sum_i d_i^2+2(R-1)+k
+              \le R^2+k-1.
+\]
+Thus the sum of slopes is at most \(R^2+C_1n\), where \(C_1\) is fixed.
+The entire row with \(k=n-R+1\) parts is consequently bounded by
+\begin{equation}
+ T_n(R)=\binom{n-1}{R-1}
+         \frac{(R^2+C_1n)^{n-R}}{(n-R+1)!}.
+ \label{eq:row-envelope}
+\end{equation}
+A lower bound is obtained from one large part
+\(J=\lfloor2n/\ell\rfloor\) and \(n-J\) ones:
+\[
+ u_n\ge\frac{\lambda_J^{n-J}}{(n-J)!}.
+\]
+Since \(\lambda_J=J^2(1+O(1/J))\), Stirling's formula gives
+\begin{equation}
+ \log u_n\ge n\ell-2n\log\ell+(\log4-1)n+o(n).
+ \label{eq:coarse-lower}
+\end{equation}
+
+For completeness, the maximization of \eqref{eq:row-envelope} can be
+localized without losing a constant of order \(n\). If \(R\ge\rho n\)
+for a fixed \(\rho>0\), its logarithm is at most
+\((1-\rho)n\ell+O(n\log\ell)+O(n)\), which is far below
+\eqref{eq:coarse-lower}. A row within \(O(n)\) of that lower bound must
+therefore have \(R/n\to0\). Its binomial entropy is then \(o(n)\).
+The same comparison forces
+\(\log(R^2+C_1n)\ge2\ell-O(\log\ell)\), so
+\(R^2/n\to\infty\), \(\log R=\ell-O(\log\ell)\), and the additive
+\(C_1n\) is negligible. A further comparison gives
+\((R/n)\ell=O(\log\ell)\).
+
+Put \(y=R\ell/n\). Uniform Stirling estimates in the just-localized rows
+now yield
+\begin{equation}
+ \frac1n\log T_n(R)
+ =\ell-2\log\ell+1+2\log y-y+o(1).
+ \label{eq:coarse-functional}
+\end{equation}
+The function \(2\log y-y\) tends to minus infinity at either endpoint of
+\((0,\infty)\) and has its unique maximum at \(y=2\).
+On \(|y-2|\ge\epsilon\) it loses a fixed positive amount. The preliminary
+localization shows that rows not covered by \eqref{eq:coarse-functional}
+lose at least as much: otherwise a sequence of competing rows would have
+satisfied those localization conditions. Summing at most \(n\) rows changes
+a logarithm by at most \(\log n=o(n)\). This proves
+\eqref{eq:R-coarse}, and also the matching upper version of
+\eqref{eq:coarse-lower}.
+
+For the largest part, always \(J\le R\). If \(J\le(1-\delta)R\), the
+stronger estimate \(\sum_i d_i^2\le(J-1)(R-1)\) gives
+\[
+ \sum_i\lambda_{j_i}\le JR+C_2n.
+\]
+On the already localized rows, \(R^2\gg n\), so the right side is at most
+\((1-\delta/2)R^2\) for large \(n\). Replacing the numerator of
+\eqref{eq:row-envelope} by this capped value loses a factor
+\((1-\delta/2)^{n-R}\), hence \(e^{-c n}\). The binomial entropy on those
+rows is only \(e^{o(n)}\); it cannot cancel that loss. This proves
+\eqref{eq:J-coarse}. Combining the two estimates, with slightly narrower
+windows for \(R\), proves \eqref{eq:macro-window}.
+\end{proof}
+
+\section{The microscopic row estimate}
+\label{sec:microscopic}
+Fix \(J\in\mathcal I_n\), and write
+\begin{equation}
+ m=n-J,\qquad \Lambda=\lambda_J,\qquad
+ t_J=\frac{m}{\Lambda},\qquad A_J=\frac{m^2}{\Lambda},\qquad
+ C_J=\frac{\Lambda^m}{m!}.
+ \label{eq:row-vars}
+\end{equation}
+In this section assume only \(\lambda_j=j^2+O(j)\). Uniformly on the
+window, \(\Lambda\sim J^2\), \(t_J\asymp\ell^2/n\), and
+\(A_J\asymp\ell^2\). Let \(u_{n,J}\) denote the sum of the weights with
+largest part exactly \(J\).
+
+\begin{lemma}[Uniform row equivalent and microscopic law]
+\label[lemma]{lem:row}
+Uniformly for \(J\in\mathcal I_n\),
+\begin{equation}
+ u_{n,J}=C_J e^{bA_J}
+             \left(1+O_\lambda\!\left(\frac{\ell^4}{n}\right)\right).
+ \label{eq:row-equivalent}
+\end{equation}
+Conditionally on the largest part being \(J\), the probability that there
+is any additional part of size at least three is
+\(O_\lambda(\ell^4/n)\). The conditional distribution of \(D_2\) is at
+that same total-variation distance from \(\Pois(A_J)\).
+\end{lemma}
+
+\subsection{An upper bound that keeps the small-part entropy}
+Distinguish one occurrence of the largest part \(J\). Let \(a_h\) be the
+remaining multiplicities, so \(\sum_{h\le J}h a_h=m\). Write
+\(r=\sum_h a_h\) and \(s=\sum_h\lambda_h a_h\). The weight with the
+largest part marked is
+\begin{equation}
+ \frac{(\Lambda+s)^r}{\prod_{h\le J}a_h!}.
+ \label{eq:marked}
+\end{equation}
+If there are several occurrences of \(J\), marking overcounts the original
+weight by their number. Therefore a sum of marked weights is a valid upper
+bound; when all remaining parts are ones or twos, it is exact.
+
+Because \(s\ge0\) and \(r\le m\),
+\[
+ (\Lambda+s)^r\le\Lambda^r\exp(ms/\Lambda).
+\]
+Use
+\[
+ a_1=m-\sum_{h\ge2}h a_h,\qquad
+ r=m-\sum_{h\ge2}(h-1)a_h,\qquad
+ s=\lambda_1m+\sum_{h\ge2}(\lambda_h-\lambda_1h)a_h,
+\]
+and \(m!/a_1!\le m^{m-a_1}\). Dividing \eqref{eq:marked} by \(C_J\)
+gives the upper bound
+\begin{equation}
+ e^{\lambda_1A_J}\prod_{h=2}^J\frac{\mu_h^{a_h}}{a_h!},
+ \qquad
+ \mu_h=\frac{m^h}{\Lambda^{h-1}}
+           \exp\!\left(t_J(\lambda_h-\lambda_1h)\right).
+ \label{eq:mu}
+\end{equation}
+We may drop the remaining mass constraint when summing a nonnegative upper
+bound. Hence
+\begin{equation}
+ u_{n,J}\le C_J\exp\!\left(\lambda_1A_J+\sum_{h=2}^J\mu_h\right).
+ \label{eq:upper-row}
+\end{equation}
+
+\begin{lemma}[Suppression of parts of size at least three]
+\label[lemma]{lem:mu}
+Uniformly on \(\mathcal I_n\),
+\begin{equation}
+ \mu_2=A_J+O_\lambda(\ell^4/n),\qquad
+ \sum_{h=3}^J\mu_h=O_\lambda(\ell^4/n).
+ \label{eq:mu-bounds}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The first claim follows immediately from
+\(\mu_2=A_Je^{t_J(\lambda_2-2\lambda_1)}\).
+For the second choose a fixed \(C\) with
+\(\lambda_h-\lambda_1h\le h^2+Ch\) for all \(h\), and bound \(\mu_h\)
+by
+\[
+ v_h=\Lambda t_J^h e^{t_J(h^2+Ch)}.
+\]
+For \(3\le h\le J/2\),
+\[
+ \log(v_{h+1}/v_h)=\log t_J+t_J(2h+1+C)
+ \le-(1-1/a+o(1))\ell.
+\]
+Thus that portion is geometrically decreasing and has sum
+\(O(v_3)=O(\Lambda t_J^3)=O(\ell^4/n)\).
+For \(J/2\le h\le J\), the logarithm of \(v_h\) is a convex quadratic
+in \(h\). At the endpoints its leading terms are, respectively,
+\(-J\ell/2+n/4+o(n)\) and \(-J\ell+n+o(n)\).
+Since \(J\ell/n\ge a>1\), both are at most \(-c_1n\).
+Convexity bounds the whole interval by the larger endpoint; its total
+contribution is \(O(Je^{-c_1n})\). This proves \eqref{eq:mu-bounds}.
+\end{proof}
+
+Combining \cref{lem:mu} with \eqref{eq:upper-row} proves the upper half of
+\eqref{eq:row-equivalent}. It also bounds the marked mass with at least one
+additional part of size three or larger by
+\begin{equation}
+ C_J e^{\lambda_1A_J+\mu_2}
+         \left(\exp\!\left(\sum_{h=3}^J\mu_h\right)-1\right)
+ =C_Je^{bA_J}O_\lambda(\ell^4/n).
+ \label{eq:bad-row}
+\end{equation}
+This bound includes configurations with a second largest part equal to \(J\).
+
+\subsection{Matching lower bound and the Poisson cloud}
+Retain exactly one \(J\), exactly \(d\) twos, and \(m-2d\) ones. Its
+unmarked weight is
+\begin{equation}
+ w_{J,d}=\frac{\left(\Lambda+\lambda_1m
+                          +(\lambda_2-2\lambda_1)d\right)^{m-d}}
+                    {(m-2d)!\,d!},\qquad 0\le d\le m/2.
+ \label{eq:exact-good-weight}
+\end{equation}
+For any fixed sufficiently large \(C_3\), uniformly for
+\(0\le d\le C_3\ell^2\), expansion of the logarithm and of the falling
+factorial gives
+\begin{align}
+ (m-d)\log\!\left(1+
+        \frac{\lambda_1m+(\lambda_2-2\lambda_1)d}{\Lambda}\right)
+   &=\lambda_1A_J+O_\lambda(\ell^4/n),\label{eq:log-expand}\\
+ \frac{m!}{(m-2d)!\,m^{2d}}
+   &=1+O(\ell^4/n).\label{eq:falling-expand}
+\end{align}
+For example, the error sizes in \eqref{eq:log-expand} are bounded by constants
+times \(dm/\Lambda+m^3/\Lambda^2=O(\ell^4/n)\); the factorial error is
+\(O(d^2/m)=O(\ell^4/n)\). Therefore
+\begin{equation}
+ w_{J,d}=C_Je^{\lambda_1A_J}\frac{A_J^d}{d!}
+            \left(1+O_\lambda(\ell^4/n)\right).
+ \label{eq:poisson-weights}
+\end{equation}
+Choose \(C_3\) larger than twice the largest asymptotic coefficient in
+\(A_J/\ell^2\). The upper tail of \(\Pois(A_J)\) past \(C_3\ell^2\)
+is \(e^{-c_2\ell^2}\), by the elementary exponential Markov bound
+\(\Prob(P\ge k)\le\inf_{z>1}e^{A_J(z-1)}z^{-k}\).
+That is smaller than \(\ell^4/n\). Summing \eqref{eq:poisson-weights}
+proves the matching lower bound in \eqref{eq:row-equivalent}.
+
+The same estimates, before summation, compare the normalized probabilities
+on the cutoff with the Poisson probabilities in total variation. The cutoff
+tail and \eqref{eq:bad-row} account for all remaining mass. This proves every
+assertion of \cref{lem:row}.
+
+\begin{remark}[Where the two contributions to \(b\) come from]
+The factor \(e^{\lambda_1A_J}\) is the feedback of the many unit-action
+factors. The factor \(e^{A_J}\) is their combinatorial replacement by twos.
+Dropping the latter is not an innocuous simplification: it would lose a
+factor of order \(e^{r_n^2}\). The numerical value of \(\lambda_2\) enters
+only the smaller error at this level of precision.
+\end{remark}
+
+\section{The large-action saddle and the full equivalent}
+\label{sec:saddle}
+The microscopic estimate reduces the original sum over all integer
+partitions to one positive sum over the largest action. We first analyze
+the case of eventually exact quadratic slopes; then we show precisely how
+the two additional tail parameters enter.
+
+\subsection{An exact saddle coordinate}
+For real \(0<x<n\), write
+\begin{equation}
+ H_n(x)=(n-x)\left[1+\log\frac{x^2}{n-x}\right],\qquad
+ A_0(x)=\left(\frac{n-x}{x}\right)^2.
+ \label{eq:H}
+\end{equation}
+Direct differentiation gives
+\begin{align}
+ H_n'(x)&=\log\frac{n-x}{x^2}+\frac{2(n-x)}x,\label{eq:Hprime}\\
+ H_n''(x)&=-\frac1{n-x}-\frac4x-\frac{2(n-x)}{x^2}<0,
+                      \label{eq:Hsecond}\\
+ H_n'''(x)&=-\frac1{(n-x)^2}+\frac6{x^2}
+                                      +\frac{4(n-x)}{x^3}.
+                      \label{eq:Hthird}
+\end{align}
+There is exactly one critical point. Set \(r=(n-x)/x\) there.
+Equation \eqref{eq:Hprime} becomes \(x=re^{2r}\), equivalently
+\(n=r(r+1)e^{2r}\). Thus the critical point is exactly \(x_n\), and
+\begin{equation}
+ H_n(x_n)=(2r_n+1)m_n,\qquad
+ -H_n''(x_n)=\frac{D(r_n)}{m_n}=\sigma_n^{-2}.
+ \label{eq:saddle-identities}
+\end{equation}
+Taking logarithms in the defining equation for \(r_n\) first gives
+\(r_n\sim\tfrac12\log n\). Substitution back into
+\(2r_n=\log n-\log r_n-\log(r_n+1)\) gives
+\eqref{eq:r-expansion} and then \eqref{eq:rough-scales}.
+
+\subsection{A quantitative discrete Gaussian comparison}
+For \(J\in\mathcal I_n\), Stirling's formula and \cref{lem:row} give,
+when the slopes are eventually exactly quadratic,
+\begin{equation}
+ u_{n,J}=e^{H_n(J)}a_n(J)
+               \left(1+O_\lambda(\ell^4/n)\right),\qquad
+ a_n(x)=\frac{e^{bA_0(x)}}{\sqrt{2\pi(n-x)}}.
+ \label{eq:row-saddle}
+\end{equation}
+Here and below the fixed macroscopic interval may be enlarged slightly to
+contain each real segment between \(J\) and \(x_n\).
+Uniformly on that interval,
+\begin{equation}
+ -H_n''(x)\asymp\frac{\ell^2}{n},\qquad
+ |H_n'''(x)|=O(\ell^3/n^2),\qquad
+ |(\log a_n)'(x)|=O_\lambda(\ell^3/n).
+ \label{eq:saddle-controls}
+\end{equation}
+The last estimate follows from
+\[
+ (\log a_n)'(x)=-\frac{2bn(n-x)}{x^3}+\frac1{2(n-x)}.
+\]
+Let \(y=(J-x_n)/\sigma_n\) and
+\(\epsn=\ell^2/\sqrt n\). Taylor's theorem, strict concavity, and
+\eqref{eq:saddle-controls} imply
+\begin{align}
+ H_n(J)-H_n(x_n)&=-\tfrac12y^2+O(|y|^3/\sqrt n),
+                                                        \label{eq:HTaylor}\\
+ H_n(J)-H_n(x_n)&\le-c_1y^2,                 \label{eq:Hdomination}\\
+ \left|\log\frac{a_n(J)}{a_n(x_n)}\right|
+                       &\le C_1\epsn|y|.    \label{eq:amp-control}
+\end{align}
+These statements hold throughout the fixed macroscopic interval, not just
+at a fixed value of \(y\).
+
+To make the error after summation explicit, use
+\(|e^v-e^w|\le |v-w|e^{\max(v,w)}\). Equations
+\eqref{eq:HTaylor}--\eqref{eq:amp-control} then bound the difference of
+the scaled summand and \(e^{-y^2/2}\) by
+\begin{equation}
+ C e^{-c_2y^2+C_2\epsn|y|}
+          \left(\frac{|y|^3}{\sqrt n}+\epsn|y|\right).
+ \label{eq:L1-saddle-error}
+\end{equation}
+The lattice spacing in \(y\) is \(\sigma_n^{-1}\to0\). Gaussian
+moments, or a comparison on intervals of that length, show that the sum of
+\eqref{eq:L1-saddle-error} is \(O_\lambda(\sigma_n\epsn)\).
+The elementary Riemann-sum estimate
+\begin{equation}
+ \sum_{J\in\Z}e^{-(J-x_n)^2/(2\sigma_n^2)}
+             =\sqrt{2\pi}\,\sigma_n+O(1)
+ \label{eq:gaussian-sum}
+\end{equation}
+is uniform in the fractional part of \(x_n\). For instance, the error
+between the integral and the sum of a continuously differentiable function
+is bounded by the integral of the absolute derivative, which is bounded
+for this Gaussian. The Gaussian mass outside \(\mathcal I_n\) is
+exponentially small. Since \(1/\sigma_n=O(\ell/\sqrt n)=O(\epsn)\),
+we obtain
+\begin{equation}
+ \sum_{J\in\mathcal I_n}u_{n,J}
+ =e^{H_n(x_n)}a_n(x_n)\sqrt{2\pi}\,\sigma_n
+                       \left(1+O_\lambda(\epsn)\right).
+ \label{eq:sum-main}
+\end{equation}
+The row error \(O(\ell^4/n)=O(\epsn^2)\) is smaller. Finally,
+\cref{lem:coarse} says that the left side is
+\(u_n(1+O(e^{-c n+o(n)}))\); no absolute estimate of omitted rows is
+being presumed. Substitution of \eqref{eq:saddle-identities} gives
+\eqref{eq:main-equivalent} and \eqref{eq:rate} in the eventually
+quadratic case.
+
+\subsection{Linear and critical sublinear tail perturbations}
+Assume now \eqref{eq:Q}, and let
+\(\rho(x)=(n-x)/x\). Uniformly for \(J\in\mathcal I_n\),
+\begin{align}
+ (n-J)\log\frac{\lambda_J}{J^2}
+   &=\alpha\rho(J)+\eta\frac{\rho(J)}{\log J}+o(1),
+                                                   \label{eq:tail-expansion}\\
+ \frac{(n-J)^2}{\lambda_J}-A_0(J)&=O_\lambda(\ell^3/n)=o(1).
+                                                   \label{eq:A-perturb}
+\end{align}
+For the first equality, the quadratic Taylor error is
+\(O((n-J)/J^2)=O(\ell^2/n)\). The unspecified tail error, when
+multiplied by \((n-J)/J^2\), is
+\(o((n-J)/(J\log J))=o(1)\) uniformly, because all the indices in the
+window tend to infinity together and \(\rho(J)/\log J\) is bounded.
+This uniformity is important: no regularity or differentiability of the
+unspecified \(o\)-term is assumed.
+
+Consequently \eqref{eq:row-saddle} holds with a relative \(1+o(1)\)
+error and with the smooth amplitude
+\begin{equation}
+ a_n^*(x)=\frac{\exp\!\left(bA_0(x)+\alpha\rho(x)
+                           +\eta\rho(x)/\log x\right)}
+                   {\sqrt{2\pi(n-x)}}.
+ \label{eq:perturbed-amplitude}
+\end{equation}
+The additional logarithmic derivatives are
+\(O_\lambda(\ell^2/n)\), so the bound
+\eqref{eq:amp-control} and the Gaussian comparison remain valid.
+At the saddle,
+\[
+ \rho(x_n)=r_n,\qquad
+ \log x_n=2r_n+\log r_n,\qquad
+ \frac{r_n}{\log x_n}\longrightarrow\frac12.
+\]
+It follows that
+\[
+ a_n^*(x_n)=
+ \frac{\exp(br_n^2+\alpha r_n+\eta/2)}{\sqrt{2\pi m_n}}
+                       (1+o(1)).
+\]
+Repeating \eqref{eq:sum-main} proves \cref{thm:coefficient} in full.
+For an arbitrary unspecified tail \(o(j/\log j)\), its modulus of
+convergence contributes an unspecified \(o(1)\); the quantitative rate
+\eqref{eq:rate} is therefore not asserted in that generality.
+
+\begin{remark}[Why the saddle must be specified accurately]
+An error small relative to \(x_n\) need not be small relative to
+\(\sigma_n\). In particular, replacing \(x_n\) by
+\(2n/\log n\) does not give a correctly centered Gaussian law. Similarly,
+substituting a short logarithmic expansion for \(r_n\) into the large
+exponent of \eqref{eq:main-equivalent} need not preserve a relative
+\(1+o(1)\) error. The implicit scalar equation eliminates this avoidable
+loss of precision.
+\end{remark}
+
+\section{The Gaussian--Poisson law and genuine local limits}
+\label{sec:probability-proof}
+The same estimates give distributional results without differentiating an
+asymptotic equivalent. Normalize \eqref{eq:row-saddle} by the sum in
+\eqref{eq:sum-main}. The summed absolute error
+\eqref{eq:L1-saddle-error}, together with the relative error in the row
+formula, proves
+\begin{equation}
+ \TV\bigl(\mathcal L_n(J),\mathcal L(G_n)\bigr)=o(1).
+ \label{eq:J-TV}
+\end{equation}
+For eventually quadratic slopes the error is \(O_\lambda(\epsn)\).
+The mass outside the macroscopic interval is already exponentially small.
+
+\subsection{Removing the dependence of the Poisson mean on the large action}
+Conditionally on \(J\in\mathcal I_n\), \cref{lem:row} compares
+\(D_2\) with \(\Pois(A_J)\), with total-variation error
+\(O_\lambda(\ell^4/n)\). For two nonnegative means, the elementary
+Poisson coupling gives
+\begin{equation}
+ \TV(\Pois(v),\Pois(w))\le \min(1,|v-w|).
+ \label{eq:poisson-coupling}
+\end{equation}
+Indeed, when \(v\le w\), add an independent \(\Pois(w-v)\) variable;
+the resulting variables differ with probability at most \(w-v\).
+
+For \(|J-x_n|=O(\sigma_n)\), equations
+\eqref{eq:A-perturb} and
+\(A_0'(x)=-2n(n-x)/x^3\) imply
+\begin{equation}
+ A_J-r_n^2=O_\lambda(\ell^2/\sqrt n)+o(1)=o(1).
+ \label{eq:mean-freeze}
+\end{equation}
+In the eventually quadratic case, Gaussian domination from
+\eqref{eq:Hdomination}--\eqref{eq:amp-control} gives the integrated bound
+\[
+ \E_n\!\left[\min(1,|A_J-r_n^2|);\ J\in\mathcal I_n\right]
+                                  =O_\lambda(\epsn).
+\]
+In the general case the bounded quantity in brackets tends to zero in
+probability, by \eqref{eq:J-TV} and \eqref{eq:mean-freeze}; hence its
+expectation tends to zero. Mixture coupling, followed by
+\eqref{eq:J-TV}, now proves \eqref{eq:joint-TV}, including its stated
+rate in the eventually quadratic case.
+
+The probability of an extra part of size at least three is
+\(O_\lambda(\ell^4/n)\) on every macroscopic row by \cref{lem:row}.
+The complement of those rows has exponentially small probability. This
+proves \eqref{eq:good-prob}.
+The standardized discrete Gaussian tends to a standard normal by
+\eqref{eq:gaussian-sum}. The characteristic function of
+\((P_n-r_n^2)/r_n\) is
+\[
+ \exp\!\left(r_n^2(e^{it/r_n}-1-it/r_n)\right)
+                         \longrightarrow e^{-t^2/2}.
+\]
+Independence in the comparison law and vanishing total variation prove
+\eqref{eq:independent-normals}. This completes the proof of
+\cref{thm:probability}.
+
+\subsection{Point probabilities in the central window}
+Total-variation convergence alone is not a rescaled local limit theorem:
+a small total error could in principle be concentrated at a few lattice
+points. The available pointwise estimates rule that out here.
+
+\begin{corollary}[Central two-dimensional local limit]
+\label[corollary]{cor:local}
+Under \eqref{eq:Q}, for every fixed \(M<\infty\), uniformly over integers
+\(j,d\) with \(|j-x_n|\le M\sigma_n\) and
+\(|d-r_n^2|\le Mr_n\),
+\begin{equation}
+ \sigma_nr_n\Prob_n(J=j,D_2=d)
+ =\frac1{2\pi}\exp\!\left(-\frac{(j-x_n)^2}{2\sigma_n^2}
+                         -\frac{(d-r_n^2)^2}{2r_n^2}\right)+o(1).
+ \label{eq:local-limit}
+\end{equation}
+The same formula holds with the event replaced by
+\(\{J=j,K=n+1-j-d\}\).
+\end{corollary}
+\begin{proof}
+For configurations with only one part at least three,
+\eqref{eq:poisson-weights} is a uniform relative estimate at every displayed
+\(j,d\). The pointwise saddle expansion and the full coefficient equivalent
+give the Gaussian factor. Stirling's formula for the Poisson probabilities,
+with \(d=r_n^2+O(r_n)\), gives the second Gaussian factor uniformly.
+Replacing \(A_j\) by \(r_n^2\) has vanishing relative effect there, by
+\eqref{eq:mean-freeze}.
+
+For a fixed central \(j\), all configurations with an additional part at
+least three have probability at most
+\(O_\lambda(\ell^4/n)\Prob_n(J=j)
+=O_\lambda(\ell^4/(n\sigma_n))\).
+After multiplication by \(\sigma_nr_n\), this is
+\(O_\lambda(\ell^5/n)=o(1)\), even if all of that mass were at the
+particular \(d\). Thus it cannot affect the limit.
+On the good configurations, \(K=n+1-J-D_2\). The same bound handles
+bad configurations for the second event as well.
+\end{proof}
+
+\begin{corollary}[The factor count and the excess action]
+\label[corollary]{cor:K}
+Let \(R_n=n-K+1\). Under \eqref{eq:Q},
+\begin{equation}
+ \frac{K-(n+1-x_n-r_n^2)}{\sigma_n}\Longrightarrow -Z_1,
+ \qquad
+ \frac{R_n-(x_n+r_n^2)}{\sigma_n}\Longrightarrow Z_1.
+ \label{eq:K-limit}
+\end{equation}
+Moreover, \(R_n-J\) is at total-variation distance \(o(1)\) from
+\(\Pois(r_n^2)\).
+\end{corollary}
+\begin{proof}
+On the event of \eqref{eq:good-prob}, \(R_n=J+D_2\) exactly. Apply the
+joint approximation and use \(r_n/\sigma_n\to0\).
+\end{proof}
+The correction \(r_n^2\) is invisible on the larger Gaussian scale but
+is indispensable for the microscopic difference \(R_n-J\). This explains
+why the earlier statement \(J/R_n\to1\) contains much less information.
+
+\section{Universality, perturbations, and what the constants mean}
+\label{sec:universality}
+Dividing the equivalents in \cref{thm:coefficient} proves
+\cref{cor:universality}. It is useful to separate the three mechanisms.
+
+\subsection{Finite-prefix universality and its exception}
+Suppose the slopes are eventually exactly quadratic. Every fixed
+\(\lambda_h\), \(h\ge2\), influences lower-order terms in the
+microscopic row expansion, but none influences its leading equivalent.
+This is not because small parts are absent: the number of twos tends to
+infinity in probability. Rather, the large slope \(\lambda_J\asymp J^2\)
+dominates the feedback sum so strongly that the numerical contribution
+of each fixed nonunit slope is negligible in its exponent.
+
+The first slope is different. There are about \(n\) action-one factors,
+so their cumulative feedback contributes
+\(\lambda_1 n^2/J^2\sim\lambda_1r_n^2\).
+For the baseline \(\lambda_j=j^2\), one has \(b=2\). Keeping that tail
+but setting \(\lambda_1=c\ge0\) gives
+\begin{equation}
+ \frac{u_n^{(c)}}{u_n^{(1)}}\sim e^{(c-1)r_n^2}.
+ \label{eq:first-slope-example}
+\end{equation}
+Thus equality of the tail of the defining slope sequence does not imply
+equality of coefficient equivalents unless the first slope is also fixed.
+
+\subsection{The linear tail is visible at a smaller exponential scale}
+For \(\lambda_j=j^2+\alpha j+o(j/\log j)\), the extra factor is
+\(e^{\alpha r_n}\). The exact relation defining \(r_n\) rewrites it as
+\begin{equation}
+ e^{\alpha r_n}
+       =\left(\frac{n}{r_n(r_n+1)}\right)^{\alpha/2}.
+ \label{eq:linear-tail-factor}
+\end{equation}
+It is therefore polynomial in \(n\), with a logarithmic correction.
+There is no need to re-center the leading Gaussian by an amount comparable
+to its standard deviation: the induced saddle shift is negligible on that
+scale, although the amplitude itself is not negligible.
+
+\subsection{A sharp constant-scale perturbation}
+A perturbation \(\eta j/\log j\) produces the finite factor
+\(e^{\eta/2}\), with the first slope and the linear coefficient held
+fixed. The mechanism is the exact evaluation
+\[
+ \frac{n-J}{J\log J}\sim\frac{r_n}{\log x_n}\longrightarrow\frac12.
+\]
+Any tail \(o(j/\log j)\) disappears from the multiplicative equivalent.
+This gives an actual stability theorem, not a formal Taylor heuristic.
+For instance, changing the tail from \(j^2\) to
+\(j^2+2j/\log j\), while preserving \(\lambda_1\), multiplies the
+large-order coefficients asymptotically by \(e\).
+
+\begin{remark}[Limits of this universality statement]
+The hypotheses deliberately specify the tail at the scale \(j/\log j\).
+The weaker assumption \(\lambda_j\sim j^2\) is not sufficient for the
+same equivalent: a perturbation such as \(j^2/\sqrt{\log j}\) is
+relatively small but is multiplied by a large exponent in the coefficient
+formula. Nor does this theorem cover sign cancellations or negative slopes.
+\end{remark}
+
+\section{A second saddle: the entire Borel transform}
+\label{sec:borel-proof}
+\subsection{Entirety and the continuous coefficient envelope}
+The coefficient equivalent gives
+\[
+ \left(\frac{u_n}{n!}\right)^{1/n}
+                         \sim\frac4{(\log n)^2}\longrightarrow0.
+\]
+The root test proves that \(B\) in \eqref{eq:borel-def} is entire.
+For real \(v>0\), define \(r=r(v)\) by
+\(v=r(r+1)e^{2r}\), and let
+\begin{equation}
+ F_0(v)=(2r+1)\frac{vr}{r+1}.
+ \label{eq:F0}
+\end{equation}
+Implicit differentiation gives the exact identities
+\begin{equation}
+ r'(v)=\frac{r(r+1)}{vD(r)},\qquad F_0'(v)=2r.
+ \label{eq:r-derivative}
+\end{equation}
+Applying Stirling's formula to \(n!\), the positive Borel summand is
+asymptotic, uniformly as the integer \(n\to\infty\), to
+\begin{equation}
+ e^{K(n;t)}c(n),\qquad
+ c(v)=\frac{\exp(br(v)^2+\alpha r(v)+\eta/2)}
+                 {\sqrt{2\pi vD(r(v))}},
+ \label{eq:borel-summand}
+\end{equation}
+where
+\begin{align}
+ K(v;t)&=F_0(v)-v\log v+v+v\log t\notag\\
+       &=v\left[\frac1{r(v)+1}
+                      +\log\frac{t}{r(v)(r(v)+1)}\right].
+ \label{eq:K}
+\end{align}
+The meaning of uniformity here is simple: the error in the coefficient
+equivalent is a sequence tending to zero, so its supremum over all
+\(n\ge N\) tends to zero. Positivity permits this error to be passed
+through any tail sum.
+
+\subsection{Exact location and curvature of the Borel saddle}
+Equations \eqref{eq:r-derivative} and \eqref{eq:K} imply
+\begin{equation}
+ K'(v;t)=\log\frac{t}{r(v)(r(v)+1)},\qquad
+ K''(v;t)=-\frac{2r(v)+1}{vD(r(v))}<0.
+ \label{eq:Kderivatives}
+\end{equation}
+Let \(s(s+1)=t\). The unique critical point, its value, and its variance
+parameter are therefore
+\begin{equation}
+ v_* =t e^{2s},\qquad
+ K(v_*;t)=s e^{2s},\qquad
+ \nu^2=\frac{v_*D(s)}{2s+1}.
+ \label{eq:borel-saddle}
+\end{equation}
+In particular \(\nu/v_*\to0\). Uniformly for
+\(v\in[v_*/2,2v_*]\), one has \(r(v)=s+O(1)\), and direct
+differentiation gives
+\begin{equation}
+ |K'''(v;t)|=O(1/(v_*^2s)),\qquad
+ |(\log c)'(v)|=O_\lambda(s/v_*).
+ \label{eq:second-saddle-controls}
+\end{equation}
+After multiplication by \(\nu^3\) and \(\nu\), respectively, the
+right sides become \(O(\sqrt{s/v_*})\) and
+\(O_\lambda(s^{3/2}/\sqrt{v_*})\), both tending to zero.
+Consequently Taylor's formula and a discrete Gaussian comparison on this
+interval yield
+\begin{equation}
+ \sum_{v_*/2\le n\le2v_*} e^{K(n;t)}c(n)
+           \sim e^{K(v_*;t)}c(v_*)\sqrt{2\pi}\,\nu.
+ \label{eq:borel-central-sum}
+\end{equation}
+This is the same estimate as in \cref{sec:saddle}, now with
+\(\nu\to\infty\) and an even more slowly varying relative amplitude.
+
+\subsection{Tail control for the infinite positive sum}
+We record the tail argument because a saddle estimate on a finite window
+alone does not establish an entire-function growth theorem.
+On \([v_*/2,2v_*]\), strict concavity loses at least
+\(c v_*/s\) at either endpoint. Also
+\(K'(v_*/2;t)\ge c/s\) and \(K'(2v_*;t)\le-c/s\), for large \(s\),
+by \eqref{eq:Kderivatives} or by integrating its second derivative.
+For \(n\le v_*/2\), the core exponent is bounded by its endpoint value,
+since it increases up to \(v_*\). The amplitude has logarithm bounded
+above by \(O_\lambda(1+s^2)\) on \(1\le n\le v_*/2\).
+Even after multiplication by the number of terms, this tail is negligible
+compared with the central sum.
+
+For \(v\ge2v_*\), concavity gives
+\[
+ K(v;t)\le K(2v_*;t)-\frac{c}{s}(v-2v_*).
+\]
+From \eqref{eq:r-derivative},
+\(|(\log c)'(v)|\le C_\lambda(1+\log v)/v\) for large \(v\).
+The supremum of this bound over \(v\ge2v_*\) is
+\(O_\lambda(s/v_*)=o(1/s)\). Thus half of the displayed linear
+decay absorbs all possible amplitude growth. The remaining tail is a
+geometric sum with factor of order \(s\), multiplied by an endpoint
+already smaller by \(e^{-c v_*/s}\).
+Finitely many initial Borel terms grow only polynomially in \(t\), and
+are negligible. These bounds also justify insertion of the uniform
+coefficient equivalent into the infinite tail sum.
+
+Substitution of \eqref{eq:borel-saddle} into
+\eqref{eq:borel-central-sum} now gives
+\[
+ e^{s e^{2s}}
+ \frac{e^{bs^2+\alpha s+\eta/2}}{\sqrt{2\pi v_*D(s)}}
+ \sqrt{\frac{2\pi v_*D(s)}{2s+1}},
+\]
+which is exactly \eqref{eq:borel-full}. This proves \cref{thm:borel}.
+
+\subsection{Consequences and directional limitations}
+Since \(s=\sqrt t-\tfrac12+O(t^{-1/2})\),
+\begin{equation}
+ \log B(t)\sim s e^{2s}
+             \sim\frac{\sqrt t}{e}e^{2\sqrt t},\qquad
+ \log\log B(t)\sim2\sqrt t.
+ \label{eq:borel-logconsequences}
+\end{equation}
+The first equivalent and the full formula retain information lost by the
+second. With fixed tail parameters, changing \(\lambda_1\) by
+\(\Delta\) changes \(B(t)\) by a multiplicative factor asymptotic to
+\(e^{\Delta s^2}\), although it leaves the leading equivalent for
+\(\log B\) unchanged.
+
+For every \(q>0\),
+\begin{equation}
+ \frac1q\int_0^\infty e^{-t/q}B(t)\dd t=+\infty.
+ \label{eq:laplace-failure}
+\end{equation}
+Indeed, \eqref{eq:borel-logconsequences} gives
+\(\log B(t)-t/q\to+\infty\); the positive integrand does not even
+tend to zero. An entire Borel transform does not automatically have the
+growth bounds needed for directional Borel--Laplace summation; this
+distinction is part of the standard summability framework \cite{sauzin}.
+Nothing in this positive-axis proof determines growth on the negative axis,
+angular cancellation, or a Stokes constant.
+
+There is also a direct obstruction to a positive-real literal solution of
+\eqref{eq:model}. If \(q\in(0,1)\) and \(u>0\), then
+\(j\log q+\lambda_j u\to+\infty\), so
+\(q^je^{\lambda_j u}\) fails to tend to zero. Any proposed accelerated
+positive-direction value must therefore specify a continuation or
+regularization of the kernel; it cannot silently be called a solution of
+that divergent literal sum.
+
+\section{Least-term asymptotics without an unwarranted remainder claim}
+\label{sec:least-proof}
+For each fixed \(t>0\), \cref{thm:coefficient} implies
+\(u_n^{1/n}\to\infty\). Thus \(u_nt^n\to\infty\), and its minimum
+is attained at a finite index.
+Put \(R=\tfrac12\log(1/t)\) and use the continuous envelope
+\begin{equation}
+ Q(v;t)=F_0(v)+v\log t+g(r(v)),\qquad
+ g(r)=br^2+\alpha r+\eta/2-\tfrac12\log D(r).
+ \label{eq:least-envelope}
+\end{equation}
+By \eqref{eq:r-derivative}, the derivative of the core
+\(F_0(v)+v\log t\) is \(2r(v)-2R\). Its unique minimum is at
+\(N_0=R(R+1)e^{2R}=R(R+1)/t\), where the core value is exactly
+\(-R^2/t\).
+
+On a fixed relative neighborhood of \(N_0\), the core second derivative
+is \(2r'(v)\asymp1/N_0\), while
+\[
+ \frac{\partial}{\partial v}g(r(v))=O_\lambda(R/N_0),\qquad
+ \frac{\partial^2}{\partial v^2}g(r(v))=O_\lambda(R/N_0^2).
+\]
+It follows by the mean value theorem that the minimum of the smooth
+full envelope is displaced from \(N_0\) by \(O_\lambda(R)\).
+The resulting change in its minimum value is
+\(O_\lambda(R^2/N_0)=O_\lambda(t)=o(1)\).
+Rounding either this minimum or \(N_0\) to an integer changes the value
+by \(o(1)\).
+
+For clarity, the local minimum cannot be bypassed at a far-away index.
+The full envelope is strictly convex for all sufficiently large \(v\):
+its positive core curvature is asymptotic to \(1/v\), and the amplitude
+curvature is \(O_\lambda((\log v)/v^2)\). Its derivative has opposite
+signs at \(N_0/2\) and \(2N_0\) when \(t\) is small. Therefore it has
+one eventual minimum. On the complement of any fixed relative
+neighborhood of \(N_0\), integration of the core curvature gives a
+loss of order \(N_0\), whereas the amplitude variation is only
+\(O_\lambda(R^2)\) on fixed relative windows; convexity continues that
+loss beyond them. The finitely many smaller indices give terms of
+polynomial size in \(t\), much larger than \(e^{-R^2/t+O(R^2)}\).
+
+The coefficient equivalent means that
+\(\log(u_nt^n)=Q(n;t)+o(1)\), uniformly over all sufficiently large
+integers. Thus it may be minimized without losing more than \(o(1)\)
+in the minimum value. Every minimizing index tends to infinity and must
+satisfy \(n/N_0\to1\), by the preceding convexity loss.
+Evaluating \(g\) at \(r=R\) and exponentiating proves
+\cref{thm:least}, including its assertion about a nearest integer to
+\(N_0\).
+
+\begin{remark}[A scale, not yet an analytic error theorem]
+The dominant least-term scale is
+\begin{equation}
+ \exp\!\left(-\frac{\log^2(1/t)}{4t}\right).
+ \label{eq:superleast}
+\end{equation}
+It is smaller than \(e^{-A/t}\) for every fixed \(A>0\), as
+\(t\downarrow0\). This does not imply that a sectorial solution has a
+remainder of this size. A remainder theorem must relate the actual function
+to its truncated Taylor series and control cancellations and analytic
+continuation. The source article provides a left-sector fixed point, but
+its Poincar\'e statement alone supplies no such uniform optimal-order
+estimate \cite{repo-classification}.
+\end{remark}
+
+\section{Exact computation and reproducibility}
+\label{sec:computation}
+The accompanying program is designed to audit finite algebra and to show
+how slowly the asymptotic regime can be approached. Its exact calculations
+are logically separate from the asymptotic proofs.
+
+\subsection{An integral coefficient recurrence}
+For integer slopes, let
+\begin{equation}
+ b_n=n!u_n,\qquad E_{j,m}=m![q^m]e^{\lambda_j\U(q)}.
+ \label{eq:scaled-recurrence-defs}
+\end{equation}
+Differentiation of the exponential identity gives
+\begin{align}
+ E_{j,0}&=1,\notag\\
+ E_{j,m}&=\lambda_j\sum_{k=1}^m
+            \binom{m-1}{k-1}b_kE_{j,m-k},\qquad m\ge1,
+                                                   \label{eq:exact-rec-E}\\
+ b_n&=\sum_{j=1}^n\frac{n!}{(n-j)!}E_{j,n-j}.
+                                                   \label{eq:exact-rec-b}
+\end{align}
+When computing \(b_n\), the required exponential coefficients have
+\(m\le n-1\), so only previously computed \(b_k\) are used. Starting
+from \(E_{j,0}=1\), every operation in these formulas is an integer
+operation. This gives an independent implementation of the formal fixed
+point without enumerating partitions.
+
+A second implementation enumerates integer partitions of \(n\) and sums
+\eqref{eq:partition} using exact rational arithmetic. Agreement of these
+two implementations is a useful test because their combinatorial
+organization and normalization differ substantially.
+
+\subsection{Executed checks}
+The program computed exact coefficients through degree \(256\) for four
+models: the unmodified quadratic slopes, and the three modifications
+\(\lambda_1=0\), \(\lambda_1=3\), and \(\lambda_2=7\), with all other
+slopes unchanged. For each model, all degrees \(1\) through \(18\) were
+also computed by independent partition enumeration. All \(72\) exact
+comparisons passed.
+
+For the quadratic model it additionally summed the exact weights
+\eqref{eq:exact-good-weight} over all possible \(J\ge3\) and \(d\).
+The resulting mass was checked to lie between zero and the full
+coefficient. The reported probabilities are evaluations of ratios of
+these exact integers. The asymptotic formula, logarithms, and displayed
+ratios were evaluated at \(80\)-decimal working precision using
+\texttt{mpmath}; they are not outward-rounded interval bounds.
+
+\begin{table}[htbp]
+\centering
+\caption{Quadratic slopes: the exact coefficient divided by the leading
+ equivalent, and the probability of one large action with only ones and twos.}
+\label{tab:diagnostics}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+\(n\)&\(r_n\)&\(u_n/F_n\)&Good-configuration probability\\
+\midrule
+20  &1.087760&3.531186&0.561985\\
+40  &1.298005&2.090003&0.767695\\
+80  &1.519691&1.689076&0.849825\\
+120 &1.654076&1.557336&0.876061\\
+180 &1.791611&1.455860&0.896387\\
+256 &1.913461&1.384043&0.910996\\
+\bottomrule
+\end{tabular}
+\end{table}
+At degree \(256\), the exact coefficient is still about \(38\%\) larger
+than the leading equivalent \(F_n\). The theorem
+is an asymptotic statement, and its conservative
+\(O((\log n)^2/\sqrt n)\) rate is not a small numerical bound at those
+orders. The observed values support neither a monotonic-convergence claim
+nor an explicit finite-order error constant. Those would require separate
+arguments.
+
+\begin{table}[htbp]
+\centering
+\caption{Finite-perturbation ratios. Each displayed column tends to one
+ by \cref{cor:universality}; the finite values are diagnostics, not proofs.}
+\label{tab:perturbations}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+\(n\)&\(u_n^{[\lambda_2=7]}/u_n\)&
+\(e^{-2r_n^2}u_n^{[\lambda_1=3]}/u_n\)&
+\(e^{r_n^2}u_n^{[\lambda_1=0]}/u_n\)\\
+\midrule
+20  &3.642423&6.041575&0.888086\\
+40  &1.897724&2.674726&0.960560\\
+80  &1.538280&1.699454&0.996221\\
+120 &1.436076&1.516262&1.005374\\
+180 &1.358496&1.394877&1.010625\\
+256 &1.303662&1.317723&1.013079\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Files and rebuild procedure}
+The package contains the article source and PDF, the verification program,
+exact coefficient tables, numerical diagnostics, a machine-readable check
+report, source-provenance notes, and a build script. From the package root,
+run
+\begin{quote}\small\ttfamily
+python -m pip install -r requirements.txt\\
+python code/verify.py --order 256 --check-order 18\\
+sh build.sh
+\end{quote}
+The exact recurrence and partition calculations use Python's standard
+library. The listed \texttt{mpmath} dependency is used for diagnostics.
+The PDF needs a standard LaTeX installation with the packages named in the
+source. No internet retrieval, external figure, or external bibliography
+file is required to rebuild it.
+
+\section{Proof status and a feasible formalization route}
+\label{sec:formalization}
+Every main assertion above has a conventional mathematical proof in this
+article. None has been machine-checked in Lean in this work. The finite
+program checks do not certify infinite tails, limiting distributions, or
+Borel growth.
+
+A useful formalization can be staged without implementing a complete
+transseries field. First formalize the coefficientwise contraction and the
+finite coefficient identity in a formal-power-series ring. The next stage
+is finite: multiplicity vectors, the marked-largest-part inequality, the
+exact ones/twos weights, and the positive exponential majorant. These are
+natural targets for algebraic and combinatorial proof automation.
+
+The central analytic interface should be the uniform row lemma, with its
+parameters and macroscopic window made explicit. A reusable discrete
+Laplace theorem should accept bounds on the second and third derivatives,
+a bound on the logarithmic derivative of the amplitude, and a certified
+outside-window estimate. The proof in \cref{sec:saddle} identifies exactly
+those hypotheses. Such an interface would also support the second Borel
+saddle, rather than requiring a special-purpose proof for each sum.
+
+Finally, probability statements should be formulated in total variation
+before passing to weak limits. The Poisson coupling and the uniform
+pointwise bounds are simpler, more informative intermediate goals than an
+isolated central limit theorem. The distinction between coefficient
+asymptotics and analytic remainders should remain explicit in the API;
+there is no valid implication from \cref{thm:least} alone to a remainder
+certificate.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.27\textwidth}p{0.61\textwidth}@{}}
+\toprule
+Result & Dependencies and status\\
+\midrule
+Positive coefficient identity & Classical Lagrange inversion, with a finite
+coefficientwise specialization; rederived here and checked at finite orders.\\
+Coarse localization & Positive envelope, Stirling estimates, one-dimensional
+strict concavity; rederived from the source article's mechanism.\\
+Microscopic row lemma & Marking, exponential majorization, a small-part tail
+bound, and exact ones/twos weights; proved here.\\
+Full coefficient equivalent & Microscopic row lemma, explicit saddle,
+Gaussian sum, and perturbation expansion; proved here.\\
+Joint and local limits & Pointwise row weights, summed absolute saddle error,
+Poisson coupling, and Stirling; proved here.\\
+Borel equivalent & Coefficient equivalent, a second saddle, and control of
+both infinite tails; proved here.\\
+Least term & Coefficient equivalent, convex minimization, integer rounding;
+proved here, but not an analytic remainder theorem.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Further research questions}
+\label{sec:questions}
+The following questions continue the proved results rather than restating
+questions already settled in this article. Assertions labeled as heuristics
+are not theorems of this paper.
+
+\subsection{All-order corrections and the first appearance of each small slope}
+For eventually quadratic slopes, determine a systematic expansion of
+\(u_n/F_n\) in inverse powers of \(n\), with coefficients expressed in
+\(r_n\) and the fixed initial slopes. The exact microscopic formula
+provides a route: expand the falling factorial, the feedback logarithm,
+and the discrete saddle to matching orders. The first omitted primitive
+cloud has scale \(m^3/\Lambda^2\asymp(\log n)^4/n\).
+At what precise order does each \(\lambda_h\), \(h\ge2\), first
+become visible, and which coefficients admit sign or monotonicity
+statements? A useful answer should include a uniform truncation bound, not
+only a list of formal correction polynomials.
+
+\subsection{The cloud hierarchy for nonquadratic slopes}
+For \(\lambda_j\sim a j^p\), \(p>1\), the source article proves only
+macroscopic concentration and logarithmic coefficient growth. At a
+one-large-action configuration, the natural formal small-part activity is
+approximately
+\[
+ \mu_h\approx\frac{n^h}{(aJ^p)^{h-1}},\qquad
+ J\asymp n/\log n.
+\]
+Thus its power of \(n\) is \(p-(p-1)h\). This is a heuristic predicting
+changes at \(p=h/(h-1)\): for \(p>2\), even the twos should disappear;
+for \(1<p<2\), several small sizes may occur in large numbers. At a
+critical exponent the logarithmic factors still matter. Prove the
+appropriate multi-cloud limit theorem, including interactions and the
+correct shifted saddle. The present quadratic theorem proves one member
+of that hierarchy, not the hierarchy itself.
+
+\subsection{Boundary perturbations without a smooth asymptotic tail}
+The scale \(j/\log j\) is now known to affect the constant in the
+coefficient equivalent. Classify tails of the form
+\(\lambda_j=j^2+\alpha j+(j/\log j)\eta_j\), where \(\eta_j\)
+oscillates instead of converging. Slow oscillations suggest an amplitude
+sampled near \(j=x_n\); oscillations across a window of width
+\(\sigma_n\) may instead be averaged by a Gaussian profile. Determine
+necessary and sufficient local regularity hypotheses, and construct
+examples with genuinely nonconvergent normalized coefficients.
+
+\subsection{Compositional inverses and cancellation-sensitive large order}
+Let \(\widehat Q=\U^{\langle-1\rangle}\). The source article transfers
+Gevrey-class membership but does not determine exact type or a coefficient
+equivalent. Does the one-large-action mechanism survive the signed
+reversion weights after cancellation? Determine the first exponential and
+subexponential scales of the inverse coefficients, and identify when the
+first-slope factor remains visible. Positivity of \eqref{eq:partition}
+cannot simply be reused for a signed inversion formula.
+
+\subsection{Angular growth and negative-direction Borel summation}
+The positive-axis Borel equivalent is now explicit, but it gives no
+cancellation estimate for \(B(-t)\) or for nearby complex rays. Determine
+sectorial growth, possible indicator transitions, and whether a suitable
+negative-direction Borel--Laplace sum agrees with the literal left-sector
+fixed point. The proof must establish the analytic identification as well
+as growth; an entire Borel transform alone settles neither.
+
+\subsection{Acceleration adapted to the double-exponential growth}
+Construct and analyze an acceleration procedure adapted to
+\(\log B(t)\sim(\sqrt t/e)e^{2\sqrt t}\). Specify the analytic
+continuation or regularization of the countable kernel that the proposed
+sum solves. Different choices may be inequivalent, since the literal
+positive-real kernel diverges for every positive candidate value. A
+complete result should identify uniqueness conditions and compatibility
+with composition or inversion.
+
+\subsection{From the least term to the actual sectorial remainder}
+The proved least-term scale \eqref{eq:superleast} suggests a refined
+optimal-order problem for the left-sector analytic solution. Does its
+Taylor remainder at order near \(R(R+1)/t\) have that scale, a different
+scale, or additional oscillatory cancellation? Establish a uniform
+remainder theorem on proper sectors, and only then compare it with the
+least term. This is a sharper question than coefficient Gevrey membership.
+
+\subsection{Amplitudes, noninteger actions, and several feedback components}
+Replace the model by
+\[
+ U=\sum_j c_jq^{a_j}e^{\lambda_jU},\qquad c_j\ge0,
+\]
+first with integer actions and then with well-based real actions. Which
+amplitude and action assumptions preserve a one-large-action reduction?
+The unit-action reservoir is essential to the present balance. For vector
+feedback, determine whether an analogous reduction is governed by a
+nonnegative matrix or by several competing large components. Signed or
+complex amplitudes require a separate noncancellation theory.
+
+\subsection{Explicit finite certificates and scalable computation}
+The current relative error constants are asymptotic and depend on the
+fixed exceptional slopes. Extract computable thresholds and constants
+from the microscopic and saddle bounds, use directed interval arithmetic,
+and give finite enclosures for \(u_n\) at orders beyond exact recurrence
+computation. A particularly useful tool would certify both the coefficient
+and the probability of exceptional configurations, with its proof
+obligations structured for eventual Lean verification.
+
+\section{Conclusion}
+The unresolved finer-asymptotics question in the repository's
+exponential-feedback article has a concrete answer for the class
+\eqref{eq:Q}. The coefficient is governed by one explicit scalar saddle,
+a Gaussian large action, and a Poisson cloud of twos. The cloud supplies a
+factor \(e^{r_n^2}\) that would be missed by retaining only a large action
+and unit actions. The unit-action feedback supplies the additional
+\(e^{\lambda_1r_n^2}\), explaining both finite-prefix universality and
+its sharp exception.
+
+The resulting equivalent identifies a hierarchy of perturbation scales,
+strengthens Borel growth from double-logarithmic precision to a full
+multiplicative formula, and determines the least-term scale. These results
+are proved for a precisely specified model and tail class. They do not
+settle unrestricted transseries summability, signed reversion, or the
+optimal remainder of a sectorial realization. Those remaining questions
+now have more precise parameters and sharper candidate scales.
+
+\appendix
+\section{Notation and proof-audit checkpoints}
+\label{app:audit}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.22\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\(u_n\) & Coefficient of the formal fixed point, without factorial scaling.\\
+\(b\) & The fixed number \(1+\lambda_1=u_2\).\\
+\(b_n\) & The separate computational quantity \(n!u_n\).\\
+\(K,J,D_2\) & Number of factors, largest action, number of twos.\\
+\(R_n\) & The excess-action coordinate \(n-K+1\).\\
+\(r_n\) & Positive solution of \(r_n(r_n+1)e^{2r_n}=n\).\\
+\(x_n,m_n\) & Saddle large action and remaining unit mass,
+\(n/(r_n+1)\) and \(nr_n/(r_n+1)\).\\
+\(D(r),\sigma_n^2\) & \(2r^2+4r+1\) and \(m_n/D(r_n)\).\\
+\(A_J\) & Row Poisson mean \((n-J)^2/\lambda_J\).\\
+\(s\) & Borel saddle parameter, \(s(s+1)=t\).\\
+\(R\) & Least-term parameter \(\tfrac12\log(1/t)\), not \(R_n\).\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+An independent proof audit can focus on five points. First, verify the
+marking factor in \eqref{eq:marked}: multiple largest parts must be
+\emph{overcounted}, not treated as exact. Second, keep the factor
+\(e^{\mu_2}\); discarding the entropy of the twos loses a diverging
+multiplicative factor. Third, check that the unspecified tail in
+\eqref{eq:Q} yields a \emph{uniform} \(o(1)\) in
+\eqref{eq:tail-expansion}, without assuming smoothness. Fourth, distinguish
+total variation from rescaled pointwise local limits; the extra bound in
+\cref{cor:local} is necessary. Fifth, keep the positive-axis Borel estimate
+and the least-term minimization separate from an analytic remainder theorem.
+
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{repo-classification}
+ProveIt research archive.
+\emph{A Sharp Regularity Classification for Countable Exponential-Feedback
+Transseries}. Research draft, 29 September 2026.
+Repository maintained by Vladimir Reshetnikov; inspected at commit
+\texttt{04473354a0f3edff2d6c365caf26170ca6b88735}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/04473354a0f3edff2d6c365caf26170ca6b88735/Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}{Pinned article source}.
+The main theorems occur in source lines 140--330; the positive envelope in
+lines 430--690; the finer-asymptotics question in the research-question
+subsection within lines 1430--1480.
+
+\bibitem{repo-volume}
+ProveIt research archive.
+\emph{Transseries: the polynomial--logarithmic calculus and its inversions}.
+Canonical volume and status README, inspected at the same pinned commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/04473354a0f3edff2d6c365caf26170ca6b88735/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}{Pinned volume README and formalization-status map}.
+
+\bibitem{gessel}
+Ira M.~Gessel.
+\emph{Lagrange Inversion}.
+\emph{Journal of Combinatorial Theory, Series A} \textbf{144} (2016), 212--249.
+\href{https://arxiv.org/abs/1609.05988}{arXiv:1609.05988}.
+
+\bibitem{janson}
+Svante Janson.
+\emph{Simply generated trees, conditioned Galton--Watson trees, random
+allocations and condensation}.
+\emph{Probability Surveys} \textbf{9} (2012), 103--252.
+\href{https://arxiv.org/abs/1112.0510}{arXiv:1112.0510}.
+
+\bibitem{sauzin}
+David Sauzin.
+\emph{Introduction to 1-summability and resurgence}. 2014.
+\href{https://arxiv.org/abs/1405.0356}{arXiv:1405.0356}.
+
+\end{thebibliography}
+\end{document}
