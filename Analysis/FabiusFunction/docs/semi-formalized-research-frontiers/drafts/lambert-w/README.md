@@ -89,7 +89,7 @@ Six polynomial-logarithmic transseries packages were also filed here on
 2026-09-01, because Lambert W is their guiding example.  Their subject is the
 transseries calculus rather than the function, so on 2026-09-02 they were
 regrouped into
-[`../series-and-transseries/polynomial-logarithmic-transseries/`](../series-and-transseries/Transseries_And_Inversion/),
+[`../series-and-transseries/polynomial-logarithmic-transseries/`](../../../../../Transseries/docs/series-and-transseries/Transseries_And_Inversion),
 which held their intake receipts.  Those six were consolidated, and on
 2026-09-04 the whole `series-and-transseries` group became the single volume
 linked above.  This group keeps only the articles about the Lambert W

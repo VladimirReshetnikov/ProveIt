@@ -1,5 +1,5 @@
-import FabiusFunction.TransseriesMonomialUniqueness
-import FabiusFunction.TransseriesPolyLogScale
+import Transseries.TransseriesMonomialUniqueness
+import Transseries.TransseriesPolyLogScale
 import FabiusFunction.WrightOmegaTwoOrders
 
 /-!

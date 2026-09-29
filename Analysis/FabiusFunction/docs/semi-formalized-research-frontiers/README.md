@@ -1,5 +1,9 @@
 # Semi-formalized Fabius research frontiers
 
+The two transseries and inversion volumes, with their verification files,
+now live in [`Analysis/Transseries/docs/series-and-transseries/`](../../../Transseries/docs/series-and-transseries/).
+Historical records below retain the earlier Fabius intake paths.
+
 This directory is the boundary layer between the prose mathematics of the
 Fabius function and Rvachev's up-function and the Lean corpus that verifies
 it.  It was originally a pure quarantine: everything here lacked an exact,
@@ -382,8 +386,10 @@ of 77. The eight-theorem Stirling leaf is retained.
 The two certificate leaves added nine public theorems at the historical
 979/12,142 checkpoint. Six further leaves and extensions to existing modules
 then added 57 declarations. The incoming BellSetPartitions module adds 34
-more, giving the historical 986/12,233 checkpoint. The merged current inventory
-is 1004/12,500. No new aggregate-build or PDF-parity claim is made.
+more, giving the historical 986/12,233 checkpoint. The former merged inventory
+of 1004/12,500 included the 13 modules now in `Analysis/Transseries`; the
+current Fabius inventory is 991/12,382. No new aggregate-build or PDF-parity
+claim is made.
 
 The claim crosswalk remains conservative. The abstract Faà di Bruno result,
 ordinary Bell normalization, and Touchard definition and displayed
@@ -437,8 +443,9 @@ nine more modules (90 explicit public declarations) and four theorems to
 pre-incoming checkpoint, while 952/11,881 is the historical post-incoming
 checkpoint. The two written OrderDual Neumann wrappers and the real-analytic
 Wright omega theorem gave the incoming historical 952/11,884/0
-modules/declarations/missing-comments checkpoint. The live merged census is
-1004/12,500/0. The following list records the incoming module surfaces at that
+modules/declarations/missing-comments checkpoint. The current Fabius census is
+991/12,382/0 after moving the 13 generic modules to `Analysis/Transseries`.
+The following list records the incoming module surfaces at that
 historical checkpoint, not the larger merged surfaces inventoried above.
 The retained PDFs predate the incoming source-only overlay and claim no
 render parity.

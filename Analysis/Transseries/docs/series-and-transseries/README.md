@@ -4,9 +4,13 @@ This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
 2026-09-04 (see the end of this file).
 
-The authoritative live Lean inventory and zero-gap result are computed by
-`scripts/doc_audit.py` and pinned in `docs/doc_audit_baseline.json`; the
-970/12,051 and 967/12,001 inventories are historical checkpoints.
+The transseries Lean inventory and zero-gap result are computed by
+`Analysis/FabiusFunction/scripts/doc_audit.py --root
+Analysis/Transseries/Lean/Transseries` and pinned in
+[`../doc_audit_baseline.json`](../doc_audit_baseline.json). The 970/12,051 and
+967/12,001 inventories are historical joint Fabius/transseries checkpoints.
+The generic modules now use `Transseries.Transseries*` import paths. The
+Fabius-specific Wright omega bridge retains its `FabiusFunction` import path.
 The flatness module now includes both its vector-valued API and the scalar
 submodule, absorption, and inverse-power-scale interfaces (4 definitions and
 22 theorems). The differential-block module contains one definition and 20
@@ -23,14 +27,15 @@ and staircase statements still have the qualifications recorded in the source;
 the least-term-index lemmas are supporting results, not a complete
 optimal-truncation theorem.
 
-> [`Transseries_And_Inversion/`](Transseries_And_Inversion/) —
+> [`Transseries_And_Inversion/`](Transseries_And_Inversion) —
 > *Transseries: the polynomial–logarithmic calculus, series reversal at
 > infinity, and the inversion of rapidly growing functions*. The local
 > 704-page and incoming 711-page A4 PDFs are historical publication
 > checkpoints. The incoming branch later reached 55,985 source lines and 3,125
-> distinct labels, and the merged canonical source is newer still. No current
-> source-size, label-count, or TeX/PDF parity claim is made; a fresh render is
-> pending.
+> distinct labels, and the merged canonical source is newer still. The moved
+> source was rebuilt in three `pdflatex` passes as a 720-page A4 PDF, with no
+> undefined references and 110 overfull-box warnings. Its title and provenance
+> pages were visually checked. No current source-size or label-count claim is made.
 
 ## What was merged
 
@@ -170,12 +175,12 @@ mantissas and worked-example integers, none of them a result.
 
 ## The companion volume: combinatorial transseries (three arrivals of 2026-09-04, consolidated)
 
-[`Combinatorial_Transseries_Inverses/`](Combinatorial_Transseries_Inverses/)
+[`Combinatorial_Transseries_Inverses/`](Combinatorial_Transseries_Inverses)
 is *Combinatorial Transseries and Their Inverses: Gamma quotients, finite
 exponential sums, moment sectors, moving saddles, arithmetic sheets, and
-q-products* (127 A4 pages; 5,616 source lines; nine parts, 20 chapters;
+q-products* (126 A4 pages in the rebuilt PDF; 5,616 source lines; nine parts, 20 chapters;
 21 theorems, 10 propositions, 4 lemmas, 4 corollaries, every one with a
-proof; loads `docs/fabius-notation.tex`; labels `ct:` for the merge and
+proof; loads `Analysis/FabiusFunction/docs/fabius-notation.tex`; labels `ct:` for the merge and
 `t1:`, `t2:`, `t3:` for the absorbed sources).  It applies the canonical
 volume's inversion architecture to combinatorial families the volume does
 not treat, with three inversion engines proved once: phase-coordinate
@@ -254,4 +259,4 @@ natural follow-up.  Note for future filing: on Windows a directory named
 deleted `combinatorial_transseries_and_inverses/`, which is why the
 companion's directory omits the "And".
 
-See [`../MANIFEST.md`](../MANIFEST.md) for the group record.
+See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

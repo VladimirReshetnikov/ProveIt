@@ -1,4 +1,4 @@
-import FabiusFunction.TransseriesDifferentialBlock
+import Transseries.TransseriesDifferentialBlock
 
 /-!
 # Repeated derivative of a coefficient block

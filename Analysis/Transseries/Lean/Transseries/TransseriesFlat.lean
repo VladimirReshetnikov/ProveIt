@@ -1,4 +1,4 @@
-import FabiusFunction.TransseriesPolyLogScale
+import Transseries.TransseriesPolyLogScale
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 /-!

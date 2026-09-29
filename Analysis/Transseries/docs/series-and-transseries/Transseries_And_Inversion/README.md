@@ -8,15 +8,18 @@ layout warnings. The incoming branch later reached 55,985 lines and 3,125
 distinct labels; the merged canonical source includes still later editorial
 and Lean-crosswalk changes. Neither artifact is therefore current. The accepted
 merged-source render is recorded in the [merge-28de4e51 receipt
-register](../../MANIFEST.md#merge-28de4e51-publication-receipts).
+register](../../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md#merge-28de4e51-publication-receipts).
+The relocated source was rebuilt in three `pdflatex` passes on 2026-09-29:
+720 A4 pages, no undefined references, 110 overfull-box warnings. The title
+and provenance pages were visually checked. This is the current PDF paired
+with the source in this directory; the linked receipts remain historical.
 
 ## Status
 
 Editorial consolidation is complete. All five source groups are merged, and all
 five source directories were residue-audited and deleted on 4 September 2026.
 “Complete” describes the editorial consolidation, not full machine
-formalization. Current publication parity is recorded in the receipt register
-linked above.
+formalization. Current local TeX/PDF parity is recorded above.
 
 | Source group | Lines | Absorbed as |
 | --- | --- | --- |

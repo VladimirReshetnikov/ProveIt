@@ -1,4 +1,4 @@
-import FabiusFunction.TransseriesBlockClasses
+import Transseries.TransseriesBlockClasses
 import Mathlib.Analysis.Asymptotics.AsymptoticEquivalent
 
 /-!

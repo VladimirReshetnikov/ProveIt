@@ -1,4 +1,4 @@
-import FabiusFunction.TransseriesScaleDominance
+import Transseries.TransseriesScaleDominance
 
 /-!
 # Blocks are the logarithmic-comparability classes

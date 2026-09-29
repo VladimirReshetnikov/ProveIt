@@ -1,5 +1,5 @@
-import FabiusFunction.TransseriesScale
-import FabiusFunction.TransseriesScaleDominance
+import Transseries.TransseriesScale
+import Transseries.TransseriesScaleDominance
 
 /-!
 # The power–logarithmic family is an asymptotic scale

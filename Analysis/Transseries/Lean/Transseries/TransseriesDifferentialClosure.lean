@@ -1,4 +1,4 @@
-import FabiusFunction.TransseriesDifferentialBlock
+import Transseries.TransseriesDifferentialBlock
 
 /-!
 # The smallest differentially closed class

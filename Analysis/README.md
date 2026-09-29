@@ -7,6 +7,10 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   eleven-term arctangent-square identity and the golden-ratio sine identity.
 - [`ExponentialIdentities/`](ExponentialIdentities/) contains the exact floor
   certificate for the five-level tiny-exponent tower.
+- [`Transseries/`](Transseries/) develops asymptotic scales, power-logarithmic
+  monomials, well-based supports, and differential blocks independently of the
+  Fabius function. Its two inversion volumes and verification material live
+  alongside the Lean library.
 - [`FabiusFunction/`](FabiusFunction/) defines the bounded Fabius function,
   its signed global extension, exact rational dyadic arithmetic, and the
   statements of every result in arXiv:1702.06487v3.  Proofs are the next

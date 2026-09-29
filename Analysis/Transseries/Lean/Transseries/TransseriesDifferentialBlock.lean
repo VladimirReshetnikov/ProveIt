@@ -1,4 +1,4 @@
-import FabiusFunction.TransseriesBlockAntiderivative
+import Transseries.TransseriesBlockAntiderivative
 import Mathlib.Algebra.Polynomial.Derivation
 
 /-!

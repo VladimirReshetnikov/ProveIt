@@ -1409,10 +1409,14 @@ open.
 
 The six polynomial-logarithmic transseries packages filed here on 2026-09-01
 moved to
-[`series-and-transseries/polynomial-logarithmic-transseries/`](series-and-transseries/Transseries_And_Inversion/)
+[`series-and-transseries/polynomial-logarithmic-transseries/`](../../../../Transseries/docs/series-and-transseries/Transseries_And_Inversion)
 on 2026-09-02; their receipts are in that group's section below.
 
-## series-and-transseries — `series-and-transseries/`
+## series-and-transseries — now `Analysis/Transseries/docs/series-and-transseries/`
+
+The canonical volumes and their verification files were relocated to
+[`Analysis/Transseries/docs/series-and-transseries/`](../../../../Transseries/docs/series-and-transseries/).
+The entries below retain the historical intake and publication record.
 
 Packages whose subject is the formal-series calculus itself rather than a
 single special function.  The group was split off from `lambert-w/` on
@@ -1491,7 +1495,7 @@ repository-generated.  None of the four loads `docs/fabius-notation.tex`, so
 all four are free of the notation-migration defect classes recorded against
 their neighbours.  Comparison, deduplication, canonical selection, and
 consolidation are deferred; see
-[`series-and-transseries/transseries-tutorials/README.md`](series-and-transseries/Transseries_And_Inversion/).
+[`series-and-transseries/transseries-tutorials/README.md`](../../../../Transseries/docs/series-and-transseries/Transseries_And_Inversion).
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
@@ -1557,7 +1561,7 @@ characters from the repository root.
 
 Comparison, deduplication, proof checking, numerical reproduction and Lean
 crosswalking are deferred; see
-[`series-and-transseries/special-function-inversion/README.md`](series-and-transseries/Transseries_And_Inversion/).
+[`series-and-transseries/special-function-inversion/README.md`](../../../../Transseries/docs/series-and-transseries/Transseries_And_Inversion).
 
 | Directory | Document | Previous path / provenance |
 | --- | --- | --- |
@@ -1576,7 +1580,7 @@ distinct archive stems name the directories. Longest filed path 252
 characters. All sources LF with a final newline; all PDFs fully embedded,
 Type-3-free, pdfTeX-1.40.26. None loads `docs/fabius-notation.tex`. Quick
 intake only; see
-[`series-and-transseries/sequence-transseries/README.md`](series-and-transseries/Transseries_And_Inversion/).
+[`series-and-transseries/sequence-transseries/README.md`](../../../../Transseries/docs/series-and-transseries/Transseries_And_Inversion).
 
 | Directory | Document | Previous path |
 | --- | --- | --- |

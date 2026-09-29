@@ -1,5 +1,5 @@
 import FabiusFunction.CauchyPolynomials
-import FabiusFunction.TransseriesBlockAntiderivative
+import Transseries.TransseriesBlockAntiderivative
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Topology.Algebra.Polynomial
