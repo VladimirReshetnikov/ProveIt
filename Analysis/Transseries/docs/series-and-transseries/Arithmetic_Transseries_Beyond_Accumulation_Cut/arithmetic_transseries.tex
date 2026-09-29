@@ -1,0 +1,1758 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Arithmetic Transseries Beyond an Accumulation Cut},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Arithmetic transseries beyond an accumulation cut}
+\fancyhead[R]{\small 29 September 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{1.5em}
+\setlength{\parindent}{14pt}
+\setlist[enumerate]{itemsep=3pt,topsep=4pt}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\HH}{\mathscr H}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\snapshot}{\texttt{db68f0853c3c69cd930caedab6f6ad9addb11eaf}}
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+\noindent\textsc{Transseries \; / \; Arithmetic asymptotics \; / \; Nonlinear inversion}
+\vspace{15mm}
+\begin{center}
+{\LARGE\bfseries Arithmetic Transseries\\[4mm]
+Beyond an Accumulation Cut\par}
+\vspace{8mm}
+{\Large Divisibility, summable inversion, and\\[2mm]
+curvature-lifted resonances\par}
+\vspace{14mm}
+{\large Research manuscript prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+29 September 2026
+\end{center}
+\vspace{12mm}
+\begin{abstract}
+Divisor-counting sequences have corrections with arithmetic coefficients
+$\ind_{d\mid n}$ and exponential actions $a(1-1/d)$ accumulating at $a$.
+This combination defeats finite-grid truncation without defeating Hahn
+well-ordering. We construct an arithmetic Hahn ring and a compatible scale
+of weighted Banach algebras that retain the indicators exactly. An lcm
+convolution handles arithmetic multiplication, while an action--label weight
+makes the entire accumulating block summable on expanding families of
+analytic sheets. For the elementary input block, membership has the exact
+criterion $\sum_d |c_d|\ee^{-ad}<\infty$.
+
+We prove a convergent, all-action, fixed-label inverse theorem for
+$\ee^{ax}(1+E_n(x))/x$, with explicit coefficients and a geometric remainder.
+It applies to necklaces and primitive necklaces on their exact ranges.
+A second result identifies the first inverse sector beyond the primitive
+action cut: it has action $a$, but its leading pure-exponential amplitude
+cancels, leaving a curvature-induced factor of order $X^{-1}$.
+An exact coefficient transformation explains this phenomenon at every
+homogeneous order and gives its extension to cores $\ee^{ax}x^{-b}$.
+
+The construction answers a specified algebra-and-summation direction in the
+ProveIt companion volume. It is not a canonical interpolation of an
+arithmetic sequence, a field containing nontrivial indicators, or a general
+resurgence theorem. Full mathematical proofs are supplied; 964 exact finite
+assertions and 48 high-precision error checks provide supplementary audits.
+These results are not Lean-verified, and publication-level priority has not
+been established.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} AI-assisted research manuscript; unrefereed.
+Classical ingredients and proposed extensions are distinguished in
+Section~\ref{sec:scope}. The repository snapshot, reproducibility instructions,
+and formalization boundaries are recorded explicitly.
+\end{titlepage}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The research target and the scope of the answer}\label{sec:scope}
+
+\subsection{A specific question in the repository}
+
+The current ProveIt transseries project separates its generic Lean modules
+from the Fabius-function development. Its companion volume,
+\emph{Combinatorial Transseries and Their Inverses}, contains a chapter on
+necklaces, Lyndon words, and irreducible polynomials. The subsequent
+``Further research directions'' section explicitly asks for an arithmetic
+transseries algebra that preserves divisibility indicators, permits an
+accumulation of actions at $\log q$, and specifies summable products and
+inverse operations \cite{repo}. This is the target of this article.
+
+The source consulted was the file named in Appendix~\ref{app:provenance},
+at the pinned commit \texttt{db68f0853c3c} (full hash in the appendix).
+In that source the question occurs near
+line 4971. Its benchmark is Proposition
+\path{t2:prop:necklace-cutoff}; the relevant chapter has label
+\texttt{ct:ch:necklaces}. The source already provides finite divisor cutoffs,
+finite-cutoff trigonometric interpolations, certain fixed-radical analytic
+sheets, and integer threshold methods. None of those constructions is
+claimed here as a new result.
+
+The repository also contains an unmerged article on action accumulation
+and nonlinear inversion using Laplace measures. Its own catalogue entry
+states that it does not preserve the divisibility indicators and therefore
+does not provide the arithmetic algebra requested by the companion
+\cite{repoindex}. The present construction addresses that missing
+arithmetic component rather than repeating the measure-valued theory.
+
+\subsection{What is established}
+
+There are three main results, together with their necessary limitations.
+
+\paragraph{Arithmetic summation across the cut.}
+Theorems~\ref{thm:banach} and \ref{thm:admission} provide an explicit
+weighted Banach algebra whose coefficients multiply by lcm convolution.
+The whole infinite family of primitive actions is retained. Scalar analytic
+functional calculus, including logarithms and multiplicative inverses near
+one, is norm-convergent. Evaluation gives exact arithmetic data on the
+diagonal $x=n$ and holomorphic functions on label-dependent half-planes.
+
+\paragraph{Convergent inverse transport.}
+Theorems~\ref{thm:inverse} and \ref{thm:range} give an explicit inverse
+series around the exact core $\ee^{aX}/X$. The series is absolutely
+summable even after it is expanded into individual action tuples. A
+uniform bound controls its tail. The arithmetic label is fixed throughout
+an inverse calculation; this is an essential part of the statement.
+
+\paragraph{Curvature-lifted resonance.}
+Theorems~\ref{thm:firstcut} and \ref{thm:resonance} identify a cancellation
+at the first action beyond the primitive block and explain it at every
+homogeneous order. For the more general core $\ee^{ax}x^{-b}$,
+Corollary~\ref{cor:bcore} gives the first surviving coefficient at each
+pure-exponential resonance.
+
+The first two results supply a constructive answer to the formal,
+analytic-functional-calculus, and fixed-label reversion portions of the
+repository question. They deliberately do not postulate a fractional
+shift of the arithmetic label. Section~\ref{sec:obstructions} proves why
+ordinary differential-field and compact-profinite interpretations cannot
+simply be imposed on these data.
+
+\subsection{Classical ingredients and proposed extensions}
+
+The multiplication
+$\sum_{\lcm(i,j)=l}c_i b_j$ is the classical lcm convolution. Its
+relationship with the divisor-zeta transform is recorded, for example, in
+T\'oth's survey, Section 4.4 \cite{toth}. It is not introduced here as a
+new arithmetic operation. Hahn supports, well-ordering arguments, and
+Lagrange inversion are also classical ingredients; Edgar's account gives
+background on transseries and their usual differential and compositional
+operations \cite{edgar}.
+
+The proposed contributions are the combined action--label completion,
+its exact elementary-block admission criterion and faithful sheet
+realization, the absolute inverse transport through the accumulating
+arithmetic support, and the all-order curvature calculation and its
+post-cut consequence. Each has a proof below. A targeted literature check
+also found a 2026 preprint on analytic properties of necklace polynomials;
+it studies the alphabet-variable polynomial and its analytic inequalities,
+rather than the length-variable construction considered here
+\cite{chebolu}. This comparison is not an exhaustive novelty search. The
+results should be regarded as proposed research extensions, not as a
+verified claim of first discovery.
+
+\section{Divisor sectors and the two variables}\label{sec:data}
+
+Throughout, $\N=\{1,2,\ldots\}$ and $a>0$. For integer alphabet size
+$q\ge2$ we specialize to $a=\log q$. Set
+\begin{equation}
+ e_d(n)=\ind_{d\mid n},\qquad
+ \lambda_d=a\left(1-\frac1d\right),\qquad d\ge2.
+ \label{eq:actions}
+\end{equation}
+The letter $n$ always denotes an arithmetic label. The variable $x$ is a
+real or complex analytic coordinate. They can be set equal, but they are
+not identified while differentiating or reverting a function.
+
+\subsection{The exact combinatorial input}
+
+The number of necklaces and primitive necklaces of length $n$ are,
+respectively,
+\begin{equation}
+ N_q(n)=\frac1n\sum_{d\mid n}\varphi(d)q^{n/d},\qquad
+ L_q(n)=\frac1n\sum_{d\mid n}\mu(d)q^{n/d}.
+ \label{eq:counts}
+\end{equation}
+For completeness, the first formula follows by averaging the fixed words
+of the cyclic rotations. A rotation through $r$ positions fixes
+$q^{\gcd(n,r)}$ words, and grouping the rotations by
+$d=n/\gcd(n,r)$ gives $\varphi(d)$ copies. For the second formula, let
+$P_q(n)$ count words of least period $n$. Every word has a unique least
+period dividing $n$, so $q^n=\sum_{d\mid n}P_q(d)$. M\"obius inversion
+then gives the numerator of the second expression, and every primitive
+orbit has $n$ words. These are the same exact inputs used in the
+repository chapter \cite{repo}.
+
+Given coefficients $c_d$, define
+\begin{equation}
+ E_n(x)=\sum_{\substack{d\mid n\\d\ge2}}c_d\ee^{-\lambda_d x},
+ \qquad f_n(x)=\frac{\ee^{ax}}x\bigl(1+E_n(x)\bigr).
+ \label{eq:sheets}
+\end{equation}
+Each $E_n$ is an entire function because it is a finite sum. Choosing
+$c_d=\varphi(d)$ or $c_d=\mu(d)$ gives $f_n(n)=N_q(n)$ or $L_q(n)$.
+The family $f_n$ is not asserted to be the restriction of a single
+interpolation of the counting sequence.
+
+Two bounds used repeatedly below are
+\begin{equation}
+ \sum_{d\mid n}\varphi(d)=n,
+ \qquad \sum_{d\mid n}|\mu(d)|\le n.
+ \label{eq:arithbounds}
+\end{equation}
+The first identity counts the integers in $\{1,\ldots,n\}$ by the order
+of the corresponding element of the cyclic group. The second follows
+because each summand is at most one and $n$ has at most $n$ divisors.
+Consequently, for either of the two counting inputs and real $X>0$,
+\begin{equation}
+ A_n(X):=\sum_{\substack{d\mid n\\d\ge2}}|c_d|\ee^{-\lambda_dX}
+ \le n\ee^{-aX/2}.
+ \label{eq:An}
+\end{equation}
+
+\subsection{Why the accumulation point matters}
+
+The actions obey
+\begin{equation}
+ \frac a2=\lambda_2<\lambda_3<\cdots<a,
+ \qquad \lambda_d\longrightarrow a.
+ \label{eq:cut}
+\end{equation}
+A finite additive grid with strictly positive generators has only
+finitely many elements below any fixed bound. The set in
+\eqref{eq:cut} does not. Moreover $2\lambda_2=a$, so infinitely many
+primitive sectors precede the first quadratic sector.
+
+This is not a failure of well-ordering: an increasing sequence can be
+well-ordered while accumulating at its supremum. The distinction between
+\emph{finitely many decompositions of one action} and \emph{finitely many
+actions below a bound} will be central. The former is true here; the
+latter is false.
+
+For a finite divisor cutoff $D$, \eqref{eq:arithbounds} gives
+\begin{equation}
+ \abs{E_n(n)-\sum_{2\le d\le D}c_d e_d(n)\ee^{-\lambda_dn}}
+ \le n\ee^{-\lambda_{D+1}n}.
+ \label{eq:cutoff}
+\end{equation}
+This recovers the companion's benchmark without changing its scope.
+The goal is now to sum the full primitive block and transport it through
+nonlinear operations, not to pretend that \eqref{eq:cutoff} resolves every
+bounded action with a fixed finite list.
+
+\section{The arithmetic Hahn ring}\label{sec:formal}
+
+\subsection{The action monoid}
+
+Let
+\begin{equation}
+ S=\left\{\lambda_{d_1}+\cdots+\lambda_{d_m}:
+ m\ge0,\ d_i\ge2\right\},
+ \label{eq:S}
+\end{equation}
+where the empty sum is zero. We order $S$ by its usual real order.
+
+\begin{lemma}[Finite action decompositions]\label{lem:support}
+The set $S$ is well-ordered. Every $s\in S$ has only finitely many ordered
+representations by generators $\lambda_d$, including the length of the
+representation. Every fixed action therefore has finitely many
+decompositions into any prescribed finite number of elements of $S$.
+\end{lemma}
+\begin{proof}
+Every representation of an action at most $B$ has length at most
+$\lfloor 2B/a\rfloor$. For a fixed length $m$, use the elementary
+well-quasi-order property of $\N^m$: every infinite sequence of tuples
+has an earlier tuple that is componentwise at most a later one. One proof
+is to successively extract an infinite nondecreasing subsequence in each
+coordinate. For a single coordinate, either a value occurs infinitely
+often or one can successively choose strictly increasing values.
+
+An infinite strictly decreasing sequence of actions in $S$ is bounded
+above by its first term. After selecting a subsequence, its chosen
+representations have a common length $m$. A componentwise comparable
+pair of tuples contradicts the strict decrease, because $d\mapsto
+\lambda_d$ is strictly increasing. Thus there is no such decreasing
+sequence. A countable linearly ordered subset of $\R$ with no infinite
+strict descent is well-ordered: from a nonempty subset without a least
+element one could choose a strict descent recursively.
+
+For a fixed $s$ and fixed $m$, infinitely many distinct representing
+tuples would again yield a comparable pair. At least one coordinate
+would be strictly larger, which would make the sums unequal. There are
+only finitely many possible lengths. Finally, a decomposition into
+$m$ elements of $S$ can be refined into a generator representation,
+with marked cuts between its pieces. The generator representations and
+the possible cuts are finite; zero pieces cause only finitely many
+additional placements when $m$ is prescribed.
+\end{proof}
+
+\begin{remark}
+This is the concrete positive-monoid argument required for the countably
+generated support. The repository's Neumann bridge supplies two-set
+product and finite-factorization statements, not by itself this entire
+countable monoid construction; see Appendix~\ref{app:lean}.
+\end{remark}
+
+\subsection{Divisor coordinates and lcm multiplication}
+
+Let $\A=\C^{\N}$, with pointwise addition and multiplication. Every
+$A\in\A$ has unique divisor coordinates
+\begin{equation}
+ A(n)=\sum_{l\mid n}c_l,\qquad
+ c_l=\sum_{d\mid l}\mu(l/d)A(d).
+ \label{eq:zetamobius}
+\end{equation}
+These expressions are finite for each index. Equivalently,
+$A=\sum_l c_l e_l$, where this notation means divisor-finite evaluation,
+not a claim of uniform convergence in $n$.
+
+\begin{proposition}[Classical lcm product]\label{prop:lcm}
+If $A=\sum_i c_i e_i$ and $B=\sum_j b_j e_j$, then
+\begin{equation}
+ AB=\sum_l(c\star b)_l e_l,
+ \qquad (c\star b)_l=\sum_{\lcm(i,j)=l}c_i b_j.
+ \label{eq:lcm}
+\end{equation}
+The inner sum is finite. The divisor-zeta map \eqref{eq:zetamobius}
+is a ring isomorphism between this lcm-coordinate ring and $\A$.
+\end{proposition}
+\begin{proof}
+The identity $e_i(n)e_j(n)=e_{\lcm(i,j)}(n)$ follows directly from
+divisibility. If $\lcm(i,j)=l$, then both $i$ and $j$ divide $l$,
+so there are only finitely many such pairs. Evaluating the right side
+at $n$ gives the product of the two finite divisor sums. Invertibility
+of the coordinate map is M\"obius inversion, proved by
+$\sum_{d\mid m}\mu(d)=\ind_{m=1}$.
+\end{proof}
+
+The construction in Proposition~\ref{prop:lcm} is classical
+\cite{toth}; its role here is to preserve the arithmetic information at
+action collisions.
+
+\subsection{The formal completion}
+
+\begin{definition}
+The arithmetic Hahn ring on $S$ is
+\begin{equation}
+ \HH=\left\{F=\sum_{s\in S}A_s t^s:A_s\in\A\right\}.
+ \label{eq:Hahn}
+\end{equation}
+In divisor coordinates we write
+$F=\sum_{s,l}c_{s,l}e_l t^s$. Multiplication adds actions and takes lcms
+of labels:
+\begin{equation}
+ (FG)_{u,l}=
+ \sum_{\substack{s+t=u\\\lcm(i,j)=l}}c_{s,i}b_{t,j}.
+ \label{eq:jointproduct}
+\end{equation}
+\end{definition}
+
+Lemma~\ref{lem:support} and the finite number of divisors of $l$ make
+\eqref{eq:jointproduct} a finite sum. Associativity follows by grouping
+finite triple decompositions; the identity is $e_1t^0$.
+For any $F$ with zero action-zero coefficient, every power $F^m$ has
+actions at least $ma/2$. Hence a scalar power series $\sum_m a_mF^m$
+is formally meaningful, since every exact action receives only finitely
+many contributions. In particular $\exp F$, $\log(1+F)$, and
+$(1+F)^{-1}$ are defined formally.
+
+The universal arithmetic input is
+\begin{equation}
+ E=\sum_{d\ge2}c_de_dt^{\lambda_d}.
+ \label{eq:universalE}
+\end{equation}
+It is legitimate for every coefficient sequence $c_d$ at the formal
+level. Formal legitimacy alone does not give an analytic sum uniform in
+the label. The next section supplies the missing summation condition.
+
+\section{An action--label Banach completion}\label{sec:banach}
+
+For a positive integer $N$ and a real $r$ with $0\le r<N$, put
+\begin{equation}
+ h_N(l)=\max(N,l),\qquad
+ w_{N,r}(s,l)=\ee^{-s(h_N(l)-r)},
+ \qquad
+ \norm{F}_{N,r}=\sum_{s\in S}\sum_{l\ge1}|c_{s,l}|w_{N,r}(s,l).
+ \label{eq:norm}
+\end{equation}
+Let $\B_{N,r}$ be the coefficient arrays of finite norm. The label
+factor is essential: a divisor $l$ can occur on the diagonal only at
+integers at least $l$, and its exponential decay should be measured at
+that scale.
+
+\begin{theorem}[Arithmetic Banach algebra and sheet realization]
+\label{thm:banach}
+The space $\B_{N,r}$, with multiplication \eqref{eq:jointproduct}, is a
+commutative unital Banach algebra, and
+\begin{equation}
+ \norm{FG}_{N,r}\le\norm{F}_{N,r}\norm{G}_{N,r}.
+ \label{eq:submult}
+\end{equation}
+For each $n\in\N$, the evaluation
+\begin{equation}
+ \mathcal E_nF(x)=\sum_{s\in S}\sum_{l\mid n}c_{s,l}\ee^{-sx}
+ \label{eq:eval}
+\end{equation}
+converges absolutely and is bounded by $\norm{F}_{N,r}$ on
+$\Re x\ge\max(N,n)-r$. It is holomorphic in the interior, and
+$\mathcal E_n(FG)=\mathcal E_n(F)\mathcal E_n(G)$.
+The family of all sheet evaluations, with all $n\ge1$, is faithful.
+\end{theorem}
+\begin{proof}
+Weighted $\ell^1$ is complete because multiplication of each coordinate
+by its positive weight is an isometric linear bijection to ordinary
+$\ell^1(S\times\N)$. If $l=\lcm(i,j)$, then
+$h_N(l)\ge h_N(i)$ and $h_N(l)\ge h_N(j)$. Since $s,t\ge0$,
+\[
+ w_{N,r}(s+t,l)\le w_{N,r}(s,i)w_{N,r}(t,j).
+\]
+Apply the triangle inequality to \eqref{eq:jointproduct}, then sum
+nonnegative terms in either order. This proves \eqref{eq:submult}.
+The identity has norm one.
+
+If $l\mid n$, then $h_N(l)\le\max(N,n)$. Throughout the stated
+half-plane, $|\ee^{-sx}|\le w_{N,r}(s,l)$. The norm therefore
+majorizes the evaluation term by term. The same majorant proves
+uniform absolute convergence, including on compact subsets of the open
+half-plane, so the sum is holomorphic. Absolute convergence permits
+regrouping the product by actions and lcms, giving multiplicativity.
+
+For faithfulness, suppose every sheet function is identically zero.
+Fix $n$ and let $A_s(n)=\sum_{l\mid n}c_{s,l}$. If any such coefficient
+is nonzero, choose its least action $s_0$, using Lemma~\ref{lem:support}.
+For large positive $x$,
+\[
+ \ee^{s_0x}\mathcal E_nF(x)
+ =A_{s_0}(n)+\sum_{s>s_0}A_s(n)\ee^{-(s-s_0)x}.
+\]
+The latter sum tends to zero by dominated convergence, using absolute
+convergence at one fixed sufficiently large $x_0$. Thus the identically
+zero left side would tend to the nonzero number $A_{s_0}(n)$, a
+contradiction. All $A_s(n)$ vanish. Apply M\"obius inversion for each
+$s$ and all $n$ to obtain $c_{s,l}=0$.
+\end{proof}
+
+\begin{remark}[Faithfulness is not a tail-sequence assertion]
+The complete family of analytic sheets is used in the theorem. The
+nonzero arithmetic coefficient array $c_l=\mu(l)$ at action zero has
+evaluation $\ind_{n=1}$. It vanishes on every diagonal integer $n\ge2$.
+Thus one cannot infer formal equality merely from equality of eventual
+integer sequences in this unrestricted coefficient ring.
+\end{remark}
+
+\subsection{An exact admission criterion}
+
+\begin{theorem}[Elementary-block admission]\label{thm:admission}
+For the block \eqref{eq:universalE}, the following are equivalent:
+\begin{equation}
+ E\in\B_{N,r}\text{ for one admissible pair }(N,r),
+ \qquad
+ \sum_{d\ge2}|c_d|\ee^{-ad}<\infty.
+ \label{eq:admission}
+\end{equation}
+If these hold, then $E\in\B_{N,r}$ for every admissible pair, and for
+each fixed $r\ge0$,
+\begin{equation}
+ \norm{E}_{N,r}\longrightarrow0\qquad(N\longrightarrow\infty).
+ \label{eq:smallnorm}
+\end{equation}
+In particular, every polynomial-growth sequence $c_d$ is admitted.
+\end{theorem}
+\begin{proof}
+The part with $d\le N$ is finite. For $d>N$ the norm summand is
+\begin{equation}
+ |c_d|\ee^{-\lambda_d(d-r)}
+ =|c_d|\ee^{-ad}\ee^{a+ar-ar/d}.
+ \label{eq:tailweight}
+\end{equation}
+The last factor is bounded above and below by positive constants
+independent of $d$. This proves the equivalence and its independence of
+$N,r$. For fixed $r$, each fixed-$d$ summand tends to zero as $N$ grows,
+and it is bounded by $\ee^{ar}|c_d|\ee^{-a(d-1)}$. The latter sequence
+is summable under \eqref{eq:admission}; dominated convergence proves
+\eqref{eq:smallnorm}. Polynomial growth is dominated by any positive
+exponential decay.
+\end{proof}
+
+\begin{remark}
+This is an exact criterion for membership in the specified absolute
+completion, not a necessary condition for the existence of each
+individual $E_n$: every such sheet is a finite sum regardless of the
+growth of $c_d$. The additional content is uniform control over the
+expanding sheet family and its nonlinear operations.
+\end{remark}
+
+For $|c_d|\le Cd$ one has a convenient explicit majorant. Writing
+$z=\ee^{-a}$, split the norm at $d=N$ and use
+$\lambda_d\ge a/2$ below the split and \eqref{eq:tailweight} above it:
+\begin{equation}
+ \norm{E}_{N,r}\le
+ \frac{CN(N+1)}2\ee^{-a(N-r)/2}
+ +C\ee^{a(1+r)}
+ \frac{z^{N+1}\bigl((N+1)-Nz\bigr)}{(1-z)^2}.
+ \label{eq:explicitnorm}
+\end{equation}
+Both necklace inputs satisfy this estimate with $C=1$.
+
+\subsection{Functional calculus, derivatives, and translation}
+
+\begin{corollary}[Summable scalar operations]\label{cor:funcalc}
+If $F\in\B_{N,r}$ and $\norm{F}_{N,r}=B<1$, then
+$(1+F)^{-1}$ and $\log(1+F)$ converge in the Banach algebra. Their
+truncations satisfy
+\begin{align}
+ \norm{(1+F)^{-1}-\sum_{m=0}^M(-F)^m}_{N,r}
+ &\le\frac{B^{M+1}}{1-B},\label{eq:invbound}\\
+ \norm{\log(1+F)-\sum_{m=1}^M\frac{(-1)^{m+1}}mF^m}_{N,r}
+ &\le\frac{B^{M+1}}{(M+1)(1-B)}.\label{eq:logbound}
+\end{align}
+More generally, a scalar analytic power series converges at $F$ whenever
+its radius of convergence exceeds $B$. Evaluation commutes with these
+operations.
+\end{corollary}
+\begin{proof}
+Submultiplicativity bounds the norm of each $F^m$ by $B^m$. Sum the
+scalar absolute majorants. The evaluation maps have norm at most one
+and are multiplicative, so they commute with the norm limits.
+\end{proof}
+
+Define the analytic-coordinate derivation by
+\begin{equation}
+ D(e_lt^s)=-s e_lt^s.
+ \label{eq:D}
+\end{equation}
+It is not generally bounded on a single $\B_{N,r}$, but is bounded
+with a loss of margin.
+
+\begin{proposition}[Controlled loss of analytic margin]\label{prop:loss}
+For $0\le r'<r<N$ and $k\ge0$,
+\begin{equation}
+ \norm{D^kF}_{N,r'}\le\frac{k!}{(r-r')^k}\norm{F}_{N,r}.
+ \label{eq:loss}
+\end{equation}
+Translation in the analytic coordinate, defined by
+$T_u(e_lt^s)=\ee^{-su}e_lt^s$, satisfies
+$\norm{T_uF}_{N,r'}\le\norm{F}_{N,r}$ whenever
+$|u|\le r-r'$. The label remains unchanged.
+\end{proposition}
+\begin{proof}
+The weight ratio is $w_{N,r'}/w_{N,r}=\ee^{-s(r-r')}$.
+Use $s^k\ee^{-s(r-r')}\le k!/(r-r')^k$, which follows from the
+$k$th term of the exponential series. The translation assertion uses
+$|\ee^{-su}|\le\ee^{s|u|}$. The Leibniz law for $D$ follows from
+addition of the action indices in \eqref{eq:jointproduct}.
+\end{proof}
+
+Thus the completion is a scale of analytic algebras rather than one
+Banach differential algebra with a bounded derivative. In particular,
+we have not silently identified differentiation in $x$ with a shift or
+variation of the arithmetic label.
+
+\section{All-action inversion on arithmetic sheets}\label{sec:inverse}
+
+\subsection{The exact core and the reversion equation}
+
+For large $y>0$, the large positive solution of $\ee^{aX}/X=y$ is
+\begin{equation}
+ X=-\frac1a W_{-1}\!\left(-\frac ay\right),\qquad
+ aX-\log X=\log y.
+ \label{eq:core}
+\end{equation}
+Here $W_{-1}$ is the real branch of Lambert's function below $-1$.
+Only the equation and the branch $X>1/a$ are needed in the proofs;
+\eqref{eq:core} is an exact convenient notation, not an asymptotic
+truncation. The same dominant core is already used in the repository
+\cite{repo}.
+
+Fix a label $n$ and seek $x=X+\delta$ with $f_n(x)=\ee^{aX}/X$.
+After dividing the two core factors, this equation becomes
+\begin{equation}
+ 1+E_n(X+\delta)=(1+\delta/X)\ee^{-a\delta}.
+ \label{eq:root}
+\end{equation}
+Set
+\begin{equation}
+ J_X(u)=\frac{1-(1+u/X)\ee^{-au}}u,
+ \qquad p=J_X(0)=a-\frac1X.
+ \label{eq:J}
+\end{equation}
+The removable value at $u=0$ is understood. Introducing a coupling
+parameter $z$ gives the exact implicit equation
+\begin{equation}
+ \delta J_X(\delta)+zE_n(X+\delta)=0.
+ \label{eq:coupling}
+\end{equation}
+We expand in $z$ at zero and then set $z=1$. The coupling order counts
+how many primitive sectors participate; it is not an action cutoff.
+
+\subsection{The algebraic reversion identity}
+
+\begin{lemma}[Lagrange coefficient identity]\label{lem:lagrange}
+For $\delta=zF(\delta)$ with $\delta(0)=0$, over any commutative
+$\Q$-algebra, the unique formal solution satisfies
+\begin{equation}
+ [z^m]G(\delta)=\frac1m[u^{m-1}]G'(u)F(u)^m,
+ \qquad m\ge1.
+ \label{eq:lagrange}
+\end{equation}
+The coefficients exist without an invertibility assumption on $F(0)$.
+\end{lemma}
+\begin{proof}
+The coefficient of $z^m$ in $\delta$ is determined recursively by lower
+coefficients, proving existence and uniqueness. When $F(0)$ is an
+indeterminate unit, formal residue substitution $z=u/F(u)$ gives
+\[
+ [z^m]G(\delta)
+ =\Res_{u=0}G(u)\left(\frac{F(u)^m}{u^{m+1}}
+       -\frac{F(u)^{m-1}F'(u)}{u^m}\right)du.
+\]
+The residue of the derivative of $G(u)F(u)^m/u^m$ is zero.
+Rearranging this identity gives \eqref{eq:lagrange}. For a fixed $m$,
+both sides are polynomial expressions with rational coefficients in
+finitely many coefficients of $F$ and $G$. An identity proved after
+localizing the universal polynomial ring at its nonzero indeterminate
+$F(0)$ is therefore already an identity in that polynomial ring, and
+specializes to any commutative $\Q$-algebra. This includes rings with
+idempotents and zero divisors.
+\end{proof}
+
+Apply the lemma to $F(u)=-E_n(X+u)/J_X(u)$ and $G(u)=u$. Then
+\begin{align}
+ \delta_n(X)&=\sum_{m\ge1}\delta_{m,n}(X),\label{eq:deltasum}\\
+ \delta_{m,n}(X)
+ &=\frac{(-1)^m}{m}[u^{m-1}]
+       \left(\frac{E_n(X+u)}{J_X(u)}\right)^m.
+ \label{eq:deltam}
+\end{align}
+At first this is a formal expression. Expanding the power of $E_n$
+reveals the arithmetic action structure:
+\begin{align}
+ \delta_n(X)
+ &=\sum_{m\ge1}\ \sum_{d_1,\ldots,d_m\ge2}
+ C_m(s,X)\left(\prod_{i=1}^m c_{d_i}\right)
+ e_{\lcm(d_1,\ldots,d_m)}(n)\ee^{-sX},\label{eq:allactions}\\
+ s&=\lambda_{d_1}+\cdots+\lambda_{d_m},\nonumber\\
+ C_m(s,X)&=\frac{(-1)^m}{m}[u^{m-1}]\ee^{-su}J_X(u)^{-m}.
+ \label{eq:Cm}
+\end{align}
+The inner sum is over ordered tuples. For each exact $s$ it is finite,
+including the possible $m$, by Lemma~\ref{lem:support}. The coefficients
+$C_m(s,X)$ are rational functions of $X$ and $a$, with $s/a\in\Q$,
+whenever $p\ne0$. Thus \eqref{eq:allactions} is a formal arithmetic
+Hahn series with these rational functions as an additional coefficient
+field. No fractional divisibility predicate has appeared.
+
+\subsection{A quantitative convergence theorem}
+
+\begin{theorem}[Absolute inverse transport with an explicit tail]
+\label{thm:inverse}
+Let $a>0$, $X\ge4/a$, and $0<\rho\le1/(8a)$. Fix $n$ and any
+complex coefficients $c_d$ on its divisors. Define $A_n(X)$ by
+\eqref{eq:An} without using its final upper bound, and set
+\begin{equation}
+ \theta=\frac{2\ee^{a\rho}A_n(X)}{a\rho}.
+ \label{eq:theta}
+\end{equation}
+If $\theta<1$, equation \eqref{eq:root} has a unique solution
+$\delta$ in $|\delta|<\rho$. It is the sum \eqref{eq:deltasum},
+and both that sum and its full ordered-tuple expansion
+\eqref{eq:allactions} converge absolutely. For every $M\ge0$,
+\begin{equation}
+ \abs{\delta-\sum_{m=1}^M\delta_{m,n}(X)}
+ \le\frac{\rho\theta^{M+1}}{(M+1)(1-\theta)}.
+ \label{eq:inverseerror}
+\end{equation}
+The same expression bounds the sum of the absolute values of all
+omitted tuple contributions.
+\end{theorem}
+\begin{proof}
+First bound the denominator on the closed disk. Integrating the
+derivative of $(1+u/X)\ee^{-au}$ gives
+\begin{equation}
+ J_X(u)=\int_0^1\ee^{-atu}\left(p+\frac{atu}{X}\right)dt.
+ \label{eq:Jintegral}
+\end{equation}
+Here $3a/4\le p<a$ and $\rho/X\le1/32$. Consequently,
+\[
+ |J_X(u)-p|
+ \le a(\ee^{1/8}-1)+\frac a{32}\ee^{1/8}
+ \le\frac a7+\frac a{28}=\frac{5a}{28}.
+\]
+The last inequality follows from $\ee^{1/8}\le(1-1/8)^{-1}=8/7$.
+It follows that $|J_X(u)|\ge4a/7>a/2$ throughout the disk. In
+particular, $J_X$ has no zero there.
+
+On $|u|=\rho$,
+\[
+ |E_n(X+u)|\le\ee^{a\rho}A_n(X),\qquad
+ |uJ_X(u)|>a\rho/2.
+\]
+For $|z|<1/\theta$, Rouch\'e's theorem applied to
+$uJ_X(u)+zE_n(X+u)$ gives exactly one zero in the disk, counted with
+multiplicity. It is therefore a simple zero. The local holomorphic
+implicit solutions patch, by uniqueness, into one holomorphic function
+$\delta(z)$ on $|z|<1/\theta$ with $\delta(0)=0$.
+At $z=1$ it solves \eqref{eq:root}. Its Taylor coefficients are
+\eqref{eq:deltam} by Lemma~\ref{lem:lagrange}.
+
+For absolute summation at the finer tuple level, the Cauchy coefficient
+bound in \eqref{eq:Cm} is
+\begin{equation}
+ |C_m(s,X)|\le\frac1{m\rho^{m-1}}
+ \left(\frac2a\right)^m\ee^{s\rho}.
+ \label{eq:Cbound}
+\end{equation}
+For a fixed label only divisor tuples survive. Summing the absolute
+values of their contributions and using $\lambda_d<a$ gives
+\[
+ \sum_{\substack{d_1,\ldots,d_m\mid n\\d_i\ge2}}
+ |C_m(s,X)|\prod_i|c_{d_i}|\ee^{-sX}
+ \le\frac\rho m\left(
+ \frac{2\ee^{a\rho}A_n(X)}{a\rho}\right)^m
+ =\frac\rho m\theta^m.
+\]
+Summing this bound from $m=M+1$ to infinity proves
+\eqref{eq:inverseerror}, since $1/m\le1/(M+1)$ on that range.
+It also proves absolute convergence before grouping actions, so all
+regroupings used in \eqref{eq:allactions} are legitimate.
+\end{proof}
+
+\begin{remark}[The vanishing-input case]
+If $A_n(X)=0$, then $E_n$ is zero, the unique root in the disk is
+$\delta=0$, and all coefficients and error bounds vanish. The proof
+using $1/\theta$ is read separately in this case.
+\end{remark}
+
+\begin{corollary}[Uniformity supplied by the Banach completion]
+\label{cor:uniforminverse}
+Suppose $\sum_{d\ge2}|c_d|\ee^{-ad}<\infty$, and fix
+$0<\rho\le1/(8a)$. For every sufficiently large integer $N$, inversion
+is uniformly convergent for all labels $n$ and real core coordinates
+\begin{equation}
+ X\ge\max(N,n)-\rho,\qquad X\ge4/a.
+ \label{eq:uniformdomain}
+\end{equation}
+An admissible common majorant in \eqref{eq:inverseerror} is
+\begin{equation}
+ \Theta_N=\frac{2}{a\rho}\norm{E}_{N,2\rho}<1.
+ \label{eq:ThetaN}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Choose $N>2\rho$. For $|u|\le\rho$ and a divisor $d\mid n$,
+\[
+ |c_d\ee^{-\lambda_d(X+u)}|
+ \le |c_d|\ee^{-\lambda_d(h_N(d)-2\rho)}.
+\]
+The total absolute majorant on the circle is at most
+$\norm{E}_{N,2\rho}$. Repeat the proof of Theorem~\ref{thm:inverse}
+with this majorant instead of $\ee^{a\rho}A_n(X)$, including the
+ordered-tuple estimate. The norm tends to zero by
+Theorem~\ref{thm:admission}; hence $\Theta_N<1$ eventually.
+\end{proof}
+
+This corollary makes the connection between the global arithmetic
+completion and the local inverse theorem explicit. The inverse's
+coefficients depend rationally on $X$; the assertion is a uniformly
+convergent family of such inverses, not an unannounced claim that
+variable-$X$ coefficients belong to the original constant-coefficient
+Banach space.
+
+\subsection{An exact inverse on the range}
+
+\begin{theorem}[Arithmetic range inverse]\label{thm:range}
+Let $c_d$ be real and satisfy the admission condition
+\eqref{eq:admission}. Put
+\begin{equation}
+ y_n=\frac{\ee^{an}}n\bigl(1+E_n(n)\bigr).
+ \label{eq:yn}
+\end{equation}
+For all sufficiently large $n$, this is positive, and its large core
+inverse $X_n>1/a$ satisfies $X_n-n\to0$. The convergent series
+\eqref{eq:allactions}, evaluated with label $n$ and core $X_n$, obeys
+\begin{equation}
+ n=X_n+\sum_{m\ge1}\delta_{m,n}(X_n).
+ \label{eq:rangeinverse}
+\end{equation}
+For necklaces and primitive necklaces,
+\begin{equation}
+ X_n-n=\bigO_a\!\left(n\ee^{-an/2}\right),
+ \label{eq:Xn}
+\end{equation}
+and the explicit bound \eqref{eq:inverseerror} applies with
+$\theta\le 2\ee^{a\rho}n\ee^{-aX_n/2}/(a\rho)$.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:admission} and diagonal evaluation,
+$|E_n(n)|\le\norm{E}_{n,0}\to0$. In particular $1+E_n(n)>0$
+for large $n$. Write $H(x)=ax-\log x$. Its derivative is
+$a-1/x\ge a/2$ for $x\ge2/a$, and
+\[
+ H(X_n)-H(n)=\log(1+E_n(n)).
+\]
+For large $n$ the large core solution is also at least $2/a$, and the
+mean value theorem gives
+$|X_n-n|\le(2/a)|\log(1+E_n(n))|\to0$.
+For the two counting inputs, \eqref{eq:An} gives
+\eqref{eq:Xn} after using $|\log(1+t)|\le2|t|$ for $|t|\le1/2$.
+
+Fix a permitted $\rho$. Eventually $|X_n-n|<\rho$ and the uniform
+inverse theorem applies. The number $\delta=n-X_n$ already satisfies
+\eqref{eq:root}, because $f_n(n)=y_n=\ee^{aX_n}/X_n$. Its size is
+less than $\rho$, so uniqueness identifies it with the convergent
+Lagrange series. The stated explicit bound follows from
+\eqref{eq:An}.
+\end{proof}
+
+\begin{remark}[What this does and does not invert]
+Equation \eqref{eq:rangeinverse} is an identity on the exact sequence
+range and a convergent local inverse on each specified sheet. It does
+not require choosing a global interpolation. It also does not by itself
+solve the problem of determining an unknown label from an arbitrary
+real target: the label occurs in the sheet data. On the exact range,
+\eqref{eq:Xn} already shows that nearest-integer rounding of $X_n$
+recovers $n$ eventually. A practical threshold problem can use candidate
+labels and exact comparisons, as in the repository; no new general
+threshold theorem is claimed here.
+\end{remark}
+
+\section{Coefficients, collisions, and the first post-cut sector}
+\label{sec:firstcut}
+
+\subsection{The first three homogeneous kernels}
+
+Expand $J_X(u)=p+j_1u+j_2u^2+\cdots$. Directly from
+\eqref{eq:J},
+\begin{equation}
+ j_1=-\frac{a^2}2+\frac aX,
+ \qquad j_2=\frac{a^3}6-\frac{a^2}{2X}.
+ \label{eq:js}
+\end{equation}
+The first kernels from \eqref{eq:Cm} are
+\begin{align}
+ C_1(s,X)&=-\frac1p,\label{eq:Cfirst}\\
+ C_2(s,X)&=-\frac{s}{2p^2}-\frac{j_1}{p^3},\label{eq:Csecond}\\
+ C_3(s,X)&=-\frac{s^2}{6p^3}-\frac{s j_1}{p^4}
+          -\frac{2j_1^2}{p^5}+\frac{j_2}{p^4}.
+ \label{eq:Cthird}
+\end{align}
+For example, the second expression comes from the coefficient of $u$
+in $\ee^{-su}J_X(u)^{-2}/2$. The third follows from the coefficient
+of $u^2$ in the same expansion with exponent $-3$, multiplied by
+$-1/3$. Equivalently,
+\begin{equation}
+ \delta_{1,n}=-\frac{E_n(X)}p,
+ \qquad
+ \delta_{2,n}=\frac{E_n(X)E'_n(X)}{p^2}
+              -\frac{j_1E_n(X)^2}{p^3}.
+ \label{eq:deltatwo}
+\end{equation}
+This displays why differentiating the small sectors while holding their
+arithmetic indicators fixed is necessary.
+
+\subsection{The arithmetic content of action collisions}
+
+At action $a$, the only representation is
+$\lambda_2+\lambda_2=a$. At action $4a/3$, the unordered two-term
+representations are $(2,6)$ and $(3,3)$. At action $3a/2$, they are
+$(3,6)$ and $(4,4)$, and there is also the three-term representation
+$(2,2,2)$. There are no one-term representations at these actions.
+The completeness of these short lists can be checked by solving the
+corresponding two-unit-fraction equations, or by the finite algorithm in
+Section~\ref{sec:algorithm}.
+
+For $c_d=\varphi(d)$, the coefficients multiplying the indicated
+exponential monomial are
+\begin{align}
+ [\ee^{-aX}]\delta_n&=C_2(a,X)e_2(n),\nonumber\\
+ [\ee^{-4aX/3}]\delta_n
+ &=C_2(4a/3,X)\bigl(4e_3(n)+4e_6(n)\bigr),\label{eq:phicollisions}\\
+ [\ee^{-3aX/2}]\delta_n
+ &=C_2(3a/2,X)\bigl(8e_6(n)+4e_4(n)\bigr)
+   +C_3(3a/2,X)e_2(n).\nonumber
+\end{align}
+The bracket notation here means an exact action coefficient in the
+formal series, not extraction from a one-variable ordinary power series.
+For $c_d=\mu(d)$ the corresponding expressions are
+\begin{align}
+ [\ee^{-aX}]\delta_n&=C_2(a,X)e_2(n),\nonumber\\
+ [\ee^{-4aX/3}]\delta_n
+ &=C_2(4a/3,X)\bigl(e_3(n)-2e_6(n)\bigr),\label{eq:mucollisions}\\
+ [\ee^{-3aX/2}]\delta_n
+ &=-2C_2(3a/2,X)e_6(n)-C_3(3a/2,X)e_2(n).\nonumber
+\end{align}
+For instance the two ordered tuples $(2,6)$ and $(6,2)$ contribute
+$2c_2c_6e_6$, whereas $(3,3)$ contributes $c_3^2e_3$.
+Keeping only the total action would lose this distinction.
+
+\subsection{Cancellation at the accumulation boundary}
+
+Substitute $s=a$ into \eqref{eq:Csecond}. A cancellation gives the
+exact identity
+\begin{equation}
+ C_2(a,X)=-\frac{a}{2X(a-1/X)^3}.
+ \label{eq:boundarykernel}
+\end{equation}
+Its limit as $X\to\infty$ is zero. Thus an action at the first
+nonlinear boundary is present, but its amplitude is one algebraic order
+smaller than a naive nonresonant estimate suggests.
+
+\begin{theorem}[First nonlinear sector beyond the primitive cut]
+\label{thm:firstcut}
+Fix $a=\log q>0$ and either $c_d=\varphi(d)$ or $c_d=\mu(d)$.
+Fix $0<\rho\le1/(8a)$. Uniformly for real $X$ with $|X-n|\le\rho$
+as $n\to\infty$, the inverse displacement of
+Theorem~\ref{thm:inverse} satisfies
+\begin{equation}
+ \delta_n(X)+\frac{E_n(X)}{a-1/X}
+ =-\frac{a\,e_2(n)}{2X(a-1/X)^3}\ee^{-aX}
+ +\bigO_a\!\left(n^2\ee^{-7aX/6}\right).
+ \label{eq:firstcut}
+\end{equation}
+In particular, on even labels,
+\begin{equation}
+ \delta_n(X)+\frac{E_n(X)}{a-1/X}
+ \sim-\frac{a}{2X(a-1/X)^3}\ee^{-aX}.
+ \label{eq:firstequiv}
+\end{equation}
+The same statements hold at the exact range core $X=X_n$.
+\end{theorem}
+\begin{proof}
+The first homogeneous term is exactly $-E_n(X)/p$, so it is removed
+in the left side. The unique quadratic tuple with action $a$ is
+$(2,2)$. In both counting cases $c_2^2=1$, and its label is $e_2$.
+Its coefficient is \eqref{eq:boundarykernel}.
+
+Every other quadratic tuple has at least one index at least three,
+so its action is at least
+$\lambda_2+\lambda_3=7a/6$. The kernel $C_2(s,X)$ is uniformly
+bounded for $s\in[a,2a]$ and large $X$. The sum of absolute products
+of the divisor coefficients is at most $n^2$, by
+\eqref{eq:arithbounds}. The remaining quadratic terms are therefore
+$\bigO_a(n^2\ee^{-7aX/6})$.
+
+For the remaining estimates, use the fixed disk radius $1/(8a)$ in
+Theorem~\ref{thm:inverse}; uniqueness identifies its root with the root
+in any smaller permitted disk for large $n$. This makes the constants
+depend only on $a$. For $m\ge3$, its absolute tail is
+$\bigO_a(A_n(X)^3)=\bigO_a(n^3\ee^{-3aX/2})$, uniformly in the
+stated range, since $\theta\to0$. This is absorbed by the preceding
+bound: their ratio is $n\ee^{-aX/3}\to0$. This proves
+\eqref{eq:firstcut}. On even labels the ratio of the error to the
+absolute leading term is
+$\bigO_a(Xn^2\ee^{-aX/6})\to0$, giving
+\eqref{eq:firstequiv}. The range assertion follows from
+\eqref{eq:Xn}.
+\end{proof}
+
+\begin{remark}[Why the full primitive block must be retained]
+The subtracted term $E_n(X)/p$ includes every divisor of $n$. For
+necklaces, if a divisor cutoff omits $d=n$, it omits the positive term
+$\varphi(n)\ee^{-aX+aX/n}$. When $X=n+\bigO(1)$, this term is at
+least a positive constant times $\ee^{-aX}$, already larger than the
+$X^{-1}\ee^{-aX}$ effect in \eqref{eq:firstcut}. The theorem cannot
+be recovered by subtracting a fixed finite primitive prefix and then
+reading off the quadratic sector. This is exactly where summation
+across the accumulating block becomes mathematically necessary.
+\end{remark}
+
+\section{An all-order resonance law}\label{sec:resonance}
+
+The cancellation in \eqref{eq:boundarykernel} is not isolated. We now
+transform the coefficient kernel so that its entire pure-exponential
+limit, and the first correction caused by the factor $x^{-1}$, are
+explicit.
+
+For complex $\alpha$ and $m\ge0$, let
+$\binom{\alpha}{m}=\alpha(\alpha-1)\cdots(\alpha-m+1)/m!$.
+Define the analytic germ
+\begin{equation}
+ B(w)=\frac{(1+w)\log(1+w)}w,
+ \qquad B(0)=1,
+ \qquad \eps=\frac1{aX}.
+ \label{eq:Bkernel}
+\end{equation}
+The logarithm is the germ at $w=0$.
+
+\begin{theorem}[Exact transformed kernel and curvature lifting]
+\label{thm:resonance}
+For every $m\ge1$, $s$, and $X$ with $p\ne0$, put $\alpha=s/a$.
+The kernel \eqref{eq:Cm} has the exact coefficient representation
+\begin{equation}
+ C_m(s,X)=-\frac1{am}[w^{m-1}]
+  (1+w)^{\alpha-1}\bigl(1-\eps B(w)\bigr)^{-m}.
+ \label{eq:transformedC}
+\end{equation}
+For fixed $m,\alpha$, as $X\to\infty$,
+\begin{equation}
+ C_m(s,X)=-\frac1{am}\binom{\alpha-1}{m-1}
+ -\frac1{a^2X}\frac{d}{d\alpha}\binom{\alpha}{m}
+ +\bigO_{a,m,\alpha}(X^{-2}).
+ \label{eq:Cexpansion}
+\end{equation}
+At every integer $k$ with $1\le k<m$, the first term vanishes and
+\begin{equation}
+ C_m(ka,X)=
+ \frac{(-1)^{m-k}}{a^2X\,m\binom{m-1}{k}}
+ +\bigO_{a,m,k}(X^{-2}).
+ \label{eq:resonant}
+\end{equation}
+Whenever the action $ka$ has an $m$-tuple representation in the
+arithmetic support, this is its universal homogeneous kernel. The
+arithmetic sum of tuple amplitudes can, independently, vanish.
+\end{theorem}
+\begin{proof}
+It is useful to derive the identity for a finite collection of sector
+amplitudes $b_d=c_de_d(n)\ee^{-\lambda_dX}$, treated as independent
+commuting quantities. In \eqref{eq:root} with coupling $z$, put
+$v=\ee^{-a\delta}$ and $w=v-1$. Since
+$\delta=-a^{-1}\log v$, the equation becomes
+\[
+ v\bigl(1-\eps\log v\bigr)
+ =1+z\sum_d b_d v^{\lambda_d/a}.
+\]
+Equivalently,
+\begin{equation}
+ w\bigl(1-\eps B(w)\bigr)
+ =z\sum_d b_d(1+w)^{\lambda_d/a}.
+ \label{eq:wequation}
+\end{equation}
+Use Lemma~\ref{lem:lagrange} on this equation with
+$G(w)=-a^{-1}\log(1+w)$. The contribution of an ordered tuple of
+length $m$ is precisely the right side of
+\eqref{eq:transformedC}, since $G'(w)=-1/(a(1+w))$ and the tuple's
+exponents sum to $\alpha$. The identity is a universal coefficient
+identity, so it also proves equality with \eqref{eq:Cm}. Only finitely
+many Taylor coefficients are involved at fixed $m$.
+
+Expand the last factor in \eqref{eq:transformedC} at $\eps=0$:
+\[
+ (1-\eps B(w))^{-m}=1+m\eps B(w)+\bigO(\eps^2).
+\]
+The constant term in $\eps$ gives the first term of
+\eqref{eq:Cexpansion}. For the linear term, the definition of $B$
+gives
+\begin{align*}
+ [w^{m-1}](1+w)^{\alpha-1}B(w)
+ &=[w^m](1+w)^\alpha\log(1+w)\\
+ &=\frac{d}{d\alpha}\binom{\alpha}{m}.
+\end{align*}
+Since $\eps/a=1/(a^2X)$, this proves \eqref{eq:Cexpansion}.
+The remainder estimate is valid for fixed $m,\alpha$: the relevant
+finite coefficient extraction is analytic in $\eps$ near zero.
+
+At $\alpha=k\in\{1,\ldots,m-1\}$,
+$\binom{k-1}{m-1}=0$. Differentiating the polynomial
+$\binom{\alpha}{m}$ at its simple root $k$ gives
+\[
+ \left.\frac{d}{d\alpha}\binom{\alpha}{m}\right|_{\alpha=k}
+ =\frac{k!(-1)^{m-1-k}(m-1-k)!}{m!}
+ =\frac{(-1)^{m-1-k}}{m\binom{m-1}{k}}.
+\]
+Substitution proves \eqref{eq:resonant}.
+\end{proof}
+
+For the necklace action set, an $m$-tuple has
+$m/2\le\alpha<m$. Thus only integers in this interval can occur as
+actual resonant actions, even though the kernel identity holds for all
+$k$ in the theorem. For $m=2$, $k=1$, formula \eqref{eq:resonant}
+reads $-1/(2a^2X)+\bigO(X^{-2})$, in agreement with the exact
+expression \eqref{eq:boundarykernel}.
+
+\subsection{The pure-exponential comparison}
+
+If the factor $x^{-1}$ is removed from the forward core, then
+$J_X$ is replaced by $J_\infty(u)=(1-\ee^{-au})/u$ and the kernel is
+exactly
+\begin{equation}
+ C_m^{\mathrm{exp}}(s)=-\frac1{am}\binom{s/a-1}{m-1}.
+ \label{eq:purekernel}
+\end{equation}
+This follows either by putting $\eps=0$ in \eqref{eq:wequation},
+or by the same change of coordinate for the pure-exponential equation.
+The integer zeros in \eqref{eq:purekernel} are therefore exact
+cancellations of the entire homogeneous kernel. The logarithmic term
+in the phase $ax-\log x$ removes these zeros at order $X^{-1}$.
+This is the sense in which curvature lifts the resonance.
+
+\subsection{General power-law factors}
+
+Consider instead
+\begin{equation}
+ f_n^{(b)}(x)=\ee^{ax}x^{-b}\bigl(1+E_n(x)\bigr),
+ \qquad b\in\R\text{ fixed},
+ \label{eq:bcore}
+\end{equation}
+near a large positive $X$, with the local analytic branch of $x^{-b}$.
+Replace $J_X$ by
+\begin{equation}
+ J_X^{(b)}(u)=\frac{1-(1+u/X)^b\ee^{-au}}u,
+ \qquad J_X^{(b)}(0)=a-b/X.
+ \label{eq:Jb}
+\end{equation}
+For fixed $b$ this is uniformly nonzero on a sufficiently small fixed
+disk for all large $X$, because it converges there to $J_\infty$.
+Thus the same Rouch\'e and coefficient arguments provide an inverse
+series and a geometric tail, with the lower bound for $J_X^{(b)}$
+substituted in place of $a/2$.
+
+\begin{corollary}[Universal first curvature coefficient]
+\label{cor:bcore}
+Let $C_m^{(b)}(s,X)$ be defined by \eqref{eq:Cm} with $J_X^{(b)}$.
+For fixed $a,b,m,\alpha=s/a$,
+\begin{equation}
+ C_m^{(b)}(s,X)=
+ -\frac1{am}\binom{\alpha-1}{m-1}
+ -\frac{b}{a^2X}\frac{d}{d\alpha}\binom{\alpha}{m}
+ +\bigO(X^{-2}).
+ \label{eq:bexpansion}
+\end{equation}
+At an integer resonance $1\le k<m$ this gives
+\begin{equation}
+ C_m^{(b)}(ka,X)=
+ \frac{(-1)^{m-k}b}{a^2X\,m\binom{m-1}{k}}
+ +\bigO(X^{-2}).
+ \label{eq:bresonance}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The change $v=1+w=\ee^{-a\delta}$ now gives
+\[
+ (1+w)\bigl(1-\eps\log(1+w)\bigr)^b
+ =1+z\sum_d b_d(1+w)^{\lambda_d/a}.
+\]
+After subtracting one and dividing by $w$, the factor multiplying $w$
+is
+\[
+ K_b(w,\eps)=
+ \frac{(1+w)(1-\eps\log(1+w))^b-1}{w}
+ =1-b\eps B(w)+\bigO(\eps^2).
+\]
+All expressions are analytic germs, including at $w=0$.
+Lagrange extraction now contains $K_b^{-m}$, whose expansion is
+$1+mb\eps B(w)+\bigO(\eps^2)$. Repeat the coefficient calculation
+in Theorem~\ref{thm:resonance}. The simple-root derivative formula
+then gives \eqref{eq:bresonance}.
+\end{proof}
+
+The bounds in \eqref{eq:Cexpansion} and \eqref{eq:bexpansion} are for
+fixed homogeneous order. They are not uniform when $m$ grows with $X$.
+The joint large-order problem is genuinely additional, as noted in
+Section~\ref{sec:questions}.
+
+\section{Obstructions to stronger interpretations}\label{sec:obstructions}
+
+The limitations below are structural statements with proofs, not missing
+steps concealed inside the inversion theorem.
+
+\subsection{Indicators cannot live faithfully in a field}
+
+\begin{proposition}[Idempotent obstruction]\label{prop:idempotent}
+No unital ring embedding of the arithmetic coefficient ring $\A$ into a
+field exists. Every derivation on a commutative ring containing the
+indicators annihilates each $e_d$. Consequently the shift
+$A(n)\mapsto A(n+1)$ cannot be the exponential of a derivation that
+preserves the indicator ring.
+\end{proposition}
+\begin{proof}
+The indicator $e_2$ is a nonzero idempotent different from one, and
+$e_2(1-e_2)=0$ with both factors nonzero. A field has no such pair,
+so an injective ring map is impossible.
+
+For any idempotent $e$, the Leibniz rule gives
+$D(e)=D(e^2)=2eD(e)$, whence $(1-2e)D(e)=0$.
+But $(1-2e)^2=1$, so $D(e)=0$. Thus every iterate of $D$ annihilates
+$e_d$, and any meaningful exponential of $D$ fixes $e_d$. The integer
+shift sends $e_2$ to $1-e_2$, so it cannot be such an exponential.
+\end{proof}
+
+The arithmetic ring therefore is not an ordinary transseries field with
+an enlarged set of constant symbols. A difference operator acting on
+labels can be studied separately, but it is not supplied by analytic
+translation in $x$. This is why the frozen-label convention is necessary
+rather than cosmetic.
+
+\subsection{A compact profinite parameter does not repair summation}
+
+Let $\widehat{\mathbb Z}$ denote the profinite completion of the
+integers. Each single indicator $e_d$ extends continuously to it, because
+it is the characteristic function of the clopen set $d\widehat{\mathbb Z}$.
+It is tempting to sum the primitive block at fixed $x$ and regard the
+result as a continuous function of a profinite label. The following
+proposition shows that this fails for both counting inputs.
+
+\begin{proposition}[Fixed-coordinate profinite obstruction]
+\label{prop:profinite}
+Fix a real $x>0$. Neither of the functions
+$n\mapsto E_n(x)$ for $c_d=\varphi(d)$ or $c_d=\mu(d)$ is the
+restriction to positive integers of a continuous complex-valued function
+on $\widehat{\mathbb Z}$.
+\end{proposition}
+\begin{proof}
+Put $b=ax>0$. In the totient case, $\lambda_d<a$ and positivity imply
+\[
+ E_n(x)\ge\ee^{-b}\sum_{d\mid n,\ d\ge2}\varphi(d)
+ =\ee^{-b}(n-1).
+\]
+Thus the restriction is unbounded, whereas every continuous function on
+the compact space $\widehat{\mathbb Z}$ is bounded.
+
+For the M\"obius case, including the $d=1$ term gives
+\[
+ 1+E_n(x)=\ee^{-b}\sum_{d\mid n}\mu(d)\ee^{b/d}.
+\]
+For $n>1$, expand the exponential and interchange with the finite
+divisor sum. The constant coefficient vanishes, and
+\begin{equation}
+ \sum_{d\mid n}\mu(d)\ee^{b/d}
+ =\sum_{k\ge1}\frac{b^k}{k!}
+       \prod_{p\mid n}(1-p^{-k}).
+ \label{eq:muprof}
+\end{equation}
+Every product is between zero and one, so
+$1+E_n(x)\le1-\ee^{-b}$, or $E_n(x)\le-\ee^{-b}$, for all $n>1$.
+On the other hand, $E_1(x)=0$. The positive integers $n_j=1+j!$
+converge to 1 in the profinite topology: every fixed modulus divides
+$j!$ eventually. The values $E_{n_j}(x)$ stay separated from zero,
+contradicting continuity at 1.
+\end{proof}
+
+The weighted sheet domain avoids this contradiction by requiring the
+analytic coordinate to grow with the label. It is not a product of a
+fixed analytic domain with all of $\widehat{\mathbb Z}$. Other weighted
+or partially defined profinite constructions remain possible, but they
+must respect the obstruction just proved.
+
+\subsection{Bounded-action extraction versus homogeneous truncation}
+
+Theorem~\ref{thm:inverse} truncates at a homogeneous order $M$. Each
+retained term sums the entire primitive divisor block, and the omitted
+terms carry at least $M+1$ primitive factors. This is different from
+listing all actions below a fixed numerical cutoff. Before action $a$
+alone there are infinitely many primitive actions in the universal
+series. No theorem above converts that infinite list into a finite grid.
+
+At a fixed label $n$ there are only finitely many primitive divisors,
+so a computation is finite. Uniformity over all $n$ is supplied by the
+weighted norm, not by silently interchanging a label-dependent finite
+sum with a globally finite action list. Equally, summability in this
+article means ordinary absolute convergence of the specified families;
+no Borel summation, alien derivative, or Stokes automorphism is asserted.
+
+\section{Finite algorithms and reproducible audits}\label{sec:algorithm}
+
+\subsection{Exact membership and a fixed-action coefficient algorithm}
+
+\begin{proposition}[A finite action search]\label{prop:actionalgorithm}
+For a given rational $\alpha\ge0$, it is decidable by a finite exact
+search whether $a\alpha\in S$, and all generator representations can
+be enumerated. Hence every exact action coefficient in
+\eqref{eq:allactions} is computable from a finite list of the input
+coefficients $c_d$.
+\end{proposition}
+\begin{proof}
+For $\alpha=0$ take the empty tuple. Otherwise a representation of
+length $m$ must have $m\le\lfloor2\alpha\rfloor$ and obey
+\begin{equation}
+ \frac1{d_1}+\cdots+\frac1{d_m}=m-\alpha>0.
+ \label{eq:egyptian}
+\end{equation}
+Search only sorted denominators. At a recursive step with $k$ terms
+remaining, target sum $t>0$, and smallest permitted denominator $L$,
+the next denominator lies in the finite interval
+\begin{equation}
+ \max\!\left(L,\left\lceil\frac1t\right\rceil\right)
+ \le d\le\left\lfloor\frac{k}{t}\right\rfloor.
+ \label{eq:denomrange}
+\end{equation}
+The lower bound follows from $1/d\le t$. The upper bound follows
+because the remaining sorted denominators are at least $d$, so the
+sum of the $k$ reciprocals is at most $k/d$. Recurse with target
+$t-1/d$, $k-1$ terms, and lower bound $d$. Nonpositive targets are
+rejected unless no terms remain and the target is zero. For $k=1$
+the sole possible denominator is $1/t$, which must be an integer at
+least $L$. The depth and every branching interval are finite.
+
+Restore the ordered tuples by permutation. Equivalently, a sorted tuple
+with multiplicities $r_d$ receives the factor $m!/\prod_d r_d!$.
+The action coefficient follows by multiplying the corresponding
+$c_d$, using the lcm of the denominators for the label, and applying
+\eqref{eq:Cm}. No bound on the running time polynomial in the bit
+length of $\alpha$ is claimed.
+\end{proof}
+
+\subsection{Efficient homogeneous jets for a known label}
+
+Enumerating all tuples is unnecessary for numerical inversion on one
+sheet. Given the divisors of $n$, form the weighted moments
+\begin{equation}
+ W_k=\sum_{d\mid n,\ d\ge2}c_d\lambda_d^k\ee^{-\lambda_dX},
+ \qquad 0\le k<M.
+ \label{eq:Wk}
+\end{equation}
+The Taylor coefficients required by \eqref{eq:deltam} are
+\begin{align}
+ [u^k]E_n(X+u)&=\frac{(-1)^k}{k!}W_k,\label{eq:Ejet}\\
+ [u^k]J_X(u)&=-\frac{(-a)^{k+1}}{(k+1)!}
+              -\frac{(-a)^k}{Xk!}.\label{eq:Jjet}
+\end{align}
+Divide the two jets modulo $u^M$, obtaining
+$F(u)=E_n(X+u)/J_X(u)$. Successively multiply by $F$ modulo $u^M$
+and read $(-1)^m[u^{m-1}]F(u)^m/m$ for $m=1,\ldots,M$.
+
+With naive polynomial arithmetic, the moment construction and these
+jet operations take $\bigO(M\tau(n)+M^3)$ scalar arithmetic
+operations once the divisors and exponentials are available. This is
+not a bit-complexity or integer-factorization bound. The supplied
+implementation uses trial division to enumerate divisors, and can be
+replaced by a faster divisor provider without changing the coefficient
+calculation. Large precision is important when checking an exponentially
+small residual by subtracting two nearly equal inverse values.
+
+For a genuinely machine-certified numerical enclosure, every input
+bound and polynomial operation must use outward-rounded intervals.
+The analytic inequality \eqref{eq:inverseerror} is rigorous; the
+recorded floating-point evaluations of it are diagnostic values, not
+interval certificates.
+
+\subsection{What the accompanying program checks}
+
+The file \texttt{verification/verify.py} is self-contained except for
+\texttt{mpmath}. Its exact portion uses Python integer arithmetic and
+\texttt{fractions.Fraction}. It performs 964 successful exact assertions:
+it checks finite lcm-convolution identities, divisor identities up to
+$n=300$, substitution of the rational formal inverse through coupling
+order seven, the integer-root derivative formula through $m=14$, four
+specified action-collision lists, and 80 finite-$X$ identities comparing
+the two coefficient coordinates in \eqref{eq:Cm} and
+\eqref{eq:transformedC}.
+
+The numerical portion uses 400 decimal digits. Exact integer necklace
+or primitive-necklace counts provide the targets, not floating-point
+forward approximations. For twelve combinations of counting type,
+$q$, and $n$, it computes the large Lambert core $X$, compares the first
+four homogeneous inverse sums with the exact displacement $n-X$, and
+checks all 48 instances of \eqref{eq:inverseerror}. It also records
+ratios testing \eqref{eq:firstequiv}. The generated CSV and JSON files
+are included so that the reported checks can be rerun.
+
+\begin{table}[htbp]
+\centering
+\caption{Binary-necklace range inversion. Actual absolute error of the
+first $M$ homogeneous terms, and the evaluated bound from
+\eqref{eq:inverseerror}. These are high-precision diagnostics, not
+outward-rounded intervals. Values are generated by the supplied program.}
+\label{tab:errors}
+\begin{tabular}{@{}rrcc@{}}
+\toprule
+$n$&$M$&Absolute error&Analytic-bound value\\
+\midrule
+% BEGIN GENERATED VERIFICATION TABLE
+20 & 1 & $1.708\times10^{-7}$ & $3.853\times10^{-5}$ \\
+20 & 2 & $4.958\times10^{-11}$ & $5.255\times10^{-7}$ \\
+20 & 4 & $2.195\times10^{-18}$ & $1.32\times10^{-10}$ \\
+60 & 1 & $1.671\times10^{-20}$ & $2.581\times10^{-17}$ \\
+60 & 2 & $4.953\times10^{-29}$ & $2.912\times10^{-25}$ \\
+60 & 4 & $4.775\times10^{-48}$ & $5.001\times10^{-41}$ \\
+120 & 1 & $6.766\times10^{-39}$ & $2.23\times10^{-35}$ \\
+120 & 2 & $3.961\times10^{-56}$ & $2.338\times10^{-52}$ \\
+120 & 4 & $3.341\times10^{-93}$ & $3.469\times10^{-86}$ \\
+% END GENERATED VERIFICATION TABLE
+\bottomrule
+\end{tabular}
+\end{table}
+
+For example, at $q=2,n=120$ the ratio of the left side of
+\eqref{eq:firstequiv} to its proposed leading term is approximately
+$1.0000561453$ for necklaces and $1.0000280316$ for primitive necklaces.
+At $q=3,n=210$ the deviations of these ratios from one are approximately
+$3.14\times10^{-15}$ and $1.57\times10^{-15}$, respectively.
+These observations agree with the proved asymptotic estimate. At smaller
+labels the ratio can be substantially different from one; the bound and
+proof, not a visual numerical trend, justify the asymptotic statement.
+
+The audits are finite tests, not substitutes for the general proofs.
+In particular they do not establish the Banach completeness theorem,
+the infinite support argument, or the uniform asymptotic statements.
+No Lean kernel check of the new theorems was performed.
+
+\section{Consequences and interpretation}\label{sec:consequences}
+
+\subsection{A usable answer at an infinite action boundary}
+
+The construction supplies two complementary kinds of finiteness.
+For algebraic equality at one action, the support lemma makes the
+coefficient extraction finite. For evaluation across an entire
+accumulating block, the action--label norm supplies absolute convergence.
+Neither mechanism can replace the other: a well-ordered support does
+not by itself make its evaluation summable, and pointwise convergence
+on one sheet does not by itself provide a faithful coefficient calculus.
+
+The inverse theorem then uses a third organization, homogeneous degree
+in the primitive input. Its analytic majorant remains geometric even
+though a bounded-action prefix of the universal input is infinite.
+This separation of exact action extraction, arithmetic labeling, and
+analytic homogeneous summation is the main structural contribution.
+
+\subsection{A precise beyond-all-orders effect}
+
+The leading range displacement $-E_n(X)/p$ already contains infinitely
+many universal action sectors. Once that entire block is retained,
+\eqref{eq:firstcut} detects a specific smaller effect at its accumulation
+boundary. Its coefficient is neither a freely chosen exponentially
+small constant nor an interpolation-dependent Stokes parameter. It is
+forced by the exact inverse equation and the identity $e_2^2=e_2$.
+The factor $X^{-1}$ is forced by the slowly varying part of the core.
+
+More generally, \eqref{eq:bresonance} separates two possible reasons an
+action coefficient can vanish. The universal analytic kernel may vanish
+in the pure-exponential limit, or the arithmetic sum over its lcm-labeled
+tuples may cancel. Curvature resolves the first mechanism at order
+$X^{-1}$ when $b\ne0$; it does not automatically resolve the second.
+This distinction remains meaningful at action collisions such as those
+in \eqref{eq:phicollisions} and \eqref{eq:mucollisions}.
+
+\subsection{What remains outside the theorem}
+
+The article does not construct the largest possible arithmetic
+transseries ring, prove a general closure theorem for arbitrary
+compositions, or define divisibility for noninteger labels. The
+norm criterion is exact for the stated elementary block, not a
+classification of every conditional or regularized summation method.
+The inverse theorem is local in the analytic coordinate and is
+uniform only in its stated large-core domains. A critical point near
+$X=1/a$ is excluded. The curvature formulas are fixed-order
+expansions, and the numerical checks use no interval arithmetic.
+These boundaries leave several substantive research problems.
+
+\section{Further research questions}\label{sec:questions}
+
+\begin{question}[Joint action--label admissibility beyond one block]
+For a general array $c_{s,l}$, characterize those formal arithmetic Hahn
+series that admit a faithful holomorphic sheet realization with
+uniform nonlinear inversion. Can an intrinsic condition, independent of
+a chosen family $h_N(l)$, recover the useful part of the weighted
+completion without forcing absolute $\ell^1$ summability?
+\end{question}
+A useful first benchmark is to compare the present norm with a norm
+formed after summing absolute coefficients on each divisor fiber.
+The latter can be substantially smaller, but its multiplicative and
+faithfulness properties require separate analysis. Conditional
+summation should not be conflated with the elementary-block criterion
+already proved.
+
+\begin{question}[Difference operations on arithmetic labels]
+Construct a compatible arithmetic difference calculus generated by
+congruence indicators $e_{d,r}(n)=\ind_{n\equiv r\pmod d}$, in which
+integer shifts act naturally. Determine which joint action--congruence
+weights make multiplication and shift uniformly continuous.
+\end{question}
+Products of congruence indicators are either zero or another congruence
+indicator, according to the Chinese remainder compatibility condition.
+This suggests an extension of the lcm rule, but Proposition
+\ref{prop:idempotent} still prevents identifying label shifts with the
+analytic exponential of a derivation. A successful theory should expose
+both operations rather than hide this distinction.
+
+\begin{question}[Uniform large homogeneous order]
+Determine the joint asymptotics of $C_m(ka,X)$ when $m$ and $k$ grow
+with $X$. At what scale does the first curvature term in
+\eqref{eq:resonant} cease to dominate, and what rescaled profile replaces
+it? The exact representation \eqref{eq:transformedC} supplies a concrete
+starting point for a two-parameter saddle analysis.
+\end{question}
+The present theorem controls fixed $m,k$ only. Expanding in $1/X$ and
+then allowing $m$ to grow is not justified by its proof. A uniform
+result could connect geometric homogeneous convergence to sharp
+optimal truncation within individual action families.
+
+\begin{question}[Arithmetic cancellation at resonant actions]
+Classify the labels and coefficient sequences for which
+\[
+ \sum_{\lambda_{d_1}+\cdots+\lambda_{d_m}=ka}
+ \left(\prod_i c_{d_i}\right)e_{\lcm(d_1,\ldots,d_m)}
+\]
+vanishes identically, or on specified arithmetic subsequences. How do
+totient positivity and M\"obius signs alter the first surviving
+curvature-lifted term?
+\end{question}
+The finite action algorithm makes each fixed case decidable. A
+structural classification would require more than checking initial
+coefficients, especially where several lcm labels survive at the same
+action.
+
+\begin{question}[More complicated accumulation sets]
+Extend the action--label completion to positive generator sets with
+several finite accumulation levels or higher order types. Identify
+conditions that separately guarantee well-ordering, finite exact-action
+decompositions, and convergence of the label-weighted norm.
+\end{question}
+The positive lower bound $a/2$ bounds homogeneous length in the present
+proof. Removing it can destroy this argument even when individual
+labels leave only finitely many input terms. A replacement theorem
+would need to control both arbitrarily long products and any action
+accumulation at zero.
+
+\begin{question}[Optimal expanding domains]
+For $c_d$ close to the threshold $|c_d|\asymp\ee^{ad}$, determine the
+smallest label-dependent analytic half-planes on which inverse families
+remain uniformly summable. Can the norm be sharpened sufficiently to
+describe logarithmic or iterated-logarithmic boundary corrections?
+\end{question}
+For example, elementary inputs with
+$|c_d|=\ee^{ad}/d^\gamma$ are admitted exactly for $\gamma>1$ in the
+present norm. At or below that boundary, every fixed sheet still exists;
+the issue is the geometry and summability of the family, not the
+existence of the finite divisor sum.
+
+\begin{question}[Certified numerical realization]
+Implement the jet algorithm with outward-rounded intervals, including
+the large Lambert core and an explicit divisor-coefficient majorant.
+Can the majorant be sharpened by action-aware estimates to provide
+near-optimal certified errors without enumerating all tuples?
+\end{question}
+The current Cauchy bound is explicit but can be conservative, as
+Table~\ref{tab:errors} shows. A proof-producing implementation should
+separate the exact combinatorial count, interval evaluation of the
+core, and propagation of the inverse tail.
+
+\begin{question}[Formal verification of the arithmetic completion]
+Formalize the action-support theorem, lcm-coordinate ring, weight
+inequality, and homogeneous coefficient identities in Lean. Then
+connect a finite checker to the mathematical semantics of the jet
+algorithm and to the analytic tail theorem.
+\end{question}
+Appendix~\ref{app:lean} gives a dependency order and the limited existing
+repository interfaces that can be reused. The purpose is to verify the
+new construction, not to relabel an unverified analytic argument as an
+already formalized theorem.
+
+\begin{question}[Critical cores with arithmetic sector accumulation]
+Study inverse sheets when the core approaches its critical slope
+$a-1/X=0$ while an arithmetic primitive block remains summable. Is there
+a uniform fold coordinate compatible with the full lcm-labeled block,
+and how does it interact with the action accumulation cut?
+\end{question}
+The geometric disk proof here deliberately assumes a lower slope bound.
+Existing repository fold analyses concern other models. Combining such
+coordinates with the present arithmetic summation would be a separate
+extension, not a consequence of the large-$X$ theorem.
+
+\section{Conclusion}
+
+An accumulating action support need not prevent exact symbolic
+multiplication, and arithmetic indicators need not be replaced by
+trigonometric surrogates to obtain a summable analytic theory. The
+lcm-coordinate ring, a well-ordered positive action monoid, and a weight
+that couples action to the earliest possible arithmetic label together
+provide a workable alternative. The resulting inverse expansion is
+absolutely convergent on specified sheets and exact on the counting
+sequence's range.
+
+The first post-cut inverse sector illustrates why this framework is
+more than a reformulation of finite divisor cutoffs: the whole
+primitive block must first be retained, after which a curvature-induced
+$X^{-1}\ee^{-aX}$ term becomes visible. The all-order kernel identity
+explains its resonance mechanism and its extension to a general
+power-law core. These are precise research results within an explicit
+scope; their broader novelty, optimized numerical realization, and
+formal verification remain tasks for further work.
+
+\appendix
+\section{Repository provenance and scope ledger}\label{app:provenance}
+
+The repository was inspected through its GitHub connector, with a
+subsequent pinned read of the exact open-question passage. The snapshot
+used for this article is
+\begin{center}
+\small\snapshot.
+\end{center}
+Its parent was
+\texttt{04473354a0f3edff2d6c365caf26170ca6b88735}.
+The snapshot's final commit concerns unrelated ordinal reports; the
+transseries source blob recorded below is unchanged by that commit.
+The article does not depend on any unrelated claims in the repository.
+
+\paragraph{Primary mathematical source.}
+{\small\path{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}}\par
+The source blob is
+\texttt{17647298fa31d61c061d556a3b1e451a228ae20e}.
+The necklace chapter and its finite cutoffs were read, along with the
+synthesis and research directions. The explicit arithmetic-algebra
+question was reread at the pinned snapshot, source lines 4955--4978.
+
+\paragraph{Comparison with existing arrivals.}
+{\small\path{Analysis/Transseries/docs/series-and-transseries/README.md}}\par
+Its entry for
+\path{Action_Accumulation_Nonlinear_Inversion} states that that
+article does not retain divisibility indicators. The catalogue was used
+to avoid duplicating an analytic action-measure result. No complete
+audit of all repository research reports was attempted.
+
+\paragraph{Existing Lean source inspected.}
+{\small\path{Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}}\par
+Its blob is
+\texttt{06d5ea1663573d96d5712636347d44764b40f800}.
+The actual declarations, rather than only a catalogue description,
+were read for the formalization comparison below.
+
+
+The package also includes \texttt{source\_notes/provenance.json} and
+\texttt{source\_notes/scope.md}. These record what was consulted and what
+was not claimed. No copy of the entire repository or its large source
+volumes is required to compile this article.
+
+\section{Lean interfaces and a proposed verification route}\label{app:lean}
+
+The inspected module places its declarations in namespace
+\texttt{Fabius}, although its module path is now under
+\texttt{Transseries}. It supplies
+\path{dickson_isPWO},
+\path{dickson_antichain_finite}, and
+\path{dickson_isPWO_pi}; the Neumann interfaces include
+\path{neumann_isPWO} and
+\path{neumann_finite_factorizations}, together with additive
+versions generated by \texttt{to\_additive} and explicit order-dual
+wrappers \cite{repolean}.
+
+The source describes these as bridges to Mathlib's partially
+well-ordered-set and finite-antidiagonal results. Their presence is
+useful, but it is important not to overstate it. They do not instantiate
+the lcm-labeled Banach algebra, prove its norm inequality, verify the
+new analytic inverse theorem, or establish the curvature formula.
+No such formalization is delivered with this article.
+
+A proposed dependency order is as follows.
+\begin{enumerate}
+\item Define the rational normalized actions $1-1/d$ for $d\ge2$.
+Use the finite-length bound and the available Dickson interface to
+prove well-ordering and finite exact-action representations. Keep the
+embedding into real actions $a\alpha$ separate from the rational
+combinatorial support.
+\item Define divisor-coordinate arithmetic functions and prove
+$e_i e_j=e_{\lcm(i,j)}$. Establish the finite lcm convolution, its
+associativity, and the divisor-zeta equivalence. This stage needs no
+analysis or asymptotics.
+\item Construct the coefficient ring on the action monoid, proving
+finiteness before defining each convolution. Verify the universal
+polynomial identities underlying finite Lagrange jets over a
+commutative rational algebra.
+\item Introduce the weighted summable-family space. Prove the single
+weight inequality from Theorem~\ref{thm:banach}, then use it to build
+the normed algebra and its evaluation homomorphisms. Establish the
+admission equivalence by comparison of positive series.
+\item Formalize the analytic disk bounds, root existence and uniqueness,
+and Cauchy coefficient estimates. Finally connect the finite jet
+checker to this analytic theorem. The finite program should not be
+trusted as a source of unproved universal identities.
+\end{enumerate}
+
+The exact derivative-of-binomial identity in
+Theorem~\ref{thm:resonance} and the finite action search are plausible
+early verification targets. The uniform holomorphic-family construction
+is a substantially larger step. This is an implementation roadmap,
+not a report of a Lean build.
+
+\section{Reproducibility and deliverable contents}\label{app:repro}
+
+The source is a standalone LaTeX article. From its directory, run
+\begin{verbatim}
+python verification/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error arithmetic_transseries.tex
+pdflatex -interaction=nonstopmode -halt-on-error arithmetic_transseries.tex
+pdflatex -interaction=nonstopmode -halt-on-error arithmetic_transseries.tex
+\end{verbatim}
+The equivalent convenience command is \texttt{sh build.sh}. A recent
+Python with \texttt{mpmath} and a standard TeX installation with the
+packages used in the preamble are required. The generated verification table is embedded in this standalone source;
+a matching table fragment is also shipped. The article can therefore be
+compiled without rerunning the numerical script.
+
+The verification program records its working precision and separates
+exact checks from numerical diagnostics. The counts in this article
+refer to the program included in this package, not to any pre-existing
+repository audit. The PDF was compiled from the delivered source and
+its rendered pages were inspected. No font files, third-party source
+volumes, or build-cache files are included in the archive.
+
+\begin{thebibliography}{9}
+
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt: Combinatorial Transseries and Their
+Inverses}, repository manuscript, pinned snapshot of 29 September 2026.
+Primary path, source blob, and inspected passages are specified in
+Appendix~\ref{app:provenance}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/db68f0853c3c69cd930caedab6f6ad9addb11eaf/Analysis/Transseries}.
+
+\bibitem{repoindex}
+Vladimir Reshetnikov, \emph{Series and transseries}, ProveIt catalogue,
+including the arrivals of 29 September 2026 and the scope description of
+\emph{Action Accumulation and Nonlinear Inversion}. Repository and
+snapshot as in \cite{repo}; path
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+
+\bibitem{repolean}
+Vladimir Reshetnikov, \emph{TransseriesWellBased.lean}, ProveIt Lean
+source, snapshot as in \cite{repo}; path and blob in
+Appendix~\ref{app:provenance}.
+
+\bibitem{toth}
+L\'aszl\'o T\'oth, Multiplicative arithmetic functions of several
+variables: a survey, in \emph{Mathematics Without Boundaries: Surveys in
+Pure Mathematics}, T.~M. Rassias and P.~M. Pardalos (eds.), Springer,
+2014, pp.~483--514. In particular, Section 4.4 on lcm convolution.
+\url{https://arxiv.org/abs/1310.7053}.
+
+\bibitem{edgar}
+G.~A. Edgar, Transseries for beginners, \emph{Real Analysis Exchange}
+\textbf{35} (2009/2010), 253--310.
+\url{https://arxiv.org/abs/0801.4877}.
+
+\bibitem{chebolu}
+Sunil K. Chebolu, J\'an Min\'a\v{c}, Tung T. Nguyen, and Nguyen Duy Tan,
+\emph{Analytic Properties of Necklace Polynomials}, arXiv preprint,
+version 1, 12 May 2026.
+\url{https://arxiv.org/abs/2605.11445}.
+
+\end{thebibliography}
+\end{document}

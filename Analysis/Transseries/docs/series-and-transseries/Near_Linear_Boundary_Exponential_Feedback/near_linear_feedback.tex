@@ -1,0 +1,1574 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\definecolor{inkblue}{HTML}{193C5B}
+\usepackage[colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The near-linear boundary of exponential feedback}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\linespread{1.06}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Uhat}{\widehat U}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\asympeq}{\mathrel{\sim}}
+\DeclareMathOperator{\supp}{supp}
+\title{\textbf{The Near-Linear Boundary of\newline Exponential Feedback}\\[7pt]
+\large A self-consistent Lambert law, coefficient large deviations,\\
+and a cascade of Borel-growth resonances}
+\author{Research study prepared for Vladimir Reshetnikov's ProveIt program}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Consider the uniquely defined formal solution
+$\Uhat(q)=\sum_{j\ge1}c_jq^j\exp(\lambda_j\Uhat(q))$.
+The ProveIt feedback article leaves open the sharp growth law at the
+near-linear boundary $\lambda_j=jL(j)$, where $L$ is slowly varying and
+unbounded: the solution diverges, although it belongs to every positive
+Gevrey class. Under explicit smoothness, convexity, and positive-amplitude
+hypotheses, we resolve this coefficient-growth problem. If $a=c_1$ and
+$b_n$ is determined by
+\[
+ b_n\ee^{b_n}=L\!\left(\frac{n}{1+b_n}\right),
+\]
+then $u_n^{1/n}\sim a\ee^{b_n}$. The Lagrange composition length satisfies
+a large-deviation principle with rate $r-1-\log r$ after scaling its
+excess by $n/(1+b_n)$. Exponentially controlled amplitudes and bounded
+linear perturbations of the slopes preserve these laws.
+
+For every $\sigma>0$, the factorial-normalized transform
+$\Bcal_\sigma(t)=\sum u_nt^n/(n!)^\sigma$ is entire, and
+$\log\Bcal_\sigma(t)\sim\sigma\nu_\sigma(t)$, where
+$\nu_\sigma^\sigma/(\ee^{b_{\nu_\sigma}})=at$.
+This identifies a positive-direction obstruction to every finite-order
+Borel--Laplace summation procedure of the standard Gevrey kind.
+For $L(j)=\exp((\log j)^\gamma)$, $0<\gamma<1$, an explicit
+power--logarithmic reversion gives all nonvanishing terms in the logarithm
+of the growth normalizer. At $\gamma=1-1/m$, a term becomes constant and
+produces the factor $\exp(1/m)$ in ordinary Borel growth. A separate moving-
+argument example shows why replacing the implicit Lambert law by
+$W(L(n))$ can lose a constant or an unbounded correction. Complete proofs,
+finite coefficient bounds, reproducible exact checks, and ten further
+research directions are included.
+\end{abstract}
+\vfill
+\noindent\textbf{Scope and status.} The main results are proved here in ordinary
+mathematics. They answer a stated repository question under the hypotheses
+specified below; they are not a claim to settle an unrestricted problem in
+transseries theory. No new Lean proof is supplied. Classical inversion and
+regular-variation tools are credited, and publication-level priority has
+not been established by an exhaustive literature search.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The repository question and the contribution}
+\label{sec:context}
+
+The relevant ProveIt material now lives under
+\texttt{Analysis/Transseries/}. Its main volume develops power--logarithmic
+calculus, formal reversion, exact cores, residual transport, and examples
+of special-function inversion. The separate feedback article
+\cite{repo-feedback} studies the particularly transparent countable kernel
+\begin{equation}
+ \Uhat(q)=\sum_{j\ge1}q^j\exp(\lambda_j\Uhat(q)).
+ \label{eq:unit-model}
+\end{equation}
+It supplies a finite positive coefficient formula, a sharp convergence
+criterion, a Gevrey classification, and logarithmic coefficient
+asymptotics for regularly varying slopes of index strictly greater than
+one. Its section entitled \emph{The near-linear transition} explicitly
+asks for sharp coefficient asymptotics and natural summation scales when
+$\lambda_j=j(\log j)^\beta$ or, more generally, $jL(j)$ with unbounded
+slowly varying $L$. The difficulty is not formal existence. It is the
+change of scale when the positive multiple of $n\log n$ in the
+superlinear analysis disappears.
+
+This article treats that question directly. It also answers a restricted
+but useful part of the same source's amplitude question. We allow
+\begin{equation}
+ \Uhat(q)=\sum_{j\ge1}c_jq^j\exp(\lambda_j\Uhat(q)),
+ \qquad c_j>0,\quad\lambda_j\ge0.
+ \label{eq:model}
+\end{equation}
+The central object is not $W(L(n))$ but a Lambert equation with a
+\emph{moving argument}. This distinction is necessary at the precision
+of an equivalent for $u_n^{1/n}$, rather than merely an equivalent for
+$\log u_n$.
+
+\subsection{What is established}
+The main coefficient theorem gives
+\begin{equation}
+ \log u_n=n\bigl(\log a+b_n+o(1)\bigr),\qquad a=c_1.
+ \label{eq:headline}
+\end{equation}
+It is accompanied by a complete large-deviation law for the number of
+primitive factors in the finite Lagrange expansion. A second theorem
+transfers this precise coefficient scale to the growth of all
+factorial-normalized entire transforms. A third theorem computes the
+resulting Borel-growth transseries for stretched-logarithmic slopes,
+including its constant terms at every transition value $1-1/m$.
+
+These are stronger than a determination of the least Gevrey index, but
+we distinguish them carefully from a multiplicative equivalent for
+$u_n$ itself. Equation~\eqref{eq:headline} does \emph{not} assert
+$u_n\sim(a\ee^{b_n})^n$: an $\exp(o(n))$ factor remains unresolved.
+Similarly, the large-deviation result is not a central limit theorem,
+and a growth-adapted integral is not automatically an acceleration
+operator compatible with the original equation.
+
+\subsection{Relation to established tools and novelty}
+The finite coefficient identity is classical Lagrange inversion
+\cite{gessel}, already specialized to unit amplitudes in the repository.
+General inversion with infinitely many colours has a much broader
+literature; Jansen, Kuna, and Tsagkarogiannis \cite{jkt} are a relevant
+reference, not a source for the particular asymptotic laws proved here.
+Slow variation and its use in inversion are standard themes of
+regular-variation theory \cite{bgt}. We use a differentiable subclass so
+that the needed estimates can be proved directly rather than imported
+as a large technical package.
+
+The new work relative to the inspected repository is the borderline
+Lambert normalizer, its probability law, its positive-amplitude and
+slope-perturbation stability, and its consequences for Borel growth and
+moving power--logarithmic terms. The coefficients in the final scalar
+reversion are classical Lagrange coefficients; we do not claim their
+formula as a new inversion theorem. Nor do we claim an exhaustive global
+priority result for the combined conclusions. The exact source snapshot
+and claim boundaries are recorded in Appendix~\ref{app:sources}.
+
+\section{Hypotheses, normalizers, and theorem statements}
+\label{sec:statements}
+
+\begin{definition}[Admissible near-linear slopes]
+\label{def:admissible}
+An admissible slope profile is a positive, nondecreasing $C^1$ function
+$L:[1,\infty)\to(0,\infty)$ such that
+\begin{equation}
+ L(x)\longrightarrow\infty,\qquad
+ \eps(x):=\frac{xL'(x)}{L(x)}\longrightarrow0,
+ \label{eq:elasticity}
+\end{equation}
+and $\Lambda(x)=xL(x)$ is convex. The base slopes are
+$\lambda_j=\Lambda(j)$. More generally, the perturbation theorem allows
+nonnegative $\widetilde\lambda_j$ with
+\begin{equation}
+ |\widetilde\lambda_j-\Lambda(j)|\le Cj
+ \quad(j\ge1)
+ \label{eq:linear-perturbation}
+\end{equation}
+for a fixed $C$. Conditions imposed only for large $x$ may be used after
+choosing an admissible extension; finite discrepancies are covered by
+\eqref{eq:linear-perturbation}.
+\end{definition}
+
+Condition~\eqref{eq:elasticity} implies slow variation: integrate
+$L'/L$ between $x$ and $rx$ to obtain $L(rx)/L(x)\to1$ for each fixed
+$r>0$. It also gives $\log L(x)=o(\log x)$.
+
+\begin{definition}[Exponentially controlled positive amplitudes]
+\label{def:amplitudes}
+Put $a=c_1>0$ and $d_j=c_j/a^j$. We require a constant $D\ge0$ such that
+\begin{equation}
+ \ee^{-D(j-1)}\le d_j\le\ee^{D(j-1)}\quad(j\ge1).
+ \label{eq:amplitudes}
+\end{equation}
+Thus $d_1=1$. Polynomial amplitudes, positive constant amplitudes,
+positive geometric amplitudes, and finite modifications of such families
+are included. Superexponentially small amplitudes and missing actions are
+not included.
+\end{definition}
+
+For all sufficiently large real $x$, define $b(x)>0$ by
+\begin{equation}
+ b(x)\ee^{b(x)}=L\!\left(\frac{x}{1+b(x)}\right),\qquad
+ f(x)=\ee^{b(x)},\qquad x_*(x)=\frac{x}{1+b(x)}.
+ \label{eq:b-definition}
+\end{equation}
+We abbreviate $b_n=b(n)$ and $x_n=x_*(n)$. Existence, uniqueness, and
+regularity are proved in Section~\ref{sec:normalizer}.
+
+\begin{theorem}[Sharp borderline coefficient law]
+\label{thm:main}
+Under Definitions~\ref{def:admissible} and \ref{def:amplitudes}, including
+the perturbation option~\eqref{eq:linear-perturbation}, the unique formal
+solution $\Uhat=\sum_{n\ge1}u_nq^n$ has positive coefficients and satisfies
+\begin{equation}
+ \boxed{\quad u_n^{1/n}\sim a f(n)=a\ee^{b_n}.\quad}
+ \label{eq:root-law}
+\end{equation}
+In particular, its radius of convergence is zero, while for every
+$\sigma>0$ and every $A>0$ there is a finite $C_{\sigma,A}$ such that
+\begin{equation}
+ u_n\le C_{\sigma,A} A^n(n!)^\sigma\quad(n\ge1).
+ \label{eq:zero-index}
+\end{equation}
+\end{theorem}
+
+The arbitrary $A>0$ in \eqref{eq:zero-index} says more than positive
+Gevrey membership: the factorial-normalized type is zero at every
+positive order. The series still fails to be convergent.
+
+For the probabilistic refinement, set
+\begin{equation}
+ W_{n,k}=\frac1{k!}
+ \sum_{\substack{j_1+\cdots+j_k=n\\j_i\ge1}}
+ \left(\prod_{i=1}^k c_{j_i}\right)
+ \left(\sum_{i=1}^k\lambda_{j_i}\right)^{k-1}.
+ \label{eq:Wnk}
+\end{equation}
+As usual, a zero exponent is interpreted as one, including $0^0$ here.
+Then $u_n=\sum_kW_{n,k}$. Give $K_n$ the distribution
+$\Prob(K_n=k)=W_{n,k}/u_n$, and define
+\begin{equation}
+ R_n=\frac{n-K_n+1}{x_n},\qquad I(r)=r-1-\log r\quad(r>0).
+ \label{eq:Rn}
+\end{equation}
+
+\begin{theorem}[Length large deviations]
+\label{thm:ldp}
+The variables $R_n$ obey a large-deviation principle on $(0,\infty)$
+with speed $n$ and good rate function $I$. Explicitly, for open $G$ and
+closed $F$ in $(0,\infty)$,
+\begin{align}
+ \liminf_{n\to\infty}\frac1n\log\Prob(R_n\in G)
+ &\ge-\inf_{r\in G}I(r),\\
+ \limsup_{n\to\infty}\frac1n\log\Prob(R_n\in F)
+ &\le-\inf_{r\in F}I(r).
+ \label{eq:LDP}
+\end{align}
+If $(n-k_n+1)/x_n\to r\in(0,\infty)$, then the local statement is
+\begin{equation}
+ \frac1n\log\frac{W_{n,k_n}}{u_n}\longrightarrow-I(r).
+ \label{eq:local-LDP}
+\end{equation}
+Consequently $R_n\to1$ in probability, exponentially at every fixed
+positive distance from one.
+\end{theorem}
+
+\begin{theorem}[Factorial-Borel growth]
+\label{thm:borel}
+For $\sigma>0$, the function
+\begin{equation}
+ \Bcal_\sigma(t)=\sum_{n\ge1}\frac{u_nt^n}{(n!)^\sigma}
+ \label{eq:Borel}
+\end{equation}
+is entire. Let $\nu_\sigma(t)$ be the eventually unique large positive
+solution of
+\begin{equation}
+ \frac{\nu_\sigma(t)^\sigma}{f(\nu_\sigma(t))}=at.
+ \label{eq:nu-definition}
+\end{equation}
+Then, on the positive real ray,
+\begin{equation}
+ \boxed{\quad\log\Bcal_\sigma(t)\sim\sigma\nu_\sigma(t).\quad}
+ \label{eq:Borel-growth}
+\end{equation}
+The maximum modulus equals $\Bcal_\sigma(t)$ on the circle $|z|=t$.
+Its order is $1/\sigma$ and its type at that order is infinite.
+\end{theorem}
+
+The theorem gives an implicit asymptotic equivalent, not merely an order
+of growth. It is that extra precision which detects the constant factors
+in Section~\ref{sec:resonance}.
+
+\section{Formal existence and finite coefficient inequalities}
+\label{sec:finite}
+
+\begin{proposition}[Formal locality and coefficient formula]
+\label{prop:formal}
+Equation~\eqref{eq:model} has a unique solution in $q\R[[q]]$.
+The coefficient $u_n$ depends only on the actions and slopes with index
+at most $n$, and it is given by $u_n=\sum_{k=1}^nW_{n,k}$.
+\end{proposition}
+\begin{proof}
+The map $V\mapsto\sum_jc_jq^j\exp(\lambda_jV)$ raises the $q$-adic
+valuation of a difference by at least one. Starting at zero therefore
+stabilizes every coefficient and gives a unique fixed point. In degree
+$n$, only $j\le n$ and finitely many exponential terms enter.
+
+For the formula, introduce a marker $z$ and solve
+$V=z\sum_jc_jq^j\exp(\lambda_jV)$. Formal Lagrange inversion gives
+\[
+ [z^k]V=\frac1k[t^{k-1}]
+ \left(\sum_jc_jq^j\exp(\lambda_jt)\right)^k.
+\]
+The ordered composition $(j_1,\ldots,j_k)$ contributes the coefficient
+of $t^{k-1}$ in $\exp((\sum_i\lambda_{j_i})t)$, proving
+\eqref{eq:Wnk}. Specializing $z=1$ is coefficientwise legitimate because
+$k\le n$ in degree $q^n$. Positivity follows from the $k=1$ term $c_n>0$.
+\end{proof}
+
+For example, without any asymptotic hypotheses,
+\begin{align*}
+ u_1&=c_1,\\
+ u_2&=c_2+c_1^2\lambda_1,\\
+ u_3&=c_3+c_1c_2(\lambda_1+\lambda_2)
+            +\tfrac32c_1^3\lambda_1^2.
+\end{align*}
+The $k$-marker will be important: a formal coefficient formula does not
+by itself say which composition lengths supply its mass.
+
+\begin{lemma}[Convex composition bound]
+\label{lem:convex}
+If the base sequence $\lambda_j=\Lambda(j)$ is convex, then for
+$j_1+\cdots+j_k=n$,
+\begin{equation}
+ \sum_{i=1}^k\lambda_{j_i}
+ \le\lambda_{n-k+1}+(k-1)\lambda_1.
+ \label{eq:convex-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The forward differences $\lambda_{j+1}-\lambda_j$ are nondecreasing.
+If $r\ge s>1$, moving one unit from $s$ to $r$ cannot decrease the sum
+$\lambda_r+\lambda_s$. Repeating the move leaves at most one part larger
+than one. Its size is $n-k+1$, which proves the inequality.
+\end{proof}
+
+Write $m=n-k+1$ and
+\begin{equation}
+ A_{n,k}=\lambda_m+(k-1)\lambda_1,\qquad
+ E_{n,k}=\frac{A_{n,k}^{k-1}}{k!},\qquad
+ r_{n,k}=\begin{cases}k,&m>1,\\1,&m=1.\end{cases}
+ \label{eq:finite-envelopes}
+\end{equation}
+For unit amplitudes, one composition with a single part $m$ and the
+remaining parts one has slope sum $A_{n,k}$. It has $k$ distinct
+placements unless $m=1$.
+
+\begin{proposition}[Finite, computable coefficient bounds]
+\label{prop:finite-bounds}
+For the unperturbed convex slopes and amplitudes
+\eqref{eq:amplitudes},
+\begin{equation}
+ a^n\ee^{-D(n-k)}r_{n,k}E_{n,k}
+ \le W_{n,k}\le
+ a^n\ee^{D(n-k)}\binom{n-1}{k-1}E_{n,k}.
+ \label{eq:finite-W-bound}
+\end{equation}
+In particular,
+\begin{equation}
+ \max_k a^n\ee^{-D(n-k)}r_{n,k}E_{n,k}
+ \le u_n\le
+ \sum_k a^n\ee^{D(n-k)}\binom{n-1}{k-1}E_{n,k}.
+ \label{eq:finite-u-bound}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Each composition satisfies
+\[
+ \prod_i c_{j_i}=a^n\prod_i d_{j_i},\qquad
+ \ee^{-D(n-k)}\le\prod_i d_{j_i}\le\ee^{D(n-k)},
+\]
+because $\sum_i(j_i-1)=n-k$. Use the exceptional-part compositions for
+the lower bound, and \eqref{eq:convex-bound} and the exact number
+$\binom{n-1}{k-1}$ of compositions for the upper bound.
+\end{proof}
+
+These bounds require only $O(n)$ envelope evaluations once the first $n$
+slopes are known. They can be evaluated with directed rounding to obtain
+numerical intervals. The supplied floating-point tables do not implement
+that rounding; the small rational tests check the inequalities exactly.
+
+\section{The self-consistent Lambert normalizer}
+\label{sec:normalizer}
+
+\begin{lemma}[Existence and regularity]
+\label{lem:b}
+For large $x$, \eqref{eq:b-definition} has exactly one solution with
+$0<b(x)<x-1$. Moreover,
+\begin{gather}
+ b(x)\to\infty,\qquad b(x)=o(\log x),\qquad x_*(x)\to\infty,\\
+ b(x)\sim\log L(x),\qquad
+ \frac{\dd b(x)}{\dd\log x}
+ =\frac{\eps(x_*(x))}
+ {1+1/b(x)+\eps(x_*(x))/(1+b(x))}\longrightarrow0.
+ \label{eq:b-derivative}
+\end{gather}
+Thus $f(x)=\ee^{b(x)}$ is nondecreasing, unbounded, and slowly varying.
+For each $\sigma>0$, $x^\sigma/f(x)$ is eventually strictly increasing,
+unbounded, and regularly varying with index $\sigma$.
+\end{lemma}
+\begin{proof}
+As a function of $b$, the left side $b\ee^b$ is strictly increasing and
+the right side $L(x/(1+b))$ is nonincreasing. At $b=0$ the former is zero;
+at $b=x-1$ it exceeds $L(1)$ for large $x$. This proves existence and
+uniqueness. Since $b\le W(L(x))\le\log L(x)$ once $b\ge1$, we have
+$b=o(\log x)$, so $x_*(x)\to\infty$. If $b$ remained bounded along a
+subsequence, the defining equation would contradict $L(x_*)\to\infty$.
+
+For large $x$, $0\le\eps\le1$ throughout $[x_*,x]$. Integration gives
+\[
+ 0\le\log L(x)-\log L(x_*)\le\log(1+b).
+\]
+But $\log L(x_*)=b+\log b$, so $\log L(x)=b+O(\log b)$, proving the
+claimed equivalent. Implicit differentiation of
+$b+\log b=\log L(x/(1+b))$ gives \eqref{eq:b-derivative}.
+Integration of that derivative on fixed logarithmic intervals proves
+slow variation of $f$. Finally,
+\[
+ \frac{\dd}{\dd\log x}\log\frac{x^\sigma}{f(x)}
+ =\sigma-\frac{\dd b}{\dd\log x}\longrightarrow\sigma>0,
+\]
+which proves the remaining assertions.
+\end{proof}
+
+The same calculation shows that $\nu_\sigma$ in
+\eqref{eq:nu-definition} exists uniquely for large arguments. Its regular
+variation index is $1/\sigma$: taking ratios in the defining equation
+and using the derivative bound gives this directly.
+
+\subsection{Why the argument moves}
+Ignoring the fixed $\lambda_1$ contribution for the moment, the exceptional-
+part term with $m$ large has logarithm
+\[
+ (n-m)\left(\log\frac{mL(m)}{n-m}+1\right)+O(\log n).
+\]
+Write $y=(n-m)/m$. Its logarithm divided by $n$ becomes
+\begin{equation}
+ \frac{y}{1+y}
+ \left(\log L\!\left(\frac{n}{1+y}\right)-\log y+1\right).
+ \label{eq:y-envelope}
+\end{equation}
+If $y=b_n$, the expression equals \emph{exactly} $b_n$.
+This cancellation is the reason for the normalization
+\eqref{eq:b-definition}. The actual finite-$n$ maximizer need not have
+$y=b_n$; the proof must show that optimizing it changes the normalized
+logarithm by only $o(1)$. We do that next, including the full composition
+count rather than discarding it.
+
+\section{The borderline envelope and the length law}
+\label{sec:envelope}
+
+All statements in this section first concern the unperturbed convex
+slopes. Put $b=b_n$, $x_*=n/(1+b)$, $\rho=m/n$, and define
+\begin{align}
+ H_n(\rho)&=(1-\rho)
+ \left(\log\frac{\rho L(n\rho)}{1-\rho}+1\right),
+ \label{eq:H}\\
+ H_n^{(c)}(\rho)&=(1-\rho)
+ \left(\log\left(\frac{\rho L(n\rho)}{1-\rho}+c\right)+1\right),
+ \label{eq:Hc}
+\end{align}
+where $c=\lambda_1$. Endpoint values at $\rho=1$ are understood by
+limits. At $\rho=m/n$, Stirling's formula, uniformly in $1\le k\le n$,
+gives
+\begin{equation}
+ \frac1n\log E_{n,k}=H_n^{(c)}(\rho)+o(1),\qquad k=n-m+1.
+ \label{eq:stirling-envelope}
+\end{equation}
+The harmless shifts by one contribute at most $O(\log(nL(n))/n)$.
+For $k=1$ the exact left side is zero, consistent with the endpoint.
+Also, with $h(\rho)=-\rho\log\rho-(1-\rho)\log(1-\rho)$,
+\begin{equation}
+ \frac1n\log\binom{n-1}{k-1}=h(\rho)+o(1)
+ \label{eq:entropy}
+\end{equation}
+uniformly. Both uniform estimates follow, for example, from the
+factorial bounds $\log(r!)=r\log r-r+O(\log(r+2))$.
+
+\begin{lemma}[Compact profile and coercivity]
+\label{lem:profile}
+Uniformly for $r$ in compact subsets of $(0,\infty)$,
+\begin{equation}
+ H_n\!\left(\frac{r}{1+b_n}\right)-b_n
+ \longrightarrow\log r+1-r.
+ \label{eq:profile}
+\end{equation}
+For fixed $D\ge0$ and $c\ge0$,
+\begin{equation}
+ \max_{1\le m\le n}
+ \left\{H_n^{(c)}(m/n)+h(m/n)+D\frac mn\right\}
+ =b_n+o(1).
+ \label{eq:sharp-envelope}
+\end{equation}
+Moreover the expression minus $b_n$ is coercive in
+$r=m/x_n$: along any sequence with $r\to0$ or $r\to\infty$, it tends to
+$-\infty$.
+\end{lemma}
+\begin{proof}
+For $\rho=r/(1+b)$, let
+$\Delta_n(r)=\log L(rx_*)-\log L(x_*)$.
+Since $\log L(x_*)=b+\log b$, a direct calculation gives
+\begin{equation}
+ H_n(\rho)-b
+ =(1-\rho)\left(
+ \log\frac{b}{1+b-r}+\log r+\Delta_n(r)+1\right)-b\rho.
+ \label{eq:profile-identity}
+\end{equation}
+On a fixed compact $r$-interval, $\Delta_n(r)\to0$ uniformly by
+\eqref{eq:elasticity}, $\rho\to0$, and $b\rho\to r$.
+This proves \eqref{eq:profile}.
+
+We give the tail argument explicitly, since a bound by $2^n$ throughout
+would leave an erroneous constant of order $n$.
+First, if $\rho\ge\eta>0$, then
+\[
+ H_n(\rho)\le(1-\eta)\log L(n)+O(1)
+              \le(1-\eta)b+O(\log b).
+\]
+Here $(1-\rho)\log(\rho/(1-\rho))$ is bounded above on $(0,1)$.
+The entropy and $D\rho$ are bounded, so these terms are far below $b$.
+
+The addition of $c$ causes no problem. Put
+$X=\rho L(n\rho)/(1-\rho)$. If $X\ge\ee^{b/2}$, then
+\[
+ 0\le H_n^{(c)}-H_n
+ \le\log(1+c\ee^{-b/2})=o(1).
+\]
+If $X<\ee^{b/2}$, then $H_n^{(c)}\le b/2+O(1)$, which is again far
+below $b$ even after entropy and amplitude terms. Therefore every
+potentially competitive sequence must have $\rho\to0$ and may be
+analyzed using $H_n$; then $h(\rho)+D\rho\to0$.
+
+Suppose now that $\rho\to0$ but $r\to\infty$. Both $x_*$ and $rx_*$
+are large. Given $\delta>0$, integration of \eqref{eq:elasticity} gives
+$0\le\Delta_n(r)\le\delta\log r$ eventually. In
+\eqref{eq:profile-identity},
+$\log(b/(1+b-r))=o(1)$, while $b\rho=r(1+o(1))$.
+Thus its right side is bounded above by
+\[
+ (1+\delta)\log r+1-r(1+o(1))+o(1),
+\]
+which tends to $-\infty$.
+If $r\to0$ and $m\to\infty$, monotonicity gives $\Delta_n(r)\le0$;
+the $\log r$ term then forces the same conclusion. Bounded $m$ is
+even simpler: $H_n^{(c)}$ stays bounded above, or tends downward, while
+$b\to\infty$.
+
+These arguments prove coercivity. Any sequence of maximizers is therefore
+confined to a compact $r$-interval after discarding a vanishing error.
+On such an interval, the limiting profile is $\log r+1-r$, whose unique
+maximum is zero at $r=1$. Taking $m$ nearest to $x_n$ gives the matching
+lower bound. This proves \eqref{eq:sharp-envelope}.
+\end{proof}
+
+\begin{proof}[Proof of Theorems~\ref{thm:main} and \ref{thm:ldp}
+for the base slopes]
+Use \eqref{eq:finite-u-bound}. The upper logarithm differs from the
+maximum of its $n$ summands by at most $\log n=o(n)$.
+Equations~\eqref{eq:stirling-envelope}--\eqref{eq:sharp-envelope} show
+that this maximum divided by $n$ is $\log a+b_n+o(1)$.
+For the lower bound choose $m$ nearest to $x_n$. Then
+$D(n-k)/n\to0$, and the compact profile at $r=1$ gives the same value.
+This proves \eqref{eq:root-law}.
+
+For $m/x_n\to r\in(0,\infty)$, the upper and lower estimates for
+$W_{n,k}$ differ after division by $n$ by at most
+$2D(m-1)/n+h(m/n)+o(1)=o(1)$. Hence, uniformly on compact $r$-intervals,
+\begin{equation}
+ \frac1n\log W_{n,k}-\log a-b_n\longrightarrow-I(r).
+ \label{eq:local-W}
+\end{equation}
+Subtracting the coefficient law proves \eqref{eq:local-LDP}.
+
+For an open set, choose one lattice point $m/x_n$ approaching any of its
+points; $x_n\to\infty$ makes this possible. This proves the lower
+large-deviation bound. On a compact set, the largest of at most $n$
+weights gives the upper bound, since $\log n/n\to0$.
+Lemma~\ref{lem:profile}'s coercivity implies exponential tightness: for
+every $M>0$ there are $0<\delta<R<\infty$ such that the total probability
+outside $[\delta,R]$ is at most $\exp(-Mn+o(n))$.
+This extends the upper bound to every closed set and completes the LDP.
+Since $I$ vanishes only at one, exponential concentration follows.
+
+Finally $b_n\to\infty$ proves radius zero, and
+$b_n=o(\log n)$ combined with Stirling's formula proves
+\eqref{eq:zero-index}, including arbitrary $A>0$.
+\end{proof}
+
+\begin{remark}[What length concentration does not say]
+The variable $n-K_n$ is the total excess $\sum_i(j_i-1)$, not the largest
+part. A composition with one exceptional action is enough to prove the
+lower envelope, but the LDP does not by itself prove that a typical
+weighted composition has a unique giant action. Near index one, the
+penalty for splitting a large action can be smaller than order $n$.
+Identifying that smaller scale is a separate problem.
+\end{remark}
+
+\section{Robustness under linear slope errors}
+\label{sec:robustness}
+
+\begin{proposition}[Stability at root and large-deviation precision]
+\label{prop:robustness}
+The coefficient law and the length LDP remain valid when the slopes are
+replaced by any nonnegative sequence satisfying
+\eqref{eq:linear-perturbation}. The same normalizer $b_n$ is used.
+\end{proposition}
+\begin{proof}
+For a composition of $n$, let $S=\sum_i\Lambda(j_i)$ and
+$\widetilde S=\sum_i\widetilde\lambda_{j_i}$. Then
+$|\widetilde S-S|\le Cn$, independently of its length.
+Split the finite sum into high terms with $S\ge n\ee^{b_n/2}$ and low
+terms with $S<n\ee^{b_n/2}$.
+
+On the high set,
+\[
+ \frac{\widetilde S}{S}=1+O(\ee^{-b_n/2}),
+ \qquad
+ \left|\log\frac{\widetilde S^{k-1}}{S^{k-1}}\right|
+ \le O(n\ee^{-b_n/2})=o(n)
+\]
+uniformly. The amplitudes are unchanged.
+On the low set, both slope sums are at most
+$n(\ee^{b_n/2}+C)$. Because this bound divided by $n$ tends to infinity,
+$A^{k-1}/k!$ with $A=n(\ee^{b_n/2}+C)$ increases for $1\le k\le n$,
+up to an immaterial first factor. Its maximum has logarithm
+$n(b_n/2+1+o(1))$. There are at most $2^{n-1}$ compositions altogether,
+and their amplitude product is at most $a^n\ee^{Dn}$.
+The total low contribution therefore has logarithm at most
+\[
+ n\bigl(\log a+b_n/2+D+1+\log2+o(1)\bigr),
+\]
+which is negligible relative to $n(\log a+b_n)$.
+
+Thus the two total coefficient logarithms differ by $o(n)$.
+At every fixed scaled length $r>0$, the exceptional-part lower bound
+has $S/n$ of order $\ee^{b_n}$, so it is on the high set. The local LDP
+and its compact upper bounds therefore transfer with error $o(n)$.
+The same high/low split preserves exponential tightness, proving the
+full LDP for the perturbed slopes.
+\end{proof}
+
+This permits convenient exact models and harmless changes at small
+indices. It does not license a replacement of $L(x_n)$ by $L(n)$:
+that would change each slope at large indices by more than a fixed
+linear error in some of our examples.
+
+\section{From coefficient growth to entire Borel growth}
+\label{sec:borel-proof}
+
+We prove a general maximum-term lemma, making explicit the input needed
+from the coefficient theorem.
+
+\begin{lemma}[Slowly varying coefficient transfer]
+\label{lem:entire-transfer}
+Let $a>0$, let $f$ be positive, nondecreasing, unbounded, and $C^1$ for
+large arguments, and assume
+$\dd\log f(x)/\dd\log x\to0$. If $v_n>0$ satisfy
+$v_n^{1/n}\sim af(n)$, then for $\sigma>0$,
+\[
+ \log\left(\sum_{n\ge1}\frac{v_nt^n}{(n!)^\sigma}\right)
+ \sim\sigma N(t),\qquad N(t)^\sigma/f(N(t))=at.
+\]
+\end{lemma}
+\begin{proof}
+Since $f(n)=n^{o(1)}$, the series is entire. Write
+$\log v_n=n(\log a+\log f(n)+\eta_n)$, where $\eta_n\to0$, and
+put $N=N(t)$. Stirling's formula gives
+\begin{equation}
+ \log\frac{v_nt^n}{(n!)^\sigma}
+ =n\left(\sigma\log\frac Nn+
+          \log\frac{f(n)}{f(N)}+\sigma+\eta_n\right)+O(\log(n+2)).
+ \label{eq:entire-term}
+\end{equation}
+For $n/N\to r$ in a compact subinterval of $(0,\infty)$, divide by $N$:
+the right side tends uniformly to $\sigma r(1-\log r)$.
+Its unique maximum is $\sigma$ at $r=1$. The nearest integer to $N$
+therefore supplies the lower bound.
+
+For completeness, control the tails. For $n\le\delta N$, beyond a fixed
+initial segment, monotonicity gives $f(n)\le f(N)$, and $|\eta_n|$ is
+small. The upper logarithm divided by $N$ is bounded by
+$\delta(\sigma\log(1/\delta)+\sigma+o(1))$ when $\delta$ is small.
+The fixed initial segment has logarithm $O(\log t)=o(N)$.
+
+For $n\ge RN$, the derivative hypothesis gives, uniformly,
+$f(n)/f(N)\le(n/N)^{\sigma/2}$ once $N$ is large. Formula
+\eqref{eq:entire-term} is then at most
+\[
+ n\left(-\frac\sigma2\log(n/N)+\sigma+o(1)\right).
+\]
+For sufficiently large fixed $R$, these terms have a summable
+geometric upper bound, and their total is exponentially below the
+central maximum. On $[\delta N,RN]$ there are $O(N)$ terms, so summing
+adds only $O(\log N)=o(N)$ to the maximum logarithm. Letting the compact
+interval expand proves the result.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:borel}]
+Apply Lemma~\ref{lem:entire-transfer} with the coefficient theorem and
+Lemma~\ref{lem:b}. Nonnegative coefficients give
+$|\Bcal_\sigma(z)|\le\Bcal_\sigma(|z|)$, with equality on the positive
+ray. The regular variation of $\nu_\sigma$ has index $1/\sigma$, and
+\[
+ \frac{\nu_\sigma(t)}{t^{1/\sigma}}
+   =\bigl(a f(\nu_\sigma(t))\bigr)^{1/\sigma}\longrightarrow\infty.
+\]
+These facts prove the order and infinite-type assertions.
+\end{proof}
+
+\subsection{Standard Gamma normalization and summability}
+For clarity, the standard moment normalization associated with Gevrey
+order $\sigma$ is
+\begin{equation}
+ \mathfrak B_\sigma(t)=
+ \sum_{n\ge1}\frac{u_nt^n}{\Gamma(1+\sigma n)}.
+ \label{eq:gamma-borel}
+\end{equation}
+Our $\Bcal_1$ is an unshifted Borel transform; differentiating it gives
+the common shifted convention. The obstruction below is independent of
+this harmless convention.
+
+\begin{corollary}[No positive-direction standard summation of finite order]
+\label{cor:no-laplace}
+For every $\sigma>0$, $\mathfrak B_\sigma$ is entire and
+\begin{equation}
+ \log\mathfrak B_\sigma(t)
+ \sim\sigma\nu_\sigma(t/\sigma^\sigma),\qquad t\to+\infty.
+ \label{eq:gamma-growth}
+\end{equation}
+In particular, for every $A>0$,
+\begin{equation}
+ \int_1^\infty t^{1/\sigma-1}
+ \exp(-A t^{1/\sigma})\mathfrak B_\sigma(t)\dd t=+\infty.
+ \label{eq:laplace-diverges}
+\end{equation}
+Thus the formal solution is not summable in the positive direction by
+any standard finite-order Gevrey Borel--Laplace procedure.
+\end{corollary}
+\begin{proof}
+Stirling's formula gives
+\[
+ \log\Gamma(1+\sigma n)-\sigma\log(n!)
+ =\sigma n\log\sigma+O(\log(n+2)).
+\]
+Consequently the maximum-term proof applies with $t$ replaced by
+$t/\sigma^\sigma$; the polynomial factors do not affect the leading
+logarithm. The quotient of \eqref{eq:gamma-growth} by $t^{1/\sigma}$
+tends to infinity. The integrand in \eqref{eq:laplace-diverges}
+therefore eventually exceeds an exponentially increasing function,
+which proves divergence.
+\end{proof}
+
+Borel--Laplace summability requires both continuation and growth control;
+see Sauzin \cite{sauzin}. The transforms here already continue to the
+entire plane. Their obstruction is growth on the chosen ray, not a finite
+singularity. Gevrey implicit-function theorems such as Nikolaev's
+\cite{nikolaev} have analytic hypotheses which cannot be replaced by
+coefficient membership alone. Nothing in Corollary~\ref{cor:no-laplace}
+excludes useful sums in other directions.
+
+\begin{proposition}[A critical positive damping scale]
+\label{prop:damping}
+For the ordinary Borel transform, put $\nu=\nu_1$. Then
+\[
+ \int_1^\infty\exp(-A\nu(t))\Bcal_1(t)\dd t
+\]
+converges for $A>1$ and diverges for $0<A<1$.
+\end{proposition}
+\begin{proof}
+Use $\log\Bcal_1(t)=(1+o(1))\nu(t)$ and
+$\nu(t)/t=af(\nu(t))\to\infty$.
+\end{proof}
+This is a growth statement only. It does not define an acceleration
+operator respecting products, differentiation, or the feedback equation.
+The borderline $A=1$ also requires information not provided by the
+leading equivalent.
+
+\subsection{A literal positive fixed point is impossible}
+Under our amplitude condition and $L(j)\to\infty$, for $q>0$ and $u>0$
+\[
+ \log(c_jq^j\ee^{\lambda_ju})
+ \ge j(\log a+\log q-D+uL(j))+O(1)\longrightarrow+\infty
+\]
+for base slopes, and the same is true after a bounded linear slope
+perturbation. Thus the summands do not tend to zero. No proposed positive-
+ray regularization can be described as a solution of the literal
+convergent positive sum without changing its analytic interpretation.
+
+\section{Explicit profiles and the moving-argument correction}
+\label{sec:examples}
+
+The implicit normalizer is already an asymptotic equivalent. To extract
+its visible power--logarithmic terms, write
+\begin{equation}
+ s=\log x,\qquad h(s)=\log L(\ee^s).
+ \label{eq:h-profile}
+\end{equation}
+The notation $h$ here is unrelated to the binary entropy used in
+Section~\ref{sec:envelope}.
+
+\begin{proposition}[A moving-argument expansion]
+\label{prop:moving}
+Suppose the admissible profile has $h\in C^2$ eventually and
+\begin{equation}
+ (\log h(s))^2
+ \sup_{|v-s|\le2\log h(s)}|h''(v)|\longrightarrow0.
+ \label{eq:h-second}
+\end{equation}
+Then
+\begin{equation}
+ b(\ee^s)=h(s)-\log h(s)-h'(s)\log h(s)+o(1).
+ \label{eq:moving-expansion}
+\end{equation}
+In particular,
+\begin{equation}
+ b(\ee^s)-W(L(\ee^s))=-h'(s)\log h(s)+o(1).
+ \label{eq:W-difference}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Lemma~\ref{lem:b} gives $b\sim h(s)$, so
+$\log b=\log h(s)+o(1)$ and
+$\log(1+b)=\log h(s)+o(1)$. Also $h'(s)=\eps(\ee^s)\to0$.
+In the equation
+\[
+ b+\log b=h\bigl(s-\log(1+b)\bigr),
+\]
+we may therefore replace the right-hand argument by $s-\log h(s)$ at
+an additive cost $o(1)$. Taylor's theorem and \eqref{eq:h-second} give
+\[
+ h(s-\log h(s))=h(s)-h'(s)\log h(s)+o(1),
+\]
+which proves \eqref{eq:moving-expansion}. Finally the positive solution
+of $w+\log w=h$ satisfies $w=h-\log h+o(1)$: substituting the proposed
+value leaves an $o(1)$ residual, and the derivative $1+1/w$ is bounded
+below by one. This proves \eqref{eq:W-difference}; the conventional
+Lambert notation agrees with DLMF~\S4.13 \cite{dlmf}.
+\end{proof}
+
+\subsection{Logarithmic slope amplification}
+Let $\beta>0$ and suppose $L(x)=(\log x)^\beta$ for large $x$,
+with an admissible extension at small $x$. Then $h(s)=\beta\log s$,
+and the derivative correction in \eqref{eq:moving-expansion} tends to
+zero. Consequently
+\begin{align}
+ b_n&=\beta\log\log n-\log\log\log n-\log\beta+o(1),\\
+ u_n^{1/n}&\sim
+ a\frac{(\log n)^\beta}{\beta\log\log n}.
+ \label{eq:log-power-root}
+\end{align}
+This resolves the explicit $j(\log j)^\beta$ family in the repository's
+near-linear question at coefficient-root precision.
+
+For the ordinary Borel transform,
+\begin{equation}
+ \log\Bcal_1(t)\sim
+ a t\frac{(\log t)^\beta}{\beta\log\log t}.
+ \label{eq:log-power-borel}
+\end{equation}
+Indeed, $f(x)\sim(\log x)^\beta/(\beta\log\log x)$ satisfies
+$f(atf(t))/f(t)\to1$, so the inverse relation
+$\nu_1=atf(\nu_1)$ gives $\nu_1\sim atf(t)$. This last conclusion can
+also be proved directly by substituting $(1\pm\eta)atf(t)$ and using
+monotonicity, then letting $\eta\downarrow0$.
+
+More generally, putting $R=\sigma^{-1}\log(at)$ yields
+\begin{equation}
+ \log\Bcal_\sigma(t)\sim
+ \sigma(at)^{1/\sigma}
+ \left(\frac{R^\beta}{\beta\log R}\right)^{1/\sigma}.
+ \label{eq:log-power-general-borel}
+\end{equation}
+All constants, including the $\sigma$ inside $R$, matter in this formula.
+
+\subsection{An exact rational example}
+The slopes
+\begin{equation}
+ \lambda_j=jH_j,\qquad H_j=\sum_{r=1}^j\frac1r,
+ \label{eq:harmonic-slopes}
+\end{equation}
+are rational and convex: their successive difference is $H_j+1$,
+which increases. They differ from $j\log j$ by $O(j)$, so
+Proposition~\ref{prop:robustness} applies. With unit amplitudes,
+\begin{equation}
+ u_n^{1/n}\sim\frac{\log n}{\log\log n},\qquad
+ \log\Bcal_1(t)\sim\frac{t\log t}{\log\log t}.
+ \label{eq:harmonic-results}
+\end{equation}
+For a concrete smooth admissible interpolation used in the numerical
+envelopes, set $L(x)=\psi(x+1)+\gamma_{\!E}$. The identity
+\[
+ L(x)=\sum_{k\ge1}\left(\frac1k-\frac1{x+k}\right)
+\]
+implies $L'>0$ and
+\[
+ (xL(x))''=2\sum_{k\ge1}\frac{k}{(x+k)^3}>0.
+\]
+Also $L(x)\sim\log x$ and $xL'(x)/L(x)\to0$, directly by integral
+comparison. Thus the interpolation is admissible without an appeal to
+any unproved numerical property of the digamma function.
+
+\subsection{Stretched-logarithmic amplification}
+For $0<\gamma<1$, let $L(x)=\exp((\log x)^\gamma)$ eventually.
+Here $h(s)=s^\gamma$, and Proposition~\ref{prop:moving} gives
+\begin{equation}
+ b_n=(\log n)^\gamma-\gamma\log\log n+o(1),\qquad
+ u_n^{1/n}\sim a\frac{\exp((\log n)^\gamma)}{(\log n)^\gamma}.
+ \label{eq:stretch-root}
+\end{equation}
+Although the moving argument has only an $o(1)$ effect on this particular
+$b_n$ expansion, substituting $t$ for $\nu_1(t)$ in the Borel inversion
+need not have an $o(1)$ effect. That second inversion is the source of
+the cascade in Section~\ref{sec:resonance}.
+
+\subsection{A family where the naive Lambert approximation fails}
+Fix $\eta>0$ and take
+\begin{equation}
+ L(\ee^s)=\exp\left(\frac{s}{(\log s)^\eta}\right)
+ \quad\hbox{for sufficiently large }s.
+ \label{eq:fast-slow}
+\end{equation}
+The admissibility and second-derivative conditions hold eventually.
+With $\ell=\log s$, direct differentiation gives
+\[
+ h=\frac{s}{\ell^\eta},\quad
+ \log h=\ell-\eta\log\ell,\quad
+ h'\log h=\ell^{1-\eta}+o(1).
+\]
+Therefore
+\begin{equation}
+ b(\ee^s)=\frac{s}{\ell^\eta}-\ell+\eta\log\ell
+            -\ell^{1-\eta}+o(1).
+ \label{eq:fast-slow-b}
+\end{equation}
+It follows that
+\begin{equation}
+ \frac{\ee^{b(n)}}{\ee^{W(L(n))}}
+ =\exp\left(-\bigl(\log\log n\bigr)^{1-\eta}+o(1)\right).
+ \label{eq:naive-failure}
+\end{equation}
+For $\eta>1$ the naive replacement happens to be valid at root precision.
+At $\eta=1$ it loses the factor $\ee^{-1}$, and for $0<\eta<1$ its
+relative error is unbounded. In particular, at $\eta=1$,
+\begin{equation}
+ u_n^{1/n}\sim
+ \frac{a}{\ee}\,
+ \exp\left(\frac{\log n}{\log\log n}\right)
+ \frac{\log\log n}{\log n}.
+ \label{eq:eta-one}
+\end{equation}
+This demonstrates why a theorem formulated only with $W(L(n))$ would
+be false for the stated general class.
+
+\section{A cascade of Borel-growth resonances}
+\label{sec:resonance}
+
+We now compute every term which survives at additive $o(1)$ precision
+in the logarithm of the ordinary Borel normalizer for
+\eqref{eq:stretch-root}. This is a finite transseries at each fixed
+$\gamma$, but its number of terms increases without bound as
+$\gamma\uparrow1$.
+
+For the moment keep $\gamma\in(0,1)$ fixed, write
+\begin{equation}
+ S=\log(at),\qquad
+ c_k(\gamma)=\frac1k\binom{k\gamma}{k-1},\qquad
+ K_\gamma=\left\lfloor\frac1{1-\gamma}\right\rfloor.
+ \label{eq:ck}
+\end{equation}
+Generalized binomial coefficients have their polynomial meaning here.
+The amplitude $a=c_1$ is not related to the coefficient
+$c_k(\gamma)$; the latter always carries its argument to avoid confusion.
+
+\begin{theorem}[All nonvanishing logarithmic growth terms]
+\label{thm:cascade}
+For the stretched-logarithmic family and exponentially controlled
+positive amplitudes,
+\begin{align}
+ \log\nu_1(t)
+ &=S+\sum_{k=1}^{K_\gamma}
+ c_k(\gamma)S^{1-k(1-\gamma)}-\gamma\log S+o(1),
+ \label{eq:nu-cascade}\\
+ \log\Bcal_1(t)
+ &\sim\frac{at}{S^\gamma}
+ \exp\left(\sum_{k=1}^{K_\gamma}
+ c_k(\gamma)S^{1-k(1-\gamma)}\right).
+ \label{eq:B-cascade}
+\end{align}
+The theorem permits all the slope perturbations in
+\eqref{eq:linear-perturbation}.
+\end{theorem}
+\begin{proof}
+Put $y=\log\nu_1(t)$. The defining equation for $\nu_1$ and
+\eqref{eq:stretch-root} give
+\begin{equation}
+ y=S+y^\gamma-\gamma\log y+o(1).
+ \label{eq:y-reverse}
+\end{equation}
+Let $Y$ be the unique large solution of $Y=S+Y^\gamma$.
+With $w=Y/S$ and $T=S^{\gamma-1}$, its equation is
+$w=1+Tw^\gamma$. The analytic implicit-function theorem applies near
+$(T,w)=(0,1)$, and classical Lagrange inversion gives the convergent
+expansion
+\begin{equation}
+ w=1+\sum_{k\ge1}\frac1k\binom{k\gamma}{k-1}T^k.
+ \label{eq:scalar-reversion}
+\end{equation}
+Retaining terms through $K_\gamma$ leaves an error
+$O(S^{1-(K_\gamma+1)(1-\gamma)})=o(1)$ in $Y$.
+
+We also have
+\begin{equation}
+ y=Y-\gamma\log S+o(1).
+ \label{eq:log-perturb}
+\end{equation}
+To check this at the required additive precision, substitute
+$Y-\gamma\log S$ in $z-z^\gamma+\gamma\log z$.
+Using $Y/S\to1$ and
+$S^{\gamma-1}\log S\to0$, the residual from $S$ is $o(1)$.
+The derivative of this function tends to one, so the residual produces
+an $o(1)$ error in its large inverse. This proves
+\eqref{eq:log-perturb}, and then \eqref{eq:nu-cascade}.
+Exponentiate and use Theorem~\ref{thm:borel} to obtain
+\eqref{eq:B-cascade}.
+\end{proof}
+
+\begin{corollary}[Resonant constants]
+\label{cor:resonances}
+At $\gamma=1-1/m$, $m\ge2$, the last term in
+\eqref{eq:nu-cascade} is the constant $1/m$. Hence
+\begin{equation}
+ \log\Bcal_1(t)\sim
+ \ee^{1/m}\frac{at}{S^{1-1/m}}
+ \exp\left(\sum_{k=1}^{m-1}
+ c_k(1-1/m)S^{1-k/m}\right).
+ \label{eq:resonant-constant}
+\end{equation}
+\end{corollary}
+\begin{proof}
+At this parameter value $1-m(1-\gamma)=0$ and
+$c_m(\gamma)=m^{-1}\binom{m-1}{m-1}=1/m$.
+\end{proof}
+
+For unit amplitudes, so that $S=\log t$, the first examples are
+\begin{align}
+ 0<\gamma<\tfrac12:\quad
+ &\log\Bcal_1(t)\sim tS^{-\gamma}\ee^{S^\gamma},
+ \label{eq:first-region}\\
+ \gamma=\tfrac12:\quad
+ &\log\Bcal_1(t)\sim\ee^{1/2}tS^{-1/2}\ee^{\sqrt S},
+ \label{eq:half}\\
+ \gamma=\tfrac23:\quad
+ &\log\Bcal_1(t)\sim\ee^{1/3}tS^{-2/3}
+       \exp\left(S^{2/3}+\tfrac23S^{1/3}\right),
+ \label{eq:two-thirds}\\
+ \gamma=\tfrac34:\quad
+ &\log\Bcal_1(t)\sim\ee^{1/4}tS^{-3/4}
+       \exp\left(S^{3/4}+\tfrac34S^{1/2}+\tfrac{15}{32}S^{1/4}\right).
+ \label{eq:three-quarters}
+\end{align}
+The term called a resonance here is a zero exponent in the logarithmic
+normalizer. It is not a collision of Borel singularities: the Borel
+transforms are entire. Omitting the constant term changes an asymptotic
+equivalent into an incorrect one even though it does not change the
+order or the infinite-type classification.
+
+\subsection{Every factorial normalization}
+The same argument, with
+$R=\sigma^{-1}\log(at)$, gives the following more general formula:
+\begin{equation}
+ \log\Bcal_\sigma(t)\sim
+ \sigma(at)^{1/\sigma}R^{-\gamma/\sigma}
+ \exp\left(\sum_{k=1}^{K_\gamma}
+ \frac{c_k(\gamma)}{\sigma^k}R^{1-k(1-\gamma)}\right).
+ \label{eq:sigma-cascade}
+\end{equation}
+Indeed, $y=\log\nu_\sigma$ now obeys
+$y=R+\sigma^{-1}y^\gamma-(\gamma/\sigma)\log y+o(1)$, and its
+analytic core has $T=\sigma^{-1}R^{\gamma-1}$ in
+\eqref{eq:scalar-reversion}. At $\gamma=1-1/m$, the corresponding
+constant factor is $\exp(1/(m\sigma^m))$. This formula uses
+$(n!)^\sigma$; for the $\Gamma(1+\sigma n)$ normalization one must
+first make the argument change in \eqref{eq:gamma-growth}.
+
+\subsection{Uniform transition through a resonance}
+The constant-factor jump in a fixed-parameter expansion has a smooth
+transition when the parameter is allowed to move. We state it for a
+fully specified family to make uniformity unambiguous:
+\begin{equation}
+ \lambda_j(\gamma)=j\exp((\log(j+1))^\gamma),\qquad c_j=1,
+ \quad 0<\gamma<1.
+ \label{eq:uniform-family}
+\end{equation}
+Write $\Bcal_{1,\gamma}$ for its ordinary Borel transform.
+
+\begin{lemma}[Uniformity on compact parameter intervals]
+\label{lem:gamma-uniform}
+For \eqref{eq:uniform-family}, the coefficient-root theorem and the
+Borel-growth theorem hold uniformly for $\gamma$ in each compact
+subinterval $J\subset(0,1)$. On $J$, the expansion
+\begin{equation}
+ b_\gamma(\ee^s)=s^\gamma-\gamma\log s+o(1)
+ \label{eq:uniform-b}
+\end{equation}
+also holds uniformly.
+\end{lemma}
+\begin{proof}
+Let $\gamma_-\le\gamma\le\gamma_+$ describe $J$.
+The profile $L_\gamma(x)=\exp((\log(x+1))^\gamma)$ is admissible.
+For convexity, set $\ell=\log(x+1)$; then
+\[
+ (xL_\gamma(x))''=
+ \frac{\gamma L_\gamma(x)\ell^{\gamma-2}}{(x+1)^2}
+ \left(\ell(x+2)+x(\gamma\ell^\gamma+\gamma-1)\right)>0.
+\]
+The last sign follows from
+$\ell(x+2)-x>0$, using $\log(1+x)\ge x/(1+x)$, and the remaining
+$\gamma$-terms are positive. Moreover
+\[
+ \sup_{\gamma\in J}\frac{xL_\gamma'(x)}{L_\gamma(x)}
+ =O((\log x)^{\gamma_+-1})\longrightarrow0,
+\]
+and $\inf_{\gamma\in J}\log L_\gamma(x)\to\infty$.
+Thus $b_\gamma\to\infty$, $b_\gamma=o(\log x)$, and all the compact
+profile estimates in Lemma~\ref{lem:profile} are uniform. Its coercivity
+proof is uniform as well: the same eventual bound on the elasticity
+works for every $\gamma\in J$, and the bounded-index slopes are uniformly
+bounded. A contrary sequence $\gamma_n\in J$ would therefore contradict
+exactly that proof. This establishes the uniform root law.
+
+In Lemma~\ref{lem:entire-transfer}, the coefficient errors
+$\eta_n(\gamma)$ consequently tend to zero uniformly. The derivative
+bound for $\log f_\gamma$ and the small, central, and large index
+estimates are all uniform; the corresponding $N(t,\gamma)$ tend to
+infinity uniformly. This proves uniform Borel transfer.
+Finally, in Proposition~\ref{prop:moving},
+$h_\gamma(s)=s^\gamma+o(1)$ with the same uniform derivative estimates;
+$h_\gamma'\log h_\gamma=O(s^{\gamma_+-1}\log s)=o(1)$.
+The Taylor remainder is uniform, proving \eqref{eq:uniform-b}.
+\end{proof}
+
+\begin{theorem}[A double-scaling resonance profile]
+\label{thm:resonance-layer}
+Fix $m\ge2$, put $S=\log t$, and let
+\begin{equation}
+ \gamma(t,\theta)=1-\frac1m+\frac{\theta}{\log S}.
+ \label{eq:moving-gamma}
+\end{equation}
+For $\theta$ in every fixed compact real interval,
+\begin{equation}
+ \frac{\log\Bcal_{1,\gamma(t,\theta)}(t)}
+ {tS^{-\gamma(t,\theta)}
+  \exp\!\left(\sum_{k=1}^{m-1}c_k(\gamma(t,\theta))
+         S^{1-k(1-\gamma(t,\theta))}\right)}
+ \longrightarrow \exp\left(\frac{\ee^{m\theta}}m\right)
+ \label{eq:resonance-layer}
+\end{equation}
+uniformly in $\theta$.
+\end{theorem}
+\begin{proof}
+For large $t$, all the parameters lie in a fixed compact subinterval
+of $(0,1)$, so Lemma~\ref{lem:gamma-uniform} applies. The analytic
+implicit-function expansion \eqref{eq:scalar-reversion} has a uniform
+radius and bounded remainders on a sufficiently small closed parameter
+interval about $1-1/m$. Truncate it after the $m$th term. The error in
+$Y$ is
+\[
+ O\!\left(S^{1-(m+1)(1-\gamma(t,\theta))}\right)
+ =O\!\left(S^{-1/m}\ee^{(m+1)\theta}\right)=o(1)
+\]
+uniformly for bounded $\theta$. The logarithmic perturbation estimate
+is uniform too. The $m$th retained term is
+\[
+ c_m(\gamma(t,\theta))S^{1-m(1-\gamma(t,\theta))}
+ =c_m(\gamma(t,\theta))\ee^{m\theta}
+ \longrightarrow\frac{\ee^{m\theta}}m.
+\]
+Subtract the first $m-1$ terms, exponentiate, and apply the uniform Borel
+growth theorem. This proves \eqref{eq:resonance-layer}.
+\end{proof}
+
+At $\theta=0$ this gives the factor $\ee^{1/m}$. The leading terms in
+the denominator must be evaluated at the \emph{moving} value of
+$\gamma$; replacing them by their limiting parameter values changes
+unbounded terms. The theorem asserts uniformity for bounded $\theta$,
+not a simultaneous limit with $|\theta|\to\infty$ or $m\to\infty$.
+
+\section{Exact checks and numerical diagnostics}
+\label{sec:computations}
+
+The supplied program separates exact finite verification from
+floating-point asymptotic diagnostics. None of the latter is used as a
+premise of a theorem.
+
+\subsection{Independent rational coefficient computations}
+For rational inputs, coefficients are generated without a symbolic
+algebra system. If
+$E_j(q)=\exp(\lambda_j\Uhat(q))=\sum_{r\ge0}e_{j,r}q^r$, then
+\begin{equation}
+ e_{j,0}=1,\qquad
+ e_{j,m}=\frac{\lambda_j}{m}
+            \sum_{r=1}^m r u_r e_{j,m-r},\qquad
+ u_n=\sum_{j=1}^n c_j e_{j,n-j}.
+ \label{eq:code-recurrence}
+\end{equation}
+This follows by differentiating $E_j$, and supplies a triangular
+recurrence independent of enumerating Lagrange compositions.
+
+The recorded run uses $\lambda_j=jH_j$. It compares the recurrence
+with direct composition enumeration, checks convex composition bounds,
+checks the finite lower and upper inequalities using exact fractions,
+and repeats a coefficient comparison for the nonconstant amplitudes
+$c_j=(j+1)/2$. For the latter,
+$1\le c_j\le2^{j-1}$, so \eqref{eq:amplitudes} holds with $a=1$ and
+$D=\log2$. Separately, the coefficients of
+$w=1+Tw^\gamma$ are checked through degree nine for
+$\gamma=1-1/m$, $2\le m\le8$, including $c_m(\gamma)=1/m$.
+
+The recorded output reports \textbf{467 exact assertions passed}, with
+rational feedback coefficients computed through order 24. These are
+finite arithmetic checks, not a formal proof of the limit theorems.
+
+\subsection{Finite coefficient envelopes}
+The first table uses unit amplitudes and the harmonic slopes
+\eqref{eq:harmonic-slopes}. Its lower and upper columns are the logarithms
+of the two sides of \eqref{eq:finite-u-bound}, divided by $n$.
+The scale $b_n$ is computed with the smooth harmonic interpolation, and
+$m_{\rm low}$ maximizes the lower envelope.
+\begin{center}
+\small
+\input{data/envelope_table.tex}
+\end{center}
+The two envelopes need not lie on opposite sides of the asymptotic
+normalizer $b_n$: they enclose $\log u_n/n$, not its limit expression.
+In fact the lower column already exceeds $b_n$ here. The convergence
+is very slow, and the upper estimate deliberately counts all compositions
+using a common maximal slope sum. At the displayed sizes the table does
+not identify the limiting constant by itself. These floating-point values
+are not outward-rounded interval certificates.
+
+\subsection{Resonant normalizer diagnostics}
+For the next table use the large-$x$ profile
+$L(x)=\exp((\log x)^\gamma)$ and let $S=\log t$.
+Instead of forming enormous numbers $t$ or $\nu_1(t)$, solve directly for
+$b=\log(\nu_1(t)/t)$:
+\begin{equation}
+ b+\log b=\bigl(S+b-\log(1+b)\bigr)^\gamma.
+ \label{eq:numerical-b}
+\end{equation}
+At $\gamma=1-1/m$, the displayed quantity is
+\[
+ \exp\left(b+\gamma\log S-
+        \sum_{k=1}^{m-1}c_k(\gamma)S^{1-k/m}\right),
+\]
+whose limit is $\ee^{1/m}$. The calculation uses 75 decimal working
+digits.
+\begin{center}
+\small
+\input{data/resonance_table.tex}
+\end{center}
+These are diagnostics of the \emph{implicit growth normalizer}, not
+numerical evaluations of $\Bcal_1(t)$ or proofs that the same finite
+values approximate it closely. The JSON output also contains six
+moving-parameter normalizer checks for Theorem~\ref{thm:resonance-layer},
+computed at 100 decimal working digits; these have the same limitation. Even $S=10^{12}$ leaves a visible
+subleading correction for $\gamma=3/4$. Retaining the negative-power
+terms in \eqref{eq:scalar-reversion} and the next moving-argument
+correction would substantially improve numerical convergence.
+
+\subsection{Reproduction}
+From the archive root, the commands are
+\begin{quote}\ttfamily\small
+python -m pip install -r requirements.txt\\
+python code/verify.py\\
+pdflatex -interaction=nonstopmode -halt-on-error near\_linear\_feedback.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error near\_linear\_feedback.tex
+\end{quote}
+Exact arithmetic uses the standard Python library; NumPy and SciPy
+supply the large finite envelopes, and mpmath supplies high-precision
+normalizer calculations. The script writes both machine-readable output
+and the two tables included above. A third LaTeX pass may be used when
+section or table placement has changed.
+
+\section{Ten further research questions}
+\label{sec:future}
+
+\subsection{A multiplicative coefficient equivalent}
+Determine the $\exp(o(n))$ factor in
+$u_n=(a\ee^{b_n})^n\exp(o(n))$, first for $\lambda_j=jH_j$ and unit
+amplitudes. The finite upper envelope ignores the exact distribution of
+slope sums across compositions. A solution will require finer entropy
+estimates and a saddle correction, not just a higher-order expansion of
+$b_n$. A useful intermediate target is the first sublinear term of
+$\log u_n$ with a proved error smaller than that term.
+
+\subsection{A local limit theorem for composition length}
+The rate function has $I''(1)=1$, suggesting fluctuations of order
+$x_n/\sqrt n$ around a suitably corrected value of $n-K_n+1$.
+That scale and a Gaussian law are conjectural here. Terms discarded as
+$o(n)$ can shift the centre by much more than the fluctuation width.
+Determine the correct centre and variance before asserting a central
+limit theorem, and then seek a uniform lattice local limit.
+
+\subsection{Condensation of the primitive actions}
+Does a typical positively weighted Lagrange composition have one
+exceptional part containing almost all its excess? The present length
+law neither proves nor disproves this. For $L(x)=\exp((\log x)^\gamma)$,
+splitting an action changes $L$ by a relative amount of order
+$(\log x)^{\gamma-1}$ on fixed-ratio scales. This points to a possible
+sub-$n$ rate for condensation. Establish that rate, identify competing
+entropy, and distinguish unique condensation from several macroscopic
+parts.
+
+\subsection{Minimal hypotheses and oscillatory slow variation}
+Remove the differentiability and convexity assumptions while retaining a
+correct normalizer. Convexity provides a sharp exceptional-part upper
+bound; without it, the relevant object may be an upper convex envelope
+of the discrete slopes rather than $jL(j)$ itself. Seek necessary and
+sufficient conditions under which that envelope preserves coefficient-
+root growth, and analyze slowly varying factors with long plateaux or
+oscillatory local elasticity.
+
+\subsection{Sparse actions and much smaller amplitudes}
+Allow $c_j=0$, noninteger actions, or amplitudes with
+$\log c_j$ more negative than order $j$. The proof here uses the ability
+to fill almost every remaining unit of degree with action-one factors,
+and it needs at least exponentially sized exceptional-action amplitudes.
+Determine how support gaps and amplitude suppression alter the optimal
+length, the Lambert balance, and the rate function. A first concrete
+case is $c_j=\exp(-j\log\log(j+2))$.
+
+\subsection{Signed feedback and vector systems}
+For signed or complex amplitudes the positive coefficient model is only
+an absolute majorant. Develop verifiable noncancellation conditions that
+recover lower growth bounds. For vector equations, determine whether a
+one-dimensional effective slope emerges from positive matrix feedback,
+or whether several interacting large actions produce a different
+variational problem. Any extension must state its infinite-tail
+conditions rather than invoke a finite-dimensional theorem informally.
+
+\subsection{Growth away from the positive Borel ray}
+Determine the directional growth of $\Bcal_\sigma$ on nonpositive rays
+and in sectors. Positivity fixes maximum modulus but does not prevent
+cancellation on other rays. Compare any resulting Laplace sums with the
+left-sector analytic fixed points constructed in the repository feedback
+article. Neither an entire Borel transform nor coefficient Gevrey bounds
+alone proves that the two analytic constructions coincide.
+
+\subsection{Compatible acceleration and optimal truncation}
+Use the scale $\nu_1$ to construct an acceleration, if possible, which
+respects multiplication and the nonlinear feedback equation after an
+explicit analytic interpretation of its countable kernel. The damping
+threshold in Proposition~\ref{prop:damping} is only a necessary guide.
+For a specified sectorial realization, also establish uniform remainder
+bounds and an actual optimal-truncation theorem. Coefficient-root growth
+alone does not certify errors of truncated analytic solutions.
+
+\subsection{Inversion and parameter limits beyond fixed resonances}
+Determine the exact root-growth scale of the compositional inverse of
+$\Uhat$. Equality of the least Gevrey index is too weak to decide whether
+$a\ee^{b_n}$ survives reversion. Separately, extend
+Theorem~\ref{thm:resonance-layer} to an increasing resonance index $m$,
+or to the transition $\gamma\uparrow1$ at a rate depending on $t$.
+That limit requires uniform control of a growing number of reversion
+terms and should connect to the genuinely superlinear regime.
+
+\subsection{Formal proofs and certified asymptotic computation}
+A practical Lean sequence starts with the finite coefficient formula,
+the discrete convex composition bound, and the exact amplitude
+inequalities. The next stages are the compact profile lemma, its tail
+coercivity, and the maximum-term transfer. These are substantial but
+separable targets; no full transseries datatype is needed for the first
+stage. On the numerical side, implement directed interval versions of
+\eqref{eq:finite-u-bound}, certified roots for \eqref{eq:b-definition},
+and explicit moduli for the $o(1)$ terms. Keep finite interval enclosures,
+asymptotic theorems, and Lean certificates as distinct output types.
+
+\section{Conclusions}
+
+The near-linear regime is not a degenerate version of the superlinear
+Gevrey calculation. It has its own self-consistent Lambert scale:
+\[
+ b_n\ee^{b_n}=L\left(\frac n{1+b_n}\right),\qquad
+ u_n^{1/n}\sim a\ee^{b_n}.
+\]
+The coefficient theorem tolerates substantial amplitude variability and
+bounded linear slope errors. At the same precision it provides a universal
+large-deviation law for Lagrange composition length, with a rate function
+independent of the slowly varying profile.
+
+The scale transfers to entire Borel growth through one more nonlinear
+inversion. That transfer distinguishes zero Gevrey type at every positive
+order from positive-direction summability: all the normalized transforms
+are entire but too large for their standard Laplace kernels. For
+stretched-logarithmic amplification the inversion yields a finite,
+explicit power--logarithmic expansion at each parameter, an infinite
+sequence of resonant constants, and a uniform transition profile through
+each fixed resonance. A faster slowly varying example shows why the
+moving argument in the initial Lambert equation is indispensable.
+
+These conclusions answer the inspected repository's near-linear question
+at coefficient-root and transform-growth precision under the stated
+hypotheses. A full multiplicative coefficient equivalent, general signed
+or sparse systems, and a compatible acceleration theory remain separate
+research tasks rather than consequences asserted without proof.
+
+\appendix
+\section{Source snapshot and claim boundaries}
+\label{app:sources}
+
+\subsection{Pinned repository source}
+The initial survey used the repository root tree
+\begin{center}\small\ttfamily
+ a795fcffa4b3ece22761d81fbed3c43be8b81795.
+\end{center}
+The unchanged predecessor was rechecked at commit
+\begin{center}\small\ttfamily
+04473354a0f3edff2d6c365caf26170ca6b88735.
+\end{center}
+The initial transseries project tree was
+\begin{center}\small\ttfamily
+ e37727630fd519201ceb2b2f24fdc71b238873d9.
+\end{center}
+The direct predecessor is the file \texttt{article.tex} in
+\begin{quote}\small\ttfamily\raggedright
+Analysis/Transseries/docs/series-and-transseries/\\
+Exponential\_Feedback\_Regularity\_Classification/
+\end{quote}
+Its blob hash is
+\begin{center}\small\ttfamily
+ c6a83d71973a12fe7ed970d2abc56e2b49e6808f.
+\end{center}
+The contiguous source range 1400--1605 contains the further-research
+section, including the near-linear, amplitude, and summation questions.
+The source range 350--530 contains the positive coefficient formula,
+its proof, and the convergence criterion. The group README initially
+recorded six unmerged arrivals of 29 September 2026 and recorded twelve
+at the final recheck, after a second intake. Both versions describe the
+arrivals as lacking claim-by-claim review and Lean formalization.
+We therefore reprove the needed finite algebra rather than treating the
+predecessor as a formally verified dependency.
+
+\subsection{Scope of the repository comparison}
+The review used the current transseries project README, the group README
+and its descriptions of the initial six arrivals, the subsequent intake
+descriptions at the final recheck, and the relevant contiguous parts of
+the feedback article. It was not a line-by-line audit of the
+entire canonical and companion volumes or every repository file.
+No repository branch was changed. The proposed placement of this package
+is a new research directory beside the predecessor, pending mathematical
+review and normal repository intake.
+
+\subsection{Status matrix}
+\begin{center}\small
+\begin{tabular}{@{}p{0.38\linewidth}p{0.55\linewidth}@{}}
+\toprule
+Item & Status and boundary\\
+\midrule
+Formal coefficient formula & Classical tool; reproved with amplitudes and checked at finite orders.\\[3pt]
+Coefficient-root equivalent & Proved under admissibility, positivity, and exponential amplitude bounds; not a full coefficient equivalent.\\[3pt]
+Length large deviations & Proved with speed $n$; does not identify a largest-action or Gaussian law.\\[3pt]
+Entire Borel growth & Proved on the positive ray and hence for maximum modulus; not a directional classification.\\[3pt]
+Positive summation obstruction & Proved for every standard finite Gevrey order; not an obstruction to all generalized summation.\\[3pt]
+Resonance cascade and layer & Proved for the stated families; fixed $m$, compact moving parameters.\\[3pt]
+Computation & 467 exact finite assertions plus nonrigorous floating-point diagnostics; no new Lean proof.\\[3pt]
+Novelty & Extension of an explicit inspected repository question; external publication priority not exhaustively established.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{A proof-audit guide}
+\label{app:audit}
+
+The central technical point is Lemma~\ref{lem:profile}. Its compact
+identity is exact before taking limits, and its coercivity argument is
+needed to discard the exponentially many but poorly weighted
+compositions. Counting all compositions by $2^n$ before localization
+would destroy the constant at coefficient-root precision. The amplitude
+hypothesis is useful precisely because its logarithmic cost is at most
+$D(n-K_n)$, which is $o(n)$ in the localized regime.
+
+The next sensitive step is the transfer to Borel growth. An error
+$\exp(o(n))$ in coefficients is compatible with an equivalent for
+$\log\Bcal_\sigma(t)$, but not with an equivalent for
+$\Bcal_\sigma(t)$ itself. All the displays in
+Section~\ref{sec:resonance} deliberately concern the logarithm of the
+Borel transform. Exponentiating those displays a second time without a
+stronger error estimate would be invalid.
+
+Finally, when a reversion term has exponent zero it must be retained
+before exponentiating the logarithmic normalizer. This is the source of
+the constants in Corollary~\ref{cor:resonances}, and it is why the index
+$K_\gamma$ includes the equality case. The moving-parameter theorem
+requires uniform estimates from the coefficient theorem onward; its
+proof does not merely insert a moving parameter into a pointwise
+asymptotic statement.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{repo-feedback}
+Vladimir Reshetnikov, ProveIt research repository.
+\emph{A Sharp Regularity Classification for Countable
+Exponential-Feedback Transseries}. Research article filed 29 September
+2026; source snapshot and precise path in Appendix~\ref{app:sources}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/04473354a0f3edff2d6c365caf26170ca6b88735/Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}{Pinned TeX source}.
+The repository owner is given for attribution of the source location;
+no independent authorship or peer-review claim is intended.
+
+\bibitem{gessel}
+Ira M. Gessel.
+Lagrange inversion.
+\emph{Journal of Combinatorial Theory, Series A} \textbf{144}
+(2016), 212--249.
+\href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018};
+\href{https://arxiv.org/abs/1609.05988}{arXiv:1609.05988}.
+
+\bibitem{jkt}
+Sabine Jansen, Tobias Kuna, and Dimitrios Tsagkarogiannis.
+Lagrange inversion and combinatorial species with uncountable color
+palette.
+\emph{Annales Henri Poincar\'e} (2021).
+\href{https://doi.org/10.1007/s00023-020-01013-0}{doi:10.1007/s00023-020-01013-0};
+\href{https://arxiv.org/abs/2008.10862}{arXiv:2008.10862}.
+
+\bibitem{bgt}
+N. H. Bingham, C. M. Goldie, and J. L. Teugels.
+\emph{Regular Variation}.
+Encyclopedia of Mathematics and its Applications, vol.~27.
+Cambridge University Press, 1987.
+Background reference; the differentiable estimates needed here are
+proved in the text.
+
+\bibitem{sauzin}
+David Sauzin.
+\emph{Introduction to 1-summability and resurgence}.
+2014.
+\href{https://arxiv.org/abs/1405.0356}{arXiv:1405.0356}.
+
+\bibitem{nikolaev}
+Nikita Nikolaev.
+\emph{Gevrey Asymptotic Implicit Function Theorem}.
+2021, version 2.
+\href{https://arxiv.org/abs/2112.08792}{arXiv:2112.08792}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions.
+\S4.13, Lambert $W$-function.
+\url{https://dlmf.nist.gov/4.13}.
+Accessed 29 September 2026.
+
+\end{thebibliography}
+\end{document}

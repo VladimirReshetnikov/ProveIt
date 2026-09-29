@@ -1,0 +1,1974 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{27,49,70}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite-core feedback transseries}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.2em}\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\belowcaptionskip}{6pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.7em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\ee}{\mathrm e}\newcommand{\dd}{\mathrm d}
+\newcommand{\Prob}{\mathbb P}\newcommand{\E}{\mathbb E}
+\newcommand{\Normal}{\mathcal N}\newcommand{\Acal}{\mathcal A}
+\newcommand{\Uhat}{\widehat U}\newcommand{\Vhat}{\widehat V}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\One}{\mathcal E_M}
+\newcommand{\Kcal}{\mathcal K}
+\DeclareMathOperator{\Var}{Var}
+\hypersetup{pdftitle={Finite-Core Universality and Sharp Large Order for Countable Exponential-Feedback Transseries},pdfauthor={Research draft prepared with ChatGPT},pdfsubject={Sharp cutoff, multiplicative coefficient asymptotics, Gaussian fluctuations, and formal inverse asymptotics}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{ink} Finite-Core Universality and Sharp Large Order\par for Countable Exponential-Feedback Transseries\par}
+\vspace{0.6em}
+{\large A sharp cutoff, a moving Gaussian saddle,\par and superquadratic inverse asymptotics\par}
+\vspace{0.85em}
+Research article prepared for Vladimir Reshetnikov\\
+29 September 2026
+\end{center}
+
+\begin{abstract}
+For the formal equation
+\[
+ \Uhat(q)=\sum_{j\ge1}q^j\exp\!\bigl(a j^p\Uhat(q)\bigr),
+ \qquad a>0,\quad p>1,
+\]
+we pass from logarithmic large-order estimates to a full multiplicative
+coefficient equivalent. The main step is a sharp finite-core reduction.
+Keep actions $1,\ldots,M$ in an analytic implicit core, and retain exactly
+one further action through its linear response. The coefficients of this
+one-tail series are asymptotic to those of $\Uhat$ if and only if
+$M(p-1)>1$. At equality the ratio tends to zero, not one. A coupled
+small-radius/large-action saddle then gives the full exponential factor
+and determinant prefactor using only the finite core. It also yields a
+conditional local Gaussian law and an unconditional central limit theorem
+for the largest action, centered at an explicitly defined moving saddle,
+with standard deviation asymptotic to
+$\sqrt{pn}/((p-1)\log n)$.
+
+The result allows nonnegative changes to finitely many initial slopes and
+weights, with the first weight kept equal to one. For $p>2$ the finite core disappears from the leading
+multiplicative equivalent. For $p=2$ a factor
+$\exp((1+1/a)r_n^2)$ survives, where
+$r_n(1+r_n)e^{2r_n}=an$; discarding it produces an unbounded relative error.
+For $p>2$ we additionally prove a sharp formal-reversion law,
+$v_n=-u_n+(n+1)u_2u_{n-1}+o(nu_{n-1})$.
+The proofs are self-contained apart from elementary analytic and formal
+power-series tools. Exact coefficient checks, numerical saddle diagnostics,
+a proof-dependency audit, and a further research program accompany the text.
+\end{abstract}
+
+\noindent\textbf{Status.}
+This is an AI-assisted research draft with conventional mathematical proofs,
+not a Lean-verified development. The model-specific theorems below are the
+proposed contributions. Their global originality and publication priority
+have not been established. No named longstanding conjecture, general
+summability theorem, or full inverse theorem in the quadratic/subquadratic
+regime is claimed solved.
+
+\clearpage
+\setcounter{tocdepth}{1}\hypersetup{bookmarksdepth=2}
+\tableofcontents
+\clearpage
+
+\section{The problem left by the repository}
+\label{sec:context}
+
+\subsection{A precise extension, rather than another coefficient list}
+
+The ProveIt transseries project develops asymptotic scales, power--logarithmic
+and exponential expansions, formal composition and reversion, analytic
+realization, and quantitative inversion. Its current documentation carefully
+distinguishes the scope of the Lean modules from the human research
+manuscripts \cite{repo}. In particular, a formal expansion and a theorem
+about the growth or realization of its coefficients are different objects.
+
+The recently filed article \emph{A sharp regularity classification for
+countable exponential-feedback transseries} \cite{feedback} studies
+\[
+ \Uhat(q)=\sum_{j\ge1}q^j e^{\lambda_j\Uhat(q)}.
+\]
+It obtains convergence and Gevrey classifications, logarithmic coefficient
+asymptotics, macroscopic concentration, and sectorial realizations. After its
+concentration proof it explicitly leaves a full multiplicative equivalent,
+a local limit theorem, and the fluctuation scale around a sufficiently
+accurate finite-$n$ center unresolved. Its reversion result transfers Gevrey
+class membership, not sharp coefficient asymptotics.
+
+Those are the gaps addressed here, for the substantial but specific class
+$\lambda_j=a j^p$, $p>1$, and finite nonnegative perturbations of that class.
+The distinction in precision is important. Knowing
+$\log u_n=X_n+o(n)$ allows an undetermined factor
+$\exp(o(n))$. Such a factor can be larger than every power of $n$.
+We exhibit exactly this phenomenon at $p=2$ and give a finite procedure
+that incorporates all factors needed for a relative error tending to zero.
+
+The source inspected for \cite{feedback} is pinned at repository commit
+\path{5804c7aff9955e6cbc09be2a71a295a07b238bc9}; its TeX blob is
+\path{c6a83d71973a12fe7ed970d2abc56e2b49e6808f}.
+The relevant current directory is
+\begin{quote}\small
+\path{Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/}.
+\end{quote}
+The repository was changing during inspection. We do not claim an exhaustive
+audit of every incoming archive or every branch. Our main proofs do not
+assume an unreviewed theorem from an earlier research draft: the needed
+coefficient identity and macroscopic bounds are established again below.
+
+\subsection{Relation to established mathematics}
+
+Lagrange inversion is classical; Gessel's survey \cite{gessel} provides several
+formal and combinatorial forms. Infinite-colour inversion is also an
+established subject, with considerably broader settings than our countable
+scalar kernel \cite{jkt}. Neither Lagrange inversion nor the passage to
+infinitely many formal colours is claimed as a new method here.
+
+Condensation, finite clouds of small components, and threshold phenomena
+already occur in superexponentially weighted random trees. Janson, Jonsson,
+and Stef\'ansson \cite{jjs} obtain detailed results for product degree weights,
+and Janson \cite{janson} surveys the relation to random allocations. Our
+coefficient weights instead contain
+$(\lambda_{j_1}+\cdots+\lambda_{j_m})^{m-1}$, not a fixed product of
+single-part weights. The growing action has scale $n/\log n$, and the
+small-action threshold carries logarithmic factors. Thus the familiar
+condensation picture is useful context, but is not itself our novelty claim
+or a substitute for the proofs below.
+
+Rapid-coefficient expansions under formal operations have a classical
+antecedent in Bender's work \cite{bender}. We give the specific convolution
+and reversion argument needed here, including its range $p>2$, rather than
+asserting that formal reversion automatically preserves a leading constant.
+For the formal transseries viewpoint, see also Edgar \cite{edgar}.
+
+\subsection{What the results do and do not provide}
+
+The main output is a multiplicative asymptotic theorem for a divergent
+one-generator transseries. Substituting $q=e^{-x}$ gives
+$\sum u_ne^{-nx}$, whose support is entirely elementary; the difficult
+information lies in the coefficient growth and the implicit feedback.
+No enlarged monomial support is required for the phenomenon.
+
+The finite-core formula uses analytic functions only near the origin, where
+they are unambiguous. It never evaluates the original infinite kernel at a
+positive argument. This point is essential: for $p>1$, that infinite sum
+diverges for every fixed positive pair $(q,u)$. Similarly, no Borel or
+Laplace integral is justified merely by obtaining precise large-order
+coefficients. Those analytic questions remain separate.
+
+\section{Model, finite core, and principal theorems}
+\label{sec:main}
+
+\subsection{The admissible family}
+
+Fix $a>0$, $p>1$, and an integer $M_0\ge1$. Assume
+\begin{equation}
+ w_1=1,\qquad w_j,\lambda_j\ge0,\qquad
+ w_j=1,\quad\lambda_j=a j^p\quad(j>M_0).
+ \label{eq:assumptions}
+\end{equation}
+The finitely many exceptional values are finite real numbers. Write
+\begin{equation}
+ \Uhat(q)=\sum_{j\ge1}w_jq^j e^{\lambda_j\Uhat(q)}
+        =\sum_{n\ge1}u_nq^n.
+ \label{eq:model}
+\end{equation}
+All infinite identities involving $\Uhat$ are formal. Coefficients of any
+fixed degree involve only finitely many summands. We prove below that the
+solution exists uniquely and $u_1=1$.
+The \emph{pure model} has $w_j=1$, $\lambda_j=a j^p$ for all $j\ge1$.
+
+Fix an integer $M\ge M_0$. Define the analytic core and response by
+\begin{align}
+ \Phi_M(t,u)&=\sum_{j=1}^M w_jt^je^{\lambda_ju},
+ &G_M(t)&=\Phi_M(t,G_M(t)),\\
+ R_M(t)&=\bigl(1-\partial_u\Phi_M(t,G_M(t))\bigr)^{-1}.
+ \label{eq:core}
+\end{align}
+The branches have $G_M(0)=0$, $G_M'(0)=1$, and $R_M(0)=1$.
+They are analytic on a fixed complex neighborhood of zero. Define
+\begin{equation}
+ W_M(q)=R_M(q)\sum_{j>M}q^j e^{a j^pG_M(q)},
+ \qquad w_{n,M}=[q^n]W_M(q).
+ \label{eq:one-tail}
+\end{equation}
+The notation $w_{n,M}$ is distinct from the primitive weights $w_j$.
+Although $G_M$ and $R_M$ are analytic, $W_M$ is a \emph{formal} series.
+Its coefficient $w_{n,M}$ counts exactly one primitive action above $M$;
+it is not the coefficient of the truncation $G_M$ itself.
+
+\begin{theorem}[Sharp finite-core cutoff]
+\label{thm:cutoff}
+Under \eqref{eq:assumptions},
+\begin{equation}
+ \boxed{\quad
+ \lim_{n\to\infty}\frac{w_{n,M}}{u_n}=
+ \begin{cases}
+ 1,&M(p-1)>1,\\[2pt]
+ 0,&M(p-1)\le1.
+ \end{cases}\quad}
+ \label{eq:cutoff}
+\end{equation}
+For the pure model the smallest sufficient integer is
+\begin{equation}
+ M_*(p)=\left\lfloor\frac1{p-1}\right\rfloor+1.
+ \label{eq:mincore}
+\end{equation}
+All parameters, including $M$, are fixed as $n\to\infty$.
+\end{theorem}
+
+\subsection{A computable multiplicative equivalent}
+
+In the next theorem let $G=G_M$, $R=R_M$ to simplify notation.
+The saddle is a real pair $(z_n,\tau_n)$, with $z_n$ not required to be an
+integer. Set $k_n=n-z_n$ and $\Lambda_n=a z_n^p$.
+
+\begin{theorem}[Finite-core saddle formula]
+\label{thm:saddle}
+For every fixed $M\ge M_0$, there is, for all sufficiently large $n$, a
+unique solution in the asymptotic region specified below to
+\begin{equation}
+ \boxed{\qquad
+ n=z_n+a z_n^p\tau_nG'(\tau_n),\qquad
+ -\log\tau_n=apz_n^{p-1}G(\tau_n).
+ \qquad}
+ \label{eq:saddle}
+\end{equation}
+It satisfies
+\begin{align}
+ z_n&\sim\frac{p}{p-1}\frac{n}{\log n},
+ &\tau_n&\sim \frac1a\left(\frac{p-1}{p}\right)^p
+                   \frac{(\log n)^p}{n^{p-1}}.
+ \label{eq:saddlescales}
+\end{align}
+Define, with all core functions evaluated at $\tau_n$,
+\begin{align}
+ B_n&=\Lambda_n(\tau_nG'+\tau_n^2G''),
+ &C_n&=1+\frac{pk_n}{z_n},\\
+ H_n&=ap(p-1)z_n^{p-2}G,
+ &\Delta_n&=C_n^2-H_nB_n.
+ \label{eq:determinant}
+\end{align}
+Then $\Delta_n>0$ eventually and
+\begin{equation}
+ \boxed{\quad
+ w_{n,M}\sim\Acal_{n,M}:=
+ \frac{R_M(\tau_n)}{\sqrt{\Delta_n}}
+ \exp\!\left(a z_n^pG_M(\tau_n)-(n-z_n)\log\tau_n\right).
+ \quad}
+ \label{eq:full-equivalent}
+\end{equation}
+Consequently $u_n\sim\Acal_{n,M}$ when $M(p-1)>1$, whereas
+$\Acal_{n,M}/u_n\to0$ when $M(p-1)\le1$.
+\end{theorem}
+
+The uniqueness assertion is local to, for example,
+$z\log n/n\in[c_-,c_+]$, where
+$0<c_-<p/(p-1)<c_+$ are fixed and sufficiently close, and to the
+small branch of the core. It is not a claim about every possible positive
+solution of the displayed equations away from that region.
+
+\subsection{Fluctuations and inverse asymptotics}
+
+The positive Lagrange formula in Section~\ref{sec:formal} defines a
+probability distribution on ordered action configurations of total action
+$n$. Let $J_n$ denote their largest action and let $\One$ be the event
+that exactly one action exceeds $M$.
+
+\begin{theorem}[Moving Gaussian law]
+\label{thm:clt}
+For every fixed $M\ge M_0$, put
+\begin{equation}
+ \sigma_n^2=\frac{B_n}{\Delta_n}
+       \sim\frac{z_n^2}{pn}
+       \sim\frac{p}{(p-1)^2}\frac{n}{(\log n)^2}.
+ \label{eq:variance}
+\end{equation}
+For each fixed $A<\infty$, uniformly over integers
+$|j-z_n|\le A\sigma_n$,
+\begin{equation}
+ \sigma_n\Prob(J_n=j\mid\One)
+ =\frac1{\sqrt{2\pi}}
+   \exp\!\left(-\frac{(j-z_n)^2}{2\sigma_n^2}\right)+o(1).
+ \label{eq:local-clt}
+\end{equation}
+The conditional standardized variables converge in distribution to
+$\Normal(0,1)$. If $M(p-1)>1$, then also
+\begin{equation}
+ \frac{J_n-z_n}{\sigma_n}\ \Longrightarrow\ \Normal(0,1)
+ \quad\text{without conditioning}.
+ \label{eq:clt}
+\end{equation}
+\end{theorem}
+
+We deliberately distinguish the conditional \emph{local} theorem from the
+unconditional \emph{weak} theorem. A conditioning event of probability
+$1-o(1)$ transfers weak convergence, but alone does not transfer errors on
+the smaller $1/\sigma_n$ scale of individual point probabilities.
+
+For the pure model, let $r_n>0$ be the unique solution of
+\begin{equation}
+ r_n(1+r_n)^{p-1}e^{pr_n}=a n^{p-1},
+ \qquad j_n^0=\frac n{1+r_n},\quad k_n^0=n-j_n^0,
+ \label{eq:bare-r}
+\end{equation}
+and define
+\begin{equation}
+ S_n=\frac{\exp\!\bigl(k_n^0(1+pr_n)\bigr)}
+              {\sqrt{1+2pr_n+pr_n^2}}.
+ \label{eq:bare-S}
+\end{equation}
+
+\begin{theorem}[Explicit large order and superquadratic reversion]
+\label{thm:explicit}
+For the pure model, if $p>3/2$ then
+\begin{equation}
+ u_n\sim S_n
+  \exp\!\left(\frac{(a+1)(k_n^0)^2}{a(j_n^0)^p}\right).
+ \label{eq:first-correction}
+\end{equation}
+In particular, $u_n\sim S_n$ for $p>2$, whereas for $p=2$,
+\begin{equation}
+ \boxed{\qquad u_n\sim S_n\exp\!\bigl((1+1/a)r_n^2\bigr).\qquad}
+ \label{eq:quadratic}
+\end{equation}
+If $p>2$ and $\Vhat=\Uhat^{\langle-1\rangle}=\sum v_nq^n$, then
+\begin{equation}
+ v_n=-u_n+(n+1)u_2u_{n-1}+o(nu_{n-1}),
+ \qquad v_n\sim-u_n\sim-S_n.
+ \label{eq:inverse}
+\end{equation}
+Moreover,
+\begin{equation}
+ \frac{u_n}{u_{n-1}}\sim e^{pr_n}
+ =\frac{a n^{p-1}}{r_n(1+r_n)^{p-1}}.
+ \label{eq:ratio}
+\end{equation}
+\end{theorem}
+
+\section{Exact formal identities and their probability model}
+\label{sec:formal}
+
+\begin{lemma}[Formal existence and positive coefficient formula]
+\label{lem:lagrange}
+Equation~\eqref{eq:model} has a unique solution in $q\R[[q]]$, with
+$u_1=1$ and nonnegative coefficients. Its coefficients are
+\begin{equation}
+ u_n=\sum_{m=1}^n\frac1{m!}
+ \sum_{\substack{j_1+\cdots+j_m=n\\ j_i\ge1}}
+ \left(\prod_{i=1}^m w_{j_i}\right)
+ \left(\sum_{i=1}^m\lambda_{j_i}\right)^{m-1}.
+ \label{eq:positive}
+\end{equation}
+Equivalently, for finitely supported multiplicity vectors
+$\mathbf m=(m_1,m_2,\ldots)$,
+\begin{equation}
+ u_n=\sum_{\sum j m_j=n}
+ \frac{\prod_j w_j^{m_j}}{\prod_jm_j!}
+ \left(\sum_j\lambda_jm_j\right)^{\sum_jm_j-1}.
+ \label{eq:partition}
+\end{equation}
+For the one-part term the zeroth power is interpreted as $1$, including
+when its base vanishes.
+\end{lemma}
+
+\begin{proof}
+The coefficient of $q^n$ on the right side of \eqref{eq:model} uses only
+coefficients of $\Uhat$ of degrees at most $n-1$. This recursively defines
+a unique solution and proves nonnegativity and $u_1=w_1=1$.
+
+For the explicit expression, introduce a separate marker $s$ and solve
+$U_s=s\Phi(q,U_s)$, where
+$\Phi(q,u)=\sum_{j\ge1}w_jq^je^{\lambda_ju}$.
+Classical formal Lagrange inversion gives
+\[
+ [s^m]U_s=\frac1m[u^{m-1}]\Phi(q,u)^m.
+\]
+Expanding the product and the exponential gives \eqref{eq:positive} after
+setting $s=1$. That substitution is valid coefficientwise: every factor
+of $\Phi$ has positive $q$-order, so only $m\le n$ can contribute to
+$[q^n]$. Grouping ordered lists by their multiplicities gives
+\eqref{eq:partition}.
+\end{proof}
+
+For all sufficiently large $n$, the one-part configuration of size $n$
+has weight $1$, so $u_n>0$. Normalize every ordered summand in
+\eqref{eq:positive} by $u_n$. This defines a probability measure on the
+finite disjoint union of all compositions of $n$. Write $K_n=m$ for its
+number of parts, $J_n=\max_i j_i$, and
+\begin{equation}
+ E_n=n-K_n+1=1+\sum_i(j_i-1)
+ \label{eq:excess}
+\end{equation}
+for one plus the total excess above unit actions. The integer $E_n$ is
+not the largest part, although the two become asymptotically close.
+
+\begin{lemma}[The exact one-tail identity]
+\label{lem:marking}
+The core functions in \eqref{eq:core} are analytic near zero with
+nonnegative Taylor coefficients. Furthermore,
+\begin{equation}
+ w_{n,M}=u_n\Prob(\One).
+ \label{eq:prob-one}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The analytic implicit function theorem applies to
+$u-\Phi_M(t,u)$ at $(0,0)$, since its derivative in $u$ is $1$ there.
+Formal iteration proves nonnegative coefficients, and the analytic
+solution has the same Taylor series. The series
+$P(t)=\partial_u\Phi_M(t,G_M(t))$ has nonnegative coefficients and zero
+constant term; hence $R_M=(1-P)^{-1}$ does too.
+
+Mark every primitive action $j>M$ by $s$:
+\[
+ U_s=\Phi_M(q,U_s)+s\sum_{j>M}q^je^{a j^pU_s}.
+\]
+At $s=0$ the solution is $G_M$. Differentiating formally at $s=0$ yields
+\[
+ (1-\partial_u\Phi_M(q,G_M))\left.\partial_sU_s\right|_{s=0}
+ =\sum_{j>M}q^je^{a j^pG_M}.
+\]
+Thus $[s]U_s=W_M$. In \eqref{eq:positive}, the power of $s$ is exactly
+the number of parts above $M$, proving \eqref{eq:prob-one}.
+\end{proof}
+
+\begin{example}[Small coefficients in the pure model]
+Directly from \eqref{eq:partition},
+\begin{align*}
+ u_1&=1,\qquad u_2=a+1,\\
+ u_3&=1+a(1+2^p)+\tfrac32a^2,\\
+ u_4&=1+a(1+2^p+3^p)
+       +\tfrac12a^2(2+2^p)^2+\tfrac83a^3.
+\end{align*}
+For $a=1,p=2$, $u_3=15/2$ and the inverse coefficient is
+$v_3=2u_2^2-u_3=1/2>0$. Thus an eventual-sign theorem for the inverse
+must not be misread as a sign assertion at every small degree.
+\end{example}
+
+\section{Macroscopic localization, with full estimates}
+\label{sec:macro}
+
+The following lemma establishes the coarse bounds needed later. The
+logarithmic conclusion is included to make the reduction self-contained;
+it is not presented as new relative to \cite{feedback}.
+Put $s=p-1$ and
+\begin{equation}
+ X_n=s n\log n-p n\log\log n
+ +\left(\log a+p\log\frac p{s}-s\right)n.
+ \label{eq:Xn}
+\end{equation}
+
+\begin{lemma}[Exponential-scale localization]
+\label{lem:macro}
+Under \eqref{eq:assumptions}, $\log u_n=X_n+o(n)$. For every
+$\delta>0$ there is $c_\delta>0$ such that
+\begin{equation}
+ \Prob\!\left(\left|\frac{E_n\log n}{n}-\frac p{p-1}\right|>\delta\right)
+ \le\exp(-c_\delta n+o(n)).
+ \label{eq:macro-excess}
+\end{equation}
+For every $\varepsilon>0$ there is $d_\varepsilon>0$ such that
+\begin{equation}
+ \Prob\bigl(J_n<(1-\varepsilon)E_n\bigr)
+ \le\exp(-d_\varepsilon n+o(n)).
+ \label{eq:macro-giant}
+\end{equation}
+Also, for every fixed $M\ge M_0$,
+$\log w_{n,M}=X_n+o(n)$, even if $M$ is below the sharp cutoff.
+\end{lemma}
+
+\begin{proof}
+Choose constants $D\ge0$ and $W\ge1$ so that
+$\lambda_j\le a j^p+D$ and $w_j\le W$ for all $j$. In a composition
+with $m$ parts put $r=n-m+1$. Convexity of $x^p$ and repeated transfer
+of excess to a largest part give
+\[
+ \sum_i j_i^p\le r^p+m-1.
+\]
+There are at most $r-1$ nonunit parts, so their primitive weight product
+is at most $W^{r-1}$. Increasing $D$ absorbs the extra $a(m-1)$ and gives
+the row bound
+\begin{equation}
+ [\text{$m$-part contribution}]
+ \le\binom{n-1}{r-1}W^{r-1}
+       \frac{(a r^p+Dm)^{m-1}}{m!}.
+ \label{eq:row-upper}
+\end{equation}
+Conversely, the configuration with one action $r$ and $n-r$ unit actions
+contributes at least
+\begin{equation}
+ T_{n,r}:=\frac{(a r^p)^{n-r}}{(n-r)!},
+ \qquad r>M_0.
+ \label{eq:lower-spike}
+\end{equation}
+The factor counting its possible positions cancels the difference between
+$m!$ and $(m-1)!$.
+
+Let $L=\log n$. Taking $r=\lfloor(p/s)n/L\rfloor$ in
+\eqref{eq:lower-spike} and using Stirling's formula gives
+$\log T_{n,r}=X_n+o(n)$.
+We now show why no row improves this logarithm by order $n$.
+If $r\ge\eta n$ for fixed $\eta>0$, the logarithm of the right side of
+\eqref{eq:row-upper} is at most
+$(1-\eta)s nL+O(n\log L)$, using the elementary entropy bound
+$\binom{n-1}{r-1}\le2^n$. Such rows are excluded from any maximizing
+sequence, so necessarily $r/n\to0$.
+
+In that range the binomial entropy and $(r-1)\log W$ are $o(n)$.
+Comparison with the lower bound forces
+$\log(a r^p+Dm)\ge pL-O(\log L)$; hence
+$\log r=L-O(\log L)$ and $Dm=o(r^p)$. Write $\alpha=r/n$.
+Uniform Stirling estimates now give, for any row within $O(n)$ of the
+maximum,
+\[
+ \frac1n\log[\text{row bound}]
+ =(1-\alpha)\{sL+p\log\alpha+\log a
+                -\log(1-\alpha)+1\}+o(1).
+\]
+Comparison once more with $X_n/n$ gives $\alpha L=O(\log L)$.
+Consequently $\alpha\log\alpha=o(1)$ and, putting $y=rL/n$,
+\begin{equation}
+ \frac1n\log[\text{row bound}]
+ =sL-p\log L+\log a+1+p\log y-sy+o(1).
+ \label{eq:variational}
+\end{equation}
+The function $g(y)=p\log y-sy$ tends to $-\infty$ at both ends of
+$(0,\infty)$ and is strictly concave, with its unique maximum at $p/s$.
+This proves the upper logarithmic estimate. It also proves uniform
+exponential loss away from any fixed neighborhood of $p/s$: otherwise a
+sequence of offending rows would, by the preceding localization, have a
+limit point contradicting the strict maximum of $g$. Summing at most $n$
+rows changes a logarithm by only $O(\log n)$. This proves
+\eqref{eq:macro-excess}.
+
+For \eqref{eq:macro-giant}, it is enough to take $0<\varepsilon<1/2$.
+Restrict $r$ to a fixed compact multiple of $n/L$, since its complement
+already has exponentially small weight. Under the constraint
+$j_i\le b=\lfloor(1-\varepsilon)r\rfloor$, convexity maximizes the slope
+sum by putting the excess into at most two nonunit parts, of sizes $b$
+and $r-b+1$. Indeed, transferring mass between two interior nonunit parts
+increases the convex sum until one reaches $1$ or the upper cap.
+Thus the slope sum is at most
+\[
+ a\{b^p+(r-b+1)^p\}+D'm
+ =a r^p\{(1-\varepsilon)^p+\varepsilon^p+o(1)\}.
+\]
+The expression in braces tends to a constant strictly below $1$. Raising
+to the power $m-1\sim n$ loses a fixed exponential factor. The
+composition entropy and primitive weights are only $\exp(o(n))$ in this
+range and cannot compensate. The same maximum calculation proves
+\eqref{eq:macro-giant}.
+
+Finally, $w_{n,M}\le u_n$, while the lower configuration in
+\eqref{eq:lower-spike} has exactly one part above any fixed $M$ for large
+$n$. Therefore it is also a lower bound for $w_{n,M}$, proving its
+logarithmic asymptotic.
+\end{proof}
+
+A useful consequence is that, with exponentially high probability,
+$K_n\sim n$, $E_n\asymp n/\log n$, and the largest action is unique.
+This still does \emph{not} imply that all remaining actions are bounded
+by a particular $M$. That stronger assertion is the next step.
+
+\section{Why a sufficient finite core captures almost all weight}
+\label{sec:cutoff-proof}
+
+\begin{proposition}[Sufficiency of the strict cutoff]
+\label{prop:sufficiency}
+If $M(p-1)>1$, then $\Prob(\One)\to1$.
+\end{proposition}
+
+\begin{proof}
+Put $c_*=p/(p-1)$. Fix a small width $\delta>0$ and a small
+$\varepsilon\in(0,1/3)$, to be chosen below. By
+Lemma~\ref{lem:macro}, except on a set of probability
+$\exp(-cn+o(n))$, a configuration has
+\begin{equation}
+ (c_*-\delta)\frac n{\log n}\le r=E_n
+ \le(c_*+\delta)\frac n{\log n},
+ \qquad L_0=J_n\ge(1-\varepsilon)r.
+ \label{eq:good-region}
+\end{equation}
+The largest part $L_0$ is unique for large $n$, and is above $M$.
+Every other part $i>1$ has $i-1\le\varepsilon r$.
+
+Consider a good configuration with an additional part $i>M$. Choose one
+such part by a fixed deterministic rule, for example its earliest position.
+Replace the pair $(L_0,i)$ by $(L_0+i-1,1)$, keeping all positions and the
+number $m$ of parts unchanged. Both nonunit parts in this operation are
+in the pure tail, while the new unit part has weight $w_1=1$. Thus the
+primitive weight product and the denominator $m!$ in
+\eqref{eq:positive} are unchanged.
+
+Let $S$ and $S'$ be the old and new slope sums. For every $\eta>0$,
+choosing $\varepsilon$ small enough gives, uniformly in
+\eqref{eq:good-region} and in $i>M$,
+\begin{equation}
+ S'-S\ge a(p-\eta)r^{p-1}(i-1).
+ \label{eq:gain}
+\end{equation}
+Indeed, the mean-value theorem bounds the gain at the large part below by
+$ap(1-\varepsilon)^{p-1}r^{p-1}(i-1)$. The loss is
+$a i^p-\lambda_1$. Since $\lambda_1$ is fixed and nonnegative, its possible
+contribution can be discarded, and
+$i^p/(i-1)\le C_p(\varepsilon r+1)^{p-1}$ for $i\ge2$.
+Making $\varepsilon$ small absorbs this term and proves
+\eqref{eq:gain} for large $n$.
+
+By the convex bound used earlier,
+$S'\le a r^p+Dm=a r^p(1+o(1))$ uniformly here. The old coefficient
+weight divided by the new one is therefore at most
+\begin{equation}
+ \left(\frac S{S'}\right)^{m-1}
+ \le\exp\!\left(-\frac{(p-2\eta)(m-1)(i-1)}r\right)
+ \label{eq:weight-ratio}
+\end{equation}
+for sufficiently large $n$.
+
+We record the multiplicity of this map, rather than treating it as an
+unjustified injection. In the image, the unique giant is still recognizable.
+Given its image configuration, the chosen slot, and $i$, the original
+configuration is recovered by subtracting $i-1$ from the giant and replacing
+the unit in that slot by $i$. Thus there are at most $m$ preimages for each
+integer $i$. Let $\mathcal B_n$ denote the good configurations with an
+additional part above $M$. Summing \eqref{eq:weight-ratio} gives
+\begin{align}
+ \Prob(\mathcal B_n)
+ &\le \sup_{r\text{ in }\eqref{eq:good-region}}
+ n\sum_{i=M+1}^{\infty}
+  \exp\!\left(-\frac{(p-2\eta)(n-r)(i-1)}r\right)\notag\\
+ &\le n^{\,1-\frac{(p-2\eta)M}{c_*+\delta}+o(1)}.
+ \label{eq:small-tail-bound}
+\end{align}
+The denominator of the geometric series tends to $1$ and does not change
+the power of $n$. Because $M(p-1)>1$, we may choose $\eta$ and $\delta$
+small enough that the exponent in the last line is negative.
+The exceptional configurations have exponentially small probability.
+On the good event at least one part exceeds $M$, so the absence of a second
+one is precisely $\One$. This proves the proposition.
+\end{proof}
+
+\begin{remark}[What makes this stronger than macroscopic condensation]
+The large-action result only says that the remaining excess is $o(n/\log n)$.
+The mass-transfer estimate controls every extra action above a \emph{fixed}
+cutoff, and pays explicitly for its possible locations. The competition
+between a factor of order $n$ and a suppression of order
+$n^{-M(p-1)}$ is the origin of the cutoff. It also explains why an
+unqualified statement that ``one large action dominates'' does not establish
+a multiplicative coefficient formula.
+\end{remark}
+
+\section{A uniform small-radius coefficient saddle}
+\label{sec:inner-saddle}
+
+We next prove the analytic estimate used to compute $w_{n,M}$.
+Only a fixed analytic core is involved. In particular, no exchange of an
+infinite divergent tail with a contour integral will be made.
+
+\begin{lemma}[Coefficient estimate with a shrinking saddle]
+\label{lem:inner}
+Let $G(t)=t+O(t^2)$ and $R(t)=1+O(t)$ be analytic at zero with
+nonnegative Taylor coefficients. Fix $a>0,p>1$, and constants
+$0<c_-<c_+<\infty$. For integers
+\[
+ c_-\frac n{\log n}\le j\le c_+\frac n{\log n},\qquad
+ k=n-j,\quad\Lambda=a j^p,
+\]
+let $t=t_j>0$ solve
+\begin{equation}
+ \Lambda tG'(t)=k.
+ \label{eq:inner-saddle}
+\end{equation}
+Then this solution exists uniquely on the small positive branch for large
+$n$, $t\sim k/\Lambda\to0$ uniformly, and
+\begin{equation}
+ [q^k]R(q)e^{\Lambda G(q)}
+ =\frac{R(t)e^{\Lambda G(t)}t^{-k}}
+        {\sqrt{2\pi B_j}}(1+o(1)),
+ \qquad B_j=\Lambda(tG'(t)+t^2G''(t)).
+ \label{eq:inner-estimate}
+\end{equation}
+The $o(1)$ is uniform over the indicated integers $j$.
+\end{lemma}
+
+\begin{proof}
+Since $tG'(t)=t+O(t^2)$ has positive derivative near zero, the small solution
+exists uniquely whenever $k/\Lambda$ is sufficiently small. In the stated
+range,
+$k/\Lambda\asymp n^{1-p}(\log n)^p\to0$ uniformly. Also
+$B_j\sim k\sim n$.
+
+Cauchy's formula on $q=te^{i\theta}$ gives
+\begin{align*}
+ [q^k]R(q)e^{\Lambda G(q)}
+ =\frac{e^{\Lambda G(t)}t^{-k}}{2\pi}
+ \int_{-\pi}^{\pi}R(te^{i\theta})
+ \exp\!\bigl(\Lambda[G(te^{i\theta})-G(t)]-ik\theta\bigr)\,\dd\theta.
+\end{align*}
+The linear term vanishes by \eqref{eq:inner-saddle}. With
+$D=t\,\dd/\dd t$, analyticity and $G(t)=t+O(t^2)$ give
+$\Lambda D^hG(t)=O(k)$ for every fixed positive integer $h$, uniformly
+as $t\to0$. Hence, for $|\theta|\le k^{-2/5}$,
+\[
+ \Lambda[G(te^{i\theta})-G(t)]-ik\theta
+ =-\tfrac12B_j\theta^2+O(k|\theta|^3),
+\]
+where the error is $o(1)$ throughout this arc. The response satisfies
+$R(te^{i\theta})/R(t)=1+o(1)$ there.
+
+For the complement, write $G(q)=\sum_{h\ge1}g_hq^h$, with $g_1=1$
+and $g_h\ge0$. Then
+\begin{equation}
+ G(t)-\Re G(te^{i\theta})
+ =\sum_{h\ge1}g_ht^h(1-\cos h\theta)
+ \ge t(1-\cos\theta).
+ \label{eq:circle-decay}
+\end{equation}
+Also $|R(te^{i\theta})|\le R(t)$. Since $\Lambda t\asymp k$, the
+complementary integral is bounded by the main positive scale times
+$O(e^{-c k^{1/5}})$, using $1-\cos\theta\ge c\theta^2$ on
+$[-\pi,\pi]$. The central Gaussian integral is
+$\sqrt{2\pi/B_j}(1+o(1))$. This proves
+\eqref{eq:inner-estimate} and its uniformity.
+\end{proof}
+
+The same proof allows a fixed analytic multiplier $t^d h(t)$ with
+$h(0)>0$: its coefficient contribution is asymptotic to its value at the
+saddle times the right side of \eqref{eq:inner-estimate}. The factor
+$e^{id\theta}$ is $1+o(1)$ on the central arc. We will use this observation
+with fixed $d=M+1$ in the sharpness proof.
+
+\section{The moving action saddle and its determinant}
+\label{sec:outer-saddle}
+
+\subsection{The exponent after coefficient extraction}
+
+For real $j$ in a fixed compact multiple of $n/\log n$, define $t_j$ by
+\eqref{eq:inner-saddle} and set
+\begin{equation}
+ f_n(j)=a j^pG(t_j)-(n-j)\log t_j.
+ \label{eq:outer-exponent}
+\end{equation}
+Here and throughout this section $G=G_M$, $R=R_M$.
+Differentiating the defining equation for $t_j$ gives
+\begin{equation}
+ \frac{t_j'}{t_j}=-\frac{C_j}{B_j},
+ \qquad C_j=1+\frac{p(n-j)}j.
+ \label{eq:t-derivative}
+\end{equation}
+The saddle condition eliminates the terms containing $t_j'$ when
+$f_n$ is differentiated once, so
+\begin{align}
+ f_n'(j)&=apj^{p-1}G(t_j)+\log t_j,\\
+ f_n''(j)&=ap(p-1)j^{p-2}G(t_j)-\frac{C_j^2}{B_j}.
+ \label{eq:f-derivatives}
+\end{align}
+These are exact identities, not leading-order approximations.
+
+\begin{lemma}[Location, curvature, and uniqueness]
+\label{lem:outer}
+Choose fixed $c_-<p/(p-1)<c_+$. Uniformly on the interval
+$I_n=[c_-n/\log n,c_+n/\log n]$,
+\begin{align}
+ \frac{f_n'(c n/\log n)}{\log n}
+ &=\frac pc-(p-1)+o(1),\\
+ f_n''(j)&=-\frac{pn}{j^2}(1+o(1)),
+ & f_n'''(j)&=O\!\left(\frac{(\log n)^3}{n^2}\right).
+ \label{eq:curvature}
+\end{align}
+For large $n$ there is therefore exactly one zero $z_n$ of $f_n'$ in
+$I_n$, and it is the strict maximum of $f_n$ there.
+The pair $(z_n,t_{z_n})$ is the solution asserted in
+Theorem~\ref{thm:saddle}.
+\end{lemma}
+
+\begin{proof}
+In this interval $k=n-j\sim n$, $G(t)=t(1+O(t))$,
+$G'(t)=1+O(t)$, and $t\sim k/(a j^p)$. Thus
+\[
+ apj^{p-1}G(t_j)=\frac{pk}{j}(1+O(t_j)),
+\]
+while
+\[
+ \log t_j=(1-p)\log n+p\log\log n-\log a-p\log c+o(1)
+\]
+when $j=c n/\log n$. This proves the first estimate and the signs at
+the two endpoints. In \eqref{eq:f-derivatives},
+\[
+ B_j=k(1+O(t_j)),\qquad
+ ap(p-1)j^{p-2}G(t_j)=\frac{p(p-1)k}{j^2}(1+O(t_j)).
+\]
+Since $C_j=1+pk/j$, their difference is
+$-pk/j^2-2p/j-1/k+o(n/j^2)$, proving the curvature estimate.
+Differentiating these analytic expressions, using
+$t_j'/t_j=O(1/j)$ and the corresponding derivatives of
+$G(t)=t+O(t^2)$, gives $f_n'''=O(n/j^3)$, the stated bound.
+Strict negative curvature and the endpoint signs prove uniqueness.
+The leading location and the leading value of $t_{z_n}$ follow immediately,
+giving \eqref{eq:saddlescales}.
+\end{proof}
+
+\subsection{Completing the two-stage asymptotic}
+
+\begin{proof}[Proof of Theorem~\ref{thm:saddle}]
+First localize the sum in \eqref{eq:one-tail} to $j\in I_n$, choosing
+$c_-,c_+$ on opposite sides of $p/(p-1)$. Under the one-tail event,
+$j$ is the largest part. Lemma~\ref{lem:macro} shows that the contribution
+outside such an interval is at most
+$u_n\exp(-cn+o(n))$. Both $u_n$ and $w_{n,M}$ have logarithm
+$X_n+o(n)$, so this is also exponentially negligible relative to $w_{n,M}$.
+This argument does not require the sufficient-cutoff result.
+
+Inside $I_n$, Lemma~\ref{lem:inner} gives
+\begin{equation}
+ w_{n,M}\sim
+ \sum_{j\in I_n\cap\N}
+       \frac{R(t_j)}{\sqrt{2\pi B_j}}e^{f_n(j)}.
+ \label{eq:outer-sum}
+\end{equation}
+At $z_n$, the identities \eqref{eq:f-derivatives} give
+\[
+ -f_n''(z_n)=\frac{\Delta_n}{B_n}>0.
+\]
+The estimates above yield
+\begin{equation}
+ B_n\sim n,\qquad
+ \Delta_n\sim\frac{pn^2}{z_n^2},\qquad
+ \sigma_n=\sqrt{\frac{B_n}{\Delta_n}}\longrightarrow\infty.
+ \label{eq:BD-asymptotics}
+\end{equation}
+For $h=j-z_n$ with $|h|\le\sigma_n\log n$, Taylor's formula gives
+\begin{equation}
+ f_n(z_n+h)=f_n(z_n)-\frac{h^2}{2\sigma_n^2}+o(1)
+ \label{eq:quadratic-window}
+\end{equation}
+uniformly: the cubic error is
+$O((\log n)^3n^{-2}(\sigma_n\log n)^3)
+=O((\log n)^3/\sqrt n)=o(1)$.
+In the same window $R(t_j)/\sqrt{B_j}$ varies by a relative $o(1)$,
+since its logarithmic derivative is $O(1/j)$.
+
+The curvature bound in \eqref{eq:curvature} suppresses the remaining
+terms of $I_n$ by $\exp(-c(\log n)^2)$ after the central window is
+removed. A polynomial number of terms cannot repair this loss. Finally,
+since $\sigma_n\to\infty$, the Gaussian lattice sum is a Riemann sum:
+\[
+ \sum_{j\in\mathbb Z}
+ e^{-(j-z_n)^2/(2\sigma_n^2)}
+ \sim\sqrt{2\pi}\,\sigma_n.
+\]
+Multiplying this with the prefactor in \eqref{eq:outer-sum} gives
+\[
+ w_{n,M}\sim
+ R(\tau_n)e^{f_n(z_n)}\frac{\sigma_n}{\sqrt{B_n}}
+ =\frac{R(\tau_n)e^{f_n(z_n)}}{\sqrt{\Delta_n}},
+\]
+which is \eqref{eq:full-equivalent}. The positive case of
+Theorem~\ref{thm:cutoff}, already proved, transfers the formula to $u_n$
+when $M(p-1)>1$. The negative case will follow from the next section.
+\end{proof}
+
+\begin{remark}[Why there is no missing factor of $2\pi$]
+The coefficient saddle supplies $(2\pi B_n)^{-1/2}$. Summing the action
+saddle supplies $(2\pi)^{1/2}\sigma_n$. Their product is exactly
+$\Delta_n^{-1/2}$. Using only one saddle would miss both this cancellation
+and the moving action scale.
+\end{remark}
+
+\section{Sharpness: the boundary core is not sufficient}
+\label{sec:necessity}
+
+\begin{proposition}[A single omitted small action forces failure]
+\label{prop:necessity}
+For any fixed $M\ge M_0$, let $d=M+1$. There is a nonnegative subseries
+of \eqref{eq:model}, disjoint from the one-tail subseries, whose coefficient
+$b_{n,M}$ satisfies
+\begin{equation}
+ \frac{b_{n,M}}{w_{n,M}}\sim k_n\tau_n^M.
+ \label{eq:two-tail-ratio}
+\end{equation}
+In particular, if $M(p-1)\le1$, then $w_{n,M}/u_n\to0$.
+\end{proposition}
+
+\begin{proof}
+Temporarily add the action $d$ to the core with a marker $s$:
+\begin{equation}
+ G_s(q)=\Phi_M(q,G_s(q))+s q^d e^{a d^pG_s(q)}.
+ \label{eq:marked-small}
+\end{equation}
+Set
+\[
+ R_s(q)=\bigl(1-\partial_u\Phi_M(q,G_s(q))
+                 -s a d^p q^d e^{a d^pG_s(q)}\bigr)^{-1}.
+\]
+At $s=0$, $G_s=G$ and $R_s=R$. Differentiation gives
+\begin{align}
+ D(q):=\left.\partial_sG_s(q)\right|_{s=0}
+ &=R(q)q^d e^{a d^pG(q)}=q^d(1+O(q)),\\
+ \dot R(q):=\left.\partial_sR_s(q)\right|_{s=0}
+ &=R(q)^2\left(\partial_u^2\Phi_M(q,G(q))D(q)
+                       +a d^p q^d e^{a d^pG(q)}\right).
+ \label{eq:marked-derivatives}
+\end{align}
+Both series have nonnegative coefficients, and $\dot R(q)=O(q^d)$.
+
+Now retain exactly one action $j>d$, and differentiate its response
+with respect to $s$ at zero. The result is the formal nonnegative series
+\begin{equation}
+ B_M(q)=\sum_{j>d}q^j e^{a j^pG(q)}
+             \left(\dot R(q)+a j^pR(q)D(q)\right).
+ \label{eq:two-tail-series}
+\end{equation}
+By the two independent markers, it counts configurations with exactly one
+part $j>d$, exactly one part $d$, and all remaining parts at most $M$.
+Consequently it is disjoint from $W_M$, and
+$u_n\ge w_{n,M}+b_{n,M}$ for $b_{n,M}=[q^n]B_M$.
+
+For each $j$ in the saddle region, apply Lemma~\ref{lem:inner} and its
+analytic-multiplier extension. Relative to the coefficient of
+$q^j R(q)e^{a j^pG(q)}$, the second summand in the parentheses in
+\eqref{eq:two-tail-series} contributes asymptotically
+$a j^p D(t_j)\sim a j^p t_j^d$. The first contributes $O(t_j^d)$ and
+is negligible, since $a j^p\to\infty$.
+The multiplier $a j^p t_j^d$ varies by a relative $o(1)$ across the
+Gaussian action window. Coarse tails are negligible by Lemma~\ref{lem:macro},
+since $B_M$ is a subseries of $\Uhat$ and $\log w_{n,M}=X_n+o(n)$.
+Inside the coarse interval but outside the Gaussian window, the multiplier
+has at most a polynomial effect,
+which cannot overcome the saddle decay. The finitely many excluded values
+$j\le d$ have merely exponential coefficient growth and are negligible.
+Repeating the outer-saddle summation thus gives
+\[
+ \frac{b_{n,M}}{w_{n,M}}
+ \sim a z_n^p\tau_n^d
+ =\frac{k_n\tau_n^{d-1}}{G'(\tau_n)}
+ \sim k_n\tau_n^M.
+\]
+
+From \eqref{eq:saddlescales}, with
+$c_q=a^{-1}((p-1)/p)^p>0$,
+\begin{equation}
+ k_n\tau_n^M
+ \sim c_q^M n^{1-M(p-1)}(\log n)^{pM}.
+ \label{eq:cutoff-scale}
+\end{equation}
+This diverges when $M(p-1)<1$, and also at equality, where the positive
+power of $\log n$ remains. Since
+$u_n/w_{n,M}\ge1+b_{n,M}/w_{n,M}$, the claimed failure follows.
+\end{proof}
+
+Proposition~\ref{prop:necessity} completes Theorem~\ref{thm:cutoff} and
+the negative-cutoff conclusion of Theorem~\ref{thm:saddle}. It also
+identifies exactly what is wrong with replacing the strict inequality in
+\eqref{eq:mincore} by a non-strict one. The boundary does not have a
+finite nonzero missing-action correction; that correction is already
+unbounded.
+
+\section{Gaussian fluctuations around the correct moving center}
+\label{sec:fluctuations}
+
+\begin{proof}[Proof of Theorem~\ref{thm:clt}]
+On $\One$, the unique action $j>M$ is the largest. Its exact probability
+is
+\begin{equation}
+ \Prob(J_n=j\mid\One)
+ =\frac{[q^{n-j}]R_M(q)e^{a j^pG_M(q)}}{w_{n,M}},\qquad j>M.
+ \label{eq:conditional-law}
+\end{equation}
+Use \eqref{eq:inner-estimate} in the numerator and
+\eqref{eq:full-equivalent} in the denominator. For
+$|j-z_n|\le A\sigma_n$, the ratio of the analytic prefactors tends to
+$1$, while \eqref{eq:quadratic-window} gives the Gaussian exponent.
+The remaining constant is
+$\sqrt{\Delta_n}/\sqrt{2\pi B_n}=1/(\sqrt{2\pi}\sigma_n)$,
+proving \eqref{eq:local-clt}.
+
+The same estimates on windows of growing standardized width, together
+with the curvature tail bound, imply conditional tightness and convergence
+of interval probabilities. This proves the conditional central limit theorem.
+If $M(p-1)>1$, then $\Prob(\One)\to1$ by the cutoff theorem. For every
+bounded continuous $h$, conditioning changes
+$\E h((J_n-z_n)/\sigma_n)$ by at most
+$2\|h\|_\infty\Prob(\One^c)$, which tends to zero. Thus the
+unconditional weak limit is the same. The variance scale in
+\eqref{eq:variance} follows from \eqref{eq:BD-asymptotics}.
+\end{proof}
+
+\subsection{Why the leading action scale is not an adequate center}
+
+The approximation $z_n\sim(p/(p-1))n/\log n$ determines only the first
+scale. Even the next deterministic correction is generally much larger
+than $\sigma_n\asymp\sqrt n/\log n$. For the bare equation
+\eqref{eq:bare-r}, for example,
+\[
+ pr_n=(p-1)\log n-p\log\log n+O(1),
+\]
+so replacing $r_n$ by its first term shifts $j_n^0$ by order
+$n\log\log n/(\log n)^2$. Dividing that shift by $\sigma_n$ tends to
+infinity. A central limit theorem written with only the leading scale as
+its center would therefore usually be false.
+
+The coupled equations \eqref{eq:saddle} avoid this problem: they define a
+center accurate to the Gaussian scale without requiring a manually expanded
+series of logarithms. They are not an assertion that $z_n$ equals the
+finite-$n$ mean exactly. The theorem is the centered distributional limit,
+with the separately stated conditional local refinement.
+
+\section{Explicit equivalents and the quadratic correction}
+\label{sec:explicit}
+
+\subsection{The bare saddle}
+
+Consider first the comparison sum
+\begin{equation}
+ T_n=\sum_{j=1}^n\frac{(a j^p)^{n-j}}{(n-j)!}.
+ \label{eq:bare-sum}
+\end{equation}
+It corresponds to the same coefficient/action calculation with $G(t)=t$
+and $R(t)=1$. The saddle equations reduce to
+\[
+ k=a j^pt,\qquad-\log t=\frac{pk}{j},\qquad j+k=n.
+\]
+Writing $r=k/j$ gives exactly \eqref{eq:bare-r}. Its left side is
+strictly increasing from $0$ to $\infty$, so the positive solution is
+unique. At this saddle,
+\[
+ t=e^{-pr},\quad f=k(1+pr),\quad
+ B=k,\quad\Delta=(1+pr)^2-p(p-1)r^2
+                  =1+2pr+pr^2.
+\]
+The preceding saddle proof therefore gives $T_n\sim S_n$, with $S_n$
+as in \eqref{eq:bare-S}.
+
+This comparison has a simple interpretation: the slope at the giant is
+kept, while every finite-core feedback correction is suppressed. Whether
+that suppression is harmless depends on $p$.
+
+\subsection{A controlled perturbation of the saddle}
+
+\begin{proposition}[First core correction]
+\label{prop:first-correction}
+Under \eqref{eq:assumptions}, write
+$\beta=u_2=\lambda_1+w_2$. If $p>3/2$, then
+\begin{equation}
+ u_n\sim S_n\exp\!\left(\frac{\beta(k_n^0)^2}{a(j_n^0)^p}\right).
+ \label{eq:general-first-correction}
+\end{equation}
+In particular, for $p>2$ any finite perturbation satisfying
+\eqref{eq:assumptions} has $u_n\sim S_n$.
+\end{proposition}
+
+\begin{proof}
+Choose a fixed $M\ge\max(M_0,2)$ with $M(p-1)>1$. Then
+$G_M(t)=t+\beta t^2+O(t^3)$ and $R_M(t)=1+O(t)$.
+For a real $j$ in the coarse saddle interval put
+$k=n-j$, $\Lambda=a j^p$, and $t_0=k/\Lambda$. The small solution of
+$\Lambda tG'(t)=k$ has the uniform analytic expansion
+\[
+ t=t_0-2\beta t_0^2+O(t_0^3).
+\]
+Substitution into the exponent yields
+\begin{align}
+ f_G(j)
+ &=k-k\log t_0+\beta k t_0+O(k t_0^2)\notag\\
+ &=f_0(j)+\delta(j)+O(n t_0^2),
+ \qquad\delta(j)=\frac{\beta(n-j)^2}{a j^p}.
+ \label{eq:perturbed-exponent}
+\end{align}
+The analytic remainder can be differentiated with respect to $j$;
+since $t_0'/t_0=-1/k-p/j=O(1/j)$, its first derivative is
+$O(n t_0^2/j)$. Similarly $\delta'(j)=O(n t_0/j)$.
+
+Let $j_0=j_n^0$ maximize $f_0$ and let $z$ maximize $f_G$.
+Both lie in the same coarse interval, and its curvature has magnitude
+comparable to $n/j_0^2$. The derivative estimates and the mean-value theorem
+therefore give $z-j_0=O(j_0 t_0(j_0))$. Taylor's theorem then gives
+\begin{equation}
+ f_G(z)-f_0(j_0)=\delta(j_0)+O(n t_0(j_0)^2).
+ \label{eq:peak-perturbation}
+\end{equation}
+Here the quadratic shift in the maximum, the change in $\delta$, and the
+explicit remainder in \eqref{eq:perturbed-exponent} all have the displayed
+order. The determinant prefactors have ratio $1+O(t_0(j_0))$, and
+$R_M(\tau_n)=1+o(1)$. These estimates follow directly from
+\eqref{eq:determinant}, because $z/j_0=1+O(t_0)$ and the core
+and its first two derivatives differ from those of $t$ by $O(t)$ in
+relative scale where appropriate.
+
+Finally,
+\[
+ t_0(j_0)\asymp n^{1-p}(\log n)^p,\qquad
+ n t_0(j_0)^2\asymp n^{3-2p}(\log n)^{2p}=o(1)
+\]
+when $p>3/2$. Combine \eqref{eq:peak-perturbation} with
+Theorem~\ref{thm:saddle} and the cutoff theorem. This proves
+\eqref{eq:general-first-correction}. For $p>2$, the retained correction
+$\beta k_0t_0=O(n^{2-p}(\log n)^p)$ also tends to zero.
+\end{proof}
+
+\begin{corollary}[Quadratic feedback]
+For the pure quadratic model,
+\begin{equation}
+ r_n(1+r_n)e^{2r_n}=an,
+ \qquad
+ u_n\sim
+ \frac{\exp\!\left(\frac{nr_n}{1+r_n}(1+2r_n)
+                      +(1+1/a)r_n^2\right)}
+      {\sqrt{1+4r_n+2r_n^2}}.
+ \label{eq:quadratic-full}
+\end{equation}
+The ratio $u_n/S_n$ tends to infinity faster than every fixed power of $n$.
+\end{corollary}
+
+\begin{proof}
+Here $\beta=a+1$ and $k_0/j_0=r_n$, so the correction in
+\eqref{eq:general-first-correction} is $(1+1/a)r_n^2$.
+Also $r_n\sim\tfrac12\log n$. Thus
+$\log(u_n/S_n)\sim(1+1/a)(\log n)^2/4$, which dominates every
+fixed multiple of $\log n$.
+\end{proof}
+
+The order-$n$ logarithmic asymptotic cannot detect this factor because
+$(\log n)^2=o(n)$. The quadratic example is therefore a concrete reason
+to distinguish logarithmic control from multiplicative control.
+
+\subsection{The hierarchy below the quadratic regime}
+
+For $3/2<p<2$, the first correction in
+\eqref{eq:general-first-correction} grows as a positive constant times
+$n^{2-p}(\log n)^p$ in the pure model. The same two-core calculation still
+gives a relative equivalent, because the next exponent scale tends to zero.
+At $p=3/2$, that next scale is logarithmically divergent; a two-action core
+is no longer enough. More generally, the small-action scales are
+\begin{equation}
+ n\tau_n^{d-1}\asymp
+ n^{1-(d-1)(p-1)}(\log n)^{p(d-1)}.
+ \label{eq:hierarchy}
+\end{equation}
+Theorem~\ref{thm:cutoff} handles the whole hierarchy by retaining an exact
+finite analytic core instead of expanding each of these exponent scales by
+hand. In the pure model, representative choices are
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+Range of $p$ & Smallest sufficient $M$\\
+\midrule
+$p>2$ & $1$\\
+$3/2<p\le2$ & $2$\\
+$4/3<p\le3/2$ & $3$\\
+$5/4<p\le4/3$ & $4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The core must grow as $p\downarrow1$. None of the fixed-$p$ arguments
+above asserts a uniform theorem in that limit.
+
+\section{Coefficient ratios and the least formal term}
+\label{sec:least-term}
+
+The multiplicative theorem also determines the scale at which the terms
+of the divergent transseries stop decreasing. This is a statement about
+formal terms, not yet an analytic remainder theorem.
+
+\begin{proposition}[Ratio law throughout the superlinear range]
+\label{prop:all-ratios}
+Under \eqref{eq:assumptions}, for every fixed $p>1$,
+\begin{equation}
+ \frac{u_n}{u_{n-1}}\sim\frac1{\tau_n}
+ \sim e^{pr_n}
+ \sim a\left(\frac p{p-1}\right)^p
+           \frac{n^{p-1}}{(\log n)^p},
+ \label{eq:all-ratios}
+\end{equation}
+where $\tau_n$ comes from any sufficient core and $r_n$ solves
+\eqref{eq:bare-r}.
+\end{proposition}
+
+\begin{proof}
+Fix a sufficient core and extend its saddle smoothly to real $n$.
+The implicit-function theorem applies because $\Delta_n>0$.
+Differentiating the two stationary equations gives the useful exact identities
+\begin{equation}
+ \frac{\dd z_n}{\dd n}=\frac{C_n}{\Delta_n},\qquad
+ \frac{\dd\log\tau_n}{\dd n}=-\frac{H_n}{\Delta_n}.
+ \label{eq:saddle-motion}
+\end{equation}
+For completeness, at fixed $j$ the inner equation gives
+$\partial_n\log t_j=1/B_j$, while
+$\partial_j\log t_j=-C_j/B_j$ and
+$\partial_n f_n'(j)=C_j/B_j$. Differentiating
+$f_n'(z_n)=0$ proves the first identity; substituting it into the total
+derivative of $\log t_{z_n}$ proves the second.
+
+The scales already established imply
+$z_n'=O(z_n/n)$ and $\tau_n'/\tau_n=O(1/n)$.
+Differentiating the finite analytic expressions in
+\eqref{eq:determinant} therefore gives
+$\dd\log\Delta_n/\dd n=O(1/n)$. There is no dangerous cancellation
+here, since $\Delta_n\asymp n^2/z_n^2$ and the differentiated terms
+are individually $O(\Delta_n/n)$. Likewise
+$\dd\log R(\tau_n)/\dd n=O(\tau_n/n)$.
+The stationary exponent satisfies the exact envelope identity
+\[
+ \frac{\dd}{\dd n}
+ \bigl(a z_n^pG(\tau_n)-(n-z_n)\log\tau_n\bigr)
+ =-\log\tau_n.
+\]
+Thus $\dd\log\Acal_{n,M}/\dd n=-\log\tau_n+O(1/n)$.
+Taking a difference over one unit and using $u_n\sim\Acal_{n,M}$ proves
+the first equivalence in \eqref{eq:all-ratios}.
+The full-core and bare radii have ratio tending to $1$: both are
+asymptotic to the right side of \eqref{eq:saddlescales}. The last two
+equivalences follow from \eqref{eq:bare-r}.
+\end{proof}
+
+\begin{corollary}[Least-term index]
+\label{cor:least-term}
+In the pure model, let $N(q)$ be any integer minimizing $u_nq^n$ over
+$n\ge1$, for $q>0$. Such a minimum exists, and as $q\downarrow0$,
+\begin{equation}
+ \boxed{\quad
+ N(q)\sim a^{-1/(p-1)}q^{-1/(p-1)}
+       \left(\frac{\log(1/q)}p\right)^{p/(p-1)}.
+ \quad}
+ \label{eq:least-index}
+\end{equation}
+Equivalently, for $q=e^{-x}$,
+$N(e^{-x})\sim a^{-1/(p-1)}(x/p)^{p/(p-1)}e^{x/(p-1)}$.
+\end{corollary}
+
+\begin{proof}
+The coefficients are positive, and their $n$th roots tend to infinity by
+Lemma~\ref{lem:macro}; hence $u_nq^n\to\infty$ for each fixed $q>0$,
+so a minimum exists. Its index tends to infinity as $q\downarrow0$, because
+for every fixed $n$ the ratio $q u_{n+1}/u_n$ then tends to zero.
+
+Let $x=\log(1/q)$ and $r=x/p$. The real index at which the \emph{bare}
+radius equals $q$ is exactly
+\begin{equation}
+ \nu(q)=a^{-1/(p-1)}r^{1/(p-1)}(1+r)q^{-1/(p-1)}.
+ \label{eq:least-bare-index}
+\end{equation}
+The smooth comparison $e^{pr_n}$ in \eqref{eq:all-ratios} is increasing
+and regularly varying with index $p-1$. For any fixed $\delta>0$, the
+ratios $q u_n/u_{n-1}$ are therefore below $1$ on all sufficiently large
+indices up to $(1-\delta)\nu(q)$, and above $1$ from
+$(1+\delta)\nu(q)$ onward. This follows uniformly from the eventual
+relative bounds in \eqref{eq:all-ratios} and monotonicity of the smooth
+comparison; the finitely many small indices also have ratios below $1$
+for small enough $q$. Every minimizing index lies between these two
+bounds. Letting $\delta\downarrow0$ gives $N(q)\sim\nu(q)$, whose
+leading form is \eqref{eq:least-index}.
+\end{proof}
+
+\begin{remark}[A boundary that must not be crossed without another proof]
+The corollary locates the least coefficient term. It does not show that a
+sectorial analytic solution differs from an optimally truncated series by
+at most that term, or by any fixed multiple of it. Such a conclusion needs
+uniform remainder estimates for the actual function. Keeping these two
+statements separate is particularly important for the rapidly growing
+feedback kernel.
+\end{remark}
+
+\section{Sharp reversion in the superquadratic regime}
+\label{sec:inverse}
+
+\subsection{A rapid-coefficient convolution lemma}
+
+We isolate the signed part of the argument. Positivity was essential in
+the forward cutoff proof, so that proof must not simply be reused after
+formal reversion.
+
+\begin{lemma}[Endpoint domination and reversion]
+\label{lem:rapid-inverse}
+Let $A(q)=q+\sum_{n\ge2}a_nq^n$, with $a_n>0$. Suppose there is a
+smooth, eventually convex function $F$ such that
+\[
+ a_n\sim e^{F(n)},\qquad
+ \frac{a_n}{a_{n-1}}\sim\mathcal R_n,
+ \qquad
+ \mathcal R_n\sim c\frac{n^\rho}{(\log n)^\kappa},
+ \quad c>0,\quad\rho>1.
+\]
+For $A^{\langle-1\rangle}(q)=q+\sum_{n\ge2}\alpha_nq^n$,
+\begin{equation}
+ \alpha_n=-a_n+(n+1)a_2a_{n-1}+o(na_{n-1}).
+ \label{eq:rapid-inverse}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $B(q)=A(q)/q-1=\sum_{m\ge1}b_mq^m$, so $b_m=a_{m+1}$.
+We first show
+\begin{equation}
+ [q^N]B(q)^2\sim2b_1b_{N-1},\qquad
+ [q^N]B(q)^2\le Cb_{N-1}\quad(N\ge2)
+ \label{eq:convolution}
+\end{equation}
+for a fixed constant $C$.
+The summands with indices $1$ and $N-1$ give $2b_1b_{N-1}$.
+For each fixed $j\ge2$,
+\[
+ \frac{b_jb_{N-j}}{b_{N-1}}=O(\mathcal R_N^{-(j-1)})=o(1).
+\]
+To bound the middle uniformly, choose a large fixed integer $L$ beyond
+the convexity threshold of $F$. On $L\le j\le N-L$, the function
+$F(j+1)+F(N-j+1)$ is convex, so its maximum occurs at the endpoints.
+The comparability $a_n\asymp e^{F(n)}$ gives
+\[
+ \sum_{j=L}^{N-L}\frac{b_jb_{N-j}}{b_{N-1}}
+ \le C_L N\frac{a_{N-L+1}}{a_N}
+ =O(N\mathcal R_N^{-(L-1)})=o(1)
+\]
+when $L$ is sufficiently large. The finitely many endpoint terms between
+$2$ and $L-1$ are already negligible. This proves the first assertion
+of \eqref{eq:convolution}; increasing $C$ covers the finitely many small
+values of $N$ and gives its second assertion.
+
+Induction by convolution now gives, for $N\ge\ell\ge1$,
+\begin{equation}
+ [q^N]B(q)^\ell\le C^{\ell-1}b_{N-\ell+1}.
+ \label{eq:iterated-convolution}
+\end{equation}
+Indeed, convolving the induction hypothesis with $B$ reduces the next
+step to \eqref{eq:convolution} with total index $N-\ell+2$.
+
+Lagrange inversion for $A^{\langle-1\rangle}$ yields
+\begin{equation}
+ \alpha_n=\frac1n\sum_{\ell=1}^{n-1}(-1)^\ell
+ \binom{n+\ell-1}{\ell}[q^{n-1}]B(q)^\ell.
+ \label{eq:inverse-binomial}
+\end{equation}
+The term $\ell=1$ is $-a_n$, while \eqref{eq:convolution} makes the term
+$\ell=2$ equal to $(n+1)a_2a_{n-1}(1+o(1))$.
+We bound all remaining terms absolutely, so no unproved cancellation
+estimate is used.
+
+For $3\le\ell\le n/2$, the ratio hypothesis, uniformly on indices
+between $n/2$ and $n$, gives
+\[
+ \frac{a_{n-\ell+1}}{a_n}\le
+ \left(\frac{C_1}{\mathcal R_n}\right)^{\ell-1}.
+\]
+Also $n^{-1}\binom{n+\ell-1}{\ell}\le
+2(2n)^{\ell-1}/\ell!$. Thus the normalized absolute sum of these terms
+is $O((n/\mathcal R_n)^2)$. Because $n/\mathcal R_n\to0$, this is
+$o(n/\mathcal R_n)$, or $o(na_{n-1}/a_n)$.
+
+For $\ell>n/2$, the numerator coefficient in
+\eqref{eq:iterated-convolution} is at most a constant times
+$a_{\lfloor n/2\rfloor+1}$. The ratio hypothesis implies
+\[
+ \log\frac{a_{\lfloor n/2\rfloor+1}}{a_n}
+ =-\tfrac\rho2 n\log n+O(n\log\log n).
+\]
+This beats the $e^{O(n)}$ bound for the binomial factors and $C^\ell$,
+and also the number of summands. Their contribution is smaller than
+$o(na_{n-1})$. Combining the three ranges proves
+\eqref{eq:rapid-inverse}.
+\end{proof}
+
+\subsection{Checking the hypotheses for the feedback coefficients}
+
+\begin{proof}[Proof of the reversion and ratio parts of Theorem~\ref{thm:explicit}]
+For $p>2$, Proposition~\ref{prop:first-correction} gives $u_n\sim S_n$.
+Extend the positive solution $r_n$ of \eqref{eq:bare-r} smoothly to real
+$x>0$. Implicit differentiation gives
+\begin{equation}
+ r'(x)=\frac{p-1}
+ {x\left(p+1/r(x)+(p-1)/(1+r(x))\right)}
+ \sim\frac{p-1}{px}.
+ \label{eq:r-derivative}
+\end{equation}
+Let $F(x)=\log S_x$. The derivative of the optimized bare exponent with
+respect to $x$ is $-\log t=pr(x)$; the derivative in the optimizing
+action vanishes. The logarithmic determinant contributes only
+$O(1/(x\log x))$. Consequently
+\begin{equation}
+ F'(x)=pr(x)+O\!\left(\frac1{x\log x}\right),\qquad
+ F''(x)\sim\frac{p-1}{x}>0.
+ \label{eq:F-derivatives}
+\end{equation}
+The second estimate follows either by differentiating the explicit
+$r$-formula once more or directly from \eqref{eq:r-derivative}; its absolute error
+is $O(1/(x\log x))$, hence its relative error is $O(1/\log x)$.
+Thus $F$ is eventually convex.
+
+The mean-value theorem and \eqref{eq:F-derivatives} show
+$S_n/S_{n-1}\sim e^{pr_n}$. The same is true for $u_n/u_{n-1}$ because
+$u_n/S_n\to1$. From \eqref{eq:bare-r},
+\begin{equation}
+ e^{pr_n}
+ =\frac{a n^{p-1}}{r_n(1+r_n)^{p-1}}
+ \sim a\left(\frac p{p-1}\right)^p
+       \frac{n^{p-1}}{(\log n)^p}.
+ \label{eq:rapid-ratio-scale}
+\end{equation}
+Lemma~\ref{lem:rapid-inverse} applies with $\rho=p-1>1$ and
+$\kappa=p$, proving \eqref{eq:inverse}. In particular,
+\begin{equation}
+ -\frac{v_n}{u_n}
+ =1-\frac{(n+1)u_2}{e^{pr_n}}
+       +o\!\left(\frac n{e^{pr_n}}\right),
+ \label{eq:inverse-relative}
+\end{equation}
+and $v_n<0$ for all sufficiently large $n$.
+The forward parts of the theorem were proved in
+Proposition~\ref{prop:first-correction} and its quadratic corollary.
+\end{proof}
+
+\subsection{The exact point where the proof stops}
+
+The small parameter in the inverse proof is
+\[
+ \epsilon_n:=\frac n{\mathcal R_n}
+ \asymp n^{2-p}(\log n)^p.
+\]
+It tends to zero precisely in the superquadratic range considered here.
+At $p=2$ it instead grows logarithmically, and the higher powers in
+\eqref{eq:inverse-binomial} cannot be discarded by this argument.
+The forward cutoff theorem remains valid there, but its positivity is
+lost on reversion. We do not extend \eqref{eq:inverse} into that range by
+analogy or by extrapolating numerical ratios.
+
+\section{Algorithms, exact checks, and numerical diagnostics}
+\label{sec:computations}
+
+\subsection{Positive coefficient recurrence}
+
+Let $E_{j,m}=[q^m]e^{\lambda_j\Uhat(q)}$ and $E_{j,0}=1$.
+Differentiation of the exponential gives the triangular recurrence
+\begin{equation}
+ u_n=\sum_{j=1}^n w_jE_{j,n-j},\qquad
+ E_{j,m}=\frac{\lambda_j}{m}
+              \sum_{k=1}^m k u_k E_{j,m-k}\quad(m\ge1).
+ \label{eq:numeric-recurrence}
+\end{equation}
+For nonnegative input, every term in these sums is nonnegative. Computing
+in logarithms with a log-sum-exp operation therefore avoids both overflow
+and subtractive cancellation. Only the triangle $j+m\le N$ is needed
+through order $N$. The direct implementation takes $O(N^3)$ arithmetic
+operations and $O(N^2)$ storage; this is not a bit-complexity bound for
+large-integer arithmetic.
+
+For integer slopes, factorial normalization avoids rational intermediate
+values. Put $b_n=n!u_n$ and $\mathcal E_{j,m}=m!E_{j,m}$. Then
+\begin{align}
+ b_n&=\sum_{j=1}^n w_j\frac{n!}{(n-j)!}\mathcal E_{j,n-j},\\
+ \mathcal E_{j,m}
+ &=\lambda_j\sum_{k=1}^m\binom{m-1}{k-1}
+                    b_k\mathcal E_{j,m-k}.
+ \label{eq:integer-recurrence}
+\end{align}
+The supplied exact implementation uses $w_j=1$, integer $a$ and integer
+$p$. It computes the inverse in the same factorial normalization by the
+partial Bell-polynomial recurrence for the identity
+$\Uhat(\Vhat(q))=q$.
+
+\subsection{Evaluating the finite-core formula}
+
+For numerical evaluation one need not first compute a long Taylor expansion
+of $G_M$. Solve simultaneously for $(t,u,z)$:
+\begin{equation}
+ u=\Phi_M(t,u),\qquad
+ \log t+apz^{p-1}u=0,\qquad
+ z+a z^ptG_M'(t)=n.
+ \label{eq:numeric-saddle}
+\end{equation}
+The required derivatives are finite expressions:
+\begin{align}
+ G_M'&=\frac{\Phi_t}{1-\Phi_u},\\
+ G_M''&=\frac{\Phi_{tt}+2\Phi_{tu}G_M'
+                              +\Phi_{uu}(G_M')^2}{1-\Phi_u}.
+ \label{eq:core-derivatives}
+\end{align}
+All partial derivatives are evaluated at $(t,u)$. The pure-model program
+uses logarithms of the three positive unknowns, initializes with the bare
+saddle, and checks the regular branch $\Phi_u<1$, a positive determinant,
+and the numerical residual. These are floating-point checks, not interval
+certificates. The existence theorem ensures the intended small branch for
+sufficiently large $n$; it does not supply an explicit universal starting
+order for a generic nonlinear root finder.
+
+Each evaluation of the core and its derivatives uses only $M$ summands.
+Thus the finite-core formula is useful even when storing the exact
+coefficient itself is impractical. A larger sufficient core can improve
+finite-order accuracy substantially without changing the limit theorem.
+
+\subsection{What was actually checked}
+
+The package records exact coefficients and formal inverse coefficients
+through degree $300$ for $(a,p)=(1,2)$ and $(1,3)$. It contains:
+\begin{itemize}
+\item 36 independent comparisons of the positive recurrence with the
+partition formula: degrees $1$ through $18$ in the two models;
+\item 96 independent one-tail marking comparisons: degrees $1$ through
+$16$, cutoffs $M=1,2,3$, in both models;
+\item 598 exact inverse-composition residual checks: degrees $2$ through
+$300$ in the two models.
+\end{itemize}
+All of these checks passed. The inverse coefficients are obtained from a
+recurrence enforcing the composition identity; the residual checks are not
+presented as an independent second proof of formal inversion. By contrast,
+the partition enumeration and the one-tail enumeration use different finite
+algorithms from the differential recurrences.
+
+Separately, the log-domain positive recurrence was run through degree
+$1000$ in both models. Comparing it with the exact coefficients through
+$300$ gave maximum absolute discrepancies in $\log u_n$ of approximately
+$6.83\times10^{-13}$ for $p=2$ and $9.10\times10^{-13}$ for $p=3$.
+These agreement figures are diagnostics in ordinary floating-point
+arithmetic, not rigorous error bars.
+
+\subsection{The effect of the finite-core cutoff}
+
+Table~\ref{tab:cutoff} compares the computed coefficient $u_{1000}$ with
+$\Acal_{1000,M}$ from \eqref{eq:full-equivalent}, for $a=1$.
+The quadratic $M=1$ core is insufficient and has a large missing factor.
+The smallest sufficient core is not necessarily the most accurate choice
+at a moderate degree; adding a few more small actions improves the numerical
+approximation markedly.
+
+\begin{table}[htbp]
+\centering
+\caption{Finite-core diagnostics at $n=1000$, $a=1$. The ratio uses the
+log-domain recurrence; no interval certification is asserted.}
+\label{tab:cutoff}
+\begin{tabular}{rrrr}
+\toprule
+$p$ & $M$ & $u_n/\Acal_{n,M}$ & saddle action $z_n$\\
+\midrule
+2 & 1 & 373.908262191 & 292.05833 \\
+2 & 2 & 1.051182297 & 290.22703 \\
+2 & 3 & 1.000393348 & 290.19821 \\
+2 & 4 & 0.999965103 & 290.19784 \\
+3 & 1 & 1.045788395 & 235.38637 \\
+3 & 2 & 0.999941539 & 235.37627 \\
+3 & 3 & 0.999938904 & 235.37627 \\
+3 & 4 & 0.999938904 & 235.37627 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the pure quadratic model at $n=1000$, the ratio to the bare formula is
+approximately $124136.898$, while the ratio to the explicit quadratic
+correction \eqref{eq:quadratic} is $1.19599044$. The exact four-action
+core improves the ratio to approximately $0.99996510$.
+The large bare error is not a finite-precision accident: its divergence is
+proved by the quadratic corollary. Conversely, the small observed
+four-core error is not a proven finite-$n$ guarantee.
+
+\subsection{Inverse diagnostics and a deliberately separate conjecture}
+
+The middle column of Table~\ref{tab:inverse} shows $-v_n/u_n$ from exact
+integer-normalized coefficients. The superquadratic ratios move toward the
+proved limit $1$, albeit slowly. The quadratic ratios are far smaller.
+The last column compares with the conjectural extension discussed in
+Section~\ref{sec:research}; that column is exploratory, not a theorem check.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact-coefficient inverse diagnostics, $a=1$. Here
+$\widetilde V_n=-S_n\exp(-2k_n^0/(j_n^0)^{p-1})$ is an exploratory
+comparison; its quadratic asymptotic status is conjectural.}
+\label{tab:inverse}
+\begin{tabular}{rrrr}
+\toprule
+$p$ & $n$ & $-v_n/u_n$ & $v_n/\widetilde V_n$\\
+\midrule
+2 & 50 & 0.000519898 & 0.649597 \\
+2 & 100 & 0.000121097 & 0.757155 \\
+2 & 200 & 0.000018894 & 0.835910 \\
+2 & 300 & 0.000005371 & 0.870969 \\
+3 & 50 & 0.571305779 & 0.978478 \\
+3 & 100 & 0.667665290 & 0.992327 \\
+3 & 200 & 0.751191069 & 0.997274 \\
+3 & 300 & 0.793480085 & 0.998512 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No finite collection of these comparisons proves the cutoff, the saddle
+limit, the central limit theorem, or the inverse asymptotic. Their role is
+to detect normalization errors, missing factors, and implausible finite-order
+behavior in formulas proved by other means.
+
+\section{Further research questions and a concrete inverse conjecture}
+\label{sec:research}
+
+\subsection{Quadratic and subquadratic inverse asymptotics}
+
+The most immediate continuation is a finite-core theorem for the signed
+inverse coefficients when $1<p\le2$. There is an exact identity suggesting
+a route, but the needed cancellation control has not been proved here.
+
+\begin{proposition}[Exact inverse response to one marked tail]
+\label{prop:inverse-response}
+Let $Q=G_M^{\langle-1\rangle}$. Fix $j>M$ and solve
+\[
+ U_s(q)=\Phi_M(q,U_s(q))+s q^j e^{a j^pU_s(q)},
+ \qquad V_s=U_s^{\langle-1\rangle}.
+\]
+Then the formal derivative of the inverse at $s=0$ is
+\begin{equation}
+ \left.\partial_sV_s(u)\right|_{s=0}
+ =-Q'(u)R_M(Q(u))Q(u)^j e^{a j^p u}.
+ \label{eq:inverse-response}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The direct response at $s=0$ is
+$T_j(q)=R_M(q)q^je^{a j^pG_M(q)}$ by Lemma~\ref{lem:marking}.
+Differentiate $U_s(V_s(u))=u$ at $s=0$:
+$T_j(Q(u))+G_M'(Q(u))\partial_sV_s(u)|_{s=0}=0$.
+Use $Q'=1/G_M'(Q)$ and $G_M(Q(u))=u$.
+\end{proof}
+
+For $M\ge2$ in the pure model,
+$Q(u)=u-(a+1)u^2+O(u^3)$. Thus the large power $Q(u)^j$ in
+\eqref{eq:inverse-response} suggests an exponential penalty of leading
+form $\exp(-(a+1)ju)$, not the positive forward factor
+$\exp((a+1)ku)$. At the bare saddle this suggests the following candidate.
+
+\begin{conjecture}[Quadratic inverse equivalent]
+\label{conj:quadratic-inverse}
+For the pure model with $p=2$ and every fixed $a>0$,
+\begin{equation}
+ v_n\sim-S_n\exp\!\bigl(-(1+1/a)r_n\bigr).
+ \label{eq:inverse-conjecture}
+\end{equation}
+\end{conjecture}
+
+The exact inverse-response identity does not prove that the one-tail
+response exhausts the inverse coefficient. That is the missing step.
+The quadratic data in Table~\ref{tab:inverse} are consistent with the
+candidate, but do not establish its constant, sign for all large $n$, or
+its limit. For $p=3$, convergence of the table's last-column ratio to $1$
+already follows from $v_n\sim-S_n$, because that column's extra exponential
+factor tends to $1$; no refined rate follows from it.
+A useful attack would reorganize the signed Lagrange formula into an
+analytic core before bounding its remaining tail, rather than estimate
+individual inverse-composition powers absolutely as in the $p>2$ proof.
+
+\subsection{Regularly varying feedback and critical logarithmic boundaries}
+
+Replace the pure tail by
+$\lambda_j\sim a j^p(\log j)^\gamma$, with controlled derivatives or
+finite differences. The leading radius is then expected to have scale
+$n^{1-p}(\log n)^{p-\gamma}$. The corresponding omitted-action diagnostic
+would be
+\[
+ n\tau_n^M\asymp
+ n^{1-M(p-1)}(\log n)^{M(p-\gamma)}.
+\]
+At $M(p-1)=1$, this predicts three different possibilities: a vanishing
+correction for $\gamma>p$, a finite nonzero correction for $\gamma=p$,
+and a divergent correction for $\gamma<p$. Establishing a theorem at that
+boundary requires a sharper replacement for the power-tail transfer bound,
+and potentially a Poisson correction when the scale tends to a constant.
+The power-tail theorem does not automatically cover these alternatives.
+
+\subsection{Joint laws for the finite background cloud}
+
+The present local theorem concerns the large action after conditioning on
+one tail. Determine the joint law of the numbers of actions
+$2,\ldots,M$ and their dependence on $J_n$. Natural scales are
+$n\tau_n^{d-1}$, but their exact means and covariances depend on the core's
+implicit response. One can introduce finitely many marking variables in
+$\Phi_M$ and differentiate the saddle equations. The desired theorem
+would give Gaussian limits for diverging counts, Poisson limits for bounded
+counts, and a quantitative total-variation approximation where appropriate.
+It should explicitly distinguish this coefficient model from the fixed
+product-weight random-allocation models in \cite{jjs,janson}.
+
+\subsection{Uniformity as the growth exponent approaches one}
+
+The minimum sufficient core diverges as $p\downarrow1$. Moreover, when
+$(p-1)\log n$ is bounded, the proposed giant size is no longer small
+relative to $n$. Both the fixed-core analytic estimates and the coarse
+localization need replacement. Develop a double-scaling theorem in which
+$p=p_n\downarrow1$ and determine the transition between a macroscopic
+fraction of total action and the $n/\log n$ scale. A uniform result here
+would connect the convergent linear-feedback boundary with the divergent
+superlinear regime, rather than merely taking a limit in a nonuniform
+formula.
+
+\subsection{Quantified errors and certified saddle computation}
+
+The current asymptotic theorems have $o(1)$ relative errors without explicit
+universal onset values. Convert the mass-transfer inequality, the Cauchy
+arc bounds, and the action-saddle Taylor estimates into explicit constants.
+Then combine interval evaluation of the finite sums in
+\eqref{eq:numeric-saddle} with a bracket for the unique coarse saddle.
+The target is a computable pair of bounds
+$L_n\le u_n/\Acal_{n,M}\le U_n$ with $L_n,U_n\to1$ and a
+specified domain of validity. Floating-point residuals alone, even when
+small, do not provide that certificate.
+
+\subsection{Higher-order expansions and accuracy-dependent cores}
+
+A complete expansion should combine higher Cauchy-saddle terms, a discrete
+Edgeworth expansion for the action sum, and omitted-background corrections.
+For a target algebraic accuracy, the natural first estimate is to choose a
+core with $n\tau_n^M$ below that accuracy scale. This suggests stricter
+cutoffs than $M(p-1)>1$, but the logarithmic factors and the analytic-saddle
+errors must be tracked together. Determine the smallest core for a prescribed
+relative error $O(n^{-K})$, and whether the resulting expansion can be
+organized in a reusable symbolic coefficient calculus.
+
+\subsection{From least formal terms to actual analytic remainders}
+
+Corollary~\ref{cor:least-term} determines a formal truncation scale for every
+$p>1$. The earlier feedback article constructs left-sector analytic
+solutions \cite{feedback}, but a useful continuation would establish
+uniform remainder estimates strong enough to compare those solutions with
+truncation at that scale. Directional summability or acceleration requires
+further analytic growth information; neither follows from a coefficient
+ratio law alone. A precise target is a sectorial remainder bound with an
+explicit action-dependent exponent, followed by an analysis of the Stokes
+ambiguity between different realizations when such ambiguity exists.
+
+\subsection{A staged formalization in Lean}
+
+The shortest useful formalization path begins with finite algebra rather
+than the full saddle theorem. Formalize the positive Lagrange coefficient
+identity, its finite multiplicity form, and the marked one-tail response;
+then the convex mass-transfer inequality and the preimage-count bound.
+These are separate from the analytic implicit-function and contour estimates.
+The existing transseries support and asymptotic-scale library provides
+context, but no claim is made that it already supplies this entire analytic
+chain. A later stage can package shrinking-radius saddle estimates with
+uniform hypotheses, followed by the lattice Gaussian summation and signed
+inverse lemma. This decomposition would make a partially completed
+formalization useful without labeling the unformalized remainder as checked.
+
+\section{Conclusion}
+
+For power feedback, the passage from logarithmic estimates to relative
+asymptotics is controlled by a finite but sharply determined amount of
+background data. The correct reduction is not simply to one large action,
+but to one large action dressed by a sufficient analytic core. The exact
+threshold is $M(p-1)>1$, and its strict boundary is forced by an explicit
+positive two-tail contribution.
+
+Once this reduction is established, two ordinary saddle calculations give
+the full coefficient factor and a moving Gaussian law. They also expose the
+superpolynomial factor hidden in the quadratic logarithmic estimate and
+locate the least formal term. A separate rapid-coefficient argument handles
+formal reversion when $p>2$. The quadratic inverse, quantitative analytic
+remainders, and uniform transition at $p=1$ remain focused next problems,
+not conclusions silently assumed by the present results.
+
+\appendix
+\section{Proof dependencies and scope audit}
+\label{app:audit}
+
+The proof order avoids circular use of the cutoff theorem. First the positive
+coefficient formula and coarse localization are proved. The upper side of
+the cutoff uses a combinatorial transfer. Independently, the saddle formula
+is proved for $w_{n,M}$ for every fixed core, including insufficient ones.
+That independent formula is then used to prove failure below the cutoff.
+Only after both sides are available is the unconditional fluctuation
+statement obtained.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}}
+\toprule
+Result & Main ingredients & Proven range\\
+\midrule
+Positive coefficients and one-tail identity & Formal Lagrange inversion;
+analytic implicit core; marking & Assumptions \eqref{eq:assumptions}\\[4pt]
+Macroscopic localization & Convexity, Stirling bounds, one-dimensional
+strict maximum & Every fixed $p>1$\\[4pt]
+Sufficient core & Slope transfer and explicit preimage count &
+$M(p-1)>1$\\[4pt]
+One-tail coefficient equivalent & Uniform Cauchy saddle; moving lattice
+saddle & Every fixed $M\ge M_0$\\[4pt]
+Necessary core & Exact two-mark response and saddle multiplier &
+Failure for $M(p-1)\le1$\\[4pt]
+Gaussian laws & Saddle window and tail control & Local conditional;
+weak unconditional for sufficient $M$\\[4pt]
+First explicit correction & Analytic perturbation of optimized exponent &
+$p>3/2$\\[4pt]
+Ratio and least-term index & Smooth saddle motion; regular variation &
+$p>1$; least-term statement for pure model\\[4pt]
+Sharp signed reversion & Endpoint convolution; absolute high-power bound &
+Pure model, $p>2$\\[4pt]
+Quadratic inverse equivalent & Exact response plus unproved tail dominance &
+Conjecture only\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The ordinary analytic implicit-function theorem, Cauchy's coefficient formula,
+Stirling's estimate, elementary convexity, and the Gaussian integral are
+classical tools used in the proofs. Numerical agreement is not an additional
+axiom or a replacement for any of them. No theorem in this document has
+been compiled as Lean code. No repository file or branch was modified in
+preparing the package.
+
+The main claims are stated for nonnegative weights and slopes with an
+\emph{exact power tail after finitely many exceptions}. Signed primitive
+weights, an arbitrary regularly varying tail, a growing core, or a
+parameter $p$ depending on $n$ require additional arguments. In particular,
+a theorem about one of those larger classes is not implicit in our use of
+the word universality.
+
+\section{Notation and normalization}
+\label{app:notation}
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.69\textwidth}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$q$ & Formal expansion variable; $q=e^{-x}$ gives the exponential
+transseries interpretation.\\[3pt]
+$w_j,\lambda_j$ & Primitive weight and feedback slope of action $j$.\\[3pt]
+$u_n,v_n$ & Ordinary coefficients of $\Uhat$ and its formal inverse.
+They are not exponential-generating-function coefficients.\\[3pt]
+$G_M,R_M$ & Analytic finite core and its linear response near zero.\\[3pt]
+$W_M,w_{n,M}$ & Formal series and coefficient for exactly one action above
+$M$.\\[3pt]
+$K_n,E_n,J_n$ & Random number of parts, one plus excess action, and largest
+part in the normalized positive Lagrange measure.\\[3pt]
+$z_n,\tau_n$ & Real moving action saddle and its small coefficient radius.\\[3pt]
+$k_n=n-z_n$ & Deterministic complement of the saddle action; not the random
+number of parts $K_n$.\\[3pt]
+$B_n,C_n,H_n,\Delta_n$ & Derivative quantities in
+\eqref{eq:determinant}; $\sigma_n^2=B_n/\Delta_n$.\\[3pt]
+$r_n,j_n^0,k_n^0,S_n$ & Bare saddle ratio, action, complement, and coefficient
+approximation.\\[3pt]
+$b_n=n!u_n$ & Integer normalization used only in the exact-computation
+section and output files.\\[3pt]
+$\sim$ & Ratio tends to one, except when explicitly applied to logarithms.
+All displayed asymptotics fix the model parameters first.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the pure model the least sufficient core is $M_*(p)$ from
+\eqref{eq:mincore}. With arbitrary initial perturbations the theorem is
+applied with any $M\ge M_0$ also satisfying the strict cutoff. This ensures
+that every action subjected to the tail transfer has precisely the assumed
+power slope and unit weight.
+
+\section{Reproduction and source provenance}
+\label{app:reproduction}
+
+The main TeX file is self-contained: its bibliography and numerical tables
+are embedded, with no external figures or bibliography database required.
+Compile it twice with \texttt{pdflatex}. The companion files are
+\texttt{README.md}, \texttt{SOURCES.md}, \texttt{PROOF\_STATUS.md}, a
+\texttt{Makefile}, three Python programs, and their recorded data.
+A Python environment with NumPy and SciPy is needed only for numerical
+saddle diagnostics and table generation. The exact program uses the standard
+library alone.
+
+\begin{verbatim}
+python code/verify_exact.py --order 300
+python code/diagnostics.py --order 1000 --powers 2 3
+python code/report_tables.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+
+The stored CSV files with integer-normalized coefficients are exact.
+The stored logarithms, nonlinear-solver residuals, and ratios to saddle
+formulas are floating-point data. Re-running the scripts may change last
+printed digits or timings across platforms. The article's asymptotic
+proofs do not depend on those digits or on any external computation service.
+
+The repository motivation is tied to the pinned source identified in
+Section~\ref{sec:context}. The literature check was targeted, not an
+exhaustive priority search. In particular, the paper treats the existence of
+related condensation and rapid-series methods as prior work, while proposing
+the exact finite-core reduction and the associated model-specific
+asymptotics as the contribution to be independently reviewed.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt: Analysis/Transseries}, repository and
+research documentation. Snapshot consulted: commit
+\path{5804c7aff9955e6cbc09be2a71a295a07b238bc9},
+29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/5804c7aff9955e6cbc09be2a71a295a07b238bc9/Analysis/Transseries}{Pinned transseries directory}.
+
+\bibitem{feedback}
+\emph{A sharp regularity classification for countable exponential-feedback
+transseries}, research draft prepared for Vladimir Reshetnikov,
+29 September 2026. ProveIt,
+\path{Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}.
+Source blob \path{c6a83d71973a12fe7ed970d2abc56e2b49e6808f}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5804c7aff9955e6cbc09be2a71a295a07b238bc9/Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}{Pinned TeX source}.
+
+\bibitem{gessel}
+Ira M. Gessel, \emph{Lagrange Inversion}, Journal of Combinatorial Theory,
+Series A \textbf{144} (2016), 212--249.
+\href{https://arxiv.org/abs/1609.05988}{arXiv:1609.05988}.
+\href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018}.
+
+\bibitem{jkt}
+Sabine Jansen, Tobias Kuna, and Dimitrios Tsagkarogiannis,
+\emph{Lagrange inversion and combinatorial species with uncountable color
+palette}, Annales Henri Poincar\'e (2021).
+\href{https://arxiv.org/abs/2008.10862}{arXiv:2008.10862}.
+\href{https://doi.org/10.1007/s00023-020-01013-0}{doi:10.1007/s00023-020-01013-0}.
+
+\bibitem{jjs}
+Svante Janson, Thordur Jonsson, and Sigurdur Orn Stef\'ansson,
+\emph{Random trees with superexponential branching weights},
+Journal of Physics A: Mathematical and Theoretical \textbf{44} (2011),
+485002.
+\href{https://arxiv.org/abs/1104.2810}{arXiv:1104.2810}.
+\href{https://doi.org/10.1088/1751-8113/44/48/485002}{doi:10.1088/1751-8113/44/48/485002}.
+
+\bibitem{janson}
+Svante Janson, \emph{Simply generated trees, conditioned Galton--Watson
+trees, random allocations and condensation}, Probability Surveys
+\textbf{9} (2012), 103--252.
+\href{https://arxiv.org/abs/1112.0510}{arXiv:1112.0510}.
+
+\bibitem{bender}
+Edward A. Bender, \emph{An Asymptotic Expansion for the Coefficients of
+Some Formal Power Series}, Journal of the London Mathematical Society
+(2) \textbf{9} (1975), 451--458.
+\href{https://doi.org/10.1112/jlms/s2-9.3.451}{doi:10.1112/jlms/s2-9.3.451}.
+
+\bibitem{edgar}
+G. A. Edgar, \emph{Transseries for beginners}, Real Analysis Exchange
+\textbf{35} (2010), 253--310.
+\href{https://arxiv.org/abs/0801.4877}{arXiv:0801.4877}.
+
+\end{thebibliography}
+\end{document}

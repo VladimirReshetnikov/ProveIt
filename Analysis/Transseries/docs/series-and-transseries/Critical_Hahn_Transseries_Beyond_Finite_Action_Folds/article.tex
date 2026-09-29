@@ -1,0 +1,1700 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem,needspace}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Countable-action critical transseries}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\bc}{\beta_{\mathrm c}}
+\newcommand{\rhoc}{\rho_{\mathrm c}}
+\newcommand{\Bc}{B_{\mathrm c}}
+\newcommand{\m}{\boldsymbol m}
+\newcommand{\gL}{g_{\alpha,L}}
+\newcommand{\Ra}{\mathcal R_\alpha}
+\newcommand{\coeff}[2]{[#1]#2}
+\newcommand{\repo}{\texttt{ProveIt}}
+\hypersetup{pdftitle={Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector Asymptotics, and Sharp Action Budgets},pdfauthor={Research draft prepared for Vladimir Reshetnikov},pdfsubject={Countable exponential feedback, convergent Hahn inversion, stable local limits and action cutoffs}}
+
+\begin{document}
+\begin{center}
+{\small\scshape Transseries / asymptotic inversion / countable exponential feedback}\par
+\vspace{10pt}
+{\LARGE\bfseries Beyond Finite-Action Folds}\par
+\vspace{6pt}
+{\Large Critical Hahn Transseries, Stable Sector Asymptotics,\par and Sharp Action Budgets}\par
+\vspace{12pt}
+{\normalsize Research draft prepared for Vladimir Reshetnikov}\par
+{\small 29 September 2026}\par
+\end{center}
+\vspace{5pt}
+\begin{abstract}
+Finite analytic action families generically produce square-root inverse
+singularities. A countable family can instead reach a nonanalytic boundary,
+where that conclusion fails. We study the explicit positive class
+\[
+ U_\beta(q)=\beta\sum_{j\ge1}a_jq^j e^{jU_\beta(q)},\qquad
+ a_j=a j^{-1-\alpha}\quad\hbox{outside a finite set},\quad 1<\alpha<2.
+\]
+At its critical coupling, we construct an actually convergent Hahn inverse
+with a finite positive generating grid, give a closed formula for every
+coefficient, and determine its exact finite-ramification criterion.
+An all-orders, uniformly additive large-sector expansion has coefficients
+expressed through derivatives of a stable density. A reflection identity
+identifies its terms with the Hahn coefficients and explains a precise
+arithmetic cancellation rule. We then prove a joint coupling--action-cutoff
+limit. The number of retained actions must exceed the stable scale
+$n^{1/\alpha}$ to preserve the $n$th coefficient asymptotically; at a
+comparable cutoff an explicit infinitely divisible density gives the exact
+limiting loss. Finally, we compute the critical-value and curvature drift
+of the finite-action folds and prove a triangular-array Gaussian limit in
+the complementary hard-cutoff regime. All statements include conventional
+proofs. Exact coefficient checks and reproducible numerical diagnostics
+accompany the article.
+\end{abstract}
+\noindent\textbf{Scope and research status.}
+This is a proved model-specific extension of the repository's finite-action
+critical-inversion program, not a claimed solution of unrestricted
+transseries realization or resurgence. Stable limits for simply generated
+trees and soft/hard truncation are established subjects; those mechanisms
+are credited below. Global publication priority for the combined results
+has not been established. No new Lean formalization is claimed.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The gap, the contribution, and the classical background}
+\label{sec:intro}
+
+\subsection{What changes when the action family is countable}
+The repository contains a substantial inversion calculus and recent
+research packages on support-controlled reversion, analytic moving folds,
+and regularity of countable exponential feedback. The moving-fold package
+constructs a local two-sheet atlas for an analytic finite-action equation;
+its research questions include higher critical multiplicity, changing
+actions, and the loss of a uniform action gap. The regularity package
+studies $U(q)=\sum_{j\ge1}q^j e^{\lambda_jU(q)}$ and separates formal
+existence, convergence, Gevrey regularity, and realization
+\cite{repo-index,repo-fold,repo-regularity}.
+
+Here the slopes are only linear, but the coefficients have a power-law
+tail. The solution therefore converges near the origin, while its first
+critical boundary is not analytic. The second moment diverges. The
+critical exponent becomes $1/\alpha$, rather than $1/2$, and a finite
+truncation of the action family restores a square root at a moving
+critical value. Consequently, taking the sector index to infinity and
+taking the action cutoff to infinity do not commute without a scale
+condition. This is the specific gap addressed here.
+
+We do not identify a nonanalytic boundary with an analytic critical point
+of a nonintegral ``multiplicity.'' Those are different objects. Nor do we
+claim to settle every higher-multiplicity or parameter-dependent-action
+question in the moving-fold manuscript. Our results give a precise,
+self-contained answer for the class defined in Section~\ref{sec:model}.
+
+\subsection{What is classical, and what is supplied here}
+The substitution $t=qe^U$ turns the problem into
+$t=q\exp(\beta A(t))$, an instance of the classical simply generated tree
+schema. Janson's survey gives critical infinite-variance local limits and
+stable maximum-size behavior; in particular, Example~18.27 treats a
+closely related power-law allocation setting \cite{janson}. Soft and hard
+truncation of heavy tails are studied by Chakrabarty and Samorodnitsky
+\cite{chakrabarty}. Lagrange inversion, singularity transfer, and saddle
+methods are standard tools \cite{flajolet}. We do not relabel these general
+principles as new discoveries.
+
+The contribution developed in this article is an explicit connection
+between the analytic and sector descriptions of this countable-action
+model. It consists of the following linked results.
+\begin{enumerate}[label=\arabic*.,leftmargin=*]
+\item A convergent critical Hahn inverse, its closed multi-index formula,
+its exact ramification, and a geometric truncation estimate
+(Theorems~\ref{thm:hahn} and~\ref{thm:hahn-coeff}).
+\item An arbitrary-order stable-density expansion and an exact
+Hahn--Fourier coefficient identity, including an arithmetic cancellation
+rule (Theorems~\ref{thm:allorders} and~\ref{thm:duality}).
+\item A two-parameter coupling--cutoff profile and a necessary and
+sufficient action-budget condition
+(Theorems~\ref{thm:cutoff} and~\ref{thm:budget}).
+\item Explicit finite-fold drift constants and a uniform Gaussian
+coefficient law when the cutoff lies below the critical budget
+(Theorems~\ref{thm:fold-drift} and~\ref{thm:hard}).
+\end{enumerate}
+These are intended as a reusable extension within the repository. The
+proofs do not depend on the correctness of any unreviewed repository
+manuscript. An independent literature and mathematical review remains
+necessary before asserting publication novelty.
+
+\section{Model, coordinates, and exact coefficients}
+\label{sec:model}
+
+Fix
+\begin{equation}\label{eq:model-assumptions}
+ 1<\alpha<2,\qquad a>0,\qquad
+ A(t)=a\Li_{1+\alpha}(t)+P(t)=\sum_{j\ge1}a_jt^j,
+\end{equation}
+where $P(t)=\sum_{j=1}^Jp_jt^j$, every $a_j$ is nonnegative, and $a_1>0$.
+The coefficients of $P$ itself need not be nonnegative. Thus an arbitrary
+finite prefix can be changed while the positive tail is held fixed. Put
+\begin{equation}\label{eq:d-def}
+ d_k=a\zeta(1+\alpha-k)+\sum_{j=1}^Jp_jj^k\quad(k\ge0),
+ \qquad G=\Gamma(-\alpha)>0.
+\end{equation}
+The quantities $d_0=A(1)$ and $d_1=\sum j a_j$ are finite and positive.
+For $k\ge2$, the numbers $d_k$ are \emph{analytic expansion coefficients},
+not finite moments of the action distribution. In particular,
+$\sum j^2a_j=\infty$, even though $d_2$ is a finite real number.
+
+For $\beta>0$, define $U_\beta\in q\R[[q]]$ by
+\begin{equation}\label{eq:feedback}
+ U_\beta(q)=\beta A\bigl(qe^{U_\beta(q)}\bigr),
+ \qquad u_n(\beta)=[q^n]U_\beta(q).
+\end{equation}
+Its coefficient at degree $n$ depends only on earlier coefficients and
+$a_1,\ldots,a_n$, so the formal solution is unique. The analytic implicit
+function theorem at $(q,U)=(0,0)$ also gives a convergent solution there.
+All its coefficients are positive, since $a_1>0$.
+
+Throughout, $\N=\{0,1,2,\ldots\}$. The central parameters are
+\begin{equation}\label{eq:parameters}
+ \bc=d_1^{-1},\quad \delta_\beta=1-\beta d_1,\quad
+ \rho_\beta=e^{-\beta d_0},\quad B_\beta=\beta aG.
+\end{equation}
+We also write $\rhoc=\rho_{\bc}$ and $\Bc=B_{\bc}$.
+
+\begin{proposition}[Exact parametrization and Lagrange coefficient]
+\label{prop:exact}
+With $t=qe^{U_\beta(q)}$ one has
+\begin{equation}\label{eq:parametric}
+ U_\beta=\beta A(t),\qquad q=t e^{-\beta A(t)},\qquad
+ u_n(\beta)=\frac1n[t^n]e^{n\beta A(t)}\quad(n\ge1).
+\end{equation}
+If $N_j$ are independent Poisson random variables of means $n\beta a_j$
+and $K_n=\sum_{j\ge1}jN_j$, then
+\begin{equation}\label{eq:poisson}
+ u_n(\beta)=\frac{\rho_\beta^{-n}}n\Prob(K_n=n),\qquad
+ \E K_n=n\beta d_1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The first two identities follow directly from \eqref{eq:feedback}.
+Lagrange inversion for $t=q e^{\beta A(t)}$ gives
+\[
+ [q^n]\beta A(t(q))
+ =\frac1n[t^{n-1}]\beta A'(t)e^{n\beta A(t)}
+ =\frac1n[t^n]e^{n\beta A(t)},
+\]
+where the last equality follows by differentiating the exponential.
+The total Poisson intensity is $n\beta d_0<\infty$, so only finitely many
+$N_j$ are nonzero almost surely. The probability generating function of
+$K_n$ is $\exp(n\beta(A(t)-d_0))$. Comparing its coefficient at $t^n$
+proves \eqref{eq:poisson}; the mean follows from $d_1<\infty$.
+\end{proof}
+
+For an integer $M\ge1$, let $A_M(t)=\sum_{j\le M}a_jt^j$ and let
+$U_{\beta,M}$ and $u_{n,M}(\beta)$ denote the corresponding solution and
+coefficients. A particularly useful consequence is
+\begin{equation}\label{eq:conditional}
+ \frac{u_{n,M}(\beta)}{u_n(\beta)}
+ =\Prob\bigl(N_j=0\text{ for all }j>M\mid K_n=n\bigr).
+\end{equation}
+Indeed, independence contributes the factor
+$\exp(-n\beta\sum_{j>M}a_j)$, and the remaining coefficient is the
+truncated probability in \eqref{eq:poisson}. The ratio belongs to $[0,1]$,
+is nondecreasing in $M$, and equals $1$ for $M\ge n$. This identity will
+turn an analytic action-cutoff question into a conditional large-jump
+question, without approximation.
+
+\section{A convergent Hahn inverse at the critical boundary}
+\label{sec:hahn}
+
+The polylogarithm expansion \cite[Eq.~25.12.12]{dlmf}, on the branch
+$|\arg x|<\pi$ and $|x|<2\pi$, gives
+\begin{equation}\label{eq:polylog}
+ A(e^{-x})=d_0-d_1x+aGx^\alpha
+                  +\sum_{k\ge2}\frac{d_k(-x)^k}{k!}.
+\end{equation}
+The series on the right is convergent in that disk. Introduce
+\begin{equation}\label{eq:critical-coordinate}
+ x=-\log t,\qquad \varepsilon=\log(\rho_\beta/q),\qquad
+ H_\beta(x)=\beta\sum_{k\ge2}\frac{d_k(-1)^k x^{k-2}}{k!}.
+\end{equation}
+Equations \eqref{eq:parametric} and \eqref{eq:polylog} become the exact
+local normal form
+\begin{equation}\label{eq:normalform}
+ \boxed{\quad
+ \varepsilon=\delta_\beta x+B_\beta x^\alpha+x^2H_\beta(x),
+ \qquad U_\beta=\beta d_0+\varepsilon-x.\quad}
+\end{equation}
+For positive $q<\rhoc$ at criticality, $x$ and $\varepsilon$ are positive.
+Complex branches below are continuations of this positive branch.
+
+\begin{theorem}[Convergent critical Hahn chart]
+\label{thm:hahn}
+At $\beta=\bc$, set
+\[
+ T=(\varepsilon/\Bc)^{1/\alpha},\qquad R=T^{2-\alpha}.
+\]
+There is a holomorphic function $V(T,R)$ near $(0,0)$, with $V(0,0)=1$,
+such that the critical inverse is exactly
+\begin{equation}\label{eq:hahn-chart}
+ x=T V(T,T^{2-\alpha}),\qquad
+ V^\alpha+\frac{R}{\Bc}V^2H_{\bc}(TV)=1.
+\end{equation}
+Consequently its Hahn support in $\varepsilon$ is contained in
+\begin{equation}\label{eq:hahn-grid}
+ \left\{\frac{1+k+(2-\alpha)m}{\alpha}:k,m\in\N\right\}.
+\end{equation}
+The expansion is absolutely convergent on a sufficiently small slit
+neighborhood, and its support has only finitely many elements below any
+fixed bound.
+
+More quantitatively, suppose $V$ is bounded by $K_0$ on a polydisk with
+radii $T_0,R_0$. If its Taylor polynomial of total degree at most $N$ is
+$V_{\le N}$, and
+\[
+ \theta=\max\{|T|/T_0,|T|^{2-\alpha}/R_0\}<1,
+\]
+then
+\begin{equation}\label{eq:hahn-remainder}
+ |x-TV_{\le N}(T,T^{2-\alpha})|
+ \le |T|K_0\frac{(N+2)\theta^{N+1}}{(1-\theta)^2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Substitute $x=TV$ into \eqref{eq:normalform} with $\delta_\beta=0$ and
+divide by $\Bc T^\alpha$. This gives \eqref{eq:hahn-chart}. Its derivative
+with respect to $V$ at $(T,R,V)=(0,0,1)$ is $\alpha\ne0$. The analytic
+implicit function theorem gives the claimed $V$ and its Taylor series.
+Multiplication by $T$ and then substitution $R=T^{2-\alpha}$ give
+\eqref{eq:hahn-grid}. Both grid generators are positive. Thus a bound
+$1+k+(2-\alpha)m\le C$ bounds $k$ and $m$ separately, proving local
+finiteness even when the additive group they generate is dense.
+
+Cauchy's estimate bounds the Taylor coefficient of $T^kR^m$ by
+$K_0T_0^{-k}R_0^{-m}$. At total degree $\ell$ there are $\ell+1$ such
+monomials. The omitted sum is therefore at most
+\[
+ |T|K_0\sum_{\ell>N}(\ell+1)\theta^\ell
+ \le |T|K_0(N+2)\theta^{N+1}(1-\theta)^{-2}.
+\]
+This also proves absolute convergence after the substitution.
+\end{proof}
+
+\begin{remark}[Obtaining actual majorant radii]
+The radii in the theorem need not remain purely existential. Choose
+$0<r_0<2\pi$ and a bound $H_0\ge\max(1,\sup_{|x|\le r_0}|H_{\bc}(x)|)$.
+On $|v-1|=1/4$, put $m_\alpha=\min|v^\alpha-1|>0$, using the branch
+near $1$. One may take
+\[
+ T_0=r_0/2,\qquad
+ R_0=\frac{\Bc m_\alpha}{4(5/4)^2H_0},\qquad K_0=5/4.
+\]
+On that $v$-circle the perturbation has modulus at most $m_\alpha/4$.
+Rouch\'e's theorem gives exactly one zero, hence a simple zero depending
+holomorphically on $(T,R)$, inside the circle. Slightly enlarging the
+parameter radii preserves the strict inequality, so Cauchy estimates at
+the displayed radii are legitimate. Evaluating $H_0$ and $m_\alpha$ with
+outward rounding would produce numerical certificates; the supplied
+numerical program does not perform that interval-arithmetic step.
+\end{remark}
+
+\subsection{A closed formula for every coefficient}
+For a finitely supported multi-index $\m=(m_2,m_3,\ldots)$ define
+\begin{equation}\label{eq:multiindex}
+ m_* =\sum_{k\ge2}m_k,\qquad
+ K=\sum_{k\ge2}k m_k,\qquad
+ \Lambda=1+K-\alpha m_*,\qquad
+ h_k=\frac{\bc d_k(-1)^k}{k!\Bc}.
+\end{equation}
+In particular $\Lambda\ge1+(2-\alpha)m_*>0$.
+
+\begin{theorem}[Exact multi-index reversion]
+\label{thm:hahn-coeff}
+The chart in Theorem~\ref{thm:hahn} has the absolutely convergent expansion
+\begin{equation}\label{eq:closed-hahn}
+ x=\sum_{\m}C_{\m}\left(\prod_{k\ge2}h_k^{m_k}\right)T^\Lambda,
+ \qquad
+ C_{\m}=\frac{(-1)^{m_*}}{\alpha\prod_{k\ge2}m_k!}
+       \frac{\Gamma((K+1)/\alpha)}{\Gamma(1+\Lambda/\alpha)}.
+\end{equation}
+The zero multi-index contributes $T$. Terms with equal exponent are to
+be grouped; every such group is finite.
+\end{theorem}
+\begin{proof}
+Write $s=x/T$ and $y=s^\alpha$. The equation for $y$ is
+\[
+ y=1-\sum_{k\ge2}z_k y^{k/\alpha},\qquad z_k=h_kT^{k-\alpha}.
+\]
+First retain only finitely many $z_k$ and introduce an auxiliary variable
+$w$ multiplying their sum. Lagrange inversion about $y=1$, applied to
+$y^{1/\alpha}$, says that the coefficient of a monomial of total degree
+$m_*>0$ is
+\[
+ \frac{(-1)^{m_*}}{\alpha\prod m_k!}
+ \left.\frac{\mathrm d^{m_*-1}}{\mathrm dy^{m_*-1}}
+                 y^{(K+1)/\alpha-1}\right|_{y=1}.
+\]
+The derivative is
+$\Gamma((K+1)/\alpha)/\Gamma((K+1)/\alpha-m_*+1)$,
+which gives \eqref{eq:closed-hahn}. The formula for $m_*=0$ also yields
+$1$ by $\Gamma(z+1)=z\Gamma(z)$.
+
+A bound on $\Lambda$ bounds $m_*$ and every index $k$ appearing in $\m$,
+so passing from finitely many $z_k$ to all of them is coefficientwise
+finite. To justify absolute rather than just formal convergence, replace
+each $h_k$ by $-|h_k|$. The same implicit-function argument applies to
+the analytic majorant $\sum |h_k|T^{k-2}$. The gamma factors in
+\eqref{eq:closed-hahn} are positive, so every coefficient of the resulting
+majorant expansion is $|C_{\m}|\prod|h_k|^{m_k}$. Its convergence proves
+absolute convergence of the original expansion and validates grouping.
+\end{proof}
+
+For example, the terms supported only on $h_2$ start as
+\begin{equation}\label{eq:first-hahn}
+ x=T-\frac{h_2}{\alpha}T^{3-\alpha}
+       +\frac{5-\alpha}{2\alpha^2}h_2^2T^{5-2\alpha}+\cdots,
+\end{equation}
+while the term linear in $h_3$ is $-(h_3/\alpha)T^{4-\alpha}$.
+These displayed families must be sorted together; their relative order
+can depend on $\alpha$.
+
+\begin{corollary}[Exact ramification and exponential action grid]
+\label{cor:ramification}
+If $\alpha=r/s$ in lowest terms, the critical inverse becomes holomorphic
+after $\varepsilon=z^r$, and $r$ is the smallest possible positive integer
+ramification. If $\alpha$ is irrational, no finite Puiseux cover makes
+the inverse holomorphic.
+
+If $\varepsilon=e^{-\omega X}$ with $\omega>0$ and $X\to+\infty$,
+\eqref{eq:closed-hahn} is an absolutely convergent exponential Hahn
+transseries. A sufficient positive action grid for $x$ has initial action
+$\omega/\alpha$ and increments $\omega/\alpha$ and
+$\omega(2-\alpha)/\alpha$. The analytic term $\varepsilon$ in $U$ is
+included separately.
+\end{corollary}
+\begin{proof}
+For $\alpha=r/s$, $T$ is a constant times $z^s$ and $T^{2-\alpha}$ is a
+constant times $z^{2s-r}$. Both exponents are positive integers. The
+leading term of $x$ is a nonzero multiple of $\varepsilon^{s/r}$, so any
+finite ramification must be divisible by $r$. If $\alpha$ is irrational,
+the leading exponent $1/\alpha$ cannot be made integral by multiplying
+it by any positive integer. The exponential statement follows by direct
+substitution in the convergent grid.
+\end{proof}
+
+\section{Coupling transition and the three coefficient regimes}
+\label{sec:phase}
+
+The fractional boundary is the transition between an inherited
+power-law singularity and an interior analytic fold.
+
+\begin{theorem}[Phase diagram]
+\label{thm:phases}
+For fixed $\beta>0$, the radius and leading coefficients are as follows.
+If $0<\beta<\bc$, the radius is $\rho_\beta$ and
+\begin{equation}\label{eq:subcritical}
+ u_n(\beta)\sim\beta a\delta_\beta^{-1-\alpha}
+                    \rho_\beta^{-n}n^{-1-\alpha}.
+\end{equation}
+At $\beta=\bc$, the radius is $\rhoc$ and
+\begin{equation}\label{eq:critical-leading}
+ u_n(\bc)\sim\rhoc^{-n}\Bc^{-1/\alpha}
+               \frac{-1}{\Gamma(-1/\alpha)}n^{-1-1/\alpha}.
+\end{equation}
+If $\beta>\bc$, there is a unique $\tau\in(0,1)$ with
+$\beta\tau A'(\tau)=1$. Writing
+\begin{equation}\label{eq:fold-parameters}
+ r_\beta=\tau e^{-\beta A(\tau)},\qquad
+ v_\beta=\beta(t\partial_t)^2A(t)\big|_{t=\tau}>0,
+\end{equation}
+one has radius $r_\beta$ and
+\begin{equation}\label{eq:supercritical}
+ u_n(\beta)\sim\frac{r_\beta^{-n}}{\sqrt{2\pi v_\beta}\,n^{3/2}}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The function $\beta tA'(t)$ is strictly increasing for real $0<t<1$,
+starts at $0$, and tends to $\beta d_1$. Thus $q(t)=t e^{-\beta A(t)}$
+is increasing up to $t=1$ when $\beta\le\bc$, and has its unique first
+maximum at $t=\tau<1$ when $\beta>\bc$.
+
+For $\delta_\beta>0$, inversion of \eqref{eq:normalform} gives
+\[
+ x=\varepsilon/\delta_\beta
+   -B_\beta\delta_\beta^{-1-\alpha}\varepsilon^\alpha
+   +o(\varepsilon^\alpha).
+\]
+The first nonanalytic term of $U_\beta$ is therefore
+$B_\beta\delta_\beta^{-1-\alpha}\varepsilon^\alpha$.
+Singularity transfer gives its coefficient divided by $\Gamma(-\alpha)$,
+which proves \eqref{eq:subcritical}. At criticality the leading
+nonanalytic term is $-\Bc^{-1/\alpha}\varepsilon^{1/\alpha}$ by
+Theorem~\ref{thm:hahn}, proving \eqref{eq:critical-leading}.
+
+At the interior critical point put $t=\tau e^{-x}$ and
+$\varepsilon=\log(r_\beta/q)$. Taylor expansion gives
+$\varepsilon=v_\beta x^2/2+O(x^3)$ and
+$U_\beta=\beta A(\tau)+\varepsilon-x$.
+The singular term is $-\sqrt{2/v_\beta}\,\varepsilon^{1/2}$.
+Since $\Gamma(-1/2)=-2\sqrt\pi$, this yields
+\eqref{eq:supercritical}.
+
+For completeness, these local expansions describe the actual unique
+dominant singularity. Pringsheim's theorem excludes a smaller convergence
+radius, since the positive real parametric branch is analytic strictly
+before the stated boundary. The nonanalytic local term excludes a larger
+radius. The coefficients of $t(q)$ are positive, with its
+first two coefficients nonzero. Monotone convergence along the positive
+radius gives a finite boundary value, either $1$ or $\tau$. At every
+other point on the same circle, strictness in the triangle inequality
+gives $|t(q)|$ smaller than that positive value. Consequently
+$|\beta t A'(t)|<1$ there, and the implicit function theorem continues
+the solution across that point. Near the positive point the local
+power--fractional or square-root inverse continues in a slit sector,
+by \eqref{eq:normalform} or the analytic fold expansion. Compactness of
+the rest of the circle gives a common indented continuation domain.
+The usual singularity-transfer contour is therefore valid
+\cite[Ch.~VI]{flajolet}; no unverified competing singularity is discarded.
+\end{proof}
+
+\subsection{A uniform local coupling profile}
+The same normal form gives a useful transition in the \emph{argument}
+coordinate, separate from the large-sector transition below.
+
+\begin{proposition}[Boundary-layer inverse and emerging fold]
+\label{prop:local-crossover}
+Suppose $\varepsilon\downarrow0$ and
+\[
+ \delta_\beta=\eta\Bc^{1/\alpha}\varepsilon^{(\alpha-1)/\alpha},
+ \qquad \eta\text{ in a fixed compact subset of }\R.
+\]
+There is a unique positive solution near the critical branch, and
+\begin{equation}\label{eq:local-profile}
+ x=(\varepsilon/\Bc)^{1/\alpha}
+   \left(v(\eta)+O\bigl(\varepsilon^{\kappa}\bigr)\right),
+ \quad v(\eta)^\alpha+\eta v(\eta)=1,
+ \quad \kappa=\frac{\min(\alpha-1,2-\alpha)}\alpha.
+\end{equation}
+The error is uniform on that compact set. As $\delta_\beta\uparrow0$
+through negative values, the emerging interior fold satisfies
+\begin{align}
+ x_{\mathrm f}&\sim
+       \left(\frac{-\delta_\beta}{\alpha\Bc}\right)^{1/(\alpha-1)},
+       \label{eq:emerging-x}\\
+ \log(r_\beta/\rho_\beta)&\sim
+ (\alpha-1)\alpha^{-\alpha/(\alpha-1)}
+ \Bc^{-1/(\alpha-1)}(-\delta_\beta)^{\alpha/(\alpha-1)}.
+ \label{eq:emerging-radius}
+\end{align}
+\end{proposition}
+\begin{proof}
+Divide \eqref{eq:normalform} by $\varepsilon$, putting
+$x=(\varepsilon/\Bc)^{1/\alpha}v$.
+Since $B_\beta/\Bc=\beta/\bc=1-\delta_\beta$, the result is
+\[
+ 1=\eta v+v^\alpha
+      +O(\varepsilon^{(\alpha-1)/\alpha})v^\alpha
+      +O(\varepsilon^{(2-\alpha)/\alpha})v^2.
+\]
+The positive root of $v^\alpha+\eta v=1$ is unique: for $\eta<0$ the
+function first decreases below zero and then increases through $1$ only
+once; for $\eta\ge0$ it increases throughout. At that root its derivative
+is $1/v+(\alpha-1)v^{\alpha-1}>0$. On compact $\eta$-sets the root and
+this derivative are uniformly controlled, proving \eqref{eq:local-profile}.
+
+At the interior fold the derivative of the right side of
+\eqref{eq:normalform} vanishes. Its first two terms are
+$\delta_\beta+\alpha B_\beta x^{\alpha-1}$; the analytic remainder is
+$O(x)=o(x^{\alpha-1})$. This proves \eqref{eq:emerging-x}. Substitution
+back into the normal form gives
+$\varepsilon_{\mathrm f}\sim-(\alpha-1)\Bc x_{\mathrm f}^\alpha$.
+Since $\varepsilon_{\mathrm f}=\log(\rho_\beta/r_\beta)$,
+\eqref{eq:emerging-radius} follows.
+\end{proof}
+
+\section{Stable densities and all-order sector asymptotics}
+\label{sec:stable}
+
+We use the principal power $(-iu)^\alpha$ for real $u$. Because
+$\cos(\pi\alpha/2)<0$, the integral
+\begin{equation}\label{eq:stable-density}
+ g_\alpha(z)=\frac1{2\pi}\int_{\R}
+          \exp\bigl((-iu)^\alpha-iuz\bigr)\dd u
+\end{equation}
+converges absolutely, together with every derivative in $z$. This is the
+density of a centered, spectrally positive stable law in a normalization
+chosen to match the feedback equation.
+
+\begin{lemma}[Normalization, derivatives, and positivity]
+\label{lem:stable}
+The exponent in \eqref{eq:stable-density} has the L\'evy representation
+\begin{equation}\label{eq:levy}
+ (-iu)^\alpha=\frac1G\int_0^\infty
+       (e^{iux}-1-iux)x^{-1-\alpha}\dd x.
+\end{equation}
+The function $g_\alpha$ is a smooth probability density, positive for
+every real argument. At the origin,
+\begin{equation}\label{eq:stable-derivatives}
+ g_\alpha^{(k)}(0)=\frac{\Gamma((k+1)/\alpha)}{\pi\alpha}
+                   \sin\frac{\pi(k+1)}\alpha,
+ \qquad
+ g_\alpha(0)=-\frac1{\Gamma(-1/\alpha)}>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $\Re s>0$, two integrations by parts give
+\[
+ \int_0^\infty(e^{-sx}-1+sx)x^{-1-\alpha}\dd x
+ =\frac{\Gamma(2-\alpha)}{\alpha(\alpha-1)}s^\alpha
+ =\Gamma(-\alpha)s^\alpha.
+\]
+Pass to $s=-iu$ by continuity; integrability near zero follows from the
+quadratic cancellation, and at infinity from $\alpha>1$. This proves
+\eqref{eq:levy}. The centered compensated Poisson construction on
+$(0,1]$, followed by the finite-intensity jumps on $(1,\infty)$, realizes
+this characteristic function. Fourier integrability then gives the
+smooth density in \eqref{eq:stable-density}.
+
+For the derivative formula, restrict the Fourier integral to $u>0$ and
+take twice its real part. With $c=-e^{-i\pi\alpha/2}$, which has positive
+real part, substitute $w=u^\alpha$ to obtain
+\[
+ g_\alpha^{(k)}(0)=\frac{\Gamma((k+1)/\alpha)}{\pi\alpha}
+       \Re\bigl((-i)^k c^{-(k+1)/\alpha}\bigr).
+\]
+The real part is $\sin(\pi(k+1)/\alpha)$, giving the first identity.
+Gamma reflection yields the second.
+
+Here is also a direct positivity argument useful later. For any $L>0$
+let $X_L$ have the compensated L\'evy measure
+$G^{-1}x^{-1-\alpha}\mathbf1_{(0,L]}(x)\dd x$.
+Its density exists by the Fourier estimates in
+Lemma~\ref{lem:truncated-density} below. Split it at $\epsilon<L$:
+\[
+ X_L=X_\epsilon+S_{\epsilon,L}
+                  -\frac1G\int_\epsilon^L x^{-\alpha}\dd x,
+\]
+where $S_{\epsilon,L}$ is an independent compound Poisson sum.
+The variance of $X_\epsilon$ tends to zero, while the displayed
+compensation tends to positive infinity as $\epsilon\downarrow0$.
+Conditional on a sufficiently large finite number of jumps,
+$S_{\epsilon,L}$ has a density positive throughout the interval between
+that number times $\epsilon$ and that number times $L$. These intervals
+overlap for large numbers of jumps. For any prescribed real $z$, choose
+$\epsilon$ small enough that $z$ plus the compensation lies strictly
+inside such an interval. Convolution with the positive-probability event
+that $X_\epsilon$ is close to zero then gives a strictly positive density
+at $z$. Thus $g_{\alpha,L}(z)>0$. Adding the jumps above $L$ to $X_L$,
+and using the positive probability of no such jumps, proves
+$g_\alpha(z)>0$. This argument does not assume positivity merely from
+Fourier integrability.
+\end{proof}
+
+For a coupling $\beta$, which may now depend on $n$, put
+\begin{equation}\label{eq:bn-lambda}
+ b_n=(n\beta aG)^{1/\alpha},\qquad
+ \lambda_n=\frac{n(1-\beta d_1)}{b_n},\qquad
+ c_{k,n}=\frac{n\beta d_k}{k!b_n^k}\quad(k\ge2).
+\end{equation}
+The natural critical coupling window is $\lambda_n=O(1)$, equivalently
+$\beta-\bc=O(n^{-(\alpha-1)/\alpha})$.
+
+\begin{theorem}[Uniform all-order stable expansion]
+\label{thm:allorders}
+Fix a compact interval $I\subset(0,\infty)$ for $\beta$ and $R>0$. For a
+finite multi-index $\m$ as in \eqref{eq:multiindex}, put
+\begin{equation}\label{eq:weight}
+ w(\m)=\frac{K-\alpha m_*}{\alpha}
+       =\sum_{k\ge2}\frac{k-\alpha}{\alpha}m_k.
+\end{equation}
+Uniformly for $\beta\in I$, as $n\to\infty$,
+\begin{equation}\label{eq:allorders}
+ \boxed{\quad
+ n b_n\rho_\beta^n u_n(\beta)
+ =\sum_{w(\m)<R}
+      \frac{\prod_{k\ge2}c_{k,n}^{m_k}}{\prod_{k\ge2}m_k!}
+      (-1)^K g_\alpha^{(K)}(\lambda_n)
+      +O_{I,R}(n^{-R}).\quad}
+\end{equation}
+The sum is finite. The error is an \emph{absolute, additive} error in the
+displayed normalization; it is not a relative estimate uniformly far
+from the critical window. In particular, if $\lambda_n\to\lambda\in\R$,
+\begin{equation}\label{eq:leading-window}
+ u_n(\beta)\sim\frac{\rho_\beta^{-n}}{n b_n}g_\alpha(\lambda).
+\end{equation}
+\end{theorem}
+\begin{proof}
+We provide the Fourier estimates explicitly. By
+Proposition~\ref{prop:exact}, the left side of \eqref{eq:allorders} is
+$b_n\Prob(K_n=n)$. Fourier inversion on the lattice gives
+\begin{align}
+ b_n\Prob(K_n=n)
+ &=\frac1{2\pi}\int_{-\pi b_n}^{\pi b_n}
+         \chi_n(u)e^{-i\lambda_nu}\dd u,\label{eq:lattice-fourier}\\
+ \chi_n(u)
+ &=\exp\left(n\beta\left[A(e^{iu/b_n})-d_0
+                                    -id_1u/b_n\right]\right).\nonumber
+\end{align}
+For $|u|/b_n<2\pi$, \eqref{eq:polylog} implies the exact local expansion
+\begin{equation}\label{eq:characteristic-expansion}
+ \chi_n(u)=\exp\left((-iu)^\alpha
+                     +\sum_{k\ge2}c_{k,n}(iu)^k\right).
+\end{equation}
+
+The needed bounds on the rest of the Fourier contour follow from the
+positive tail, not from a formal Taylor series. There exist $c>0$ and
+$\theta_0>0$, independent of $\beta\in I$, such that
+\begin{equation}\label{eq:fourier-bound}
+ \sum_{j\ge1}a_j(1-\cos(j\theta))\ge
+ \begin{cases}
+ c|\theta|^\alpha,&0<|\theta|\le\theta_0,\\
+ c,&\theta_0\le|\theta|\le\pi.
+ \end{cases}
+\end{equation}
+For the first bound, sum only over a block of integers with
+$1\le j|\theta|\le2$; they are in the unchanged tail when $\theta_0$ is
+small. Each cosine defect is bounded below, and the sum of $j^{-1-\alpha}$
+over that block is comparable to $|\theta|^\alpha$. For the second bound,
+the single coefficient $a_1>0$ suffices on the compact interval shown.
+Thus $|\chi_n(u)|\le e^{-c'|u|^\alpha}$ for
+$|u|\le\theta_0b_n$, and $|\chi_n(u)|\le e^{-c'n}$ beyond that interval.
+
+Choose a central cutoff $L_n=(C\log n)^{1/\alpha}$, with $C$ large enough
+in terms of $R$. The contribution from $|u|>L_n$ to
+\eqref{eq:lattice-fourier} is $O(n^{-R})$, and so are the tails of all
+finitely many stable-density derivative integrals used below.
+On $|u|\le L_n$, the analytic perturbation in
+\eqref{eq:characteristic-expansion} is
+$O(n^{-(2-\alpha)/\alpha}|u|^2)$ and tends to zero uniformly.
+The analytic series can be cut after an index $k_0$ with
+$(k_0-\alpha)/\alpha>R$. Cauchy bounds for its coefficients show that
+the omitted part is bounded by a constant times
+$n^{-R}(1+|u|^{k_0+1})$ on this central interval, after increasing $k_0$
+if necessary.
+
+Expand the exponential of the remaining finite polynomial. Each
+multi-index contributes exactly
+$\prod c_{k,n}^{m_k}(iu)^K/\prod m_k!$, with size
+$O(n^{-w(\m)}|u|^K)$. Because every basic weight
+$(k-\alpha)/\alpha$ is positive, only finitely many have weight below
+$R$. Taylor's remainder and the finite analytic coefficient bounds leave
+an error of the form
+\[
+ C_R n^{-R}(1+|u|^{D_R})e^{-c''|u|^\alpha}
+\]
+after multiplication by the stable factor, for a finite integer $D_R$.
+This bound is integrable with a constant independent of $n$ and $\beta$.
+It proves the asserted remainder without introducing unwanted powers of
+$\log n$.
+
+Finally,
+\[
+ \frac1{2\pi}\int_\R(iu)^K
+         e^{(-iu)^\alpha-i\lambda_nu}\dd u
+       =(-1)^K g_\alpha^{(K)}(\lambda_n).
+\]
+In all estimates the oscillatory factor $e^{-i\lambda_nu}$ has modulus
+one, so they are uniform even when $\lambda_n$ is unbounded. This proves
+the additive statement. For bounded $\lambda_n$, positivity and
+continuity of $g_\alpha$ give a positive lower bound on compact intervals,
+which justifies the relative conclusion \eqref{eq:leading-window}.
+\end{proof}
+
+\begin{remark}[Why the qualification on the error matters]
+For fixed subcritical or supercritical $\beta$, $|\lambda_n|$ diverges.
+The leading density can then be smaller than the additive remainder in
+\eqref{eq:allorders}. One cannot obtain a uniform relative theorem in
+those regimes merely by dividing that equation by $g_\alpha(\lambda_n)$.
+The fixed-coupling results in Theorem~\ref{thm:phases} have a separate
+singularity proof. A quantitative matching theorem on an expanding
+$\lambda$-window is left as a research problem.
+\end{remark}
+
+\section{An exact Hahn--Fourier identity and the cancellation sieve}
+\label{sec:duality}
+
+The local inverse and the sector expansion are not two unrelated
+approximations. Their coefficients match term by term.
+
+\begin{theorem}[Coefficient duality]
+\label{thm:duality}
+At criticality, the multi-index $\m$ contributes to $x$ the term
+\[
+ C_{\m}\left(\prod h_k^{m_k}\right)
+                    \Bc^{-\Lambda/\alpha}\varepsilon^{\Lambda/\alpha}.
+\]
+Its nonanalytic contribution to $u_n$ has multiplier
+\begin{equation}\label{eq:duality-left}
+ -\frac{C_{\m}\prod h_k^{m_k}\,\Bc^{-\Lambda/\alpha}}
+          {\Gamma(-\Lambda/\alpha)}
+\end{equation}
+in front of $\rhoc^{-n}n^{-1-\Lambda/\alpha}$. This multiplier equals
+\begin{equation}\label{eq:duality-right}
+ \frac{(-1)^K g_\alpha^{(K)}(0)}{\prod m_k!}
+       \bc^{m_*}\Bc^{-(K+1)/\alpha}
+       \prod_{k\ge2}\left(\frac{d_k}{k!}\right)^{m_k},
+\end{equation}
+which is exactly the corresponding term of
+Theorem~\ref{thm:allorders} after division by $n b_n$.
+
+The universal gamma factor vanishes precisely when
+$(K+1)/\alpha$ is an integer. If $\alpha=r/s$ in lowest terms this means
+$r\mid K+1$. Equivalently, that Hahn term is an integer power of
+$\varepsilon$ and is locally analytic. For irrational $\alpha$ this
+particular cancellation never occurs. Other cancellations caused by
+zero $d_k$ or by grouping equal exponents are not excluded.
+\end{theorem}
+\begin{proof}
+In the logarithmic coordinate $q=\rhoc e^{-\varepsilon}$, Cauchy's
+coefficient differential is exactly
+$q^{-n}\dd q/q=-\rhoc^{-n}e^{n\varepsilon}\dd\varepsilon$.
+The local Hankel integral for a power $\varepsilon^z$ therefore has
+factor $n^{-z-1}/\Gamma(-z)$. There is no additional expansion of a
+Jacobian. This logarithmic transfer can also be checked against the
+polylogarithm identity \eqref{eq:polylog}, whose coefficients are exact
+powers of $n$. The minus sign in \eqref{eq:duality-left} comes from
+$U=\bc d_0+\varepsilon-x$.
+
+For the algebraic identity, write $z=\Lambda/\alpha=(K+1)/\alpha-m_*$.
+Gamma reflection gives
+\[
+ \frac1{\Gamma(1+z)\Gamma(-z)}=-\frac{\sin\pi z}{\pi},
+ \qquad
+ \sin\pi z=(-1)^{m_*}\sin\frac{\pi(K+1)}\alpha.
+\]
+Insert \eqref{eq:closed-hahn} and
+$h_k=\bc d_k(-1)^k/(k!\Bc)$ into \eqref{eq:duality-left}.
+The resulting sign is $(-1)^K$, the remaining gamma--sine factor is
+$g_\alpha^{(K)}(0)$ by \eqref{eq:stable-derivatives}, and the power of
+$\Bc$ is
+$-m_*-\Lambda/\alpha=-(K+1)/\alpha$. This is
+\eqref{eq:duality-right}.
+
+Since $\Lambda>0$, the reciprocal gamma factor in
+\eqref{eq:duality-left} vanishes exactly when $\Lambda/\alpha$ is a
+positive integer. This is equivalent to $(K+1)/\alpha\in\N$.
+For $\alpha=r/s$ the condition is $r\mid K+1$. The leading monomial
+coefficients are understood with continuous reciprocal gamma at its
+zeros, so the identity includes the vanishing cases.
+\end{proof}
+
+\begin{example}[The first correction disappears at $\alpha=3/2$]
+\label{ex:threehalves}
+For $\alpha=3/2$, $g_\alpha''(0)=0$, since $(2+1)/\alpha=2$.
+Consequently the nominal relative $n^{-1/3}$ correction
+$c_{2,n}g_\alpha''(0)$ is absent at critical coupling, regardless of the
+finite prefix. If $d_2\ne0$, the first possible nonzero correction is
+\begin{equation}\label{eq:threehalf-correction}
+ n b_n\rhoc^n u_n(\bc)
+  =g_{3/2}(0)+\frac{c_{2,n}^2}{2}g_{3/2}^{(4)}(0)+O(n^{-1}).
+\end{equation}
+It has order $n^{-2/3}$. The corresponding first Hahn correction is
+$-(h_2/\alpha)T^{3-\alpha}=-(h_2/\alpha)T^{3/2}$, an integer power of
+$\varepsilon$; hence it contributes no singular large-sector term.
+This explains the cancellation structurally, rather than discovering it
+only by a vanishing numerical constant.
+\end{example}
+
+\begin{remark}[Two different kinds of convergence]
+The critical Hahn expansion in $\varepsilon$ is convergent. The expansion
+in decreasing powers of $n$ in Theorem~\ref{thm:allorders} is asserted to
+all finite orders, not to converge when infinitely many orders are summed.
+The derivative factors $g_\alpha^{(K)}$ can grow rapidly with $K$.
+The identity between their individual coefficients does not identify the
+two notions of convergence and does not imply Borel summability of the
+large-sector expansion.
+\end{remark}
+
+\section{A sharp joint coupling--action-cutoff profile}
+\label{sec:cutoff}
+
+For $L>0$, define
+\begin{align}
+ \Psi_{\alpha,L}(u)
+ &=\frac1G\int_0^L(e^{iux}-1-iux)x^{-1-\alpha}\dd x,
+       \label{eq:truncated-exponent}\\
+ g_{\alpha,L}(z)
+ &=\frac1{2\pi}\int_\R e^{\Psi_{\alpha,L}(u)-iuz}\dd u,
+       \label{eq:truncated-density}\\
+ \nu_L&=\frac1{\alpha G L^\alpha},\qquad
+ h_L=\frac{L^{1-\alpha}}{(\alpha-1)G}.
+       \label{eq:tail-constants}
+\end{align}
+Here $\nu_L$ is the intensity of omitted jumps above $L$, and $h_L$ is
+their mean in stable-scale units. Both constants are necessary: deleting
+large jumps changes the mass and the centering.
+
+\begin{lemma}[Truncated density estimates]
+\label{lem:truncated-density}
+The function $g_{\alpha,L}$ is a smooth, strictly positive probability
+density. For $L$ in a compact subinterval of $(0,\infty)$, its defining
+Fourier integral and all fixed derivatives admit common integrable
+majorants. As $L\to\infty$, $g_{\alpha,L}\to g_\alpha$ locally uniformly.
+For $0<L\le1$ there is a constant depending only on $\alpha$ such that
+\begin{equation}\label{eq:small-L-density}
+ \sup_z g_{\alpha,L}(z)\le C_\alpha L^{-(2-\alpha)/2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The compensated Poisson construction and the positivity argument in
+Lemma~\ref{lem:stable} apply with the L\'evy measure restricted to $(0,L]$.
+To justify the density used there, observe that
+\[
+ -\Re\Psi_{\alpha,L}(u)
+   =\frac1G\int_0^L(1-\cos ux)x^{-1-\alpha}\dd x
+ \ge c_\alpha
+ \begin{cases}
+ u^2L^{2-\alpha},& |u|L\le1,\\
+ |u|^\alpha,& |u|L\ge1.
+ \end{cases}
+\]
+The first inequality uses $1-\cos v\ge c v^2$ on $|v|\le1$.
+For the second, restrict to $0<x<1/|u|$ and use the first estimate there.
+These bounds prove integrability with any polynomial factor, hence
+smoothness and the uniform majorants. They also give
+\[
+ \int_\R |e^{\Psi_{\alpha,L}(u)}|\dd u
+ \le C L^{-(2-\alpha)/2}+C,
+\]
+which proves \eqref{eq:small-L-density}. As $L\to\infty$, the exponent
+converges to \eqref{eq:levy}; for $L\ge1$ the same lower bounds give a
+common integrable majorant. Dominated convergence proves the local
+uniform convergence of the densities.
+\end{proof}
+
+\Needspace{15\baselineskip}
+\begin{theorem}[Joint critical cutoff law]
+\label{thm:cutoff}
+Let $\beta=\beta_n$ stay in a compact subinterval of $(0,\infty)$, and
+use $b_n,\lambda_n$ from \eqref{eq:bn-lambda}. Suppose
+\[
+ \lambda_n\longrightarrow\lambda\in\R,\qquad
+ \frac{M_n}{b_n}\longrightarrow L\in(0,\infty).
+\]
+Then
+\begin{equation}\label{eq:cutoff-profile}
+ \boxed{\quad
+ \frac{u_{n,M_n}(\beta_n)}{u_n(\beta_n)}
+ \longrightarrow
+ \Ra(L,\lambda):=
+ e^{-\nu_L}\frac{g_{\alpha,L}(\lambda+h_L)}{g_\alpha(\lambda)}.
+ \quad}
+\end{equation}
+The convergence is uniform for $M_n/b_n$ and $\lambda_n$ in fixed compact
+subintervals of $(0,\infty)$ and $\R$, respectively, in the equivalent
+form with $\Ra(M_n/b_n,\lambda_n)$ on the right and an $o(1)$ error.
+The profile is independent of $a$ and of the finite prefix $P$ after
+these quantities have been incorporated into $\bc$ and $b_n$.
+\end{theorem}
+\begin{proof}
+Let $K_{n,M}=\sum_{j\le M}jN_j$ and
+$\mu_{n,M}=n\beta\sum_{j\le M}j a_j$. The exact conditional identity
+can be written
+\begin{equation}\label{eq:cutoff-ratio-exact}
+ \frac{u_{n,M}(\beta)}{u_n(\beta)}
+ =\exp\left(-n\beta\sum_{j>M}a_j\right)
+       \frac{\Prob(K_{n,M}=n)}{\Prob(K_n=n)}.
+\end{equation}
+Because $M\sim Lb_n\to\infty$, the omitted weights are in the unchanged
+tail. Integral comparison gives, uniformly on compact $L$-intervals,
+\begin{align}
+ n\beta\sum_{j>M}a_j&\longrightarrow\nu_L,\label{eq:cutoff-mass}\\
+ \frac{n\beta\sum_{j>M}j a_j}{b_n}&\longrightarrow h_L.
+       \label{eq:cutoff-mean}
+\end{align}
+The target centered lattice coordinate is consequently
+$(n-\mu_{n,M})/b_n=\lambda_n+h_L+o(1)$.
+
+The centered characteristic exponent of $K_{n,M}/b_n$ is
+\[
+ n\beta\sum_{j\le M}a_j
+        (e^{iu j/b_n}-1-iu j/b_n).
+\]
+Riemann summation, using $n\beta a/b_n^\alpha=1/G$, shows its convergence
+to $\Psi_{\alpha,L}(u)$, locally uniformly in $u$ and $L$.
+The integrand at the lower endpoint is integrable after its quadratic
+cancellation. Explicitly, the contribution of $j\le\epsilon b_n$ is
+bounded by $C u^2\epsilon^{2-\alpha}$, uniformly in $n$; on the remainder
+ordinary Riemann convergence applies. The finitely changed prefix
+contributes only $O(n/b_n^2)=o(1)$ to the centered exponent.
+
+To upgrade weak convergence to the required lattice local limit, one
+must control the Fourier tails. For $M$ sufficiently large, unchanged
+tail weights give
+\begin{equation}\label{eq:trunc-fourier-bound}
+ \sum_{j\le M}a_j(1-\cos j\theta)\ge c
+ \begin{cases}
+ \theta^2M^{2-\alpha},&|\theta|M\le1,\\
+ |\theta|^\alpha,&1/M\le|\theta|\le\theta_0.
+ \end{cases}
+\end{equation}
+For the first bound use a terminal block of integers below $M$ and the
+quadratic cosine estimate. For the second, use integers up to
+$1/|\theta|$; after making $\theta_0$ small the unchanged tail supplies
+a fixed fraction of their second-moment sum. The coefficient $a_1$
+again supplies a uniform gap for $\theta_0\le|\theta|\le\pi$.
+Upon putting $u=b_n\theta$ and restricting $M/b_n$ to a compact
+positive interval, these inequalities give a common integrable
+majorant for the rescaled characteristic functions, with an
+exponentially small contribution from the macroscopic arc.
+Fourier inversion and dominated convergence therefore yield
+\[
+ b_n\Prob(K_{n,M}=n)
+   =g_{\alpha,M/b_n}\left(\lambda_n+
+                   \frac{n\beta\sum_{j>M}j a_j}{b_n}\right)+o(1)
+   \longrightarrow g_{\alpha,L}(\lambda+h_L).
+\]
+All bounds are uniform on the compact parameter sets specified in the
+theorem. The denominator is
+$b_n\Prob(K_n=n)=g_\alpha(\lambda_n)+o(1)$ by
+Theorem~\ref{thm:allorders}, and it stays bounded away from zero there.
+Insert these estimates and \eqref{eq:cutoff-mass} into
+\eqref{eq:cutoff-ratio-exact}. This proves \eqref{eq:cutoff-profile} and
+its uniform version. The disappearance of the finite prefix from the
+centered Riemann limit proves the universality assertion.
+\end{proof}
+
+\subsection{Why the profile is a genuine conditional probability}
+The L\'evy measure above $L$ has finite mass $\nu_L$ and first moment
+$h_L$. Decomposing the stable variable into jumps below and above $L$
+gives the nonnegative density identity
+\begin{equation}\label{eq:poisson-density-decomposition}
+ g_\alpha(z)=e^{-\nu_L}\sum_{m=0}^\infty\frac1{m!}
+   \int_{(L,\infty)^m}
+      g_{\alpha,L}\left(z+h_L-\sum_{i=1}^m x_i\right)
+      \prod_{i=1}^m\frac{\dd x_i}{Gx_i^{1+\alpha}}.
+\end{equation}
+For $m=0$, the integral is understood to be $g_{\alpha,L}(z+h_L)$.
+Thus \eqref{eq:cutoff-profile} is exactly the fraction of the stable
+density arising from the event of no jump above $L$, when conditioned on
+the final centered value. In particular
+\begin{equation}\label{eq:profile-range}
+ 0<\Ra(L,\lambda)<1\qquad(L>0,\ \lambda\in\R).
+\end{equation}
+The first inequality follows from density positivity. The second is
+strict because the $m=1$ term in \eqref{eq:poisson-density-decomposition}
+is positive. Ignoring either $e^{-\nu_L}$ or the shift $h_L$ would
+produce the wrong profile.
+
+\begin{theorem}[Necessary and sufficient critical action budget]
+\label{thm:budget}
+Fix $\beta=\bc$ and put $b_n=(n\Bc)^{1/\alpha}$. For every sequence of
+positive integer cutoffs $M_n$,
+\begin{equation}\label{eq:budget-iff}
+ \frac{u_{n,M_n}(\bc)}{u_n(\bc)}\longrightarrow1
+ \quad\Longleftrightarrow\quad \frac{M_n}{b_n}\longrightarrow\infty.
+\end{equation}
+If $M_n/b_n\to0$, the coefficient ratio tends to zero. If
+$M_n/b_n\to L\in(0,\infty)$, it tends to $\Ra(L,0)\in(0,1)$.
+The function $L\mapsto\Ra(L,\lambda)$ is nondecreasing and satisfies
+\begin{equation}\label{eq:profile-endpoints}
+ \lim_{L\downarrow0}\Ra(L,\lambda)=0,\qquad
+ \lim_{L\to\infty}\Ra(L,\lambda)=1
+\end{equation}
+for each fixed $\lambda$.
+\end{theorem}
+\begin{proof}
+Monotonicity follows by applying \eqref{eq:conditional} at two cutoffs
+$\lfloor L_1b_n\rfloor\le\lfloor L_2b_n\rfloor$ and passing to the
+limit. For $\lambda\ne0$, choose the unique nearby coupling satisfying
+$\lambda_n=\lambda$; the defining expression in
+\eqref{eq:bn-lambda} is strictly decreasing in $\beta$, so this choice
+exists for all large $n$.
+
+As $L\to\infty$, $h_L,\nu_L\to0$ and
+$g_{\alpha,L}\to g_\alpha$ locally uniformly by
+Lemma~\ref{lem:truncated-density}. This proves the second limit in
+\eqref{eq:profile-endpoints}. For $L\downarrow0$, the same lemma gives
+\[
+ \Ra(L,\lambda)\le
+  \frac{C_\alpha}{g_\alpha(\lambda)}
+  L^{-(2-\alpha)/2}\exp\left(-\frac1{\alpha G L^\alpha}\right)
+  \longrightarrow0.
+\]
+
+If $M_n/b_n\to\infty$, compare the coefficient ratio below with the
+ratio at $\lfloor Lb_n\rfloor$ for each fixed $L$, and above with $1$.
+Theorem~\ref{thm:cutoff}, followed by $L\to\infty$, proves sufficiency.
+If $M_n/b_n\to0$, compare above with the ratio at
+$\lfloor Lb_n\rfloor$ and then let $L\downarrow0$.
+Finally, if $M_n/b_n$ does not tend to infinity, a subsequence is bounded
+above by some finite $L$. On that subsequence the upper limit of the
+coefficient ratio is at most $\Ra(L,0)<1$ by
+\eqref{eq:profile-range}. Thus a ratio tending to $1$ forces
+$M_n/b_n\to\infty$. The comparable-cutoff case is
+Theorem~\ref{thm:cutoff} itself.
+\end{proof}
+
+\begin{remark}[What the budget does and does not mean]
+Every coefficient of degree $n$ is reproduced \emph{exactly} by retaining
+$n$ actions. The theorem identifies the much smaller scale needed for
+asymptotic relative accuracy, but requires a factor tending to infinity
+beyond $n^{1/\alpha}$ for the ratio to tend to $1$. A fixed large multiple
+can give a very small limiting error, but not zero limiting error.
+This is a theorem about growing sector index, not about truncating a
+convergent sum at a fixed numerical value of $q$.
+\end{remark}
+
+\section{How finite-action folds approach the fractional boundary}
+\label{sec:finite-folds}
+
+At critical coupling every finite truncation has finite variance and an
+ordinary fold. The location and curvature of that fold contain the same
+scale that appears in the action-budget theorem.
+
+Let $M\ge J$, and let $\tau_M>1$ be the unique positive solution of
+\begin{equation}\label{eq:finite-critical}
+ \bc\sum_{j\le M}j a_j\tau_M^j=1.
+\end{equation}
+It is larger than $1$ because the left side at $1$ is less than
+$\bc d_1=1$. Define
+\begin{equation}\label{eq:finite-r-v}
+ r_M=\tau_Me^{-\bc A_M(\tau_M)},\qquad
+ v_M=\bc\sum_{j\le M}j^2a_j\tau_M^j.
+\end{equation}
+In particular, $r_M>e^{-\bc A_M(1)}>\rhoc$.
+
+There is a unique positive number $v_\alpha$ satisfying
+\begin{equation}\label{eq:v-alpha}
+ \int_0^1(e^{v_\alpha u}-1)u^{-\alpha}\dd u
+                    =\frac1{\alpha-1}.
+\end{equation}
+Existence and uniqueness follow because the left side is continuous,
+strictly increasing from $0$ to infinity. Introduce
+\begin{align}
+ J_\alpha(v)&=\frac1\alpha+\frac{v}{\alpha-1}
+       -\int_0^1(e^{vu}-1-vu)u^{-1-\alpha}\dd u,
+       \label{eq:J-alpha}\\
+ D_\alpha&=\bc a J_\alpha(v_\alpha),\qquad
+ V_\alpha=\bc a\int_0^1u^{1-\alpha}e^{v_\alpha u}\dd u.
+       \label{eq:D-V}
+\end{align}
+The integrals converge at zero. Moreover,
+$J_\alpha'(v_\alpha)=0$ and $J_\alpha''(v)<0$.
+Since $J_\alpha'(0)=1/(\alpha-1)>0$, one has
+$J_\alpha(v_\alpha)>J_\alpha(0)=1/\alpha$, so $D_\alpha>0$.
+
+\begin{theorem}[Critical-value and curvature drift]
+\label{thm:fold-drift}
+As $M\to\infty$,
+\begin{equation}\label{eq:fold-drift}
+ M\log\tau_M\longrightarrow v_\alpha,\qquad
+ \log(r_M/\rhoc)\sim D_\alpha M^{-\alpha},\qquad
+ v_M\sim V_\alpha M^{2-\alpha}.
+\end{equation}
+The number $v_\alpha$ depends only on $\alpha$, and the dependence of
+$D_\alpha,V_\alpha$ on the finite prefix is only through $\bc a$.
+\end{theorem}
+\begin{proof}
+Write $h_M=\log\tau_M$. Subtract
+$\bc\sum_{j\ge1}j a_j=1$ from \eqref{eq:finite-critical} to get
+\begin{equation}\label{eq:h-root}
+ \sum_{j\le M}j a_j(e^{h_Mj}-1)=\sum_{j>M}j a_j.
+\end{equation}
+For any fixed $v\ge0$, multiply the difference between the two sides,
+with $h_M$ replaced by $v/M$, by $M^{\alpha-1}$. Tail summation and a
+Riemann sum give
+\[
+ a\left(\int_0^1(e^{vu}-1)u^{-\alpha}\dd u
+                         -\frac1{\alpha-1}\right).
+\]
+The finite prefix contributes $O(M^{\alpha-2})=o(1)$. The convergence is
+uniform for $v$ on compact intervals. Strict monotonicity in $h$ brackets
+the root between $(v_\alpha-\epsilon)/M$ and
+$(v_\alpha+\epsilon)/M$ for every fixed $\epsilon>0$, proving the first
+limit in \eqref{eq:fold-drift}.
+
+An exact rearrangement, important also for stable numerical evaluation,
+is
+\begin{equation}\label{eq:radius-rearrangement}
+ \log(r_M/\rhoc)=\bc\left(
+       h_M\sum_{j>M}j a_j+\sum_{j>M}a_j
+       -\sum_{j\le M}a_j(e^{h_Mj}-1-h_Mj)\right).
+\end{equation}
+Indeed, begin with
+$h_M+\bc(d_0-A_M(e^{h_M}))$ and use $1=\bc d_1$.
+After multiplying by $M^\alpha$, the first two terms in the brackets
+tend to $a v_\alpha/(\alpha-1)$ and $a/\alpha$.
+The last term tends to
+$a\int_0^1(e^{v_\alpha u}-1-v_\alpha u)u^{-1-\alpha}\dd u$.
+Its finite-prefix contribution is $O(M^{\alpha-2})$, again negligible.
+This proves the radius drift with constant $D_\alpha$.
+
+Finally, Riemann summation in \eqref{eq:finite-r-v} gives
+\[
+ M^{\alpha-2}v_M
+   \longrightarrow\bc a\int_0^1u^{1-\alpha}e^{v_\alpha u}\dd u
+   =V_\alpha.
+\]
+The integrability at zero permits the same small-initial-block argument
+as in the proof of Theorem~\ref{thm:cutoff}; finite-prefix terms vanish.
+\end{proof}
+
+For fixed $M$, the analytic fold law is
+\begin{equation}\label{eq:fixed-M}
+ u_{n,M}(\bc)\sim\frac{r_M^{-n}}{\sqrt{2\pi v_M}\,n^{3/2}}.
+\end{equation}
+The next theorem allows $M$ to increase with $n$, and identifies the
+range in which that formula remains valid with its exact moving
+parameters.
+
+\begin{theorem}[Uniform fold law in the hard-cutoff regime]
+\label{thm:hard}
+If $M=M_n\to\infty$ and $n/M_n^\alpha\to\infty$, then
+\begin{equation}\label{eq:hard}
+ u_{n,M_n}(\bc)=
+ \frac{r_{M_n}^{-n}}{\sqrt{2\pi v_{M_n}}\,n^{3/2}}(1+o(1)).
+\end{equation}
+Thus the finite-fold coefficient law is uniform whenever
+$M_n=o(n^{1/\alpha})$. At the critical scale $M_n\asymp n^{1/\alpha}$,
+the non-Gaussian profile of Theorem~\ref{thm:cutoff} is required instead.
+\end{theorem}
+\begin{proof}
+Exponentially tilt the coefficient identity at $t=\tau_M$. Let
+$\widetilde N_j$ be independent Poisson variables of means
+$n\bc a_j\tau_M^j$, $j\le M$, and set
+$\widetilde K=\sum_{j\le M}j\widetilde N_j$. Then
+\begin{equation}\label{eq:tilted-identity}
+ u_{n,M}(\bc)=\frac{r_M^{-n}}n\Prob(\widetilde K=n),\qquad
+ \E\widetilde K=n,\qquad \Var(\widetilde K)=n v_M.
+\end{equation}
+Put $\sigma_M=\sqrt{n v_M}$ and $H_n=n/M^\alpha$. By
+Theorem~\ref{thm:fold-drift},
+\[
+ \frac{M}{\sigma_M}\asymp H_n^{-1/2}\longrightarrow0,
+ \qquad \tau_M^M\longrightarrow e^{v_\alpha}.
+\]
+The third absolute cumulant bound is
+\[
+ \frac{n\bc\sum_{j\le M}j^3a_j\tau_M^j}{\sigma_M^3}
+ =O(H_n^{-1/2})=o(1).
+\]
+Consequently the centered characteristic function, at argument
+$u/\sigma_M$, converges to $e^{-u^2/2}$ on every bounded $u$-interval.
+
+For the local, rather than only weak, central limit, split the Fourier
+integral into three regions. When $|\theta|\le1/M$, the quadratic cosine
+bound gives
+\[
+ \left|\E e^{i\theta(\widetilde K-n)}\right|
+       \le e^{-c n v_M\theta^2}.
+\]
+After $u=\sigma_M\theta$, this supplies a common Gaussian majorant;
+its range extends to $\sigma_M/M\asymp\sqrt{H_n}\to\infty$.
+For $1/M\le|\theta|\le\theta_0$, the second estimate in
+\eqref{eq:trunc-fourier-bound}, and $\tau_M\ge1$, give
+$\left|\E e^{i\theta(\widetilde K-n)}\right|\le e^{-c n|\theta|^\alpha}$.
+The normalized integral over this region is bounded by
+\[
+ C\sigma_M n^{-1/\alpha}
+       \int_{n^{1/\alpha}/M}^\infty e^{-c v^\alpha}\dd v
+ \le C H_n^{1/2-1/\alpha}
+       \int_{H_n^{1/\alpha}}^\infty e^{-c v^\alpha}\dd v=o(1).
+\]
+This estimate is valid even when $H_n$ tends to infinity very slowly.
+On $\theta_0\le|\theta|\le\pi$, the positive coefficient $a_1$ gives an
+$e^{-cn}$ bound. Its integral, multiplied by $\sigma_M$, also tends to
+zero, since the hypothesis bounds $M$ polynomially in $n$.
+Fourier inversion now yields
+$\sigma_M\Prob(\widetilde K=n)\to1/\sqrt{2\pi}$.
+Inserting this in \eqref{eq:tilted-identity} proves \eqref{eq:hard}.
+\end{proof}
+
+\begin{remark}[Do not exponentiate an uncontrolled remainder]
+Theorem~\ref{thm:hard} uses the \emph{exact} value $r_M$. It does not
+permit the replacement
+$r_M^{-n}=\rhoc^{-n}\exp(-nD_\alpha M^{-\alpha})(1+o(1))$
+throughout its range. Theorem~\ref{thm:fold-drift} only controls
+$\log(r_M/\rhoc)$ relatively; its unquantified error may be amplified by
+$n$. That replacement needs a rate strong enough that
+$n\left(\log(r_M/\rhoc)-D_\alpha M^{-\alpha}\right)\to0$.
+The exact rearrangement \eqref{eq:radius-rearrangement} avoids this
+problem in computation.
+\end{remark}
+
+\subsection{The two limits really differ}
+For every fixed $M$, the power of $n$ in \eqref{eq:fixed-M} is $-3/2$,
+and the exponential factor has radius $r_M>\rhoc$. For the untruncated
+critical equation, the power is $-1-1/\alpha$ and the radius is $\rhoc$.
+The drift $\log(r_M/\rhoc)\asymp M^{-\alpha}$ becomes order one after
+multiplication by $n$ exactly at $M\asymp n^{1/\alpha}$. This agrees
+with, but is not a replacement for, the full cutoff profile theorem:
+the latter supplies both the missing amplitude and the conditioned
+centering shift. The matching is therefore quantitative, not just a
+comparison of formal critical exponents.
+
+\section{Reproducible computation and numerical diagnostics}
+\label{sec:computation}
+
+\subsection{What was checked exactly}
+The accompanying \texttt{code/verify.py} performs three independent
+finite coefficient calculations: direct substitution into the nonlinear
+equation, Lagrange's coefficient formula, and a sum over integer
+partitions. For rational weights it compares the results through degree
+$13$, using Python's exact \texttt{Fraction} arithmetic. The test weights
+are $\beta/j^3$ with $\beta=1/3$, and their cutoff at $M=4$ with
+$\beta=2/5$. The exponent $3$ is used to keep the arithmetic rational;
+these tests verify the algebraic identity, which does not depend on the
+restriction $1<\alpha<2$.
+
+Additional exact comparisons check that retaining $M$ actions preserves
+every coefficient through degree $M$. A symbolic calculation at
+$\alpha=3/2$ verifies four coefficients of the Hahn implicit equation.
+In total, \textbf{80 exact comparisons passed}. This is evidence for the
+implementation and the displayed finite identities, not a substitute
+for the asymptotic proofs.
+
+For a single target sector $n$, the probability in
+\eqref{eq:poisson} can be computed by a positive recurrence. If $p_k$ is
+the probability generating coefficient at $t^k$, with the Poisson
+parameter $n$ held fixed, then
+\begin{equation}\label{eq:probability-recurrence}
+ p_0=e^{-n\beta A_M(1)},\qquad
+ p_k=\frac{n\beta}{k}\sum_{j=1}^{\min(k,M)}j a_jp_{k-j}.
+\end{equation}
+For the infinite family replace $A_M(1)$ by $A(1)$ and the upper summation
+limit by $k$. This costs $O(n\min(n,M))$ arithmetic operations and $O(n)$
+storage for one target $n$. The Poisson parameter changes when the target
+$n$ changes; this complexity should not be mistaken for a simultaneous
+all-sector algorithm of the same cost.
+
+\subsection{The prototype with exponent \texorpdfstring{$\alpha=3/2$}{alpha=3/2}}
+For $a=1$, $P=0$, and $\alpha=3/2$, the constants are
+\begin{align*}
+ \bc&=0.38279338399942656225\ldots,&
+ \Bc&=0.90464481009458340321\ldots,\\
+ \rhoc&=0.59839006994955853557\ldots,&
+ g_{3/2}(0)&=0.24885478260493015222\ldots.
+\end{align*}
+They were evaluated with 75-digit arithmetic. The coefficient recurrence
+was evaluated through target degree $4096$ using
+\texttt{numpy.longdouble}; on platforms with a narrower exponent range,
+the code switches to an arbitrary-precision recurrence if its initial
+probability underflows. Fourier integrals were
+computed in double precision, with two quadrature resolutions for the
+cutoff density. None of these floating-point evaluations is an
+outward-rounded interval certificate.
+
+In Table~\ref{tab:critical}, $p_n=\Prob(K_n=n)$ and the corrected value is
+the right side of \eqref{eq:threehalf-correction} without its remainder.
+The disappearance of the nominal $n^{-1/3}$ term is visible in the
+faster approach to the limiting constant.
+\begin{table}[htbp]
+\centering\small
+\input{data/critical_table.tex}
+\caption{Critical normalized coefficients. The relative error is measured
+against $g_{3/2}(0)$; the correction is the first nonzero term allowed by
+the cancellation sieve.}
+\label{tab:critical}
+\end{table}
+
+Write $\Ra(L)=\Ra(L,0)$ at critical coupling. Table~\ref{tab:cutoff}
+compares the limiting retained-coefficient fraction with the actual
+ratio at $n=4096$ and $M=\lfloor Lb_n\rfloor$. The latter uses the rounded
+integer cutoff, so $M/b_n$ is slightly less than the displayed target
+$L$. At $L=1$ a substantial fraction is still lost. A larger fixed
+multiple can be very accurate but, as Theorem~\ref{thm:budget} states,
+has a strictly positive limiting loss.
+\begin{table}[htbp]
+\centering\small
+\input{data/cutoff_table.tex}
+\caption{Critical action-cutoff profile and finite-sector diagnostics.
+The two quadrature resolutions differed by at most $2.34\times10^{-12}$
+in the computed truncated densities; this difference is a diagnostic,
+not a rigorous error bound.}
+\label{tab:cutoff}
+\end{table}
+
+For the finite-fold constants, the calculations give
+\begin{align*}
+ v_{3/2}&=0.85403265659819698978\ldots,\\
+ D_{3/2}&=0.59948018701656103250\ldots,\\
+ V_{3/2}&=1.05291088528937168260\ldots.
+\end{align*}
+Table~\ref{tab:fold} illustrates the convergence in
+Theorem~\ref{thm:fold-drift}. The complete data additionally contain the
+scaled curvatures, critical-coupling-window comparisons at
+$\lambda=-1,0,1$, and cutoff ratios at $n=256,1024,4096$.
+\begin{table}[htbp]
+\centering\small
+\input{data/fold_table.tex}
+\caption{Moving finite-action folds. The two columns converge to
+$v_{3/2}$ and $D_{3/2}$, respectively.}
+\label{tab:fold}
+\end{table}
+
+\subsection{Reproduction and reliability boundaries}
+Run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py --max-n 4096
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+A third LaTeX pass may be useful if page references move. The package
+contains the generated CSV tables and \texttt{data/verification.json},
+so typesetting does not require rerunning the computation. The formulas
+and proofs are independent of the precision and quadrature choices in
+the script. The numerical code does not verify global singularity
+geometry, local-limit theorems, or the infinite support assertions by
+finite sampling.
+
+\section{Interpretation for transseries and a formalization route}
+\label{sec:interpretation}
+
+\subsection{Three scales, kept separate}
+The model has three related but distinct asymptotic descriptions. First,
+near $q=0$ the original $U_\beta(q)=\sum u_nq^n$ is an ordinary convergent
+series; substituting $q=e^{-X}$ makes it a convergent integer-action
+exponential transseries. Second, near its critical boundary one uses
+$\varepsilon=\log(\rhoc/q)$, and $x$ has the fractional convergent Hahn
+chart of Section~\ref{sec:hahn}. Third, as the original sector index
+$n$ grows, the coefficients $u_n$ have the stable-density asymptotic
+expansion of Section~\ref{sec:stable}. Theorem~\ref{thm:duality} relates
+the last two descriptions. It does not identify their variables.
+
+This separation resolves a potential ambiguity in statements about
+``closure under inversion.'' The small-$q$ analytic germ is harmless;
+the obstruction to a finite Puiseux chart occurs at a nonanalytic
+boundary of the countable action sum. At rational $\alpha$ a finite
+ramification exists and its minimal order is known exactly. At
+irrational $\alpha$ the critical inverse still has a finite positive
+Hahn grid, although it has no finite-sheeted Puiseux representation.
+Thus finite-grid support and finite analytic ramification are different
+properties.
+
+\subsection{Finite-prefix universality has a precise boundary}
+The finitely many altered weights change $d_0$, $d_1$, and the analytic
+coefficients $d_k$. They therefore change the critical coupling, the
+exponential growth factor, and the subleading sector corrections. They
+do not change the leading critical exponents, the admissible Hahn grid,
+the normalized cutoff profile, or the
+arithmetic form of the cancellation sieve. The profile theorem is not
+an assertion that all sequences with the same tail are identical;
+it identifies exactly which quantities survive the normalization.
+
+The positive-tail assumption supplies the Fourier damping. The condition
+$a_1>0$ is a convenient sufficient aperiodicity hypothesis, not a claim
+that more general lattice spans are impossible. Replacing it by a
+nontrivial common divisor would require accessible residue classes and
+corresponding Fourier aliases. Signed or complex weights would remove
+the conditional probability interpretation altogether.
+
+\subsection{What could be formalized first}
+No new result in this article has been checked in Lean. The repository's
+existing formalization of finite algebraic recurrences or residual
+brackets does not, by itself, establish the analytic statements here.
+A realistic staged interface is the following.
+
+The first stage is finite algebra: the coefficient recurrence,
+Lagrange's identity for a finite truncation, exact agreement through
+degree $M$, and the finite multi-index support bounds. The second stage
+is scalar special-function algebra: the gamma recurrence and reflection
+identity proving \eqref{eq:duality-left}--\eqref{eq:duality-right}, with
+reciprocal gamma used to include zeros cleanly. The third stage packages
+the analytic implicit-function and Cauchy-majorant argument with explicit
+inputs $H_0,m_\alpha,T_0,R_0$. These stages isolate checkable certificates
+without pretending that symbolic coefficient equality proves analytic
+convergence.
+
+The probability stage should then formalize the independent Poisson
+coefficient identity and the Fourier tail inequalities. Only after
+those are in place should one assemble uniform local limits and
+triangular-array limits. Their most useful reusable content is the
+integrable-majorant interface, including uniform dependence on compact
+parameter sets. Finally, the global analytic phase diagram can be linked
+to a formal singularity-transfer theorem. This is a substantial program,
+not an already completed formal crosswalk.
+
+\section{Further research questions and concrete targets}
+\label{sec:questions}
+
+\paragraph{1. Slowly varying action tails.}
+Replace the exact tail by $a_j\sim a j^{-1-\alpha}\ell(j)$ with slowly
+varying $\ell$. Determine the correct implicit stable scale, the analogue
+of the cutoff profile, and a usable inverse notation when de Bruijn
+conjugates are needed. The finite positive Hahn grid may cease to be the
+right representation; specify sufficient hypotheses that preserve it.
+
+\paragraph{2. Quantitative cutoff errors and certified action selection.}
+Prove an explicit rate in Theorem~\ref{thm:cutoff}, uniform in a chosen
+rectangle of $(L,\lambda)$, and enclose its density integrals by interval
+arithmetic. The practical target is an algorithm which, given $n$ and a
+relative tolerance, returns a certified cutoff $M$. The current profile
+is exact as a limit, while the supplied quadrature is not certified.
+
+\paragraph{3. An expanding coupling window.}
+Find the largest growing range of $\lambda_n$ on which the all-order
+expansion is relatively accurate, and match it to the fixed-subcritical
+power-law regime and the supercritical saddle regime. This requires
+large-argument estimates for stable-density derivatives and control of
+how many correction terms are useful; the additive uniform theorem does
+not already provide it.
+
+\paragraph{4. Endpoint exponents and logarithmic crossover.}
+Study joint limits $\alpha\downarrow1$ or $\alpha\uparrow2$ with $n$.
+At the upper endpoint the diverging second-moment normalization competes
+with Gaussian behavior; at the lower endpoint the mean itself is near
+failure. Derive logarithmic critical charts and cutoff laws rather than
+substituting an endpoint into formulas containing $\Gamma(-\alpha)$.
+
+\paragraph{5. Nonlinear slopes that break the exact substitution.}
+For
+$U=\beta\sum a_jq^j\exp((j+r_j)U)$ with $r_j=o(j)$, identify conditions
+under which the stable boundary and budget persist. The parametrization
+$t=qe^U$ is then no longer exact. A useful first case is
+$r_j=\gamma j^\theta$, $0<\theta<1$, with a controlled complex domain.
+
+\paragraph{6. Incommensurate actions and shrinking gaps.}
+Replace integer actions $j$ by a genuinely incommensurate sequence, or
+let a family of action gaps tend to zero. Determine whether the critical
+inverse still admits a locally finite positive support semigroup and
+which effective summability conditions replace the lattice Fourier
+argument. This would address a different part of the repository's
+parameter-dependent-action question.
+
+\paragraph{7. Higher-order finite-fold drift.}
+Expand $M\log\tau_M$, $\log(r_M/\rhoc)$, and $v_M$ beyond their leading
+limits, allowing finite-prefix corrections. Establish a remainder strong
+enough to exponentiate after multiplication by $n$ in a prescribed joint
+range. This would turn the warning after Theorem~\ref{thm:hard} into a
+usable sharp uniform formula.
+
+\paragraph{8. Minimal support and deeper cancellations.}
+The grid in \eqref{eq:hahn-grid} is sufficient, not always minimal.
+Classify finite prefixes which suppress $d_2,d_3,\ldots$ and derive the
+resulting first nonzero sector corrections. When rational $\alpha$
+causes exponent collisions, seek an effective criterion for cancellation
+of the entire grouped coefficient rather than only its gamma factor.
+
+\paragraph{9. Divergent outer expansions and resurgence.}
+Determine the large-order growth of the coefficients in
+Theorem~\ref{thm:allorders}, optimal truncation, and possible Borel or
+accelerated summation. Locate the relevant complex saddles and singular
+values. Convergence of the local Hahn expansion and the coefficient
+duality alone do not prove any of these claims.
+
+\paragraph{10. Signed weights and competing complex singularities.}
+Allow controlled negative or complex $a_j$ and replace positivity by
+explicit continuation and saddle hypotheses. Determine when a
+multi-saddle analogue of the cutoff profile exists. The nonnegative
+Poisson conditioning proof will not survive unchanged, so an analytic
+replacement is necessary.
+
+\paragraph{11. Proof-producing computation.}
+Implement a checker for finite support bounds, exact rational coefficient
+identities, and local holomorphic majorants, followed by an interval
+Fourier integrator. Connect its certificates to Lean statements with
+separate hypotheses for analytic continuation, aperiodicity, and tail
+bounds. The deliverable should distinguish a verified coefficient from a
+verified asymptotic error estimate.
+
+\section{Conclusion}
+The decisive distinction is not merely between finitely many and
+infinitely many formal symbols. It is whether the action sum remains
+analytic at the boundary reached by the inverse. In the positive
+power-tail class, the failure of a finite second moment changes the
+critical exponent from $1/2$ to $1/\alpha$. Nevertheless, the inverse
+still possesses a convergent, explicitly computable Hahn chart with
+controlled support.
+
+The same chart determines the all-order sector coefficients through an
+exact gamma reflection identity. It explains why some apparently leading
+corrections vanish, and why finite ramification is an arithmetic property
+of $\alpha$. Truncating the countable action sum restores ordinary folds,
+but preserving large sectors requires a sharp growing action budget.
+The joint density profile supplies the missing transition, and the
+finite-fold drift gives its complementary analytic explanation.
+
+These results provide a rigorous model in which local inversion,
+large-sector asymptotics, and action truncation can be compared without
+interchanging limits informally. The broader questions of arbitrary
+transseries realization, general resurgence, and noncommensurate action
+families remain distinct research tasks.
+
+\appendix
+\section{Source audit and proof dependencies}
+\label{app:sources}
+
+\subsection{Repository snapshot and limits of inspection}
+The repository sources used for the mathematical crosswalk were read at
+commit
+\begin{center}
+\small\texttt{a795fcffa4b3ece22761d81fbed3c43be8b81795}.
+\end{center}
+The inspected group is
+\begin{center}
+\small\path{Analysis/Transseries/docs/series-and-transseries/}.
+\end{center}
+The group README's arrival descriptions and status caveats, the regularity
+package README, and the moving-fold article's final research-question and
+scope sections were inspected directly. The full canonical transseries
+volume was not audited. In particular, the comparison above is not an
+assertion that every possible overlap in that volume has been excluded.
+
+During inspection, \texttt{main} advanced to
+\begin{center}
+\small\texttt{5804c7aff9955e6cbc09be2a71a295a07b238bc9},
+\end{center}
+whose parent is the pinned revision above. That later commit records a new incoming-archive
+batch. This article does not claim to have reviewed those new archives.
+The repository was not modified.
+
+The group README describes the recent research packages as unmerged,
+not claim-by-claim reviewed, and not Lean-formalized. Those qualifications
+are preserved here rather than treating their statements as certified
+premises. The underlying model and every theorem in this article are
+proved directly.
+
+\subsection{Dependency structure}
+The analytic branch is
+\begin{gather*}
+ \text{polylogarithm expansion}\ \Longrightarrow\ \text{exact normal form}
+ \ \Longrightarrow\\
+ \text{convergent Hahn chart and coefficients}.
+\end{gather*}
+The sector branch is
+\begin{gather*}
+ \text{Lagrange identity}\ \Longrightarrow\ \text{Poisson coefficient representation}
+ \ \Longrightarrow\\
+ \text{Fourier local limits and corrections}.
+\end{gather*}
+Gamma reflection identifies the coefficients from these two branches.
+The cutoff branch adds only tail Riemann sums, uniform Fourier bounds,
+and the exact conditional identity. The finite-fold branch uses a
+positive real root equation, its Riemann-sum limits, and a tilted Gaussian
+local limit. Numerical verification is downstream of all four branches;
+none uses numerical observations as a theorem hypothesis.
+
+\section{A compact notation ledger}
+\small
+\begin{longtable}{@{}p{0.24\textwidth}p{0.70\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+$\alpha,a,P$ & Tail exponent parameter, tail amplitude, and finite-prefix
+polynomial in $A(t)=a\Li_{1+\alpha}(t)+P(t)$.\\[3pt]
+$d_k$ & Analytic coefficients in \eqref{eq:d-def}; only $d_0,d_1$ are
+ordinary finite moments.\\[3pt]
+$G$ & $\Gamma(-\alpha)>0$.\\[3pt]
+$\bc,\delta_\beta$ & Critical coupling $1/d_1$ and linear defect
+$1-\beta d_1$.\\[3pt]
+$\rho_\beta,B_\beta$ & Boundary value $e^{-\beta d_0}$ and fractional
+coefficient $\beta aG$.\\[3pt]
+$x,\varepsilon$ & $-\log t$ and $\log(\rho_\beta/q)$ near the boundary.\\[3pt]
+$T,R,V$ & Hahn chart variables
+$T=(\varepsilon/\Bc)^{1/\alpha}$, $R=T^{2-\alpha}$,
+$x=TV(T,R)$.\\[3pt]
+$\m,m_*,K,\Lambda$ & Multi-index, its total multiplicity, weighted index,
+and Hahn exponent numerator in \eqref{eq:multiindex}.\\[3pt]
+$b_n,\lambda_n$ & Stable sector scale and centered critical-window
+coordinate in \eqref{eq:bn-lambda}.\\[3pt]
+$g_\alpha,g_{\alpha,L}$ & Full and upper-jump-truncated centered stable
+densities.\\[3pt]
+$\nu_L,h_L$ & Omitted-jump intensity and omitted mean at cutoff $L$.\\[3pt]
+$\Ra(L,\lambda)$ & Limiting retained-coefficient fraction in
+\eqref{eq:cutoff-profile}.\\[3pt]
+$\tau_M,r_M,v_M$ & Exact finite-action critical point, critical value,
+and tilted curvature.\\[3pt]
+$v_\alpha,D_\alpha,V_\alpha$ & Limiting finite-fold drift constants;
+$v_\alpha$ is distinct from the curvature $v_M$.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\begingroup
+\small
+\raggedright
+\begin{thebibliography}{9}
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions.
+Section 25.12, \emph{Polylogarithms}, especially Eq.~25.12.12.
+\url{https://dlmf.nist.gov/25.12}.
+Consulted 29 September 2026.
+
+\bibitem{flajolet}
+P. Flajolet and R. Sedgewick.
+\emph{Analytic Combinatorics}.
+Cambridge University Press, 2009.
+Author-maintained book site: \url{https://ac.cs.princeton.edu/}.
+
+\bibitem{janson}
+S. Janson.
+Simply generated trees, conditioned Galton--Watson trees, random
+allocations and condensation.
+\emph{Probability Surveys} \textbf{9} (2012), 103--252.
+\href{https://doi.org/10.1214/11-PS188}{doi:10.1214/11-PS188}.
+Preprint \href{https://arxiv.org/abs/1112.0510}{arXiv:1112.0510};
+see the critical infinite-variance discussion and Example~18.27.
+
+\bibitem{chakrabarty}
+A. Chakrabarty and G. Samorodnitsky.
+Understanding heavy tails in a bounded world or, is a truncated heavy
+tail heavy or not?
+\emph{Stochastic Models} \textbf{28}(1) (2012), 109--143.
+\href{https://doi.org/10.1080/15326349.2012.646551}{doi:10.1080/15326349.2012.646551}.
+Preprint \href{https://arxiv.org/abs/1001.3218}{arXiv:1001.3218}.
+
+\bibitem{repo-index}
+VladimirReshetnikov/ProveIt repository.
+\emph{Series and transseries}, group README and arrival-status descriptions.
+Path \path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+Snapshot and inspected scope: Appendix~\ref{app:sources}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-fold}
+VladimirReshetnikov/ProveIt repository, research manuscript.
+\emph{Critical Transseries at a Moving Fold: a uniform two-sheet atlas,
+large-sector crossover, and resonant action splitting}.
+Path below the preceding group:
+\path{Critical_Transseries_Moving_Fold/article.tex}.
+Final research-question and scope sections, source lines 1400--1580,
+read at the pinned snapshot. September 2026.
+
+\bibitem{repo-regularity}
+VladimirReshetnikov/ProveIt repository, research package.
+\emph{A Sharp Regularity Classification for Countable Exponential-Feedback
+Transseries}.
+Path below the group:
+\path{Exponential_Feedback_Regularity_Classification/README.md}.
+Package model, verification status, and limitations read at the pinned
+snapshot. September 2026.
+
+\end{thebibliography}
+\endgroup
+\end{document}

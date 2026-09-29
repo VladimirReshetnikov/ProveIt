@@ -1,0 +1,1591 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\usepackage{listings}
+\definecolor{ink}{RGB}{25,47,65}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Negative-ray summation of feedback transseries}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=4pt,topsep=5pt,leftmargin=1.7em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\U}{\widehat U}
+\newcommand{\Q}{\widehat Q}
+\newcommand{\Pp}{\widehat P}
+\newcommand{\B}{\mathcal B_0}
+\newcommand{\G}{\mathcal G_1}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\Ree}{\operatorname{Re}}
+\newcommand{\Imm}{\operatorname{Im}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\inv}{\langle-1\rangle}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\sh}{\mathsf C}
+\hypersetup{pdftitle={Negative-Ray Summation of Countable Exponential-Feedback Transseries},pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Fine Borel summability, inverse Bessel kernels, logarithmic-Gevrey remainders, certified inversion}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{ink} Negative-Ray Summation of Countable\par Exponential-Feedback Transseries\par}
+\vspace{0.7em}
+{\large A sharp slope threshold, an inverse Bessel representation,\par and logarithmic-Gevrey error certificates\par}
+\vspace{0.9em}
+Research article prepared for Vladimir Reshetnikov\\
+29 September 2026
+\end{center}
+
+\begin{abstract}
+Consider the formally well-defined feedback equation
+\[
+ \U(q)=\sum_{j\ge1}q^j\exp(\lambda_j\U(q)),\qquad \lambda_j\ge0,
+\]
+and its compositional inverse $\Q$.  We prove that $\U$ and $\Q$ are
+\emph{finely Borel--Laplace summable in the negative direction} if and only
+if $\lambda_j=O((j\log(j+1))^2)$.  The sums are inverse functions and recover
+the literal feedback equation near the negative real axis.  The proof
+inverts the feedback equation before taking its Borel transform: an exact
+signed exponential-block expansion becomes a normally convergent sum of
+Bessel kernels.  If
+$A=\limsup\lambda_j/(j\log j)^2<\infty$, this constructs the inverse Borel
+transform on the parabolic region
+$|\zeta|+\Ree\zeta<1/(2A)$; for $A=0$ it constructs an entire function.
+For the quadratic model $\lambda_j=j^2$, we additionally prove a uniform
+remainder estimate on a closed left half-disc.  Its explicit positive
+majorant $M_N$ satisfies
+\[
+ \log M_N=N\log N-2N\log\log N+(\log4-1)N+o(N).
+\]
+Truncation at $N\sim\log^2(1/r)/(4r)$ consequently gives an error at most
+$\exp[-(1/4-o(1))\log^2(1/r)/r]$.  We provide exact rational numerical
+certificates, an inverse-error transport bound, reproducible programs,
+and a research agenda separating fine summability from angular summability,
+resurgence, and actual optimal-error asymptotics.
+\end{abstract}
+
+\noindent\textbf{Status.} The theorems below are conventional mathematical proofs,
+not Lean-verified statements.  The proposed new contribution is the constructive
+negative-direction summation theorem and its quantitative remainder theory for
+this model.  The underlying Lagrange, Bessel, and nonlinear summation tools are
+classical.  Global publication priority has not been established.  In particular,
+we do not claim a general transseries summation theorem or a solution of a named
+longstanding conjecture.
+
+\clearpage
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\tableofcontents
+\clearpage
+
+\section{The repository question and the result obtained}
+\label{sec:context}
+
+\subsection{A precise boundary between existing work and this article}
+The ProveIt transseries project studies formal asymptotic scales, well-based
+supports, differential blocks, inversion, and analytic error transport.  At the
+snapshot used here, the material has its own directory
+\texttt{Analysis/Transseries/}.  The exact snapshot is
+\begin{center}\small\ttfamily
+a795fcffa4b3ece22761d81fbed3c43be8b81795.
+\end{center}
+The principal point of departure is the research package
+\emph{A sharp regularity classification for countable exponential-feedback
+transseries} \cite{feedback}.  Its README explicitly distinguishes the proved
+left-sector Poincar\'e realization from a uniform Gevrey remainder theorem and
+from directional Borel summation.  Those latter assertions were not established
+there.  This article addresses that specific boundary.
+
+The earlier package already proves the formal existence and Gevrey
+classification of the feedback solution.  In particular, its classification
+implies that the coefficient series is Gevrey--1 precisely at the growth
+threshold $(j\log j)^2$.  We do not present that coefficient classification
+as a discovery of the present paper.  Our main result is that, for this
+nonnegative-slope model, the same threshold is exactly sufficient for
+\emph{fine negative-direction Borel summation}, with identification of the
+summed function.  We give an independent proof of the necessity needed here,
+so our main theorem does not rely on accepting the earlier draft's asymptotic
+proofs without review.
+
+The focused source review covered the current project README, the
+series-and-transseries directory README, and the feedback article and its
+README.  It was not an exhaustive claim-by-claim audit of the much larger
+canonical transseries volume.  The directory README also marks the recent
+research arrivals as unmerged and not formalized \cite{project}.  The
+formalization roadmap in Section~\ref{sec:lean} is accordingly prospective.
+
+\subsection{Why inversion first changes the analytic problem}
+Directly expanding $\U$ produces nonnegative, potentially very large
+coefficients.  However, its inverse is characterized by
+\begin{equation}
+ u=\Phi(Q(u),u),\qquad
+ \Phi(q,u)=\sum_{j\ge1}q^j\ee^{\lambda_j u}.
+ \label{eq:literal}
+\end{equation}
+For $\Ree u\le0$, every coefficient $\ee^{\lambda_j u}$ has modulus at most
+one.  The countably infinite kernel is therefore controlled by a geometric
+series in $q$, regardless of how large the slopes are.  Inverting in $q$
+while keeping $u$ fixed retains that information.  Expanding everything as
+an ordinary power series at the outset discards it.
+
+The resulting exact inverse has blocks of the form $u^k\ee^{bu}$.
+Their integrated Borel transforms are Bessel kernels.  On the negative
+Borel ray, positive $b$ produces oscillation instead of exponential growth;
+the few possible negative frequencies satisfy a linear bound in $k$.
+This is the mechanism behind the theorem.  It is a structural property of
+the defining equation, not a general consequence of Gevrey regularity.
+
+\subsection{Contribution map}
+The new analytic assertions are the threshold equivalence of
+Theorem~\ref{thm:threshold}, the explicit inverse Borel representation and
+parabolic continuation of Theorem~\ref{thm:borel}, and the quadratic
+remainder and error-certificate results of
+Theorems~\ref{thm:remainder}--\ref{thm:optimal}.  The proof also gives an
+all-slope continuous ray transform, even when no Borel germ exists.
+Classical tools are proved in the specialized form needed here and credited
+at their first use.  Numerical checks supplement, but do not establish,
+the infinite-dimensional or asymptotic conclusions.
+
+\section{Conventions and main theorems}
+\label{sec:main}
+
+Write
+\begin{equation}
+ \U(q)=\sum_{n\ge1}u_nq^n,
+ \qquad \Q(u)=\sum_{n\ge1}v_nu^n,
+ \qquad \Q=\U^{\inv}.
+ \label{eq:formal}
+\end{equation}
+The formal inverse exists because $u_1=1$.  All slopes are finite real
+numbers, and are nonnegative throughout.  Natural logarithms are used.
+A statement about $j\log j$ starts at $j=2$.
+
+\begin{definition}[Gevrey--1 and integrated Borel transform]
+A formal series $\widehat f(u)=\sum_{n\ge0}f_nu^n$ is in $\G$ when
+$|f_n|\le C H^n n!$ for some $C,H>0$.  Its integrated Borel transform is
+\begin{equation}
+ \B\widehat f(\zeta)=\sum_{n\ge0}\frac{f_n}{n!}\zeta^n.
+ \label{eq:B0}
+\end{equation}
+Thus $\widehat f\in\G$ exactly when \eqref{eq:B0} is a holomorphic germ at
+zero.  The usual Borel minor of a series with zero constant term is the
+derivative of \eqref{eq:B0}.
+\end{definition}
+
+\begin{definition}[Fine summability on the negative ray]
+\label{def:fine}
+Let
+\[
+ \Omega^-_\delta=\{\zeta\in\C:\dist(\zeta,(-\infty,0])<\delta\}.
+\]
+A series is \emph{finely Borel summable in direction $\pi$} when its Borel
+germ extends to some $\Omega^-_\delta$ and, there, satisfies
+$|\B\widehat f(\zeta)|\le C\ee^{H|\zeta|}$.
+Its sum at $u=-r$, for sufficiently small $r>0$, is
+\begin{equation}
+ \mathcal S_\pi\widehat f(-r)
+  =\frac1r\int_0^\infty\ee^{-s/r}\B\widehat f(-s)\,\dd s.
+ \label{eq:laplace}
+\end{equation}
+For complex $u$ the same formula is
+$-u^{-1}\int_0^\infty \ee^{s/u}\B\widehat f(-s)\,\dd s$, on
+$\Ree(-1/u)>H$.
+\end{definition}
+
+This is the fine, half-strip version of summability, as distinguished from
+summability in an open arc of directions in \cite[Sections 7 and 9]{sauzin}.
+Using the Borel minor gives an equivalent definition: integration preserves
+exponential growth, and differentiation preserves it after narrowing the
+strip.  The domain in the $u$-plane is a disc tangent to the origin from
+the left, not a sector of opening greater than $\pi$.
+
+\begin{theorem}[Sharp negative-direction threshold]
+\label{thm:threshold}
+For every sequence $\lambda_j\ge0$, the following five conditions are
+equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\lambda_j=O((j\log(j+1))^2)$;
+\item $\U\in\G$;
+\item $\Q\in\G$;
+\item $\U$ is finely Borel summable in direction $\pi$;
+\item $\Q$ is finely Borel summable in direction $\pi$.
+\end{enumerate}
+When they hold, the summed functions are compositional inverses near the
+negative real axis.  In particular, for small negative $q$,
+\begin{equation}
+ \mathcal S_\pi\U(q)
+ =\sum_{j\ge1}q^j\exp\!\left(\lambda_j\mathcal S_\pi\U(q)\right),
+ \label{eq:summed-feedback}
+\end{equation}
+and the sum on the right converges absolutely.  The analogous identity
+holds on a sufficiently small common complex neighborhood contained in
+the left sectors where the dependent variable has negative real part.
+\end{theorem}
+
+\begin{theorem}[Constructive inverse continuation]
+\label{thm:borel}
+Set
+\begin{equation}
+ A=\limsup_{j\to\infty}\frac{\lambda_j}{(j\log j)^2}.
+ \label{eq:A}
+\end{equation}
+If $0<A<\infty$, the explicit kernel series of
+Section~\ref{sec:bessel} defines $\B\Q$ holomorphically on
+\begin{equation}
+ \mathcal P_A=\left\{\zeta\in\C:
+       |\zeta|+\Ree\zeta<\frac1{2A}\right\}.
+ \label{eq:parabola}
+\end{equation}
+It has exponential growth on a sufficiently thin fixed tubular
+neighborhood of the negative ray.  If $A=0$, the same kernel series is
+entire and still has this negative-ray growth property.  The set
+\eqref{eq:parabola} is a guaranteed continuation region, not a claim that
+its boundary consists of singularities.
+\end{theorem}
+
+The quadratic case has a stronger uniform conclusion.  It is convenient
+to retain the convergent factor $\ee^{-u}$ exactly and write
+\begin{equation}
+ P(u)=\ee^uQ(u),\qquad \Pp(u)=\sum_{n\ge1}a_nu^n.
+ \label{eq:P}
+\end{equation}
+Let $\rho=3-2\sqrt2$ and let $\sh_k$ be defined in
+\eqref{eq:schroeder} below.
+
+\begin{theorem}[Uniform logarithmic-Gevrey remainder]
+\label{thm:remainder}
+Suppose $\lambda_j=j^2$.  Boundary values refer to the continuous
+block-series extension constructed below.  For $0<r_0<\rho$, $N\ge2$, and
+$\Ree u\le0$, $|u|=r\le r_0$, one has
+\begin{equation}
+ \left|P(u)-\sum_{n=1}^{N-1}a_nu^n\right|
+ \le r^N M_N(r_0),
+ \label{eq:remainder}
+\end{equation}
+where the entirely explicit positive majorant is
+\begin{equation}
+ M_N(r_0)=\frac{\rho^{-N}}{1-r_0/\rho}
+ +\sum_{k=1}^{N-1}\sh_k
+       \frac{[k(k-1)]^{N-k}}{(N-k)!}.
+ \label{eq:MN}
+\end{equation}
+For fixed $r_0$,
+\begin{equation}
+ \log M_N(r_0)
+ =N\log N-2N\log\log N+(\log4-1)N+o(N).
+ \label{eq:MN-asymp}
+\end{equation}
+The error for approximating $Q(u)$ by
+$\ee^{-u}\sum_{n<N}a_nu^n$ is at most $\ee^r$ times the right side of
+\eqref{eq:remainder}.
+\end{theorem}
+
+\begin{theorem}[A certified beyond-all-orders scale]
+\label{thm:optimal}
+In the quadratic case, put $L=\log(1/r)$ and
+$N(r)=\lfloor L^2/(4r)\rfloor$.  For every $\varepsilon>0$ and all
+sufficiently small $r>0$,
+\begin{equation}
+ \sup_{\substack{|u|=r\\\Ree u\le0}}
+ \left|P(u)-\sum_{n<N(r)}a_nu^n\right|
+ \le \exp\!\left[-\left(\frac14-\varepsilon\right)
+                         \frac{L^2}{r}\right].
+ \label{eq:optimal}
+\end{equation}
+The same conclusion holds for the exponentially normalized approximation
+to $Q$, after possibly decreasing the admissible $r$.
+\end{theorem}
+
+Here and below, ``optimal'' in a theorem label refers to the leading-order
+optimization of our proved majorant.  It does not assert a matching lower
+bound for the actual truncation error.  Cancellation can make that error
+smaller.  No Stokes constant is inferred from the number $1/4$.
+
+\section{Formal existence and the necessary growth condition}
+\label{sec:formal}
+
+\subsection{Local finiteness and positive Lagrange weights}
+Although $\Phi$ need not be analytic near $(0,0)$, it is legitimate
+formally: its coefficient of $q^n$ uses only $j\le n$.  If
+$V,W\in q\R[[q]]$ agree through degree $n-1$, then
+$\Phi(q,V)$ and $\Phi(q,W)$ agree through degree $n$.  Iteration starting
+at zero therefore converges coefficientwise to a unique fixed point.
+Its first coefficient is one, and every coefficient is nonnegative.
+
+For completeness, classical Lagrange inversion \cite{gessel} yields a
+particularly useful finite coefficient formula.  Introduce an auxiliary
+parameter $t$ in $V=t\Phi(q,V)$, invert with respect to $t$, and then set
+$t=1$ coefficientwise.  Each coefficient of $q$ permits only finitely many
+powers of $t$.  For a finitely supported sequence of nonnegative integers
+$\mathbf m=(m_1,m_2,\ldots)$, set
+$|\mathbf m|=\sum m_j$ and $w(\mathbf m)=\sum jm_j$.  The result is
+\begin{equation}
+ u_n=\sum_{w(\mathbf m)=n}
+       \frac{(\sum_j\lambda_jm_j)^{|\mathbf m|-1}}
+            {\prod_jm_j!}.
+ \label{eq:positive-Lagrange}
+\end{equation}
+The convention $0^0=1$ handles single-component terms.  This identity is
+only a finite formal calculation; it imposes no analytic condition on
+the sequence of slopes.
+
+Taking one component of size $j\ge2$ and $m$ components of size one in
+\eqref{eq:positive-Lagrange} gives
+\begin{equation}
+ u_{j+m}\ge \frac{(\lambda_j+m\lambda_1)^m}{m!}
+             \ge\frac{\lambda_j^m}{m!}.
+ \label{eq:lower}
+\end{equation}
+This elementary inequality already detects the correct necessary scale.
+
+\begin{lemma}[Necessity of the logarithmic-square threshold]
+\label{lem:necessary}
+If $\U\in\G$, then $\lambda_j=O((j\log(j+1))^2)$.
+\end{lemma}
+\begin{proof}
+Choose $C,H\ge1$ with $u_n\le CH^n n!$, and put
+$m=\lceil j\log(j+1)\rceil$.  From \eqref{eq:lower},
+\[
+ \lambda_j\le C^{1/m}H^{1+j/m}
+                   \bigl(m!(j+m)!\bigr)^{1/m}.
+\]
+Using $n!\le n^n$, the last factor is at most
+$m(j+m)^{1+j/m}$.  Now $j/m=O(1/\log j)$, so
+$(j+m)^{j/m}$ stays bounded, while $m$ and $j+m$ are both
+$O(j\log(j+1))$.  The remaining factors are bounded as well.  The
+finitely many small $j$ are absorbed into the constant.
+\end{proof}
+
+\subsection{Why reversion does not change class membership}
+\begin{lemma}[Gevrey--1 reversion]
+\label{lem:gevreyinverse}
+Let $f(z)=z+\sum_{n\ge2}f_nz^n$ and let $g=f^{\inv}$ be formal.
+Then $f\in\G$ if and only if $g\in\G$.
+\end{lemma}
+\begin{proof}
+It suffices to prove one direction, since $f=g^{\inv}$.  Lagrange's
+coefficient formula is
+\[
+ g_n=\frac1n\coeff{z}{n-1}
+       \left(1+\sum_{j\ge1}f_{j+1}z^j\right)^{-n}.
+\]
+Expand the negative power.  A term with $\ell$ factors is indexed by a
+composition $j_1+\cdots+j_\ell=n-1$, with $j_i\ge1$, and has a binomial
+factor $\binom{n+\ell-1}{\ell}$.  If
+$|f_m|\le CH^m m!$, the product of factorials in that term obeys
+\begin{equation}
+ \prod_{i=1}^{\ell}(j_i+1)!
+ \le 2^{\ell-1}(n-\ell+1)!\le 2^n n!.
+ \label{eq:factorial-product}
+\end{equation}
+To see the first inequality, move a unit from the smaller of two parts
+greater than one to the larger; the factorial product can only increase.
+Iterating leaves one large part and $\ell-1$ parts equal to one.
+
+The binomial factor is at most $4^n$, the number of all relevant
+compositions is at most $2^n$, and the factors involving $C$ and $H$ are
+at most $D^n$ for a fixed $D$.  Summing gives $|g_n|\le E^n n!$ after
+enlarging $E$.  This proves class membership, not preservation of the
+sharp factorial-normalized type.
+\end{proof}
+
+The preceding lemma is included to make the logic of necessity independent
+of any sharp asymptotic classification.  Fine summability implies Gevrey--1
+by local analyticity of the Borel germ.  Thus either fine summability
+assertion in Theorem~\ref{thm:threshold} already forces the slope condition.
+The rest of the paper proves its sufficiency constructively.
+
+\section{An exact signed exponential-block inverse}
+\label{sec:blocks}
+
+\subsection{The coefficient measures}
+Fix $u$ temporarily and invert the map $q\mapsto\Phi(q,u)$ at zero, with
+an independent target variable $w$.  Lagrange inversion gives
+\[
+ q(w;u)=\sum_{k\ge1}\frac{w^k}{k}
+       \coeff{q}{k-1}
+       \left(\sum_{j\ge1}q^{j-1}\ee^{\lambda_j u}\right)^{-k}.
+\]
+Now set $w=u$.  For $k\ge2$, let $1\le\ell\le k-1$ and let
+$\mathbf m=(m_1,\ldots,m_\ell)$ range over ordered positive compositions
+of $k-1$.  Define
+\begin{align}
+ \omega_{k,\ell}&=\frac{(-1)^\ell}{k}
+                         \binom{k+\ell-1}{\ell},\label{eq:weight}\\
+ b_{k,\mathbf m}&=\sum_{i=1}^\ell\lambda_{m_i+1}
+                              -(k+\ell)\lambda_1.\label{eq:frequency}
+\end{align}
+Let $\mu_k$ be the finite signed atomic measure placing mass
+$\omega_{k,\ell}$ at $b_{k,\mathbf m}$ for each indexed composition.
+Coincident atoms are added.  Put $\mu_1=\delta_{-\lambda_1}$.  Formally,
+\begin{equation}
+ \boxed{\quad Q(u)=\sum_{k\ge1}u^k\int_\R\ee^{bu}\,\dd\mu_k(b).\quad}
+ \label{eq:block-expansion}
+\end{equation}
+Every ordinary Taylor coefficient uses only $k\le n$, so
+\eqref{eq:block-expansion} also defines a formal series without convergence
+hypotheses.  It solves $u=\Phi(Q(u),u)$ formally.  Uniqueness of the
+formal feedback fixed point after substitution $q=Q(u)$ gives
+$\U(Q(u))=u$, identifying this series with the compositional inverse
+in \eqref{eq:formal}.
+
+\subsection{A universal combinatorial majorant}
+Define $\sh_1=1$ and, for $k\ge2$,
+\begin{equation}
+ \sh_k=\frac1k\sum_{\ell=1}^{k-1}
+                \binom{k+\ell-1}{\ell}\binom{k-2}{\ell-1}.
+ \label{eq:schroeder}
+\end{equation}
+There are $\binom{k-2}{\ell-1}$ relevant compositions, so
+$\|\mu_k\|_{\TV}\le\sh_k$.
+
+The first seven values are $1,1,3,11,45,197,903$.
+
+\begin{lemma}[Generating function and usable bounds]
+\label{lem:mass}
+The generating function of these positive majorants is
+\begin{equation}
+ S(t)=\sum_{k\ge1}\sh_kt^k
+     =\frac{1+t-\sqrt{1-6t+t^2}}4.
+ \label{eq:S}
+\end{equation}
+Its radius of convergence is $\rho=3-2\sqrt2$, and
+\begin{equation}
+ \sh_k\le\rho^{-k},\qquad \sh_k\le\frac{6^k}{4}.
+ \label{eq:C-bounds}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Applying the coefficient form of Lagrange inversion to
+$S=t(1-S)/(1-2S)$ gives exactly \eqref{eq:schroeder}.  The branch with
+$S(0)=0$ of $2S^2-(1+t)S+t=0$ is \eqref{eq:S}.  Its first positive
+branch point is $\rho$.  Since all coefficients are nonnegative,
+$\sh_k\rho^k\le S(\rho)=(1+\rho)/4<1$; convergence at $\rho$ follows
+also by monotone passage in \eqref{eq:S}.  Similarly
+$\sh_k6^{-k}\le S(1/6)=1/4$.
+\end{proof}
+
+These are the small Schr\"oder coefficients, but no enumerative
+interpretation is required for any subsequent argument.  Retaining the
+uncancelled mass majorant, rather than the actual total variation after
+coincident atoms cancel, makes every estimate transparent and reproducible.
+
+\begin{proposition}[All-slope analytic inverse]
+\label{prop:all-slopes}
+For every nonnegative slope sequence, \eqref{eq:block-expansion} converges
+normally in a sufficiently small open left half-disc and uniformly on
+smaller closed left half-discs.  More explicitly, it is absolutely
+convergent whenever
+\begin{equation}
+ \Ree u\le0,\qquad |u|\ee^{2\lambda_1|u|}<\rho.
+ \label{eq:block-domain}
+\end{equation}
+The resulting function satisfies \eqref{eq:literal} for sufficiently small
+$u$ in that half-disc.  It has $\Q$ as a uniform Poincar\'e expansion on
+each smaller closed left half-disc, as $u\to0$.
+\end{proposition}
+\begin{proof}
+Nonnegativity of the slopes gives $b\ge-2k\lambda_1$ at every atom.
+For $\Ree u\le0$,
+\[
+ \left|u^k\int\ee^{bu}\,\dd\mu_k(b)\right|
+ \le\sh_k\bigl(|u|\ee^{2\lambda_1|u|}\bigr)^k.
+\]
+This proves normal and boundary-uniform convergence.
+
+For a fixed $u$ with negative real part,
+$q\mapsto\Phi(q,u)$ is holomorphic for $|q|<1$ and has nonzero derivative
+$\ee^{\lambda_1u}$ at zero.  Its local inverse in $w$ has the Lagrange
+coefficients used above.  The same majorant shows convergence of that
+inverse for small $w$, uniformly for small $u$ in the left half-disc.
+For $w=u$ both the inverse series and its value remain sufficiently small;
+substitution in the convergent $q$-series gives \eqref{eq:literal}.
+This justifies the functional identity, not only the formal coefficients.
+
+For each fixed $N$, the blocks with $k<N$ are finite sums of entire
+exponentials and can be Taylor expanded with a remainder of order $u^N$.
+The blocks with $k\ge N$ have a geometric $O(|u|^N)$ tail on smaller
+half-discs.  The constants may depend arbitrarily on $N$ and the slopes.
+This proves uniform Poincar\'e asymptotics, without a Gevrey assertion.
+\end{proof}
+
+\section{Bessel kernels and a ray transform for arbitrary slopes}
+\label{sec:bessel}
+
+\subsection{One block under the Borel transform}
+For $k\ge1$ and $b\in\R$ define the entire function
+\begin{equation}
+ K_{k,b}(\zeta)
+  =\sum_{m\ge0}\frac{b^m\zeta^{m+k}}{m!(m+k)!}
+  =\frac{\zeta^k}{k!}\,{}_0F_1(k+1;b\zeta).
+ \label{eq:kernel}
+\end{equation}
+It is the integrated Borel transform of $u^k\ee^{bu}$.
+A normalized form of the classical Poisson--Bessel integral
+\cite[Eq.~10.9.4]{dlmf} is particularly effective here.
+
+\begin{lemma}[Probability-integral representation]
+\label{lem:kernel}
+Let
+\[
+ p_k(v)=\frac{\Gamma(k+1)}{\sqrt\pi\Gamma(k+1/2)}
+                    (1-v^2)^{k-1/2},\qquad -1<v<1.
+\]
+Then $\int_{-1}^1p_k(v)\,\dd v=1$ and
+\begin{equation}
+ K_{k,b}(\zeta)=\frac{\zeta^k}{k!}
+        \int_{-1}^1\exp(2\sqrt{b\zeta}\,v)p_k(v)\,\dd v.
+ \label{eq:poisson}
+\end{equation}
+The right side is independent of the choice of square root.  If $b\ge0$,
+\begin{equation}
+ |K_{k,b}(\zeta)|\le\frac{|\zeta|^k}{k!}
+                   \exp(2\sqrt b\,|\Ree\sqrt\zeta|).
+ \label{eq:pos-kernel}
+\end{equation}
+If $b<0$, replace $\sqrt b\,|\Ree\sqrt\zeta|$ by
+$\sqrt{|b|}\,|\Imm\sqrt\zeta|$ in that bound.  In particular, for $s\ge0$,
+\begin{align}
+ |K_{k,b}(-s)|&\le s^k/k!,&& b\ge0,\label{eq:osc-bound}\\
+ |K_{k,b}(-s)|&\le(s^k/k!)\ee^{2\sqrt{|b|s}},&&b<0.\label{eq:neg-bound}
+\end{align}
+For $b>0$ there is also the explicit oscillatory formula
+\begin{equation}
+ K_{k,b}(-s)=(-1)^k(s/b)^{k/2}J_k(2\sqrt{bs}).
+ \label{eq:besselJ}
+\end{equation}
+\end{lemma}
+\begin{proof}
+A beta integral gives the normalization and the even moments
+\[
+ \int_{-1}^1v^{2m}p_k(v)\,\dd v
+  =\frac{(2m)!k!}{4^m m!(m+k)!}.
+\]
+Odd moments vanish.  Expanding the exponential in \eqref{eq:poisson}
+and using these moments gives \eqref{eq:kernel}.  The same evenness proves
+square-root independence.  Taking absolute values under a probability
+integral proves \eqref{eq:pos-kernel} and its negative-$b$ counterpart.
+For a negative argument and positive $b$, the integrand is oscillatory
+and has modulus one.  Formula \eqref{eq:besselJ} follows by comparing the
+power series for $J_k$.
+\end{proof}
+
+\subsection{Exact Laplace recovery and the distinction from a Borel germ}
+\begin{lemma}[One-block recovery]
+\label{lem:kernel-laplace}
+For every $r>0$, $k\ge1$, and real $b$,
+\begin{equation}
+ \frac1r\int_0^\infty\ee^{-s/r}K_{k,b}(-s)\,\dd s
+       =(-r)^k\ee^{-br}.
+ \label{eq:kernel-laplace}
+\end{equation}
+Moreover, the same integral with an absolute value inside is at most
+$r^k$ for $b\ge0$, and equals $r^k\ee^{|b|r}$ for $b<0$.
+\end{lemma}
+\begin{proof}
+For one fixed $b$, termwise integration of \eqref{eq:kernel} is justified
+absolutely: the integrated series of absolute values is
+$r^k\sum_{m\ge0}(|b|r)^m/m!$.  The signed sum is the right side of
+\eqref{eq:kernel-laplace}.  For $b\ge0$, use the stronger oscillatory
+bound \eqref{eq:osc-bound} before integrating.  For $b<0$, every term of
+$(-1)^kK_{k,b}(-s)$ is nonnegative, so the absolute integral is the
+positive exponential sum just computed.
+\end{proof}
+
+\begin{proposition}[Continuous ray representation without a growth hypothesis]
+\label{prop:ray}
+For arbitrary nonnegative slopes, the function
+\begin{equation}
+ \mathfrak B_Q(-s)=\sum_{k\ge1}\int K_{k,b}(-s)\,\dd\mu_k(b),
+ \qquad s\ge0,
+ \label{eq:ray-series}
+\end{equation}
+is well-defined, continuous, and at most exponentially growing in $s$.
+For all sufficiently small $r>0$ its Laplace integral recovers the
+analytic inverse of Proposition~\ref{prop:all-slopes}:
+\begin{equation}
+ Q(-r)=\frac1r\int_0^\infty\ee^{-s/r}\mathfrak B_Q(-s)\,\dd s.
+ \label{eq:ray-recovery}
+\end{equation}
+This alone is \emph{not} a fine Borel-summability assertion: without a
+slope bound, \eqref{eq:ray-series} need not be the restriction of a
+holomorphic Borel germ at zero.
+\end{proposition}
+\begin{proof}
+Since a negative frequency has $|b|\le2k\lambda_1$, the $k$th term is
+bounded on the ray by
+\[
+ \sh_k\frac{s^k}{k!}\exp(2\sqrt{2\lambda_1ks}).
+\]
+For any fixed $\eta>0$, Young's inequality bounds the last exponential
+by $\exp(\eta k+2\lambda_1s/\eta)$.  Sum with
+$\sh_k\le\rho^{-k}$.  The result is an exponential in $s$, and the same
+bound gives uniform convergence on compact ray intervals.
+
+Lemma~\ref{lem:kernel-laplace} bounds the integrated absolute contribution
+of block $k$ by
+$\sh_kr^k\ee^{2k\lambda_1r}$.  Its sum is finite under
+\eqref{eq:block-domain}.  Fubini's theorem is therefore applicable to
+the kernel sum and Laplace integral; it gives \eqref{eq:block-expansion}
+at $u=-r$ exactly.  No exchange of the original, generally divergent,
+forward power series with a Laplace integral has been made.
+\end{proof}
+
+The last warning is substantive.  A continuous ray function with a
+formal expansion can be produced even when that formal expansion has
+zero Borel radius.  Fine summability requires the additional complex
+analytic neighborhood proved next.
+
+\section{The parabolic continuation and fine growth estimate}
+\label{sec:continuation}
+
+\subsection{From a slope bound to a block-frequency bound}
+\begin{lemma}[Concentration of the maximal frequency]
+\label{lem:frequency}
+If $A<\infty$ in \eqref{eq:A}, then for every $a>A$ there is $D\ge0$
+such that every positive frequency in block $k\ge2$ satisfies
+\begin{equation}
+ b\le a(k\log k)^2+D(k-1).
+ \label{eq:b-bound}
+\end{equation}
+Every negative frequency satisfies $|b|\le2k\lambda_1$.
+\end{lemma}
+\begin{proof}
+Choose $D$ so that, for all $j\ge2$,
+$\lambda_j\le a(j\log j)^2+D(j-1)$.  Such a $D$ exists by the definition
+of the limsup and the finiteness of each exceptional slope.  The function
+\[
+ g(x)=((x+1)\log(x+1))^2,\qquad x\ge0,
+\]
+is convex and has $g(0)=0$.  Indeed, for $t\ge1$ the second derivative of
+$t^2\log^2t$ is $2\log^2t+6\log t+2>0$.  Convexity and $g(0)=0$ imply
+$g(x)+g(y)\le g(x+y)$ for nonnegative $x,y$: bound each term by its
+fraction of the chord from zero to $x+y$.  Therefore
+\[
+ \sum_{i=1}^\ell\lambda_{m_i+1}
+ \le a\,g\!\left(\sum_i m_i\right)+D\sum_i m_i
+ =a(k\log k)^2+D(k-1).
+\]
+Dropping the nonpositive subtraction in \eqref{eq:frequency} proves
+\eqref{eq:b-bound}.  The negative-frequency assertion was already used
+in Proposition~\ref{prop:all-slopes}.
+\end{proof}
+
+\subsection{Normal convergence in the Borel plane}
+Define
+\begin{equation}
+ B_Q(\zeta)=\sum_{k\ge1}\int K_{k,b}(\zeta)\,\dd\mu_k(b).
+ \label{eq:BQ}
+\end{equation}
+The square-root quantities
+\[
+ h(\zeta)=|\Ree\sqrt\zeta|,
+ \qquad \widetilde h(\zeta)=|\Imm\sqrt\zeta|
+\]
+are independent of the sign of the root, and
+$h(\zeta)^2=(|\zeta|+\Ree\zeta)/2$.
+By Lemmas~\ref{lem:kernel} and \ref{lem:frequency}, the absolute mass of
+block $k\ge2$ is bounded by
+\begin{equation}
+ \frac{\rho^{-k}|\zeta|^k}{k!}
+ \exp\!\left(2\sqrt a\,h(\zeta)k\log k
+       +2\sqrt D\,h(\zeta)\sqrt k
+       +2\sqrt{2\lambda_1}\,\widetilde h(\zeta)\sqrt k\right).
+ \label{eq:master-bound}
+\end{equation}
+The estimate combines the positive- and negative-frequency bounds; an
+individual atom needs only one of the corresponding exponents.
+
+Let $K$ be compact and suppose $\sup_K2\sqrt a\,h<1$.  Taking logarithms
+in \eqref{eq:master-bound} and using Stirling's elementary estimate shows
+that the $k$th bound is
+\[
+ \exp\bigl(-(1-\beta)k\log k+O_K(k)+O_K(\sqrt k)\bigr),
+ \qquad \beta=\sup_K2\sqrt a\,h<1.
+\]
+This is summable.  Thus \eqref{eq:BQ} converges normally on
+$\{2\sqrt a\,h<1\}$.  If $A>0$, every compact subset of
+\eqref{eq:parabola} admits a choice $a>A$ satisfying this strict
+inequality.  If $A=0$, every compact subset of $\C$ admits a sufficiently
+small $a>0$.  We obtain the continuation assertions of
+Theorem~\ref{thm:borel}.
+
+In a neighborhood of zero, normal convergence also permits Taylor
+coefficient extraction.  Each kernel in block $k$ vanishes to order $k$;
+hence the coefficient of $\zeta^n$ is a finite sum and is exactly $v_n/n!$.
+Consequently \eqref{eq:BQ} really is the analytic continuation of
+$\B\Q$, not merely a ray function chosen to have a desired Laplace
+transform.
+
+\subsection{Exponential bounds in a fixed strip}
+Parabolic continuation alone does not prove fine summability; growth
+must be controlled on a fixed-width neighborhood of the entire ray.
+We give that estimate explicitly.
+
+Choose one $a>A$ and choose $\delta>0$ small enough that the closure of
+$\Omega^-_{2\delta}$ stays inside $\{2\sqrt a\,h<1\}$.  This is possible
+because $h^2\le2\delta$ on that tube.  For
+$\zeta=-s+it$, $s\ge1$, $|t|\le\delta$, one has
+\begin{equation}
+ h(\zeta)\le\frac{\delta}{2\sqrt s},\qquad
+ \widetilde h(\zeta)\le\sqrt{s+\delta},\qquad
+ |\zeta|\le s+\delta.
+ \label{eq:strip-roots}
+\end{equation}
+The first estimate follows by rationalizing
+$\sqrt{s^2+t^2}-s$.
+
+Absorbing fixed constants into $d_1,d_2,d_3$, the logarithm of the
+$k$th bound in \eqref{eq:master-bound} is at most
+\begin{equation}
+ k\log\bigl(\rho^{-1}(s+\delta)\bigr)-\log k!
+ +\frac{d_1}{\sqrt s}k\log k
+ +\frac{d_2}{\sqrt s}\sqrt k+d_3\sqrt{ks}.
+ \label{eq:strip-term}
+\end{equation}
+Split the sum into $k\le s^2$ and $k>s^2$.
+
+In the first range,
+$(d_1/\sqrt s)\log k\le2d_1\log s/\sqrt s=o(1)$.
+Young's inequality bounds the last two terms by $c_1k+c_2s+c_3$.
+For large $s$, the first part of the sum is consequently at most
+\[
+ C\ee^{c_2s}\sum_{k\ge1}
+       \frac{(\rho^{-1}\ee^{c_1+1}(s+\delta))^k}{k!}
+ \le C'\ee^{H_1s}.
+\]
+In the second range, $\log(s+\delta)\le\tfrac12\log k+o(1)$.
+For sufficiently large $s$ we have $d_1/\sqrt s\le1/8$.
+Using $\log k!\ge k\log k-k$ in \eqref{eq:strip-term}, while
+$\sqrt{ks}/k\le1/\sqrt s$, gives an upper bound
+$-\tfrac14 k\log k$ after increasing the threshold on $s$.
+The tail is thus uniformly bounded.  The remaining bounded portion of
+the tube is compactly contained in the domain of normal convergence.
+We conclude that
+\begin{equation}
+ |B_Q(\zeta)|\le C\ee^{H|\zeta|},\qquad \zeta\in\Omega^-_\delta.
+ \label{eq:fine-growth}
+\end{equation}
+This proves the remaining assertion of Theorem~\ref{thm:borel} and, in
+particular, the implication (i)$\Rightarrow$(v) of
+Theorem~\ref{thm:threshold}.  Proposition~\ref{prop:ray} then identifies
+the Borel sum with the literal analytic inverse $Q$.
+
+\section{Summation commutes with taking the inverse}
+\label{sec:nonlinear}
+
+The preceding construction proves fine summability of $\Q$ directly.
+To transfer the result to $\U$, one needs closure under compositional
+inversion, not just closure of Gevrey coefficient classes.  This is a
+classical nonlinear summation principle.  We include a proof adapted to
+fixed half-strips, following the convolution method underlying
+\cite[Sections 13 and 17]{sauzin}.  This avoids silently replacing a
+half-strip hypothesis by an open angular-sector hypothesis.
+
+\subsection{The elementary half-strip algebra}
+At infinity write
+$\varphi(z)=\sum_{n\ge1}\varphi_nz^{-n}$ and use its Borel minor
+\[
+ \mathscr B\varphi(\xi)
+    =\sum_{n\ge1}\frac{\varphi_n}{(n-1)!}\xi^{n-1}.
+\]
+Let $\Omega^+_\delta=-\Omega^-_\delta$.  Consider those minors holomorphic
+there and bounded by $M\ee^{c|\xi|}$.  The tube is convex, so every straight
+segment from zero to a point of the tube stays inside it.  If $\widehat
+\varphi$ is such a minor, its $k$-fold convolution obeys
+\begin{equation}
+ |\widehat\varphi^{*k}(\xi)|
+ \le M^k\frac{|\xi|^{k-1}}{(k-1)!}\ee^{c|\xi|}.
+ \label{eq:conv-bound}
+\end{equation}
+Indeed, parameterize the convolution simplex by nonnegative coordinates
+summing to one; the exponential factors multiply to
+$\ee^{c|\xi|}$ and the simplex volume is $1/(k-1)!$.
+
+Products of formal series correspond to convolution, with the constant
+terms handled separately.  Formula \eqref{eq:conv-bound} also shows that
+substitution into a convergent scalar power series is permitted whenever
+the substituted series has zero constant term.  If $H(w)=\sum h_kw^k$
+and $|h_k|\le CR^{-k}$, the sum of the Borel minors of
+$\sum_{k\ge1}h_k\varphi^k$ is bounded by a constant times
+$\exp((c+M/R)|\xi|)$.  In particular, reciprocals of series with nonzero
+constant term belong to the same class.
+
+Multiplication by $z$, with the new polynomial part separated off,
+corresponds to differentiation of the minor.  Cauchy's estimate on a
+narrower tube preserves an exponential bound.  Division by $z$
+corresponds to integration.  Translation $z\mapsto z+c_0$ multiplies
+the minor by $\ee^{-c_0\xi}$ and preserves the class.  Laplace summation
+commutes with all these operations: products follow from Fubini on
+convolution integrals, reciprocal and scalar substitution from the same
+absolutely convergent convolution majorant, multiplication by $z$ from
+integration by parts, and translation from its exponential multiplier.
+All these identities hold on a sufficiently far right half-plane.
+
+\subsection{A direct inverse formula and its analytic meaning}
+\begin{lemma}[Fine-summable inverse at infinity]
+\label{lem:fineinverse}
+Suppose $f(z)=z+c_0+\varphi(z)$, where $\varphi\in z^{-1}\C[[z^{-1}]]$
+has a fine-summable minor in the positive direction.  Then the formal
+inverse $g(z)=z-c_0+O(z^{-1})$ has the same property.  Its sum is the
+analytic inverse of the sum of $f$ on sufficiently far right half-planes.
+\end{lemma}
+\begin{proof}
+First take $c_0=0$.  Formal Lagrange inversion gives
+\begin{equation}
+ g(z)=z+\chi(z),\qquad
+ \chi=\sum_{k\ge1}\frac{(-1)^k}{k!}
+                       \partial_z^{\,k-1}(\varphi^k).
+ \label{eq:inverse-operator}
+\end{equation}
+One way to verify this formula is to solve
+$\xi=-t\varphi(z+\xi)$ in the formal parameter $t$ and then put $t=1$;
+the order in $z^{-1}$ tends to infinity with $k$.
+Since differentiation corresponds to multiplication by $-\xi$ in the
+Borel plane, the candidate minor is
+\begin{equation}
+ \widehat\chi(\xi)
+ =-\sum_{k\ge1}\frac{\xi^{k-1}}{k!}
+                          \widehat\varphi^{*k}(\xi).
+ \label{eq:inverse-minor}
+\end{equation}
+By \eqref{eq:conv-bound}, its absolute value is at most
+\[
+ \ee^{c|\xi|}\sum_{k\ge1}
+        \frac{M^k|\xi|^{2k-2}}{k!(k-1)!}
+ \le M\exp\bigl((c+2\sqrt M)|\xi|\bigr).
+\]
+The last inequality follows by comparison with
+$\sum_{j\ge0}(\sqrt M|\xi|)^{2j}/(j!)^2\le
+\exp(2\sqrt M|\xi|)$.  Normal convergence proves the required
+holomorphy on the same half-strip.
+
+It remains to identify the sum as an inverse function.  The Laplace
+sum $\varphi_*(z)$ satisfies
+$|\varphi_*(z)|\le M/(\Ree z-c)$ and
+$|\varphi_*'(z)|\le M/(\Ree z-c)^2$.
+For $\Ree z$ sufficiently large and $|t|\le2$, the equation
+$\xi=-t\varphi_*(z+\xi)$ is a contraction on $|\xi|\le1$.
+Its solution is holomorphic in $t$ on a disc of radius greater than one.
+The ordinary analytic Lagrange formula is therefore convergent at $t=1$
+and gives \eqref{eq:inverse-operator} with $\varphi_*$ in place of
+$\varphi$.  On the other hand, the exponential majorant for
+\eqref{eq:inverse-minor} permits termwise Laplace integration, and each
+term sums to the corresponding term of that analytic Lagrange formula.
+Thus the sum of $g$ really is the inverse of $z+\varphi_*(z)$.
+
+For a nonzero constant, write $f=\tau_{c_0}\circ f_0$, where
+$f_0=z+\varphi$ and $\tau_{c_0}(z)=z+c_0$.
+Then $f^{\inv}=f_0^{\inv}\circ\tau_{-c_0}$.  Translation, already
+proved to preserve fine summability and its sums, completes the argument.
+\end{proof}
+
+\subsection{Return to the feedback variables}
+For a tangent-to-identity series $Q$, conjugate by the involution
+$J(z)=-1/z$:
+\begin{equation}
+ f=J\circ Q\circ J,
+ \qquad f(z)=-\frac1{Q(-1/z)}=z+c_0+O(z^{-1}).
+ \label{eq:conjugation}
+\end{equation}
+Fine summability of $Q$ on the negative ray gives the positive-direction
+half-strip minor of $Q(-1/z)$ by reflection and differentiation of
+$B_Q(-\xi)$.  The algebra operations just proved, including multiplication
+by $z$ and reciprocal of a nonzero constant term, give the fine-summable
+tail of $f$.  Lemma~\ref{lem:fineinverse} gives $g=f^{\inv}$, and
+conjugating back gives
+$J\circ g\circ J=Q^{\inv}=U$.  Each operation respects the summed
+functions.  We have proved fine summability of $U$, and that the two sums
+are inverses, without assuming a larger angular continuation domain.
+
+\begin{proof}[Completion of Theorem~\ref{thm:threshold}]
+The slope bound implies fine summability of $Q$ by
+Theorem~\ref{thm:borel}, and the preceding argument implies fine
+summability of $U$.  Fine summability implies Gevrey--1.  The two Gevrey
+conditions are equivalent by Lemma~\ref{lem:gevreyinverse}, and either
+implies the slope condition by Lemma~\ref{lem:necessary}.
+This proves all five equivalences.
+
+The sum of $Q$ is the literal inverse constructed in
+Proposition~\ref{prop:all-slopes}, by exact Laplace recovery.  For small
+negative $q$, its inverse satisfies $U(q)=q+O(q^2)<0$.
+Putting $u=U(q)$ in \eqref{eq:literal} gives
+\eqref{eq:summed-feedback}; its absolute convergence follows from
+$\Ree u<0$ and $|q|<1$.  On a sufficiently small proper left sector,
+$U(q)=q+O(q^2)$ similarly implies $\Ree U(q)<0$, proving the stated
+complex version on the common domain.
+\end{proof}
+
+\section{Quadratic feedback: exact blocks and uniform remainders}
+\label{sec:quadratic}
+
+\subsection{A normalized expansion with nonnegative frequencies}
+Take $\lambda_j=j^2$ and $P=\ee^uQ$.  In an atom from
+\eqref{eq:frequency}, the new frequency is
+\begin{equation}
+ a_{k,\mathbf m}=b_{k,\mathbf m}+1
+    =\sum_{i=1}^\ell m_i(m_i+1).
+ \label{eq:quadratic-frequency}
+\end{equation}
+Because the parts sum to $k-1$,
+\begin{equation}
+ 0\le a_{k,\mathbf m}\le k(k-1).
+ \label{eq:quadratic-support}
+\end{equation}
+The upper bound follows from $\sum m_i^2\le(\sum m_i)^2$.
+Thus there are explicitly computable polynomials $H_k(v)$ with
+\begin{equation}
+ P(u)=\sum_{k\ge1}u^kH_k(\ee^u),
+ \qquad \sum_a|[v^a]H_k(v)|\le\sh_k,
+ \qquad \deg H_k\le k(k-1).
+ \label{eq:quadratic-block}
+\end{equation}
+The first four are
+\begin{align*}
+ H_1(v)&=1, & H_2(v)&=-v^2,\\
+ H_3(v)&=2v^4-v^6, & H_4(v)&=-5v^6+5v^8-v^{12}.
+\end{align*}
+They are not the ordinary Taylor coefficients $a_n$ of $P$; the two
+levels of expansion must be kept distinct.
+
+Since all frequencies in \eqref{eq:quadratic-block} are nonnegative,
+this block expansion converges uniformly on every closed left half-disc
+$|u|\le r_0<\rho$.  A directly usable tail bound, for $r<1/6$, is
+\begin{equation}
+ \left|P(u)-\sum_{k=1}^K u^kH_k(\ee^u)\right|
+ \le\frac{(6r)^{K+1}}{4(1-6r)},
+ \qquad \Ree u\le0,\quad |u|\le r.
+ \label{eq:geometric-tail}
+\end{equation}
+For $Q$, multiply this bound by $\ee^r$.
+This is a convergent block approximation to a function with a divergent
+ordinary Taylor expansion.  There is no contradiction: each block
+retains an entire exponential instead of Taylor expanding it indefinitely.
+
+\subsection{Proof of the uniform remainder certificate}
+For $m\ge1$, the integral form of Taylor's remainder says
+\[
+ \ee^z-\sum_{j=0}^{m-1}\frac{z^j}{j!}
+  =\frac{z^m}{(m-1)!}\int_0^1(1-t)^{m-1}\ee^{tz}\,\dd t.
+\]
+If $\Ree z\le0$, its modulus is at most $|z|^m/m!$.
+Apply this to each exponential in block $k<N$, using $m=N-k$ and
+\eqref{eq:quadratic-support}.  The total error from this block is at most
+\[
+ r^N\sh_k\frac{[k(k-1)]^{N-k}}{(N-k)!}.
+\]
+The unexpanded blocks $k\ge N$ contribute at most
+\[
+ \sum_{k\ge N}\rho^{-k}r^k
+ \le r^N\frac{\rho^{-N}}{1-r_0/\rho}.
+\]
+The finite Taylor sums assemble to exactly
+$\sum_{n<N}a_nu^n$, because the coefficient at degree $n$ uses only
+$k\le n$.  Summing the bounds proves \eqref{eq:remainder} and
+\eqref{eq:MN}.  Notice that this estimate is uniform all the way to
+the imaginary boundary of the half-disc, where ordinary exponential
+damping disappears.
+
+\section{Asymptotics of the majorant and the deeper flat scale}
+\label{sec:majorant}
+
+\subsection{A discrete saddle for the positive majorant}
+We now prove \eqref{eq:MN-asymp}, including its linear constant.
+For $2\le k<N$ define
+\[
+ T_{N,k}=\sh_k\frac{[k(k-1)]^{N-k}}{(N-k)!}.
+\]
+The $k=1$ summand vanishes.  The logarithm of a sum of at most $N$ positive
+terms differs from its largest logarithm by at most $\log N$.
+The geometric-tail term in \eqref{eq:MN} has logarithm only $O(N)$.
+It will be smaller than the saddle contribution.
+
+Put $t=k/N$ and $c=\rho^{-1}$.  The bounds
+$1\le\sh_k\le c^k$, $k(k-1)\le k^2$, and the uniform elementary
+Stirling estimate give
+\begin{equation}
+ \frac1N\log T_{N,k}
+ \le(1-t)\bigl(\log N+2\log t-\log(1-t)+1\bigr)
+       +t\log c+O(\log N/N).
+ \label{eq:saddle-upper}
+\end{equation}
+The error bound is uniform for $1\le N-k\le N$.
+Set $a=t\log N$.  Subtracting
+$\log N-2\log\log N$ from the right side of
+\eqref{eq:saddle-upper} gives
+\begin{equation}
+ 2\log a+1-a+R(t)+O(\log N/N),
+ \label{eq:saddle-shape}
+\end{equation}
+where
+\[
+ R(t)=-2t\log t-(1-t)\log(1-t)-t+t\log c.
+\]
+The function $R$ is bounded on $[0,1]$, with its endpoint values interpreted
+continuously, and $R(t)\to0$ as $t\to0$.
+
+The function $2\log a+1-a$ tends to minus infinity both as
+$a\downarrow0$ and as $a\to\infty$.  Consequently any indices capable of
+maximizing \eqref{eq:saddle-shape} must have $a$ in a fixed compact
+subinterval of $(0,\infty)$.  On such a set,
+$t=a/\log N\to0$ uniformly, and hence $R(t)=o(1)$.
+The limiting optimization is therefore exact:
+\[
+ \max_{a>0}(2\log a+1-a)=2\log2-1=\log4-1,
+ \qquad a=2.
+\]
+For a matching lower bound choose
+$k=\lfloor2N/\log N\rfloor$.  Use $\sh_k\ge1$ and Stirling's formula.
+Replacing $k(k-1)$ by $k^2$ changes the logarithm by
+$(N-k)\log(1-1/k)=O(\log N)=o(N)$.
+The same computation without $t\log c$ therefore attains
+$\log4-1+o(1)$.  The maximum and then the positive sum have precisely the
+asymptotic \eqref{eq:MN-asymp}.  This completes the proof of
+Theorem~\ref{thm:remainder}.
+
+\begin{corollary}[Uniform Gevrey--1 of zero type]
+For every $H>0$ and every fixed $r_0<\rho$ there is a constant $C_H$ such
+that the remainder in \eqref{eq:remainder} is at most
+$C_H H^N N! |u|^N$ for all $N\ge2$ and all $u$ in the stated half-disc.
+\end{corollary}
+\begin{proof}
+From \eqref{eq:MN-asymp} and Stirling,
+\[
+ \frac1N\log\frac{M_N}{N!}
+ =-2\log\log N+\log4+o(1)\longrightarrow-\infty.
+\]
+Thus $M_N\le H^N N!$ for sufficiently large $N$; enlarge $C_H$ for the
+finitely many remaining indices.
+\end{proof}
+
+\subsection{Optimizing the proved bound}
+\begin{proof}[Proof of Theorem~\ref{thm:optimal}]
+Let $L=\log(1/r)$ and $N=\lfloor L^2/(4r)\rfloor$.  Then
+\[
+ \log N=L+2\log L-\log4+o(1),
+ \qquad \log\log N=\log L+o(1).
+\]
+Using \eqref{eq:MN-asymp},
+\begin{align*}
+ \log(r^N M_N)
+ &=N\bigl(-L+\log N-2\log\log N+\log4-1+o(1)\bigr)\\
+ &=-\frac{L^2}{4r}(1+o(1)).
+\end{align*}
+The finite bound \eqref{eq:remainder} is uniform over the half-circle,
+so this proves \eqref{eq:optimal}.  Multiplication by $\ee^r$ contributes
+only $r$ to the logarithm of the error bound, which is absorbed by an
+arbitrarily small loss in $\varepsilon$.
+\end{proof}
+
+Under the transseries substitution $u=-\ee^{-X}$, $X\to+\infty$, the
+remainder scale becomes
+\begin{equation}
+ \exp\!\left[-\left(\frac14-o(1)\right)X^2\ee^X\right].
+ \label{eq:deep-flat}
+\end{equation}
+This is invisible to every fixed exponential monomial $\ee^{-nX}$.
+It is an analytically proved error scale arising from an infinite
+reorganization of a one-generator formal exponential transseries.
+The conclusion is an upper bound; it does not by itself specify a new
+nonzero transseries sector or prove that this scale appears with a
+nonvanishing coefficient in a completed expansion.
+
+\subsection{What the constant does and does not say}
+There are three different quantities here: the growth of the actual
+Taylor coefficients, the growth of the positive majorant $M_N$, and the
+smallest actual error among all truncations.  The saddle calculation
+proves a sharp asymptotic for the second quantity.  It proves an upper
+bound for the third, but no matching lower bound.  The signed block
+coefficients can cancel, so replacing ``majorant asymptotic'' by
+``actual optimal remainder asymptotic'' would be unjustified.
+
+Likewise, an entire Borel transform need not have acceptable growth in
+every direction.  The earlier feedback draft establishes, for the forward
+quadratic model, an entire ordinary Borel transform with excessive growth
+on the positive ray \cite{feedback}.  Our negative-ray recovery does not
+contradict that obstruction.  It supplies the missing favorable direction,
+and it does not assert an angular neighborhood of favorable directions.
+
+For finite computation, use \eqref{eq:MN} rather than the limiting
+constant.  The convergence in \eqref{eq:MN-asymp} is slow: the packaged
+floating-point diagnostics still place the centered value
+$(\log M_N-N\log N+2N\log\log N)/N$ near $1.35$ at $N=10^5$, whereas its
+proved limit is $\log4-1\approx0.38629$.  This is a reason to retain
+explicit certificates, not a discrepancy with a limit containing an
+unspecified $o(N)$ term.
+
+\section{Examples, exact computations, and inverse certificates}
+\label{sec:verification}
+
+\subsection{Examples across the threshold}
+For $\lambda_j=j^2(\log(j+1))^\beta$, the conclusion is particularly simple:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Slope regime & Fine negative summation & Guaranteed inverse Borel domain\\
+\midrule
+$\beta<2$ & Yes & Entire plane\\
+$\beta=2$ & Yes & $|\zeta|+\Ree\zeta<1/2$\\
+$\beta>2$ & No & No holomorphic Borel germ at zero\\
+\bottomrule
+\end{tabular}
+\end{center}
+The failure in the last row holds for both $\U$ and $\Q$.  Nevertheless,
+Propositions~\ref{prop:all-slopes} and \ref{prop:ray} still construct the
+literal negative-side inverse and its continuous ray representation.
+The criterion is a limsup criterion: slopes exceeding the threshold by
+unbounded factors on an arbitrarily sparse subsequence already prevent
+fine Borel summability.  Eventual monotonicity or regular variation of the
+slopes is not assumed.
+
+For comparison, the convergence threshold is much smaller:
+$\U$ and $\Q$ are convergent at zero exactly when $\lambda_j=O(j)$,
+as already recorded in \cite{feedback}.  Here is a short independent
+check.  If $\lambda_j\le Lj$, the kernel is holomorphic for
+$|q|\ee^{L|u|}<1$ and the analytic implicit-function theorem applies at
+$(0,0)$.  Conversely, if $u_n\le CH^n$, use \eqref{eq:lower} with $m=j$
+to obtain $\lambda_j\le C^{1/j}H^2(j!)^{1/j}=O(j)$.
+Convergent reversion preserves analyticity.  Thus in the quadratic model
+both original Taylor series diverge, even though the inverse Borel
+transform constructed here is entire.
+
+Two soluble cases test the normalizations.  With all slopes zero,
+$U(q)=q/(1-q)$ and $Q(u)=u/(1+u)$.  With $\lambda_j=j$,
+\begin{equation}
+ Q(u)=\frac{u\ee^{-u}}{1+u}.
+ \label{eq:linear-check}
+\end{equation}
+The verification program checks these against a separate forward
+coefficient recurrence.
+
+\subsection{Independent exact coefficient checks}
+The accompanying program computes the forward coefficients from
+$E_j(q)=\exp(j^2U(q))$ using
+\begin{equation}
+ [q^m]E_j=\frac{j^2}{m}
+             \sum_{i=1}^m i u_i[q^{m-i}]E_j,
+ \qquad u_n=\sum_{j=1}^n[q^{n-j}]E_j.
+ \label{eq:forward-rec}
+\end{equation}
+The first formula follows by differentiating $E_j$; the second is the
+feedback equation.  This computation is independent of the inverse-block
+construction.  The latter uses dynamic programming over compositions,
+retaining exact rational coefficients and integer frequencies.  The first
+ordinary coefficients are as follows.
+\begin{center}
+\begin{tabular}{@{}r r r r r@{}}
+\toprule
+$n$ & $u_n$ in $\U$ & $a_n$ in $\Pp$ & $v_n$ in $\Q$ & $\sh_n$\\
+\midrule
+1 & $1$ & $1$ & $1$ & 1\\
+2 & $2$ & $-1$ & $-2$ & 1\\
+3 & $15/2$ & $-1$ & $1/2$ & 3\\
+4 & $107/3$ & $-1$ & $-2/3$ & 11\\
+5 & $1555/8$ & $-13/3$ & $-29/8$ & 45\\
+6 & $17362/15$ & $-49/3$ & $-743/60$ & 197\\
+7 & $5288311/720$ & $-1099/15$ & $-8491/144$ & 903\\
+8 & $15414767/315$ & $-16207/45$ & $-92726/315$ & 4279\\
+\bottomrule
+\end{tabular}
+\end{center}
+The executed exact-arithmetic checks verify both
+$\U\circ\Q=u$ and $\Q\circ\U=q$ through degree 24, the recurrence of
+$S$, the block-frequency bounds, and the uncancelled-mass bounds.  The
+zero- and linear-slope tests also pass through degree 24.  These are finite
+checks of formulas and implementation, not substitutes for the preceding
+proofs.
+
+\subsection{Three rational enclosures of the inverse function}
+The block series gives numerical certificates without first estimating a
+small divergent-series remainder.  For rational $r>0$, enclose
+$t=\ee^{-r}$ between consecutive Taylor polynomials.  Taylor's integral
+remainder gives the direction of the two inequalities exactly.
+Evaluate the finite polynomial
+$\sum_{k=1}^{K}(-r)^kH_k(t)$ by rational interval arithmetic, append the
+rational tail bound \eqref{eq:geometric-tail}, and divide by the positive
+interval for $t$.  This encloses $Q(-r)=P(-r)/t$.
+
+For $K=14$, the executed program used Taylor degrees 36 and 37 for $t$,
+then rounded the final rational endpoints outward to 24 decimal places.
+Every displayed endpoint below is therefore an exact terminating rational,
+not a rounded floating-point claim.
+\begin{center}\small
+\begin{tabular}{@{}c l l@{}}
+\toprule
+$r$ & Lower bound for $Q(-r)$ & Upper bound for $Q(-r)$\\
+\midrule
+$1/20$ & $-0.055065695744769945932257$ & $-0.055065684970061950441109$\\
+$1/40$ & $-0.026258040219395119101712$ & $-0.026258040219131013674068$\\
+$1/100$ & $-0.010200506315988279498804$ & $-0.010200506315988279246191$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The corresponding widths are less than $1.078\times10^{-8}$,
+$2.642\times10^{-13}$, and $2.527\times10^{-19}$, respectively; the
+unrounded exact widths and all certificate inputs are in the data files.
+
+\subsection{A certified derivative bound and error transport}
+\begin{proposition}[A concrete inverse-error certificate]
+\label{prop:errortransport}
+For quadratic feedback and $u\in[-1/20,0]$, the inverse branch obeys
+(the derivative at zero is interpreted from the left)
+\begin{equation}
+ |Q(u)|<1/10,\qquad Q'(u)\ge\frac{619}{900}>0.
+ \label{eq:derivative}
+\end{equation}
+If $u_*$ and $v$ lie in this interval and $Q(u_*)=q_*$, then
+\begin{equation}
+ |u_*-v|\le\frac{900}{619}|Q(v)-q_*|.
+ \label{eq:transport}
+\end{equation}
+If $Q(v)$ is known only through an approximation $\widetilde Q(v)$ with
+certified error $\eta$, its residual in \eqref{eq:transport} can be replaced
+by $|\widetilde Q(v)-q_*|+\eta$.  Existence of $u_*$ must first be checked
+by a bracket; an error bound alone is not an existence proof.
+\end{proposition}
+\begin{proof}
+For $r\le1/20$, \eqref{eq:C-bounds} gives
+\[
+ |Q(u)|\le\ee^r S(r)
+ \le\frac1{1-r}\left(r+\frac{9r^2}{1-6r}\right)<\frac1{10}.
+\]
+The same estimate holds on the closed left half-disc.  It guarantees
+that \eqref{eq:literal}, initially proved near zero, continues throughout
+its open half-disc by the identity theorem, since the $q$-series stays
+inside $|q|<1$.
+
+Let $R=1/10$.  On the indicated real interval the differentiated kernel
+satisfies
+\[
+ |\Phi_u(Q(u),u)|\le\sum_{j\ge1}j^2R^j
+   =\frac{R(1+R)}{(1-R)^3}=\frac{110}{729},
+\]
+and
+\[
+ \Phi_q(Q(u),u)\ge\ee^u-\sum_{j\ge2}jR^{j-1}
+ \ge\frac{19}{20}-\frac{19}{81}>0,
+ \qquad \Phi_q(Q(u),u)\le\frac{100}{81}.
+\]
+These derivatives are justified by absolute convergence of their
+geometric majorants.  Differentiating $u=\Phi(Q(u),u)$ yields
+\[
+ Q'(u)=\frac{1-\Phi_u}{\Phi_q}
+ \ge\left(1-\frac{110}{729}\right)\frac{81}{100}
+ =\frac{619}{900}.
+\]
+The mean-value theorem proves \eqref{eq:transport}; the approximate
+residual follows from the triangle inequality.
+\end{proof}
+
+As an executed application, take $q_*=-1/40$.  The first rational
+enclosure above and $Q(0)=0$ bracket this target, so a unique
+$u_*=U(-1/40)$ lies in $[-1/20,0]$.  Choose the rational center
+$v=-0.02385490927750544$, without assuming its accuracy.  Enclosing $Q(v)$
+by 14 blocks and Taylor degrees 12 and 13 for $\ee^v$, then applying
+\eqref{eq:transport} and outward rounding, gives the exact certificate
+\begin{equation}
+ \boxed{\quad
+ -0.023854909277599602576607
+ \ \le U(-1/40)\le\
+ -0.023854909277411277423393.
+ \quad}
+ \label{eq:U-cert}
+\end{equation}
+The width is $1.88325153214\times10^{-13}$.
+The center was selected numerically, but its certificate uses only rational
+arithmetic and Proposition~\ref{prop:errortransport}.
+
+\subsection{Floating-point checks are separately labeled}
+At 70 decimal digits, the program compares the 24-block inverse
+approximation with a numerical root of a 179-term literal feedback sum
+at $r=0.01,0.025,0.05$.  It also numerically integrates four independent
+Bessel kernels and compares the integrals with
+\eqref{eq:kernel-laplace}.  All four kernel comparisons have absolute
+discrepancy below $10^{-60}$ in that run.  These calculations are
+floating-point diagnostics, not interval proofs of the roots or of the
+integrals.  The rational enclosures and residual-transport certificate
+are separate computations and do not depend on those comparisons.
+
+The majorant diagnostic program evaluates a positive sum in log-space
+and records the slow movement of its maximizing block.  It uses the
+Schr\"oder recurrence
+\[
+ k\sh_k=3(2k-3)\sh_{k-1}-(k-3)\sh_{k-2},\qquad k\ge3,
+\]
+in ratio form.  Its output is explicitly marked non-certified; the proof
+of the limiting saddle does not use that output.
+
+\section{Further research questions and proposed directions}
+\label{sec:questions}
+
+The following questions are not claimed solved in this article.  They
+are framed so that a successful answer would add information not already
+contained in the fine summation theorem.
+
+\subsection{Angular summability of the quadratic model}
+Determine the set of angles $\theta$ for which the entire functions
+$\B\Q(te^{i\theta})$ and $\B\U(te^{i\theta})$ have at most exponential
+growth as $t\to\infty$, with the uniform neighborhood needed for angular
+summability.  In particular, does any open arc containing $\pi$ work?
+The present fixed-width tube does not answer that question.  The
+uncancelled Bessel estimate deteriorates off the negative ray, so a proof
+of an open arc would have to exploit cancellation or a different exact
+representation.  A proof that no such arc exists would identify a genuine
+boundary between fine and angular summability in a concrete nonlinear
+implicit model.
+
+\subsection{The actual Borel boundary at critical slope growth}
+For $\lambda_j\sim a(j\log j)^2$, $a>0$, determine the singularities of
+$\B\Q$ and whether any part of the boundary
+$|\zeta|+\Ree\zeta=1/(2a)$ is an actual obstruction.  Our theorem proves
+normal convergence strictly inside; it does not prove failure outside.
+A related question is the exact factorial-normalized type of $\Q$ and its
+relation to the forward type.  Class membership is invariant under
+reversion, but the elementary proof here does not establish a numerical
+type identity.  This is a useful place for a more detailed literature
+comparison before asserting novelty of any type-preservation theorem.
+
+\subsection{Signed coefficient asymptotics and actual least error}
+Find an asymptotic equivalent, including signs and prefactors, for the
+ordinary coefficients of $\Pp$ or $\Q$ in the quadratic case.  The
+positive majorant deliberately ignores cancellation between compositions
+with different lengths.  A signed saddle analysis may reveal a smaller
+coefficient scale or a different correction to the dominant block.
+The stronger analytic target is a matching lower bound for the best
+Taylor-truncation error, or a full description of its exceptional zeros.
+Only then would it be legitimate to interpret a constant such as $1/4$
+as the actual least-error action rather than a certificate constant.
+
+\subsection{Other powers and generalized summation kernels}
+For regularly varying slopes $\lambda_j\sim a j^p$ with $p>1$, construct
+analogues of the inverse kernel formula for moment Borel transforms with
+weights $\Gamma(1+(p-1)n)$.  Determine which directions have sufficient
+kernel damping, and whether the literal left-side inverse is recovered.
+For $p>2$ the ordinary Borel germ need not exist, so changing the summation
+order is essential rather than cosmetic.  The quadratic proof suggests
+that keeping exponential blocks intact may remain useful, but it does
+not establish a generalized summability theorem for those other orders.
+
+\subsection{Complex slopes, signs, and loss of positivity}
+Replace the nonnegative slopes by complex slopes, perhaps contained in a
+fixed sector, and identify sufficient geometric conditions for an
+oscillatory or damped Borel direction.  Then seek necessity statements.
+Our forward lower bound uses positivity and generally fails when
+coefficients cancel; the negative-ray Bessel bound also uses the slopes'
+common real direction.  Both parts of the equivalence must therefore be
+revisited.  A common half-plane of damping for the literal kernel may
+suffice for analytic inversion without sufficing for fine summability.
+
+\subsection{Weighted actions and joint amplitude--slope thresholds}
+Study
+\[
+ U(q)=\sum_{j\ge1}c_jq^j\ee^{\lambda_jU(q)},\qquad c_1=1,
+\]
+with positive amplitudes that can decay rapidly.  Determine the sharp
+joint condition on $(c_j,\lambda_j)$ for fine summability and for
+convergence.  The inverse-block formula survives with additional products
+of the $c_j$, but the mass generating function and the positive coefficient
+lower bound both change.  Very small amplitudes can suppress isolated
+large slopes, so a criterion involving only $\sup\lambda_j/j$ or a bare
+slope limsup should not be expected in this setting.
+
+\subsection{Canonical recovery beyond every finite Gevrey class}
+For superpolynomial slopes, the all-slope ray construction still produces
+a continuous, exponentially bounded transform recovering the literal
+inverse.  Relate this transform to acceleration, moment summability, or
+other summation procedures defined from formal coefficients.  The main
+tasks are to specify a summation class and prove that its canonical value
+coincides with the literal implicit branch.  Calling the continuous ray
+function a Borel germ would evade, rather than solve, this problem.
+Uniqueness should be proved within the chosen summation class and not
+inferred merely from having a common Poincar\'e expansion.
+
+\subsection{Sharper certified algorithms and automatic normalization}
+Develop an algorithm that recognizes when a normalization such as
+$P=\ee^uQ$ removes all negative block frequencies, then selects between
+geometric block truncation and ordinary Taylor truncation using certified
+cost and error estimates.  Improving the uncancelled mass bound could
+substantially reduce the number of blocks needed in rational certificates.
+A further goal is an interval-verified Borel--Laplace quadrature directly
+from the Bessel representation, with rigorously bounded tails and a
+verified equivalence to the simpler block evaluator.
+
+\section{A formalization roadmap and proof obligations}
+\label{sec:lean}
+
+The repository's existing formal scales and support infrastructure are
+relevant context, but they do not automatically formalize any analytic
+summation assertion proved here.  A practical staged development would
+separate finite algebra from measure, complex-analysis, and uniform-limit
+arguments.
+
+The first stage should formalize the composition-indexed coefficient
+measures as finitely supported maps, prove the exact frequency formulas,
+and establish the mass recurrence and generating-function identities.
+The quadratic bound $0\le a\le k(k-1)$ and the two composition checks are
+finite algebraic targets.  They require no Borel integration theory.
+An exact certificate checker can verify the rational interval arithmetic
+using proved exponential Taylor bounds and the geometric tail theorem.
+
+The second stage should establish the normalized beta moments and
+\eqref{eq:poisson}, followed by the one-block Laplace identity.  The proof
+must distinguish an absolutely integrable Taylor series for one fixed
+frequency from the much stronger absolute-integrability estimate used
+when summing infinitely many blocks.  Confusing those two exchanges would
+invalidate the all-slope construction.
+
+The third stage should formalize the compact-normal convergence estimate
+\eqref{eq:master-bound} and the fixed-strip split at $k=s^2$.  Only after
+those are in place should the implementation identify the formal Borel
+coefficients of the limiting function.  The nonlinear inverse theorem
+then belongs in a reusable library for half-strip Borel minors and
+Laplace summation, rather than being hidden in a feedback-specific lemma.
+
+Finally, the logarithmic saddle proof should have an explicit statement
+about the \emph{positive majorant}, with a separate theorem transporting
+it to an upper bound on a function error.  This distinction is valuable
+for formalization: it prevents a later user from inadvertently rewriting
+an inequality as an asymptotic equivalence for an oscillating remainder.
+No Lean files are supplied with this article, and no claim is made that
+these stages have been implemented or checked.
+
+\section{Conclusion}
+The countable feedback model provides a concrete example in which formal
+support, coefficient growth, directional summation, and uniform error
+control are genuinely different layers.  Inverting the dependent variable
+first preserves enough exponential structure to bridge several of them.
+The resulting Bessel representation makes the negative direction
+accessible exactly up to the known Gevrey--1 slope threshold, identifies
+the summed functions with the literal implicit branch, and yields a
+stronger quantitative theorem in the quadratic case.
+
+The proven progress is therefore specific: a negative-direction fine
+summation theorem, a guaranteed inverse Borel continuation region, a
+closed-half-disc logarithmic-Gevrey certificate, and reproducible exact
+inverse bounds.  Angular summability, maximal continuation, global
+resurgence, and actual optimal-remainder asymptotics remain separate
+research questions.  These boundaries are part of the result, not
+qualifications to be removed in a future summary.
+
+\appendix
+\section{Reproducibility and package contents}
+\label{sec:reproduce}
+The archive contains the self-contained source \texttt{article.tex}, the
+compiled \texttt{article.pdf}, the two programs in \texttt{code/}, and
+recorded data in \texttt{data/}.  The primary exact-arithmetic program uses
+Python's standard-library fractions.  If \texttt{mpmath} is installed, it
+also runs the separately labeled numerical diagnostics.  The majorant
+program uses only the standard library.
+
+The exact commands used to generate the data and document are
+\begin{quote}\small\ttfamily
+python code/verify.py --order 24\\
+python code/majorant.py\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The recorded run used Python 3.13.5 and mpmath 1.3.0 at 70 digits for the
+floating-point checks.  The scripts accept ordinary local execution and
+make no network requests.  No source file or branch in ProveIt was modified.
+
+The certificate files store rational numerators and denominators in
+addition to decimal displays.  The two composition identities are checked
+by truncated polynomial composition, not by comparing a few numerical
+function values.  Re-running at a larger order extends those finite checks
+but does not change the status of the analytic proofs.
+
+\section{An explicit coefficient-extraction algorithm}
+For the quadratic blocks, let $D_{s,\ell}(a)$ count ordered compositions
+of $s$ into $\ell$ positive parts whose frequency
+$\sum m_i(m_i+1)$ equals $a$.  Start with $D_{0,0}(0)=1$, and use
+\begin{equation}
+ D_{s,\ell}(a)=\sum_{m=1}^{s}
+                     D_{s-m,\ell-1}(a-m(m+1)).
+ \label{eq:dp}
+\end{equation}
+Absent indices have value zero.  Then
+\begin{equation}
+ [v^a]H_k(v)=\frac1k\sum_{\ell=1}^{k-1}
+          (-1)^\ell\binom{k+\ell-1}{\ell}D_{k-1,\ell}(a),
+ \qquad k\ge2.
+ \label{eq:dp-H}
+\end{equation}
+Finally,
+\begin{equation}
+ a_n=\sum_{k=1}^n\sum_a[v^a]H_k(v)\frac{a^{n-k}}{(n-k)!},
+ \qquad
+ v_n=\sum_{j=0}^{n-1}\frac{(-1)^j}{j!}a_{n-j}.
+ \label{eq:coeff-algorithm}
+\end{equation}
+The convention $0^0=1$ handles $H_1=1$.  All these expressions are finite
+and rational.  Equation~\eqref{eq:dp} aggregates compositions with the same
+frequency, avoiding explicit enumeration of all ordered compositions.
+It is a reproducible reference algorithm, not a claim of asymptotically
+optimal computational complexity.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{project}
+Vladimir Reshetnikov, \emph{ProveIt}, repository snapshot\newline
+\texttt{a795fcffa4b3ece22761d81fbed3c43be8b81795}.\newline
+\path{Analysis/Transseries/README.md} and\newline
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+Accessed 29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a795fcffa4b3ece22761d81fbed3c43be8b81795/Analysis/Transseries}{Pinned repository directory}.
+
+\bibitem{feedback}
+\emph{A sharp regularity classification for countable exponential-feedback
+transseries}, research draft prepared for Vladimir Reshetnikov,
+29 September 2026.  Article and README in
+\texttt{Exponential\_Feedback\_Regularity\_Classification/},
+under the series-and-transseries directory of \cite{project}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a795fcffa4b3ece22761d81fbed3c43be8b81795/Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification}{Pinned research package}.
+Cited as a repository research draft, not as a peer-reviewed or
+machine-verified publication.
+
+\bibitem{gessel}
+Ira M. Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory,
+Series A \textbf{144} (2016), 212--249.
+\href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018}.
+\href{https://arxiv.org/abs/1609.05988}{arXiv:1609.05988}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{\S10.9, Integral Representations}, especially the Poisson integral
+10.9.4.  Accessed 29 September 2026.
+\url{https://dlmf.nist.gov/10.9}.
+
+\bibitem{sauzin}
+David Sauzin, \emph{Introduction to 1-summability and resurgence},
+2014, 127 pp.  In particular, Sections 7 and 9 distinguish fine
+half-strip summability from summability in an arc; Sections 13 and 17
+explain nonlinear operations and inversion.
+\href{https://arxiv.org/abs/1405.0356}{arXiv:1405.0356}.
+
+\end{thebibliography}
+\end{document}
