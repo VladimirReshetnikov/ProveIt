@@ -443,7 +443,15 @@ def main() -> None:
                         default=Path(__file__).resolve().parents[1]/"rerun")
     parser.add_argument("--skip-numerical", action="store_true",
                         help="Run only exact algebraic tests.")
+    # ed. (ProveIt, 2026-09-29): guard the recorded files in verification/.
+    parser.add_argument("--overwrite-recorded", action="store_true",
+                        help="Allow --output-dir to be verification/, replacing the "
+                             "recorded results.json and summary.tex.")
     args = parser.parse_args()
+    recorded_dir = Path(__file__).resolve().parent
+    if args.output_dir.resolve() == recorded_dir and not args.overwrite_recorded:
+        parser.error(f"refusing to overwrite the recorded files in {recorded_dir}; "
+                     "choose another --output-dir or pass --overwrite-recorded")
     scalar_checks()
     finite_defect_checks()
     jordan_checks()

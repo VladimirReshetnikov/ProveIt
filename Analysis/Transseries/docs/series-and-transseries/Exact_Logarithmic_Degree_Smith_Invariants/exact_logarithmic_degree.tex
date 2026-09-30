@@ -1137,6 +1137,11 @@ The questions ``Perturbations that are small only in logarithms'', ``Confluence 
 \subsection{Perturbations that are small only in logarithms}
 The outer-drop hypothesis excludes a perturbation such as $L^{-1}E^j$. It can remain at one root level indefinitely, so the proof that a resonance path visits at most $s$ root levels no longer applies. Can one construct a multilevel residue-series reduction that contracts first in $L$, then in deeper logarithms, and identify exactly when its effective matrix has finite pole order? A first target is a one-root operator with coefficients in a finite Laurent series in $L^{-1}$, including examples whose homogeneous solutions require new powers or exponentials rather than only a polynomial in $T$.
 
+% ed. (2026-09-29): records the later package (batch 53) that answers this question in part.
+\begin{ednote}
+Answered in part by the later package \cite{ed:tri}: for triangular systems, and for scalar operators that factor into first-order factors over the field, with no smallness hypothesis, every solution in the finite logarithmic tower is polynomial in the added logarithm, of degree bounded by the number of split factors on a coupling path, and the Smith exponents of a residue series with determinant \(z^r\) classify the degrees. A first-order factor either is a logarithmic derivative in the field or has no homogeneous solution at any finite depth; for \(Ey=L^{-\alpha}y\), \(\alpha>0\), the latter happens exactly when \(0<\alpha<1\). In particular, at first order the first target above has no exotic case: a coefficient \(x^{-1}(\lambda+\sum_{k\ge1}c_kL^{-k})\) is always a logarithmic derivative, with integrating factor \(x^{\lambda}L^{c_1}\exp(\cdot)\) in the field, the exponent being a small series. One-root operators of higher order that do not factor over the field, and cyclic couplings, remain open.
+\end{ednote}
+
 \subsection{Confluence under indicial-root collisions}
 The exact pencil uses factors $P'(\lambda)^{-1}$, while the repeated-root theory has a nonsingular matrix crossing in a larger block. Construct coordinates that interpolate between these descriptions as two roots merge. The concrete test case $P_\tau(t)=t(t-\tau)$ with residue-weighted perturbations should clarify whether a uniformly bounded change of basis exists or whether a rescaling in $\tau$ is essential. Fixed-parameter solvability and a parameter-uniform normal form are different targets.
 
@@ -1151,6 +1156,11 @@ Every partition is realizable when one is free to choose $r$ distinct simple roo
 
 \subsection{Matrix systems and nonreal modes}
 A matrix-valued indicial polynomial may have internal Jordan structure not represented by scalar multiplicity alone. Determine the appropriate residue pairing and test whether its root crossing remains first order and nondegenerate. Separately, including nonreal indicial roots requires oscillatory factors such as $x^{i\beta}$, which do not fit an ordered real-growth interpretation without care. One possible first model fixes a finite set of imaginary exponents and treats their coefficients algebraically rather than imposing an artificial magnitude order on oscillation.
+
+% ed. (2026-09-29): records the later package (batch 53) that answers this question in part.
+\begin{ednote}
+For triangular first-order systems at every depth \(n\ge0\), including complex coefficients with real exponents, the same package \cite{ed:tri} identifies the invariant as the Smith exponents of its residue series \(M(z)\), whose diagonal is exactly \(z\) and whose determinant is \(z^r\). Nontriangular systems and oscillatory monomials \(x^{i\beta}\) are not treated there; it shows only that \(D-i/x\) has no nonzero homogeneous solution in the real-exponent field or its finite logarithmic tower.
+\end{ednote}
 
 \subsection{Nonlinear finite obstructions}
 For an equation $P(E)u+Ru+F(u)=f$, a support-small nonlinear term may be eliminated on the complement of the resonant coordinates. Can the resulting finite nonlinear map be expanded in the derivative parameter with a useful finite jet bound? Its branches may have different minimum logarithmic degrees, and linear Smith exponents need not suffice. A concrete test problem is a quadratic nonlinearity with a strictly positive outer drop, near a forcing for which the linear Toeplitz obstruction has codimension one.
@@ -1265,5 +1275,8 @@ The paper explicitly relates operator Toeplitz matrices, Jordan-chain stabilizat
 % ed. (2026-09-29): bibliography entry for the editorial notes.
 \bibitem{ed:hfr}
 \emph{Finite Resonance Certificates and Sharp Analytic Normalization for Hahn--Fuchsian Systems}, ProveIt research package filed in batch 48 (after the inspected snapshot), directory \path{Hahn_Fuchsian_Resonance_Analytic_Normalization/} beside the predecessor \cite{repo-residue}. Editorial addition.
+% ed. (2026-09-29): bibliography entry for the batch-53 editorial notes.
+\bibitem{ed:tri}
+\emph{Triangular Hahn Differential Systems Without Smallness: Rank-one descent, exact logarithmic degree, and finite residue certificates}, ProveIt research package filed in batch 53 (after the inspected snapshot), directory \path{Triangular_Hahn_Differential_Systems_Without_Smallness/} beside this package; source \path{triangular_hahn_systems.tex}. Editorial addition.
 \end{thebibliography}
 \end{document}

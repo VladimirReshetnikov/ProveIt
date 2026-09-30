@@ -46,7 +46,9 @@ are classical and are credited. Global priority is not established.
 The theorem concerns solutions in H_n[T], with polynomial dependence on T.
 Coefficients lower the outer x exponent by a uniform positive amount.
 It does not assert analytic summability, classify arbitrary dependence on T,
-or cover merely logarithmically small perturbations. Effective computation on
+or cover merely logarithmically small perturbations (the later package
+`../Triangular_Hahn_Differential_Systems_Without_Smallness/` treats them for
+triangular systems and for operators that factor over the field). Effective computation on
 arbitrary Hahn data needs explicit coefficient-operation oracles; the finite
 rational scalar realization with residue forcing does not have that obstacle.
 
@@ -159,3 +161,31 @@ was renamed.
 - `README.md`: this section, the ledger and `notes/validation.json`
   sentences, and the note under "Exact verification". (`build.sh` leaves
   `build-pass-*.log` files in the package root; they are ignored.)
+
+### Batch-53 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 53 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `exact_logarithmic_degree.tex`: Section 13, after "Perturbations that are
+  small only in logarithms": an editorial note that the later package
+  `../Triangular_Hahn_Differential_Systems_Without_Smallness/` answers it in
+  part (triangular systems and operators factoring over the field, no
+  smallness: tower solutions polynomial in the added logarithm, degree
+  bounded by split factors on a coupling path, Smith exponents of a residue
+  series with determinant `z^r`; a first-order coefficient
+  `x^(-1)(λ + Σ_(k≥1) c_k L^(-k))` is always a logarithmic derivative, while
+  `Ey = L^(-α)y` has no homogeneous tower solution exactly for `0 < α < 1`);
+  non-factoring higher-order operators and cyclic couplings remain open.
+  After "Matrix systems and nonreal modes": the same package identifies the
+  invariant for triangular systems at every depth (Smith exponents of
+  `M(z)`, diagonal `z`, determinant `z^r`); nontriangular systems and
+  `x^(iβ)` are not treated there. A bibliography entry `ed:tri`.
+- `exact_logarithmic_degree.pdf`: rebuilt with three pdfLaTeX passes (30
+  pages, unchanged; no errors, undefined references, multiply defined
+  labels, duplicate destinations, LaTeX warnings, overfull or underfull
+  boxes; no Type 3 font).
+- `notes/validation.json`: `pdf_bytes`, `tex_bytes`,
+  `tex_source_whitespace_words` and both checksums recomputed again for the
+  filed source and PDF; the `editorial_rebuild` field says so.
+- `README.md`: the "Scope and status" sentence on logarithmically small
+  perturbations now names the later package; this subsection.

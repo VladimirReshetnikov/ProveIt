@@ -139,3 +139,30 @@ Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comm
   the sharper cutoff stay open.
 - `residue_fredholm.pdf`: rebuilt (27 pages, unchanged; no errors,
   undefined references, multiply defined labels or duplicate destinations).
+
+### Batch-53 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 53 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `residue_fredholm.tex`: a new note `ed:log-small` after "Perturbations
+  small only in logarithms": for first-order operators the later package
+  `../Triangular_Hahn_Differential_Systems_Without_Smallness/` (batch 53)
+  gives the classification asked for (a coefficient
+  `x^(-1)(λ + Σ_(β>0) c_β L^(-β))` is a logarithmic derivative exactly when
+  no exponent lies in `(0,1)`, and then only `T` is needed; otherwise, as
+  for `x^(-1)L^(-α)`, `0 < α < 1`, there is no homogeneous solution at any
+  finite logarithmic depth; further depth never creates one); higher-order
+  single-root operators are covered only when they factor over the field.
+  In `ed:matrix-systems`, one sentence added: that package bounds the
+  degree of triangular first-order systems at every depth by split factors
+  on a coupling path and classifies it by Smith exponents; nontriangular
+  systems and nonreal roots stay open. The same note's "(the setting of the
+  previous note)" now names the note it meant (the one after "The exact
+  minimal power of the promoted logarithm"), since other notes stand
+  between them.
+- `residue_fredholm.pdf`: rebuilt (`latexmk -pdf`): 28 pages (27 before);
+  no errors, undefined references, multiply defined labels, duplicate
+  destinations or overfull boxes; the two underfull-box warnings are in
+  delivered bibliography entries, as in the delivered build; no Type 3 font.
+- `notes/build_report.json` is kept as delivered (its `pages` is the
+  delivered 26).
