@@ -1,0 +1,1807 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Diophantine Laws of Probabilistic Computation},pdfauthor={ChatGPT, research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Optimal normalization budgets, single-fold quartic certificates, and quantum computation}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Diophantine laws of probabilistic computation}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ce}{c.e.}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Dmax}{D_{\max}}
+\newcommand{\Dinf}{D_{\infty}}
+\newcommand{\indic}[1]{\mathbf 1_{\{#1\}}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\sigone}{\Sigma^0_1}
+\newcommand{\pione}{\Pi^0_1}
+\newcommand{\sigtwo}{\Sigma^0_2}
+\newcommand{\pitwo}{\Pi^0_2}
+\newcommand{\snapshot}{\texttt{f608f1cb3c5be8a736df1328c01b293aabfccf4e}}
+
+\begin{document}
+\begin{titlepage}
+\centering
+{\small PROVEIT-RELATED RESEARCH \quad / \quad 30 SEPTEMBER 2026\par}
+\vspace{1.0cm}
+{\LARGE\bfseries Diophantine Laws of\\[0.15cm] Probabilistic Computation\par}
+\vspace{0.45cm}
+{\large Optimal normalization budgets, unique quartic certificates,\\
+and quantum computational substrates\par}
+\vspace{0.6cm}
+{\normalsize Prepared for Vladimir Reshetnikov\par}
+{\small Mathematical development and reproducible implementation by ChatGPT\par}
+\vspace{0.65cm}
+\begin{minipage}{0.93\textwidth}
+\begin{abstract}
+The statement that the halting set of an effective computational substrate is
+Diophantine follows from MRDP. For probabilistic and quantum computation, the
+more discriminating questions concern output \emph{laws}, conditional
+probabilities, and the cost of realizing prescribed normalized histories.
+We develop a substrate-independent representation of an effective discrete
+output law as the dyadic mass of a prefix-free projection of a fixed quartic
+integer zero set. This construction counts projected events, not polynomial
+witnesses, and therefore requires no finite-fold hypothesis.
+
+The central constructive result determines the exact mass budget for a
+sequence of strictly positive probability vectors. Its cost is the product
+of the successive largest coordinate ratios. For a finite rational history
+with $N$ transitions and $m$ outcomes, we construct one quartic polynomial
+with $5Nm+m+4N+3$ natural witnesses. A valid feasible input has exactly one
+witness tuple. A canonical earliest-maximum rule removes ties without
+increasing the degree. We also prove a sharp binary variation bound and an
+operator version governed by max-relative entropy.
+
+Normalization changes the arithmetic boundary. Conditional two-outcome
+probabilities with any fixed success floor below one realize exactly the
+weakly computable reals in $[0,1]$, whereas almost-sure return realizes exactly
+the computable reals. Strict conditional comparisons remain
+$\Sigma^0_2$-complete even when success is guaranteed arbitrarily close to
+one. Explicit integer arithmetic for Clifford+$T$ circuits supplies a quantum
+front end. The accompanying code exports a concrete quartic and performs
+exhaustive, symbolic, and exact-arithmetic tests. We distinguish these proved
+constructions from established ingredients, unexpanded MRDP polynomials,
+and formalization work that has not been performed.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.93\textwidth}
+\small
+\textbf{Status.} This is a research manuscript with complete ordinary
+mathematical proofs and executable finite checks, not a claim of independently
+established historical priority or a Lean/Rocq-verified extension. The most
+concrete deliverable is the explicit single-fold finite-history compiler in
+Section~\ref{sec:quartic}. No general finite-fold MRDP conjecture is assumed or
+settled.
+\end{minipage}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Research target and relation to ProveIt}\label{sec:context}
+
+\subsection{What is being represented?}
+A computational substrate may manipulate tape symbols, lambda terms,
+fractions, rewrite graphs, amplitudes, or physical-looking states. If its
+finite executions are effective, existential arithmetic can describe their
+occurrence. This observation alone does not preserve the quantitative
+semantics of probabilistic computation. A polynomial may have many witnesses
+for one execution, and infinitely many distinct executions may contribute
+to an output probability. Quantum computational paths can interfere, so
+summing their squared amplitudes individually is generally wrong.
+
+This article separates four questions. First, can one recover the \emph{whole
+discrete output law} from integer polynomial solvability? Second, which
+probability comparisons are themselves existential Diophantine? Third, what
+is the exact probability mass required to realize a changing conditional
+output distribution? Fourth, can this last optimization problem have a
+small, explicit polynomial certificate with uniquely determined witnesses?
+The answers form a coherent extension of the finite-trace viewpoint.
+
+Our strongest concrete construction is not merely an application of MRDP.
+It is a direct quartic compiler for optimal normalization feasibility,
+including precise witness and equation counts, invalid-input rejection,
+canonical tie resolution, and a uniqueness proof. The infinite and quantum
+extensions explain why that finite compiler is useful.
+
+\subsection{Repository boundary}
+The inspected ProveIt snapshot is
+\begin{center}\small\snapshot.\end{center}
+Its Hilbert-tenth-problem development exposes the theorems
+\code{mrdp}, \code{mrdp_iff}, and \code{mrdp_dioph_iff}
+in the \code{Diophantine} namespace. In particular, the source of
+\code{Diophantine/MRDP.lean} states the equivalence between recursively
+enumerable subsets of $\N$ and projections of zero sets of integer
+polynomials with a finite natural witness dimension, chosen before the
+input. The statement includes input zero \cite{proveit-mrdp,proveit-readme}.
+We use exactly that mathematical interface, not the correctness of every
+other research claim in the repository.
+
+The repository also supplies pairing, primitive-recursive graph, and trace
+modules adjacent to this interface. Those are natural integration points
+for the proposed compiler. This manuscript does not report a local rebuild
+of ProveIt or an axiom audit of newly supplied declarations: it supplies no
+new kernel-checked declarations. Its mathematical proofs are independent
+of a choice of proof-assistant syntax.
+
+\subsection{Established ingredients and contribution ledger}
+The MRDP equivalence is an established theorem \cite{matiyasevich}. Formalized reductions through
+FRACTRAN already exist \cite{larchey-forster}; hence a bare assertion that
+FRACTRAN halting is Diophantine would not be a new result. Weakly computable
+reals and their bounded-variation characterization also predate this work
+\cite{ambos-spies,ng-stephan-wu}. Max-relative entropy and its operator-order
+formula are established \cite{datta}. Finally, the arithmetic hardness of
+probabilistic termination and expectation comparison has substantial prior
+literature \cite{kaminski-katoen}.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.28\textwidth}p{0.62\textwidth}}
+\toprule
+Component & Status in this manuscript\\
+\midrule
+MRDP; prefix allocation; weak computability; max-relative entropy &
+Established ingredients, stated with attribution and used with explicit proofs
+of the needed consequences.\\[3pt]
+Exact normalization budget &
+Derived here as a finite/infinite optimization theorem, with a canonical
+minimal realization.\\[3pt]
+Unique quartic compiler &
+Explicit construction and proof here; implemented and checked on finite
+instances. Historical priority is not asserted.\\[3pt]
+Sharp binary and operator bounds &
+Proved here; the underlying entropy notions are not claimed as new.\\[3pt]
+High-success arithmetic boundary &
+Explicit realization and hardness reductions here, situated relative to
+known computability classifications.\\[3pt]
+Universal output-law polynomial &
+Existence and degree reduction proved; its full coefficients and witness
+count are not generated.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The questions answered here are precisely formulated mathematical questions
+about the proposed extension. They are not presented as previously published
+open problems whose priority history has been exhaustively established.
+
+\section{Effective output laws and quartic arithmetic}\label{sec:laws}
+
+\subsection{Conventions}
+We take $\N=\{0,1,2,\ldots\}$. A relation on natural tuples is
+\emph{Diophantine} when it has the form
+\begin{equation}\label{eq:dioph}
+ R(\mathbf x)\quad\Longleftrightarrow\quad
+ \exists\mathbf w\in\N^k\;P(\mathbf x,\mathbf w)=0,
+ \qquad P\in\Z[\mathbf X,\mathbf W].
+\end{equation}
+All polynomial witnesses in this article are natural numbers. Negative
+coefficients are allowed. This is not a statement about rational witnesses,
+or about unrestricted integer witnesses unless an explicit translation is
+given.
+
+A real $a$ is \emph{left-c.e.} if a computable nondecreasing rational sequence
+converges to $a$. A discrete \emph{subprobability law} is a function
+$\mu:\N\to[0,1]$ with $\sum_z\mu(z)\le1$. Missing mass is allowed to represent
+nonreturn. An effective family of output laws is uniformly left-c.e. in its
+program and output arguments.
+
+\begin{definition}[Effective first-return presentation]\label{def:firstreturn}
+An effective first-return presentation consists of an effective enumeration
+of finite terminal histories, a computable output label for each history,
+and uniformly computable nonnegative real history weights. Histories
+represent pairwise disjoint terminal outcomes, and the sum of their weights
+is at most one. Each actual finite terminal history occurs once in the
+presentation, or is canonically deduplicated.
+\end{definition}
+
+For a quantum machine, a history in this definition is a sequence of actual
+measurement outcomes together with the classical control information.
+Interfering basis paths between measurements must already have been combined
+when computing its weight.
+
+\begin{lemma}[Effective first returns give lower approximations]\label{lem:leftce}
+Every effective first-return presentation has a uniformly left-c.e. output
+law.
+\end{lemma}
+\begin{proof}
+For each history $j$, compute rational lower bounds on its weight, replace
+negative bounds by zero, and take running maxima. At stage $s$, sum the bounds
+for the first $s$ enumerated histories with the specified output label.
+These sums are computable, nondecreasing, and bounded by the true output
+mass. Every finite collection of history weights is approximated arbitrarily
+well, so the limit is their full sum. The construction is uniform. Rounding
+down on successively finer dyadic grids gives dyadic lower approximations.
+For infinitely many labels, expose only finitely many labels at each stage;
+all lower masses still have sum at most one.
+\end{proof}
+
+The assumptions permit an infinite state space and an unbounded running
+time. They do not permit noncomputable real transition constants hidden in
+the source language. They also do not turn an infinite limiting configuration
+into a finite first return.
+
+\subsection{A degree-reduction interface}
+\begin{lemma}[Quartic lowering]\label{lem:quarticlower}
+Every Diophantine relation has a representation by a single integer
+polynomial of total degree at most four. A fixed input polynomial gives a
+fixed finite new witness dimension.
+\end{lemma}
+\begin{proof}
+Evaluate the input polynomial by a finite arithmetic circuit. Introduce
+variables for its intermediate values. Each addition has a linear residual,
+and each multiplication has a quadratic residual. Signed intermediate
+integers can be represented by differences of natural variables; a product
+of two such differences is still quadratic. Equate the output difference
+to zero and sum the squares of all residuals. An integer sum of squares is
+zero exactly when every residual is zero. Conversely, a genuine evaluation
+supplies intermediate values and hence natural positive/negative parts.
+The resulting sum has total degree at most four. No uniqueness of the
+introduced witnesses is required for this lemma.
+\end{proof}
+
+The polynomial in Lemma~\ref{lem:quarticlower} can be much larger than the
+original one. Degree reduction is not an efficiency theorem. The direct
+construction in Section~\ref{sec:quartic}, in contrast, controls its arithmetic
+circuit size and natural witness multiplicity.
+
+\section{Output laws as masses of Diophantine projections}\label{sec:prefix}
+
+\subsection{Canonical allocation of fair-coin events}
+A finite binary word $\sigma$ specifies the cylinder of infinite fair-coin
+streams beginning with $\sigma$. Its probability is $2^{-|\sigma|}$.
+A prefix-free set of words specifies disjoint cylinders.
+
+\begin{lemma}[Effective labeled allocation]\label{lem:kraft}
+Suppose a computable enumeration requests labeled binary words of lengths
+$n_1,n_2,\ldots$, and
+$\sum_j2^{-n_j}\le1$. There is a deterministic effective allocation of
+prefix-free words with exactly these lengths and labels.
+\end{lemma}
+\begin{proof}
+Maintain a finite set of free words, initially containing the empty word.
+Maintain the invariant that there is at most one free word of each length.
+For a request of length $n$, choose the longest free word of length at most
+$n$. Remove it. Repeatedly split its cylinder into its left child, which is
+continued, and its right child, which is put in the free set, until length
+$n$ is reached. Allocate the final left descendant to the request.
+
+There was no other free word with length strictly between the chosen length
+and $n$, by maximality. Thus the one-free-word-per-length invariant is
+preserved. Free and allocated cylinders remain pairwise disjoint and together
+have total mass one. If there were no suitable free word, all free words
+would have distinct lengths greater than $n$. Since the free set is finite,
+its total mass would be strictly less than
+$\sum_{k>n}2^{-k}=2^{-n}$. The requested mass would then exceed the remaining
+mass, contrary to the hypothesis. Every allocation therefore succeeds.
+\end{proof}
+
+\begin{theorem}[Fair-coin realization]\label{thm:semimeasure}
+A uniformly given discrete subprobability law is realizable as the terminal
+output law of a fair-coin program if and only if it is uniformly left-c.e.
+\end{theorem}
+\begin{proof}
+A fair-coin machine supplies an effective enumeration of disjoint finite
+halting cylinders, so the forward implication follows directly, or from
+Lemma~\ref{lem:leftce}.
+
+For the reverse implication choose monotone dyadic lower approximations
+$d_s(z)$, with finite support at each stage and total mass at most one.
+Each increment $d_s(z)-d_{s-1}(z)$ is a nonnegative dyadic rational and can
+be decomposed into finitely many requests for masses $2^{-n}$, all labeled
+by $z$. The total requested mass is $\sum_z\mu(z)\le1$.
+Lemma~\ref{lem:kraft} allocates their cylinders. A program dovetails this
+allocation enumeration with reading its random stream and returns $z$ when
+it discovers an allocated cylinder containing that stream. Its output events
+are exactly the allocated cylinders, and their mass for label $z$ is
+$\lim_s d_s(z)=\mu(z)$.
+\end{proof}
+
+The program may read additional random bits before an allocated cylinder is
+recognized. The allocated word is an event code, not necessarily its literal
+minimal runtime leaf. The theorem preserves the terminal output law, not
+runtime, space, or interactive behavior.
+
+\subsection{One quartic zero set for all effective laws}
+Encode a binary word by
+\begin{equation}
+ c(\sigma)=2^{|\sigma|}+\operatorname{value}_2(\sigma),\qquad
+ \ell(c)=\floor{\log_2 c}\quad(c\ge1).
+\end{equation}
+The empty word has code one. Fix a universal allocation interpreter. It
+accepts requests only while preserving the prefix-free allocation invariant;
+malformed or overbudget requests are discarded or leave the source stalled.
+Thus arbitrary program codes still specify a valid subprobability law.
+Valid source compilers from Theorem~\ref{thm:semimeasure} never trigger this
+protection.
+
+\begin{theorem}[Universal projected-root representation]\label{thm:universal}
+There are a fixed $k$ and a fixed integer polynomial
+$U(E,Z,C,W_1,\ldots,W_k)$ of total degree at most four such that every effective
+discrete output law has, effectively from its presentation, an index $e$
+with
+\begin{equation}\label{eq:rootmass}
+ \mu_e(z)=\sum_{c\ge1}2^{-\ell(c)}
+ \indic{\exists\mathbf w\in\N^k\;U(e,z,c,\mathbf w)=0}.
+\end{equation}
+For fixed $e$, the word codes appearing in this sum across all labels are
+prefix-free, and each code has at most one label.
+\end{theorem}
+\begin{proof}
+The relation ``interpreter $e$ allocates word code $c$ to label $z$'' is c.e.:
+run the interpreter and enumerate its allocations. Apply MRDP to this
+relation, using an effective coding of its input tuple, and then apply
+Lemma~\ref{lem:quarticlower}. The resulting polynomial and its witness
+dimension depend only on the fixed interpreter. Prefix-freeness and label
+uniqueness are properties of that interpreter. Equation~\eqref{eq:rootmass}
+is the disjoint-cylinder probability formula. Every law from
+Theorem~\ref{thm:semimeasure} has a source for the interpreter.
+\end{proof}
+
+\begin{remark}[Projection is essential]
+Equation~\eqref{eq:rootmass} assigns one weight to a word code for which a
+witness exists. It does \emph{not} sum over witness tuples. A single word may
+have infinitely many arithmetic witnesses without changing its probability.
+Consequently this theorem does not assume a finite-fold or single-fold MRDP
+representation. Conversely, any effectively specified polynomial relation
+whose output-labeled projection is prefix-free defines a left-c.e.
+subprobability law by this same formula.
+\end{remark}
+
+\begin{corollary}[Ordinary strict thresholds]\label{cor:strict}
+For any effective output-law interpreter, the relation
+$b\mu_e(z)>a$, where $a\in\N$ and $b\ge1$, is Diophantine and has a fixed
+quartic representation.
+\end{corollary}
+\begin{proof}
+A monotone rational approximation exceeds $a/b$ at a finite stage exactly
+when the limit does. This is a c.e. relation in $(e,z,a,b)$. Apply MRDP and
+quartic lowering, including $b\ge1$ in the decidable input guard.
+\end{proof}
+
+Neither Theorem~\ref{thm:universal} nor Corollary~\ref{cor:strict} supplies the
+full expanded universal polynomial in the accompanying software. They give
+an existence construction through a fixed c.e. interpreter. The finite
+polynomial exported by the software is the substantially more explicit one
+constructed next.
+
+\section{The exact normalization budget}\label{sec:budget}
+
+\subsection{A mass-allocation problem}
+Let $p_0,p_1,\ldots$ be strictly positive probability vectors on
+$\{1,\ldots,m\}$, with $m\ge2$. Suppose that by checkpoint $s$ we have
+accumulated masses $a_{s,i}$ of disjoint returned outcomes. Those masses must
+be coordinatewise nondecreasing. Write
+\begin{equation}\label{eq:normalization}
+ h_s=\sum_i a_{s,i},\qquad a_{s,i}=h_sp_{s,i}.
+\end{equation}
+Here $h_s$ is the probability already assigned to a successful return, also
+called the \emph{heralded mass}. Fix an initial mass $h_0=\delta>0$ and a
+unit total budget $h_s\le1$.
+
+The checkpoints are points in an effective enumeration of accumulated
+probability. They need not coincide with successive machine instructions or
+successive coin flips. This distinction is necessary: exact rational mass
+increments need not be realizable in a uniformly bounded number of fair
+coin flips.
+
+\begin{definition}[Normalization cost]
+For $s\ge1$, define
+\begin{equation}\label{eq:R-G}
+ R_s=\max_{1\le i\le m}\frac{p_{s-1,i}}{p_{s,i}},\qquad
+ G_0=1,\qquad G_s=\prod_{j=1}^{s}R_j.
+\end{equation}
+The path's total multiplicative cost is $G_N$ for a finite horizon, and
+$G_\infty=\sup_sG_s$ for an infinite history.
+\end{definition}
+
+Since both vectors sum to one, $R_s\ge1$. Otherwise every old coordinate
+would be strictly smaller than the new coordinate, contradicting equal
+sums.
+
+\begin{theorem}[Optimal normalization budget]\label{thm:budget}
+A finite or infinite positive probability history admits masses satisfying
+\eqref{eq:normalization}, $h_0=\delta$, $h_s\le1$, and
+$a_{s,i}\ge a_{s-1,i}$ if and only if
+\begin{equation}\label{eq:budgetcondition}
+ \delta G_s\le1\qquad\text{for every checkpoint }s.
+\end{equation}
+Its unique pointwise minimal feasible history is
+\begin{equation}\label{eq:greedy}
+ h_s^*=\delta G_s,\qquad a_{s,i}^*=\delta G_sp_{s,i}.
+\end{equation}
+In particular, the largest feasible initial mass for a finite path is
+$G_N^{-1}$.
+\end{theorem}
+\begin{proof}
+For a single transition, coordinatewise monotonicity is equivalent to
+\[
+ h_sp_{s,i}\ge h_{s-1}p_{s-1,i}\quad\text{for every }i,
+\]
+and, because all quantities being divided by are positive, to
+$h_s\ge h_{s-1}R_s$. Iterating gives $h_s\ge\delta G_s$.
+This proves necessity and pointwise minimality of any possible candidate.
+
+Conversely, the choice in \eqref{eq:greedy} satisfies the single-step
+inequality with equality in the maximizing ratio and inequality in all
+other coordinates. Its coordinates are nondecreasing, its initial mass is
+$\delta$, and the assumed budget condition gives total mass at most one.
+It is therefore feasible. Each of its total masses is forced for any
+pointwise minimal solution, and the prescribed vectors then force every
+coordinate. The argument applies to every finite prefix of an infinite
+history without any compactness or choice step.
+\end{proof}
+
+\begin{corollary}[Effective realization of a feasible history]\label{cor:effectivebudget}
+If $\delta$ and the $p_{s,i}$ are computable rationals, and the budget
+condition holds, the greedy masses define a computable nondecreasing
+rational approximation to an output subprobability law. A fair-coin program
+realizes that limiting law.
+\end{corollary}
+\begin{proof}
+Finite maxima and products of positive rationals are computable exactly.
+Theorem~\ref{thm:budget} supplies monotonicity and boundedness. Each coordinate
+therefore converges and is left-c.e.; the limiting sum is at most one.
+Apply Theorem~\ref{thm:semimeasure}. When necessary, round rational cumulative
+masses down to finer dyadic lower approximations before allocation.
+\end{proof}
+
+\begin{example}[An excursion costs mass]\label{ex:excursion}
+Consider
+\[
+ p_0=(1/2,1/2),\quad p_1=(2/3,1/3),\quad p_2=(1/2,1/2).
+\]
+Then $R_1=3/2$, $R_2=4/3$, and $G_2=2$. Thus $\delta\le1/2$ is necessary
+and sufficient, although the initial and final conditional laws agree.
+At the maximum initial mass, the greedy cumulative masses are
+\[
+ (1/4,1/4),\quad(1/2,1/4),\quad(1/2,1/2).
+\]
+The first transition spends additional mass on the first output; the return
+transition spends it on the second. Previously assigned mass cannot be
+withdrawn.
+\end{example}
+
+\subsection{An information-theoretic expression}
+For positive classical probability vectors, write
+\[
+ \Dinf(p\Vert q)=\log\max_i\frac{p_i}{q_i},
+\]
+with the natural logarithm throughout this article. Then
+\begin{equation}\label{eq:costentropy}
+ \log G_N=\sum_{s=1}^{N}\Dinf(p_{s-1}\Vert p_s).
+\end{equation}
+The divergence itself is standard, and is the commuting specialization of
+max-relative entropy \cite{datta}. Its role here is an exact additive budget
+for irreversible accumulation of terminal mass. The direction of the
+arguments is significant: the old law is compared with the new law.
+Reversing them generally changes the answer.
+
+\section{A single-fold quartic certificate with explicit size}\label{sec:quartic}
+
+\subsection{Parameters and statement}
+Fix an external horizon $N\ge0$ and an external number of labels $m\ge2$.
+The free natural parameters are
+\[
+ (u_{s,i})_{0\le s\le N,\,1\le i\le m},\quad
+ (v_s)_{0\le s\le N},\quad \alpha,\beta.
+\]
+Call an input \emph{valid} when
+\begin{equation}\label{eq:valid}
+ u_{s,i}\ge1,\quad v_s=\sum_i u_{s,i},\qquad
+ 1\le\alpha\le\beta.
+\end{equation}
+It specifies $p_{s,i}=u_{s,i}/v_s$ and $\delta=\alpha/\beta$.
+Denominators need not be reduced, and different rows may use independently
+rescaled denominators.
+
+\begin{theorem}[Explicit unique-witness quartic]\label{thm:singlefold}
+For each fixed $N,m$ there is an explicitly constructible integer polynomial
+$F_{N,m}$ of total degree at most four with
+\begin{align}
+ W(N,m)&=5Nm+m+4N+3 \label{eq:wcount}\\
+ E(N,m)&=5Nm+m+6N+4 \label{eq:ecount}
+\end{align}
+natural witnesses and squared residuals, respectively, such that:
+\begin{enumerate}[label=(\roman*),nosep]
+\item a valid input has a witness if and only if its prescribed history is
+feasible with initial mass $\alpha/\beta$;
+\item every valid feasible input has exactly one natural witness tuple;
+\item invalid inputs have no natural witness tuple.
+\end{enumerate}
+The residual system has an arithmetic-circuit implementation of size
+$O(Nm)$. This is not a claim that its fully expanded polynomial has only
+$O(Nm)$ monomials.
+\end{theorem}
+
+\subsection{Validity, ratios, and selectors}
+Introduce positivity witnesses $g_{s,i}$ and $g_\alpha,g_\beta$, with residuals
+\begin{align}
+ u_{s,i}-1-g_{s,i}&=0,&v_s-\sum_i u_{s,i}&=0,\label{eq:validres}\\
+ \alpha-1-g_\alpha&=0,&\beta-\alpha-g_\beta&=0.\notag
+\end{align}
+For every transition $s=1,\ldots,N$ introduce $X_{s,i},Y_{s,i}$ and enforce
+\begin{equation}\label{eq:XY}
+ X_{s,i}-u_{s-1,i}v_s=0,\qquad
+ Y_{s,i}-v_{s-1}u_{s,i}=0.
+\end{equation}
+Their ratios are the candidates for $R_s$:
+$X_{s,i}/Y_{s,i}=p_{s-1,i}/p_{s,i}$, and their denominators are positive.
+
+Introduce selectors $e_{s,i}$ satisfying
+\begin{equation}\label{eq:selector}
+ e_{s,i}(e_{s,i}-1)=0,\qquad \sum_i e_{s,i}-1=0.
+\end{equation}
+They select exactly one coordinate. Define selected numerator and denominator
+witnesses $A_s,B_s$ by
+\begin{equation}\label{eq:AB}
+ A_s-\sum_i e_{s,i}X_{s,i}=0,\qquad
+ B_s-\sum_i e_{s,i}Y_{s,i}=0.
+\end{equation}
+Every residual displayed so far has total degree at most two.
+
+\subsection{Canonical earliest-maximum rule}
+Ordinary maximum constraints allow several selectors when two ratios tie.
+To eliminate this multiplicity, introduce natural slacks $t_{s,i}$ and use
+\begin{equation}\label{eq:canonical}
+ A_sY_{s,i}-B_sX_{s,i}-t_{s,i}-\sum_{j>i}e_{s,j}=0.
+\end{equation}
+If coordinate $k$ is selected, the last sum is one for $i<k$ and zero for
+$i\ge k$. Thus the selected ratio must be \emph{strictly} larger than every
+earlier ratio and at least as large as every later one. Integer strictness
+is encoded by subtraction of one, not by a new quantifier or a high-degree
+product.
+
+\begin{lemma}[Unique pivot]\label{lem:pivot}
+For any positive integer lists $(X_i),(Y_i)$, the selector and comparison
+constraints \eqref{eq:selector}--\eqref{eq:canonical} have exactly one solution
+in the selector, selected-ratio, and slack variables. Its selected index is
+the least index maximizing $X_i/Y_i$.
+\end{lemma}
+\begin{proof}
+The Boolean and sum constraints select an index $k$. Nonnegative slacks give
+$X_kY_i-Y_kX_i\ge1$ for $i<k$ and $\ge0$ for $i\ge k$.
+Positivity of all denominators makes these exactly the asserted strict and
+weak ratio comparisons. Hence $k$ must be the least maximizing index.
+Conversely, that index satisfies those comparisons: a strictly positive
+integer cross difference is at least one. It determines all selectors,
+$A=X_k$, $B=Y_k$, and all slacks uniquely.
+\end{proof}
+
+\subsection{Canonical products and the terminal budget}
+Set $C_0=\alpha$, $D_0=\beta$ as expressions, not additional witnesses.
+For $s=1,\ldots,N$ introduce $C_s,D_s$ and impose
+\begin{equation}\label{eq:CD}
+ C_s-C_{s-1}A_s=0,\qquad D_s-D_{s-1}B_s=0.
+\end{equation}
+Finally introduce a natural slack $z$ and impose
+\begin{equation}\label{eq:terminal}
+ D_N-C_N-z=0.
+\end{equation}
+For $N=0$, this uses $D_0=\beta,C_0=\alpha$ directly. Products deliberately
+remain unreduced. There are no arbitrary common factors and no gcd
+certificates to create extra witnesses.
+
+Let $\mathcal R_{N,m}$ be the complete residual list in
+\eqref{eq:validres}--\eqref{eq:terminal}, including every indicated index, and
+put
+\begin{equation}\label{eq:F}
+ F_{N,m}=\sum_{r\in\mathcal R_{N,m}}r^2.
+\end{equation}
+This is the promised explicit polynomial definition. It is a finite
+sum-of-squares specification, not an appeal to MRDP.
+
+\subsection{Proof of the compiler theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:singlefold}]
+\emph{Soundness.} A natural zero of $F_{N,m}$ makes each residual zero.
+The validity residuals force \eqref{eq:valid}. Equations~\eqref{eq:XY}
+then force positive ratio denominators. Lemma~\ref{lem:pivot} forces the
+least maximizing ratio at each stage, so $A_s/B_s=R_s$.
+The product residuals force
+\[
+ \frac{C_N}{D_N}=\frac{\alpha}{\beta}\prod_{s=1}^N R_s
+ =\delta G_N.
+\]
+The denominator is positive. The final natural slack forces
+$C_N\le D_N$, hence $\delta G_N\le1$. Since $G_s$ is nondecreasing, the
+budget condition holds for every earlier stage. Apply
+Theorem~\ref{thm:budget}.
+
+\emph{Completeness.} For a valid feasible input, assign the positivity and
+input slacks their forced values, compute the $X,Y$ lists, choose each
+least maximizing coordinate, and assign its uniquely determined nonnegative
+comparison slacks. Compute the unreduced products $C_s,D_s$. Feasibility
+makes $D_N-C_N$ nonnegative; assign it to $z$. Every residual is zero.
+
+\emph{Uniqueness.} The input fixes the validity slacks and all $X,Y$ values.
+Lemma~\ref{lem:pivot} fixes the selectors, $A,B$, and comparison slacks.
+The recurrence fixes the unreduced products, and the final equation fixes
+$z$. There are no other witnesses. The existence of other, nonminimal
+feasible mass histories is irrelevant: the certificate describes the
+canonical optimal budget, not an arbitrary feasible history.
+
+\emph{Size and degree.} The positivity slacks contribute $(N+1)m$ witnesses,
+the two input slacks contribute two, and each transition contributes
+$4m+4$ witnesses: $X,Y,e,t$ for every coordinate and $A,B,C,D$.
+The terminal slack contributes one. This gives \eqref{eq:wcount}.
+Validity contributes $(N+1)(m+1)+2$ residuals, each transition contributes
+$4m+5$, and the terminal equation contributes one, giving
+\eqref{eq:ecount}. Each residual is quadratic or linear, so their squares
+have degree at most four. Shared suffix sums of the selectors evaluate all
+comparison residuals with $O(m)$ arithmetic operations per transition.
+\end{proof}
+
+\begin{remark}[The exact single-fold scope]
+The horizon $N$ and label count $m$ index a family of finite polynomials.
+They are not unbounded runtime variables inside one fixed-arity
+single-fold universal halting polynomial. This construction therefore does
+not resolve a general finite-fold MRDP question. Its uniqueness is over
+natural witnesses. Replacing each natural variable by an arbitrary
+four-square representation would in general destroy that uniqueness.
+\end{remark}
+
+\subsection{The exported \texorpdfstring{$N=2,m=2$}{N=2, m=2} polynomial}
+For Example~\ref{ex:excursion}, take rows
+$(u_{0,1},u_{0,2})=(1,1)$, $(u_{1,1},u_{1,2})=(2,1)$,
+$(u_{2,1},u_{2,2})=(1,1)$ and $(\alpha,\beta)=(1,2)$.
+The denominators are $(2,3,2)$. The selected coordinate is two at the first
+transition and one at the second. Thus
+\[
+ (A_1,B_1)=(3,2),\quad(A_2,B_2)=(4,3),\qquad
+ (C_1,D_1)=(3,4),\quad(C_2,D_2)=(12,12).
+\]
+The terminal slack is zero. This instance has 11 free input coordinates,
+33 witnesses, 38 residuals, total degree four, and 165 expanded monomials.
+The bundle supplies the residual list, variable ordering, full natural
+assignment, and expanded polynomial. These values are computed by the
+included script rather than inferred from a numerical optimizer.
+
+\section{Variation bounds and a sharp binary constant}\label{sec:variation}
+
+\subsection{A general bound}
+For probability vectors define
+$\TV(p,q)=\tfrac12\sum_i|p_i-q_i|$.
+
+\begin{proposition}[Variation consumes mass]\label{prop:variation}
+For the positive histories of Theorem~\ref{thm:budget},
+\begin{equation}\label{eq:tvbound}
+ \sum_{s=1}^{N}\TV(p_{s-1},p_s)
+ \le\sum_{s=1}^{N}(1-R_s^{-1})
+ \le\log G_N.
+\end{equation}
+Every history feasible from initial mass $\delta$ therefore has total
+variation at most $\log(1/\delta)$, including an infinite history.
+\end{proposition}
+\begin{proof}
+If $R_s=1$, then $p_s\ge p_{s-1}$ coordinatewise and equal total sums imply
+equality. If $R_s>1$, coordinatewise domination gives a probability vector
+$q_s$ such that
+\[
+ p_s=R_s^{-1}p_{s-1}+(1-R_s^{-1})q_s.
+\]
+Hence $\TV(p_{s-1},p_s)\le1-R_s^{-1}$. For $R\ge1$,
+$1-R^{-1}\le\log R$, as follows by integrating $1/t$ on $[1,R]$ or
+differentiating their difference. Sum over $s$ and apply the budget theorem.
+For an infinite path pass to the supremum of the nonnegative partial sums.
+\end{proof}
+
+\subsection{The binary path identity}
+The binary case contains a stronger symmetric bound. Put
+$p_s=(x_s,1-x_s)$ with $0<x_s<1$, and define
+\begin{equation}\label{eq:Phi}
+ \Phi(x)=-\frac12\log\bigl(x(1-x)\bigr).
+\end{equation}
+
+\begin{theorem}[Sharp balanced binary bound]\label{thm:binary}
+Every binary path satisfies
+\begin{equation}\label{eq:binarypotential}
+ 2\sum_{s=1}^{N}|x_s-x_{s-1}|+
+ \Phi(x_N)-\Phi(x_0)\le\log G_N.
+\end{equation}
+In particular, a feasible path starting at $x_0=1/2$ and initial mass
+$\delta$ satisfies
+\begin{equation}\label{eq:binarysharp}
+ \sum_{s=1}^{N}|x_s-x_{s-1}|
+ \le\frac12\log(1/\delta).
+\end{equation}
+For every $0<\delta<1$, the constant $1/2$ in this statement is sharp as a
+supremum over finite balanced-start paths.
+\end{theorem}
+\begin{proof}
+If a step increases $x$ from $x$ to $y$, its largest ratio is
+$(1-x)/(1-y)$, so its logarithmic cost is
+$\int_x^y(1-u)^{-1}\,du$. If the step decreases $x$ to $y$, the cost is
+$\int_y^x u^{-1}\,du$. Since
+\[
+ \Phi'(u)=\frac{2u-1}{2u(1-u)},
+\]
+both cases have the exact common expression
+\begin{equation}\label{eq:pathidentity}
+ \log R_s=
+ \int_{\min(x_{s-1},x_s)}^{\max(x_{s-1},x_s)}
+ \frac{du}{2u(1-u)}+\Phi(x_s)-\Phi(x_{s-1}).
+\end{equation}
+Now $u(1-u)\le1/4$, so the integral is at least
+$2|x_s-x_{s-1}|$. Sum and telescope the potential to obtain
+\eqref{eq:binarypotential}. The potential is minimized at $1/2$, and
+$\log G_N\le\log(1/\delta)$ for a feasible path, proving
+\eqref{eq:binarysharp}.
+
+For sharpness, repeat the cycle $1/2\to1/2+\varepsilon\to1/2$ exactly $n$
+times. Its one-cycle multiplicative cost is
+$(1+2\varepsilon)/(1-2\varepsilon)$ and its variation is $2\varepsilon$.
+Choose
+\[
+ r_n=(1/\delta)^{1/n},\qquad
+ \varepsilon_n=\frac{r_n-1}{2(r_n+1)}.
+\]
+The full cost is exactly $1/\delta$, while the full variation is
+$n(r_n-1)/(r_n+1)$, which tends to
+$\tfrac12\log(1/\delta)$. Thus no smaller constant works. If rational paths
+are required, approximate each $\varepsilon_n$ from below by rationals;
+feasibility is preserved and the same supremum is obtained.
+\end{proof}
+
+This bound is a quantitative restriction on successive conditional
+estimates. Conditioning can hide noncomputable limiting information, but
+it cannot make a fixed positive amount of accumulated mass support an
+arbitrarily oscillatory normalized path. Small excursions near balance are
+the asymptotically least expensive way to accumulate binary variation.
+
+\section{Which real probabilities can normalization produce?}\label{sec:weak}
+
+\subsection{Weak computability and finite variation}
+A real is \emph{weakly computable}, also called a difference of left-c.e.
+reals, when $c=A-B$ for finite left-c.e. reals $A,B$. The equivalence with
+computable rational approximation of bounded total variation is established
+in the literature \cite{ambos-spies,ng-stephan-wu}. The elementary argument
+needed here is short.
+
+\begin{lemma}[Jordan decomposition of an approximation]\label{lem:jordan}
+A real $c$ is weakly computable if and only if there is a computable rational
+sequence $(x_s)$ tending to $c$ for which
+$\sum_s|x_{s+1}-x_s|<\infty$.
+\end{lemma}
+\begin{proof}
+If $x_s=A_s-B_s$ with monotone convergent computable rational approximations,
+then
+$|x_{s+1}-x_s|\le(A_{s+1}-A_s)+(B_{s+1}-B_s)$, and the sum is finite.
+Conversely, set
+\[
+ P_s=\sum_{j<s}\max(x_{j+1}-x_j,0),\qquad
+ Q_s=\sum_{j<s}\max(x_j-x_{j+1},0).
+\]
+Both are computable increasing rational sequences with finite limits, and
+$x_s=x_0+P_s-Q_s$. Their limits express $c$ as a difference of left-c.e.
+reals.
+\end{proof}
+
+\subsection{An exact success-floor classification}
+Two disjoint successful terminal outcomes, $A$ and $B$, have unconditional
+masses $a,b$ and heralding probability $h=a+b$. Their conditional probability
+of $A$, given eventual successful return, is
+\begin{equation}\label{eq:conditional}
+ c=\frac{a}{a+b},\qquad h>0.
+\end{equation}
+The denominator is an eventual-event probability. It is not assumed known
+or computable.
+
+\begin{theorem}[High-success normalization realizes exactly weak computability]
+\label{thm:weakclassification}
+For a real $c\in[0,1]$, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $c$ is a conditional terminal-output probability of an effective
+process with positive heralding probability;
+\item $c$ is weakly computable;
+\item for every rational $0<\delta<1$, there is such a process with heralding
+probability at least $\delta$ and conditional probability exactly $c$.
+\end{enumerate}
+The realization in (iii) may be chosen to have a computable rational
+accumulation checkpoint of total mass exactly $\delta$.
+\end{theorem}
+\begin{proof}
+\emph{(i) implies (ii).} The masses $a,b$ are left-c.e. by
+Lemma~\ref{lem:leftce}. If one is zero, $c$ is an endpoint and is computable.
+Otherwise choose monotone rational approximations $a_s,b_s$ and discard a
+finite initial segment until both are positive. Set
+$h_s=a_s+b_s$ and $x_s=a_s/h_s$. These give an effective positive binary
+history with initial mass $h_0>0$ and total budget at most one.
+Proposition~\ref{prop:variation} bounds its total variation by
+$\log(1/h_0)$. It converges to $a/(a+b)$, so
+Lemma~\ref{lem:jordan} proves weak computability.
+
+\emph{(ii) implies (iii).} The endpoint cases are realized by a constant
+output. Suppose $0<c<1$, and take a computable rational bounded-variation
+approximation to $c$. Choose rational $\eta>0$ with
+$c\in(\eta,1-\eta)$. Clamp the approximation to $[\eta,1-\eta]$; clamping
+is a contraction, preserves the limit, and does not increase total variation.
+Discard a sufficiently long finite initial segment so that the remaining
+variation is at most $\eta\log(1/\delta)$.
+
+For a binary step confined to that interval, the integral formulas in the
+proof of Theorem~\ref{thm:binary} give
+$\log R_s\le|x_s-x_{s-1}|/\eta$. Hence the remaining path has
+$\sum_s\log R_s\le\log(1/\delta)$. Its greedy realization from initial
+mass $\delta$ is therefore feasible by Theorem~\ref{thm:budget}. Its
+monotone rational coordinate masses converge to $a,b$ with $a+b\ge\delta$.
+Because their normalized ratios are the chosen $x_s$, continuity at the
+positive denominator gives $a/(a+b)=c$. Apply
+Corollary~\ref{cor:effectivebudget} to realize the limiting law.
+
+\emph{(iii) implies (i)} is immediate.
+\end{proof}
+
+\begin{remark}[The nonuniform choice must not be hidden]\label{rem:nonuniform}
+The proof of (ii)$\Rightarrow$(iii) chooses an interior interval and a late
+small-variation tail. It is an existence theorem for each real and each
+success floor; it is not an algorithm for discovering those choices from
+an arbitrary bounded-variation approximation index. The rational greedy
+compiler is uniform once a suitable tail and a valid budget bound are
+supplied. The finite-horizon quartic compiler is fully explicit and has no
+such unbounded tail choice.
+\end{remark}
+
+Weakly computable reals are not all limit-computable reals; the distinction
+is established by computability-theoretic results such as those discussed
+by Ng, Stephan, and Wu \cite{ng-stephan-wu}. Thus the theorem does not say
+that conditioning can realize an arbitrary $\Delta^0_2$ real. It identifies
+an exact intermediate class using a concrete mass constraint.
+
+\begin{theorem}[The full-success boundary]\label{thm:total}
+The conditional probabilities of effective two-outcome processes that
+return one of the two outcomes with probability one are exactly the
+computable reals in $[0,1]$.
+\end{theorem}
+\begin{proof}
+Here $a+b=1$. Increasing rational lower approximations give intervals
+$[a_s,1-b_s]$ containing $a$, whose widths tend to zero. To compute $a$ to
+any required precision, search for an interval of sufficiently small width.
+The search terminates under the probability-one promise. Conversely, for a
+computable $c$, both $c$ and $1-c$ are uniformly left-c.e. Their two-label
+law has total mass one and is realized by
+Theorem~\ref{thm:semimeasure}.
+\end{proof}
+
+There is therefore a genuine endpoint distinction: every fixed permitted
+failure probability greater than zero allows all weakly computable
+conditional probabilities; requiring failure probability exactly zero
+restricts the class to computable probabilities. This is an expressivity
+statement, not a physical procedure for obtaining a noncomputable real to
+certified arbitrary precision from experimental samples.
+
+\section{The arithmetic hierarchy of probability questions}\label{sec:hierarchy}
+
+\subsection{Indexing and promises}
+A $\sigone$ relation has an existential quantifier over a computable
+predicate; $\sigtwo$ has an existential block followed by a universal block.
+The dual classes are $\pione$ and $\pitwo$. Completeness below means
+computable many-one completeness. Inputs are program indices for a fixed
+effective universal model, with rational threshold $q\in(0,1)$ fixed in
+advance.
+
+When a success floor is required, use an effective family of wrappers that
+reserves a positive rational mass for guaranteed return before handing the
+remaining mass to an arbitrary source program. Restrict the syntax to
+wrappers whose reserved mass is at least the specified $\delta$.
+All indices in that family satisfy the floor; no undecidable semantic
+validation is included in the language being classified. Equivalently,
+one may state the upper bounds as promise-problem bounds and ensure that
+every hardness reduction lands inside the promise. We will do both
+explicitly rather than silently conjoin an arbitrary-code problem with an
+additional floor predicate.
+
+These distinctions matter because almost-sure termination itself has high
+arithmetic complexity, as is known from prior work
+\cite{kaminski-katoen}. Our proofs below establish the particular threshold
+claims directly.
+
+\subsection{Unconditional probabilities}
+\begin{theorem}[Unconditional comparison table]\label{thm:unconditionaltable}
+For a fixed interior rational $q$ and a universal effective output-law model,
+the following classifications hold:
+\begin{center}
+\begin{tabular}{cccccc}
+\toprule
+$p>q$ & $p\le q$ & $p<q$ & $p\ge q$ & $p=q$ & $p\ne q$\\
+\midrule
+$\sigone$-c. & $\pione$-c. & $\sigtwo$-c. & $\pitwo$-c. & $\pitwo$-c. & $\sigtwo$-c.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here ``-c.'' means complete for the displayed class.
+\end{theorem}
+\begin{proof}
+Let $p_s\uparrow p$ be computable rational lower bounds. Then
+$p>q\iff\exists s\,(p_s>q)$ and $p\le q$ is its complement. Moreover,
+\[
+ p\ge q\iff\forall k\;\exists s\;(p_s>q-2^{-k}),
+\]
+so $p\ge q$ is $\pitwo$ and $p<q$ is $\sigtwo$. Equality is the conjunction
+of $p\ge q$ and $p\le q$, hence is $\pitwo$; inequality is its complement.
+
+For the first hardness claim, use a rational baseline $q$ and add a small
+rational mass $\varepsilon>0$ precisely when a given ordinary computation
+halts. The resulting mass exceeds $q$ exactly in the halting case.
+Taking complements proves the $\pione$ claim.
+
+For the remaining claims, let $\varphi_e$ be the $e$th ordinary partial
+computable function. A fair-coin program chooses $n\ge0$ with probability
+$2^{-(n+1)}$, simulates $\varphi_e(n)$, and returns precisely if that
+simulation halts. Its return probability is
+\begin{equation}\label{eq:te}
+ t_e=\sum_{n\ge0}2^{-(n+1)}\indic{\varphi_e(n)\downarrow}.
+\end{equation}
+Thus $t_e=1$ exactly when $e$ belongs to the $\pitwo$-complete totality set.
+Set $p_e=qt_e$. Then $p_e<q$ and $p_e\ne q$ exactly for nontotal indices,
+whereas $p_e\ge q$ and $p_e=q$ exactly for total indices. These are the
+required reductions.
+\end{proof}
+
+For completeness, totality has the form
+$\forall n\exists t$ ``$\varphi_e(n)$ halts by $t$'', and every
+$\pitwo$ predicate $\forall n\exists t\,R(e,n,t)$ with computable $R$
+reduces to it by the program that, on $n$, searches for such a $t$.
+No oracle is used by the probabilistic program in \eqref{eq:te}.
+
+\subsection{Conditioning defeats the existential threshold boundary}
+\begin{theorem}[Conditional comparison at any subunit success floor]
+\label{thm:conditionaltable}
+Fix rationals $q\in(0,1)$ and $\delta\in(0,1)$. In a universal effective
+wrapper family guaranteeing $a+b\ge\delta$, set $c=a/(a+b)$. Then
+\begin{center}
+\begin{tabular}{cccccc}
+\toprule
+$c>q$ & $c<q$ & $c\ne q$ & $c\ge q$ & $c\le q$ & $c=q$\\
+\midrule
+$\sigtwo$-c. & $\sigtwo$-c. & $\sigtwo$-c. & $\pitwo$-c. & $\pitwo$-c. & $\pitwo$-c.\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular, the strict conditional comparisons are not existential
+Diophantine relations in such a universal family.
+\end{theorem}
+\begin{proof}
+Choose computable rational lower approximations $a_s,b_s$. Their normalized
+ratios $c_s=a_s/(a_s+b_s)$ are computable once the denominator is positive;
+use any fixed rational value before that point. They converge to $c$.
+Consequently
+\begin{equation}\label{eq:strictsigma2}
+ c>q\iff\exists k\exists n\;\forall s\ge n\quad c_s\ge q+2^{-k}.
+\end{equation}
+The analogous expression handles $c<q$. Thus these strict cuts are
+$\sigtwo$, and their complements are $\pitwo$. Equality has the more useful
+form
+\begin{equation}\label{eq:eqpi2}
+ c=q\iff\forall k\forall n\;\exists s\ge n\quad |c_s-q|<2^{-k}.
+\end{equation}
+Convergence makes repeated arbitrary closeness equivalent to equality, so
+this is a $\pitwo$ expression. Its complement is $\sigtwo$.
+
+For hardness choose a positive rational
+$\varepsilon<\min(1-\delta,q,1-q)$ and use $t_e$ from \eqref{eq:te}.
+The first wrapper has masses
+\begin{equation}\label{eq:hardplus}
+ a_e=q,\qquad b_e=1-q-\varepsilon+\varepsilon t_e.
+\end{equation}
+It reserves mass $1-\varepsilon$ for guaranteed return and assigns the
+remaining mass to the totality sampler. Its heralding probability is
+$h_e=1-\varepsilon+\varepsilon t_e\ge\delta$, and
+$c_e=q/h_e\ge q$. It follows that $c_e>q$ and $c_e\ne q$ hold exactly
+when $e$ is nontotal, while $c_e\le q$ and $c_e=q$ hold exactly when $e$
+is total.
+
+For the other direction use
+\begin{equation}\label{eq:hardminus}
+ a_e=q-\varepsilon+\varepsilon t_e,\qquad b_e=1-q.
+\end{equation}
+The same denominator gives
+$c_e-q=-(1-q)\varepsilon(1-t_e)/h_e$. Thus $c_e<q$ exactly for nontotal
+indices and $c_e\ge q$ exactly for total indices. All masses in both
+wrappers are nonnegative and their sums are at most one. These reductions
+are effective, preserve the syntactic floor guarantee, and prove every
+hardness assertion. MRDP and the strict arithmetic hierarchy then exclude
+ordinary existential Diophantine representations for the complete
+$\sigtwo$ cuts.
+\end{proof}
+
+For example, the theorem applies with a success guarantee of $0.999999$.
+The difficulty is not confined to rare postselection events: the unknown
+remaining denominator mass can encode a universal nontermination question.
+A finite lower bound for $a$ does not certify that future additions to $b$
+will not reverse a conditional threshold comparison.
+
+\begin{remark}[A quantifier trap]
+The naive formula saying that $c_s$ is eventually within every tolerance
+of $q$ has the pattern $\forall k\exists n\forall s$ and only gives a
+$\Pi^0_3$ upper bound. Formula~\eqref{eq:eqpi2} is sharper because convergence
+is already known. Omitting that argument would obscure the exact boundary.
+\end{remark}
+
+\subsection{The probability-one promise}
+\begin{proposition}[Comparisons under almost-sure return]\label{prop:totalcuts}
+Under the promise $a+b=1$, strict comparisons $c>q,c<q$ and inequality
+$c\ne q$ are $\sigone$-complete promise problems. Weak comparisons and
+equality are $\pione$-complete promise problems. The reductions can be
+chosen from a uniformly total family of samplers.
+\end{proposition}
+\begin{proof}
+Under the promise $c=a$ and $1-c=b$, so $c>q$ and $c<q$ are witnessed by
+lower approximations to $a$ and $b$, respectively. Their disjunction is
+inequality; taking complements within the promise gives the upper bounds.
+
+Let $x_e=2^{-t}$ if a designated computation halts at time $t$, and let
+$x_e=0$ if it never halts. This is a uniformly computable real: after $s$
+steps, a still-undetected later halting time can contribute at most
+$2^{-s}$. For a sufficiently small positive rational $\varepsilon$, the
+probabilities $q+\varepsilon x_e$ and $q-\varepsilon x_e$ lie in $[0,1]$
+and are uniformly computable. Their complementary two-label laws have
+uniform total samplers by Theorem~\ref{thm:semimeasure}. Strict comparison
+in the appropriate direction, or inequality with $q$, detects halting;
+equality and the opposite weak comparison detect nonhalting.
+\end{proof}
+
+This is a promise classification. Deciding which arbitrary probabilistic
+programs satisfy the promise has not become easy. It is incorrect to erase
+that promise and infer a $\pione$ algorithm for arbitrary exact-output
+questions.
+
+\subsection{Polynomial quantifier normal forms}
+The hierarchy can itself be expressed using quartic integer equations.
+For a computable relation $R(e,u,v)$, MRDP applies both to $R$ and to its
+complement. Consequently the four normal forms are
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+Class & Quartic arithmetic form, with natural quantified tuples\\
+\midrule
+$\sigone$ & $\exists\mathbf w\;P(e,\mathbf w)=0$\\
+$\pione$ & $\forall\mathbf w\;P(e,\mathbf w)\ne0$\\
+$\pitwo$ & $\forall u\exists v,\mathbf w\;P(e,u,v,\mathbf w)=0$\\
+$\sigtwo$ & $\exists u\forall v,\mathbf w\;Q(e,u,v,\mathbf w)\ne0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the last line choose $Q$ to represent $\neg R$, so that universal
+nonvanishing expresses $\forall v\,R(e,u,v)$. Apply
+Lemma~\ref{lem:quarticlower} to each matrix. These are arithmetic formulas
+\emph{over} Diophantine relations, not all existential Diophantine
+representations. The strict hierarchy is exactly why the distinction
+cannot generally be removed.
+
+All tables assumed $0<q<1$. At endpoints some classifications collapse:
+$p>0$ is $\sigone$, $p=0$ is $\pione$, $p=1$ can be $\pitwo$-complete,
+and $p>1$ is impossible. Endpoint statements must not be read off the
+interior tables without checking them.
+
+\section{An explicit quantum computational front end}\label{sec:quantum}
+
+\subsection{Exact amplitudes rather than floating-point paths}
+The Clifford+$T$ gate family admits exact arithmetic in
+$\Z[1/\sqrt2,i]$; the exact synthesis literature gives a much stronger
+structural account of this ring and its realizable operators
+\cite{giles-selinger}. Here we only need a direct forward evaluator for the
+gates $H,T,S,X,$ and CNOT.
+
+After $L$ elementary gates, represent each amplitude as
+\begin{equation}\label{eq:ring}
+ \psi_j=\frac{a_j+b_j\sqrt2+i(c_j+d_j\sqrt2)}{2^L},
+ \qquad a_j,b_j,c_j,d_j\in\Z.
+\end{equation}
+The common denominator is intentionally unreduced: each gate increments
+$L$ by one, even when it could be implemented without a new denominator.
+For $z=a+b\sqrt2+i(c+d\sqrt2)$ the relevant integer-linear maps are
+\begin{align}
+ \sqrt2 z&\longleftrightarrow(2b,a,2d,c),\label{eq:linearquantum}\\
+ iz&\longleftrightarrow(-c,-d,a,b),\notag\\
+ \sqrt2(1+i)z&\longleftrightarrow
+ \bigl(2(b-d),a-c,2(b+d),a+c\bigr).\notag
+\end{align}
+For an $H$ gate on an amplitude pair $(z_0,z_1)$, the new numerators are
+$\sqrt2(z_0+z_1)$ and $\sqrt2(z_0-z_1)$. For $T$, multiply the bit-zero
+numerator by two and the bit-one numerator by $\sqrt2(1+i)$.
+For $S$, use two and $2i$ respectively. The $X$ and CNOT gates permute
+amplitudes and multiply all numerators by two. Dividing by the new
+$2^{L+1}$ gives precisely the usual gate actions.
+
+The squared norm of one numerator is
+\begin{equation}\label{eq:normquantum}
+ |z|^2=A+B\sqrt2,\qquad
+ A=a^2+2b^2+c^2+2d^2,\quad B=2(ab+cd).
+\end{equation}
+Thus for a selected set $J$ of measurement outcomes,
+\begin{equation}\label{eq:probquantum}
+ \Pr(J)=\frac{\sum_{j\in J}A_j+
+                 (\sum_{j\in J}B_j)\sqrt2}{4^L}.
+\end{equation}
+The symbolic coefficient $B$ can be negative, although the final probability
+is nonnegative.
+
+\begin{proposition}[Decidable finite-circuit probabilities]\label{prop:finitequantum}
+For a finite circuit over these gates with a computational-basis input,
+comparison of a terminal basis-event probability with a rational threshold
+is decidable by exact integer arithmetic. Its graph and its comparison
+relations are Diophantine, with quartic representations.
+\end{proposition}
+\begin{proof}
+The gate recurrences compute the four integer coordinates exactly.
+After clearing positive denominators, a rational comparison reduces to the
+sign of $A+B\sqrt2$ with $A,B\in\Z$. If either coefficient is zero or they
+have the same sign, the sign is immediate. If they have opposite signs,
+compare $A^2$ and $2B^2$, reversing the resulting sign when $A<0$.
+Equality $A^2=2B^2$ with both coefficients nonzero is impossible: cancelling
+common factors would give a reduced rational square root of two.
+This supplies a terminating integer algorithm and therefore a computable
+relation. Apply MRDP and Lemma~\ref{lem:quarticlower}.
+
+For a direct bounded evaluator, use linear gate residuals and quadratic
+norm residuals. Signed intermediate coordinates can be encoded by their
+natural positive and negative parts; adding $z^+z^-=0$ makes that split
+canonical. The finite comparison algorithm can be lowered to the same
+arithmetic-gate format. This last observation does not assert the particular
+witness count of Theorem~\ref{thm:singlefold} for the quantum compiler.
+\end{proof}
+
+\begin{example}[Cancellation and an irrational output probability]
+Starting in $|0\rangle$, the circuit $H^2$ returns outcome zero with
+probability one. If its intermediate basis alternatives were treated as
+independent classical alternatives without recombination, the cancellation
+in the outcome-one amplitude would be lost.
+
+The circuit $HTH$, acting right to left on the input as usual, gives
+\[
+ \Pr(0)=\frac{2+\sqrt2}{4},\qquad
+ \Pr(1)=\frac{2-\sqrt2}{4}.
+\]
+The accompanying sequential evaluator applies $H$, then $T$, then $H$, which
+is the same palindromic circuit. Both probabilities are represented exactly,
+not by decimal approximations. A finite fair-coin decision tree with a
+uniform depth bound has only dyadic output probabilities, so no such tree
+can realize this law exactly. The unbounded sampler in
+Theorem~\ref{thm:semimeasure} can realize it and, because the two masses sum
+to one, returns almost surely.
+\end{example}
+
+\subsection{Unbounded measured programs}
+Consider an unbounded classical controller with finitely described quantum
+gates and projective measurements, allowing only finitely many qubits at
+each finite execution stage. A finite measurement history has a weight
+computed by evolving an \emph{unnormalized} state through its gates and
+measurement projections. Its squared norm is the history probability.
+Keeping the state unnormalized avoids division by a possibly zero branch
+probability.
+
+Distinct recorded measurement histories are mutually exclusive classical
+events. Summing the weights of first-return histories therefore gives a
+presentation in Definition~\ref{def:firstreturn}. Lemma~\ref{lem:leftce} and
+Theorem~\ref{thm:universal} apply. The same argument works for uniformly
+computable gate entries when valid evolution and an effective finite
+history presentation are part of the model assumptions; exact algebraic
+zero tests are unnecessary for obtaining lower bounds.
+
+\begin{corollary}[Quantum output-law Diophantine representation]
+Every such effective quantum program's discrete classical terminal output
+law has the fixed-quartic projected-root representation
+\eqref{eq:rootmass}. Its ordinary strict output-probability thresholds are
+existential Diophantine. Its conditional eventual-return thresholds are
+subject to the distinctions in Section~\ref{sec:hierarchy}.
+\end{corollary}
+\begin{proof}
+The measurement-history presentation gives a left-c.e. law; apply the
+corresponding representation and threshold theorems. Classical fair-coin
+control is a special case, so the general hardness obstructions cannot be
+removed by admitting quantum operations.
+\end{proof}
+
+This is an exact statement about a terminal \emph{classical probability
+law}. It is not an efficient classical simulation of quantum computation,
+not a replacement for quantum states in interactive protocols, and not a
+claim that all quantum behavior is captured by classical random variables.
+The reference state-vector implementation uses $2^n$ amplitudes for $n$
+qubits and is deliberately a small-instance exact checker. It does not
+implement the unbounded universal MRDP compiler.
+
+\section{An operator-valued normalization budget}\label{sec:operator}
+
+\subsection{Accumulated ensembles}
+A quantum analogue of coordinatewise accumulated output mass is a sequence
+of positive semidefinite operators $\rho_s$, with
+$\rho_s-\rho_{s-1}\succeq0$ and $\Tr\rho_s\le1$. For example, these may
+represent sums of subnormalized density operators over disjoint returned
+histories. Write
+\[
+ \rho_s=h_s\sigma_s,\qquad \Tr\sigma_s=1.
+\]
+This is an accumulation process, not the state trajectory of a single
+system undergoing arbitrary unitary evolution.
+
+For positive definite density matrices define
+\begin{equation}\label{eq:K}
+ K(\sigma,\tau)=\inf\{r>0:\sigma\preceq r\tau\}
+ =\lambda_{\max}(\tau^{-1/2}\sigma\tau^{-1/2}).
+\end{equation}
+The logarithm of this quantity is the established max-relative entropy
+$\Dmax(\sigma\Vert\tau)$, with logarithm-base conventions adjusted to our
+natural logarithm \cite{datta}. The equality in \eqref{eq:K} follows by
+conjugating the operator inequality by $\tau^{-1/2}$.
+
+\begin{theorem}[Exact operator accumulation cost]\label{thm:operator}
+For a finite or infinite sequence of positive definite density matrices
+$\sigma_0,\sigma_1,\ldots$, put
+\[
+ K_s=K(\sigma_{s-1},\sigma_s),\qquad H_s=\prod_{j=1}^s K_j.
+\]
+There are accumulated ensembles $\rho_s=h_s\sigma_s$ with
+$h_0=\delta>0$, $h_s\le1$, and $\rho_s-\rho_{s-1}\succeq0$ if and only if
+$\delta H_s\le1$ for every $s$. Their unique pointwise minimal total masses
+are $h_s^*=\delta H_s$. Equivalently, the logarithmic cost is
+\begin{equation}
+ \log H_N=\sum_{s=1}^{N}\Dmax(\sigma_{s-1}\Vert\sigma_s).
+\end{equation}
+\end{theorem}
+\begin{proof}
+A single monotonicity condition is
+$h_s\sigma_s\succeq h_{s-1}\sigma_{s-1}$, equivalent to
+$h_s/h_{s-1}\ge K_s$. Taking traces shows $K_s\ge1$.
+The proof of Theorem~\ref{thm:budget} now applies verbatim to the scalar
+factors: iteration gives necessity, and choosing equality at every step
+gives positive semidefinite increments and sufficiency.
+\end{proof}
+
+For singular density matrices, the same result holds with $K_s=+\infty$
+when $\supp(\sigma_{s-1})$ is not contained in
+$\supp(\sigma_s)$, and with the inverse taken on the latter support
+otherwise. To see the obstruction, a vector in the new kernel must also
+lie in the old kernel whenever the old operator is bounded above by a
+multiple of the new one. Under support inclusion, the finite-dimensional
+restriction gives the same formula.
+
+\begin{corollary}[Data processing and trace variation]\label{cor:operatorvariation}
+For a completely positive trace-preserving map $\Lambda$,
+\[
+ K(\Lambda\sigma,\Lambda\tau)\le K(\sigma,\tau).
+\]
+Thus applying the same channel at each checkpoint cannot increase the
+optimal accumulation cost. Moreover, any feasible operator path satisfies
+\[
+ \sum_{s=1}^{N}\frac12\|\sigma_s-\sigma_{s-1}\|_1
+ \le\log(1/\delta).
+\]
+\end{corollary}
+\begin{proof}
+A positive map preserves $\sigma\preceq r\tau$, so every feasible $r$
+before the map is feasible afterward. For the variation claim, if $K_s>1$
+then
+\[
+ \sigma_s=K_s^{-1}\sigma_{s-1}+(1-K_s^{-1})\omega_s
+\]
+for a positive trace-one operator $\omega_s$. The triangle inequality and
+$\|\omega_s\|_1=\|\sigma_{s-1}\|_1=1$ give trace distance at most
+$1-K_s^{-1}$. Handle $K_s=1$ by equality, sum, and use the scalar logarithmic
+inequality from Proposition~\ref{prop:variation}.
+\end{proof}
+
+The data-processing property of max-relative entropy is known
+\cite{datta}. Here its immediate consequence is monotonicity of an entire
+accumulation budget, rather than a new entropy monotonicity theorem.
+
+\subsection{Two exact matrix examples}
+\begin{example}[A coherent excursion erased by dephasing]\label{ex:coherent}
+Let
+\[
+ \sigma_0=\sigma_2=I/2,\qquad
+ \sigma_1=\begin{pmatrix}1/2&t\\t&1/2\end{pmatrix},\qquad0<t<1/2.
+\]
+The eigenvalues of $\sigma_1$ are $1/2\pm t$. Thus
+\[
+ K_1=\frac{1}{1-2t},\quad K_2=1+2t,\quad
+ \delta_{\max}=\frac{1-2t}{1+2t}.
+\]
+At $t=1/6$ the cost is two and the maximum initial mass is $1/2$.
+Dephasing in the displayed basis sends every matrix to $I/2$ and reduces
+the cost to one. These matrices commute because the endpoints are scalar;
+the example demonstrates a coherence-sensitive cost, not noncommutation.
+\end{example}
+
+\begin{example}[A genuinely noncommuting cycle]\label{ex:noncommuting}
+Set
+\[
+ \rho=\begin{pmatrix}2/3&0\\0&1/3\end{pmatrix},\qquad
+ \sigma=\begin{pmatrix}1/2&1/6\\1/6&1/2\end{pmatrix}.
+\]
+Their commutator is nonzero. Both have determinant $2/9$, and
+\[
+ \det(r\sigma-\rho)=\det(r\rho-\sigma)
+ =\frac{4r^2-9r+4}{18}.
+\]
+The least admissible domination factor in either direction is
+$K=(9+\sqrt{17})/8$. Indeed, the determinant vanishes there and the
+Hermitian difference has positive trace, hence is positive semidefinite;
+the smaller root is below one and cannot dominate a trace-one operator.
+For the cycle $\rho\to\sigma\to\rho$,
+\[
+ G=K^2=\frac{49+9\sqrt{17}}{32},\qquad
+ \delta_{\max}=\frac{49-9\sqrt{17}}{32}.
+\]
+Dephasing turns the middle state into $I/2$ and gives the strictly smaller
+cycle cost $(4/3)(3/2)=2$. The symbolic checker verifies both determinant
+identities and the reciprocal cost exactly.
+\end{example}
+
+The operator theorem is a finite-dimensional order optimization theorem.
+It does not by itself compile every prescribed computable matrix sequence
+into a circuit over the discrete gate set of Section~\ref{sec:quantum}.
+Exact state preparation and a small Diophantine certificate for generalized
+eigenvalue maxima are separate problems.
+
+\section{Other unconventional substrates}\label{sec:substrates}
+
+The decisive property for the output-law theorem is not a conventional
+instruction set. It is an effective, nonovercounting presentation of finite
+terminal histories with computable weights. Universality is needed for the
+completeness lower bounds, but not for the positive representation theorem.
+The following applications state their semantics explicitly.
+
+\paragraph{Randomized combinator reduction.}
+A lambda, SK, SKI, or Iota reducer with a specified effective reduction
+strategy and a fair-coin branching primitive has finite syntactic
+histories and dyadic history weights. Its first-return law therefore has
+\eqref{eq:rootmass}. The random primitive and reduction strategy are part of
+the proposed extension; this is not a claim that the inspected repository
+already implements that probabilistic language. Adding probabilities does
+not excuse ambiguities between deterministic evaluation strategy and
+nondeterministic rewrite choice.
+
+\paragraph{Stochastic fractional programs.}
+One can give a FRACTRAN-style system an explicit rational random dispatcher
+between finite deterministic fractional programs, preserving each program's
+ordered divisibility semantics. A transition is then decidable arithmetic,
+with a rational branch probability. Finite histories fit our interface.
+This construction deliberately avoids saying ``choose an applicable
+fraction randomly'' without specifying how conflicts, priorities, and
+normalization are resolved. Deterministic FRACTRAN-to-Diophantine reductions
+are already present in the literature \cite{larchey-forster}; the additional
+object represented here is the probability law and its conditional boundary.
+
+\paragraph{Random local rewriting and cellular systems.}
+A finite description of each current active configuration, an effective
+finite set of next local choices, and rational transition weights are enough
+for an effective first-return presentation. Infinite configurations may
+also be admitted when a finite-history simulation and observable can be
+computed from their effective descriptions. Merely declaring an arbitrary
+infinite initial configuration does not meet that requirement.
+
+\paragraph{Continuous-time jump systems.}
+For a countable-state jump process with finitely many outgoing rational
+rates $q_{ij}$ at each effectively represented state, the next-jump
+probability is $q_{ij}/\sum_kq_{ik}$ when the denominator is positive.
+A zero-rate state is treated as absorbing. Events that reach a designated
+terminal state after finitely many jumps therefore have an effective
+rational-weight history presentation. This application uses the embedded
+jump chain. It neither assigns a terminal value to an infinite explosion
+history nor claims a result about arbitrary deadline-constrained events.
+Those questions require additional semantics and analysis.
+
+\paragraph{Robust observations of computable continuous trajectories.}
+Suppose a trajectory is supplied with an algorithm for certified evaluation
+at rational times and is continuous. Reaching an effectively open target
+at some finite time is semidecidable: enumerate rational times and certified
+interior balls, and accept once an evaluation is certified inside one.
+Continuity ensures that an actual open-target visit contains an appropriate
+rational time, including a one-sided interval at time zero. This yields a
+Diophantine reachability predicate by MRDP. It says nothing about exact
+zero crossings with no robust margin, or about differential equations whose
+solutions are not uniformly computable from the supplied data.
+
+\paragraph{The effective boundary is indispensable.}
+An arbitrary real oracle parameter can encode a non-c.e. set, and an
+observation that asks for an exact infinite-time limit can move beyond
+existential arithmetic. Such a model is not covered merely because it is
+called Turing-complete. The theorem concerns effective computational
+substrates, not every imaginable extension that contains ordinary Turing
+machines as a submodel.
+
+\section{Reproducible checks and formalization route}\label{sec:audit}
+
+\subsection{What the software actually verifies}
+The bundle contains an exact rational budget evaluator, a symbolic
+single-fold quartic compiler, a canonical prefix allocator, and an exact
+small quantum-circuit evaluator. The script \code{code/verify.py} uses a
+fixed random seed, $20260930$, for reproducible sampled tests. It also runs
+exhaustive tests that do not rely on randomness.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.35\textwidth}p{0.55\textwidth}}
+\toprule
+Check & Observed result\\
+\midrule
+Exhaustive binary histories &
+780 histories, 3,120 initial-mass cases, and 22,220 forced-pivot candidates;
+exactly one valid pivot candidate precisely in each of the 1,330 feasible
+cases.\\[3pt]
+Multi-outcome and large-integer tests &
+192 sampled schedules, including 32 additional rescalings by $10^{100}$;
+all exact invariance and feasibility checks pass.\\[3pt]
+Symbolic quartic &
+$N=2,m=2$: 11 parameters, 33 witnesses, 38 residuals, degree four, 165
+expanded monomials. All residuals vanish at the exported witness.\\[3pt]
+Mutation checks &
+Increasing each of the 33 witness coordinates separately by one is rejected.
+This is a finite robustness check, not a search of all wrong tuples.\\[3pt]
+Quadratic-field signs &
+25,921 small integer pairs cross-checked with high-precision decimal
+arithmetic; 200 near-cancelling Pell cases checked by exact identities.\\[3pt]
+Quantum circuits &
+100 sampled circuits of 30 gates; 3,000 exact norm checks pass, together with
+$H^2$, $HTH$, and a Bell-state example.\\[3pt]
+Prefix allocation &
+12 dyadic approximation stages of the $HTH$ output law; disjoint allocated
+mass is $4095/4096$.\\[3pt]
+Operator budgets &
+Four exact coherent examples and one noncommuting cycle pass symbolic
+matrix checks.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two allocated masses at the twelfth $HTH$ stage are $437/512$ and
+$599/4096$. Their sum is $4095/4096$, leaving exactly $1/4096$ unallocated
+at that finite stage. No claim is made that twelve stages already represent
+the full irrational law. The script also includes floating-point diagnostics
+for the sharpness limit in Theorem~\ref{thm:binary}; those diagnostics are
+explicitly labeled illustrative and do not support the exact proof.
+
+The detailed results and software versions are in
+\code{artifacts/verification.json}. The full finite quartic is supplied
+both as a residual specification and as an expanded expression. The code
+uses Python integers and \code{Fraction} for exact rational arithmetic;
+SymPy is used for symbolic expansion and the matrix checks.
+
+\subsection{Proof obligations suitable for Lean or Rocq}
+A direct formalization should keep the finite arithmetic layer separate
+from the analytic probability layer. The following dependency chain avoids
+requiring a large quantum semantics development before obtaining a useful
+kernel-checked result.
+
+\paragraph{Finite order and ratio layer.}
+Formalize positive rational rows, least maximizing indices, and the
+single-step equivalence
+$h'q_i\ge hp_i\ (\forall i)\iff h'\ge h\max_i(p_i/q_i)$.
+Induct on the horizon to prove the optimal product theorem. This portion
+requires finite sums, ordered fields, and finite maxima, not MRDP.
+
+\paragraph{Certificate layer.}
+Define a finite index type for parameters and witnesses, an explicit
+residual family of multivariate integer polynomials, and its sum of
+squares. Prove that natural zeros force every residual to vanish. Prove the
+selector lemma, the product invariant, and witness uniqueness. Derive the
+cardinality formulas from the index constructors rather than from an
+external count. Prove a compiler correctness theorem and use the Python
+example only as an untrusted certificate generator.
+
+\paragraph{Computability and MRDP layer.}
+Encode the allocation interpreter and the threshold semidecision procedure
+on naturals. The inspected \code{Diophantine.mrdp} interface can then
+produce the finite polynomial existence theorem. A separate circuit
+lowering theorem establishes degree at most four. This layer should not
+claim witness uniqueness for a generic MRDP construction.
+
+\paragraph{Measure and limit layer.}
+Prove the prefix-cylinder allocation invariant and its measure identity;
+then identify limits of cumulative masses with output laws. Prove the
+variation bounds and the weak-computability realization with its explicit
+nonuniform existential tail choice. Separate program extraction claims from
+existence in classical mathematics.
+
+\paragraph{Quantum layer.}
+First verify the integer-linear gate recurrences and the quadratic norm
+formula, with the state-vector dimension explicit. Then develop measured
+first-return semantics using unnormalized branch states. The
+operator-budget theorem can be formalized independently in a finite
+Hermitian matrix library.
+
+This is a plan, not delivered Lean source or a report of successful Lean
+compilation. In particular, no guessed theorem names or placeholder
+\code{sorry} proofs are included as though they were checked results.
+
+\subsection{A trust-boundary summary}
+The ordinary proofs establish the general theorems. The finite tests provide
+evidence about the supplied implementations, including arithmetic signs,
+indexing, tie resolution, and degree accounting. They cannot replace an
+inductive proof of the compiler theorem. Conversely, the MRDP existence
+proof does not certify that the software has generated a universal
+polynomial: it has not. The archive makes this separation explicit in both
+the README and the machine-readable report.
+
+\section{Further research questions}\label{sec:questions}
+
+The following questions are proposed research directions, not claims that
+their full priority or open-status history has been settled by the present
+literature search. They are ordered to put concrete extensions ahead of
+broader conjectural targets.
+
+\begin{question}[Kernel-checked unique quartic compiler]
+Can Theorem~\ref{thm:singlefold}, including invalid-input rejection and the
+exact count $5Nm+m+4N+3$, be formalized and connected to an executable
+polynomial exporter in ProveIt? A decisive deliverable would be a checked
+reflection theorem accepting the supplied $N=2,m=2$ residual certificate.
+\end{question}
+The finite positivity and tie-breaking lemmas make this the most sharply
+specified implementation target. It need not wait for quantum semantics or
+infinite probability theory.
+
+\begin{question}[Smaller canonical arithmetic certificates]
+Can the $X,Y$ cross-product witnesses or the selectors be eliminated while
+retaining degree at most four, natural-witness uniqueness, and a linear-size
+arithmetic circuit? What trade-off between witness count, degree, and
+coefficient size is optimal for this specific normalization predicate?
+\end{question}
+This is a finite compiler optimization problem. A mere MRDP existence
+argument cannot answer its size or uniqueness requirements.
+
+\begin{question}[Sharp multi-outcome variation budgets]
+For a specified initial vector $p_0$, determine the sharp supremum of
+$\sum_s\TV(p_{s-1},p_s)$ under
+$\sum_s\Dinf(p_{s-1}\Vert p_s)\le B$. Does a useful potential formula
+extend the balanced binary constant $1/2$ to $m\ge3$, and what paths are
+asymptotically extremal?
+\end{question}
+Proposition~\ref{prop:variation} gives the universal upper bound $B$ but
+Theorem~\ref{thm:binary} shows that it can be substantially nonsharp when
+the starting law is fixed.
+
+\begin{question}[Uniform high-success realization]
+What effective additional data are necessary and sufficient to turn the
+existential high-success realization in
+Theorem~\ref{thm:weakclassification} into a uniform compiler? Natural input
+formats include certified tail-variation bounds, an interior interval, or a
+computable bound on the remaining logarithmic cost.
+\end{question}
+The present theorem explicitly leaves tail selection nonuniform. A solution
+should specify its representation of real numbers and its promised inputs;
+otherwise an apparent uniformization may hide an oracle.
+
+\begin{question}[Exact symbolic infinite histories]
+For which algorithmically described rational paths can $G_\infty$ be
+computed, or bounded sharply enough to synthesize a desired success floor?
+Examples include periodic transformations, linear recurrences, and
+piecewise-rational paths with summable perturbations.
+\end{question}
+Finite prefix feasibility is decidable and uniquely certified here.
+Certifying every prefix with one finite object is an additional mathematical
+problem, not an automatic consequence of those certificates.
+
+\begin{question}[Operator certificates with controlled multiplicity]
+Can an explicit quartic natural-witness system certify the optimal factors
+$K_s$ for algebraic density matrices, including support changes, without
+uncontrolled multiplicity from eigenvector choices? Can canonical principal
+minor or characteristic-polynomial data replace arbitrary spectral bases?
+\end{question}
+The scalar earliest-maximum rule has no immediate analogue for degenerate
+eigenspaces. Any proposed uniqueness theorem must address that issue rather
+than merely add spectral witnesses.
+
+\begin{question}[Quantum front ends with structural compression]
+Which circuit classes admit polynomial-size exact Diophantine certificates
+that avoid the full $2^n$ state vector? Candidate interfaces include
+stabilizer structure, bounded tensor-network width, and a bounded number of
+non-Clifford gates, with all compression assumptions stated explicitly.
+\end{question}
+The current state-vector checker is exponential. A useful result would
+preserve exact zero tests and Born probabilities while making the source of
+any speedup mathematically visible.
+
+\begin{question}[Interactive and compositional semantics]
+How much of the projected-root representation survives for interactive
+processes with adaptive inputs, correlated outputs, or sequential
+conditioning? Can a compositional representation preserve joint laws rather
+than only a terminal one-output marginal?
+\end{question}
+Independent samplers for marginals are not enough. A solution must preserve
+the common probability space or the appropriate quantum instrument.
+
+\begin{question}[Direct universal substrate polynomials]
+Can one produce a fully expanded, audited quartic polynomial for a small
+measured quantum controller or a stochastic fractional language, avoiding a
+large generic interpreter? Which operation counts can be proved rather than
+estimated from informal circuit descriptions?
+\end{question}
+Theorem~\ref{thm:universal} gives a fixed polynomial in principle, not its
+coefficients or a competitive universal witness count.
+
+\begin{question}[Counting executions without counting arithmetic witnesses]
+Can canonical finite source certificates be composed into useful
+resource-bounded counting reductions while preserving projected-event
+weights? Under what explicit restrictions can one obtain a genuinely
+parsimonious unbounded representation?
+\end{question}
+The finite single-fold construction here is not a general unbounded
+single-fold theorem. Any extension must confront that distinction directly.
+
+\begin{question}[Continuous-time and robust physical semantics]
+Develop certified first-hit and deadline probabilities for effective jump
+systems and computable flows, with explicit treatments of explosion,
+Zeno behavior, exact equality observations, and robustness margins. Which
+observables remain c.e. threshold events, and which cross the normalization
+boundary proved here?
+\end{question}
+The finite-first-return interface identifies a tractable starting point;
+it does not prescribe a physically preferred semantics for limit events.
+
+\begin{question}[An algebra of probability specifications]
+Build a specification language that tracks whether a quantity is left-c.e.,
+right-c.e., weakly computable, or computable, and automatically assigns a
+sound arithmetic quantifier class to each comparison. Can successful
+normalization-budget certificates improve the inferred class for useful
+restricted program families?
+\end{question}
+Such a system would prevent the common mistake of compiling every
+probabilistic specification to a single existential equation merely
+because its source language is Turing-complete.
+
+\section{Conclusion}
+The useful extension of Diophantine computation is not just another
+unconventional universal instruction set. It is a semantics-preserving
+account of which quantitative assertions admit finite arithmetic witnesses.
+Effective output laws admit a common projected-root representation, but
+normalization can raise a strict threshold from $\sigone$ to
+$\sigtwo$, even with a success guarantee arbitrarily close to one.
+
+The exact normalization budget supplies a constructive organizing theorem:
+accumulated mass can follow a prescribed positive conditional path exactly
+when its product of maximal coordinate ratios fits the available budget.
+That theorem yields a direct, unique-witness quartic compiler, a sharp
+binary oscillation bound, an exact weak-computability characterization,
+and a noncommutative operator-order extension. The explicit finite compiler
+and tests are ready to serve as a concrete formalization target; the broader
+universal and quantum results retain their stated existence and semantic
+boundaries.
+
+\appendix
+\section{Using the archive}\label{app:archive}
+The archive is self-contained for reading the article and rebuilding its
+PDF with a conventional LaTeX installation. Its main files are:
+\begin{center}
+\small
+\begin{tabular}{p{0.42\textwidth}p{0.48\textwidth}}
+\toprule
+Path & Purpose\\
+\midrule
+\code{article.tex}, \code{article.pdf} & Source and typeset manuscript.\\
+\code{code/normalization.py} & Exact budget evaluator and residual compiler.\\
+\code{code/quantum_exact.py} & Exact ring arithmetic and small state vectors.\\
+\code{code/prefix_allocator.py} & Canonical labeled prefix allocation.\\
+\code{code/verify.py} & Reproducible test and artifact generator.\\
+\code{artifacts/verification.json} & Test counts, versions, and limitations.\\
+\code{README.md} & Build, execution, and scope instructions.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two files beginning \code{normalization_quartic_N2_m2} contain the
+residual system with example assignment and the full expanded polynomial.
+The file \code{HTH_prefix_allocation.json} records the finite prefix-code
+example. Rebuild from the archive root with
+\begin{verbatim}
+python code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The Python scripts require Python 3.10 or newer and SymPy. Tests were run
+with Python 3.13.5 and SymPy 1.14.0. A newly generated report records the
+versions actually used. The source code uses zero-based coordinate indices;
+the mathematical exposition uses indices $1,\ldots,m$. The earliest-maximum
+rule is the same ordering in both conventions.
+
+\section{Source and verification notes}
+The repository was inspected at the pinned commit printed in
+Section~\ref{sec:context}. Bibliography entries for repository sources use
+that commit rather than a moving branch. The references on weakly computable
+reals, probabilistic-program hardness, exact Clifford+$T$ arithmetic, and
+max-relative entropy provide the established context; the proofs of the
+specific budget and compiler statements appear in full in this manuscript.
+
+No claim is made that the literature search establishes first publication
+of every consequence proved here. In particular, general c.e.-to-Diophantine
+existence, fair-coin representation of lower semicomputable output laws,
+and the entropy formulas are not advertised as new discoveries. The primary
+new deliverable of this work is the explicit synthesis of these ideas with
+the canonical finite normalization certificate, including its verified
+implementation and its carefully separated infinite semantics.
+
+\begin{thebibliography}{99}
+\small\raggedright
+\setlength{\itemsep}{3pt}
+\setlength{\parskip}{0pt}
+\bibitem{proveit-mrdp}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{Diophantine/MRDP.lean}.
+ProveIt repository, snapshot \snapshot, inspected 30 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f608f1cb3c5be8a736df1328c01b293aabfccf4e/Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean}{Pinned source: \texttt{Diophantine/MRDP.lean}}.
+
+\bibitem{proveit-readme}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{Hilbert's tenth problem: Jones's articles on Diophantine representation}.
+Project README, pinned ProveIt snapshot, inspected 30 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f608f1cb3c5be8a736df1328c01b293aabfccf4e/Computability/HilbertTenthProblem/README.md}{Pinned project README}.
+
+\bibitem{larchey-forster}
+Dominique Larchey-Wendling and Yannick Forster.
+Hilbert's Tenth Problem in Coq (Extended Version).
+\emph{Logical Methods in Computer Science} 18(1), article 35, 2022.
+\url{https://doi.org/10.46298/lmcs-18(1:35)2022}.
+\url{https://arxiv.org/abs/2003.04604}.
+
+\bibitem{ambos-spies}
+Klaus Ambos-Spies, Klaus Weihrauch, and Xizhong Zheng.
+Weakly computable real numbers.
+\emph{Journal of Complexity} 16(4), 676--690, 2000.
+\url{https://doi.org/10.1006/jcom.2000.0561}.
+The bounded-variation characterization is also explicitly stated and
+attributed in \cite{ng-stephan-wu}.
+
+\bibitem{ng-stephan-wu}
+Keng Meng Ng, Frank Stephan, and Guohua Wu.
+Degrees of weakly computable reals.
+In \emph{Logical Approaches to Computational Barriers}, CiE 2006.
+\url{https://doi.org/10.1007/11780342_43}.
+Author manuscript:
+\url{https://personal.ntu.edu.sg/kmng/Files/Papers/ng-stephan-wu-cie-2006.pdf}.
+
+\bibitem{kaminski-katoen}
+Benjamin Lucien Kaminski and Joost-Pieter Katoen.
+On the hardness of almost-sure termination.
+MFCS 2015; author manuscript arXiv:1506.01930.
+\url{https://arxiv.org/abs/1506.01930}.
+
+\bibitem{giles-selinger}
+Brett Giles and Peter Selinger.
+Exact synthesis of multiqubit Clifford+$T$ circuits.
+\emph{Physical Review A} 87, 032332, 2013.
+\url{https://doi.org/10.1103/PhysRevA.87.032332}.
+\url{https://arxiv.org/abs/1212.0506}.
+
+\bibitem{datta}
+Nilanjana Datta.
+Min- and max-relative entropies and a new entanglement monotone.
+\emph{IEEE Transactions on Information Theory} 55(6), 2816--2826, 2009.
+\url{https://doi.org/10.1109/TIT.2009.2018325}.
+\url{https://arxiv.org/abs/0803.2770}.
+\bibitem{matiyasevich}
+Yu. V. Matiyasevich.
+Diophantine representation of enumerable predicates.
+\emph{Mathematics of the USSR-Izvestiya} 5(1), 1--28, 1971.
+\url{https://doi.org/10.1070/IM1971v005n01ABEH001004}.
+\url{https://www.mathnet.ru/eng/im1910}.
+\end{thebibliography}
+\end{document}

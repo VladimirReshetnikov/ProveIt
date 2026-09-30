@@ -1,0 +1,1105 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{aliascnt}
+\usepackage[capitalise,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{163746}
+\definecolor{accent}{HTML}{236B79}
+\definecolor{pale}{HTML}{F0F5F7}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Canonical Trace Polytopes}
+\fancyhead[R]{\small Research memorandum}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt plus 1pt}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2.2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{Corollary}{Corollaries}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{Definition}{Definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{Example}{Examples}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Research question}
+\aliascntresetthe{question}
+\crefname{question}{Research question}{Research questions}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{Remark}{Remarks}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Net}{\mathcal N}
+\newcommand{\NF}{\operatorname{NF}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\Sol}{\operatorname{Sol}_{\N}}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\parikh}{\operatorname{Par}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\sharpP}{\mathsf{\#P}}
+\newcommand{\ce}{\text{c.e.}}
+\newtcolorbox{resultbox}{colback=pale,colframe=accent,boxrule=0.6pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\hypersetup{pdftitle={Canonical Trace Polytopes: Witness-Preserving Diophantine Representations of Computational Substrates},pdfauthor={Research memorandum prepared for Vladimir Reshetnikov},pdfsubject={Petri nets, trace monoids, parsimonious arithmetic encodings, finite-fold Diophantine representations}}
+\begin{document}
+\begin{titlepage}
+\vspace*{11mm}
+{\color{accent}\large\scshape ProveIt research extension}\par
+\vspace{8mm}
+{\color{ink}\fontsize{29}{34}\selectfont\bfseries Canonical Trace\par Polytopes}\par
+\vspace{6mm}
+{\Large Witness-Preserving Diophantine Representations\par of Computational Substrates}\par
+\vspace{8mm}
+{\large Research memorandum prepared for Vladimir Reshetnikov}\par
+{\large September 30, 2026}\par
+\vspace{8mm}
+\hrule
+\vspace{6mm}
+\begin{abstract}
+An existential Diophantine representation says that a computation exists; it need not preserve which computation occurred, how many computations occurred, or how many arithmetic witnesses describe it. We construct a stronger, bounded-horizon representation. For a Petri net with $d$ places, $m$ distinctly labelled transitions, and horizon $T$, an explicit convex quadratic integer polynomial has its nonnegative integer zeros in bijection with the commutation classes of enabled length-$T$ executions between prescribed endpoints. The construction uses
+\[
+(2T+1)d+(7T+1)m
+\]
+unknowns. Its nonnegative real zero set is a bounded rational polytope, and every slack variable is uniquely determined by the canonical execution. A smaller quartic presentation is also given.
+
+We derive an exact all-marking criterion for permissible commutations, realize arbitrary independence graphs by unit-weight nets, and prove an exponential automaton-state lower bound that explains the use of Boolean memory rather than an explicitly expanded automaton. Counting classes remains $\sharpP$-complete even for unit-weight, $1$-safe nets and their maximal static commutation relation. The same witness-preserving arithmetic methods apply to bounded counter programs, Boolean circuits, cellular automata, and explicitly size-bounded rewriting.
+
+Finally, we prove a precise boundary theorem: a single finite-fold polynomial representation of the decidable verifier for canonical first-halting universal computations is equivalent to the general finite-fold Diophantine conjecture; the analogous statement holds for single-fold representations. The bounded constructions do not cross this boundary. Complete mathematical proofs, an exact-arithmetic reference implementation, reproducible finite checks, and a formalization and research agenda are included.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\small\textbf{Status.} This is a proved theorem package and executable research prototype, not a claimed resolution of the general finite-fold or single-fold conjecture. Classical ingredients are identified in the text. Global priority for the combined results has not been established, and the new proofs have not been checked in Lean.
+\end{resultbox}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{The research problem and its relation to ProveIt}
+\label{sec:intro}
+\subsection{Beyond an existence-only translation}
+A conventional application of the Matiyasevich--Robinson--Davis--Putnam theorem turns an effectively enumerable reachability predicate into a polynomial solvability problem. It does not, by itself, identify polynomial solutions with executions. One execution can acquire many auxiliary encodings; a nondeterministic execution may have many schedules; and a scheduling quotient can introduce another layer of multiplicity.
+
+For a compiler intended for proofs, counting, or optimization, the natural stronger specification is a bijection
+\begin{equation}\label{eq:goal}
+\{\hbox{computational objects of interest}\}
+\ \longleftrightarrow\
+\{z\in\N^n:P(z)=0\}.
+\end{equation}
+The entire right-hand tuple must be determined, not merely its projection to a few distinguished coordinates. Otherwise even the number of solutions of the equation can be unrelated to the number of computations.
+
+Here the main computational objects are executions modulo specified swaps of adjacent transitions. We resolve four concrete design questions. First, which swaps preserve enabledness at \emph{every} marking? Second, how can one enforce one representative per commutation class without expanding an exponentially large automaton? Third, can all arithmetic auxiliaries be unique while keeping the polynomial degree small? Fourth, what does this genuinely bounded construction imply---and not imply---about a single polynomial representing arbitrarily long universal computations?
+
+\subsection{Repository baseline and the extension developed here}
+The inspected ProveIt snapshot has commit
+\begin{center}
+\small\code{e8bb0931d67f80d9fce87a8cddb0f661ff19f956}.
+\end{center}
+Its Hilbert-tenth-problem development contains theorems
+\code{boundedForall_dioph}, \code{exactIter_dioph}, and
+\code{existsExactIter_dioph}; the last two provide Diophantine exact iteration and finite reachability under appropriate Diophantine substitutions \cite{proveit-trace}. These are the correct existing interfaces to reuse for existence-level consequences.
+
+The present article adds an explicit \emph{semantic fibre} specification. We keep the transition word, its states, the normal-form recognizer, and every auxiliary variable visible, prove unique extension, and only then collect the constraints into one polynomial. The bounded construction is elementary and does not need MRDP. Its relation to the repository is therefore complementary: it supplies a structured front end and a stronger correctness theorem, rather than another proof of existential trace closure.
+
+The repository's status register distinguishes completed results from pending formalization \cite{proveit-status}. No repository build was performed for this article. Statements about its interfaces are based on the inspected sources, not on a new independent kernel audit. No result below relies on an unverified numerical optimization in the repository.
+
+\subsection{Theorems, classical ingredients, and novelty}
+The exact encoding, its size accounting, its unique-extension proof, the graph realization, the memory lower bound, and the particular counting reduction are all supplied in full. They form a concrete extension suitable for review and implementation. We do not claim that an exhaustive literature search establishes priority for each individual observation.
+
+The trace-monoid forbidden-factor characterization of lexicographic normal forms is classical; an explicit published form appears in Barth\'elemy \cite{barthelemy}. Sum-of-squares conjunction and arithmetic encodings of Boolean constraints are also standard ideas. Register-machine Diophantine representations have a long history, including Jones--Matiyasevich \cite{jones-mat}. The contribution pursued here is the \emph{combined guarantee}: exact semantic commutation, canonical representative selection, no free witnesses, bounded real geometry, and explicit separation from fixed-dimensional finite-fold compression.
+
+The distinction between polynomial representability and finite-fold or single-fold representability is essential. Matiyasevich discusses this distinction and the associated conjectures \cite{matiyasevich2010}; Cantone, Cuzziol, and Omodeo discuss recent single-fold specification methods and the danger of introducing uncontrolled witnesses \cite{cco2024}. Our boundary theorem concerns these stronger specifications. It is not presented as their solution.
+
+\section{Conventions and witness-preserving arithmetic}
+\label{sec:conventions}
+Throughout, $\N=\{0,1,2,\ldots\}$. All unknowns are nonnegative integers unless a real relaxation is explicitly being considered. Polynomial equalities, including their subtractions, are interpreted in $\Z$ or $\R$, not using truncated subtraction on $\N$. A transition label identifies a transition, not merely its visible action name; distinct transitions with identical effects remain distinct labels.
+
+\begin{definition}[Representations and fibres]
+A polynomial $P(x,z)\in\Z[x,z]$ represents a relation $R$ if
+\[
+R(x)\quad\Longleftrightarrow\quad\exists z\in\N^n\;P(x,z)=0.
+\]
+It is \emph{finite-fold} if for each fixed $x$ there are only finitely many such $z$, and \emph{single-fold} if there is at most one. A representation of a set of computational objects is \emph{parsimonious} here when an explicitly defined decoding map is a bijection from its entire natural zero set to those objects.
+\end{definition}
+
+A finite number $n$ of witness \emph{coordinates} says nothing about the cardinality of a fibre. Even a one-variable equation such as $0z=0$ has infinitely many natural solutions. Conversely, the polynomials in the main theorem generally have many solutions at a fixed pair of endpoints: one for each execution class. Their unique-extension property is conditional on the selected canonical word.
+
+\begin{lemma}[Unique slack and scalarization]\label{lem:slack}
+Suppose $L_1(z),\ldots,L_s(z)$ are integer polynomials. Then
+\[
+\sum_{j=1}^s L_j(z)^2=0\quad\Longleftrightarrow\quad
+L_j(z)=0\text{ for every }j
+\]
+over $\Z$ and over $\R$. For integer-valued expressions $A,B$, the inequality $A\le B$ is equivalent to the existence of a \emph{unique} $s\in\N$ satisfying $A+s=B$.
+\end{lemma}
+\begin{proof}
+Every square is nonnegative. A sum of nonnegative reals is zero exactly when every summand is zero. The slack is necessarily $B-A$, which is a natural number exactly under the stated inequality.
+\end{proof}
+
+\begin{lemma}[Affine Boolean conjunction]\label{lem:and}
+For fixed $p,q\in\{0,1\}$, the natural solutions of
+\begin{equation}\label{eq:and}
+p=u+s_1,\qquad q=u+s_2,\qquad
+1+u=p+q+s_3
+\end{equation}
+consist of exactly one tuple $(u,s_1,s_2,s_3)$, with $u=pq$.
+For real $p,q\in[0,1]$, the same equations imply
+\[
+\max(0,p+q-1)\le u\le\min(p,q).
+\]
+\end{lemma}
+\begin{proof}
+Nonnegativity gives $u\le p$, $u\le q$, and $u\ge p+q-1$. For Boolean inputs these bounds determine $u$: it is zero when either input is zero and one when both are one. Each slack then has a prescribed value. The displayed real bounds are precisely the same inequalities.
+\end{proof}
+
+This small gadget is responsible for the quadratic, rather than quartic, final polynomial. We do not use a nonunique decomposition into sums of squares to enforce nonnegativity: natural-variable domains provide it directly. Replacing all natural variables by arbitrary integer variables would invalidate the later one-hot and slack arguments. Replacing a natural variable by a sum of four squares preserves existence but not the claimed bijection.
+
+\section{An exact commutation test for Petri transitions}
+\label{sec:commutation}
+\subsection{Model and sequential demands}
+Let $\Net$ have $d\ge0$ places and a finite ordered alphabet
+$\A=\{1,\ldots,m\}$ of transitions, where $m\ge1$. Transition $a$ has consumption and production vectors
+\[
+c_a,v_a\in\N^d.
+\]
+At a marking $x\in\N^d$ it is enabled exactly when $x\ge c_a$ coordinatewise, and its result is
+\[
+a(x)=x-c_a+v_a.
+\]
+Thus every label acts as a partial function. In a word $ab$, transition $a$ is performed first.
+
+For a vector $y\in\Z^d$, write $y_+$ for its coordinatewise positive part. Define the \emph{sequential demand}
+\begin{equation}\label{eq:demand}
+D_{ab}=c_a+(c_b-v_a)_+
+      =\max(c_a,c_a+c_b-v_a).
+\end{equation}
+
+\begin{theorem}[Exact all-marking commutation criterion]\label{thm:commute}
+The two-step word $ab$ is enabled at $x$ if and only if $x\ge D_{ab}$. Transitions $a,b$ commute as partial functions if and only if
+\begin{equation}\label{eq:imax}
+D_{ab}=D_{ba}.
+\end{equation}
+Consequently
+\[
+I_{\max}=\{(a,b):a\ne b,\ D_{ab}=D_{ba}\}
+\]
+is the maximal symmetric irreflexive, context-independent relation whose adjacent swaps preserve enabledness and final markings for all starting markings. It can be computed using $O(dm^2)$ coordinate comparisons and arithmetic operations.
+\end{theorem}
+\begin{proof}
+The two enabling conditions are $x\ge c_a$ and
+$x-c_a+v_a\ge c_b$. Their conjunction is exactly
+$x\ge\max(c_a,c_a+c_b-v_a)=D_{ab}$. Whenever both orders are enabled they have the same result,
+\[
+x-c_a+v_a-c_b+v_b.
+\]
+They are therefore the same partial function exactly when their domains agree. Two principal coordinate orthants $\{x:x\ge D\}$ and $\{x:x\ge E\}$ agree exactly when $D=E$: inclusion in one direction forces the corresponding coordinate inequality by testing the corner of the smaller orthant. This proves necessity as well as sufficiency.
+
+A swap inside a longer word has a common prefix marking. Equality of the two partial maps preserves whether the two-step fragment exists and, if it exists, the marking at the beginning of the unchanged suffix. Hence every pair in the displayed relation is sound in all contexts. Conversely, a relation sound in every context is sound for the empty prefix and suffix at every marking, so every one of its pairs satisfies \eqref{eq:imax}. Computing both demand vectors for each pair gives the operation bound.
+\end{proof}
+
+The operation bound is not a claim of constant-cost arithmetic on unbounded integers; the bit complexity includes the arc-weight bit lengths. Only additions, comparisons, and positive parts of input-size integers are needed.
+
+\begin{example}[Why effect vectors are insufficient]
+On one place let $a$ produce a token and let $b$ consume a token:
+\[
+(c_a,v_a)=(0,1),\qquad(c_b,v_b)=(1,0).
+\]
+The net changes $+1$ and $-1$ commute algebraically, but $ab$ is enabled at marking zero and $ba$ is not. Indeed $D_{ab}=0$ while $D_{ba}=1$.
+\end{example}
+
+\begin{remark}[Sequential commutation is not simultaneous independence]
+The relation in \cref{thm:commute} means equality of sequential partial maps. It is not a claim that the two transitions can fire simultaneously, nor that their token occurrences are causally independent in an unfolding. Two pure consumers sharing a place satisfy $D_{ab}=c_a+c_b=D_{ba}$, although they compete for the same resource. The quotient in this article is explicitly the sequential commutation quotient.
+\end{remark}
+
+\subsection{There is no hidden graph restriction}
+\begin{theorem}[Realizing arbitrary independence graphs]\label{thm:graph}
+Every symmetric irreflexive relation $I$ on $m$ labels is exactly $I_{\max}$ for a Petri net with unit arc weights and at most $\binom m2$ places.
+\end{theorem}
+\begin{proof}
+For each unordered nonedge $\{a,b\}$, with $a<b$, introduce a private place $p_{ab}$. Transition $a$ produces one token there, transition $b$ consumes one token there, and all other transitions leave it untouched. At this coordinate $D_{ab}=0$ and $D_{ba}=1$, so the nonedge is not in $I_{\max}$.
+
+If $\{a,b\}$ is an edge of $I$, no private place is assigned to this pair. At every existing place, at most one of these two transitions acts. A transition and an identity action have equal demands in either order. Thus all coordinates satisfy $D_{ab}=D_{ba}$, and the pair belongs to $I_{\max}$. The arcs have weights zero or one, and there is one place per nonedge.
+\end{proof}
+
+For a complete graph, the construction has zero places and all transitions are identity actions. An unused dummy place can be added when a convention requires a nonempty place set; this has no semantic effect. The theorem concerns commutation at all markings, not boundedness or safety from a particular initial marking.
+
+\section{Canonical schedules with linear Boolean memory}
+\label{sec:normal}
+Fix any symmetric irreflexive $I\subseteq I_{\max}$. On words over $\A$, let $\equiv_I$ be the equivalence relation generated by adjacent swaps $ab\leftrightarrow ba$ for $(a,b)\in I$. Equivalent words have equal length and equal multiplicities of all labels. Every class of words of length $T$ is finite and has a unique lexicographically least word, denoted its normal form.
+
+\begin{lemma}[Execution invariance]\label{lem:invariance}
+If $w\equiv_I w'$, then $w$ is enabled from $M$ if and only if $w'$ is, and their final markings agree whenever they are enabled.
+\end{lemma}
+\begin{proof}
+Apply \cref{thm:commute} to each generating swap and compose the resulting partial-function equalities.
+\end{proof}
+
+\subsection{The forbidden-factor test}
+The next characterization is a classical trace-language fact \cite{barthelemy}; we record a proof to make its use in the compiler explicit.
+
+\begin{lemma}[Lexicographic forbidden factors]\label{lem:forbidden}
+A word is not lexicographically least in its $I$-class if and only if it has a factor
+\begin{equation}\label{eq:forbidden}
+bua,\qquad a<b,\quad(a,b)\in I,\quad
+(a,c)\in I\text{ for every letter }c\text{ of }u.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Such a factor allows the final $a$ to move left across $u$ and $b$, making the word smaller. Conversely, order the occurrences of a word by the transitive closure of $i<j$ whenever their labels do not commute. Equivalent words are precisely the labelled linear extensions of this occurrence order: adjacent incomparable swaps preserve it, and moving the first occurrence of a target linear extension to the front, then inducting, connects any two extensions.
+
+If the given extension is not lexicographically least, consider its first nongreedy choice. A later occurrence with smaller label $a$ was already available. It is incomparable with every occurrence skipped before reaching it, since a predecessor would contradict availability and a successor cannot occur earlier in the given extension. Hence all these skipped labels commute with $a$. The first skipped label is some $b>a$, giving \eqref{eq:forbidden}.
+\end{proof}
+
+\begin{example}[Adjacent inversion checks miss normal-form violations]\label{ex:adjacent}
+Let $a<b<c$, with $aIb$ and $bIc$ but not $aIc$. The word $cab$ has no adjacent decreasing independent pair: $ca$ is dependent and $ab$ is increasing. Nevertheless
+\[
+cab\equiv_I cba\equiv_I bca,
+\]
+and $bca$ is lexicographically smaller. Normalization must remember more than the immediately preceding label.
+\end{example}
+
+\subsection{A forbidden-set recurrence}
+For each candidate next label $a$, keep one flag $F_a$. After a prefix $w$, set $F_a(w)=1$ exactly when $w$ has a suffix $bu$ with
+\[
+b>a,\qquad aIb,\qquad\hbox{every letter of }u\hbox{ independent of }a.
+\]
+The empty suffix $u$ is permitted. All flags initially vanish. Appending $a$ is forbidden precisely when $F_a=1$.
+
+\begin{proposition}[Exact flag update]\label{prop:flags}
+On appending a label $b$, the flags change by
+\begin{equation}\label{eq:flag-update}
+F'_a=\ind_{aIb}\bigl(\ind_{a<b}\mathbin{\lor}F_a\bigr).
+\end{equation}
+A word is a normal form if and only if no step appends a label whose old flag is one.
+\end{proposition}
+\begin{proof}
+If $a$ and $b$ are dependent, any suffix whose letters must commute with $a$ is broken, and $b$ itself cannot start a new forbidden suffix. If $aIb$ and $a<b$, the one-letter suffix $b$ starts such a suffix regardless of the old flag. If $aIb$ and $b<a$, the new letter can only prolong a previously existing suffix, not start one. These are exactly the three cases in \eqref{eq:flag-update}. The last assertion is \cref{lem:forbidden} applied at the right endpoint of every forbidden factor.
+\end{proof}
+
+For arithmetic use, at step $i$ let $e_{i,b}$ be one-hot selectors. Write
+\begin{equation}\label{eq:CH}
+C_{i,a}=\sum_{b:aIb}e_{i,b},\qquad
+H_{i,a}=\sum_{b>a:aIb}e_{i,b},\qquad
+W_{i,a}=C_{i,a}-H_{i,a}.
+\end{equation}
+On a natural one-hot assignment, $C,H,W$ are Boolean, $H\le C$, and $H$ and $W$ cannot both equal one. The recurrence is
+\begin{equation}\label{eq:flag-poly}
+F_{i+1,a}=H_{i,a}+W_{i,a}F_{i,a}.
+\end{equation}
+It uses only $m$ bits of state. All indices range over $i=0,\ldots,T-1$ unless indicated otherwise.
+
+\subsection{Why an exponentially large automaton is avoidable but real}
+\begin{theorem}[Exponential state lower bound]\label{thm:memory}
+For every $k\ge1$ there is an independence relation on $2k$ ordered labels whose language of lexicographic normal forms requires at least $2^k$ nonrejecting states in any deterministic finite automaton. Thus any deterministic finite-state implementation requires at least $k$ bits of memory in the worst case. The $m$ flags of \cref{prop:flags} are optimal in order of growth, up to a constant factor.
+\end{theorem}
+\begin{proof}
+Order the alphabet as
+\[
+a_1<b_1<a_2<b_2<\cdots<a_k<b_k.
+\]
+Let $a_iIb_j$ exactly when $j\le i$, impose symmetry, and allow no independence between two $a$'s or between two $b$'s. For $S\subseteq\{1,\ldots,k\}$, let $w_S$ consist of the letters $b_j$ with $j\in S$, in decreasing index order. Each $w_S$ is normal, since all $b$-letters are dependent.
+
+After this prefix, $F_{a_i}=1$ exactly when $i\in S$. Any selected $b_j$ with $j>i$ is dependent with $a_i$ and occurs before all smaller indices; it cannot leave a final flag. The letter $b_i$, if present, sets the flag. Every later $b_j$ has $j<i$, commutes with $a_i$, and is smaller than $a_i$, so it preserves but does not set the flag. Therefore $w_Sa_i$ is normal exactly when $i\notin S$.
+
+For distinct $S,S'$, choose $i$ in their symmetric difference. The continuation $a_i$ is accepted after exactly one of $w_S,w_{S'}$. A deterministic automaton must assign distinct states to these $2^k$ prefixes. They are all accepted prefixes, so these are nonrejecting states. A device with $b$ bits has at most $2^b$ states, giving $b\ge k$.
+\end{proof}
+
+By \cref{thm:graph}, these difficult relations occur as exact semantic commutation graphs of unit-weight Petri nets. This lower bound is not a lower bound on the number of unbounded arithmetic variables: one integer can store many bits. It specifically explains why expanding the recognizer into one variable per automaton state would be the wrong compiler architecture.
+
+\section{A parsimonious quadratic encoding of raw executions}
+\label{sec:raw}
+Fix a net, natural endpoints $M,N\in\N^d$, and an exact horizon $T\in\N$. Introduce the variables
+\[
+x_{i,p}\quad(0\le i\le T),\qquad
+r_{i,p}\quad(0\le i<T),\qquad
+e_{i,a}\quad(0\le i<T),
+\]
+where $1\le p\le d$ and $1\le a\le m$. They all range over $\N$. The equations are
+\begin{align}
+x_{0,p}&=M_p,&x_{T,p}&=N_p,\label{eq:endpoints}\\
+\sum_{a=1}^m e_{i,a}&=1,\label{eq:onehot}\\
+x_{i,p}&=\sum_a c_{a,p}e_{i,a}+r_{i,p},\label{eq:consume}\\
+x_{i+1,p}&=r_{i,p}+\sum_a v_{a,p}e_{i,a}.\label{eq:produce}
+\end{align}
+Let $P_{\mathrm{raw}}$ be the sum of squares of the left-minus-right residuals of these equations.
+
+\begin{theorem}[Exact raw-run fibres]\label{thm:raw}
+The natural zeros of $P_{\mathrm{raw}}$ are in explicit bijection with the enabled length-$T$ transition words taking $M$ to $N$. The polynomial has degree at most two. The displayed, unoptimized presentation has
+\begin{align*}
+V_{\mathrm{raw}}&=(2T+1)d+Tm,\\
+R_{\mathrm{raw}}&=2(T+1)d+T
+\end{align*}
+variables and squared residuals, respectively.
+\end{theorem}
+\begin{proof}
+A natural solution of \eqref{eq:onehot} has exactly one coordinate equal to one and all others zero. Let $a_i$ be its selected label. Equations \eqref{eq:consume} and the nonnegativity of $r$ give $x_i\ge c_{a_i}$, so the step is enabled. They also force
+\[
+r_i=x_i-c_{a_i},\qquad x_{i+1}=x_i-c_{a_i}+v_{a_i}.
+\]
+Together with \eqref{eq:endpoints}, this decodes a valid execution.
+
+Conversely, a valid word fixes the selectors. Starting from $x_0=M$, it uniquely determines each marking $x_i$ and then each remainder $r_i$. Enabledness guarantees that these are natural numbers. They satisfy every equation, and there are no other variables. This proves both existence and uniqueness of extension. All residuals are affine, so their squared sum has degree at most two. Counting the three variable arrays and the equations gives the formulas.
+\end{proof}
+
+\begin{lemma}[Uniform coordinate bounds]\label{lem:height}
+Every natural solution of \eqref{eq:endpoints}--\eqref{eq:produce}, and every nonnegative real solution of these same equations, satisfies
+\begin{equation}\label{eq:height}
+0\le x_{i,p},r_{i,p}\le B_p:=M_p+T\max_a v_{a,p},
+\qquad 0\le e_{i,a}\le1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The selector sum bounds each nonnegative selector by one. From \eqref{eq:consume}, $0\le r_{i,p}\le x_{i,p}$, and from \eqref{eq:produce},
+\[
+x_{i+1,p}\le x_{i,p}+\max_a v_{a,p}.
+\]
+Induction from $M_p$ proves the sharper bound with $i$ in place of $T$ for $x_i$, and hence the stated common bound.
+\end{proof}
+
+The raw-run encoding already avoids a frequent error: gating a separate transition equation by a selector while leaving inactive-branch auxiliaries free. There is only one enabling remainder per place and time, and it belongs to the selected step.
+
+\section{Canonical traces: compact quartic and convex quadratic forms}
+\label{sec:main}
+\subsection{A small quartic presentation}
+Add the flag variables $f_{i,a}\in\N$ for $0\le i\le T$. Besides the raw-run equations, impose
+\begin{align}
+f_{0,a}&=0,\label{eq:fzero}\\
+f_{i+1,a}&=H_{i,a}+W_{i,a}f_{i,a},\label{eq:frecur}\\
+\sum_a e_{i,a}f_{i,a}&=0.\label{eq:reject}
+\end{align}
+The linear forms $H,W$ are those of \eqref{eq:CH}. Let $P_4$ be the sum of the squares of all displayed residuals.
+
+\begin{theorem}[Compact canonical certificate]\label{thm:quartic}
+Natural zeros of $P_4$ are in bijection with the $I$-commutation classes of enabled length-$T$ words from $M$ to $N$. It has degree at most four, with
+\begin{align}
+V_4&=(2T+1)(d+m),\label{eq:V4}\\
+R_4&=2(T+1)d+(T+1)m+2T.\label{eq:R4}
+\end{align}
+At every zero all selectors and flags are Boolean; no separate equations $f(f-1)=0$ are required.
+\end{theorem}
+\begin{proof}
+Decode a raw run using \cref{thm:raw}. Since each selector row is one-hot, the recurrence \eqref{eq:frecur}, starting from zero, forces $f_i$ to be exactly the Boolean flags of \cref{prop:flags}. In \eqref{eq:reject}, every summand is nonnegative and only the selected label can contribute. Thus the selected old flag vanishes at every step, so the word is normal.
+
+Conversely, each normal enabled word uniquely determines its raw witness and all flag rows. It satisfies the rejection equations. By \cref{lem:invariance}, every enabled commutation class has its normal representative among the executions with the same endpoints. Uniqueness of this representative and of all its auxiliaries proves the bijection. The extra flag array contributes $(T+1)m$ variables; its initial and recurrence equations contribute $(T+1)m$ residuals, and rejection contributes $T$. Recurrence and rejection are at most quadratic, so the squared sum is at most quartic.
+\end{proof}
+
+\subsection{Eliminating products without introducing multiplicity}
+We next replace each recurrence and rejection test by affine constraints. At each $(i,a)$ introduce five variables
+\[
+u_{i,a},\quad s^1_{i,a},\quad s^2_{i,a},\quad
+s^3_{i,a},\quad s^4_{i,a}\in\N.
+\]
+Replace \eqref{eq:frecur}--\eqref{eq:reject} by
+\begin{align}
+f_{i,a}&=u_{i,a}+s^1_{i,a},\label{eq:q1}\\
+W_{i,a}&=u_{i,a}+s^2_{i,a},\label{eq:q2}\\
+1+u_{i,a}&=f_{i,a}+W_{i,a}+s^3_{i,a},\label{eq:q3}\\
+f_{i+1,a}&=H_{i,a}+u_{i,a},\label{eq:q4}\\
+1&=e_{i,a}+f_{i,a}+s^4_{i,a}.\label{eq:q5}
+\end{align}
+Keep the raw-run equations and \eqref{eq:fzero}. Let $L_1,\ldots,L_{R_2}$ be all their affine residuals, including \eqref{eq:q1}--\eqref{eq:q5}, and define
+\begin{equation}\label{eq:P2}
+P_2(z)=\sum_{j=1}^{R_2}L_j(z)^2.
+\end{equation}
+This is an explicit polynomial specified without an expensive expansion into monomials. The implementation also supports expansion for small examples.
+
+\begin{theorem}[Canonical trace polytope theorem]\label{thm:main}
+For every $\Net,M,N,T$ and symmetric irreflexive $I\subseteq I_{\max}$ as above, the polynomial \eqref{eq:P2} has all the following properties.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item It belongs to $\Z[z_1,\ldots,z_{V_2}]$, has degree at most two, and is convex on $\R^{V_2}$.
+\item Its natural zero set is in explicitly computable bijection with the $I$-commutation classes of enabled length-$T$ executions from $M$ to $N$.
+\item Its nonnegative real zero set is a bounded rational polytope. Its lattice points are exactly the natural zeros in \textup{(ii)}.
+\item The unoptimized presentation has
+\begin{align}
+V_2&=(2T+1)d+(7T+1)m,\label{eq:V2}\\
+R_2&=2(T+1)d+(5T+1)m+T.\label{eq:R2}
+\end{align}
+\item At every natural zero, each selector, flag, $u$, and $s^j$ is at most one, and all markings and enabling remainders satisfy \eqref{eq:height}. Thus the polynomial has finitely many natural zeros, with an explicit coordinate bound.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+We separate arithmetic soundness, uniqueness, and real geometry.
+
+\emph{Natural soundness.} The raw constraints decode an enabled run. Each $W_{i,a}$ and $H_{i,a}$ is Boolean and they are disjoint. Start with the forced Boolean row $f_0=0$. If $f_i$ is Boolean, \cref{lem:and} applied to \eqref{eq:q1}--\eqref{eq:q3} forces
+\[
+u_{i,a}=f_{i,a}W_{i,a}.
+\]
+Then \eqref{eq:q4} gives the correct next flag. It is Boolean because $u\le W$ and $H+W=C\le1$. Induction proves the Boolean flag interpretation at every layer. Equation \eqref{eq:q5} is exactly $e_{i,a}+f_{i,a}\le1$. It rules out selecting a forbidden label. The decoded run is consequently normal.
+
+\emph{Existence and uniqueness.} Starting from a canonical enabled word, set the raw variables and flags as before. Each $u$ and each slack must be
+\begin{align*}
+u&=fW,&s^1&=f-u,&s^2&=W-u,\\
+s^3&=1+u-f-W,&s^4&=1-e-f.
+\end{align*}
+All these values are zero or one. Nonnegativity of the last expression is precisely the no-forbidden-selection property. They satisfy every affine equation. Conversely, the equations and the preceding induction force exactly these values. Thus the extension is unique, and the class bijection follows as in \cref{thm:quartic}.
+
+\emph{Real geometry.} Write the affine system as $Az=b$ with integer $A,b$. Scalarization gives
+\[
+\{z\in\R_{\ge0}^{V_2}:P_2(z)=0\}
+=\mathcal C:=\{z\in\R_{\ge0}^{V_2}:Az=b\}.
+\]
+This is a rational polyhedron, possibly empty. The selectors lie in simplices, so $0\le H,W$ and $H+W=C\le1$. Inductively assume $0\le f_i\le1$. Equations \eqref{eq:q1}--\eqref{eq:q3} give $0\le u\le f_i,W$. Hence
+\[
+0\le f_{i+1}=H+u\le H+W=C\le1.
+\]
+The first two slacks are at most one. The third is $1+u-f_i-W\le1$ because $u\le f_i$ and $W\ge0$; the fourth is $1-e-f_i\le1$. All are nonnegative by the variable domains. The raw variables obey \cref{lem:height}. Every coordinate of $\mathcal C$ is therefore bounded. A bounded rational polyhedron is a rational polytope, with the empty case allowed.
+
+Finally, $P_2=\|Az-b\|_2^2$ has Hessian $2A^{\mathsf T}A$, which is positive semidefinite. The counts are the raw counts, plus $(T+1)m$ flag variables and $5Tm$ local auxiliaries; the added residuals are $m+5Tm$. This gives \eqref{eq:V2} and \eqref{eq:R2} and completes all assertions.
+\end{proof}
+
+\begin{remark}[What is fixed and what is a parameter]
+The net, the alphabet order, the horizon, and the relation $I$ are fixed when this polynomial is formed. The endpoints can alternatively remain free polynomial parameters; they enter only affinely, so the joint degree is still at most two. Treating arbitrary arc weights as additional variables would create products with selectors and would change this degree accounting. Treating $T$ as a variable in one fixed polynomial is a different problem altogether.
+\end{remark}
+
+The number of variables and equations is linear in $T(d+m)$. In a sparse residual representation, the coefficient occurrences require at most order
+$T(dm+|I|+d+m)$ space, up to the endpoint terms and bit lengths. This is not a claim that a fully expanded square has the same sparsity: squaring a dense affine residual introduces cross terms. Nor are the displayed constants claimed optimal; obvious deterministic or redundant arrays can be eliminated in particular instances.
+
+\subsection{The real relaxation is not automatically integral}
+\begin{example}[A nonempty polytope with no lattice points]\label{ex:gap}
+Take two places, two transitions, and
+\[
+c_a=(2,0),\quad c_b=(0,2),\quad v_a=v_b=(0,0),
+\quad M=(1,1),\quad N=(0,0),\quad T=1.
+\]
+The two pure consumers commute by \cref{thm:commute}. Neither is enabled at $M$, so there are no integer solutions. Nevertheless set
+\[
+e_{0,a}=e_{0,b}=\tfrac12,\quad x_0=(1,1),
+\quad x_1=r_0=(0,0).
+\]
+These satisfy the raw affine constraints. In the order $a<b$, take $f_0=0$, $u=0$, and $f_{1,a}=1/2$, $f_{1,b}=0$. For each label set
+\[
+s^1=0,\qquad s^2=W,\qquad s^3=1-W,\qquad s^4=1-e.
+\]
+All are nonnegative and satisfy \eqref{eq:q1}--\eqref{eq:q5}. Thus $\mathcal C$ is nonempty but $\mathcal C\cap\Z^{V_2}$ is empty.
+\end{example}
+
+Convexity of $P_2$ is not an algorithm for its natural zeros. Linear programming can find the fractional point in this example and still decide nothing affirmative about a genuine execution.
+
+\subsection{A concrete scheduling example}
+Let $a$ produce one token, let $b$ be a no-op, and let $c$ consume one token, on one place. In the order $a<b<c$, the maximal commutation relation has precisely the pairs $aIb$ and $bIc$ and their reverses. The word $cab$ is enabled from marking one but not canonical, as in \cref{ex:adjacent}. Its normal representative is $bca$; its marking trace is
+\[
+1\ \xrightarrow{b}\ 1\ \xrightarrow{c}\ 0\ \xrightarrow{a}\ 1.
+\]
+After the first $b$, the flag for $a$ is one. The subsequent $c$, which is dependent with $a$, clears it before the final $a$ is selected. The construction records that flag history uniquely; it does not merely impose a global sorting of all labels.
+
+For this net, horizon six and endpoints $M=N=2$, there are 140 enabled words and 28 commutation classes. The quadratic certificate has 142 variables and 113 residuals; the quartic one has 52 variables and 47 residuals. These counts are reproduced by the included program, not inferred from a floating-point solver.
+
+\section{Costs, exact counts, and a closed-form example}
+\label{sec:cost}
+\subsection{Which observations survive the quotient?}
+For label costs $\kappa_a\in\N^q$, define
+\[
+K(w)=\sum_{i=0}^{T-1}\kappa_{a_i}.
+\]
+This quantity is constant on commutation classes because adjacent swaps preserve the multiplicity of each label. It can be retained by adding the affine equations
+\begin{equation}\label{eq:cost}
+y_j=\sum_{i,a}\kappa_{a,j}e_{i,a}\qquad(1\le j\le q).
+\end{equation}
+The new output variables $y_j$ are unique. Prescribing a target value of $y$, or imposing $y_j+s_j=B_j$ for a budget, retains unique extension. These additions do not increase the polynomial degree.
+
+\begin{corollary}[Generating functions are preserved]\label{cor:weighted}
+Let $\mathcal R_T(M,N)/I$ be the finite set of commutation classes represented by $P_2$. Then, with commuting indeterminates $t_1,\ldots,t_q$,
+\[
+\sum_{[w]\in\mathcal R_T(M,N)/I}t^{K(w)}
+=\sum_{z\in\Sol(P_2)}t^{\sum_{i,a}\kappa_a e_{i,a}(z)}.
+\]
+Here $t^v=\prod_jt_j^{v_j}$. In particular, the number of natural zeros is the number of classes, and taking one cost coordinate per label retains the entire Parikh-vector generating polynomial.
+\end{corollary}
+\begin{proof}
+Apply the bijection of \cref{thm:main}; each matched pair has the same displayed cost. Both sums are finite by the explicit bounds.
+\end{proof}
+
+Neither state-dependent costs nor maximum intermediate resource usage are automatically preserved. For the one-place producer $a$ and no-op $b$, the orders $ab$ and $ba$ commute, yet a cost charged to $b$ equal to the current marking has different values. More generally, any observation depending on the prefix state must be included in the partial-map semantics before commutation is certified. A label-additive cost is a sufficient condition, not a universal description of observable equivalence.
+
+A stochastic interpretation also requires care. Counting one representative per class is not the same as summing the probability of all schedules in that class. The latter requires a separate class-weight calculation, potentially including the number and probabilities of its linear extensions.
+
+\subsection{A ballot formula for the producer--idle--consumer net}
+The small example from \cref{sec:main} admits an exact family of counts. This gives an independent combinatorial check on both the semantics and the enumerator.
+
+\begin{theorem}[Class and schedule counts for one resource]\label{thm:ballot}
+For the one-place net with producer $a$, idle transition $b$, and consumer $c$, fix $M,N,T\in\N$. Let
+\[
+\mathcal L=\{\ell:0\le\ell\le T,\quad
+r_\ell=(\ell+N-M)/2\in\{0,1,\ldots,\ell\}\}.
+\]
+Use $\binom nk=0$ when $k$ is an integer outside $0\le k\le n$. Set
+\[
+A_\ell=\binom{\ell}{r_\ell}
+       -\binom{\ell}{r_\ell+M+1}.
+\]
+Then the number of maximal-commutation classes and the number of raw schedules are respectively
+\begin{equation}\label{eq:ballot}
+\#\bigl(\mathcal R_T(M,N)/I_{\max}\bigr)=\sum_{\ell\in\mathcal L}A_\ell,
+\qquad
+\#\mathcal R_T(M,N)=\sum_{\ell\in\mathcal L}\binom T\ell A_\ell.
+\end{equation}
+The class Parikh generating polynomial is
+\[
+\sum_{\ell\in\mathcal L}
+ A_\ell U^{r_\ell}V^{\ell-r_\ell}B^{T-\ell},
+\]
+where $U,V,B$ mark producer, consumer, and idle occurrences.
+\end{theorem}
+\begin{proof}
+Deleting all idle letters leaves a word over $a,c$, and adjacent allowed swaps change neither this reduced word nor the number of idle letters. Conversely, all placements of a fixed number of idle letters around the same reduced word are equivalent, since $b$ commutes with both other labels. Thus a class is exactly an enabled reduced word of some length $\ell$, together with $T-\ell$ idle letters.
+
+A reduced word ending at $N$ has $r_\ell$ up-steps and $\ell-r_\ell$ down-steps. Of the $\binom\ell{r_\ell}$ unrestricted words, the ones that go below zero are counted by $\binom\ell{r_\ell+M+1}$. To see this, reflect the part of the path from its starting height $M$ through its first visit to $-1$. This maps it bijectively to an unrestricted path from $-M-2$ to $N$ of length $\ell$. Such a path has $r_\ell+M+1$ up-steps; reflecting through its first crossing of $-1$ reverses the construction. Hence $A_\ell$ is exactly the enabled reduced-word count.
+
+There are $\binom T\ell$ choices of positions for a fixed reduced word in a raw schedule. Idle steps cannot alter enabledness. Summing proves both counts and recording the three multiplicities proves the generating polynomial.
+\end{proof}
+
+For $M=N=2,T=6$, the nonzero terms $A_\ell$ for $\ell=0,2,4,6$ are $1,2,6,19$. Thus the class count is $28$, whereas the raw count is
+\[
+1+15\cdot2+15\cdot6+19=140.
+\]
+The formula also explains why a canonical class count cannot generally be obtained by dividing the raw count by one uniform symmetry factor: the factors $\binom T\ell$ differ among classes.
+
+\section{Counting hardness survives maximal commutation}
+\label{sec:counting}
+We now let the net and endpoints vary as finite input data. Arc weights and markings are encoded in binary; the exact horizon $T$ is encoded in unary. The latter convention is essential for a polynomial-size unrolling. The complexity class $\sharpP$ counts accepting branches of polynomial-time nondeterministic computations; Valiant's work is a foundational source for this counting framework \cite{valiant}.
+
+\begin{theorem}[Parsimonious counting completeness]\label{thm:counting}
+Counting maximal-static-commutation classes of enabled length-$T$ Petri-net executions from $M$ to $N$ is $\sharpP$-complete under parsimonious polynomial-time reductions. Hardness holds even for nets with only unit arc weights that are $1$-safe from the specified initial marking. Consequently, counting natural zeros of the quadratic certificates produced by \cref{thm:main} is $\sharpP$-complete on this promised family of certificates.
+\end{theorem}
+\begin{proof}
+\emph{Membership.} Compute $I_{\max}$ by \cref{thm:commute}. Guess a word of length $T$ using a fixed-width binary encoding of each label, rejecting unused binary codes. Every word has exactly one guessing branch. Simulate it, check the endpoints, and run the flag recognizer. Exactly the canonical enabled words accept. Since $T$ is unary, the word length is polynomial in the input size. By \cref{lem:height}, intermediate marking bit lengths are polynomial as well. The arithmetic and flag checks run in polynomial time. Hence each commutation class contributes exactly one accepting branch.
+
+\emph{Hardness construction.} Start with a Boolean circuit on $n$ input wires, with $g$ gates of fan-in at most two and designated output wire $o$. Gates are topologically ordered. Write $w=n+g$. We construct a net that guesses the input, evaluates every gate deterministically, tests that the output is one, and finally erases the stored values. The erasure is important: all accepting inputs must lead to the same final marking.
+
+For each wire $j$, create two value places $V_j^0,V_j^1$, initially empty. Create control places $Q_0,\ldots,Q_{2w+1}$ with a single token initially at $Q_0$. Every transition moves the control token from one stage to the next. The data operations at the stages are as follows.
+\begin{enumerate}[label=\textup{\arabic*.},leftmargin=2em]
+\item At input stage $j<n$, two distinct transitions write a token to $V_j^0$ or $V_j^1$.
+\item At gate stage $j$, include one transition for each assignment to its distinct predecessor wires. There are at most four. The transition reads the corresponding predecessor value places catalytically: a read place has both a unit input and a unit output arc. It writes one token to the correct value place of the new output wire. For repeated predecessors, consolidate duplicate reads rather than consuming two tokens from one place.
+\item At stage $w$, the only transition requires a token at $V_o^1$, retains it, and advances the control. No transition accepts an output zero.
+\item At the next $w$ stages, two possible transitions for each wire erase its zero or one token. Exactly one is enabled. At the end all value places are empty.
+\end{enumerate}
+The common final marking has its only token at $Q_{2w+1}$, and the horizon is
+\[
+T=2w+1.
+\]
+Every reachable marking is $1$-safe: each wire is written once, read without change, and then erased once; only one control token exists. All arcs have weight zero or one. After the input choices, exactly one gate or erasure transition is enabled at each stage. Thus satisfying input assignments are in bijection with accepting runs of this common length and common endpoint. The construction is polynomial in the circuit size.
+
+\emph{The quotient does not merge assignments.} Distinct input assignments select different labelled input transitions. Their Parikh vectors are different, and all commutations preserve Parikh vectors. Thus no two accepting runs belonging to different assignments can become equivalent, even when the relation is the maximal one computed from the constructed net. There is already only one run for each assignment. Soundness of the relation also ensures that any word equivalent to an accepting run is an accepting run. Consequently each such class has exactly one run.
+
+For completeness, counting satisfying assignments to circuits is itself a parsimonious universal $\sharpP$ problem: write a polynomial-time accepting predicate as a Boolean circuit on a fixed-length certificate, using deterministic padding to make the certificate representation unique. Its satisfying input strings are exactly the accepting certificates. Applying the construction above proves hardness. Finally, \cref{thm:main} preserves the count when passing to the quadratic certificate.
+\end{proof}
+
+This theorem pinpoints the limitation of the geometric representation. A compact convex quadratic polynomial can encode a hard \emph{integer counting} problem because its real zero polytope need not be integral. It does not imply hardness for solving the corresponding unconstrained real least-squares problem. The theorem also does not say that every family with a large commutation relation is hard; graph and net structure can still support useful parameterized algorithms.
+
+\section{Other computational substrates}
+\label{sec:substrates}
+The preceding theorem is most informative when the arithmetic front end is reusable. We give precise extensions and state which parts retain the Petri-net commutation theorem. In every case, size and time bounds refer to an explicitly unrolled finite computation, not a fixed-dimensional universal equation.
+
+\subsection{A general Boolean verifier compilation lemma}
+\begin{theorem}[Unique extension of a finite verifier]\label{thm:circuit}
+Let $C$ be a finite deterministic Boolean circuit whose input strings encode candidate computational objects, with exactly one input encoding for each object. There is an effectively constructed system of affine integer equalities in natural variables, of size linear in the number of inputs and gates, whose full natural solutions are in bijection with the inputs accepted by $C$. Its sum-of-squares polynomial is convex quadratic, and its nonnegative real solution set is bounded.
+\end{theorem}
+\begin{proof}
+For each input bit $p$, introduce its complement $\bar p$ and impose $p+\bar p=1$. This gives exactly one complement for each possible bit. Process gates topologically. A NOT gate is $p+y=1$. For an AND gate, use \eqref{eq:and}, with output $u$. For an OR gate, first compute $u=p\land q$ by that gadget and impose $y+u=p+q$. Constants have equations $y=0$ or $y=1$. Finally set the acceptance output to one.
+
+On natural assignments the gate values are forced Boolean by induction, and all slacks are unique by \cref{lem:and}. Thus every accepted input has one full extension and every full solution decodes an accepted input. Over the reals the input bits are in $[0,1]$. The AND bounds keep the output in $[0,1]$, the NOT equation does the same, and the lower bound $u\ge p+q-1$ makes the OR output at most one. Its nonnegativity is part of its domain. All auxiliary slacks are bounded as in \cref{lem:and}. Hence the real feasible set is bounded. Scalarization proves the polynomial assertion.
+\end{proof}
+
+The unique input-encoding assumption must not be skipped. Padded records with unconstrained unused bits, multiple syntactic descriptions of the same object, or ignored nondeterministic choices would all change the solution count. The lemma is a compiler for a specified verifier and specified coding convention, not a theorem that arbitrary encodings are automatically parsimonious.
+
+\subsection{Counter and register programs, including zero tests}
+A finite counter program with natural registers and finite control can be unrolled using the raw variables of \cref{sec:raw}. Increment and decrement are consumption--production updates. To enforce a control edge with source $s(a)$ and target $t(a)$, add a control variable $q_i$ and equations
+\[
+q_i=\sum_a s(a)e_{i,a},\qquad
+q_{i+1}=\sum_a t(a)e_{i,a},
+\]
+with prescribed initial and final control values. Equivalent one-hot control places can be used instead.
+
+For a transition $a$ carrying a zero guard on register $p$, add
+\begin{equation}\label{eq:zero-guard}
+e_{i,a}x_{i,p}=0.
+\end{equation}
+This imposes the guard exactly on the selected branch. There is no auxiliary witness in the inactive branch, so uniqueness is unchanged. Nonzero/decrement guards are already expressed by consumption of a token. Thus a bounded counter-program execution has a direct parsimonious quartic sum-of-squares encoding, with finite control and every guard explicit.
+
+For fixed numerical initial registers and a fixed horizon, the same extension can be made quadratic. Let $B_p=M_p+T\max_a v_{a,p}$, known from the raw induction. Replace \eqref{eq:zero-guard} by the affine equation
+\begin{equation}\label{eq:bigM}
+x_{i,p}+s_{i,a,p}=B_p(1-e_{i,a}),\qquad s_{i,a,p}\in\N.
+\end{equation}
+When $e_{i,a}=1$, it forces $x_{i,p}=0$. Otherwise it only enforces the already valid bound $x_{i,p}\le B_p$, and its slack is unique. The coefficient $B_p$ is a fixed integer for this instance. When the initial registers are free parameters, $B_pe_{i,a}$ is no longer jointly affine; the uniform-parameter presentation is then quartic unless another representation is supplied.
+
+The Petri demand formula cannot simply be reused after adding zero tests. Domains now contain equalities as well as lower bounds, and a previously commuting update may destroy a guard. The needed stronger test is still explicit for interval-guarded translations.
+
+\begin{theorem}[Exact commutation with interval guards]\label{thm:interval}
+Suppose transition $a$ has domain
+\[
+D_a=\{x\in\N^d:l_a\le x\le u_a\}
+\]
+and update $x\mapsto x+\delta_a$, where $l_a\in\N^d$,
+$u_a\in(\N\cup\{\infty\})^d$, $l_a\le u_a$, and
+$l_a+\delta_a\in\N^d$. Define
+\begin{align*}
+L_{ab}&=\max(l_a,l_b-\delta_a),\\
+U_{ab}&=\min(u_a,u_b-\delta_a),
+\end{align*}
+using $\infty-t=\infty$. The domain of $ab$ is the box
+$[L_{ab},U_{ab}]\cap\N^d$, declared empty if any lower endpoint exceeds its upper endpoint. Two transitions commute as partial maps exactly when either both composed boxes are empty, or both are nonempty and
+\[
+L_{ab}=L_{ba},\qquad U_{ab}=U_{ba}.
+\]
+The maximal such relation is computable with $O(dm^2)$ coordinate operations.
+\end{theorem}
+\begin{proof}
+The two domain conditions are $l_a\le x\le u_a$ and
+$l_b\le x+\delta_a\le u_b$. Intersecting their coordinate intervals gives exactly the stated box. The final update, when defined, is $x+\delta_a+\delta_b$ in either order. Empty compositions agree as partial functions. For nonempty integer boxes, equality of domains is equivalent to equality of all lower and upper endpoints: each finite extreme is attained, and an unbounded coordinate is distinguished from a bounded one by an arbitrarily large coordinate value. This proves the criterion and the direct pairwise algorithm.
+\end{proof}
+
+Lower guards express positivity and consumption; upper guard zero expresses a zero test. Finite control can itself be a coordinate with lower and upper endpoints both equal to the source state, and update equal to target minus source. Thus the interval model includes the usual zero-testing counter programs, not just ordinary Petri nets. Reset and copy updates are not translations and are not covered by this theorem.
+
+\begin{corollary}[Canonical quadratic certificates for guarded programs]\label{cor:guarded}
+Fix an interval-guarded translation system as in \cref{thm:interval}, numerical endpoints, and horizon $T$. Let $g$ be the number of finite upper-guard entries among all transition coordinates. Its executions modulo the maximal commutation relation in \cref{thm:interval} have a parsimonious convex quadratic certificate with
+\[
+V_2+Tg\quad\hbox{variables},\qquad R_2+Tg\quad\hbox{residuals},
+\]
+where $V_2,R_2$ are given by \eqref{eq:V2}--\eqref{eq:R2}. Its nonnegative real zero set is bounded.
+\end{corollary}
+\begin{proof}
+Use the underlying Petri updates $c_a=l_a$ and
+$v_a=l_a+\delta_a$, which are nonnegative by assumption. Add, for every finite $u_{a,p}$ and each time step, a unique natural slack $g_{i,a,p}$ with
+\begin{equation}\label{eq:upper-guard}
+x_{i,p}+g_{i,a,p}
+=u_{a,p}e_{i,a}+B_p(1-e_{i,a}),
+\end{equation}
+where $B_p=M_p+T\max_a v_{a,p}$. At a natural one-hot selector, this enforces the selected upper guard; each inactive guard enforces only the already established bound $x_{i,p}\le B_p$. Hence each enabled guarded word has exactly one raw extension, including all upper-guard slacks, and no other words have extensions.
+
+Use the sound relation from \cref{thm:interval} in the same flag constraints. The proof of the class bijection needs only partial-map commutation, now supplied by that theorem, so it applies without change. In the real relaxation the new right-hand side is between $B_p$ and $u_{a,p}$, and the added slack is bounded by their maximum. The old coordinate bounds remain valid. There is one new variable and one affine residual per finite guard and time step.
+\end{proof}
+
+The distinction between the two maximal relations matters. A pair can commute vacuously because both guarded orders have empty domains, even if the underlying unguarded Petri transitions do not commute. It is the \emph{guarded} execution set that is then invariant. The reference compiler implements these optional upper guards and recomputes their exact commutation relation; it does not silently reuse the unguarded relation.
+
+\subsection{Finite cellular automata}
+Consider a one-dimensional deterministic cellular automaton on a ring of $W$ cells, alphabet size $q$, radius $r$, and fixed local rule. Give each cell a one-hot alphabet encoding, initially constrained by a sum equal to one. The local rule can be compiled by testing each of its $q^{2r+1}$ neighbourhood patterns with Boolean conjunctions and collecting patterns that produce each output symbol. Thus one time layer has a deterministic Boolean circuit of size
+\[
+O\bigl(W(r+1)q^{2r+1}\bigr),
+\]
+and $T$ layers have $T$ times this size. Apply \cref{thm:circuit}, treating the initial one-hot rows as the candidate data and their sums as affine constraints. Every valid initial configuration has exactly one space--time history and exactly one arithmetic extension. Constraints on the final pattern select its preimages without introducing extra encodings.
+
+The same construction works on a finite interval with explicitly specified boundary conditions. For an infinite quiescent-background automaton, one must first specify and justify a sufficient finite space--time region; the ring theorem alone does not supply that justification. Also, synchronous local updates are not a sequence of freely swappable asynchronous transitions. A schedule quotient for an asynchronous automaton needs its own partial-map semantics.
+
+\subsection{Bounded word rewriting and explicit term graphs}
+Fix a finite alphabet, a finite family of substring replacement rules, a horizon $T$, and an explicit maximum word length $B$. Store the word in $B$ cells with a canonical blank suffix and a uniquely encoded length. At each step choose a rule and a position using a fixed one-hot code, check the matched substring and size bound, and compute the uniquely padded next word. This is a finite deterministic verifier of the candidate choice history. Its circuit can be constructed by finite comparisons, multiplexers, and shifts of the $B$ cells. By \cref{thm:circuit} it has a quadratic witness-preserving arithmetic encoding.
+
+The objects counted here are \emph{labelled derivations}, including the chosen rule and position, not merely their endpoint words. Distinct rules with identical replacements count separately unless the object definition first quotients them. For length-changing rules, the numerical positions of later redexes move; declaring two static position labels independent without accounting for that movement is unsound.
+
+An analogous finite verifier is available for a specified bounded term-graph representation with deterministic allocation conventions. For tree representations of duplicating combinators, a bound on the number of reduction steps need not be a comparable bound on tree size. A size budget or a fully specified sharing representation is therefore essential. This article does not claim a linear-size arithmetic encoding of arbitrary tree expansion merely from a linear step bound.
+
+\subsection{Exact time, first halting, and padding}
+All previous constructions use an exact horizon. For a deterministic program that halts in $t\le T$ steps, a unique length-$T$ record can be obtained by a distinguished stopped mode with a single mandatory padding action and frozen data. The first visit to stopped mode is the halting event; every later position is forced. The native time is then a uniquely determined observable.
+
+Allowing arbitrary stuttering at arbitrary positions is different. It introduces multiple records of the same computation and can change the interaction with the commutation relation. Unused bits in a padded record must also be forced. A compiler for ``at most $T$'' needs a canonical padding convention as part of its correctness specification, not just an existential choice of a shorter length.
+
+\section{Fixed-dimensional compression and the finite-fold boundary}
+\label{sec:boundary}
+The constructions above are a family of equations $P_T$, with a number of unknowns growing with $T$. A single polynomial with a fixed number of unknowns can represent reachability by MRDP or the repository's exact-iteration machinery, but preservation of witness multiplicity requires a separate argument. We make the precise logical strength of one natural proposed compression explicit.
+
+\subsection{A decidable verifier with one successful history}
+Fix a deterministic universal machine $U$, a canonical encoding of its programs and inputs, and a canonical encoding of finite configuration lists. Define
+\[
+\operatorname{Trace}_U(e,x,h)
+\]
+to mean that $h$ codes the complete execution of program $e$ on input $x$, beginning in its specified initial configuration and ending at the \emph{first} halting configuration. There is no padding and no irrelevant annotation. A run halting immediately has the singleton list containing its initial configuration.
+
+This relation can be chosen primitive recursive. For specificity, a useful polynomial pairing injection is
+\begin{equation}\label{eq:pair}
+\pi(a,b)=(a+b)^2+a.
+\end{equation}
+It is injective: for $s=a+b$, its values lie in $[s^2,s^2+s]$, and these intervals for distinct $s$ are disjoint. Within an interval, $a$ determines $b$. Encode the empty list as zero and a nonempty list as
+\[
+\operatorname{cons}(a,h)=1+\pi(a,h).
+\]
+The tail is strictly smaller than the code. Decoding is by bounded search, rejecting numbers that are not valid codes, and checking the whole list requires only bounded iteration. Choose a standard machine encoding with primitive-recursive initial-configuration, one-step, and halting tests. The verifier checks all adjacent pairs and verifies that no earlier configuration halted. It is therefore primitive recursive.
+
+Determinism and the absence of padding imply
+\begin{equation}\label{eq:onehistory}
+\text{for each }(e,x),\quad
+\#\{h:\operatorname{Trace}_U(e,x,h)\}\le1.
+\end{equation}
+Existence of this unique history is equivalent to $U(e,x)$ halting. The history can be enormous; decidability of a proposed finite history says nothing about deciding whether some such history exists.
+
+\subsection{An exact equivalence theorem}
+\begin{theorem}[Canonical universal traces are finite-fold complete]\label{thm:boundary}
+The following statements are equivalent.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Every computably enumerable subset of $\N$ has a finite-fold polynomial Diophantine representation over $\N$.
+\item There is one integer polynomial $H(e,x,z)$, with a fixed finite tuple $z$, representing universal halting and having finitely many $z$-solutions for every fixed $(e,x)$.
+\item There is one integer polynomial $V(e,x,h,y)$, with a fixed finite tuple $y$, representing the decidable relation $\operatorname{Trace}_U$, with finitely many $y$-solutions for every fixed $(e,x,h)$.
+\end{enumerate}
+The three statements remain equivalent when ``finite-fold'' and ``finitely many'' are replaced throughout by ``single-fold'' and ``at most one''.
+\end{theorem}
+\begin{proof}
+\emph{(a)$\Rightarrow$(c).} The set of triple codes
+\[
+S=\{\pi(e,\pi(x,h)):\operatorname{Trace}_U(e,x,h)\}
+\]
+is computably enumerable, indeed decidable using the chosen bounded decoding. By (a), there is a polynomial $Q(n,y)$ with finite fibres representing $S$. Set
+\[
+V(e,x,h,y)=Q\bigl(\pi(e,\pi(x,h)),y\bigr).
+\]
+This is an integer polynomial because the code map is polynomial. Its natural $y$-fibre at a fixed triple is exactly the corresponding $Q$-fibre, so it has the required finiteness and represents exactly the trace relation.
+
+\emph{(c)$\Rightarrow$(b).} Existentially quantify $h$ as one more witness and use $V$ itself as the halting polynomial. For fixed $(e,x)$, a nonhalting computation has no possible $h$, and a halting computation has exactly one possible $h$ by \eqref{eq:onehistory}. Above this unique value there are only finitely many $y$ by (c). Hence the full $(h,y)$-fibre is finite and is nonempty exactly for halting inputs.
+
+\emph{(b)$\Rightarrow$(a).} For a computably enumerable set $A$, choose a program $e_A$ that halts on $x$ exactly when $x\in A$. Specializing the program parameter gives the polynomial $H(e_A,x,z)$ with finite fibres representing $A$.
+
+Every step also preserves ``at most one'': polynomial substitution does not add witnesses, specialization does not add witnesses, and in the middle implication there is at most one admissible $h$ as well as at most one admissible $y$. This proves the single-fold version.
+\end{proof}
+
+This is a useful obstruction to an overambitious compiler contract. A fixed polynomial with finite fibres for a perfectly decidable first-halting trace verifier is already as strong as the general finite-fold conjecture. Calling the input a ``verified finite history'' does not make the required \emph{uniform arithmetic representation} harmless. The verifier is fixed while its history parameter is unbounded, and projecting that parameter yields universal halting.
+
+The theorem is an equivalence and a design boundary, not a proof that such a polynomial cannot exist. The finite-fold and single-fold questions are the classical stronger representation problems discussed in \cite{matiyasevich2010,cco2024}. Nothing in our bounded family contradicts a positive resolution of either question. It simply does not furnish that resolution.
+
+\subsection{Why obvious compression arguments lose multiplicity}
+A common informal argument says: encode a long execution in one integer, represent the digit tests Diophantinely, and combine all equations. This can correctly prove \emph{existence}. It does not establish that a fixed history code has only one, or only finitely many, auxiliary arithmetic encodings. A representation of an exponentiation or sequence-decoding relation may have uncontrolled fibres. Each such relation needs its own finite-fold or single-fold theorem before this property can be composed.
+
+Likewise, choosing ``the least witness'' at the semantic level is not a polynomial construction. Its minimality condition must itself be represented, and that representation can introduce further witnesses. The normal-form selection in \cref{sec:normal} avoids this particular problem because it is an explicit finite-state recurrence unrolled to a fixed length; the number of variables is allowed to grow.
+
+\begin{proposition}[No computable universal witness-height bound]\label{prop:noheight}
+Let $P(e,x,z)$ be any fixed polynomial representing universal halting. There is no total computable function $B(e,x)$ with the following property: whenever $U(e,x)$ halts, there is a zero of $P(e,x,\cdot)$ whose every coordinate is at most $B(e,x)$.
+\end{proposition}
+\begin{proof}
+Such a function would decide halting. Compute $B(e,x)$, enumerate the finite box $\{0,\ldots,B(e,x)\}^{\dim z}$, and evaluate $P$ exactly at each tuple. A zero exists in the box exactly when the machine halts, by the assumed representation and bound. This contradicts the undecidability of universal halting.
+\end{proof}
+
+Even a bound on the \emph{least available} witness would be impossible in that sense; it is not necessary to bound every zero. Finite-foldness does not provide an effective bound of this kind. In contrast, the explicit bounds of \cref{thm:main} depend on the given horizon and therefore pose no conflict.
+
+\section{Implementation and reproducible verification}
+\label{sec:implementation}
+\subsection{Reference implementation}
+The companion package contains a Python implementation using only the standard library. It emits sparse residual polynomials and regards the final polynomial as their squared sum. Every natural assignment is checked using exact integer arithmetic. The one fractional-relaxation example uses exact rational numbers, not numerical tolerances.
+
+The primary entry point is
+\begin{lstlisting}[language=Python]
+compile_certificate(net, initial, final, horizon,
+                    form="quadratic", independence=None,
+                    upper=None)
+\end{lstlisting}
+Here \code{form} can be \code{raw}, \code{quartic}, or \code{quadratic}. With no supplied independence relation the compiler computes the maximal sound relation. A supplied relation must be symmetric and contained in that maximal relation. The optional upper-guard matrix uses \code{None} for infinity and finite natural entries for upper bounds. One-step empty domains are rejected rather than silently retained; removing such transitions is a straightforward preprocessing step.
+
+The returned certificate has methods for constructing the unique witness of a valid word, checking a whole natural assignment, decoding a zero, exporting the residual system as JSON, and expanding the polynomial for small instances. The code does not invoke an integer-programming solver or pretend to solve general Diophantine equations. It is a compiler and exact checker.
+
+The source also implements the graph-realization construction of \cref{thm:graph}, the flag recognizer, a literal guarded-run simulator, and the circuit-to-safe-net reduction used in \cref{thm:counting}. The cellular-automaton and rewriting front ends in \cref{sec:substrates} are mathematical constructions; complete standalone translators for those front ends are not included.
+
+\subsection{What was tested}
+The full run of \texttt{python code/verify.py} produced \code{PASS}. The machine-readable record is \code{results/verification.json}. The following are the exact finite scopes of the checks.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.29\textwidth}X@{}}
+\toprule
+Check & Scope and result\\
+\midrule
+Petri demand criterion & 256 scalar transition pairs, arc weights $0$--$3$; 2,048 starting-marking comparisons.\\
+Trace normal forms & All 75 independence graphs on ordered alphabets of sizes 1--4; all words of length at most 6: 358,509 words and 124,494 classes.\\
+Boolean memory family & All 254 subset prefixes for $k=1,\ldots,7$, including distinguishing one-letter continuations.\\
+Core certificates & 286 constructed full witnesses in the three presentations; 576 single-coordinate perturbations rejected.\\
+Exhaustive zero search & All $2^{16}=65,536$ assignments in the full forced-height box of a tiny quadratic instance; exactly its two predicted zeros.\\
+Real relaxation & Exact rational witness for \cref{ex:gap}, together with absence of an enabled integer step.\\
+Circuit reduction & AND, OR, XOR, and a repeated-input example; accepting-run counts $1,3,2,1$, with safety and distinct Parikh vectors checked.\\
+Ballot formula & 160 endpoint--horizon instances, with horizons through 7.\\
+Interval guards & 729 scalar transition pairs and 6,561 marking comparisons; 45 bounded execution instances and 216 constructed witnesses.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The normal-form oracle is independent of the flag recurrence: it constructs the graph of legal adjacent swaps, computes its connected components with a disjoint-set data structure, and compares accepted words with the actual minimum of each component. The guarded commutation check compares literal two-step execution domains against the closed-form box criterion. The ballot formula provides a separate combinatorial count for the producer--idle--consumer examples.
+
+For the core three-transition net, the computed endpoint examples are:
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$M$ & $N$ & $T$ & Raw runs & Classes & Quadratic $(V_2,R_2)$\\
+\midrule
+0&0&0&1&1&$(4,5)$\\
+0&0&4&9&4&$(96,77)$\\
+2&2&6&140&28&$(142,113)$\\
+1&2&5&44&13&$(119,95)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A finite test does not prove the universal theorems. In particular, changing one coordinate of a constructed witness is not an exhaustive uniqueness proof, and the full box search concerns only its explicitly stated tiny instance. Universal correctness and uniqueness are supplied by the preceding mathematical arguments. The tests serve as independent checks of indexing, signs, degree accounting, boundary cases, and the executable realization of those arguments.
+
+\subsection{Reproduction and polynomial format}
+From the package directory, run
+\begin{lstlisting}
+python code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The verification program should be run without Python's optimization flag, since its test assertions are part of the checks. The ordinary compiler's witness validation is an explicit runtime check. Python 3.10 or later is required; no third-party Python package or network access is needed for verification. A standard TeX installation with the packages listed in the source is needed to rebuild the PDF.
+
+Each exported JSON residual is a list of coefficient--monomial pairs. A monomial is a list of variable names, repeated when a power is present. The represented polynomial is the sum of the squares of the residuals, not the sum of the residuals. The domain field explicitly says ``nonnegative integers.'' A separate small text file contains a fully expanded quadratic polynomial as a format sanity check.
+
+\section{A formalization route that preserves the stronger specification}
+\label{sec:formalization}
+The new proofs are not currently Lean-checked. A useful formalization should preserve the fibre information rather than immediately discarding it through an existential predicate. The repository's existing \code{Dioph} interfaces can remain unchanged; the stronger results can imply them as corollaries.
+
+\subsection{Separate semantic and arithmetic layers}
+The semantic layer should define a finite labelled family of partial maps, exact finite runs, a proved sound independence relation, and its generated word equivalence. The arithmetic layer should define a fixed finite set of variables and residual polynomials. A decoder reads the selected word from a natural zero. A witness constructor produces all variables from a canonical run. The central obligations are
+\[
+\operatorname{decode}(\operatorname{encode}(w))=w,
+\qquad
+\operatorname{encode}(\operatorname{decode}(z))=z.
+\]
+The second identity is what excludes free arithmetic witnesses. Proving only the first would establish completeness but not injectivity of the representation.
+
+An appropriate result object is an equivalence between a finite execution-class type and a subtype of natural assignments satisfying the polynomial equation. Cardinality and weighted-enumerator statements then follow from that equivalence rather than from separate ad hoc proofs. The quotient can be replaced by the subtype of normal runs, using the unique-normal-form theorem to build an equivalence with classes.
+
+\subsection{Suggested proof decomposition}
+A practical decomposition has six modules, whose names below are proposed rather than asserted to exist.
+
+\paragraph{\code{PetriDemand}.}
+Formalize \cref{thm:commute}, including both implications and the empty-coordinate case. Keep the distinction between integer vector updates and natural state domains explicit. Prove equality of partial functions, not merely equality of results when both are defined.
+
+\paragraph{\code{IntervalGuardCommutation}.}
+Represent upper endpoints by a type with an infinity element. Prove the composed-box formula, canonicalize empty boxes, and derive \cref{thm:interval}. Equality of nonempty boxes must include unbounded-coordinate cases.
+
+\paragraph{\code{TraceNormalForm}.}
+Prove the forbidden-factor characterization and the flag invariant. Establish uniqueness of the lexicographically least representative using finite word classes. Prove that the recognizer's natural recurrence forces Boolean values by induction, rather than adding unnecessary Boolean polynomial constraints.
+
+\paragraph{\code{UniqueAffineExtension}.}
+Formalize unique slack, the affine AND gadget, and deterministic circuit extension. A reusable combinator should compose witness equivalences over fixed inputs. Sum-of-squares scalarization should be stated over an ordered ring, then specialized to integer polynomials evaluated at natural assignments.
+
+\paragraph{\code{CanonicalTraceCertificate}.}
+Define the variable index type as a tagged finite union of the arrays in the construction. Prove decoding, existence, and coordinatewise uniqueness. This layer also carries the exact variable and residual counts, including $T=0$ and $d=0$.
+
+\paragraph{\code{TracePolytope}.}
+Reuse the affine system over the reals, prove each coordinate bound, and package boundedness and convexity. Relate the natural assignment subtype to lattice points without changing domains by an uncontrolled integer encoding.
+
+\subsection{Integration with the current repository}
+The existing \code{exactIter_dioph} theorem can provide the unbounded existence-level consequence once a substrate's one-step relation is Diophantine \cite{proveit-trace}. It should not be renamed or reinterpreted as a multiplicity theorem. Instead, add a clearly separate bounded compiler interface carrying unique extension, and document precisely what is forgotten when projecting to \code{Dioph}.
+
+The most valuable first milestone is the raw affine certificate plus unique extension; it is small, reusable, and independent of trace-monoid infrastructure. The second is the exact flag recognizer, and the third is the combined bijection. Only after those should cardinality and the full real-polytope statements be layered on. No project axiom or placeholder proof is needed in the mathematical design; an actual implementation must still pass the repository's normal kernel and transitive-axiom checks.
+
+\section{Further research questions and concrete next steps}
+\label{sec:research}
+The following agenda separates finite, testable development tasks from the genuinely stronger uniform arithmetic questions. None of the questions is claimed to have a new answer merely because it is listed here.
+
+\begin{question}[Kernel-checked fibre preservation]
+Can the full equivalence of \cref{thm:main}, including every slack coordinate, be formalized as a reusable compiler theorem in ProveIt? A concrete first target is to reproduce the raw, quartic, and quadratic variable counts with a finite-indexed polynomial definition and an executable witness constructor.
+\end{question}
+The decisive acceptance test is the identity $\operatorname{encode}\circ\operatorname{decode}=\mathrm{id}$ on the full solution subtype. A proof only of solvability equivalence is not sufficient for the counting applications.
+
+\begin{question}[Smaller uniquely extended affine systems]
+Can the five local auxiliary variables per time--label pair in \eqref{eq:q1}--\eqref{eq:q5} be reduced uniformly while retaining a convex quadratic sum of affine squares, bounded real relaxation, and unique natural extension?
+\end{question}
+The displayed constants are not optimality claims. Eliminating variables symbolically, sharing complementary quantities, or exploiting implication relations among flags may help. The automaton lower bound concerns Boolean memory and does not obstruct such arithmetic improvements by itself.
+
+\begin{question}[Structure of independence graphs]
+Which graph parameters permit smaller flag systems or tractable exact class counting? Candidates include neighbourhood inclusion, modular decomposition, and widths of a graph encoding the residual interactions.
+\end{question}
+A useful project would report both coefficient sparsity and actual enumeration behaviour on a library of graphs. \Cref{thm:graph} rules out assuming that Petri-net semantic commutation graphs belong to a narrow graph class in general.
+
+\begin{question}[Integral or ideal relaxations]
+For which subclasses of nets and independence relations is the canonical trace polytope integral? Can one characterize subclasses admitting a polynomial-size ideal extension, meaning an extension whose real projection is the convex hull of the relevant discrete encodings?
+\end{question}
+\Cref{ex:gap} supplies a small explicit obstruction to unrestricted integrality. Total unimodularity of a suitable residual matrix would be a sufficient condition, but the canonicalization constraints need not preserve it. The general counting hardness theorem also prevents treating a compact formulation as a general counting algorithm.
+
+\begin{question}[State-sensitive commutation]
+Can the static relation be replaced by a state-dependent diamond test while retaining a unique polynomial-size normal-form verifier? What precise consistency conditions replace the trace-monoid forbidden-factor language?
+\end{question}
+A local diamond at one marking is insufficient to justify arbitrary sequences of swaps. A satisfactory answer must show invariance of enabledness across the whole generated equivalence and uniqueness of the chosen representative, not just local endpoint equality.
+
+\begin{question}[Reset, copy, and richer guarded updates]
+Can \cref{thm:interval} be extended to partial affine maps with reset or copy operations, with a similarly explicit exact commutation criterion?
+\end{question}
+Unlike translations, different affine expressions can agree on a lower-dimensional guarded domain without having equal coefficient matrices. Any exact criterion must account for those domain equalities as well as for empty compositions. A bounded compiler can still use finite Boolean verification, but that does not supply the desired symbolic all-state criterion.
+
+\begin{question}[Weight-preserving quotients]
+For which state-dependent costs, probabilities, or resource observations does a commutation quotient preserve the intended observable? Can the necessary observation data be augmented without destroying a useful independence relation?
+\end{question}
+Label-additive weights are fully handled by \cref{cor:weighted}. Peak space, scheduler probabilities, and costs depending on the current marking require additional analysis. The correct target may be a weighted sum over linear extensions rather than one unit per class.
+
+\begin{question}[Counting algorithms under explicit parameters]
+Which parameters yield fixed-parameter or output-sensitive algorithms for counting the lattice points of these particular trace polytopes? Parameters should be stated precisely: fixed horizon, small active transition set, bounded residual-graph width, or a restricted control architecture give different problems.
+\end{question}
+An empirical benchmark should compare direct canonical-word generation, lattice-point methods, and dynamic programming. The $\sharpP$-completeness result gives a worst-case boundary, not a prohibition on useful structured algorithms.
+
+\begin{question}[Faithful graph-rewriting front ends]
+Can bounded term-graph or interaction-net histories be compiled with a canonical node-allocation discipline and a proved commutation quotient that respects shared substructure?
+\end{question}
+The important distinction is between counting graph-rewrite histories, tree interpretations, and observable normal forms. Allocation symmetries and accidental free names can destroy parsimony even when the underlying reduction relation is well understood.
+
+\begin{question}[Restricted fixed-dimensional compression]
+Which explicitly described nonuniversal families admit fixed-dimensional single-fold arithmetic representations of their histories? Can a theorem state a sufficient structural hypothesis on the transition system together with the exact arithmetic primitives needed for compression?
+\end{question}
+A computable time bound alone is not a proof that its graph, or the associated sequence coding, has a single-fold polynomial representation. A successful restricted result must audit those arithmetic fibres. \Cref{thm:boundary} provides a sharp warning whenever the family contains canonical universal first-halting histories.
+
+\begin{question}[Finite-fold arithmetic primitives]
+Can one establish finite-fold or single-fold polynomial representations for the sequence or growth relations actually used in a uniform history compressor, rather than for an unspecified black-box decoder?
+\end{question}
+This connects directly to the arithmetic questions in \cite{matiyasevich2010,cco2024}. The computational front end developed here isolates what such a result would need to preserve. It neither supplies nor assumes the missing number-theoretic theorem.
+
+\begin{question}[Representation-size versus operation-count optimization]
+Can ProveIt's compact universal-equation and straight-line-certificate work be given a semantic interface that records which optimizations preserve arithmetic fibres, and which preserve only solvability?
+\end{question}
+Operation counts for fixed universal certificates and variable counts for a time-unrolled compiler measure different resources. A useful comparative study should report both without conflating them, and should test whether elimination or relation-combining steps introduce multiple witnesses.
+
+\section{Conclusion}
+The existence of a Diophantine representation and the preservation of a computation's witnesses are different mathematical requirements. For bounded executions, a fully explicit solution to the stronger requirement is available: compute exact partial-map commutations, select lexicographic representatives with a small Boolean state, and express the resulting verifier by affine equations with unique natural slacks. The final polynomial is convex quadratic, while its natural zeros still carry the full discrete computational content.
+
+The resulting theorem package does more than certify reachability. It preserves class counts and label-additive weights, gives a bounded rational polytope with explicit coordinate bounds, handles interval-guarded counter programs, and explains both an automaton-size obstruction and a counting-complexity obstruction. The elementary ballot family and the exhaustive checks provide independent reference cases for an eventual formal implementation.
+
+At the same time, a growing family of bounded certificates is not one fixed-dimensional universal equation. The exact equivalence in \cref{thm:boundary} identifies where a proposed uniform finite-fold compressor reaches the full strength of the classical finite-fold problem. This separation makes the construction useful without overstating it: the bounded theorem is proved and executable, and the stronger arithmetic frontier is stated precisely enough to guide further research.
+
+\appendix
+\section{A minimal end-to-end example}
+\label{app:usage}
+The following program can be run from the package directory. Python indices start at zero, whereas the mathematical exposition numbers labels and places from one. The three ordered labels remain $a<b<c$.
+\begin{lstlisting}[language=Python]
+import sys
+sys.path.insert(0, "code")
+from trace_polytope import Net, compile_certificate
+
+net = Net(pre=((0,), (0,), (1,)),
+          post=((1,), (0,), (0,)),
+          names=("a", "b", "c"))
+cert = compile_certificate(net, (1,), (1,), 3)
+
+# b,c,a is the canonical representative of c,a,b.
+word = (1, 2, 0)
+z = cert.witness(word)
+assert cert.zero(z)
+assert cert.energy(z) == 0
+assert cert.decode(z) == word
+cert.export("certificate.json")
+print(len(cert.variables), len(cert.residuals))  # 73, 59
+
+# Make b a zero-test instead of an unconditional no-op.
+# The compiler recomputes the guarded commutation relation.
+guarded = compile_certificate(
+    net, (0,), (0,), 3,
+    upper=((None,), (0,), (None,)))
+z2 = guarded.witness((0, 2, 1))  # increment, decrement, zero-test
+assert guarded.zero(z2)
+\end{lstlisting}
+
+The exported equation is exact even without monomial expansion. To expand a small instance, use \code{cert.expanded_polynomial()}; for large instances, retaining the sum-of-squares circuit is preferable. Expansion is not needed to evaluate the equation or to verify a proposed zero.
+
+\section{Edge cases and specification checklist}
+\label{app:edges}
+\paragraph{Zero horizon.}
+There are no selectors, remainders, or step-local auxiliaries. The endpoint equations require $M=N$, and the flags are forced to zero. There is exactly one empty execution class when the endpoints agree and no solution otherwise.
+
+\paragraph{No places.}
+Markings have the unique empty tuple as value. The net has only labelled identity transitions. The selector and normal-form constraints still distinguish the intended words and their classes. The full-box test uses this legitimate degenerate case to obtain a genuinely exhaustive small search.
+
+\paragraph{Repeated effects and repeated circuit inputs.}
+Two labels with equal transition data remain distinct actions and can commute. Circuit gates that mention one predecessor twice must read one token once; otherwise a supposedly $1$-safe construction would demand two tokens and fail.
+
+\paragraph{Empty interval compositions.}
+Both orders may have empty domains. They then agree as partial maps, even when their numerical composed-box endpoints differ. The guarded commutation routine canonicalizes an empty box before comparing it. Empty \emph{one-step} domains are excluded in the stated input convention.
+
+\paragraph{Inactive guards and branches.}
+An inactive upper guard has the bound $B_p$, not an unconstrained witness. An unused branch of a logical disjunction must not leave arbitrary variables. Every variable listed in the exported certificate has a unique semantic value once the canonical word is fixed.
+
+\paragraph{The domain is part of the theorem.}
+The identity $\sum_a e_a=1$ forces a one-hot selector over $\N$, but not over $\Z$ or $\R$. Real solutions are deliberately retained only as a relaxation. Natural nonnegativity must not be erased when transferring the polynomial to another system.
+
+\paragraph{Representation versus decision.}
+The program constructs and evaluates equations. It does not enumerate all natural zeros of a large certificate. The explicit height theorem makes the set finite, but the associated search and count can still be computationally hard.
+
+\section{Source and verification provenance}
+The repository sources inspected for the baseline were its Hilbert-tenth-problem README, formalization status register, and the actual \code{DiophantineTrace.lean} interface. The latter was retrieved at the pinned commit listed in \cref{sec:intro}; its Git blob identifier was
+\begin{center}
+\small\code{08e5796b22fc85ef0cd97255dba8b7527960160b}.
+\end{center}
+Repository citations below use immutable commit URLs. The literature was checked through the authors' papers, publisher pages, or the ACL Anthology. The bibliography is selective: it documents the reused conceptual background and the finite-fold boundary, not a claim to an exhaustive priority survey.
+
+The package's \code{README.md} describes its contents and limitations. Its \code{SHA256SUMS.txt} records the distributed files, including the article source, compiled PDF, code, and test receipts. The verification receipt reports the precise finite scopes; it should not be read as a formal proof certificate.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{proveit-trace}
+V. Reshetnikov and contributors.
+\emph{ProveIt: Diophantine bounded universals and finite traces}.
+\code{Computability/HilbertTenthProblem/Lean/Diophantine/Common/DiophantineTrace.lean}.
+Repository snapshot \code{e8bb0931d67f80d9fce87a8cddb0f661ff19f956}, inspected September 30, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e8bb0931d67f80d9fce87a8cddb0f661ff19f956/Computability/HilbertTenthProblem/Lean/Diophantine/Common/DiophantineTrace.lean}.
+
+\bibitem{proveit-status}
+V. Reshetnikov and contributors.
+\emph{ProveIt: Hilbert's tenth problem, formalization status}.
+\code{Computability/HilbertTenthProblem/Lean/STATUS.md}.
+Same repository snapshot, inspected September 30, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e8bb0931d67f80d9fce87a8cddb0f661ff19f956/Computability/HilbertTenthProblem/Lean/STATUS.md}.
+
+\bibitem{jones-mat}
+J. P. Jones and Yu. V. Matiyasevich.
+Register machine proof of the theorem on exponential Diophantine representation of enumerable sets.
+\emph{Journal of Symbolic Logic} \textbf{49}(3) (1984), 818--829.
+\url{https://doi.org/10.2307/2274135}.
+
+\bibitem{barthelemy}
+F. Barth\'elemy.
+Using Mazurkiewicz trace languages for partition-based morphology.
+In \emph{Proceedings of the 45th Annual Meeting of the Association of Computational Linguistics} (2007), 928--935.
+See the lexicographic normal-form characterization in Section 2.2, p.~930.
+\url{https://aclanthology.org/P07-1117/}.
+
+\bibitem{valiant}
+L. G. Valiant.
+The complexity of enumeration and reliability problems.
+\emph{SIAM Journal on Computing} \textbf{8}(3) (1979), 410--421.
+\url{https://doi.org/10.1137/0208032}.
+
+\bibitem{matiyasevich2010}
+Yu. Matiyasevich.
+Towards finite-fold Diophantine representations.
+\emph{Journal of Mathematical Sciences} \textbf{171} (2010), 745--752.
+\url{https://doi.org/10.1007/s10958-010-0179-4}.
+
+\bibitem{cco2024}
+D. Cantone, L. Cuzziol, and E. G. Omodeo.
+On Diophantine singlefold specifications.
+\emph{Le Matematiche} \textbf{79}(II) (2024), 585--620.
+\url{https://doi.org/10.4418/2024.79.2.18}.
+Author-deposited text:
+\url{https://arts.units.it/bitstream/11368/3101478/1/CCO24.pdf}.
+\end{thebibliography}
+\end{document}
