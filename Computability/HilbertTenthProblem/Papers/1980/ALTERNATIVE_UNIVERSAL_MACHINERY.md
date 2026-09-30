@@ -30,7 +30,7 @@ before the shifted-index proof applies. All eight units can therefore
 share one unsquared product minus one. Its comparison circuit costs88,
 so75 remains the comparison frontier.
 The [strong-unit substitution](../research-wip/native-stream-queue/complete75_strong_reduction89.md)
-lowers degree166 to162 at the same cost. The latest
+lowers degree166 to162 at the same cost. The subsequent
 [reversed auxiliary product](../research-wip/native-stream-queue/complete75_reversed_auxiliary89.md)
 gives **89 operations at exact degree160**, retaining all19 coordinates
 and their positive solution set. A displaced Pell-index proof excludes
@@ -38,6 +38,15 @@ the added sign branches. The
 [retained-auxiliary partitions](../research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
 improve the other options to93/degree128 and92/degree136;96/degree84 and
 94/degree96 remain available.
+The latest [positive first-root coordinate](../research-wip/native-stream-queue/complete75_positive_root89.md)
+gives **89=47M+42A at degree148**, with19 positive witnesses and an
+explicit bijection of positive solution sets. The old root is reconstructed
+as XY^2*k+tau_gap; its gap is positive on every parent zero. Both ratio
+slacks, all fixed compiler constants and the ordinary input are retained.
+Its [regrouped versions](../research-wip/native-stream-queue/complete75_positive_root_degree_tradeoffs.md)
+give **94/degree84**, **93/degree118**, and **92/degree122**. The first
+saves two operations at degree84. All retain19 positive witnesses, the
+strong auxiliary comparison and the exact linear comparison.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
@@ -89,6 +98,26 @@ leaf selection, synchronized control and a uniform varying-duration
 history certificate remain unpaid. The
 executable decoder fixture is distinguished from the generic universal
 two-stack simulation.
+
+The [group-commutator substrate](../research-wip/native-stream-queue/group_commutator_universal_substrate.md)
+provides a different universal route: every computably enumerable positive
+set occurs as finitely generated subgroup membership in SL(4,Z), along
+one fixed quadratic curve in ordinary x. The graph-group presentation has
+an exact missing-edge converse. An effective finite-presentation embedding
+preserves named free letters, and a conjugated fibre-product subgroup
+allows a repeated two-block target. Its
+[faithful matrix loader](../research-wip/native-stream-queue/group_unipotent_input_loaders.md)
+costs **5=2M+3A**, with no witnesses and nonnegative literal numerals.
+The finite-presentation theorem is an explicit external dependency;
+certification of an arbitrary selected product remains unpaid. This does
+not bypass the stack-guard obstruction by falsely identifying stack maps
+with a group: it constructs a different universal group directly.
+A folded affine program prefix and swapped free basis give one fixed
+universal matrix alphabet with **6=2M+4A** total input loading. The
+[affine-input obstruction](../research-wip/native-stream-queue/group_affine_input_obstruction.md)
+proves quadratic degree necessary for the paired-SL2 subgroup interface;
+an explicit SL3 counterexample prevents extending that statement to
+arbitrary affine SL3 or SL4 curves. No operation lower bound follows.
 
 ## Historical 76-operation milestone
 

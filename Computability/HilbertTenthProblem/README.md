@@ -63,17 +63,25 @@ universal Diophantine equations by James P. Jones and coauthors:
   costs **99=49M+50A**, with **19 positive witnesses** and degree84.
   Its comparison system costs76 with eight equations; a proved canonical
   compiler margin preserves the same accepted ordinary inputs.
-  The latest [reversed auxiliary product](Papers/research-wip/native-stream-queue/complete75_reversed_auxiliary89.md)
-  lowers the polynomial to **89=48M+41A**, with the same19 positive
-  witnesses and exact degree160. Integer unit obstructions and a displaced
-  Pell-index argument justify one unsquared product minus one; its
-  single-comparison system costs88.
-  The [six-factor partitions](Papers/research-wip/native-stream-queue/complete75_norm_product90.md)
-  give **96 operations at degree84** and **94 at degree96**. The
-  [reduced auxiliary partitions](Papers/research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
-  improve the remaining options to **93 at degree128** and **92 at degree136**.
+  The latest [positive Pell-root coordinate](Papers/research-wip/native-stream-queue/complete75_positive_root89.md)
+  gives **89=47M+42A**, with the same19 positive witnesses and exact
+  degree148. It is bijective on positive solutions with the
+  [reversed auxiliary degree160 source](Papers/research-wip/native-stream-queue/complete75_reversed_auxiliary89.md).
+  Integer unit obstructions, displaced Pell indices and the new root-gap
+  positivity proof justify the unsquared product. Its comparison circuit costs88.
+  The [positive-root partitions](Papers/research-wip/native-stream-queue/complete75_positive_root_degree_tradeoffs.md)
+  give **94 operations at degree84**, **93 at degree118**, and **92 at degree122**.
+  In particular the degree84 option improves its preceding96-operation bound.
   The75 comparison and89 polynomial bounds are distinct.
   These optimized results are not yet Lean formalized.
+- A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
+  represents every computably enumerable positive set by membership in a
+  finitely generated SL(4,Z) subgroup, with a fixed quadratic ordinary-input
+  curve costing five scalar operations. One fixed universal subgroup serves
+  all programs with a six-operation program/input loader. The group embedding
+  theorem is cited explicitly; a uniform Diophantine certificate for arbitrary
+  selected matrix products remains open. This is a substrate result, not a smaller
+  complete universal equation.
 
 ## Building and checking
 

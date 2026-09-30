@@ -50,13 +50,23 @@ One unsquared product minus one is the entire polynomial; its single
 comparison certificate costs88. The separate comparison bound remains75.
 
 The [strong-unit substitution](complete75_strong_reduction89.md) lowers
-that polynomial's degree to162 with one gate change. The latest
+that polynomial's degree to162 with one gate change. The subsequent
 [reversed auxiliary product](complete75_reversed_auxiliary89.md) gives
 **89=48M+41A at exact degree160**, retaining19 positive witnesses and
 identical positive solution sets. A displaced Pell-index argument excludes
 the new unit signs. The [retained-auxiliary partitions](complete75_auxiliary_degree_tradeoffs.md)
 give **93 operations at degree128** and **92 at degree136**. Together
-with96/degree84 and94/degree96, these are the current displayed tradeoffs.
+with96/degree84 and94/degree96, these are the earlier displayed tradeoffs.
+
+The latest [positive Pell-root coordinate](complete75_positive_root89.md)
+gives **89=47M+42A at exact degree148**, still with19 positive witnesses.
+The reconstruction `tau_old=XY^2*k+tau_gap` defines a bijection of the
+positive solution sets and cancels the highest-degree first-norm term.
+It retains both ratio slacks and the entire compiler/input construction.
+The [regrouped positive-root variants](complete75_positive_root_degree_tradeoffs.md)
+give **94 operations at degree84**, **93 at degree118**, and **92 at degree122**,
+all with19 positive witnesses. These improve the preceding96/84,93/128,
+and92/136 options; the94/96 option is also superseded.
 
 The original30-witness source remains the reference for the full compiler
 and Pell proof. Earlier [107](complete75_positive_elimination.md),
@@ -118,10 +128,25 @@ Direct kernel work must
 preserve the norm units, first-index parity, and bounded odd input index;
 the six literal deletion failures do not rule out joint redesigns.
 
+A separate [group-commutator substrate](group_commutator_universal_substrate.md)
+now represents every computably enumerable positive set by membership in
+a finitely generated subgroup of SL(4,Z), along one fixed quadratic curve
+in ordinary input. Its [faithful matrix loader](group_unipotent_input_loaders.md)
+costs **5=2M+3A** with nonnegative literal numerals and no witnesses.
+The proof uses an explicitly cited effective finite-presentation embedding;
+no universal presentation has been materialized. Certifying an arbitrary
+selected product of the fixed subgroup matrices remains unpaid. A fixed
+universal subgroup can serve all programs using a folded affine
+prefix and a swapped free basis, for **6=2M+4A** total program/input loading. The
+[affine-input obstruction](group_affine_input_obstruction.md) proves that
+degree two is necessary for this paired-SL2 subgroup interface; it does
+not give an operation lower bound or extend to general SL3/SL4 curves.
+
 The historical native-stream
 component costs six operations with external bounds, or eight with a paid
 joint bound; finite-controller arithmetic and power geometry remain unpaid.
-The proposed five-operation loader has no completed proof or implementation.
+The historical native-queue five-operation loader proposal remains unproved;
+it is separate from the completed matrix loader above.
 
 ## Linux research continuation, 2026-09-29
 
@@ -136,6 +161,11 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Positive-root degree tradeoffs](complete75_positive_root_degree_tradeoffs.md) | **94/degree84**, **93/degree118**, and **92/degree122**, each with19 positive witnesses. Full positive bijections retain the strong and linear auxiliary equations. | Exact partition bounds concern only the stated factor family. The94/84 result saves two operations at degree84; the global89-operation bound is unchanged. |
+| [Affine subgroup-input obstruction](group_affine_input_obstruction.md) | Two independent affine SL2 blocks can yield only empty, singleton or arithmetic-progression subgroup membership sets. The quadratic degree of the universal paired-SL2 curve is sharp. | No operation lower bound; an explicit SL3 affine curve accepts exactly{1,2}, excluding an extension to general SL3/SL4 curves. |
+| [Positive first-root universal polynomial](complete75_positive_root89.md) | **89=47M+42A**,19 positive witnesses and exact degree148. An explicit positive-root coordinate gives a bijection with the degree160 source and retains all compiler hypotheses. | The comparison bound remains75. This changes a witness coordinate; it is not equality of the two polynomials at the same supplied values. |
+| [Group-commutator universal substrate](group_commutator_universal_substrate.md) | Every computably enumerable positive set is membership in a finitely generated SL(4,Z) subgroup along a fixed quadratic ordinary-input curve. | Uses an external effective Higman embedding theorem. The arbitrary selected matrix-product Diophantine certificate remains unpaid. |
+| [Faithful matrix input loaders](group_unipotent_input_loaders.md) | **5=2M+3A**, degree2 and no witnesses for the prescribed fixed-rank curve; a **6=3M+3A** version is independent of rank. Includes elementary freeness proofs. | The five-operation circuit uses nonnegative literal numerals; computed matrix entries may be signed. A fixed universal alphabet has a six-operation program/input loader. Membership certification remains unpaid. |
 | [Reversed auxiliary universal product](complete75_reversed_auxiliary89.md) | **89=48M+41A**,19 positive witnesses and exact degree160. Three gate changes preserve the positive solution set through a displaced Pell-index sign proof. | The comparison system remains88 with one equation;75 is still the comparison frontier. No operation-count or formalization improvement is claimed. |
 | [Retained-auxiliary degree tradeoffs](complete75_auxiliary_degree_tradeoffs.md) | **93/degree128** and **92/degree136**, each with19 positive witnesses. Two gate changes and regrouping lower degree with exact original-source correction identities. | The full strong and linear auxiliary comparisons remain paid. Two-group optimality is scoped to these fixed factors and circuits. |
 | [Strong-unit polynomial reduction](complete75_strong_reduction89.md) | One gate change gives **89 operations at degree162**. The strong unit forces its residual to vanish, proving equality of the integer zero sets before positivity restrictions. | Intermediate step toward89/degree160; the polynomials generally differ away from their zero sets. |

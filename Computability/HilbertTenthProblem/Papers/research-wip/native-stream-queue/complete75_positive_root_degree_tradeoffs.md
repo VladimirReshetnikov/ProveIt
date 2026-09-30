@@ -280,7 +280,7 @@ algebraic identity checks, not asserted accepting compiler witnesses.
 
 Three weighted and offset univariate specializations per construction
 check all factor degrees and highest coefficients, the complete
-polynomial degree, and the explicit forms(13),(14). Register, comparison,
+polynomial degree, and the explicit forms(12a),(13),(14). Register, comparison,
 count and all two- and three-group partition audits are recorded separately.
 The proof above supplies the unbounded positive-domain result.
 
@@ -289,3 +289,8 @@ factor changes away from Qs=Ql=0, and these two full equations remain
 present and paid. No real-witness equivalence or proof-assistant
 formalization is claimed. The historical93/128 and92/136 files are kept
 unchanged as the preceding constructions.
+
+An independent proof/source review also passed all three constructions.
+Supplemental checks covered384 direct-factor identities across four
+compiler bases, an additional weighted degree/top specialization for each
+variant, and the restricted partition minima42,59,61.

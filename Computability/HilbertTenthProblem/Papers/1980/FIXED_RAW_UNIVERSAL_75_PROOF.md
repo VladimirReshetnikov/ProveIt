@@ -41,7 +41,13 @@ keeps89 operations and19 positive witnesses while lowering the degree
 to160, through exact positive-solution equivalence. The
 [retained-auxiliary variants](../research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
 give93 operations at degree128 and92 at degree136. These improve degrees;
-the75 comparison bound is unchanged.
+the75 comparison bound is unchanged. A further
+[positive first-root coordinate](../research-wip/native-stream-queue/complete75_positive_root89.md)
+gives89=47M+42A at exact degree148, with19 positive witnesses and a
+bijection of positive solution sets. Both ratio slacks remain present.
+Its [regrouped variants](../research-wip/native-stream-queue/complete75_positive_root_degree_tradeoffs.md)
+give94 operations at degree84,93 at degree118 and92 at degree122;
+the degree84 result saves two operations from its preceding96 bound.
 The source and full compiler proof below retain their original30-coordinate
 presentation.
 
