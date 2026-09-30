@@ -34,7 +34,8 @@ New research, without a change to the complete universal bound:
 | [Paired Boolean fields](native_controller_boolean_pairs56.md) | Exact **56=30M+26A** relation for two independent Boolean streams and their complements, with repunit supplied. | Joint selectors and arbitrary Boolean functions are not free. |
 | [Four independent fields](native_controller_four_fields55.md) | Exact **55=30M+25A** four-field relation;57 exposes the repunit. The [56/58 reference](native_controller_four_fields56.md) pays parity explicitly. | Four Boolean planes have a combined parity restriction; routing, control and ordinary input remain unpaid. |
 | [Cyclic NAE/majority](native_controller_nae_majority60.md) | Exact **60=33M+27A** relation for two rotations and a not-all-equal gate with majority output, at even length. The [61 reference](native_controller_nae_majority61.md) also proves a conditional spectral restriction; the [67 source](native_controller_nae_majority67.md) permits either length parity. | This finite gate relation has no universal simulation or ordinary-input/acceptance compiler. |
-| [Dual-rail ordinary-input FIFO](native_dualrail_fifo67.md) | Exact **67=33M+34A** typed FIFO initialized by ordinary `6x+2`. A restricted arithmetic carry controller fits a literal75 architecture. | The FIFO alone admits all inputs. Universality of the restricted controller is open;75 is not a complete bound. |
+| [Dual-rail ordinary-input FIFO](native_dualrail_fifo67.md) | Exact **65=33M+32A** typed FIFO initialized by ordinary `2x`, with a positive first append. A general Boolean-filtered affine carry controller fits a literal **75=38M+37A** architecture. | The FIFO alone admits all inputs. Universality of the entire filtered carry graph is open;75 is not a complete bound. |
+| [Filtered carry structure](pell_kernel_dualrail_carry_structure.md) | Necessary coefficient conditions, effective width bounds outside the read-only endpoint interval, endpoint rigidity and same-sign read obstructions. | These retain the Boolean filters and do not classify the remaining coefficient family. |
 | [Selector/FIFO composition](input_bridge_selector_queue.md) | At most **69** operations for the complete finite three-row FIFO relation, with paid power geometry and bounds. A shared **63** specialization accepts exactly positive ternary repunits. | The established loader requires more read rows and a different origin treatment; the finite controller remains unpaid. |
 | [Stateless FIFO regularity](native_stateless_fifo_regular.md) | Every fixed finite stateless table with this equal-length transport accepts a regular language of ordinary inputs, even with padding, a fixed first row and positivity flags. | This excludes a universal stateless replacement, not the existing synchronized controller or a redesigned transport. |
 | [Interleaving refutation](interleaved_compiler_collapse_refutation.md) | New positive separated-field **74** and collapsed **75** sources admit every positive input for every admitted fixed compiler, including an empty-set compiler. | This rejects those specified sources, not either previously open75 candidate. The proof here uses an independent whole-cell stride. |
@@ -82,6 +83,7 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_nae_majority61.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_nae_majority60.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_dualrail_fifo67.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_dualrail_carry_structure.py
 ```
 
 The immediate constructive targets are a compiler using the single masked
@@ -97,8 +99,8 @@ table accepts only a regular input language. Larger affine state codes
 alone cannot encode the current erase/copy language. The full unfiltered
 affine-carry model with an absorbing zero endpoint is also decidable, even
 with finitely many carry coordinates. The dual-rail FIFO types the Boolean
-labels and includes ordinary input within67; its75 carry architecture
-therefore leaves a concrete restricted-controller universality question,
+labels and includes ordinary input within65; its75 general carry architecture
+therefore leaves a concrete filtered-controller universality question,
 outside that full-trit decidability theorem. A useful next
 construction must supply a synchronized controller, a proved universal
 local relation with routing, or a different computation model, with

@@ -1,4 +1,10 @@
-# A native dual-rail FIFO with ordinary input in 67 operations
+# Native dual-rail FIFOs with ordinary input in 65 operations
+
+The final refinement costs **65=33M+32A**. It places the required
+origin bit on the append stream and computes only q-1 for the shared
+offset. The67 and66 references first establish transport, typing and
+ordinary-input semantics. A general Boolean-filtered affine carry
+controller then fits a literal75 architecture; its universality is open.
 
 The four-field typing relation composes with an ordinary-input queue in
 **67=33M+34A**, with 19 equations and 24 positive auxiliaries beyond
@@ -147,3 +153,158 @@ Independent full scoped proof/source/default review passes. A subsequent
 focused extension review caught temporary-register name collisions in the
 eight-operation schedule; distinct names and a combined75-register audit
 now address them. No universal simulation is tested or claimed.
+
+## 66 operations with the origin on the append stream
+
+Keep the57 typing source, but interpret F0,F1 as append planes and
+F2,F3 as read planes. Compute
+
+    A=F0+F1-2H, D=F2+F3-2H, I=2x,
+    D=I+WA, I+beta=W, q=WL.                              (5)
+
+The initial value now needs one multiplication, saving the addition in
+I=6x+2. Everything else in the ledger is unchanged: **66=33M+33A**,
+19 equations and24 positive auxiliaries beyond the same seven parameters.
+The exact semantic projection is a FIFO run from2x to zero with
+q=3^t, W=3^m, t>=m>=1, 2x<W, and with the first Boolean append plane
+equal to1 at the origin. In particular the first scalar append trit is
+1 or2. The first read trit is unrestricted. If the first append trit
+is1, its split must be(1,0); later trit1 splits remain arbitrary.
+
+For soundness, I>=2 and the positive bound imply W>=3, and the same
+transport proof applies. For the converse, every run and split with the
+stated first-append condition satisfies the typing origin condition.
+The packed parity remains automatic: D+A=2x+(W+1)A is even. All four
+field slacks, beta and L are positive, so the exact57 positive extension
+applies without any change to its kernel proof.
+
+Every positive x again has a bare-component witness. Choose the least
+W=3^m>2x. Read the initial m-trit queue while appending1 on the first
+step and0 thereafter. At time m, the queue contains1; read that1 and
+append0. Thus t=m+1, q=3W, and the final queue is zero. Split the first
+append as(1,0), and split the read trits in either permitted way. This
+proves coverage of every ordinary input, while still making no accepting
+controller claim.
+
+The checker audits the66 source independently and compares arbitrary
+Boolean streams through t=3 with direct FIFO execution. It also constructs
+these maps for x=1,...,200. The unchanged67 checks are retained.
+
+### The74 carry architecture and a more general endpoint
+
+The eight-operation extension now gives a literal **74=37M+37A**
+architecture. Under the zero-sum coefficient condition its carry has
+initial value cs and final value0, with append weights c0,c1 and read
+weights c2,c3. Its universality remains open.
+
+There is also a mathematically exact interpretation without zero-sum
+coefficients. Let K=c0+c1+c2+c3 be even, choose fixed integer initial
+carry cs, and set cf=-K/2. In (4) replace the free fixed numeral cs by
+the free fixed numeral cs+K/2. No variable arithmetic is added. Indeed
+the original global carry equality is
+
+    sum_i ci*(Fi-H)+cs=q*cf.
+
+Substituting q=2H+1 and cf=-K/2 makes this exactly
+
+    sum_i ci*Fi+cs+K/2=0.                                (6)
+
+Hence the same eight operations express the full carry graph with h=0,
+initial carry cs and terminal carry cf=-K/2. The fixed sum and half are
+computed when choosing the program numerals, independently of x. This
+does not assert that all weights can be halved or that a variable half
+is free. The stated fixed restriction is simply K even.
+
+Unless K=0, the terminal carry is not absorbing under zero labels.
+This architecture therefore cannot import a zero-extension argument
+from the earlier queue model. A universal simulation would have to reach
+the exact endpoint at its accepting time and satisfy the first-append
+condition, while excluding all unintended accepting paths in the whole
+carry graph. Neither version has such a compiler yet. Independent full
+proof/source/default review of the66 refinement and endpoint extension
+passes, with no findings.
+
+## 65 operations by computing only the shared offset
+
+The aggregate projections in (5) use only2H, never H by itself. Retain
+the55 source and compute the single register Q=q-1, instead of supplying
+H and computing q=H+H+1 in two additions. Then use
+
+    A=F0+F1-Q, D=F2+F3-Q, I=2x,
+    D=I+WA, I+beta=W, q=WL.                              (7)
+
+The exact55 theorem already proves q=3^t, so Q=2H for the mathematical
+repunit H=(q-1)/2. Thus every65 solution extends to66 by supplying that
+positive H, and every66 solution restricts to65 by forgetting H. Their
+positive parameter projections are identical. This is a source-equivalence
+proof, not an assumption that an uncomputed H is an arithmetic register.
+
+The total is **65=33M+32A**, with18 equations and23 positive auxiliaries
+beyond x,W,q,F0,F1,F2,F3. With x the only free ordinary input, the full
+component has29 positive existential coordinates. The checker expands
+the65 polynomials independently, and the literal combined carry schedules
+execute with disjoint register names. The arithmetic register named
+`twice_H` in the source now computes q-1 directly.
+
+The eight-operation carry specializations above consequently cost73.
+More usefully, two further operations permit an unrestricted affine
+carry offset and independently prescribed endpoints within75.
+
+### A general Boolean-filtered affine carry controller within75
+
+Fix integer weights c0,c1,c2,c3, offset h and endpoint carries cs,cf.
+Here c0,c1 weight the append planes and c2,c3 the read planes. Put
+K=sum(ci), and first assume h-K is even. Define the fixed program
+numerals
+
+    lambda=(h-K-2cf)/2,             delta=cs-cf.
+
+Append the equation
+
+    sum_i ci*Fi+lambda*Q+delta=0.                         (8)
+
+Its literal schedule has four products ci*Fi and three additions to
+sum them, one product lambda*Q, one addition of that product, and one
+addition of delta. This costs10=5M+5A, so the complete arithmetic
+architecture has **75=38M+37A**,19 equations and29 positive witnesses
+when x is its only free input. All program numerals are fixed independently
+of x. The products by fixed coefficients are fully charged even when a
+particular choice happens to simplify them.
+
+The mathematical equality behind (8) is exactly
+
+    sum_i ci*(Fi-H)+hH+cs=q*cf.
+
+Indeed Q=2H and q=2H+1 give (8) upon substitution. The exact carry
+reconstruction theorem therefore proves that (8) certifies the entire
+finite carry graph
+
+    3 k_(j+1)=k_j+h+c0*a0_j+c1*a1_j+c2*d0_j+c3*d1_j,
+    k_0=cs,                         k_t=cf.              (9)
+
+All four labels are Boolean. The inferred carry remains in a fixed
+finite integer interval, for example with absolute bound
+max(abs(cs),ceil((abs(h)+sum(abs(ci)))/2)). No carry word or additional
+state coordinate is assumed or supplied. Conversely any such path,
+together with the specified FIFO run and its origin condition, satisfies
+the source and inherits the complete positive65 Pell extension.
+
+The fixed parity restriction is harmless for choosing a machine: if
+needed, double every ci, h, cs and cf before forming lambda and delta.
+Every original carry path doubles. Conversely a scaled path starts even,
+and its recurrence has an even added term, so induction makes every
+carry even; division by2 recovers the original path. Thus the scaling
+preserves the entire labelled language, not only the intended paths.
+
+In particular this75 architecture includes arbitrary weights with h=0,
+cf=0 and the absorbing zero endpoint. Its Boolean labels distinguish
+it from the earlier full-trit unfiltered width-decision theorem. The
+remaining research question is now concrete: can this whole carry graph,
+coupled to the scalar FIFO initialized by2x and the first-append condition,
+represent every recursively enumerable set by fixed program numerals?
+No compiler proving that claim has been supplied. The75 count remains
+a conditional architecture, not an established universal certificate.
+
+Independent full scoped proof/source/default review of this final65 and
+general75 refinement passes, including the absence of H from the source,
+the complete75 schedule and the entire-path scaling argument.

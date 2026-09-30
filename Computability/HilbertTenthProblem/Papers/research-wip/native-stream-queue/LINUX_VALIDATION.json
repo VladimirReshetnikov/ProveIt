@@ -1307,13 +1307,13 @@
     {
       "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_dualrail_fifo67.py",
       "exit_code": 0,
-      "source_lf_sha256": "76fe9c93872b258408683e05de3b9077dc8e6f2bff83d4ee7bcb081d27d7b26c",
-      "receipt_lf_sha256": "593ab9857b9ed77bb4fdd137bf09974ac0933220dd3e1d8d97ca53804fadb399",
+      "source_lf_sha256": "63cd18e9bdb593b710359ed21ef0fb6a971650230a800f6da4376d26a5425eb7",
+      "receipt_lf_sha256": "7b7a8c36081a8798ea8848ea3b5bda233b4b033e9ca7028bedbb68d2cb39c4c4",
       "independent_scoped_reviews": 1,
       "review_status": "PASS",
-      "default_replay": "Independent full default passed; later literal75 extension separately reviewed and matched regenerated section; final full author regeneration passed",
+      "default_replay": "Independent final proof/source/default review passed after final65/general75 and arbitrary-offset structure refinements",
       "summary": {
-        "status": "PASS_COMPLETE_DUALRAIL_FIFO_67",
+        "status": "PASS_COMPLETE_DUALRAIL_FIFO_65_66_67",
         "exhaustive": {
           "arbitrary_boolean_stream_tuples": 600192,
           "accepted": 123,
@@ -1381,12 +1381,263 @@
               "cs"
             ]
           ],
+          "general_endpoint": {
+            "fixed_constraint": "K=c0+c1+c2+c3 is even",
+            "terminal_carry": "-K/2",
+            "paid_constant": "cs+K/2",
+            "zero_terminal_carry_absorbing_only_if": "K=0"
+          },
           "source": "c0*F0+c1*F1+c2*F2+c3*F3+cs=0",
           "local_relation": "3 carry_next=carry+c0*d0+c1*d1+c2*a0+c3*a1",
           "scope": "Exact conditional affine carry relation only; no universal compiler for these fixed coefficients is known."
         },
+        "append_origin": {
+          "arbitrary_boolean_stream_tuples": 37512,
+          "accepted": 42,
+          "maximum_t": 3,
+          "canonical_ordinary_inputs": 200,
+          "canonical_positive_maps": 400,
+          "scope": "Initial queue2x and positive first append; append-origin typing, including every positive input."
+        },
+        "conditional_carry74": {
+          "extra_operations": 8,
+          "multiplications": 4,
+          "additions_subtractions": 4,
+          "candidate_total": 74,
+          "fixed_constraint": "c0+c1+c2+c3=0",
+          "instructions": [
+            [
+              "carry_p0",
+              "*",
+              "weight0",
+              "F0"
+            ],
+            [
+              "carry_p1",
+              "*",
+              "weight1",
+              "F1"
+            ],
+            [
+              "carry_p2",
+              "*",
+              "weight2",
+              "F2"
+            ],
+            [
+              "carry_p3",
+              "*",
+              "weight3",
+              "F3"
+            ],
+            [
+              "carry_s01",
+              "+",
+              "carry_p0",
+              "carry_p1"
+            ],
+            [
+              "carry_s012",
+              "+",
+              "carry_s01",
+              "carry_p2"
+            ],
+            [
+              "carry_s0123",
+              "+",
+              "carry_s012",
+              "carry_p3"
+            ],
+            [
+              "controller",
+              "+",
+              "carry_s0123",
+              "cs"
+            ]
+          ],
+          "general_endpoint": {
+            "fixed_constraint": "K=c0+c1+c2+c3 is even",
+            "terminal_carry": "-K/2",
+            "paid_constant": "cs+K/2",
+            "zero_terminal_carry_absorbing_only_if": "K=0"
+          },
+          "source": "c0*F0+c1*F1+c2*F2+c3*F3+cs=0",
+          "local_relation": "3 carry_next=carry+c0*a0+c1*a1+c2*d0+c3*d1",
+          "scope": "Exact conditional affine carry relation only; no universal compiler for these fixed coefficients is known."
+        },
+        "conditional_carry73": {
+          "extra_operations": 8,
+          "multiplications": 4,
+          "additions_subtractions": 4,
+          "candidate_total": 73,
+          "fixed_constraint": "c0+c1+c2+c3=0",
+          "instructions": [
+            [
+              "carry_p0",
+              "*",
+              "weight0",
+              "F0"
+            ],
+            [
+              "carry_p1",
+              "*",
+              "weight1",
+              "F1"
+            ],
+            [
+              "carry_p2",
+              "*",
+              "weight2",
+              "F2"
+            ],
+            [
+              "carry_p3",
+              "*",
+              "weight3",
+              "F3"
+            ],
+            [
+              "carry_s01",
+              "+",
+              "carry_p0",
+              "carry_p1"
+            ],
+            [
+              "carry_s012",
+              "+",
+              "carry_s01",
+              "carry_p2"
+            ],
+            [
+              "carry_s0123",
+              "+",
+              "carry_s012",
+              "carry_p3"
+            ],
+            [
+              "controller",
+              "+",
+              "carry_s0123",
+              "cs"
+            ]
+          ],
+          "general_endpoint": {
+            "fixed_constraint": "K=c0+c1+c2+c3 is even",
+            "terminal_carry": "-K/2",
+            "paid_constant": "cs+K/2",
+            "zero_terminal_carry_absorbing_only_if": "K=0"
+          },
+          "source": "c0*F0+c1*F1+c2*F2+c3*F3+cs=0",
+          "local_relation": "3 carry_next=carry+c0*a0+c1*a1+c2*d0+c3*d1",
+          "scope": "Exact conditional affine carry relation only; no universal compiler for these fixed coefficients is known."
+        },
+        "general_carry75": {
+          "extra_operations": 10,
+          "multiplications": 5,
+          "additions_subtractions": 5,
+          "candidate_total": 75,
+          "instructions": [
+            [
+              "carry_p0",
+              "*",
+              "weight0",
+              "F0"
+            ],
+            [
+              "carry_p1",
+              "*",
+              "weight1",
+              "F1"
+            ],
+            [
+              "carry_p2",
+              "*",
+              "weight2",
+              "F2"
+            ],
+            [
+              "carry_p3",
+              "*",
+              "weight3",
+              "F3"
+            ],
+            [
+              "carry_s01",
+              "+",
+              "carry_p0",
+              "carry_p1"
+            ],
+            [
+              "carry_s012",
+              "+",
+              "carry_s01",
+              "carry_p2"
+            ],
+            [
+              "carry_s0123",
+              "+",
+              "carry_s012",
+              "carry_p3"
+            ],
+            [
+              "carry_offset",
+              "*",
+              "lambda",
+              "twice_H"
+            ],
+            [
+              "carry_with_offset",
+              "+",
+              "carry_s0123",
+              "carry_offset"
+            ],
+            [
+              "controller",
+              "+",
+              "carry_with_offset",
+              "cs"
+            ]
+          ],
+          "fixed_offset": "lambda=(h-K-2cf)/2, K=sum(ci), h-K even",
+          "paid_constant": "cs_actual-cf",
+          "local_relation": "3 carry_next=carry+h+c0*a0+c1*a1+c2*d0+c3*d1",
+          "endpoints": "carry starts at cs_actual and ends at cf",
+          "normalization": "Double all weights, h and endpoint carries if necessary; even initial carry forces all carries even.",
+          "scope": "Exact entire Boolean-filtered affine carry graph; universality remains open."
+        },
         "established_complete_universal_bound": 76,
-        "scope": "Exact bounded FIFO initialized by6x+2; no universal synchronized controller or accepting computation."
+        "scope": "Exact bounded FIFO initialized by2x with append origin or6x+2 with read origin; no universal synchronized controller or accepting computation."
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_dualrail_carry_structure.py",
+      "exit_code": 0,
+      "source_lf_sha256": "b087158a45fda38337a20195da8b5eabdfab22e2929b9796849345d63f252c3f",
+      "receipt_lf_sha256": "6f5312c61b80f260daf3984cba14879d66598854fdcc199b6d8a739c7790e81f",
+      "independent_scoped_reviews": 1,
+      "review_status": "PASS",
+      "default_replay": "Independent final proof/source/default review passed after final65/general75 and arbitrary-offset structure refinements",
+      "summary": {
+        "status": "PASS_DUALRAIL_CARRY_NECESSARY_CONDITIONS",
+        "terminal_blocks": {
+          "coefficient_state_systems": 10125,
+          "integral_read_only_paths": 239830,
+          "accepted_terminal_blocks": 47966,
+          "accepted_with_finite_width_bound": 1242,
+          "endpoint_deficit_checks": 46280,
+          "maximum_terminal_block_length": 3
+        },
+        "dominance": {
+          "same_sign_coefficient_state_systems": 14000,
+          "strict_lower_bounds_checked": 672000
+        },
+        "terminal_zero_append": {
+          "positive_initial_queue_transport_tuples": 1440,
+          "maximum_width_exponent": 3
+        },
+        "affine_offset": "Arbitrary fixed integer h and arbitrary fixed integer endpoints cs,cf",
+        "scope": "Necessary coefficient/input bounds and endpoint rigidity only; not a universality or decidability theorem",
+        "established_complete_universal_bound": 76
       }
     }
   ],
