@@ -1,8 +1,8 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; and the transversal matroid of a preorder**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; and marked-tree stability for arbitrary apex neighbourhoods**
 
-This is a research report in seven parts. Part I is the original report of
+This is a research report in eight parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
 ProveIt's incoming-report intake, from a later manuscript that addresses the
 three questions Part I left open in its Section 10 ("What remains unresolved"):
@@ -29,7 +29,16 @@ real-rootedness; **Part VII** prints source 09's matroid sections: the
 transversal matroid of a preorder determines it up to isomorphism. Sources
 06, 07 and 09 credit ChatGPT on their title pages; source 08 calls itself
 "AI-assisted" and names no assistant. All four were prepared for Vladimir
-Reshetnikov.
+Reshetnikov. **Part VIII** was added on 30 September 2026 in batch 63, from
+one manuscript (source 10 below; batch-63 manuscript 03), prepared for
+Vladimir Reshetnikov with ChatGPT per its title page. It removes Part VI's
+terminal convention for one apex over a tree: stability of the incidence
+graph of a tree with one apex adjacent to an **arbitrary** set of tree
+vertices is classified — a corollary of Part VI's theorems, which the
+manuscript also proves directly — and it adds linear-time recognition,
+exact polynomial-time counting, optimization and repair of the stable apex
+neighbourhoods, a sharp diameter window, and a path-only real-rootedness
+theorem for their size-counting polynomial.
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -65,15 +74,16 @@ Reshetnikov.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 9–21) and Appendices A–C (pp. 217–219) |
-| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 22–50) |
-| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 51–75) |
-| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 76–116) |
-| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 76–116) |
-| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 117–165) |
-| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 117–165) |
-| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 166–199) |
-| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 200–216); stability sections in Part VI; coefficient sections credited in Part V |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 10–22) and Appendices A–C (pp. 245–247) |
+| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 23–51) |
+| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 52–76) |
+| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 77–117) |
+| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 77–117) |
+| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 118–166) |
+| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 118–166) |
+| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 167–200) |
+| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 201–217); stability sections in Part VI; coefficient sections credited in Part V |
+| 10 | batch 63, manuscript 03 (*Marked-Tree Stability: Complete Apex-Neighborhood Classification, Exact Enumeration, and Optimal Repair*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Marked_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `a4268e78e`) | commit `b57c0b5ff112e1a08af8add12b2d687b8ece91d0` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `62f1ad07c` (prefix `10-marked-trees-`) | Part VIII: Sections 116–131 (pp. 218–244) |
 
 Manuscript 02 names no ProveIt commit. It records the Git blob of the
 `article.tex` it consulted; that blob is Part I exactly as printed here
@@ -178,6 +188,31 @@ source 07 shipped none.
   Research questions 54–57; 1–2 are in Part VI; 3, 4, 7, 9 are printed
   unnumbered next to the earlier questions they repeat.
 
+Batch 63's manuscript 03 (source 10) arrived in `a4268e78e` and was placed in
+`62f1ad07c`, together with manuscripts for two other reports. Its pin
+`b57c0b5ff` records the blob `920246d1…` of this report's `article.tex`,
+which is Parts I–VII exactly as printed before Part VIII (last changed by
+`8c6517c0f`, unchanged at the pin and at the placement), so its "Part VI"
+and its line ranges refer to that text. Its manuscript, PDF and delivery
+README are not shipped; they survive in the arrival commit. Its
+`SHA256SUMS.txt` was verified (10/10) at placement and retired.
+
+- **Part VIII** is source 10 in its own order, behind a merge section
+  (Section 116). Source 10's Section k is Section k + 116 here (its
+  Appendices A–B are Sections 130–131), and statement and equation numbers
+  follow the section (Theorem 2.2 → 118.2); its Tables 1–2 and Figure 1
+  are Tables 14–15 and Figure 4, and its eight questions are Research questions
+  58–65. Its classification (Theorem 118.2) is printed with a **first proof
+  assembled for the merge** from Part VI's Theorems 89.1, 93.2 and 84.3(ii)
+  — source 10 itself calls the classification "a synthesis and extension of
+  specific existing results" (Section 130) — and with its own direct proof
+  as the second. Its four bridge lemmas, path-shortening lemma, resolvent
+  lemma and ADE proposition duplicate Part VI (Lemmas 85.1, 85.4–85.6,
+  89.2, 87.1, Proposition 85.2, Theorem 88.1): their statements and labels
+  are kept, their proofs are replaced by pointers; its coefficient count for
+  the `ϑ(3,3,3)` quartic is kept as a second route. Section 116.4 lists
+  every choice.
+
 Section numbers of the sources that their shipped notes use:
 source 09's `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites its Sections 4
 (→ Part V, not reprinted: Corollary 67.2 and Proposition 71.5), 5 → 103,
@@ -201,7 +236,11 @@ the general theorems rest on the written proofs and on imported published
 theorems — the support-counting bridge, the Lorentzian theory of matroid
 bases, Röhrle–Ulirsch's Theorem A, the basis-walk mixing theorem, the
 #P-completeness of transversal-base counting, the Ingleton–Piff
-characterization of gammoids — which are cited, not reproved.)
+characterization of gammoids — which are cited, not reproved. Part VIII:
+source 10's program checks every marking of every tree with at most nine
+vertices; the general theorems rest on the written proofs, on Part VI's
+theorems and on standard stable-polynomial closure properties and Perron
+positivity.)
 
 ## Results
 
@@ -438,7 +477,48 @@ proves:
    matroid, so these generate exactly the finite gammoids under minors
    (Theorem 108.1, Corollary 108.2, with Ingleton–Piff's characterization).
 
-**What Parts II–VII do to the open questions** (Sections 11.3 and 26.3;
+**Part VIII** (source 10) studies the incidence graph `A(T;S)` of a tree `T`
+with one apex adjacent exactly to a set `S` of tree vertices (a *marking*;
+Part VI's `A(T)` is `S = V(T)`). With `K` the smallest subtree containing
+`S` and `H(T,S)` the tree on `S` obtained by suppressing the unmarked
+degree-two vertices of `K`, it proves:
+
+1. **Classification** (Theorem 118.2): `Phi_{A(T;S)}` is real stable iff
+   `S` is empty, or every vertex of degree ≥ 3 in `K` is marked
+   (*branch-complete*) and `I − A_H/2 ⪰ 0`, i.e. `H(T,S)` is a finite or
+   affine ADE tree. This **follows from Part VI** (Theorems 89.1, 93.2 and
+   84.3(ii); first proof); source 10's direct proof is new: an unmarked hull
+   branch forces an induced odd multi-theta graph (Theorem 120.2); a real
+   symmetric matrix supported on `S` with connected-set energies
+   `1_W^T C 1_W = [W ∩ S ≠ ∅]` exists iff `S` is branch-complete, and is
+   then unique (Theorem 121.1, generalizing Proposition 86.2);
+   `F_{T,S} = det L + s·tr(adj(L) C)` holds on the host with unmarked
+   subdivisions and fringe (Theorem 121.3, generalizing Theorem 86.3); and
+   indefiniteness gives a rational negative Rayleigh certificate on the
+   host (Theorem 122.2, generalizing Theorem 87.2).
+2. **Recognition and geometry** (Section 123): stability is decided in
+   `O(n)` time (Theorem 123.1); a stable hull has at most four leaves
+   (Corollary 123.2); the largest stable marking `alpha_st(T)` satisfies
+   `diam(T) + 1 ≤ alpha_st(T) ≤ min(n, diam(T) + 3)`, all three offsets
+   attained (Theorem 123.3); stable markings are neither up- nor
+   down-closed, and all markings are stable iff `T` is a path
+   (Proposition 123.4).
+3. **Enumeration, optimization and repair** (Sections 124–125): an endpoint
+   formula for the multivariate enumerator of stable markings over hulls
+   with two, three and four leaves and six exceptional arm triples
+   (Theorem 124.1); all coefficients of the weighted size enumerator in
+   `O(n^5)` exact arithmetic operations (Theorem 124.2) and the exact
+   probability that an independent random marking is stable
+   (equation 124.7); a maximum-weight stable marking for arbitrary signed
+   rational scores in `O(n^5)` (Theorem 125.1) and minimum-cost apex-edge
+   repair (Corollary 125.2).
+4. **The size enumerator of stable markings** (Section 126): path and star
+   formulas (Proposition 126.1); `Z_T(t)` is real-rooted iff the
+   multivariate enumerator is stable iff `T` is a path (Theorem 126.3, by a
+   two-coefficient rigidity lemma, Lemma 126.2); for stars log-concavity
+   fails from `m = 4` and unimodality from `m = 6` (equations 126.5–126.7).
+
+**What Parts II–VIII do to the open questions** (Sections 11.3 and 26.3;
 Part II's dated pointers are in the abstract, the scope box, Sections 8 and
 10 and Appendix C; Part III's in the title block, the abstract, the
 reading-route box, Section 19 and Research questions 3 and 4 of Section 24;
@@ -501,6 +581,16 @@ Research questions 23, 24, 26, 28, 32 and 34):
   question 11, and classifies two treewidth-two families; Research question
   11 stays open in general. Conjectures 5.3 and 5.1(d) are unchanged. Parts
   V–VII refute nothing in Parts I–IV; nothing is retracted.
+- [Added 30 September 2026, batch 63.] Part VIII removes the "stated
+  terminal convention" of Part VI's criterion (Section 93.4, "What these
+  results do not imply") for one apex over a tree, and answers no numbered
+  research question: its Research questions 58–60 re-pose Part VI's 45, 47
+  and 48 with added detail, and 64–65 overlap 44, 52 and 53. Its answers
+  are in Section 116.3; its dated pointers, marked "Added 30 September 2026,
+  batch 63", are in the title block, the abstract, the scope box, the
+  reading-route box, after Theorem 84.1, in Sections 89.2 and 93.4, and
+  after Research questions 45, 47 and 48. Conjectures 5.3 and 5.1(d) are
+  unchanged; nothing is refuted or retracted.
 
 ## Not claimed
 
@@ -675,6 +765,32 @@ From Part VII (see also `09-matroid-lifts-CLAIMS_AND_SOURCES.md`):
 - No Lean or Rocq verification; the staged formalization plan (Section 111)
   is unstarted.
 
+From Part VIII (see also `10-marked-trees-SOURCE_AUDIT.md`):
+
+- The classification (Theorem 118.2) is **not a new discovery of ADE
+  stability**: it follows from Part VI's theorems, as source 10 says; its
+  comparison table's "continuation developed here" carries a merge note.
+  The ADE list, the half-plane-property framework, Brändén's Rayleigh
+  criterion and the `ϑ(3,3,3)` example (priority Patel) are credited; the
+  eight-vertex obstruction is not presented as a new small-matroid discovery
+  (Kummer–Sert classify the half-plane-property matroids on at most eight
+  elements).
+- No classification of all stable bipartite graphs, of several apices or of
+  hosts with cycles, and no answer to the individual support-diagonal
+  question (Research question 58, which contains Part VI's 45).
+- The finite enumeration (31,886 marked instances on 95 trees with
+  `n ≤ 9`) tests the implementation of the structural classification; it
+  is not an independent analytic stability test. Only the 133 small-order
+  determinant identities enumerate matching supports independently.
+- The `O(n^5)` bound is conservative and the code is a reference
+  prototype, not a large-instance solver; the linear-time recognition claim
+  concerns the structural decision, not the bit length of rationalized
+  eigenvectors. Markings related by a tree automorphism are counted
+  separately.
+- No worldwide priority (the review was focused; principal extensions and
+  transversal-matroid presentations deserve specialist comparison); no Lean
+  or Rocq verification.
+
 ## Labels
 
 Part I's 60 labels are bare (`sec:`, `eq:`, `thm:`, `lem:`, `prop:`, `cor:`,
@@ -729,6 +845,22 @@ at Sections 66, 83 and 100, after Part IV and before Part I's appendices,
 whose letters and numbers are unchanged. Their research questions continue
 the numbering as 37–43 (Part V), 44–53 (Part VI) and 54–57 (Part VII). Their
 tables are Tables 6–12 (notation tables 6, 8 and 12).
+
+Part VIII added **95** labels, all with the prefix `mts:` ("marked-tree
+stability"): source 10's 76 labels, prefixed before anything cited them
+(three of them, `eq:C`, `eq:Q` and `thm:main`, equal bare Part I labels),
+none dropped; 15 new ones (Section 116, its four subsections and its
+notation table, the eight research questions, and `mts:app:certificate`); and 4
+`mts:hq:` labels added to Part VI's previously unlabelled Research questions
+45, 47, 48 and 52 so that Part VIII can cite them. New total: **781**. No
+earlier label was renamed or removed, and the numbers of all 686 earlier
+labels are unchanged (compared in the `.aux` files of the committed and the
+new build). Their page numbers moved by one or two pages (the title block,
+abstract, scope box, reading route and contents grew); those in Part I's
+appendices moved by 28. Part VIII begins at Section 116, after Part VII and
+before Part I's appendices, whose letters and numbers are unchanged. Its
+research questions are 58–65; its tables are Tables 13–15 (notation table
+13) and its figure is Figure 4.
 
 ## Notation
 
@@ -803,16 +935,25 @@ Part IV's against all three. Watch in particular:
 - Part VI's `L`, `B`, `T`, `C_T` are a pencil, an incidence matrix, a tree
   and `I − A_T/2`, not Part V's support size or Parts I–III's symbols of
   the same letters; `B_m` is a book.
+- **Part VIII (Table 13).** Two renamings, no normalization changed:
+  source 10's `G(T,S)` is printed `A(T;S)` (calligraphic; `A(T;V(T))` is
+  Part VI's `A(T)`), and its `Theta_3` is printed `ϑ(3,3,3)`. Source 10's
+  `n = |V(T)|` is Part VI's `r`. Its `K` is the **hull** of the marking, not
+  a matrix or `K_{l,r}`; its `H(T,S)` is the terminal skeleton, not the
+  half-plane `ℍ`; its `L` is the pencil in Sections 121–122 but a **leaf
+  set** in Sections 124–125; its `Z_T` counts **stable markings**, not the
+  supports `p_{A(T;S)}` of one marking; its `Q(R_1,R_2,R_3)` is not Part I's
+  `Q_tau`.
 
 ## Files
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 220 pages, A4 (title p. 1, scope box and contents pp. 2–8,
-                                             Part I pp. 9–21, Part II pp. 22–50, Part III pp. 51–75,
-                                             Part IV pp. 76–116, Part V pp. 117–165, Part VI pp. 166–199,
-                                             Part VII pp. 200–216, Part I's appendices pp. 217–219,
-                                             references pp. 219–220)
+article.pdf                                  the compiled report, 249 pages, A4 (title p. 1, scope box and contents pp. 2–9,
+                                             Part I pp. 10–22, Part II pp. 23–51, Part III pp. 52–76,
+                                             Part IV pp. 77–117, Part V pp. 118–166, Part VI pp. 167–200,
+                                             Part VII pp. 201–217, Part VIII pp. 218–244,
+                                             Part I's appendices pp. 245–247, references pp. 247–249)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -880,6 +1021,13 @@ code/09-matroid-lifts-verify.py              Parts VI–VII (source 09): exact f
 code/09-matroid-lifts-Makefile               Parts VI–VII (source 09): the delivered Makefile (do not run here; see below)
 data/09-matroid-lifts-verification_results.json  Parts VI–VII (source 09): recorded output of verify.py
 data/09-matroid-lifts-verification_run.txt   Parts VI–VII (source 09): the same record (byte-identical)
+10-marked-trees-SOURCE_AUDIT.md              Part VIII (source 10): pin, inspected line ranges, prior/new boundary (delivered SOURCE_AUDIT.md)
+code/10-marked-trees-marked_trees.py         Part VIII (source 10): recognition, enumeration, optimization and repair library (NetworkX)
+code/10-marked-trees-verify.py               Part VIII (source 10): exact finite checks (imports marked_trees; NetworkX, SymPy)
+code/10-marked-trees-build.sh                Part VIII (source 10): the delivered three-pass build script (do not run here)
+data/10-marked-trees-requirements.txt        Part VIII (source 10): pinned versions (networkx==3.6.1, sympy==1.14.0)
+data/10-marked-trees-run.log                 Part VIII (source 10): console output of the recorded run (n = 1..9)
+data/10-marked-trees-verification.json       Part VIII (source 10): recorded output (Python 3.13.5)
 ```
 
 The ten `02-height-two-` files were staged in the placement commit
@@ -902,6 +1050,11 @@ The 30 files of Parts V–VII (ten `06-`, eleven `07-`, four `08-`, five
 are byte-identical by delivery: source 07's `example_certificate.json` and
 `.log`, and source 09's `verification_results.json` and
 `verification_run.txt`.
+The seven `10-marked-trees-` files of Part VIII were staged in `62f1ad07c`,
+byte-identical to their delivery (its `results/` directory and
+`requirements.txt` became `data/`, its programs and `build.sh` `code/`, its
+`SOURCE_AUDIT.md` the report root); all are LF text, and the `.log` file was
+force-added past the root `*.log` ignore rule.
 
 ## Data conventions
 
@@ -1009,6 +1162,22 @@ rank checks, 34 automorphism counts, 592 minor constructions, 16 vertex-sum
 identities, and the `Theta_3` certificate (Rayleigh value −9 at the
 recorded assignment; two real roots). Its `elapsed_seconds` varies.
 
+**Part VIII.** Source 10's JSON (`"status"`: "All listed exact finite
+checks passed; these are not formal proofs.", seed 20260930,
+`max_tree_size` 9) records, for each `n ≤ 9`, the unlabelled trees
+(NetworkX representatives), all their vertex subsets, the stable ones and
+their skeleton types (`A`, `D`, `E`, `affine`), and the two failure modes
+(`unmarked_branch`, `spectral_obstruction`) — Table 15 of the article,
+31,886 marked instances on 95 trees, automorphic markings counted
+separately; the check counts of Section 127 (21,237 PSD comparisons, 10,649
+branch witnesses, 526 connected-energy instances, 133 identities with
+24,534 minor coefficients, 190 enumerator, 285 optimization, 95 repair and
+95 diameter comparisons); the `ϑ(3,3,3)` coefficients and discriminant
+−5243; the two rational Rayleigh certificates (the fully marked `K_{1,5}`
+and a nine-vertex subdivided tree with fringe); the star size enumerators
+for `m = 3, 4, 6`; and 5 path and 11 star formula checks. All arithmetic is
+exact. Its `elapsed_seconds` varies.
+
 ## Build the article
 
 ```sh
@@ -1022,16 +1191,19 @@ newpxmath, tcolorbox, titlesec, fancyhdr, listings, hyperref, …) plus TikZ
 and needspace for Part II; Part III adds only macros; Part IV adds macros,
 an `example` environment and the TikZ library `arrows.meta` (for manuscript
 01's dependency graph, Section 60); Parts V–VII add macros and the TikZ
-library `positioning` (for source 06's dependency diagram, Section 67). No
-image or font files are needed. The shipped PDF (220 pages) was built on
-29 September 2026 with MiKTeX (pdfTeX 1.40.26) by `latexmk`: no errors, no
-undefined or multiply defined references or citations, no duplicate
-destinations, no overfull boxes and no other LaTeX warnings; five underfull
-boxes, one (badness 1817) in Part II's provenance-ledger table, which the
-committed builds before Parts III–VII and the delivered manuscript 02's own
-build also show, and four (badness 1024–6625) in paragraphs of Parts V and
-VI that set long shipped file names (Sections 78, 78.1 and 83.4). (The earlier builds of 29 September
-2026 had 74 pages before Part IV and 116 before Parts V–VII.)
+library `positioning` (for source 06's dependency diagram, Section 67);
+Part VIII adds only macros (`\Hull`, `\Leaf`, `\diam`, `\Stab`, `\Zpoly`,
+`\pathin`) and does not load `cleveref`. No image or font files are needed.
+The shipped PDF (249 pages) was built on 30 September 2026 with MiKTeX
+(pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
+references or citations, no duplicate destinations, no overfull boxes and
+no other LaTeX warnings; five underfull boxes, the same five as the build of
+the committed Parts I–VII text: one (badness 1817) in Part II's
+provenance-ledger table, which the committed builds before Parts III–VII and
+the delivered manuscript 02's own build also show, and four (badness
+1024–6625) in paragraphs of Parts V and VI that set long shipped file names
+(Sections 78, 78.1 and 83.4). (The earlier builds of 29 September 2026 had
+74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII.)
 
 ## Rerun the checks
 
@@ -1253,6 +1425,29 @@ program prints the JSON it writes) equal
 `data/09-matroid-lifts-verification_results.json` and
 `-verification_run.txt` except `elapsed_seconds`.
 
+**Part VIII, source 10.** Needs NetworkX 3.6.1 (which requires Python ≥ 3.11)
+and SymPy 1.14.0 (`data/10-marked-trees-requirements.txt`).
+`10-marked-trees-verify.py` imports its library by the delivered name
+`marked_trees`, so under the shipped names it fails with
+`ModuleNotFoundError`; its default output `results/verification.json` is
+relative to the working directory. Restore the delivered layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/10/code" "$W/10/results"
+cp code/10-marked-trees-marked_trees.py "$W/10/code/marked_trees.py"
+cp code/10-marked-trees-verify.py "$W/10/code/verify.py"
+cd "$W/10"
+uv run --no-project --with networkx==3.6.1 --with sympy==1.14.0 python code/verify.py --max-n 9 --output results/verification.json > console.txt
+```
+
+Pass `--max-n 9` explicitly: the program's default is 8 (see below). Run
+this way on 30 September 2026 (uv with Python 3.13.5, on Windows, about
+25 s; the recorded run took 10 s), it passed: `results/verification.json`
+equals `data/10-marked-trees-verification.json` except `elapsed_seconds`,
+and `console.txt` equals `data/10-marked-trees-run.log` except the path
+separator in its last line ("Saved results\verification.json" on Windows).
+That run wrote LF line endings.
+
 None of these runs changed a file of this report (checked with
 `git status` and by comparing a copy of `code/` and `data/`).
 
@@ -1385,6 +1580,34 @@ None of these runs changed a file of this report (checked with
 - **Bylines.** Sources 06, 07 and 09 name ChatGPT on their title pages;
   source 08 names no assistant ("mathematical development and exposition
   with AI assistance"). The article's PDF metadata is unchanged.
+- **Part VIII's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/10-marked-trees-verify.py` says in its docstring "Run: python
+    code/verify.py --max-n 8 --output results/verification.json", and its
+    `--max-n` default is 8; the delivery README, the article's table and the
+    recorded run use `--max-n 9`.
+  - It imports `marked_trees` (shipped as
+    `code/10-marked-trees-marked_trees.py`), and `data/10-marked-trees-run.log`
+    ends "Saved results/verification.json" (shipped as
+    `data/10-marked-trees-verification.json`).
+  - `code/10-marked-trees-build.sh` changes to its own directory, creates
+    `code/build/` and runs `pdflatex` on a nonexistent `code/article.tex`,
+    which fails: do not run it.
+  - `10-marked-trees-SOURCE_AUDIT.md` gives line ranges of the pinned
+    `article.tex`; Part VIII's preamble, front-matter and pointer additions
+    moved Part VI's lines by 27 to 49 (Section 130 of the article maps the
+    ranges to Part VI's sections). It names
+    `code/08-ade-stability-verify.py` correctly and speaks of "the
+    delivered article" (Part VIII).
+  - The unshipped delivery README lists `article.pdf`, `article.tex`,
+    `results/` and `SHA256SUMS.txt` (verified and retired), calls the PDF
+    "the 24-page research article", and uses `python`; it notes that
+    NetworkX 3.6.1 excludes Python 3.14.1.
+  - The recorded run (Python 3.13.5) records `elapsed_seconds` 9.982.
+- **Bylines (Part VIII).** Source 10's title page reads "Research prepared
+  for Vladimir Reshetnikov / Mathematical development and exposition with
+  ChatGPT", and its PDF metadata name ChatGPT; the article records this in
+  Section 116.1 and does not reprint the byline.
 - **Merge observations not in any source** are marked as such in the
   article: the #P-hardness of a specified height-two `gamma_k`
   (Corollary 76.4), the infinitely many induced-minimal unstable graphs
@@ -1392,7 +1615,10 @@ None of these runs changed a file of this report (checked with
   on normalization by the matching number (Research question 37), the tree
   diagonals for `r ≤ 12` (Section 96), and the comparison with the q-zeta
   report's matroid (Section 106). Their finite checks were run by the
-  batch-55 dossier and write phase and are not shipped.
+  batch-55 dossier and write phase and are not shipped. Part VIII adds
+  one: the first proof of Theorem 118.2, assembled from Part VI's theorems
+  (Section 118). Its bibliography has a second McKee–Smyth entry: source 10
+  cites arXiv:0907.0371, a different paper from Part VI's arXiv:2002.06082.
 
 ## Relation to neighbouring reports and to the formal projects
 
@@ -1423,6 +1649,8 @@ all 5,930 pairs `(tau, B)` with `n ≤ 4`, with the minor
 in Section 106 of the article, not a theorem; no note was added to that
 report in this batch). Part VI continues Parts II–III's stability questions
 only; the other neighbours treat neither stability nor log-concavity.
+Part VIII (batch 63) continues Part VI only; it touches no neighbouring
+report, and no reciprocal note was written.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
@@ -1441,7 +1669,10 @@ statements (a search of the tracked `.lean` and `.v` files outside `lib/`
 for matroid, bimatroid, gammoid, Lorentzian, ultra-log-concave, Dynkin,
 real-stable, matchable, incidence–apex and multi-theta finds nothing), and
 their formalization plans (Sections 79.3 and 95.4, and Section 111) are
-unstarted.
+unstarted. The same holds for Part VIII: a search of the tracked `.lean` and
+`.v` files for matching-support, incidence–apex, Dynkin and marked-tree
+terms finds nothing, and its formalization boundary (Section 127.3) and
+Research question 65 describe unstarted work.
 
 ## Sources and attribution
 
@@ -1486,5 +1717,11 @@ unstarted.
   property); J. McKee and C. Smyth, arXiv:2002.06082 (ADE context);
   A. W. Ingleton and M. J. Piff, J. Combin. Theory Ser. B 15 (1973)
   (gammoids).
+- Part VIII: J. McKee and C. Smyth, *Integer symmetric matrices of small
+  spectral radius and small Mahler measure*, arXiv:0907.0371 (spectral
+  context); M. Kummer and B. Sert, *Matroids on eight elements with the
+  half-plane property and related concepts*, SIAM J. Discrete Math. 37
+  (2023) 2208–2227, arXiv:2111.09610; with Choe–Oxley–Sokal–Wagner and
+  Brändén above.
 
 No third-party papers or font files are included.

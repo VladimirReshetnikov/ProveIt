@@ -29,7 +29,8 @@
     Part IV: gamma-positivity for every finite preorder;
     Part V: ultra-log-concave support polynomials, palindromic cores, approximate and exact counting;
     Part VI: stability of signed matching supports, ADE trees, books and multi-theta graphs;
-    Part VII: the transversal matroid of a preorder}}
+    Part VII: the transversal matroid of a preorder;
+    Part VIII: marked-tree stability, arbitrary apex neighbourhoods, enumeration and repair}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -117,6 +118,13 @@
 \newcommand{\ep}{\varepsilon}
 \newcommand{\Aut}{\operatorname{Aut}}
 \newcommand{\rk}{\operatorname{rk}}
+% Part VIII (batch 63): macros of source 10
+\newcommand{\Hull}{\operatorname{Hull}}
+\newcommand{\Leaf}{\operatorname{Leaf}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\Stab}{\mathcal S}
+\newcommand{\Zpoly}{\mathcal Z}
+\newcommand{\pathin}[2]{\mathring P_{#1#2}}
 
 \begin{document}
 \thispagestyle{empty}
@@ -139,6 +147,9 @@ every finite preorder}\par
 \vspace{3pt}
 {\normalsize\color{Ink} With Parts~V--VII (added 29 September 2026): ultra-log-concave support
 polynomials; stability of signed matching supports; the transversal matroid of a preorder}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~VIII (added 30 September 2026): marked-tree stability ---
+arbitrary apex neighbourhoods, enumeration and repair}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -208,6 +219,17 @@ and affine ADE trees, and is classified for books and multi-theta graphs;
 it is strictly stronger than real-rootedness. Part~VII shows that the
 transversal matroid of a preorder determines the preorder up to isomorphism
 and that height-two preorder matroids generate the gammoids under minors.
+
+\emph{Addition of 30 September 2026 (batch 63).} Part~VIII, from a further
+manuscript, removes the terminal convention of Part~VI's tree criterion for
+one apex: for a tree and an arbitrary set of apex neighbours, the signed
+support polynomial is stable exactly when every branching vertex of the
+spanned subtree is marked and the suppressed skeleton is a finite or
+affine ADE tree. This follows from Part~VI's theorems; the manuscript adds
+a direct proof, linear-time recognition, a sharp diameter window, exact
+polynomial-time counting, optimization and repair of stable neighbourhoods,
+and shows that their size-counting polynomial is real-rooted only for
+paths.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -231,6 +253,8 @@ every $h_\tau$ and classifies palindromic bipartite support polynomials;
 Part~VI proves that stability of the signed support polynomial is strictly
 stronger than real-rootedness; see Sections~\ref{lor:sec:answers},
 \ref{ade:sec:answers} and~\ref{mat:sec:answers}.]
+[Added 30 September 2026, batch 63: Part~VIII classifies stability for
+every apex neighbourhood on a tree; see Section~\ref{mts:sec:answers}.]
 \end{tcolorbox}
 % Part III (batch 42): the page break that stood here was removed; the
 % longer abstract pushes this box to page 2, where the contents now follow it.
@@ -256,6 +280,9 @@ VI (Sections~\ref{ade:sec:prov}--\ref{ade:app:certificates}) and VII
 (Sections~\ref{mat:sec:prov}--\ref{mat:app:audit}), added on
 29 September 2026, treat ultra-log-concavity and counting, stability, and
 the transversal matroid of a preorder; they follow Part~IV.
+Part~VIII (Sections~\ref{mts:sec:prov}--\ref{mts:app:certificate}), added
+on 30 September 2026, classifies marked-tree stability; it follows
+Part~VII and precedes the appendices of Part~I.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -10791,6 +10818,11 @@ Here $A_T$ is the adjacency matrix.  The same criterion holds after
 subdividing the edges of $T$ arbitrarily before forming incidence vertices,
 provided that the apex remains adjacent only to the original vertices.
 \end{theorem}
+[Added 30 September 2026, batch 63: Part~VIII removes the terminal
+convention for a single apex over a tree: for an arbitrary apex
+neighbourhood $S\subseteq V(T)$, stability holds exactly when every
+branching vertex of the subtree spanned by $S$ is marked and the
+suppressed skeleton is an ADE tree (Theorem~\ref{mts:thm:main}).]
 
 The list of trees with adjacency spectral radius at most two is classical:
 the finite simply-laced Dynkin trees $A,D,E$ and the affine simply-laced
@@ -11593,6 +11625,12 @@ nonterminals.  This distinction is particularly visible for books: the
 common spine endpoints stay fixed, while a page path can be lengthened
 without adding new apex edges.
 
+[Added 30 September 2026, batch 63: when the apex neighbourhood is not the
+terminal set, an unmarked vertex of degree at least three in the subtree
+spanned by the neighbours forbids stability (Part~VIII,
+Theorem~\ref{mts:thm:branch}), and otherwise the suppressed skeleton decides
+(Theorem~\ref{mts:thm:main}).]
+
 \section{Quadrilateral books: four stable pages, all-real diagonals}
 \label{ade:sec:books}
 
@@ -12353,6 +12391,10 @@ fundamental transversal matroids with the half-plane property, all
 bipartite graphs with stable support polynomial, or all real-rooted
 support diagonals.  These remaining distinctions motivate the research
 questions below.
+[Added 30 September 2026, batch 63: Part~VIII removes the terminal
+convention for a single apex over a tree (Theorem~\ref{mts:thm:main});
+within one-apex tree hosts the criterion now classifies every apex
+neighbourhood. The other limitations of this paragraph stand.]
 
 
 \section{Stable blocks beyond cactus determinants (source~09)}
@@ -12616,7 +12658,7 @@ equivalent; source~09's ``useful first target'', the subdivisions of theta
 graphs, is Theorem~\ref{ade:thm:introtheta}. The question overlaps Part~III's
 Research question~\ref{ade:hq:classify}.]
 
-\begin{question}[All tree incidence--apex diagonals]
+\begin{question}[All tree incidence--apex diagonals]\label{mts:hq:diagonals}
 For which trees $T$ is the univariate polynomial
 \begin{equation}
  p_{\calA(T)}(t)
@@ -12636,6 +12678,8 @@ residues would require a separate proof and is not assumed here.
 [Merge note: evidence only. For this merge the diagonal was checked
 exactly for every unlabelled tree with $2\le r\le12$ (986 trees; $r=1$ is
 immediate): all are real-rooted.]
+[Added 30 September 2026, batch 63: source~10 poses the same question for
+arbitrary markings (Part~VIII, Research question~\ref{mts:q:diagonal}).]
 
 \begin{question}[Positive-weight Rayleigh versus full stability]
 Within the incidence--apex tree family, characterize the trees for which
@@ -12646,7 +12690,7 @@ The universal failure certificate uses arbitrary real left variables.
 The book certificate is stronger and already fails at positive weights.
 Equating these two levels without proof would be a mistake.
 
-\begin{question}[Several apex columns]
+\begin{question}[Several apex columns]\label{mts:hq:apices}
 Replace one apex by two or more independently selectable apex vertices,
 with prescribed terminal neighborhoods.  Is there an exact Boolean
 coefficient formula involving mixed covariances or higher exterior
@@ -12656,8 +12700,10 @@ The single-apex case only sees one unrooted component.  Several apex
 columns must resolve simultaneous components and remove the
 multiplicities of their assignments.  A product of single-apex formulas
 would generally overcount.
+[Added 30 September 2026, batch 63: source~10 poses the same question
+(Part~VIII, Research question~\ref{mts:q:apices}).]
 
-\begin{question}[Base graphs with cycles]
+\begin{question}[Base graphs with cycles]\label{mts:hq:cycles}
 Which parts of the covariance method survive if the auxiliary incidence
 graph is not a tree?  Can cycle-space corrections replace the identity
 $|W|-|E(T[W])|=1$ without destroying positive semidefiniteness?
@@ -12666,6 +12712,9 @@ The tree proof exploits both unique paths and unimodular incidence
 cofactors.  The even-theta construction suggests that independent random
 columns can sometimes correct cycle multiplicities, but it does not
 yet provide a general replacement for the connected-subtree energy law.
+[Added 30 September 2026, batch 63: source~10 poses the same question for
+unicyclic, cactus and bounded-cycle-rank hosts (Part~VIII, Research
+question~\ref{mts:q:cycles}).]
 
 \begin{question}[Boundary Rayleigh certificates]
 Find compact sums-of-squares expressions for the Rayleigh differences
@@ -12697,7 +12746,7 @@ but sampling a determinant mixture and forgetting its auxiliary vector
 need not automatically give a simple uniform-support sampler.  The
 conditional distributions and normalization must be analyzed.
 
-\begin{question}[Formal integration into ProveIt]
+\begin{question}[Formal integration into ProveIt]\label{mts:hq:formal}
 Formalize the cofactor support lemma, the covariance rigidity theorem,
 and the rational Rayleigh certificate compiler, then connect them to the
 repository's existing matching-support and preorder semantics.
@@ -14028,6 +14077,1902 @@ prover was run for this manuscript.
 
 \clearpage
 
+%% ====================================================================
+%% Part VIII (batch 63): marked-tree stability, from batch-63 manuscript 03
+%% (source 10; archive ProveIt_Marked_Tree_Stability). Labels carry mts:.
+%% Part VIII follows Part VII and precedes Part I's appendices.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part VIII.\quad Marked-tree stability: arbitrary apex neighbourhoods, enumeration and repair}
+\addcontentsline{toc}{part}{Part VIII.\texorpdfstring{\quad}{ } Marked-tree stability}
+
+\noindent\emph{Part~VIII was added on 30 September 2026 in batch~63 of
+ProveIt's incoming-report intake, from one manuscript. It removes the
+terminal convention of Part~VI's tree criterion for a single apex: for a
+tree $T$ and an arbitrary set $S$ of apex neighbours, the signed support
+polynomial of the incidence graph of $T$ with one apex adjacent exactly to
+$S$ is real stable if and only if $S$ is empty, or every branching vertex
+of the subtree spanned by $S$ is marked and the tree obtained by
+suppressing its unmarked degree-two vertices is a finite or affine ADE
+tree. This classification is a corollary of Part~VI's theorems. The
+manuscript's direct host-level proof, the existence dichotomy for the
+supported covariance, and the consequences---linear-time recognition, a
+sharp diameter window, an exact endpoint formula for the stable
+neighbourhoods with $O(n^5)$ counting, optimization and repair, and a
+path-only real-rootedness theorem for the stable-neighbourhood count---are
+new relative to this report. Parts~I--VII are unchanged except for dated
+pointers. Section~\ref{mts:sec:prov} records the provenance, fixes the
+notation and states what is answered.}
+
+\section{Provenance, conventions and what Part~VIII answers}
+\label{mts:sec:prov}
+
+\subsection{The manuscript}
+\label{mts:sec:source}
+Part~VIII is printed from batch-63 manuscript~03, called \emph{source~10}
+here after its file prefix: \emph{Marked-Tree Stability: Complete
+Apex-Neighborhood Classification, Exact Enumeration, and Optimal Repair},
+dated 30 September 2026, 24 A4 pages as delivered. Its title page reads
+``Research prepared for Vladimir Reshetnikov / Mathematical development and
+exposition with ChatGPT'', and its PDF metadata name ChatGPT; that byline
+is recorded here and not reprinted. Its archive
+\nolinkurl{ProveIt_Marked_Tree_Stability.zip} (inner directory of the same
+name, main file \nolinkurl{article.tex}) arrived in ProveIt commit
+\texttt{a4268e78e} and was placed in \texttt{62f1ad07c}. It is pinned to
+commit \texttt{b57c0b5ff} (full hash in Section~\ref{mts:sec:provenance}),
+with this report's \texttt{article.tex} as blob
+\texttt{920246d173bfbc708bcf\allowbreak dd6d67e0a6fc358cb3dc}: Parts~I--VII
+exactly as printed, unchanged from the pin to the placement (the last
+change before it was \texttt{8c6517c0f}). Its library, verifier and build
+script are shipped in \nolinkurl{code/}, its requirements, console log and
+recorded output in \nolinkurl{data/}, and its source audit at the report
+root, all with the prefix \texttt{10-marked-trees-}; its checksum list
+\texttt{SHA256SUMS.txt} was verified (10/10) at placement and retired. The
+manuscript, delivery README and PDF are not shipped; they survive in the
+arrival commit.
+
+Source~10 is a continuation of Part~VI and credits it exactly: the
+full-apex criterion, the terminal-subdivision theorem, the canonical
+matroid and inversion bridge, path shortening, the $\vartheta(3,3,3)$
+obstruction with its credit to Shivam Patel, and stability under tree
+attachments. Its new material is a completion of Part~VI's tree criterion
+to arbitrary apex neighbourhoods and the enumeration, optimization and
+root-geometry consequences of that completion.
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of source~10 (as delivered).}
+Given a tree $T$ and a set $S$ of marked vertices, form the bipartite
+incidence graph of $T$ and adjoin one apex adjacent exactly to $S$.
+We classify real stability of its Boolean matching-support polynomial for
+\emph{every} marking. The answer has two independent parts: every branching
+vertex of the minimal subtree spanning $S$ must itself be marked, and the
+tree obtained by suppressing its unmarked degree-two vertices must be a
+finite or affine ADE tree. An unmarked branch forces an induced odd-theta
+obstruction; on the remaining markings a uniquely determined,
+terminal-supported covariance gives an exact determinant--adjugate identity.
+Indefiniteness produces a rational negative Rayleigh certificate on the
+original tree, including subdivisions and unmarked attachments.
+
+The classification has consequences not requiring enumeration of all $2^{|V(T)|}$
+markings. We derive a finite endpoint formula for the complete weighted
+stable-neighborhood enumerator and obtain exact $O(n^5)$ arithmetic
+algorithms for counting, maximum-weight selection, and minimum-cost
+apex-edge repair. The largest stable marking lies between
+$\diam(T)+1$ and $\diam(T)+3$, with both bounds sharp. The polynomial
+counting stable markings by size is real-rooted precisely when $T$ is a
+path; even log-concavity and unimodality fail on small stars.
+
+The starting ADE theorem, its terminal-subdivision version, and the
+odd-theta obstruction are credited to the pinned ProveIt report rather
+than claimed anew. The arbitrary-marking completion, covariance-existence
+dichotomy, endpoint enumeration, and optimization results are the research
+continuation developed here. Full proofs, exact finite checks, limitations,
+and further questions are included.
+\end{tcolorbox}
+\noindent The abstract is reproduced as delivered. Its ``pinned ProveIt
+report'' is this report (Part~VI), and its ``arbitrary-marking completion''
+is read with the priority box below: the classification follows from
+Part~VI's theorems, and what is new is its statement, its direct proof and
+its consequences.
+
+\begin{statusbox}
+\small\textbf{Status (source~10, as delivered).} This is an unrefereed,
+AI-assisted research article. The all-size statements rest on the written
+proofs; the supplied tests are not a Lean or Rocq formalization. Novelty is
+assessed relative to the inspected repository and a focused literature
+review, not certified worldwide.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (merge).}
+Theorem~\ref{mts:thm:main}, the classification of all markings, is new as a
+statement but is a corollary of Part~VI: for a branch-complete marking,
+$\calA(T;S)$ is the terminal-skeleton graph of
+Theorem~\ref{ade:thm:subdivision} with trees attached by one-vertex sums,
+which Theorem~\ref{ade:mat:thm:vertex-stable} controls, and an unmarked hull
+branch yields an induced multi-theta graph excluded by
+Theorem~\ref{ade:thm:introtheta}(ii). Source~10 says so itself
+(Section~\ref{mts:app:source}: ``a synthesis and extension of specific
+existing results, not a first discovery of ADE stability''), although its
+comparison table lists the classification as ``continuation developed
+here''; that row carries a merge note. The theorem is printed with the
+corollary proof first and source~10's direct proof second.
+Theorems~\ref{mts:thm:covariance}, \ref{mts:thm:identity}
+and~\ref{mts:thm:certificate} generalize Part~VI's
+Proposition~\ref{ade:prop:uniqueC}, Theorem~\ref{ade:thm:detidentity} with
+identity~\eqref{ade:eq:subdivisionidentity}, and
+Theorem~\ref{ade:thm:negative} to arbitrary markings and to hosts with
+unmarked fringe; the nonexistence half of Theorem~\ref{mts:thm:covariance}
+is new. The canonical matroid, the inversion bridge, the Rayleigh lemma,
+path shortening, the resolvent lemma, the ADE list, the $\vartheta(3,3,3)$
+quartic and the $K_{1,5}$ certificate are Part~VI's and are printed as
+pointers (Section~\ref{mts:sec:merge}); the quartic's nonreal-root example
+is Shivam Patel's~\cite{Patel}. The ADE list is classical, and Kummer and
+Sert classify the half-plane-property matroids on at most eight
+elements~\cite{KummerSert}. Recognition, the diameter window, the endpoint
+enumerator, counting, optimization, repair and the neighbourhood polynomial
+have no counterpart in Parts~I--VII. Source~10's literature review was
+focused, and no worldwide priority is claimed for any result of
+Part~VIII.
+\end{statusbox}
+
+\subsection{Notation of Part~VIII}
+\label{mts:sec:notation}
+Part~VIII uses Part~VI's $\Phi_G$, $F_G$, $p_G$, $\calA(\cdot)$, $\star$,
+$L$, $\del_{ij}$ and $\vartheta(\cdots)$, and Part~VI's convention that the
+canonical matroid is $\mathsf M_G$ with bases $(U\setminus I)\sqcup J$
+(Section~\ref{ade:sec:notation}). Table~\ref{mts:tab:notation} lists what
+Part~VIII adds or uses differently. Two symbols of source~10 were changed;
+no normalization was changed:
+\begin{itemize}[leftmargin=1.4em]
+\item source~10's graph $G(T,S)$ is printed $\calA(T;S)$, extending
+Part~VI's $\calA(T)$ and $\calA(\widehat T;T)$;
+\item source~10's $\Theta_3$ is printed $\vartheta(3,3,3)$, following
+Part~VI's rule (Section~\ref{ade:sec:notation}); it is also Part~II's
+$\Theta_3$.
+\end{itemize}
+Source~10's sign $(-1)^{|U|/2}$ in~\eqref{mts:eq:Phi} is Part~VI's
+$(-1)^{|I|}$, since a matchable support $U$ has $|U|=2|I|$. Source~10 writes
+$n=|V(T)|$ where Part~VI writes $r$.
+
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Symbols of Part~VIII. The last column prints the tempting false
+reading.}
+\label{mts:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.38\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~VIII & Not to be confused with\\
+\midrule
+$T=(V,E)$, $n$ & the host tree, $n=|V|$ & Part~VI's $r$ (the same number);
+ Part~I's ground set $E=[n]$.\\
+$S$, marks & the apex neighbourhood (a \emph{marking}) & Part~VI's
+ $S=W\cap V(T)$ in the proof of Theorem~\ref{ade:thm:subdivision}; Part~II's
+ subsets $S$; Part~I's polytope $S_\tau$.\\
+$\calA(T;S)$, $\star$, $s$ & incidence graph of $T$ plus one apex $\star$
+ adjacent exactly to $S$ (source~10's $G(T,S)$); apex variable &
+ $\calA(T)=\calA(T;V(T))$ of Part~VI.\\
+$F_{T,S}(x;y,s)$ & Part~VI's basis polynomial $F_G$ of $\calA(T;S)$ &
+ source~09's $F_G$ (the dual convention).\\
+$K=\Hull_T(S)$ & the hull: the smallest subtree containing $S$ & the
+ generic matrix $K$ of Lemma~\ref{ade:lem:matroid}; Part~VI's random matrix
+ $K$; the stars $K_{1,m}$ and $K_{\ell,r}$.\\
+$H=H(T,S)$, $C_H$, $C$ & terminal skeleton on $S$; $I-\tfrac12A_H$; its
+ zero extension to $V(T)$ & the half-plane $\HH$; Part~III's $H$; Part~VI's
+ $C_T$ (the case $S=V(T)$); Part~I's $C_\tau$.\\
+$L$ & in Sections~\ref{mts:sec:covariance}--\ref{mts:sec:spectral}, the
+ pencil $\diag(x)+\sum_ey_eb_eb_e^T$ (Part~VI's $L$) & a leaf set $L$ in
+ Sections~\ref{mts:sec:enumeration}--\ref{mts:sec:optimization}.\\
+$L$, $\Leaf$, $\mathcal L_3$, $\mathcal L_4$ & a set of hull leaves; the
+ leaf set of a tree; eligible three- and four-leaf sets & the pencil $L$.\\
+$o(L)$, $p(L)$, $R_i$ & the branch vertices of $\Hull_T(L)$; internal
+ vertices of its arms & Part~VI's $p_G$.\\
+$\Stab(T)$, $\Zpoly_T(z)$, $Z_T(t;w)$ & stable markings and their
+ multivariate and univariate enumerators & $p_{\calA(T;S)}$, which counts
+ supports of \emph{one} marking.\\
+$P_{ab}(z)$, $\pathin ab$ & $\prod(1+z_v)$ over the internal vertices of
+ the $a$--$b$ path & the path graph $P_n$; Part~I's $P_\tau$; Part~VI's
+ $P_G$.\\
+$E_k(R)$, $Q(R_1,R_2,R_3)$, $\mathcal E$ & elementary symmetric polynomial;
+ three-leaf factor; exceptional arm triples & the edge set $E$; Part~I's
+ polytope $\Qt$ and its equation~\eqref{eq:Q}.\\
+$\alpha_{\mathrm{st}}(T)$, $\diam$ & largest stable marking size; diameter
+ & \\
+$c_v$, $d_v$, $a_v$, $w_v$, $p_v$ & scores, deletion and addition costs,
+ weights, marking probabilities & $c=\prod_iv_i^{-2}$ in
+ Theorem~\ref{mts:thm:certificate}; Part~VI's auxiliary vector $w$.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~VIII answers}
+\label{mts:sec:answers}
+Status after Part~VIII, as of 30 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Part~VI's terminal convention is removed for one apex over a
+tree.} Part~VI's criterion covers the full apex and, after subdivision,
+apex neighbourhoods equal to the terminals
+(Theorems~\ref{ade:thm:intromain} and~\ref{ade:thm:subdivision}), and its
+Section ``What these results do not imply'' restricts it to that
+convention. Theorem~\ref{mts:thm:main} classifies every apex neighbourhood
+on every tree host. Beyond one apex over a tree, nothing changes.
+\item \textbf{Stability and its certificates are decidable in linear time}
+(Theorem~\ref{mts:thm:recognition}), and the stable neighbourhoods of a
+tree are counted, optimized and repaired exactly in $O(n^5)$ arithmetic
+operations (Theorems~\ref{mts:thm:enumerator}--\ref{mts:thm:optimization},
+Corollary~\ref{mts:cor:repair}).
+\item \textbf{No numbered research question of Parts~I--VII is answered.}
+Part~VI's Research questions~\ref{mts:hq:diagonals}, \ref{mts:hq:apices}
+and~\ref{mts:hq:cycles} are posed again by source~10, with added detail, as
+Research questions~\ref{mts:q:diagonal}--\ref{mts:q:cycles}; Research
+questions~\ref{ade:q:first}, \ref{mts:hq:formal} and~\ref{ade:q:last} are
+overlapped by Research questions~\ref{mts:q:certificates}
+and~\ref{mts:q:compiler}.
+\end{itemize}
+Part~VIII refutes no statement of Parts~I--VII, and nothing is retracted.
+Its remark that unmarked fringe is irrelevant agrees with Part~VI's
+statement after Corollary~\ref{ade:mat:cor:blocks} that attaching trees
+preserves stability. Part~VI gains dated pointers after
+Theorem~\ref{ade:thm:intromain}, at ``Why the terminal convention
+matters'', at ``What these results do not imply'', and after Research
+questions~\ref{mts:hq:diagonals}, \ref{mts:hq:apices}
+and~\ref{mts:hq:cycles}; those three questions and Research
+question~\ref{mts:hq:formal}, unlabelled before, received labels.
+
+\subsection{Where the merge had to choose}
+\label{mts:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Order.} Source~10's order of sections is kept. Its two
+appendices are printed as ordinary sections at the end of Part~VIII, so
+that Part~I's appendices keep their letters.
+\item \emph{The main theorem} is printed once, with a first proof assembled
+for this merge from Part~VI's theorems (Section~\ref{mts:sec:main}) and
+source~10's direct proof as the second
+(Section~\ref{mts:sec:spectral}).
+\item \emph{Printed as pointers (duplicates of Part~VI).} Source~10's
+four bridge lemmas, printed as
+Lemmas~\ref{mts:lem:matroid}, \ref{mts:lem:bridge}, \ref{mts:lem:rayleigh}
+and~\ref{mts:lem:diagonal}, are Lemma~\ref{ade:lem:matroid},
+Proposition~\ref{ade:prop:bridge}, Lemmas~\ref{ade:lem:minors},
+\ref{ade:mat:lem:induced} and~\ref{ade:lem:rayleigh} with the same proofs;
+its path-shortening lemma (Lemma~\ref{mts:lem:shorten}) is
+Lemma~\ref{ade:lem:shorten} almost word for word; its three-odd-path
+paragraph is Theorem~\ref{ade:thm:introtheta}(ii); its resolvent lemma
+(Lemma~\ref{mts:lem:resolvent}) is Lemma~\ref{ade:lem:covstable} with the
+trivial case $C=0$ added; its ADE proposition
+(Proposition~\ref{mts:prop:ADE}) is Theorem~\ref{ade:thm:ADElist}, whose
+proof is not reprinted; Table~\ref{mts:tab:ADE} is kept because later
+statements cite it. Their statements and labels are kept, their proofs are
+replaced by pointers.
+\item \emph{Second routes kept.} Source~10's coefficient count
+for~\eqref{mts:eq:theta} and its direct proof of
+Theorem~\ref{mts:thm:main}.
+\item \emph{Research questions.} Source~10's eight questions continue the
+numbering as Research questions~\ref{mts:q:diagonal}--\ref{mts:q:compiler},
+each with its label; the three that restate Part~VI's questions are
+numbered, with merge notes, because their formulations are broader, and
+Part~VI's questions point to them.
+\item \emph{Self-citation and file names.} Source~10's reference
+``ProveIt'' (Parts~II--VII of this report at the pin, especially Part~VI)
+became references to Part~VI, and its macro for the repository name was
+expanded. Its source-range table, which cites line numbers of the pinned
+\texttt{article.tex}, became a table of Part~VI's sections
+(Section~\ref{mts:app:source}). Its seven code, data and audit files keep
+their delivered base names behind the prefix \texttt{10-marked-trees-}:
+\texttt{marked\_trees.py}, \texttt{verify.py} and \texttt{build.sh} in
+\nolinkurl{code/}; \texttt{requirements.txt} and the two files of its
+\texttt{results/} directory, \texttt{run.log} and
+\texttt{verification.json}, in \nolinkurl{data/}; and
+\texttt{SOURCE\_AUDIT.md} at the report root. Merge notes give the shipped
+names, and its reproduction commands are paraphrased with delivery names.
+\item \emph{Cross-references.} Source~10 uses \texttt{cleveref}, which this
+report does not load (Parts~I--VII use plain \verb|\ref|); its
+\verb|\cref| and \verb|\Cref| references were converted to explicit
+``Theorem~\verb|\ref|'' forms, with the same targets.
+\item \emph{Macros, labels and layout.} Its preamble is dropped: its
+\verb|\R|, \verb|\C|, \verb|\HH|, \verb|\one|, \verb|\ind|, \verb|\diag|,
+\verb|\tr|, \verb|\adj|, \verb|\Lap|, \verb|\supp|, \verb|\im|, \verb|\del|
+agree with the host's; its $\mathbb N$ macro (unused in its text, and
+the host's $\N$ is $\mathbb Z_{\ge0}$) and an unused \verb|\weight| are
+dropped, and its $\mathbb Q$ is typeset directly. Its \verb|\Hull|,
+\verb|\Leaf|, \verb|\diam|, \verb|\Stab|, \verb|\Zpoly| and \verb|\pathin|
+were added to the preamble. Labels carry the prefix \texttt{mts:}; the
+eight questions and this section's headings gained labels, as did four
+questions of Part~VI (\texttt{mts:hq:}). Its abstract and status box are
+printed in this section; its title page, table of contents and running
+head are dropped.
+\item \emph{Bibliography.} \cite{COSW} and~\cite{Branden} were already
+cited. Source~10's McKee--Smyth reference is a different paper from
+Part~VI's~\cite{McKeeSmyth} and is~\cite{McKeeSmythIMRN}; Kummer--Sert is
+new~\cite{KummerSert}; the Patel credit uses the host's~\cite{Patel}.
+\end{itemize}
+
+\section{The research problem and its provenance}\label{mts:sec:provenance}
+
+A matching polynomial ordinarily counts a matching once for each choice of
+its edges. A \emph{matching-support polynomial} instead counts a set of
+endpoints once whenever some perfect matching on those endpoints exists.
+This replacement of multiplicity by existence changes the analytic problem:
+the familiar determinantal or stable-polynomial constructions need not
+retain their coefficients after multiplicities are removed.
+
+This report develops this distinction, especially in Parts~II, III
+and~VI. Part~VI proves a striking criterion
+(Theorem~\ref{ade:thm:intromain}):
+if an apex is joined to every vertex on the left of the incidence graph
+of a tree $H$, the signed support polynomial is real stable exactly when
+$I-A_H/2$ is positive semidefinite. It also proves that subdividing edges
+between the original apex neighbors, without marking the new vertices,
+preserves the criterion (Theorem~\ref{ade:thm:subdivision}). These are
+existing results, not the principal novelty claims of this article.
+
+A natural missing step is to permit an \emph{arbitrary} apex neighborhood
+on a given host tree. The original vertices need not all be marked; an
+unmarked vertex may have degree three or more in the subtree connecting the
+marks. Such a configuration is not a terminal subdivision of a tree whose
+vertices are exactly the marks. The distinction is essential: three marked
+leaves around an unmarked center already produce a nonstable example,
+whereas marking the center repairs it.
+
+We resolve this arbitrary-neighborhood classification within the tree
+incidence--apex family. We then ask a different, algorithmic question:
+\emph{how many neighborhoods are stable, and which stable neighborhood has
+maximum weight?} The classification imposes at most four leaves on the
+marked hull. This yields an endpoint decomposition with polynomially many
+outer cases, even though a path has exponentially many stable markings.
+It is this decomposition, rather than generic matroid sampling machinery,
+that gives exact counting and optimization.
+
+\subsection{A precise boundary between old and new}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.35\textwidth}X@{}}
+\toprule
+Ingredient or result & Status in this article\\
+\midrule
+Half-plane property, stable minors, Rayleigh inequalities & Established
+stable-polynomial theory \cite{COSW,Branden}; the special facts used here
+are stated explicitly.\\
+Trees with adjacency spectral radius at most two & Classical ADE
+classification; an elementary proof is included for completeness.\\
+Full-apex and terminal-subdivision determinant identities and ADE criterion &
+Prior: Part~VI (Theorems~\ref{ade:thm:intromain}, \ref{ade:thm:detidentity}
+and~\ref{ade:thm:subdivision}). Their method is extended, with credit, to
+arbitrary unmarked fringe and branch-complete markings.\\
+Three odd paths and the quartic obstruction & Prior results of Parts~II
+and~VI (Theorem~\ref{ade:thm:introtheta}(ii)); the report credits Shivam
+Patel for the earlier eight-vertex example.\\
+Arbitrary-marking classification and supported-covariance existence &
+Continuation developed here, including the unmarked-branch obstruction
+and exact necessity of the geometric condition. [Merge note: the
+classification, Theorem~\ref{mts:thm:main}, is a corollary of Part~VI's
+Theorems~\ref{ade:thm:subdivision}, \ref{ade:mat:thm:vertex-stable}
+and~\ref{ade:thm:introtheta}(ii) (first proof in
+Section~\ref{mts:sec:main}), as source~10 itself says in
+Section~\ref{mts:app:source}. New here are the statement for arbitrary
+markings, the direct host-level identity
+(Theorem~\ref{mts:thm:identity}) and certificate
+(Theorem~\ref{mts:thm:certificate}), which give a second proof, and the
+nonexistence half of Theorem~\ref{mts:thm:covariance}.]\\
+Weighted neighborhood enumeration, selection, and repair &
+Continuation developed here: explicit endpoint formulas and exact
+polynomial-time algorithms.\\
+Diameter window and the path-only real-rootedness theorem for neighborhood counts &
+Consequences proved here; the latter follows from a two-coefficient
+root-rigidity argument, not numerical root plots.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The general half-plane-property literature is much broader than this family.
+Choe--Oxley--Sokal--Wagner develop structural constructions and show that
+some, but not all, transversal matroids have the property \cite{COSW}.
+Br\"and\'en gives the all-real-specialization Rayleigh criterion
+\cite[Theorem 5.6]{Branden}. Kummer--Sert classify the matroids on at most
+eight elements with the half-plane property \cite{KummerSert}; therefore
+our eight-vertex obstruction is not presented as a new small-matroid
+discovery. The spectral classification has a classical setting in the work
+of McKee--Smyth \cite{McKeeSmythIMRN}.
+
+Our focused review did not establish whether every new formulation below
+has an equivalent earlier formulation elsewhere. In particular, a
+specialist comparison with principal extensions and transversal-matroid
+presentations remains appropriate before a priority claim. What is
+unambiguous here is the statement, proof, implementation, and boundary
+relative to the pinned source.
+
+\subsection{The repository snapshot}
+
+The inspected snapshot is
+\begin{quote}\small\ttfamily
+b57c0b5ff112e1a08af8add12b2d687b8ece91d0.
+\end{quote}
+The main source is the file
+\begin{quote}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/}\newline
+\nolinkurl{preorder-root-polytopes/article.tex},
+\end{quote}
+whose blob is
+\texttt{920246d173bfbc708bcfdd6d67e0a6fc358cb3dc}.
+The relevant source ranges and headings are recorded in
+Section~\ref{mts:app:source}. We do not rely on unrelated claims elsewhere in the
+repository, and no repository file was modified.
+[Merge note: that blob is Parts~I--VII of this report exactly as printed
+before Part~VIII was added (Section~\ref{mts:sec:source}).]
+
+\section{Definitions and the classification theorem}\label{mts:sec:main}
+
+All trees are finite, simple, undirected, and nonempty. Let $T=(V,E)$ be a
+tree with $n=|V|$. A subset $S\subseteq V$ is a \emph{marking}. Define
+$\calA(T;S)$ to be the bipartite graph with left shore $V$ and right shore
+$E\sqcup\{\star\}$, where an edge-element $e=uv$ is adjacent to $u,v$, and
+$\star$ is adjacent exactly to the vertices in $S$. Thus $\calA(T;S)$ has $2n$
+vertices, even when $\star$ is isolated.
+[Merge note: source~10 writes $G(T,S)$. The notation extends Part~VI's:
+$\calA(T;V(T))=\calA(T)$, and Part~VI's $\calA(\widehat T;T)$ is
+$\calA(\widehat T;V(T))$ (Section~\ref{ade:sec:subdivision}).]
+
+For $I\subseteq V$ and $J\subseteq E\sqcup\{\star\}$, write $I\sim J$ when
+$|I|=|J|$ and the induced bipartite graph on $I\sqcup J$ has a perfect
+matching. Define
+\begin{equation}
+ F_{T,S}(x;y,s)=\sum_{I\sim J}
+ \left(\prod_{v\in V\setminus I}x_v\right)
+ \left(\prod_{e\in J\cap E}y_e\right)
+ s^{\ind_{\{\star\in J\}}}.
+ \label{mts:eq:F}
+\end{equation}
+A feasible pair contributes one term, irrespective of the number of
+witnessing matchings. The polynomial is homogeneous of degree $n$,
+multiaffine, and has coefficients zero or one.
+
+For a finite simple graph $G$ on a vertex set $W$, its signed
+matching-support polynomial is
+\begin{equation}
+ \Phi_G(z)=\sum_{U\subseteq W:\,G[U]\text{ has a perfect matching}}
+             (-1)^{|U|/2}\prod_{v\in W\setminus U}z_v.
+ \label{mts:eq:Phi}
+\end{equation}
+The empty support is allowed. A nonzero real polynomial is \emph{real
+stable} when it does not vanish if every variable belongs to
+$\HH=\{z\in\C:\im z>0\}$.
+[Merge note: $F_{T,S}$ is Part~VI's basis polynomial~\eqref{ade:eq:Fdef} of
+$\calA(T;S)$, with left variables $x$ and right variables $y$ and $s$, and
+\eqref{mts:eq:Phi} is source~09's~\eqref{ade:mat:eq:Phi}, which agrees
+with Part~VI's~\eqref{ade:eq:Phidef} on bipartite graphs.]
+
+\begin{definition}[Hull and terminal skeleton]
+For nonempty $S$, let $K=\Hull_T(S)$ be the smallest connected subtree
+containing $S$. For $|S|\ge2$, it is the union of the unique paths between
+marked vertices. For $|S|=1$, it consists of that vertex.
+Call $S$ \emph{branch-complete} if every vertex of degree at least three
+\emph{in $K$} lies in $S$. In this case suppress all vertices of
+$K\setminus S$, which necessarily have degree two, and denote the resulting
+tree on $S$ by $H(T,S)$.
+\end{definition}
+
+Every leaf of $K$ is marked. An edge of $H(T,S)$ joins two marks exactly
+when the path between them contains no other mark. Vertices outside $K$
+are necessarily unmarked but may form arbitrarily large attached trees.
+The degree condition is on $K$, not on the host $T$.
+
+\begin{theorem}[Complete marked-tree classification]\label{mts:thm:main}
+Let $T$ be a nonempty finite tree and $S\subseteq V(T)$. The following
+conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $F_{T,S}$ is real stable;
+\item $\Phi_{\calA(T;S)}$ is real stable;
+\item either $S=\varnothing$, or $S$ is branch-complete and
+\begin{equation}
+ C_H=I-\tfrac12 A_{H(T,S)}\succeq0;
+ \label{mts:eq:criterion}
+\end{equation}
+\item either $S=\varnothing$, or $S$ is branch-complete and its terminal
+skeleton is one of the finite or affine ADE trees in Table~\ref{mts:tab:ADE}.
+\end{enumerate}
+Equivalently, in the nonempty branch-complete case,
+$\rho(A_{H(T,S)})\le2$. A marking with zero or one mark is always stable.
+\end{theorem}
+
+\begin{proof}[First proof: a corollary of Part~VI (merge)]
+The equivalence (i)$\Leftrightarrow$(ii) is Proposition~\ref{ade:prop:bridge}
+for $\calA(T;S)$, and (iii)$\Leftrightarrow$(iv) is
+Theorem~\ref{ade:thm:ADElist} for the skeleton; since $H(T,S)$ is
+bipartite, $I-\tfrac12A_{H(T,S)}\succeq0$ is equivalent to
+$\rho(A_{H(T,S)})\le2$, as after Theorem~\ref{ade:thm:negative}.
+
+\emph{Unmarked fringe.} Let $S\ne\varnothing$ and $K=\Hull_T(S)$. Every
+component $R$ of $T-V(K)$ is joined to exactly one vertex $u\in V(K)$, by
+one edge $e$, and contains no mark. In $\calA(T;S)$ the left vertices of
+$R\cup\{u\}$ and the edge-elements of $E(R)\cup\{e\}$ span the incidence
+graph of the tree $R+e$, which meets the rest of $\calA(T;S)$ only in $u$
+and has no apex edge. Hence $\calA(T;S)$ is obtained from $\calA(K;S)$ by
+one-vertex sums with incidence graphs of trees. A tree is stable: its
+blocks are single edges, and $\Phi_{K_2}=z_1z_2-1$ does not vanish on
+$\HH^2$, because a product of two points of $\HH$ is never a positive
+real number; apply Corollary~\ref{ade:mat:cor:blocks}. By
+Theorem~\ref{ade:mat:thm:vertex-stable}, $\Phi_{\calA(T;S)}$ is stable if
+and only if $\Phi_{\calA(K;S)}$ is. The same argument with
+$\calA(T;\varnothing)$, the incidence graph of $T$ with an isolated apex,
+proves that the empty marking is stable.
+
+\emph{Branch-complete markings.} If $S$ is branch-complete, every
+vertex of $K\setminus S$ has degree two in $K$, and $K$ is obtained from
+the skeleton $H=H(T,S)$ by replacing each edge by the path of $K$ between
+consecutive marks. The apex is adjacent exactly to the terminals $S=V(H)$,
+so $\calA(K;S)$ is the terminal-skeleton graph $\calA(\widehat H;H)$ with
+$\widehat H=K$, and Theorem~\ref{ade:thm:subdivision} gives stability
+exactly when $\rho(A_H)\le2$.
+
+\emph{Unmarked hull branches.} If $v\in V(K)\setminus S$ has degree at
+least three in $K$, choose in three components of $K-v$ a mark $a_i$
+nearest to $v$. As in the proof of Theorem~\ref{mts:thm:branch} below,
+the incidence vertices of the three paths from $v$ to $a_i$, together with
+$\star$, induce in $\calA(T;S)$ a multi-theta graph
+$\vartheta(2d_1+1,2d_2+1,2d_3+1)$ with endpoints $v$ and $\star$, where
+$d_i=d_T(v,a_i)\ge1$. By Theorem~\ref{ade:thm:introtheta}(ii) it is not
+stable, and by Lemma~\ref{ade:mat:lem:induced} neither is
+$\Phi_{\calA(T;S)}$.
+\end{proof}
+
+The first proof is assembled for this merge from Part~VI's theorems; source~10
+states that its classification is such a synthesis
+(Section~\ref{mts:app:source}). Source~10's own proof, printed as the second
+proof after Proposition~\ref{mts:prop:ADE}, occupies
+Sections~\ref{mts:sec:bridge}--\ref{mts:sec:spectral}; it proves the
+identity and the failure certificate directly on the host tree, without
+the vertex-sum theorem or matroid minors.
+The full-apex criterion is the special case $S=V(T)$; the repository's
+terminal-subdivision theorem is the case $K=T$ with every suppressed
+vertex of degree two. The unmarked branching obstruction is the additional
+case needed for arbitrary neighborhoods.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1,marked/.style={circle,draw,fill=black,inner sep=2.6pt},unmarked/.style={circle,draw,fill=white,inner sep=2.6pt}]
+\begin{scope}
+\node[unmarked,label=below:{$v$}] (c) at (0,0) {};
+\node[marked,label=above:{$a$}] (a) at (-1.2,1.25) {};
+\node[marked,label=above:{$b$}] (b) at (1.2,1.25) {};
+\node[marked,label=below:{$c$}] (d) at (0,-1.2) {};
+\draw (a)--(c)--(b) (c)--(d);
+\node[align=center,font=\small,text width=3.6cm] at (0,-2.1) {unmarked hull branch\\nonstable};
+\end{scope}
+\begin{scope}[xshift=5cm]
+\node[marked] (c) at (0,0) {};
+\node[marked] (a) at (-1.2,1.25) {};
+\node[marked] (b) at (1.2,1.25) {};
+\node[marked] (d) at (0,-1.2) {};
+\node[unmarked] (m) at (-.6,.625) {};
+\draw (a)--(m)--(c)--(b) (c)--(d);
+\node[unmarked] (f) at (.7,-.6) {};
+\node[unmarked] (g) at (1.2,-1.1) {};
+\draw[dashed] (c)--(f)--(g);
+\node[align=center,font=\small,text width=4.2cm] at (0,-2.1) {marked center, with subdivision\\and unmarked fringe\\stable skeleton $D_4$};
+\end{scope}
+\end{tikzpicture}
+\caption{Filled vertices are apex neighbors. The diagrams show the host tree,
+not its bipartite incidence graph. Unmarked degree-two subdivision vertices
+and unmarked fringe do not alter the terminal skeleton.}
+\label{mts:fig:marked}
+\end{figure}
+
+\section{The support--matroid bridge and elementary analytic facts}\label{mts:sec:bridge}
+
+\noindent\emph{Merge note. The four lemmas of this section are Part~VI's,
+in source~10's formulation; source~10 proves them by the same arguments as
+Part~VI, and its proofs are replaced by pointers. Its statements are kept
+because later sections cite them.}
+
+\begin{lemma}[Canonical transversal matroid]\label{mts:lem:matroid}
+For a bipartite graph with shores $U$ and $B$, the sets
+$(U\setminus I)\sqcup J$, with $I\sim J$, are the bases of a rank-$|U|$
+transversal matroid. Its basis polynomial is
+$F_G(x;y)=\sum_{I\sim J}x^{U\setminus I}y^J$.
+\end{lemma}
+\begin{proof}
+This is Lemma~\ref{ade:lem:matroid} (the matroid $\mathsf M_G$ and its basis
+polynomial~\eqref{ade:eq:Fdef}), proved there by the same one-slot-per-left-vertex
+presentation.
+\end{proof}
+
+Source~10 also recalls the generic linear representation $[I\ K]$ of
+Lemma~\ref{ade:lem:matroid}, with an independent indeterminate $K_{ub}$ on
+each graph edge; a basis minor is nonzero precisely when $I\sim J$.
+
+\begin{lemma}[Inversion bridge and induced subgraphs]\label{mts:lem:bridge}
+For a bipartite graph $G$ with shores $U,B$,
+\begin{equation}
+ \Phi_G(x,z_B)=\left(\prod_{b\in B}z_b\right)
+                F_G\bigl(x;(-1/z_b)_{b\in B}\bigr).
+ \label{mts:eq:inversion}
+\end{equation}
+Thus $F_G$ and $\Phi_G$ are stable simultaneously. Stability of $\Phi_G$
+passes to every induced subgraph.
+\end{lemma}
+\begin{proof}
+Identity~\eqref{mts:eq:inversion} and the first conclusion are
+Proposition~\ref{ade:prop:bridge}, equation~\eqref{ade:eq:bridge}. The
+second is Lemmas~\ref{ade:lem:minors} and~\ref{ade:mat:lem:induced}, by the
+identity
+\begin{equation}
+ \partial_{z_v}\Phi_G=\Phi_{G-v},
+ \label{mts:eq:induced}
+\end{equation}
+iterated; its leading unmatched monomial excludes the zero polynomial.
+\end{proof}
+
+We use the standard closure properties under differentiation and real
+specialization \cite{COSW,Branden}. Real specialization follows by
+approaching the real point from $\HH$ and applying Hurwitz's theorem; the
+limit is zero-free or identically zero. For a matroid basis polynomial,
+deletion and contraction are respectively specialization at zero and
+differentiation, with the usual loop/coloop factors treated separately.
+Hence matroid minors inherit stability.
+
+\begin{lemma}[Necessary Rayleigh inequality]\label{mts:lem:rayleigh}
+If a real multiaffine polynomial $f$ is stable, then, for all distinct
+variables $z_i,z_j$ and every real assignment $a$,
+\begin{equation}
+ \del_{ij}f(a):=f_i(a)f_j(a)-f(a)f_{ij}(a)\ge0.
+ \label{mts:eq:rayleigh}
+\end{equation}
+\end{lemma}
+\begin{proof}
+This is Lemma~\ref{ade:lem:rayleigh}, with the same bivariate
+specialization argument.
+\end{proof}
+
+The converse is Br\"and\'en's general theorem \cite{Branden}; our negative
+certificates require only the elementary direction just proved.
+
+\begin{lemma}[A stable polynomial has real-rooted support diagonal]\label{mts:lem:diagonal}
+If $F_G$ is stable, then
+\begin{equation}
+ p_G(t)=F_G(\one;t\one)=\sum_{I\sim J}t^{|I|}
+ \label{mts:eq:p}
+\end{equation}
+has only negative real zeros, or is constant.
+\end{lemma}
+\begin{proof}
+This is the last assertion of Proposition~\ref{ade:prop:bridge}, with the
+same specialization and diagonalization argument.
+\end{proof}
+
+The converse is false; the repository's books provide examples
+(Theorem~\ref{ade:thm:introbook}). This distinction will also matter when we introduce
+a second enumerator, counting \emph{which markings} are stable.
+
+\section{The unmarked-branch obstruction}\label{mts:sec:branch}
+
+\subsection{A small obstruction, with its original credit}
+
+Let $\vartheta(3,3,3)$ consist of three internally disjoint paths of length three
+between a left endpoint and a right endpoint. It is $\calA(K_{1,3};S)$ when
+$S$ consists of the three leaves and excludes the center. Its support
+polynomial is
+\begin{equation}
+ p_{\vartheta(3,3,3)}(t)=1+9t+24t^2+16t^3+t^4.
+ \label{mts:eq:theta}
+\end{equation}
+This is an existing obstruction in this report, which attributes the earlier
+counterexample to Shivam Patel~\cite{Patel}. We reproduce the small certificate rather
+than claim a new example.
+[Merge note: \eqref{mts:eq:theta} is Part~VI's~\eqref{ade:eq:thetaobstruction}
+and Part~II's $p_{\Theta_3}$ (Theorem~\ref{htwo:thm:thetaintro}). The
+coefficient count below differs from Part~VI's (which counts matchable
+right sets per left set) and is kept as a second route.]
+
+Here is a direct coefficient count (source~10's route). The graph has nine edges and degree
+sequence $(3,3,2,2,2,2,2,2)$. Its number of two-edge matchings is
+\[
+ \binom92-2\binom32-6\binom22=24.
+\]
+There is no four-cycle, so two matchings cannot share a four-vertex
+support. Each shore has four vertices, and every choice of three vertices
+from each shore is matchable. To verify this last assertion, label the
+left vertices $u,b_1,b_2,b_3$ and the right vertices $a_1,a_2,a_3,\star$,
+with edges $ua_i,b_ia_i,b_i\star$. If $u$ is omitted, match the leaves to
+their private $a_i$ columns, using $\star$ for the unique missing private
+column when necessary. If $u$ is retained and $\star$ is omitted, match
+the two retained leaves privately and give $u$ the third column. Finally,
+if both $u$ and $\star$ are retained, either an available private column
+belongs to the omitted leaf, in which case give it to $u$, or both
+available private columns belong to retained leaves. In the latter case
+give one to $u$, its leaf to $\star$, and match the other leaf privately.
+Thus the size-three coefficient is $\binom43^2=16$. The full graph has a
+perfect matching, giving final coefficient one.
+
+For an exact nonreal-root certificate,
+\begin{equation}
+ \operatorname{disc}(t^4+16t^3+24t^2+9t+1)=-5243.
+ \label{mts:eq:thetadisc}
+\end{equation}
+If all four roots were real and distinct, the discriminant would be
+positive; repeated roots would give zero. Thus the polynomial has a
+nonreal root. The included program independently enumerates the supports
+and computes the discriminant over the integers. By
+Lemma~\ref{mts:lem:diagonal}, $F_{\vartheta(3,3,3)}$ is not stable.
+[Merge note: \eqref{mts:eq:thetadisc} is Part~VI's~\eqref{ade:eq:thetadisc};
+Part~VI also prints source~09's Sturm chain and Rayleigh certificate for
+the same graph. The ``included program'' is shipped as
+\nolinkurl{code/10-marked-trees-verify.py}; its recorded output
+\nolinkurl{data/10-marked-trees-verification.json} lists the coefficients
+$1,9,24,16,1$ and the discriminant $-5243$.]
+
+\subsection{Shortening odd paths by legitimate matroid minors}
+
+It is not correct to assume that arbitrary graph contractions preserve
+matching-support stability. We use the following specific operation,
+already present in the repository's terminal-subdivision argument.
+
+\begin{lemma}[Path shortening]\label{mts:lem:shorten}
+Suppose a bipartite graph has a path $a-c-b-d$, where $a,b$ are on the
+left and $c,d$ on the right. Suppose $N(b)=\{c,d\}$,
+$N(c)=\{a,b\}$, and $a$ is not adjacent to $d$. In its canonical matroid,
+contract the right element $c$ and delete the left private element $b$.
+The result is the canonical matroid of the graph obtained by removing
+$b,c$ and replacing this path by the edge $a-d$.
+\end{lemma}
+\begin{proof}
+This is Lemma~\ref{ade:lem:shorten}; source~10's proof, in the generic
+representation $[I\ K]$, is the same argument almost word for word and is
+not reprinted.
+\end{proof}
+
+Consequently, a graph consisting of three internally disjoint odd paths,
+each of length at least three, is nonstable. Shorten each path by pairs of
+edges until all three have length three. The intermediate internal vertices
+satisfy the degree conditions in Lemma~\ref{mts:lem:shorten}. Stability of the
+original canonical matroid would imply stability of the resulting
+$\vartheta(3,3,3)$ minor, a contradiction.
+[Merge note: this is Theorem~\ref{ade:thm:introtheta}(ii) for three paths,
+with the same proof (Section~\ref{ade:sec:theta}).]
+
+\begin{theorem}[An unmarked hull branch forbids stability]\label{mts:thm:branch}
+If $S\ne\varnothing$ and $K=\Hull_T(S)$ has a vertex $v\notin S$ of degree
+at least three, then $F_{T,S}$ and $\Phi_{\calA(T;S)}$ are not stable.
+\end{theorem}
+\begin{proof}
+Choose three components of $K-v$. Each contains a mark. In each choose a
+mark $a_i$ at minimum distance from $v$, and take the path from $v$ to
+$a_i$. Its internal vertices are unmarked. The three paths meet only at
+$v$. In $\calA(T;S)$ their incidence subdivisions, followed by the three
+edges $a_i\star$, form three paths from $v$ to $\star$ of lengths
+$2d_T(v,a_i)+1\ge3$.
+
+The graph induced on precisely these path vertices is exactly this odd
+theta graph. There are no cross-edges, because $T$ is a tree; there are
+no extra apex edges, because there are no internal marks on the chosen
+paths. The preceding minor argument proves it nonstable. Induced-subgraph
+inheritance in Lemma~\ref{mts:lem:bridge} excludes stability of the original graph,
+and the inversion bridge transfers the conclusion to $F_{T,S}$.
+\end{proof}
+
+[Merge note: Theorem~\ref{mts:thm:branch} is new as a statement; its
+proof applies Theorem~\ref{ade:thm:introtheta}(ii) and induced
+inheritance (Lemma~\ref{ade:mat:lem:induced}) to the induced multi-theta
+graph $\vartheta(2d_1+1,2d_2+1,2d_3+1)$ between $v$ and $\star$. It is the
+case that Part~VI's terminal convention excludes
+(Section~\ref{ade:sec:subdivision}, ``Why the terminal convention
+matters'').]
+
+\section{Exactly when a supported covariance exists}\label{mts:sec:covariance}
+
+The geometric obstruction also has a precise algebraic interpretation.
+A matrix is \emph{supported on $S$} if all its rows and columns outside
+$S$ are zero. Consider the connected-set interpolation conditions
+\begin{equation}
+ \one_W^T C\one_W=\ind_{\{W\cap S\ne\varnothing\}}
+ \qquad\text{for every nonempty connected vertex set }W\subseteq V(T).
+ \label{mts:eq:energy}
+\end{equation}
+They ask that the quadratic form turn the number of usable apex entries
+in a connected component into the Boolean assertion that at least one is
+present.
+
+\begin{theorem}[Existence and uniqueness of the supported covariance]\label{mts:thm:covariance}
+For $S\ne\varnothing$, a real symmetric matrix supported on $S$ satisfying
+\eqref{mts:eq:energy} exists if and only if $S$ is branch-complete. When it
+exists it is unique and equals the zero extension of
+\begin{equation}
+ C_H=I-\tfrac12 A_{H(T,S)}.
+ \label{mts:eq:C}
+\end{equation}
+For $S=\varnothing$, the unique supported matrix is zero and it satisfies
+\eqref{mts:eq:energy}.
+\end{theorem}
+\begin{proof}
+First suppose the marking is branch-complete. For connected $W$, the set
+$R=W\cap S$ is either empty or connected in the skeleton $H$. Indeed, the
+unique path in $T$ between two elements of $R$ belongs to $W$, and contains
+every intervening mark on their skeleton path. Consequently
+\[
+ \one_W^T C\one_W=|R|-|E(H[R])|
+ =\begin{cases}0,&R=\varnothing,\\1,&R\ne\varnothing.\end{cases}
+\]
+This proves existence even when $C_H$ is indefinite.
+
+For uniqueness, singleton marks give $C_{aa}=1$. For adjacent marks in
+$H$, their connecting path contains exactly those two marks, so its
+energy is $2+2C_{ab}=1$ and $C_{ab}=-1/2$. Induct on distance in $H$ for a
+nonadjacent pair $a,b$. On their connecting path, diagonal and adjacent-pair
+contributions already sum to one. All other pairs of smaller distance
+have zero entry by induction. The remaining term $2C_{ab}$ must vanish.
+This determines every entry supported on $S$.
+
+Conversely, suppose an unmarked branch $v$ exists. Choose three first
+marks $a,b,c$ in distinct directions as in Theorem~\ref{mts:thm:branch}. The path
+between any two of them contains no other mark. Singleton and two-mark
+path energies force
+\[
+ C_{aa}=C_{bb}=C_{cc}=1,\qquad
+ C_{ab}=C_{ac}=C_{bc}=-\tfrac12.
+\]
+The connected union of the three paths contains exactly these three marks,
+so its energy is $3+2(-3/2)=0$, contradicting its required energy one.
+The empty case is immediate from the support requirement.
+\end{proof}
+
+[Merge note: for $S=V(T)$ the uniqueness half is Part~VI's covariance
+rigidity, Proposition~\ref{ade:prop:uniqueC}, with the same induction on
+distance, and the existence half is~\eqref{ade:eq:connectedenergy}. The
+support restriction, the branch-complete generality and the nonexistence
+half at an unmarked branch are new.]
+
+\begin{remark}[The support restriction is part of the theorem]
+We have classified matrices supported on the apex neighborhood and
+satisfying every connected-set equation. We have not ruled out unrelated
+determinantal models, indefinite matrices with additional off-neighborhood
+entries, or higher-moment constructions. On the positive-semidefinite
+side, zero rows outside $S$ follow automatically from the zero diagonal
+entries forced by singleton equations.
+\end{remark}
+
+\subsection{The coefficient identity, including unmarked fringe}
+
+Choose an orientation of $T$. For $e=uv$, let $b_e=e_u-e_v$, with the sign
+chosen according to the orientation, and put
+\begin{equation}
+ L(x,y)=\diag(x_v)_{v\in V}+\sum_{e\in E}y_e b_eb_e^T.
+ \label{mts:eq:L}
+\end{equation}
+Changing an orientation does not change $L$.
+
+\begin{theorem}[Exact Boolean determinant--adjugate identity]\label{mts:thm:identity}
+Suppose $S$ is branch-complete, or empty, and let $C$ be the matrix in
+Theorem~\ref{mts:thm:covariance}. Then
+\begin{equation}
+ \boxed{F_{T,S}(x;y,s)=\det L+s\,\tr\bigl(\adj(L)C\bigr).}
+ \label{mts:eq:identity}
+\end{equation}
+This is a polynomial identity, with no invertibility or definiteness
+assumption. It holds on the original host tree, including every unmarked
+subdivision vertex and every unmarked attached subtree.
+\end{theorem}
+\begin{proof}
+Let $B$ be the oriented incidence matrix. By Cauchy--Binet,
+\begin{align}
+ \det(L+sww^T)
+ &=\sum_{|I|=|J|}x^{V\setminus I}y^J\det(B_{I,J})^2\notag\\
+ &\quad+s\sum_{|I|=|J|+1}x^{V\setminus I}y^J
+                      \det[B_{I,J}\ \ w_I]^2,
+ \label{mts:eq:CB}
+\end{align}
+where $I\subseteq V$, $J\subseteq E$, and $w$ is an auxiliary vector.
+The first-line minor is zero or $\pm1$ and is nonzero exactly on a
+matchable support. One can see this by leaf elimination; alternatively,
+the underlying incidence graph is a tree, so a fixed support has at most
+one perfect matching and hence at most one nonzero determinant term.
+
+For the second line, consider the internal-edge forest on the chosen rows
+$I$. A selected edge with one endpoint in $I$ is a half-edge; an edge
+with no endpoint in $I$ gives a zero column. A component with $k$ vertices
+and $h$ half-edges has $k-1+h$ selected columns. If $h>1$, those columns
+cannot be assigned distinct rows. When there is no zero column and every
+component has at most one half-edge, the equality $|I|=|J|+1$ forces exactly
+one component $W$ to have no half-edge; every other component has one.
+
+A component with one half-edge gives a square incidence block of
+determinant $\pm1$. In the component $W$, the internal incidence block
+has left kernel spanned by $\one_W$, and each maximal cofactor has modulus
+one. Thus
+\begin{equation}
+ \det[B_{I,J}\ \ w_I]=\pm\sum_{v\in W}w_v.
+ \label{mts:eq:cofactor}
+\end{equation}
+In every other component configuration the augmented determinant vanishes
+identically. If $w$ is supported on $S$, an apex matching exists exactly
+when this unique unrooted component meets $S$.
+
+Apply the linear functional $w_uw_v\mapsto C_{uv}$ to the quadratic
+coefficients of \eqref{mts:eq:CB}. By \eqref{mts:eq:energy}, the square in
+\eqref{mts:eq:cofactor} becomes one when $W\cap S\ne\varnothing$ and zero
+otherwise. Each feasible apex support is therefore counted exactly once.
+The first line is unchanged. On the left, the rank-one determinant
+identity gives
+\[
+ \det(L+sww^T)=\det L+s\,w^T\adj(L)w.
+\]
+The same functional produces \eqref{mts:eq:identity}. Everything takes place
+in a polynomial ring, so singular substitutions are allowed.
+\end{proof}
+
+[Merge note: Theorem~\ref{mts:thm:identity} generalizes Part~VI's
+Theorem~\ref{ade:thm:detidentity} ($S=V(T)$) and the terminal-subdivision
+identity~\eqref{ade:eq:subdivisionidentity} ($K=T$) to hosts with unmarked
+fringe; its cofactor analysis is Lemma~\ref{ade:lem:forestcofactor}. Part~VI
+reaches fringe only through the vertex-sum theorem, not by an identity.]
+
+\begin{remark}
+The right side is generally \emph{not} $\det(L+sC)$: that determinant
+would introduce higher powers of $s$ and represent several apex choices.
+Nor is the coefficient identity the assertion that every matching has the
+same weight. The connected-component quadratic functional is precisely
+what removes the matching multiplicity.
+\end{remark}
+
+\section{Stability, rational certificates, and the ADE list}\label{mts:sec:spectral}
+
+\subsection{Positive covariance gives stability}
+
+The following resolvent argument is the analytic mechanism already used
+for full-apex trees in Part~VI. The extended identity allows the
+same argument on every branch-complete marking.
+
+\begin{lemma}[Resolvent positivity]\label{mts:lem:resolvent}
+Let $L=\diag(x_i)+\sum_e y_e b_eb_e^T$, with real vectors $b_e$. If
+$C\succeq0$, then $\det L+s\tr(\adj(L)C)$ is stable.
+\end{lemma}
+\begin{proof}
+For $C\ne0$ this is Lemma~\ref{ade:lem:covstable}, with the same
+argument through
+\begin{equation}
+ \im L^{-1}=-L^{-*}(\im L)L^{-1}\prec0,
+ \label{mts:eq:im-inverse}
+\end{equation}
+which gives $\im\tr(CL^{-1})<0$; source~10 notes that this follows also by
+factoring $C=RR^*$ and taking the trace of the negative definite form on
+the nonzero columns of $R$. If $C=0$, the polynomial is $\det L$, which
+does not vanish because $\im L\succ0$ for $x_i,y_e\in\HH$.
+\end{proof}
+
+Singular positive-semidefinite matrices cause no difficulty; in particular,
+the affine ADE boundary is included without an extra approximation step.
+
+\subsection{A negative certificate directly on the original tree}
+
+\begin{theorem}[Rational Rayleigh certificate with subdivisions and fringe]\label{mts:thm:certificate}
+Suppose $S$ is nonempty and branch-complete, but $C_H$ is not positive
+semidefinite. There is a vector $v\in\mathbb Q_{>0}^{V(T)}$ with $v^TCv<0$.
+For any such vector set
+\begin{align}
+ y_{ij}&=\frac1{v_iv_j} &&(ij\in E(T)),\label{mts:eq:cert-y}\\
+ x_i&=\frac{\deg_T(i)}{v_i^2}-\sum_{j\sim i}\frac1{v_iv_j},
+ &s&=0.\label{mts:eq:cert-x}
+\end{align}
+Writing $c=\prod_i v_i^{-2}$, the exact Rayleigh values are
+\begin{equation}
+ \del_{s,x_i}F_{T,S}=c^2v_i^2(v^TCv)<0
+ \qquad(i\in V(T)).
+ \label{mts:eq:certificate}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For the connected nonnegative adjacency matrix $A_H$, failure of
+$I-A_H/2\succeq0$ means its largest eigenvalue exceeds two. A strictly
+positive Perron eigenvector therefore has negative $C_H$ energy. Approximate
+it sufficiently closely by positive rational entries; strict negativity
+persists. Extend to a positive rational vector on the other vertices of
+$T$. Since $C$ is supported on $S$, the energy is unchanged.
+
+At \eqref{mts:eq:cert-y}--\eqref{mts:eq:cert-x}, with $D_v=\diag(v_i)$,
+\begin{equation}
+ L_0=D_v^{-1}\Lap(T)D_v^{-1}.
+ \label{mts:eq:lap-congruence}
+\end{equation}
+The tree Laplacian has kernel $\R\one$ and adjugate $\one\one^T$: any
+cofactor is one, by elimination of leaves or the incidence determinant of
+the tree. Adjugate transformation under the invertible diagonal
+congruence gives
+\[
+ \det L_0=0,\qquad \adj(L_0)=c\,vv^T.
+\]
+Using Theorem~\ref{mts:thm:identity} at $s=0$ yields
+$F=0$, $F_s=c\,v^TCv$, and $F_{x_i}=c\,v_i^2$. In the Rayleigh expression
+$F_sF_{x_i}-FF_{s,x_i}$, the second term vanishes, proving
+\eqref{mts:eq:certificate}. Lemma~\ref{mts:lem:rayleigh} then excludes stability.
+\end{proof}
+
+This theorem extends the source's skeleton certificate to the full host
+without contracting away its extra vertices. It does not assert that all
+negative certificates occur at positive variable values: the $x_i$ may be
+negative, which is entirely legitimate for a test of real stability.
+[Merge note: ``the source'' is Part~VI; the formulas are those of
+Theorem~\ref{ade:thm:negative}, equations
+\eqref{ade:eq:certy}--\eqref{ade:eq:explicitRayleigh}. On the host tree
+this is a second route to the necessity half of
+Theorem~\ref{ade:thm:subdivision}, which Part~VI proves by matroid minors
+(Lemma~\ref{ade:lem:shorten}).]
+
+\begin{example}[A transparent spectral failure]
+For the fully marked $K_{1,5}$, take center coordinate $v_0=2$ and all five
+leaf coordinates equal to one. Then $v^TCv=-1$, all $y_e=1/2$, the center
+$x_0=-5/4$, and each leaf $x_i=1/2$. Thus $c=1/4$ and
+$\del_{s,x_0}F=-1/4$. This bare-star certificate is already in the
+repository (the example after Theorem~\ref{ade:thm:negative}). Inserting an unmarked subdivision vertex on an arm, and
+attaching an unmarked two-edge twig there, preserves the energy: put value
+one at all new vertices and use \eqref{mts:eq:cert-x}. The delivered output
+checks this nine-vertex extension exactly as well.
+[Merge note: both certificates are recorded under
+\texttt{rayleigh\_certificates} in
+\nolinkurl{data/10-marked-trees-verification.json}.]
+\end{example}
+
+\subsection{An elementary form of the classical classification}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.25\textwidth}X@{}}
+\toprule
+Name & Shape of the terminal skeleton $H$\\
+\midrule
+$A_r$, $r\ge1$ & A path on $r$ vertices.\\
+$D_{c+3}$, $c\ge1$ & One trivalent vertex with arm lengths $(1,1,c)$.\\
+$E_6,E_7,E_8$ & One trivalent vertex with arm lengths
+$(1,2,2)$, $(1,2,3)$, $(1,2,4)$, respectively.\\
+$\widetilde E_6,\widetilde E_7,\widetilde E_8$ & One trivalent vertex with
+arm lengths $(2,2,2)$, $(1,3,3)$, $(1,2,5)$, respectively.\\
+$\widetilde D_4$ & The four-leaf star $K_{1,4}$.\\
+$\widetilde D_{d+4}$, $d\ge1$ & Two trivalent vertices joined by a path of
+length $d$, with two additional immediate leaves at each end.\\
+\bottomrule
+\end{tabularx}
+\caption{All trees with adjacency spectral radius at most two. Arm lengths
+count edges of the terminal skeleton, not edges of the host tree. The
+finite types have $2I-A_H\succ0$; affine types have corank one.}
+\label{mts:tab:ADE}
+\end{table}
+
+\begin{proposition}[Classical tree criterion]\label{mts:prop:ADE}
+A nonempty tree $H$ satisfies $I-A_H/2\succeq0$ if and only if it occurs
+in Table~\ref{mts:tab:ADE}.
+\end{proposition}
+\begin{proof}
+This is Theorem~\ref{ade:thm:ADElist}, and Table~\ref{mts:tab:ADE} is its
+list (a)--(f) in source~10's layout. Source~10's proof is the same
+elementary argument (excluded degrees five and four through $K_{1,5}$ and
+the $K_{1,4}$ eigenvector, the double-fork eigenvector, and Schur pivots
+along the arms) and is not reprinted. For a skeleton with one trivalent
+vertex and arm lengths $a\le b\le c$, the decisive condition is the arm
+inequality~\eqref{ade:eq:arms},
+\begin{equation}
+ \frac1{a+1}+\frac1{b+1}+\frac1{c+1}\ge1,
+ \label{mts:eq:arms}
+\end{equation}
+with equality exactly in the affine cases.
+\end{proof}
+
+\begin{proof}[Second proof of Theorem~\ref{mts:thm:main} (source~10, direct)]
+The inversion bridge gives (i)$\Leftrightarrow$(ii). An unmarked hull
+branch is excluded by Theorem~\ref{mts:thm:branch}. On every remaining nonempty
+marking, Theorem~\ref{mts:thm:identity} and Lemma~\ref{mts:lem:resolvent} give stability when $C_H\succeq0$,
+and Theorem~\ref{mts:thm:certificate} excludes it otherwise. The empty case is
+$F=\det L$. Finally Proposition~\ref{mts:prop:ADE} identifies the matrix criterion with
+(iv). For a nonnegative adjacency matrix its largest eigenvalue is its
+spectral radius, giving the stated equivalent numerical criterion.
+\end{proof}
+
+\begin{corollary}[Positive covariance is also necessary]\label{mts:cor:PSDexistence}
+The graph $\calA(T;S)$ is stable if and only if a positive-semidefinite
+symmetric matrix satisfying \eqref{mts:eq:energy} exists. Such a matrix is
+automatically supported on $S$ and is unique.
+\end{corollary}
+\begin{proof}
+Singleton equations make every diagonal outside $S$ zero. A
+positive-semidefinite matrix with $C_{ii}=0$ has its entire $i$th row zero,
+as follows from its two-by-two principal minors. Now use
+Theorems~\ref{mts:thm:covariance} and~\ref{mts:thm:main}.
+\end{proof}
+
+\section{Recognition and geometric consequences}\label{mts:sec:recognition}
+
+\begin{theorem}[Linear-time recognition]\label{mts:thm:recognition}
+Given a tree by adjacency lists and a marking, stability of $\calA(T;S)$ can
+be decided in $O(n)$ combinatorial time, without constructing its support
+polynomial and without numerical eigenvalue computation.
+\end{theorem}
+\begin{proof}
+Handle $S=\varnothing$ separately. Repeatedly remove unmarked leaves,
+updating degrees with a queue. Every vertex and edge is processed a
+constant number of times, and the remaining graph is $K=\Hull_T(S)$.
+Reject if a remaining unmarked vertex has degree at least three.
+Suppress the unmarked degree-two vertices, following each path once.
+This constructs $H$ in linear time. Its membership in Table~\ref{mts:tab:ADE} is
+checked from its degrees, the number of branches, and, in the one-branch
+case, its three arm lengths. These traversals are linear.
+\end{proof}
+
+A geometric rejection can include three explicit first-mark paths, giving
+the induced theta certificate. A positive result can include the skeleton
+shape and the subdivision paths. A spectral rejection can be supplemented
+by the rational vector of Theorem~\ref{mts:thm:certificate}. The theorem's linear-time
+claim concerns the structural decision, not an unproved uniform bound on
+the bit length of every possible rationalized eigenvector.
+
+\begin{corollary}[Four-leaf bound]\label{mts:cor:leaves}
+If $S$ is stable and $|S|\ge2$, then $\Hull_T(S)$ has at most four leaves.
+\end{corollary}
+\begin{proof}
+Suppressing degree-two vertices does not change the leaves, and every
+ADE tree in Table~\ref{mts:tab:ADE} has at most four.
+\end{proof}
+
+The bound is on the number of \emph{hull leaves}, not the number of marks:
+a path can have all its vertices marked, and a double-fork skeleton can
+have arbitrarily many marks along its central path.
+
+\begin{theorem}[A sharp diameter window]\label{mts:thm:diameter}
+Let $\alpha_{\mathrm{st}}(T)$ be the largest cardinality of a stable marking.
+Then
+\begin{equation}
+ \diam(T)+1\le\alpha_{\mathrm{st}}(T)
+       \le\min\{n,\diam(T)+3\}.
+ \label{mts:eq:diameter}
+\end{equation}
+The offsets one, two, and three are all attained.
+\end{theorem}
+\begin{proof}
+Mark all vertices on a longest path. Its hull and skeleton are paths, so
+it is stable and has $\diam(T)+1$ vertices. Conversely, every nonempty
+stable marking has an ADE skeleton $H$ on $|S|$ vertices. Inspection of
+Table~\ref{mts:tab:ADE}, or its arm formulas, gives
+$|V(H)|\le\diam(H)+3$. Distances between terminals can only increase under
+subdivision, so $\diam(H)\le\diam(T)$. Also $|S|\le n$.
+Paths attain offset one, $K_{1,3}$ attains offset two, and $K_{1,4}$ attains
+offset three.
+\end{proof}
+
+\begin{proposition}[No monotonicity under changing the neighborhood]\label{mts:prop:nonmonotone}
+The stable markings are in general neither downward closed nor upward
+closed under inclusion. Every marking of $T$ is stable if and only if $T$
+is a path.
+\end{proposition}
+\begin{proof}
+On $K_{1,3}$ the fully marked set has skeleton $D_4$ and is stable, but
+deleting its center mark leaves the unstable three-leaf marking. On
+$K_{1,5}$, the center together with four leaves is stable, whereas adding
+the fifth leaf gives the excluded five-leaf star. Thus neither monotonicity
+holds.
+
+If $T$ is a path, every hull and skeleton are paths. If $T$ is not a path,
+it has a vertex with at least three neighbors. Mark precisely three of
+those neighbors. The hull is a three-leaf star with unmarked center, so
+this marking is unstable.
+\end{proof}
+
+These examples explain why minimum repair cannot be reduced to a naive
+procedure which only deletes marks or only adds missing branch marks.
+
+\section{An exact endpoint formula for all stable neighborhoods}\label{mts:sec:enumeration}
+
+Define the stable-marking family and its enumerators by
+\begin{align}
+ \Stab(T)&=\{S\subseteq V(T):F_{T,S}\text{ is real stable}\},\notag\\
+ \Zpoly_T(z)&=\sum_{S\in\Stab(T)}z^S,
+ & Z_T(t;w)&=\Zpoly_T((tw_v)_{v\in V}).
+ \label{mts:eq:Z}
+\end{align}
+Here $z^S=\prod_{v\in S}z_v$. Write $Z_T(t)=Z_T(t;\one)$ for unweighted
+size enumeration. This polynomial counts \emph{apex neighborhoods}; it is
+not $p_{\calA(T;S)}$, which counts supports for one fixed neighborhood.
+
+For distinct vertices $a,b$, let $\pathin ab$ be the internal vertices of
+the unique $a$--$b$ path, and put
+\begin{equation}
+ P_{ab}(z)=\prod_{v\in\pathin ab}(1+z_v).
+ \label{mts:eq:pathproduct}
+\end{equation}
+For a vertex set $R$ let
+\[
+ E_k(R)=\sum_{A\subseteq R,\ |A|=k}z^A,
+ \qquad E_0(R)=1,
+\]
+with $E_k(R)=0$ for $k>|R|$.
+
+For $\ell=3,4$, define
+\begin{equation}
+ \mathcal L_\ell(T)=\{L\subseteq V:|L|=\ell,\ \Leaf(\Hull_T(L))=L\}.
+ \label{mts:eq:leafsets}
+\end{equation}
+Not every three- or four-element set is eligible: an element lying between
+two others is not a leaf of their hull and must be excluded. Each pair of
+distinct vertices is automatically eligible as a two-leaf hull.
+
+\subsection{The three-leaf factor}
+
+For $L=\{a,b,c\}\in\mathcal L_3(T)$, let $o=o(L)$ be the unique trivalent
+vertex of its hull. Its three arms have internal vertex sets
+$R_1,R_2,R_3$, excluding $o$ and the corresponding leaf. Let $\mathcal E$
+be the set of all \emph{distinct permutations} of the six triples
+\begin{equation}
+ (0,1,1),\ (0,1,2),\ (0,1,3),\ (1,1,1),\ (0,2,2),\ (0,1,4).
+ \label{mts:eq:exceptions}
+\end{equation}
+Define
+\begin{equation}
+ Q(R_1,R_2,R_3)
+ =1+\sum_{i=1}^3\left(\prod_{v\in R_i}(1+z_v)-1\right)
+   +\sum_{(k_1,k_2,k_3)\in\mathcal E}\prod_{i=1}^3E_{k_i}(R_i).
+ \label{mts:eq:Q}
+\end{equation}
+The first part counts choices of internal marks on at most one arm. The
+second part contains the six exceptional finite/affine patterns. Repeated
+coordinates in a triple do not create extra multiplicities.
+
+\subsection{Four-leaf hulls}
+
+Every four-leaf tree, after degree-two vertices are suppressed, has either
+one degree-four vertex or two degree-three vertices. Partition
+$\mathcal L_4(T)$ accordingly as $\mathcal L_4^{(4)}(T)$ and
+$\mathcal L_4^{(3,3)}(T)$. In the first case denote the branch by $o(L)$;
+in the second denote the two branches by $o(L),p(L)$. These are vertices
+of the host tree, and may be separated by any positive path length.
+
+\begin{theorem}[Weighted endpoint decomposition]\label{mts:thm:enumerator}
+For every nonempty finite tree,
+\begin{align}
+ \Zpoly_T(z)
+ &=1+\sum_{v\in V}z_v
+   +\sum_{\{a,b\}\subseteq V}z_a z_b P_{ab}(z)\notag\\
+ &\quad+\sum_{L\in\mathcal L_3(T)}
+            z^{L\cup\{o(L)\}}Q(R_1,R_2,R_3)\notag\\
+ &\quad+\sum_{L\in\mathcal L_4^{(4)}(T)}z^{L\cup\{o(L)\}}\notag\\
+ &\quad+\sum_{L\in\mathcal L_4^{(3,3)}(T)}
+            z^{L\cup\{o(L),p(L)\}}P_{o(L)p(L)}(z).
+ \label{mts:eq:enumerator}
+\end{align}
+Every monomial on the right occurs once. In particular the expression,
+although \eqref{mts:eq:Q} uses a subtraction shorthand, has nonnegative
+coefficients after expansion.
+\end{theorem}
+\begin{proof}
+The empty marking and all singletons give the first two terms. Every
+other stable marking has a unique leaf set
+$L=\Leaf(\Hull_T(S))$ with $2\le|L|\le4$, by Corollary~\ref{mts:cor:leaves}.
+All vertices outside this hull are unmarked. The leaves and all branch
+vertices of the hull must be marked; only its degree-two vertices can be
+chosen freely subject to the ADE condition. Moreover
+$\Hull_T(S)=\Hull_T(L)$, so each outer case in \eqref{mts:eq:enumerator} is
+recoverable uniquely from the resulting marking.
+
+If $|L|=2$, the hull is a path. Its endpoints must be marked and any
+subset of internal vertices is allowed, giving $z_a z_b P_{ab}$.
+
+If $|L|=3$, its branch $o$ and three leaves are mandatory. If $k_i$
+internal marks are chosen on arm $i$, the terminal skeleton has arm
+lengths $k_i+1$. By Table~\ref{mts:tab:ADE}, it is of $D$ type when at least two of
+the $k_i$ vanish, giving the first part of \eqref{mts:eq:Q}. The remaining
+allowed unordered triples are exactly \eqref{mts:eq:exceptions}. For a
+specified triple, the weighted choices are
+$E_{k_1}(R_1)E_{k_2}(R_2)E_{k_3}(R_3)$. These cases are disjoint from the
+$D$ cases and from one another.
+
+If $|L|=4$ and there is one degree-four branch, the only allowed skeleton
+is $\widetilde D_4$. Hence none of its four pendant arms may contain an
+extra mark. If there are two degree-three branches, the only allowed
+skeleton is an affine double fork. Again the four pendant arms may have
+no extra marks, but every subset of the internal joining path is allowed.
+These are precisely the last two lines. No other hull leaf count or branch
+type can occur, completing the disjoint decomposition.
+\end{proof}
+
+This is a polynomial-size \emph{description}, not a promise to print every
+monomial of the multivariate expansion in polynomial time. For example,
+$\Zpoly_{P_n}(z)=\prod_v(1+z_v)$ has $2^n$ distinct monomials.
+
+\begin{theorem}[Exact counting in polynomial time]\label{mts:thm:counting}
+For rational vertex weights $w_v$, the complete coefficient vector of
+$Z_T(t;w)$ can be computed using $O(n^5)$ exact arithmetic operations and
+polynomial space. For unit weights, counting stable neighborhoods and
+counting those of any prescribed cardinality have polynomial bit
+complexity.
+\end{theorem}
+\begin{proof}
+Enumerate all subsets of at most four endpoints, of which there are
+$O(n^4)$. Using unique tree paths, construct their hulls, check that the
+chosen vertices are exactly the leaves, and identify the branches in
+$O(n)$ time per candidate. Store path polynomials
+$\prod_{v\in\pathin ab}(1+w_vt)$ for endpoint pairs. There are $O(n^2)$
+such products, each of degree at most $n$; even independent multiplication
+for each pair costs at most $O(n^4)$ arithmetic operations and uses
+$O(n^3)$ coefficient storage.
+
+After substituting $z_v=tw_v$, each $E_k(R_i)$ is a scalar multiple of
+$t^k$, obtained from the appropriate path polynomial. The exceptional
+list is fixed and has $k_i\le4$. Thus every endpoint contribution can be
+added to the answer in $O(n)$ operations. The total is $O(n^5)$.
+
+For unit weights, every output coefficient is at most $2^n$ and has
+$O(n)$ bits. The path products, elementary coefficients, and accumulated
+nonnegative contributions have polynomial bit length as well, so exact
+integer arithmetic preserves polynomial bit complexity. With rational
+weights of total input bit length $B$, all squarefree monomial products
+have a common denominator dividing the product of the input denominators;
+the coefficient numerators and denominators have $O(B+n)$ bits up to
+standard representation constants. The same argument therefore also
+supplies polynomial bit complexity in $n+B$.
+\end{proof}
+
+\subsection{Independent random markings}
+
+For independently marked vertices with probabilities $0<p_v<1$, the exact
+probability of obtaining a stable neighborhood is
+\begin{equation}
+ \Pr(S\in\Stab(T))
+ =\left(\prod_{v\in V}(1-p_v)\right)
+     Z_T\left(1;\left(\frac{p_v}{1-p_v}\right)_{v\in V}\right).
+ \label{mts:eq:probability}
+\end{equation}
+This follows by factoring the probability of each marking. Values $p_v=0$
+or $1$ are handled by the original finite sum, or by continuity. Thus
+rational independent marking probabilities also admit exact polynomial-time
+stability-probability evaluation, despite the lack of monotonicity.
+
+\section{Maximum-weight choice and minimum-cost repair}\label{mts:sec:optimization}
+
+\begin{theorem}[Exact maximum-weight stable marking]\label{mts:thm:optimization}
+Given arbitrary rational scores $c_v$, one can find a set $S\in\Stab(T)$
+maximizing $\sum_{v\in S}c_v$ in $O(n^5)$ arithmetic operations and
+comparisons. Negative scores are allowed, and an optimizing set, not just
+its value, is returned.
+\end{theorem}
+\begin{proof}
+Use the endpoint cases of Theorem~\ref{mts:thm:enumerator}, but maximize rather than
+sum. Consider the empty marking and every singleton separately. For each
+other case, include its mandatory leaves and branch vertices.
+
+On a two-leaf path, choose exactly the positive-score internal vertices;
+zero-score choices can be resolved arbitrarily. For a three-leaf hull,
+first consider the $D$ cases: either no internal marks, or positive-score
+internal marks on one selected arm only. Take the best of these options.
+For each exceptional triple $(k_1,k_2,k_3)\in\mathcal E$, choose the $k_i$
+highest-score vertices of arm $i$; reject that triple if an arm is too
+short. These selections can include negative scores, because the required
+cardinalities are fixed within the case. Only the four largest entries
+per arm are needed, and they can be found in a linear scan.
+
+For a four-leaf hull with one degree-four branch, there are no optional
+marks. With two trivalent branches, choose all positive-score internal
+vertices on their joining path and none on the pendant arms. Compare all
+candidate totals and retain their vertex sets. Each endpoint case is
+processed in $O(n)$ time and there are $O(n^4)$ cases. Correctness follows
+from the exhaustive, disjoint geometric description in
+Theorem~\ref{mts:thm:enumerator} and elementary optimization within each free or
+fixed-cardinality region.
+\end{proof}
+
+This is not a generic theorem about optimizing stable matroids. The host
+is a tree and only its single apex neighborhood is changed. The small
+number of hull leaves and fixed list of exceptional arm counts are doing
+the algorithmic work.
+
+\begin{corollary}[Nearest stable neighborhood]\label{mts:cor:repair}
+Given an initial neighborhood $S_0$, a stable neighborhood minimizing
+$|S\triangle S_0|$ is computable within the same bound. More generally,
+nonnegative rational costs for adding and deleting individual apex edges
+can be minimized exactly.
+\end{corollary}
+\begin{proof}
+For Hamming distance, assign
+$c_v=2\ind_{\{v\in S_0\}}-1$. Then
+\[
+ |S\triangle S_0|=|S_0|-\sum_{v\in S}c_v.
+\]
+For weighted repair, let $d_v$ be the deletion cost on $v\in S_0$ and
+$a_v$ the addition cost on $v\notin S_0$. The total repair cost is
+\[
+ \sum_{v\in S_0}d_v
+ -\sum_{v\in S\cap S_0}d_v
+ +\sum_{v\in S\setminus S_0}a_v.
+\]
+Use score $d_v$ on the original marks and score $-a_v$ elsewhere, and
+apply Theorem~\ref{mts:thm:optimization}.
+\end{proof}
+
+\begin{example}[Why additions can be optimal]
+On the three-leaf star, start with the three leaves marked. Adding the
+center costs one and makes the marking stable. Deleting one leaf also
+costs one, but deletion cost two per leaf and center-addition cost one
+makes addition uniquely cheaper. Conversely, on a fully marked five-leaf
+star, deletion of one leaf repairs the spectral obstruction; adding
+marks cannot help because all vertices are already marked.
+\end{example}
+
+The implementation exposes four public entrypoints:
+\begin{center}\small\ttfamily
+\begin{tabular}{ll}
+recognize & stable\_polynomial\\
+maximum\_weight\_stable & nearest\_stable
+\end{tabular}
+\end{center}
+All use integer or rational arithmetic, never a floating-point spectral tolerance.
+
+\section{Explicit families and a second real-rootedness classification}\label{mts:sec:shape}
+
+\subsection{Paths and stars}
+
+\begin{proposition}[Path and star formulas]\label{mts:prop:star}
+For a path,
+\begin{equation}
+ \Zpoly_{P_n}(z)=\prod_{v\in V(P_n)}(1+z_v),
+ \qquad Z_{P_n}(t)=(1+t)^n.
+ \label{mts:eq:pathZ}
+\end{equation}
+For the star $K_{1,m}$, with center $o$ and leaf set $L$,
+\begin{align}
+ \Zpoly_{K_{1,m}}(z)
+ &=\sum_{k=0}^{\min(2,m)}E_k(L)
+       +z_o\sum_{k=0}^{\min(4,m)}E_k(L),\label{mts:eq:starZmulti}\\
+ Z_{K_{1,m}}(t)
+ &=\sum_{k=0}^{\min(2,m)}\binom mk t^k
+       +t\sum_{k=0}^{\min(4,m)}\binom mk t^k.
+ \label{mts:eq:starZ}
+\end{align}
+\end{proposition}
+\begin{proof}
+All path markings are stable. For the star with unmarked center, at most
+two leaves may be marked, since three create an unmarked hull branch.
+With marked center, the skeleton is a star with the selected leaves, and
+its covariance is positive semidefinite precisely when at most four
+leaves are selected. Count these disjoint alternatives.
+\end{proof}
+
+For $m\ge4$ the total number of stable star neighborhoods is
+\begin{equation}
+ Z_{K_{1,m}}(1)=2+2m+2\binom m2+\binom m3+\binom m4.
+ \label{mts:eq:starcount}
+\end{equation}
+Under uniform independent marking its probability is this count divided
+by $2^{m+1}$, asymptotic to $m^4/(24\,2^{m+1})$. Thus paths have stable
+probability one, while large stars have exponentially small stable
+probability with a polynomial prefactor.
+
+\subsection{Two initial coefficients force complete root rigidity}
+
+The following elementary equality argument is useful beyond this example.
+It explains why good root geometry cannot survive the act of counting
+stable neighborhoods.
+
+\begin{lemma}[Two-level root rigidity]\label{mts:lem:rigidity}
+Let $\mathcal F\subseteq2^{[n]}$ contain every subset of cardinality at
+most two, and put $f(t)=\sum_{S\in\mathcal F}t^{|S|}$. Then $f$ has only
+real roots if and only if $\mathcal F=2^{[n]}$.
+\end{lemma}
+\begin{proof}
+The assertion is immediate for $n\le1$. Otherwise $f(0)=1$, $[t]f=n$,
+and $[t^2]f=\binom n2$. If $f$ has only real roots, its nonnegative
+coefficients imply all roots are negative. Writing $d=\deg f\le n$, we
+can therefore factor
+\[
+ f(t)=\prod_{i=1}^d(1+\lambda_i t),\qquad\lambda_i>0.
+\]
+Comparison of the first two coefficients gives
+\[
+ \sum_i\lambda_i=n,\qquad
+ \sum_i\lambda_i^2=n^2-2\binom n2=n.
+\]
+Cauchy--Schwarz now gives $n^2\le dn$, so $d\ge n$. Thus $d=n$ and
+equality holds; all $\lambda_i=1$. Hence $f=(1+t)^n$. Since each
+coefficient counts a subcollection of the $\binom nk$ available
+$k$-subsets, equality of every coefficient forces every subset to belong
+to $\mathcal F$. The reverse implication is immediate.
+\end{proof}
+
+\begin{theorem}[Root classification for the stable-neighborhood enumerator]\label{mts:thm:Zroots}
+For every nonempty finite tree $T$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $T$ is a path;
+\item every marking of $T$ is stable;
+\item the univariate polynomial $Z_T(t)$ has only real roots;
+\item the multivariate polynomial $\Zpoly_T(z)$ is real stable.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The equivalence of (i) and (ii) is Proposition~\ref{mts:prop:nonmonotone}. A marking of
+size at most two always has an empty, singleton, or path skeleton, so
+$\Stab(T)$ contains all subsets of those sizes. Lemma~\ref{mts:lem:rigidity} gives
+(iii)$\Leftrightarrow$(ii). If (iv) holds, diagonalizing all variables
+gives (iii). If $T$ is a path, \eqref{mts:eq:pathZ} is a product of stable
+linear factors, giving (iv).
+\end{proof}
+
+This theorem concerns $Z_T$, which varies the apex neighborhood. It does
+\emph{not} assert that the support polynomial $p_{\calA(T;S)}$ for an
+individual nonpath tree is nonreal-rooted. In particular, the repository
+proves real-rootedness for the full-apex star support polynomial for every
+$m$, even though $Z_{K_{1,m}}$ is nonreal-rooted for every $m\ge3$
+(Theorem~\ref{ade:thm:introbook}: the book $B_m$ is $\calA(K_{1,m})$).
+
+\subsection{Even weaker coefficient-shape properties fail}
+
+Small exact examples from \eqref{mts:eq:starZ} are
+\begin{align}
+ Z_{K_{1,3}}(t)&=1+4t+6t^2+3t^3+t^4=(1+t)^4-t^3,\label{mts:eq:Z3}\\
+ Z_{K_{1,4}}(t)&=1+5t+10t^2+6t^3+4t^4+t^5,\label{mts:eq:Z4}\\
+ Z_{K_{1,6}}(t)&=1+7t+21t^2+15t^3+20t^4+15t^5.
+ \label{mts:eq:Z6}
+\end{align}
+The first has no real zeros at all: it is positive for $t\ge0$ by its
+coefficients, and for $t<0$ its expression $(1+t)^4-t^3$ is positive.
+In the second, $6^2<10\cdot4$, so log-concavity fails. In the third,
+$21>15<20$, so unimodality fails.
+
+More generally, for every $m\ge4$, the coefficients at degrees two,
+three, and four are respectively $m(m+1)/2$, $\binom m2$, and
+$\binom m3$. The log-concavity inequality at degree three fails exactly
+when
+\[
+ 3(m-1)<(m+1)(m-2),
+\]
+which holds for every integer $m\ge4$. For every $m\ge6$, those same three
+coefficients have a strict dip, since
+$m(m+1)/2>\binom m2<\binom m3$. Thus the exact algorithms do not rely on
+unimodality, log-concavity, or a hidden stable-polynomial property of the
+marking family.
+
+\section{Exact verification and the computational trust boundary}\label{mts:sec:verification}
+
+The supplied checks were executed with Python 3.13.5, NetworkX 3.6.1, and
+SymPy 1.14.0. All decisions about positive semidefiniteness, coefficients,
+and optimization use exact integers or rationals. Random test weights and
+scores are reproducible, with seed \texttt{20260930}. The complete output
+is \texttt{results/verification.json}.
+[Merge note: shipped as \nolinkurl{data/10-marked-trees-verification.json},
+with the console output as \nolinkurl{data/10-marked-trees-run.log}; the
+programs are \nolinkurl{code/10-marked-trees-marked_trees.py} and
+\nolinkurl{code/10-marked-trees-verify.py}. The recorded run used
+\texttt{-{}-max-n 9}; the verifier's own docstring and default say~8
+(README, ``Discrepancies and delivery names'').]
+
+\subsection{Exhaustive marked instances through nine vertices}
+
+For each unlabelled tree representative, every subset of its vertex set
+was tested. The counts below are \emph{not} counts of isomorphism classes
+of marked trees: automorphism-equivalent subsets of the same representative
+are deliberately counted separately, because the enumerator counts
+vertex subsets.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrrr}
+\toprule
+$n$ & Trees & Markings & Stable & Unmarked branch & Spectral failure\\
+\midrule
+1&1&2&2&0&0\\
+2&1&4&4&0&0\\
+3&1&8&8&0&0\\
+4&2&32&31&1&0\\
+5&3&96&88&8&0\\
+6&6&384&324&58&2\\
+7&11&1408&1075&306&27\\
+8&23&5888&3942&1707&239\\
+9&47&24064&13850&8569&1645\\
+\bottomrule
+\end{tabular}
+\caption{31,886 marked instances on 95 unlabelled tree representatives.
+The all-size classification is proved in the text; this table tests the
+implementation of its two obstruction mechanisms.}
+\label{mts:tab:tests}
+\end{table}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Executed check & Count\\
+\midrule
+Combinatorial ADE decisions compared with exact rational PSD tests &21,237\\
+Explicit three-first-mark-path witnesses at unmarked branches &10,649\\
+Connected-set energy feasibility, marked trees through order six &526 instances\\
+Complete determinant coefficient identities, branch-complete marked trees through order five &133 instances\\
+Individual incidence-minor/cofactor coefficients in those identities &24,534\\
+Endpoint enumerators compared with exhaustive stable-subset sums &190\\
+Signed-score optimizations compared with exhaustive maxima &285\\
+Nearest-neighborhood repairs compared with exhaustive distances &95\\
+Sharp diameter-window checks on tree representatives &95\\
+Path formulas / star formulas checked &5 / 11\\
+Exact rank-one-adjugate Rayleigh certificates &2\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The distinction between these checks matters. In particular, the
+exhaustive counting and optimization comparisons use the structural
+classification to identify admissible subsets; they are not independent
+analytic tests of stability in every number of variables. The full
+coefficient checks \emph{do} independently enumerate matching supports
+and compare every coefficient of the determinant formula for the stated
+small orders. Neither kind of finite check replaces the general proofs.
+
+\subsection{Independent exact routines}
+
+The matching-support enumerator uses sets of attainable column masks,
+not lists of matching witnesses. If $D(I)$ is the collection of column
+sets matchable to a row set $I$, then for a chosen row $i\in I$,
+\[
+ D(I)=\{J\cup\{j\}:J\in D(I\setminus\{i\}),\ j\in N(i)\setminus J\}.
+\]
+Identical column sets are deduplicated. This is essential: counting
+matchings would verify the wrong polynomial.
+
+The covariance test is independent of the ADE shape routine. It constructs
+the matrix forced by singleton and consecutive-mark path equations, then
+uses exact Schur complements. A negative diagonal rejects positive
+semidefiniteness; a zero diagonal must have a zero row; a positive pivot
+is eliminated exactly. In particular affine diagrams are not classified
+by a floating-point cutoff.
+
+For the connected-set test, every nonempty connected $W\subseteq V(T)$
+is enumerated in the stated small orders. The program checks that all
+energies \eqref{mts:eq:energy} hold exactly if and only if no unmarked hull
+branch exists. The determinant tests use integer incidence cofactors and
+the rational quadratic form, not sampled numerical polynomial evaluations.
+
+\subsection{Reproduction and formalization boundary}
+
+Source~10's instructions, run from its delivered package directory, install
+its \nolinkurl{requirements.txt} with \texttt{pip}, run
+\texttt{python code/verify.py -{}-max-n 9 -{}-output results/verification.json},
+and build its article twice with \texttt{pdflatex}.
+[Merge note: in this report the verifier imports its library by the
+delivered name \texttt{marked\_trees}, so it is rerun on a copy with the
+delivered layout; the README gives a recipe that cannot overwrite the
+recorded output. The article is built with this report.]
+The code has no network calls. Dependencies are ordinary mathematical
+Python packages; their versions used here are pinned for reproduction.
+No external fonts or third-party article PDFs are shipped.
+
+A formalization could isolate a small finite combinatorial core: hulls,
+branch-completeness, the three-mark obstruction, and the endpoint
+partition. Separately it would prove the forest-cofactor identity,
+resolvent lemma, and exact Rayleigh certificate. The classical stable
+minor closure and spectral facts should be explicit dependencies until
+proved in the target library. No delivered Lean or Rocq theorem, kernel
+check, or formal correctness claim is made for the Python implementation.
+[Merge note: nor does this report or ProveIt's Lean and Rocq developments
+formalize any statement of Parts~VI or~VIII; compare Part~VI's
+formalization boundary (Section~\ref{ade:sec:verification}).]
+
+\section{Further research questions and topics}\label{mts:sec:questions}
+
+The following questions retain the distinctions exposed by the proofs.
+They are not claims established by this article.
+[Merge note: source~10's eight questions continue the numbering as
+Research questions~\ref{mts:q:diagonal}--\ref{mts:q:compiler}. The first
+three restate Part~VI's Research questions~\ref{mts:hq:diagonals},
+\ref{mts:hq:apices} and~\ref{mts:hq:cycles} with added detail and are
+printed with pointers, because source~10's formulations are broader
+(arbitrary markings; a terminal-geometry criterion; unicyclic and cactus
+hosts). Research questions~\ref{mts:q:certificates}
+and~\ref{mts:q:compiler} overlap Part~VI's Research
+questions~\ref{ade:q:first}, \ref{mts:hq:formal} and~\ref{ade:q:last}.
+The other three are new.]
+
+\begin{question}[The individual support diagonal]\label{mts:q:diagonal}
+Classify real-rootedness of $p_{\calA(T;S)}(t)$ for arbitrary marked trees.
+In particular, resolve the repository's question whether the full-apex
+diagonal $p_{\calA(T;V(T))}$ is real-rooted for every tree.
+\end{question}
+Our criterion classifies multivariate stability, not this weaker
+property. On branch-complete markings, \eqref{mts:eq:identity} gives a concrete
+resolvent formula for investigating residues on Laplacian eigenspaces.
+The theorem that $Z_T$ is real-rooted only for paths does not answer this
+question, because $Z_T$ varies $S$ rather than counting supports for one $S$.
+[Merge note: the full-apex case is Part~VI's Research
+question~\ref{mts:hq:diagonals}; its merge note records an exact check of
+every tree with $2\le r\le12$ (all real-rooted), which is evidence, not an
+answer. For $S=V(T)$, the specialization $x=\one$, $y=t\one$, $s=t$ of
+\eqref{mts:eq:identity} is Part~VI's
+formula~\eqref{ade:eq:treeunivariatequestion}.]
+
+\begin{question}[More than one apex]\label{mts:q:apices}
+For two or more separately selectable apex elements with specified
+neighborhoods, characterize when the canonical support polynomial is
+stable. Is there a finite terminal-geometry criterion analogous to
+branch-completeness?
+\end{question}
+One apex leaves precisely one unrooted incidence component. Several apices
+must coordinate several components while removing multiplicities of their
+assignments. Simply multiplying the one-apex formulas, or replacing the
+rank-one term by $\det(L+sC)$, counts the wrong objects.
+[Merge note: this is Part~VI's Research question~\ref{mts:hq:apices},
+asked there with prescribed terminal neighbourhoods; source~10 adds the
+request for a criterion analogous to branch-completeness.]
+
+\begin{question}[Cycle-space corrections]\label{mts:q:cycles}
+Extend the covariance-existence and stability dichotomies when the host
+is unicyclic, a cactus, or has bounded cycle rank.
+\end{question}
+The present proof uses unique paths twice: to create the unmarked-branch
+obstruction and to make every relevant selected incidence component a
+tree with one-dimensional cofactor direction. Cycles change both the
+connected-set energy and the multiplicities of incidence determinants.
+A useful first goal is an exact analogue of Theorem~\ref{mts:thm:covariance} for one
+cycle, before attempting a general stable representation.
+[Merge note: this is Part~VI's Research question~\ref{mts:hq:cycles}, with
+the covariance-existence dichotomy added as a target.]
+
+\begin{question}[Faster exact enumeration and repair]\label{mts:q:faster}
+Can the $O(n^5)$ endpoint algorithms be replaced by quadratic or near-linear
+tree dynamic programs, retaining exact weighted coefficients or optimal
+signed-score repair?
+\end{question}
+The finite arm-pattern list suggests a bounded set of states, but the
+unbounded $A$, $D$, and affine-$D$ path lengths must be compressed without
+counting the same hull repeatedly. The formulas here give an exact
+baseline for validating such a faster implementation.
+
+\begin{question}[Coefficient shape after real-rootedness fails]\label{mts:q:shape}
+Characterize the trees whose stable-neighborhood size sequence is
+log-concave or unimodal. Find structural explanations for the number and
+location of its modes, rather than expecting a universal positive answer.
+\end{question}
+Stars already disprove universal log-concavity and unimodality. Any useful
+positive theorem must impose a genuine structural restriction. The
+path-only real-rootedness theorem settles the strongest version entirely;
+it should not be reposed as an open question.
+
+\begin{question}[Random trees and asymptotic stable probabilities]\label{mts:q:random}
+For random labelled trees, or deterministic families with growing branching
+complexity, determine the asymptotic probability that an independent
+random marking is stable.
+\end{question}
+The exact formula \eqref{mts:eq:probability} reduces the problem to counts of
+small-leaf hulls and their allowable marked paths. Paths and stars show
+that no universal order of magnitude is possible without hypotheses.
+A meaningful analysis must specify both the host-tree model and the
+marking probabilities.
+
+\begin{question}[Restricted obstruction certificates]\label{mts:q:certificates}
+Within this family, identify economical canonical-matroid certificates
+for the spectral failures and compare them with the geometric odd-theta
+certificate. Which different marked trees yield the same excluded matroid
+minor?
+\end{question}
+The existing theory of small half-plane-property matroids
+\cite{KummerSert} and cyclotomic spectral obstructions \cite{McKeeSmythIMRN}
+must be consulted before claiming a new minimal-obstruction list. Our
+criterion gives a recognition theorem, not such a minimality classification.
+[Merge note: compare Part~VI's Research questions~\ref{ade:q:first}
+(forbidden canonical matroid minors) and~\ref{ade:q:last} (minimal induced
+obstructions), and Section~\ref{ade:sec:inducedminimal}: the unstable
+bipartite graphs have no finite set of induced-minimal obstructions.]
+
+\begin{question}[A small verified compiler from trees to proofs]\label{mts:q:compiler}
+Formalize the endpoint partition and construct a checker that accepts
+an ADE skeleton certificate or a negative obstruction certificate and
+returns a theorem about the original support polynomial.
+\end{question}
+The input should include the actual marking and host-tree paths, not
+just an abstract diagram. Correctness of the compiler must connect the
+combinatorial certificate to the determinant or minor semantics. Checking
+an isolated rational inequality is insufficient without that bridge.
+[Merge note: compare Part~VI's Research question~\ref{mts:hq:formal}
+(formal integration of the cofactor lemma, covariance rigidity and the
+Rayleigh certificate compiler).]
+
+\section{Conclusion}
+
+The full-apex ADE theorem leaves a geometric issue when the neighborhood
+is arbitrary: an unmarked branch connecting several marks is not an
+innocent subdivision vertex. It simultaneously destroys the connected-set
+covariance interpolation and creates a persistent odd-theta obstruction.
+Once those branches are marked, the terminal-supported covariance is
+forced, and its positive semidefiniteness is both sufficient and necessary.
+This gives a complete classification for all markings of all finite trees.
+
+The classification does more than decide one instance. The marked hull
+has at most four leaves, producing a disjoint weighted endpoint formula,
+exact counting, and exact signed-score selection and repair. The sharp
+diameter window limits the maximum cardinality, while the two-level
+rigidity argument determines the real-rootedness of the neighborhood
+counting polynomial completely. These conclusions remain meaningful even
+though that enumerator can fail both log-concavity and unimodality.
+
+The general bipartite stability problem and the individual tree-support
+diagonal problem remain distinct further targets. The present contribution
+is a proved and executable completion of one structural family, with its
+new enumeration and optimization consequences, rather than an unsupported
+claim about all half-plane-property matroids.
+
+\section{Source audit and dependency ledger}\label{mts:app:source}
+
+\noindent\emph{(Appendix~A of source~10.)}
+The repository was read at the fixed commit in Section~\ref{mts:sec:provenance}.
+[Merge note: source~10 lists the material it inspected by line ranges of
+the pinned \texttt{article.tex}; those ranges no longer match this file,
+which has grown, and are replaced by the corresponding sections of
+Part~VI. The line ranges survive in
+\nolinkurl{10-marked-trees-SOURCE_AUDIT.md}. The last range stopped inside
+Part~VI's research questions, at the first line of Research question~50.]
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.25\textwidth}X@{}}
+\toprule
+Part~VI & Material inspected\\
+\midrule
+Section~\ref{ade:sec:prov} & Part VI provenance, status, notation, and previously established scope.\\
+Sections~\ref{ade:sec:intro}--\ref{ade:sec:bridge} & Existing ADE/book/multi-theta statements, canonical matroid, inversion,
+minor closure, and Rayleigh inequality.\\
+Sections~\ref{ade:sec:cofactor}--\ref{ade:sec:criterion} & Forest cofactors, full-apex covariance rigidity, determinant--adjugate
+identity, and rational negative certificate.\\
+Sections~\ref{ade:sec:ADE}--\ref{ade:sec:subdivision} & Elementary ADE list and proof; terminal-subdivision theorem and generic
+path-shortening matroid minor.\\
+Section~\ref{ade:sec:consequences} & Vertex gluing, unmarked tree attachments, weighted support diagonals,
+and the distinction from univariate real-rootedness.\\
+Sections~\ref{ade:sec:verification}--\ref{ade:sec:questions} & Prior finite checks and further questions, including full-apex diagonals,
+several apices, and cyclic hosts.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The source's tree and subdivision theorems already prove the positive
+case when all branches are terminals and there is no outside fringe;
+its gluing theorem handles fringe abstractly. We give a direct host-level
+cofactor proof and certificate, and identify the missing unmarked-branch
+case. The resulting classification is therefore a synthesis and extension
+of specific existing results, not a first discovery of ADE stability.
+The exact endpoint enumerator and weighted repair algorithm are not
+contained in the inspected sections.
+[Merge note: this paragraph is the basis of the first proof of
+Theorem~\ref{mts:thm:main}; ``the source'' is Part~VI, its tree and
+subdivision theorems are Theorems~\ref{ade:thm:intromain}
+and~\ref{ade:thm:subdivision}, and its gluing theorem is
+Theorem~\ref{ade:mat:thm:vertex-stable}.]
+
+The public literature review checked the arXiv records and relevant
+full-text material for \cite{COSW,Branden,McKeeSmythIMRN,KummerSert}. The main
+external dependencies are standard stable-polynomial closure properties
+and Perron positivity. All tree-specific combinatorics, the explicit ADE
+case analysis, the support coefficients, and the endpoint algorithms are
+proved in the article. No literature search can by itself certify global
+priority; the package keeps that claim separate from mathematical
+correctness.
+
+
+\needspace{10\baselineskip}
+\section{A compact proof certificate for the main results}
+\label{mts:app:certificate}
+
+\noindent\emph{(Appendix~B of source~10.)}
+The classification can be audited in the following order.
+\begin{enumerate}
+\item If a hull branch is unmarked, select three first-mark paths. Their
+incidence--apex graph is induced, and legitimate matroid path shortening
+reduces it to the credited quartic obstruction.
+\item Otherwise the terminal skeleton is a tree. Its zero-extended
+$C_H=I-A_H/2$ has connected-set energy exactly the indicator of meeting
+$S$, and singleton/path equations force this matrix uniquely.
+\item Forest cofactors turn those energies into the Boolean support
+identity $F=\det L+s\tr(\adj(L)C)$.
+\item Positive semidefiniteness gives stability through the sign of
+$\im\tr(CL^{-1})$. Indefiniteness gives a rational negative Rayleigh
+value through a diagonally rescaled tree Laplacian.
+\item The classical tree spectrum calculation identifies the ADE list.
+Its at-most-four-leaf property partitions every stable marking by a unique
+endpoint hull. The allowed arm counts yield \eqref{mts:eq:enumerator}; free
+choices and fixed-cardinality choices yield the optimization algorithm.
+\item Every one- and two-element marking is stable. If $Z_T$ were
+real-rooted, its first two coefficients would force all its factors to be
+$1+t$, hence every marking would be stable, forcing $T$ to be a path.
+\end{enumerate}
+
+This certificate lists logical dependencies. It is not machine-checked
+formal proof syntax, and the accompanying finite tests should not be
+substituted for any of its all-size steps.
+
+
 \clearpage
 \appendix
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
@@ -14360,6 +16305,20 @@ A.~W. Ingleton and M.~J. Piff,
 \emph{Gammoids and transversal matroids},
 \emph{Journal of Combinatorial Theory, Series B} \textbf{15} (1973), 51--68.
 doi:10.1016/0095-8956(73)90031-2.
+
+% Part VIII (batch 63): references of source 10 not already cited above.
+\bibitem{McKeeSmythIMRN}
+J. McKee and C. Smyth,
+\emph{Integer symmetric matrices of small spectral radius and small Mahler
+measure}, \arxiv{0907.0371}, 2009.
+Cited by source~10 for the classical setting of the spectral
+classification; a different paper from~\cite{McKeeSmyth}.
+
+\bibitem{KummerSert}
+M. Kummer and B. Sert,
+\emph{Matroids on eight elements with the half-plane property and related
+concepts}, \emph{SIAM Journal on Discrete Mathematics} \textbf{37} (2023),
+no.~3, 2208--2227. doi:10.1137/22M1490648; \arxiv{2111.09610}.
 
 \end{thebibliography}
 \end{document}
