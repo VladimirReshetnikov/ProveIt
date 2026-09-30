@@ -160,12 +160,16 @@ Merged TeX inputs are newer, so a synchronized comb rerender is pending.
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its retired arrival and operational
 ledger checkpoints remain recoverable from Git and distinguish the submitted
-PDF from the current incoming publication checkpoint. The source is 2,138
-lines and 78,310 bytes (SHA-256
-`57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`);
-passes 28/29/29 produced a final 790,802-byte PDF with SHA-256
-`3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
+PDF from the current incoming publication checkpoint. Its 2026-09-04 source
+was 2,138 lines and 78,310 bytes, and passes 28/29/29 produced a final
+29-page, 790,802-byte PDF; the SHA-256 values once recorded here described
+that build, and the repository no longer keeps checksum receipts.
 Its recorded publication gates passed and no checksum ledger is a live gate.
+On 2026-09-29 an editorial note after `prob:Bayesian-spectrum` marked the
+report's expected `q^{mn}` Appell diagonal of `C_m` incorrect (the diagonal
+is identically 1; see the report README's erratum and
+`Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/`); the source is now
+2,156 lines/79,504 bytes and the rebuilt PDF 30 pages/888,775 bytes.
 Manuscript theorem
 labels do not by themselves establish current Lean verification.
 

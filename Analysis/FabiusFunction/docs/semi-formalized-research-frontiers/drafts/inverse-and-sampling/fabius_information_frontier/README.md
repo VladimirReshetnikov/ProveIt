@@ -1,19 +1,38 @@
 # Exact Information Geometry and New Frontiers for the Fabius--Rvachev System
 
-> **Current publication receipt (2026-09-04).** The synchronized
-> `fabius_information_frontier.tex` has 2,138 lines and 78,310 bytes (SHA-256
-> `57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`).
-> From absent auxiliaries, three successful serial halt-on-error passes produced
-> 28 pages/778,760 bytes, 29 pages/790,804 bytes, and finally 29 pages/790,802
-> bytes. The final PDF has SHA-256
-> `3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
-> Its log has no TeX error, unresolved reference or citation, or rerun request;
-> title, author, subject, and keywords metadata are present. All 29 pages are A4
-> at rotation zero, render, and contain extractable text. All 23 font rows are
-> embedded and subset, six are Libertinus, and none is Type 3; representative
+> **Current publication receipt (2026-09-29).** The synchronized
+> `fabius_information_frontier.tex` has 2,156 lines and 79,504 bytes (2,138
+> lines and 78,310 bytes before the editorial note of 2026-09-29), and the
+> synchronized `fabius_information_frontier.pdf` has 30 pages and 888,775
+> bytes. After that note the PDF was rebuilt by the `latexmk` procedure below
+> with MiKTeX pdfTeX 1.40.29; the final log has no TeX error, undefined
+> reference or citation, duplicate destination, rerun request, or overfull box.
+> All 30 pages are A4 at rotation zero and the metadata are present; all 23
+> font rows are embedded and subset, six are Libertinus, and none is Type 3;
+> the page carrying the note (page 25) was rendered and inspected. The
+> SHA-256 values that earlier versions of this README recorded described the
+> 2026-09-04 build; the repository no longer keeps checksum receipts.
+>
+> **Earlier receipt (2026-09-04).** From absent auxiliaries, three successful
+> serial halt-on-error passes produced 28 pages/778,760 bytes, 29 pages/790,804
+> bytes, and finally 29 pages/790,802 bytes. Its log had no TeX error,
+> unresolved reference or citation, or rerun request; title, author, subject,
+> and keywords metadata were present. All 29 pages were
+> A4 at rotation zero, rendered, and contained extractable text. All 23 font rows
+> were embedded and subset, six were Libertinus, and none was Type 3; representative
 > title, body, figure, table, and final pages passed visual inspection. Generated
 > sidecars were removed. The former 19-entry operational ledger remains retired
 > and Git-recoverable; it is not a live publication gate.
+
+**Erratum (2026-09-29).** The report's remark after
+`prob:Bayesian-spectrum` expected the leading diagonal of the Bayesian
+operator `C_m` in an Appell basis to contain `q^{mn}`. It does not: `C_m`
+maps monic polynomials to monic polynomials of the same degree and
+carries the Appell polynomials of `X_q` to those of `S_{q,m}`, so the
+diagonal is identically 1 (`√(1−q^{2m})` at degree one in orthonormal
+bases). An editorial note under the remark records this; the proof and
+the singular system are in the unreviewed draft
+`../Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/` (filed 2026-09-29).
 
 This archive accompanies the report
 `fabius_information_frontier.pdf` and its complete LaTeX source
@@ -81,7 +100,7 @@ The source expects the vector figures under `figures/`.
 ## File map
 
 - `fabius_information_frontier.tex`: complete report source.
-- `fabius_information_frontier.pdf`: synchronized 29-page canonical report;
+- `fabius_information_frontier.pdf`: synchronized 30-page canonical report;
   the distinct submitted 30-page payload remains recoverable from Git history.
 - `experiments.py`: documented experiment and figure generator.
 - `requirements.txt`: Python dependencies.
