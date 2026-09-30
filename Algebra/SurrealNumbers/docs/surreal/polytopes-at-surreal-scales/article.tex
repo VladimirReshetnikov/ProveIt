@@ -1,0 +1,1700 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype,mathtools,bm}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{fancyhdr,xurl,hyperref}
+\definecolor{inkblue}{HTML}{174A66}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Finite-Scale Geometry of Surreal Liftings},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite-scale geometry of surreal liftings}
+\fancyhead[R]{\small 30 September 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\st}{\operatorname{st}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\LT}{\operatorname{LT}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Span}{\operatorname{span}_{\R}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\aff}{\operatorname{aff}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\relint}{\operatorname{relint}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\lex}{\mathrm{lex}}
+\newcommand{\Atil}{\widetilde A}
+\newcommand{\zero}{\mathbf 0}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\br}[1]{\left\langle #1\right\rangle}
+\title{\vspace{-12mm}\textbf{Finite-Scale Geometry\\of Surreal Liftings}\\[4mm]
+\large Sharp dependence compression, exact polynomial degree bounds,\\
+and linear realization of finite combinatorics}
+\author{Research manuscript prepared for Vladimir Reshetnikov\\
+\small An AI-assisted contribution to the \texttt{ProveIt} research program}
+\date{30 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A finite surreal polytope has an ordinary realizable face lattice, but its
+standard part can erase faces and their incidences. We isolate a setting in
+which the scale information can be classified exactly: surreal heights on a
+fixed real configuration of $n$ labeled points of affine dimension $d$.
+Let $V$ be the real affine-dependence space and let
+$L_h(c)=\sum_i c_i h_i$. If $m=\dim_{\R}L_h(V)$, then
+$m\le n-d-1$. After an affine height is removed, at most $m$ monomial
+coefficient slices preserve the leading term of \emph{every} real dependence
+evaluation, including its exact vanishing. This remains true for arbitrary
+set-sized Conway supports, not just finite series. The complete dependence
+sign type is classified by an oriented partial flag of length $m$.
+
+A real polynomial height vector represents that entire sign type as a germ
+at $0^+$ with minimum degree $m-1$ when $m>0$. For bounded heights, requiring
+the correct standard part changes the exact minimum to $m-r_0$, where
+$r_0\in\{0,1\}$ is the rank of $\st\circ L_h$. By contrast, preserving only
+the finite lifted combinatorics and the standard part always requires degree
+at most one. For integral bases, the same linear deformation can also
+preserve the entire toric initial ideal. We prove both bounds sharply and explain why they do not
+conflict. We give determinantal and barycentric certificates, an explicit
+rational specialization threshold, counterexamples to naive truncation and
+shadow arguments, and corrections to two statements in an earlier convexity
+draft. Exact verification code and a formalization plan accompany the text.
+The underlying normal-form, ordered-field, and symbolic-perturbation tools
+are classical; the proposed contribution is this sharp, unified lifting
+package, not a claim to have invented higher-rank secondary geometry.
+\end{abstract}
+\vspace{2mm}
+\noindent\textbf{Status.} The statements below have mathematical proofs in
+this manuscript. The program checks finite examples only. No new Lean proof
+or independent refereeing is claimed. Literature-wide priority of the
+package has not been established.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The problem, its scope, and its relation to earlier work}
+\label{sec:scope}
+
+\subsection{What can genuinely change over the surreals?}
+
+A finite list of points with surreal coordinates may exhibit arbitrarily
+separated scales. Nevertheless, its face lattice is controlled by finitely
+many polynomial signs. Real-closed-field transfer therefore prevents new
+\emph{finite realizable combinatorial types} from appearing solely because
+the ambient field is $\No$. This observation does not make the geometry
+empty. It redirects attention to specialization, leading terms, and which
+comparisons must be retained simultaneously.
+
+Three different demands must not be conflated:
+\begin{enumerate}[label=(\roman*)]
+\item retain the finite face structure, or the finite regular subdivision;
+\item retain the signs of all real affine-dependence evaluations;
+\item retain their actual leading monomials and leading coefficients.
+\end{enumerate}
+The second demand involves an uncountable family of tests, even when the
+point configuration is finite. The third is stronger still. This manuscript
+shows that these distinctions lead to different, exactly computable notions
+of scale complexity.
+
+The real-base hypothesis is essential. Fix
+\[
+ A=(a_1,\ldots,a_n),\qquad a_i\in\R^d,
+ \qquad \aff\{a_1,\ldots,a_n\}=\R^d.
+\]
+We may take the points distinct; every label is retained, including labels
+that are not vertices of a resulting polytope. Only the heights
+$h_i\in\No$ vary. The lifted configuration consists of
+$p_i=(a_i,h_i)$. Determinants involving its height row are \emph{linear} in
+$h$. This simple fact is the source of the sharp results. General moving
+surreal coordinates lead to polynomial, not merely linear, sign conditions;
+Section~\ref{sec:general} treats the corresponding weaker conclusion.
+
+\subsection{Connection with the repository and the previous convexity draft}
+
+The inspected \texttt{ProveIt} source
+\nolinkurl{Algebra/SurrealNumbers/Surreal/Algebra/Geometry.lean}
+develops coordinate geometry over an ordered base field, including dot and
+cross products, Gram identities, and Ptolemy-related identities
+\cite{RepoGeometry}. The surrounding project documents a constructed surreal
+field, normal forms, and its real closedness; its guide explicitly separates
+unrefereed research manuscripts from statements mapped to Lean declarations
+\cite{RepoGuide}. The present paper adds a higher-dimensional
+\emph{affine-dependence and lifting} layer. It does not depend on the more
+speculative results elsewhere in that collection, and it does not infer
+machine verification from a repository README.
+
+An earlier companion draft, \emph{Finite Convexity and Exact Lexicographic
+Optimization over the Surreals}, dated 22 September 2026, already treats
+finite objective hierarchies and a sufficiently-small-parameter compiler
+\cite{PriorDraft}. We do not present that compiler as new. Our questions
+instead concern compression of arbitrary height normal forms, preservation
+of \emph{all} real dependence tests, and optimal polynomial degree. Section
+\ref{sec:corrections} also corrects its global validity-interval statement
+and clarifies the field of convex combinations in its shadow statement.
+
+\subsection{Literature boundary}
+
+Conway normal forms and the ordered-field foundations are classical
+\cite{Gonshor}. Regular liftings, subdivisions, and secondary polytopes are
+standard subjects \cite{DRS}. Joswig and Smith develop higher-rank tropical
+geometry and explicitly ask how regular-subdivision duality, multiplicities,
+and combinatorial structure should extend; their rank-two decomposition
+already exhibits successive minimizer data \cite{JS}.
+
+The literature check must include a very recent overlap: Chiriv\`i,
+Costa Cesari, Fang, and Littelmann's \emph{Higher rank
+Gelfand--Kapranov--Zelevinsky fans}, arXiv:2604.20250v2, revised
+13 September 2026, develops higher-rank GKZ cones and fans and associated
+quasi-valuations and degenerations \cite{CCFL}. Thus this article does
+\emph{not} claim the first higher-rank secondary theory or a complete
+solution of the broader questions in \cite{JS}. The explicit scale and
+degree classification below has a narrower scope. Its linear-algebraic
+mechanism is elementary once stated correctly; its priority as a package
+requires further literature and referee scrutiny.
+
+\subsection{Main answers at a glance}
+
+Put $q=n-d-1$. The quantities $m$ and $r_0$ will be defined precisely below.
+For $m>0$, the conclusions are:
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.53\linewidth}p{0.37\linewidth}@{}}
+\toprule
+Information to preserve & Exact bound or conclusion\\
+\midrule
+All real dependence leading terms & $m\le q$ selected monomial slices\\
+All real dependence signs, as a polynomial germ & Minimum degree $m-1$\\
+Same signs and the labeled real shadow & Minimum degree $m-r_0\le q$\\
+Finite lifted sign data and the shadow & Minimum degree $0$ or $1$\\
+A fixed positive real specialization for every real dependence & Impossible when $m\ge2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first count is taken \emph{after removing an affine height}. The
+polynomial models preserve signs, not numerical surreal exponents.
+The finite-data degree is zero exactly when the shadow already satisfies
+all the required signs. These qualifications are part of the theorems,
+not exceptions left implicit.
+
+\section{Foundations, normal forms, and the affine quotient}
+\label{sec:setup}
+
+\subsection{Finite mathematics inside a class field}
+
+Although $\No$ is a proper class, each normal form has set-sized support,
+and this paper uses only finitely many numbers at a time. Statements about
+convex hulls can be interpreted in a set-sized ordered subfield $K$ containing
+$\R$ and the finitely many coordinates in question. When needed, enlarge
+$K$ to its real closure inside $\No$. Selected monomials can also be added
+to this field. We do not apply first-order model theory directly to a
+proper-class structure, or appeal to compactness of a surreal interval.
+
+For points $v_1,\ldots,v_N\in K^D$, our convention is
+\[
+ \conv_K(v_1,\ldots,v_N)
+ =\left\{\sum_{i=1}^N\lambda_i v_i:
+       \lambda_i\in K_{\ge0},\ \sum_i\lambda_i=1\right\}.
+\]
+A nonempty exposed face is the set maximizing a $K$-linear functional.
+For a finite polytope these give the usual faces. One elementary
+justification is finite linear elimination: feasible nonnegative
+combinations and supporting inequalities admit finite certificates, and
+redundant inequalities can be removed until facet inequalities remain.
+Alternatively all fixed-size assertions can be transferred from real
+closed fields. The later lifting certificates will be proved directly.
+
+\subsection{Normal forms and standard part}
+
+Every nonzero surreal has a unique Conway normal form
+\begin{equation}\label{eq:normal}
+ x=\sum_{\gamma\in S}x_\gamma\omega^\gamma,
+ \qquad x_\gamma\in\R\setminus\{0\},
+\end{equation}
+where $S$ is reverse well-ordered: every nonempty subset has a greatest
+member \cite{Gonshor}. We write
+\[
+ \operatorname{le}(x)=\max S,\qquad
+ \LT(x)=x_{\operatorname{le}(x)}\omega^{\operatorname{le}(x)},
+ \qquad \LT(0)=0.
+\]
+Throughout, $\omega^\gamma$ denotes the Conway omega-map monomial in
+normal form; no identity with $\exp(\gamma\log\omega)$ is assumed for
+general surreal $\gamma$. The sign of $x$ is the sign of its leading coefficient. A finite union of
+reverse well-ordered supports is reverse well-ordered, so real linear
+combinations of a finite list are computed coefficientwise. These are the
+only infinite-series operations needed in the central proof.
+
+A surreal $x$ is \emph{finite} when $|x|<M$ for some real $M>0$. Its normal
+form has no positive exponent, and its standard part is its coefficient at
+exponent zero. The map $\st$ on finite surreals is an order-preserving ring
+homomorphism to $\R$. In particular $x\ge0$ implies $\st(x)\ge0$, not
+necessarily $\st(x)>0$. The loss of strictness is responsible for geometric
+collapse.
+
+\subsection{Removing affine heights}
+
+Let
+\[
+ \Atil=
+ \begin{pmatrix}1&\cdots&1\\ a_1&\cdots&a_n\end{pmatrix},
+ \qquad V=\ker_{\R}\Atil,
+ \qquad \dim_{\R}V=q.
+\]
+An element $c=(c_i)\in V$ is a real affine dependence:
+$\sum_i c_i=0$ and $\sum_i c_i a_i=0$. Define
+\begin{equation}\label{eq:Lh}
+ L_h:V\longrightarrow\No,
+ \qquad L_h(c)=\sum_i c_i h_i,
+ \qquad m=\dim_{\R}\im L_h.
+\end{equation}
+Thus $0\le m\le q$. Adding the values of any surreal-valued affine function
+on $\R^d$ to the heights leaves $L_h$ unchanged.
+
+Choose an affine basis $B\subseteq\{1,\ldots,n\}$ with $|B|=d+1$.
+Write the real barycentric coordinates of $a_i$ relative to $B$ as
+\[
+ a_i=\sum_{b\in B}\lambda_{B,i,b}a_b,
+ \qquad \sum_{b\in B}\lambda_{B,i,b}=1.
+\]
+They are uniquely defined, without a positivity requirement. Set
+\begin{equation}\label{eq:gauge}
+ \ell(a_i)=\sum_{b\in B}\lambda_{B,i,b}h_b,
+ \qquad g_i=h_i-\ell(a_i).
+\end{equation}
+The function $\ell$ is affine and $g_b=0$ for $b\in B$.
+
+\begin{lemma}[The affine gauge]\label{lem:gauge}
+Projection $c\mapsto(c_i)_{i\notin B}$ is a real-linear isomorphism
+$V\simeq\R^q$. Under it,
+\[
+ L_h(c)=\sum_{i\notin B}c_i g_i,
+ \qquad m=\dim_{\R}\Span\{g_i:i\notin B\}.
+\]
+The shear $(a,z)\mapsto(a,z-\ell(a))$ preserves the labeled lifted
+combinatorics and the projected lower subdivision.
+\end{lemma}
+\begin{proof}
+The equations $\Atil c=0$ determine $c_B$ uniquely from $c_{B^c}$ because
+the columns indexed by $B$ form an invertible square matrix. Affine
+functions annihilate affine dependencies, yielding the displayed formula.
+The shear is an invertible affine transformation with positive determinant
+one. An inequality $z\ge u\cdot a+v$ becomes another inequality with
+coefficient $+1$ on $z$, so lower supporting hyperplanes remain lower
+supporting hyperplanes. General faces are preserved by affine invertibility.
+\end{proof}
+
+\section{A finite coefficient-pivot theorem}
+\label{sec:pivots}
+
+\begin{theorem}[Simultaneous leading-term compression]\label{thm:pivot}
+Let $g=(g_1,\ldots,g_q)\in\No^q$. There exist distinct exponents
+$\gamma_1>\cdots>\gamma_m$ and linearly independent real vectors
+$b_1,\ldots,b_m\in\R^q$ such that
+\begin{equation}\label{eq:sharp}
+ g^\sharp=\sum_{j=1}^m b_j\omega^{\gamma_j}
+\end{equation}
+satisfies
+\begin{equation}\label{eq:allLT}
+ \LT(\lambda\cdot g^\sharp)=\LT(\lambda\cdot g)
+ \quad\hbox{for every }\lambda\in\R^q.
+\end{equation}
+Here $m=\dim_{\R}\Span\{g_1,\ldots,g_q\}$. The exponents and vectors may be
+chosen among the actual coefficient slices of $g$. Moreover, the nonzero
+real combinations of the coordinates of $g$ have exactly $m$ different
+leading exponents.
+\end{theorem}
+\begin{proof}
+Take the finite union $S$ of the supports of the coordinates and write
+\[
+ g=\sum_{\gamma\in S}b_\gamma\omega^\gamma,
+ \qquad b_\gamma\in\R^q\setminus\{0\}.
+\]
+If $S$ is empty, the conclusion holds with $m=0$. Otherwise choose
+$\gamma_1=\max S$. Having chosen $\gamma_1,\ldots,\gamma_j$, put
+$U_j=\Span\{b_{\gamma_1},\ldots,b_{\gamma_j}\}$. If every coefficient
+vector belongs to $U_j$, stop. If not, the set
+\[
+ \{\gamma\in S:b_\gamma\notin U_j\}
+\]
+is nonempty and has a greatest element; choose that as $\gamma_{j+1}$.
+Each choice strictly increases the real dimension of $U_j$, so at most
+$q$ choices are made. They have strictly decreasing exponents. Write
+$b_j=b_{\gamma_j}$.
+
+Fix $\lambda\in\R^q$. If $\lambda\cdot b_j=0$ for every selected vector,
+then $\lambda$ annihilates every coefficient vector, by the stopping
+condition. Hence $\lambda\cdot g=\lambda\cdot g^\sharp=0$.
+Otherwise let $j$ be the first selected index with
+$\lambda\cdot b_j\ne0$. Every coefficient vector at an exponent greater
+than $\gamma_j$ belongs to $U_{j-1}$: this is precisely the maximality in
+the choice of $\gamma_j$. Those coefficients vanish after pairing with
+$\lambda$. The coefficient at $\gamma_j$ is $\lambda\cdot b_j\ne0$.
+Consequently both combinations in \eqref{eq:allLT} have leading term
+$(\lambda\cdot b_j)\omega^{\gamma_j}$.
+
+The maps $\lambda\mapsto\lambda\cdot g$ and
+$\lambda\mapsto(\lambda\cdot b_1,\ldots,\lambda\cdot b_m)$ have the
+same kernel. The latter has rank $m$ since the selected vectors are
+independent. Rank--nullity identifies $m$ with the dimension of the span
+of the coordinates of $g$.
+Finally, for every $j$ there exists a real $\lambda$ annihilating
+$U_{j-1}$ but not $b_j$. Thus $\gamma_j$ actually occurs as a leading
+exponent. No other leading exponent can occur by the preceding argument.
+\end{proof}
+
+\begin{remark}[Finite rank is not finite support scanning]
+The proof makes finitely many \emph{rank-increasing choices}. It need not
+inspect finitely many consecutive terms of each input normal form. There
+may be an infinite block of coefficient slices in $U_j$ before the next
+slice outside $U_j$. Without an effective representation and a certificate
+that no further independent slice exists, the theorem is not an algorithm
+for arbitrary surreal names. Section~\ref{sec:computation} gives the exact
+finite-support algorithm that is implemented here.
+\end{remark}
+
+\begin{corollary}[Sharp affine-height compression]\label{cor:height}
+For a lifting $h$ of $A$, remove an affine height as in
+\eqref{eq:gauge}. There is a height vector
+\[
+ h^\sharp_i=\ell(a_i)+\sum_{j=1}^m b_{j,i}\omega^{\gamma_j},
+ \qquad b_{j,b}=0\quad(b\in B),
+\]
+with $m\le n-d-1$, such that
+\[
+ \LT(L_{h^\sharp}(c))=\LT(L_h(c))\qquad(c\in V).
+\]
+Exactly $m$ distinct leading exponents occur among the nonzero $L_h(c)$.
+In particular $m$ is the minimum number of distinct monomial scales in a
+real-coefficient representation preserving all these leading terms modulo
+affine heights.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:pivot} to the $q$ residual coordinates, and use
+Lemma~\ref{lem:gauge}. A representation with $s$ monomial scales can have
+at most $s$ different leading exponents under real linear combinations;
+the last assertion of the theorem proves the lower bound $s\ge m$.
+\end{proof}
+
+\begin{example}[Sharpness in every codimension]\label{ex:sharp}
+For any integer $q\ge1$, take $d=1$, $n=q+2$, and $a_i=i-1$ for
+$1\le i\le q+2$. Use $B=\{1,2\}$ and set
+\[
+ h_1=h_2=0,\qquad h_{j+2}=\omega^{-j}\quad(1\le j\le q).
+\]
+The residual heights are real-linearly independent, since their leading
+exponents are distinct. Hence $m=q$. The fundamental dependence for the
+$j$th nonbasis point evaluates to $\omega^{-j}$. This is a sharpness
+example for a full dependence invariant; it does \emph{not} assert that a
+face lattice requires $q$ independent infinitesimals.
+\end{example}
+
+\section{Oriented flags classify the complete dependence sign type}
+\label{sec:flags}
+
+\begin{definition}
+The \emph{complete real dependence sign type} of a lifting is the function
+\[
+ \chi_h:V\longrightarrow\{-1,0,1\},\qquad
+ \chi_h(c)=\sgn L_h(c).
+\]
+It is not just the list of signs of the finitely many circuits of $A$.
+\end{definition}
+
+By the compression theorem, there are independent functionals
+$f_1,\ldots,f_m\in V^*$ such that
+\begin{equation}\label{eq:lexsign}
+ \chi_h(c)=\sgn_\lex\bigl(f_1(c),\ldots,f_m(c)\bigr),
+\end{equation}
+where the sign on the right is that of the first nonzero entry, or zero if
+all entries vanish. The selected coefficient rows give
+$f_j(c)=\sum_i c_i b_{j,i}$.
+Define
+\[
+ W_0=V,\qquad W_j=\bigcap_{k=1}^j\ker f_k\quad(1\le j\le m).
+\]
+Each inclusion has codimension one. On the one-dimensional quotient
+$W_{j-1}/W_j$, the restriction of $f_j$ specifies a positive ray.
+
+\begin{theorem}[Flag classification]\label{thm:flag}
+The function $\chi_h$ determines, and is determined by, the oriented partial
+flag
+\[
+ V=W_0\supsetneq W_1\supsetneq\cdots\supsetneq W_m=\ker L_h.
+\]
+Every such flag on $V$ occurs for a surreal lifting of $A$.
+Two independent lists $f_1,\ldots,f_m$ and $f'_1,\ldots,f'_{m'}$
+produce the same complete sign type if and only if $m=m'$ and
+\begin{equation}\label{eq:triangular}
+ f'_j=\alpha_j f_j+\sum_{k<j}\beta_{jk}f_k,
+ \qquad \alpha_j>0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Given the oriented flag, find the first $j$ for which $c\notin W_j$;
+the orientation of $c+W_j$ in $W_{j-1}/W_j$ determines its sign. Vectors
+in $W_m$ have sign zero, so the flag determines \eqref{eq:lexsign}.
+
+Conversely, suppose the sign type is not identically zero and let
+$P=\{c:\chi_h(c)=1\}$. In the ordinary finite-dimensional real topology,
+\[
+ \overline P=\{c:f_1(c)\ge0\}.
+\]
+Indeed positive points lie in this closed halfspace. Every point with
+$f_1>0$ is positive, and each point with $f_1=0$ is a limit of points with
+$f_1>0$. Thus $\chi_h$ determines $\ker f_1$ and the positive orientation
+of its quotient. Restrict the sign function to this kernel and repeat.
+After exactly $m$ steps it is identically zero. This reconstructs the
+oriented flag without choosing a coordinate system.
+
+For two lists defining the same flag, the restrictions of $f'_j$ and $f_j$
+to $W_{j-1}$ have the same kernel and the same positive ray. They differ
+there by a positive factor $\alpha_j$. Their difference annihilates
+$W_{j-1}$ and is therefore in the span of $f_1,\ldots,f_{j-1}$, proving
+\eqref{eq:triangular}. These transformations plainly preserve the first
+nonzero sign, proving the converse.
+
+Finally extend functionals realizing a prescribed flag to coefficient rows
+in $\R^n$, or use the affine-gauge identification $V\simeq\R^q$.
+Choose heights with residual vector $\sum_{j=1}^m b_j\omega^{-j}$.
+Their dependence type is the required flag.
+\end{proof}
+
+\begin{remark}[What is canonical and what is not]
+The flag and its orientations are canonical for $\chi_h$; the normalized
+functionals are not. The actual leading exponents are additional data not
+determined by the sign type. Replacing $\omega^{\gamma_j}$ by any other
+strictly decreasing list of surreal monomials leaves \eqref{eq:lexsign}
+unchanged. Formula~\eqref{eq:triangular} is also the familiar triangular
+invariance of lexicographic orders, not a new group action discovered here.
+\end{remark}
+
+\section{Polynomial realization and exact minimum degree}
+\label{sec:degree}
+
+For a real polynomial height vector $H(t)\in\R[t]^n$, define
+$\chi_{H,0^+}(c)$ to be the eventual sign of $L_{H(t)}(c)$ as $t\to0^+$.
+A polynomial is eventually zero precisely when it is identically zero.
+We assign degree zero to constant paths, including the zero vector.
+The quantifiers are
+\[
+ \forall c\in V\ \exists\eta_c>0\ \forall t\in(0,\eta_c):
+ \sgn L_{H(t)}(c)=\chi_h(c).
+\]
+They do not assert a uniform $\eta_c$ for all real $c$.
+
+\begin{theorem}[Exact unrestricted polynomial degree]\label{thm:degree}
+If $m>0$, the minimum degree of a real polynomial height vector $H$ with
+$\chi_{H,0^+}=\chi_h$ is exactly $m-1$. Such a vector is
+\begin{equation}\label{eq:poly}
+ H(t)=b_1+b_2t+\cdots+b_mt^{m-1},
+\end{equation}
+where the coefficient rows vanish on the chosen affine basis. If $m=0$,
+a constant affine height vector suffices.
+\end{theorem}
+\begin{proof}
+For every $c$, the first nonzero coefficient of $L_{H(t)}(c)$ is the first
+nonzero $f_j(c)$. This gives the upper bound.
+
+For the lower bound write an arbitrary degree-$D$ candidate as
+$H(t)=u_0+u_1t+\cdots+u_Dt^D$. Its identically vanishing dependence
+space is
+\[
+ \bigcap_{j=0}^D\ker\bigl(c\mapsto c\cdot u_j\bigr).
+\]
+Equality of complete sign types makes this space exactly $\ker L_h$,
+which has codimension $m$. An intersection of $D+1$ linear kernels has
+codimension at most $D+1$. Thus $m\le D+1$.
+\end{proof}
+
+\begin{theorem}[Exact degree with prescribed standard part]\label{thm:shadowdegree}
+Suppose all $h_i$ are finite and put $h^0=\st(h)$ componentwise. Define
+\[
+ r_0=\rank_{\R}(\st\circ L_h:V\to\R)
+     =\rank_{\R}L_{h^0}\in\{0,1\}.
+\]
+The minimum degree of a real polynomial height vector satisfying
+\[
+ H(0)=h^0,\qquad \chi_{H,0^+}=\chi_h
+\]
+is exactly $m-r_0$. This includes $m=0$, where the minimum is zero.
+\end{theorem}
+\begin{proof}
+Use the affine gauge. All residual heights are finite, so the selected
+exponents satisfy $\gamma_j\le0$.
+
+If $r_0=1$, the coefficient slice at exponent zero in the residual vector
+is nonzero. It is the first pivot, so $\gamma_1=0$ and
+$b_1=\st(g)$. Then
+\[
+ H_i(t)=\st(\ell(a_i))+b_{1,i}
+          +\sum_{j=2}^m b_{j,i}t^{j-1}
+\]
+has constant term $h_i^0$ and degree $m-1$.
+
+If $r_0=0$, then $\st(g)=0$. All pivots, if any, have strictly negative
+exponents. Set
+\[
+ H_i(t)=\st(\ell(a_i))+\sum_{j=1}^m b_{j,i}t^j.
+\]
+Its constant term is $h_i^0$ and its degree is $m$. In both cases the first
+nonzero dependence coefficient has the required sign.
+
+For a degree-$D$ candidate, the coefficient at $t^0$ induces the fixed
+map $L_{h^0}$ of rank $r_0$. Each of the remaining $D$ coefficient rows
+increases the rank of the joint coefficient map by at most one. Since
+that map must have the same kernel as $L_h$, its rank is $m$, yielding
+$m\le r_0+D$. This proves optimality.
+\end{proof}
+
+\begin{corollary}[Sharp uniform bounds]
+For real-base liftings, the complete dependence type has a polynomial
+model of degree at most $q-1$ when it is nonzero. For bounded liftings
+with the correct shadow, degree at most $q$ always suffices. Both bounds
+are attained by Example~\ref{ex:sharp}; in its shadow-preserving version
+$r_0=0$.
+\end{corollary}
+
+\begin{proposition}[A fixed real parameter cannot do the same job]
+\label{prop:nonuniform}
+If $m\ge2$, there is no real height vector $w\in\R^n$ such that
+$\sgn L_w(c)=\chi_h(c)$ for every $c\in V$. In particular no single
+positive real specialization of a polynomial model can preserve all
+real dependence signs at once.
+\end{proposition}
+\begin{proof}
+The real-valued linear map $L_w$ has rank at most one. Equality of the
+sign types would force $\ker L_w=\ker L_h$, which has codimension
+$m\ge2$. This contradicts rank--nullity.
+\end{proof}
+
+For a concrete picture, compare $x+\eps y$ at a positive infinitesimal
+$\eps$ with $x+t_0y$ at a fixed real $t_0>0$. The real pair
+$(x,y)=(-t_0,1)$ makes the second expression zero and the first strictly
+negative. The exceptional test depends on $t_0$. This is exactly why
+pointwise stabilization for every fixed test is compatible with failure of
+a uniform real specialization.
+
+\section{Finite combinatorics: determinants, slacks, and a linear path}
+\label{sec:finite}
+
+\subsection{Determinants of a lifted configuration}
+
+The augmented matrix of the lifted points is
+\[
+ M(h)=\begin{pmatrix}1&\cdots&1\\ a_1&\cdots&a_n\\h_1&\cdots&h_n\end{pmatrix}.
+\]
+For an ordered $(d+2)$-subset $J$, expansion along the last row gives
+\begin{equation}\label{eq:detlinear}
+ \det M(h)_J=\sum_{i\in J}c_{J,i}h_i=L_h(c_J),
+ \qquad c_J\in V.
+\end{equation}
+The coefficients are real signed cofactors. The relation $\Atil c_J=0$
+follows by expanding a determinant with two equal rows. Some such vectors
+may be zero, and those minors vanish for every height vector.
+
+\begin{lemma}[Finite determinant signs determine the labeled faces]
+\label{lem:faces}
+Suppose $m>0$. The signs of the finitely many determinants in
+\eqref{eq:detlinear} determine the labeled face lattice of the lifted
+polytope. When $m=0$, the lifted polytope is an affine copy of the base
+polytope and its labeled face structure is already fixed by $A$.
+\end{lemma}
+\begin{proof}
+When $m>0$, the height row is not in the span of the rows of $\Atil$,
+so $M(h)$ has rank $d+2$ and the lifted affine dimension is $d+1$.
+An ordered list $I$ of $d+1$ lifted points is affinely independent exactly
+when it extends to a nonzero augmented maximal minor. For such $I$, the
+signs of $\det M(h)_{I\cup\{j\}}$, with a consistently fixed column
+order, tell on which side of its affine hyperplane each other label lies.
+The hyperplane supports a facet precisely when all nonzero signs agree.
+The zero labels are exactly the labels on that facet. Every facet contains
+an affine basis of this size, so this enumerates all facets with their
+labels. Every proper nonempty face is an intersection of facets, completing
+the reconstruction. If $m=0$, Lemma~\ref{lem:gauge} identifies the whole
+configuration with the graph of an affine function on $A$.
+\end{proof}
+
+In particular equality of complete dependence types implies equality of the
+finite lifted sign data. The converse fails dramatically: finitely many
+hyperplanes cannot detect all the levels of an oriented flag.
+
+\subsection{Barycentric certificates for lower cells}
+
+For each affine basis $B$ of $A$ and each label $i$, define
+\begin{equation}\label{eq:slack}
+ s_{B,i}(h)=h_i-\sum_{b\in B}\lambda_{B,i,b}h_b.
+\end{equation}
+This is another real dependence evaluation. Its coefficient vector is a
+fundamental circuit vector when zero entries are removed; the zero vector
+occurs for $i\in B$.
+
+\begin{proposition}[Exact lower-cell certificate]\label{prop:slack}
+A basis $B$ supports a lower cell of full base dimension precisely when
+$s_{B,i}(h)\ge0$ for all labels $i$. Its equality-label set is
+\[
+ I_B(h)=\{i:s_{B,i}(h)=0\}.
+\]
+The maximal marked cells of the induced regular subdivision are exactly the
+distinct sets $I_B(h)$ arising this way, interpreted geometrically as
+$\conv_{\R}\{a_i:i\in I_B(h)\}$ together with their labels. Their faces
+supply the remaining cells. This convention includes the full cell when
+all heights are affine.
+\end{proposition}
+\begin{proof}
+The graph of the affine function interpolating $h$ on $B$ is a lower
+supporting hyperplane exactly when every lifted point lies on or above it.
+These are the inequalities in \eqref{eq:slack}. The equalities identify its
+contact labels, and the projection has dimension $d$ because it contains
+$B$. Conversely every full-dimensional projected lower face contains such
+a base affine basis, so every maximal cell is obtained.
+The resulting finite sign system has a real specialization by the
+polynomial construction and the finite threshold below; thus the asserted
+subdivision and its face incidences are also those of an ordinary real
+regular lifting. This avoids any appeal to topological compactness over
+$\No$.
+\end{proof}
+
+We use \emph{marked} subdivisions deliberately. A point lying in the
+interior of a real cell may be on its lower supporting hyperplane, or may
+lie above that hyperplane. The two possibilities need not alter the
+underlying geometric region but are distinguished by $I_B$.
+
+\subsection{An explicit simultaneous real threshold}
+
+\begin{lemma}[Finite sign stabilization]\label{lem:eta}
+For a nonzero real polynomial $f(t)=\sum_{j=0}^D a_jt^j$, let
+$k=\min\{j:a_j\ne0\}$ and $T(f)=\sum_{j>k}|a_j|$. Set
+\[
+ \eta(f)=
+ \begin{cases}
+  1,&T(f)=0,\\
+  \min\{1,|a_k|/(2T(f))\},&T(f)>0.
+ \end{cases}
+\]
+Then $\sgn f(t)=\sgn a_k$ whenever $0<t<\eta(f)$. For a finite list
+of polynomials, the minimum of these bounds for its nonzero members
+preserves every sign, with identically zero members remaining zero.
+\end{lemma}
+\begin{proof}
+For $0<t<1$,
+\[
+ \left|\sum_{j>k}a_jt^{j-k}\right|
+ \le t\sum_{j>k}|a_j|=tT(f).
+\]
+When the tail is nonzero this is less than $|a_k|/2$ under the stated bound.
+The sign of $a_k$ is therefore unchanged; multiplication by $t^k>0$
+finishes the proof. A finite minimum of positive real bounds is positive.
+\end{proof}
+
+Apply the lemma to the determinant polynomials and all the slack
+polynomials of any model from Section~\ref{sec:degree}. The resulting
+$\eta_0$ gives the same labeled lifted faces and the same marked regular
+subdivision for every $0<t<\eta_0$. Rational coefficients give a rational
+$\eta_0$ and a rational specialization $t_0=\eta_0/2$.
+
+The threshold is sufficient, not asserted optimal. Section
+\ref{sec:corrections} explains why even an optimal \emph{initial} interval
+must not be confused with the entire set of valid parameters.
+
+\subsection{The finite-data degree collapses to one}
+
+\begin{theorem}[Linear realization with the exact shadow]\label{thm:linear}
+Let $h\in\No^n$ be finite and $h^0=\st(h)$. Let $\cF\subseteq V$
+be any finite collection of real dependence vectors. There exists
+$w\in\R^n$ such that the affine-linear path
+\begin{equation}\label{eq:linearpath}
+ K(s)=(1-s)h^0+sw
+\end{equation}
+satisfies
+\[
+ \sgn L_{K(s)}(c)=\sgn L_h(c)
+ \qquad(c\in\cF,\ 0<s\le1).
+\]
+In particular one path preserves the entire labeled lifted face lattice,
+all its determinant signs, and the marked regular subdivision while
+starting at the exact labeled standard part.
+
+Among polynomial paths starting at $h^0$ and realizing the chosen finite
+sign data for all sufficiently small positive parameters, the minimum
+degree is zero when $h^0$ already has those signs, and one otherwise.
+\end{theorem}
+\begin{proof}
+Choose a shadow-preserving polynomial model $H$ from
+Theorem~\ref{thm:shadowdegree}. The finite sign lemma provides a real
+$t_0>0$ such that $w=H(t_0)$ has the required signs on $\cF$.
+For any $c\in\cF$ with $L_h(c)>0$ we have
+\[
+ L_{h^0}(c)=\st(L_h(c))\ge0,\qquad L_w(c)>0.
+\]
+Their convex combination in \eqref{eq:linearpath} is strictly positive
+for $0<s\le1$. The negative case follows by replacing $c$ with $-c$.
+If $L_h(c)=0$, both real endpoint values are zero. This proves the
+simultaneous claim. Use the finite list of determinants and slacks for
+the geometric consequence.
+
+A constant path starting at $h^0$ can realize only the signs of $h^0$.
+When those signs suffice, take that constant path. Otherwise degree zero
+is impossible and the exhibited path has degree one.
+\end{proof}
+
+\begin{remark}[Why the conclusion is stronger than a limit argument]
+The path has the correct signs on the \emph{whole} punctured segment
+$0<s\le1$, not merely on an unspecified small interval. After the real
+endpoint has been chosen, this is a convexity argument in a finite linear
+sign chamber. It does not claim to preserve $\chi_h$ on all of $V$.
+Proposition~\ref{prop:nonuniform} rules that out when $m\ge2$.
+\end{remark}
+
+\begin{theorem}[Arbitrarily large separation of the two degrees]
+\label{thm:separation}
+For every real configuration with $q=n-d-1\ge1$, there is a bounded
+lifting with affine shadow for which the minimum degree for the complete
+dependence type with that shadow is $q$, whereas the minimum degree for
+all finite lifted determinant and slack signs with that shadow is one.
+\end{theorem}
+\begin{proof}
+There are finitely many nonzero determinant and slack vectors in $V$.
+Choose $f_1\in V^*$ nonzero on all of them: a finite union of proper
+hyperplanes does not cover $V^*$. Extend $f_1$ to a basis
+$f_1,\ldots,f_q$ of $V^*$, represented by real height rows $b_j$ in the
+affine gauge. Put
+\[
+ h=\eps b_1+\eps^2 b_2+\cdots+\eps^q b_q,
+ \qquad \eps=\omega^{-1}.
+\]
+Then $m=q$ and $h^0=0$, so $r_0=0$. Theorem
+\ref{thm:shadowdegree} gives minimum complete-type degree $q$.
+Every nonzero vector in the finite test list already has its sign decided
+by $f_1$, so $K(s)=sb_1$ realizes that list for all $s>0$. At least one
+lifted determinant is nonzero because $m>0$; at the shadow every such
+determinant is zero. Hence a constant path cannot realize the finite list,
+and its exact minimum degree is one.
+\end{proof}
+
+This separation is one reason not to use the phrase ``the number of
+surreal scales of a polytope'' without specifying the invariant. Even a
+single nontrivial combinatorial degeneration can carry an arbitrarily long
+complete dependence flag.
+
+\section{Shadows and canonical refinement hierarchies}
+\label{sec:shadows}
+
+\begin{proposition}[Standard part of a finite convex hull]
+\label{prop:stconv}
+For finite points $v_1,\ldots,v_N\in K^D$,
+\[
+ \st\bigl(\conv_K(v_1,\ldots,v_N)\bigr)
+ =\conv_{\R}\bigl(\st(v_1),\ldots,\st(v_N)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+Every convex coefficient lies between zero and one and is therefore
+finite. Standard part takes a convex combination to the convex combination
+with real coefficients $\st(\lambda_i)$. Conversely every real convex
+combination of the shadows is the standard part of the combination of the
+original points with those same real coefficients.
+\end{proof}
+
+The proposition is an equality of convex sets after applying $\st$.
+It does not say that standard part sends each face to a face.
+
+\begin{example}[A face whose shadow is not a face]\label{ex:nonface}
+Lift the four corners of a unit square with heights $(0,0,0,\eps)$,
+where the ordering is $(0,0),(1,0),(0,1),(1,1)$ and $\eps>0$ is
+infinitesimal. The first three lifted points form a lower triangular facet.
+The shadow of the entire polytope is a square in the plane $z=0$, whereas
+the shadow of that facet is the filled triangle with vertices
+$(0,0),(1,0),(0,1)$. That triangle is not a face of the square. Thus there
+is no unrestricted face-lattice map $F\mapsto\st(F)$.
+\end{example}
+
+\begin{proposition}[The shadow subdivision is a coarsening]
+\label{prop:refineshadow}
+For a bounded lifting of a fixed real base, its marked regular subdivision
+refines the one induced by $h^0=\st(h)$: every maximal source cell is
+contained in a maximal shadow cell, including inclusion of its contact
+labels.
+\end{proposition}
+\begin{proof}
+Choose a supporting basis $B$ of a maximal source cell. All
+$s_{B,i}(h)\ge0$, so all
+$s_{B,i}(h^0)=\st(s_{B,i}(h))\ge0$. Thus the same basis supports a
+shadow cell. Every source equality remains an equality after standard
+part, giving $I_B(h)\subseteq I_B(h^0)$.
+\end{proof}
+
+More generally the complete flag yields a finite hierarchy, even when the
+heights are not bounded. Let $b_1,\ldots,b_m$ be its coefficient rows,
+and for $0\le k\le m$ use the lexicographic height with the first $k$
+rows. Equivalently take the polynomial
+$H_k(t)=\sum_{j=1}^k b_jt^{j-1}$ at a sufficiently small positive real
+$t$, with $H_0=0$. Denote its marked subdivision by $\cS_k$.
+
+\begin{proposition}[Canonical finite refinement chain]\label{prop:chain}
+The subdivisions $\cS_k$ do not depend on the choice of coefficient
+functionals realizing the same oriented flag, and
+\[
+ \cS_0\succeq\cS_1\succeq\cdots\succeq\cS_m=\cS(h),
+\]
+where $\succeq$ means ``is coarser than.'' Every subdivision in the chain
+is an ordinary real regular subdivision of $A$. There are at most $m$
+strict refinement steps. The oriented flag need not be recoverable from
+this chain.
+\end{proposition}
+\begin{proof}
+Positive triangular transformations \eqref{eq:triangular} preserve the
+first-nonzero signs of every truncated list, so they preserve all truncated
+slack signs. Hence the chain depends only on the flag.
+If $B$ supports a lower cell for the first $k+1$ rows, every slack has
+nonnegative lexicographic sign through that level. Its first $k$ entries
+are either all zero or have the same positive first nonzero entry. Thus
+$B$ also supports a lower cell at level $k$, and its equality labels can
+only increase when the last row is removed. This proves refinement.
+Finite sign stabilization realizes every level over $\R$; a common real
+parameter can be chosen for the finitely many levels and slacks.
+
+For the last assertion, choose $f_1$ nonzero on every nonzero slack vector
+as in Theorem~\ref{thm:separation}. All later rows are invisible to the
+subdivision, so $\cS_1=\cdots=\cS_m$ while the remaining flag on
+$\ker f_1$ can vary whenever its dimension permits.
+\end{proof}
+
+This is a flag-refined version of the usual secondary data, not a claim
+that the secondary fan is the entire space of complete dependence types.
+Already in a generic real secondary chamber, further infinitesimal
+coefficients may encode nontrivial orders on its invisible real dependence
+directions.
+
+\section{Higher-rank tropical minimizers: an elementary bridge}
+\label{sec:tropical}
+
+This section records a finite-rank interpretation of the hierarchy, not a
+new theory of higher-rank tropical multiplicities. It is useful for comparing
+the lifting package with \cite{JS,CCFL} without identifying different
+notions of topology or convexity.
+
+Take real height rows $b_1,\ldots,b_r\in\R^n$. For
+$x=(x_1,\ldots,x_r)\in(\R^d)^r$, compare the vectors
+\[
+ \Phi_i(x)=
+ (b_{1,i}+a_i\cdot x_1,\ldots,b_{r,i}+a_i\cdot x_r)
+ \in\R^r
+\]
+in lexicographic order. Define $I_0=\{1,\ldots,n\}$ and successively
+\begin{equation}\label{eq:nestedmin}
+ I_j(x)=\operatorname*{arg\,min}_{i\in I_{j-1}(x)}
+                 (b_{j,i}+a_i\cdot x_j).
+\end{equation}
+The final minimizers of $\Phi_i(x)$ are exactly $I_r(x)$.
+
+For nonempty $T\subseteq S\subseteq\{1,\ldots,n\}$ set
+\[
+ \cD_b^S(T)=\{y\in\R^d:
+       \operatorname*{arg\,min}_{i\in S}(b_i+a_i\cdot y)=T\}.
+\]
+This is a relatively open polyhedron, possibly empty. Indeed choose
+$i_0\in T$, impose equalities
+\[
+ (a_i-a_{i_0})\cdot y=b_{i_0}-b_i\quad(i\in T),
+\]
+and strict inequalities saying that every $i\in S\setminus T$ has a
+larger value. If nonempty, it has dimension $d-\dim\aff(A_T)$.
+
+\begin{proposition}[Product strata for a fixed minimizer history]
+\label{prop:tropstrata}
+For a specified chain of nonempty sets
+$I_0\supseteq I_1\supseteq\cdots\supseteq I_r$, the points $x$ with
+this exact successive minimizer history form
+\begin{equation}\label{eq:productstrata}
+ \cD_{b_1}^{I_0}(I_1)\times
+ \cD_{b_2}^{I_1}(I_2)\times\cdots\times
+ \cD_{b_r}^{I_{r-1}}(I_r).
+\end{equation}
+A nonempty such stratum has dimension
+\[
+ rd-\sum_{j=1}^r\dim\aff(A_{I_j}).
+\]
+There are finitely many histories, and the lexicographic tie locus is the
+disjoint union of those strata with $|I_r|\ge2$.
+\end{proposition}
+\begin{proof}
+Lexicographic comparison first discards all labels not minimizing the first
+coordinate, then discards nonminimizers of the second among the survivors,
+and continues. For a prescribed chain, the $j$th condition involves only
+$x_j$, which proves the product formula. The equalities defining a
+nonempty factor have rank $\dim\aff(A_{I_j})$. Its strict inequalities
+cut out an open subset of that affine solution space and do not decrease
+its dimension. Dimensions add under products. The finiteness and disjointness
+follow because every $x$ has a unique chain of finite sets.
+\end{proof}
+
+This derivation makes no claim that the Euclidean closures of these strata
+constitute a pure polyhedral complex. Higher-rank examples can fail the
+naive closure and purity expectations; such issues are treated explicitly
+in \cite{JS}. Its rank-two product decomposition is a close precedent for
+\eqref{eq:productstrata}. The newer framework \cite{CCFL} uses higher-rank
+GKZ cones and its own face and coface structure. A scalar-field Farkas
+lemma over $K$ and a separation statement for lexicographically ordered
+matrix halfspaces are different assertions; one cannot import one as the
+other without checking the ambient structure.
+
+The present finite compression concerns the \emph{height dependence
+space}. It does not preserve the full ordered multiplicative group of all
+surreal monomials. Nor does it supply tropical weights, balancing, or the
+algebraic degeneration machinery of \cite{CCFL}. Those are additional
+structures beyond the sign and leading-term invariants proved here.
+
+\section{Examples that locate the exact boundary}
+\label{sec:examples}
+
+\subsection{Identical leading heights, opposite square diagonals}
+
+For the square ordered as above, the affine-dependence space is spanned by
+$c=(1,-1,-1,1)$. Consider
+\[
+ h^+=(1,1,1,1+\eps),\qquad h^-=(1,1,1,1-\eps),
+ \qquad 0<\eps\ll1.
+\]
+All four individual heights have leading term $1$ in both liftings and
+both standard parts are $(1,1,1,1)$. Yet
+\[
+ L_{h^+}(c)=\eps,\qquad L_{h^-}(c)=-\eps.
+\]
+The positive case uses diagonal $a_2a_3$, with maximal cells
+$\{1,2,3\}$ and $\{2,3,4\}$. The negative case uses diagonal $a_1a_4$,
+with maximal cells $\{1,2,4\}$ and $\{1,3,4\}$. These exact contact-label
+sets are also returned by the supplied checker.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.45,every node/.style={font=\small}]
+ \begin{scope}
+ \draw[thick] (0,0)--(1.6,0)--(1.6,1.6)--(0,1.6)--cycle;
+ \draw[thick,inkblue] (1.6,0)--(0,1.6);
+ \foreach \x/\y/\n in {0/0/1,1.6/0/2,0/1.6/3,1.6/1.6/4}
+   {\fill (\x,\y) circle (1.2pt);}
+ \node[below left] at (0,0) {$a_1$};\node[below right] at (1.6,0) {$a_2$};
+ \node[above left] at (0,1.6) {$a_3$};\node[above right] at (1.6,1.6) {$a_4$};
+ \node at (.8,-.6) {$L_h(c)=+\eps$};
+ \end{scope}
+ \begin{scope}[xshift=4cm]
+ \draw[thick] (0,0)--(1.6,0)--(1.6,1.6)--(0,1.6)--cycle;
+ \draw[thick,inkblue] (0,0)--(1.6,1.6);
+ \foreach \x/\y/\n in {0/0/1,1.6/0/2,0/1.6/3,1.6/1.6/4}
+   {\fill (\x,\y) circle (1.2pt);}
+ \node[below left] at (0,0) {$a_1$};\node[below right] at (1.6,0) {$a_2$};
+ \node[above left] at (0,1.6) {$a_3$};\node[above right] at (1.6,1.6) {$a_4$};
+ \node at (.8,-.6) {$L_h(c)=-\eps$};
+ \end{scope}
+\end{tikzpicture}
+\caption{The coordinatewise leading heights and the real shadows agree;
+ the first nonzero affine-dependence coefficient determines different
+ regular triangulations. The figure shows the projected lower cells.}
+\end{figure}
+
+\subsection{A nontrivial three-scale compression}
+
+Take $A=(0,1,2,3,4)$ in one dimension, and gauge the first two heights to
+zero. On the last three coordinates put
+\begin{align*}
+ g={}&(1,1,0)\eps+(2,2,0)\eps^2+(0,1,1)\eps^5\\
+    &+(1,-2,-3)\eps^6+(1,0,1)\eps^9,
+ \qquad \eps=\omega^{-1}.
+\end{align*}
+The coefficient at $\eps^2$ is twice the first; the coefficient at
+$\eps^6$ is $(1,1,0)-3(0,1,1)$. The coefficient-pivot procedure therefore
+selects powers $1,5,9$, and
+\[
+ g^\sharp=(1,1,0)\eps+(0,1,1)\eps^5+(1,0,1)\eps^9.
+\]
+The three selected rows are independent. Every real linear combination
+of the three original coordinates has exactly the same leading term after
+compression, not merely the same sign on the finitely many circuits.
+A shadow-preserving polynomial model is
+\[
+ H(t)=(0,0,t+t^3,t+t^2,t^2+t^3).
+\]
+Its minimum degree for the complete sign type with zero shadow is three.
+The exact checker gives the sufficient bound $\eta_0=1/10$, the sample
+$t_0=1/20$, and lower maximal contact sets $\{1,2\}$ and $\{2,5\}$.
+Thus a degree-one path from zero to $H(1/20)$ already retains the finite
+lifted geometry, while losing some of the full real dependence type.
+
+The gaps between the powers could be replaced by much larger surreal
+exponent gaps. The proof depends on their order and coefficient spans,
+not on the existence of a smallest step in the exponent group.
+
+\subsection{Unsigned determinant valuations also lose combinatorics}
+
+Let $\delta>0$ be infinitesimal and $u=(1,1)$. For a real configuration
+$A$ put $p_i=u+\delta a_i$. Every coordinate of every $p_i$ has leading
+term $1$. Every nonzero augmented $3\times3$ determinant is
+$\delta^2$ times the corresponding real determinant. Compare
+\[
+ A=\{(0,0),(2,0),(0,2),(2,2)\}
+\]
+with
+\[
+ A'=\{(0,0),(2,0),(0,2),(1/2,1/2)\}.
+\]
+In both configurations every triple is affinely independent, so all these
+determinants have the same leading exponent. Nevertheless one hull has
+four vertices and the other has three, with a labeled interior point.
+Neither coordinate leading terms nor the unsigned determinant valuations
+recover the labeled face lattice. The signs of leading coefficients matter.
+
+\subsection{Finite truncation can destroy an exact equality}
+
+Let $y=\eps$ and $x=\eps+\eps^2+\cdots=\eps/(1-\eps)$.
+The exact algebraic relation $(1-y)x-y=0$ holds. Replacing $x$ by the
+first $N$ terms gives
+\[
+ (1-\eps)(\eps+\cdots+\eps^N)-\eps=-\eps^{N+1}\ne0.
+\]
+The pivot theorem preserves real \emph{linear} combinations. It does not
+preserve arbitrary polynomial relations between the coordinates, and it
+must not be advertised as a finite truncation algorithm for a surreal field.
+
+\subsection{One parameter does not preserve the entire scale field}
+
+The positive infinitesimals
+$\eps_1=\omega^{-1}$ and $\eps_2=\omega^{-\omega}$ satisfy
+$\eps_2<\eps_1^N$ for every positive ordinary integer $N$. Replacing them
+by $t^a,t^b$ with fixed positive real $a,b$ in a rank-one monomial group
+cannot preserve all these inequalities: choose $N>b/a$. Our finite-height
+models preserve a specified real-linear dependence type, not every
+multiplicative comparison in the field generated by the original scales.
+This is a boundary on what the theorem says, not a contradiction to its
+polynomial realization conclusion.
+
+\section{A toric application: preserving the whole initial ideal}
+\label{sec:toric}
+
+Suppose now that the base points are integral, $a_i\in\Z^d$, and let
+$k$ be any field. The homogeneous toric ideal is
+\[
+ I_A=\ker\bigl(k[x_1,\ldots,x_n]\longrightarrow
+                 k[z_0,z_1^{\pm1},\ldots,z_d^{\pm1}],
+                 \quad x_i\longmapsto z_0z^{a_i}\bigr).
+\]
+For a polynomial, define its $h$-initial form to be the sum of the terms
+whose weights $\sum_i u_i h_i$ are \emph{maximal}. These weights lie in
+the ordered additive group of $\No$; no infinite sum or coefficient
+valuation is involved. The ideal generated by the initial forms of all
+members of $I_A$ is denoted $\operatorname{in}_h I_A$.
+
+Put $\Lambda=\ker_{\Z}\Atil$. For $c\in\Lambda$ write
+$c=c^+-c^-$ with disjoint nonnegative integer supports, and set
+$B_c=x^{c^+}-x^{c^-}$. Its initial form depends only on $\chi_h(c)$.
+A vector $g\in\Lambda\setminus\{0\}$ is \emph{conformally indecomposable}
+when it is not a sum of two nonzero lattice vectors lying in its closed
+orthant, with their absolute values adding coordinatewise. The set $G_A$
+of these vectors, with either both signs or one representative of each
+pair, is the Graver basis. Its relationship with universal Gr\"obner
+bases is classical; see, for example, \cite{Petrovic}. We include the
+finite argument needed for arbitrary ordered weights.
+
+\begin{lemma}[A finite certificate for arbitrary ordered weights]
+\label{lem:graver}
+The set $G_A$ is finite. For heights in any totally ordered abelian group,
+\[
+ \operatorname{in}_h I_A
+ =\bigl\langle\operatorname{in}_h B_g:g\in G_A\bigr\rangle.
+\]
+\end{lemma}
+\begin{proof}
+In each orthant, conformal indecomposables are the minimal nonzero elements
+of the lattice under coordinatewise comparison of absolute values.
+Dickson's lemma makes this set finite. One proof of that lemma is induction
+on the number of coordinates: any infinite sequence in $\mathbb N^n$
+contains an infinite subsequence whose first coordinate is nondecreasing;
+apply the induction hypothesis to the remaining coordinates to find a
+comparable pair. An infinite set of distinct minimal elements would give
+an infinite sequence with no such pair.
+
+Repeatedly splitting a decomposable lattice vector strictly decreases the
+positive integer $\ell^1$-size of each resulting summand. Thus every
+$c\in\Lambda\setminus\{0\}$ has a conformal decomposition
+$c=g_1+\cdots+g_s$ into Graver vectors. Let
+$\alpha_j=h\cdot g_j$. If $h\cdot c>0$, then some $\alpha_j>0$.
+The monomial $\operatorname{in}_h B_{g_j}=x^{g_j^+}$ divides
+$x^{c^+}=\operatorname{in}_h B_c$. The negative case is symmetric.
+If $h\cdot c=0$ and not all $\alpha_j$ vanish, there are both a
+positive and a negative $\alpha_j$. The two terms of $B_c$ are then
+separately divisible by initial monomials of Graver binomials.
+If all $\alpha_j=0$, use the identity, valid for conformal sums,
+\[
+ B_{g+g'}=x^{g'^+}B_g+x^{g^-}B_{g'}.
+\]
+It expresses $B_c$ in the ideal generated by the tied Graver binomials.
+Hence every initial form of a lattice binomial belongs to the stated ideal.
+A common monomial factor handles binomials whose exponents overlap.
+
+It remains to justify that binomials suffice. Decompose any $f\in I_A$
+into its $\Atil$-homogeneous parts. Within each part, the coefficients sum
+to zero, because all monomials have the same image under the toric map.
+If the terms of one part have different weights, every maximal-weight
+monomial is the initial monomial of its difference with a lower-weight
+monomial in that same part. If all its terms have equal weight, the whole
+part is a linear combination of tied differences with one fixed monomial.
+Thus its initial form belongs to the ideal of initial binomials. The
+initial form of the original $f$ is a sum of the initial forms of those
+homogeneous parts whose maximal weights attain the global maximum, so
+it belongs as well. The reverse inclusion follows because every $B_g$
+belongs to $I_A$.
+\end{proof}
+
+\begin{theorem}[Toric compatibility of compression and real shadows]
+\label{thm:toric}
+For an integral base configuration, the compressed lifting satisfies
+\[
+ \operatorname{in}_{h^\sharp}I_A=\operatorname{in}_h I_A.
+\]
+A polynomial model of its complete dependence type has the same initial
+ideal for every sufficiently small positive real parameter. If $h$ is
+bounded, a real affine-linear path starting at $\st(h)$ can preserve this
+initial ideal, all the lifted determinant signs, and the marked lower
+subdivision simultaneously on its whole punctured segment.
+\end{theorem}
+\begin{proof}
+Compression preserves the sign of $L_h(g)$ for every $g\in G_A\subseteq V$,
+so Lemma~\ref{lem:graver} gives the first equality. The finite sign lemma
+applied to these Graver comparisons proves stabilization along a polynomial
+model. For the last assertion, add $G_A$ to the finite determinant and
+slack test list in Theorem~\ref{thm:linear}.
+\end{proof}
+
+This preserves the initial ideal itself, not only its radical or the
+underlying subdivision. The initial algebra and its scheme-theoretic
+invariants therefore agree. The statement is an application of classical
+finite Graver control together with our lifting construction; it is not a
+new construction of the higher-rank degenerations of \cite{CCFL}.
+For the square, $I_A=(x_1x_4-x_2x_3)$: the two infinitesimal choices above
+give initial ideals $(x_1x_4)$ and $(x_2x_3)$, respectively.
+
+\section{General surreal polytopes: what transfer gives and what it does not}
+\label{sec:general}
+
+\begin{theorem}[Classical finite realization and shadow arcs]
+\label{thm:general}
+Every finite surreal point configuration has the same labeled oriented
+matroid, and hence the same labeled polytope face structure, as a real
+configuration. Without prescribed real coordinates or other real
+parameters, a realization can be chosen with real algebraic coordinates.
+If the original coordinates are finite, there is a real semialgebraic arc
+of configurations with the same finite determinant signs that converges
+to their labeled standard parts. Additional \emph{finitely many} polynomial
+sign conditions can be preserved along the same arc.
+\end{theorem}
+\begin{proof}
+List the signs of all minors of the homogeneous coordinate matrix, keeping
+each zero as an equality. This is a finite system of polynomial equalities
+and strict inequalities with integer coefficients. It has a solution in
+a set-sized real closed subfield of $\No$ containing the coordinates.
+Completeness of the theory of real closed fields transfers the existential
+sentence to $\R$, and also to the real algebraic numbers when there are
+no prescribed real parameters. The minor signs determine the rank and
+oriented matroid; the facet reconstruction in
+Lemma~\ref{lem:faces}, in its appropriate affine rank, gives the face
+structure. These are standard real-algebraic facts \cite{BPR}.
+
+For the bounded assertion, let $v^0$ be the vector of all standard-part
+coordinates and let $S$ be the corresponding real semialgebraic sign cell,
+including the extra predicates when present. For every positive real
+$r$, the surreal tuple lies in the ball of radius $r$ about $v^0$ and
+satisfies the sign conditions. Transfer over the named real parameters
+shows that $S$ contains a real tuple within that ball. Thus
+$v^0\in\overline S$. If a constant configuration already suffices, take
+a constant arc. Otherwise semialgebraic curve selection yields an arc
+entering $S$ and tending to $v^0$ \cite{BPR,BR}. Its one-variable
+semialgebraic coordinates are algebraic-function branches; one may use
+a finite power reparameterization to obtain analytic branches at the
+endpoint. The determinant signs on the punctured arc are the desired ones.
+\end{proof}
+
+The realization statement is classical transfer, not a new surreal
+realizability theorem. Likewise the general arc existence is an application
+of curve selection; \cite{BR} supplies a quantitative framework. The
+special contribution of the fixed-base setting is the elementary
+polynomial model with sharp degree and the linear finite-data path.
+
+\begin{example}[Polynomial arcs need not preserve nonlinear constraints]
+Take the finite surreal point
+\[
+ (x,y)=\bigl(\sqrt{1-\eps^2},\eps\bigr),\qquad 0<\eps\ll1.
+\]
+It lies on the unit circle, has $y>0$, and has standard part $(1,0)$.
+There is no real polynomial arc $(X(t),Y(t))$ with
+$(X(0),Y(0))=(1,0)$, $X(t)^2+Y(t)^2=1$, and $Y(t)>0$ for small positive
+$t$. Indeed, if either polynomial is nonconstant, the coefficient of the
+largest even degree in $X^2+Y^2$ is a positive sum of squares and cannot
+vanish. Both must therefore be constant, contradicting the endpoint and
+$Y(t)>0$. An algebraic analytic arc exists, but a polynomial one does not.
+This example concerns the permitted extra polynomial constraints; it is
+not claimed as an obstruction arising from determinant signs alone.
+\end{example}
+
+\section{Corrections to the earlier convexity draft}
+\label{sec:corrections}
+
+The earlier draft \cite{PriorDraft} contains a valid sufficiently-small
+comparison argument. Its Proposition 7.1, however, identifies the
+\emph{entire} positive validity set with an interval. Its Theorem 9.1 and
+following explanation also require a distinction between a real domain
+and its scalar extension. Neither issue affects the proofs above.
+
+\subsection{The global validity set need not be an interval}
+
+On $P=[0,1]$, take the objective hierarchy
+$c_0x=x$, $c_1x=-3x$, and $c_2x=2x$. Lexicographic maximization selects
+$x=1$. The compiled objective is
+\[
+ (1-3t+2t^2)x=(1-t)(1-2t)x.
+\]
+It selects exactly the same maximizer for
+\begin{equation}\label{eq:reentry}
+ t\in(0,1/2)\ \cup\ (1,\infty),
+\end{equation}
+not for a single interval. At $t=1/2$ and $t=1$ it is constant on the
+whole segment; between those points it selects $x=0$.
+
+\begin{proposition}[Correct initial-radius statement]\label{prop:radius}
+For finitely many nonzero comparison polynomials with their required
+signs at $0^+$, the component of the simultaneous validity set adjacent
+to zero is $(0,\rho)$, where $\rho$ is the least positive zero of one
+of the normalized nonzero comparison polynomials, or $+\infty$ when
+none has a positive zero. Over a real closed coefficient field, a finite
+$\rho$ belongs to that field. The entire validity set may have additional
+components beyond $\rho$.
+\end{proposition}
+\begin{proof}
+Divide each polynomial by its lowest power of $t$; its constant term is
+nonzero. Before its first positive zero its sign is constant, by the
+intermediate value property. At a positive zero the required strict sign
+fails, even if the polynomial merely touches zero and later has the same
+sign again. Taking the least positive zero over the finite list gives
+exactly the component adjacent to zero. Signs on subsequent root intervals
+can agree again, as \eqref{eq:reentry} shows.
+\end{proof}
+
+For a general ordered field the first zero may lie only in a real closure,
+so the endpoint may define a cut rather than an element of the original
+field. A sufficient algebraic bound such as Lemma~\ref{lem:eta} avoids
+this issue. We never use a global-interval assertion.
+
+\subsection{A real face and its scalar extension are different sets}
+
+Let $P_{\R}=\conv_{\R}(v_1,\ldots,v_N)$ with real vertices, and let
+$P_K=\conv_K(v_1,\ldots,v_N)$. Suppose a compiled objective makes exactly
+the labels in $J$ optimal. Then
+\begin{equation}\label{eq:facebasechange}
+ \operatorname*{arg\,max}_{x\in P_K}c\cdot x
+   =\conv_K\{v_j:j\in J\},
+\end{equation}
+not generally $\conv_{\R}\{v_j:j\in J\}$.
+To prove \eqref{eq:facebasechange}, express $x$ as a convex combination
+and subtract its objective value from the optimal vertex value. The result
+is a sum of nonnegative terms. Equality forces every positive coefficient
+to occur at an optimal vertex, exactly as over $\R$.
+
+For example, maximizing the first coordinate on $[0,1]^2_K$ gives the
+whole edge $\{1\}\times[0,1]_K$, including $(1,\eps)$ for a positive
+infinitesimal $\eps\in K$. This point is not in the ordinary real edge.
+The correct shadow identity is
+\[
+ \st\!\left(\operatorname*{arg\,max}_{P_K}c\cdot x\right)
+   =\conv_{\R}\{v_j:j\in J\},
+\]
+by Proposition~\ref{prop:stconv}. The same optimal \emph{vertex labels}
+and the same base-changed face are selected. If the old statement is read
+literally with optimization only over the subset $P_{\R}\subset\No^d$,
+then equality with the real face is correct; it is not the assertion about
+$K$-convex polytopes used elsewhere. This is a scalar-extension ambiguity,
+not a reason to discard the finite compiler.
+
+\section{Computation, certificates, and a formalization route}
+\label{sec:computation}
+
+\subsection{What the executable verifier actually does}
+
+The accompanying \nolinkurl{code/verify.py} uses only Python's standard
+library and exact rational arithmetic. It accepts the finite examples
+encoded there as Laurent polynomials in a positive infinitesimal
+$\eps=\omega^{-1}$. An input coefficient list is complete, not an oracle
+that may reveal further terms later. The procedure is:
+\begin{enumerate}[label=\arabic*.]
+\item find affine bases by exact determinants and compute barycentric
+      coefficients by exact elimination;
+\item subtract the affine gauge coefficientwise and retain exactly the
+      rank-increasing coefficient rows;
+\item build the polynomial model, every affine-basis slack, and every
+      augmented maximal minor;
+\item compare leading terms and signs before and after compression,
+      compute the rational threshold, and verify the real specialization
+      and several points on the linear shadow path.
+\end{enumerate}
+The theorem proves validity on the whole segment; the sampled points are
+only additional implementation checks. Exact leading-term equality is
+checked on the finite determinant/slack list and on 60 additional rational
+dependence vectors per example. No finite test can replace the universal
+proof in Theorem~\ref{thm:pivot}.
+
+The executed suite contains seven named cases, six members of the sharpness
+family, and forty randomized rational configurations using seed
+\texttt{20260930}. All fifty-three cases passed, including the three-scale pivot
+list $[1,5,9]$ and the validity-set counterexample. This gives 3,180 extra
+sampled dependence checks, in addition to the complete finite geometry
+test lists for each case. Machine-readable data are in
+\nolinkurl{data/certificates.json}; the execution summary is in
+\texttt{data/verification\_report.txt}. The program does not implement
+arbitrary surreal arithmetic, semialgebraic curve selection, or a Graver
+basis algorithm. The corresponding general results rest on the written
+proofs, not on a claimed implementation.
+
+If the finite support has $s$ coefficient rows and the affine-dependence
+dimension is $q$, an incremental elimination implementation can perform
+the pivot selection using $O(sq^2)$ field operations, after gauging.
+The supplied reference verifier recomputes some small ranks for simplicity;
+it is not presented as achieving that optimized complexity. Enumerating
+all affine bases involves at most $\binom{n}{d+1}$ candidates, and rational
+bit growth must be accounted for in any bit-complexity claim.
+
+\subsection{Why coefficient access alone does not make the bound computable}
+
+\begin{proposition}[An explicit representation obstruction]
+\label{prop:undecidable}
+There is no algorithm that always computes $m$ for rational-coefficient
+height series given by uniformly computable coefficient functions, even
+under the promise that each series actually has finite support and that
+the real base configuration is fixed.
+\end{proposition}
+\begin{proof}
+Use $A=(0,1,2,3)$ and gauge the first two heights to zero. For a Turing
+machine $e$, let $x_e=\eps^{T+1}$ if it halts for the first time at step
+$T$, and let $x_e=0$ if it never halts. The coefficient of $\eps^N$ in
+$x_e$ is computable uniformly from $e,N$ by simulating at most $N$ steps.
+Every resulting series has at most one nonzero coefficient. Take heights
+$(0,0,1,x_e)$. Their dependence-image dimension is one if the machine
+never halts and two if it halts, since a nonzero positive infinitesimal is
+real-linearly independent of $1$. An algorithm computing $m$ from these
+coefficient functions would decide the halting problem.
+\end{proof}
+
+Thus a complete finite support list and a computable coefficient function
+with a finite-support promise are very different input representations.
+The latter supplies no computable bound on the last possible nonzero
+coefficient. The rank theorem does not erase that distinction.
+
+\subsection{A theorem-by-theorem Lean plan}
+
+The most reusable starting point is not the full class of surreals. Work
+first with a set-sized Hahn-style normal-form structure over $\R$, equipped
+with coefficient uniqueness, leading signs, and the fact that every
+nonempty support subset has a largest exponent in the growth convention.
+The desired modules are proposed components, not existing declarations:
+
+\paragraph{Coefficient compression.}
+Formalize the rank-increasing selection as finite-dimensional linear
+algebra on coefficient vectors. Prove the key invariant: before the next
+selected exponent, every coefficient row belongs to the already selected
+span. Derive kernel equality, leading-term equality, and the exact count
+of attained leading exponents.
+
+\paragraph{Affine quotient.}
+Use the kernel of the augmented real matrix as the dependence space.
+Formalize the affine-basis projection isomorphism and coefficientwise gauge.
+This part is independent of normal forms and should work over any suitable
+coefficient field.
+
+\paragraph{Certificates.}
+Prove cofactor vectors and barycentric slack vectors belong to the kernel.
+Prove that their signs imply the listed supporting faces, rather than
+trusting an external convex-hull routine. The external Python program may
+produce rational witnesses, but a Lean checker should verify those
+witnesses by rational equalities and inequalities.
+
+\paragraph{Optimality and shadows.}
+The degree lower bound is a rank--nullity theorem about polynomial
+coefficient maps. The linear shadow path needs only an order-preserving
+real-linear standard-part map and a finite real specialization theorem.
+Neither proof should require a formal theory of tropical fans.
+
+\paragraph{Toric extension.}
+Formalize conformal decomposition and the finite Graver certificate
+separately. Its ordered-weight proof does not need real closedness or a
+surreal-specific polynomial ring.
+
+Only after these modules are proved should they be instantiated with the
+repository's constructed surreal field. The normal-form, real-embedding,
+and standard-part interfaces must be checked against that implementation.
+No claim is made that the whole plan is already supported by existing
+Mathlib declarations, and no Lean build was run for this manuscript.
+
+\section{Further research questions and concrete routes}
+\label{sec:questions}
+
+The questions here are proposed projects, not assertions that every one is
+a previously published open problem. Their scopes exclude the finite-data
+and complete-type degree questions already answered above.
+
+\paragraph{1. Moving-base determinant degenerations.}
+For $n$ bounded surreal points in dimension $d$, seek sharp complexity
+bounds for a real algebraic or Puiseux arc preserving all determinant
+signs and the labeled shadow. General quantitative curve selection already
+gives effective bounds; the task is to exploit the determinant structure
+rather than reprove mere existence. A useful first case is a planar
+configuration with one prescribed collinearity collapse and all other
+minors nonzero. Determine when polynomial coordinates suffice without
+adding extra nonlinear constraints.
+
+\paragraph{2. More than one nonreal lifting coordinate.}
+Replace one height by $r\ge2$ surreal coordinates over a fixed real base.
+Maximal minors now involve products of heights. Compressing their
+coefficient vectors in an exterior-power representation is finite-dimensional,
+but the compressed data may fail the decomposability relations needed to
+come from actual points. Determine the sharp realizable compression bound
+already for $r=2$, and identify the Pl\"ucker-type obstruction explicitly.
+
+\paragraph{3. Singular fibers of the flag-to-secondary map.}
+A complete dependence flag maps to a regular subdivision, and for integral
+$A$ to a toric initial ideal. Generic first rows leave later flags invisible;
+thus the fibers need not be points or contractible. Describe the topology
+and incidence structure of fibers when the first row lies on a secondary
+or Gr\"obner wall. The coefficient-kernel description gives explicit
+semialgebraic conditions from which to start.
+
+\paragraph{4. Certificates smaller than all bases or a Graver basis.}
+The proofs give finite certificates, but the evident lists can be large.
+Can a certificate containing only a controlled set of supporting bases,
+redundancy witnesses, and essential lattice relations verify simultaneously
+the face lattice, the lower subdivision, and the initial ideal? Separate
+certificate size from the complexity of finding that certificate. A
+practical target is an output-sensitive checker rather than an efficient
+universal enumeration algorithm.
+
+\paragraph{5. Effective infinite-support subclasses.}
+Proposition~\ref{prop:undecidable} rules out uniform extraction from arbitrary
+coefficient programs. Identify normal-form languages with enough support
+structure to certify that no later independent coefficient exists. Examples
+to investigate include rational generating functions and prescribed
+finite-dimensional coefficient recurrences. The desired result is an
+algorithm with a proved stopping criterion, not merely symbolic access to
+individual coefficients.
+
+\paragraph{6. Relating flags to higher-rank algebraic degenerations.}
+Compare the canonical real-dependence flag here with the higher-rank
+quasi-valuations in \cite{CCFL}. Determine precisely which information is
+lost when a matrix of weights is replaced by the flag modulo positive
+triangular and affine transformations. Equality of toric initial ideals
+is proved above; equality of valuation structures or multi-parameter
+families is a stronger requirement and should be tested separately.
+
+\paragraph{7. Arithmetic constraints on a real replacement.}
+With rational $A$ and rational coefficient slices, the present construction
+gives rational specializations, but denominators may grow substantially.
+Optimize coefficient height and the size of a rational endpoint while
+retaining specified signs and a prescribed rational shadow. For an
+integral endpoint one must account for the shadow and allowed affine
+rescalings, rather than silently multiplying the entire path by a scalar.
+This is a concrete quantitative refinement of the existence theorem.
+
+\paragraph{8. A small trusted formalization.}
+Implement the coefficient-pivot and finite-slack certificate theorems first,
+with no surreal class machinery in the checker. Then connect them to the
+existing ordered-field geometry and normal forms. An especially useful
+milestone is a machine-checked version of the separation theorem: a
+family with linear finite combinatorial realizations but arbitrarily large
+minimum degree for the complete dependence type.
+
+\section{Conclusion}
+
+The real-base lifting problem admits an exact three-level answer. Arbitrary
+surreal support collapses to $m\le n-d-1$ selected coefficient slices
+when all real dependence leading terms are the invariant. The resulting
+complete sign type is an oriented partial flag, and its minimum polynomial
+germ degree is determined by $m$ and, when a shadow is fixed, $r_0$.
+Finite combinatorics is less demanding: a single real segment suffices,
+and in the integral case that segment may also preserve the entire toric
+initial ideal.
+
+These results do not produce a new finite face lattice unavailable over
+the reals. They describe exactly what can be hidden behind a familiar
+face lattice, what standard part destroys, and which additional data
+restore it. The strongest claim of this manuscript is the proved sharp
+classification in this stated setting. Its possible novelty lies in that
+assembled theorem package and its implementation boundary; independent
+proof review and a broader priority audit remain appropriate.
+
+\clearpage
+\appendix
+\section{Dependency and verification ledger}
+
+\begin{center}
+\small
+\begin{longtable}{@{}p{0.34\linewidth}p{0.54\linewidth}@{}}
+\toprule
+Result & Evidence and dependencies\\
+\midrule
+\endhead
+Coefficient-pivot theorem & Full proof; Conway coefficient uniqueness,
+ leading-sign rule, and finite-dimensional linear algebra.\\
+Affine compression and flags & Full proofs from the pivot theorem and
+ ordinary real linear algebra.\\
+Exact polynomial degrees & Full constructions and rank lower bounds;
+ no transfer or numerical approximation.\\
+Finite face and slack certificates & Full determinant and barycentric
+ proofs; finite rational examples checked.\\
+Linear shadow realization & Full proof from standard part and finite
+ sign stabilization; arbitrary finite test list.\\
+Arbitrary degree separation & Explicit full-rank construction and exact
+ lower bounds; finite family members checked.\\
+Toric initial ideal & Full conformal-decomposition proof, with classical
+ Graver-background attribution; no Graver implementation claimed.\\
+General semialgebraic arcs & Application of cited real-closed-field
+ transfer and curve selection, not a new general existence theorem.\\
+Validity-set correction & Explicit quadratic counterexample and corrected
+ initial-component proof; exact signs checked.\\
+Coefficient-oracle obstruction & Direct reduction from the halting problem.\\
+New Lean declarations & None supplied or claimed.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Source and reproduction notes}
+
+The fixed geometry source inspected was
+\begin{quote}\small\ttfamily
+Algebra/SurrealNumbers/Surreal/Algebra/Geometry.lean
+\end{quote}
+at repository commit
+\nolinkurl{5e0f4e05046bacda3c6ba2643f19b91aa632436b}, with blob
+\nolinkurl{450fd4bbfc017e0da24c28e538af1cc02037ad5a}. The surrounding README
+was read on 30 September 2026; its fetched blob was
+\nolinkurl{cf63fc5ff9ca9d8877e90f8e69ec34e6ded19d23}. These identify inspected
+sources, not a claim that the repository has stopped changing. The
+comparison covers these files, the reports guide, and targeted searches;
+it is not a complete audit of every manuscript in the repository.
+
+The earlier companion draft was recovered from the research library under
+\nolinkurl{article(20260923-000126).pdf}; the relevant statements are on its
+printed pages 5--6. It was consulted for comparison and correction, not
+imported as a theorem dependency. The current literature check included
+the September 2026 revision of \cite{CCFL}. No exhaustive priority search
+or independent referee report is represented by this record.
+
+To reproduce the executable checks, run
+\begin{quote}\ttfamily
+python3 code/verify.py
+\end{quote}
+from the package directory. To rebuild this document, run
+\begin{quote}\ttfamily
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+A third run may be needed after a substantial change to the contents or
+cross-references. The bibliography is included below; no external
+\texttt{.bib} file is required. Standard TeX Live packages provide the
+fonts; no font files are distributed with this package.
+
+\begin{thebibliography}{99}
+\small\raggedright
+\bibitem{Gonshor}
+Harry Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110, Cambridge University
+Press, 1986. Chapter 5, ``Normal Form.''
+\href{https://doi.org/10.1017/CBO9780511629143}{doi:10.1017/CBO9780511629143}.
+
+\bibitem{DRS}
+Jes\'us A. De Loera, J\"org Rambau, and Francisco Santos,
+\emph{Triangulations: Structures for Algorithms and Applications},
+Algorithms and Computation in Mathematics 25, Springer, 2010.
+\href{https://doi.org/10.1007/978-3-642-12971-1}{doi:10.1007/978-3-642-12971-1}.
+
+\bibitem{JS}
+Michael Joswig and Ben Smith, ``Convergent Hahn series and tropical geometry
+of higher rank,'' \emph{Journal of the London Mathematical Society}
+\textbf{107} (2023), 1450--1481.
+\href{https://doi.org/10.1112/jlms.12716}{doi:10.1112/jlms.12716};
+\href{https://arxiv.org/abs/1809.01457}{arXiv:1809.01457}.
+The rank-two decomposition and the concluding questions are relevant
+comparisons, not new claims of this manuscript.
+
+\bibitem{CCFL}
+Rocco Chiriv\`i, Martina Costa Cesari, Xin Fang, and Peter Littelmann,
+``Higher rank Gelfand--Kapranov--Zelevinsky fans,''
+\href{https://arxiv.org/abs/2604.20250v2}{arXiv:2604.20250v2},
+13 September 2026. Sections 2--3 concern higher-rank cones and subdivisions;
+Sections 4--5 concern quasi-valuations and degenerations.
+
+\bibitem{BPR}
+Saugata Basu, Richard Pollack, and Marie-Fran\c{c}oise Roy,
+\emph{Algorithms in Real Algebraic Geometry}, 1st edition,
+Algorithms and Computation in Mathematics 10, Springer, 2003.
+\href{https://doi.org/10.1007/978-3-662-05355-3}{doi:10.1007/978-3-662-05355-3}.
+
+\bibitem{BR}
+Saugata Basu and Marie-Fran\c{c}oise Roy,
+``Quantitative Curve Selection Lemma,''
+\href{https://arxiv.org/abs/1803.00505v3}{arXiv:1803.00505v3},
+19 July 2021; first version 2018.
+
+\bibitem{Petrovic}
+Sonja Petrovi\'c, ``On the universal Gr\"obner bases of varieties of
+minimal degree,''
+\href{https://arxiv.org/abs/0711.2714}{arXiv:0711.2714}, 2007.
+Cited for the classical Graver/universal-Gr\"obner background; the needed
+ordered-weight argument is proved in Lemma~\ref{lem:graver}.
+
+\bibitem{RepoGeometry}
+Vladimir Reshetnikov, \texttt{ProveIt} repository,
+\nolinkurl{Algebra/SurrealNumbers/Surreal/Algebra/Geometry.lean},
+inspected at commit \texttt{5e0f4e0}, 30 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5e0f4e05046bacda3c6ba2643f19b91aa632436b/Algebra/SurrealNumbers/Surreal/Algebra/Geometry.lean}{Fixed source link}.
+
+\bibitem{RepoGuide}
+\texttt{ProveIt}, \nolinkurl{Algebra/SurrealNumbers/README.md} and
+\nolinkurl{Algebra/SurrealNumbers/docs/README.md}, consulted
+30 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Algebra/SurrealNumbers}{Project and report guide}.
+Descriptions of formalization status are repository reports, not a
+fresh build certification by this manuscript.
+
+\bibitem{PriorDraft}
+\emph{Finite Convexity and Exact Lexicographic Optimization over the
+Surreals: A finite-dimensional theorem package and a one-objective
+compiler for multiscale linear programs}, research draft prepared for
+the Surreal repository, 22 September 2026, 8 pages. Research-library copy:
+\nolinkurl{article(20260923-000126).pdf}. Proposition 7.1 and Theorem 9.1,
+printed pages 5--6, are examined in Section~\ref{sec:corrections}.
+No public repository location for this copy is assumed.
+\end{thebibliography}
+\end{document}
