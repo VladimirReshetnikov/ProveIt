@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **63 research reports in five families**. Start with the
+This collection has **64 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -15,6 +15,21 @@ formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
 
 ## Newest reports
+
+Batches 58 and 59 (placed in `b30441a` and `f2cb203`, written in `4e12835`
+and `da05b41`) add one report,
+[polytopes at surreal scales](surreal/polytopes-at-surreal-scales/), merged
+from twelve manuscripts into ten Parts on finite polytopes over a set-sized
+real closed field `K ⊇ ℝ` inside `No`: lifting compression to at most
+`n−d−1` real layers with exact germ degrees, coordinate-truncation
+histories, affine residues and mixed-volume scales, real traces and lattice
+counts, extension complexity invisible to all-order jets, mixed-volume
+tomography and realization, exponential contact depth of moving vertices,
+omnific integer hulls with a rational-normal dichotomy, and set-sized
+presentations. Batch 59 also adds a reciprocal note to
+[omnific groups and lattices](surreal/omnific-groups-and-lattices/)
+(`526c255`). The new report is not yet indexed in the formalization ledger;
+nothing in it is formalized, and its independent proof review is pending.
 
 Batches 24–29 (placed in `be06fc8`, `cf350b1`, `f4c9504`, `a4dcb91`,
 `c6359e4` and `66d7e55`, each followed by its write commits) add nine reports
@@ -191,7 +206,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: twenty-three reports
+## Surreal numbers: twenty-four reports
 
 | Report | Question or main subject |
 |---|---|
@@ -208,6 +223,7 @@ not extend their earlier proof-review scope.
 | [Markov generators at every scale](surreal/markov-generators-at-every-scale/) | All-scale resolvent hierarchies of finite positive Hahn rate matrices and their converse realization; divisible value group, no path measures or infinite state spaces |
 | [Transcendence over bounded support](surreal/transcendence-over-bounded-support/) | `2^cf(G)` algebraically independent Hahn series over the fraction field of bounded-support series, and linear-disjointness descent; transcendence from the support, not the coefficients |
 | [Matrix scaling at surreal scales](surreal/matrix-scaling-at-surreal-scales/) | Fixed-margin diagonal scaling of positive Hahn matrices; the spanning-tree deletion gap is the exact gain; no Sinkhorn convergence claim |
+| [Polytopes at surreal scales](surreal/polytopes-at-surreal-scales/) | Finite polytopes over set-sized real closed `K ⊇ ℝ`: all-scale lifting compression to at most `n−d−1` real layers with exact germ degrees, coordinate-truncation histories, affine residues and mixed-volume scales, lattice counts with non-quasipolynomial Ehrhart functions, extension complexity invisible to all-order jets, mixed-volume tomography and realization (a Fano obstruction), exponential contact depth of moving vertices, omnific integer hulls with a rational-normal dichotomy, and set-sized presentations; twelve manuscripts; no Lean verification |
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)`; Part V: compact groups over `No`, whose universal set-sized quotient exists exactly in the semisimple case |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |

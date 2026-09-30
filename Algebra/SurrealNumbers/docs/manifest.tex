@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of sixty-three research reports on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of sixty-four research reports on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -60,7 +60,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Sixty-three mathematical research packages,\\
+ {\large Sixty-four mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small September 2026}
@@ -71,11 +71,11 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the sixty-three research packages stored under
+This document catalogues the sixty-four research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Twenty-three
+The collection divides in five, and so does the directory tree.  Twenty-four
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
@@ -84,7 +84,7 @@ automorphisms, Gamma functions, differential transcendence of explicit
 surreals, Hahn-valued measures and probability, Markov generators,
 transcendence over bounded-support series, diagonal matrix scaling, vector
 and tensor fields, Euclidean three-space and its rotations, and finite
-probability, independent surreal copies, and six reports on Conway's omnific integers $\Oz$: their
+probability, finite polytopes at surreal scales, independent surreal copies, and six reports on Conway's omnific integers $\Oz$: their
 Diophantine geometry, their set-sized quotients, the automorphisms that
 preserve them, their algebraic groups and lattices, and the discrete initial
 subgroups they normalize, and continued fractions with omnific digits.
@@ -140,7 +140,7 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Twenty-three reports about $\No$ and its real Hahn subfields.  Two questions of
+Twenty-four reports about $\No$ and its real Hahn subfields.  Two questions of
 Lipparini on evaluating formal sums; two independent halves of Gonshor's
 product-birthday conjecture, on domains neither of which contains the other;
 the subgraph question from Roughan's paper on birthday arithmetic; a genetic
@@ -151,7 +151,7 @@ transcendence of explicit surreals; Hahn-valued measures and probability;
 Markov generators at every valuation scale; transcendence over bounded-support
 series; diagonal matrix scaling; vector and tensor fields in every
 dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
-probability; and six reports on the omnific integers $\Oz$, written from
+probability; finite polytopes at surreal scales, from batches 58 and 59; and six reports on the omnific integers $\Oz$, written from
 batches 24--29: Diophantine geometry, set-sized quotients, preserving
 automorphisms, groups and lattices, and discrete initial subgroups with their
 omnific normalization, together with continued fractions. A further report proposes independent copies with
@@ -164,7 +164,9 @@ The five earlier omnific reports are merges, grown by later additions: the
 Diophantine report assembles fifteen manuscripts, the quotient report
 twenty-four, the preserving-automorphism report fifteen, the groups and lattices
 report five and the initial-subgroup report two. The continued-fraction report
-is a written single-source report. Assembly, independent proof
+is a written single-source report. The polytope report merges twelve
+manuscripts, six from each of batches 58 and 59, into ten Parts on three
+spines. Assembly, independent proof
 review and Lean coverage are separate; the ledger maps the ring and
 constant-term package, degree laws, units, finite elements and exact
 omnific floor and ordinary polynomial-root rigidity of the Diophantine
@@ -636,6 +638,40 @@ the cases $p=t$ and $p=\tfrac12+t$ of the i.i.d.\ corollary of
 question of.  No physical interpretation is claimed, in line with
 \nolinkurl{physics/surreal-scalars-and-spacetime}.  One manuscript; not
 refereed, no Lean verification, priority not certified.}
+
+\entry{Polytopes at surreal scales}
+{surreal/polytopes-at-surreal-scales}
+{article.pdf}{twelve manuscripts, delivered 30~September 2026}
+{Finite polytopes over a set-sized real closed field $K\supseteq\R$ inside
+$\No$, with its bounded ring and standard part, in ten Parts on three spines.
+Part~I: for a fixed real configuration of $n$ points of affine dimension $d$
+with surreal heights, at most $m\le n-d-1$ real layers keep the leading term
+of every dependence evaluation; the sign type is an oriented partial flag of
+minimal polynomial germ degree exactly $m-1$, and support-initial lifting
+histories are exactly the finite marked regular refinement chains, sharp for
+planar parabolic polygons.  Part~II realizes every prescribed
+triangle/quadrilateral history under coordinate truncation.  Part~III: the
+scale lattice and a full-dimensional affine residue, even when the standard
+part collapses the polytope, and finite rational-grid segment models
+preserving all mixed-volume valuations at once.  Part~IV: real traces,
+algebraic descent, and a quadrilateral whose lattice counts
+$(n+1)^2-\lceil\alpha n\rceil$ have a generating function that is not
+D-finite.  Part~V: for every $n\ge4$, two strictly convex $n$-gons agreeing in
+shadow, oriented matroid and all-order jets at $\omega^{-\omega}$, one of
+logarithmic linear and semidefinite extension complexity and one with
+$\mathrm{xc}(\mathrm{xc}-1)\ge2n$; such invisible gaps exist exactly when the
+jet scale's valuation is not an order unit.  Parts~VI--X (batch~59):
+mixed-volume tomography, where no finite list of mixed-area probes recognizes
+every planar scale lattice; an exact realization criterion for mixed-volume
+profiles, under which a matroid-type profile is realizable exactly when the
+matroid is representable over~$\R$, with an unrealizable strictly Lorentzian
+Fano profile; Lawrence polytopes whose face-preserving vertex arcs need
+degree exponential in~$k$; omnific integer hulls generated by an explicit
+finite set from one ordinary Graver test set, finitely for all boxed
+right-hand sides exactly when every row is rational in direction; and
+set-sized presentations, where a small hull that is also a small halfspace
+class is a polytope.  Merged from twelve manuscripts; not refereed, no Lean
+verification, priority not certified.}
 
 \entry{Omnific integers and omnific--Diophantine geometry}
 {surreal/omnific-diophantine-geometry}

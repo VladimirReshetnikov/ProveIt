@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and eleven independent mathematical research packages, unpacked
+One hundred and thirteen independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and eleven reports, names the problem each one attacks
+numbers all one hundred and thirteen reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -29,7 +29,8 @@ records what each report claims rather than verifying it.
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| **Total** | **111** |
+| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation | 2 |
+| **Total** | **113** |
 
 ## Later deliveries
 
@@ -118,6 +119,24 @@ polynomials, Part VI), a four-test radical-solvability criterion for
 irreducible sextics that needs no separating parameter (sextic
 block-resolvent separators, Part II), and exact alphabet-size criteria for
 concavity of product Tsallis entropy (two-coin counterexamples, Part III).
+Batch 58 extended one: the integral Hasse failures of the three-variable
+Keller map are Zariski dense in every plane `C = c ≠ 0` and absent from
+`C = 0`, with a complete local criterion for completely split fibers and the
+count `~ κ(c) T^{2/3}` in square boxes (arithmetic local–global fibers,
+Part II).  Batch 59 brought nothing to this collection.  Batch 60 opened the
+category [`hilbert-tenth-problem/`](hilbert-tenth-problem) with two reports
+merged from nine manuscripts continuing the Lean project
+`Computability/HilbertTenthProblem`, and batch 61 added a seventh manuscript
+on FIFO queues and tag systems to the first of them:
+[`canonical-diophantine-certificates`](hilbert-tenth-problem/canonical-diophantine-certificates)
+(seven manuscripts: polynomials whose natural zeros are in bijection with
+bounded executions or their trace classes, for guarded translations, Petri
+nets, counter schedules, polynomial trajectories, memory logs, queues and tag
+systems and rewriting) and
+[`probabilistic-quantum-and-continuous-computation`](hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation)
+(three: output laws and normalization budgets of probabilistic programs,
+undecidable quantum mortality in dimension four, and a continuous
+three-outcome trichotomy).
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 111 independent mathematical research packages}}
+  pdfsubject={Catalogue of 113 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,22 +53,22 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and eleven independent mathematical research packages,\\
+  {\large One hundred and thirteen independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 29 September 2026}
+  {\normalsize 30 September 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and eleven research packages stored
+This document catalogues the one hundred and thirteen research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other nine came through ProveIt's incoming-reports procedure
-(\dir{docs/incoming}) --- six in batch~36 and one each in batches~40, 41
-and~44 --- whose archives remain in the repository's history.  Later batches
+other eleven came through ProveIt's incoming-reports procedure
+(\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
+and~44, and two in batch~60 --- whose archives remain in the repository's history.  Later batches
 also extended existing reports; their entries name the batch.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
@@ -182,7 +182,9 @@ original archive names are recorded with every entry.
 \midrule
 \dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{111}\\
+\dir{hilbert-tenth-problem} & --- & 2\\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{113}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1845,7 +1847,7 @@ verified dimension-five stable map.}
 
 \entry{Arithmetic local--global dichotomies for the three-variable Keller map}
 {jacobian-conjecture/arithmetic-local-global-fibers}
-{article.pdf}{ProveIt\_Arithmetic\_Local\_Global.zip}
+{article.pdf}{ProveIt\_Arithmetic\_Local\_Global.zip; batch~58: ProveIt\_Dense\_Integral\_Hasse.zip}
 {For the project's three-variable Keller map, gives an explicit infinite
 family of integral targets with a preimage in every $\mathbb{Z}_p^3$ but none
 in $\mathbb{Z}^3$ (each fiber is three rational points, so these are not
@@ -1857,7 +1859,13 @@ it with a rational Hasse principle over every number field.  The complex
 stratification is credited to Gao and the finite-field histograms to an
 external note.  An intake remark records an integral triple collision over the
 project's own collision value.  Not a new disproof of the Jacobian
-conjecture.}
+conjecture.  Part~II, added in batch~58, answers Part~I's density question:
+such failures are Zariski dense in every plane $C=c\ne0$, hence in
+$\mathbb{A}^3$, and none lies on $C=0$.  It gives a complete local criterion
+for completely split fibers, finds finitely many integral split fibers on
+each plane, and proves $\#\mathcal H^{\mathrm{sp}}_c(T)\sim\kappa(c)T^{2/3}$
+for the completely split failures in square boxes $|A|,|B|\le T$, with
+$\kappa(c)$ an explicit Gamma factor times an Euler product.}
 
 \entry{All-degree rigidity of a weighted Keller class}
 {jacobian-conjecture/weighted-keller-rigidity}
@@ -1928,5 +1936,53 @@ chosen in advance, or its matching resolvent has one at each of three
 distinct parameters, because a base-field matching root of a nonsolvable
 sextic comes from a Galois-invariant pentad, of which there is at most one,
 and occurs at no more than two parameters.}
+
+\section{Hilbert's tenth problem}
+
+Two reports continuing the formal project
+\dir{Computability/HilbertTenthProblem}, which proves MRDP in both
+directions in Lean, the universal pair $(58,4)$ and the single-fold unary
+exponential representation of Jones and Matiyasevich.  None of the reports'
+own theorems is formalized; each README names the project declarations it
+builds on.
+
+\entry{Canonical Diophantine certificates}
+{hilbert-tenth-problem/canonical-diophantine-certificates}
+{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip}
+{Diophantine representations that control their witnesses, not only their
+existence.  For Petri nets and interval-guarded translations, a convex
+quadratic integer polynomial whose natural zeros are in bijection with the
+commutation classes of enabled executions of length~$T$ (its real zero set
+is a rational polytope with exactly those lattice points), with quartic
+second routes, a Cartier--Foata variant for bounded causal height, exact
+commutation tests, $\#\mathrm P$-completeness of counting and an
+exponential lower bound for normal-form automata.  Single-fold quartics for
+multisets and nested repetitions of counter actions independent of the
+repetition counts, for ``$p(i)\ge0$ for all $i\le T$'' with $O((d+1)^3)$
+witnesses independent of~$T$, for memory logs with $24L$ witnesses, and for
+FRACTRAN and scheduled SKI runs.  For cyclic-tag and deletion-tag systems
+and fixed-read FIFO networks, certificates with one coordinate per consumed
+symbol and one guard slack, with no intermediate queue quantified; faithful
+word memory with polynomial insertion at both ends needs two natural
+coordinates.  Proves that a single-fold (finite-fold) universal halting
+polynomial exists exactly when every enumerable set has such a
+representation, an open problem not solved here.  Merged from seven
+manuscripts; not a Lean formalization.}
+
+\entry{Diophantine laws of probabilistic, quantum and continuous computation}
+{hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation}
+{article.pdf}{ProveIt\_Diophantine\_Quantum\_Normalization.zip, quantum\_diophantine\_research.zip, ProveIt\_Diophantine\_Barriers.zip (batch~60)}
+{One fixed quartic represents the output law of every effective
+probabilistic or quantum program as masses of projected roots; exact
+normalization budgets with a unique-witness quartic certificate;
+normalized two-outcome probabilities are exactly the weakly computable
+reals, and conditional comparisons are $\Sigma^0_2$-complete.  Deciding
+whether a seven-outcome rational quantum instrument in dimension four has
+an impossible outcome word is undecidable (via Neary's matrix-mortality
+theorem), with bijective quartics for words of fixed length.  One rational
+piecewise-affine map of the cube realizes every disjoint pair of
+enumerable sets as exact acceptance and robust rejection, with quartic
+safety certificates for a computable critical-noise radius.  Merged from
+three manuscripts; not a Lean formalization.}
 
 \end{document}

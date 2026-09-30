@@ -13,8 +13,8 @@
   proves it real closed and the surcomplex numbers `No[i]` algebraically
   closed, constructs Conway's omnific integers inside `No` and proves their
   basic arithmetic (constant term, units, floor, integer roots, finite
-  quotients), and formalizes further results from 63 research reports on
-  `No`, `No[i]`, the omnific integers and related structures
+  quotients), and formalizes further results from its collection of 64
+  research reports on `No`, `No[i]`, the omnific integers and related structures
   ([`docs/`](SurrealNumbers/docs/README.md)). It is a self-contained Lake
   package (`lake --dir Algebra/SurrealNumbers build`) whose default build
   also runs an axiom audit; its [README](SurrealNumbers/README.md) and agent

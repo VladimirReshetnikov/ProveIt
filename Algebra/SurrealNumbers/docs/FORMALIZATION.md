@@ -15,8 +15,10 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The canonical inventory below identifies **63 main texts** with **4626**
-standard result environments. Counts cover
+The document map identifies **64 main texts**; the canonical inventory below
+indexes 63 of them, with **4626** standard result environments. The 64th,
+`surreal/polytopes-at-surreal-scales` (batches 58 and 59), arrived after this
+inventory and is not yet indexed or mapped. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
 claims. Counts are a navigation aid, **not a completeness certificate**.
@@ -987,7 +989,8 @@ cannot replace strong Hahn summability.
 custom environments are not included. A label inside a nested equation
 labels that equation, not the enclosing theorem or proposition; an
 environment without its own label is indexed by its source line.
-The inventory covers all 63 maintained main texts
+The inventory covers 63 of the 64 maintained main texts (all but
+`surreal/polytopes-at-surreal-scales`)
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in

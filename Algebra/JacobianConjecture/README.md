@@ -170,7 +170,10 @@ names the declarations here that it builds on.
   including integral targets with a preimage in every `Z_p^3` but none in
   `Z^3`, and the exact 2-adic fiber law `(21,7,3,1)/32`.  It also records
   that the fiber over the collision value `(0,-2,0)` contains a third
-  integral point, `(1,-2,8)`.
+  integral point, `(1,-2,8)`.  Its Part II (batch 58) shows that such
+  failures are Zariski dense in every plane `C = c ≠ 0`, hence in `A³`,
+  that `C = 0` has none, and counts the completely split ones:
+  `~ κ(c) T^{2/3}` in boxes `|A|, |B| ≤ T`.  Not formalized.
 - [`weighted-keller-rigidity`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/weighted-keller-rigidity/README.md):
   classifies, in every degree, the Keller maps of weights `(-1,1,2)` whose
   components are affine in `v = x^2 z` (with `r` affine in `(t,v)`, extended
