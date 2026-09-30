@@ -241,8 +241,18 @@ sound, and the final duration is
     t=r(m+k)+m+2, r>=1.                                 (13)
 
 All three physical rows occur, the first is00, and m,t are even. The scalar
-transport and strict joint bound still hold. Initial I need not be even
-in this binary corollary; no free parity repair is assumed.
+transport and strict joint bound still hold. If these binary physical symbols
+are packed in **radix3**, initial I need not be even. For native **radix2**
+packing, the fixed leading code bit0 makes I even automatically. In that
+case put W2=2^m, q2=2^t, x=I/2 and use the binary row indicators:
+
+    D2=F10, A2=F01, D2=2x+W2*A2,
+    F00+F01+F10=q2-1, F00 odd, all three fields positive.
+
+The [exact binary FIFO58 component](native_binary_three_row_fifo58.md) applies
+at this coded x, including its fixed first00 selector and full positive
+converse. Both radix2 and radix3 numerical trace identities are checked;
+changing packing radix does not change a physical controller transition.
 
 Thus three rows suffice for coded-input finite-control universality already
 on two symbols. For a two-symbol row system covering both possible read
@@ -262,7 +272,9 @@ It checks every reachable zero event against the source accepting state.
 Thirteen explicit accepting traces include initially accepting input and
 one, four and nine complete simulation cycles. Their exact transports,
 row positivity, first row, duration formula, parity and joint bounds are
-verified as integers.
+verified as integers. The three binary trace fixtures are additionally
+checked in radix2 against the native FIFO58 interface, including even input,
+positive fields, first-selector parity, geometry and the transport.
 
 These finite checks supplement the constructive proof. They are not an
 arithmetic controller certificate, an ordinary-input loader, a formalization,

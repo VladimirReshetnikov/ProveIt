@@ -222,9 +222,23 @@ def deterministic_trace(machine, word):
         H = sum(F.values())
         assert G % 2 == H % 2 == 0 and H == (q-1)//2
     assert all(v > 0 for v in F.values())
+    if machine.binary:
+        # The same physical trace also has a native radix-two FIFO. Its
+        # first physical digit is0, so ordinary I=2*x is exact here.
+        I2 = sum(a*2**j for j,a in enumerate(machine.encoded(word)))
+        W2,q2 = 2**m,2**len(trace)
+        F2 = {row:sum(2**j for j,edge in enumerate(trace) if edge==row)
+              for row in machine.rows}
+        A2,D2 = F2[0,1],F2[1,0]
+        assert I2 % 2 == 0 and 0 < I2 < W2
+        assert D2 == I2 + W2*A2 and D2+A2 < q2
+        assert sum(F2.values()) == q2-1 and F2[0,0] % 2 == 1
+        assert all(v > 0 for v in F2.values())
+        assert W2-I2 > 0 and q2//W2 > 0
     return dict(source_cells=len(word), binary_three_row=machine.binary, micro_width=m, cycles=cycles,
                 micro_steps=len(trace), each_row_positive=True,
-                even_width_and_time=True, scalar_joint_bound=True)
+                even_width_and_time=True, scalar_joint_bound=True,
+                native_radix2_fifo58_checked=machine.binary)
 
 
 def check():
@@ -288,6 +302,7 @@ def check():
         status='PASS_FOUR_ROW_FINITE_CONTROLLER_BLOCK_SIMULATOR',
         proof='four_row_queue_block_simulator.md',
         arithmetic_component='native_four_row_fifo66.md',
+        binary_arithmetic_component='native_binary_three_row_fifo58.md',
         physical_rows=sorted([list(row) for row in ROWS]),
         source_systems=systems, complete_graph_comparisons=comparisons,
         binary_three_row_comparisons=binary_comparisons,
