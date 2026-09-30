@@ -106,6 +106,18 @@ and block-locality for signed matching-support stability (Part VI); and the
 transversal matroid of a preorder, which determines it up to isomorphism
 (Part VII) — and the shifted Catalan Hankel polynomials gained Part V,
 collision-uniform expansions for roots meeting away from the endpoints.
+Batch 56 extended two: Cigler's Hankel polynomials gained a proof of the
+report's experimental rectangular-Schur formula, with exact minimal
+recurrences and a corrected reciprocity sign in Cigler's Conjecture 18
+(Cigler's Conjecture 16 parity report, Part II), and the open-query
+membership games gained exact filter-profile invariants for spaces with a
+finite nonempty derived set, answering Part II's attainment question there
+(Part III).  Batch 57 extended three: joint limits with a growing shift and a
+Catalan (Marchenko–Pastur) inverse-zero law (shifted Catalan Hankel
+polynomials, Part VI), a four-test radical-solvability criterion for
+irreducible sextics that needs no separating parameter (sextic
+block-resolvent separators, Part II), and exact alphabet-size criteria for
+concavity of product Tsallis entropy (two-coin counterexamples, Part III).
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

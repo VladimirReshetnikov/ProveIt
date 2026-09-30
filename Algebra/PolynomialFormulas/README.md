@@ -324,7 +324,10 @@ proves in writing that one of `t = 1, ..., 196` on the curve `(t, 2t^2)`
 separates the sextic pair and triple block-resolvent descriptors that
 `SexticSeparatingSearch.pairSeparatingCode` finds by unbounded `Nat.find`
 search.  The bound is not formalized; formalizing it would make that search
-bounded.
+bounded.  Its Part II (batch 57) shows that on the irreducible branch the
+decision needs no separating parameter at all: a triple-resolvent test at one
+parameter, or matching-resolvent tests at three distinct parameters, decide
+radical solvability.  Part II is not formalized either.
 
 ## Checking
 
