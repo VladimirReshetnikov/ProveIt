@@ -174,9 +174,10 @@ of an existing draft; semantic consolidation is deferred to the post-
   are not certificates; no Lean statement.
 - [`Polynomial_Geometric_Small_Deviations_Fabius_Jets/`](Polynomial_Geometric_Small_Deviations_Fabius_Jets/),
   *Polynomial–Geometric Small Deviations: A Corrected Fabius-Jet
-  Conjecture* (24-page A4 PDF, 1,139-line source, an mpmath/SciPy/SymPy
+  Conjecture* (25-page A4 PDF, 1,168-line source, an mpmath/SciPy/SymPy
   check program), filed on 2026-09-29 by a quick archival intake from the
-  repository-level `docs/incoming/` drop zone.  It shows that the jet
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  It shows that the jet
   small-ball conjecture `conj:jet-small-ball` of
   [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/)
   is false whenever `q ≠ 1/e`: the logarithm of the small-ball
@@ -190,7 +191,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   `q = 1/2`) the expansion is the one already machine-checked in
   `Analysis/FabiusFunction/Lean` (the corrected Lambert-phase and
   explicit "Wikipedia" forms of the small-argument asymptotic), which the
-  article does not cite.  Unreviewed; its numerics are not certificates;
+  article does not cite (an editorial note of 2026-09-29 now names them).  Unreviewed; its numerics are not certificates;
   no Lean statement for the general case.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
