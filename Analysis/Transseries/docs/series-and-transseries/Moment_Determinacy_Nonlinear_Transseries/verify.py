@@ -274,11 +274,17 @@ def run() -> dict:
 
 def main() -> None:
     parser=argparse.ArgumentParser()
-    parser.add_argument('--output',type=Path,default=Path('verification_results.json'))
+    # Editorial amendment (ProveIt, 2026-09-29): without --output, a run at a
+    # precision other than the recorded 130 digits writes
+    # verification_results_dps<N>.json instead of overwriting the recorded file.
+    parser.add_argument('--output',type=Path,default=None)
     parser.add_argument('--dps',type=int,default=130)
     args=parser.parse_args()
     if args.dps<115:
         parser.error('at least 115 digits are required for cancellation-sensitive gap tests')
+    if args.output is None:
+        args.output=Path('verification_results.json' if args.dps==130
+                         else f'verification_results_dps{args.dps}.json')
     mp.mp.dps=args.dps
     data=run()
     args.output.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')

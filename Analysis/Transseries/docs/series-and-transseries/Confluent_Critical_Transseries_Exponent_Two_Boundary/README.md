@@ -182,3 +182,21 @@ addition, ProveIt, 2026-09-29.]".
 - `README.md`: the retired checksum ledger is no longer listed; rerun
   behaviour and the Windows rerun documented; page count updated; this
   section.
+
+### Batch-51 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 51 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `Confluent_Critical_Transseries.tex`: an editorial note at Question 10
+  ("The lower endpoint"): partly answered, for the pure tail `j^(-2-eps)` on
+  the interior-fold side (couplings above `1/zeta(1+eps)`), by
+  `../Lower_Critical_Endpoint_Landau_Transseries/` (batch 51; a compensated
+  core uniform through `eps = 0`, and conditioning that couples a large
+  action to a doubly exponentially unlikely compensating fluctuation); the
+  boundary-critical side, where this article's coupling `c_eps = 1/zeta(alpha)`
+  lies, remains open. A new editorial bibliography entry `ed:lcl`, appended
+  last. The statement above that the lower endpoint is not covered by this
+  article stays true.
+- `Confluent_Critical_Transseries.pdf`: rebuilt (24 pages, unchanged; no
+  errors, undefined references, multiply defined labels or duplicate
+  destinations).

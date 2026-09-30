@@ -26,6 +26,9 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes added on filing (no numbering changes).
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \DeclareMathOperator{\Li}{Li}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Rea}{Re}
@@ -101,7 +104,8 @@ The \repo\ package \emph{Beyond Finite-Action Folds} studies positive
 countable-action equations with tail \(j^{-1-\alpha}\) for
 \(1<\alpha<2\). Its later editorial cross-references record work at the
 upper endpoint and explicitly leave the lower endpoint \(\alpha\to1\)
-unresolved \cite{repo-critical}. The present paper addresses the pure-tail
+% ed. (2026-09-29): repo-index added to this citation; the bibliography entry was otherwise never cited.
+unresolved \cite{repo-critical,repo-index}. The present paper addresses the pure-tail
 family
 \begin{equation}\label{eq:model}
  U_{\ep,c}(q)=c\sum_{j\ge1}\frac{q^j\ee^{jU_{\ep,c}(q)}}{j^{2+\ep}}
@@ -126,6 +130,28 @@ a very large positive jump must be compensated by an exceptionally
 unlikely negative fluctuation of the remaining centered cloud.
 That compensation changes the action-cutoff loss from an ordinary
 exponential tail into a doubly exponential one.
+
+% ed. (2026-09-29): two further open questions on the same endpoint, not cited in the delivered text (dossier of batch 51).
+\begin{ednote}
+The same lower endpoint is posed, independently, as Question~10 of the
+confluent package
+(\path{Confluent_Critical_Transseries_Exponent_Two_Boundary/Confluent_Critical_Transseries.tex},
+``The lower endpoint \(\alpha\downarrow1\)'': a compensated core, and
+whether conditioning couples the largest actions to the total) and as
+Question~8 of the logarithmic-endpoint package
+(\path{Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex}, ``The
+lower endpoint and loss of the mean'': a renormalized coupling, critical
+coordinate and action budget). Both were already in the repository at the
+commit this article was written against. For the pure tail on the
+interior-fold side, Theorem~\ref{thm:normal} supplies the compensated core
+and the coordinates \(\delta\) and \(\la=nA\delta\);
+Corollary~\ref{cor:budget} supplies the budget; and
+Theorem~\ref{thm:double} shows that conditioning couples a large action to
+a doubly exponentially unlikely compensating fluctuation. The
+boundary-critical side of both questions is not addressed here
+(Section~\ref{sec:future}). Paths are relative to
+\path{Analysis/Transseries/docs/series-and-transseries/}.
+\end{ednote}
 
 \subsection{What is inherited and what is established here}
 The substitution \(t=q\ee^U\), its Lagrange coefficient identity, and the
@@ -950,6 +976,28 @@ Using \(\Li_0(\ee^{-\delta})=(\ee^\delta-1)^{-1}\) and
 \(n\log(\rho/\rhob)=\la F_{0,\delta}(1)\) gives the second form.
 \end{proof}
 
+% ed. (2026-09-29): notation dictionary to the critical-Hahn article and the agreement checked on filing (dossier of batch 51).
+\begin{ednote}
+For \(\ep>0\) the model \eqref{eq:model} is the critical-Hahn article's
+\(U=\beta A(q\ee^U)\) \cite{repo-critical} with \(a=1\), no finite prefix,
+\(\beta=c\) and \(\alpha=1+\ep\); there \(A(t)=\Li_{2+\ep}(t)\) is the
+action generating function, not the amplitude \(A\) of \eqref{eq:A}. Its
+\(\beta_c=1/d_1\) is \(c_{\mathrm b}=1/\zeta(1+\ep)\), and its
+\(\rho_\beta=\ee^{-\beta d_0}\) is \(\rhob\). Its
+\(\delta_\beta=1-\beta d_1\) is a coupling mismatch, not the fold distance
+\(\delta\) used here. The exact fold of Proposition~\ref{prop:fold}
+reduces, as \(\delta\to0\) at fixed \(\ep\), to that article's
+emerging-fold law \texttt{eq:emerging-x}. The leading form
+\eqref{eq:gaussian}, read at fixed \(c\), has the shape of its
+supercritical law \texttt{eq:supercritical} (Theorem \texttt{thm:phases})
+with \(r_\beta=\rho\) and \(v_\beta=c\Li_\ep(\tau)\), here
+\(c\Li_0(\ee^{-\delta})\); that law is stated there for \(1<\alpha<2\)
+only. Its cutoff criterion
+\(M_n/n^{1/\alpha}\to\infty\) is at the boundary-critical coupling, whereas
+\(M\delta\to\infty\) of Corollary~\ref{cor:budget} is on the interior-fold
+side: different regimes, no conflict. This comparison is editorial.
+\end{ednote}
+
 \begin{corollary}[The first matching obstruction]\label{cor:matching}
 Under the hypotheses of Theorem~\ref{thm:gaussian},
 \begin{equation}\label{eq:matching-ratio}
@@ -1485,6 +1533,17 @@ explicit; for a slowly varying \(L\), the effective exponential scale
 can change. A useful target is a necessary-and-sufficient hypothesis
 under which the same Landau cutoff profile survives after normalization.
 No universality assertion for these modified models is made here.
+% ed. (2026-09-29): an interior counterpart filed later (batch 50), which this article could not see.
+\begin{ednote}
+At fixed \(1<\alpha<2\) the slowly varying tail
+\(a j^{-1-\alpha}\ell(j)\) is treated by a later sibling package,
+\path{Slowly_Varying_Action_Tails_Critical_Transseries/} (batch~50; its
+\texttt{thm:cutoff}, \texttt{thm:budget} and \texttt{cor:effective}),
+filed after this article was written. Its effective index
+\(\alpha-m/\log b_n\) for \((\log j)^m\) tails is the interior analogue of
+the question posed here; the limit \(\alpha\downarrow1\) is not treated
+there.
+\end{ednote}
 
 \subsection{The full hierarchy of Gaussian matching obstructions}
 Corollary~\ref{cor:matching} isolates the first threshold
@@ -1621,6 +1680,18 @@ those files. Numerical outputs can differ in their final digits across
 platforms. On a platform whose \texttt{longdouble} has insufficient
 exponent range, the recurrence program raises an explicit error rather
 than silently returning an underflowed probability.
+% ed. (2026-09-29): make_figures.py changed on filing so that a default run no longer overwrites recorded files.
+\begin{ednote}
+In the filed package \texttt{make\_figures.py} writes by default under
+\texttt{build/} (\texttt{build/figures/} and
+\texttt{build/data/figure\_curve.json}); only
+\mbox{\texttt{--output-dir .}} overwrites the shipped figures and
+\texttt{data/figure\_curve.json}. The recorded \texttt{data/} files and
+\texttt{data/run.log} come from a run with \texttt{--output data}. The
+build report mentioned below describes the delivered build; this PDF was
+rebuilt on filing with editorial notes, so its recorded digests of the
+source and PDF no longer apply.
+\end{ednote}
 
 The theorem proofs do not require the Python dependencies. The PDF can
 be rebuilt from the stored figures with a standard mathematical LaTeX

@@ -134,3 +134,17 @@ to the article text is marked in `article.tex` by a comment beginning
 - `README.md`: the rounding corrected; the quick-run and Windows rerun
   behaviour documented; the retired checksum ledger no longer listed; page
   count updated; this section.
+
+### Batch-51 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 51 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: an editorial note at Question 8 ("The lower endpoint and
+  loss of the mean"): partly answered, for the pure tail `j^(-2-eps)` on the
+  interior-fold side, by `../Lower_Critical_Endpoint_Landau_Transseries/`
+  (batch 51): the coupling parametrized by the exact fold distance `delta`,
+  the crossover variable `lambda = n A delta`, and the action budget
+  `M delta -> infinity`; the boundary-critical side, where `1/d_1` collapses,
+  remains open. A new editorial bibliography entry `ed:lcl`.
+- `article.pdf`: rebuilt (29 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).

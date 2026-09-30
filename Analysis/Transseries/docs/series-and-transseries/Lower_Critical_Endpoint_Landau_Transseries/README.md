@@ -1,7 +1,8 @@
 # Through the Lower Critical Endpoint
 ## Exponentially Coalescing Folds, Landau Transseries, and Conditional Action Budgets
 
-A 25-page research article prepared for Vladimir Reshetnikov, 29 September 2026.
+A 26-page research article (25 pages as delivered; see the amendments below)
+prepared for Vladimir Reshetnikov, 29 September 2026.
 
 ## Read
 
@@ -53,14 +54,20 @@ research directions, a proof-dependency audit, and source provenance.
 - `article.tex`, `article.pdf`: source and compiled article.
 - `figures/`: the two figures in PNG and PDF form.
 - `verify.py`: exact algebraic tests and numerical diagnostic driver.
-- `make_figures.py`: optional figure regeneration.
+- `make_figures.py`: optional figure regeneration (writes under `build/`
+  unless `--output-dir .` is given).
 - `data/verification_results.json`: complete recorded verification report.
-- `data/*.csv`, `data/figure_curve.json`, `data/run.log`: recorded data and log.
+- `data/*.csv`, `data/figure_curve.json`, `data/run.log`: recorded data and
+  the recorded standard output of the verification run.
 - `notes/provenance.json`: repository commit, inspected scope, and primary sources.
 - `notes/proof_status.md`: assumptions and limitations by result.
-- `notes/build_report.json`: compilation, rendering, and artifact hashes.
+- `notes/build_report.json`: compilation, rendering, and artifact hashes of
+  the delivered build.
 - `requirements.txt`, `build.sh`: reproduction aids.
-- `SHA256SUMS`: checksum ledger for the delivered package, excluding itself.
+
+The delivered checksum ledger `SHA256SUMS` was verified in full (21/21) on
+filing (batch 51) and not kept; the delivered archive remains in the
+repository history (see `docs/incoming/README.md`, batch 51 row).
 
 ## Build
 
@@ -88,10 +95,37 @@ python -m pip install -r requirements.txt
 python verify.py --output build/verification --max-n 2048
 ```
 
-The default output is also `build/verification`; it leaves recorded `data/`
-files unchanged. The original run used Python 3.13.5 with the pinned
-requirements. Optional `python make_figures.py` overwrites the figures and
-`data/figure_curve.json`, using the recorded verification report.
+The default output is also `build/verification` (relative to the working
+directory); it leaves recorded `data/` files unchanged. The original run
+used Python 3.13.5 with the pinned requirements. The recorded `data/` files
+and `data/run.log` come from a run with `--output data` (the last line of
+`data/run.log` is "Wrote data/verification_results.json"); the documented
+command writes under `build/`.
+
+Optional `python make_figures.py` regenerates the figures and
+`data/figure_curve.json` from the recorded verification report. Since the
+editorial amendment below it writes them under `build/` (`build/figures/`,
+`build/data/figure_curve.json`; relative `--output-dir` paths are resolved
+against the package root); only `python make_figures.py --output-dir .`
+overwrites the shipped figures and `data/figure_curve.json`, as the
+delivered script always did.
+
+The build report `notes/build_report.json` describes the delivered build:
+its digests of `article.tex` and `article.pdf` became stale when the source
+was amended and the PDF rebuilt on filing, and its
+`"rerun_json_and_csv_byte_identical": true` holds on the delivering (Linux)
+platform. On Windows, where NumPy `longdouble` is double precision, a rerun
+reproduces the recorded numbers only up to their last digits. A rerun on a
+copy on 2026-09-29 (Windows) passed all 43 exact assertions and the 24
+normal-form comparisons; the four CSVs and `verification_results.json`
+differed from the recorded files only in floating values: normalized
+coefficients and cutoff ratios agree to a relative 1.1e-13, and the small
+residuals computed from them (`relative_error_1`, `relative_error_2`, of
+size down to 1e-10) inherit that absolute noise; `figure_curve.json` agreed
+to a relative 5.2e-13. The exact results agree everywhere. At larger
+`--max-n` the explicit underflow error described below can fire there.
+Where bare `python` does not resolve (as on this Windows checkout), use `py`
+or `uv run --no-project --with-requirements requirements.txt python`.
 
 The supplied run passes **43 exact assertions** and **24 high-precision
 normal-form comparisons**. It records nine finite coefficient cases, nine
@@ -129,3 +163,51 @@ The inspection included the full critical-Hahn package README and the
 beginning of its article, plus selected project and package summaries. The
 long article's connector output was truncated. This package does not claim
 an exhaustive audit of the repository or its large canonical volume.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+These changes were made on filing, after the batch-51 delivery. Every change
+to the article text is marked in `article.tex` by a comment beginning
+`% ed. (2026-09-29)`; visible additions are headed "Editorial note (ProveIt,
+2026-09-29)".
+
+- `article.tex`:
+  - an unnumbered `ednote` environment for editorial notes (no numbering
+    changes);
+  - Section 1.1: the bibliography entry `repo-index`, previously never
+    cited, is cited beside `repo-critical`; an editorial note records that
+    the same lower endpoint is posed independently as Question 10 of the
+    confluent package
+    (`../Confluent_Critical_Transseries_Exponent_Two_Boundary/`) and
+    Question 8 of the logarithmic-endpoint package
+    (`../Logarithmic_Critical_Endpoint_Lambert_Charts/`), and that
+    Theorem 3.1, Corollary 8.2 and Theorem 9.2 answer both for the pure tail
+    on the interior-fold side only;
+  - after the proof of Theorem 7.1: an editorial notation dictionary to the
+    critical-Hahn article (`a = 1`, no prefix, `beta = c`,
+    `alpha = 1 + epsilon`; its `beta_c` is `c_b`, its `rho_beta` is `rho_0`,
+    its `A(t)` is the generating function `Li_(2+epsilon)(t)`, not the
+    amplitude `A`; its `delta_beta = 1 - beta d_1` is a coupling mismatch,
+    not the fold distance `delta` used here), with the agreement checked on
+    filing: the exact fold reduces to its `eq:emerging-x`, the Gaussian law
+    has the shape of its `eq:supercritical`, and its cutoff criterion is in
+    a different regime;
+  - Section 11.5: an editorial note that the slowly varying tail at fixed
+    `1 < alpha < 2` is treated by the later package
+    `../Slowly_Varying_Action_Tails_Critical_Transseries/` (batch 50), which
+    this article could not see;
+  - Section 12.4: an editorial note on the changed default of
+    `make_figures.py`, the `--output data` origin of the recorded `data/`
+    files, and the stale digests of the build report.
+- `article.pdf`: rebuilt from the amended source (26 pages; the delivered PDF
+  had 25; no errors, undefined references, multiply defined labels or
+  duplicate destinations; no Type 3 fonts).
+- `make_figures.py`: new option `--output-dir` (default `build`, resolved
+  against the package root); only `--output-dir .` overwrites the shipped
+  figures and `data/figure_curve.json`. A default run on a copy left every
+  recorded file untouched; `--output-dir .` rewrote them as before.
+- `notes/build_report.json`: not edited; it describes the delivered build
+  (see "Reproduce the checks").
+- `README.md`: the retired checksum ledger is no longer listed; the origin
+  of `data/run.log`, the scope of the build report and the Windows rerun
+  are documented; the page count is updated; this section.

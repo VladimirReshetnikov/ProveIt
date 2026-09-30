@@ -29,6 +29,9 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes added on filing (no numbering changes).
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -126,6 +129,35 @@ Here the support is that of a \emph{positive Stieltjes moment problem};
 we do not construct a realization of every left-finite Hahn series.
 The positive measure is the additional structure, and moment
 determinacy is exactly the extra condition that restores identifiability.
+
+% ed. (2026-09-29): repository results on the determinate side, and two notational links, not cited in the delivered text (dossier of batch 51).
+\begin{ednote}
+Two filed repository results lie on the determinate side of
+Theorem~\ref{thm:identifiability}. The canonical volume \cite{ed:tai}
+(its Theorem \texttt{p8:thm:bell}) writes the tail
+\(C(x)=\ee^{-1}\sum_{j\ge0}1/(j!\,(x+j+1))\) as a Stieltjes transform
+whose moments are the Bell numbers, with a signed remainder. In the
+present notation \(C(x)=x^{-1}S_\mu(1/x)\) for the probability measure
+\(\mu=\sum_{j\ge0}\delta_{j+1}/(\ee\,j!)\), with moments
+\(m_n=\mathfrak B_{n+1}\le(n+1)!\), of Gevrey order at most one; so
+Lemma~\ref{lem:hardy} makes that representation the only positive one,
+and by Theorem~\ref{thm:identifiability} the corresponding inverse has
+exactly one positive Stieltjes realization. The certified \(q\to1\)
+package \cite{ed:ciq} (its \texttt{thm:stieltjes} and \texttt{thm:pade})
+writes a finite-size correction as \(\int\dd\nu_\tau(u)/(1+su)\) with a
+positive measure whose moments are bounded by \(CA^{2j}(2j)!\), that is,
+of factorial-square growth, the boundary case \(s=2\) of
+Theorem~\ref{thm:gevrey}; it proves determinacy by the argument of
+Lemma~\ref{lem:hardy} and adds two-sided Pad\'e bounds. The
+inverse-digamma package \cite{ed:ids} has a Stieltjes-type representation
+only modulo a convergent Laurent function, outside the class used here.
+The word \emph{realization} in this article means a positive Stieltjes
+representation of the inverse germ at \(y\downarrow0\), not the
+Hardy-field sense of the canonical volume's
+Definition~\texttt{plt:def:cmp-realization}. The limit
+\(v_0=-W_0(-\kappa)\) of \eqref{eq:lambert-limit} is that volume's Cayley
+tree function (\texttt{p1:def:cayley}). This note is editorial.
+\end{ednote}
 
 \subsection{The main results in one place}
 Let \(m_n=\int\lambda^n\dd\mu\), \(m_0=1\), and write the formal inverse as
@@ -1627,6 +1659,20 @@ not certify these arguments. This report supplies no Lean source and
 makes no claim that those dependencies have already been formalized in
 the required form. The finite Python checks likewise are not a substitute
 for a proof assistant.
+% ed. (2026-09-29): the modules alluded to are named, with two related machine-checked facts (dossier of batch 51).
+\begin{ednote}
+The modules meant are
+\path{Analysis/Transseries/Lean/Transseries/TransseriesFlat.lean},
+\path{TransseriesWellBased.lean} and \path{TransseriesScale.lean} in the
+same directory. Two machine-checked facts are related but not relied on:
+\texttt{Fabius.exists\_eq\_in\_residual\_interval}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean}),
+the monotone residual bracket behind \eqref{eq:residual} in
+Proposition~\ref{prop:inverse}, and \texttt{Fabius.cayleyTree}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/CayleyTreeFunction.lean}),
+the real function \(-W_0(-w)\) for \(w\le\ee^{-1}\), without its power
+series. No statement of this article is formalized.
+\end{ednote}
 
 \section{Further research questions}
 \label{sec:questions}
@@ -1835,5 +1881,25 @@ L'Enseignement Math\'ematique \textbf{70} (2024), 251--282.
 F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical
 Functions}, Chapter 17, especially Section 17.8, Jacobi's triple product.
 \url{https://dlmf.nist.gov/17.8}. Consulted 29 September 2026.
+
+% ed. (2026-09-29): the three entries below are editorial additions for the editorial note in Section 1.1.
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Transseries: the polynomial-logarithmic calculus, series reversal at
+infinity, and inversion}, the canonical volume of the series-and-transseries
+group:
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+
+\bibitem{ed:ciq}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Certified Inversion Through the \(q\)-to-1 Transition}, research
+package filed in batch~46:
+\path{Analysis/Transseries/docs/series-and-transseries/Certified_Inversion_q_to_1_Transition/q_transition.tex}.
+
+\bibitem{ed:ids}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{A Spectral Representation for the Inverse Digamma Function}, research
+package filed in batch~46:
+\path{Analysis/Transseries/docs/series-and-transseries/Inverse_Digamma_Spectral_Representation/inverse_digamma_spectral.tex}.
 \end{thebibliography}
 \end{document}

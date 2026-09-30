@@ -118,8 +118,9 @@ to the article text is marked in `article.tex` by a comment beginning
     normalization; Question 7 answered there, Questions 1 and 2 in part), and
     for the joint limit `alpha_n -> 2` of Question 4 the confluent and
     stable–Gaussian packages (independent, agreeing term by term). The lower
-    endpoint `alpha -> 1` stays open, and no answer is marked beyond what was
-    checked;
+    endpoint `alpha -> 1` was left open there (it is answered on the
+    interior-fold side only by batch 51; see below), and no answer is marked
+    beyond what was checked;
   - four editorial bibliography entries (`ed:lce`, `ed:mct`, `ed:cct`,
     `ed:sge`) for those packages.
 - `article.pdf`: rebuilt from the amended source (25 pages; the delivered
@@ -142,5 +143,21 @@ Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comm
   profile and budget for every slowly varying `l`, with the `Gamma(-alpha)`
   normalization dictionary; a counterexample to the Hahn grid; a convergent
   Lambert chart and an effective-index expansion for `(log j)^m`).
+- `article.pdf`: rebuilt (25 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).
+
+### Batch-51 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 51 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: the editorial note at Question 4 gains two sentences: the
+  lower endpoint `alpha -> 1` is partly answered, on the interior-fold side
+  only (couplings `beta > beta_c`, pure tail `a_j = j^(-2-eps)`), by
+  `../Lower_Critical_Endpoint_Landau_Transseries/` (batch 51; a confluent
+  normal form uniform through `eps = 0`, a Landau coefficient profile, the
+  budget `M delta -> infinity` in its fold distance `delta`, which is not
+  this article's `delta_beta`, and a doubly exponential cutoff loss); the
+  boundary-critical and subcritical paths `beta <= beta_c` stay open. A new
+  editorial bibliography entry `ed:lcl`.
 - `article.pdf`: rebuilt (25 pages, unchanged; no errors, undefined
   references, multiply defined labels or duplicate destinations).
