@@ -8,15 +8,17 @@
 > with20 positive witnesses and nine equations.
 >
 > The current single-polynomial frontier is **89=48M+41A**, with19 positive
-> witnesses and exact degree166: see [the eight-factor proof](complete75_norm_product89.md).
+> witnesses and exact degree160: see [the reversed auxiliary proof](complete75_reversed_auxiliary89.md).
 > It builds on the [bounded projection99](complete75_bounded_projection_elimination99.md),
 > [norm product91](complete75_norm_product91.md), and
 > [shifted transport90](complete75_norm_product90.md). The proofs recover
 > auxiliary signs and the original positive quotient in a specific order;
 > do not assume intermediate computed coordinates are positive off the zero set.
-> Lower-degree alternatives are96/degree84,94/degree96,93/degree136,
-> and92/degree138. Preserve the strong auxiliary norm and the exact linear
-> root. The comparison bound75 and polynomial bound89 are separate measures.
+> The [retained-auxiliary partitions](complete75_auxiliary_degree_tradeoffs.md)
+> improve the lower-degree alternatives to93/degree128 and92/degree136;
+> the96/degree84 and94/degree96 options remain. Preserve the strong auxiliary
+> norm and the exact linear root. The comparison bound75 and polynomial
+> bound89 are separate measures.
 >
 > The README indexes the four-row queue simulator, binaryFIFO58 and
 > ternaryFIFO66, row-local controller obstruction, residue-affine pumping,
@@ -41,24 +43,58 @@
 > N=2^(H+1)-1 and a paid2N positive basis loader. A
 > [typed prefix merge](typed_prefix_normal_form_merge25.md) costs25 operations,
 > four auxiliary witnesses and seven equations. Fixed trees cost25(t-1);
-> output typing is proved, while arbitrary leaf typing and word/tree selection,
-> empty tests, synchronized control and arbitrary duration remain unpaid.
+> output typing is proved. The [singleton extension](typed_prefix_singleton_merge31.md)
+> costs31 and supplies exact binary empty tests plus a typed ordinary-input
+> endpoint in two affine operations. Fixed flags admit cheaper schedules.
+> Variable leaf selection, synchronized control and arbitrary duration
+> remain unpaid.
 >
 > Next targets are below75 comparisons or below89 polynomial operations,
 > with degree and positivity counted. These are reviewed mathematical
 > proofs with exact source audits, not Lean formalizations.
 
-One concrete **unverified next proposal** extends the typed prefix merge
-with cone/singleton domain flags. For input flags F,G in{0,1}, the local
-orientation e and tail code T suggest adding `F*e*(T-1)=0` and
-`G*(1-e)*(T-1)=0`, with output flag `F+G-FG`. Reusing the existing selected
-tail registers and storing flags positively as1+F suggests a33-operation
-merge with ten equations. This would admit a binary empty-test leaf;
-it still needs a full proof, literal source and independent review.
-Also check whether a typed root's conditions V=1 and U=kappa*x+lambda
-pay the ordinary-input endpoint directly, since root typing already
-supplies its domain length power. No uniform selected-word/tree compiler
-has been supplied by either proposal.
+The previous cone/singleton proposal is now implemented and proved in
+merge31: positive flags avoid their two explicit decodings. Its root
+condition V=1,U=kappa*x+lambda uses the root's already proved power typing.
+Keep the fixed-word and uniform-history scopes separate. Precomputed
+subtree flags are legitimate only when the leaf flags are source constants;
+variable selected branches need a paid replacement. The next substantive
+history task is a uniform synchronized selected-word/tree certificate,
+rather than another unchecked input or empty-test conversion.
+
+For algebraic work, the strong factor1+T^2-K cannot be-1 modulo4, so any
+integer product zero forces T^2=K before substitutions. The one-gate
+[degree162 reduction](complete75_strong_reduction89.md) preserves even the
+full integer zero set. The degree160 successor also uses V=of-c and reverses
+the linear unit; keeping the old orientation admits a formal kernel sign
+collision. Preserve the strengthened R+2 bounds and the order of index
+recovery when attempting further rewrites.
+
+A separate **unverified group-membership lead** may provide an ordinary-input
+matrix substrate. For an r.e. set S, investigate
+`G_S=<a,b,c | [b^(-n)*a*b^n,c]=1 for n in S>`. A proposed exact converse
+uses the semidirect product of the graph group on a_i,c_j with commutation
+edges i-j in S, shifted simultaneously by b. For a missing edge, retract
+onto the two corresponding free generators to keep their commutator
+nontrivial. This still needs a complete presentation/isomorphism proof.
+
+Then investigate a finite-presentation embedding and the diagonal fibre
+subgroup M(H) in a product of free groups. Relevant primary starting points
+are [Mikaelian's Higman proof](https://arxiv.org/abs/1908.10153) and
+[Bogopolski--Ventura, Section1](https://arxiv.org/pdf/0810.0690): the former
+states the recursively-presented embedding theorem, and the latter gives
+M(H)={(u,v):u=v in H}, generated by diagonal generators and relator pairs.
+Check effectivity and preserve named a,b,c by presentation changes.
+
+The proposed matrix input is the commutator of B^(-x)*A*B^x with a fixed C,
+where B is unipotent and the ambient free generators have a faithful fixed
+integer-matrix representation. Its entries may then be fixed polynomials
+of degree at most4 in ordinary x. Prove the free embedding with B among
+the basis images and count this loader explicitly. A plain power B^x alone
+cannot encode an arbitrary set by subgroup membership: its preimage is a
+subgroup of the integers. Even if the commutator route works, certification
+of an arbitrary product of the fixed subgroup generators remains unpaid.
+No matrix universality theorem or new Diophantine bound is claimed here.
 
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.

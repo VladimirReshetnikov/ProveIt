@@ -40,14 +40,23 @@ The [shifted transport product](complete75_norm_product90.md) gives
 **90=49M+41A**, with19 positive witnesses and degree276. Its separate
 partitions improve the smaller-degree options to **96 operations at
 degree84**, **94 at degree96**, and **92 at degree138**. The earlier
-93/degree136 option remains a distinct tradeoff.
+93/degree136 option was a distinct tradeoff before the substitutions below.
 
-The latest [eight-factor unit product](complete75_norm_product89.md) gives
+The [eight-factor unit product](complete75_norm_product89.md) gives
 **89=48M+41A**, with the same **19 positive witnesses** and exact degree
 **166**. A residue obstruction and a folded Pell-sequence gap exclude
 negative auxiliary units before the shifted-transport index proof is used.
 One unsquared product minus one is the entire polynomial; its single
 comparison certificate costs88. The separate comparison bound remains75.
+
+The [strong-unit substitution](complete75_strong_reduction89.md) lowers
+that polynomial's degree to162 with one gate change. The latest
+[reversed auxiliary product](complete75_reversed_auxiliary89.md) gives
+**89=48M+41A at exact degree160**, retaining19 positive witnesses and
+identical positive solution sets. A displaced Pell-index argument excludes
+the new unit signs. The [retained-auxiliary partitions](complete75_auxiliary_degree_tradeoffs.md)
+give **93 operations at degree128** and **92 at degree136**. Together
+with96/degree84 and94/degree96, these are the current displayed tradeoffs.
 
 The original30-witness source remains the reference for the full compiler
 and Pell proof. Earlier [107](complete75_positive_elimination.md),
@@ -61,8 +70,8 @@ The positive-elimination, packing-bound, shared- and signed-projection, norm-pro
 binary and ternary FIFO, finite-control simulator, row-window obstruction,
 nonabsorbing read-only, fixed-idle and odd-controller orbit analyses,
 factored counter steps, two-stack scalar steps and affine loading, typed
-polycyclic histories, linear-encoding bounds and typed prefix merges, residue-affine,
-controlled read-functional queue, PCP/matrix trace,
+polycyclic histories, linear-encoding bounds, typed prefix and singleton
+merges, residue-affine, controlled read-functional queue, PCP/matrix trace,
 and six constant-deletion packets have independent scoped proof and source
 review passes. Their checkers retain exact operation ledgers and distinguish
 finite experiments from the mathematical proofs. The complete75 checker
@@ -101,7 +110,9 @@ using eight witnesses and seven equations. Fixed-duration costs are explicit.
 Typed prefix maps retain stack guards that direct inverse-group products
 lose; exact bounded-depth linear actions need dimension2^(H+1)-1. Typed
 prefix normal forms instead admit an exact25-operation local merge, with
-output typing proved and fixed-tree costs counted. Leaf typing, empty tests,
+output typing proved and fixed-tree costs counted. A31-operation extension
+retains singleton domains and exact binary empty tests. Its typed root
+supports the two-operation ordinary-input endpoint. Variable leaf selection,
 shared control and a uniform certificate for arbitrary duration remain unpaid.
 Direct kernel work must
 preserve the norm units, first-index parity, and bounded odd input index;
@@ -125,6 +136,9 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Reversed auxiliary universal product](complete75_reversed_auxiliary89.md) | **89=48M+41A**,19 positive witnesses and exact degree160. Three gate changes preserve the positive solution set through a displaced Pell-index sign proof. | The comparison system remains88 with one equation;75 is still the comparison frontier. No operation-count or formalization improvement is claimed. |
+| [Retained-auxiliary degree tradeoffs](complete75_auxiliary_degree_tradeoffs.md) | **93/degree128** and **92/degree136**, each with19 positive witnesses. Two gate changes and regrouping lower degree with exact original-source correction identities. | The full strong and linear auxiliary comparisons remain paid. Two-group optimality is scoped to these fixed factors and circuits. |
+| [Strong-unit polynomial reduction](complete75_strong_reduction89.md) | One gate change gives **89 operations at degree162**. The strong unit forces its residual to vanish, proving equality of the integer zero sets before positivity restrictions. | Intermediate step toward89/degree160; the polynomials generally differ away from their zero sets. |
 | [Eight-factor universal polynomial](complete75_norm_product89.md) | **89=48M+41A**,19 positive witnesses and exact degree166. Auxiliary-unit sign recovery lets all eight equations share one unsquared product polynomial. | Underlying88-operation system has one comparison;75 remains the comparison bound. The proof retains the strong auxiliary norm and recovers the linear root before the index argument. |
 | [Shifted transport unit](complete75_norm_product90.md) | **90=49M+41A**,19 positive witnesses and degree276; explicit partitions give96/degree84,94/degree96,92/degree138. | The negative index branch needs a separate Pell proof after a C>=0 packing bootstrap. The lower-degree partitions keep index and transport units separate. |
 | [Integer norms and the index factor](complete75_norm_product91.md) | **91=49M+42A**,19 positive witnesses and degree266. Negative-Pell descents make the product exactly restore four norms and the index equation. Grouped variants attain97/degree84,95/degree96, and93/degree136. | Underlying80-operation system has four equations;75 remains the comparison bound. Partition optimality is limited to this five-factor construction. No weak auxiliary-norm substitution or general optimality claim. |
@@ -136,7 +150,8 @@ New research and the completed75-operation construction:
 | [Factored residue-affine counter steps](residue_affine_factored_counter_step.md) | Generic scalar graph **4b+3**, shortcut-Collatz graph7, and exact counter-program graph **10B+8** in the number of instruction branches, with paid zero/decrement guards. Explicit nonunit maps escape the prior pumping hypotheses. | The universal simulation uses a stated prime-power input code. Ordinary-input loading and finite iteration remain unpaid; the executable counter fixture is nonuniversal. |
 | [Factored two-stack read selectors](two_stack_factored_selector_step.md) | Exact scalar step **8B+18**, eight positive witnesses and seven equations for a full B=9K table. One step as a polynomial costs8B+38. The affine ordinary-input loader still costs two operations. | Fixed-t unrolling costs2+t(8B+18), with10t-2 witnesses; one polynomial costs(8B+39)t+1. Uniform variable-duration history remains unpaid. |
 | [Typed histories and linear stack encodings](two_stack_polycyclic_history_obstruction.md) | Exact synchronized two-Dyck-word contract; direct inverse-group products lose mismatch guards. Sharp depth-H linear dimensionN=2^(H+1)-1, with a paid2N positive basis loader and fixed-word polynomialN(3t+2)+5. | Dimension and word length are source constants. This does not exclude auxiliary-word group constructions or nonlinear encodings, or provide existential action selection. |
-| [Typed prefix-normal-form composition](typed_prefix_normal_form_merge25.md) | Exact nonzero local composition in **25=10M+15A**, four positive auxiliary witnesses and seven equations; one polynomial costs45. Fixed trees with t leaves cost25(t-1), or46t-47 as one polynomial. | The four input length powers and code bounds are external; output typing is proved. Arbitrary word/tree selection, empty tests, ordinary-input loading and synchronized control remain unpaid. |
+| [Singleton domains and binary empty tests](typed_prefix_singleton_merge31.md) | Exact local merge **31=13M+18A**, four positive auxiliary witnesses and ten equations; one polynomial costs60. Typed roots admit ordinary-input-to-empty endpoints with a two-operation affine loader. | Input descriptors must be typed. Fixed-tree and fixed-flag ledgers are complete, but variable branch selection, shared control and uniform tree geometry remain unpaid. |
+| [Typed prefix-normal-form composition](typed_prefix_normal_form_merge25.md) | Exact nonzero local composition in **25=10M+15A**, four positive auxiliary witnesses and seven equations; one polynomial costs45. Fixed trees with t leaves cost25(t-1), or46t-47 as one polynomial. | The four input length powers and code bounds are external; output typing is proved. This cone-only interface is extended by merge31 to handle empty tests and a typed ordinary-input endpoint; uniform selection and synchronized control remain unpaid. |
 | [Two stacks and an affine ordinary-input loader](two_stack_affine_input_step.md) | Exact positive one-step graph **16B-3**, four witnesses and five equations; a fixed program prefix costs **1M+1A** on ordinary input x. For fixed t, full unrolling costs2+t(16B-3), with6t-2 witnesses; one polynomial costs(16B+12)t+1. | The generic two-stack simulation is universal, while the executable fixture is an input decoder. The varying-duration history certificate remains unpaid. The factored selector successor trades more witnesses for fewer operations. |
 | [Shared positive projections](complete75_gamma_dominance_elimination102.md) | A positive quotient difference restores the input Pell-index gap, giving **102=50M+52A**,20 witnesses and degree84. At the original75 comparison count it gives21 witnesses, ten equations and a104-operation polynomial. | The102 polynomial starts from a76-operation comparison system. Conditional witness positivity is proved on the zero set; no complete certificate below75 is claimed. |
 | [Stronger bound and one polynomial](complete75_bounded_packing_elimination105.md) | Canonical compiler bounds permit conditional elimination of the packed index, giving a degree-84 polynomial in **105=51M+54A** with21 positive witnesses. | The comparison system costs76 with ten equations; the established comparison bound remains75. |
@@ -234,6 +249,9 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_norm_product91.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_norm_product90.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_norm_product89.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_strong_reduction89.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_reversed_auxiliary89.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_four_row_fifo66.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_binary_three_row_fifo58.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/binary_nonabsorbing_cone_and_read_only.py
@@ -247,6 +265,7 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/two_stack_factored_selector_step.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/two_stack_polycyclic_history_obstruction.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/typed_prefix_normal_form_merge25.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/typed_prefix_singleton_merge31.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_read_functional_controller_regular.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix_pcp_trace.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_constant_deletion_obstructions.py

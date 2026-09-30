@@ -14,6 +14,12 @@ can be completely accounted for, but a variable action word, its tree
 geometry, finite control, input loading and empty tests are not supplied
 by this packet. No complete universal bound is improved.
 
+The [singleton-domain extension](typed_prefix_singleton_merge31.md)
+adds exact binary empty tests in31 local operations. A root typed by
+that composition tree also admits a paid ordinary-input-to-empty endpoint.
+Its fixed-word and fixed-flag schedules keep uniform branch selection,
+control and tree geometry as separate remaining costs.
+
 ## 1. The typed input and output interfaces
 
 Write binary words top first and define

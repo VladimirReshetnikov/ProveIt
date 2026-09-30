@@ -22,13 +22,22 @@ is266 and its underlying four-equation system costs80. Grouped variants
 give97 operations at degree84,95 at degree96, and93 at degree136.
 The [shifted transport product](../research-wip/native-stream-queue/complete75_norm_product90.md)
 then gives90 operations at degree276 and the separate96/degree84,
-94/degree96 and92/degree138 variants. The latest
+94/degree96 and92/degree138 variants. The
 [eight-factor product](../research-wip/native-stream-queue/complete75_norm_product89.md)
-gives **89=48M+41A**, with19 positive witnesses and exact degree166.
+first gives **89=48M+41A**, with19 positive witnesses and exact degree166.
 A folded Pell-sequence residue gap restores the auxiliary linear equation
 before the shifted-index proof applies. All eight units can therefore
 share one unsquared product minus one. Its comparison circuit costs88,
-so75 remains the comparison frontier;93/degree136 remains a degree tradeoff.
+so75 remains the comparison frontier.
+The [strong-unit substitution](../research-wip/native-stream-queue/complete75_strong_reduction89.md)
+lowers degree166 to162 at the same cost. The latest
+[reversed auxiliary product](../research-wip/native-stream-queue/complete75_reversed_auxiliary89.md)
+gives **89 operations at exact degree160**, retaining all19 coordinates
+and their positive solution set. A displaced Pell-index proof excludes
+the added sign branches. The
+[retained-auxiliary partitions](../research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
+improve the other options to93/degree128 and92/degree136;96/degree84 and
+94/degree96 remain available.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
@@ -71,8 +80,12 @@ actions need dimensionN=2^(H+1)-1; the paid positive basis loader costs2N.
 The [typed prefix merge](../research-wip/native-stream-queue/typed_prefix_normal_form_merge25.md)
 instead gives exact nonzero composition in25 operations with four positive
 auxiliary witnesses and seven equations. It proves output typing from
-typed inputs and accounts for every fixed composition tree. Leaf typing,
-empty tests, synchronized action selection and a uniform varying-duration
+typed inputs and accounts for every fixed composition tree. Its
+[singleton-domain extension](../research-wip/native-stream-queue/typed_prefix_singleton_merge31.md)
+costs31 operations and handles binary empty tests exactly. Typed roots
+support ordinary-input-to-empty endpoints with the two-operation loader;
+fixed leaf flags allow cheaper explicitly counted schedules. Variable
+leaf selection, synchronized control and a uniform varying-duration
 history certificate remain unpaid. The
 executable decoder fixture is distinguished from the generic universal
 two-stack simulation.

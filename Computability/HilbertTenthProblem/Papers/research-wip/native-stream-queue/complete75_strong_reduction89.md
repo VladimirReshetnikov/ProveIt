@@ -8,6 +8,12 @@ restricting the supplied coordinates to be positive. Thus the full
 ordinary-input universality theorem and fixed compiler numerals carry over.
 The best comparison-certificate bound remains75.
 
+The [reversed auxiliary successor](complete75_reversed_auxiliary89.md)
+also changes the auxiliary root and linear-unit sign, attaining degree160
+at the same89 operations. Its proof preserves positive solution sets;
+the single substitution here has the stronger integer-zero-set
+equivalence established below.
+
 This is a degree improvement, not an operation-count improvement. It uses
 the already computed strong auxiliary expression in one more place; no
 equation or positivity condition is deleted.
@@ -153,6 +159,10 @@ An independent final proof/source/default review passed without findings.
 It also checked256 signed full-polynomial difference identities using
 direct K,T,U formulas, the89-operation histogram, and a separate weighted,
 offset degree162 specialization at B=128,d=7 with the coefficient(8).
+A second independent proof/source/default review also passed, with512
+original19 corrected-product identities, including four negative computed
+mu values and175 zero restored quotients, and three weighted, offset
+degree162 leading-form checks.
 
 No real-zero equivalence, global arithmetic optimum, or proof-assistant
 formalization is claimed.

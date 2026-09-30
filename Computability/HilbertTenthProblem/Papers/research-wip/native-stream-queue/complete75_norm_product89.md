@@ -15,6 +15,13 @@ the output polynomial; no square is needed. This improves both the operation
 count and degree of90/degree276. The smaller-degree96/84 and94/96 constructions
 remain different tradeoffs.
 
+The [strong-unit substitution](complete75_strong_reduction89.md) lowers
+the degree to162 at the same89 operations. The later
+[reversed auxiliary construction](complete75_reversed_auxiliary89.md)
+gives degree160, still with19 positive witnesses and the identical positive
+solution set. The [retained-auxiliary partitions](complete75_auxiliary_degree_tradeoffs.md)
+give93/degree128 and92/degree136 as additional lower-degree options.
+
 ## 1. Coordinates, fixed numerals, and literal factors
 
 Keep all fixed compiler numerals and conventions of90: B>=16, positive

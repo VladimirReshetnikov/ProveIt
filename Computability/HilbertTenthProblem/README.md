@@ -63,16 +63,16 @@ universal Diophantine equations by James P. Jones and coauthors:
   costs **99=49M+50A**, with **19 positive witnesses** and degree84.
   Its comparison system costs76 with eight equations; a proved canonical
   compiler margin preserves the same accepted ordinary inputs.
-  The latest [eight-factor unit product](Papers/research-wip/native-stream-queue/complete75_norm_product89.md)
+  The latest [reversed auxiliary product](Papers/research-wip/native-stream-queue/complete75_reversed_auxiliary89.md)
   lowers the polynomial to **89=48M+41A**, with the same19 positive
-  witnesses and exact degree166. Integer norm descents, a folded Pell
-  residue gap and shifted-transport index recovery justify one unsquared
-  product minus one; its single-comparison system costs88.
+  witnesses and exact degree160. Integer unit obstructions and a displaced
+  Pell-index argument justify one unsquared product minus one; its
+  single-comparison system costs88.
   The [six-factor partitions](Papers/research-wip/native-stream-queue/complete75_norm_product90.md)
-  give **96 operations at degree84**, **94 at degree96**, and **92 at
-  degree138**. The earlier [93/degree136 option](Papers/research-wip/native-stream-queue/complete75_norm_product91.md)
-  remains a separate tradeoff. The75 comparison and89 polynomial bounds
-  are distinct.
+  give **96 operations at degree84** and **94 at degree96**. The
+  [reduced auxiliary partitions](Papers/research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
+  improve the remaining options to **93 at degree128** and **92 at degree136**.
+  The75 comparison and89 polynomial bounds are distinct.
   These optimized results are not yet Lean formalized.
 
 ## Building and checking

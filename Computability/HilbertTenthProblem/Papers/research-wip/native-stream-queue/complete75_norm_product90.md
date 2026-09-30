@@ -20,6 +20,10 @@ not equality of the old and new polynomials away from zero.
 The [eight-factor successor](complete75_norm_product89.md) merges the two
 remaining equations and uses an unsquared product, giving89 operations
 at degree166. The lower-degree partitions here remain separate options.
+The later [reversed auxiliary product](complete75_reversed_auxiliary89.md)
+lowers that89-operation degree to160. The
+[retained-auxiliary partitions](complete75_auxiliary_degree_tradeoffs.md)
+give93/degree128 and improve this packet's92/degree138 to92/degree136.
 
 ## 1. Definitions and the new transport coordinate
 

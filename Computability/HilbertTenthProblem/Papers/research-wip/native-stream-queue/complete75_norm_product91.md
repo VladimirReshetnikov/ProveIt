@@ -18,7 +18,10 @@ The [shifted transport successor](complete75_norm_product90.md) gives
 90 operations and improves the degree84 and96 options to96 and94
 operations. Its [eight-factor successor](complete75_norm_product89.md)
 gives89 operations at degree166. The93/degree136 option below remains
-a distinct degree/cost tradeoff.
+a distinct degree/cost tradeoff in that family. The newer
+[retained-auxiliary partitions](complete75_auxiliary_degree_tradeoffs.md)
+improve that option to93/degree128 and also give92/degree136; the
+[reversed auxiliary product](complete75_reversed_auxiliary89.md) gives89/degree160.
 
 ## 1. Two elementary signed negative-unit obstructions
 
