@@ -36,6 +36,12 @@ New research, without a change to the complete universal bound:
 | [Cyclic NAE/majority](native_controller_nae_majority60.md) | Exact **60=33M+27A** relation for two rotations and a not-all-equal gate with majority output, at even length. The [61 reference](native_controller_nae_majority61.md) also proves a conditional spectral restriction; the [67 source](native_controller_nae_majority67.md) permits either length parity. | This finite gate relation has no universal simulation or ordinary-input/acceptance compiler. |
 | [Dual-rail ordinary-input FIFO](native_dualrail_fifo64.md) | Exact **64=33M+31A** typed FIFO initialized by ordinary `6x`, deriving field bounds from three aggregate bounds. General carry control costs nine more operations, giving73. The [65 reference](native_dualrail_fifo67.md) is retained. | The FIFO alone admits all inputs; no universal controller or accepting compiler is supplied. |
 | [Joint-bounded FIFO](native_dualrail_fifo63.md) | Exact **63=33M+30A** FIFO with ordinary `6x` and `A+D<q`; the proof excludes packed overflow as well as field carries. General and equal-endpoint carry architectures cost **72** and **71**. | Controller padding must respect the joint bound. Neither architecture has a universal compiler; the complete bound remains76. |
+| [Binary and ternary power geometry](pell_kernel_power_two43.md) | Exact positive predicates for `q=2^t` and, in the [ternary variant](pell_kernel_power_three43.md), `q=3^t`, each in **43=25M+18A**. Both reuse the existing `r+1` register; the smallest parameters are covered. | Geometry only; no digit fields, input, controller or acceptance are included. |
+| [Paired binary FIFO](native_binary_pair_fifo52.md) | Exact **52=29M+23A** paired FIFO initialized by ordinary `x` and a high marker, including powers and bounds. A general affine controller gives **61**. | Both append streams must be nonempty. Unrestricted absorbing affine control is decidable; a universal controller or paid filter is absent. |
+| [Exact binary selectors](native_controller_binary_selector56.md) | An odd kernel quotient forces exact population count, giving four one-hot fields in **56=29M+27A** and native NAND ports in **58**. | Every label must occur and the first label is fixed. Routing, ordinary input and acceptance remain unpaid. |
+| [Width-deleted classification](pell_kernel_width_deleted_classification.md) | Exact four-stratum classification of the weakened62 source, including negative append values and an explicit positive-kernel extension. | The missing width bound invalidates the FIFO interpretation; this is not a complete universal certificate. |
+| [Width descent and thin sets](input_bridge_width_descent.md) | A fixed native path admits different ordinary inputs after width descent. The [thin-set theorem](input_bridge_width_deleted_thin_sets.md) proves nonuniversality of the precise **71-operation** width-deleted affine-controller family. | The decision theorem is uniform under a powers-of-two-language promise; unrestricted variable-width decidability is not asserted. |
+| [Balanced-controller obstruction](native_controller_balanced_rule110.md) | A balanced carry identity costs five operations, but every zero-preserving block code for the three-state Rule110 interface forces same-sign read weights and bounded inputs. | The theorem covers every block length for this interface, not other machines, offsets or acceptance schemes. |
 | [Filtered carry structure](pell_kernel_dualrail_carry_structure.md) | Necessary coefficient conditions, effective width bounds outside the read-only endpoint interval, endpoint rigidity and same-sign read obstructions. | These retain the Boolean filters and do not classify the remaining coefficient family. |
 | [Exact carry memory](input_bridge_carry_memory.md) | An explicit finite-window characterization of the entire labelled carry language, including boundaries, and necessary synthesis criteria. | It does not remove the FIFO or imply decidability or universality of the coupled system. |
 | [Direct Rule110 synthesis](native_controller_rule110_affine_synthesis.md) | Exact linear certificates exclude all322 direct one-symbol/three-state rail assignments, with arbitrary integer coefficients. | Eight assignments have only an uncoded-output obstruction; serialization and accepted-language implementations remain open. |
@@ -96,6 +102,14 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_rule110_code_typing.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_dualrail_fifo64.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_dualrail_fifo63.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_width_deleted_classification.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_width_descent.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_width_deleted_thin_sets.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_balanced_rule110.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_power_two43.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_power_three43.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_binary_pair_fifo52.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_binary_selector56.py
 ```
 
 The immediate constructive targets are a compiler using the single masked
@@ -116,7 +130,14 @@ reduce general control to nine extra operations, giving a concrete72
 architecture in the latter case. Its filtered-controller universality
 question remains outside the full-trit decidability theorem. The exact
 finite-memory criterion and serialized Rule110 experiments make explicit
-why a desired transition subgraph and unpaid code typing do not suffice. A useful next
+why a desired transition subgraph and unpaid code typing do not suffice.
+The binary route now gives a paired FIFO in52 and an affine-controller
+architecture in61, while exact one-hot selectors give NAND ports in58.
+The new43-operation power predicates also allow native scalar streams
+without a separate large packed-field scale. These components leave more
+room for a synchronized controller, but their counts do not supply one.
+Deleting the ternary FIFO width bound has now been ruled out for the
+precise affine family by a thin-set nonuniversality argument. A useful next
 construction must supply a synchronized controller, a proved universal
 local relation with routing, or a different computation model, with
 ordinary input and acceptance included in its full ledger.
