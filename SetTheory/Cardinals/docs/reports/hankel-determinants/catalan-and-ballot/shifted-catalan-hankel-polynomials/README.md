@@ -1,8 +1,8 @@
 # Shifted Catalan Hankel Polynomials
 
-**Exact coefficients, sharp recurrences, and a denominator conjecture; with root collisions and sharp recurrences for arbitrary polynomial multipliers, cyclotomic resonances of one repeated root, and two-endpoint confluence**
+**Exact coefficients, sharp recurrences, and a denominator conjecture; with root collisions and sharp recurrences for arbitrary polynomial multipliers, cyclotomic resonances of one repeated root, two-endpoint confluence, and interior root collisions**
 
-This is a research report in four parts. Part I is the original report of
+This is a research report in five parts. Part I is the original report of
 19 September 2026, on the shifted linear multiplier `x^m (a + b x)`. Part II
 was added on 28 September 2026 in batch 39 of ProveIt's incoming-report
 intake, from a later manuscript that takes up the extension Part I named and
@@ -14,17 +14,24 @@ cyclotomic resonances" (Section 24.1), for one repeated root, and shows that
 the question's proposed parameters do not suffice. Part IV was added on
 29 September 2026 in batch 53, from a manuscript that answers the endpoint
 half of Part II's research question "Uniform endpoint and root-collision
-limits" (Section 24.4); the half about collisions of roots away from the
-endpoints stays open. Parts I–III were prepared with OpenAI ChatGPT for
-Vladimir Reshetnikov; Part IV's manuscript is AI-assisted research prepared
-for him and does not name the assistant. All four are AI-assisted.
+limits" (Section 24.4). Part V was added on 29 September 2026 in batch 55,
+from a manuscript that answers the other half, collisions of roots away from
+the endpoints (which Part IV had left open as its first research question,
+Section 57.1), for fixed degree and fixed nonendpoint bases; limits uniform
+up to the endpoints stay open. Parts I–III were prepared with OpenAI ChatGPT
+for Vladimir Reshetnikov; Part IV's manuscript is AI-assisted research
+prepared for him and does not name the assistant; Part V's names no
+assistant on its title page, but its PDF metadata gives the author as
+"OpenAI ChatGPT; prepared for Vladimir Reshetnikov". All five are
+AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 19 Sep 2026 (*Shifted Catalan Hankel Polynomials: Exact coefficients, sharp recurrences, and a denominator conjecture*) | `catalan_hankel_conjecture_solution.zip` | (none) | unpacked `a3fe9660e`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–11 (pp. 7–22) and Appendices A–B (pp. 99–100) |
-| 02 | batch 39, manuscript 03 (*Root Collisions and Sharp Recurrences for Polynomially Weighted Catalan Hankel Determinants*, 28 Sep 2026, 23-page PDF as delivered) | `ProveIt_Catalan_Root_Collisions.zip` (inner `ProveIt_Catalan_Root_Collisions/`, main file `article.tex`) | `fbba58593` | `e2b1f016a` (prefix `02-root-collisions-`) | Part II: Sections 12–27 (pp. 23–48) |
-| 03 | batch 42, manuscript 01 (*A One-Defect Law for Cyclotomic Catalan Hankel Recurrences: Complete single-root classification, a necessary sign parameter, and the central exception*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Cyclotomic_Catalan_Recurrences.zip` (inner `cyclotomic_catalan/`, main file `article.tex`) | `9754e8360` (and blob `b29ea42f` of this `article.tex`) | `3609d0473` (prefix `03-cyclotomic-`) | Part III: Sections 28–43 (pp. 49–75) |
-| 04 | batch 53, manuscript 02 (*Two-Endpoint Confluence for Catalan Hankel Determinants: An exact even finite-size expansion, the first interaction law, and a sharp critical scale*, 29 Sep 2026, 20-page A4 PDF as delivered) | `Two_Endpoint_Catalan_Confluence.zip` (inner `Two_Endpoint_Catalan_Confluence/`, main file `article.tex`) | `1ee53d57d` (and blob `e5a4d814` of this `article.tex`) | `1dc874990` (prefix `04-endpoint-confluence-`) | Part IV: Sections 44–60 (pp. 76–98) |
+| 01 (original) | Cardinals-collection report, 19 Sep 2026 (*Shifted Catalan Hankel Polynomials: Exact coefficients, sharp recurrences, and a denominator conjecture*) | `catalan_hankel_conjecture_solution.zip` | (none) | unpacked `a3fe9660e`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–11 (pp. 8–23) and Appendices A–B (pp. 130–131) |
+| 02 | batch 39, manuscript 03 (*Root Collisions and Sharp Recurrences for Polynomially Weighted Catalan Hankel Determinants*, 28 Sep 2026, 23-page PDF as delivered) | `ProveIt_Catalan_Root_Collisions.zip` (inner `ProveIt_Catalan_Root_Collisions/`, main file `article.tex`) | `fbba58593` | `e2b1f016a` (prefix `02-root-collisions-`) | Part II: Sections 12–27 (pp. 24–50) |
+| 03 | batch 42, manuscript 01 (*A One-Defect Law for Cyclotomic Catalan Hankel Recurrences: Complete single-root classification, a necessary sign parameter, and the central exception*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Cyclotomic_Catalan_Recurrences.zip` (inner `cyclotomic_catalan/`, main file `article.tex`) | `9754e8360` (and blob `b29ea42f` of this `article.tex`) | `3609d0473` (prefix `03-cyclotomic-`) | Part III: Sections 28–43 (pp. 51–77) |
+| 04 | batch 53, manuscript 02 (*Two-Endpoint Confluence for Catalan Hankel Determinants: An exact even finite-size expansion, the first interaction law, and a sharp critical scale*, 29 Sep 2026, 20-page A4 PDF as delivered) | `Two_Endpoint_Catalan_Confluence.zip` (inner `Two_Endpoint_Catalan_Confluence/`, main file `article.tex`) | `1ee53d57d` (and blob `e5a4d814` of this `article.tex`) | `1dc874990` (prefix `04-endpoint-confluence-`) | Part IV: Sections 44–60 (pp. 78–100) |
+| 05 | batch 55, manuscript 03 (*Interior Root Collisions in Catalan Hankel Determinants: Convergent sector expansions, multiple clusters, and phase-dependent zero motion*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Interior_Collision_Research.zip` (inner `ProveIt_Interior_Collision_Research/`, main file `article.tex`) | `e1afd75e3` (README only; no blob recorded) | `26473dfa0` (prefix `05-interior-collision-`) | Part V: Sections 61–80 (pp. 101–129) |
 
 The pin `fbba58593` is ProveIt commit
 `fbba58593dc0622aa914972896150d4848f935b5`; the manuscript read Part I's
@@ -68,11 +75,36 @@ Part IV prints every result, proof, example, remark, limitation and question
 of the manuscript; Section 44 records the provenance, the notation, what
 Part IV answers, and where the merge had to choose.
 
+The pin `e1afd75e3` is ProveIt commit
+`e1afd75e35a4de734d5aa47aec5cdb917b82ed3e` (the batch-53 record in the
+incoming-report README). The batch-55 manuscript records no blob: through the
+GitHub connector it read only this report's README there, which described
+three parts, because the combined `article.tex` at that commit is still blob
+`e5a4d81408c80f0385ae66c26fbd11bba7dfdb09` (Parts I–III; Part IV was written
+in `e300500cb`, after the pin). By its source notes it took Part II's
+question from the standalone Part II manuscript and Part IV's scope and
+question from the standalone batch-53 manuscript, both read from Vladimir's
+file library; that manuscript's "Section 13.1" is Section 57.1 here. The body
+of Section 24.4 is unchanged between the pin and the placement commit apart
+from its label and the dated batch-53 note, and Section 57.1 as printed here
+is the passage the manuscript paraphrases, so Part V's "repository" and
+"inspected repository reports" are Parts I–III as printed here, its
+"root-collision report" is Part II, and its "endpoint continuation" is
+Part IV. The archive arrived in `2d4919838`. Its manuscript, PDF, delivery
+README and checksum list are not shipped; they survive in the arrival commit
+(the checksum list, 13/13, was verified at placement and retired). Its source
+audit and proof status are shipped verbatim as
+`05-interior-collision-SOURCES.md` and `05-interior-collision-PROOF_STATUS.md`.
+Part V prints every result, proof, example, remark, limitation and question
+of the manuscript; Section 61 records the provenance, the notation, what
+Part V answers (with one observation of the merge, Remark 61.1), and where
+the merge had to choose.
+
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
-Rocq or any other proof assistant, and no source claims otherwise. All four
+Rocq or any other proof assistant, and no source claims otherwise. All five
 parts give written all-parameter proofs; their exact-arithmetic suites (and
-Part IV's high-precision diagnostics) are finite audits and debugging checks,
-not substitutes for those proofs.
+the high-precision diagnostics of Parts IV and V) are finite audits and
+debugging checks, not substitutes for those proofs.
 
 ## Results
 
@@ -80,12 +112,14 @@ Write `C_n = binomial(2n, n)/(n + 1)` and let `N` be the determinant size
 (not the last index), with the empty determinant equal to 1.
 
 **Part I** (unchanged apart from dated pointers in the abstract and
-Sections 10.3, 11 (three) and Appendix B, two title-page lines, title-page
-vertical spaces reduced (by 3 mm in batch 42 and by 12 mm in all in batch 53,
-so that the page still fits), contents entries for the four parts, two
-bibliography entries used only by Part II, one used only by Part III and
-three used only by Part IV, a bibliography label column widened for twelve
-entries, and the closing note on source dates). For
+Sections 10.3, 11 (three) and Appendix B, two title-page lines (the second
+shortened in batch 55 to "cyclotomic resonances, two-endpoint confluence,
+and interior root collisions"), title-page vertical spaces reduced (by 3 mm
+in batch 42, by 12 mm in all in batch 53 and by a further 7 mm in batch 55,
+so that the page still fits), contents entries for the five parts, two
+bibliography entries used only by Part II, one used only by Part III, three
+used only by Part IV and one used only by Part V, a bibliography label column
+widened for twelve entries, and the closing note on source dates). For
 
     D_N^(m)(a,b) = det(a*C_(i+j+m) + b*C_(i+j+m+1))_(0 <= i,j < N),
 
@@ -103,8 +137,9 @@ entries, and the closing note on source dates). For
    expansion with an explicit first asymptotic correction (Theorem 2.4).
 
 **Part II** (batch-39 manuscript 03; unchanged apart from dated batch-42
-pointers in Sections 20.1, 21.4 and 24.1–24.2, dated batch-53 pointers in
-Sections 22 and 24.4, and new labels on Sections 24.1, 24.2 and 24.4). For a
+pointers in Sections 20.1, 21.4 and 24.1–24.2, dated batch-53 and batch-55
+pointers in Sections 22 and 24.4, and new labels on Sections 24.1, 24.2, 24.4
+and 24.5). For a
 nonzero polynomial `q`, let
 `H_N(q) = det(sum_r q_r C_(i+j+r))_(0 <= i,j < N)`, so that
 `D_N^(m)(a,b) = H_N(x^m (a + b x))`. Write
@@ -139,8 +174,8 @@ nonzero polynomial `q`, let
    instead of 15); `x^2 + 1` of order 4 (Section 21). Exact fixed-parameter
    asymptotics (Section 22).
 
-**Part III** (batch-42 manuscript 01; unchanged apart from a new label on
-Section 40.2). One repeated root: the multiplier is
+**Part III** (batch-42 manuscript 01; unchanged apart from new labels on
+Sections 40.2 and 40.4). One repeated root: the multiplier is
 `(x - c)^t` with `c` outside `{0, 4}`, `c = 2 + z + 1/z`, and
 `L = ord(z^2)` (possibly infinite); the rates are `lambda_k = (-1)^t z^(2k-t)`.
 It proves:
@@ -196,7 +231,9 @@ and their orders equal the rows `t <= 4` of `data/03-cyclotomic-orders_c1_c2_c3.
 product are `B_(1,1)` and `B_(2,2)`; Part III's leading coefficients (33.3)
 reproduce the five leading coefficients of Part II's `(2x-9)^4` table.
 
-**Part IV** (batch-53 manuscript 02). Two endpoint clusters: `m` roots
+**Part IV** (batch-53 manuscript 02; unchanged apart from dated batch-55
+pointers after its introductory paragraph and in Sections 44.4 and 57.1, and
+a new label on Section 57.2). Two endpoint clusters: `m` roots
 `c_i^- = 2 - 2 cos(sqrt(y_i)/nu)` near 0 and `ell` roots
 `c_j^+ = 2 + 2 cos(sqrt(v_j)/nu)` near 4 (square roots only through entire
 power series), `d = m + ell`, **`nu = N + d/2`**, `h = 1/nu`,
@@ -252,10 +289,87 @@ parity of `kappa`; (55.4) is the same polynomial as Part II's `H_N((x-2)^4)`,
 i.e. Part III's `B_(2,2)(N)` (observed, not explained); the small
 determinants of Section 59 agree with direct evaluation for `N <= 7`.
 
+**Part V** (batch-55 manuscript 03). Roots colliding away from the
+endpoints: `d` roots `c_i = 2 + 2 cosh(w + u_i/nu)` at a fixed base
+`c = 2 + 2 cosh w` outside `{0, 4}` (`w` not in `pi i Z`), with
+**`nu = N + d/2`**, `h = 1/nu`, scaled coordinates `u_i` in compact complex
+sets (any collision pattern), `D = binom(d,2)` (**not** Part II's
+`D = deg q`, which is `d` here), and `r = d - k`. It proves:
+
+1. **A convergent collision-sector expansion** (Theorem 64.1, (64.7)): for
+   all large `N`, exactly,
+   `H_N(q_N) = (-1)^(N d) sum_k e^((2k-d) nu w) nu^(k(d-k)) F_k(1/nu; u, w)`,
+   where each amplitude `F_k` is holomorphic near `h = 0`, symmetric and
+   entire in `u`, with a **convergent** Taylor series whose leading term is
+   `B_(d,k)(w) S_(d,k)(u)` (64.8): a universal profile (64.4)–(64.5) times a
+   nonzero base constant (64.6); the remainder bound is absolute (64.9), not
+   relative, and includes every collision and coordinate derivatives. Values
+   and symmetries of the profile (Proposition 64.2).
+2. **The first correction** (Theorem 66.1, (66.2)), with multiplication by
+   `U = sum u_i` and the Euler operator; it vanishes for the central sector
+   when `d = 2m` and `U = 0`. An all-orders finite coefficient algorithm
+   (Section 66.1). Unlike Part IV's endpoint expansion, **the expansion is not
+   even** (remark closing Section 66).
+3. **An explicit Cauchy remainder** (Theorem 67.1, (67.3)) with explicit
+   radius (67.1) and constant (67.2), conservative, including collisions.
+4. **Several separated clusters** (Theorem 68.1): one global `nu = N + d/2`,
+   leading amplitudes a product of `B S` factors and explicit nonzero cross
+   factors `T_ab` (68.3), (68.5); separation of the bases is essential
+   (Remark 68.2).
+5. **Inside the interval** (`w = i theta`): the even and odd total
+   multiplicity laws (Corollary 69.1, (69.1)–(69.2)); the odd case has two
+   tied phases and need not have an `N`-independent limit.
+6. **Sine-kernel duality** (Lemma 70.1, Theorem 70.2): the profile
+   `S_(2t,t)(ix, iy)` is `2^t det[sinc(x_i - y_j)]/(Delta(x) Delta(y))`,
+   strictly positive for `x = y` real at every collision pattern.
+7. **Two equal-multiplicity roots** at `2 + 2 cos(theta +- tau/(N+t))`
+   (Theorem 71.1, (71.7)): `H_N/(A_t(theta) nu^(t^2)) = Phi_t(tau) +
+   (-1)^t sin(2 nu theta) Psi_t(tau)/(nu sin theta) + O(nu^-2)`, `nu = N + t`;
+   `Phi_t` is the normalized oscillatory Jacobi (kissing-polynomial) Hankel
+   determinant at frequency `2 tau` (Proposition 71.2); `Phi_(2m) > 0` on the
+   real line (Corollary 71.3); large-frequency parity asymptotics and the large
+   simple zeros of odd `t` (Lemma 72.1, Proposition 72.2).
+8. **Zero transport** (Theorems 73.1, 73.2): near a simple real profile zero
+   there is exactly one finite-size zero, real and simple, with explicit first
+   displacement (73.2), and a **convergent** expansion (73.5) whose `l`-th
+   coefficient is a Laurent polynomial of degree at most `l` in the phase
+   `e^(2 i nu theta)`, `b_1` explicit (73.6).
+9. Examples: the exact two-simple-root formula (74.1) with `Phi_1 = sin(2
+   tau)/(2 tau)`; periodic and quasiperiodic scaled zero motion (Corollary
+   74.2: a whole interval of limits when `theta/pi` is irrational, finitely
+   many when rational, exact zeros at `theta = pi/2`); `Phi_2` (74.6); the
+   centre law (74.7). Nine research directions (Section 77).
+
+What Part V answers (Section 61.4): Part II's Section 24.4, second version,
+and Part IV's question 57.1, for fixed degree and fixed nonendpoint bases,
+with the oscillatory sectors retained; the caveat closing Part II's
+Section 22 for collisions away from the endpoints. The manuscript states the
+pair law only in centred coordinates; as an **observation of this merge**
+(Remark 61.1, derived from Theorem 71.1 and checked numerically for `t = 1`,
+not shipped), in Section 57.1's uncentred coordinates `z e^(+-tau/N)` the
+`1/nu` term gains the non-oscillatory summand `t tau Phi_t'(tau)`. Not
+answered: limits uniform up to the endpoints (Part V's own question 77.1),
+Part IV's question 57.2 (generalized, not answered, in 77.2), Part III's
+Sections 40.2 and 40.4 (not discussed).
+
+Consistency with Parts II–IV (Section 61.4, observations of this merge): at
+`u = 0` the sector rates `(-1)^d z^(2k-d)` and growth `N^(k(d-k))` are Part
+II's Corollary 14.3 (leading constants not compared symbolically); at
+`theta = pi/2` the centre law (74.7) has no `1/nu` term, and its constant
+`A_t(pi/2) = prod_{j<t} j!^2 / prod_{j<2t} j!` is the leading coefficient of
+Part III's central product `B_(t,t)(N)` (Theorem 30.4), a polynomial in
+`nu = N + t` of the parity of `t^2` (checked by hand; `t = 1, 2` give `nu` and
+`nu^2 (nu^2 - 1)/12`); Lemma 63.1 is a fifth route to the Christoffel
+identity, and Lemma 65.1 uses Part IV's centring `alpha_j = j - (d-1)/2`
+(Lemma 49.1), which the manuscript does not cite.
+
 Theorem and equation numbers refer to the shipped `article.pdf`. Part IV's
 are the manuscript's shifted by 44 sections: its number `n.j` is `(n+44).j`
 here (its Theorem 3.1 is Theorem 47.1), and its Appendices A and B are
-Sections 59 and 60.
+Sections 59 and 60. Part V's are the manuscript's shifted by 61 sections
+(its Theorem 3.1 is Theorem 64.1, its Theorem 10.1 is Theorem 71.1), its
+Appendices A and B are Sections 79 and 80, and its two data tables are
+Tables 5 and 6.
 
 ## Not claimed
 
@@ -283,10 +397,11 @@ Sections 59 and 60.
   or with endpoint factors, none is known here; Section 24.2 is answered only
   inside the tied groups of one root.)* Its asymptotics are for fixed
   parameters; uniform endpoint and root-collision limits are posed, not
-  proved there; Part IV proves the endpoint ones (batch 53), and collisions
-  away from the endpoints remain open. Its eight research directions
-  (Section 24) are tasks relative to the manuscript, not asserted to be
-  globally open.
+  proved there; Part IV proves the endpoint ones (batch 53), and Part V the
+  ones away from the endpoints, at fixed nonendpoint bases and fixed degree
+  (batch 55); limits uniform up to the endpoints remain open. Its eight
+  research directions (Section 24) are tasks relative to the manuscript, not
+  asserted to be globally open.
 - **Part III:** the Christoffel formula and its confluent form, Andréief's
   identity, Desnanot–Jacobi condensation, general rationality and the
   order-at-most-`2^t` construction (Krattenthaler), Part II's generic degree
@@ -319,7 +434,9 @@ Sections 59 and 60.
   the all-orders coefficient generator, the explicit bound and the sharp
   outward criterion. The literature check was bounded; worldwide priority
   for every identity or corollary is **not** established. It does not solve
-  the nonendpoint collision half of Section 24.4, hard-edge universality for
+  the nonendpoint collision half of Section 24.4 *(re-scoped 29 September
+  2026, batch 55: that half is proved in Part V for fixed degree and fixed
+  nonendpoint bases)*, hard-edge universality for
   arbitrary weights, or limits with multiplicities growing with `N`: `m` and
   `ell` are fixed, and the constants and the analytic radius are not claimed
   uniform in them. The if-and-only-if scale criterion is for **outward,
@@ -332,6 +449,34 @@ Sections 59 and 60.
   arbitrary-order coefficient engine. Its ten research directions
   (Section 57) are research directions, not assertions that every item is
   globally open.
+- **Part V:** the Catalan measure and orthogonal polynomials, the
+  Christoffel polynomial-modification identity, its bilinear kernel variant
+  and divided-difference confluence (Krattenthaler; re-proved in the
+  manuscript's normalization), orthogonal-polynomial kernel determinants and
+  sine-kernel bulk limits for characteristic polynomials (Strahov–Fyodorov,
+  context only), and the oscillatory Jacobi (kissing-polynomial) Hankel
+  determinant with its even-degree nondegeneracy, odd-degree degeneracy and
+  large-frequency analysis (Celsus–Deaño–Huybrechs–Iserles) are credited, not
+  claimed; the centred exponential Vandermonde is an elementary repackaging of
+  the ordinary one, and parallels Part IV's centred alternant. The claimed
+  contribution is the collision-uniform convergent amplitude package: the
+  first-coefficient operator, the explicit Cauchy bound, the separated-cluster
+  constants, and the convergent phase-dependent zero expansion. The
+  literature audit was bounded (the kissing-polynomial paper's full text could
+  not be retrieved, so no theorem-by-theorem comparison with it was made);
+  worldwide priority is **not** established. Not claimed: uniformity as a base
+  approaches an endpoint or another base; growing degree, unbounded or
+  `N`-dependent scaled coordinates, or zero indices growing with `N`; nonsimple
+  zeros or a classification of all recurrence resonances; any
+  constant-coefficient recurrence for a moving multiplier `q_N`; validation of
+  every theorem or file of the repository. The pair law and zero transport are
+  stated in centred coordinates; the translation to Section 57.1's
+  coordinates (Remark 61.1) is the merge's. The 518 recorded assertions
+  (392 exact, 126 at 100 digits) are finite audits; the CSV experiments are
+  not certificates, and numerical root decimals are not certified isolating
+  intervals; no interval arithmetic and no proof assistant is used. Its nine
+  research directions (Section 77) are proposed continuations, not claims
+  that every formulation is open in the published literature.
 - The theorems are over characteristic zero and are not to be transported
   unchanged to small positive characteristic. For arbitrary complex inputs
   "algorithm" presupposes exact field operations and equality tests; the
@@ -375,7 +520,24 @@ every page number moved, by one page in Parts I–III because the contents
 grew by a page, and Part I's appendices past Part IV). Parts II, III and IV
 start at Sections 12, 28 and 44; Part I's appendices come after Part IV and
 keep their letters. The notation tables are Table 1 (Part II), Table 2
-(Part III) and Table 3 (Part IV); Part I has no numbered tables.
+(Part III), Table 3 (Part IV) and Table 4 (Part V); Part I has no numbered
+tables, and Part V's two data tables are Tables 5 and 6.
+
+Part V added **135** labels, all with the prefix `ic:` ("interior
+collisions"; `rg -c "ic:" article.tex` was 0 before): the manuscript's 117
+labels, prefixed (six of them, `thm:main`, `sec:main`, `sec:examples`,
+`eq:measure`, `eq:R`, `eq:Jacobi`, would otherwise have collided with
+Part I's bare labels), and 18 new ones (the eight of Section 61, the
+manuscript's four unlabelled sections — its Section 2, its conclusion and its
+two appendices — three of its research subsections, `ic:x:bridge`,
+`ic:x:mixed`, `ic:x:jacobi`, and `ic:x:rcq5`, `ic:x:cycuniform`, `ic:x:tecq2`
+on Part II's Section 24.5, Part III's Section 40.4 and Part IV's
+Section 57.2). Total: **570** (435 before batch 55). No label was renamed or
+removed, and no number of Parts I–IV moved (all 435 earlier labels compared
+in the `.aux` files of a build of the committed text and the new build; every
+page number moved, by one page in Part I and the first pages of Part II and
+by two pages after that, because the contents grew by a page and Part II's
+two dated notes by another, and Part I's appendices past Part V).
 
 ## Notation
 
@@ -450,14 +612,41 @@ particular for:
   displacement (Part III's `eta` is a parity indicator); `lambda` is a
   partition and `s_lambda` a Schur polynomial (Part II's `lambda_k` are rates).
 
+Part V keeps its manuscript's symbols, with no normalization changed; Table 4
+(Section 61.3) lists them. One function was renamed: the manuscript's
+`shc z = sinh z / z` is printed `sinhc`, Part IV's name for the same function;
+its upright `Re` is printed `ℜ` (`\Re`). Watch in particular for:
+
+- `D = binom(d,2)` is **not** Part II's `D = deg q`, which is Part V's `d`
+  (as in Part IV); `e_k = binom(k,2) + binom(d-k,2)`.
+- `w` is the spectral coordinate of the base, `c = 2 + 2 cosh w`, `z = e^w`
+  (Part II's and Part III's `z`), **not** Part III's centred size
+  `w = N + t/2`; `theta` with `w = i theta` is the base angle inside `(0, 4)`.
+- `nu = N + d/2` is Part IV's formula, but Part V's expansions are in `1/nu`,
+  **not** `1/nu^2`; for a symmetric pair (`d = 2t`) it is `nu = N + t`.
+- `t` is the multiplicity of each root of a pair from Section 71 on (as in
+  Part III), but a formal branch-counting variable in (65.3) and in the proof
+  of Theorem 68.1 (`t_a`), and Part IV's kernel variable elsewhere in the
+  report; `(i tau)^t` in a tuple means `t` repeated entries, not a power.
+- `tau` is a trigonometric collision coordinate, `2 + 2 cos(theta +- tau/nu)`;
+  Section 57.1's hyperbolic `z e^(+-tau/N)` is Part V's `tau` times `-i`
+  (Remark 61.1).
+- `Z_N` (73.1) is normalized by `A_t(theta) nu^(t^2)`, not like Part IV's
+  `Z_N` (46.7); `S_(d,k)` is a profile (Part IV's `S(t,y)` is a sine
+  function); `B_(d,k)(w)` a base constant (Part III's `B_(a,b)(N)` is a
+  product); `L(h; u, w)` and `L_j` are two different objects within Part V
+  (Part III's `L = ord(z^2)` a third); `m` is half the degree in Sections 69
+  and 72 (Parts I, II, IV use `m` otherwise); `s` is the number of clusters
+  and `s_t` a constant.
+
 ## Files
 
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 101 pages (title page; contents pp. 2–6;
-                                                     Part I pp. 7–22; Part II pp. 23–48; Part III pp. 49–75;
-                                                     Part IV pp. 76–98; Part I's appendices pp. 99–100;
-                                                     references p. 101)
+article.pdf                                          the compiled report, 133 pages (title page; contents pp. 2–7;
+                                                     Part I pp. 8–23; Part II pp. 24–50; Part III pp. 51–77;
+                                                     Part IV pp. 78–100; Part V pp. 101–129; Part I's
+                                                     appendices pp. 130–131; references pp. 132–133)
 README.md                                            this guide
 Makefile                                             Part I's make targets (pdf, test, clean); `test` rewrites data/ in place
 notes/provenance.md                                  Part I: primary sources, version audit, novelty scope
@@ -506,19 +695,40 @@ code/04-endpoint-confluence-verify.py                Part IV: exact (Fraction) a
 data/04-endpoint-confluence-verification.json        Part IV: recorded outcome, 810 checks, per-case numerical rows
 data/04-endpoint-confluence-verification.txt         Part IV: the same counts as text
 data/04-endpoint-confluence-requirements.txt         Part IV: mpmath==1.3.0 (delivered as requirements.txt)
+05-interior-collision-SOURCES.md                     Part V: pinned README, library manuscripts read, literature
+                                                     audit and contribution boundary (delivered as SOURCES.md)
+05-interior-collision-PROOF_STATUS.md                Part V: proved statements, classical ingredients, computational
+                                                     audit, not claimed (delivered as PROOF_STATUS.md)
+code/05-interior-collision-verify.py                 Part V: exact (Fraction) and 100-digit (mpmath) checks and the
+                                                     CSV experiments (delivered as code/verify.py)
+code/05-interior-collision-Makefile                  Part V: the delivered root Makefile (pdf, verify, clean);
+                                                     do not run it from this directory
+data/05-interior-collision-verification.json         Part V: recorded run, 518 assertions in twelve counts,
+                                                     maximal discrepancies, multi-cluster metrics
+data/05-interior-collision-finite_size_corrections.csv  Part V: leading and first-corrected errors of Theorem 71.1,
+                                                     t = 1..3, N = 40..320 (CRLF)
+data/05-interior-collision-zero_transport.csv        Part V: profile zeros, finite-N zeros and predicted shifts,
+                                                     t = 1, 3, N = 40..320 (CRLF)
+data/05-interior-collision-jacobi_parity_audit.csv   Part V: large-frequency profile residuals, t = 1..5 (CRLF)
+data/05-interior-collision-multiple_clusters.csv     Part V: two-cluster leading-term experiment, N = 40..320 (CRLF)
+data/05-interior-collision-requirements.txt          Part V: mpmath==1.3.0 (delivered as requirements.txt)
 ```
 
 The eleven `02-root-collisions-` files were staged in the placement commit
-`e2b1f016a`, the seven `03-cyclotomic-` files in `3609d0473`, and the six
-`04-endpoint-confluence-` files in `1dc874990`, all byte-identical to the
-deliveries (Part IV's are LF, with no CR byte). The two CSVs are all-CRLF as delivered
-(written by Python's `csv` module) and are protected by `-text` lines in
-`SetTheory/Cardinals/.gitattributes`; never re-save them.
+`e2b1f016a`, the seven `03-cyclotomic-` files in `3609d0473`, the six
+`04-endpoint-confluence-` files in `1dc874990`, and the ten
+`05-interior-collision-` files in `26473dfa0`, all byte-identical to the
+deliveries (Part IV's are LF, with no CR byte; of Part V's, only the four CSVs
+contain CR bytes). The six CSVs of Parts II, III and V are all-CRLF as
+delivered (written by Python's `csv` module) and are protected by `-text`
+lines in `SetTheory/Cardinals/.gitattributes`; never re-save them.
 
 Data conventions (Parts I–III): polynomial arrays are in ascending powers;
 rational values are exact strings such as `"8/3"` or `"8/81"`, never rounded
 decimals. Part IV's JSON is different: its numbers are 25-digit decimal
-strings of 100-digit diagnostics (see the Part IV bullet below).
+strings of 100-digit diagnostics (see the Part IV bullet below), and Part V's
+CSV values are binary floating-point decimals except the zero columns (see
+the Part V bullet).
 
 - Part I: in `coefficient_rows.json`, entry `k` is the coefficient of
   `a^k b^(N-k)`, not `a^(N-k) b^k`; in `minor_polynomials.json`, entry `j` is
@@ -562,6 +772,27 @@ strings of 100-digit diagnostics (see the Part IV bullet below).
   `h = 1/(N + d/2)`, as decimal strings rounded to about 25 digits; they are
   diagnostics, not certificates. The `both-double` rows are the table of
   Section 55.5. The exact checks record only their counts.
+- Part V: `verification.json` holds `python` (3.13.5), `mpmath` (1.3.0),
+  `precision_decimal_digits` (100), a `status` (not a proof-assistant or
+  interval certificate), twelve `assertion_counts` (392 exact: 63 + 7 + 35 +
+  35 + 252; 126 numerical: 35 + 25 + 30 + 14 + 4 + 12 + 6), `total_assertions`
+  518, six `maximum_relative_discrepancies` as strings (the
+  `first_correction_numeric` value, about `6.6e-13`, reflects a deliberate
+  centred finite difference with step `1e-6`), `metrics` (the two-cluster rows
+  of `multiple_clusters.csv` and a second-order amplitude residual) and
+  `elapsed_seconds`. The CSV files are the experiments of Section 75, **not**
+  among the 518 assertions: `finite_size_corrections.csv` (columns `t, N`,
+  leading and corrected absolute errors, `nu^2` times the corrected error) at
+  `theta = 1.1`, `tau = 0.8`, whose rows `N = 40, 160, 320` are Table 5;
+  `zero_transport.csv` (`t, N`, `profile_zero`, `finite_N_zero`,
+  `predicted_shift` as 25- and 18-digit strings, `scaled_shift_error`) at
+  `theta = 1.1`, whose rows `N = 40, 160, 320` are Table 6 (the profile zero
+  of `t = 3` is numerical, not a certified isolating interval);
+  `jacobi_parity_audit.csv` (`t, s, scaled_residual`) for `t = 1..5` at
+  frequencies `s = 12.3, 24.3, 48.3`, the bracket error of Proposition 72.2
+  times `s^2`; `multiple_clusters.csv` (`N`, absolute error, `nu` times it)
+  for two clusters of size 2 at `w = 0.8i` and `1.7i`, central sectors
+  `k = (1, 1)`.
 
 ## Build the article
 
@@ -578,19 +809,25 @@ undefined or multiply defined references, no duplicate destinations and no
 overfull or underfull boxes; a build of the committed text before each
 addition was equally clean. No font files are included. The Part III
 manuscript's own build used `tocloft` and `xurl` as well, and the Part IV
-manuscript's `tcolorbox`; the merged article needs none of them. The batch-53
-build (101 pages) has no errors, undefined or multiply defined references,
+manuscript's `tcolorbox`, and the Part V manuscript's `tcolorbox`, `tocloft`
+and `xurl`; the merged article needs none of them. The batch-55 build
+(133 pages) has no errors, undefined or multiply defined references,
 duplicate destinations, or overfull or underfull boxes; its only
 informational messages ("Infinite glue shrinkage found in box being split",
-ignored) come from the three `longtable` notation tables, two of which gave
-the same message in the build of the committed text.
+ignored) come from the four `longtable` notation tables, three of which gave
+the same message in the build of the committed text. Part V sets
+`\emergencystretch` to the manuscript's 3em (reset to the report's 2em
+after it) and prints one file name of Section 79 with `\nolinkurl` instead of
+`\texttt`, so that it can break; the text is unchanged.
 
 ## Rerun the checks
 
 The Part I–III suites are standard-library Python 3.10+ with exact integers
-and rationals; Part IV's also needs `mpmath` (tested with 1.3.0) for its
-100-digit diagnostics. All four **rewrite their data files**. Run them only
-on a copy; on Windows they also write CRLF line endings. Commands are for
+and rationals; Parts IV and V also need `mpmath` (tested with 1.3.0) for
+their 100-digit checks. All five **write data files**: run in place, the
+programs of Parts I, II and IV, and Part V's without `--out`, would overwrite
+recorded files, and Part III's would add unprefixed ones. Run them only on a
+copy; on Windows they also write CRLF line endings. Commands are for
 Git Bash or another POSIX shell, from this directory (`py` may replace
 `python3`).
 
@@ -758,6 +995,44 @@ equalled the recorded ones apart from Windows line endings. The checks are
 scalar Gaussian elimination; the coefficient-minor checks are independent of
 the first-correction kernel formula.
 
+**Part V.** Its files still use the delivered names. Run from this directory,
+`code/05-interior-collision-verify.py` with no arguments uses its default
+`--out data` (relative to the working directory) and **overwrites Part I's
+`data/verification.json`**, and adds four unprefixed CSVs to `data/`. The
+delivered Makefile (`code/05-interior-collision-Makefile`), run from this
+directory, is worse: `verify` runs `python code/verify.py --out data`, which
+here is **Part I's** verifier and rewrites Part I's `data/`; `pdf` runs
+`pdflatex` three times on the merged `article.tex` in place; `clean` deletes
+`article.aux`, `.log`, `.out`, `.toc`, `.fls` and `.fdb_latexmk` here. Never
+run it here. (The delivery README's `python -m pip install -r
+requirements.txt` and `python code/verify.py --out data` assume the delivered
+layout and a bare `python`; the dependency file is shipped as
+`data/05-interior-collision-requirements.txt`.) Restore the delivered layout
+in a scratch copy instead:
+
+```sh
+W=/path/to/scratch/interior-collision
+mkdir -p "$W/code" "$W/recorded"
+cp code/05-interior-collision-verify.py "$W/code/verify.py"
+for f in data/05-interior-collision-*; do cp "$f" "$W/recorded/${f#data/05-interior-collision-}"; done
+cd "$W" && uv run --no-project --with mpmath==1.3.0 python code/verify.py --out data   # compare $W/data with $W/recorded
+```
+
+(or `python3 -m pip install mpmath==1.3.0` and `python3 code/verify.py --out
+data`). The program has no local imports, so it may also be run in place
+with an explicit scratch output directory,
+`uv run --no-project --with mpmath==1.3.0 python code/05-interior-collision-verify.py --out "$W/data"`,
+but **never without `--out`**. Run the first way on 29 September 2026
+(Python 3.13.5, mpmath 1.3.0, about 4 s) it passed all 518 assertions; the
+four CSVs were byte-identical to the recorded ones (CRLF on every system,
+because `csv` ends rows with CRLF and the files are opened with
+`newline=''`), and `verification.json` equalled the recorded file apart from
+`elapsed_seconds` (and CRLF line endings on Windows, from `write_text`;
+compare after `tr -d '\r'`). The field `python` also varies with the
+interpreter. The checks raise `AssertionError` explicitly, so `-O` does not
+disable them. The exact and numerical determinant paths share one Gaussian
+elimination routine; the moment-matrix and Christoffel constructions differ.
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** `code/02-root-collisions-verify.py` imports
@@ -873,6 +1148,66 @@ the first-correction kernel formula.
   Akemann–Fyodorov and DLMF §18.11(ii) are added as [10], [11], [12] (the last
   separate from Part I's DLMF item [4], §18.5); its item for the pinned
   repository report is replaced by Parts I–III and the pin in Section 44.1.
+- **Part V delivery names.** `code/05-interior-collision-verify.py` says in
+  its docstring "Run: python code/verify.py --out data" and writes unprefixed
+  `verification.json`, `finite_size_corrections.csv`, `zero_transport.csv`,
+  `jacobi_parity_audit.csv` and `multiple_clusters.csv` into its `--out`
+  directory (default `data`, relative to the working directory; see the rerun
+  paragraph). `code/05-interior-collision-Makefile` was delivered at the
+  package root; it names `article.tex` and `code/verify.py`, both of which are
+  other files here, and a bare `python`. The placement commit shipped it,
+  although it must not be run here; it is kept byte-identical as delivered.
+  `05-interior-collision-SOURCES.md` and `05-interior-collision-PROOF_STATUS.md`
+  were delivered as `SOURCES.md` and `PROOF_STATUS.md`; their "the present
+  manuscript", "the article" and "the supplied article" are the manuscript
+  (Part V), their "repository" is Parts I–III at the pin, and their theorem
+  and section numbers are the manuscript's, shifted by 61 here (its `n.j` is
+  `(n+61).j`; its Appendix A is Section 79). `SOURCES.md` calls Part II's
+  question "Section 24.4 in the combined repository report" (correct here) and
+  Part IV's question the standalone manuscript's "Section 13.1" (Section 57.1
+  here); it names the library files `article(20260929-023936).tex`,
+  `article(20260930-010250).tex` and `article(20260930-010248).pdf`, which are
+  the standalone Part II and Part IV sources in Vladimir's file library, not
+  shipped here (their content is Parts II and IV). `PROOF_STATUS.md` says
+  "The numbering above matches the supplied article"; in this report it
+  matches after the shift. `data/05-interior-collision-requirements.txt` was
+  delivered at the package root as `requirements.txt`. The article
+  (Sections 62, 75 and 79) gives the shipped names beside the delivered ones
+  in merge notes, and prints the delivered reproduction commands with the
+  warning and the scratch-copy recipe.
+- **Part V unshipped files.** The manuscript's `article.tex`, its 24-page A4
+  `article.pdf`, its delivery README and its `SHA256SUMS.txt` are not shipped
+  (they survive in `2d4919838`; the checksum list, which named the delivered
+  paths, was verified 13/13 at placement and retired). The delivery README's
+  content — result summary, file list, reproduction and build commands,
+  status and attribution — is covered by Section 61 and this README; its
+  commands (bare `python`, `python code/verify.py --out data`, `make pdf`,
+  `make verify`, `make clean`, and "regenerate SHA256SUMS") are superseded by
+  the Part V rerun paragraph above.
+- **Part V overlap.** Part V re-derives, without assuming Parts I–IV, the
+  Catalan measure, the monic orthonormal polynomials and their trigonometric
+  form (63.3) (a fifth route), the Gram (Andréief) integral and the
+  Christoffel identity (Lemma 63.1 is Part II's Lemma 15.1 for `gamma = 1`
+  and Part IV's Lemma 48.1); its centred exponents are Part IV's (Lemma 49.1),
+  uncited by the manuscript; and its centre law at `theta = pi/2` agrees with
+  Part III's central product. All are marked in Section 61.4; no statement of
+  Parts I–IV was changed. The consistency checks and Remark 61.1 are the
+  merge's own and are labelled so.
+- **Part V bibliography.** Its Krattenthaler item (Ramanujan J. 61 (2023),
+  with arXiv:2101.04225v5) is Part I's [3], and its Strahov–Fyodorov item is
+  Part IV's [10]; Celsus–Deaño–Huybrechs–Iserles is added as [13]. Its items
+  for the pinned repository report, the standalone Part II manuscript and the
+  standalone Part IV manuscript are replaced by Parts I–IV and the pin in
+  Section 61.1, and the sentences citing them by internal references
+  (Section 61.5 lists them); its "Part II, Section 24.4" is printed as a
+  cross-reference with the same number, and its "Section 13.1" of the Part IV
+  manuscript as Section 57.1.
+- **Part V typography.** The manuscript's `\shc` is printed `\sinhc`, its
+  upright `\operatorname{Re}` as `\Re` (fraktur `ℜ` in this font, the
+  repository's convention), and its `\dd` (`\,\mathrm d`) as `\,\dd` with the
+  report's `\dd`, so the spacing is unchanged; its title page, scope box and
+  contents are replaced by Section 61.1, which quotes the abstract and the
+  scope box. No mathematical text was changed.
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -903,14 +1238,25 @@ Catalan multiplier or endpoint (hard-edge) limits. The nearest is
 `cigler-conjecture-8-schur`, whose asymptotics are fixed-parameter and
 expressly not uniform as its parameter `t -> 1`, a different degeneration.
 No reciprocal note was written for batch 53. Its related open problems are internal to this report:
-Part II's Section 24.4 (the nonendpoint half), Part III's Section 40.2
+Part II's Section 24.4 (the nonendpoint half, answered by Part V in batch 55
+for fixed degree and fixed nonendpoint bases), Part III's Section 40.2
 (endpoint factors with a cyclotomic interior root, close to Part IV's own
 question 57.2) and Section 40.4 (uniform limits near a disappearing
 characteristic factor).
 
+Part V touches no sibling report either: none treats moving roots, bulk
+(sine-kernel) limits or oscillatory Jacobi determinants; no reciprocal note
+was written for batch 55. Its answers and open problems are internal to this
+report and are recorded there by dated notes: Part II's Sections 22 and 24.4
+and Part IV's introduction and Sections 44.4 and 57.1 (answered); Part IV's
+question 57.2 (generalized in Part V's 77.2, not answered) and Part III's
+Sections 40.2 and 40.4 (not discussed). The oscillatory Jacobi determinant
+`Phi_t` belongs to the kissing-polynomial literature (Celsus–Deaño–Huybrechs–
+Iserles), which no other ProveIt report cites.
+
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
-declaration anywhere in ProveIt formalizes a result of Parts I–IV as stated. The
+declaration anywhere in ProveIt formalizes a result of Parts I–V as stated. The
 nearest Lean material, the Catalan-number and generic moment-Hankel modules of
 `Analysis/FabiusFunction/Lean/FabiusFunction/` (for example
 `CatalanGeneratingFunction.lean`, `MomentHankelMatrix.lean`), concerns other
@@ -921,19 +1267,29 @@ of the Hankel determinant of `sum_i w_i a_i^r`, which is the case of Part II's
 Lemma 19.2 (not claimed new there) in which every exponential polynomial is
 constant, and `Surreal.Prony.monic_annihilator_unique` is a uniqueness
 statement for monic annihilators under an invertible Hankel matrix; neither
-formalizes a theorem of Parts I–IV. The Fabius project's
+formalizes a theorem of Parts I–V. The Fabius project's
 `Fabius.realSinhc` (`Analysis/FabiusFunction/Lean/FabiusFunction/HyperbolicActivation.lean`)
 defines the real function `sinh x / x` with value 1 at 0, the real case of
-Part IV's `sinhc`, with its basic identities; it states no result of this
-report. Part II's Section 23.3, Part III's Section 40.8 and Part IV's
-Sections 56.4 and 57.10 propose formalization routes (jets, confluent
-Vandermonde, the maximal-degree Cauchy–Binet lemma, finite-prefix
-certification; the exponential-block minimality lemma, the
+the `sinhc` of Parts IV and V, with its basic identities; it states no result
+of this report. The same project's
+`Fabius.polynomialMomentGramMatrix_det_eq_prod_coeff_sq_mul`
+(`PolynomialMomentGramDeterminant.lean`) is the finite change-of-basis
+identity `det G_n = (prod of leading coefficients)^2 det H_n` for an arbitrary
+moment pairing; the evaluation of Part V's constant `Z_t` (71.11) by monic
+Legendre norms is an instance of that algebra together with orthogonality,
+which the module does not assume, and no statement of Part V is formalized
+there. Part II's Section 23.3, Part III's Section 40.8, Part IV's
+Sections 56.4 and 57.10 and Part V's Section 77.9 propose formalization routes
+(jets, confluent Vandermonde, the maximal-degree Cauchy–Binet lemma,
+finite-prefix certification; the exponential-block minimality lemma, the
 nearest-representative and square-sum lemmas, and the implication from the
 two sector coefficients to the one-defect law; the polynomial identity behind
 the centred alternant, the first-coefficient table over `Q` and the minor
-relations, then the Christoffel layer, then the analytic remainder); none has
-been started.
+relations, then the Christoffel layer, then the analytic remainder; the
+centred Vandermonde, row-sign sector extraction, forced valuations and the
+first-coefficient identity over formal power series, then the Christoffel
+layer, then holomorphic divided differences, Cauchy estimates and the
+implicit-function argument); none has been started.
 
 ## Sources and attribution
 
@@ -967,16 +1323,27 @@ Mathematical Physics 241 (2003), 343–382. https://arxiv.org/abs/math-ph/021001
 Gernot Akemann and Yan V. Fyodorov, *Universal random matrix correlations of
 ratios of characteristic polynomials at the spectral edges*, Nuclear Physics B
 664 (2003), 457–476. https://arxiv.org/abs/hep-th/0304095
-(Both cited in Part IV for context only, not as inputs to its proofs.)
+(Both cited in Part IV for context only, not as inputs to its proofs;
+Strahov–Fyodorov is cited in Part V in the same way.)
 
 NIST Digital Library of Mathematical Functions, §18.11(ii), *Formulas of
 Mehler–Heine type*, https://dlmf.nist.gov/18.11 (Part IV).
+
+Andrew F. Celsus, Alfredo Deaño, Daan Huybrechs and Arieh Iserles, *The
+kissing polynomials and their Hankel determinants*, Transactions of
+Mathematics and Its Applications 6 (2022), tnab005.
+https://doi.org/10.1093/imatrm/tnab005, arXiv:1504.07297 (Part V: the
+oscillatory Jacobi determinant, its parity phenomena and large-frequency
+analysis are prior literature; the manuscript's audit could not retrieve the
+full text, so no theorem-by-theorem comparison was made).
 
 Dougherty, French, Saderholm and Qian (J. Integer Sequences 14 (2011)), DLMF
 18.5.7 and OEIS A000108, A001519, A001906 are cited in Part I. Part I's
 sources were checked on 19 September 2026 and Part II's on 28 September
 2026; Part III's manuscript is dated 29 September 2026 and its source notes
 do not date their checks; Part IV's manuscript and source notes are dated
-29 September 2026, the day it consulted DLMF. The four provenance notes
-record the versions inspected and the limits of each search. No third-party paper PDFs, font files, compiler auxiliaries or
+29 September 2026, the day it consulted DLMF; Part V's manuscript and source
+audit are dated 29 September 2026 (the audit gives the Pacific date). The
+five provenance notes record the versions inspected and the limits of each
+search. No third-party paper PDFs, font files, compiler auxiliaries or
 bytecode are included.
