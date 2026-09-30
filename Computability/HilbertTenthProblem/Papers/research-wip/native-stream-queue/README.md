@@ -28,6 +28,13 @@ New research, without a change to the complete universal bound:
 | [Native ternary selectors](native_controller_three_selector_53.md) | Exact three-label selector relation in **53=29M+24A**, with power geometry, typing, bounds and one-hot synchronization; 54 also exposes the repunit. | Controller, ordinary input, transport and acceptance remain unpaid. The first label is fixed to zero. |
 | [Native gate routing](native_controller_nand_composition.md) | Complete **66** cyclic NAND relation and **67** finite three-state variants; paid routing also proves Boolean input typing. | Commuting NAND wiring collapses. The richer rule family has no universality, raw-input or acceptance proof; the Rule110 search is explicitly bounded. |
 | [Noncommuting native routing](native_controller_noncommuting73.md) | Exact **73=37M+36A** NAND relation with a paid tail route, positive converse and an admitted noncommuting example. A finite-defect lemma bounds deviation from an ordinary rotation. | Universal wiring, input and acceptance remain absent. Removing the tail bound gives a refuted72 source. |
+| [Restricted tail routing](native_controller_noncommuting72.md) | Exact **72** and **71** NAND restrictions, including positive noncommuting examples. The71 relation has distance at most four from one rotation, sharply, and admits a family with independent block choices. | The structural bound does not classify all solutions or establish universality. |
+| [Single native word](native_single_word46.md) | Exact native typing in **45=25M+20A** using necessary signed parity; the explicit-parity46 reference is retained. | Repunit, Boolean projection, program mask, input and controller are additional obligations. |
+| [Two native fields](native_controller_two_fields48.md) | Exact **48=27M+21A** two-field relation;50 exposes the repunit. The proof covers the smallest admitted index8 and both parity directions. | Two Boolean planes have a combined parity restriction and fixed initial bit; no computation is supplied. |
+| [Paired Boolean fields](native_controller_boolean_pairs56.md) | Exact **56=30M+26A** relation for two independent Boolean streams and their complements, with repunit supplied. | Joint selectors and arbitrary Boolean functions are not free. |
+| [Four independent fields](native_controller_four_fields55.md) | Exact **55=30M+25A** four-field relation;57 exposes the repunit. The [56/58 reference](native_controller_four_fields56.md) pays parity explicitly. | Four Boolean planes have a combined parity restriction; routing, control and ordinary input remain unpaid. |
+| [Cyclic NAE/majority](native_controller_nae_majority60.md) | Exact **60=33M+27A** relation for two rotations and a not-all-equal gate with majority output, at even length. The [61 reference](native_controller_nae_majority61.md) also proves a conditional spectral restriction; the [67 source](native_controller_nae_majority67.md) permits either length parity. | This finite gate relation has no universal simulation or ordinary-input/acceptance compiler. |
+| [Dual-rail ordinary-input FIFO](native_dualrail_fifo67.md) | Exact **67=33M+34A** typed FIFO initialized by ordinary `6x+2`. A restricted arithmetic carry controller fits a literal75 architecture. | The FIFO alone admits all inputs. Universality of the restricted controller is open;75 is not a complete bound. |
 | [Selector/FIFO composition](input_bridge_selector_queue.md) | At most **69** operations for the complete finite three-row FIFO relation, with paid power geometry and bounds. A shared **63** specialization accepts exactly positive ternary repunits. | The established loader requires more read rows and a different origin treatment; the finite controller remains unpaid. |
 | [Stateless FIFO regularity](native_stateless_fifo_regular.md) | Every fixed finite stateless table with this equal-length transport accepts a regular language of ordinary inputs, even with padding, a fixed first row and positivity flags. | This excludes a universal stateless replacement, not the existing synchronized controller or a redesigned transport. |
 | [Interleaving refutation](interleaved_compiler_collapse_refutation.md) | New positive separated-field **74** and collapsed **75** sources admit every positive input for every admitted fixed compiler, including an empty-set compiler. | This rejects those specified sources, not either previously open75 candidate. The proof here uses an independent whole-cell stride. |
@@ -36,13 +43,14 @@ New research, without a change to the complete universal bound:
 | [Discriminant input-gap projection](input_bridge_discriminant_gap_projection.md) | Exact two-coset projection of a distinct **75=41M+34A** gap-deletion candidate, its fibers over genuine76 witnesses, and a certified bridge-only alias. | No full false input or soundness proof for that candidate. |
 | [Unscaled input bridge](input_bridge_unscaled13.md) | Exact conditional **13=6M+7A** bridge for `W=2^x` and `x>=2`, with explicit positive witnesses. | Input 1 forces zero quotients. Fixed disjoint End variants covering every input phase exhaust the data mask; this is not a complete75 compiler. |
 | [Squared-congruence kernel repair](pell_kernel_squared_congruence.md) | The same-cost change `jc` to `jc^2` preserves completeness but still permits the wrong-index kernel family; a numerical input bridge also attaches. | The actual compiler/transport is not attached, so this does not refute full75. |
-| [Arithmetic-carry controller analysis](native_controller_carry_obstruction.md) | Exact carry compiler criterion, scoped affine/polynomial controller obstructions, and a nonuniversality theorem for a single-coordinate zero-absorbing affine-carry queue. | Powers/bounds remain external to the conditional 13-operation controller schedule; the multi-coordinate effectivity question is expressly unaudited. |
+| [Arithmetic-carry controller analysis](native_controller_carry_obstruction.md) | Exact carry compiler criterion and scoped affine/polynomial controller obstructions. | Powers/bounds remain external to the conditional13 controller schedule. |
+| [Effective affine-carry width decision](input_bridge_presburger_effectivity.md) | Constructive audit closes the multi-coordinate effectivity gap: the scoped unfiltered affine/absorbing-zero model has a decidable ordinary-input language. | Extra edge filters, nonlinear witnesses or a different endpoint are outside the theorem. The checker implements the terminal procedure, not full quantifier elimination. |
 
 The mask, selector, interleaving, input-gap and squared-congruence packages
 have independent scoped proof/source/receipt review passes.
 The controller's carry, scalar-queue and polynomial arguments also
-have independent review; the separate parametric-Presburger application was
-checked against its primary theorem, without promoting algorithmic effectivity.
+have independent review. The later parametric-Presburger effectivity audit
+checks the constructive primary proofs and closes the previously recorded gap.
 These are mathematical proofs with symbolic and finite checks, not Lean
 formalizations or new publication bounds.
 
@@ -63,10 +71,21 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_unscaled13.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_squared_congruence.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/audit_native_controller_carry.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_noncommuting72.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_presburger_effectivity.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_single_word46.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_two_fields48.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_boolean_pairs56.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_four_fields56.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_four_fields55.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_nae_majority67.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_nae_majority61.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_nae_majority60.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_dualrail_fifo67.py
 ```
 
 The immediate constructive targets are a compiler using the single masked
-field and a native controller composed with the three typed selectors.
+field and a native controller using the typed Boolean streams or selectors.
 The direct interleaving shortcut is now refuted, including strictly positive
 separate data and verification fields and reuse of twice the actual main
 Pell power. The native alternative has paid typing for three choices and
@@ -75,7 +94,12 @@ Its uniform NAND form has a proved structural collapse; its three-state
 form has no universal computation compiler. The native FIFO now composes
 with the selectors with paid powers and bounds, but any fixed stateless
 table accepts only a regular input language. Larger affine state codes
-alone cannot encode the current erase/copy language. A useful next
+alone cannot encode the current erase/copy language. The full unfiltered
+affine-carry model with an absorbing zero endpoint is also decidable, even
+with finitely many carry coordinates. The dual-rail FIFO types the Boolean
+labels and includes ordinary input within67; its75 carry architecture
+therefore leaves a concrete restricted-controller universality question,
+outside that full-trit decidability theorem. A useful next
 construction must supply a synchronized controller, a proved universal
 local relation with routing, or a different computation model, with
 ordinary input and acceptance included in its full ledger.

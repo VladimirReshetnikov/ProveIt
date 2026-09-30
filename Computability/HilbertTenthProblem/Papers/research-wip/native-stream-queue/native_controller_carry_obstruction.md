@@ -230,12 +230,15 @@ Once a valid cutoff, period and admissible residues are available, the
 restriction L=3^ell is decidable: inspect the finitely many smaller powers
 and the eventual finite cycle of 3^ell modulo the period. The paper's
 proof uses constructive reductions and Presburger quantifier elimination
-in Sections 2-4, but this note does not implement that elimination or
-independently audit its full algorithmic effectivity. The claims recorded
-here are the exact reduction (6) and its stated eventual-periodicity
-consequence. They show why adding more unfiltered affine carry coordinates
-does not automatically restore a useful computation model. A proposed
-universal compiler must account for this collapsed width-only relation.
+in Sections 2-4. The subsequent
+[effectivity audit](input_bridge_presburger_effectivity.md) checks those
+constructions for this parameter-only sentence and gives a uniform
+algorithm computing a cutoff, period, exceptions and admissible residues.
+It closes the original effectivity gap: adding finitely many unfiltered
+affine carry coordinates with this absorbing zero endpoint still gives
+a decidable ordinary-input language. The full quantifier eliminator is
+not implemented; the separate checker implements the terminal periodicity
+and powers-of-three procedure and a hand-eliminated matrix example.
 
 ## 6. Even arbitrary witness-free polynomial equalities cannot capture this language
 
@@ -319,12 +322,13 @@ received an independent mathematical review with no findings. The carry
 criterion, exact ledger, affine obstruction and polynomial obstruction also
 received an independent proof/source/receipt review; its productive-prefix
 scope clarification has been incorporated. Section 5's exact reduction and
-eventual-periodicity consequence were checked against the primary theorem;
-its full algorithmic effectivity remains unaudited.
+eventual-periodicity consequence were checked against the primary theorem.
+The separate effectivity audit subsequently received two independent
+scoped proof/source/default reviews, including the primary reductions.
 
-The useful remaining target is a different universal machine whose
-*entire* local transition relation is a small carry graph, or a proved
-small family of typed witness streams that turns such a carry graph into
-the desired language. The carry graph must be designed together with
-erasure, ordinary-input loading and acceptance; encoding a large existing
-controller by larger free state numerals cannot solve the obstruction.
+The useful remaining target is a proved small family of typed witness
+streams that restricts a carry graph to the desired language, or a
+computation model outside the unfiltered affine/absorbing-zero scope.
+The restrictions must be designed together with erasure, ordinary-input
+loading and acceptance. Encoding a large existing controller by larger
+free state numerals cannot solve the obstruction.
