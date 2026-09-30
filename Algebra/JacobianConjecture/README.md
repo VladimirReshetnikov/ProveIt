@@ -173,7 +173,11 @@ names the declarations here that it builds on.
   integral point, `(1,-2,8)`.  Its Part II (batch 58) shows that such
   failures are Zariski dense in every plane `C = c ≠ 0`, hence in `A³`,
   that `C = 0` has none, and counts the completely split ones:
-  `~ κ(c) T^{2/3}` in boxes `|A|, |B| ≤ T`.  Not formalized.
+  `~ κ(c) T^{2/3}` in boxes `|A|, |B| ≤ T`.  Its Part III (batch 64) gives
+  a complete local-integral certificate for every target, nonsplit fibers
+  included, and on `C = 2` counts all integral Hasse failures in those
+  boxes: `(27/(2π²)) T log T + O(T)`, almost all of them nonsplit.  Not
+  formalized.
 - [`weighted-keller-rigidity`](../../SetTheory/Cardinals/docs/reports/jacobian-conjecture/weighted-keller-rigidity/README.md):
   classifies, in every degree, the Keller maps of weights `(-1,1,2)` whose
   components are affine in `v = x^2 z` (with `r` affine in `(t,v)`, extended

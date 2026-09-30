@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and thirteen independent mathematical research packages, unpacked
+One hundred and fourteen independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and thirteen reports, names the problem each one attacks
+numbers all one hundred and fourteen reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -29,8 +29,8 @@ records what each report claims rather than verifying it.
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation | 2 |
-| **Total** | **113** |
+| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting | 3 |
+| **Total** | **114** |
 
 ## Later deliveries
 
@@ -136,7 +136,35 @@ systems and rewriting) and
 [`probabilistic-quantum-and-continuous-computation`](hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation)
 (three: output laws and normalization budgets of probabilistic programs,
 undecidable quantum mortality in dimension four, and a continuous
-three-outcome trichotomy).
+three-outcome trichotomy).  Batch 62 added four Parts to the first of these
+(dynamic heaps and fresh names; order-free self-assembly and a sharp degree
+threshold for orthant-nonnegative polynomials; priority pumping; conservative
+reaction networks with one shared fallback: Parts X–XIII), three Parts from
+eight manuscripts to the second (quartic probability landscapes and
+reversible equilibria; exact rational and cyclotomic gates; strict and 2-adic
+contractions and exact-precision neural networks: Parts V–VII), and opened a
+third, [`liveness-beyond-halting`](hilbert-tenth-problem/liveness-beyond-halting)
+(two manuscripts: progress deadlines, hyperimmune-free schedules and the
+recurrence hierarchy up to Σ¹₁).  Batch 63 added a third manuscript to
+[`liveness-beyond-halting`](hilbert-tenth-problem/liveness-beyond-halting)
+(an incoming-edge quadratic transition law and planar stack dynamics), a
+Part XIV to
+[`canonical-diophantine-certificates`](hilbert-tenth-problem/canonical-diophantine-certificates)
+(history-free routing certificates and a rank-function bottleneck), and a
+Part VIII to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(marked-tree stability).  Batch 64 added a Part IX to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(two-flow bijections and lattice-point sampling), a Part III to
+[`arithmetic-local-global-fibers`](jacobian-conjecture/arithmetic-local-global-fibers)
+(nonsplit fibers and a `T log T` law), a Part XIV to
+[`slice-regularity-and-fueter-inversion`](quaternionic-analysis/slice-regularity-and-fueter-inversion)
+(global Fueter inversion beyond finite connectivity), a Part VIII to
+[`probabilistic-quantum-and-continuous-computation`](hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation)
+(rational tubes for polynomial flows) and a Part V to
+[`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
+(critical moments of the largest jump); its sixth manuscript went to the
+Fabius drafts tree.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
