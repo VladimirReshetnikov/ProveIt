@@ -130,6 +130,21 @@ eigenfunctional.  Nonzero phases and uniformity at `s → 0, 1` are not
 settled.  Unreviewed; its numerics are diagnostics, not certificates; no
 Lean statement.
 
+## Critical corrections and equilibrium selection (arrival, 2026-09-29)
+
+[`Thue_Morse_Critical_Pressure_Corrections/`](Thue_Morse_Critical_Pressure_Corrections/)
+holds *Beyond the Square-Root Cusp* (21-page A4 PDF, 1,495-line source,
+an mpmath/NumPy/SciPy diagnostic program), filed on 2026-09-29 by a quick
+archival intake.  It takes up two questions of the critical pressure
+article above.  At the critical exponent the pressure is
+`κ_b√|c| − (b−1)|c| log(1/|c|) + [b log b + (b−1)(γ−1)]|c| + O(|c|^{3/2−η})`,
+so both a logarithmic and a linear term follow the square root; the
+equilibrium measures at small nonzero phases converge weakly to
+`½δ_0 + ½·Lebesgue`, and along the detuned window `s = 1 + u√|c|` to an
+explicit mixture.  The left boundary layer, a sharp next term and
+unbounded detuning are not settled.  Unreviewed; its numerics are
+diagnostics, not certificates; no Lean statement.
+
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities

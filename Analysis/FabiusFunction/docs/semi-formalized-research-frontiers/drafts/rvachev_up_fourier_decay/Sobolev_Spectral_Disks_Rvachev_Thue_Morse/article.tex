@@ -1,0 +1,1729 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor,fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{inkblue}{RGB}{28,55,81}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={From Analytic Spectral Collapse to Sobolev Spectral Disks},
+ pdfauthor={OpenAI ChatGPT; research manuscript prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact spectra, Thue--Morse and Stern dual distributions, and sharp logarithmic endpoint asymptotics}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Sobolev spectral disks and endpoint laws}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{itemsep=0.3em,topsep=0.3em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\T}{\mathbb T}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\ess}{\mathrm{ess}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\br}[1]{\langle#1\rangle}
+\newcommand{\Disk}[1]{\overline{D}(0,#1)}
+\newcommand{\Hs}{H^{s,\beta}(\T)}
+\numberwithin{equation}{section}
+
+\title{\textbf{From Analytic Spectral Collapse\\to Sobolev Spectral Disks}\\[0.6em]
+\large Exact regularity thresholds and sharp endpoint laws\\
+for Rvachev--Thue--Morse transfer operators}
+\author{Research manuscript prepared for Vladimir Reshetnikov\\
+\small OpenAI ChatGPT}
+\date{29 September 2026 (Pacific time)}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The ProveIt manuscript on spectral collapse and alternating Rvachev RMS
+asymptotics asks how its analytic spectrum changes at finite smoothness.
+We answer the periodic Sobolev part of that question, including logarithmic
+refinements, and the nonperiodic interval problem at every nonnegative integer
+Sobolev order. For a trigonometric polynomial mask and an integer dilation,
+a positive eigenfunction of the squared-mask transfer operator gives the
+exact Fredholm essential spectrum: a closed disk. The complete spectrum is
+that disk together with the spectrum of an explicit finite Fourier matrix.
+We prove the required positivity hypothesis for every even sine power.
+
+For the dyadic quadratic sine mask the disk radius is
+$2^{-s}\sqrt{1+\sqrt{17}}/4$. The eigenvalues $1/2$ and $-1/4$ become isolated
+exactly above two regularity thresholds separated by one derivative.
+An exact Fourier-cutoff identity links the leading Thue--Morse correlation
+functional to the subleading Stern-polynomial functional $B_k(-2)$.
+Closed quadratic-energy formulas determine their precise Sobolev and
+logarithmic continuity thresholds. They also give two-sided, sharp operator
+norms for the scalar moment remainder. At the subleading critical index,
+a logarithmic weight of exponent $\beta>1/2$ recovers a uniform two-term
+scalar asymptotic even though the subleading eigenvalue remains on the
+essential spectral boundary. No corresponding operator-norm little-oh
+remainder is possible.
+
+All infinite-dimensional conclusions are proved analytically. An accompanying
+standard-library Python program checks finite identities with exact rational
+and quadratic-field arithmetic. This is an unrefereed research extension,
+not a new Lean formalization or a claim of established global priority.
+\end{abstract}
+\noindent\textbf{Keywords.} Transfer operator; essential spectrum; Sobolev regularity;
+Thue--Morse correlations; Stern polynomials; Riesz product; critical asymptotics.
+
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The repository question and the contribution}
+\label{sec:intro}
+
+\subsection{A specific, delimited research target}
+The Fabius-function branch of ProveIt contains a Fourier-decay synthesis and
+a later manuscript entitled \emph{Spectral Collapse and Alternating RMS
+Asymptotics for the Rvachev Up-Function} \cite{repo-spectral,repo-fourier}.
+The later manuscript proves, on analytic Hardy disk spaces, that the quadratic
+dyadic transfer operator has spectrum $\{0,1/2,-1/4\}$. Its research question
+\emph{Spectra at finite smoothness} asks for the spectrum or essential spectral
+radius on finite-smoothness spaces, the isolation of the analytic eigenvalues,
+and the effect of unmatched endpoint jets. It explicitly warns against
+transferring an analytic determinant to such spaces.
+
+This paper answers that question on $H^{s,\beta}(\T)$ for all real $s,\beta$,
+and on $H^r(0,1)$ for every integer $r\ge0$. The answer differs fundamentally
+from analytic spectral collapse: there is an entire essential spectral disk,
+not merely a finite set. The remaining H\"older, $C^r$, and fractional
+nonperiodic interval questions are not claimed to be resolved.
+
+The comparison is fixed by the repository commit
+\begin{center}\small\texttt{b2aed2d23125006c48d63fc97aef0d64b67becb1}.\end{center}
+The exact source path, inspected material, and source identifiers are recorded
+in \cref{sec:provenance}. No repository file was modified in preparing this
+article. In particular, a result described here as proved is a claim about
+the mathematical argument in this article, not a claim that the repository's
+Lean development already contains it.
+
+\subsection{What is already known, and what is supplied here}
+Transfer operators with sine and cosine weights have an established
+literature. Chen and Volkmer study precisely this family on the circle,
+including explicit dyadic computations \cite{chen-volkmer}. Disk spectra
+for weighted isometries and their connection with transfer operators are
+part of a broader theory studied by Bardadyn and Kwa\'sniewski
+\cite{bardadyn-kwasniewski}. Thue--Morse correlations, their Riesz-product
+origin, and questions about their means are also established objects
+\cite{baake-coons}. The recurrence defining Stern polynomials is classical;
+we use the normalization of Ulas and Ulas \cite{ulas-ulas}.
+
+The present work does not claim to discover those operators, sequences, or
+the general possibility of a disk spectrum. Its contribution is the
+self-contained combination of an exact Sobolev essential disk with a
+complete finite-matrix classification of the outliers, followed by a sharp
+critical-regularity analysis of the two distinguished dyadic coefficient
+functionals. The exact Fourier-tail formula yields a scalar asymptotic at an
+embedded spectral boundary, together with an optimal logarithmic threshold.
+These statements provide a concrete answer to the inspected repository's
+finite-smoothness question.
+
+The literature checks establish relevant antecedents but are not an exhaustive
+priority investigation. Some retrieved sources were available only through
+primary-source abstracts and metadata. Accordingly, the results are presented
+as a proved research extension relative to the specified repository target,
+not as a certified first occurrence of every specialization in the literature.
+
+\subsection{The principal dyadic conclusion}
+Let
+\begin{equation}
+ (\Lop f)(x)=\frac12\left[
+ \sin^2\!\left(\frac{\pi x}{2}\right)f(x/2)
+ +\cos^2\!\left(\frac{\pi x}{2}\right)f((x+1)/2)\right].
+ \label{eq:intro-L}
+\end{equation}
+Put
+\begin{equation}
+ \gamma=\frac{\sqrt{1+\sqrt{17}}}{4},\qquad
+ s_0=\frac12\log_2\!\left(\frac{1+\sqrt{17}}4\right),\qquad
+ s_1=s_0+1.
+ \label{eq:thresholds-intro}
+\end{equation}
+The exact classification proved below is
+\begin{equation}
+ \sigma_{\ess}(\Lop;H^{s,\beta})=\Disk{\gamma2^{-s}},\qquad
+ \sigma(\Lop;H^{s,\beta})=
+ \Disk{\gamma2^{-s}}\cup\{1/2,-1/4\}.
+ \label{eq:intro-spectrum}
+\end{equation}
+Here essential spectrum means \emph{failure of Fredholmness}. The real
+logarithmic exponent $\beta$ does not change this spectral set. It does,
+however, decide whether the leading and subleading coefficient functionals
+are continuous at $s=s_0$ and $s=s_1$.
+
+For the sine-product moments
+\begin{equation}
+ W_n(x)=\prod_{j=0}^{n-1}\sin^2(\pi2^j x),\qquad
+ I_n(f)=\int_0^1 f(x)W_n(x)\dd x,
+ \label{eq:intro-moments}
+\end{equation}
+we construct functionals $\mu,D_+,D_-$ such that
+\begin{equation}
+ I_n(f)=2^{-n}\mu(f)
+  +\frac{(-1/4)^n}{3}(D_++D_-)(f)+R_n(f).
+ \label{eq:intro-two-term}
+\end{equation}
+At the critical subleading regularity,
+\begin{equation}
+ \norm{R_n}_{(H^{s_1,\beta})^*}
+ \asymp_\beta 4^{-n}(1+n)^{1/2-\beta}
+ \quad(\beta>1/2).
+ \label{eq:intro-endpoint}
+\end{equation}
+Thus a uniform scalar remainder $o(4^{-n})$ survives at the essential
+spectral boundary, while an operator-norm remainder $o(4^{-n})$ cannot.
+This distinction is one of the main reasons to study both the spectrum and
+the actual moment functional rather than substitute one question for the other.
+
+\section{Spaces, masks, and the classification theorem}
+\label{sec:framework}
+
+\subsection{Fourier conventions and logarithmic Sobolev spaces}
+Write $\T=\R/\Z$, $e_k(x)=\exp(2\pi\ii kx)$, and
+$\widehat f(k)=\int_0^1f(x)e^{-2\pi\ii kx}\dd x$ for integrable $f$.
+For real $s,\beta$, define $H^{s,\beta}(\T)$ as the Hilbert completion of
+trigonometric polynomials in the norm
+\begin{equation}
+ \norm f_{s,\beta}^2=
+ \sum_{k\in\Z}\br{k}^{2s}\bigl[\log(e+|k|)\bigr]^{2\beta}
+       |\widehat f(k)|^2,\qquad \br{k}=(1+k^2)^{1/2}.
+ \label{eq:Hsb}
+\end{equation}
+The notation $H^s$ means $H^{s,0}$. For negative $s$, the completion is
+naturally a space of periodic distributions. Every formula initially stated
+on trigonometric polynomials extends by boundedness when the relevant norm
+estimate is established. Pairings with distributions are complex-linear in
+$f$; they need not be Hilbert inner products.
+
+Let $b\ge2$ be an integer and let
+\begin{equation}
+ w(x)=\sum_{\ell=-D}^{D}w_\ell e_\ell(x)\ne0,
+ \qquad
+ (\Lop_{b,w}f)(x)=\frac1b\sum_{a=0}^{b-1}
+       (wf)\!\left(\frac{x+a}{b}\right).
+ \label{eq:general-L}
+\end{equation}
+The Fourier rule is
+\begin{equation}
+ \widehat{\Lop_{b,w}f}(k)
+   =\sum_{\ell=-D}^{D}w_\ell\widehat f(bk-\ell),
+ \qquad
+ \Lop_{b,w}e_j=\sum_k w_{bk-j}e_k.
+ \label{eq:Fourier-rule}
+\end{equation}
+In particular, these operators are bounded on every $H^{s,\beta}$: only
+finitely many frequency shifts occur, and the ratio of the corresponding
+weights is bounded.
+
+\subsection{The finite matrix and the positive square-mask hypothesis}
+Set
+\begin{equation}
+ d=\left\lfloor\frac D{b-1}\right\rfloor,\qquad
+ F_d=\Span\{e_j:|j|\le d\},\qquad
+ A_{b,w}=(w_{bk-j})_{-d\le k,j\le d}.
+ \label{eq:finite-matrix}
+\end{equation}
+A coefficient outside $[-D,D]$ is understood to be zero. This matrix is
+exactly the restriction of $\Lop_{b,w}$ to $F_d$.
+
+The hypothesis used in the general result is
+\begin{equation}
+ h\in C(\T),\quad \min_\T h>0,\quad \rho>0,\qquad
+ \Lop_{b,|w|^2}h=\rho h.
+ \tag{P}\label{eq:P}
+\end{equation}
+It is important that $h$ be strictly positive, not merely nonnegative.
+A zero of $h$ would invalidate the bounded similarity used below.
+We prove \eqref{eq:P} for all masks $\sin^{2m}(\pi x)$ in \cref{sec:sine}.
+For a general complex trigonometric mask, it remains an explicit hypothesis.
+
+\begin{theorem}[Exact Sobolev disk and finite outliers]
+\label{thm:general-spectrum}
+Assume \eqref{eq:P}. For all real $s,\beta$, set $r_s=b^{-s}\sqrt\rho$.
+Then
+\begin{align}
+ \sigma_{\ess}(\Lop_{b,w};H^{s,\beta})&=\Disk{r_s},
+ \label{eq:general-essential}\\
+ \sigma(\Lop_{b,w};H^{s,\beta})&=\Disk{r_s}\cup\sigma(A_{b,w}).
+ \label{eq:general-spectrum}
+\end{align}
+Every generalized eigenvector at an eigenvalue $\lambda$ with $|\lambda|>r_s$
+lies in $F_d$. The algebraic multiplicities and Jordan blocks at such
+$\lambda$ agree with those of $A_{b,w}$.
+
+Moreover, for every $n\ge1$ and every compact operator $K$ on $H^{s,\beta}$,
+\begin{equation}
+ \norm{\Lop_{b,w}^{\,n}-K}_{H^{s,\beta}\to H^{s,\beta}}\ge r_s^n.
+ \label{eq:compact-obstruction}
+\end{equation}
+The compact operator may depend on $n$.
+\end{theorem}
+
+The theorem identifies a \emph{set-valued spectrum}, not only its outer
+radius. It does not identify the point, continuous, and residual spectra
+inside the Sobolev disk. On $L^2$, the proof supplies infinite-dimensional
+eigenspaces for every point in the open disk. Compact perturbation preserves
+the Fredholm essential spectrum, but not those individual eigenspaces; we
+therefore make no analogous interior point-spectrum assertion at every $s$.
+
+\section{The exact \texorpdfstring{$L^2$}{L2} disk}
+\label{sec:L2}
+
+\subsection{A similarity to a coisometry}
+Let $M_g$ denote multiplication by a bounded function $g$. All adjoints in
+this section are taken in $L^2(\T)$ with Lebesgue measure.
+
+\begin{lemma}[Square-mask identity]
+\label{lem:square-mask}
+For bounded $h$,
+\begin{equation}
+ \Lop_{b,w}^*g=\overline w\,(g\circ T_b),\qquad
+ \Lop_{b,w}M_h\Lop_{b,w}^*
+       =M_{\Lop_{b,|w|^2}h},\quad T_bx=bx\pmod1.
+ \label{eq:square-mask}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Changing variables on each of the $b$ branches gives
+$\int(\Lop_{b,w}f)\overline g=\int wf\,\overline{g\circ T_b}$,
+which proves the adjoint formula. For the second identity, evaluate
+$\Lop_{b,w}(h\overline w\,g\circ T_b)$ at $x$. The factor $g(x)$
+does not depend on the chosen inverse branch and can be taken outside the
+sum. What remains is $\Lop_{b,|w|^2}h(x)$.
+\end{proof}
+
+\begin{lemma}[Coisometry and power bound]
+\label{lem:coisometry}
+Under \eqref{eq:P}, the operator
+\begin{equation}
+ C=\rho^{-1/2}M_{h^{-1/2}}\Lop_{b,w}M_{h^{1/2}}
+ \label{eq:C}
+\end{equation}
+is a coisometry: $CC^*=I$. Consequently,
+\begin{equation}
+ \norm{\Lop_{b,w}^{\,n}}_{2\to2}
+ \le \left(\frac{\max h}{\min h}\right)^{1/2}\rho^{n/2}
+ \qquad(n\ge0).
+ \label{eq:L2-power}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The square-mask identity gives
+$CC^*=\rho^{-1}M_{h^{-1/2}}M_{\rho h}M_{h^{-1/2}}=I$.
+Thus $C^*$ is an isometry and $\norm C=1$. The similarity
+$\Lop_{b,w}=\sqrt\rho M_{h^{1/2}}CM_{h^{-1/2}}$ yields
+\eqref{eq:L2-power}.
+\end{proof}
+
+\subsection{Why the whole disk is essential}
+\begin{lemma}[Infinite branch defect]
+\label{lem:kernel}
+The kernel of $\Lop_{b,w}$ on $L^2(\T)$ is infinite-dimensional.
+\end{lemma}
+\begin{proof}
+A nonzero trigonometric polynomial has only finitely many zeros on $\T$.
+Choose a small interval $J\subset(0,1)$ on which two branch weights
+$w(y_0(x))$ and $w(y_1(x))$, with $y_a(x)=(x+a)/b$, do not vanish.
+For arbitrary $g\in L^2(J)$, define $f$ on these two branch intervals by
+\[
+ f(y_0(x))=w(y_1(x))g(x),\qquad
+ f(y_1(x))=-w(y_0(x))g(x),
+\]
+and let $f$ vanish on the other branches and outside these intervals.
+The two contributions to $\Lop_{b,w}f$ cancel. Because the weights are
+bounded away from zero after shrinking $J$, this construction embeds the
+infinite-dimensional space $L^2(J)$ into the kernel.
+\end{proof}
+
+\begin{proposition}[Complete essential disk on $L^2$]
+\label{prop:L2-spectrum}
+Under \eqref{eq:P},
+\begin{equation}
+ \sigma(\Lop_{b,w};L^2)=\sigma_{\ess}(\Lop_{b,w};L^2)
+ =\Disk{\sqrt\rho}.
+ \label{eq:L2-disk}
+\end{equation}
+Every point of the open disk is an eigenvalue of infinite geometric
+multiplicity.
+\end{proposition}
+\begin{proof}
+Let $E=\ker C$, which is infinite-dimensional by \cref{lem:kernel} and the
+similarity. For $e\in E$, the vectors $(C^*)^je$, $j\ge0$, lie in mutually
+orthogonal copies of $E$. Indeed, if $j>k$, cancellation of $k$ copies of
+$CC^*=I$ reduces the inner product to one involving a positive power of $C$
+applied to an element of $\ker C$, and it is zero.
+
+For $|z|<1$, the norm-convergent series
+\begin{equation}
+ u_z(e)=\sum_{j=0}^{\infty}z^j(C^*)^je
+ \label{eq:disk-eigenvectors}
+\end{equation}
+satisfies $Cu_z(e)=zu_z(e)$ and
+$\norm{u_z(e)}^2=\norm e^2/(1-|z|^2)$. It is injective in $e$.
+Therefore $C-zI$ has infinite-dimensional kernel and is not Fredholm.
+The non-Fredholm set is closed, so it contains the closed unit disk.
+Since $\norm C=1$, there is no spectrum outside that disk. Similarity and
+scaling prove the claim for $\Lop_{b,w}$.
+\end{proof}
+
+No abstract classification of all weighted shifts is needed for this
+argument. The branch defect and the positive square-mask eigenfunction
+supply the complete disk directly.
+
+\section{Compact conjugacy and the exclusion of hidden outliers}
+\label{sec:sobolev-proof}
+
+\subsection{The compact remainder in a change of regularity}
+Let $U_{s,\beta}:H^{s,\beta}\to L^2$ be the unitary Fourier multiplier
+\begin{equation}
+ U_{s,\beta}e_k=q_{s,\beta}(k)e_k,\qquad
+ q_{s,\beta}(k)=\br{k}^{s}[\log(e+|k|)]^\beta.
+ \label{eq:unitary}
+\end{equation}
+
+\begin{lemma}[Compact Sobolev conjugacy]
+\label{lem:compact-conjugacy}
+For every real $s,\beta$,
+\begin{equation}
+ U_{s,\beta}\Lop_{b,w}U_{s,\beta}^{-1}
+ =b^{-s}\Lop_{b,w}+K_{s,\beta},
+ \qquad K_{s,\beta}\text{ compact on }L^2.
+ \label{eq:compact-conjugacy}
+\end{equation}
+For every fixed positive integer $n$, it follows that
+\begin{equation}
+ U_{s,\beta}\Lop_{b,w}^{\,n}U_{s,\beta}^{-1}
+ =b^{-ns}\Lop_{b,w}^{\,n}+K_{s,\beta,n},
+ \qquad K_{s,\beta,n}\text{ compact}.
+ \label{eq:compact-power}
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the Fourier rule, the entry that sends input frequency $bk-\ell$ to
+output frequency $k$ is multiplied under conjugacy by
+$q_{s,\beta}(k)/q_{s,\beta}(bk-\ell)$. For each fixed $\ell$,
+\begin{equation}
+ \frac{q_{s,\beta}(k)}{q_{s,\beta}(bk-\ell)}\longrightarrow b^{-s}
+ \qquad (|k|\to\infty).
+ \label{eq:weight-ratio}
+\end{equation}
+The power part has this limit because
+$\br{k}/\br{bk-\ell}\to b^{-1}$; the quotient of the two logarithms tends
+to one. The difference operator for this $\ell$ is a bounded partial
+frequency shift followed by a diagonal multiplier tending to zero at both
+ends of $\Z$. Such a diagonal multiplier is a norm limit of finite-rank
+truncations. Summing over the finitely many $\ell$ proves
+\eqref{eq:compact-conjugacy}. Taking powers preserves equality modulo
+compact operators and gives \eqref{eq:compact-power}.
+\end{proof}
+
+The Fredholm essential spectrum is invariant under compact perturbations.
+Together with \cref{prop:L2-spectrum}, \cref{lem:compact-conjugacy}
+already proves \eqref{eq:general-essential}. This step alone does
+\emph{not} exclude additional isolated eigenvalues outside the disk.
+The finite-frequency argument below does that work.
+
+\subsection{Finite bands and quotient tails}
+\begin{lemma}[Invariance and strict descent]
+\label{lem:band}
+For every $N\ge d$, $F_N$ is invariant under $\Lop_{b,w}$. If a
+trigonometric polynomial has degree $p>d$, its image has degree at most
+$\lfloor(p+D)/b\rfloor<p$. Therefore the induced operator on $F_N/F_d$
+is nilpotent.
+\end{lemma}
+\begin{proof}
+A nonzero output frequency satisfies $|bk-j|\le D$, so its absolute value
+is at most $(|j|+D)/b$. For $N\ge d$, write
+$D=(b-1)d+e$ with $0\le e<b-1$. Then
+$\lfloor(N+D)/b\rfloor\le N$. If $p>d$, one has $D<(b-1)p$,
+which gives strict descent. Iteration reaches $F_d$ in finitely many
+steps.
+\end{proof}
+
+\begin{lemma}[Every exterior spectral point is finite-dimensional]
+\label{lem:outliers}
+Under \eqref{eq:P}, if $|\lambda|>r_s$, then
+$\lambda\in\sigma(\Lop_{b,w};H^{s,\beta})$ if and only if
+$\lambda\in\sigma(A_{b,w})$. The generalized eigenspaces at such
+$\lambda$ are contained in $F_d$.
+\end{lemma}
+\begin{proof}
+Write $\widetilde L=U_{s,\beta}\Lop_{b,w}U_{s,\beta}^{-1}$.
+Let $Q_N$ be the orthogonal projection onto frequencies $|k|>N$.
+By \eqref{eq:L2-power}, choose a positive integer $n$ with
+\[
+ b^{-ns}\norm{\Lop_{b,w}^{\,n}}_{2\to2}<|\lambda|^n.
+\]
+Using \eqref{eq:compact-power} and
+$\norm{Q_NK_{s,\beta,n}Q_N}\to0$, choose $N\ge d$ so large that
+\begin{equation}
+ \norm{Q_N\widetilde L^{\,n}Q_N}<|\lambda|^n.
+ \label{eq:tail-power-bound}
+\end{equation}
+Since $F_N$ is invariant, the quotient operator is represented on its
+orthogonal complement by $T_N=Q_N\widetilde LQ_N$, and
+$T_N^n=Q_N\widetilde L^{\,n}Q_N$ on that complement. Hence
+$\lambda I-T_N$ is invertible: its spectral radius is smaller than
+$|\lambda|$.
+
+Relative to $F_N\oplus F_N^\perp$, the operator is block upper triangular.
+The lower diagonal block is invertible after subtracting $\lambda I$.
+Thus the full operator is invertible exactly when its finite block on
+$F_N$ is invertible. By \cref{lem:band}, that finite block has the same
+nonzero eigenvalues as the block on $F_d$; the remaining quotient is
+nilpotent. Also, if $(\widetilde L-\lambda I)^jv=0$, invertibility on the
+tail forces $v\in F_N$, and invertibility of the nilpotent quotient minus
+$\lambda I$ forces $v\in F_d$. Diagonal conjugation by $U_{s,\beta}$
+preserves each finite band, completing the proof.
+\end{proof}
+
+\begin{proof}[Completion of \cref{thm:general-spectrum}]
+The essential disk follows from compact conjugacy. Every finite-matrix
+eigenvalue is an eigenvalue on the full space, since $F_d$ is invariant.
+\Cref{lem:outliers} excludes any other spectrum outside the disk and
+identifies the generalized eigenspaces. Near an exterior eigenvalue the
+quotient block remains invertible, so the finite-block resolvent also
+identifies its algebraic multiplicity and Jordan structure.
+
+Finally, the Calkin image of $\Lop_{b,w}$ has spectrum $\Disk{r_s}$.
+The spectrum of its $n$th power is $\Disk{r_s^n}$ by spectral mapping.
+Its norm is at least its spectral radius, and the quotient norm is no
+larger than $\norm{\Lop_{b,w}^{\,n}-K}$ for any compact $K$.
+This proves \eqref{eq:compact-obstruction}.
+\end{proof}
+
+\begin{remark}[Regularity-dependent, not contradictory spectra]
+An analytic Hardy space and a finite-order Sobolev space are different
+Banach spaces with different resolvents. The appearance of an essential
+disk here neither contradicts nor weakens the analytic finite-spectrum
+result in the repository. It quantifies precisely what analytic regularity
+had removed.
+\end{remark}
+
+\section{All even sine powers and integer interval regularity}
+\label{sec:sine}
+
+\subsection{A positive eigenfunction exists in a finite cone}
+For $m\ge1$, let
+\begin{equation}
+ w_m(x)=\sin^{2m}(\pi x),\qquad
+ c_{m,\ell}=\frac{(-1)^\ell}{4^m}\binom{2m}{m+\ell}
+ \quad(|\ell|\le m).
+ \label{eq:sine-coefficients}
+\end{equation}
+The coefficients are zero outside this interval. Denote the matrix
+\eqref{eq:finite-matrix} for $w_m$ by $A_{b,m}$.
+
+\begin{proposition}[Automatic positivity for even sine masks]
+\label{prop:sine-positive}
+For every $b\ge2$ and $m\ge1$, there exist a strictly positive real
+trigonometric polynomial $h$ and a number $\rho_{b,m}>0$ such that
+\begin{equation}
+ \Lop_{b,w_{2m}}h=\rho_{b,m}h.
+ \label{eq:sine-positive}
+\end{equation}
+The degree of $h$ is at most $d_2=\lfloor2m/(b-1)\rfloor$, and
+\begin{equation}
+ \rho_{b,m}=r(A_{b,2m}),
+ \label{eq:rho-finite}
+\end{equation}
+where $r$ denotes spectral radius. In particular, $\rho_{b,m}$ is a
+positive algebraic number.
+\end{proposition}
+\begin{proof}
+Let $V$ be the real vector space of real-valued trigonometric polynomials
+of degree at most $d_2$. Consider the set
+\[
+ \mathcal K=\left\{f\in V:f\ge0,\ \int_0^1f=1\right\}.
+\]
+It is nonempty and convex. It is compact because, for $f\in\mathcal K$,
+$|\widehat f(k)|\le\int f=1$, and it is closed in the finite-dimensional
+space $V$. By the finite-band lemma, $\Lop_{b,w_{2m}}$ maps $V$ into $V$.
+For nonzero nonnegative $f$, the integral
+$\int w_{2m}f$ is strictly positive, since $w_{2m}>0$ except at the integer
+point and $f$ is a nonzero continuous function. Therefore
+\[
+ f\longmapsto
+ \frac{\Lop_{b,w_{2m}}f}{\int_0^1\Lop_{b,w_{2m}}f}
+\]
+is a continuous map from $\mathcal K$ to itself. The finite-dimensional
+Brouwer fixed-point theorem gives an eigenfunction $h\ge0$ with mean one
+and eigenvalue $\rho>0$.
+
+It remains to prove strict positivity. A nonzero trigonometric polynomial
+of degree at most $d_2$ has at most $2d_2$ distinct zeros on $\T$: multiply
+its Laurent polynomial by the $d_2$th power of its variable and use the
+ordinary polynomial zero bound. Choose $n$ with
+$(b-1)b^{n-1}>2d_2$. If $x\in(0,1)$, all $b^n$ inverse branches in
+$\Lop_{b,w_{2m}}^{\,n}h(x)$ have strictly positive product weights.
+If $x=0$, at least the $(b-1)b^{n-1}$ preimages $k/b^n$ with $b\nmid k$
+have strictly positive product weights; none of their first $n$ forward
+positions is an integer. There are therefore more positive-weight
+preimages than zeros of $h$. At least one summand is positive, at every
+$x$, so $\Lop_{b,w_{2m}}^{\,n}h(x)>0$. Since this equals $\rho^nh(x)$,
+we obtain $h>0$.
+
+On the complexification of $V$, equip functions with the equivalent norm
+$\norm f_h=\max_x|f(x)|/h(x)$. Positivity gives
+$|\Lop_{b,w_{2m}}f|\le\Lop_{b,w_{2m}}|f|\le\rho\norm f_h h$.
+Hence its finite-dimensional spectral radius is at most $\rho$, and the
+eigenfunction gives equality. Its matrix has rational entries by
+\eqref{eq:sine-coefficients}, proving algebraicity.
+\end{proof}
+
+\begin{corollary}[Complete even-moment spectra]
+\label{cor:all-sine}
+For all integers $b\ge2$, $m\ge1$, and real $s,\beta$,
+\begin{align}
+ \sigma_{\ess}(\Lop_{b,w_m};H^{s,\beta})
+ &=\Disk{b^{-s}\sqrt{r(A_{b,2m})}},\notag\\
+ \sigma(\Lop_{b,w_m};H^{s,\beta})
+ &=\Disk{b^{-s}\sqrt{r(A_{b,2m})}}\cup\sigma(A_{b,m}).
+ \label{eq:all-sine-spectrum}
+\end{align}
+An eigenvalue $\lambda\ne0$ of $A_{b,m}$ lies outside the essential disk
+exactly when
+\begin{equation}
+ s>\log_b\!\left(\frac{\sqrt{r(A_{b,2m})}}{|\lambda|}\right).
+ \label{eq:general-isolation-threshold}
+\end{equation}
+\end{corollary}
+
+This gives a finite algebraic procedure for the complete spectral set at
+any specified regularity. Numerical diagonalization is not part of the
+proof. Exact characteristic polynomials or certified algebraic root
+isolation may be used to turn the formulas into explicit numbers.
+
+\subsection{Unmatched interval jets do not add nonzero spectrum}
+Let $H^r(0,1)$ be the usual interval Sobolev space at an integer order
+$r\ge0$. When $r\ge1$, its periodic subspace is characterized by the
+$r$ matching conditions
+\begin{equation}
+ f^{(j)}(1)=f^{(j)}(0),\qquad 0\le j<r.
+ \label{eq:matching-jets}
+\end{equation}
+It is naturally isomorphic to $H^r(\T)$, with equivalent norms. Define
+$\delta_j(f)=f^{(j)}(1)-f^{(j)}(0)$.
+
+\begin{lemma}[Exact boundary-jet action]
+\label{lem:jets}
+For a smooth periodic mask $w$ and $0\le j<r$,
+\begin{equation}
+ \delta_j(\Lop_{b,w}f)=b^{-j-1}
+ \sum_{\ell=0}^j\binom j\ell w^{(j-\ell)}(0)\delta_\ell(f).
+ \label{eq:jet-action}
+\end{equation}
+For $w=w_m$, the induced operator on the quotient by the periodic subspace
+is nilpotent, of nilpotency index at most $\lceil r/(2m)\rceil$ when $r>0$.
+\end{lemma}
+\begin{proof}
+Differentiate the branch formula $j$ times. The difference between its
+values at $1$ and $0$ telescopes over the $b$ branch endpoints, leaving
+$b^{-j-1}[(wf)^{(j)}(1)-(wf)^{(j)}(0)]$. Leibniz's rule and periodicity
+of all derivatives of $w$ give \eqref{eq:jet-action}. The identity holds
+first for smooth functions and then by Sobolev trace continuity.
+
+For $w_m$, the derivatives of orders $0,\ldots,2m-1$ vanish at zero.
+Thus the output jet of index $j$ depends only on input jets of indices
+at most $j-2m$. Iterating $\lceil r/(2m)\rceil$ times annihilates all
+$r$ quotient coordinates. These coordinates describe the full quotient:
+the jet map is onto by elementary Hermite interpolation.
+\end{proof}
+
+\begin{theorem}[Integer-order interval spectrum]
+\label{thm:interval}
+For integers $r\ge0$, $b\ge2$, $m\ge1$, the complete spectrum and the
+Fredholm essential spectrum of $\Lop_{b,w_m}$ on $H^r(0,1)$ are exactly
+those in \eqref{eq:all-sine-spectrum} with $s=r$ and $\beta=0$.
+Every generalized eigenvector at a nonzero eigenvalue has matching endpoint
+jets and belongs to the periodic subspace.
+\end{theorem}
+\begin{proof}
+For $r=0$, interval and periodic $L^2$ are the same Hilbert space up to
+identification of endpoints of measure zero. For $r>0$, the periodic
+subspace is invariant and has finite codimension $r$.
+Choose any bounded finite-dimensional complement. The resulting block
+upper triangular operator has the periodic operator on one diagonal block
+and the nilpotent jet operator on the other. For $\lambda\ne0$, the
+quotient block minus $\lambda I$ is invertible. The full operator is
+therefore invertible exactly when the periodic block is invertible.
+The point zero already belongs to the periodic essential disk. A
+finite-dimensional block and the off-diagonal finite-rank block do not
+change Fredholm essential spectrum. Finally, projecting a nonzero
+$\lambda$-generalized eigenvector to the nilpotent quotient gives zero,
+which proves the matching assertion.
+\end{proof}
+
+This argument does not justify the same statement on fractional interval
+Sobolev spaces. Trace conditions change at half-integer orders, and the
+critical logarithmic spaces require separate endpoint analysis. That
+extension is retained as a research question rather than silently assumed.
+
+\section{The quadratic dyadic operator: exact thresholds}
+\label{sec:dyadic-spectrum}
+
+\subsection{The two finite matrices}
+For $b=2,m=1$, the terminal Fourier band is $F_1$. In the basis
+$(e_{-1},e_0,e_1)$,
+\begin{equation}
+ A_{2,1}=\begin{pmatrix}
+ -1/4&0&0\\[-1mm]
+ -1/4&1/2&-1/4\\[-1mm]
+ 0&0&-1/4
+ \end{pmatrix},\qquad
+ \det(tI-A_{2,1})=(t-1/2)(t+1/4)^2.
+ \label{eq:A21}
+\end{equation}
+The eigenspaces are generated by
+\begin{equation}
+ 1,\qquad v_+=e_1+\tfrac13,\qquad v_-=e_{-1}+\tfrac13,
+ \label{eq:primal-eigenfunctions}
+\end{equation}
+with respective eigenvalues $1/2,-1/4,-1/4$. Both values are semisimple
+in this finite block.
+
+The squared mask is $w_2=\sin^4(\pi x)$. In the basis
+$(e_{-2},e_{-1},e_0,e_1,e_2)$ its matrix is
+\begin{equation}
+ A_{2,2}=\begin{pmatrix}
+ 1/16&0&0&0&0\\
+ 3/8&-1/4&1/16&0&0\\
+ 1/16&-1/4&3/8&-1/4&1/16\\
+ 0&0&1/16&-1/4&3/8\\
+ 0&0&0&0&1/16
+ \end{pmatrix}.
+ \label{eq:A22}
+\end{equation}
+Its characteristic polynomial is
+\begin{equation}
+ (t+1/4)(t-1/16)^2(t^2-t/8-1/16).
+ \label{eq:A22-char}
+\end{equation}
+In particular,
+\begin{equation}
+ \rho=\frac{1+\sqrt{17}}{16},\quad
+ h(x)=1+\kappa\cos(2\pi x),\quad
+ \kappa=\frac{5-\sqrt{17}}4
+ \label{eq:explicit-h}
+\end{equation}
+satisfy $\Lop_{2,w_2}h=\rho h$. Since $0<\kappa<1$, this also gives
+a direct check of the strict positivity hypothesis without the cone
+argument. The exact identities in this subsection are elementary matrix
+computations; their role is to make the general theorem explicit, not to
+claim these finite eigenvalues as newly discovered.
+
+\begin{theorem}[Dyadic regularity transition]
+\label{thm:dyadic-spectrum}
+For every real $s,\beta$, the quadratic dyadic operator \eqref{eq:intro-L}
+has the spectrum \eqref{eq:intro-spectrum}. Its eigenvalue $1/2$ is isolated
+if and only if $s>s_0$, and $-1/4$ is isolated if and only if $s>s_1$.
+When isolated, their algebraic multiplicities are respectively one and two,
+and both are semisimple. The same spectral sets hold on $H^r(0,1)$ at
+integer $r\ge0$.
+\end{theorem}
+\begin{proof}
+Use \cref{thm:general-spectrum,thm:interval} and
+\eqref{eq:A21}--\eqref{eq:explicit-h}. Solving
+$\gamma2^{-s}<1/2$ and $\gamma2^{-s}<1/4$ gives the two strict thresholds.
+At equality, the eigenvalue is on the boundary of a disk contained in the
+spectrum, and is therefore not isolated.
+\end{proof}
+
+For orientation, the constants have the approximate values
+\begin{equation}
+ \gamma\approx0.5658569621,\qquad
+ s_0\approx0.1785093184,\qquad s_1\approx1.1785093184.
+ \label{eq:threshold-decimals}
+\end{equation}
+These decimals are explanatory approximations; the exact radicals and
+logarithms, not rounded values, define the thresholds.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Space & Essential disk radius & Isolated displayed eigenvalues\\
+\midrule
+$L^2$ & $\gamma$ & none\\
+$H^1$ & $\gamma/2$ & $1/2$ only\\
+$H^{s_1,\beta}$ & $1/4$ & $1/2$ only\\
+$H^2$ & $\gamma/4$ & $1/2$ and $-1/4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The table concerns isolation, not existence: the polynomial eigenfunctions
+\eqref{eq:primal-eigenfunctions} belong to all these spaces. In particular,
+one full derivative is not enough to isolate the alternating eigenvalue.
+
+\section{Dual distributions and an exact Fourier cutoff}
+\label{sec:cutoff}
+
+\subsection{Two familiar recurrences with different spectral roles}
+Define real sequences $(\eta_k)_{k\ge0}$ and $(a_k)_{k\ge0}$ by
+\begin{align}
+ &\eta_0=1,\qquad \eta_1=-\tfrac13,\qquad
+ \eta_{2k}=\eta_k,\qquad
+ \eta_{2k+1}=-\tfrac12(\eta_k+\eta_{k+1}),
+ \label{eq:eta-recurrence}\\
+ &a_0=0,\qquad a_1=1,\qquad
+ a_{2k}=-2a_k,\qquad a_{2k+1}=a_k+a_{k+1}.
+ \label{eq:a-recurrence}
+\end{align}
+The potentially self-referential odd equations at $k=0$ are consistent
+with these initial values. For subsequent indices they give an unambiguous
+recursion. The sequence $\eta$ is the balanced Thue--Morse pair-correlation
+sequence; $a_k=B_k(-2)$ in the standard Stern-polynomial convention
+\cite{baake-coons,ulas-ulas}. Neither sequence is introduced here as a new
+integer or rational sequence.
+
+For a trigonometric polynomial $f$, define
+\begin{align}
+ \mu(f)&=\sum_{k\in\Z}\eta_{|k|}\widehat f(k),\notag\\
+ D_+(f)&=\sum_{k\ge1}a_k\widehat f(k),\qquad
+ D_-(f)=\sum_{k\le-1}a_{|k|}\widehat f(k).
+ \label{eq:dual-functionals}
+\end{align}
+These formulas define distributions even before their sharp Sobolev
+continuity thresholds are known: $|\eta_k|\le1$ by induction, and
+$|a_k|\le k$ for $k\ge1$, again by induction using
+\eqref{eq:a-recurrence}.
+
+\begin{proposition}[Dual eigenrelations and biorthogonality]
+\label{prop:dual-eigen}
+On trigonometric polynomials,
+\begin{equation}
+ \mu\Lop=\tfrac12\mu,\qquad
+ D_+\Lop=-\tfrac14D_+,\qquad
+ D_-\Lop=-\tfrac14D_-.
+ \label{eq:dual-eigen}
+\end{equation}
+Moreover,
+\begin{equation}
+ \mu(1)=1,\quad\mu(v_\pm)=0,\quad D_\pm(1)=0,
+ \quad D_+(v_+)=D_-(v_-)=1,\quad D_+(v_-)=D_-(v_+)=0.
+ \label{eq:biorthogonal}
+\end{equation}
+Consequently the algebraic operators
+\begin{equation}
+ P_0f=\mu(f)1,\qquad
+ P_1f=D_+(f)v_++D_-(f)v_-
+ \label{eq:P01}
+\end{equation}
+are disjoint idempotents commuting with $\Lop$ on polynomials.
+\end{proposition}
+\begin{proof}
+The Fourier action is
+\begin{equation}
+ \Lop e_{2k}=\tfrac12e_k,\qquad
+ \Lop e_{2k+1}=-\tfrac14(e_k+e_{k+1}).
+ \label{eq:dyadic-mode-rule}
+\end{equation}
+For $\mu$, its evaluation against these identities is exactly
+\eqref{eq:eta-recurrence}. For $D_+$ on positive indices, it is exactly
+\eqref{eq:a-recurrence}; the mode at zero is annihilated, and negative
+modes cannot produce a positive output frequency. The $D_-$ argument is
+symmetric. Direct evaluation on $1,v_+,v_-$ gives
+\eqref{eq:biorthogonal} and then the projection identities.
+\end{proof}
+
+\subsection{The finite Riesz product and its stable coefficient formula}
+Write
+\begin{equation}
+ p_n(x)=2^nW_n(x)=\prod_{j=0}^{n-1}(1-\cos(2\pi2^jx)),
+ \qquad q_n(k)=\widehat p_n(k).
+ \label{eq:pn}
+\end{equation}
+The polynomial $p_n$ is nonnegative, has degree $2^n-1$, and has mean one.
+Indeed, $p_0=1$ and the identity
+$p_{n+1}(x)=(1-\cos(2\pi x))p_n(2x)$ gives
+\begin{equation}
+ q_{n+1}(2k)=q_n(k),\qquad
+ q_{n+1}(2k+1)=-\tfrac12(q_n(k)+q_n(k+1)).
+ \label{eq:qn-recurrence}
+\end{equation}
+In particular $q_n(0)=1$ and $q_n(-k)=q_n(k)$.
+
+\begin{theorem}[Exact cutoff identity]
+\label{thm:cutoff}
+For every $n\ge0$ and $0\le k\le2^n$,
+\begin{equation}
+ q_n(k)=\eta_k+\frac13(-1/2)^na_k.
+ \label{eq:cutoff}
+\end{equation}
+For $|k|\ge2^n$, $q_n(k)=0$. At $k=2^n$ both statements agree.
+\end{theorem}
+\begin{proof}
+At $n=0$, the required indices are $k=0,1$. The right side is respectively
+$1$ and $-1/3+1/3=0$, as required. Assume the formula at level $n$.
+For an even index $2k\le2^{n+1}$, combine
+$q_{n+1}(2k)=q_n(k)$ with $\eta_{2k}=\eta_k$ and $a_{2k}=-2a_k$;
+the correction factor satisfies
+$(-1/2)^{n+1}(-2)=(-1/2)^n$.
+For an odd index $2k+1\le2^{n+1}$, the two indices $k,k+1$ lie in the
+previous valid range. Substitution in \eqref{eq:qn-recurrence}, followed
+by the two sequence recurrences, gives the formula.
+The support statement follows from the degree of $p_n$. At its boundary,
+$\eta_{2^n}=-1/3$ and $a_{2^n}=(-2)^n$, so the right side is zero.
+\end{proof}
+
+As a consequence, $q_n(k)\to\eta_{|k|}$ for every fixed integer $k$.
+The probability measures $p_n(x)\dd x$ therefore converge weakly to a
+probability measure whose integral against every trigonometric polynomial
+is $\mu$. To see this without any measure-theoretic identification theorem,
+use compactness of probability measures on the compact circle to obtain
+subsequential limits, then use convergence on all characters and density of
+trigonometric polynomials in $C(\T)$ to prove uniqueness. Thus the notation
+$\mu$ can denote both the leading distribution and this measure.
+No singularity assertion is needed for any proof below.
+
+\subsection{The moment remainder is exactly a Fourier tail}
+For a polynomial $f$, change of variables in the transfer formula gives
+\begin{equation}
+ I_n(f)=\int_0^1\Lop^nf(x)\dd x.
+ \label{eq:transfer-moment}
+\end{equation}
+For example, induction follows from
+$\int (\Lop g)h=\int wg(h\circ T_2)$.
+
+\begin{corollary}[Exact two-term identity with a vanishing low-frequency remainder]
+\label{cor:tail-formula}
+On trigonometric polynomials, \eqref{eq:intro-two-term} holds with
+\begin{equation}
+ R_n(f)=-\sum_{|k|>2^n}
+ \left(2^{-n}\eta_{|k|}+\frac{(-1/4)^n}{3}a_{|k|}\right)\widehat f(k).
+ \label{eq:exact-tail}
+\end{equation}
+In particular, $R_n$ annihilates every polynomial of degree at most $2^n$.
+Whenever $\mu,D_+,D_-$ are continuous on $H^{s,\beta}$, the identities extend
+to that whole space and the tail pairing converges absolutely by
+Cauchy--Schwarz.
+\end{corollary}
+\begin{proof}
+Since $q_n$ is even, integration gives
+$I_n(f)=2^{-n}\sum_kq_n(k)\widehat f(k)$. Apply
+\cref{thm:cutoff} on $|k|\le2^n$, and use its support assertion outside
+that interval. The coefficient identity
+$2^{-n}(-1/2)^n=(-1/4)^n$ gives the result. Extension follows by density
+and continuity; $I_n$ is a finite Fourier pairing on every $H^{s,\beta}$.
+\end{proof}
+
+\begin{example}[A single frequency and the nonuniformity of the cutoff]
+For $f=e_{2^j}$ and $n\ge j$, the exact expression is
+\[
+ I_n(e_{2^j})=-\frac{2^{-n}}3+
+       \frac{(-1/4)^n(-2)^j}{3}.
+\]
+For $n<j$, the moment is zero because its frequency lies beyond the support
+of $p_n$. At $n=j$, the displayed two terms cancel exactly. This illustrates
+why a fixed-frequency asymptotic is not by itself a uniform statement over
+a Sobolev unit ball: frequencies can move with $n$.
+\end{example}
+
+\section{Quadratic energies and sharp continuity thresholds}
+\label{sec:energies}
+
+\subsection{Four finite-state recurrences}
+Define the prefix energies and adjacent correlations
+\begin{align}
+ E_n&=\sum_{k=0}^{2^n-1}a_k^2,&
+ C_n&=\sum_{k=0}^{2^n-1}a_ka_{k+1},\notag\\
+ F_n&=\sum_{k=0}^{2^n-1}\eta_k^2,&
+ G_n&=\sum_{k=0}^{2^n-1}\eta_k\eta_{k+1}.
+ \label{eq:four-energies}
+\end{align}
+The letter $F_n$ in this section denotes a scalar energy, not the finite
+Fourier space $F_N$; the indices and context distinguish them.
+
+\begin{lemma}[Exact energy recurrences]
+\label{lem:energy-recurrences}
+The initial values are $(E_0,C_0)=(0,0)$ and $(F_0,G_0)=(1,-1/3)$.
+For every $n\ge0$,
+\begin{align}
+ E_{n+1}&=6E_n+2C_n+4^n,&
+ C_{n+1}&=-4E_n-4C_n-2\cdot4^n,\label{eq:EC}\\
+ F_{n+1}&=\tfrac32F_n+\tfrac12G_n-\tfrac29,&
+ G_{n+1}&=-F_n-G_n+\tfrac49.\label{eq:FG}
+\end{align}
+\end{lemma}
+\begin{proof}
+Put $M=2^n$. Splitting $E_{n+1}$ into even and odd indices gives
+\[
+ E_{n+1}=\sum_{k=0}^{M-1}\bigl[4a_k^2+(a_k+a_{k+1})^2\bigr].
+\]
+Since $a_0=0$ and $a_M^2=4^n$, the shifted sum
+$\sum_{k=0}^{M-1}a_{k+1}^2$ equals $E_n+4^n$. This proves the first
+recurrence. The adjacent products in an even--odd pair sum to
+$-2(a_k+a_{k+1})^2$, proving the second.
+
+For $\eta$, the same split uses
+$\eta_{2k}=\eta_k$ and
+$\eta_{2k+1}=-(\eta_k+\eta_{k+1})/2$. The shifted square sum is now
+$F_n-1+1/9=F_n-8/9$, since $\eta_M^2=1/9$.
+Thus
+\[
+ F_{n+1}=F_n+\tfrac14(2F_n+2G_n-8/9),\qquad
+ G_{n+1}=-\tfrac12(2F_n+2G_n-8/9),
+\]
+which is \eqref{eq:FG}.
+\end{proof}
+
+\subsection{Closed forms and dyadic annuli}
+Let $u=\sqrt{17}$, $\Lambda_\pm=1\pm u$, and
+$\lambda_\pm=(1\pm u)/4$.
+
+\begin{proposition}[Closed quadratic-energy formulas]
+\label{prop:closed-energies}
+For every $n\ge0$,
+\begin{align}
+ E_n&=\frac{5+u}{4u}\Lambda_+^n
+      +\frac{u-5}{4u}\Lambda_-^n-\frac12\,4^n,
+ \label{eq:Eclosed}\\
+ F_n&=\frac{19+5u}{18u}\lambda_+^n
+      +\frac{5u-19}{18u}\lambda_-^n+\frac49.
+ \label{eq:Fclosed}
+\end{align}
+Consequently, as $j\to\infty$,
+\begin{align}
+ \sum_{k=2^j}^{2^{j+1}-1}a_k^2
+ &\sim c_a\Lambda_+^j,&c_a&=\frac{5+u}{4},\label{eq:a-annulus}\\
+ \sum_{k=2^j}^{2^{j+1}-1}\eta_k^2
+ &\sim c_\eta\lambda_+^j,&c_\eta&=\frac{19+5u}{18u}\frac{u-3}{4}>0.
+ \label{eq:eta-annulus}
+\end{align}
+\end{proposition}
+\begin{proof}
+The homogeneous matrix in \eqref{eq:EC} is
+$\bigl(\begin{smallmatrix}6&2\\-4&-4\end{smallmatrix}\bigr)$,
+with eigenvalues $1\pm\sqrt{17}$. A particular solution has
+$E_n=-4^n/2$. Solving for the two homogeneous coefficients from $E_0=0$
+and $E_1=1$ gives \eqref{eq:Eclosed}.
+The homogeneous matrix in \eqref{eq:FG} has eigenvalues
+$(1\pm\sqrt{17})/4$, and a stationary solution has $F_n=4/9$.
+Using $F_0=1$, $F_1=10/9$ gives \eqref{eq:Fclosed}. These computations
+can alternatively be checked by substituting into the recurrences and
+initial values, which also proves them by induction.
+
+For $E_n$, the growth rate $\Lambda_+=1+u$ is strictly larger than
+$4$ and $|\Lambda_-|$. For $F_n$, $\lambda_+>1$ and
+$|\lambda_-|<1$. Taking differences between consecutive prefix energies
+therefore gives the annulus equivalents and the stated positive constants.
+\end{proof}
+
+Notice the exact relations
+\begin{equation}
+ \Lambda_+=2^{2s_1},\qquad \lambda_+=2^{2s_0},\qquad
+ \Lambda_+=4\lambda_+.
+ \label{eq:energy-exponents}
+\end{equation}
+Thus the same two thresholds that govern spectral isolation also govern
+the growth of the dual coefficient energies. This agreement is derived,
+not assumed from a general regularity principle.
+
+\subsection{The Hilbert dual criterion}
+\begin{lemma}[Coefficient criterion for a continuous functional]
+\label{lem:dual-criterion}
+Let $T(f)=\sum_kt_k\widehat f(k)$ on polynomials. Then $T$ extends
+continuously to $H^{s,\beta}$ if and only if
+\begin{equation}
+ \sum_{k\in\Z}|t_k|^2\br{k}^{-2s}
+       [\log(e+|k|)]^{-2\beta}<\infty.
+ \label{eq:dual-criterion}
+\end{equation}
+When finite, the sum is exactly $\norm T_{(H^{s,\beta})^*}^2$.
+\end{lemma}
+\begin{proof}
+Cauchy--Schwarz proves sufficiency and the upper norm bound.
+For necessity and equality, use finite-support coefficients proportional
+to $\overline{t_k}q_{s,\beta}(k)^{-2}$ and normalize their Sobolev norm.
+The resulting functional values are the square roots of the finite partial
+sums in \eqref{eq:dual-criterion}. Let the support increase.
+\end{proof}
+
+\begin{theorem}[Sharp leading and subleading regularity thresholds]
+\label{thm:dual-thresholds}
+The functional $\mu$ extends continuously to $H^{s,\beta}$ exactly when
+\begin{equation}
+ s>s_0\quad\text{or}\quad s=s_0\ \text{and}\ \beta>1/2.
+ \label{eq:mu-threshold}
+\end{equation}
+Each of $D_+$ and $D_-$, and also their sum, extends continuously exactly
+when
+\begin{equation}
+ s>s_1\quad\text{or}\quad s=s_1\ \text{and}\ \beta>1/2.
+ \label{eq:D-threshold}
+\end{equation}
+In their stated ranges, $P_0$ and $P_1$ are bounded commuting projections.
+When the corresponding eigenvalue is isolated, these are its Riesz
+projections.
+\end{theorem}
+\begin{proof}
+On the dyadic block $2^j\le|k|<2^{j+1}$, the reciprocal squared Sobolev
+weight is comparable, with constants independent of $j\ge1$, to
+$2^{-2sj}(1+j)^{-2\beta}$. The annulus formulas show that the positive
+frequency contributions in \eqref{eq:dual-criterion} are comparable to
+\begin{equation}
+ 2^{2(s_0-s)j}(1+j)^{-2\beta}\quad\text{for }\mu,
+ \qquad
+ 2^{2(s_1-s)j}(1+j)^{-2\beta}\quad\text{for }D_+.
+ \label{eq:block-dual-tests}
+\end{equation}
+Negative frequencies give an identical test. The geometric series
+converges above the stated exponent, diverges below it, and at equality
+reduces to the power-series test $\sum j^{-2\beta}<\infty$.
+For $D_++D_-$, the supports are disjoint, so there is no cancellation in
+the squared dual norm. This proves necessity as well as sufficiency.
+
+Bounded projection identities follow from \cref{prop:dual-eigen} and
+density. When an eigenvalue is outside the essential disk, its generalized
+eigenspace is exactly its semisimple finite Fourier eigenspace by
+\cref{thm:general-spectrum}. On every polynomial, sufficiently many
+iterations descend into $F_1$, where \eqref{eq:biorthogonal} gives the
+finite spectral projection. Thus the displayed projection agrees on a
+dense subspace with the Riesz projection, and hence everywhere.
+\end{proof}
+
+\begin{remark}[Continuous embedded projections]
+At $s=s_1$, $\beta>1/2$, the finite-rank operator $P_1$ is bounded and
+commutes with $\Lop$, but $-1/4$ is not isolated. It is therefore not a
+Riesz projection defined by a contour separating that point from the
+rest of the spectrum. A bounded projection onto a finite-dimensional
+invariant summand is compatible with other spectrum accumulating at the
+same eigenvalue. The corresponding observation applies to $P_0$ at
+$s=s_0$, $\beta>1/2$.
+\end{remark}
+
+\section{Sharp scalar remainders, including the critical endpoint}
+\label{sec:sharp-remainders}
+
+\subsection{Weighted tails of the two coefficient sequences}
+For $z=(z_k)_{k\ge1}$, put
+\begin{equation}
+ \mathcal T_z(N;s,\beta)^2=
+ \sum_{k>N}|z_k|^2\br{k}^{-2s}[\log(e+k)]^{-2\beta}.
+ \label{eq:weighted-tail}
+\end{equation}
+We use $X_n\asymp Y_n$ to mean that there exist positive constants,
+independent of sufficiently large $n$, bounding $X_n/Y_n$ above and below.
+Constants may depend on the fixed displayed parameters.
+
+\begin{lemma}[Two-sided tail estimates]
+\label{lem:tails}
+Let $\sigma_a=s_1$ and $\sigma_\eta=s_0$. For $z=a$ or $z=\eta$,
+if $s>\sigma_z$, then
+\begin{equation}
+ \mathcal T_z(2^n;s,\beta)
+ \asymp_{s,\beta}2^{(\sigma_z-s)n}(1+n)^{-\beta}.
+ \label{eq:tail-supercritical}
+\end{equation}
+If $s=\sigma_z$ and $\beta>1/2$, then
+\begin{equation}
+ \mathcal T_z(2^n;\sigma_z,\beta)
+ \asymp_\beta(1+n)^{1/2-\beta}.
+ \label{eq:tail-critical}
+\end{equation}
+The analogous norm restricted to one block $2^j\le k<2^{j+1}$ is
+comparable to $2^{(\sigma_z-s)j}(1+j)^{-\beta}$.
+\end{lemma}
+\begin{proof}
+Apply the annulus estimates in \cref{prop:closed-energies} and the
+comparability of the weights on each dyadic block. The squared tail is
+comparable to
+\[
+ \sum_{j\ge n}2^{2(\sigma_z-s)j}(1+j)^{-2\beta}.
+\]
+Deleting the single boundary term $k=2^n$ does not change the comparison.
+For $a$, its square is $4^n=o(2^{2s_1n})$; for $\eta$, it is $1/9$
+while the annular energy grows like $2^{2s_0n}$. When $s>\sigma_z$,
+a decaying geometric factor makes the sum comparable to its initial
+term, even for negative $\beta$. At $s=\sigma_z$, the integral test
+makes the sum comparable to $(1+n)^{1-2\beta}$. Taking square roots
+proves all the assertions.
+\end{proof}
+
+\subsection{The exact rate above critical regularity}
+\begin{theorem}[Optimal supercritical scalar remainder]
+\label{thm:supercritical-remainder}
+For every $s>s_1$ and every real $\beta$, the expansion
+\eqref{eq:intro-two-term} defines continuous functionals on $H^{s,\beta}$,
+and
+\begin{equation}
+ \norm{R_n}_{(H^{s,\beta})^*}
+ \asymp_{s,\beta}(\gamma2^{-s})^n(1+n)^{-\beta}.
+ \label{eq:sharp-supercritical}
+\end{equation}
+The upper estimate is uniform for $f$ in the Sobolev unit ball, and its
+exponential rate and displayed power of $n$ cannot be improved uniformly.
+In particular, $\norm{R_n}=o(4^{-n})$ in this range.
+\end{theorem}
+\begin{proof}
+Continuity follows from \cref{thm:dual-thresholds}. By the exact tail formula
+and the dual norm criterion, $\norm{R_n}$ is the weighted $\ell^2$ norm of
+its coefficient sequence. The triangle inequality and \cref{lem:tails}
+give an upper bound by a fixed constant times
+\begin{align*}
+ &2^{-n}2^{(s_0-s)n}(1+n)^{-\beta}
+  +4^{-n}2^{(s_1-s)n}(1+n)^{-\beta}\\
+ &\hspace{4em}=2(\gamma2^{-s})^n(1+n)^{-\beta},
+\end{align*}
+where the harmless factor $1/3$ in the second coefficient is absorbed into
+the constant. The equality of the two exponential rates uses
+$2^{s_0}/2=2^{s_1}/4=\gamma$.
+
+For the lower bound, cancellation between the two coefficient sequences
+must be excluded; separate upper estimates would not suffice. Fix a large
+integer $L\ge1$ and restrict to the block
+$2^{n+L}\le k<2^{n+L+1}$. Let $A_{n,L}$ and $B_{n,L}$ be the weighted
+$\ell^2$ norms of, respectively, the Stern term and the correlation term
+on this block. The one-block estimates give
+\begin{align*}
+ A_{n,L}&\asymp 4^{-n}2^{(s_1-s)(n+L)}(1+n+L)^{-\beta},\\
+ B_{n,L}&\asymp 2^{-n}2^{(s_0-s)(n+L)}(1+n+L)^{-\beta}.
+\end{align*}
+The implicit comparison constants can be chosen independently of $n,L$
+when $n+L$ is sufficiently large. Hence
+$A_{n,L}/B_{n,L}\ge c_{s,\beta}2^L$ for some positive constant.
+Choose and fix $L$ so that this lower bound exceeds two. The reverse
+triangle inequality then makes the norm of the sum at least
+$A_{n,L}-B_{n,L}\ge A_{n,L}/2$. With this fixed $L$, that lower bound
+is a positive constant times the right side of
+\eqref{eq:sharp-supercritical}. The dual norm criterion identifies this
+coefficient norm with the exact supremum over the unit ball, proving
+optimality. Finally, $\gamma2^{-s}<1/4$ when $s>s_1$.
+\end{proof}
+
+\subsection{A sharp logarithmic rescue at the spectral boundary}
+\begin{theorem}[Critical two-term scalar asymptotic]
+\label{thm:critical-remainder}
+At $s=s_1$ and $\beta>1/2$, the two-term expansion
+\eqref{eq:intro-two-term} is valid on all of $H^{s_1,\beta}$ and
+\begin{equation}
+ \norm{R_n}_{(H^{s_1,\beta})^*}
+ \asymp_\beta4^{-n}(1+n)^{1/2-\beta}.
+ \label{eq:sharp-critical}
+\end{equation}
+Equivalently,
+\begin{equation}
+ 2^n I_n(f)=\mu(f)+\frac{(-1/2)^n}{3}(D_++D_-)(f)
+ +O_\beta\!\left(2^{-n}(1+n)^{1/2-\beta}\norm f_{s_1,\beta}\right).
+ \label{eq:critical-normalized}
+\end{equation}
+The error is uniformly $o(2^{-n})$ after this normalization. The power
+$(1+n)^{1/2-\beta}$ is sharp in the dual norm.
+\end{theorem}
+\begin{proof}
+The coefficient functionals are bounded by \cref{thm:dual-thresholds}.
+The weighted norm of the Stern part of the exact tail is comparable to
+$4^{-n}(1+n)^{1/2-\beta}$ by the critical tail estimate. The correlation
+part, which is one derivative above its own critical index, has norm
+comparable to
+\[
+ 2^{-n}2^{(s_0-s_1)n}(1+n)^{-\beta}
+ =4^{-n}(1+n)^{-\beta}.
+\]
+The second quantity is smaller than the first by a factor comparable to
+$(1+n)^{-1/2}$. Thus both the triangle and reverse triangle inequalities
+give \eqref{eq:sharp-critical} for sufficiently large $n$. The two
+frequency halves are disjoint and symmetric, contributing only a fixed
+factor of $\sqrt2$. Multiplication by $2^n$ gives
+\eqref{eq:critical-normalized}; since $\beta>1/2$, its extra power tends
+to zero.
+\end{proof}
+
+\begin{corollary}[Necessity of the logarithmic threshold]
+\label{cor:no-endpoint-without-log}
+On $H^{s_1,\beta}$ with $\beta\le1/2$, there do not exist bounded linear
+functionals $M,S$ and continuous remainders $\varepsilon_n$ satisfying
+\[
+ I_n=2^{-n}M+(-1/4)^nS+\varepsilon_n,\qquad
+ \norm{\varepsilon_n}=o(4^{-n}).
+\]
+The same impossibility holds on $H^{s,\beta}$ for every $s<s_1$.
+\end{corollary}
+\begin{proof}
+For a fixed polynomial, the remainder vanishes once $2^n$ exceeds its
+degree. Thus the leading and subleading coefficients are uniquely fixed
+by limits: the leading one is $\lim_n2^nI_n(f)=\mu(f)$, and after its
+subtraction the rescaled subleading coefficient is
+$(D_++D_-)(f)/3$. Any continuous coefficient functional agreeing with
+those polynomial limits would extend $D_++D_-$. The necessity part of
+\cref{thm:dual-thresholds} says that such an extension does not exist in
+the stated range.
+\end{proof}
+
+This is an obstruction to a \emph{uniform continuous-coefficient theorem}
+on the whole Hilbert space. It does not say that a particular smoother
+amplitude, or a polynomial, fails to have a two-term expansion. Nor does
+it rule out different formulations using unbounded coefficient maps on
+proper domains.
+
+\section{Scalar asymptotics versus operator asymptotics}
+\label{sec:operator-scalar}
+
+\subsection{The supercritical operator expansion}
+\begin{proposition}[Operator remainder and its exact exponential scale]
+\label{prop:operator-expansion}
+For $s>s_1$ and any real $\beta$, put
+$Q=\Lop(I-P_0-P_1)$ on $H^{s,\beta}$. For $n\ge1$,
+\begin{equation}
+ \Lop^n=2^{-n}P_0+(-1/4)^nP_1+Q^n,
+ \qquad \sigma(Q)=\Disk{\gamma2^{-s}}.
+ \label{eq:operator-expansion}
+\end{equation}
+Consequently,
+\begin{equation}
+ \lim_{n\to\infty}\norm{Q^n}^{1/n}=\gamma2^{-s},\qquad
+ \norm{Q^n}\le C_\varepsilon(\gamma2^{-s}+\varepsilon)^n
+ \quad(\varepsilon>0).
+ \label{eq:operator-rate}
+\end{equation}
+Also $\norm{Q^n}\ge(\gamma2^{-s})^n$ for every $n\ge1$.
+\end{proposition}
+\begin{proof}
+The bounded disjoint projections commute with $\Lop$ and have the
+prescribed eigenvalues on their ranges. They are the Riesz projections
+for the two isolated spectral values. Removing their summands leaves
+exactly the essential disk; adding zero on their finite-dimensional
+ranges does not enlarge it. This proves \eqref{eq:operator-expansion}.
+The spectral radius formula proves \eqref{eq:operator-rate}. The lower
+bound follows either from that spectral set and spectral mapping at
+each $n$, or from \eqref{eq:compact-obstruction} after subtracting the
+two finite-rank terms.
+\end{proof}
+
+The general spectral argument yields an arbitrarily small exponential
+slack $\varepsilon$ in an upper operator-norm bound. The scalar moment
+calculation in \cref{thm:supercritical-remainder} is stronger for its
+specific observable: it removes that slack and supplies the exact
+logarithmic power. One must not promote that scalar estimate to the full
+operator norm without a separate proof.
+
+\subsection{At critical regularity the two notions separate}
+\begin{theorem}[A scalar little-oh law without an operator little-oh law]
+\label{thm:critical-separation}
+On $H^{s_1,\beta}$ with $\beta>1/2$, the operators $P_0,P_1$ remain
+bounded and the algebraic power identity in \eqref{eq:operator-expansion}
+remains valid. Nevertheless,
+\begin{equation}
+ \norm{\Lop^n-2^{-n}P_0-(-1/4)^nP_1}\ge4^{-n}
+ \qquad(n\ge1).
+ \label{eq:critical-operator-obstruction}
+\end{equation}
+For the integration functional $\ell_0(f)=\int_0^1f(x)\dd x$,
+\begin{equation}
+ \norm{\ell_0\bigl(\Lop^n-2^{-n}P_0-(-1/4)^nP_1\bigr)}
+ \asymp_\beta4^{-n}(1+n)^{1/2-\beta}=o(4^{-n}).
+ \label{eq:critical-scalar-separation}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The projection identities were established algebraically and extend by
+boundedness, so the power decomposition remains true without an isolation
+assumption. Both subtracted terms have finite rank. The essential disk
+has radius $1/4$ at $s=s_1$, and the compact obstruction in
+\cref{thm:general-spectrum} proves
+\eqref{eq:critical-operator-obstruction}. On the other hand,
+$\ell_0(1)=1$ and $\ell_0(v_+)=\ell_0(v_-)=1/3$.
+Therefore the functional on the left of
+\eqref{eq:critical-scalar-separation} is exactly $R_n$.
+Apply \cref{thm:critical-remainder}.
+\end{proof}
+
+The source of the improvement is visible in \eqref{eq:exact-tail}:
+integration after $n$ transfer steps annihilates the remainder on every
+frequency up to $2^n$. The operator itself has no comparable finite-rank
+annihilation of its full essential component. The critical scalar law is
+therefore not an exception to the spectral obstruction, but a different
+kind of asymptotic statement.
+
+\subsection{How the result relates to Rvachev Fourier shells}
+The repository uses the entire product
+\begin{equation}
+ \Phi(t)=\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi t}{2^j}\right),
+ \qquad \sinc z=\frac{\sin z}{z},\quad\sinc0=1.
+ \label{eq:Phi}
+\end{equation}
+This is its Fourier-product normalization for the Rvachev up-function
+\cite{repo-fourier,arias}. Its finite-scale identity, obtained simply
+by separating the first $n$ factors, is
+\begin{equation}
+ \Phi(2^nx)=\Phi(x)\prod_{j=1}^n
+       \frac{\sin(\pi2^jx)}{\pi2^jx}.
+ \label{eq:Phi-scale}
+\end{equation}
+For real $x\ne0$, squaring and clearing the denominators gives
+\begin{equation}
+ (\pi x)^{2n}2^{n(n+1)}|\Phi(2^nx)|^2
+       =|\Phi(x)|^2W_n(2x).
+ \label{eq:Phi-Wn}
+\end{equation}
+This exhibits directly the dyadic sine-product moments underlying shell
+analysis. The repository's precise RMS normalization packages the remaining
+factors into an analytic amplitude; that analytic application and its
+certified constants are credited to the antecedent manuscript, not
+recomputed or claimed as new here.
+
+The new information is what remains true after weakening regularity.
+For periodic amplitudes, \cref{thm:supercritical-remainder,thm:critical-remainder}
+give sharp uniform two-term laws. For nonperiodic amplitudes on an interval,
+\cref{thm:interval} gives the exact integer-order spectral picture: two
+Sobolev derivatives suffice to isolate both displayed dyadic eigenvalues,
+whereas one does not. A nonperiodic analytic amplitude must not be declared
+to lie in every periodic Sobolev space; mismatched endpoint values or jets
+can prevent that. The fractional periodic endpoint theorem consequently
+requires its periodic hypothesis when applied to an amplitude.
+
+\section{Verification, implementation, and formalization boundaries}
+\label{sec:verification}
+
+\subsection{What the accompanying computation checks}
+The delivered program \texttt{verify.py} uses only Python's standard
+library. It constructs $\eta_k$ and $a_k$ exactly, forms the finite Riesz
+products by independent Laurent-polynomial multiplication, and compares
+their coefficients with \eqref{eq:cutoff}. It checks the energy recurrences
+against direct finite sums and the closed forms in the exact field
+$\Q(\sqrt{17})$, represented as pairs of rational numbers. It also checks
+the dual eigenrelations, finite-band invariance and strict descent, the
+two displayed characteristic polynomials, and the explicit positive
+square-mask eigenfunction.
+
+The executed default run, through dyadic level $12$, returned
+\texttt{PASS}. Its recorded checks are:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Checked identity or property & Number of checks\\
+\midrule
+Exact cutoff coefficients, including both signs & 16,395\\
+Dual eigenfunctional identities & 24,579\\
+Finite-band invariance and descent cases & 89,014\\
+Direct energy recurrences & 52\\
+Closed energy formulas in $\Q(\sqrt{17})$ & 26\\
+Positive eigenfunction coordinates & 5\\
+Characteristic polynomial identities & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+The frequency checks reach $|k|=4096$; the band tests cover
+$b=2,\ldots,8$ and $m=1,\ldots,6$. These finite ranges are computational
+scope statements, not substitutes for quantifiers in the theorems.
+
+Run, from the extracted directory,
+\begin{verbatim}
+python verify.py --output verification.json
+\end{verbatim}
+The output file includes the exact energy data, arithmetic type, Python
+version, and check counts. Explicit exceptions enforce the checks even
+if Python assertions are disabled. No numerical eigensolver, floating-point
+comparison, or unvalidated quadrature enters a passed mathematical check.
+The approximate decimals in \eqref{eq:threshold-decimals} are not used by
+the verification program.
+
+\subsection{What is proved by analysis, not by sampling}
+The infinite-dimensional spectrum is proved through the coisometry
+similarity, construction of infinitely many defect eigenvectors, compact
+conjugacy, and the quotient-tail argument. The endpoint norm equivalents
+are proved through exact energy recurrences, dyadic comparisons, and the
+Hilbert dual criterion. No finite list of Fourier coefficients could
+establish those conclusions by itself.
+
+The external functional-analytic inputs are standard: invariance of the
+Fredholm essential spectrum under compact perturbations, its description
+through the Calkin algebra, spectral mapping and the spectral radius
+formula, finite-dimensional Brouwer fixed point, and the integer-order
+Sobolev trace theorem. The special operators and estimates needed here
+are proved in the text. The dependency structure is:
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Conclusion & Main ingredients\\
+\midrule
+Exact $L^2$ disk & Square-mask identity, strict positivity, infinite branch defect\\
+Sobolev disk & Fourier weight ratio and compactness of vanishing diagonals\\
+Complete outlier classification & Finite-band descent and invertible quotient tails\\
+Even sine family & Finite cone, zero count, and Brouwer fixed point\\
+Interval theorem & Exact boundary jets and finite-codimensional nilpotent quotient\\
+Critical scalar law & Cutoff identity, exact energies, and weighted dual norms\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{A realistic route to formalization}
+A first formalization layer should encode the two sequences over $\Q$ and
+$\Z$, prove their recurrences, and formalize the finite coefficient identity.
+These statements require only finite sums, parity decompositions, and
+induction. The quadratic-energy formulas can be formalized either in a
+quadratic field or by verifying their second-order recurrences without
+introducing radicals until the final corollary.
+
+A second layer should prove the dyadic weighted $\ell^2$ criterion and its
+geometric and critical power-series tests. That layer already yields the
+sharp continuity thresholds and scalar remainder results independently of
+Calkin-algebra infrastructure. The operator-spectrum layer then requires
+bounded Fourier multipliers, compact operators, quotient spectra, and
+Fredholm theory. It is logically separable and materially more demanding.
+
+No new Lean code or proof objects are supplied, and no Lean build was run.
+The Python interpreter, its arithmetic implementation, and the supplied
+program have not been formally verified as part of this package. The
+mathematical proofs and the finite checks are complementary evidence,
+not interchangeable forms of certification.
+
+\section{Further research questions}
+\label{sec:questions}
+The following questions are not conclusions of this paper. They separate
+natural next steps from claims already established above.
+
+\begin{question}[Fractional interval and trace-critical spaces]
+Determine the exact spectrum on $H^s(0,1)$ and on logarithmically refined
+interval spaces when $s$ is nonintegral. What occurs at half-integer trace
+thresholds, and what are the sharp two-term moment estimates for amplitudes
+whose first unmatched endpoint jet is prescribed? The finite integer-order
+jet quotient suggests the correct decomposition but does not settle the
+fractional norm comparison.
+\end{question}
+
+\begin{question}[Dual distributions for higher even moments]
+For general $b,m$, each nonzero eigenvector of $A_{b,m}$ should lead to
+coefficient functionals governed by finite recurrences along residue
+classes modulo $b$. Develop an effective construction, and determine their
+exact Sobolev and logarithmic thresholds. In the presence of Jordan blocks,
+identify the additional powers of $n$ in moment expansions and the endpoint
+logarithmic exponents they force.
+\end{question}
+
+\begin{question}[Which masks admit a positive square-mask eigenfunction?]
+Characterize the nonzero trigonometric masks satisfying \eqref{eq:P}.
+For even sine powers, one-point vanishing and a finite zero count suffice.
+For masks whose zeros contain periodic inverse-branch configurations,
+strict positivity may fail. Determine the resulting essential spectral set
+and whether a decomposition into invariant components replaces the single
+coisometry similarity.
+\end{question}
+
+\begin{question}[Beyond polynomial masks]
+For analytic or sufficiently smooth nonpolynomial masks, Fourier conjugacy
+still suggests a compact leading comparison when the coefficient tails are
+controlled. Can one recover an exact Sobolev essential disk and classify
+all exterior eigenvalues through a convergent infinite Fourier reduction?
+The finite nilpotent quotient used here no longer exists, so its role must
+be replaced rather than assumed.
+\end{question}
+
+\begin{question}[Nonlinear expanding maps]
+Replace $T_bx=bx$ by a nonlinear expanding covering of the circle. The
+Sobolev multiplier ratio then depends on position through the derivative.
+Find sharp hypotheses under which pressure or a positive square-mask
+transfer equation determines the entire essential spectral set, not merely
+an upper bound on its radius. The present proof uses constant expansion
+in an essential way.
+\end{question}
+
+\begin{question}[Which scalar observables improve at an embedded boundary?]
+Classify continuous functionals $\ell$ for which
+$\ell(\Lop^n-2^{-n}P_0-(-1/4)^nP_1)=o(4^{-n})$ at critical regularity.
+Integration has an exact low-frequency cutoff. Is a quantitative variant
+of this cutoff necessary, or can cancellation in other observables give
+a genuinely different mechanism?
+\end{question}
+
+\begin{question}[Exact constants and dyadic oscillations in the sharp norms]
+The present estimates determine the exact exponential rate and logarithmic
+power up to positive constants. Determine whether the corresponding
+normalized dual norms converge, and when log-periodic oscillations occur
+for non-dyadic cutoffs. Such a refinement requires weighted distribution
+information within each annulus, not only its total energy.
+\end{question}
+
+\begin{question}[Quantitative spectral projections near the thresholds]
+As $s\downarrow s_0$ or $s\downarrow s_1$, the relevant dual norm diverges.
+The block tests predict the order of this divergence. Determine exact
+leading constants, bounds uniform in a joint limit of $s,\beta,n$, and
+certified resolvent estimates suitable for stable numerical computation.
+This would turn the sharp qualitative transition into an effective
+conditioning theory.
+\end{question}
+
+\begin{question}[Finite-smoothness spaces outside the Hilbert scale]
+Answer the original repository question on H\"older and $C^r$ spaces.
+The Hilbert-space coisometry and exact weighted $\ell^2$ dual norms are
+specific to the present proof. Their replacements must account for the
+relevant Banach norms and cannot be obtained by merely replacing $s$ with
+an integer differentiability index in the final formula.
+\end{question}
+
+\begin{question}[A proof-producing computational interface]
+Construct a verified procedure that takes an integer dilation and a rational
+trigonometric mask, produces the finite matrices and their invariant bands,
+and checks a supplied positive square-mask eigenfunction certificate.
+Combining this with a formal proof of \cref{thm:general-spectrum} would
+turn finite algebraic data into machine-checked infinite-dimensional
+spectral conclusions for a broad family of explicit examples.
+\end{question}
+
+\section{Conclusion}
+The analytic finite spectrum is only one regularity regime of the
+Rvachev--Thue--Morse transfer operator. On the periodic Sobolev scale,
+its replacement is exact and computable: a regularity-dependent essential
+disk together with a finite set of algebraic outliers. The squared sine
+mask determines the disk radius, while the unsquared mask determines the
+finite outliers. These are different pieces of spectral data and require
+different arguments.
+
+In the dyadic quadratic case, the leading Thue--Morse measure and the
+subleading Stern distribution have sharp thresholds $s_0$ and $s_1=s_0+1$.
+Their exact energy growth explains both spectral isolation and the
+continuity of asymptotic coefficient functionals. The Fourier-cutoff
+identity goes further: it identifies the moment remainder as a literal
+high-frequency tail. This permits a uniform scalar asymptotic at a
+critical essential boundary, provided and only provided that the
+subleading functional is made continuous by the logarithmic exponent
+$\beta>1/2$. The simultaneous operator-norm obstruction shows why that
+conclusion could not have been inferred from a spectral gap.
+
+\appendix
+\section{Repository provenance and claim boundaries}
+\label{sec:provenance}
+The directly inspected repository materials were the Fabius-function
+README, the Fourier-decay group README, the spectral-collapse manuscript
+README and inventory, and the spectral manuscript source at the immutable
+commit below. The source search located the explicit question
+\emph{Spectra at finite smoothness}. Inspection was targeted to the relevant
+research branch, not an exhaustive audit of the whole repository.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Item & Identifier or scope\\
+\midrule
+Repository & \texttt{VladimirReshetnikov/ProveIt}\\
+Immutable comparison commit &
+\texttt{b2aed2d23125006c48d63fc97aef0d64b67becb1}\\
+Spectral source blob in inspected inventory &
+\texttt{1289ae8ca02383bd2a44ad8f9edb429941d004ff}\\
+Spectral README blob &
+\texttt{7d32919e68332fd8ca78211811b2f005ab97d175}\\
+Fourier group README blob &
+\texttt{30d7898b50f2bf0ea199cf24f5b543d8b98fe4fe}\\
+Source question & Spectra at finite smoothness\\
+Answered here & Periodic $H^{s,\beta}$, all real $s,\beta$; interval $H^r$, integer $r\ge0$\\
+Not answered here & H\"older/$C^r$ spectrum; general fractional interval spaces; full interior point-spectrum decomposition\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The spectral source path, relative to the repository root, is
+\begin{quote}\small\ttfamily\raggedright
+Analysis/FabiusFunction/docs/\allowbreak
+semi-formalized-research-frontiers/drafts/\allowbreak
+rvachev\_up\_fourier\_decay/\allowbreak
+Spectral\_Collapse\_Alternating\_RMS/article.tex
+\end{quote}
+The observed commit timestamp is 30 September 2026 at 03:29:35 UTC,
+which is 29 September 2026 at 20:29:35 Pacific daylight time. This accounts
+for the different UTC and local calendar dates without treating either
+as a future source.
+
+The earlier manuscript's analytic determinant and RMS constant enclosures
+are antecedents. They were not independently recertified here. The present
+proofs do not rely on their correctness for the new Sobolev or endpoint
+conclusions. Global priority and peer-review acceptance are not established.
+The supplied text is intended to be mathematically checkable and is
+accompanied by an explicit statement of the analytic inputs and finite
+verification scope.
+
+\section{Elementary implementation details}
+\label{app:implementation}
+The exact field operations for $a+b\sqrt{17}$ use
+\[
+ (a,b)+(c,d)=(a+c,b+d),\qquad
+ (a,b)(c,d)=(ac+17bd,ad+bc).
+\]
+All four coordinates are rational numbers. Thus checking
+\eqref{eq:Eclosed} and \eqref{eq:Fclosed} requires no approximate radical.
+The two characteristic polynomials are checked by the
+Faddeev--LeVerrier recurrence over $\Q$, followed by a zero-matrix
+Cayley--Hamilton check. The finite Riesz products are constructed by
+multiplying their Laurent coefficient dictionaries, independently of the
+stable-cutoff formula.
+
+The verification log and JSON output are part of the delivered archive.
+The defaults are intentionally finite and reproducible. Increasing the
+level parameter increases the amount of exact arithmetic but does not
+alter the logical role of computation: the general recurrences and
+functional-analytic theorems are established by proofs in the article.
+
+\begin{thebibliography}{99}
+
+\bibitem{repo-spectral}
+Vladimir Reshetnikov, \emph{ProveIt repository},
+\emph{Spectral Collapse and Alternating RMS Asymptotics for the Rvachev
+Up-Function}, research manuscript dated 28 September 2026, with README.
+Inspected at commit
+\texttt{b2aed2d23125006c48d63fc97aef0d64b67becb1}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b2aed2d23125006c48d63fc97aef0d64b67becb1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay/Spectral_Collapse_Alternating_RMS}{Immutable repository directory}.
+The source question and blob identifiers are recorded in
+\cref{sec:provenance}.
+
+\bibitem{repo-fourier}
+Vladimir Reshetnikov, \emph{ProveIt repository}, Fabius-function Fourier-decay
+group and canonical synthesis, with group README.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b2aed2d23125006c48d63fc97aef0d64b67becb1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/rvachev_up_fourier_decay}{Immutable Fourier-decay directory}.
+
+\bibitem{chen-volkmer}
+Xianghong Chen and Hans Volkmer,
+\emph{On transfer operators on the circle with trigonometric weights},
+2016. \href{https://arxiv.org/abs/1610.07658}{arXiv:1610.07658}.
+
+\bibitem{bardadyn-kwasniewski}
+K.~Bardadyn and B.~Kwa\'sniewski,
+\emph{Spectrum of weighted isometries: $C^*$-algebras, transfer operators
+and topological pressure}, 2019; revised 2020.
+\href{https://arxiv.org/abs/1911.04811}{arXiv:1911.04811}.
+
+\bibitem{baake-coons}
+Michael Baake and Michael Coons,
+\emph{Correlations of the Thue--Morse sequence}, 2022.
+\href{https://arxiv.org/abs/2209.07102}{arXiv:2209.07102}.
+
+\bibitem{ulas-ulas}
+Maciej Ulas and Oliwia Ulas,
+\emph{On certain arithmetic properties of Stern polynomials}, 2011.
+\href{https://arxiv.org/abs/1102.5109}{arXiv:1102.5109}.
+
+\bibitem{arias}
+Juan Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and Properties}, 2017 English translation of the 1982 paper
+in \emph{Rev. Real Acad. Ciencias Madrid} \textbf{76}, 21--38.
+\href{https://arxiv.org/abs/1702.05442}{arXiv:1702.05442}.
+
+\end{thebibliography}
+\end{document}

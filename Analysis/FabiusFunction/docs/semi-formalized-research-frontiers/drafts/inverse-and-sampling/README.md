@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has eleven live navigation targets:
+This theme has twelve live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -35,6 +35,10 @@ This theme has eleven live navigation targets:
   — an archival arrival of 2026-09-29 on the infinite-factor model:
   Gaussian-variance non-estimability and Christoffel recovery;
   unreviewed.
+- [`Anchored_Dyadic_Recovery_Uniform_Spectrum/`](Anchored_Dyadic_Recovery_Uniform_Spectrum/)
+  — an archival arrival of 2026-09-29 on recovering the whole
+  uniform-factor spectrum, or a fixed prefix of it, at the dyadic
+  reference law; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -293,6 +297,21 @@ consistency returns exactly on classes with uniformly vanishing tails.
 A Christoffel hierarchy on a variance-weighted spectral measure gives
 explicit bias bounds, exact for geometric spectra such as the up
 law's.  Unreviewed; its numerics are diagnostics; no Lean statement.
+
+[`Anchored_Dyadic_Recovery_Uniform_Spectrum/`](Anchored_Dyadic_Recovery_Uniform_Spectrum/)
+holds *Anchored Recovery of the Dyadic Uniform Spectrum*, filed on
+2026-09-29 by a quick archival intake (22-page A4 PDF, 1,622-line
+source, an exact check program with mpmath diagnostics).  It takes up
+the pointwise questions the uniform-factor recovery article above
+leaves open: comparing a law directly with the Rvachev law, the
+spectrum is recovered to within `exp[−Θ(√log(1/ε))]` from
+total-variation or Kolmogorov error `ε` — no Hölder exponent, even for
+smooth, fixed-variance, geometrically separated spectra, but far better
+than the pairwise `(log 1/ε)^{−2}` — while every fixed number of
+leading factors is recovered at Lipschitz rate with an arbitrary
+summable tail.  Testing the dyadic law against `δ`-separated
+alternatives needs `exp[Θ(log²(1/δ))]` samples.  The pairwise modulus
+remains open.  Unreviewed; no Lean statement.
 
 ## Formalization notes
 

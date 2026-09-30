@@ -1,0 +1,1495 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,xurl}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{25,53,75}
+\definecolor{muted}{RGB}{85,90,96}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Beyond the Square-Root Cusp},
+ pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={Logarithmic critical corrections and equilibrium selection for digital-product pressure}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Beyond the square-root cusp}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{.2em}
+\setlist{itemsep=.25em,topsep=.5em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}\newtheorem{lemma}[lemma]{Lemma}\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}\newtheorem{proposition}[proposition]{Proposition}\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}\newtheorem{corollary}[corollary]{Corollary}\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}\newtheorem{definition}[definition]{Definition}\aliascntresetthe{definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Id}{\mathrm I}
+\newcommand{\Proj}{\Pi}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Holder}{C^\alpha(\TT)}
+\newcommand{\Leb}{\mathfrak m}
+\newcommand{\bconst}{B_b}
+\newcommand{\rhoess}{r_{\mathrm{ess}}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+{\small\sffamily\color{ink} PROVEIT\quad /\quad ANALYSIS AND DYNAMICAL SYSTEMS}\par
+\vspace{15mm}
+{\Huge\bfseries\color{ink} Beyond the\\[3mm] Square-Root Cusp\par}
+\vspace{7mm}
+{\Large Logarithmic critical corrections and equilibrium\\[2mm]
+selection for digital-product pressure\par}
+\vspace{9mm}
+{\large Research draft prepared for Vladimir Reshetnikov\par}
+{Prepared with ChatGPT\quad\textbullet\quad 29 September 2026\par}
+\vspace{7mm}\hrule\vspace{3mm}
+\begin{abstract}
+The ProveIt critical-pressure article determines a square-root singularity
+and explicitly asks for its next term and for the limiting equilibrium
+measures. We address both questions. For the consecutive digital mask in
+any integer base $b\ge2$, put $\kappa_b=\sqrt{2(b-1)\log b}$. At the
+critical absolute-moment exponent, the unnormalized cylinder pressure is
+\[
+\begin{split}
+ P_{b,1}(c)={}&\kappa_b\sqrt{|c|}-(b-1)|c|\log(1/|c|)\\
+ &+\bigl[b\log b+(b-1)(\gamma-1)\bigr]|c|
+ +O_{b,\eta}(|c|^{3/2-\eta})
+\end{split}
+\]
+for every $0<\eta<1/2$. Thus both a logarithmic term and an ordinary
+linear term occur. The logarithm comes from an explicitly evaluated
+finite-part response functional, rather than from a formal continuation
+of a supercritical zeta coefficient.
+
+At nonzero phases near zero there is a unique equilibrium probability.
+At the critical exponent it converges weakly to
+$\tfrac12\delta_0+\tfrac12\Leb$, where $\Leb$ is normalized Lebesgue
+measure. More generally, along $s=1+u\sqrt{|c|}$, bounded detuning selects
+an explicit mixture whose atomic mass is
+\[
+ \frac12\left(1+
+ \frac{u\log b}{\sqrt{u^2(\log b)^2+8(b-1)\log b}}\right).
+\]
+We obtain the individual left and right eigenvector asymptotics, a
+$\sqrt{|c|}$-scale boundary layer, and the exact leading divergence of a
+finite-product amplitude. The spectral foundation and the leading
+crossover are credited to the repository predecessor and reconstructed
+as needed. Detailed proofs, reproducible diagnostics, a claims audit,
+and further research questions accompany the article.
+\end{abstract}
+\vfill
+{\small\color{muted} Status: ordinary mathematical proofs in an unrefereed research draft;
+not Lean/Rocq verified. Numerical data are not interval certificates.
+No unrestricted claim of worldwide priority is made.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+
+\section{The precise research target}
+\label{sec:intro}
+
+\subsection{What was already known in the inspected repository}
+The immediate predecessor is \emph{Critical Cusps in Digital-Product
+Pressure} \cite{CriticalRepo}. It proves the leading law
+$P_{b,1}(c)\sim\kappa_b\sqrt{|c|}$, constructs a size-two Jordan block at
+the atomic phase, and obtains the leading bounded-detuning and finite-size
+crossover. Those results are \emph{not} claimed anew here. Its further
+research agenda contains two particularly concrete questions:
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item After the square root, does the pressure have a
+$|c|\log|c|$ term, a $|c|$ term, or both, and what are their coefficients?
+\item Which normalized eigenvectors and equilibrium measures emerge as
+the phase tends to the atomic phase?
+\end{enumerate}
+These are the predecessor's questions entitled ``The next critical term''
+and ``Eigenfunctions, eigenmeasures, and equilibrium measures.'' The
+present article answers the first with an explicit remainder and answers
+the weak-selection and first boundary-layer parts of the second.
+
+The earlier \emph{Fractional Cusps at the Atomic Phase} treats exponents
+$s>1$ \cite{FractionalRepo}. A later subcritical article treats all
+$0<s<1$ \cite{SubcriticalRepo}. Neither the leading square root nor the
+subcritical linear response is a new contribution of this package.
+This distinction matters in a rapidly expanding research corpus.
+
+The primary literature studies generalized Thue--Morse measures and
+phase-dependent singular potentials \cite{GKS,GLS}. In particular,
+\cite[Theorems 2.2--2.3 and the following discussion]{GLS} proves
+phase continuity at nonnegative pressure orders and asks about stronger
+regularity at general positive orders. Our result is a refined local
+answer at the exceptional atomic phase; it is not a global regularity
+classification. The published sine convention is obtained from our
+binary cosine convention by shifting the phase by $1/2$.
+
+\subsection{Claims and boundaries}
+\begin{center}
+\begin{tabular}{@{}p{.24\textwidth}p{.69\textwidth}@{}}
+\toprule
+\textbf{Status} & \textbf{Content}\\
+\midrule
+Prior repository results & Leading square-root pressure, the atomic
+Jordan block, and the leading bounded-detuning eigenvalue crossover.\\[2mm]
+Proved here & Both next critical coefficients with an explicit
+little-power-loss remainder; first normalized eigenvector corrections;
+critical and detuned equilibrium selection; the right boundary layer.\\[2mm]
+Derived consequences & An exact amplitude constant and the obstruction
+to a pure half-integer-power expansion through order $|c|$.\\[2mm]
+Not established & A complete transseries, a sharp next coefficient,
+unbounded-detuning uniformity, a global phase theory, or formal verification.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All model-specific analytic ingredients used below are proved or
+reconstructed. We use the standard elementary framework of bounded
+operators, Riesz projections, compact approximation, and measure entropy;
+the particular finite-dimensional reduction and entropy argument are
+spelled out. Numerical calculations are a separate diagnostic layer.
+
+The pinned repository snapshot is
+\begin{center}\small
+\nolinkurl{1085b506d65e207a05b7e9c861bb1fe88432fe38}.
+\end{center}
+The inspected critical article has blob identifier
+\nolinkurl{5539ac92693fc99fa35ded81bcf9a4486d37e501}.
+The cited primary papers and targeted repository searches establish a
+specific local research gap, not worldwide priority. Independent review
+is still needed. No repository files were changed in preparing this work.
+
+\section{Definitions and main results}
+\label{sec:main}
+
+\subsection{Normalization}
+Fix $b\ge2$ and let $T_bx=bx\pmod1$ on $\TT=\RR/\ZZ$. Write
+\begin{equation}
+ m_b(x)=\left|\frac1b\sum_{r=0}^{b-1}e^{2\pi i r x}\right|
+       =\left|\frac{\sin\pi bx}{b\sin\pi x}\right|,
+ \label{eq:mask}
+\end{equation}
+with removable values at integers. For $s>0$ and phase $c$, define
+\begin{equation}
+ (\Lop_{s,c}f)(x)=\sum_{k=0}^{b-1}
+ m_b\left(\frac{x+k}{b}-c\right)^s
+ f\left(\frac{x+k}{b}\right).
+ \label{eq:operator}
+\end{equation}
+There is no factor $1/b$ in this operator. Let $\mathcal D_{b,n}$ be the
+$b^n$ equal closed cells of $[0,1]$. Put
+\begin{align}
+ F_{s,n,c}(x)&=\prod_{j=0}^{n-1}m_b(b^jx-c)^s,\\
+ Z_{s,n}(c)&=\sum_{I\in\mathcal D_{b,n}}\sup_{x\in I}F_{s,n,c}(x),\\
+ P_{b,s}(c)&=\lim_{n\to\infty}\frac1n\log Z_{s,n}(c).
+ \label{eq:pressure}
+\end{align}
+The usual subdivision inequality makes $Z_{s,n}$ submultiplicative;
+in the neighborhoods used here we will also identify the limit directly
+with a simple eigenvalue. All logarithms are natural. Throughout,
+\begin{equation}
+ \delta=|c|,\quad t=\sqrt\delta,\quad d=b-1,\quad
+ L=\log b,\quad a=2L,\quad \kappa_b=\sqrt{ad}.
+ \label{eq:constants}
+\end{equation}
+Euler's constant is $\gamma$, and $\Leb$ denotes normalized Lebesgue
+measure on $\TT$. The binary pressure order is
+\begin{equation}
+ P(q\log\cos^2\pi(x-c))=P_{2,2q}(c).
+ \label{eq:binary}
+\end{equation}
+Thus our critical exponent $s=1$ corresponds to $q=1/2$.
+
+\subsection{The complete expansion through the linear scale}
+\begin{theorem}[Logarithmic critical correction]
+\label{thm:pressure}
+For every integer $b\ge2$ and every $0<\eta<1/2$, as $c\to0$,
+\begin{equation}
+ \boxed{\begin{aligned}
+ P_{b,1}(c)={}&\kappa_b\sqrt\delta-d\delta\log(1/\delta)
+                  +B_b\delta+O_{b,\eta}(\delta^{3/2-\eta}),\\
+ B_b={}&b\log b+(b-1)(\gamma-1).
+ \end{aligned}}
+ \label{eq:main-pressure}
+\end{equation}
+For small nonzero $c$, the two eigenvalues near one satisfy
+\begin{equation}
+ \lambda_\pm(c)=1\pm\kappa_b\sqrt\delta-d\delta\log(1/\delta)
+ +C_b\delta+O_{b,\eta}(\delta^{3/2-\eta}),
+ \label{eq:eigenvalues-refined}
+\end{equation}
+where $C_b=(2b-1)\log b+(b-1)(\gamma-1)$.
+The remaining spectrum on a suitable H\"older space stays in a fixed
+disk of radius less than one, and $P_{b,1}(c)=\log\lambda_+(c)$.
+\end{theorem}
+
+For example,
+\begin{equation}
+\begin{split}
+ P_{2,1}(c)={}&\sqrt{2\log2}\sqrt\delta-\delta\log(1/\delta)\\
+ &+(2\log2+\gamma-1)\delta+O_\eta(\delta^{3/2-\eta}).
+\end{split}
+\label{eq:binary-expansion}
+\end{equation}
+Here $B_2\approx0.9635100260$. A polynomial in $\sqrt\delta$ cannot
+represent the expansion through order $\delta$: the nonzero
+$\delta\log\delta$ term must be retained. This is an obstruction to a
+pure Puiseux expansion, not a proof of a complete logarithmic transseries.
+
+\subsection{Eigenvectors, boundary layers, and selected measures}
+Define, for $0<x<1$,
+\begin{equation}
+ H(x)=\frac{\sin\pi x}{\pi},\qquad
+ G(x)=H(x)\left[-\psi(x)-\psi(1-x)+2\log\frac2\pi\right],
+ \label{eq:HG}
+\end{equation}
+where $\psi=\Gamma'/\Gamma$. Extend periodically with $H(0)=0$ and
+$G(0)=1$. For $f\in C^\alpha$, $0<\alpha<1$, set
+\begin{equation}
+ \ell(f)=f(0),\qquad
+ \Xi(f)=\int_0^1\frac{f(x)-f(0)}{H(x)}\dd x.
+ \label{eq:functionals}
+\end{equation}
+The integral is absolutely convergent. The functional $\Xi$ is bounded
+on $C^\alpha$ but is not asserted to be a finite signed measure.
+
+\begin{theorem}[Critical eigenvectors and half-and-half selection]
+\label{thm:selection-critical}
+Fix $0<\alpha<1/2$. For sufficiently small $c\ne0$ there are a strictly
+positive right eigenfunction $h_c$ and a positive left eigenprobability
+$\nu_c$ for $\lambda_+(c)$, uniquely normalized by
+$\Xi(h_c)=1$ and $\nu_c(1)=1$. As $c\to0$,
+\begin{align}
+ h_c&=H+\frac{\kappa_b}{a}\sqrt\delta\,G+o(\sqrt\delta)
+ &&\text{in }C^\alpha,\label{eq:right-expansion}\\
+ \nu_c&=\ell+\frac{\kappa_b}{a}\sqrt\delta\,\Xi+o(\sqrt\delta)
+ &&\text{in }(C^\alpha)^*.\label{eq:left-expansion}
+\end{align}
+The right boundary layer is
+\begin{equation}
+ \frac{h_c(\sqrt\delta\,z)}{\sqrt\delta}
+ \longrightarrow |z|+\frac{\kappa_b}{a},
+ \label{eq:boundary-critical}
+\end{equation}
+uniformly for $z$ in each compact subset of $\RR$, with the argument
+interpreted on the circle. The probability
+\begin{equation}
+ \mu_c(f)=\frac{\nu_c(h_cf)}{\nu_c(h_c)}
+ \label{eq:mu}
+\end{equation}
+is the unique equilibrium measure for $\log m_b(x-c)$, and
+\begin{equation}
+ \boxed{\displaystyle\mu_c\ \Longrightarrow\
+             \tfrac12\delta_0+\tfrac12\Leb.}
+ \label{eq:half-selection}
+\end{equation}
+The arrow means weak convergence of probabilities, not convergence in
+total variation.
+\end{theorem}
+
+\begin{theorem}[Bounded-detuning selection]
+\label{thm:selection-detuned}
+Let $c=\sigma t^2$, $s=1+ut$, where $\sigma\in\{-1,1\}$ and $t\downarrow0$.
+For $u$ in any fixed compact subset of $\RR$, the unique equilibrium
+probabilities of $s\log m_b(x-c)$ satisfy, uniformly against each
+continuous test function,
+\begin{equation}
+ \boxed{\displaystyle
+ \mu_{1+ut,\sigma t^2}\Longrightarrow
+ w_b(u)\delta_0+(1-w_b(u))\Leb,\qquad
+ w_b(u)=\frac12\left(1+
+ \frac{uL}{\sqrt{u^2L^2+4\kappa_b^2}}\right).}
+ \label{eq:detuned-selection}
+\end{equation}
+At $(s,c)=(1,0)$ the entire set of equilibrium probabilities is exactly
+$\{v\delta_0+(1-v)\Leb:0\le v\le1\}$. Thus the phase perturbation and its
+detuning select particular elements of a pre-existing equilibrium segment.
+\end{theorem}
+The limiting weights tend algebraically to one or zero as
+$u\to+\infty$ or $u\to-\infty$. The theorem does not make its error
+uniform along an unbounded function $u=u(t)$.
+
+\section{Reconstructing the critical spectral foundation}
+\label{sec:jordan}
+The Jordan mechanism in this section is a predecessor result
+\cite{CriticalRepo}. We reconstruct it to fix the normalization of $G$
+and the dual coordinates, which is essential for the next coefficients.
+Our $G$ differs from the predecessor's unnormalized digamma companion by
+a constant multiple of $H$.
+
+\subsection{An exact Jordan chain and its dual}
+Write $\Lop=\Lop_{1,0}$. The mask identity gives
+\begin{equation}
+ (\Lop f)(x)=\frac{H(x)}b\sum_{k=0}^{b-1}
+             \frac{f((x+k)/b)}{H((x+k)/b)},\qquad 0<x<1.
+ \label{eq:conjugacy}
+\end{equation}
+The removable endpoint values are understood by continuity.
+
+\begin{lemma}[Normalized Jordan coordinates]
+\label{lem:jordan-coordinates}
+The functions and functionals in \cref{eq:HG,eq:functionals} satisfy
+\begin{gather}
+ \Lop H=H,\qquad \Lop G=G+aH,\qquad
+ \ell\Lop=\ell,\qquad \Xi\Lop=\Xi+a\ell,\label{eq:jordan-relations}\\
+ \ell(G)=1,\quad \ell(H)=0,\quad \Xi(H)=1,\quad \Xi(G)=0.
+ \label{eq:normalization}
+\end{gather}
+Both $G$ and $H$ are periodic Lipschitz functions. Consequently
+\begin{equation}
+ \Proj f=G\ell(f)+H\Xi(f),\qquad
+ \mathcal N f=aH\ell(f)
+ \label{eq:PN}
+\end{equation}
+define a bounded rank-two projection and a nonzero nilpotent operator
+with $\mathcal N^2=0$ and
+$\Lop\Proj=\Proj\Lop=\Proj+\mathcal N$.
+\end{lemma}
+\begin{proof}
+The expansions $\psi(x)=-x^{-1}-\gamma+O(x)$ and
+$\psi(1-x)=-\gamma+O(x)$ give $G(0)=1$ with a finite one-sided derivative;
+reflection handles the other endpoint. Formula \cref{eq:conjugacy}
+immediately fixes $H$. The digamma multiplication identity
+\[
+ \sum_{k=0}^{b-1}\psi\left(\frac{x+k}{b}\right)
+       =b\psi(x)-b\log b
+\]
+and its reflected version show that $\Lop G=G+2\log b\,H$.
+The multiplication identity follows by logarithmic differentiation of
+the Gamma multiplication formula, or directly by grouping the convergent
+series for differences of digamma functions into residue classes.
+
+For the only nontrivial normalization, integrate on
+$[\varepsilon,1-\varepsilon]$. Since $\psi=(\log\Gamma)'$,
+\begin{align*}
+ \int_\varepsilon^{1-\varepsilon}
+ [-\psi(x)-\psi(1-x)]\dd x
+ &=2\log\Gamma(\varepsilon)-2\log\Gamma(1-\varepsilon),\\
+ \int_\varepsilon^{1-\varepsilon}\frac{\dd x}{H(x)}
+ &=2\log\cot(\pi\varepsilon/2).
+\end{align*}
+Using $\log\Gamma(\varepsilon)=-\log\varepsilon+O(\varepsilon)$,
+the constant $2\log(2/\pi)$ in $G/H$ cancels the remaining finite part.
+This proves $\Xi(G)=0$.
+
+If $f(0)=0$, \cref{eq:conjugacy} and a change of variables give
+$\Xi(\Lop f)=\Xi(f)$; absolute integrability follows from
+$|f(x)|\le C\dist(x,\ZZ)^\alpha$. For arbitrary $f$, subtract $f(0)G$
+and use the already proved formula for $\Lop G$. This proves the dual
+identity. The projection and commutation assertions are now direct
+consequences of the four pairings in \cref{eq:normalization}.
+\end{proof}
+
+\subsection{Weighted quadrature and the complementary spectrum}
+\begin{lemma}[Uniform iterate estimate]
+\label{lem:quadrature}
+For $0<\alpha<1$, $N=b^n$, and $f\in C^\alpha$, one has
+\begin{equation}
+ \left\|\Lop^n f-a n H f(0)-G f(0)-H\Xi(f)\right\|_\infty
+ \le C_{b,\alpha}(n+1)b^{-\alpha n}\|f\|_\alpha.
+ \label{eq:C0-remainder}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Iterating the telescoping quotient in \cref{eq:conjugacy} yields
+\begin{equation}
+ \Lop^n f(x)=\frac{H(x)}N\sum_{k=0}^{N-1}
+             \frac{f((x+k)/N)}{H((x+k)/N)}.
+ \label{eq:iterate}
+\end{equation}
+First let $f=1$. Subtract the two endpoint poles from the cosecant:
+\[
+ v(y)=\csc\pi y-\frac1{\pi y}-\frac1{\pi(1-y)}.
+\]
+This extends smoothly to $[0,1]$, and direct integration gives
+$\int_0^1v=(2/\pi)\log(2/\pi)$. The two pole sums are evaluated using
+\[
+ \sum_{k=0}^{N-1}\frac1{x+k}=\psi(N+x)-\psi(x).
+\]
+Since $\psi(N+x)=\log N+O(N^{-1})$ uniformly for $0\le x\le1$, and
+$H(x)$ removes the apparent endpoint divergences, the resulting expression
+is $2\log N\,H(x)+G(x)+O(N^{-1})$, uniformly in $x$.
+
+Now put $g=f-f(0)$. The function $g/H$ is integrable, although generally
+unbounded. Compare the shifted sample in each cell of length $1/N$ with
+its integral. For the first cell, the weighted sample is bounded by
+\[
+ \frac{H(x)}N\frac{|g(x/N)|}{H(x/N)}
+ \le C\|f\|_\alpha N^{-\alpha}H(x)x^{\alpha-1}
+ \le C'\|f\|_\alpha N^{-\alpha};
+\]
+the last cell is analogous. The endpoint integrals have the same bound.
+For an interior cell at distance comparable to $k/N$ from an endpoint,
+the variation of the numerator contributes at most
+$C\|f\|_\alpha N^{-\alpha}/k$ after integration; the variation of $1/H$
+contributes at most $C\|f\|_\alpha N^{-\alpha}k^{\alpha-2}$.
+The same estimates hold with $N-k$ near the other endpoint.
+Their sums are $O(N^{-\alpha}\log N)$ and $O(N^{-\alpha})$, respectively.
+Thus the weighted sum converges uniformly to $H(x)\Xi(f)$ at the stated
+rate. The case $n=0$ is absorbed by increasing the constant.
+\end{proof}
+
+\begin{proposition}[Spectral separation]
+\label{prop:gap}
+On $C^\alpha$, the spectral subspace of $\Lop$ at eigenvalue one is
+exactly $\operatorname{span}\{G,H\}$, with its size-two Jordan block.
+All remaining spectrum has modulus at most $b^{-\alpha}$. In particular,
+for any $b^{-\alpha}<\theta<1$ there is $K_\theta<\infty$ such that
+\begin{equation}
+ \|\Lop^n-\Proj-n\mathcal N\|_{\alpha\to\alpha}
+ \le K_\theta\theta^n\qquad(n\ge1).
+ \label{eq:gap}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For each fixed $n$, the inverse-branch formula and the product inequality
+for H\"older seminorms give a Lasota--Yorke estimate
+\begin{equation}
+ [\Lop^n f]_\alpha\le
+ C b^{-\alpha n}\|\Lop^n1\|_\infty[f]_\alpha+C_n\|f\|_\infty.
+ \label{eq:LY}
+\end{equation}
+Here $C$ is independent of $n$. On arcs crossing the coordinate cut,
+reindex the inverse branches and split at the cut; this changes only the
+fixed H\"older constant. The coefficients are Lipschitz for each $n$.
+
+To see the compactness consequence explicitly, approximate the identity
+by periodic piecewise-linear interpolation $Q_M$ on a uniform mesh.
+These finite-rank maps have uniformly bounded $C^\alpha$ norms and
+$\|I-Q_M\|_{\alpha\to0}=O(M^{-\alpha})$. Apply \cref{eq:LY} to
+$(I-Q_M)f$ and let $M\to\infty$. The essential norm of $\Lop^n$ is at
+most $C' b^{-\alpha n}\|\Lop^n1\|_\infty$.
+By \cref{lem:quadrature}, the last factor is $O(n+1)$, so
+$\rhoess(\Lop)\le b^{-\alpha}$.
+
+Outside that disk, spectrum consists of isolated eigenvalues of finite
+algebraic multiplicity. If $\Lop f=\lambda f$ and $\lambda\ne1$, the dual
+relations imply $\ell(f)=\Xi(f)=0$. Formula \cref{eq:C0-remainder}
+then excludes $|\lambda|>b^{-\alpha}$. A generalized eigenvector at one,
+after subtracting its $\Proj$ component, also lies in the common kernel
+of the two functionals. Its iterates are a polynomial in $n$, whereas
+\cref{eq:C0-remainder} makes them tend to zero. That polynomial must
+vanish identically. The entire generalized eigenspace is therefore the
+range of $\Proj$. On its complement the spectral-radius formula gives
+\cref{eq:gap}, since the central block has exact powers
+$\Proj+n\mathcal N$.
+\end{proof}
+
+\section{A perturbation reduction with a controlled chart error}
+\label{sec:compression}
+
+\subsection{The strength of the phase perturbation}
+For the remainder of the critical calculation, let
+$E_c=\Lop_{1,c}-\Lop_{1,0}$. The absolute trigonometric mask is Lipschitz,
+so its translated difference has uniform norm $O(\delta)$ and bounded
+Lipschitz seminorm. Splitting a H\"older quotient into distances below
+and above $\delta$ proves
+\begin{equation}
+ \|E_c\|_{\alpha\to\alpha}=O(\delta^{1-\alpha})
+ =O(\varepsilon_c),\qquad \varepsilon_c=\delta^{1-\alpha}.
+ \label{eq:translation-bound}
+\end{equation}
+The finite inverse-branch sum is bounded on $C^\alpha$, so the weight
+estimate indeed gives the operator estimate. It does not assert norm
+differentiability of translation at a cusp.
+
+\subsection{Graph coordinates around an isolated spectral cluster}
+\begin{lemma}[Second-order compression error]
+\label{lem:compression}
+Let $A_0$ be a bounded operator with an isolated finite-dimensional
+spectral subspace $V$ and commuting projection $P$. Put $Q=I-P$.
+For sufficiently small bounded $E$, the corresponding spectral subspace
+of $A_0+E$ is the graph of a map $K:V\to QX$ with
+$\|K\|=O(\|E\|)$. In the graph coordinate $v\mapsto v+Kv$, the
+compressed operator is
+\begin{equation}
+ A_0|_V+PE|_V+O(\|E\|^2).
+ \label{eq:compression}
+\end{equation}
+The constants are uniform in a continuous family with a common separating
+contour and uniformly bounded resolvents.
+\end{lemma}
+\begin{proof}
+A resolvent Neumann series on the separating contour shows that the
+Riesz projection $P_E$ satisfies $\|P_E-P\|=O(\|E\|)$.
+The restriction of $P$ to $\operatorname{ran}P_E$ is invertible onto $V$,
+so that range is a graph, with $K=O(\|E\|)$.
+Projection back to $V$ gives the exact compressed expression
+\[
+ P(A_0+E)(I+K)|_V=A_0|_V+PE|_V+PEK.
+\]
+The term $PA_0K$ vanishes because $QX$ is $A_0$-invariant. The final term
+has norm $O(\|E\|^2)$. This proves the claim without selecting individual
+eigenvectors inside a possibly defective cluster.
+\end{proof}
+
+In the ordered basis $(G,H)$, \cref{lem:compression} and
+\cref{prop:gap} give the two-dimensional matrix
+\begin{equation}
+ A_c=\begin{pmatrix}
+ 1+\ell(E_cG)&\ell(E_cH)\\
+ a+\Xi(E_cG)&1+\Xi(E_cH)
+ \end{pmatrix}+O(\delta^{2-2\alpha}).
+ \label{eq:central-matrix}
+\end{equation}
+The error is an entrywise estimate in a fixed basis. It is not discarded
+without examining its effect on the square-root splitting: an
+$O(\delta^{2-2\alpha})$ error in the small upper-right entry can shift
+an eigenvalue by $O(\delta^{3/2-2\alpha})$. Choosing $\alpha<1/4$ is what
+makes this $o(\delta)$ and preserves the linear coefficient.
+
+\section{Exact branch identities and the finite-part logarithm}
+\label{sec:response}
+Reflection conjugates $\Lop_{1,c}$ to $\Lop_{1,-c}$, so eigenvalues and
+pressure are even. We therefore take $0<c<1/(4b)$ in this section and
+restore $\delta=|c|$ at the end.
+
+\subsection{A signed cotangent calculation}
+\begin{lemma}[Exact response of the vanishing eigenfunction]
+\label{lem:exactH}
+For $d=b-1$,
+\begin{equation}
+ (E_cH)(0)=\frac{\sin\pi dc}{\pi}.
+ \label{eq:atomH}
+\end{equation}
+On $bc\le x\le1$,
+\begin{equation}
+ (\Lop_{1,c}H)(x)=\frac{\sin\pi(x-dc)}\pi.
+ \label{eq:bulkH}
+\end{equation}
+On $0\le x\le bc$,
+\begin{equation}
+ (\Lop_{1,c}H)(x)=
+ 2m_b(x/b-c)H(x/b)-\frac{\sin\pi(x-dc)}\pi.
+ \label{eq:innerH}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $y_k=(x+k)/b$. In the numerator absolute value, absorb the factor
+$(-1)^k$ from $\sin\pi b(y_k-c)$, leaving $|\sin\pi(x-bc)|$.
+Introduce the auxiliary signed sum obtained from this expression by
+omitting its two absolute values. After multiplication by $H(y_k)$ it is
+\[
+ \frac{\sin\pi(x-bc)}{b\pi}
+ \sum_{k=0}^{b-1}\frac{\sin\pi y_k}{\sin\pi(y_k-c)}.
+\]
+Use
+$\sin\pi y_k/\sin\pi(y_k-c)=\cos\pi c+
+\sin\pi c\cot\pi(y_k-c)$ and
+\[
+ \sum_{k=0}^{b-1}\cot\pi\left(\frac{x+k}{b}-c\right)
+ =b\cot\pi(x-bc).
+\]
+The sum becomes $\sin\pi(x-dc)/\pi$. When $x\ge bc$, both the common
+numerator and all denominators have the sign yielding the absolute-value
+sum, so this proves \cref{eq:bulkH}. When $0<x<bc$, the branch $k=0$
+has negative numerator and denominator, whereas the other denominators
+remain positive. Restoring absolute values reverses the other branch
+signs. The total is twice the zeroth-branch contribution minus the
+signed sum, giving \cref{eq:innerH}. Continuity at $x=0$, where
+$H(0)=0$, gives \cref{eq:atomH}. Apparent cotangent singularities are
+removed by their sine prefactor.
+\end{proof}
+
+\subsection{The three matrix entries that determine the answer}
+\begin{proposition}[Explicit response coefficients]
+\label{prop:entries}
+As $c\downarrow0$,
+\begin{align}
+ \ell(E_cH)&=dc+O(c^3),\label{eq:entry12}\\
+ \ell(E_cG)&=r_bc+O(c^2),\label{eq:entry11}\\
+ \Xi(E_cH)&=-2dc\log(1/c)+k_bc+O(c^2),\label{eq:entry22}
+\end{align}
+where
+\begin{equation}
+ r_b=2d\left(\gamma+\log\frac2\pi\right)+2b\log b,
+ \qquad k_b=2d\left(\log\frac{\pi b}{2}-1\right).
+ \label{eq:rk}
+\end{equation}
+For the remaining entry, the bound
+$\Xi(E_cG)=O(c^{1-\alpha})$ suffices.
+\end{proposition}
+\begin{proof}
+The first line is \cref{eq:atomH}. Evaluating $\Lop_{1,c}G$ at zero,
+the branch at zero changes by $O(c^2)$ since $m_b(-c)=1+O(c^2)$.
+For $1\le j<b$,
+\[
+ m_b(j/b-c)=\frac{\pi c}{\sin(\pi j/b)}+O(c^2)
+            =\frac{c}{H(j/b)}+O(c^2).
+\]
+It follows that the coefficient in \cref{eq:entry11} is
+$\sum_{j=1}^{b-1}G(j/b)/H(j/b)$. The digamma multiplication identity gives
+\[
+ \sum_{j=1}^{b-1}\psi(j/b)=-d\gamma-b\log b,
+\]
+which evaluates the coefficient as $r_b$.
+
+For the logarithmic entry, write $v=\pi dc$. By definition,
+\begin{equation}
+ \Xi(E_cH)=\int_0^1
+ \frac{\Lop_{1,c}H(x)-H(x)-\sin(v)/\pi}{H(x)}\dd x.
+ \label{eq:finitepart-start}
+\end{equation}
+This is an ordinary convergent integral: the constant subtracted in the
+numerator is the value of $E_cH$ at zero. Split it at $x=bc$.
+On the outer interval, \cref{eq:bulkH} gives
+\[
+ \frac{\Lop_{1,c}H-H-\sin(v)/\pi}{H}
+ =\cos v-1-\sin v\,[\cot\pi x+\csc\pi x].
+\]
+Since $\cot\pi x+\csc\pi x=\cot(\pi x/2)$, its integral is exactly
+\begin{equation}
+ I_{\rm out}=(1-bc)(\cos v-1)
+       +\frac{2\sin v}{\pi}\log\sin\frac{\pi bc}{2}.
+ \label{eq:outer-exact}
+\end{equation}
+Thus
+\begin{equation}
+ I_{\rm out}=-2dc\log(1/c)+2dc\log(\pi b/2)+O(c^2).
+ \label{eq:outer-expand}
+\end{equation}
+
+On the inner interval, \cref{eq:innerH} and Taylor expansion give,
+uniformly for $0\le x\le bc$ after removing the value at $x=0$,
+\begin{equation}
+ \frac{\Lop_{1,c}H-H-\sin(v)/\pi}{H(x)}
+     =-\frac{2d}{b}+O(c^2).
+ \label{eq:inner-expand}
+\end{equation}
+For a precise uniform justification, $m_b(x/b-c)=1+O(c^2)$ there,
+$H(x/b)=x/b+O(x^3)$, and
+\[
+ \sin\pi(x-dc)+\sin\pi dc=\pi x+O(c^2x).
+\]
+The numerator in \cref{eq:inner-expand} is consequently
+$-2dx/b+O(c^2x)$, and division by $H(x)=x(1+O(c^2))$ is uniform down
+to the removable endpoint. Hence
+$I_{\rm in}=-2dc+O(c^3)$. Combining this with
+\cref{eq:outer-expand} proves \cref{eq:entry22}.
+The last bound follows from boundedness of $\Xi$ and
+\cref{eq:translation-bound}.
+\end{proof}
+
+\begin{corollary}[An exact binary check]
+\label{cor:binary-exact}
+For $b=2$ and $0<c<1/8$,
+\begin{equation}
+ \Xi(E_cH)=-2c+(1-2c)(\cos\pi c-1)
+          +\frac{2\sin\pi c}{\pi}\log\sin\pi c.
+ \label{eq:binary-exact}
+\end{equation}
+\end{corollary}
+\begin{proof}
+For the binary mask, the inner formula simplifies by elementary
+sine addition to $\Lop_{1,c}H(x)=\sin\pi c/\pi$ when $0\le x\le2c$.
+The integrand in \cref{eq:finitepart-start} is therefore exactly $-1$
+on that interval. Add its integral $-2c$ to \cref{eq:outer-exact}.
+\end{proof}
+
+The appearance of $\log c$ is now transparent. The shifted zeros feed
+a nonzero value into a function which previously vanished at zero.
+The dual coordinate removes that value but integrates the residual
+against $1/H(x)\sim1/\dist(x,\ZZ)$. The outer region beginning at $bc$
+therefore leaves a logarithmic finite part. No divergent expression has
+been treated as a convergent integral.
+
+\section{From the response matrix to the pressure expansion}
+\label{sec:proof-pressure}
+
+\subsection{The refined eigenvalue calculation}
+\begin{proof}[Proof of the eigenvalue assertion in \cref{thm:pressure}]
+Fix $0<\eta<1/2$ and choose $\alpha=\eta/2<1/4$. Write the matrix in
+\cref{eq:central-matrix} as
+\[
+ A_c=\begin{pmatrix}1+e&u\cr a+g&1+f\end{pmatrix}.
+\]
+Its entries, including the graph error, satisfy
+\begin{align}
+ e&=r_bc+O(c^{2-2\alpha}),\qquad
+ f=-2dc\log(1/c)+k_bc+O(c^{2-2\alpha}),\\
+ u&=dc+O(c^{2-2\alpha}),\qquad
+ g=O(c^{1-\alpha}).
+ \label{eq:entry-errors}
+\end{align}
+The two eigenvalues are exactly
+\begin{equation}
+ 1+\frac{e+f}{2}\ \pm\
+ \sqrt{u(a+g)+\frac{(e-f)^2}{4}}.
+ \label{eq:roots}
+\end{equation}
+The expression under the square root is
+\begin{equation}
+ ad c+O(c^{2-2\alpha})+O(c^{2-\alpha})
+                 +O(c^2\log^2 c).
+ \label{eq:discriminant}
+\end{equation}
+It is positive for sufficiently small $c>0$. Dividing the error by
+$\sqrt c$ in the difference-of-square-roots identity gives
+\begin{equation}
+ \sqrt{u(a+g)+(e-f)^2/4}
+   =\kappa_b\sqrt c+O(c^{3/2-\eta}).
+ \label{eq:sqrt-error}
+\end{equation}
+Here $c^{3/2}\log^2c=O_\eta(c^{3/2-\eta})$.
+
+The half-trace is
+\begin{equation}
+ \frac{e+f}{2}=-dc\log(1/c)+\frac{r_b+k_b}{2}c
+                      +O(c^{2-2\alpha}).
+\end{equation}
+The constants simplify to
+\begin{equation}
+ \frac{r_b+k_b}{2}=d(\gamma-1)+(2b-1)\log b=C_b.
+ \label{eq:Cconstant}
+\end{equation}
+Combining these equations proves \cref{eq:eigenvalues-refined} for
+positive phases. Reflection supplies the negative phases. The rank-two
+cluster is the only spectrum near one; the complementary spectrum stays
+in a fixed smaller disk by resolvent continuity. The eigenvalues are
+real, simple, and separated by $2\kappa_b\sqrt\delta+o(\sqrt\delta)$.
+\end{proof}
+
+\subsection{Positivity and identification with cylinder pressure}
+\begin{lemma}[Positive spectral data and pressure]
+\label{lem:positive-pressure}
+For sufficiently small $c\ne0$, $\lambda_+(c)$ is the simple dominant
+eigenvalue of $\Lop_{1,c}$, with a strictly positive right eigenfunction
+and a positive left eigenmeasure. Its logarithm equals the pressure in
+\cref{eq:pressure}.
+\end{lemma}
+\begin{proof}
+Use the graph coordinate of \cref{lem:compression}. A right eigenvector
+in the central plane can be written $(x_c,1)$, where the second row of
+the eigenvalue equation gives
+\begin{equation}
+ x_c=\frac{\lambda_+(c)-1-f}{a+g}
+     =\frac{\kappa_b}{a}\sqrt\delta+o(\sqrt\delta)>0.
+ \label{eq:x-leading}
+\end{equation}
+Lifting to the full space gives
+\begin{equation}
+ h_c=H+x_cG+O(\delta^{1-\alpha})
+ \label{eq:h-lift}
+\end{equation}
+in $C^\alpha$. Choose a small fixed neighborhood of zero on which
+$G\ge1/2$. There $H\ge0$ and $x_c$ is a positive constant times
+$\sqrt\delta$, while the error is $o(\sqrt\delta)$ when $\alpha<1/2$.
+Outside that neighborhood, $H$ is bounded below by a positive constant.
+This proves $h_c>0$ everywhere for sufficiently small $c\ne0$.
+
+The positive operator $\Lop_{1,c}$ has the norm limit
+$\lambda_+^{-n}\Lop_{1,c}^n\to\Proj_+$ on $C^\alpha$ for each fixed
+$c\ne0$, since all its other spectrum is strictly smaller in modulus.
+Thus $\Proj_+$ is positive. Write $\Proj_+f=h_c\ell_c(f)$, with
+$\ell_c(h_c)=1$. Its positivity makes $\ell_c$ a positive functional.
+It is bounded for the uniform norm, because
+$|\ell_c(f)|\le\ell_c(1)\|f\|_\infty$ for real $f$.
+Its extension to continuous functions is a positive finite measure.
+Normalize this measure to obtain $\nu_c(1)=1$.
+
+A change of variables gives
+\begin{equation}
+ \int_0^1\Lop_{1,c}^n1\dd x=b^n\int_0^1 F_{1,n,c}\dd x
+          \le Z_{1,n}(c).
+ \label{eq:pressure-lower}
+\end{equation}
+The left side has positive leading coefficient times $\lambda_+^n$, so
+it supplies the lower pressure bound.
+For the upper bound, fix $c\ne0$ and replace the weight $m_b(x-c)$ by
+$m_b(x-c)+\epsilon$. Its operator converges in norm to $\Lop_{1,c}$
+as $\epsilon\downarrow0$. The simple leading eigenvalue and positive
+eigenfunction persist, say as $\lambda_\epsilon$ and $h_\epsilon$.
+The logarithm of this regularized weight is H\"older continuous and
+bounded. On each $b$-adic cylinder, inverse-branch contraction bounds
+the variation of its $n$-step logarithmic weight by a geometric series,
+independently of $n$. Cylinder suprema are consequently comparable,
+with an $n$-independent factor, to the weighted inverse-branch sum at any
+fixed target point. That sum is $\Lop_\epsilon^n1$ and has exponential
+rate $\lambda_\epsilon$. Hence the regularized cylinder pressure is
+$\log\lambda_\epsilon$. Since the original products are pointwise no
+larger, their upper exponential rate is at most
+$\log\lambda_\epsilon$. Letting $\epsilon\downarrow0$ proves the claim.
+This argument needs no bounded logarithm for the original weight.
+\end{proof}
+
+\begin{proof}[Completion of \cref{thm:pressure}]
+Expand the logarithm of \cref{eq:eigenvalues-refined} for the positive
+branch. The quadratic term subtracts $\kappa_b^2\delta/2=d\log b\,\delta$.
+All cross terms involving $\sqrt\delta$ and $\delta\log\delta$, and all
+higher Taylor terms, are $O_\eta(\delta^{3/2-\eta})$.
+Thus $B_b=C_b-d\log b$, which is exactly \cref{eq:main-pressure}.
+At $c=0$, the telescoping product is $H(b^nx)/(b^nH(x))$. On a cell
+at distance comparable to $k/b^n$ from an endpoint its supremum is
+$O(1/k)$, while the two endpoint cells contribute $O(1)$. Thus
+$1\le Z_{1,n}(0)\le C(n+1)$, proving $P_{b,1}(0)=0$. The expansion
+therefore extends continuously to zero.
+\end{proof}
+
+\begin{remark}[What the remainder does and does not say]
+For each fixed $\eta>0$, the remainder is smaller than $\delta$.
+It is not asserted to be uniform as $\eta\downarrow0$, and no explicit
+numerical bound for its constant is claimed. The calculation leaves
+terms at the scale $\delta^{3/2}\log^2\delta$ unresolved. A generic
+operator norm estimate is sufficient for both displayed coefficients,
+but not for a sharp subsequent term.
+\end{remark}
+
+\section{Individual eigenvectors and the critical boundary layer}
+\label{sec:eigenvectors}
+
+\subsection{Two normalizations that remain meaningful at the limit}
+Choose now any fixed $0<\alpha<1/2$. The leading eigenvalue expansion,
+which does not require the refined remainder on this particular space,
+is $\lambda_+=1+\kappa_b t+o(t)$. The graph error is
+$O(\delta^{1-\alpha})=o(t)$. Since graph vectors lie in the kernel of
+both $\ell$ and $\Xi$, the lift of $(x_c,1)$ has $\Xi(h_c)=1$ exactly.
+Equation \cref{eq:x-leading} proves
+\cref{eq:right-expansion}.
+
+A left eigenvector of the central matrix can be written $(1,q_c)$.
+Its first component equation gives
+\begin{equation}
+ q_c=\frac{\lambda_+(c)-1-e}{a+g}
+          =\frac{\kappa_b}{a}t+o(t).
+ \label{eq:q-leading}
+\end{equation}
+To lift this row to the full dual space, compose it with the coordinate
+map from the perturbed cluster projection. That map equals
+$(\ell,\Xi)+O(\delta^{1-\alpha})$ in operator norm. The resulting
+functional is
+$\ell+q_c\Xi+o(t)$. Because $\Xi(1)=0$, its value at one is $1+o(t)$;
+normalizing that value to one proves \cref{eq:left-expansion}.
+Positivity and uniqueness were established in \cref{lem:positive-pressure}.
+
+It follows, in particular, that
+\begin{equation}
+ \nu_c\Longrightarrow\delta_0,\qquad
+ h_c\longrightarrow H,\qquad
+ \nu_c(h_c)=\frac{2\kappa_b}{a}t+o(t).
+ \label{eq:normalization-collapse}
+\end{equation}
+The weak convergence follows first on H\"older test functions, then on
+all continuous functions by uniform approximation and the fact that the
+$\nu_c$ are probabilities.
+
+\subsection{The boundary layer}
+On a fixed compact set of real $z$, periodicity and the expansion of
+sine give $H(tz)/t\to|z|$, whereas $G(tz)\to1$ uniformly.
+The $C^\alpha$ remainder in \cref{eq:right-expansion} is $o(t)$ even in
+uniform norm. This proves \cref{eq:boundary-critical}.
+
+The scaling is not arbitrary: the bulk eigenfunction vanishes linearly
+at the atom, while the positive lift at the atom is of order $t$.
+Balancing these two terms forces the spatial scale $x\asymp t$.
+This statement concerns the right eigenfunction; it does not assert
+that the left eigenmeasure has a density with a comparable pointwise
+profile.
+
+\subsection{Why the weak left limit is not the equilibrium limit}
+For any fixed $f\in C^\alpha$, multiply the two expansions and use
+\begin{equation}
+ \Xi(Hf)=\int_0^1f\dd x,
+ \label{eq:key-pairing}
+\end{equation}
+since $H(0)=0$. One obtains
+\begin{equation}
+ \nu_c(h_cf)=\frac{\kappa_b}{a}t
+        \left(f(0)+\int_0^1f\dd x\right)+o(t).
+ \label{eq:pairing-critical}
+\end{equation}
+Divide by \cref{eq:normalization-collapse} to obtain the half-and-half
+limit in \cref{eq:half-selection}. Uniform approximation extends it to
+continuous test functions.
+
+A naive multiplication of the limiting objects would give
+$H\delta_0=0$, not a probability. Both the numerator and denominator in
+\cref{eq:mu} vanish at order $t$. Their first corrections contain the
+information that selects a nontrivial mixture. Also, the expansion of
+$\nu_c$ is in $(C^\alpha)^*$, not in the total-variation norm; the
+finite-part functional $\Xi$ must not be mistaken for a signed
+probability correction.
+
+\begin{corollary}[Exact leading amplitude divergence]
+\label{cor:amplitude}
+For each fixed sufficiently small $c\ne0$ there are $\theta_c<1$ and
+$\mathcal A_b(c)>0$ such that
+\begin{equation}
+ b^n\int_0^1F_{1,n,c}\dd x
+ =\mathcal A_b(c)e^{nP_{b,1}(c)}(1+O_c(\theta_c^n)),
+ \label{eq:amplitude-n}
+\end{equation}
+and
+\begin{equation}
+ \mathcal A_b(c)\sim\frac{a}{\pi^2\kappa_b}|c|^{-1/2}.
+ \label{eq:amplitude-c}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The rank-one spectral projection is
+$f\mapsto h_c\nu_c(f)/\nu_c(h_c)$.
+Integrate its value at $f=1$ and use
+$\int H=2/\pi^2$ and \cref{eq:normalization-collapse}.
+The complementary spectrum gives the fixed-$c$ exponential error.
+\end{proof}
+The divergence order is already visible in the predecessor's spectral
+projectors. Formula \cref{eq:amplitude-c} records its exact constant for
+the normalization \cref{eq:operator}. The two successive limits in this
+corollary are not a new uniform finite-size theorem.
+
+\section{Detuned eigenvectors and the selected mixture}
+\label{sec:detuning}
+The leading eigenvalue crossover used in this section was already proved
+in \cite{CriticalRepo}. We give a short reconstruction that also produces
+the eigenvectors needed for the new selection statement.
+
+\subsection{An analytic atomic cluster}
+For real $s$ close to one, put
+$H_s=H^s$ and $\beta_s=b^{1-s}$. The exact coboundary gives
+\begin{equation}
+ \Lop_{s,0}H_s=\beta_s H_s,\qquad
+ \ell\Lop_{s,0}=\ell.
+ \label{eq:atomic-detuned}
+\end{equation}
+For fixed $\alpha<1$, the map $s\mapsto\Lop_{s,0}$ is analytic in a
+complex neighborhood of one on $C^\alpha$. At a simple zero, the local
+factor is $|x|^s$ times a nonvanishing analytic factor; the derivatives
+$|x|^s\log^k|x|$ have the necessary H\"older bounds uniformly whenever
+$\Re s>\alpha$. Away from the zeros analyticity is immediate. The same
+reasoning applies to $H_s$.
+
+Let $\Proj_s$ be the analytic rank-two cluster projection, define
+$G_s=\Proj_s1$, and write its second coordinate as $\Xi_s$, so that
+\begin{equation}
+ \Proj_sf=G_s\ell(f)+H_s\Xi_s(f).
+ \label{eq:Ps}
+\end{equation}
+Indeed $\ell\Proj_s=\ell$, because $\ell$ is a left eigenvector at one
+inside the contour. Hence $G_s(0)=1$ and the kernel of $\ell$ in the
+central plane is generated by $H_s$. The coordinates satisfy
+\begin{equation}
+ G_1=G,\quad \Xi_1=\Xi,\quad \Xi_s(H_s)=1,\quad \Xi_s(G_s)=0.
+ \label{eq:coords-detuned}
+\end{equation}
+They depend analytically on $s$. In this basis the atomic central matrix
+has the form
+\begin{equation}
+ A_{s,0}=\begin{pmatrix}1&0\\a_s&\beta_s\end{pmatrix},
+ \qquad a_s=a+O(s-1).
+ \label{eq:detuned-matrix0}
+\end{equation}
+No explicit formula for $a_s$ is needed for leading selection.
+
+\subsection{Balanced coordinates and the two eigenvectors}
+Set $c=\sigma t^2$ and $s=1+ut$. Fix $0<\alpha<1/2$ and let $u$ range
+in a compact set. The phase perturbation has norm
+\begin{equation}
+ \|\Lop_{s,c}-\Lop_{s,0}\|_{\alpha\to\alpha}
+       =O(t^{2-2\alpha})=o(t),
+ \label{eq:detuned-small}
+\end{equation}
+uniformly. For $s<1$ use the local exponent $s-\alpha$; the extra factor
+$t^{2ut}=\exp(2ut\log t)$ stays bounded and tends to one. For $s\ge1$
+the uniform Lipschitz estimate suffices.
+
+Evaluation at the atom supplies a sharper estimate for the small
+upper-right entry:
+\begin{equation}
+ \ell\bigl((\Lop_{s,c}-\Lop_{s,0})H_s\bigr)
+       =d|c|^s(1+O(t^2))=dt^2(1+o(1)).
+ \label{eq:detuned-small-entry}
+\end{equation}
+To check this, each branch $j/b$, $1\le j<b$, contributes
+$|c|^s(1+O(c))$, while the zeroth branch vanishes. The formula is uniform
+for $s$ near one and for either sign of $c$.
+
+Compress by the graph lemma and change coordinates by
+$S_t=\operatorname{diag}(t,1)$. The square of the error in
+\cref{eq:detuned-small} is $o(t^2)$, so it remains negligible even in
+the small entry. Thus
+\begin{equation}
+ S_t^{-1}A_{s,c}S_t
+ =I+t\begin{pmatrix}0&d\\a&-uL\end{pmatrix}+o(t).
+ \label{eq:balanced}
+\end{equation}
+Define
+\begin{equation}
+ D(u)=\sqrt{u^2L^2/4+\kappa_b^2},\quad
+ A(u)=D(u)-uL/2,\quad B(u)=D(u)+uL/2.
+ \label{eq:AB}
+\end{equation}
+These are positive, with $A(u)B(u)=ad$ and $A(u)+B(u)=2D(u)$.
+The dominant generator eigenvalue is $A(u)$, while its right balanced
+vector is $(B(u)/a,1)$ and its left balanced row is proportional to
+$(1,A(u)/a)$. Undoing the scaling and lifting back to the function space
+gives, uniformly for bounded $u$,
+\begin{align}
+ \lambda_+(s,c)&=1+tA(u)+o(t),\label{eq:old-crossover}\\
+ h_{s,c}&=H_s+\frac{B(u)}a tG_s+o(t),\label{eq:right-detuned}\\
+ \nu_{s,c}&=\ell+\frac{A(u)}a t\Xi_s+o(t).
+ \label{eq:left-detuned}
+\end{align}
+The normalizations are $\Xi_s(h_{s,c})=1$ and $\nu_{s,c}(1)=1$.
+For the latter, $\Xi_s(1)=O(s-1)=O(t)$, so normalization changes no
+first-order term. The argument for strict positivity in
+\cref{lem:positive-pressure} applies uniformly on compact $u$ sets:
+$B(u)$ has a positive minimum there and the graph error is $o(t)$.
+The same regularization argument identifies the pressure with
+$\log\lambda_+$.
+
+\subsection{The mixture weights}
+For each $f\in C^\alpha$,
+$\Xi_s(H_sf)\to\Xi(Hf)=\int f\dd x$. Pairing
+\cref{eq:right-detuned,eq:left-detuned} therefore gives
+\begin{align}
+ \nu_{s,c}(h_{s,c}f)
+    &=\frac{t}{a}\left(B(u)f(0)+A(u)\int f\dd x\right)+o(t),\\
+ \nu_{s,c}(h_{s,c})&=\frac{2D(u)}a t+o(t).
+ \label{eq:detuned-pairings}
+\end{align}
+The denominator is uniformly bounded below by a positive multiple of
+$t$ for bounded $u$. Dividing proves \cref{eq:detuned-selection}, since
+$w_b(u)=B(u)/(2D(u))$. Uniform approximation extends the conclusion to
+each continuous test function. This proves the weak-limit part of
+\cref{thm:selection-detuned}, once the equilibrium interpretation is
+established below.
+
+The same expansion gives the detuned right boundary layer
+\begin{equation}
+ \frac{h_{1+ut,\sigma t^2}(tz)}t
+       \longrightarrow |z|+\frac{B(u)}a,
+ \label{eq:boundary-detuned}
+\end{equation}
+uniformly for $(u,z)$ in compact sets. In fact
+$H(tz)^{1+ut}/t\to|z|$, including $z=0$, and $G_s(tz)\to1$.
+Positive detuning increases the atomic lift and the selected atomic
+weight; negative detuning favors the Lebesgue component. These statements
+are about the bounded scaling window, not fixed-$s$ extrapolations.
+
+\section{Equilibrium measures and the critical equilibrium segment}
+\label{sec:equilibrium}
+
+\subsection{A variational argument that allows zeros}
+For a weight $w=m_b(\,\cdot-c)^s$, an equilibrium probability means a
+$T_b$-invariant probability maximizing
+\begin{equation}
+ h_\mu(T_b)+\int\log w\dd\mu.
+ \label{eq:free-energy}
+\end{equation}
+The value $-\infty$ is permitted for the integral. The potential is not
+bounded below, so this interpretation should be justified rather than
+attached automatically to a transfer eigenvector.
+
+\begin{lemma}[Positive spectral data give the unique equilibrium]
+\label{lem:equilibrium}
+Suppose the transfer operator for a nonnegative continuous H\"older
+weight has a strictly positive eigenfunction $h$, a positive finite left
+eigenmeasure $\nu$, and a simple dominant eigenvalue $\lambda$ on
+$C^\alpha$. Then $\mu=h\nu/\nu(h)$ is invariant and is the unique
+equilibrium probability. Its free energy equals $\log\lambda$.
+\end{lemma}
+\begin{proof}
+Define the normalized inverse-branch weights
+\begin{equation}
+ g(y)=\frac{w(y)h(y)}{\lambda h(T_by)}.
+ \label{eq:g}
+\end{equation}
+They are nonnegative and sum to one over each fiber of $T_b$.
+For continuous $f$,
+$\Lop(h(f\circ T_b))=\lambda hf$, which, paired with $\nu$, proves
+invariance of $\mu$. More generally, for continuous $F$ and $K$,
+\[
+ \int F(y)K(T_by)\dd\mu(y)
+ =\int K(x)\sum_{T_by=x}g(y)F(y)\dd\mu(x).
+\]
+Thus the conditional distribution of a predecessor, given its image,
+is the finite probability vector $g$.
+
+For completeness, the entropy formula needed here is
+\begin{equation}
+ h_\rho(T_b)=\int\left[-\sum_{T_by=x}p_x(y)\log p_x(y)\right]\dd\rho(x),
+ \label{eq:entropy}
+\end{equation}
+where $p_x$ is the conditional predecessor distribution of any invariant
+probability $\rho$. The partition into the $b$ half-open digit intervals
+is generating. In its stationary digit process, the conditional entropy
+of the present digit given the entire future equals the entropy rate:
+for finite futures it is the difference of two consecutive block
+entropies, by stationarity, and these differences decrease to that rate.
+The image point encodes the entire future, so conditioning on it gives
+\cref{eq:entropy}. The half-open convention handles the countable
+ambiguity of terminating expansions and does not change the argument.
+
+For $\rho=\mu$, \cref{eq:entropy} is at most $\log b$. Therefore
+$-\log g$ is $\mu$-integrable, with $0\log0=0$. Since $\log h$ is bounded,
+\cref{eq:g} makes $\log w$ integrable as well. Its coboundary integrates
+to zero, giving free energy $\log\lambda$.
+
+For arbitrary invariant $\rho$ with finite potential integral,
+\cref{eq:g,eq:entropy} express the free energy minus $\log\lambda$ as
+\begin{equation}
+ -\int\sum_{T_by=x}p_x(y)\log\frac{p_x(y)}{g(y)}\dd\rho(x)\le0.
+ \label{eq:relative-entropy}
+\end{equation}
+The inequality is the finite-vector relative-entropy inequality, with
+the value $+\infty$ when positive mass is assigned to $g=0$.
+A measure with potential integral $-\infty$ cannot maximize.
+Equality forces $p_x=g$ almost everywhere. For such a measure, the finite
+measure $h^{-1}\rho$ is a left eigenmeasure of $\Lop$ at $\lambda$.
+The adjoint eigenspace there is one-dimensional because the eigenvalue
+is isolated and algebraically simple on $C^\alpha$. Thus the measure is
+proportional to $\nu$, and normalization forces $\rho=\mu$.
+\end{proof}
+
+The hypotheses hold at all sufficiently small nonzero phases considered
+in \cref{thm:selection-critical,thm:selection-detuned}. This completes
+their equilibrium assertions without invoking a positivity theorem that
+would fail at the defective atomic operator.
+
+\subsection{What is being selected at the critical point?}
+\begin{proposition}[The critical equilibrium segment]
+\label{prop:segment}
+For $s=1$ and $c=0$, the equilibrium probabilities are exactly
+$v\delta_0+(1-v)\Leb$, $0\le v\le1$.
+\end{proposition}
+\begin{proof}
+Let $\rho$ be ergodic and different from $\delta_0$. Invariance implies
+that the countable union of preimages of zero has $\rho$-measure zero.
+For almost every $x$, the telescoping relation is therefore valid:
+\begin{equation}
+ \sum_{j=0}^{n-1}\log m_b(T_b^jx)
+ =\log H(T_b^nx)-\log H(x)-n\log b.
+ \label{eq:ergodic-coboundary}
+\end{equation}
+There is some $\epsilon>0$ for which $\rho(H\ge\epsilon)>0$.
+Ergodicity gives infinitely many returns of almost every point to this
+set. Along those return times, the average in
+\cref{eq:ergodic-coboundary} tends to $-\log b$.
+Since $-\log m_b\ge0$, the ergodic theorem with truncation implies that
+its averages tend to $+\infty$ if its integral is infinite, and to its
+integral otherwise. The return subsequence excludes infinity. Hence
+\begin{equation}
+ \int\log m_b\dd\rho=-\log b.
+ \label{eq:ergodic-potential}
+\end{equation}
+Every such ergodic measure has free energy
+$h_\rho(T_b)-\log b\le0$. Equality requires entropy $\log b$.
+In the stationary digit process, maximal entropy means that the
+conditional law of each digit given its past is the uniform distribution;
+the digits are therefore independent and uniform. The corresponding
+circle measure is exactly $\Leb$.
+
+The fixed-point measure $\delta_0$ has both entropy and potential
+integral zero, so it also has free energy zero. Entropy is affine under
+ergodic decomposition, and the potential integral decomposes as well.
+Consequently a general invariant probability attains zero precisely
+when almost all of its ergodic components are $\delta_0$ or $\Leb$.
+Their mixtures have free energy zero, which is the maximum and agrees
+with $P_{b,1}(0)=0$.
+\end{proof}
+This also proves the last assertion of \cref{thm:selection-detuned}.
+The segment classification is supplied to identify the variational
+meaning of the limit; the phase-selected weights and boundary behavior
+are the new conclusions targeted here.
+
+\section{Numerical diagnostics and reproducibility}
+\label{sec:numerics}
+
+\subsection{Independent checks of the response identities}
+The accompanying \code{code/verify.py} records its actual output in
+\code{data/verification.json}. At 70-decimal-digit working precision,
+20 choices of base and point test both Jordan identities, and eight
+base--phase pairs test both the exact atom response and the bulk sine
+identity. The largest absolute residuals observed in these two groups
+are approximately $1.4\times10^{-70}$ and $1.7\times10^{-71}$.
+These are high-precision numerical checks of independently proved
+identities, not interval-arithmetic certificates.
+
+The script also evaluates the finite-part integral directly after
+splitting at $bc$. At $c=10^{-7}$, it gives the following comparisons:
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$b$ & $\ell(E_cG)/c$ & $r_b$ & $\Xi(E_cH)/c+2d\log(1/c)$ & $k_b$\\
+\midrule
+2 & 3.023854148 & 3.023854641 & 0.289459278 & 0.289459772\\
+3 & 7.094204255 & 7.094205570 & 2.200778002 & 2.200779976\\
+5 & 17.099438853 & 17.099442801 & 8.488157046 & 8.488164942\\
+\bottomrule
+\end{tabular}
+\end{center}
+The residual differences in this table are mainly finite-$c$ corrections,
+not claims of numerical error in the limiting constants. For the binary
+closed formula \cref{eq:binary-exact}, two direct integrals with an endpoint
+cutoff $10^{-30}$ differ from the exact expression by about $10^{-30}$,
+as expected from omitting a bounded endpoint integrand.
+
+\subsection{Pressure: a deliberately demanding observable}
+For the continuum pressure define the logarithm-corrected quotient
+\begin{equation}
+ R_b(c)=\frac{P_{b,1}(c)-\kappa_b\sqrt{|c|}
+                      +(b-1)|c|\log(1/|c|)}{|c|}.
+ \label{eq:Rnumeric}
+\end{equation}
+The theorem predicts $R_b(c)\to B_b$.
+The code discretizes the transfer operator by nonnegative periodic
+piecewise-linear interpolation at the inverse branches and computes its
+two eigenvalues with largest real parts. The following are floating-point
+collocation values, not certified continuum values:
+\begin{center}\small\input{data/pressure_table.tex}\end{center}
+The leading constants are $\kappa_2\approx1.17741002$ and
+$\kappa_3\approx2.09629415$. The displayed approach of $R_b(c)$ to $B_b$
+is slow. That is compatible with the remainder and with additional
+$|c|^{3/2}\log^2|c|$-scale contributions; the table does not establish
+a coefficient for any such term.
+
+The nominal meshes are $65\,536$ points at $c=10^{-3}$,
+$262\,144$ at $10^{-4}$ and $10^{-5}$, and $1\,048\,576$ at $10^{-6}$.
+They are rounded upward to a multiple of the base. A doubled-grid check
+for $b=2$, $c=10^{-6}$ changes the pressure from
+$0.00116477280617$ to $0.00116476829537$.
+The change is approximately $4.51\times10^{-9}$ in pressure but about
+$0.00451$ after division by $c$ in \cref{eq:Rnumeric}. This illustrates
+why a small eigenvector residual alone does not certify the continuum
+coefficient. Both meshes still give values above the predicted limiting
+constant, consistent with nonnegligible finite-phase corrections.
+
+\subsection{Selection: an observable distinguishing the two components}
+The test function $\cos2\pi x$ has value one at the atom and integral
+zero against $\Leb$. Hence its predicted limiting expectation is exactly
+$w_b(u)$. Computing left and right eigenvectors of the same positive
+collocation matrix and normalizing their entrywise product gives:
+\begin{center}\small\input{data/selection_table.tex}\end{center}
+All these rows use $b=2$ and $262\,144$ mesh points. The recorded output
+also includes the sine moment, matrix residuals, and the discrepancy
+between the eigenvalues obtained from left and right calculations.
+The agreement is qualitative and improving across the two phases;
+it is not a rigorous weak-convergence certificate. No numerical result
+is used as a premise in any theorem above.
+
+\subsection{How to reproduce the package}
+With the versions recorded in \code{requirements.txt}, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+OPENBLAS_NUM_THREADS=1 python code/verify.py
+\end{verbatim}
+The environment-variable syntax shown is for a POSIX shell; it only
+limits numerical threading. On other shells set it using their syntax
+or omit it. The script records library versions and computation residuals.
+To skip collocation and retain only the special-function diagnostics,
+use \code{python code/verify.py --identities-only}. The option
+\code{--output-dir} sends outputs to a different directory so the shipped
+receipt need not be overwritten. The PDF is rebuilt by the supplied
+\code{Makefile}, or by three successive runs of pdfLaTeX. No network
+access is needed once the dependencies are installed.
+
+\section{Further research questions and concrete next targets}
+\label{sec:questions}
+The questions below are proposed continuations of this article. They are
+not all claimed to be previously published open problems. The first,
+fourth, and fifth also refine explicitly identified boundaries in the
+critical predecessor.
+
+\begin{question}[The next critical logarithmic polynomial]
+Does the next pressure term have the form
+$|c|^{3/2}Q_b(\log|c|)$, with $Q_b$ a polynomial of degree two?
+The square of the diagonal difference in \cref{eq:roots} already creates
+such a candidate, but the other matrix entry and the graph correction
+may contribute at the same scale. Compute those contributions before
+assigning a coefficient. The binary exact formula
+\cref{eq:binary-exact} isolates one part of the task.
+\end{question}
+
+\begin{question}[A sharp remainder without a power loss]
+Replace $O_\eta(|c|^{3/2-\eta})$ by a bound involving explicit powers of
+$\log(1/|c|)$ and, ideally, computable constants. The obstruction is the
+use of a global H\"older norm in $PEK$. A localized estimate pairing
+$E_c$ with the reduced resolvent may keep track of the small support of
+the cusp displacement instead of paying $|c|^{-\alpha}$ twice.
+\end{question}
+
+\begin{question}[A complete critical expansion]
+Determine whether the pressure and its central spectral data have an
+asymptotic expansion in powers of $\sqrt{|c|}$ and $\log|c|$. If so,
+give a recursive algorithm and prove closure of the relevant function
+class under the reduced-resolvent operations. The present three-term
+formula excludes a pure Puiseux series but does not exclude additional
+log-periodic or other nonalgebraic contributions at later orders.
+\end{question}
+
+\begin{question}[Growing detuning and matched selection]
+Extend \cref{eq:detuned-selection} to $|u|\le U(t)$ with $U(t)\to\infty$.
+The factors $t^{2ut}$ and the shrinking relative central gap must be
+controlled together. Determine a quantitative overlap with fixed
+supercritical and subcritical regimes, for both pressure and equilibrium
+weights. Taking $u\to\infty$ in the limiting formula alone does not
+establish that theorem.
+\end{question}
+
+\begin{question}[Two-point regularity and differentiated remainders]
+Is the pressure $C^{0,1/2}$ on a full neighborhood of zero? Can its
+one-sided derivative, away from exceptional nonzero phases, be expanded
+by differentiating \cref{eq:main-pressure}? An asymptotic remainder in
+function values does not justify differentiating it. Control between
+two moving phases, not just between a phase and zero, is required.
+\end{question}
+
+\begin{question}[Quantitative convergence of equilibrium measures]
+Obtain explicit rates for the convergence to the selected mixtures,
+first in the dual of a fixed H\"older space and then in a transport
+metric. Determine whether the atomic weight admits a
+$\sqrt{|c|}\log(1/|c|)$ correction and whether its coefficient can be
+read from the refined eigenvalues plus localized eigenvector estimates.
+This would quantify the finite-phase bias visible in the cosine table.
+\end{question}
+
+\begin{question}[The left boundary layer]
+The right eigenfunction has the explicit profile
+\cref{eq:boundary-detuned}. Determine how the probability $\nu_{s,c}$
+concentrates near zero and whether rescaling its restriction yields a
+nontrivial measure. The first dual correction $\Xi$ is a finite-part
+functional rather than a measure, so it cannot itself be used as a
+probability profile. A useful formulation should separate concentrated
+mass from the small diffuse tail.
+\end{question}
+
+\begin{question}[Other masks and other Jordan multiplicities]
+For which nonconsecutive digital masks do a defective isolated
+spectral cluster and a finite-part dual functional occur? Establish
+conditions under which a logarithmic trace response is universal.
+For a Jordan chain of length greater than two, determine the analogous
+root scaling, equilibrium simplex, and selection rule. A finite matrix
+prediction must be supported by an actual operator realization.
+\end{question}
+
+\begin{question}[Certified computation and proof-assistant integration]
+Turn the weighted quadrature and graph-compression estimates into
+explicit constants, then produce interval enclosures for a nontrivial
+phase neighborhood. A proof-assistant route can separate the exact
+cotangent and digamma identities, the endpoint integral estimates,
+the finite matrix calculation, and the spectral/entropy bridges.
+The exact finite-dimensional algebra is a useful first target, but
+formalizing only that calculation would not verify the infinite-dimensional
+theorem.
+\end{question}
+
+\appendix
+\section{Proof dependencies and an audit of scope}
+\label{app:audit}
+The pressure proof follows the dependency chain
+\[
+\begin{gathered}
+\text{telescoping quotient and weighted quadrature}
+\Longrightarrow\text{isolated normalized Jordan block}\\
+\Longrightarrow\text{graph compression with a quadratic error}\\
+\Longrightarrow\text{exact atom/bulk response and finite-part logarithm}\\
+\Longrightarrow\text{refined eigenvalues}
+\Longrightarrow\text{pressure via positive regularization}.
+\end{gathered}
+\]
+The equilibrium proof additionally uses the first left/right eigenvector
+corrections, the cancellation $\Xi(Hf)=\int f$, and the conditional
+entropy argument. It does not follow just from the leading pressure
+asymptotic or from a pointwise limit of the right eigenfunction.
+
+Three verification boundaries should remain explicit. First, the present
+manuscript is not a Lean or Rocq development. Second, collocation output
+is not an enclosure of the spectrum of the continuous operator. Third,
+a theorem proved in a new research draft is not the same thing as an
+independently established priority claim. The source ledger records the
+specific repository questions addressed, and the manuscript reconstructs
+the analytic ingredients rather than importing unreviewed claims as
+unlabeled axioms.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.43\textwidth}p{.49\textwidth}@{}}
+\toprule
+\textbf{Claim} & \textbf{Verification supplied}\\
+\midrule
+Normalized Jordan chain and gap & Written proof; high-precision checks
+of the exact identities.\\[1.5mm]
+Logarithmic and linear pressure coefficients & Written finite-part and
+matrix proof; independent integral and collocation diagnostics.\\[1.5mm]
+Boundary layer and mixture selection & Written norm/duality argument;
+left/right collocation checks of a distinguishing observable.\\[1.5mm]
+Equilibrium meaning and uniqueness & Written conditional-entropy proof,
+including zeros of the weight.\\[1.5mm]
+PDF and package integrity & Compilation, reference and font checks,
+page rendering, and a build-validation receipt.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{GKS}
+P.~Gohlke, M.~Kesseb\"ohmer, and T.~I.~Schindler,
+\emph{Generalized Thue--Morse measures: spectral and fractal analysis},
+2025, \href{https://arxiv.org/abs/2509.22109v1}{arXiv:2509.22109v1}.
+
+\bibitem{GLS}
+P.~Gohlke, G.~Lamprinakis, and J.~Schmeling,
+\emph{On a family of singular potentials: Parameter dependence of
+thermodynamic characteristics}, 2026,
+\href{https://arxiv.org/abs/2603.19001v1}{arXiv:2603.19001v1}.
+Theorems 2.2--2.3 and the subsequent regularity question.
+
+\bibitem{Repo}
+V.~Reshetnikov, \emph{ProveIt}, repository snapshot
+\nolinkurl{1085b506d65e207a05b7e9c861bb1fe88432fe38}, inspected
+29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1085b506d65e207a05b7e9c861bb1fe88432fe38}{Pinned repository}.
+
+\bibitem{CriticalRepo}
+ProveIt research corpus, research draft prepared with ChatGPT for
+V.~Reshetnikov,
+\emph{Critical Cusps in Digital-Product Pressure: A Jordan collision,
+square-root phase scaling, and explicit subcritical response},
+29 September 2026. At the snapshot in \cite{Repo}, source
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Critical_Pressure/article.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1085b506d65e207a05b7e9c861bb1fe88432fe38/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Critical_Pressure/article.tex}{Pinned source}.
+The research questions ``The next critical term'' and ``Eigenfunctions,
+eigenmeasures, and equilibrium measures'' are the immediate targets.
+
+\bibitem{FractionalRepo}
+ProveIt research corpus, research draft prepared with ChatGPT for
+V.~Reshetnikov,
+\emph{Fractional Cusps at the Atomic Phase: Sharp noninteger regularity
+of Thue--Morse pressure and sharp relaxation for digital products in
+every base}, 29 September 2026. At the snapshot in \cite{Repo}, source
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Fractional_Pressure/article.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1085b506d65e207a05b7e9c861bb1fe88432fe38/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Fractional_Pressure/article.tex}{Pinned source}.
+
+\bibitem{SubcriticalRepo}
+ProveIt research corpus,
+\emph{Thue\_Morse\_Subcritical\_Pressure}, research package,
+29 September 2026. At the snapshot in \cite{Repo}, source
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Subcritical_Pressure/article.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1085b506d65e207a05b7e9c861bb1fe88432fe38/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Subcritical_Pressure/article.tex}{Pinned source}.
+Its all-subcritical extension is also recorded in the editorial note in
+\cite{CriticalRepo}; no theorem from this package is assumed here.
+\end{thebibliography}
+\end{document}

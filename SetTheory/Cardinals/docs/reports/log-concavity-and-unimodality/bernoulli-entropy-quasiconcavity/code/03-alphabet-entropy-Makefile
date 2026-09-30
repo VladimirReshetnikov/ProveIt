@@ -1,0 +1,15 @@
+.PHONY: all pdf exact symbolic numerical figures check clean
+all: pdf
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+exact:
+	python code/verify_exact.py
+symbolic:
+	python code/verify_symbolic.py
+numerical:
+	python code/verify_numerical.py
+figures:
+	python code/make_figures.py
+check: exact symbolic numerical
+clean:
+	latexmk -c article.tex
