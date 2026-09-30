@@ -9,6 +9,17 @@ nine equations** at the same operation count. Its single sum-of-squares
 polynomial has exact degree84 and a **101=50M+51A** evaluation DAG.
 The proof restores positivity of signed coordinate definitions on the zero
 set and preserves every original positive solution.
+The newer [bounded-projection refinement](../research-wip/native-stream-queue/complete75_bounded_projection_elimination99.md)
+improves the single polynomial to **99=49M+50A**, with **19 positive
+witnesses** and degree84. Its comparison system has76 operations and eight
+equations. A proved canonical compiler margin permits eliminating the
+packed index; the accepted ordinary input set is unchanged.
+The [norm-and-index product](../research-wip/native-stream-queue/complete75_norm_product91.md)
+then lowers the polynomial to **91=49M+42A**, with the same19 witnesses.
+Integer unit factorization and elementary negative-Pell obstructions
+justify merging four norm equations and the index equation. Its degree
+is266 and its underlying four-equation system costs80. Grouped variants
+give97 operations at degree84,95 at degree96, and93 at degree136.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
@@ -31,9 +42,19 @@ The subsequent [nonabsorbing-controller bounds](../research-wip/native-stream-qu
 decide the entire read-only subclass and bound inputs outside a necessary
 coefficient cone. The [fixed-idle boundary](../research-wip/native-stream-queue/binary_fixed_idle_controller.md)
 has a57-operation predicate with an explicitly regular input language.
+The [odd-controller orbit analysis](../research-wip/native-stream-queue/binary_odd_controller_orbit.md)
+gives exact guarded fixed-width duration bounds and excludes the additional
+boundary region c=-b,a/b<1 by an effective width bound. It does not decide
+all remaining coefficients at unbounded width.
 The [factored residue-affine counter map](../research-wip/native-stream-queue/residue_affine_factored_counter_step.md)
 provides a universal coded simulation with paid scalar zero/decrement guards;
 it still needs certificates for its prime-power input loading and history.
+The [two-stack alternative](../research-wip/native-stream-queue/two_stack_affine_input_step.md)
+supplies an ordinary-input loader in two operations and an exact positive
+scalar step in16B-3 operations for B branches. Fixed-duration unrolling has
+an explicit cost; a uniform varying-duration history certificate remains
+unpaid. The executable decoder fixture is distinguished from the generic
+universal two-stack simulation.
 
 ## Historical 76-operation milestone
 

@@ -54,11 +54,21 @@ universal Diophantine equations by James P. Jones and coauthors:
   with30 positive witnesses and19 equations; see
   [the complete proof](Papers/1980/FIXED_RAW_UNIVERSAL_75_PROOF.md).
   Three independent integration reviews and focused source/component checks
-  pass. The latest [signed-projection refinement](Papers/research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
+  pass. The [signed-projection refinement](Papers/research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
   retains75 operations with **20 positive witnesses and nine equations**.
   Its degree-84 polynomial is evaluable in **101=50M+51A operations**, with
   fixed compiler numerals and ordinary input. Conditional positivity is
   proved on the zero set; every original positive solution is preserved.
+  The newer [bounded-projection polynomial](Papers/research-wip/native-stream-queue/complete75_bounded_projection_elimination99.md)
+  costs **99=49M+50A**, with **19 positive witnesses** and degree84.
+  Its comparison system costs76 with eight equations; a proved canonical
+  compiler margin preserves the same accepted ordinary inputs.
+  A [product of four integer norms and the index factor](Papers/research-wip/native-stream-queue/complete75_norm_product91.md)
+  further lowers the polynomial to **91=49M+42A**, with the same19 positive
+  witnesses. Its degree is266 and its comparison system costs80 with four
+  equations. Alternative factor groupings give **97 operations at degree84**,
+  **95 at degree96**, and **93 at degree136**. The75 comparison and91
+  polynomial bounds are distinct.
   These optimized results are not yet Lean formalized.
 
 ## Building and checking

@@ -17,6 +17,12 @@ every permitted low-dummy adjustment. The fixed program numerals are
 unchanged. This preserves the accepted ordinary input set, rather than
 every old witness tuple. No optimality or formalization claim is made.
 
+The later [norm-and-index product refinement](complete75_norm_product91.md)
+uses this source as its compiler interface. It gives91 operations at
+degree266, or97 operations while retaining degree84, with the same19
+positive witnesses. This99 source remains the proof dependency for its
+canonical bound and coordinate elimination.
+
 ## 1. Definitions, domain and eight equations
 
 Use the same fixed compiler constants and notation as101. The ordinary

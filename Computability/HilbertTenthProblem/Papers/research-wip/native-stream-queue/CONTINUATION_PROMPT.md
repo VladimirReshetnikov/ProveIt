@@ -4,23 +4,44 @@
 > **75=41M+34A** universal certificate with30 positive witnesses and19 equations.
 > Start with [the current proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) and
 > [its consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
-> The latest [signed projection](complete75_signed_projection_elimination101.md)
+> The [signed projection](complete75_signed_projection_elimination101.md)
 > retains75 operations with20 positive witnesses and nine equations. Its
 > single-polynomial evaluation costs **101=50M+51A**, with exact degree84.
 > It preserves every old positive solution and needs no stronger canonical
-> packing bound. The README indexes these proofs, the four-row queue
+> packing bound. The newer [bounded projection](complete75_bounded_projection_elimination99.md)
+> gives a **99=49M+50A** degree84 polynomial with19 positive witnesses.
+> Its comparison system costs76 with eight equations. It uses a proved
+> canonical margin C+Z+F<q/3 and preserves accepted inputs; the75 comparison
+> bound is separate from polynomial evaluation. The latest
+> [norm-and-index product](complete75_norm_product91.md) gives **91=49M+42A** with
+> the same19 witnesses, degree266, and an80-operation four-equation system.
+> Negative-Pell descents make the product exactly restore four norms and the
+> index equation; signed computed roots cause no exception. Grouped variants
+> give97/degree84,95/degree96, and93/degree136. Preserve these degree tradeoffs.
+> The README indexes these proofs, the four-row queue
 > simulator, binaryFIFO58 and ternaryFIFO66, row-local controller obstruction,
 > residue-affine pumping, PCP/matrix continuations,
-> and rejected74 shortcuts. The operation-count target remains below75;
+> and rejected74 shortcuts. Targets are below75 for comparisons and below91
+> for one polynomial, with degree accounted for;
 > controller arithmetic and ordinary-input loading are still unpaid for
 > the new coded queue simulator.
 > In the counted nonabsorbing63 binary family, every read-only a=0 case is
 > decidable, widths are bounded outside the coefficient cone, and the
-> a=b,c=-b boundary reduces to the regular fixed-idle57 predicate. Other
+> a=b,c=-b boundary reduces to the regular fixed-idle57 predicate. The
+> [odd-controller orbit analysis](binary_odd_controller_orbit.md) gives an exact
+> fixed-width guarded duration cutoff and proves bounded width also for
+> c=-b,a/b<1. Other
 > cases inside the cone remain open; a nonzero terminal state forbids free
 > zero padding. The factored counter map escapes the unit-slope pumping
 > hypothesis, with scalar guards counted in10B+8, but its prime-power input
-> loader and finite history remain unpaid. Preserve those distinctions.
+> loader and finite history remain unpaid. The
+> [two-stack substrate](two_stack_affine_input_step.md) instead has a two-operation
+> affine ordinary-input prefix and exact16B-3 scalar steps with paid empty-stack
+> guards. Its fixed-t unrolling costs2+t(16B-3), or(16B+12)t+1 for one polynomial.
+> The next missing piece is a uniform certificate for arbitrary finite duration;
+> the executable decoder is not a transcribed universal interpreter.
+> Preserve those distinctions, and preserve the separate75/91 universal frontiers
+> together with the degree84 option at97 operations.
 
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.

@@ -8,13 +8,25 @@ Three independent full integration reviews passed without findings. This is
 a mathematical proof with symbolic and finite checks, not a Lean formalization
 or a new publication claim.
 
-The latest [signed-projection refinement](../research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
+The [signed-projection refinement](../research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
 preserves75 operations with20 positive witnesses and nine equations. Its
 degree-84 polynomial costs101=50M+51A. This follows the earlier
 [positive elimination](../research-wip/native-stream-queue/complete75_positive_elimination.md)
 and [shared-projection refinement](../research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md),
 but needs no stronger canonical packing bound: conditional positivity is
 proved on the zero set, and every original positive solution is preserved.
+The newer [bounded-projection refinement](../research-wip/native-stream-queue/complete75_bounded_projection_elimination99.md)
+uses a canonical compiler margin to give a **99=49M+50A** polynomial in
+**19 positive witnesses**, still of degree84. Its comparison system costs76
+with eight equations, so75 remains the best comparison bound. The stronger
+bound preserves the accepted input set through canonical completeness.
+A [norm-and-index product refinement](../research-wip/native-stream-queue/complete75_norm_product91.md)
+gives a **91=49M+42A** polynomial in the same19 positive witnesses, of
+degree266. Negative-Pell obstructions make the product equation restore all
+four original norms and the index equation, including for signed computed
+roots. Grouped variants give97 operations at degree84,95 at degree96, and93
+at degree136. The91 polynomial's four-equation comparison system costs80;
+it leaves this75 bound intact.
 The source and full compiler proof below retain their original30-coordinate
 presentation.
 
