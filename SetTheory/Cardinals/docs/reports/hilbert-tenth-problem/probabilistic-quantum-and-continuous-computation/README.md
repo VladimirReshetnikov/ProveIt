@@ -1,15 +1,17 @@
 # Diophantine Laws of Probabilistic, Quantum and Continuous Computation
 
-**Normalization budgets and unique quartic certificates, four-dimensional quantum mortality, a continuous three-outcome trichotomy, exact probabilities, exact gates and contracting dynamics**
+**Normalization budgets and unique quartic certificates, four-dimensional quantum mortality, a continuous three-outcome trichotomy, exact probabilities, exact gates, contracting dynamics and polynomial flows**
 
-This is a research report dated 30 September 2026, built from eleven
-manuscripts: three of batch 60 (Parts I–IV) and eight of batch 62 (Parts
-V–VII). All were prepared for Vladimir Reshetnikov. Of batch 60,
+This is a research report dated 30 September 2026, built from twelve
+manuscripts: three of batch 60 (Parts I–IV), eight of batch 62 (Parts
+V–VII) and one of batch 64 (Part VIII). All were prepared for Vladimir
+Reshetnikov. Of batch 60,
 manuscripts 08 and 09 name ChatGPT as the author of the mathematical
 development and code, and manuscript 07 describes itself as a research
 manuscript with reproducible exact-arithmetic artifacts. The eight batch-62
-manuscripts are AI-assisted research manuscripts; their title-page wording is
-recorded in Appendix F.1 of the article.
+manuscripts and the batch-64 manuscript are AI-assisted research
+manuscripts; their title-page wording is recorded in Appendices F.1 and F.2 of
+the article.
 
 | Source | Batch | Archive | Pin | Arrived | Placed | Printed as |
 |---|---|---|---|---|---|---|
@@ -24,17 +26,19 @@ recorded in Appendix F.1 of the article.
 | 14 | 62, manuscript 11 | `strict_contractions_research` (*Strict Contractions with Diophantine-Complete Transients*; main file `strict_contractions.tex`) | `526c2557f` | `6d04e1e38` | `adeddcecc` | Part VII: Sections 111–122, appendices 144–145, Sections 151.1 and 152.1 |
 | 12 | 62, manuscript 08 | `Diophantine_Contracting_2Adic` (*Exact Diophantine Computation in Contracting 2-adic Dynamics*) | `b6bf6406a` | `b57c0b5ff` | `adeddcecc` | Part VII: Sections 123–133, appendices 146–148, Sections 151.2 and 152.2 |
 | 15 | 62, manuscript 12 | `Precision_Is_Memory_Diophantine_Neural_Computation` (*Precision Is Memory: Quadratic Diophantine Certificates for Neural Computation and the Rational-Synthesis Frontier*) | `526c2557f` | `cb1646dc4` | `adeddcecc` | Part VII: Sections 135–143, appendices 149–150, Sections 151.3 and 152.3 |
+| 18 | 64, manuscript 05 | `Rational_Tubes_Integer_Zeros`, inner directory `rational_tubes_integer_zeros` (*Rational Tubes, Integer Zeros: Complete Diophantine Certificates for Polynomial Flows and Chemical Computation*, 30-page Letter PDF) | `6d04e1e38` | `7747fcfdd` | `3025c15df` | Part VIII: Sections 154–167, appendices 168–169 |
 
-Sources 10–17 are called by their shipped file prefixes, which continue this
-report's sequence after 07–09; their batch-62 manuscript numbers are in the
-second column. Written sections: 38 (conventions of Part V), 70 and 84–85
+Sources 10–18 are called by their shipped file prefixes, which continue this
+report's sequence after 07–09; their batch-62 and batch-64 manuscript numbers
+are in the second column. Written sections: 38 (conventions of Part V), 70 and 84–85
 (conventions of Part VI, the shared core of sources 11 and 16, and the
 completion of 11's main proof), 110 and 134 (conventions of Part VII and the
-comparison of sources 14 and 12), the conclusion and question sections of each
-Part, and Appendix F.1.
+comparison of sources 14 and 12), 153 (conventions of Part VIII), the
+conclusion and question sections of each Part of batch 62, and Appendices F.1
+and F.2.
 
 Every result, proof, example, remark, research question and limitation of the
-eleven manuscripts is printed. The three batch-60 sources share no theorem.
+twelve manuscripts is printed. The three batch-60 sources share no theorem.
 Of batch 62, sources 11 and 16 share one arithmetic core (denominator
 rigidity, decoding, rank-*d* embeddings, the spin map, the Mihailova compiler,
 density and approximation), printed once in Section 84 with genuinely
@@ -45,10 +49,20 @@ arguments kept as second routes (only source 13's interior-threshold table is
 not reprinted). **The report is AI-assisted and unrefereed, and none of its
 theorems is formalized in Lean or Rocq.**
 
+Source 18 (Part VIII, batch 64) is printed in full. Its theorem that
+open-target reachability of rational polynomial flows is recursively
+enumerable, hence Diophantine (Theorem 160.1), is the qualitative statement of
+Part IV's paragraph *Robust observations of computable continuous trajectories*
+(Section 33), which source 18 does not cite: the theorem and its proof, which
+runs through source 18's own complete checker, are printed with a credit, and
+the paragraph is not printed twice. Its fixed-quartic corollary (160.2) is Part
+I's Lemma 3.3, and its conditional no-bound Proposition 160.5 repeats the
+argument of Corollaries 30.3 and 18.4; both carry pointers.
+
 ```
 article.tex                                           the report, standalone LaTeX with an internal bibliography
-article.pdf                                           the compiled report, 275 pages (unnumbered title page,
-                                                      contents pages 1-16, then pages 17-274)
+article.pdf                                           the compiled report, 309 pages (unnumbered title page,
+                                                      contents pages 1-18, then pages 19-308)
 README.md                                             this guide
 07-quantum-mortality-STATUS.md                        source 07's verification and dependency status, as delivered
 09-continuous-barriers-PROVENANCE.md                  source 09's repository inspection, sources and claim boundaries, as delivered
@@ -93,13 +107,13 @@ code/16-dense-rotations-verify.py                     source 16's decoder, compi
 code/17-reversible-equilibria-Makefile                source 17's make targets (check, pdf, clean), delivered paths
 code/17-reversible-equilibria-equilibria.py           source 17's exact masses, prefix enclosures and quartic certificates
 code/17-reversible-equilibria-verify.py               source 17's checks (SymPy); writes results/ and verification/
-code/18-rational-tubes-Makefile                       batch 64, source 18 (placed in 3025c15df; not yet written into the article)
-code/18-rational-tubes-constant_example.py
-code/18-rational-tubes-kinetic.py
-code/18-rational-tubes-quartic.py
-code/18-rational-tubes-run_checks.py
-code/18-rational-tubes-tubes.py
-code/18-rational-tubes-verify_json.py
+code/18-rational-tubes-Makefile                       source 18's make targets (all, check, pdf, clean), delivered paths
+code/18-rational-tubes-constant_example.py            source 18's specialized 17-witness quartic (SymPy); writes ../results/
+code/18-rational-tubes-kinetic.py                     source 18's separate-rail and common-offset lifts, reaction lists, symbolic checks
+code/18-rational-tubes-quartic.py                     source 18's witness-carrying quadratic-residual compiler and gate counter
+code/18-rational-tubes-run_checks.py                  source 18's checks (SymPy); writes ../results/
+code/18-rational-tubes-tubes.py                       source 18's exact integer tube generator and checker (standard library)
+code/18-rational-tubes-verify_json.py                 source 18's command-line checker for *_certificate.json files
 data/07-quantum-mortality-build_summary.json          source 07's record of its 22-page PDF build
 data/07-quantum-mortality-check_results.json          source 07's recorded run: 32,418 checks in 26 categories
 data/07-quantum-mortality-four_dimensional_instrument.json  the seven integer numerator matrices of Section 19 (denominator 15)
@@ -160,32 +174,32 @@ data/17-reversible-equilibria-pdf_preflight.json      source 17's check of its o
 data/17-reversible-equilibria-quartic_N3.json         the full N = 3 prefix certificate
 data/17-reversible-equilibria-quartic_N3.txt          the same, expanded
 data/17-reversible-equilibria-requirements.txt        sympy==1.14.0
-data/18-rational-tubes-VERIFICATION_RECEIPT.txt       batch 64, source 18 (placed in 3025c15df; not yet written into the article)
-data/18-rational-tubes-chemical_end_to_end_certificate.json
-data/18-rational-tubes-chemical_small_quartic.json
-data/18-rational-tubes-constant_certificate.json
-data/18-rational-tubes-constant_flow_reactions.json
-data/18-rational-tubes-constant_quartic.json
-data/18-rational-tubes-constant_robust_certificate.json
-data/18-rational-tubes-logistic_reactions.json
-data/18-rational-tubes-logistic_robust_certificate.json
-data/18-rational-tubes-negative_decay_certificate.json
-data/18-rational-tubes-negative_floor_certificate.json
-data/18-rational-tubes-negative_floor_quartic.json
-data/18-rational-tubes-negative_quartic.json
-data/18-rational-tubes-offset_nonlinear_reactions.json
-data/18-rational-tubes-pre_blowup_certificate.json
-data/18-rational-tubes-rational_data_certificate.json
-data/18-rational-tubes-rational_quartic.json
-data/18-rational-tubes-requirements.txt
-data/18-rational-tubes-specialized_constant_expanded.txt
-data/18-rational-tubes-specialized_constant_quartic.json
-data/18-rational-tubes-verification_summary.json
+data/18-rational-tubes-VERIFICATION_RECEIPT.txt       source 18's summary of its checks and of its own 30-page PDF build
+data/18-rational-tubes-chemical_end_to_end_certificate.json  the 2,000-step three-species chemical tube (Section 163.5)
+data/18-rational-tubes-chemical_small_quartic.json    its one-step quartic: 162 witnesses, 158 residuals
+data/18-rational-tubes-constant_certificate.json      x' = 1, nominal tube (and the next four: the Section 163.3 inventory)
+data/18-rational-tubes-constant_flow_reactions.json   the four reactions of the constant flow's chemical lift
+data/18-rational-tubes-constant_quartic.json          x' = 1, N = 2 quartic: 63 witnesses, 59 residuals
+data/18-rational-tubes-constant_robust_certificate.json  x' = 1 with positive noise
+data/18-rational-tubes-logistic_reactions.json        the fourteen reactions of the logistic lift
+data/18-rational-tubes-logistic_robust_certificate.json  x' = 1 - x², positive noise (Section 163.1)
+data/18-rational-tubes-negative_decay_certificate.json  a negative-state decay tube
+data/18-rational-tubes-negative_floor_certificate.json  x' = -1, N = H = 3 (floor, not truncation)
+data/18-rational-tubes-negative_floor_quartic.json    its N = 3 quartic: 74 witnesses, 68 residuals
+data/18-rational-tubes-negative_quartic.json          negative decay, N = 3 quartic: 76 witnesses, 70 residuals
+data/18-rational-tubes-offset_nonlinear_reactions.json  the 53-reaction four-species common-offset lift
+data/18-rational-tubes-pre_blowup_certificate.json    x' = x², event before blow-up (Section 163.2)
+data/18-rational-tubes-rational_data_certificate.json x' = (1+x)/3, x(0) = 1/2
+data/18-rational-tubes-rational_quartic.json          rational constant field, N = 2 quartic: 63 witnesses, 59 residuals
+data/18-rational-tubes-requirements.txt               sympy==1.14.0
+data/18-rational-tubes-specialized_constant_expanded.txt  the specialized quartic expanded (Section 168)
+data/18-rational-tubes-specialized_constant_quartic.json  its 15 residuals and 17-coordinate witness
+data/18-rational-tubes-verification_summary.json      source 18's recorded run (Python 3.13.5, SymPy 1.14.0)
 ```
 
-The delivered READMEs and PDFs of the eleven manuscripts, and the batch-62
-checksum manifests (`SHA256SUMS`, `SHA256SUMS.txt`, `MANIFEST.json`,
-`CHECKSUMS.sha256`), are not shipped: this README replaces the READMEs, and
+The delivered READMEs and PDFs of the twelve manuscripts, and the batch-62
+and batch-64 checksum manifests (`SHA256SUMS`, `SHA256SUMS.txt`,
+`MANIFEST.json`, `CHECKSUMS.sha256`, `MANIFEST.sha256`), are not shipped: this README replaces the READMEs, and
 `article.pdf` is a build of the merged text. The batch-60 manuscripts and
 READMEs of 07 and 09 survive in `ccfb084ad` (inside the zips), as do their
 PDFs; 08's delivered `article.tex` and `README.md` are also the versions of
@@ -196,11 +210,10 @@ prefixed name above, **byte-identical to the delivery**; the delivered paths
 and the files whose text still uses them are listed under *Delivered names*
 below.
 
-The 28 files beginning `18-rational-tubes-` (7 in `code/`, 21 in `data/`)
-belong to batch 64's manuscript 05, *Rational Tubes, Integer Zeros*, placed
-here as addition 18 in `3025c15df` for a later Part VIII. They are listed so
-that the listing matches the directory; the article does not yet contain that
-manuscript, and nothing in this README describes it.
+Of batch 64's manuscript 05 (source 18), the 28 files beginning
+`18-rational-tubes-` (7 in `code/`, 21 in `data/`) are shipped; its manuscript,
+delivered README, 30-page PDF and checksum manifest `MANIFEST.sha256` are not,
+and survive in the arrival commit `7747fcfdd` (inside the zip).
 
 ## Labels and numbering
 
@@ -237,12 +250,26 @@ thirteen existing unlabelled research questions of Parts II–IV (`pqc:q:histori
 `pqc:q:frontend`, `pqc:q:algebra`, `pqc:q:instruments`, `pqc:q:promise`,
 `pqc:q:signed`, `pqc:q:fields`, `pqc:cb:q:dimension`, `pqc:cb:q:realizers`,
 `pqc:cb:q:neural`, `pqc:cb:q:transfer`, `pqc:cb:q:critical`,
-`pqc:cb:q:boundary`) and on the example `pqc:ex:hhhth`. The report now has
-**895 labels** (258 + 565 + 72), counted with `\label(\[[^]]*\])?\{`; no
+`pqc:cb:q:boundary`) and on the example `pqc:ex:hhhth`. The report then had
+895 labels (258 + 565 + 72), counted with `\label(\[[^]]*\])?\{`; no
 existing label was renamed or removed, and no existing label's number or
 bibliography number changed (checked against the `.aux` of the previous
 build). In Parts V–VII, 85 labels of shared-counter environments carry
 cleveref type hints, for the same reason as above.
+
+Batch 64 (Part VIII) kept all 85 delivered labels of source 18, prefixed
+`pqc:tu:`; eight of them (lemmas, propositions, corollary, definition) carry
+cleveref type hints. Writing Part VIII added 38 labels: `pqc:part:tubes`;
+`pqc:tu:conv` and `pqc:tu:conv:relation`, `:letters`, `:macros`; fourteen
+section labels `pqc:tu:sec:*` and three subsection labels (`sec:repo`,
+`sec:verified`, `sec:open`); `pqc:tu:app:notation`; `pqc:tu:cor:fixedquartic`
+(source 18's one unlabelled corollary); eleven research-question labels
+`pqc:tu:q:*`; `pqc:app:provenance64`; and labels on two unlabelled research
+questions of Part III, `pqc:cb:q:grids` ("Replace dense grids by small
+inductive regions") and `pqc:cb:q:tradeoff` ("Sharp radius–time
+tradeoffs"). The report now has **1018 labels** (895 + 85 + 38). No existing
+label was renamed or removed, and no existing label's number or bibliography
+number changed (checked against the `.aux` of a build of the previous text).
 
 Numbering: source 08's Section *n* is Section *n* + 1 here for *n* = 2–8
 (Part I), and its Sections 9, 10, 11 are Sections 11, 12, 33; source 07's
@@ -272,6 +299,11 @@ source 13's ten numbered paragraphs and source 10's twelve numbered projects
 keep their forms. In Parts V–VII an italic *[source NN]* under a section
 heading names the source of that section.
 
+Part VIII is Sections 153–169: Section 153 is written (its conventions);
+source 18's Section *n* is Section 153 + *n* (*n* = 1–14), and its appendices
+A and B are Sections 168 and 169 ("Source 18 appendix"). Its eleven research
+questions, a numbered list in the source, are research questions 93–103.
+
 ## Setting and notation
 
 Witnesses are natural numbers, polynomials have integer coefficients and
@@ -285,8 +317,12 @@ source's letters. Parts V, VI and VII open with their own letter tables and
 false readings (Sections 38.2, 70.3 and 110.1): for example source 17's `b`
 is a binary environment, not Part I's rejection mass; the `D` of sources 11
 and 16 is a common denominator, not a quantum dimension; Part III's `Hit`
-is noisy, source 14's exact. Renamed (Sections 2.4, 38.3, 70.4, 110.2; no
-normalization changed):
+is noisy, source 14's exact. Part VIII's Section 153.2 compares source 18's
+letters with Parts III and VII and lists its own double uses (`H` is a
+reciprocal time step, not a target; `N` counts Euler steps; `K`, `B` are
+integers; the rails `p_j` and species `q` are not the initial numerators and
+denominators `p_j/q_j`); it renames nothing. Renamed (Sections 2.4, 38.3,
+70.4, 110.2; no normalization changed):
 
 | Here | Source | Where | Reason |
 |---|---|---|---|
@@ -436,14 +472,43 @@ rational clipped networks; synthesis for four-layer tied networks equivalent
 to Hilbert's tenth problem over `Q`, decidable for strict targets; and no
 computable precision ceiling for a universal network (Sections 135–142).
 
+**Part VIII (source 18).** For a rational polynomial vector field, rational
+initial point and open rational polyhedral target (no global existence
+assumed), a canonical integer tube — floor-rounded Euler nodes, ceiling-rounded
+radii, strict guards and target tests, with `N, H, D, R` positive integers and
+optional initial and forcing units — is sound under bounded measurable forcing
+and proves existence up to its terminal time (Theorem 157.1), and exists
+whenever the target is reached (Theorem 158.2), so reachability, positive
+finite-horizon robustness and certificates are equivalent (Theorem 158.3). For
+fixed `N` and noise units the certificate is a sum of squares of quadratics
+with `2g + (6d+3)N + 2d + m + 3` natural witnesses and `2g + (5d+2)N + 2d + m +
+3` residuals, total degree at most four including the free `R, H, D`, and at
+most one witness (Theorem 159.1). The reachability set is r.e., hence
+Diophantine, with a fixed quartic by standard degree reduction (Theorem 160.1,
+Corollary 160.2); a finite-event compiler contract transfers halting
+(Definition 160.3, Theorem 160.4) and, if one exists, rules out a computable
+certificate-size bound (Proposition 160.5). The naive dual-rail split of
+`x' = 1 − x²` blows up at `π/2` (Proposition 161.2); hyperbolic rails with
+`p_j n_j = c_j` give an exact kinetic lift (Theorem 161.3); one damping species
+with `q(1+S) = 1` makes the prescribed trajectory global with `2d+1` species and
+degree ≤ `Δ = k+d+⌈(k+d)/2⌉+3`, preserving every finite open event (Theorem
+162.2), and a common offset gives `d+2` species with degree ≤ `Δ+3` (Theorem
+162.3); chemical reachability then has the same integer tubes (Corollary
+162.4). Examples: a positive-noise logistic tube, a pre-blow-up event of `x' =
+x²`, eight accepted tubes, five generic quartics (63/59, 162/158, 76/70, 74/68,
+63/59 witnesses/residuals), a 2,000-step chemical tube (its full quartic
+counted, 42,044 gates, 126,099 witnesses, 118,099 residuals, not materialized)
+and a specialized constant-flow quartic with 17 witnesses and 15 residuals
+(Sections 163, 168).
+
 ## What the report does not claim
 
 - **No formalization.** No new Lean or Rocq proof was compiled and no
   proof-assistant axiom audit was run for any result here; the formalization
-  sections (35.1–35.3, 51, 62, 102, 122, 133, 142.3) are plans, and 09's
-  proposed `RobustReachability` module names are not repository declarations.
+  sections (35.1–35.3, 51, 62, 102, 122, 133, 142.3, 165) are plans, and 09's
+  proposed `RobustReachability` and 18's `PolynomialFlow`/`KineticFlow` module names are not repository declarations.
 - **No explicit universal polynomial.** None of the fixed MRDP polynomials
-  (Theorems 4.3, 22.1, 26.3, Corollary 29.2, and the MRDP statements of
+  (Theorems 4.3, 22.1, 26.3, 160.1, Corollaries 29.2, 160.2, and the MRDP statements of
   Parts V–VII) is expanded, and none has a stated degree, witness count or
   multiplicity. The explicit polynomials are size-indexed families; their
   sizes may not be transferred to the fixed-arity polynomials (Remark 2.1).
@@ -486,7 +551,23 @@ computable precision ceiling for a universal network (Sections 135–142).
   Hilbert's tenth problem over `Q` (Koymans–Pagano record it as open) and does
   not implement its generic projective compiler, real quantifier elimination
   or universal network; 16's dimension obstruction is specific to its
-  mechanism and its example is decidable.
+  mechanism and its example is decidable. Of batch 64: 18 claims no priority
+  for the joint normal form and no new Turing-completeness theorem, and its
+  bounds (Euler steps, `M`, `L`, species and degree) are construction bounds,
+  not optimal; its Euler scheme is not claimed to improve on validated
+  integration (Immler) and its semidecision procedure is not a δ-decision
+  procedure.
+- **Part VIII's limits (source 18).** Local uniqueness of the tube witness
+  (fixed `N, R, H, D`) is not a single-fold representation of any r.e. set;
+  the fixed quartic comes from MRDP and standard degree reduction and has no
+  stated witness count; the transfer and the no-bound proposition are
+  conditional on a finite-event compiler, which is not instantiated for any
+  published universal flow. The chemical lifts are global only from the
+  prescribed initialization on the invariant manifold, give no uniform
+  positive clock bound and no infinite-horizon robustness, and are idealized
+  deterministic mass-action networks, not laboratory implementations. Open
+  targets are essential: exact equality, closed targets, asymptotic
+  convergence, safety and Zeno-sensitive events are not treated.
 - **Nonuniformity and promises.** The high-success realization of Theorem 8.2
   chooses a late small-variation tail nonuniformly (Remark 8.3); the
   conditional-comparison bounds use syntactically floor-guaranteeing wrapper
@@ -520,7 +601,11 @@ computable precision ceiling for a universal network (Sections 135–142).
   Lipschitz bound for an arbitrary Python callable. The batch-62 suites
   (10, 11, 12's 121,822, 13's 6,050 exact and 60 NumPy smoke tests, 14, 15's
   53,472, 16, 17's 113,686) likewise test their implementations only; 13's
-  NumPy Hessian checks are floating-point sanity checks.
+  NumPy Hessian checks are floating-point sanity checks. Source 18's suite
+  (eight accepted tubes, six mutated and two further candidates rejected, 4,020
+  signed Euclidean and 4,020 ceiling divisions, five generic and one
+  specialized quartic, twelve chemical lifts) tests its implementation only;
+  a rejected candidate is not a proof of nonreachability.
 
 ## Relation to the formal project and to neighbouring reports
 
@@ -556,7 +641,14 @@ between the pins `f608f1cb3`, `ccfb084ad`, `b6bf6406a`, `b998f70c6`,
 `526c2557f`, `e18718e83` and the placement commit `adeddcecc`, so the
 sources' descriptions of the repository are current. None of the report
 concerns the project's operation counts of straight-line universal
-certificates.
+certificates. Source 18 (Part VIII) pins `6d04e1e38` and reads the MRDP
+guide `Computability/HilbertTenthProblem/Lean/MRDP.md`; `Computability/` is
+unchanged from that pin to the placement commit `3025c15df`, so its
+description of the guide is current. ProveIt has no formal development of
+ordinary differential equations, flow reachability, validated integration or
+reaction kinetics; source 18's proposed `PolynomialFlow.*` and
+`KineticFlow.*` modules, like source 09's `RobustReachability`, do not exist
+(Section 165 suggests one namespace for both).
 
 The sibling report
 [`canonical-diophantine-certificates`](../canonical-diophantine-certificates/README.md),
@@ -568,20 +660,40 @@ single-fold (finite-fold) representability problem is the frontier that
 research questions 10 and 19 here ask about (Section 36.4). Research
 question 11's continuous-time robustness part is answered for discrete-time
 rational PWA maps by Part III and, for stationary masses of reversible
-chains, partly by source 17. Part V's Section 38.1 reconciles that report's
+chains, partly by source 17, and for open-target first hits of rational
+polynomial flows, partly by source 18 (Part VIII). Part V's Section 38.1 reconciles that report's
 weighted canonical-stopping probability representation with Part I's fixed
 quartic projection and source 13's randomly padded root counts. The third
 report of the category,
-[`liveness-beyond-halting`](../liveness-beyond-halting/README.md), treats
-infinite-path (recurrence, liveness) predicates, which neither this report
-nor the certificates report covers.
+[`liveness-beyond-halting`](../liveness-beyond-halting/README.md) (written in
+`2a34b1740`), treats infinite-path (recurrence, liveness) predicates, which
+neither this report nor the certificates report covers.
+
+**Relations: `liveness-beyond-halting`.** That report proves a sharp
+progress-modulus hierarchy for computable finitely branching systems —
+finite reachability Σ⁰₁, a fixed computable deadline Π⁰₁, bounded gaps Σ⁰₂,
+some computable deadline Σ⁰₃, recurrence Σ¹₁ (complete for one fixed
+two-stack machine), deterministic recurrence Π⁰₂ — shows that a shared
+deadline makes recurrence an effectively closed condition, gives
+degree-two transition laws and unique-witness finite-horizon certificates, and
+proves that none of these liveness properties has an ordinary Diophantine
+representation. Its deterministic Π⁰₂ row is the non-probabilistic analogue of
+this report's almost-sure termination (Theorem 9.1); its exact realizations
+are discontinuous and carry no noise radius, unlike Part III's; and source 18
+(Part VIII) disclaims the asymptotic and safety properties it treats. It cites
+this report's research questions 11, 9, 2, 23, 31 and 24 in its own; this
+report records the relation in a dated bullet of Section 36.4 and after the
+remark closing Section 33. Neither report proves a theorem of the other.
 
 Of the research questions of Parts I–IV, batch 62 partly answers 7
 (quantum front ends, source 10), 10 (counting, source 13), 11 (continuous
 time, source 17), 12 (probability specifications, source 13), 20 (promise
 problems, source 16), 22 (exact scalar fields, source 10) and 25 (smooth
 realizers, source 12); it bears on 5, 21, 24, 27, 29 and 32; it does not
-answer 26. Each has a dated note after it, and Section 36.4 lists them.
+answer 26. Batch 64 (source 18) partly answers 11 (open first hits of
+rational polynomial flows; probabilities, deadlines, Zeno and equality events
+stay open) and bears on 25, 27, 30 and 31. Each has a dated note after it, and
+Section 36.4 lists them.
 
 ## Build
 
@@ -594,17 +706,19 @@ No external figures, bibliography database or downloads are needed.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX, pdfTeX) has 275 Letter pages, with no errors,
+The recorded build (MiKTeX, pdfTeX) has 309 Letter pages, with no errors,
 undefined references or citations, multiply defined labels, duplicate
 destinations, LaTeX or package warnings, or overfull boxes; there are 17
 underfull boxes, in narrow table cells and in a few source paragraphs. All
-fonts are embedded Type 1. Parts V–VII
+fonts are embedded Type 1 (the 17 underfull boxes are those of the build
+before Part VIII, which added none). Parts V–VII
 widened the contents' section-number and page-number columns (three-digit
 numbers). Source 07's `data/07-quantum-mortality-build_summary.json`, source
 08's `data/08-probabilistic-laws-pdf_preflight.json`, source 10's
 `data/10-coherent-circuits-BUILD_INFO.txt`, source 12's
 `data/12-twoadic-contraction-BUILD_RECEIPT.json` and source 17's
-`data/17-reversible-equilibria-pdf_preflight.json` describe the delivered
+`data/17-reversible-equilibria-pdf_preflight.json`, and source 18's
+`data/18-rational-tubes-VERIFICATION_RECEIPT.txt` describe the delivered
 PDFs, which are not shipped; 07's `STATUS.md`, 09's and 13's `PROVENANCE.md`,
 12's `PROOF_STATUS.md` and 14's `SOURCE_AUDIT.md` likewise report builds and
 page inspections of their own PDFs. These production checks do not verify the
@@ -680,6 +794,18 @@ for f in equilibria verify; do cp code/17-reversible-equilibria-$f.py /tmp/r17/c
 (cd /tmp/r17 && uv run --no-project --with sympy==1.14.0 python code/verify.py)   # writes results/, verification/checks.json
 ```
 
+Batch 64 (source 18; SymPy 1.14.0 for `run_checks.py` and `constant_example.py`,
+standard library for `verify_json.py`; run `run_checks.py` first, since it
+creates `results/` and `constant_example.py` does not):
+
+```sh
+mkdir -p /tmp/r18/code
+for f in tubes quartic kinetic run_checks constant_example verify_json; do cp code/18-rational-tubes-$f.py /tmp/r18/code/$f.py; done
+(cd /tmp/r18 && uv run --no-project --with sympy==1.14.0 python code/run_checks.py \
+  && uv run --no-project --with sympy==1.14.0 python code/constant_example.py \
+  && py code/verify_json.py results/*_certificate.json)   # writes results/ (19 files); prints ACCEPT lines
+```
+
 Compare `/tmp/r07/examples/<f>.json` and `/tmp/r07/verification/check_results.json`
 with `data/07-quantum-mortality-<f>.json`, `/tmp/r08/artifacts/<f>` with
 `data/08-probabilistic-laws-<f>`, and `/tmp/r09/results/<f>` with
@@ -702,9 +828,18 @@ checker prints its report, which the recipe saves; it equals
 `data/14-strict-contractions-independent_checker_report.json`. 15 and 17 fail
 unless their output directories exist, hence the `mkdir` lines.
 
+The source-18 recipe was run on 30 September 2026 in a copy (Python 3.13.5 and
+SymPy 1.14.0 under `uv`, `PYTHONUTF8=1`): all three commands exited 0, all
+eight certificates were accepted, and all 19 regenerated `results/` files equal
+the shipped `data/18-rational-tubes-*` files apart from CRLF line endings.
+`verification_summary.json` records the interpreter and SymPy versions, so
+another Python changes those fields. The JSON files contain integers larger
+than 2^53; Python's `json` keeps them exact, but tools that parse JSON numbers
+as doubles do not.
+
 The delivered Makefiles (`code/07-quantum-mortality-Makefile`,
 `code/08-probabilistic-laws-Makefile`, `code/14-strict-contractions-Makefile`,
-`code/17-reversible-equilibria-Makefile`) and build scripts
+`code/17-reversible-equilibria-Makefile`, `code/18-rational-tubes-Makefile`) and build scripts
 (`code/10-coherent-circuits-build.py`, `code/11-rational-rotations-build.sh`,
 `code/12-twoadic-contraction-build.sh`, `code/13-quartic-landscapes-build.sh`,
 `code/16-dense-rotations-build.sh`) name delivered paths (`article.tex`,
@@ -791,6 +926,9 @@ Delivered path → shipped path (all byte-identical):
 | 17 | `Makefile`, `code/<f>.py` (2) | `code/17-reversible-equilibria-<name>` |
 | 17 | `results/<f>` (5), `verification/checks.json`, `verification/pdf_preflight.json`, `requirements.txt` | `data/17-reversible-equilibria-<f>` |
 | 17 | `PROVENANCE.md` | `17-reversible-equilibria-PROVENANCE.md` |
+| 18 | `Makefile`, `code/<f>.py` (6) | `code/18-rational-tubes-<name>` |
+| 18 | `results/<f>` (19), `requirements.txt` | `data/18-rational-tubes-<f>` |
+| 18 | `article.tex`, `README.md`, `article.pdf`, `MANIFEST.sha256` | not shipped (in `7747fcfdd`) |
 
 Shipped files whose text still uses delivered names or names unshipped
 files: `07-quantum-mortality-STATUS.md` (`code/run_checks.py`,
@@ -811,8 +949,13 @@ final PDF"); `13-quartic-landscapes-PROVENANCE.md`,
 (this report's README at the pin `e18718e83`, which it inspected); the
 manifests `data/11-rational-rotations-source_manifest.json` and
 `data/15-neural-precision-source_manifest.json` (their manuscripts' inspected
-paths); and every Python program (delivered module names and output
-directories). `data/13-quartic-landscapes-test_output.txt` and
+paths); `data/18-rational-tubes-VERIFICATION_RECEIPT.txt` (`article.pdf`,
+`article.tex`, `verify_json.py` and its own 30-page PDF); source 18's
+Makefile (`python`, `code/*.py`, `results/*_certificate.json` and the
+unshipped `article.tex`); and every Python program (delivered module names and
+output directories; source 18's `run_checks.py` and `constant_example.py`
+write to `../results` relative to their own directory, which in this
+directory would be the report root). `data/13-quartic-landscapes-test_output.txt` and
 `data/13-quartic-landscapes-verification_report.json` are byte-identical: the
 delivery shipped the same JSON under both names.
 `data/08-probabilistic-laws-requirements.txt` and
@@ -822,8 +965,9 @@ files.
 In Parts I–IV of the article the file names were changed to the shipped
 names; 08's archive table (Appendix A.1) and 07's and 09's reproduction
 paragraphs (Appendix A.2, Section 34.4) were rewritten for them. In Parts
-V–VII the sources' text keeps the delivered names, and a `[write]` paragraph
-in each source's implementation section gives the shipped names.
+V–VIII the sources' text keeps the delivered names, and a `[write]` paragraph
+in each source's implementation section gives the shipped names (for source
+18, Section 163.6, and a note after Section 169's delivered commands).
 
 ## Provenance and merge choices (Appendix F)
 
@@ -898,3 +1042,41 @@ in each source's implementation section gives the shipped names.
   existing ones; 17's entry for this report's README is omitted.
 - The write used the pristine manuscripts in the arrival commits and the
   files staged in `adeddcecc`.
+
+**Batch 64 (Part VIII, Appendix F.2).**
+
+- **Placement.** Source 18 (batch 64, manuscript 05; pin `6d04e1e38`;
+  arrival `7747fcfdd`; placed in `3025c15df`) is continuous-time polynomial
+  dynamics with exact Diophantine certificates. The certificates report treats
+  discrete executions and `liveness-beyond-halting` infinite paths, both of
+  which source 18 disclaims. It is Part VIII, after Part VII, so that nothing
+  earlier renumbers.
+- **Duplicates.** Theorem 160.1 restates Part IV's paragraph on robust
+  observations of computable continuous trajectories; the theorem (with its
+  own proof through the complete checker) is printed with a credit, the
+  paragraph not twice. Corollary 160.2 = Lemma 3.3; Proposition 160.5 repeats
+  the argument of Corollaries 30.3 and 18.4.
+- **Written text** (`[write]`): Section 153 (sources, relation to Parts
+  I–VII, letter table, macros and labels, abstract, title-page box and status);
+  credits after Theorem 160.1, Corollary 160.2, Proposition 160.5 and the
+  signed-pair equation (159.1); notes on discrete reaction networks (Section
+  161.1), open targets (164.3), shipped names (163.6), the formalization
+  namespace (165.2) and the delivered commands (169); pointers after the
+  research questions. In Parts I–IV: title page, Sections 1.3 and 1.5, dated
+  notes after Part III's related-work paragraph on Platzer–Qian, its
+  `RobustReachability` proposal, the remark closing Section 33, research
+  questions 11, 25, 27, 30 and 31, and two bullets in Section 36.4 (Part VIII,
+  and `liveness-beyond-halting`).
+- **Form.** Title-page summary box and status statement printed as paragraphs;
+  the eleven listed questions as research question environments with unchanged
+  text; hard-coded section numbers as cross-references; appendices as
+  "Source 18 appendix" sections; source 18's `\code` unified with this
+  report's (escaped underscores removed); its New PX fonts, `titlesec` styling
+  and `tcolorbox` box not used. Title-page and metadata wording addressed to
+  Vladimir Reshetnikov is recorded only in Appendix F.2.
+- **Bibliography**: source 18's eight entries appended (92 in all now) with keys
+  `b64s18-*`, except Gao–Avigad–Clarke, which is the existing `Gao2012`. Its
+  pinned MRDP-guide entry (`6d04e1e38`) is kept apart from 07's
+  (`f608f1cb3`); the guide is unchanged between the pins.
+- The write used the pristine manuscript from the archive in `7747fcfdd` and
+  the files staged in `3025c15df`.

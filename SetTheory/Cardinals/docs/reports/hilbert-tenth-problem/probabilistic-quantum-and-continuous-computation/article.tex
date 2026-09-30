@@ -12,7 +12,7 @@
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
-\hypersetup{pdftitle={Diophantine Laws of Probabilistic, Quantum and Continuous Computation},pdfauthor={Research report merged from eleven AI-assisted manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Normalization budgets, quantum mortality, continuous robust safety, exact probabilities, exact gates, contracting dynamics, Diophantine certificates}}
+\hypersetup{pdftitle={Diophantine Laws of Probabilistic, Quantum and Continuous Computation},pdfauthor={Research report merged from twelve AI-assisted manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Normalization budgets, quantum mortality, continuous robust safety, exact probabilities, exact gates, contracting dynamics, polynomial flows, mass-action kinetics, Diophantine certificates}}
 \definecolor{accent}{RGB}{30,62,88}
 \definecolor{light}{RGB}{241,245,248}
 \pagestyle{fancy}
@@ -173,6 +173,9 @@
 \newcommand{\diam}{\operatorname{diam}}
 \newcommand{\sg}{\sigma}
 \newcommand{\pin}{{\small\texttt{e18718e837d43e162252f9a314e8cb797fbd1a1f}}}
+% --- batch 64, Part VIII (source 18); see Section pqc:tu:conv:macros ---
+\newcommand{\Cert}{\operatorname{Cert}}
+\newcommand{\ee}{\mathrm e}
 \makeatletter
 \renewcommand{\@pnumwidth}{2.2em}
 \renewcommand{\@tocrmarg}{3em}
@@ -197,11 +200,11 @@ Quantum and Continuous Computation\par}
 {\large Normalization budgets and unique quartic certificates,\\
 four-dimensional quantum mortality,
 a continuous three-outcome trichotomy,\\
-exact probabilities, exact gates and contracting dynamics\par}
+exact probabilities, exact gates, contracting dynamics and polynomial flows\par}
 \vspace{0.6cm}
-{\normalsize Research report merged from eleven manuscripts prepared for
-Vladimir Reshetnikov\\ (batch~60, manuscripts 07, 08 and 09; batch~62,
-manuscripts 06--09 and 11--14; all dated 30 September 2026)\par}
+{\normalsize Research report merged from twelve manuscripts prepared for
+Vladimir Reshetnikov\\ (batch~60, manuscripts 07--09; batch~62,
+manuscripts 06--09 and 11--14; batch~64, manuscript 05; all dated 30 September 2026)\par}
 {\small AI-assisted mathematical development and reproducible
 exact-arithmetic implementations; unrefereed\par}
 \vspace{0.3cm}
@@ -239,27 +242,29 @@ with unique natural witnesses, and compile finite group presentations into
 rational four-dimensional rotations whose exact synthesis or state transfer is
 c.e.-complete (VI); and build strict contractions of $\R^4$ and of $\Z_2$
 whose exact transients are c.e.-complete, and exact rational neural networks
-whose precision is unbounded memory (VII).
+whose precision is unbounded memory (VII). Part~VIII (batch~64) certifies
+open-target visits of rational polynomial flows by canonical integer tubes and
+unique-witness quartics, and lifts the flows to global mass-action kinetics.
 \end{abstract}
 \end{minipage}
 \vfill
 \begin{minipage}{0.93\textwidth}
 \footnotesize
-\textbf{Status.} \wtag\ All eleven manuscripts are AI-assisted and
+\textbf{Status.} \wtag\ All twelve manuscripts are AI-assisted and
 unrefereed. They give ordinary mathematical proofs, apart from the external
 inputs they name (MRDP; Neary's six-generator matrix-mortality theorem;
 Meyer's and Lagrange's theorems on quadratic forms; the existence of a
 universal Turing machine; the max--min representation of piecewise-affine
 functions; in Parts~V--VII also Higman's embedding theorem, Mihailova's
 construction, Tarski's decision method, Minsky's counter machines and the
-Adamczewski--Bugeaud theorem), and finite exact-arithmetic checks. No result of this report is
+Adamczewski--Bugeaud theorem; in Part~VIII standard ODE existence theory), and finite exact-arithmetic checks. No result of this report is
 formalized in Lean or Rocq; placement beside ProveIt's Lean project on
 Hilbert's tenth problem confers no formal status
 (Section~\ref{pqc:conv:formal}). No historical priority, minimal dimension
 or optimal constant is claimed, and no general single-fold or finite-fold
 MRDP question is settled. The status statements of the three batch-60
 sources are printed in full in Section~\ref{pqc:conv:status}, and those of the
-eight batch-62 sources at the head of Parts~V--VII.
+nine later sources at the head of Parts~V--VIII.
 \end{minipage}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -400,6 +405,16 @@ $2$-adic dynamics, tensor contractions, reversible Markov chains or neural
 networks; source~12's ``existing $2$-adic digit API'' is Mathlib's
 \code{PadicInt}, not a ProveIt module.
 
+\wtag\ The batch-64 source of Part~VIII (source~18) uses \code{Diophantine.mrdp}
+in the same way and cites the MRDP guide
+(\code{Computability/HilbertTenthProblem/Lean/MRDP.md}) at the pin
+\code{6d04e1e38}; \code{Computability/} is unchanged from that pin to the
+placement commit \code{3025c15df}. It ships no Lean or Rocq. ProveIt has no
+formal development of ordinary differential equations, reachability of flows,
+validated integration or chemical reaction kinetics; the
+\code{PolynomialFlow} and \code{KineticFlow} modules that source~18 proposes do
+not exist.
+
 All three manuscripts inspected ProveIt at \snapshot{}. Nothing under
 \code{Computability/} changed between that commit and the placement commit
 \code{7498484af}, so every repository statement quoted in this report is
@@ -528,6 +543,20 @@ Parts~I--IV. Each new Part opens with its own conventions, since their letters
 collide with those of Parts~I--III in new ways
 (Sections~\ref{pqc:conv:b62-V}, \ref{pqc:conv:b62-VI}
 and~\ref{pqc:conv:b62-VII}).
+
+\paragraph{\wtag\ Batch 64: Part VIII.}
+One manuscript of batch~64 (manuscript~05), numbered here source~18 by its
+shipped file prefix, is printed in full as Part~VIII, after Part~VII, so that
+nothing earlier renumbers: \emph{Rational Tubes, Integer Zeros: Complete
+Diophantine Certificates for Polynomial Flows and Chemical Computation}. It is
+the continuous-time, open-target, finite-time counterpart of Part~III. Its
+theorem that open-target reachability of rational polynomial flows is
+recursively enumerable, hence Diophantine, is the qualitative statement of
+Part~IV's paragraph on robust observations of computable continuous
+trajectories, which it makes explicit, complete and counted; this is credited
+where it is printed. Part~VIII opens with its conventions
+(Section~\ref{pqc:tu:conv}), and its provenance is
+Appendix~\ref{pqc:app:provenance64}.
 
 \paragraph{Abstract of manuscript 08.}
 The statement that the halting set of an effective computational substrate is
@@ -2775,6 +2804,12 @@ robustness notion \cite{PlatzerQian2026}.  Our model instead has discrete time,
 a continuous compact state space, and a uniform bound on adversarial error
 at \emph{every} step.  Neither theorem is automatically a theorem about the
 other noise model.
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Part~VIII (source~18) treats continuous time for
+rational polynomial differential equations, but for finite-time visits of
+\emph{open} targets, not safety: finite reachability is equivalent to a positive
+finite-horizon tolerance and to a canonical integer tube certificate
+(Theorem~\ref{pqc:tu:thm:equivalence}); Section~\ref{pqc:tu:conv:relation}
+compares the two Parts.
 
 \subsection{Principal statements}
 
@@ -4050,6 +4085,18 @@ $\pione$-complete (Theorem~\ref{pqc:cb:thm:classification}).
 Theorem~\ref{pqc:cb:thm:transfer} states when such a trichotomy transfers
 to another substrate.
 \end{remark}
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Part~VIII (source~18) proves the paragraph's
+statement for rational polynomial ODEs with open rational polyhedral targets,
+where the trajectory is given by the equation rather than by an evaluation
+algorithm: reachability is recursively enumerable, hence Diophantine
+(Theorem~\ref{pqc:tu:thm:re}), through an explicit canonical integer checker that
+is sound, complete, robust to initial error and bounded forcing, and compiled to
+a counted quartic with a unique witness for each unrolling length
+(Theorems~\ref{pqc:tu:thm:equivalence} and~\ref{pqc:tu:thm:quartic}). It is
+Part~III's open-target, continuous-time counterpart in the sense of this remark
+(Section~\ref{pqc:tu:conv:relation}). Infinite-path properties of discrete
+systems, such as recurrence and progress deadlines, are classified in the sibling
+report \code{liveness-beyond-halting} (see Section~\ref{pqc:conv:qoverlap}).
 
 \section{Implementation and validation}
 \label{pqc:conv:impl}\label{pqc:sec:audit}
@@ -4341,6 +4388,9 @@ No modification to the MRDP core is mathematically necessary.  Possible new modu
 \code{RobustReachability} namespace would be \code{Grid},
 \code{CutCertificate}, and \code{Diophantine}.  These names are proposals,
 not existing or compiled repository declarations.
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Source~18 proposes \code{PolynomialFlow} and
+\code{KineticFlow} modules for its continuous-time certificates; the two plans
+share the checker-to-MRDP layer (Section~\ref{pqc:tu:sec:formal}).
 
 \subsubsection{Universal interpreter layer}
 
@@ -4523,6 +4573,18 @@ Diophantine, equality is co-c.e.\ and $\pione$-complete
 (rational, algebraic) or $\pitwo$-complete (irrational, transcendental;
 Theorem~\ref{pqc:rv:thm:hierarchy}). Continuous time, explosion and robustness
 margins remain open (source~17's Question~\ref{pqc:rv:q:physical}).
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Partly answered by source~18 (Part~VIII) for
+flows of rational polynomial ODEs: the finite first hit of an open rational
+polyhedron is a c.e.\ event with complete canonical integer-tube certificates,
+which also certify a positive tolerance to initial error and bounded forcing
+(Theorems~\ref{pqc:tu:thm:equivalence} and~\ref{pqc:tu:thm:re}). Explosion is
+handled twice: a certificate proves existence up to the event, even before a
+blow-up (the pre-blow-up example of Section~\ref{pqc:tu:sec:examples}), and a
+global mass-action lift moves every blow-up to infinite physical time without
+losing a finite event (Theorem~\ref{pqc:tu:thm:globalchemical}). First-hit and
+deadline probabilities, jump systems, Zeno behaviour and exact equality
+observations remain open (Section~\ref{pqc:tu:sec:open};
+Questions~\ref{pqc:tu:q:beyond} and~\ref{pqc:tu:q:boundary}).
 
 \begin{question}[An algebra of probability specifications]\label{pqc:q:algebra}
 Build a specification language that tracks whether a quantity is left-c.e.,
@@ -4660,6 +4722,10 @@ out universality there, while flatness to all orders does not
 (Proposition~\ref{pqc:ad:prop:flat}). Source~14's
 Proposition~\ref{pqc:sc:prop:rigid} is the real homogeneous obstruction. The
 real $C^\infty$, analytic and polynomial cases of this question remain open.
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Bears on it only: source~18 (Part~VIII) certifies
+finite open events of rational polynomial \emph{flows} and embeds them in global
+mass-action kinetics, but constructs no realizer of the trichotomy, and a flow
+is not a map of a compact state space.
 
 \begin{question}[Extract and certify the rational neural circuit]\label{pqc:cb:q:neural}
 Can the max--min representation in \cref{pqc:cb:cor:relu} be generated as a concrete
@@ -4696,8 +4762,15 @@ observation is decidable while exact extinction is c.e.-complete
 (Proposition~\ref{pqc:ad:prop:nilpotent}, Corollary~\ref{pqc:ad:cor:complete}):
 a data point for the negative direction, although source~12 does not formalize
 this Part's noise radius on $\Z_2$.
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Bears on it for chemical simulators: source~18
+(Part~VIII) lifts every rational polynomial flow exactly to global rational
+mass-action kinetics under a positive change of time
+(Theorems~\ref{pqc:tu:thm:globalchemical} and~\ref{pqc:tu:thm:compressed}). That
+is an exact orbit lift, explicitly not a noisy projection or lifting estimate
+(Section~\ref{pqc:tu:sec:global}); source~18's
+Question~\ref{pqc:tu:q:offmanifold} asks for such an estimate.
 
-\begin{question}[Replace dense grids by small inductive regions]
+\begin{question}[Replace dense grids by small inductive regions]\label{pqc:cb:q:grids}
 Can positive-radius inputs be certified by adaptive polyhedral partitions,
 interval boxes, or algebraic invariants with substantially smaller witnesses
 than the complete grid?
@@ -4709,7 +4782,7 @@ The theorem to preserve is completeness for every positive margin, not merely
 success on benchmark examples.  The no-bound theorem excludes a computable
 universal worst-case guarantee, but permits powerful subclass-specific bounds.
 
-\begin{question}[Sharp radius--time tradeoffs]
+\begin{question}[Sharp radius--time tradeoffs]\label{pqc:cb:q:tradeoff}
 Can the lower and upper exponential estimates in \eqref{pqc:cb:eq:time-radius} be
 made comparable up to fixed constants or a fixed exponent for a universal
 realizer?
@@ -4734,6 +4807,9 @@ computability of the value itself.
 \par\noindent\wtag\ \emph{Batch-62 note (30 September 2026).} Bears on it: source~12's Corollary~\ref{pqc:ad:cor:poly} gives a decidable
 subclass, rational polynomial contractions of $\Z_p$, for exact reachability of
 the fixed point.
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Compare source~18's Question~\ref{pqc:tu:q:boundary},
+the continuous-time question for equality targets; source~18's certificates
+need open targets (Section~\ref{pqc:tu:sec:open}).
 
 \begin{question}[Different noise semantics]\label{pqc:cb:q:noise}
 What becomes of the Diophantine trichotomy for a single initial perturbation,
@@ -4745,6 +4821,12 @@ coordinate, but the rejection theorem controls all coordinates at every step.
 This asymmetry provides a useful starting point.  Probabilistic eventual
 acceptance, almost-sure avoidance, and existential noisy reachability must not
 be conflated; their quantifier structures can differ substantially.
+\par\noindent\wtag\ \emph{Batch-64 note (30 September 2026).} Bears on it: source~18 (Part~VIII) uses a single
+initial perturbation together with bounded measurable forcing, in continuous time
+and up to a finite horizon, and shows that for open-target visits of rational
+polynomial flows a positive tolerance of this kind exists exactly when the visit
+happens (Theorem~\ref{pqc:tu:thm:equivalence}). It proves no trichotomy and
+treats no stochastic or total-error budget.
 
 \begin{question}[Geometry of the fragile boundary]\label{pqc:cb:q:boundary}
 What can be said about the topology, dimension, or effective descriptive
@@ -4781,6 +4863,11 @@ nonacceptance is $\pione$-complete, hence not existential Diophantine
 Corollary~\ref{pqc:cb:cor:dioph-trichotomy}). The question stays open for
 continuous time, jump processes, deadlines, explosion and stochastic noise,
 which is also 09's Question~\ref{pqc:cb:q:noise}.
+\wtag\ \emph{Batch-64 note (30 September 2026).} For continuous time it is now
+partly answered by Part~VIII: finite open first-hit events of rational
+polynomial flows are c.e.\ with complete, positively robust integer
+certificates, and explosion is handled; probabilities, deadlines, Zeno and
+equality events remain open (the note after Question~\ref{pqc:q:continuous}).
 \item \emph{One frontier, two forms.} 08's
 Question~\ref{pqc:q:counting} and 07's Question~\ref{pqc:qm:q:frontier}
 both ask for a fixed-arity representation with controlled witness
@@ -4816,6 +4903,34 @@ Question~\ref{pqc:cb:q:neural} is \emph{not} answered: sources~14 and~15 supply
 a gate count for another map and a certification layer, not the network.
 Questions~\ref{pqc:q:smaller}, \ref{pqc:q:instruments}, the variation-budget
 and high-success questions are not addressed.
+\item \wtag\ \emph{Batch 64: Part VIII} (dated notes of 30 September 2026 after
+each question): Question~\ref{pqc:q:continuous} is partly answered by
+source~18 (open first-hit events of rational polynomial flows);
+Questions~\ref{pqc:cb:q:realizers}, \ref{pqc:cb:q:transfer},
+\ref{pqc:cb:q:critical} and~\ref{pqc:cb:q:noise} are only borne on. Source~18's
+own questions (Section~\ref{pqc:tu:sec:questions}) carry pointers to
+Questions~\ref{pqc:q:kernel}, \ref{pqc:q:direct}, \ref{pqc:q:smaller},
+\ref{pqc:qm:q:smaller}, \ref{pqc:cb:q:grids} and~\ref{pqc:cb:q:tradeoff}.
+\item \wtag\ \emph{Infinite paths and liveness} (batch-64 note, 30 September
+2026). This report's infinite-time statements are almost-sure termination and
+probabilistic thresholds (Part~I, $\pitwo$ in
+Theorem~\ref{pqc:thm:unconditionaltable}), robust avoidance and noise-fragile
+divergence (Part~III), and stationary masses (Part~V). The third report of this
+category, \code{liveness-beyond-halting} (written in \code{2a34b1740}),
+classifies infinite-path properties of computable finitely branching systems: a
+fixed computable progress deadline is $\pione$, bounded gaps $\sigtwo$, some
+computable deadline $\Sigma^0_3$, recurrence (B\"uchi acceptance)
+$\Sigma^1_1$-complete and deterministic recurrence $\pitwo$ (its Theorems
+\code{lbh:thm:hierarchy} and \code{lbh:thm:deterministic}); a shared computable
+deadline makes recurrence an effectively closed condition (\code{lbh:thm:compact}),
+and none of these liveness properties has an ordinary Diophantine
+representation. Its deterministic $\pitwo$ row is the non-probabilistic analogue
+of Part~I's almost-sure termination, and it cites this report's
+Questions~\ref{pqc:q:continuous}, \ref{pqc:q:direct}, \ref{pqc:q:smaller},
+\ref{pqc:cb:q:extract}, \ref{pqc:cb:q:noise} and~\ref{pqc:cb:q:dimension} in its
+own questions. Its realizations are exact, discontinuous and carry no noise
+radius, so Part~III's robustness statements have no counterpart there; neither
+report proves a theorem of the other.
 \end{itemize}
 
 \section{Conclusions}
@@ -17432,6 +17547,1861 @@ Diophantine representation.
 \end{question}
 
 
+\part{Continuous time: rational polynomial flows and global mass-action kinetics (source 18)}
+\label{pqc:part:tubes}
+
+\section{\wtag\ Conventions of Part VIII}
+\label{pqc:tu:conv}
+
+Part~VIII prints one manuscript of batch~64 in full: source~18,
+\emph{Rational Tubes, Integer Zeros: Complete Diophantine Certificates for
+Polynomial Flows and Chemical Computation} (batch-64 manuscript~05, dated
+30 September 2026, pin \code{6d04e1e38}). For a rational polynomial vector
+field, a rational initial point and an open rational polyhedral target, it
+proves finite reachability equivalent to positive finite-horizon robustness and
+to the existence of a canonical integer error-tube certificate
+(Theorem~\ref{pqc:tu:thm:equivalence}); compiles each certificate of fixed length
+into a counted quartic sum of squares with at most one natural witness
+(Theorem~\ref{pqc:tu:thm:quartic}); and lifts every such flow to a rational
+mass-action system, with $2d+1$ or $d+2$ species, whose prescribed trajectory is
+global and whose linear projection keeps every finite open event
+(Theorems~\ref{pqc:tu:thm:globalchemical} and~\ref{pqc:tu:thm:compressed}).
+Everything in Sections~\ref{pqc:tu:sec:intro}--\ref{pqc:tu:app:notation} is
+source~18's text except the passages marked \wtag.
+
+\subsection{Relation to Parts I--VII}
+\label{pqc:tu:conv:relation}
+Part~VIII is the continuous-time counterpart that Parts~I--VII leave out.
+Part~III's related-work paragraph sets Platzer and Qian's robust safety for
+polynomial differential equations aside with ``Our model instead has discrete
+time'' (Section~\ref{pqc:cb:sec:intro}, ``Relation to existing research''); source~18 is continuous in time. The
+two Parts sit on opposite sides of the contrast that the remark after Part~IV's
+paragraph \emph{Robust observations of computable continuous trajectories}
+draws (Section~\ref{pqc:sec:substrates}):
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+ & Part III (source 09) & Part VIII (source 18)\\
+\midrule
+Time & discrete: iterates of a rational PWA map of $[0,1]^d$ & continuous: the flow of a rational polynomial ODE on $\R^d$\\
+Target & closed rational boxes & open rational polyhedra\\
+Event certified & robust \emph{avoidance} for all time (positive critical radius, $\sigone$) & a finite-time \emph{visit} ($\sigone$)\\
+Noise & adversarial, at every step, in the sup norm & one initial perturbation and bounded measurable forcing, up to a finite horizon\\
+Certificate & a Boolean cut of a finite grid graph (Theorem~\ref{pqc:cb:thm:quartic}) & a canonical integer tube of Euler nodes and radii (Theorem~\ref{pqc:tu:thm:equivalence})\\
+Unique witness & per mesh, for the cut quartic $Q_N$ & per $(N,R,H,D)$, for the quartic $P_{I,N}^{E_{\mathrm{in}},J}$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Neither Part's robustness implies the other's. Part~VIII makes no statement
+about infinite-time behaviour; Part~III none about flows.
+
+Four results of Part~VIII restate or parallel earlier statements, and are
+credited where they are printed:
+\begin{itemize}
+\item Theorem~\ref{pqc:tu:thm:re} is the qualitative statement of Part~IV's
+paragraph on robust observations of computable continuous trajectories; that
+paragraph is not reprinted, and the credit after the theorem says what
+source~18 adds.
+\item Corollary~\ref{pqc:tu:cor:fixedquartic} is Part~I's
+Lemma~\ref{pqc:lem:quarticlower}, applied to the MRDP polynomial of
+Theorem~\ref{pqc:tu:thm:re}.
+\item Proposition~\ref{pqc:tu:prop:nobound} is the argument of Part~III's
+Corollary~\ref{pqc:cb:cor:witness-bounds} and Part~II's
+Corollary~\ref{pqc:qm:cor:nobound}, made conditional on a finite-event compiler.
+\item The canonical signed pairs \eqref{pqc:tu:eq:canonicalsign} are the signed
+normal form of the sibling report \code{canonical-diophantine-certificates}.
+\end{itemize}
+Source~18 cites none of Parts~I--VII, although Parts~I--IV were in the
+repository at its pin. It partly answers Question~\ref{pqc:q:continuous}, whose
+dated note records what stays open, and it bears on Questions~\ref{pqc:cb:q:noise},
+\ref{pqc:cb:q:transfer}, \ref{pqc:cb:q:realizers} and~\ref{pqc:cb:q:critical}.
+Part~VII's source~14 proves exact reachability of an open half-space
+$\sigone$-complete for one fixed discrete-time contraction; for flows, Part~VIII
+proves open-target reachability $\sigone$ with complete certificates
+(Theorem~\ref{pqc:tu:thm:re}) and its hardness only conditionally, for a family
+with a finite-event compiler (Definition~\ref{pqc:tu:def:universal}). The sibling report \code{liveness-beyond-halting}
+treats recurrence and progress deadlines of discrete systems, which source~18
+disclaims (Section~\ref{pqc:tu:sec:open}).
+
+\subsection{Letters used differently}
+\label{pqc:tu:conv:letters}
+Part~VIII keeps source~18's letters. Many of them are Part~III's or Part~VII's
+letters with other meanings; the table lists them, and the letters that
+source~18 itself uses twice.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lYYY@{}}
+\toprule
+Letter & Part III & Part VII & Part VIII (source 18)\\
+\midrule
+$H$ & target set & homogeneous map (14); halting time (12); height (15) & reciprocal time step, $h=1/H$\\
+$N$ & mesh $N=D2^n$ & --- & number of Euler steps; terminal time $T=N/H$\\
+$D$ & denominator-clearing integer & $D=BK$ (14); scales $D_t$ (15) & reciprocal state-lattice spacing\\
+$K$ & the cube $[0,1]^d$; $K_0$ & $K=2n$ (14); drift (12) & the integer $H(H+L)$\\
+$B$ & rejecting set; envelope & radial divisor (14); weight denominator (15) & the integer $H^2$; the box $B_R=[-R,R]^d$; $B(p,n)$ in the naive split\\
+$C$ & $C=L+1$ & --- & an integer of the radius recurrence; $\mathcal C$ the rail clock\\
+$G$ & grid $G_N$ & gate count (14); unit map (12) & the guard integer $DRH-DM-J$; the rail field $G(y)$; $G_*$\\
+$g$ & a map, in Theorem~\ref{pqc:cb:thm:transfer} & --- & number of signed arithmetic gates\\
+$J$ & $\pi^{-1}(H)$, in Theorem~\ref{pqc:cb:thm:transfer} & --- & forcing units, amplitude $\eta=J/D$\\
+$E,e$ & edge set $E_N$; input index $e$ & encodings (14, 12) & radius units $E_i$, radii $e_i=E_i/D$; $E=q(1+S)-1$ in Lemma~\ref{pqc:tu:lem:damping}; program $e$ in Definition~\ref{pqc:tu:def:universal}\\
+$L,M$ & Lipschitz bound & Lipschitz bound; lower excesses (15) & integral Lipschitz and speed bounds $L(R)$, $M(R)$ on $B_R$\\
+$m$ & interpreter states & --- & number of target rows\\
+$U$ & --- & --- & the target polyhedron; the floor remainders $U_{ij}$\\
+$Q$ & quartic $Q_N$ & --- & the divisor $AHD^{k-1}$; $Q_0$ an MRDP polynomial\\
+$A$ & the c.e.\ set of $(A,B)$ & --- & common field denominator; $A(p,n)$ in the naive split; $A_1$, $A_F$\\
+$s$ & --- & --- & number of residuals (Theorem~\ref{pqc:tu:thm:quartic}); a slack; number of species (Section~\ref{pqc:tu:sec:chemical}); damping exponent (Section~\ref{pqc:tu:sec:global})\\
+$p,q$ & --- & --- & $x^0_j=p_j/q_j$ (Sections~\ref{pqc:tu:sec:instances}--\ref{pqc:tu:sec:certificate}); rails $p_j,n_j$ and damping species $q$ (Sections~\ref{pqc:tu:sec:chemical}--\ref{pqc:tu:sec:global})\\
+$\mu,\sigma,\delta$ & envelope; ---; a margin & clip $\sigma$ (15) & target and box margins; tolerance in Theorem~\ref{pqc:tu:thm:equivalence}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The tempting false readings are these. Part~VIII's $H$ is a count of steps
+per unit time, never a target; its target is $U$, and $U_{ij}$ are remainders,
+not targets. Its $N$ counts Euler steps and its $D$ is the fineness of the state
+lattice: Part~III's mesh $N=D2^n$ is neither. $K$ and $B$ are integers, not the
+cube and the rejecting set. ``Robust'' in Theorem~\ref{pqc:tu:thm:equivalence}(ii)
+means one initial perturbation and one bounded measurable forcing up to a finite
+time $T$, not Part~III's per-step adversarial noise, and a certificate
+$\Cert_{E_{\mathrm{in}},J}$ is an integer tube, not a graph cut. The rails
+$p_j$ and the species $q$ of Sections~\ref{pqc:tu:sec:chemical}
+and~\ref{pqc:tu:sec:global} have nothing to do with the numerators and
+denominators $p_j/q_j$ of the initial point in Section~\ref{pqc:tu:sec:instances}.
+The quartic $P_{I,N}^{E_{\mathrm{in}},J}$ is a fourth explicit, size-indexed
+family beside $F_{N,m}$, $\mathscr Q_{D,K,n}$ and $Q_N$
+(Remark~\ref{pqc:conv:rem:fixedpoly}); the fixed polynomials of
+Theorem~\ref{pqc:tu:thm:re} and Corollary~\ref{pqc:tu:cor:fixedquartic} come from
+MRDP, are not expanded, and carry no witness count.
+
+\subsection{Macros, labels and file names}
+\label{pqc:tu:conv:macros}
+\begin{itemize}
+\item No printed symbol of source~18 was renamed. Its \verb|\code| (a small
+typewriter font) is printed with this report's \verb|\code|; the escaped
+underscores inside it were unescaped. \verb|\Cert| and \verb|\ee| are added;
+\verb|\Reach|, \verb|\ceil|, \verb|\floor|, \verb|\norm| (the sup norm) and the
+number sets were already defined identically. Source~18's fonts (New PX), section
+styling and title-page box are not used; the box is printed below as a paragraph.
+\item Source~18's labels carry the prefix \code{pqc:tu:}. Its lemmas,
+propositions, corollaries and definition carry cleveref type hints, as in
+Parts~I--VII. Labels were added to its sections, to one unlabelled corollary
+(\code{pqc:tu:cor:fixedquartic}) and to its research questions.
+\item Its hard-coded section numbers (``Sections 3--5'', ``Section 6'',
+``Sections 8--9'', ``Section 8'') are cross-references here, and its two
+appendices are the sections titled ``Source 18 appendix''.
+\item Its eleven research questions, a numbered list in the source, are printed
+as research questions with unchanged text.
+\item File names in source~18's text are its delivered names; the shipped names
+are given in Section~\ref{pqc:tu:sec:verified} and in the README.
+\item Its bibliography is appended to this report's with keys beginning
+\code{b64s18-}; its entry for the Gao--Avigad--Clarke paper is this report's
+existing entry \cite{Gao2012}.
+\end{itemize}
+
+\subsection{Abstract and status statement of source 18}
+\paragraph{Abstract of source 18.}
+% --- source 18, lines 87-112 ---
+We develop a concrete bridge from continuous-time polynomial dynamics to
+Diophantine certification. For a rational polynomial vector field, rational
+initial point, and open rational polyhedral target, finite reachability is
+proved equivalent to the existence of a canonical integer certificate on a
+uniform rational mesh. The certificate records floor-rounded Euler nodes,
+ceiling-rounded error radii, strict containment inequalities, and an optional
+positive initial-state and forcing tolerance. Both soundness and completeness
+are proved, including continuation before possible finite-time blow-up.
+For a fixed mesh length $N$, a quadratic-residual compiler gives a single
+nonnegative polynomial of degree at most four. If the arithmetic circuit uses
+$g$ signed gates, the construction uses
+$2g+(6d+3)N+2d+m+3$ natural witnesses and
+$2g+(5d+2)N+2d+m+3$ equations, where $m$ is the number of target inequalities.
+The witness is unique once the instance and the mesh parameters are fixed.
+
+A second construction embeds an arbitrary $d$-dimensional rational polynomial
+flow into positive mass-action kinetics. Reciprocal rail invariants prevent
+cancellation-induced auxiliary blow-up, and one additional damping species
+makes the lifted trajectory global without losing any finite event of the
+original flow. A common-offset variant reduces the global construction from $2d+1$ to $d+2$
+species at a cost of three in its degree upper bound. A simple counterexample
+explains why a naive dual-rail split lacks the required continuation property. We then connect the complete arithmetic checker to ProveIt's
+MRDP interface, carefully separating bounded unrolling, fixed-dimensional
+Diophantine representability, and finite-event universality assumptions. Exact
+Python checks, explicit quadratic systems, chemical reaction lists, and a
+formalization plan accompany the article.
+
+\paragraph{Summary box of source 18's title page.}
+% --- source 18, lines 66-75 ---
+\textbf{Main construction.} Every finite visit of a rational polynomial flow to an
+open rational polyhedron admits a canonical, exactly checked integer error-tube
+certificate. Each fixed-length certificate is the natural zero set of an explicit
+quartic sum of squares, with quantified witness and equation counts.
+\textbf{Chemical normal form.} Every such flow has a rational mass-action
+realization on $d+2$ species (or a lower-degree $2d+1$-species form) that preserves
+all finite open-target visits under
+a positive change of time and has no finite-time blow-up from its prescribed
+initialization.
+
+\paragraph{Status statement of source 18.}
+% --- source 18, lines 78-83 ---
+Research status: complete mathematical proofs and reproducible exact-arithmetic
+checks are supplied. The new analytic and compiler theorems have not been
+formalized in Lean or independently peer reviewed. Priority for the joint normal
+form is not established; classical computability, validated integration, and
+chemical universality results are explicitly distinguished from the constructions
+proved here.
+
+\wtag\ Source~18's claims ledger is printed in Section~\ref{pqc:tu:sec:intro}.
+Its limitations are in Sections~\ref{pqc:tu:sec:mrdp} (local uniqueness is not
+a single-fold representation; the degree reduction is standard; the transfer is
+conditional), \ref{pqc:tu:sec:global} (global existence only on the invariant
+manifold, no uniform clock bound, no infinite-horizon robustness)
+and~\ref{pqc:tu:sec:related} (open targets essential; no equality, Zeno or safety
+events; no physical implementation).
+
+\section{The question and the contribution}\label{pqc:tu:sec:intro}
+
+\subsection{Why continuous computation is a useful next substrate}
+A discrete computation has a finite successful history that can be checked by
+integer arithmetic. A continuous computation seems different: its successful
+history is a real-valued function on an interval, and a numerical approximation
+is not itself a proof that the exact trajectory reaches the intended set.
+The productive question is not merely whether the resulting acceptance set is
+Diophantine. Once recursive enumerability is known, MRDP already answers that.
+The sharper question is:
+\begin{quote}
+Can finite continuous events be represented by an explicit, complete,
+low-degree integer certificate whose rounding, error propagation, existence
+obligations, and witness multiplicity are all visible?
+\end{quote}
+We answer this question affirmatively for rational polynomial ordinary
+differential equations and open rational polyhedral targets. We also give a
+chemical embedding for which a finite event cannot be lost through artificial
+blow-up of the encoding variables.
+
+These are mathematical construction problems, not assertions that the
+Turing completeness of polynomial ODEs or continuous chemical reaction networks
+was previously unknown. Polynomial ODE computation has a substantial theory;
+Bournez's account surveys its computability and complexity connections
+\cite{b64s18-bournez}. Fages, Le Guludec, Bournez, and Pouly established strong Turing
+completeness for continuous chemical reaction networks under their specified
+computability semantics \cite{b64s18-fages}. Our construction isolates the additional
+finite-certificate and global-lift properties needed for the present arithmetic
+interface.
+
+\subsection{Connection to the repository}\label{pqc:tu:sec:repo}
+The repository snapshot used in this article is
+\begin{center}
+\code{6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72}.
+\end{center}
+The inspected MRDP guide documents the endpoint
+\code{Diophantine.mrdp}: every recursively enumerable subset of $\N$ is the
+projection of the natural zero set of one integer polynomial, with a fixed
+finite number of witnesses and with input zero included. Its converse is also
+provided. The guide explicitly distinguishes this existence interface from a
+practical polynomial extractor or a numerical degree bound \cite{b64s18-repo}.
+
+The proposed addition therefore lies \emph{before} that endpoint: a small exact
+checker for an analytic event, a proof that the checker is complete, and a
+bounded explicit polynomial compiler. The analytic proofs below are given here,
+not claimed to be present in the repository. The existing MRDP source was
+inspected through its documentation; no repository build was performed for this
+article.
+
+\wtag\ The pin is \code{6d04e1e38}. Nothing under \code{Computability/}
+changed between it and the placement commit \code{3025c15df} or this write, so
+the description of the MRDP guide above is current; it was checked against
+\code{Computability/HilbertTenthProblem/Lean/MRDP.md} and the declarations
+\code{Diophantine.mrdp}, \code{Diophantine.mrdp_iff} and
+\code{Diophantine.mrdp_dioph_iff} (Section~\ref{pqc:conv:formal}). Parts~I--IV
+of this report were already in the repository at the pin; source~18 did not
+cite them. Its relation to them is recorded in Section~\ref{pqc:tu:conv}.
+
+\subsection{Claims ledger}
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.43\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}}
+\toprule
+Result & Content & Status here\\
+\midrule
+Rational-tube equivalence & Finite open reachability iff an integer certificate exists, including positive finite-horizon robustness & Proved in Sections~\ref{pqc:tu:sec:certificate}--\ref{pqc:tu:sec:completeness}\\
+Quartic normal form & Explicit counts, degree at most four, canonical witness for fixed parameters & Proved in Section~\ref{pqc:tu:sec:quartic}; small instances checked\\
+Global kinetic lifts & $2d+1$ or $d+2$ species, rational data, no finite-time blow-up from prescribed initialization, linear orbit projection & Proved in Sections~\ref{pqc:tu:sec:chemical}--\ref{pqc:tu:sec:global}\\
+MRDP endpoint & One fixed-dimensional polynomial for the encoded reachability set & Consequence of the checker and existing MRDP\\
+Finite-event universality & Transfer from a compiler satisfying an explicit halting-event contract & Conditional transfer theorem, not an imported unstated premise\\
+Priority and formal proof & World-first novelty; Lean verification of the new results & Neither asserted\\
+\bottomrule
+\end{tabular}
+\end{center}
+The intended contribution is the fully specified combination, especially the
+canonical arithmetic normal form and the nonexplosive kinetic embedding. The
+proofs do not depend on a novelty claim. This article does not claim to settle a
+classical unresolved Diophantine conjecture or to establish a previously unknown
+Turing-completeness theorem.
+
+\section{Rational polynomial instances and local bounds}\label{pqc:tu:sec:instances}
+
+\subsection{Input data and semantics}
+Throughout, $\N=\{0,1,2,\ldots\}$. Fix $d\geq1$ and a vector field
+\begin{equation}\label{pqc:tu:eq:field}
+ F_j(x)=\frac1A\sum_{\alpha\in\mathcal A_j}c_{j\alpha}x^\alpha,
+ \qquad A\in\N_{>0},\quad c_{j\alpha}\in\Z,
+ \quad x^\alpha=\prod_{r=1}^d x_r^{\alpha_r}.
+\end{equation}
+The lists $\mathcal A_j$ are finite; zero polynomials are allowed. Put
+\begin{equation}
+ k=\max\bigl(1,\max_{j,\alpha}|\alpha|\bigr),
+ \qquad |\alpha|=\alpha_1+\cdots+\alpha_d,
+\end{equation}
+where an empty maximum contributes nothing. The initial point is
+$x^0_j=p_j/q_j\in\Q$, with $q_j>0$ and $\gcd(|p_j|,q_j)=1$. The target is
+\begin{equation}\label{pqc:tu:eq:target}
+ U=\{x\in\R^d:a_\ell\cdot x<b_\ell\text{ for }1\leq\ell\leq m\},
+ \quad a_\ell\in\Z^d,\quad b_\ell\in\Z.
+\end{equation}
+Clearing positive denominators puts every rational open polyhedron in this
+form. In particular, rational open boxes are included. The case $m=0$ means
+$U=\R^d$. A zero row with a nonpositive bound makes $U$ empty, and is not silently
+discarded.
+
+Polynomial fields are locally Lipschitz. Let
+$x:[0,T_{\max})\to\R^d$ be the unique maximal forward solution of
+\begin{equation}\label{pqc:tu:eq:ode}
+ x'=F(x),\qquad x(0)=x^0.
+\end{equation}
+No global existence assumption is made. Define
+\begin{equation}\label{pqc:tu:eq:reach}
+ \Reach(F,x^0,U)\quad\Longleftrightarrow\quad
+ \exists t\in[0,T_{\max})\;x(t)\in U.
+\end{equation}
+Every successful event can be witnessed at a positive rational time: if it
+occurs at $t=0$, local existence and openness provide a positive interval; if
+it occurs later, continuity provides an open time neighborhood inside the
+existence interval.
+
+\subsection{Integral bounds on a box}
+For an integer $R\geq1$, let $B_R=[-R,R]^d$ and define
+\begin{align}
+ M(R)&=\sum_{j,\alpha}|c_{j\alpha}|R^{|\alpha|},\label{pqc:tu:eq:M}\\
+ L(R)&=\sum_{\substack{j,\alpha\\|\alpha|>0}}
+ |c_{j\alpha}|\,|\alpha|R^{|\alpha|-1}.\label{pqc:tu:eq:L}
+\end{align}
+Both are nonnegative integers. The deliberate omission of $1/A$ makes the
+bounds coarse but keeps their evaluation integral.
+
+\begin{lemma}\label[lemma]{pqc:tu:lem:bounds}
+For $u,v\in B_R$,
+\begin{equation}
+ \norm{F(u)}\leq M(R),\qquad
+ \norm{F(u)-F(v)}\leq L(R)\norm{u-v}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The first assertion follows by taking absolute values of every monomial in
+\eqref{pqc:tu:eq:field}, using $A\geq1$ and $R\geq1$. For the second, the sum of the
+absolute values of all first partial derivatives of all components on $B_R$
+is at most $L(R)$. In particular every Jacobian row sum is at most this number.
+The segment from $u$ to $v$ stays in the convex box, so the integral mean-value
+formula gives the asserted infinity-norm Lipschitz bound.
+\end{proof}
+These choices are not numerically optimal. Their advantages are that they
+require only addition, multiplication, and nonnegative integer powers, and
+that no optimization oracle is hidden in the checker.
+
+\section{The exact integer certificate}\label{pqc:tu:sec:certificate}
+
+\subsection{Mesh, state lattice, and noise units}
+Fix positive integers $N,H,D,R$. The physical step is $h=1/H$, the state lattice
+has spacing $1/D$, and the terminal time is $T=N/H$. Fix two natural numbers
+$E_{\mathrm{in}}$ and $J$. They specify initial uncertainty
+$E_{\mathrm{in}}/D$ and forcing amplitude $\eta=J/D$.
+The nominal version sets both to zero; the positive-robustness version sets
+both to one.
+
+A certificate consists of signed lattice nodes $X_i\in\Z^d$, natural radius
+units $E_i\in\N$, and natural remainders $U_{ij},V_i$. Write
+\begin{equation}
+ v_i=X_i/D,\qquad e_i=E_i/D.
+\end{equation}
+The initial constraints are
+\begin{equation}\label{pqc:tu:eq:initial}
+ q_jX_{0j}=p_jD\quad(1\leq j\leq d),\qquad E_0=E_{\mathrm{in}}.
+\end{equation}
+Thus $D$ must clear the initial denominators whenever a certificate exists.
+
+Define the homogenized polynomial and the positive divisor
+\begin{equation}\label{pqc:tu:eq:homogeneous}
+ \widetilde F_j(X,D)=\sum_\alpha c_{j\alpha}X^\alpha D^{k-|\alpha|},
+ \qquad Q=AH D^{k-1}.
+\end{equation}
+Then $D h F_j(X/D)=\widetilde F_j(X,D)/Q$.
+
+\subsection{Canonical floor nodes}
+For $0\leq i<N$ and $1\leq j\leq d$, require
+\begin{align}
+ Q(X_{i+1,j}-X_{ij})+U_{ij}&=\widetilde F_j(X_i,D),\label{pqc:tu:eq:floor}\\
+ 0\leq U_{ij}&<Q.\label{pqc:tu:eq:floorbound}
+\end{align}
+Euclidean division applies even when the dividend is negative. These conditions
+uniquely determine
+\begin{equation}\label{pqc:tu:eq:euler}
+ X_{i+1,j}=X_{ij}+\floor{\widetilde F_j(X_i,D)/Q}.
+\end{equation}
+Consequently
+\begin{equation}\label{pqc:tu:eq:rounderr}
+ \norm{v_{i+1}-v_i-hF(v_i)}<1/D.
+\end{equation}
+This is directed floor rounding, not round-to-nearest and not truncation toward
+zero. The distinction is essential for negative states or vector-field values.
+
+\subsection{Canonical ceiling radii}
+In the remaining formulas abbreviate $M=M(R)$, $L=L(R)$ and set
+\begin{align}
+ B&=H^2,& K&=H(H+L),\label{pqc:tu:eq:BK}\\
+ C&=L(DM+J)+H^2+JH,& G&=DRH-DM-J.\label{pqc:tu:eq:CG}
+\end{align}
+For $0\leq i<N$, require
+\begin{align}
+ B E_{i+1}&=K E_i+C+V_i,\label{pqc:tu:eq:ceil}\\
+ 0\leq V_i&<B.\label{pqc:tu:eq:ceilbound}
+\end{align}
+Equivalently,
+\begin{equation}\label{pqc:tu:eq:canonicalradius}
+ E_{i+1}=\ceil{(KE_i+C)/B}.
+\end{equation}
+The scaled recurrence gives the two useful estimates
+\begin{align}
+ e_{i+1}&\geq(1+hL)e_i+L(M+\eta)h^2+1/D+h\eta,\label{pqc:tu:eq:radlower}\\
+ e_{i+1}&<(1+hL)e_i+L(M+\eta)h^2+2/D+h\eta.\label{pqc:tu:eq:radupper}
+\end{align}
+The first $1/D$ budgets the floor rounding. The second, appearing only in the
+upper estimate, budgets the ceiling rounding. The coefficient of the local
+truncation bound is intentionally twice the elementary $1/2$ bound used below.
+That harmless slack simplifies the integer expression.
+
+\subsection{Containment and target tests}
+At every nonterminal node require the $2d$ strict inequalities
+\begin{equation}\label{pqc:tu:eq:guards}
+ G-HE_i-HX_{ij}>0,\qquad G-HE_i+HX_{ij}>0.
+\end{equation}
+They are exactly
+\begin{equation}\label{pqc:tu:eq:guardscaled}
+ |v_{ij}|+e_i+h(M+\eta)<R.
+\end{equation}
+Finally require, for every target row,
+\begin{equation}\label{pqc:tu:eq:terminal}
+ Db_\ell-a_\ell\cdot X_N-\|a_\ell\|_1E_N>0.
+\end{equation}
+Thus the entire closed infinity-norm ball of radius $e_N$ around $v_N$ is
+contained in the open target. Write $\Cert_{E_{\mathrm{in}},J}(I;N,H,D,R)$
+when all these equations and inequalities hold, where $I=(F,x^0,U)$.
+All fields of the certificate are uniquely determined by the instance and its
+four positive integer parameters; the checker merely tests whether that
+canonical candidate succeeds.
+
+\section{Soundness, including existence and bounded forcing}\label{pqc:tu:sec:soundness}
+
+\begin{theorem}[Robust soundness]\label{pqc:tu:thm:sound}
+Suppose $\Cert_{E_{\mathrm{in}},J}(I;N,H,D,R)$ holds. Let
+$w:[0,N/H]\to\R^d$ be measurable with $\norm{w(t)}\leq J/D$ almost everywhere,
+and let $z^0$ satisfy $\norm{z^0-x^0}\leq E_{\mathrm{in}}/D$.
+The solution of
+\begin{equation}\label{pqc:tu:eq:forced}
+ z'=F(z)+w(t),\qquad z(0)=z^0,
+\end{equation}
+exists throughout $[0,N/H]$ and obeys
+\begin{equation}\label{pqc:tu:eq:nodebound}
+ \norm{z(i/H)-v_i}\leq e_i\quad(0\leq i\leq N).
+\end{equation}
+In particular $z(N/H)\in U$. Solutions of \eqref{pqc:tu:eq:forced} are understood in
+the absolutely continuous, almost-everywhere sense.
+\end{theorem}
+
+\begin{proof}
+Local existence and uniqueness for \eqref{pqc:tu:eq:forced} follow from the standard
+integral-equation construction: the polynomial term is locally Lipschitz in
+$z$, and the bounded measurable forcing is integrable on compact intervals.
+We prove existence and \eqref{pqc:tu:eq:nodebound} simultaneously, one mesh interval
+at a time. The initial assertion follows from \eqref{pqc:tu:eq:initial}.
+
+Suppose the solution has reached $t_i=i/H$ and satisfies the claimed bound.
+While it remains in $B_R$, \cref{pqc:tu:lem:bounds} gives the speed estimate
+\begin{equation}\label{pqc:tu:eq:speed}
+ \norm{z(t_i+s)-z(t_i)}\leq (M+\eta)s.
+\end{equation}
+For $0\leq s\leq h$, each component consequently satisfies
+\begin{equation}
+ |z_j(t_i+s)|\leq |v_{ij}|+e_i+(M+\eta)h<R
+\end{equation}
+as long as the solution exists in the box. A first exit would contradict this
+strict estimate. Moreover the same estimate leaves a positive distance to the
+boundary, uniformly over this step. A finite maximal endpoint before $t_i+h$
+would have a finite limit, because the derivative is bounded on the box; the
+local integral-equation construction could then extend the solution.
+Therefore it exists through $t_i+h$ and does not leave the box during the step.
+This is the continuation obligation that a bare approximate trajectory would
+not establish.
+
+Using \eqref{pqc:tu:eq:speed}, the triangle inequality, and the Lipschitz bound gives
+\begin{align}
+ &\norm{z(t_i+h)-v_i-hF(v_i)}\notag\\
+ &\quad\leq e_i+\int_0^h
+   \bigl(L\norm{z(t_i+s)-v_i}+\eta\bigr)\,ds\notag\\
+ &\quad\leq e_i+\int_0^h\bigl(L(e_i+(M+\eta)s)+\eta\bigr)\,ds\notag\\
+ &\quad=(1+hL)e_i+\tfrac12L(M+\eta)h^2+h\eta.\label{pqc:tu:eq:localerror}
+\end{align}
+Adding the rounding error \eqref{pqc:tu:eq:rounderr} and applying
+\eqref{pqc:tu:eq:radlower} proves the next node bound. The induction therefore reaches
+$N/H$. Finally, for every target row,
+\begin{equation}
+ a_\ell\cdot z(N/H)
+ \leq a_\ell\cdot v_N+\|a_\ell\|_1e_N<b_\ell
+\end{equation}
+by \eqref{pqc:tu:eq:terminal}. This proves the theorem.
+\end{proof}
+
+\begin{remark}[What robustness means here]
+The theorem certifies one finite time and one open target, for every forcing
+within an explicit amplitude bound. It does not claim robustness of an infinite
+computation, invariance of an exact algebraic encoding under disturbances, or
+completeness of the checker for an arbitrarily prescribed large tolerance.
+Positive existential tolerances will be addressed in \cref{pqc:tu:thm:equivalence}.
+\end{remark}
+
+\section{Completeness and quantitative parameters}\label{pqc:tu:sec:completeness}
+
+\subsection{A bound for all computed radii}
+The key point is that precision and mesh size can be increased independently.
+Shrinking the time step without increasing $D$ sufficiently would accumulate
+rounding error and would not yield completeness.
+
+\begin{lemma}\label[lemma]{pqc:tu:lem:radiusbound}
+For $T=N/H$, the canonical radii satisfy
+\begin{equation}\label{pqc:tu:eq:generalerrorbound}
+ e_i\leq \ee^{LT}\left(
+ \frac{E_{\mathrm{in}}}{D}
+ +\frac{TL(M+J/D)}H+\frac{2TH}D+\frac{TJ}D\right)
+ \quad(0\leq i\leq N).
+\end{equation}
+When $E_{\mathrm{in}}=J=0$, this simplifies to
+\begin{equation}\label{pqc:tu:eq:nominalbound}
+ e_i\leq\ee^{LT}\left(\frac{TLM}{H}+\frac{2TH}{D}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $a=1+L/H$ and
+$b=L(M+J/D)/H^2+2/D+J/(DH)$. By \eqref{pqc:tu:eq:radupper},
+$e_{i+1}\leq ae_i+b$. Hence
+$e_i\leq a^i e_0+b\sum_{r=0}^{i-1}a^r\leq a^N(e_0+Nb)$.
+Use $(1+L/H)^N\leq\ee^{LN/H}$ and substitute $N=TH$.
+The argument includes $L=0$ without division by $L$.
+\end{proof}
+
+\begin{theorem}[Complete canonical certificates]\label{pqc:tu:thm:complete}
+If $\Reach(F,x^0,U)$ holds, then for every fixed pair
+$E_{\mathrm{in}},J\in\N$ there exist positive integers $N,H,D,R$ for which
+$\Cert_{E_{\mathrm{in}},J}(I;N,H,D,R)$ holds.
+\end{theorem}
+\begin{proof}
+Choose a positive rational time $T<T_{\max}$ with $x(T)\in U$.
+The trajectory on $[0,T]$ is compact. Choose an integer $R\geq1$ with
+\begin{equation}
+ \sigma=R-\max_{0\leq t\leq T}\norm{x(t)}>0.
+\end{equation}
+Because $U$ is open, choose $\mu>0$ such that the closed infinity-norm ball of
+radius $\mu$ about $x(T)$ lies in $U$, with strict margin in each defining row.
+For $m=0$, any positive $\mu$ is suitable. Choose
+$0<\varepsilon<\min(\sigma,\mu)/4$.
+
+Let $H$ tend to infinity through multiples of the denominator of $T$, put
+$N=TH$, and let $D$ tend to infinity through multiples of all initial
+denominators, with $D/H\to\infty$ sufficiently quickly. For example one can
+use a suitable fixed positive multiple of $H^3$. The right side of
+\eqref{pqc:tu:eq:generalerrorbound} tends to zero. Thus, for sufficiently large
+parameters,
+\begin{equation}\label{pqc:tu:eq:completenesschoice}
+ e_i\leq\varepsilon\quad(0\leq i\leq N),
+ \qquad (M+J/D)/H<\sigma/2.
+\end{equation}
+Generate the floor nodes and ceiling radii using the exact formulas.
+
+We first prove $\norm{x(i/H)-v_i}\leq e_i$ without assuming that the certificate
+guards have already passed. Initially the difference is zero. If the assertion
+holds at node $i$, then $v_i\in B_R$, because the true trajectory is at distance
+at least $\sigma$ from the boundary and $e_i\leq\varepsilon<\sigma$.
+The true trajectory remains in $B_R$ by its choice, independently of the
+candidate. Comparing its integral with the Euler step therefore gives
+\eqref{pqc:tu:eq:localerror} with zero forcing. The candidate radius is at least the
+nominal bound needed for this estimate, even when $E_{\mathrm{in}}$ or $J$ is
+positive. After adding floor rounding, the next node bound follows. This
+induction avoids a circular appeal to unverified containment.
+
+The guards now follow from
+\begin{equation}
+ |v_{ij}|+e_i+(M+J/D)/H
+ \leq\norm{x(i/H)}+2\varepsilon+\sigma/2<R.
+\end{equation}
+At the terminal node every point in the radius-$e_N$ ball about $v_N$ is within
+$2\varepsilon<\mu$ of $x(T)$, so all target tests pass. The initial and division
+equations hold by construction. This gives the certificate.
+\end{proof}
+
+\subsection{An explicit nominal choice}
+For the nominal case, the proof yields concrete sufficient inequalities once a
+successful segment and its margins are known. Choose
+$0<\varepsilon<\min(\sigma,\mu)/4$ and an integer $r\geq LT$.
+Then $C_{\exp}=3^r\geq\ee^{LT}$. Take a positive integer $H$, divisible by the
+denominator of $T$, satisfying
+\begin{equation}\label{pqc:tu:eq:Hchoice}
+ H>\max\left(\frac{2M}{\sigma},
+             \frac{2C_{\exp}TLM}{\varepsilon}\right).
+\end{equation}
+Take a positive $D$, divisible by every $q_j$, such that
+\begin{equation}\label{pqc:tu:eq:Dchoice}
+ D>\frac{4C_{\exp}TH}{\varepsilon}.
+\end{equation}
+Then the two terms in \eqref{pqc:tu:eq:nominalbound} are each smaller than
+$\varepsilon/2$, and the proof applies. These are sufficient bounds, not claims
+of optimal precision or practical conditioning. In particular the true
+trajectory margins are not assumed computable in advance by the certificate
+search: exhaustive enumeration does not need to know them.
+
+\begin{theorem}[Reachability, positive robustness, and arithmetic]\label{pqc:tu:thm:equivalence}
+For every rational polynomial instance $I$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\Reach(I)$.
+\item There are a rational $T>0$ and $\delta>0$ such that every solution with
+$\norm{z^0-x^0}\leq\delta$ and every measurable forcing of norm at most $\delta$
+exists through $T$ and lies in $U$ at $T$.
+\item A certificate $\Cert_{0,0}(I;N,H,D,R)$ exists.
+\item A certificate $\Cert_{1,1}(I;N,H,D,R)$ exists.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Completeness gives (i)$\Rightarrow$(iii) and (i)$\Rightarrow$(iv).
+Soundness gives (iii)$\Rightarrow$(i), and gives (iv)$\Rightarrow$(ii) with
+$T=N/H$ and $\delta=1/D$. Taking the unperturbed initial point and zero forcing
+proves (ii)$\Rightarrow$(i).
+\end{proof}
+The equivalence is a finite-event statement. It does not replace a universal
+quantifier over an arbitrary infinite execution by a finite witness.
+
+\section{An explicit quartic Diophantine normal form}\label{pqc:tu:sec:quartic}
+
+\subsection{Natural variables and canonical signed wires}
+To expose the arithmetic geometry, fix the instance $I$, length $N$, and noise
+units $E_{\mathrm{in}},J$. The three parameters $R,H,D$ remain free natural
+variables. Every signed integer quantity $z$ is represented by two natural
+variables $z^+,z^-$ with
+\begin{equation}\label{pqc:tu:eq:canonicalsign}
+ z=z^+-z^-,\qquad z^+z^-=0.
+\end{equation}
+For a prescribed integer $z$, this pair is unique:
+$(z^+,z^-)=(\max(z,0),\max(-z,0))$.
+\wtag\ This canonical signed pair is the signed normal form of the sibling
+report \code{canonical-diophantine-certificates} (its Lemma
+\code{cdc:pt:lem:signed}, in Section \code{cdc:pt:sec:arithmetic}), and the
+split used in the proof of Part~II's Proposition~\ref{pqc:prop:finitequantum};
+source~18 uses it without citing either.
+
+An ordinary arithmetic gate producing $z=u+v$ or $z=uv$ introduces the two
+variables $z^+,z^-$, its canonical-sign equation, and the evaluation equation
+\begin{equation}\label{pqc:tu:eq:gates}
+ z^+-z^- - (u+v)=0
+ \quad\text{or}\quad
+ z^+-z^- -uv=0.
+\end{equation}
+Here a wire such as $u$ denotes an affine signed expression or an integer
+constant. Thus every gate equation has total degree at most two. Subtraction is
+addition with a negative integer coefficient. All powers in the definitions of
+$M,L,Q,B,K,C,G$, and $\widetilde F$ are evaluated using such gates.
+
+Let $g$ be the number of these signed arithmetic gates. This number excludes
+state-node pairs, division remainders, error-radius variables, and the slack
+variables described next. Gate outputs are not macro expressions that can
+silently increase the final degree: they are actual new variables constrained
+by \eqref{pqc:tu:eq:gates}.
+
+\subsection{Quadratic constraints for the whole certificate}
+For each initial coordinate allocate its signed pair and impose both
+\eqref{pqc:tu:eq:canonicalsign} and \eqref{pqc:tu:eq:initial}. At every step and coordinate,
+allocate the signed pair for $X_{i+1,j}$, the natural remainder $U_{ij}$, and
+one natural complement $S_{ij}$ satisfying
+\begin{equation}
+ U_{ij}+S_{ij}+1=Q.
+\end{equation}
+Together with \eqref{pqc:tu:eq:floor}, these encode exactly $0\leq U_{ij}<Q$.
+For each radius step introduce $E_{i+1},V_i,W_i\in\N$ and impose
+\begin{equation}
+ BE_{i+1}-KE_i-C-V_i=0,\qquad V_i+W_i+1=B.
+\end{equation}
+The quantity $E_0$ is the prescribed constant $E_{\mathrm{in}}$, not an additional
+witness. The floor equation is quadratic in its circuit wires and state-node
+variables; so is the radius equation.
+
+Every strict integer inequality $A_0>0$ is encoded by a new natural slack
+$s$ and the equation $A_0=1+s$. Apply this to the $2dN$ containment tests,
+the $m$ terminal tests, and to $R,H,D>0$. The expressions in the containment
+and terminal tests are at most quadratic in the circuit variables. Products
+such as $DRH$ have already been computed by gates into the wire $G$.
+
+\begin{theorem}[Counted quartic compilation]\label{pqc:tu:thm:quartic}
+There is an effective construction of an integer polynomial
+\begin{equation}
+ P_{I,N}^{E_{\mathrm{in}},J}(R,H,D,w)
+   =\sum_{r=1}^{s}f_r(R,H,D,w)^2,
+ \qquad \deg f_r\leq2,
+\end{equation}
+with
+\begin{align}
+ \#w&=2g+(6d+3)N+2d+m+3,\label{pqc:tu:eq:wcount}\\
+ s&=2g+(5d+2)N+2d+m+3.\label{pqc:tu:eq:ecount}
+\end{align}
+The polynomial has total degree at most four, including its free parameters.
+For every $(R,H,D)\in\N^3$,
+\begin{equation}\label{pqc:tu:eq:quarticequiv}
+ \exists w\in\N^{\#w}\;P_{I,N}^{E_{\mathrm{in}},J}(R,H,D,w)=0
+ \quad\Longleftrightarrow\quad
+ \Cert_{E_{\mathrm{in}},J}(I;N,H,D,R).
+\end{equation}
+For fixed $I,N,E_{\mathrm{in}},J,R,H,D$, there is at most one such natural witness
+$w$.
+\end{theorem}
+\begin{proof}
+Use the construction above. Its variable and equation counts are as follows.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Component & Natural variables & Equations\\
+\midrule
+Signed arithmetic gates & $2g$ & $2g$\\
+Initial signed nodes and values & $2d$ & $2d$\\
+Floor node, sign condition, remainder, complement & $4dN$ & $3dN$\\
+Ceiling radius, remainder, complement & $3N$ & $2N$\\
+Strict tube-containment slacks & $2dN$ & $2dN$\\
+Strict target slacks & $m$ & $m$\\
+Positivity slacks for $R,H,D$ & $3$ & $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Summing gives \eqref{pqc:tu:eq:wcount}--\eqref{pqc:tu:eq:ecount}. Each residual is quadratic
+or lower. Over the integers, a sum of squares vanishes exactly when every
+summand vanishes. Hence the polynomial zero set is precisely the simultaneous
+constraint set, proving \eqref{pqc:tu:eq:quarticequiv}.
+
+For uniqueness, order the circuit and trace variables according to their
+construction. Parameters determine all global arithmetic wires. Each rational
+initial coordinate determines at most one integer node, and the canonical sign
+condition determines its pair. Given $X_i$, all $\widetilde F_j(X_i,D)$ wires
+are fixed. Since $Q>0$, Euclidean division fixes $X_{i+1,j}$ and $U_{ij}$;
+the complement and signed pair are then fixed. Since $B>0$, the ceiling
+constraint fixes $E_{i+1}$ and $V_i$, and then its complement. Every slack is
+fixed by its equality. Induction therefore fixes every witness coordinate.
+If any divisibility, nonnegativity, containment, or target condition fails,
+there is no witness rather than a second choice.
+\end{proof}
+
+\subsection{Size, semantics, and the meaning of uniqueness}
+For a fixed source instance there is a fixed circuit size $g_F$ for one
+homogenized vector-field evaluation and a fixed global overhead $g_0$, so the
+construction can use $g=g_0+Ng_F$. Its variable and equation counts are linear
+in the unrolling length. This is not a bound on the bit size of the witness
+integers, which may be very large. Repeated squaring evaluates each prescribed
+power with logarithmically many multiplications in its exponent; sparse field
+representations can be retained.
+
+The polynomial is nonnegative at every real assignment because it is a sum
+of squares. Its \emph{intended witness domain is $\N$}. Replacing that domain
+by arbitrary real or integer witnesses without further constraints would
+change the statement. In particular, the canonical-sign proof uses
+nonnegativity.
+
+The uniqueness claim is also deliberately local: $N,R,H,D$ and the source
+instance are fixed. Successful events generally admit many mesh choices.
+Moreover $N$ indexes polynomials with different numbers of variables.
+Neither this family nor its local uniqueness constitutes a single-fold
+Diophantine representation of an arbitrary recursively enumerable set.
+
+\section{From the checker to MRDP, and the exact universality boundary}\label{pqc:tu:sec:mrdp}
+
+\subsection{Uniform recursive enumerability}
+\begin{theorem}\label{pqc:tu:thm:re}
+Under any standard effective finite encoding of rational polynomial instances,
+the set of valid instance codes satisfying $\Reach$ is recursively enumerable.
+It therefore has a fixed-dimensional Diophantine representation over $\N$.
+\end{theorem}
+\begin{proof}
+Validity of a finite instance code is decidable. For a valid instance, enumerate
+positive tuples $(N,H,D,R)$, discard those for which $D$ does not clear the
+initial denominators, and compute the unique floor-node and ceiling-radius
+candidate. Test all of its integer constraints. Each candidate computation
+terminates. Soundness prevents false positives and completeness ensures that
+every successful instance eventually passes. Invalid instance codes are never
+accepted. This is a semidecision procedure. Applying MRDP to its acceptance set
+gives the fixed-dimensional representation.
+\end{proof}
+\wtag\ \emph{Credit.} The qualitative statement of
+Theorem~\ref{pqc:tu:thm:re} is Part~IV's paragraph \emph{Robust observations of
+computable continuous trajectories} (Section~\ref{pqc:sec:substrates}): reaching
+an effectively open target at some finite time is semidecidable for a
+continuous trajectory with certified evaluation at rational times, hence
+Diophantine by MRDP. That paragraph is not reprinted here. Source~18, which does
+not cite it, makes it explicit, complete, counted and robust for rational
+polynomial flows: the semidecision procedure is a fixed canonical integer
+checker, sound under bounded forcing
+(Theorem~\ref{pqc:tu:thm:sound}), complete for every fixed pair of noise units
+(Theorem~\ref{pqc:tu:thm:complete}), with a counted unique-witness quartic for
+each unrolling length (Theorem~\ref{pqc:tu:thm:quartic}); and it treats the
+solution's existence interval, which the paragraph assumes to be supplied.
+The implementation uses arbitrary-precision integer operations, finite lists,
+integer powers, and Euclidean division. With conventional natural encodings,
+these operations and the bounded trace evaluation can be arranged primitively
+recursively. The only unbounded search is the outer search for a successful
+parameter tuple. ProveIt's documented primitive-recursive and r.e.-to-
+Diophantine interfaces are a natural downstream destination \cite{b64s18-repo}.
+
+\begin{corollary}[A fixed quartic exists, without the explicit trace count]\label[corollary]{pqc:tu:cor:fixedquartic}
+The set in \cref{pqc:tu:thm:re} also has a representation by one fixed integer
+polynomial of degree at most four with finitely many natural witnesses.
+\end{corollary}
+\begin{proof}
+Let $Q_0(a,z)$ be the polynomial provided by MRDP for the encoded input $a$.
+Evaluate $Q_0$ by a fixed integer arithmetic circuit, represent every signed
+intermediate by a canonical natural pair, and impose its quadratic gate
+constraints and the linear equation saying the output is zero. The sum of the
+squares of these residuals is quartic. Projecting out the intermediate variables
+recovers exactly $Q_0(a,z)=0$.
+\end{proof}
+This degree-reduction argument is standard, not a new universality bound.
+\wtag\ It is Part~I's Lemma~\ref{pqc:lem:quarticlower}, whose proof is the same
+circuit-and-square argument without the canonical sign condition.
+The explicit linear-in-$N$ counts in \cref{pqc:tu:thm:quartic} belong to the unrolled
+analytic certificate. After MRDP, the number and size of witnesses are not
+computed by this article, and possible multiplicity in the original MRDP
+witness $z$ remains. Canonical arithmetic gates do not remove it. The repository's
+separate universal-polynomial results address different quantitative questions
+\cite{b64s18-repo,b64s18-jones}.
+
+\subsection{A contract for a Turing-complete front end}
+Published uses of ``computation by ODE'' can mean approximation of a real
+function, convergence with an error output, robust discrete simulation, or
+recognition of a finite event. Those meanings should not be interchanged
+without proof. For the present purpose the needed contract is short.
+
+\begin{definition}[Effective finite-event simulation]\label[definition]{pqc:tu:def:universal}
+A finite-event compiler is a total effective map sending a program-input pair
+$(e,n)$ to a rational polynomial instance $I_{e,n}$ such that
+\begin{equation}\label{pqc:tu:eq:simulationcontract}
+ \text{program }e\text{ halts on input }n
+ \quad\Longleftrightarrow\quad \Reach(I_{e,n}).
+\end{equation}
+Any promised restrictions on the degree, dimension, coefficients, initial data,
+or target shape are part of the contract, not inferred from the word
+``universal.''
+\end{definition}
+
+\begin{theorem}[Finite-event transfer]\label{pqc:tu:thm:transfer}
+For every compiler satisfying \cref{pqc:tu:def:universal}, its halting relation is
+represented both by the complete family of explicit quartic certificates from
+\cref{pqc:tu:thm:quartic} and by a fixed-dimensional Diophantine equation from
+\cref{pqc:tu:thm:re}. Moreover, the kinetic construction in Sections~\ref{pqc:tu:sec:chemical}--\ref{pqc:tu:sec:global} transfers it
+to rational mass-action instances whose prescribed trajectories are global.
+\end{theorem}
+\begin{proof}
+Substitute $I_{e,n}$ in \cref{pqc:tu:thm:equivalence,pqc:tu:thm:quartic,pqc:tu:thm:re}.
+The kinetic part follows from the orbit and reachability equivalence proved in
+\cref{pqc:tu:thm:globalchemical} below. All transformations of finite descriptions
+are effective.
+\end{proof}
+This is a conditional compiler theorem with an explicit hypothesis. It is not
+an assertion that merely citing an asymptotic real-function universality theorem
+has already verified \eqref{pqc:tu:eq:simulationcontract} with rational coefficients
+and rational initial states. The published continuous-computation results
+\cite{b64s18-bournez,b64s18-fages,b64s18-graca} are relevant front ends, but the exact finite-event
+adapter for a selected construction should be audited separately.
+
+\subsection{A conditional limit on uniform certificate bounds}
+\begin{proposition}\label[proposition]{pqc:tu:prop:nobound}
+For a family with a finite-event compiler satisfying
+\eqref{pqc:tu:eq:simulationcontract}, there is no total computable function bounding
+the bit length of the shortest successful certificate for every successful
+compiled instance, as a function of its finite instance description.
+\end{proposition}
+\begin{proof}
+Suppose such a function existed. Given a compiled instance, compute the bound
+and enumerate the finitely many strings of at most that length. Run the exact
+checker on each. A successful certificate implies reachability by soundness;
+if none succeeds, the bound and completeness imply nonreachability.
+Together with the compiler this would decide halting, a contradiction.
+\end{proof}
+The proposition does not say that every successful instance is difficult.
+It explains why a complete finite verifier cannot be accompanied by a general
+computable cutoff that decides all cases in a universal family.
+\wtag\ The same argument gives Part~III's Corollary~\ref{pqc:cb:cor:witness-bounds}
+(no computable mesh, certificate-length or witness-height bound for positive
+critical radius) and Part~II's Corollary~\ref{pqc:qm:cor:nobound} (no
+computable bound on the shortest zero word). Unlike those two statements,
+Proposition~\ref{pqc:tu:prop:nobound} is conditional: it needs a finite-event
+compiler satisfying \eqref{pqc:tu:eq:simulationcontract}, and source~18 does not
+instantiate one (Question~\ref{pqc:tu:q:adapters}).
+
+\section{A failure of naive chemical encoding, and its repair}\label{pqc:tu:sec:chemical}
+
+\subsection{Mass-action semantics}
+Let $Y=(Y_1,\ldots,Y_s)$ be nonnegative species concentrations. A reaction
+\begin{equation}
+ \alpha\cdot Y\xrightarrow{c}\beta\cdot Y,
+ \qquad \alpha,\beta\in\N^s,\quad c\in\Q_{>0},
+\end{equation}
+contributes $cY^\alpha(\beta-\alpha)$ to the derivative of $Y$.
+Finite sums give rational polynomial fields. This is deterministic continuous
+mass-action semantics. It is not the discrete stochastic jump process or Petri
+net firing semantics. We do not impose mass conservation, reversibility,
+bimolecularity, or an experimentally realizable choice of physical chemicals.
+\wtag\ The sibling report \code{canonical-diophantine-certificates} treats the
+discrete firing semantics: its Section \code{cdc:cs:sec:substrates} covers
+discrete chemical reaction networks with stoichiometric integer updates and
+excludes continuous concentrations and rates, and its batch-62 source~11
+(\emph{One Shared Fallback}, files \code{11-reaction-fallback-*}) concerns
+conservative priority reaction networks, again with discrete firings. Part~VIII
+shares no theorem with either.
+
+\begin{lemma}[Direct kinetic realization]\label[lemma]{pqc:tu:lem:kinetic}
+A rational polynomial vector field $G(Y)$ is realizable by this reaction scheme
+whenever each negative monomial coefficient in component $G_i$ belongs to a
+monomial divisible by $Y_i$.
+\end{lemma}
+\begin{proof}
+Collect monomials componentwise. For a term $cY^\alpha$ in component $i$, if
+$c>0$ use the reaction $\alpha\to\alpha+e_i$ at rate $c$. If $c<0$, the
+hypothesis gives $\alpha_i\geq1$, so use $\alpha\to\alpha-e_i$ at rate $-c$.
+Each reaction changes only the specified coordinate and contributes exactly
+the desired term. Sum the finitely many contributions.
+\end{proof}
+This elementary inverse-kinetic construction and more sophisticated ODE-to-CRN
+transformations belong to an established literature; polynomialization and
+chemical compilation are not new claims of this article \cite{b64s18-fages,b64s18-hemery}.
+We give the lemma's proof to keep the exact sign convention auditable.
+
+\subsection{A bounded projected trajectory with exploding rails}
+A tempting dual-rail encoding writes $x=p-n$, expands $F(p-n)=A(p,n)-B(p,n)$
+with nonnegative-coefficient polynomials, and sets $p'=A$, $n'=B$.
+It has the correct projected derivative while it exists, but that is not
+sufficient for a complete reachability reduction.
+
+\begin{proposition}[Naive-rail incompleteness]\label[proposition]{pqc:tu:prop:naive}
+For $x'=1-x^2$, $x(0)=0$, the naive split
+\begin{equation}\label{pqc:tu:eq:naivesplit}
+ p'=1+2pn,\qquad n'=p^2+n^2,\qquad p(0)=n(0)=0
+\end{equation}
+has finite-time blow-up although the original solution is bounded and global.
+It fails to preserve reachability of the rational open interval $(99/100,1)$.
+\end{proposition}
+\begin{proof}
+The difference satisfies
+$(p-n)'=1-(p-n)^2$, so $p-n=\tanh t$ for as long as the lift exists.
+The sum $u=p+n$ satisfies
+\begin{equation}
+ u'=1+u^2,\qquad u(0)=0,
+\end{equation}
+whence $u=\tan t$ and blow-up occurs at $t=\pi/2$.
+Before that time, $p-n<\tanh(\pi/2)<\tanh 2<99/100$.
+For the last inequality, $\ee^4<3^4=81<199$, and
+$\tanh 2=(\ee^4-1)/(\ee^4+1)<99/100$.
+The original $\tanh t$ tends to $1$ and hence enters $(99/100,1)$ at a finite
+time, whereas the naive lift ceases to exist first.
+\end{proof}
+The example refutes this unregulated split, not published chemical-universality
+constructions that may use additional controls or different semantics.
+The lesson is that correctness of a projection identity must be supplemented
+by a continuation theorem for the auxiliary variables.
+
+\subsection{Hyperbolic rails with conserved products}
+Let $F:\R^d\to\R^d$ be rational polynomial. Introduce positive rails
+$p_j,n_j$ and write $x_j=p_j-n_j$. Set
+\begin{equation}\label{pqc:tu:eq:clockC}
+ \mathcal C(p,n)=\prod_{r=1}^d(p_r+n_r),
+ \qquad\mathcal C_j(p,n)=\prod_{r\ne j}(p_r+n_r).
+\end{equation}
+Define a $2d$-component polynomial field $G$ by
+\begin{equation}\label{pqc:tu:eq:hyperbolic}
+ p_j'=p_j\mathcal C_j F_j(p-n),\qquad
+ n_j'=-n_j\mathcal C_j F_j(p-n).
+\end{equation}
+Use the rational strictly positive initialization
+\begin{equation}\label{pqc:tu:eq:railinit}
+ p_j^0=1+\max(x_j^0,0),\qquad
+ n_j^0=1+\max(-x_j^0,0),\qquad c_j=p_j^0n_j^0>0.
+\end{equation}
+Then $p_j^0-n_j^0=x_j^0$.
+
+\begin{theorem}[Exact hyperbolic kinetic lift]\label{pqc:tu:thm:hyperbolic}
+The field \eqref{pqc:tu:eq:hyperbolic} is rational mass-action realizable. Its prescribed
+solution has invariants $p_jn_j=c_j$ and projects to $x'=F(x)$ under the positive
+change of time
+\begin{equation}\label{pqc:tu:eq:baseclock}
+ \frac{d\tau}{dt}=\mathcal C(p(t),n(t)).
+\end{equation}
+Every finite original trajectory segment has a finite lifted segment, and no
+finite original open-target visit is lost through cancellation-induced rail
+blow-up. If $\deg F\leq k$, its polynomial degree is at most $k+d$.
+\end{theorem}
+\begin{proof}
+Each component in \eqref{pqc:tu:eq:hyperbolic} is divisible by the corresponding
+rail. Hence every negative monomial contains that rail, and
+\cref{pqc:tu:lem:kinetic} applies. Direct differentiation gives
+\begin{equation}
+ (p_jn_j)'=n_jp_j\mathcal C_jF_j
+             -p_jn_j\mathcal C_jF_j=0.
+\end{equation}
+Strictly positive initial rails remain positive on every finite existence
+interval, either by their multiplicative equations or by the invariant and
+continuity. Subtracting the two equations gives
+\begin{equation}
+ (p_j-n_j)'=(p_j+n_j)\mathcal C_jF_j(p-n)
+           =\mathcal C F_j(p-n).
+\end{equation}
+The common clock factor is positive, proving the projection identity.
+
+For completeness of the lift, take any original segment $x(\tau)$,
+$0\leq\tau\leq T<T_{\max}$. The unique positive rails with difference $x_j$ and
+product $c_j$ are
+\begin{equation}\label{pqc:tu:eq:railformula}
+ p_j(\tau)=\frac{x_j(\tau)+\sqrt{x_j(\tau)^2+4c_j}}2,
+ \qquad
+ n_j(\tau)=\frac{-x_j(\tau)+\sqrt{x_j(\tau)^2+4c_j}}2.
+\end{equation}
+They are positive, bounded, and continuously differentiable on the compact
+segment. From $p_j-n_j=x_j$ and $p_jn_j=c_j$ one obtains
+\begin{equation}
+ \frac{dp_j}{dx_j}=\frac{p_j}{p_j+n_j},\qquad
+ \frac{dn_j}{dx_j}=-\frac{n_j}{p_j+n_j}.
+\end{equation}
+Define
+\begin{equation}
+ t(\tau)=\int_0^\tau\frac{du}{\mathcal C(p(u),n(u))}.
+\end{equation}
+This is finite, continuously differentiable, and strictly increasing on the
+segment. Reparameterizing \eqref{pqc:tu:eq:railformula} by its inverse yields exactly
+\eqref{pqc:tu:eq:hyperbolic}, by the derivative identities above. Uniqueness of the
+polynomial ODE identifies it with the prescribed lifted solution. Thus every
+finite original segment is covered, and bounded original states force bounded
+rails on that segment. Finally, the factor $p_j\mathcal C_j$ or
+$n_j\mathcal C_j$ has degree $d$, so the total degree is at most $k+d$.
+\end{proof}
+The square roots in \eqref{pqc:tu:eq:railformula} appear only in the mathematical
+proof and inverse orbit description. Neither the emitted polynomial field nor
+its prescribed initial data needs an irrational coefficient.
+
+\section{One more species makes the chemical trajectory global}\label{pqc:tu:sec:global}
+
+\subsection{Polynomial damping without changing the orbit}
+Write $y=(p,n)\in\R_{>0}^{2d}$ and let $G(y)$ be the field from
+\eqref{pqc:tu:eq:hyperbolic}. Put
+\begin{equation}
+ \kappa=k+d,\qquad s=\ceil{\kappa/2},\qquad
+ S(y)=\sum_{i=1}^{2d}y_i^2.
+\end{equation}
+Introduce a single species $q$ and define the rational polynomial field
+\begin{align}
+ y_i'&=q^sG_i(y)\qquad(1\leq i\leq2d),\label{pqc:tu:eq:dampedrails}\\
+ q'&=-2q^{s+2}\sum_{i=1}^{2d}y_iG_i(y).\label{pqc:tu:eq:dampedq}
+\end{align}
+Initialize $y$ by \eqref{pqc:tu:eq:railinit} and
+\begin{equation}\label{pqc:tu:eq:qinit}
+ q^0=\frac1{1+S(y^0)}\in\Q_{>0}.
+\end{equation}
+
+\begin{lemma}\label[lemma]{pqc:tu:lem:damping}
+Along the prescribed solution,
+\begin{equation}\label{pqc:tu:eq:qinv}
+ q(1+S(y))=1,
+\end{equation}
+and $p_jn_j=c_j$. Every rail derivative is bounded in absolute value by a
+constant depending only on the coefficients of $G$.
+\end{lemma}
+\begin{proof}
+Multiplication of the original rail field by a common scalar preserves the
+product invariants. Let $A_1(y)=\sum_i y_iG_i(y)$ and
+$E=q(1+S(y))-1$. Direct differentiation gives the exact identity
+\begin{equation}\label{pqc:tu:eq:Einvariant}
+ E'=-2q^{s+1}A_1(y)E.
+\end{equation}
+Since $E(0)=0$, uniqueness for this scalar linear equation gives $E=0$ on the
+existence interval. In particular $q=(1+S(y))^{-1}\in(0,1]$.
+
+For a monomial $y^\alpha$ of $G_i$ with $|\alpha|\leq\kappa\leq2s$, set
+$r=\max_i|y_i|$. If $r\leq1$, then
+$|y^\alpha|/(1+S(y))^s\leq1$. If $r\geq1$, then
+\begin{equation}
+ \frac{|y^\alpha|}{(1+S(y))^s}
+ \leq\frac{r^{|\alpha|}}{(1+r^2)^s}\leq1.
+\end{equation}
+Therefore $|q^sG_i(y)|$ is at most the sum of the absolute values of the
+coefficients of $G_i$. This bound is uniform along the prescribed trajectory.
+\end{proof}
+
+\begin{theorem}[Global rational chemical normal form]\label{pqc:tu:thm:globalchemical}
+For every rational polynomial initial-value problem in dimension $d$, of degree
+at most $k\geq1$, the construction \eqref{pqc:tu:eq:dampedrails}--\eqref{pqc:tu:eq:qinit}
+produces a rational mass-action system with $2d+1$ species and degree at most
+\begin{equation}\label{pqc:tu:eq:chemdegree}
+ k+d+\ceil{(k+d)/2}+3.
+\end{equation}
+Its prescribed trajectory exists for all physical times $t\geq0$ and remains
+strictly positive. With
+\begin{equation}\label{pqc:tu:eq:fullclock}
+ \theta'(t)=q(t)^s\mathcal C(p(t),n(t)),\qquad\theta(0)=0,
+\end{equation}
+its projection satisfies $p(t)-n(t)=x(\theta(t))$. The clock covers every finite
+time of the original maximal forward solution. Consequently, for every open
+rational polyhedron $U$,
+\begin{equation}\label{pqc:tu:eq:chemicalreach}
+ \Reach(F,x^0,U)
+ \quad\Longleftrightarrow\quad
+ \Reach(\widehat F,(y^0,q^0),\widehat U),
+\end{equation}
+where $\widehat U=\{(p,n,q):p-n\in U\}$ is again an open rational polyhedron.
+\end{theorem}
+\begin{proof}
+Every component $q^sG_i$ retains the target-species factor possessed by $G_i$.
+Every monomial in the $q$ component contains $q$. Thus negative monomials in
+all components satisfy \cref{pqc:tu:lem:kinetic}; the field is mass-action realizable.
+The rail degree is at most $\kappa+s$, and the $q$ component has degree at most
+$\kappa+s+3$, proving \eqref{pqc:tu:eq:chemdegree}.
+
+All coordinates start positive and their equations are multiplicative in the
+corresponding coordinate. Positivity holds on every finite existence interval.
+By \cref{pqc:tu:lem:damping}, each rail grows at most linearly in physical time, and
+$q\in(0,1]$. If the maximal physical endpoint were finite, the full state would
+remain in a bounded set. Polynomial local existence would then extend the
+solution, contradicting maximality. Thus the solution is global. On every
+finite interval the coefficients in the multiplicative equations are bounded,
+so none of the initially positive species reaches zero at a finite time.
+
+Subtracting the damped rail equations gives
+$(p-n)'=q^s\mathcal C F(p-n)$, which proves the projection relation under the
+strictly increasing clock \eqref{pqc:tu:eq:fullclock}. It remains to prove that the
+clock does not omit a finite original segment. Take such a segment and use
+\eqref{pqc:tu:eq:railformula} to recover its positive bounded rails; put
+$q(\tau)=(1+S(y(\tau)))^{-1}$. Define physical time by
+\begin{equation}\label{pqc:tu:eq:dampedtime}
+ t(\tau)=\int_0^\tau
+ \frac{du}{q(u)^s\mathcal C(p(u),n(u))}.
+\end{equation}
+On the compact original segment the denominator is continuous and strictly
+positive, so this integral is finite and strictly increasing. The rail
+derivative calculation from \cref{pqc:tu:thm:hyperbolic} verifies
+\eqref{pqc:tu:eq:dampedrails} after reparameterization. Differentiating
+$q=(1+S)^{-1}$ then verifies \eqref{pqc:tu:eq:dampedq}. Uniqueness identifies this with
+the globally defined chemical trajectory.
+
+Conversely, every finite physical segment has a finite clock value, because
+its state and clock derivative are continuous and bounded there. The projection
+is an original solution up to that clock value. Were it to continue the original
+solution through a finite maximal original endpoint with bounded state, it
+would contradict maximality of the original solution. Hence the projection
+covers exactly the original forward orbit, with a possible infinite physical
+time needed to approach an original blow-up endpoint. The strict target
+inequalities are unchanged by substitution $x=p-n$, proving
+\eqref{pqc:tu:eq:chemicalreach}.
+\end{proof}
+
+\subsection{What the global theorem does and does not say}
+The theorem is global for the \emph{prescribed rational initialization}, or more
+generally for appropriate initial data on the invariant manifold
+$q(1+S)=1$ with positive rails. It does not assert global existence from every
+arbitrary concentration vector of the emitted reaction network. In particular,
+an independently chosen $q^0$ need not satisfy the damping invariant.
+
+The clock is positive but need not have a globally uniform positive lower
+bound. Slowdown near large states is how a finite original blow-up is moved to
+infinite physical time. The theorem preserves finite-event existence and the
+ordered orbit, not a polynomial-time complexity bound or the original physical
+rate. Since finite compact segments have positive clock minima, no finite
+successful original event is pushed all the way to infinite physical time.
+
+The hyperbolic invariants need not survive arbitrary perturbations of chemical
+concentrations. Nevertheless each nominal finite open event of the emitted
+polynomial system has its own positive finite-horizon robustness certificate
+by \cref{pqc:tu:thm:equivalence}. That statement is weaker than infinite-horizon fault
+tolerance, and does not require an off-manifold perturbation to retain the exact
+simulation identity. Physically admissible perturbations are a subset of the
+bounded real forcing perturbations in \cref{pqc:tu:thm:sound}.
+
+\subsection{Common-offset compression: fewer species at a degree cost}
+There is a second exact encoding with a useful dimension--degree tradeoff.
+Instead of assigning two rails to each source coordinate, use one positive
+coordinate $u_i$ for each $x_i$ and one common positive offset $z$, with
+$x_i=u_i-z$. Write
+\begin{equation}
+ P(u)=\prod_{i=1}^d u_i,\qquad
+ A_F(u,z)=\sum_{i=1}^d(u_i-z)F_i(u-z\mathbf1).
+\end{equation}
+Define the $(d+1)$-component field
+\begin{align}
+ u_i'&=zP(u)\bigl(zF_i(u-z\mathbf1)+A_F(u,z)\bigr),\label{pqc:tu:eq:offsetu}\\
+ z'&=zP(u)A_F(u,z).\label{pqc:tu:eq:offsetz}
+\end{align}
+Choose rational initial data
+\begin{equation}\label{pqc:tu:eq:offsetinit}
+ z^0=1+\sum_i|x_i^0|,\qquad u_i^0=z^0+x_i^0,
+ \qquad c=(z^0)^2-\sum_i(x_i^0)^2>0.
+\end{equation}
+All $u_i^0,z^0$ are strictly positive.
+
+\begin{theorem}[Species--degree tradeoff]\label{pqc:tu:thm:compressed}
+Let
+\begin{equation}
+ \Delta=k+d+\ceil{(k+d)/2}+3.
+\end{equation}
+Every rational polynomial initial-value problem in dimension $d$, of degree at
+most $k\geq1$, has either of the following global rational mass-action normal
+forms, both with a linear projection and exact preservation of finite open
+polyhedral events:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Construction & Species & Degree upper bound\\
+\midrule
+Separate hyperbolic rails and damping & $2d+1$ & $\Delta$\\
+Common offset and damping & $d+2$ & $\Delta+3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The common-offset form thus saves $d-1$ species at a cost of three in the degree
+upper bound. These are construction bounds, not optimality claims.
+\end{theorem}
+\begin{proof}
+The first line is \cref{pqc:tu:thm:globalchemical}. For the second, each component
+$u_i'$ in \eqref{pqc:tu:eq:offsetu} is divisible by $u_i$, because $P$ contains every
+$u_i$. The $z$ component is divisible by $z$. Thus the field is kinetic by
+\cref{pqc:tu:lem:kinetic}. Its degree is at most $\kappa_*=k+d+2$.
+The projection satisfies
+\begin{equation}
+ (u_i-z)'=z^2P(u)F_i(u-z\mathbf1).
+\end{equation}
+A direct derivative calculation gives the conserved quantity
+\begin{equation}\label{pqc:tu:eq:offsetinvariant}
+ z^2-\sum_i(u_i-z)^2=c.
+\end{equation}
+Indeed, the derivative of the first term is $2z^2P A_F$, and the derivative
+of the sum is the same expression.
+
+For any finite original segment, the unique corresponding positive offset
+coordinates are
+\begin{equation}\label{pqc:tu:eq:offsetinverse}
+ z(\tau)=\sqrt{c+\sum_i x_i(\tau)^2},\qquad
+ u_i(\tau)=z(\tau)+x_i(\tau).
+\end{equation}
+Because $c>0$, $z>|x_i|$ and all $u_i$ are strictly positive. They are bounded
+and bounded away from zero on each compact original segment. Differentiation
+gives $dz/d\tau=(\sum_i x_iF_i)/z$ and
+$du_i/d\tau=F_i+(\sum_i x_iF_i)/z$. Reparameterizing by the positive clock
+$d\tau/dt=z^2P(u)$ yields exactly \eqref{pqc:tu:eq:offsetu}--\eqref{pqc:tu:eq:offsetz}.
+The reciprocal clock has a finite integral on every finite original segment,
+so none is lost through an offset blow-up.
+
+Apply the polynomial damping construction to the base state
+$Y=(u_1,\ldots,u_d,z)$, using $s_*=\ceil{\kappa_*/2}$ and one species $q$:
+\begin{equation}
+ Y'=q^{s_*}G_*(Y),\qquad
+ q'=-2q^{s_*+2}\sum_iY_i(G_*)_i(Y),
+ \qquad q^0=(1+\|Y^0\|_2^2)^{-1}.
+\end{equation}
+The proof of \cref{pqc:tu:lem:damping} applies in any finite dimension and gives a
+uniform bound on each derivative of $Y$. Positivity and global existence
+follow exactly as in \cref{pqc:tu:thm:globalchemical}. The invariant
+\eqref{pqc:tu:eq:offsetinvariant} survives the common time multiplier. The degree bound
+is
+\begin{equation}
+ \kappa_*+\ceil{\kappa_*/2}+3
+ =k+d+\ceil{(k+d)/2}+6=\Delta+3.
+\end{equation}
+The projected clock is $q^{s_*}z^2P(u)$, positive and bounded away from zero on
+each lifted compact source segment. Finally a target row becomes
+\begin{equation}
+ a_\ell\cdot u-\left(\sum_i a_{\ell i}\right)z<b_\ell,
+\end{equation}
+with zero coefficient on $q$. Thus the projection remains linear and the
+target remains an open rational polyhedron with the same number of rows.
+\end{proof}
+As with separate rails, the square root is used only in the inverse orbit
+proof. The emitted field and the initialization \eqref{pqc:tu:eq:offsetinit} are
+rational. For $d=1$ the species counts agree and the separate-rail degree bound
+is better; for $d>1$ the common-offset construction gives a genuine species
+reduction.
+
+\begin{corollary}[Chemical-to-integer equivalence]\label[corollary]{pqc:tu:cor:composite}
+Every rational polynomial instance admits an effective transformation to a
+well-initialized global rational mass-action instance, and its reachability is
+equivalent to existence of a canonical integer tube for that chemical instance.
+For any fixed chemical trace length the latter has the explicit quartic
+representation of \cref{pqc:tu:thm:quartic}, with $d$ there replaced by the chosen chemical dimension $2d+1$ or $d+2$ and
+the same number $m$ of target inequalities.
+\end{corollary}
+\begin{proof}
+Combine \cref{pqc:tu:thm:globalchemical,pqc:tu:thm:compressed,pqc:tu:thm:equivalence,pqc:tu:thm:quartic}. For separate rails, each row
+$a_\ell\cdot x<b_\ell$ becomes
+$a_\ell\cdot p-a_\ell\cdot n<b_\ell$, with zero coefficient on $q$.
+For common offsets use the row substitution in \cref{pqc:tu:thm:compressed}. All coefficients
+are integral, and no additional terminal inequalities are needed.
+\end{proof}
+This corollary gives a direct arithmetic interface to a continuous chemical
+computational substrate, with no numerical trajectory accepted on faith and
+no auxiliary finite-time explosion hidden in the reduction.
+
+\section{Worked examples and reproducible checks}\label{pqc:tu:sec:examples}
+
+\subsection{A positive-noise certificate for a nonlinear flow}
+Consider
+\begin{equation}
+ x'=1-x^2,\qquad x(0)=0,\qquad U=(7/10,41/50).
+\end{equation}
+Take $R=1$, $N=H=1000$, $D=10^8$, and $E_{\mathrm{in}}=J=1$.
+The integral bounds are $M=2$ and $L=2$. The exact checker returns
+\begin{equation}
+ X_N=76\,177\,343,\qquad E_N=1\,279\,638.
+\end{equation}
+Consequently every allowed perturbed solution exists to time $1$ and ends in
+\begin{equation}\label{pqc:tu:eq:logisticinterval}
+ \left[\frac{74\,897\,705}{10^8},
+       \frac{77\,456\,981}{10^8}\right]
+ =[0.74897705,\,0.77456981]\subset(0.7,0.82).
+\end{equation}
+Both tolerances equal $10^{-8}$. The smallest integer tube guard is
+$22\,388\,007\,999$, which is positive. The two terminal integer margins,
+using rows $-10x<-7$ and $50x<41$, are $48\,977\,050$ and
+$227\,150\,950$. No value of $\tanh(1)$ is used in the acceptance test.
+The exact elementary solution is useful for intuition, but the arithmetic
+certificate proves the event independently of evaluating it.
+
+\subsection{A successful event before an actual blow-up}
+For $x'=x^2$, $x(0)=1$, the solution is $x(t)=1/(1-t)$ on $[0,1)$.
+The instance with target $(9/5,11/5)$ has a successful certificate at $T=1/2$:
+\begin{equation}
+ N=5000,\quad H=10000,\quad D=10^{10},\quad R=3,
+ \quad E_{\mathrm{in}}=J=0.
+\end{equation}
+The final node and error units are
+\begin{equation}
+ X_N=19\,997\,222\,819,\qquad E_N=171\,654\,968.
+\end{equation}
+The certified terminal interval is
+$[1.9825567851,2.0168877787]$, inside the target. This example illustrates why
+requiring global existence of the \emph{source} polynomial ODE would be an
+unnecessary restriction. The certificate establishes just the finite segment
+needed for the event. The chemical transformation separately makes its own
+prescribed physical trajectory global.
+
+\subsection{A compact verification inventory}
+The package includes eight accepted exact-arithmetic examples:
+\begin{center}
+\small
+\begin{tabular}{lrrrrl}
+\toprule
+Example & $N$ & $H$ & $D$ & $R$ & Exact final radius\\
+\midrule
+Constant flow & 10 & 10 & $10^3$ & 2 & $1/100$\\
+Constant, positive noise & 10 & 10 & $10^3$ & 2 & $21/1000$\\
+Logistic, positive noise & 1000 & 1000 & $10^8$ & 1 & $639819/50000000$\\
+Negative floor division & 3 & 3 & $10^2$ & 2 & $3/100$\\
+Negative-state decay & 1000 & 1000 & $10^8$ & 2 & $172977/50000000$\\
+Pre-blow-up event & 5000 & 10000 & $10^{10}$ & 3 & $21456871/1250000000$\\
+Rational coefficients/data & 1000 & 1000 & $10^8$ & 2 & $517653/100000000$\\
+Three-species chemical & 2000 & $2\cdot10^6$ & $3\cdot10^{12}$ & 2 & $39593237/1500000000000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The negative-state example exercises signed nodes. The negative-floor example
+uses $x'=-1$, $N=H=3$, and $D=100$: each increment is
+$\floor{-100/3}=-34$, with remainder $2$, rather than truncation to $-33$.
+An additional exhaustive finite check covers $4020$ signed Euclidean divisions
+and $4020$ ceiling divisions.
+The rational-data example uses $x'=(1+x)/3$, $x(0)=1/2$ and target $(1,6/5)$;
+it tests a nontrivial common field denominator and initial denominator.
+
+The rejection checks alter, independently, a state node, an error radius, a
+floor remainder, a ceiling remainder, the scale, and the initial error units.
+All six mutated certificates are rejected. Two additional candidates fail
+because of a tube boundary and an unreachable constant trajectory. Rejection
+of an individual candidate is not a general proof of nonreachability; these
+are tests of the checker, not negative-instance decision results.
+
+Five generic witness-carrying quartic compilations were checked:
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Instance & Signed gates $g$ & Natural witnesses & Equations & Residual degree\\
+\midrule
+Constant flow, $N=2$ & 19 & 63 & 59 & 2\\
+Chemical field, $N=1$ & 65 & 162 & 158 & 2\\
+Negative decay, $N=3$ & 21 & 76 & 70 & 2\\
+Negative floor, $N=3$ & 20 & 74 & 68 & 2\\
+Rational constant field, $N=2$ & 19 & 63 & 59 & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+All residuals evaluate to zero at the exported natural witnesses, and both
+count formulas are checked programmatically. The emitted expressions retain
+$R,H,D$ as symbolic free parameters; the sample values only instantiate the
+accompanying witness. The current implementation's public compiler interface
+accepts an already verified certificate and emits its parameterized schema
+and witness together. The general source-to-schema construction is specified
+mathematically in Section~\ref{pqc:tu:sec:quartic}; a separate witness-free command-line interface is
+not supplied.
+
+\subsection{Exact chemical checks}
+Symbolic checks were run for the fields
+\begin{equation}
+ 1-x^2,\qquad x^2,\qquad \tfrac13-2x,
+ \qquad (z,-x),\qquad (xz-1,x^2-z),\qquad 1.
+\end{equation}
+For each, the program verifies the rail-product invariants, the projection
+identity, the damping identity \eqref{pqc:tu:eq:Einvariant}, the kinetic sign
+condition, reconstruction from the emitted reaction list, and the degree bound.
+The resulting species counts are $3,3,3,5,5,3$; the reaction counts after
+componentwise monomial collection are $14,10,12,8,48,4$.
+The actual degrees are $8,8,6,5,9,5$, within the stated bounds.
+All six fields were also checked in the common-offset form. In dimension two,
+the oscillator uses four species and six reactions, and the nonlinear example
+uses four species and fifty-three reactions; their actual degrees are $11$ and
+$12$. The latter complete reaction list is also included.
+
+For the logistic example, $p^0=n^0=1$ and $q^0=1/3$ are rational. Before damping,
+\begin{align}
+ G_p&=p-p^3+2p^2n-pn^2,\\
+ G_n&=-n+p^2n-2pn^2+n^3.
+\end{align}
+With $s=2$ the complete three-species field is
+\begin{align}
+ p'&=q^2(p-p^3+2p^2n-pn^2),\\
+ n'&=q^2(-n+p^2n-2pn^2+n^3),\\
+ q'&=-2q^4(pG_p+nG_n).
+\end{align}
+The package contains all fourteen reactions, not just the field. For example,
+the term $-q^2p^3$ is realized by
+$3P+2Q\to2P+2Q$ at rate $1$, and $2q^2p^2n$ by
+$2P+N+2Q\to3P+N+2Q$ at rate $2$. Each negative term consumes a species already
+present in its reactant monomial.
+
+\subsection{An end-to-end chemical certificate}
+The constant source flow $x'=1$, $x(0)=0$ produces the three-species damped
+chemical field
+\begin{equation}\label{pqc:tu:eq:constantchem}
+ p'=qp,\qquad n'=-qn,\qquad q'=-2q^3(p^2-n^2),
+ \qquad (p^0,n^0,q^0)=(1,1,1/3).
+\end{equation}
+Its four reactions are included in \code{constant_flow_reactions.json}.
+For the projected target $1/2000<p-n<1/1250$, the exact checker accepts
+\begin{equation}
+ N=2000,\quad H=2\cdot10^6,\quad D=3\cdot10^{12},\quad R=2,
+ \quad E_{\mathrm{in}}=J=1.
+\end{equation}
+Here $M=136$, $L=328$, and the final integer state is
+\begin{equation}
+ X_N=(3\,001\,000\,165\,502,\ 2\,999\,000\,165\,668,\
+       999\,999\,850\,963),
+ \qquad E_N=79\,186\,474.
+\end{equation}
+The projected terminal interval is therefore
+\begin{equation}
+ \left[\frac{1\,841\,626\,886}{3\cdot10^{12}},
+       \frac{2\,158\,372\,782}{3\cdot10^{12}}\right]
+ \subset (1/2000,1/1250).
+\end{equation}
+This is a certificate for the chemical ODE itself, not just a symbolic check
+that it simulates a source equation. It permits both initial and forcing
+uncertainties of $1/(3\cdot10^{12})$ until physical time $1/1000$.
+
+The exact syntactic gate counter gives $g=42044$ for the corresponding full
+unrolling, hence $126099$ natural witnesses and $118099$ quadratic residuals.
+That large polynomial was counted but not materialized in this package; its
+accepted integer tube is supplied. A one-step certificate for the same chemical
+field and the wider projected target $(-1,1)$ was fully compiled, producing
+$162$ natural witnesses and $158$ quadratic residuals, all verified to vanish.
+Thus the package contains a direct, fully emitted chemical-to-quartic example
+as well as the longer, tighter chemical event certificate.
+
+\subsection{What was computationally verified}\label{pqc:tu:sec:verified}
+The computations use Python 3.13.5 and SymPy 1.14.0 in the supplied run.
+The tube generator and verifier use Python integers and exact fractions, with
+no floating-point arithmetic. SymPy is used for the symbolic compiler and
+chemical identities. Detailed inputs, certificates, residuals, witnesses,
+reaction lists, and results are stored in JSON files.
+
+These checks are finite computations, not a formal proof of the general
+analytic theorems and not an independent verification of the Python interpreter
+or SymPy. The general soundness, completeness, and continuation arguments are
+proved in the text. The exact checks give reproducible evidence against
+implementation and transcription errors.
+
+\wtag\ \emph{Shipped names.} Source~18's text keeps its delivered file names. In
+this report its six programs are \code{code/18-rational-tubes-tubes.py},
+\code{-quartic.py}, \code{-kinetic.py}, \code{-run_checks.py},
+\code{-constant_example.py} and \code{-verify_json.py}, with its
+\code{Makefile} as \code{code/18-rational-tubes-Makefile}; its nineteen
+\code{results/} files and its \code{requirements.txt} are
+\code{data/18-rational-tubes-<name>}. The programs import one another by their
+delivered module names and write into \code{../results}, so they run only in a
+copy with the delivered layout; the README gives the recipe. A rerun at the
+write reproduced every recorded file apart from line endings. The delivered
+checksum manifest and PDF are not shipped.
+
+\section{Relation to existing methods and limitations}\label{pqc:tu:sec:related}
+
+\subsection{Validated integration and logical reachability}
+Validated numerical integration already produces rigorous solution enclosures.
+For example, Immler formalized reachability analysis using adaptive
+Runge--Kutta methods and affine arithmetic in Isabelle/HOL \cite{b64s18-immler}.
+Our first-order Euler construction should not be mistaken for an improvement
+in numerical efficiency over those methods. Its role is to make the full
+acceptance condition an elementary integer circuit, with a completeness proof
+and explicit accounting of every rounding witness.
+
+Gao, Avigad, and Clarke's $\delta$-decision framework addresses bounded
+first-order real formulas using controlled numerical relaxation
+\cite{Gao2012}. The present acceptance test is exact integer equality and strict
+integer inequality, but searches unboundedly over finite certificates. It is
+a positive semidecision procedure, not a decision procedure for exact
+unbounded reachability. There is therefore no conflict between its exactness
+and the limitations of general real decision problems.
+
+\subsection{ODE-to-chemical compilation}
+The chemical-compilation literature includes exact generation of functions,
+computation by convergence, polynomialization of elementary expressions, and
+reductions of reaction complexity \cite{b64s18-fages,b64s18-hemery}. Those are different
+specifications from the joint one here: rational initialization, exact forward
+orbit projection, explicit finite-event preservation, a fixed species bound,
+and no finite physical-time blow-up along the prescribed trajectory. The
+common-offset construction additionally exposes a species--degree tradeoff.
+
+Time changes and extra state variables are familiar tools in kinetic modeling.
+The present contribution is not the observation that they can be used. It is
+the explicit pairing of the conserved products $p_jn_j=c_j$ with the polynomial
+damping invariant $q(1+S)=1$, followed by a proof of the complete arithmetic
+interface. A more exhaustive comparison of normal forms may reveal earlier
+instances of some or all of this construction; no priority conclusion is drawn
+from the literature search performed for this manuscript.
+
+\subsection{Open targets are essential to this proof}\label{pqc:tu:sec:open}
+The completeness argument uses two positive margins: distance from the compact
+trajectory to the containing box boundary, and distance of the terminal point
+to the complement of the target. An exact equality target need not have the
+second margin. For example $x'=-x$, $x(0)=1$ approaches zero without ever
+reaching it, while a constant zero trajectory is always in the equality target.
+The enclosure test cannot infer an exact zero merely from arbitrarily small
+nonzero intervals.
+
+Accordingly, this article does not solve general exact zero-hitting,
+closed-target reachability, asymptotic convergence, universal safety, or
+Zeno-sensitive hybrid verification. Some special cases may have additional
+algebraic certificates, but they require new hypotheses or methods.
+\wtag\ Two of these are treated elsewhere for discrete time. Part~III of this
+report certifies robust avoidance of closed rational targets, a universal safety
+property, for rational piecewise-affine maps under per-step noise
+(Theorem~\ref{pqc:cb:thm:quartic}), and shows the noise-fragile remainder
+$\pione$-complete (Theorem~\ref{pqc:cb:thm:classification}). The sibling report
+\code{liveness-beyond-halting} classifies recurrence, deadline and
+temporal-logic properties of discrete computable systems (its Theorem
+\code{lbh:thm:hierarchy}: fixed deadlines $\pione$, bounded gaps $\sigtwo$,
+computable deadlines $\Sigma^0_3$, recurrence $\Sigma^1_1$) and proves that none
+of them has an ordinary Diophantine representation. Neither treats continuous
+time.
+
+\subsection{The chemical normal form is not a physical implementation claim}
+The emitted system is an idealized finite deterministic mass-action network.
+Species concentrations may become arbitrarily large as physical time tends to
+infinity; rate constants are exact rational values; and the construction may
+use high-order reactions and source or sink behavior without conservation of
+physical mass. None of this proves that a small laboratory reaction network
+can run an unbounded Turing computation under realistic stochastic noise.
+The theorem concerns the mathematical semantics explicitly stated in Section~\ref{pqc:tu:sec:chemical}.
+
+\section{A concrete route to formalization in ProveIt}\label{pqc:tu:sec:formal}
+
+\subsection{Separate arithmetic from analysis}
+The smallest useful trusted interface is a theorem of the form
+\begin{equation}
+ \operatorname{check}(I,c)=\mathrm{true}
+ \quad\Longrightarrow\quad
+ \text{every permitted perturbed solution reaches the target at }T(c).
+\end{equation}
+An integer checker can be made executable before formalizing the analytic
+completeness proof. The implementation should use a finite sparse polynomial
+syntax over integer coefficients, a positive common denominator, integer
+vectors for nodes, and natural vectors for radius and remainder data.
+The checker should reject malformed dimensions, zero denominators, invalid
+natural parameters, and inconsistent list lengths before evaluating a field.
+
+The arithmetic correctness layer proves Euclidean floor semantics for signed
+dividends, ceiling semantics for natural dividends, the scaled guard identities,
+and the exact relationship between $F(X/D)$ and $\widetilde F(X,D)$.
+The analytic layer proves the box bounds, local solution comparison,
+first-exit argument, and continuation lemma. This separation prevents a
+fast numerical implementation from being silently treated as a proof of
+ODE semantics.
+
+\subsection{Suggested module boundaries}
+A prospective module layout, not files claimed to exist in the repository, is:
+\begin{center}
+\small
+\begin{tabular}{p{.34\textwidth}p{.57\textwidth}}
+\toprule
+Proposed module & Main obligation\\
+\midrule
+\code{PolynomialFlow.Syntax} & Rational sparse fields, rational initial data, open polyhedra\\
+\code{PolynomialFlow.Bounds} & Coefficient bounds $M,L$ and infinity-norm estimates\\
+\code{PolynomialFlow.TubeCheck} & Exact integer data and executable checker\\
+\code{PolynomialFlow.TubeSound} & Perturbation estimates, existence, and terminal inclusion\\
+\code{PolynomialFlow.TubeComplete} & Compact margins, mesh refinement, and successful certificate existence\\
+\code{PolynomialFlow.Quartic} & Signed gates, slack compilation, counts, and unique fixed-parameter fibers\\
+\code{KineticFlow.Hyperbolic} & Positive rails, conserved products, orbit correspondence\\
+\code{KineticFlow.GlobalClock} & Damping invariant, derivative bounds, global existence\\
+\code{KineticFlow.Offset} & Common-offset invariant and species--degree tradeoff\\
+\code{PolynomialFlow.Diophantine} & Encoded checker enumerability and existing MRDP adapter\\
+\bottomrule
+\end{tabular}
+\end{center}
+The names are design suggestions, not tested Lean code. Exact compatibility with
+the repository's pinned toolchain and current Mathlib ODE interfaces remains a
+formalization task.
+\wtag\ Part~III's plan (Section~\ref{pqc:cb:sec:formalization}) proposes a
+\code{RobustReachability} namespace with modules \code{Grid},
+\code{CutCertificate} and \code{Diophantine} for its discrete-time cut
+certificates. The two proposals share their last layer: an encoded finite
+checker proved primitive recursive, enumerated, and passed to
+\code{Diophantine.mrdp}. A single namespace, with one shared
+checker-to-MRDP adapter and separate modules for the discrete-time cut
+certificates and for these continuous-time tubes, would avoid proving that
+layer twice. None of the modules of either table exists in ProveIt.
+
+\subsection{Trust and audit obligations}
+A useful audit distinguishes the following claims: the arithmetic checker
+terminates; its implementation matches the stated integer predicate; an accepted
+certificate implies an actual analytic event; every event has a certificate;
+the quadratic compiler preserves the checker; and MRDP applies to the encoded
+predicate. Each needs its own theorem. A generated JSON certificate is not part
+of the trusted boundary until a proved checker accepts it.
+
+For the chemical lift, most identities are polynomial identities suitable for
+ring normalization. The genuinely analytic obligations are positivity,
+continuation from derivative bounds, and finiteness of the time-reparameterizing
+integral on compact source segments. These should not be replaced by numerical
+samples of the same identities.
+
+\section{Further research questions and topics}\label{pqc:tu:sec:questions}
+The following questions are specific continuations of the proved normal forms.
+They are not all claimed to be established open problems in the literature;
+several are proposed engineering or optimization problems for this project.
+
+\begin{question}[An end-to-end kernel-checked analytic certificate]\label{pqc:tu:q:kernel}
+Formalize robust soundness and completeness, then connect the exact natural
+checker to the existing MRDP endpoint. A meaningful first milestone is a
+kernel-checked positive-noise certificate for the logistic example, including
+existence and containment rather than only arithmetic evaluation.
+\end{question}
+\wtag\ Compare Question~\ref{pqc:q:kernel} (Part~I's compiler) and Part~III's recommended order after Question~\ref{pqc:cb:q:boundary}: all three put a kernel-checked finite certificate layer first.
+
+\begin{question}[Higher-order canonical tubes]\label{pqc:tu:q:higher}
+Replace Euler by rational Taylor or Runge--Kutta schemes while preserving a
+unique arithmetic witness at fixed precision parameters. Determine explicit
+tradeoffs between gate count per step, order, derivative bounds, and the
+number of steps required by a target margin. Canonical interval bounds and
+rounding policies must be specified rather than chosen nondeterministically.
+\end{question}
+
+\begin{question}[Local rather than global conditioning]\label{pqc:tu:q:local}
+Use a distinct rational box and Lipschitz bound on each step. Can the witness
+normal form retain linear size and unique fibers while replacing the coarse
+factor $\ee^{LT}$ by a computably accumulated local growth estimate? This could
+substantially reduce the size of witnesses in stiff or strongly dissipative
+regions without weakening soundness.
+\end{question}
+\wtag\ Compare Part~III's Question~\ref{pqc:cb:q:grids}, which asks the same for its dense grids.
+
+\begin{question}[A smaller global kinetic lift]\label{pqc:tu:q:smallerlift}
+Can the common-offset construction be made global with only $d+1$ species,
+while retaining polynomial mass-action semantics, rational initialization,
+a linear projection, and every finite source event? Alternatively, can a
+$d+2$-species construction attain the lower degree bound of the separate-rail
+form? A lower bound would require a clearly stated class of encodings.
+\end{question}
+
+\begin{question}[Low-molecularity normal forms with all guarantees retained]\label{pqc:tu:q:molecularity}
+Known chemical transformations motivate reducing reaction order. The joint
+question here is whether one can obtain a quantitative bimolecular construction
+that simultaneously preserves rational preparation, the exact forward orbit,
+finite-event completeness, and nonexplosion. Any quadratization must be checked
+for auxiliary blow-up and time-change degeneracy, not only for local algebraic
+identities.
+\end{question}
+\wtag\ The discrete reaction networks of the sibling report \code{canonical-diophantine-certificates} (the note in Section~\ref{pqc:tu:sec:chemical}) use discrete firings, not mass-action kinetics; that is a different semantics, and they do not answer it.
+
+\begin{question}[Certified finite-event adapters for published universal flows]\label{pqc:tu:q:adapters}
+Select one concrete polynomial or chemical universal construction and verify
+\eqref{pqc:tu:eq:simulationcontract} for its actual coefficient field, initial-state
+encoding, and terminal detector. This would turn the conditional transfer
+statement into a fully instantiated theorem with explicit dimension and
+reaction bounds.
+\end{question}
+\wtag\ Compare Questions~\ref{pqc:q:direct} and~\ref{pqc:cb:q:realizers}: an instantiated adapter would be a polynomial continuous-time front end, but not a realizer of Part~III's trichotomy.
+
+\begin{question}[Off-manifold chemical error budgets]\label{pqc:tu:q:offmanifold}
+Study perturbations of $p_jn_j=c_j$ and $q(1+S)=1$. On a prescribed successful
+finite segment, derive a projection error estimate from deviations of these
+invariants. Such a result would describe how physical disturbances affect the
+simulated clock and state, rather than merely certifying a terminal target in
+the full chemical state space.
+\end{question}
+\wtag\ Compare Question~\ref{pqc:cb:q:transfer}. Theorem~\ref{pqc:tu:thm:globalchemical} gives an exact orbit lift, explicitly not a noise transfer (Section~\ref{pqc:tu:sec:global}); this question asks for the missing estimate.
+
+\begin{question}[Witness bit complexity and clock slowdown]\label{pqc:tu:q:bitcomplexity}
+Relate source trajectory size, target margin, local conditioning, and elapsed
+source time to the bit size of integer certificates before and after chemical
+lifting. The degree and species bounds alone do not control computational cost.
+Seek upper bounds under effective promises and matching lower bounds for
+chosen simulator families.
+\end{question}
+\wtag\ Compare Part~III's Question~\ref{pqc:cb:q:tradeoff} (radius--time tradeoffs).
+
+\begin{question}[Beyond polynomial autonomous fields]\label{pqc:tu:q:beyond}
+Polynomial nonautonomous systems can be handled by adjoining a clock variable
+$t'=1$ and applying the present theorem. More ambitious extensions include
+rational fields with certified nonvanishing denominators and hybrid systems
+with explicitly separated switching guards. Exact contact events and Zeno
+behavior must remain outside a claimed completeness theorem until separately
+addressed.
+\end{question}
+\wtag\ Compare Question~\ref{pqc:q:continuous}, whose Zeno and explosion clauses this question keeps open.
+
+\begin{question}[Arithmetic optimization and fixed-dimensional compression]\label{pqc:tu:q:optimization}
+Optimize the straight-line residual circuit, share repeated powers and
+bounds, and compare the resulting explicit operation counts for the same
+certificate semantics. Separately investigate fixed-dimensional compression
+through the repository's MRDP infrastructure. Do not conflate uniqueness of
+arithmetic gate values with uniqueness of the compressed existential witness.
+\end{question}
+\wtag\ Compare Questions~\ref{pqc:q:smaller} and~\ref{pqc:qm:q:smaller} (smaller explicit quartics for other predicates) and Remark~\ref{pqc:conv:rem:fixedpoly}; Corollary~\ref{pqc:tu:cor:fixedquartic} adds a fourth unexpanded fixed polynomial.
+
+\begin{question}[Boundary events with additional structure]\label{pqc:tu:q:boundary}
+Identify classes of equality targets that admit complementary algebraic
+certificates, such as a preserved polynomial invariant together with a strict
+transversality condition. Determine exactly which hypotheses restore a
+finite complete certificate and which merely prove one-sided sufficient tests.
+\end{question}
+\wtag\ Compare Question~\ref{pqc:cb:q:critical}, the discrete-time question of exact critical-level reachability.
+
+\section{Conclusion}\label{pqc:tu:sec:conclusion}
+Finite open events of rational polynomial dynamics admit more than an abstract
+appeal to recursive enumerability. They admit a complete integer error-tube
+language whose existence and noise obligations are proved, whose fixed-length
+acceptance relation is a counted quartic sum of squares, and whose fixed-mesh
+witness is canonical. The construction supplies a precise analytic front end
+to the Diophantine interfaces already developed in ProveIt.
+
+For continuous chemical computation, an exact projection identity by itself is
+not enough: the encoding must also survive until the simulated event. Conserved
+hyperbolic rail products eliminate one source of auxiliary blow-up, and a single
+polynomial damping species makes the prescribed chemical trajectory global.
+The separate-rail normal form uses $2d+1$ species. Common-offset compression
+saves $d-1$ species at a cost of three in the degree upper bound. Both preserve
+every finite original open event without introducing irrational data.
+
+The strongest unconditional claims of this article are these certificate and
+embedding theorems. Their combination gives a concrete, reproducible research
+result and a formalization target. It is not presented as a solution of a
+classical single-fold conjecture, as a new discovery of chemical universality,
+or as an exact decision procedure for arbitrary continuous dynamics.
+
+\section{Source 18 appendix: a fully written quartic family for a constant flow}\label{pqc:tu:app:explicit}
+This appendix removes every arithmetic-circuit abbreviation in a simple case.
+Consider $x'=1$, $x(0)=0$, $U=(9/10,11/10)$ and the nominal certificate.
+Here $M=1$, $L=0$, $Q=H$, and the canonical error radius is exactly $E_i=i$.
+The floor nodes are nonnegative, so no signed pairs are needed in this
+specialized example.
+
+Fix $N\geq1$. In addition to the free natural parameters $R,H,D$, use natural
+witness variables
+\begin{equation}
+ A_*,G_*,r_*,h_*,d_*,t_-,t_+,
+ \quad X_1,\ldots,X_N,
+ \quad U_i,S_i,L_i^-,L_i^+\quad(0\leq i<N),
+\end{equation}
+and put $X_0=0$. Define $\mathcal P_N$ to be the sum of the squares of these
+$4N+7$ residuals:
+\begin{align}
+ &A_*-DH,\qquad G_*-RA_*+D,\label{pqc:tu:eq:specialglobal}\\
+ &R-1-r_*,\qquad H-1-h_*,\qquad D-1-d_*,\label{pqc:tu:eq:specialpositive}\\
+ &H(X_{i+1}-X_i)+U_i-D &&(0\leq i<N),\label{pqc:tu:eq:specialfloor}\\
+ &U_i+S_i+1-H &&(0\leq i<N),\label{pqc:tu:eq:specialrem}\\
+ &G_*-Hi-HX_i-1-L_i^- &&(0\leq i<N),\label{pqc:tu:eq:specialguardminus}\\
+ &G_*-Hi+HX_i-1-L_i^+ &&(0\leq i<N),\label{pqc:tu:eq:specialguardplus}\\
+ &10X_N-9D-10N-1-t_-,\label{pqc:tu:eq:speciallower}\\
+ &11D-10X_N-10N-1-t_+.\label{pqc:tu:eq:specialupper}
+\end{align}
+Each displayed residual has degree at most two. The family has $5N+7$ natural
+witness variables, and $\deg\mathcal P_N\leq4$. It is the specialization of the
+certificate equations after eliminating deterministic arithmetic identities;
+its smaller counts are not the counts of the generic compiler.
+
+For $N=2$, $R=H=2$, $D=100$, a complete witness is
+\begin{align*}
+ A_*&=200,&G_*&=300,&r_*&=1,&h_*&=1,&d_*&=99,\\
+ X_1&=50,&X_2&=100,&U_0&=0,&U_1&=0,\\
+ S_0&=1,&S_1&=1,&L_0^-&=299,&L_0^+&=299,\\
+ L_1^-&=197,&L_1^+&=397,&t_-&=79,&t_+&=79.
+\end{align*}
+Thus a single explicitly specified quartic equation with seventeen natural
+witnesses certifies a genuine continuous-time reachability event. The file
+\code{specialized_constant_quartic.json} contains all fifteen residuals and
+all witness values, while \code{specialized_constant_expanded.txt} contains
+the expanded ordinary polynomial. Its degree is checked to be exactly four.
+
+\section{Source 18 appendix: notation and package guide}\label{pqc:tu:app:notation}
+\begin{longtable}{p{.20\textwidth}p{.71\textwidth}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+$d,k,A$ & Source dimension, polynomial degree bound at least one, common positive field denominator\\
+$I=(F,x^0,U)$ & Rational polynomial reachability instance\\
+$R,B_R,M,L$ & Integer containing radius, real box, integral speed and Lipschitz bounds\\
+$N,H,D$ & Number of steps, reciprocal time step, reciprocal state-lattice spacing\\
+$X_i,v_i$ & Integer node and corresponding rational center $X_i/D$\\
+$E_i,e_i$ & Natural error units and rational error radius $E_i/D$\\
+$E_{\mathrm{in}},J$ & Fixed initial and forcing error units; actual tolerances divide by $D$\\
+$Q$ & Positive divisor for canonical signed floor steps\\
+$B,K,C,G$ & Global integral expressions used in radius and containment checks\\
+$g,m$ & Number of signed arithmetic gates and number of target inequalities\\
+$p_j,n_j,c_j$ & Positive chemical rails and invariant product $p_jn_j$\\
+$\mathcal C,\mathcal C_j$ & Common positive rail clock and its omitted-factor products\\
+$q,s,\kappa$ & Damping species, damping exponent, degree bound $k+d$ for the undamped rail field\\
+$\theta$ & Original time accumulated along the global chemical trajectory\\
+\bottomrule
+\end{longtable}
+The package can be rebuilt using
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/run_checks.py
+python code/constant_example.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The numerical certificates use only Python's standard library; the symbolic
+checks additionally require SymPy. The LaTeX source uses standard TeX Live
+packages, including New PX fonts. No font files are distributed in the archive.
+
+\wtag\ These are the delivered commands, for the delivered layout: in this
+report the programs carry the prefix \code{18-rational-tubes-}, the
+\code{article.tex} named there is source~18's own manuscript, which is not
+shipped (this report's \code{article.tex} replaces it), and this report is set
+in Latin Modern, not New PX. The README gives commands that work with the
+shipped names; the symbols of this table are compared with those of Parts~III
+and~VII in Section~\ref{pqc:tu:conv:letters}.
+
 
 \appendix
 \section{Reproduction notes and algorithmic contracts}
@@ -17797,6 +19767,90 @@ note), and the Kaminski--Katoen and Giles--Selinger entries of sources~10 and~13
 are this report's existing entries. Different editions of Tarski's decision
 method (sources~15 and~16) and the sources' pinned ProveIt entries are kept
 separately. Source~17's entry for this report's README is omitted.
+\end{itemize}
+
+\subsection{\wtag\ Batch 64: Part VIII}
+\label{pqc:app:provenance64}
+One manuscript of batch~64 was added as Part~VIII. It arrived in
+\code{7747fcfdd}, inside the archive \code{Rational_Tubes_Integer_Zeros}
+(inner directory \code{rational_tubes_integer_zeros}), and its code and data
+were placed in the placement commit \code{3025c15df}; its manuscript, README,
+30-page PDF and checksum manifest (\code{MANIFEST.sha256}) are not shipped and
+survive in that archive. It is called here source~18, by its shipped file
+prefix \code{18-rational-tubes-}, which continues this report's sequence after
+sources~10--17.
+
+\begin{center}
+\small
+\begin{tabular}{@{}llp{0.42\textwidth}lll@{}}
+\toprule
+Source & Batch 64 & Archive & Arrival & Pin & Placed\\
+\midrule
+18 & 05 & \code{Rational_Tubes_Integer_Zeros} & \code{7747fcfdd} & \code{6d04e1e38} & \code{3025c15df}\\
+\bottomrule
+\end{tabular}
+\end{center}
+It contributed Part~VIII in full: rational polynomial instances and their integer
+bounds; the canonical integer tube, its robust soundness and completeness and the
+equivalence of reachability, positive finite-horizon robustness and
+certificates; the counted quartic compilation with a unique fixed-parameter
+witness; recursive enumerability and the MRDP endpoint, the finite-event
+compiler contract, the conditional transfer and the conditional no-bound
+proposition; the naive-rail counterexample, the hyperbolic rail lift, the
+damped global mass-action normal form and its common-offset compression; eight
+accepted exact examples, five generic and one specialized quartic, and an
+end-to-end chemical certificate; a formalization plan; eleven questions.
+
+Its title page, not printed, read ``A research development for the ProveIt
+project'' and ``Prepared for Vladimir Reshetnikov''; its PDF metadata named it a
+research manuscript prepared for him. It is AI-assisted and unrefereed.
+
+Where the merge had to choose:
+\begin{itemize}
+\item \emph{Placement.} Source~18 is continuous-time polynomial dynamics with
+exact Diophantine certificates, this report's remit; the sibling reports treat
+discrete executions (\code{canonical-diophantine-certificates}) and
+infinite-path properties (\code{liveness-beyond-halting}), both of which
+source~18 disclaims. It is a new Part after Part~VII, so that nothing earlier
+renumbers.
+\item \emph{Duplicates.} Its Theorem~\ref{pqc:tu:thm:re} restates, for
+rational polynomial ODEs, Part~IV's paragraph \emph{Robust observations of
+computable continuous trajectories}. The theorem and its proof, which runs
+through source~18's own complete checker, are printed with a credit; the
+paragraph is not reprinted. Corollary~\ref{pqc:tu:cor:fixedquartic} is Part~I's
+Lemma~\ref{pqc:lem:quarticlower} and Proposition~\ref{pqc:tu:prop:nobound} is
+the argument of Corollaries~\ref{pqc:cb:cor:witness-bounds}
+and~\ref{pqc:qm:cor:nobound}; both are printed with pointers, as short second
+routes.
+\item \emph{Labels.} Source~18's 85 labels are prefixed \code{pqc:tu:}; eight
+carry cleveref type hints. Written labels: \code{pqc:part:tubes},
+\code{pqc:tu:conv} and three subsection labels, fourteen section and three
+subsection labels, \code{pqc:tu:app:notation}, \code{pqc:tu:cor:fixedquartic},
+eleven research-question labels \code{pqc:tu:q:*},
+\code{pqc:app:provenance64}, and labels on two existing research questions of
+Part~III (\code{pqc:cb:q:grids}, \code{pqc:cb:q:tradeoff}). No existing label
+was renamed or renumbered.
+\item \emph{Symbols.} None renamed; Section~\ref{pqc:tu:conv:letters} tabulates
+the letters that differ from Parts~III and~VII and source~18's own double
+uses. \verb|\code| is this report's; escaped underscores in it were unescaped.
+\item \emph{Form.} The title-page summary box and status statement are printed
+as paragraphs in Section~\ref{pqc:tu:conv}; the eleven research questions,
+a numbered list in the source, are question environments with unchanged text;
+hard-coded section numbers are cross-references; the two appendices are
+sections of Part~VIII.
+\item \emph{In-place notes} (dated 30 September 2026, marked \wtag) were added in
+Parts~III and~IV: after Part~III's related-work paragraph on Platzer and Qian,
+after its \code{RobustReachability} proposal, after the remark on robust
+observations of computable continuous trajectories, after
+Questions~\ref{pqc:q:continuous}, \ref{pqc:cb:q:realizers},
+\ref{pqc:cb:q:transfer}, \ref{pqc:cb:q:critical} and~\ref{pqc:cb:q:noise}, and in
+Section~\ref{pqc:conv:qoverlap}, which also gains a pointer to the sibling
+report \code{liveness-beyond-halting}.
+\item \emph{Bibliography.} Source~18's eight entries are appended with keys
+beginning \code{b64s18-}, except that its Gao--Avigad--Clarke entry is the
+existing \cite{Gao2012}. Its entry for ProveIt's MRDP guide is kept apart from
+\cite{proveit-mrdp-guide}, because it records a different pin
+(\code{6d04e1e38}); the guide is unchanged between the two pins.
 \end{itemize}
 
 \begin{thebibliography}{99}
@@ -18369,5 +20423,52 @@ David Aldous and James Allen Fill.
 \emph{Reversible Markov Chains and Random Walks on Graphs}.
 Unfinished monograph, 2002; recompiled 2014.
 \url{https://www.stat.berkeley.edu/users/aldous/RWG/book.html}.
+
+% --- batch 64, source 18 (Part VIII); its entry gao is Gao2012 above ---
+\bibitem{b64s18-repo}
+Vladimir Reshetnikov, \emph{ProveIt: MRDP---recursively enumerable if and only
+if Diophantine}, repository documentation, snapshot
+\code{6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72}, September 30, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72/Computability/HilbertTenthProblem/Lean/MRDP.md}{Pinned MRDP guide}.
+Also consulted: \emph{Hilbert's tenth problem: Jones's articles on Diophantine
+representation}, project README at the same repository.
+
+\bibitem{b64s18-jones}
+James P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47} (1982), no.~3, 549--571.
+This article is cited for the classical universal-equation context; no particular
+printed equation or numerical bound is used in a proof here.
+
+\bibitem{b64s18-immler}
+Fabian Immler, \emph{Verified reachability analysis of continuous systems},
+in TACAS 2015, Lecture Notes in Computer Science \textbf{9035}, 37--51, 2015.
+\href{https://doi.org/10.1007/978-3-662-46681-0_3}{doi:10.1007/978-3-662-46681-0\_3}.
+
+\bibitem{b64s18-fages}
+Fran\c{c}ois Fages, Guillaume Le Guludec, Olivier Bournez, and Amaury Pouly,
+\emph{Strong Turing completeness of continuous chemical reaction networks and
+compilation of mixed analog-digital programs}, in CMSB 2017,
+Lecture Notes in Computer Science \textbf{10545}, 108--127, 2017.
+\href{https://doi.org/10.1007/978-3-319-67471-1_7}{doi:10.1007/978-3-319-67471-1\_7}.
+
+\bibitem{b64s18-hemery}
+Mathieu Hemery, Fran\c{c}ois Fages, and Sylvain Soliman,
+\emph{Compiling elementary mathematical functions into finite chemical reaction
+networks via a polynomialization algorithm for ODEs}, 2021.
+\href{https://arxiv.org/abs/2106.15884}{arXiv:2106.15884}.
+
+\bibitem{b64s18-bournez}
+Olivier Bournez, \emph{Computability, complexity and programming with ordinary
+differential equations}, invited talk, STACS 2020,
+LIPIcs \textbf{154}, article 3, 3:1--3:13, 2020.
+\href{https://doi.org/10.4230/LIPIcs.STACS.2020.3}{doi:10.4230/LIPIcs.STACS.2020.3}.
+
+\bibitem{b64s18-graca}
+Daniel S. Gra\c{c}a, Manuel L. Campagnolo, and Jorge Buescu,
+\emph{Robust simulations of Turing machines with analytic maps and flows},
+in CiE 2005, Lecture Notes in Computer Science \textbf{3526}, 169--179, 2005.
+\href{https://doi.org/10.1007/11494645_21}{doi:10.1007/11494645\_21}.
+Analytic simulation is not silently identified here with the rational polynomial
+finite-event contract in Definition~\ref{pqc:tu:def:universal}.
 \end{thebibliography}
 \end{document}
