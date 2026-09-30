@@ -76,3 +76,11 @@ The complete critical expansion, the sharp next logarithmic polynomial,
 unbounded detuning, two-point phase regularity, convergence rates for selected
 measures, the left boundary-layer profile, and formal/interval certification
 remain research tasks. See the nine questions in Section 11.
+
+## Editorial note (ProveIt, 2026-09-29)
+
+The row "Exact leading amplitude constant | Corollary 7.1" is not new: the
+predecessor `Thue_Morse_Critical_Pressure` already states the same
+asymptotic for its eigenprojections (its `eq:critical-amplitudes`). What
+this package adds is the derivation from the normalized eigenvectors; an
+editorial note after Corollary 7.1 in `article.tex` says so.

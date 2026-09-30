@@ -145,7 +145,9 @@ def identities() -> dict:
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--identities-only',action='store_true')
-    parser.add_argument('--output-dir',type=Path,default=Path(__file__).resolve().parents[1]/'data')
+    # ed. (2026-09-29): default recomputed/, so a plain run no longer
+    # overwrites the recorded data/ (receipt and the two \input tables).
+    parser.add_argument('--output-dir',type=Path,default=Path(__file__).resolve().parents[1]/'recomputed')
     args=parser.parse_args()
     args.output_dir.mkdir(parents=True,exist_ok=True)
     start=time.time()
@@ -182,16 +184,16 @@ def main() -> None:
             c_tex = f"10^{{{int(round(math.log10(r['phase'])))}}}"
             tab.append(f"{r['base']} & ${c_tex}$ & {r['pressure']/math.sqrt(r['phase']):.8f} & {r['logarithm_corrected_coefficient']:.6f} & {r['predicted_linear_coefficient']:.6f}\\\\")
         tab.extend(['\\bottomrule','\\end{tabular}'])
-        (args.output_dir/'pressure_table.tex').write_text('\n'.join(tab)+'\n')
+        (args.output_dir/'pressure_table.tex').write_text('\n'.join(tab)+'\n',newline='\n')  # ed. (2026-09-29): LF
         tab=['\\begin{tabular}{@{}rrrr@{}}','\\toprule',
              '$u$ & $c$ & numerical $\\int\\cos(2\\pi x)\\,d\\mu$ & predicted limit\\\\','\\midrule']
         for r in selection:
             c_tex = f"10^{{{int(round(math.log10(r['phase'])))}}}"
             tab.append(f"{r['detuning']:.0f} & ${c_tex}$ & {r['cosine_moment']:.8f} & {r['predicted_cosine_moment']:.8f}\\\\")
         tab.extend(['\\bottomrule','\\end{tabular}'])
-        (args.output_dir/'selection_table.tex').write_text('\n'.join(tab)+'\n')
+        (args.output_dir/'selection_table.tex').write_text('\n'.join(tab)+'\n',newline='\n')  # ed. (2026-09-29): LF
     data['elapsed_seconds']=time.time()-start
-    (args.output_dir/'verification.json').write_text(json.dumps(data,indent=2)+'\n')
+    (args.output_dir/'verification.json').write_text(json.dumps(data,indent=2)+'\n',newline='\n')  # ed. (2026-09-29): LF
     print('Wrote diagnostics to',args.output_dir,'seconds',data['elapsed_seconds'],flush=True)
 
 if __name__=='__main__':

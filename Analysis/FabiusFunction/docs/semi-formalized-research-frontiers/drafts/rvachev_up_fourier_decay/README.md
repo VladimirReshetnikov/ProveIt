@@ -49,7 +49,7 @@ and no Lean statement exists.
 
 [`Sobolev_Spectral_Disks_Rvachev_Thue_Morse/`](Sobolev_Spectral_Disks_Rvachev_Thue_Morse/)
 holds *From Analytic Spectral Collapse to Sobolev Spectral Disks*
-(23-page A4 PDF, 1,729-line source, a standard-library exact check
+(24-page A4 PDF, 1,773-line source, a standard-library exact check
 program), filed on 2026-09-29 by a quick archival intake.  It answers
 the Sobolev part of the arrival's question "Spectra at finite
 smoothness": on periodic Sobolev spaces `H^s` (with logarithmic

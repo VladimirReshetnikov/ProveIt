@@ -3,7 +3,7 @@
 ## Exact Moment Fibres and Logarithmic Instability Near the Fabius–Rvachev Law
 
 This package contains a self-contained 21-page research article (20 pages
-before the editorial note of 2026-09-29), its LaTeX
+before the editorial notes of 2026-09-29), its LaTeX
 source, exact-arithmetic verification code, and the output of a completed run.
 It was prepared in response to a request to develop a research extension of
 Vladimir Reshetnikov's ProveIt repository.
@@ -112,3 +112,28 @@ mathematical text is unchanged.
   bytes; no error, undefined reference, rerun request, duplicate
   destination or overfull box; no Type 3 font.
   `data/pdf_review.txt` is the delivered record of the 20-page build.
+
+In the editorial pass after batch 57, a later package of this tree was found
+to answer four more of its research questions at the dyadic reference.
+
+- `article.tex`: four further notes, each marked `% ed.`, citing
+  `../Anchored_Dyadic_Recovery_Uniform_Spectrum/` (filed 2026-09-29,
+  unreviewed). After "Pointwise recovery of the exact dyadic spectrum": the
+  anchored modulus on `K` (and on `A_L`, `L > 1`), in total variation or
+  Kolmogorov distance, has the exact scale `exp[-Theta(sqrt(log(1/eps)))]`,
+  so no Hoelder exponent, yet it is eventually below the pairwise lower
+  bound `(eq:modulus-lower)`; its leading constant is bracketed only. After
+  "Geometrically separated classes": separation `a_(j+1) <= q a_j` with any
+  fixed `q in (1/2, 1)` does not restore a power law at the dyadic
+  reference; the pairwise modulus and `q = 1/2` remain open. After "Fixed
+  leading factors versus the complete sequence": every fixed prefix is
+  locally Lipschitz-stable at the dyadic reference on `A_L`, `L >= 1`, with
+  `log C_(L,r) <= (log 2) r^2 + O_L(r+1)`; the optimal growth in `r` is open.
+  After "Matching statistical upper bounds": only an anchored testing
+  version (`exp[Theta(log^2(1/delta))]` samples, confidence sets contracting
+  at the dyadic spectrum); a global estimator with a proved risk bound
+  remains open. The mathematical text is unchanged.
+- `article.pdf`: rebuilt again with `sh build.sh` (MiKTeX 26.2 pdfTeX 1.40.29): 21 pages,
+  509,992 bytes; no error, undefined reference, rerun request,
+  duplicate destination or overfull box; no Type 3 font; the pages carrying
+  the notes were rendered and inspected.

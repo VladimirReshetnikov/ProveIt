@@ -3,10 +3,15 @@
 
 Exact rational tests are separated from mpmath diagnostics. The tests do not
 certify the analytic theorems. Run from any directory: python code/verify.py.
+
+ed. (2026-09-29): outputs go to data-rerun/ beside data/ unless --output-dir
+names another directory, so a plain run no longer overwrites the recorded
+files in data/; all four files are written with LF line endings.
 """
 from __future__ import annotations
 from fractions import Fraction as F
 from pathlib import Path
+import argparse
 import csv
 import json
 import platform
@@ -174,8 +179,13 @@ def diagnostics() -> dict[str, object]:
 
 
 def main() -> None:
-    out = ROOT/'data'
-    out.mkdir(exist_ok=True)
+    # ed. (2026-09-29): explicit output directory, default data-rerun/.
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output-dir', type=Path, default=ROOT/'data-rerun',
+                        help='directory for the four output files '
+                             '(default: data-rerun/ beside data/)')
+    out = parser.parse_args().output_dir
+    out.mkdir(parents=True, exist_ok=True)
     result = {'python': platform.python_version(), 'mpmath': mp.__version__,
               'exact_checks': exact_checks(), 'diagnostics': diagnostics()}
     mp.mp.dps = 90
@@ -184,11 +194,13 @@ def main() -> None:
     result['bounds'] = rows
     result['rouche_thresholds'] = thresholds
     report = json.dumps(result, indent=2) + '\n'
-    (out/'verification.json').write_text(report)
-    (out/'verification.txt').write_text(report)
+    # ed. (2026-09-29): LF line endings on every platform.
+    (out/'verification.json').write_text(report, newline='\n')
+    (out/'verification.txt').write_text(report, newline='\n')
     for name, data in [('analytic_bounds.csv', rows), ('rouche_thresholds.csv', thresholds)]:
         with (out/name).open('w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=data[0].keys())
+            writer = csv.DictWriter(f, fieldnames=data[0].keys(),
+                                    lineterminator='\n')
             writer.writeheader(); writer.writerows(data)
     print(json.dumps(result, indent=2))
 

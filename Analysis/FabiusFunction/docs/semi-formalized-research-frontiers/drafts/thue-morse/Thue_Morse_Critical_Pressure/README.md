@@ -39,7 +39,8 @@ See `SOURCES.md` and `CLAIMS_AND_VALIDATION.md` for exact scope and provenance.
 
 ## Files
 
-- `article.pdf`: compiled 22-page article.
+- `article.pdf`: compiled article (22 pages as delivered; 23 since the
+  editorial notes of batch 57).
 - `article.tex`: complete source, with embedded bibliography.
 - `code/verify.py`: high-precision identities, symbolic matrix check, collocation,
   mesh comparisons, and finite-size diagnostics.
@@ -104,3 +105,25 @@ mathematical text is unchanged.
   (batch 44 of `docs/incoming/`). Runs of `code/verify.py` without `--full`
   (including `make quick`) still regenerate the two table files in `data/`
   in place with smaller meshes, so run them only on a copy.
+
+In the editorial pass after batch 57, a later package of this tree was found
+to take up two more of its research questions.
+
+- `article.tex`: after "The next critical term", a note records that
+  `../Thue_Morse_Critical_Pressure_Corrections/` (filed 2026-09-29,
+  unreviewed) answers it: both corrections occur, and
+  `P_(b,1)(c) = kappa_b sqrt|c| - (b-1)|c| log(1/|c|)
+  + [b log b + (b-1)(gamma-1)]|c| + O(|c|^(3/2-eta))` for every
+  `0 < eta < 1/2`. After "Eigenfunctions, eigenmeasures, and equilibrium
+  measures", a note records that the same package gives the first normalized
+  eigenvector corrections, a right boundary layer on the scale `sqrt|c|` and
+  the weak limits of the equilibrium measures (`(1/2) delta_0 + (1/2)`
+  Lebesgue at `s = 1`, an explicit mixture along `s = 1 + u sqrt|c|`,
+  `u` bounded); the left boundary layer remains open. Both notes are marked
+  `% ed.`. Conversely, that package's amplitude corollary repeats this
+  article's `eq:critical-amplitudes`, as a note there says.
+- `article.pdf`: rebuilt with `latexmk -pdf -interaction=nonstopmode
+  -halt-on-error article.tex` (MiKTeX 26.2 pdfTeX 1.40.29): 23 pages (22 before; the notes add
+  one), 782,505 bytes; no error, undefined reference, duplicate
+  destination or overfull box; no Type 3 font; the pages carrying the notes
+  were rendered and inspected.

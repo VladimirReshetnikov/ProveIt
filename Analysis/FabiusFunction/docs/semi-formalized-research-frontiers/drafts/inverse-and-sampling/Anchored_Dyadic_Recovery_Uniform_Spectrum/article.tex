@@ -26,6 +26,8 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \DeclareMathOperator{\TV}{TV}
 \DeclareMathOperator{\Law}{Law}
 \DeclareMathOperator{\Var}{Var}
@@ -1338,11 +1340,14 @@ numerical operation.
 
 \subsection{How to reproduce the package}
 
+% ed. (2026-09-29): the program now writes to data-rerun/ by default, so a
+% plain run no longer overwrites the recorded files in data/.
 Run \texttt{python code/verify.py} from the package root, or invoke the
-script by its absolute path from another directory. It regenerates
-\nolinkurl{data/verification.json}, \nolinkurl{data/verification.txt},
-\nolinkurl{data/analytic_bounds.csv}, and
-\nolinkurl{data/rouche_thresholds.csv}. The exact checks use only the Python
+script by its absolute path from another directory. It writes
+\nolinkurl{verification.json}, \nolinkurl{verification.txt},
+\nolinkurl{analytic_bounds.csv}, and \nolinkurl{rouche_thresholds.csv}
+to \nolinkurl{data-rerun/}, or to the directory given by
+\texttt{-{}-output-dir}; the recorded copies are in \nolinkurl{data/}. The exact checks use only the Python
 standard library; the diagnostic portion needs \texttt{mpmath}.
 The TeX source contains the displayed tables directly, so rebuilding the
 article does not require Python. Two passes of \texttt{pdflatex article.tex}
@@ -1425,6 +1430,25 @@ global minimax problem.\\
 \bottomrule
 \end{tabular}
 \end{center}
+% ed. (2026-09-29): Lean crosswalk; the article does not cite these theorems.
+\begin{ednote}
+Lean crosswalk, not cited by the article. The zero multiplicity
+$c_m=1+v_2(m)$ of \eqref{eq:multiplicity} is the machine-checked theorem
+\path{Fabius.analyticOrderAt_rvachevFourierProduct_int} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/IntegerZeroAnalyticOrder.lean}.
+That $1+v_2(m)\ge r+1$ exactly when $2^r\mid m$, the divisor count behind
+\cref{lem:periods}, is
+\path{Fabius.dyadicZeroMultiplicity_ge_succ_iff_pow_two_dvd} in
+\path{DyadicZeroMultiplicity.lean} of the same directory. The derivative
+norms \eqref{eq:exact-derivative-norm} are
+\path{Fabius.isGreatest_abs_iteratedDeriv_rvachevUp}
+(\path{GlobalBounds.lean}), and the variance $1/9$ is
+\path{Fabius.integral_sq_mul_rvachev_eq_one_ninth}
+(\path{DyadicSpecializations.lean}). Exact identifiability of dyadic
+exponent sequences from zero orders, a noise-free counterpart of the
+divisor inversion, is proved in \path{GeneralizedRvachevIdentifiability.lean}.
+No quantitative statement of this article is formalized.
+\end{ednote}
 
 The adjacent inverse-and-sampling README was also inspected. It lists the
 finite-factor, Gaussian-confounding, and flat-boundary recovery articles as
@@ -1530,6 +1554,19 @@ support is used decisively to turn Kolmogorov error into entire-transform
 error on contours. Which tail or exponential-moment hypothesis can replace
 it, and which parameter metric sees escaped Gaussian variance correctly?
 \end{question}
+% ed. (2026-09-29): the predecessor's corresponding question is answered, for
+% the Gaussian variance, by a package filed after this article's snapshot.
+\begin{ednote}
+The predecessor's corresponding question, ``Gaussian components and
+square-summable spectra'', is answered for the Gaussian-variance functional
+by the repository article
+\path{inverse-and-sampling/Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/}
+(filed 2026-09-29, after the snapshot this article read; unreviewed), in a
+model with a known smooth compactly supported background: without a tail
+restriction the exact minimax risk for the variance is $V/2$ at every
+sample size. Quantitative recovery of the scales themselves in that space,
+anchored or pairwise, is not treated there.
+\end{ednote}
 
 \begin{question}[Validated inversion and proof-carrying certificates]
 Build a finite-prefix solver that outputs both candidate lengths and

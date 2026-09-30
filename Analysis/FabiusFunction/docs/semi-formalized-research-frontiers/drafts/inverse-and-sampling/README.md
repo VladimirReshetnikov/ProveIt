@@ -300,7 +300,7 @@ law's.  Unreviewed; its numerics are diagnostics; no Lean statement.
 
 [`Anchored_Dyadic_Recovery_Uniform_Spectrum/`](Anchored_Dyadic_Recovery_Uniform_Spectrum/)
 holds *Anchored Recovery of the Dyadic Uniform Spectrum*, filed on
-2026-09-29 by a quick archival intake (22-page A4 PDF, 1,622-line
+2026-09-29 by a quick archival intake (23-page A4 PDF, 1,659-line
 source, an exact check program with mpmath diagnostics).  It takes up
 the pointwise questions the uniform-factor recovery article above
 leaves open: comparing a law directly with the Rvachev law, the

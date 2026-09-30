@@ -133,7 +133,7 @@ Lean statement.
 ## Critical corrections and equilibrium selection (arrival, 2026-09-29)
 
 [`Thue_Morse_Critical_Pressure_Corrections/`](Thue_Morse_Critical_Pressure_Corrections/)
-holds *Beyond the Square-Root Cusp* (21-page A4 PDF, 1,495-line source,
+holds *Beyond the Square-Root Cusp* (21-page A4 PDF, 1,512-line source,
 an mpmath/NumPy/SciPy diagnostic program), filed on 2026-09-29 by a quick
 archival intake.  It takes up two questions of the critical pressure
 article above.  At the critical exponent the pressure is
