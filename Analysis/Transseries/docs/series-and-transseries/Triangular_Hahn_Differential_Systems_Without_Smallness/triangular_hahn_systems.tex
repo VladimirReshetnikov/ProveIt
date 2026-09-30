@@ -1,0 +1,999 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable,enumitem,needspace}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Triangular Hahn systems without smallness}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\Qq}{\mathbb Q}\newcommand{\Nn}{\mathbb N}
+\newcommand{\Hh}{\mathcal H}\newcommand{\Ll}{\mathcal L}
+\newcommand{\Id}{\mathrm{id}}\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\Res}{\operatorname{Res}}\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Mat}{\operatorname{Mat}}\newcommand{\End}{\operatorname{End}}
+\newcommand{\im}{\operatorname{im}}\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\dd}{\partial_T}\newcommand{\eps}{\varepsilon}
+\newcommand{\snap}{47e1a335d252b90809a5416a6438d7aa1e087770}
+\hypersetup{pdftitle={Triangular Hahn Differential Systems Without Smallness},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Rank-one descent, exact logarithmic degree, and finite residue certificates},pdfkeywords={Hahn series, transseries, triangular differential systems, residues, Smith invariants, logarithmic depth}}
+\title{\textbf{Triangular Hahn Differential\\Systems Without Smallness}\\[0.65em]\large Rank-one descent, exact logarithmic degree,\\and finite residue certificates}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+Recent ProveIt research gives finite residue and exact logarithmic-degree classifications for differential equations whose perturbations uniformly decrease the outer power of $x$. It explicitly asks what happens when coefficients are small only in logarithms, and how to extend the method to systems. We give a complete answer for triangular systems over full, finite-depth logarithmic Hahn fields, with arbitrary coefficients and no smallness assumption.
+
+The starting point is a rank-one dichotomy. A scalar operator $D-a$ either has a logarithmic integrating factor, with one residue obstruction, or is bijective on the original field. A logarithmic integrating factor cannot first appear at a greater finite logarithmic depth. For triangular systems these facts imply that every solution in the entire finite logarithmic tower already lies in the base field with polynomial dependence on one additional logarithm. Its degree is bounded by the number of split diagonal factors along a dependency path, not by the size of the coefficients.
+
+A finite formal residue matrix $M(z)$ has diagonal exactly $z$ and determinant $z^r$, where $r$ is the number of split factors. Its Smith exponents determine all homogeneous degree subspaces and the exact minimum degree for each forcing. Only a bounded jet is needed. Every jet coefficient is a finite sum of operator words, because strict triangularity bounds the number of coupling steps. A three-dimensional mixed system demonstrates residue transport through an exponential-type intermediate mode and exact cancellation of a logarithmic obstruction. For that family, actual real solutions and signed factorial-series error bounds are also proved.
+\end{abstract}
+\vfill
+\noindent\fbox{\begin{minipage}{0.94\linewidth}\small
+\textbf{Status and limits.} These are conventional mathematical proofs, not a Lean formalization or an independently refereed publication. The proposed extension is the unrestricted triangular class, its all-depth descent and path bounds, and its finite certificates. Hahn integration, rank-one integrating factors, finite-defect elimination, Smith form, and Toeplitz methods have established antecedents, which are credited. Global priority is not established. General nontriangular systems and general analytic summability are not claimed.
+\end{minipage}}
+\clearpage
+\setcounter{tocdepth}{1}\tableofcontents
+\section*{Reading guide}
+The rank-one criterion is Theorem~\ref{thm:rankone}; logarithmic descent is Theorem~\ref{thm:descent}. The unrestricted triangular theorem is Theorem~\ref{thm:triangular}. The exact degree classification and finite certificates are Theorems~\ref{thm:smith} and~\ref{thm:jet}. The mixed cancellation family is developed in Sections~\ref{sec:example}--\ref{sec:analytic}. All infinite-support arguments are proved separately from the finite regression tests.
+\clearpage
+
+\section{The question, the extension, and its boundaries}
+\label{sec:intro}
+\subsection{A specific question in the current repository}
+The ProveIt article \emph{The Exact Logarithmic Degree of Hahn-Transseries Solutions} treats scalar operators
+\begin{equation}
+ P(E)+\sum_j a_j E^j,\qquad E=xD,\qquad D=\frac{d}{dx},
+ \qquad d_x(a_j)\le-\eps<0,
+ \label{eq:oldclass}
+\end{equation}
+where $d_x$ is the largest outer exponent of $x$. Its finite derivative-parameter matrix gives exact degrees in an added logarithm. Its further-research section explicitly excludes a coefficient such as $(\log x)^{-1}$ from the outer-drop argument and asks for a multilevel treatment, including scalar examples whose homogeneous solutions require powers or exponentials. The same section asks about matrix systems \cite{repo-smith}. These questions continue those of the earlier finite-residue article \cite{repo-residue}.
+
+We replace the outer-smallness hypothesis by a different structural hypothesis: the differential system is triangular, or a triangularizing gauge over the base field is supplied. Its diagonal entries and all of its strictly triangular couplings can be arbitrary Hahn series. Coefficients may grow, be small only in a logarithm, have infinite support, or mix several logarithmic levels. Triangularity prevents a coupling path from cycling; no analytic norm or valuation-smallness assumption on the couplings is required.
+
+This is not an extension to every operator in every direction. A generic higher-order scalar equation need not factor into first-order operators over the chosen field, and a generic matrix system need not triangularize there. Those problems remain outside the theorem. Within the triangular class, however, the classification includes every solution in every greater \emph{finite logarithmic depth}, not merely a guessed polynomial ansatz.
+
+\subsection{The main result in one statement}
+Let $\Hh_n$ be the real Hahn field generated by real powers of $x,\log x,\ldots,\log_n x$, with reverse-well-ordered support and the natural derivation. Put $T=\log_{n+1}x$. Consider
+\begin{equation}
+ \Ll y=f,\qquad
+ \Ll=\diag(D-a_1,\ldots,D-a_m)+N,
+ \qquad N_{ij}=0\quad(i\ge j),
+ \label{eq:system-intro}
+\end{equation}
+with $a_i,N_{ij}\in\Hh_n$ and $f\in\Hh_n^m$. A diagonal factor is called \emph{split} when $a_i=Dh_i/h_i$ for some $h_i\in\Hh_n^\times$. This terminology refers to the specified logarithmic field, not to analytic regular singularities.
+
+Let $r$ be the number of split factors. In the dependency graph put an arrow $j\to i$ when $N_{ij}\ne0$, and let $q$ be the greatest number of split vertices on a directed path, including a one-vertex path. Set $q=0$ when $r=0$. We prove the following conclusions.
+
+Every forcing has a particular solution in $\Hh_n[T]^m$ of degree at most $q$. The homogeneous solution space throughout $\bigcup_{N\ge n}\Hh_N^m$ has dimension $r$, is contained in $\Hh_n[T]^m$, and has degree at most $q-1$ when $r>0$. If $r=0$, the system is bijective on the original field and gains no logarithmic solutions at any greater finite depth.
+
+For $r>0$, an explicit $r\times r$ formal matrix $M(z)$ has diagonal $z$ and determinant $z^r$. If its Smith exponents are $\nu_1,\ldots,\nu_r$, then
+\begin{equation}
+ \sum_i\nu_i=r,\qquad 0\le\nu_i\le q,
+ \qquad
+ \dim\mathscr S_d=\sum_i\min(d+1,\nu_i),
+ \label{eq:preview}
+\end{equation}
+where $\mathscr S_d$ is the homogeneous space of degree at most $d$ in $T$. Finite linear systems determine the exact minimum degree for each forcing. The jet $M_0,\ldots,M_{q-1}$ suffices for classification. Constructing a solution at the final possible degree $q$ may also use $M_q$.
+
+\subsection{What is inherited and what is proposed here}
+The basic residue functional and normalized primitive are the same objects used in the repository's residue and Smith articles. We reprove the required identities to make the argument self-contained; we do not present them as new. The use of a derivative parameter, Smith exponents, and block Toeplitz matrices is also already present in the predecessor \cite{repo-smith}. The adjacent Hahn--Fuchsian article treats a real-spectrum system with a different small-support structure and proves substantial analytic normalization results \cite{repo-fuchsian}.
+
+The proposed additions are the rank-one \emph{all-depth descent} mechanism used to handle arbitrary diagonal coefficients; an unrestricted triangular system theorem mixing split and nonsplit factors; path-sensitive degree bounds; and finite residue words whose finiteness comes from acyclicity instead of an outer drop. The mixed example shows why removing nonsplit coordinates without tracking their residue transfers gives a wrong answer. Its explicit real realization goes beyond a purely formal illustration, but it is not a general summability theorem.
+
+Strong derivations on generalized series fields and their integration theory have a substantial literature, including Kuhlmann and Matusinski \cite{km}. Logarithmic and exponential extensions belong to the broader theory of asymptotic differential algebra \cite{adh,gehret}. Smith and Toeplitz/Jordan-chain methods are classical; Stiefenhofer provides a pertinent operator-series formulation \cite{stief}. The proofs below establish the precise statements needed here rather than infer them from a general resemblance to those theories. The literature check is targeted and does not establish publication priority for the combination.
+
+\subsection{Snapshot and interpretation}
+The principal source inspection is pinned to commit
+\begin{center}\small\texttt{\snap}.\end{center}
+The exact-degree source at that commit has blob identifier
+\begin{center}\small\texttt{45f4a6ba37bea48a47652bc10a3f8ba579a9bcf1}.\end{center}
+The targeted question is in its subsection ``Perturbations that are small only in logarithms.'' The repository was read, not modified. This is a targeted examination of the relevant corpus, not a line-by-line audit of every repository document or every newly deposited archive.
+
+Throughout most of the paper, ``solution'' means a formal Hahn-series solution. An element of $\Hh_n$ need not converge or represent a germ of an actual function. Section~\ref{sec:analytic} separately constructs actual functions for one finite-coefficient family. No other analytic evaluation is assumed.
+
+\section{The finite logarithmic Hahn field and its residue}
+\label{sec:field}
+\subsection{Monomials, support, and the derivative}
+Fix an integer $n\ge0$. Write
+\[
+ \ell_0=x,\qquad \ell_j=\log_jx\ (j\ge1),\qquad
+ \rho_j=(\ell_0\ell_1\cdots\ell_j)^{-1}.
+\]
+For $\alpha\in\R^{n+1}$ put $\mathfrak m_\alpha=\prod_{j=0}^n\ell_j^{\alpha_j}$. Monomials are ordered lexicographically by $\alpha$, with the outer coordinate first. A support is \emph{reverse well ordered} when each nonempty subset has a greatest monomial. Let
+\[
+ \Hh_n=\left\{\sum_\alpha c_\alpha\mathfrak m_\alpha:
+ c_\alpha\in\R,\ \supp(c)\text{ reverse well ordered}\right\}.
+\]
+Usual Hahn addition and convolution make this a field. The comparison $f\prec g$ for nonzero series means that the largest monomial of $f$ is strictly smaller than that of $g$; $0\prec g$ is permitted. It is a formal support comparison, not an estimate of real functions.
+
+A family is Hahn-summable when the union of its supports is reverse well ordered and each monomial occurs in only finitely many members. The derivative is the strong extension of
+\begin{equation}
+ D\mathfrak m_\alpha
+ =\mathfrak m_\alpha\sum_{j=0}^n\alpha_j\rho_j.
+ \label{eq:derivative}
+\end{equation}
+Indeed, each of the finitely many derivative branches translates a support by a fixed exponent vector, and each target exponent has at most one preimage on each branch. This proves strongness directly. The product rule follows first on monomials and then by Hahn convolution.
+
+Set $\ct f=[1]f$ and $\Res_n f=[\rho_n]f$. The coefficient functional $\ct$ is not asserted to be multiplicative on the whole field. One identity used repeatedly is
+\begin{equation}
+ \Res_n(\rho_n f)=\ct f.
+ \label{eq:rho-ct}
+\end{equation}
+Each derivative has zero residue. In fact, the only monomial that could contribute to $\rho_n$ through branch $j$ has zero exponent in coordinate $j$, so its branch coefficient vanishes.
+
+\subsection{Outer blocks and summable geometric inverses}
+For $n\ge1$, let $t=\ell_1$ and identify the lower field generated by $t,\log t,\ldots,\log_{n-1}t$ with a copy of $\Hh_{n-1}$. Every element has a unique block expansion
+\begin{equation}
+ f=\sum_{\beta\in S}x^\beta f_\beta(t),\qquad
+ D(x^\alpha u)=x^{\alpha-1}(\alpha+\delta)u,
+ \quad\delta=\frac{d}{dt}.
+ \label{eq:blocks}
+\end{equation}
+For a nonzero series, $d_x(f)$ denotes its greatest outer exponent; set $d_x(0)=-\infty$. The projected outer support $S$ is reverse well ordered, as is every fiber. Conversely, a reverse-well-ordered outer support with reverse-well-ordered fibers gives a reverse-well-ordered lexicographic support: choose the greatest outer exponent in any nonempty subset, then the greatest element of its fiber.
+
+The lower derivative $\delta$ lowers the outer $t$ exponent of every nonzero derivative term by one. Hence, for $\alpha\ne0$,
+\begin{equation}
+ (\alpha+\delta)^{-1}g
+ =\sum_{j\ge0}\frac{(-\delta)^j g}{\alpha^{j+1}}.
+ \label{eq:blockinverse}
+\end{equation}
+This is a Hahn sum, not a norm-convergent operator series. If the greatest outer exponent of $g$ is $B$, the $j$th term has outer exponent at most $B-j$. Above any fixed outer threshold, only finitely many $j$ can contribute. The union of the corresponding finite number of reverse-well-ordered supports is reverse well ordered. Telescoping proves both inverse identities. The same argument applies whenever an operator decreases an outer exponent by a fixed positive amount.
+
+\begin{lemma}[Normalized primitive; inherited residue splitting]
+\label{lem:primitive}
+There is a real-linear map $I_n:\Hh_n\to\Hh_n$ such that
+\begin{align}
+ D I_n f&=f-\Res_n(f)\rho_n,&\ct(I_n f)&=0,\label{eq:DI}\\
+ I_n D f&=f-\ct f,&\ker D&=\R.\label{eq:ID}
+\end{align}
+Moreover, $D$ is a bijection from $\{u:u\prec1\}$ onto $\{v:v\prec\rho_n\}$, with inverse $I_n$ on these subspaces.
+\end{lemma}
+\begin{proof}
+For $n=0$, integrate $x^\beta$ to $x^{\beta+1}/(\beta+1)$ when $\beta\ne-1$, and send the exceptional monomial $x^{-1}$ to zero. This proves the assertions directly.
+
+For $n\ge1$, use \eqref{eq:blocks}. Integrate the $x^\beta$ block with \eqref{eq:blockinverse} when $\beta+1\ne0$. In the block $\beta=-1$, apply the induction hypothesis to the lower derivative $\delta$. Its exceptional lower monomial, multiplied by $x^{-1}$, is precisely $\rho_n$. All nonexceptional outer blocks remain distinct, so their primitive supports form a Hahn support by the fiber description above. The lower normalized primitive has no constant coefficient; other outer blocks cannot contribute to the global constant coefficient. Thus \eqref{eq:DI} holds.
+
+If $Df=0$, every outer block except exponent zero vanishes by \eqref{eq:blockinverse}; the remaining lower block is constant by induction. Consequently $\ker D=\R$. Applying this to $D(I_nDf-f)=0$, using zero residue for derivatives and $\ct I_nDf=0$, gives \eqref{eq:ID}.
+
+Finally, a monomial smaller than $1$ either has a strictly negative outer exponent or lies in the zero outer block and is smaller than $1$ in the lower field. Its derivative is correspondingly smaller than $\rho_n$. Conversely, a series smaller than $\rho_n$ has either outer exponent below $-1$, whose primitive has negative outer exponent, or outer exponent $-1$ with lower block below the lower residue. Induction makes that lower primitive small. The normalized primitive is therefore small, and the kernel contains no nonzero small constant.
+\end{proof}
+
+The identities in this lemma are the exact-sequence content inherited from the repository's finite-residue construction \cite{repo-residue,repo-smith}. Their proof is included because subsequent rank-one inverses require the full Hahn field, not merely polynomial differential blocks.
+
+For $u\prec1$, the usual series for $\exp u$ and $\log(1+u)$ are Hahn-summable. The Hahn--Neumann support lemma supplies reverse well ordering and finite coefficient multiplicities for powers of a small support. Formal differentiation gives
+\begin{equation}
+ D\exp u=(Du)\exp u,\qquad
+ D\log(1+u)=\frac{Du}{1+u}.
+ \label{eq:explog}
+\end{equation}
+These standard small-support operations are part of the generalized-series calculus \cite{km,adh}. This use of exponential notation is restricted to small $u$; $\exp(\sqrt{\log x})$, for example, is not being inserted into $\Hh_n$ by definition.
+
+\section{Rank-one classification and logarithmic descent}
+\label{sec:rankone}
+\begin{definition}
+A coefficient $a\in\Hh_n$ is \emph{logarithmically split} when $D-a$ has a nonzero homogeneous solution in $\Hh_n$. Equivalently, $a=Dh/h$ for some $h\in\Hh_n^\times$. Otherwise it is \emph{nonsplit}.
+\end{definition}
+
+\begin{theorem}[Rank-one dichotomy]
+\label{thm:rankone}
+Let $a\in\Hh_n$. It is split if and only if it has the unique form
+\begin{equation}
+ a=\sum_{j=0}^n\gamma_j\rho_j+b,
+ \qquad\gamma_j\in\R,\qquad b\prec\rho_n.
+ \label{eq:splitcriterion}
+\end{equation}
+In that case a normalized integrating factor is
+\begin{equation}
+ h=\prod_{j=0}^n\ell_j^{\gamma_j}\exp(I_n b),
+ \label{eq:h}
+\end{equation}
+and
+\begin{align}
+ \ker(D-a)&=\R h,\label{eq:splitkernel}\\
+ (D-a)y=f\text{ in }\Hh_n
+ &\Longleftrightarrow\Res_n(f/h)=0.\label{eq:splitrange}
+\end{align}
+If $a$ is nonsplit, then $D-a:\Hh_n\to\Hh_n$ is bijective.
+\end{theorem}
+\begin{proof}
+Factor a nonzero $h$ uniquely as $c\mathfrak m_\gamma(1+u)$, with $c\ne0$ and $u\prec1$. Then
+\[
+ \frac{Dh}{h}=\sum_j\gamma_j\rho_j+D\log(1+u).
+\]
+The last term is smaller than $\rho_n$ by Lemma~\ref{lem:primitive}. This proves necessity. Conversely, $I_nb\prec1$ and \eqref{eq:explog} shows that \eqref{eq:h} has logarithmic derivative $a$. Uniqueness in \eqref{eq:splitcriterion} follows from the distinct ordered monomials $\rho_0,\ldots,\rho_n$. Conjugation gives
+\begin{equation}
+ (D-a)(hu)=hDu.
+ \label{eq:conjugation}
+\end{equation}
+The kernel and range assertions in the split case now follow from Lemma~\ref{lem:primitive}.
+
+It remains to establish surjectivity in the nonsplit case. We give a depth induction, including the support argument. The coefficient $a=0$ is split, so assume $a\ne0$, and let $\beta=d_x(a)$.
+
+If $\beta>-1$, put $B=a^{-1}D$. On outer exponents $B$ decreases by at least $\beta+1>0$. Therefore
+\begin{equation}
+ (D-a)^{-1}=-\sum_{j\ge0}B^j a^{-1}
+ \label{eq:dominantinverse}
+\end{equation}
+is a well-defined Hahn operator, by the same decreasing-outer-support argument as in \eqref{eq:blockinverse}. Since $D-a=-a(1-B)$, telescoping proves both inverse identities. Such an $a$ cannot satisfy \eqref{eq:splitcriterion}.
+
+If $\beta<-1$, then $a\prec\rho_n$, so $a$ is split. In the remaining case write
+\[
+ a=x^{-1}b_0(t)+b_1,\qquad d_x(b_1)<-1.
+\]
+The term $b_1$ is smaller than $\rho_n$. Multiplication by $u=\exp(I_n b_1)$ conjugates $D-a$ to $D-x^{-1}b_0(t)$. On an $x^\alpha$ block the latter acts as
+\begin{equation}
+ x^\alpha v\longmapsto x^{\alpha-1}
+ \bigl(\delta-(b_0-\alpha)\bigr)v.
+ \label{eq:descentblock}
+\end{equation}
+For $n=0$, $b_0$ is a real constant and the coefficient is split, with factor $x^{b_0}u$. For $n\ge1$, if any lower coefficient $b_0-\alpha$ were split, a lower integrating factor $v$ would make $x^\alpha v u$ a nonzero homogeneous solution upstairs. Thus, when $a$ is nonsplit, every lower block in \eqref{eq:descentblock} is nonsplit and is bijective by induction. Solve each block independently. A right-hand-side outer exponent $\eta$ becomes $\eta+1$ in the solution. The projected outer support is merely translated, and each fiber is a Hahn series by induction; hence their union is a valid Hahn support. This produces the inverse for every forcing. Injectivity also follows blockwise, or directly from the definition of nonsplit.
+\end{proof}
+
+\begin{remark}
+The inverse \eqref{eq:dominantinverse} uses a positive outer drop \emph{inside a scalar construction}. This does not impose a uniform outer-drop assumption on the coefficients of the full triangular system. In the critical outer block, the proof descends to a lower logarithmic variable and can repeat this descent through every finite level.
+\end{remark}
+
+\begin{theorem}[No new rank-one modes at greater logarithmic depth]
+\label{thm:descent}
+For $N\ge n$,
+\begin{equation}
+ \left\{\frac{Dh}{h}:h\in\Hh_N^\times\right\}\cap\Hh_n
+ =\left\{\frac{Dh}{h}:h\in\Hh_n^\times\right\}.
+ \label{eq:dlogdescent}
+\end{equation}
+Every homogeneous solution of $D-a$, $a\in\Hh_n$, in a greater finite logarithmic depth already belongs to $\Hh_n$. For $f\in\Hh_n$, a nonsplit equation has exactly one solution in the entire finite logarithmic tower, and that solution is in $\Hh_n$. A split equation has all its tower solutions in $\Hh_n+h\R T$, where $T=\ell_{n+1}$, and they are exactly
+\begin{equation}
+ y=h\left(I_n(f/h)+\Res_n(f/h)T+c\right),\qquad c\in\R.
+ \label{eq:rankonesolution}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:splitcriterion} at depth $N$ to an element $a\in\Hh_n$. Each old monomial smaller than $\rho_n$ is also smaller than $\rho_N$: at its first differing coordinate among $0,\ldots,n$, it is already smaller. Each new residue $\rho_j$, $j>n$, has nonzero exponents in new coordinates and is absent from $a$. The coefficients of these new residues in the depth-$N$ criterion must consequently vanish. Removing the old residue terms leaves an old-field series smaller than $\rho_n$. This is precisely the depth-$n$ criterion, proving \eqref{eq:dlogdescent}.
+
+A new homogeneous solution divided by an old integrating factor has derivative zero, hence is a real constant. A nonsplit coefficient remains nonsplit at every finite depth, so its already constructed old-field particular solution is unique there. In the split case, differentiating \eqref{eq:rankonesolution} and using $DT=\rho_n$ gives a particular solution at depth $n+1$. Any other tower solution differs from it by a homogeneous solution, which has just been shown to descend.
+\end{proof}
+
+\begin{example}[A precise logarithmic threshold]
+\label{ex:threshold}
+For $n=1$, put $L=\log x$ and consider
+\[
+ xDy=L^{-\alpha}y,\qquad \alpha>0.
+\]
+When $\alpha=1$, the integrating factor is $L$. When $\alpha>1$, it is
+$\exp(L^{1-\alpha}/(1-\alpha))$, an exponential of a small Hahn series and therefore already in $\Hh_1$. When $0<\alpha<1$, the coefficient $x^{-1}L^{-\alpha}$ lies strictly between $\rho_0$ and $\rho_1$ and fails \eqref{eq:splitcriterion}. There is no nonzero homogeneous solution at \emph{any} finite logarithmic depth. The actual real homogeneous function
+$\exp(L^{1-\alpha}/(1-\alpha))$ exists, but its exponent is large and it is outside the entire finite logarithmic tower. The inhomogeneous formal operator is nevertheless bijective on $\Hh_1$.
+\end{example}
+
+\section{Polynomial forcing and the unrestricted triangular theorem}
+\label{sec:triangular}
+\subsection{What one scalar step does to the degree}
+We regard $\Hh_n[T]$ as a subring of $\Hh_{n+1}$, with $DT=\rho_n$. The degree of a nonzero vector is the maximum of its component degrees; the zero vector can be assigned degree $-\infty$. Statements about a minimum nonnegative degree use the convention that the zero solution is allowed at degree zero.
+
+\begin{lemma}[Polynomial scalar lifting]
+\label{lem:polynomial}
+Let $f(T)\in\Hh_n[T]$ have degree $d\ge0$. If $a$ is nonsplit, $(D-a)y=f$ has a unique polynomial solution, of degree exactly $d$. If $a$ is split, it has a polynomial particular solution of degree at most $d+1$, and its polynomial homogeneous solutions are exactly $\R h$. In both cases every solution in the entire finite logarithmic tower is one of these polynomial solutions.
+\end{lemma}
+\begin{proof}
+Write $f=\sum_{j=0}^d f_jT^j$ and $y=\sum y_jT^j$. With $B=D-a$ acting on base-field coefficients, the coefficient equations are
+\begin{equation}
+ B y_j+(j+1)\rho_n y_{j+1}=f_j.
+ \label{eq:coefficientrecursion}
+\end{equation}
+When $a$ is nonsplit, solve these successively from $j=d$ downwards using $B^{-1}$. The top coefficient is $B^{-1}f_d\ne0$, and the recurrence is unique.
+
+When $a$ is split, divide by $h$ and integrate polynomial forcing for $D$. For a single top term $gT^j$, put $u=I_ng$ and $c=\Res_n g$. Then
+\[
+ D\left(uT^j+\frac{cT^{j+1}}{j+1}\right)
+ =gT^j+j\rho_n uT^{j-1}.
+\]
+Subtract the lower-degree error and repeat. The construction terminates and raises the total degree by at most one. Its homogeneous freedom is a constant after division by $h$.
+
+Finally, subtract the constructed polynomial particular solution from any solution at a greater finite depth. The difference is homogeneous for the original coefficient $a\in\Hh_n$, so Theorem~\ref{thm:descent} places it in the original field. This also proves uniqueness in the nonsplit case throughout the tower.
+\end{proof}
+
+\begin{theorem}[Triangular systems with arbitrary Hahn coefficients]
+\label{thm:triangular}
+For \eqref{eq:system-intro}, let $r$ and $q$ be as defined in Section~\ref{sec:intro}. No smallness assumption on $a_i$ or $N_{ij}$ is needed.
+
+For every $f\in\Hh_n^m$ there is a particular solution in $\Hh_n[T]^m$ of degree at most $q$. Every solution in $\bigcup_{N\ge n}\Hh_N^m$ belongs to this same polynomial space. The tower homogeneous space has real dimension $r$ and, when $r>0$, every homogeneous solution has degree at most $q-1$. If $r=0$, the original operator is bijective on $\Hh_n^m$ and its inverse supplies the unique solution throughout the tower.
+\end{theorem}
+\begin{proof}
+Solve rows in the order $m,m-1,\ldots,1$. At row $i$ the already determined entries make
+\[
+ (D-a_i)y_i=f_i-\sum_{j>i}N_{ij}y_j
+\]
+a scalar equation with polynomial forcing. Lemma~\ref{lem:polynomial} always supplies a polynomial solution. A nonsplit row adds no free constant and does not raise a nonzero forcing degree. A split row adds one free real constant and can raise a forcing degree by one. Since each new constant is introduced in a distinct row and later steps never change that row, these $r$ constants are independent and exhaust all homogeneous freedom.
+
+For a particular solution, trace the source of any degree increase backward through the acyclic dependency graph. A forcing starts with degree zero. Its degree can increase only at a split vertex, at most once each time the path visits that vertex. A path cannot revisit a vertex. Its degree is therefore at most its number of split vertices, hence at most $q$. For a homogeneous solution, a free constant starts with degree zero at a split vertex; that initial split vertex does not raise its degree. Only earlier split vertices on the dependency path can raise it. The bound is consequently $q-1$.
+
+To prove that no nonpolynomial tower solutions have been missed, start again from the last row of any such solution. The scalar all-depth assertion in Lemma~\ref{lem:polynomial} makes that component polynomial. Descending induction then makes every subsequent forcing polynomial and every component polynomial. When there are no split rows, the same recursion is a sequence of base-field bijections, proving the last assertion.
+\end{proof}
+
+\begin{corollary}[Supplied gauges and split scalar operators]
+\label{cor:gauge}
+The theorem applies to any system that is transformed into \eqref{eq:system-intro} by a supplied gauge matrix in $\operatorname{GL}_m(\Hh_n)$. Such a gauge preserves the exact degree in $T$. The theorem also applies to a scalar differential operator given as a product of first-order factors over $\Hh_n$, by introducing intermediate variables.
+\end{corollary}
+\begin{proof}
+A matrix over $\Hh_n$ cannot raise $T$-degree. Applying this fact to an invertible gauge and its inverse proves exact degree preservation. For a product $(D-a_1)\cdots(D-a_m)y=f$, set $u_1=y$, $u_2=(D-a_m)u_1$, and continue through the factors. The resulting equations have the form $(D-a_{m+1-i})u_i-u_{i+1}=0$, with the last equation forced by $f$. This is upper triangular with constant couplings.
+\end{proof}
+
+Finding such a gauge or factorization is not included in the theorem. Also, the scalar component of a triangular solution may have a smaller degree than the full vector: the full-system certificate must not be silently substituted for a componentwise minimum.
+
+\subsection{Sharpness of the structural degree bound}
+The chain
+\[
+ Dy_i-\rho_n y_{i+1}=0\quad(1\le i<r),
+ \qquad Dy_r=\rho_n
+\]
+has the particular solution $y_i=T^{r-i+1}/(r-i+1)!$. Its homogeneous solutions have degree at most $r-1$, so no homogeneous correction removes the top degree $r$ of the forced solution. Thus the universal particular and homogeneous bounds are both sharp. This chain is a classical iterated-integration example; it illustrates optimality of the bound, not a new source of Smith theory. Section~\ref{sec:example} supplies the more informative mixed split/nonsplit example.
+
+\section{Finite-defect elimination at the original depth}
+\label{sec:fixed}
+\subsection{Normalized diagonal data}
+Write $\mathcal D=\diag(D-a_1,\ldots,D-a_m)$. At a split coordinate choose $h_i$ by \eqref{eq:h} and define
+\begin{align}
+ G_i f&=h_iI_n(f/h_i),& E_i y&=\ct(y/h_i),\label{eq:regularmaps}\\
+ K_i c&=h_i c,& P_i f&=\Res_n(f/h_i),& Q_i c&=h_i\rho_n c.\nonumber
+\end{align}
+At a nonsplit coordinate let $G_i=(D-a_i)^{-1}$; there are no corresponding coordinates in $K,P,Q,E$. Assemble diagonal $G:\Hh_n^m\to\Hh_n^m$ and maps
+\[
+ K,Q:\R^r\to\Hh_n^m,\qquad E,P:\Hh_n^m\to\R^r,
+\]
+using the split indices in increasing order. Let $R$ denote multiplication by $\rho_n$ on every component. The letter $R$ in these operator formulas is not the coefficient field $\R$.
+
+The normalized identities are
+\begin{align}
+ \mathcal D G&=1-QP,&G\mathcal D&=1-KE,\label{eq:splitting}\\
+ EK&=1,&PQ&=1,&EG&=0,&GQ&=0,&P\mathcal D&=0.\label{eq:normalization}
+\end{align}
+They follow directly from Lemma~\ref{lem:primitive} and Theorem~\ref{thm:rankone}. In addition,
+\begin{equation}
+ RK=Q,\qquad PRK=1,\qquad GRK=0,\qquad PRG=0.
+ \label{eq:crossing}
+\end{equation}
+For the last identity, at a split coordinate use
+$\Res_n(\rho_nI_ng)=\ct(I_ng)=0$; a nonsplit coordinate contributes nothing to $P$.
+
+These identities isolate the finite-defect algebra from the Hahn realization. In particular, $\ker G=\im Q$: one inclusion follows from $GQ=0$, and the other follows from $\mathcal DG=1-QP$.
+
+\subsection{A finite residue matrix with no support hypothesis}
+Because $G$ is coordinate diagonal and $N$ strictly upper triangular, $(GN)^m=(NG)^m=0$ as operators. Set
+\begin{align}
+ S_0&=(1+GN)^{-1}=\sum_{j=0}^{m-1}(-GN)^j,\label{eq:S0}\\
+ H_0&=(1+NG)^{-1},\qquad
+ M_0=PNS_0K,\qquad b_f=PH_0f.\label{eq:M0}
+\end{align}
+Every expression here is a \emph{finite} composition of well-defined maps. Coupling coefficients of arbitrary size cause no summability problem.
+
+\begin{theorem}[Exact original-depth obstruction]
+\label{thm:fixed}
+For $f\in\Hh_n^m$, the equation $\Ll y=f$ has a solution in $\Hh_n^m$ if and only if
+\begin{equation}
+ M_0c=b_f
+ \label{eq:fixedmatrix}
+\end{equation}
+has a solution $c\in\R^r$. All original-depth solutions are
+\begin{equation}
+ y=S_0Gf+S_0Kc,\qquad M_0c=b_f,
+ \label{eq:fixedreconstruct}
+\end{equation}
+and $Ey=c$. The finite matrix $M_0$ is strictly upper triangular. Moreover,
+\begin{equation}
+ \dim_\R\ker\Ll=\dim_\R\coker\Ll=r-\rank M_0
+ \quad\text{on }\Hh_n^m.
+ \label{eq:fredholm}
+\end{equation}
+Here ``cokernel'' is algebraic; no topological Fredholm assertion is intended.
+\end{theorem}
+\begin{proof}
+Applying $G$ to $\Ll y=f$ and using \eqref{eq:splitting} gives
+\[
+ (1+GN)y=Gf+K(Ey).
+\]
+Thus any solution has \eqref{eq:fixedreconstruct}. Conversely, for a vector constructed by that formula, $Ey=c$, because $EG=0$ and $ES_0=E$. Its residual $v=\Ll y-f$ satisfies $Gv=0$, so it lies in $\im Q$ and vanishes exactly when $Pv=0$. But
+\[
+ Pv=M_0c+PNS_0Gf-Pf=M_0c-PH_0f,
+\]
+where $1-NS_0G=(1+NG)^{-1}$. This proves the equivalence and reconstruction.
+
+Every term of $M_0$ contains at least one strictly upper coupling and only diagonal maps between couplings. It is therefore strictly upper on the ordered split indices. For $f=0$, the reconstruction gives a bijection of $\ker M_0$ with $\ker\Ll$, proving the kernel dimension. The map $f\mapsto b_f=PH_0f$ is onto $\R^r$: $H_0$ is invertible and $P$ has right inverse $Q$. The range condition is exactly $b_f\in\im M_0$, so the quotient cokernel is isomorphic to $\R^r/\im M_0$.
+\end{proof}
+
+The finite-defect elimination architecture is classical and is shared with the repository's predecessor \cite{repo-residue,repo-smith}. What changes here is why the inverse exists: strict triangularity makes it a finite polynomial in $GN$, regardless of the coefficient supports. The nonsplit diagonal inverses supplied by Theorem~\ref{thm:rankone} are essential ingredients rather than discarded modes.
+
+\section{The derivative-parameter matrix and exact logarithmic degree}
+\label{sec:matrix}
+\subsection{A formal parameter acts by differentiation}
+Introduce a central formal variable $z$ and define
+\begin{equation}
+ A(z)=N+zR,\qquad S(z)=(1+GA(z))^{-1}.
+ \label{eq:Sz}
+\end{equation}
+This inverse exists in the formal power-series ring over $\End_\R(\Hh_n^m)$ because its constant term is invertible. Explicitly,
+\begin{equation}
+ S(z)=\sum_{j\ge0}(-zS_0GR)^jS_0.
+ \label{eq:Sexpansion}
+\end{equation}
+There is no claim of convergence for a nonzero numerical value of $z$. On polynomials in $T$, however, every operator power series acts meaningfully after the substitution $z=\dd$, since only finitely many derivatives act nontrivially on each polynomial. The coefficient operators act on $\Hh_n$ and commute with $\dd$, while their noncommuting composition with each other is retained exactly.
+
+Set
+\begin{equation}
+ M(z)=PA(z)S(z)K\in\Mat_r(\R[[z]]),\qquad
+ M(z)=\sum_{j\ge0}M_jz^j.
+ \label{eq:Mz}
+\end{equation}
+The actual extension of $\Ll$ to $\Hh_n[T]^m$ is represented by
+$\mathcal D+N+R\dd$: $\mathcal D$ differentiates only coefficients, and $R\dd$ accounts for $DT=\rho_n$.
+
+\begin{theorem}[Exact polynomial reduction and crossing]
+\label{thm:reduction}
+For $f\in\Hh_n^m$, polynomial solutions of $\Ll y=f$ are in bijection with $c(T)\in\R[T]^r$ satisfying
+\begin{equation}
+ M(\dd)c(T)=b_f.
+ \label{eq:polymatrix}
+\end{equation}
+The bijection is
+\begin{equation}
+ y(T)=S_0Gf+S(\dd)Kc(T),\qquad Ey=c(T).
+ \label{eq:polyreconstruct}
+\end{equation}
+The matrix $M(z)$ is upper triangular with diagonal entries exactly $z$. Consequently
+\begin{equation}
+ \det M(z)=z^r.
+ \label{eq:det}
+\end{equation}
+For homogeneous solutions the bijection preserves degree exactly. For a nonzero forcing, a positive degree is likewise preserved, and degree-zero solvability agrees on the two sides.
+\end{theorem}
+\begin{proof}
+Repeat the proof of Theorem~\ref{thm:fixed} in formal operator series, replacing $N$ by $A(z)$. The splitting maps $G,K,E,P,Q$ remain coefficient maps. Since $EG=0$, one has $ES(z)=E$. The condition $Gv=0$ on the residual again reduces its vanishing to $Pv=0$. The formal right-hand side of the reduced equation is
+\[
+ P(1+A(z)G)^{-1}f.
+\]
+After $z=\dd$, the vector $f$ is constant in $T$, so only the constant coefficient survives: this right-hand side is $PH_0f=b_f$. Similarly $S(\dd)Gf=S_0Gf$. This proves \eqref{eq:polymatrix}--\eqref{eq:polyreconstruct} and the inverse map $Ey=c$.
+
+The matrices $A$ and $S$ are coordinate upper triangular. At a split coordinate $i$, the diagonal part of $S$ is $(1+zG_iR)^{-1}$. By $G_iRK_i=0$, it fixes $K_i$ exactly. The corresponding diagonal entry of $M$ is therefore
+\[
+ P_i zR(1+zG_iR)^{-1}K_i=zP_iRK_i=z.
+\]
+No strictly upper coordinate path contributes to a diagonal entry. This proves \eqref{eq:det}.
+
+Formal power series in $\dd$ cannot raise polynomial degree, while the coefficient projection $E$ cannot raise it either. The identities giving the bijection therefore imply degree equality on the homogeneous subspace. In the forced case $S_0Gf$ has degree at most zero, so the same reasoning proves equality for every positive degree. At degree zero it is precisely Theorem~\ref{thm:fixed}.
+\end{proof}
+
+\subsection{Smith indices and the forcing-specific minimum}
+Because $\R[[z]]$ is a discrete valuation ring, there are invertible matrices $U(z),V(z)$ and uniquely determined nonnegative integers $\nu_1\le\cdots\le\nu_r$ such that
+\begin{equation}
+ U(z)M(z)V(z)=\diag(z^{\nu_1},\ldots,z^{\nu_r}).
+ \label{eq:smith}
+\end{equation}
+For completeness, elimination chooses an entry with least $z$-order, moves it to the upper-left corner, divides out its unit, and clears its row and column by divisible elementary operations. Iteration gives a diagonal form, with adjacent diagonal factors arranged by divisibility. The ideals of minors determine the successive sums of the exponents and hence uniqueness. This is the usual Smith argument, not a new diagonalization theorem.
+
+Any formal matrix unit $W(z)$ acts invertibly on polynomial vectors after $z=\dd$. Its inverse is $W^{-1}(\dd)$. Both transformations do not increase degree, so each preserves exact degree. Let
+\begin{equation}
+ \beta(f)=U(0)b_f.
+ \label{eq:beta}
+\end{equation}
+Although this coordinate vector depends on Smith choices, the conclusions below do not.
+
+\begin{theorem}[Exact degree at every finite logarithmic depth]
+\label{thm:smith}
+Assume $r>0$. The Smith indices satisfy
+\begin{equation}
+ \sum_{i=1}^r\nu_i=r,\qquad \max_i\nu_i\le q.
+ \label{eq:smithbounds}
+\end{equation}
+For $d\ge0$, the real dimension of homogeneous tower solutions of degree at most $d$ is
+\begin{equation}
+ h_d=\sum_{i=1}^r\min(d+1,\nu_i).
+ \label{eq:hd}
+\end{equation}
+For any $f\in\Hh_n^m$, the exact minimum nonnegative degree of a particular solution, among all finite-depth tower solutions, is
+\begin{equation}
+ d_{\min}(f)=\max\bigl(\{0\}\cup
+       \{\nu_i:\beta_i(f)\ne0\}\bigr).
+ \label{eq:dmin}
+\end{equation}
+The number $r$, the multiset of indices, and the function $d_{\min}$ are invariant under supplied base-field gauge equivalences, with the forcing transported by the gauge.
+\end{theorem}
+\begin{proof}
+The determinant identity gives $\sum_i\nu_i=r$. Put $c=V(\dd)v$ in \eqref{eq:polymatrix} and apply $U(\dd)$. Since the forcing is constant in $T$, this gives independent equations
+\begin{equation}
+ \dd^{\nu_i}v_i=\beta_i(f).
+ \label{eq:diagonaleq}
+\end{equation}
+For a zero right-hand side, the kernel has dimension $\nu_i$, with basis $1,T,\ldots,T^{\nu_i-1}$ when $\nu_i>0$; when $\nu_i=0$, the equation is $v_i=0$. The bounded-degree dimension is therefore \eqref{eq:hd}, since both Smith units and reconstruction preserve degree.
+
+If some $\nu_i>q$, the corresponding homogeneous equation would have a solution of degree $\nu_i-1\ge q$, contradicting Theorem~\ref{thm:triangular}. This proves the second bound in \eqref{eq:smithbounds}. For a nonzero constant right-hand side, \eqref{eq:diagonaleq} has minimum degree exactly $\nu_i$, represented by $\beta_iT^{\nu_i}/\nu_i!$; a zero right-hand side can use $v_i=0$. This proves \eqref{eq:dmin}. Theorem~\ref{thm:triangular} ensures that the polynomial classification is already the full finite-depth classification.
+
+A base-field gauge preserves exact degree and gives bijections of all homogeneous solution spaces. Thus $r$ is their total dimension, and the dimensions $h_d$ are invariant. Their successive differences determine the multiset of $\nu_i$. The same degree-preserving bijection with transported forcing proves invariance of $d_{\min}$.
+\end{proof}
+
+The bounds $\nu_i\le q$ and $\sum_i\nu_i=r$ express different information. The first is a path bound; the second counts split scalar factors, even in different disconnected graph components. The bound $q$ itself may depend on a chosen triangular presentation. The Smith multiset does not.
+
+\section{Finite jets, path-length cutoffs, and exact certificates}
+\label{sec:certificates}
+\subsection{A finite word formula}
+Let $\ell$ denote the greatest number of edges on a directed path of the dependency graph of $N$. Thus $\ell\le m-1$, with $\ell=0$ when $N=0$. Insertions of coordinate-diagonal operators do not change a path, so any word with more than $\ell$ occurrences of $N$, separated by diagonal operators, is zero.
+
+\begin{proposition}[Finite coefficient words without support smallness]
+\label{prop:words}
+For $j\ge0$, the coefficient $M_j$ in \eqref{eq:Mz} is the finite sum
+\begin{equation}
+ M_j=\sum (-1)^{p-1}P B_1G B_2G\cdots G B_p K,
+ \label{eq:words}
+\end{equation}
+where $p\ge1$, every $B_i$ is either $N$ or $R$, exactly $j$ letters are $R$, and at most $\ell$ letters are $N$. In particular every contributing word has length
+\begin{equation}
+ p\le j+\ell\le j+m-1.
+ \label{eq:wordbound}
+\end{equation}
+An empty indexing set contributes zero, as for $M_0$ when $N=0$.
+\end{proposition}
+\begin{proof}
+Expand formally $PA(1+GA)^{-1}K$ as $\sum_{p\ge1}(-1)^{p-1}PA(GA)^{p-1}K$. This expansion is legitimate coefficientwise: at fixed $z$-degree $j$ there are exactly $j$ copies of $R$, and all words with more than $\ell$ copies of $N$ vanish by the dependency graph. Consequently only the finitely many lengths in \eqref{eq:wordbound} contribute. This finite-word expansion has the same inverse identity as \eqref{eq:Sexpansion}, and therefore is its coefficientwise expansion. No rearrangement of a non-summable Hahn family occurs; all infinite Hahn operations are inside the already defined scalar maps $G_i$.
+\end{proof}
+
+This is a finiteness theorem for \emph{operator compositions and coefficient queries}. An arbitrary Hahn series is not automatically an effective finite data structure. To turn the formula into an executable algorithm, exact arithmetic, each required scalar inverse or primitive, and each residue extraction must be available on the input representation. Without those operations, the word bound is not a bit-complexity claim.
+
+\subsection{Toeplitz systems and negative witnesses}
+Use divided powers
+\[
+ c(T)=\sum_{j=0}^d c_j\frac{T^j}{j!},\qquad c_j\in\R^r.
+\]
+Equation \eqref{eq:polymatrix} becomes
+\begin{equation}
+ \sum_{j=0}^{d-u}M_jc_{u+j}=b_f\,\mathbf1_{u=0},
+ \qquad 0\le u\le d.
+ \label{eq:toeplitzeq}
+\end{equation}
+Let $\mathsf C_d$ be the $r(d+1)\times r(d+1)$ upper block Toeplitz matrix whose block $(u,v)$ is $M_{v-u}$ for $v\ge u$ and zero otherwise. Let $\mathbf b_d=(b_f,0,\ldots,0)^{\mathsf T}$.
+
+\begin{theorem}[Finite classification and certificates]
+\label{thm:jet}
+Assume $r>0$. A solution of degree at most $d$ exists if and only if
+\begin{equation}
+ \mathsf C_d\mathbf c=\mathbf b_d
+ \label{eq:certificate}
+\end{equation}
+is solvable over $\R$. Its homogeneous nullity is $h_d$. A positive certificate is a solution vector $\mathbf c$. A negative certificate is a row vector $w^{\mathsf T}$ satisfying
+\begin{equation}
+ w^{\mathsf T}\mathsf C_d=0,
+ \qquad w^{\mathsf T}\mathbf b_d\ne0.
+ \label{eq:negative}
+\end{equation}
+The jet $M_0,\ldots,M_{q-1}$ determines all Smith indices and all forcing-specific minimum degrees. At jet order $j$ its matrix entries require only words of length at most $j+\ell$. Constructing a degree-$q$ solution by \eqref{eq:certificate} can additionally require $M_q$.
+\end{theorem}
+\begin{proof}
+The divided-power differentiation rule gives \eqref{eq:toeplitzeq}, so finite linear algebra proves the equivalence and the dual criterion \eqref{eq:negative}. Let $h_{-1}=0$. By \eqref{eq:hd},
+\begin{equation}
+ h_d-h_{d-1}=\#\{i:\nu_i\ge d+1\}.
+ \label{eq:increments}
+\end{equation}
+Computing the nullities through $d=q-1$ therefore determines every positive index; the remaining indices are zero. Equivalently, the number of indices equal to $k\ge1$ is the difference of the two consecutive counts in \eqref{eq:increments}, with the count for $k=q+1$ set to zero. By Theorem~\ref{thm:smith}, $h_{q-1}=r$.
+
+For a forcing, test \eqref{eq:certificate} at $d=0,\ldots,q-1$. The first solvable degree is the minimum. If none is solvable, Theorem~\ref{thm:triangular} supplies degree $q$, so the minimum is exactly $q$. Every tested matrix uses only the claimed jet. Proposition~\ref{prop:words} gives the word cutoff. Forming the actual system at degree $q$ uses $M_q$, which explains the distinction between classifying the last possible degree and explicitly constructing a coordinate vector at that degree.
+\end{proof}
+
+For rational effective data, both witnesses can be rational and checked by exact multiplication. Over arbitrary real coefficients, the same finite-dimensional statement holds mathematically, but decidable comparison or computable representation is an additional requirement. A matrix witness must be accompanied by the provenance of its entries: a correct solution of an unrelated finite matrix does not certify the original differential equation.
+
+\subsection{An intrinsic nilpotent action and early stopping}
+The tower homogeneous solution space is stable under $\dd$, because $\dd$ commutes with the system acting on polynomials. On this $r$-dimensional real space it is nilpotent. Its positive Jordan-block lengths are precisely the positive Smith indices; zero Smith indices add no block. Formula \eqref{eq:hd} is therefore also the dimension of the kernel of the $(d+1)$st power of this intrinsic nilpotent action.
+
+One may stop a homogeneous classification as soon as $h_d=r$; no longer chain can remain. In a disconnected dependency graph, the problem splits by components, often reducing both $q$ and the matrix dimensions. These are consequences of the theorem, not an assertion of a sophisticated optimal algorithm. Forcing-adapted sparse elimination and exact coefficient complexity remain further targets.
+
+\section{A mixed system: exponential-type transport and cancellation}
+\label{sec:example}
+\subsection{The system and its two surviving logarithmic modes}
+Work at depth $n=1$, and set
+\[
+ L=\log x,\qquad s=\sqrt L,\qquad T=\log L,
+ \qquad \rho=\frac1{xL},\qquad a=\frac1{x\sqrt L}.
+\]
+For a real parameter $c$, consider the three-dimensional system
+\begin{align}
+ Dy_1+\rho y_2+c\rho y_3&=0,\label{eq:example1}\\
+ (D-a)y_2-a y_3&=0,\label{eq:example2}\\
+ Dy_3&=\rho.\label{eq:example3}
+\end{align}
+The first and third diagonal factors are split, with integrating factor $1$. The middle one is nonsplit by Example~\ref{ex:threshold}. Thus $r=q=2$, even though the system has three coordinates. The middle homogeneous mode in an exponential extension is $\exp(2s)$; it is absent from every finite logarithmic Hahn field.
+
+There is a unique $v\in\Hh_1$ satisfying
+\begin{equation}
+ (D-a)v=\rho.
+ \label{eq:v}
+\end{equation}
+Since $D=(2xs)^{-1}\partial_s$ on functions of $s$, this is
+\begin{equation}
+ v_s-2v=\frac2s,
+ \qquad
+ v(s)=-\sum_{j\ge0}\frac{(-1)^j j!}{2^j s^{j+1}}.
+ \label{eq:vseries}
+\end{equation}
+The displayed series is a legitimate Hahn series, with strictly decreasing powers of $s$. It is generally divergent when interpreted as a numerical infinite sum at a fixed $s$; no numerical convergence is intended. Let
+\begin{equation}
+ J=I_1(\rho v)
+ =2\sum_{j\ge0}\frac{(-1)^j j!}{2^j(j+1)s^{j+1}}.
+ \label{eq:Jseries}
+\end{equation}
+Its constant coefficient is zero and $J_s=2v/s$.
+
+\begin{proposition}[Exact solution and minimum degree]
+\label{prop:mixed}
+A particular solution of \eqref{eq:example1}--\eqref{eq:example3} is
+\begin{equation}
+ y_3=T,\qquad y_2=-T+v,\qquad
+ y_1=\frac{1-c}{2}T^2-J.
+ \label{eq:mixedsolution}
+\end{equation}
+All homogeneous solutions in the entire finite logarithmic tower are
+\begin{equation}
+ A\begin{pmatrix}1\\0\\0\end{pmatrix}
+ +B\begin{pmatrix}(1-c)T\\-1\\1\end{pmatrix},
+ \qquad A,B\in\R.
+ \label{eq:mixedhom}
+\end{equation}
+The exact minimum forced degree is $2$ when $c\ne1$, and $1$ when $c=1$.
+\end{proposition}
+\begin{proof}
+The last equation is immediate. Since $(D-a)(-T)=-\rho+aT$, adding \eqref{eq:v} proves the second. Since $DJ=\rho v$, the first follows by direct substitution:
+\[
+ Dy_1=(1-c)\rho T-\rho v
+       =-\rho(-T+v)-c\rho T.
+\]
+For a homogeneous solution, the third coordinate is a constant $B$. The middle equation has the unique tower solution $y_2=-B$, because $(D-a)(-B)=aB$. The first equation then integrates to $(1-c)BT+A$. This proves \eqref{eq:mixedhom} without an assumed polynomial ansatz.
+
+When $c\ne1$, no homogeneous correction has degree two, so the nonzero quadratic coefficient in \eqref{eq:mixedsolution} cannot be removed. When $c=1$, the particular solution has degree one, and the third equation prevents degree zero because $\Res_1\rho=1$.
+\end{proof}
+
+The indirect path $3\to2\to1$ and the direct path $3\to1$ contribute opposite residue terms when $c=1$. The nonsplit intermediate coordinate is not a homogeneous logarithmic mode, but it cannot be discarded from the transfer calculation. It changes the effective coupling from $c$ to $c-1$.
+
+\subsection{The full formal residue matrix, not just its constant term}
+Here $G_1=G_3=I_1$, and $G_2=(D-a)^{-1}$. For the two split coordinates in the order $1,3$, one has
+\begin{equation}
+ M(z)=\begin{pmatrix}z&c-1\\0&z\end{pmatrix},
+ \qquad b_f=\begin{pmatrix}0\\1\end{pmatrix}.
+ \label{eq:mixedM}
+\end{equation}
+We verify the whole series identity. Define
+\[
+ w(z)=(D-a+z\rho)^{-1}(-a).
+\]
+As a formal series in $z$ with Hahn coefficients, it satisfies
+\begin{equation}
+ (\partial_s-2+2z/s)w=-2,
+ \qquad
+ w(z)=\sum_{k\ge0}\frac{\prod_{j=0}^{k-1}(z-j/2)}{s^k},
+ \label{eq:w}
+\end{equation}
+with the empty product equal to one. Matching powers of $s^{-1}$ gives the recurrence
+$A_k=(z-(k-1)/2)A_{k-1}$, so the displayed formula follows. Each positive-$z$ coefficient is a Hahn series in strictly negative powers of $s$; in particular $\ct w(z)=1$.
+
+In the homogeneous reconstruction with coordinate vector $(c_1,c_3)^{\mathsf T}$, the third row is $y_3=c_3$, the second is $y_2=-w(z)c_3$, and $\ct y_1=c_1$. Taking the first residue gives
+\[
+ z\ct y_1+\ct y_2+c\ct y_3
+ =zc_1+(c-1)c_3.
+\]
+The third residue is $zc_3$. This proves \eqref{eq:mixedM}. For the forcing, $Gf=0$ because $I_1\rho=0$, so $b_f=Pf=(0,1)^{\mathsf T}$.
+
+If $c\ne1$, the off-diagonal entry is a unit and the Smith exponents are $(0,2)$. If $c=1$, the matrix is $zI_2$ and the exponents are $(1,1)$. The homogeneous bounded-degree dimensions are therefore respectively
+\[
+ (h_0,h_1,h_2,\ldots)=(1,2,2,\ldots)
+ \quad\text{or}\quad(2,2,2,\ldots).
+\]
+The determinant stays $z^2$ in both cases; the distribution of degree changes while the total number of logarithmic modes remains two.
+
+\subsection{A four-entry negative certificate}
+Let $\eta=c-1$. At proposed degree one, order the unknowns as
+$(c_{0,1},c_{0,3},c_{1,1},c_{1,3})$. Then
+\begin{equation}
+ \mathsf C_1=
+ \begin{pmatrix}
+ 0&\eta&1&0\\
+ 0&0&0&1\\
+ 0&0&0&\eta\\
+ 0&0&0&0
+ \end{pmatrix},\qquad
+ \mathbf b_1=\begin{pmatrix}0\\1\\0\\0\end{pmatrix}.
+ \label{eq:mixedcert}
+\end{equation}
+The row $w^{\mathsf T}=(0,-\eta,1,0)$ annihilates $\mathsf C_1$ but has
+$w^{\mathsf T}\mathbf b_1=-\eta$. Thus, whenever $c\ne1$, this is an exact certificate excluding degree one. A degree-two positive certificate uses divided-power coefficients
+\[
+ c_0=(0,0)^{\mathsf T},\qquad
+ c_1=(0,1)^{\mathsf T},\qquad
+ c_2=(1-c,0)^{\mathsf T}.
+\]
+For $c=1$, the degree-one positive certificate is $c_0=0$, $c_1=(0,1)^{\mathsf T}$, while the row $(0,1)$ excludes degree zero. These certificates are rational whenever $c$ is rational.
+
+\section{Actual real solutions and signed error bounds for the mixed family}
+\label{sec:analytic}
+\subsection{A convergent integral realization}
+The formal theory does not evaluate arbitrary Hahn series. For the specific family above, define for $s>0$
+\begin{equation}
+ v_{\mathrm{an}}(s)=-\int_0^\infty
+       \frac{e^{-su}}{1+u/2}\,du
+       =-2e^{2s}E_1(2s),
+ \label{eq:van}
+\end{equation}
+where $E_1(z)=\int_z^\infty e^{-t}\,dt/t$ on the positive real axis. Differentiation under the integral is justified on every compact subinterval of $s>0$ by an exponentially decaying majorant. It gives
+\[
+ (v_{\mathrm{an}})_s-2v_{\mathrm{an}}
+ =\int_0^\infty\frac{(u+2)e^{-su}}{1+u/2}\,du
+ =\frac2s.
+\]
+Moreover $|v_{\mathrm{an}}(s)|\le1/s$. Thus
+\begin{equation}
+ J_{\mathrm{an}}(s)=-2\int_s^\infty
+                  \frac{v_{\mathrm{an}}(t)}{t}\,dt
+ \label{eq:Jan}
+\end{equation}
+is well-defined, tends to zero at infinity, and satisfies
+$(J_{\mathrm{an}})_s=2v_{\mathrm{an}}/s$.
+
+Substituting these two functions into \eqref{eq:mixedsolution}, with
+$s=\sqrt{\log x}$ and $T=\log\log x$, gives actual smooth solutions for all $x>1$. This verifies existence analytically for the displayed family; it is logically independent of assigning numerical sums to the formal Hahn series.
+
+\subsection{Signed factorial remainders}
+Define, for $N\ge0$, the empty sums to be zero and put
+\begin{align}
+ v_N(s)&=-\sum_{j=0}^{N-1}\frac{(-1)^j j!}{2^j s^{j+1}},\label{eq:vN}\\
+ J_N(s)&=2\sum_{j=0}^{N-1}\frac{(-1)^j j!}{2^j(j+1)s^{j+1}}.\label{eq:JN}
+\end{align}
+
+\begin{theorem}[Explicit analytic error certificate]
+\label{thm:error}
+For every $s>0$ and integer $N\ge0$,
+\begin{align}
+ 0&<(-1)^{N+1}\bigl(v_{\mathrm{an}}(s)-v_N(s)\bigr)
+ \le \frac{N!}{2^Ns^{N+1}},\label{eq:vbound}\\
+ 0&<(-1)^N\bigl(J_{\mathrm{an}}(s)-J_N(s)\bigr)
+ \le \frac{2N!}{2^N(N+1)s^{N+1}}.\label{eq:Jbound}
+\end{align}
+Consequently replacing $v_{\mathrm{an}},J_{\mathrm{an}}$ by $v_N,J_N$ in the explicit solution gives componentwise error bounds \eqref{eq:vbound}--\eqref{eq:Jbound}, with no error in $y_3$.
+\end{theorem}
+\begin{proof}
+The finite geometric identity is
+\[
+ \frac1{1+u/2}=\sum_{j=0}^{N-1}(-u/2)^j
+              +\frac{(-u/2)^N}{1+u/2}.
+\]
+Insert it into \eqref{eq:van}. Since
+$\int_0^\infty e^{-su}u^j\,du=j!/s^{j+1}$, the exact remainder is
+\begin{equation}
+ v_{\mathrm{an}}(s)-v_N(s)
+ =(-1)^{N+1}\int_0^\infty
+             \frac{e^{-su}(u/2)^N}{1+u/2}\,du.
+ \label{eq:vexactremainder}
+\end{equation}
+Its sign is immediate. Replacing the denominator by $1$ gives the upper bound in \eqref{eq:vbound}. Each finite term is integrable in \eqref{eq:Jan}, and integrating the remainder yields
+\[
+ J_{\mathrm{an}}(s)-J_N(s)
+ =-2\int_s^\infty\frac{v_{\mathrm{an}}(t)-v_N(t)}t\,dt.
+\]
+The sign is reversed; integration of $t^{-N-2}$ gives \eqref{eq:Jbound}. The componentwise conclusion follows from the explicit solution formula.
+\end{proof}
+
+The factorial expansion of $E_1$ and its next-term signed bounds are classical; see DLMF \S6.12 \cite{dlmf}. We included a direct integral proof to attach unambiguous signs and constants to the particular mixed system, not to claim a new exponential-integral asymptotic formula.
+
+The upper bound for $v$ changes from order $N$ to $N+1$ by the factor $(N+1)/(2s)$. The smallest bound therefore occurs near $N=2s$. Taking $N=\lfloor2s\rfloor$ always selects a minimizing integer, with the usual tie when $2s$ is integral. This is a direct discrete comparison of the certified bounds. It does not claim that the actual error is minimized at exactly the same integer.
+
+\subsection{What analytic uniqueness does and does not mean}
+The formal equation for $v$ is unique inside the finite logarithmic tower. The analytic scalar equation also permits $v_{\mathrm{an}}+Ce^{2s}$. Such additions lie outside that tower. Our integral selects the solution bounded by $1/s$ at infinity. Thus the dimension $r=2$ of the formal logarithmic homogeneous space should not be confused with the three-dimensional local analytic homogeneous space of a nonsingular three-dimensional first-order system. An explicit additional homogeneous vector is
+\[
+ \begin{pmatrix}
+ -2\displaystyle\int_1^s e^{2t}\,\frac{dt}{t}\\[0.4em]
+ e^{2s}\\0
+ \end{pmatrix}.
+\]
+Direct differentiation checks all three homogeneous equations. Its second component has exponential growth beyond the allowed logarithmic monomials.
+
+\section{Complex coefficients, gauge invariants, and the exact scope}
+\label{sec:extensions}
+\subsection{Complex coefficients without artificial ordering of phases}
+The rank-one, triangular, and finite-matrix classification theorems remain valid with complex coefficients and the same \emph{real} exponent group, provided the split criterion is stated correctly:
+\begin{equation}
+ a=\sum_{j=0}^n\gamma_j\rho_j+b,
+ \qquad \gamma_j\in\R,\quad b\in\Hh_n(\C),\quad b\prec\rho_n.
+ \label{eq:complexcriterion}
+\end{equation}
+The residue coefficients must remain real, since the available monomials have real exponents. The small tail may be complex. The constants, kernels, and finite matrices are then over $\C$.
+
+Here is the only extra base case needed in the proof of Theorem~\ref{thm:rankone}. At depth zero, a critical coefficient $a=b_0/x$ with $b_0\notin\R$ has block multipliers $\alpha-b_0$ for real $\alpha$, none of which vanishes. Thus $D-a$ is bijective on the real-exponent complex Hahn field. When $b_0\in\R$, the usual monomial $x^{b_0}$ splits it. All higher-depth arguments are unchanged. In particular, $D-i/x$ has no nonzero homogeneous solution in this field or its finite logarithmic tower; the oscillatory function $x^i$ belongs to a different extension. We do not impose a growth order on complex phases to force it into the present field.
+
+\subsection{Why triangularity is not a cosmetic assumption}
+The unrestricted couplings are possible because a strictly upper coordinate path cannot return to its starting vertex. Replacing $N$ by a matrix with a directed cycle destroys the finite-word proof. Even if every diagonal factor is split, feedback around a cycle can introduce new exponential scales. For instance, the constant-coefficient system $Dy_1=y_2$, $Dy_2=y_1$ has homogeneous analytic modes $e^x$ and $e^{-x}$, neither present in the finite logarithmic tower. Its diagonal entries alone would misleadingly suggest two split coordinates. The theorem does not apply to that cyclic presentation.
+
+This example does not prove that no useful nontriangular extension exists: over a suitable gauge the system diagonalizes into nonsplit scalar factors $D-1$ and $D+1$, and the correct logarithmic homogeneous dimension is zero. It shows that the count must be taken in an actual triangular differential presentation, not guessed from the original diagonal entries.
+
+\subsection{What the exact theorem resolves}
+For rank one it decides exactly whether additional logarithmic depth can create a homogeneous mode: it cannot. For triangular systems it replaces the predecessor's uniform outer drop by a finite acyclic coordinate structure, includes nonsplit intermediate coordinates, and classifies all finite-depth logarithmic solutions. For the mixed family it supplies both a positive construction and a negative degree certificate, together with actual real solutions and explicit asymptotic errors.
+
+It does not decide triangularizability of an arbitrary differential module. It does not construct a minimal exponential extension for nonsplit modes. It does not claim that arbitrary Hahn coefficients are computably presented. It does not supply convergence or summability for a general formal solution. These are genuine boundaries of the assertions, not hidden hypotheses to be filled by numerical experiments.
+
+\section{Verification, proof dependencies, and formalization targets}
+\label{sec:verification}
+\subsection{The computational package}
+The accompanying program \path{verification/verify.py} uses exact rational and symbolic arithmetic for its algebraic checks. It tests normalized finite-defect identities and reconstruction on finite-dimensional models, the word formula against an independently expanded inverse, Toeplitz degree counts, forcing certificates, random triangular matrix-series families, and the explicit mixed-system coefficients. It also records high-precision numerical illustrations of the analytic remainder bounds; these are not interval-arithmetic proofs.
+
+The exact counts, random seed, dependency versions, and recorded outputs are in \path{verification/results.json}. The manuscript's final verification summary is inserted below from the completed run, not estimated in advance.
+% BEGIN RECORDED VERIFICATION SUMMARY
+\begin{center}\small
+\begin{tabular}{lr}\toprule
+Completed check category & Recorded count\\\midrule
+Exact rational/symbolic assertions & 1,413\\
+Finite-defect models & 20\\
+Jordan profiles with paired degree certificates & 29\\
+General triangular polynomial matrix-series cases & 20\\
+Mixed-system parameter cases & 5\\
+High-precision analytic illustrations & 36\\
+\bottomrule\end{tabular}\end{center}
+The recorded run used Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0, with seed 20260929. All recorded checks passed. Counts of cases are not meant to sum to the assertion total; each case includes several independently checked identities.
+% END RECORDED VERIFICATION SUMMARY
+
+The finite-dimensional models are regression tests of the elimination identities, not models of the entire Hahn field. Random triangular matrix series test the finite classification algebra; their use does not assert that every randomly generated series has been realized by the differential systems in the main theorem. The scalar series checks use finite truncations with exact residuals, not truncated numerical equality as a substitute for a support proof.
+
+\subsection{Where the general proof resides}
+The infinite-dimensional facts are established in Sections~\ref{sec:field}--\ref{sec:rankone}. The necessary steps are: the strong monomial derivation; blockwise normalized integration; Hahn summability of the scalar decreasing-support inverses; the split/nonsplit induction; and the descent of logarithmic integrating factors. Once those are established, triangular back substitution proves the all-depth assertion without another infinite support sum over coupling paths.
+
+The effective residue matrix then uses only formal power series in an auxiliary parameter, whose action on a polynomial is finite. Each jet coefficient is a finite number of previously defined Hahn operations. Smith and Toeplitz arguments are finite algebra over the coefficient field. The analytic example has a separate integral proof, so its error estimates do not depend on informal summation of a divergent series.
+
+For independent review, the highest-value checkpoints are the critical outer-block case of Theorem~\ref{thm:rankone}, the support comparison in Theorem~\ref{thm:descent}, the proof that every tower solution is polynomial, and the normalization identity $PRG=0$. Checking these identifies the points at which a superficially similar statement for a different field or a different coefficient class could fail.
+
+\subsection{A staged Lean development}
+The repository's documented block-antiderivative API proves polynomial block identities; it is not by itself a proof of a full concrete Hahn-series realization \cite{repo-volume}. A responsible formalization can separate the following layers.
+
+First, formalize the finite-defect elimination theorem from maps satisfying \eqref{eq:splitting}--\eqref{eq:normalization}, together with nilpotence of the strictly upper perturbation. This part is independent of transseries and includes the original-depth kernel and cokernel formulas.
+
+Second, formalize matrix power series acting on divided-power polynomial vectors, the coefficient Toeplitz system, and the positive and negative certificates. The mixed example provides a small exact end-to-end target. One can initially avoid a full Smith library by proving all bounded-degree results from ranks, then add Smith invariants.
+
+Third, build the lexicographic real-exponent Hahn field, strong derivative, normalized primitive, and rank-one split criterion. The inverse constructions must come with actual summability proofs. This layer is the main missing bridge between finite identities and the concrete differential field.
+
+Finally, combine polynomial scalar lifting with a well-founded coordinate recursion to prove the graph-path degree bounds and tower descent. No theorem in the present package has been checked by Lean, and no uncompiled Lean sketch is offered as though it certified the manuscript.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+The following questions extend the proved triangular result. They are proposed research directions, not a claim that each is an established named open problem in the literature.
+
+\subsection{Detecting and certifying triangularization}
+Given a finite Laurent-logarithmic matrix system, can one decide whether it admits a gauge over $\Hh_n$ that makes it triangular? A useful first step is a certificate format for an explicitly supplied gauge, together with a procedure for finding rank-one differential submodules in low dimension. The theorem proves what follows from triangularization; it does not provide this search procedure.
+
+\subsection{Cyclic couplings with controlled multilevel contraction}
+Can the finite-path argument be replaced by a decomposition of the dependency graph into strongly connected components, with a support contraction attached only to cyclic components? This would combine the present theorem with the predecessor's outer-small method rather than demand either condition globally. A concrete target is a two-cycle whose product of transfer operators contracts at a lower logarithmic level, even though neither coupling is outer-small.
+
+\subsection{Minimal exponential and oscillatory extensions}
+For a nonsplit rank-one coefficient, determine the least additional exponential monomial needed for a homogeneous solution and how different such extensions interact in a triangular system. The descent theorem rules out logarithms alone, but does not classify exponential height or algebraic dependence among new modes. Complex coefficients add the related problem of controlled phase groups without an artificial order on oscillation.
+
+\subsection{Effective coefficient grammars and bit complexity}
+Identify finitely represented Hahn subclasses closed under the scalar inverses required by \eqref{eq:words}, or develop exact residue algorithms that do not construct the full inverse. Finite Laurent-logarithmic input is a natural first class. The main obstacle is not the number of coupling words, which is bounded, but deciding the coefficients of intermediate infinite scalar solutions. A complete complexity result should account for exponent denominators, coefficient heights, matrix size, and derivative-parameter jet order.
+
+\subsection{Forcing-adapted and componentwise minimum degrees}
+The present certificates classify the degree of the full solution vector. A specified component can have a smaller minimum because reconstruction may annihilate a top-degree mode in that component. Can one combine the residue matrix with the appropriate reconstruction row to obtain a similarly small finite certificate for a componentwise minimum? Separately, a forcing-specific reachable subgraph may permit much smaller Toeplitz systems than the uniform $r(d+1)$ construction.
+
+\subsection{Parameter transitions between split and nonsplit factors}
+Example~\ref{ex:threshold} changes its logarithmic character at $\alpha=1$. A parameter-uniform analytic description near that value requires reorganizing $L^{1-\alpha}/(1-\alpha)$ and separating a divergent normalization constant from the changing logarithmic scale. Develop a uniform remainder theorem when $(1-\alpha)\log L$ stays bounded, and determine how the finite residue data connect to that transition. Fixed-parameter formal classification alone does not answer the uniform analytic question.
+
+\subsection{Analytic realization and Stokes transport for general triangular input}
+For convergent or summable coefficient classes, can the scalar inverses and their compositions be realized by actual sectorial functions with uniform error estimates? The mixed example shows how a nonsplit scalar integral carries residue information between split coordinates. In a general triangular system, those transfers may interact with Stokes jumps of the missing exponential modes. Establishing the relation requires analytic estimates beyond formal Hahn algebra.
+
+\subsection{Nonlinear triangular equations}
+For a genuinely triangular nonlinear system, back substitution remains possible, but scalar solution branches can introduce fractional powers, exponentials, and branch-dependent logarithmic obstructions. A first target is a quadratic scalar equation forced by already constructed polynomial-logarithmic components, under hypotheses that make a distinguished branch unique. Determine whether a finite algebraic obstruction space replaces the linear residue matrix.
+
+\subsection{Canonical finite presentations and formally checked portability}
+The Smith indices are intrinsic, while $M(z)$ depends on normalized primitives and choices of integrating factors. Construct explicit finite-jet transformations between residue matrices from different normalizations or different supplied triangular gauges. Such transformations would make certificates portable across implementations. A proof-assistant implementation should verify both the finite witness and the certificate that its entries came from the claimed differential operator.
+
+\section{Conclusion}
+The obstruction to logarithmic solvability is not simply the size of a coefficient. In rank one, a coefficient either is a logarithmic derivative in the original finite-depth Hahn field, with exactly one residue obstruction, or gives a bijective inhomogeneous operator there. Increasing finite logarithmic depth cannot create a new homogeneous mode.
+
+For triangular systems, this dichotomy and acyclic back substitution replace an outer-small perturbation hypothesis. All finite-depth logarithmic solutions lie in a polynomial extension by one logarithm. The number of split vertices on a dependency path bounds the degree; a finite derivative-parameter residue matrix determines the exact degree. Its determinant is $z^r$, and its finite jets admit both positive and negative certificates using only bounded-length coupling words.
+
+The mixed family shows a nonsplit coordinate transporting a residue that a direct coupling can cancel. Exact degree certificates and signed analytic error bounds make this a concrete extension beyond the predecessor's outer-small class.
+
+\Needspace{10\baselineskip}
+\appendix
+\section{Dependency and scope table}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.28\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.30\linewidth}}
+\toprule
+Statement & Essential input & Boundary\\
+\midrule\endhead
+Normalized primitive & Lexicographic Hahn support and lower-block inverse & Full finite log depth; formal series\\
+Rank-one dichotomy & Primitive, small exponential, outer-block induction & Real exponent group; complex residues need care\\
+No new logarithmic modes & Explicit logarithmic-derivative criterion & Finite added depths, not exponential extensions\\
+Triangular existence & Scalar polynomial lifting and acyclic recursion & Actual triangular presentation or supplied gauge\\
+Path degree bound & Split-vertex count along dependencies & Upper bound; cancellations may reduce degree\\
+Original-depth matrix & Normalized splitting and finite nilpotence & Algebraic cokernel, not analytic Fredholm theory\\
+Derivative-parameter matrix & Formal operator series, $GRK=0$, $PRK=1$ & Parameter acts on polynomials, not numerical convergence\\
+Smith classification & Determinant $z^r$ and degree-preserving units & Counts logarithmic modes, not all analytic modes\\
+Finite jet words & Acyclic coordinate graph & Finite oracle workload, not automatic computability\\
+Mixed analytic realization & Explicit convergent integrals & Proved for the displayed family only\\
+Verification suite & Finite exact symbolic and rational checks & Not a proof-assistant check of infinite supports\\
+\bottomrule
+\end{longtable}
+
+\section{Reproduction and provenance}
+The archive contains this source, the compiled PDF, a build script, the verification program and its recorded output, and proof/provenance notes. The bibliography is embedded in the source; no external bibliography processor, private font, network access, or repository checkout is needed to rebuild after the stated software dependencies are installed.
+
+To rebuild the article, run \texttt{sh build.sh}. To rerun the checks, run
+\begin{verbatim}
+python verification/verify.py
+\end{verbatim}
+The verification program writes to \path{rerun/} by default, preserving the recorded output. Use its explicit \texttt{--output-dir} option to choose another destination. The recorded environment and exact assertion counts are stored in its JSON output. The source references to the ProveIt papers below are pinned to the inspected commit rather than to a moving default branch.
+
+\clearpage
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo-smith}
+ProveIt research corpus.
+\emph{The Exact Logarithmic Degree of Hahn-Transseries Solutions: Finite jets, Smith invariants, and cancellation-sensitive resonance}.
+Source and editorial amendments inspected at commit \texttt{\snap}, 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/47e1a335d252b90809a5416a6438d7aa1e087770/Analysis/Transseries/docs/series-and-transseries/Exact_Logarithmic_Degree_Smith_Invariants/exact_logarithmic_degree.tex}.
+
+\bibitem{repo-residue}
+ProveIt research corpus.
+\emph{Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn Transseries}.
+Package documentation and its editorial cross-references, 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/47e1a335d252b90809a5416a6438d7aa1e087770/Analysis/Transseries/docs/series-and-transseries/Residue_Obstructions_Logarithmic_Depth_Promotion/README.md}.
+
+\bibitem{repo-fuchsian}
+ProveIt research corpus.
+\emph{Finite Resonance Certificates and Sharp Analytic Normalization for Hahn--Fuchsian Systems}.
+Package documentation, pinned source inspection, 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/47e1a335d252b90809a5416a6438d7aa1e087770/Analysis/Transseries/docs/series-and-transseries/Hahn_Fuchsian_Resonance_Analytic_Normalization/README.md}.
+
+\bibitem{repo-volume}
+ProveIt research corpus.
+\emph{Transseries: the polynomial--logarithmic calculus and its inversions}.
+Canonical-volume documentation and formalization inventory, inspected 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/47e1a335d252b90809a5416a6438d7aa1e087770/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
+
+\bibitem{km}
+S.~Kuhlmann and M.~Matusinski.
+\emph{Hardy type derivations on generalized series fields}.
+arXiv:0903.2197, 2009.
+\url{https://arxiv.org/abs/0903.2197}.
+
+\bibitem{adh}
+M.~Aschenbrenner, L.~van den Dries, and J.~van der Hoeven.
+\emph{Asymptotic Differential Algebra and Model Theory of Transseries}.
+Annals of Mathematics Studies 195, Princeton University Press, 2017.
+Corrected preprint arXiv:1509.02588v7, 2025.
+\url{https://arxiv.org/abs/1509.02588}.
+
+\bibitem{gehret}
+A.~Gehret.
+\emph{The Asymptotic Couple of the Field of Logarithmic Transseries}.
+arXiv:1405.1012, 2014; revised version 2016.
+\url{https://arxiv.org/abs/1405.1012}.
+
+\bibitem{stief}
+M.~Stiefenhofer.
+\emph{Formal and Analytic Diagonalization of Operator functions}.
+arXiv:2305.14228, 2023.
+\url{https://arxiv.org/abs/2305.14228}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions.
+\emph{Section 6.12: Asymptotic Expansions}, especially equation 6.12.1 and its remainder bounds.
+Accessed 29 September 2026.
+\url{https://dlmf.nist.gov/6.12}.
+\end{thebibliography}
+\end{document}

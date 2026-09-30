@@ -2,7 +2,7 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are forty-nine unmerged
+2026-09-04 (see the end of this file). Beside them are fifty unmerged
 arrivals of 2026-09-29, each filed whole with its PDF, the first forty-one
 then amended editorially (see "Arrivals of 2026-09-29" below).
 
@@ -263,8 +263,8 @@ companion's directory omits the "And".
 
 ## Arrivals of 2026-09-29 (unmerged)
 
-Forty-nine research packages arrived through the repository drop zone
-`docs/incoming/` on 2026-09-29, in eight deliveries (its batches 45 to 52;
+Fifty research packages arrived through the repository drop zone
+`docs/incoming/` on 2026-09-29, in nine deliveries (its batches 45 to 53;
 the eighth came in four drop-zone commits).
 Each is filed whole, with its PDF, verification program and recorded
 outputs, in a directory named after the document. None has been reviewed
@@ -275,7 +275,7 @@ and cite the volumes under
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/`;
 the passages they cite are unchanged here apart from that path. The
 gamma-core and residue-obstruction articles, and all articles of the third
-to eighth deliveries, cite the current paths. No article of the first two
+to ninth deliveries, cite the current paths. No article of the first two
 deliveries saw the others in the repository; where one continues another,
 it read it from Vladimir's library, as noted below. The seven articles of
 the third delivery were written after the first delivery was filed. Six
@@ -336,7 +336,16 @@ Its four other archives are not transseries work and extend reports of the
 research-report collection under `SetTheory/Cardinals/docs/reports/`:
 optimal Kummer atlases for the radical-solvers report, two independent
 articles on the macroscopic jump law of adjacency-bounded 132-avoiding
-permutations, and finite-output open-query games.
+permutations, and finite-output open-query games. The ninth delivery
+brought two archives. Its transseries article, the triangular article, was
+written against the revision that brought the eighth delivery's second
+group of archives, whose tree has the sixth delivery amended but no
+seventh- or eighth-delivery package; it continues the exact-degree article
+and does not cite Vladimir's library. The other archive is not transseries
+work: it answers the endpoint half of a question of the research-report
+collection's *Shifted Catalan Hankel Polynomials* (uniform endpoint limits
+of Catalan Hankel determinants) and becomes that report's Part IV, under
+`SetTheory/Cardinals/docs/reports/hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials/`.
 
 The forty-three packages of the first seven deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
@@ -358,7 +367,9 @@ delivery was amended in the same way after it was filed, and notes
 recording it were added to three earlier packages (the critical Hahn,
 confluent and logarithmic-endpoint packages). The eight packages of the
 eighth delivery are filed as delivered and have not yet been amended; their
-paragraphs below cite the delivered files.
+paragraphs below cite the delivered files. The package of the ninth
+delivery is filed as delivered and has not yet been amended; its paragraph
+below cites the delivered files.
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -1621,7 +1632,7 @@ forced equations, iterated-logarithm coefficients and nonreal spectrum are
 not treated here. Its constants lemma is the depth-0 case of the canonical
 volume's `plt:thm:ext-tower-strict` (`transseries_and_inversion.tex:29092`),
 which it could not read; an editorial note now cites it. The two articles,
-the exact-degree article and the three articles after it form one unit
+the exact-degree article and the four articles after it form one unit
 for the deferred merge, on differential equations over Hahn fields; the
 residue-obstruction article is its host, the exact-degree article supplies its degree
 classification, and this article its depth-0 system counterpart. Their
@@ -1732,6 +1743,48 @@ article's two-edge example. No finite set of input coefficients
 determines the convergence locus. It cites `NeumannWords.lean` as related
 only.
 
+[`Triangular_Hahn_Differential_Systems_Without_Smallness/`](Triangular_Hahn_Differential_Systems_Without_Smallness/)
+holds *Triangular Hahn Differential Systems Without Smallness: rank-one
+descent, exact logarithmic degree, and finite residue certificates*
+(25-page A4 PDF, 999-line source, 1,413 exact rational and symbolic
+assertions and 36 high-precision illustrations). It takes up the
+exact-degree article's questions "Perturbations that are small only in
+logarithms" and "Matrix systems and nonreal modes"
+(`Exact_Logarithmic_Degree_Smith_Invariants/exact_logarithmic_degree.tex:1137-1138`,
+`:1152-1153`), which are the residue-obstruction article's
+"Perturbations small only in logarithms" and "Matrix systems and nonreal
+indicial roots"
+(`Residue_Obstructions_Logarithmic_Depth_Promotion/residue_fredholm.tex:1062-1065`,
+`:1072-1075`), and answers them in part: it replaces the outer-small
+hypothesis by triangularity. For a system `diag(D − a_i) + N` over the
+real Hahn field of `x, log x, …, log_n x`, with `N` strictly triangular and
+no smallness assumption on any coefficient, a diagonal factor is split
+(`a_i` a logarithmic derivative in the field) exactly when `a_i` is a real
+combination of `ρ_j = 1/(x log x ⋯ log_j x)` plus a series below `ρ_n`, and
+no greater finite logarithmic depth creates a new rank-one mode. With `r`
+split factors and `q` the largest number of split vertices on a path of
+the coupling graph, every solution in the whole finite logarithmic tower
+is polynomial in `T = log_{n+1} x`, forced solutions have degree at most
+`q` and the `r`-dimensional homogeneous space at most `q − 1`; a residue
+series `M(z)` with diagonal `z` and determinant `z^r` has Smith exponents
+`ν_i` with `dim S_d = Σ min(d + 1, ν_i)`, and finite Toeplitz systems in its
+jet decide the least degree of each forcing, with positive and negative
+rational certificates. It covers scalar operators that factor into
+first-order factors over the field, so `x y' = (log x)^{−α} y` is split for
+`α ≥ 1` but for `0 < α < 1` has no homogeneous solution at any finite
+depth. In a three-dimensional example a nonsplit middle coordinate
+transports a residue that a direct coupling cancels at `c = 1`, lowering
+the least forced degree from 2 to 1, with actual solutions and signed
+factorial error bounds. It does not decide triangularizability, treat
+cyclic couplings or construct the exponential extensions of nonsplit
+modes. It was written before the three articles above were filed and does
+not cite them; its path bound is the counterpart, for arbitrary Hahn
+coefficients at every depth, of the path-sensitive article's degree lemma
+(degree of a path kernel = number of exact resonances), and its
+cancellation example is the kind of correlation that article excludes by
+independent edge coefficients. It names the block-antiderivative API of
+the canonical volume as related only.
+
 In that unit, the path-sensitive article refines the Hahn–Fuchsian
 article's universal theorem for prescribed supports, and the Hahn–Dulac and
 convergence-locus articles form its nonlinear part: they prove the same
@@ -1743,8 +1796,14 @@ the nonlinear counterpart of the exact-degree article's logarithmic degree,
 and the convergence loci are a nonlinear counterpart of the algebraic
 logarithmic strata whose geometry the Hahn–Fuchsian article asks about
 ("Geometry of the logarithmic strata"), not an answer to that question.
-Their conventions (`Λ`, `A`, `A_0`; `P` for the gauge in the first two, for
-a polynomial block in the third) need a dictionary first.
+The triangular article extends the exact-degree article's Smith
+classification from outer-small scalar operators to triangular systems
+with arbitrary coefficients at every logarithmic depth; its degree bound
+by split vertices on a path and its Smith formula `Σ min(d + 1, ν_i)` have
+the form of the path-sensitive lemma and of the Hahn–Fuchsian
+`dim ker B^{d+1}`. Their conventions (`Λ`, `A`, `A_0`; `P` for the gauge in
+the first two, for a polynomial block in the third; `N`, `q`, `r` and `ρ_j`
+in the triangular article) need a dictionary first.
 
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the
@@ -1767,7 +1826,7 @@ moment-determinacy article's least moment bound is compared with its flat
 defect, not with the actual truncation error; none of these is a sharp
 instance.
 
-Twenty-eight checksum ledgers were verified in full on filing and not filed.
+Twenty-nine checksum ledgers were verified in full on filing and not filed.
 From the first delivery, these are the two `SHA256SUMS.txt` of the
 regularity and inverse-harmonic packages and the `SHA256SUMS` of the
 moving-fold package. From the second, they are the `SHA256SUMS` of the
@@ -1787,7 +1846,8 @@ signed-condensation and second natural-boundaries packages had none. From
 the seventh, it is the `SHA256SUMS` of the lower-endpoint package; the
 moment-determinacy package had none. From the eighth, they are the
 `SHA256SUMS` of the exact-type and path-sensitive packages and the
-`SHA256SUMS.txt` of the Hahn–Dulac package; the other five had none. The
+`SHA256SUMS.txt` of the Hahn–Dulac package; the other five had none. From
+the ninth, it is the `SHA256SUMS.txt` of the triangular package. The
 READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
@@ -1817,7 +1877,10 @@ reports of the exact-type, path-sensitive, Hahn–Dulac and
 convergence-locus packages carry digests of their delivered source and PDF
 (and, except the path-sensitive one, of their program and results), which
 match the filed files, and the subexponential-cost package's
-`data/build_validation.json` records only its page count and checks.
+`data/build_validation.json` records only its page count and checks. The
+triangular README still lists its ledger, and its `notes/validation.json`
+carries digests of its delivered source and PDF, which match the filed
+files.
 
 Fifty-eight CSV tables written with CRLF line endings were normalized to LF
 on filing: the reversion package's `numeric_checks.csv`, the regularity
@@ -1849,7 +1912,9 @@ delivered: those of the path-sensitive, convergence-locus,
 uniform-coefficient and critical-line packages, and the
 subexponential-cost JSON and table writers, write CRLF on Windows (the
 subexponential-cost CSV writer on every platform); those of the
-exact-type, Cauchy-cutoff and Hahn–Dulac packages write LF.
+exact-type, Cauchy-cutoff and Hahn–Dulac packages write LF. The ninth
+delivery has no carriage return in any file, and its program writes LF
+line endings on every platform.
 
 The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`
@@ -1868,7 +1933,8 @@ byte-identical to its `data/verification.json`. The lower-endpoint package
 of the seventh delivery adds a twelfth, `data/run.log`, the recorded output
 of the run that wrote its `data/` files (with `--output data`, as its
 README now says; the documented command writes under `build/`), likewise
-added past the rule. The eighth delivery has no `.log` file.
+added past the rule. The eighth delivery has no `.log` file. Nor has the
+ninth.
 
 No `build.sh` reruns a verification program in place any more. Those of the
 arithmetic, resonance-block, non-Archimedean reversion and Stokes-transport
@@ -1926,6 +1992,10 @@ convergence-locus programs always rewrite `verification/results.json`; the
 uniform-coefficient program writes `verification_results.json` into the
 working directory unless given `--output`, and its `build.sh` reruns
 `make_tables.py`, which rewrites both table inputs, on every build. Run
-them on a copy.
+them on a copy. The triangular program is as delivered; it writes into
+`rerun/` by default (`--output-dir`), leaving `verification/` alone, and a
+rerun reproduced both recorded files byte for byte; `rerun/` is not
+ignored, so delete it afterwards. Its `build.sh` runs pdfLaTeX under the
+ignored `build/` and copies the PDF over the filed one.
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

@@ -9,7 +9,7 @@ This project holds the transseries development independently of
   `lake build Transseries` checks the umbrella after its dependencies are ready.
 - [`docs/series-and-transseries/`](docs/series-and-transseries/) contains the
   canonical transseries and inversion volume, its combinatorial companion,
-  their PDFs, the source verification programs, and forty-nine unmerged
+  their PDFs, the source verification programs, and fifty unmerged
   arrivals of 2026-09-29 filed whole beside them, the first forty-one with
   editorial amendments of the same day.
 
