@@ -1,6 +1,6 @@
 # Exponents and q-series
 
-There are two live document packages:
+There are two live document packages and one unmerged archival arrival:
 
 - [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
   is the single canonical synthesis of forward q-series and branch-aware
@@ -9,6 +9,15 @@ There are two live document packages:
   single consolidated frontier volume for the geometric q-deformation of the
   Fabius–Rvachev system: exponent sequences, sinc products, atomic splines,
   and parameter deformations.
+- [`Unit_Circle_Barrier_q_Fabius_Transform/`](Unit_Circle_Barrier_q_Fabius_Transform/)
+  — an archival arrival of 2026-09-30, filed whole (22-page A4 PDF,
+  939-line source, an exact and high-precision check program): for every
+  fixed nonzero `z` the unit circle is a natural boundary of
+  `q ↦ A(q,z)`, which generalizes Part IX's natural-boundary theorem and
+  settles Part VII's generic natural-boundary conjecture; exact leading
+  cyclotomic poles of the moment coefficients; and the exterior
+  transform's pole divisor with multiplicities. Unreviewed; no Lean
+  statement.
 
 ## The 2026-09-02 consolidation
 

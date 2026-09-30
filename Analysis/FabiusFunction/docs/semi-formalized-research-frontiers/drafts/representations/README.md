@@ -158,6 +158,21 @@ of an existing draft; semantic consolidation is deferred to the post-
   filed and does not cite it; the two are to be compared, and possibly
   merged, after review.  Unreviewed; its numerics are not certificates; no
   Lean statement.
+- [`Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/`](Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/),
+  *Poisson Extremes and Gaussian Bridges under Small-Sum Conditioning*
+  (21-page A4 PDF, 1,577-line source, a SymPy/SciPy diagnostic program),
+  filed on 2026-09-30 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone.  In the setting and
+  notation of the lacunary article above, it proves that the conditioned
+  extremes form a marked Poisson process jointly independent of the
+  Brownian bridge and the exponential slack, for every uniformly
+  lacunary weight sequence (the qualitative part of that article's
+  Question 7; rates stay open), and for weights `j^{−p}` an
+  incomplete-gamma law for the maximum with all fixed-order
+  inverse-logarithmic corrections, located on the index scale
+  `N/(log N)^{1/p}`.  It credits the polynomial variance clocks to the
+  uniform-series article above.  Unreviewed; its numerics are not
+  certificates; no Lean statement.
 - [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
   Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy

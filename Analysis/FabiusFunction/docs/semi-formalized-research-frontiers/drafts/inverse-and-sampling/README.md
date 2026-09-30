@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has twelve live navigation targets:
+This theme has thirteen live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -16,6 +16,9 @@ This theme has twelve live navigation targets:
   — an archival arrival of 2026-09-29 on the information frontier's
   Bayesian prefix operator, prefix Rényi information and
   corrected-prefix rate-distortion questions; unreviewed.
+- [`Quadratic_Renyi_Growth_Geometric_Convolution_Channels/`](Quadratic_Renyi_Growth_Geometric_Convolution_Channels/)
+  — an archival arrival of 2026-09-30 on the growth of prefix Rényi
+  information above the critical order 2; unreviewed.
 - [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
   — an archival arrival of 2026-09-28 on the stability of recovering the
   uniform-factor spectrum from the law; unreviewed.
@@ -206,8 +209,23 @@ badly conditioned, every finite-order Rényi information of the prefix
 channel is finite with an exact critical order 2 in the large-depth
 excess, and at the prefix's own distortion no postprocessing of the
 prefix is rate-distortion optimal.  A closed-form spectrum and the
-rate-distortion expansion remain open.  Unreviewed; its numerics are
-diagnostics; no Lean statement.
+rate-distortion expansion remain open.  Its growth question above the
+critical order is taken up by
+`Quadratic_Renyi_Growth_Geometric_Convolution_Channels/` below.
+Unreviewed; its numerics are diagnostics; no Lean statement.
+
+[`Quadratic_Renyi_Growth_Geometric_Convolution_Channels/`](Quadratic_Renyi_Growth_Geometric_Convolution_Channels/)
+holds *Quadratic Rényi Growth: A Universal Linear Correction and
+Endpoint Selection in Geometric Convolution Channels*, filed on
+2026-09-30 by a quick archival intake (19-page A4 PDF, 1,381-line
+source, an exact check program with optional floating-point
+quadrature).  It answers the article above's question on growth above
+the critical Rényi order: for fixed `α > 2` the prefix information is
+`(α−2)L m²/2 + B(α)m + O(log² m)` with an explicit universal `B(α)`,
+both coefficients scale by `max(θ_0, θ_1)` for Beta innovations, and
+the Rényi-tilted law concentrates at the heavier endpoint with explicit
+radial and allocation large deviations.  The critical crossover
+`α = 2 + u/m` stays open.  Unreviewed; no Lean statement.
 
 [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
 holds *Recovering Uniform Factors: Exact Moment Fibres and Logarithmic

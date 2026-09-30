@@ -9,9 +9,9 @@ This project holds the transseries development independently of
   `lake build Transseries` checks the umbrella after its dependencies are ready.
 - [`docs/series-and-transseries/`](docs/series-and-transseries/) contains the
   canonical transseries and inversion volume, its combinatorial companion,
-  their PDFs, the source verification programs, and fifty unmerged
-  arrivals of 2026-09-29 filed whole beside them, with editorial amendments
-  of the same day.
+  their PDFs, the source verification programs, and fifty-one unmerged
+  arrivals of 2026-09-29 and 2026-09-30 filed whole beside them, the fifty
+  of 2026-09-29 with editorial amendments of the same day.
 
 The generic Lean declarations retain their existing `Fabius` namespace for
 source compatibility; their module paths now start with `Transseries`.
