@@ -1,0 +1,731 @@
+{
+  "status": "PASS_EXACT_JOINT_BOUNDED_FIFO_63",
+  "source": {
+    "operations": 63,
+    "multiplications": 33,
+    "additions_subtractions": 30,
+    "equations": 15,
+    "positive_parameters": [
+      "x",
+      "W",
+      "q",
+      "F0",
+      "F1",
+      "F2",
+      "F3"
+    ],
+    "positive_auxiliaries": [
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux",
+      "alpha",
+      "beta",
+      "L"
+    ],
+    "instructions": [
+      [
+        "p0",
+        "*",
+        "q",
+        "F3"
+      ],
+      [
+        "p1",
+        "+",
+        "F2",
+        "p0"
+      ],
+      [
+        "p2",
+        "*",
+        "q",
+        "p1"
+      ],
+      [
+        "p3",
+        "+",
+        "F1",
+        "p2"
+      ],
+      [
+        "p4",
+        "*",
+        "q",
+        "p3"
+      ],
+      [
+        "packed",
+        "+",
+        "F0",
+        "p4"
+      ],
+      [
+        "q2",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "q2",
+        "q2"
+      ],
+      [
+        "twice_H",
+        "-",
+        "q",
+        1
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "ksn2",
+        "*",
+        "k",
+        "sn2"
+      ],
+      [
+        "UM2",
+        "*",
+        "UM",
+        "UM"
+      ],
+      [
+        "scaled_norm_coefficient",
+        "+",
+        "UM2",
+        "wn2"
+      ],
+      [
+        "ratio_product2",
+        "*",
+        "ksn2",
+        "ksn2"
+      ],
+      [
+        "L9",
+        "*",
+        "scaled_norm_coefficient",
+        "ratio_product2"
+      ],
+      [
+        "tauplus1",
+        "+",
+        "tau",
+        1
+      ],
+      [
+        "R9",
+        "*",
+        "tau",
+        "tauplus1"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "r1",
+        "+",
+        "r",
+        1
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "R11",
+        "+",
+        "r1",
+        "hpm1"
+      ],
+      [
+        "tr1",
+        "+",
+        "r1",
+        "r"
+      ],
+      [
+        "cam2",
+        "*",
+        "c",
+        "a"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "six_a",
+        "*",
+        6,
+        "a"
+      ],
+      [
+        "modulus",
+        "+",
+        "six_a",
+        8
+      ],
+      [
+        "gam",
+        "*",
+        "ga",
+        "modulus"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "a_square",
+        "*",
+        "a",
+        "a"
+      ],
+      [
+        "discriminant",
+        "+",
+        "a_square",
+        "modulus"
+      ],
+      [
+        "c2",
+        "*",
+        "c",
+        "c"
+      ],
+      [
+        "Ac2",
+        "*",
+        "discriminant",
+        "c2"
+      ],
+      [
+        "R15",
+        "+",
+        "Ac2",
+        1
+      ],
+      [
+        "L15",
+        "*",
+        "d",
+        "d"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "discriminant",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "+",
+        "c",
+        "of"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "c"
+      ],
+      [
+        "H17",
+        "+",
+        "tr1",
+        "jc"
+      ],
+      [
+        "H2",
+        "*",
+        "H17",
+        "H17"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "ic22",
+        "aux_square_gap"
+      ],
+      [
+        "P17",
+        "-",
+        1,
+        "aux_y2"
+      ],
+      [
+        "read_fields",
+        "+",
+        "F2",
+        "F3"
+      ],
+      [
+        "read_sum",
+        "-",
+        "read_fields",
+        "twice_H"
+      ],
+      [
+        "append_fields",
+        "+",
+        "F0",
+        "F1"
+      ],
+      [
+        "append_sum",
+        "-",
+        "append_fields",
+        "twice_H"
+      ],
+      [
+        "initial",
+        "*",
+        6,
+        "x"
+      ],
+      [
+        "scaled_append",
+        "*",
+        "W",
+        "append_sum"
+      ],
+      [
+        "transport",
+        "+",
+        "initial",
+        "scaled_append"
+      ],
+      [
+        "width_bound",
+        "+",
+        "initial",
+        "beta"
+      ],
+      [
+        "length_product",
+        "*",
+        "W",
+        "L"
+      ],
+      [
+        "joint_sum",
+        "+",
+        "append_sum",
+        "read_sum"
+      ],
+      [
+        "joint_bound",
+        "+",
+        "joint_sum",
+        "alpha"
+      ]
+    ],
+    "sources": [
+      {
+        "equality": [
+          "r",
+          "packed"
+        ],
+        "source": "-F0 - F1*q - F2*q**2 - F3*q**3 + r",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source": "k**2*q**24*s**4*w**2 + k**2*q**12*s**2*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source": "c - eta - k*q**4*s",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source": "-h*q**8*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source": "a - q**8*s*w - q**4*s",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source": "-a*c - 6*a*ga + d - 8*ga - q**4*w",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+      },
+      {
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source": "c*j - c - f*o + 2*r + 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "read_sum",
+          "transport"
+        ],
+        "source": "-F0*W - F1*W + F2 + F3 + W*q - W - q - 6*x + 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "width_bound",
+          "W"
+        ],
+        "source": "-W + beta + 6*x",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "q",
+          "length_product"
+        ],
+        "source": "-L*W + q",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "joint_bound",
+          "q"
+        ],
+        "source": "F0 + F1 + F2 + F3 + alpha - 3*q + 2",
+        "correction": "0"
+      }
+    ]
+  },
+  "prepower": {
+    "positive_joint_bounded_field_tuples": 39222,
+    "q_range": [
+      3,
+      10
+    ],
+    "scope": "No power, field, parity, or nonnegative decoded-stream assumption"
+  },
+  "exhaustive": [
+    {
+      "t": 1,
+      "positive_field_tuples": 15,
+      "valuation_admitted": 4,
+      "accepted": 0
+    },
+    {
+      "t": 2,
+      "positive_field_tuples": 10626,
+      "valuation_admitted": 67,
+      "accepted": 0
+    },
+    {
+      "t": 3,
+      "positive_field_tuples": 1426425,
+      "valuation_admitted": 1102,
+      "accepted": 3
+    }
+  ],
+  "overflow_patterns": {
+    "minimal_carry_patterns": 119,
+    "maximum_t": 7,
+    "conclusion": "Only the first three block boundaries can meet the joint sum"
+  },
+  "all_inputs": {
+    "ordinary_positive_inputs": 200,
+    "positive_outer_maps": 400,
+    "full_Pell_coordinates": "Parametric positive extension, not materialized"
+  },
+  "controllers": {
+    "72": {
+      "operations": 72,
+      "multiplications": 38,
+      "additions_subtractions": 34,
+      "equations": 16,
+      "condition": "arbitrary endpoints",
+      "equality": [
+        "carry_with_offset",
+        "endpoint_difference"
+      ],
+      "fixed_comparison_numeral": "endpoint_difference=cf-cs",
+      "extra_instructions": [
+        [
+          "carry_p0",
+          "*",
+          "weight0",
+          "F0"
+        ],
+        [
+          "carry_p1",
+          "*",
+          "weight1",
+          "F1"
+        ],
+        [
+          "carry_p2",
+          "*",
+          "weight2",
+          "F2"
+        ],
+        [
+          "carry_p3",
+          "*",
+          "weight3",
+          "F3"
+        ],
+        [
+          "carry_s01",
+          "+",
+          "carry_p0",
+          "carry_p1"
+        ],
+        [
+          "carry_s012",
+          "+",
+          "carry_s01",
+          "carry_p2"
+        ],
+        [
+          "carry_s0123",
+          "+",
+          "carry_s012",
+          "carry_p3"
+        ],
+        [
+          "carry_offset",
+          "*",
+          "lambda",
+          "twice_H"
+        ],
+        [
+          "carry_with_offset",
+          "+",
+          "carry_s0123",
+          "carry_offset"
+        ]
+      ],
+      "scope": "Joint-bounded entire affine carry/FIFO graph; universality open"
+    },
+    "71": {
+      "operations": 71,
+      "multiplications": 38,
+      "additions_subtractions": 33,
+      "equations": 16,
+      "condition": "cs=cf",
+      "equality": [
+        "carry_s0123",
+        "carry_negative_offset"
+      ],
+      "fixed_comparison_numeral": "endpoint_difference=cf-cs",
+      "extra_instructions": [
+        [
+          "carry_p0",
+          "*",
+          "weight0",
+          "F0"
+        ],
+        [
+          "carry_p1",
+          "*",
+          "weight1",
+          "F1"
+        ],
+        [
+          "carry_p2",
+          "*",
+          "weight2",
+          "F2"
+        ],
+        [
+          "carry_p3",
+          "*",
+          "weight3",
+          "F3"
+        ],
+        [
+          "carry_s01",
+          "+",
+          "carry_p0",
+          "carry_p1"
+        ],
+        [
+          "carry_s012",
+          "+",
+          "carry_s01",
+          "carry_p2"
+        ],
+        [
+          "carry_s0123",
+          "+",
+          "carry_s012",
+          "carry_p3"
+        ],
+        [
+          "carry_negative_offset",
+          "*",
+          "negative_lambda",
+          "twice_H"
+        ]
+      ],
+      "scope": "Joint-bounded entire affine carry/FIFO graph; universality open"
+    }
+  },
+  "input_factor_counterexample": {
+    "q": 27,
+    "W": 9,
+    "fields": [
+      14,
+      14,
+      5,
+      41
+    ],
+    "r": 811040,
+    "valuation": 12,
+    "initial": 2,
+    "scope": "Full outer/kernel projection at I=2x; excludes a free return to that input factor"
+  },
+  "dependency_sha256": "63cd18e9bdb593b710359ed21ef0fb6a971650230a800f6da4376d26a5425eb7",
+  "scope": "Exact FIFO component with A+D<q and input6x; no universal compiler",
+  "established_complete_universal_bound": 76
+}
