@@ -26,6 +26,10 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{definition}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\N}{\mathbb N}
@@ -90,6 +94,10 @@ where $\dx$ is the greatest outer exponent of $x$ in a Hahn series. It construct
 Its first further-research question asks for the \emph{exact minimum positive degree}, rather than just the degree-zero test and a universal bound. More precisely, it asks for finite residue data recovering the whole degree filtration and for a certificate excluding degree one less than the minimum. Its second question asks for a cancellation-sensitive treatment of resonance paths. Both are stated in the predecessor's section entitled ``Further research questions and concrete next targets'' \cite{repo-residue}.
 
 This manuscript answers the first question throughout the class \eqref{eq:class-intro}, in the algebraic sense made precise below. It gives a terminating exact algorithm when the required coefficient operations are effectively supplied. It also answers a substantial finite rational scalar instance of the second question: the cancellation data reduce exactly to a weighted nilpotent matrix, and every such upper triangular rational matrix can occur. In particular, the answer is not obtained by taking the longest unweighted path in a resonance graph.
+% ed. (2026-09-29): a neighbouring package filed after this article's snapshot, not cited.
+\begin{ednote}
+The Hahn--Fuchsian package (\path{Hahn_Fuchsian_Resonance_Analytic_Normalization/} \cite{ed:hfr}), filed after the inspected snapshot, answers the homogeneous half of the first question at depth $0$ for first-order real-spectrum systems: solutions of degree at most $d$ in $\log x$ form a space of dimension $\dim\ker B^{d+1}$ for one nilpotent matrix $B=N+\sum_\rho R_\rho$ (its \texttt{thm:logs}), with entries polynomial in finitely many input coefficients (its \texttt{thm:ancestry}). The present article treats scalar operators at depth $n\ge1$, with forcing; for the pencil subclass \eqref{eq:pencil-h} has the same form. The two results do not overlap in hypotheses.
+\end{ednote}
 
 \subsection{A preview of the classification}
 Fix $n\ge1$ and write
@@ -129,6 +137,10 @@ There is no need to compute an infinite Smith transformation to use these conclu
 
 \subsection{What is inherited, classical, and proved here}
 The repository's fixed-depth residue splitting is our immediate starting point. We restate and prove the needed splitting in Sections~\ref{sec:hahn}--\ref{sec:split}, so that the new argument does not depend on an unexamined informal assertion. The existing Lean block-antiderivative API concerns polynomial differential blocks; the repository documentation explicitly distinguishes it from a complete concrete Hahn realization \cite{repo-docs,repo-block}. This manuscript does not change that verification status.
+% ed. (2026-09-29): the restated results are identified by the predecessor's labels.
+\begin{ednote}
+Lemmas~\ref{lem:primitive}, \ref{lem:moments} and \ref{lem:functional}, Proposition~\ref{prop:split}, \eqref{eq:old-reduction} and \eqref{eq:M0-finite} restate the predecessor's \texttt{thm:residue}, \texttt{thm:moments}, \texttt{lem:functional}, \texttt{thm:euler-split}, \texttt{thm:fredholm} and \texttt{thm:cutoff} \cite{repo-residue}. The identity $\Res\circ\delta=0$ of Lemma~\ref{lem:primitive} is also the lower-block form of the canonical volume's \texttt{plt:thm:ext-tower-strict} (\path{Transseries_And_Inversion/transseries_and_inversion.tex}).
+\end{ednote}
 
 Strong derivations and integration on generalized series fields are established subjects; see Kuhlmann and Matusinski \cite{km}. Generalized-series operator methods also have a substantial theory, including van der Hoeven's work \cite{vdh}. Smith normal form is a standard algebraic tool \cite{stanley}. The relation between operator-series diagonalization, Toeplitz matrices, and Jordan chains is likewise not new: Stiefenhofer explicitly develops that relationship for formal and analytic operator families \cite{stiefenhofer}.
 
@@ -921,6 +933,11 @@ Given any partition $r=q_1+\cdots+q_b$, choose $B$ to be the block diagonal sum 
 Finally, \eqref{eq:realized-forcing} is $JD_Pd$ in the splitting notation. Since $GJ=0$, equation~\eqref{eq:old-data} gives $b_{f_d}=D_Pd$. Thus the normalized reduced right side is precisely $d$, with no unknown tail correction. Formula~\eqref{eq:pencil-min}, or the Toeplitz test, uses only rational matrices and terminates.
 \end{proof}
 
+% ed. (2026-09-29): the predecessor's sharp family is a special case; checked on filing (batch 50).
+\begin{ednote}
+The Jordan-shift family of the predecessor (its \texttt{thm:sharp-matrix}, $P_s(E)+x^{-1}\sigma$) \cite{repo-residue} is the case $q_1\equiv1$ of Theorem~\ref{thm:pencil}: $D_P^{-1}N$ is a single Jordan block, the Smith exponents are $(0,\ldots,0,s)$, and \eqref{eq:pencil-solution} reproduces its coefficients $c_k$ and $C_s$ exactly (checked for $s\le6$). This is the complete sequence $0,1,\ldots,s$ that the predecessor's first question asked of its sharp family.
+\end{ednote}
+
 \subsection{What the realization does and does not say}
 The theorem proves an exact range statement about degree profiles, not only the existence of one sharp family. Every partition occurs already with integer indicial roots, an outer drop lattice contained in the integers, and coefficient blocks proportional to $\sigma$.
 
@@ -1081,6 +1098,10 @@ The general support statements, strongness of infinite operator sums, existence 
 No new theorem in this package has been checked by Lean or another proof assistant. No numerical or interval certificate for real-variable solutions is supplied, because the paper makes no analytic realization claim. The explicit scalar differential operator is real-analytic away from its coefficient singularities, but connecting its actual solutions to the full formal expansion requires additional work not furnished by the formal construction alone.
 
 The matrix-series results do not classify arbitrary solutions in the whole larger Hahn field $\Hh_{n+1}$, which allows nonpolynomial dependence on $T$. The theorem's domain is explicitly $\Hh_n[T]$. It constructs a full $r$-dimensional polynomial homogeneous space for the represented real indicial modes, but does not insert oscillatory solutions associated with nonreal roots.
+% ed. (2026-09-29): the preceding paragraph understates the domain.
+\begin{ednote}
+By the predecessor's \texttt{thm:promotion} \cite{repo-residue}, every homogeneous solution in $\Hh_{n+1}$ already lies in $\Hh_n[T]$; hence for $T$-independent forcing every solution in $\Hh_{n+1}$ lies in $\Hh_n[T]$, and Theorem~\ref{thm:smith-degree} classifies all solutions in $\Hh_{n+1}$.
+\end{ednote}
 
 \subsection{Proof dependencies and independent review priorities}
 The infinite-dimensional part has two separate contraction mechanisms. Lower differentiation decreases an $L$ exponent by one, justifying the functional calculus inside blocks. The perturbation decreases an $x$ exponent by $\eps$, justifying outer reconstruction and projected finite cutoffs. The derivative parameter is formal and supplies a third, discrete bookkeeping degree, not an analytic smallness assumption.
@@ -1108,6 +1129,10 @@ The finite rational scalar construction and fourth-order example are suitable en
 \section{Further research questions and concrete next targets}
 \label{sec:future}
 The exact degree question at fixed outer-small linear data is answered above. The following questions concern genuinely different extensions or effectiveness boundaries; they are not presented as an established catalog of open problems in the literature.
+% ed. (2026-09-29): correspondence with the predecessor's questions.
+\begin{ednote}
+The questions ``Perturbations that are small only in logarithms'', ``Confluence under indicial-root collisions'', ``Optimal coefficient grammars and bit complexity'', ``Matrix systems and nonreal modes'', ``Nonlinear finite obstructions'' and ``Analytic realization and sectorial information'' below are the predecessor's questions ``Perturbations small only in logarithms'', ``Parameter-dependent root collisions'', ``Effective coefficient representations'', ``Matrix systems and nonreal indicial roots'', ``Nonlinear equations and an effective obstruction variety'' and ``Analytic realization beyond the displayed block'' \cite{repo-residue}. The matrix-systems question is partly answered at depth $0$, for first-order real-spectrum systems, by the Hahn--Fuchsian package \cite{ed:hfr}.
+\end{ednote}
 
 \subsection{Perturbations that are small only in logarithms}
 The outer-drop hypothesis excludes a perturbation such as $L^{-1}E^j$. It can remain at one root level indefinitely, so the proof that a resonance path visits at most $s$ root levels no longer applies. Can one construct a multilevel residue-series reduction that contracts first in $L$, then in deeper logarithms, and identify exactly when its effective matrix has finite pole order? A first target is a one-root operator with coefficients in a finite Laurent series in $L^{-1}$, including examples whose homogeneous solutions require new powers or exponentials rather than only a polynomial in $T$.
@@ -1237,5 +1262,8 @@ A survey of established Smith-form algebra and its interpretations. The elementa
 Matthias Stiefenhofer, \emph{Formal and Analytic Diagonalization of Operator functions}, 2023.
 \href{https://arxiv.org/abs/2305.14228}{arXiv:2305.14228}.
 The paper explicitly relates operator Toeplitz matrices, Jordan-chain stabilization, finite inverse pole order, and Smith form. Cited to distinguish those established methods from their specific support-controlled application in this manuscript.
+% ed. (2026-09-29): bibliography entry for the editorial notes.
+\bibitem{ed:hfr}
+\emph{Finite Resonance Certificates and Sharp Analytic Normalization for Hahn--Fuchsian Systems}, ProveIt research package filed in batch 48 (after the inspected snapshot), directory \path{Hahn_Fuchsian_Resonance_Analytic_Normalization/} beside the predecessor \cite{repo-residue}. Editorial addition.
 \end{thebibliography}
 \end{document}

@@ -25,6 +25,10 @@
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{definition}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \DeclareMathOperator{\Li}{Li}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\Rea}{Re}
@@ -107,6 +111,22 @@ limit nor the Gaussian endpoint is being repeated or asserted. The repository
 index warns that its recent research arrivals are unmerged and not formally
 verified. We therefore prove the mathematical statements needed below rather
 than use those arrivals as unexamined analytic axioms.
+% ed. (2026-09-29): endpoint packages in (or filed after) this article's snapshot that it does not cite by name.
+\begin{ednote}
+The logarithmic-endpoint package
+(\path{Logarithmic_Critical_Endpoint_Lambert_Charts/} \cite{ed:lce}, in the
+tree at the inspected snapshot) treats the $\alpha=2$ analogue of the tails
+of \cref{sec:chart}, $a_j\sim aj^{-3}(\log j)^r$, $r\ge-1$, at leading
+order (its \texttt{thm:weightedchart}, \texttt{thm:weightedbudget}); its
+Lambert core has the form of \eqref{eq:Lambertcore} at $(\alpha,m)=(2,1)$,
+where the logarithm comes from the pole of $\Gamma(-\alpha)$. The marginal
+package (\path{Marginal_Critical_Transseries_Action_Budgets/} \cite{ed:mct},
+\texttt{thm:min-budget}) gives the $\alpha=2$ two-term minimal budget; the
+later confluent and stable--Gaussian packages \cite{ed:cct,ed:sge} treat the
+crossover $\alpha\to2$ for exact tails, where the cutoff profile tends to
+$\exp(-s^{-\alpha}/\alpha)$. None of them treats $1<\alpha<2$ with a slowly
+varying factor.
+\end{ednote}
 
 \subsection{Results and their logical scope}
 For arbitrary positive slowly varying $\ell$, we prove a critical real inverse
@@ -524,6 +544,17 @@ where $g_{\alpha,s}$ is the probability density with characteristic
 exponent $\int_0^s(e^{\ii tx}-1-\ii tx)x^{-1-\alpha}\dd x$.
 This separates the probability of no large jump from the mean shift caused
 by removing those jumps.
+% ed. (2026-09-29): normalization dictionary with the critical Hahn article, checked on filing (batch 50).
+\begin{ednote}
+In the notation of the critical Hahn article \cite{repo-critical},
+$b_n^{\mathrm{CHT}}=\Gamma(-\alpha)^{1/\alpha}b_n$,
+$L=s\,\Gamma(-\alpha)^{-1/\alpha}$,
+$\lambda^{\mathrm{CHT}}=\Gamma(-\alpha)^{-1/\alpha}\lambda_n$, and
+$\Phi_\alpha(s,y)$ is its profile $R_\alpha$ at those arguments. With
+$\ell\equiv1$, \cref{thm:cutoff,thm:budget} are its \texttt{thm:cutoff}
+and \texttt{thm:budget} (checked at $\alpha=3/2$, $s=0.99975$: both give
+$0.357773962623$, the value recorded in \texttt{verification/cutoffs.csv}).
+\end{ednote}
 
 \begin{theorem}[Universal coupling--cutoff law]\label{thm:cutoff}
 If $s_n=M_n/b_n$ remains in a compact subset of $(0,\infty)$, then
@@ -1278,6 +1309,13 @@ Let $\alpha\uparrow2$ or $\alpha\downarrow1$ while the logarithmic tail and
 $n$ vary. Derive a common normalization and an error theorem covering the
 interaction of the endpoint singularity with $m/\log b_n$. Substitution
 of an endpoint in \eqref{eq:effectivealpha} is not justified by this paper.
+% ed. (2026-09-29): the same limit is asked by four packages of this series (batches 48 and 49); none answers it.
+\begin{ednote}
+Slowly varying factors at or near $\alpha=2$ are also asked about by the
+logarithmic-endpoint package's Question~6, the marginal package's
+Question~2, the stable--Gaussian package's Question~3 and the confluent
+package's Question~4 \cite{ed:lce,ed:mct,ed:sge,ed:cct}; none is answered.
+\end{ednote}
 
 \paragraph{6. Large order of the inverse-logarithmic expansion.}
 Determine the growth of $D_k,N_k$ as $k\to\infty$, the optimal truncation
@@ -1371,9 +1409,10 @@ coefficient-scale $\log b$ tend to $+\infty$.\\
 The package is self-contained apart from standard LaTeX packages and the
 Python dependencies listed in \texttt{requirements.txt}. From the package
 root, run
+% ed. (2026-09-29): the delivered recipe rewrote the recorded outputs; the programs now write into rerun/ (see the package README).
 \begin{verbatim}
 python verification/verify.py
-python verification/make_tables.py
+python verification/make_tables.py --input rerun/results.json
 pdflatex -interaction=nonstopmode -halt-on-error article.tex
 pdflatex -interaction=nonstopmode -halt-on-error article.tex
 pdflatex -interaction=nonstopmode -halt-on-error article.tex
@@ -1390,7 +1429,8 @@ The exact algebra checks were run; the numerical diagnostics were run;
 the article's analytic proofs were not checked by a proof assistant.
 
 \clearpage
-\begin{thebibliography}{9}
+% ed. (2026-09-29): widest label 99, since four editorial entries follow the delivered ones.
+\begin{thebibliography}{99}
 \bibitem{repo-critical}
 V. Reshetnikov, ProveIt repository, research manuscript
 \emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
@@ -1437,5 +1477,27 @@ Accessed September 29, 2026.
 G. A. Edgar, \emph{Transseries for beginners},
 arXiv:0801.4877, 2008.
 \url{https://arxiv.org/abs/0801.4877}.
+% ed. (2026-09-29): bibliography entries for the editorial notes (packages of this series).
+\bibitem{ed:lce}
+\emph{The Logarithmic Critical Endpoint}, ProveIt research package filed in
+batch 48, directory \path{Logarithmic_Critical_Endpoint_Lambert_Charts/}
+beside the manuscript of \cite{repo-critical}. Editorial addition.
+
+\bibitem{ed:mct}
+\emph{Marginal Critical Transseries}, ProveIt research package filed in
+batch 48, directory \path{Marginal_Critical_Transseries_Action_Budgets/}
+beside the manuscript of \cite{repo-critical}. Editorial addition.
+
+\bibitem{ed:cct}
+\emph{Confluent Critical Transseries Across the Exponent-Two Boundary},
+ProveIt research package filed in batch 49 (after the inspected snapshot),
+directory \path{Confluent_Critical_Transseries_Exponent_Two_Boundary/}
+beside the manuscript of \cite{repo-critical}. Editorial addition.
+
+\bibitem{ed:sge}
+\emph{Through the Stable--Gaussian Endpoint}, ProveIt research package filed
+in batch 49 (after the inspected snapshot), directory
+\path{Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/} beside the
+manuscript of \cite{repo-critical}. Editorial addition.
 \end{thebibliography}
 \end{document}

@@ -2,6 +2,9 @@
 """Exact algebra checks and floating-point diagnostics for the accompanying article.
 
 Usage: python verification/verify.py [--quick | --exact-only] [--output-dir PATH]
+(ed. 2026-09-29: the default output directory is rerun/ in the package root;
+writing into the recorded verification/ needs --overwrite-recorded. Files are
+written with LF, and results.json ends with a newline.)
 Requires Python 3.10+, numpy, scipy, mpmath, sympy. Numerical results are NOT
 interval certificates. The proofs in article.tex do not rely on these checks.
 """
@@ -129,8 +132,13 @@ def main() -> None:
     parser=argparse.ArgumentParser()
     parser.add_argument('--quick',action='store_true',help='Use fewer coefficient indices')
     parser.add_argument('--exact-only',action='store_true',help='Run exact checks without changing data files')
-    parser.add_argument('--output-dir',type=Path,default=ROOT,help='Destination for JSON and CSV outputs')
+    parser.add_argument('--output-dir',type=Path,default=ROOT.parent/'rerun',help='Destination for JSON and CSV outputs')
+    parser.add_argument('--overwrite-recorded',action='store_true',help='Allow writing into the recorded verification/ directory')
     args=parser.parse_args()
+    if (not args.exact_only and args.output_dir.resolve()==ROOT.resolve()
+            and not args.overwrite_recorded):
+        parser.error('refusing to overwrite the recorded verification/ outputs; '
+                     'pass --overwrite-recorded or choose another --output-dir')
     checks=exact_checks()
     if args.exact_only:
         print(f'{checks} exact algebra assertions passed; no data files changed.')
@@ -197,13 +205,13 @@ def main() -> None:
                         'second':mp.nstr(1+v1/L+v2/L**2,35)})
     for name,data in [('coefficients',rows),('cutoffs',cutoff_rows),('inverse',inverse)]:
         with (outdir/(name+'.csv')).open('w',newline='') as f:
-            writer=csv.DictWriter(f,fieldnames=data[0].keys());writer.writeheader();writer.writerows(data)
+            writer=csv.DictWriter(f,fieldnames=data[0].keys(),lineterminator='\n');writer.writeheader();writer.writerows(data)
     output={'exact_assertions_passed':checks,'constants':constants,
             'numerical_status':'Floating-point diagnostics, not interval certificates.',
             'fft_relative_error_against_65_digit_recurrence':mp.nstr(relative_fft_error,12),
             'jacobi_96_vs_160_max_difference':jacobi_error,
             'coefficient_rows':rows,'cutoff_rows':cutoff_rows,'inverse_rows':inverse}
-    (outdir/'results.json').write_text(json.dumps(output,indent=2))
+    (outdir/'results.json').write_text(json.dumps(output,indent=2)+'\n',newline='\n')
     print(json.dumps(output,indent=2))
 
 if __name__=='__main__': main()

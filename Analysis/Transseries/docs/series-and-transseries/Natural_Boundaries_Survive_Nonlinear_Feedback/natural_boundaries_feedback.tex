@@ -26,6 +26,10 @@
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \newtheorem{question}[theorem]{Question}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{definition}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
 \newcommand{\Uhat}{\widehat U}\newcommand{\Qhat}{\widehat Q}
 \newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
@@ -36,6 +40,8 @@
 \newcommand{\co}[2]{[#1^{#2}]}
 \newcommand{\inv}{\langle-1\rangle}
 \begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which the titlepage environment numbers 1 like the following page (removes a duplicate-destination warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering\vspace*{10mm}
 {\small\scshape Research in transseries and analytic continuation\par}
@@ -63,6 +69,7 @@ retain factorial growth after substitution along an arbitrary holomorphic
 curve. A mean-square argument treats tied nearest poles without assuming a
 unique dominant singularity.
 
+% ed. (2026-09-29): at d = 2 this answer duplicates an earlier-filed package; see the editorial notes in Section 1.1 and after Theorem thm:quadratic-main.
 For $d=2$, this resolves the angular-continuation question left open in the
 repository's negative-ray summation article: both inverse and forward formal
 series are finely Borel summable on the negative ray, but neither is
@@ -83,6 +90,7 @@ conjecture. The literature and repository comparison is targeted; global
 priority is not asserted.
 \end{minipage}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \setcounter{tocdepth}{2}\tableofcontents\clearpage
 
 \section{The question resolved and the contribution boundary}
@@ -108,6 +116,13 @@ $\lambda_j=j^d$, $d\in\N$, $d\ge2$. The answer in the quadratic case is
 \emph{negative}: fine summation cannot be enlarged to an open angular interval
 containing the negative direction. The reason is a natural boundary of the
 actual inverse, not failure of the Borel germ to continue to finite points.
+% ed. (2026-09-29): the d = 2 answer is not new to the repository.
+\begin{ednote}
+For $d=2$ this question had already been answered negatively, independently,
+by an earlier-filed package that this article could not see \cite{ed:nbq}; see
+the editorial note after Theorem~\ref{thm:quadratic-main}. The cases
+$d\ge3$ are new to the repository.
+\end{ednote}
 
 The source snapshot used for the final comparison is
 \begin{center}\small\texttt{ebd8344bca77d8352cd745b7df374618a290a029}.\end{center}
@@ -173,12 +188,35 @@ Fine summability means a fixed-width Borel tube; angular summability means a
 Borel sector with locally uniform exponential bounds. These are different
 requirements.
 
+% ed. (2026-09-29): the case d = 2 duplicates an earlier-filed package (batch 49), not visible from this article's snapshot.
+\begin{ednote}
+The case $d=2$ of Theorems~\ref{thm:main} and~\ref{thm:quadratic-main} was
+proved independently in
+\path{Natural_Boundaries_Quadratic_Exponential_Feedback/} \cite{ed:nbq} (its
+Theorem~\texttt{thm:main}), filed earlier and not visible from this
+article's snapshot, with the explicit radius $1/32$, the bound
+$|Q'-1|<1/3$ and the further conclusion that the image arc is nowhere
+real-analytic. Its Theorem~\texttt{thm:rigidity} is the case $d=2$ of
+Theorem~\ref{thm:moving}, and its Theorem~\texttt{thm:rational-main} extends
+the $d=2$ conclusions to rational amplitude series. The exact coefficients
+at $d=2$ agree with that package's recorded ones (through degree 16). The cases $d\ge3$ answer
+that package's question ``Higher-degree and nonpolynomial slopes'' for
+integer $d$; noninteger powers remain open.
+\end{ednote}
+
 \subsection{What is new, inherited, and deliberately not claimed}
 The principal new mechanism is the moving-curve moment theorem in
 Section~\ref{sec:moving}. A fixed-parameter lacunary-series theorem alone does
 not settle \eqref{eq:inverse}: its parameter $q$ changes with $u$, so one must
 exclude cancellation by that motion. The resulting natural boundary and
 angular obstruction are the proposed research contribution.
+% ed. (2026-09-29): at d = 2 the moving-curve theorem and the obstruction are also in an earlier-filed package.
+\begin{ednote}
+At $d=2$ the moving-curve theorem, the natural boundary and the angular
+obstruction are also in \cite{ed:nbq} (see the editorial note after
+Theorem~\ref{thm:quadratic-main}); they are new to the repository for
+$d\ge3$.
+\end{ednote}
 
 The coefficient/Gevrey classification and the positive fine-summability
 result are earlier repository results. Sections~\ref{sec:blocks}--\ref{sec:summability}
@@ -1181,6 +1219,14 @@ Corollary~\ref{cor:Borel-growth} rules out every fixed angular neighborhood,
 but leaves room for widening tubes and parabolic regions. An explicit
 transition law could explain how fine summation approaches its angular
 failure and improve numerical contour choices.
+% ed. (2026-09-29): a partial answer in an earlier-filed package (batch 49).
+\begin{ednote}
+For $B=\B\Qhat_2$ the maximum modulus on circles is known:
+\path{Signed_Quadratic_Feedback_Inversion/} \cite{ed:sqi},
+Theorem~\texttt{thm:borel}, gives $\max_{|\zeta|=R}|B(\zeta)|\sim-B(R)$, with
+an explicit equivalent, which bounds the growth on every ray. The growth on
+individual rays adjacent to the negative axis is not determined there.
+\end{ednote}
 
 \subsection{Higher-degree pole collisions}
 \begin{question}
@@ -1214,6 +1260,16 @@ is its true leading scale?
 A positive tree majorant discards cancellations. Matching lower bounds
 would require a direct analysis of the signed blocks, not another
 optimization of the same upper estimate.
+% ed. (2026-09-29): the least formal term at d = 2 is determined by a package filed beside this one (batch 50).
+\begin{ednote}
+For $d=2$ the least formal term of $\Qhat_2$ on the positive axis is
+determined by \path{Signed_Condensation_Sharp_Quadratic_Reversion/}
+\cite{ed:scs}, Theorem~\texttt{thm:least}: at $a=1$ it is
+$\exp(-(1/4+o(1))\log^2(1/t)/t)$, with the constant $1/4$ of
+\eqref{eq:optimized} at $d=2$. That is a statement about formal terms; it
+gives no lower bound for the analytic truncation error, so the question
+stays open.
+\end{ednote}
 
 \subsection{Global boundary geometry and inverse branches}
 \begin{question}
@@ -1315,6 +1371,25 @@ representation, and logarithmic-Gevrey error certificates},
 29 September 2026. Repository directory
 \path{Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/}.
 Source blob \texttt{eafc690678f7ca2cd75a8310f1a0889b19c7cdb5}.
+
+% ed. (2026-09-29): bibliography entries for the editorial notes (packages filed beside this one).
+\bibitem{ed:nbq}
+\emph{Natural Boundaries of Quadratic Exponential Feedback}, ProveIt research
+package filed in batch 49 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Quadratic_Exponential_Feedback/}.
+Editorial addition.
+
+\bibitem{ed:sqi}
+\emph{Signed Quadratic-Feedback Inversion}, ProveIt research package filed in
+batch 49 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Quadratic_Feedback_Inversion/}.
+Editorial addition.
+
+\bibitem{ed:scs}
+\emph{Signed Condensation in Quadratic-Feedback Transseries}, ProveIt research
+package filed in batch 50 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Condensation_Sharp_Quadratic_Reversion/}.
+Editorial addition.
 
 \bibitem{sokal}
 A. D. Sokal, An improvement of Watson's theorem on Borel summability,

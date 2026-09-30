@@ -107,8 +107,10 @@ so none needed updating.
     `../Hahn_Fuchsian_Resonance_Analytic_Normalization/` answers the
     homogeneous half of the first and the Jordan-chain part of the second
     for first-order real-spectrum systems at depth 0 (`dim ker B^{d+1}`;
-    the nilpotency index of `B = N + ΣR_ρ`); forced equations, depth
-    `n ≥ 1`, higher-order matrix polynomials and nonreal roots stay open.
+    the nilpotency index of `B = N + ΣR_ρ`). Forced equations and depth
+    `n ≥ 1` are answered by `../Exact_Logarithmic_Degree_Smith_Invariants/`
+    (batch 50; see below), as is the cancellation question for a scalar
+    subclass; higher-order matrix polynomials and nonreal roots stay open.
   - Section 11, "Other ordered exponent groups": the non-Archimedean
     reversion package `../Reversion_Beyond_Archimedean_Valuations/` draws
     the analogous separation for reversion; the operator question stays
@@ -120,3 +122,20 @@ so none needed updating.
   with `newline="\n"`, so a rerun on Windows no longer produces CRLF. A
   rerun of the amended program (Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0)
   on a copy reproduced the filed JSON byte for byte.
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `residue_fredholm.tex`: in `ed:filtration`, the last sentence "The
+  question as posed, at depth `n≥1` with the new logarithm `T` and with
+  forcing, remains open." is replaced by the answer of
+  `../Exact_Logarithmic_Degree_Smith_Invariants/` (batch 50; Smith exponents
+  `Σν_i = r`, `0 ≤ ν_i ≤ s`, decided by block Toeplitz ranks of a finite
+  jet; `thm:sharp-matrix` is its single-block case). A new note
+  `ed:resonance-graph` after "Cancellation-sensitive resonance graphs"
+  records that package's answer for operators `P(E) + σΣx^(-η)q_η(E)` with
+  simple real roots (the weighted graph `D_P^(-1)N`); the general case and
+  the sharper cutoff stay open.
+- `residue_fredholm.pdf`: rebuilt (27 pages, unchanged; no errors,
+  undefined references, multiply defined labels or duplicate destinations).

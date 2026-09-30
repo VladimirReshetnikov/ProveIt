@@ -131,3 +131,16 @@ to the article text is marked in `article.tex` by a comment beginning
 - `README.md`: the retired checksum ledger is no longer listed; the Windows
   `longdouble` behaviour is documented; the page count is updated; this
   section.
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: in the editorial note at Question 1, "For `1<alpha<2` the
+  question is open." is replaced: for `1 < alpha < 2` it is answered by
+  `../Slowly_Varying_Action_Tails_Critical_Transseries/` (batch 50; scale,
+  profile and budget for every slowly varying `l`, with the `Gamma(-alpha)`
+  normalization dictionary; a counterexample to the Hahn grid; a convergent
+  Lambert chart and an effective-index expansion for `(log j)^m`).
+- `article.pdf`: rebuilt (25 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).

@@ -53,7 +53,8 @@ No repository file, branch, or persistent Library file was modified.
 
 ## Contents
 
-- `article.tex`, `article.pdf`: self-contained source and compiled article.
+- `article.tex`, `article.pdf`: self-contained source and compiled article
+  (28 pages as delivered; 29 pages after the editorial rebuild of 2026-09-29).
 - `code/verify.py`: exact rational coefficient checks and two inverse-value
   certificate routes; standard library only.
 - `code/diagnostics.py`: logarithmic floating-point coefficient diagnostics.
@@ -65,8 +66,12 @@ No repository file, branch, or persistent Library file was modified.
 - `SOURCE_NOTES.md`: pinned repository provenance and primary references.
 - `requirements.txt`: tested diagnostic dependency versions.
 - `build.sh`: three-pass PDF build.
-- `data/build_info.json`: build/test environment and PDF inspection summary.
-- `SHA256SUMS`: checksums for the deliverable files except itself.
+- `data/build_info.json`: build/test environment and PDF inspection summary
+  of the delivered 28-page build (kept as delivered). Its "current smoke order
+  64" records a check made before delivery that no recipe here reproduces.
+- The delivered checksum ledger `SHA256SUMS` was verified in full on filing
+  (11/11, batch 50) and not kept; the delivered archive remains in the
+  repository history (see `docs/incoming/README.md`, batch 50 row).
 
 ## Reproduce
 
@@ -86,7 +91,12 @@ python code/diagnostics.py --order 512
 
 The diagnostic recurrence uses quadratic storage and roughly cubic arithmetic
 work. Its output is not an interval certificate. Both scripts accept `--output`
-to avoid replacing their included recorded data. The exhaustive exact program
+to avoid replacing their included recorded data. (Editorial, 2026-09-29: both
+now write into `rerun/` beside `code/` by default, and writing the recorded
+`data/exact_checks.json` or `data/diagnostics.json` requires
+`--overwrite-recorded`. On Windows use `py` instead of `python`, or
+`uv run --no-project --with numpy==2.3.5 --with scipy==1.17.0 python
+code/diagnostics.py --order 512`.) The exhaustive exact program
 has an exponential composition-enumeration component; its order is deliberately
 restricted to 2–18.
 
@@ -116,3 +126,52 @@ independently certify a unique literal root.
 Finite tests support implementation and algebraic consistency. The infinite
 analytic and asymptotic assertions depend on the proofs in the article, not on
 agreement of a finite table with a conjectured formula.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Filed on 2026-09-29 (batch 50 of `docs/incoming/`; see `docs/incoming/README.md`).
+The following changes were made; every change to the article source is
+preceded by a `% ed. (2026-09-29)` comment, the visible additions are labelled
+"Editorial note (ProveIt, 2026-09-29)", and no label was renamed.
+
+- `article.tex`:
+  - an unnumbered `ednote` environment (no numbering shifts);
+  - after the paragraph citing "lines 1470--1483": those are lines of the
+    pinned snapshot; after the editorial pass of 2026-09-29 the amplitude
+    question is at lines 1569--1582 of
+    `../Exponential_Feedback_Regularity_Classification/article.tex` and the
+    negative-ray question at lines 1480--1491 of
+    `../Negative_Ray_Summation_Exponential_Feedback/article.tex`, each followed
+    by an editorial note (both now record this package);
+  - at the end of the section "A sharper Borel region under strong damping":
+    the zero-loss reversion theorem (`thm:zeroloss`) of
+    `../Sharp_Weighted_Type_Formal_Reversion/`, in this article's snapshot but
+    uncited, gives `T_s(Q) = T_s(U)`, hence the exact inverse type under
+    strong damping and `T_1(Q) = 4A` in `prop:sharp-borel` (an editorial
+    deduction); the research question "Sharp signed inverse coefficients"
+    points to it;
+  - after the example `c_j = 1`, `lambda_j = j log(j+1)`: a case of
+    `../Near_Linear_Boundary_Exponential_Feedback/` (uncited) and of the
+    negative-ray article;
+  - after the research question "Angular and generalized moment summation":
+    for `c_j = 1` the open arc fails for `lambda_j = j^2`
+    (`../Natural_Boundaries_Quadratic_Exponential_Feedback/`) and for
+    `lambda_j = j^d`, `d >= 3` (`../Natural_Boundaries_Survive_Nonlinear_Feedback/`);
+  - bibliography entries `ed:swt`, `ed:nlb`, `ed:nbq`, `ed:nbs`.
+- `article.pdf`: rebuilt with three pdfLaTeX passes (29 pages, was 28; no
+  errors, undefined references, multiply defined labels, duplicate
+  destinations, overfull or underfull boxes; every font Type 1).
+- `code/verify.py`, `code/diagnostics.py`: the default output is
+  `rerun/exact_checks.json` and `rerun/diagnostics.json`; writing the recorded
+  files in `data/` requires `--overwrite-recorded`; JSON is written with LF on
+  every platform (the delivered programs wrote CRLF on Windows). A rerun on a
+  copy (`verify.py --order 12`, `diagnostics.py --order 512`) reproduced both
+  recorded files byte for byte; `data/` is unchanged.
+- `SOURCE_NOTES.md` is kept as delivered. Its cited ranges are lines of the
+  pinned snapshot; after the editorial pass of 2026-09-29, the regularity
+  article's lines 1440--1508 are 1482--1643 (the question, 1470--1483, is
+  1569--1582), and the negative-ray article's ranges 1--540, 600--1030 and
+  1360--1515 are 1--561, 621--1051 and 1403--1603 (the weighted-actions
+  question is 1480--1491).
+- `README.md`: this section, the ledger bullet and the notes under "Contents"
+  and "Reproduce".

@@ -3,10 +3,14 @@
 
 No network access is used. Exact arithmetic uses Python integers/Fraction.
 The asymptotic diagnostic table uses mpmath; it is not an interval proof.
-Run: python code/verify.py --degree 240
+Run: python code/verify.py --degree 320
+(ed. 2026-09-29: the default degree is now 320, that of the recorded run;
+outputs go to rerun/ beside code/ unless --output-dir is given, and writing
+into the recorded data/ needs --overwrite-recorded. All files and standard
+output are written with LF.)
 """
 from __future__ import annotations
-import argparse, csv, json, math, time
+import argparse, csv, json, math, sys, time
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
@@ -138,10 +142,21 @@ def saddle(n:int,a:int):
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--degree',type=int,default=240)
+    try:  # ed. 2026-09-29: LF also in redirected stdout on Windows
+        sys.stdout.reconfigure(newline='\n')
+    except AttributeError:
+        pass
+    root=Path(__file__).resolve().parents[1]
+    parser=argparse.ArgumentParser();parser.add_argument('--degree',type=int,default=320)
+    parser.add_argument('--output-dir',type=Path,default=root/'rerun')
+    parser.add_argument('--overwrite-recorded',action='store_true',
+                        help='allow writing into the recorded data/ directory')
     args=parser.parse_args(); N=args.degree
     if not 20<=N<=1200:raise ValueError('degree must lie in [20,1200]')
-    root=Path(__file__).resolve().parents[1];(root/'data').mkdir(exist_ok=True)
+    out=args.output_dir
+    if out.resolve()==(root/'data').resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded data/; pass --overwrite-recorded or choose another --output-dir')
+    out.mkdir(parents=True,exist_ok=True)
     models=[Model('pure_a1'),Model('pure_a2',a=2),Model('lambda1_zero',lambda1=0),
             Model('linear_tail',b=1),Model('weight2_two',weight2=2)]
     checks=0; start=time.perf_counter(); all_data={}
@@ -158,8 +173,8 @@ def main():
                 assert response[n]==inverse_partition(model,n,M)
                 checks+=1
         assert Fraction(V[2],2)==-model.beta;checks+=1
-        with (root/'data'/f'{model.name}_exact_egf.csv').open('w',newline='') as f:
-            wr=csv.writer(f);wr.writerow(['n','n_factorial_times_v_n']);wr.writerows(enumerate(V))
+        with (out/f'{model.name}_exact_egf.csv').open('w',newline='') as f:
+            wr=csv.writer(f,lineterminator='\n');wr.writerow(['n','n_factorial_times_v_n']);wr.writerows(enumerate(V))
         print(f'{model.name}: exact coefficients through {degree}; checks passed',flush=True)
     rows=[]
     for name,(model,V) in all_data.items():
@@ -169,9 +184,9 @@ def main():
             c=mp.mpf(model.b-model.beta)/model.a
             ratio=-mp.mpf(V[n])/mp.factorial(n)*mp.exp(-logS-c*r)
             rows.append([name,n,mp.nstr(r,16),mp.nstr(ratio,16)])
-    with (root/'data'/'asymptotic_diagnostics.csv').open('w',newline='') as f:
-        wr=csv.writer(f);wr.writerow(['model','n','r_n','v_n_over_predicted_negative_equivalent']);wr.writerows(rows)
-    with (root/'data'/'table.tex').open('w') as f:
+    with (out/'asymptotic_diagnostics.csv').open('w',newline='') as f:
+        wr=csv.writer(f,lineterminator='\n');wr.writerow(['model','n','r_n','v_n_over_predicted_negative_equivalent']);wr.writerows(rows)
+    with (out/'table.tex').open('w',newline='\n') as f:
         for name,n,r,ratio in rows:
             if name=='pure_a1' and n in (20,50,100,160,200,240,300,320,400,500,600):
                 f.write(f'{n} & {float(r):.6f} & {float(ratio):.9f} \\\\\n')
@@ -179,7 +194,7 @@ def main():
             'diagnostics_precision_decimal_digits':mp.mp.dps,
             'elapsed_seconds':round(time.perf_counter()-start,3),
             'status':'All exact checks passed. Asymptotic tables are floating diagnostics, not proof or interval certificates.'}
-    (root/'data'/'verification.json').write_text(json.dumps(status,indent=2)+'\n')
+    (out/'verification.json').write_text(json.dumps(status,indent=2)+'\n',newline='\n')
     print(json.dumps(status,indent=2))
     for row in rows:print(', '.join(map(str,row)))
 

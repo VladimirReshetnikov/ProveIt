@@ -240,6 +240,18 @@ def partition_checks() -> int:
 
 
 def main() -> None:
+    # ed. 2026-09-29: write into rerun/ in the package root unless --output-dir is
+    # given; the recorded verification/results.json needs --overwrite-recorded.
+    import argparse
+    here=Path(__file__).resolve().parent
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--output-dir',type=Path,default=here.parent/'rerun')
+    parser.add_argument('--overwrite-recorded',action='store_true')
+    args=parser.parse_args()
+    if args.output_dir.resolve()==here.resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded verification/results.json; '
+                     'pass --overwrite-recorded or choose another --output-dir')
+    args.output_dir.mkdir(parents=True,exist_ok=True)
     moment_checks()
     pencil=random_pencil_checks()
     general=general_series_checks()
@@ -252,8 +264,8 @@ def main() -> None:
         'random_pencil_cases':pencil,'general_polynomial_matrix_cases':general,
         'partition_cases':partition_count,'diamond':diamond,
         'scope':'Finite symbolic checks only. Not a Lean formalization or verification of arbitrary Hahn supports.'}
-    out=Path(__file__).resolve().parent/'results.json'
-    out.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    out=args.output_dir/'results.json'
+    out.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'status':result['status'],'assertions':result['assertions'],
                       'counts':result['counts'],'results_file':str(out)},indent=2))
 

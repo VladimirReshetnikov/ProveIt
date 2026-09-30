@@ -94,3 +94,17 @@ following changes were made after filing; everything else is as delivered.
   run, so a bare run no longer overwrites the degree-120 tables with shorter
   ones; the CSV and JSON writers emit LF line endings on every platform. A
   bare rerun on a copy reproduced the three filed `data/` files byte for byte.
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: the editorial note after the research question "Amplitudes,
+  general actions, and multiple scales" now ends with the later package
+  `../Amplitude_Slope_Compensation_Feedback_Transseries/` (batch 50), which
+  states the analogue of the exact type identity for integer actions and
+  positive exponentially bounded amplitudes (convergence iff
+  `lambda_j = O(j + d_j)`, Gevrey-s iff `lambda_j^(1/(s+1)) = O(j log(j+1) + d_j)`,
+  and the type under strong damping); general real actions stay open.
+- `article.pdf`: rebuilt (25 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).

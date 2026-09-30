@@ -26,6 +26,9 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Prob}{\mathbb P}
 \newcommand{\R}{\mathbb R}
@@ -121,6 +124,10 @@ Small deviations of weighted independent sums have a substantial literature; Lif
 Mellin transforms of geometric harmonic sums and the resulting logarithmic periodicity are classical tools, systematically developed by Flajolet, Gourdon, and Dumas \cite{fgd}. More specifically, Tavares's recent preprint \cite[Proposition 6.3]{tavares} gives a Gamma--zeta Fourier correction for a base-three uniform-series density. Its nonzero Fourier coefficients agree, after the appropriate change of scale and sign, with the mechanism appearing below. Thus neither the existence of a geometric lattice oscillation nor the Gamma--zeta mechanism is claimed as a new phenomenon here. Our argument does not use that preprint's results about predecessor densities.
 
 The work performed here is the explicit correction of \eqref{eq:old-conjecture}, the polynomial-weight all-order construction with uniform phase control, the coefficient formula and first correction, and the comparison and quantile consequences. These are proved within this manuscript rather than inferred from titles of prior work. A complete priority investigation across the small-deviation literature has not been completed. ``Resolved'' below refers to the stated repository conjecture, not to an assertion that a long-established major open problem has been settled.
+% ed. (2026-09-29): the repository's own machine-checked Fabius case was not credited; recorded on filing (batch 50).
+\begin{ednote}
+The case $m=0$, $q=1/2$ (the Fabius law) of \cref{thm:allorders,cor:logform,thm:fourier} was already a machine-checked theorem of the repository when the conjecture was stated \cite{ed:fabiuslean}. In particular the term $\frac{\log\log2}{\log2}\log L$ of \eqref{eq:missing} is part of the elementary main term of \path{Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO}, so the Fabius case of the conjecture was already contradicted by a Lean theorem; this article does not cite it. The details are in the editorial note at the end of \cref{sec:correction}. The source report now carries an editorial note (2026-09-29) under \texttt{conj:jet-small-ball} marking the conjecture false for $\lambda\ne1$ and pointing to this article.
+\end{ednote}
 
 \section{The Lambert coordinate and the main theorem}
 \label{sec:main}
@@ -280,6 +287,16 @@ For $q=1/2$, $\lambda=\log2$, so the missing term is already present in the ordi
 The squared factor $(m+1)^2$ makes the omission more pronounced as the jet order increases. Its sign does not depend on the phase of the lattice oscillation.
 
 A fixed-order expansion of $R$ that is adequate for relative accuracy in $R$ need not be adequate inside $\ee^{-\lambda R^2/2}$. An error $\Delta R$ there is amplified by a factor of order $R$ at the logarithmic level. Keeping the exact Lambert coordinate until the final conversion avoids this loss of precision.
+
+% ed. (2026-09-29): machine-checked counterparts of the dyadic case, uncited by the article; recorded on filing (batch 50).
+\begin{ednote}
+For $m=0$, $q=1/2$ (the Fabius law) \cref{thm:allorders}, \cref{cor:logform} and \cref{thm:fourier} have machine-checked counterparts in \path{Analysis/FabiusFunction/Lean/FabiusFunction/} \cite{ed:fabiuslean}:
+\path{Fabius.log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion} (\path{FabiusFullAsymptoticExpansion.lean}), whose main term \path{fabiusSharpLambertMain} is $\log\calF_{0,\log2}$ in the exact phase $\lambda2^{-\lambda}=x$ (this article's $R$);
+\path{Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO} (\path{FabiusSharpAsymptotic.lean}), whose elementary main term \path{fabiusWikipediaElementaryMain} contains the term $\frac{\log\log2}{\log2}\log L$ of \eqref{eq:missing}, with the error $O(1/L)$, sharper than the $O((\log L)^2/L)$ of \eqref{eq:Lform};
+\path{fabiusFirstSaddleCorrection}, which is $A_{1,0,\log2}$ with the periodic function of opposite sign (the Lean periodic function is $-\Psi_{\log2}$ up to an additive constant); and
+\path{hasSum_negativeLaplacePsi_gammaZeta_fourierSeries} and \path{negativeLaplacePsiFourierCoeff_ne_zero} (\path{PeriodicFourier.lean}), the Gamma--zeta Fourier form and the nonvanishing of its coefficients.
+The canonical Fabius volume (\path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/}) states them as \texttt{eq:sharp-main-lambda} and \texttt{eq:all-orders-log}. Term by term, including the constant, the Lean elementary main term agrees with \eqref{eq:Lform} at $(m,\lambda)=(0,\log2)$, apart from two further terms of order $(\log L)^2/L$. The general $m$ and $\lambda$, the comparison theorem and the quantile theorem are not formalized. This note is editorial.
+\end{ednote}
 
 \section{An exact Gamma reference for the probability}
 \label{sec:gamma}
@@ -893,8 +910,9 @@ There is also a useful scale separation. The Fourier expansion of each coefficie
 The archive contains \texttt{code/verify.py}, three CSV files, a run log, and machine-readable environment metadata. It performs three independent types of checks: symbolic cancellation in \eqref{eq:A1}; high-precision agreement between the boundary product and Fourier representations of $\Psi_\lambda$; and direct numerical Laplace inversion compared with the first two asymptotic coefficients. It also tests \cref{thm:comparison} for $\eta_n=0.7/n$.
 
 The recorded environment is Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, SciPy 1.17.0, and SymPy 1.14.0. Boundary and Fourier calculations use at least 60 decimal digits, with guard digits internally. The contour integral uses independent double-precision adaptive quadrature. All experiments are deterministic. To reproduce them, run from the package root:
+% ed. (2026-09-29): the delivered recipe wrote into the recorded results/; the program now refuses that without --overwrite-recorded (see the package README).
 \begin{verbatim}
-python code/verify.py --output results
+python code/verify.py --output rerun
 \end{verbatim}
 
 The script explicitly requests Euler--Maclaurin evaluation of $\zeta$ in the Fourier calculation, avoiding avoidable cancellation in eta-based formulas at frequencies commensurate with $\log2$. This is a numerical implementation choice, not a modification of \eqref{eq:fourier}.
@@ -962,6 +980,10 @@ takes the values $1.00044032$, $1.00011026$, $1.00002755$, and $1.00000687$ at $
 \label{sec:formalization}
 
 No Lean source was produced or compiled for the new theorems in this package. The repository already distinguishes exact formal counterparts from partial crosswalks and informal frontier results \cite{repotrans}; that distinction is retained here. Symbolic identities verified by SymPy are also not Lean theorems.
+% ed. (2026-09-29): the existing Lean counterparts of the case m = 0, q = 1/2 are not named in this section.
+\begin{ednote}
+The Fabius case $m=0$, $q=1/2$ of the all-order expansion, of the $L$-form with the term \eqref{eq:missing}, of the first correction and of the Fourier theorem is already machine-checked in \path{Analysis/FabiusFunction/Lean/FabiusFunction/}; see the editorial note at the end of \cref{sec:correction}. A formalization of the general case would extend those modules rather than start from finite algebra alone.
+\end{ednote}
 
 A natural formalization order begins with finite algebra. The polynomials $\calP_j$, their exponential generating identity, their valuation bound, and the first-coefficient cancellation involve only finite sums, polynomial identities, and truncated power series. The shifted factorization \eqref{eq:factor-algebra} and the reindexing rule \eqref{eq:shift} have small algebraic cores. These are useful independent milestones.
 
@@ -1130,6 +1152,13 @@ R. A. Tavares.
 arXiv:2608.27617v1 (2026), especially \S6 and Proposition 6.3.
 \href{https://arxiv.org/html/2608.27617v1}{Version inspected}.
 Cited for the related base-three periodic correction, not as an input to the new proofs.
+
+% ed. (2026-09-29): bibliography entry for the editorial notes.
+\bibitem{ed:fabiuslean}
+ProveIt repository, Fabius Lean corpus, \path{Analysis/FabiusFunction/Lean/FabiusFunction/}
+(\path{FabiusSharpAsymptotic.lean}, \path{FabiusWikipediaExpansion.lean}, \path{FabiusFullAsymptoticExpansion.lean}, \path{FabiusFirstSaddleCorrection.lean}, \path{PeriodicFourier.lean}),
+and the canonical volume \path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}.
+Editorial addition (2026-09-29).
 
 \bibitem{dlmf}
 NIST Digital Library of Mathematical Functions.

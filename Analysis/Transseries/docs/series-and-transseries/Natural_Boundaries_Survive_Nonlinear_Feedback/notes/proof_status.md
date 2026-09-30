@@ -6,6 +6,8 @@ Theorems 1.1 and 1.2 are the headline results. Their natural-boundary component 
 
 The proposed additions relative to the directly reviewed predecessor are the moving-curve asymptotic theorem, the implicit natural-boundary theorem, its forward-boundary and robustness consequences, and the negative answer to angular summability. The general-degree positive remainder-majorant formula and its optimization extend the predecessor's quadratic estimate. The fixed Fourier transform, principal-part extraction, tree enumeration, and Laplace summation tools are classical.
 
+> **Editorial note (ProveIt, 2026-09-29).** For d = 2 the moving-curve theorem, the natural boundary and the negative answer to angular summability are not new to the repository: the earlier-filed package `../../Natural_Boundaries_Quadratic_Exponential_Feedback/` (batch 49; its `thm:main` and `thm:rigidity`) proves them independently, with explicit constants. They are new for integer d >= 3. See the editorial note after `thm:quadratic-main` in the article.
+
 ## Load-bearing proof checks
 
 1. **Formal and analytic existence are separate.** Formal recursion is coefficientwise finite. Analytic realization is constructed only on a closed left half-disc, by a uniform contraction. No unjustified product-neighborhood analyticity at the origin is used.

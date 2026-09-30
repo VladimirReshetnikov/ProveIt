@@ -136,3 +136,17 @@ following changes were made on 2026-09-29; everything else is as delivered.
   the delivered `article.pdf` and `article.tex`, not of the filed files.
 - `README.md`: the page count (26 to 27), the parenthetical pointer after
   "Main results", and this section.
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: the editorial note after `conj:quadratic-inverse` adds a
+  third independent claimed proof,
+  `../Signed_Condensation_Sharp_Quadratic_Reversion/` (batch 50), under the
+  first package's hypotheses, with the least formal inverse term; its exact
+  coefficients agree with both earlier ones. The conjecture itself is
+  unchanged.
+- `article.pdf`: rebuilt (27 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).
+  `data/build_quality.json` still describes the delivered build.

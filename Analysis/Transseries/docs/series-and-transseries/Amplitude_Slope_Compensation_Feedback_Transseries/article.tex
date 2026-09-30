@@ -33,6 +33,10 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{definition}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -126,6 +130,17 @@ amplitude--slope thresholds'']{negative}. The latter source proves a
 unit-amplitude fine-summation theorem. The present paper treats an
 arbitrary positive amplitude sequence with an exponential upper bound.
 It does not change the action exponents from the integers $j$.
+% ed. (2026-09-29): the cited line numbers predate the editorial pass of 2026-09-29.
+\begin{ednote}
+The cited lines 1470--1483 are those of the snapshot identified above. After
+the editorial pass of 2026-09-29 the amplitude question is at lines
+1569--1582 of
+\path{Exponential_Feedback_Regularity_Classification/article.tex}, followed
+by an editorial note that now records this article; the negative-ray
+question is at lines 1480--1491 of
+\path{Negative_Ray_Summation_Exponential_Feedback/article.tex}, also
+followed by an editorial note.
+\end{ednote}
 
 The focused review included the project and document-directory READMEs,
 the relevant regularity questions, and the negative-ray article's
@@ -1148,6 +1163,19 @@ independent calculations, but it does not prove that the boundary of
 point on it is singular for the inverse. Normal convergence regions
 and maximal continuation domains must not be identified.
 
+% ed. (2026-09-29): an uncited theorem in this article's snapshot settles the exact inverse type left open here.
+\begin{ednote}
+The zero-loss reversion theorem of
+\path{Sharp_Weighted_Type_Formal_Reversion/} \cite{ed:swt} (its
+Theorem~\texttt{thm:zeroloss}), which was in this article's snapshot but is
+not cited, applies to the weight $(n!)^s$ and gives $T_s(\Q)=T_s(\U)$. With
+Theorem~\ref{thm:type} this yields
+$T_s(\Q)=(s+1)^{s+1}\limsup_j\lambda_j/d_j^{s+1}$ under strong damping, and
+$T_1(\Q)=4A$ in Proposition~\ref{prop:sharp-borel}. Signs, the cancellation
+scale and prefactors of the inverse coefficients remain open. This
+deduction is editorial.
+\end{ednote}
+
 \section{Phase diagrams and explicit examples}
 \label{sec:examples}
 
@@ -1272,6 +1300,14 @@ its inverse belong to every positive Gevrey class and are finely
 summable in direction $\pi$. This is an illustration of the distinction
 between the two budgets, not a new unit-amplitude theorem.
 \end{example}
+% ed. (2026-09-29): the example is covered by two repository articles, one of them uncited.
+\begin{ednote}
+This example is also a case of
+\path{Near_Linear_Boundary_Exponential_Feedback/} \cite{ed:nlb} (slopes
+$jL(j)$ with $L(j)=\log(j+1)$, which gives the exact root asymptotic and
+zero type at every positive Gevrey order), and of the negative-ray
+article's fine-summability theorem \cite{negative}.
+\end{ednote}
 
 \section{Why the hypotheses and the direction matter}
 \label{sec:boundaries}
@@ -1519,6 +1555,13 @@ A general exact-type-preservation theorem, if applicable with this
 normalization, should be used rather than rediscovered. Even such a
 theorem would not settle the signs, cancellation scale, or multiplicative
 prefactor of the inverse coefficients.
+% ed. (2026-09-29): the exact type part is settled by a theorem in this article's snapshot.
+\begin{ednote}
+The exact type is settled by the zero-loss reversion theorem of
+\cite{ed:swt}; see the editorial note at the end of
+Section~\ref{sec:sharp-borel}. Signs, cancellation scale and prefactors
+remain open.
+\end{ednote}
 
 \subsection{A full multiplicative forward asymptotic}
 For $d_j=bj^\beta$ and $\lambda_j=aj^p$, refine
@@ -1563,6 +1606,14 @@ The target should identify the sum with the literal inverse, not merely
 prove the existence of some function with the same asymptotic expansion.
 Uniform Gevrey remainders are a starting point, not the entire summation
 argument.
+% ed. (2026-09-29): obstructions for unit amplitudes proved by two later packages (batches 49 and 50).
+\begin{ednote}
+For $c_j=1$ and $\lambda_j=j^2$ the open arc fails:
+\path{Natural_Boundaries_Quadratic_Exponential_Feedback/} \cite{ed:nbq}
+(its Theorem~\texttt{thm:main}); and for $\lambda_j=j^d$, $d\ge3$,
+\path{Natural_Boundaries_Survive_Nonlinear_Feedback/} \cite{ed:nbs} (its
+Theorem~\texttt{thm:main}). Neither has been independently reviewed.
+\end{ednote}
 
 \subsection{Amplitudes beyond exponential growth}
 The counterexample \eqref{eq:amplitude-counterexample} shows that slope
@@ -1817,6 +1868,31 @@ research draft in ProveIt, same snapshot, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/ebd8344bca77d8352cd745b7df374618a290a029/Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/article.tex}.
 The weighted-amplitude question and the distinction between fine and
 angular summation are the immediate analytic starting points.
+
+% ed. (2026-09-29): bibliography entries for the editorial notes.
+\bibitem{ed:swt}
+\emph{Sharp Weighted Type Under Formal Reversion}, ProveIt research package
+filed in batch 48 (in this article's snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/}.
+Editorial addition.
+
+\bibitem{ed:nlb}
+\emph{The Near-Linear Boundary of Exponential Feedback}, ProveIt research
+package filed in batch 47 (in this article's snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Near_Linear_Boundary_Exponential_Feedback/}.
+Editorial addition.
+
+\bibitem{ed:nbq}
+\emph{Natural Boundaries of Quadratic Exponential Feedback}, ProveIt research
+package filed in batch 49 (after this article's snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Quadratic_Exponential_Feedback/}.
+Editorial addition.
+
+\bibitem{ed:nbs}
+\emph{Natural Boundaries Survive Nonlinear Feedback}, ProveIt research
+package filed in batch 50 (beside this article),
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Survive_Nonlinear_Feedback/}.
+Editorial addition.
 
 \bibitem{gessel}
 Ira M. Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory,

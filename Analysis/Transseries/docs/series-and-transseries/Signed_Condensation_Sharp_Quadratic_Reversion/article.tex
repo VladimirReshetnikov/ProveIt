@@ -23,6 +23,10 @@
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \newtheorem{question}{Research question}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{definition}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
 \newcommand{\U}{\widehat U}
@@ -34,6 +38,8 @@
 \newcommand{\abs}[1]{\left|#1\right|}
 \newcommand{\RepoCommit}{aab173a7ccdd48add72191d68ce6b0c12ffd72fe}
 \begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which the titlepage environment numbers 1 like the following page (removes a duplicate-destination warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
 \vspace*{15mm}
@@ -86,6 +92,7 @@ proved here; no claim of resolving general transseries summability or a
 classical field-wide conjecture is made.
 \end{minipage}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \tableofcontents
 \newpage
 
@@ -114,6 +121,13 @@ an exact first-order inverse response but leaves the cancellation estimate
 needed to pass from that response to the full inverse unproved \cite{finitecore}.
 The relevant inspected source range is lines 1623--1678; the precise
 conjecture is at lines 1661--1668, with its explanation immediately after it.
+% ed. (2026-09-29): the cited line numbers predate the editorial pass of 2026-09-29.
+\begin{ednote}
+The cited lines are those of the blob and snapshot identified above. After the editorial pass of 2026-09-29 the range
+1623--1678 is 1666--1721, and the conjecture is at lines 1704--1711 of
+\path{Finite_Core_Universality_Exponential_Feedback/article.tex}, followed
+by an editorial note recording the claimed proofs, now including this one.
+\end{ednote}
 
 For the pure quadratic model, that conjecture is
 \begin{equation}
@@ -248,6 +262,28 @@ Suppose two models have the same eventual \(a,b,d\) and respective values
 In particular, preserving \(u_2\) makes every other finite-prefix alteration
 invisible in the leading inverse equivalent.
 \end{corollary}
+
+% ed. (2026-09-29): two earlier-filed independent claimed proofs of the same theorem (batch 49), not visible from this article's snapshot.
+\begin{ednote}
+Two earlier-filed packages, which this article could not see, claim the
+same inverse law, so this article is a third independent claimed proof of
+the conjecture \texttt{conj:quadratic-inverse}.
+\path{Quadratic_Exponential_Feedback_After_Reversion/} \cite{ed:qfr}
+(Theorem~\texttt{thm:main}) has the same hypotheses, with \(b,d,\beta\)
+written \(d,e,\mu\); its Corollary~\texttt{cor:universality} is
+Corollary~\ref{cor:prefix} here and its Theorem~\texttt{thm:borel} is
+Theorem~\ref{thm:borel} here.
+\path{Signed_Quadratic_Feedback_Inversion/} \cite{ed:sqi}
+(Theorem~\texttt{thm:main}) has an exact tail \(aj^2\), finitely many
+exceptional weights and slopes that may be arbitrary real numbers, and the
+factor
+\(\exp(-(\lambda_1+w_2)r_n/a)\). The three sets of exact coefficients agree
+at every common degree (through \(240\) for \(a=1\) and \(160\) for
+\(a=2\)). Theorem~\ref{thm:least} sharpens the least-term index corollary of
+the second package and adds the value; the localization proof here is a
+third route, closest to the first package's positive majorant. None of the
+three proofs has been independently reviewed.
+\end{ednote}
 
 For the remaining statements, write \(\gamma=(b-\beta)/a\) and use the
 ordinary factorial-normalized Borel transform
@@ -1100,6 +1136,15 @@ to zero; this is why the theorem is stated after an eventual-negative index
 \(N\). None of these issues is hidden by the notation ``least term.''
 \end{remark}
 
+% ed. (2026-09-29): relation to the negative-ray article's remainder bound, uncited by this article.
+\begin{ednote}
+At \(a=1\), \(b=d=0\) the exponent \(-\log^2(1/t)/(4t)\) of
+\eqref{eq:least} has the constant \(1/4\) of the negative-ray article's
+remainder bound \cite{ed:nrs} (its Theorem~\texttt{thm:optimal}), which is
+an upper bound from a majorant. The present theorem is a statement about
+formal terms and gives no lower bound for the analytic truncation error.
+\end{ednote}
+
 \section{Exact computations and reproducibility}
 \label{sec:verification}
 
@@ -1280,6 +1325,16 @@ existence result, not a sharp threshold. A smaller cutoff likely requires
 retaining cancellations between additional tails instead of estimating
 those tails absolutely.
 \end{question}
+% ed. (2026-09-29): this question is answered by two earlier-filed packages (batch 49).
+\begin{ednote}
+Answered in two earlier-filed packages. \cite{ed:sqi},
+Theorem~\texttt{thm:two}: every fixed \(M\ge2\) gives the full inverse
+equivalent, \(M=2\) is the smallest sufficient core in the pure model, and
+\(M=1\) suffices exactly when \(w_2=0\). \cite{ed:qfr},
+Theorem~\texttt{thm:sharp} and Corollary~\texttt{cor:minimalcore}: the
+sharp relative error of every fixed core with \(M\ge2\), in the pure model
+\(j_nt_n^M\).
+\end{ednote}
 
 \begin{question}[A complete inverse large-order expansion]
 Determine an all-order expansion of \(v_n/(-S_ne^{\gamma r_n})\) in
@@ -1312,6 +1367,15 @@ which finite-difference assumptions are actually necessary. More irregular
 perturbations could destroy a smooth local saddle while preserving a
 logarithmic coefficient law.
 \end{question}
+% ed. (2026-09-29): this question is answered by an earlier-filed package (batch 49).
+\begin{ednote}
+Answered in \cite{ed:qfr}, Theorem~\texttt{thm:borderline}: if
+\(\lambda_j=aj^2+bj+d+\varepsilon_j\) (in this article's notation) with
+\(\varepsilon_j\log j/j\to\kappa\), with no monotonicity or
+differentiability assumption on \(\varepsilon_j\), the inverse equivalent
+acquires exactly the factor \(e^{\kappa/(2a)}\), and so does the Borel
+equivalent.
+\end{ednote}
 
 \begin{question}[Effective, rather than asymptotic, cancellation bounds]
 Make the constants in \eqref{eq:fusion}, \eqref{eq:cloudloss}, and
@@ -1331,6 +1395,16 @@ that ray. A solution could locate directions of ordinary summability or
 identify a suitable acceleration scale without confusing entire
 continuation with acceptable growth.
 \end{question}
+% ed. (2026-09-29): partial answers in two earlier-filed packages (batch 49).
+\begin{ednote}
+Partly answered. \cite{ed:sqi}, Theorem~\texttt{thm:borel}, shows (for an
+exact tail \(aj^2\)) that the maximum modulus of \(\Bcal\Q\) on the circle
+\(|z|=R\) is asymptotic to \(-\Bcal\Q(R)\). For the pure model at \(a=1\),
+\cite{ed:nbq}, Theorem~\texttt{thm:main}(iii), shows that \(\Bcal\Q\) (in
+the normalization \eqref{eq:borel-def}) admits no exponential bound in any
+sector of positive opening about the direction \(\pi\). Growth in general
+sectors remains open.
+\end{ednote}
 
 \begin{question}[Least term versus an actual analytic remainder]
 For a specified negative-direction analytic realization of the inverse,
@@ -1362,6 +1436,14 @@ persistent cancellation at leading order. This question requires a new
 statement rather than a formal replacement of positive constants by
 absolute values.
 \end{question}
+% ed. (2026-09-29): partial answer in an earlier-filed package (batch 49).
+\begin{ednote}
+Partly answered in \cite{ed:sqi}, Theorem~\texttt{thm:main}: with an exact
+tail \(w_j=1\), \(\lambda_j=aj^2\), finitely many exceptional weights and
+slopes may be arbitrary real numbers, and the inverse coefficients are still
+eventually negative, with \(v_n\sim-S_n\exp(-(\lambda_1+w_2)r_n/a)\).
+Oscillatory tail weights remain open.
+\end{ednote}
 
 \section{Conclusion}
 The sharp quadratic inverse conjecture is reduced to, and proved by, an
@@ -1404,6 +1486,31 @@ under the directory in \cite{inventory}, same pinned snapshot.
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/aab173a7ccdd48add72191d68ce6b0c12ffd72fe/Analysis/Transseries/docs/series-and-transseries/Finite_Core_Universality_Exponential_Feedback/article.tex}{Pinned source}.
 Theorem labeled \texttt{thm:explicit}; proposition
 \texttt{prop:inverse-response}; conjecture \texttt{conj:quadratic-inverse}.
+
+% ed. (2026-09-29): bibliography entries for the editorial notes (packages filed beside this one).
+\bibitem{ed:qfr}
+\emph{Quadratic Exponential Feedback after Reversion}, ProveIt research
+package filed in batch 49 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Quadratic_Exponential_Feedback_After_Reversion/article.tex}.
+Editorial addition.
+
+\bibitem{ed:sqi}
+\emph{Signed Quadratic-Feedback Inversion}, ProveIt research package filed
+in batch 49 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Quadratic_Feedback_Inversion/article.tex}.
+Editorial addition.
+
+\bibitem{ed:nbq}
+\emph{Natural Boundaries of Quadratic Exponential Feedback}, ProveIt research
+package filed in batch 49 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Quadratic_Exponential_Feedback/article.tex}.
+Editorial addition.
+
+\bibitem{ed:nrs}
+\emph{Negative-Ray Summation of Countable Exponential-Feedback Transseries}, ProveIt
+research package filed in batch 47 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/article.tex}.
+Editorial addition.
 
 \bibitem{gessel}
 I. M. Gessel, \emph{Lagrange inversion},

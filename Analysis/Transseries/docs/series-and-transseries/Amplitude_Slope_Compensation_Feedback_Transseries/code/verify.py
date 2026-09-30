@@ -117,8 +117,16 @@ def block_interval(c: Sequence[F], lam: Sequence[F], u: F, K: int) -> tuple[F, F
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--order', type=int, default=12)
-    parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[1]/'data'/'exact_checks.json')
+    # ed. 2026-09-29: the default output is rerun/exact_checks.json beside code/;
+    # writing the recorded data/exact_checks.json needs --overwrite-recorded.
+    parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[1]/'rerun'/'exact_checks.json')
+    parser.add_argument('--overwrite-recorded', action='store_true',
+                        help='allow writing the recorded data/exact_checks.json')
     args = parser.parse_args()
+    recorded = Path(__file__).resolve().parents[1]/'data'/'exact_checks.json'
+    if args.output.resolve() == recorded.resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded data/exact_checks.json; '
+                     'pass --overwrite-recorded or choose another --output')
     N = args.order
     if not 2 <= N <= 18:
         raise ValueError('The exhaustive composition checks require 2 <= order <= 18.')
@@ -220,7 +228,7 @@ def main() -> None:
             'independent_literal_kernel_certificate':independent,
             'scope':'Finite exact identities and the stated rational enclosure; not asymptotic or Lean verification.'}
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(result,indent=2)+'\n')
+    args.output.write_text(json.dumps(result,indent=2)+'\n', newline='\n')  # ed. 2026-09-29: LF
     print(f'{assertions} exact assertions passed; order {N}; {len(records)} models.')
     print('Certified inverse interval:',cert['lower_decimal'],cert['upper_decimal'])
     print('Certificate width:',cert['width_upper_decimal'])

@@ -5,7 +5,7 @@ Research article prepared for Vladimir Reshetnikov, 29 September 2026.
 
 ## Contents
 
-- `article.pdf`: 25-page article (24 pages as delivered; see "Editorial amendments"), with complete conventional proofs and a research agenda.
+- `article.pdf`: 26-page article (24 pages as delivered; see "Editorial amendments"), with complete conventional proofs and a research agenda.
 - `article.tex`: standalone editable LaTeX source; bibliography is included in the source.
 - `verification/verify.py`: exact integer-normalized inverse and marked-core recurrences,
   independent partition-formula and rational-substitution checks, and decimal diagnostics.
@@ -146,3 +146,21 @@ following changes were made on 2026-09-29; everything else is as delivered.
 - `README.md`: the page count, the ledger bullet (below), the paragraph on
   the default output directory, and this section.
 - The delivered `SHA256SUMS.txt` is not filed (see "Contents").
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: the editorial note after Theorem `thm:main` adds the third
+  independent claimed proof `../Signed_Condensation_Sharp_Quadratic_Reversion/`
+  (batch 50): same hypotheses and inverse law (its `b, d, beta` are `d, e, mu`
+  here), its `cor:prefix` and `thm:borel` are `cor:universality` and
+  `thm:borel` here, and it adds the least formal inverse term; exact
+  coefficients equal at every common degree.
+- `article.pdf`: rebuilt (26 pages; 25 before this note; no errors,
+  undefined references, multiply defined labels or duplicate destinations).
+- The editorial note on the negative-ray article's question "Signed
+  coefficient asymptotics and actual least error" now cites its lines
+  1429--1438 (previously 1423--1432), which the batch-50 notes in that
+  article shifted.
+- `README.md`: the page count under "Contents".

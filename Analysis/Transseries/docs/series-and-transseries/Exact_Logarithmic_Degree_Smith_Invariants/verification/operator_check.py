@@ -103,6 +103,18 @@ def residue_matrix_column(s: Series, k: int) -> list[F]:
 
 
 def main() -> None:
+    # ed. 2026-09-29: write into rerun/ in the package root unless --output-dir is
+    # given; the recorded verification/operator_results.json needs --overwrite-recorded.
+    import argparse
+    here=Path(__file__).resolve().parent
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--output-dir',type=Path,default=here.parent/'rerun')
+    parser.add_argument('--overwrite-recorded',action='store_true')
+    args=parser.parse_args()
+    if args.output_dir.resolve()==here.resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded verification/operator_results.json; '
+                     'pass --overwrite-recorded or choose another --output-dir')
+    args.output_dir.mkdir(parents=True,exist_ok=True)
     checks=0
     for av in [-1,1]:
         B=sp.Matrix([[0,1,1,0],[0,0,0,1],[0,0,0,av],[0,0,0,0]])
@@ -125,8 +137,8 @@ def main() -> None:
             'maximum_word_length':3+KMAX,'lowest_retained_L_exponent':LMIN,
             'specializations':[-1,1],
             'scope':'Finite noncommutative scalar-operator regression checks; not a full infinite-support proof.'}
-    dest=Path(__file__).resolve().parent/'operator_results.json'
-    dest.write_text(json.dumps(result,indent=2)+'\n')
+    dest=args.output_dir/'operator_results.json'
+    dest.write_text(json.dumps(result,indent=2)+'\n',newline='\n')
     print(json.dumps(result,indent=2))
 
 if __name__=='__main__': main()

@@ -36,8 +36,16 @@ def logarithmic_coefficients(N: int, p: float, beta: float, b: float) -> np.ndar
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--order',type=int,default=512)
-    parser.add_argument('--output',type=Path,default=Path(__file__).resolve().parents[1]/'data'/'diagnostics.json')
+    # ed. 2026-09-29: the default output is rerun/diagnostics.json beside code/;
+    # writing the recorded data/diagnostics.json needs --overwrite-recorded.
+    parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[1]/'rerun'/'diagnostics.json')
+    parser.add_argument('--overwrite-recorded', action='store_true',
+                        help='allow writing the recorded data/diagnostics.json')
     args = parser.parse_args()
+    recorded = Path(__file__).resolve().parents[1]/'data'/'diagnostics.json'
+    if args.output.resolve() == recorded.resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded data/diagnostics.json; '
+                     'pass --overwrite-recorded or choose another --output')
     if not 20 <= args.order <= 2000:
         parser.error('--order must be between 20 and 2000.')
     b = math.log(2.)
@@ -77,7 +85,7 @@ def main() -> None:
             'recurrence_checked_against_exact_through':20,'max_log_discrepancy':max_diff,
             'full_coefficient_rows':rows,'one_large_action_lower_bound_rows':lower_rows}
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result,indent=2)+'\n')
+    args.output.write_text(json.dumps(result,indent=2)+'\n', newline='\n')  # ed. 2026-09-29: LF
     for row in rows:
         print(f"p={row['p']} n={row['n']:4d} type root/T={row['root_over_limit']:.9f}")
     print('Maximum log error versus exact:',max_diff)

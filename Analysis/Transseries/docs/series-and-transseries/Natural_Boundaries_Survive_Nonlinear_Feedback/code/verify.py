@@ -11,11 +11,15 @@ import csv
 import json
 import math
 import platform
+import sys
 from fractions import Fraction as F
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+RECORDED = ROOT / "data"
+# ed. 2026-09-29: outputs go to rerun/ unless --output-dir is given; writing
+# into the recorded data/ needs --overwrite-recorded. All files are LF.
+DATA = ROOT / "rerun"
 
 def mul(a: list[F], b: list[F], n: int) -> list[F]:
     c = [F(0)] * (n + 1)
@@ -141,8 +145,8 @@ def exact_checks(order: int) -> dict:
             count+=1
         blocks_out[str(d)]={str(k):h[k] for k in range(1,nb+1)}
     with (DATA/"coefficients.csv").open("w",newline="") as f:
-        w=csv.writer(f);w.writerow(["d","n","U_coefficient_exact","Q_coefficient_exact"]);w.writerows(rows)
-    (DATA/"blocks.json").write_text(json.dumps(blocks_out,indent=2)+"\n")
+        w=csv.writer(f,lineterminator="\n");w.writerow(["d","n","U_coefficient_exact","Q_coefficient_exact"]);w.writerows(rows)
+    (DATA/"blocks.json").write_text(json.dumps(blocks_out,indent=2)+"\n",newline="\n")
     return {"status":"passed","rational_comparisons":count,"order":order,"degrees":[2,3,4],
             "scope":"Finite exact identities, not an infinite-series or theorem verification."}
 
@@ -190,7 +194,7 @@ def numerical_checks() -> dict:
             curve_rows.append([d,n,s(mp.re(ratio)),s(mp.im(ratio))])
         assert abs(ratio-1)<mp.mpf('0.12')
     with (DATA/"moving_curve_ratios.csv").open("w",newline="") as f:
-        w=csv.writer(f);w.writerow(["d","n","ratio_real","ratio_imag"]);w.writerows(curve_rows)
+        w=csv.writer(f,lineterminator="\n");w.writerow(["d","n","ratio_real","ratio_imag"]);w.writerows(curve_rows)
     # Exact periodic boundary equation, evaluated with high precision.
     boundary=[]
     maxres=mp.mpf(0)
@@ -208,7 +212,7 @@ def numerical_checks() -> dict:
         approx=u-2*u*u+u**3/2-F(2,3).numerator/mp.mpf(F(2,3).denominator)*u**4
         boundary.append([b,s(t),s(mp.re(q)),s(mp.im(q)),s(mp.re(q)/(t*t)),s(abs(q-approx)/t**5),s(res)])
     with (DATA/"boundary_points.csv").open("w",newline="") as f:
-        w=csv.writer(f);w.writerow(["denominator","t","Re_Q_it","Im_Q_it","Re_Q_over_t2","four_term_error_over_t5","residual"]);w.writerows(boundary)
+        w=csv.writer(f,lineterminator="\n");w.writerow(["denominator","t","Re_Q_it","Im_Q_it","Re_Q_over_t2","four_term_error_over_t5","residual"]);w.writerows(boundary)
     # Finite Fourier spectra and the odd-modulus quadratic Gauss magnitude.
     gaussmax=mp.mpf(0);gauss_cases=0
     for b in (3,5,7,9,11,15):
@@ -240,11 +244,22 @@ def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--order",type=int,default=24)
     parser.add_argument("--exact-only",action="store_true")
+    parser.add_argument("--output-dir",type=Path,default=ROOT/"rerun")
+    parser.add_argument("--overwrite-recorded",action="store_true",
+                        help="allow writing into the recorded data/ directory")
     args=parser.parse_args()
     if not 4<=args.order<=60:parser.error("--order must be between 4 and 60")
-    DATA.mkdir(exist_ok=True)
+    try:  # ed. 2026-09-29: LF also in redirected stdout on Windows
+        sys.stdout.reconfigure(newline="\n")
+    except AttributeError:
+        pass
+    global DATA
+    DATA=args.output_dir
+    if DATA.resolve()==RECORDED.resolve() and not args.overwrite_recorded:
+        parser.error("refusing to overwrite the recorded data/; pass --overwrite-recorded or choose another --output-dir")
+    DATA.mkdir(parents=True,exist_ok=True)
     result={"python":platform.python_version(),"exact":exact_checks(args.order),
             "numerical":({"status":"not run","reason":"--exact-only"} if args.exact_only else numerical_checks())}
-    (DATA/"verification.json").write_text(json.dumps(result,indent=2)+"\n")
+    (DATA/"verification.json").write_text(json.dumps(result,indent=2)+"\n",newline="\n")
     print(json.dumps(result,indent=2))
 if __name__=="__main__":main()

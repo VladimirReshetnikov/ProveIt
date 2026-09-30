@@ -139,7 +139,7 @@ following changes were made on 2026-09-29; everything else is as delivered.
   inverse series, the negative-ray article's question "Signed coefficient
   asymptotics and actual least error"
   (`../Negative_Ray_Summation_Exponential_Feedback/article.tex`, lines
-  1423-1432); its Borel theorem parallels the regularity article's
+  1429-1438); its Borel theorem parallels the regularity article's
   `thm:borelintro` (`../Exponential_Feedback_Regularity_Classification/article.tex`,
   lines 301-316), neither of which it cites; and `cor:gevrey` and
   `eq:Bgrowth` upgrade to limits the two limsups of the later weighted-type
@@ -173,3 +173,20 @@ following changes were made on 2026-09-29; everything else is as delivered.
   run, so a default rerun reproduces it.
 - `README.md`: the page count, the `data/run.log` and ledger bullets under
   "Contents", and this section.
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: the editorial note after Theorem `thm:main` adds the third
+  independent claimed proof `../Signed_Condensation_Sharp_Quadratic_Reversion/`
+  (batch 50), under the hypotheses of the quadratic-inverse package; its
+  least formal inverse term sharpens the index of the corollary "Least formal
+  term" here and adds the value; exact coefficients equal at every common
+  degree.
+- The editorial note on the negative-ray article's question "Signed
+  coefficient asymptotics and actual least error" now cites its lines
+  1429--1438 (previously 1423--1432), which the batch-50 notes in that
+  article shifted; so does the reference under "Editorial amendments" above.
+- `article.pdf`: rebuilt (21 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).

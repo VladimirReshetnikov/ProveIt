@@ -146,3 +146,15 @@ following changes were made after filing; everything else is as delivered.
   the recorded files untouched, and printed the text of
   `verification_output.txt` (the captured standard output, written by no
   script).
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: an editorial note after the research question
+  "Higher-degree and nonpolynomial slopes": answered for integer `d >= 3` by
+  `../Natural_Boundaries_Survive_Nonlinear_Feedback/` (batch 50; its
+  `thm:main`), which also re-proves `d = 2` independently; noninteger powers
+  stay open.
+- `article.pdf`: rebuilt (23 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).

@@ -134,3 +134,22 @@ following changes were made after filing; everything else is as delivered.
   rerun on a copy (`verify.py --order 24`, `majorant.py`) reproduced all six
   written `data/` files byte for byte. The programs rewrite the recorded
   `data/` files in place; run them on a copy.
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `article.tex`: the editorial note on "Angular summability of the quadratic
+  model" adds the second, independent negative answer of
+  `../Natural_Boundaries_Survive_Nonlinear_Feedback/` (batch 50; every integer
+  `d >= 2`); the note on "Signed coefficient asymptotics and actual least
+  error" adds the third claimed proof
+  `../Signed_Condensation_Sharp_Quadratic_Reversion/` and its least formal
+  inverse term (constant 1/4 at `a = 1`, no analytic lower bound); a new note
+  after "Weighted actions and joint amplitude--slope thresholds" records the
+  answer of `../Amplitude_Slope_Compensation_Feedback_Transseries/` for
+  positive exponentially bounded amplitudes (convergence iff
+  `lambda_j = O(j + d_j)`, fine summability iff
+  `lambda_j^(1/2) = O(j log(j+1) + d_j)`).
+- `article.pdf`: rebuilt (25 pages; 24 before these notes; no errors,
+  undefined references, multiply defined labels or duplicate destinations).

@@ -27,13 +27,16 @@ In L=log(1/x), the expansion includes the previously omitted term
 
 This disproves the precise conjecture `conj:jet-small-ball` in the inspected
 ProveIt source whenever lambda != 1. The exceptional case lambda=1 is
-handled separately. Additional proved results give a comparison law for
+handled separately. (Editorial, 2026-09-29: the report now carries an
+editorial note under the conjecture marking it false for lambda != 1; and for
+m = 0, q = 1/2 the term is already part of a machine-checked Lean theorem,
+see "Editorial amendments" below.) Additional proved results give a comparison law for
 all weight multipliers exp(eta_n) with eta_n -> 0, a harmonic-tail scaling
 law, and inverse-quantile error transport.
 
 ## Contents
 
-- `article.pdf`: the compiled 24-page article.
+- `article.pdf`: the compiled article (24 pages as delivered; 25 pages after the editorial rebuild of 2026-09-29).
 - `article.tex`: self-contained LaTeX source, including the bibliography.
 - `build.sh`: three-pass PDF build script.
 - `code/verify.py`: deterministic symbolic and numerical diagnostics.
@@ -42,7 +45,7 @@ law, and inverse-quantile error transport.
 - `results/asymptotics.csv`: independent inversion versus A_1 and A_2.
 - `results/comparison.csv`: the harmonic perturbation check.
 - `results/verification.json`: environment and test summary.
-- `results/run.txt`: complete recorded diagnostic output.
+- `results/run.txt`: complete recorded diagnostic output (the captured standard output of the recorded run).
 
 ## Build the PDF
 
@@ -64,8 +67,17 @@ The recorded run used Python 3.13.5. A fresh virtual environment is recommended.
 
 ```sh
 python -m pip install -r requirements.txt
-python code/verify.py --output results
+mkdir -p rerun
+python code/verify.py --output rerun > rerun/run.txt
 ```
+
+(Editorial, 2026-09-29: the delivered recipe was `python code/verify.py
+--output results`, which rewrote the recorded `results/` and left
+`results/run.txt` stale. The program's default output is now `rerun/` beside
+`code/`, and it refuses to write into `results/` unless given
+`--overwrite-recorded`. On Windows use `py` instead of `python`, or
+`uv run --no-project --with mpmath==1.3.0 --with numpy==2.3.5 --with
+scipy==1.17.0 --with sympy==1.14.0 python code/verify.py`.)
 
 No network calls or random sampling occur in the program. The script checks
 exact symbolic identities; evaluates product and Fourier expressions with
@@ -118,3 +130,55 @@ claim of an exhaustive global-priority determination. The all-order theorem
 is a fixed-order statement; optimal truncation, Gevrey bounds, uniform
 singular parameter limits, and certified numerical quantiles are proposed
 research questions rather than claimed completed results.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Filed on 2026-09-29 (batch 50 of `docs/incoming/`; see `docs/incoming/README.md`)
+beside the report whose conjecture it corrects. The report's conjecture
+`conj:jet-small-ball` was marked false for lambda != 1 by an editorial note in
+the report, in a commit of its own before this package was filed. The
+following changes were made to the package; every change to the article
+source is preceded by a `% ed. (2026-09-29)` comment, the visible additions
+are labelled "Editorial note (ProveIt, 2026-09-29)", and no label was renamed.
+
+- `article.tex`:
+  - an unnumbered `ednote` environment (no numbering shifts);
+  - an editorial note at the end of Section 1.3 ("Relation to existing
+    literature"): the case m = 0, q = 1/2 was already machine-checked when the
+    conjecture was stated, so its Fabius case was already contradicted by a Lean
+    theorem, which the article does not cite; the report now carries the
+    refutation note;
+  - an editorial note at the end of Section 3 (after "The dyadic case") naming the
+    machine-checked counterparts at (m, lambda) = (0, log 2), all in
+    `Analysis/FabiusFunction/Lean/FabiusFunction/`:
+    `Fabius.log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`
+    (`FabiusFullAsymptoticExpansion.lean`; main term `fabiusSharpLambertMain`
+    in the exact phase `lambda 2^(-lambda) = x`),
+    `Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO`
+    (`FabiusSharpAsymptotic.lean`; its elementary main term
+    `fabiusWikipediaElementaryMain` contains `(log log 2/log 2) log L`, with
+    error `O(1/L)`), `fabiusFirstSaddleCorrection` (= `A_1` at m = 0, with the
+    periodic function of opposite sign), and
+    `hasSum_negativeLaplacePsi_gammaZeta_fourierSeries`,
+    `negativeLaplacePsiFourierCoeff_ne_zero` (`PeriodicFourier.lean`); the
+    canonical volume states them as `eq:sharp-main-lambda` and
+    `eq:all-orders-log`;
+  - an editorial note in Section 12 ("Formalization boundaries") pointing to
+    those modules;
+  - the reproduction command in Section 11.1 now writes to `rerun/`;
+  - a bibliography entry `ed:fabiuslean` for the Lean corpus and the volume.
+- `article.pdf`: rebuilt with three pdfLaTeX passes (25 pages, was 24; no
+  errors, undefined references, multiply defined labels or duplicate
+  destinations; every font Type 1).
+- `code/verify.py`: CSV rows, `verification.json` and standard output are
+  written with LF on every platform; the default output directory is `rerun/`
+  beside `code/`, and writing into the recorded `results/` requires
+  `--overwrite-recorded`. A rerun on a copy reproduced `results/periodic.csv`
+  byte for byte and every other recorded file up to the last digits of
+  double-precision diagnostics (contour integral, as delivered); the recorded
+  `results/` are unchanged.
+- `README.md`: this section, the notes in "Main result", "Contents" and
+  "Reproduce the diagnostics".
+
+On filing, the three CSV tables under `results/` were normalized from CRLF to
+LF; every other file was filed byte for byte as delivered.

@@ -3,7 +3,9 @@
 
 These computations check formulas; they are NOT interval-arithmetic proofs.
 The mathematical remainder proofs are in article.tex. Run from package root:
-    python code/verify.py --output results
+    python code/verify.py --output rerun
+(ed. 2026-09-29: the default output is rerun/ beside code/; writing into the
+recorded results/ needs --overwrite-recorded. All files are written with LF.)
 Dependencies: mpmath, numpy, scipy, sympy. No network or random input is used.
 """
 from __future__ import annotations
@@ -12,6 +14,7 @@ import csv
 import json
 import math
 import platform
+import sys
 from pathlib import Path
 from typing import Callable
 import mpmath as mp
@@ -173,17 +176,28 @@ def symbolic_checks() -> dict:
 
 def write_csv(path: Path, rows: list[dict]) -> None:
     with path.open('w', newline='', encoding='utf-8') as fh:
-        writer = csv.DictWriter(fh, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(fh, fieldnames=list(rows[0]), lineterminator='\n')
         writer.writeheader(); writer.writerows(rows)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=Path('results'))
+    try:  # ed. 2026-09-29: LF also in redirected stdout on Windows
+        sys.stdout.reconfigure(newline='\n')
+    except AttributeError:
+        pass
+    package = Path(__file__).resolve().parent.parent
+    parser.add_argument('--output', type=Path, default=package/'rerun')
+    parser.add_argument('--overwrite-recorded', action='store_true',
+                        help='allow writing into the recorded results/ directory')
     parser.add_argument('--digits', type=int, default=60)
     args = parser.parse_args()
     if args.digits < 60:
         parser.error('--digits must be at least 60')
+    if (args.output.resolve() == (package/'results').resolve()
+            and not args.overwrite_recorded):
+        parser.error('refusing to overwrite the recorded results/; '
+                     'pass --overwrite-recorded or choose another --output')
     args.output.mkdir(parents=True, exist_ok=True)
     mp.mp.dps = args.digits
     symbolic = symbolic_checks()
@@ -233,7 +247,8 @@ def main() -> None:
                   numerical_status='diagnostics, not interval certificates',
                   max_product_fourier_difference=max(float(r['product_fourier_difference']) for r in periodic),
                   max_cutoff_change=max(float(r['contour_cutoff_change']) for r in rows))
-    (args.output/'verification.json').write_text(json.dumps(metadata,indent=2)+'\n')
+    (args.output/'verification.json').write_text(json.dumps(metadata,indent=2)+'\n',
+                                                 encoding='utf-8', newline='\n')
     print(json.dumps(metadata,indent=2))
 
 if __name__ == '__main__':
