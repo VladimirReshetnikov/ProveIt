@@ -45,9 +45,9 @@ unrenumbered.  The general proof is the unreviewed draft
 
 ## Archive contents
 
-- `common_digit_fabius_zonoids.tex` — complete 2,120-line, 90,982-byte
-  LaTeX source (2,092 lines before the editorial note of 2026-09-29).
-- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,295,227-byte
+- `common_digit_fabius_zonoids.tex` — complete 2,134-line, 91,767-byte
+  LaTeX source (2,092 lines before the editorial notes of 2026-09-29).
+- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,296,128-byte
   report, rebuilt on 2026-09-29.
 - `code/experiments.py` — fully commented symbolic/numerical experiment script.
 - `generated/*.csv` — numerical and exact-symbolic verification tables.
@@ -91,7 +91,12 @@ After the editorial note of 2026-09-29 under `conj:jet-small-ball`, the PDF
 was rebuilt by the same three-pass procedure with MiKTeX pdfTeX 1.40.29:
 36 pages, 1,295,227 bytes; the final log has no warning, error,
 unresolved reference, rerun request, or overfull box, and the page
-carrying the note was rendered and inspected.  The SHA-256 values that
+carrying the note was rendered and inspected.  After the second editorial
+note of 2026-09-29 (below `conj:copula-endpoints`; see Editorial
+amendments), the PDF was rebuilt again by the same procedure: 36 pages,
+1,296,128 bytes; no error, unresolved reference, rerun request, duplicate
+destination or overfull box, the same two underfull notices, no Type 3
+font; the page carrying the note was rendered and inspected.  The SHA-256 values that
 earlier versions of this README recorded described the 2026-09-04 build;
 the repository no longer keeps checksum receipts.
 
@@ -126,3 +131,19 @@ a current validation dependency.
 
 The final PDF was rendered page-by-page at 170 dpi and visually checked for
 clipped text, overlap, missing figures, black boxes, and broken glyphs.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+- Under `conj:jet-small-ball`: the erratum note described in the Erratum
+  paragraph above (after batch 50 of `docs/incoming/`).
+- After the paragraph following `conj:copula-endpoints` (subsection
+  "Inverse-Fabius copula endpoint laws"), in the editorial pass after batch
+  54 of `docs/incoming/` (see `docs/incoming/README.md`): a note, marked
+  `% ed.`, records that joint lower-corner small-deviation rates of the
+  common-digit family, their first correction, the standardized copula
+  exponent and conditional extremes given threshold events such as
+  `{X_{1/2} <= x}` are proved in the unreviewed draft
+  `../Endpoint_Geometry_Common_Digit_Fabius_Laws/` (its `thm:sharp`,
+  `thm:copula`, `thm:diagonal` and `eq:conditional-threshold`), while
+  `conj:copula-endpoints` and conditioning on an exact value `X_{1/2} = x`
+  remain open.  The PDF was rebuilt as recorded under "Build the PDF".

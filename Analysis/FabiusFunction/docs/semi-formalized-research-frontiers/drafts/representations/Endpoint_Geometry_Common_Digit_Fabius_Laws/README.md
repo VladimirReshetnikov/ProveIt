@@ -49,7 +49,9 @@ library:
 python3 verify.py
 ```
 
-This regenerates `verification.txt` and the files in `generated/`. It checks
+This writes `verification.txt` and `generated/` under `recomputed/` unless
+`--output-root` is given (editorial amendment below; the delivered script
+rewrote the recorded files, including the two table inputs, in place). It checks
 804 finite envelope identities with exact rational arithmetic, one complete
 finite rational probability certificate, and 100 floating-point algebraic
 cancellation examples. The asymptotic tables use ordinary floating point,
@@ -81,3 +83,42 @@ No font files are distributed in this package.
 
 This package is a standalone contribution. No changes have been pushed to
 ProveIt, and no repository-wide formal build is claimed.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+This package was filed whole in batch 54 of the repository-level
+`docs/incoming/` drop zone (see `docs/incoming/README.md`) and amended in
+the editorial pass that followed. No checksum ledger was delivered.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style, and one
+  note follows Corollary `cor:scalar`. For uniform digits the linear
+  coefficient `D = 1/λ − 1/2 + λ^(-1) log(λ/w)`, `w = 1 − e^(−λ)`, agrees
+  with the corrected expansion recorded in the editorial note under
+  `conj:jet-small-ball` of `../common_digit_fabius_zonoids_frontier_report/`
+  (at `m = 0`, after `X_q = (w/q) S_(0,q)`, `L = s + λ + log w`); at
+  `q = 1/2` it equals `1/2 + (1 + log log 2)/log 2`, the coefficient of
+  `−log x` in `fabiusWikipediaElementaryMain`, the main term of the
+  machine-checked `Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO`
+  (`Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSharpAsymptotic.lean`).
+  The article cites neither. Its own scalar error `O((log s)²)` is coarser
+  than both, as it says.
+- `article.tex`: the title page no longer sets a hyperref page anchor
+  (`\hypersetup{pageanchor=false}` around it), because the delivered build
+  reported a duplicate destination `page.1`. Both changes are marked `% ed.`.
+- `article.pdf`: rebuilt with three `pdflatex -interaction=nonstopmode
+  -halt-on-error article.tex` passes (MiKTeX pdfTeX): 22 pages, as
+  delivered; 773,206 bytes; no error, undefined reference, rerun request,
+  duplicate destination or overfull box; no Type 3 font.
+- `generated/small_ball_bounds.csv`: delivered with CRLF line endings
+  (Python's `csv` module) and normalized to LF on filing.
+- `verify.py`: a new option `--output-root` (default `recomputed/`) receives
+  `verification.txt` and `generated/`, replacing the delivered in-place
+  rewrite of the recorded files and of the two tables that `article.tex`
+  inputs; all outputs are UTF-8 with LF line endings and the CSV writer uses
+  `lineterminator='\n'`. Changes are marked `# ed.`. Use `py verify.py` where
+  `python3` does not resolve.
+- Rerun on a copy (2026-09-29), `py verify.py` (Python 3.14.4, standard
+  library): 804 exact tests, the finite certificate and 100 floating-point
+  checks pass; all five outputs are byte-identical to the filed
+  `verification.txt` and `generated/` files.

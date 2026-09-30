@@ -115,9 +115,12 @@ def main() -> None:
     parser=argparse.ArgumentParser()
     parser.add_argument('--numerics',action='store_true',
                         help='also run 65-digit finite-window likelihood diagnostics')
+    # ed. (2026-09-29): the default no longer overwrites the recorded
+    # verification_results.json beside this script.
     parser.add_argument('--output',type=Path,
-                        default=Path(__file__).with_name('verification_results.json'),
-                        help='JSON output path (parent directories are created)')
+                        default=Path(__file__).with_name('recomputed')/'verification_results.json',
+                        help='JSON output path (parent directories are created; '
+                             'default recomputed/verification_results.json)')
     args=parser.parse_args()
     if not __debug__:
         parser.error('run without -O: the exact checks require Python assertions')
@@ -126,7 +129,8 @@ def main() -> None:
         result['numerical_likelihood_checks']=numerical_checks()
     output=args.output
     output.parent.mkdir(parents=True,exist_ok=True)
-    output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    # ed. (2026-09-29): LF line endings on every platform.
+    output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(result,indent=2))
 
 if __name__=='__main__':

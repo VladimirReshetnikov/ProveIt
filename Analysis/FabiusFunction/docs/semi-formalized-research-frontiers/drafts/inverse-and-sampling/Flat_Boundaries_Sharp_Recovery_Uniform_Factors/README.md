@@ -112,3 +112,28 @@ theorems, and the numerical diagnostics do not simulate a minimax risk.
 No numerical value for J_r(up) is claimed. Constants are not uniform in a
 growing capacity or changing background, and mixed collision strata remain
 among ten precisely formulated further research questions.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+In the editorial pass after batch 54 of the repository-level `docs/incoming/`
+drop zone (see `docs/incoming/README.md`), a later package of this tree was
+found to take up the positive-variance analogue of one of its research
+questions. The article gains reciprocal notes; its
+mathematical text is unchanged.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style.
+- `article.tex`: after the research question "Mixed collision strata at the
+  zero-noise boundary", a note records that
+  `../Local_Minimax_Geometry_Uniform_Factors/` (filed 2026-09-29,
+  unreviewed; its Corollary `cor:joint`) proves the proposed denominator
+  for the local minimax sampling rates when the Gaussian variance is
+  unknown in a compact interval bounded away from zero. The zero-noise
+  question asked here, including `v = 0`, remains open; that article poses
+  it as its own question.
+- `article.tex`: the title page no longer sets a hyperref page anchor
+  (`\hypersetup{pageanchor=false}` around it), because the build reported a
+  duplicate destination `page.1`. Both changes are marked `% ed.`.
+- `article.pdf`: rebuilt with `sh build.sh` (three pdflatex passes) (MiKTeX pdfTeX): 21 pages, as before, 677,196
+  bytes; no error, undefined reference, rerun request, duplicate
+  destination or overfull box; no Type 3 font.

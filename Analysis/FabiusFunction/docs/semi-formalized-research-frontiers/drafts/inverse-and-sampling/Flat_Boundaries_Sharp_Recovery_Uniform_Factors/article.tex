@@ -21,6 +21,8 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Law}{Law}
 \DeclareMathOperator{\supp}{supp}
@@ -44,6 +46,9 @@
 \hypersetup{pdftitle={Flat Boundaries Preserve Information: Uniform-Factor Recovery without Gaussian Smoothing},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Fabius--Rvachev density, Hellinger asymptotics, minimax estimation}}
 
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page (the build reported a
+% duplicate destination page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
 \vspace*{15mm}
@@ -90,6 +95,8 @@ verification or worldwide publication-priority claim is made.
 {\small Repository snapshot:\par
 \texttt{9b24a3a8d545af9624f6ac455f5b548be62818b6}\par}
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 \tableofcontents
 \newpage
 
@@ -1394,6 +1401,16 @@ The present paper proves the fully vanishing case, not this entire formula.
 A solution should supply both a local upper modulus and moment-matched
 likelihood pairs for every dominant cluster, including $v=0$.
 \end{question}
+% ed. (2026-09-29): the positive-variance analogue is settled by a later
+% package; the zero-noise question stays open.
+\begin{ednote}
+For Gaussian variance unknown in a compact interval bounded away from zero,
+the later repository article \path{inverse-and-sampling/Local_Minimax_Geometry_Uniform_Factors/} (filed 2026-09-29, unreviewed;
+its Corollary \texttt{cor:joint}) proves the proposed denominator for the
+local minimax sampling rates. The zero-noise boundary asked for here,
+including $v=0$, remains open; that article poses it as its own question on
+mixed strata without a positive variance floor.
+\end{ednote}
 
 \begin{question}[Singular limiting experiments and optimal constants]
 Describe the limiting experiments when

@@ -33,6 +33,8 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Pp}{\mathbb P}
@@ -97,6 +99,9 @@ and $n^{-1/(4M+4)}$ with unknown variance, together with variance rate
 $n^{-1/(2M+2)}$. Here $M$ is the maximum number of uniform factors, with absent
 factors represented by zero half-lengths. Its companion flat-boundary report
 extends the global theory to unsmoothed infinite-uniform backgrounds and
+% ed. (2026-09-29): the flat-boundary question on mixed strata is posed at the
+% zero-noise boundary and is not answered here; see the editorial note after
+% the proof of Corollary cor:joint.
 explicitly leaves mixed collision strata among its further questions
 \cite{RepoFlat}. These global statements
 are prior results, not discoveries claimed in this article.
@@ -231,6 +236,26 @@ $n^{-1/(2D_{\rm U})}$ with unknown variance.
 The maximum of finitely many block losses is bounded above by their sum and
 below by each individual block loss. Apply Theorem~\ref{thm:main}.
 \end{proof}
+
+% ed. (2026-09-29): uncited conjecture proved here; scope of the answers to
+% the Sharp-Stability and flat-boundary questions.
+\begin{ednote}
+Corollary~\ref{cor:joint} proves, for unknown Gaussian variance and at the
+level of minimax sampling rates, the conjectural local denominator
+$\max(\{m_1,\dots,m_s\}\cup\{2(m_0+1):m_0>0\})$ of the research question
+``Classify all local strata with unknown variance'' in \cite{RepoGaussian}
+(its $m_0$, the number of zero slots, is $r$ here), which this article does not cite; the
+pairwise Hellinger-modulus form of that question is not stated here. The
+known-variance denominator $\max\{Q,2r\}$ is the total-variation
+denominator of the finite-factor report
+\path{inverse-and-sampling/Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/};
+its research question ``The optimal statistical experiment near collisions''
+is thereby answered for the Gaussian-smoothed model only. The mixed-strata
+question of \cite{RepoFlat} is posed at the zero-noise boundary and remains
+open; it is this article's own question on mixed strata without a positive
+variance floor. Notation differs: \cite{RepoGaussian} writes $m$ for the
+capacity and $r$ for a shift.
+\end{ednote}
 
 \begin{remark}[The absent-block convention matters]
 When $r=0$, there is no zero-block rate. Inserting $r=0$ into the expression

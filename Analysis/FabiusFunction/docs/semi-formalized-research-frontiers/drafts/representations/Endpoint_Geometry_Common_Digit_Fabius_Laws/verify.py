@@ -8,6 +8,7 @@ Run: python3 verify.py
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import math
@@ -17,8 +18,11 @@ from random import Random
 from typing import Sequence
 
 ROOT = Path(__file__).resolve().parent
-OUT = ROOT / 'generated'
-OUT.mkdir(exist_ok=True)
+# ed. (2026-09-29): outputs go under --output-root (default recomputed/), laid
+# out like the package (verification.txt, generated/), so that a rerun cannot
+# replace the recorded files or the two tables article.tex inputs; LF endings.
+OUT_ROOT = ROOT / 'recomputed'
+OUT = OUT_ROOT / 'generated'
 
 
 def envelope(a: Sequence[F], lam: Sequence[F]):
@@ -153,7 +157,8 @@ def exact_certificate():
         'lower_numerator_bits': lower.numerator.bit_length(),
         'lower_denominator_bits': lower.denominator.bit_length(),
         'status': 'All feasibility and rational probability inequalities checked using Fraction.'}
-    (OUT/'exact_certificate.json').write_text(json.dumps(output, indent=2)+'\n')
+    (OUT/'exact_certificate.json').write_text(json.dumps(output, indent=2)+'\n',
+                                              encoding='utf-8', newline='\n')
     return output
 
 
@@ -214,15 +219,15 @@ def asymptotic_tables():
         rows.append({'t': t, 'normalized_lower': (lo+main)/t,
                      'predicted_coefficient': A, 'normalized_upper': (hi+main)/t,
                      'core_1': counts[0], 'core_2': counts[1], 'residual': ns})
-    with (OUT/'small_ball_bounds.csv').open('w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+    with (OUT/'small_ball_bounds.csv').open('w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=rows[0].keys(), lineterminator='\n')
         writer.writeheader(); writer.writerows(rows)
     lines = [r'\begin{tabular}{r r r r}',r'\toprule',
              r'$t$ & Lower certificate & $A(a)$ & Upper certificate\\',r'\midrule']
     lines += [f"{r['t']:,} & {r['normalized_lower']:.6f} & {A:.6f} & {r['normalized_upper']:.6f}\\\\"
               for r in rows]
     lines += [r'\bottomrule',r'\end{tabular}']
-    (OUT/'bounds_table.tex').write_text('\n'.join(lines)+'\n')
+    (OUT/'bounds_table.tex').write_text('\n'.join(lines)+'\n', encoding='utf-8', newline='\n')
     D = math.log(16)
     mesh = []
     for d in [2, 3, 5, 9, 17, 33]:
@@ -233,7 +238,7 @@ def asymptotic_tables():
              r'$d$ & $\kappa_d^{\max}$ & $\kappa_\infty$ & $(d-1)^2(\kappa_\infty-\kappa_d^{\max})$\\',r'\midrule']
     lines += [f'{d} & {kd:.9f} & {ki:.9f} & {gap:.9f}\\\\' for d,kd,ki,gap in mesh]
     lines += [r'\bottomrule',r'\end{tabular}']
-    (OUT/'mesh_table.tex').write_text('\n'.join(lines)+'\n')
+    (OUT/'mesh_table.tex').write_text('\n'.join(lines)+'\n', encoding='utf-8', newline='\n')
     return rows, mesh
 
 
@@ -260,6 +265,14 @@ def further_checks():
 
 
 def main():
+    global OUT_ROOT, OUT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output-root', type=Path, default=OUT_ROOT,
+                        help='directory receiving verification.txt and generated/ '
+                             '(default: recomputed/)')
+    OUT_ROOT = parser.parse_args().output_root.resolve()
+    OUT = OUT_ROOT / 'generated'
+    OUT.mkdir(parents=True, exist_ok=True)
     output = []
     def say(s=''):
         print(s); output.append(s)
@@ -283,7 +296,8 @@ def main():
     say(f'Noncommuting-limit example delta=log(2): exact-tail limit={2/(1+math.exp(-delta)):.12f}; Gaussian-tail limit={2/(1+1/math.cosh(delta)):.12f}')
     say('\nScope: rational assertions are exact finite checks. Decimal tables use ordinary')
     say('floating point, are not interval enclosures, and are not proofs of limit theorems.')
-    (ROOT/'verification.txt').write_text('\n'.join(output)+'\n')
+    (OUT_ROOT/'verification.txt').write_text('\n'.join(output)+'\n',
+                                            encoding='utf-8', newline='\n')
 
 if __name__ == '__main__':
     main()

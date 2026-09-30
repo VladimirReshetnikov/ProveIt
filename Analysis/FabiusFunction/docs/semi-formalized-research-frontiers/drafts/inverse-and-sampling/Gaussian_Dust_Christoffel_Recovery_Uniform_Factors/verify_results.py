@@ -6,6 +6,7 @@ It does not verify the universal analytic/statistical theorems or run Lean.
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import platform
@@ -17,8 +18,9 @@ import mpmath as mp
 import sympy as sp
 
 ROOT = Path(__file__).resolve().parent
-OUT = ROOT / "artifacts"
-OUT.mkdir(exist_ok=True)
+# ed. (2026-09-29): write to recomputed/ by default (see --output-dir) so that
+# a rerun cannot replace the recorded artifacts/; all outputs use LF endings.
+OUT = ROOT / "recomputed"
 R = sp.Rational
 COUNTS: dict[str, int] = {}
 
@@ -52,7 +54,8 @@ def check_cumulants() -> None:
         expected = 2**(2 * k) * sp.bernoulli(2 * k) / (2 * k)
         require(got == expected, "cumulants", f"order {2*k}")
         values.append({"order": 2*k, "value": str(got)})
-    (OUT / "cumulants.json").write_text(json.dumps(values, indent=2) + "\n")
+    (OUT / "cumulants.json").write_text(json.dumps(values, indent=2) + "\n",
+                                        encoding="utf-8", newline="\n")
     require((R(1, 5) + R(1, 3)) / sp.factorial(4) == R(1, 45),
             "dust_constants", "fourth-order absolute remainder")
     require((R(1, 5) - R(1, 3)) / sp.factorial(4) == -R(1, 180),
@@ -89,11 +92,11 @@ def check_geometric() -> None:
                         f"C={C},r={r},d={d}")
                 rows.append({"C": str(C), "r": str(r), "degree": d,
                              "bias": str(predicted/3)})
-    with (OUT / "geometric_checks.csv").open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=rows[0].keys())
+    with (OUT / "geometric_checks.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=rows[0].keys(), lineterminator="\n")
         w.writeheader(); w.writerows(rows)
-    with (OUT / "dyadic_bias.csv").open("w", newline="") as f:
-        w = csv.writer(f)
+    with (OUT / "dyadic_bias.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["degree", "highest_cumulant_order", "exact_bias", "decimal_bias"])
         for d in range(13):
             bias = R(1, 4)**d / (16*(1-R(1, 4)**(d+1))**2)
@@ -165,12 +168,18 @@ def fourier_diagnostic() -> None:
                          "absolute_error": mp.nstr(abs(scaled-target), 30)})
         require(abs(scaled-target) < mp.mpf("0.001"), "fourier_diagnostic",
                 f"frequency={frequency}; diagnostic, not an interval certificate")
-    with (OUT / "fourier_diagnostic.csv").open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=rows[0].keys())
+    with (OUT / "fourier_diagnostic.csv").open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=rows[0].keys(), lineterminator="\n")
         w.writeheader(); w.writerows(rows)
 
 
 def main() -> None:
+    global OUT
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-dir", type=Path, default=OUT,
+                        help="output directory (default: recomputed/ beside artifacts/)")
+    OUT = parser.parse_args().output_dir.resolve()
+    OUT.mkdir(parents=True, exist_ok=True)
     check_cumulants()
     check_geometric()
     check_finite_and_noise()
@@ -187,7 +196,8 @@ def main() -> None:
         "limitations": ["Finite checks are not proofs of universal theorems.",
                         "Fourier diagnostics do not compute total variation.",
                         "No interval arithmetic, independent referee review, or Lean verification."]}
-    (OUT / "verification_results.json").write_text(json.dumps(result, indent=2) + "\n")
+    (OUT / "verification_results.json").write_text(json.dumps(result, indent=2) + "\n",
+                                                   encoding="utf-8", newline="\n")
     print(json.dumps(result, indent=2))
 
 

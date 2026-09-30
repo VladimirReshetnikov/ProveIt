@@ -123,8 +123,16 @@ class Collocation:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--full', action='store_true')
+    # ed. (2026-09-29): write to a separate directory by default so that a
+    # rerun cannot replace the recorded data/ files that article.tex inputs;
+    # data/ may be rewritten only by an explicit --output-dir with --full.
+    ap.add_argument('--output-dir', default=str(ROOT/'recomputed'),
+                    help='output directory (default: recomputed/ beside data/)')
     args = ap.parse_args()
-    (ROOT/'data').mkdir(exist_ok=True)
+    out = Path(args.output_dir).resolve()
+    if out == (ROOT/'data').resolve() and not args.full:
+        ap.error('refusing to overwrite the recorded data/ without --full')
+    out.mkdir(parents=True, exist_ok=True)
     results = {'status':'Floating-point/high-precision diagnostics; no interval or spectral certification.',
                'versions':{'python':platform.python_version(),'numpy':np.__version__,
                            'scipy':scipy.__version__,'mpmath':mp.__version__},
@@ -173,21 +181,23 @@ def main() -> None:
     elementary_amp=2*mp.tan(mp.pi*s/2)/(mp.pi*s)
     assert abs(beta_amp-elementary_amp)<mp.mpf('1e-14')
     results['amplitude_identity_error']=float(abs(beta_amp-elementary_amp))
-    (ROOT/'data'/'verification.json').write_text(json.dumps(results,indent=2)+'\n')
-    with (ROOT/'data'/'pressure_table.tex').open('w') as f:
+    # ed. (2026-09-29): LF line endings and UTF-8 on every platform.
+    (out/'verification.json').write_text(json.dumps(results,indent=2)+'\n',
+                                         encoding='utf-8', newline='\n')
+    with (out/'pressure_table.tex').open('w', encoding='utf-8', newline='\n') as f:
         f.write('\\begin{tabular}{@{}rrrrrr@{}}\n\\toprule\n'
                 '$b$ & $s$ & $h$ & coarse grid & fine grid & predicted limit\\\\\n\\midrule\n')
         for i in range(0,len(prows),2):
             r,t=prows[i:i+2]
             f.write(f"{r['b']} & {r['s']:.2f} & {r['h']:.3g} & {r['scaled_increment']:.6f} & {t['scaled_increment']:.6f} & {r['target']:.6f}\\\\\n")
         f.write('\\bottomrule\n\\end{tabular}\n')
-    with (ROOT/'data'/'finite_size_table.tex').open('w') as f:
+    with (out/'finite_size_table.tex').open('w', encoding='utf-8', newline='\n') as f:
         f.write('\\begin{tabular}{@{}rrrr@{}}\n\\toprule\n'
                 '$n$ & $h$ & $b^{sn}M_n$ (grid) & limiting value\\\\\n\\midrule\n')
         for r in frows:
             f.write(f"{r['n']} & {r['h']:.5f} & {r['rescaled_moment']:.7f} & {r['target']:.7f}\\\\\n")
         f.write('\\bottomrule\n\\end{tabular}\n')
-    print('Wrote data/verification.json and LaTeX tables',flush=True)
+    print(f'Wrote {out}/verification.json and LaTeX tables',flush=True)
 
 if __name__ == '__main__':
     main()

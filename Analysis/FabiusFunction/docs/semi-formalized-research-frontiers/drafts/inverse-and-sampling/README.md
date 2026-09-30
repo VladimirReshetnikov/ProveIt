@@ -237,12 +237,14 @@ as in the smoothed model, now with the Gaussian variance allowed to be zero:
 `n^{−1/(4m)}` for the half-lengths with known variance, `n^{−1/(4m+4)}` with
 unknown variance, `n^{−1/(2m+2)}` for the variance.  This settles the
 Gaussian-confounding article's first open problem for global rates; the
-finite-factor article's local rate at each collision pattern remains open.
+finite-factor article's local rate at each collision pattern remains open
+without Gaussian smoothing; with smoothing it is settled by
+`Local_Minimax_Geometry_Uniform_Factors/` below.
 Unreviewed; no Lean statement.
 
 [`Local_Minimax_Geometry_Uniform_Factors/`](Local_Minimax_Geometry_Uniform_Factors/)
 holds *Local Minimax Geometry of Uniform Convolution Factors*, filed on
-2026-09-29 by a quick archival intake (20-page A4 PDF, 1,386-line
+2026-09-29 by a quick archival intake (21-page A4 PDF, 1,411-line
 source, an exact SymPy check program with mpmath likelihood
 diagnostics).  It localizes the Gaussian-confounding article above:
 near a configuration with `r` vanishing half-lengths and positive
@@ -257,8 +259,7 @@ Unreviewed; no Lean statement.
 
 [`Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/`](Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/)
 holds *Gaussian Dust and Christoffel Recovery in Infinite Uniform
-Convolutions*, filed on 2026-09-29 by a quick archival intake (22-page
-US Letter PDF, 1,503-line source, an exact SymPy check program).  It
+Convolutions*, filed on 2026-09-29 by a quick archival intake (23-page US Letter PDF, 1,522-line source, an exact SymPy check program).  It
 drops the capacity bound: with infinitely many uniform factors of
 bounded total variance `V`, the Gaussian variance is identifiable but
 its exact minimax risk is `V/2` at every sample size, because many

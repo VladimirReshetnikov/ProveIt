@@ -45,6 +45,8 @@
 \newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\TT}{\mathbb T}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\CC}{\mathbb C}
@@ -149,6 +151,22 @@ The resulting nonlinear error is
  O(|c|)\,O(|c|^{s-\alpha})=O(|c|^{1+s-\alpha})=o(|c|)
 \]
 for every $0<s<1$ and $0<\alpha<s$.
+
+% ed. (2026-09-29): relation to the predecessor, the uncited snapshot entry,
+% and the changed default output directory of code/verify.py.
+\begin{ednote}
+This article answers the research question ``The remaining subcritical
+interval'' of \cite{CriticalRepo} at the atomic phase, for every
+$0<s\le1/2$, and on $1/2<s<1$ it sharpens that article's $o(|c|)$
+remainder to $O(|c|^{1+s-\alpha})$. Nonzero phases remain open. The
+article is filed in the repository beside its predecessor as
+\path{thue-morse/Thue_Morse_Subcritical_Pressure/}; the repository
+snapshot it was written against is \cite{Repo}. The two tables of
+\cref{sec:numerics} are the recorded output of a run with \code{--full}.
+Since 2026-09-29, \code{code/verify.py} writes to \code{recomputed/}
+unless \code{--output-dir} is given, and it refuses to rewrite
+\code{data/} without \code{--full}.
+\end{ednote}
 
 \subsection{A broader result than a threshold extension}
 A common translation moves every zero by the same amount. Instead,

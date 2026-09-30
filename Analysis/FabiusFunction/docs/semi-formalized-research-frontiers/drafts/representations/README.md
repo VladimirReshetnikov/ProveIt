@@ -74,8 +74,12 @@ New standalone intake members:
   five are Libertinus, none is Type 3, and generated sidecars are absent.
   On 2026-09-29 an editorial note under `conj:jet-small-ball` marked that
   conjecture false for `q ≠ 1/e` (see the report README's erratum and
-  `Polynomial_Geometric_Small_Deviations_Fabius_Jets/`); the source is now
-  2,120 lines/90,982 bytes and the rebuilt PDF 36 pages/1,295,227 bytes.
+  `Polynomial_Geometric_Small_Deviations_Fabius_Jets/`).  A second note of
+  the same day, after `conj:copula-endpoints`, points to
+  `Endpoint_Geometry_Common_Digit_Fabius_Laws/` for joint lower-tail rates
+  and threshold conditioning (the conjecture and exact-value conditioning
+  stay open); the source is now 2,134 lines/91,767 bytes and the rebuilt
+  PDF 36 pages/1,296,128 bytes.
 
 - [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
   the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
@@ -195,7 +199,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   no Lean statement for the general case.
 - [`Endpoint_Geometry_Common_Digit_Fabius_Laws/`](Endpoint_Geometry_Common_Digit_Fabius_Laws/),
   *The Endpoint Geometry of Common-Digit Fabius Laws* (22-page A4 PDF,
-  1,672-line source, a standard-library exact check program), filed on
+  1,695-line source, a standard-library exact check program), filed on
   2026-09-29 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone.  It takes up the endpoint-dependence
   direction of

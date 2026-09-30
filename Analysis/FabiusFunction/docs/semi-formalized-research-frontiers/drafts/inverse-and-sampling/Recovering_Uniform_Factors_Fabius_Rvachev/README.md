@@ -2,7 +2,8 @@
 
 ## Exact Moment Fibres and Logarithmic Instability Near the Fabius–Rvachev Law
 
-This package contains a self-contained 20-page research article, its LaTeX
+This package contains a self-contained 21-page research article (20 pages
+before the editorial note of 2026-09-29), its LaTeX
 source, exact-arithmetic verification code, and the output of a completed run.
 It was prepared in response to a request to develop a research extension of
 Vladimir Reshetnikov's ProveIt repository.
@@ -88,3 +89,26 @@ support containment, not exact support endpoints ±1; the separate analytic
 moment-fibre theorem preserves those exact endpoints. No estimator achieving
 the lower rate is claimed. The article is unrefereed and no Lean formalization
 is supplied.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+In the editorial pass after batch 54 of the repository-level `docs/incoming/`
+drop zone (see `docs/incoming/README.md`), a later package of this tree was
+found to take up one of its research questions. The article gains reciprocal notes; its
+mathematical text is unchanged.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style.
+- `article.tex`: after the research question "Gaussian components and
+  square-summable spectra", a note records that
+  `../Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/` (filed
+  2026-09-29, unreviewed) answers it for the Gaussian-variance functional,
+  in a model with a known smooth compactly supported background: exact
+  minimax risk `V/2` without a tail restriction, and uniform consistency on
+  a compact class exactly when its squared-scale tails vanish uniformly.
+  Quantitative stability of the scales themselves is not treated there. The
+  note is marked `% ed.`.
+- `article.pdf`: rebuilt with `sh build.sh` (three pdflatex passes) (MiKTeX pdfTeX): 21 pages (20 before; the note adds one), 505,903
+  bytes; no error, undefined reference, rerun request, duplicate
+  destination or overfull box; no Type 3 font.
+  `data/pdf_review.txt` is the delivered record of the 20-page build.

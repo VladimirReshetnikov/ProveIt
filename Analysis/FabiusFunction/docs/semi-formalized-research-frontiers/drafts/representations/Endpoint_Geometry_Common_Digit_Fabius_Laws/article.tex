@@ -36,6 +36,8 @@
 \newtheorem{question}[theorem]{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\PP}{\mathbb P}
 \newcommand{\EE}{\mathbb E}
 \newcommand{\RR}{\mathbb R}
@@ -59,6 +61,9 @@
 \numberwithin{equation}{section}
 
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page (the delivered build
+% reported a duplicate destination page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{13mm}
@@ -93,6 +98,8 @@ established.\par\medskip
 geometric-uniform laws and the report's open endpoint-dependence program.
 \end{minipage}
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 
 \begin{abstract}
 Let $U_0,U_1,\ldots$ be independent uniform random variables and couple all
@@ -646,6 +653,22 @@ This scalar order of expansion is a consistency check and an input to
 marginal standardization, not a claim to supersede the repository's much
 finer one-parameter Fabius asymptotics. The $n=0$ indexing and the factor
 $w=1-e^{-\lambda}$ both matter for the linear coefficient.
+
+% ed. (2026-09-29): agreement with the corrected zonoid conjecture and with
+% the machine-checked Fabius expansion, neither of which is cited here.
+\begin{ednote}
+For uniform digits ($\beta=c=1$) the linear coefficient
+$D_{\lambda,1,1}=1/\lambda-1/2+\lambda^{-1}\log(\lambda/w)$ agrees with
+the corrected expansion recorded in the editorial note under
+\texttt{conj:jet-small-ball} of \cite{RepoCommon} (at $m=0$), after the
+substitution $X_q=(w/q)S_{0,q}$, $L=s+\lambda+\log w$; the $s^2$ and
+$s\log s$ terms agree as well. At $q=1/2$ it equals
+$1/2+(1+\log\log2)/\log2$, the coefficient of $-\log x$ in the main term
+\path{fabiusWikipediaElementaryMain} of the machine-checked
+\path{Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSharpAsymptotic.lean}),
+whose error is $O(1/\log(1/x))$.
+\end{ednote}
 
 \section{Marginal standardization and universal copula asymptotics}
 \label{sec:copula}
