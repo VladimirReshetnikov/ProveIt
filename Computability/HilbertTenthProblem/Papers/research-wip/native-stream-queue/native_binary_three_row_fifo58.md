@@ -337,4 +337,6 @@ triples,1,540 FIFO witnesses with124,740 centered-coefficient evaluations,
 and1,932 fixed-mask converse instances. These checks corroborate the
 parametric theorems and do not supply an arithmetic universal controller.
 
-    /tmp/diophantine-research-venv/bin/python native_binary_three_row_fifo58.py
+From the repository root, with the pinned verification dependencies installed:
+
+    python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_binary_three_row_fifo58.py

@@ -16,12 +16,17 @@ symbolic and executable audits, not Lean formalizations or publication claims.
 
 The current substrate continuation includes a
 [four-row finite-control queue simulator](../research-wip/native-stream-queue/four_row_queue_block_simulator.md),
-an exact [66-operation ordinary-input FIFO component](../research-wip/native-stream-queue/native_four_row_fifo66.md),
+exact [66-operation ternary](../research-wip/native-stream-queue/native_four_row_fifo66.md)
+and [58-operation binary](../research-wip/native-stream-queue/native_binary_three_row_fifo58.md)
+ordinary-input FIFO components,
 and [residue-affine maps with an ancestor-pumping obstruction](../research-wip/native-stream-queue/residue_affine_ancestor_pumping.md).
 The simulator has a complete coded-input proof; finite-controller arithmetic
-and ordinary-input loading still need to be paid. The tested centered71
-carry family and the stated unit-slope residue-affine subclass are
-provably insufficient for universal representation.
+and ordinary-input loading still need to be paid. The tested centered61/71
+carry families and the stated unit-slope residue-affine subclass are
+provably insufficient for universal representation. A separate
+[row-local-window obstruction](../research-wip/native-stream-queue/four_row_local_window_obstruction.md)
+also rules out replacing the simulator's arbitrary finite control by bounded
+row-only tests; it does not bound the cost of nonlocal arithmetic constraints.
 
 ## Historical 76-operation milestone
 

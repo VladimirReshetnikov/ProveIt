@@ -6,8 +6,8 @@ Start with
 [CONTINUATION_PROMPT.md](CONTINUATION_PROMPT.md). No local-machine files are
 needed to continue in an independent clone.
 
-**The established complete universal bound is now75=41M+34A**, with30
-strictly positive witnesses and19 equations. See the
+**The established complete universal bound is now75=41M+34A.** Its reference
+source has30 strictly positive witnesses and19 equations. See the
 [full proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) and
 [consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
 Three independent full integration reviews passed; this is a mathematical
@@ -33,8 +33,9 @@ and Pell proof. Both rows use fixed compiler numerals and ordinary input.
 
 ## Research checkpoint, 2026-09-30
 
-The positive-elimination, packing-bound, shared-projection, four-row FIFO, finite-control
-simulator, residue-affine, controlled read-functional queue, PCP/matrix trace,
+The positive-elimination, packing-bound, shared-projection, binary and ternary
+FIFO, finite-control simulator, row-window obstruction, residue-affine,
+controlled read-functional queue, PCP/matrix trace,
 and six constant-deletion packets have independent scoped proof and source
 review passes. Their checkers retain exact operation ledgers and distinguish
 finite experiments from the mathematical proofs. The complete75 checker
@@ -43,10 +44,16 @@ also passes with the pinned SymPy dependency.
 The next operation-count target remains a complete certificate below75.
 The four-row queue simulator now supplies state-dependent physical output:
 its literal finite controller simulates arbitrary source queue rules on
-valid coded inputs. The exact66-operation FIFO component supports its
-accepting traces, but controller arithmetic and ordinary-input loading
-remain to be supplied. Its71-operation centered scalar controller is
-provably insufficient. Residue-affine exploration likewise separates a
+valid coded inputs. The exact66-operation ternary FIFO and the smaller
+58-operation three-row binary FIFO support these accepting traces, but
+controller arithmetic and ordinary-input loading remain to be supplied.
+The binary centered61 family has only finite or fixed-mask input languages;
+the ternary centered71 family is also insufficient. The paid nonabsorbing63
+binary carry interface retains its separate open scope and forbids free
+zero padding at a nonzero terminal state. A separate row-window
+obstruction rules out recovering arbitrary controller states with bounded
+local row tests alone, even at identical positions and geometry.
+Residue-affine exploration likewise separates a
 cheap one-step polynomial from the remaining history cost; unit slopes
 with a pure-division branch cannot represent arbitrarily thin sets under
 affine input loading. The PCP trace retains the useful
@@ -76,7 +83,9 @@ New research and the completed75-operation construction:
 | [Shared positive projections](complete75_gamma_dominance_elimination102.md) | A positive quotient difference restores the input Pell-index gap, giving **102=50M+52A**,20 witnesses and degree84. At the original75 comparison count it gives21 witnesses, ten equations and a104-operation polynomial. | The102 polynomial starts from a76-operation comparison system. Conditional witness positivity is proved on the zero set; no complete certificate below75 is claimed. |
 | [Stronger bound and one polynomial](complete75_bounded_packing_elimination105.md) | Canonical compiler bounds permit conditional elimination of the packed index, giving a degree-84 polynomial in **105=51M+54A** with21 positive witnesses. | The comparison system costs76 with ten equations; the established comparison bound remains75. |
 | [Four physical rows and FIFO](native_four_row_fifo66.md) | Exact four-label selectors in **58**, ordinary-input FIFO in **66=31M+35A**, and centered affine carry control in71. | The uncontrolled FIFO accepts every input; the centered71 family cannot be universal. Richer controller arithmetic remains open. |
+| [Three binary rows and FIFO](native_binary_three_row_fifo58.md) | Exact three-label selectors in **53** and ordinary-input FIFO in **58=30M+28A**, with26 positive witnesses and17 equations. The bare predicate covers every positive input. | The centered61 controller accepts only a finite language, a fixed binary-mask language, all inputs, or no inputs. Universal controller arithmetic and source-input loading remain unpaid. |
 | [Four-row finite-control simulator](four_row_queue_block_simulator.md) | A literal finite controller over rows00,01,12,20 simulates arbitrary fixed-length queue machines on coded inputs, with safe zero acceptance and the completeFIFO66 converse. Three binary rows also suffice. | Ordinary-input loading and arithmetic certification of the finite controller remain unpaid. |
+| [Row-local controller obstruction](four_row_local_window_obstruction.md) | For every fixed window width, a rejecting coded input has a false cleanup trace whose windows all occur at the same positions in accepting traces with identical geometry, in bothFIFO66 andFIFO58. | This excludes row-only local conjunctions. Extra state tracks, matrix products, input-dependent tests and nonlocal constraints are outside the theorem; a two-addition ternary parity guard separates the displayed fixture. |
 | [Residue-affine maps and ancestor pumping](residue_affine_ancestor_pumping.md) | One step has two positive witnesses and a **6b+8** polynomial evaluation. Unit slopes with a pure-division residue force an affine geometric progression in every infinite point-target language under any fixed affine loader. | The pumping subclass cannot represent factorials. Nonunit slopes, wider guards and other acceptance interfaces are outside the theorem; finite iteration is unpaid. |
 | [Positive elimination and one polynomial](complete75_positive_elimination.md) | Eight positive definitions reduce complete75 to **22 witnesses and 11 equations**; a single degree-84 polynomial has a **107=52M+55A** evaluation DAG. | The certificate operation bound remains75. Positive witnesses and fixed compiler constants are essential conventions; no optimality or Lean claim. |
 | [Controlled read-functional queues](native_read_functional_controller_regular.md) | Arbitrary synchronized finite control still gives a regular initial-word language when each physical read symbol has one fixed append symbol, uniformly over existential width and duration. | State-dependent physical rewriting, variable-length rules, and additional non-finite-state arithmetic constraints are outside the theorem. |
@@ -163,7 +172,9 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_bounded_packing_elimination105.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_four_row_fifo66.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_binary_three_row_fifo58.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/four_row_queue_block_simulator.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/four_row_local_window_obstruction.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/residue_affine_ancestor_pumping.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_read_functional_controller_regular.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix_pcp_trace.py

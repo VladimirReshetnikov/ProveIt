@@ -9,10 +9,16 @@
 > stronger-bound alternative has20 witnesses and a **102-operation**
 > single-polynomial evaluation of exact degree84, starting from a76-operation
 > comparison system. The README indexes these proofs, the four-row queue
-> simulator and FIFO66, residue-affine pumping, PCP/matrix continuations,
+> simulator, binaryFIFO58 and ternaryFIFO66, row-local controller obstruction,
+> residue-affine pumping, PCP/matrix continuations,
 > and rejected74 shortcuts. The operation-count target remains below75;
 > controller arithmetic and ordinary-input loading are still unpaid for
 > the new coded queue simulator.
+> The counted nonabsorbing63 binary carry interface remains open; its
+> nonzero terminal state forbids free zero padding. The centered61 family
+> is fully classified, and bounded row-only local tests cannot recover the
+> simulator's general finite control. Preserve those scope distinctions
+> when trying richer controllers or a different computational substrate.
 
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.
