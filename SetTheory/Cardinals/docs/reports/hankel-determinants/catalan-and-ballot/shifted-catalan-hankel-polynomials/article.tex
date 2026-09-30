@@ -66,6 +66,17 @@
 \newcommand{\Rgen}{R_{\mathrm{gen}}}
 \newcommand{\Rgrp}{R_{\mathrm{grp}}}
 \newcommand{\ind}{\mathbf 1}
+% Part IV (batch 53, manuscript 02): the manuscript's macros; \by and \CC
+% above already have the manuscript's definitions.
+\newcommand{\Del}{\Delta}
+\newcommand{\bv}{\boldsymbol v}
+\newcommand{\ba}{\boldsymbol a}
+\newcommand{\bb}{\boldsymbol b}
+\newcommand{\bu}{\boldsymbol u}
+\newcommand{\bw}{\boldsymbol w}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\sinhc}{\operatorname{sinhc}}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
  frame=single,rulecolor=\color{muted},backgroundcolor=\color{lightblue},
  keepspaces=true,showstringspaces=false}
@@ -74,20 +85,20 @@
 \thispagestyle{empty}
 \begin{center}
 {\small\sffamily\bfseries\color{muted}EXACT ENUMERATION \quad / \quad GENERATING FUNCTIONS \quad / \quad ASYMPTOTICS}\par
-\vspace{7mm}
+\vspace{4mm}
 {\LARGE\bfseries\color{inkblue}Shifted Catalan Hankel Polynomials}\par
 \vspace{3mm}
 {\Large Exact coefficients, sharp recurrences,\par and a denominator conjecture}\par
-\vspace{7mm}
+\vspace{4mm}
 {A research note prepared with OpenAI ChatGPT}\par
 {19 September 2026}\par
 \vspace{3mm}
 {\small\color{muted}With Part~II (28 September 2026): root collisions and sharp
 recurrences for arbitrary polynomial multipliers,\par
-and Part~III (29 September 2026): cyclotomic resonances of one repeated
-root}
+and Parts~III and~IV (29 September 2026): cyclotomic resonances of one
+repeated root, and two-endpoint confluence}
 \end{center}
-\vspace{5mm}
+\vspace{1mm}
 \begin{abstract}
 For the Catalan numbers $C_n$, consider the size-$N$ determinant
 $D_N^{(m)}(a,b)=\det(aC_{i+j+m}+bC_{i+j+m+1})_{0\leq i,j<N}$.
@@ -119,6 +130,11 @@ certified finite-prefix algorithm handles the resonances.
 characteristic multiplicity for one repeated root $(x-c)^t$,
 $c=2+z+z^{-1}\notin\{0,4\}$; it depends on the sign of $z^L$, not only
 on $t$ and $L=\ord(z^2)$.
+
+\emph{Addition of 29 September 2026 (batch 53).} Part~IV lets roots
+approach the endpoints $0$ and $4$ on the scale $N^{-2}$: the normalized
+determinant is an even convergent series in $1/(N+\deg q/2)$, and outward
+displacements are negligible exactly when they are $o(N^{-2})$.
 \end{abstract}
 \vspace{3mm}
 \noindent\colorbox{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
@@ -129,7 +145,7 @@ on $t$ and $L=\ord(z^2)$.
 \]
 The proof is uniform in the determinant size and the Catalan shift.
 }}\par
-\vspace{5mm}
+\vspace{3mm}
 \noindent\textbf{Status and scope.}
 This is an unrefereed, AI-assisted mathematical manuscript, not a formalized
 proof.  Its theorems are supported by explicit arguments, not inferred from
@@ -1242,6 +1258,15 @@ away from the endpoints, Part~III gives that classification
 (Theorems~\ref{cyc:thm:main}, \ref{cyc:thm:central}
 and~\ref{cyc:thm:rootfree}); resonant cancellations among several distinct
 roots, or with endpoint factors, remain unclassified.]
+
+\noindent[Added 29 September 2026, batch 53: for fixed $m$ the limit
+$a\to0$ is treated in Part~IV.  For $b\ne0$, $x^m(a+bx)$ is $b$ times
+$x^m(x+a/b)$, a cluster of $m+1$ roots at the endpoint $0$; for real
+$a/b\ge0$ the ratio $D_N^{(m)}(a,b)/D_N^{(m)}(0,b)$ tends to $1$ exactly
+when $a/b=o(N^{-2})$, to an explicit profile when $N^2a/b$ converges, and
+to infinity when $N^2a/b\to\infty$ (Theorem~\ref{tec:thm:scale} and
+Section~\ref{tec:sec:answers}).  Joint limits with growing $m$ remain
+open.]
 
 %% ====================================================================
 %% Batch-39 addition (manuscript 03, "Root Collisions and Sharp
@@ -2755,6 +2780,12 @@ A double-scaling limit cannot be justified by simply using
 \eqref{rc:eq:asymptotic} with moving parameters.  That is one of the
 separate research directions listed below.
 
+\noindent[Added 29 September 2026, batch 53: for roots approaching $0$
+or $4$ on the scale $N^{-2}$, Part~IV proves the uniform double-scaling
+limit directly (Theorems~\ref{tec:thm:main} and~\ref{tec:thm:scale}),
+without using \eqref{rc:eq:asymptotic}; roots approaching each other away
+from the endpoints are not covered.]
+
 \section{Verification, implementation, and formalization status}
 \label{rc:sec:verification}
 
@@ -2933,7 +2964,7 @@ that remain stable as two parameters approach one another.  Such a
 description could also identify an earlier equivalent formulation of
 the multiplicity law.
 
-\subsection{Uniform endpoint and root-collision limits}
+\subsection{Uniform endpoint and root-collision limits}\label{tec:x:rcq4}
 A concrete endpoint scaling is
 \[
  c_N=2+2\cosh(\tau/N),\qquad q_N(x)=(x-c_N)^t.
@@ -2948,6 +2979,22 @@ For $t=1$ the branch formula already reduces these limits to elementary
 hyperbolic functions.  The general problem asks for a uniform confluent
 determinant limit and error bounds.  A second version lets two distinct
 nonendpoint roots approach at a rate of order $N^{-1}$.
+
+\noindent[Added 29 September 2026, batch 53: the endpoint half is
+answered by Part~IV for any fixed numbers $m$ and $\ell$ of roots
+approaching $0$ and $4$ together, with arbitrary internal collisions: with
+$\nu=N+(m+\ell)/2$ the normalized determinant is a convergent series in
+$\nu^{-2}$, locally uniform in the scaled coordinates
+(Theorem~\ref{tec:thm:main}); its leading term factorizes into confluent
+cosine and sine determinants, its first correction is explicit
+(Theorem~\ref{tec:thm:first}), and in the scaling posed here the limits are
+$F_t^+(\tau)$ at the right endpoint and $F_t^-(\tau)$ at the left, with the
+stated values at $\tau=0$ and an $N^{-1}$ term that is only the centring
+$N\mapsto N+t/2$ (Corollary~\ref{tec:cor:original}); an explicit error
+bound is Theorem~\ref{tec:thm:bound}.  Relative to the fixed-endpoint
+determinant the ratio tends to $1$ exactly when every outward displacement
+is $o(N^{-2})$ (Theorem~\ref{tec:thm:scale}).  The nonendpoint collisions
+of the second version remain open (Section~\ref{tec:x:q1}).]
 
 \subsection{Other eventually constant Jacobi recurrences}
 Krattenthaler's recurrence theorem covers many moment families beyond
@@ -4922,7 +4969,7 @@ one-dimensional proof shows exactly which ingredient is missing:
 a tractable sum of leading and first surviving coefficients over all
 maximal labels.
 
-\subsection{Endpoint factors coupled to a cyclotomic interior root}
+\subsection{Endpoint factors coupled to a cyclotomic interior root}\label{tec:x:cycendpoint}
 Investigate $x^a(x-4)^b(x-c)^t$.  The repository's degree law already
 [Theorem~\ref{rc:thm:main}] adds fixed endpoint triangular contributions.  The open structural
 issue is how those endpoint blocks alter the ratio of two tied
@@ -5098,6 +5145,1628 @@ and the four data files are shipped with the prefix \texttt{03-cyclotomic-}
 (the Makefile in \nolinkurl{code/}), as listed in
 Section~\ref{cyc:sec:verification}.]
 
+%% ====================================================================
+%% Batch-53 addition (manuscript 02, "Two-Endpoint Confluence for Catalan
+%% Hankel Determinants").  All labels of Part IV carry the prefix tec:
+%% (two-endpoint confluence).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part IV.\quad Two-endpoint confluence}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Two-endpoint confluence}
+
+\noindent\emph{Part~IV was added on 29 September 2026 in batch~53 of
+ProveIt's incoming-report intake, from one manuscript written against the
+pinned state of Parts~I--III.  It answers the endpoint half of Part~II's
+research question ``Uniform endpoint and root-collision limits''
+(Section~\ref{tec:x:rcq4}): for any fixed numbers of roots approaching
+$0$ and $4$, with arbitrary collisions inside each cluster, it proves an
+exact even convergent expansion of the normalized determinant, its
+complete first correction, and a sharp outward scale.  The question's
+other half, collisions of roots away from the endpoints, remains open.
+Parts~I--III are unchanged except for dated pointers to this addition
+(Sections~\ref{sec:status}, \ref{rc:sec:asymptotics}
+and~\ref{tec:x:rcq4}), a line on the title page (whose vertical spaces
+were reduced by 12\,mm in all so that it still fits on one page) and a
+paragraph of the abstract, a contents entry, three bibliography entries used only by
+Part~IV (with a label column widened for the longer list), a clause in
+the closing note on source dates, and two new labels, on Part~II's
+Section~\ref{tec:x:rcq4} and Part~III's Section~\ref{tec:x:cycendpoint}.
+Section~\ref{tec:sec:intro} records the provenance and fixes the notation
+of the addition.}
+
+\section{Provenance and conventions of Part~IV}\label{tec:sec:intro}
+
+\subsection{One manuscript, one addition}\label{tec:sec:source}
+Part~IV is batch-53 manuscript~02, \emph{Two-Endpoint Confluence for
+Catalan Hankel Determinants}, subtitled \emph{An exact even finite-size
+expansion, the first interaction law, and a sharp critical scale}, an
+AI-assisted research article prepared for Vladimir Reshetnikov and dated
+29 September 2026 (20 A4 pages as delivered).  Unlike the sources of
+Parts~I--III, it does not name the assistant that prepared it.  It
+arrived as the archive \nolinkurl{Two_Endpoint_Catalan_Confluence.zip}
+(inner directory \nolinkurl{Two_Endpoint_Catalan_Confluence/}, main file
+\nolinkurl{article.tex}) in ProveIt commit \texttt{148a906aa} and was
+placed in \texttt{1dc874990}.  It was written against ProveIt commit
+\texttt{1ee53d57de253d16cdaad79d1f54bbd95d76d682}, reading this report's
+\nolinkurl{article.tex} (Git blob
+\texttt{e5a4d81408c80f0385ae66c26fbd11bba7dfdb09}) and README through the
+GitHub connector; its source notes name Part~II's Sections~22 and~24.4,
+and Part~III, as the relevant material.  The report's
+\nolinkurl{article.tex} is unchanged between the pin and the placement
+commit (the same blob), so every statement the manuscript makes about
+``the repository'', ``the source'' or ``the report'' refers to
+Parts~I--III as printed above.
+
+The manuscript's program and recorded outputs are shipped beside the
+earlier files with the prefix \texttt{04-endpoint-confluence-} (Part~I's
+unprefixed files count as~01, Part~II's as~02, Part~III's as~03), its
+dependency file under \nolinkurl{data/}, and its source notes and proof
+audit, delivered as \nolinkurl{SOURCES.md} and \nolinkurl{PROOF_AUDIT.md},
+as \nolinkurl{04-endpoint-confluence-SOURCES.md} and
+\nolinkurl{04-endpoint-confluence-PROOF_AUDIT.md} at the report root.  Its
+manuscript, delivery README and PDF are not shipped; they survive in the
+arrival commit.  Section~\ref{tec:app:archive} lists the shipped files.
+
+The manuscript contributes, in the order printed here: the repository
+question, what is classical, and a guide to the proof
+(Section~\ref{tec:sec:scope}); the two-endpoint model and its confluent
+cosine and sine kernels (Section~\ref{tec:sec:model}); the four main
+statements, namely the exact even expansion, the first interaction law, the
+endpoint values and the sharp outward scale (Section~\ref{tec:sec:main});
+a self-contained Christoffel reduction (Section~\ref{tec:sec:christoffel});
+the exact centred hyperbolic alternant that generates every coefficient
+(Section~\ref{tec:sec:alternant}); the proof of the expansion, with an
+explicit remainder bound (Section~\ref{tec:sec:proofmain}); the derivation
+of the first correction (Section~\ref{tec:sec:first}); positive Schur
+expansions of the outward profiles (Section~\ref{tec:sec:schur}); the
+proof of the sharp scale (Section~\ref{tec:sec:scaleproof}); the answer in
+the question's own uncentred scaling, and exact spatial displacements
+(Section~\ref{tec:sec:original}); worked examples
+(Section~\ref{tec:sec:examples}); its computations and verification
+boundary (Section~\ref{tec:sec:verification}); ten research directions
+(Section~\ref{tec:sec:future}); a conclusion; a sign and normalization
+audit (Section~\ref{tec:app:audit}); and its archive and reproduction
+notes (Section~\ref{tec:app:archive}).  Every result, proof, example,
+remark, limitation and question of the manuscript is printed.  Where it
+re-derives something Parts~I--III already prove, the overlap is marked
+(Section~\ref{tec:sec:merge}).
+
+The manuscript's own abstract reads:
+\begin{quote}\small
+The Catalan-Hankel report in \textit{ProveIt} asks for uniform limits when
+a repeated root approaches either endpoint of the Catalan moment interval.
+We solve that endpoint problem for arbitrary fixed multiplicities and, more
+generally, for two simultaneous clusters with arbitrary internal
+collisions. For total multiplier degree $d$, the effective size is
+$\nu=N+d/2$. After removing the endpoint sign and the power
+$\nu^{\binom m2+\binom{\ell+1}2}$, the determinant is the restriction of a
+holomorphic \emph{even} function of $1/\nu$. Its expansion is convergent,
+locally uniform in all scaled root coordinates, and has an explicit
+Cauchy remainder bound. The leading coefficient factors into two
+confluent cosine/sine determinants. We derive the complete first
+correction, including a universal mixed derivative with coefficient
+$-1/4$. A centered hyperbolic Vandermonde identity generates every higher
+coefficient. Positive Schur expansions of the outward profiles then prove
+an exact scale criterion: the determinant is asymptotic to its
+fixed-endpoint value if and only if all outward displacements are
+$o(N^{-2})$; if the largest scaled displacement tends to infinity, the
+ratio diverges. Written proofs are accompanied by 810 exact-arithmetic
+and high-precision checks, clearly separated by their evidentiary status.
+\end{quote}
+
+\begin{center}
+\fcolorbox{muted}{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+\textbf{Status (manuscript~02).}
+This is an unrefereed, AI-assisted manuscript with conventional written
+proofs, not a Lean or Rocq formalization.  It resolves the endpoint portion
+of Part~II's moving-root question, not its nonendpoint collision problem,
+and it does not resolve hard-edge universality for arbitrary weights or
+limits with multiplicities that grow with~$N$: the multiplicities $m$ and
+$\ell$ are fixed, and the constants and the analytic radius are not
+claimed to be uniform in them.  The if-and-only-if scale criterion is
+restricted to outward, nonnegative displacements.  Classical identities are
+credited, not presented as new: the fixed-size Christoffel reduction and its
+confluence (Krattenthaler~\cite{Krattenthaler2023}, re-proved in the
+present normalization), characteristic-polynomial determinants, integrable
+kernels and hard-edge limits from random matrix
+theory~\cite{StrahovFyodorov2003,AkemannFyodorov2003}, and the
+Mehler--Heine phenomenon of which the one-variable cosine and sine limits
+are elementary half-integer cases~\cite{DLMFMehlerHeine}.  The proposed
+contribution is the explicit combined package: the simultaneous
+two-endpoint, collision-uniform theorem, the centre $N+d/2$, the convergent
+expansion without odd powers, the first interaction operator, the
+all-orders coefficient generator, the explicit error bound and the sharp
+outward criterion.  The literature check was bounded, not exhaustive, and
+worldwide priority for every identity or corollary is not established; no
+claim of settling a famous external conjecture is made.  The proofs do not
+assume the report's sector-degree or resonance theorems.  The 810 recorded
+checks (710 exact, 100 at 100 digits) count executions, not universal
+theorems; the high-precision checks are diagnostics, not outward-rounded
+interval certificates, and the shipped program verifies the leading term
+and the first correction; it is not an arbitrary-order coefficient engine.
+No proof assistant was run, nothing in Part~IV is formalized, and its
+placement beside a Lean project confers no formal status.  (Sources: the
+manuscript, its delivery README, and its source notes and proof audit,
+\nolinkurl{04-endpoint-confluence-SOURCES.md} and
+\nolinkurl{04-endpoint-confluence-PROOF_AUDIT.md}.)}}
+\end{center}
+
+\subsection{Reading conventions}\label{tec:sec:reading}
+Inside Sections~\ref{tec:sec:scope}--\ref{tec:app:archive}, ``this
+article'', ``the present article'' and ``here'' mean manuscript~02 as
+printed in Part~IV; ``the repository'', ``the repository's question'',
+``the source'' and ``the report'' mean Parts~I--III at the pin
+\texttt{1ee53d57d}.  The manuscript cites this report's own section
+numbers, which did not change: its ``Part~II, Section~24.4'' is
+Section~\ref{tec:x:rcq4} and its ``Section~22'' is
+Section~\ref{rc:sec:asymptotics}.  ``The archive'' means the delivered
+package, whose program and data are shipped under the prefixed names
+listed in Section~\ref{tec:app:archive}.  The manuscript's two appendices
+are printed as Sections~\ref{tec:app:audit} and~\ref{tec:app:archive}, so
+that Part~I's appendices keep their letters.  Its Sections~1--14 are
+Sections~\ref{tec:sec:scope}--\ref{tec:sec:conclusion}, so a manuscript
+number $n.j$ of a section, theorem, lemma, corollary or equation is
+printed as $(n+44).j$ (for example, its Theorem~3.1 is
+Theorem~\ref{tec:thm:main}), and its Appendices~A and~B are
+Sections~\ref{tec:app:audit} and~\ref{tec:app:archive}.  The manuscript
+cites Krattenthaler's Ramanujan Journal paper through arXiv:2101.04225v5,
+pointing to its Theorem~1 and ``the confluent discussion in Section~5'';
+that is Part~I's reference~\cite{Krattenthaler2023}.  Its DLMF reference is
+Section~18.11(ii), not the Section~18.5 of Part~I's~\cite{DLMF}, and is
+listed separately as~\cite{DLMFMehlerHeine}.  Bracketed paragraphs
+beginning ``Merge note'' are this merge's, not the manuscript's.
+
+\subsection{Notation of Part~IV}\label{tec:sec:notation}
+Part~IV keeps the manuscript's symbols.  Within
+Sections~\ref{tec:sec:scope}--\ref{tec:app:archive} every symbol has its
+Part~IV meaning, except in merge notes and where a sentence names
+Part~I, II or~III or cites one of their equations.  The multiplier has
+$m$ roots near $0$ and $\ell$ near $4$ and no other roots; with all of
+them at the endpoints it is Part~II's
+$q=\gamma x^m(x-4)^\ell\prod_i(x-c_i)^{t_i}$ with $\gamma=1$ and $s=0$,
+and $H_N(q)$ is Part~II's \eqref{rc:eq:HN}.
+Table~\ref{tec:tab:notation} lists the symbols that a reader of
+Parts~I--III is likely to misread.  No symbol was renamed and no
+normalization changed.  Two readings need particular care: the letter $t$
+is the variable of the kernels in Sections~\ref{tec:sec:model}
+to~\ref{tec:sec:scaleproof}, but the multiplicity of one repeated root in
+\eqref{tec:eq:question} and Section~\ref{tec:sec:original}, as in
+Part~II's question; and the derivative columns of the kernels
+\eqref{tec:eq:Km}--\eqref{tec:eq:Kp} are \emph{not} divided by factorials,
+whereas repeated-root rows are (Section~\ref{tec:app:audit}).
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright}p{0.19\textwidth}>{\raggedright}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\caption{Symbols and notions of Part~IV.  The last column gives the
+meaning of the same letter in Part~I, II or~III, or the tempting false
+reading.}\label{tec:tab:notation}\\
+\toprule
+Symbol or notion & Meaning in Part~IV & Not to be confused with\\
+\midrule
+\endfirsthead
+\toprule
+Symbol or notion & Meaning in Part~IV & Not to be confused with\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$H_N(q)$
+ & the weighted determinant \eqref{tec:eq:HN}, Part~II's \eqref{rc:eq:HN}
+ & Part~I's $H_N^{(m)}=H_N(x^m)$, whose superscript is a shift; Part~III's
+   $\cH Nt(c)=H_N((x-c)^t)$.\\
+$m$, $\ell$, $d=m+\ell$
+ & numbers of roots near $0$ and near $4$; the degree of the multiplier
+ & Part~II's multiplicities $m,\ell$ of the exact roots $0,4$ (the same when
+   the roots sit there); $d$ is Part~II's $D=\deg q$ here, not Part~I's
+   $d=\binom m2$ nor Part~II's sector degrees $d_{\bk}$.\\
+$b_r$, $\rho$, $\kappa$
+ & $\binom r2$, $b_m+b_\ell$, $b_m+\binom{\ell+1}2$ \eqref{tec:eq:indices}
+ & $\kappa$ is Part~II's $\kappa$ \eqref{rc:eq:kappa}; $b_r$ is not
+   Part~I's parameter $b$; $\rho$ is not Part~II's modulus bound in
+   \eqref{rc:eq:asymptotic} nor Part~III's leading ratio
+   \eqref{cyc:eq:rho}.\\
+$\nu=N+d/2$, $h=1/\nu$
+ & centred size and its inverse; the expansion is in $h^2$
+ & Part~II's block multiplicities $\nu_u$; Part~I's moments $\nu_{i+j}$;
+   Part~III's $h=t-k$ (compare its centred size $w=N+t/2$).\\
+$t$, $s$
+ & variables of $C$, $S$ and of the kernels; but $t$ is a multiplicity in
+   \eqref{tec:eq:question} and Section~\ref{tec:sec:original}
+ & Part~I's generating-function variable $t$; Part~II's number $s$ of
+   interior roots; Part~III's multiplicity $t$.\\
+$C(t,y)$, $S(t,y)$; $C$, $S$ in \eqref{tec:eq:11}
+ & $\cos(t\sqrt y)$ and $\sin(t\sqrt y)/\sqrt y$ as entire series
+   \eqref{tec:eq:CSa}--\eqref{tec:eq:CSb}; abbreviations of $C(1,y)$, $S(1,v)$
+ & the Catalan numbers $C_n$ (always subscripted); Part~II's $S=2^D$ and
+   matrix $C$; Part~III's subsets $S$.\\
+$y_i$, $v_j$; $c_i^\pm$; $q_N$
+ & scaled coordinates (negative real means outward); the moving roots
+   \eqref{tec:eq:roots}; the size-dependent multiplier
+ & Part~II's fixed interior roots $c_i$ and fixed multiplier $q$.\\
+$Z_N$, $Z(h;\by,\bv)$, $A_j$
+ & normalized determinant \eqref{tec:eq:ZN}, its even interpolation, its
+   coefficients
+ & Part~II's amplitudes $A_\pm(z)$; Part~III's superfactorials $A_u$;
+   Part~I's constant $A_m$.\\
+$K_m^-$, $K_\ell^+$; $K_n^\varepsilon$
+ & confluent cosine and sine kernels \eqref{tec:eq:Km}, \eqref{tec:eq:Kp};
+   $\varepsilon=0,1$ selects them in Theorem~\ref{tec:thm:Schur}
+ & Part~I's $K=(m-1)^2$; Part~III's common sector factor $K_t(z)$.\\
+$\mathcal A_{m,\ell}$
+ & endpoint value $A_0(\mathbf0,\mathbf0)$ \eqref{tec:eq:Aendpoint}
+ & it equals Part~II's leading coefficient for $q=x^m(x-4)^\ell$
+   (Section~\ref{tec:sec:answers}).\\
+$a$, $b$; $\ba$, $\bb$
+ & $b_m$ and $\binom{\ell+1}2$ in Corollary~\ref{tec:cor:endpoint}; limits
+   of scaled displacements in Theorem~\ref{tec:thm:scale}; a fixed positive
+   number in Section~\ref{tec:sec:scaleproof}
+ & Part~I's parameters $a,b$ of $x^m(a+bx)$, which appear in the dated note
+   of Section~\ref{sec:status} and in Section~\ref{tec:sec:answers}.\\
+$\epsilon_{i,N}$, $\eta_{j,N}$; $\varepsilon$
+ & outward displacements at $0$ and $4$; the kernel type $0$ or $1$
+ & Part~III's parity indicator $\eta$.\\
+$R_N$, $M_N$
+ & ratio to the fixed-endpoint determinant \eqref{tec:eq:R}; $N^2$ times the
+   largest displacement
+ & Part~II's Christoffel matrix $M_N$ \eqref{rc:eq:MN} and bound $R$;
+   Part~III's minimal order $R(t,c)$.\\
+$M(h;\by,\bv)$, $Q$, $E(h;\bu,\bw)$
+ & the matrices \eqref{tec:eq:M}, \eqref{tec:eq:expMat} and the quotient
+   \eqref{tec:eq:Q}
+ & Part~II's $M_N$; Part~I's $E_m(N)$ and the shift $\E$; the multiplier
+   $q$.\\
+$\mathcal R$, $\mathcal R_2$
+ & hyperbolic generator \eqref{tec:eq:Rgenerator} (constant term $1$) and
+   its $h^2$ coefficient \eqref{tec:eq:R2closed}
+ & Part~II's maximal order $\Rzero$; Part~IV has no $\mathcal R_0$.\\
+$\alpha_j$; $u_i$, $w_a$; $U$, $W$; $Y$, $V$
+ & centred exponents $j-(d-1)/2$; auxiliary variables and their sums;
+   coordinate sums $\sum y_i$, $\sum v_j$
+ & Part~III's arcsine measure $\alpha$ and values $U_a$; Part~II's nodes
+   $w_a$; Part~II's matrix $V$.\\
+$\phi_h$, $c_h$, $s_h$, $D_h$
+ & the even entire functions of Section~\ref{tec:sec:proofmain}
+ & Part~III's sign $s_N$; Part~I's $D_N^{(m)}(a,b)$.\\
+$\mathcal D_\pm$
+ & Euler operators \eqref{tec:eq:euler}
+ & ---\\
+$J_0$, $J_1$, $J_2$, $J_{11}$
+ & kernel minors with raised derivative orders (Section~\ref{tec:sec:first})
+ & Part~III's index set $J$.\\
+$k_j$, $\lambda$, $s_\lambda$
+ & strictly increasing exponents, their partition \eqref{tec:eq:partition},
+   the Schur polynomial
+ & Part~II's labels $\bk$ and rates $\lambda_{\bk}$; Part~III's rates
+   $\lambda_k$; Part~I's $\lambda_\pm$.\\
+$R$, $r$, $T$, $B_{m,\ell,R}$
+ & coordinate radius, disk radius, bound and constant of
+   Theorem~\ref{tec:thm:bound}
+ & Part~III's $T=\binom t2$ and product $B_{a,b}(N)$; Part~II's
+   $T=\sum_it_i$ and $B_0$, $B_4$.\\
+$F_t^\pm$, $\boldsymbol\tau_t$, $\kappa_t$, $f_\varepsilon$
+ & repeated-root profiles \eqref{tec:eq:Ft}; $\kappa_t$ is $\binom t2$ at $0$
+   and $\binom{t+1}2$ at $4$; $f_0=C$, $f_1=S$
+ & ---\\
+$p_n$, $\mu$; $a_{n,r}$
+ & monic orthogonal polynomials \eqref{tec:eq:pn} and the Catalan measure
+   \eqref{tec:eq:measure}; Taylor jets of $p_n$
+ & the same as Part~II's $p_n$, $\mu$ (Part~I's $p_n^{(0)}$, $\mu_0$);
+   Part~III's centred moments $\mu_n$.\\
+$\Del$
+ & the Vandermonde $\prod_{i<j}(u_j-u_i)$
+ & Part~II's $\Delta_q$, with multiplicities; Part~III's $\Delta(S)$.\\
+$\sinc$, $\sinhc$, $\fall xr$
+ & $\sin z/z$, $\sinh z/z$ (both $1$ at $0$), the falling factorial
+ & ---\\
+\end{longtable}
+\endgroup
+
+\subsection{What Part~IV answers, and what stays open}\label{tec:sec:answers}
+Part~II's Section~\ref{tec:x:rcq4} asked, for $c_N=2\pm2\cosh(\tau/N)$ and
+$q_N=(x-c_N)^t$, for the locally uniform limit of $H_N(q_N)$ normalized by
+$(-1)^{tN}N^{t(t+1)/2}$ at the right endpoint and by $N^{t(t-1)/2}$ at the
+left, with its value at $\tau=0$, a uniform confluent determinant limit and
+error bounds; and, in a second version, for two distinct nonendpoint roots
+approaching each other at rate $N^{-1}$.  Part~IV answers the first version.
+Corollary~\ref{tec:cor:original} gives the limits $F_t^+(\tau)$ and
+$F_t^-(\tau)$, entire and even in $\tau$, their values at $\tau=0$
+\eqref{tec:eq:origzero}, and the $N^{-1}$ term, which is only the centring
+$N\mapsto N+t/2$; Theorem~\ref{tec:thm:bound} gives an explicit remainder
+bound.  It does so inside a larger statement: $m$ roots near $0$ and $\ell$
+near $4$ at once, any collision pattern within each cluster, coordinates in
+compact complex sets (Theorems~\ref{tec:thm:main} and~\ref{tec:thm:first}),
+and a sharp outward scale (Theorem~\ref{tec:thm:scale}).  For $t=1$ the
+question noted that the limits are elementary hyperbolic functions; they are
+$F_1^-(\tau)=\cosh\tau$ and $F_1^+(\tau)=2\sinh\tau/\tau$
+(Section~\ref{tec:sec:examples}).  The second version, collisions away from
+the endpoints, is \emph{not} answered: it is Part~IV's first research
+question (Section~\ref{tec:x:q1}), and Section~\ref{tec:x:rcq4} stays open
+for it.
+
+The same results settle, for endpoint roots, the caveat that closes Part~II's
+Section~\ref{rc:sec:asymptotics}: its fixed-parameter estimate cannot be
+used with moving parameters, and Part~IV proves the double-scaling limit
+directly, on the scale $N^{-2}$, without using that estimate.  They also
+treat the limit $a\to0$ that Part~I's Section~\ref{sec:status} names, at
+fixed $m$.  For $b\ne0$ and $\varepsilon=a/b$,
+$D_N^{(m)}(a,b)=b^NH_N(x^m(x+\varepsilon))$, a cluster of $m+1$ roots at
+the endpoint $0$, $m$ of them fixed there.  For real $\varepsilon\ge0$ the
+root $-\varepsilon$ is an outward displacement, so by
+Theorem~\ref{tec:thm:scale}, with $\ell=0$ and $m+1$ roots,
+$D_N^{(m)}(a,b)/D_N^{(m)}(0,b)$ tends to $1$ exactly when
+$\varepsilon=o(N^{-2})$, to the profile ratio \eqref{tec:eq:finiteprofile}
+when $N^2\varepsilon$ converges, and to infinity when
+$N^2\varepsilon\to\infty$.  Joint limits with $m$ growing with $N$ remain
+open (Section~\ref{tec:sec:future}, ``Multiplicities growing with
+determinant size'').  Part~III's research directions on endpoint factors
+coupled to a cyclotomic interior root (Section~\ref{tec:x:cycendpoint}) and
+on uniform limits near a disappearing characteristic factor concern
+interior roots and are not addressed; Part~IV's second research question
+(endpoint clusters in the presence of fixed interior roots) is close to
+the first of them.
+
+\emph{Consistency with Parts~II and~III} (observations of this merge,
+checked by a separate exact computation not shipped with the report).
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item The endpoint value \eqref{tec:eq:Aendpoint} is Part~II's leading
+ coefficient \eqref{rc:eq:leading} for $q=x^m(x-4)^\ell$ ($s=0$,
+ $\gamma=1$): there $\mathcal W=((-1,m),(1,\ell))$, $\Delta_q=4^{m\ell}$ and
+ $\V(\mathcal W)=(-1)^{b_m}2^{m\ell}\prod_{h<m}h!\prod_{h<\ell}h!$, and
+ $B_0(m)B_4(\ell)\V(\mathcal W)/\Delta_q$ simplifies to $\mathcal A_{m,\ell}$;
+ exact arithmetic agrees for $m,\ell\le3$.  The sign $(-1)^{N\ell}$ removed
+ in \eqref{tec:eq:ZN} is Part~II's rate $(-1)^\ell$.  So
+ Corollary~\ref{tec:cor:endpoint} is a second route to the case $s=0$ of
+ Theorem~\ref{rc:thm:leading}, and it adds the next coefficient.  More is
+ true at exact endpoints: Part~II's single sector polynomial $P(N)$ of
+ degree $\kappa$ satisfies $\nu^{-\kappa}P=Z(1/\nu)$, and a polynomial in
+ $h$ that agrees with the even series $Z(h)$ of Theorem~\ref{tec:thm:main}
+ at infinitely many points accumulating at $0$ has only even powers; hence
+ $P=\sum_jA_j(\mathbf0,\mathbf0)\nu^{\kappa-2j}$ contains only powers of
+ $\nu=N+d/2$ of the parity of $\kappa$.  For example
+ $H_N((x-4)^2)=\nu(4\nu^2-1)/3$ with $\nu=N+1$, and
+ $H_N(x^2(x-4)^2)=\nu^2(\nu^2-1)/12$ with $\nu=N+2$.
+\item The product \eqref{tec:eq:22exact} for $H_N(x^2(x-4)^2)$ is the same
+ polynomial as Part~II's \eqref{rc:eq:centreproduct} for $H_N((x-2)^4)$,
+ which is Part~III's central product $B_{2,2}(N)$; the coincidence of the
+ two determinants is observed (both formulas are proved, and they agree for
+ $N\le7$ by direct evaluation), not explained here.
+\item The small determinants of Section~\ref{tec:app:audit}
+ ($H_N(x)$, $H_N(x-4)$, $H_N(x(x-4))$, $H_N(x^2)$, $H_N((x-4)^2)$) agree with
+ direct evaluation for $N\le7$, and the table of
+ Section~\ref{tec:sec:examples} agrees with the case \texttt{both-double}
+ recorded in \nolinkurl{data/04-endpoint-confluence-verification.json}.
+\end{enumerate}
+
+\subsection{Where the merge had to choose}\label{tec:sec:merge}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \emph{Placement.}  Part~IV is printed after Part~III and before
+ Part~I's appendices, so that no section, equation, theorem or table
+ number of Parts~I--III moves (checked against the \texttt{.aux} file of a
+ build of the committed text).  Its sections continue the numbering
+ (Sections~\ref{tec:sec:intro} to~\ref{tec:app:archive}), with the
+ concordance of Section~\ref{tec:sec:reading}.
+\item \emph{Labels.}  Every label of Part~IV carries the prefix
+ \texttt{tec:}; without it, seven of the manuscript's labels,
+ \texttt{thm:main}, \texttt{lem:Christoffel}, \texttt{eq:Christoffel},
+ \texttt{eq:measure}, \texttt{eq:R}, \texttt{eq:M} and \texttt{eq:Q}, would
+ have collided with Part~I's bare labels.  Labels were added to the
+ manuscript's sixteen sections and to its first research subsection, and
+ to Part~II's Section~\ref{tec:x:rcq4} and Part~III's
+ Section~\ref{tec:x:cycendpoint} so that they can be cited; no existing
+ label was changed.
+\item \emph{Overlaps with Parts~I--III.}  The manuscript re-derives, without
+ assuming the report correct, several things already proved there.  Printed
+ with a pointer and kept: the determinant \eqref{tec:eq:HN} (Part~II's
+ \eqref{rc:eq:HN}); the Catalan measure, the monic orthogonal polynomials,
+ their trigonometric form \eqref{tec:eq:ptrigplus} and $H_N(1)=1$ (a fourth
+ route, after Part~I's Section~\ref{sec:coeffproof}, Part~II's
+ Section~\ref{rc:sec:classical}, whose \eqref{rc:eq:ptrig} is
+ \eqref{tec:eq:ptrigplus}, and Part~III's
+ Section~\ref{cyc:sec:orthogonal}); the Gram integral identity
+ \eqref{tec:eq:Andreief} and the Christoffel identity
+ (Lemma~\ref{tec:lem:Christoffel} is Part~II's
+ Lemma~\ref{rc:lem:Christoffel} for $\gamma=1$, and Part~III's
+ Lemma~\ref{cyc:lem:Christoffel} and Part~I's Lemma~\ref{lem:Christoffel}
+ are other special cases); the endpoint jets \eqref{tec:eq:endpointjets},
+ which are Part~II's \eqref{rc:eq:zerojet} and \eqref{rc:eq:fourjet}
+ (the signs $(-1)^{n+r}$ and $(-1)^{n-r}$ agree); and the endpoint value
+ of Corollary~\ref{tec:cor:endpoint} (Section~\ref{tec:sec:answers}).
+ Everything else in Part~IV (the evenness and convergence, the first
+ interaction law, the alternant generator, the remainder bound, the Schur
+ positivity and the sharp scale) has no counterpart in Parts~I--III, which
+ are fixed-parameter throughout.  No statement of Parts~I--III was
+ changed.
+\item \emph{Bibliography.}  The manuscript's Krattenthaler reference is
+ Part~I's \cite{Krattenthaler2023}.  Its references to Strahov--Fyodorov,
+ Akemann--Fyodorov and DLMF Section~18.11(ii) are added to the common
+ bibliography as \cite{StrahovFyodorov2003}, \cite{AkemannFyodorov2003}
+ and~\cite{DLMFMehlerHeine}.  Its reference to the pinned repository report
+ is replaced by Parts~I--III themselves and the pin recorded in
+ Section~\ref{tec:sec:source}; the sentence that cited it
+ (Section~\ref{tec:sec:scope}) now points there, and gains a pointer to
+ Section~\ref{rc:sec:asymptotics} and a merge note.  The manuscript's
+ references to Part~II's Section~24.4 are printed as cross-references to
+ Section~\ref{tec:x:rcq4}; the numbers are unchanged.
+\item \emph{File names.}  Sections~\ref{tec:sec:verification}
+ and~\ref{tec:app:archive} give the shipped names beside the delivered ones
+ in merge notes.  The manuscript's reproduction command is printed as
+ delivered but must not be run in place here, because the program would
+ overwrite Part~I's recorded outputs; a recipe on a scratch copy follows it.
+\item \emph{Front matter.}  The manuscript's title page, abstract, scope
+ box and contents are replaced by Section~\ref{tec:sec:source}, which
+ prints the abstract and the status.
+\item \emph{Notation and macros.}  The manuscript's symbols are kept, with
+ the scoping convention and Table~\ref{tec:tab:notation} of
+ Section~\ref{tec:sec:notation}; nothing was renamed.  Its macros
+ \verb|\Del|, \verb|\bv|, \verb|\ba|, \verb|\bb|, \verb|\bu|, \verb|\bw|,
+ \verb|\sinc|, \verb|\sinhc| and \verb|\fall| were added to the preamble
+ with the manuscript's definitions; its \verb|\by| and \verb|\CC| are the
+ report's, and its \verb|\repo| is spelled out.  No mathematical text of the
+ manuscript was changed.
+\end{enumerate}
+
+\section{The repository question and the contribution}\label{tec:sec:scope}
+\subsection{The endpoint moving-root question}
+For $C_n=\binom{2n}{n}/(n+1)$ and $q(x)=\sum_r q_rx^r$, put
+\begin{equation}\label{tec:eq:HN}
+ H_N(q)=\det\left(\sum_r q_r C_{i+j+r}\right)_{0\le i,j<N},
+ \qquad H_0(q)=1.
+\end{equation}
+The report \textit{Shifted Catalan Hankel Polynomials} in \textit{ProveIt} contains
+three parts: a shifted linear-multiplier analysis, an extension to
+arbitrary polynomial multipliers, and a single-root cyclotomic
+classification. Its Part II, Section~\ref{tec:x:rcq4}, asks for the locally uniform
+limit associated with
+\begin{equation}\label{tec:eq:question}
+ c_N=2+2\cosh(\tau/N),\qquad q_N(x)=(x-c_N)^t,
+ \qquad \frac{H_N(q_N)}{(-1)^{tN}N^{t(t+1)/2}},
+\end{equation}
+and for the corresponding left-endpoint limit with exponent
+$t(t-1)/2$. It specifically requests confluent determinant limits and
+error bounds. The same subsection separately asks about collisions away
+from the endpoints; that separate problem is not solved here.
+
+The source was read at repository commit
+\texttt{1ee53d57de253d16cdaad79d1f54bbd95d76d682}.
+The mathematical source file had blob
+\texttt{e5a4d81408c80f0385ae66c26fbd11bba7dfdb09}.
+The path, relevant sections, and comparison are recorded in
+Section~\ref{tec:sec:source} and the accompanying \texttt{SOURCES.md}.
+In particular, the source's fixed-parameter asymptotics
+(Section~\ref{rc:sec:asymptotics}) expressly warn
+that they cannot simply be substituted into a moving-root limit.
+
+\noindent[Merge note: the manuscript's \texttt{SOURCES.md} is shipped as
+\nolinkurl{04-endpoint-confluence-SOURCES.md}; its bibliography item for
+the pinned report is replaced by Parts~I--III themselves and the pin
+recorded in Section~\ref{tec:sec:source}.  Section~24.4 of Part~II and
+Section~22 of Part~II, as the manuscript cites them, are
+Sections~\ref{tec:x:rcq4} and~\ref{rc:sec:asymptotics} here: the numbers
+did not change.]
+
+The results here address a larger fixed-degree problem. Any number $m$
+of roots may approach $0$, any number $\ell$ may approach $4$, and roots
+inside either cluster may coincide in any pattern. The approach may be
+from outside the interval, inside it, or in complex directions. Uniformity
+includes all these collisions on compact sets of the scaled coordinates.
+
+\subsection{What is classical, and what is established here}
+The reduction of a polynomially modified moment determinant to a
+fixed-size determinant of orthogonal polynomials is classical.
+Krattenthaler gives a detailed account, four proofs, a confluent version,
+and recurrence applications~\cite{Krattenthaler2023}. We use that identity,
+with a self-contained proof for the present normalization. The broader
+appearance of characteristic-polynomial determinants, integrable kernels,
+and hard-edge limits is likewise established in random matrix theory;
+see Strahov--Fyodorov and Akemann--Fyodorov~\cite{StrahovFyodorov2003,AkemannFyodorov2003}. The one-variable
+cosine and sine limits are elementary half-integer cases of the
+Mehler--Heine phenomenon~\cite{DLMFMehlerHeine}.
+
+The contribution is the following explicit package for the repository's
+problem: a simultaneous two-endpoint, collision-uniform theorem; the exact
+center $N+d/2$; a genuinely convergent expansion containing no odd powers;
+a closed first interaction operator; an all-orders coefficient generator;
+an elementary, explicit error bound; and a necessary-and-sufficient
+outward stability criterion. These conclusions are proved directly,
+without assuming the repository's newer sector-degree or resonance
+claims. A bounded literature check does not establish priority for every
+identity or corollary in this package.
+
+\subsection{A guide to the proof}
+The decisive algebra is not a delicate large determinant estimate.
+Centering the columns turns an exponential alternant into a product of
+hyperbolic sines within each cluster and hyperbolic cosines between the
+clusters. After the forced zero is divided out, that product is even in
+the inverse size. A fixed-dimensional Christoffel formula transports this
+identity to Catalan determinants. The first correction follows from the
+quadratic term of the product; positivity of the limiting profiles then
+settles the sharp scale question.
+
+\section{Notation and the two-endpoint model}\label{tec:sec:model}
+Fix nonnegative integers $m,\ell$ with $d=m+\ell\ge1$. Write
+\begin{equation}\label{tec:eq:indices}
+ b_r=\binom r2,\qquad \rho=b_m+b_\ell,\qquad
+ \kappa=b_m+\binom{\ell+1}{2}=\rho+\ell,
+ \qquad \nu=N+\frac d2,\quad h=\nu^{-1}.
+\end{equation}
+For a tuple $\bu$, let $\Del(\bu)=\prod_{i<j}(u_j-u_i)$; empty
+products and empty determinants are $1$.
+
+All square-root expressions below denote entire power series in the
+squared variable, so no branch choice is part of the definition. Set
+\begin{align}
+ C(t,y)&=\cos(t\sqrt y)
+       =\sum_{k\ge0}\frac{(-1)^k t^{2k}y^k}{(2k)!},\label{tec:eq:CSa}\\
+ S(t,y)&=\frac{\sin(t\sqrt y)}{\sqrt y}
+       =\sum_{k\ge0}\frac{(-1)^k t^{2k+1}y^k}{(2k+1)!}.
+       \label{tec:eq:CSb}
+\end{align}
+In particular $S(t,0)=t$. For $\by\in\CC^m$ and $\bv\in\CC^\ell$,
+define the moving roots and multiplier by
+\begin{align}
+ c_i^-(h)&=2-2\cos(h\sqrt{y_i}), &1\le i\le m,\\
+ c_j^+(h)&=2+2\cos(h\sqrt{v_j}), &1\le j\le\ell,\label{tec:eq:roots}\\
+ q_N(x)&=\prod_{i=1}^m(x-c_i^-(h))
+          \prod_{j=1}^{\ell}(x-c_j^+(h)).
+\end{align}
+Thus $c_i^-=h^2y_i+O(h^4)$ and
+$c_j^+=4-h^2v_j+O(h^4)$. Negative real coordinates mean outward motion.
+The normalized determinant is
+\begin{equation}\label{tec:eq:ZN}
+ Z_N(\by,\bv)=(-1)^{N\ell}\nu^{-\kappa}H_N(q_N).
+\end{equation}
+
+Define the two entire, symmetric kernel functions by
+\begin{align}
+ K_m^-(t;\by)
+ &=(-1)^{b_m}\frac{\det[\partial_t^r C(t,y_i)]_
+             {1\le i\le m,\ 0\le r<m}}{\Del(\by)},\label{tec:eq:Km}\\
+ K_\ell^+(s;\bv)
+ &=(-1)^{b_\ell}\frac{\det[\partial_s^r S(s,v_j)]_
+             {1\le j\le\ell,\ 0\le r<\ell}}{\Del(\bv)}.
+             \label{tec:eq:Kp}
+\end{align}
+The quotients are defined at collisions by analytic continuation. More
+concretely, a block of $r$ repeated coordinates $z$ is replaced by rows
+of normalized derivatives $(1/a!)\partial_z^a$, $0\le a<r$; the
+remaining denominator is the product of cross-block differences to the
+products of their multiplicities. Set $K_0^\pm=1$.
+
+\section{Main results}\label{tec:sec:main}
+\subsection{An exact even expansion}
+\begin{theorem}[Two-endpoint confluence]\label{tec:thm:main}
+There are entire functions $A_j(\by,\bv)$, symmetric separately in each
+cluster, such that for all sufficiently large $N$,
+\begin{equation}\label{tec:eq:mainseries}
+ Z_N(\by,\bv)=\sum_{j=0}^{\infty}\frac{A_j(\by,\bv)}{\nu^{2j}}.
+\end{equation}
+The series converges locally uniformly in the root coordinates and
+uniformly for $|h|$ in a sufficiently small closed disk. It is the Taylor
+series of an even holomorphic function $Z(h;\by,\bv)$ with
+$Z_N=Z(\nu^{-1};\by,\bv)$. In particular,
+\begin{equation}\label{tec:eq:A0}
+ A_0(\by,\bv)=2^{\ell-m\ell}
+       K_m^-(1;\by)K_\ell^+(1;\bv).
+\end{equation}
+All statements include repeated roots, zero coordinates, and mixed
+collision patterns. For every fixed $J$ the remainder after $A_J$ is
+$O(\nu^{-2J-2})$ locally uniformly, including after any fixed number of
+derivatives in the coordinates.
+\end{theorem}
+
+The theorem is stronger than the existence of a formal asymptotic series.
+It constructs an analytic function of the inverse size. The absence of
+odd powers is exact, not a cancellation observed through a finite order.
+The restriction to fixed $m,\ell$ is important: the constants and the
+analytic radius are not claimed to be uniform in growing multiplicities.
+
+\subsection{The complete first correction}
+In the next statement every kernel and its derivatives are evaluated at
+$t=s=1$. Put $Y=\sum_i y_i$ and $V=\sum_j v_j$.
+\begin{theorem}[First interaction law]\label{tec:thm:first}
+The coefficient of $\nu^{-2}$ in \eqref{tec:eq:mainseries} is
+\begin{align}\label{tec:eq:A1}
+ A_1=2^{\ell-m\ell}\Bigg\{&
+ \frac{(m+3\ell+1)Y+(\ell+3m-1)V}{24}\,K_m^-K_\ell^+
+ \nonumber\\[-1mm]
+ &-\frac{(\partial_t^2K_m^-)K_\ell^+
+             +K_m^-(\partial_s^2K_\ell^+)}{24}
+ -\frac{(\partial_tK_m^-)(\partial_sK_\ell^+)}4\Bigg\}.
+\end{align}
+This identity is entire in every coordinate; it does not divide by the
+leading profile, so it remains valid at zeros of $A_0$.
+\end{theorem}
+
+At leading order the clusters decouple, up to the scalar
+$2^{\ell-m\ell}$. The first correction has a mixed derivative whose
+coefficient is always $-1/4$. It is therefore incorrect, in general, to
+multiply two one-endpoint finite-size expansions and expect the
+simultaneous two-endpoint correction.
+
+An equivalent form uses the Euler operators
+\begin{equation}\label{tec:eq:euler}
+ \mathcal D_-=b_m+2\sum_i y_i\partial_{y_i},\qquad
+ \mathcal D_+=\binom{\ell+1}{2}+2\sum_jv_j\partial_{v_j}.
+\end{equation}
+On the product of the kernels, replace $\partial_t$ by $\mathcal D_-$,
+$\partial_t^2$ by $\mathcal D_-(\mathcal D_--1)$, and analogously for
+$s$. This eliminates auxiliary variables from the correction formula.
+
+\subsection{The endpoint value}
+\begin{corollary}\label{tec:cor:endpoint}
+At $\by=\boldsymbol0$, $\bv=\boldsymbol0$,
+\begin{equation}\label{tec:eq:Aendpoint}
+ A_0(\boldsymbol0,\boldsymbol0)=
+ \mathcal A_{m,\ell}:=
+ 2^{\ell-m\ell+b_m+b_\ell}
+ \prod_{r=0}^{m-1}\frac{r!}{(2r)!}
+ \prod_{r=0}^{\ell-1}\frac{r!}{(2r+1)!}>0.
+\end{equation}
+Writing $a=b_m$ and $b=\binom{\ell+1}{2}$, one also has
+\begin{equation}\label{tec:eq:Aendpoint1}
+ \frac{A_1(\boldsymbol0,\boldsymbol0)}{\mathcal A_{m,\ell}}
+ =-\frac{a(a-1)+b(b-1)+6ab}{24}.
+\end{equation}
+\end{corollary}
+
+\subsection{A sharp scale criterion}
+For nonnegative real outward displacements define
+\begin{align}
+ \widetilde q_N(x)&=\prod_{i=1}^m(x+\epsilon_{i,N})
+             \prod_{j=1}^{\ell}(x-4-\eta_{j,N}),\\
+ R_N&=\frac{H_N(\widetilde q_N)}{H_N(x^m(x-4)^\ell)},\qquad
+ M_N=N^2\max\{\epsilon_{i,N},\eta_{j,N}\}.\label{tec:eq:R}
+\end{align}
+The denominator is nonzero and $R_N$ is positive.
+\begin{theorem}[Exact outward stability threshold]\label{tec:thm:scale}
+With fixed $m,\ell$ as above,
+\begin{equation}\label{tec:eq:iff}
+ R_N\longrightarrow1\quad\Longleftrightarrow\quad M_N\longrightarrow0.
+\end{equation}
+If $N^2\epsilon_{i,N}\to a_i$ and $N^2\eta_{j,N}\to b_j$ with finite
+nonnegative limits, then
+\begin{equation}\label{tec:eq:finiteprofile}
+ R_N\longrightarrow
+ \frac{K_m^-(1;-\ba)}{K_m^-(1;\boldsymbol0)}
+ \frac{K_\ell^+(1;-\bb)}{K_\ell^+(1;\boldsymbol0)}.
+\end{equation}
+This limit exceeds $1$ if at least one limit coordinate is positive.
+If $M_N\to\infty$, then $R_N\to\infty$.
+\end{theorem}
+The equivalence is restricted to outward, nonnegative displacements.
+Inside the interval, oscillations and zeros prevent the same monotonicity
+argument and may invalidate such an equivalence.
+
+\section{The Catalan moment functional and Christoffel reduction}\label{tec:sec:christoffel}
+\subsection{Orthogonal polynomials with unit norms}
+The Catalan numbers are moments of the probability measure
+\begin{equation}\label{tec:eq:measure}
+ d\mu(x)=\frac1{2\pi}\sqrt{\frac{4-x}{x}}\,dx,\qquad 0<x<4.
+\end{equation}
+Indeed, $x=4u$ gives
+$\int x^k\,d\mu=(2/\pi)4^k B(k+1/2,3/2)=C_k$.
+Define monic polynomials by
+\begin{equation}\label{tec:eq:pn}
+ p_0=1,\qquad p_1=x-1,\qquad
+ p_{n+1}=(x-2)p_n-p_{n-1}\quad(n\ge1).
+\end{equation}
+Their elementary trigonometric expressions are
+\begin{align}
+ p_n(2+2\cos\theta)
+   &=\frac{\sin((n+1/2)\theta)}{\sin(\theta/2)},\label{tec:eq:ptrigplus}\\
+ p_n(2-2\cos\theta)
+   &=(-1)^n\frac{\cos((n+1/2)\theta)}{\cos(\theta/2)}.
+   \label{tec:eq:ptrigminus}
+\end{align}
+The identities follow by checking $n=0,1$ and the recurrence; the
+apparent singularities at special angles are removable where appropriate.
+
+Under $x=2+2\cos\theta$, the measure is
+$(2/\pi)\sin^2(\theta/2)\,d\theta$ on $0<\theta<\pi$.
+Thus the functions in \eqref{tec:eq:ptrigplus} are orthonormal, since the
+half-integer sine functions have squared integral $\pi/2$ and distinct
+ones are orthogonal. In particular $\int p_np_k\,d\mu=\delta_{nk}$ and
+$H_N(1)=1$. These facts fix all normalizing constants used below.
+
+\subsection{A proof of the fixed-size determinant identity}
+\begin{lemma}[Christoffel identity]\label{tec:lem:Christoffel}
+For $q(x)=\prod_{a=1}^d(x-c_a)$,
+\begin{equation}\label{tec:eq:Christoffel}
+ H_N(q)=(-1)^{Nd}
+   \frac{\det[p_{N+j}(c_i)]_{1\le i\le d,\ 0\le j<d}}
+        {\Del(c_1,\ldots,c_d)}.
+\end{equation}
+The quotient is a symmetric polynomial in the $c_a$ and hence extends to
+all collisions by normalized derivative rows.
+\end{lemma}
+\begin{proof}
+Expanding two determinants and integrating term by term yields the
+Gram integral identity
+\begin{equation}\label{tec:eq:Andreief}
+ H_N(q)=\frac1{N!}\int_{(0,4)^N}\Del(x_1,\ldots,x_N)^2
+                 \prod_{a=1}^Nq(x_a)\,d\mu(x_a).
+\end{equation}
+The same identity holds for complex $q$, by finite multilinearity.
+The enlarged Vandermonde in the ordered tuple
+$(x_1,\ldots,x_N,c_1,\ldots,c_d)$ is
+\[
+ \Del(\boldsymbol x)\Del(\boldsymbol c)
+            \prod_{a,i}(c_i-x_a).
+\]
+Replace its monomial columns by the monic columns $p_0,p_1,\ldots$;
+the determinant does not change. Multiply by
+$\Del(\boldsymbol x)=\det[p_{j-1}(x_i)]_{1\le i,j\le N}$ and integrate.
+Laplace expansion on the first $N$ rows followed by orthogonality kills
+every choice of $N$ columns except the first $N$. The surviving integral
+is $N!$, and the remaining determinant is
+$\det[p_{N+j}(c_i)]$. Comparing with \eqref{tec:eq:Andreief} gives
+\eqref{tec:eq:Christoffel}, including the sign $(-1)^{Nd}$.
+An alternating polynomial is divisible by the Vandermonde. Taylor
+expansion of rows in a colliding block proves the normalized derivative
+rule and its factorials.
+\end{proof}
+
+This proof is included to make the present article self-contained, not
+as a claim of a new Christoffel identity. The general identity and its
+confluence are explicitly treated in~\cite{Krattenthaler2023}.
+
+\section{The centered hyperbolic alternant}\label{tec:sec:alternant}
+The following finite determinant is the algebraic engine of the article.
+Let $\alpha_j=j-(d-1)/2$, $0\le j<d$. Introduce independent auxiliary
+variables $u_1,\ldots,u_m,w_1,\ldots,w_\ell$ and the $d\times d$ matrix
+\begin{equation}\label{tec:eq:expMat}
+ E(h;\bu,\bw)=
+ \begin{bmatrix}
+ [(-1)^j e^{\alpha_jhu_i}]_{i,j}\\
+ [e^{\alpha_jhw_a}]_{a,j}
+ \end{bmatrix}.
+\end{equation}
+We use $\sinhc z=\sinh(z)/z$, with value $1$ at zero.
+
+\begin{lemma}[Exact centered alternant]\label{tec:lem:alternant}
+One has the identity of entire functions
+\begin{equation}\label{tec:eq:master}
+ \det E=(-1)^{b_m}2^{m\ell}h^\rho
+            \Del(\bu)\Del(\bw)\,\mathcal R(h;\bu,\bw),
+\end{equation}
+where
+\begin{align}\label{tec:eq:Rgenerator}
+ \mathcal R={}&
+ \prod_{i<i'}\sinhc\!\left(\frac h2(u_{i'}-u_i)\right)
+ \prod_{a<a'}\sinhc\!\left(\frac h2(w_{a'}-w_a)\right)
+ \prod_{i,a}\cosh\!\left(\frac h2(w_a-u_i)\right).
+\end{align}
+Consequently $\mathcal R$ is even in $h$, symmetric within each tuple,
+and its constant term is $1$.
+\end{lemma}
+\begin{proof}
+Factor $e^{-h(d-1)u_i/2}$ from each lower row and
+$e^{-h(d-1)w_a/2}$ from each upper row. The remaining determinant is
+the Vandermonde at nodes $-e^{hu_i}$ and $e^{hw_a}$. Within the first
+cluster its factors are
+$-2e^{h(u_i+u_{i'})/2}\sinh(h(u_{i'}-u_i)/2)$; within the second
+cluster they are the analogous positive factors. Between clusters they
+are $2e^{h(u_i+w_a)/2}\cosh(h(w_a-u_i)/2)$.
+Every variable occurs in exactly $d-1$ exponential factors, so the
+centering cancels all exponentials. Extract $h$ times each within-cluster
+difference. There are $\rho$ such differences and $m\ell$ cross pairs.
+This gives \eqref{tec:eq:master}, including its sign and power of $2$.
+\end{proof}
+
+\subsection{The quadratic generator}
+The first nonconstant term is
+\begin{equation}\label{tec:eq:R2}
+ \mathcal R=1+h^2\mathcal R_2+O(h^4),
+\end{equation}
+where, writing $U=\sum_i u_i$ and $W=\sum_aw_a$,
+\begin{align}\label{tec:eq:R2closed}
+ 24\mathcal R_2={}&(m+3\ell)\sum_i u_i^2-U^2
+       +(\ell+3m)\sum_a w_a^2-W^2-6UW.
+\end{align}
+Indeed, a within-cluster pair contributes its squared difference divided
+by $24$, and a cross pair contributes its squared difference divided by
+$8$. Summing the differences gives the displayed formula.
+
+\subsection{The all-orders meaning}
+Expand the right side of \eqref{tec:eq:Rgenerator} to any prescribed order.
+The coefficient of $h^{2j}$ is a finite symmetric polynomial with rational
+coefficients. In the alternant on the left, expanding each row in powers
+of $h$ identifies the coefficients with minors of
+$[(-1)^j\alpha_j^r/r!]$ and $[\alpha_j^s/s!]$.
+Equivalently, expand $\mathcal R$ in the two Schur bases; a Schur
+partition records exactly which derivative orders replace the consecutive
+orders $0,\ldots,m-1$ or $0,\ldots,\ell-1$.
+
+This supplies an all-orders coefficient algorithm. It can also be read
+as an identity of constant-coefficient differential operators: replace
+$u_i,w_a$ by derivatives in separate row variables and apply the result
+to a product of the functions $C$ and $S$. Each finite Taylor coefficient
+uses only finitely many derivatives. Convergence is justified below by
+holomorphy, rather than by a purely formal interchange of infinite
+operators.
+
+\section{Proof of the even, collision-uniform expansion}\label{tec:sec:proofmain}
+\subsection{An exact normalized formula}
+Put
+\begin{align}
+ \phi_h(y)&=\frac{2-2\cos(h\sqrt y)}{h^2},&\phi_0(y)&=y,\\
+ c_h(y)&=\cos(h\sqrt y/2),&s_h(y)&=\sinc(h\sqrt y/2).
+\end{align}
+All three functions are entire in $(h,y)$ and even in $h$. Define
+\begin{equation}\label{tec:eq:M}
+ M(h;\by,\bv)=
+ \begin{bmatrix}
+ [(-1)^j C(1+\alpha_jh,y_i)]_{i,j}\\
+ [S(1+\alpha_jh,v_a)]_{a,j}
+ \end{bmatrix}.
+\end{equation}
+Using \eqref{tec:eq:ptrigplus}--\eqref{tec:eq:ptrigminus} in
+\eqref{tec:eq:Christoffel} yields
+\begin{equation}\label{tec:eq:Zexact}
+ Z(h;\by,\bv)=
+ \frac{2^\ell(-1)^{b_\ell}h^{-\rho}\det M}
+ {\displaystyle
+  \prod_i c_h(y_i)\prod_a s_h(v_a)
+  \Del(\phi_h(\by))\Del(\phi_h(\bv))
+  \prod_{i,a}\bigl[4-h^2(\phi_h(y_i)+\phi_h(v_a))\bigr]}.
+\end{equation}
+At $h=(N+d/2)^{-1}$ the right side equals $Z_N$.
+
+For completeness, the powers and signs are as follows. The $m$ lower
+rows supply $(-1)^{Nm}$, which combines with the Christoffel sign to
+leave $(-1)^{N\ell}$. The upper rows each supply $2/h$. The lower
+within-cluster Vandermonde is $h^{2b_m}\Del(\phi_h(\by))$; the upper
+one is $(-1)^{b_\ell}h^{2b_\ell}\Del(\phi_h(\bv))$.
+Multiplication by $h^\kappa$ leaves $h^{-\rho}$, as in
+\eqref{tec:eq:Zexact}. No additional factorials belong in this formula.
+
+\subsection{Removal of the apparent singularities}
+\begin{lemma}\label{tec:lem:analyticQ}
+The function
+\begin{equation}\label{tec:eq:Q}
+ Q(h;\by,\bv)=\frac{\det M(h;\by,\bv)}
+                        {h^\rho\Del(\by)\Del(\bv)}
+\end{equation}
+is entire and even in $h$, and entire in every coordinate.
+\end{lemma}
+\begin{proof}
+Taylor-expand each row in $h$. In a nonzero determinant term the selected
+derivative orders within one cluster must be distinct, since equal
+orders would give proportional rows in the corresponding coefficient
+matrix. Their smallest possible sum is $b_m$ for the lower cluster and
+$b_\ell$ for the upper cluster. Thus the determinant vanishes to order
+at least $\rho$. Its quotient by $h^\rho$ is entire, jointly with the
+coordinates. Alternation in the coordinates of either cluster then
+removes the two Vandermondes. One may justify joint removal by successive
+analytic divided differences, which also gives the stated confluent rule.
+
+For parity, reverse the $d$ columns. Since
+$\alpha_{d-1-j}=-\alpha_j$, one obtains
+\[
+ \det M(-h)=(-1)^{b_d+m(d-1)}\det M(h)=(-1)^\rho\det M(h).
+\]
+The last equality follows because
+$b_d+m(d-1)-\rho=m(m-1)+2m\ell$ is even. Dividing by $h^\rho$
+proves evenness. Alternatively, every odd coefficient vanishes in
+\eqref{tec:eq:master}.
+\end{proof}
+
+Write
+\begin{equation}\label{tec:eq:Dphi}
+ D_h(\by)=\prod_{i<i'}
+ \frac{\phi_h(y_{i'})-\phi_h(y_i)}{y_{i'}-y_i},
+\end{equation}
+with derivatives at coincidences, and similarly for $\bv$.
+Then \eqref{tec:eq:Zexact} is $2^\ell(-1)^{b_\ell}Q$ divided by
+$\prod c_h\prod s_hD_h(\by)D_h(\bv)$ and the cross factors.
+At $h=0$ these denominator factors are respectively $1,1,1,1$ and
+$4^{m\ell}$. They remain nonzero on a sufficiently small disk,
+uniformly on any compact coordinate set. This proves holomorphy and
+convergence of the even Taylor series.
+
+The least-order term in the row expansion uses precisely the derivative
+orders $0,\ldots,m-1$ and $0,\ldots,\ell-1$. By the constant term of
+\eqref{tec:eq:master}, its coefficient is
+\[
+ (-1)^{b_m}2^{m\ell}
+ \det[\partial_t^r C(1,y_i)]\det[\partial_s^r S(1,v_a)].
+\]
+Substitution in \eqref{tec:eq:Zexact} gives \eqref{tec:eq:A0}. All Taylor
+coefficients are entire in the coordinates, because every denominator
+has a nonzero constant in $h$ and every numerator coefficient is an
+entire alternating quotient. Uniform convergence of differentiated
+series follows from Cauchy's estimates on a slightly larger compact set.
+This proves Theorem~\ref{tec:thm:main}.
+
+\subsection{An explicit remainder bound}
+\begin{theorem}[A conservative effective bound]\label{tec:thm:bound}
+Suppose $|y_i|,|v_a|\le R$, $R\ge0$. Let
+\begin{align}
+ r&=\frac1{4\sqrt{R+1}},&T&=1+\frac{d-1}{2}r,\\
+ B_{m,\ell,R}&=2^{\ell+d+\rho}d!\,r^{-\rho}T^d
+                  \exp\bigl(dT\sqrt{R+1}\bigr).
+                  \label{tec:eq:boundconstant}
+\end{align}
+Then $Z$ is holomorphic on a neighborhood of $|h|\le r$ and has modulus
+at most $B_{m,\ell,R}$ on $|h|=r$. For $|h|<r$,
+\begin{equation}\label{tec:eq:bound}
+ \left|Z(h)-\sum_{j=0}^J A_jh^{2j}\right|
+ \le B_{m,\ell,R}
+       \frac{(|h|/r)^{2J+2}}{1-(|h|/r)^2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Here $|h\sqrt y|\le1/4$. The power-series bounds give
+$|c_h(y)-1|<1/2$, $|s_h(y)-1|<1/2$, and
+\[
+ |\phi_h'(y)-1|=|\sinc(h\sqrt y)-1|
+ \le\frac{\sinh(1/4)}{1/4}-1<\frac1{50}.
+\]
+A divided difference of $\phi_h$ is an integral of its derivative on
+the straight segment between its nodes. It consequently has distance
+less than $1/50$ from $1$. Also $|\phi_h(y)|\le(51/50)R$, so each cross
+factor has modulus greater than $3$. In particular all denominator
+factors in the rewritten version of \eqref{tec:eq:Zexact} are nonzero;
+for an upper bound their inverse product is at most $2^{d+\rho}$.
+
+To bound the determinant divided by the coordinate Vandermondes, replace
+rows by successive divided differences within each cluster. Every such
+row entry is bounded by the supremum of its original entire row function
+on $|y|\le R+1$, by Cauchy's derivative estimate and the integral formula
+for divided differences. On that larger disk, $|1+\alpha_jh|\le T$,
+and both $C$ and $S$ have modulus at most
+$T\exp(T\sqrt{R+1})$. The determinant is therefore bounded by $d!$
+times the $d$th power of this number. On $|h|=r$, division by $h^\rho$
+costs $r^{-\rho}$. The factor $2^\ell$ in \eqref{tec:eq:Zexact} gives
+\eqref{tec:eq:boundconstant}. Finally apply Cauchy's coefficient bound to
+the even Taylor series and sum its geometric tail.
+\end{proof}
+The constants deliberately favor transparency over sharpness. They are
+explicit analytic bounds, whereas the numerical tests later in the
+article are not interval certificates.
+
+\section{Derivation of the first interaction coefficient}\label{tec:sec:first}
+\subsection{The five relevant minors}
+For a cluster of size $n$, denote the determinant with column derivative
+orders $0,\ldots,n-1$ by $J_0$. Let $J_1,J_2,J_{11}$ use, respectively,
+\[
+ (0,\ldots,n-2,n),\quad
+ (0,\ldots,n-2,n+1),\quad
+ (0,\ldots,n-3,n-1,n).
+\]
+Set $J_{11}=0$ if $n<2$. The symbols refer to either the $C$ or $S$
+cluster. They may be divided by the same Vandermonde and multiplied by
+the same sign as the base kernel.
+
+The coefficient of degree two in the centered alternant gives the
+following ratios to the base coefficient. The row coefficients use
+$\alpha_j^r/r!$, so the factorials in this table are already included.
+\begin{center}
+\begin{tabular}{@{}ll@{}}\toprule
+Derivative selection & Coefficient ratio\\\midrule
+Lower $J_2$, upper $J_0$ & $(m+3\ell-1)/24$\\
+Lower $J_{11}$, upper $J_0$ & $-(m+3\ell+1)/24$\\
+Lower $J_0$, upper $J_2$ & $(\ell+3m-1)/24$\\
+Lower $J_0$, upper $J_{11}$ & $-(\ell+3m+1)/24$\\
+Lower $J_1$, upper $J_1$ & $-1/4$\\\bottomrule
+\end{tabular}
+\end{center}
+A selection involving a nonexistent cluster is simply absent. To verify
+the table directly, use $s_{(2)}-s_{(1,1)}=\sum u_i^2$ and
+$s_{(2)}+s_{(1,1)}=(\sum u_i)^2$ in \eqref{tec:eq:R2closed}.
+The term $UW=s_{(1)}(\bu)s_{(1)}(\bw)$ gives the mixed coefficient.
+There are no degree-one selections.
+
+\subsection{Reduction to ordinary kernel derivatives}
+Every row function satisfies $\partial_t^2f(t,y)=-yf(t,y)$. Differentiating
+$J_0$ column by column leaves only the last column, hence
+\begin{equation}\label{tec:eq:Jrelations}
+ J_0'=J_1,\qquad J_0''=J_2+J_{11},\qquad
+ J_2-J_{11}=-\Bigl(\sum y_i\Bigr)J_0.
+\end{equation}
+For the last identity, sum the determinants obtained by applying two
+derivatives to one column. The differential equation says that this sum
+is the coefficient of a diagonal row multiplication by $-y_i$, hence
+$-(\sum y_i)J_0$. All terms except the last two columns vanish; the
+next-to-last term is $-J_{11}$ because its two last columns are reversed.
+These identities are polynomial determinant identities and hold even
+where $J_0=0$.
+
+It follows from the table that the normalized numerator correction is
+\begin{align}\label{tec:eq:numeratorcorr}
+ -\frac{(K_m^-)''K_\ell^++K_m^-(K_\ell^+)''}{24}
+ -\frac{(m+3\ell)Y+(\ell+3m)V}{24}K_m^-K_\ell^+
+ -\frac{(K_m^-)'(K_\ell^+)'}4.
+\end{align}
+
+\subsection{The geometric denominator correction}
+The remaining factors must not be omitted. Their expansions are
+\begin{align*}
+ \prod_i c_h(y_i)^{-1}&=1+\frac{h^2Y}{8}+O(h^4),\\
+ \prod_a s_h(v_a)^{-1}&=1+\frac{h^2V}{24}+O(h^4),\\
+ D_h(\by)^{-1}&=1+\frac{h^2(m-1)Y}{12}+O(h^4),\\
+ D_h(\bv)^{-1}&=1+\frac{h^2(\ell-1)V}{12}+O(h^4),\\
+ \prod_{i,a}[4-h^2(\phi_h(y_i)+\phi_h(v_a))]^{-1}
+ &=4^{-m\ell}\left(1+\frac{h^2(\ell Y+mV)}4+O(h^4)\right).
+\end{align*}
+For example $\phi_h(y)=y-h^2y^2/12+O(h^4)$ proves the two divided
+Vandermonde expansions even at collisions. Adding these contributions
+to \eqref{tec:eq:numeratorcorr} gives exactly \eqref{tec:eq:A1}.
+This proves Theorem~\ref{tec:thm:first}.
+
+Finally, rescaling the kernel determinants gives
+\begin{align}\label{tec:eq:homogeneity}
+ K_m^-(t;\by)&=t^{b_m}K_m^-(1;t^2\by),\\
+ K_\ell^+(s;\bv)&=s^{\binom{\ell+1}{2}}K_\ell^+(1;s^2\bv).
+\end{align}
+The identities first follow for nonzero $t,s$ by extracting powers from
+rows, columns and Vandermondes, then extend to zero by holomorphy.
+Differentiation at $1$ proves the Euler-operator form.
+
+\section{Positive Schur expansions of the outward profiles}\label{tec:sec:schur}
+\subsection{A coefficientwise-positive formula}
+For a strictly increasing tuple $0\le k_0<\cdots<k_{n-1}$, define the
+partition
+\begin{equation}\label{tec:eq:partition}
+ \lambda_i=k_{n-i}-(n-i),\qquad 1\le i\le n.
+\end{equation}
+Let $s_\lambda$ denote the Schur polynomial, equivalently the quotient
+$\det[a_i^{k_j}]/\Del(\ba)$ in this ordering.
+\begin{theorem}[Positive outward expansion]\label{tec:thm:Schur}
+For $\varepsilon=0,1$, write $K_n^\varepsilon$ for $K_n^-$ and $K_n^+$,
+respectively. Then
+\begin{equation}\label{tec:eq:Schur}
+ K_n^\varepsilon(1;-\ba)=2^{b_n}
+ \sum_{0\le k_0<\cdots<k_{n-1}}
+ \frac{\Del(k_0,\ldots,k_{n-1})}
+      {\prod_{j=0}^{n-1}(2k_j+\varepsilon)!}
+ s_\lambda(\ba).
+\end{equation}
+The series converges locally uniformly on $\CC^n$ and all its coefficients
+in the variables $a_i$ are nonnegative real numbers. Its constant term is
+\begin{equation}\label{tec:eq:Kzero}
+ K_n^\varepsilon(1;\boldsymbol0)
+ =2^{b_n}\prod_{j=0}^{n-1}\frac{j!}{(2j+\varepsilon)!}.
+\end{equation}
+For $n\ge1$, the coefficient of $a_1+\cdots+a_n$ is strictly positive.
+\end{theorem}
+\begin{proof}
+At negative coordinates, the series for the row functions has positive
+coefficients in $a$. Apply Cauchy--Binet to its power-series factorization.
+For chosen powers $k_0<\cdots<k_{n-1}$, the second determinant has entries
+\[
+ \frac{\fall{2k_i+\varepsilon}{r}}{(2k_i+\varepsilon)!},
+ \qquad 0\le i,r<n.
+\]
+The numerator is the Vandermonde in $2k_i+\varepsilon$, because the
+falling factorials are monic polynomials of their degrees. It equals
+$2^{b_n}\Del(\boldsymbol k)$. The sign in the definition of the kernel
+cancels the sign of $\Del(-\ba)$, leaving \eqref{tec:eq:Schur}.
+
+This computation may first be carried out for truncated series. Their
+entire row functions converge with all derivatives on compact sets, so
+the determinant divided differences converge there as well. Alternatively,
+on a positive diagonal $a_i=A$ the series is monotone and bounded by the
+confluent determinant limit; its positive coefficients then majorize the
+series on $|a_i|\le A$. This gives local uniform convergence.
+Schur polynomials have nonnegative coefficients: the branching identity
+\[
+ s_\lambda(a_1,\ldots,a_n)
+ =\sum_{\mu\,\text{interlaces}\,\lambda}
+     a_n^{|\lambda|-|\mu|}s_\mu(a_1,\ldots,a_{n-1})
+\]
+proves this by induction, starting with a monomial in one variable.
+The identity follows from the bialternant formula after clearing its
+Vandermonde. The smallest tuple is $k_j=j$, which gives the constant
+term since $\Del(0,1,\ldots,n-1)=\prod_jj!$.
+The tuple $(0,1,\ldots,n-2,n)$ gives $\lambda=(1)$ and a strictly
+positive coefficient. For $n=1$ the same assertion uses $k_0=1$.
+\end{proof}
+
+\subsection{Consequences and a useful relative error bound}
+For nonnegative $\ba$,
+\begin{equation}\label{tec:eq:positive}
+ K_n^\varepsilon(1;-\ba)\ge K_n^\varepsilon(1;\boldsymbol0)>0.
+\end{equation}
+The inequality is strict if at least one coordinate is positive, and
+every coordinate derivative of the profile is nonnegative. In particular,
+$A_0(-\ba,-\bb)\ge\mathcal A_{m,\ell}$. Thus the absolute error in
+Theorem~\ref{tec:thm:bound}, divided by $\mathcal A_{m,\ell}$, is a valid
+relative-to-leading-term bound on an outward compact set.
+
+Formula \eqref{tec:eq:Kzero} and the homogeneity laws immediately give
+\eqref{tec:eq:Aendpoint} and \eqref{tec:eq:Aendpoint1}. This proves
+Corollary~\ref{tec:cor:endpoint}. The two different triangular exponents
+are now visible directly: the cosine determinant contributes $b_m$,
+whereas the sine-divided-by-root determinant contributes $b_\ell+\ell$.
+
+\section{Proof of the sharp outward critical-scale theorem}\label{tec:sec:scaleproof}
+\subsection{Monotonicity at every finite size}
+Multiply \eqref{tec:eq:Andreief} by $(-1)^{N\ell}$ for the outward
+multiplier. Its integrand contains
+\[
+ \prod_{a=1}^N\left\{
+ \prod_i(x_a+\epsilon_{i,N})
+ \prod_j(4+\eta_{j,N}-x_a)\right\}.
+\]
+Every factor is positive for $0<x_a<4$. The integral is positive, and
+increasing any displacement increases the integrand pointwise.
+Consequently $R_N\ge1$ and it is nondecreasing in every displacement.
+No assumption of distinct roots is required.
+
+\subsection{Finite scaled coordinates}
+For an outward displacement $\epsilon\ge0$, define its angular coordinate
+by
+\begin{equation}\label{tec:eq:inversecoord}
+ a(h,\epsilon)=h^{-2}\operatorname{arcosh}(1+\epsilon/2)^2.
+\end{equation}
+Then $2-2\cos(h\sqrt{-a})=-\epsilon$. Since
+$\operatorname{arcosh}(1+\epsilon/2)^2=\epsilon+O(\epsilon^2)$ as
+$\epsilon\to0$, bounded $N^2\epsilon$ implies
+$a(h,\epsilon)-N^2\epsilon\to0$. The same coordinate works for
+$4+\eta$. Apply Theorem~\ref{tec:thm:main} to these bounded moving
+coordinates and divide by its value at zero. This proves
+\eqref{tec:eq:finiteprofile}, including $R_N\to1$ when $M_N\to0$.
+
+\subsection{Necessity and escape from the critical window}
+Suppose $M_N$ does not tend to zero. Along a subsequence, one fixed
+coordinate has $N^2$ times its displacement at least some $a>0$;
+there is a fixed coordinate after passing to a further subsequence
+because $d$ is fixed. By finite-size monotonicity, $R_N$ is bounded
+below by the ratio with that displacement replaced by $a/N^2$ and
+all other displacements set to zero. Its limit is strictly greater
+than $1$ by Theorem~\ref{tec:thm:Schur}. Hence $R_N$ cannot tend to $1$.
+
+Now suppose $M_N\to\infty$. Fix $A>0$. For all sufficiently large $N$,
+some displacement is at least $A/N^2$. The same comparison bounds
+$R_N$ below by the minimum of the finitely many one-coordinate comparison
+ratios. For each location, its limiting Schur series has a positive
+linear coefficient in $A$, so the minimum of those finitely many limits
+tends to infinity as $A\to\infty$. Given any desired lower bound,
+choose $A$ first and then $N$ sufficiently large. This proves
+$R_N\to\infty$ and completes Theorem~\ref{tec:thm:scale}.
+
+The divergence conclusion is not a large-coordinate use of the compact
+asymptotic theorem. It follows by comparison with arbitrarily large
+\emph{fixed} critical coordinates, which is why no unjustified uniformity
+at infinity is needed.
+
+\section{The original scaling and other coordinate choices}\label{tec:sec:original}
+\subsection{An explicit answer to the repository's question}
+Let $\boldsymbol\tau_t=(-\tau^2,\ldots,-\tau^2)\in\CC^t$. Define
+\begin{equation}\label{tec:eq:Ft}
+ F_t^-(\tau)=K_t^-(1;\boldsymbol\tau_t),\qquad
+ F_t^+(\tau)=2^t K_t^+(1;\boldsymbol\tau_t).
+\end{equation}
+Both functions are entire in $\tau$ and even. At repeated coordinates
+they are the explicit $t\times t$ determinants
+\begin{equation}\label{tec:eq:repeatedkernel}
+ K_t^\varepsilon(1;(z,\ldots,z))
+ =(-1)^{b_t}\det\left[
+ \frac1{i!}\partial_z^i\partial_s^j f_\varepsilon(s,z)
+ \bigg|_{s=1}\right]_{0\le i,j<t},
+\end{equation}
+where $f_0=C$ and $f_1=S$.
+
+\begin{corollary}[Original uncentered formulation]\label{tec:cor:original}
+Locally uniformly for $\tau\in\CC$,
+\begin{align}
+ \frac{H_N((x-(2-2\cosh(\tau/N)))^t)}{N^{t(t-1)/2}}
+   &=F_t^-(\tau)+O(N^{-1}),\label{tec:eq:origleft}\\
+ \frac{H_N((x-(2+2\cosh(\tau/N)))^t)}{(-1)^{tN}N^{t(t+1)/2}}
+   &=F_t^+(\tau)+O(N^{-1}).\label{tec:eq:origright}
+\end{align}
+The endpoint values are
+\begin{equation}\label{tec:eq:origzero}
+ F_t^-(0)=2^{b_t}\prod_{j=0}^{t-1}\frac{j!}{(2j)!},\qquad
+ F_t^+(0)=2^{t+b_t}\prod_{j=0}^{t-1}\frac{j!}{(2j+1)!}.
+\end{equation}
+If $\kappa_t$ is the corresponding triangular exponent, the first
+uncentered correction is explicitly
+\begin{equation}\label{tec:eq:uncentered1}
+ F_t^\pm(\tau)+\frac{t}{2N}
+       \left(\kappa_t+\tau\frac d{d\tau}\right)F_t^\pm(\tau)
+       +O(N^{-2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Put $\nu=N+t/2$. In the centered theorem the coordinates are
+$-(\nu/N)^2\tau^2$, and the normalization changes by
+$(\nu/N)^{\kappa_t}$. Expand this analytic rescaling. The centered
+finite-size correction itself starts at $\nu^{-2}$, so the entire
+$N^{-1}$ term is exactly the coordinate and normalization change.
+All expansions are uniform on compact sets. Formula \eqref{tec:eq:origzero}
+follows from \eqref{tec:eq:Kzero}.
+\end{proof}
+
+Thus the $O(N^{-1})$ term in the originally posed coordinates is real,
+but it is a centering effect. Replacing $N$ by $N+t/2$ in both the angular
+scale and the normalization removes it and every later odd inverse power.
+
+\subsection{Exact spatial displacements also have an even expansion}
+Suppose the desired roots are $h^2y_i$ and $4-h^2v_a$, rather than
+\eqref{tec:eq:roots}. Inverting $\phi_h$ near zero gives
+\[
+ \widehat y=y+\frac{h^2y^2}{12}+O(h^4),\qquad
+ \phi_h(\widehat y)=y.
+\]
+The inverse is analytic in $h^2$ and locally uniform in $y$. Therefore
+the exact spatial-coordinate model also has an even convergent expansion.
+Its first correction is
+\begin{equation}\label{tec:eq:spatialcorrection}
+ A_1^{\mathrm{spatial}}=A_1+
+ \frac1{12}\left(\sum_i y_i^2\partial_{y_i}
+                 +\sum_a v_a^2\partial_{v_a}\right)A_0.
+\end{equation}
+This demonstrates that evenness is not confined to a trigonometric
+notation for the roots. The center of the determinant size, however,
+is essential to the stated form.
+
+\section{Worked examples and checks on the constants}\label{tec:sec:examples}
+\subsection{One root at the left endpoint}
+For $m=1$, $\ell=0$, $\nu=N+1/2$ and $\kappa=0$, the exact formula is
+\[
+ Z_N(y)=\frac{\cos\sqrt y}{\cos(h\sqrt y/2)}.
+\]
+Hence $A_0=\cos\sqrt y$ and $A_1=(y/8)\cos\sqrt y$.
+At $y=-\tau^2$ this is $\cosh\tau$ divided by
+$\cosh(h\tau/2)$, and the limiting profile is $F_1^-(\tau)=\cosh\tau$.
+This also makes the sharp $N^{-2}$ threshold visible without determinants.
+
+\subsection{One root at the right endpoint}
+For $m=0$, $\ell=1$,
+\[
+ Z_N(v)=\frac{2\sin\sqrt v/\sqrt v}{\sinc(h\sqrt v/2)}.
+\]
+Thus $A_0=2\sin\sqrt v/\sqrt v$ and $A_1=vA_0/24$.
+The outward profile is $F_1^+(\tau)=2\sinh\tau/\tau$, with value $2$
+at zero. These two one-root examples verify both boundary normalizations.
+
+\subsection{One root at each endpoint}
+For $m=\ell=1$, write $C=C(1,y)$ and $S=S(1,v)$. Then
+\begin{equation}\label{tec:eq:11}
+ A_0=CS,\qquad
+ A_1=\left(\frac y4+\frac v6\right)CS
+                  -\frac14 C_t(1,y)S_t(1,v).
+\end{equation}
+The mixed term generally does not vanish. At $y=v=0$ the exact
+unsigned endpoint determinant is $N+1$, and the centered normalization
+with $\nu=N+1$ is identically $1$; accordingly $A_1(0,0)=0$.
+
+\subsection{Two coincident roots at an endpoint}
+The two repeated-root profiles from \eqref{tec:eq:repeatedkernel} simplify to
+\begin{align}
+ F_2^-(\tau)&=\frac12+\frac{\sinh(2\tau)}{4\tau},\label{tec:eq:F2minus}\\
+ F_2^+(\tau)&=\frac{\sinh(2\tau)-2\tau}{\tau^3}.\label{tec:eq:F2plus}
+\end{align}
+The singularities at zero are removable; the values there are $1$ and
+$4/3$, respectively. To derive them, evaluate the $2\times2$ determinant
+in \eqref{tec:eq:repeatedkernel}, or differentiate the two elementary
+hyperbolic row functions before taking the coincident limit.
+
+For example, with two roots at each endpoint, all exactly at the
+endpoints, one has
+\begin{equation}\label{tec:eq:22exact}
+ H_N(x^2(x-4)^2)=\frac{(N+1)(N+2)^2(N+3)}{12}.
+\end{equation}
+This follows by inserting the endpoint jets in the four-row
+Christoffel determinant and factoring the resulting polynomial.
+Writing $\nu=N+2$ gives
+$Z_N=(1-h^2)/12$, agreeing with both
+\eqref{tec:eq:Aendpoint} and \eqref{tec:eq:Aendpoint1}.
+
+\subsection{A genuinely confluent two-cluster numerical example}
+Take $m=\ell=2$, $\by=(-1,-1)$ and $\bv=(-2,-2)$.
+The first two coefficients, computed from the confluent kernels, are
+\[
+ A_0=0.1741166983662596749147659\ldots,\qquad
+ A_1=-0.7183984032902893460064576\ldots.
+\]
+The following are high-precision evaluations, not interval enclosures.
+Here $h=1/(N+2)$.
+\begin{center}\small
+\begin{tabular}{@{}rrrr@{}}\toprule
+$N$ & $|Z_N-A_0|$ & $|Z_N-A_0-h^2A_1|$ &
+ $(Z_N-A_0-h^2A_1)/h^4$\\\midrule
+16 & $2.2027646\cdot10^{-3}$ & $1.4514422\cdot10^{-5}$ & 1.52366601\\
+32 & $6.2030784\cdot10^{-4}$ & $1.1440675\cdot10^{-6}$ & 1.52885861\\
+64 & $1.6484093\cdot10^{-4}$ & $8.0651949\cdot10^{-8}$ & 1.53034944\\
+128 & $4.2503422\cdot10^{-5}$ & $5.3595798\cdot10^{-9}$ & 1.53074959\\
+\bottomrule\end{tabular}
+\end{center}
+The corrected residual displays the predicted fourth-order behavior.
+The proof of the error order is Theorem~\ref{tec:thm:main}, not the table.
+
+\section{Computation, reproducibility, and the verification boundary}\label{tec:sec:verification}
+\subsection{Two independent determinant paths}
+The accompanying \texttt{code/verify.py} (shipped as
+\nolinkurl{code/04-endpoint-confluence-verify.py}) uses exact rational arithmetic for
+its algebraic tests. One path forms the original Catalan moment matrix
+from \eqref{tec:eq:HN}. A second path uses the fixed-size confluent
+Christoffel determinant. The latter obtains Taylor jets from
+\eqref{tec:eq:pn}: if $p_n(c+u)=\sum_r a_{n,r}u^r$, then
+\[
+ a_{n+1,r}=(c-2)a_{n,r}+a_{n,r-1}-a_{n-1,r},
+ \qquad a_{n,-1}=0.
+\]
+No trigonometric root extraction is needed for these exact tests.
+The endpoint jet identities checked separately are
+\begin{equation}\label{tec:eq:endpointjets}
+ \frac{p_n^{(r)}(0)}{r!}=(-1)^{n+r}\binom{n+r}{2r},\qquad
+ \frac{p_n^{(r)}(4)}{r!}
+   =\frac{2n+1}{2r+1}\binom{n+r}{2r},
+\end{equation}
+with zero values when $r>n$. Both follow from the recurrence, or the
+trigonometric formulas expanded at the endpoints.
+
+The code also evaluates the normalized kernel jets by the convergent
+entire series
+\begin{equation}\label{tec:eq:jetseries}
+ \frac1{q!}\partial_y^q\partial_t^r f_\varepsilon(t,y)
+ =\sum_{\substack{k\ge q\\2k+\varepsilon\ge r}}
+ \frac{(-1)^k\binom{k}{q}y^{k-q}t^{2k+\varepsilon-r}}
+ {(2k+\varepsilon-r)!}.
+\end{equation}
+This handles zero coordinates and repeated roots without dividing by
+small root differences. High-precision tests use 100 decimal digits.
+They include inward roots, complex roots, exact endpoints, and mixed
+repeated-root blocks of total degree up to eight in the endpoint
+coefficient checks.
+
+\subsection{Executed checks}
+The run recorded in \texttt{data/verification.json} and
+\texttt{data/verification.txt} completed the following checks.
+
+\noindent[Merge note: those two records are shipped as
+\nolinkurl{data/04-endpoint-confluence-verification.json} and
+\nolinkurl{data/04-endpoint-confluence-verification.txt}.  In this
+report the unprefixed \nolinkurl{data/verification.json} and
+\nolinkurl{data/verification.txt} are Part~I's recorded outputs; see
+Section~\ref{tec:app:archive} before rerunning anything.]
+\begin{center}\small
+\begin{tabular}{@{}p{.77\textwidth}r@{}}\toprule
+Check & Count\\\midrule
+Exact original determinants versus confluent Christoffel determinants &104\\
+Exact endpoint Taylor-jet identities &378\\
+Exact leading constants of centered coefficient minors &35\\
+Exact vanishing of degree-one centered minors &60\\
+Exact second-order one-cluster minor ratios &108\\
+Exact mixed minor ratios $-1/4$ &25\\
+High-precision first-correction residual checks &40\\
+High-precision analytic evenness checks &6\\
+Analytic continuation formula versus Christoffel evaluation &6\\
+High-precision endpoint leading and correction constants &48\\\midrule
+\textbf{Total; all passed} &\textbf{810}\\\bottomrule
+\end{tabular}
+\end{center}
+The first six rows comprise 710 exact-arithmetic checks. The last four
+rows comprise 100 high-precision diagnostic checks. A check count measures
+executed identities, not distinct universal results. In particular,
+finite tests of the table of minors do not replace the all-parameter
+proof from \eqref{tec:eq:master}.
+
+\subsection{Computing higher coefficients}
+For a specified order $J$, expand the finite product
+\eqref{tec:eq:Rgenerator} through degree $2J$. Convert its separately
+symmetric coefficients to Schur polynomials, or directly to the
+coefficient minors of the centered exponential matrix. Replace the
+corresponding alternants by kernel determinants with the indicated
+increased derivative orders. Finally multiply by the truncated reciprocal
+series of $c_h,s_h,D_h$ and the cross factors in
+\eqref{tec:eq:Zexact}. Only finite operations are needed for each $J$.
+
+This is a constructive mathematical algorithm, but the shipped script
+is a verification implementation for the leading and first correction,
+not a fully optimized arbitrary-order engine. The bound in
+Theorem~\ref{tec:thm:bound} can be applied once the desired exact coefficients
+or certified enclosures for them have been computed. The present
+high-precision implementation does not perform outward-rounded interval
+arithmetic.
+
+\subsection{A formalization route}
+No Lean or Rocq file is claimed for this article. A feasible formalization
+would begin with the polynomial Vandermonde identity underlying
+\eqref{tec:eq:master}, the first coefficient table over $\mathbb Q$, and
+\eqref{tec:eq:Jrelations}. Formal power series can express the exact
+parity and coefficient algorithm independently of analysis. A second
+layer would prove the Catalan moment functional and the Christoffel
+identity. Only the final layer needs holomorphic divided differences,
+uniform convergence, and the Cauchy remainder estimate. Keeping those
+layers separate would make the new algebra reusable for other moment
+families.
+
+\section{Further research questions and proposed next steps}\label{tec:sec:future}
+The following are research directions, not assertions that every item
+is globally open in the published literature.
+
+\subsection{Nonendpoint collisions on the reciprocal-size scale}\label{tec:x:q1}
+The unsolved second portion of the repository's question lets two
+nonendpoint roots approach at order $N^{-1}$. Construct a uniform
+counterpart of the present theorem with oscillatory sector amplitudes
+retained. A useful first target is two equal-multiplicity roots with
+spectral coordinates $z e^{\pm\tau/N}$ and $z\ne\pm1$, allowing $z$
+on the unit circle. Here different exponential sectors can compete;
+the endpoint factorization alone does not settle their cancellation.
+
+\subsection{Endpoint clusters in the presence of fixed interior roots}
+Add a fixed polynomial multiplier whose roots avoid $0$ and $4$.
+Determine the correct effective size and the influence of its boundary
+amplitudes on evenness. A finite perturbation of the Jacobi recurrence
+may alter the amplitude without changing the local oscillatory scale.
+An exact criterion for disappearance of odd powers would separate
+structural symmetry from a choice of normalization.
+
+\subsection{Higher interaction operators}
+The quadratic generator produces the universal mixed term $-1/4$.
+Compute the quartic and sextic operators in a minimal basis of Euler
+operators and symmetric coordinate polynomials. Determine whether the
+logarithm of the coefficient generator yields a particularly simple
+connected-interaction expansion. Its elementary factors already show
+that only even orders can occur, but do not automatically give the most
+compact differential representation.
+
+\subsection{Multiplicities growing with determinant size}
+The theorem keeps $m,\ell$ fixed. Find a regime $m=m_N$, $\ell=\ell_N$
+in which the factorized leading profile or the first correction remains
+uniform. The explicit bound here is deliberately too coarse to locate a
+sharp growth threshold. Such a threshold should account simultaneously
+for the number of pair interactions, growth of the confluent kernels,
+and the shrinking domain on which an effective relative error is small.
+
+\subsection{Other Jacobi endpoint exponents}
+Replace the Catalan weight by $x^\alpha(4-x)^\beta$ with
+$\alpha,\beta>-1$. Determine which effective size optimizes convergence,
+and whether an exact even analytic interpolation survives beyond the
+half-integer trigonometric cases. The appropriate limiting kernels are
+Bessel-type, so the classical hard-edge theory supplies context; the
+specific objective is an explicit collision-uniform coefficient and
+remainder calculus analogous to the one proved here.
+
+\subsection{Zeros of inward confluent profiles}
+For positive scaled coordinates, the kernel determinants can vanish.
+Classify real zeros of the one-parameter repeated-root profiles and
+establish simplicity or interlacing where true. Holomorphic convergence
+and a nonzero derivative at a limiting zero would then give quantitative
+locations of zeros of the finite Catalan determinant. The absolute
+first-correction formula remains meaningful there even when a relative
+formula would be singular.
+
+\subsection{Degeneration of finite recurrences}
+For each fixed multiplier the repository gives a finite exponential-sector
+recurrence description. Explain how those recurrences degenerate under
+the present moving-root limit and recover differential equations for the
+profile determinants. A rigorous bridge between coalescing characteristic
+roots and the centered even series would connect the repository's
+algebraic and asymptotic descriptions rather than treating them separately.
+
+\subsection{Sharper analytic bounds and stable numerical evaluation}
+Locate the nearest genuine singularities of the analytic interpolation
+in $h$, distinguishing removable singularities from denominator zeros.
+Use that geometry to improve \eqref{tec:eq:bound} and select a practical
+truncation order. Develop interval implementations using divided
+differences or jets so that collisions are handled without loss of
+significance. This would convert the available analytic error estimates
+into end-to-end numerical certificates.
+
+\subsection{Rational modifications and Cauchy-transform blocks}
+Allow poles of a rational multiplier away from the integration interval,
+with selected poles approaching the endpoints on the same scale.
+Characteristic-polynomial ratio identities suggest determinant blocks
+involving Cauchy transforms~\cite{StrahovFyodorov2003,AkemannFyodorov2003}. Determine which sign, centering,
+and evenness statements survive, and what replaces the monotonicity
+argument for the sharp outward stability criterion.
+
+\subsection{A machine-checked coefficient and confluence library}
+Formalize the centered alternant and the second-order interaction formula
+first, then implement a verified finite coefficient generator. A reusable
+library should state its divided-difference confluence conventions
+explicitly and track every factorial. The final target is a checked
+interface connecting exact rational algebra, analytic remainder bounds,
+and certified evaluations of the confluent kernels.
+
+\section{Conclusion}\label{tec:sec:conclusion}
+The repository's endpoint moving-root question has an explicit,
+collision-uniform answer for every fixed multiplicity, with a simultaneous
+two-endpoint extension. The principal structural fact is exact evenness
+in $(N+d/2)^{-1}$ after the natural sign and power are removed.
+The two endpoints decouple in the leading term but interact at the next
+order through a computable differential operator. Positive Schur
+coefficients turn the asymptotic profile into a sharp necessary-and-sufficient
+criterion for stability under outward perturbations.
+
+The scope remains precise: the work proves the endpoint results stated
+here, not a general solution of all root collisions, all recurrence
+resonances, or hard-edge universality for arbitrary weights. The result
+is a conventional mathematical manuscript with explicit tests; neither
+formal verification nor worldwide priority is asserted.
+
+\section{A sign and normalization audit}\label{tec:app:audit}
+
+This section is Appendix~A of the manuscript.
+
+The following elementary checks are useful when porting the formulas.
+For one multiplier factor, \eqref{tec:eq:Christoffel} says
+$H_N(x-c)=(-1)^Np_N(c)$. Thus
+\[
+ H_N(x)=1,\qquad H_N(x-4)=(-1)^N(2N+1).
+\]
+For two endpoint factors the same formula and
+$p_n(0)=(-1)^n$, $p_n(4)=2n+1$ give
+$H_N(x(x-4))=(-1)^N(N+1)$.
+For two repeated lower factors the derivative determinant gives
+$H_N(x^2)=N+1$; for two upper factors it gives
+\[
+ H_N((x-4)^2)=\frac{(N+1)(2N+1)(2N+3)}3.
+\]
+These identities include $N=0$. They fix the asymmetric triangular
+powers and the factor $2^\ell$ at the right endpoint. They also verify
+that derivatives in a repeated-root block must be divided by their
+factorials, whereas the derivative columns in \eqref{tec:eq:Km} and
+\eqref{tec:eq:Kp} are \emph{not} factorial-normalized.
+
+At a tuple of all zero coordinates, the kernel coefficient matrix has
+entries $(-1)^i\fall{2i+\varepsilon}{j}/(2i+\varepsilon)!$.
+Its determinant has sign $(-1)^{b_n}$ and nonzero magnitude
+$2^{b_n}\prod i!/(2i+\varepsilon)!$, exactly as used in
+\eqref{tec:eq:Kzero}. This is a direct independent derivation of the
+endpoint constant without evaluating a Selberg integral.
+
+\section{Archive contents and reproduction}\label{tec:app:archive}
+
+This section is Appendix~B of the manuscript.
+
+The archive contains the TeX source and compiled PDF, \texttt{code/verify.py},
+its recorded data, a reproduction README, source notes, and a dependency
+file. After installing \texttt{requirements.txt}, run
+\texttt{python code/verify.py}; the script writes to \texttt{data/}
+regardless of the working directory. Exact tests use the standard library;
+\texttt{mpmath} is used only for numerical diagnostics. Rebuild with
+\texttt{latexmk -pdf article.tex}, or repeated \texttt{pdflatex} runs.
+No external images or custom font files are required.
+
+\noindent[Merge note: of these, the TeX source, the 20-page PDF and the
+reproduction README are not shipped here; they survive in the arrival
+commit \texttt{148a906aa}.  The program, its two recorded outputs, the
+source notes, the proof audit and the dependency file are shipped
+byte-identical with the prefix \texttt{04-endpoint-confluence-}:
+{\raggedright
+\begin{itemize}[leftmargin=2em,itemsep=0pt,topsep=2pt]
+\item \nolinkurl{code/04-endpoint-confluence-verify.py} (delivered as
+ \nolinkurl{code/verify.py});
+\item \nolinkurl{data/04-endpoint-confluence-verification.json}
+ (delivered as \nolinkurl{data/verification.json});
+\item \nolinkurl{data/04-endpoint-confluence-verification.txt}
+ (delivered as \nolinkurl{data/verification.txt});
+\item \nolinkurl{data/04-endpoint-confluence-requirements.txt} (delivered as
+ \nolinkurl{requirements.txt}; it pins \texttt{mpmath==1.3.0});
+\item \nolinkurl{04-endpoint-confluence-SOURCES.md} and
+ \nolinkurl{04-endpoint-confluence-PROOF_AUDIT.md} at the report root
+ (delivered as \nolinkurl{SOURCES.md} and \nolinkurl{PROOF_AUDIT.md}).
+\end{itemize}}
+\noindent The command above must \emph{not} be run in this directory.  Here
+\nolinkurl{code/verify.py} is Part~I's verifier, and the shipped Part~IV
+program, which takes no arguments, always writes
+\nolinkurl{verification.json} and \nolinkurl{verification.txt} into the
+\nolinkurl{data/} directory beside its own \nolinkurl{code/} directory:
+run in place as \nolinkurl{code/04-endpoint-confluence-verify.py}, it
+would overwrite Part~I's recorded \nolinkurl{data/verification.json} and
+\nolinkurl{data/verification.txt}.  On Windows it also writes CRLF line
+endings, whereas the recorded files are LF.  Restore the delivered layout
+in a scratch copy instead (a POSIX shell, from the report directory):]
+\begin{lstlisting}
+W=/path/to/scratch/endpoint-confluence
+mkdir -p "$W/code" "$W/recorded"
+cp code/04-endpoint-confluence-verify.py "$W/code/verify.py"
+for f in data/04-endpoint-confluence-verification.*; do
+  cp "$f" "$W/recorded/${f#data/04-endpoint-confluence-}"; done
+cd "$W" && python3 code/verify.py   # writes $W/data; compare with $W/recorded
+\end{lstlisting}
+\noindent[Run this way on 29 September 2026 with Python~3.13.5 and
+\texttt{mpmath}~1.3.0, it printed \texttt{TOTAL: 810} in about two seconds, and
+both outputs equalled the recorded ones apart from Windows line endings.
+The checks are Python assertions, so do not pass \texttt{-O}.]
+
 \clearpage
 \appendix
 \section{The precise correction to the printed conjecture}\label{app:barry}
@@ -5236,7 +6905,7 @@ no third-party article PDFs, no font files, no compiler auxiliaries,
 and no Python bytecode.
 
 \clearpage
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \addcontentsline{toc}{section}{References}
 
 \bibitem{Barry2020}
@@ -5306,10 +6975,34 @@ central product after \eqref{cyc:eq:Ciglertranslation}; its proof also
 uses condensation.  Part~III's manuscript does not state which arXiv
 version it read.
 
+\bibitem{StrahovFyodorov2003}
+E.~Strahov and Y.~V.~Fyodorov,
+Universal results for correlations of characteristic polynomials:
+Riemann--Hilbert approach,
+\emph{Communications in Mathematical Physics} \textbf{241} (2003), 343--382.
+\url{https://arxiv.org/abs/math-ph/0210010}.
+Cited in Part~IV for context, not as an input to its proofs.
+
+\bibitem{AkemannFyodorov2003}
+G.~Akemann and Y.~V.~Fyodorov,
+Universal random matrix correlations of ratios of characteristic
+polynomials at the spectral edges,
+\emph{Nuclear Physics B} \textbf{664} (2003), 457--476.
+\url{https://arxiv.org/abs/hep-th/0304095}.
+Cited in Part~IV for hard-edge context, not as an input to its proofs.
+
+\bibitem{DLMFMehlerHeine}
+NIST Digital Library of Mathematical Functions,
+Section~18.11(ii), Formulas of Mehler--Heine type.
+\url{https://dlmf.nist.gov/18.11}.
+Cited in Part~IV; consulted by its manuscript on 29 September 2026.
+
 \end{thebibliography}
 \noindent\small\textit{Online sources checked on 19 September 2026
 (Part~I) and 28 September 2026 (Part~II); Part~III's manuscript is dated
-29 September 2026, and its source notes do not date its checks.
+29 September 2026, and its source notes do not date its checks; Part~IV's
+manuscript and its source notes are dated 29 September 2026, the day it
+consulted DLMF.
 All theorem numbering in the body refers to the present manuscript,
 unless a source is explicitly named.}
 \end{document}
