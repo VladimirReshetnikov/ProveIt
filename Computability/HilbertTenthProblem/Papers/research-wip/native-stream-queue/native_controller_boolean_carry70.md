@@ -1,5 +1,7 @@
 # A paid Boolean carry inside a paired ternary queue
 
+The later [polynomial collapse theorem](native_controller_boolean_carry_polynomial_obstruction.md) rules out a universal compiler using only this hidden filter, a fixed polynomial input and affine external control with empty queues. The component and code identities below remain valid.
+
 The [constructive marker extension](input_bridge_boolean_carry_loader65.md)
 now characterizes the bare input language exactly and supplies positive
 witnesses for every ordinary input after one additional initialization addition.

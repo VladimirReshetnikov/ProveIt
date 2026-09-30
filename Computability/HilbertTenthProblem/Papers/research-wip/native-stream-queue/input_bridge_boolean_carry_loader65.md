@@ -1,5 +1,7 @@
 # A paid ternary marker and a complete positive erasing construction
 
+The later [polynomial collapse theorem](native_controller_boolean_carry_polynomial_obstruction.md) rules out a universal compiler using only this hidden filter, a fixed polynomial input and affine external control with empty queues. The component and code identities below remain valid.
+
 The [hidden Boolean-carry queue64](native_controller_boolean_carry70.md)
 has an exact ordinary-input language before adding an external controller:
 it accepts x if and only if the ternary expansion of2x contains a digit2.

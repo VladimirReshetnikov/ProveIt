@@ -1,5 +1,7 @@
 # A computation and identity-return code for the hidden Boolean carry
 
+The later [polynomial collapse theorem](native_controller_boolean_carry_polynomial_obstruction.md) rules out a universal compiler using only this hidden filter, a fixed polynomial input and affine external control with empty queues. The component and code identities below remain valid.
+
 The [hidden-carry paired filter](native_controller_boolean_carry70.md)
 admits an exact three-cell, two-phase code. Its computation phase allows
 every logical read/write pair; its return phase enforces the identity.
