@@ -1,6 +1,6 @@
 {
-  "scope": "Focused Linux handoff replay and new scoped research; complete universal bound remains76",
-  "checked_at_utc": "2026-09-30T03:40:43Z",
+  "scope": "Focused Linux baseline replay and scoped research; complete universal bound improved from76 to75",
+  "checked_at_utc": "2026-09-30T04:09:31Z",
   "handoff_commit": "3c6494aaaca68927cce4e8cc65bfde5a45e656c3",
   "platform": "Linux",
   "python": "3.13.14",
@@ -20909,8 +20909,1989 @@
         "scope": "Integer-coefficient P positive and even on positive integers; no additional filters or appearances of x",
         "established_complete_universal_bound": 76
       }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_half_binomial42.py",
+      "exit_code": 0,
+      "source_lf_sha256": "1eaaaa34e35d7ebd59b97be246e44c763a12f03aaf5c3b8f8995fe7a5ea2dfe5",
+      "receipt_lf_sha256": "b6509de8c7d9fa67ddade374f3d46325560fca46e0c0f69afc66ad802db714f9",
+      "independent_scoped_reviews": 2,
+      "review_status": "PASS",
+      "default_replay": "Author, independent full reviewers, and root fresh default checks passed; included in consolidated75 replay",
+      "summary": {
+        "status": "PASS_STRONG_HALF_BINOMIAL_KERNEL42",
+        "kernel": {
+          "operations": 42,
+          "multiplications": 25,
+          "additions_subtractions": 17,
+          "equations": 10,
+          "positive_parameters": [
+            "scale",
+            "R"
+          ],
+          "positive_auxiliaries": [
+            "a",
+            "c",
+            "d",
+            "f",
+            "h",
+            "i",
+            "j",
+            "k",
+            "o",
+            "s",
+            "w",
+            "tau",
+            "eta",
+            "zeta",
+            "ga",
+            "y_aux"
+          ],
+          "aliases": {
+            "n2": "scale",
+            "r": "R",
+            "k": "K (twice the first Pell psi coefficient)"
+          },
+          "instructions": [
+            [
+              "wn2",
+              "*",
+              "w",
+              "n2"
+            ],
+            [
+              "sn2",
+              "*",
+              "s",
+              "n2"
+            ],
+            [
+              "UM",
+              "*",
+              "wn2",
+              "sn2"
+            ],
+            [
+              "R12",
+              "+",
+              "UM",
+              "sn2"
+            ],
+            [
+              "ksn2",
+              "*",
+              "k",
+              "sn2"
+            ],
+            [
+              "UM2",
+              "*",
+              "UM",
+              "UM"
+            ],
+            [
+              "scaled_norm_coefficient",
+              "+",
+              "UM2",
+              "wn2"
+            ],
+            [
+              "ratio_product2",
+              "*",
+              "ksn2",
+              "ksn2"
+            ],
+            [
+              "L9",
+              "*",
+              "scaled_norm_coefficient",
+              "ratio_product2"
+            ],
+            [
+              "tau_square",
+              "*",
+              "tau",
+              "tau"
+            ],
+            [
+              "R9",
+              "-",
+              "tau_square",
+              1
+            ],
+            [
+              "R10a",
+              "+",
+              "ksn2",
+              "eta"
+            ],
+            [
+              "R10b",
+              "+",
+              "eta",
+              "zeta"
+            ],
+            [
+              "r1",
+              "+",
+              "r",
+              1
+            ],
+            [
+              "hpm1",
+              "*",
+              "h",
+              "UM"
+            ],
+            [
+              "R11",
+              "+",
+              "r1",
+              "hpm1"
+            ],
+            [
+              "cam2",
+              "*",
+              "c",
+              "a"
+            ],
+            [
+              "D1",
+              "+",
+              "wn2",
+              "cam2"
+            ],
+            [
+              "a4",
+              "*",
+              4,
+              "a"
+            ],
+            [
+              "a4m5",
+              "+",
+              "a4",
+              3
+            ],
+            [
+              "gam",
+              "*",
+              "ga",
+              "a4m5"
+            ],
+            [
+              "R14",
+              "+",
+              "D1",
+              "gam"
+            ],
+            [
+              "a_square",
+              "*",
+              "a",
+              "a"
+            ],
+            [
+              "A",
+              "+",
+              "a_square",
+              "a4m5"
+            ],
+            [
+              "c2",
+              "*",
+              "c",
+              "c"
+            ],
+            [
+              "Ac2",
+              "*",
+              "A",
+              "c2"
+            ],
+            [
+              "R15",
+              "+",
+              "Ac2",
+              1
+            ],
+            [
+              "L15",
+              "*",
+              "d",
+              "d"
+            ],
+            [
+              "ic2",
+              "*",
+              "i",
+              "c2"
+            ],
+            [
+              "ic22",
+              "*",
+              "ic2",
+              "ic2"
+            ],
+            [
+              "L16",
+              "*",
+              "f",
+              "f"
+            ],
+            [
+              "f_square_minus_one",
+              "-",
+              "L16",
+              1
+            ],
+            [
+              "R16",
+              "*",
+              "A",
+              "f_square_minus_one"
+            ],
+            [
+              "of",
+              "*",
+              "o",
+              "f"
+            ],
+            [
+              "aux_u_rhs",
+              "-",
+              "of",
+              "c"
+            ],
+            [
+              "jc",
+              "*",
+              "j",
+              "c"
+            ],
+            [
+              "H17",
+              "-",
+              "jc",
+              "r"
+            ],
+            [
+              "H2",
+              "*",
+              "H17",
+              "H17"
+            ],
+            [
+              "aux_y2",
+              "*",
+              "y_aux",
+              "y_aux"
+            ],
+            [
+              "aux_square_gap",
+              "-",
+              "H2",
+              "aux_y2"
+            ],
+            [
+              "L17",
+              "*",
+              "ic22",
+              "aux_square_gap"
+            ],
+            [
+              "P17",
+              "-",
+              1,
+              "aux_y2"
+            ]
+          ],
+          "sources": [
+            {
+              "equality": [
+                "L9",
+                "R9"
+              ],
+              "source_sign": 1,
+              "source": "k**2*s**4*scale**6*w**2 + k**2*s**2*scale**3*w - tau**2 + 1",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "c",
+                "R10a"
+              ],
+              "source_sign": 1,
+              "source": "c - eta - k*s*scale",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "k",
+                "R10b"
+              ],
+              "source_sign": 1,
+              "source": "-eta + k - zeta",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "k",
+                "R11"
+              ],
+              "source_sign": 1,
+              "source": "-R - h*s*scale**2*w + k - 1",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "a",
+                "R12"
+              ],
+              "source_sign": 1,
+              "source": "a - s*scale**2*w - s*scale",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "d",
+                "R14"
+              ],
+              "source_sign": 1,
+              "source": "-a*c - 4*a*ga + d - 3*ga - scale*w",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "L15",
+                "R15"
+              ],
+              "source_sign": 1,
+              "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "ic22",
+                "R16"
+              ],
+              "source_sign": 1,
+              "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+              "correction": "0"
+            },
+            {
+              "equality": [
+                "L17",
+                "P17"
+              ],
+              "source_sign": 1,
+              "source": "R**2*a**2*f**2 - R**2*a**2 + 4*R**2*a*f**2 - 4*R**2*a + 3*R**2*f**2 - 3*R**2 - 2*R*a**2*c*f**2*j + 2*R*a**2*c*j - 8*R*a*c*f**2*j + 8*R*a*c*j - 6*R*c*f**2*j + 6*R*c*j + a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - a**2*f**2*y_aux**2 + a**2*y_aux**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 4*a*f**2*y_aux**2 + 4*a*y_aux**2 + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 3*f**2*y_aux**2 + 4*y_aux**2 - 1",
+              "correction": "-R**2*a**2*f**2 + R**2*a**2 - 4*R**2*a*f**2 + 4*R**2*a + R**2*c**4*i**2 - 3*R**2*f**2 + 3*R**2 + 2*R*a**2*c*f**2*j - 2*R*a**2*c*j + 8*R*a*c*f**2*j - 8*R*a*c*j - 2*R*c**5*i**2*j + 6*R*c*f**2*j - 6*R*c*j - a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + a**2*f**2*y_aux**2 - a**2*y_aux**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 4*a*f**2*y_aux**2 - 4*a*y_aux**2 + c**6*i**2*j**2 - c**4*i**2*y_aux**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 3*f**2*y_aux**2 - 3*y_aux**2"
+            },
+            {
+              "equality": [
+                "H17",
+                "aux_u_rhs"
+              ],
+              "source_sign": 1,
+              "source": "-R + c*j + c - f*o",
+              "correction": "0"
+            }
+          ],
+          "deleted_instruction": [
+            "tr1",
+            "+",
+            "r1",
+            "r"
+          ],
+          "replaced_norm_instructions": [
+            [
+              "tau_square",
+              "*",
+              "tau",
+              "tau"
+            ],
+            [
+              "R9",
+              "-",
+              "tau_square",
+              1
+            ]
+          ],
+          "retained_strong_auxiliary_square": true,
+          "theorem_external_hypotheses": "q>=16, scale=q^3, 3q+1<=R<q^4; construction of scale and bounds is separately paid",
+          "exact_projection": "q=2^t, R=3 mod4, popcount((R-1)/2)>=3t+1, under displayed external bounds"
+        },
+        "candidate75": {
+          "operations": 75,
+          "multiplications": 41,
+          "additions_subtractions": 34,
+          "equations": 19,
+          "positive_existentials_excluding_x": 30,
+          "source_dependency": "complete75_half_binomial.source_audit",
+          "fixed_mask_alias": "MF_source=MF+B-1",
+          "entire_schedule_matches_kernel_edits": true,
+          "ledger": {
+            "outer": 19,
+            "half_binomial_kernel": 42,
+            "input_bridge": 14
+          },
+          "scope": "Literal candidate ledger only: modified compiler, mask, synchronization and ordinary-input theorem are pending outside this packet"
+        },
+        "bootstrap": {
+          "prepower_parameter_cases": 260,
+          "q_range": [
+            16,
+            80
+          ],
+          "lower_R": "3q+1, not q^2; packed boundary is allowed before typing"
+        },
+        "first_norm": {
+          "generated_pell_points": 2000,
+          "arbitrary_coefficients": 8000,
+          "admitted": 66,
+          "fundamental_pair": "(2V+1,2) for every V>=1"
+        },
+        "ratios": {
+          "main_prototypes": [
+            {
+              "R": 3,
+              "old_r": 1,
+              "Y_bits": 3,
+              "main_coordinate_bits": {
+                "a": 6,
+                "c": 14,
+                "d": 19,
+                "k": 11
+              },
+              "all_seven_main_equations": true,
+              "strict_positive_eta_zeta": true
+            },
+            {
+              "R": 7,
+              "old_r": 3,
+              "Y_bits": 21,
+              "main_coordinate_bits": {
+                "a": 28,
+                "c": 169,
+                "d": 196,
+                "k": 149
+              },
+              "all_seven_main_equations": true,
+              "strict_positive_eta_zeta": true
+            },
+            {
+              "R": 11,
+              "old_r": 5,
+              "Y_bits": 55,
+              "main_coordinate_bits": {
+                "a": 66,
+                "c": 661,
+                "d": 726,
+                "k": 607
+              },
+              "all_seven_main_equations": true,
+              "strict_positive_eta_zeta": true
+            },
+            {
+              "R": 15,
+              "old_r": 7,
+              "Y_bits": 105,
+              "main_coordinate_bits": {
+                "a": 120,
+                "c": 1681,
+                "d": 1800,
+                "k": 1577
+              },
+              "all_seven_main_equations": true,
+              "strict_positive_eta_zeta": true
+            },
+            {
+              "R": 19,
+              "old_r": 9,
+              "Y_bits": 171,
+              "main_coordinate_bits": {
+                "a": 190,
+                "c": 3421,
+                "d": 3610,
+                "k": 3251
+              },
+              "all_seven_main_equations": true,
+              "strict_positive_eta_zeta": true
+            },
+            {
+              "R": 23,
+              "old_r": 11,
+              "Y_bits": 253,
+              "main_coordinate_bits": {
+                "a": 276,
+                "c": 6073,
+                "d": 6348,
+                "k": 5821
+              },
+              "all_seven_main_equations": true,
+              "strict_positive_eta_zeta": true
+            },
+            {
+              "R": 31,
+              "old_r": 15,
+              "Y_bits": 465,
+              "main_coordinate_bits": {
+                "a": 496,
+                "c": 14881,
+                "d": 15376,
+                "k": 14417
+              },
+              "all_seven_main_equations": true,
+              "strict_positive_eta_zeta": true
+            }
+          ],
+          "half_binomial_threshold_cases": 700,
+          "prototype_scope": "Exact main equations with scale1; general-q theorem proved parametrically"
+        },
+        "complete_prototype": {
+          "R": 3,
+          "scale": 1,
+          "X": 8,
+          "Y": 5,
+          "a": 45,
+          "c": 8835,
+          "K": 1604,
+          "tau": 321601,
+          "eta": 815,
+          "zeta": 789,
+          "h": 40,
+          "auxiliary_index": 53010,
+          "all_ten_equalities": true,
+          "all_supplied_coordinates_positive": true,
+          "coordinate_bit_lengths": {
+            "scale": 1,
+            "R": 2,
+            "w": 4,
+            "s": 3,
+            "a": 6,
+            "c": 14,
+            "d": 19,
+            "k": 11,
+            "tau": 19,
+            "eta": 10,
+            "zeta": 10,
+            "h": 6,
+            "ga": 7,
+            "f": 347450,
+            "i": 347429,
+            "y_aux": 694912,
+            "o": 347463,
+            "j": 694899
+          },
+          "scope": "Full numerical42 prototype outside the q>=16 projection hypotheses; compiler witnesses not materialized"
+        },
+        "scope": "Proved42 kernel under explicit external bounds;75 source ledger is not a complete compiler theorem",
+        "established_complete_universal_bound": 75
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_half_binomial_compiler.py",
+      "exit_code": 0,
+      "source_lf_sha256": "d6bed0afef319e5a702bda6b9959bf3888e101da7879b77953c345182f8032d2",
+      "receipt_lf_sha256": "e0bba063d501261909bdc07120742f2a28e4baf8dbc31988cf44bcc8b1f881a3",
+      "independent_scoped_reviews": 2,
+      "review_status": "PASS",
+      "default_replay": "Author, independent full reviewers, and root fresh default checks passed; included in consolidated75 replay",
+      "summary": {
+        "status": "PASS_PROPOSED75_HALF_BINOMIAL_COMPILER_INTERFACE",
+        "formulas": {
+          "native_MC": "MC_old - 2*R^e_dummy",
+          "native_MF": "MF_old + 4",
+          "source_MF": "MF_native + B - 1",
+          "effective_export": "new_constants(cc); MF denotes the new native mask, not the source alias",
+          "shifted_word": "F*q + Z - 1",
+          "low_mask": "J*MC + 1",
+          "high_mask": "J*MF - 1",
+          "packed_mask": "J*MC + q*(J*MF - 1) + 1",
+          "source_rewrite_residual": "B*J*q - J*q - q**2 + q"
+        },
+        "layouts": [
+          {
+            "alphabet": 2,
+            "original_tiles": 2,
+            "native_positions": 73,
+            "dummy_positions": 49,
+            "zero_clause_padding": 0,
+            "mask_population": 72,
+            "inner_bits": 125,
+            "cell_bits": 9765625,
+            "inner_cell_length": 78125,
+            "anchors": [
+              81,
+              243,
+              729,
+              2187
+            ],
+            "linear_basis_checks": 6132,
+            "all_inner_shifts_clean_band_checks": 78125,
+            "all_inner_shifts_anchor_checks": 78125,
+            "all_bit_residue_parity_checks": 250,
+            "malformed_native_triples": 60,
+            "canonical_or_empty_triples": 54,
+            "rejected_center_copy_or_anchor_defects": 44,
+            "canonical_states_sampled": [
+              null,
+              0,
+              1
+            ],
+            "defect_states_sampled": [
+              0,
+              1
+            ],
+            "inner_bits_power_five": 125,
+            "cell_length_power_five": 78125,
+            "cell_bits_power_five": 9765625,
+            "high_correction": 0,
+            "high_degree": 15078,
+            "high_term_basis_checks": 73,
+            "previous_unit_mod5": 3,
+            "unit_mod5": 3,
+            "guaranteed_control_dummy": 26,
+            "native_mask_even": true,
+            "full_mask_population": 9765625,
+            "materialized_packed_word": false,
+            "new_mask_population": 9765625,
+            "new_MC_population": 9765552,
+            "new_MF_population": 73,
+            "extra_dummy": 26,
+            "expanded_support_size": 73,
+            "extra_dummy_zero_test_coefficients": 84,
+            "expanded_clean_band_checks": 78125,
+            "aligned_anchor_support_checks": 78125,
+            "single_odd_spill_exclusions": 78125,
+            "rotation_bit_cases": 500,
+            "weighted_four_valued_dummy_triples": 208,
+            "mass_margin": "unshifted <= R/4 - 2; rotated <= max(3R/4,R/2+1)",
+            "new_MF_two_adic_valuation": 2,
+            "original_cached_masks_are_not_new_source_constants": true
+          },
+          {
+            "alphabet": 3,
+            "original_tiles": 2,
+            "native_positions": 75,
+            "dummy_positions": 50,
+            "zero_clause_padding": 0,
+            "mask_population": 74,
+            "inner_bits": 125,
+            "cell_bits": 9765625,
+            "inner_cell_length": 78125,
+            "anchors": [
+              83,
+              249,
+              747,
+              2241
+            ],
+            "linear_basis_checks": 6300,
+            "all_inner_shifts_clean_band_checks": 78125,
+            "all_inner_shifts_anchor_checks": 78125,
+            "all_bit_residue_parity_checks": 250,
+            "malformed_native_triples": 60,
+            "canonical_or_empty_triples": 128,
+            "rejected_center_copy_or_anchor_defects": 66,
+            "canonical_states_sampled": [
+              null,
+              0,
+              1,
+              2
+            ],
+            "defect_states_sampled": [
+              0,
+              1,
+              2
+            ],
+            "inner_bits_power_five": 125,
+            "cell_length_power_five": 78125,
+            "cell_bits_power_five": 9765625,
+            "high_correction": 0,
+            "high_degree": 15450,
+            "high_term_basis_checks": 75,
+            "previous_unit_mod5": 2,
+            "unit_mod5": 2,
+            "guaranteed_control_dummy": 27,
+            "native_mask_even": true,
+            "full_mask_population": 9765625,
+            "materialized_packed_word": false,
+            "new_mask_population": 9765625,
+            "new_MC_population": 9765550,
+            "new_MF_population": 75,
+            "extra_dummy": 27,
+            "expanded_support_size": 75,
+            "extra_dummy_zero_test_coefficients": 84,
+            "expanded_clean_band_checks": 78125,
+            "aligned_anchor_support_checks": 78125,
+            "single_odd_spill_exclusions": 78125,
+            "rotation_bit_cases": 500,
+            "weighted_four_valued_dummy_triples": 208,
+            "mass_margin": "unshifted <= R/4 - 2; rotated <= max(3R/4,R/2+1)",
+            "new_MF_two_adic_valuation": 2,
+            "original_cached_masks_are_not_new_source_constants": true
+          },
+          {
+            "alphabet": 100,
+            "original_tiles": 2,
+            "native_positions": 123,
+            "dummy_positions": 1,
+            "zero_clause_padding": 20,
+            "mask_population": 122,
+            "inner_bits": 625,
+            "cell_bits": 48828125,
+            "inner_cell_length": 78125,
+            "anchors": [
+              131,
+              393,
+              1179,
+              3537
+            ],
+            "linear_basis_checks": 10332,
+            "all_inner_shifts_clean_band_checks": 78125,
+            "all_inner_shifts_anchor_checks": 78125,
+            "all_bit_residue_parity_checks": 1250,
+            "malformed_native_triples": 60,
+            "canonical_or_empty_triples": 128,
+            "rejected_center_copy_or_anchor_defects": 66,
+            "canonical_states_sampled": [
+              null,
+              0,
+              1,
+              99
+            ],
+            "defect_states_sampled": [
+              0,
+              1,
+              99
+            ],
+            "inner_bits_power_five": 625,
+            "cell_length_power_five": 78125,
+            "cell_bits_power_five": 48828125,
+            "high_correction": 0,
+            "high_degree": 24378,
+            "high_term_basis_checks": 123,
+            "previous_unit_mod5": 4,
+            "unit_mod5": 4,
+            "guaranteed_control_dummy": 124,
+            "native_mask_even": true,
+            "full_mask_population": 48828125,
+            "materialized_packed_word": false,
+            "new_mask_population": 48828125,
+            "new_MC_population": 48828002,
+            "new_MF_population": 123,
+            "extra_dummy": 124,
+            "expanded_support_size": 124,
+            "extra_dummy_zero_test_coefficients": 84,
+            "expanded_clean_band_checks": 78125,
+            "aligned_anchor_support_checks": 78125,
+            "single_odd_spill_exclusions": 78125,
+            "rotation_bit_cases": 2500,
+            "weighted_four_valued_dummy_triples": 208,
+            "mass_margin": "unshifted <= R/4 - 2; rotated <= max(3R/4,R/2+1)",
+            "new_MF_two_adic_valuation": 2,
+            "original_cached_masks_are_not_new_source_constants": true
+          },
+          {
+            "alphabet": 3,
+            "original_tiles": 3,
+            "native_positions": 105,
+            "dummy_positions": 71,
+            "zero_clause_padding": 0,
+            "mask_population": 104,
+            "inner_bits": 125,
+            "cell_bits": 9765625,
+            "inner_cell_length": 78125,
+            "anchors": [
+              119,
+              357,
+              1071,
+              3213
+            ],
+            "linear_basis_checks": 12600,
+            "all_inner_shifts_clean_band_checks": 78125,
+            "all_inner_shifts_anchor_checks": 78125,
+            "all_bit_residue_parity_checks": 250,
+            "malformed_native_triples": 60,
+            "canonical_or_empty_triples": 128,
+            "rejected_center_copy_or_anchor_defects": 93,
+            "canonical_states_sampled": [
+              null,
+              0,
+              1,
+              2
+            ],
+            "defect_states_sampled": [
+              0,
+              1,
+              2
+            ],
+            "inner_bits_power_five": 125,
+            "cell_length_power_five": 78125,
+            "cell_bits_power_five": 9765625,
+            "high_correction": 0,
+            "high_degree": 22150,
+            "high_term_basis_checks": 105,
+            "previous_unit_mod5": 1,
+            "unit_mod5": 1,
+            "guaranteed_control_dummy": 39,
+            "native_mask_even": true,
+            "full_mask_population": 9765625,
+            "materialized_packed_word": false,
+            "new_mask_population": 9765625,
+            "new_MC_population": 9765520,
+            "new_MF_population": 105,
+            "extra_dummy": 39,
+            "expanded_support_size": 105,
+            "extra_dummy_zero_test_coefficients": 120,
+            "expanded_clean_band_checks": 78125,
+            "aligned_anchor_support_checks": 78125,
+            "single_odd_spill_exclusions": 78125,
+            "rotation_bit_cases": 500,
+            "weighted_four_valued_dummy_triples": 208,
+            "mass_margin": "unshifted <= R/4 - 2; rotated <= max(3R/4,R/2+1)",
+            "new_MF_two_adic_valuation": 2,
+            "original_cached_masks_are_not_new_source_constants": true
+          },
+          {
+            "alphabet": 3,
+            "original_tiles": 2,
+            "native_positions": 75,
+            "dummy_positions": 50,
+            "zero_clause_padding": 0,
+            "mask_population": 74,
+            "inner_bits": 125,
+            "cell_bits": 9765625,
+            "inner_cell_length": 78125,
+            "anchors": [
+              83,
+              249,
+              747,
+              2241
+            ],
+            "linear_basis_checks": 6300,
+            "all_inner_shifts_clean_band_checks": 78125,
+            "all_inner_shifts_anchor_checks": 78125,
+            "all_bit_residue_parity_checks": 250,
+            "malformed_native_triples": 60,
+            "canonical_or_empty_triples": 128,
+            "rejected_center_copy_or_anchor_defects": 66,
+            "canonical_states_sampled": [
+              null,
+              0,
+              1,
+              2
+            ],
+            "defect_states_sampled": [
+              0,
+              1,
+              2
+            ],
+            "inner_bits_power_five": 125,
+            "cell_length_power_five": 78125,
+            "cell_bits_power_five": 9765625,
+            "high_correction": 1,
+            "high_degree": 15450,
+            "high_term_basis_checks": 75,
+            "previous_unit_mod5": 0,
+            "unit_mod5": 3,
+            "guaranteed_control_dummy": 27,
+            "native_mask_even": true,
+            "full_mask_population": 9765625,
+            "materialized_packed_word": false,
+            "new_mask_population": 9765625,
+            "new_MC_population": 9765550,
+            "new_MF_population": 75,
+            "extra_dummy": 27,
+            "expanded_support_size": 75,
+            "extra_dummy_zero_test_coefficients": 84,
+            "expanded_clean_band_checks": 78125,
+            "aligned_anchor_support_checks": 78125,
+            "single_odd_spill_exclusions": 78125,
+            "rotation_bit_cases": 500,
+            "weighted_four_valued_dummy_triples": 208,
+            "mass_margin": "unshifted <= R/4 - 2; rotated <= max(3R/4,R/2+1)",
+            "new_MF_two_adic_valuation": 2,
+            "original_cached_masks_are_not_new_source_constants": true
+          }
+        ],
+        "masks": {
+          "mask_pairs": 12,
+          "masked_population_cases": 1200,
+          "origin_recoveries": 1200,
+          "excluded_packing_boundaries": 12,
+          "exhaustive_inverse_population_cases": 86360,
+          "inverse_equalities": 8828,
+          "scope": "Small arithmetic masks plus full inverse identity through 8-bit lambda; not actual compiler words"
+        },
+        "control": {
+          "exact_dummy_change": "-B*DR*q**3*rho*zbit + B*DR*q*rho*zbit - DC*q**3*rho*zbit + DC*q*rho*zbit - P*q**3*rho*zbit + P*q*rho*zbit - q**2*rho*zbit + rho*zbit",
+          "gamma": "rho*(q**2 - 1)*(q*(B*DR + DC + P) + 1)",
+          "target": "(Ridx_initial - d*h) * Gamma^(-1) modulo d*N",
+          "subset_targets": 3250,
+          "direct_index_residue_checks": 3888,
+          "canonical_extra_dummy_upper_bit_zero": true,
+          "uses_existing_Boolean_control_dummy": true
+        },
+        "scope": "Compiler and mask interface only; complete75 depends on separate kernel, bridge and source audits",
+        "proof": "complete75_half_binomial_compiler.md"
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_half_binomial75.py",
+      "exit_code": 0,
+      "source_lf_sha256": "3be92ee9e4ed0d6c40abf5bcea2cf4fb9da43ec1c9f8575ca74fe1e51e425eff",
+      "receipt_lf_sha256": "4f59579110521dc2951ff7619103d3e2ae5a2eabcaf44242ef3dfad85e0ceb7f",
+      "independent_scoped_reviews": 2,
+      "review_status": "PASS",
+      "default_replay": "Author, independent full reviewers, and root fresh default checks passed; included in consolidated75 replay",
+      "summary": {
+        "status": "PASS_HALF_BINOMIAL_INPUT_AND_POSITIVE_CONVERSE_COMPONENTS",
+        "source": {
+          "operations": 14,
+          "multiplications": 7,
+          "additions": 7,
+          "instructions": [
+            [
+              "scaled_t",
+              "*",
+              "twice_cell_bits",
+              "x"
+            ],
+            [
+              "raw_bound",
+              "+",
+              "bounded",
+              "scaled_t"
+            ],
+            [
+              "odd_index",
+              "+",
+              "scaled_t",
+              "inner_bits"
+            ],
+            [
+              "index_product",
+              "*",
+              "delta",
+              "A"
+            ],
+            [
+              "index_rhs",
+              "+",
+              "odd_index",
+              "index_product"
+            ],
+            [
+              "pell_gap",
+              "+",
+              "kappa",
+              "phi"
+            ],
+            [
+              "kappa2",
+              "*",
+              "kappa",
+              "kappa"
+            ],
+            [
+              "scaled_kappa2",
+              "*",
+              "A",
+              "kappa2"
+            ],
+            [
+              "norm_rhs",
+              "+",
+              "scaled_kappa2",
+              1
+            ],
+            [
+              "mu2",
+              "*",
+              "mu",
+              "mu"
+            ],
+            [
+              "modulus_multiple",
+              "*",
+              "rho",
+              "a4m5"
+            ],
+            [
+              "difference_multiple",
+              "*",
+              "kappa",
+              "a"
+            ],
+            [
+              "exponent_partial",
+              "+",
+              "W",
+              "difference_multiple"
+            ],
+            [
+              "exponent_rhs",
+              "+",
+              "exponent_partial",
+              "modulus_multiple"
+            ]
+          ],
+          "input_residuals": [
+            {
+              "index": 15,
+              "comparison": [
+                "kappa",
+                "index_rhs"
+              ],
+              "source": "-a**2*delta - 4*a*delta - 2*cell_bits*x - 3*delta - inner_bits + kappa",
+              "sign": 1
+            },
+            {
+              "index": 16,
+              "comparison": [
+                "c",
+                "pell_gap"
+              ],
+              "source": "c - kappa - phi",
+              "sign": 1
+            },
+            {
+              "index": 17,
+              "comparison": [
+                "mu2",
+                "norm_rhs"
+              ],
+              "source": "-a**2*kappa**2 - 4*a*kappa**2 - 3*kappa**2 + mu**2 - 1",
+              "sign": 1
+            },
+            {
+              "index": 18,
+              "comparison": [
+                "mu",
+                "exponent_rhs"
+              ],
+              "source": "-W - a*kappa - 4*a*rho + mu - 3*rho",
+              "sign": 1
+            }
+          ],
+          "complete_source_operations": 75,
+          "complete_source_ledger": {
+            "outer": 19,
+            "kernel": 42,
+            "input": 14
+          },
+          "supplied_positive_input_coordinates": [
+            "kappa",
+            "mu",
+            "delta",
+            "phi",
+            "rho"
+          ],
+          "scope": "Exact source audit; compiler theorem not established here"
+        },
+        "main": {
+          "prototypes": [
+            {
+              "R": 3,
+              "X": 8,
+              "Y_bits": 3,
+              "K_bits": 11,
+              "c_bits": 14,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 7,
+              "X": 128,
+              "Y_bits": 21,
+              "K_bits": 149,
+              "c_bits": 169,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 11,
+              "X": 2048,
+              "Y_bits": 55,
+              "K_bits": 607,
+              "c_bits": 661,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 15,
+              "X": 32768,
+              "Y_bits": 105,
+              "K_bits": 1577,
+              "c_bits": 1681,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 19,
+              "X": 524288,
+              "Y_bits": 171,
+              "K_bits": 3251,
+              "c_bits": 3421,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 23,
+              "X": 8388608,
+              "Y_bits": 253,
+              "K_bits": 5821,
+              "c_bits": 6073,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 31,
+              "X": 2147483648,
+              "Y_bits": 465,
+              "K_bits": 14417,
+              "c_bits": 14881,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 47,
+              "X": 140737488355328,
+              "Y_bits": 1081,
+              "K_bits": 50809,
+              "c_bits": 51889,
+              "all_main_quotients_positive": true
+            },
+            {
+              "R": 51,
+              "X": 2251799813685248,
+              "Y_bits": 1275,
+              "K_bits": 65027,
+              "c_bits": 66301,
+              "all_main_quotients_positive": true
+            }
+          ],
+          "scope": "Fresh exact main witnesses; no full compiler tuple materialized"
+        },
+        "input": {
+          "positive_interfaces": [
+            {
+              "q": 16,
+              "R": 51,
+              "u": 3,
+              "x": 1,
+              "W": 8,
+              "all_input_coordinates_positive": true
+            },
+            {
+              "q": 64,
+              "R": 195,
+              "u": 3,
+              "x": 1,
+              "W": 8,
+              "all_input_coordinates_positive": true
+            },
+            {
+              "q": 64,
+              "R": 195,
+              "u": 5,
+              "x": 2,
+              "W": 32,
+              "all_input_coordinates_positive": true
+            },
+            {
+              "q": 256,
+              "R": 771,
+              "u": 3,
+              "x": 1,
+              "W": 8,
+              "all_input_coordinates_positive": true
+            },
+            {
+              "q": 256,
+              "R": 771,
+              "u": 5,
+              "x": 2,
+              "W": 32,
+              "all_input_coordinates_positive": true
+            },
+            {
+              "q": 256,
+              "R": 771,
+              "u": 7,
+              "x": 3,
+              "W": 128,
+              "all_input_coordinates_positive": true
+            }
+          ],
+          "discriminant_representatives": 1014,
+          "scope": "Actual new R range and recovered main norm/projection; fixed d=b=1 are interface fixtures, not compiler numerals; no first norm or Y scale asserted"
+        },
+        "auxiliary": {
+          "modular_cases": 55,
+          "materialized": [
+            {
+              "A": 2,
+              "R": 3,
+              "main_c": 15,
+              "auxiliary_index": 90,
+              "auxiliary_base_bits": 171,
+              "all_auxiliary_coordinates_positive": true
+            },
+            {
+              "A": 3,
+              "R": 3,
+              "main_c": 35,
+              "auxiliary_index": 210,
+              "auxiliary_base_bits": 535,
+              "all_auxiliary_coordinates_positive": true
+            },
+            {
+              "A": 2,
+              "R": 7,
+              "main_c": 2911,
+              "auxiliary_index": 40754,
+              "auxiliary_base_bits": 77432,
+              "all_auxiliary_coordinates_positive": true
+            }
+          ],
+          "scope": "Exact signed auxiliary identities; small full auxiliary fixtures are not compiler witnesses"
+        },
+        "valuation": {
+          "half_binomial_scale_cases": 1152
+        },
+        "scope": "Complete75 source ledger plus bridge/converse proof components; modified compiler independently required",
+        "established_complete_universal_bound": 75
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_half_binomial.py",
+      "exit_code": 0,
+      "source_lf_sha256": "5383b009a41abc19bb4c94e3f25c96ccfd4122d6a016c27b54fda0a75f7acab5",
+      "receipt_lf_sha256": "a46ffb29e0d0db2f6c531edb442f0b5adb0f29a8a3f13dcdd8be9c64b4d17ea0",
+      "independent_scoped_reviews": 3,
+      "review_status": "PASS",
+      "default_replay": "Author, independent full reviewers, and root fresh default checks passed; included in consolidated75 replay",
+      "summary": {
+        "status": "PASS_COMPLETE_RAW_UNIVERSAL75_SOURCE_AND_PACKING",
+        "source": {
+          "operations": 75,
+          "multiplications": 41,
+          "additions_subtractions": 34,
+          "positive_witnesses": 30,
+          "equations": 19,
+          "fixed_mask_alias": "MF_source=MF+B-1",
+          "schedule": [
+            [
+              "qm1",
+              "-",
+              "q",
+              1
+            ],
+            [
+              "repunit",
+              "*",
+              "Bm1",
+              "Jrep"
+            ],
+            [
+              "bounded",
+              "+",
+              "C",
+              "alpha"
+            ],
+            [
+              "Lbig",
+              "*",
+              "q",
+              "q"
+            ],
+            [
+              "n2",
+              "*",
+              "Lbig",
+              "q"
+            ],
+            [
+              "marked_rhs",
+              "+",
+              "Z",
+              "W"
+            ],
+            [
+              "qF",
+              "*",
+              "q",
+              "F"
+            ],
+            [
+              "packed",
+              "+",
+              "Z",
+              "qF"
+            ],
+            [
+              "qMF",
+              "*",
+              "q",
+              "MF"
+            ],
+            [
+              "mask_factor",
+              "+",
+              "MC",
+              "qMF"
+            ],
+            [
+              "mask",
+              "*",
+              "mask_factor",
+              "Jrep"
+            ],
+            [
+              "gap",
+              "-",
+              "Lbig",
+              "packed"
+            ],
+            [
+              "Lm1",
+              "-",
+              "Lbig",
+              1
+            ],
+            [
+              "rproduct",
+              "*",
+              "gap",
+              "Lm1"
+            ],
+            [
+              "r_lhs",
+              "+",
+              "rproduct",
+              "mask"
+            ],
+            [
+              "wn2",
+              "*",
+              "w",
+              "n2"
+            ],
+            [
+              "kinner",
+              "+",
+              "Kconstant",
+              "wn2"
+            ],
+            [
+              "innerC",
+              "*",
+              "kinner",
+              "C"
+            ],
+            [
+              "local_rhs",
+              "*",
+              "zquot",
+              "qm1"
+            ],
+            [
+              "local_rhs_sum",
+              "+",
+              "F",
+              "local_rhs"
+            ],
+            [
+              "sn2",
+              "*",
+              "s",
+              "n2"
+            ],
+            [
+              "UM",
+              "*",
+              "wn2",
+              "sn2"
+            ],
+            [
+              "R12",
+              "+",
+              "UM",
+              "sn2"
+            ],
+            [
+              "ksn2",
+              "*",
+              "k",
+              "sn2"
+            ],
+            [
+              "UM2",
+              "*",
+              "UM",
+              "UM"
+            ],
+            [
+              "scaled_norm_coefficient",
+              "+",
+              "UM2",
+              "wn2"
+            ],
+            [
+              "ratio_product2",
+              "*",
+              "ksn2",
+              "ksn2"
+            ],
+            [
+              "L9",
+              "*",
+              "scaled_norm_coefficient",
+              "ratio_product2"
+            ],
+            [
+              "tau_square",
+              "*",
+              "tau",
+              "tau"
+            ],
+            [
+              "R9",
+              "-",
+              "tau_square",
+              1
+            ],
+            [
+              "R10a",
+              "+",
+              "ksn2",
+              "eta"
+            ],
+            [
+              "R10b",
+              "+",
+              "eta",
+              "zeta"
+            ],
+            [
+              "r1",
+              "+",
+              "r",
+              1
+            ],
+            [
+              "hpm1",
+              "*",
+              "h",
+              "UM"
+            ],
+            [
+              "R11",
+              "+",
+              "r1",
+              "hpm1"
+            ],
+            [
+              "cam2",
+              "*",
+              "c",
+              "a"
+            ],
+            [
+              "D1",
+              "+",
+              "wn2",
+              "cam2"
+            ],
+            [
+              "a4",
+              "*",
+              4,
+              "a"
+            ],
+            [
+              "a4m5",
+              "+",
+              "a4",
+              3
+            ],
+            [
+              "gam",
+              "*",
+              "ga",
+              "a4m5"
+            ],
+            [
+              "R14",
+              "+",
+              "D1",
+              "gam"
+            ],
+            [
+              "a_square",
+              "*",
+              "a",
+              "a"
+            ],
+            [
+              "A",
+              "+",
+              "a_square",
+              "a4m5"
+            ],
+            [
+              "c2",
+              "*",
+              "c",
+              "c"
+            ],
+            [
+              "Ac2",
+              "*",
+              "A",
+              "c2"
+            ],
+            [
+              "R15",
+              "+",
+              "Ac2",
+              1
+            ],
+            [
+              "L15",
+              "*",
+              "d",
+              "d"
+            ],
+            [
+              "ic2",
+              "*",
+              "i",
+              "c2"
+            ],
+            [
+              "ic22",
+              "*",
+              "ic2",
+              "ic2"
+            ],
+            [
+              "L16",
+              "*",
+              "f",
+              "f"
+            ],
+            [
+              "f_square_minus_one",
+              "-",
+              "L16",
+              1
+            ],
+            [
+              "R16",
+              "*",
+              "A",
+              "f_square_minus_one"
+            ],
+            [
+              "of",
+              "*",
+              "o",
+              "f"
+            ],
+            [
+              "aux_u_rhs",
+              "-",
+              "of",
+              "c"
+            ],
+            [
+              "jc",
+              "*",
+              "j",
+              "c"
+            ],
+            [
+              "H17",
+              "-",
+              "jc",
+              "r"
+            ],
+            [
+              "H2",
+              "*",
+              "H17",
+              "H17"
+            ],
+            [
+              "aux_y2",
+              "*",
+              "y_aux",
+              "y_aux"
+            ],
+            [
+              "aux_square_gap",
+              "-",
+              "H2",
+              "aux_y2"
+            ],
+            [
+              "L17",
+              "*",
+              "ic22",
+              "aux_square_gap"
+            ],
+            [
+              "P17",
+              "-",
+              1,
+              "aux_y2"
+            ],
+            [
+              "scaled_t",
+              "*",
+              "twice_cell_bits",
+              "x"
+            ],
+            [
+              "raw_bound",
+              "+",
+              "bounded",
+              "scaled_t"
+            ],
+            [
+              "odd_index",
+              "+",
+              "scaled_t",
+              "inner_bits"
+            ],
+            [
+              "index_product",
+              "*",
+              "delta",
+              "A"
+            ],
+            [
+              "index_rhs",
+              "+",
+              "odd_index",
+              "index_product"
+            ],
+            [
+              "pell_gap",
+              "+",
+              "kappa",
+              "phi"
+            ],
+            [
+              "kappa2",
+              "*",
+              "kappa",
+              "kappa"
+            ],
+            [
+              "scaled_kappa2",
+              "*",
+              "A",
+              "kappa2"
+            ],
+            [
+              "norm_rhs",
+              "+",
+              "scaled_kappa2",
+              1
+            ],
+            [
+              "mu2",
+              "*",
+              "mu",
+              "mu"
+            ],
+            [
+              "modulus_multiple",
+              "*",
+              "rho",
+              "a4m5"
+            ],
+            [
+              "difference_multiple",
+              "*",
+              "kappa",
+              "a"
+            ],
+            [
+              "exponent_partial",
+              "+",
+              "W",
+              "difference_multiple"
+            ],
+            [
+              "exponent_rhs",
+              "+",
+              "exponent_partial",
+              "modulus_multiple"
+            ]
+          ],
+          "sources": [
+            {
+              "index": 0,
+              "equality": [
+                "repunit",
+                "qm1"
+              ],
+              "sign": 1,
+              "source": "B*Jrep - Jrep - q + 1",
+              "correction": "0"
+            },
+            {
+              "index": 1,
+              "equality": [
+                "raw_bound",
+                "q"
+              ],
+              "sign": 1,
+              "source": "C + alpha + 2*cell_bits*x - q",
+              "correction": "0"
+            },
+            {
+              "index": 2,
+              "equality": [
+                "innerC",
+                "local_rhs_sum"
+              ],
+              "sign": 1,
+              "source": "B*C*DR + C*DC + C*q**3*w - F - q*zquot + zquot",
+              "correction": "0"
+            },
+            {
+              "index": 3,
+              "equality": [
+                "r",
+                "r_lhs"
+              ],
+              "sign": 1,
+              "source": "-B*Jrep*q + F*q**3 - F*q - Jrep*MC - Jrep*MF*q + Jrep*q + Z*q**2 - Z - q**4 + q**2 + r",
+              "correction": "0"
+            },
+            {
+              "index": 4,
+              "equality": [
+                "C",
+                "marked_rhs"
+              ],
+              "sign": 1,
+              "source": "C - W - Z",
+              "correction": "0"
+            },
+            {
+              "index": 5,
+              "equality": [
+                "L9",
+                "R9"
+              ],
+              "sign": 1,
+              "source": "k**2*q**18*s**4*w**2 + k**2*q**9*s**2*w - tau**2 + 1",
+              "correction": "0"
+            },
+            {
+              "index": 6,
+              "equality": [
+                "c",
+                "R10a"
+              ],
+              "sign": 1,
+              "source": "c - eta - k*q**3*s",
+              "correction": "0"
+            },
+            {
+              "index": 7,
+              "equality": [
+                "k",
+                "R10b"
+              ],
+              "sign": 1,
+              "source": "-eta + k - zeta",
+              "correction": "0"
+            },
+            {
+              "index": 8,
+              "equality": [
+                "k",
+                "R11"
+              ],
+              "sign": 1,
+              "source": "-h*q**6*s*w + k - r - 1",
+              "correction": "0"
+            },
+            {
+              "index": 9,
+              "equality": [
+                "a",
+                "R12"
+              ],
+              "sign": 1,
+              "source": "a - q**6*s*w - q**3*s",
+              "correction": "0"
+            },
+            {
+              "index": 10,
+              "equality": [
+                "d",
+                "R14"
+              ],
+              "sign": 1,
+              "source": "-a*c - 4*a*ga + d - 3*ga - q**3*w",
+              "correction": "0"
+            },
+            {
+              "index": 11,
+              "equality": [
+                "L15",
+                "R15"
+              ],
+              "sign": 1,
+              "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+              "correction": "0"
+            },
+            {
+              "index": 12,
+              "equality": [
+                "ic22",
+                "R16"
+              ],
+              "sign": 1,
+              "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+              "correction": "0"
+            },
+            {
+              "index": 13,
+              "equality": [
+                "L17",
+                "P17"
+              ],
+              "sign": 1,
+              "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 2*a**2*c*f**2*j*r + 2*a**2*c*j*r + a**2*f**2*r**2 - a**2*f**2*y_aux**2 - a**2*r**2 + a**2*y_aux**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 8*a*c*f**2*j*r + 8*a*c*j*r + 4*a*f**2*r**2 - 4*a*f**2*y_aux**2 - 4*a*r**2 + 4*a*y_aux**2 + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 6*c*f**2*j*r + 6*c*j*r + 3*f**2*r**2 - 3*f**2*y_aux**2 - 3*r**2 + 4*y_aux**2 - 1",
+              "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 2*a**2*c*f**2*j*r - 2*a**2*c*j*r - a**2*f**2*r**2 + a**2*f**2*y_aux**2 + a**2*r**2 - a**2*y_aux**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 8*a*c*f**2*j*r - 8*a*c*j*r - 4*a*f**2*r**2 + 4*a*f**2*y_aux**2 + 4*a*r**2 - 4*a*y_aux**2 + c**6*i**2*j**2 - 2*c**5*i**2*j*r + c**4*i**2*r**2 - c**4*i**2*y_aux**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 6*c*f**2*j*r - 6*c*j*r - 3*f**2*r**2 + 3*f**2*y_aux**2 + 3*r**2 - 3*y_aux**2"
+            },
+            {
+              "index": 14,
+              "equality": [
+                "H17",
+                "aux_u_rhs"
+              ],
+              "sign": 1,
+              "source": "c*j + c - f*o - r",
+              "correction": "0"
+            },
+            {
+              "index": 15,
+              "equality": [
+                "kappa",
+                "index_rhs"
+              ],
+              "sign": 1,
+              "source": "-a**2*delta - 4*a*delta - 2*cell_bits*x - 3*delta - inner_bits + kappa",
+              "correction": "0"
+            },
+            {
+              "index": 16,
+              "equality": [
+                "c",
+                "pell_gap"
+              ],
+              "sign": 1,
+              "source": "c - kappa - phi",
+              "correction": "0"
+            },
+            {
+              "index": 17,
+              "equality": [
+                "mu2",
+                "norm_rhs"
+              ],
+              "sign": 1,
+              "source": "-a**2*kappa**2 - 4*a*kappa**2 - 3*kappa**2 + mu**2 - 1",
+              "correction": "0"
+            },
+            {
+              "index": 18,
+              "equality": [
+                "mu",
+                "exponent_rhs"
+              ],
+              "sign": 1,
+              "source": "-W - a*kappa - 4*a*rho + mu - 3*rho",
+              "correction": "0"
+            }
+          ],
+          "unchanged_input_operations": 14,
+          "strong_auxiliary_square_retained": true
+        },
+        "packing": {
+          "finite_positive_outer_tuples": 149298,
+          "boundary_rejections": 49,
+          "exact_mask_passes": 494,
+          "mask_rejections": 148755,
+          "repeated_mask_cases": 48,
+          "examples": [
+            {
+              "q": 8,
+              "MC": 6,
+              "MF": 4,
+              "Z": 1,
+              "F": 4,
+              "R": 2047,
+              "population": 11,
+              "half_binomial_valuation": 9
+            },
+            {
+              "q": 16,
+              "MC": 6,
+              "MF": 12,
+              "Z": 1,
+              "F": 4,
+              "R": 49143,
+              "population": 14,
+              "half_binomial_valuation": 12
+            },
+            {
+              "q": 16,
+              "MC": 6,
+              "MF": 12,
+              "Z": 9,
+              "F": 4,
+              "R": 47103,
+              "population": 14,
+              "half_binomial_valuation": 12
+            },
+            {
+              "q": 16,
+              "MC": 10,
+              "MF": 12,
+              "Z": 1,
+              "F": 4,
+              "R": 49147,
+              "population": 14,
+              "half_binomial_valuation": 12
+            }
+          ],
+          "scope": "Toy masks only; universal compiler and Pell witnesses require separate proofs"
+        },
+        "proof_status": "Complete mathematical proof; three independent full integration reviews PASS; not Lean formalized",
+        "established_complete_universal_bound": 75
+      }
     }
   ],
-  "review": "Independent scoped proof/source/default reviews pass; no Lean formalization or new universal bound claimed. The later Presburger effectivity audit closes the prior scoped gap.",
-  "full_universal_bound": 76
+  "review": "Three independent complete75 proof/source/default integration reviews pass, together with scoped reviews of earlier research. Mathematical proof, symbolic checks and finite tests are distinguished; no new Lean formalization or publication claimed.",
+  "full_universal_bound": 75,
+  "complete75_validation": {
+    "script": "Computability/HilbertTenthProblem/Papers/verification/explore_fixed_raw_universal_75.py",
+    "source_lf_sha256": "9dc8ff071472fdd8ea4a672b6b9049f9d5046821c2e964454763161cf24a9db5",
+    "receipt_lf_sha256": "a856f83bfef2e0b06499b6eafa852e4a3fa17b800116fba015abad2d06eabc97",
+    "operations": 75,
+    "multiplications": 41,
+    "additions_subtractions": 34,
+    "positive_witnesses": 30,
+    "equations": 19,
+    "independent_full_integration_reviews": 3,
+    "review_status": "PASS",
+    "formalization": "Not Lean formalized",
+    "full_tuple": "Parametric proof; astronomical universal compiler witnesses not materialized"
+  }
 }

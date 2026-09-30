@@ -24,6 +24,25 @@ and write a `round4_<year>_results.json` next to themselves. Run them with
 
 ---
 
+## 2026-09-29 — Satellite universal certificate reduced from76 to75
+
+**Classification: CLAR / BUILD, new satellite research; original pagination
+not applicable.** The complete fixed-index theorem now uses75=41M+34A,
+30 strictly positive witnesses and19 equations. The changed first Pell norm
+extracts half the binomial-floor word and removes one main-index addition.
+Modified fixed masks supply its exact two-bit population adjustment, with
+a proved stronger synchronization bound and unchanged ordinary-input bridge.
+
+The complete proof is [FIXED_RAW_UNIVERSAL_75_PROOF.md](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md).
+Three independent full proof/source/default integration reviews passed without
+findings. The focused [consolidated checker](verification/explore_fixed_raw_universal_75.py)
+replays all source, kernel, compiler and bridge evidence. Parametric full
+positive witnesses are distinguished from finite and sparse checks.
+The historical76 proof remains valid. No article TeX/PDF or Lean theorem was
+changed, and no formalization or publication of the optimized75 bound is claimed.
+
+---
+
 ## 1976 — Diophantine Representation of the Set of Prime Numbers
 
 **Status: read twice in full (the baseline source against the OCR; second

@@ -1,0 +1,312 @@
+{
+  "status": "PASS_HALF_BINOMIAL_INPUT_AND_POSITIVE_CONVERSE_COMPONENTS",
+  "source": {
+    "operations": 14,
+    "multiplications": 7,
+    "additions": 7,
+    "instructions": [
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "raw_bound",
+        "+",
+        "bounded",
+        "scaled_t"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "pell_gap",
+        "+",
+        "kappa",
+        "phi"
+      ],
+      [
+        "kappa2",
+        "*",
+        "kappa",
+        "kappa"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_rhs",
+        "+",
+        "scaled_kappa2",
+        1
+      ],
+      [
+        "mu2",
+        "*",
+        "mu",
+        "mu"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "kappa",
+        "a"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ]
+    ],
+    "input_residuals": [
+      {
+        "index": 15,
+        "comparison": [
+          "kappa",
+          "index_rhs"
+        ],
+        "source": "-a**2*delta - 4*a*delta - 2*cell_bits*x - 3*delta - inner_bits + kappa",
+        "sign": 1
+      },
+      {
+        "index": 16,
+        "comparison": [
+          "c",
+          "pell_gap"
+        ],
+        "source": "c - kappa - phi",
+        "sign": 1
+      },
+      {
+        "index": 17,
+        "comparison": [
+          "mu2",
+          "norm_rhs"
+        ],
+        "source": "-a**2*kappa**2 - 4*a*kappa**2 - 3*kappa**2 + mu**2 - 1",
+        "sign": 1
+      },
+      {
+        "index": 18,
+        "comparison": [
+          "mu",
+          "exponent_rhs"
+        ],
+        "source": "-W - a*kappa - 4*a*rho + mu - 3*rho",
+        "sign": 1
+      }
+    ],
+    "complete_source_operations": 75,
+    "complete_source_ledger": {
+      "outer": 19,
+      "kernel": 42,
+      "input": 14
+    },
+    "supplied_positive_input_coordinates": [
+      "kappa",
+      "mu",
+      "delta",
+      "phi",
+      "rho"
+    ],
+    "scope": "Exact source audit; compiler theorem not established here"
+  },
+  "main": {
+    "prototypes": [
+      {
+        "R": 3,
+        "X": 8,
+        "Y_bits": 3,
+        "K_bits": 11,
+        "c_bits": 14,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 7,
+        "X": 128,
+        "Y_bits": 21,
+        "K_bits": 149,
+        "c_bits": 169,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 11,
+        "X": 2048,
+        "Y_bits": 55,
+        "K_bits": 607,
+        "c_bits": 661,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 15,
+        "X": 32768,
+        "Y_bits": 105,
+        "K_bits": 1577,
+        "c_bits": 1681,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 19,
+        "X": 524288,
+        "Y_bits": 171,
+        "K_bits": 3251,
+        "c_bits": 3421,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 23,
+        "X": 8388608,
+        "Y_bits": 253,
+        "K_bits": 5821,
+        "c_bits": 6073,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 31,
+        "X": 2147483648,
+        "Y_bits": 465,
+        "K_bits": 14417,
+        "c_bits": 14881,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 47,
+        "X": 140737488355328,
+        "Y_bits": 1081,
+        "K_bits": 50809,
+        "c_bits": 51889,
+        "all_main_quotients_positive": true
+      },
+      {
+        "R": 51,
+        "X": 2251799813685248,
+        "Y_bits": 1275,
+        "K_bits": 65027,
+        "c_bits": 66301,
+        "all_main_quotients_positive": true
+      }
+    ],
+    "scope": "Fresh exact main witnesses; no full compiler tuple materialized"
+  },
+  "input": {
+    "positive_interfaces": [
+      {
+        "q": 16,
+        "R": 51,
+        "u": 3,
+        "x": 1,
+        "W": 8,
+        "all_input_coordinates_positive": true
+      },
+      {
+        "q": 64,
+        "R": 195,
+        "u": 3,
+        "x": 1,
+        "W": 8,
+        "all_input_coordinates_positive": true
+      },
+      {
+        "q": 64,
+        "R": 195,
+        "u": 5,
+        "x": 2,
+        "W": 32,
+        "all_input_coordinates_positive": true
+      },
+      {
+        "q": 256,
+        "R": 771,
+        "u": 3,
+        "x": 1,
+        "W": 8,
+        "all_input_coordinates_positive": true
+      },
+      {
+        "q": 256,
+        "R": 771,
+        "u": 5,
+        "x": 2,
+        "W": 32,
+        "all_input_coordinates_positive": true
+      },
+      {
+        "q": 256,
+        "R": 771,
+        "u": 7,
+        "x": 3,
+        "W": 128,
+        "all_input_coordinates_positive": true
+      }
+    ],
+    "discriminant_representatives": 1014,
+    "scope": "Actual new R range and recovered main norm/projection; fixed d=b=1 are interface fixtures, not compiler numerals; no first norm or Y scale asserted"
+  },
+  "auxiliary": {
+    "modular_cases": 55,
+    "materialized": [
+      {
+        "A": 2,
+        "R": 3,
+        "main_c": 15,
+        "auxiliary_index": 90,
+        "auxiliary_base_bits": 171,
+        "all_auxiliary_coordinates_positive": true
+      },
+      {
+        "A": 3,
+        "R": 3,
+        "main_c": 35,
+        "auxiliary_index": 210,
+        "auxiliary_base_bits": 535,
+        "all_auxiliary_coordinates_positive": true
+      },
+      {
+        "A": 2,
+        "R": 7,
+        "main_c": 2911,
+        "auxiliary_index": 40754,
+        "auxiliary_base_bits": 77432,
+        "all_auxiliary_coordinates_positive": true
+      }
+    ],
+    "scope": "Exact signed auxiliary identities; small full auxiliary fixtures are not compiler witnesses"
+  },
+  "valuation": {
+    "half_binomial_scale_cases": 1152
+  },
+  "scope": "Complete75 source ledger plus bridge/converse proof components; modified compiler independently required",
+  "established_complete_universal_bound": 75
+}

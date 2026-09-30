@@ -29,8 +29,9 @@ The [native-stream queue WIP handoff](research-wip/native-stream-queue/README.md
 preserves the conditional six/eight-operation stream component, portable
 independent audits, unfinished controller research and archived scratch
 evidence. Its [continuation prompt](research-wip/native-stream-queue/CONTINUATION_PROMPT.md)
-describes the proved 76-operation frontier and promising next directions.
-The WIP component does not lower the complete universal bound.
+describes the historical76-operation frontier. The later
+[complete half-binomial75 proof](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) lowers
+the universal bound; the native queue components retain their separate scope.
 
 - Every displayed system, machine table and count of the six articles was
   re-derived by the checkers. The corrections to the printed articles are
@@ -43,10 +44,10 @@ The WIP component does not lower the complete universal bound.
   `+`, `−`, `×` signs, exponentiation not counted), and Theorem 5 is given
   explicit, symbolically verified straight-line certificates. The satellite
   article reduces the count from 129 to 89 operations; the smallest complete
-  certificate established since uses **76 operations (41 multiplications and
-  35 additions)**, with 30 positive existential witnesses and 19 equations
-  ([`FIXED_RAW_UNIVERSAL_76_PROOF.md`](1980/FIXED_RAW_UNIVERSAL_76_PROOF.md),
-  checked by `verification/explore_fixed_raw_universal_76.py`). The
+  certificate established since uses **75 operations (41 multiplications and
+  34 additions/subtractions)**, with 30 positive existential witnesses and 19 equations
+  ([`FIXED_RAW_UNIVERSAL_75_PROOF.md`](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md),
+  checked by `verification/explore_fixed_raw_universal_75.py`). The
   75-operation Rule 110 finite-history system still lacks a complete
   universal input and acceptance interface and is a separate component.
 

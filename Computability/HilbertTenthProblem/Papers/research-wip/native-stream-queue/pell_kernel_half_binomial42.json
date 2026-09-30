@@ -1,0 +1,571 @@
+{
+  "status": "PASS_STRONG_HALF_BINOMIAL_KERNEL42",
+  "kernel": {
+    "operations": 42,
+    "multiplications": 25,
+    "additions_subtractions": 17,
+    "equations": 10,
+    "positive_parameters": [
+      "scale",
+      "R"
+    ],
+    "positive_auxiliaries": [
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "aliases": {
+      "n2": "scale",
+      "r": "R",
+      "k": "K (twice the first Pell psi coefficient)"
+    },
+    "instructions": [
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "ksn2",
+        "*",
+        "k",
+        "sn2"
+      ],
+      [
+        "UM2",
+        "*",
+        "UM",
+        "UM"
+      ],
+      [
+        "scaled_norm_coefficient",
+        "+",
+        "UM2",
+        "wn2"
+      ],
+      [
+        "ratio_product2",
+        "*",
+        "ksn2",
+        "ksn2"
+      ],
+      [
+        "L9",
+        "*",
+        "scaled_norm_coefficient",
+        "ratio_product2"
+      ],
+      [
+        "tau_square",
+        "*",
+        "tau",
+        "tau"
+      ],
+      [
+        "R9",
+        "-",
+        "tau_square",
+        1
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "r1",
+        "+",
+        "r",
+        1
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "R11",
+        "+",
+        "r1",
+        "hpm1"
+      ],
+      [
+        "cam2",
+        "*",
+        "c",
+        "a"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "a"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "ga",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "a_square",
+        "*",
+        "a",
+        "a"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "c",
+        "c"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "R15",
+        "+",
+        "Ac2",
+        1
+      ],
+      [
+        "L15",
+        "*",
+        "d",
+        "d"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "c"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "c"
+      ],
+      [
+        "H17",
+        "-",
+        "jc",
+        "r"
+      ],
+      [
+        "H2",
+        "*",
+        "H17",
+        "H17"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "ic22",
+        "aux_square_gap"
+      ],
+      [
+        "P17",
+        "-",
+        1,
+        "aux_y2"
+      ]
+    ],
+    "sources": [
+      {
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source_sign": 1,
+        "source": "k**2*s**4*scale**6*w**2 + k**2*s**2*scale**3*w - tau**2 + 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source_sign": 1,
+        "source": "c - eta - k*s*scale",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source_sign": 1,
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source_sign": 1,
+        "source": "-R - h*s*scale**2*w + k - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source_sign": 1,
+        "source": "a - s*scale**2*w - s*scale",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source_sign": 1,
+        "source": "-a*c - 4*a*ga + d - 3*ga - scale*w",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source_sign": 1,
+        "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source_sign": 1,
+        "source": "R**2*a**2*f**2 - R**2*a**2 + 4*R**2*a*f**2 - 4*R**2*a + 3*R**2*f**2 - 3*R**2 - 2*R*a**2*c*f**2*j + 2*R*a**2*c*j - 8*R*a*c*f**2*j + 8*R*a*c*j - 6*R*c*f**2*j + 6*R*c*j + a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - a**2*f**2*y_aux**2 + a**2*y_aux**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 4*a*f**2*y_aux**2 + 4*a*y_aux**2 + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 3*f**2*y_aux**2 + 4*y_aux**2 - 1",
+        "correction": "-R**2*a**2*f**2 + R**2*a**2 - 4*R**2*a*f**2 + 4*R**2*a + R**2*c**4*i**2 - 3*R**2*f**2 + 3*R**2 + 2*R*a**2*c*f**2*j - 2*R*a**2*c*j + 8*R*a*c*f**2*j - 8*R*a*c*j - 2*R*c**5*i**2*j + 6*R*c*f**2*j - 6*R*c*j - a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + a**2*f**2*y_aux**2 - a**2*y_aux**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 4*a*f**2*y_aux**2 - 4*a*y_aux**2 + c**6*i**2*j**2 - c**4*i**2*y_aux**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 3*f**2*y_aux**2 - 3*y_aux**2"
+      },
+      {
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source_sign": 1,
+        "source": "-R + c*j + c - f*o",
+        "correction": "0"
+      }
+    ],
+    "deleted_instruction": [
+      "tr1",
+      "+",
+      "r1",
+      "r"
+    ],
+    "replaced_norm_instructions": [
+      [
+        "tau_square",
+        "*",
+        "tau",
+        "tau"
+      ],
+      [
+        "R9",
+        "-",
+        "tau_square",
+        1
+      ]
+    ],
+    "retained_strong_auxiliary_square": true,
+    "theorem_external_hypotheses": "q>=16, scale=q^3, 3q+1<=R<q^4; construction of scale and bounds is separately paid",
+    "exact_projection": "q=2^t, R=3 mod4, popcount((R-1)/2)>=3t+1, under displayed external bounds"
+  },
+  "candidate75": {
+    "operations": 75,
+    "multiplications": 41,
+    "additions_subtractions": 34,
+    "equations": 19,
+    "positive_existentials_excluding_x": 30,
+    "source_dependency": "complete75_half_binomial.source_audit",
+    "fixed_mask_alias": "MF_source=MF+B-1",
+    "entire_schedule_matches_kernel_edits": true,
+    "ledger": {
+      "outer": 19,
+      "half_binomial_kernel": 42,
+      "input_bridge": 14
+    },
+    "scope": "Literal candidate ledger only: modified compiler, mask, synchronization and ordinary-input theorem are pending outside this packet"
+  },
+  "bootstrap": {
+    "prepower_parameter_cases": 260,
+    "q_range": [
+      16,
+      80
+    ],
+    "lower_R": "3q+1, not q^2; packed boundary is allowed before typing"
+  },
+  "first_norm": {
+    "generated_pell_points": 2000,
+    "arbitrary_coefficients": 8000,
+    "admitted": 66,
+    "fundamental_pair": "(2V+1,2) for every V>=1"
+  },
+  "ratios": {
+    "main_prototypes": [
+      {
+        "R": 3,
+        "old_r": 1,
+        "Y_bits": 3,
+        "main_coordinate_bits": {
+          "a": 6,
+          "c": 14,
+          "d": 19,
+          "k": 11
+        },
+        "all_seven_main_equations": true,
+        "strict_positive_eta_zeta": true
+      },
+      {
+        "R": 7,
+        "old_r": 3,
+        "Y_bits": 21,
+        "main_coordinate_bits": {
+          "a": 28,
+          "c": 169,
+          "d": 196,
+          "k": 149
+        },
+        "all_seven_main_equations": true,
+        "strict_positive_eta_zeta": true
+      },
+      {
+        "R": 11,
+        "old_r": 5,
+        "Y_bits": 55,
+        "main_coordinate_bits": {
+          "a": 66,
+          "c": 661,
+          "d": 726,
+          "k": 607
+        },
+        "all_seven_main_equations": true,
+        "strict_positive_eta_zeta": true
+      },
+      {
+        "R": 15,
+        "old_r": 7,
+        "Y_bits": 105,
+        "main_coordinate_bits": {
+          "a": 120,
+          "c": 1681,
+          "d": 1800,
+          "k": 1577
+        },
+        "all_seven_main_equations": true,
+        "strict_positive_eta_zeta": true
+      },
+      {
+        "R": 19,
+        "old_r": 9,
+        "Y_bits": 171,
+        "main_coordinate_bits": {
+          "a": 190,
+          "c": 3421,
+          "d": 3610,
+          "k": 3251
+        },
+        "all_seven_main_equations": true,
+        "strict_positive_eta_zeta": true
+      },
+      {
+        "R": 23,
+        "old_r": 11,
+        "Y_bits": 253,
+        "main_coordinate_bits": {
+          "a": 276,
+          "c": 6073,
+          "d": 6348,
+          "k": 5821
+        },
+        "all_seven_main_equations": true,
+        "strict_positive_eta_zeta": true
+      },
+      {
+        "R": 31,
+        "old_r": 15,
+        "Y_bits": 465,
+        "main_coordinate_bits": {
+          "a": 496,
+          "c": 14881,
+          "d": 15376,
+          "k": 14417
+        },
+        "all_seven_main_equations": true,
+        "strict_positive_eta_zeta": true
+      }
+    ],
+    "half_binomial_threshold_cases": 700,
+    "prototype_scope": "Exact main equations with scale1; general-q theorem proved parametrically"
+  },
+  "complete_prototype": {
+    "R": 3,
+    "scale": 1,
+    "X": 8,
+    "Y": 5,
+    "a": 45,
+    "c": 8835,
+    "K": 1604,
+    "tau": 321601,
+    "eta": 815,
+    "zeta": 789,
+    "h": 40,
+    "auxiliary_index": 53010,
+    "all_ten_equalities": true,
+    "all_supplied_coordinates_positive": true,
+    "coordinate_bit_lengths": {
+      "scale": 1,
+      "R": 2,
+      "w": 4,
+      "s": 3,
+      "a": 6,
+      "c": 14,
+      "d": 19,
+      "k": 11,
+      "tau": 19,
+      "eta": 10,
+      "zeta": 10,
+      "h": 6,
+      "ga": 7,
+      "f": 347450,
+      "i": 347429,
+      "y_aux": 694912,
+      "o": 347463,
+      "j": 694899
+    },
+    "scope": "Full numerical42 prototype outside the q>=16 projection hypotheses; compiler witnesses not materialized"
+  },
+  "scope": "Proved42 kernel under explicit external bounds;75 source ledger is not a complete compiler theorem",
+  "established_complete_universal_bound": 75
+}

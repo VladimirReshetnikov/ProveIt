@@ -219,4 +219,6 @@ It constructs actual even polynomial inputs for every required finite
 prefix pattern and checks positive erased tuples with the proportional
 external carry, including even width/time. These finite tests supplement
 the parametric proof; they are not an enumeration of accepted languages.
-Independent full review is pending.
+Independent full proof/source/default review passed with no findings.
+Fresh replay686158 matched the saved receipt, including both asymmetric
+suffix arguments, signed two-run bounds and the positive aligned converse.

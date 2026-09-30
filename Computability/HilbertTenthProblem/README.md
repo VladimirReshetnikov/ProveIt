@@ -50,8 +50,11 @@ universal Diophantine equations by James P. Jones and coauthors:
 - The editorial review found and corrected errors in the printed articles;
   every correction is justified in the per-article notes.
 - The smallest established complete universal straight-line certificate
-  (satellite work on the 1980 Theorem 5) uses 76 operations; see
-  `Papers/1980/FIXED_RAW_UNIVERSAL_76_PROOF.md`.
+  (satellite work on the 1980 Theorem 5) uses **75 operations (41 multiplications and34 additions/subtractions)**,
+  with30 positive witnesses and19 equations; see
+  [the complete proof](Papers/1980/FIXED_RAW_UNIVERSAL_75_PROOF.md).
+  Three independent integration reviews and focused source/component checks
+  pass. This optimized bound is not yet Lean formalized.
 
 ## Building and checking
 

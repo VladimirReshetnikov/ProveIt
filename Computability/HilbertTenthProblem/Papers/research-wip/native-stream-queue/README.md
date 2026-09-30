@@ -5,7 +5,14 @@ This directory is an explicitly scoped research handoff on
 [CONTINUATION_PROMPT.md](CONTINUATION_PROMPT.md). No local-machine files are
 needed to continue in an independent clone.
 
-**The established complete universal bound remains 76.** The native-stream
+**The established complete universal bound is now75=41M+34A**, with30
+strictly positive witnesses and19 equations. See the
+[full proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) and
+[consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
+Three independent full integration reviews passed; this is a mathematical
+proof with symbolic and finite checks, not a Lean formalization.
+
+The historical native-stream
 component costs six operations with external bounds, or eight with a paid
 joint bound; finite-controller arithmetic and power geometry remain unpaid.
 The proposed five-operation loader has no completed proof or implementation.
@@ -19,10 +26,14 @@ pinned dependency on Linux. [LINUX_VALIDATION.json](LINUX_VALIDATION.json)
 records the focused commands, results and evidence boundaries. The original
 Windows receipt below remains a historical handoff record.
 
-New research, without a change to the complete universal bound:
+New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Complete half-binomial75](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) | Complete universal certificate in **75=41M+34A**,30 positive witnesses and19 equations, with fixed program numerals, ordinary input, synchronized accepting computation and both proof directions. | Three independent full integration reviews pass; no Lean formalization or publication claim. |
+| [Strong half-binomial42](pell_kernel_half_binomial42.md) | A changed first norm supplies a doubled Pell coefficient without a paid doubling and saves the main-index addition; the strong auxiliary square is retained. | The full source pays the explicit scale and index bounds. |
+| [Modified compiler masks](complete75_half_binomial_compiler.md) | Exact global two-bit population correction, harmless four-valued dummy digit, strengthened rotation bounds, synchronization and actual-index five-adic control. | Parametric full compiler proof; sparse and finite checks are identified separately. |
+| [Positive half-binomial input bridge](input_bridge_half_binomial75.md) | The unchanged14-operation ordinary-input bridge and all fresh positive kernel/input witnesses satisfy the complete75 source. | Large universal witnesses are constructed parametrically, not materialized. |
 | [One-field half mask](one_field_half_mask.md) | Exact bounded mask predicate in **51=30M+21A**, including power recovery and a positive-witness converse. The proof excludes its `F=q` boundary after the kernel. | A universal single-field compiler, input and acceptance are absent; 51 is a module count. |
 | [Base-four half mask](pell_kernel_base_four_half_mask.md) | The same **51=30M+21A** predicate with retained power `X=4^(2r+1)`; even masks work with the exact origin-parity condition. | Even exponent removes one stride obstruction but does not prove compiler alignment. |
 | [Native ternary selectors](native_controller_three_selector_53.md) | Exact three-label selector relation in **53=29M+24A**, with power geometry, typing, bounds and one-hot synchronization; 54 also exposes the repunit. | Controller, ordinary input, transport and acceptance remain unpaid. The first label is fixed to zero. |
@@ -35,7 +46,7 @@ New research, without a change to the complete universal bound:
 | [Four independent fields](native_controller_four_fields55.md) | Exact **55=30M+25A** four-field relation;57 exposes the repunit. The [56/58 reference](native_controller_four_fields56.md) pays parity explicitly. | Four Boolean planes have a combined parity restriction; routing, control and ordinary input remain unpaid. |
 | [Cyclic NAE/majority](native_controller_nae_majority60.md) | Exact **60=33M+27A** relation for two rotations and a not-all-equal gate with majority output, at even length. The [61 reference](native_controller_nae_majority61.md) also proves a conditional spectral restriction; the [67 source](native_controller_nae_majority67.md) permits either length parity. | This finite gate relation has no universal simulation or ordinary-input/acceptance compiler. |
 | [Dual-rail ordinary-input FIFO](native_dualrail_fifo64.md) | Exact **64=33M+31A** typed FIFO initialized by ordinary `6x`, deriving field bounds from three aggregate bounds. General carry control costs nine more operations, giving73. The [65 reference](native_dualrail_fifo67.md) is retained. | The FIFO alone admits all inputs; no universal controller or accepting compiler is supplied. |
-| [Joint-bounded FIFO](native_dualrail_fifo63.md) | Exact **63=33M+30A** FIFO with ordinary `6x` and `A+D<q`; the proof excludes packed overflow as well as field carries. General and equal-endpoint carry architectures cost **72** and **71**. | Controller padding must respect the joint bound. Neither architecture has a universal compiler; the complete bound remains76. |
+| [Joint-bounded FIFO](native_dualrail_fifo63.md) | Exact **63=33M+30A** FIFO with ordinary `6x` and `A+D<q`; the proof excludes packed overflow as well as field carries. General and equal-endpoint carry architectures cost **72** and **71**. | Controller padding must respect the joint bound. Neither architecture has a universal compiler; the native component itself has no universal compiler. |
 | [Strong power geometry42](pell_kernel_power_geometry42.md) | Exact powers of two and three in **42=25M+17A**, replacing the first-index equation by `k=hq` while retaining the strong auxiliary norm. The paired binary and ternary FIFOs therefore cost **51** and **49**, with general affine control in60 and58. | Exact components only; the original43 references remain valid. No universal controller or acceptance compiler is supplied. |
 | [Paired ternary FIFO and delayed loader](native_ternary_pair_fifo50.md) | Exact native nine-symbol FIFO from ordinary `(x,0)`, originally50 and now49 via power42. A proved finite prefix inserts the handoff machine's delimiter while preserving x. | The finite prefix and subsequent universal controller still need arithmetic certification. Both append streams are positive; the optional joint bound is explicit. |
 | [Paired Boolean ternary FIFO](native_boolean_pair_fifo63.md) | Exact **63=32M+31A** component for two genuine Boolean queues, with positive ordinary-input split and both lane transports; general affine control costs72. | Universal input normalization, controller and acceptance remain open. |
@@ -95,6 +106,7 @@ formalizations or new publication bounds.
 Fresh default checks for the new artifacts:
 
 ```sh
+python3 Computability/HilbertTenthProblem/Papers/verification/explore_fixed_raw_universal_75.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_one_field_half_mask.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_base_four_half_mask.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_three_selector_53.py
@@ -198,11 +210,11 @@ input forces the controller to be trivial and the language to contain all
 positive inputs. The obstruction persists under every fixed positive even
 integer-polynomial input substitution. This does not decide every individual
 controller language or cover additional filters.
-Two different filters remain constructive alternatives: a paid hidden Boolean
-carry and complementary queue lanes. The former has a proved erasing map
-and a one-addition marker input, giving a controller architecture in71 or73
-with even alignment. The latter gives general control in71 or73 aligned.
-Neither architecture yet has a universal controller and accepting compiler.
+The hidden Boolean carry has a proved erasing map and paid marker, but its
+external controller now has a polynomial-input collapse obstruction.
+Complementary queue lanes give general control in71 or73 aligned and remain
+an open controller interface. The complete75 result instead uses the new
+half-binomial kernel and the modified established helical compiler.
 Binary one-hot selectors give NAND ports in58 and an exact Rule110 scan
 relation in73, but its terminal condition has no universal halting theorem.
 These components leave more room for a synchronized universal controller;
@@ -289,3 +301,7 @@ inventory.
 
 The original files remain intact in the originating checkout. The remote
 continuation depends only on this branch and the migrated tracked dependencies.
+
+The `unreviewed_complete76_projection_bound29.md/.py` pair preserves an
+interrupted author-only alternative. Its source was not run, has no receipt,
+and is excluded from verified research counts.

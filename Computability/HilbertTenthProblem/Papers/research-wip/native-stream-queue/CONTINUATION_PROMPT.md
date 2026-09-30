@@ -1,5 +1,10 @@
 # Continuation: universal straight-line certificates
 
+> Historical handoff below. The subsequent research completed a reviewed
+> **75=41M+34A** universal certificate with30 positive witnesses and19 equations.
+> Start with [the current proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) and
+> [its consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
+
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.
 All paths and executable imports below are relative to this repository; no
