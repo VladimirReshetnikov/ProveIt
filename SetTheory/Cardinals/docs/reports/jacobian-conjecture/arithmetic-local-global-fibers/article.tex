@@ -80,6 +80,9 @@
 \newcommand{\Hsplit}{\mathcal H^{\mathrm{sp}}}
 \newcommand{\Isplit}{\mathcal I^{\mathrm{sp}}}
 \newcommand{\calB}{\mathcal B}
+% Part III (batch 64, manuscript 02)
+\newcommand{\nssha}{\nolinkurl{6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72}}
+\newcommand{\NS}{\mathrm{ns}}\newcommand{\spc}{\mathrm{sp}}
 \lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,
  keepspaces=true,showstringspaces=false,breaklines=true,
  frame=single,rulecolor=\color{black!20},xleftmargin=0.4em,xrightmargin=0.4em,
@@ -89,16 +92,16 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \setlength{\parindent}{0pt}
-\vspace*{0.3in}
+\vspace*{0.1in}
 \noindent{\large\scshape ProveIt research article}\par
-\vspace{0.35in}
+\vspace{0.25in}
 \noindent{\huge\bfseries Arithmetic Local--Global\par Dichotomies for ProveIt's\par Three-Variable Keller Map}\par
 \vspace{0.25in}
 \noindent{\Large Split integral Hasse failures, a dense parameter family,\par and exact $p$-adic fiber laws}\par
-\vspace{0.4in}
+\vspace{0.3in}
 \noindent Research draft prepared for Vladimir Reshetnikov\par
 \noindent September 24, 2026\par
-\vspace{0.45in}
+\vspace{0.3in}
 \begin{abstract}
 We study the arithmetic image of the explicit polynomial map with constant
 Jacobian determinant $-2$ developed in ProveIt's Jacobian-conjecture project.
@@ -144,6 +147,10 @@ Section~\ref{alg:sub:attribution} and Appendix~\ref{alg:app:report}.
 formalized) answers Research question~\ref{alg:sub:q-density} and, for
 completely split fibers in square boxes, Research
 question~\ref{alg:sub:q-height}.
+[Added 30 September 2026, batch~64:] Part~III
+(Section~\ref{alg:ns:sec:relation}, labels \texttt{alg:ns:}, not
+formalized) answers Research questions~\ref{alg:sub:q-split} and, for
+square boxes in all sectors, \ref{alg:sub:q-height}.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 \tableofcontents
@@ -1506,6 +1513,12 @@ Can the 512-entry dyadic certificate be compressed into a short list of
 explicit congruence conditions on $(A,B,C)$, with a hand-checkable
 case proof for each integral fiber size?
 \end{question}
+\noindent[Added 30 September 2026, batch~64: partly answered, for image
+membership only, by Part~III: Proposition~\ref{alg:ns:prop:two} compresses
+membership in $F(\Z_2^3)$ to the five-row table $E(A,B,C)$ of congruences
+modulo $8$. The integral fiber sizes $j=1,2,3$ are not compressed, and
+that proof is still the exhaustive $512$-case check.]
+
 \cref{alg:thm:dyadic} proves that modulus eight suffices and modulus four
 does not. Thus the remaining problem is logical and algebraic compression,
 not an unbounded precision search. The eight parity rows suggest a small
@@ -1523,6 +1536,13 @@ is classified in Part~II (Theorem~\ref{alg:dh:thm:local-complete}, with
 Theorem~\ref{alg:dh:thm:finite}), in terms of the root numerators; the
 rational-plus-quadratic sector remains open (Research
 question~\ref{alg:dh:q:quadratic}).]
+[Added 30 September 2026, batch~64: answered by Part~III on every slice
+$C\ne0$, in both sectors and in the target coefficients:
+Theorem~\ref{alg:ns:thm:main} is a complete local certificate (an integer
+root of the monic inverse polynomial, $\gcd(3BC-4,27AC^2-4)$ a power of
+two, and a table modulo~$8$), and Corollary~\ref{alg:ns:cor:nonsplit} the
+complete Hasse test for a rational point with an irreducible quadratic
+pair. The rational-plus-quadratic sector is no longer open.]
 
 For arbitrary split rational fibers, \cref{alg:lem:denominator} already gives
 a criterion once denominators are known. The challenge is to express it
@@ -1544,6 +1564,15 @@ $\kappa(2)=27\Gamma(1/3)^2/(8\pi^2\Gamma(2/3))$
 (Theorem~\ref{alg:dh:thm:headline-count}); fibers with one rational point
 and a quadratic pair, unequal box sides, uniformity in $c$ and an error
 term remain open.]
+[Added 30 September 2026, batch~64: answered by Part~III for square boxes
+in all sectors. On $C=2$ the locally integral targets, all integral
+Hasse failures and the nonsplit ones each number
+$\frac{27}{2\pi^2}T\log T+O(T)$ in $|A|,|B|\le T$
+(Theorem~\ref{alg:ns:thm:count-main}), and the integral targets
+$2^{5/3}T^{1/3}+O(1)$; the completely split sector ($T^{2/3}$) is not the
+dominant one. Unequal box sides remain open (Research
+question~\ref{alg:ns:q:unequal}), as do other slices, a second-order term
+and a power-saving error.]
 
 The density $27/(4\pi^2)$ counts ordered root parameters in a square.
 Passing to target heights introduces a nonlinear region, a sixfold
@@ -1569,11 +1598,19 @@ coordinate, but they can introduce new prime denominators and do not
 preserve all local-integrality conditions automatically. A valid extension
 must control those exceptional primes explicitly.
 
-\subsection{Exact local laws over extensions of \texorpdfstring{$\Q_2$}{Q2}}
+\subsection{Exact local laws over extensions of \texorpdfstring{$\Q_2$}{Q2}}\label{alg:sub:q-extensions}
 \begin{question}
 Determine integral fiber distributions over finite extensions of $\Q_2$,
 including ramified extensions.
 \end{question}
+\noindent[Added 30 September 2026, batch~64: Part~III bears on this for
+image membership only: over the valuation ring of any finite extension,
+a solution modulo $8$ lifts (Lemma~\ref{alg:ns:lem:lift}), so membership
+is decided in the finite quotient
+(Theorem~\ref{alg:ns:thm:numberfields}). The fiber distributions, and the
+least modulus deciding membership (Research
+question~\ref{alg:ns:q:dyadicprec}), remain open.]
+
 Over a discretely valued extension, the same contraction proof uses the
 valuation of $2$ in that field. It therefore gives a finite precision
 bound, but the number of residue classes and the rank patterns can
@@ -1681,6 +1718,14 @@ exactly what is answered, fixes the notation against Part~I and lists
 what is printed twice; Sections~\ref{alg:dh:sec:intro}--\ref{alg:dh:sec:repro}
 are the manuscript.}
 
+\noindent[Added 30 September 2026, batch~64: Part~III
+(Section~\ref{alg:ns:sec:relation}) answers Research
+question~\ref{alg:sub:q-split} in the rational-plus-quadratic sector too,
+and Research question~\ref{alg:sub:q-height} for square boxes in all
+sectors, where the split sector counted here is not the dominant one. It
+added further dated notes to Parts~I and~II, listed in
+Appendix~\ref{alg:ns:app:provenance}.]
+
 \section{Relation to Part~I}\label{alg:dh:sec:relation}
 \wtag{} This section was written when the manuscript was added to the
 report.
@@ -1768,6 +1813,11 @@ settles the completely split sector of the prior report's Research
 Question~12.3'' after Theorem~\ref{alg:dh:thm:headline-count}, and the
 corresponding sentence of its abstract, are printed with the restriction
 to square boxes added and marked \wtag.
+[Added 30 September 2026, batch~64: this describes Part~II only. The
+question is now answered for square boxes in all sectors by Part~III
+(Theorem~\ref{alg:ns:thm:count-main}): on $C=2$ the integral Hasse
+failures number $\frac{27}{2\pi^2}T\log T+O(T)$, almost all nonsplit, so
+the split sector above is a lower-order part of that count.]
 \item \emph{Research question~\ref{alg:sub:q-split} is answered in the
 completely split sector.} Theorem~\ref{alg:dh:thm:local-complete} gives
 the complete local criterion for every completely split integral target on
@@ -1778,6 +1828,10 @@ an integral point.) A criterion in the target coefficients themselves,
 without factoring, is Research question~\ref{alg:dh:q:coefficient}; the
 rational-plus-quadratic sector remains open (Research
 question~\ref{alg:dh:q:quadratic}).
+[Added 30 September 2026, batch~64: both are answered by Part~III: the
+coefficient criterion by Theorem~\ref{alg:ns:thm:main}, and the
+rational-plus-quadratic sector by Corollary~\ref{alg:ns:cor:nonsplit}
+(Section~\ref{alg:ns:sec:answers}).]
 \item \emph{Research questions~\ref{alg:sub:q-dyadic}
 and~\ref{alg:sub:q-library} are related, not answered.} Research
 question~\ref{alg:dh:q:coefficient} (coefficient-only local certificates)
@@ -2102,6 +2156,11 @@ sides are not treated here and remain open. The manuscript's sentence
 has no box restriction; see Section~\ref{alg:dh:sec:answers}.] It does \emph{not}
 count fibers having one rational point and a nonrational quadratic pair;
 those fibers may have a different arithmetic behavior.
+[Added 30 September 2026, batch~64: they do. Part~III counts them on
+$C=\pm2$: in square boxes they number $\frac{27}{2\pi^2}T\log T+O(T)$
+(Theorem~\ref{alg:ns:thm:count-main}), so on these slices the split sector
+of this theorem is not the dominant part of the integral Hasse failures.
+The theorem itself is unaffected.]
 
 \subsection{What is old, what is proved here, and what remains unclaimed}
 The inverse cubic and the geometric degree-three model are prior work.
@@ -3036,6 +3095,12 @@ quadratic discriminant and the reconstruction valuations in terms of
 the rational root and the remaining coefficients.
 \wtag{} This is the second half of Part~I's Research
 question~\ref{alg:sub:q-split}, with a counting question added.
+[Added 30 September 2026, batch~64: the classification is answered by
+Part~III for every $c\ne0$ (Theorem~\ref{alg:ns:thm:main} and
+Corollary~\ref{alg:ns:cor:nonsplit}); the count for $c=\pm2$ in square
+boxes is $\frac{27}{2\pi^2}T\log T+O(T)$
+(Theorem~\ref{alg:ns:thm:count-main}). The exponent and constant for
+other $c$ remain open (Research question~\ref{alg:ns:q:slices}).]
 
 \begin{question}[A quantitative remainder]\label{alg:dh:q:remainder}
 Can one prove an explicit error term
@@ -3071,6 +3136,15 @@ with the splitting assumption. A compact certificate format could be
 more useful computationally than a single large formula.
 \wtag{} This extends Part~I's Research question~\ref{alg:sub:q-dyadic},
 which asks the same for the dyadic certificate alone.
+[Added 30 September 2026, batch~64: answered by Part~III. The integral
+roots of a completely split target's monic inverse polynomial are its
+root numerators, so by Theorem~\ref{alg:ns:thm:main} such a target is
+locally integral everywhere exactly when $\gcd(3Bc-4,27Ac^2-4)$ is a
+power of two and the modulo-eight table $E(A,B,c)$ holds; no
+factorization is needed (Section~\ref{alg:ns:sec:answers}). Applied to
+completely split targets, this criterion reproduces all fifteen counts
+of the table in Section~\ref{alg:dh:sec:count}
+(Section~\ref{alg:ns:sec:consistency}).]
 
 \begin{question}[Number fields and $S$-integer counting]\label{alg:dh:q:numberfield}
 What replaces the constant $\kappa(c)$ over the integers of a number
@@ -3081,6 +3155,11 @@ The numerator-root method and denominator covering have natural ideal
 versions. Archimedean regions, ideal classes, residue characteristic two,
 and the unit group introduce new issues. The existence theorem for
 $S$-integers proved here does not by itself give their height asymptotics.
+[Added 30 September 2026, batch~64: Part~III's
+Theorem~\ref{alg:ns:thm:numberfields} gives a complete local membership
+certificate over every ring $\Oh_{K,S}$, for all fibers; the counting
+constants asked for here remain open (Research
+question~\ref{alg:ns:q:numberfield} asks the same for nonsplit fibers).]
 
 \begin{question}[The finite integral exceptional set]\label{alg:dh:q:exceptions}
 Can the divisor enumeration of $\Isplit_c$ be simplified to a closed
@@ -3121,6 +3200,9 @@ $T^{2/3}$ target-height law. The resulting theorem resolves the concrete
 full-dimensional question left in the repository report while keeping
 the unsplit arithmetic sector, uniform counting, and formal verification
 as explicitly separate next problems.
+[Added 30 September 2026, batch~64: the unsplit sector is treated in
+Part~III, which classifies it on every slice and shows that on $C=\pm2$ it
+carries the dominant $T\log T$ term of the integral Hasse failures.]
 
 \section{A compact proof and certificate ledger}\label{alg:dh:sec:ledger}
 \wtag{} This is the manuscript's Appendix~A.
@@ -3175,8 +3257,1796 @@ delivered name, and the scripts write under delivered names into
 (Appendix~\ref{alg:dh:app:rerun}). On Windows use \texttt{py} or
 \texttt{uv run} for \texttt{python}.
 
-%% End of Part II. The appendices below belong to Part I, apart from
-%% the Part II provenance and rerun subsections at the end of Appendix C.
+% ==== Part III begins
+%% ====================================================================
+%% Batch-64 addition (manuscript 02, "Beyond Split Fibers: Exact Local
+%% Certificates and a T log T Law for Integral Hasse Failures"). All
+%% labels of Part III carry the prefix alg:ns: (nonsplit). Section 28 is
+%% new ([write]); manuscript Section k is printed as Section k+28
+%% (k = 1..14; Section 41 is its research questions, Section 42 its
+%% Conclusion) and its Appendices A--D as Sections 43--46.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Nonsplit fibers: a complete local certificate and a $T\log T$ law}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Nonsplit fibers: a complete local certificate and a \texorpdfstring{$T\log T$}{T log T} law}
+\fancyhead[L]{\small Part III: nonsplit fibers and a $T\log T$ law}
+
+\noindent\emph{Part~III was added on 30~September 2026 in batch~64 of
+ProveIt's incoming-report intake, from one manuscript of 30~September
+2026 written against Parts~I and~II as pinned. Parts~I and~II are
+unchanged except for dated notes and the title-page spacing (listed in
+Appendix~\ref{alg:ns:app:provenance}). Part~III answers Research
+question~\ref{alg:sub:q-split} on every slice $C\ne0$, and Research
+question~\ref{alg:sub:q-height} for square boxes in all sectors: on
+$C=2$ the integral Hasse failures number
+$\frac{27}{2\pi^2}T\log T+O(T)$, almost all of them nonsplit, so the
+completely split sector that Part~II counts ($T^{2/3}$) is not the
+dominant one. Section~\ref{alg:ns:sec:relation} states exactly what is
+answered, fixes the notation against Parts~I and~II and lists what is
+printed twice; Sections~\ref{alg:ns:sec:intro}--\ref{alg:ns:app:dyadic}
+are the manuscript.}
+
+\section{Relation to Parts~I and~II}\label{alg:ns:sec:relation}
+\wtag{} This section was written when the manuscript was added to the
+report.
+
+\subsection{The manuscript}\label{alg:ns:sec:source}
+Part~III is batch-64 manuscript~02, \emph{Beyond Split Fibers: Exact
+Local Certificates and a $T\log T$ Law for Integral Hasse Failures},
+subtitled \emph{Arithmetic of ProveIt's three-variable Keller map} and
+dated 30~September 2026. It was delivered as the archive
+\texttt{ProveIt\_Beyond\_Split\_Fibers} and is pinned to ProveIt commit
+\nssha; its provenance, shipped files and editorial changes are in
+Appendix~\ref{alg:ns:app:provenance}. Its title-page abstract and
+evidence note read as follows.
+\begin{quote}\small
+We resolve the rational-plus-quadratic local-solubility question left open
+in ProveIt's arithmetic-fiber report. For its explicit three-variable
+polynomial map $F$ with Jacobian determinant $-2$, an integral target
+$(A,B,C)$ is locally integral at every prime precisely when a monic inverse
+cubic has an integer root, the integer
+$\gcd(3BC-4,27AC^2-4)$ has no odd prime factor, and an explicit table of
+congruences modulo $8$ holds. Thus no separate analysis of the quadratic
+factor's splitting fields is needed once a rational root is known.
+
+On the slice $C=2$, this criterion becomes a primitive parametrization:
+$A=r^3-r^2+rb$, $B=2b$, and $\gcd(3r-1,3b-1)=1$.
+We prove that nonsplit integral Hasse failures in $|A|,|B|\le T$ number
+$\frac{27}{2\pi^2}T\log T+O(T)$; the same formula counts all integral
+Hasse failures on the slice. This differs fundamentally from the
+$T^{2/3}$ scale previously obtained for completely split fibers.
+We also determine the entire integral image on $C=2$: it has two
+polynomial parametrizations with disjoint integer images, containing
+$2^{5/3}T^{1/3}+O(1)$ targets in the same box. A number-field and
+$S$-integer extension, exact algorithms, finite certificates, and further
+research questions complete the study.
+
+\textbf{Evidence and novelty boundary.}
+All principal claims have proofs below. The computations are reproducible
+checks and finite certificates, not Lean or Rocq formalizations. The
+classification and counting theorems are candidate new contributions
+relative to the pinned repository and primary sources reviewed here;
+worldwide priority has not been established. The map, inverse-cubic
+geometry, and earlier split-fiber results are explicitly attributed.
+This article does not claim a new disproof of the Jacobian conjecture.
+\end{quote}
+
+\subsection{What Part~III answers, and what it does not}\label{alg:ns:sec:answers}
+\begin{itemize}[itemsep=2pt,topsep=3pt]
+\item \emph{Research question~\ref{alg:sub:q-split} is answered, on every
+slice $C\ne0$ and in both sectors.} Theorem~\ref{alg:ns:thm:main} is a
+complete local certificate for every integral target: an integer root of
+the monic inverse polynomial $H$, the gcd $G$ of $U=3BC-4$ and
+$V=27AC^2-4$ a power of two, and the modulus-eight table $E$.
+Corollary~\ref{alg:ns:cor:nonsplit} turns it into a complete Hasse test
+for fibers with one rational point and an irreducible quadratic pair,
+the second sector of the question, which Part~II left open. (Part~II's
+Theorem~\ref{alg:dh:thm:local-complete} had classified the completely
+split sector in terms of root numerators.) On $C=0$ every integral target
+has an integral point.
+\item \emph{Research question~\ref{alg:sub:q-height} is answered for square
+boxes, in all sectors.} On $C=2$ (and, by reflection, $C=-2$), in
+$|A|,|B|\le T$, the locally integral targets, all integral Hasse failures
+and the nonsplit ones each number $\frac{27}{2\pi^2}T\log T+O(T)$
+(Theorem~\ref{alg:ns:thm:count-main}), and the integral targets
+$2^{5/3}T^{1/3}+O(1)$ (Corollary~\ref{alg:ns:cor:integral-count}). The
+completely split sector counted by Part~II,
+$\#\Hsplit_2(T)\sim\kappa(2)T^{2/3}$
+(Theorem~\ref{alg:dh:thm:headline-count}), is therefore \emph{not} the
+dominant term: almost every integral Hasse failure on $C=2$ is nonsplit
+(Corollary~\ref{alg:ns:cor:density}). The constant $27/(2\pi^2)$ is twice
+the Euler product $\prod_{p\ne3}(1-p^{-2})=27/(4\pi^2)$, the main term
+with an explicit Euler product that the discussion of the question asks
+for. Not answered: unequal box sides $H_A\ne H_B$ (Research
+question~\ref{alg:ns:q:unequal}); a second-order term or a power saving
+(Research questions~\ref{alg:ns:q:second} and~\ref{alg:ns:q:power}); other
+slices (Research question~\ref{alg:ns:q:slices}).
+\item \emph{Part~II's Research question~\ref{alg:dh:q:coefficient} is
+answered.} For a completely split integral target the numerators of the
+roots are integer roots of $H$ (Section~\ref{alg:ns:sec:consistency}), so
+the root gate holds automatically and local solubility everywhere is
+``$G$ is a power of two and $E(A,B,C)$ holds'': a criterion in
+$(A,B,c)$ that needs no factorization of the inverse cubic.
+\item \emph{Part~II's Research question~\ref{alg:dh:q:quadratic} is
+answered in its classification half on every slice, and in its counting
+half on $C=\pm2$} (order $T\log T$, constant $27/(2\pi^2)$). The exponent
+and constant on other slices remain open (Research
+question~\ref{alg:ns:q:slices}).
+\item \emph{Partly answered or related.} Research
+question~\ref{alg:sub:q-dyadic}: membership in the dyadic image is
+compressed to the five-row table $E$ in the target coefficients
+(Proposition~\ref{alg:ns:prop:two}); the integral fiber \emph{sizes}
+$j=1,2,3$ are not compressed, and the proof is still the exhaustive
+$512$-case check, not a hand case proof. Research
+question~\ref{alg:sub:q-extensions} and Part~II's Research
+question~\ref{alg:dh:q:numberfield}: Theorem~\ref{alg:ns:thm:numberfields}
+gives a membership certificate over every ring $\Oh_{K,S}$, with the
+uniform dyadic modulus $8R$; fiber distributions, minimal moduli and
+height counts over number fields remain open (Research
+questions~\ref{alg:ns:q:dyadicprec} and~\ref{alg:ns:q:numberfield}).
+Research question~\ref{alg:sub:q-library} and Part~II's Research
+question~\ref{alg:dh:q:library} are related to Research
+question~\ref{alg:ns:q:software}. Research questions 12.4 (answered by
+Part~II), 12.6--12.8 and Part~II's Research
+questions~\ref{alg:dh:q:remainder}, \ref{alg:dh:q:uniform}
+and~\ref{alg:dh:q:exceptions} are untouched.
+\end{itemize}
+Part~II's results stand as proved: its split-sector theorems are not
+superseded, and its $T^{2/3}$ law is the exact order of the split
+sector, which Part~III bounds only by $O(T)$
+(Lemma~\ref{alg:ns:lem:splitbound}). What changes is the scope of the
+sentence ``Research question~12.3 is answered only in the completely split
+sector'': dated notes in Parts~I and~II now point here.
+
+\subsection{Consistency with Parts~I and~II}\label{alg:ns:sec:consistency}
+Where the Parts meet they agree. Each item was checked at the write, by
+hand or by an exact computation of its own (not the delivered programs).
+\begin{itemize}[itemsep=2pt,topsep=3pt]
+\item \emph{Part~II's numerators are the roots of $H$.} Since
+$H(Ct)=C^2g(t)$, the roots of the monic $H$ are $C$ times the roots of
+Part~I's $g_{A,B,C}$; on $C=c$ these are exactly Part~II's root
+numerators $a,b,r$, with $a+b+r=2$ \eqref{alg:dh:eq:numerator-roots}.
+\item \emph{Odd primes.} At an odd prime $p\nmid c$, Part~II's obstruction
+\eqref{alg:dh:eq:gcd} is $a\equiv b\equiv r\equiv2\cdot3^{-1}$, that is,
+$\overline H=(S-2/3)^3$, which is exactly $p\mid U$ and $p\mid V$ in the
+proof of Theorem~\ref{alg:ns:thm:odd}.
+\item \emph{The slice $C=2$.} Part~III's polynomial $f$ with $H(2T)=8f(T)$
+is $g_{A,B,2}/2$, so its integer roots are Part~I's roots $a,b,c$ of
+\eqref{alg:eq:planemap}; $d=f'(r)$ is Part~I's $D_r$, Part~I's
+$d(t)=g'(t)$ is $2d$ there, and \eqref{alg:ns:eq:slice-inverse} is
+Part~I's \eqref{alg:eq:planepoints}. For a completely split target,
+Theorem~\ref{alg:ns:thm:param} reduces to Part~I's criterion
+\eqref{alg:eq:alllocalcriterion}: by \eqref{alg:ns:eq:gcd-derivative} its
+condition is $\gcd(3r-1,d)=1$, and with $u=r-s$, $v=r-t$ one has
+$3r-1=u+v$ and $d=uv$; a prime divides both $u+v$ and $uv$ exactly when
+it divides $u$ and $v$, so the condition is $\gcd(u,v)=1$, which is
+Part~I's $g=1$.
+\item \emph{The dyadic table.} The program of
+Section~\ref{alg:ns:app:dyadic} was rerun at the write: the image of $F$
+on $(\Z/8\Z)^3$ has $176$ classes and equals $E$ pointwise, and the
+residue fiber histogram is $336,112,48,16$ for sizes $0,2,4,6$, which is
+Part~I's \eqref{alg:eq:dyadicfinite} at $m=3$;
+$176/512=11/32$ is \eqref{alg:eq:rho2}.
+\item \emph{Constants.} Part~III's $\alpha=27/(4\pi^2)$ is Part~I's
+parameter density \eqref{alg:eq:paramdensity}, from the same M\"obius sum
+over $d$ prime to $3$; $27/(2\pi^2)=1.3678359792\ldots$ and
+$2^{5/3}(10^5)^{1/3}=147.36\ldots$ (against $I_2(10^5)=148$).
+\item \emph{The split counts.} By Lemma~\ref{alg:ns:lem:split-nointeger}
+every locally integral completely split target on $C=2$ is a Hasse
+failure, so the manuscript's $\Sigma(T)$ is Part~II's $\#\Hsplit_2(T)$.
+Its recorded values $121$, $653$, $3\,304$ at $T=10^3,10^4,10^5$ (table
+in Section~\ref{alg:ns:sec:computation}) are Part~II's recorded exact
+counts for $c=2$ (\rpath{data/02-dense-hasse-height_counts.txt}).
+Moreover, the coefficient criterion of Theorem~\ref{alg:ns:thm:main} with
+the integrality test of Corollary~\ref{alg:ns:cor:integral-test}, applied
+by an independent enumeration of completely split targets on $C=c$,
+reproduces all fifteen counts of Part~II's table in
+Section~\ref{alg:dh:sec:count} ($c=1,2,3,4,8$ and $T=10^3,10^4,10^5$).
+\item \emph{Integral points.} Part~II's table of integral split exceptions
+after Theorem~\ref{alg:dh:thm:finite} lists none on $C=2$, as
+Lemma~\ref{alg:ns:lem:split-nointeger} requires; the integral image on
+$C=2$ (Theorem~\ref{alg:ns:thm:curves}) consists of nonsplit fibers and
+the repeated-root target $(0,0,2)$. The formulas $F(1/2,-2,4)=(0,4,2)$,
+\eqref{alg:ns:eq:family-point} for $2\le b<40$,
+\eqref{alg:ns:eq:integralpoint} for $|r|\le30$ and $F(1,0,0)=(0,0,2)$
+were evaluated exactly.
+\item \emph{The plane $C=0$}: \eqref{alg:ns:eq:boundary} is Part~I's
+boundary point \eqref{alg:eq:boundarypoint} and the display in Part~II's
+Theorem~\ref{alg:dh:thm:headline-density}.
+\end{itemize}
+
+\subsection{Notation: Parts~I and~II against Part~III}\label{alg:ns:sec:notation}
+Part~III keeps the manuscript's letters, with one exception, so several
+letters mean different things in the three Parts.
+Table~\ref{alg:ns:tab:notation} fixes them; within Part~III only the
+Part~III column applies, and the last column prints the tempting false
+reading. Table~\ref{alg:dh:tab:notation} compares Parts~I and~II.
+
+\begingroup\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright}p{0.09\textwidth}>{\raggedright}p{0.33\textwidth}>{\raggedright}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.15\textwidth}@{}}
+\caption{Symbols of Part~III whose meaning differs in Parts~I and~II.}
+\label{alg:ns:tab:notation}\\
+\toprule
+Symbol & Parts I and II & Part III & Not to be read as\\
+\midrule
+\endfirsthead
+\toprule
+Symbol & Parts I and II & Part III & Not to be read as\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$H$ & I: parameter heights ($M(H)$, $\mathcal A(H)$), box sides
+$H_A,H_B$ in Research question~\ref{alg:sub:q-height}; II: $\Hsplit_c(T)$
+is a set & the monic inverse polynomial $H(S)$ \eqref{alg:ns:eq:HUV};
+the counts $H_2(T)$, $H_2^{\NS}(T)$, $H_2^{\spc}(T)$ of Hasse failures on
+$C=2$ & a height\\
+$G$ & I: the binary cubic $G_{A,B,C}(T,S)$ \eqref{alg:eq:binarycubic} &
+the positive integer $\gcd(|U|,|V|)$ \eqref{alg:ns:eq:HUV} & a cubic\\
+$U,V$ & I: $u=1+xy$ (lower case); II: an indeterminate $U$ in the proof
+of Lemma~\ref{alg:dh:lem:odd-integrality}, and auxiliary integers $U,V$
+in the proof of Theorem~\ref{alg:dh:thm:S} & $U=3BC-4$, $V=27AC^2-4$ & \\
+$E$ & not used & the dyadic condition $E(A,B,C)$ (table before
+Theorem~\ref{alg:ns:thm:main}) & \\
+$S$ & a finite set of primes; I: also the second projective variable in
+\eqref{alg:eq:binarycubic}; II: a sum, printed $\Sigma$ & the
+indeterminate of $H(S)$; a finite set of finite places in
+Section~\ref{alg:ns:sec:numberfields}; the manuscript's split count
+$S(T)$ is printed $\Sigma(T)$ & a count\\
+$\Sigma$ & II: a sum of two half-numerators or roots & $\Sigma(T)$, the
+locally integral completely split targets on $C=2$ in the box
+($=\#\Hsplit_2(T)$) & a sum\\
+$a,b,r$ & I: integer roots $a,b,c$ on $C=2$, $r$ an index; II: root
+numerators with $a+b+r=2$ & $a$: an integer root of $H$ (a root
+numerator, $a=Ct$); $b=B/2$ and $r$ an integer root of $f$ on $C=2$
+\eqref{alg:ns:eq:param}; $\target$ is the target & roots of $g$\\
+$C$, $c$ & I: $C$ the third coordinate, $c$ a root; II: $c$ the third
+coordinate & $C$ the third coordinate (the questions write $c$ for a
+fixed slice); $c_0$ an implied constant in Lemma~\ref{alg:ns:lem:range} &
+a root\\
+$d,D$ & I: $d(t)=g'(t)$, $D_r$ products of root differences; II: $d=s-t$,
+$D=dv$, $D_r$ for numerators & $D=H'(a)$ \eqref{alg:ns:eq:D};
+$d=f'(r)$ \eqref{alg:ns:eq:dDelta}, so $D=4d$ and $d$ is Part~I's $D_r$
+on $C=2$; $d$ also a divisor in Lemmas~\ref{alg:ns:lem:primitive}
+and~\ref{alg:ns:lem:mean} & Part~I's $d(t)$\\
+$\Delta$ & I: the discriminant of the inverse cubic & $\Delta_a$
+\eqref{alg:ns:eq:delta-H} and $\Delta$ \eqref{alg:ns:eq:dDelta},
+discriminants of the \emph{quadratic} factor, $\Delta_{2r}=4\Delta$ on
+$C=2$ & the cubic's\\
+$f,g$ & I: $g$ the inverse cubic; II: also valuations & $g$ the same
+(proof of Proposition~\ref{alg:ns:prop:inverse}); $f(T)=H(2T)/8=g(T)/2$
+on $C=2$ \eqref{alg:ns:eq:f} & \\
+$T$ & I: the indeterminate of $g$; II: also the height bound & the height
+bound; also the indeterminate of $f$ and $g$ & \\
+$t$ & I: $t=y+1/x$; II: an integer root & $t=y+1/x$; a root $t$ in
+Lemmas~\ref{alg:ns:lem:split-nointeger} and~\ref{alg:ns:lem:splitbound};
+the parameter of the cusp curve & \\
+$P,Q,R$ & the coordinates of $F$; II: also the cutoff $R$ &
+the coordinates; $P(T)$ the marked-root count
+(Section~\ref{alg:ns:sec:count}); $R=\lfloor\sqrt{T/8}\rfloor$ in
+Lemma~\ref{alg:ns:lem:range}; $R=\Oh_{K,S}$ in
+Section~\ref{alg:ns:sec:numberfields} & \\
+$L,I,N$ & I: $L=2H+1$, $I(q)$ \eqref{alg:eq:Iq}, $N$ a number of primes;
+II: $L=T^{1/3}$, the beta area $I$, $\Isplit_c$ & $L_2(T)$, $I_2(T)$,
+$N(T)$ target counts on $C=2$; $L$ an interval length in
+Lemma~\ref{alg:ns:lem:primitive}; $\mathcal I_r(T)$ an interval & \\
+$\alpha$ & I: $\alpha_p$ in Theorem~\ref{alg:thm:thinsieve}, automorphisms
+$\alpha,\beta$; II: roots $\alpha,\beta,\gamma$ & $\alpha=27/(4\pi^2)$
+\eqref{alg:ns:eq:mean}, Part~I's density \eqref{alg:eq:paramdensity} & \\
+$e$ & I: $e=v_p(\det J)$ in Lemma~\ref{alg:lem:ball}; II: $e=v_2(|c|)$ &
+$e=v(2)$, the valuation of $\det J$ up to a unit, as in Part~I &
+Part~II's $e$\\
+$q,\tau,\delta$ & I: $q$ a field size, $\tau$ the project's family
+parameter; II: $q$ a prime, $\tau$ a divisor count, $\delta(c)$ a density
+& $q=|r|$; $\tau$ the divisor function, as in Part~II; $\delta$ a Newton
+correction in Lemma~\ref{alg:ns:lem:lift} & \\
+\end{longtable}
+\endgroup
+
+The one rename: the manuscript's split count $S(T)$ (Sections
+\ref{alg:ns:sec:mult}, \ref{alg:ns:sec:computation}
+and~\ref{alg:ns:app:small}) is printed $\Sigma(T)$, as Part~II printed its
+sum $S$ as $\Sigma$, because $S$ is also the indeterminate of $H$ and the
+finite set of places. The manuscript's implied constant $C$ in the proof
+of Lemma~\ref{alg:ns:lem:range} is printed $c_0$, because $C$ is the third
+coordinate. No normalization was changed.
+
+\subsection{What is printed twice, and why}\label{alg:ns:sec:duplicates}
+The manuscript restates parts of Parts~I and~II to be self-contained.
+Its later sections cite these restatements, and all of its labels are
+kept, so they are printed where they stand; the manuscript attributes
+them (its attribution table in Section~\ref{alg:ns:sec:intro}).
+\begin{itemize}[itemsep=2pt,topsep=3pt]
+\item The map \eqref{alg:ns:eq:F} is \eqref{alg:eq:F}, and
+\eqref{alg:ns:eq:boundary} is \eqref{alg:eq:boundarypoint}.
+\item Proposition~\ref{alg:ns:prop:inverse} is Part~I's
+Theorem~\ref{alg:thm:root} (and Part~II's
+Proposition~\ref{alg:dh:prop:inverse}) in the monic coordinate $a=Ct$:
+Part~I's $w=g'(t)/2=1/x$ is $D/(2C)$. The proof here is a direct
+substitution.
+\item Lemma~\ref{alg:ns:lem:rootgate} is the Chebotarev mechanism of
+Part~I's Lemma~\ref{alg:lem:cubicHasse} and
+Theorem~\ref{alg:thm:rationalHasse}, applied to integral local points; the
+manuscript lists it as inherited.
+\item Lemma~\ref{alg:ns:lem:hensel-odd} at odd primes and
+Lemma~\ref{alg:ns:lem:lift} at $p=2$ are cases of Part~I's inverse-ball
+Lemma~\ref{alg:lem:ball} (with Corollary~\ref{alg:cor:precision}), and
+of Part~II's lifting fact \eqref{alg:dh:eq:pdivc}.
+Lemma~\ref{alg:ns:lem:lift} is stated over any complete discrete
+valuation ring of characteristic zero, which
+Theorem~\ref{alg:ns:thm:numberfields} uses; it is kept as a second
+route, a Newton iteration.
+\item Modulus-eight sufficiency and the measure $11/32$ are Part~I's
+Theorem~\ref{alg:thm:dyadic}; the residue histogram in the Remark after
+Proposition~\ref{alg:ns:prop:two} is \eqref{alg:eq:dyadicfinite}
+(pointer added there). The table $E$ itself is new.
+\item Lemma~\ref{alg:ns:lem:split-nointeger} is Part~I's
+Theorem~\ref{alg:thm:plane} (``It has no integral point''), with the
+same proof; the manuscript does not cite it, and a pointer was added
+there. \eqref{alg:ns:eq:slice-inverse} is Part~I's
+\eqref{alg:eq:planepoints} for split fibers.
+\item \eqref{alg:ns:eq:prior-split} is Part~II's
+Theorem~\ref{alg:dh:thm:headline-count} at $c=2$; the manuscript does not
+use it, and Lemma~\ref{alg:ns:lem:splitbound} is a weaker bound proved
+independently.
+\item New in their generality: Theorems~\ref{alg:ns:thm:main},
+\ref{alg:ns:thm:odd}, the table $E$ of
+Proposition~\ref{alg:ns:prop:two}, Corollary~\ref{alg:ns:cor:nonsplit},
+Theorem~\ref{alg:ns:thm:param} (which extends Part~I's criterion
+\eqref{alg:eq:alllocalcriterion} from split targets to every locally
+integral target on $C=2$), Corollary~\ref{alg:ns:cor:family},
+Proposition~\ref{alg:ns:prop:repeated}, Theorem~\ref{alg:ns:thm:curves},
+the counting results of Sections~\ref{alg:ns:sec:count}
+and~\ref{alg:ns:sec:mult}, and Theorem~\ref{alg:ns:thm:numberfields},
+which extends the method of Part~I's
+Theorem~\ref{alg:thm:rationalHasse} from rational to $S$-integral points.
+\end{itemize}
+
+\subsection{The formal project and Part~III}\label{alg:ns:sec:formalproject}
+The manuscript cites ProveIt's Lean file
+\rpath{Algebra/JacobianConjecture/Lean/JacobianConjecture/Counterexample.lean}
+at its pin \nssha; the file is identical at Part~II's pin and at the
+placement commit, so it is cited here as \cite{dh:proveitformal}. The file
+defines the map as \texttt{counterexample} (namespace
+\texttt{LeanProofs.JacobianCounterexample}, lines 95--101) and proves
+\texttt{jacobianDet\_counterexample}, $\det JF=-2$ over every commutative
+ring (line 134), and the collision \texttt{collision} (line 165). Part~III
+uses the map, checks the determinant symbolically, and relies on no formal
+statement. \emph{None of Part~III's results is formalized.} The project
+has no $p$-adic, Hasse-principle or counting material, and the placement
+of this report beside its Lean and Rocq developments confers no formal
+status. The manuscript's formalization plan
+(Section~\ref{alg:ns:sec:formal}) is a proposal; it keeps Chebotarev as an
+explicitly imported theorem.
+
+\section{The question, the answer, and its scope}\label{alg:ns:sec:intro}
+
+\subsection{A specific unresolved question in ProveIt}
+The repository's report \emph{Arithmetic Local--Global Dichotomies for
+ProveIt's Three-Variable Keller Map} develops split integral Hasse
+failures and exact local fiber laws \wtag{}~(Parts~I and~II of this
+report). Its Part~II classifies
+completely split fibers and counts them in fixed slices. It explicitly
+leaves open the case of one rational point accompanied by an irreducible
+quadratic pair, and the corresponding target-height asymptotics. Part~I,
+Section~\ref{alg:sub:q-split}, asks for local integral classification beyond split fibers;
+Section~\ref{alg:sub:q-height} asks for target-height asymptotics. The appended Part~II
+records the nonsplit case as still open and asks for coefficient-level
+certificates \wtag{}~(Research questions~\ref{alg:dh:q:quadratic}
+and~\ref{alg:dh:q:coefficient}).
+
+The difficulty is genuine: a rational point can fail integrality at a
+prime where the two nonrational geometric points become locally rational
+and provide integral alternatives. Testing only the denominator of the
+rational point therefore gives the wrong local answer. Nevertheless,
+for this particular map the entire odd-prime phenomenon collapses to
+two coefficient congruences.
+
+We use the snapshot \nssha. The report is located at
+\begin{quote}\small\raggedright
+\rpath{SetTheory/Cardinals/docs/reports/jacobian-conjecture/}\allowbreak
+\rpath{arithmetic-local-global-fibers/article.tex}.
+\end{quote}
+\wtag{} That is the present report, whose Parts~I and~II are unchanged
+from this pin to the placement commit \texttt{3025c15df}; the pinned
+commit is abbreviated \texttt{6d04e1e38} elsewhere in this report.
+Its mathematical assertions are treated as research claims rather than
+as formal consequences of residing in a repository. The proofs of our
+main theorems are independent of its unformalized counting arguments.
+
+\subsection{The map and the terminology}
+Throughout, let
+\begin{equation}\label{alg:ns:eq:F}
+\begin{gathered}
+u=1+xy,\qquad h=u^2z+y^2(1+3u),\\
+F(x,y,z)=(uh,\ y+3xh,\ x(5-3u-x^2z)).
+\end{gathered}
+\end{equation}
+Thus its coordinate polynomials are
+\begin{align*}
+P&=(1+xy)^3z+y^2(1+xy)(4+3xy),\\
+Q&=y+3x(1+xy)^2z+3xy^2(4+3xy),\\
+R&=2x-3x^2y-x^3z.
+\end{align*}
+The identity $\det JF=-2$ and explicit collisions are formalized in the
+repository \cite{dh:proveitformal} \wtag{}~(declarations
+\texttt{jacobianDet\_counterexample} and \texttt{collision};
+Section~\ref{alg:ns:sec:formalproject}). The map is attributed there and by Gao to
+Alp\"oge; Gao establishes its complex fiber geometry \cite{gao}.
+
+\begin{definition}
+An integral target $\target=(A,B,C)\in\Z^3$ is \emph{everywhere locally
+integral} if $\target\in F(\Z_p^3)$ for every rational prime $p$.
+It is an \emph{integral Hasse failure} if it is everywhere locally integral
+but does not belong to $F(\Z^3)$. A fiber is \emph{nonsplit} in this article
+if its inverse cubic factors over $\Q$ as a linear factor times an
+irreducible quadratic. A \emph{completely split} fiber has three distinct
+rational points unless repeated roots are explicitly mentioned.
+\end{definition}
+Every everywhere locally integral target studied here has a rational
+preimage, and hence a real preimage. Adding an archimedean-solubility
+condition would not change the definition. An integral Hasse failure is
+not a rational Hasse failure.
+
+\subsection{Main classification}
+Put
+\begin{equation}\label{alg:ns:eq:HUV}
+\begin{aligned}
+H(S)&=S^3-2S^2+BCS-2AC^2,\\
+U&=3BC-4,\qquad V=27AC^2-4,\qquad G=\gcd(|U|,|V|).
+\end{aligned}
+\end{equation}
+For integer coefficients $U\ne0$, so $G$ is positive. Let $E(A,B,C)$
+be the following condition. All congruences in the first column are
+modulo $8$.
+\begin{center}
+\begin{tabular}{@{}cl@{}}
+\toprule
+$C$ & Condition $E(A,B,C)$\\
+\midrule
+$0$ & no condition on $A,B$\\
+$4$ & $B$ is even\\
+$2$ or $6$ & $A$ and $B$ are even\\
+odd & $[A\text{ even and }B\equiv2\pmod4]$\\
+ & \quad or $[A\text{ odd and }BC\equiv2A+1\pmod8]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[Complete local certificate]\label{alg:ns:thm:main}
+For every $(A,B,C)\in\Z^3$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $(A,B,C)\in F(\Z_p^3)$ for every prime $p$;
+\item $H$ has an integer root, $G$ is a power of $2$ (including $1$),
+and $E(A,B,C)$ holds.
+\end{enumerate}
+If $C=0$, these conditions always hold and the target already has an
+integral preimage. If $C\ne0$, global integral solubility is decided by
+the finitely many simple integer roots of $H$ and the reconstruction
+formulas in Section~\ref{alg:ns:sec:inverse}.
+\end{theorem}
+The rational-root condition cannot be dropped. The theorem is a finite
+coefficient certificate \emph{together with} an ordinary rational-root
+test; it is not a bounded congruence characterization of rational
+solubility.
+
+\subsection{Main counting and integral-image results}
+Let $L_2(T)$ count everywhere locally integral targets $(A,B,2)$ with
+$|A|,|B|\le T$. Let $I_2(T)$ count their globally integral subset, and
+let $H_2(T)$ and $H_2^{\NS}(T)$ count all and nonsplit integral Hasse
+failures, respectively. Targets, not roots or ordered parameter tuples,
+are counted.
+
+\begin{theorem}[The dominant nonsplit law]\label{alg:ns:thm:count-main}
+As $T\to\infty$,
+\begin{align}
+L_2(T)&=\frac{27}{2\pi^2}T\log T+O(T),\label{alg:ns:eq:L-main}\\
+H_2(T)&=\frac{27}{2\pi^2}T\log T+O(T),\label{alg:ns:eq:H-main}\\
+H_2^{\NS}(T)&=\frac{27}{2\pi^2}T\log T+O(T).\label{alg:ns:eq:NS-main}
+\end{align}
+The entire integral image on $C=2$ is parametrized without duplication by
+\begin{equation}\label{alg:ns:eq:curves-main}
+(A,B)=(-2r^3+r^2+\varepsilon r,\ -6r^2+4r+2\varepsilon),
+\qquad r\in\Z,\quad\varepsilon\in\{-1,1\}.
+\end{equation}
+Consequently
+\begin{equation}\label{alg:ns:eq:I-main}
+I_2(T)=2^{5/3}T^{1/3}+O(1).
+\end{equation}
+The same conclusions, after reflecting the second coordinate, hold on
+$C=-2$.
+\end{theorem}
+The previous split theorem \wtag{}~(Part~II,
+Theorem~\ref{alg:dh:thm:headline-count} at $c=2$) gives
+\begin{equation}\label{alg:ns:eq:prior-split}
+H_2^{\spc}(T)\sim
+\frac{27\Gamma(1/3)^2}{8\pi^2\Gamma(2/3)}T^{2/3}.
+\end{equation}
+[\wtag{} In Part~II's notation $H_2^{\spc}(T)=\#\Hsplit_2(T)$, and the
+constant is \eqref{alg:dh:eq:c2constant}; the manuscript's
+$\Sigma(T)$ below counts the same targets
+(Section~\ref{alg:ns:sec:consistency}).]
+We do not claim that result anew and do not need its proof to establish
+\eqref{alg:ns:eq:L-main}--\eqref{alg:ns:eq:NS-main}: an elementary $O(T)$ bound for
+split fibers suffices. The new main term comes from the rational-plus-
+quadratic sector, not from refining the split-family constant.
+
+\subsection{Attribution and what is not claimed}
+\begin{center}\small
+\begin{tabular}{@{}p{.31\textwidth}p{.29\textwidth}p{.34\textwidth}@{}}
+\toprule
+Ingredient or result & Status here & Scope\\
+\midrule
+Map, determinant, collisions & Prior; independently checked & ProveIt formal source; Gao\\
+Inverse cubic and missing cusp & Prior geometry; rederived & All relevant odd characteristics\\
+Rational Hasse argument & Inherited mechanism & Chebotarev plus cubic Galois groups\\
+Modulus-$8$ sufficiency and image size & Prior dyadic phenomenon & Explicit coefficient table reverified\\
+$G$-criterion for all rooted cubics & Main refinement & Includes the previously open nonsplit case\\
+Primitive parametrization on $C=2$ & Main refinement & All locally integral targets\\
+$T\log T$ and two integral curves & Main counting results & Square target boxes on $C=\pm2$\\
+General number-field certificate & Extension & Finite local tests outside a finite set\\
+\bottomrule
+\end{tabular}
+\end{center}
+We make no claim of a sharp second term in \eqref{alg:ns:eq:H-main}, a uniform
+asymptotic for every varying nonzero $C$, or a new solution of the plane
+Jacobian problem. The limited literature search did not locate these
+specific arithmetic and counting statements in the inspected primary
+sources; that finding is not a global priority proof.
+
+\section{Inverse cubics and exact reconstruction}\label{alg:ns:sec:inverse}
+
+\subsection{The boundary \texorpdfstring{$C=0$}{C=0}}
+Direct substitution gives
+\begin{equation}\label{alg:ns:eq:boundary}
+F(0,B,A-4B^2)=(A,B,0).
+\end{equation}
+Thus no integral target on $C=0$ is an integral Hasse failure. Formula
+\eqref{alg:ns:eq:boundary} is also the reason primes dividing $C$ will cause no
+odd-prime obstruction.
+
+\subsection{The affine inverse chart}
+\begin{proposition}[Inverse chart]\label{alg:ns:prop:inverse}
+Let $k$ be a field of characteristic different from $2$, and let
+$A,B,C\in k$ with $C\ne0$. The points of $F^{-1}(A,B,C)(k)$ are in
+bijection with the simple roots $a\in k$ of $H$. If
+\begin{equation}\label{alg:ns:eq:D}
+D=H'(a)=3a^2-4a+BC\ne0,
+\end{equation}
+then the corresponding point is
+\begin{equation}\label{alg:ns:eq:reconstruct}
+\boxed{\quad
+x=\frac{2C}{D},\qquad
+ y=\frac{2a-D}{2C},\qquad
+ z=\frac{D(10D-12a-D^2)}{8C^2}.
+\quad}
+\end{equation}
+For a point in the fiber, the inverse coordinate is $a=C(y+1/x)$.
+\end{proposition}
+\begin{proof}
+Since $C=x(2-3xy-x^2z)\ne0$, we have $x\ne0$. Put
+$t=y+1/x$ and $g(T)=CT^3-2T^2+BT-2A$.
+Substitution of \eqref{alg:ns:eq:F}, followed by collecting terms, gives
+\begin{equation}\label{alg:ns:eq:inverse-identities}
+g(t)=0,\qquad g'(t)=\frac2x.
+\end{equation}
+These identities can also be derived by eliminating $z$ from the third
+coordinate, using $z=2/x^2-3y/x-C/x^3$, and then substituting in the first
+two coordinates. As $H(Ct)=C^2g(t)$, differentiation yields
+$H'(Ct)=Cg'(t)=2C/x\ne0$.
+
+Conversely, if $H(a)=0$ and $D\ne0$, set $t=a/C$ and $x=2C/D$.
+Then $y=t-1/x=(2a-D)/(2C)$. Solving the third coordinate for $z$ gives
+exactly \eqref{alg:ns:eq:reconstruct}. Substitution in the first two coordinates
+reduces their residuals to multiples of $H(a)$, so they equal $A,B$.
+All operations divide only by $2$, $C$, and $D$, which are nonzero.
+The recovered value $C(y+1/x)=a$ proves injectivity of the construction.
+\end{proof}
+The same root chart appears in the prior arithmetic report, expressed
+with $t$ rather than the monic coordinate $a$ \wtag{}~(Part~I,
+Theorem~\ref{alg:thm:root}; Part~II,
+Proposition~\ref{alg:dh:prop:inverse}). Gao's degree-
+three and missing-fiber geometry is consistent with this description
+\cite{gao}. We use the monic version because an integral coefficient
+polynomial has integral rational roots.
+
+\begin{corollary}[Exact integral test]\label{alg:ns:cor:integral-test}
+For $C\ne0$ and a simple integer root $a$ of $H$, the reconstructed
+point is integral if and only if
+\begin{equation}\label{alg:ns:eq:divisibility}
+D\mid2C,\qquad
+2C\mid2a-D,\qquad
+8C^2\mid D(10D-12a-D^2).
+\end{equation}
+An integral target belongs to $F(\Z^3)$ if and only if either $C=0$ or
+at least one simple integer root satisfies \eqref{alg:ns:eq:divisibility}.
+\end{corollary}
+\begin{proof}
+Each rational coordinate in \eqref{alg:ns:eq:reconstruct} is integral precisely
+under the corresponding divisibility condition. Every rational root of
+$H$ is an integer by the rational-root theorem, and
+Proposition~\ref{alg:ns:prop:inverse} accounts for the entire rational fiber.
+\end{proof}
+
+\subsection{Why local solubility supplies a rational root}
+\begin{lemma}[The cubic rational-root gate]\label{alg:ns:lem:rootgate}
+If $(A,B,C)\in\Z^3$ is everywhere locally integral, then $H$ has an
+integer root. For $C\ne0$, a rational root of $H$ guarantees that $H$
+has a simple rational root.
+\end{lemma}
+\begin{proof}
+When $C=0$, $H=S^2(S-2)$. Suppose $C\ne0$. If $H$ were irreducible over
+$\Q$, its Galois group would be a transitive subgroup of $S_3$, hence
+$C_3$ or $S_3$. Both contain a $3$-cycle. By the Chebotarev density
+theorem \cite[Theorem~8.31 and Example~8.36]{milne}, there are infinitely
+many good primes, excluding $2C$ and the discriminant, for which $H$
+has irreducible reduction. At such a prime it has no root in $\Q_p$:
+any $\Q_p$-root of the monic integral polynomial would be $p$-integral
+and reduce to a root. Proposition~\ref{alg:ns:prop:inverse} rules out a local
+preimage, a contradiction.
+
+A reducible cubic has a rational root, which is integral here. If a
+rational root is repeated but not triple, the remaining linear factor
+has a simple rational root. The triple case would be
+$H=(S-2/3)^3$, impossible for a monic integer polynomial. This proves
+the last assertion.
+\end{proof}
+The argument uses qualitative Chebotarev, not an unproved hypothesis.
+Its purpose is only to justify the rational-root gate. The subsequent
+local tests and the entire counting proof are elementary.
+
+\section{Every odd prime is controlled by one gcd}\label{alg:ns:sec:odd}
+
+\subsection{From integral points to simple roots modulo a prime}
+\begin{lemma}\label{alg:ns:lem:hensel-odd}
+For every odd prime $p$,
+\[
+\target\in F(\Z_p^3)
+\quad\Longleftrightarrow\quad
+\overline{\target}\in F(\F_p^3).
+\]
+If $p\nmid C$, the right side holds precisely when $\overline H$ has a
+simple root in $\F_p$. If $p\mid C$, it always holds.
+\end{lemma}
+\begin{proof}
+Reduction gives necessity. At any residue preimage, $\det JF=-2$ is a
+unit modulo $p$, so the multivariable Hensel argument lifts it to the
+prescribed target over $\Z_p$. When $p\nmid C$, apply
+Proposition~\ref{alg:ns:prop:inverse} over $\F_p$. When $p\mid C$, use
+\eqref{alg:ns:eq:boundary} modulo $p$ and then lift.
+\end{proof}
+
+\begin{lemma}[The only obstruction for a rooted cubic]\label{alg:ns:lem:triple}
+Let $q(S)$ be a monic cubic over a field and suppose it has a root in
+that field. It has no simple root in the field if and only if
+$q(S)=(S-a)^3$ for some field element $a$.
+\end{lemma}
+\begin{proof}
+If a root is simple there is nothing to prove. Otherwise divide by its
+square. The remaining factor is linear. Its root is simple unless it
+coincides with the repeated root, which is exactly the triple case.
+The converse is immediate in every characteristic.
+\end{proof}
+
+\subsection{The coefficient criterion}
+\begin{theorem}[Odd-prime classification]\label{alg:ns:thm:odd}
+Assume $H$ has an integer root. For each odd prime $p$,
+\begin{equation}\label{alg:ns:eq:oddcriterion}
+(A,B,C)\in F(\Z_p^3)
+\quad\Longleftrightarrow\quad
+p\nmid\gcd(3BC-4,27AC^2-4).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The integer root reduces to a root modulo every prime. If $p\mid C$,
+Lemma~\ref{alg:ns:lem:hensel-odd} gives local solubility, and
+$3BC-4\equiv-4\not\equiv0\pmod p$ gives the right side.
+
+Suppose $p\nmid C$. By Lemmas~\ref{alg:ns:lem:hensel-odd} and
+\ref{alg:ns:lem:triple}, failure occurs exactly when $\overline H$ is a cube
+of a linear factor. In characteristic $3$, a linear cube has no
+$S^2$ term, whereas $H$ has coefficient $-2\ne0$; moreover
+$3BC-4\not\equiv0\pmod3$.
+
+For $p\ne2,3$, the $S^2$ coefficient forces the triple root to be
+$2/3$. Comparing the other coefficients with $(S-2/3)^3$ gives
+\[
+BC=\frac43,\qquad AC^2=\frac4{27}
+\quad\text{in }\F_p.
+\]
+These are exactly $p\mid U$ and $p\mid V$.
+\end{proof}
+
+\begin{remark}[The geometric source of the gcd]
+The locus $U=V=0$ is the missing cusp in the inverse-cubic geometry;
+in characteristic zero it is parametrized by
+$(A,B,C)=(4/(27t^2),4/(3t),t)$, $t\ne0$ \cite{gao}.
+The new arithmetic point is that, \emph{after a rational root is known},
+every odd local failure is reduction into this one locus. Merely avoiding
+the cusp is not sufficient for an arbitrary irreducible cubic.
+\end{remark}
+
+\subsection{Why the quadratic pair need not be analyzed separately}
+Suppose a rational root $a$ is known. At a good odd prime, its reduction
+may be repeated. If it is double rather than triple, the remaining
+linear factor has a simple residue root and lifts to a local integral
+point. That point need not arise from a globally rational geometric
+point. Thus quadratic splitting does enter the mechanism, but does not
+survive as an independent condition in \eqref{alg:ns:eq:oddcriterion}.
+
+This explains why tracking discriminants, Legendre symbols, and the
+valuation of each reconstructed nonrational point would overcomplicate
+this problem. Such data are useful for finer fiber distributions, but
+not for the yes/no local-solubility classification under the root gate.
+
+\section{The prime two and a finite coefficient table}\label{alg:ns:sec:two}
+
+\subsection{A lifting lemma with a nonunit determinant}
+\begin{lemma}[Uniform inverse correction]\label{alg:ns:lem:lift}
+Let $\Oh$ be a complete discrete valuation ring of characteristic zero,
+with valuation $v$, and put $e=v(2)$. For the map $F$, suppose
+$a_0\in\Oh^3$ and $b\in\Oh^3$ satisfy
+\[
+\min_i v(F_i(a_0)-b_i)>2e.
+\]
+Then there is $a\in\Oh^3$ with $F(a)=b$. In particular, over $\Z_2$
+a solution modulo $8$ lifts to a solution over $\Z_2$.
+\end{lemma}
+\begin{proof}
+At each integral point, $J^{-1}=-(1/2)\operatorname{adj}(J)$ has entries
+of valuation at least $-e$. If the current error has minimum valuation
+$k>2e$, take the Newton correction
+$\delta=-J^{-1}(F(a)-b)$. Then $v(\delta_i)\ge k-e>e\ge0$.
+The integral polynomial Taylor expansion has linear term canceled and
+all remaining terms of degree at least two in $\delta$. Hence the new
+error has minimum valuation at least $2k-2e$.
+
+Iterating, the excess $k-2e$ at least doubles, and corrections tend to
+zero in valuation. Completeness gives an integral limit, and polynomial
+continuity gives $F(a)=b$. For $\Z_2$, an error divisible by $8$ has
+$k\ge3>2$.
+\end{proof}
+
+\subsection{The complete residue certificate}
+\begin{proposition}[Dyadic coefficient criterion]\label{alg:ns:prop:two}
+For every integer target,
+\begin{equation}\label{alg:ns:eq:dyadic}
+(A,B,C)\in F(\Z_2^3)\quad\Longleftrightarrow\quad E(A,B,C).
+\end{equation}
+The set of admissible targets modulo $8$ has cardinality $176$.
+\end{proposition}
+\begin{proof}
+Lemma~\ref{alg:ns:lem:lift} reduces the statement to the finite image of $F$
+on $(\Z/8\Z)^3$. Substituting the $512$ input triples and collecting
+outputs gives the table defining $E$ in Section~\ref{alg:ns:sec:intro}.
+Section~\ref{alg:ns:app:dyadic} \wtag{}~(the manuscript's Appendix~D)
+gives a full exhaustive certificate. It uses
+only integer arithmetic and finite loops, and establishes both
+inclusions, not just the number of admissible targets.
+
+The certificate has been executed in the supplied verification package. The
+finite identity it checks, together with the lifting lemma, proves the
+statement at every $2$-adic precision.
+\end{proof}
+
+The size $176$ also follows immediately from the coefficient table:
+$64$ targets for $C=0$, $32$ for $C=4$, $16$ for each of $C=2,6$, and
+$12$ for each of the four odd values of $C$. The corresponding normalized
+image measure is $176/512=11/32$, agreeing with the prior dyadic law
+\wtag{}~(Part~I, \eqref{alg:eq:rho2} in Theorem~\ref{alg:thm:dyadic}). This measure is not claimed as a new result.
+
+\begin{remark}[Finite fibers are not $2$-adic fibers]
+The counts of residue targets with respectively $0,2,4,6$ preimages
+modulo $8$ are $336,112,48,16$. These are finite-ring fiber cardinalities.
+They must not be confused with cardinalities of fibers over $\Z_2$.
+Our argument needs only membership in the image.
+\wtag{} These counts are Part~I's \eqref{alg:eq:dyadicfinite} at $m=3$,
+$2^9\cdot(21,7,3,1)/32$, and its table in the proof of
+Theorem~\ref{alg:thm:dyadic} (total row); Part~I also gives the
+$2$-adic fiber law \eqref{alg:eq:dyadiclaw} that this remark
+distinguishes them from.
+\end{remark}
+
+\section{Complete classification, including nonsplit fibers}\label{alg:ns:sec:complete}
+
+\subsection{Proof of the main certificate}
+\begin{proof}[Proof of Theorem~\ref{alg:ns:thm:main}]
+If a target is locally integral everywhere, Lemma~\ref{alg:ns:lem:rootgate}
+gives the integer root. Theorem~\ref{alg:ns:thm:odd} then says no odd prime
+divides $G$, while Proposition~\ref{alg:ns:prop:two} gives $E$.
+
+Conversely, an integer root and a power-of-two gcd imply local integral
+solubility at every odd prime by Theorem~\ref{alg:ns:thm:odd}. Condition $E$
+supplies the prime $2$. If $C=0$, formula~\eqref{alg:ns:eq:boundary} gives a
+global integral point; the conditions are indeed automatic, since
+$H=S^2(S-2)$ and $G=4$.
+\end{proof}
+
+\subsection{An explicit rational-plus-quadratic formulation}
+For an integer root $a$, factor
+\begin{equation}\label{alg:ns:eq:factor-H}
+H(S)=(S-a)\bigl(S^2+(a-2)S+a^2-2a+BC\bigr).
+\end{equation}
+The discriminant of the quadratic is
+\begin{equation}\label{alg:ns:eq:delta-H}
+\Delta_a=-3a^2+4a+4-4BC=(3a-2)^2-4D.
+\end{equation}
+Here and below, ``a square in $\Z$'' means the square of an integer;
+negative integers are not squares.
+
+\begin{corollary}[Complete nonsplit Hasse test]\label{alg:ns:cor:nonsplit}
+Suppose $C\ne0$, $H(a)=0$ for an integer $a$, and $\Delta_a$ is not a
+square in $\Z$. Then the fiber has exactly one rational point, given by
+\eqref{alg:ns:eq:reconstruct}. It is an integral Hasse failure if and only if
+$G$ is a power of two, $E(A,B,C)$ holds, and at least one of the three
+divisibilities in \eqref{alg:ns:eq:divisibility} fails.
+\end{corollary}
+\begin{proof}
+The discriminant condition says the quadratic factor is irreducible
+over $\Q$. In particular $D\ne0$, since otherwise $a$ would also be a
+root of that factor. Proposition~\ref{alg:ns:prop:inverse} gives the unique
+rational point. Apply Theorem~\ref{alg:ns:thm:main} and
+Corollary~\ref{alg:ns:cor:integral-test}.
+\end{proof}
+This resolves the rational-plus-quadratic local-solubility question for
+\emph{all} integral target slices, not only $C=2$. It also supplies the
+requested coefficient certificate at every odd prime. What remains
+restricted to $C=2$ is the sharp counting law.
+
+\subsection{The three tests are genuinely different}
+The following examples isolate the conditions. In the first column,
+all targets have $C=2$.
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Target & Rational-root gate & Odd gcd test & Dyadic test\\
+\midrule
+$(2,0,2)$ & fails & passes & passes\\
+$(8,4,2)$ & passes & fails at $5$ & passes\\
+$(1,2,2)$ & passes & passes & fails\\
+$(0,4,2)$ & passes & passes & passes\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $(2,0,2)$ the relevant cubic is $T^3-T^2-2$, which has no rational
+root and already has no root modulo $3$. The gcd equals $4$; avoiding
+the cusp alone does not help. For $(8,4,2)$ the root is $2$, and the
+cubic becomes $(T-2)^3$ modulo $5$. For $(1,2,2)$ the inverse cubic is
+$(T-1)(T^2+1)$, but the target fails the parity condition at $2$.
+Finally, $(0,4,2)$ will be our smallest displayed nonsplit integral
+Hasse failure, with unique rational point $(1/2,-2,4)$.
+
+\section{A primitive parametrization on the slice \texorpdfstring{$C=2$}{C=2}}\label{alg:ns:sec:slice}
+
+\subsection{All locally integral targets}
+\begin{theorem}[Primitive root coordinates]\label{alg:ns:thm:param}
+An integer target $(A,B,2)$ is everywhere locally integral if and only if
+there exist $r,b\in\Z$ such that
+\begin{equation}\label{alg:ns:eq:param}
+A=r^3-r^2+rb,\qquad B=2b,\qquad
+\gcd(3r-1,3b-1)=1.
+\end{equation}
+Every integer root of the corresponding cubic satisfies the gcd
+condition, not just one chosen root.
+\end{theorem}
+\begin{proof}
+The dyadic table forces $B$ and $A$ to be even. Write $B=2b$ and define
+\begin{equation}\label{alg:ns:eq:f}
+f(T)=T^3-T^2+bT-A.
+\end{equation}
+The relation with the monic inverse polynomial is $H(2T)=8f(T)$.
+The rational-root gate is therefore equivalent to an integer root $r$
+of the monic polynomial $f$, or equivalently the first equation of
+\eqref{alg:ns:eq:param}.
+
+Now
+\[
+G=4\gcd(3b-1,27A-1),
+\]
+and the exact congruence
+\begin{equation}\label{alg:ns:eq:congruence-cube}
+27A-1\equiv(3r-1)^3\pmod{3b-1}
+\end{equation}
+shows that its odd prime support is the common odd prime support of
+$3r-1$ and $3b-1$. In fact the difference in
+\eqref{alg:ns:eq:congruence-cube} is $9r(3b-1)$.
+Modulo $2$, $A=r^3-r^2+rb\equiv rb$. The gcd of $3r-1$ and $3b-1$
+is even exactly when both $r$ and $b$ are odd, exactly when $A$ is odd.
+Thus the odd gcd test and the dyadic test combine into
+$\gcd(3r-1,3b-1)=1$. The argument applies to any integer root of $f$.
+The converse follows from the same identities and
+Theorem~\ref{alg:ns:thm:main}.
+\end{proof}
+
+\subsection{Reconstruction and the quadratic discriminant}
+Put
+\begin{equation}\label{alg:ns:eq:dDelta}
+d=3r^2-2r+b=f'(r),\qquad
+\Delta=(3r-1)^2-4d=-3r^2+2r+1-4b.
+\end{equation}
+Then
+\begin{equation}\label{alg:ns:eq:factor-f}
+f(T)=(T-r)\bigl(T^2+(r-1)T+r^2-r+b\bigr).
+\end{equation}
+Whenever $d\ne0$, the point belonging to $r$ is particularly simple:
+\begin{equation}\label{alg:ns:eq:slice-inverse}
+\boxed{\quad
+(x,y,z)=\left(\frac1d,\ r-d,\ 5d^2-3rd-2d^3\right).
+\quad}
+\end{equation}
+Indeed, in \eqref{alg:ns:eq:reconstruct} take $a=2r$, $C=2$, and $D=4d$.
+The second and third coordinates are integers automatically. Thus the
+entire global integrality obstruction is $d\ne\pm1$.
+
+For reference, the primitive gcd may also be tested with the derivative:
+\begin{equation}\label{alg:ns:eq:gcd-derivative}
+\gcd(3r-1,d)=\gcd(3r-1,3b-1),
+\end{equation}
+because $3d\equiv3b-1\pmod{3r-1}$ and $3$ is coprime to $3r-1$.
+This is an equality of positive gcds, not merely an equality of their
+prime supports.
+
+\subsection{An infinite nonsplit Hasse family}
+\begin{corollary}\label{alg:ns:cor:family}
+For every integer $b\ge2$, the target
+\begin{equation}\label{alg:ns:eq:family}
+(0,2b,2)
+\end{equation}
+is an integral Hasse failure with exactly one rational preimage,
+\begin{equation}\label{alg:ns:eq:family-point}
+\left(\frac1b,-b,5b^2-2b^3\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take $r=0$. The primitive gcd is $\gcd(-1,3b-1)=1$, so all local
+conditions hold. The remaining quadratic is $T^2-T+b$, whose
+discriminant $1-4b$ is negative. Formula~\eqref{alg:ns:eq:slice-inverse} gives
+\eqref{alg:ns:eq:family-point}, and its first coordinate is not integral.
+\end{proof}
+This family makes branch switching visible. At an odd prime dividing
+$b$, the rational point is not integral, but the reduction of
+$T(T^2-T+b)$ is $T^2(T-1)$: its root $1$ is simple. The quadratic branch
+therefore supplies an integral local point. For $b=2$, the nonrational
+pair has discriminant $-7$, and the rational point is $(1/2,-2,4)$.
+
+\section{Repeated roots and the entire integral image}\label{alg:ns:sec:integral}
+
+\subsection{The unique repeated-root exception}
+\begin{proposition}\label{alg:ns:prop:repeated}
+The only everywhere locally integral target on $C=2$ whose inverse
+cubic has a repeated root is $(A,B,2)=(0,0,2)$. Its inverse polynomial
+is $T^2(T-1)$; its unique rational point in the fiber is $(1,0,0)$.
+\end{proposition}
+\begin{proof}
+A repeated root of a monic cubic over $\Q$ is rational, hence integral.
+Write
+\[
+f(T)=(T-s)^2(T-r),\qquad r=1-2s,\qquad b=2s-3s^2.
+\]
+Then
+\[
+3b-1=-(3s-1)^2,
+\]
+so Theorem~\ref{alg:ns:thm:param}, applied to the root $s$, requires
+$|3s-1|=1$. The only integer solution is $s=0$; the apparent alternative
+$s=2/3$ is not integral. Therefore $r=1$, $b=A=0$. The repeated root
+$0$ does not correspond to a point of the inverse chart; the simple root
+$1$ gives $(1,0,0)$. A triple root would require $3s=1$ and is impossible.
+\end{proof}
+The repeated root is counted once when marking distinct integer roots,
+not twice according to multiplicity. This distinction will produce the
+constant corrections in the exact counting identities.
+
+\subsection{Split distinct fibers have no integral point}
+\begin{lemma}\label{alg:ns:lem:split-nointeger}
+On $C=2$, a completely split fiber with three distinct rational points
+has no integral point.
+\end{lemma}
+\begin{proof}
+The three roots $r,s,t$ of the monic polynomial $f$ are integers and
+satisfy $r+s+t=1$. If the point belonging to $r$ were integral, then
+\[
+f'(r)=(r-s)(r-t)=\pm1
+\]
+by \eqref{alg:ns:eq:slice-inverse}. Both integer differences must be $1$ or
+$-1$. Since $s\ne t$, the other roots must be $r-1,r+1$. Their sum
+would be $3r=1$, impossible for integer $r$.
+\end{proof}
+This proof is specific to the sum of roots on $C=2$; it should not be
+exported without modification to an arbitrary slice.
+\wtag{} This is Part~I's Theorem~\ref{alg:thm:plane} (``It has no
+integral point''), reproved here by the same argument; the manuscript
+does not cite it. The three roots $r,s,t$ of $f$ are Part~I's integer
+roots $a,b,c$ of \eqref{alg:eq:planemap}, and $f'(r)$ is Part~I's $D_r$
+(Section~\ref{alg:ns:sec:duplicates}). Part~II's
+Theorem~\ref{alg:dh:thm:finite} gives the finitely many exceptions on
+other slices.
+
+\subsection{Two polynomial curves}
+\begin{theorem}[Exact integral-image curves]\label{alg:ns:thm:curves}
+The targets in $F(\Z^3)$ with third coordinate $2$ are precisely
+\begin{equation}\label{alg:ns:eq:curves}
+\begin{aligned}
+A&=-2r^3+r^2+\varepsilon r,\\
+B&=-6r^2+4r+2\varepsilon,
+\qquad r\in\Z,\quad\varepsilon\in\{-1,1\}.
+\end{aligned}
+\end{equation}
+The corresponding integral preimage is
+\begin{equation}\label{alg:ns:eq:integralpoint}
+(x,y,z)=(\varepsilon,\ r-\varepsilon,\ 5-\varepsilon(3r+2)).
+\end{equation}
+Distinct pairs $(r,\varepsilon)$ give distinct targets.
+\end{theorem}
+\begin{proof}
+Any integral target is locally integral, so $B=2b$ and the inverse cubic
+$f$ is available. Its point corresponds to a simple integer root $r$.
+By \eqref{alg:ns:eq:slice-inverse}, integrality is equivalent to
+$d=\varepsilon\in\{-1,1\}$. Solving for $b$ gives
+$b=\varepsilon-3r^2+2r$. Substitution into
+$A=r^3-r^2+rb$ and $B=2b$ gives \eqref{alg:ns:eq:curves}, and
+\eqref{alg:ns:eq:slice-inverse} becomes \eqref{alg:ns:eq:integralpoint}. Conversely,
+these formulas substitute directly into $F$ and give integral points.
+
+If two different parameter pairs gave the same target, they could not
+have the same $r$, since $B$ determines $\varepsilon$ once $r$ is fixed.
+There would therefore be two different simple rational roots. A cubic
+with two distinct simple rational roots must have three distinct
+rational roots. Lemma~\ref{alg:ns:lem:split-nointeger} contradicts the existence
+of the integral point. This also handles possible intersections of the
+two curves. The repeated-root target has only one simple root, so is
+not an exception to injectivity.
+\end{proof}
+
+\begin{corollary}[Exact integral-image scale]\label{alg:ns:cor:integral-count}
+In the square target box,
+\[
+I_2(T)=2^{5/3}T^{1/3}+O(1).
+\]
+Except for $(0,0,2)$, every integral target on this slice has a nonsplit
+fiber.
+\end{corollary}
+\begin{proof}
+For each fixed $\varepsilon$, the first coordinate in
+\eqref{alg:ns:eq:curves} is $-2r^3+O(r^2)$. The inequality $|A|\le T$ therefore
+restricts $r$ to endpoints
+$\pm(T/2)^{1/3}+O(1)$. More explicitly, for all sufficiently large
+positive or negative $r$ the cubic is strictly monotone on that tail,
+and its real threshold roots have these estimates. The number of
+integer $r$ is $2(T/2)^{1/3}+O(1)$.
+For these $r$, $|B|=O(T^{2/3})<T$ for sufficiently large $T$, so the
+second-coordinate bound removes no additional asymptotic range.
+There are two disjoint integer-parametrized images, proving the formula. A rational cubic
+factorization other than nonsplit would be completely split or repeated;
+Lemma~\ref{alg:ns:lem:split-nointeger} and Proposition~\ref{alg:ns:prop:repeated}
+leave only the stated exception.
+\end{proof}
+
+\section{Marked-root counting and the \texorpdfstring{$T\log T$}{T log T} term}\label{alg:ns:sec:count}
+
+\subsection{Why a logarithm should appear}
+The parametrization is nearly quadratic in its center but linear in
+$b$. For a nonzero root $r$, keeping $A$ bounded forces $b$ into an
+interval of length about $2T/|r|$ centered at $-r^2+r$. The bound on
+$B=2b$ permits $|r|$ up to a constant multiple of $\sqrt T$.
+Summing $T/|r|$ through this range produces $T\log T$. The constant is
+not an arbitrary density: it is the mean primitive density in the
+arithmetic progressions $3r\pm1$.
+
+\subsection{The exact parameter region}
+Let $P(T)$ denote the number of pairs $(r,b)\in\Z^2$ satisfying
+\eqref{alg:ns:eq:param} and $|A|,|B|\le T$. These pairs mark integer roots,
+so they are not yet target counts. We may first assume $T$ is an integer;
+replacing a real $T$ by $\lfloor T\rfloor$ does not change the conclusions.
+
+For $r\ne0$, the permitted real interval for $b$ is
+\begin{equation}\label{alg:ns:eq:interval}
+\mathcal I_r(T)=
+[-T/2,T/2]\cap
+[-r^2+r-T/|r|,\,-r^2+r+T/|r|].
+\end{equation}
+For $r=0$, every $|b|\le T/2$ is primitive, yielding
+$2\lfloor T/2\rfloor+1=O(T)$ pairs.
+
+\begin{lemma}[Range and boundary reduction]\label{alg:ns:lem:range}
+Only $|r|=O(\sqrt T)$ contribute. If
+$R=\lfloor\sqrt{T/8}\rfloor$, then, for sufficiently large $T$ and
+$3\le|r|\le R$, the second interval in \eqref{alg:ns:eq:interval} is contained
+in the first. The total contribution from $|r|>R$, together with
+$|r|<3$, is $O(T)$.
+\end{lemma}
+\begin{proof}
+Nonemptiness implies
+\[
+r^2-r\le T/2+T/|r|.
+\]
+In terms of $q=|r|$, the left side is at least $q^2-q$, so $q=O(\sqrt T)$.
+For example the explicit bound $q\le\lfloor\sqrt{2T}\rfloor+3$ is safe
+for every integer $T\ge1$: beyond it,
+$q^2-q-T/2>T/q$.
+
+If $3\le q\le R$, the absolute center is at most $T/8+\sqrt{T/8}$,
+and the radius is at most $T/3$. Their sum is smaller than $T/2$ once
+$T$ is sufficiently large. Thus the interval is uncut there and has
+length $2T/q$.
+
+For $R<q\le c_0\sqrt T$ \wtag{}~(the manuscript writes $C\sqrt T$; $c_0$ is the implied constant of $q=O(\sqrt T)$ above), forget the gcd condition and bound the number
+of possible integers by $2T/q+1$. The harmonic sum over this fixed-ratio
+range is $O(1)$, so its contribution is $O(T)$. Each of the finitely
+many roots $|r|<3$ also contributes $O(T)$.
+\end{proof}
+
+\subsection{Primitive points in each interval}
+\begin{lemma}[A uniform interval count]\label{alg:ns:lem:primitive}
+For fixed $r\in\Z$ and any interval of length $L$, the number of
+integers $b$ in the interval with $\gcd(3r-1,3b-1)=1$ is
+\begin{equation}\label{alg:ns:eq:primitivecount}
+L\frac{\varphi(|3r-1|)}{|3r-1|}+O(\tau(|3r-1|)),
+\end{equation}
+with an absolute implied constant. Here $\tau$ is the divisor function.
+\end{lemma}
+\begin{proof}
+Write $n=|3r-1|$, so $3\nmid n$. Inclusion--exclusion gives
+\[
+\sum_{b\in\mathcal I\cap\Z}
+\sum_{d\mid\gcd(n,3b-1)}\mu(d)
+=\sum_{d\mid n}\mu(d)
+\#\{b\in\mathcal I\cap\Z:3b\equiv1\pmod d\}.
+\]
+Each congruence is one residue class, hence contributes $L/d+O(1)$.
+The main term is $L\sum_{d\mid n}\mu(d)/d=L\varphi(n)/n$, and summing
+the errors gives the assertion.
+\end{proof}
+
+\begin{lemma}[The arithmetic mean]\label{alg:ns:lem:mean}
+For each sign,
+\begin{equation}\label{alg:ns:eq:mean}
+\sum_{1\le r\le X}\frac{\varphi(3r\pm1)}{3r\pm1}
+=\alpha X+O(\log(2X)),
+\qquad
+\alpha=\prod_{p\ne3}(1-p^{-2})=\frac{27}{4\pi^2}.
+\end{equation}
+Consequently
+\begin{equation}\label{alg:ns:eq:harmonicmean}
+\sum_{1\le r\le X}\frac{\varphi(3r\pm1)}{r(3r\pm1)}
+=\alpha\log X+O(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Expand $\varphi(n)/n=\sum_{d\mid n}\mu(d)/d$. Since $3$ never divides
+$3r\pm1$, only $3\nmid d$ occur. For each such $d$, the condition
+$3r\pm1\equiv0\pmod d$ specifies one residue class, with
+$X/d+O(1)$ representatives up to $X$. Thus
+\[
+\sum_{r\le X}\frac{\varphi(3r\pm1)}{3r\pm1}
+=X\!\sum_{\substack{d\le3X+1\\3\nmid d}}\frac{\mu(d)}{d^2}
++O\!\left(\sum_{d\le3X+1}\frac1d\right).
+\]
+The tail of the absolutely convergent main sum is $O(1/X)$.
+Its Euler product is
+\[
+\alpha=\frac{1}{\zeta(2)(1-3^{-2})}=\frac{27}{4\pi^2}.
+\]
+This proves \eqref{alg:ns:eq:mean}. Partial summation gives
+\eqref{alg:ns:eq:harmonicmean}; the error integral
+$\int_1^X O(\log(2t))t^{-2}\,dt$ is bounded.
+\end{proof}
+\wtag{} The constant $\alpha$ is the density $27/(4\pi^2)$ of Part~I's
+\eqref{alg:eq:paramdensity}, obtained there from the same M\"obius sum
+$\sum_{3\nmid d}\mu(d)/d^2$; the counted quantities differ (here a mean
+of $\varphi(3r\pm1)/(3r\pm1)$ over roots, there a density of ordered
+root pairs). Part~I's $\alpha_p$ in Theorem~\ref{alg:thm:thinsieve}
+is unrelated (Table~\ref{alg:ns:tab:notation}).
+
+\begin{proposition}[Marked-root asymptotic]\label{alg:ns:prop:P}
+\begin{equation}\label{alg:ns:eq:P}
+P(T)=\frac{27}{2\pi^2}T\log T+O(T).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Apply Lemmas~\ref{alg:ns:lem:range} and \ref{alg:ns:lem:primitive} on the full intervals:
+\[
+P(T)=2T\!\sum_{3\le|r|\le R}
+\frac{\varphi(|3r-1|)}{|r|\,|3r-1|}+O(T).
+\]
+The accumulated divisor errors are harmless: since the integers
+$|3r-1|$ lie below $O(\sqrt T)$ and each is attained at most a bounded
+number of times,
+\[
+\sum_{|r|\le R}\tau(|3r-1|)
+\ll\sum_{n\ll\sqrt T}\tau(n)
+\ll\sqrt T\log(2T)=O(T).
+\]
+The last inequality follows directly from
+$\sum_{n\le Y}\tau(n)=\sum_{d\le Y}\lfloor Y/d\rfloor\ll Y\log(2Y)$.
+
+Positive roots produce $3r-1$, negative roots produce $3|r|+1$.
+Lemma~\ref{alg:ns:lem:mean} therefore makes the displayed sum
+$2\alpha\log R+O(1)$. Finally $\log R=\tfrac12\log T+O(1)$, giving
+$P(T)=2\alpha T\log T+O(T)$ and the stated constant.
+\end{proof}
+There is no hidden equidistribution hypothesis in this computation. The
+primitive density is obtained by a uniformly controlled divisor sum.
+
+\section{From roots to targets: exact multiplicity corrections}\label{alg:ns:sec:mult}
+
+\subsection{An elementary bound for split targets}
+Let $\Sigma(T)$ be the number of locally integral targets in the box with
+three distinct rational roots, and let $N(T)$ count locally integral
+nonsplit targets. By Lemma~\ref{alg:ns:lem:split-nointeger}, every target
+counted by $\Sigma(T)$ is already an integral Hasse failure.
+
+\begin{lemma}\label{alg:ns:lem:splitbound}
+$\Sigma(T)=O(T)$.
+\end{lemma}
+\begin{proof}
+For a split cubic write the integer roots as $r,s,t$ with sum $1$.
+The second elementary symmetric function is $b$, so
+\[
+r^2+s^2+t^2=(r+s+t)^2-2b=1-2b\le T+1.
+\]
+Thus $r,s$ range in a disk inside a square of side $O(\sqrt T)$, and
+$t=1-r-s$ is fixed by them. There are $O(T)$ ordered pairs, hence no
+more than $O(T)$ targets. Imposing the $A$ bound and the primitive gcd
+can only reduce the count.
+\end{proof}
+This deliberately elementary estimate is enough for our main theorem.
+The stronger prior formula \eqref{alg:ns:eq:prior-split} is compatible with,
+but not required by, the argument.
+
+\subsection{Exact identities}
+For every integer $T\ge1$, Proposition~\ref{alg:ns:prop:repeated} yields
+\begin{align}
+P(T)&=3\Sigma(T)+N(T)+2,\label{alg:ns:eq:multiplicity-P}\\
+L_2(T)&=\Sigma(T)+N(T)+1=P(T)-2\Sigma(T)-1.\label{alg:ns:eq:multiplicity-L}
+\end{align}
+The $2$ in the first identity is the number of distinct integer roots
+$0,1$ of $T^2(T-1)$; the $1$ in the second counts its single target.
+Every other locally integral cubic is either nonsplit, with one integer
+root, or split distinct, with three.
+
+All integral targets except this repeated-root target are nonsplit.
+Therefore the exact Hasse counts are
+\begin{align}
+H_2^{\NS}(T)&=P(T)-3\Sigma(T)-I_2(T)-1,\label{alg:ns:eq:exact-NS}\\
+H_2(T)&=P(T)-2\Sigma(T)-I_2(T)-1.\label{alg:ns:eq:exact-H}
+\end{align}
+These formulas are also used by the supplied counting program. They
+prevent the common error of dividing every marked-root count by three.
+
+\begin{proof}[Proof of Theorem~\ref{alg:ns:thm:count-main}]
+Insert Proposition~\ref{alg:ns:prop:P}, Lemma~\ref{alg:ns:lem:splitbound}, and
+Corollary~\ref{alg:ns:cor:integral-count} into
+\eqref{alg:ns:eq:multiplicity-L}, \eqref{alg:ns:eq:exact-NS}, and \eqref{alg:ns:eq:exact-H}.
+The curve statement is Theorem~\ref{alg:ns:thm:curves}. Finally direct
+substitution in \eqref{alg:ns:eq:F} gives
+\[
+F(-x,-y,z)=(P(x,y,z),-Q(x,y,z),-R(x,y,z)).
+\]
+This bijection preserves square target heights and all integral and
+local-solubility conditions, transferring the results to $C=-2$.
+\end{proof}
+
+\subsection{Density consequences and the distinction of sample spaces}
+\begin{corollary}\label{alg:ns:cor:density}
+Among everywhere locally integral targets on $C=2$ in growing square
+boxes, the proportion that are integral Hasse failures tends to $1$.
+Among those Hasse failures, the proportion that are nonsplit also tends
+to $1$. More precisely,
+\[
+\frac{I_2(T)}{L_2(T)}
+\sim\frac{2^{5/3}\,2\pi^2}{27}\,
+\frac{T^{-2/3}}{\log T}.
+\]
+In contrast, the proportion of everywhere locally integral targets
+among \emph{all} integer targets in the square tends to $0$.
+\end{corollary}
+\begin{proof}
+Use $L_2(T)\sim(27/(2\pi^2))T\log T$,
+$I_2(T)\sim2^{5/3}T^{1/3}$, and $\Sigma(T)=O(T)$. The ambient box has
+$(2\lfloor T\rfloor+1)^2$ targets, which is of order $T^2$.
+\end{proof}
+Thus ``almost every'' here has a specified conditioning set. No positive
+ambient density is asserted. The arithmetic image can be thin in the
+ambient plane while local-to-global failure is overwhelmingly typical
+inside its locally soluble part.
+
+\section{Number fields and rings of \texorpdfstring{$S$}{S}-integers}\label{alg:ns:sec:numberfields}
+
+The collapse of odd local conditions is not special to rational primes.
+It uses a rooted cubic over a finite residue field and the invertibility
+of $2$. We record a general extension, including the effect of dyadic
+ramification.
+
+Let $K$ be a number field and $S$ a finite set of finite places. Put
+$R=\Oh_{K,S}$. For a finite place $v\notin S$, write $\Oh_v$ for the
+valuation ring of the completion. All target coordinates now lie in
+$R$. The ring $R/8R$ is finite; if $2$ is a unit in $R$, it is the zero
+ring and its image condition is vacuous.
+
+\begin{theorem}[Finite certificate over $S$-integers]\label{alg:ns:thm:numberfields}
+Let $C\ne0$. A target $\target\in R^3$ belongs to $F(\Oh_v^3)$ for
+every finite $v\notin S$ if and only if all three conditions hold:
+\begin{enumerate}[label=(\alph*)]
+\item $H$ has a simple root in $K$;
+\item for every $v\notin S$ of odd residue characteristic, at least one
+of $U,V$ is a $v$-adic unit;
+\item the residue of $\target$ in $(R/8R)^3$ lies in
+$F((R/8R)^3)$.
+\end{enumerate}
+Condition (b) is equivalently that the ideal $(U,V)R$ has no prime
+support outside $S$ and the dyadic places. For $C=0$, every target has
+the global $R$-point \eqref{alg:ns:eq:boundary}.
+\end{theorem}
+\begin{proof}
+Suppose local solubility holds outside $S$. If $H$ is irreducible over
+$K$, its transitive cubic Galois group has a $3$-cycle. Chebotarev gives
+infinitely many residue fields of irreducible reduction, avoiding the
+finite sets $S$, the dyadic places, the primes of $C$, and the bad
+reduction primes. No local root is possible there. Hence $H$ is
+reducible. A reducible cubic has a simple $K$-root unless it is a triple
+linear factor. The triple case has no point over any extension field
+by Proposition~\ref{alg:ns:prop:inverse}, contradicting local solubility.
+This proves (a).
+
+A root in $K$ of the monic polynomial $H\in R[T]$ belongs to the
+integrally closed ring $R$. Reducing it at any $v\notin S$ gives a
+residue root. At odd residue characteristic the proof of
+Theorem~\ref{alg:ns:thm:odd} works verbatim over the residue field: places
+dividing $C$ are automatically soluble, residue characteristic $3$
+permits no triple root, and in every other odd characteristic the only
+obstruction is $U=V=0$. This proves the equivalence of the odd local
+conditions with (b), in both directions.
+
+It remains to handle dyadic places not inverted in $R$. Necessity of
+(c) follows by reducing the local solutions modulo $8\Oh_v$ and
+combining their residues by the Chinese remainder theorem. Indeed,
+$R/8R$ is the product of the corresponding finite local quotients.
+Conversely, (c) supplies an integral approximate solution at each such
+place. If $e=v(2)$, its error has valuation at least $3e>2e$, so
+Lemma~\ref{alg:ns:lem:lift} gives a genuine local point. Thus (a)--(c) are
+sufficient as well.
+\end{proof}
+
+\begin{remark}[Why ``simple'' is explicit in the extension]
+Over $\Z$, the triple polynomial $(S-2/3)^3$ cannot have integral
+coefficients. Over $S$-integers with $3$ inverted it can. The word
+``simple'' in condition (a) prevents importing that integer-specific
+shortcut into the more general theorem. Equivalently, one could allow
+any $K$-root and separately exclude the triple case.
+\end{remark}
+
+The dyadic modulus $8R$ is a uniform sufficient modulus, including
+ramified dyadic fields. We do not claim that it is minimal. The compact
+rational coefficient table $E$ is special to $\Z/8\Z$; for a general
+number field the finite image in (c) must be computed in its actual
+quotient ring, not by applying that table componentwise to coordinates
+of an arbitrary integral basis.
+
+Once a simple root is known, global $R$-membership is likewise finite:
+reconstruct all simple $K$-roots by \eqref{alg:ns:eq:reconstruct} and test
+membership of their coordinates in $R$. The theorem therefore supplies
+a complete local/global decision procedure, although no optimal
+complexity bound is claimed for number-field factorization.
+
+\section{Algorithms and reproducible checks}\label{alg:ns:sec:computation}
+
+\subsection{An exact classification algorithm}
+For integer input $(A,B,C)$, the following procedure has no prime-search
+loop and needs no factorization of $G$.
+\begin{enumerate}[label=\arabic*.]
+\item If $C=0$, return the point $(0,B,A-4B^2)$.
+\item Compute $G=\gcd(|3BC-4|,|27AC^2-4|)$ and repeatedly divide out $2$.
+Reject local solubility if the remaining odd part exceeds $1$, or if
+$E(A,B,C)$ fails.
+\item Compute the rational roots of the monic cubic $H$. They are
+integers. If none exist, reject local solubility.
+\item Reconstruct all simple roots exactly. Return ``integral image''
+if a reconstructed point is integral and ``integral Hasse failure''
+otherwise. The quadratic discriminant distinguishes the nonsplit case.
+\end{enumerate}
+The order is chosen for speed: the inexpensive gcd and dyadic tests can
+reject many inputs before polynomial factorization. Correctness follows
+from Theorem~\ref{alg:ns:thm:main}; the root gate is never silently omitted.
+The supplied \rpath{code/classify.py} implements this procedure with
+exact rational arithmetic and SymPy's rational-root computation.
+
+\subsection{Exact counting without target-box scanning}
+For each root $r$, compute the integer endpoints of \eqref{alg:ns:eq:interval}.
+For each squarefree divisor $d$ of $|3r-1|$, the permitted residue class
+is $b\equiv3^{-1}\pmod d$. Inclusion--exclusion counts all primitive
+$b$ in the interval exactly by floor differences. This evaluates $P(T)$
+without scanning $O(T^2)$ target pairs.
+
+To count $\Sigma(T)$, enumerate ordered roots $r<s<t$ with $r+s+t=1$ and
+$r^2+s^2+t^2\le T+1$. Compute $A=rst$, $B=2(rs+rt+st)$, check the box
+and gcd, and count each unordered triple once. The integral curves give
+$I_2(T)$ directly. Equations~\eqref{alg:ns:eq:exact-NS} and \eqref{alg:ns:eq:exact-H}
+then give the exact Hasse counts.
+
+This is a practical exact algorithm, not a claimed optimal complexity
+result. The delivered split enumerator uses $O(T)$ candidate pairs;
+trial division of $|3r-1|$ is used in the marked-root counter. Both can
+be improved by sieving, but no asymptotic theorem here depends on such
+an optimization.
+
+\subsection{Recorded exact counts}
+The following outputs were generated by the included programs. The last
+column is illustrative floating-point arithmetic; all counts are exact.
+\begin{center}\small
+\begin{tabular}{@{}r r r r r r@{}}
+\toprule
+$T$ & $P(T)$ & $\Sigma(T)$ & $I_2(T)$ & $H_2^{\NS}(T)$ &
+$H_2^{\NS}/(T\log T)$\\
+\midrule
+$10^2$ & $633$ & $21$ & $14$ & $555$ & $1.205167$\\
+$10^3$ & $9\,462$ & $121$ & $32$ & $9\,066$ & $1.312438$\\
+$10^4$ & $126\,107$ & $653$ & $68$ & $124\,079$ & $1.347171$\\
+$10^5$ & $1\,575\,664$ & $3\,304$ & $148$ & $1\,565\,603$ & $1.359865$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The predicted leading constant is
+$27/(2\pi^2)\approx1.3678359792$.
+For comparison, the total Hasse counts in these rows are
+$576$, $9\,187$, $124\,732$, and $1\,568\,907$.
+The proximity of the ratios is evidence of consistency, not a proof of
+the asymptotic or its error term.
+
+\subsection{Independent verification layers}
+The package records the following completed checks.
+\begin{enumerate}[label=(\roman*)]
+\item Exact symbolic checks of the determinant, inverse identities,
+reconstruction, factorization, discriminant, and the coefficient-gcd
+identity, using SymPy.
+\item Exhaustive comparison of the dyadic coefficient table with all
+$512$ targets modulo $8$.
+\item Exhaustive image and root-cusp comparison over
+$p=3,5,7,11,13,17,19,23,29,31$, totaling $82\,142$ target triples.
+\item Direct substitution and inverse recovery for $1\,331$ integer
+input points in $[-5,5]^3$.
+\item Independent target-box enumeration at $T=5,10,25,50$, checking
+the exact multiplicity corrections, integral curves, and nonsplit
+counts; and $100$ exact instances of Corollary~\ref{alg:ns:cor:family}.
+\end{enumerate}
+The finite dyadic enumeration is a complete finite certificate for the
+residue-table claim. The other finite tests do not establish statements
+at untested primes or arbitrarily large heights; those statements have
+separate proofs in the article.
+
+\section{Formalization plan and dependency audit}\label{alg:ns:sec:formal}
+
+\subsection{What is and is not kernel checked}
+The source repository contains a Lean declaration for the displayed map
+and a theorem computing its formal multivariate-polynomial Jacobian
+determinant \cite{dh:proveitformal}. This article did not run that Lean build.
+Its own classification, counting, and number-field results are not
+formalized in Lean or Rocq, and no such status is inferred from the
+existing project.
+
+The arithmetic proofs naturally decompose into a mostly elementary
+formalization target. First, formalize the inverse chart as identities
+in a localization, with the conditions $2C D\ne0$ explicit. Second,
+formalize the finite-field cubic lemma and coefficient comparison.
+Third, implement the dyadic table as a decidable finite statement and
+prove the Newton lifting lemma. Fourth, formalize the primitive
+parametrization and the two integral curves. These four stages contain
+the main classification innovation. Chebotarev is needed only for the
+necessity of the global rational-root gate, and should remain an
+explicit imported theorem or an explicitly stated dependency until an
+appropriate formal library result is available.
+
+For the counting theorem, the critical analytic inputs are modest:
+M\"obius inversion, the Euler product for $\zeta(2)$, an elementary
+divisor-sum bound, and partial summation. A clean formal proof should
+keep $P,S,N,L,I,H$ distinct rather than hiding multiplicity corrections
+inside a single counting function.
+
+\subsection{Dependency graph}
+\begin{center}\small
+\begin{tabular}{@{}p{.35\textwidth}p{.59\textwidth}@{}}
+\toprule
+Claim & Essential dependencies\\
+\midrule
+Odd gcd criterion & Inverse chart; unit-Jacobian lifting; rooted cubic lemma\\
+Dyadic table & $512$-case finite identity; nonunit Newton lifting\\
+Complete local classification & Odd criterion; dyadic table; cubic Chebotarev gate\\
+Primitive parametrization & Classification; exact coefficient congruence\\
+Integral curves & Slice reconstruction; distinct-root derivative product\\
+$T\log T$ count & Primitive parametrization; divisor inversion; harmonic mean;
+ multiplicity correction\\
+Number-field extension & Same rooted cubic lemma; Chebotarev over $K$;
+ integrally closed rings; dyadic lifting and CRT\\
+\bottomrule
+\end{tabular}
+\end{center}
+No proof of the main counting constant uses numerical extrapolation,
+the previously claimed split asymptotic, or a conjectural equidistribution
+statement.
+
+\section{Further research questions of Part~III}\label{alg:ns:sec:questions}
+The results above settle the nonsplit local-solubility question and the
+leading square-box asymptotic on $C=2$. They also suggest several
+substantial extensions. The questions below specify what remains open
+in this article; they are not all claimed to be previously published
+open problems.
+
+\begin{question}[A genuine second-order term]\label{alg:ns:q:second}
+Does the limit
+\[
+\lim_{T\to\infty}\frac{H_2^{\NS}(T)-\frac{27}{2\pi^2}T\log T}{T}
+\]
+exist, and can it be expressed by an explicit convergent arithmetic
+series and a boundary integral?
+\end{question}
+The present proof absorbs the clipped intervals and finitely many small
+roots into $O(T)$, precisely the scale of the desired term. Improving it
+requires retaining their contributions rather than merely sharpening
+the divisor error. The summatory mean in Lemma~\ref{alg:ns:lem:mean} is already
+strong enough to make such a refinement plausible.
+
+\begin{question}[Power-saving remainder]\label{alg:ns:q:power}
+After a second main term is identified, can the remainder be bounded by
+$O(T^{1/2+\epsilon})$, or is a larger fluctuation forced by the changing
+integer boundaries and split-root subtraction?
+\end{question}
+The known split contribution is of order $T^{2/3}$, so the answer for
+all Hasse failures and for nonsplit failures may require explicitly
+subtracting different $T^{2/3}$ terms. A proposed error smaller than
+that scale must account for this distinction.
+\wtag{} Part~II's Research question~\ref{alg:dh:q:remainder} asks the
+analogous question for the split count $\#\Hsplit_c(T)$ itself.
+
+\begin{question}[Other fixed slices]\label{alg:ns:q:slices}
+For each fixed nonzero integer $c$, determine the order and leading
+constant for nonsplit integral Hasse failures on $C=c$ in square boxes.
+Which $c$ share the $T\log T$ law, and what local factors replace
+$27/(2\pi^2)$?
+\end{question}
+The complete local certificate already applies. The difficulty is the
+height geometry and the divisibility conditions in the monic-root
+parametrization. The special slice $c=2$ removes denominator congruences
+and makes two reconstructed coordinates automatically integral; that
+simplification cannot simply be assumed for other $c$.
+\wtag{} This is the part of Part~II's Research
+question~\ref{alg:dh:q:quadratic} (exponent and leading constant of the
+rational-plus-quadratic sector) that Part~III leaves open: its
+classification half is answered on every slice by
+Corollary~\ref{alg:ns:cor:nonsplit}, its counting half on $C=\pm2$ by
+Theorem~\ref{alg:ns:thm:count-main}. The split sector of every slice is
+Part~II's Theorem~\ref{alg:dh:thm:headline-count}.
+
+\begin{question}[Unequal boxes and phase changes]\label{alg:ns:q:unequal}
+Determine the asymptotic in $|A|\le H_A$, $|B|\le H_B$ uniformly in
+natural ranges of the ratio $H_A/H_B^{3/2}$.
+\end{question}
+The root interval has radius $H_A/|r|$ but the admissible centers extend
+to $|r|\asymp\sqrt{H_B}$. The logarithmic range can shrink or disappear
+as these two scales cross. A uniform result would explain the mechanism
+behind the square-box logarithm rather than only one specialization.
+\wtag{} This is what remains of Part~I's Research
+question~\ref{alg:sub:q-height}, which asks for boxes $|A|\le H_A$,
+$|B|\le H_B$; Part~III answers it for square boxes in all sectors.
+
+\begin{question}[Quadratic fields and branch-switching statistics]\label{alg:ns:q:quadfields}
+Among nonsplit Hasse failures, what is the distribution of the quadratic
+field $\Q(\sqrt\Delta)$ and of the primes at which the unique rational
+point is nonintegral but a quadratic point is locally integral?
+\end{question}
+The gcd criterion removes these data from the membership test, but not
+from finer arithmetic statistics. A field-conditioned count would
+involve square classes of $-3r^2+2r+1-4b$ in the primitive region.
+
+\begin{question}[Minimal dyadic precision over number fields]\label{alg:ns:q:dyadicprec}
+For a finite extension of $\Q_2$, what is the least ideal modulus that
+determines membership in $F(\Oh_v^3)$? How does it depend on ramification
+and residue degree?
+\end{question}
+Theorem~\ref{alg:ns:thm:numberfields} supplies the uniform modulus $8\Oh_v$,
+not an optimal one. A classification of the finite image could generalize
+the small rational table without an exponential enumeration of the
+entire quotient cube.
+\wtag{} Cf.\ Part~I's Research question~\ref{alg:sub:q-extensions},
+which asks for the integral fiber distributions over finite extensions
+of $\Q_2$; this question asks only for the membership modulus.
+
+\begin{question}[Beyond this cubic map]\label{alg:ns:q:beyond}
+Which polynomial maps with an inverse polynomial of degree $d>3$ admit
+an analogous collapse from local factorization data to a small set of
+coefficient obstructions after one rational branch is known?
+\end{question}
+Lemma~\ref{alg:ns:lem:triple} is unusually strong in degree three. In degree
+four a repeated rational factor can leave an irreducible quadratic with
+no residue root, so the same proof fails. Identifying the correct
+replacement would separate genuinely cubic behavior from a reusable
+arithmetic method.
+
+\begin{question}[Counting over number fields and $S$-integers]\label{alg:ns:q:numberfield}
+For a fixed number field and a specified archimedean height, determine
+the asymptotic number of locally integral but globally nonintegral
+nonsplit targets on a fixed slice. How do units and the ideal class group
+alter the logarithmic factor?
+\end{question}
+The certificate in Section~\ref{alg:ns:sec:numberfields} settles the local
+membership problem but does not settle height counting. The meaning of
+a box and the treatment of units must be fixed before formulating a
+leading constant.
+\wtag{} Part~II's Research question~\ref{alg:dh:q:numberfield} asks the
+same for split fibers (the constant $\kappa(c)$ over number fields and
+after inverting finitely many primes).
+
+\begin{question}[Proof-producing arithmetic software]\label{alg:ns:q:software}
+Can the rational-root, gcd, dyadic-residue, and reconstruction certificates
+be emitted by a small program and checked inside ProveIt's Lean project,
+leaving only the general rational-root necessity theorem dependent on
+Chebotarev?
+\end{question}
+Such a checker would certify individual global and integral-Hasse
+examples without trusting a computer algebra system. For positive local
+certificates, the root and gcd witnesses are especially compact.
+\wtag{} Cf.\ Part~I's Research question~\ref{alg:sub:q-library} and
+Part~II's Research question~\ref{alg:dh:q:library}, which ask for a
+reusable library; this question asks for per-target certificates.
+
+\section{Conclusion of Part~III}\label{alg:ns:sec:conclusion}
+The unresolved nonsplit sector is not a minor correction to the split
+case. It changes the dominant arithmetic scale. Once a rational root
+is available, every odd local obstruction is detected by reduction to
+the missing cubic cusp; the entire infinite family of odd-prime tests
+reduces to the gcd of two explicit target polynomials. The dyadic test
+is finite and uniform.
+
+On $C=2$, these facts give a primitive integer parametrization. Its
+harmonic-width geometry yields the coefficient
+$27/(2\pi^2)$ in a $T\log T$ law. Global integrality, meanwhile, forces
+a derivative to be a unit and collapses the image to two curves with
+only $T^{1/3}$ targets. This establishes a sharp qualitative separation:
+locally integral targets are sparse in the ambient plane, but almost
+all of them are nonsplit integral Hasse failures.
+
+\section{Package contents and replay instructions of Part~III}\label{alg:ns:app:package}
+\wtag{} This is the manuscript's Appendix~A.
+The archive contains this article as \rpath{article.tex} and
+\rpath{article.pdf}, together with:
+\begin{center}\small
+\begin{tabular}{@{}p{.34\textwidth}p{.60\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\rpath{code/arithmetic.py} & Exact map, residue test, reconstruction,
+primitive interval counts, and target counts\\
+\rpath{code/classify.py} & Exact integer-target classifier with JSON output\\
+\rpath{code/verify.py} & Dyadic certificate, finite-field checks, inverse
+checks, independent small-box enumeration\\
+\rpath{code/symbolic.py} & Exact symbolic identity checks\\
+\rpath{code/count.py} & Reproduce the counting table\\
+\rpath{data/*.json} & Recorded outputs of the verification and counting runs\\
+\rpath{README.md} & Build and execution commands\\
+\rpath{STATUS.md} & Proof, novelty, formalization, and computation boundaries\\
+\rpath{SOURCES.md} & Pinned source and attribution ledger\\
+\rpath{SHA256SUMS} & Integrity checks for the delivered files\\
+\bottomrule
+\end{tabular}
+\end{center}
+From the package root, run
+\Needspace{9\baselineskip}
+\begin{lstlisting}[language=bash]
+python code/verify.py
+python code/symbolic.py
+python code/count.py
+python code/classify.py 0 4 2
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The exact arithmetic and finite verification programs need only Python's
+standard library. Symbolic verification and the general classifier use
+SymPy. Counts and proofs do not depend on floating-point calculations.
+The package uses Python 3.10 or later; the recorded run used Python 3.13
+and SymPy 1.14.0.
+
+\wtag{} In this report the files carry the prefix
+\texttt{03-nonsplit-hasse-}: the programs and the \texttt{Makefile} are
+under \rpath{code/}, the recorded outputs and \texttt{requirements.txt}
+under \rpath{data/}, and \texttt{STATUS.md} and \texttt{SOURCES.md} at
+the report root. The manuscript is printed here as Part~III; its
+\texttt{article.pdf}, \texttt{README.md} and \texttt{SHA256SUMS} are not
+shipped. The commands above are the delivery's: \texttt{classify.py},
+\texttt{count.py}, \texttt{symbolic.py} and \texttt{verify.py} import
+\texttt{arithmetic} by its delivered name, and \texttt{verify.py},
+\texttt{symbolic.py} and \texttt{count.py} write \texttt{verification.json},
+\texttt{symbolic.json} and \texttt{counts.json} into \rpath{../data/}
+relative to their own directory, so they must be run on a copy
+(Appendix~\ref{alg:ns:app:rerun}). On Windows use \texttt{py} or
+\texttt{uv run} for \texttt{python}.
+
+\section{Explicit finite bounds used by the programs of Part~III}\label{alg:ns:app:bounds}
+\wtag{} This is the manuscript's Appendix~B.
+The marked-root enumerator loops through
+$|r|\le\lfloor\sqrt{2T}\rfloor+3$. To verify that this is safe, put
+$q=|r|$. A feasible pair would satisfy
+\[
+q(q^2-q-T/2)\le T.
+\]
+For $q\ge\sqrt{2T}+2$, the expression $q^2-q-T/2$ is at least
+$3T/2+3\sqrt{2T}+2>T$, so feasibility is impossible. The chosen integer
+bound is slightly looser, not tighter, than needed.
+
+For split counting, $r^2+s^2+t^2\le T+1$ bounds each root. Enumerating
+$r<s<t$ with $t=1-r-s$ is unique; it does not divide an ordered count by
+six near repeated roots. For integral curves, the inequality
+$|-6r^2+4r+2\varepsilon|\le T$ implies a quadratic bound on $|r|$;
+$\lfloor\sqrt{T+1}\rfloor+3$ is again deliberately safe. The sharp
+$T^{1/3}$ scale is proved from the first coordinate, not imposed as an
+unverified truncation in the program.
+
+\section{Small-box cross-checks of Part~III}\label{alg:ns:app:small}
+\wtag{} This is the manuscript's Appendix~C.
+These values were obtained both from the root-parametrized algorithm
+and by independently scanning all integer target pairs in the indicated
+boxes and computing their roots.
+\begin{center}\small
+\begin{tabular}{@{}r r r r r r r@{}}
+\toprule
+$T$ & $P$ & $\Sigma$ & $I_2$ & $L_2$ & $H_2^{\NS}$ & $H_2$\\
+\midrule
+$5$ & $14$ & $1$ & $4$ & $11$ & $6$ & $7$\\
+$10$ & $33$ & $2$ & $5$ & $28$ & $21$ & $23$\\
+$25$ & $104$ & $5$ & $8$ & $93$ & $80$ & $85$\\
+$50$ & $261$ & $10$ & $12$ & $240$ & $218$ & $228$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example, $P=14$ at $T=5$ is not a target count: its three-root
+fiber contributes three markings, and the repeated-root target
+contributes two. The corrections give $L_2=14-2\cdot1-1=11$.
+
+\section{The complete dyadic finite certificate of Part~III}\label{alg:ns:app:dyadic}
+\wtag{} This is the manuscript's Appendix~D.
+This short standalone program verifies the exact equality between the
+residue image and the coefficient table. No symbolic algebra package is
+used. There are $512$ source triples and $512$ target triples; the set
+comprehension computes the former image and the final loop checks every
+possible target. Polynomial evaluation is performed over the integers
+and then reduced modulo $8$, which agrees with evaluation in the quotient
+ring.
+
+\begin{lstlisting}[language=Python]
+from itertools import product
+
+def F(x, y, z):
+    u = 1 + x*y
+    h = u*u*z + y*y*(1 + 3*u)
+    return u*h, y + 3*x*h, x*(5 - 3*u - x*x*z)
+
+def E(A, B, C):
+    c = C % 8
+    if c == 0: return True
+    if c == 4: return B % 2 == 0
+    if c in (2, 6): return A % 2 == B % 2 == 0
+    return ((A % 2 == 0 and B % 4 == 2)
+            or (A % 2 == 1 and (B*C - 2*A - 1) % 8 == 0))
+
+image = {tuple(v % 8 for v in F(*a))
+         for a in product(range(8), repeat=3)}
+assert len(image) == 176
+for b in product(range(8), repeat=3):
+    assert (b in image) == E(*b)
+\end{lstlisting}
+
+The recorded run passed every assertion. The same comparison appears in
+\rpath{code/verify.py}, which also records the finite fiber histogram.
+For readers replacing executable enumeration by a proof-assistant
+certificate, the final assertion is a decidable statement on a finite
+type. Its formalization is separate from the valuation-theoretic
+argument lifting the residue image to $\Z_2$.
+
+The cardinality check alone would not prove the coefficient table:
+two different subsets can both have $176$ elements. The final loop
+certifies the stronger pointwise equivalence used in the theorem.
+
+%% End of Part III. The appendices below belong to Part I, apart from
+%% the Part II and Part III provenance and rerun subsections at the end
+%% of Appendix C.
 \clearpage
 \fancyhead[L]{\small Arithmetic local--global dichotomies}
 \phantomsection\addcontentsline{toc}{part}{Appendices}
@@ -3228,6 +5098,9 @@ names.
 [Added 30 September 2026, batch~58: Part~II's delivered replay commands
 are printed in Section~\ref{alg:dh:sec:repro}; commands that work with
 its shipped names are in Appendix~\ref{alg:dh:app:rerun}.]
+[Added 30 September 2026, batch~64: Part~III's delivered replay commands
+are printed in Section~\ref{alg:ns:app:package}; commands that work with
+its shipped names are in Appendix~\ref{alg:ns:app:rerun}.]
 
 \section{A characteristic-three simplification}
 The separate characteristic-three finite-field count has a direct
@@ -3270,6 +5143,9 @@ is printed. The manuscript contributed everything except the text marked
 report is now built from \emph{two} manuscripts; Part~II is batch-58
 manuscript~01, pinned to \dhsha, and its provenance, shipped files and
 editorial changes are in Appendix~\ref{alg:dh:app:provenance}.]
+[Added 30 September 2026, batch~64: the report is now built from
+\emph{three} manuscripts; Part~III is batch-64 manuscript~02, pinned to
+\nssha, and its provenance is in Appendix~\ref{alg:ns:app:provenance}.]
 
 The editorial changes are these.
 \begin{enumerate}[label=(\arabic*)]
@@ -3514,6 +5390,194 @@ the regenerated \texttt{example.json} is the shipped one without its
 \rpath{data/02-dense-hasse-build_review.json} is a static record of the
 delivered 20-page PDF, not regenerated.
 
+\subsection{Part~III: the third manuscript}\label{alg:ns:app:provenance}
+\wtag{} [Added 30 September 2026, batch~64.] Part~III is built from
+\emph{one} manuscript: manuscript~02 of batch~64 of ProveIt's incoming
+reports, the archive \texttt{ProveIt\_Beyond\_Split\_Fibers} (inner
+directory \texttt{ProveIt\_Nonsplit\_Hasse}, main file
+\texttt{article.tex}, a 24-page US-Letter PDF dated 30~September 2026,
+author line and PDF metadata ``AI-assisted research draft prepared for
+Vladimir Reshetnikov''), pinned to ProveIt commit \nssha. The archive
+arrived in commit \texttt{7747fcfdd} and was placed in
+\texttt{3025c15df} as an addition to this report, with the file prefix
+\texttt{03-nonsplit-hasse-}. The report is therefore built from three
+manuscripts: Part~I (batch~36, manuscript~03;
+Appendix~\ref{alg:app:onesource}), Part~II (batch~58, manuscript~01;
+Appendix~\ref{alg:dh:app:provenance}) and Part~III. Nothing was merged
+across the Parts and nothing was selected away: every result, proof,
+example, table, question and limitation of the manuscript is printed in
+Sections~\ref{alg:ns:sec:intro}--\ref{alg:ns:app:dyadic}, and it
+contributed everything there except the text marked \wtag.
+Section~\ref{alg:ns:sec:relation} is new.
+
+Parts~I and~II are unchanged from Part~III's pin to the placement commit
+(the only change to this directory in between is the placed files), so
+the manuscript's references to Part~I's Research questions 12.2 and 12.3
+and to Part~II's open questions and split constant are current. The
+manuscript also read this directory's README and the collection's
+\rpath{SetTheory/Cardinals/docs/reports/README.md} and
+\rpath{SetTheory/Cardinals/README.md} at its pin, for scope and placement
+only (\rpath{03-nonsplit-hasse-SOURCES.md}).
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{Labels.} The manuscript's 78 labels carry the prefix
+\texttt{alg:ns:}, unchanged after it. Twenty were added for Part~III: the
+relation section, its six subsections and the notation table
+(\rpath{alg:ns:sec:relation}, \rpath{alg:ns:sec:source},
+\rpath{alg:ns:sec:answers}, \rpath{alg:ns:sec:consistency},
+\rpath{alg:ns:sec:notation}, \rpath{alg:ns:sec:duplicates},
+\rpath{alg:ns:sec:formalproject}, \rpath{alg:ns:tab:notation}); the
+manuscript's nine research questions (\rpath{alg:ns:q:second},
+\rpath{alg:ns:q:power}, \rpath{alg:ns:q:slices}, \rpath{alg:ns:q:unequal},
+\rpath{alg:ns:q:quadfields}, \rpath{alg:ns:q:dyadicprec},
+\rpath{alg:ns:q:beyond}, \rpath{alg:ns:q:numberfield},
+\rpath{alg:ns:q:software}); its Conclusion
+(\rpath{alg:ns:sec:conclusion}); and the two subsections of this
+appendix (\rpath{alg:ns:app:provenance}, \rpath{alg:ns:app:rerun}). In
+Part~I the label \rpath{alg:sub:q-extensions} was added to the existing
+subsection 12.5. No existing label was renamed or removed, and no number
+of Part~I or Part~II moved.
+\item \emph{Numbering.} Manuscript Section~$k$ ($k=1,\ldots,14$) is
+printed as Section~$k+28$, so its Theorem~$k.m$ and equation~($k.m$) are
+Theorem~$(k+28).m$ and equation~($(k+28).m$); its Appendices~A--D are
+Sections~\ref{alg:ns:app:package}--\ref{alg:ns:app:dyadic}, with the
+manuscript's reference to ``Appendix~D'' printed as a section reference.
+Its research questions already shared the theorem counter. The titles of
+its research-question, Conclusion and appendix sections gained ``of
+Part~III''.
+\item \emph{Citations.} The manuscript's entry \texttt{prior} reads:
+``\emph{Arithmetic Local--Global Dichotomies for ProveIt's Three-Variable
+Keller Map}, with Part~II, \emph{Zariski-dense integral Hasse failures:
+complete split-fiber criteria and sharp target-height asymptotics},
+AI-assisted research reports dated September 24 and 29, 2026, merged in
+ProveIt, snapshot [the pin]. Unrefereed and not formalized. See Part~I,
+Sections~12.2--12.3, and the Part~II discussion of remaining nonsplit and
+coefficient-certificate questions.'' It is this report, so its four
+citations became cross-references to Parts~I and~II, marked \wtag, and
+Part~I's section numbers 12.2 and 12.3 became cross-references (the
+printed numbers are unchanged). Its entry \texttt{formal} names the same
+Lean file at its own pin, identical to Part~II's entry, and is cited as
+\cite{dh:proveitformal}. Its entries for Gao and Milne were merged into
+Part~I's entries \cite{gao} and \cite{milne}, with their notes kept.
+\item \emph{Notation.} The split count $S(T)$ is printed $\Sigma(T)$,
+and the implied constant $C$ in the proof of
+Lemma~\ref{alg:ns:lem:range} is printed $c_0$
+(Section~\ref{alg:ns:sec:notation}); nothing else was renamed. Macros: the
+manuscript's \verb|\pin| is \verb|\nssha| here; \verb|\NS| and
+\verb|\spc| were added; its definitions of \verb|\Z|, \verb|\Q|,
+\verb|\R|, \verb|\C|, \verb|\F|, \verb|\A|, \verb|\Zp|, \verb|\Qp|,
+\verb|\Oh|, \verb|\Gal|, \verb|\Disc|, \verb|\im|, \verb|\lcm|,
+\verb|\target| and \verb|\rpath| duplicate the report's and were dropped;
+its unused \verb|\odd| was not carried over.
+\item \emph{Notes marked \wtag} were added in
+Section~\ref{alg:ns:sec:intro} (the report and the pin, the formal
+declarations, Part~II's split constant), at the four former citations,
+after the Remark following Proposition~\ref{alg:ns:prop:two} (Part~I's
+residue counts), after Lemma~\ref{alg:ns:lem:split-nointeger} (Part~I's
+Theorem~\ref{alg:thm:plane}, which the manuscript does not cite), after
+Lemma~\ref{alg:ns:lem:mean} (Part~I's density), at the constant $c_0$,
+after six research questions (cross-references to Parts~I and~II), at
+the heads of Sections~\ref{alg:ns:app:package}--\ref{alg:ns:app:dyadic},
+and at the end of Section~\ref{alg:ns:app:package} (shipped names). The
+manuscript's title page is printed as the abstract and evidence note of
+Section~\ref{alg:ns:sec:source}; its author line is recorded only here.
+\item \emph{Parts~I and~II} gained dated notes on the title page, after
+Research questions~\ref{alg:sub:q-dyadic}, \ref{alg:sub:q-split},
+\ref{alg:sub:q-height} and~\ref{alg:sub:q-extensions}, in the
+introductory paragraph of Part~II, in
+Section~\ref{alg:dh:sec:answers}, after
+Theorem~\ref{alg:dh:thm:headline-count}, after Part~II's Research
+questions~\ref{alg:dh:q:quadratic}, \ref{alg:dh:q:coefficient}
+and~\ref{alg:dh:q:numberfield}, in Section~\ref{alg:dh:sec:conclusion},
+in Appendices~\ref{alg:app:replay} and~\ref{alg:app:onesource}, and in
+the bibliography entries \cite{gao}, \cite{milne}
+and~\cite{dh:proveitformal}. The title page's vertical spaces were
+reduced so that its note fits on one page. The Part~III heading, its
+running head and its contents entry are new.
+\end{enumerate}
+No mathematical statement of the manuscript was changed.
+
+Where the addition had to choose: (a) the manuscript became Part~III of
+this report, not a new report, because it studies the same map through
+the same chart and cubic and answers questions of Parts~I and~II;
+(b) its restatements of Parts~I and~II are kept in place and marked
+(Section~\ref{alg:ns:sec:duplicates}), since all of its labels are kept;
+in particular its proof that split fibers on $C=2$ have no integral point
+is kept beside a pointer to Part~I's Theorem~\ref{alg:thm:plane};
+(c) of the colliding letters, the count $S(T)$ was renamed rather than
+the indeterminate $S$ or the set of places, following Part~II's rename of
+its sum, and the constant $C$ was renamed rather than the coordinate;
+(d) Part~II's split-sector theorems are kept as proved, and the sentences
+that restrict the answer to Research question~\ref{alg:sub:q-height} to
+the split sector are re-scoped by dated notes, not edited; (e) the
+bibliography entry for this report itself became cross-references.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright}p{0.40\textwidth}>{\raggedright\arraybackslash}p{0.52\textwidth}}
+\toprule
+Delivered file & In this report\\
+\midrule
+\texttt{article.tex} & printed as Part~III
+(Sections~\ref{alg:ns:sec:intro}--\ref{alg:ns:app:dyadic})\\
+\texttt{README.md}, \texttt{article.pdf}, \texttt{SHA256SUMS} & not
+shipped (the report README and \rpath{article.pdf} replace the first
+two)\\
+\texttt{SOURCES.md}, \texttt{STATUS.md} &
+\rpath{03-nonsplit-hasse-SOURCES.md}, \rpath{03-nonsplit-hasse-STATUS.md}\\
+\texttt{Makefile} & \rpath{code/03-nonsplit-hasse-Makefile}\\
+\texttt{requirements.txt} & \rpath{data/03-nonsplit-hasse-requirements.txt}\\
+\texttt{code/arithmetic.py}, \texttt{classify.py}, \texttt{count.py},
+\texttt{symbolic.py}, \texttt{verify.py} & the same names under
+\rpath{code/} with the prefix \texttt{03-nonsplit-hasse-}\\
+\texttt{data/build\_review.json}, \texttt{classification\_example.json},
+\texttt{counts.json}, \texttt{symbolic.json}, \texttt{verification.json} &
+the same names under \rpath{data/} with the prefix
+\texttt{03-nonsplit-hasse-}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every shipped file is byte-identical to the delivery, and matches the
+delivered \texttt{SHA256SUMS}. The shipped
+\rpath{03-nonsplit-hasse-SOURCES.md}, \rpath{03-nonsplit-hasse-STATUS.md}
+and \rpath{code/03-nonsplit-hasse-Makefile}, and the manuscript's own text
+(Sections~\ref{alg:ns:sec:computation} and~\ref{alg:ns:app:package}),
+still name the delivered paths. \rpath{data/03-nonsplit-hasse-build_review.json}
+records the delivered 24-page PDF, which is not shipped, and
+\rpath{data/03-nonsplit-hasse-classification_example.json} is the
+standard output of \texttt{classify.py 0 4 2}; no program writes that
+file.
+
+\subsection{Rerunning the checks of Part~III}\label{alg:ns:app:rerun}
+\wtag{} [Added 30 September 2026, batch~64.] Rerun on a copy with the
+delivered names, never in the report: \texttt{classify.py},
+\texttt{count.py}, \texttt{symbolic.py} and \texttt{verify.py} import
+\texttt{arithmetic} by its delivered name, and \texttt{verify.py},
+\texttt{symbolic.py} and \texttt{count.py} (without \texttt{-{}-output})
+write \texttt{verification.json}, \texttt{symbolic.json} and
+\texttt{counts.json} into \rpath{../data/} relative to their own
+directory.
+\begin{lstlisting}[language=bash]
+W=<scratch>              # outside the repository
+mkdir -p "$W/code" "$W/data"
+for f in arithmetic classify count symbolic verify; do
+  cp "code/03-nonsplit-hasse-$f.py" "$W/code/$f.py"; done
+cd "$W"
+py code/verify.py
+uv run --no-project --with sympy==1.14.0 python code/symbolic.py
+py code/count.py
+uv run --no-project --with sympy==1.14.0 python code/classify.py 0 4 2
+\end{lstlisting}
+At the write these commands were run so, with Python~3.14.4 for the
+standard-library programs and Python~3.13.5 under \texttt{uv} with
+SymPy~1.14.0: all exit with status zero, \texttt{verify.py} and
+\texttt{symbolic.py} report \texttt{"status": "PASS"}, and the
+regenerated \texttt{verification.json}, \texttt{symbolic.json} and
+\texttt{counts.json} and the printed classification equal the shipped
+files apart from Windows line endings. \texttt{verify.py},
+\texttt{count.py} and \texttt{arithmetic.py} need only the standard
+library.
+
 \clearpage
 \begin{thebibliography}{9}
 \bibitem{proveit}
@@ -3538,6 +5602,9 @@ Theorems 3.3--3.4 and Appendix A.1.
 entry reads: ``Used for attribution of the pre-existing geometric
 setting; none of its generalizations is an assumption of the proofs
 here.''
+\wtag{} Part~III cites arXiv:2608.00222v1, July 31, 2026, with the note:
+``Theorems~3.3--3.4 provide the relevant degree-three map and fiber
+geometry; the map is attributed to Alp\"oge's announcement.''
 
 \bibitem{finitefield}
 \texttt{royvanrijn/jacobian-research}, \emph{Exact finite-field value
@@ -3561,12 +5628,15 @@ not as assumptions in any theorem of this article.
 James S. Milne, \emph{Algebraic Number Theory}, version 3.08,
 July 19, 2020, Theorem 8.31 and Example 8.36.
 \url{https://www.jmilne.org/math/CourseNotes/ANT.pdf}.
+\wtag{} Part~III cites the same version, adding ``printed pages
+147--148''.
 
 \bibitem{dh:proveitformal}
 V. Reshetnikov, \emph{ProveIt: Jacobian-conjecture formal development},
 repository at commit \dhsha, inspected September 29, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/1085b506d65e207a05b7e9c861bb1fe88432fe38/Algebra/JacobianConjecture/Lean/JacobianConjecture/Counterexample.lean}.
-\wtag{} Cited by Part~II.
+\wtag{} Cited by Part~II, and by Part~III at its pin \nssha, where the
+file is identical.
 
 \bibitem{dh:priorreport}
 \emph{Arithmetic Local--Global Dichotomies for ProveIt's Three-Variable
