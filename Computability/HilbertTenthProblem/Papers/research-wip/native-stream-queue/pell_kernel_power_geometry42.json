@@ -1,0 +1,2491 @@
+{
+  "status": "PASS_STRONG_POWER_GEOMETRY42_AND_PAIRED_FIFOS",
+  "power_sources": {
+    "2": {
+      "operations": 42,
+      "multiplications": 25,
+      "additions_subtractions": 17,
+      "equations": 11,
+      "radix": 2,
+      "positive_parameters": [
+        "q"
+      ],
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "r",
+        "s",
+        "w",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux"
+      ],
+      "instructions": [
+        [
+          "wn2",
+          "*",
+          "w",
+          "q"
+        ],
+        [
+          "sn2",
+          "*",
+          "s",
+          "q"
+        ],
+        [
+          "UM",
+          "*",
+          "wn2",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "wn2"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "R11",
+          "*",
+          "h",
+          "q"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "wn2",
+          "cam2"
+        ],
+        [
+          "a4",
+          "*",
+          4,
+          "a"
+        ],
+        [
+          "a4m5",
+          "+",
+          "a4",
+          3
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "a4m5"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "A",
+          "+",
+          "a_square",
+          "a4m5"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "A",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "A",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "-",
+          "of",
+          "c"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "-",
+          "jc",
+          "tr1"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "equality": [
+            "r1",
+            "q"
+          ],
+          "source": "-q + r + 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "k**2*q**6*s**4*w**2 + k**2*q**3*s**2*w - tau**2 - tau",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "c - eta - k*q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-h*q + k",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "a - q**2*s*w - q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-a*c - 4*a*ga + d - 3*ga - q*w",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+          "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**6*i**2*j**2 - 4*c**5*i**2*j*r - 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+        },
+        {
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j + c - f*o - 2*r - 1",
+          "correction": "0"
+        }
+      ],
+      "exact_projection": "q=2^t, integer t>=1",
+      "retained_strong_auxiliary_square": true
+    },
+    "3": {
+      "operations": 42,
+      "multiplications": 25,
+      "additions_subtractions": 17,
+      "equations": 11,
+      "radix": 3,
+      "positive_parameters": [
+        "q"
+      ],
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "r",
+        "s",
+        "w",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux"
+      ],
+      "instructions": [
+        [
+          "wn2",
+          "*",
+          "w",
+          "q"
+        ],
+        [
+          "sn2",
+          "*",
+          "s",
+          "q"
+        ],
+        [
+          "UM",
+          "*",
+          "wn2",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "wn2"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "R11",
+          "*",
+          "h",
+          "q"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "wn2",
+          "cam2"
+        ],
+        [
+          "six_a",
+          "*",
+          6,
+          "a"
+        ],
+        [
+          "modulus",
+          "+",
+          "six_a",
+          8
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "modulus"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "discriminant",
+          "+",
+          "a_square",
+          "modulus"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "discriminant",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "discriminant",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "+",
+          "c",
+          "of"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "+",
+          "tr1",
+          "jc"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ]
+      ],
+      "sources": [
+        {
+          "equality": [
+            "r1",
+            "q"
+          ],
+          "source": "-q + r + 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "k**2*q**6*s**4*w**2 + k**2*q**3*s**2*w - tau**2 - tau",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "c - eta - k*q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-h*q + k",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "a - q**2*s*w - q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-a*c - 6*a*ga + d - 8*ga - q*w",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+          "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+        },
+        {
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j - c - f*o + 2*r + 1",
+          "correction": "0"
+        }
+      ],
+      "exact_projection": "q=3^t, integer t>=1",
+      "retained_strong_auxiliary_square": true
+    }
+  },
+  "first_index": {
+    "congruence_cases": 11613,
+    "q_interval": [
+      2,
+      50
+    ],
+    "exact_argument": "q divides n; q<=n<=p-1=2q-2; hence n=q"
+  },
+  "canonical_main_cases": [
+    {
+      "radix": 2,
+      "q": 2,
+      "h_bits": 11,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    },
+    {
+      "radix": 2,
+      "q": 4,
+      "h_bits": 152,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    },
+    {
+      "radix": 2,
+      "q": 8,
+      "h_bits": 1587,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    },
+    {
+      "radix": 2,
+      "q": 16,
+      "h_bits": 14442,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    },
+    {
+      "radix": 2,
+      "q": 32,
+      "h_bits": 123097,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    },
+    {
+      "radix": 3,
+      "q": 3,
+      "h_bits": 82,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    },
+    {
+      "radix": 3,
+      "q": 9,
+      "h_bits": 3678,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    },
+    {
+      "radix": 3,
+      "q": 27,
+      "h_bits": 115804,
+      "all_eight_main_equalities": true,
+      "strictly_positive": true
+    }
+  ],
+  "small_complete": {
+    "q": 2,
+    "r": 1,
+    "h": 1601,
+    "auxiliary_index": 203130,
+    "all_positive": true,
+    "all_eleven_equalities": true,
+    "coordinate_bit_lengths": {
+      "q": 2,
+      "r": 1,
+      "w": 3,
+      "s": 3,
+      "a": 7,
+      "c": 16,
+      "d": 22,
+      "k": 12,
+      "eta": 11,
+      "zeta": 11,
+      "tau": 22,
+      "h": 11,
+      "ga": 8,
+      "f": 1528252,
+      "i": 1528228,
+      "y_aux": 3056519,
+      "o": 1528267,
+      "j": 3056503
+    }
+  },
+  "paired_sources": {
+    "binary51": {
+      "operations": 51,
+      "multiplications": 29,
+      "additions_subtractions": 22,
+      "equations": 18,
+      "positive_parameters": [
+        "x",
+        "K",
+        "W",
+        "q",
+        "read0",
+        "read1",
+        "append0",
+        "append1"
+      ],
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "r",
+        "s",
+        "w",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux",
+        "L",
+        "beta",
+        "alpha0",
+        "alpha1"
+      ],
+      "positive_witnesses_excluding_x": 28,
+      "instructions": [
+        [
+          "wn2",
+          "*",
+          "w",
+          "q"
+        ],
+        [
+          "sn2",
+          "*",
+          "s",
+          "q"
+        ],
+        [
+          "UM",
+          "*",
+          "wn2",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "wn2"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "R11",
+          "*",
+          "h",
+          "q"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "wn2",
+          "cam2"
+        ],
+        [
+          "a4",
+          "*",
+          4,
+          "a"
+        ],
+        [
+          "a4m5",
+          "+",
+          "a4",
+          3
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "a4m5"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "A",
+          "+",
+          "a_square",
+          "a4m5"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "A",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "A",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "-",
+          "of",
+          "c"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "-",
+          "jc",
+          "tr1"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ],
+        [
+          "queue_width",
+          "*",
+          2,
+          "K"
+        ],
+        [
+          "input_bound",
+          "+",
+          "x",
+          "beta"
+        ],
+        [
+          "total_time",
+          "*",
+          "W",
+          "L"
+        ],
+        [
+          "appended0",
+          "*",
+          "W",
+          "append0"
+        ],
+        [
+          "transport0",
+          "+",
+          "x",
+          "appended0"
+        ],
+        [
+          "appended1",
+          "*",
+          "W",
+          "append1"
+        ],
+        [
+          "transport1",
+          "+",
+          "K",
+          "appended1"
+        ],
+        [
+          "read_bound0",
+          "+",
+          "read0",
+          "alpha0"
+        ],
+        [
+          "read_bound1",
+          "+",
+          "read1",
+          "alpha1"
+        ]
+      ],
+      "sources": [
+        {
+          "equality": [
+            "r1",
+            "q"
+          ],
+          "source": "-q + r + 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "k**2*q**6*s**4*w**2 + k**2*q**3*s**2*w - tau**2 - tau",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "c - eta - k*q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-h*q + k",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "a - q**2*s*w - q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-a*c - 4*a*ga + d - 3*ga - q*w",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**4*i**2 - 3*f**2 + 3",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+          "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**6*i**2*j**2 - 4*c**5*i**2*j*r - 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 3*c**2*f**2*j**2 + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+        },
+        {
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j + c - f*o - 2*r - 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "W",
+            "queue_width"
+          ],
+          "source": "-2*K + W",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "K",
+            "input_bound"
+          ],
+          "source": "K - beta - x",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "q",
+            "total_time"
+          ],
+          "source": "-L*W + q",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read0",
+            "transport0"
+          ],
+          "source": "-W*append0 + read0 - x",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read1",
+            "transport1"
+          ],
+          "source": "-K - W*append1 + read1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read_bound0",
+            "q"
+          ],
+          "source": "alpha0 - q + read0",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read_bound1",
+            "q"
+          ],
+          "source": "alpha1 - q + read1",
+          "correction": "0"
+        }
+      ],
+      "controller": {
+        "operations": 60,
+        "multiplications": 34,
+        "additions_subtractions": 26,
+        "equations": 19,
+        "extra_instructions": [
+          [
+            "binary_control_p0",
+            "*",
+            "weight0",
+            "read0"
+          ],
+          [
+            "binary_control_p1",
+            "*",
+            "weight1",
+            "read1"
+          ],
+          [
+            "binary_control_p2",
+            "*",
+            "weight2",
+            "append0"
+          ],
+          [
+            "binary_control_p3",
+            "*",
+            "weight3",
+            "append1"
+          ],
+          [
+            "binary_control_s01",
+            "+",
+            "binary_control_p0",
+            "binary_control_p1"
+          ],
+          [
+            "binary_control_s012",
+            "+",
+            "binary_control_s01",
+            "binary_control_p2"
+          ],
+          [
+            "binary_control_s0123",
+            "+",
+            "binary_control_s012",
+            "binary_control_p3"
+          ],
+          [
+            "binary_control_q",
+            "*",
+            "q_coefficient",
+            "q"
+          ],
+          [
+            "binary_control_left",
+            "+",
+            "binary_control_s0123",
+            "binary_control_q"
+          ]
+        ],
+        "equality": [
+          "binary_control_left",
+          "comparison_constant"
+        ],
+        "fixed_constants": "q_coefficient=h-cf; comparison_constant=h-cs",
+        "local_relation": "2*c_next=c+h+c0*d0+c1*d1+c2*a0+c3*a1",
+        "scope": "Entire unfiltered binary carry graph coupled to the paired FIFO; universality not established"
+      }
+    },
+    "ternary49": {
+      "operations": 49,
+      "multiplications": 28,
+      "additions_subtractions": 21,
+      "equations": 17,
+      "positive_parameters": [
+        "x",
+        "W",
+        "q",
+        "read0",
+        "read1",
+        "append0",
+        "append1"
+      ],
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "r",
+        "s",
+        "w",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux",
+        "L",
+        "beta",
+        "alpha0",
+        "alpha1"
+      ],
+      "positive_witnesses_excluding_x": 27,
+      "joint_read_bound": false,
+      "instructions": [
+        [
+          "wn2",
+          "*",
+          "w",
+          "q"
+        ],
+        [
+          "sn2",
+          "*",
+          "s",
+          "q"
+        ],
+        [
+          "UM",
+          "*",
+          "wn2",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "wn2"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "R11",
+          "*",
+          "h",
+          "q"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "wn2",
+          "cam2"
+        ],
+        [
+          "six_a",
+          "*",
+          6,
+          "a"
+        ],
+        [
+          "modulus",
+          "+",
+          "six_a",
+          8
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "modulus"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "discriminant",
+          "+",
+          "a_square",
+          "modulus"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "discriminant",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "discriminant",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "+",
+          "c",
+          "of"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "+",
+          "tr1",
+          "jc"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ],
+        [
+          "input_bound",
+          "+",
+          "x",
+          "beta"
+        ],
+        [
+          "total_time",
+          "*",
+          "W",
+          "L"
+        ],
+        [
+          "appended0",
+          "*",
+          "W",
+          "append0"
+        ],
+        [
+          "transport0",
+          "+",
+          "x",
+          "appended0"
+        ],
+        [
+          "appended1",
+          "*",
+          "W",
+          "append1"
+        ],
+        [
+          "read_bound0",
+          "+",
+          "read0",
+          "alpha0"
+        ],
+        [
+          "read_bound1",
+          "+",
+          "read1",
+          "alpha1"
+        ]
+      ],
+      "sources": [
+        {
+          "equality": [
+            "r1",
+            "q"
+          ],
+          "source": "-q + r + 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "k**2*q**6*s**4*w**2 + k**2*q**3*s**2*w - tau**2 - tau",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "c - eta - k*q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-h*q + k",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "a - q**2*s*w - q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-a*c - 6*a*ga + d - 8*ga - q*w",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+          "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+        },
+        {
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j - c - f*o + 2*r + 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "W",
+            "input_bound"
+          ],
+          "source": "W - beta - x",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "q",
+            "total_time"
+          ],
+          "source": "-L*W + q",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read0",
+            "transport0"
+          ],
+          "source": "-W*append0 + read0 - x",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read1",
+            "appended1"
+          ],
+          "source": "-W*append1 + read1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read_bound0",
+            "q"
+          ],
+          "source": "alpha0 - q + read0",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read_bound1",
+            "q"
+          ],
+          "source": "alpha1 - q + read1",
+          "correction": "0"
+        }
+      ],
+      "controller": {
+        "operations": 58,
+        "multiplications": 33,
+        "additions_subtractions": 25,
+        "equations": 18,
+        "extra_instructions": [
+          [
+            "pair_control_p0",
+            "*",
+            "weight0",
+            "read0"
+          ],
+          [
+            "pair_control_p1",
+            "*",
+            "weight1",
+            "read1"
+          ],
+          [
+            "pair_control_p2",
+            "*",
+            "weight2",
+            "append0"
+          ],
+          [
+            "pair_control_p3",
+            "*",
+            "weight3",
+            "append1"
+          ],
+          [
+            "pair_control_s01",
+            "+",
+            "pair_control_p0",
+            "pair_control_p1"
+          ],
+          [
+            "pair_control_s012",
+            "+",
+            "pair_control_s01",
+            "pair_control_p2"
+          ],
+          [
+            "pair_control_s0123",
+            "+",
+            "pair_control_s012",
+            "pair_control_p3"
+          ],
+          [
+            "pair_control_q",
+            "*",
+            "q_coefficient",
+            "q"
+          ],
+          [
+            "pair_control_left",
+            "+",
+            "pair_control_s0123",
+            "pair_control_q"
+          ]
+        ],
+        "equality": [
+          "pair_control_left",
+          "comparison_constant"
+        ],
+        "fixed_constants": "weight_i=2ci; q_coefficient=h-2cf; comparison_constant=h-2cs",
+        "scope": "Entire unfiltered affine carry graph; does not certify the delayed loader or original finite controller"
+      }
+    },
+    "ternary49_joint": {
+      "operations": 49,
+      "multiplications": 28,
+      "additions_subtractions": 21,
+      "equations": 16,
+      "positive_parameters": [
+        "x",
+        "W",
+        "q",
+        "read0",
+        "read1",
+        "append0",
+        "append1"
+      ],
+      "positive_auxiliaries": [
+        "a",
+        "c",
+        "d",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "o",
+        "r",
+        "s",
+        "w",
+        "tau",
+        "eta",
+        "zeta",
+        "ga",
+        "y_aux",
+        "L",
+        "beta",
+        "alpha"
+      ],
+      "positive_witnesses_excluding_x": 26,
+      "joint_read_bound": true,
+      "instructions": [
+        [
+          "wn2",
+          "*",
+          "w",
+          "q"
+        ],
+        [
+          "sn2",
+          "*",
+          "s",
+          "q"
+        ],
+        [
+          "UM",
+          "*",
+          "wn2",
+          "sn2"
+        ],
+        [
+          "R12",
+          "+",
+          "UM",
+          "sn2"
+        ],
+        [
+          "ksn2",
+          "*",
+          "k",
+          "sn2"
+        ],
+        [
+          "UM2",
+          "*",
+          "UM",
+          "UM"
+        ],
+        [
+          "scaled_norm_coefficient",
+          "+",
+          "UM2",
+          "wn2"
+        ],
+        [
+          "ratio_product2",
+          "*",
+          "ksn2",
+          "ksn2"
+        ],
+        [
+          "L9",
+          "*",
+          "scaled_norm_coefficient",
+          "ratio_product2"
+        ],
+        [
+          "tauplus1",
+          "+",
+          "tau",
+          1
+        ],
+        [
+          "R9",
+          "*",
+          "tau",
+          "tauplus1"
+        ],
+        [
+          "R10a",
+          "+",
+          "ksn2",
+          "eta"
+        ],
+        [
+          "R10b",
+          "+",
+          "eta",
+          "zeta"
+        ],
+        [
+          "r1",
+          "+",
+          "r",
+          1
+        ],
+        [
+          "R11",
+          "*",
+          "h",
+          "q"
+        ],
+        [
+          "tr1",
+          "+",
+          "r1",
+          "r"
+        ],
+        [
+          "cam2",
+          "*",
+          "c",
+          "a"
+        ],
+        [
+          "D1",
+          "+",
+          "wn2",
+          "cam2"
+        ],
+        [
+          "six_a",
+          "*",
+          6,
+          "a"
+        ],
+        [
+          "modulus",
+          "+",
+          "six_a",
+          8
+        ],
+        [
+          "gam",
+          "*",
+          "ga",
+          "modulus"
+        ],
+        [
+          "R14",
+          "+",
+          "D1",
+          "gam"
+        ],
+        [
+          "a_square",
+          "*",
+          "a",
+          "a"
+        ],
+        [
+          "discriminant",
+          "+",
+          "a_square",
+          "modulus"
+        ],
+        [
+          "c2",
+          "*",
+          "c",
+          "c"
+        ],
+        [
+          "Ac2",
+          "*",
+          "discriminant",
+          "c2"
+        ],
+        [
+          "R15",
+          "+",
+          "Ac2",
+          1
+        ],
+        [
+          "L15",
+          "*",
+          "d",
+          "d"
+        ],
+        [
+          "ic2",
+          "*",
+          "i",
+          "c2"
+        ],
+        [
+          "ic22",
+          "*",
+          "ic2",
+          "ic2"
+        ],
+        [
+          "L16",
+          "*",
+          "f",
+          "f"
+        ],
+        [
+          "f_square_minus_one",
+          "-",
+          "L16",
+          1
+        ],
+        [
+          "R16",
+          "*",
+          "discriminant",
+          "f_square_minus_one"
+        ],
+        [
+          "of",
+          "*",
+          "o",
+          "f"
+        ],
+        [
+          "aux_u_rhs",
+          "+",
+          "c",
+          "of"
+        ],
+        [
+          "jc",
+          "*",
+          "j",
+          "c"
+        ],
+        [
+          "H17",
+          "+",
+          "tr1",
+          "jc"
+        ],
+        [
+          "H2",
+          "*",
+          "H17",
+          "H17"
+        ],
+        [
+          "aux_y2",
+          "*",
+          "y_aux",
+          "y_aux"
+        ],
+        [
+          "aux_square_gap",
+          "-",
+          "H2",
+          "aux_y2"
+        ],
+        [
+          "L17",
+          "*",
+          "ic22",
+          "aux_square_gap"
+        ],
+        [
+          "P17",
+          "-",
+          1,
+          "aux_y2"
+        ],
+        [
+          "input_bound",
+          "+",
+          "x",
+          "beta"
+        ],
+        [
+          "total_time",
+          "*",
+          "W",
+          "L"
+        ],
+        [
+          "appended0",
+          "*",
+          "W",
+          "append0"
+        ],
+        [
+          "transport0",
+          "+",
+          "x",
+          "appended0"
+        ],
+        [
+          "appended1",
+          "*",
+          "W",
+          "append1"
+        ],
+        [
+          "read_sum",
+          "+",
+          "read0",
+          "read1"
+        ],
+        [
+          "joint_bound",
+          "+",
+          "read_sum",
+          "alpha"
+        ]
+      ],
+      "sources": [
+        {
+          "equality": [
+            "r1",
+            "q"
+          ],
+          "source": "-q + r + 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L9",
+            "R9"
+          ],
+          "source": "k**2*q**6*s**4*w**2 + k**2*q**3*s**2*w - tau**2 - tau",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "c",
+            "R10a"
+          ],
+          "source": "c - eta - k*q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R10b"
+          ],
+          "source": "-eta + k - zeta",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "k",
+            "R11"
+          ],
+          "source": "-h*q + k",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "a",
+            "R12"
+          ],
+          "source": "a - q**2*s*w - q*s",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "d",
+            "R14"
+          ],
+          "source": "-a*c - 6*a*ga + d - 8*ga - q*w",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L15",
+            "R15"
+          ],
+          "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "ic22",
+            "R16"
+          ],
+          "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "L17",
+            "P17"
+          ],
+          "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+          "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+        },
+        {
+          "equality": [
+            "H17",
+            "aux_u_rhs"
+          ],
+          "source": "c*j - c - f*o + 2*r + 1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "W",
+            "input_bound"
+          ],
+          "source": "W - beta - x",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "q",
+            "total_time"
+          ],
+          "source": "-L*W + q",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read0",
+            "transport0"
+          ],
+          "source": "-W*append0 + read0 - x",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "read1",
+            "appended1"
+          ],
+          "source": "-W*append1 + read1",
+          "correction": "0"
+        },
+        {
+          "equality": [
+            "joint_bound",
+            "q"
+          ],
+          "source": "alpha - q + read0 + read1",
+          "correction": "0"
+        }
+      ],
+      "controller": {
+        "operations": 58,
+        "multiplications": 33,
+        "additions_subtractions": 25,
+        "equations": 17,
+        "extra_instructions": [
+          [
+            "pair_control_p0",
+            "*",
+            "weight0",
+            "read0"
+          ],
+          [
+            "pair_control_p1",
+            "*",
+            "weight1",
+            "read1"
+          ],
+          [
+            "pair_control_p2",
+            "*",
+            "weight2",
+            "append0"
+          ],
+          [
+            "pair_control_p3",
+            "*",
+            "weight3",
+            "append1"
+          ],
+          [
+            "pair_control_s01",
+            "+",
+            "pair_control_p0",
+            "pair_control_p1"
+          ],
+          [
+            "pair_control_s012",
+            "+",
+            "pair_control_s01",
+            "pair_control_p2"
+          ],
+          [
+            "pair_control_s0123",
+            "+",
+            "pair_control_s012",
+            "pair_control_p3"
+          ],
+          [
+            "pair_control_q",
+            "*",
+            "q_coefficient",
+            "q"
+          ],
+          [
+            "pair_control_left",
+            "+",
+            "pair_control_s0123",
+            "pair_control_q"
+          ]
+        ],
+        "equality": [
+          "pair_control_left",
+          "comparison_constant"
+        ],
+        "fixed_constants": "weight_i=2ci; q_coefficient=h-2cf; comparison_constant=h-2cs",
+        "scope": "Entire unfiltered affine carry graph; does not certify the delayed loader or original finite controller"
+      }
+    }
+  },
+  "scope": "Exact strong binary/ternary powers and inherited paired FIFO projections; no universal controller or acceptance compiler",
+  "established_complete_universal_bound": 76
+}

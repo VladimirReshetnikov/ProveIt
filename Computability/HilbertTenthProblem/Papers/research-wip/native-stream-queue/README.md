@@ -36,6 +36,11 @@ New research, without a change to the complete universal bound:
 | [Cyclic NAE/majority](native_controller_nae_majority60.md) | Exact **60=33M+27A** relation for two rotations and a not-all-equal gate with majority output, at even length. The [61 reference](native_controller_nae_majority61.md) also proves a conditional spectral restriction; the [67 source](native_controller_nae_majority67.md) permits either length parity. | This finite gate relation has no universal simulation or ordinary-input/acceptance compiler. |
 | [Dual-rail ordinary-input FIFO](native_dualrail_fifo64.md) | Exact **64=33M+31A** typed FIFO initialized by ordinary `6x`, deriving field bounds from three aggregate bounds. General carry control costs nine more operations, giving73. The [65 reference](native_dualrail_fifo67.md) is retained. | The FIFO alone admits all inputs; no universal controller or accepting compiler is supplied. |
 | [Joint-bounded FIFO](native_dualrail_fifo63.md) | Exact **63=33M+30A** FIFO with ordinary `6x` and `A+D<q`; the proof excludes packed overflow as well as field carries. General and equal-endpoint carry architectures cost **72** and **71**. | Controller padding must respect the joint bound. Neither architecture has a universal compiler; the complete bound remains76. |
+| [Strong power geometry42](pell_kernel_power_geometry42.md) | Exact powers of two and three in **42=25M+17A**, replacing the first-index equation by `k=hq` while retaining the strong auxiliary norm. The paired binary and ternary FIFOs therefore cost **51** and **49**, with general affine control in60 and58. | Exact components only; the original43 references remain valid. No universal controller or acceptance compiler is supplied. |
+| [Paired ternary FIFO and delayed loader](native_ternary_pair_fifo50.md) | Exact native nine-symbol FIFO from ordinary `(x,0)`, originally50 and now49 via power42. A proved finite prefix inserts the handoff machine's delimiter while preserving x. | The finite prefix and subsequent universal controller still need arithmetic certification. Both append streams are positive; the optional joint bound is explicit. |
+| [Direct Boolean ternary rails](input_bridge_boolean_ternary60.md) | `Y=3s+1` certifies actual0/1 ternary digits: typing55 and an exact ordinary-input scalar FIFO in **60=31M+29A**. General and selected controller schedules cost69,68 and66. | All four rails must be nonzero. Code filters, input normalization and universal acceptance are absent. |
+| [Paid Rule110 scan controller](native_controller_rule110_selector73.md) | Six exact selectors and state-flow equations give a complete **73-operation** finite FIFO relation;74 pays a preamble visiting all labels. Terminal A is proved empty, terminal C means all-ones reachability, and free-terminal75 admits every input. | No universal input or halting interpretation for the actual terminal-C condition has been proved. |
+| [Weakened power42 counterexample](pell_kernel_power_geometry_weak42.md) | The distinct multiplication-saving auxiliary weakening admits strictly positive witnesses at `q=5`, despite retaining `r+1=q`. Main coordinates and residues are checked exactly; final auxiliary values have a proved parametric extension. | Refutes this specified geometry shortcut, not the strong42 construction or either old complete75 candidate. |
 | [Binary and ternary power geometry](pell_kernel_power_two43.md) | Exact positive predicates for `q=2^t` and, in the [ternary variant](pell_kernel_power_three43.md), `q=3^t`, each in **43=25M+18A**. Both reuse the existing `r+1` register; the smallest parameters are covered. | Geometry only; no digit fields, input, controller or acceptance are included. |
 | [Paired binary FIFO](native_binary_pair_fifo52.md) | Exact **52=29M+23A** paired FIFO initialized by ordinary `x` and a high marker, including powers and bounds. A general affine controller gives **61**. | Both append streams must be nonempty. Unrestricted absorbing affine control is decidable; a universal controller or paid filter is absent. |
 | [Exact binary selectors](native_controller_binary_selector56.md) | An odd kernel quotient forces exact population count, giving four one-hot fields in **56=29M+27A** and native NAND ports in **58**. | Every label must occur and the first label is fixed. Routing, ordinary input and acceptance remain unpaid. |
@@ -110,6 +115,11 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_power_three43.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_binary_pair_fifo52.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_binary_selector56.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_ternary_pair_fifo50.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_rule110_selector73.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_power_geometry_weak42.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_power_geometry42.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_boolean_ternary60.py
 ```
 
 The immediate constructive targets are a compiler using the single masked
@@ -131,11 +141,14 @@ architecture in the latter case. Its filtered-controller universality
 question remains outside the full-trit decidability theorem. The exact
 finite-memory criterion and serialized Rule110 experiments make explicit
 why a desired transition subgraph and unpaid code typing do not suffice.
-The binary route now gives a paired FIFO in52 and an affine-controller
-architecture in61, while exact one-hot selectors give NAND ports in58.
-The new43-operation power predicates also allow native scalar streams
-without a separate large packed-field scale. These components leave more
-room for a synchronized controller, but their counts do not supply one.
+The binary route now gives a paired FIFO in51 and an affine-controller
+architecture in60, while the ternary paired FIFO costs49 and has a proved
+finite loader. Both use the new strong42 power predicates. Direct Boolean
+ternary rails also give a scalar FIFO in60 and exact affine control in69.
+Binary one-hot selectors give NAND ports in58 and an exact Rule110 scan
+relation in73, but its terminal condition has no universal halting theorem.
+These components leave more room for a synchronized universal controller;
+their operation counts do not supply one.
 Deleting the ternary FIFO width bound has now been ruled out for the
 precise affine family by a thin-set nonuniversality argument. A useful next
 construction must supply a synchronized controller, a proved universal
