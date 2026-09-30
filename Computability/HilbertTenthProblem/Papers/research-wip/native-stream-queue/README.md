@@ -40,7 +40,11 @@ New research, without a change to the complete universal bound:
 | [Paired ternary FIFO and delayed loader](native_ternary_pair_fifo50.md) | Exact native nine-symbol FIFO from ordinary `(x,0)`, originally50 and now49 via power42. A proved finite prefix inserts the handoff machine's delimiter while preserving x. | The finite prefix and subsequent universal controller still need arithmetic certification. Both append streams are positive; the optional joint bound is explicit. |
 | [Paired Boolean ternary FIFO](native_boolean_pair_fifo63.md) | Exact **63=32M+31A** component for two genuine Boolean queues, with positive ordinary-input split and both lane transports; general affine control costs72. | Universal input normalization, controller and acceptance remain open. |
 | [Filtered paired controller](native_controller_paired_filter70.md) | Bound sharing and direct lane transports reduce the filtered queue to **64=32M+32A**, with a full carry relation in **69** and fixed block alignment in72. The [66/71/74 reference](native_controller_paired_filter71.md) is preserved. | The [raw-input obstruction](native_controller_paired_raw_obstruction.md) rules out a universal compiler for this one-carry family: accepting every even input forces acceptance of every input. |
-| [Polynomial input obstruction](input_bridge_filtered_polynomial_obstruction.md) | Every fixed positive even integer-polynomial input substitution preserves the filtered family's obstruction: accepting all positive even x implies accepting all x. Full affine70/73 schedules are audited. | No extra filters or other input equations are covered; this is an expressiveness theorem, not general decidability. |
+| [Polynomial input obstruction](input_bridge_filtered_polynomial_obstruction.md) | Every fixed positive even integer-polynomial input substitution preserves the filtered family's obstruction: accepting all positive even x implies accepting all x. Full affine70/73 schedules are audited. | Finite carry conjunctions and fixed affine field/q equalities also collapse. Richer filters or other input equations remain outside the theorem. |
+| [Hidden Boolean carry](native_controller_boolean_carry70.md) | A one-operation weighted filter gives an exact two-state hidden carry in64, external control in70, or72 with even width and time. Symmetric read coefficients cost67. | The raw input language omits words without a trit2; no universal external controller is supplied. |
+| [Paid marker and erasure](input_bridge_boolean_carry_loader65.md) | The raw hidden-carry language is exactly those x whose2x contains a ternary2. An explicit5m−2 erasing construction and2m+1 odd loop give positive witnesses for every input after one paid addition: bare65, controller71, even-aligned73. | The construction erases data; a chosen controller's universal computation and halting interpretation are still unpaid. |
+| [Complementary queue lanes](native_controller_paired_cross64.md) | Exact64 component for a0+d1=1, with all-input positive witnesses and unrestricted Boolean history pairs. Centered/general controllers cost69/71, or71/73 with even alignment. | The endpoint specialization is a choice, not forced by the tail. No universal update rule or accepting compiler is established. |
+| [Hidden-carry phase codes](input_bridge_boolean_carry_codes.md) | Exact three-cell computation and identity-return codes, extended to arbitrary fixed finite alphabets; external recoder restrictions are proved. | Alphabet typing, phase control, ordinary-input loading and cleanup remain separate obligations. |
 | [Contextual queue codes](pell_kernel_paired_contextual_codes.md) | Exact edge-code overlap and scalar projection identities, plus a width-dependent phase cycle of length2m+1. | Selected block alphabets, loading and acceptance are unpaid. The raw-input obstruction still applies to the underlying filtered family. |
 | [Central-product digit test](input_bridge_central_product.md) | Five operations enforce a zero central native product digit, and nine conditionally enforce reflected equality. | Without proved carry bounds the digit is not a dot product: complete positive native FIFO examples give both a false positive and a false negative. |
 | [Direct Boolean ternary rails](input_bridge_boolean_ternary60.md) | `Y=3s+1` certifies actual0/1 ternary digits: typing55 and an exact ordinary-input scalar FIFO in **60=31M+29A**. General and selected controller schedules cost69,68 and66. | All four rails must be nonzero. Code filters, input normalization and universal acceptance are absent. |
@@ -156,6 +160,10 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_paired_raw_obstruction.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_paired_contextual_codes.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_filtered_polynomial_obstruction.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_boolean_carry70.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_paired_cross64.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_boolean_carry_codes.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_boolean_carry_loader65.py
 ```
 
 The immediate constructive targets are a compiler using the single masked
@@ -188,6 +196,11 @@ input forces the controller to be trivial and the language to contain all
 positive inputs. The obstruction persists under every fixed positive even
 integer-polynomial input substitution. This does not decide every individual
 controller language or cover additional filters.
+Two different filters remain constructive alternatives: a paid hidden Boolean
+carry and complementary queue lanes. The former has a proved erasing map
+and a one-addition marker input, giving a controller architecture in71 or73
+with even alignment. The latter gives general control in71 or73 aligned.
+Neither architecture yet has a universal controller and accepting compiler.
 Binary one-hot selectors give NAND ports in58 and an exact Rule110 scan
 relation in73, but its terminal condition has no universal halting theorem.
 These components leave more room for a synchronized universal controller;

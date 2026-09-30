@@ -6,8 +6,10 @@ cannot represent all computably enumerable sets. This remains true after
 replacing the ordinary initialization `I0+I1=2x` by **any fixed integer
 polynomial P(x) that is positive and even for every positive integer x**.
 All other queue, filter, endpoint and positivity conditions are retained.
-The assertion concerns the input substitution alone, without an additional
-program-dependent relation or a changed local rule.
+The assertion concerns the input substitution and the affine carry family.
+Section6 also covers finite conjunctions of carries and fixed affine linear
+equalities solely in the four stream words and q. Other additional
+program-dependent relations and changed local rules are not covered.
 
 More precisely, if the resulting language contains every positive even x,
 then it contains every positive x. For nonconstant P, its centered carry
@@ -19,8 +21,8 @@ Thus this family cannot represent, for example, the union of the positive
 even integers and a computably enumerable nonrecursive subset of the odd
 integers. This is an expressiveness obstruction; it is **not** a decision
 procedure for every language admitted by the family. It does not exclude
-additional paid filters, another local rule, input supplied through other
-equations, or an initialization with different semantics. The established
+nonlinear or otherwise richer filters, another local rule, input supplied
+through other equations, or an initialization with different semantics. The established
 complete universal bound remains76.
 
 ## 1. Exact model and centered endpoint
@@ -221,7 +223,56 @@ expands their complete equations. The theorem above refutes this proposed
 input repair for all c,d, without claiming that a particular finite test
 settles a universal statement.
 
-## 6. Evidence
+## 6. More affine carries and fixed linear word filters do not repair it
+
+For nonconstant P, the same conclusion holds for any fixed finite conjunction
+of independent affine carry controllers. If their intersection contains every even input,
+each individual controller does. Each is therefore trivial by the preceding
+proof, and their conjunction accepts every input. This observation concerns
+the shared old filter (1); it does not transfer to a changed local relation.
+For constant P, the conjunction is input-independent and therefore all or
+empty; its carry coefficients need not be trivial.
+
+More generally, suppose P is nonconstant and add a fixed affine equality
+solely in the four complete stream words and q:
+
+    r0*F0+r1*F1+r2*F2+r3*F3+rq*q=c.                   (11)
+
+Using F2=H-F0-F1 and q=2H+1, this is
+
+    a*F0+b*F1+g*F3+d*H=e,
+    a=r0-r2, b=r1-r2, g=r3, d=r2+2rq, e=c-rq.        (12)
+
+It is exactly the global equation of an integral carry with initial -e,
+terminal0 and increments `a*a0+b*a1+g*d1+d`. The global equation implies
+integrality of each successive carry by reduction modulo3, as usual.
+Its carries are bounded by a constant independent of input and width.
+On the final m steps, the sole physical label read10/append00 makes the
+increment d constant. Thus
+
+    W*|d| <= 2C+|d|
+
+for a fixed carry bound C. If every positive even x is accepted, P(x)
+and hence the required widths are unbounded. It follows that d=0.
+The remaining equation is precisely (3), with s=-e, so the polynomial
+input theorem forces a=b=g=e=0. Consequently every such row must satisfy
+
+    r0=r1=r2=-2rq, r3=0, c=rq.                         (13)
+
+It is just a fixed multiple of the already imposed filter
+`q-1-2(F0+F1+F2)=0`. Applying the argument separately to each row proves
+the same nonuniversality result for any finite set of these additional
+equalities. With constant P, the language is already independent of x,
+so the all-or-empty observation suffices without (13).
+
+This corollary does not cover added variable witnesses, inequalities,
+divisibility conditions, terms involving W or the initial split, or
+nonlinear constraints. It does cover a second or third affine carry and
+literal fixed linear equalities in the complete stream fields and q;
+these do not supply the missing compiler even if their operation cost
+is disregarded.
+
+## 7. Evidence
 
 The accompanying checker audits both full affine sources; verifies the
 Taylor divisibility and exact lifting for several nonlinear polynomials,
@@ -232,4 +283,6 @@ long2 carry argument and its local coefficient alternatives. These are
 focused symbolic and finite checks supporting the parametric proof.
 No new universal certificate, Lean formalization or general decidability
 theorem is claimed. Independent full proof, source and fresh default
-review passed, with no findings.
+review passed for Sections1–5, with no findings. The additional Section6
+corollary, symbolic reduction and fresh default replay also passed a second
+independent review after explicitly separating the constant-P case.

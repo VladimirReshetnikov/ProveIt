@@ -211,14 +211,28 @@ def zero_orbit_checks():
                 scope='Complete finite zero-basin check for the secondary-append-zero case')
 
 
+def linear_filter_reduction():
+    f0,f1,f2,f3,q,H = sp.symbols('F0 F1 F2 F3 q H')
+    r0,r1,r2,r3,rq,c = sp.symbols('r0 r1 r2 r3 rq c')
+    raw = r0*f0+r1*f1+r2*f2+r3*f3+rq*q-c
+    reduced = (r0-r2)*f0+(r1-r2)*f1+r3*f3+(r2+2*rq)*H-(c-rq)
+    assert sp.expand(raw.subs({f2:H-f0-f1,q:2*H+1})-reduced) == 0
+    collapsed = raw.subs({r0:-2*rq,r1:-2*rq,r2:-2*rq,r3:0,c:rq})
+    assert sp.expand(collapsed-rq*(q-1-2*(f0+f1+f2))) == 0
+    return dict(reduced_row=str(sp.expand(reduced)),
+                necessary_coefficients_if_all_even_inputs_accepted='r0=r1=r2=-2*rq; r3=0; c=rq',
+                collapsed_row=str(sp.expand(collapsed)),
+                scope='Fixed affine equalities in four whole stream words and q; no added witnesses, widths, inequalities or nonlinear relations')
+
+
 def verify():
     return dict(status='PASS_FILTERED_PAIRED_POLYNOMIAL_INPUT_OBSTRUCTION',
                 sources=dict(affine70=affine_source(),aligned_affine73=affine_source(True)),
                 polynomial_images=polynomial_checks(), contractions=contraction_checks(),
-                zero_orbits=zero_orbit_checks(),
+                zero_orbits=zero_orbit_checks(), linear_filters=linear_filter_reduction(),
                 dependency_sha256=hashlib.sha256(Path(prior.__file__).read_bytes()).hexdigest(),
                 theorem='For every fixed positive even integer-polynomial input substitution in this one-carry family, containing all positive even x implies containing all positive x',
-                scope='No added filters or other appearances of x; no general decidability assertion',
+                scope='Allows finite affine carry conjunctions and fixed linear field/q equalities; no richer filters or other appearances of x; no general decidability assertion',
                 established_complete_universal_bound=76)
 
 

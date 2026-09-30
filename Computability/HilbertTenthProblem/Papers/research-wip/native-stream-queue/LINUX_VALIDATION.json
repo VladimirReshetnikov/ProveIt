@@ -1,6 +1,6 @@
 {
   "scope": "Focused Linux handoff replay and new scoped research; complete universal bound remains76",
-  "checked_at_utc": "2026-09-30T03:03:04Z",
+  "checked_at_utc": "2026-09-30T03:28:46Z",
   "handoff_commit": "3c6494aaaca68927cce4e8cc65bfde5a45e656c3",
   "platform": "Linux",
   "python": "3.13.14",
@@ -19212,9 +19212,9 @@
     {
       "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_filtered_polynomial_obstruction.py",
       "exit_code": 0,
-      "source_lf_sha256": "49a9582a0ccc651328e66a7a55258654a2598920d42d267c0d17ac578b6af789",
-      "receipt_lf_sha256": "8deddc123ad16ce994f8578dc6852ce26fd69745435b238d78716d198394f404",
-      "independent_scoped_reviews": 1,
+      "source_lf_sha256": "460f95c8d2ff6f0b1365459b89c7afa035737c6f36313fad3e05062470311083",
+      "receipt_lf_sha256": "5309437948a5e8633e9896c77ec1264ff90d0b6f8cd2c460c07cff7f9715e4fd",
+      "independent_scoped_reviews": 2,
       "review_status": "PASS",
       "default_replay": "Author and independent full proof/source/default reviews passed",
       "summary": {
@@ -19497,9 +19497,1113 @@
           "all_binary_words": 510,
           "scope": "Complete finite zero-basin check for the secondary-append-zero case"
         },
+        "linear_filters": {
+          "reduced_row": "F0*r0 - F0*r2 + F1*r1 - F1*r2 + F3*r3 + H*r2 + 2*H*rq - c + rq",
+          "necessary_coefficients_if_all_even_inputs_accepted": "r0=r1=r2=-2*rq; r3=0; c=rq",
+          "collapsed_row": "-2*F0*rq - 2*F1*rq - 2*F2*rq + q*rq - rq",
+          "scope": "Fixed affine equalities in four whole stream words and q; no added witnesses, widths, inequalities or nonlinear relations"
+        },
         "dependency_sha256": "57416b3b89bceac3d9720e191f43b31c25b06a463a58d3afc20fe43cd9f2123d",
         "theorem": "For every fixed positive even integer-polynomial input substitution in this one-carry family, containing all positive even x implies containing all positive x",
-        "scope": "No added filters or other appearances of x; no general decidability assertion",
+        "scope": "Allows finite affine carry conjunctions and fixed linear field/q equalities; no richer filters or other appearances of x; no general decidability assertion",
+        "established_complete_universal_bound": 76
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_boolean_carry70.py",
+      "exit_code": 0,
+      "source_lf_sha256": "90de7fbf3929ba7fbc8a923ee2f813ab8b01f86dcd8d4c68366bd159e86388b1",
+      "receipt_lf_sha256": "ff27b35e292e299c2af6989c878b822052b71cb44b434c4f8d76889010b87faf",
+      "independent_scoped_reviews": 1,
+      "review_status": "PASS",
+      "default_replay": "Author and independent full proof/source/default reviews passed",
+      "summary": {
+        "status": "PASS_BOOLEAN_CARRY_FIFO64_67_70_72",
+        "filter": {
+          "boolean_field_tuples": 69904,
+          "admitted": 628,
+          "positive_admitted": 438,
+          "lengths": [
+            1,
+            4
+          ],
+          "zero_fields_included": true,
+          "edges": [
+            {
+              "carry": 0,
+              "label_append_then_read": [
+                0,
+                0,
+                1,
+                1
+              ],
+              "next_carry": 0
+            },
+            {
+              "carry": 0,
+              "label_append_then_read": [
+                0,
+                1,
+                0,
+                1
+              ],
+              "next_carry": 0
+            },
+            {
+              "carry": 0,
+              "label_append_then_read": [
+                0,
+                1,
+                1,
+                0
+              ],
+              "next_carry": 0
+            },
+            {
+              "carry": 0,
+              "label_append_then_read": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "next_carry": 0
+            },
+            {
+              "carry": 0,
+              "label_append_then_read": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "next_carry": 1
+            },
+            {
+              "carry": 1,
+              "label_append_then_read": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "next_carry": 0
+            },
+            {
+              "carry": 1,
+              "label_append_then_read": [
+                0,
+                0,
+                1,
+                0
+              ],
+              "next_carry": 0
+            },
+            {
+              "carry": 1,
+              "label_append_then_read": [
+                0,
+                1,
+                0,
+                0
+              ],
+              "next_carry": 0
+            },
+            {
+              "carry": 1,
+              "label_append_then_read": [
+                1,
+                0,
+                1,
+                1
+              ],
+              "next_carry": 1
+            },
+            {
+              "carry": 1,
+              "label_append_then_read": [
+                1,
+                1,
+                0,
+                1
+              ],
+              "next_carry": 1
+            },
+            {
+              "carry": 1,
+              "label_append_then_read": [
+                1,
+                1,
+                1,
+                0
+              ],
+              "next_carry": 1
+            }
+          ]
+        },
+        "carry": {
+          "hidden_words_and_controller_configs": 13244,
+          "admitted": 3516,
+          "maximum_length": 5,
+          "configs": [
+            [
+              -1,
+              1,
+              2,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              -1,
+              13,
+              -2,
+              0,
+              0
+            ],
+            [
+              3,
+              -2,
+              5,
+              -4,
+              3,
+              -1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "scope": "Exact local/global identity; FIFO not imposed in this standalone test"
+        },
+        "positive_fixture": {
+          "x": 1,
+          "W": 3,
+          "q": 27,
+          "initial": [
+            1,
+            1
+          ],
+          "fields": [
+            4,
+            1,
+            13,
+            4
+          ],
+          "alpha": 5,
+          "width_beta": 1,
+          "L": 9,
+          "hidden_carries": [
+            0,
+            1,
+            1,
+            0
+          ],
+          "labels_append_then_read": [
+            [
+              1,
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "controllers": [
+            {
+              "read": [
+                -1,
+                1
+              ],
+              "append": [
+                2,
+                1
+              ],
+              "h": 0,
+              "cs": 0,
+              "cf": 0,
+              "carries": [
+                0,
+                1,
+                1,
+                0
+              ]
+            },
+            {
+              "read": [
+                1,
+                1
+              ],
+              "append": [
+                -1,
+                13
+              ],
+              "h": -2,
+              "cs": 0,
+              "cf": 0,
+              "carries": [
+                0,
+                4,
+                1,
+                0
+              ]
+            }
+          ],
+          "positive_kernel_extension": "Inherited exact Boolean55 converse; large Pell coordinates not materialized"
+        },
+        "terminal": {
+          "reachable_configurations": 371,
+          "positive_track_zero_endpoints": 11,
+          "wrong_endpoint_examples": 1,
+          "aligned_positive_example": {
+            "x": 3,
+            "m": 2,
+            "t": 4,
+            "initial": [
+              3,
+              3
+            ],
+            "fields": [
+              4,
+              3,
+              39,
+              30
+            ],
+            "hidden_end": 0,
+            "controller": {
+              "read": [
+                -2,
+                1
+              ],
+              "append": [
+                4,
+                -3
+              ],
+              "h": 1,
+              "cs": 1,
+              "cf": 0
+            }
+          },
+          "widths_m": [
+            1,
+            3
+          ],
+          "inputs": [
+            1,
+            2,
+            3
+          ],
+          "configs": [
+            [
+              -1,
+              1,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              -1,
+              13,
+              -2,
+              0
+            ],
+            [
+              3,
+              2,
+              5,
+              4,
+              -2,
+              0
+            ],
+            [
+              -2,
+              1,
+              4,
+              -3,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              3,
+              2,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "scope": "Whole finite graph reachability; mathematical tail proof applies to all lengths"
+        },
+        "alignment": {
+          "exponents_checked": 100,
+          "statement": "Positive square root of a power of3 iff exponent even"
+        },
+        "input_omissions": {
+          "no11_initial_physical_words": 363,
+          "orbit_steps": 2986,
+          "positive_even_sum_splits": 124,
+          "widths_m": [
+            1,
+            5
+          ],
+          "omitted_example": {
+            "x": 2,
+            "ordinary_sum": 4,
+            "ternary_low_first": [
+              1,
+              1
+            ]
+          },
+          "scope": "Exact closed e0/no11 alphabet always appends a nonzero symbol; all widths excluded parametrically"
+        },
+        "scope": "Exact finite-machine components; no ordinary-input universal simulation",
+        "established_complete_universal_bound": 76
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_paired_cross64.py",
+      "exit_code": 0,
+      "source_lf_sha256": "67130db94b2f4dd0e7d3831b6eb102be036840e0ed98ebc5e5dd8b1da5d15260",
+      "receipt_lf_sha256": "3c1e15ada36513e4c2080e06bdc0088323b8c39f4d87538df689e38445d4854a",
+      "independent_scoped_reviews": 1,
+      "review_status": "PASS",
+      "default_replay": "Author and independent full proof/source/default reviews passed",
+      "summary": {
+        "status": "PASS_COMPLEMENTARY_LANE_PAIRED64",
+        "prepower": {
+          "arbitrary_positive_pre_power_tuples": 25200,
+          "minimum_q": 5,
+          "minimum_r": 156,
+          "no_joint_sum_bound_used": true
+        },
+        "typing": {
+          "domains": [
+            {
+              "t": 1,
+              "field_tuples": 0,
+              "admitted": 0,
+              "admitted_without_old_joint_bound": 0
+            },
+            {
+              "t": 2,
+              "field_tuples": 84,
+              "admitted": 10,
+              "admitted_without_old_joint_bound": 4
+            },
+            {
+              "t": 3,
+              "field_tuples": 3900,
+              "admitted": 144,
+              "admitted_without_old_joint_bound": 72
+            },
+            {
+              "t": 4,
+              "field_tuples": 123240,
+              "admitted": 1582,
+              "admitted_without_old_joint_bound": 784
+            }
+          ],
+          "field_tuples": 127224,
+          "admitted": 1736
+        },
+        "semantics": {
+          "domains": [
+            {
+              "t": 2,
+              "stream_width_tuples": 36,
+              "admitted": 0
+            },
+            {
+              "t": 3,
+              "stream_width_tuples": 882,
+              "admitted": 3
+            },
+            {
+              "t": 4,
+              "stream_width_tuples": 12600,
+              "admitted": 10
+            },
+            {
+              "t": 5,
+              "stream_width_tuples": 144150,
+              "admitted": 34
+            }
+          ],
+          "stream_width_tuples": 157668,
+          "admitted": 47,
+          "example_without_old_joint_bound": {
+            "x": 1,
+            "W": 3,
+            "q": 81,
+            "fields": [
+              12,
+              9,
+              37,
+              28
+            ],
+            "initials": [
+              1,
+              1
+            ]
+          }
+        },
+        "positive_maps": {
+          "ordinary_inputs": 200,
+          "maps_per_input": 2,
+          "examples": [
+            {
+              "x": 1,
+              "aligned": false,
+              "m": 2,
+              "t": 4,
+              "W": 9,
+              "q": 81,
+              "fields": [
+                3,
+                4,
+                28,
+                37
+              ],
+              "initials": [
+                1,
+                1
+              ],
+              "alpha": 49,
+              "width_beta": 7,
+              "L": 9
+            },
+            {
+              "x": 1,
+              "aligned": true,
+              "m": 2,
+              "t": 4,
+              "W": 9,
+              "q": 81,
+              "fields": [
+                3,
+                4,
+                28,
+                37
+              ],
+              "initials": [
+                1,
+                1
+              ],
+              "alpha": 49,
+              "width_beta": 7,
+              "L": 9
+            },
+            {
+              "x": 2,
+              "aligned": false,
+              "m": 3,
+              "t": 6,
+              "W": 27,
+              "q": 729,
+              "fields": [
+                12,
+                13,
+                327,
+                352
+              ],
+              "initials": [
+                3,
+                1
+              ],
+              "alpha": 389,
+              "width_beta": 23,
+              "L": 27
+            },
+            {
+              "x": 2,
+              "aligned": true,
+              "m": 4,
+              "t": 8,
+              "W": 81,
+              "q": 6561,
+              "fields": [
+                39,
+                40,
+                3162,
+                3241
+              ],
+              "initials": [
+                3,
+                1
+              ],
+              "alpha": 3359,
+              "width_beta": 77,
+              "L": 81
+            },
+            {
+              "x": 10,
+              "aligned": false,
+              "m": 4,
+              "t": 8,
+              "W": 81,
+              "q": 6561,
+              "fields": [
+                30,
+                40,
+                2440,
+                3250
+              ],
+              "initials": [
+                10,
+                10
+              ],
+              "alpha": 4081,
+              "width_beta": 61,
+              "L": 81
+            },
+            {
+              "x": 10,
+              "aligned": true,
+              "m": 4,
+              "t": 8,
+              "W": 81,
+              "q": 6561,
+              "fields": [
+                30,
+                40,
+                2440,
+                3250
+              ],
+              "initials": [
+                10,
+                10
+              ],
+              "alpha": 4081,
+              "width_beta": 61,
+              "L": 81
+            },
+            {
+              "x": 200,
+              "aligned": false,
+              "m": 7,
+              "t": 14,
+              "W": 2187,
+              "q": 4782969,
+              "fields": [
+                1057,
+                1093,
+                2312023,
+                2390427
+              ],
+              "initials": [
+                364,
+                36
+              ],
+              "alpha": 2469853,
+              "width_beta": 1787,
+              "L": 2187
+            },
+            {
+              "x": 200,
+              "aligned": true,
+              "m": 8,
+              "t": 16,
+              "W": 6561,
+              "q": 43046721,
+              "fields": [
+                3244,
+                3280,
+                21284248,
+                21520116
+              ],
+              "initials": [
+                364,
+                36
+              ],
+              "alpha": 21759193,
+              "width_beta": 6161,
+              "L": 6561
+            }
+          ],
+          "full_kernel_extension": "Fresh positive raw Boolean-kernel map proved; no old joint slack is assumed"
+        },
+        "controllers": {
+          "local_words_and_controller_tuples": 14040,
+          "admitted": 4684,
+          "unrestricted_history_triples": 8,
+          "scope": "Includes general nonzero offset and every allowed full label; not a selected subgraph"
+        },
+        "scope": "Exact changed filter and complete carry relations; universal input simulation and acceptance remain open",
+        "established_complete_universal_bound": 76
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_boolean_carry_codes.py",
+      "exit_code": 0,
+      "source_lf_sha256": "c14a6cfca97b30c6611031db87ec7f1502ca587c1a51a056414b27224eadcc1b",
+      "receipt_lf_sha256": "aa9c127dddeb260b88dbbfa881253844dd2f24cc1d428cf8eb64c951deb60e9d",
+      "independent_scoped_reviews": 1,
+      "review_status": "PASS",
+      "default_replay": "Author and independent full proof/source/default reviews passed",
+      "summary": {
+        "status": "PASS_HIDDEN_BOOLEAN_CARRY_CONTEXTUAL_CODES",
+        "codes": {
+          "domains": [
+            {
+              "concatenated_bits": 1,
+              "physical_cells": 3,
+              "symbols": 2,
+              "microscopic_paths_tested": 16,
+              "computation_paths": 4,
+              "identity_return_paths": 2
+            },
+            {
+              "concatenated_bits": 2,
+              "physical_cells": 6,
+              "symbols": 4,
+              "microscopic_paths_tested": 64,
+              "computation_paths": 16,
+              "identity_return_paths": 4
+            },
+            {
+              "concatenated_bits": 3,
+              "physical_cells": 9,
+              "symbols": 8,
+              "microscopic_paths_tested": 256,
+              "computation_paths": 64,
+              "identity_return_paths": 8
+            },
+            {
+              "concatenated_bits": 4,
+              "physical_cells": 12,
+              "symbols": 16,
+              "microscopic_paths_tested": 1024,
+              "computation_paths": 256,
+              "identity_return_paths": 16
+            },
+            {
+              "concatenated_bits": 5,
+              "physical_cells": 15,
+              "symbols": 32,
+              "microscopic_paths_tested": 4096,
+              "computation_paths": 1024,
+              "identity_return_paths": 32
+            }
+          ],
+          "paths_tested": 5456,
+          "smallest_codes": [
+            {
+              "logical_bit": 0,
+              "ordinary": [
+                1,
+                13
+              ],
+              "temporary": [
+                1,
+                10
+              ]
+            },
+            {
+              "logical_bit": 1,
+              "ordinary": [
+                4,
+                10
+              ],
+              "temporary": [
+                4,
+                4
+              ]
+            }
+          ]
+        },
+        "finite_minimality": {
+          "domains": [
+            {
+              "physical_cells": 1,
+              "ordinary_rail_pairs": 4,
+              "families_with_two_or_more_symbols": 0
+            },
+            {
+              "physical_cells": 2,
+              "ordinary_rail_pairs": 16,
+              "families_with_two_or_more_symbols": 0
+            },
+            {
+              "physical_cells": 3,
+              "ordinary_rail_pairs": 64,
+              "families_with_two_or_more_symbols": 1
+            }
+          ],
+          "scope": "Only the full computation plus identity-return template with hidden boundary0"
+        },
+        "external": {
+          "computation_increment": "13*h + p*u0 - p*u1 + r*v0 - 2*r*v1 + 14*u1 + 12*v1",
+          "identity_return_increment": "13*h + p*u0 - 2*p*u1 + p*v0 - p*v1 + 12*u1 + 14*v1",
+          "necessary_return_coefficient": "u0 - 2*u1 + v0 - v1",
+          "additional_identity_computation_coefficient": "u0 - u1 + v0 - 2*v1",
+          "joint_specialization": {
+            "u1": "v1",
+            "v0": "3*v1-u0",
+            "common_increment": "13*h + 26*v1"
+          },
+          "scope": "Necessary conditions only when the specified recoder handles every finite binary word under a uniform carry bound"
+        },
+        "contraction": {
+          "fixed_increment_initial_states": 20451,
+          "integral_paths": 7,
+          "increment_range": [
+            -100,
+            100
+          ],
+          "macro_base": 27
+        },
+        "scope": "Exact physical code and scoped recoder conditions; code typing, ordinary input, phases and halting remain unpaid",
+        "established_complete_universal_bound": 76
+      }
+    },
+    {
+      "script": "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_boolean_carry_loader65.py",
+      "exit_code": 0,
+      "source_lf_sha256": "052d04c2ab4194b5936496bd0f52589d81fe02bfc5c748963d3f4dc98c34e327",
+      "receipt_lf_sha256": "66ae0101a4d90aa204b453de38deee9c198aedb81c4fa5cc251738f46865ef7c",
+      "independent_scoped_reviews": 1,
+      "review_status": "PASS",
+      "default_replay": "Author and independent full proof/source/default reviews passed",
+      "summary": {
+        "status": "PASS_BOOLEAN_CARRY_MARKER65_AND_CONSTRUCTIVE_ERASURE",
+        "construction": {
+          "domains": [
+            {
+              "width": 1,
+              "scalar_words": 1,
+              "positive_even_physical_maps": 1,
+              "maximum_constructed_time": 3,
+              "proved_time_bound": 3
+            },
+            {
+              "width": 2,
+              "scalar_words": 5,
+              "positive_even_physical_maps": 3,
+              "maximum_constructed_time": 8,
+              "proved_time_bound": 8
+            },
+            {
+              "width": 3,
+              "scalar_words": 19,
+              "positive_even_physical_maps": 10,
+              "maximum_constructed_time": 13,
+              "proved_time_bound": 13
+            },
+            {
+              "width": 4,
+              "scalar_words": 65,
+              "positive_even_physical_maps": 33,
+              "maximum_constructed_time": 18,
+              "proved_time_bound": 18
+            },
+            {
+              "width": 5,
+              "scalar_words": 211,
+              "positive_even_physical_maps": 106,
+              "maximum_constructed_time": 23,
+              "proved_time_bound": 23
+            },
+            {
+              "width": 6,
+              "scalar_words": 665,
+              "positive_even_physical_maps": 333,
+              "maximum_constructed_time": 28,
+              "proved_time_bound": 28
+            },
+            {
+              "width": 7,
+              "scalar_words": 2059,
+              "positive_even_physical_maps": 1030,
+              "maximum_constructed_time": 33,
+              "proved_time_bound": 33
+            }
+          ],
+          "total_scalar_constructions": 3025,
+          "positive_even_physical_maps": 1516,
+          "explicit_odd_cycles": 98,
+          "scope": "The direct constructive algorithm and its physical positive lift; no guessed controller"
+        },
+        "finite_basins": {
+          "domains": [
+            {
+              "width": 1,
+              "complete_scalar_configurations": 6,
+              "zero_reachable_configurations": 4,
+              "state_zero_words": 3
+            },
+            {
+              "width": 2,
+              "complete_scalar_configurations": 18,
+              "zero_reachable_configurations": 12,
+              "state_zero_words": 9
+            },
+            {
+              "width": 3,
+              "complete_scalar_configurations": 54,
+              "zero_reachable_configurations": 40,
+              "state_zero_words": 27
+            },
+            {
+              "width": 4,
+              "complete_scalar_configurations": 162,
+              "zero_reachable_configurations": 132,
+              "state_zero_words": 81
+            },
+            {
+              "width": 5,
+              "complete_scalar_configurations": 486,
+              "zero_reachable_configurations": 424,
+              "state_zero_words": 243
+            },
+            {
+              "width": 6,
+              "complete_scalar_configurations": 1458,
+              "zero_reachable_configurations": 1332,
+              "state_zero_words": 729
+            },
+            {
+              "width": 7,
+              "complete_scalar_configurations": 4374,
+              "zero_reachable_configurations": 4120,
+              "state_zero_words": 2187
+            }
+          ],
+          "scope": "Complete finite graph cross-check of the proved hidden-state-zero basin; no unproved classification of state-one words is used"
+        },
+        "ordinary_maps": {
+          "ordinary_positive_inputs": 200,
+          "all_positive_outer_maps": 400,
+          "even_width_and_time_maps": 200,
+          "examples": [
+            {
+              "x": 1,
+              "aligned": false,
+              "initial_value": 8,
+              "m": 2,
+              "t": 6,
+              "W": 9,
+              "q": 729,
+              "initial": [
+                4,
+                4
+              ],
+              "fields": [
+                30,
+                39,
+                274,
+                355
+              ],
+              "alpha": 31,
+              "width_beta": 1,
+              "L": 81,
+              "time_root": null,
+              "width_root": null
+            },
+            {
+              "x": 1,
+              "aligned": true,
+              "initial_value": 8,
+              "m": 4,
+              "t": 12,
+              "W": 81,
+              "q": 531441,
+              "initial": [
+                4,
+                4
+              ],
+              "fields": [
+                3270,
+                3171,
+                264874,
+                256855
+              ],
+              "alpha": 3271,
+              "width_beta": 73,
+              "L": 6561,
+              "time_root": 729,
+              "width_root": 9
+            },
+            {
+              "x": 2,
+              "aligned": false,
+              "initial_value": 14,
+              "m": 3,
+              "t": 11,
+              "W": 27,
+              "q": 177147,
+              "initial": [
+                13,
+                1
+              ],
+              "fields": [
+                2944,
+                3277,
+                79501,
+                88480
+              ],
+              "alpha": 2945,
+              "width_beta": 13,
+              "L": 6561,
+              "time_root": null,
+              "width_root": null
+            },
+            {
+              "x": 2,
+              "aligned": true,
+              "initial_value": 14,
+              "m": 4,
+              "t": 24,
+              "W": 81,
+              "q": 282429536481,
+              "initial": [
+                13,
+                1
+              ],
+              "fields": [
+                1723489516,
+                1699754959,
+                139602650809,
+                137680151680
+              ],
+              "alpha": 1723489517,
+              "width_beta": 67,
+              "L": 3486784401,
+              "time_root": 531441,
+              "width_root": 9
+            },
+            {
+              "x": 10,
+              "aligned": false,
+              "initial_value": 62,
+              "m": 4,
+              "t": 14,
+              "W": 81,
+              "q": 4782969,
+              "initial": [
+                31,
+                31
+              ],
+              "fields": [
+                28710,
+                29268,
+                2325541,
+                2370739
+              ],
+              "alpha": 28711,
+              "width_beta": 19,
+              "L": 59049,
+              "time_root": null,
+              "width_root": null
+            },
+            {
+              "x": 10,
+              "aligned": true,
+              "initial_value": 62,
+              "m": 4,
+              "t": 14,
+              "W": 81,
+              "q": 4782969,
+              "initial": [
+                31,
+                31
+              ],
+              "fields": [
+                28710,
+                29268,
+                2325541,
+                2370739
+              ],
+              "alpha": 28711,
+              "width_beta": 19,
+              "L": 59049,
+              "time_root": 2187,
+              "width_root": 9
+            },
+            {
+              "x": 200,
+              "aligned": false,
+              "initial_value": 1202,
+              "m": 7,
+              "t": 31,
+              "W": 2187,
+              "q": 617673396283947,
+              "initial": [
+                1093,
+                109
+              ],
+              "fields": [
+                141021296460,
+                141214706733,
+                308413575359113,
+                308836563625180
+              ],
+              "alpha": 141021296461,
+              "width_beta": 985,
+              "L": 282429536481,
+              "time_root": null,
+              "width_root": null
+            },
+            {
+              "x": 200,
+              "aligned": true,
+              "initial_value": 1202,
+              "m": 8,
+              "t": 52,
+              "W": 6561,
+              "q": 6461081889226673298932241,
+              "initial": [
+                1093,
+                109
+              ],
+              "fields": [
+                492310472418482336784,
+                492235333548334916583,
+                3230049009537662611640917,
+                3229556023410625387701172
+              ],
+              "alpha": 492310472418482336785,
+              "width_beta": 5359,
+              "L": 984770902183611232881,
+              "time_root": 2541865828329,
+              "width_root": 81
+            }
+          ],
+          "external_controller": "Zero controller accepts these examples; no arbitrary nonzero-controller completeness is claimed",
+          "full_kernel_extension": "Proved parametrically by the exact positive Boolean/Pell converse, not materialized"
+        },
+        "dependency_sha256": "90de7fbf3929ba7fbc8a923ee2f813ab8b01f86dcd8d4c68366bd159e86388b1",
+        "theorem": "The bare raw64 language is exactly those x with a trit2 in2x; paid input6x+2 gives all positive inputs, including even width and duration",
+        "scope": "Complete components and explicit positive histories, not a universal external-controller compiler",
         "established_complete_universal_bound": 76
       }
     }
