@@ -12,6 +12,29 @@ strictly positive witnesses and19 equations. See the
 Three independent full integration reviews passed; this is a mathematical
 proof with symbolic and finite checks, not a Lean formalization.
 
+The [positive-elimination refinement](complete75_positive_elimination.md)
+retains the same 75 operations with **22 positive witnesses and 11 equations**.
+Its literal single-polynomial evaluation takes **107 operations** and has
+exact degree **84**, with compiler numerals fixed. The original 30-witness
+source remains the reference for the full compiler and Pell proof.
+
+## Research checkpoint, 2026-09-30
+
+The positive-elimination, controlled read-functional queue, PCP/matrix trace,
+and six constant-deletion packets have independent scoped proof and source
+review passes. Their checkers retain exact operation ledgers and distinguish
+finite experiments from the mathematical proofs. The complete75 checker
+also passes with the pinned SymPy dependency.
+
+The next operation-count target remains a complete certificate below75.
+The queue obstruction directs further work toward genuinely state-dependent
+physical output or unbounded arithmetic control: adding finite control to
+a unique-output rewrite cannot suffice. The PCP trace retains the useful
+shared endpoint, but its selected weighted products and raw-input interface
+must be made cheaper before adding a power kernel. Direct kernel work must
+preserve the norm units, first-index parity, and bounded odd input index;
+the six literal deletion failures do not rule out joint redesigns.
+
 The historical native-stream
 component costs six operations with external bounds, or eight with a paid
 joint bound; finite-controller arithmetic and power geometry remain unpaid.
@@ -30,6 +53,10 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Positive elimination and one polynomial](complete75_positive_elimination.md) | Eight positive definitions reduce complete75 to **22 witnesses and 11 equations**; a single degree-84 polynomial has a **107=52M+55A** evaluation DAG. | The certificate operation bound remains75. Positive witnesses and fixed compiler constants are essential conventions; no optimality or Lean claim. |
+| [Controlled read-functional queues](native_read_functional_controller_regular.md) | Arbitrary synchronized finite control still gives a regular initial-word language when each physical read symbol has one fixed append symbol, uniformly over existential width and duration. | State-dependent physical rewriting, variable-length rules, and additional non-finite-state arithmetic constraints are outside the theorem. |
+| [Post correspondence and affine matrices](matrix_pcp_trace.md) | Conditional finite PCP trace in **11=4M+7A**, with a paid carry margin; explicit positive branch expansion in **10m+7** operations, hence57 for five tiles. A prescribed bound on prefix imbalance gives an effective finite automaton. | Selected fields, digit bounds, common power geometry, fixed-program ordinary input and selector control remain unpaid. Shared tile slopes collapse to individually matching tiles. |
+| [Six empty constant deletions](complete75_constant_deletion_obstructions.md) | Six literal **74=41M+33A** sources obtained by deleting norm units, the first-index successor, or the odd input offset have no positive solutions. | Scoped rejected rewrites, with exact whole-source audits; no lower bound on general74 constructions. |
 | [Complete half-binomial75](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) | Complete universal certificate in **75=41M+34A**,30 positive witnesses and19 equations, with fixed program numerals, ordinary input, synchronized accepting computation and both proof directions. | Three independent full integration reviews pass; no Lean formalization or publication claim. |
 | [Strong half-binomial42](pell_kernel_half_binomial42.md) | A changed first norm supplies a doubled Pell coefficient without a paid doubling and saves the main-index addition; the strong auxiliary square is retained. | The full source pays the explicit scale and index bounds. |
 | [Modified compiler masks](complete75_half_binomial_compiler.md) | Exact global two-bit population correction, harmless four-valued dummy digit, strengthened rotation bounds, synchronization and actual-index five-adic control. | Parametric full compiler proof; sparse and finite checks are identified separately. |
@@ -107,6 +134,10 @@ Fresh default checks for the new artifacts:
 
 ```sh
 python3 Computability/HilbertTenthProblem/Papers/verification/explore_fixed_raw_universal_75.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_positive_elimination.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_read_functional_controller_regular.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix_pcp_trace.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_constant_deletion_obstructions.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_one_field_half_mask.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/explore_pell_kernel_base_four_half_mask.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_three_selector_53.py

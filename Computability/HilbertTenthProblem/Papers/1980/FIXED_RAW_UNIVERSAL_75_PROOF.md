@@ -8,6 +8,12 @@ Three independent full integration reviews passed without findings. This is
 a mathematical proof with symbolic and finite checks, not a Lean formalization
 or a new publication claim.
 
+The [positive-elimination refinement](../research-wip/native-stream-queue/complete75_positive_elimination.md)
+removes eight forced positive coordinates from this reference source. It
+preserves75 operations with22 positive witnesses and11 equations, and gives
+one degree-84 polynomial evaluable in107 operations. The source and full
+compiler proof below retain their original30-coordinate presentation.
+
 This construction retains the strong auxiliary square and the cubed scales.
 It is distinct from the earlier auxiliary-scale, input-gap and squared-scale
 75 proposals. It changes the first norm and uses the supplied packed integer

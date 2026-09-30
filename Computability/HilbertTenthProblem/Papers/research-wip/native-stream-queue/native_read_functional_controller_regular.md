@@ -245,3 +245,10 @@ These finite comparisons validate the algorithms on those domains. The
 regular-language conclusion for arbitrary alphabets, controllers and widths
 is the mathematical proof above. No existing source or receipt is modified,
 and no complete universal improvement below 75 is claimed.
+
+Independent full proof and implementation review passed with no findings.
+Fresh default replay matched all 44,977 comparisons. An additional independent
+1,200-case randomized comparison used alphabets of size 2 through 5,
+controllers of size 1 through 5, and queue lengths 1 through 7; exhaustive
+physical reachability agreed with the sweep-monoid procedure in every case.
+Those extra bounded checks supplement, and do not replace, the proof.
