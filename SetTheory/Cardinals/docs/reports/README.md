@@ -95,7 +95,17 @@ macroscopic jump law, merged from two manuscripts (adjacency-bounded
 membership games, Part II).  Batch 53 extended one: two-endpoint confluence
 (shifted Catalan Hankel polynomials, Part IV), the uniform limit for roots
 approaching both ends of the spectrum, with an exact even expansion and a
-sharp outward scale.
+sharp outward scale.  Batch 54 extended one: the exact algebraic degree of
+polynomial-coordinate solutions, with nonradical solutions of order-two
+iterative equations (nonreal roots in iterative equations, Part IV); its
+second collection manuscript was held for batch 55.  Batch 55 extended two:
+the preorder root polytopes gained three parts — ultra-log-concave support
+polynomials, merged from two manuscripts, with palindromic cores,
+approximate counting and exact-counting hardness (Part V); an ADE threshold
+and block-locality for signed matching-support stability (Part VI); and the
+transversal matroid of a preorder, which determines it up to isomorphism
+(Part VII) — and the shifted Catalan Hankel polynomials gained Part V,
+collision-uniform expansions for roots meeting away from the endpoints.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
