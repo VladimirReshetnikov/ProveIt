@@ -1,0 +1,739 @@
+{
+  "status": "PASS_CENTRAL_PRODUCT_LEDGER_AND_NATIVE_CARRY_OBSTRUCTION",
+  "source65": {
+    "operations": 65,
+    "multiplications": 34,
+    "additions_subtractions": 31,
+    "equations": 18,
+    "positive_witnesses_excluding_x": 30,
+    "instructions": [
+      [
+        "bt_p0",
+        "*",
+        "q",
+        "F3"
+      ],
+      [
+        "bt_p1",
+        "+",
+        "F2",
+        "bt_p0"
+      ],
+      [
+        "bt_p2",
+        "*",
+        "q",
+        "bt_p1"
+      ],
+      [
+        "bt_p3",
+        "+",
+        "F1",
+        "bt_p2"
+      ],
+      [
+        "bt_p4",
+        "*",
+        "q",
+        "bt_p3"
+      ],
+      [
+        "bt_packed",
+        "+",
+        "F0",
+        "bt_p4"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "bt_three_s",
+        "*",
+        3,
+        "s"
+      ],
+      [
+        "sn2",
+        "+",
+        "bt_three_s",
+        1
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "ksn2",
+        "*",
+        "k",
+        "sn2"
+      ],
+      [
+        "UM2",
+        "*",
+        "UM",
+        "UM"
+      ],
+      [
+        "scaled_norm_coefficient",
+        "+",
+        "UM2",
+        "wn2"
+      ],
+      [
+        "ratio_product2",
+        "*",
+        "ksn2",
+        "ksn2"
+      ],
+      [
+        "L9",
+        "*",
+        "scaled_norm_coefficient",
+        "ratio_product2"
+      ],
+      [
+        "tauplus1",
+        "+",
+        "tau",
+        1
+      ],
+      [
+        "R9",
+        "*",
+        "tau",
+        "tauplus1"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "r1",
+        "+",
+        "r",
+        1
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "R11",
+        "+",
+        "r1",
+        "hpm1"
+      ],
+      [
+        "tr1",
+        "+",
+        "r1",
+        "r"
+      ],
+      [
+        "cam2",
+        "*",
+        "c",
+        "a"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "six_a",
+        "*",
+        6,
+        "a"
+      ],
+      [
+        "modulus",
+        "+",
+        "six_a",
+        8
+      ],
+      [
+        "gam",
+        "*",
+        "ga",
+        "modulus"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "a_square",
+        "*",
+        "a",
+        "a"
+      ],
+      [
+        "discriminant",
+        "+",
+        "a_square",
+        "modulus"
+      ],
+      [
+        "c2",
+        "*",
+        "c",
+        "c"
+      ],
+      [
+        "Ac2",
+        "*",
+        "discriminant",
+        "c2"
+      ],
+      [
+        "R15",
+        "+",
+        "Ac2",
+        1
+      ],
+      [
+        "L15",
+        "*",
+        "d",
+        "d"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "discriminant",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "+",
+        "c",
+        "of"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "c"
+      ],
+      [
+        "H17",
+        "+",
+        "tr1",
+        "jc"
+      ],
+      [
+        "H2",
+        "*",
+        "H17",
+        "H17"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "ic22",
+        "aux_square_gap"
+      ],
+      [
+        "P17",
+        "-",
+        1,
+        "aux_y2"
+      ],
+      [
+        "bt_X_bound",
+        "+",
+        "r",
+        "bound_beta"
+      ],
+      [
+        "bt_append",
+        "+",
+        "F0",
+        "F1"
+      ],
+      [
+        "bt_read",
+        "+",
+        "F2",
+        "F3"
+      ],
+      [
+        "bt_joint",
+        "+",
+        "bt_append",
+        "bt_read"
+      ],
+      [
+        "bt_joint_bound",
+        "+",
+        "bt_joint",
+        "alpha"
+      ],
+      [
+        "bt_initial",
+        "*",
+        2,
+        "x"
+      ],
+      [
+        "bt_tail",
+        "*",
+        "W",
+        "bt_append"
+      ],
+      [
+        "bt_transport",
+        "+",
+        "bt_initial",
+        "bt_tail"
+      ],
+      [
+        "bt_width",
+        "+",
+        "bt_initial",
+        "width_beta"
+      ],
+      [
+        "bt_divisor",
+        "*",
+        "W",
+        "L"
+      ],
+      [
+        "cp_product",
+        "*",
+        "F2",
+        "F3"
+      ],
+      [
+        "cp_upper",
+        "*",
+        3,
+        "cp_high"
+      ],
+      [
+        "cp_shifted",
+        "*",
+        "q",
+        "cp_upper"
+      ],
+      [
+        "cp_rhs",
+        "+",
+        "cp_low",
+        "cp_shifted"
+      ],
+      [
+        "cp_bound",
+        "+",
+        "cp_low",
+        "cp_alpha"
+      ]
+    ],
+    "sources": [
+      {
+        "equality": [
+          "r",
+          "bt_packed"
+        ],
+        "source": "-F0 - F1*q - F2*q**2 - F3*q**3 + r",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source": "81*k**2*q**2*s**4*w**2 + 108*k**2*q**2*s**3*w**2 + 54*k**2*q**2*s**2*w**2 + 12*k**2*q**2*s*w**2 + k**2*q**2*w**2 + 9*k**2*q*s**2*w + 6*k**2*q*s*w + k**2*q*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source": "c - eta - 3*k*s - k",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source": "-3*h*q*s*w - h*q*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source": "a - 3*q*s*w - q*w - 3*s - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source": "-a*c - 6*a*ga + d - 8*ga - q*w",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+      },
+      {
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source": "c*j - c - f*o + 2*r + 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "bt_X_bound",
+          "wn2"
+        ],
+        "source": "bound_beta - q*w + r",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "bt_joint_bound",
+          "q"
+        ],
+        "source": "F0 + F1 + F2 + F3 + alpha - q",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "bt_read",
+          "bt_transport"
+        ],
+        "source": "-F0*W - F1*W + F2 + F3 - 2*x",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "bt_width",
+          "W"
+        ],
+        "source": "-W + width_beta + 2*x",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "bt_divisor",
+          "q"
+        ],
+        "source": "L*W - q",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "cp_product",
+          "cp_rhs"
+        ],
+        "source": "F2*F3 - 3*cp_high*q - cp_low",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "cp_bound",
+          "q"
+        ],
+        "source": "cp_alpha + cp_low - q",
+        "correction": "0"
+      }
+    ],
+    "exact_added_predicate": "Positive lower remainder and positive high quotient; the native ternary digit of F2*F3 at q is zero, not necessarily its polynomial convolution coefficient."
+  },
+  "conditional_dot": {
+    "pairs": 1364,
+    "domains": [
+      {
+        "N": 4,
+        "radix": 5,
+        "pairs": 4,
+        "zero_dot_pairs": 3
+      },
+      {
+        "N": 5,
+        "radix": 6,
+        "pairs": 16,
+        "zero_dot_pairs": 9
+      },
+      {
+        "N": 6,
+        "radix": 7,
+        "pairs": 64,
+        "zero_dot_pairs": 27
+      },
+      {
+        "N": 7,
+        "radix": 8,
+        "pairs": 256,
+        "zero_dot_pairs": 81
+      },
+      {
+        "N": 8,
+        "radix": 9,
+        "pairs": 1024,
+        "zero_dot_pairs": 243
+      }
+    ],
+    "scope": "Conditional typed construction with radix>N and explicit low/high sentinels; varying-radix typing is not implemented."
+  },
+  "conditional_reflection": {
+    "operations_with_supplied_repunit": 9,
+    "multiplications": 5,
+    "additions_subtractions": 4,
+    "equations": 2,
+    "extra_operations_to_construct_repunit": 2,
+    "instructions": [
+      [
+        "cr_ab",
+        "*",
+        "A",
+        "B"
+      ],
+      [
+        "cr_sum",
+        "+",
+        "A",
+        "B"
+      ],
+      [
+        "cr_j_sum",
+        "*",
+        "J",
+        "cr_sum"
+      ],
+      [
+        "cr_twice",
+        "*",
+        2,
+        "cr_ab"
+      ],
+      [
+        "cr_E",
+        "-",
+        "cr_j_sum",
+        "cr_twice"
+      ],
+      [
+        "cp_upper",
+        "*",
+        "radix",
+        "cp_high"
+      ],
+      [
+        "cp_shifted",
+        "*",
+        "q",
+        "cp_upper"
+      ],
+      [
+        "cp_rhs",
+        "+",
+        "cp_low",
+        "cp_shifted"
+      ],
+      [
+        "cp_bound",
+        "+",
+        "cp_low",
+        "cp_alpha"
+      ]
+    ],
+    "guarded_pairs": 340,
+    "scope": "Exact reflected-equality test under typed Boolean digits, endpoint guards and radix>N; none of these guards or the varying-radix geometry is obtained for free."
+  },
+  "counterexamples": [
+    {
+      "kind": "false_negative",
+      "x": 10,
+      "q": 243,
+      "W": 81,
+      "fields": [
+        1,
+        1,
+        91,
+        91
+      ],
+      "alpha": 59,
+      "width_beta": 61,
+      "L": 3,
+      "packed_r": 1311124240,
+      "low_first_digits": [
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "convolution_coefficients": [
+        1,
+        0,
+        2,
+        0,
+        3,
+        0,
+        2,
+        0,
+        1
+      ],
+      "central_coefficient": 0,
+      "lower_polynomial": 262,
+      "incoming_carry": 1,
+      "extracted_digit": 1,
+      "cp_low": 19,
+      "cp_high": 11,
+      "cp_alpha": 224,
+      "full_positive_extension": "Reviewed Boolean60 supplies every base kernel coordinate; the false positive also satisfies both added extraction equalities."
+    },
+    {
+      "kind": "false_positive",
+      "x": 37,
+      "q": 243,
+      "W": 81,
+      "fields": [
+        1,
+        1,
+        118,
+        118
+      ],
+      "alpha": 5,
+      "width_beta": 7,
+      "L": 3,
+      "packed_r": 1700139052,
+      "low_first_digits": [
+        1,
+        0,
+        1,
+        1,
+        1
+      ],
+      "convolution_coefficients": [
+        1,
+        0,
+        2,
+        2,
+        3,
+        2,
+        3,
+        2,
+        1
+      ],
+      "central_coefficient": 2,
+      "lower_polynomial": 316,
+      "incoming_carry": 1,
+      "extracted_digit": 0,
+      "cp_low": 73,
+      "cp_high": 19,
+      "cp_alpha": 170,
+      "full_positive_extension": "Reviewed Boolean60 supplies every base kernel coordinate; the false positive also satisfies both added extraction equalities."
+    }
+  ],
+  "dependency_sha256": "ef07b120428f563bf1b8f8dbd79ae83915a223d0c96f1628885b1e5a0634caef",
+  "scope": "Five paid operations extract a radix digit. A zero dot-product interpretation additionally requires proven carry bounds and reflected wiring.",
+  "established_complete_universal_bound": 76
+}
