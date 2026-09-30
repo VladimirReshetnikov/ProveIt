@@ -11,8 +11,13 @@ or a new publication claim.
 The [positive-elimination refinement](../research-wip/native-stream-queue/complete75_positive_elimination.md)
 removes eight forced positive coordinates from this reference source. It
 preserves75 operations with22 positive witnesses and11 equations, and gives
-one degree-84 polynomial evaluable in107 operations. The source and full
-compiler proof below retain their original30-coordinate presentation.
+one degree-84 polynomial evaluable in107 operations. The later
+[shared-projection refinement](../research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md)
+reduces the75-operation source to21 positive witnesses and ten equations
+(104 operations for one polynomial). Combined with a stronger canonical
+packing bound, it gives a76-operation system with20 witnesses and nine
+equations, whose degree-84 polynomial costs102=50M+52A. The source and
+full compiler proof below retain their original30-coordinate presentation.
 
 This construction retains the strong auxiliary square and the cubed scales.
 It is distinct from the earlier auxiliary-scale, input-gap and squared-scale

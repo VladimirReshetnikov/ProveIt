@@ -3,13 +3,25 @@
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
 strong auxiliary square and saves the old doubled-index addition. The
-[positive-elimination refinement](../research-wip/native-stream-queue/complete75_positive_elimination.md)
-reduces its 30 positive witnesses and 19 equations to **22 witnesses and
-11 equations** at the same operation count. Its single sum-of-squares
-polynomial has exact degree84 and a **107=52M+55A** evaluation DAG.
+[positive-projection refinement](../research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md)
+reduces its30 positive witnesses and19 equations to **21 witnesses and
+ten equations** at the same operation count. Combining the projection
+with a stronger packing bound gives a76-operation system with20 witnesses
+and nine equations. Its single sum-of-squares polynomial has exact degree84
+and a **102=50M+52A** evaluation DAG; the75-operation alternative costs104
+when converted to one polynomial.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
+
+The current substrate continuation includes a
+[four-row finite-control queue simulator](../research-wip/native-stream-queue/four_row_queue_block_simulator.md),
+an exact [66-operation ordinary-input FIFO component](../research-wip/native-stream-queue/native_four_row_fifo66.md),
+and [residue-affine maps with an ancestor-pumping obstruction](../research-wip/native-stream-queue/residue_affine_ancestor_pumping.md).
+The simulator has a complete coded-input proof; finite-controller arithmetic
+and ordinary-input loading still need to be paid. The tested centered71
+carry family and the stated unit-slope residue-affine subclass are
+provably insufficient for universal representation.
 
 ## Historical 76-operation milestone
 

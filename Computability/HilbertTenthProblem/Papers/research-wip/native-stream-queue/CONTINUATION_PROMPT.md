@@ -4,10 +4,15 @@
 > **75=41M+34A** universal certificate with30 positive witnesses and19 equations.
 > Start with [the current proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) and
 > [its consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
-> The subsequent [positive elimination](complete75_positive_elimination.md)
-> retains75 operations with22 positive witnesses and11 equations; its single
-> degree-84 polynomial has a107-operation evaluation. The README indexes
-> the controlled-queue and PCP/matrix continuations and rejected74 shortcuts.
+> The latest [positive projection](complete75_gamma_dominance_elimination102.md)
+> retains75 operations with21 positive witnesses and ten equations. Its
+> stronger-bound alternative has20 witnesses and a **102-operation**
+> single-polynomial evaluation of exact degree84, starting from a76-operation
+> comparison system. The README indexes these proofs, the four-row queue
+> simulator and FIFO66, residue-affine pumping, PCP/matrix continuations,
+> and rejected74 shortcuts. The operation-count target remains below75;
+> controller arithmetic and ordinary-input loading are still unpaid for
+> the new coded queue simulator.
 
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.
