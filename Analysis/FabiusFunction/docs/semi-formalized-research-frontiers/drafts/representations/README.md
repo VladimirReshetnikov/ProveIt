@@ -193,6 +193,23 @@ of an existing draft; semantic consolidation is deferred to the post-
   explicit "Wikipedia" forms of the small-argument asymptotic), which the
   article does not cite (an editorial note of 2026-09-29 now names them).  Unreviewed; its numerics are not certificates;
   no Lean statement for the general case.
+- [`Endpoint_Geometry_Common_Digit_Fabius_Laws/`](Endpoint_Geometry_Common_Digit_Fabius_Laws/),
+  *The Endpoint Geometry of Common-Digit Fabius Laws* (22-page A4 PDF,
+  1,672-line source, a standard-library exact check program), filed on
+  2026-09-29 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It takes up the endpoint-dependence
+  direction of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  the probability that several common-digit laws `X_{q_i}` are all small
+  is governed by an upper envelope of lines, with an explicit three-term
+  expansion `−I t² − T t log t + A t`, a universal copula exponent
+  `2√A/(√A+√B)` on the diagonal, and Gaussian and extreme-tail limits
+  that do not commute although the correlation is constant.  It does not
+  claim the zonoid report's `conj:copula-endpoints`.  Its one-parameter
+  case agrees with the corrected jet small-ball form and, for the Fabius
+  law, with the machine-checked small-argument expansion in
+  `Analysis/FabiusFunction/Lean`, which it does not cite.  Unreviewed;
+  its asymptotic tables are not certificates; no Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

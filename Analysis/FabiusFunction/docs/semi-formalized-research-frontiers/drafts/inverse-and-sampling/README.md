@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has eight live navigation targets:
+This theme has ten live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -24,6 +24,13 @@ This theme has eight live navigation targets:
 - [`Flat_Boundaries_Sharp_Recovery_Uniform_Factors/`](Flat_Boundaries_Sharp_Recovery_Uniform_Factors/)
   — an archival arrival of 2026-09-29 on sharp minimax rates for
   recovering uniform factors without Gaussian smoothing; unreviewed.
+- [`Local_Minimax_Geometry_Uniform_Factors/`](Local_Minimax_Geometry_Uniform_Factors/)
+  — an archival arrival of 2026-09-29 on local minimax rates at mixed
+  collision strata under Gaussian smoothing; unreviewed.
+- [`Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/`](Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/)
+  — an archival arrival of 2026-09-29 on the infinite-factor model:
+  Gaussian-variance non-estimability and Christoffel recovery;
+  unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -232,6 +239,34 @@ unknown variance, `n^{−1/(2m+2)}` for the variance.  This settles the
 Gaussian-confounding article's first open problem for global rates; the
 finite-factor article's local rate at each collision pattern remains open.
 Unreviewed; no Lean statement.
+
+[`Local_Minimax_Geometry_Uniform_Factors/`](Local_Minimax_Geometry_Uniform_Factors/)
+holds *Local Minimax Geometry of Uniform Convolution Factors*, filed on
+2026-09-29 by a quick archival intake (20-page A4 PDF, 1,386-line
+source, an exact SymPy check program with mpmath likelihood
+diagnostics).  It localizes the Gaussian-confounding article above:
+near a configuration with `r` vanishing half-lengths and positive
+clusters of multiplicities `m_j`, each cluster is recovered at rate
+`n^{−1/(2m_j)}` and the zero block at `n^{−1/(4r)}` (known variance) or
+`n^{−1/(4r+4)}` (unknown), and the variance at `n^{−1/(2r+2)}`, so it is
+root-`n` estimable when no factor vanishes.  This is the
+Gaussian-confounding article's conjectured classification of local
+strata, and, with Gaussian smoothing, the finite-factor article's local
+rate at each collision pattern; without smoothing both stay open.
+Unreviewed; no Lean statement.
+
+[`Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/`](Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/)
+holds *Gaussian Dust and Christoffel Recovery in Infinite Uniform
+Convolutions*, filed on 2026-09-29 by a quick archival intake (22-page
+US Letter PDF, 1,503-line source, an exact SymPy check program).  It
+drops the capacity bound: with infinitely many uniform factors of
+bounded total variance `V`, the Gaussian variance is identifiable but
+its exact minimax risk is `V/2` at every sample size, because many
+small uniform factors ("Gaussian dust") imitate a Gaussian; uniform
+consistency returns exactly on classes with uniformly vanishing tails.
+A Christoffel hierarchy on a variance-weighted spectral measure gives
+explicit bias bounds, exact for geometric spectra such as the up
+law's.  Unreviewed; its numerics are diagnostics; no Lean statement.
 
 ## Formalization notes
 

@@ -1,0 +1,1503 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{libertinus}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,tabularx,longtable,enumitem}
+\usepackage{xcolor,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Gaussian dust and Christoffel recovery}
+\fancyhead[R]{\small ProveIt research extension}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.3em,topsep=0.4em}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\K}{\mathcal K_V}
+\newcommand{\Cs}{\mathcal C}
+\newcommand{\clip}{\operatorname{clip}_{[0,V]}}
+\newcommand{\pin}{458ccfb80b9940220819091da107e82bb970dcca}
+\hypersetup{pdftitle={Gaussian Dust and Christoffel Recovery in Infinite Uniform Convolutions},pdfauthor={AI-assisted research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Fabius--Rvachev inverse problems, Gaussian variance, moment recovery}}
+\title{\textbf{Gaussian Dust and Christoffel Recovery\\in Infinite Uniform Convolutions}\\[0.55em]\large Exact non-estimability, a complete compact-class criterion,\\and geometric moment formulas beyond finite capacity}
+\author{Research manuscript prepared for Vladimir Reshetnikov\\\small AI-assisted; conventional proofs and reproducible exact checks}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The finite-capacity inverse problems in ProveIt's Fabius--Rvachev research
+program change qualitatively when the number of uniform convolution factors
+is unrestricted. We study a known smooth compactly supported background plus
+an independent Gaussian and any square-summable sequence of centered uniform
+factors. The underlying distributional compactification and identifiability
+belong to the existing DUSTPAN theory of Billey--Swanson; they are credited and
+re-established in a variance-weighted moment representation suited to inference.
+In this experiment the Gaussian variance is identifiable, but its exact
+minimax absolute-error risk is $V/2$, and its exact squared-error risk is
+$V^2/4$, at every finite sample size when total latent variance is at most $V$.
+On a compact subclass, uniform consistency is possible if and only if the
+uniform-factor energy tails vanish uniformly. We provide finite-cumulant
+upper certificates, a Christoffel hierarchy with an explicit tail bound,
+and a rank-free total-variation expansion quantifying Gaussian approximation.
+For squared scales $Cr^j$, the degree-$d$ Christoffel bias is exactly
+$C(1-r)r^d/[3(1-r^{d+1})^2]$. Coefficient-constrained regularization gives
+noise bounds and statistical upper rates on two-sided polynomial and geometric
+envelope classes. The article distinguishes classical tools, derived results,
+and unresolved minimax and computational questions. No proof-assistant
+verification or worldwide priority claim is made.
+\end{abstract}
+\vspace{0.4em}
+\noindent\textbf{Keywords.} Fabius function; Rvachev up-function; DUSTPAN distributions;
+Gaussian component; infinite convolution; Christoffel function; cumulants;
+statistical identifiability; uniform consistency.
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Research question, provenance, and main conclusions}
+\label{sec:intro}
+
+\subsection{What is being extended}
+ProveIt contains exact Fabius--Rvachev arithmetic and several recent inverse
+problem reports. The finite-factor stability report studies a fixed number of
+unknown uniform factors against a known smooth background. Its successor
+allows an unknown Gaussian variance but keeps the capacity fixed. The earlier
+infinite-spectrum report constructs moment-preserving perturbations and
+quantitative inverse-instability examples near the dyadic spectrum
+\cite{repo,finite,gaussian,recovering}. These are different questions: neither
+finite-capacity rates nor full-law identifiability alone determine what happens
+to Gaussian-variance estimation when arbitrarily many tiny factors are allowed.
+
+We address the following specific extension:
+\begin{quote}
+For an unrestricted square-summable uniform spectrum, can one distinguish
+actual Gaussian variance from the accumulated variance of unresolved small
+uniform factors? Which restrictions make this distinction statistically
+recoverable, and can the recovery be certified from finitely many cumulants?
+\end{quote}
+The answer has both a negative and a constructive part. The unrestricted
+statistical problem has exactly the risk of ignoring the data. On compact
+subclasses, one precise tail condition is necessary and sufficient for uniform
+consistency. Positive polynomial certificates turn this qualitative condition
+into an explicit method.
+
+\subsection{Classical results that are not claimed as new}
+Billey and Swanson introduced DUSTPAN distributions, characterized their
+compact parameter space, and proved the closure and identifiability statements
+for generalized uniform sums plus a normal component
+\cite[Theorem~1.15, Theorem~3.13, Corollaries~3.28--3.29]{billey}.
+Their interval lengths are twice our half-lengths. Thus the existence of a
+Gaussian component in the closure, the uniqueness of the spectrum, and the
+basic compactification are \emph{not} discoveries of this article.
+
+The variational definition and moment-matrix formula for Christoffel functions
+are also classical; \cite[Section~2.2]{christoffel} gives a modern account,
+including singular moment matrices. Our geometric computation is an elementary
+Cauchy-determinant specialization, related to the geometric orthogonality
+measures in the little $q$-Jacobi family \cite[Section~18.27(iv)]{dlmfq}.
+No novelty is asserted for those identities or for general compact moment
+determinacy. The distinction between exact moment determination and unstable
+inversion has an extensive literature; \cite{hausdorff} treats a different,
+operator-theoretic Hausdorff moment setting.
+
+ProveIt also already contains Christoffel reconstruction of the physical
+measure $\mathrm{up}(x)\dd x$, as recorded in its representation-frontier
+corpus audit \cite{native}. Our measure is instead
+$3s\delta_0+\sum_j a_j^2\delta_{a_j^2}$: its atoms encode convolution
+factors, not spatial observations of the up-density. The distinction prevents
+conflating an existing density-reconstruction result with the variance-recovery
+problem treated here.
+
+The contribution developed here is the combination of a variance-weighted
+spectral measure with the smoothed statistical experiment: exact finite-sample
+risk, the compact-class equivalence theorem, explicit rank-free $L^1$
+remainder bounds, and constructive Gaussian-variance certificates with exact
+geometric bias and controlled noisy implementations. These results have full
+proofs below. Their worldwide publication priority has not been established.
+
+\subsection{A guide to the theorems}
+Fix a variance budget $V>0$. In the notation introduced in \cref{sec:model},
+$s$ is Gaussian variance, $v$ is \emph{total latent variance}, and $a_j$ are
+uniform half-lengths.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.27\textwidth}X@{}}
+\toprule
+Question & Answer proved here or credited below \\\midrule
+What does the exact law identify? & All $a_j$, with multiplicity, and $s$; the
+underlying identification is classical. The spectral measure in
+\cref{thm:spectral} makes the Gaussian variance an atom at zero. \\
+What can a finite sample learn without tail restrictions? & Exactly minimax
+risk $V/2$ in absolute error and $V^2/4$ in squared error,
+\cref{thm:minimax}. \\
+Which compact classes are learnable? & Exactly those with uniformly vanishing
+$\ell^2$ tails of $a$, \cref{thm:criterion}. \\
+Can finite cumulants certify recovery? & Yes: decreasing positive certificates
+and a Christoffel hierarchy, \cref{thm:ladder,thm:christoffel}. \\
+What happens for geometric factors? & An exact finite-degree bias formula,
+\cref{thm:geometric}; the dyadic specialization is displayed explicitly. \\
+How rapidly can tiny factors imitate Gaussian noise? & A total-variation
+asymptotic with an explicit uniform remainder, \cref{thm:dust,cor:dust}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Snapshot and verification boundary}
+The inspected repository snapshot is commit
+\begin{center}\small\texttt{\pin}.\end{center}
+The relevant directory is
+\begin{quote}\small\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/}.\end{quote}
+The accompanying source audit records the particular files inspected; this is
+not an audit of every theorem in ProveIt. None of the proofs below assumes
+that an unreviewed repository theorem is correct. Supporting computations
+check finite algebraic identities, not the universal analytic or statistical
+claims. The manuscript has not been independently refereed or checked in
+Lean or Rocq. No repository files were changed.
+
+\section{Model and elementary analytic facts}
+\label{sec:model}
+
+Let $U_1,U_2,\ldots$ be independent uniform random variables on $[-1,1]$,
+and let $G$ be an independent standard normal. Let $B$ be independent of them,
+known, centered, and supported in $[-H,H]$, with density
+$b\in C_c^\infty(\R)$. Centering a known background causes no loss of generality.
+The statistical observations are independent copies of
+\begin{equation}
+ Y=B+Z,\qquad Z=\sqrt{s}\,G+\sum_{j\ge1}a_jU_j,
+ \qquad a_1\ge a_2\ge\cdots\ge0,
+ \quad \sum_{j\ge1}a_j^2<\infty.
+ \label{eq:model}
+\end{equation}
+The series converges in $L^2$ and almost surely, by independence, centering,
+and the summability of the variances. The $L^2$ statement follows directly
+from the Cauchy criterion; the almost-sure statement is Kolmogorov's
+convergence theorem, also recalled in \cite[Theorem~3.9]{billey}.
+Only the $L^2$ realization is needed in the subsequent arguments.
+
+Write
+\begin{equation}
+ x_j=a_j^2,\qquad p_k(a)=\sum_{j\ge1}x_j^k,\qquad
+ v=s+\frac{p_1(a)}3,\qquad 0\le v\le V,
+ \qquad L=3V.
+ \label{eq:notation}
+\end{equation}
+Thus $s$ and $v$ are variances, not standard deviations. The latent law is
+$\mu_{v,a}=\Law(Z)$ and the observed law is $P_{v,a}=\Law(Y)$.
+We use $\TV(P,Q)=\sup_A|P(A)-Q(A)|$, equal to half the $L^1$ distance of
+densities. Gaussian measure of variance $t\ge0$ is denoted by $\gamma_t$;
+$\gamma_0=\delta_0$.
+
+\begin{lemma}[Uniform exponential and moment bounds]
+\label{lem:subgaussian}
+For every real $t$,
+\begin{equation}
+ \E e^{tZ}\le e^{vt^2/2}\le e^{Vt^2/2}.
+ \label{eq:subgaussian}
+\end{equation}
+The moment-generating and characteristic functions of $Z$ extend to entire
+functions. For a constant $D$ depending only on $H,V$, and every integer
+$r\ge1$, $\E|Y|^r\le(D\sqrt r)^r$ uniformly over the model.
+\end{lemma}
+\begin{proof}
+The coefficient inequality $(2k+1)!\ge6^k k!$ follows by induction because
+$(2k+3)(2k+2)\ge6(k+1)$. Therefore
+$\sinh t/t\le e^{t^2/6}$. Apply this to each finite partial sum and to its
+independent Gaussian. The partial sums converge in probability, and their
+exponentials are uniformly integrable: their second exponential moments are
+bounded by the same inequality at $2t$. Passing to the limit proves
+\eqref{eq:subgaussian} and the product representation of the MGF.
+
+The bound also holds with $t$ and $-t$, so
+$\E e^{R|Z|}\le2e^{VR^2/2}$ for all $R$. Differentiation under expectation
+on compact subsets of $\mathbb C$ proves entire extension. Chernoff's
+inequality gives $\Prob(|Z|>u)\le2e^{-u^2/(2V)}$. Integration of this tail
+bound yields $\E|Z|^r\le(D_0\sqrt r)^r$ after increasing a constant $D_0$.
+The triangle inequality in $L^r$ and $|B|\le H$ give the assertion for $Y$.
+\end{proof}
+
+\begin{lemma}[Cumulant coordinates]
+\label{lem:cumulants}
+Set $\gamma_{2k}=\kappa_{2k}(U_1)$. Then
+\begin{equation}
+ \gamma_{2k}=\frac{2^{2k}B_{2k}}{2k}
+ =(-1)^{k+1}\frac{2(2k-1)!\zeta(2k)}{\pi^{2k}}\ne0,
+ \label{eq:gamma}
+\end{equation}
+and
+\begin{align}
+ \kappa_2(Y)-\kappa_2(B)&=v,\label{eq:variance}\\
+ \kappa_{2k}(Y)-\kappa_{2k}(B)&=\gamma_{2k}p_k(a),\quad k\ge2.
+ \label{eq:cumulants}
+\end{align}
+The odd latent cumulants vanish. In particular,
+$\gamma_2=1/3$, $\gamma_4=-2/15$, and $\gamma_6=16/63$.
+\end{lemma}
+\begin{proof}
+Expand $\log(\sinh t/t)$ at zero using the classical logarithmic sine
+expansion \cite[Eq.~4.19.7]{dlmf}. Equivalently, Euler's sine product gives
+$\log(\sinh t/t)=\sum_{k\ge1}(-1)^{k+1}\zeta(2k)t^{2k}/(k\pi^{2k})$
+for $|t|<\pi$. This proves both forms of \eqref{eq:gamma}.
+For sufficiently small $|t|$, the sum of these logarithmic series over $j$
+converges absolutely, since $\sum a_j^2<\infty$ and the $a_j$ are bounded.
+Comparing coefficients of the independent-product MGF proves the formulas.
+\end{proof}
+
+\begin{remark}[The Rvachev background]
+The random variable $\sum_{j\ge1}2^{-j}U_j$ has the normalized Rvachev
+up density on $[-1,1]$. Its characteristic function is
+$\prod_{j\ge1}\sinc(2^{-j}t)$ in our ordinary characteristic-function
+convention, and its variance is $1/9$. It is an admissible known background
+in \eqref{eq:model}, as in the inspected Gaussian-confounding report
+\cite{gaussian}. Alternatively, the same geometric spectrum can be the
+\emph{unknown latent} uniform component. These two roles must not be confused.
+\end{remark}
+
+\section{A spectral measure for the Gaussian component}
+\label{sec:spectral}
+
+\begin{definition}[Variance-weighted spectral measure]
+For the parameters in \eqref{eq:notation}, define a finite measure on $[0,L]$ by
+\begin{equation}
+ \rho_{v,a}=3s\,\delta_0+\sum_{j\ge1}x_j\delta_{x_j}.
+ \label{eq:spectral}
+\end{equation}
+Zero coordinates contribute no mass. At any positive $x$, the mass is $x$
+times the finite integer multiplicity of that squared scale.
+\end{definition}
+
+\begin{theorem}[Moment representation and exact identification]
+\label{thm:spectral}
+The moments $m_r=\int x^r\dd\rho_{v,a}(x)$ are
+\begin{equation}
+ m_0=3v,\qquad m_r=p_{r+1}(a)\quad(r\ge1).
+ \label{eq:spectralmoments}
+\end{equation}
+Consequently the exact observed law determines $\rho_{v,a}$, all the positive
+half-lengths with multiplicity, and $s=\rho_{v,a}(\{0\})/3$.
+\end{theorem}
+\begin{proof}
+The mass identity is $3s+p_1=3v$; all positive-degree moments kill the atom
+at zero and give \eqref{eq:spectralmoments}. The cumulant formulas recover
+these moments from the observed law after subtracting the known background
+cumulants. Two finite measures on $[0,L]$ with the same moments integrate
+every polynomial equally. Uniform polynomial approximation of continuous
+functions, followed by uniqueness of finite Borel measures, makes them equal.
+At each positive atom $x$, divide its mass by $x$ to recover its multiplicity,
+and take its positive square root to recover the half-length. The atom at
+zero gives $s$.
+\end{proof}
+
+This is a moment-theoretic representation of the classical identification
+result, not a new claim that generalized uniform convolutions are identifiable.
+Its additional usefulness is that Gaussian variance is now a boundary-atom
+estimation problem for a positive measure whose entire moment sequence is
+known in principle.
+
+\begin{proposition}[Intrinsic Gaussian divisibility]
+\label{prop:intrinsic}
+For every parameter in the model,
+\begin{equation}
+ s=\lim_{t\to+\infty}\frac{2\log\E e^{tY}}{t^2}
+   =\max\{w\ge0:P_{v,a}=\gamma_w*Q\text{ for a probability measure }Q\}.
+ \label{eq:intrinsic}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For each fixed $a_j$, $t^{-2}\log(\sinh(a_jt)/(a_jt))\to0$; it is
+nonnegative and bounded by $a_j^2/6$. Dominated convergence for the sum
+shows that the uniform component contributes $o(t^2)$ to the log MGF.
+The bounded background contributes at most $H|t|$ in absolute value.
+The Gaussian contributes $st^2/2$, proving the limit.
+
+The decomposition with $w=s$ exists by construction. If $P_{v,a}=\gamma_w*Q$,
+Tonelli's theorem applied to exponential moments shows that $Q$ has finite
+MGF at every real $t$ and
+$\log M_Q(t)=\log M_Y(t)-wt^2/2$.
+Its mean is zero. Jensen's inequality gives $\log M_Q(t)\ge0$.
+The displayed limit therefore implies $w\le s$.
+\end{proof}
+
+\section{The known compactification and its statistical topology}
+\label{sec:topology}
+
+Define
+\begin{equation}
+ \K=\left\{(v,a):0\le v\le V,\quad
+ a_1\ge a_2\ge\cdots\ge0,\quad\sum_{j\ge1}a_j^2\le3v\right\},
+ \label{eq:K}
+\end{equation}
+with metric
+$d_\star((v,a),(w,c))=|v-w|+\sup_j|a_j-c_j|$.
+Here $s(v,a)=v-p_1(a)/3$. The point of retaining $v$, rather than $s$, as a
+coordinate is that variance carried by disappearing factors is not lost.
+The following proposition supplies a self-contained smoothed version of the
+Billey--Swanson framework \cite{billey}.
+
+\begin{proposition}[Compact model and a total-variation homeomorphism]
+\label{prop:compact}
+The space $\K$ is compact. Its map to latent laws is continuous and injective
+for weak convergence, and its map to observed laws is a homeomorphism onto a
+compact subset of the total-variation metric space. Finite uniform sums with
+$s=0$ are dense in this observed-law space.
+\end{proposition}
+\begin{proof}
+Monotonicity gives $a_j^2\le L/j$. A diagonal subsequence of any parameter
+sequence converges in each coordinate and in $v$; Fatou's lemma preserves
+the defining inequality. The uniform tail bound $a_j\le\sqrt{L/j}$ upgrades
+coordinate convergence to convergence in the supremum norm. This proves
+compactness.
+
+For a complex argument $z$, write the compensated product
+\begin{equation}
+ \phi_{v,a}(z)=e^{-vz^2/2}
+ \prod_{j\ge1}\left(e^{a_j^2z^2/6}\sinc(a_jz)\right).
+ \label{eq:compensated}
+\end{equation}
+On every compact set in $z$, a factor is $1+O(a_j^4)$ uniformly for large $j$,
+and
+\begin{equation}
+ \sum_{j>J}a_j^4\le a_{J+1}^2\sum_{j>J}a_j^2\le\frac{L^2}{J+1}.
+ \label{eq:tailfour}
+\end{equation}
+Finite products depend continuously on the coordinates, and the tails converge
+uniformly to one as $J\to\infty$. Hence the entire characteristic functions
+converge locally uniformly when parameters converge. L\'evy's continuity
+theorem gives weak continuity. Injectivity is \cref{thm:spectral}, even
+without the background.
+
+If $\mu_n\Rightarrow\mu$, then for every $y$,
+$\int b(y-z)\dd\mu_n(z)\to\int b(y-z)\dd\mu(z)$, because $b(y-\cdot)$ is
+bounded and continuous. These nonnegative densities all have integral one.
+Scheff\'e's lemma gives $L^1$ convergence: indeed, dominated convergence for
+$\min(f_n,f)\le f$ and
+$\norm{f_n-f}_1=2-2\int\min(f_n,f)$ proves it directly.
+Thus the observed-law map is TV-continuous. It is injective by
+\cref{thm:spectral}, and a continuous injection from a compact space into a
+metric space is a homeomorphism onto its image.
+
+For density, retain the first $J$ half-lengths and put
+$\tau_J=v-\frac13\sum_{j\le J}a_j^2\ge0$.
+Replace this residual variance by $n_J$ uniforms of half-length
+$\sqrt{3\tau_J/n_J}$, with $n_J\to\infty$. Choose $n_J$ so that this
+half-length tends to zero, and sort the combined finite list. Its total
+variance is $v$, its Gaussian variance is zero, and each ordered coordinate
+tends to the target coordinate. The same uniform-tail argument yields
+$d_\star$ convergence, hence TV convergence of the observed laws.
+\end{proof}
+
+\begin{theorem}[Exactly where Gaussian variance is continuous]
+\label{thm:continuity}
+The function $s:\K\to[0,V]$ is upper semicontinuous. Its continuity points
+are exactly the parameters with $s=0$. At a parameter with Gaussian variance
+$s$, the possible limits of $s(\theta_n)$ along sequences
+$\theta_n\to\theta$ are precisely the interval $[0,s]$.
+\end{theorem}
+\begin{proof}
+The map $p_1$ is the increasing supremum of continuous finite sums, so it is
+lower semicontinuous; $s=v-p_1/3$ is upper semicontinuous. At $s=0$,
+nonnegativity and upper semicontinuity imply continuity.
+
+Fix a target and a number $u\in[0,s]$. Keep the original uniform spectrum,
+replace Gaussian variance $s-u$ by $n$ equal uniform factors of half-length
+$\sqrt{3(s-u)/n}$, and keep Gaussian variance $u$. Sorting changes no law.
+The total variance stays $v$, and the ordered coordinates converge to the
+original spectrum. The Gaussian variances are constantly $u$. This proves
+attainability of every proposed limit and discontinuity when $s>0$.
+Upper semicontinuity and nonnegativity exclude all other limits.
+\end{proof}
+
+\begin{remark}
+The full parameter $(v,a)$ is uniformly recoverable as a \emph{continuous
+function of the exact law} in the compactified metric. The functional $s$ is
+not continuous on that parameter space. There is no contradiction: infinitely
+many small coordinate changes may carry a fixed sum of squares.
+At a zero-Gaussian target, convergence also holds in $\ell^2$ for the spectra,
+since their squared norms converge and their coordinates converge.
+\end{remark}
+
+\section{A rank-free expansion for Gaussian dust}
+\label{sec:dust}
+
+The compactification describes convergence but does not give a numerical error.
+The next theorem quantifies how a cloud of small uniform factors replaces a
+Gaussian component. The background in this section need only be a probability
+density $b\in W^{8,1}(\R)$; compact support is not required. Write
+$\norm{b^{(r)}}_1$ for the $L^1$ norm of its weak derivative.
+
+\begin{theorem}[A uniform fourth-order smoothing expansion]
+\label{thm:dust}
+Let $a$ be any finite or square-summable sequence of nonnegative half-lengths,
+and put
+\[
+ f=b*\Law\left(\sum_j a_jU_j\right),\qquad
+ g=b*\gamma_{p_1/3}.
+\]
+Then
+\begin{equation}
+ \left\|f-g+\frac{p_2}{180}g^{(4)}\right\|_1
+ \le \frac{43}{22680}p_3\norm{b^{(6)}}_1
+      +\frac{p_2^2}{4050}\norm{b^{(8)}}_1.
+ \label{eq:dustbound}
+\end{equation}
+The constants are independent of the number of factors and of their collisions.
+They are not asserted optimal.
+\end{theorem}
+\begin{proof}
+Let $T_i$ be convolution by $a_iU_i$, let $G_i$ be convolution by
+$\gamma_{a_i^2/3}$, and set $A_i=T_i-G_i$. All these operators commute with
+weak derivatives, and $T_i,G_i$ contract $L^1$. Taylor's formula for
+translation, with integral remainder, gives
+\begin{equation}
+ \left\|h(\cdot-z)-\sum_{r=0}^{k-1}
+          \frac{(-z)^r}{r!}h^{(r)}\right\|_1
+ \le\frac{|z|^k}{k!}\norm{h^{(k)}}_1.
+ \label{eq:translationbound}
+\end{equation}
+It applies to Sobolev functions by approximation from smooth functions.
+The uniform and its variance-matched Gaussian agree in moments through order
+three. Their fourth moments are $a_i^4/5$ and $a_i^4/3$, respectively.
+Consequently
+\begin{align}
+ \norm{A_i h}_1&\le\frac{a_i^4}{45}\norm{h^{(4)}}_1,
+ \label{eq:Ai4}\\
+ \left\|A_i h+\frac{a_i^4}{180}h^{(4)}\right\|_1
+ &\le\frac{11a_i^6}{11340}\norm{h^{(6)}}_1.
+ \label{eq:Ai6}
+\end{align}
+For the first line use $(1/5+1/3)/4!=1/45$.
+For the second line expand through degree five, use the fourth-moment
+\emph{difference} $(1/5-1/3)/4!=-1/180$, and bound the sixth-moment
+remainder by $(1/7+5/9)/6!=11/11340$.
+
+First suppose there are $n$ factors. An exact telescoping identity is
+\[
+ \prod_{i=1}^n T_i-\prod_{i=1}^n G_i
+ =\sum_{i=1}^n A_i
+       \left(\prod_{j<i}T_j\right)\left(\prod_{j>i}G_j\right).
+\]
+Replace the product $\prod_{j<i}T_j$ by $\prod_{j<i}G_j$ with a second
+telescoping identity. Every resulting remainder contains $A_iA_j$ for
+one pair $j<i$, and all other factors are $L^1$ contractions. Applying
+\eqref{eq:Ai4} twice bounds its action on $b$ by
+$a_i^4a_j^4\norm{b^{(8)}}_1/45^2$. Thus
+\begin{equation}
+ f-g=\sum_i A_i\left(\prod_{j\ne i}G_j\right)b+R,
+ \qquad
+ \norm R_1\le\frac{p_2^2}{4050}\norm{b^{(8)}}_1.
+ \label{eq:doubletelescoping}
+\end{equation}
+There are no uncontrolled higher-order subset sums in this argument.
+
+Apply \eqref{eq:Ai6} to each summand. To replace
+$\left(\prod_{j\ne i}G_j\right)b^{(4)}$ by $g^{(4)}$, use centering and
+\eqref{eq:translationbound} at order two:
+\[
+ \norm{(I-G_i)h}_1\le\frac{a_i^2}{6}\norm{h''}_1.
+\]
+Its contribution, after multiplication by $a_i^4/180$, is at most
+$a_i^6\norm{b^{(6)}}_1/1080$. Since
+\[
+ \frac{11}{11340}+\frac1{1080}=\frac{43}{22680},
+\]
+we obtain \eqref{eq:dustbound} for a finite list.
+
+For an infinite list, the uniform partial sums converge weakly, and convolution
+with any $L^1$ function is continuous from weak convergence into $L^1$.
+For completeness, approximate that function in $L^1$ by a continuous
+compactly supported function; for the latter, tightness controls spatial tails
+and dominated convergence applies on a compact interval. Convolution
+contractions control the approximation errors. Apply this observation to
+$b$ and its derivatives. Gaussian convolutions have the same continuity,
+and the finite $p_1,p_2,p_3$ sums converge to their infinite counterparts.
+Pass to the limit in the finite-list inequality.
+\end{proof}
+
+\begin{corollary}[Sharp first response of a small-factor cloud]
+\label{cor:dust}
+For a sequence of spectra with $h=\sup_j a_j\to0$,
+$p_1\to3\tau<\infty$, and $p_2>0$, one has
+\begin{equation}
+ \TV\left(b*\Law\left(\sum_j a_jU_j\right),
+               b*\gamma_{p_1/3}\right)
+ \sim\frac{p_2}{360}\norm{(b*\gamma_\tau)^{(4)}}_1.
+ \label{eq:dustasymptotic}
+\end{equation}
+The constant multiplying $p_2$ is strictly positive.
+\end{corollary}
+\begin{proof}
+The inequalities $p_3\le h^2p_2$ and $p_2\le h^2p_1$ make the remainder in
+\eqref{eq:dustbound} equal to $o(p_2)$. Moreover,
+$(b*\gamma_{p_1/3})^{(4)}\to(b*\gamma_\tau)^{(4)}$ in $L^1$.
+If the latter derivative were zero, the density would be a polynomial of
+degree at most three in the distributional sense. An integrable polynomial
+on $\R$ must be zero, contradicting mass one. Divide the expansion by $p_2$,
+take $L^1$ norms, and divide by two.
+\end{proof}
+
+\paragraph{Equal dust.}
+Take $n$ factors with $a_j=\sqrt{3\delta/n}$. They have variance $\delta$,
+$p_2=9\delta^2/n$, and $p_3=27\delta^3/n^2$. Therefore
+\begin{equation}
+ \TV\left(b*\Law\left(\sqrt{3\delta/n}\sum_{j=1}^n U_j\right),
+               b*\gamma_\delta\right)
+ \sim\frac{\delta^2}{40n}\norm{(b*\gamma_\delta)^{(4)}}_1.
+ \label{eq:equaldust}
+\end{equation}
+A fixed collection of macroscopic factors, or a fixed additional Gaussian,
+may be absorbed into $b$; its derivative norms can only decrease under such
+convolution. This gives a quantitative version of the perturbations used in
+\cref{thm:continuity}.
+
+\section{Exact finite-sample impossibility without a tail condition}
+\label{sec:minimax}
+
+Let $Y_1,\ldots,Y_N$ be independent with common law $P_\theta$,
+$\theta=(v,a)\in\K$. Estimators may be any measurable functions of the data;
+randomization does not improve the lower bounds below.
+
+\begin{theorem}[No uniform statistical gain at any finite sample size]
+\label{thm:minimax}
+For every integer $N\ge1$,
+\begin{align}
+ \inf_{\widehat s}\sup_{\theta\in\K}
+       \E_\theta|\widehat s-s(\theta)|&=\frac V2,
+ \label{eq:absminimax}\\
+ \inf_{\widehat s}\sup_{\theta\in\K}
+       \E_\theta(\widehat s-s(\theta))^2&=\frac{V^2}4.
+ \label{eq:sqminimax}
+\end{align}
+Both upper bounds are attained by the constant estimator $\widehat s=V/2$.
+The lower bounds hold even on the fixed-total-variance slice $v=V$.
+\end{theorem}
+\begin{proof}
+Compare the parameter $\theta_G$ with no uniform factors and Gaussian variance
+$V$ to $\theta_n$ with zero Gaussian variance and $n$ equal half-lengths
+$\sqrt{3V/n}$. Both have total variance $V$.
+By \cref{prop:compact}, or by \eqref{eq:equaldust},
+$\TV(P_{\theta_n},P_{\theta_G})\to0$. A product coupling, or telescoping
+product densities, gives
+\[
+ \TV(P_{\theta_n}^{\otimes N},P_{\theta_G}^{\otimes N})
+ \le N\TV(P_{\theta_n},P_{\theta_G})\longrightarrow0
+\]
+for every fixed $N$.
+
+Clipping an estimator into $[0,V]$ cannot increase either loss. Let $f_n,f_G$
+be the two sample densities, and let $z$ be the clipped estimate at a given
+sample. The sum of the absolute-error risks is at least
+\[
+ \int\min(f_n,f_G)\bigl(|z|+|z-V|\bigr)
+ =V\bigl(1-\TV(P_{\theta_n}^{\otimes N},P_{\theta_G}^{\otimes N})\bigr).
+\]
+The larger risk is at least half this quantity. Sending $n\to\infty$ gives
+$V/2$. For squared error, use
+$z^2+(z-V)^2\ge V^2/2$ in the same calculation to obtain $V^2/4$.
+The constant estimator gives the matching upper bounds.
+\end{proof}
+
+\begin{corollary}[The corresponding testing obstruction]
+\label{cor:test}
+In testing the single law with $s=V,a=0$ against all laws with $s=0,v=V$,
+the infimum, over tests, of type-I error plus worst-case type-II error equals
+one at every finite sample size.
+\end{corollary}
+\begin{proof}
+The sum of the errors for a simple pair is at least one minus their TV
+distance. Use the preceding sequence of alternatives. A constant test attains
+one.
+\end{proof}
+
+\begin{remark}[What this does and does not say]
+Exact identification from an entire distribution is compatible with
+\cref{thm:minimax}. The worst parameter is allowed to depend on the sample
+size, and can contain as many tiny factors as needed. This is not a claim
+that every fixed parameter is statistically indistinguishable from every
+other one, or that pointwise consistent estimation is impossible. It also
+does not contradict the repository's fixed-capacity rates: the required
+number of factors here has no a priori bound.
+\end{remark}
+
+\begin{corollary}[Local minimax risk at an individual law]
+\label{cor:localminimax}
+Fix $\theta\in\K$ with Gaussian variance $s_0$. For $\eta>0$, restrict the
+minimax problem to parameters $\theta'$ with
+$\TV(P_{\theta'},P_\theta)<\eta$. For each fixed sample size $N$, as
+$\eta\downarrow0$ the absolute-error minimax risk tends to $s_0/2$, and
+the squared-error minimax risk tends to $s_0^2/4$.
+\end{corollary}
+\begin{proof}
+Replace all Gaussian variance $s_0$ at $\theta$ by equal dust, keeping its
+original uniforms. This produces parameters of Gaussian variance zero whose
+observed laws converge in TV to $P_\theta$. Eventually they lie in any fixed
+neighborhood, and the two-point proof of \cref{thm:minimax} yields lower
+bounds $s_0/2$ and $s_0^2/4$. Upper semicontinuity of $s$, transferred to the
+observed-law space by \cref{prop:compact}, implies that for every
+$\varepsilon>0$ all sufficiently small neighborhoods have
+$0\le s(\theta')\le s_0+\varepsilon$. The appropriate midpoint constant
+estimator gives upper bounds $(s_0+\varepsilon)/2$ and
+$(s_0+\varepsilon)^2/4$. Send $\varepsilon$ to zero.
+\end{proof}
+
+\section{Positive finite-cumulant certificates}
+\label{sec:ladder}
+
+A polynomial that equals one at zero but suppresses positive spectral atoms
+provides an upper bound on the Gaussian variance. The simplest such family
+already resolves the qualitative recovery question.
+
+\begin{theorem}[A monotone cumulant ladder]
+\label{thm:ladder}
+For $m\ge0$, define
+\begin{equation}
+ A_m=v-\frac13\sum_{r=1}^m(-1)^{r+1}\binom mr\frac{p_{r+1}}{L^r},
+ \qquad A_0=v.
+ \label{eq:ladder}
+\end{equation}
+These quantities depend on cumulants only through order $2m+2$. They satisfy
+\begin{equation}
+ A_m-s=\frac13\sum_{j\ge1}x_j(1-x_j/L)^m\ge0,
+ \qquad A_m\downarrow s.
+ \label{eq:ladderbias}
+\end{equation}
+For every $J,m\ge1$,
+\begin{equation}
+ 3(A_m-s)\le\frac{JL}{em}+\sum_{j>J}x_j.
+ \label{eq:laddertail}
+\end{equation}
+Conversely,
+\begin{equation}
+ \sum_{j>2m}x_j\le6(A_m-s),\qquad m\ge1.
+ \label{eq:ladderconverse}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Integrate $(1-x/L)^m$ against \eqref{eq:spectral}, expand by the binomial
+formula, and divide by three. The atom at zero contributes $s$.
+For each positive $x_j$, $(1-x_j/L)^m\downarrow0$, and the summable
+majorant $x_j$ permits dominated convergence.
+For \eqref{eq:laddertail}, bound the first $J$ terms by
+$x e^{-mx/L}\le L/(em)$ each, and keep the remaining terms unchanged.
+For $j>2m$, $x_j\le L/j\le L/(2m+1)$, so Bernoulli's inequality gives
+$(1-x_j/L)^m\ge1-m/(2m+1)>1/2$. Substitute in
+\eqref{eq:ladderbias}.
+\end{proof}
+
+Every $A_m$ is continuous on $\K$. Indeed $v$ is continuous, and for $k\ge2$
+the tail of $p_k$ is bounded by $L^k/(J+1)^{k-1}$, uniformly over $\K$.
+The unknown $p_1$ never appears in \eqref{eq:ladder}; it would be circular
+to use it as input to an estimator of $s$.
+
+\section{A necessary and sufficient condition for uniform recovery}
+\label{sec:criterion}
+
+\begin{theorem}[Complete compact-class criterion]
+\label{thm:criterion}
+Let $K$ be a nonempty compact subset of $\K$, in the metric $d_\star$.
+The following statements are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The Gaussian variance $s$ is continuous on $K$.
+\item The uniform-factor energy tails vanish uniformly:
+\begin{equation}
+ \lim_{J\to\infty}\sup_{(v,a)\in K}\sum_{j>J}a_j^2=0.
+ \label{eq:tailcriterion}
+\end{equation}
+\item The finite-cumulant ladder $A_m$ converges uniformly to $s$ on $K$.
+\item There exist estimators from $N$ independent observations with
+\begin{equation}
+ \sup_{\theta\in K}\E_\theta|\widehat s_N-s(\theta)|\longrightarrow0.
+ \label{eq:uniformconsistent}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For (i)$\Rightarrow$(ii), $p_1=3(v-s)$ is continuous on $K$ and its finite
+partial sums are continuous and increase pointwise to $p_1$. Dini's theorem
+gives uniform convergence. For (ii)$\Rightarrow$(i), the uniform limit of
+these continuous partial sums is continuous, hence so is $s$.
+
+The implication (ii)$\Rightarrow$(iii) follows by first choosing $J$ in
+\eqref{eq:laddertail} and then $m$. Conversely \eqref{eq:ladderconverse}
+proves (iii)$\Rightarrow$(ii). Alternatively, (i)$\Rightarrow$(iii) follows
+from Dini's theorem applied to $A_m\downarrow s$.
+
+For (iii)$\Rightarrow$(iv), fix $m$. Estimate the finitely many raw moments
+up to order $2m+2$ by sample averages and clip them to fixed compact intervals
+containing all the corresponding true moments on $\K$. Uniform moment
+bounds from \cref{lem:subgaussian} make the expected moment errors
+$O_m(N^{-1/2})$. Cumulants are polynomials in these moments, so their
+errors have the same bound after clipping; therefore the estimator of
+$A_m$ obtained from \eqref{eq:ladder} has uniformly vanishing expected error.
+Choose increasing integers $N_m$ so large that this error is at most $1/m$
+for all $N\ge N_m$. Let $m(N)$ increase sufficiently slowly along these
+thresholds. Uniform convergence of $A_m-s$ and clipping the final answer
+into $[0,V]$ prove \eqref{eq:uniformconsistent}.
+
+Finally assume (iv), and clip the estimators into $[0,V]$. For each fixed $N$,
+$\theta\mapsto\E_\theta\widehat s_N$ is continuous on $K$:
+\cref{prop:compact} gives TV continuity of the one-observation laws,
+tensorization gives it for their $N$-fold products, and expectations of a
+bounded statistic are TV-continuous. By (iv), these continuous functions
+converge uniformly to $s$. Hence $s$ is continuous.
+\end{proof}
+
+\begin{corollary}[Useful sufficient classes]
+\label{cor:classes}
+Uniform consistency holds on every compact subclass with any one of the
+following bounds, with constants independent of the parameter: a fixed finite
+capacity; $a_j\le Cj^{-\beta}$ for $\beta>1/2$; $a_j\le Cq^j$ for $0<q<1$;
+or $\sum_j a_j\le A$.
+\end{corollary}
+\begin{proof}
+The first three bounds give a summable deterministic majorant for $a_j^2$.
+For the last, monotonicity gives $a_j\le A/j$, so
+$\sum_{j>J}a_j^2\le a_{J+1}\sum_{j>J}a_j\le A^2/(J+1)$.
+Apply \cref{thm:criterion}.
+\end{proof}
+
+\begin{remark}[Compactness and quantifiers matter]
+An arbitrary nonclosed parameter class need not satisfy this equivalence:
+continuity at each of its points does not imply a uniform modulus.
+The theorem requires compactness in the specified topology, not merely a
+bounded list of individual variances. The full $\K$ violates the tail
+condition: for any fixed $J$, a sufficiently long equal-factor cloud can
+place almost all of its energy beyond $J$.
+\end{remark}
+
+\section{Christoffel recovery from higher cumulants}
+\label{sec:christoffel}
+
+The binomial ladder is explicit, but it uses a prescribed polynomial.
+Optimizing the polynomial yields the classical Christoffel function at zero,
+applied here to the spectral measure rather than to the observed density.
+This distinction is essential: empirical moments of $Y$ are not the moments
+of $\rho$ until they have been converted by \cref{lem:cumulants}.
+
+\begin{definition}[Gaussian-variance Christoffel certificate]
+For an integer $d\ge0$, put
+\begin{equation}
+ \Cs_d(v,a)=\frac13
+   \inf\left\{\int q(x)^2\dd\rho_{v,a}(x):
+          q\in\R[x],\ \deg q\le d,\ q(0)=1\right\}.
+ \label{eq:christoffel}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Hierarchy, matrix formula, and tail certificate]
+\label{thm:christoffel}
+The quantities $\Cs_d$ depend on observed cumulants only through order $4d+2$.
+They decrease to $s$ and satisfy
+\begin{equation}
+ 0\le\Cs_d-s\le\frac13\sum_{j>d}x_j.
+ \label{eq:christoffeltail}
+\end{equation}
+For $d\ge1$, define
+\begin{equation}
+ H_d=(p_{i+j+1})_{i,j=1}^d,\qquad y_d=(p_{i+1})_{i=1}^d.
+ \label{eq:hankel}
+\end{equation}
+Then $y_d$ belongs to the range of the positive semidefinite matrix $H_d$, and
+\begin{equation}
+ \Cs_d=v-\frac13 y_d^{\mathsf T}H_d^\dagger y_d,
+ \label{eq:schur}
+\end{equation}
+where $H_d^\dagger$ is the Moore--Penrose inverse; $\Cs_0=v$.
+Moreover $\Cs_d=s$ if and only if the spectrum has at most $d$ distinct
+positive squared scales.
+\end{theorem}
+\begin{proof}
+Write $\mu_a=\sum_j x_j\delta_{x_j}$. Since $q(0)=1$,
+\begin{equation}
+ \Cs_d=s+\frac13\lambda_d,\qquad
+ \lambda_d=\inf_{\deg q\le d,\ q(0)=1}\int q^2\dd\mu_a.
+ \label{eq:lambda}
+\end{equation}
+For $q(x)=1+\sum_{i=1}^d c_ix^i$, the integral against $\rho$ is
+\begin{equation}
+ 3v+2c^{\mathsf T}y_d+c^{\mathsf T}H_dc.
+ \label{eq:quadratic}
+\end{equation}
+This uses moments $m_0,\ldots,m_{2d}$ and hence $v,p_2,\ldots,p_{2d+1}$,
+not the unknown $p_1$.
+If $u\in\ker H_d$, the polynomial $\sum_i u_ix^i$ has zero squared integral
+against $\mu_a$, so it vanishes $\mu_a$-almost everywhere. Its integral
+against $\mu_a$ is therefore $u^{\mathsf T}y_d=0$. Thus $y_d$ is orthogonal
+to $\ker H_d$ and lies in its range. Completing the square on that range
+shows that the minimum is attained and proves \eqref{eq:schur}.
+
+If $x_1,\ldots,x_d$ are positive, use the test polynomial
+\begin{equation}
+ q_d(x)=\prod_{i=1}^d(1-x/x_i).
+ \label{eq:annihilator}
+\end{equation}
+It vanishes at the first $d$ entries, and for every remaining $x_j$ each
+factor lies in $[0,1]$. Its squared integral is at most
+$\sum_{j>d}x_j$. If there are fewer positive entries, use their finite product
+instead. This proves \eqref{eq:christoffeltail}; summability makes its
+right-hand side tend to zero. Monotonicity follows by increasing the
+admissible polynomial space.
+
+If there are at most $d$ distinct positive squared scales, a polynomial
+vanishing at each of them gives $\lambda_d=0$. Conversely, the attained
+minimum can be zero only if an admissible polynomial vanishes at every
+positive atom. It has at most $d$ distinct real roots. This proves the final
+assertion, including $d=0$.
+\end{proof}
+
+\begin{remark}[A small-order formula]
+Provided $p_3>0$,
+\begin{equation}
+ \Cs_1=v-\frac{p_2^2}{3p_3}.
+ \label{eq:firstcertificate}
+\end{equation}
+It is exact for any number of equal positive half-lengths, because only one
+distinct squared scale is present. At the zero spectrum it is interpreted by
+the pseudoinverse formula and equals $v=s$. The numerator and denominator
+are recovered from the fourth and sixth cumulants. This formula should not
+be implemented as an unregularized ratio when $p_3$ is small.
+\end{remark}
+
+\begin{remark}[What the optimization relaxes]
+The Christoffel problem is a positive-measure polynomial problem. It does not
+impose the extra integer-multiplicity restriction
+$\rho(\{x\})/x\in\N$ at positive atoms. Therefore its upper certificate is
+not asserted to be the largest Gaussian variance among all uniform-factor
+models matching a finite list of cumulants. That sharper constrained inverse
+problem remains separate.
+\end{remark}
+
+\section{An exact geometric formula}
+\label{sec:geometric}
+
+Suppose the unknown squared scales form an exact geometric sequence,
+\begin{equation}
+ x_j=Cr^j,\qquad j=0,1,2,\ldots,
+ \qquad C>0,\quad0<r<1.
+ \label{eq:geometric}
+\end{equation}
+The reindexing from $j=1$ elsewhere is only for convenience. Here
+$p_k=C^k/(1-r^k)$ and the uniform variance is $C/[3(1-r)]$.
+
+\begin{theorem}[Exact finite-degree Christoffel bias]
+\label{thm:geometric}
+For the spectrum \eqref{eq:geometric}, at every integer $d\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+  \Cs_d-s=\frac{C(1-r)r^d}{3(1-r^{d+1})^2}.}
+ \label{eq:geometricbias}
+\end{equation}
+In particular, $\Cs_d-s\sim C(1-r)r^d/3$ as $d\to\infty$.
+\end{theorem}
+\begin{proof}
+All finite moment matrices of $\mu_a$ are positive definite because its
+support is infinite. Completing the square in the constant coefficient gives
+\begin{equation}
+ \lambda_d=
+ \frac{\det\left(C^{i+j+1}/(1-r^{i+j+1})\right)_{i,j=0}^d}
+      {\det\left(C^{i+j+1}/(1-r^{i+j+1})\right)_{i,j=1}^d},
+ \label{eq:detratio}
+\end{equation}
+with the empty denominator determinant equal to one.
+
+We use the elementary Cauchy identity
+\begin{equation}
+ \det\left(\frac1{1-u_iv_j}\right)_{i,j=0}^d
+ =\frac{\prod_{0\le i<k\le d}(u_i-u_k)
+          \prod_{0\le j<\ell\le d}(v_j-v_\ell)}
+        {\prod_{i,j=0}^d(1-u_iv_j)}.
+ \label{eq:cauchy}
+\end{equation}
+One proof applies the ordinary Cauchy determinant to
+$1/(u_i^{-1}-v_j)$ and divides row $i$ by $u_i$; the powers of the $u_i$
+cancel. The ordinary identity follows by multiplying the determinant by
+its common denominator: the numerator is alternating in each variable list,
+hence divisible by both Vandermonde products; comparison at a simple pole,
+inductively on the matrix size, gives coefficient one. This argument proves
+\eqref{eq:cauchy} for the nonzero distinct variables used here, with all
+denominators nonzero.
+
+In \eqref{eq:detratio}, row and column factors of $C$ leave a single factor
+$C$ in the quotient. Apply \eqref{eq:cauchy} with $u_i=r^i$ and
+$v_j=r^{j+1}$. The factors introduced by row and column zero in the numerator
+are
+\[
+ \prod_{i=1}^d(1-r^i)\prod_{j=1}^d(r-r^{j+1})
+ =r^d\prod_{i=1}^d(1-r^i)^2.
+\]
+The introduced denominator factors are
+\[
+ \prod_{j=0}^d(1-r^{j+1})\prod_{i=1}^d(1-r^{i+1})
+ =(1-r)\prod_{i=2}^{d+1}(1-r^i)^2.
+\]
+Their quotient is $r^d(1-r)/(1-r^{d+1})^2$.
+Multiply by $C$ and use \eqref{eq:lambda} to prove the theorem.
+\end{proof}
+
+\subsection{The dyadic Fabius--Rvachev specialization}
+For half-lengths $a_j=2^{-j}$, $j\ge1$, set $C=r=1/4$. The exact result is
+\begin{equation}
+ \Cs_d-s=\frac{4^{-d}}{16(1-4^{-d-1})^2}.
+ \label{eq:dyadicbias}
+\end{equation}
+The first few values are particularly simple:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$d$ & Highest cumulant order & Exact bias & Decimal bias \\\midrule
+0 & 2  & $1/9$          & $0.1111111111$\\
+1 & 6  & $4/225$        & $0.0177777778$\\
+2 & 10 & $16/3969$      & $0.0040312421$\\
+3 & 14 & $64/65025$     & $0.0009842368$\\
+4 & 18 & $256/1046529$  & $0.0002446182$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The accompanying program regenerates these rational values and the decimal
+roundings. Unlike a finite truncation of the uniform sum, these numbers are
+exact for the infinite geometric spectrum.
+
+\subsection{Interpretation and its limitations}
+In the zero-based indexing of \eqref{eq:geometric}, deleting the first $d$
+entries leaves the tail $\sum_{j=d}^\infty Cr^j=Cr^d/(1-r)$.
+Consequently \eqref{eq:geometricbias} improves the generic upper bound
+in \eqref{eq:christoffeltail} by the exact factor
+\begin{equation}
+ \frac{\Cs_d-s}{Cr^d/[3(1-r)]}
+ =\frac{(1-r)^2}{(1-r^{d+1})^2}\longrightarrow(1-r)^2.
+ \label{eq:tailratio}
+\end{equation}
+
+This exact formula is not a statistical minimax rate. It describes noiseless
+finite-moment bias. If exact geometric shape with unknown $C,r$ were imposed
+as a parametric assumption, those few parameters could instead be recovered
+from a few cumulants. The general-purpose certificate deliberately does not
+use that parametric shortcut.
+
+\section{Regularization by bounded polynomial coefficients}
+\label{sec:regularization}
+
+Direct inversion of $H_d$ is unnecessary for a robust upper certificate.
+Normalize spectral locations by $z=x/L$ and define
+\begin{equation}
+ \bar m_0=3v,\qquad
+ \bar m_r=p_{r+1}/L^r\quad(r\ge1).
+ \label{eq:normalizedmoments}
+\end{equation}
+These are the moments of the pushforward of $\rho$ to $[0,1]$; the total
+mass is still $3v$, not one.
+For $M\ge1$, let
+\begin{equation}
+ \mathcal Q_{d,M}=
+ \left\{q(z)=\sum_{i=0}^d c_iz^i:
+ c_0=1,\ \sum_{i=0}^d|c_i|\le M\right\}.
+ \label{eq:coeffball}
+\end{equation}
+This is a compact coefficient set.
+Given estimates $\widehat m_0,\ldots,\widehat m_{2d}$, define
+\begin{equation}
+ \widehat C_{d,M}=\frac13\inf_{q\in\mathcal Q_{d,M}}
+       \sum_{i,j=0}^d c_ic_j\widehat m_{i+j}.
+ \label{eq:regularized}
+\end{equation}
+The value is a continuous function of the estimated moments, even if their
+Hankel matrix is not positive semidefinite. The estimated quadratic may then
+be nonconvex; existence of its global minimum still follows from compactness.
+No efficient general nonconvex solver is implicit in this definition.
+
+\begin{theorem}[A deterministic noise certificate]
+\label{thm:regularized}
+Suppose
+\begin{equation}
+ \max_{0\le r\le2d}|\widehat m_r-\bar m_r|\le\varepsilon.
+ \label{eq:momenterror}
+\end{equation}
+Let $C_{d,M}$ be \eqref{eq:regularized} with the true moments.
+Then
+\begin{equation}
+ |\widehat C_{d,M}-C_{d,M}|\le\frac{\varepsilon M^2}{3}.
+ \label{eq:noisebound}
+\end{equation}
+If $x_i\ge\ell_i>0$ for $1\le i\le d$ and
+\begin{equation}
+ M\ge M_d:=\prod_{i=1}^d(1+L/\ell_i),
+ \label{eq:Md}
+\end{equation}
+then
+\begin{equation}
+ |\clip(\widehat C_{d,M})-s|
+ \le\frac13\sum_{j>d}x_j+\frac{\varepsilon M^2}{3}.
+ \label{eq:regularizedrisk}
+\end{equation}
+Moreover
+\begin{equation}
+ U_{d,M}:=\clip\left(\widehat C_{d,M}+\frac{\varepsilon M^2}{3}\right)
+ \label{eq:uppercertificate}
+\end{equation}
+is an upper bound on $s$, and
+$0\le U_{d,M}-s\le\frac13\sum_{j>d}x_j+2\varepsilon M^2/3$.
+\end{theorem}
+\begin{proof}
+For any $q\in\mathcal Q_{d,M}$, the difference between the estimated and true
+quadratic is at most
+$\varepsilon\sum_{i,j}|c_i||c_j|\le\varepsilon M^2$.
+The infima differ by at most the same amount, proving \eqref{eq:noisebound}.
+The polynomial $\prod_{i=1}^d(1-Lz/x_i)$ has coefficient $\ell^1$ norm
+exactly $\prod_{i=1}^d(1+L/x_i)\le M_d$, because its coefficients alternate
+in sign. It is therefore admissible. The argument of
+\cref{thm:christoffel} gives
+$0\le C_{d,M}-s\le\frac13\sum_{j>d}x_j$.
+Combine this with \eqref{eq:noisebound}. Clipping into an interval containing
+$s$ does not increase absolute error, and preserves the certified upper-bound
+property.
+\end{proof}
+
+\begin{remark}[A fully specified, though possibly expensive, computation]
+One may approximate the infimum in \eqref{eq:regularized} over a finite
+rational grid in the coefficient ball. If the coefficient $\ell^1$ mesh is
+$\eta$, and $K_0=\max_r|\widehat m_r|$, the objective changes by at most
+$2K_0M\eta$ between two grid-neighbor coefficient vectors, since
+$|c^{\mathsf T}\widehat Hc-d^{\mathsf T}\widehat Hd|
+\le K_0\norm{c-d}_1(\norm c_1+\norm d_1)$.
+A grid fine enough to meet a specified objective tolerance therefore gives
+a finite globally certified procedure. Such a search is not promised to be
+practical in high degree; the theorem is an error guarantee, not a complexity
+claim.
+\end{remark}
+
+\section{Statistical upper bounds on envelope classes}
+\label{sec:rates}
+
+We now turn the deterministic certificate into actual estimation guarantees.
+These bounds do not claim optimal rates. Their purpose is to prove a
+constructive contrast with \cref{thm:minimax} and quantify the price of
+infinite rank under explicit assumptions.
+
+\begin{lemma}[Uniform estimation of the normalized spectral moments]
+\label{lem:empirical}
+For each $d\ge1$, there are estimates of
+$\bar m_0,\ldots,\bar m_{2d}$ from $N$ observations such that
+\begin{equation}
+ \sup_{\theta\in\K}\E_\theta
+   \max_{0\le r\le2d}|\widehat m_r-\bar m_r|
+ \le N^{-1/2}\exp\{C_0d\log(d+1)\},
+ \label{eq:empirical}
+\end{equation}
+where $C_0$ depends only on $H,V$ and the known background, not on $d,N$.
+\end{lemma}
+\begin{proof}
+Set $R=4d+2$. Increase a constant $D_1$ so that, with
+$M_R=D_1\sqrt R\ge1$, every raw moment $\mu_j=\E Y^j$, $j\le R$, has
+$|\mu_j|\le M_R^j$ and $\E|Y|^{2j}\le M_R^{2j}$.
+This follows from \cref{lem:subgaussian}, using $2j\le2R$ and absorbing
+$\sqrt2$ in $D_1$. Estimate $\mu_j$ by the sample mean of $Y^j$ and clip
+it into $[-M_R^j,M_R^j]$. The resulting $\widehat\mu_j$ satisfies
+\begin{equation}
+ \E|\widehat\mu_j-\mu_j|\le M_R^j/\sqrt N.
+ \label{eq:rawmomenterror}
+\end{equation}
+
+For $r\le R$, use the standard partition expression for a cumulant,
+\begin{equation}
+ \kappa_r=\sum_{\pi\in\Pi_r}(-1)^{|\pi|-1}(|\pi|-1)!
+              \prod_{A\in\pi}\mu_{|A|},
+ \label{eq:partitioncumulant}
+\end{equation}
+which follows by comparing coefficients in
+$\log(\sum_{j\ge0}\mu_jt^j/j!)$.
+A telescoping product and \eqref{eq:rawmomenterror} bound the expected error
+of the product for a partition $\pi$ by $|\pi|M_R^r/\sqrt N$.
+Furthermore,
+\[
+ \sum_{\pi\in\Pi_r}(|\pi|-1)!|\pi|
+ =\sum_{q=1}^r S(r,q)q!\le\sum_{q=1}^r q^r\le r^{r+1},
+\]
+because $S(r,q)q!$ counts surjections to $q$ labeled points. Thus the
+expected cumulant error is at most $r^{r+1}M_R^r/\sqrt N$.
+
+Subtract the exact known cumulants of $B$. Use \eqref{eq:variance} for
+$\bar m_0=3v$ and \eqref{eq:cumulants} for $\bar m_r$, $r\ge1$.
+By \eqref{eq:gamma}, $|\gamma_{2k}|^{-1}\le\pi^{2k}/2$.
+The factors $L^{-r}$ and these reciprocal cumulants grow at most
+exponentially in $R$, since $V>0$ is fixed. Sum the expected errors to bound
+the expected maximum. All factors are absorbed in
+$\exp\{C_0d\log(d+1)\}$, proving the lemma.
+\end{proof}
+
+\begin{theorem}[Constructive risk bound]
+\label{thm:statbound}
+Suppose a class satisfies $x_i\ge\ell_i>0$ for $i\le d$ and
+$\sum_{j>d}x_j\le T_d$ uniformly. Using the estimates in
+\cref{lem:empirical}, the clipped estimator \eqref{eq:regularized} with
+$M=M_d$ satisfies
+\begin{equation}
+ \sup_\theta\E_\theta|\clip(\widehat C_{d,M_d})-s|
+ \le\frac{T_d}{3}
+ +\frac{M_d^2}{3\sqrt N}\exp\{C_0d\log(d+1)\}.
+ \label{eq:statrisk}
+\end{equation}
+A finite coefficient-grid minimization with objective tolerance $N^{-1}$
+adds at most $1/(3N)$ to this bound.
+\end{theorem}
+\begin{proof}
+The deterministic argument of \cref{thm:regularized} holds for every realized
+moment error, not only on a fixed high-probability event. Take expectations
+and apply \cref{lem:empirical}. The grid tolerance statement follows directly
+from division of the objective value by three.
+\end{proof}
+
+\begin{corollary}[Polynomial envelopes]
+\label{cor:polyrate}
+Suppose the sorted half-lengths satisfy
+\begin{equation}
+ c_-j^{-\beta}\le a_j\le c_+j^{-\beta}\quad(j\ge1),
+ \qquad c_->0,\quad \beta>1/2,
+ \label{eq:polyenvelope}
+\end{equation}
+with fixed constants, and the class is nonempty under the variance budget.
+There exist estimators for which, as $N\to\infty$,
+\begin{equation}
+ \sup_\theta\E_\theta|\widehat s_N-s|
+ =O\left(\left(\frac{\log N}{\log\log N}\right)^{1-2\beta}\right).
+ \label{eq:polyrate}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Take $\ell_i=c_-^2i^{-2\beta}$. Then
+\[
+ \log M_d\le d\log(1+L/c_-^2)+2\beta\log(d!)=O(d\log(d+1)),
+ \qquad
+ T_d\le\frac{c_+^2}{2\beta-1}d^{1-2\beta}.
+\]
+Choose $d=\lfloor c\log N/\log\log N\rfloor$ with $c>0$ sufficiently
+small relative to the constants in \eqref{eq:statrisk}. Its noise term is
+$O(N^{-1/4})$ for all sufficiently large $N$; its bias term is the displayed
+bound. Handle finitely many small $N$ by the constant estimator.
+\end{proof}
+
+\begin{corollary}[Geometric envelopes]
+\label{cor:geomrate}
+Suppose
+\begin{equation}
+ c_-q^j\le a_j\le c_+q^j\quad(j\ge1),
+ \qquad c_->0,\quad0<q<1,
+ \label{eq:geomenvelope}
+\end{equation}
+with fixed constants and nonempty model class. There are constants $c,C>0$
+and estimators such that
+\begin{equation}
+ \sup_\theta\E_\theta|\widehat s_N-s|
+ \le C\exp\{-c\sqrt{\log N}\}
+ \label{eq:geomrate}
+\end{equation}
+for all sufficiently large $N$.
+\end{corollary}
+\begin{proof}
+Take $\ell_i=c_-^2q^{2i}$. Then
+\[
+ \log M_d\le d\log(1+L/c_-^2)+\log(1/q)d(d+1)=O(d^2),
+ \qquad
+ T_d\le\frac{c_+^2q^{2d+2}}{1-q^2}.
+\]
+Set $d=\lfloor c_1\sqrt{\log N}\rfloor$ with $c_1$ sufficiently small.
+The noise term in \eqref{eq:statrisk} is $O(N^{-1/4})$ for large $N$, and
+the tail term is bounded by the right-hand side of \eqref{eq:geomrate}.
+\end{proof}
+
+\begin{remark}[Precisely what assumptions these rates use]
+The positive lower envelopes control the coefficients of the annihilating
+polynomial. They are not needed for the qualitative uniform-consistency
+criterion. Neither rate is asserted minimax, and neither is a rate for
+estimating the entire ordered spectrum. These classes allow independent
+deviations from geometric or polynomial shape at every coordinate; they are
+not finite-dimensional parametric families. The constants depend on the fixed
+envelope and may deteriorate badly as its lower bound decreases.
+\end{remark}
+
+\section{Pointwise estimation despite constant global minimax risk}
+\label{sec:pointwise}
+
+The global obstruction concerns a supremum over parameters; it should not be
+mistaken for an impossibility of learning any single fixed distribution.
+The positive ladder produces one sequence of estimators that is consistent
+at every fixed member of the full unrestricted class.
+
+\begin{theorem}[One pointwise consistent estimator on the whole class]
+\label{thm:pointwise}
+Let $m=m(N)=\lfloor\sqrt{\log(N+e)}\rfloor$. Use
+\cref{lem:empirical} with $d=m$ to estimate the normalized moments, and put
+\begin{equation}
+ \widehat s_N=
+ \clip\left(\frac13\sum_{r=0}^{m}(-1)^r\binom mr\widehat m_r\right).
+ \label{eq:pointwiseestimator}
+\end{equation}
+For every fixed $\theta\in\K$,
+$\E_\theta|\widehat s_N-s(\theta)|\to0$.
+More precisely, uniformly over $\theta$,
+\begin{equation}
+ \E_\theta|\widehat s_N-s(\theta)|
+ \le A_m(\theta)-s(\theta)
+  +\frac{2^m}{3\sqrt N}\exp\{C_0m\log(m+1)\}.
+ \label{eq:pointwiserisk}
+\end{equation}
+Only the first term need fail to converge uniformly.
+\end{theorem}
+\begin{proof}
+The true moment polynomial in \eqref{eq:pointwiseestimator} is $A_m$.
+The sum of the absolute binomial coefficients is $2^m$, so
+\cref{lem:empirical} bounds the expected error of this polynomial by the
+second term of \eqref{eq:pointwiserisk}. Clipping cannot increase the error
+against $s$. The second term tends to zero since
+$m\log(m+1)=o(\log N)$. For each fixed parameter, \cref{thm:ladder} makes
+the first term tend to zero as well.
+\end{proof}
+
+The observations therefore support the following three simultaneous facts:
+exact-law identifiability; pointwise consistent estimation from increasing
+samples; and a nonzero, sample-size-independent global minimax risk. The
+resolution is the absence of a uniform energy-tail modulus. The dust
+alternative in a worst-case lower bound becomes increasingly complicated as
+the sample size grows.
+
+\section{Verification, reproducibility, and formalization route}
+\label{sec:validation}
+
+\subsection{What the accompanying program checks}
+The file \path{verify_results.py} uses exact rational arithmetic for algebraic
+checks and high-precision arithmetic for a separately labeled Fourier
+diagnostic. It checks the Bernoulli cumulants, all constants in the Taylor
+remainder, the geometric Schur-complement formula over several rational
+values of $C,r$, finite-spectrum pseudoinverse formulas and exact termination,
+positive-ladder identities, and representative coefficient-noise bounds.
+It also regenerates the dyadic table. A high-precision calculation of equal-dust
+characteristic functions tests the sign and coefficient of the first correction.
+That diagnostic is \emph{not} a numerical computation of total variation.
+
+The delivered run passed 4,619 exact assertions and three high-precision
+Fourier diagnostic checks. All data written by the script are consequences or diagnostics of the stated
+formulas. They are not used to bridge an unproved infinite range. In
+particular, the statistical assertions are justified by the proofs, not by
+Monte Carlo simulations. The program is an independently executable
+companion, not a formal proof certificate accepted by Lean.
+
+\subsection{A realistic formalization decomposition}
+A future Lean or Rocq development can separate five layers.
+First formalize the finite algebraic layer: moment-cumulant conversion,
+Hankel Gram matrices, a quadratic minimum on a matrix range, and the Cauchy
+determinant quotient. This would certify the geometric formula and finite
+spectral computations without any probability theory.
+
+Second formalize square-summable independent sums and their exponential
+bounds, then the spectral measure and compactification. Third establish
+convolution continuity in $L^1$ and the operator Taylor estimates; finite
+products should precede the infinite limit. Fourth formalize the two-point
+risk lower bound and the tensorization inequality. Finally add Dini's theorem,
+empirical moments, and the diagonal estimator for the compact-class criterion.
+
+No declaration in the current repository is asserted to implement these new
+endpoints. The mathematical proof dependencies are explicit enough that one
+can formalize the layers independently rather than importing the conclusions
+as axioms.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+
+\begin{question}[Sharp minimax rates under spectral envelopes]
+Determine matching lower and upper rates for Gaussian-variance estimation
+under the two-sided envelopes \eqref{eq:polyenvelope} and
+\eqref{eq:geomenvelope}. Are the logarithmic and stretched-logarithmic upper
+bounds proved here optimal, or does the integer-multiplicity constraint
+permit a substantially faster method?
+\end{question}
+The compactness criterion settles possibility, not speed. A lower bound must
+preserve the fixed envelope while producing moment or likelihood cancellation;
+the unrestricted equal-dust construction does not do this.
+
+\begin{question}[Removing lower envelopes quantitatively]
+Obtain sharp rates assuming only $a_j\le Cj^{-\beta}$ or $a_j\le Cq^j$.
+Can positive polynomials adapted to a scale threshold replace the explicit
+root polynomial without incurring its coefficient growth?
+\end{question}
+Uniform consistency already follows from \cref{thm:criterion}. What remains
+is an effective quantitative modulus that does not presume a positive lower
+bound for every leading squared scale.
+
+\begin{question}[Optimal recovery from finitely many exact cumulants]
+Given $v,p_2,\ldots,p_m$, characterize the largest and smallest possible
+Gaussian variances among actual uniform-factor models. Determine when a
+Christoffel upper bound is attainable subject to the discrete condition
+$\rho(\{x\})/x\in\N$ for every positive atom.
+\end{question}
+Classical truncated moment feasibility alone drops this condition. This is a
+natural place where the special convolution model may improve on a generic
+positive-measure relaxation.
+
+\begin{question}[A stable computational implementation]
+Design a numerically efficient estimator with certified error bounds from
+noisy cumulants. Compare coefficient balls, orthogonal-polynomial bases,
+positive-semidefinite moment projection, and interval arithmetic. A useful
+implementation should report a noise-dependent degree rather than simply
+invert a large Hankel matrix.
+\end{question}
+The exact formulas in this article establish a reference target; the finite
+rational-grid construction establishes existence, not practical scalability.
+
+\begin{question}[Perturbations of geometric spectra]
+For $x_j=Cr^j(1+\varepsilon_j)$ with controlled $\varepsilon_j$, determine
+whether the exact geometric Christoffel asymptotic persists with a stable
+leading constant. Identify the weakest summability or regular-variation
+assumptions yielding a relative-error theorem.
+\end{question}
+A first route is determinant perturbation, but its conditioning may be much
+worse than that of the variational problem. Direct comparison of positive
+spectral measures may be more robust.
+
+\begin{question}[Higher-order dust expansions]
+Extend \cref{thm:dust} to arbitrary fixed order with constants independent of
+rank. Express the remainder in a small collection of power sums and derive
+uniform relative errors when several leading cumulants have been matched.
+\end{question}
+The double-telescoping proof suggests a route via higher operator differences.
+The issue is controlling the remainder without an exponentially large subset
+expansion. Existing geometric Edgeworth reports address a different scaling
+regime and should be compared carefully before any novelty claim.
+
+\begin{question}[The unsmoothed statistical experiment]
+Which topology and local risk statements survive when the known smooth
+background is removed, particularly at the point mass and at finite uniform
+sums? Derive sharp distinctions between weak, total-variation, and Hellinger
+behavior at support boundaries.
+\end{question}
+The smoothing assumption is used explicitly in the TV-homeomorphism proof.
+It must not be silently discarded, even though some dust approximations
+have stronger convergence without smoothing.
+
+\begin{question}[Unknown or partly known background]
+What aspects of Gaussian variance remain identifiable when $B$ is known only
+through finitely many moments, or belongs to a specified compact family?
+Formulate sufficient restrictions that distinguish background Gaussian
+content from the latent Gaussian component.
+\end{question}
+The present subtraction of background cumulants is exact. With an arbitrary
+unknown background, convolution factorization creates genuine nonidentifiability,
+not merely statistical instability.
+
+\begin{question}[Multivariate segment convolutions]
+Replace $a_jU_j$ by $u_jU_j$ with $u_j\in\R^p$, and Gaussian variance by a
+positive semidefinite covariance matrix. Characterize the corresponding
+matrix-valued dust, directional cumulant measures, and compact-class
+learnability conditions.
+\end{question}
+In one dimension the ordered nonnegative spectrum removes sign and permutation
+ambiguity. In several dimensions, opposite directions and angular moment
+identification introduce additional structure that must be resolved first.
+
+\begin{question}[A proof-assistant endpoint with statistical semantics]
+Formalize \cref{thm:criterion} together with \cref{thm:minimax} for the actual
+probability-law model, not only for finite algebraic moment data. Can the
+spectral-measure representation reduce the amount of special-function
+analysis needed in that formalization?
+\end{question}
+The finite Schur-complement and determinant lemmas give a manageable initial
+milestone, while the compact statistical experiment provides a substantial
+longer-term target directly aligned with ProveIt's verification goals.
+
+\section{Conclusion}
+The important distinction is not simply finite versus infinite sums. It is
+whether a class permits a fixed amount of variance to migrate into arbitrarily
+many unresolved factors. In the full class, that migration produces exact
+constant minimax risks at every finite sample size. On compact subclasses,
+uniformly vanishing energy tails are exactly the condition that restores
+uniform Gaussian-variance estimation.
+
+The variance-weighted spectral measure makes this distinction transparent:
+the Gaussian component is its mass at zero. Positive polynomial filters and
+Christoffel minimization recover this atom from higher cumulants. The exact
+geometric formula supplies a particularly explicit link back to the
+Fabius--Rvachev setting, and bounded-coefficient regularization translates the
+algebra into honest noise and sampling guarantees. The remaining open work is
+chiefly quantitative: sharp envelope rates, efficient certified algorithms,
+and extensions beyond the known smooth background.
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt}, GitHub repository, inspected at commit
+\texttt{458ccfb80b9940220819091da107e82bb970dcca}, 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{finite}
+\emph{Sharp Stability Strata for Finite Fabius--Rvachev Deconvolution:
+Colliding scales, vanishing factors, and optimal recovery exponents},
+AI-assisted research report prepared for Vladimir Reshetnikov,
+28 September 2026; archived in \cite{repo}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/458ccfb80b9940220819091da107e82bb970dcca/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution}.
+
+\bibitem{gaussian}
+\emph{Gaussian Confounding and Sharp Recovery of Uniform Convolution Factors:
+Shifted power sums, minimax estimation, and detection above a Fabius--Rvachev
+background}, AI-assisted research report prepared for Vladimir Reshetnikov,
+29 September 2026; archived in \cite{repo}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/458ccfb80b9940220819091da107e82bb970dcca/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Gaussian_Confounding_Sharp_Recovery_Uniform_Factors}.
+
+\bibitem{recovering}
+\emph{Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
+Instability Near the Fabius--Rvachev Law}, AI-assisted research report,
+archived in \cite{repo}, September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/458ccfb80b9940220819091da107e82bb970dcca/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Recovering_Uniform_Factors_Fabius_Rvachev}.
+
+\bibitem{native}
+\emph{Fabius--Rvachev New Frontiers}, representation-frontier package,
+\emph{Corpus audit and nonduplication boundary}, inspected in \cite{repo}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/458ccfb80b9940220819091da107e82bb970dcca/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Fabius_Rvachev_New_Frontiers-2/CORPUS_AUDIT.md}.
+
+\bibitem{billey}
+Sara C. Billey and Joshua P. Swanson,
+\emph{The metric space of limit laws for $q$-hook formulas},
+arXiv:2010.12701, 2020; version 2, 24 August 2023.
+\url{https://arxiv.org/abs/2010.12701v2}.
+
+\bibitem{christoffel}
+Edouard Pauwels, Mihai Putinar, and Jean-Bernard Lasserre,
+\emph{Data analysis from empirical moments and the Christoffel function},
+arXiv:1810.08480, 2018; version 2, 10 January 2020.
+\url{https://arxiv.org/abs/1810.08480v2}.
+
+\bibitem{hausdorff}
+Daniel Gerth, Bernd Hofmann, Christopher Hofmann, and Stefan Kindermann,
+\emph{The Hausdorff Moment Problem in the light of ill-posedness of type I},
+arXiv:2104.06029, 2021.
+\url{https://arxiv.org/abs/2104.06029}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 4.19: Maclaurin Series and Laurent Series},
+especially Eq.~4.19.7; accessed 29 September 2026.
+\url{https://dlmf.nist.gov/4.19}.
+
+\bibitem{dlmfq}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 18.27: $q$-Hahn Class}, especially the little $q$-Jacobi
+orthogonality in Section 18.27(iv); accessed 29 September 2026.
+\url{https://dlmf.nist.gov/18.27}.
+\end{thebibliography}
+\end{document}

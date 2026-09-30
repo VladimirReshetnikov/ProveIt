@@ -111,6 +111,23 @@ explicit linear cusp `(b−1)π s tan(πs/2)|c|` (`s = 2q`).  `q ≤ 1/4` and
 nonzero phases are not settled.  Unreviewed; its numerics are
 diagnostics, not certificates; no Lean statement.
 
+## Subcritical pressure at the atomic phase (arrival, 2026-09-29)
+
+[`Thue_Morse_Subcritical_Pressure/`](Thue_Morse_Subcritical_Pressure/) holds
+*Localized Spectral Response and the Full Subcritical Pressure Law*
+(20-page A4 PDF, 1,473-line source, an mpmath/NumPy/SciPy diagnostic
+program), filed on 2026-09-29 by a quick archival intake.  It takes up the
+subcritical interval left open by the critical pressure article above:
+for every `0 < s < 1` (every `0 < q < 1/2` in the binary convention
+`q = s/2`) the pressure has the linear cusp
+`(b−1)π s tan(πs/2)|c|` at the atomic phase, with remainder
+`O(|c|^{1+s−α})` for every `0 < α < s`; when the mask zeros move
+independently the cusp is the polyhedral `π s tan(πs/2)‖ε‖₁`.  The key is
+an `O(|c|)` bound for the perturbation paired with the atomic left
+eigenfunctional.  Nonzero phases and uniformity at `s → 0, 1` are not
+settled.  Unreviewed; its numerics are diagnostics, not certificates; no
+Lean statement.
+
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities
