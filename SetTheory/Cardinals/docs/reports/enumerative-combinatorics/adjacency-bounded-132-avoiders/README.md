@@ -1,8 +1,8 @@
 # Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations
 
-**Strict monotonicity of the growth constants, the exact constant 2 log π in their approach to 4, the largest-jump law near the boundary m = n − d, and the macroscopic jump law for m proportional to n**
+**Strict monotonicity of the growth constants, the exact constant 2 log π in their approach to 4, the largest-jump law near the boundary m = n − d, the macroscopic jump law for m proportional to n, and the critical moments of the largest jump**
 
-This is a research report in four parts. Part I is the original report of
+This is a research report in five parts. Part I is the original report of
 19 September 2026. Part II was added on 28 September 2026 in batch 38 of
 ProveIt's incoming-report intake, from a later manuscript that answers the
 question Part I left open: whether the centered remainder `E_m` converges.
@@ -11,16 +11,19 @@ that treats the joint regime next to the trivial bound, `m = n − d`, through
 the largest adjacent jump of a random 132-avoider. Part IV was added on the
 same day in batch 52, merged from two further manuscripts, written
 independently of each other, that answer Part III's questions on the bulk
-profile and the exact moment constants (its Sections 32.1 and 32.2). All five
-were prepared for Vladimir Reshetnikov and are AI-assisted.
+profile and the exact moment constants (its Sections 32.1 and 32.2). Part V
+was added on 30 September 2026 in batch 64, from a sixth manuscript that
+answers Part IV's question on the centered half-moment and the subcritical
+moment corrections (its Section 47.6). All six are AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 19 Sep 2026 (*Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations*) | `strict_growth_132.zip` | (none) | unpacked `a3fe9660e`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–9 (pp. 8–22) and Appendices A–C (pp. 109–110) |
-| 02 | batch 38, manuscript 04 (*Closing the Catalan growth-constant gap: Endpoint renewal comparison for adjacency-bounded 132-avoiding permutations*, 28 Sep 2026, 23-page PDF as delivered) | `Closing_Catalan_Growth_Gap` (inner `Adjacency_Growth_Constant/`, main file `article.tex`) | `6c9175a54` | `938b2f74e` (prefix `02-centered-remainder-`) | Part II: Sections 10–20 (pp. 23–43) |
-| 03 | batch 43, manuscript 02 (*The Largest Jump Is Almost Maximal: An algebraic boundary law for random 132-avoiding permutations*, 29 Sep 2026, 26-page US Letter PDF as delivered) | `ProveIt_Largest_Jump_Research.zip` (inner `ProveIt_Largest_Jump/`, main file `article.tex`), arrived in `06bcc37a8` | `8d936ee23` | `faef2ed2a` (prefix `03-largest-jump-`) | Part III: Sections 21–36 (pp. 44–68) |
-| 04 | batch 52, manuscript 10 (*The Macroscopic Jump Law: Exact rare-event profiles and moment constants for random 132-avoiding permutations*, 29 Sep 2026, 23-page US Letter PDF as delivered); the base of Part IV. It also read the standalone Part III source `article(20260929-161704).tex` from Vladimir's library | `ProveIt_Macroscopic_Jump.zip` (inner `ProveIt_Macroscopic_Jump/`, main file `article.tex`), arrived in `458ccfb80` | `1ee53d57d` | `a701d9098` (prefix `04-macroscopic-jump-`) | Part IV: Sections 37–50 (pp. 69–108), merged with 05 |
+| 01 (original) | Cardinals-collection report, 19 Sep 2026 (*Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations*) | `strict_growth_132.zip` | (none) | unpacked `a3fe9660e`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–9 (pp. 10–24) and Appendices A–C (pp. 139–140) |
+| 02 | batch 38, manuscript 04 (*Closing the Catalan growth-constant gap: Endpoint renewal comparison for adjacency-bounded 132-avoiding permutations*, 28 Sep 2026, 23-page PDF as delivered) | `Closing_Catalan_Growth_Gap` (inner `Adjacency_Growth_Constant/`, main file `article.tex`) | `6c9175a54` | `938b2f74e` (prefix `02-centered-remainder-`) | Part II: Sections 10–20 (pp. 25–45) |
+| 03 | batch 43, manuscript 02 (*The Largest Jump Is Almost Maximal: An algebraic boundary law for random 132-avoiding permutations*, 29 Sep 2026, 26-page US Letter PDF as delivered) | `ProveIt_Largest_Jump_Research.zip` (inner `ProveIt_Largest_Jump/`, main file `article.tex`), arrived in `06bcc37a8` | `8d936ee23` | `faef2ed2a` (prefix `03-largest-jump-`) | Part III: Sections 21–36 (pp. 46–70) |
+| 04 | batch 52, manuscript 10 (*The Macroscopic Jump Law: Exact rare-event profiles and moment constants for random 132-avoiding permutations*, 29 Sep 2026, 23-page US Letter PDF as delivered); the base of Part IV. It also read the standalone Part III source `article(20260929-161704).tex` from Vladimir's library | `ProveIt_Macroscopic_Jump.zip` (inner `ProveIt_Macroscopic_Jump/`, main file `article.tex`), arrived in `458ccfb80` | `1ee53d57d` | `a701d9098` (prefix `04-macroscopic-jump-`) | Part IV: Sections 37–50 (pp. 71–110), merged with 05 |
 | 05 | batch 52, manuscript 11 (*Macroscopic Deficits of the Largest Jump: A rare-event law and exact moment constants for 132-avoiding permutations*, 29 Sep 2026, 24-page US Letter PDF as delivered) | `ProveIt_Macroscopic_Jump_Research.zip` (inner directory also `ProveIt_Macroscopic_Jump/`, main file `article.tex`), arrived in `11e1e9001` | `1ee53d57d` | `a701d9098` (prefix `05-macroscopic-deficits-`) | Part IV (as 04), in particular Sections 40.4–40.5, 42, 43.3 and 46.2–46.5 |
+| 06 | batch 64, manuscript 06 (*Every Logarithmic Scale Contributes: Critical moment crossover and endpoint corrections for the largest jump of a 132-avoiding permutation*, 30 Sep 2026, 27-page US Letter PDF as delivered) | `ProveIt_Critical_Jump_Moments.zip` (inner `Critical_Jump_Moments/`, main file `article.tex`), arrived in `7747fcfdd` | `cb1646dc4` | `3025c15df` (prefix `06-critical-moments-`) | Part V: Sections 51–66 (pp. 111–138) |
 
 The pin `6c9175a54` is ProveIt commit
 `6c9175a54bcaad3bfc2d416257d2b7d3dff2c1e0`; the manuscript quotes the blob
@@ -67,11 +70,29 @@ prints each shared result once with both sources credited, and keeps the
 genuinely different proofs as second routes. Section 50.3 lists where the
 merge had to choose.
 
+The pin `cb1646dc4` is ProveIt commit
+`cb1646dc442724f8e298cf259195b6c308367d80`, which manuscript 06 resolved
+through GitHub's main branch on 30 September 2026. It records the blobs
+`9b6865915b…` of this `README.md`, `c673f447a2…` of `article.tex` and
+`f0248e0d61…` of `code/05-macroscopic-deficits-model.py`; all three were
+unchanged at the placement commit `3025c15df`, so Part V's statements about
+Parts I–IV refer to the text printed here. The manuscript, its PDF and its
+delivery README are not shipped; they survive in the arrival commit
+`7747fcfdd`. Its `SHA256SUMS` ledger was verified at placement (21/21) and
+retired. Part V prints every result, proof, example, remark, limitation and
+question of the manuscript. Its three inputs (Part III's limiting law and
+total-variation bound, Part IV's profile) and the recurrence of its checks
+(Parts I, III and IV) are printed again as its interface, each credited;
+Section 66.2 lists where the merge had to choose.
+
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The exact
 certificates and finite checks verify finite algebraic statements; they are
 not a proof of the all-`m`, all-`n` or asymptotic theorems. Part IV's Monte
-Carlo table and figure are illustrations only.
+Carlo table and figure are illustrations only. Part V's theorems apply the
+abstract transfer theorems it proves to three results of Parts III and IV, so
+they have exactly the status of those parts; its printed decimals are
+high-precision numerics, not interval certificates.
 
 ## Results
 
@@ -195,6 +216,49 @@ This answers Part III's Section 32.1 completely and Section 32.2 for
 research direction "Joint growth of length and adjacency bound" for
 `1/2 < m/n < 1`. It shows that the equivalent `3/sqrt(π(1 − θ)n)` which
 Part III declined to assert (Remark 29.3) is false for every `0 < θ < 1`.
+[30 September 2026, batch 64: the critical centered half-moment is answered
+by Part V.]
+
+**Part V** (manuscript 06 of batch 64). From three results of Parts III and
+IV — the limiting law with `P(D > x) = (3/sqrt(π)) x^(-1/2) + O(x^(-3/2))`,
+the uniform bound `sup_x |P(D_n > x) − P(D > x)| = O(n^(-1/2))` implied by
+Part III's total-variation theorem, and Part IV's pointwise profile `Ψ` — it
+proves:
+
+1. **The centered half-moment converges** (Theorem 53.1):
+   `E sqrt(D_n) = (3/(2 sqrt(π))) log n + c_⋆ + o(1)`, where
+   `c_⋆ = c_mic + c_mac`, `c_mic = 1 + (1/2) ∫_1^∞ x^(-1/2) (P(D > x) − (3/sqrt(π)) x^(-1/2)) dx`
+   (microscopic) and `c_mac = (3/sqrt(π)) (log 2 − log(1 + sqrt(2)) + sqrt(2) − 2)`
+   (macroscopic); numerically `c_⋆ ≈ −0.942121413999402`,
+   `c_mic ≈ 0.367948538497933`, `c_mac ≈ −1.310069952497335`. A Laplace
+   integral of `1 − G(e^(-t))` gives `c_mic` without truncation
+   (Proposition 60.1).
+2. **Every subcritical moment has an explicit first correction** (Theorem 53.2):
+   for fixed `0 < p < 1/2`, `E D_n^p = E D^p + 𝔪(p) n^(p − 1/2) + o(n^(p − 1/2))`,
+   where `𝔪(p) = (3/(2 sqrt(π))) B_{1/2}(p − 1/2, −1/2)` is a regularized
+   incomplete beta function and `𝔪(p) < 0`; e.g. `𝔪(1/4) ≈ −2.5755`. For
+   `p > 1/2` the same function is Part IV's constant, `𝔪(p) = 𝔪_p`
+   (Remark 55.3), and its finite part at the pole `p = 1/2` is
+   `B_1 = 3/sqrt(π) + c_mac ≈ 0.382498798`.
+3. **A two-term crossover** (Theorem 53.3): for `p = 1/2 + λ/log n`,
+   `E D_n^p = (3/(2 sqrt(π))) log n · (e^λ − 1)/λ + B_0 + B_1 e^λ + o(1)`
+   locally uniformly in complex `λ`, with `B_0 = c_mic − 3/sqrt(π) ≈ −1.3246`.
+4. **Every logarithmic scale contributes** (Theorem 53.4): under the
+   `sqrt(D_n)`-weighted measure, `log D_n/log n` tends to Uniform[0, 1], and
+   the weighted measure minus `(3/(2 sqrt(π))) log n` times Lebesgue measure
+   converges to `B_0 δ_0 + B_1 δ_1` in the dual bounded-Lipschitz norm; tilted
+   laws and all logarithm-weighted critical moments follow (Section 58).
+5. **An abstract transfer theory** (Sections 54–59) for any `X_n` in `[1, n]`
+   with a power tail, a uniform `O(n^(-α))` survival error and a pointwise
+   profile; a counterexample (Proposition 59.1) shows the uniform error cannot
+   be dropped, and a stability theorem (Proposition 59.2) allows
+   `o(n^(-α))` perturbations.
+6. Exact distributions of `D_n` for `n ≤ 64`, finite checks, and ten research
+   questions (Section 63).
+
+This answers Part IV's Section 47.6 (both questions) and the critical half of
+Part III's Section 32.2, and sharpens Part III's `E sqrt(D_n) = … + O(1)` and
+`E D_n^p = E D^p + O(n^(p − 1/2))` (Theorem 22.3).
 
 ## Not claimed
 
@@ -232,6 +296,8 @@ Part III declined to assert (Remark 29.3) is false for every `0 < θ < 1`.
   irreducibility of the eliminated polynomial, or anything about the
   fixed-`m` component ordering. [29 September 2026, batch 52: Part IV proves
   the exact supercritical constants (Theorem 38.3); every other item stands.]
+  [30 September 2026, batch 64: Part V proves the convergence of
+  `E sqrt(D_n) − (3/(2 sqrt(π))) log n`, to `c_⋆ ≈ −0.9421` (Theorem 53.1).]
 - **Part IV does not claim** an asymptotic equivalent for
   `a_n^(⌊θn⌋)/C_n` when `0 < θ ≤ 1/2` (only `o(n^(-1/2))` and polynomial
   lower bounds; the conjectured hierarchy `P(M_n ≤ θn) ~ Ω_r(θ) n^(-r/2)` is a
@@ -245,7 +311,22 @@ Part III declined to assert (Remark 29.3) is false for every `0 < θ < 1`.
   word-cost expectations, anything about the fixed-`m` component ordering, or
   any new Lean or Rocq declaration. The identification of manuscript 10's three
   channels with manuscript 11's three modes (Section 43.4) is the merge's
-  reading, not a proved joint limit.
+  reading, not a proved joint limit. [30 September 2026, batch 64: Part V
+  proves the convergence of the centered half-moment and the first correction
+  to `E D_n^p` for `0 < p < 1/2` (Theorems 53.1 and 53.2); every other item
+  stands.]
+- **Part V does not claim** a local limit for individual lattice masses, the
+  exact total-variation constant, the transition at `m = n/2`, a rate for the
+  centered half-moment, any correction theorem for `p ≤ 0` (the coefficient
+  `𝔪(p)` is continued analytically below `1/2`, but a continued coefficient
+  does not continue an asymptotic theorem), an `o(1)`-accurate second-order
+  constant for fixed supercritical `p`, uniformity in the exponent window as
+  `|λ| → ∞`, total-variation convergence of the discrete biased laws to their
+  continuous limit, a positive-measure meaning of the negative endpoint
+  coefficient `B_0`, an elementary closed form, rationality or transcendence
+  of `c_mic`, or a certified decimal enclosure of any constant. Its
+  permutation theorems are exactly as reliable as the three inputs from
+  Parts III and IV; its abstract theorems do not depend on them.
 - Part II's scalar polynomial is not a denominator of `A_m`,
   `det(I - W_V) ≠ 1 - K_m` in general, and the coefficientwise majorant
   `A_m ⪯ 1/(1 - K_m)` is **false** (at `m = 2`, `n = 3`: 5 against 3). The
@@ -260,7 +341,7 @@ Part III declined to assert (Remark 29.3) is false for every `0 < θ < 1`.
   corrections (the first, `(8z - 12)/log m`, is about 0.98 at `m = 10^6`), but no
   computation in the range distinguishes `2 log π` from nearby constants; the
   value rests on the proofs alone (Remark 17.1).
-- Floating-point tables and all ten figures are illustrations, not interval
+- Floating-point tables and all thirteen figures are illustrations, not interval
   certificates; only Part I's Perron certificates and Part II's Table 7 are
   rigorous (outward-rounded from exact fractions). Part III's probabilities
   are exact fractions (Table 12 shows rounded decimals of them); its finite
@@ -271,11 +352,17 @@ Part III declined to assert (Remark 29.3) is false for every `0 < θ < 1`.
   slowly (the first column of Table 15 is not even monotone); Table 16 and
   Figure 7 are pseudorandom Monte Carlo illustrations whose error bars
   measure sampling error, not finite-size bias; no constant of Part IV was
+  fitted to data. Part V's constants (Table 20) are 40- and 70-digit
+  quadratures that agree to more than 29 decimals, not enclosures; its
+  Table 21 and Figures 12–13 are exact finite-`n` values for `n ≤ 64`, far
+  from the limits (the biased mean scale even moves away from `1/2`), and
+  Figure 11 plots the exact limiting densities; no constant of Part V was
   fitted to data.
 - No priority. All literature checks were targeted (Part I on
   19 September 2026, Part II on 28 September 2026, Parts III and IV on
-  29 September 2026: the arXiv v1 records of Nadler and of Mayama–Akita, for
-  Part III also the records of two Janson papers, and for Parts III and IV
+  29 September 2026, Part V on 30 September 2026: the arXiv v1 records of
+  Nadler and of Mayama–Akita, for
+  Part III also the records of two Janson papers, and for Parts III–V
   targeted searches for largest adjacent differences in 132-avoiders; the
   Flajolet–Odlyzko PDF was not retrieved); none is an exhaustive novelty
   certification or external peer review.
@@ -307,6 +394,20 @@ Part III: Tables 11–13, Figures 5–6; Part IV: Tables 14–17, Figures 7–10
 and equations are numbered consecutively through all parts. Part I's
 appendices come after Part IV and contain no numbered equations, tables or
 figures.
+
+Part V added **116** labels, all with the prefix `cjm:` ("critical jump
+moments"), its own prefix as for Parts II–IV. The manuscript's 102 labels were
+prefixed (its `eq:h` and `sec:computation` would otherwise collide with
+Part I's bare labels); the merge added eight to new headings, tables and a
+remark of Part V, and six to the unlabelled headings of Part IV's research
+questions 47.2, 47.4, 47.5, 47.7, 47.8 and 47.13 (`cjm:sec:mj-half`,
+`cjm:sec:mj-local`, `cjm:sec:mj-tv`, `cjm:sec:mj-second`,
+`cjm:sec:mj-geometric`, `cjm:sec:mj-formal`) so that Part V can cite them.
+Total: **549**. No label was renamed or removed, and in the batch-64 build
+every one of the 433 earlier labels keeps its number (compared in the `.aux`
+files of the committed and the new build); their page numbers moved by two,
+because the contents grew to eight pages. Part V is Sections 51–66,
+Tables 18–21 and Figures 11–13, and comes before Part I's appendices.
 
 ## Notation
 
@@ -373,14 +474,39 @@ manuscripts' names and the tempting false reading. Watch in particular for:
 - No normalization changed. Manuscript 10 tests `D_n > un`, manuscript 11
   `D_n ≥ ⌈xn⌉`; the limits agree.
 
+Part V keeps `D_n`, `M_n`, `D`, `G`, `s`, `r`, `N_(N,f)`, `Ψ`, `ρ`, `u` and
+`𝒩_s(u)` from Parts III–IV, and renames every manuscript symbol that clashes
+with the earlier parts. Table 19 (Section 51.5) lists them with the
+tempting false reading. Watch in particular for:
+
+- The coefficient function is `𝔪(p)` (the manuscript's `𝒦(p)`), because for
+  `p > 1/2` it **is** Part IV's `𝔪_p` (Remark 55.3). For `0 < p < 1/2` it is
+  **not** a leading constant: it is the negative coefficient of the correction
+  `n^(p − 1/2)`, and the leading term is `E D^p`. A calligraphic `𝒦` would
+  clash with Part III's clipping series and a Greek `κ` with its quantiles
+  `κ_(1−ε)`.
+- The microscopic and macroscopic constants are `c_mic`, `c_mac` (the
+  manuscript's `h`, `j`; Part III's `h` is the cutoff `⌊n/4⌋`), the tail
+  coefficient `3/sqrt(π)` is `𝔞` (the manuscript's `a`; `a_n^(m)` is a count),
+  and Lebesgue measure on `[0, 1]` is `Leb` (the manuscript's `m`, the
+  adjacency bound here).
+- `Φ(λ) → 𝓜(λ) = (e^λ − 1)/λ`, `T_n → ϑ_n = log D_n/log n` (not a cost `T`),
+  `Q_n^λ → P_n^λ, E_n^λ`, `μ_λ → ϖ_λ`, `S, S_n → 𝒮, 𝒮_n` (survival
+  functions; Part IV's `S` is an endpoint map), `r(x) → ϱ(x)`, `b → 𝔟`,
+  `H, J, J_n → 𝓗, 𝓙, 𝓙_n` (Part IV's `J_n` is the first deficiency),
+  `𝒜 → 𝓡`, `c(p) → 𝔠(p)`, the constants `C → K`, and in the recurrence
+  `h(n,u), c_k(u), T_m(n,u,v), A_j → 𝒩_n(u), c_(k,u), T^(m)_(u,v)(n), 𝒢_j`,
+  Part IV's names for the same counts. The abstract exponents `α`, `β` are
+  not Part I's `α_m` or Part II's `β_m`. No normalization changed.
+
 ## Files
 
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 111 pages (title page, contents pp. 2–7,
-                                                     Part I pp. 8–22, Part II pp. 23–43, Part III pp. 44–68,
-                                                     Part IV pp. 69–108, Part I's appendices pp. 109–110,
-                                                     bibliography pp. 110–111)
+article.pdf                                          the compiled report, 141 pages (title page, contents pp. 2–9,
+                                                     Part I pp. 10–24, Part II pp. 25–45, Part III pp. 46–70,
+                                                     Part IV pp. 71–110, Part V pp. 111–138, Part I's appendices
+                                                     pp. 139–140, bibliography pp. 140–141)
 README.md                                            this guide
 build.sh, build.ps1                                  Part I's three-pass pdfLaTeX scripts (build in place; see below)
 requirements.txt                                     Part I's pins: numpy 2.3.5, scipy 1.17.0, sympy 1.14.0, matplotlib 3.10.8
@@ -460,6 +586,24 @@ data/05-macroscopic-deficits-package_audit.json      Part IV (ms. 11): audit of 
 05-macroscopic-deficits-SOURCES.md                   Part IV (ms. 11): its source and novelty ledger
 figures/05-macroscopic-deficits-bulk_profile.{pdf,png}   Part IV (ms. 11): Figure 9 (PDF regenerated, PNG as delivered)
 figures/05-macroscopic-deficits-mean_constant.{pdf,png}  Part IV (ms. 11): Figure 10 (PDF regenerated, PNG as delivered)
+code/06-critical-moments-exact_counts.py             Part V: exact laws of D_n, exhaustive comparisons, PGF coefficients (standard library)
+code/06-critical-moments-verify_symbolic.py          Part V: five exact algebraic identity checks (SymPy)
+code/06-critical-moments-numerics.py                 Part V: constants by stable quadrature, regressions, finite moments (mpmath)
+code/06-critical-moments-figures.py                  Part V: Figures 11–13 (NumPy, Matplotlib)
+code/06-critical-moments-build.sh                    Part V: the manuscript's three-pass pdfLaTeX build (delivered layout)
+data/06-critical-moments-exact_checks.json           Part V: recorded finite-check run (PASS; 625, 23,713, 784, 129)
+data/06-critical-moments-exact_distributions.json    Part V: exact integer laws of D_n, n = 1..64 (index d = 0 holds 0)
+data/06-critical-moments-pgf_coefficients.json       Part V: P(D = k), k = 0..128, as exact fractions
+data/06-critical-moments-symbolic_checks.json        Part V: recorded symbolic run (PASS, five identities)
+data/06-critical-moments-constants.json              Part V: 40/70-digit constants, 𝔪(p) values, regressions (not certified)
+data/06-critical-moments-finite_moments.csv          Part V: finite-size moments for n = 8, 16, 32, 64 (Table 21; CRLF)
+data/06-critical-moments-pdf_quality.json            Part V: audit of the delivered (unshipped) 27-page PDF
+data/06-critical-moments-requirements.txt            Part V: pins mpmath 1.3.0, sympy 1.14.0, numpy 2.3.5, matplotlib 3.10.8
+06-critical-moments-SOURCES.md                       Part V: the manuscript's pin, inspected files and literature ledger
+06-critical-moments-PROOF_STATUS.md                  Part V: its proof-status and non-claims ledger
+figures/06-critical-moments-tilted_densities.pdf     Part V: Figure 11 (regenerated)
+figures/06-critical-moments-centered_moment.pdf      Part V: Figure 12 (regenerated)
+figures/06-critical-moments-biased_distribution.pdf  Part V: Figure 13 (regenerated)
 ```
 
 The sixteen `02-centered-remainder-` code and data files were staged in the
@@ -488,6 +632,17 @@ not shipped. In the write phase the four figure **PDFs** were regenerated
 (see "Discrepancies" below), so they are no longer the delivered bytes; the
 four PNG previews, the code and the data are unchanged.
 
+The eighteen `06-critical-moments-` files were staged in the placement commit
+`3025c15df`, byte-identical to the delivery (the delivered root `build.sh` is
+`code/06-critical-moments-build.sh`, and the root `requirements.txt` is under
+`data/`). One of them, `data/06-critical-moments-finite_moments.csv`, is
+all-CRLF as delivered (5 lines) and is protected by a `-text` line in
+`SetTheory/Cardinals/.gitattributes`; no other Part V text file contains a CR
+byte.
+The delivered `SHA256SUMS`, manuscript, README and PDF are not shipped. In the
+write phase the three figure PDFs were regenerated (see "Discrepancies"
+below); the code and data are unchanged.
+
 ## Build the article
 
 ```sh
@@ -506,7 +661,7 @@ text as well. No font files are included. The batch-43 build (69 pages,
 29 September 2026) is equally clean: the same two font warnings and nothing
 else. `code/03-largest-jump-build.sh` is the manuscript's own script; it
 builds an `article.tex` in its own directory and fails in `code/`. The
-batch-52 build, which is the shipped `article.pdf` (111 pages,
+batch-52 build (111 pages,
 29 September 2026, `latexmk` with pdfTeX 1.40.29 under MiKTeX 26.2), is
 equally clean: 0 errors, 0 undefined references or
 citations, 0 multiply defined labels, no duplicate destinations, no overfull
@@ -518,6 +673,21 @@ unchanged Part II and Part III figure PDFs. `code/04-macroscopic-jump-build.sh`
 and `code/05-macroscopic-deficits-build.sh` are the manuscripts' own scripts;
 like Part III's, they change to their own directory, look for an
 `article.tex` there and fail in `code/`.
+
+The batch-64 build, which is the shipped `article.pdf` (141 pages,
+30 September 2026, `latexmk` with pdfTeX 1.40.29 under MiKTeX 26.2), is
+equally clean:
+0 errors, 0 undefined references or citations, 0 multiply defined labels, no
+duplicate destinations, no overfull or underfull boxes, and the same two font
+warnings as a build of the committed batch-52 text. To keep the title page on
+one page after the abstract's batch-64 paragraph, the batch-64 edit added
+`\enlargethispage{3\baselineskip}` to it, which lowers the companion-archive
+line into the bottom margin; nothing else on the title page changed. The
+heading of Section 56 is typeset as text ("1/log n"), not math: in math it
+loaded a sans-serif font at a size MiKTeX lacks and added a third font
+warning. Part V's three figures embed TrueType fonts.
+`code/06-critical-moments-build.sh` is the manuscript's own script; it changes
+to its own directory, looks for an `article.tex` there and fails in `code/`.
 
 ## Rerun the checks
 
@@ -691,6 +861,67 @@ exact cost tail of Lemma 40.2 for `h ≤ 29`; the recurrence (Section 44.2), the
 large-`p` asymptotic and the equality of both integral forms at `p = 3/2, 3`
 were checked numerically.
 
+**Part V.** Its scripts use the delivered names and write into the delivered
+`data/` and `figures/`, **overwriting their own recorded outputs** there.
+Run in place here they misbehave: `06-critical-moments-exact_counts.py` would
+write new unprefixed `data/exact_distributions.json`,
+`data/pgf_coefficients.json` and `data/exact_checks.json` into this
+directory; `06-critical-moments-verify_symbolic.py` would write a new
+`data/symbolic_checks.json`; `06-critical-moments-numerics.py` reads
+`data/pgf_coefficients.json` and `data/exact_distributions.json`, which do
+not exist here, and would otherwise write `data/constants.json` and
+`data/finite_moments.csv`; `06-critical-moments-figures.py` reads
+`data/constants.json`; and the build script finds no `article.tex` in
+`code/`. Restore the delivered layout in a scratch copy (Git Bash or another
+POSIX shell, from this directory):
+
+```sh
+W=/path/to/scratch
+k=06-critical-moments
+mkdir -p "$W/$k/code" "$W/$k/data" "$W/$k/figures"
+for d in code data figures; do
+  for f in $d/$k-*; do cp "$f" "$W/$k/$d/${f#$d/$k-}"; done
+done
+mv "$W/$k/code/build.sh" "$W/$k/"
+mv "$W/$k/data/requirements.txt" "$W/$k/"
+cd "$W/$k"
+py code/exact_counts.py --max-n 64 --pgf-terms 128
+                                   # standard library, no -O; rewrites exact_distributions.json,
+                                   #   pgf_coefficients.json, exact_checks.json
+uv run --no-project --with sympy==1.14.0 python code/verify_symbolic.py
+                                   # rewrites data/symbolic_checks.json
+uv run --no-project --with mpmath==1.3.0 python code/numerics.py
+                                   # rewrites data/constants.json and data/finite_moments.csv
+printf 'pdf.fonttype: 42\n' > matplotlibrc   # TrueType instead of Type 3 fonts
+uv run --no-project --with numpy==2.3.5 --with matplotlib==3.10.8 python code/figures.py
+                                   # writes figures/{tilted_densities,centered_moment,biased_distribution}.pdf
+```
+
+These were run this way on 30 September 2026 (`py` was Python 3.14.4 and the
+`uv` runs used Python 3.13.5, with SymPy 1.14.0, mpmath 1.3.0, NumPy 2.3.5 and
+Matplotlib 3.10.8; about 18 seconds in all). The
+finite checks passed with the recorded counts (625 definition-checked
+avoiders of sizes 1–7, 23,713 generated avoiders of sizes 1–10, 784
+endpoint-state equalities, 129 PGF coefficients), the symbolic script passed
+its five identities, and `numerics.py` reported "PASS: numerical regression
+only, not certified intervals". Every regenerated JSON file equals the
+shipped one apart from line endings (and `exact_checks.json` also in its
+`elapsed_seconds`); `finite_moments.csv` is byte-identical to the shipped
+file. **CRLF hazard:** on Windows, Python writes the JSON files with CRLF line
+endings, whereas the shipped JSON files are LF; the CSV writer uses
+`newline=''` with the `csv` module's `\r\n` terminator, so it writes CRLF on
+every platform, which is why the delivered CSV is CRLF and why it carries a
+`-text` line in `SetTheory/Cardinals/.gitattributes`. Do not copy regenerated
+outputs back over the shipped files; compare them with `diff
+--strip-trailing-cr` or after removing CRs. The shipped Part V figure PDFs
+are the figures of this run (see "Discrepancies"); a new run differs from
+them in its PDF metadata. Independently, for this
+write-up, the regularized formula for `𝔪(p)` was evaluated with mpmath at
+`p = 3/4, 1, 3/2, 2, 3` and agreed with Part IV's integral for `𝔪_p` to
+twenty digits; its value `−2.575500874573932` at `p = 1/4`, the finite part
+`B_1 = 0.382498798145934` at the pole, and `c_mac` were recomputed from the
+closed forms.
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** The Part II scripts and records use the delivered paths
@@ -700,7 +931,7 @@ were checked numerically.
 - **Unshipped PDF.** `data/02-centered-remainder-pdf_validation.json` and
   `data/02-centered-remainder-pdf_fonts.txt` describe the manuscript's
   delivered 23-page PDF, which is not shipped; `article.pdf` here is a new
-  build of the merged text (69 pages since batch 43).
+  build of the merged text (141 pages since batch 64).
 - **Duplicates.** Each Part II console capture is byte-identical to the JSON
   it prints, and `data/02-centered-remainder-environment.json` is
   byte-identical to Part I's `data/environment.json` (the same environment).
@@ -788,17 +1019,61 @@ were checked numerically.
   as delivered; Figure 9 plots the ten exact cases of
   `data/05-macroscopic-deficits-bulk_counts.csv`, of which Table 15 prints
   all ten.
+- **Parts I–IV text since batch 64.** The abstract gained a batch-64
+  paragraph and the title page an `\enlargethispage` (see "Build the
+  article"); Part III's research question 32.2, Part IV's scope list
+  (Section 37.3), its paragraph on what neither manuscript claims
+  (Section 38.6), its remark after Proposition 44.1, its research question
+  47.6, its scope table (Table 17) and Part I's Appendix B carry dated
+  pointers to Part V, with their original wording kept; six Part IV question
+  headings gained `cjm:` labels (see "Labels"). Nothing else in Parts I–IV
+  changed.
+- **Part V delivery names.** The Part V scripts use the delivered paths
+  `data/exact_distributions.json`, `data/pgf_coefficients.json`,
+  `data/exact_checks.json`, `data/symbolic_checks.json`,
+  `data/constants.json`, `data/finite_moments.csv` and unprefixed
+  `figures/` names; `code/06-critical-moments-build.sh` expects the
+  manuscript's `article.tex` beside it. `06-critical-moments-SOURCES.md`
+  speaks of `SOURCES.md`, of the manuscript's "Appendix A" (printed as
+  Section 64) and of "Part IV: Theorem 38.1" (still Theorem 38.1 here), and
+  cites "source lines 231–249" of the README at the pin, whose passage is now
+  the "Not claimed" bullets on Parts III and IV above (with batch-64 notes).
+  `06-critical-moments-PROOF_STATUS.md` names `SOURCES.md` and writes the
+  constants as `h`, `j`, `a`, `B0`, `B1`, `c_star` (Part V's `c_mic`,
+  `c_mac`, `𝔞`, `B_0`, `B_1`, `c_⋆`); the data files use the same names
+  (`h`, `j`, `A` for Part V's `𝓡`, `K_values` for `𝔪(p)`). The recipe above
+  recreates the delivered layout; the article quotes the shipped names.
+- **Part V's unshipped PDF and wording.** `data/06-critical-moments-pdf_quality.json`
+  audits the delivered 27-page US Letter PDF, which is not shipped;
+  `article.pdf` here is a new A4 build of the merged text. The delivered
+  title page, PDF metadata and README describe the manuscript as prepared for
+  Vladimir Reshetnikov; the article records it only as an AI-assisted
+  manuscript, in its provenance section. The delivered README asks for
+  Python 3.11 or later and writes `python`; the recipe above uses `py` and
+  `uv`.
+- **Part V figures.** The delivered figure PDFs embedded Type 3 fonts
+  (DejaVu Sans, and STIX in `centered_moment.pdf`). In the write phase they
+  were regenerated by the shipped `figures.py`, unchanged, on a copy of the
+  delivered layout with Matplotlib 3.10.8, NumPy 2.3.5 and
+  `pdf.fonttype: 42` (the recipe above); they now embed TrueType (CID) fonts
+  and plot the shipped data, and are therefore not byte-identical to the
+  delivery. Their axis labels still write `t = log D_n/log n` and the
+  critical moment as `E sqrt(D_n) − (3/(2 sqrt(π))) log n`; the article's
+  symbol for `t` is `ϑ_n`, and the captions say so.
 
 ## Relation to neighbouring reports and to the formal project
 
 No other report in the research-report collection treats these permutations,
-and none of Parts II–IV names a neighbouring report, so no reciprocal note
-was written; Part IV's dated pointers are all inside this report.
+and none of Parts II–V names a neighbouring report, so no reciprocal note
+was written; the dated pointers of Parts IV and V are all inside this report.
+Part V is a probabilistic moment-transfer argument, not transseries work;
+the transseries volume's README already sent Part IV's two manuscripts here
+on the same ground.
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
-declaration anywhere in ProveIt formalizes any statement of Parts I–IV (a
+declaration anywhere in ProveIt formalizes any statement of Parts I–V (a
 search of the repository's tracked `.lean` and `.v` files for 132-avoidance,
-adjacency bounds or largest jumps finds none, re-run on 29 September 2026).
+adjacency bounds or largest jumps finds none, re-run on 30 September 2026).
 Section 19.9 records the formalization targets manuscript 04 of batch 38
 proposes (the renewal polynomial identity, the supersolution argument, the
 skew-cut injection, the uniform tail inequality), Section 32.9 those of
@@ -809,7 +1084,10 @@ inequality), and Section 47.13 those of batch 52's manuscripts 10 and 11
 stopping-word injection, then the tail envelope, the Riemann-sum source
 theorem and the contraction argument; the threshold parser, the word
 identities, the convolution tail estimate and the fixed-word acceptance
-lemma); none has been started.
+lemma), and Section 63.10 those of batch 64's manuscript 06 (the abstract
+transfer theorem for real exponents on a compact interval, then the critical
+half-moment and the bounded-Lipschitz estimate, with the three inputs from
+Parts III and IV as separate interfaces); none has been started.
 
 ## Sources and attribution
 
@@ -839,6 +1117,12 @@ its rare-scale cost tail and the fixed-word endpoint acceptance calculation
 with the universal outer-word law; and, from both, the bulk profile and the
 supercritical moment constants. Manuscript 11's exact counts use the
 Mayama–Akita endpoint recurrence (Part I's Proposition 2.1), credited as
+prior work. Part V's are the locally uniform complex-moment transfer theorem
+under a power tail, a uniform survival error and a pointwise profile; its
+critical, subcritical, exponent-window and signed two-endpoint consequences;
+the evaluation of the critical constants and the Laplace-integral formula for
+the microscopic one; the intermediate-scale counterexample and the stability
+theorem. Its exact checks also use the Mayama–Akita recurrence, credited as
 prior work.
 
 Part III also cites, as background only, Svante Janson, *Simply generated

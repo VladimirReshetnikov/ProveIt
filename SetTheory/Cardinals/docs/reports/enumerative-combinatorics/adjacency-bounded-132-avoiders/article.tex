@@ -77,6 +77,15 @@
 % macros are replaced by Part III's \ljP, \ljE, \ljTV, \ljLaw, \ljcost.
 \newcommand{\mjVar}{\operatorname{Var}}
 \newcommand{\mjlen}{\operatorname{len}}
+% Part V (batch 64): the manuscript's \E, \Prob, \TV, \Law are Part III's
+% \ljE, \ljP, \ljTV, \ljLaw; its \dd (with a thin space) is written \,\dd;
+% its h, j, \Lip, \BL, Lebesgue m and \pin under report-local names.
+\newcommand{\cjmic}{c_{\mathrm{mic}}}
+\newcommand{\cjmac}{c_{\mathrm{mac}}}
+\newcommand{\cjLip}{\operatorname{Lip}}
+\newcommand{\cjBL}{\mathrm{BL}}
+\newcommand{\cjLeb}{\mathrm{Leb}}
+\newcommand{\cjsha}{\texttt{cb1646dc442724f8e298cf259195b6c308367d80}}
 \allowdisplaybreaks[2]
 \setlength{\parindent}{1.1em}
 \setlength{\parskip}{.25em}
@@ -89,6 +98,7 @@
 
 \begin{document}
 \thispagestyle{empty}
+\enlargethispage{3\baselineskip}% batch 64: keeps the title page on one page
 \begin{center}
 {\small\sffamily\color{Forest}\bfseries COMBINATORICS\quad /\quad INTEGER SEQUENCES\quad /\quad ASYMPTOTICS}\par
 \vspace{4mm}
@@ -143,6 +153,10 @@ limit in $n$ and $m$ near the boundary only; the bulk regime stays open.
 manuscripts, finds the limit profile of $\sqrt n\,\mathbb P(n-M_n>un)$ and the
 leading constant of every moment of order $p>1/2$; for example
 $\mathbb E(n-M_n)\sim3\sqrt{n/\pi}$.
+
+\emph{Addition of 30 September 2026 (batch 64).} Part~V shows that
+$\mathbb E\sqrt{n-M_n}-(3/(2\sqrt\pi))\log n$ converges to an explicit
+constant and finds the first correction to every moment of order $p<1/2$.
 \end{abstract}
 \begin{resultbox}
 \textbf{Scope and attribution.}
@@ -4188,6 +4202,9 @@ $n^{1/2-p}\ljE D_n^p\to\mathfrak m_p=\frac3{\sqrt\pi}\int_0^1
 constants are indeed integrals of the bulk profile
 (\cref{mj:thm:moments}). The critical question stays open
 (\cref{mj:sec:q-centered}).]
+[Added 30 September 2026, batch 64: the critical question is answered in
+Part~V: $\ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n\to c_\star\approx-0.942121414$,
+an explicit convergent constant (\cref{cjm:thm:critical}).]
 
 \subsection{The sharp total-variation constant and local corrections}
 \label{mj:sec:lj-tv}
@@ -4733,7 +4750,8 @@ $\ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n$ converges. Part~IV settles:
  $(2\theta-1)/\sqrt\theta<1$ (the merge's comparison).
 \end{itemize}
 It does not settle: the critical centered half-moment, which stays open
-(\cref{mj:sec:q-centered}); an equivalent for $0<\theta\le1/2$, where only
+(\cref{mj:sec:q-centered}) [answered in Part~V, added 30 September 2026:
+\cref{cjm:thm:critical,cjm:thm:subcritical}]; an equivalent for $0<\theta\le1/2$, where only
 $o(n^{-1/2})$ and polynomial lower bounds are proved
 (\cref{mj:thm:profile,mj:thm:lower}); the window at $m=n/2$; a local limit;
 the exact total-variation constant of Part~III's
@@ -5000,7 +5018,8 @@ substituted into a varying-bound problem.
 
 Neither manuscript claims the exact total-variation constant, a constant
 term in the critical half-moment, a local limit for individual macroscopic
-lattice masses, or the optimal scale below the half-size cutoff. The
+lattice masses, or the optimal scale below the half-size cutoff. [Added 30 September
+2026, batch 64: Part~V proves the constant term (\cref{cjm:thm:critical}).] The
 positive bulk equivalent concerns adjacency bounds $m/n\in(1/2,1)$; the
 smaller-bound bulk regime and the critical window at $m=n/2$ remain open.
 Nor does this work resolve the fixed-$m$ component-ordering problem of
@@ -6366,6 +6385,11 @@ convergence of its centered $O(1)$ remainder. The proof of
 fails at the critical order, dominated convergence fails at $p=1/2$, and
 vague convergence alone cannot repair that failure. That question remains
 separate (\cref{mj:sec:q-centered}).
+[Added 30 September 2026, batch 64: Part~V answers it (\cref{cjm:thm:critical})
+and sharpens \eqref{mj:eq:p-half} to
+$\mathfrak m_p=\frac{3/(2\sqrt\pi)}{p-1/2}+B_1+O(p-1/2)$, with the finite part
+$B_1\approx0.382499$ of \cref{cjm:thm:crossover}
+(\cref{cjm:lem:beta,cjm:rem:mp}).]
 
 \subsection{General power bias and the uniform transformation}
 For $p>1/2$, define (manuscript~10)
@@ -6803,6 +6827,7 @@ constraints through all large pieces rather than multiply independent split
 probabilities.
 
 \subsection{Reciprocal thresholds and the critical window at \texorpdfstring{$m=n/2$}{m = n/2}}
+\label{cjm:sec:mj-half}
 \emph{Manuscript~10.} Determine the order of $\ljP(M_n\le n/2)$ and the
 transition when $M_n\le n/2+s_n$. \emph{Manuscript~11.} Find the probability
 scale and the transition function when $m=n/2+s_n$ and $s_n=o(n)$. The linear
@@ -6826,6 +6851,7 @@ split-boundary strips in one estimate. Compact absolute uniformity is not
 enough when the main profile itself tends to zero or infinity.
 
 \subsection{A local macroscopic limit}
+\label{cjm:sec:mj-local}
 \emph{Both manuscripts.} For $d_n/n\to x\in(0,1/2)$ (manuscript~11), or
 uniformly on compact subsets of $(0,1/2)$ with $d_n=\lfloor xn\rfloor$
 (manuscript~10), is it true that
@@ -6840,6 +6866,7 @@ substantially sharper error control. A local theorem would substantially
 strengthen coefficient asymptotics and numerical certification.
 
 \subsection{The exact total-variation constant}
+\label{cjm:sec:mj-tv}
 \emph{Both manuscripts.} Part~III proves a sharp order but leaves the constant
 in $\ljTV(\ljLaw(D_n),\ljLaw(D))$ open (its Section~\ref{mj:sec:lj-tv}).
 Determine whether $\sqrt n\,\ljTV(\ljLaw(D_n),\ljLaw(D))$ converges, and
@@ -6865,8 +6892,18 @@ $\ljE D_n^p$ for $0<p<1/2$? These questions require a quantitative matching of
 the fixed-deficit law and the macroscopic measure near the singular boundary
 $x=0$. (The first is the critical part of Part~III's
 Section~\ref{mj:sec:lj-moments}, which Part~IV leaves open.)
+[Added 30 September 2026, batch 64: both questions are answered in Part~V,
+from Part~III's uniform total-variation bound and Part~IV's pointwise
+profile alone. The limit exists and equals an explicit constant
+$c_\star\approx-0.942121414$ (\cref{cjm:thm:critical}), and
+$\ljE D_n^p=\ljE D^p+\mathfrak m(p)n^{p-1/2}+o(n^{p-1/2})$ for $0<p<1/2$, with an
+explicit negative coefficient that continues $\mathfrak m_p$ through its pole
+(\cref{cjm:thm:subcritical,cjm:rem:mp}). No finer matching near $x=0$ was
+needed. A rate for the centered half-moment remains open
+(\cref{cjm:sec:future}).]
 
 \subsection{Second-order moment asymptotics}
+\label{cjm:sec:mj-second}
 \emph{Both manuscripts.} Determine the next term after $3\sqrt{n/\pi}$ in
 $\ljE D_n$, the next term in the second moment, and the next terms in
 $\ljE D_n^p$ for fixed $p>1/2$. The numerical tables show significant
@@ -6881,6 +6918,7 @@ decorations, mesoscopic tails, and repeated macroscopic split events, rather
 than extrapolating a few simulated sizes.
 
 \subsection{A geometric conditional limit for the whole permutation}
+\label{cjm:sec:mj-geometric}
 \emph{Manuscript~10.} \Cref{mj:cor:conditional} describes two marked
 statistics. Can one construct a conditioned tree or permutation limit under
 $D_n>un$, with an actual canonical macroscopic split and a finite outer
@@ -6937,6 +6975,7 @@ absolute adjacent differences give immediate equivalent formulations, but a
 genuinely new class needs a separate decomposition.
 
 \subsection{Formalization, certified and efficient computation}
+\label{cjm:sec:mj-formal}
 \emph{Manuscript~10.} A Lean development could first formalize the finite
 decomposition, \cref{mj:prop:root}, the endpoint counts, and the stopping-word
 injection. The analytic layer would then add the uniform tail envelope, the
@@ -7015,7 +7054,8 @@ Novelty, review and formal status & New relative to the inspected report's
  stated scope; not an exhaustive priority assessment, external review or a
  proof-assistant verification.\\
 Local limit, critical window, smaller-bound bulk, centered half-moment, exact
- TV constant & Open.\\
+ TV constant & Open. [Centered half-moment: answered in
+ Part~V, added 30 September 2026.]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -7258,6 +7298,1961 @@ independent unpublished work. The full ledger is
 \end{itemize}
 
 
+%% ====================================================================
+%% Part V (batch 64): manuscript 06 of batch 64, "Every Logarithmic Scale
+%% Contributes". All labels of Part V carry the prefix cjm: (critical jump
+%% moments).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part V.\quad Critical moments of the largest-jump deficit}
+\addcontentsline{toc}{part}{Part V.\texorpdfstring{\quad}{ } Critical moments of the largest-jump deficit}
+
+\noindent\emph{Part~V was added on 30 September 2026 in batch~64 of
+ProveIt's incoming-report intake, from one manuscript written against the
+state of Parts~I--IV printed above. Part~IV found the macroscopic profile of
+the largest-jump deficit $D_n=n-M_n$ and the leading constant of every moment
+of order $p>1/2$, and asked in \cref{mj:sec:q-centered} whether
+$\ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n$ converges and what the leading
+correction to $\ljE D_n^p$ is for $0<p<1/2$. Part~V answers both questions,
+and with them the critical half of Part~III's
+Section~\ref{mj:sec:lj-moments}, from three proved results of Parts~III
+and~IV. The abstract transfer theorems behind the answer are independent of
+permutations.}
+
+\section{Provenance, conventions and the answer}
+\label{cjm:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{cjm:sec:source}
+Part~V is built from one AI-assisted research manuscript,
+\emph{manuscript~06} of batch~64, \emph{Every Logarithmic Scale
+Contributes: Critical moment crossover and endpoint corrections for the
+largest jump of a $132$-avoiding permutation}, dated September 30, 2026
+(27 pages, US Letter, as delivered). It arrived as the archive
+\texttt{ProveIt\_Critical\_Jump\_Moments.zip} (inner directory
+\texttt{Critical\_Jump\_Moments/}, main file \texttt{article.tex}) in ProveIt
+commit \texttt{7747fcfdd}, and was placed in commit \texttt{3025c15df}. It
+was written against ProveIt commit
+\begin{center}\small\cjsha,\end{center}
+at which this report's \texttt{article.tex}, \texttt{README.md} and
+\path{code/05-macroscopic-deficits-model.py} had the blobs
+\texttt{c673f447a2}, \texttt{9b6865915b} and \texttt{f0248e0d61}, the ones
+the manuscript records. All three were unchanged at the placement commit, so
+every statement the manuscript makes about this report refers to Parts~I--IV
+as printed above. Its code, data, figures and two provenance notes are
+shipped beside the earlier parts' files with the prefix
+\path{06-critical-moments-}, continuing the report's local sequence after
+Part~IV's \path{05-macroscopic-deficits-}. Its manuscript, README and PDF are
+not shipped and survive in the arrival commit; its checksum ledger was
+verified at placement (21 of 21 files) and retired. Its three figures were
+regenerated in the write phase (\cref{cjm:sec:merge}).
+
+The manuscript contributes, in the order printed here: the centered
+critical half-moment with an exact convergent constant
+(\cref{cjm:thm:critical}); the first correction to every subcritical
+moment, with its sign (\cref{cjm:thm:subcritical}); a two-term crossover in
+the exponent window $p=1/2+\lambda/\log n$ (\cref{cjm:thm:crossover}); the
+logarithmic-scale law under square-root bias with a signed two-endpoint
+correction (\cref{cjm:thm:logmeasure}); the abstract uniform transfer
+theory behind all four (\cref{cjm:sec:transfer,cjm:sec:window,cjm:sec:measure}),
+with tilted laws and logarithm-weighted moments (\cref{cjm:sec:tilts}), a
+counterexample and a stability theorem (\cref{cjm:sec:sharpness}); a
+Laplace-integral formula for the microscopic constant
+(\cref{cjm:prop:h-laplace}); exact finite checks through $n=64$; ten
+research questions; a derivation of the exact endpoint recurrence; and a
+proof audit. Every result, proof, example, remark, limitation and question of
+the manuscript is printed.
+
+\begin{resultbox}
+\textbf{Status (manuscript 06 of batch 64).} The theorems of Part~V have
+written mathematical proofs. They are not Lean- or Rocq-verified, have not
+been externally peer reviewed, and no publication priority is claimed. The
+abstract transfer theorems are proved from explicitly stated hypotheses. The
+permutation application uses three results of Parts~III and~IV as proved
+inputs; it therefore has the same status as those unrefereed and unformalized
+parts, and a correction to an input would affect the application but not the
+abstract theorems. The printed decimals of the constants are high-precision
+numerical approximations, not interval certificates; the finite data and the
+figures are regression checks and illustrations, not evidence for the
+asymptotic statements.
+\end{resultbox}
+
+\subsection{The question of Part~IV, and what answers it}
+Part~III proves the fixed-deficit limiting law of $D_n$, the sharp order
+$n^{-1/2}$ of its total-variation error and the moment threshold at $p=1/2$;
+at that threshold it shows only that
+$\ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n$ is bounded
+(\cref{lj:thm:moments-main}). Part~IV proves the macroscopic rare-event
+profile and every supercritical moment constant, but not the centered
+half-moment or corrections below the threshold: those are its question
+\cref{mj:sec:q-centered}, and the README's list of what Parts~III and~IV do
+not claim named both.
+
+Part~V answers the two questions \emph{relative to the proved results of
+Parts~III and~IV}. It does not require a new enumeration of large
+permutations or a local limit theorem. The decisive observation is that a
+uniform distribution-function error can be integrated after the microscopic
+power tail has been subtracted. This makes the critical exponent accessible
+without trying to insert $p=1/2$ into a divergent supercritical integral.
+(Part~IV expected that the question would ``require a quantitative matching
+of the fixed-deficit law and the macroscopic measure near the singular
+boundary''; the matching needed turns out to be supplied by Part~III's uniform
+total-variation bound together with Part~IV's pointwise profile.)
+
+There is a second, more structural conclusion. The critical moment is the
+normalizing constant of a probability measure that weights a permutation by
+$\sqrt{D_n}$. Under that measure, the logarithm of the deficit explores every
+scale between order one and order $n$. A general theorem identifies not
+only the leading uniform law on logarithmic scales, but also its first
+signed correction. That correction is concentrated at the two ends of the
+scale interval.
+
+\subsection{Inherited status}
+Parts~III and~IV are AI-assisted, unrefereed research proofs, and their
+probabilistic theorems are not formalized in Lean or Rocq. Part~V uses their
+limiting law, total-variation estimate and bulk profile as previously proved
+mathematical inputs, not as machine-checked facts. Every new transfer
+statement below has a complete proof from explicitly stated hypotheses. This
+separation permits an independent audit: a correction to an input from
+Parts~III or~IV would affect the application, but not the abstract transfer
+theorem. The manuscript's pin and its record of the inspected files are in
+\cref{cjm:sec:provenance}.
+
+\subsection{Relation to public work}
+Nadler~\cite{Nadler} initiated the adjacency-constrained enumeration problem
+and analyzed the case of bound two. Mayama and Akita~\cite{MayamaAkita}
+developed an endpoint-state approach for arbitrary fixed bounds, including
+rational generating functions. Their maximum decomposition also supplies
+the finite recurrence used for the exact checks of Part~V. The limit here
+takes the permutation size to infinity while the statistic itself ranges
+through multiple scales; it is not an additional fixed-bound rationality
+result.
+
+The literature check used the primary arXiv records of those papers and
+targeted searches for the largest-jump and critical-moment questions on
+September 30, 2026. It was not an exhaustive priority investigation.
+Accordingly, ``new'' in the contribution ledger (\cref{cjm:tab:ledger})
+means proved here beyond the explicit scope of Parts~III and~IV, not
+certified absent from all other literature.
+
+\begin{table}[htbp]
+\centering\small
+\caption{What Part~V inherits from Parts~III and~IV, and what it adds.}
+\label{cjm:tab:ledger}
+\begin{tabular}{p{.40\linewidth}p{.52\linewidth}}
+\toprule
+Inherited from Parts~III and~IV & Proved in Part~V\\
+\midrule
+Algebraic limiting law and power tail & Exact centered critical moment, including a convergent constant formula\\
+$O(n^{-1/2})$ total-variation estimate & First correction for every $0<p<1/2$, with its sign\\
+Macroscopic deficit-tail profile & Locally uniform moment transfer and the $1/\log n$ exponent window\\
+Leading moments for fixed $p>1/2$ & Critical logarithmic-scale law and two-endpoint signed correction\\
+Exact finite endpoint recurrence & Independent finite regression checks; no new formalization\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Notation of Part~V}
+\label{cjm:sec:notation}
+The symbols $a_n^{(m)}$, $C_n$, $\Cat$, $\Av_n(132)$, $\Pi_n$, $M_n$, $D_n$,
+$D$ (Part~III's limit law), $G$, $s$, $r$ (the square roots of
+\eqref{lj:eq:s-r}), $N_{N,f}$, $\Psi$, $\rho$, $u$ (a threshold fraction) and
+$\mathcal N_s(u)$ keep their meanings from Parts~III and~IV. Several of the
+manuscript's letters are used in Parts~I--IV for other objects, and one of its
+functions is Part~IV's moment constant under another name. Part~V fixes one
+name for each notion (\cref{cjm:tab:notation}). In particular:
+\begin{itemize}
+\item the coefficient function that the manuscript writes $\mathcal K(p)$ is
+ $\mathfrak m(p)$ here, because for $p>1/2$ it \emph{is} Part~IV's moment
+ constant $\mathfrak m_p$ (\cref{cjm:rem:mp}). The tempting false reading is
+ that $\mathfrak m(p)$ is a leading constant for every $p$: for $0<p<1/2$ it
+ is the coefficient of the \emph{correction} $n^{p-1/2}$, and it is negative,
+ while the leading term is the limiting moment $\ljE D^p$. The calligraphic
+ $\mathcal K$ of the manuscript would also clash with Part~III's clipping
+ series $\ljK(z)$, and a Greek $\kappa$ with Part~III's quantile
+ $\kappa_{1-\epsilon}$, which is why Part~IV already renamed its moment
+ constants from $\kappa_p$;
+\item the manuscript's Lebesgue measure $m$ on $[0,1]$ is $\cjLeb$, since $m$
+ is the adjacency bound throughout the report and $\mathfrak m_p$ is
+ Part~IV's constant;
+\item the microscopic and macroscopic constants $h$ and $j$ of the manuscript
+ are $\cjmic$ and $\cjmac$, since $h$ is Part~III's cutoff
+ $\lfloor n/4\rfloor$ and Part~IV's cutoff, and Part~III's $c_j=C_j/4^j$ is
+ always indexed by a letter;
+\item the tail coefficient $a$ of the manuscript is $\mathfrak a$, since
+ $a_n^{(m)}$ counts avoiders and $a$, $b$ are block sizes (as in Part~IV and
+ in \cref{cjm:app:recurrence}).
+\end{itemize}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~V. ``Source'' gives manuscript~06's symbol; the last
+column prints the tempting false reading.}
+\label{cjm:tab:notation}
+\begin{tabular}{>{\raggedright}p{.18\linewidth}>{\raggedright}p{.29\linewidth}>{\raggedright}p{.13\linewidth}>{\raggedright\arraybackslash}p{.28\linewidth}}
+\toprule
+Symbol & Meaning in Part~V & Source & Not to be confused with\\
+\midrule
+$\mathfrak a$ & tail coefficient; $3/\sqrt\pi$ in the application & $a$ &
+ the counts $a_n^{(m)}$; Part~III's $a_2,a_3$; block sizes $a,b$.\\
+$\alpha$, $\beta$ & tail and remainder exponents (abstract) & $\alpha$,
+ $\beta$ & Part~I's growth constants $\alpha_m$, Part~II's $\beta_m$.\\
+$\cjmic$, $\cjmac$, $c_\star$ & microscopic, macroscopic and total critical
+ constants & $h$, $j$, $c_\star$ & Part~III's cutoff $h=\lfloor n/4\rfloor$;
+ $c_j=C_j/4^j$.\\
+$B_0$, $B_1$ & endpoint constants & $B_0$, $B_1$ & Part~III's $B(x)$;
+ Part~II's $\Bformal_N$.\\
+$\mathfrak m(p)$ & regularized coefficient function & $\mathcal K(p)$ &
+ a leading constant (only for $p>1/2$, where it is $\mathfrak m_p$);
+ Part~III's $\ljK$ and quantile $\kappa_{1-\epsilon}$.\\
+$\mathcal M(\lambda)$ & $\int_0^1e^{\lambda t}\,\dd t$ & $\Phi(\lambda)$ &
+ Part~I's shift map $\Phi$; Part~IV's profile $\Psi$.\\
+$\vartheta_n$ & logarithmic scale $\log D_n/\log n$ ($\log X_n/\log n$) &
+ $T_n$ & Part~III's cost $T$; Part~IV's $T_{n,m}$, $T_W$; Part~I's
+ $T^{(m)}_{p,q}(n)$.\\
+$\eta_n$ & critical weighted measure on $[0,1]$ & $\eta_n$ & the local
+ $\eta$ of Part~IV's proofs.\\
+$\ljP^\lambda_n$, $\ljE^\lambda_n$ & power-tilted probability and expectation
+ & $Q_n^\lambda$ & Part~III's $\ljQ$; Part~IV's $Q_{N,m}$ and size bias
+ $\ljP^\star_n$ ($p=1$).\\
+$\varpi_\lambda$ & limiting tilted law on $[0,1]$ & $\mu_\lambda$ &
+ Part~IV's marked measure $\mu$.\\
+$\cjLeb$ & Lebesgue measure on $[0,1]$ & $m$ & the adjacency bound $m$;
+ $\mathfrak m_p$.\\
+$\mathcal S$, $\mathcal S_n$, $\mathcal S_Y$ & survival functions of $D$ (or
+ $X$), $D_n$ (or $X_n$), $Y$ & $S$, $S_n$, $S_Y$ & Part~IV's endpoint map
+ $S$.\\
+$\varrho(x)$ & remainder in the limiting tail & $r(x)$ & $r$ of
+ \eqref{lj:eq:s-r} (kept); Part~IV's $r_a$.\\
+$\mathfrak b(u)$, $g_n(u)$ & cancellation function; scaled tail discrepancy &
+ $b(u)$, $g_n(u)$ & Part~III's $b_t$, $B(x)$; Part~IV's test function $g$.\\
+$\mathcal H(p)$, $\mathcal J(p)$, $\mathcal J_n(p)$ & microscopic and
+ macroscopic regularized functions & $H$, $J$, $J_n$ & Part~III's series
+ $H$, $J$; Part~IV's first deficiency $J_n$ and $H^\star$.\\
+$\mathcal R$, $\mathcal R(p)$; $\mathfrak c(p)$; $\ell(t)$ & regularized
+ Laplace integral; $p/\Gamma(1-p)$; $1-G(e^{-t})$ & $\mathcal A$,
+ $\mathcal A(p)$; $c(p)$; $\ell(t)$ & Part~I's class $\Aclass$; $c_j$;
+ Part~IV's $\ell_n(w)$.\\
+$\mathcal D$; $K$, $K_{\mathcal D}$ & compact set of exponents; constants &
+ $K$; $C$, $C_K$ & Catalan numbers $C_n$; Part~III's $\ljK$.\\
+$\mathcal N_n(u)$, $c_{k,u}$, $T^{(m)}_{u,v}(n)$, $\mathcal G_j(x)$ &
+ the counts of \cref{cjm:app:recurrence} & $h(n,u)$, $c_k(u)$,
+ $T_m(n,u,v)$, $A_j(x)$ & Part~IV's notation for the same counts
+ \eqref{mj:eq:DP}; Part~I's $A_m(x)$.\\
+$\theta$, $\lambda$ & exponent of an added atom; exponent-window parameter
+ & $\theta$, $\lambda$ & Part~IV's fraction $\theta=m/n$; Part~I's
+ eigenvalues $\lambda_U,\lambda_V$.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly the
+manuscript's quantity. Probability, expectation, total variation and law are
+written $\ljP$, $\ljE$, $\ljTV$, $\ljLaw$ as in Parts~III and~IV; the
+manuscript's $\cjLip$ and $\cjBL$ are kept.
+The survival function of the manuscript's application, $\mathcal S(x)$, is
+Part~III's $\ljP(D>x)$. The letters $\sigma$, $\tau$, $p^\ast$, $f$, $\nu$,
+$\delta_n$, $\varepsilon_n$ and $v$ are local to single proofs and declared
+where used. Equations are numbered consecutively with those of Parts~I--IV.
+
+\section{The permutation model and the three inputs}
+\label{cjm:sec:inputs}
+
+\subsection{Definitions and conventions}
+Recall from Part~III that a permutation $\pi\in S_n$ avoids $132$ when there
+are no indices $i<j<k$ with $\pi_i<\pi_k<\pi_j$, that $\Av_n(132)$ is this
+set and has $C_n=\frac1{n+1}\binom{2n}{n}$ elements, and that $\Pi_n$ is
+uniform on $\Av_n(132)$. Put
+\begin{equation}
+ M_n=\max_{1\le i<n}|\Pi_n(i+1)-\Pi_n(i)|,
+ \qquad D_n=n-M_n.
+ \label{cjm:eq:statistic}
+\end{equation}
+For $n=1$ the empty maximum is zero, so $D_1=1$, as in Part~IV. Thus
+$1\le D_n\le n$. Since $a_n^{(m)}$ counts avoiders whose adjacent
+differences are all at most $m$, Part~III's \eqref{lj:eq:bridge} reads
+\begin{equation}
+ \frac{a_n^{(m)}}{C_n}=\ljP(M_n\le m)=\ljP(D_n\ge n-m).
+ \label{cjm:eq:count-tail}
+\end{equation}
+All logarithms are natural. For a positive real $x$ and complex $p$, $x^p$
+means $\exp(p\log x)$.
+
+For a positive random variable $Y$ define its strict survival function by
+$\mathcal S_Y(x)=\ljP(Y>x)$. Abbreviate
+\[
+ \mathcal S_n(x)=\ljP(D_n>x),\qquad \mathcal S(x)=\ljP(D>x),\qquad
+ \mathfrak a=\frac{3}{\sqrt\pi}.
+\]
+Here $D$ is the positive-integer random variable of the next input. The
+strict/non-strict distinction matters for exact lattice formulas but not
+for the Lebesgue integrals used in the proofs. The manuscript also writes
+$A_0=\mathfrak a/2=\frac3{2\sqrt\pi}$ for the critical logarithmic
+coefficient; Part~V writes the fraction out.
+
+The three inputs below are printed as the manuscript states them, although
+each is a result of Parts~III or~IV: they are the entire interface between
+the abstract theory and the permutations, and printing them here makes that
+interface auditable in one place.
+
+\subsection{Input I: the microscopic law}
+Part~III (\cref{lj:thm:main}, \eqref{lj:eq:main-pgf}) gives the probability
+generating function
+\begin{equation}
+ G(z)=\ljE z^D
+ =\frac{(1-s)(4+8s+3s^2-s^2r)}{4(1+2s)(1+s)^2},
+ \quad s=\sqrt{1-z},\quad r=\sqrt{\frac{1+s}{2}},
+ \label{cjm:eq:pgf}
+\end{equation}
+with the branches positive on $0\le z<1$. In particular,
+$\ljP(D=1)=7/48$. Its tail satisfies (\cref{lj:thm:tail-main},
+\eqref{lj:eq:tail-leading})
+\begin{equation}
+ \mathcal S(x)=\mathfrak a x^{-1/2}+O(x^{-3/2}),\qquad x\ge1.
+ \label{cjm:eq:limiting-tail}
+\end{equation}
+The integer version stated in Part~III implies the real version:
+$\mathcal S(x)=\mathcal S(\lfloor x\rfloor)$, and changing $x$ by at most one
+changes $x^{-1/2}$ by $O(x^{-3/2})$.
+
+The leading coefficient is consistent with a direct algebraic expansion:
+\begin{equation}
+ 1-G(z)=3s+
+ \left(-\frac{23}{4}+\frac{\sqrt2}{8}\right)s^2+
+ \left(\frac{43}{4}-\frac{9\sqrt2}{16}\right)s^3+O(s^4).
+ \label{cjm:eq:pgf-expansion}
+\end{equation}
+The manuscript verifies this identity symbolically. This finite algebraic
+check does not replace Part~III's limiting-law and tail proofs.
+[Merge note: this is Part~III's expansion in the proof of
+\cref{lj:thm:tail-main}, $3(1-z)^{-1/2}-a_2-a_3(1-z)^{1/2}+O(1-z)$ for
+$\sum_k\ljP(D>k)z^k=(1-G)/s^2$ (\eqref{lj:eq:tail-gf}), with
+$a_2=23/4-\sqrt2/8$ and $a_3=-43/4+9\sqrt2/16$; the two agree.]
+
+\subsection{Input II: a uniform finite-size error}
+The total-variation theorem of Part~III (\eqref{lj:eq:main-tv}, with the
+explicit bound \eqref{lj:eq:explicit-tv}) implies
+\begin{equation}
+ \sup_{x\ge0}|\mathcal S_n(x)-\mathcal S(x)|\le K n^{-1/2}
+ \label{cjm:eq:kolmogorov}
+\end{equation}
+for an absolute constant $K$. No value of the best constant is required.
+Indeed a half-line is one of the measurable sets controlled by total
+variation. The proofs below use only \eqref{cjm:eq:kolmogorov}; the full
+strength of total variation is unnecessary.
+
+\subsection{Input III: the macroscopic profile}
+Part~IV's \cref{mj:thm:profile} gives
+\begin{equation}
+ \sqrt n\,\mathcal S_n(nu)\longrightarrow\Psi(u),\qquad 0<u\le1,
+ \label{cjm:eq:bulk-limit}
+\end{equation}
+where, as in \eqref{mj:eq:Psi},
+\begin{equation}
+ \Psi(u)=
+ \begin{cases}
+ \displaystyle \mathfrak a\frac{1-2u}{\sqrt{u(1-u)}},&0<u<1/2,\\[4pt]
+ 0,&1/2\le u\le1.
+ \end{cases}
+ \label{cjm:eq:bulk-profile}
+\end{equation}
+Part~V needs only pointwise convergence, not a convergence rate or a local
+limit. Part~IV supplies a stronger uniformity away from zero.
+
+The formal leading density on $(0,1/2)$ is
+\begin{equation}
+ -\Psi'(u)=\rho(u)=\frac{\mathfrak a}{2[u(1-u)]^{3/2}}.
+ \label{cjm:eq:bulk-density}
+\end{equation}
+This density has infinite total mass at zero. It is a rare-event limit
+measure, not a probability density on the entire interval. It is the
+deficit density of Part~IV (\cref{mj:thm:marked}).
+
+\section{Main results for the largest-jump deficit}
+\label{cjm:sec:main}
+
+\subsection{The centered square-root moment}
+Define the microscopic finite part
+\begin{equation}
+ \cjmic=1+\frac12\int_1^\infty x^{-1/2}
+       \left(\mathcal S(x)-\mathfrak a x^{-1/2}\right)\,\dd x
+ \label{cjm:eq:h}
+\end{equation}
+and the elementary macroscopic correction
+\begin{equation}
+ \cjmac=\mathfrak a\left(\log2-\log(1+\sqrt2)+\sqrt2-2\right).
+ \label{cjm:eq:j}
+\end{equation}
+The integral in \eqref{cjm:eq:h} is absolutely convergent by
+\eqref{cjm:eq:limiting-tail}.
+
+\begin{theorem}[Resolution of the centered half-moment question]
+\label{cjm:thm:critical}
+Using the three inputs of \cref{cjm:sec:inputs},
+\begin{equation}
+ \ljE\sqrt{D_n}=\frac3{2\sqrt\pi}\log n+c_\star+o(1),\qquad
+ c_\star=\cjmic+\cjmac.
+ \label{cjm:eq:critical}
+\end{equation}
+The exact definitions \eqref{cjm:eq:h}--\eqref{cjm:eq:j}, together with the
+algebraic function \eqref{cjm:eq:pgf}, specify $c_\star$ without a limiting
+finite-size fit. Numerical quadrature gives
+\[
+ c_\star\approx-0.942121413999402.
+\]
+\end{theorem}
+
+This answers the first question of \cref{mj:sec:q-centered} and the critical
+question of Part~III's Section~\ref{mj:sec:lj-moments}, and sharpens Part~III's
+\eqref{lj:eq:critical-moment} from $O(1)$ to $c_\star+o(1)$.
+
+\subsection{Every subcritical moment has an explicit first correction}
+For $\Re p>-1/2$, $p\ne1/2$, define the regularized expression
+\begin{equation}
+ \mathfrak m(p)=\frac{\mathfrak a}2\left\{
+ \frac{2^{1/2-p}}{p-1/2}+
+ \int_0^{1/2}u^{p-3/2}\bigl((1-u)^{-3/2}-1\bigr)\,\dd u
+ \right\}.
+ \label{cjm:eq:regularized-beta}
+\end{equation}
+The integral converges in this domain because its bracket is $O(u)$ at
+zero. Equivalently,
+\begin{equation}
+ \mathfrak m(p)=\frac{\mathfrak a}2 B_{1/2}(p-1/2,-1/2),
+ \label{cjm:eq:beta-shorthand}
+\end{equation}
+where the incomplete beta function in \eqref{cjm:eq:beta-shorthand} is
+\emph{analytically continued} when $p<1/2$. The convergent expression
+\eqref{cjm:eq:regularized-beta}, not a divergent unregularized integral, is
+the definition used here.
+
+\begin{theorem}[Subcritical correction]
+\label{cjm:thm:subcritical}
+For each fixed real $0<p<1/2$,
+\begin{equation}
+ \ljE D_n^p=\ljE D^p+\mathfrak m(p)n^{p-1/2}
+                +o(n^{p-1/2}).
+ \label{cjm:eq:subcritical}
+\end{equation}
+Moreover $\mathfrak m(p)<0$ throughout this interval. Consequently
+$\ljE D_n^p<\ljE D^p$ for all sufficiently large $n$, for each fixed such
+$p$. This last conclusion is eventual one-sided convergence, not
+monotonicity in $n$.
+\end{theorem}
+
+This answers the second question of \cref{mj:sec:q-centered}, and sharpens
+Part~III's \eqref{lj:eq:small-moments} from $O(n^{p-1/2})$ to an exact first
+term with its sign.
+
+For comparison, the supercritical leading coefficient of Part~IV is the
+same function: for fixed $p>1/2$, $\ljE D_n^p\sim\mathfrak m(p)n^{p-1/2}$,
+that is, $\mathfrak m(p)=\mathfrak m_p$ (\cref{mj:thm:moments};
+\cref{cjm:rem:mp} proves the identity). Thus one regularized analytic
+function governs both sides of the moment threshold, although its role is
+an error coefficient below the threshold and a leading coefficient above
+it. Its pole at the threshold must be canceled before one takes a limit.
+
+\subsection{The moving critical window}
+Let
+\begin{equation}
+ \mathcal M(\lambda)=\int_0^1e^{\lambda t}\,\dd t
+ =\begin{cases}(e^\lambda-1)/\lambda,&\lambda\ne0,\\1,&\lambda=0,
+ \end{cases}
+ \label{cjm:eq:Phi}
+\end{equation}
+which is an entire function. Set
+\begin{equation}
+ B_0=\cjmic-\mathfrak a,\qquad B_1=\mathfrak a+\cjmac.
+ \label{cjm:eq:endpoint-constants}
+\end{equation}
+
+\begin{theorem}[Two-term moment crossover]
+\label{cjm:thm:crossover}
+For $p_n(\lambda)=1/2+\lambda/\log n$,
+\begin{equation}
+ \ljE D_n^{p_n(\lambda)}
+ = \frac3{2\sqrt\pi}\log n\,\mathcal M(\lambda)+B_0+B_1e^\lambda+o(1),
+ \label{cjm:eq:crossover}
+\end{equation}
+locally uniformly for complex $\lambda$. In particular, the error is
+uniform on each fixed bounded real interval. The endpoint constants have
+the numerical values
+\begin{align*}
+ B_0&\approx-1.324620212145336,\\
+ B_1&\approx\phantom{-}0.382498798145934.
+\end{align*}
+At $\lambda=0$, their sum is $c_\star$.
+\end{theorem}
+
+\subsection{The logarithmic-scale law and its signed correction}
+Write $\vartheta_n=\log D_n/\log n$ for $n\ge2$. Define a finite measure on
+$[0,1]$ by
+\begin{equation}
+ \eta_n(\varphi)=\ljE\bigl[\sqrt{D_n}\,\varphi(\vartheta_n)\bigr].
+ \label{cjm:eq:eta}
+\end{equation}
+For a Lipschitz function $\varphi$, let
+$\|\varphi\|_{\cjBL}=\|\varphi\|_\infty+\cjLip(\varphi)$.
+
+\begin{theorem}[Two endpoint corrections]
+\label{cjm:thm:logmeasure}
+Uniformly over complex-valued $\varphi$ with $\|\varphi\|_{\cjBL}\le1$,
+\begin{equation}
+ \eta_n(\varphi)=\frac3{2\sqrt\pi}\log n\int_0^1\varphi(t)\,\dd t
+                +B_0\varphi(0)+B_1\varphi(1)+o(1).
+ \label{cjm:eq:measure-expansion}
+\end{equation}
+Equivalently, in the dual bounded-Lipschitz norm,
+\begin{equation}
+ \eta_n-\frac3{2\sqrt\pi}\log n\,\cjLeb
+       \longrightarrow B_0\delta_0+B_1\delta_1.
+ \label{cjm:eq:signed-limit}
+\end{equation}
+This is convergence of a \emph{signed residual}, not a decomposition of a
+positive measure into three positive pieces.
+\end{theorem}
+
+Under the probability measure that weights $\Pi_n$ proportionally to
+$\sqrt{D_n}$, $\vartheta_n$ therefore converges weakly to
+$\mathrm{Unif}[0,1]$. For real $\lambda$, weighting instead by
+$D_n^{p_n(\lambda)}$ produces the limiting density
+\begin{equation}
+ \frac{e^{\lambda t}}{\mathcal M(\lambda)},\qquad 0\le t\le1.
+ \label{cjm:eq:tilted-density}
+\end{equation}
+The normalization and the first correction to this probability law are
+proved in \cref{cjm:sec:tilts}. \Cref{cjm:thm:logmeasure} is the critical
+analogue of Part~IV's power-biased law \eqref{mj:eq:power-biased} and its
+size-biased limit (\cref{mj:thm:uniform}), which live on the scale $D_n/n$
+for $p>1/2$; at $p=1/2$ the natural scale is logarithmic.
+
+\section{A general uniform moment-transfer theorem}
+\label{cjm:sec:transfer}
+This section contains the common argument behind all the application
+results. It is independent of permutations and of the rest of the report.
+
+\subsection{Hypotheses and regularized functions}
+Let $X,X_n$ be real random variables with $X\ge1$ and $1\le X_n\le n$.
+Write $\mathcal S(x)=\ljP(X>x)$ and $\mathcal S_n(x)=\ljP(X_n>x)$. Suppose that
+constants $\alpha,\mathfrak a,\beta>0$ satisfy the following three
+conditions:
+\begin{align}
+ \mathcal S(x)&=\mathfrak a x^{-\alpha}+\varrho(x),&
+ |\varrho(x)|&\le K x^{-\alpha-\beta}\quad(x\ge1),
+ \label{cjm:eq:A1}\\
+ \sup_{x\ge0}|\mathcal S_n(x)-\mathcal S(x)|&\le K n^{-\alpha},
+ \label{cjm:eq:A2}\\
+ n^\alpha \mathcal S_n(nu)&\longrightarrow\Psi(u)
+ &&(0<u\le1).
+ \label{cjm:eq:A3}
+\end{align}
+Constants denoted by $K$ may be enlarged. Set
+\begin{equation}
+ \mathfrak b(u)=\Psi(u)-\mathfrak a u^{-\alpha},\qquad 0<u\le1,
+ \label{cjm:eq:b-general}
+\end{equation}
+and
+\begin{align}
+ \mathcal H(p)&=1+p\int_1^\infty x^{p-1}\varrho(x)\,\dd x,
+              &&\Re p<\alpha+\beta,
+ \label{cjm:eq:H-general}\\
+ \mathcal J(p)&=p\int_0^1u^{p-1}\mathfrak b(u)\,\dd u,
+              &&\Re p>0.
+ \label{cjm:eq:J-general}
+\end{align}
+In this section $\Psi$ is any function satisfying \eqref{cjm:eq:A3}; in the
+application it is Part~IV's profile \eqref{cjm:eq:bulk-profile}.
+
+\begin{lemma}[The cancellation is uniformly bounded]
+\label{cjm:lem:bounded}
+The function $\mathfrak b$ is bounded on $(0,1]$. The integrals defining
+$\mathcal H$ and $\mathcal J$ converge absolutely and define holomorphic
+functions in their indicated half-planes.
+\end{lemma}
+\begin{proof}
+For fixed $u>0$, \eqref{cjm:eq:A1} implies
+$n^\alpha\mathcal S(nu)\to\mathfrak a u^{-\alpha}$. Subtracting this limit
+from \eqref{cjm:eq:A3} and applying \eqref{cjm:eq:A2} gives
+$|\mathfrak b(u)|\le K$. For $p$ in a compact subset of
+$\Re p<\alpha+\beta$, the integrand for $\mathcal H$ is bounded by a
+constant times $x^{-1-\varepsilon}$ for some $\varepsilon>0$. For $p$ in a
+compact subset of $\Re p>0$, the integrand for $\mathcal J$ is bounded by a
+constant times $u^{-1+\varepsilon}$. Additional powers of $|\log x|$ or
+$|\log u|$ remain integrable, so differentiation under the integral is
+justified locally. This proves holomorphy.
+\end{proof}
+
+Define a scaled tail discrepancy
+\begin{equation}
+ g_n(u)=n^\alpha\bigl(\mathcal S_n(nu)-\mathcal S(nu)\bigr),\qquad 0<u\le1.
+ \label{cjm:eq:g}
+\end{equation}
+It is bounded by $K$, vanishes when $u<1/n$, and converges pointwise to
+$\mathfrak b(u)$. The vanishing follows because both survival functions are
+one on $0\le x<1$.
+
+\begin{lemma}[Uniform integral convergence]
+\label{cjm:lem:Jconv}
+Put $\mathcal J_n(p)=p\int_0^1u^{p-1}g_n(u)\,\dd u$. On every compact subset
+of $\Re p>0$, $\mathcal J_n\to\mathcal J$ uniformly.
+\end{lemma}
+\begin{proof}
+If $\sigma=\inf\Re p>0$ and $p^\ast=\sup|p|$ on the compact set, then
+\[
+ \sup_p|\mathcal J_n(p)-\mathcal J(p)|
+ \le p^\ast\int_0^1u^{\sigma-1}|g_n(u)-\mathfrak b(u)|\,\dd u.
+\]
+The integrand tends to zero pointwise and is bounded by
+$2K u^{\sigma-1}$. Dominated convergence proves the assertion.
+\end{proof}
+
+\subsection{An exact identity before any asymptotics}
+For $\Re p>0$, finite support and the fundamental theorem of calculus give
+\begin{equation}
+ \ljE X_n^p=1+p\int_1^n x^{p-1}\mathcal S_n(x)\,\dd x.
+ \label{cjm:eq:tail-moment}
+\end{equation}
+This is also valid for complex $p$, by applying Fubini to the absolutely
+integrable identity $y^p-1=p\int_1^y x^{p-1}\,\dd x$.
+
+\begin{lemma}[Exact decomposition]
+\label{cjm:lem:exact}
+For $0<\Re p<\alpha+\beta$,
+\begin{align}
+ \ljE X_n^p={}&\mathcal H(p)+\mathfrak a p\frac{n^{p-\alpha}-1}{p-\alpha}
+       +n^{p-\alpha}\mathcal J_n(p)\notag\\
+       &-p\int_n^\infty x^{p-1}\varrho(x)\,\dd x.
+ \label{cjm:eq:exact-decomposition}
+\end{align}
+At $p=\alpha$, the quotient is interpreted as $\log n$.
+\end{lemma}
+\begin{proof}
+In \eqref{cjm:eq:tail-moment}, split
+$\mathcal S_n=\mathfrak a x^{-\alpha}+\varrho+(\mathcal S_n-\mathcal S)$.
+Integrating the first term yields the quotient. Complete the second integral
+to infinity and subtract its tail. In the last term set $x=nu$. The resulting
+lower limit $1/n$ can be replaced by zero because $g_n$ vanishes there. These
+are exact operations, not formal asymptotic manipulations.
+\end{proof}
+
+\begin{theorem}[Locally uniform complex-moment transfer]
+\label{cjm:thm:transfer}
+Under \eqref{cjm:eq:A1}--\eqref{cjm:eq:A3}, for every compact set
+$\mathcal D\subset\{p:0<\Re p<\alpha+\beta\}$,
+\begin{equation}
+ \sup_{p\in\mathcal D}\left|
+ n^{\alpha-p}\left(
+ \ljE X_n^p-\mathcal H(p)-\mathfrak a p\frac{n^{p-\alpha}-1}{p-\alpha}
+ \right)-\mathcal J(p)\right|\longrightarrow0.
+ \label{cjm:eq:transfer}
+\end{equation}
+The singularity at $p=\alpha$ is removable in the displayed expression.
+\end{theorem}
+\begin{proof}
+By \cref{cjm:lem:exact}, the expression inside the absolute value is
+\[
+ \mathcal J_n(p)-\mathcal J(p)-p n^{\alpha-p}\int_n^\infty x^{p-1}\varrho(x)\,\dd x.
+\]
+The first term tends uniformly to zero by \cref{cjm:lem:Jconv}. For the
+second, let $\tau=\sup_{p\in\mathcal D}\Re p<\alpha+\beta$ and
+$p^\ast=\sup_{p\in\mathcal D}|p|$. Then its absolute value is at most
+\[
+ p^\ast K n^{\alpha-\Re p}
+ \frac{n^{\Re p-\alpha-\beta}}{\alpha+\beta-\Re p}
+ \le\frac{p^\ast K}{\alpha+\beta-\tau}n^{-\beta}.
+\]
+This bound is uniform. The quotient in \eqref{cjm:eq:transfer} is an entire
+function of $p$, after filling its value at $p=\alpha$, which verifies the
+last assertion.
+\end{proof}
+
+\subsection{What uniformity does and does not buy}
+For a fixed $p$ in the strip, \cref{cjm:thm:transfer} gives an error
+$o(n^{\Re p-\alpha})$ in the unscaled moment expression. At $p=\alpha$,
+this is $o(1)$. At fixed real $p>\alpha$, it need not be $o(1)$.
+Consequently, extracting the constant-looking term from the formula for a
+fixed supercritical exponent does \emph{not} establish a second-order
+constant. A quantitative rate for $\mathcal J_n(p)-\mathcal J(p)$ would be
+required.
+
+The moving window $p-\alpha=O(1/\log n)$ is different:
+$n^{p-\alpha}$ stays bounded on compact windows. Precisely there, the
+uniform theorem upgrades the unscaled error to $o(1)$ and yields a genuine
+two-term expansion.
+
+\section{Fixed exponents, the critical constant, and beta regularization}
+\label{cjm:sec:constants}
+
+\subsection{The general subcritical and critical formulas}
+For real $0<p<\alpha$, the limiting moment exists and
+\begin{equation}
+ \ljE X^p=\mathcal H(p)+\frac{\mathfrak a p}{\alpha-p}.
+ \label{cjm:eq:limit-moment}
+\end{equation}
+This follows from the same tail integration as before, now on $[1,\infty)$.
+Define
+\begin{equation}
+ \mathfrak m(p)=\frac{\mathfrak a p}{p-\alpha}+\mathcal J(p).
+ \label{cjm:eq:K-general}
+\end{equation}
+(In the application, $\alpha=1/2$, this is the function
+\eqref{cjm:eq:regularized-beta}, by \cref{cjm:lem:beta}.) Then
+\cref{cjm:thm:transfer} gives
+\begin{equation}
+ \ljE X_n^p=\ljE X^p+\mathfrak m(p)n^{p-\alpha}
+                          +o(n^{p-\alpha}),\qquad0<p<\alpha.
+ \label{cjm:eq:subcritical-general}
+\end{equation}
+At the critical exponent itself it gives
+\begin{equation}
+ \ljE X_n^\alpha=\mathfrak a\alpha\log n+\mathcal H(\alpha)+\mathcal J(\alpha)+o(1).
+ \label{cjm:eq:critical-general}
+\end{equation}
+Thus the finite constant splits into a microscopic term determined by the
+entire limiting law and a macroscopic term determined by the bulk profile.
+Neither term alone supplies the answer.
+
+\subsection{Applying the theorem to the permutation inputs}
+Equations \eqref{cjm:eq:limiting-tail}--\eqref{cjm:eq:bulk-limit} satisfy
+the general hypotheses with
+\[
+ \alpha=\frac12,\qquad\beta=1,\qquad \mathfrak a=\frac3{\sqrt\pi}.
+\]
+In particular, the abstract uniform strip includes $0<\Re p<3/2$. Formula
+\eqref{cjm:eq:h} is exactly $\mathcal H(1/2)$. It remains to evaluate
+$\mathcal J(1/2)$ and identify \eqref{cjm:eq:K-general} with the
+regularized beta expression.
+
+\begin{lemma}[Evaluation of the macroscopic critical contribution]
+\label{cjm:lem:j}
+For the profile \eqref{cjm:eq:bulk-profile}, $\mathcal J(1/2)=\cjmac$ as
+defined in \eqref{cjm:eq:j}.
+\end{lemma}
+\begin{proof}
+By direct substitution,
+\begin{align}
+ \mathcal J(1/2)=\frac{\mathfrak a}2\bigg\{
+ &\int_0^{1/2}\left(\frac{1-2u}{u\sqrt{1-u}}-\frac1u\right)\,\dd u
+   -\int_{1/2}^1\frac{\dd u}{u}\bigg\}.
+ \label{cjm:eq:j-integral}
+\end{align}
+The first integrand is bounded at zero; its two displayed summands must
+not be integrated separately there. An antiderivative of their difference
+is
+\[
+ \mathcal F(u)=-2\operatorname{artanh}\sqrt{1-u}
+                 +4\sqrt{1-u}-\log u.
+\]
+As $u\downarrow0$, $\mathcal F(u)\to4-\log4$. At $u=1/2$,
+$\operatorname{artanh}(1/\sqrt2)=\log(1+\sqrt2)$, so
+\[
+ \mathcal F(1/2)=-2\log(1+\sqrt2)+2\sqrt2+\log2.
+\]
+Subtract $\mathcal F(0+)$ and then the last integral $\log2$ in
+\eqref{cjm:eq:j-integral}. The result is
+\[
+ \frac{\mathfrak a}2\bigl(\log4-2\log(1+\sqrt2)+2\sqrt2-4\bigr)=\cjmac.
+\]
+\end{proof}
+Combining \eqref{cjm:eq:critical-general} with \cref{cjm:lem:j} proves
+\cref{cjm:thm:critical}.
+
+\begin{lemma}[A single coefficient function on both sides of the threshold]
+\label{cjm:lem:beta}
+For $\Re p>0$, $p\ne1/2$, the expression
+$\mathfrak ap/(p-1/2)+\mathcal J(p)$ equals \eqref{cjm:eq:regularized-beta}.
+In particular its residue at $p=1/2$ is $\mathfrak a/2$, and its finite part
+there is $\mathfrak a+\cjmac=B_1$.
+\end{lemma}
+\begin{proof}
+First take real $p>1/2$. The singular integrals are then separately
+convergent, and
+\[
+ \frac{\mathfrak ap}{p-1/2}+\mathcal J(p)=p\int_0^{1/2}u^{p-1}\Psi(u)\,\dd u.
+\]
+Since $\Psi(1/2)=0$, $u^p\Psi(u)\to0$ at zero, and
+$-\Psi'=\rho$, integration by parts gives
+\[
+ p\int_0^{1/2}u^{p-1}\Psi(u)\,\dd u
+ =\frac{\mathfrak a}2\int_0^{1/2}u^{p-3/2}(1-u)^{-3/2}\,\dd u.
+\]
+Subtract one from $(1-u)^{-3/2}$ and integrate the subtracted power
+explicitly. This gives \eqref{cjm:eq:regularized-beta}.
+Both sides are holomorphic on the connected domain
+$\{\Re p>0\}\setminus\{1/2\}$, so the identity extends throughout that
+domain by analytic continuation. Finally,
+\[
+ \frac{\mathfrak ap}{p-1/2}=\frac{\mathfrak a/2}{p-1/2}+\mathfrak a,
+ \qquad \mathcal J(p)=\cjmac+O(p-1/2),
+\]
+which gives the residue and the finite part.
+\end{proof}
+
+\begin{remark}[Merge note: $\mathfrak m(p)$ is Part~IV's $\mathfrak m_p$ for $p>1/2$]
+\label{cjm:rem:mp}
+The second display of the proof of \cref{cjm:lem:beta} shows, for real
+$p>1/2$,
+\[
+ \mathfrak m(p)=\frac3{2\sqrt\pi}\int_0^{1/2}u^{p-3/2}(1-u)^{-3/2}\,\dd u,
+\]
+which is Part~IV's first formula \eqref{mj:eq:kappa-beta} for
+$\mathfrak m_p$. Hence $\mathfrak m(p)=\mathfrak m_p$ for every $p>1/2$, and
+the manuscript's sentence that the supercritical leading coefficient ``is the
+same function'' is an identity, not only a numerical coincidence (the
+write phase also checked it numerically at $p=3/4,1,3/2,2,3$, to twenty
+digits against \eqref{mj:eq:kappa-t}). For $1/2<p<3/2$ it is also what
+\cref{cjm:thm:transfer} says directly, since there the transfer theorem
+gives the limit of \cref{mj:thm:moments}:
+\[
+ n^{1/2-p}\ljE D_n^p\longrightarrow\mathfrak m(p).
+\]
+Part~IV's \cref{mj:prop:constantlimits} gives the pole
+\eqref{mj:eq:p-half} as $p\downarrow1/2$; \cref{cjm:lem:beta} sharpens it
+to
+\[
+ \mathfrak m_p=\frac{3}{2\sqrt\pi}\,\frac{1}{p-1/2}+B_1+O(p-1/2),
+\]
+so the finite part of Part~IV's pole is $B_1\approx0.382498798$, the
+constant of \cref{cjm:thm:crossover}. Below the threshold, the coefficient
+$\mathfrak m(p)$, $0<p<1/2$, of the correction in \eqref{cjm:eq:subcritical}
+is the analytic continuation of Part~IV's constants through that pole.
+\end{remark}
+
+\begin{proof}[Proof of \cref{cjm:thm:subcritical}]
+The expansion follows from \eqref{cjm:eq:subcritical-general} and
+\cref{cjm:lem:beta}. To prove the sign, observe that
+\[
+ \frac{1-2u}{\sqrt{1-u}}<1\quad(0<u<1/2).
+\]
+Indeed both sides are positive, and squaring reduces the claim to
+$u(4u-3)<0$. For $1/2\le u\le1$ the bulk profile is zero. Therefore
+$\mathfrak b(u)=\Psi(u)-\mathfrak a u^{-1/2}<0$ on $(0,1]$, so
+$\mathcal J(p)<0$ for every real $p>0$. If $p<1/2$, the term
+$\mathfrak ap/(p-1/2)$ is also negative. Hence $\mathfrak m(p)<0$. Dividing
+the remainder in \eqref{cjm:eq:subcritical} by its strictly negative
+leading coefficient proves eventual one-sidedness.
+\end{proof}
+
+\section{The \texorpdfstring{1/log\,\textit{n}}{1/log n} critical exponent window}
+\label{cjm:sec:window}
+
+\begin{theorem}[General two-term crossover]
+\label{cjm:thm:general-window}
+Under the hypotheses of \cref{cjm:thm:transfer}, let
+$p_n(\lambda)=\alpha+\lambda/\log n$. Define
+\[
+ B_0=\mathcal H(\alpha)-\mathfrak a,\qquad B_1=\mathfrak a+\mathcal J(\alpha).
+\]
+Then
+\begin{equation}
+ \ljE X_n^{p_n(\lambda)}
+ =\mathfrak a\alpha\log n\,\mathcal M(\lambda)+B_0+B_1e^\lambda+o(1)
+ \label{cjm:eq:general-window}
+\end{equation}
+locally uniformly for complex $\lambda$.
+\end{theorem}
+\begin{proof}
+Fix a compact set of $\lambda$ values. For large $n$, all $p_n(\lambda)$
+lie in a fixed compact subset of the strip in \cref{cjm:thm:transfer}. In
+addition $n^{p_n-\alpha}=e^\lambda$ is uniformly bounded. The theorem
+therefore gives, uniformly on the chosen compact set,
+\[
+ \ljE X_n^{p_n}=\mathcal H(p_n)+\mathfrak a p_n\log n\,\mathcal M(\lambda)
+                     +e^\lambda \mathcal J(p_n)+o(1).
+\]
+Continuity gives $\mathcal H(p_n)=\mathcal H(\alpha)+o(1)$ and
+$\mathcal J(p_n)=\mathcal J(\alpha)+o(1)$. The remaining term is exactly
+\[
+ \mathfrak a p_n\log n\,\mathcal M(\lambda)
+ =\mathfrak a\alpha\log n\,\mathcal M(\lambda)+\mathfrak a\lambda\mathcal M(\lambda)
+ =\mathfrak a\alpha\log n\,\mathcal M(\lambda)+\mathfrak a(e^\lambda-1).
+\]
+Collecting constants proves \eqref{cjm:eq:general-window}, including at
+$\lambda=0$ by continuity.
+\end{proof}
+\Cref{cjm:thm:crossover} is the specialization $\alpha=1/2$ with the
+constants already computed.
+
+\subsection{Why the width is logarithmic}
+The crossover width is forced by the factor $n^{p-\alpha}$:
+\[
+ n^{p-\alpha}=\exp((p-\alpha)\log n).
+\]
+It changes by a constant factor when $p-\alpha$ changes by order
+$1/\log n$. At that scale, the pole cancellation between the microscopic
+limiting moment and the macroscopic contribution is visible in the entire
+function $\mathcal M$.
+
+For real $\lambda$ one has $\mathcal M(\lambda)>0$. The asymptotic expression
+never asks for a moment of the limiting variable $X$ above its convergence
+threshold; it concerns the finite variable $X_n$ throughout. In particular,
+using $\ljE X^{p_n}$ for positive $\lambda$ would be invalid.
+
+\subsection{An exact model that checks the normalization}
+\begin{example}[A truncated Pareto variable]
+\label{cjm:ex:pareto}
+Let $\ljP(X>x)=x^{-\alpha}$ for $x\ge1$, and put $X_n=\min(X,n)$.
+Here $\mathfrak a=1$, $\varrho=0$, $\mathcal H=1$, and $\mathfrak b=0$ almost
+everywhere on $(0,1)$. The value of $\mathfrak b$ at $u=1$ is immaterial to
+all integrals. Thus $\mathcal J=0$, $B_0=0$, and $B_1=1$. Direct calculation
+gives the exact identities
+\begin{align}
+ \ljE X_n^p&=1+p\frac{n^{p-\alpha}-1}{p-\alpha},\\
+ \ljE X_n^{\alpha+\lambda/\log n}&=\alpha\log n\,\mathcal M(\lambda)+e^\lambda.
+ \label{cjm:eq:pareto-exact}
+\end{align}
+The atom at $X_n=n$ contributes exactly one to the critical weighted mass.
+It is the endpoint term $B_1$, not an extra piece of the logarithmic
+coefficient. This elementary example checks both the factor $\alpha$ in
+the leading term and the distinction between $\mathcal J(\alpha)$ and $B_1$.
+\end{example}
+
+\section{The logarithmic-scale measure and endpoint theorem}
+\label{cjm:sec:measure}
+The moment crossover probes the test functions $e^{\lambda t}$. A direct
+argument treats the entire bounded-Lipschitz class at once and gives a
+stronger conclusion.
+
+\subsection{Statement in the general setting}
+Put $\vartheta_n=\log X_n/\log n$ and define
+\[
+ \eta_n(\varphi)=\ljE[X_n^\alpha\varphi(\vartheta_n)].
+\]
+Let $\cjLeb$ be Lebesgue measure on $[0,1]$ and define, for a finite signed
+or complex measure $\nu$,
+\[
+ \|\nu\|_{\cjBL^*}
+ =\sup_{\|\varphi\|_\infty+\cjLip(\varphi)\le1}|\nu(\varphi)|.
+\]
+
+\begin{theorem}[General two-endpoint correction]
+\label{cjm:thm:general-measure}
+Under \eqref{cjm:eq:A1}--\eqref{cjm:eq:A3},
+\begin{equation}
+ \|\eta_n-\mathfrak a\alpha\log n\,\cjLeb-B_0\delta_0-B_1\delta_1\|_{\cjBL^*}
+ \longrightarrow0,
+ \label{cjm:eq:BL-general}
+\end{equation}
+where $B_0=\mathcal H(\alpha)-\mathfrak a$ and
+$B_1=\mathfrak a+\mathcal J(\alpha)$. More precisely, the norm is at most
+\begin{equation}
+ |\mathcal J_n(\alpha)-\mathcal J(\alpha)|+
+ O\bigl((\log n)^{-1}+n^{-\beta}\bigr),
+ \label{cjm:eq:BL-bound}
+\end{equation}
+with a constant depending only on the hypotheses.
+\end{theorem}
+
+\subsection{Proof by three integrals}
+\begin{proof}
+For a Lipschitz function $\varphi$ on
+$[0,1]$, let
+\[
+ f(x)=x^\alpha\varphi(\log x/\log n),\qquad1\le x\le n.
+\]
+This is absolutely continuous, with almost-everywhere derivative
+\begin{equation}
+ f'(x)=x^{\alpha-1}
+ \left\{\alpha\varphi(\log x/\log n)+\frac1{\log n}\varphi'(\log x/\log n)\right\}.
+ \label{cjm:eq:f-derivative}
+\end{equation}
+The derivative is integrable, so Fubini gives
+\begin{equation}
+ \eta_n(\varphi)=\varphi(0)+\int_1^n f'(x)\mathcal S_n(x)\,\dd x.
+ \label{cjm:eq:weighted-tail}
+\end{equation}
+Split the survival function into its power tail, remainder and finite-size
+discrepancy, exactly as in \cref{cjm:lem:exact}.
+
+\paragraph{The power tail.}
+The part with $\mathfrak a x^{-\alpha}$ equals
+\begin{align}
+ \mathfrak a\int_1^n\frac{\alpha\varphi(\log x/\log n)+(\log n)^{-1}\varphi'(\log x/\log n)}{x}\,\dd x
+ =\mathfrak a\alpha\log n\int_0^1\varphi(t)\,\dd t+\mathfrak a(\varphi(1)-\varphi(0)).
+ \label{cjm:eq:measure-power}
+\end{align}
+This identity explains why two endpoint terms occur even before the
+microscopic and macroscopic corrections are considered.
+
+\paragraph{The microscopic remainder.}
+Combine the initial term $\varphi(0)$ in \eqref{cjm:eq:weighted-tail} with
+the integral involving $\varrho(x)$. Uniformly for
+$\|\varphi\|_{\cjBL}\le1$, their sum is
+\begin{equation}
+ \mathcal H(\alpha)\varphi(0)+O((\log n)^{-1}+n^{-\beta}).
+ \label{cjm:eq:measure-micro}
+\end{equation}
+Indeed $|\varphi(\log x/\log n)-\varphi(0)|\le\log x/\log n$, and
+$|\varphi'|\le1$ almost everywhere. The error from replacing $\varphi$
+by $\varphi(0)$ and dropping the derivative term is bounded by
+\[
+ \frac1{\log n}\int_1^\infty x^{\alpha-1}|\varrho(x)|(\alpha\log x+1)\,\dd x,
+\]
+which is finite by \eqref{cjm:eq:A1}. Completing the remaining integral to
+infinity costs $O(n^{-\beta})$.
+
+\paragraph{The finite-size discrepancy.}
+After $x=nu$, this contribution is
+\begin{align}
+ \int_{1/n}^1u^{\alpha-1}g_n(u)
+ \left\{\alpha\varphi\left(1+\frac{\log u}{\log n}\right)
+ +\frac1{\log n}\varphi'\left(1+\frac{\log u}{\log n}\right)\right\}\,\dd u.
+ \label{cjm:eq:measure-finite}
+\end{align}
+The bound $|g_n|\le K$ and the Lipschitz property show that replacing the
+function by $\varphi(1)$ and deleting its derivative costs at most
+\[
+ \frac K{\log n}\int_0^1u^{\alpha-1}(\alpha|\log u|+1)\,\dd u=O((\log n)^{-1}).
+\]
+The remaining integral is exactly $\mathcal J_n(\alpha)\varphi(1)$, since
+$g_n=0$ on $(0,1/n)$. Replacing $\mathcal J_n(\alpha)$ by $\mathcal J(\alpha)$
+costs at most $|\mathcal J_n(\alpha)-\mathcal J(\alpha)|$.
+
+Adding \eqref{cjm:eq:measure-power}--\eqref{cjm:eq:measure-finite}, the
+coefficient of $\varphi(0)$ is $\mathcal H(\alpha)-\mathfrak a$, and that of
+$\varphi(1)$ is $\mathfrak a+\mathcal J(\alpha)$. The errors are uniform on
+the unit ball, proving \eqref{cjm:eq:BL-bound}. Finally \cref{cjm:lem:Jconv}
+proves convergence.
+\end{proof}
+
+Applying this theorem with $\alpha=1/2$ proves \cref{cjm:thm:logmeasure}.
+The same proof also shows exactly what quantitative information is missing
+for a rate: it is the single weighted integral discrepancy
+$\mathcal J_n(\alpha)-\mathcal J(\alpha)$, not a new pointwise local limit.
+
+\subsection{The topology is essential}
+For the permutation application, every $\eta_n$ is supported on finitely
+many points $\log d/\log n$. Its critical normalization therefore has
+total-variation distance one from the continuous uniform distribution,
+with the convention $\ljTV(\mu,\nu)=\sup_A|\mu(A)-\nu(A)|$ (Part~III's).
+Weak or bounded-Lipschitz convergence is the correct conclusion.
+
+Moreover, $B_0<0$ in this application. There is no contradiction with
+positivity of $\eta_n$: the signed residual after removing
+$\frac3{2\sqrt\pi}\log n\,\cjLeb$ need not be positive. Nor does an atom in
+the correction mean that the original discrete measure has a limiting atom
+at that endpoint under probability normalization.
+
+\section{Tilted laws, logarithmic moments, and interpretation}
+\label{cjm:sec:tilts}
+
+\subsection{A full first correction under power bias}
+For real $\lambda$ define the probability measure $\ljP^\lambda_n$, with
+expectation $\ljE^\lambda_n$, by
+\begin{equation}
+ \ljE^\lambda_n\varphi(\vartheta_n)
+ =\frac{\ljE[X_n^{\alpha+\lambda/\log n}\varphi(\vartheta_n)]}
+        {\ljE X_n^{\alpha+\lambda/\log n}}.
+ \label{cjm:eq:Q}
+\end{equation}
+Let
+\[
+ \varpi_\lambda(\varphi)
+ =\frac{\int_0^1e^{\lambda t}\varphi(t)\,\dd t}{\mathcal M(\lambda)}.
+\]
+
+\begin{corollary}[Tilted logarithmic-scale laws]
+\label{cjm:cor:tilt}
+Uniformly for real $\lambda$ in a compact interval and
+$\|\varphi\|_{\cjBL}\le1$,
+\begin{align}
+ \ljE^\lambda_n\varphi(\vartheta_n)=\varpi_\lambda(\varphi)
+ +\frac{B_0[\varphi(0)-\varpi_\lambda(\varphi)]
+       +B_1e^\lambda[\varphi(1)-\varpi_\lambda(\varphi)]}
+       {\mathfrak a\alpha\log n\,\mathcal M(\lambda)}
+ +o((\log n)^{-1}).
+ \label{cjm:eq:tilt-correction}
+\end{align}
+In particular $\vartheta_n$ converges weakly under $\ljP^\lambda_n$ to the
+density $e^{\lambda t}/\mathcal M(\lambda)$.
+\end{corollary}
+\begin{proof}
+Apply \cref{cjm:thm:general-measure} to
+$\varphi_\lambda(t)=e^{\lambda t}\varphi(t)$. Its bounded-Lipschitz norm is
+uniformly bounded for the stated range of $\lambda$ and $\varphi$. This gives
+\[
+ \ljE[X_n^{\alpha+\lambda/\log n}\varphi(\vartheta_n)]
+ =\mathfrak a\alpha\log n\int_0^1e^{\lambda t}\varphi(t)\,\dd t
+   +B_0\varphi(0)+B_1e^\lambda\varphi(1)+o(1).
+\]
+The denominator has the expansion \eqref{cjm:eq:general-window} and has a
+positive leading coefficient uniformly bounded away from zero after
+division by $\log n$. Expanding the ratio to order $1/\log n$ gives
+\eqref{cjm:eq:tilt-correction}. Bounded-Lipschitz convergence implies weak
+convergence on the compact interval $[0,1]$.
+\end{proof}
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=.86\linewidth]{figures/06-critical-moments-tilted_densities.pdf}
+\caption{The limiting densities $e^{\lambda t}/\mathcal M(\lambda)$
+(manuscript~06's $e^{\lambda t}/\Phi(\lambda)$), for $\lambda=-2,0,2$.
+At critical square-root bias, $\lambda=0$ and the density is uniform.
+These curves are the exact functions in the theorem, not fitted data.}
+\label{cjm:fig:tilts}
+\end{figure}
+
+At critical bias, each fixed interval $(s,t)\subset(0,1)$ receives limiting
+probability $t-s$. Equivalently, for $0<s<t<1$,
+\begin{equation}
+ \ljE\bigl[X_n^\alpha;\ n^s<X_n<n^t\bigr]
+       \sim \mathfrak a\alpha(t-s)\log n.
+ \label{cjm:eq:interval-scales}
+\end{equation}
+This leading statement follows from weak convergence because interval
+boundaries have zero limiting mass. The second-order formula
+\eqref{cjm:eq:tilt-correction} is asserted for Lipschitz test functions, not
+for arbitrary discontinuous indicators.
+
+\subsection{Logarithm-weighted critical moments}
+\begin{corollary}[All fixed logarithmic powers]
+\label{cjm:cor:logmoments}
+For each fixed integer $k\ge1$,
+\begin{equation}
+ \ljE[X_n^\alpha(\log X_n)^k]
+ =\frac{\mathfrak a\alpha}{k+1}(\log n)^{k+1}
+      +B_1(\log n)^k+o((\log n)^k).
+ \label{cjm:eq:log-moments}
+\end{equation}
+For $k=0$ the corresponding constant is $B_0+B_1$, as in
+\eqref{cjm:eq:critical-general}.
+\end{corollary}
+\begin{proof}
+Use $\varphi(t)=t^k$ in \cref{cjm:thm:general-measure} and multiply by
+$(\log n)^k$. Its integral is $1/(k+1)$, its value at zero is zero, and its
+value at one is one. No differentiation of an asymptotic expansion is
+needed.
+\end{proof}
+
+For the permutation model the case $k=1$ reads
+\begin{equation}
+ \ljE[\sqrt{D_n}\log D_n]
+   =\frac{3}{4\sqrt\pi}(\log n)^2+B_1\log n+o(\log n).
+ \label{cjm:eq:log-first}
+\end{equation}
+It also follows that the critical-biased mean scale satisfies
+\begin{equation}
+ \ljE^0_n\vartheta_n=\frac12+\frac{B_1-B_0}{\mathfrak a\log n}
+                            +o((\log n)^{-1}).
+ \label{cjm:eq:biased-mean}
+\end{equation}
+Here $B_1-B_0>0$. The slow positive correction helps explain the
+finite-size illustrations in \cref{cjm:sec:computation}; the theorem does not
+predict monotonicity at moderate sizes.
+
+\subsection{Two different notions of typical behavior}
+Under the original uniform distribution on avoiders, $D_n$ converges to a
+proper finite-valued variable $D$. It is therefore tight, and
+$\log D_n/\log n\to0$ in probability. Under square-root bias, the same
+logarithmic ratio instead tends to a uniform distribution. These statements
+refer to different sampling measures and do not conflict.
+
+The critical bias compensates exactly for the power-law decay: a scale
+increment $\dd(\log x)$ contributes asymptotically the same amount to
+$\ljE X_n^\alpha$. Positive $\lambda$ in the moving exponent window favors
+larger logarithmic scales; negative $\lambda$ favors smaller ones. Both
+still retain a nondegenerate distribution over the entire interval for
+fixed finite $\lambda$.
+
+\section{Sharpness and stability of the transfer mechanism}
+\label{cjm:sec:sharpness}
+
+\subsection{The uniform tail error cannot be discarded}
+The limiting law and the bulk profile alone do not determine the centered
+critical moment. An intermediate-scale perturbation can be invisible to
+both while leaving an order-one critical contribution.
+
+\begin{proposition}[A surviving intermediate-scale correction]
+\label{cjm:prop:counterexample}
+Fix $\alpha>0$, $0<\theta<1$, and $c>0$. There are random variables
+$Y_n\in[1,n]$ having the same distributional limit and the same pointwise
+bulk profile as the truncated Pareto variables of \cref{cjm:ex:pareto}, but
+\begin{equation}
+ \ljE Y_n^{\alpha+\lambda/\log n}
+ =\alpha\log n\,\mathcal M(\lambda)+e^\lambda
+                 +c e^{\lambda\theta}+o(1)
+ \label{cjm:eq:counterexample-window}
+\end{equation}
+locally uniformly for complex $\lambda$. Their critical logarithmic
+weighted residual converges in $\cjBL^*$ to
+$\delta_1+c\delta_\theta$, not just the two-endpoint measure.
+They do not satisfy \eqref{cjm:eq:A2} with order $n^{-\alpha}$.
+\end{proposition}
+\begin{proof}
+For sufficiently large $n$, put $\varepsilon_n=c n^{-\alpha\theta}\le1$.
+With probability $1-\varepsilon_n$, let $Y_n$ have the law of
+$X_n=\min(X,n)$ from \cref{cjm:ex:pareto}; with probability
+$\varepsilon_n$, set $Y_n=n^\theta$. Define the finitely many smaller
+$n$ arbitrarily in $[1,n]$.
+
+Because $\varepsilon_n\to0$, $Y_n$ has the same limiting law as $X_n$.
+For fixed $0<u<1$, the added atom lies below $nu$ for large $n$, so
+\[
+ n^\alpha\ljP(Y_n>nu)=(1-\varepsilon_n)u^{-\alpha}
+ \longrightarrow u^{-\alpha}.
+\]
+At $u=1$ both survival functions vanish. Thus the bulk profile is also
+unchanged. On the other hand, the new atom contributes
+\[
+ \varepsilon_n(n^\theta)^{\alpha+\lambda/\log n}
+                  =c e^{\lambda\theta}.
+\]
+Removing the fraction $\varepsilon_n$ of the original law changes its
+moment by $O(\varepsilon_n\log n)=o(1)$ uniformly on compact $\lambda$
+sets, by \eqref{cjm:eq:pareto-exact}. This proves
+\eqref{cjm:eq:counterexample-window}.
+
+For the weighted-measure assertion, the critical contribution of the new
+atom is exactly $c\varphi(\theta)$, and deleting the corresponding
+fraction of the Pareto weighted measure costs
+$O(\varepsilon_n\log n)\|\varphi\|_\infty=o(1)$ uniformly. Finally,
+at $x=n^\theta/2$, for large $n$, the survival discrepancy from the
+untruncated Pareto law equals
+\[
+ \varepsilon_n(1-x^{-\alpha})\sim c n^{-\alpha\theta},
+\]
+which is not $O(n^{-\alpha})$.
+\end{proof}
+
+This example explains the role of Part~III's total-variation theorem.
+It excludes persistent critical weighted mass at intermediate logarithmic
+scales. The bulk profile by itself would not exclude such mass and would
+not resolve the centered half-moment question.
+
+\subsection{Robustness under smaller perturbations}
+\begin{proposition}[Stability at the relevant error scale]
+\label{cjm:prop:stability}
+Suppose $X_n$ satisfies the general hypotheses, $1\le Y_n\le n$, and
+\[
+ \delta_n:=\sup_x|\ljP(Y_n>x)-\ljP(X_n>x)|=o(n^{-\alpha}).
+\]
+Then the uniform transfer expansion, critical crossover, and signed
+bounded-Lipschitz endpoint correction hold for $Y_n$ with the same
+functions $\mathcal H,\mathcal J$ and the same constants $B_0,B_1$.
+\end{proposition}
+\begin{proof}
+For $p$ in a compact subset $\mathcal D$ of $\Re p>0$, tail integration
+bounds
+\[
+ |\ljE Y_n^p-\ljE X_n^p|
+ \le |p|\delta_n\int_1^n x^{\Re p-1}\,\dd x
+ \le K_{\mathcal D}\delta_n n^{\Re p}.
+\]
+After multiplication by $n^{\alpha-\Re p}$ this is $o(1)$ uniformly.
+For a test function in the unit bounded-Lipschitz ball, use
+\eqref{cjm:eq:f-derivative} to bound the corresponding weighted expectation
+difference by $K\delta_n n^\alpha=o(1)$. These estimates transfer all the
+assertions directly.
+\end{proof}
+
+The sufficient condition in this proposition is an error bound, not a
+claim that every natural modification of a permutation statistic satisfies
+it. Verifying the condition for a particular modification remains a
+separate problem.
+
+\section{Computing the constant without fitting finite permutations}
+\label{cjm:sec:quadrature}
+
+\subsection{A convergent discrete formula}
+Because $D$ is positive-integer-valued, \eqref{cjm:eq:h} also gives
+\begin{equation}
+ \cjmic=1+\sum_{k=1}^\infty\left[
+  (\sqrt{k+1}-\sqrt k)\ljP(D>k)
+       -\frac{\mathfrak a}2\log\frac{k+1}{k}\right].
+ \label{cjm:eq:h-series}
+\end{equation}
+The summands are $O(k^{-2})$, by \eqref{cjm:eq:limiting-tail}. Hence this is
+an absolutely convergent series, with truncation error $O(N^{-1})$ after
+$N$ terms. Its probabilities are rational coefficients of the algebraic
+function $G$. It is an exact specification, although not the fastest
+numerical route. (The summand is the one Part~III's proof of
+\eqref{lj:eq:critical-moment} estimates by $\frac3{2\sqrt\pi}k^{-1}+O(k^{-2})$.)
+
+Equivalently,
+\begin{equation}
+ \cjmic=\lim_{N\to\infty}
+ \left(\ljE\sqrt{\min(D,N)}-\frac{\mathfrak a}2\log N\right).
+ \label{cjm:eq:h-capped}
+\end{equation}
+This limit concerns a truncation of the \emph{limiting} variable $D$,
+not a finite permutation variable $D_n$. Their centered constants differ
+by the macroscopic contribution $\cjmac$.
+
+\subsection{A regularized Laplace integral}
+Set
+\[
+ \ell(t)=1-G(e^{-t}),\qquad t>0,
+\]
+and define
+\begin{equation}
+ \mathcal R=\int_0^1\frac{\ell(t)-3\sqrt t}{t^{3/2}}\,\dd t
+                 +\int_1^\infty\frac{\ell(t)}{t^{3/2}}\,\dd t.
+ \label{cjm:eq:A-integral}
+\end{equation}
+Both integrals converge absolutely: \eqref{cjm:eq:pgf-expansion} gives
+$\ell(t)=3\sqrt t+O(t)$ at zero, and $0\le\ell(t)\le1$ at infinity.
+
+\begin{proposition}[A computable integral for the microscopic constant]
+\label{cjm:prop:h-laplace}
+With Euler's constant $\gamma$,
+\begin{equation}
+ \cjmic=\frac{\mathcal R}{2\sqrt\pi}
+                  +\frac{\mathfrak a}2(\gamma+2\log2).
+ \label{cjm:eq:h-laplace}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $0<p<1$, integrating by parts after the substitution $u=tx$ gives
+\[
+ x^p=\frac{p}{\Gamma(1-p)}
+       \int_0^\infty(1-e^{-tx})t^{-p-1}\,\dd t.
+\]
+For $0<p<1/2$, Tonelli's theorem therefore yields
+\begin{equation}
+ \ljE D^p=\frac{p}{\Gamma(1-p)}
+             \int_0^\infty\ell(t)t^{-p-1}\,\dd t.
+ \label{cjm:eq:fractional-moment}
+\end{equation}
+Subtract $3\sqrt t$ on $(0,1)$. If $\mathfrak c(p)=p/\Gamma(1-p)$ and
+\[
+ \mathcal R(p)=\int_0^1[\ell(t)-3\sqrt t]t^{-p-1}\,\dd t
+                 +\int_1^\infty\ell(t)t^{-p-1}\,\dd t,
+\]
+then $\mathcal R(p)$ is holomorphic for $0<\Re p<1$, with value
+$\mathcal R$ at $p=1/2$, and
+\[
+ \ljE D^p=\mathfrak c(p)\mathcal R(p)+\frac{3\mathfrak c(p)}{1/2-p}.
+\]
+Compare this with \eqref{cjm:eq:limit-moment}:
+\[
+ \mathcal H(p)=\mathfrak c(p)\mathcal R(p)+\frac{3\mathfrak c(p)-\mathfrak ap}{1/2-p}.
+\]
+The numerator in the quotient vanishes at $p=1/2$. Its derivative there is
+$\frac{\mathfrak a}2\psi(1/2)$, where $\psi=\Gamma'/\Gamma$, since
+$\mathfrak c'(p)=\Gamma(1-p)^{-1}[1+p\psi(1-p)]$.
+Consequently the quotient tends to $-\frac{\mathfrak a}2\psi(1/2)$.
+The duplication formula for $\Gamma$, differentiated at $1/2$, gives
+$\psi(1/2)=-\gamma-2\log2$. Finally
+$\mathfrak c(1/2)=1/(2\sqrt\pi)$, proving \eqref{cjm:eq:h-laplace}.
+\end{proof}
+
+\subsection{Stable evaluation near zero}
+A naive evaluation of $1-G(e^{-t})-3\sqrt t$ loses digits near zero.
+The verification code instead uses the algebraically equivalent form
+\begin{equation}
+ \ell(t)=\frac{s[12+(25+r)s+(11-r)s^2]}{4(1+2s)(1+s)^2},
+ \quad s=\sqrt{-\operatorname{expm1}(-t)},\quad
+ r=\sqrt{(1+s)/2}.
+ \label{cjm:eq:ell-stable}
+\end{equation}
+Writing $t=v^2$, it subtracts $3v$ by the identity
+\begin{equation}
+ \ell(v^2)-3v=3(s-v)+
+ \frac{s^2[(r-23)-(49+r)s-24s^2]}{4(1+2s)(1+s)^2}.
+ \label{cjm:eq:ell-remainder}
+\end{equation}
+The factor $s-v$ is rationalized; the remaining exponential cancellation
+can be removed by
+\[
+ e^{-x}-1+x=\frac{x^2}{2}\,{}_1F_1(1;3;-x),
+\]
+whose identity follows term by term from the exponential series. The
+transformed integrand $2[\ell(v^2)-3v]/v^2$ has finite endpoint limit
+$(1/\sqrt2-23)/2$.
+
+For the second integral in \eqref{cjm:eq:A-integral}, the code uses
+\[
+ \int_1^\infty\ell(t)t^{-3/2}\,\dd t
+      =2-\int_1^\infty G(e^{-t})t^{-3/2}\,\dd t.
+\]
+The last integrand decays exponentially. These rearrangements make the
+reported numerical agreement meaningful; they are not an interval-based
+error proof.
+
+\begin{table}[htbp]
+\centering
+\caption{Constants evaluated from convergent integrals. The displayed
+decimals are numerical approximations, not certified enclosures.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Approximation\\
+\midrule
+$\cjmic$ & $\phantom{-}0.367948538497933$\\
+$\cjmac$ & $-1.310069952497335$\\
+$c_\star=\cjmic+\cjmac$ & $-0.942121413999402$\\
+$B_0=\cjmic-\mathfrak a$ & $-1.324620212145336$\\
+$B_1=\mathfrak a+\cjmac$ & $\phantom{-}0.382498798145934$\\
+$\mathfrak m(1/4)$ & $-2.575500874573932$\\
+\bottomrule
+\end{tabular}
+\label{cjm:tab:constants}
+\end{table}
+
+\section{Exact finite checks and numerical illustrations}
+\label{cjm:sec:computation}
+
+\subsection{Counting rather than sampling}
+The manuscript's code computes exact integer distributions of $D_n$ through
+$n=64$. It uses the endpoint-threshold recurrence derived in
+\cref{cjm:app:recurrence}, not Monte Carlo sampling. Independent recursive
+generation of every $132$-avoider through size ten agrees with the resulting
+deficit histograms. For sizes through seven, a separate test of the defining
+$132$ condition on all permutations verifies the recursive generator.
+
+The verification run records:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check & Count or range\\
+\midrule
+Definition-based avoiders checked & $625$ (sizes $1$--$7$)\\
+Generated avoiders checked against histograms & $23\,713$ (sizes $1$--$10$)\\
+Endpoint-state equalities checked & $784$\\
+Exact deficit distributions & sizes $1$--$64$\\
+Exact PGF coefficients checked & $129$ (degrees $0$--$128$)\\
+Symbolic algebraic identities & $5$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The integer totals equal the Catalan numbers at every computed size.
+The PGF coefficients are exact rational numbers; multiplication by the
+algebraic denominator is checked coefficient by coefficient, and the
+coefficient of $z$ is exactly $7/48$. (Part~III's
+\path{data/03-largest-jump-limit_probabilities.csv} records the same
+probabilities $\ljP(D=k)$ for $k\le256$, computed there independently.)
+
+\subsection{Independent numerical regressions}
+The constant calculation was repeated at 40- and 70-decimal working
+precision. The two computations agreed to more than 29 decimal places in
+the recorded regression check. The elementary formula for $\cjmac$ was
+checked against a separately evaluated convergent integral. The value of
+$\cjmic$ was also compared with the symmetric removable limit of the
+regularized fractional-moment expression at $p=1/2\pm10^{-6}$; its observed
+difference was about $2.68\times10^{-12}$.
+
+A different, slower check uses the first 128 exact PGF coefficients in
+\eqref{cjm:eq:h-capped}. It gives $0.377930026226763$ for the truncated
+microscopic constant, about $0.00998149$ above $\cjmic$, consistent with its
+$O(1/N)$ truncation scale. No interval enclosure is inferred from that
+comparison. The pole finite part of $\mathfrak m$ was also checked
+numerically against $B_1$, and $\mathfrak m(1)=\mathfrak a$ was verified at
+high precision as a normalization check. (That is Part~IV's mean constant,
+$\mathfrak m_1=3/\sqrt\pi$.)
+
+\subsection{What the finite data actually show}
+\begin{table}[htbp]
+\centering\small
+\caption{Finite-size moments from exact integer distributions, rounded
+for display. The last row lists the proved limits, not fitted estimates.}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $\ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n$ &
+$n^{1/4}(\ljE D_n^{1/4}-\ljE D^{1/4})$ & $\ljE^0_n\vartheta_n$\\
+\midrule
+8  & $-0.1296061114$ & $-2.0053474893$ & $0.5061596109$\\
+16 & $-0.2961230527$ & $-2.0986386677$ & $0.5651776479$\\
+32 & $-0.4402451849$ & $-2.1871612273$ & $0.5855553734$\\
+64 & $-0.5577086463$ & $-2.2648950027$ & $0.5922137801$\\
+\midrule
+$\infty$ & $-0.9421214140$ & $-2.5755008746$ & $0.5$\\
+\bottomrule
+\end{tabular}
+\label{cjm:tab:finite}
+\end{table}
+
+These sizes are not close enough to identify the limiting constant by
+inspection. In particular, the critical-biased mean scale is moving away
+from $1/2$ in the displayed range even though the theorem proves its
+convergence to $1/2$. The data test the implementations and illustrate slow
+finite-size behavior. They are not evidence sufficient to prove the
+asymptotic formulas, and no coefficient in a theorem was fitted to them.
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=.86\linewidth]{figures/06-critical-moments-centered_moment.pdf}
+\caption{The centered square-root moment at the four computed sizes and
+its proved limiting constant. The substantial remaining gap illustrates
+why numerical fitting was not used to derive $c_\star$.}
+\label{cjm:fig:centered}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering\includegraphics[width=.86\linewidth]{figures/06-critical-moments-biased_distribution.pdf}
+\caption{Critical-biased logarithmic distribution functions of
+$\vartheta_n$ (the axis label's $t=\log D_n/\log n$) from exact counts, for
+$n=16,32,64$. The limiting distribution is uniform, but finite distributions
+are atomic and their convergence is not in total variation.}
+\label{cjm:fig:biased}
+\end{figure}
+
+\subsection{Rebuilding and rerunning}
+\label{cjm:sec:reproduce}
+Part~V's files are
+\begin{lstlisting}
+code/06-critical-moments-exact_counts.py     Exact distributions, exhaustive
+                                             comparisons, rational PGF coefficients
+code/06-critical-moments-verify_symbolic.py  Five exact algebraic identity checks
+code/06-critical-moments-numerics.py         Stable quadrature, independent
+                                             numerical regressions, finite moments
+code/06-critical-moments-figures.py          The three figures of this part
+code/06-critical-moments-build.sh            The manuscript's three-pass build
+data/06-critical-moments-*                   Recorded checks, exact counts and
+                                             coefficients, numerical output,
+                                             requirements, delivery PDF audit
+figures/06-critical-moments-*.pdf            The three figures of this part
+06-critical-moments-SOURCES.md               Pinned source paths, literature scope
+06-critical-moments-PROOF_STATUS.md          Trust boundary and statement ledger
+\end{lstlisting}
+The scripts are shipped byte-identical to the delivery and still use the
+delivered names: they read and write \path{data/exact_distributions.json},
+\path{data/pgf_coefficients.json}, \path{data/exact_checks.json},
+\path{data/symbolic_checks.json}, \path{data/constants.json},
+\path{data/finite_moments.csv} and unprefixed files in \path{figures/}, and
+the build script looks for an \texttt{article.tex} beside itself. The
+report's README gives a recipe that restores the delivered layout in a
+scratch copy; there, the manuscript's instructions apply,
+\begin{verbatim}
+python code/exact_counts.py --max-n 64 --pgf-terms 128
+python code/verify_symbolic.py
+python code/numerics.py
+python code/figures.py
+\end{verbatim}
+and rerunning overwrites only the copy's recorded outputs. The counting
+program uses the Python standard library. The symbolic, quadrature and
+figure programs additionally use SymPy, mpmath, NumPy and Matplotlib; the
+versions used are recorded in \path{data/06-critical-moments-requirements.txt}.
+None of these computations is connected to a proof-assistant checker. Their
+output certifies only that the indicated finite assertions passed in the
+execution environment. The retained figures make Python unnecessary for
+rebuilding the article.
+
+\section{What has been settled, and what has not}
+\label{cjm:sec:scope}
+The two explicit questions answered here are convergence of the centered
+critical half-moment and the first correction to every fixed positive
+subcritical moment (\cref{mj:sec:q-centered}). Their proofs are consequences
+of exactly the three inputs of \cref{cjm:sec:inputs}. The new
+logarithmic-scale statements organize the same information into a
+distributional picture, and the general theorem makes that mechanism reusable
+outside the permutation problem.
+
+Several stronger assertions would exceed the proof. There is no new local
+limit for individual lattice masses, no exact leading constant in the
+original total-variation error, and no description of the adjacency-bound
+transition at $m=n/2$. The coefficient function $\mathfrak m(p)$ is
+analytically continued below $1/2$, but the moment theorem is not extended
+to $p\le0$ on that basis. A continuation of a coefficient formula does not
+by itself continue an asymptotic theorem.
+
+The complex crossover is locally uniform for fixed compact sets of
+$\lambda$, not uniform as $|\lambda|\to\infty$. For fixed
+supercritical $p$, the present transfer theorem does not supply an
+$o(1)$-accurate second-order constant. The numerical constants are exact
+only through their convergent definitions; their printed decimal
+approximations have not been enclosed by interval arithmetic. Discrete
+biased laws do not converge to their continuous limit in total variation,
+and the negative endpoint coefficient $B_0$ has no positive-measure
+interpretation. No elementary closed form, rationality or transcendence
+result is claimed for the microscopic constant.
+
+Finally, no proof of Part~V has been checked by Lean or Rocq, and neither
+the advance relative to Parts~III and~IV nor a bounded literature search
+constitutes external validation of publication priority. These limits do
+not weaken the stated abstract implications; they identify precisely the
+boundary of the contribution.
+
+\section{Further research questions and proposed routes}
+\label{cjm:sec:future}
+The manuscript proposes ten questions. Four overlap with questions of
+Part~IV; they are printed here with pointers to Part~IV's text, which is
+not repeated.
+
+\subsection{A rate for the centered half-moment}
+The exact decomposition reduces the rate problem to
+$\mathcal J_n(1/2)-\mathcal J(1/2)$, up to an $O(n^{-1})$ microscopic tail
+error. Can one prove an explicit bound, or an asymptotic equivalent, for that
+weighted macroscopic discrepancy? A promising route is to quantify Part~III's
+stopping-word or Part~IV's maximum-decomposition argument in a weighted
+integral norm rather than demand a uniform relative tail estimate at every
+scale. Such a result would immediately sharpen both \eqref{cjm:eq:critical}
+and \eqref{cjm:eq:BL-bound}. (This refines, at the critical exponent,
+Part~IV's question on second-order moment asymptotics,
+\cref{cjm:sec:mj-second}.)
+
+\subsection{A local limit and the exact total-variation constant}
+The derivative $\rho(u)$ suggests a lattice approximation for
+$\ljP(D_n=d)$ when $d/n$ stays inside $(0,1/2)$. Proving it requires more
+than differentiation of the existing tail limit. Exact endpoint-state
+counts may identify a useful discrete difference equation. Even a local
+bulk theorem would not alone determine the total-variation constant; one
+must control all remaining scales and the signs of probability-mass
+errors. Part~V does not identify that constant. (These are Part~IV's
+questions \cref{cjm:sec:mj-local} and \cref{cjm:sec:mj-tv}, asked there
+by both of its manuscripts.)
+
+\subsection{The half-size threshold}
+The leading bulk profile vanishes at $u=1/2$, corresponding to adjacency
+bound $m=n/2$. What scale and limiting function describe the transition
+there? The endpoint expansion in \eqref{cjm:eq:bulk-profile} is linear from
+below, but gives no order on or beyond the threshold. A refined terminal
+split analysis, retaining lattice offsets and two-large-block events,
+seems more suitable than the present integrated method. (This is Part~IV's
+question \cref{cjm:sec:mj-half}.)
+
+\subsection{Wider moving-exponent windows}
+Can \eqref{cjm:eq:crossover} be made uniform for
+$|\lambda|\le L_n$ with $L_n\to\infty$? Such a theorem would match the
+critical window to fixed subcritical or supercritical regimes.
+The general proof exposes two issues: controlling the range of $p$ in
+$\mathcal J_n(p)-\mathcal J(p)$, and ensuring that its error remains small
+after multiplication by $e^\lambda$. A quantitative estimate from the first
+question is an essential ingredient.
+
+\subsection{Negative exponents and logarithms without critical bias}
+For $p\le0$, the integral involving $\mathfrak b(u)$ is no longer controlled
+merely by boundedness at zero. The explicit limiting profile has a better
+small-$u$ expansion, but the finite discrepancies need a matching uniform
+estimate. Can one prove that stronger estimate, and thereby determine
+corrections to $\ljE\log D_n$ or $\ljE D_n^p$ for negative $p$? This is a
+separate boundary-layer problem, not an automatic consequence of
+\eqref{cjm:eq:regularized-beta}.
+
+\subsection{Geometry of a permutation under critical bias}
+The theorem identifies the scale of the deficit but not the conditioned
+permutation. Under square-root bias, condition further on
+$\log D_n/\log n\in(s,t)$. What happens to the location of the largest
+jump, the relative ascent/descent contribution, or the sizes along the
+maximum-decomposition path? A joint extension of Part~IV's marked
+macroscopic measure (\cref{mj:thm:marked}) could lead to a scale-indexed
+geometric limit. (This is the critical-bias counterpart of Part~IV's
+question \cref{cjm:sec:mj-geometric}, which conditions on a macroscopic
+deficit instead.)
+
+\subsection{Other Catalan models and other tail exponents}
+The abstract theorem permits arbitrary $\alpha>0$. Which statistics on
+Catalan trees, other pattern classes, or conditioned branching structures
+satisfy its three hypotheses? The crucial target is a uniform
+$O(n^{-\alpha})$ survival error, not merely convergence in distribution.
+The counterexample in \cref{cjm:prop:counterexample} provides a diagnostic
+for proposed generalizations: hidden intermediate-scale mass must be
+excluded.
+
+\subsection{Higher-order endpoint corrections}
+The first signed correction consists of two point masses. A next term
+might involve derivatives of endpoint evaluations, a regular measure on
+$[0,1]$, or slower scales, depending on the rate and shape of
+$g_n-\mathfrak b$. Determine the appropriate test-function topology and the
+next expansion before guessing its support. The direct three-integral proof
+provides a natural starting point, with its $1/\log n$ terms still visible.
+
+\subsection{Certified constants and their analytic nature}
+The formulas for $\cjmic$ and $c_\star$ are absolutely convergent and
+amenable to interval quadrature. A useful computational continuation would
+supply a rigorous decimal enclosure, with explicit small-$t$ and large-$t$
+error bounds. A more theoretical question asks whether $\cjmic$ admits a
+simpler special-function expression. No elementary closed form, rationality
+or transcendence claim is suggested by the present decimal computation.
+
+\subsection{Formalization in the repository}
+A manageable first Lean target is the abstract theorem for real exponents
+on a fixed compact interval, followed by the critical half-moment and the
+bounded-Lipschitz estimate. The proof uses tail integration, dominated
+convergence, elementary power integrals, and uniform bounds; it need not
+initially formalize complex holomorphy. The application then requires
+formal counterparts of the three probabilistic inputs from Parts~III
+and~IV. Keeping these interfaces separate would make proof status explicit
+and permit independent replacement of any input argument. (Part~IV's
+formalization targets are in \cref{cjm:sec:mj-formal}; no Lean or Rocq
+declaration for any part of this report exists.)
+
+\section{The exact endpoint recurrence used by the checks}
+\label{cjm:app:recurrence}
+This section was the manuscript's Appendix~A. It gives the finite
+combinatorics used by the verification code. The recurrence is inherited
+from the endpoint-state approach of Mayama--Akita~\cite{MayamaAkita} and is
+Part~I's \cref{prop:endpoint}, in the coefficient form Part~IV prints as
+\eqref{mj:eq:DP}; the first-entry count is Part~III's
+\eqref{lj:eq:first-count}. The manuscript derives both again, by the same
+maximum decomposition as Parts~I and~III, to make its checks reproducible
+independently of the repository's code, and its derivation is kept here in
+Part~IV's notation (\cref{cjm:tab:notation}).
+
+\subsection{Maximum decomposition and first entries}
+Every nonempty $132$-avoider has a unique decomposition
+\begin{equation}
+ \pi=(\sigma+b)\,n\,\tau,
+ \qquad \sigma\in\Av_a(132),\quad\tau\in\Av_b(132),\quad a+b=n-1.
+ \label{cjm:eq:root}
+\end{equation}
+All left entries must exceed all right entries: otherwise a left entry,
+the maximum, and a larger right entry form a $132$ pattern. Conversely,
+this condition and avoidance in the two blocks ensure avoidance globally.
+It follows that the recursive generator is exhaustive and has no
+duplicates, and yields the Catalan recurrence. (This is Part~I's maximum
+decomposition, \cref{sec:endpoints}.)
+
+Let $\mathcal N_n(u)$ count unrestricted size-$n$ avoiders with first
+deficiency $n-\pi_1\le u$. Set $\mathcal N_n(u)=0$ for $u<0$ and
+$\mathcal N_0(u)=1$ for $u\ge0$. For $1\le f\le n$, the number with first
+entry $f$ is
+\begin{equation}
+ N_{n,f}=\frac{n-f+1}{n}\binom{n+f-2}{n-1},
+ \label{cjm:eq:first-entry}
+\end{equation}
+Part~III's \eqref{lj:eq:first-count}. Here is the manuscript's
+generating-function proof, which also checks the endpoint convention. Write
+$\Cat(x)=\sum_{n\ge0}C_nx^n$, so $\Cat(x)=1+x\Cat(x)^2$, and for $j\ge0$
+put
+\[
+ \mathcal G_j(x)=\sum_{n\ge j+1}N_{n,n-j}x^n.
+\]
+When the first deficiency is zero, the maximum is first and the rest is
+an arbitrary avoider, so $\mathcal G_0=x\Cat(x)$. When the first deficiency is
+$j\ge1$, the left block in \eqref{cjm:eq:root} is nonempty. Its first
+entry has deficiency $j-1$ inside that block, while the right block is
+arbitrary. Thus $\mathcal G_j=x\Cat(x)\mathcal G_{j-1}$, giving
+\[
+ \mathcal G_j(x)=(x\Cat(x))^{j+1}.
+\]
+Lagrange inversion applied to $\Cat-1=x\Cat^2$ gives, for $k\ge0$,
+\[
+ [x^k]\Cat(x)^{j+1}
+ =\frac{j+1}{2k+j+1}\binom{2k+j+1}{k}.
+\]
+Substitute $k=n-j-1$ and simplify the binomial coefficient. The result
+is \eqref{cjm:eq:first-entry} with $f=n-j$. (Part~III reaches
+$(x\Cat)^{j+1}$ through the bivariate series \eqref{lj:eq:first-gf} and
+\eqref{lj:eq:deficiency-fixed}; the manuscript's one-line recursion in $j$
+is the same decomposition read one deficiency at a time.) Thus
+\begin{equation}
+ \mathcal N_n(u)=\sum_{j=0}^{\min(u,n-1)}
+       \frac{j+1}{n}\binom{2n-j-2}{n-1},\qquad n\ge1.
+ \label{cjm:eq:h-count}
+\end{equation}
+The program checks that each complete row sums to $C_n$.
+
+\subsection{Two endpoint thresholds}
+Let $T^{(m)}_{u,v}(n)$ count size-$n$ avoiders with every adjacent
+difference at most $m$, first deficiency at most $u$, and last deficiency at
+most $v$ (Part~I's $T^{(m)}_{p,q}(n)$ with finite thresholds). Negative
+thresholds give zero, $T^{(m)}_{u,v}(1)=1$ for nonnegative thresholds, and
+thresholds above $n-1$ are clipped to $n-1$.
+
+For $n\ge2$ one has
+\begin{align}
+ T^{(m)}_{u,v}(n)={}&T^{(m)}_{u-1,m-1}(n-1)\notag\\
+ &+\sum_{k=1}^{\min(m,n-1)}c_{k,u}\,
+       T^{(m)}_{m-k,v-k}(n-k),
+ \label{cjm:eq:threshold-recurrence}\\
+ c_{k,u}&=\begin{cases}1,&k=1,\\\mathcal N_{k-1}(u-1),&k\ge2,\end{cases}
+ \notag
+\end{align}
+which is \eqref{mj:eq:DP}. The unrestricted adjacency count is
+$a_n^{(m)}=T^{(m)}_{n-1,n-1}(n)$.
+
+\begin{proof}[Proof of \eqref{cjm:eq:threshold-recurrence}]
+If the maximum is last, deleting it changes the first deficiency bound to
+$u-1$. The final jump has size $n-\pi_{n-1}$, so the old last deficiency
+must be at most $m-1$. The new last deficiency is zero, explaining the
+first term.
+
+Otherwise let the maximum be at position $k$, so the right block has size
+$b=n-k\ge1$. The jump from the maximum to its following entry is at least
+$k$, hence $k\le m$. The left block has size $k-1\le m-1$, so its internal
+jumps and its jump to the maximum automatically meet the adjacency bound.
+When nonempty, its first deficiency must be at most $u-1$; it contributes
+$\mathcal N_{k-1}(u-1)$. If it is empty, the first entry is the maximum, and
+the coefficient is one.
+
+The jump from the maximum to the first entry $f$ of the standardized right
+block has size $n-f=k+(b-f)$, so its first deficiency is at most $m-k$.
+The final deficiency of the whole permutation is $k$ plus the right-block
+last deficiency, so that bound is $v-k$. This gives the summand.
+Uniqueness of \eqref{cjm:eq:root} makes all cases disjoint.
+\end{proof}
+
+The manuscript's code uses this recurrence for every size, without the
+faster unrestricted-state shortcut \eqref{mj:eq:unrestrictedDP} of
+Part~IV's \path{code/05-macroscopic-deficits-model.py}, which it inspected.
+It is therefore intended as a finite verification implementation, not a
+claim of optimal enumeration complexity. It explicitly clears the
+memoization cache when the adjacency bound changes.
+
+\section{Proof and computation audit}
+\label{cjm:app:audit}
+This section was the manuscript's Appendix~B.
+\begin{longtable}{>{\raggedright}p{.29\linewidth}>{\raggedright}p{.30\linewidth}>{\raggedright\arraybackslash}p{.31\linewidth}}
+\toprule
+Statement & Dependency & Verification status\\
+\midrule
+\endhead
+Algebraic limiting law and tail & Part~III, \cref{lj:thm:main,lj:thm:tail-main} & Adopted theorem of Part~III; not formalized\\
+Uniform survival error & Part~III's total-variation theorem, \eqref{lj:eq:main-tv} & Immediate half-line consequence; Part~III not formalized\\
+Bulk profile & Part~IV, \cref{mj:thm:profile} & Adopted theorem of Part~IV; not formalized\\
+Uniform moment transfer & Three abstract hypotheses & Complete proof in \cref{cjm:sec:transfer}\\
+Centered half-moment & Transfer theorem and explicit profile & Complete deduction; convergent exact constant\\
+Subcritical correction & Transfer theorem and regularization & Complete deduction; negative sign proved\\
+Complex critical window & Locally uniform transfer & Complete proof; compact windows only\\
+Signed endpoint measure & Three abstract hypotheses & Complete proof in dual bounded-Lipschitz norm\\
+Tilted limits and logarithmic powers & Endpoint theorem & Complete proofs by normalization and test functions\\
+Intermediate-scale counterexample & Truncated Pareto mixture & Explicit construction and proof\\
+Exact finite counts & Endpoint recurrence and independent generation & Integer regression checks through the stated ranges\\
+Constant decimals & Convergent quadrature formulas & Precision and alternate-form checks; not interval certified\\
+Lean/Rocq endpoint & Not supplied & No formal verification claimed\\
+\bottomrule
+\end{longtable}
+
+An audit should check in particular the following possible failure points.
+The leading tail coefficient is $\mathfrak a=3/\sqrt\pi$, but the critical
+logarithm coefficient is $\mathfrak a/2$. The finite part of $\mathfrak m(p)$
+at its pole is $B_1=\mathfrak a+\cjmac$, not $\cjmac$. The microscopic
+constant $\cjmic$ and the finite-permutation constant $c_\star$ differ. The
+negative endpoint coefficient is a signed correction, not a negative
+probability. The complex moment theorem has an explicit strip, and its
+fixed-supercritical error cannot be silently strengthened. Finally, the
+finite numerical checks have no bearing on the validity of dominated
+convergence beyond their stated regression role. The incomplete beta
+expression is regularized below $p=1/2$; no divergent integral is treated as
+an ordinary integral, and complex powers always use the real logarithm of a
+positive base (\path{06-critical-moments-PROOF_STATUS.md}).
+
+\section{Repository pin, literature scope and merge}
+\label{cjm:sec:provenance}
+
+\subsection{Manuscript~06's pin and literature scope}
+The manuscript records the ProveIt commit \cjsha, resolved through GitHub's
+main-branch reference on 30 September 2026, and the report directory
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+enumerative-combinatorics/\\
+adjacency-bounded-132-avoiders/.
+\end{quote}
+It inspected three files there, with the Git blobs
+\begin{center}\small
+\begin{tabular}{ll}
+\texttt{README.md} & \texttt{9b6865915b549427272025beaf2826d59131b6d1}\\
+\texttt{article.tex} & \texttt{c673f447a22396f5c66b36b4ce8141acc0ceee3d}\\
+\path{code/05-macroscopic-deficits-model.py} & \texttt{f0248e0d6181200257e2949c1a8fa8f9fecf5617}
+\end{tabular}
+\end{center}
+The README's list of what Parts~III and~IV do not claim names the centered
+half-moment and the subcritical corrections; the article supplied Parts~III
+and~IV; the model's endpoint-state recurrence and first-entry formula
+informed the manuscript's independent verification code. The interfaces it names are Part~III's \cref{lj:thm:main},
+\cref{lj:sec:pgf}, \cref{lj:sec:singularity}, \cref{lj:sec:tv} and
+\cref{lj:cor:sharp-tv} (it does not assume the exact total-variation
+constant) and Part~IV's \cref{mj:thm:profile}; the open problems it cites are
+\cref{mj:sec:q-centered}, Part~IV's scope discussion (\cref{mj:sec:scope})
+and the README's list. It requires no result about the fixed-$m$ growth
+constants of Parts~I and~II. The full ledger is
+\path{06-critical-moments-SOURCES.md}.
+
+The primary arXiv records and relevant HTML of \cite{Nadler,MayamaAkita}
+were checked on September 30, 2026. They provide problem context and the
+endpoint-state enumeration method; the largest-jump critical-moment results
+are not attributed to them. The investigation compared the report's explicit
+list of open questions with the new deductions and made targeted public
+searches for the relevant permutation and critical-moment terms. This does
+not establish that the abstract transfer principle, the constants, or related
+conclusions have never appeared elsewhere. There is no claim of exhaustive
+bibliographic coverage, external peer review, or established publication
+priority; claims of progress are relative to the pinned report. No complete
+report or external paper is redistributed.
+
+\subsection{Where the merge had to choose}
+\label{cjm:sec:merge}
+\begin{itemize}
+\item \emph{Placement.} Part~V follows Part~IV and precedes Part~I's
+ appendices, which contain no numbered equations, tables or figures; no
+ number of Parts~I--IV changed. The manuscript's Appendices~A and~B are
+ printed as \cref{cjm:app:recurrence,cjm:app:audit}; its Appendix~C
+ (package map) and its reproduction subsection are replaced by
+ \cref{cjm:sec:reproduce}. Its title page and abstract are replaced by the
+ opening note of Part~V, the status box of \cref{cjm:sec:source} and a
+ paragraph of the report's abstract; every claim of its abstract is stated in
+ \cref{cjm:sec:main}. The delivery's title-page and metadata wording naming
+ the assistant's addressee is not printed; the manuscript is described here
+ only as AI-assisted.
+\item \emph{Introduction.} The manuscript's Section~1.1 (``A specific gap,
+ rather than a new encoding of an old theorem'') and~1.2 (``Version boundary
+ and inherited status'') describe this report from outside, by pin and README
+ lines. They are rewritten as the second and third subsections of
+ \cref{cjm:sec:intro}, citing Parts~III and~IV by label; the pin and file
+ record moved to the previous subsection. Its contribution table is
+ \cref{cjm:tab:ledger}.
+\item \emph{Duplicates with Parts~III and~IV.} The three inputs of
+ \cref{cjm:sec:inputs} are results of Parts~III and~IV and are printed again
+ as the interface of Part~V, each with its source; the manuscript's
+ ``Part~IV, Theorem~38.1 of the pinned report'' is \cref{mj:thm:profile}.
+ The expansion \eqref{cjm:eq:pgf-expansion} is Part~III's, the density
+ \eqref{cjm:eq:bulk-density} Part~IV's. The maximum decomposition, the
+ first-entry count and the endpoint recurrence of \cref{cjm:app:recurrence}
+ are Part~I's, Part~III's and Part~I's (as Part~IV's \eqref{mj:eq:DP});
+ the manuscript's derivations are kept there, marked, because its checks
+ were built on them.
+\item \emph{What Part~V sharpens.} \Cref{cjm:thm:critical} sharpens Part~III's
+ \eqref{lj:eq:critical-moment}, \cref{cjm:thm:subcritical} its
+ \eqref{lj:eq:small-moments}, and \cref{cjm:lem:beta} Part~IV's pole
+ \eqref{mj:eq:p-half}. The manuscript's sentence that its coefficient
+ function is the supercritical leading coefficient is proved as an identity
+ with Part~IV's $\mathfrak m_p$ in \cref{cjm:rem:mp} (the merge's). Nothing
+ in Parts~I--IV is refuted.
+\item \emph{Notation.} Every rename is listed in \cref{cjm:tab:notation}:
+ $\mathcal K(p)\to\mathfrak m(p)$, $h\to\cjmic$, $j\to\cjmac$,
+ $a\to\mathfrak a$ (the tail coefficient; the block sizes $a$, $b$ keep
+ their letters), $A_0=a/2\to\frac3{2\sqrt\pi}$ (written out),
+ $\Phi\to\mathcal M$, $T_n\to\vartheta_n$, $Q_n^\lambda\to
+ \ljP_n^\lambda,\ljE_n^\lambda$, $\mu_\lambda\to\varpi_\lambda$,
+ $m\to\cjLeb$, $S,S_n,S_Y\to\mathcal S,\mathcal S_n,\mathcal S_Y$,
+ $r(x)\to\varrho(x)$, $b\to\mathfrak b$, $H,J,J_n\to\mathcal H,\mathcal
+ J,\mathcal J_n$, $\mathcal A,\mathcal A(p)\to\mathcal R,\mathcal R(p)$,
+ $c(p)\to\mathfrak c(p)$, the compact set $K\to\mathcal D$, the constants
+ $C,C_K\to K,K_{\mathcal D}$, $P=\sup|p|\to p^\ast$, $L=\log n$ (written
+ out), $\psi\to\varphi_\lambda$ in the proof of \cref{cjm:cor:tilt} (the
+ manuscript's $\psi$ is also the digamma function),
+ $F(u)\to\mathcal F(u)$ in the proof of \cref{cjm:lem:j},
+ $C(x)\to\Cat(x)$, $h(n,u)\to\mathcal N_n(u)$, $A_j\to\mathcal G_j$,
+ $c_k(u)\to c_{k,u}$, $T_m(n,u,v)\to T^{(m)}_{u,v}(n)$; the macros
+ $\mathbb E,\mathbb P,d_{\mathrm{TV}},\mathcal L$ are Part~III's. No
+ normalization changed.
+\item \emph{Labels.} The manuscript's 102 labels are kept with the prefix
+ \texttt{cjm:}; its \texttt{eq:h} and \texttt{sec:computation} would
+ otherwise collide with Part~I's. The merge added labels to eight new
+ headings, tables and remarks of Part~V and to six unlabelled question
+ headings of Part~IV (\cref{cjm:sec:mj-half,cjm:sec:mj-local,cjm:sec:mj-tv,cjm:sec:mj-second,cjm:sec:mj-geometric,cjm:sec:mj-formal})
+ so that Part~V can cite them.
+\item \emph{Research questions.} All ten are printed. Four overlap with
+ Part~IV: the local limit and total-variation constant (Part~IV's
+ \cref{cjm:sec:mj-local,cjm:sec:mj-tv}), the half-size threshold
+ (\cref{cjm:sec:mj-half}), and formalization (\cref{cjm:sec:mj-formal});
+ two bear on Part~IV's questions on second-order asymptotics and the
+ conditioned geometry. They keep the manuscript's text with a pointer.
+ Part~IV's \cref{mj:sec:q-centered}, and the critical half of Part~III's
+ Section~\ref{mj:sec:lj-moments}, carry dated notes that Part~V answers
+ them.
+\item \emph{The merge's own text.} The opening note, \cref{cjm:sec:source},
+ the notation subsection and table, the sentences after
+ \cref{cjm:thm:critical,cjm:thm:subcritical,cjm:thm:logmeasure},
+ \cref{cjm:rem:mp}, this section's first subsection (condensed from the
+ manuscript's \path{06-critical-moments-SOURCES.md} and its Section~1.2),
+ the bracketed or parenthesized merge notes, and this list are the merge's.
+\item \emph{Reproduction and figures.} The manuscript's package listing and
+ commands are replaced by the shipped names and the copy recipe
+ (\cref{cjm:sec:reproduce} and the README). The three figure PDFs were
+ regenerated in the write phase by the delivered \path{figures.py}, run
+ unchanged on a copy of the delivered layout with Matplotlib~3.10.8,
+ NumPy~2.3.5 and \texttt{pdf.fonttype}~42, so that they embed TrueType
+ rather than Type~3 fonts; they plot the shipped data. Their axis labels keep
+ the manuscript's $t=\log D_n/\log n$; the captions say that this is
+ $\vartheta_n$.
+\item \emph{Stale sentences elsewhere.} The abstract gained a paragraph;
+ Part~III's Section~\ref{mj:sec:lj-moments}, Part~IV's scope
+ (\cref{mj:sec:scope}), its account of what neither manuscript claims, its
+ remark after \cref{mj:prop:constantlimits}, its question
+ \cref{mj:sec:q-centered} and its scope table, and Part~I's
+ \cref{app:reproduction}, carry dated pointers to Part~V; their original
+ wording is kept.
+\end{itemize}
+
+
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
@@ -7315,7 +9310,9 @@ Added 29 September 2026, batch 43: Part~III's carry the prefix
 \path{03-largest-jump-} and are listed in \cref{lj:sec:reproduce}.
 Added 29 September 2026, batch 52: Part~IV's carry the prefixes
 \path{04-macroscopic-jump-} and \path{05-macroscopic-deficits-} and are
-listed in \cref{mj:sec:reproduce}.]
+listed in \cref{mj:sec:reproduce}.
+Added 30 September 2026, batch 64: Part~V's carry the prefix
+\path{06-critical-moments-} and are listed in \cref{cjm:sec:reproduce}.]
 
 The primary reproducibility command needs no third-party Python packages:
 \begin{lstlisting}
