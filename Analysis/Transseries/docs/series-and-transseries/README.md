@@ -2,9 +2,9 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are thirty-nine unmerged
-arrivals of 2026-09-29, each filed whole with its PDF, then amended
-editorially (see "Arrivals of 2026-09-29" below).
+2026-09-04 (see the end of this file). Beside them are forty-one unmerged
+arrivals of 2026-09-29, each filed whole with its PDF, the first
+thirty-nine then amended editorially (see "Arrivals of 2026-09-29" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -263,8 +263,8 @@ companion's directory omits the "And".
 
 ## Arrivals of 2026-09-29 (unmerged)
 
-Thirty-nine research packages arrived through the repository drop zone
-`docs/incoming/` on 2026-09-29, in six deliveries (its batches 45 to 50).
+Forty-one research packages arrived through the repository drop zone
+`docs/incoming/` on 2026-09-29, in seven deliveries (its batches 45 to 51).
 Each is filed whole, with its PDF, verification program and recorded
 outputs, in a directory named after the document. None has been reviewed
 claim by claim, and none is merged into either volume; merging is deferred.
@@ -274,7 +274,7 @@ and cite the volumes under
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/`;
 the passages they cite are unchanged here apart from that path. The
 gamma-core and residue-obstruction articles, and all articles of the third
-to sixth deliveries, cite the current paths. No article of the first two
+to seventh deliveries, cite the current paths. No article of the first two
 deliveries saw the others in the repository; where one continues another,
 it read it from Vladimir's library, as noted below. The seven articles of
 the third delivery were written after the first delivery was filed. Six
@@ -311,8 +311,15 @@ that a conjecture of the same Fabius report on small balls of polynomial
 parameter jets (`conj:jet-small-ball`) is false as stated, is filed beside
 that report, under
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Polynomial_Geometric_Small_Deviations_Fabius_Jets/`.
+The two articles of the seventh delivery were written against the
+revision that recorded the editorial pass over the first five deliveries,
+and finished before the sixth delivery was filed, so neither saw a
+sixth-delivery article. Neither cites Vladimir's library or the other.
+One continues the critical Hahn article (its lower endpoint `α ↓ 1`); the
+other answers no named question and starts from the action-accumulation
+article's flat oscillations.
 
-All forty-one packages of the six deliveries, the Fekete and
+The forty-one packages of the first six deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
 pass on 2026-09-29. Unnumbered "Editorial note (ProveIt, 2026-09-29)"
 blocks, which leave each article's own numbering unchanged, record
@@ -328,6 +335,8 @@ the delivered archives remain in the repository history
 citations below refer to the amended files; the volumes are unchanged.
 The sixth delivery was amended in the same way after it was filed, and
 notes recording it were added to eight earlier packages.
+The two packages of the seventh delivery are filed as delivered and have
+not yet been amended; their paragraphs below cite the delivered files.
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -770,6 +779,41 @@ could see; an editorial note now does, and one in the critical Hahn article
 now records this answer to its Question 1. The endpoint limit, growing
 windows and certified budgets are left open.
 
+[`Lower_Critical_Endpoint_Landau_Transseries/`](Lower_Critical_Endpoint_Landau_Transseries/)
+holds *Through the Lower Critical Endpoint: Exponentially Coalescing Folds,
+Landau Transseries, and Conditional Action Budgets* (25-page A4 PDF,
+1,697-line source, 43 exact assertions, 24 high-precision normal-form
+comparisons, and floating-point coefficient and cutoff diagnostics through
+`n = 2048`). It answers the lower half of the critical Hahn article's
+Question 4
+(`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex:1509-1514`),
+which that article's editorial note and README record as open, for the pure
+tail `c j^{−2−ε}`, `α = 1 + ε ↓ 1`, on the interior-fold side only.
+Normalizing by the exact fold `e^{−δ}` removes the apparent pole at `ε = 0`
+and gives a convergent normal form, uniform however `ε` and `δ` vanish. At
+`ε = 0` the fold distance is `δ = −log(1 − e^{−1/c}) ~ e^{−1/c}`, the
+coefficients cross over at `λ = ncδ`, and their profile is an explicit
+transform of the Landau density, with every finite order of correction in
+`δ`. The inverse has a convergent chart over a `W_0` Lambert core, hence a
+convergent expansion in `E = e^{−1/c}`, and a uniform two-sheet chart
+through the fold; the Landau formula meets the Gaussian regime with the
+factor `e^{ℓ/4}` when `λδ → ℓ`. Truncating the actions at `M` preserves the
+coefficient exactly when `Mδ → ∞`, and the loss at scaled cutoff `m` is
+doubly exponential, `√(λ/2π) exp(−m/(2λ) − λe^{m/λ})/(H(λ)m²)`, so the
+scaled budget for a small loss `h` grows like `λ log log(1/h)`. At `ε > 0`
+the model is the critical Hahn article's with `a = 1`, `β = c` and no
+prefix; its exact fold reduces to that article's emerging-fold law and its
+Gaussian law to that article's supercritical law, which that article states
+only for `1 < α < 2`. It does not cite the same question as posed by the
+confluent article (Question 10,
+`Confluent_Critical_Transseries_Exponent_Two_Boundary/Confluent_Critical_Transseries.tex:1491-1498`)
+and the logarithmic-endpoint article (Question 8,
+`Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex:1713-1717`), which
+it partly answers on the same side. It was written before the
+slowly-varying article above was filed. The boundary-critical and
+subcritical paths, slowly varying tails and certified budgets are left
+open.
+
 [`Quadratic_Exponential_Feedback_After_Reversion/`](Quadratic_Exponential_Feedback_After_Reversion/)
 holds *Quadratic Exponential Feedback after Reversion: Cancellation,
 Finite-Core Universality, and Sharp Borel Growth* (26-page A4 PDF,
@@ -947,7 +991,7 @@ natural-boundaries and inverse articles above. It does not classify
 individual Borel rays, and its recorded run output is a second copy of
 its verification record.
 
-These nineteen articles and the regularity article study one kernel,
+These twenty articles and the regularity article study one kernel,
 `U = Σ c_j q^j exp(λ_j U)`, in complementary regimes, and form one unit for
 the deferred merge; the regularity article is its host, and the critical
 Hahn article also joins the moving fold. Four pairs and one triple
@@ -958,11 +1002,14 @@ positive amplitudes, with the joint budgets `j + d_j` and
 article to slowly varying tails inside `1 < α < 2`; at `ℓ ≡ 1` its
 profile and budget are that article's, and its logarithmic tails are the
 interior counterpart of the logarithmic-endpoint article's log-weighted
-theorems. The logarithmic-endpoint and marginal
-articles prove the same endpoint core; the logarithmic-endpoint article,
-which covers more of the critical Hahn article's questions, is the natural
-base, the marginal article's certificate and budget sections enter beside
-it, and the confluent and stable–Gaussian articles supply, independently,
+theorems. The lower-endpoint article is the only one at `α ↓ 1`: for the
+pure tail above the boundary-critical coupling it reaches `α = 1` through a
+normal form uniform in `ε`, and at `ε > 0` its fold and Gaussian laws are
+the critical Hahn article's emerging-fold and supercritical laws. The
+logarithmic-endpoint and marginal articles prove the same endpoint core;
+the logarithmic-endpoint article, which covers more of the critical Hahn
+article's questions, is the natural base, the marginal article's
+certificate and budget sections enter beside it, and the confluent and stable–Gaussian articles supply, independently,
 the crossover through `α = 2` (the second one order further in a bounded
 window, the first at any rate). For eventually exact `j²` the
 microscopic-condensation article's coefficient theorem is the finite-core
@@ -983,8 +1030,11 @@ quadratic-inverse article and `aj² + bj + d` in the signed-condensation
 article; the inverse is `Q`, `V̂`, `Q` with coefficients `q_n`,
 or `V` with coefficients `v_n`; the endpoint articles use different
 logarithms, the slowly-varying article's stable scale omits the factor
-`Γ(−α)` that the critical Hahn article puts into `b_n`, the two crossover
-articles write `α = 2 − ε`, and the inverse exponent is `(d − μ)/a`,
+`Γ(−α)` that the critical Hahn article puts into `b_n`, the lower-endpoint
+article's `δ` is the fold distance, not the critical Hahn article's
+coupling mismatch `δ_β = 1 − βd_1`, and its `A = cΓ(1 − ε)δ^ε` is not that
+article's amplitude series `A(t)`, the two crossover articles write
+`α = 2 − ε`, and the inverse exponent is `(d − μ)/a`,
 `−b` or `(b − β)/a`), so a notation dictionary must come first.
 
 [`Uniform_q_Multinomial_Certified_Inversion/`](Uniform_q_Multinomial_Certified_Inversion/)
@@ -1256,6 +1306,38 @@ declarations of `Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean
 one) only to note that its supports lie outside
 them.
 
+[`Moment_Determinacy_Nonlinear_Transseries/`](Moment_Determinacy_Nonlinear_Transseries/)
+holds *Moment Determinacy and Nonlinear Transseries: A sharp Gevrey
+threshold, exact flat defects, convergent ambiguity sectors, and
+Lambert–W folds* (25-page A4 PDF, 1,839-line source, a 130-digit check
+program with exact inverse-coefficient, lattice-moment and flat-defect
+checks). It answers no named question. Starting from the flat oscillations
+of the action-accumulation article above, and from that article's note on
+the canonical volume's open `plt:rmk:ext-open-realization`
+(`Transseries_And_Inversion/transseries_and_inversion.tex:29986-30000`), which
+it leaves open, it asks whether all inverse coefficients and positivity of
+a representing measure determine the inverse `T = yS(T)` of a Stieltjes
+transform `S(t) = ∫(1 + tλ)^{−1} dμ(λ)`. They do exactly when the Stieltjes
+moment problem of `μ` is determinate. A cancellation-free Lagrange formula
+gives the inverse coefficients the Gevrey order of the moments, so order at
+most two forces uniqueness, while for every order above two a generalized
+gamma family gives a continuum of realizations of one formal inverse. The
+flat defects are exact: `πα t^{−β} exp(−sec(πα) t^{−α})/Γ(β/α)` for the
+gamma family, and `(q;q)_∞³/(MΘ_q(t))` for the even and odd `q`-lattices,
+whose log-periodic amplitude keeps it comparable to the least moment bound.
+Shifted lattices satisfy the same exact `q`-Euler equation and still differ,
+and their inverses cross infinitely often, so the two cannot lie in one
+Hardy field. Through the inversion it gives the first relative gap
+corrections, a coefficient-only error floor, and convergent expansions in
+the hidden parameter with explicit tails, whose radius is
+`t_0/(e p y D_0)`: the rescaled deformation map tends to `v e^{−v}`, the
+coefficients tend to the Cayley numbers `k^{k−1}/k!` of the canonical
+volume's tree function `p1:def:cayley`, and a real fold keeps the first
+gamma or theta correction. It does not cite the repository's determinate
+instances, the canonical volume's Bell transform `p8:thm:bell` and the
+certified `q → 1` article's Stieltjes measure. The classical moment theory
+is attributed, and the numerics are not interval-certified.
+
 [`Arithmetic_Transseries_Beyond_Accumulation_Cut/`](Arithmetic_Transseries_Beyond_Accumulation_Cut/)
 holds *Arithmetic Transseries Beyond an Accumulation Cut: divisibility,
 summable inversion, and curvature-lifted resonances* (26-page A4 PDF,
@@ -1392,11 +1474,13 @@ editorial note there cites the Lean lemma for the real monotone case of
 its residual transport, of which its complex fold statement is not a
 case. The truncation bounds of the
 negative-ray, sectorial-summability and second natural-boundaries articles
-are majorants, and the least terms of the microscopic-condensation and
-signed-condensation articles are formal, not remainder estimates; none of
-these is a sharp instance.
+are majorants, the least terms of the microscopic-condensation and
+signed-condensation articles are formal, not remainder estimates, and the
+moment-determinacy article's least moment bound is compared with its flat
+defect, not with the actual truncation error; none of these is a sharp
+instance.
 
-Twenty-four checksum ledgers were verified in full on filing and not filed.
+Twenty-five checksum ledgers were verified in full on filing and not filed.
 From the first delivery, these are the two `SHA256SUMS.txt` of the
 regularity and inverse-harmonic packages and the `SHA256SUMS` of the
 moving-fold package. From the second, they are the `SHA256SUMS` of the
@@ -1412,8 +1496,9 @@ natural-boundaries and signed-inversion packages and the `SHA256SUMS.txt` of
 the quadratic-inverse and stable–Gaussian packages. From the sixth, they
 are the `SHA256SUMS` of the amplitude–slope package and the
 `SHA256SUMS.txt` of the slowly-varying and exact-degree packages; the
-signed-condensation and second natural-boundaries packages had none. The
-READMEs of the
+signed-condensation and second natural-boundaries packages had none. From
+the seventh, it is the `SHA256SUMS` of the lower-endpoint package; the
+moment-determinacy package had none. The READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
 fourth-delivery and five fifth-delivery packages that had one, now record
@@ -1432,7 +1517,10 @@ files. The finite-core package's
 `data/build_quality.json` keeps the digests and page count of the delivered
 PDF and source, and other build and quality receipts, such as the
 direct-truncation package's `verification/pdf_audit.json`, likewise describe
-the delivered builds, as their package READMEs say.
+the delivered builds, as their package READMEs say. The lower-endpoint
+package's README still lists its ledger, and its `notes/build_report.json`
+carries digests of its delivered source, PDF, verification program and
+results, which match the filed files.
 
 Fifty-six CSV tables written with CRLF line endings were normalized to LF
 on filing: the reversion package's `numeric_checks.csv`, the regularity
@@ -1456,7 +1544,8 @@ editorial pass, every file that a program of the six deliveries writes
 itself is written with LF line endings on every platform, so a rerun no
 longer reintroduces CRLF. The slowly-varying package's filed
 `verification/results.json` has no final newline, as delivered; its
-program now writes one.
+program now writes one. The seventh delivery has no carriage return in any
+file, and its programs write LF line endings on every platform.
 
 The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`
@@ -1471,7 +1560,10 @@ signed-inversion package's `data/run.log`. All eleven were added past the
 `*.log` ignore rule.
 The sixth delivery has no `.log` file; the second natural-boundaries
 package's `data/run_output.txt` is its redirected program output and is
-byte-identical to its `data/verification.json`.
+byte-identical to its `data/verification.json`. The lower-endpoint package
+of the seventh delivery adds a twelfth, `data/run.log`, the recorded output
+of the run that wrote its `data/` files (with `--output data`; its README's
+command writes under `build/`), likewise added past the rule.
 
 No `build.sh` reruns a verification program in place any more. Those of the
 arithmetic, resonance-block, non-Archimedean reversion and Stokes-transport
@@ -1502,5 +1594,18 @@ takes `--input`); the signed-condensation default degree is now 320, that
 of its recorded run. Its `build.sh` scripts and the Makefiles' `pdf`
 targets only run pdfLaTeX (the exact-degree and second natural-boundaries
 scripts leave `build-pass-*.log` files, which are ignored).
+The programs of the seventh delivery are as delivered. The lower-endpoint
+`verify.py` writes into `build/verification` below the working directory
+unless given `--output`, so from the package root it leaves `data/` alone,
+but its `make_figures.py` always rewrites both figures and
+`data/figure_curve.json`; on Windows, where NumPy's `longdouble` is double
+precision, its numbers reproduce the recorded ones only up to the last
+digits, although its build report records a byte-identical rerun on the
+delivering platform. The moment-determinacy `verify.py` writes
+`verification_results.json` into the working directory by default, so its
+README's command run from the package root rewrites the recorded file
+(with identical bytes at the recorded precision). Both `build.sh` scripts
+only run pdfLaTeX (the lower-endpoint one under `build/`, then copying the
+PDF over `article.pdf`).
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

@@ -1,0 +1,1839 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\hypersetup{pdftitle={Moment Determinacy and Nonlinear Transseries},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Positive Stieltjes realizations, a sharp Gevrey threshold, exact flat defects, and nonlinear inverse folds}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Moment Determinacy and Nonlinear Transseries}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Id}{\operatorname{id}}
+\newcommand{\Gev}{\operatorname{Gev}}
+\newcommand{\cayley}[1]{\frac{#1^{#1-1}}{#1!}}
+\title{\textbf{Moment Determinacy and\newline Nonlinear Transseries}\\[7pt]
+\large A sharp Gevrey threshold, exact flat defects,\\
+convergent ambiguity sectors, and Lambert--\(W\) folds}
+\author{Research report prepared for Vladimir Reshetnikov\\
+\small In connection with the ProveIt research program}
+\date{29 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+A complete formal expansion need not identify the function that is to be
+inverted, even when the function is a Stieltjes transform of a positive
+probability measure. We study the nonlinear realization problem
+\(T(y)=yS(T(y))\), where
+\(S(t)=\int_0^\infty(1+t\lambda)^{-1}\dd\mu(\lambda)\).
+First, inverse identifiability is shown to be exactly equivalent to
+Stieltjes moment determinacy. A cancellation-free Lagrange formula
+preserves the exact factorial growth order of the moment sequence.
+Consequently, formal Gevrey order at most two forces uniqueness in this
+positive-measure class, whereas every order greater than two admits
+explicit continua of distinct realizations.
+
+Two complementary families make the hidden data explicit. Generalized
+gamma measures give an exact defect
+\(Ct^{-\beta}\exp(-At^{-\alpha})\); bilateral geometric measures give a
+reciprocal theta function with a nonconstant log-periodic amplitude.
+For the latter, the ambiguity is comparable to the least moment-remainder
+bound. We transport both defects through nonlinear inversion, calculate
+the first relative correction, and construct convergent expansions in
+successive powers of the flat defect with explicit Cauchy bounds.
+After a defect-dependent rescaling, the deformation map converges to
+\(v\ee^{-v}\). This proves an asymptotically exact radius for the
+parameter expansion, Cayley-number limits for its coefficients, and a
+nearby square-root fold, including its first gamma and log-periodic
+corrections.
+
+The moment-indeterminacy constructions, Hardy-type determinacy argument,
+Jacobi identity, and Lagrange inversion are classical foundations. The
+paper develops their quantitative nonlinear synthesis, without claiming
+exhaustive historical priority or a solution of the repository's general
+Hahn-series realization problem. All proofs are conventional mathematical
+proofs, not Lean formalizations. Reproducible finite checks and a precise
+research agenda accompany the article.
+\end{abstract}
+\vfill
+\noindent\textbf{Scope.} Positive-real asymptotic germs as \(y\downarrow0\);
+formal coefficient growth; explicit analytic realizations and inverse
+parameter singularities. No general summation rule is assumed.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The realization question and the contribution}
+\label{sec:context}
+
+\subsection{A focused question arising from the repository}
+The ProveIt transseries corpus distinguishes formal algebra, asymptotic
+scales, flat functions, and analytic inversion certificates
+\cite{repo-main,repo-series}. These distinctions suggest a precise
+realization question:
+\begin{quote}
+If every coefficient of an inverse expansion is known, and the
+underlying function is required to come from a positive measure, is the
+actual inverse uniquely determined? If not, what is the size and analytic
+structure of the missing information?
+\end{quote}
+This question is narrower than the construction of a general field of
+transseries and broader than computing another list of inverse
+coefficients. It admits a complete answer at the level of identifiability,
+a sharp coefficient-growth threshold, and explicit models of the
+remaining ambiguity.
+
+The inspected repository companion on action accumulation already
+exhibits flat oscillations and studies their transport under inversion
+\cite{repo-action}. Its editorial notes explicitly distinguish those
+results from the canonical volume's general realization question,
+identified there by the label
+\texttt{plt:rmk:ext-open-realization}. We maintain that distinction.
+Here the support is that of a \emph{positive Stieltjes moment problem};
+we do not construct a realization of every left-finite Hahn series.
+The positive measure is the additional structure, and moment
+determinacy is exactly the extra condition that restores identifiability.
+
+\subsection{The main results in one place}
+Let \(m_n=\int\lambda^n\dd\mu\), \(m_0=1\), and write the formal inverse as
+\begin{equation}
+ \widehat T(y)=\sum_{n\ge1}b_ny^n,
+ \qquad c_n=(-1)^n b_{n+1}.
+\end{equation}
+The following statements will be proved in order.
+
+\paragraph{An exact identifiability criterion.}
+The actual germs \(T_\mu\) and the representing measures \(\mu\) are in
+one-to-one correspondence. All measures with the same moments produce
+the same formal inverse. Thus that formal inverse identifies a unique
+positive Stieltjes realization if and only if its moment problem is
+determinate (Theorem~\ref{thm:identifiability}).
+
+\paragraph{A sharp factorial-growth threshold.}
+The coefficients satisfy the noncancelling identity
+\begin{equation}
+ c_n=\frac1{n+1}
+ \sum_{k_1+\cdots+k_{n+1}=n}m_{k_1}\cdots m_{k_{n+1}}.
+ \label{eq:intro-composition}
+\end{equation}
+In particular, \(m_n\le c_n\), and a bound
+\(m_n\le CA^n(n!)^s\) implies
+\(c_n\le(4AC)^n(n!)^s\). Formal Gevrey order \(s\le2\) therefore forces
+uniqueness. For every \(s>2\), a generalized gamma family gives distinct
+positive realizations of exact formal Gevrey order \(s\)
+(Theorems~\ref{thm:gevrey} and~\ref{thm:gamma}).
+
+\paragraph{Explicit missing data.}
+The generalized gamma family has a closed exponential defect, while the
+bilateral geometric family has a reciprocal theta defect. The latter
+has a positive log-periodic amplitude and is comparable to the
+optimally chosen moment-remainder bound
+(Theorems~\ref{thm:gamma-defect},~\ref{thm:theta-defect},
+and~\ref{thm:least}). Even an exact first-order \(q\)-difference equation,
+added to positivity and the complete formal expansion, need not select a
+unique transform (Proposition~\ref{prop:shifted}).
+
+\paragraph{Nonlinear sectors and their radius.}
+For a physical baseline \(t_0=T_{a_0}(y)\), put \(D_0=D(t_0)\) and let
+\(p\to\infty\) be the logarithmic slope scale of the defect. The expansion
+of \(T_{a_0+\delta}(y)\) in \(\delta\) converges, with explicit coefficient
+and remainder bounds. Its radius \(R_y\) obeys
+\begin{equation}
+ R_y\sim\frac{t_0}{\ee\,p\,yD_0}.
+ \label{eq:intro-radius}
+\end{equation}
+At fixed sector number \(k\), the normalized coefficient tends to
+\(k^{k-1}/k!\). The critical deformation is a Lambert--\(W\) fold, and
+its first correction retains the theta phase
+(Theorems~\ref{thm:sectors},~\ref{thm:radius}, and~\ref{thm:fold-correction}).
+
+\subsection{What is classical, and what is claimed here}
+Moment-indeterminate generalized gamma and Stieltjes--Wigert measures
+are classical; useful primary accounts include
+\cite{lin-stoyanov,chihara,christiansen,christiansen-koelink}.
+The order-two determinacy boundary is a Hardy/Carleman phenomenon,
+not a newly discovered boundary in moment theory. Likewise, Jacobi's
+triple product, Lagrange inversion, and the local square-root normal form
+are classical tools. They are either stated with attribution or derived
+in the form used below.
+
+The contribution developed in this report is the organized nonlinear
+realization theorem, its cancellation-free coefficient control, the
+exact defect transport with relative corrections, the quantitative
+convergent sector expansion, and the defect-dependent parameter-radius
+and fold analysis. These are proposed research contributions with proofs;
+we do not assert that no equivalent formulation has appeared elsewhere.
+The source comparison was targeted, not a theorem-by-theorem audit of the
+large repository corpus. No result in this report is claimed to have been
+checked by Lean.
+
+It is also important not to confuse the present nonuniqueness with a
+failure of a sectorial implicit-function theorem. A prescribed
+Borel-summable class contains additional analytic information; for
+example, Nikolaev's theorem concerns a selected summable asymptotic
+setting \cite{nikolaev}. Our input data are positivity and a full formal
+jet, without such a selection rule. The various \(q\)-summation procedures
+also have their own hypotheses \cite{divizio-zhang}; none is silently
+identified with the families below.
+
+\section{Positive Stieltjes transforms and their inverse germs}
+\label{sec:framework}
+
+\begin{definition}
+Let \(\mathcal P_\infty\) be the probability measures on \([0,\infty)\)
+with finite moments of every nonnegative integer order. For
+\(\mu\in\mathcal P_\infty\), define
+\begin{equation}
+ S_\mu(t)=\int_0^\infty\frac{\dd\mu(\lambda)}{1+t\lambda},
+ \qquad F_\mu(t)=\frac{t}{S_\mu(t)}
+ \quad(t>0).
+ \label{eq:stieltjes}
+\end{equation}
+The \emph{positive Stieltjes inverse} is \(T_\mu=F_\mu^{-1}\).
+Thus its defining equation is
+\begin{equation}
+ T_\mu(y)=yS_\mu(T_\mu(y)).
+ \label{eq:implicit}
+\end{equation}
+A flat function at zero is one that is \(O(t^N)\) for every \(N\).
+\end{definition}
+
+\begin{lemma}[Regularity, remainder, and positivity]
+\label{lem:regularity}
+The function \(S_\mu\) is holomorphic on \(\Re t>0\), is positive on
+\((0,\infty)\), and extends smoothly from the right to \(t=0\). For every
+\(k\ge0\),
+\begin{equation}
+ S_\mu^{(k)}(t)=(-1)^kk!\int_0^\infty
+ \frac{\lambda^k}{(1+t\lambda)^{k+1}}\dd\mu(\lambda).
+ \label{eq:derivatives}
+\end{equation}
+In particular, \(0<S_\mu(t)\le1\) and \(S_\mu'(t)\le0\) for real \(t>0\).
+For every integer \(N\ge0\),
+\begin{align}
+ S_\mu(t)&=\sum_{n=0}^{N-1}(-1)^n m_nt^n+R_N(t),\label{eq:remainder}\\
+ R_N(t)&=(-t)^N\int_0^\infty
+       \frac{\lambda^N}{1+t\lambda}\dd\mu(\lambda),
+ &0\le(-1)^N R_N(t)\le m_Nt^N.\label{eq:remainder-bound}
+\end{align}
+The empty sum is zero when \(N=0\).
+\end{lemma}
+\begin{proof}
+On the right half-plane, \(|1+t\lambda|\ge1\). Differentiation on compact
+sets is justified by the finite moments, giving
+\eqref{eq:derivatives}; the same domination gives continuity of every
+right derivative at zero. Holomorphy follows from dominated local
+holomorphic integration. The signs are immediate. Finally, integrate the
+finite geometric identity
+\((1+z)^{-1}=\sum_{n<N}(-z)^n+(-z)^N/(1+z)\)
+with \(z=t\lambda\ge0\). No infinite geometric expansion has been used.
+\end{proof}
+
+\begin{proposition}[Existence and a residual certificate]
+\label{prop:inverse}
+The map \(F_\mu\) is an increasing bijection of \((0,\infty)\) onto itself.
+Equation~\eqref{eq:implicit} has exactly one positive solution for every
+\(y>0\). It satisfies
+\begin{equation}
+ 0<T_\mu(y)\le y,
+ \qquad T_\mu(y)\ge y(1-m_1y)
+ \quad\text{when }m_1y\le1.
+ \label{eq:root-bounds}
+\end{equation}
+For any trial value \(v>0\),
+\begin{equation}
+ |v-T_\mu(y)|\le|v-yS_\mu(v)|.
+ \label{eq:residual}
+\end{equation}
+The inverse is smooth from the right at zero, with
+\begin{equation}
+ T_\mu(y)=y-m_1y^2+(m_1^2+m_2)y^3+O(y^4).
+ \label{eq:first-inverse}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Since
+\[
+ F_\mu'(t)=\frac{S_\mu(t)-tS_\mu'(t)}{S_\mu(t)^2}\ge1,
+\]
+\(F_\mu\) is strictly increasing. Moreover, \(F_\mu(t)\to0\) at zero and
+\(F_\mu(t)\ge t\to\infty\). The upper root bound follows from \(S\le1\).
+The identity \(S(t)\ge1-m_1t\), together with \(T\le y\), gives the lower
+bound. For fixed \(y\), the residual function
+\(H(t)=t-yS_\mu(t)\) has derivative at least one on the positive axis.
+The real mean-value theorem proves \eqref{eq:residual}.
+
+At the boundary point \((t,y)=(0,0)\), the equation has derivative one
+in \(t\). Repeated one-sided implicit differentiation gives smoothness
+and determines every Taylor coefficient. Equivalently, extend each
+finite smooth jet across the endpoint and apply the finite-order
+implicit-function theorem. Substitution to degree three yields
+\eqref{eq:first-inverse}.
+\end{proof}
+
+\begin{remark}[What a residual certificate does not know]
+The estimate \eqref{eq:residual} evaluates the actual transform. It does
+not turn a formal coefficient list into a selection of \(\mu\).
+The information-theoretic lower bound in Section~\ref{sec:transport}
+will show why that distinction cannot be omitted.
+\end{remark}
+
+\section{Identifiability and the sharp Gevrey threshold}
+\label{sec:threshold}
+
+\begin{definition}
+A formal series \(\sum a_nz^n\) has \emph{Gevrey order at most \(s\)}
+if \(|a_n|\le CA^n(n!)^s\) for some finite \(C,A>0\). It has
+\emph{exact order \(s\)} if it has order at most \(s\), but no smaller
+order. We use this coefficient convention, not a convention shifted by
+one derivative. An assertion about this formal order alone does not
+assert a sectorial Borel summation theorem.
+\end{definition}
+
+\begin{theorem}[Inverse identifiability equals moment determinacy]
+\label{thm:identifiability}
+Fix a Stieltjes moment sequence \(m=(m_n)_{n\ge0}\), with \(m_0=1\),
+that has at least one representing measure in \(\mathcal P_\infty\).
+Every representing measure produces the same formal inverse
+\begin{equation}
+ \widehat T(y)=y\widehat S(\widehat T(y)),
+ \qquad \widehat S(t)=\sum_{n\ge0}(-1)^nm_nt^n.
+ \label{eq:formal-implicit}
+\end{equation}
+Different representing measures produce different actual inverse germs.
+Conversely, the formal inverse uniquely determines \(m\). Hence a
+unique positive Stieltjes inverse realization exists exactly when the
+moment problem is determinate.
+\end{theorem}
+\begin{proof}
+Finite Taylor substitution in Lemma~\ref{lem:regularity} and
+Proposition~\ref{prop:inverse} gives \eqref{eq:formal-implicit} to every
+finite order. In the formal power-series ring, the equation recursively
+determines a unique series beginning with \(y\).
+
+Suppose two actual inverse germs agree. Inverting their increasing
+functions shows that their transforms agree on an interval adjacent to
+zero. The identity theorem extends equality to the right half-plane.
+At \(t=1\), equality of all derivatives implies equality of
+\[
+ \int\frac{\lambda^k}{(1+\lambda)^{k+1}}\dd\mu(\lambda)
+ \quad(k\ge0).
+\]
+Push \(\mu\) forward by \(u=\lambda/(1+\lambda)\), and multiply the
+resulting measure by \(1-u\). We obtain a finite measure on \([0,1]\)
+whose polynomial moments are the displayed integrals. Polynomial
+approximation of continuous functions on \([0,1]\) gives equality of
+these weighted measures. Neither original push-forward has an atom at
+\(u=1\), and the weight is strictly positive on \([0,1)\). Division by
+the weight, first on \([0,1-\varepsilon]\) and then by monotone
+exhaustion, recovers equality of the original measures.
+
+Finally, \(\widehat T(y)=y+O(y^2)\) has a unique formal compositional
+inverse \(\widehat F\). The relation
+\(\widehat S(t)=t/\widehat F(t)\) reconstructs every moment. This also
+shows that no ambiguity is introduced by passing from the transform jet
+to the inverse jet.
+\end{proof}
+
+\begin{lemma}[A cancellation-free coefficient formula]
+\label{lem:coefficients}
+Write \(\widehat T(y)=\sum_{j\ge1}b_jy^j\) and
+\(c_n=(-1)^n b_{n+1}\). Then \eqref{eq:intro-composition} holds,
+\(c_n\ge m_n\), and, for \(s\ge0\), \(C\ge1\),
+\begin{equation}
+ m_n\le CA^n(n!)^s
+ \quad\Longrightarrow\quad
+ c_n\le(4AC)^n(n!)^s\quad(n\ge1).
+ \label{eq:gevrey-bound}
+\end{equation}
+Thus the moment sequence and the inverse coefficient sequence have
+exactly the same infimum of admissible Gevrey orders; if the order is
+attained for either sequence, it is attained for both.
+\end{lemma}
+\begin{proof}
+The formal Lagrange coefficient identity gives
+\[
+ b_{n+1}=\frac1{n+1}\coef{t}{n}\widehat S(t)^{n+1}.
+\]
+Every product contributing to degree \(n\) has sign \((-1)^n\), so
+there is no cancellation. The \(n+1\) terms with exactly one index equal
+to \(n\) contribute \(m_n\) after division by \(n+1\). For the upper
+bound, at most \(n\) indices in a weak composition are positive, and
+\(m_0=1\). Each product is therefore at most
+\(C^nA^n(\prod_jk_j!)^s\le C^nA^n(n!)^s\).
+There are \(\binom{2n}{n}\le4^n\) weak compositions of \(n\) into
+\(n+1\) parts. Division by \(n+1\) only improves the bound.
+\end{proof}
+
+\begin{lemma}[The factorial-square determinacy criterion]
+\label{lem:hardy}
+A Stieltjes moment sequence satisfying
+\(m_n\le CA^n(n!)^2\) is determinate.
+\end{lemma}
+\begin{proof}
+For a representing random variable \(X\ge0\), let \(U\) have the
+symmetric law obtained from \(\sqrt X\) by choosing either sign with
+probability one half. Its even moments are \(m_n\), and its odd moments
+vanish. Choose \(c>0\) with \(c^2A<1\). Monotone convergence gives
+\[
+ \mathbb E\cosh(cU)
+ =\sum_{n\ge0}\frac{c^{2n}m_n}{(2n)!}<\infty,
+\]
+since \((n!)^2\le(2n)!\). Thus
+\(\mathbb E\ee^{c|U|}\le2\mathbb E\cosh(cU)<\infty\).
+The moment generating function is holomorphic in the strip
+\(|\Re z|<c\), and its Taylor series at zero is fixed by the moments.
+Any two representing measures therefore yield identical moment
+ generating functions near zero and, by the identity theorem, on the
+strip. Their characteristic functions agree on the imaginary axis.
+Uniqueness of the Fourier transform of a finite measure gives equality
+of the symmetric laws. Squaring recovers the same law of \(X\).
+The exponential integrability argument applies to every competitor
+because it uses only the shared moments.
+\end{proof}
+
+\begin{theorem}[Sharp inverse Gevrey threshold]
+\label{thm:gevrey}
+In the class of positive Stieltjes inverses, a realizable formal inverse
+of Gevrey order at most \(s\le2\) has exactly one realization.
+For every real \(s>2\), there are uncountably many distinct realizations
+of a single formal inverse of exact Gevrey order \(s\).
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:coefficients}, a Gevrey bound on the inverse implies
+the same bound on the moments. For \(s\le2\), this is a factorial-square
+bound, so Lemma~\ref{lem:hardy} and
+Theorem~\ref{thm:identifiability} give uniqueness. For \(s>2\), take
+\(\alpha=1/s\) in Theorem~\ref{thm:gamma} below. That theorem gives a
+continuum of distinct measures with common moments of exact order
+\(1/\alpha=s\). Lemma~\ref{lem:coefficients} transfers the exact order,
+and Theorem~\ref{thm:identifiability} transfers distinctness.
+\end{proof}
+
+\begin{remark}[The precise sense of sharpness]
+The threshold is a universal \emph{sufficient} growth condition within
+a specified positive-measure realization class. It does not say that
+every sequence of order greater than two is indeterminate. Nor does it
+say that arbitrary smooth or sectorial analytic functions of order at
+most two are determined by their positive-real formal expansions.
+The classical component is Lemma~\ref{lem:hardy}; compare the treatment
+of Hardy's condition and generalized gamma laws in \cite{lin-stoyanov}.
+\end{remark}
+
+\section{Generalized gamma measures and an exact exponential defect}
+\label{sec:gamma}
+
+Fix parameters
+\begin{equation}
+ 0<\alpha<\tfrac12,\qquad \beta>0,\qquad
+ a=\frac\beta\alpha,\quad c=\cos(\pi\alpha),\quad
+ A=\sec(\pi\alpha).
+ \label{eq:gamma-parameters}
+\end{equation}
+Define
+\begin{align}
+ f(\lambda)&=\frac\alpha{\Gamma(a)}\lambda^{\beta-1}
+                       \ee^{-\lambda^\alpha},\label{eq:gamma-density}\\
+ p_*(\lambda)&=\sin\!\left(\tan(\pi\alpha)\lambda^\alpha-\pi\beta\right),\label{eq:gamma-sine}\\
+ \dd\mu_\theta(\lambda)&=f(\lambda)
+                \bigl(1-\theta p_*(\lambda)\bigr)\dd\lambda,
+ \qquad -1\le\theta\le1.\label{eq:gamma-family}
+\end{align}
+The notation \(p_*\) is reserved for the bounded sine perturbation;
+the unrelated large slope parameter \(p\) will be introduced later.
+
+\begin{theorem}[A moment-null positive family]
+\label{thm:gamma}
+The measures \(\mu_\theta\) are distinct probabilities with common moments
+\begin{equation}
+ m_n=\frac{\Gamma((n+\beta)/\alpha)}{\Gamma(\beta/\alpha)}.
+ \label{eq:gamma-moments}
+\end{equation}
+These moments, and their formal inverse coefficients, have exact Gevrey
+order \(1/\alpha\).
+\end{theorem}
+\begin{proof}
+The density is nonnegative because \(|p_*|\le1\). Substitution
+\(u=\lambda^\alpha\) gives the unperturbed moments. The signed moment
+of the perturbation is
+\[
+ \frac1{\Gamma(a)}\Im\left[
+ \ee^{-\ii\pi\beta}
+ \int_0^\infty u^{(n+\beta)/\alpha-1}
+ \ee^{-(1-\ii\tan(\pi\alpha))u}\dd u\right].
+\]
+The complex gamma integral is valid because the real part of its
+exponential coefficient is positive. Since
+\(1-\ii\tan(\pi\alpha)=c^{-1}\ee^{-\ii\pi\alpha}\),
+its phase after multiplication by \(\ee^{-\ii\pi\beta}\) is
+\(\pi n\). The imaginary part is zero. The case \(n=0\) proves
+normalization. The sine perturbation is not zero almost everywhere, so
+different parameters give different measures.
+
+Stirling's formula yields
+\(\log m_n=\alpha^{-1}n\log n+O(n)\).
+The remaining polynomial factors can be absorbed into an exponential
+constant, so the order \(1/\alpha\) is attained, while every smaller
+order fails. Apply Lemma~\ref{lem:coefficients} to the inverse.
+\end{proof}
+
+\begin{theorem}[Closed form for the entire transform defect]
+\label{thm:gamma-defect}
+For every \(t>0\), the transforms of \eqref{eq:gamma-family} satisfy
+\begin{equation}
+ S_\theta(t)=S_0(t)+\theta D(t),\qquad
+ D(t)=\frac{\pi\alpha}{\Gamma(\beta/\alpha)}
+       t^{-\beta}\ee^{-At^{-\alpha}}>0.
+ \label{eq:gamma-defect}
+\end{equation}
+In particular, their common formal expansion omits a nonzero, explicitly
+known, flat function.
+\end{theorem}
+\begin{proof}
+Let \(H(t)=\int f(\lambda)p_*(\lambda)/(1+t\lambda)\dd\lambda\).
+After \(u=\lambda^\alpha\), introduce
+\(v=(1-\ii\tan(\pi\alpha))u\). The phase factors cancel, giving
+\begin{equation}
+ H(t)=\frac{c^a}{\Gamma(a)}\Im
+ \int_{\arg v=-\pi\alpha}
+ \frac{v^{a-1}\ee^{-v}}{1-tc^{1/\alpha}v^{1/\alpha}}\dd v.
+ \label{eq:gamma-contour}
+\end{equation}
+Powers are taken with their principal branches in the wedge
+\(-\pi\alpha\le\arg v\le0\). The original and transformed integrals
+are absolutely convergent.
+
+Rotate the ray to the positive real axis, passing below the simple pole
+\(r=t^{-\alpha}/c\). There are no other poles in the open wedge:
+the argument of \(v^{1/\alpha}\) lies strictly between \(-\pi\) and
+zero. Large arcs vanish exponentially because \(\pi\alpha<\pi/2\),
+and small arcs vanish because \(a>0\). The integral along the real axis
+is interpreted as its real principal value plus the lower indentation.
+The residue is
+\begin{equation}
+ \Res_{v=r}\frac{v^{a-1}\ee^{-v}}
+                        {1-tc^{1/\alpha}v^{1/\alpha}}
+ =-\alpha r^a\ee^{-r}.
+\end{equation}
+The lower indentation, traversed from left to right, contributes
+\(\ii\pi\) times the residue. All remaining boundary values are real.
+Thus
+\[
+ H(t)=-\frac{\pi\alpha c^a}{\Gamma(a)}r^a\ee^{-r}
+     =-\frac{\pi\alpha}{\Gamma(a)}t^{-\beta}\ee^{-At^{-\alpha}}.
+\]
+The definition \(1-\theta p_*\) of the density now gives
+\eqref{eq:gamma-defect}. Exponential decay dominates every power of
+\(t\), proving flatness.
+\end{proof}
+
+\begin{example}[A completely explicit Gevrey-three model]
+\label{ex:cubic}
+For \(\alpha=\beta=1/3\), one has \(m_n=(3n)!\) and
+\begin{align}
+ S_0(t)&=\int_0^\infty\frac{\ee^{-u}}{1+tu^3}\dd u,
+ &D(t)&=\frac\pi3t^{-1/3}\ee^{-2t^{-1/3}}.\label{eq:cubic}
+\end{align}
+Every \(\theta\in[-1,1]\) gives a positive Stieltjes transform
+\(S_0+\theta D\), and the corresponding inverses share the formal series
+\begin{equation}
+ \widehat T(y)=y-6y^2+756y^3-376056y^4
+                  +488904336y^5+\cdots.
+ \label{eq:cubic-inverse}
+\end{equation}
+The continuum of actual inverse functions cannot be distinguished by
+computing additional coefficients of this series.
+\end{example}
+
+\begin{remark}[The endpoint and the classical dichotomy]
+For the unperturbed generalized gamma law with arbitrary \(\alpha>0\),
+\eqref{eq:gamma-moments} has order \(1/\alpha\). Thus
+\(\alpha\ge1/2\) falls within the determinacy criterion, whereas the
+family above proves indeterminacy for \(\alpha<1/2\). This recovers a
+classical generalized gamma dichotomy rather than replacing it with a
+new moment theorem. The contour formula makes an additional quantitative
+feature visible: its action \(A=\sec(\pi\alpha)\) diverges as the
+boundary is approached from below.
+\end{remark}
+
+\section{Bilateral geometric measures and theta-scale ambiguity}
+\label{sec:qfamily}
+
+Fix \(0<q<1\), put \(h=-\log q\), and set
+\begin{equation}
+ w_n=q^{n(n-1)/2},\qquad \lambda_n=q^{-n}
+ \quad(n\in\Z).
+\end{equation}
+The Gaussian decay in \(n\) makes every sum used below absolutely
+convergent. Define
+\begin{equation}
+ M=\sum_{n\text{ even}}w_n=\sum_{n\text{ odd}}w_n,
+ \qquad
+ \mu_+=\frac1M\sum_{n\text{ even}}w_n\delta_{q^{-n}},\quad
+ \mu_-=\frac1M\sum_{n\text{ odd}}w_n\delta_{q^{-n}}.
+ \label{eq:q-measures}
+\end{equation}
+The equality defining \(M\) follows by pairing \(n\) with \(1-n\).
+Write \(S_\pm=S_{\mu_\pm}\), and
+\(S_\eta=(1-\eta)S_-+\eta S_+\) for \(0\le\eta\le1\).
+These discrete measures belong to the classical Stieltjes--Wigert
+moment setting \cite{chihara,christiansen,christiansen-koelink}.
+
+\begin{proposition}[Common moments and exact difference equations]
+\label{prop:q-moments}
+Both measures in \eqref{eq:q-measures} have moments
+\begin{equation}
+ m_k=q^{-k(k+1)/2}\quad(k\ge0).
+ \label{eq:q-moments}
+\end{equation}
+Their transforms obey
+\begin{equation}
+ S_+(qt)=1-tS_-(t),\qquad S_-(qt)=1-tS_+(t).
+ \label{eq:coupled-q}
+\end{equation}
+Consequently every \(S_\eta\) satisfies the same exact equation
+\begin{equation}
+ S_\eta(q^2t)=1-qt+qt^2S_\eta(t).
+ \label{eq:q2}
+\end{equation}
+The common formal series satisfies
+\(\widehat S(qt)=1-t\widehat S(t)\), although not every member of this
+particular affine family satisfies that first-order equation exactly.
+\end{proposition}
+\begin{proof}
+The index shift \(n=m+k\) gives
+\(w_nq^{-kn}=q^{-k(k+1)/2}w_m\).
+It preserves or reverses parity according to \(k\); either parity has
+normalizing sum \(M\). This proves the moments. For the difference
+equations, shift \(n=m+1\), use \(w_{m+1}=q^mw_m\), and use
+\[
+ \frac{q^m}{1+tq^{-m}}=q^m-\frac{t}{1+tq^{-m}}.
+\]
+The shifted constant sum is again \(M\), giving
+\eqref{eq:coupled-q}. A second iteration proves \eqref{eq:q2}.
+The formal first-order identity follows directly from
+\eqref{eq:q-moments} by comparing coefficients.
+\end{proof}
+
+We use the following normalization of the theta function:
+\begin{align}
+ \Theta_q(z)&=\sum_{n\in\Z}q^{n(n-1)/2}z^n,\label{eq:theta}\\
+ (a;q)_\infty&=\prod_{j=0}^\infty(1-aq^j),\nonumber\\
+ \Theta_q(z)&=(-z;q)_\infty(-q/z;q)_\infty(q;q)_\infty.
+ \label{eq:triple}
+\end{align}
+Equation~\eqref{eq:triple} is Jacobi's triple-product identity
+\cite{dlmf}. It also fixes all normalization constants in what follows.
+
+\begin{theorem}[Exact reciprocal-theta defect]
+\label{thm:theta-defect}
+For every \(t>0\),
+\begin{equation}
+ D(t):=S_+(t)-S_-(t)
+ =\frac{(q;q)_\infty^3}{M\Theta_q(t)}
+ =\frac{(q;q)_\infty^2}
+ {M(-t;q)_\infty(-q/t;q)_\infty}>0.
+ \label{eq:theta-defect}
+\end{equation}
+In particular,
+\begin{equation}
+ D(qt)=tD(t).
+ \label{eq:defect-q}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let
+\[
+ G(t)=\sum_{n\in\Z}\frac{(-1)^nw_n}{1+tq^{-n}}=MD(t).
+\]
+The series is normally convergent on compact subsets of
+\(\C^*\setminus\{-q^n:n\in\Z\}\). The same index shift as above gives
+\(G(qt)=tG(t)\), because \(\sum(-1)^nq^nw_n=0\).
+Also \(\Theta_q(qt)=t^{-1}\Theta_q(t)\).
+
+The product \(G(t)\Theta_q(t)\) is holomorphic on \(\C^*\): the zeros
+in the triple product cancel the simple poles of \(G\). It is invariant
+under multiplication by \(q\). It is bounded on a closed fundamental
+annulus and hence, by this invariance, on all of \(\C^*\). Its
+singularity at zero is removable. Liouville's theorem makes it constant.
+At \(t=-1\), the residue of \(G\) is one, whereas
+\(\Theta_q(t)/(1+t)\to(q;q)_\infty^3\).
+The constant is therefore \((q;q)_\infty^3\), proving the formula.
+Every factor in the product form is positive for \(t>0\).
+\end{proof}
+
+\subsection{A precise log-periodic amplitude}
+For real \(u\), define
+\begin{equation}
+ P_h(u)=\sum_{n\in\Z}\ee^{-h(n+u)^2/2},\qquad
+ K_q=\frac{(q;q)_\infty^3}{M},\qquad
+ x=\frac{\log(1/t)}h.
+ \label{eq:periodic}
+\end{equation}
+Completing the square in the theta series yields the \emph{exact}
+identity
+\begin{equation}
+ D(t)=K_q\,
+ \frac{\exp[-\frac h2(x-\frac12)^2]}{P_h(x-\frac12)}.
+ \label{eq:theta-gaussian}
+\end{equation}
+The function \(P_h\) is positive, smooth, and one-periodic. Its Fourier
+coefficients follow by integrating the periodized Gaussian over one
+period:
+\begin{equation}
+ P_h(u)=\sqrt{\frac{2\pi}{h}}
+ \sum_{k\in\Z}\ee^{-2\pi^2k^2/h}\ee^{2\pi\ii ku}.
+ \label{eq:poisson}
+\end{equation}
+The Gaussian Fourier transform justifies this absolutely convergent
+Fourier expansion; in particular, \(P_h\) is not constant.
+
+It follows that \(D\) is flat, but
+\begin{equation}
+ \frac{D(t)}{\exp[-\frac h2(x-\frac12)^2]}
+ \label{eq:nonlimit}
+\end{equation}
+has no limit as \(t\downarrow0\). Indeed, choose two phases at which
+\(P_h\) differs and let \(x\) tend to infinity along those phases.
+Thus a single real constant-amplitude monomial at this scale is
+insufficient. A periodic coefficient, or an equivalent oscillatory
+extension, is needed. This observation does not exclude every possible
+extended transseries representation.
+
+\begin{theorem}[The ambiguity matches the least moment bound]
+\label{thm:least}
+Let
+\begin{equation}
+ E_*(t)=\min_{N\in\N} t^Nq^{-N(N+1)/2},
+ \qquad \N=\{0,1,2,\ldots\}.
+ \label{eq:least-bound}
+\end{equation}
+For \(x\ge1/2\),
+\begin{align}
+ E_*(t)&=\exp\!\left[-\frac h2(x-\tfrac12)^2
+              +\frac h2\dist(x-\tfrac12,\Z)^2\right],
+ \label{eq:least-exact}\\
+ \frac{D(t)}{E_*(t)}
+ &=\frac{K_q\exp[-\frac h2\dist(x-\tfrac12,\Z)^2]}
+           {P_h(x-\tfrac12)}.\label{eq:least-ratio}
+\end{align}
+In particular, \(D(t)\asymp_q E_*(t)\) as \(t\downarrow0\): the ratio
+is bounded above and below by strictly positive constants depending
+only on \(q\).
+\end{theorem}
+\begin{proof}
+The logarithm of the \(N\)-th bound is
+\[
+ \log(t^Nm_N)=\frac h2\bigl(N-(x-\tfrac12)\bigr)^2
+                      -\frac h2(x-\tfrac12)^2.
+\]
+For \(x\ge1/2\), a nearest integer to \(x-1/2\) is nonnegative. This
+proves \eqref{eq:least-exact}. Divide \eqref{eq:theta-gaussian} by it.
+The periodic continuous denominator has a positive minimum and finite
+maximum, and \(0\le\dist(u,\Z)\le1/2\).
+\end{proof}
+
+\begin{remark}[A bound, not an equality of true remainders]
+The quantity \(E_*\) is the best member of the explicit family of
+bounds in \eqref{eq:remainder-bound}. The theorem does not assert that
+it equals the smallest actual truncation error of either transform.
+It does show that no coefficient-only reconstruction can generally
+remove ambiguity at that scale. Also,
+\(\log m_n=\frac h2n^2+O(n)\), so this example lies beyond every finite
+Gevrey order.
+\end{remark}
+
+\subsection{Even the exact first-order equation can remain nonunique}
+\label{subsec:shifted}
+One might try to remove the ambiguity by imposing the first-order
+\(q\)-Euler equation exactly. Within the affine family \(S_\eta\), it
+selects \(\eta=1/2\). In the full positive-measure class, that conclusion
+is false.
+
+\begin{proposition}[Shifted lattices with the same exact equation]
+\label{prop:shifted}
+For \(r>0\), define
+\begin{equation}
+ Z_r=\sum_{n\in\Z}r^{-n}w_n=\Theta_q(1/r),\qquad
+ \nu_r=\frac1{Z_r}\sum_{n\in\Z}r^{-n}w_n\delta_{r q^{-n}}.
+ \label{eq:shifted-lattice}
+\end{equation}
+All these probabilities have moments \eqref{eq:q-moments}. Their
+transforms \(U_r=S_{\nu_r}\) all satisfy
+\begin{equation}
+ U_r(qt)=1-tU_r(t).
+ \label{eq:exact-q-euler}
+\end{equation}
+If \(r/s\notin q^\Z\), the transforms and their inverse germs are
+distinct. Their difference changes sign infinitely often at zero.
+The corresponding inverse germs also cross infinitely often.
+\end{proposition}
+\begin{proof}
+For the moments, shift \(n=m+k\) as in
+Proposition~\ref{prop:q-moments}; the factors \(r^k\) from the support
+and \(r^{-k}\) from the weight cancel. If
+\(a_n=Z_r^{-1}r^{-n}w_n\), then
+\(a_{n+1}=(rq^{-n})^{-1}a_n\). Shifting the transform sum gives
+\[
+ U_r(qt)=\sum_n\frac{a_n(rq^{-n})^{-1}}{1+trq^{-n}}
+        =\sum_na_n(rq^{-n})^{-1}-tU_r(t)=1-tU_r(t).
+\]
+The first sum is \(\sum a_{n+1}=1\).
+
+When \(r/s\notin q^\Z\), the supports are disjoint, so the measures
+are different. By Theorem~\ref{thm:identifiability}, so are their
+transforms. For \(V=U_r-U_s\), equation~\eqref{eq:exact-q-euler} gives
+\(V(qt)=-tV(t)\). Choose \(t_*>0\) with \(V(t_*)\ne0\). Iteration
+shows alternating signs at \(q^nt_*\); continuity gives a zero between
+successive such points.
+
+For inverse transport, write \(y=t/U_s(t)\), so \(T_s(y)=t\).
+The residual for the other inverse is
+\(t-yU_r(t)=-yV(t)\). Since its residual is strictly increasing,
+\(\operatorname{sgn}(T_r(y)-T_s(y))=\operatorname{sgn}V(t)\).
+The sequence \(t=q^nt_*\) tends to zero and so does \(y\); its signs
+alternate. This proves infinitely many inverse crossings.
+\end{proof}
+
+\begin{corollary}[A simultaneous germ-field obstruction]
+The two inverse germs in Proposition~\ref{prop:shifted} cannot both lie
+in a field of actual real-valued germs at zero. In particular, after
+\(y=1/x\), they cannot both belong to one Hardy field at infinity.
+\end{corollary}
+\begin{proof}
+Their difference is a nonzero germ but has zeros arbitrarily close to
+zero. It therefore has no reciprocal germ. A field cannot contain such
+a nonzero element.
+\end{proof}
+
+\begin{remark}
+This is a statement about simultaneous realization, not a proof that
+either inverse individually lies in no Hardy field. The basic
+moment-indeterminate lattice families are classical. Their role here is
+to show exactly which extra analytic equations still fail to turn formal
+data into unique inverse data.
+\end{remark}
+
+\section{Nonlinear transport and an unavoidable error floor}
+\label{sec:transport}
+
+In this section \(S_a=S_{a_0}+(a-a_0)D\) denotes either the gamma family
+with physical interval \([-1,1]\), or the ordered theta family with
+physical interval \([0,1]\). The word \emph{physical} means simply that
+the associated measure is positive; it does not refer to an external
+physical model. In both families \(D(t)>0\), and every member has the
+same moments.
+
+\begin{lemma}[Exact derivative with respect to the hidden parameter]
+\label{lem:parameter-derivative}
+For \(y>0\) and a physical parameter \(a\),
+\begin{equation}
+ \partial_aT_a(y)=
+ \frac{yD(T_a(y))}{1-yS_a'(T_a(y))}>0.
+ \label{eq:parameter-derivative}
+\end{equation}
+For two physical parameters \(a,b\),
+\begin{equation}
+ T_a(y)-T_b(y)
+ =\int_b^a\frac{yD(T_\theta(y))}
+                   {1-yS_\theta'(T_\theta(y))}\dd\theta.
+ \label{eq:gap-integral}
+\end{equation}
+Every finite Taylor expansion of \(T_a\) at zero is independent of \(a\).
+\end{lemma}
+\begin{proof}
+Differentiate \(T_a=yS_a(T_a)\). The denominator is at least one by
+positivity of the measure, proving the formula and its sign. Integration
+gives the second statement. Parameter endpoints are handled by one-sided
+derivatives or by local analytic continuation. Shared Taylor
+coefficients follow from Theorem~\ref{thm:identifiability}.
+\end{proof}
+
+\begin{theorem}[Two quantitative inverse-gap laws]
+\label{thm:gap-laws}
+The following expansions hold uniformly for distinct physical
+parameters \(a,b\), including in the limit \(a-b\to0\).
+
+For the gamma family, with the parameters of \eqref{eq:gamma-parameters},
+\begin{equation}
+ \frac{T_a(y)-T_b(y)}{(a-b)yD(y)}
+ =1-\alpha A m_1y^{1-\alpha}
+       +(\beta-1)m_1y+O(y^{2-2\alpha}).
+ \label{eq:gamma-gap}
+\end{equation}
+For the theta family, define the bounded one-periodic function
+\begin{equation}
+ a_q(x)=-\frac12+
+ \frac{P_h'(x-\frac12)}{hP_h(x-\frac12)}.
+ \label{eq:aq}
+\end{equation}
+With \(x=\log(1/y)/h\) and \(m_1=q^{-1}\),
+\begin{equation}
+ \frac{T_a(y)-T_b(y)}{(a-b)yD(y)}
+ =1-m_1y\bigl(x+a_q(x)+1\bigr)
+       +O\!\left(y^2(1+x)^2\right).
+ \label{eq:q-gap}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The shared finite moments give, uniformly in the physical parameter,
+\[
+ T_a(y)=y-m_1y^2+O(y^3),\qquad
+ (1-yS_a'(T_a(y)))^{-1}=1-m_1y+O(y^2).
+\]
+Uniformity follows either from bounded densities relative to a common
+base in the gamma case, or from convexity in the theta case, and the
+finite-moment derivative bounds.
+
+For gamma, expand the logarithm of the exact defect:
+\begin{align*}
+ \log\frac{D(T_a(y))}{D(y)}
+ &=-\beta\log\frac{T_a(y)}y
+   -Ay^{-\alpha}\left[\left(\frac{T_a(y)}y\right)^{-\alpha}-1\right]\\
+ &=-\alpha A m_1y^{1-\alpha}+\beta m_1y+O(y^{2-\alpha}).
+\end{align*}
+Exponentiating introduces an error of order \(y^{2-2\alpha}\).
+Multiplying by the denominator expansion gives the integrand in
+\eqref{eq:gap-integral}, divided by \(yD(y)\). The asserted gamma law
+follows. Because \(\alpha<1/2\), the error has order strictly greater
+than one, so the displayed linear term is informative.
+
+For theta, direct differentiation of \eqref{eq:theta-gaussian} gives
+\begin{equation}
+ t\frac{D'(t)}{D(t)}=x+a_q(x),
+ \qquad x=\frac{\log(1/t)}h.
+ \label{eq:theta-slope}
+\end{equation}
+Since \(a_q\) and all its real derivatives are bounded, integration over
+\(\log(T_a(y)/y)=-m_1y+O(y^2)\) yields
+\[
+ \log\frac{D(T_a(y))}{D(y)}
+ =-m_1y(x+a_q(x))+O(y^2(1+x)).
+\]
+Exponentiate, multiply by the denominator factor, and use
+\eqref{eq:gap-integral}. All estimates are uniform in \(a\), hence also
+in the averaged interval from \(b\) to \(a\).
+\end{proof}
+
+For the cubic example, equation~\eqref{eq:gamma-gap} becomes particularly
+simple:
+\begin{equation}
+ \frac{T_a(y)-T_b(y)}{(a-b)yD(y)}
+ =1-4y^{2/3}-4y+O(y^{4/3}).
+ \label{eq:cubic-gap}
+\end{equation}
+Thus a flat perturbation does not merely persist: its first nonlinear
+relative correction can be computed without resolving the full
+coefficient expansion.
+
+\begin{theorem}[A coefficient-only information floor]
+\label{thm:floor}
+Let an estimator \(\mathcal A(m,y)\) depend only on \(y\) and the full
+common moment sequence, or equivalently on the full common inverse
+coefficient sequence. For any two physical members,
+\begin{equation}
+ \max\{|\mathcal A-T_a(y)|,|\mathcal A-T_b(y)|\}
+ \ge\frac12|T_a(y)-T_b(y)|.
+ \label{eq:information-floor}
+\end{equation}
+For the theta endpoints, this lower bound is asymptotic to
+\(yD(y)/2\) and hence is bounded below by \(c_qyE_*(y)\) for all
+sufficiently small \(y\), with \(c_q>0\). For the gamma endpoints
+\(a=1,b=-1\), it is asymptotic to \(yD(y)\).
+\end{theorem}
+\begin{proof}
+The estimator receives identical input for both members. The triangle
+inequality gives \eqref{eq:information-floor}. Apply
+Theorem~\ref{thm:gap-laws}, and for theta use Theorem~\ref{thm:least}.
+\end{proof}
+
+\begin{remark}
+This lower bound concerns a worst-case error over a family of admissible
+realizations. It is not a limit on methods supplied with the actual
+measure, an exact integral, a summation prescription, or another datum
+that fixes the hidden parameter. In the gamma case, we do not identify
+the defect action \(A\) with the least-moment-bound action: they are
+different quantities.
+\end{remark}
+
+\section{Convergent expansions in the flat ambiguity parameter}
+\label{sec:sectors}
+
+A finite truncation of the common formal power series cannot describe
+the ambiguity in Section~\ref{sec:transport}. A different expansion can:
+keep one actual realization as the baseline, and expand in the hidden
+parameter. In this section the letters \(a,a_0\) denote family
+parameters, not the gamma quotient \(\beta/\alpha\).
+
+Fix a physical baseline \(a_0\), a small \(y>0\), and set
+\begin{equation}
+ t_0=T_{a_0}(y),\quad S=S_{a_0},\quad
+ H(t)=t-yS(t),\quad B_0=1-yS'(t_0),\quad D_0=D(t_0).
+ \label{eq:sector-data}
+\end{equation}
+The deformed inverse equation is
+\begin{equation}
+ H(t)=\delta yD(t),\qquad \delta=a-a_0.
+ \label{eq:deformed-equation}
+\end{equation}
+Complex \(\delta\) is allowed in the local analytic discussion, even
+though only a bounded real interval corresponds to positive measures.
+
+\begin{theorem}[Exact sector coefficients and an explicit tail bound]
+\label{thm:sectors}
+Assume \(ym_1\le1/2\), and choose \(0<r<t_0/2\). On a neighborhood
+of the closed disc \(|t-t_0|\le r\), define the removable analytic quotient
+\begin{equation}
+ A_y(t)=\frac{t-t_0}{H(t)},\quad A_y(t_0)=B_0^{-1},\qquad
+ \phi_y(t)=yD(t)A_y(t).
+ \label{eq:phi}
+\end{equation}
+Let \(M_D\) be any bound for \(|D|\) on the disc and set \(M=2yM_D\).
+For \(\rho=|\delta|M/r<1\), the branch through \(t_0\) is represented by
+an absolutely convergent series
+\begin{align}
+ T_{a_0+\delta}(y)&=t_0+\sum_{k\ge1}\delta^k A_k(y),\label{eq:sectors}\\
+ A_k(y)&=\frac1{k!}
+  \left.\frac{\mathrm d^{k-1}}{\mathrm dt^{k-1}}
+  \bigl(\phi_y(t)^k\bigr)\right|_{t=t_0}.\label{eq:sector-coefficients}
+\end{align}
+Its coefficients and tails satisfy
+\begin{align}
+ |\delta^kA_k(y)|&\le\frac r k\rho^k,\label{eq:sector-bound}\\
+ \left|T_{a_0+\delta}(y)-t_0-\sum_{k=1}^K\delta^kA_k(y)\right|
+ &\le\frac{r\rho^{K+1}}{(K+1)(1-\rho)}.\label{eq:sector-tail}
+\end{align}
+For physical \(a_0+\delta\), this branch is the positive inverse already
+defined in Section~\ref{sec:framework}.
+\end{theorem}
+\begin{proof}
+The disc lies in the right half-plane. There \(|S'(t)|\le m_1\), by
+\eqref{eq:derivatives}. Since \(H(t_0)=0\),
+\[
+ \frac{H(t)}{t-t_0}
+ =1-y\int_0^1 S'(t_0+s(t-t_0))\dd s.
+\]
+The right side differs from one by at most \(ym_1\le1/2\). Thus it is
+nonzero and \(|A_y|\le2\) throughout the disc. Equation
+\eqref{eq:deformed-equation} is equivalent there to
+\(t-t_0=\delta\phi_y(t)\).
+
+On the boundary, \(|\delta\phi_y|\le|\delta|M<r=|t-t_0|\).
+Rouch\'e's theorem gives one root, counted with multiplicity, in the
+disc. It is simple and depends holomorphically on \(\delta\) for
+\(|\delta|<r/M\). For real physical parameters this root is real by
+conjugation symmetry, and positive because \(r<t_0\). Uniqueness of
+the positive inverse identifies it with \(T_{a_0+\delta}\).
+
+The analytic Lagrange formula gives \eqref{eq:sector-coefficients}.
+For completeness, putting \(w=t-t_0\), the coefficient is
+\(k^{-1}[w^{k-1}]\phi_y(t_0+w)^k\).
+Cauchy's coefficient estimate on \(|w|=r\) gives
+\(|A_k|\le M^k/(kr^{k-1})\). Summing these bounds and using
+\(1/k\le1/(K+1)\) for \(k\ge K+1\) proves
+\eqref{eq:sector-tail}.
+\end{proof}
+
+\begin{proposition}[The first two exact sectors]
+\label{prop:first-sectors}
+With the data of \eqref{eq:sector-data},
+\begin{align}
+ A_1(y)&=\frac{yD_0}{B_0},\label{eq:a1}\\
+ A_2(y)&=\frac{y^2D_0D'(t_0)}{B_0^2}
+       +\frac{y^3D_0^2S''(t_0)}{2B_0^3}.\label{eq:a2}
+\end{align}
+\end{proposition}
+\begin{proof}
+Expand \(H(t_0+w)=B_0w-yS''(t_0)w^2/2+O(w^3)\). Hence
+\(A_y(t_0)=B_0^{-1}\) and
+\(A_y'(t_0)=yS''(t_0)/(2B_0^2)\).
+Substitution in \eqref{eq:sector-coefficients}, or direct implicit
+differentiation twice, gives the formulas.
+\end{proof}
+
+The coefficients contain successively higher powers of \(D_0\),
+multiplied by slope factors. Thus \eqref{eq:sectors} resolves the
+beyond-all-orders ambiguity rather than merely recomputing the common
+power series. It is an expansion \emph{around an actual baseline}; it
+does not supply a canonical choice of that baseline from its formal jet.
+
+\subsection{Explicit discs in the two families}
+The next bounds give completely specified sufficient convergence
+conditions. They are deliberately simple, rather than asymptotically
+optimal. Section~\ref{sec:fold} will determine the leading optimal
+radius.
+
+\begin{proposition}[A gamma disc]
+\label{prop:gamma-disc}
+For the gamma defect, put
+\begin{equation}
+ p=\alpha A t_0^{-\alpha},\qquad
+ r=\frac{t_0}{8(1+\beta+p)}.
+ \label{eq:gamma-disc}
+\end{equation}
+Then \(M_D=\ee^{3/8}D_0\) is valid in
+Theorem~\ref{thm:sectors}. For all sufficiently small \(y\),
+\begin{equation}
+ \frac Mr\le32\ee^{3/8}(1+\beta+p)D_0\longrightarrow0.
+ \label{eq:gamma-disc-bound}
+\end{equation}
+\end{proposition}
+\begin{proof}
+On \(|t-t_0|\le t_0/2\), using the principal powers,
+\[
+ \left|\frac{D'(t)}{D(t)}\right|
+ \le\frac{2\beta+2^{1+\alpha}p}{t_0}
+ \le\frac{2\beta+3p}{t_0}.
+\]
+The nonvanishing explicit defect has a holomorphic logarithm on this
+disc. Integrating its logarithmic derivative along a straight segment
+of length at most \(r\) bounds the logarithmic variation by \(3/8\).
+This proves the bound for \(M_D\). Since \(t_0/y\to1\), eventually
+\(y/t_0\le2\); substituting \(M=2yM_D\) gives
+\eqref{eq:gamma-disc-bound}. Its limit is zero by exponential flatness.
+\end{proof}
+
+\begin{proposition}[A theta disc]
+\label{prop:q-disc}
+For the theta defect, let \(t_0<1\), and put
+\begin{equation}
+ x_0=\frac{\log(1/t_0)}h,\qquad
+ B=x_0+\frac4{1-q},\qquad r=\frac{t_0}{8B}.
+ \label{eq:q-disc}
+\end{equation}
+Then \(M_D=\ee^{1/4}D_0\) is valid in
+Theorem~\ref{thm:sectors}, and eventually
+\begin{equation}
+ \frac Mr\le32\ee^{1/4}BD_0\longrightarrow0.
+ \label{eq:q-disc-bound}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Logarithmically differentiate the product in
+\eqref{eq:theta-defect}:
+\[
+ t\frac{D'(t)}{D(t)}
+ =-\sum_{n\ge0}\frac{tq^n}{1+tq^n}
+   +\sum_{n\ge0}\frac{q^{n+1}}{t+q^{n+1}}.
+\]
+For \(|t-t_0|\le t_0/2\), the first absolute sum is at most
+\(3/[2(1-q)]\). In the second, the terms with \(n+1\le x_0\) are each
+at most one, while the remaining sum is at most \(2/(1-q)\).
+Thus \(|tD'/D|\le B\), and \(|D'/D|\le2B/t_0\).
+No zero or pole of \(D\) lies in this disc. Integrating its logarithmic
+derivative over radius \(r\) gives variation at most \(1/4\). The last
+estimate follows from \(y/t_0\le2\) and the log-Gaussian flatness of
+\(D_0\).
+\end{proof}
+
+Both propositions imply convergence uniformly over every bounded
+physical parameter interval when \(y\) is sufficiently small. Their
+bounds are also effective once the actual baseline and its defect are
+numerically enclosed. The floating-point examples later in the article
+do not by themselves provide such outward-rounded enclosures.
+
+\section{A universal Lambert--\texorpdfstring{\(W\)}{W} limit and the parameter radius}
+\label{sec:fold}
+
+The scale of the sharp parameter radius is larger than the elementary
+Cauchy-disc radius by a bounded factor. More importantly, it has a
+universal limit. Continue to fix a physical baseline \(a_0\), and use
+\eqref{eq:sector-data}. Define
+\begin{equation}
+ p=\begin{cases}
+    \alpha A t_0^{-\alpha},&\text{gamma},\\
+    \log(1/t_0)/h,&\text{theta},
+   \end{cases}
+ \qquad
+ v=\frac{p(t-t_0)}{t_0},\qquad
+ \kappa=\delta\frac{pyD_0}{t_0}.
+ \label{eq:fold-scaling}
+\end{equation}
+In both cases \(p\to\infty\) as \(y\downarrow0\). Equation
+\eqref{eq:deformed-equation} becomes
+\begin{equation}
+ \kappa=\Psi_y(v):=
+ \frac{pH(t_0(1+v/p))}{t_0}
+ \frac{D_0}{D(t_0(1+v/p))}.
+ \label{eq:psi}
+\end{equation}
+On every fixed bounded complex \(v\)-set, this formula is holomorphic
+for all sufficiently small \(y\). It no longer involves a subtraction
+of two unspecified formal series.
+
+\begin{lemma}[Uniform local convergence of the deformation map]
+\label{lem:psi-limit}
+For either family,
+\begin{equation}
+ \Psi_y(v)\longrightarrow v\ee^{-v}
+ \label{eq:psi-limit}
+\end{equation}
+locally uniformly in \(v\in\C\), with convergence of every derivative.
+\end{lemma}
+\begin{proof}
+Since \(H(t_0)=0\) and \(|S'|\le m_1\) in the right half-plane,
+\[
+ \frac{pH(t_0(1+v/p))}{t_0}=v+O_R(y)
+ \quad(|v|\le R).
+\]
+For gamma, the explicit logarithm gives
+\[
+ \log\frac{D(t_0(1+v/p))}{D_0}
+ =-\beta\log(1+v/p)
+  -\frac p\alpha\bigl((1+v/p)^{-\alpha}-1\bigr)
+ =v+O_R(p^{-1}).
+\]
+For theta, integrate \eqref{eq:theta-slope} over
+\(\log(1+v/p)\). The periodic factor and its derivatives are uniformly
+bounded in a fixed complex strip about the real phase axis: positivity
+on that axis and compactness of one period supply a zero-free strip.
+The resulting logarithm is again \(v+O_R(p^{-1})\).
+This proves \eqref{eq:psi-limit}. Local uniform holomorphic convergence
+implies convergence of all derivatives by Cauchy's formula.
+\end{proof}
+
+\begin{theorem}[Cayley coefficients, a real fold, and a sharp leading radius]
+\label{thm:radius}
+Let \(R_y\) be the radius of the Taylor series in \(\delta\) for the
+branch \(T_{a_0+\delta}(y)\) through \(t_0\). Then
+\begin{equation}
+ R_y\sim\frac{t_0}{\ee\,p\,yD_0}.
+ \label{eq:radius}
+\end{equation}
+In scaled coordinates, the branch converges locally uniformly for
+\(|\kappa|<1/\ee\) to
+\begin{equation}
+ v_0(\kappa)=-W_0(-\kappa)
+       =\sum_{k\ge1}\frac{k^{k-1}}{k!}\kappa^k,
+ \qquad v_0\ee^{-v_0}=\kappa.
+ \label{eq:lambert-limit}
+\end{equation}
+Consequently, for every fixed \(k\ge1\),
+\begin{equation}
+ A_k(y)=\frac{t_0}{p}
+   \left(\frac{pyD_0}{t_0}\right)^k
+   \left(\frac{k^{k-1}}{k!}+O_k(p^{-1})\right).
+ \label{eq:cayley-limit}
+\end{equation}
+There is a real critical point \(v_c(y)\to1\) of \(\Psi_y\), with
+critical value \(\kappa_c(y)\to1/\ee\), on the continuation of the
+branch from the origin. It is a nondegenerate square-root fold.
+\end{theorem}
+\begin{proof}
+We separate the lower radius bound from the upper bound; the latter
+cannot be inferred merely from coefficient limits at fixed \(k\).
+
+\emph{Analytic continuation inside every smaller disc.}
+Fix \(r<1/\ee\) and choose \(r<r_1<1/\ee\). The inverse
+\(v_0=-W_0(-\kappa)\), defined equivalently by its Taylor series, is
+holomorphic on a neighborhood of \(|\kappa|\le r_1\). Its image is
+compact, and \((v\ee^{-v})'=\ee^{-v}(1-v)\) is nonzero there.
+Uniform local inverse neighborhoods can therefore be chosen around
+\(v_0(\kappa)\), with one common sufficiently small radius on the
+compact \(\kappa\)-disc. Taylor's theorem and the positive minimum of
+the derivative give a uniform nonzero lower bound for
+\(|v\ee^{-v}-\kappa|\) on the boundaries of those neighborhoods.
+Lemma~\ref{lem:psi-limit} and Rouch\'e's theorem then give a unique nearby
+root of \(\Psi_y(v)=\kappa\), analytic in \(\kappa\). Local uniqueness
+makes these roots agree on overlapping neighborhoods, producing a
+single analytic branch on \(|\kappa|\le r\).
+The roots converge uniformly to \(v_0\). The same argument, using the
+\(O(p^{-1})\) error in the proof of the lemma, gives that convergence
+rate on every smaller fixed disc. Hence the scaled Taylor radius has
+liminf at least \(1/\ee\).
+
+\emph{A singularity on the same branch.}
+The derivative of \(v\ee^{-v}\) has a simple zero at \(v=1\), and its
+second derivative there is \(-1/\ee\). Holomorphic convergence gives
+one simple zero \(v_c(y)\) of \(\Psi_y'\) near one. Reality of the
+functions implies that this zero is real. On every interval
+\([0,1-\varepsilon]\), \(\Psi_y'\) is positive for sufficiently small
+\(y\). In a fixed small neighborhood of one, \(\Psi_y''\) is negative,
+so \(\Psi_y'\) decreases through its unique zero. It follows that the
+branch from zero increases to \(v_c\), at
+\(\kappa_c=\Psi_y(v_c)\to1/\ee\).
+
+The Taylor expansion at the critical point is
+\(\Psi_y(v)=\kappa_c+\Psi_y''(v_c)(v-v_c)^2/2+O((v-v_c)^3)\).
+Since \(\Psi_y''(v_c)\ne0\), the inverse has a genuine square-root
+singularity there. An analytic continuation of the Taylor series across
+that point on this branch is impossible. Thus the scaled radius has
+limsup at most \(1/\ee\). Combining both bounds and undoing
+\eqref{eq:fold-scaling} proves \eqref{eq:radius}.
+
+Finally, the inverse of \(v\mapsto v\ee^{-v}\) has the coefficients in
+\eqref{eq:lambert-limit} by Lagrange inversion. Uniform convergence of
+the scaled analytic inverses on a fixed circle gives convergence of
+coefficients, with error \(O_k(p^{-1})\). Rescaling yields
+\eqref{eq:cayley-limit}.
+\end{proof}
+
+\begin{remark}[What the radius theorem does and does not locate]
+The theorem determines the leading asymptotic Taylor radius. It does
+not assert that the real fold is the exact nearest complex singularity
+for every fixed nonzero \(y\). Competing singularities could alter
+subleading information about that radius. The fold location itself,
+which is a local real statement, is calculated more precisely next.
+For small \(y\), its \(\delta\)-value tends to infinity, so it lies far
+outside any fixed positive-measure parameter interval. No loss of
+existence of the physical positive inverse is being asserted.
+\end{remark}
+
+\subsection{The first fold correction and the surviving theta phase}
+
+\begin{lemma}[A two-term scaled defect expansion]
+\label{lem:Q}
+Uniformly on bounded complex \(v\)-sets,
+\begin{equation}
+ \log\frac{D(t_0(1+v/p))}{D_0}
+ =v+\frac{Q_y(v)}p+O_R(p^{-2}),
+ \label{eq:Qexp}
+\end{equation}
+where
+\begin{equation}
+ Q_y(v)=
+ \begin{cases}
+ -\beta v-\dfrac{1+\alpha}{2}v^2,&\text{gamma},\\[3pt]
+ a_q(p)v-\dfrac12v^2,&\text{theta}.
+ \end{cases}
+ \label{eq:Q}
+\end{equation}
+Moreover,
+\begin{equation}
+ \Psi_y(v)=v\ee^{-v}\left(1-\frac{Q_y(v)}p\right)
+                      +O_R(p^{-2}),
+ \label{eq:psicorrection}
+\end{equation}
+with the same control for finitely many derivatives on smaller compact
+sets.
+\end{lemma}
+\begin{proof}
+The gamma formula follows by taking two further terms in the binomial
+and logarithmic expansions used in Lemma~\ref{lem:psi-limit}.
+For theta, put \(s=\log(t/t_0)\), so the phase is \(p-s/h\). Integrate
+\[
+ \frac{\mathrm d}{\mathrm ds}\log D(t_0\ee^s)
+ =p-s/h+a_q(p-s/h)
+\]
+from zero to \(\log(1+v/p)\). The terms of orders one and \(p^{-1}\)
+are exactly those in \eqref{eq:Q}. Bounded complex-strip derivatives of
+\(a_q\) control the remainder uniformly in its phase.
+
+The residual prefactor in \eqref{eq:psi} is \(v+O_R(y)\). In the gamma
+case \(y\asymp t_0\asymp p^{-1/\alpha}=o(p^{-2})\), because
+\(\alpha<1/2\). In the theta case \(y\asymp\ee^{-hp}=o(p^{-2})\).
+The residual correction is therefore smaller than the stated error.
+Exponentiate \eqref{eq:Qexp} with a minus sign and multiply by this
+prefactor. Holomorphy again gives derivative control.
+\end{proof}
+
+\begin{theorem}[Explicit gamma and theta fold corrections]
+\label{thm:fold-correction}
+The real critical point and value from Theorem~\ref{thm:radius} satisfy
+\begin{equation}
+ v_c=1-\frac{Q_y'(1)}p+O(p^{-2}),\qquad
+ \kappa_c=\ee^{-1}\left(1-\frac{Q_y(1)}p\right)+O(p^{-2}).
+ \label{eq:fold-general}
+\end{equation}
+Thus, in the gamma case,
+\begin{align}
+ v_c&=1+\frac{\beta+1+\alpha}{p}+O(p^{-2}),\label{eq:fold-gamma-v}\\
+ \kappa_c&=\ee^{-1}\left(1+\frac{\beta+(1+\alpha)/2}{p}\right)
+                                          +O(p^{-2}).\label{eq:fold-gamma-k}
+\end{align}
+In the theta case,
+\begin{align}
+ v_c&=1+\frac{1-a_q(p)}p+O(p^{-2}),\label{eq:fold-q-v}\\
+ \kappa_c&=\ee^{-1}\left(1+\frac{1/2-a_q(p)}p\right)
+                                          +O(p^{-2}).\label{eq:fold-q-k}
+\end{align}
+The errors are uniform in the theta phase for fixed \(q\). Locally on
+the two inverse branches,
+\begin{equation}
+ v=v_c\ \pm\sqrt{
+      \frac{2(\kappa_c-\kappa)}{-\Psi_y''(v_c)}}
+      +O(\kappa_c-\kappa),
+ \qquad -\Psi_y''(v_c)\longrightarrow\ee^{-1}.
+ \label{eq:sqrt}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Differentiate \eqref{eq:psicorrection} near \(v=1\). Writing
+\(v_c=1+d/p+O(p^{-2})\), the coefficient at order \(p^{-1}\) in
+\(\Psi_y'(v_c)=0\) is \(-\ee^{-1}(d+Q_y'(1))\). This proves the first
+part of \eqref{eq:fold-general}. The derivative of \(v\ee^{-v}\)
+vanishes at one, so the displacement of the critical point contributes
+only at order \(p^{-2}\) to the critical value. Evaluation of
+\eqref{eq:psicorrection} at one proves the second part. Substitute
+\eqref{eq:Q} for the displayed specializations. Finally, invert the
+quadratic Taylor term at the nondegenerate critical point to obtain
+\eqref{eq:sqrt}.
+\end{proof}
+
+The periodic coefficient is visible in both the inverse-gap law
+\eqref{eq:q-gap} and the singularity law \eqref{eq:fold-q-k}.
+Thus nonlinear inversion does not wash out the phase of the flat
+ambiguity. The leading normal form is universal, but its first
+correction remembers the realization scale.
+
+\begin{corollary}[An abstract local criterion for the same radius law]
+\label{cor:abstract}
+The leading radius and Cayley-coefficient conclusions do not require a
+moment model. Suppose a family of local equations has the form
+\(H_y(t)=\delta yD_y(t)\), with \(H_y(t_0)=0\), \(D_y(t_0)>0\), and a
+scale \(p_y\to\infty\). Suppose its data are real on the positive axis
+and holomorphic on the expanding scaled discs, and, locally uniformly
+in complex \(v\),
+\begin{equation}
+ \frac{p_yH_y(t_0(1+v/p_y))}{t_0}\longrightarrow v,
+ \qquad
+ \frac{D_y(t_0(1+v/p_y))}{D_y(t_0)}\longrightarrow\ee^v.
+ \label{eq:abstract-fold}
+\end{equation}
+Then the branch through \(t_0\) has parameter radius
+\(R_y\sim t_0/(\ee p_y yD_y(t_0))\), a real fold on its continuation,
+and normalized fixed-order coefficient limits \(k^{k-1}/k!\).
+If the convergence in \eqref{eq:abstract-fold} has rate \(O(p_y^{-1})\),
+the coefficient errors have that rate as well.
+\end{corollary}
+\begin{proof}
+The scaled deformation map is the quotient of the two expressions in
+\eqref{eq:abstract-fold}. It converges holomorphically to \(v\ee^{-v}\).
+The lower-radius continuation, local real critical point, upper-radius
+obstruction, and coefficient extraction in the proof of
+Theorem~\ref{thm:radius} apply without change.
+\end{proof}
+
+\section{Reproducible computations and verification boundaries}
+\label{sec:computations}
+
+The accompanying program \texttt{verify.py} uses exact integer
+arithmetic for the cubic inverse coefficients and arbitrary-precision
+arithmetic for finite analytic consistency tests. The recorded run used
+Python 3.13.5, mpmath 1.3.0, and 130 decimal digits. All assertions in
+that run passed. The exact environment and results are recorded in
+\texttt{verification\_results.json}; there are no network dependencies.
+
+\subsection{Exact arithmetic and independent transform evaluations}
+The program computes the first twelve coefficients for \(m_n=(3n)!\)
+using the finite coefficient formula and independently substitutes them
+into the defining formal equation. The first five are displayed in
+\eqref{eq:cubic-inverse}. For the theta family at \(q=1/2\), moments
+through order twelve are checked separately on the even and odd
+lattices. Transform defects are evaluated both as direct differences of
+Stieltjes sums and from the theta formulas. The exact \(q^2\) equation
+and the defect scaling are tested independently. The shifted-lattice
+first-order equation and its alternating difference are also tested.
+
+For the gamma defect, direct quadrature of the signed integral in the
+cubic case gives the values in Table~\ref{tab:gamma}. The test compares
+these with the negative of the closed form in \eqref{eq:cubic}.
+
+\begin{table}[htbp]
+\centering
+\caption{Cubic signed Stieltjes defect, checked against the exact formula.}
+\label{tab:gamma}
+\begin{tabular}{@{}rl@{}}
+\toprule
+\(t\) & \(\displaystyle\int_0^\infty
+ \frac{\ee^{-u}\sin(\sqrt3u-\pi/3)}{1+tu^3}\dd u=-D(t)\)\\
+\midrule
+\(1\)    & \(-0.141722777195878776146374\)\\
+\(0.1\)  & \(-0.0303419687206032999616225\)\\
+\(0.01\) & \(-0.000451920923529153552470793\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Inverse transport and the fold}
+Table~\ref{tab:qgap} compares the actual endpoint inverse gap with its
+leading scale and first relative correction at \(q=1/2\). At integer
+phases \(x=N\), symmetry gives \(P_h'(N-1/2)=0\), hence
+\(a_q(N)=-1/2\). The final column is therefore
+\(1-2y(N+1/2)\). The value at \(N=4\) is not in a particularly small
+asymptotic regime; it is included to avoid displaying only favorable
+large-\(N\) cases.
+
+\begin{table}[htbp]
+\centering
+\caption{Theta-family inverse gap, \(q=1/2\) and \(y=2^{-N}\).}
+\label{tab:qgap}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+\(N\) & \(D(y)\) & \((T_+-T_-)/(yD(y))\) & First correction\\
+\midrule
+4  & \(6.98194\cdot10^{-5}\)  & 0.644450288768 & 0.437500000000\\
+8  & \(1.66462\cdot10^{-11}\) & 0.936987457980 & 0.933593750000\\
+12 & \(6.05587\cdot10^{-23}\) & 0.993922761611 & 0.993896484375\\
+20 & \(2.84745\cdot10^{-60}\) & 0.999960900309 & 0.999960899353\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At these integer phases,
+\(D(y)/E_*(y)=0.004468440172262834\ldots\).
+The phase is fixed, so this repeated ratio illustrates the periodic
+formula rather than a general phase-independent constant.
+For the cubic model, the measured ratio at \(y=10^{-4}\) is
+\(0.991133461317105922\ldots\), compared with the first corrected value
+\(0.990982261239872465\ldots\) from \eqref{eq:cubic-gap}.
+
+To test the fold, the program fixes \(t_0=2^{-p}\) and computes
+\(y=t_0/S_-(t_0)\). It evaluates the residual by subtracting the
+integrands before summation, rather than subtracting two nearly equal
+order-one numbers. The critical equation is
+\begin{equation}
+ H'(t)D(t)-H(t)D'(t)=0.
+ \label{eq:numeric-fold}
+\end{equation}
+Table~\ref{tab:fold} compares the resulting critical values with
+\eqref{eq:fold-q-k}. At these phases the predictor is
+\(\ee^{-1}(1+1/p)\). The bounded last column is consistent with the
+proved \(O(p^{-2})\) remainder.
+
+\begin{table}[htbp]
+\centering
+\caption{The real theta fold and its first correction.}
+\label{tab:fold}
+\begin{tabular}{@{}rllll@{}}
+\toprule
+\(p\) & \(v_c\) & \(\kappa_c\) & \(\ee^{-1}(1+1/p)\)
+& \(p^2\) times error\\
+\midrule
+12 & 1.15750238455 & 0.404091437651 & 0.398536061269 & 0.7999741990\\
+20 & 1.08555562628 & 0.388065092191 & 0.386273413230 & 0.7166715845\\
+32 & 1.05078622850 & 0.380048631028 & 0.379375673708 & 0.6891082956\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Finally, the exact first two parameter sectors at \(q=1/2,y=2^{-8}\)
+are approximately
+\[
+ A_1=6.09270122025727\cdot10^{-14},\qquad
+ A_2=7.19277265023981\cdot10^{-24}.
+\]
+For the endpoint displacement \(\delta=1\), the observed omitted tail
+is approximately \(1.20633833887303\cdot10^{-33}\); the explicit bound
+\eqref{eq:sector-tail}, evaluated with the theta disc, is approximately
+\(1.42599129686661\cdot10^{-30}\). This verifies that the implemented
+normalizations and the stated analytic estimate are mutually consistent
+in this test case.
+
+\subsection{What these computations certify}
+The integer coefficient identities are exact finite calculations.
+All quadratures, infinite-sum truncations, root computations, and
+theta evaluations in the program use high-precision floating-point
+arithmetic, not outward-rounded interval arithmetic. Thus the displayed
+decimals are consistency evidence, not independently certified numerical
+endpoints. The program does not prove the infinite identities, the
+asymptotic theorems, or the absence of additional complex singularities.
+Those assertions rely on the proofs above. A future interval
+implementation would need explicit enclosures for every tail,
+quadrature, and rounded arithmetic operation.
+
+\section{Consequences for a transseries realization architecture}
+\label{sec:architecture}
+
+\subsection{Three objects that must not be identified}
+The examples distinguish three different kinds of data. The first is a
+formal coefficient sequence, or formal inverse \(\widehat T\). The
+second is a selected analytic representative \(T_{a_0}\). The third is
+the class of all admissible representatives and its flat deformations.
+A symbolic inversion algorithm acts on the first object. An evaluated
+residual certificate acts on the second. A theorem such as
+\eqref{eq:information-floor} or \eqref{eq:radius} describes the third.
+Confusing these objects turns a correct formal computation into an
+incorrect claim of analytic uniqueness.
+
+Positive measures provide a particularly useful test case because they
+supply complete monotonicity, real-root uniqueness, and signed remainder
+bounds, yet still leave nontrivial analytic moduli above the determinacy
+threshold. The models therefore rule out the proposed implication
+``positive Stieltjes structure plus all inverse coefficients implies a
+unique analytic inverse,'' while identifying exactly when the
+implication becomes valid.
+
+\subsection{A natural representation of the additional data}
+In the gamma example, a representation can retain an actual baseline
+and a coefficient multiplying the generator
+\(t^{-\beta}\ee^{-At^{-\alpha}}\). Nonlinear inversion generates
+successive powers of that generator and its logarithmic derivatives.
+The convergent parameter series gives a direct analytic meaning to
+these extra sectors without assigning a sum to the divergent common
+power series.
+
+For theta, retaining only a constant coefficient at the log-Gaussian
+scale loses information. A representation must also retain the phase
+\(x\bmod1\), or the periodic function \(1/P_h(x-1/2)\). Its Fourier
+expansion produces complex oscillatory factors, so a system restricted
+to purely real nonoscillatory monomials should not silently treat it as
+an ordinary one-term asymptotic equivalent. The fold correction shows
+that this is not a superficial formatting issue: the phase affects the
+location of an actual analytic singularity.
+
+These observations are compatible with the repository's distinction
+between formal well-based supports, flat-function interfaces, and
+concrete analytic realization \cite{repo-series,repo-action}. They are
+not a replacement for proving the missing general realization theorems.
+
+\subsection{A realistic formalization boundary}
+A staged formalization would begin with finite algebra and order facts:
+the weak-composition coefficient identity, its sign, the factorial bound,
+and the monotonicity/residual certificate. The moment-determinacy bridge
+then needs measure push-forwards, polynomial approximation on a compact
+interval, and uniqueness of Fourier transforms under exponential
+integrability. The gamma and theta examples require complex integration
+or equivalent special-function identities. The radius theorem requires
+uniform holomorphic implicit inversion and a carefully stated local
+fold lemma.
+
+Existing repository modules on flatness, well-based supports, and
+asymptotic scales are relevant interfaces, but their presence alone does
+not certify these arguments. This report supplies no Lean source and
+makes no claim that those dependencies have already been formalized in
+the required form. The finite Python checks likewise are not a substitute
+for a proof assistant.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\paragraph{Q1. Determine the full inverse ambiguity envelope.}
+For a fixed indeterminate Stieltjes moment sequence, determine
+\(\inf_\mu T_\mu(y)\) and \(\sup_\mu T_\mu(y)\) over all representing
+probabilities, not only over the constructed affine families. Translate
+the full moment parametrization into sharp nonlinear envelopes. Are the
+even and odd lattice inverses asymptotically extremal at the least-bound
+scale, or is the constant in the information floor strictly improvable?
+No extremality claim for those two measures has been proved here.
+
+\paragraph{Q2. Locate the exact nearest deformation singularities.}
+Theorem~\ref{thm:radius} gives the leading radius, and
+Theorem~\ref{thm:fold-correction} locates the real fold to one further
+order. Determine whether that fold is the nearest singularity for all
+sufficiently small \(y\). If not, classify the competing complex
+singularities and their phase dependence. This is necessary before
+identifying the second-order expansion of the Taylor radius with the
+second-order expansion of the real fold.
+
+\paragraph{Q3. Develop joint critical limits.}
+The results keep \(\alpha,\beta,q\) fixed. Study the joint limit
+\(\alpha\uparrow1/2\), \(y\downarrow0\), where
+\(A=\sec(\pi\alpha)\) diverges and moment determinacy reappears at the
+endpoint. Separately, analyze \(q\uparrow1\), \(y\downarrow0\), where
+the theta oscillation is exponentially small in \(1/h\). A uniform
+answer must distinguish small amplitude from exact absence of a phase.
+
+\paragraph{Q4. Relate positive realizations to canonical summation.}
+For the exact \(q\)-Euler family in
+Proposition~\ref{prop:shifted}, identify which measures, if any, coincide
+with particular analytic \(q\)-summation prescriptions. Determine the
+additional sectorial growth or boundary data that restore uniqueness,
+and then prove which of those selections commute with the nonlinear
+map \(S\mapsto T\). The different summation procedures discussed in
+\cite{divizio-zhang} make this a question about specified hypotheses,
+not merely nomenclature.
+
+\paragraph{Q5. Reconstruct the hidden parameter from minimal extra data.}
+For the ordered one-parameter families, one exact transform value fixes
+the parameter. Quantify the conditioning of this reconstruction when
+that value is known only approximately. Combine the information floor
+with the exact derivative \eqref{eq:parameter-derivative} to identify
+optimal measurement scales. For the full moment-indeterminate family,
+determine which finite or countable supplementary observations identify
+a measure and its inverse.
+
+\paragraph{Q6. Extend the radius criterion beyond the two models.}
+Find verifiable conditions on logarithmic derivatives of a flat defect
+that imply the complex-uniform limits in
+Corollary~\ref{cor:abstract}. For example, formulate conditions for
+regularly varying actions and for several competing flat scales.
+Determine when one still obtains a single Lambert fold and when several
+scales interact to produce a different limiting implicit equation.
+
+\paragraph{Q7. Build an algebra of periodic-coefficient sectors.}
+Construct a precise analytic or formal framework in which the
+log-periodic coefficient \(1/P_h\), its derivatives, products, and
+inverse-sector expansions are legitimate objects. Specify the support
+and convergence conditions required for composition. Clarify the
+boundary between a usable oscillatory calculus and a realization in an
+ordered Hardy field; Proposition~\ref{prop:shifted} provides an explicit
+test that any simultaneous-realization claim must pass.
+
+\paragraph{Q8. Formalize the positive-measure bridge and certify numerics.}
+A concrete first milestone is a formal proof of
+Lemma~\ref{lem:coefficients} and the implication
+``formal inverse coefficient bound \(\Rightarrow\) moment bound.''
+A second is the exact identifiability theorem. Independently, implement
+outward-rounded versions of the theta and gamma evaluations and use
+\eqref{eq:residual} and \eqref{eq:sector-tail} to produce fully rigorous
+inverse and sector enclosures. These are separate tasks from a full
+formalization of the contour and fold arguments.
+
+\section{Conclusion}
+The positive Stieltjes inverse problem gives a complete, sharply scoped
+answer to a realization question relevant to the ProveIt transseries
+program. Formal inversion neither creates nor removes the
+identifiability obstruction: that obstruction is exactly the underlying
+moment problem. A sign-definite coefficient formula transfers the
+classical order-two determinacy threshold to the nonlinear inverse.
+Beyond it, exact exponential and theta defects expose the missing
+analytic data.
+
+The ambiguity is not an arbitrary nuisance term. It has an exact
+parameter derivative, a convergent nonlinear sector expansion, an
+information-theoretic error floor, and a universal rescaled deformation
+map. The leading map \(v\ee^{-v}\) determines the asymptotic parameter
+radius and Cayley coefficients, while the first fold correction retains
+the specific gamma or theta structure. These conclusions supply
+explicit theorems and counterexamples on which a broader realization
+and certified-inversion theory can build.
+
+\appendix
+\section{The Lagrange identity used in both coefficient calculations}
+\label{app:lagrange}
+We record a short proof to make clear that the two uses of Lagrange
+inversion in the paper have the same normalization. Let \(S(t)\) be a
+formal series with \(S(0)=1\), and let \(T=yS(T)\). Formal substitution
+\(y=t/S(t)\) in the residue formula for \([y^n]T\) gives
+\begin{align*}
+ [y^n]T
+ &=\operatorname{res}_{t=0}
+ \left(t^{-n}S(t)^n-t^{-(n-1)}S(t)^{n-1}S'(t)\right)\dd t\\
+ &=[t^{n-1}]S(t)^n
+   -\frac1n[t^{n-2}]\frac{\mathrm d}{\mathrm dt}S(t)^n\\
+ &=\frac1n[t^{n-1}]S(t)^n.
+\end{align*}
+For \(n=1\), the coefficient with negative index is zero. For all
+\(n\), the second term uses
+\([t^{n-2}](S^n)'=(n-1)[t^{n-1}]S^n\).
+The change-of-variables rule is valid for a formal substitution with
+nonzero linear coefficient; it can also be checked directly on Laurent
+monomials. In the analytic setting the same calculation follows from
+Cauchy's integral formula on sufficiently small circles. Replacing
+\(t\) by \(t_0+w\), and \(S\) by \(\phi_y\), yields the coefficient
+formula of Theorem~\ref{thm:sectors}; a nonunit constant is allowed when
+one uses the same residue argument with \(w=\delta\phi_y(w+t_0)\).
+
+\section{Repository provenance and limits of the comparison}
+\label{app:provenance}
+The repository was inspected on 29 September 2026. The relevant live
+path was \texttt{Analysis/Transseries}, not the older path under
+\texttt{Analysis/FabiusFunction} used in some earlier research notes.
+The retrieved Transseries subtree listing had Git tree identifier
+\texttt{81058854a185ab903d9012f6de6f93da345b31d6}.
+This identifies the inspected listing, not a claim that every file was
+read or that the whole repository was frozen at that state.
+
+The principal content sources were the transseries group README and
+the README of the \emph{Action Accumulation and Nonlinear Inversion}
+package \cite{repo-series,repo-action}. The former describes formal,
+asymptotic, and analytic interfaces and their qualifications. The latter
+provides the closest inspected comparison for hidden flat oscillations
+and nonlinear transport, including an explicit warning about the general
+Hahn-realization question. The canonical multi-volume sources and the
+new research packages were not audited theorem by theorem.
+
+An indexed repository code search for ``Stieltjes'' returned relevant
+uses in other material; an indexed search for ``Wigert'' in the
+Transseries path returned no matches. Neither search proves absence of
+an equivalent theorem or historical novelty. The local
+\texttt{SOURCE\_NOTES.md} records the inspected paths and the primary
+literature used. No repository file was changed, and no external article is bundled in
+this package.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{repo-main}
+V. Reshetnikov, \emph{ProveIt}, repository, inspected 29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt}{GitHub: VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-series}
+V. Reshetnikov, ProveIt contributors and research artifacts,
+\emph{Series and transseries}, group README, inspected 29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Transseries/docs/series-and-transseries/README.md}{GitHub: Series and transseries README}.
+
+\bibitem{repo-action}
+ProveIt research artifact,
+\emph{Action Accumulation and Nonlinear Inversion: A Laplace--measure
+calculus, hidden oscillations, and limits of Hardy-field realization},
+package README and editorial amendments, 29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Transseries/docs/series-and-transseries/Action_Accumulation_Nonlinear_Inversion/README.md}{GitHub: Action Accumulation and Nonlinear Inversion README}.
+
+\bibitem{lin-stoyanov}
+G. D. Lin and J. Stoyanov,
+\emph{Moment determinacy of powers and products of nonnegative random
+variables}, Journal of Theoretical Probability \textbf{28} (2015),
+1337--1353.
+\href{https://doi.org/10.1007/s10959-014-0546-z}{doi:10.1007/s10959-014-0546-z}.
+Author manuscript: \href{https://arxiv.org/abs/1403.0301}{arXiv:1403.0301}.
+
+\bibitem{chihara}
+T. S. Chihara, \emph{A characterization and a class of distribution
+functions for the Stieltjes--Wigert polynomials}, Canadian Mathematical
+Bulletin \textbf{13} (1970), 529--532.
+\href{https://doi.org/10.4153/CMB-1970-098-7}{doi:10.4153/CMB-1970-098-7}.
+
+\bibitem{christiansen}
+J. S. Christiansen, \emph{The moment problem associated with the
+Stieltjes--Wigert polynomials}, Journal of Mathematical Analysis and
+Applications \textbf{277} (2003), 218--245.
+\href{https://doi.org/10.1016/S0022-247X(02)00534-6}{doi:10.1016/S0022-247X(02)00534-6}.
+
+\bibitem{christiansen-koelink}
+J. S. Christiansen and E. Koelink,
+\emph{Self-adjoint difference operators and classical solutions to the
+Stieltjes--Wigert moment problem}, Journal of Approximation Theory
+\textbf{140} (2006), 1--26.
+\href{https://doi.org/10.1016/j.jat.2005.11.010}{doi:10.1016/j.jat.2005.11.010}.
+
+\bibitem{divizio-zhang}
+L. Di Vizio and C. Zhang, \emph{On \(q\)-summation and confluence},
+Annales de l'Institut Fourier \textbf{59} (2009), 347--392.
+\href{https://doi.org/10.5802/aif.2433}{doi:10.5802/aif.2433}.
+\href{https://arxiv.org/abs/0709.1610}{arXiv:0709.1610}.
+
+\bibitem{nikolaev}
+N. Nikolaev, \emph{Gevrey asymptotic implicit function theorem},
+L'Enseignement Math\'ematique \textbf{70} (2024), 251--282.
+\href{https://doi.org/10.4171/LEM/1061}{doi:10.4171/LEM/1061}.
+
+\bibitem{dlmf}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical
+Functions}, Chapter 17, especially Section 17.8, Jacobi's triple product.
+\url{https://dlmf.nist.gov/17.8}. Consulted 29 September 2026.
+\end{thebibliography}
+\end{document}
