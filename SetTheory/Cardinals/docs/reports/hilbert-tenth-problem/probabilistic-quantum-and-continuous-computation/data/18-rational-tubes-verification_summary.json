@@ -1,0 +1,439 @@
+{
+  "python": "3.13.5",
+  "sympy": "1.14.0",
+  "accepted_examples": [
+    {
+      "accepted": true,
+      "N": 10,
+      "H": 10,
+      "D": 1000,
+      "R": 2,
+      "M": 1,
+      "L": 0,
+      "Q": 10,
+      "E_final": 10,
+      "final_node": [
+        1000
+      ],
+      "tube_guard_minimum": 9910,
+      "target_integer_margins": [
+        900,
+        900
+      ],
+      "final_error": "1/100",
+      "physical_time": "1",
+      "name": "constant",
+      "noise_units": [
+        0,
+        0
+      ]
+    },
+    {
+      "accepted": true,
+      "N": 10,
+      "H": 10,
+      "D": 1000,
+      "R": 2,
+      "M": 1,
+      "L": 0,
+      "Q": 10,
+      "E_final": 21,
+      "final_node": [
+        1000
+      ],
+      "tube_guard_minimum": 9809,
+      "target_integer_margins": [
+        790,
+        790
+      ],
+      "final_error": "21/1000",
+      "physical_time": "1",
+      "name": "constant_robust",
+      "noise_units": [
+        1,
+        1
+      ]
+    },
+    {
+      "accepted": true,
+      "N": 1000,
+      "H": 1000,
+      "D": 100000000,
+      "R": 1,
+      "M": 2,
+      "L": 2,
+      "Q": 100000000000,
+      "E_final": 1279638,
+      "final_node": [
+        76177343
+      ],
+      "tube_guard_minimum": 22388007999,
+      "target_integer_margins": [
+        48977050,
+        227150950
+      ],
+      "final_error": "639819/50000000",
+      "physical_time": "1",
+      "name": "logistic_robust",
+      "noise_units": [
+        1,
+        1
+      ]
+    },
+    {
+      "accepted": true,
+      "N": 3,
+      "H": 3,
+      "D": 100,
+      "R": 2,
+      "M": 1,
+      "L": 0,
+      "Q": 3,
+      "E_final": 3,
+      "final_node": [
+        -102
+      ],
+      "tube_guard_minimum": 290,
+      "target_integer_margins": [
+        50,
+        90
+      ],
+      "final_error": "3/100",
+      "physical_time": "1",
+      "name": "negative_floor",
+      "noise_units": [
+        0,
+        0
+      ]
+    },
+    {
+      "accepted": true,
+      "N": 1000,
+      "H": 1000,
+      "D": 100000000,
+      "R": 2,
+      "M": 2,
+      "L": 1,
+      "Q": 1000,
+      "E_final": 345954,
+      "final_node": [
+        -36769864
+      ],
+      "tube_guard_minimum": 99800000000,
+      "target_integer_margins": [
+        25768364,
+        82119550
+      ],
+      "final_error": "172977/50000000",
+      "physical_time": "1",
+      "name": "negative_decay",
+      "noise_units": [
+        0,
+        0
+      ]
+    },
+    {
+      "accepted": true,
+      "N": 5000,
+      "H": 10000,
+      "D": 10000000000,
+      "R": 3,
+      "M": 9,
+      "L": 6,
+      "Q": 100000000000000,
+      "E_final": 171654968,
+      "final_node": [
+        19997222819
+      ],
+      "tube_guard_minimum": 98262278320000,
+      "target_integer_margins": [
+        9127839255,
+        9155611065
+      ],
+      "final_error": "21456871/1250000000",
+      "physical_time": "1/2",
+      "name": "pre_blowup",
+      "noise_units": [
+        0,
+        0
+      ]
+    },
+    {
+      "accepted": true,
+      "N": 1000,
+      "H": 1000,
+      "D": 100000000,
+      "R": 2,
+      "M": 3,
+      "L": 1,
+      "Q": 3000,
+      "E_final": 517653,
+      "final_node": [
+        109329647
+      ],
+      "tube_guard_minimum": 89923271000,
+      "target_integer_margins": [
+        8811994,
+        50763500
+      ],
+      "final_error": "517653/100000000",
+      "physical_time": "1",
+      "name": "rational_data",
+      "noise_units": [
+        0,
+        0
+      ]
+    },
+    {
+      "accepted": true,
+      "N": 2000,
+      "H": 2000000,
+      "D": 3000000000000,
+      "R": 2,
+      "M": 136,
+      "L": 328,
+      "Q": 162000000000000000000000000000000000000000000000000000000,
+      "E_final": 79186474,
+      "final_node": [
+        3001000165502,
+        2999000165668,
+        999999850963
+      ],
+      "tube_guard_minimum": 5997434389251999999,
+      "target_integer_margins": [
+        683253772000,
+        302034022500
+      ],
+      "final_error": "39593237/1500000000000",
+      "physical_time": "1/1000",
+      "name": "chemical_end_to_end",
+      "noise_units": [
+        1,
+        1
+      ]
+    }
+  ],
+  "rejected_mutations": [
+    "nodes",
+    "errors",
+    "floor_remainders",
+    "ceiling_remainders",
+    "scale",
+    "initial_error_units"
+  ],
+  "other_rejections": [
+    "tube boundary",
+    "unreachable constant trajectory"
+  ],
+  "quartic_compilations": [
+    {
+      "name": "constant",
+      "gate_count": 19,
+      "witness_count": 63,
+      "equation_count": 59,
+      "maximum_residual_degree": 2,
+      "all_residuals_zero": true,
+      "count_formula_verified": true
+    },
+    {
+      "name": "chemical_small",
+      "gate_count": 65,
+      "witness_count": 162,
+      "equation_count": 158,
+      "maximum_residual_degree": 2,
+      "all_residuals_zero": true,
+      "count_formula_verified": true
+    },
+    {
+      "name": "negative",
+      "gate_count": 21,
+      "witness_count": 76,
+      "equation_count": 70,
+      "maximum_residual_degree": 2,
+      "all_residuals_zero": true,
+      "count_formula_verified": true
+    },
+    {
+      "name": "negative_floor",
+      "gate_count": 20,
+      "witness_count": 74,
+      "equation_count": 68,
+      "maximum_residual_degree": 2,
+      "all_residuals_zero": true,
+      "count_formula_verified": true
+    },
+    {
+      "name": "rational",
+      "gate_count": 19,
+      "witness_count": 63,
+      "equation_count": 59,
+      "maximum_residual_degree": 2,
+      "all_residuals_zero": true,
+      "count_formula_verified": true
+    }
+  ],
+  "chemical_checks": [
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 14,
+      "actual_degree": 8,
+      "degree_bound": 8,
+      "damping_power": 2,
+      "rail_invariants": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 10,
+      "actual_degree": 8,
+      "degree_bound": 8,
+      "damping_power": 2,
+      "rail_invariants": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 12,
+      "actual_degree": 6,
+      "degree_bound": 6,
+      "damping_power": 1,
+      "rail_invariants": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 2,
+      "species": 5,
+      "reaction_count": 8,
+      "actual_degree": 5,
+      "degree_bound": 8,
+      "damping_power": 2,
+      "rail_invariants": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 2,
+      "species": 5,
+      "reaction_count": 48,
+      "actual_degree": 9,
+      "degree_bound": 9,
+      "damping_power": 2,
+      "rail_invariants": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 4,
+      "actual_degree": 5,
+      "degree_bound": 6,
+      "damping_power": 1,
+      "rail_invariants": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    }
+  ],
+  "offset_chemical_checks": [
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 18,
+      "actual_degree": 11,
+      "degree_bound": 11,
+      "offset_invariant": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 12,
+      "actual_degree": 11,
+      "degree_bound": 11,
+      "offset_invariant": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 14,
+      "actual_degree": 9,
+      "degree_bound": 9,
+      "offset_invariant": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 2,
+      "species": 4,
+      "reaction_count": 6,
+      "actual_degree": 11,
+      "degree_bound": 11,
+      "offset_invariant": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 2,
+      "species": 4,
+      "reaction_count": 53,
+      "actual_degree": 12,
+      "degree_bound": 12,
+      "offset_invariant": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    },
+    {
+      "dimension": 1,
+      "species": 3,
+      "reaction_count": 6,
+      "actual_degree": 8,
+      "degree_bound": 9,
+      "offset_invariant": true,
+      "projection_identity": true,
+      "damping_invariant": true,
+      "kinetic_sign_condition": true,
+      "reaction_reconstruction": true
+    }
+  ],
+  "floor_division_cases": 4020,
+  "ceiling_division_cases": 4020,
+  "naive_lift_obstruction_identities": true,
+  "large_chemical_schema_count": {
+    "gate_count": 42044,
+    "witness_count": 126099,
+    "equation_count": 118099,
+    "full_large_schema_materialized": false
+  },
+  "formal_verification": false
+}
