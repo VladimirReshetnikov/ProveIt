@@ -1,4 +1,4 @@
-"""Faithful free-group embeddings and5/6-operation conjugate input curves.
+"""Faithful free-group embeddings and5/6/7-operation input curves.
 
 Matrices are flat row-major four-tuples. This is only the input-loader
 component; it does not encode subgroup membership or prove universality.
@@ -202,8 +202,8 @@ def verify_embedding():
 
 LOADER5 = (
     ('q', '*', 'c', 'x'),
-    ('square', '*', 'x', 'x'),
-    ('lower', '*', 'negative_c', 'square'),
+    ('product', '*', 'q', 'x'),
+    ('lower', '-', 0, 'product'),
     ('upper_left', '+', 1, 'q'),
     ('lower_right', '-', 1, 'q'),
 )
@@ -231,7 +231,7 @@ def execute_schedule(schedule, inputs, outputs):
 def loader5(x, k):
     """k>=1 is a fixed presentation parameter, never an extra runtime input."""
     assert isinstance(k, int) and k >= 1
-    return execute_schedule(LOADER5, {'x': x, 'c': 4*k, 'negative_c': -4*k}, LOADER5_OUTPUTS)
+    return execute_schedule(LOADER5, {'x': x, 'c': 4*k}, LOADER5_OUTPUTS)
 
 
 def loader6(x):
@@ -253,7 +253,7 @@ def verify_quadratic_loaders():
     reports = {}
     for label, schedule, outputs, inputs, fixed_A, cost in (
         ('fixed_rank5', LOADER5, LOADER5_OUTPUTS,
-         {'x': x, 'c': c, 'negative_c': -c}, (1, c, 0, 1), 5),
+         {'x': x, 'c': c}, (1, c, 0, 1), 5),
         ('rank_uniform6', LOADER6, LOADER6_OUTPUTS, {'x': x}, A, 6)):
         available = set(inputs)
         for name, op, left, right in schedule:
@@ -261,7 +261,8 @@ def verify_quadratic_loaders():
             assert all(isinstance(v, int) or v in available for v in (left, right))
             available.add(name)
         counts = Counter('M' if op == '*' else 'A' for _, op, _, _ in schedule)
-        assert len(schedule) == cost and counts == {'M': 3, 'A': cost-3}
+        multiplications = 2 if cost == 5 else 3
+        assert len(schedule) == cost and counts == {'M': multiplications, 'A': cost-multiplications}
         actual = tuple(sp.expand(v) for v in execute_schedule(schedule, inputs, outputs))
         target = multiply(multiply((1, 0, -x, 1), fixed_A), (1, 0, x, 1))
         assert all(sp.expand(a-b) == 0 for a, b in zip(actual, target))
@@ -278,7 +279,7 @@ def verify_quadratic_loaders():
                 assert matrix == direct and determinant(matrix) == 1
                 assert paired_diagonal_target(value, k) == (matrix, matrix)
                 samples += 1
-        reports[label] = dict(operations=cost, multiplications=3, additions_subtractions=cost-3,
+        reports[label] = dict(operations=cost, multiplications=multiplications, additions_subtractions=cost-multiplications,
                               supplied_witnesses=0, input='ordinary integer x; intended language domain x>0',
                               fixed_parameter='c=4k, k=N-1>=1 is fixed' if cost == 5 else 'A and B independent of rank',
                               schedule=schedule, outputs=outputs,
@@ -287,8 +288,68 @@ def verify_quadratic_loaders():
                               symbolic_conjugation_identity=True, direct_integer_matrix_cases=samples,
                               repeated_pair_target_has_no_additional_arithmetic=True,
                               fixed_numeral_products_charged=True,
-                              fixed_signed_numerals_allowed=True)
+                              fixed_signed_numerals_allowed=True,
+                              arithmetic_gates_use_only_nonnegative_literals=True)
     return reports
+
+
+LOADER7 = (('program_product', '*', 'kappa', 'x'),
+           ('loaded_input', '+', 'program_product', 'offset'))+tuple(
+    (name, op, 'loaded_input' if left == 'x' else left,
+     'loaded_input' if right == 'x' else right)
+    for name, op, left, right in LOADER5)
+
+
+def loader7(x, kappa, offset):
+    """The fixed rank-four curve at kappa*x+offset; coefficients are fixed."""
+    assert isinstance(kappa, int) and kappa > 0
+    assert isinstance(offset, int) and offset > 0
+    return execute_schedule(LOADER7, {'x': x, 'c': 12, 'kappa': kappa, 'offset': offset},
+                            LOADER5_OUTPUTS)
+
+
+def verify_affine_loader7():
+    x, kappa, offset = sp.symbols('x kappa offset')
+    inputs = {'x': x, 'c': 12, 'kappa': kappa, 'offset': offset}
+    available = set(inputs)
+    for name, op, left, right in LOADER7:
+        assert name not in available
+        assert all(isinstance(v, int) or v in available for v in (left, right))
+        available.add(name)
+    counts = Counter('M' if op == '*' else 'A' for _, op, _, _ in LOADER7)
+    assert len(LOADER7) == 7 and counts == {'M': 3, 'A': 4}
+    actual = tuple(sp.expand(v) for v in execute_schedule(LOADER7, inputs, LOADER5_OUTPUTS))
+    loaded = kappa*x+offset
+    expected = (1+12*loaded, 12, -12*loaded*loaded, 1-12*loaded)
+    assert all(sp.expand(a-b) == 0 for a, b in zip(actual, expected))
+    assert sp.expand(determinant(actual)-1) == 0
+    degrees = [sp.Poly(v, x).degree() for v in actual]
+    assert degrees == [1, 0, 2, 1]
+    A4 = (1, 12, 0, 1)
+    cases = 0
+    for program in range(13):
+        offset, kappa = 2**program, 2**(program+1)
+        for value in range(1, 65):
+            y = kappa*value+offset
+            assert y == 2**program*(2*value+1)
+            remainder, valuation = y, 0
+            while remainder % 2 == 0:
+                valuation += 1
+                remainder //= 2
+            assert valuation == program and (remainder-1)//2 == value
+            direct = multiply(multiply(matrix_power(B, -y), A4), matrix_power(B, y))
+            assert loader7(value, kappa, offset) == loader5(y, 3) == direct
+            cases += 1
+    return dict(operations=7, multiplications=3, additions_subtractions=4,
+                supplied_witnesses=0, input='ordinary positive integer x',
+                fixed_parameters='kappa=2^(p+1), offset=2^p for fixed program p; c=12',
+                schedule=LOADER7, outputs=LOADER5_OUTPUTS,
+                coordinate_polynomials=[str(v) for v in actual], coordinate_degrees=degrees,
+                determinant_identity=True, symbolic_affine_composition_identity=True,
+                integer_matrix_and_unique_valuation_cases=cases,
+                no_runtime_exponentiation=True,
+                arithmetic_gates_use_only_nonnegative_literals=True,
+                scope='Paid affine input composition only; the companion group theorem supplies the single subgroup for the universal coded c.e. set')
 
 
 def verify_schreier_embedding():
@@ -320,8 +381,103 @@ def verify_schreier_embedding():
                 proof_scope='The note proves freeness using the k-cycle covering graph and its spanning tree, for every fixed k>=1')
 
 
+LOADER5_SWAPPED = (
+    ('q', '*', 'c', 'x'),
+    ('square', '*', 'q', 'q'),
+    ('lower', '-', 0, 'square'),
+    ('upper_left', '+', 1, 'q'),
+    ('lower_right', '-', 1, 'q'),
+)
+SWAPPED_OUTPUTS = ('upper_left', 1, 'lower', 'lower_right')
+LOADER6_PROGRAM = (
+    ('program_product', '*', 'scaled_kappa', 'x'),
+    ('q', '+', 'program_product', 'scaled_offset'),
+    ('square', '*', 'q', 'q'),
+    ('lower', '-', 0, 'square'),
+    ('upper_left', '+', 1, 'q'),
+    ('lower_right', '-', 1, 'q'),
+)
+
+
+def swap_conjugate(matrix):
+    """Conjugation by S=[[0,1],[1,0]], which is its own inverse."""
+    a, b, c, d = matrix
+    return (d, c, b, a)
+
+
+def swapped_schreier_generators(k):
+    old = [swap_conjugate(g) for g in schreier_generators(k)]
+    return [old[1], old[0]]+old[2:]
+
+
+def loader5_swapped(x, k):
+    assert isinstance(k, int) and k >= 1
+    return execute_schedule(LOADER5_SWAPPED, {'x': x, 'c': 4*k}, SWAPPED_OUTPUTS)
+
+
+def loader6_program(x, scaled_kappa, scaled_offset):
+    """Fixed rank-four program coefficients are12*2^(p+1) and12*2^p."""
+    assert isinstance(scaled_kappa, int) and scaled_kappa > 0
+    assert isinstance(scaled_offset, int) and scaled_offset > 0
+    return execute_schedule(LOADER6_PROGRAM,
+                            {'x': x, 'scaled_kappa': scaled_kappa, 'scaled_offset': scaled_offset},
+                            SWAPPED_OUTPUTS)
+
+
+def verify_swapped_loaders():
+    x, c, alpha, beta = sp.symbols('x c alpha beta')
+    reports = {}
+    for label, schedule, inputs, q, cost in (
+        ('swapped_fixed_rank5', LOADER5_SWAPPED, {'x': x, 'c': c}, c*x, 5),
+        ('preferred_uniform_program6', LOADER6_PROGRAM,
+         {'x': x, 'scaled_kappa': alpha, 'scaled_offset': beta}, alpha*x+beta, 6)):
+        available = set(inputs)
+        for name, op, left, right in schedule:
+            assert name not in available
+            assert all(isinstance(v, int) or v in available for v in (left, right))
+            available.add(name)
+        counts = Counter('M' if op == '*' else 'A' for _, op, _, _ in schedule)
+        assert len(schedule) == cost and counts == {'M': 2, 'A': cost-2}
+        actual = tuple(sp.expand(v) for v in execute_schedule(schedule, inputs, SWAPPED_OUTPUTS))
+        Astar = (1, 1, 0, 1)
+        direct = multiply(multiply((1, 0, -q, 1), Astar), (1, 0, q, 1))
+        assert all(sp.expand(a-b) == 0 for a, b in zip(actual, direct))
+        assert sp.expand(determinant(actual)-1) == 0
+        degrees = [sp.Poly(v, x).degree() for v in actual]
+        assert degrees == [1, 0, 2, 1]
+        cases = 0
+        for k in range(1, 9):
+            generators = swapped_schreier_generators(k)
+            assert generators[:2] == [Astar, (1, 0, 4*k, 1)]
+            assert generators[2:] == [(1-4*i, 1, -16*i*i, 1+4*i) for i in range(1, k)]
+            assert all(determinant(g) == 1 for g in generators)
+            for program in range(12 if cost == 6 else 1):
+                kappa, offset = 2**(program+1), 2**program
+                for value in (-3, 0, 1, 2, 13, 97):
+                    loaded = kappa*value+offset if cost == 6 else value
+                    matrix = (loader6_program(value, 4*k*kappa, 4*k*offset) if cost == 6
+                              else loader5_swapped(value, k))
+                    Bstar = generators[1]
+                    expected = multiply(multiply(matrix_power(Bstar, -loaded), Astar),
+                                        matrix_power(Bstar, loaded))
+                    assert matrix == expected
+                    cases += 1
+        reports[label] = dict(operations=cost, multiplications=2, additions_subtractions=cost-2,
+                              supplied_witnesses=0, schedule=schedule, outputs=SWAPPED_OUTPUTS,
+                              coordinate_polynomials=[str(v) for v in actual],
+                              coordinate_degrees=degrees, determinant_identity=True,
+                              symbolic_conjugation_identity=True, direct_integer_matrix_cases=cases,
+                              fixed_rank_four_generators=dict(a=Astar, b=(1, 0, 12, 1)),
+                              fixed_parameters=('c=4k with fixed rankN=k+1' if cost == 5 else
+                                                'scaled_kappa=12*2^(p+1), scaled_offset=12*2^p for fixed program p'),
+                              arithmetic_gates_use_only_nonnegative_literals=True,
+                              fixed_numeral_products_charged=True, no_runtime_exponentiation=True)
+    return reports
+
+
 def verify():
-    return dict(status='PASS_GROUP_UNIPOTENT_INPUT_LOADERS', quadratic_loaders=verify_quadratic_loaders(),
+    return dict(status='PASS_GROUP_UNIPOTENT_INPUT_LOADERS', quadratic_loaders={**verify_quadratic_loaders(), 'reference_uniform_program7': verify_affine_loader7(),
+                                   **verify_swapped_loaders()},
                 optional_commutator_loader=verify_commutator_loader(),
                 conjugate_embedding=verify_embedding(), schreier_embedding=verify_schreier_embedding(),
                 scope='Faithful free-group embedding and exact ordinary-input matrix curve only. No subgroup membership certificate, existential membership encoding, or universal Diophantine bound is provided.')

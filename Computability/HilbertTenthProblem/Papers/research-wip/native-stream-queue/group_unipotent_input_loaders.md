@@ -7,12 +7,14 @@ ordinary-input conjugate
 
     L(x)=B^-x A B^x
 
-with **five scalar operations:3 multiplications and2 additions/subtractions**.
+with **five scalar operations:2 multiplications and3 additions/subtractions**.
 Its entries have degrees1,0,2,1 in x. There are **no supplied witnesses**.
 The fixed coefficient depends only on N. A second construction gives the
 same input conjugate with **six operations:3M+3A**, using A and B independent
 of N. Both take the ordinary integer x directly; the intended group-language
-domain is x>0.
+domain is x>0. Swapping the named free-basis images also gives a
+**six-operation2M+4A** program-composed loader for one fixed universal
+subgroup from the companion theorem.
 
 These are input components, not complete Diophantine certificates. A fixed
 conjugation of a fibre-product subgroup makes the repeated pair `(L(x),L(x))`
@@ -146,16 +148,19 @@ would reverse the two diagonal signs.
 
 The exact five-gate schedule is
 
-    q=c*x, square=x*x, lower=(-c)*square,
+    q=c*x, product=q*x, lower=0-product,
     upper_left=1+q, lower_right=1-q.                   (8)
 
-The output is `(upper_left,c,lower,lower_right)`. All three products,
-including both multiplications by fixed numerals, are charged. There
-are3M+2A operations, no powers or divisions as primitives, and no
-existential coordinates. Fixed integer numerals, including-c, are
-available as in an integer polynomial circuit. If a convention permits
-only nonnegative fixed numerals, compute c*square and negate it with
-one subtraction: the resulting schedule costs six operations.
+The output is `(upper_left,c,lower,lower_right)`. Both products, including
+the multiplication by the fixed coefficient c, are charged. There are
+2M+3A operations, no powers or divisions as primitives, and no existential
+coordinates. The circuit uses only the nonnegative literals0,1,c, and
+computes the negative entry by its paid subtraction.
+
+An alternative five-operation circuit computes q=c*x, square=x*x and
+lower=(-c)*square, followed by the same two diagonal operations. That
+version has3M+2A and permits a signed fixed numeral. The main source
+uses(8), which keeps the total cost and saves one multiplication.
 
 For every fixed k>=1 the determinant of(7) is identically1, its trace
 is2, and its coordinate degrees are exactly1,0,2,1. In particular rank4
@@ -200,7 +205,82 @@ matrices and is independent of x. This accounting does not treat the
 subgroup-membership verifier, its generators, a finite presentation, or
 any Diophantine witness construction as already paid.
 
-## 5. Optional direct commutator coefficients
+## 5. A reference affine prefix for a fixed universal subgroup
+
+The group companion can apply its theorem once to the c.e. positive set
+
+    T_univ={2^p*(2x+1): x in S_p},
+
+where S_p ranges over an effective enumeration of all c.e. positive sets.
+For fixed program p, put kappa_p=2^(p+1) and lambda_p=2^p. These are
+positive fixed numerals compiled from the program, not varying inputs.
+The affine value
+
+    y=kappa_p*x+lambda_p=2^p*(2x+1)
+
+has2-adic valuation exactly p, so its odd part uniquely recovers x.
+Thus y belongs to T_univ exactly when x belongs to S_p. The companion's
+subgroup for T_univ is fixed across programs; only these two loader
+numerals change. This invokes that companion theorem, not an additional
+membership certificate from this packet.
+
+Compose the rank-four curve(9) with this affine input. The explicit DAG is
+
+    program_product=kappa_p*x,
+    y=program_product+lambda_p,
+    q=12*y, product=q*y, lower=0-product,
+    upper_left=1+q, lower_right=1-q.                   (11)
+
+It outputs L5(y), with k=3, and its repeated diagonal pair. This costs
+**7=3M+4A**, uses only nonnegative fixed literals, and introduces no
+witness. All four matrix coefficients retain degrees1,0,2,1 in the
+ordinary input x. The powers defining the two fixed program numerals
+are computed when the program is compiled; no input-dependent
+exponentiation occurs in(11). The group-membership history still has
+no paid Diophantine certificate here.
+
+## 6. A swapped basis saves one operation in program composition
+
+The preceding affine prefix is correct but can be improved by changing the
+fixed embedding. Put S=[[0,1],[1,0]]. Conjugation by S preserves SL2(Z),
+even though det(S)=-1. It sends the old B to Ustar=[[1,1],[0,1]] and
+the old U to Vstar=[[1,0],[4,1]]. Thus Ustar,Vstar are free by Section1.
+Conjugate the entire free basis(5) by S and swap its first two names:
+
+    a=Ustar, b=Vstar^k,
+    remaining basis images=Vstar^i Ustar Vstar^-i, 1<=i<k,
+    Vstar^i Ustar Vstar^-i=[[1-4i,1],[-16i^2,1+4i]].
+
+Conjugation and permutation preserve the already proved free independence.
+There are again exactly N=k+1 basis images. With c=4k, now
+
+    Astar=[[1,1],[0,1]], Bstar=[[1,0],[c,1]],
+    Lstar(x)=Bstar^-x Astar Bstar^x
+            =[[1+cx,1],[-(cx)^2,1-cx]].               (12)
+
+Compute q=c*x, square=q*q, lower=0-square,1+q,1-q. The base curve still
+costs5=2M+3A and uses only nonnegative fixed literals.
+
+For the fixed rank-four case c=12 and the program encoding of Section5,
+set alpha_p=12*kappa_p and beta_p=12*lambda_p. These are two fixed program
+numerals. Instead of evaluating the intermediate encoded input y, compute
+
+    program_product=alpha_p*x,
+    q=program_product+beta_p,
+    square=q*q, lower=0-square,
+    upper_left=1+q, lower_right=1-q.                   (13)
+
+This directly outputs Lstar(y) and its repeated pair. It costs
+**6=2M+4A**, has no supplied witnesses, and uses only nonnegative literal
+numerals. All coordinate degrees are again1,0,2,1. The matrix alphabet is
+the fixed one supplied by the companion's group theorem for the single
+coded c.e. set T_univ; the two scalar program numerals change the target
+curve, while the numerical input x remains ordinary and unencoded.
+The fixed products defining alpha_p,beta_p are compiled once and are
+not varying-input gates. No subgroup-membership history is paid by this
+six-operation loader.
+
+## 7. Optional direct commutator coefficients
 
 For comparison, with the rank-independent matrices(3), the literal
 commutator
@@ -214,7 +294,7 @@ has a19-operation integer circuit. Put
 
 Then
 
-    W=[[1+r,-64p],[2ell-3v,1+16v-r]].                  (11)
+    W=[[1+r,-64p],[2ell-3v,1+16v-r]].                  (14)
 
 The adjacent source lists all19 binary gates:8M+11A, including the products
 by8,4,-64,3,16. Its entries are exactly
@@ -234,14 +314,18 @@ in a quotient H. The repeated quadratic target of Section4 avoids paying
 for these quartic coefficients when that subgroup-conjugation interface
 is available. No minimum-circuit claim is made for either construction.
 
-## 6. Source, verification, and scope
+## 8. Source, verification, and scope
 
 The [source](group_unipotent_input_loaders.py) and
-[receipt](group_unipotent_input_loaders.json) contain the three full schedules,
+[receipt](group_unipotent_input_loaders.json) contain the six full schedules,
 all fixed matrices, and exact symbolic identities. Matrices use flat
 row-major four-tuples. The primary APIs are `loader5(x,k)`, `loader6(x)`,
 and `paired_diagonal_target(x,k=None)`; the last uses the six-operation
-curve when k is omitted and otherwise the five-operation curve.
+curve when k is omitted and otherwise the five-operation curve. The
+reference program-composed API is `loader7(x,kappa,offset)`. The preferred
+APIs are `loader5_swapped(x,k)` and
+`loader6_program(x,scaled_kappa,scaled_offset)`; the last two arguments of
+the latter are the fixed positive program numerals alpha_p,beta_p.
 
 Default execution regenerates and compares the receipt:
 
@@ -254,7 +338,12 @@ family and257 of the six-operation curve, including negative and zero
 integers. The optional quartic circuit has385 direct matrix checks and a
 symbolic commutator identity. These extended-domain checks support the
 polynomial identities; the intended group-language query remains ordinary
-positive x.
+positive x. The seven-operation composition has a symbolic identity and
+832 direct matrix/unique-valuation checks for p=0,...,12 and x=1,...,64.
+The preferred swapped six-operation curve has576 independent matrix-power
+comparisons across k=1,...,8, p=0,...,11 and six signed/zero/positive
+inputs; its five-operation base has48 such comparisons. Conjugating and
+permuting the prior Schreier basis is checked explicitly for each k.
 
 For each of the two embedding families, all reduced words through lengths8,
 6,5 at ranks2,3,4 are tested for distinct matrix images, respectively.
@@ -266,3 +355,10 @@ The result proves faithful embeddings and explicit input loading. It
 provides no universal Diophantine polynomial, no arithmetic cost for subgroup
 membership, no positive-witness membership construction, and no replacement
 for the separate group-theoretic universality proof.
+
+An independent proof/source/default review passed without findings. It checked
+the projective ping-pong proof, exclusion of-I, both free families including
+the k=1 cover, fixed-numeral charging, and exact five/six-operation ledgers.
+A separately written free-word matrix evaluator matched the five-operation
+loader for k=1,...,7 and x=-40,...,40, and the six-operation and optional
+quartic curves for x=-64,...,64:696 independent input cases in total.

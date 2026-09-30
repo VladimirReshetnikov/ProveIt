@@ -243,17 +243,45 @@ of the free group on `U,B`. In this choice `A=[[1,12],[0,1]]` and
 L_5(x) = [[1+12x,12],[-12x^2,1-12x]].
 ```
 
-Compute `q=12*x`, `r=x*x`, `s=(-12)*r`, `1+q`, and `1-q`. This is
-**5=3M+2A** with no witnesses, allowing fixed signed integer numerals
-as matrix constants. If only nonnegative literal numerals are allowed,
-computing the negative lower entry by a subtraction costs one more
-operation. Thus the same fixed curve
+Compute `q=12*x`, `r=q*x`, `s=0-r`, `1+q`, and `1-q`. This is
+**5=2M+3A** with no witnesses and only nonnegative literal numerals.
+The intermediate lower entry is signed, as allowed for a computed
+integer-matrix coordinate. An alternative schedule has3M+2A using the
+fixed signed numeral-12. Thus the same fixed curve
 `diag(L_5(x),L_5(x))`, independently of `S`, works for every computably
 enumerable positive set after applying the stated effective
 two-generator embedding. More generally the companion gives the same
 five-operation bound with coefficient `4(N-1)` for an arbitrary
 presentation rank `N>=2`. Neither count includes membership
 certification.
+
+An equally faithful choice improves the program-prefix composition below.
+Conjugate the preceding free matrices by `S=[[0,1],[1,0]]` and interchange
+the named basis letters `a,b`. Conjugation by this integer invertible
+matrix preserves SL2 and freeness, even though `det S=-1`. With
+
+```
+U_*=[[1,1],[0,1]], V_*=[[1,0],[4,1]],
+a -> U_*, b -> V_*^3,
+z_1 -> V_* U_* V_*^-1, z_2 -> V_*^2 U_* V_*^-2,
+```
+
+the new `A=[[1,1],[0,1]]`, `B=[[1,0],[12,1]]` give
+
+```
+L_*(x) = [[1+12x,1],[-(12x)^2,1-12x]].
+```
+
+The scalar schedule is `q=12*x`, `r=q*q`, `s=0-r`, `1+q`, `1-q`:
+again **5=2M+3A**, with no negative literal numerals. Choosing this
+representation in (2) changes only the fixed subgroup generator matrices.
+
+The [affine-input obstruction](group_affine_input_obstruction.md) shows
+that degree two is necessary for this paired-SL2 subgroup interface.
+Even two independent affine SL2 blocks have a subgroup-membership
+preimage that is empty or a coset of a subgroup of the integers. This
+does not imply an arithmetic-operation lower bound and does not extend
+to arbitrary affine SL3 or SL4 curves.
 
 ## 5. Universality, evidence, and remaining arithmetic work
 
@@ -264,6 +292,48 @@ matrix alphabet that recognizes it via ordinary positive input and
 than an inference from the bare undecidability of matrix membership.
 It uses recursive enumerability and group embedding; it does not appeal
 to a prior Diophantine representation of `S`.
+
+There is also a useful version with **one subgroup and one finite matrix
+alphabet for all programs**. Fix an effective enumeration `S_p`, `p>=0`,
+of the computably enumerable subsets of the positive integers, and set
+
+```
+U = {2^p (2x+1) : p>=0 and x in S_p}.
+```
+
+Dovetailing the enumerators proves that `U` is computably enumerable.
+For positive `x`, the integer `2^p(2x+1)` has exact two-adic valuation
+`p`. Thus equality of two such codes first forces the same `p`, then
+the same `x`. Construct `K_U` just once by the preceding theorem. For
+program `p`, precompute the two positive numerals
+
+```
+kappa_p=2^(p+1), lambda_p=2^p.
+```
+
+Then, with `y=kappa_p*x+lambda_p`,
+
+```
+x in S_p iff y in U
+         iff diag(L_*(y),L_*(y)) in K_U.                       (3)
+```
+
+The numerical argument is still the original ordinary positive integer
+`x`. Fold the fixed coefficient into the two program numerals,
+`alpha_p=12*kappa_p`, `beta_p=12*lambda_p`. The six scalar instructions are
+
+```
+t=alpha_p*x, q=t+beta_p, r=q*q, s=0-r, u=1+q, v=1-q.
+```
+
+The target consists of two copies of `[[u,1],[s,v]]`. Thus full
+program/input loading costs **6=2M+4A**, with no supplied witnesses,
+and every subgroup generator is independent of both `p` and `x`.
+The program numerals are computed when fixing the program, just as in
+the existing complete75 compiler. The circuit does not compute an
+exponentiation on a varying program coordinate. The companion audits
+this composed loader, together with the earlier seven-operation
+composition through `L_5` as a reference.
 
 The companion [checker](group_commutator_universal_substrate.py) and
 [receipt](group_commutator_universal_substrate.json) check literal

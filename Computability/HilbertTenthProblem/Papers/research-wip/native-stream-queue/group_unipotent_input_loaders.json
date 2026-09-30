@@ -3,8 +3,8 @@
   "quadratic_loaders": {
     "fixed_rank5": {
       "operations": 5,
-      "multiplications": 3,
-      "additions_subtractions": 2,
+      "multiplications": 2,
+      "additions_subtractions": 3,
       "supplied_witnesses": 0,
       "input": "ordinary integer x; intended language domain x>0",
       "fixed_parameter": "c=4k, k=N-1>=1 is fixed",
@@ -16,16 +16,16 @@
           "x"
         ],
         [
-          "square",
+          "product",
           "*",
-          "x",
+          "q",
           "x"
         ],
         [
           "lower",
-          "*",
-          "negative_c",
-          "square"
+          "-",
+          0,
+          "product"
         ],
         [
           "upper_left",
@@ -64,7 +64,8 @@
       "direct_integer_matrix_cases": 1285,
       "repeated_pair_target_has_no_additional_arithmetic": true,
       "fixed_numeral_products_charged": true,
-      "fixed_signed_numerals_allowed": true
+      "fixed_signed_numerals_allowed": true,
+      "arithmetic_gates_use_only_nonnegative_literals": true
     },
     "rank_uniform6": {
       "operations": 6,
@@ -135,7 +136,244 @@
       "direct_integer_matrix_cases": 257,
       "repeated_pair_target_has_no_additional_arithmetic": true,
       "fixed_numeral_products_charged": true,
-      "fixed_signed_numerals_allowed": true
+      "fixed_signed_numerals_allowed": true,
+      "arithmetic_gates_use_only_nonnegative_literals": true
+    },
+    "reference_uniform_program7": {
+      "operations": 7,
+      "multiplications": 3,
+      "additions_subtractions": 4,
+      "supplied_witnesses": 0,
+      "input": "ordinary positive integer x",
+      "fixed_parameters": "kappa=2^(p+1), offset=2^p for fixed program p; c=12",
+      "schedule": [
+        [
+          "program_product",
+          "*",
+          "kappa",
+          "x"
+        ],
+        [
+          "loaded_input",
+          "+",
+          "program_product",
+          "offset"
+        ],
+        [
+          "q",
+          "*",
+          "c",
+          "loaded_input"
+        ],
+        [
+          "product",
+          "*",
+          "q",
+          "loaded_input"
+        ],
+        [
+          "lower",
+          "-",
+          0,
+          "product"
+        ],
+        [
+          "upper_left",
+          "+",
+          1,
+          "q"
+        ],
+        [
+          "lower_right",
+          "-",
+          1,
+          "q"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        "c",
+        "lower",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "12*kappa*x + 12*offset + 1",
+        "12",
+        "-12*kappa**2*x**2 - 24*kappa*offset*x - 12*offset**2",
+        "-12*kappa*x - 12*offset + 1"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "symbolic_affine_composition_identity": true,
+      "integer_matrix_and_unique_valuation_cases": 832,
+      "no_runtime_exponentiation": true,
+      "arithmetic_gates_use_only_nonnegative_literals": true,
+      "scope": "Paid affine input composition only; the companion group theorem supplies the single subgroup for the universal coded c.e. set"
+    },
+    "swapped_fixed_rank5": {
+      "operations": 5,
+      "multiplications": 2,
+      "additions_subtractions": 3,
+      "supplied_witnesses": 0,
+      "schedule": [
+        [
+          "q",
+          "*",
+          "c",
+          "x"
+        ],
+        [
+          "square",
+          "*",
+          "q",
+          "q"
+        ],
+        [
+          "lower",
+          "-",
+          0,
+          "square"
+        ],
+        [
+          "upper_left",
+          "+",
+          1,
+          "q"
+        ],
+        [
+          "lower_right",
+          "-",
+          1,
+          "q"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        1,
+        "lower",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "c*x + 1",
+        "1",
+        "-c**2*x**2",
+        "-c*x + 1"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "symbolic_conjugation_identity": true,
+      "direct_integer_matrix_cases": 48,
+      "fixed_rank_four_generators": {
+        "a": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "b": [
+          1,
+          0,
+          12,
+          1
+        ]
+      },
+      "fixed_parameters": "c=4k with fixed rankN=k+1",
+      "arithmetic_gates_use_only_nonnegative_literals": true,
+      "fixed_numeral_products_charged": true,
+      "no_runtime_exponentiation": true
+    },
+    "preferred_uniform_program6": {
+      "operations": 6,
+      "multiplications": 2,
+      "additions_subtractions": 4,
+      "supplied_witnesses": 0,
+      "schedule": [
+        [
+          "program_product",
+          "*",
+          "scaled_kappa",
+          "x"
+        ],
+        [
+          "q",
+          "+",
+          "program_product",
+          "scaled_offset"
+        ],
+        [
+          "square",
+          "*",
+          "q",
+          "q"
+        ],
+        [
+          "lower",
+          "-",
+          0,
+          "square"
+        ],
+        [
+          "upper_left",
+          "+",
+          1,
+          "q"
+        ],
+        [
+          "lower_right",
+          "-",
+          1,
+          "q"
+        ]
+      ],
+      "outputs": [
+        "upper_left",
+        1,
+        "lower",
+        "lower_right"
+      ],
+      "coordinate_polynomials": [
+        "alpha*x + beta + 1",
+        "1",
+        "-alpha**2*x**2 - 2*alpha*beta*x - beta**2",
+        "-alpha*x - beta + 1"
+      ],
+      "coordinate_degrees": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "determinant_identity": true,
+      "symbolic_conjugation_identity": true,
+      "direct_integer_matrix_cases": 576,
+      "fixed_rank_four_generators": {
+        "a": [
+          1,
+          1,
+          0,
+          1
+        ],
+        "b": [
+          1,
+          0,
+          12,
+          1
+        ]
+      },
+      "fixed_parameters": "scaled_kappa=12*2^(p+1), scaled_offset=12*2^p for fixed program p",
+      "arithmetic_gates_use_only_nonnegative_literals": true,
+      "fixed_numeral_products_charged": true,
+      "no_runtime_exponentiation": true
     }
   },
   "optional_commutator_loader": {
