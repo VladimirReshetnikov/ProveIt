@@ -83,3 +83,28 @@ and `Analysis/FabiusFunction/Lean/FabiusFunction/CombDefectSeries.lean`.
 The former explicitly leaves completeness of its sufficient phase list
 unasserted. This package was produced independently and does not modify the
 remote repository.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Made in the editorial pass after batch 56 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-29)`.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-29)" is defined in the preamble. One note, after the discussion of
+  Question 1 ("Fixed-phase maximality beyond the first extra degree"),
+  records that the later unreviewed draft
+  `../Fixed_Phase_Order_Rvachev_Quadrature/` answers the question
+  affirmatively for every dyadic mesh `M = 2^d`, and for `M = 2^(r-1) m`
+  with `m` odd from the explicit level
+  `r >= 2 max(2, 1 + ceil(log2 m)) (m+1) + 4` on (both selected phases fail
+  at degree `nu_2(M) + 2`, with a signed leading term), while the finitely
+  many lower levels of each non-dyadic mesh remain open. The sentence under
+  "Main results" that the question is not claimed solved remains true of
+  this article. The title page no longer sets a PDF page anchor (it
+  duplicated the destination `page.1`).
+- `article.pdf`: rebuilt from the amended source by the three passes above
+  (MiKTeX pdfTeX 1.40.29): 20 pages as delivered, no error, undefined
+  reference, duplicate destination, overfull or underfull box; the page
+  carrying the note was rendered and inspected. `validation/pdf_quality.json`
+  is a delivered record and describes the delivered PDF.

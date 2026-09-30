@@ -32,6 +32,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -52,6 +54,8 @@
 \newcommand{\oddSum}{\sum_{\substack{n\ge1\\n\text{ odd}}}}
 
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page (it duplicated page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
 \vspace*{10mm}
@@ -103,6 +107,8 @@ sources and primary references, not certified against the entire literature.
 This is an unrefereed research manuscript.
 \end{minipage}
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 \begingroup
 \small\setlength{\parskip}{0pt}
 \tableofcontents
@@ -148,6 +154,24 @@ such phases \cite{repo-phase}. Specifically, with $r=d+1$,
 The same manuscript explicitly leaves the next-degree failure problem
 unresolved. Its results about optimal \emph{uniformly translated} phase
 filters do not answer that different question.
+
+% ed. (2026-09-29): relation to the question answered; uncited repository results.
+\begin{ednote}
+This article answers Question~1 (``Fixed-phase maximality beyond the first
+extra degree'') of \cite{repo-phase} for every dyadic mesh and, from the
+explicit level of \cref{thm:elementary} on, for every odd part; the finitely
+many lower levels of each non-dyadic mesh remain open. An editorial note at
+that question records this. The completeness of the phase set \eqref{eq:Z}
+at the first failing level is also Theorem \texttt{thm:phase-zero-set} of
+the canonical synthesis
+\path{inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/},
+and the phase-uniform sharpness of exactness through degree $\vTwo(M)$ is
+machine-checked as
+\path{Fabius.exists_shift_tsum_shifted_monomial_ne_integral_nat_real}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/CompositeMeshSharpness.lean});
+neither is cited in this article. The fixed-phase results of this article
+have no Lean statement.
+\end{ednote}
 
 We ask whether, at a selected phase, the degree-$r+1$ monomial still has a
 nonzero error. An affirmative answer at a mesh $M$ completes its fixed-phase

@@ -3,6 +3,9 @@
 
 No numerical result is used as a substitute for a proof in the article.
 Requires Python 3.10+, sympy, mpmath, matplotlib.
+ed. (2026-09-29): outputs go to rerun/data and rerun/figures unless
+--output-dir is given (pass --output-dir . to regenerate the recorded files);
+all text output is LF; figure fonts are embedded as TrueType (no Type 3).
 """
 from __future__ import annotations
 from fractions import Fraction as F
@@ -134,12 +137,18 @@ def main() -> None:
     ap=argparse.ArgumentParser()
     ap.add_argument('--degree',type=int,default=18)
     ap.add_argument('--skip-symbolic',action='store_true')
+    # ed. (2026-09-29): output directory option; the default leaves the
+    # recorded data/ and figures/ (the figure the article includes) untouched.
+    ap.add_argument('--output-dir',type=Path,default=ROOT/'rerun',
+                    help='directory receiving data/ and figures/ (default: rerun/ '
+                         'beside this script; pass . to overwrite the recorded files)')
     args=ap.parse_args()
+    OUT=args.output_dir.resolve()
     if args.degree < 3 or args.degree > 32:
         raise ValueError('Diagnostic degree must lie between 3 and 32.')
     mp.mp.dps=100
-    (ROOT/'data').mkdir(exist_ok=True)
-    (ROOT/'figures').mkdir(exist_ok=True)
+    (OUT/'data').mkdir(parents=True,exist_ok=True)
+    (OUT/'figures').mkdir(parents=True,exist_ok=True)
     report={} if args.skip_symbolic else basic_checks()
     rows, spectra=[],[]
     for qq,m in [(F(1,3),1),(F(1,2),1),(F(1,2),2),(F(1,2),3),(F(2,3),1)]:
@@ -174,18 +183,23 @@ def main() -> None:
                        for i,v in enumerate(sv))
         print({k:v for k,v in row.items() if 'exact_numerator' not in k and 'exact_denominator' not in k},flush=True)
     for name,rr in [('polynomial_bounds.csv',rows),('singular_values.csv',spectra)]:
-        with (ROOT/'data'/name).open('w',newline='') as f:
-            w=csv.DictWriter(f,fieldnames=rr[0].keys());w.writeheader();w.writerows(rr)
+        # ed. (2026-09-29): lineterminator='\n' so the CSVs are LF on every OS.
+        with (OUT/'data'/name).open('w',newline='') as f:
+            w=csv.DictWriter(f,fieldnames=rr[0].keys(),lineterminator='\n');w.writeheader();w.writerows(rr)
     report.update({'finite_polynomial_checks':'passed for all 5 parameter pairs',
                    'precision_decimal_digits':mp.mp.dps,'maximum_degree':args.degree,
                    'status':'exact identities plus non-interval numerical diagnostics; no Lean certification'})
-    (ROOT/'data'/'verification_report.json').write_text(json.dumps(report,indent=2)+'\n')
-    with (ROOT/'data'/'bounds_table.tex').open('w') as f:
+    # ed. (2026-09-29): newline='\n' so the JSON and the table fragment are LF on Windows too.
+    (OUT/'data'/'verification_report.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
+    with (OUT/'data'/'bounds_table.tex').open('w',newline='\n') as f:
         for row in rows:
             qtex='\\tfrac{%s}{%s}'%tuple(row['q'].split('/'))
             f.write('$%s$ & %d & %.8f & %.8f & %.8f \\\\\n'%(qtex,row['m'],float(row['linear_correlation']),float(row['cubic_witness_bound']),float(row['polynomial_max_correlation'])))
     import matplotlib
     matplotlib.use('Agg')
+    # ed. (2026-09-29): TrueType (Type 42) fonts instead of Type 3 in the figure PDF.
+    matplotlib.rcParams['pdf.fonttype']=42
+    matplotlib.rcParams['ps.fonttype']=42
     import matplotlib.pyplot as plt
     fig,ax=plt.subplots(figsize=(6.7,4.0))
     for m in (1,2,3):
@@ -196,8 +210,8 @@ def main() -> None:
     ax.legend()
     ax.grid(True,which='major',alpha=.3)
     fig.tight_layout()
-    fig.savefig(ROOT/'figures'/'polynomial_spectra.pdf')
-    fig.savefig(ROOT/'figures'/'polynomial_spectra.png',dpi=160)
+    fig.savefig(OUT/'figures'/'polynomial_spectra.pdf')
+    fig.savefig(OUT/'figures'/'polynomial_spectra.png',dpi=160)
     plt.close(fig)
 
 if __name__=='__main__':

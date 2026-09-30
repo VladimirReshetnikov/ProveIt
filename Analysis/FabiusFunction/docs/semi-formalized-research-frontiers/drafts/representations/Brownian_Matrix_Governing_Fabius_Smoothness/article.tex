@@ -30,6 +30,8 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{question}{Research question}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
 \newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
 \newcommand{\dd}{\,\mathrm d}
@@ -49,6 +51,8 @@
 \newcommand{\snapshot}{23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae}
 
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page (it duplicated page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{9mm}
 \noindent{\large\scshape ProveIt research continuation}\par
@@ -91,6 +95,8 @@ not been checked by a proof assistant.
 its multivariate envelope proof are contributions developed here relative to
 the inspected source. No claim of exhaustive historical priority is made.
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 
 \begingroup
 \small
@@ -832,6 +838,23 @@ $e^{-\lambda_*}$. Hence \eqref{eq:raywindow} proves its proposed leading
 coefficient in a precisely defined envelope sense. No rational independence
 of the logarithms is needed for this conclusion. The arithmetic dependence
 of finer oscillations remains a separate question.
+
+% ed. (2026-09-29): scope of the answer to conj:ray-decay; uncited Lean match and related sibling.
+\begin{ednote}
+The leading coefficient proved here is that of \texttt{conj:ray-decay} of
+the common-digit zonoid report
+\path{representations/common_digit_fabius_zonoids_frontier_report/} in the
+window-supremum and relative-measure sense of \cref{thm:rays}; its pointwise
+form away from the zero hyperplanes and its periodic or quasiperiodic
+remainder are not claimed. An editorial note at that conjecture records
+this. The scalar identity \eqref{eq:upnorm} is machine-checked in the
+repository as \path{Fabius.isGreatest_abs_iteratedDeriv_rvachevUp}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/GlobalBounds.lean}),
+which is not cited in this article. The envelope area $\He$ is the function
+$I(a)$ that governs joint lower-corner small deviations in the article
+\path{representations/Endpoint_Geometry_Common_Digit_Fabius_Laws/}, filed
+after this article's repository snapshot; the theorems there are different.
+\end{ednote}
 
 \begin{corollary}[Sharp isotropic shell envelope]
 \label{cor:shell}

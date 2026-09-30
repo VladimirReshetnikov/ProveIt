@@ -45,9 +45,9 @@ unrenumbered.  The general proof is the unreviewed draft
 
 ## Archive contents
 
-- `common_digit_fabius_zonoids.tex` — complete 2,134-line, 91,767-byte
+- `common_digit_fabius_zonoids.tex` — complete 2,151-line, 92,789-byte
   LaTeX source (2,092 lines before the editorial notes of 2026-09-29).
-- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,296,128-byte
+- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,297,530-byte
   report, rebuilt on 2026-09-29.
 - `code/experiments.py` — fully commented symbolic/numerical experiment script.
 - `generated/*.csv` — numerical and exact-symbolic verification tables.
@@ -96,7 +96,13 @@ note of 2026-09-29 (below `conj:copula-endpoints`; see Editorial
 amendments), the PDF was rebuilt again by the same procedure: 36 pages,
 1,296,128 bytes; no error, unresolved reference, rerun request, duplicate
 destination or overfull box, the same two underfull notices, no Type 3
-font; the page carrying the note was rendered and inspected.  The SHA-256 values that
+font; the page carrying the note was rendered and inspected.  After the
+third editorial note of 2026-09-29 (after `conj:ray-decay`; see Editorial
+amendments), the PDF was rebuilt again by the same procedure (MiKTeX pdfTeX
+1.40.29): 36 pages, 1,297,530 bytes; no error, unresolved reference, rerun
+request, duplicate destination or overfull box, the same two underfull
+notices, no Type 3 font; the page carrying the note was rendered and
+inspected.  The SHA-256 values that
 earlier versions of this README recorded described the 2026-09-04 build;
 the repository no longer keeps checksum receipts.
 
@@ -147,3 +153,16 @@ clipped text, overlap, missing figures, black boxes, and broken glyphs.
   `thm:copula`, `thm:diagonal` and `eq:conditional-threshold`), while
   `conj:copula-endpoints` and conditioning on an exact value `X_{1/2} = x`
   remain open.  The PDF was rebuilt as recorded under "Build the PDF".
+- After the paragraph following `conj:ray-decay` (subsection "Sharp
+  ray-wise decay of the joint sinc product"), in the editorial pass after
+  batch 56 of `docs/incoming/` (see `docs/incoming/README.md`): a note,
+  marked `% ed.`, records that for distinct parameters the leading
+  coefficient `-1/(2|log q_*|)` of the conjecture is proved in a window
+  sense (window supremum over `s` in `[R,2R]`, pointwise upper bound,
+  matching lower bound on any fixed proportion of each window) by Theorem
+  `thm:rays` of the unreviewed draft
+  `../Brownian_Matrix_Governing_Fabius_Smoothness/`, which also determines
+  every mixed `L^p` derivative norm of the joint density to quadratic order
+  through the matrix `min(lambda_i, lambda_j)`; the pointwise form away from
+  the zero hyperplanes and the periodic or quasiperiodic remainder remain
+  open.  The PDF was rebuilt as recorded under "Build the PDF".

@@ -7,7 +7,7 @@ Research continuation of the ProveIt common-digit Fabius project, prepared
 
 ## Read first
 
-`article.pdf` is the complete 21-page article. `article.tex` is its editable,
+`article.pdf` is the complete 22-page article. `article.tex` is its editable,
 LaTeX source. The archive includes its generated table input, and the
 bibliography is embedded in the source.
 The article gives full analytic proofs, nine proposed research questions,
@@ -80,15 +80,15 @@ Python 3.10 or later is expected. The recorded run used Python 3.13.5 and
 mpmath 1.3.0. From this directory:
 
 ```sh
-python -m pip install -r requirements.txt
-python code/verify.py
+uv run --no-project --with mpmath==1.3.0 python code/verify.py
 ```
 
 Run without Python's `-O` option: the script explicitly requires assertions
 to stay enabled. It runs 8,601 exact rational/parity assertions and then
 96 deterministic pseudorandom samples per logarithmic-box or ray-window case
 at 160 decimal digits. Seeds are fixed in the script. It regenerates all
-files under `data/`.
+four files of `data/` in `data-rerun/` (or in the directory given by
+`--output-dir`); only `--output-dir data` overwrites the recorded files.
 
 The omitted logarithmic product tail has an analytic bound; the numerical
 values of that bound and the other outputs are not interval enclosures of
@@ -113,4 +113,47 @@ pdflatex -interaction=nonstopmode -halt-on-error article.tex
 
 No external images, bibliography downloads, or font files are bundled or
 needed as downloaded assets. TikZ draws the envelope diagram from the source.
-The supplied PDF was compiled with pdfTeX 1.40.26 and checked by rendering.
+The delivered PDF was compiled with pdfTeX 1.40.26 and checked by rendering;
+the filed PDF is the 2026-09-29 rebuild described below.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Made in the editorial pass after batch 56 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-29)`, every change to the program `ed. (2026-09-29)`.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-29)" is defined in the preamble. One note, after the paragraph
+  that follows the proof of Theorem `thm:rays`, records that the leading
+  coefficient of `conj:ray-decay` of
+  `../common_digit_fabius_zonoids_frontier_report/` is proved here in the
+  window-supremum and relative-measure sense only (its pointwise form away
+  from the zero hyperplanes and the periodic/quasiperiodic remainder are not
+  claimed); that the scalar identity `eq:upnorm` is machine-checked as
+  `Fabius.isGreatest_abs_iteratedDeriv_rvachevUp`
+  (`Analysis/FabiusFunction/Lean/FabiusFunction/GlobalBounds.lean`), which
+  the article does not cite; and that the envelope area `H` is the function
+  `I(a)` of `../Endpoint_Geometry_Common_Digit_Fabius_Laws/`, filed after
+  this article's snapshot, whose theorems are different. The title page no
+  longer sets a PDF page anchor (it duplicated the destination `page.1`).
+  A reciprocal note now stands at `conj:ray-decay` in the zonoid report.
+- `article.pdf`: rebuilt from the amended source by the three passes above
+  (MiKTeX pdfTeX 1.40.29): 22 pages (21 as delivered), no error, undefined
+  reference or citation, duplicate destination, or overfull box (two
+  underfull lines inside the note's long paths); the page carrying the note
+  was rendered and inspected. `VALIDATION.md` gains a closing paragraph
+  saying so.
+- `code/verify.py`: new option `--output-dir`, default `data-rerun/`, so a
+  plain run no longer overwrites the recorded `data/` (including the table
+  that the article inputs); `--output-dir data` regenerates the recorded
+  files. The CSV files, the table and the JSON report are now written with
+  LF line endings on every operating system (the delivered program wrote
+  CRLF CSV files everywhere and CRLF text on Windows).
+- `data/box_diagnostics.csv`, `data/ray_diagnostics.csv`: delivered with
+  CRLF line endings; normalized to LF on filing (batch 56).
+- A rerun of the amended program on a copy (2026-09-29,
+  `uv run --no-project --with mpmath==1.3.0 python code/verify.py`,
+  Python 3.13.5) reproduced all four files of `data/` byte for byte.
+- `README.md`: the page count under "Read first", the command and output
+  location under "Reproduce the checks", the PDF sentence under "Rebuild the
+  PDF", and this section.

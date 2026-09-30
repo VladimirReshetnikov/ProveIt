@@ -4,6 +4,8 @@
 The Fraction checks are exact finite arithmetic.  The mpmath checks are
 floating-point diagnostics, NOT interval certificates or formal proofs.
 Run: python reproducibility/verify.py [--exact-only | --numeric-only]
+ed. (2026-09-29): results go to validation-rerun/ unless --output-dir is given
+(pass --output-dir validation to overwrite the recorded files); JSON is LF.
 """
 from __future__ import annotations
 
@@ -240,18 +242,25 @@ def main() -> None:
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--exact-only", action="store_true")
     group.add_argument("--numeric-only", action="store_true")
+    # ed. (2026-09-29): output directory option; the default leaves the
+    # recorded validation/ directory untouched.
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "validation-rerun",
+                        help="directory for the JSON results (default: validation-rerun/; "
+                             "pass validation to overwrite the recorded files)")
     args = parser.parse_args()
-    out = ROOT / "validation"
+    out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=True)
     if not args.numeric_only:
         result = exact_checks()
-        (out / "exact_results.json").write_text(json.dumps(result, indent=2)+"\n")
+        # ed. (2026-09-29): newline="\n" so the JSON is LF on Windows too.
+        (out / "exact_results.json").write_text(json.dumps(result, indent=2)+"\n", newline="\n")
         print(f"Exact checks: PASS ({result['checks']})")
         for row in result["dyadic_rows"]:
             print(row)
     if not args.exact_only:
         result = numerical_checks()
-        (out / "numerical_results.json").write_text(json.dumps(result, indent=2)+"\n")
+        # ed. (2026-09-29): newline="\n" so the JSON is LF on Windows too.
+        (out / "numerical_results.json").write_text(json.dumps(result, indent=2)+"\n", newline="\n")
         print(f"Numerical checks: PASS ({result['checks']})")
         print("Maximum normalized series discrepancy:",
               result["max_normalized_series_discrepancy"])

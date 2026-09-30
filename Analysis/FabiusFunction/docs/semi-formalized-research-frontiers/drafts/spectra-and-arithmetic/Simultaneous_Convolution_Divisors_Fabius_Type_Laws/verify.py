@@ -4,6 +4,8 @@
 Python 3.10+; standard library only. No network access is used.
 Finite computations test implementations and examples, not infinite theorems.
 Run: python verify.py --output verification.json
+ed. (2026-09-29): without --output the result goes to verification.rerun.json,
+not to the recorded verification.json; the JSON is written with LF endings.
 """
 from __future__ import annotations
 
@@ -274,11 +276,13 @@ def run_tests() -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("verification.json"))
+    # ed. (2026-09-29): the default no longer overwrites the recorded verification.json.
+    parser.add_argument("--output", type=Path, default=Path("verification.rerun.json"))
     args = parser.parse_args()
     result = run_tests()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    # ed. (2026-09-29): newline="\n" so the JSON is LF on Windows too.
+    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps({"status": result["status"], **result["counts"]}, indent=2))
 
 

@@ -50,18 +50,18 @@ are no external figure or font files in the package.
 The exact component needs only Python's standard library:
 
 ```sh
-python reproducibility/verify.py --exact-only
+py reproducibility/verify.py --exact-only
 ```
 
 For the numerical component:
 
 ```sh
-python -m pip install -r requirements.txt
-python reproducibility/verify.py --numeric-only
+uv run --no-project --with mpmath==1.3.0 python reproducibility/verify.py --numeric-only
 ```
 
-With no option, the program runs both sets. Results are written to the
-`validation` directory. The exact dyadic evaluator rejects non-dyadic
+With no option, the program runs both sets. Results are written to
+`validation-rerun/`, or to the directory given by `--output-dir`; only
+`--output-dir validation` overwrites the recorded results. The exact dyadic evaluator rejects non-dyadic
 arguments rather than silently rounding them.
 
 ## Status and boundaries
@@ -105,3 +105,48 @@ Relevant Lean module:
 
 The article contains full source references and a proof-dependency ledger.
 No repository files were changed.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Made in the editorial pass after batch 56 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-29)`, every change to the program `ed. (2026-09-29)`.
+The byline "prepared with ChatGPT" is kept as delivered.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-29)" is defined in the preamble. One note, at the end of the
+  introduction's paragraph on the earlier phase-filter manuscript, records
+  that this article answers Question 1 ("Fixed-phase maximality beyond the
+  first extra degree") of `../Optimal_Phase_Filters/` for every dyadic mesh
+  and, from the explicit level of Theorem `thm:elementary` on, for every odd
+  part, while the finitely many lower levels of each non-dyadic mesh remain
+  open; that the completeness of the first-failing-level phase set is also
+  Theorem `thm:phase-zero-set` of the canonical synthesis
+  `../comb_interpolation_synthesis/`; and that the phase-uniform sharpness
+  of exactness through degree `nu_2(M)` is machine-checked as
+  `Fabius.exists_shift_tsum_shifted_monomial_ne_integral_nat_real`
+  (`Analysis/FabiusFunction/Lean/FabiusFunction/CompositeMeshSharpness.lean`).
+  Neither is cited by the article, and its fixed-phase results have no Lean
+  statement. A reciprocal note now stands after Question 1 in
+  `../Optimal_Phase_Filters/article.tex`. The title page no longer sets a
+  PDF page anchor (it duplicated the destination `page.1`).
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf`
+  (MiKTeX pdfTeX 1.40.29): 21 pages as delivered, no error, undefined
+  reference or citation, duplicate destination, or overfull box; the page
+  carrying the note was rendered and inspected.
+- `reproducibility/verify.py`: new option `--output-dir`, default
+  `validation-rerun/`, so a plain run no longer overwrites the recorded
+  `validation/` results; the JSON files are written with LF line endings on
+  Windows too. A rerun of the amended program on a copy (2026-09-29,
+  `uv run --no-project --with mpmath==1.3.0 python reproducibility/verify.py`,
+  Python 3.13.5; 978 exact and 960 numerical checks passed) reproduced
+  `validation/exact_results.json` and `validation/numerical_results.json`
+  byte for byte.
+- `validation/artifact_validation.json`: a build record, filed as data. Its
+  three delivered file digests were verified (3/3) on filing (batch 56).
+  After the amendments above its `pdf_pages`, `pdf_bytes` and `sha256`
+  entries were recomputed for the filed `article.tex`, `article.pdf` and
+  `reproducibility/verify.py`, and a key `editorial_amendment` says so; its
+  other fields describe the delivered build.
+- `README.md`: the commands and output location under "Reproduce the
+  checks", and this section.

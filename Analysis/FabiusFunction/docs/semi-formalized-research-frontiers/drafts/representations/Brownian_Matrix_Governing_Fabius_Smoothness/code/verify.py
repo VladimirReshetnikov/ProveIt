@@ -2,10 +2,13 @@
 """Exact convex-algebra checks and high-precision Fourier diagnostics.
 
 Run from any directory: python code/verify.py
+ed. (2026-09-29): outputs go to data-rerun/ unless --output-dir is given
+(pass --output-dir data to regenerate the recorded files); all text is LF.
 Only mpmath is required. The rational checks are exact. Floating-point
 sinc-product calculations are diagnostics, not formal/interval certificates.
 """
 from __future__ import annotations
+import argparse
 import csv
 import json
 import math
@@ -17,8 +20,9 @@ from typing import Sequence
 import mpmath as mp
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'data'
-OUT.mkdir(exist_ok=True)
+# ed. (2026-09-29): the default output directory is data-rerun/, so that a
+# plain run cannot overwrite the recorded data/ (the article inputs its table).
+OUT = ROOT / 'data-rerun'
 
 
 def envelope(lam: Sequence[F], s: Sequence[F]) -> F:
@@ -163,8 +167,9 @@ def diagnostics() -> dict:
              'best_log_derivative_lower_witness':mp.nstr(max(witnesses),25),
              'witness_minus_Q_over_order':mp.nstr((max(witnesses)-H)/sum(alpha),15)}
         rows.append(row)
+    # ed. (2026-09-29): lineterminator='\n' so the CSV is LF on every OS.
     with (OUT/'box_diagnostics.csv').open('w',newline='') as fp:
-        w=csv.DictWriter(fp,fieldnames=rows[0]);w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(fp,fieldnames=rows[0],lineterminator='\n');w.writeheader();w.writerows(rows)
     rayrows=[]
     qray=[mp.mpf('0.5'),mp.mpf('0.25')]
     for theta in ([1,1],[0,1]):
@@ -183,8 +188,9 @@ def diagnostics() -> dict:
                 'max_log_product':mp.nstr(max(logs),25),
                 'mean_log_product':mp.nstr(sum(logs)/samples,25),
                 'max_error_over_log_R':mp.nstr((max(logs)-pred)/L,15)})
+    # ed. (2026-09-29): lineterminator='\n' so the CSV is LF on every OS.
     with (OUT/'ray_diagnostics.csv').open('w',newline='') as fp:
-        w=csv.DictWriter(fp,fieldnames=rayrows[0]);w.writeheader();w.writerows(rayrows)
+        w=csv.DictWriter(fp,fieldnames=rayrows[0],lineterminator='\n');w.writeheader();w.writerows(rayrows)
     # Nonresonant-sign and resonance factorization checks, high precision.
     r=mp.mpf('0.4')
     factor_error=mp.mpf(0)
@@ -195,7 +201,8 @@ def diagnostics() -> dict:
         even,_,_=log_product([r*r],[a+b],mp.mpf('1e-100'))
         odd,_,_=log_product([r*r],[r*(a-b)],mp.mpf('1e-100'))
         factor_error=max(factor_error,abs(lhs-even-odd))
-    with (OUT/'numerical_table.tex').open('w') as fp:
+    # ed. (2026-09-29): newline='\n' so the table is LF on Windows too.
+    with (OUT/'numerical_table.tex').open('w',newline='\n') as fp:
         fp.write('\\begin{tabular}{rrrrr}\n\\toprule\n$k$ & $|\\alpha|$ & $\\Qf(\\alpha)$ & Sample mean $\\log|\\Phi|$ & Best log witness\\\\\n\\midrule\n')
         for row in rows:
             fp.write(f"{row['k']} & {row['total_order']} & {float(row['H_and_Q']):.0f} & "
@@ -210,11 +217,20 @@ def diagnostics() -> dict:
 
 
 def main() -> None:
+    # ed. (2026-09-29): --output-dir option; the default does not touch data/.
+    global OUT
+    parser=argparse.ArgumentParser(description='Exact checks and Fourier diagnostics.')
+    parser.add_argument('--output-dir',type=Path,default=OUT,
+                        help='directory for the regenerated files (default: data-rerun/ '
+                             'beside data/; pass data to overwrite the recorded files)')
+    OUT=parser.parse_args().output_dir.resolve()
+    OUT.mkdir(parents=True,exist_ok=True)
     if not __debug__:
         raise RuntimeError('Run without -O so the exact assertions remain enabled')
     report={'python':platform.python_version(),'mpmath':mp.__version__,
             'exact':exact_tests(),'numerical':diagnostics()}
-    (OUT/'verification_report.json').write_text(json.dumps(report,indent=2)+'\n')
+    # ed. (2026-09-29): newline='\n' so the report is LF on Windows too.
+    (OUT/'verification_report.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps(report,indent=2))
 
 if __name__ == '__main__':

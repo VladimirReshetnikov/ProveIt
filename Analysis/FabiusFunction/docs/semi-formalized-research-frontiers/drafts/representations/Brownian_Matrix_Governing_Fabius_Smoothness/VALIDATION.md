@@ -41,3 +41,9 @@ extractable text. It was rendered for visual inspection, including the title,
 contents, proof pages, envelope diagram, numerical table, and final references.
 Font embedding and page-boundary checks were also performed. Intermediate
 TeX files and render images are not included in the deliverable archive.
+
+Editorial amendment (ProveIt, 2026-09-29): the paragraph above describes the
+delivered PDF. The filed PDF is the rebuild of the amended source described in
+`README.md` ("Editorial amendments"): 22 A4 pages; its log has no error,
+unresolved reference or citation, rerun request, duplicate destination or
+overfull box, and two underfull lines inside the editorial note's long paths.

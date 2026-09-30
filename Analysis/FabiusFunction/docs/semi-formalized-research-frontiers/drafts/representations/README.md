@@ -78,8 +78,11 @@ New standalone intake members:
   the same day, after `conj:copula-endpoints`, points to
   `Endpoint_Geometry_Common_Digit_Fabius_Laws/` for joint lower-tail rates
   and threshold conditioning (the conjecture and exact-value conditioning
-  stay open); the source is now 2,134 lines/91,767 bytes and the rebuilt
-  PDF 36 pages/1,296,128 bytes.
+  stay open).  A third note of the same day, after `conj:ray-decay`,
+  points to `Brownian_Matrix_Governing_Fabius_Smoothness/` for its leading
+  coefficient in a window sense (the pointwise form and the remainder stay
+  open); the source is now 2,151 lines/92,789 bytes and the rebuilt PDF
+  36 pages/1,297,530 bytes.
 
 - [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
   the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
@@ -215,8 +218,8 @@ of an existing draft; semantic consolidation is deferred to the post-
   `Analysis/FabiusFunction/Lean`, which it does not cite.  Unreviewed;
   its asymptotic tables are not certificates; no Lean statement.
 - [`Brownian_Matrix_Governing_Fabius_Smoothness/`](Brownian_Matrix_Governing_Fabius_Smoothness/),
-  *The Brownian Matrix Governing Fabius Smoothness* (21-page A4 PDF,
-  1,511-line source, an exact-plus-mpmath check program), filed on
+  *The Brownian Matrix Governing Fabius Smoothness* (22-page A4 PDF,
+  1,534-line source, an exact-plus-mpmath check program), filed on
   2026-09-29 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone.  It takes up the sharp Fourier-decay
   conjecture `conj:ray-decay` of

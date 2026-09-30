@@ -192,7 +192,7 @@ conjecture as open, and no Lean statement exists.
 holds *Beyond Polynomial Diagonals: Nuclear Bayesian Operators, Exact
 Null Modes, and a Rényi Phase Transition for Fabius–Rvachev Laws*,
 filed on 2026-09-29 by a quick archival intake (21-page A4 PDF,
-889-line source, an exact SymPy check program with high-precision
+912-line source, an exact SymPy check program with high-precision
 eigenvalue diagnostics).  It studies the conditional expectation `C_m`
 of the information frontier above: `C_m` is in every Schatten class
 with an infinite-dimensional kernel of explicit null modes, its

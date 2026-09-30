@@ -23,6 +23,8 @@
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \newtheorem{problem}[theorem]{Research question}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
 \newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}
 \newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}
@@ -796,6 +798,16 @@ The program rejects invalid $q$, depth, and diagnostic-degree choices. The final
 \subsection{The Bayesian spectral question}
 The operator is now triangularized algebraically in monomials and intertwined in its natural Appell families. Its complete finite Jordan type is given, but that is deliberately separated from the weighted singular problem. Every finite singular invariant is an exact moment-matrix expression, including all exterior powers. The suggested $q^{mn}$ diagonal is not correct for the defined operator: the monic polynomial diagonal is one, and the degree-one Hilbert coefficient is $\sqrt{1-q^{2m}}$.
 
+% ed. (2026-09-29): the refuted expectation is now marked incorrect in the source report.
+\begin{ednote}
+The source report now carries an editorial note, directly after
+\texttt{prob:Bayesian-spectrum} in
+\path{inverse-and-sampling/fabius_information_frontier/fabius_information_frontier.tex},
+that marks its expected $q^{mn}$ Appell diagonal incorrect for the operator
+it defines and points to this article (Proposition~\ref{prop:appell}); the report's
+README records the same erratum.
+\end{ednote}
+
 The infinite operator is compact of every Schatten order, has dense range, and loses an infinite-dimensional explicit family of Fourier modes. A degree-ordered orthogonal polynomial diagonalization is excluded by the nonzero cubic coefficient, and more generally by Gaussian rigidity. The complete positive singular sequence has not been expressed in closed form. Neither the all-Schatten result nor the existence of a singular decomposition should be mistaken for such a formula.
 
 \subsection{The R\'enyi question}
@@ -845,6 +857,17 @@ The repository navigation was inspected on 29 September 2026. The recursive tree
 The current inverse-and-sampling README was used to identify the information-frontier package and distinguish it from the recent entropy-Edgeworth and uniform-factor-recovery intakes. Detailed question wording was read from the user's Library copy of \path{fabius_information_frontier.tex}, dated 30 August 2026. That materialized copy has 77,282 bytes and SHA-256
 \begin{center}\scriptsize\texttt{b756c86255c24f421029ded2f60f574f0677fbad4bb0fa62416950a742ebda45}.\end{center}
 The live repository metadata described a different, 78,310-byte source. Accordingly, this article does \emph{not} claim byte-identical correspondence between the Library copy and the current repository article. The mathematical definitions and source labels used above are stated explicitly so that the results can be checked independently of editorial changes. No existing repository proof, formally verified or otherwise, is an unexamined assumption in the principal analytic arguments.
+
+% ed. (2026-09-29): provenance identified on filing (no hashes added).
+\begin{ednote}
+The hexadecimal string above identifies a repository commit, not a tree
+object; the source report at that commit is identical to the current one.
+The Library copy is byte-identical to the source report as first archived in
+the repository on 30 August 2026. Between that version and the current
+78,310-byte file, the three source problems cited here changed only by
+renamings of notation macros, so the wording used above is, mathematically,
+that of the current report.
+\end{ednote}
 
 The supplied script was executed with degree eighteen and 100-digit numerical arithmetic after the exact fraction computations. Its report separates exact checks from numerical diagnostics. The PDF was compiled from the included source and visually checked after rendering. There is no Lean file, no claim of kernel certification, and no assertion that a literature-wide novelty search is exhaustive.
 

@@ -10,7 +10,7 @@ The exact current live-TeX snapshots are:
 |---|---:|---:|---|
 | `Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex` | 1,682 | 62,490 | `3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90` |
 | `Digital_Spectral_Geometry_and_Log_Periodic_Saddles/Fabius_Rvachev_Frontier_Report.tex` | 1,940 | 61,049 | `92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1` |
-| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 2,307 | 90,871 | `e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e` |
+| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 2,321 | 91,688 | checksum receipt retired (source amended editorially 2026-09-29) |
 | `fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex` | 2,251 | 85,256 | `75f2a36ee0ae4b68e17030536cd7aa2cd922fea8941ed023afb272fafd29b20f` |
 | `Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex` | 1,060 | 58,362 | `e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475` |
 | `Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex` | 8,183 | 349,076 | `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1` |
@@ -193,9 +193,8 @@ notation-only TeX; no PDF was regenerated.
 New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
 *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (retained
-35-A4-page PDF checkpoint; current live TeX: 2,307 lines, 90,871 bytes,
-SHA-256
-`e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e`;
+35-A4-page PDF checkpoint; current live TeX: 2,321 lines, 91,688 bytes
+(amended editorially 2026-09-29; checksum receipt retired);
 with a 352-line exact/numerical experiment),
 arrived from a rootless 14-file archive on 2026-08-30.  The package's
 characteristic quotients
@@ -235,8 +234,8 @@ Manuscript theorem labels do not imply Lean proof status.
 
 Archival arrival of 2026-09-28:
 [`Arithmetic_Convolution_Factors_Fabius_Type_Laws/`](Arithmetic_Convolution_Factors_Fabius_Type_Laws/),
-*Arithmetic Convolution Factors of Fabius-Type Laws* (25-page A4 PDF,
-1,723-line source, an exact standard-library regression program), filed by
+*Arithmetic Convolution Factors of Fabius-Type Laws* (26-page A4 PDF,
+1,762-line source, an exact standard-library regression program), filed by
 a quick archival intake from the repository-level `docs/incoming/` drop
 zone.  It classifies scaled convolution factorizations
 `μ_A = D_c μ_B * ν` of laws of `Σ_k U_k/A_k` along divisibility ladders:
@@ -252,8 +251,8 @@ Unreviewed; no Lean statement.
 
 Archival arrival of 2026-09-29:
 [`Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`](Simultaneous_Convolution_Divisors_Fabius_Type_Laws/),
-*Simultaneous Convolution Divisors of Fabius-Type Laws* (23-page A4 PDF,
-1,601-line source, an exact standard-library certificate program), filed
+*Simultaneous Convolution Divisors of Fabius-Type Laws* (24-page A4 PDF,
+1,629-line source, an exact standard-library certificate program), filed
 by a quick archival intake from the repository-level `docs/incoming/`
 drop zone.  It decides which families of uniform laws can be removed
 *together* from the prime-base law `X_p = Σ p^{−k}U_k`: exactly the

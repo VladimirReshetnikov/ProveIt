@@ -6,12 +6,13 @@ regularity transition. Research article prepared for the ProveIt project,
 
 ## Contents
 
-- `article.pdf`: the complete 23-page article, with proofs, examples, source
+- `article.pdf`: the complete 24-page article, with proofs, examples, source
   provenance, references, and nine proposed further research projects.
 - `article.tex`: standalone LaTeX source; it does not import repository files.
 - `verify.py`: exact finite certificate routines and reproducible tests.
 - `verification.json`: output of the executed companion tests.
-- `build.sh`: runs the tests and compiles the article in three direct passes.
+- `build.sh`: runs the tests and compiles the article in three direct passes,
+  writing everything to `build/`.
 - `SOURCES.md`: the full source links underlying the bibliography.
 
 ## Main result
@@ -37,7 +38,10 @@ on [-1,1] is the law of X_2/2.
 Python 3.10 or later; standard library only. No network or package installation
 is required.
 
-    python verify.py --output verification.json
+    py verify.py
+
+Without `--output` the result goes to `verification.rerun.json`; passing
+`--output verification.json` overwrites the recorded file.
 
 The recorded execution passed 9,100 finite-family cases, 8,855 geometric-family
 cases, 96 uniform partition checks, 1,056 rational moment identities, and
@@ -77,7 +81,8 @@ microtype, booktabs, tabularx, enumitem, fancyhdr, xurl, hyperref, and cleveref.
     pdflatex -interaction=nonstopmode -halt-on-error article.tex
     pdflatex -interaction=nonstopmode -halt-on-error article.tex
 
-On a Unix-like system, `bash build.sh` runs both the tests and these three passes.
+On a Unix-like system, `bash build.sh` runs both the tests and these three passes,
+writing `build/verification.json` and `build/article.pdf`.
 No bibliography processor or external figures are needed. Rebuilding may change
 PDF metadata and binary hashes while preserving mathematical content and layout.
 
@@ -91,3 +96,58 @@ repository audit or worldwide priority claim is made. The main arguments do not
 assume the correctness of unverified repository research claims.
 
 No repository files were modified or uploaded as part of preparing this package.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Made in the editorial pass after batch 56 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-29)`, every change to the programs `ed. (2026-09-29)`.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-29)" is defined in the preamble. One note, at the end of the
+  introduction's account of the question, records the uncited predecessor
+  `../Arithmetic_Convolution_Factors_Fabius_Type_Laws/` (filed 2026-09-28,
+  present at both pinned snapshots): its theorems "Arithmetic convolution
+  classification" and "Cross-base classification" contain the one-stream
+  case of `thm:streams`, and its periodic-ratio decision theorem and integer
+  regularity classification are one-stream cases of `thm:finite-window` and
+  `thm:critical`, while it allows composite divisibility-ladder targets that
+  this article does not; conversely `thm:hall`, `thm:primepower` and
+  `thm:base6` answer its question "Beyond divisibility ladders" for
+  prime-power geometric targets, and `thm:vector` and `thm:matrix` treat the
+  product-target case of its question "Multivariate arithmetic factors".
+  The note also records that the identity `X_2 = X_4 + X_4'/2` (in law) of
+  the example "Density is necessary but not sufficient" is machine-checked,
+  in the `[0,1]`-digit normalization, as
+  `Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_conv_one_quarter`
+  (`Analysis/FabiusFunction/Lean/FabiusFunction/GeometricUniformMultisection.lean`),
+  which the article does not cite. Reciprocal notes now stand at both
+  questions of that article and after `conj:general-base` of
+  `../Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`.
+- `article.pdf`: rebuilt from the amended source by the amended
+  `build.sh` (MiKTeX pdfTeX 1.40.29, three passes): 24 pages (23 as
+  delivered), no error, undefined reference or citation, duplicate
+  destination, overfull or underfull box; the page carrying the note was
+  rendered and inspected.
+- `verify.py`: the default output is `verification.rerun.json`, so a plain
+  run no longer overwrites the recorded `verification.json`; the JSON is
+  written with LF line endings on Windows too (the delivered program wrote
+  CRLF there).
+- `build.sh`: writes the check output and all LaTeX output to `build/`,
+  so it no longer overwrites the recorded `verification.json` or rebuilds
+  `article.pdf` in place (and leaves no auxiliary files in the package).
+- A rerun on a copy (2026-09-29, `PYTHON=py bash build.sh`, Python 3.14.4,
+  standard library) passed with the recorded counts, and
+  `build/verification.json` equals the recorded `verification.json` byte
+  for byte; the default `py verify.py` gives the same bytes.
+- Normalizations, for comparison with neighbouring reports: `X_2` is
+  supported on `[-2,2]` and is twice the up-function variable; the law
+  `mu^[p]` of `../Arithmetic_Convolution_Factors_Fabius_Type_Laws/` (its
+  uniforms live on `[-1/2,1/2]`, its sinc is normalized) is the law of
+  `X_p/2`; the product
+  `Phi(z) = prod_{n>=0} sinc(pi z/2^n)` of
+  `../Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/` is the
+  characteristic function of `X_2/2` in the convention `E exp(2 pi i z X)`.
+- `README.md`: the page count and the `build.sh` line under "Contents",
+  the command and output file under "Reproduce the exact tests", the
+  `build.sh` sentence under "Compile the article", and this section.

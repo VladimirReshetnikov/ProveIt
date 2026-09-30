@@ -28,6 +28,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -141,6 +143,32 @@ zero cancellation, a family of arithmetic inequalities, and a constructive
 matching of source factors to target scales. The matching is a special nested
 instance of the representative-selection principle associated with Hall's theorem
 \cite{Hall}; its proof here requires only sorting integer deadlines.
+
+% ed. (2026-09-29): uncited predecessor in the same group; uncited Lean match.
+\begin{ednote}
+The repository already contained, at both pinned snapshots, the article
+\pathtext{spectra-and-arithmetic/Arithmetic_Convolution_Factors_Fabius_Type_Laws/}
+(filed 2026-09-28), which this manuscript does not cite. Its theorems
+``Arithmetic convolution classification'' ($\mu_A=\mathsf D_c\mu_B*\nu$ iff
+$c=1/m$ and $A_k\mid mB_k$) and ``Cross-base classification'' contain the
+one-stream case of \cref{thm:streams}; its periodic-ratio decision theorem
+and its integer regularity classification are one-stream cases of
+\cref{thm:finite-window} and \cref{thm:critical}. That article is more
+general in another direction: it allows composite divisibility-ladder
+targets, whereas the results here need prime or prime-power geometric
+targets. Conversely, \cref{thm:hall}, \cref{thm:primepower} and
+\cref{thm:base6} answer that article's question ``Beyond divisibility
+ladders'' for prime-power geometric targets (the base-six quotient is the
+counterexample it asks for), and \cref{thm:vector,thm:matrix} treat the
+product-target case of its question ``Multivariate arithmetic factors''.
+Its uniforms live on $[-1/2,1/2]$ and its sinc is normalized, so its law
+$\mu^{[p]}$ is the law of $X_p/2$ here. Editorial notes at both questions
+there record these answers. The identity $X_2\eqd X_4+\tfrac12X_4'$ of the
+example ``Density is necessary but not sufficient'' is machine-checked, in the $[0,1]$-digit
+normalization, as
+\pathtext{Fabius.ProbabilityRepresentation.geometricUniformDistribution_one_half_conv_one_quarter}
+(\pathtext{Analysis/FabiusFunction/Lean/FabiusFunction/GeometricUniformMultisection.lean}).
+\end{ednote}
 
 \subsection{What is established here, and what is reused}
 

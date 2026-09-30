@@ -41,6 +41,11 @@ Inspected recursive-tree snapshot:
 
     8490a6e1c259a3b0c7ce32170816740b8ad7b40d
 
+Editorial amendment (ProveIt, 2026-09-29): this string identifies a commit,
+not a tree object. The Library source described below is byte-identical to
+the report as first archived in the repository (30 August 2026); the three
+problems it continues changed since only by renamings of notation macros.
+
 Navigation path:
 
     Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/
