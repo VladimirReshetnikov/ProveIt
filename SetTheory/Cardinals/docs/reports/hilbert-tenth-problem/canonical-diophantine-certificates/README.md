@@ -1,17 +1,20 @@
 # Canonical Diophantine certificates
 
-**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping and reaction networks**
+**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks and routing networks**
 
-This is a research report dated 30 September 2026, merged from eleven
+This is a research report dated 30 September 2026, merged from twelve
 manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
-of batch 61, which is numbered 07 here, and four of batch 62 (its
+of batch 61, which is numbered 07 here, four of batch 62 (its
 manuscripts 01, 02, 04 and 05), numbered 08–11 here and added as Parts X–XIII
-after the report had been written. The base is manuscript 05, *Canonical
+after the report had been written, and one of batch 63 (its manuscript 02),
+numbered 12 here and added as Part XIV. The base is manuscript 05, *Canonical
 Trace Polytopes*; its `article.tex` was staged unprefixed and has been
-replaced in place by the merged text. All eleven manuscripts prove the same
+replaced in place by the merged text. All twelve manuscripts prove the same
 kind of theorem: an explicit integer polynomial whose natural zeros are in
 bijection with the bounded executions (or trace classes of executions) of a
-discrete substrate, with exactly one witness each. They continue the Lean
+discrete substrate, with exactly one witness each; in 12 the execution is a
+terminating chip-routing run, represented by its outcome (firing counts and
+sink outputs) rather than its history. They continue the Lean
 project `Computability/HilbertTenthProblem`, whose trace interfaces assert
 only that such representations exist. Author lines: "Research report
 prepared for the ProveIt project" (01), "Research manuscript for the ProveIt
@@ -22,16 +25,10 @@ program" (08), "Research prepared for Vladimir Reshetnikov" (09; its PDF
 metadata reads "Research prepared with ChatGPT for Vladimir Reshetnikov"),
 "Research manuscript prepared with ChatGPT" (10) and "Research draft
 prepared for Vladimir Reshetnikov / Developed with ChatGPT; proofs and
-executable verification included" (11). The article prints the batch-62
+executable verification included" (11) and "Research article prepared for
+the ProveIt program" (12). The article prints the batch-62
 author lines in neutral form and records these assistant names only in its
-provenance appendix.
-
-The directory also holds nine files prefixed `12-rle-routing-`, placed by
-the batch-63 placement commit `62f1ad07c` for a later Part XIV (addition 12,
-*Diophantine Certificates Without Execution Histories*). That Part is not
-yet written; nothing in `article.tex` or in this README's account of the
-report describes it, and its files are listed below only so that the
-listing matches the directory.
+provenance appendix; 12's author line names no assistant.
 
 | Report no. | Batch, manuscript | Archive | Title | Pin | Arrived | Placed | Printed in |
 |---|---|---|---|---|---|---|---|
@@ -46,11 +43,12 @@ listing matches the directory.
 | 09 | batch 62, manuscript 02 | `order_free_diophantine` (30-page PDF) | *Order-Free Diophantine Self-Assembly and a Sharp Positivity-Restricted Degree Threshold* | `4e128356d` | `b57c0b5ff` | `adeddcecc` | Section 3.9 (title-page box, abstract, status, §1); Part XI (its Parts I–III) |
 | 10 | batch 62, manuscript 04 | `ProveIt_Priority_Pumping_Diophantine`, inner directory `priority_fractran_research` (30-page PDF) | *Sharp Pumping Bounds and Canonical Diophantine Certificates for Priority Arithmetic Computation* | `4e128356d` | `b57c0b5ff` | `adeddcecc` | Section 3.10 (abstract, status, §1); Part XII (§§2–14, Appendices A–C) |
 | 11 | batch 62, manuscript 05 | `one_shared_fallback_research`, inner directory `one_shared_fallback` (26-page PDF) | *One Shared Fallback: Conservative Reaction Computation, Unique Quartic Certificates, and a Canonical Fuel Form of the Finite-Fold Problem* | `4e128356d` (also names `ccfb084ad`) | `b57c0b5ff` | `adeddcecc` | Section 3.11 (abstract, §1); Part XIII (§§2–14, Appendices A–B) |
+| 12 | batch 63, manuscript 02 | `Diophantine_Certificates_Without_Histories`, inner directory `diophantine_certificates` (26-page PDF) | *Diophantine Certificates Without Execution Histories: Single-fold quartics for succinct routing, and a universal one-router boundary* | `e18718e83` | `a4268e78e` | `62f1ad07c` | Section 3.12 (abstract, §1); Part XIV (§§2–11, Appendices A–B) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
 (Implementation and validation, Formalization targets, Research questions,
-Conclusions of the manuscripts, Provenance); manuscripts 08–11 keep their
+Conclusions of the manuscripts, Provenance); manuscripts 08–12 keep their
 validation, formalization plans, questions and conclusions inside their
 Parts, and appear in the back matter only in the provenance appendix and
 the bibliography. The Parts are: I Exact commutation and resource algebra;
@@ -62,13 +60,14 @@ heaps, fresh names and local graph computation; XI Order-free self-assembly
 and a positivity-restricted degree threshold; XII Priority repetition:
 pumping bounds, program-uniform certificates and periodic tails; XIII
 Conservative priority reaction networks and a canonical-fuel form of the
-finite-fold problem.
+finite-fold problem; XIV History-free routing certificates: last exits,
+compressed periods and a rank-function bottleneck.
 
 The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
-`725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07) and
+`725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07),
 `4e128356d0ef75308be8ed405d89aea2ffdb8a57` (08–11; 11 also names
 `ccfb084adaa2f32e8d2738a25f82a00377fb3a8c`, a later commit it read on the
-live branch). The pin of 07 is the commit
+live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12). The pin of 07 is the commit
 in which 01–03 arrived; 07 was written after 04 and 06, names them by title
 as its companion manuscripts, and arrived after this report was placed but
 before it was written. The batch-60 placement commit `7498484af` also placed
@@ -79,6 +78,12 @@ cite it; the write phase added the cross-references. Every file they cite,
 under `Computability/`, `Logic/PresburgerArithmetic/` and the vendored
 `lib/Coq-Library-Undecidability/theories/H10/Fractran/`, is identical at
 `e8bb0931d`, `725d2ebb6`, `4e128356d`, `ccfb084ad` and the write.
+Manuscript 12's pin `e18718e83` is the batch-60 commit that wrote the
+neighbouring report *probabilistic-quantum-and-continuous-computation*; this
+report had been placed but not written then (it was written in `5b87c88c5`),
+so 12 does not cite it either. No file under
+`Computability/HilbertTenthProblem` differs between `e8bb0931d`,
+`e18718e83` and the batch-63 write.
 
 What each manuscript contributes:
 
@@ -149,6 +154,20 @@ What each manuscript contributes:
   (`308T+61` witnesses), single-fold bounded minimum-fuel quartics, and the
   theorem that the least-reservoir relation has a finite-fold (single-fold)
   representation exactly when every c.e. set has one.
+- **12** for zero-retention chip-routing networks with absorbing sinks, the
+  exact odometer criterion by balance and an acyclic last-exit graph (a
+  classical mechanism, credited), made canonical by forest heights; for each
+  run-length routing topology one quartic with exactly `4n+4m+s` natural
+  witnesses and `6n+2m+s` residuals of degree at most two, uniform in the
+  initial loads and run lengths, with a unique root exactly for terminating
+  inputs; a grammar version (`4n+4g+4c+s` witnesses); canonical certificates
+  for both outcomes (`UP ∩ coUP`, a second route to the ARRIVAL bound); a
+  Presburger description of fixed periods and a transport identity; an
+  `NP = coNP` barrier for circuit-defined periods; a universal one-router
+  system with polynomial-time prefix ranks; and the theorem that the graph
+  of its one monotone Boolean rank function has a single-fold (finite-fold)
+  representation exactly when every c.e. set has one, with `2r+3` witnesses
+  and degree `max{4,2d}`.
 
 **Status.** The report is AI-assisted and unrefereed. None of its theorems
 is formalized in Lean or Rocq, and no manuscript ships Lean or Rocq files.
@@ -160,7 +179,7 @@ article.
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 306 pages
+article.pdf                              the compiled report, 338 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -174,7 +193,7 @@ README.md                                this guide
 08-dynamic-heaps-PROVENANCE.md           manuscript 08's pin, inspected sources, dependencies and verification limits
 10-priority-pumping-VALIDATION.md        manuscript 10's delivery validation (PDF build, 114,875 counted checks)
 10-priority-pumping-provenance.md        manuscript 10's pin, inspected repository files and literature
-12-rle-routing-SOURCES.md                placed in batch 63 for a later Part XIV (not yet written)
+12-rle-routing-SOURCES.md                manuscript 12's pinned repository and literature provenance
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
 code/01-causal-traces-demo.py            the 11-witness large-count example (prints; writes no file)
@@ -219,9 +238,9 @@ code/10-priority-pumping-test_priority_certificates.py  finite tests (seed 20260
 code/10-priority-pumping-verify_export.py           independent JSON polynomial evaluator (prints JSON)
 code/11-reaction-fallback-reaction_compiler.py      reaction compiler, simulator, trace and minimum-fuel certificates
 code/11-reaction-fallback-verify.py      deterministic tests (seed 20260930); writes where --output says
-code/12-rle-routing-Makefile             placed in batch 63 for Part XIV
-code/12-rle-routing-compile_quartic.py   placed in batch 63 for Part XIV
-code/12-rle-routing-verify_certificates.py   placed in batch 63 for Part XIV
+code/12-rle-routing-Makefile             manuscript 12's make targets (all, pdf, test, clean), delivery paths
+code/12-rle-routing-compile_quartic.py   sparse compiler for the RLE quartic; writes --output and a .txt beside it
+code/12-rle-routing-verify_certificates.py   exact semantics, witnesses, residuals and tests; writes --output
 
 data/01-causal-traces-build_validation.json   build and rendering record of the delivered 29-page PDF
 data/01-causal-traces-canonical_history.json  32-witness, 48-residual causal-history polynomial and certificate
@@ -303,19 +322,18 @@ data/11-reaction-fallback-example_summary.json      generated counts and degree 
 data/11-reaction-fallback-results.json              recorded run of verify.py
 data/11-reaction-fallback-universal_61_species_62_reactions.json  the universal network, machine-readable
 data/11-reaction-fallback-universal_reactions.txt   its 62 reactions with priority labels
-data/12-rle-routing-example_quartic.json            placed in batch 63 for Part XIV
-data/12-rle-routing-example_quartic.txt             placed in batch 63 for Part XIV
-data/12-rle-routing-parametric_quartic.json         placed in batch 63 for Part XIV
-data/12-rle-routing-parametric_quartic.txt          placed in batch 63 for Part XIV
-data/12-rle-routing-test_results.json               placed in batch 63 for Part XIV
+data/12-rle-routing-example_quartic.json            period v^3 s, fixed lengths: 13 witnesses, 11 residuals, 50 monomials
+data/12-rle-routing-example_quartic.txt             the same, human-readable
+data/12-rle-routing-parametric_quartic.json         the same topology, both lengths free: 81 monomials
+data/12-rle-routing-parametric_quartic.txt          the same, human-readable
+data/12-rle-routing-test_results.json               recorded run of verify_certificates.py: PASS
 ```
 
 The directory holds 146 files: 15 at the root (the article, its PDF, this
 README and twelve provenance and audit files), 46 in `code/` and 85 in
 `data/`. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
-9, 10 14 and 11 9; the nine `12-rle-routing-*` files belong to the batch-63
-addition 12. Every file except `article.tex`, `article.pdf` and `README.md`
+9, 10 14, 11 9 and 12 9. Every file except `article.tex`, `article.pdf` and `README.md`
 is byte-identical to the delivery.
 
 ## Labels
@@ -337,6 +355,7 @@ manuscripts take a sub-prefix:
 | 09 | `cdc:of:` | `cdc:of:thm:classification` |
 | 10 | `cdc:pf:` | `cdc:pf:thm:pumping` |
 | 11 | `cdc:rx:` | `cdc:rx:thm:FF` |
+| 12 | `cdc:rt:` | `cdc:rt:thm:bottleneck` |
 
 Labels written in the merge use `cdc:conv:` (the Conventions section),
 `cdc:bd:` (merged statements of Part IX, such as the universal-halting
@@ -367,6 +386,21 @@ numbers and types in the new `.aux`. The equations of Parts X–XIII, and of
 manuscript 10's introduction in Section 3.10, are numbered within their
 sections or subsections for that reason, so that the appendices keep their
 equation numbers.
+
+The batch-63 write (Part XIV) raised the count from 840 to 916. It adds all
+69 labels of manuscript 12, each with the sub-prefix `cdc:rt:` and none
+dropped (its bare `thm:universal`, `lem:bound` and `sec:intro` would
+otherwise have repeated labels of other members), and 7 written labels: the
+Part (`cdc:part:routing`), its conventions section (`cdc:conv:b63-XIV`), the
+manuscript subsection (`cdc:sec:ms12`), manuscript 12's two appendices,
+which are sections here (`cdc:rt:app:reproduction`,
+`cdc:rt:app:dependencies`), and two labels put on existing, previously
+unlabelled questions so that Part XIV and the notes can cite them
+(`cdc:q:beyond`, "Beyond translations"; `cdc:q:varperiods`, "Variable
+periods and variable degrees"). No existing label was renamed, removed or
+renumbered: the 840 labels of the batch-62 build have the same numbers and
+types in the new `.aux` (compared entry by entry). Part XIV's equations are
+numbered within its sections, as in Parts X–XIII.
 
 Text written during the merge is marked `[write]` in the article.
 
@@ -569,6 +603,27 @@ and in the arrival commit `c1f56f842`.
 | `examples/universal_reactions.txt` | `data/11-reaction-fallback-universal_reactions.txt` |
 | `verification/results.json` | `data/11-reaction-fallback-results.json` |
 
+**Manuscript 12** (package root `diophantine_certificates/`; flat)
+
+| Delivered | Shipped |
+|---|---|
+| `Makefile` | `code/12-rle-routing-Makefile` |
+| `SOURCES.md` | `12-rle-routing-SOURCES.md` |
+| `compile_quartic.py` | `code/12-rle-routing-compile_quartic.py` |
+| `example_quartic.json` | `data/12-rle-routing-example_quartic.json` |
+| `example_quartic.txt` | `data/12-rle-routing-example_quartic.txt` |
+| `parametric_quartic.json` | `data/12-rle-routing-parametric_quartic.json` |
+| `parametric_quartic.txt` | `data/12-rle-routing-parametric_quartic.txt` |
+| `test_results.json` | `data/12-rle-routing-test_results.json` |
+| `verify_certificates.py` | `code/12-rle-routing-verify_certificates.py` |
+
+Manuscript 12's section and theorem numbers, which its delivered README
+cites, map as follows: Theorem 3.1 = `cdc:rt:thm:rle`, Theorem 4.1 =
+`cdc:rt:thm:grammar`, Theorem 7.1 = `cdc:rt:thm:universal`, Theorem 8.1 =
+`cdc:rt:thm:bottleneck` (Theorems 128.1, 129.1, 132.1 and 133.1 in the
+article); its Sections 2–11 are Sections 127–136 of the article and its
+Appendices A–B Sections 137–138.
+
 **Not shipped.** The manuscripts (`article.tex`) and delivery READMEs of
 members 01, 02, 03, 04, 06 and 07: they survive in their arrival commits
 (`725d2ebb6` for 01–03, `c1f56f842` for 04 and 06, `b998f70c6` for 07), as
@@ -581,11 +636,15 @@ additions 08–11: their manuscripts (`article.tex` for 08, 10 and 11,
 `order_free_diophantine.tex` for 09), delivery READMEs and PDFs survive in
 the arrival commit `b57c0b5ff`; 08's and 09's checksum ledgers
 (`SHA256SUMS`, 11/11 and 12/12) were verified and retired at placement;
-10 and 11 delivered no ledger.
+10 and 11 delivered no ledger. For the batch-63 addition 12: its
+`article.tex`, delivery `README.md` and 26-page `article.pdf` survive in the
+arrival commit `a4268e78e`; its checksum ledger `SHA256SUMS` (12/12) was
+verified and retired at placement (`62f1ad07c`) and verified again for this
+write against a fresh extraction.
 
 ## What is claimed and what is not
 
-The report claims the theorems of the eleven manuscripts, with the proofs
+The report claims the theorems of the twelve manuscripts, with the proofs
 printed in the article: bijections between the natural zeros of explicit
 integer polynomials and bounded executions, trace classes or logs of the
 substrates listed above, with one witness per execution or class, exact
@@ -599,7 +658,12 @@ formula, sharp `2H+1` pumping bound, uniform single-fold quartic, periodic
 tail criterion, c.e.-completeness of eventual periodicity and affine macro
 certificates; 11's one-fallback compiler, exact reservoir threshold,
 priority-erasure and finite-rate obstructions, trace and minimum-fuel
-quartics and the canonical-fuel equivalence with the finite-fold problem. It
+quartics and the canonical-fuel equivalence with the finite-fold problem.
+For Part XIV: 12's exact odometer criterion with canonical heights, the
+run-length and grammar quartics with their exact witness and residual
+counts, the both-outcome certificates and the `UP ∩ coUP` membership, the
+Presburger and transport statements, the circuit counting barrier, the
+universal one-router theorem and the rank-function bottleneck equivalence. It
 does not claim the following. Each item is stated by at least the
 manuscripts named; the article keeps every one of them.
 
@@ -611,7 +675,10 @@ manuscripts named; the article keeps every one of them.
   `repository_context.md`; 07's abstract, relation to earlier work and
   `provenance.md`; 08's status box and `PROVENANCE.md`; 09's title page and
   relation to prior work; 10's status paragraph, claims ledger and
-  `provenance.md`; 11's contribution and provenance subsections). Their literature searches were targeted, and a search
+  `provenance.md`; 11's contribution and provenance subsections; 12's
+  abstract, limitation ledger and `SOURCES.md`, which say that the
+  last-exit mechanism, run-length switching orders and the ARRIVAL
+  uniqueness results are prior work). Their literature searches were targeted, and a search
   that finds nothing is not evidence of novelty (03, 07). The classical
   ingredients (MRDP, machine arithmetization, sums of squares, circuit
   quadratization, Cartier–Foata and forbidden-factor normal forms, sorting
@@ -619,8 +686,10 @@ manuscripts named; the article keeps every one of them.
   interpolation, polynomial centralizers, pairing) are not claimed.
 - **Not formal.** No new Lean, Rocq or Coq proof was written or compiled,
   the repository's Lean build and axiom audits were not rerun, and
-  repository documentation is not treated as a kernel audit (all eleven).
-  The formalization sections of 08, 09, 10 and 11 are likewise proposals.
+  repository documentation is not treated as a kernel audit (all twelve).
+  The formalization sections of 08, 09, 10, 11 and 12 are likewise
+  proposals; 12's five-layer Lean plan names no module as existing, and
+  "none of these new layers has been kernel-checked".
   07's `lean_integration.md` and the formalization sections of 01, 03, 04
   and 05 are proposals; 03's module names are "proposals, not files claimed
   to exist". The Python programs are finite exact checks: they do not prove
@@ -640,7 +709,10 @@ manuscripts named; the article keeps every one of them.
   restricted theorem from a universal first-halting extension. 11 proves a
   one-parameter refinement (the least-reservoir relation of one fixed
   network), again a reduction to the open problem; none of 08–11 claims a
-  single-fold or finite-fold MRDP theorem.
+  single-fold or finite-fold MRDP theorem. 12 proves a rank-function form
+  (the graph of one monotone Boolean function computable in polynomial
+  time), "an equivalence, not a solution"; it supplies no coefficients of a
+  global rank polynomial and no new constructive proof of MRDP.
 - **Families, not fixed arity.** Every construction is a family indexed by
   a horizon, height, log length or schedule, whose number of variables grows
   with that parameter: 01's causal height `H` is a compiler parameter
@@ -654,12 +726,17 @@ manuscripts named; the article keeps every one of them.
   nor is an `O(T)` circuit small in `log T`; 08's heap certificates grow
   with the number of macrosteps, 09's assembly compiler with the candidate
   domain, 10's quartic with the word length, and 11's certificates with the
-  horizon or the resource cutoff (its `Q_L` has `O((L+1)^8)` variables). No
+  horizon or the resource cutoff (its `Q_L` has `O((L+1)^8)` variables).
+  12's quartics have fixed arity for one routing topology, uniform in its
+  loads and run lengths, but they are a family indexed by the topology and
+  grow with its description ("dimensions depending on the network
+  description"); its `Q_{a,b}` for the universal clock is indexed by
+  external bit budgets. No
   construction improves the project's 75-operation universal certificate,
   which counts arithmetic operations, not witnesses (01's
   `RESEARCH_STATUS.md`; 04's integration section; 09 and 10 say so
   explicitly; 11's 61 species and 62 reactions count a network, not
-  operations).
+  operations; 12 improves no universal variable–degree record).
 - **Real relaxation is not integral.** 05's quadratic has a real zero set
   that is a bounded rational polytope, but that polytope need not be
   integral: its example of a nonempty polytope with no lattice point shows
@@ -776,6 +853,29 @@ manuscripts named; the article keeps every one of them.
   The discrepancy it reports in the Alhazov–Verlan source table is the
   author's reading, not re-inspected here (the table's own structure
   corroborates it).
+- **12, scope.** The least-action and last-exit mechanism is classical
+  (Friedrich–Levine; Bond–Levine; ARRIVAL; reachability switching games),
+  and run-length compression and last exits are "not new here". `SF` and
+  `FF` are not proved: the bottleneck theorem is "an equivalence, not a
+  solution", and its quantitative part is conditional on a local rank-graph
+  representation. No polynomial-time algorithm finds the unique routing
+  certificate; the height bound bounds certificate length, not execution
+  time. The both-outcome theorem "is not asserted as a new upper bound for
+  ordinary ARRIVAL". Natural witnesses are essential: replacing them by
+  sums of four integer squares keeps existence and destroys uniqueness, and
+  no single-fold claim is made over integer witnesses. The one-router
+  system is algorithmic (an unbounded counter and bounded simulation), not a
+  finite-state rotor; Cairns's sandpile universality is not transferred to
+  finite periodic rotors; being eventually periodic is not having an
+  effective periodic description. The unique clock certificate does not put
+  universal halting in `UP` (its length has no computable input-only
+  bound), and the bounded-budget quartics `Q_{a,b}` are not one
+  fixed-arity equation. The grammar component of the code checks local
+  prefix paths; there is no global symbolic grammar compiler. The
+  universal-clock tests use toy countdown and looping systems; no universal
+  Turing machine is encoded or verified. The monomial counts 50 and 81 are
+  illustrative, not minimal. The bibliography is not a complete priority
+  search, and nothing is Lean-checked.
 
 ## Relation to the formal project
 
@@ -839,6 +939,22 @@ obstacle of FRACTRAN priority) with 10; and Korec's machines in
 universal source machine. None of 08–11 states or improves an operation
 count.
 
+Part XIV (manuscript 12) relies on no formal declaration either. It cites,
+as context only, `Diophantine.mrdp` (`Lean/Diophantine/MRDP.lean`, line 33)
+and the MRDP guide `Lean/MRDP.md` (natural-witness interface, input zero
+allowed, no degree or witness bound and no practical generator), and, as
+integration points of its Lean plan, `MRDP.boundedForall_dioph` and
+`MRDP.primrec_diophFn` (`Lean/Diophantine/Common/MRDPCore.lean`, lines 215
+and 336; the guide's lines 44–45) and the older trace interfaces of
+`DiophantineTrace.lean`. Its statement that the project's MRDP interface
+does not claim unique witnesses is true of `Diophantine.mrdp`; the article
+adds that the project does formalize the single-fold *exponential*
+representation (`JM1984.RM.re_sfu`, `Lean/Diophantine/Paper1984/DPR.lean`,
+line 309, with `JM1984.Exp.SFU`), the formal neighbour of Part XIV's
+bottleneck theorem. Nothing of Part XIV is formalized: the project has no
+rotor-routing, chip-firing, ARRIVAL or `UP ∩ coUP` material, and 12 states
+or improves no operation count.
+
 The other reports of this category are
 [probabilistic-quantum-and-continuous-computation](../probabilistic-quantum-and-continuous-computation/)
 (`pqc:`), which treats the Diophantine representability of probabilistic,
@@ -850,6 +966,24 @@ batch 62 for recurrence and liveness beyond halting: Part X's perpetual
 safety obstruction and Part XII's eventual-periodicity results are the
 lowest levels of its hierarchy, and the article says so where they are
 printed.
+
+**Relations (batch 63).** *liveness-beyond-halting* has since been written
+(`2a34b1740`) from batch-62 manuscripts 10 (base) and 03 and batch-63
+manuscript 01 (its sources 10, 03 and 11). It quotes this report's
+zero-guard remark in Part VIII ("the uniform-parameter presentation is then
+quartic unless another representation is supplied") and supplies that
+representation: the degree-two transition laws of its sources 03 and 11
+(`lbh:qd:thm:compiler`, `lbh:ql:thm:compiler`, compared in its section
+`lbh:sec:threecompilers`). Its hierarchy table (`lbh:sec:onetable`) cites
+Parts X and XII as the Π⁰₁ and Σ⁰₁ levels for heap and priority programs.
+Dated batch-63 notes in the article record this at the zero-guard remark
+(Part VIII), after Part IV's specified-input nontermination certificates,
+after Part X's safety theorem and before Part XII's section on
+nonperiodic words. Part XIV shares only the word "clock" with that report
+(the universal clock is not its Clock predicate), and termination of a
+finite periodic routing network is decidable, below its hierarchy.
+Manuscript 12 bears on no question of
+*probabilistic-quantum-and-continuous-computation*.
 
 ## Build
 
@@ -868,9 +1002,12 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 306 pages (196 before batch 62), with no errors,
-undefined references or citations, multiply defined labels, duplicate
-destinations or overfull boxes.
+The recorded build has 338 pages (196 before batch 62, 306 before batch 63),
+with no errors, warnings, undefined references or citations, multiply
+defined labels, duplicate destinations or overfull boxes; the one underfull
+line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
+five macros for manuscript 12 (`\rankf`, `\UP`, `\coUP`, `\NP`, `\coNP`) and
+no package.
 
 ## Rerunning the checks
 
@@ -878,7 +1015,7 @@ Every suite needs Python 3.10 or later and the standard library only. Every
 suite rewrites its recorded outputs at fixed paths relative to its own
 location, and most scripts import their siblings by delivered name, so run
 them **on a copy with the delivered layout**, never in the report
-directory. The recipes below build such copies, `r01` … `r11`, beside
+directory. The recipes below build such copies, `r01` … `r12`, beside
 `code/` and `data/`: run them in a scratch copy of the report directory
 (copying `code/` and `data/` is enough), not in the collection. Where the
 Windows `python` alias does not resolve, use `py`.
@@ -950,10 +1087,17 @@ for f in priority_certificates test_priority_certificates generate_instances ver
 mkdir -p r11/code
 for f in reaction_compiler verify; do cp code/11-reaction-fallback-$f.py r11/code/$f.py; done
 (cd r11 && py code/reaction_compiler.py --output examples && py code/verify.py --output verification/results.json)
+
+# 12: writes test_results.json, example_quartic.{json,txt} and parametric_quartic.{json,txt} into r12
+mkdir -p r12
+for f in verify_certificates compile_quartic; do cp code/12-rle-routing-$f.py r12/$f.py; done
+(cd r12 && py verify_certificates.py --output test_results.json \
+  && py compile_quartic.py --output example_quartic.json \
+  && py compile_quartic.py --variable-lengths --output parametric_quartic.json)
 ```
 
-The recipes for 08–11 use `py`, which resolves on this machine; the
-delivered texts write `python`.
+The recipes for 08–12 use `py`, which resolves on this machine; the
+delivered texts write `python` (12's Makefile `python3`).
 
 The shell redirections reproduce the recorded console files
 (`*_run.txt`, `verification_stdout.txt`, `demo_stdout.txt`,
@@ -990,7 +1134,14 @@ carriage returns: 08's `memory_certificate.json` and `memory_events.json`;
 09's four certificates and `verification_report.json`; 10's two
 certificates, two instances and two independent checks; 11's six example
 files and `results.json`. 08's `receipt.json` and 10's `verification.json`
-and `test_output.txt` differ only in their elapsed time.
+and `test_output.txt` differ only in their elapsed time. The recipe for 12
+was run the same way in the batch-63 write (Python 3.14.4, Windows; about
+five seconds): `"status": "PASS"`, 123,201 odometer candidates (2,037
+balanced, 535 accepted), 13,375 RLE and 35,952 grammar mutations rejected,
+the `2^8192 + 2^4096`-firing certificate evaluated to zero, 205 toy clock
+checks; the compiler printed 11 residuals, degree 4, 50 and 81 monomials
+and 500 cross-checks each. All five regenerated files equal the shipped
+ones after removing carriage returns (no elapsed time is recorded).
 
 **Hazards.**
 
@@ -1029,6 +1180,16 @@ and `test_output.txt` differ only in their elapsed time.
   files are byte-identical). 10's `priority_certificates.py --export` and
   `generate_instances.py` write into `results/`, 11's programs into the
   directories named by `--output`; give them paths outside the report.
+- 12's programs write where `--output` says, relative to the working
+  directory (defaults `test_results.json` and, for the compiler, a JSON file
+  plus a `.txt` of the same stem beside it). Run in the report directory,
+  they would write unprefixed files there; the shipped
+  `code/12-rle-routing-compile_quartic.py` fails at its import of
+  `verify_certificates` in any case. Do not use
+  `code/12-rle-routing-Makefile` here: its `test` target runs the delivered
+  names with `python3`, and its `pdf` and `clean` targets run `pdflatex` on
+  and delete the auxiliary files of `article.tex`, which is now the merged
+  article.
 - The command-line compilers write where they are told: 03's
   `canonical_memory.py` and `linear_memory.py` (an output directory), 07's
   `queue_certificates.py` and `compile_tag.py` (`--output`) and 02's
@@ -1093,6 +1254,19 @@ and `test_output.txt` differ only in their elapsed time.
     in prose, and keeps their command listings in the delivered layout with
     a note; 11's manifest appendix is printed with shipped names and a note
     that its `article.tex`, `article.pdf` and `README.md` are not shipped.
+  - Batch 63: `12-rle-routing-SOURCES.md` names `article.tex` (manuscript
+    12's, not shipped; its text is Part XIV and Section 3.12) and speaks of
+    "this package"; `code/12-rle-routing-Makefile` names
+    `verify_certificates.py`, `compile_quartic.py`, the three output files
+    by their delivered names, and `article.tex`;
+    `code/12-rle-routing-compile_quartic.py` imports `verify_certificates`
+    by its delivered name. 12's recorded data name no files. The article
+    prints the shipped names where 12 names its files in prose, keeps its
+    reproduction listings in the delivered layout with a note, and notes
+    that its `article.tex`, `article.pdf`, `README.md` and `SHA256SUMS` are
+    not shipped. 12's delivered README (not shipped) cites its theorems by
+    delivered number; the mapping is under "Delivered names and shipped
+    names".
   - Recorded data that names delivery files: 03's `build_validation.json`
     (`code/test_certificates.py`, `code/test_linear_memory.py`), 01's
     `export_verification.json` and 04's `certificate_verification.jsonl`
@@ -1125,7 +1299,10 @@ and `test_output.txt` differ only in their elapsed time.
   all are different programs or data. In batch 62, 09 and 11 also deliver
   `code/verify.py`, 10 a `code/verify_export.py`, 08 a `tests/run_tests.py`
   and 11 a `results.json` (as `verification/results.json`); again all are
-  different files, told apart by their prefixes.
+  different files, told apart by their prefixes. In batch 63, 12 delivers a
+  `test_results.json` (as do 03 and 06, under `artifacts/` and
+  `verification/`) and a `verify_certificates.py`, which is not 04's or
+  07's `code/verify_certificate.py`.
 - **Two Cantone–Cuzziol–Omodeo papers.** 02, 04, 05 and 06 cite
   Cantone, Cuzziol and Omodeo, *On Diophantine singlefold specifications*,
   Le Matematiche 79(2) (2024), 585–620 (merged key `cco2024`). 07 cites a
@@ -1150,7 +1327,10 @@ and `test_output.txt` differ only in their elapsed time.
   `ccfb084ad`, which the article recasts as a pin statement, and cites
   ProveIt's MRDP guide by an unpinned link to the `main` branch, which the
   bibliography pins at `4e128356d` (the guide is unchanged between these
-  commits).
+  commits). 12 inspected `e18718e83` and cites its README and MRDP guide by
+  pinned links; its bibliography key `repo` is not this report's `repo`
+  (06's item), so its two repository items are merged into `repo-h10` and
+  `repo-mrdp`, which now also record that pin.
 
 ## Merge decisions
 
@@ -1295,6 +1475,42 @@ same decisions.
   the Part VII FRACTRAN certificate and the Part III/IV acceleration results
   to 10's account of prior work, and the Part V compiler to 08's. Title-page
   lines naming the AI assistant appear only in the provenance appendix.
+- **Batch 63 (Part XIV).** Manuscript 12 was written after Parts I–XIII
+  were placed and, like 08–11, without knowledge of the report. It is
+  printed as one Part in its own order (its Sections 2–11 and both
+  appendices), appended after Part XIII and before the appendices, so that
+  no existing number changed; its title page, abstract and Section 1 are
+  Section 3.12 (the Section 3 heading "The seven manuscripts" became "The
+  twelve manuscripts"). The Part opens with its source, its relation to
+  Parts I–XIII, its hypotheses and a conventions table. It duplicates no
+  printed result, so nothing is merged: its bottleneck theorem is printed
+  as a history-free form of `cdc:bd:thm:universal`(c), with a paragraph
+  relating it to that theorem, to `cdc:rx:thm:FF` and to
+  `cdc:pt:prop:exponential-boundary`, and its no-bound item (iv) as the
+  routing form of `cdc:bd:prop:nobound`; its both-outcome theorem is a
+  second route to the ARRIVAL bound the manuscript itself credits. Its
+  eight questions (headings of unnumbered subsections) are `question`
+  environments at the end of the Part, cross-referenced to
+  `cdc:q:verified`, `cdc:q:degree`, `cdc:q:locality`, `cdc:q:compression`,
+  `cdc:q:ffprimitives` and `cdc:q:beyond`, not merged. Four questions of
+  the back matter get dated notes: `cdc:q:restricted` (answered in part,
+  for routing topologies), `cdc:q:varperiods` (an analogue answered in
+  part), `cdc:q:compression` and `cdc:q:ffprimitives` (re-scoped).
+  Unnumbered forward pointers were added after the universal-halting
+  equivalence, in the no-bound proposition's specializations and after the
+  remark on the formalized exponential counterpart. Renamed: 12's Cantor
+  pairing `π` is `π_C` (Part IX's `π` is `(a+b)^2+a`); its `\mathsf{SF}`
+  and `\mathsf{FF}` use Part XIII's `\SF` and `\FF`. Bibliography keys
+  mapped: `repo` → `repo-h10`, `mrdpguide` → `repo-mrdp` (both with 12's
+  pin), and its six literature items became new entries with lower-case
+  keys (62 distinct works in all). Bracketed `[write]` notes inside the
+  Part: the formalized single-fold exponential representation beside 12's
+  MRDP paragraph; the grammar-length bound `2^{g_v-1}` in place of the
+  manuscript's looser `2^{g_v}`; that the transport identity needs
+  `U_v > 0` only where `k_v > 0`; the location of the two MRDP
+  declarations its Lean plan names. Where 12 names its files in prose the
+  shipped names are printed. Reciprocal pointers to *liveness-beyond-halting*
+  (written in the same batch) are dated notes in Parts IV, VIII, X and XII.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as

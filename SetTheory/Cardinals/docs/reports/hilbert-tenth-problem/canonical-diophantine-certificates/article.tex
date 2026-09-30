@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{article}
-% Report A of batch 60 (with batch 61), extended in batch 62: eleven manuscripts merged; base = manuscript 05.
-% Preamble: manuscript 05's, extended by the macros of manuscripts 01-04, 06 and 07, and (batch 62) 08-11.
+% Report A of batch 60 (with batch 61), extended in batches 62 and 63: twelve manuscripts merged; base = manuscript 05.
+% Preamble: manuscript 05's, extended by the macros of manuscripts 01-04, 06 and 07, and (batch 62) 08-11, and (batch 63) 12.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsthm,mathtools}
@@ -27,7 +27,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\scshape Canonical Diophantine Certificates}
-\fancyhead[R]{\small Research report (eleven manuscripts)}
+\fancyhead[R]{\small Research report (twelve manuscripts)}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parskip}{4pt plus 1pt}
@@ -167,6 +167,12 @@
 \newcommand{\SF}{\mathsf{SF}}
 \newcommand{\sumnorm}[1]{\lVert #1\rVert_1}
 \DeclareMathOperator{\Pre}{Pre}
+% ---- batch 63: manuscript 12 ----
+\newcommand{\rankf}{\mathsf{P}}
+\newcommand{\UP}{\mathsf{UP}}
+\newcommand{\coUP}{\mathsf{coUP}}
+\newcommand{\NP}{\mathsf{NP}}
+\newcommand{\coNP}{\mathsf{coNP}}
 \newcounter{cdcsavedequation}% [write] batch 62: holds the global equation counter across the batch-62 material
 \usepackage{etoolbox}% [write] batch 62: section numbers reach three digits; widen their box in the contents
 \makeatletter
@@ -175,34 +181,34 @@
 % ---- merge ----
 \newcommand{\wtag}{\textup{[write]}}% marks text written in the batch-60/61 write phase
 \newcommand{\srcnote}[1]{\par\smallskip\noindent{\small\itshape #1}\par\smallskip}
-\hypersetup{pdftitle={Canonical Diophantine Certificates},pdfauthor={Research report merged from eleven manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Witness-faithful Diophantine representations of bounded computation: trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping and reaction networks}}
+\hypersetup{pdftitle={Canonical Diophantine Certificates},pdfauthor={Research report merged from twelve manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Witness-faithful Diophantine representations of bounded computation: trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks and routing networks}}
 \newcommand{\srctag}[1]{\texorpdfstring{\hspace{0.5em}{\normalfont\small\color{accent}[#1]}}{ [#1]}}
 
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{2mm}
-{\color{accent}\large\scshape ProveIt research report \textperiodcentered{} merged from eleven manuscripts\par}
+{\color{accent}\large\scshape ProveIt research report \textperiodcentered{} merged from twelve manuscripts\par}
 \vspace{5mm}
 {\color{ink}\fontsize{26}{31}\selectfont\bfseries Canonical Diophantine Certificates\par}
 \vspace{4mm}
 {\large Witness-faithful polynomial representations of bounded computation:
-trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly and reaction networks\par}
+trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, reaction networks and routing networks\par}
 \vspace{4mm}
-{Research report prepared for Vladimir Reshetnikov. Manuscripts dated September 30, 2026; merged in the batch-60/61 write phase and extended in the batch-62 write phase.\par}
+{Research report prepared for Vladimir Reshetnikov. Manuscripts dated September 30, 2026; merged in the batch-60/61 write phase and extended in the batch-62 and batch-63 write phases.\par}
 \vspace{3mm}
 \hrule
 \vspace{2mm}
 \begin{abstract}
-\wtag{} An existential Diophantine representation says that a computation exists; it need not preserve which computation occurred, how many computations occurred, or how many arithmetic witnesses describe one of them. This report collects eleven manuscripts that construct \emph{witness-faithful} (single-fold or parsimonious) polynomial representations of bounded computation and locate the boundary beyond which such representations are as hard as the open single-fold and finite-fold problems.
+\wtag{} An existential Diophantine representation says that a computation exists; it need not preserve which computation occurred, how many computations occurred, or how many arithmetic witnesses describe one of them. This report collects twelve manuscripts that construct \emph{witness-faithful} (single-fold or parsimonious) polynomial representations of bounded computation and locate the boundary beyond which such representations are as hard as the open single-fold and finite-fold problems.
 
-For Petri nets and interval-guarded translations, an explicit convex quadratic integer polynomial has its natural zeros in bijection with the commutation classes of enabled executions of exact length~$T$; its nonnegative real zero set is a bounded rational polytope whose lattice points are exactly those zeros (Part~II, manuscript~05). Quartic second routes (manuscripts~04 and~06), a Cartier--Foata variant for bounded causal height (manuscript~01), exact all-marking commutation tests, an exponential automaton-state lower bound and $\sharpP$-completeness of counting accompany it (Parts~I and~II). Single-fold quartics of fixed arity describe multisets, fixed-word powers and nested repetitions of counter actions independently of the repetition counts (Part~III); the relation ``$p(i)\ge0$ for all $i\le T$'' with $O((d+1)^3)$ witnesses independent of~$T$ (Part~IV); random-access memory logs with $24L$ witnesses (Part~V); cyclic-tag, deletion-tag and fixed-read FIFO executions with one coordinate per consumed symbol and one guard slack, together with a proof that faithful polynomial word memory needs two natural coordinates (Part~VI); and FRACTRAN runs and scheduled SKI reductions (Part~VII). Part~VIII collects further substrates. Four later manuscripts add dynamic heaps modulo fresh names (Part~X), a sharp degree threshold for orthant-nonnegative polynomials and order-free tile assembly (Part~XI), priority pumping (Part~XII) and a reaction network with one shared fallback (Part~XIII).
+For Petri nets and interval-guarded translations, an explicit convex quadratic integer polynomial has its natural zeros in bijection with the commutation classes of enabled executions of exact length~$T$; its nonnegative real zero set is a bounded rational polytope whose lattice points are exactly those zeros (Part~II, manuscript~05). Quartic second routes (manuscripts~04 and~06), a Cartier--Foata variant for bounded causal height (manuscript~01), exact all-marking commutation tests, an exponential automaton-state lower bound and $\sharpP$-completeness of counting accompany it (Parts~I and~II). Single-fold quartics of fixed arity describe multisets, fixed-word powers and nested repetitions of counter actions independently of the repetition counts (Part~III); the relation ``$p(i)\ge0$ for all $i\le T$'' with $O((d+1)^3)$ witnesses independent of~$T$ (Part~IV); random-access memory logs with $24L$ witnesses (Part~V); cyclic-tag, deletion-tag and fixed-read FIFO executions with one coordinate per consumed symbol and one guard slack, together with a proof that faithful polynomial word memory needs two natural coordinates (Part~VI); and FRACTRAN runs and scheduled SKI reductions (Part~VII). Part~VIII collects further substrates. Four later manuscripts add dynamic heaps modulo fresh names (Part~X), a sharp degree threshold for orthant-nonnegative polynomials and order-free tile assembly (Part~XI), priority pumping (Part~XII) and a reaction network with one shared fallback (Part~XIII); a twelfth adds history-free certificates for chip-routing networks, one quartic per routing topology, uniform in the initial loads and run lengths, whose unique natural zero carries the exact firing counts (Part~XIV).
 
-Part~IX proves, with proofs from four manuscripts and a sketch in a fifth, that a single-fold (finite-fold) polynomial for universal halting exists exactly when every computably enumerable set has a single-fold (finite-fold) Diophantine representation, which is an open problem that this report does not solve.
+Part~IX proves, with proofs from four manuscripts and a sketch in a fifth, that a single-fold (finite-fold) polynomial for universal halting exists exactly when every computably enumerable set has a single-fold (finite-fold) Diophantine representation, which is an open problem that this report does not solve. Part~XIV proves that a single-fold (finite-fold) representation of the graph of one monotone Boolean function computable in polynomial time is equivalent to the same open statement.
 \end{abstract}
 \vspace{2mm}
 \begin{resultbox}
-\small\textbf{Status.} \wtag{} A merge of eleven AI-assisted, unrefereed manuscripts, six delivered in batch~60, one in batch~61 and four in batch~62 of ProveIt's incoming reports (\cref{cdc:sec:provenance}). The theorems carry ordinary mathematical proofs; the accompanying Python programs perform finite exact checks and are not proofs. No statement of this report is formalized in Lean or Rocq, although the report sits beside ProveIt's formal Hilbert's-tenth-problem project; the project declarations it cites are named in the README. Global priority is not claimed for any construction, and no resolution of the general single-fold or finite-fold problem is claimed. Every manuscript's own status statement is printed in \cref{cdc:sec:manuscripts}.
+\small\textbf{Status.} \wtag{} A merge of twelve AI-assisted, unrefereed manuscripts, six delivered in batch~60, one in batch~61, four in batch~62 and one in batch~63 of ProveIt's incoming reports (\cref{cdc:sec:provenance}). The theorems carry ordinary mathematical proofs; the accompanying Python programs perform finite exact checks and are not proofs. No statement of this report is formalized in Lean or Rocq, although the report sits beside ProveIt's formal Hilbert's-tenth-problem project; the project declarations it cites are named in the README. Global priority is not claimed for any construction, and no resolution of the general single-fold or finite-fold problem is claimed. Every manuscript's own status statement is printed in \cref{cdc:sec:manuscripts}.
 \end{resultbox}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -249,9 +255,9 @@ The distinction between polynomial representability and finite-fold or single-fo
 
 
 \subsection{How this report is organized}\label{cdc:sec:organization}
-\wtag{} This report merges eleven manuscripts written independently for the same purpose, witness-faithful Diophantine compilation of bounded computation. Six (numbered 01--06 here) were delivered in batch~60 of ProveIt's incoming reports and pin the repository at \texttt{e8bb0931d}; the seventh (07) was delivered in batch~61, pins \texttt{725d2ebb6}, and names manuscripts~04 and~06 as its companions. Four more (08--11) were delivered in batch~62, pin \texttt{4e128356d} (manuscript~11 also names \texttt{ccfb084ad}), and form Parts~X--XIII; they were written without knowledge of this report. Manuscript~05, whose introduction the preceding subsections reproduce, is the base: its trace-class theorem has the weakest hypothesis and the strongest conclusion among the four manuscripts that prove one (\cref{cdc:part:traces}). The eleven titles, abstracts and status statements, and every manuscript's own introduction, are printed in \cref{cdc:sec:manuscripts}; \cref{cdc:sec:provenance} records their archives, pins and commits.
+\wtag{} This report merges twelve manuscripts written independently for the same purpose, witness-faithful Diophantine compilation of bounded computation. Six (numbered 01--06 here) were delivered in batch~60 of ProveIt's incoming reports and pin the repository at \texttt{e8bb0931d}; the seventh (07) was delivered in batch~61, pins \texttt{725d2ebb6}, and names manuscripts~04 and~06 as its companions. Four more (08--11) were delivered in batch~62, pin \texttt{4e128356d} (manuscript~11 also names \texttt{ccfb084ad}), and form Parts~X--XIII; they were written without knowledge of this report. Manuscript~12 was delivered in batch~63, pins \texttt{e18718e83} and forms Part~XIV; it too was written without knowledge of this report. Manuscript~05, whose introduction the preceding subsections reproduce, is the base: its trace-class theorem has the weakest hypothesis and the strongest conclusion among the four manuscripts that prove one (\cref{cdc:part:traces}). The twelve titles, abstracts and status statements, and every manuscript's own introduction, are printed in \cref{cdc:sec:manuscripts}; \cref{cdc:sec:provenance} records their archives, pins and commits.
 
-After the conventions (\cref{cdc:conv:sec}), the material is arranged by subject in thirteen Parts:
+After the conventions (\cref{cdc:conv:sec}), the material is arranged by subject in fourteen Parts:
 \begin{center}
 \small
 \begin{tabularx}{\textwidth}{@{}lXl@{}}
@@ -271,10 +277,11 @@ X & Dynamic heaps, fresh names and local graph computation (\cref{cdc:part:heaps
 XI & Order-free self-assembly and a positivity-restricted degree threshold (\cref{cdc:part:assembly}) & 09\\
 XII & Priority repetition: pumping bounds, program-uniform certificates and periodic tails (\cref{cdc:part:pumping}) & 10\\
 XIII & Conservative priority reaction networks and a canonical-fuel form of the finite-fold problem (\cref{cdc:part:reactions}) & 11\\
+XIV & History-free routing certificates: last exits, compressed periods and a rank-function bottleneck (\cref{cdc:part:routing}) & 12\\
 \bottomrule
 \end{tabularx}
 \end{center}
-The back matter collects each manuscript's implementation and validation record (\cref{cdc:sec:validation}), its formalization proposals (\cref{cdc:sec:formal}), the merged research questions (\cref{cdc:sec:questions}), the remaining conclusions, the manuscripts' appendices, the provenance record and one merged bibliography. These back-matter sections cover manuscripts 01--07; each of Parts~X--XIII is one of manuscripts 08--11 in its own order, closing with that manuscript's validation, formalization plan, research questions, conclusion and appendices.
+The back matter collects each manuscript's implementation and validation record (\cref{cdc:sec:validation}), its formalization proposals (\cref{cdc:sec:formal}), the merged research questions (\cref{cdc:sec:questions}), the remaining conclusions, the manuscripts' appendices, the provenance record and one merged bibliography. These back-matter sections cover manuscripts 01--07; each of Parts~X--XIV is one of manuscripts 08--12 in its own order, closing with that manuscript's validation, formalization plan, research questions, conclusion and appendices.
 
 A result proved by several manuscripts is printed once, at the place named in \cref{cdc:sec:provenance}, and credits every manuscript that proves it; a genuinely different proof or construction of the same result is kept as a marked second route. Two such mergers change the shape of the text: the universal-halting equivalence is one theorem, \cref{cdc:bd:thm:universal}, and the absence of a computable witness-height bound is one proposition, \cref{cdc:bd:prop:nobound}. At the places where the other manuscripts stated them, a note points to the merged statement and the manuscript's own proof follows.
 
@@ -348,6 +355,8 @@ $I$ & a symmetric irreflexive independence relation in every manuscript that use
 \wtag{} Text printed from a manuscript keeps that manuscript's wording. In it, ``this article'', ``this paper'', ``the present report'' and ``below'' refer to that manuscript; theorem, section and equation numbers are this report's. Where a manuscript names one of its files, the shipped name in \path{code/} or \path{data/} is printed (the README maps every delivered name to its shipped name), except inside a displayed command listing, which keeps the delivered layout because the programs import one another by their delivered names. A manuscript's repository citations are to the pinned commit it names. Renamed macros and symbols: manuscript~02's \verb|\code| (small typewriter) and manuscript~05's \verb|\code| (a non-breaking URL) print as manuscript~01's \verb|\code|; the pin macros of manuscripts 01, 02, 04 and~07 (01's and 07's share the name \verb|\repoSHA| but hold different commits) are printed as the literal commit identifiers; manuscript~06 defined a \verb|\word| macro it never used, so manuscript~07's is the only one. No mathematical symbol was renamed in Parts~I--IX. The rest of this section prints each manuscript's own conventions.
 
 \paragraph{Parts X--XIII.} \wtag{} Manuscripts 08--11 (batch~62) keep their own letters and conventions, fixed at the start of each Part (\cref{cdc:conv:b62-08,cdc:conv:b62-09,cdc:conv:b62-10,cdc:conv:b62-11}); the dictionary above covers manuscripts 01--07. Three letters acquire further meanings there: $H$ is the largest consumption exponent of a priority program in Part~XII; $R$ counts the reactions of a network in Part~XIII, not residuals; and $L$ is a resource cutoff in Part~XIII. Renamed for batch~62: manuscript~09's tile palette $T$ is written $\mathcal T$, and manuscript~08's birth-order normal form is written $\NF_{\mathrm{birth}}$. Renamed macros that print the same glyphs: 08's \verb|\Bool| as \verb|\B|, 09's \verb|\ind| as \verb|\indset|, 11's \verb|\E| as \verb|\cE|; the \verb|\repo| macros of 09 and~10, which print the word ProveIt, are replaced by the word, and their pin macros by the literal commit. The equations of Parts~X--XIII are numbered within sections. Part~XI's lemmas on nonnegative cubics admit rational or real coefficients where they say so, and its comparison penalty accepts integer inputs; Part~XII's drifts are signed data derived from natural program entries. In Parts~X and~XIII, $T$ is again a number of (macro)steps.
+
+\paragraph{Part XIV.} \wtag{} Manuscript~12 (batch~63) keeps its letters too, fixed in \cref{cdc:conv:b63-XIV}. Its Cantor pairing is written $\pi_{\mathrm C}$, because Part~IX's $\pi$ is a different pairing, and its names $\SF$ and $\FF$ are Part~XIII's. In Part~XIV, $h_v$ is a height in a forest, not a history, and $T$ counts the firings of an execution, a number determined by the input rather than a given horizon.
 
 % ---- manuscript 05, lines 154-197 ----
 \subsection{Manuscript 05: Conventions and witness-preserving arithmetic}
@@ -724,7 +733,7 @@ Consequently an $O(T)$ circuit need not expand to $O(T)$ monomials. For example,
 The horizon $T$, the input word, and the program are parameters of the \emph{construction}, not additional unknowns. A symbol such as $2^T$ is an integer coefficient computed before solving the equation. Products indexed by $i<T$ are finite syntactic products for that particular polynomial.
 
 
-\section{The seven manuscripts}\label{cdc:sec:manuscripts}
+\section{The twelve manuscripts}\label{cdc:sec:manuscripts}
 \wtag{} Each subsection below gives one manuscript's title, author line and date as delivered, its abstract and status statement verbatim, and then its own introduction (except manuscript~05's, which is \cref{cdc:sec:intro}). The introductions describe each manuscript's results in its own terms and numbering-free words; where they name a theorem, the reference points to where this report prints it.
 
 \subsection{Manuscript 05 (base): Canonical Trace Polytopes}\label{cdc:sec:ms05}
@@ -1808,6 +1817,138 @@ simulation tests.
 \counterwithout{equation}{subsection}
 \setcounter{equation}{\value{cdcsavedequation}}
 \renewcommand{\theHequation}{\arabic{equation}}
+
+
+% ---- batch 63: manuscript 12 (batch-63 manuscript 02) ----
+\subsection{Manuscript 12: Diophantine Certificates Without Execution Histories}\label{cdc:sec:ms12}
+\srcnote{\wtag{} Manuscript~12 was delivered in batch~63 of ProveIt's incoming reports, after Parts~I--XIII had been written; it is printed in Part~XIV, and this subsection gives its title page, abstract and introduction. Title-page heading ``Computability / Diophantine representation''; subtitle ``Single-fold quartics for succinct routing, and a universal one-router boundary''. ``Research article prepared for the ProveIt program'', September 30, 2026. Title-page note: ``Repository snapshot: \texttt{e18718e837d43e162252f9a314e8cb797fbd1a1f}. All Diophantine unknowns in this article range over $\N=\{0,1,2,\ldots\}$; polynomial evaluation is over $\Z$.'' Batch~63, manuscript~02 (\path{Diophantine_Certificates_Without_Histories.zip}). Printed here (abstract, Section~1) and in Part~XIV (Sections 2--11 and both appendices). Manuscript~12 has no separate status statement; the last paragraph of its abstract and its contribution and limitation ledger, printed below, state its scope.}
+
+% ---- manuscript 12, lines 67-100 ----
+\paragraph{Abstract.}
+A generic application of the Matiyasevich--Robinson--Davis--Putnam theorem
+represents a computably enumerable execution property by a polynomial, but
+does not expose its operational meaning or control auxiliary multiplicity.
+We develop a different route for finite particle-routing networks: replace the
+entire execution history by prefix counts and a canonical last-exit forest.
+
+For a fixed routing topology with $n$ active vertices, $s$ absorbing sinks,
+and $m$ run-length blocks, we construct one integer polynomial of total degree
+at most four with exactly $4n+4m+s$ natural witness coordinates. Initial chip
+counts and all run lengths are parameters. Its natural zero set above each
+parameter tuple is empty for nontermination and a singleton for termination;
+the unique root includes the exact firing counts and every sink output.
+The construction uses $6n+2m+s$ residual equations of degree at most two.
+A second compiler handles periods represented by shared concatenation
+grammars, with size linear in the grammar at the level of variables and
+residual equations.
+
+The representation of the routing instructions matters. Circuit-defined
+periods already encode Boolean counting in a one-vertex acyclic network.
+More sharply, an explicitly constructed one-router system has a uniformly
+polynomial-time prefix-rank function and an eventually constant stack on
+every input, yet has computably enumerable complete halting behavior. Its
+single possible sink event occurs at firing $2^T$, where $T$ is a universal
+machine's first halting time. We prove that giving this one monotone,
+polynomial-time rank function a single-fold, respectively finite-fold,
+Diophantine graph is equivalent to the corresponding representation
+principle for all computably enumerable sets.
+
+The last-exit mechanism is classical. The contributions developed here are
+explicit canonical algebraic compilers, their quantitative accounting, and
+precise representation-boundary theorems. All proofs are supplied; executable
+exact-arithmetic checks and a sparse polynomial compiler accompany the paper.
+Priority for these refinements has not been established, and the new
+results have not been formalized in Lean.
+
+% ---- manuscript 12, lines 116-202 ----
+\subsubsection{The research problem and the claims made here}\label{cdc:rt:sec:intro}
+
+\paragraph{Beyond a black-box application of MRDP}
+The ProveIt repository provides a natural foundation for studying arithmetic
+representations of computation. Its Hilbert's tenth problem development exposes
+\code{Diophantine.mrdp} and its converse: a computably enumerable subset of
+$\N$ is the projection of the natural zero set of a fixed integer polynomial.
+The repository's interface allows input zero and natural witnesses, and does
+not claim that the auxiliary witnesses are unique or provide a practical
+polynomial-generating algorithm \cite{repo-h10,repo-mrdp}.
+
+\wtag{} [ProveIt does formalize the single-fold \emph{exponential} representation of every enumerable set (\cref{cdc:bd:rem:sfu}); the missing uniqueness concerns ordinary polynomials. The files cited here are unchanged between the pin \texttt{e18718e83} and this write.]
+
+Thus ``this effective substrate has Diophantine halting'' is usually not the
+interesting conclusion. The useful questions are more structural. Can an
+arithmetic certificate retain the exact output and firing counts? Can it avoid
+one row per computation step? Can every auxiliary choice be made canonical?
+Can instructions be compressed without expanding their repeated actions?
+Finally, which of these benefits survive when the underlying model becomes
+Turing complete?
+
+Here a \emph{single-fold representation} of a relation $A(\mathbf x)$ means a
+polynomial $Q(\mathbf x,\mathbf w)$ such that
+\[
+ A(\mathbf x)\quad\Longleftrightarrow\quad
+ \exists\mathbf w\in\N^r\;Q(\mathbf x,\mathbf w)=0,
+\]
+with at most one complete tuple $\mathbf w$ for each $\mathbf x$.
+A \emph{finite-fold representation} requires only finitely many witness tuples.
+The adjective applies to \emph{all} auxiliary coordinates, not merely to a
+unique decoded computation hidden inside a highly nonunique arithmetic
+encoding. Parameters and witnesses must also be kept distinct: fixed
+polynomial arity is a stronger requirement than one polynomial for each
+externally chosen time bound.
+
+\paragraph{Relation to previous work}
+The conceptual starting point is established mathematics, not a claim of a
+new least-action principle. Friedrich and Levine characterize abelian-stack
+aggregation by a local balance condition and an acyclic final rotor structure,
+and use that characterization to compute final states without traversing all
+intermediate states \cite{friedrich-levine}. Bond and Levine develop the general abelian
+network framework \cite{bond-levine}. For the one-token switching problem ARRIVAL,
+G\"artner and coauthors give unique verifiable run-profile certificates and
+prove membership in $\UP\cap\coUP$ \cite{arrival}. Fearnley and coauthors
+explicitly study switching periods encoded by binary run lengths and extend
+structural certificate methods to succinct switching games \cite{switching}.
+In particular, neither run-length compression nor the use of last exits is
+new here.
+
+The paper specializes and recompiles these mechanisms in a way suited to
+Diophantine research. We use zero-retention routing to absorbing sinks, permit
+arbitrarily many input chips, make every slack and forest-height variable
+unique, count the exact coordinates, and keep the run lengths themselves as
+polynomial parameters. We also give a grammar-DAG compiler and explicit
+counterexamples to overly broad generalizations. All arguments for this model
+are proved below, rather than imported by analogy from a slightly different
+aggregation convention.
+
+\paragraph{A contribution and limitation ledger}
+The central positive result is Theorem~\ref{cdc:rt:thm:rle}: the parametric quartic
+with $4n+4m+s$ natural witness coordinates. Its grammar counterpart is
+Theorem~\ref{cdc:rt:thm:grammar}. The resulting certificates have polynomial binary
+length on finite succinct instances, and a trap-collapse construction supplies
+canonical certificates for both outcomes of the termination question
+(Theorem~\ref{cdc:rt:thm:classify}).
+
+The central boundary result is Theorem~\ref{cdc:rt:thm:universal}: one uniform,
+polynomial-time rank routine defines eventually constant stacks with universal
+halting behavior. Theorem~\ref{cdc:rt:thm:bottleneck} then identifies the exact
+single-fold and finite-fold obstruction for that routine, with an explicit
+$2r+3$ witness bound conditional on a local $r$-witness representation.
+These are positive mathematical constructions and reductions, not claims
+that the unrestricted representation principles have been proved.
+
+No claimed result here gives a polynomial-time algorithm for finding the
+unique routing certificate. No claimed result improves a universal
+variable--degree record. The polynomial families for finite compressed
+networks have dimensions depending on the network description. The
+one-router universal construction uses an unbounded counter and a fixed
+bounded-simulation algorithm; it is not a finite-state rotor in disguise.
+We distinguish these points because confusing them would turn useful
+structural results into false breakthrough claims.
+
+The bibliography establishes relevant prior art but is not a complete
+priority search for every formulation below. The explicit refinements are
+presented as research results developed and proved in this article, with
+priority unverified. The accompanying Python checks are independent finite
+sanity checks, not substitutes for the proofs or a Lean kernel audit.
 
 
 \part{Exact commutation and resource algebra}\label{cdc:part:resource}
@@ -5156,6 +5297,8 @@ Diophantine solvability problem. Thus the polynomial-time specified-input
 corollary is compatible with the broader termination distinctions in the
 triangular-loop literature \cite{hfg2024,lmg2024}.
 
+\wtag{} Batch~63, 30 September 2026: the quantifier over infinite behaviour is the subject of the neighbouring report \emph{liveness-beyond-halting} of this category (Report~C, written in commit \texttt{2a34b1740} from batch-62 manuscripts~10 and~03 and batch-63 manuscript~01, its sources~10, 03 and~11). Nontermination from one specified input is the existence of an infinite run, a $\Pi^0_1$ property of a deterministic system in general; the certificate above makes it finitely certifiable for fixed polynomial trajectories, while Report~C shows which recurrence and liveness properties of its fixed universal systems admit no finite certificate (its quantifier-sensitive no-go theorem, \texttt{lbh:thm:nogo}).
+
 \section{Worked examples\srctag{02}}
 \label{cdc:pt:sec:examples}
 
@@ -7371,6 +7514,8 @@ x_{i,p}+s_{i,a,p}=B_p(1-e_{i,a}),\qquad s_{i,a,p}\in\N.
 \end{equation}
 When $e_{i,a}=1$, it forces $x_{i,p}=0$. Otherwise it only enforces the already valid bound $x_{i,p}\le B_p$, and its slack is unique. The coefficient $B_p$ is a fixed integer for this instance. When the initial registers are free parameters, $B_pe_{i,a}$ is no longer jointly affine; the uniform-parameter presentation is then quartic unless another representation is supplied.
 
+\wtag{} Batch~63, 30 September 2026: another representation is supplied in the neighbouring report \emph{liveness-beyond-halting} of this category (Report~C, written in commit \texttt{2a34b1740} from batch-62 manuscripts~10 and~03 and batch-63 manuscript~01, its sources~10, 03 and~11). Its sources~03 and~11 keep a zero guard as the unsquared natural product $e_ax_{j(a)}$ (source~03) or $c_ex_{i(e)}$ (source~11), so that the transition relation of a counter machine stays of degree two uniformly in the registers, at the price of convexity and of a pure sum-of-squares form (its \texttt{lbh:qd:thm:compiler} and \texttt{lbh:ql:thm:compiler}, compared in its section \texttt{lbh:sec:threecompilers}, which quotes this remark). Squaring the guard, as \eqref{cdc:eq:zero-guard} is squared in the sum of squares above, gives a quartic again.
+
 
 \srcnote{\wtag{} Manuscript~05 continues here with its exact commutation theorem for interval guards, printed in Part~I as \cref{cdc:thm:interval} (\cref{cdc:sec:interval}), and its corollary for guarded programs, printed in Part~II as \cref{cdc:cor:guarded} (\cref{cdc:sec:guarded}).}
 
@@ -7658,6 +7803,8 @@ Every step also preserves ``at most one'': polynomial substitution does not add 
 
 \paragraph{\wtag{} A one-parameter refinement.} Part~XIII proves that finite-fold (single-fold) representability of the least-reservoir relation of one fixed reaction network is equivalent to statements (a)--(c) (\cref{cdc:rx:thm:FF}); the canonical witness there is one number instead of a history.
 
+\paragraph{\wtag{} A rank-function form.} Part~XIV proves that a single-fold (finite-fold) representation of the graph of one total, monotone, Boolean function computable in polynomial time, the rank function of a universal one-router system, is equivalent to statement~(a) in its single-fold (finite-fold) version (\cref{cdc:rt:thm:bottleneck}); no history argument remains.
+
 This is a useful obstruction to an overambitious compiler contract. A fixed polynomial with finite fibres for a perfectly decidable first-halting trace verifier is already as strong as the general finite-fold conjecture. Calling the input a ``verified finite history'' does not make the required \emph{uniform arithmetic representation} harmless. The verifier is fixed while its history parameter is unbounded, and projecting that parameter yields universal halting.
 
 The theorem is an equivalence and a design boundary, not a proof that such a polynomial cannot exist. The finite-fold and single-fold questions are the classical stronger representation problems discussed in \cite{mat2010,cco2024}. Nothing in our bounded family contradicts a positive resolution of either question. It simply does not furnish that resolution.
@@ -7683,7 +7830,7 @@ There is no total computable function $B(x)$ such that every positive instance h
 Such a function would decide halting. Compute $B(e,x)$, enumerate the finite box $\{0,\ldots,B(e,x)\}^{\dim z}$, and evaluate $P$ exactly at each tuple. A zero exists in the box exactly when the machine halts, by the assumed representation and bound. This contradicts the undecidability of universal halting.
 \end{proof}
 
-\paragraph{\wtag{} Specializations.} \Cref{cdc:of:prop:nocutoff} (tile assembly) and \cref{cdc:rx:thm:nobound} (reaction reservoirs) are cases of this proposition.
+\paragraph{\wtag{} Specializations.} \Cref{cdc:of:prop:nocutoff} (tile assembly) and \cref{cdc:rx:thm:nobound} (reaction reservoirs) are cases of this proposition, and so is \cref{cdc:rt:thm:universal}(iv) (routing odometers, Part~XIV).
 
 Even a bound on the \emph{least available} witness would be impossible in that sense; it is not necessary to bound every zero. Finite-foldness does not provide an effective bound of this kind. In contrast, the explicit bounds of \cref{cdc:thm:main} depend on the given horizon and therefore pose no conflict.
 
@@ -7801,6 +7948,8 @@ single-fold unary exponential Diophantine representation
 with the single-fold predicate \path{JM1984.Exp.SFU}. The reductions in
 this report are not formalized.
 \end{remark}
+
+\wtag{} Part~XIV proves the analogous equivalence for the graph of one monotone Boolean rank function computable in polynomial time, in both the single-fold and the finite-fold version, without using this normal form (\cref{cdc:rt:thm:bottleneck}).
 
 % ---- manuscript 02, lines 1354-1373 ----
 
@@ -8122,7 +8271,7 @@ The witness bound depends on $T$. It supplies no computable bound on the unknown
 \paragraph{\wtag{} A fixed-arity degree threshold.} Part~XI's degree classification (\cref{cdc:of:thm:classification}) is a fixed-arity boundary theorem for the orthant-nonnegative format: polynomials of degree at most three that are nonnegative on the whole real orthant represent exactly the semilinear sets, so no such cubic is a universal certificate (\cref{cdc:of:cor:no-cubic-universal}), while degree four represents every computably enumerable set.
 
 \section{Implementation and validation}\label{cdc:sec:validation}
-\srcnote{\wtag{} This section covers manuscripts 01--07. Manuscripts 08--11 (batch~62) print their implementation and validation records inside Parts~X--XIII.}
+\srcnote{\wtag{} This section covers manuscripts 01--07. Manuscripts 08--11 (batch~62) and~12 (batch~63) print their implementation and validation records inside Parts~X--XIV.}
 \wtag{} Every manuscript ships Python programs that import only the standard library, together with recorded outputs. Each subsection below is one manuscript's own account of what it implemented, what it tested and what the tests do not establish. The programs and data are shipped in \path{code/} and \path{data/} with the manuscript's prefix (\path{01-causal-traces-}, \path{02-poly-trajectories-}, \path{03-linear-memory-}, \path{04-witness-faithful-}, \path{05-trace-polytopes-}, \path{06-counter-schedules-}, \path{07-queue-causality-}); in the prose below the shipped names are printed. The displayed command lines are the manuscripts' own and use the delivered layout (for example \path{code/verify.py}, \path{examples/}, \path{tests/}), because the programs import one another and write their outputs by those names; the README gives rerun recipes that copy the shipped files into that layout, and warns which programs overwrite recorded outputs. The manuscripts' instructions for rebuilding their own PDFs do not apply to this report, whose build is described in the README. None of the finite checks is a proof; each manuscript says so, and its theorems rest on the proofs printed in Parts~I--IX.
 
 % ---- manuscript 05, lines 810-877 ----
@@ -8718,7 +8867,7 @@ The tests do not certify every implementation behavior for arbitrarily large int
 
 
 \section{Formalization targets}\label{cdc:sec:formal}
-\srcnote{\wtag{} This section covers manuscripts 01--07. The formalization plans of manuscripts 08--11 are printed inside Parts~X--XIII; they too are proposals, and no module or declaration they propose exists.}
+\srcnote{\wtag{} This section covers manuscripts 01--07. The formalization plans of manuscripts 08--12 are printed inside Parts~X--XIV; they too are proposals, and no module or declaration they propose exists.}
 \wtag{} No theorem of this report is formalized in Lean or Rocq, and no manuscript ships a proof-assistant file; the subsections below are the manuscripts' proposals, and every module name in them is proposed, not asserted to exist. The report sits beside ProveIt's Lean project \path{Computability/HilbertTenthProblem}, which proves MRDP in both directions. The manuscripts use its existence interfaces \path{Diophantine.boundedForall_dioph}, \path{Diophantine.exactIter_dioph} and \path{Diophantine.existsExactIter_dioph} (\path{Lean/Diophantine/Common/DiophantineTrace.lean}) and \path{Diophantine.mrdp} as context only: those theorems assert that representations exist and say nothing about how many witnesses a representation has. The project also formalizes the single-fold unary exponential representation of Jones and Matiyasevich (\cref{cdc:bd:rem:sfu}), and the queue content and length-marker identities of its tag-system route (\cref{cdc:qc:rem:tagnotes}). Placement beside a formal development confers no formal status on anything here.
 
 % ---- manuscript 05, lines 878-918 ----
@@ -8999,7 +9148,7 @@ manuscript~01's question on sharp degree, arity and domain comparisons
 Part~VI (manuscript~07). Manuscript~02's closing paragraph on what would
 constitute a stronger result is printed as the last subsection.
 
-\paragraph{Questions of manuscripts 08--11.}\label{cdc:conv:b62q} \wtag{} Manuscripts 08--11 (batch~62) pose thirty-nine further questions: twelve from 08, ten from 09, ten from 10 and seven from 11. They are printed at the end of Parts~X--XIII, one \texttt{question} environment each, under the manuscripts' own titles (manuscript~11's subsection headings) and with their follow-up paragraphs. Where one coincides with a question of this section, a \wtag{} line after it names that question; they are not merged, because each was written without knowledge of this report. Six questions of this section are answered in part or re-scoped by Parts~X--XIII, and a \wtag{} note at each says how far: \cref{cdc:q:degree} (Part~XI), \cref{cdc:q:locality,cdc:q:graphfront} (Part~X), \cref{cdc:q:interfaces,cdc:q:restricted} (Part~XII, with Part~XIII on the second) and \cref{cdc:q:ffprimitives} (Part~XIII). Manuscript~08's question on certificates without explicit sorting is answered in part by Part~V (see the note after it in Part~X).
+\paragraph{Questions of manuscripts 08--11.}\label{cdc:conv:b62q} \wtag{} Manuscripts 08--11 (batch~62) pose thirty-nine further questions: twelve from 08, ten from 09, ten from 10 and seven from 11. They are printed at the end of Parts~X--XIII, one \texttt{question} environment each, under the manuscripts' own titles (manuscript~11's subsection headings) and with their follow-up paragraphs. Where one coincides with a question of this section, a \wtag{} line after it names that question; they are not merged, because each was written without knowledge of this report. Six questions of this section are answered in part or re-scoped by Parts~X--XIII, and a \wtag{} note at each says how far: \cref{cdc:q:degree} (Part~XI), \cref{cdc:q:locality,cdc:q:graphfront} (Part~X), \cref{cdc:q:interfaces,cdc:q:restricted} (Part~XII, with Part~XIII on the second) and \cref{cdc:q:ffprimitives} (Part~XIII). Manuscript~08's question on certificates without explicit sorting is answered in part by Part~V (see the note after it in Part~X). Manuscript~12 (batch~63) poses eight more, printed at the end of Part~XIV in the same way. Part~XIV answers in part \cref{cdc:q:restricted} and an analogue of the question on variable periods (\cref{cdc:q:varperiods}), and re-scopes \cref{cdc:q:compression,cdc:q:ffprimitives}; a dated \wtag{} note at each says how far.
 
 \subsection{How the manuscripts frame their questions}
 
@@ -9416,7 +9565,7 @@ Can a guard with similarly small circuitry replace the product of all queue leng
 % ---------------------------------------------------------------------
 \subsection{Richer actions, storage and trajectories}
 
-\begin{question}[Beyond translations; source 01]
+\begin{question}[Beyond translations; source 01]\label{cdc:q:beyond}
 Which reset, affine, stack, or indirect-addressing primitives admit exact fixed-arity unique-witness acceleration? The present extremal-prefix argument works because displacement sums are independent of the current value. Reset and multiplication destroy that property. One concrete target is diagonal affine actions on invariant regions where products and guards have a controlled closed form; an answer must separately account for witnesses used to represent any exponentiation.
 \end{question}
 
@@ -9463,7 +9612,7 @@ the recognized class. The synthesis procedure may be incomplete while its
 accepted certificates remain sound.
 \end{question}
 
-\begin{question}[Variable periods and variable degrees; source 02]
+\begin{question}[Variable periods and variable degrees; source 02]\label{cdc:q:varperiods}
 What uniformity survives when the degree bound or residue period is part
 of the numerical input rather than fixed externally? A family of
 polynomials with growing arity does not answer this question. Any proposed
@@ -9471,6 +9620,8 @@ single fixed polynomial must account for the encoding and checking of
 variable-length coefficient data without silently using an ordinary MRDP
 representation that loses single-foldness.
 \end{question}
+
+\wtag{} Batch~63, 30 September 2026: an analogue is answered in part by Part~XIV (manuscript~12) for routing networks. There the run lengths, and hence the period lengths $D_v$, are free parameters of one single-fold quartic for each routing topology (\cref{cdc:rt:thm:rle}), so the period is part of the numerical input; the number of blocks stays fixed. For periods described by Boolean circuits, uniformly produced bounded-degree certificates with short witnesses would give $\NP=\coNP$ (\cref{cdc:rt:thm:countbarrier}). For polynomial trajectories, and for variable degrees, the question stays open.
 
 \begin{question}[Nonlinear guards on fixed-residue trajectories; source 02]
 Implement the residue-class front end of Theorem~\ref{cdc:pt:thm:quasi}, with
@@ -9614,6 +9765,8 @@ Can one compress these canonical exact-halting certificates into a fixed number 
 as \cref{cdc:bd:thm:universal} (the universal-halting equivalence) and
 \cref{cdc:bd:prop:nobound} (no computable witness-height bound).
 
+\wtag{} Batch~63, 30 September 2026: re-scoped by Part~XIV (manuscript~12). The fixed-arity target need not involve histories at all: a single-fold (finite-fold) representation of the graph of one total, monotone, Boolean function computable in polynomial time is already equivalent to the single-fold (finite-fold) principle for all computably enumerable sets, with $2r+3$ witnesses and degree at most $\max\{4,2d\}$ from an $r$-witness, degree-$d$ representation of the graph (\cref{cdc:rt:thm:bottleneck}; compare \cref{cdc:rx:thm:FF,cdc:pt:prop:exponential-boundary}). A proposed compression theorem for total polynomial-time functions must therefore apply to that one function, as manuscript~12's question on the monotone rank bottleneck says.
+
 \begin{question}[Restricted unbounded classes with fixed-arity finite-fold or single-fold compression; sources 04, 05]\label{cdc:q:restricted}
 \emph{Source 04 (Finite-fold compression for restricted loop patterns).}
 Identify nontrivial unbounded program classes whose canonical bounded tableaux can be compressed into one fixed-arity finite-fold polynomial, with an explicit proof controlling every auxiliary fiber.
@@ -9628,12 +9781,16 @@ Which explicitly described nonuniversal families admit fixed-dimensional single-
 
 \wtag{} Batch~62, 30 September 2026: answered in part by Part~XII (manuscript~10): for fixed words $w_1,\ldots,w_s$ of a priority program, the relation that the trace begins with $w_1^{k_1}\cdots w_s^{k_s}$ and ends at $y$ has a single-fold fixed-arity quartic, with the program entries and the counts as free inputs (\cref{cdc:pf:cor:flat}). With the counts existentially quantified, distinct factorizations may give several witnesses, so the fixed-endpoint version stays open. Part~XIII (manuscript~11) gives negative guidance: its minimum-fuel relation is single-fold for each resource cutoff (\cref{cdc:rx:thm:QL}), but removing the cutoff is as hard as the finite-fold problem (\cref{cdc:rx:thm:FF}).
 
+\wtag{} Batch~63, 30 September 2026: answered in part by Part~XIV (manuscript~12) for routing networks. For every finite run-length or grammar routing topology, one quartic of fixed dimension ($4n+4m+s$, respectively $4n+4g+4c+s$ witnesses), uniform in unbounded initial loads and run lengths, has exactly one natural zero for each terminating input and none otherwise (\cref{cdc:rt:thm:rle,cdc:rt:thm:grammar}). It represents the outcome, the odometer and sink outputs, rather than the history, which routing makes order-independent and which a canonical last-exit forest replaces. Circuit-defined periods mark the limit (\cref{cdc:rt:thm:countbarrier}), and the finite periodic networks form a decidable class, so no universal family is covered.
+
 \begin{question}[Finite-fold arithmetic primitives; source 05]\label{cdc:q:ffprimitives}
 Can one establish finite-fold or single-fold polynomial representations for the sequence or growth relations actually used in a uniform history compressor, rather than for an unspecified black-box decoder?
 \end{question}
 This connects directly to the arithmetic questions in \cite{mat2010,cco2024}. The computational front end developed here isolates what such a result would need to preserve. It neither supplies nor assumes the missing number-theoretic theorem.
 
 \wtag{} Batch~62, 30 September 2026: re-scoped by Part~XIII (manuscript~11): even a primitive-recursive, single-valued relation decidable in logarithmic space on unary inputs, the least-reservoir relation of one fixed 61-species reaction network, has a finite-fold (single-fold) representation exactly when every computably enumerable set has one (\cref{cdc:rx:thm:FF}). Low complexity of a primitive is therefore not enough. Part~XI shows that every semilinear relation has a single-fold quadratic representation (\cref{cdc:of:thm:singlefoldsl}).
+
+\wtag{} Batch~63, 30 September 2026: re-scoped further by Part~XIV (manuscript~12): the graph of one total, monotone, Boolean function computable in polynomial time on binary inputs, the rank function of a universal one-router system, has a finite-fold (single-fold) representation exactly when every computably enumerable set has one (\cref{cdc:rt:thm:bottleneck}). Monotonicity and a Boolean range do not help either.
 
 % ---------------------------------------------------------------------
 \subsection{What would constitute a stronger result (manuscript 02)}
@@ -9647,7 +9804,7 @@ progress separate prevents a modest but useful construction from being
 mistaken for a resolution of the finite-fold program.
 
 \section{Conclusions of manuscripts 05, 01, 04 and 06}\label{cdc:sec:conclusions}
-\srcnote{\wtag{} The conclusions of manuscripts~02, 03 and~07 close Parts~IV, V and~VI, and those of manuscripts 08--11 close Parts~X--XIII.}
+\srcnote{\wtag{} The conclusions of manuscripts~02, 03 and~07 close Parts~IV, V and~VI, and those of manuscripts 08--12 close Parts~X--XIV.}
 
 % ---- manuscript 05, lines 983-989 ----
 \subsection{Manuscript 05: Conclusion}
@@ -10888,6 +11045,8 @@ $\operatorname{Safe}_U$ cannot have such a representation.
 \end{proof}
 
 \wtag{} In the neighbouring report \emph{liveness-beyond-halting} of this category, perpetual properties of this kind are studied systematically; the safety property above is the $\Pi^0_1$ base of its recurrence and liveness hierarchy.
+
+\wtag{} Batch~63, 30 September 2026: that report has since been written (commit \texttt{2a34b1740}, from batch-62 manuscripts~10 and~03 and batch-63 manuscript~01); its one hierarchy table for its three sources (its section \texttt{lbh:sec:onetable}) names this theorem as the $\Pi^0_1$ level for heap programs.
 
 This obstruction concerns an unbounded universal property, not the usefulness
 of finite certificates. For a fixed bound, either a safe prefix or a faulting
@@ -13853,6 +14012,8 @@ would provide just such finite certificates.
 
 \wtag{} Eventual periodicity and the affine macro certificates below are finite certificates of nontermination: the $\Sigma^0_1$ fragment of the recurrence and liveness hierarchy of the neighbouring report \emph{liveness-beyond-halting} of this category.
 
+\wtag{} Batch~63, 30 September 2026: that report has since been written (commit \texttt{2a34b1740}, from batch-62 manuscripts~10 and~03 and batch-63 manuscript~01); its one hierarchy table for its three sources (its section \texttt{lbh:sec:onetable}) names the completeness of eventual periodicity (\cref{cdc:pf:thm:ep}) as the $\Sigma^0_1$ level for priority programs.
+
 \section{Beyond periodic instruction words\srctag{10}}
 \label{cdc:pf:sec:nonperiodic}
 
@@ -15782,6 +15943,1460 @@ existence consequence, not a generated artifact. The finite-fold and
 single-fold conjectures are not claimed solved. No new Lean verification
 is claimed.
 
+% ======================================================================
+% [write] batch 63. Part XIV: manuscript 12 (batch-63 manuscript 02).
+% Its equations are numbered within sections, like those of Parts X-XIII;
+% the global counter is restored after this Part.
+\clearpage
+\part{History-free routing certificates: last exits, compressed periods and a rank-function bottleneck}\label{cdc:part:routing}
+
+\paragraph{Source and scope.} \wtag{} This Part is manuscript~12, ``Diophantine Certificates Without Execution Histories: Single-fold quartics for succinct routing, and a universal one-router boundary'' (batch~63, manuscript~02; archive \path{Diophantine_Certificates_Without_Histories.zip}, inner directory \path{diophantine_certificates}; arrival commit \texttt{a4268e78e}; pinned at \texttt{e18718e83}; shipped files prefixed \path{12-rle-routing-}; labels \texttt{cdc:rt:}). It prints the manuscript's Sections 2--11 in their own order: the zero-retention stack model, least action, and the exact odometer criterion by balance and last exits (\cref{cdc:rt:thm:last}), with canonical heights (\cref{cdc:rt:lem:height}); the parametric run-length quartic with exactly $4n+4m+s$ witnesses (\cref{cdc:rt:thm:rle}); the grammar quartic (\cref{cdc:rt:thm:grammar}); certificate height, canonical certificates for both outcomes (\cref{cdc:rt:thm:classify}), the Presburger description of fixed periods and a transport identity; the circuit counting barrier (\cref{cdc:rt:thm:countbarrier}); the universal one-router system (\cref{cdc:rt:thm:universal}); the rank-function bottleneck (\cref{cdc:rt:thm:bottleneck}); the executable artifacts and a Lean integration plan; the eight research questions; and the conclusion. Its two appendices follow: reproduction instructions and a dependency map. Its title, abstract and introduction are in \cref{cdc:sec:ms12}; the conventions of this Part are \cref{cdc:conv:b63-XIV}.
+
+\paragraph{Relation to the other Parts.} \wtag{} Manuscript~12 inspected ProveIt at \texttt{e18718e83}, when this report had been placed but not yet written, and does not cite it. It proves the report's kind of theorem for a new substrate, finite chip-routing (rotor or switching) networks with absorbing sinks: an explicit quartic with an exact witness count whose natural zero set above each parameter tuple is empty or a singleton, the root carrying the exact firing counts and sink outputs. Two differences from Parts~I--XIII matter. First, the certified object is an outcome, not a history: the root holds the odometer (the number of firings at each vertex) and a canonical last-exit forest, and no schedule, trace or step-indexed row appears. Order independence of routing (\cref{cdc:rt:cor:abelian}) makes this possible, where Part~II instead quotients schedules by commutation. Second, the polynomial is uniform in unbounded parameters: for a fixed routing topology the initial loads and all run lengths are free inputs, so the arity is fixed while the number of firings is unbounded. It is therefore a sibling of the fixed-arity accelerators of Part~III (\cref{cdc:ct:thm:accelerator,cdc:cs:thm:compiler}) and of Part~XII's flat corollary (\cref{cdc:pf:cor:flat}), in which repetition counts are also parameters; neither contains the other, since there the schedule is supplied and here the firing counts are witnesses. The Presburger description of fixed periods (\cref{cdc:rt:prop:presburger}) parallels that of flat schemes (\cref{cdc:cs:thm:flat}); the circuit counting barrier (\cref{cdc:rt:thm:countbarrier}) sits beside Part~II's counting completeness (\cref{cdc:thm:counting}); and the certificates for both outcomes (\cref{cdc:rt:thm:classify}) are a second route to the $\UP\cap\coUP$ bound that the manuscript credits to the ARRIVAL literature. The boundary half continues Part~IX: \cref{cdc:rt:thm:universal}(iv) is the routing form of \cref{cdc:bd:prop:nobound}, and \cref{cdc:rt:thm:bottleneck} is a history-free form of \cref{cdc:bd:thm:universal}(c), with the graph of one total, monotone, Boolean, polynomial-time rank function in place of the first-halting trace verifier; \cref{cdc:rx:thm:FF} (Part~XIII) and \cref{cdc:pt:prop:exponential-boundary} (the graph of $2^n$) prove the same pattern for other relations (see the paragraph after \cref{cdc:rt:thm:bottleneck}). Its observation that being eventually periodic and being supplied with a periodic description are different hypotheses parallels Part~XII's completeness of eventual periodicity (\cref{cdc:pf:thm:ep}). The Part partly answers the question on restricted unbounded classes (\cref{cdc:q:restricted}) and an analogue of the question on variable periods (\cref{cdc:q:varperiods}), and re-scopes the questions on fixed-arity compression (\cref{cdc:q:compression}) and on finite-fold arithmetic primitives (\cref{cdc:q:ffprimitives}); see the notes there. The neighbouring report \emph{liveness-beyond-halting} of this category shares only the word ``clock'' with this Part (see the conventions): termination of a finite periodic routing network is decidable (the remark after \cref{cdc:rt:prop:presburger}), far below that report's hierarchy of infinite behaviour.
+
+\paragraph{Setting and hypotheses.} \wtag{} Finite sets of active vertices and of absorbing sinks; every active vertex has an infinite destination stack; a firing removes one chip from an occupied vertex and sends it to the next destination of that vertex's stack; sinks never fire, and no chip is retained at an active vertex. All witnesses are natural, and the single-fold statements are not claimed for integer witnesses (\cref{cdc:rt:sec:rle}). The compilers need explicitly supplied periods, as run-length blocks (\cref{cdc:rt:thm:rle}) or one straight-line grammar per vertex (\cref{cdc:rt:thm:grammar}); circuit-defined periods (\cref{cdc:rt:sec:circuit}) and the algorithmic stacks of the universal clock (\cref{cdc:rt:sec:universal}) are the boundary. Each quartic has fixed arity for one topology, and its size grows with the topology description; it is not one polynomial for all networks. The bottleneck theorem is an equivalence between open statements, not a proof of either.
+
+\section{Conventions of Part~XIV}\label{cdc:conv:b63-XIV}
+\wtag{} The letters are manuscript~12's, with one renaming: its Cantor pairing, written $\pi$ in the manuscript, is written $\pi_{\mathrm C}$ here, because Part~IX's $\pi$ (\cref{cdc:eq:pair}) is the different injection $(a+b)^2+a$. Its names $\SF$ and $\FF$ are Part~XIII's and mean the same statements. The tempting false readings are to carry Part~IX's history $h$ or a horizon $T$ into this Part: here $h_v$ is a forest height and $T$ is determined by the input.
+\begingroup\small
+\begin{longtable}{@{}p{0.2\textwidth}p{0.75\textwidth}@{}}
+\toprule
+Symbol & Meaning in Part~XIV, and the clash\\
+\midrule
+\endhead
+$\pi_{\mathrm C}$ & Cantor's pairing $\pi_{\mathrm C}(e,n)=\frac12(e+n)(e+n+1)+n$, \eqref{cdc:rt:eq:pairing}; the manuscript writes $\pi$. It is Part~VII's pairing $\pi(\ell,r)=\frac12(\ell+r)(\ell+r+1)+r$ (\cref{cdc:wf:sec:ski}) with $(\ell,r)=(e,n)$, and not Part~IX's $\pi(a,b)=(a+b)^2+a$ (\cref{cdc:eq:pair}).\\
+$\mathbf u$, $\mathbf U$, $\mathcal U$ & a candidate odometer, the genuine odometer (firings per active vertex), and a fixed universal Turing machine. Part~IX writes $U$ for its universal machine; in Part~I, $u_a$ is an upper guard.\\
+$h_v$ & the canonical height of $v$ in the last-exit forest (\cref{cdc:rt:lem:height}), at most $n$. Not the history $h$ of Part~IX's $\operatorname{Trace}_U(e,x,h)$, nor Part~II's causal height $H$.\\
+$T$, $T(c)$ & the total number of firings of an execution (\cref{cdc:rt:lem:bound}), and the first halting time of $\mathcal U$ on input $c$. Both are determined by the input; neither is a horizon given with the instance, as $T$ is in Parts~II, IV, VI--VIII, X and~XIII.\\
+$\rankf$, $P_{vj}$ & the fixed rank function \eqref{cdc:rt:eq:rankclock} and the block offsets \eqref{cdc:rt:eq:perioddata}; neither is a polynomial.\\
+$R_{vw}(t)$, $\mathcal R$, $R$ & prefix routing counts; the list of residuals; and, in the trap collapse, the set of active vertices that reach a sink. Not Part~II's residual counts $R$ and $R_2$, nor Part~XIII's number of reactions.\\
+$L_{\mathbf u}(v)$, $L_A$, $\mathcal L$, $L$ & the last exit of $v$; the length of the word of grammar node $A$; the matrix $D-C^{\mathsf T}$ of the transport identity; a run length in \cref{cdc:rt:ex:huge}. Part~V's $L$ is a log length.\\
+$D_v$, $C_{vw}$, $B_{vjw}$, $D$ & the period length, the routing counts per period and before block $j$, and $D=\operatorname{diag}(D_v)$. Part~I's $D$ is a dependence relation.\\
+$n$, $s$, $S$, $m$ & the numbers of active vertices, sinks and run-length blocks, and the sink set; $s$ also names one sink.\\
+$c$ & the input code of $\mathcal U$ (\cref{cdc:rt:sec:universal,cdc:rt:sec:bottleneck}), and the number of concatenation nodes of the grammars (\cref{cdc:rt:sec:grammar}); the two uses do not meet.\\
+$\SF$, $\FF$ & every computably enumerable subset of $\N$ has a single-fold (finite-fold) Diophantine representation: statement~(a) of \cref{cdc:bd:thm:universal} in its single-fold (finite-fold) version, as in Part~XIII.\\
+$G$, $H_e$ & a hypothetical representation of the graph $\Gamma_{\rankf}$, and the polynomial \eqref{cdc:rt:eq:bottleneckpoly} built from it. $H_e$ is of the kind of $H(e,x,z)$ in \cref{cdc:bd:thm:universal}(b); $G$ is not Part~XIII's least-reservoir relation $\MinFuel$.\\
+clock & the exponentially dilated universal clock of \cref{cdc:rt:sec:universal}; not the Clock predicate or the deadline classes of the neighbouring report \emph{liveness-beyond-halting}.\\
+routing & chip routing through destination stacks; not the comparator routing of Part~V's question \cref{cdc:q:routing}.\\
+\bottomrule
+\end{longtable}
+\endgroup
+No other symbol of manuscript~12 is renamed. Its macros for $\bits$, $\supp$ and \verb|\code| are this report's; $\rankf$, $\UP$, $\coUP$, $\NP$ and $\coNP$ are its own. Its equations are numbered within sections, as in the manuscript and in Parts~X--XIII.
+
+% ---- manuscript 12, lines 204-1584 (its appendix line dropped) ----
+\section{A history-free characterization of exact routing\srctag{12}}
+\label{cdc:rt:sec:balance}
+
+\subsection{The zero-retention stack model}
+Fix disjoint finite sets $V$ of active vertices and $S$ of absorbing sinks,
+with $|V|=n$ and $|S|=s$. Each active vertex has an infinite destination stack
+\[
+ \rho_v:\{1,2,3,\ldots\}\longrightarrow V\sqcup S.
+\]
+An initial configuration is $\mathbf x=(x_v)_{v\in V}\in\N^V$.
+Sinks initially contain no chips, except in the explicitly stated trap-collapse
+construction later. Each active vertex also has a firing counter, initially
+zero. A legal firing at $v$ is allowed when $v$ contains at least one chip. It
+removes one chip, increments the counter to $j$, and sends that chip to
+$\rho_v(j)$. A sink never fires. The rule retains no chip permanently at an
+active vertex.
+
+A finite execution is \emph{complete} when all active vertices are empty.
+The number of firings at each active vertex is its \emph{odometer}
+$\mathbf u\in\N^V$. We say the input terminates when a finite complete legal
+execution exists. We will prove that in that case every maximal legal
+execution is finite and has the same odometer. No fairness hypothesis is
+needed for this statement.
+
+For $t\in\N$, define the prefix-routing counts
+\begin{equation}
+ R_{vw}(t)=\#\{j:1\le j\le t,\ \rho_v(j)=w\},
+ \qquad w\in V\sqcup S.
+ \label{cdc:rt:eq:prefix}
+\end{equation}
+They are nondecreasing in $t$, vanish at zero, and satisfy
+$\sum_w R_{vw}(t)=t$. A candidate odometer $\mathbf u$ is \emph{balanced} when
+\begin{equation}
+ u_v=x_v+\sum_{a\in V}R_{av}(u_a)\qquad(v\in V).
+ \label{cdc:rt:eq:balance}
+\end{equation}
+This is conservation of chips with final active occupancy zero. The associated
+sink count is
+\begin{equation}
+ y_s=\sum_{v\in V}R_{vs}(u_v),\qquad s\in S.
+ \label{cdc:rt:eq:sink}
+\end{equation}
+When $u_v>0$, define the last exit $L_{\mathbf u}(v)=\rho_v(u_v)$.
+The selected last-exit graph has one outgoing edge at every vertex in
+$\supp(\mathbf u)$ and no outgoing edge at the other active vertices or sinks.
+Acyclicity means that this selected graph contains no directed cycle.
+
+\subsection{Least action, existence, and uniqueness}
+\begin{lemma}[Least action for balanced candidates]
+\label{cdc:rt:lem:least}
+If $\mathbf u$ satisfies \eqref{cdc:rt:eq:balance}, the firing-count vector of every
+finite legal execution prefix is componentwise at most $\mathbf u$.
+Consequently a finite complete legal execution exists and has odometer at
+most $\mathbf u$.
+\end{lemma}
+\begin{proof}
+Suppose a legal sequence is about to exceed $\mathbf u$ for the first time,
+at vertex $v$. Just before that firing its count vector $\mathbf a$ satisfies
+$a_v=u_v$ and $a_w\le u_w$ for all $w$. The number of chips currently at $v$
+is
+\[
+ x_v+\sum_w R_{wv}(a_w)-a_v
+ \le x_v+\sum_w R_{wv}(u_w)-u_v=0.
+\]
+But a legal firing needs a positive number of chips there, a contradiction.
+Thus no legal sequence can exceed $\sum_v u_v$ firings. Repeatedly choose
+any occupied active vertex, for example the least one in a fixed order.
+The procedure must stop after finitely many firings and can stop only when
+all active vertices are empty.
+\end{proof}
+
+\begin{corollary}[Order independence]
+\label{cdc:rt:cor:abelian}
+If there is a complete legal execution, its odometer $\mathbf U$ and all
+sink outputs are independent of the legal firing order. Every maximal legal
+execution is finite.
+\end{corollary}
+\begin{proof}
+A complete execution gives a balanced vector. Lemma~\ref{cdc:rt:lem:least} bounds
+all legal executions by that vector. If $\mathbf U$ and $\mathbf U'$ are two
+complete odometers, applying the lemma in both directions gives
+$\mathbf U\le\mathbf U'$ and $\mathbf U'\le\mathbf U$. The sink formula then
+fixes every output. The same finite bound excludes an infinite execution.
+\end{proof}
+
+Balance alone proves the existence of \emph{some} termination, but need not
+make a proposed count vector exact. This distinction is crucial: a balanced
+flow may add an artificial circulation to the genuine odometer.
+
+\begin{theorem}[Exact odometer from balance and last exits]
+\label{cdc:rt:thm:last}
+For arbitrary stacks on a finite active set, a vector $\mathbf u\in\N^V$ is
+the odometer of a complete legal execution if and only if it is balanced and
+its selected last-exit graph is acyclic.
+\end{theorem}
+\begin{proof}
+First suppose $\mathbf u$ comes from a complete execution. Balance is
+conservation. If the last departure from $v$ sends a chip to an active vertex
+$w$, there must be a departure from $w$ strictly later: otherwise that newly
+arrived chip would remain when the execution ends. Hence the times of last
+departures strictly increase along selected active edges. They cannot
+strictly increase around a directed cycle.
+
+Conversely, suppose $\mathbf u$ is balanced with acyclic last exits.
+Lemma~\ref{cdc:rt:lem:least} produces the genuine odometer $\mathbf U\le\mathbf u$.
+Write $d_v=u_v-U_v$ and $W=\{v:d_v>0\}$. Define residual routing counts
+\[
+ E_{vw}=R_{vw}(u_v)-R_{vw}(U_v)\ge0.
+\]
+Subtracting the two balance equations gives
+\begin{equation}
+ d_w=\sum_{v\in V}E_{vw}\quad(w\in V),\qquad
+ \sum_{w\in V\sqcup S}E_{vw}=d_v.
+ \label{cdc:rt:eq:residualflow}
+\end{equation}
+If $w\notin W$, its incoming residual sum is zero, so every $E_{vw}$ into it
+is zero. Summing \eqref{cdc:rt:eq:residualflow} over the active vertices shows also
+that the total residual flow to sinks is zero. Finally, when $v\in W$, the
+last symbol $\rho_v(u_v)$ belongs to the nonempty residual suffix
+$U_v+1,\ldots,u_v$. It therefore cannot point to a sink or outside $W$.
+If $W$ were nonempty, every vertex of the finite set $W$ would have its selected
+successor inside $W$. Iterating successors would produce a directed cycle.
+Acyclicity excludes this possibility, so $W$ is empty and $\mathbf u=\mathbf U$.
+\end{proof}
+
+This proof is a sink-routing version of the classical least-action and
+last-exit methods \cite{friedrich-levine,arrival,switching}. Its advantage for compilation
+is that it refers to neither a schedule nor a temporal tableau.
+
+\subsection{Canonical heights rather than arbitrary rankings}
+An acyclic graph can be certified by a topological ordering, but that ordering
+usually has many valid choices. To preserve single-foldness we instead use
+exact distances along the selected functional graph.
+
+\begin{lemma}[Canonical forest certificate]
+\label{cdc:rt:lem:height}
+For a candidate $\mathbf u$, its last-exit graph is acyclic if and only if
+there exist natural heights $h_v$ satisfying
+\begin{equation}
+ h_v=\begin{cases}
+ 0,&u_v=0,\\
+ 1,&u_v>0,\ L_{\mathbf u}(v)\in S,\\
+ 1+h_w,&u_v>0,\ L_{\mathbf u}(v)=w\in V.
+ \end{cases}
+ \label{cdc:rt:eq:height}
+\end{equation}
+When they exist, the heights are unique and at most $n$.
+\end{lemma}
+\begin{proof}
+Adding the height differences around a cycle of length $r>0$ would give
+$0=r$, which is impossible. Conversely, an acyclic selected graph has a
+unique finite path from each active vertex until it reaches either a sink or
+a vertex with no selected outgoing edge. Set its height to that path length.
+This satisfies the equations and is forced by following the path backwards.
+A path visits at most $n$ active vertices.
+\end{proof}
+For balanced vectors, a selected edge cannot end at an inactive active vertex:
+such an arrival would give that vertex strictly positive incoming flow but
+zero odometer. Hence the nonempty paths of a valid complete certificate
+actually end at sinks.
+
+\section{A parametric single-fold quartic for run-length routing\srctag{12}}
+\label{cdc:rt:sec:rle}
+
+\subsection{Topology, parameters, and the nonzero remainder convention}
+Fix the destination lists of a finite routing topology. At vertex $v$, let
+its period consist of $m_v\ge1$ blocks
+\begin{equation}
+ W_v=w_{v1}^{\ell_{v1}}w_{v2}^{\ell_{v2}}\cdots
+      w_{vm_v}^{\ell_{vm_v}},\qquad \ell_{vj}\ge1.
+ \label{cdc:rt:eq:rle}
+\end{equation}
+Adjacent blocks are allowed to have the same destination; the supplied block
+boundaries are part of the description. Set $m=\sum_v m_v$. The stack is the
+infinite repetition of $W_v$, starting with the first symbol.
+
+To make every parameter natural, write
+$\ell_{vj}=\lambda_{vj}+1$ with $\lambda_{vj}\in\N$. The initial loads
+$\mathbf x$ and the $m$ values $\boldsymbol\lambda$ will be \emph{free
+parameters}, not witnesses. Define
+\begin{align}
+ D_v&=\sum_j\ell_{vj},&
+ P_{vj}&=\sum_{i<j}\ell_{vi},\label{cdc:rt:eq:perioddata}\\
+ C_{vw}&=\sum_{j:w_{vj}=w}\ell_{vj},&
+ B_{vjw}&=\sum_{i<j:w_{vi}=w}\ell_{vi}.\nonumber
+\end{align}
+These are linear polynomials in the run-length parameters. When lengths are
+fixed, they are simply nonnegative integer coefficients.
+
+For $u_v>0$ we use the unique decomposition
+\begin{equation}
+ u_v=D_vq_v+r_v,\qquad q_v\ge0,\quad 1\le r_v\le D_v.
+ \label{cdc:rt:eq:positive-remainder}
+\end{equation}
+Thus $q_v=\lfloor(u_v-1)/D_v\rfloor$. In particular, at a period boundary
+$r_v=D_v$, not zero. This convention identifies the actual last symbol
+without a special wraparound case.
+
+\subsection{The complete residual system}
+The natural witness variables are
+\begin{equation}
+ \begin{gathered}
+ u_v,q_v,z_v,h_v\quad(v\in V),\\
+ b_{vj},t_{vj},\alpha_{vj},\beta_{vj}\quad(1\le j\le m_v),\\
+ y_s\quad(s\in S).
+ \end{gathered}
+ \label{cdc:rt:eq:witnesses}
+\end{equation}
+Here $z_v$ marks a nonzero odometer, $b_{vj}$ selects the block containing
+the last symbol, and $t_{vj}$ is the one-based position within that selected
+block. Unselected blocks have all four coordinates zero.
+
+Impose the following equations at every vertex:
+\begin{align}
+ z_v(z_v-1)&=0,\label{cdc:rt:eq:r1}\\
+ \sum_j b_{vj}-z_v&=0,\label{cdc:rt:eq:r2}\\
+ q_v(1-z_v)&=0,\label{cdc:rt:eq:r3}\\
+ u_v-D_vq_v-\sum_j(P_{vj}b_{vj}+t_{vj})&=0.\label{cdc:rt:eq:r4}
+\end{align}
+At each block impose
+\begin{align}
+ t_{vj}-b_{vj}-\alpha_{vj}&=0,\label{cdc:rt:eq:r5}\\
+ t_{vj}+\beta_{vj}-\ell_{vj}b_{vj}&=0.\label{cdc:rt:eq:r6}
+\end{align}
+Because all witnesses are natural, \eqref{cdc:rt:eq:r1}--\eqref{cdc:rt:eq:r2} force
+$b_{vj}\in\{0,1\}$ without separate Boolean equations. If $b_{vj}=0$,
+\eqref{cdc:rt:eq:r5}--\eqref{cdc:rt:eq:r6} force $t_{vj}=\alpha_{vj}=\beta_{vj}=0$.
+If $b_{vj}=1$, they give exactly
+\[
+ 1\le t_{vj}\le\ell_{vj},\qquad
+ \alpha_{vj}=t_{vj}-1,\quad\beta_{vj}=\ell_{vj}-t_{vj}.
+\]
+The slacks are uniquely determined, including in the inactive case.
+
+Define, without adding new witness variables, the routing expressions
+\begin{equation}
+ F_{vw}=C_{vw}q_v+\sum_j B_{vjw}b_{vj}
+                +\sum_{j:w_{vj}=w}t_{vj}.
+ \label{cdc:rt:eq:flowformula}
+\end{equation}
+They count complete periods, complete blocks before the selected block, and
+the selected partial block. These expressions have degree at most two when
+run lengths are parameters, and are linear when lengths are fixed.
+The remaining equations are
+\begin{align}
+ h_v-z_v-\sum_{j:w_{vj}\in V} b_{vj}h_{w_{vj}}&=0
+    &&(v\in V),\label{cdc:rt:eq:r7}\\
+ u_v-x_v-\sum_{a\in V}F_{av}&=0
+    &&(v\in V),\label{cdc:rt:eq:r8}\\
+ y_s-\sum_{v\in V}F_{vs}&=0
+    &&(s\in S).\label{cdc:rt:eq:r9}
+\end{align}
+Let $\mathcal R$ be the list of all left-hand sides in
+\eqref{cdc:rt:eq:r1}--\eqref{cdc:rt:eq:r9}, with their stated multiplicities. Define
+\begin{equation}
+ Q_{\mathcal T}(\mathbf x,\boldsymbol\lambda;\mathbf w)
+       =\sum_{R\in\mathcal R}R^2.
+ \label{cdc:rt:eq:quartic}
+\end{equation}
+The subscript $\mathcal T$ denotes the fixed destination-list topology. No
+floor, divisibility predicate, quantifier, or machine simulator remains in
+this definition: it is an ordinary integer polynomial.
+
+\begin{theorem}[Parametric canonical RLE quartic]
+\label{cdc:rt:thm:rle}
+For every finite destination-list topology with $n$ active vertices,
+$s$ sinks, and $m$ blocks, the polynomial \eqref{cdc:rt:eq:quartic} has the following
+properties.
+\begin{enumerate}[label=(\roman*)]
+\item Its total degree in both parameters and witnesses is at most four.
+There are exactly $4n+4m+s$ natural witness coordinates, $n+m$ natural
+parameters, and $6n+2m+s$ residuals of degree at most two.
+\item For every initial load $\mathbf x$ and every run-length tuple
+$\boldsymbol\ell=\boldsymbol\lambda+\mathbf1$, the natural zero set of
+$Q_{\mathcal T}$ in all witness coordinates is empty if the input does not
+terminate, and is a singleton if it terminates.
+\item In that unique root, $\mathbf u$ is the exact odometer and $\mathbf y$
+is the complete vector of sink outputs.
+\item The residual list, and also the expanded polynomial, have descriptions
+of size polynomial in the finite topology description. Specializing binary
+run lengths preserves polynomial description size in the specialized input
+length.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Every residual displayed above has total degree at most two. The quantities
+$D,P,C,B$ are linear in the free $\lambda$ parameters, and every product
+involving them has only one further witness factor. Squaring establishes the
+degree bound. There are four coordinates per active vertex, four per block,
+and one per sink. There are six residuals per vertex, two per block, and one
+per sink, giving the stated counts.
+
+A sum of integer squares is zero exactly when every summand is zero.
+Suppose first that all residuals vanish. If $z_v=0$, the nonnegative sum of
+selectors in \eqref{cdc:rt:eq:r2} is zero. The block equations force their offsets
+and slacks to vanish, the gate \eqref{cdc:rt:eq:r3} forces $q_v=0$, and
+\eqref{cdc:rt:eq:r4} forces $u_v=0$. Equation~\eqref{cdc:rt:eq:r7} then forces $h_v=0$.
+If $z_v=1$, exactly one selector is one. Its offset lies in
+$[1,\ell_{vj}]$, so \eqref{cdc:rt:eq:r4} gives precisely the positive-remainder
+decomposition \eqref{cdc:rt:eq:positive-remainder}. In particular $u_v>0$.
+The selected block and its offset are unique for that remainder, since the
+block intervals partition $\{1,\ldots,D_v\}$.
+
+Consequently $F_{vw}=R_{vw}(u_v)$ and the selected destination is exactly
+$\rho_v(u_v)$. Equation~\eqref{cdc:rt:eq:r8} is genuine balance, while
+\eqref{cdc:rt:eq:r7} is the canonical height condition of Lemma~\ref{cdc:rt:lem:height}.
+Theorem~\ref{cdc:rt:thm:last} therefore identifies $\mathbf u$ with the true
+complete odometer. The sink equations identify $\mathbf y$.
+
+Conversely, a terminating execution has a unique odometer. Use its positive
+remainders to set $q,z,b,t$, set the two slacks to their forced differences,
+and take the unique forest heights. The exact prefix formula and
+conservation make every residual zero. For fixed parameters, every coordinate
+has now been shown to be uniquely forced by the odometer. This proves both
+existence and single-foldness.
+
+Finally, the expressions in \eqref{cdc:rt:eq:perioddata} and \eqref{cdc:rt:eq:flowformula}
+are finite sums with at most polynomially many terms in the topology size.
+Squaring an explicitly listed polynomial-size residual multiplies its term
+count by at most a polynomial factor. Substitution of binary lengths only
+requires additions and multiplications of integers of polynomial bit length.
+There is no expansion of a word of length $D_v$, and no unrolling of
+$\sum_v u_v$ firing steps.
+\end{proof}
+
+\begin{remark}[What is and is not linear in the description]
+The exact variable and residual counts are linear in $n+m+s$. The number
+of terms inside a residual need not be bounded by a constant, and the
+expanded quartic need not have only $O(n+m+s)$ monomials. The polynomial-size
+claim is deliberately weaker and is the one proved above.
+\end{remark}
+
+\subsection{Why natural witnesses and canonical gates are essential}
+The construction uses nonnegativity, not just equations over a field.
+For example, $\sum_j b_{vj}=0$ forces every selector to vanish only because
+the selectors are natural. Similarly, two linear slack equations express an
+interval only with nonnegative slack variables. The sum of squared residuals
+can be evaluated over $\Z$, but its intended witness domain is $\N$.
+A routine replacement of natural variables by sums of four integer squares
+preserves existence and generally destroys uniqueness: the same natural
+number can have several square decompositions. We make no corresponding
+single-fold claim over unrestricted integer witnesses.
+
+The inactivity gate $q_v(1-z_v)=0$ is indispensable. Without it, take an
+initially empty one-vertex self-routing network with period length $D$.
+The values $z=b=t=h=0$, $q=1$, and $u=D$ satisfy the other displayed local
+conditions and balance, inventing a complete cycle of firings without a
+chip. The gate eliminates this fake execution. Likewise, replacing the exact
+height equation by the inequality $h_v>h_w$ would typically admit infinitely
+many rankings for the same true odometer, defeating single-foldness.
+
+\subsection{A large exact example with thirteen unknowns}
+\begin{example}
+\label{cdc:rt:ex:huge}
+Take one active vertex $v$, one sink $s$, and period $v^L s$ with $L\ge1$.
+Put $M$ chips at $v$. Each chip is absorbed after $L+1$ firings, so
+\[
+ U=M(L+1),\qquad y=M.
+\]
+For $M>0$ the unique witness is
+\[
+ q=M-1,\quad z=h=1,\quad
+ (b_1,b_2)=(0,1),\quad(t_1,t_2)=(0,1),
+\]
+with all four block slacks zero. For $M=0$, every witness coordinate is zero.
+There are $4+8+1=13$ witness variables and $6+4+1=11$ residuals.
+
+The supplied checker evaluates this certificate with
+\[
+ L=M=2^{4096},\qquad U=2^{8192}+2^{4096}.
+\]
+It obtains exactly zero for the sum of the eleven squared residuals, using
+ordinary arbitrary-precision integer arithmetic. It does not simulate the
+$U$ firings. The integer $U$ has $8193$ binary digits, which is a manageable
+certificate size despite the infeasible execution length.
+\end{example}
+
+\begin{example}[A spurious balanced circulation]
+Let $a$ have period $(b,s)$ and $b$ have period $(a,s)$, with no initial
+chips. Both active vertices have paths to the sink. The proposed odometer
+$(u_a,u_b)=(1,1)$ is balanced: each alleged firing supplies the other one.
+Its last-exit graph is the cycle $a\to b\to a$, so no heights can satisfy
+$h_a=1+h_b$ and $h_b=1+h_a$. The genuine odometer is $(0,0)$.
+Thus even global accessibility of a sink does not make balance alone an
+exact execution certificate.
+\end{example}
+
+\section{Shared grammar periods without word expansion\srctag{12}}
+\label{cdc:rt:sec:grammar}
+
+\subsection{The representation and its useful statistics}
+Run lengths compress long constant blocks. A straight-line grammar can
+compress a different kind of repetition, such as a word obtained by repeated
+doubling of a nonconstant pattern. For each active vertex $v$, let its period
+be specified by a finite acyclic grammar whose nodes have one of two forms:
+\[
+ A\longrightarrow w\quad(w\in V\sqcup S),\qquad
+ A\longrightarrow BC.
+\]
+Every node defines exactly one nonempty word. Children occur before parents
+in a topological order, and one distinguished root $A_v$ defines the period.
+Nodes may be shared within the grammar: the same subword can occur as a child
+of many different concatenations, including twice in the same concatenation.
+We count $g_v$ nodes and $c_v$ concatenation nodes at $v$, and set
+$g=\sum_v g_v$, $c=\sum_v c_v$. Thus the accounting includes a separate
+certificate coordinate system for each active vertex's grammar. It does not
+claim that several independent prefix queries can share the same witness
+coordinates for a globally shared grammar.
+
+Precompute the length $L_A$ and symbol-count vector $(C_{Aw})_w$ by
+\[
+ L_w=1,\quad C_{wz}=[w=z],\qquad
+ L_A=L_B+L_C,\quad C_{Az}=C_{Bz}+C_{Cz}\quad(A\to BC).
+\]
+These calculations are polynomial in the grammar size and alphabet size.
+In a grammar with $g_v$ nodes, every word has length at most $2^{g_v}$;
+therefore its lengths and counts have $O(g_v)$ bits. No word expansion is
+needed. Let $D_v=L_{A_v}$.
+\wtag{} [The bound can be halved: a terminal defines a word of length one, a concatenation defines a word at most twice as long as the longer of its children's, and a descending path meets at most $c_v\le g_v-1$ concatenation nodes, so every word has length at most $2^{g_v-1}$. The doubling example below, with $k+3$ nodes and period $2^{k+1}$, is within this bound.]
+
+The key observation is that a positive prefix of one grammar word needs only
+one root-to-terminal descent path. Every right turn contributes the whole
+left subword to the prefix count. A prefix certificate should describe this
+path, not a derivation tree containing all repeated copies of the word.
+
+\subsection{Canonical path variables and equations}
+For each grammar node $A$, introduce natural variables
+\[
+ a_A,k_A,\eta_A,\theta_A.
+\]
+Here $a_A$ records whether the selected descent visits that node and $k_A$
+is its one-based local position. Impose
+\begin{align}
+ a_A(a_A-1)&=0,\label{cdc:rt:eq:g1}\\
+ k_A-a_A-\eta_A&=0,\label{cdc:rt:eq:g2}\\
+ k_A+\theta_A-L_Aa_A&=0.\label{cdc:rt:eq:g3}
+\end{align}
+An inactive node therefore has all four coordinates zero; an active node
+has $1\le k_A\le L_A$ and unique interval slacks.
+
+At a concatenation $A\to BC$, introduce four additional natural variables
+$l_A,r_A,\sigma_A,\tau_A$, and impose
+\begin{align}
+ l_A+r_A-a_A&=0,\label{cdc:rt:eq:g4}\\
+ \sigma_A-l_A(L_B-k_A)&=0,\label{cdc:rt:eq:g5}\\
+ \tau_A-r_A(k_A-L_B-1)&=0.\label{cdc:rt:eq:g6}
+\end{align}
+Thus $l_A,r_A$ are automatically Boolean. At an active node the left branch
+is possible exactly when $k_A\le L_B$, and the right branch exactly when
+$k_A\ge L_B+1$. Only one is possible, and the corresponding slack is its
+forced nonnegative difference. Every unused comparison slack is zero.
+
+For every node $X$ other than the root of its grammar, impose the incoming
+activation and position equations
+\begin{align}
+ a_X&=\sum_{A\to XC}l_A+\sum_{A\to BX}r_A,\label{cdc:rt:eq:g7}\\
+ k_X&=\sum_{A\to XC}l_Ak_A
+           +\sum_{A\to BX}r_A(k_A-L_B).\label{cdc:rt:eq:g8}
+\end{align}
+Each occurrence of $X$ as a left or right child contributes in the appropriate
+sum. In particular, if a rule is $A\to XX$, the two occurrences are handled
+separately and only the selected occurrence is active.
+
+At each active routing vertex retain the four variables $u_v,q_v,z_v,h_v$
+and impose
+\begin{align}
+ z_v(z_v-1)&=0,&q_v(1-z_v)&=0,\label{cdc:rt:eq:g9}\\
+ a_{A_v}-z_v&=0,&u_v-D_vq_v-k_{A_v}&=0.\label{cdc:rt:eq:g10}
+\end{align}
+The root offset is again the positive remainder; it is zero exactly for an
+inactive vertex. These equations do not impose a freely chosen path at each
+shared occurrence. The single activated root, unique branching, and acyclic
+node order force one path, with all other nodes inactive.
+
+\subsection{Prefix counts, last symbols, and global balance}
+Define
+\begin{equation}
+ F_{vw}=q_vC_{A_vw}
+       +\sum_{A\to BC}r_AC_{Bw}
+       +\sum_{A\to w}a_A,
+ \label{cdc:rt:eq:gflow}
+\end{equation}
+where both sums range over the grammar at $v$. A selected right turn adds
+the whole left word; the final selected terminal adds the last symbol.
+This accounts exactly for the selected prefix, in addition to the complete
+periods. The selected terminal is also the last-exit destination, so impose
+\begin{equation}
+ h_v-z_v-\sum_{\substack{A\to w\\ w\in V}}a_Ah_w=0.
+ \label{cdc:rt:eq:gheight}
+\end{equation}
+The active balance equations and sink equations are the same as
+\eqref{cdc:rt:eq:r8}--\eqref{cdc:rt:eq:r9}, using \eqref{cdc:rt:eq:gflow}. Once again, the final
+polynomial is the sum of the squares of all residuals.
+
+\begin{theorem}[Canonical grammar quartic]
+\label{cdc:rt:thm:grammar}
+For a network whose nonempty periodic words are specified by the grammars
+above, there is an explicitly constructible integer polynomial of total
+degree at most four, with
+\[
+ 4n+4g+4c+s\quad\text{natural witness coordinates}
+\]
+and
+\[
+ 4n+5g+3c+s\quad\text{residuals of degree at most two}.
+\]
+For every natural initial load, the polynomial has exactly one natural root
+if the execution terminates and no natural root otherwise. Its root contains
+the exact odometer and every sink output. Construction time and polynomial
+description size are polynomial in the grammar description and alphabet size,
+not in the lengths of the expanded periods.
+\end{theorem}
+\begin{proof}
+Start with the local path system. When the root is inactive, an induction
+from parents to children shows that every incoming activation sum is zero;
+all nodes are inactive and all their coordinates vanish. When the root is
+active, \eqref{cdc:rt:eq:g1}--\eqref{cdc:rt:eq:g6} force exactly one child at each active
+concatenation, with the uniquely appropriate translated offset. Acyclicity of
+the grammar ensures this process reaches a terminal without revisiting a
+node. All activations outside this path are zero: process the nodes from
+parents to children, noting that no node can become active without an active
+incoming selected edge. Sharing therefore causes no ambiguity.
+
+Conversely, the usual descent to a position in the root word gives a solution
+to all local equations, and the same argument proves that this solution is
+unique. At a left descent the prefix lies entirely in the left child. At a
+right descent it consists of the entire left word followed by the selected
+prefix in the right child. Induction along the descent proves
+\eqref{cdc:rt:eq:gflow}. Exactly one selected terminal supplies the final symbol.
+
+The global equations now give genuine balance and the canonical last-exit
+heights. Theorem~\ref{cdc:rt:thm:last} proves soundness and identifies the odometer.
+Conversely, the true odometer determines a unique positive remainder at every
+active vertex, a unique grammar path, and all its unique slacks. This proves
+completeness and single-foldness.
+
+There are four variables per routing vertex, four per grammar node, four per
+concatenation, and one per sink. For the residual count, the node equations
+contribute $3g$, the concatenation equations contribute $3c$, and the
+nonroot incoming equations contribute $2(g-n)$. Root activation contributes
+$n$; Boolean $z$, the quotient gate, the odometer decomposition, the height,
+and the balance contribute another $5n$; sinks contribute $s$. Their sum is
+$4n+5g+3c+s$. Every product contains at most two variables. The metadata have
+polynomial bit length, which also proves the description-size and construction
+bounds.
+\end{proof}
+
+\begin{example}[Shared repeated doubling]
+Start with a terminal $a$, a terminal $b$, and the word $A_0\to ab$.
+Define $A_{i+1}\to A_iA_i$. The final period has length $2^{k+1}$ after $k$
+doublings, but the grammar has only $k+3$ nodes. For a prefix of length $t$,
+its counts are $\lceil t/2\rceil$ copies of $a$ and $\lfloor t/2\rfloor$
+copies of $b$. The supplied checker uses $1024$ doublings, giving a period
+of length $2^{1025}$, and checks six prefix certificates without expanding
+that word. This tests the case where both children of every doubling node
+are the very same grammar node.
+\end{example}
+
+\section{Certificate height, both outcomes, and fixed-period structure\srctag{12}}
+\label{cdc:rt:sec:complexity}
+
+\subsection{A binary height bound}
+Assume first that every active vertex has a directed path to a sink in the
+underlying graph of destinations that occur in its period. Put
+$M=\sum_v x_v$.
+
+\begin{lemma}[Absorption and a finite-state bound]
+\label{cdc:rt:lem:bound}
+Under this accessibility assumption, every maximal legal execution
+terminates. For a deterministic rule that always chooses the least occupied
+active vertex, the total number $T$ of firings satisfies
+\begin{equation}
+ T<(M+1)^n\prod_{v\in V}D_v.
+ \label{cdc:rt:eq:timebound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+If a legal execution were infinite, some vertex would fire infinitely often.
+Let $I$ be the nonempty set of such vertices. A periodic stack used infinitely
+often sends infinitely many chips to every destination occurring in its
+period. No sink can receive infinitely many chips, since the total number of
+chips is the fixed finite number $M$. Likewise, an active vertex receiving
+infinitely many chips must fire infinitely often; otherwise it would eventually
+hold more than $M$ chips. Therefore $I$ is closed under all underlying
+destination edges and has no path to a sink, a contradiction.
+
+For the quantitative bound, a state relevant to future behavior consists of
+the active chip vector and each counter modulo $D_v$. There are at most
+$(M+1)^n\prod_vD_v$ such states. Accumulated sink counts are not needed to
+determine future active dynamics. A deterministic run reaching termination
+cannot repeat a nonterminal state, or its future would repeat forever.
+Including the final state yields \eqref{cdc:rt:eq:timebound}.
+\end{proof}
+
+The bound can be crude in numerical value and still be useful for
+certificates. Taking binary logarithms gives
+\begin{equation}
+ \log_2(T+1)=O\!\left(1+n\log_2(M+1)+\sum_v\log_2D_v\right).
+ \label{cdc:rt:eq:bitbound}
+\end{equation}
+Every odometer coordinate and quotient is at most $T$. RLE offsets and
+slacks are at most the corresponding period length; grammar offsets and
+slacks are at most a node-word length. Heights are at most $n$ and sink
+outputs at most $M$. Thus the complete natural root has polynomial binary
+length in a binary RLE or grammar input. This is a bound on the length of a
+certificate, not a polynomial bound on execution time or a polynomial-time
+method for finding it.
+
+\subsection{Canonical nontermination certificates by trap collapse}
+For a general finite periodic network, let $R\subseteq V$ be the set of active
+vertices that can reach a sink in the underlying destination graph. Let
+$Z=V\setminus R$. No destination from $Z$ can be in $R$ or in a real sink;
+otherwise that source would itself reach a sink.
+
+Construct a modified network with active set $R$ and a new sink $\bot$.
+Every edge from $R$ into $Z$ is redirected to $\bot$. Retain the original
+sinks, and add the fixed initial quantity $\sum_{v\in Z}x_v$ to the final
+output at $\bot$. Every remaining active vertex reaches a real sink, so the
+modified system always terminates. Its output equation at the new sink is
+\begin{equation}
+ y_\bot=\sum_{v\in Z}x_v+\sum_{a\in R}F_{a\bot}.
+ \label{cdc:rt:eq:trapoutput}
+\end{equation}
+The case $R=\varnothing$ has no routing variables and is handled directly
+by these fixed output counts.
+
+\begin{theorem}[A unique finite certificate for either answer]
+\label{cdc:rt:thm:classify}
+For RLE or grammar-period networks, the modified instance has exactly one
+natural certificate. The original input terminates if and only if
+$y_\bot=0$. Consequently the binary-input decision problem ``are all chips
+eventually absorbed at real sinks?'' is in $\UP\cap\coUP$ for both
+representations.
+\end{theorem}
+\begin{proof}
+The existence, uniqueness, and polynomial bit length of the modified
+certificate follow from the previous theorems and Lemma~\ref{cdc:rt:lem:bound}.
+Firing inside $Z$ never affects $R$. Projecting an original execution to its
+firings in $R$ therefore preserves exactly the chip dynamics of the modified
+network until the corresponding chips have been absorbed or entered $Z$.
+A chip initially in $Z$, or entering $Z$, can never reach a real sink and can
+never disappear; hence a positive value of $y_\bot$ excludes a complete
+original execution. If $y_\bot=0$, there were no initial chips in $Z$ and the
+modified execution sends none there. That complete execution in $R$ is then
+also a complete original execution.
+
+For the complexity assertion, construct the modified instance deterministically
+and guess its unique certificate in a fixed coordinate order with prescribed
+polynomial-width binary fields. Verify the residual equations and require
+$y_\bot=0$ for the yes verifier, or $y_\bot\ge1$ for the no verifier. Integer
+arithmetic on the established bit bounds is polynomial time. There is at most
+one accepting certificate string for either verifier, since every integer
+coordinate is unique and the binary encoding is fixed. There is one for
+exactly the correct answer. This is the defining certificate condition for
+$\UP\cap\coUP$.
+\end{proof}
+
+The one-token explicit-switching upper bound and related succinct
+certificates are established in the ARRIVAL literature
+\cite{arrival,switching}. The theorem above supplies a direct proof for the
+present multi-chip, grammar-aware, fully canonical algebraic formulation;
+it is not asserted as a new upper bound for ordinary ARRIVAL.
+
+\subsection{Fixed periods give an existential Presburger description}
+\begin{proposition}
+\label{cdc:rt:prop:presburger}
+Fix all periods, not only the destination topology. The graph of the partial
+map taking initial loads to complete odometers and sink outputs is definable
+by an existential Presburger formula: a finite disjunction of existential
+systems of integer-linear equalities and inequalities over natural variables.
+\end{proposition}
+\begin{proof}
+In the RLE residual system, first split into the finitely many possibilities
+for $z_v$ and the one-hot block selectors. All products of two witness
+variables are then either a variable times zero or a variable times one.
+The periods and their metadata are constants. What remains is a linear
+system with nonnegative unknowns. The finite disjunction over selectors,
+with the auxiliary coordinates existentially quantified, defines exactly
+the desired graph by Theorem~\ref{cdc:rt:thm:rle}. For the grammar compiler, similarly
+split over the Boolean node activations and branch choices; all remaining
+products become linear.
+\end{proof}
+
+This observation helps prevent a false universality conclusion from the
+unbounded chip counts. With periods fixed, even the nonlinear-looking height
+conditions have only a finite number of selector cases. With run lengths
+left as parameters, products such as $\ell q$ remain and this particular
+Presburger argument does not apply. Nevertheless, the whole class of finite
+explicitly described periodic networks remains decidable by finite-state
+analysis, with an effectively computable bound for each instance.
+
+\subsection{A phase-preserving transport identity}
+The positive-remainder convention also yields a useful exact relation between
+different inputs. Fix the periods and form the diagonal matrix
+$D=\operatorname{diag}(D_v)$ and the active routing-count matrix
+$C=(C_{vw})_{v,w\in V}$, with source vertices indexing rows. Put
+$\mathcal L=D-C^{\mathsf T}$.
+
+\begin{proposition}[Full-period input transport]
+\label{cdc:rt:prop:transport}
+Suppose the input $\mathbf x$ terminates with $U_v>0$ for every active vertex.
+Let $\mathbf k\in\N^V$ and assume
+$\mathbf x'=\mathbf x+\mathcal L\mathbf k\in\N^V$. Then $\mathbf x'$
+terminates and
+\begin{equation}
+ \mathbf U(\mathbf x')=\mathbf U(\mathbf x)+D\mathbf k.
+ \label{cdc:rt:eq:transport}
+\end{equation}
+The sink-output increase at $s$ is $\sum_vC_{vs}k_v$.
+\end{proposition}
+\begin{proof}
+Adding $D_vk_v$ firings at vertex $v$ adds $k_v$ whole periods. It changes
+its routing count to $w$ by $C_{vw}k_v$ and leaves its nonzero last phase,
+last destination, and support unchanged. The new candidate is balanced
+because its extra departure vector is $D\mathbf k$, its extra active
+arrival vector is $C^{\mathsf T}\mathbf k$, and the input change is their
+difference. Its last-exit graph remains acyclic. Theorem~\ref{cdc:rt:thm:last}
+therefore proves \eqref{cdc:rt:eq:transport}, and the sink formula gives the output
+change. The strict positivity hypothesis avoids activating previously unused
+vertices, whose new last exits would require a separate analysis.
+\end{proof}
+
+\wtag{} [The positivity hypothesis is used only at vertices with $k_v>0$. At a vertex with $k_v=0$ the candidate count and last exit are unchanged, and a vertex with $U_v=0$ and $k_v=0$ keeps count zero and has no selected edge; adding $k_a$ whole periods at a vertex $a$ with $U_a=0$ also adds exactly $C_{aw}k_a$ to each routing count, so balance holds, but its new last exit $\rho_a(D_ak_a)$ may close a cycle. Hence the proposition holds whenever $U_v>0$ at every $v$ with $k_v>0$.]
+
+\section{A circuit-defined period already hides a counting problem\srctag{12}}
+\label{cdc:rt:sec:circuit}
+The preceding compilers exploit particular representations of prefix counts.
+It is not enough that the destination at a given position can be computed
+quickly. Random access and prefix counting can have very different costs.
+
+Let $C$ be a Boolean circuit on $k$ input bits. Use one active vertex $v$ and
+two sinks $s_0,s_1$. Its period has length $2^k$, with the destinations
+specified in lexicographic assignment order:
+\begin{equation}
+ \rho_v(j)=s_{C(\operatorname{bin}_k(j-1))},
+ \qquad 1\le j\le2^k,
+ \label{cdc:rt:eq:circuitperiod}
+\end{equation}
+and the period repeats. Give $v$ exactly $2^k$ chips. Every firing goes
+directly to a sink, so the execution is particularly simple.
+
+\begin{proposition}[Counting in a one-vertex acyclic routing system]
+\label{cdc:rt:prop:counting}
+For \eqref{cdc:rt:eq:circuitperiod}, the odometer and sink outputs are
+\[
+ U_v=2^k,\qquad
+ y_{s_1}=\#\{a\in\{0,1\}^k:C(a)=1\},\qquad
+ y_{s_0}=2^k-y_{s_1}.
+\]
+Thus computing the exact output on these succinct instances computes the
+number of satisfying assignments of an arbitrary Boolean circuit.
+\end{proposition}
+\begin{proof}
+Each of the $2^k$ input chips causes exactly one firing, and the first full
+period queries each assignment once. The displayed counts follow directly.
+\end{proof}
+
+\begin{theorem}[Obstruction to uniformly small bounded-height certificates]
+\label{cdc:rt:thm:countbarrier}
+Suppose a polynomial-time procedure, on a circuit $C$, produces a
+polynomial-size bounded-degree integer polynomial $Q_C(\mathbf w)$ with the
+following properties: it has a natural root exactly when the routing output
+$y_{s_1}$ above is zero, and whenever it has a root it has one whose total
+binary encoding length is polynomial in $|C|+k$. Then $\NP=\coNP$.
+The same conclusion holds for polynomial-size systems of quadratic residuals.
+Uniqueness of their witnesses is not needed.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{cdc:rt:prop:counting}, zero output is exactly circuit
+unsatisfiability. Guess a root of the guaranteed polynomial bit length and
+evaluate $Q_C$ using exact integer arithmetic. Bounded degree, polynomial
+coefficient bit length, and polynomially many explicitly described monomials
+make this a polynomial-time check. Thus circuit unsatisfiability has
+polynomially verifiable existential certificates.
+
+For completeness, the usual complexity consequence follows directly from
+verifier circuits. If $A\in\coNP$, membership in its complement is expressed
+by some polynomial-time verifier $V(x,z)$ with a polynomial-length guessed
+string $z$. On fixed input $x$, unrolling that bounded deterministic verifier
+gives a Boolean circuit $C_x$ whose satisfying assignments are precisely its
+accepting guesses. Therefore $x\in A$ exactly when $C_x$ is unsatisfiable.
+The assumed certificates put every such $A$ in $\NP$, so
+$\coNP\subseteq\NP$. Taking complements gives the reverse inclusion.
+\end{proof}
+
+This theorem does not rule out Diophantine representations of circuit-defined
+routing. It isolates a conjunction of requirements: a uniform polynomial-time
+compiler, polynomial description size, bounded degree, and short witnesses.
+Allowing much larger witnesses removes the stated complexity consequence.
+Nor does the obstruction concern firing-order ambiguity: the example has no
+active-to-active edges at all. The difficulty is the prefix-count information
+compressed into a circuit.
+
+\section{A universal one-router system with easy prefix ranks\srctag{12}}
+\label{cdc:rt:sec:universal}
+There is a second, logically independent boundary. Even a polynomial-time
+\emph{prefix-rank} function does not guarantee that a finite semantic
+certificate has any computable size bound in the input length. An
+exponentially dilated universal clock makes the distinction explicit.
+
+\subsection{One fixed interpreter and one total rank routine}
+Fix a deterministic universal Turing machine $\mathcal U$ taking a natural
+input code $c$ in binary. Choose its interpreter convention so that for every
+computably enumerable set $A\subseteq\N$ there is a program code $e$ with
+\begin{equation}
+ n\in A\quad\Longleftrightarrow\quad
+ \mathcal U(\pi_{\mathrm C}(e,n))\text{ halts},\qquad
+ \pi_{\mathrm C}(e,n)=\frac{(e+n)(e+n+1)}2+n.
+ \label{cdc:rt:eq:pairing}
+\end{equation}
+This is ordinary effective universality with an explicit polynomial pairing
+of the program and its input. Let $T(c)$ be the first halting time, when it
+exists; time zero is allowed.
+
+Define one total Boolean function on natural arguments:
+\begin{equation}
+ \rankf(c,0)=0,\qquad
+ \rankf(c,k)=
+ \begin{cases}
+ 1,&\mathcal U(c)\text{ halts within }\lfloor\log_2 k\rfloor\text{ steps},\\
+ 0,&\text{otherwise},
+ \end{cases}
+ \quad k\ge1.
+ \label{cdc:rt:eq:rankclock}
+\end{equation}
+This definition is an executable bounded simulation, not a halting oracle.
+Given binary $c,k$, compute the bit length of $k$, simulate the fixed machine
+for that many steps minus one, and return the indicated bit. A standard direct
+simulation uses time polynomial in $\bits(c)+\bits(k)$: only
+$O(\bits(k))$ transitions and a polynomial-size portion of the input and tape
+can be involved. Initial halting is checked before the first transition.
+
+The function is nondecreasing in $k$. More precisely,
+\begin{equation}
+ \rankf(c,k)=
+ \begin{cases}
+ [k\ge2^{T(c)}],&\mathcal U(c)\text{ halts},\\
+ 0,&\mathcal U(c)\text{ does not halt}.
+ \end{cases}
+ \label{cdc:rt:eq:stepfunction}
+\end{equation}
+Thus it is an especially simple function pointwise: either identically zero
+or a single threshold step.
+
+\subsection{The routing rule and its universality}
+Use one active vertex $v$, one absorbing sink $s$, one initial chip, and a
+read-only input code $c$. The destination of firing $j\ge1$ is determined by
+\begin{equation}
+ \rho_{c}(j)=
+ \begin{cases}
+ s,&\rankf(c,j)-\rankf(c,j-1)=1,\\
+ v,&\rankf(c,j)-\rankf(c,j-1)=0.
+ \end{cases}
+ \label{cdc:rt:eq:clockstack}
+\end{equation}
+The difference is always zero or one because of monotonicity. The full sink
+prefix rank is exactly $R_{vs}(k)=\rankf(c,k)$, by telescoping, and the self
+prefix rank is $R_{vv}(k)=k-\rankf(c,k)$.
+
+\begin{theorem}[Universal halting with polynomial-time ranks]
+\label{cdc:rt:thm:universal}
+The family \eqref{cdc:rt:eq:clockstack} has all the following properties.
+\begin{enumerate}[label=(\roman*)]
+\item The graph has one active vertex and one sink, independently of $c$.
+A single fixed total algorithm computes both random access to its stack and
+all prefix counts in time polynomial in the binary input lengths.
+\item For every $c$, the stack is eventually constant. It contains at most one
+sink symbol. If $\mathcal U(c)$ first halts at time $T$, that symbol occurs
+exactly at position $2^T$; otherwise every symbol is $v$.
+\item The router terminates if and only if $\mathcal U(c)$ halts, and in that
+case its exact odometer is $u=2^{T(c)}$. Its halting set is computably enumerable
+complete. With the terminal counter as an observable output, arbitrary
+partial-computable outputs can be recovered effectively.
+\item There is no computable function of $\bits(c)$ bounding the bit length
+of the terminating odometer on all halting inputs. There is likewise no
+computable uniform bound on the position of the last exceptional stack symbol.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The bounded-simulation algorithm above proves the rank bound; two rank
+queries decide \eqref{cdc:rt:eq:clockstack}. Equation~\eqref{cdc:rt:eq:stepfunction} says
+that the rank changes only at $2^T$ when a first halt exists. This proves the
+stack description. The lone chip returns to $v$ until that unique position
+and then leaves for $s$, or returns forever when no such position exists.
+The reduction \eqref{cdc:rt:eq:pairing} proves computably enumerable completeness;
+simulation of the router proves its halting set is computably enumerable.
+After observing a terminal counter $u$, compute $T=\log_2u$ and run
+$\mathcal U(c)$ for $T$ transitions to recover its final output. This is a
+computable decoding of any simulated partial function's output.
+
+Finally, suppose a computable function $f(a)$ bounded $\bits(u)$ on every
+halting input $c$ of bit length $a$. Since $\bits(2^T)=T+1$, simulating
+$\mathcal U(c)$ for $f(a)$ transitions would decide whether it ever halts.
+This contradicts universal undecidability. A computable bound on the
+exceptional position would yield a computable bound on its bit length and
+hence the same contradiction.
+\end{proof}
+
+\wtag{} Item~(iv) is the routing form of \cref{cdc:bd:prop:nobound}, with the same finite-search proof: a computable bound on the odometer, or on some witness of any Diophantine representation of this undecidable halting set, would decide halting.
+
+\begin{remark}[Where the computational power resides]
+The theorem is not a claim that a one-state finite automaton has become
+universal. The routing apparatus has an unbounded firing counter, a read-only
+input, and a fixed polynomial-time algorithm allowed to inspect the counter's
+binary digits. That algorithm performs bounded universal simulation. There is
+no oracle, but the model is algorithmic rather than a finite-state rotor with
+a supplied finite period. Universality here is a precise time-dilated
+simulation, not an assertion of a new physically minimal universal device.
+\end{remark}
+
+If the input halts, its stack has the finite semantic description
+\[
+ v^{2^{T(c)}-1}\,s\,v^\omega;
+\]
+if it does not, it has description $v^\omega$. These descriptions exist
+pointwise, but no effective procedure can always produce a correct finite
+preperiod-plus-period description from $c$. Such a procedure would make the
+existence of a sink symbol decidable by examining the finite prefix and
+period. Thus \emph{being} eventually periodic and \emph{being supplied with}
+an effective finite periodic description are different hypotheses.
+
+For comparison, universality in an abelian physical-style substrate is not
+merely a hypothetical possibility: Cairns constructs universal behavior and
+undecidable halting questions for three-dimensional sandpiles with suitable
+infinite backgrounds \cite{cairns}. That model is not the finite conservative
+routing model of Sections~\ref{cdc:rt:sec:rle}--\ref{cdc:rt:sec:complexity}. We do not transfer
+its universality to finite periodic rotors.
+
+\subsection{Its unique semantic certificate}
+Apply the general balance theorem to the one-router system. With one input
+chip, balance reads
+\[
+ u=1+u-\rankf(c,u),
+\]
+so it requires $\rankf(c,u)=1$. Exactness also requires that the last exit
+be a sink; otherwise it is a selected self-loop. Equivalently, the exact
+semantic certificate is
+\begin{equation}
+ u=v'+1,\qquad
+ \rankf(c,u)=1,\qquad \rankf(c,v')=0,
+ \qquad u,v'\in\N.
+ \label{cdc:rt:eq:clockcertificate}
+\end{equation}
+When it exists, this pair is uniquely $u=2^{T(c)}$, $v'=u-1$.
+Checking it takes time polynomial in its binary length and the input length.
+Its length, however, has no computable input-only upper bound. Uniqueness
+plus efficient verification in the certificate length therefore does not
+place this universal halting problem in $\UP$; the missing hypothesis is a
+polynomial \emph{input-length} certificate bound.
+
+\section{An exact finite-fold and single-fold bottleneck\srctag{12}}
+\label{cdc:rt:sec:bottleneck}
+The previous construction lets us turn a caution about witnesses into a
+precise equivalence theorem. It singles out one fixed, total, monotone,
+polynomial-time Boolean function whose multiplicity-preserving Diophantine
+representation already captures the full general problem.
+\wtag{} [Compare \cref{cdc:pt:prop:exponential-boundary}, where the graph of $2^n$ plays the same role through the single-fold exponential normal form, which ProveIt formalizes (\cref{cdc:bd:rem:sfu}), and \cref{cdc:rx:thm:FF}, where the least-reservoir relation of one reaction network does.]
+
+\subsection{The two representation principles}
+Let $\SF$ be the principle that every computably enumerable subset
+of $\N$ has a single-fold Diophantine representation over natural witnesses.
+Let $\FF$ be the analogous finite-fold principle. We use these names
+as mathematical statements; no assertion that either is proved is being made.
+The corresponding statements for relations of finitely many natural variables
+are equivalent, since iterated Cantor pairing has unique natural values and
+is expressed by integer polynomial equations after clearing the factor two.
+\wtag{} [$\SF$ and $\FF$ are statement~(a) of \cref{cdc:bd:thm:universal} in its single-fold and finite-fold versions, and the remark on relations of finitely many variables is (a)$\Leftrightarrow$(a$'$) there; Part~XIII uses the same names (\cref{cdc:conv:b62-11}).]
+
+The graph of the fixed rank function is
+\[
+ \Gamma_{\rankf}=\{(c,k,b)\in\N^3:b=\rankf(c,k)\}.
+\]
+It is a recursive relation, indeed decidable in polynomial time on binary
+inputs. Ordinary MRDP supplies a polynomial representation of this graph,
+but its auxiliary multiplicity is not controlled by that theorem
+\cite{repo-mrdp}. The distinction is exactly what matters next.
+
+\begin{theorem}[One monotone rank function is a complete multiplicity bottleneck]
+\label{cdc:rt:thm:bottleneck}
+For the fixed function $\rankf$ in \eqref{cdc:rt:eq:rankclock}:
+\begin{enumerate}[label=(\roman*)]
+\item $\Gamma_{\rankf}$ has a single-fold Diophantine representation if and
+only if $\SF$ holds.
+\item $\Gamma_{\rankf}$ has a finite-fold Diophantine representation if and
+only if $\FF$ holds.
+\item More quantitatively, suppose a polynomial
+$G(c,k,b,\mathbf z)$ of degree $d$, with $r$ natural auxiliary coordinates,
+represents $\Gamma_{\rankf}$ with either of these multiplicity properties.
+Then every computably enumerable subset of $\N$ has a representation with
+the same property, at most $2r+3$ natural witnesses, and degree at most
+$\max\{4,2d\}$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The forward implications require a construction. Fix a computably enumerable
+set $A$ and choose its interpreter code $e$ from \eqref{cdc:rt:eq:pairing}.
+Use disjoint $r$-tuples $\mathbf a,\mathbf b$ and three additional natural
+witnesses $c,u,v'$. Define the explicit polynomial schema
+\begin{align}
+ H_e(n;c,u,v',\mathbf a,\mathbf b)
+ ={}&\bigl(2c-(e+n)(e+n+1)-2n\bigr)^2\nonumber\\
+   &+(u-v'-1)^2\nonumber\\
+   &+G(c,u,1,\mathbf a)^2
+     +G(c,v',0,\mathbf b)^2.
+ \label{cdc:rt:eq:bottleneckpoly}
+\end{align}
+At a natural zero, the first squared residual forces the unique value
+$c=\pi_{\mathrm C}(e,n)$. The remaining residuals say exactly
+\eqref{cdc:rt:eq:clockcertificate}, with witnesses for its two rank queries.
+Thus a root exists exactly when $\mathcal U(\pi_{\mathrm C}(e,n))$ halts, equivalently
+when $n\in A$.
+
+For a fixed $n\in A$, the triple $(c,u,v')$ is unique. If $G$ is single-fold,
+there is also exactly one $\mathbf a$ and one $\mathbf b$, so the complete
+witness tuple for $H_e$ is unique. If $G$ is finite-fold, there are finitely
+many choices of each of these two tuples, and their Cartesian product is
+finite. Hence $H_e$ has the corresponding multiplicity property.
+There are $2r+3$ witnesses. Its first residual is quadratic, its second is
+linear, and substituting constants for the third argument of $G$ does not
+increase its degree. Squaring therefore gives the bound $\max\{4,2d\}$.
+The use of the extra variable $c$, rather than substituting the quadratic
+pairing polynomial directly inside $G$, is what preserves this degree bound.
+
+For the reverse implications, $\Gamma_{\rankf}$ is computably enumerable,
+so the asserted general principle supplies its representation after a unique
+triple encoding. More explicitly, encode $(c,k,b)$ by
+$\pi_{\mathrm C}(\pi_{\mathrm C}(c,k),b)$. Apply the unary principle to the set of such codes in the
+graph, and adjoin the two unique polynomial pairing equations. A sum of
+squares combines the equations without creating choices in the pairing
+coordinates. This preserves single-foldness or finite-foldness, respectively.
+\end{proof}
+
+The theorem is an equivalence, not a solution of either representation
+principle. Its content is that even a very benign-looking local arithmetic
+routine cannot be assumed to admit a fixed-arity multiplicity-preserving
+polynomial graph for free. The routine is total, monotone in its second
+argument, Boolean-valued, and polynomial time on binary inputs; those
+properties do not remove the global representation issue.
+
+There is also an unconditional statement: if one chooses any ordinary MRDP
+polynomial $G$ for the graph, \eqref{cdc:rt:eq:bottleneckpoly} is an ordinary
+Diophantine representation of every $A$. What is missing in that
+unconditional construction is precisely control of the $G$-witnesses.
+The paper does not supply the coefficients of such a global rank polynomial;
+its explicit coefficient-level compilers are the finite RLE and grammar
+constructions, not a claimed new constructive proof of MRDP.
+
+\paragraph{\wtag{} Relation to Part~IX and Part~XIII.} \Cref{cdc:rt:thm:bottleneck} is the history-free form of~(c) in \cref{cdc:bd:thm:universal}. There the decidable relation is the first-halting trace verifier $\operatorname{Trace}_U(e,x,h)$, whose history argument $h$ is unbounded; here it is the graph of one total, monotone, Boolean function of two arguments, computable in polynomial time on binary inputs, and the proof follows the same cycle through a canonical witness, here the pair $(u,v')$ of \eqref{cdc:rt:eq:clockcertificate}. \Cref{cdc:rx:thm:FF} (Part~XIII) proves the same pattern for the least-reservoir relation of a fixed reaction network, and \cref{cdc:pt:prop:exponential-boundary} for the graph of $2^n$, in the single-fold direction, through the single-fold exponential normal form that ProveIt formalizes (\cref{cdc:bd:rem:sfu}). New in \cref{cdc:rt:thm:bottleneck}: a Boolean threshold function, an elementary proof that does not use the exponential normal form, the finite-fold version beside the single-fold one, and the explicit accounting of~(iii), $2r+3$ witnesses and degree at most $\max\{4,2d\}$.
+
+\subsection{Why bounded circuit quartics do not close the gap}
+\begin{proposition}[Canonical quartics at every external bit budget]
+\label{cdc:rt:prop:boundedclock}
+For every pair of positive integers $a,b$, there is an effectively
+constructible quartic polynomial $Q_{a,b}(c;\mathbf w)$, with a number of
+natural witness coordinates polynomial in $a+b$, such that it has a unique
+natural root exactly when
+\[
+ 0\le c<2^a\quad\text{and}\quad T(c)=b-1.
+\]
+The root may include the uniquely forced routing odometer $u=2^{b-1}$.
+\end{proposition}
+\begin{proof}
+Use $a$ Boolean witness bits to encode $c$, with the linear equality
+$c=\sum_{i=0}^{a-1}2^i c_i$. They give a unique encoding exactly in the
+specified range. Construct a Boolean circuit that simulates the fixed machine
+on this input for $b-1$ transitions and tests that its first halting time is
+exactly $b-1$. This is a deterministic bounded computation on a tape segment
+of polynomial size in $a+b$, so the circuit has polynomially many gates.
+It also handles $b=1$ by checking the initial configuration.
+
+Take gates of types AND and NOT, introducing one variable for each wire.
+Impose Boolean equations $t(t-1)=0$ on the wire values, equations $z-xy=0$
+for AND gates, and $z+x-1=0$ for NOT gates. Fix the initial input and constant
+wires, require the final acceptance wire to equal one, and add
+$u-2^{b-1}=0$. All equations have degree at most two. Their squared sum is
+quartic. The circuit is deterministic and acyclic, so for fixed input bits
+all wire values are uniquely determined. The input bits and $u$ are also
+unique. This proves the claim.
+\end{proof}
+
+A different $b$ produces a different polynomial with potentially a different
+number of coordinates. The assertion
+\[
+ \exists b\;\bigl(Q_{a,b}(c;\mathbf w_b)=0\text{ for some }\mathbf w_b\bigr)
+\]
+is not yet one ordinary fixed-arity Diophantine equation. Turning this
+externally indexed family into a fixed polynomial while preserving all
+auxiliary uniqueness is exactly the issue that must not be skipped. The
+one-router example makes the gap visible even though there is only one
+semantic exit count and one accepting time.
+
+\section{Executable artifacts and the formalization boundary\srctag{12}}
+\label{cdc:rt:sec:artifacts}
+
+\subsection{What the supplied programs actually do}
+The archive contains two dependency-free Python programs. The file
+\path{code/12-rle-routing-verify_certificates.py} supplies direct legal execution, analytic prefix
+counts, canonical RLE witnesses, residual evaluation, canonical grammar-path
+witnesses, and deterministic regression tests. Its integer arithmetic is
+exact. The test instantiation of the universal-clock routine uses small
+countdown and looping transition systems; it tests the rank mechanism, not
+the universality of a particular encoded Turing machine.
+
+The file \path{code/12-rle-routing-compile_quartic.py} is a sparse integer-polynomial compiler
+for the RLE residual system. It supports both fixed numeric run lengths and
+free natural parameters $\lambda_{vj}$ with $\ell_{vj}=\lambda_{vj}+1$.
+It constructs and expands the sum of squared residuals. Its output is a
+coefficient-and-monomial representation of an actual polynomial, not a call
+to an MRDP oracle or a numerical equation solver.
+
+For the one-vertex period $v^3s$, the expanded fixed-length polynomial has
+$50$ nonzero monomials, total degree four, and thirteen witness variables.
+The same destination topology with both block lengths left free produces
+$81$ nonzero monomials and still has degree four and thirteen witnesses.
+These are illustrative counts for the supplied compiler, not minimality
+claims. Both versions have eleven quadratic-or-linear residuals.
+
+The human-readable residuals and expanded polynomials are included as
+\path{data/12-rle-routing-example_quartic.txt} and \path{data/12-rle-routing-parametric_quartic.txt}; their JSON
+counterparts list every integer coefficient and monomial exponent. The sample
+root uses two input chips, giving eight firings and two sink arrivals.
+This small example makes the coefficient-level construction inspectable
+without printing a very long multivariate polynomial in the main text.
+
+\subsection{Exact test results and their scope}
+The following results were obtained from the supplied suite. The detailed
+machine-readable receipt is \path{data/12-rle-routing-test_results.json}.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Check & Count or value\\
+\midrule
+Two-active-vertex, one-sink, length-two networks & $81$\\
+Network/input pairs, with each initial count in $\{0,1,2\}$ & $729$\\
+Candidate odometers in $\{0,\ldots,12\}^2$ examined & $123{,}201$\\
+Balanced candidates among these & $2{,}037$\\
+Accepted exact odometers among these & $535$\\
+Single-coordinate $+1$ mutations of true RLE roots rejected & $13{,}375$\\
+Additional random halting RLE networks & $200$\\
+Analytic-versus-expanded RLE prefix comparisons & $13{,}236$\\
+Small shared grammars / prefix comparisons & $150\;/\;712$\\
+Single-coordinate $+1$ grammar-witness mutations rejected & $35{,}952$\\
+Large unexpanded grammar period length & $2^{1025}$\\
+Universal-clock mechanism checks on toy systems & $205$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The bounded odometer enumeration is not an enumeration of every auxiliary
+tuple of every polynomial. Arithmetic uniqueness of the local fields reduces
+the comparison to candidate odometers; the general completeness and
+single-foldness claims rest on the proofs. Likewise, mutation tests are good
+at finding missing constraints but cannot establish a universal theorem.
+
+For every tested halting finite network, the suite compares smallest-index and
+largest-index legal scheduling and obtains the same full odometer and sink
+outputs. The largest observed total firing count in the exhaustive tiny
+network experiment is $20$. The enormous example of
+Example~\ref{cdc:rt:ex:huge} is a separate direct certificate evaluation and does
+not involve a simulation of those firings.
+
+Each illustrative symbolic polynomial is additionally compared with the
+independent residual evaluator at $500$ arbitrary natural assignments, not
+only at its true root. At those assignments, the expanded polynomial exactly
+equals the sum of the directly evaluated squared residuals. These checks
+exercise coefficient aggregation and cancellation in the sparse compiler.
+
+\subsection{A concrete Lean integration plan}
+The repository snapshot used for this paper is
+\code{e18718e837d43e162252f9a314e8cb797fbd1a1f}. Its documented MRDP endpoint
+works with one free natural input and a finite tuple of natural witnesses,
+with integer polynomial evaluation. The guide also identifies
+\code{MRDP.boundedForall_dioph}, \code{MRDP.primrec_diophFn}, and the older
+\code{DiophantineTrace.lean} reachability interfaces \cite{repo-mrdp}.
+\wtag{} [The two declarations are in \path{Computability/HilbertTenthProblem/Lean/Diophantine/Common/MRDPCore.lean}, namespace \code{MRDP}; this report elsewhere cites the separate \code{Diophantine.boundedForall_dioph} of \path{DiophantineTrace.lean} \cite{repo-trace}.]
+These are relevant integration points, but none of them supplies the new
+single-fold routing theorem merely by being imported.
+
+A suitable new formal development would separate five layers.
+\begin{enumerate}[label=\arabic*.]
+\item \textbf{Operational semantics.} Use finite active and sink types, natural
+chip vectors and firing counters, arbitrary stack functions, and finite legal
+execution lists. Prove the conservation formula first. The least-action proof
+then needs only prefix monotonicity and a first attempted excess, not an
+external theorem about infinite abelian networks.
+\item \textbf{Exactness.} Define the selected last-exit function on positive
+odometer support. Prove that complete legal executions induce strictly
+increasing last-departure times along selected active edges. For the reverse
+direction, formalize the residual-flow argument of
+Theorem~\ref{cdc:rt:thm:last}, including the finite functional-graph cycle lemma.
+\item \textbf{Canonical local arithmetic.} Prove the unique positive-remainder
+and block-selection theorem, with inactive coordinates forced to zero. For
+grammars, prove the one-path theorem by induction through the acyclic node
+order. Keep the unique-witness statements explicit in these interfaces.
+\item \textbf{Polynomial extraction.} Build a finite list of multivariate
+integer polynomials, one per residual. Prove that evaluating their squared sum
+at natural assignments gives zero exactly when every residual vanishes.
+Then establish a bijection between roots and complete odometers, rather than
+only an existence equivalence. Variable-count and degree bounds are separate
+syntactic obligations.
+\item \textbf{Effective universality and reductions.} Formalize the bounded
+rank evaluator and the time-dilation lemma for the chosen universal machine.
+Only the ordinary unbounded rank-graph representation needs MRDP. The
+single-fold and finite-fold implications should remain explicitly conditional
+on the corresponding local rank-graph hypothesis.
+\end{enumerate}
+
+The integer/natural interface merits particular care. Polynomial residuals
+use signed subtraction in $\Z$; semantic chip counts and all witnesses are
+natural. One should not translate a signed residual such as $u-x-F$ into
+truncated subtraction on $\N$. The most convenient semantic invariant is
+usually an equality of natural sums, followed by an explicit coercion into
+$\Z$ when connecting it to the polynomial.
+
+None of these new layers has been kernel-checked in this package. The
+repository's existing audit reports concern its existing declarations, not
+this manuscript. This distinction is consistent with the broader practice of
+developing mathematical constructions and their formalization in parallel,
+as discussed in recent work on universal Diophantine bounds \cite{bayer}.
+
+\section{Further research questions and concrete targets\srctag{12}}
+\label{cdc:rt:sec:research}
+The following is a proposed research program. Items described as questions are
+questions for this construction or project; the list is not a claim that every
+formulation is an established open problem in the literature.
+
+\srcnote{\wtag{} Manuscript~12 posed its eight items under numbered headings of unnumbered subsections; the headings, without their numbers, are the titles here, and the text is unchanged. A \wtag{} line after an item names the question of \cref{cdc:sec:questions} it overlaps; the items are not merged with them.}
+
+\begin{question}[A kernel-checked single-fold compiler, end to end; source 12]
+The first target is the exact statement of Theorem~\ref{cdc:rt:thm:rle}, including
+free run-length parameters, complete witness uniqueness, degree four, and the
+precise coordinate count. A useful deliverable would be a Lean function
+returning the residual polynomials together with proofs of its semantic
+correctness and of a unique-root theorem. The residual-flow converse is a
+natural independent mathematical milestone. A successful compiler should emit
+a checkable theorem about its output polynomial, not only validate examples.
+\end{question}
+
+\wtag{} Compare \cref{cdc:q:verified}, and Part~XIII's question on a verified compiler with a solution-set bijection.
+
+\begin{question}[Smaller canonical certificates without hidden multiplicity; source 12]
+Can the $4n+4m+s$ coordinate count be reduced while retaining an explicit
+quadratic-residual presentation and natural single-foldness? Some equations
+are deliberately redundant or chosen for clarity. Savings should be measured
+against coefficient size and polynomial sparsity, not only variable count.
+Eliminating a height coordinate by substituting a long path expression, for
+example, may raise degree or expression size. A rigorous lower-bound question
+would first fix a compiler model and an allowed local gadget vocabulary;
+there is no unrestricted minimality assertion in this paper.
+\end{question}
+
+\wtag{} Compare \cref{cdc:q:degree}.
+
+\begin{question}[Multiple prefix queries on a globally shared grammar; source 12]
+The grammar theorem shares subwords within each local period but gives each
+independent prefix query its own activation and position coordinates. Networks
+with many roots in one enormous shared grammar may waste these duplicated
+certificates. Can several paths be certified canonically using a compressed
+query structure whose size follows the actual overlap of the paths? A useful
+result would specify a sharp parameter, such as the number of distinct
+selected node/offset pairs, and prove both degree control and uniqueness.
+\end{question}
+
+\wtag{} Compare \cref{cdc:q:locality}, which asks for canonical DAG codings with polynomial bit height; here the DAG is given and the descent path is canonical (\cref{cdc:rt:thm:grammar}).
+
+\begin{question}[Algorithms exploiting the forest certificate; source 12]
+The polynomial certificate describes an answer without efficiently finding it.
+Can its canonical last-exit forest guide a practical solver on networks with
+small feedback vertex sets, bounded treewidth, or few distinct period blocks?
+The phase-transport identity in Proposition~\ref{cdc:rt:prop:transport} suggests
+reusing solutions for related loads. A meaningful algorithmic result must
+bound the number of selector or forest changes rather than simply invoke
+uniqueness of the final certificate. Comparisons with existing ARRIVAL methods
+should be made on the same representation and output task.
+\end{question}
+
+\begin{question}[The intermediate territory between grammars and circuits; source 12]
+Theorem~\ref{cdc:rt:thm:countbarrier} shows why arbitrary circuit random access is too
+broad for the same short-certificate guarantee without a major complexity
+consequence. Which intermediate descriptions admit efficient prefix counting
+and compact canonical algebraic certificates? Candidates include restricted
+branching programs, decomposable circuit descriptions, and descriptions with
+an explicit small dynamic-programming interface. The task is to prove a
+representation-sensitive theorem, with the rank routine and its certificate
+size exposed, rather than to call every description merely ``succinct.''
+\end{question}
+
+\begin{question}[The monotone rank bottleneck as a test for general claims; source 12]
+Theorem~\ref{cdc:rt:thm:bottleneck} gives a specific stress test for any proposed
+single-fold or finite-fold compilation theorem for total polynomial-time
+functions. Does the proposed theorem apply to \eqref{cdc:rt:eq:rankclock}? If it
+does, the explicit polynomial \eqref{cdc:rt:eq:bottleneckpoly} must be included in
+the claimed consequences. A constructive attack could look for special
+arithmetic structure in the threshold-time relation, while a limitation
+result could identify exactly which local-certificate hypotheses exclude it.
+This is a substantial global target, not a consequence already delivered by
+bounded Boolean-circuit encodings.
+\end{question}
+
+\wtag{} Compare \cref{cdc:q:compression,cdc:q:ffprimitives}, and the notes added to them in batch~63.
+
+\begin{question}[Infinite-background abelian computation; source 12]
+Cairns's universal sandpile construction \cite{cairns} offers a physically
+more local setting in which to seek arithmetic certificates. For a specified
+finite toppling event, what finite causal region can be certified without
+unrolling every toppling? Which global halting questions require information
+outside every effectively bounded region? The functional last-exit proof here
+uses one outgoing chip per firing; sandpile topplings send several chips and
+need a different residual-flow or causal-forest invariant. Establishing that
+invariant, or proving an obstruction to a proposed one, would be a meaningful
+extension rather than a black-box application of MRDP.
+\end{question}
+
+\begin{question}[Explicit preperiods and more general abelian processors; source 12]
+There is a useful gap between explicitly supplied ultimately periodic stacks
+and the non-effectively bounded eventual constancy of the universal clock.
+A next compiler can handle supplied finite prefixes followed by RLE or grammar
+periods, with a canonical selector for whether the odometer ends before or
+after the cutoff. Beyond routing, one can ask which finite-state abelian
+processors retain a canonical completion certificate when firings consume or
+produce several messages. The conservation and minimality hypotheses should
+be stated first; replacing the functional last-exit forest by an unjustified
+ranking condition would risk accepting false circulations.
+\end{question}
+
+\wtag{} Compare \cref{cdc:q:beyond}.
+
+\section{Conclusion\srctag{12}}
+The paper develops two complementary conclusions. For explicitly compressed
+finite routing, the entire execution history can be replaced by a canonical
+spatial object: prefix counts together with exact last-exit distances. This
+produces a genuine fixed-arity, parametric, single-fold quartic for each
+routing topology, and extends to shared grammar descriptions of periods.
+Its size follows the description of the local instructions, not the number
+of firings.
+
+For universally generated instructions, even strikingly simple pointwise
+stacks do not provide the same guarantee. The universal clock has one chip,
+one active vertex, at most one sink event, eventual constancy, and
+polynomial-time prefix ranks. Nevertheless its exact exit count has no
+computable input-length bound. Its local rank graph carries the entire
+single-fold and finite-fold representation issue, as witnessed by an explicit
+conditional polynomial construction with $2r+3$ auxiliaries.
+
+The useful frontier is therefore not simply ``classical machine versus
+unconventional substrate.'' It is the interaction between effective instruction
+descriptions, exact local prefix arithmetic, canonical global causality, and
+control of every arithmetic witness. The constructions and reductions here
+make those requirements separate, testable, and suitable for a formal
+continuation in ProveIt.
+
+\section{Reproduction instructions and archive contents\srctag{12}}\label{cdc:rt:app:reproduction}
+\srcnote{\wtag{} Appendix~A of manuscript~12. The listings keep the delivered layout, in which \path{article.tex}, \path{verify_certificates.py} and \path{compile_quartic.py} sit in one directory and the second imports the first by that name. Manuscript~12's \path{article.tex}, \path{article.pdf}, \path{README.md} and \path{SHA256SUMS} are not shipped (its text is this Part and \cref{cdc:sec:ms12}); the programs are \path{code/12-rle-routing-*.py}, the build file is \path{code/12-rle-routing-Makefile} and the provenance note is \path{12-rle-routing-SOURCES.md}. This report's README gives a rerun recipe for the shipped names.}
+The source is a self-contained \LaTeX{} document with an embedded bibliography.
+No external images, proprietary assets, or font files are required. Standard
+TeX packages are used. Compile with
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+
+Run the exact checks and regenerate the two illustrative polynomials with
+\begin{lstlisting}
+python verify_certificates.py --output test_results.json
+python compile_quartic.py --output example_quartic.json
+python compile_quartic.py --variable-lengths \
+    --output parametric_quartic.json
+\end{lstlisting}
+The Python code requires Python 3.10 or later and no third-party packages.
+The programs can also be imported. For a custom topology, instantiate
+\code{Network} with its active-vertex periods and sink count, then call
+\code{compile_rle(network, variable_lengths=True)}. Destinations
+$0,\ldots,n-1$ are active; destinations $n,\ldots,n+s-1$ are sinks.
+Every supplied block is a pair \code{(destination, positive_length)}.
+In the parametric mode the numeric lengths only specify a sample instance;
+each actual length in the returned polynomial is a free natural parameter
+plus one.
+
+The archive includes the PDF and \LaTeX{} source, both Python programs,
+JSON test results, fixed and parametric polynomial exports in JSON and text,
+a README, a build file, and a provenance note. These exported polynomials are
+examples. The general RLE theorem applies to the compiler for any validated
+finite topology; the grammar compiler is given by its full mathematical
+schema and executable local-path checks, not by a separately exported global
+symbolic grammar compiler in this package.
+
+\section{A compact dependency map\srctag{12}}\label{cdc:rt:app:dependencies}
+\srcnote{\wtag{} Appendix~B of manuscript~12.}
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.30\textwidth}X@{}}
+\toprule
+Claim & Dependencies and verification status\\
+\midrule
+Exact odometer criterion & Prefix monotonicity, conservation, finite graph
+argument; complete proof in Section~\ref{cdc:rt:sec:balance}. Classical mechanism.\\
+Parametric RLE quartic & Exact odometer criterion and canonical interval
+slacks; explicit compiler and numerical regression tests supplied.\\
+Grammar quartic & Exact odometer criterion and unique DAG descent;
+complete equations and proof, local-path tests supplied.\\
+Both-outcome certificates & Finite-state bound and trap collapse;
+mathematical proof, no claim of a new standard ARRIVAL upper bound.\\
+Circuit counting barrier & A direct satisfying-assignment count and a
+polynomial-verifier reduction; proof supplied.\\
+Universal one-router boundary & Fixed universal machine and logarithmically
+bounded simulation; full reduction proof, toy mechanism tests only.\\
+Single-/finite-fold equivalence & Explicit polynomial
+\eqref{cdc:rt:eq:bottleneckpoly}; conditional local rank-graph assumption is retained.\\
+Ordinary unbounded Diophantine representation & Existing MRDP theorem;
+no auxiliary uniqueness inferred from it.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
 % [write] batch 62: restore the global equation counter of the appendices.
 \counterwithout{equation}{section}
 \setcounter{equation}{\value{cdcsavedequation}}
@@ -16091,7 +17706,7 @@ the resources required by a zero power.
 \clearpage
 
 \section{Provenance of this report}\label{cdc:sec:provenance}
-\wtag{} This report was built from eleven manuscripts. Six arrived in batch~60 of ProveIt's incoming reports (arrival commits \texttt{725d2ebb6} and \texttt{c1f56f842}) and were placed by commit \texttt{7498484af}; the seventh arrived alone in batch~61 (\texttt{b998f70c6}) and was placed by \texttt{3bf66a8bc} as the report's seventh member, before the report was written. Four more arrived in batch~62 (arrival commit \texttt{b57c0b5ff}), after the report had been written, and were placed by \texttt{adeddcecc} as additions 08--11; they form Parts~X--XIII. Each manuscript's source and delivery README survive only in its arrival commit, except manuscript~05's source, which is the base of this article; no manuscript PDF is shipped.
+\wtag{} This report was built from twelve manuscripts. Six arrived in batch~60 of ProveIt's incoming reports (arrival commits \texttt{725d2ebb6} and \texttt{c1f56f842}) and were placed by commit \texttt{7498484af}; the seventh arrived alone in batch~61 (\texttt{b998f70c6}) and was placed by \texttt{3bf66a8bc} as the report's seventh member, before the report was written. Four more arrived in batch~62 (arrival commit \texttt{b57c0b5ff}), after the report had been written, and were placed by \texttt{adeddcecc} as additions 08--11; they form Parts~X--XIII. A twelfth arrived in batch~63 (arrival commit \texttt{a4268e78e}), after Parts~X--XIII had been written, and was placed by \texttt{62f1ad07c} as addition~12; it forms Part~XIV. Each manuscript's source and delivery README survive only in its arrival commit, except manuscript~05's source, which is the base of this article; no manuscript PDF is shipped.
 
 \begingroup\footnotesize\setlength{\tabcolsep}{3pt}
 \begin{longtable}{@{}p{0.035\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.1\textwidth}>{\raggedright\arraybackslash}p{0.3\textwidth}@{}}
@@ -16110,6 +17725,7 @@ No. & Archive (batch, manuscript) & Arrival & Pin & Placed & Contribution (Parts
 09 & \path{order_free_diophantine.zip} (62, 02) & \texttt{b57c0b5ff} & \texttt{4e128356d} & \texttt{adeddcecc} & degree classification under orthant nonnegativity; order-free tile-assembly compiler (XI)\\
 10 & \path{ProveIt_Priority_Pumping_Diophantine.zip} (62, 04) & \texttt{b57c0b5ff} & \texttt{4e128356d} & \texttt{adeddcecc} & priority capacity, sharp pumping, program-uniform quartic, periodic tails, affine macros (XII)\\
 11 & \path{one_shared_fallback_research.zip} (62, 05) & \texttt{b57c0b5ff} & \texttt{4e128356d}\newline\texttt{ccfb084ad} & \texttt{adeddcecc} & one-fallback reaction compiler, reservoir threshold, trace and minimum-fuel quartics, canonical-fuel equivalence (XIII); names a later commit besides its pin\\
+12 & \path{Diophantine_Certificates_Without_Histories.zip} (63, 02) & \texttt{a4268e78e} & \texttt{e18718e83} & \texttt{62f1ad07c} & exact odometers by balance and last exits, run-length and grammar quartics, both-outcome certificates, counting barrier, universal one-router system, rank-function bottleneck (XIV)\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -16124,10 +17740,11 @@ No. & Archive (batch, manuscript) & Arrival & Pin & Placed & Contribution (Parts
 \item \emph{Bibliography.} One list; duplicates merged, each item naming the manuscripts that cite it. Manuscript~07 cites a different Cantone--Cuzziol--Omodeo article (\cite{cco-six}) from the one cited by manuscripts~02, 04, 05 and~06 (\cite{cco2024}); they are kept apart. Manuscript~07's two unpublished ``companion'' items are manuscripts~04 and~06 themselves; its sentence citing them now names them.
 \item \emph{Corrections.} Manuscript~06 cited Jones--Matiyasevich for ProveIt's documentation of MRDP and its interfaces; it now cites the repository. Manuscript~04's hard-coded section numbers (``Section~2'', ``Section~3'', ``Section~7'') now point to its sections here. Sentences in which manuscripts~01 and~05 describe their own delivered packages carry notes on what is and is not shipped.
 \item \emph{Batch 62 (manuscripts 08--11).} Each manuscript is appended as one Part (X--XIII) after Part~IX, in its own order, so that no existing Part, section, theorem, question or equation number changes; forward pointers in Parts~II--V, VII and~IX are unnumbered \wtag{} paragraphs. Where a batch-62 result duplicates one above, both are printed because the variants differ: manuscript~08's memory compiler beside manuscript~03's, with an exact comparison after it; manuscripts~09's and~11's no-bound statements and manuscript~11's canonical-fuel equivalence with their own proofs, each preceded by a note naming the Part~IX statement it specializes (\cref{cdc:bd:prop:nobound,cdc:bd:thm:universal}). Manuscript~09's three parts are sections of Part~XI. The introductions of 08--11 are in \cref{cdc:sec:manuscripts}; their validation, formalization plans, questions and conclusions stay in their Parts, and their 39 questions are cross-referenced to, not merged with, the questions above (\cref{cdc:conv:b62q}). One symbol is renamed (09's tile palette $T$ is $\mathcal T$) and one operator gains a subscript (08's $\NF_{\mathrm{birth}}$); the equations of Parts~X--XIII are numbered within sections. Corrections: 11's report of a later live-branch read is recast as a pin statement, and its unpinned link to ProveIt's MRDP guide is pinned in the bibliography; 09's ``Part~I and 11's ``Appendix~A point to their sections here; where 08--11 name their own files in prose, the shipped names are printed, and their command listings keep the delivered layout with a note. The title-page lines that named the AI assistant are recorded here only: manuscript~09's PDF metadata ``Research prepared with ChatGPT for Vladimir Reshetnikov; manuscript~10's author line and metadata ``Research manuscript prepared with ChatGPT; manuscript~11's second author line ``Developed with ChatGPT; proofs and executable verification included and metadata ``Research draft prepared with ChatGPT.
+\item \emph{Batch 63 (manuscript 12).} Appended as Part~XIV after Part~XIII, in its own order, so that no existing number changes; its introduction is in \cref{cdc:sec:manuscripts}, and its validation, formalization plan, eight questions, conclusion and appendices stay in the Part. It duplicates no printed result: its bottleneck theorem is a new form of \cref{cdc:bd:thm:universal}(c), its no-bound item a case of \cref{cdc:bd:prop:nobound}, and both are printed with notes and pointers in both directions. Its eight questions are cross-referenced to, not merged with, those of \cref{cdc:sec:questions}; four of those get dated notes, and two unlabelled ones (\cref{cdc:q:beyond,cdc:q:varperiods}) received labels so that they can be cited. Renamed: its Cantor pairing $\pi$ is $\pi_{\mathrm C}$; its $\mathsf{SF}$ and $\mathsf{FF}$ use Part~XIII's macros. Where it names its own files in prose, the shipped names are printed; its reproduction listings keep the delivered layout with a note. Its bibliography keys are mapped: its \texttt{repo}, the project README, to \cite{repo-h10}, because this report's key \texttt{repo} is manuscript~06's different item \cite{repo}, and its \texttt{mrdpguide} to \cite{repo-mrdp}; both entries now also record its pin. Its author line names no assistant. Notes added in \wtag{} brackets: the formalized exponential representation beside its MRDP paragraph, a sharper grammar-length bound, a weaker hypothesis for its transport identity, and the relation of its bottleneck theorem to Parts~IX and~XIII. Dated notes in Parts~IV, VIII, X and~XII point to the neighbouring report \emph{liveness-beyond-halting}, written in the same batch.
 \item \emph{Additions.} The conventions (\cref{cdc:conv:sec}), the Part openings, the remarks on the formalized exponential counterpart (\cref{cdc:bd:rem:sfu}) and on the project's tag-system notes (\cref{cdc:qc:rem:tagnotes}), and every other paragraph marked \wtag{}.
 \end{itemize}
 
-\paragraph{Labels.} \wtag{} Every label carries the prefix \texttt{cdc:}. Manuscript~05's labels keep their names after it (\texttt{cdc:thm:main}); the other manuscripts' labels carry a second prefix: 01 \texttt{cdc:ct:}, 02 \texttt{cdc:pt:}, 03 \texttt{cdc:mem:}, 04 \texttt{cdc:wf:}, 06 \texttt{cdc:cs:}, 07 \texttt{cdc:qc:}. Labels written in the merge use \texttt{cdc:conv:}, \texttt{cdc:bd:}, \texttt{cdc:part:}, \texttt{cdc:sec:}, \texttt{cdc:q:}, or a manuscript's prefix for a section it did not label (\texttt{cdc:wf:sec:interfaces}). Batch~62 adds the sub-prefixes \texttt{cdc:nh:} (08), \texttt{cdc:of:} (09), \texttt{cdc:pf:} (10) and \texttt{cdc:rx:} (11); its written labels are \texttt{cdc:part:heaps}, \texttt{cdc:part:assembly}, \texttt{cdc:part:pumping}, \texttt{cdc:part:reactions}, \texttt{cdc:conv:b62-08} to \texttt{cdc:conv:b62-11}, \texttt{cdc:conv:b62q}, \texttt{cdc:sec:ms08} to \texttt{cdc:sec:ms11}, nine \texttt{cdc:q:} labels added to existing questions, and \texttt{cdc:of:sec:degree}, \texttt{cdc:of:sec:assembly}, \texttt{cdc:of:sec:reproduction} for manuscript~09's three parts.
+\paragraph{Labels.} \wtag{} Every label carries the prefix \texttt{cdc:}. Manuscript~05's labels keep their names after it (\texttt{cdc:thm:main}); the other manuscripts' labels carry a second prefix: 01 \texttt{cdc:ct:}, 02 \texttt{cdc:pt:}, 03 \texttt{cdc:mem:}, 04 \texttt{cdc:wf:}, 06 \texttt{cdc:cs:}, 07 \texttt{cdc:qc:}. Labels written in the merge use \texttt{cdc:conv:}, \texttt{cdc:bd:}, \texttt{cdc:part:}, \texttt{cdc:sec:}, \texttt{cdc:q:}, or a manuscript's prefix for a section it did not label (\texttt{cdc:wf:sec:interfaces}). Batch~62 adds the sub-prefixes \texttt{cdc:nh:} (08), \texttt{cdc:of:} (09), \texttt{cdc:pf:} (10) and \texttt{cdc:rx:} (11); its written labels are \texttt{cdc:part:heaps}, \texttt{cdc:part:assembly}, \texttt{cdc:part:pumping}, \texttt{cdc:part:reactions}, \texttt{cdc:conv:b62-08} to \texttt{cdc:conv:b62-11}, \texttt{cdc:conv:b62q}, \texttt{cdc:sec:ms08} to \texttt{cdc:sec:ms11}, nine \texttt{cdc:q:} labels added to existing questions, and \texttt{cdc:of:sec:degree}, \texttt{cdc:of:sec:assembly}, \texttt{cdc:of:sec:reproduction} for manuscript~09's three parts. Batch~63 adds the sub-prefix \texttt{cdc:rt:} (12); its written labels are \texttt{cdc:part:routing}, \texttt{cdc:conv:b63-XIV}, \texttt{cdc:sec:ms12}, \texttt{cdc:rt:app:reproduction} and \texttt{cdc:rt:app:dependencies} for manuscript~12's two appendices, and \texttt{cdc:q:beyond} and \texttt{cdc:q:varperiods} on two existing questions.
 
 \clearpage
 \phantomsection
@@ -16135,7 +17752,7 @@ No. & Archive (batch, manuscript) & Arrival & Pin & Placed & Contribution (Parts
 \begin{thebibliography}{99}
 \small
 \raggedright
-\item[] \wtag{} One bibliography for the eleven manuscripts. An item cited by several manuscripts is printed once; the manuscripts citing it are listed at its end, and a detail given by only one of them is kept and attributed. Repository items are pinned at \texttt{e8bb0931d67f80d9fce87a8cddb0f661ff19f956} (manuscripts 01--06) or \texttt{725d2ebb6909fe11a13a92354c0f47367a3cbbf5} (manuscript~07); the cited files of \path{Computability/HilbertTenthProblem} are identical at the two commits. Manuscript~07's two ``companion'' items were manuscripts~04 and~06 of this report and are not repeated. Manuscripts 08--11 (batch~62) cite the repository at \texttt{4e128356d0ef75308be8ed405d89aea2ffdb8a57}; every file they cite, in \path{Computability}, \path{Logic/PresburgerArithmetic} and the vendored Rocq library, is identical at the three pins.
+\item[] \wtag{} One bibliography for the twelve manuscripts. An item cited by several manuscripts is printed once; the manuscripts citing it are listed at its end, and a detail given by only one of them is kept and attributed. Repository items are pinned at \texttt{e8bb0931d67f80d9fce87a8cddb0f661ff19f956} (manuscripts 01--06) or \texttt{725d2ebb6909fe11a13a92354c0f47367a3cbbf5} (manuscript~07); the cited files of \path{Computability/HilbertTenthProblem} are identical at the two commits. Manuscript~07's two ``companion'' items were manuscripts~04 and~06 of this report and are not repeated. Manuscripts 08--11 (batch~62) cite the repository at \texttt{4e128356d0ef75308be8ed405d89aea2ffdb8a57}; every file they cite, in \path{Computability}, \path{Logic/PresburgerArithmetic} and the vendored Rocq library, is identical at the three pins. Manuscript~12 (batch~63) cites the repository at \texttt{e18718e837d43e162252f9a314e8cb797fbd1a1f}; no file under \path{Computability/HilbertTenthProblem} differs between \texttt{e8bb0931d} and that pin.
 
 \bibitem{repo-h10}
 V. Reshetnikov (and contributors).
@@ -16147,7 +17764,8 @@ the development's tree as cited by manuscript~02:
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e8bb0931d67f80d9fce87a8cddb0f661ff19f956/Computability/HilbertTenthProblem}.
 Manuscript~02: the repository supplies corrected editions and source developments; inspection here does not constitute an independent build audit.
 At the batch-62 pin: the README \url{https://github.com/VladimirReshetnikov/ProveIt/blob/4e128356d0ef75308be8ed405d89aea2ffdb8a57/Computability/HilbertTenthProblem/README.md} (manuscript~10) and the tree \url{https://github.com/VladimirReshetnikov/ProveIt/tree/4e128356d0ef75308be8ed405d89aea2ffdb8a57/Computability/HilbertTenthProblem} (manuscript~08, as ``repository README and associated source''; manuscript~09, as README and formalization status register \path{Lean/STATUS.md}).
-Cited by manuscripts 01, 02, 03, 04, 07, 08, 09, 10.
+At manuscript~12's pin, as ``ProveIt: Hilbert's tenth problem development'', pinned project README: \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e18718e837d43e162252f9a314e8cb797fbd1a1f/Computability/HilbertTenthProblem/README.md}.
+Cited by manuscripts 01, 02, 03, 04, 07, 08, 09, 10, 12.
 
 \bibitem{repo-status}
 V. Reshetnikov (and contributors).
@@ -16178,7 +17796,8 @@ V. Reshetnikov, ProveIt repository.
 \path{Computability/HilbertTenthProblem/Lean/MRDP.md}, inspected at commit \texttt{725d2ebb6909fe11a13a92354c0f47367a3cbbf5}, September 30, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/725d2ebb6909fe11a13a92354c0f47367a3cbbf5/Computability/HilbertTenthProblem/Lean/MRDP.md}.
 Manuscript~11 cites this guide (as ``ProveIt: Hilbert's tenth problem and MRDP guide'') by a link to the repository's \texttt{main} branch, which is not a fixed version; it is pinned here at the manuscript's inspection commit: \url{https://github.com/VladimirReshetnikov/ProveIt/blob/4e128356d0ef75308be8ed405d89aea2ffdb8a57/Computability/HilbertTenthProblem/Lean/MRDP.md}.
-Cited by manuscripts 07, 11.
+Manuscript~12 cites it at its own pin, as the specification of the MRDP interface, proof chain and audit boundary: \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e18718e837d43e162252f9a314e8cb797fbd1a1f/Computability/HilbertTenthProblem/Lean/MRDP.md}.
+Cited by manuscripts 07, 11, 12.
 
 \bibitem{repo}
 V. Reshetnikov.
@@ -16557,5 +18176,55 @@ Parallel program schemata.
 \emph{Journal of Computer and System Sciences} \textbf{3}(2) (1969), 147--195.
 \href{https://doi.org/10.1016/S0022-0000(69)80011-5}{doi:10.1016/S0022-0000(69)80011-5}.
 Cited by manuscript 11.
+
+\item[] \wtag{} The following items were added in batch~63, for manuscript~12. Its two repository items are merged into \cite{repo-h10} and \cite{repo-mrdp}.
+
+\bibitem{friedrich-levine}
+T. Friedrich and L. Levine.
+\emph{Fast simulation of large-scale growth models}.
+arXiv:1006.1003v2, 2012.
+In particular, Theorem~1 and the least-action/acyclicity characterization of abelian-stack aggregation.
+\url{https://arxiv.org/abs/1006.1003}.
+Cited by manuscript 12.
+
+\bibitem{bond-levine}
+B. Bond and L. Levine.
+\emph{Abelian networks I. Foundations and examples}.
+SIAM Journal on Discrete Mathematics \textbf{30}(2) (2016), 856--874.
+arXiv:1309.3445.
+\url{https://arxiv.org/abs/1309.3445}.
+Cited by manuscript 12.
+
+\bibitem{arrival}
+B. G\"artner, T. D. Hansen, P. Hub\'a\v{c}ek, K. Kr\'al, H. Mosaad, and V. Sl\'ivov\'a.
+\emph{ARRIVAL: Next Stop in CLS}.
+ICALP 2018; arXiv:1802.07702.
+Unique run-profile certificates and the $\UP\cap\coUP$ upper bound.
+\url{https://arxiv.org/abs/1802.07702}.
+Cited by manuscript 12.
+
+\bibitem{switching}
+J. Fearnley, M. Gairing, M. Mnich, and R. Savani.
+\emph{Reachability switching games}.
+Logical Methods in Computer Science \textbf{17}(2), article 10 (2021).
+arXiv:1709.08991v7.
+See Section~2 for run-length succinctness and Section~5.3 for last-used-edge structure in succinct zero-player switching games.
+\url{https://arxiv.org/abs/1709.08991}.
+Cited by manuscript 12.
+
+\bibitem{cairns}
+H. Cairns.
+\emph{Some halting problems for abelian sandpiles are undecidable in dimension three}.
+arXiv:1508.00161v2, 2021.
+\url{https://arxiv.org/abs/1508.00161}.
+Cited by manuscript 12.
+
+\bibitem{bayer}
+J. Bayer, M. David, M. Ha\ss ler, Yu. Matiyasevich, and D. Schleicher.
+\emph{Diophantine equations over $\mathbb Z$: universal bounds and parallel formalization}.
+arXiv:2506.20909v1, 2025.
+Used for context on formalization and explicit universal-bound accounting, not as an input to the routing proofs.
+\url{https://arxiv.org/abs/2506.20909}.
+Cited by manuscript 12.
 \end{thebibliography}
 \end{document}
