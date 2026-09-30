@@ -3,8 +3,8 @@
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
 2026-09-04 (see the end of this file). Beside them are forty-one unmerged
-arrivals of 2026-09-29, each filed whole with its PDF, the first
-thirty-nine then amended editorially (see "Arrivals of 2026-09-29" below).
+arrivals of 2026-09-29, each filed whole with its PDF, then amended
+editorially (see "Arrivals of 2026-09-29" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -319,7 +319,7 @@ One continues the critical Hahn article (its lower endpoint `α ↓ 1`); the
 other answers no named question and starts from the action-accumulation
 article's flat oscillations.
 
-The forty-one packages of the first six deliveries, the Fekete and
+All forty-three packages of the seven deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
 pass on 2026-09-29. Unnumbered "Editorial note (ProveIt, 2026-09-29)"
 blocks, which leave each article's own numbering unchanged, record
@@ -331,12 +331,13 @@ listed, figures with Type 3 fonts were regenerated, and every PDF was
 rebuilt from its amended source. Every change to an article source is
 marked by a `% ed.` comment, each package README lists its amendments, and
 the delivered archives remain in the repository history
-(`docs/incoming/README.md`, batches 45 to 50). Page and line counts and line
+(`docs/incoming/README.md`, batches 45 to 51). Page and line counts and line
 citations below refer to the amended files; the volumes are unchanged.
 The sixth delivery was amended in the same way after it was filed, and
-notes recording it were added to eight earlier packages.
-The two packages of the seventh delivery are filed as delivered and have
-not yet been amended; their paragraphs below cite the delivered files.
+notes recording it were added to eight earlier packages. The seventh
+delivery was amended in the same way after it was filed, and notes
+recording it were added to three earlier packages (the critical Hahn,
+confluent and logarithmic-endpoint packages).
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -504,7 +505,7 @@ threshold agrees with the regularity article's Gevrey-type identity at
 
 [`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/`](Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/)
 holds *Beyond Finite-Action Folds: Critical Hahn Transseries, Stable
-Sector Asymptotics, and Sharp Action Budgets* (25-page A4 PDF, 1,806-line
+Sector Asymptotics, and Sharp Action Budgets* (25-page A4 PDF, 1,823-line
 source, exact checks, 75-digit constants and a probability recurrence
 through `n = 4096`). It extends the moving-fold article's finite-action
 critical inversion (`Critical_Transseries_Moving_Fold/article.tex:1051`)
@@ -522,7 +523,8 @@ also computes the critical-value and curvature drift of the finite folds. It
 does not settle the moving-fold article's higher-multiplicity question
 (`:1490-1496`), and it does not cite the regularity article's amplitude
 question, of which it treats the case `λ_j = j`; an editorial note now
-records it.
+records it. An editorial note at its Question 4 now records the
+lower-endpoint article's partial answer.
 
 [`Microscopic_Condensation_Exponential_Feedback/`](Microscopic_Condensation_Exponential_Feedback/)
 holds *Microscopic Condensation in Exponential-Feedback Transseries: sharp
@@ -651,7 +653,7 @@ and differential transcendence are not claimed.
 [`Logarithmic_Critical_Endpoint_Lambert_Charts/`](Logarithmic_Critical_Endpoint_Lambert_Charts/)
 holds *The Logarithmic Critical Endpoint: Convergent Lambert Charts,
 All-Order Sector Laws, and Sharp Action-Cutoff Corrections* (29-page A4
-PDF, 1,950-line source, exact symbolic checks, and floating-point
+PDF, 1,970-line source, exact symbolic checks, and floating-point
 diagnostics through sector index `n = 65536` checked against an 80-digit
 recurrence). It treats the upper endpoint `α = 2` of the critical Hahn
 article above, weights `a_j = a j^{−3}` outside a finite prefix, and
@@ -669,12 +671,13 @@ budget `√n` separate: the retained fraction tends to `exp(−1/(2s²))` at
 form a Poisson process with intensity `x^{−3} dx`. The finite-fold drift is
 given to all inverse-logarithmic orders, with an explicit condition for
 exponentiating it, which answers that article's Question 7 at this endpoint
-(`:1558-1563`); a leading-order extension covers `a_j ~ a j^{−3}(log j)^r`,
+(`:1567-1572`); a leading-order extension covers `a_j ~ a j^{−3}(log j)^r`,
 `r ≥ −1`. Its constants agree with the `α → 2` limits of the critical Hahn
 article's normal form, budget and fold drift. The Gaussian and
 extreme-value mechanism is credited to Janson. Numerical values are
 diagnostics, not interval certificates, and no certified cutoff algorithm
-is claimed.
+is claimed. An editorial note at its Question 8 records the lower-endpoint
+article's partial answer.
 
 [`Marginal_Critical_Transseries_Action_Budgets/`](Marginal_Critical_Transseries_Action_Budgets/)
 holds *Marginal Critical Transseries: Convergent Lambert-W Charts,
@@ -698,7 +701,7 @@ to converge, and prefix independence is claimed only at the displayed order.
 [`Confluent_Critical_Transseries_Exponent_Two_Boundary/`](Confluent_Critical_Transseries_Exponent_Two_Boundary/)
 holds *Confluent Critical Transseries Across the Exponent-Two Boundary: A
 Uniform Inverse Chart, Conditional Poisson Limits, and Sharp Action
-Budgets* (24-page A4 PDF, 1,705-line source, an exact SymPy check program
+Budgets* (24-page A4 PDF, 1,725-line source, an exact SymPy check program
 with 160-digit inverse-chart and floating-point coefficient diagnostics).
 It treats the joint limit that the two endpoint articles above leave open:
 the upper endpoint of the critical Hahn article's Question 4
@@ -724,7 +727,8 @@ the marginal article's `N_n` and `B_n`). The coefficient law is leading
 order only; uniform cutoff corrections, the lower endpoint `α ↓ 1` and
 resurgence are not claimed. Its coefficient diagnostics need an
 extended-range `long double` and stopped with an error when rerun on
-Windows.
+Windows. An editorial note at its Question 10 records the lower-endpoint
+article's partial answer.
 
 [`Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/`](Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/)
 holds *Through the Stable–Gaussian Endpoint: Uniform Critical Transseries,
@@ -781,14 +785,15 @@ windows and certified budgets are left open.
 
 [`Lower_Critical_Endpoint_Landau_Transseries/`](Lower_Critical_Endpoint_Landau_Transseries/)
 holds *Through the Lower Critical Endpoint: Exponentially Coalescing Folds,
-Landau Transseries, and Conditional Action Budgets* (25-page A4 PDF,
-1,697-line source, 43 exact assertions, 24 high-precision normal-form
+Landau Transseries, and Conditional Action Budgets* (26-page A4 PDF,
+1,768-line source, 43 exact assertions, 24 high-precision normal-form
 comparisons, and floating-point coefficient and cutoff diagnostics through
 `n = 2048`). It answers the lower half of the critical Hahn article's
 Question 4
 (`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex:1509-1514`),
-which that article's editorial note and README record as open, for the pure
-tail `c j^{−2−ε}`, `α = 1 + ε ↓ 1`, on the interior-fold side only.
+which that article's editorial note and README recorded as open (they now
+record this partial answer), for the pure tail `c j^{−2−ε}`,
+`α = 1 + ε ↓ 1`, on the interior-fold side only.
 Normalizing by the exact fold `e^{−δ}` removes the apparent pole at `ε = 0`
 and gives a convergent normal form, uniform however `ε` and `δ` vanish. At
 `ε = 0` the fold distance is `δ = −log(1 − e^{−1/c}) ~ e^{−1/c}`, the
@@ -802,17 +807,20 @@ coefficient exactly when `Mδ → ∞`, and the loss at scaled cutoff `m` is
 doubly exponential, `√(λ/2π) exp(−m/(2λ) − λe^{m/λ})/(H(λ)m²)`, so the
 scaled budget for a small loss `h` grows like `λ log log(1/h)`. At `ε > 0`
 the model is the critical Hahn article's with `a = 1`, `β = c` and no
-prefix; its exact fold reduces to that article's emerging-fold law and its
-Gaussian law to that article's supercritical law, which that article states
-only for `1 < α < 2`. It does not cite the same question as posed by the
-confluent article (Question 10,
+prefix; its exact fold reduces to that article's emerging-fold law, and its
+Gaussian law has the shape of that article's supercritical law, which that
+article states only for `1 < α < 2`. Its author text does not cite the same
+question as posed by the confluent article (Question 10,
 `Confluent_Critical_Transseries_Exponent_Two_Boundary/Confluent_Critical_Transseries.tex:1491-1498`)
 and the logarithmic-endpoint article (Question 8,
 `Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex:1713-1717`), which
-it partly answers on the same side. It was written before the
-slowly-varying article above was filed. The boundary-critical and
-subcritical paths, slowly varying tails and certified budgets are left
-open.
+it partly answers on the same side; an editorial note now does, and notes
+at those questions record the answer. It was written before the
+slowly-varying article above was filed; an editorial note now relates its
+slowly varying question to that article, and another gives the dictionary
+to the critical Hahn article (its `δ` is the fold distance, not
+`δ_β = 1 − βd_1`). The boundary-critical and subcritical paths, slowly
+varying tails and certified budgets are left open.
 
 [`Quadratic_Exponential_Feedback_After_Reversion/`](Quadratic_Exponential_Feedback_After_Reversion/)
 holds *Quadratic Exponential Feedback after Reversion: Cancellation,
@@ -1004,8 +1012,9 @@ profile and budget are that article's, and its logarithmic tails are the
 interior counterpart of the logarithmic-endpoint article's log-weighted
 theorems. The lower-endpoint article is the only one at `α ↓ 1`: for the
 pure tail above the boundary-critical coupling it reaches `α = 1` through a
-normal form uniform in `ε`, and at `ε > 0` its fold and Gaussian laws are
-the critical Hahn article's emerging-fold and supercritical laws. The
+normal form uniform in `ε`, and at `ε > 0` its fold law reduces to the
+critical Hahn article's emerging-fold law and its Gaussian law has the
+shape of that article's supercritical law. The
 logarithmic-endpoint and marginal articles prove the same endpoint core;
 the logarithmic-endpoint article, which covers more of the critical Hahn
 article's questions, is the natural base, the marginal article's
@@ -1033,7 +1042,7 @@ logarithms, the slowly-varying article's stable scale omits the factor
 `Γ(−α)` that the critical Hahn article puts into `b_n`, the lower-endpoint
 article's `δ` is the fold distance, not the critical Hahn article's
 coupling mismatch `δ_β = 1 − βd_1`, and its `A = cΓ(1 − ε)δ^ε` is not that
-article's amplitude series `A(t)`, the two crossover articles write
+article's action generating function `A(t)`, the two crossover articles write
 `α = 2 − ε`, and the inverse exponent is `(d − μ)/a`,
 `−b` or `(b − β)/a`), so a notation dictionary must come first.
 
@@ -1309,7 +1318,7 @@ them.
 [`Moment_Determinacy_Nonlinear_Transseries/`](Moment_Determinacy_Nonlinear_Transseries/)
 holds *Moment Determinacy and Nonlinear Transseries: A sharp Gevrey
 threshold, exact flat defects, convergent ambiguity sectors, and
-Lambert–W folds* (25-page A4 PDF, 1,839-line source, a 130-digit check
+Lambert–W folds* (26-page A4 PDF, 1,905-line source, a 130-digit check
 program with exact inverse-coefficient, lattice-moment and flat-defect
 checks). It answers no named question. Starting from the flat oscillations
 of the action-accumulation article above, and from that article's note on
@@ -1333,10 +1342,13 @@ the hidden parameter with explicit tails, whose radius is
 `t_0/(e p y D_0)`: the rescaled deformation map tends to `v e^{−v}`, the
 coefficients tend to the Cayley numbers `k^{k−1}/k!` of the canonical
 volume's tree function `p1:def:cayley`, and a real fold keeps the first
-gamma or theta correction. It does not cite the repository's determinate
-instances, the canonical volume's Bell transform `p8:thm:bell` and the
-certified `q → 1` article's Stieltjes measure. The classical moment theory
-is attributed, and the numerics are not interval-certified.
+gamma or theta correction. Its author text does not cite the repository's
+determinate instances, the canonical volume's Bell transform `p8:thm:bell`
+and the certified `q → 1` article's Stieltjes measure; an editorial note
+now does (the Bell measure has Gevrey order at most one, so it is unique;
+the `q → 1` measure is at the factorial-square boundary), and another names
+the Lean modules its formalization section alludes to. The classical
+moment theory is attributed, and the numerics are not interval-certified.
 
 [`Arithmetic_Transseries_Beyond_Accumulation_Cut/`](Arithmetic_Transseries_Beyond_Accumulation_Cut/)
 holds *Arithmetic Transseries Beyond an Accumulation Cut: divisibility,
@@ -1518,9 +1530,10 @@ files. The finite-core package's
 PDF and source, and other build and quality receipts, such as the
 direct-truncation package's `verification/pdf_audit.json`, likewise describe
 the delivered builds, as their package READMEs say. The lower-endpoint
-package's README still lists its ledger, and its `notes/build_report.json`
-carries digests of its delivered source, PDF, verification program and
-results, which match the filed files.
+package's README now records the retirement of its ledger; its
+`notes/build_report.json` is kept as data, and its digests of the
+verification program and results still match, while those of the source
+and PDF describe the delivered build, as the README says.
 
 Fifty-six CSV tables written with CRLF line endings were normalized to LF
 on filing: the reversion package's `numeric_checks.csv`, the regularity
@@ -1562,8 +1575,9 @@ The sixth delivery has no `.log` file; the second natural-boundaries
 package's `data/run_output.txt` is its redirected program output and is
 byte-identical to its `data/verification.json`. The lower-endpoint package
 of the seventh delivery adds a twelfth, `data/run.log`, the recorded output
-of the run that wrote its `data/` files (with `--output data`; its README's
-command writes under `build/`), likewise added past the rule.
+of the run that wrote its `data/` files (with `--output data`, as its
+README now says; the documented command writes under `build/`), likewise
+added past the rule.
 
 No `build.sh` reruns a verification program in place any more. Those of the
 arithmetic, resonance-block, non-Archimedean reversion and Stokes-transport
@@ -1594,17 +1608,19 @@ takes `--input`); the signed-condensation default degree is now 320, that
 of its recorded run. Its `build.sh` scripts and the Makefiles' `pdf`
 targets only run pdfLaTeX (the exact-degree and second natural-boundaries
 scripts leave `build-pass-*.log` files, which are ignored).
-The programs of the seventh delivery are as delivered. The lower-endpoint
-`verify.py` writes into `build/verification` below the working directory
-unless given `--output`, so from the package root it leaves `data/` alone,
-but its `make_figures.py` always rewrites both figures and
-`data/figure_curve.json`; on Windows, where NumPy's `longdouble` is double
-precision, its numbers reproduce the recorded ones only up to the last
-digits, although its build report records a byte-identical rerun on the
+The lower-endpoint `verify.py` is as delivered. It writes into
+`build/verification` below the working directory unless given `--output`,
+so from the package root it leaves `data/` alone; its `make_figures.py` now
+writes under `build/` and overwrites the shipped figures and
+`data/figure_curve.json` only with `--output-dir .`. On Windows, where NumPy's `longdouble` is double
+precision, a rerun reproduces the recorded numbers only up to the last
+digits, although the build report records a byte-identical rerun on the
 delivering platform. The moment-determinacy `verify.py` writes
 `verification_results.json` into the working directory by default, so its
 README's command run from the package root rewrites the recorded file
-(with identical bytes at the recorded precision). Both `build.sh` scripts
+(with identical bytes at the recorded precision); a run at another `--dps`
+without `--output` now writes `verification_results_dps<N>.json`. Both
+`build.sh` scripts
 only run pdfLaTeX (the lower-endpoint one under `build/`, then copying the
 PDF over `article.pdf`).
 
