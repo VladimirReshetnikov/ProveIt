@@ -1,0 +1,14 @@
+.PHONY: all pdf test examples clean
+all: pdf test
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+test:
+	python tests/run_tests.py
+examples:
+	python code/verify_certificate.py examples/stream_example.json
+	python code/verify_certificate.py examples/quartic_example.json
+	python code/verify_certificate.py examples/zero_slack_example.json
+	python code/verify_certificate.py examples/ternary_tag_example.json
+clean:
+	rm -f article.aux article.log article.out article.toc
