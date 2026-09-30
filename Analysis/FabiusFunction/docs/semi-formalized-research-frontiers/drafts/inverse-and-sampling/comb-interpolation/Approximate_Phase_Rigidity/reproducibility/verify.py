@@ -5,6 +5,9 @@ Exact tests need only the Python standard library. Numerical diagnostics need
 mpmath. They use arbitrary precision but NOT directed rounding; they are not
 proof certificates. The article contains the proofs of the infinite statements.
 No network access is used.
+ed. (2026-09-30): results go to validation-rerun/results.json unless --output
+is given (the recorded validation/results.json is not overwritten by default);
+the JSON file is written with LF line endings on every platform.
 """
 from __future__ import annotations
 
@@ -258,7 +261,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--exact-only', action='store_true')
     parser.add_argument('--dps', type=int, default=90)
-    parser.add_argument('--output', type=Path, default=ROOT/'validation'/'results.json')
+    # ed. (2026-09-30): the default leaves the recorded validation/ files untouched.
+    parser.add_argument('--output', type=Path,
+                        default=ROOT/'validation-rerun'/'results.json',
+                        help='JSON output file (default: validation-rerun/results.json; '
+                             'pass validation/results.json to overwrite the recorded file)')
     args = parser.parse_args()
     if args.dps < 70:
         parser.error('--dps must be at least 70 for the default near-zero tests')
@@ -269,7 +276,8 @@ def main() -> int:
     results['all_passed'] = True
     args.output.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(results, indent=2, sort_keys=True)
-    args.output.write_text(text+'\n', encoding='utf-8')
+    # ed. (2026-09-30): newline='\n' so the JSON is LF on Windows too.
+    args.output.write_text(text+'\n', encoding='utf-8', newline='\n')
     print(text)
     return 0
 

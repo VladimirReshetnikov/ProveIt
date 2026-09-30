@@ -31,6 +31,8 @@
 \newtheorem{question}[theorem]{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
 \newcommand{\T}{\mathbb R/\mathbb Z}
@@ -240,6 +242,26 @@ product of factors tending to one. This proves the formula. The same
 nonvanishing-product argument excludes any other real zero.
 \end{proof}
 
+% ed. (2026-09-30): uncited Lean declarations proving lem:zeros.
+\begin{ednote}
+\Cref{lem:zeros} is machine-checked in the repository, for the same product
+\eqref{eq:product} (\path{Fabius.rvachevFourierProduct}) and even over
+$\C$, although this article does not cite it: the complex zeros of $H$ are
+exactly the nonzero integers
+(\path{Fabius.rvachevFourierProduct_eq_zero_iff},
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/FourierProduct.lean});
+at a nonzero integer $t_0$ the analytic order is $\nu_2(|t_0|)+1$
+(\path{Fabius.analyticOrderAt_rvachevFourierProduct_int}), and the
+derivative of that order is $-p!\,H(m/2)/t_0^{p}$ with $m$ the odd part of
+$|t_0|$, which is nonzero
+(\path{Fabius.iteratedDeriv_rvachevFourierProduct_int} and
+\path{Fabius.iteratedDeriv_rvachevFourierProduct_int_ne_zero}), all in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/IntegerZeroAnalyticOrder.lean}.
+The zero-multiplicity and leading-derivative half of the ``Kernel jets''
+layer in \cref{sec:formal} is therefore already formalized. No theorem of
+this article has a Lean statement.
+\end{ednote}
+
 \subsection{The translation-uniform error}
 
 Write $\lambda$ for normalized Haar measure on $\T=\R/\Z$, and
@@ -321,6 +343,28 @@ supported on $L_r\Z$, equivalently that $\nu$ is invariant under rotation by
 $1/L_r$. Fourier uniqueness follows by approximating continuous test functions
 by trigonometric polynomials. At an irrational $M$, $H(nM)\ne0$ for every
 $n\ne0$, so exactness even for $j=0$ forces $\nu=\lambda$.
+
+% ed. (2026-09-30): relation to the canonical comb synthesis and its Lean
+% counterpart, which the article does not cite.
+\begin{ednote}
+For an integer mesh $M_0=a$ and the one-atom filter $\nu=\delta_0$, the
+classification above says that the unfiltered comb is exact through degree
+$r$ at every phase if and only if $r\le\nu_2(a)$. This is Theorem
+\texttt{thm:up-composite-mesh} of the canonical synthesis
+\path{inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/}
+(part \emph{Additive dyadic foundations}, same normalization
+\eqref{eq:Q}) together with its sharpness, machine-checked in the unscaled
+form (nodes $k+\theta$, kernel $u(x/M)$) as
+\path{Fabius.rvachevCombExactThrough_iff_padicValNat}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/CompositeMeshSharpness.lean}).
+The phase results of that part (\texttt{thm:phase-average},
+\texttt{thm:phase-cubature}, \texttt{thm:tm-bernoulli-egf},
+\texttt{thm:root-unity-filter}, \texttt{thm:phase-zero-set}) are exact
+identities at integer meshes; the synthesis contains no statement at
+irrational meshes and no approximate, Haar-measure or Wasserstein statement.
+\Cref{thm:resonance,thm:profile,thm:complexity,thm:inversion,thm:liouville}
+therefore have no counterpart there.
+\end{ednote}
 
 \section{Finite Fourier witnesses: signs versus positivity}
 \label{sec:witnesses}

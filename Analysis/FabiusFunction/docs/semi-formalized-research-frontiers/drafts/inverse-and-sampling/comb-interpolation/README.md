@@ -28,7 +28,7 @@ Unreviewed; not Lean-checked.
 A fourth archival arrival, of 2026-09-30,
 [`Approximate_Phase_Rigidity/`](Approximate_Phase_Rigidity/)
 (*Approximate Phase Rigidity and Arithmetic Quadrature Complexity*,
-18-page A4 PDF), replaces exactness by a small uniform error: near a
+19-page A4 PDF), replaces exactness by a small uniform error: near a
 reduced rational mesh `a/b` the optimal `N`-phase error through degree
 `r` has exact order `|M−a/b|^{max(0, v₂(a)+1+⌊log₂(N/b)⌋−r)}` for
 positive, signed and complex filters, and at finite-type irrational
