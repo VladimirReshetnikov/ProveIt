@@ -3,8 +3,8 @@
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
 2026-09-04 (see the end of this file). Beside them are fifty unmerged
-arrivals of 2026-09-29, each filed whole with its PDF, the first forty-one
-then amended editorially (see "Arrivals of 2026-09-29" below).
+arrivals of 2026-09-29, each filed whole with its PDF, then amended
+editorially (see "Arrivals of 2026-09-29" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -347,7 +347,7 @@ collection's *Shifted Catalan Hankel Polynomials* (uniform endpoint limits
 of Catalan Hankel determinants) and becomes that report's Part IV, under
 `SetTheory/Cardinals/docs/reports/hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials/`.
 
-The forty-three packages of the first seven deliveries, the Fekete and
+All fifty-two packages of the nine deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
 pass on 2026-09-29. Unnumbered "Editorial note (ProveIt, 2026-09-29)"
 blocks, which leave each article's own numbering unchanged, record
@@ -359,17 +359,20 @@ listed, figures with Type 3 fonts were regenerated, and every PDF was
 rebuilt from its amended source. Every change to an article source is
 marked by a `% ed.` comment, each package README lists its amendments, and
 the delivered archives remain in the repository history
-(`docs/incoming/README.md`, batches 45 to 51). Page and line counts and line
+(`docs/incoming/README.md`, batches 45 to 53). Page and line counts and line
 citations below refer to the amended files; the volumes are unchanged.
 The sixth delivery was amended in the same way after it was filed, and
 notes recording it were added to eight earlier packages. The seventh
 delivery was amended in the same way after it was filed, and notes
 recording it were added to three earlier packages (the critical Hahn,
-confluent and logarithmic-endpoint packages). The eight packages of the
-eighth delivery are filed as delivered and have not yet been amended; their
-paragraphs below cite the delivered files. The package of the ninth
-delivery is filed as delivered and has not yet been amended; its paragraph
-below cites the delivered files.
+confluent and logarithmic-endpoint packages). The eighth delivery was
+amended in the same way after it was filed, and notes recording it were
+added to eight earlier packages (the weighted-type, near-linear, critical
+Hahn, lower-endpoint, confluent, logarithmic-endpoint, Hahn–Fuchsian and
+resonance-block packages); the critical-line article needed no note. The
+ninth delivery was amended in the same way after it was filed, and notes
+recording it were added to two earlier packages (the exact-degree and
+residue-obstruction packages).
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -478,7 +481,7 @@ resurgence remarks (`:29986-30015`).
 [`Near_Linear_Boundary_Exponential_Feedback/`](Near_Linear_Boundary_Exponential_Feedback/)
 holds *The Near-Linear Boundary of Exponential Feedback: a self-consistent
 Lambert law, coefficient large deviations, and a cascade of Borel-growth
-resonances* (26-page A4 PDF, 1,624-line source, an exact-rational check
+resonances* (26-page A4 PDF, 1,645-line source, an exact-rational check
 program with 467 assertions and floating normalizer diagnostics). It
 answers the regularity article's question "The near-linear transition"
 (`Exponential_Feedback_Regularity_Classification/article.tex:1519-1525`)
@@ -494,6 +497,9 @@ positive-direction Laplace summation of every finite Gevrey order. For
 `L(j) = exp((log j)^γ)` it gives every nonvanishing term of the Borel
 growth, constants `e^{1/m}` at `γ = 1 − 1/m`, and a uniform profile through
 each such resonance. A multiplicative equivalent for `u_n` is not claimed.
+Through the exact-type article (an editorial deduction recorded in both),
+the inverse has `limsup |q_n|^{1/n} e^{−b_n} = 1`; a root limit remains
+open.
 
 [`Finite_Core_Universality_Exponential_Feedback/`](Finite_Core_Universality_Exponential_Feedback/)
 holds *Finite-Core Universality and Sharp Large Order for Countable
@@ -537,7 +543,7 @@ threshold agrees with the regularity article's Gevrey-type identity at
 
 [`Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/`](Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/)
 holds *Beyond Finite-Action Folds: Critical Hahn Transseries, Stable
-Sector Asymptotics, and Sharp Action Budgets* (25-page A4 PDF, 1,823-line
+Sector Asymptotics, and Sharp Action Budgets* (26-page A4 PDF, 1,858-line
 source, exact checks, 75-digit constants and a probability recurrence
 through `n = 4096`). It extends the moving-fold article's finite-action
 critical inversion (`Critical_Transseries_Moving_Fold/article.tex:1051`)
@@ -556,7 +562,9 @@ does not settle the moving-fold article's higher-multiplicity question
 (`:1490-1496`), and it does not cite the regularity article's amplitude
 question, of which it treats the case `λ_j = j`; an editorial note now
 records it. An editorial note at its Question 4 now records the
-lower-endpoint article's partial answer.
+lower-endpoint article's partial answer, and the answer on the
+boundary-critical path by the Cauchy-cutoff and uniform-coefficient
+articles.
 
 [`Microscopic_Condensation_Exponential_Feedback/`](Microscopic_Condensation_Exponential_Feedback/)
 holds *Microscopic Condensation in Exponential-Feedback Transseries: sharp
@@ -651,7 +659,7 @@ and lower bounds for the remainder are not claimed.
 [`Sharp_Weighted_Type_Formal_Reversion/`](Sharp_Weighted_Type_Formal_Reversion/)
 holds *Sharp Weighted Type Under Formal Reversion: zero-loss inversion,
 exact Borel radii, and non-D-finiteness in countable exponential feedback*
-(23-page A4 PDF, 1,727-line source, a standard-library exact-rational check
+(24-page A4 PDF, 1,775-line source, a standard-library exact-rational check
 program and floating-point diagnostics labelled as such). It answers the
 regularity article's question "Exact type under compositional inversion"
 (`Exponential_Feedback_Regularity_Classification/article.tex:1544-1549`),
@@ -685,15 +693,16 @@ delivery below continue its questions: the exact-type article answers
 "Weights beyond log-convexity", answers "Two divergent composition
 arguments" as far as types go and "Multivariate and operator-valued
 inversion" in part, and the subexponential-cost article answers "Optimal
-subexponential cost of reversion" for factorial weights.
+subexponential cost of reversion" for factorial weights. Editorial notes
+at those questions now record this.
 
 [`Exact_Weighted_Type_Beyond_Log_Convexity/`](Exact_Weighted_Type_Beyond_Log_Convexity/)
 holds *Exact Type Beyond Log-Convexity: a complete reversion criterion,
-sharp distortion, and dimension-free nonlinear calculus* (27-page A4 PDF,
-2,019-line source, a standard-library exact-rational check program with
+sharp distortion, and dimension-free nonlinear calculus* (28-page A4 PDF,
+2,107-line source, a standard-library exact-rational check program with
 5,443 counted checks and floating-point diagnostics labelled as such). It
 answers the weighted-type article's question "Weights beyond
-log-convexity" (`Sharp_Weighted_Type_Formal_Reversion/article.tex:1485-1493`):
+log-convexity" (`Sharp_Weighted_Type_Formal_Reversion/article.tex:1497-1505`):
 for an arbitrary positive weight, written in excess degree as
 `N_n = M_{n+1}`, tangent-to-identity reversion preserves the weighted type
 universally exactly when `N_n^{1/n} → ∞` and `log(S_n/N_n) = o(n)`, where
@@ -707,10 +716,10 @@ log-convex or root-monotone representative is not necessary, that every
 finite distortion `c > 1` occurs, and that a type-zero series can have an
 inverse of infinite type; the last also shows that the weighted-type
 article's polynomial test needs its log-convexity hypothesis, which it
-states. It answers "Two divergent composition arguments" (`:1495-1503`) as
+states. It answers "Two divergent composition arguments" (`:1507-1515`) as
 far as types alone go (`T(f∘g) ≤ max`, equality for unequal types, every
 value in `[0,T]` at equal types), and "Multivariate and operator-valued
-inversion" (`:1505-1513`) in part: an exact tangent calculus on Banach
+inversion" (`:1517-1525`) in part: an exact tangent calculus on Banach
 spaces with the multilinear operator norm, and sharp bounds
 `T(F)/‖A‖ ≤ T(F⁻¹) ≤ ‖A⁻¹‖T(F)` for a general derivative, which one scalar
 type cannot sharpen. The subexponential-cost article below, written
@@ -721,12 +730,12 @@ limits and Lean formalization are not claimed.
 
 [`Sharp_Subexponential_Cost_Gevrey_Reversion/`](Sharp_Subexponential_Cost_Gevrey_Reversion/)
 holds *Sharp Subexponential Reversion: exact extremal cost, a Gevrey
-transition, and composition of two divergent series* (22-page A4 PDF,
-1,357-line source, a standard-library exact check program with 5,338
+transition, and composition of two divergent series* (23-page A4 PDF,
+1,407-line source, a standard-library exact check program with 5,338
 scalar checks, and extended-precision diagnostics labelled as
 uncertified). It answers the weighted-type article's question "Optimal
 subexponential cost of reversion"
-(`Sharp_Weighted_Type_Formal_Reversion/article.tex:1424-1432`) for its
+(`Sharp_Weighted_Type_Formal_Reversion/article.tex:1424-1433`) for its
 named target, factorial weights: over the ball
 `|a_{j+1}| ≤ C A^j ((j+ν)!/(1+ν)!)^s` one negative saturating series
 maximizes every inverse coefficient, and the normalized amplification
@@ -735,7 +744,7 @@ satisfies `log R_n ~ C n^{1−s}` for `0 < s < 1`, `R_n ~ exp(C n^{1−s})` for
 `R_n → exp(C e^{−t})` at `s = 1 + t/log n`. The fixed ball is therefore
 stable under inversion exactly for `s ≥ 1`, although the type is preserved
 at every order, and the weighted-type article's overhead `exp(O(n/√r_n))`
-is not sharp. For "Two divergent composition arguments" (`:1495-1503`) it
+is not sharp. For "Two divergent composition arguments" (`:1507-1515`) it
 proves, for factorial weights,
 `τ_s(f∘g) ≤ max(τ_s(g), |g′(0)| τ_s(f))` with equality for unequal types,
 the factorial case of the exact-type article's law, by a different
@@ -744,12 +753,12 @@ limit whose inverse has infinitely many zero coefficients. It re-proves
 the weighted-type theorem only in its factorial case and says so; the
 local-quotient version for general weights is left open. It was written
 before the exact-type article above was filed, and neither cites the
-other.
+other; editorial notes in both now link them.
 
 [`Logarithmic_Critical_Endpoint_Lambert_Charts/`](Logarithmic_Critical_Endpoint_Lambert_Charts/)
 holds *The Logarithmic Critical Endpoint: Convergent Lambert Charts,
 All-Order Sector Laws, and Sharp Action-Cutoff Corrections* (29-page A4
-PDF, 1,970-line source, exact symbolic checks, and floating-point
+PDF, 2,001-line source, exact symbolic checks, and floating-point
 diagnostics through sector index `n = 65536` checked against an 80-digit
 recurrence). It treats the upper endpoint `α = 2` of the critical Hahn
 article above, weights `a_j = a j^{−3}` outside a finite prefix, and
@@ -767,13 +776,14 @@ budget `√n` separate: the retained fraction tends to `exp(−1/(2s²))` at
 form a Poisson process with intensity `x^{−3} dx`. The finite-fold drift is
 given to all inverse-logarithmic orders, with an explicit condition for
 exponentiating it, which answers that article's Question 7 at this endpoint
-(`:1567-1572`); a leading-order extension covers `a_j ~ a j^{−3}(log j)^r`,
+(`:1586-1591`); a leading-order extension covers `a_j ~ a j^{−3}(log j)^r`,
 `r ≥ −1`. Its constants agree with the `α → 2` limits of the critical Hahn
 article's normal form, budget and fold drift. The Gaussian and
 extreme-value mechanism is credited to Janson. Numerical values are
 diagnostics, not interval certificates, and no certified cutoff algorithm
 is claimed. An editorial note at its Question 8 records the lower-endpoint
-article's partial answer.
+article's partial answer, and the answer on the boundary-critical path by
+the Cauchy-cutoff and uniform-coefficient articles.
 
 [`Marginal_Critical_Transseries_Action_Budgets/`](Marginal_Critical_Transseries_Action_Budgets/)
 holds *Marginal Critical Transseries: Convergent Lambert-W Charts,
@@ -797,7 +807,7 @@ to converge, and prefix independence is claimed only at the displayed order.
 [`Confluent_Critical_Transseries_Exponent_Two_Boundary/`](Confluent_Critical_Transseries_Exponent_Two_Boundary/)
 holds *Confluent Critical Transseries Across the Exponent-Two Boundary: A
 Uniform Inverse Chart, Conditional Poisson Limits, and Sharp Action
-Budgets* (24-page A4 PDF, 1,725-line source, an exact SymPy check program
+Budgets* (24-page A4 PDF, 1,756-line source, an exact SymPy check program
 with 160-digit inverse-chart and floating-point coefficient diagnostics).
 It treats the joint limit that the two endpoint articles above leave open:
 the upper endpoint of the critical Hahn article's Question 4
@@ -824,7 +834,8 @@ order only; uniform cutoff corrections, the lower endpoint `α ↓ 1` and
 resurgence are not claimed. Its coefficient diagnostics need an
 extended-range `long double` and stopped with an error when rerun on
 Windows. An editorial note at its Question 10 records the lower-endpoint
-article's partial answer.
+article's partial answer, and the answer on the boundary-critical path by
+the Cauchy-cutoff and uniform-coefficient articles.
 
 [`Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/`](Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/)
 holds *Through the Stable–Gaussian Endpoint: Uniform Critical Transseries,
@@ -882,7 +893,7 @@ windows and certified budgets are left open.
 [`Lower_Critical_Endpoint_Landau_Transseries/`](Lower_Critical_Endpoint_Landau_Transseries/)
 holds *Through the Lower Critical Endpoint: Exponentially Coalescing Folds,
 Landau Transseries, and Conditional Action Budgets* (26-page A4 PDF,
-1,768-line source, 43 exact assertions, 24 high-precision normal-form
+1,791-line source, 43 exact assertions, 24 high-precision normal-form
 comparisons, and floating-point coefficient and cutoff diagnostics through
 `n = 2048`). It answers the lower half of the critical Hahn article's
 Question 4
@@ -917,11 +928,12 @@ slowly varying question to that article, and another gives the dictionary
 to the critical Hahn article (its `δ` is the fold distance, not
 `δ_β = 1 − βd_1`). The boundary-critical and subcritical paths, slowly
 varying tails and certified budgets are left open. The boundary-critical
-path is treated by the two articles below.
+path is now answered by the two articles below, as an editorial note
+records; the matching with this article's chart is not done.
 
 [`Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/`](Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/)
 holds *The Lower Critical Endpoint: Arbitrary-Rate Condensation, Cauchy
-Cutoff Laws, and Degenerating Transseries* (24-page A4 PDF, 1,636-line
+Cutoff Laws, and Degenerating Transseries* (25-page A4 PDF, 1,706-line
 source, 62 exact algebra assertions and floating-point coefficient,
 cutoff and chart diagnostics). It answers the lower half of the critical
 Hahn article's Question 4
@@ -943,7 +955,8 @@ compound-Poisson deficit, and at `ε log n → τ` the condensate carries the
 fraction `e^{−τ}`. A convergent critical chart is uniform through `ε = 0`,
 where the equation degenerates to `U = 0`. It does not cite the same
 question as posed by the confluent article (Question 10) and the
-logarithmic-endpoint article (Question 8), which it answers on this path.
+logarithmic-endpoint article (Question 8), which it answers on this path;
+an editorial note now does.
 Its stable law is the lower-endpoint article's Landau law shifted by
 `1 − γ`. The subcritical side, slowly varying tails and moving prefixes are
 left open.
@@ -951,8 +964,8 @@ left open.
 [`Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/`](Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/)
 holds *The Lower Critical Endpoint of Exponential-Feedback Transseries:
 uniform coefficient asymptotics, deletion of the largest action, Landau
-cutoff profiles, and the compound-Poisson boundary* (20-page A4 PDF,
-1,465-line source, 385 exact rational assertions, 55-digit Hankel checks
+cutoff profiles, and the compound-Poisson boundary* (21-page A4 PDF,
+1,528-line source, 385 exact rational assertions, 55-digit Hankel checks
 and an 80-digit recurrence comparison). Written independently of the
 Cauchy-cutoff article above, from the same revision, it treats the same
 family on the same path. By a branch-cut integral that keeps the vanishing
@@ -972,8 +985,9 @@ base for this path: its coefficient theorem is quantitative and of every
 fixed order, while the article above adds the joint limit of the cloud and
 the extremes and the explicit centre. It poses as open the unnormalized
 model at `α = 1`, which the lower-endpoint article treats for the pure
-tail. It cites neither the confluent nor the logarithmic-endpoint
-question.
+tail (a note records this; the matching is not done). It cites neither the
+confluent nor the logarithmic-endpoint question (an editorial note now
+does).
 
 [`Quadratic_Exponential_Feedback_After_Reversion/`](Quadratic_Exponential_Feedback_After_Reversion/)
 holds *Quadratic Exponential Feedback after Reversion: Cancellation,
@@ -1178,8 +1192,8 @@ Landau law; the subcritical side stays open. The
 logarithmic-endpoint and marginal articles prove the same endpoint core;
 the logarithmic-endpoint article, which covers more of the critical Hahn
 article's questions, is the natural base, the marginal article's
-certificate and budget sections enter beside it, and the confluent and stable–Gaussian articles supply, independently,
-the crossover through `α = 2` (the second one order further in a bounded
+certificate and budget sections enter beside it, and the confluent and
+stable–Gaussian articles supply, independently, the crossover through `α = 2` (the second one order further in a bounded
 window, the first at any rate). The exact-type and subexponential-cost
 articles do not study the kernel; they join the unit through the
 weighted-type article, whose kernel-independent reversion theorem the
@@ -1422,7 +1436,7 @@ checks are not interval computations.
 
 [`Resonance_Block_Summation_Transseries/`](Resonance_Block_Summation_Transseries/)
 holds *Resonance-Block Summation of Transseries: small divisors, coalescing
-Stokes actions, and nonlinear inversion* (26-page A4 PDF, 1,799-line
+Stokes actions, and nonlinear inversion* (26-page A4 PDF, 1,801-line
 source, 36 exact and 15 high-precision numerical checks). It continues the
 Stokes-transport article's countable inverse
 (`Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex:241-249`),
@@ -1448,7 +1462,8 @@ input poles
 (`Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex:1026-1028`);
 the resurgent structure of the inverse is not claimed. Its "resonances" are
 near-collisions of Borel poles, not the equal-action resonances of the
-Stokes-transport and moving-fold articles.
+Stokes-transport and moving-fold articles. An editorial note after its
+Question 1 now records the critical-line article's answer.
 
 [`Critical_Line_Continued_Fractions_Riesz_Summation/`](Critical_Line_Continued_Fractions_Riesz_Summation/)
 holds *At the Critical Line: Continued Fractions and Sharp Riesz Summation
@@ -1582,7 +1597,7 @@ as interfaces only; none of its theorems is formalized.
 
 [`Residue_Obstructions_Logarithmic_Depth_Promotion/`](Residue_Obstructions_Logarithmic_Depth_Promotion/)
 holds *Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn
-Transseries* (27-page A4 PDF, 1,203-line source, an exact-rational block
+Transseries* (28-page A4 PDF, 1,211-line source, an exact-rational block
 and matrix check program). It extends
 `Analysis/Transseries/Lean/Transseries/TransseriesBlockAntiderivative.lean`
 (the canonical volume's `plt:lem:mot-block-antiderivative`) from
@@ -1604,7 +1619,7 @@ concerns differential operators, not the compositional inverses of
 [`Hahn_Fuchsian_Resonance_Analytic_Normalization/`](Hahn_Fuchsian_Resonance_Analytic_Normalization/)
 holds *Finite Resonance Certificates and Sharp Analytic Normalization for
 Hahn–Fuchsian Systems: accumulating exponents, unavoidable logarithms, and
-a summability-threshold crossover* (24-page A4 PDF, 1,615-line source,
+a summability-threshold crossover* (25-page A4 PDF, 1,644-line source,
 exact SymPy gauge checks on finite systems and 85-digit crossover checks).
 It continues the residue-obstruction article directly above, which it knew
 through that package's README, from scalar operators to first-order
@@ -1625,18 +1640,20 @@ renormalized solution realizes every finite prefix for `p > 1`. For its
 class and without citing them (an editorial note now does), it answers the
 article above's questions on recovering the logarithmic filtration from
 matrix ranks (homogeneous part) and on the invariant for matrix systems with
-Jordan chains (`residue_fredholm.tex:1040`, `:1072-1074`): it is the
+Jordan chains (`residue_fredholm.tex:1040`, `:1077-1079`): it is the
 nilpotency index of `B = N + ΣR_ρ`. It is the depth-0 counterpart of that
 article, not its generalization: the article above needs depth `n ≥ 1`, and
 forced equations, iterated-logarithm coefficients and nonreal spectrum are
 not treated here. Its constants lemma is the depth-0 case of the canonical
 volume's `plt:thm:ext-tower-strict` (`transseries_and_inversion.tex:29092`),
-which it could not read; an editorial note now cites it. The two articles,
-the exact-degree article and the four articles after it form one unit
-for the deferred merge, on differential equations over Hahn fields; the
-residue-obstruction article is its host, the exact-degree article supplies its degree
-classification, and this article its depth-0 system counterpart. Their
-conventions (large variable in the first and third, small `x` here; the
+which it could not read; an editorial note now cites it. Another records
+the path-sensitive article's answer to its questions 11.1 and 11.2. The two
+articles, the exact-degree article and the four articles after it form one
+unit for the deferred merge, on differential equations over Hahn fields;
+the residue-obstruction article is its host, the exact-degree article
+supplies its degree classification, and this article its depth-0 system
+counterpart. Their conventions (large variable in the first and third,
+small `x` here; the
 residue functional on the full field in the first, on lower blocks in the
 third) need a dictionary first. It cites the Neumann declarations of
 `TransseriesWellBased.lean` and the module
@@ -1645,7 +1662,7 @@ third) need a dictionary first. It cites the Neumann declarations of
 [`Exact_Logarithmic_Degree_Smith_Invariants/`](Exact_Logarithmic_Degree_Smith_Invariants/)
 holds *The Exact Logarithmic Degree of Hahn-Transseries Solutions: Finite
 jets, Smith invariants, and cancellation-sensitive resonance* (30-page A4
-PDF, 1,269-line source, 1,383 exact SymPy assertions and an independent
+PDF, 1,282-line source, 1,383 exact SymPy assertions and an independent
 exact operator check). It answers the residue-obstruction article's
 question "The exact minimal power of the promoted logarithm"
 (`Residue_Obstructions_Logarithmic_Depth_Promotion/residue_fredholm.tex:1039-1042`)
@@ -1667,12 +1684,15 @@ note now does); that article's homogeneous formula `dim ker B^{d+1}` at
 depth 0 has the form of its pencil case. It restates the
 residue-obstruction article's fixed-depth theory without citing its labels;
 editorial notes now name them, and notes in that article now record its
-answers. It concerns formal solutions only.
+answers. It concerns formal solutions only. Notes in it and in the
+residue-obstruction article now record the triangular article's partial
+answers to their questions on perturbations small only in logarithms and
+on matrix systems.
 
 [`Path_Sensitive_Small_Divisors_Hahn_Fuchsian/`](Path_Sensitive_Small_Divisors_Hahn_Fuchsian/)
 holds *Path-Sensitive Small Divisors in Hahn–Fuchsian Systems: exact
 convergence criteria, resonance amplification, and stable analytic
-renormalization* (21-page A4 PDF, 1,400-line source, 2,363 exact rational
+renormalization* (21-page A4 PDF, 1,431-line source, 2,363 exact rational
 checks and 96 numerical crossover cases at 75 digits). It answers the
 Hahn–Fuchsian article's questions "Universal convergence for a fixed
 smaller input support" and "Weighted convergence in the zero-gap case"
@@ -1693,7 +1713,8 @@ basepoint-normalized analytic solution realizes every finite prefix under
 the weaker condition, with a uniform `N ≍ log(1/x)` crossover. At `r = 2`
 the chain is the Hahn–Fuchsian article's accumulation model: its
 threshold `p > 2`, its renormalized solution, and a second-order form of
-its crossover, which the article does not say. The path criterion
+its crossover, which the article does not say (an editorial note now
+does). The path criterion
 specializes to that article's universal theorem when every edge carries
 the whole semigroup; nontriangular inputs and fixed Jordan blocks are not
 treated. It cites the Neumann declarations of `TransseriesWellBased.lean`
@@ -1702,7 +1723,7 @@ as related only.
 [`Nonlinear_Hahn_Dulac_Finite_Resonance_Control/`](Nonlinear_Hahn_Dulac_Finite_Resonance_Control/)
 holds *Finite Resonance Control of Nonlinear Hahn–Dulac Transseries: exact
 logarithmic slopes, analytic realization, and accumulation thresholds*
-(27-page A4 PDF, 1,905-line source, exact SymPy block and coefficient
+(28-page A4 PDF, 1,935-line source, exact SymPy block and coefficient
 identities, random coupled systems and 80-digit tail-bound illustrations).
 It poses its own question, extending the Hahn–Fuchsian and
 residue-obstruction articles to `(x d/dx − A)y = F(x, y)` with real
@@ -1719,11 +1740,12 @@ counterexamples. For `(D − 2)y = ax + bx² + cy² + Σ t_n x^{2−1/n}` the sl
 is `0` or `1/2` according as `b + ca²` vanishes, independently of the tail,
 while convergence holds exactly when `Σ n|t_n| < ∞`, the Hahn–Fuchsian
 article's threshold `p > 2` surviving the nonlinearity. It was written
-before the exact-degree article above was filed and does not cite it.
+before the exact-degree article above was filed and does not cite it; an
+editorial note now does.
 
 [`Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/`](Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/)
 holds *Algebraic Convergence Loci for Nonlinear Hahn–Fuchsian Systems*
-(22-page A4 PDF, 1,440-line source, 21 finite systems and 670 exact SymPy
+(23-page A4 PDF, 1,462-line source, 21 finite systems and 670 exact SymPy
 equalities). It poses its own question: can infinitely many small divisors
 impose a nonalgebraic convergence condition on the finite resonant
 parameters of a positive, logarithm-free Hahn solution of
@@ -1741,21 +1763,22 @@ exponent stays more than `1` from the resonance, yet the products
 `p > 2` or `ab = 0`: the nonlinear counterpart of the path-sensitive
 article's two-edge example. No finite set of input coefficients
 determines the convergence locus. It cites `NeumannWords.lean` as related
-only.
+only. Editorial notes in it and in the Hahn–Dulac article now record their
+common criterion.
 
 [`Triangular_Hahn_Differential_Systems_Without_Smallness/`](Triangular_Hahn_Differential_Systems_Without_Smallness/)
 holds *Triangular Hahn Differential Systems Without Smallness: rank-one
 descent, exact logarithmic degree, and finite residue certificates*
-(25-page A4 PDF, 999-line source, 1,413 exact rational and symbolic
+(27-page A4 PDF, 1,028-line source, 1,413 exact rational and symbolic
 assertions and 36 high-precision illustrations). It takes up the
 exact-degree article's questions "Perturbations that are small only in
 logarithms" and "Matrix systems and nonreal modes"
 (`Exact_Logarithmic_Degree_Smith_Invariants/exact_logarithmic_degree.tex:1137-1138`,
-`:1152-1153`), which are the residue-obstruction article's
+`:1157-1158`), which are the residue-obstruction article's
 "Perturbations small only in logarithms" and "Matrix systems and nonreal
 indicial roots"
 (`Residue_Obstructions_Logarithmic_Depth_Promotion/residue_fredholm.tex:1062-1065`,
-`:1072-1075`), and answers them in part: it replaces the outer-small
+`:1077-1080`), and answers them in part: it replaces the outer-small
 hypothesis by triangularity. For a system `diag(D − a_i) + N` over the
 real Hahn field of `x, log x, …, log_n x`, with `N` strictly triangular and
 no smallness assumption on any coefficient, a diagonal factor is split
@@ -1778,9 +1801,9 @@ the least forced degree from 2 to 1, with actual solutions and signed
 factorial error bounds. It does not decide triangularizability, treat
 cyclic couplings or construct the exponential extensions of nonsplit
 modes. It was written before the three articles above were filed and does
-not cite them; its path bound is the counterpart, for arbitrary Hahn
-coefficients at every depth, of the path-sensitive article's degree lemma
-(degree of a path kernel = number of exact resonances), and its
+not cite them (an editorial note now does); its path bound is the
+counterpart, for arbitrary Hahn coefficients at every depth, of the
+path-sensitive article's degree lemma (degree of a path kernel = number of exact resonances), and its
 cancellation example is the kind of correlation that article excludes by
 independent edge coefficients. It names the block-antiderivative API of
 the canonical volume as related only.
@@ -1872,15 +1895,18 @@ package's README now records the retirement of its ledger; its
 `notes/build_report.json` is kept as data, and its digests of the
 verification program and results still match, while those of the source
 and PDF describe the delivered build, as the README says. Of the eighth
-delivery, the path-sensitive README still lists its ledger; the build
-reports of the exact-type, path-sensitive, Hahn–Dulac and
-convergence-locus packages carry digests of their delivered source and PDF
-(and, except the path-sensitive one, of their program and results), which
-match the filed files, and the subexponential-cost package's
-`data/build_validation.json` records only its page count and checks. The
-triangular README still lists its ledger, and its `notes/validation.json`
-carries digests of its delivered source and PDF, which match the filed
-files.
+delivery, the exact-type, path-sensitive and Hahn–Dulac READMEs now record
+the retirement of their ledgers. The build reports of the exact-type,
+path-sensitive, Hahn–Dulac and convergence-locus packages carry digests of
+their source and PDF, recomputed for the filed files (with an
+`editorial_rebuild` field), and all but the path-sensitive one also of
+their program and results, recomputed where the program was amended; all
+match the filed files. The subexponential-cost package's
+`data/build_validation.json` records only its page count, recomputed, and
+checks. The triangular README now records the retirement of its ledger,
+and the digests of its own source and PDF in `notes/validation.json` were
+recomputed for the amended source and the rebuilt PDF; they match the
+filed files.
 
 Fifty-eight CSV tables written with CRLF line endings were normalized to LF
 on filing: the reversion package's `numeric_checks.csv`, the regularity
@@ -1907,12 +1933,8 @@ longer reintroduces CRLF. The slowly-varying package's filed
 `verification/results.json` has no final newline, as delivered; its
 program now writes one. The seventh delivery has no carriage return in any
 file, and its programs write LF line endings on every platform. The
-eighth delivery has no other carriage return. Its programs are as
-delivered: those of the path-sensitive, convergence-locus,
-uniform-coefficient and critical-line packages, and the
-subexponential-cost JSON and table writers, write CRLF on Windows (the
-subexponential-cost CSV writer on every platform); those of the
-exact-type, Cauchy-cutoff and Hahn–Dulac packages write LF. The ninth
+eighth delivery has no other carriage return, and since its editorial pass
+all its programs write LF on every platform. The ninth
 delivery has no carriage return in any file, and its program writes LF
 line endings on every platform.
 
@@ -1969,8 +1991,8 @@ The lower-endpoint `verify.py` is as delivered. It writes into
 `build/verification` below the working directory unless given `--output`,
 so from the package root it leaves `data/` alone; its `make_figures.py` now
 writes under `build/` and overwrites the shipped figures and
-`data/figure_curve.json` only with `--output-dir .`. On Windows, where NumPy's `longdouble` is double
-precision, a rerun reproduces the recorded numbers only up to the last
+`data/figure_curve.json` only with `--output-dir .`. On Windows, where
+NumPy's `longdouble` is double precision, a rerun reproduces the recorded numbers only up to the last
 digits, although the build report records a byte-identical rerun on the
 delivering platform. The moment-determinacy `verify.py` writes
 `verification_results.json` into the working directory by default, so its
@@ -1979,23 +2001,22 @@ README's command run from the package root rewrites the recorded file
 without `--output` now writes `verification_results_dps<N>.json`. Both
 `build.sh` scripts only run pdfLaTeX (the lower-endpoint one under
 `build/`, then copying the PDF over `article.pdf`).
-The programs of the eighth delivery are as delivered. Those of the
-exact-type and subexponential-cost packages write under `build/` and
-`data/rerun` by default; the subexponential-cost `render_tables.py`
-rewrites both table inputs of its article, and its diagnostics need an
-extended-range `long double` and stop on Windows. The path-sensitive and
-critical-line programs write into `results/`, including the tables their
-articles input, unless given `--outdir`; the Cauchy-cutoff program always
-writes `verification_results.json` beside itself, and on Windows its
-numbers reproduce only to about thirteen digits; the Hahn–Dulac and
-convergence-locus programs always rewrite `verification/results.json`; the
-uniform-coefficient program writes `verification_results.json` into the
-working directory unless given `--output`, and its `build.sh` reruns
-`make_tables.py`, which rewrites both table inputs, on every build. Run
-them on a copy. The triangular program is as delivered; it writes into
-`rerun/` by default (`--output-dir`), leaving `verification/` alone, and a
-rerun reproduced both recorded files byte for byte; `rerun/` is not
-ignored, so delete it afterwards. Its `build.sh` runs pdfLaTeX under the
+Since the eighth delivery's editorial pass, its programs write by default
+under `build/` (the exact-type program below the working directory, the
+others below their package) or, for both subexponential-cost programs,
+into `data/rerun`; the Cauchy-cutoff, uniform-coefficient, critical-line,
+path-sensitive, Hahn–Dulac and convergence-locus programs refuse to write
+their recorded outputs without `--overwrite-recorded`. The
+subexponential-cost default order is now 45, that of its recorded run, and
+its diagnostics still need an extended-range `long double` and stop on
+Windows; on Windows the Cauchy-cutoff numbers reproduce only to about
+thirteen digits. The uniform-coefficient `make_tables.py` still rewrites
+both table inputs from the recorded results, and its `build.sh` runs it
+only with `--tables`. The triangular program writes into `rerun/` by
+default (`--output-dir`) and refuses `verification/` itself unless given
+`--overwrite-recorded`; a rerun of the amended program reproduced both
+recorded files byte for byte; `rerun/` is not ignored, so delete it
+afterwards. Its `build.sh` runs pdfLaTeX under the
 ignored `build/` and copies the PDF over the filed one.
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.
