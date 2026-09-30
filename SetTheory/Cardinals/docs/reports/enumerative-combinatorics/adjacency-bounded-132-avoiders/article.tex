@@ -73,6 +73,10 @@
 \newcommand{\ljQ}{\mathcal Q}
 \newcommand{\ljK}{\mathcal K}
 \newcommand{\ljU}{\Upsilon}
+% Part IV (batch 52): variance and word length; the manuscripts' other
+% macros are replaced by Part III's \ljP, \ljE, \ljTV, \ljLaw, \ljcost.
+\newcommand{\mjVar}{\operatorname{Var}}
+\newcommand{\mjlen}{\operatorname{len}}
 \allowdisplaybreaks[2]
 \setlength{\parindent}{1.1em}
 \setlength{\parskip}{.25em}
@@ -87,18 +91,18 @@
 \thispagestyle{empty}
 \begin{center}
 {\small\sffamily\color{Forest}\bfseries COMBINATORICS\quad /\quad INTEGER SEQUENCES\quad /\quad ASYMPTOTICS}\par
-\vspace{8mm}
+\vspace{4mm}
 {\LARGE\bfseries Strict growth and the Catalan limit\par
 for adjacency-bounded\par
 132-avoiding permutations}\par
-\vspace{5mm}
+\vspace{3mm}
 {\large A proof of the remaining strict-growth conjecture\par
 and a two-term large-bound asymptotic}\par
-\vspace{5mm}
+\vspace{3mm}
 {\sffamily Research report prepared for Vladimir Reshetnikov}\par
 {\small September 19, 2026}
 \end{center}
-\vspace{3mm}
+\vspace{1mm}
 \begin{abstract}
 Let $a_n^{(m)}$ count permutations $\pi\in S_n$ avoiding the pattern $132$ and
 satisfying $|\pi_{i+1}-\pi_i|\le m$. Nadler conjectured that their exponential
@@ -134,6 +138,11 @@ total variation, at the sharp rate $n^{-1/2}$, to an explicit algebraic law
 with $\mathbb P(D>k)\sim3/\sqrt{\pi k}$; uniformly,
 $a_n^{(n-d)}/C_n=3/\sqrt{\pi d}+O(d^{-3/2}+n^{-1/2})$. This answers the joint
 limit in $n$ and $m$ near the boundary only; the bulk regime stays open.
+
+\emph{Addition of 29 September 2026 (batch 52).} Part~IV, merged from two
+manuscripts, finds the limit profile of $\sqrt n\,\mathbb P(n-M_n>un)$ and the
+leading constant of every moment of order $p>1/2$; for example
+$\mathbb E(n-M_n)\sim3\sqrt{n/\pi}$.
 \end{abstract}
 \begin{resultbox}
 \textbf{Scope and attribution.}
@@ -2488,6 +2497,13 @@ $a_n^{(n-d)}/C_n=3/\sqrt{\pi d}+O(d^{-3/2}+n^{-1/2})$, an equivalent whenever
 $d\to\infty$ and $d=o(n)$ (\cref{lj:thm:tail-main,lj:eq:fixed-window}). The
 direction stays open for $n-m\asymp n$ (\cref{lj:rem:bulk}) and for any
 interpolation with the fixed-$m$ regime (\cref{lj:sec:q-reconnect}).]
+[Added 29 September 2026, batch 52: Part~IV answers the linear regime
+$m=\lfloor\theta n\rfloor$ for $1/2<\theta<1$ to first order,
+$a_n^{(\lfloor\theta n\rfloor)}/C_n\sim\frac{3(2\theta-1)}
+{\sqrt{\pi\theta(1-\theta)}}n^{-1/2}$ (\cref{mj:thm:profile}); for
+$0<\theta\le1/2$ it proves only $o(n^{-1/2})$ and polynomial lower bounds
+(\cref{mj:thm:lower}). The interpolation with the fixed-$m$ regime stays
+open.]
 
 \subsection{Renewal comparisons for other constrained tree classes}
 The reset identity \cref{crem:lem:reset} is not specifically Catalan. It
@@ -2563,7 +2579,7 @@ First four inverse-log polynomials & Executed exact symbolic checks\\
 Large-$m$ numerical figures and component table & Floating-point illustrations only\\
 New Lean or Rocq theorem declarations & None supplied or claimed\\
 External peer review or exhaustive novelty verification & Not performed\\
-Component ordering, optimal scalar defect, joint limits & Open directions (\cref{crem:sec:future}) [joint limits near $m=n$: Part~III, added 29 September 2026]\\
+Component ordering, optimal scalar defect, joint limits & Open directions (\cref{crem:sec:future}) [joint limits near $m=n$: Part~III, added 29 September 2026; for $1/2<m/n<1$: Part~IV, added the same day]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -2859,6 +2875,10 @@ and~II is untouched; and nothing connects the two regimes yet
 closed: its boundary end is answered here, and its bulk and interpolation
 questions remain open. Part~III refutes nothing in Parts~I and~II and uses
 none of their theorems.
+[Added 29 September 2026, batch 52: Part~IV settles the bulk regime for
+$1/2<m/n<1$ to first order and determines the exact supercritical moment
+constants (\cref{mj:sec:scope}); the regime $m/n\le1/2$ and the interpolation
+with fixed $m$ remain open.]
 
 \section{The question, its context, and the main results}
 \label{lj:sec:introduction}
@@ -3843,6 +3863,11 @@ Part~III does not assert
 $a_n^{(\lfloor\theta n\rfloor)}/C_n\sim
 3/\sqrt{\pi(1-\theta)n}$. An additional finite-size scaling analysis would
 be needed, and it could yield a different function of $\theta$.
+[Added 29 September 2026, batch 52: it does. Part~IV proves
+$a_n^{(\lfloor\theta n\rfloor)}/C_n\sim\frac{3(2\theta-1)}
+{\sqrt{\pi\theta(1-\theta)}}n^{-1/2}$ for $1/2<\theta<1$ and $o(n^{-1/2})$
+for $\theta\le1/2$ (\cref{mj:thm:profile}); the formula above is therefore
+false for every $0<\theta<1$.]
 \end{remark}
 
 \section{The moment transition and its consequences}
@@ -3949,6 +3974,12 @@ $\ljE D_n=\Theta(\sqrt n)$. Nor can the constant in the mean be read off
 from the tail constant $3/\sqrt\pi$: the range $D_n$ of order $n$ can
 contribute to the mean at the same order, and that bulk range has not been
 identified asymptotically in Part~III.
+[Added 29 September 2026, batch 52: Part~IV identifies it
+(\cref{mj:thm:profile}); the mean constant is $3/\sqrt\pi$, and half of it
+comes from deficits above $n/5$ (\cref{mj:thm:moments,mj:thm:uniform}). The
+value coincides with the tail constant, but it is not read off from it:
+extrapolating the boundary tail $3/\sqrt{\pi x}$ over $0<x<1$ would give
+$6/\sqrt\pi$. This comparison is the merge's.]
 \end{remark}
 
 \section{Exact probabilities, finite checks, and reproducibility}
@@ -4116,6 +4147,7 @@ windows. They also reveal several questions whose answers would extend
 the theory rather than merely recompute its constants.
 
 \subsection{Bulk finite-size scaling}
+\label{mj:sec:lj-bulk}
 For $0<u<1$, determine whether the limit
 \begin{equation}
  \Psi(u)=\lim_{n\to\infty}\sqrt n\,\ljP(D_n>\lfloor un\rfloor)
@@ -4128,8 +4160,18 @@ lower bound for sufficiently small fixed $u$. It does not establish a
 limit. A likely starting point is to retain the finite Catalan ratio
 $C_{n-t}/C_n$ instead of replacing it by $4^{-t}$, and to analyze the
 regime where both sides at a maximum decomposition are macroscopic.
+[Added 29 September 2026, batch 52: answered in Part~IV. The limit exists for
+every $0<u\le1$, uniformly on $[\delta,1]$ for each $\delta>0$, and
+$\Psi(u)=\frac3{\sqrt\pi}\frac{1-2u}{\sqrt{u(1-u)}}$ for $u<1/2$,
+$\Psi(u)=0$ for $u\ge1/2$ (\cref{mj:thm:profile}). At the endpoints,
+$\Psi(u)\sqrt u\to3/\sqrt\pi$ as $u\to0$, matching \cref{lj:thm:tail-main},
+and $\Psi(1/2-\varepsilon)\sim12\varepsilon/\sqrt\pi$
+(\cref{mj:sec:edges}). Both manuscripts behind Part~IV analyze exactly the
+regime suggested here, where both sides of a maximum decomposition are
+macroscopic.]
 
 \subsection{Exact constants for the mean and higher moments}
+\label{mj:sec:lj-moments}
 Determine whether
 $n^{1/2-p}\ljE D_n^p$ converges for each $p>1/2$, especially whether
 $\ljE D_n/\sqrt n$ has a limit. A bulk profile with sufficient uniform
@@ -4140,8 +4182,15 @@ At the critical point, ask whether
 \]
 converges. The $O(1)$ result proved here does not imply convergence of
 the centered quantity.
+[Added 29 September 2026, batch 52: answered in Part~IV for $p>1/2$:
+$n^{1/2-p}\ljE D_n^p\to\mathfrak m_p=\frac3{\sqrt\pi}\int_0^1
+(z^2/(1+z^2))^{p-1}\,\dd z$, so $\ljE D_n/\sqrt n\to3/\sqrt\pi$, and the
+constants are indeed integrals of the bulk profile
+(\cref{mj:thm:moments}). The critical question stays open
+(\cref{mj:sec:q-centered}).]
 
 \subsection{The sharp total-variation constant and local corrections}
+\label{mj:sec:lj-tv}
 The order $n^{-1/2}$ is now proved sharp, but the interval in
 \eqref{lj:eq:tv-constants} leaves the leading constant open. Does
 $\sqrt n\,\ljTV(\ljLaw(D_n),\ljLaw(D))$ converge? Is the missing limiting
@@ -4153,6 +4202,7 @@ total-variation bound and would give effective finite-size estimates
 for the first several adjacency thresholds.
 
 \subsection{Ascending and descending extreme jumps jointly}
+\label{mj:sec:lj-ascent}
 Define the largest ascent and largest descent by
 \[
  M_n^+=\max_i(\Pi_n(i+1)-\Pi_n(i))_+,
@@ -4178,6 +4228,7 @@ the present generating-function calculation. A proof must also control
 unrecorded jumps inside the large hole.
 
 \subsection{Weighted Catalan models}
+\label{mj:sec:lj-weighted}
 Replace the uniform measure by weights tracking descents, leaves of the
 associated binary tree, or another statistic with an explicit bivariate
 Catalan generating function. Determine when an absorbing finite
@@ -4272,7 +4323,7 @@ specified finite ranges; not a substitute for the proofs.\\
 Novelty and priority & Targeted comparison with the cited papers and
 repository report; no exhaustive literature or priority certification.\\
 Bulk profile, exact mean constant & Proposed research questions, not
-claimed results.\\
+claimed results. [Answered in Part~IV, added 29 September 2026.]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -4449,6 +4500,2764 @@ adjacency bound'' (\cref{crem:sec:future}).
 \end{itemize}
 
 
+%% ====================================================================
+%% Batch-52 addition (manuscripts 10, "The Macroscopic Jump Law", the
+%% base, and 11, "Macroscopic Deficits of the Largest Jump"). All labels
+%% of Part IV carry the prefix mj: (macroscopic jump).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part IV.\quad The macroscopic jump law}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } The macroscopic jump law}
+
+\noindent\emph{Part~IV was added on 29 September 2026 in batch~52 of
+ProveIt's incoming-report intake, merged from two manuscripts that were
+written independently of each other against the state of Parts~I--III
+printed above. Part~III determined the law of the largest-jump deficit
+$D_n=n-M_n$ at bounded distance from the trivial bound $m=n-1$, and asked in
+its Sections~\ref{mj:sec:lj-bulk} and~\ref{mj:sec:lj-moments} for the
+macroscopic profile of $D_n$ and the exact constants of its supercritical
+moments. Both manuscripts answer both questions, with different proofs.
+Part~IV prints the shared results once, keeps both proofs, and adds what
+only one of them proved (\cref{mj:sec:source}).}
+
+\section{Provenance, conventions and the answer}
+\label{mj:sec:intro}
+
+\subsection{Two manuscripts, one addition}
+\label{mj:sec:source}
+Part~IV is built from two AI-assisted research manuscripts prepared for
+Vladimir Reshetnikov, both dated September 29, 2026:
+\begin{itemize}
+\item \emph{Manuscript~10} of batch~52, \emph{The Macroscopic Jump Law:
+ Exact rare-event profiles and moment constants for random 132-avoiding
+ permutations} (23 pages, US Letter, as delivered). It arrived as the archive
+ \texttt{ProveIt\_Macroscopic\_Jump.zip} (inner directory
+ \texttt{ProveIt\_Macroscopic\_Jump/}, main file \texttt{article.tex}) in
+ ProveIt commit \texttt{458ccfb80}. It was written against ProveIt commit
+ \texttt{1ee53d57d}, whose root tree \texttt{c772efcde0} it records. For
+ the proofs and questions of Part~III in contiguous form it also read the
+ standalone source of Part~III's manuscript,
+ \texttt{article(20260929-161704).tex}, from Vladimir's file library; that
+ file is not in the repository, and its own pin is Part~III's
+ \texttt{8d936ee23} (\cref{lj:app:provenance}).
+\item \emph{Manuscript~11} of batch~52, \emph{Macroscopic Deficits of the
+ Largest Jump: A rare-event law and exact moment constants for
+ $132$-avoiding permutations} (24 pages, US Letter, as delivered). It
+ arrived as the archive \texttt{ProveIt\_Macroscopic\_Jump\_Research.zip}
+ (inner directory also \texttt{ProveIt\_Macroscopic\_Jump/}, main file
+ \texttt{article.tex}) in ProveIt commit \texttt{11e1e9001}. It was written
+ against the same commit \texttt{1ee53d57d} and quotes the blob
+ \texttt{aeadaf364b} of this report's \texttt{article.tex}.
+\end{itemize}
+At \texttt{1ee53d57d} this report's \texttt{article.tex} and
+\texttt{README.md} had the blobs \texttt{aeadaf364b} and
+\texttt{815242ed6}, and both were unchanged at the placement commit
+\texttt{a701d9098}. Every statement either manuscript makes about this report
+therefore refers to Parts~I--III as printed above. Neither manuscript saw the
+other. Their code, data and provenance notes are shipped beside the earlier
+parts' files with the prefixes \path{04-macroscopic-jump-} (manuscript~10) and
+\path{05-macroscopic-deficits-} (manuscript~11), continuing the report's local
+sequence after Part~III's \path{03-largest-jump-}. Their manuscripts, READMEs
+and PDFs are not shipped and survive in the arrival commits; their checksum
+ledgers were verified at placement and retired. Their four figures were
+regenerated in the write phase (\cref{mj:sec:merge}).
+
+Manuscript~10 is the base: it arrived first and covers more regimes. The two
+agree on every shared statement and neither contradicts Parts~I--III. They
+contribute, in the order printed here:
+\begin{itemize}
+\item \emph{both}: the macroscopic profile $\Psi$ and the moving-bound
+ equivalent for $1/2<m/n<1$ (\cref{mj:thm:profile}), the deficit rare-event
+ measure (\cref{mj:thm:marked}, last assertion), every supercritical moment
+ constant with the mean and variance constants (\cref{mj:thm:moments}), a
+ uniform finite-size tail envelope (\cref{mj:prop:envelope}, one explicit and
+ one non-explicit form), the first-entry and last-entry estimates of
+ \cref{mj:sec:root}, the matching with Part~III's boundary tail and the
+ linear vanishing at $u=1/2$ (\cref{mj:sec:edges}), the critical pole of the
+ moment constants, and seven of the research questions of
+ \cref{mj:sec:questions};
+\item \emph{manuscript~10 only}: the exact deficit recursion at the maximum
+ (\cref{mj:prop:root}), the stopping-word envelope, the marked rare-event
+ measure recording the last entry and the renewal proof of the profile
+ (\cref{mj:sec:renewal}), the conditional three-channel law
+ (\cref{mj:cor:conditional}), the power-biased and size-biased limits
+ (\cref{mj:thm:uniform}), polynomial lower bounds below the half-size cutoff
+ (\cref{mj:thm:lower}), a uniform Catalan sampler with Monte Carlo
+ illustrations (\cref{mj:sec:sampler}), and its small exact examples
+ (\cref{mj:sec:small});
+\item \emph{manuscript~11 only}: the canonical threshold parser and its
+ rare-scale cost tail (\cref{mj:sec:parser}), the second proof of the profile
+ through fixed outer words (\cref{mj:sec:words}), the universal outer-word
+ and terminal-split law with its three endpoint modes
+ (\cref{mj:thm:conditional,mj:cor:wordstats,mj:prop:minsplit}), the moment
+ constants at $p=3/2$ and $p=4$ with a recurrence
+ (\cref{mj:sec:closed-forms}) and their large-order asymptotic
+ (\cref{mj:prop:constantlimits}), an exact shortcut for the endpoint
+ recurrence, and exact counts up to $n=320$ (\cref{mj:sec:exact-data}).
+\end{itemize}
+Every result, proof, example, remark, limitation and question of both
+manuscripts is printed.
+
+\begin{resultbox}
+\textbf{Status (manuscripts 10 and 11).} The theorems of Part~IV have written
+proofs, exact finite regression checks, and (manuscript~10) explicitly
+labelled Monte Carlo illustrations. They are not Lean- or Rocq-verified and
+have not been independently refereed. Publication priority has not been
+established: the advances are stated relative to the inspected repository
+report, whose explicit scope they extend. No asymptotic theorem from an
+unrefereed repository report is assumed: Part~IV rederives the finite facts
+it uses and uses none of the asymptotic theorems of Parts~I--III, and no
+fixed-bound spectral asymptotic is substituted into a varying-bound problem.
+Nothing in Part~IV is formalized in any proof assistant.
+\end{resultbox}
+
+\subsection{Notation of Part~IV}
+\label{mj:sec:notation}
+The symbols $a_n^{(m)}$, $C_n$, $\Cat$, $\Av_n(132)$, $M(\pi)$, $D(\pi)$,
+$M_n$, $D_n$, $F(\pi)$, $c_j=C_j/4^j$, the operations $R_\beta$, $A$,
+$T_\tau$, the cost $t$ and the cutoff $h$ keep their meanings from Part~III;
+$D$ without index is Part~III's limit law. Manuscript~10 also sets $M=0$ and
+$D=1$ for the one-element permutation, which makes its recursions exact.
+The two manuscripts name the same objects differently, and several of their
+letters are used in Parts~I--III for other objects. Part~IV fixes one name
+for each notion (\cref{mj:tab:notation}). In particular the threshold
+fraction is always $u$ (manuscript~11 writes $x$), the split fraction always
+$y$ (manuscript~11 writes $u$), and the profile always $\Psi$, the name
+Part~III's question \eqref{lj:eq:bulk-question} gave it (manuscript~11
+writes $\Phi$).
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~IV. ``From'' gives the manuscripts' symbols
+(10, 11); the last column prints the tempting false reading.}
+\label{mj:tab:notation}
+\begin{tabular}{>{\raggedright}p{.16\linewidth}>{\raggedright}p{.29\linewidth}>{\raggedright}p{.14\linewidth}>{\raggedright\arraybackslash}p{.29\linewidth}}
+\toprule
+Symbol & Meaning in Part~IV & From & Not to be confused with\\
+\midrule
+$L(\pi)$, $L_n$ & last value $\pi_n$; that of $\Pi_n$ & 10: $L$; 11: $L$
+ & Part~III's state $L$ and its left block $L$ in $\pi=L\,n\,R$ (not used
+ here), Part~I's $L_m$.\\
+$J(\pi)$, $J_n$ & first deficiency $|\pi|-F(\pi)$; that of $\Pi_n$ & both
+ & Part~III's series $J$, Part~II's order $J$.\\
+$u$; $y$; $x$ & threshold fraction $d/n$; split fraction $a/n$; deficit
+ variable & 10: $u,y,x$; 11: $x,u,x$ & Part~II's $u=1/\Lambda$.\\
+$\Psi(u)$ & the profile \eqref{mj:eq:Psi} & 10: $\Psi$; 11: $\Phi$ &
+ Part~I's shift map $\Phi$.\\
+$\mu$; $\mu_D$ & marked measure on $\mathcal X$; its deficit marginal & 10:
+ $\mu$; 11: $\mu$ ($=\mu_D$) & the generic measures of
+ \eqref{lj:eq:bounded-test}.\\
+$\mathcal X$, $\Xi_n$ & $(0,1]\times[0,1]$; the pair $(D_n/n,L_n/n)$ & 10:
+ $E$, $Y_n$ & Part~I's $E_m$.\\
+$\rho$, $\nu$, $v(y)$ & deficit density; source functional; $\min(y,1-y)$ &
+ 10 & ---\\
+$S$, $S^\ast f$ & endpoint map; $f\circ S$ & 10: $S$, $Pf$ & Part~III's
+ $P(x,z)$; $\ljP$.\\
+$r_a$, $\bar r_H$ & $C_a4^{-a-1}$; $\sum_{a\le H}r_a$ & 10: $r_a$, $R_H$ &
+ Part~II's $r_m$; Part~III's $r$; the operations $R_\beta$; Part~I's
+ $R_m$.\\
+$\mathfrak m_p$ & moment constant, $p>1/2$ & both: $\kappa_p$ & Part~III's
+ quantile $\kappa_{1-\epsilon}$ (index also in $(0,1)$).\\
+$\mathcal I(p)$; $I(u)$ & $\int_0^1(z^2/(1+z^2))^{p-1}\,\dd z$;
+ $\int_u^{1-u}\mathfrak k$ & 11: $I(p)$; 10: $I(u)$, 11: $I_x$ & each
+ other.\\
+$\mathfrak k(y)$ & $[y(1-y)]^{-3/2}$ & 11: $k(u)$ & an index $k$.\\
+$H^\star$, $\ljP^\star_n$ & size-biased distribution function and measure &
+ 10: $H$, $\mathbb P^\star_n$ & Part~III's $H(z)$.\\
+$\mathcal W$, $\mathcal W_R$; $w_t$, $w^R_t$ & outer-word series; their
+ counts & 11: $W$, $W_R$; $w_t$, $r_t$ & Part~I's matrix $W_m$ and
+ $W_{U_m}$, $W_{V_m}$.\\
+$W_n$, $W$ & canonical outer word; its limit & 11 & the series
+ $\mathcal W$.\\
+$T_{n,m}$, $T_W$ & canonical cost; $\ljcost(W)$ & 11: $T_{n,m}$, $T$ &
+ Part~III's skeleton cost $T$ (which is also manuscript~10's $T$).\\
+$\mjlen(W)$ & number of operations of $W$ & 11: $K$ & the constants $K$.\\
+$\chi(w)$ & endpoint acceptance weight & 11: $\alpha(w)$ & Part~I's
+ $\alpha_m$.\\
+$\ell_n(w)$ & append threshold & 11: $r_n(w)$ & $r_a$.\\
+$\mathcal E_{n,m}$, $\mathcal E_n(w)$ & the events $M_n\le m$, and with
+ canonical word $w$ & 11: $E_{n,m}$, $E_n(w)$ & Part~I's $E_m$.\\
+$Q_{N,m}$ & raw terminal-pair count & 11 & Part~III's $\ljQ$.\\
+$U_n$, $U^{(u)}$ & terminal split fraction; its limit & 11: $U_n$, $U_x$;
+ 10: $Y$ & ---\\
+$\xi$, $V$, $\zeta$ & channel, deficit, last-entry mark in
+ \cref{mj:cor:conditional} & 10: $B$, $V$, $W$ & $B(x)$; $W_n$.\\
+$\mathcal N_s(u)$ & avoiders of size $s$ with first deficiency $\le u$ &
+ 11: $H_s(u)$ & Part~III's $N_{N,f}$ ($F=f$ exactly).\\
+$\Omega_r(\theta)$ & conjectured constant of \cref{mj:sec:q-hierarchy} &
+ 10: $A_r(\theta)$ & Part~I's $A_m(x)$.\\
+$\underline c_{\theta,r}$, $\underline c'_{\theta,r}$ & constants of
+ \cref{mj:thm:lower} & 10: $c_{\theta,r}$, $c'_{\theta,r}$ & Part~I's
+ $c_{k,p}$; Part~III's $\underline c_p$.\\
+$K$, $K_f$, $K_\eta$, $\ldots$ & constants, absolute unless indexed & both &
+ Part~I's $K_{m,d}$, Part~II's $K_m$, Part~III's $\ljK$.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly its
+manuscript's quantity. Probability, expectation, total variation, law and
+cost are written $\ljP$, $\ljE$, $\ljTV$, $\ljLaw$, $\ljcost$ as in
+Part~III, and variance $\mjVar$. The letters $a$, $b$ (block sizes),
+$N$ (a core size), $\sigma$, $\tau$, $\beta$ (blocks), $\eta$, $\delta$,
+$\epsilon$, $\varepsilon$, and $r$ and $q$ inside single proofs are local and
+declared where used. Equations are numbered consecutively with those of
+Parts~I--III.
+
+\subsection{Which questions are answered, and how far}
+\label{mj:sec:scope}
+Part~III's Section~\ref{mj:sec:lj-bulk} asks whether
+$\Psi(u)=\lim_n\sqrt n\,\ljP(D_n>\lfloor un\rfloor)$ exists for $0<u<1$,
+and for its value and endpoint behaviour. Its
+Section~\ref{mj:sec:lj-moments} asks whether $n^{1/2-p}\ljE D_n^p$ converges
+for each $p>1/2$, especially $\ljE D_n/\sqrt n$, and whether
+$\ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n$ converges. Part~IV settles:
+\begin{itemize}
+\item the first question completely: the limit exists for every
+ $0<u\le1$, uniformly away from $u=0$, and equals
+ $\frac3{\sqrt\pi}\frac{1-2u}{\sqrt{u(1-u)}}$ for $u<1/2$ and $0$ for
+ $u\ge1/2$; near $u=0$ it matches Part~III's boundary tail, and it vanishes
+ linearly at $u=1/2$ (\cref{mj:thm:profile}, \cref{mj:sec:edges});
+\item the supercritical half of the second: $n^{1/2-p}\ljE D_n^p\to\mathfrak
+ m_p$, an explicit integral, for every fixed $p>1/2$; in particular
+ $\ljE D_n\sim3\sqrt{n/\pi}$ and
+ $\mjVar(D_n)\sim\frac{3(4-\pi)}{4\sqrt\pi}n^{3/2}$
+ (\cref{mj:thm:moments});
+\item Part~III's \cref{lj:rem:bulk} and Part~II's research direction
+ ``Joint growth of length and adjacency bound'' (\cref{crem:sec:future}) for
+ $m=\lfloor\theta n\rfloor$ with $1/2<\theta<1$:
+ $a_n^{(\lfloor\theta n\rfloor)}/C_n\sim
+ \frac{3(2\theta-1)}{\sqrt{\pi\theta(1-\theta)}}\,n^{-1/2}$. The equivalent
+ $3/\sqrt{\pi(1-\theta)n}$, which Part~III declined to assert, is indeed
+ false for every such $\theta$: the true constant is smaller by the factor
+ $(2\theta-1)/\sqrt\theta<1$ (the merge's comparison).
+\end{itemize}
+It does not settle: the critical centered half-moment, which stays open
+(\cref{mj:sec:q-centered}); an equivalent for $0<\theta\le1/2$, where only
+$o(n^{-1/2})$ and polynomial lower bounds are proved
+(\cref{mj:thm:profile,mj:thm:lower}); the window at $m=n/2$; a local limit;
+the exact total-variation constant of Part~III's
+\cref{lj:cor:sharp-tv}; and any interpolation with the fixed-$m$ regime of
+Parts~I and~II. Part~IV refutes nothing in Parts~I--III.
+
+\section{The questions and the main results}
+\label{mj:sec:introduction}
+
+\subsection{From a boundary distribution to macroscopic rare events}
+Recall from Part~III that $M(\pi)=\max_i|\pi_{i+1}-\pi_i|$ and
+$D(\pi)=n-M(\pi)$ for $\pi\in\Av_n(132)$, $n\ge2$, that $\Pi_n$ is uniform on
+$\Av_n(132)$ with $M_n=M(\Pi_n)$, $D_n=D(\Pi_n)$, and that
+\eqref{lj:eq:bridge} reads $a_n^{(m)}/C_n=\ljP(M_n\le m)=\ljP(D_n\ge n-m)$.
+For a nonempty permutation write $F(\pi)=\pi_1$, $L(\pi)=\pi_{|\pi|}$ and
+$J(\pi)=|\pi|-F(\pi)$, and write $F_n$, $L_n$, $J_n$ for their values at
+$\Pi_n$. An inequality $D_n\ge un$ means $D_n\ge\lceil un\rceil$. All
+moment orders are fixed before $n$ tends to infinity.
+
+The finite-state, fixed-$m$ problem was developed by Nadler \cite{Nadler},
+who treated $m=2$, and Mayama--Akita \cite{MayamaAkita}, who supplied endpoint
+states, rational generating functions for each fixed bound and growth-constant
+results; their maximum-position restriction is especially useful here, and
+their finite-state recursion is the basis of manuscript~11's exact numerical
+checks, not a new result of it. Part~III proves a proper integer-valued
+boundary limit for $D_n$, a sharp-order total-variation bound, a limiting
+tail proportional to $k^{-1/2}$, a growing sublinear-deficit equivalent and a
+moment transition at $p=1/2$. It explicitly does \emph{not} infer a relative
+asymptotic at $D_n$ of order $n$ from its additive boundary estimate
+(\cref{lj:rem:bulk}), and its Sections~\ref{mj:sec:lj-bulk}
+and~\ref{mj:sec:lj-moments} ask for the bulk profile and the exact
+supercritical moment constants. Those are the starting points of Part~IV.
+
+That distinction is essential. A boundary tail of the form $c/\sqrt k$ does
+not by itself identify $\ljE D_n/\sqrt n$: events with $D_n$ proportional to
+$n$ contribute at precisely the same order. Part~IV analyzes those events
+directly, rather than extrapolating the boundary approximation. On the
+ordinary probability scale $D_n/n\to0$; on the scale of probabilities
+multiplied by $\sqrt n$, macroscopic deficits remain visible, and it is this
+second scale that governs all moments of order greater than $1/2$. Part~IV
+builds on the subject and elementary decompositions of Parts~I--III but
+assumes none of their probabilistic or spectral theorems; this makes the
+dependency on the existing research particularly narrow and auditable.
+
+\subsection{The macroscopic profile and moving-bound enumeration}
+Define, for $0<u\le1$,
+\begin{equation}
+ \Psi(u)=
+ \begin{cases}
+ \displaystyle\frac3{\sqrt\pi}\frac{1-2u}{\sqrt{u(1-u)}},&0<u<\tfrac12,\\[6pt]
+ 0,&\tfrac12\le u\le1.
+ \end{cases}
+ \label{mj:eq:Psi}
+\end{equation}
+$\Psi$ is continuous on $(0,1]$. The zero at $1/2$ and beyond is part of the
+definition, not a claim that the finite probability vanishes there.
+
+\begin{theorem}[Complete first-order macroscopic profile; both manuscripts]
+\label{mj:thm:profile}
+For every $0<u\le1$,
+\begin{equation}
+ \sqrt n\,\ljP(D_n>un)\longrightarrow\Psi(u).
+ \label{mj:eq:profile-limit}
+\end{equation}
+More generally, for every integer sequence $d_n$ with $d_n/n\to
+u\in(0,1)$,
+\begin{equation}
+ \sqrt n\,\ljP(D_n\ge d_n)\longrightarrow\Psi(u).
+ \label{mj:eq:profile-sequence}
+\end{equation}
+For each fixed $\delta>0$ the convergence in \eqref{mj:eq:profile-limit}
+is uniform in $u\in[\delta,1]$, and so is that of
+$u\mapsto\sqrt n\,\ljP(D_n\ge\lceil nu\rceil)$. Consequently, for fixed
+$1/2<\theta<1$,
+\begin{align}
+ \frac{a_n^{(\lfloor\theta n\rfloor)}}{C_n}
+ &\sim\frac{3(2\theta-1)}{\sqrt{\pi\theta(1-\theta)}}\,n^{-1/2},
+ \label{mj:eq:bulk-ratio}\\
+ a_n^{(\lfloor\theta n\rfloor)}
+ &\sim\frac{3(2\theta-1)}{\pi\sqrt{\theta(1-\theta)}}\,
+       \frac{4^n}{n^2}.
+ \label{mj:eq:bulk-count}
+\end{align}
+For fixed $0<\theta\le1/2$ the ratio is $o(n^{-1/2})$ and the count is
+$o(4^n/n^2)$; no positive asymptotic equivalent in that range is asserted.
+\end{theorem}
+
+Manuscript~10 proves \eqref{mj:eq:profile-limit} with uniformity on
+$[\delta,1]$ and both consequences; manuscript~11 proves the sequence form
+\eqref{mj:eq:profile-sequence}, compact uniformity and \eqref{mj:eq:bulk-ratio}.
+The first proof (manuscript~10) solves a renewal equation for a marked
+measure (\cref{mj:sec:renewal}); the second (manuscript~11) sums fixed outer
+words of a canonical threshold decomposition (\cref{mj:sec:words}). The
+zero part of $\Psi$ is a first-order \emph{asymptotic} cutoff, not a finite
+combinatorial prohibition. The increasing permutation, for example, has
+$M_n=1$ and $D_n=n-1$. Such permutations lie beyond the cutoff, but have
+negligible mass on the $n^{-1/2}$ scale.
+
+\subsection{The marked measure behind the coefficient three}
+Put
+\[
+ \mathcal X=(0,1]\times[0,1],\qquad
+ \Xi_n=(D_n/n,L_n/n),\qquad v(y)=\min(y,1-y).
+\]
+The following locally finite measure is infinite near the missing boundary
+$x=0$ of the deficit coordinate; it is not a probability measure.
+
+\begin{theorem}[Marked rare-event measure; manuscript~10, last assertion both]
+\label{mj:thm:marked}
+For every continuous function $f$ on $[0,1]^2$ that vanishes on some strip
+$\{0\le x\le\delta\}$ of the deficit coordinate, $\delta>0$,
+\begin{align}
+ \sqrt n\,\ljE f(\Xi_n)&\longrightarrow\mu(f),\label{mj:eq:marked-limit}\\
+ \mu(f)&=\frac1{4\sqrt\pi}\int_0^1
+ \frac{f(v(y),0)+f(v(y),1-y)+f(v(y),1)}
+ {[y(1-y)]^{3/2}}\,\dd y.
+ \label{mj:eq:marked-measure}
+\end{align}
+Equivalently, $\sqrt n\,\ljLaw(\Xi_n)$ converges vaguely on $\mathcal X$ to
+$\mu$. The deficit marginal of $\mu$ has density
+\begin{equation}
+ \rho(x)=\frac3{2\sqrt\pi}[x(1-x)]^{-3/2}\one_{(0,1/2)}(x).
+ \label{mj:eq:rho}
+\end{equation}
+That is, on the locally compact space $(0,1]$ the measures
+$\mu_{D,n}=\sqrt n\,\ljLaw(D_n/n)$ converge vaguely to
+\begin{equation}
+ \mu_D(\dd x)=\rho(x)\,\dd x=\frac3{2\sqrt\pi}
+ \frac{\one_{(0,1/2)}(x)}{[x(1-x)]^{3/2}}\,\dd x,
+ \label{mj:eq:measure}
+\end{equation}
+and $\mu_D([u,1])=\Psi(u)$ for $u>0$. The measure $\mu_D$ has infinite mass
+near zero and is not a probability measure.
+\end{theorem}
+
+The three summands describe a last entry close to the low end, a last entry
+in the interior, and a last entry close to the high end. Their equal weights
+are a theorem of the renewal calculation, not an independence assumption
+about endpoints. The last assertion is manuscript~11's Theorem~1.2, proved
+there from the profile (\cref{mj:sec:words-measure}); manuscript~10 obtains
+it as the deficit marginal (\cref{mj:sec:profile-proof}).
+
+\subsection{Exact moment constants and the mean-carrying law}
+\begin{theorem}[Every supercritical moment; both manuscripts]
+\label{mj:thm:moments}
+For every fixed real $p>1/2$,
+\begin{equation}
+ \ljE D_n^p\sim\mathfrak m_p\, n^{p-1/2},
+ \label{mj:eq:moment-equivalent}
+\end{equation}
+where
+\begin{align}
+ \mathfrak m_p
+ &=\frac3{2\sqrt\pi}\int_0^{1/2}
+          x^{p-3/2}(1-x)^{-3/2}\,\dd x\label{mj:eq:kappa-beta}\\
+ &=\frac3{\sqrt\pi}\int_0^1
+       \left(\frac{z^2}{1+z^2}\right)^{p-1}\dd z.
+ \label{mj:eq:kappa-t}
+\end{align}
+In particular,
+\begin{align}
+ \ljE M_n&=n-\frac3{\sqrt\pi}\sqrt n+o(\sqrt n),
+ \label{mj:eq:mean-M}\\
+ \mjVar(D_n)=\mjVar(M_n)
+ &\sim\frac{3(4-\pi)}{4\sqrt\pi}\,n^{3/2}
+  =\frac3{\sqrt\pi}\left(1-\frac\pi4\right)n^{3/2}.
+ \label{mj:eq:variance}
+\end{align}
+\end{theorem}
+
+The two printed forms of the variance constant are manuscript~10's and
+manuscript~11's; they are equal. Both manuscripts state both integral forms
+of $\mathfrak m_p$; manuscript~10 adds the size-biased law below, which at
+$p=1$ carries the same information as the integral.
+
+Define deficit-size bias by
+\begin{equation}
+ \ljP_n^\star(B)=\frac{\ljE[D_n\one_B]}{\ljE D_n}.
+ \label{mj:eq:size-bias}
+\end{equation}
+This is a probability measure on the same finite permutation space.
+
+\begin{theorem}[A uniform law under deficit-size bias; manuscript~10]
+\label{mj:thm:uniform}
+Under $\ljP_n^\star$,
+\begin{equation}
+ \sqrt{\frac{D_n}{n-D_n}}\ \Longrightarrow\ \operatorname{Uniform}[0,1].
+ \label{mj:eq:uniform-law}
+\end{equation}
+Equivalently, the limiting distribution function of $D_n/n$ under this
+bias is
+\begin{equation}
+ H^\star(x)=
+ \begin{cases}
+ 0,&x\le0,\\
+ \sqrt{x/(1-x)},&0<x<1/2,\\
+ 1,&x\ge1/2.
+ \end{cases}
+ \label{mj:eq:mean-cdf}
+\end{equation}
+Thus half the leading mean contribution comes from deficits above $n/5$:
+\begin{equation}
+ \frac{\ljE[D_n;D_n>n/5]}{\ljE D_n}\longrightarrow\frac12.
+ \label{mj:eq:half-mean}
+\end{equation}
+\end{theorem}
+
+Because $\mathfrak m_1=3/\sqrt\pi$, manuscript~11's moment formula at $p=1$
+and manuscript~10's size-biased law carry the same information: the
+size-biased density $x\rho(x)/\mathfrak m_1$ is the derivative of
+$H^\star$, whose total mass one is the statement $\mathcal I(1)=1$ of
+\cref{mj:sec:closed-forms} (the merge's comparison).
+
+\subsection{What makes the constant three}
+\label{mj:sec:three}
+Both manuscripts explain the coefficient $3$ in $\Psi$, from different
+decompositions.
+
+\emph{Manuscript~11: outer words.} The combinatorial proof isolates one
+split into two macroscopic blocks, preceded by a finite outer word of two
+possible operations. One operation adds a finite block on the left of a
+maximum; the other appends a new maximum. The total critical weight of all
+outer words is $4$. However, words containing an append operation are
+accepted only when the terminal right block has a last entry near its high
+endpoint. That event has asymptotic probability $1/2$. Words without an
+append operation have total weight $2$; words with one or more appends also
+have total weight $2$. The accepted weight is therefore
+\begin{equation}
+ 2+\frac12\cdot2=3.
+ \label{mj:eq:three-intro}
+\end{equation}
+Neither ignoring append operations nor treating every append as harmless
+gives the correct constant. The endpoint condition is not a secondary error
+term.
+
+\emph{Manuscript~10: a renewal with three endpoint channels.} Integrating
+the Catalan root-split density alone gives only the source term $\nu$ of
+\eqref{mj:eq:nu} (\cref{mj:rem:heuristic}): small outer decorations recur,
+and appending a maximum can erase a rare deficit. The resulting renewal
+equation has the solution \eqref{mj:eq:marked-measure}, whose three equally
+weighted summands are the three endpoint channels; \cref{mj:sec:small}
+separates the folding factor two from the three channels. (On tests of the
+deficit alone the source is a third of the answer; \cref{mj:sec:three-match}
+identifies the three channels with manuscript~11's three endpoint modes. Both
+observations are the merge's.)
+
+\subsection{Scope of the advance}
+The main profile and moment results answer the two explicit repository
+questions just identified. The marked endpoint limit, the size-biased
+uniform law, the lower bounds of \cref{mj:sec:lower}, and the conditional
+outer-word and split laws of \cref{mj:sec:conditional} are further results.
+All needed finite facts are rederived. In particular, no asymptotic claim
+from an unrefereed repository report is assumed in the proofs; the
+finite-state recurrence is used only for computations and is attributed to
+its prior source. Manuscript~10's proof is self-contained at the level of
+finite Catalan decompositions, elementary generating functions, Stirling's
+formula, and convergence of measures: an exact root identity eliminates the
+left block's internal jump statistic, and a uniform counting bound controls
+the otherwise dangerous mesoscopic remainder. Manuscript~11's proof is by
+exact Catalan counting, endpoint estimates, and a tail bound at the
+rare-event scale, a different asymptotic decomposition for a bound
+proportional to $n$; in neither is a fixed-bound spectral asymptotic
+substituted into a varying-bound problem.
+
+Neither manuscript claims the exact total-variation constant, a constant
+term in the critical half-moment, a local limit for individual macroscopic
+lattice masses, or the optimal scale below the half-size cutoff. The
+positive bulk equivalent concerns adjacency bounds $m/n\in(1/2,1)$; the
+smaller-bound bulk regime and the critical window at $m=n/2$ remain open.
+Nor does this work resolve the fixed-$m$ component-ordering problem of
+Mayama--Akita.
+
+\section{Exact identities at the maximum and at the endpoints}
+\label{mj:sec:root}
+
+\subsection{The Catalan maximum decomposition}
+Both manuscripts start from the maximum decomposition of Part~I
+(\cref{sec:endpoints}), which Part~III also rederives
+(\cref{lj:sec:preliminaries}): every $\pi\in\Av_n(132)$ is uniquely
+\[
+ \pi=(\sigma+b)\,n\,\tau,
+ \qquad \sigma\in\Av_a(132),\quad\tau\in\Av_b(132),\quad a+b+1=n,
+\]
+and every such pair produces an avoider. Hence, for the left and right block
+sizes of $\Pi_n$ (manuscript~10),
+\begin{equation}
+ \ljP(\text{left size }a,\ \text{right size }b)=\frac{C_aC_b}{C_n},
+ \label{mj:eq:split-weight}
+\end{equation}
+and, conditional on their sizes, the standardized blocks are independent and
+uniform. Summing gives $\Cat=1+x\Cat^2$. If $\pi$ is $m$-bounded and $b>0$,
+then $a+1\le m$ (manuscript~11's positional restriction), because the entry
+after $n$ is at most $b$: this is Part~I's \eqref{eq:max-position}. Both
+manuscripts rederive the decomposition and the restriction by the argument of
+Part~I; it is not repeated.
+
+\subsection{The exact deficit recursion}
+\begin{proposition}[The exact deficit recursion; manuscript~10]
+\label{mj:prop:root}
+Let $\pi=(\sigma+b)\,n\,\tau$ as above. If $b\ge1$, then
+\begin{align}
+ M(\pi)&=\max\{n-F(\tau),M(\tau)\},\label{mj:eq:M-root}\\
+ D(\pi)&=\min\{F(\tau),a+1+D(\tau)\},\label{mj:eq:D-root}\\
+ L(\pi)&=L(\tau).\label{mj:eq:L-root}
+\end{align}
+If $b=0$ and $n\ge2$, then
+\begin{equation}
+ D(\pi)=\min\{D(\sigma)+1,L(\sigma)\},
+ \qquad L(\pi)=n.
+ \label{mj:eq:append-root}
+\end{equation}
+For $a>0$, the first-entry deficiency satisfies
+\begin{equation}
+ J(\pi)=n-F(\pi)=a+1-F(\sigma);
+ \label{mj:eq:first-root}
+\end{equation}
+for $a=0$, it is zero.
+\end{proposition}
+\begin{proof}
+Suppose $b\ge1$. The downward boundary jump from $n$ to $F(\tau)$ is
+$n-F(\tau)\ge n-b=a+1$. Every jump inside the left block is at most $a-1$,
+and the jump from the left block into $n$, when present, is at most $a$.
+Therefore none of these can be largest. Only the downward boundary and
+jumps internal to the right block remain, proving \eqref{mj:eq:M-root}.
+Subtracting the maximum from $n$ gives \eqref{mj:eq:D-root}; the last value
+is unchanged. If $b=0$, appending $n$ introduces the single new jump
+$n-L(\sigma)$, and subtraction gives \eqref{mj:eq:append-root}. Finally,
+$F(\pi)=b+F(\sigma)$ when $a>0$, proving \eqref{mj:eq:first-root}.
+\end{proof}
+
+This is stronger than an asymptotic simplification. It explains why an
+arbitrary left decoration contributes only its Catalan count in the later
+analysis. The last endpoint cannot likewise be discarded: the minimum in
+\eqref{mj:eq:append-root} is exactly where a putative large deficit can be
+clipped away. (The recursion is the one-step form of the state
+transformations \eqref{lj:eq:state-right}--\eqref{lj:eq:state-append} of
+Part~III, which hold there under a first-entry hypothesis on a large hole;
+\eqref{mj:eq:D-root} and \eqref{mj:eq:append-root} hold for every avoider.)
+
+\subsection{First entries: a uniformly exponential tail}
+\label{mj:sec:first}
+The first-entry count
+\begin{equation}
+ \#\{\pi\in\Av_N(132):F(\pi)=f\}=\frac{N-f+1}{N}\binom{N+f-2}{N-1},
+ \qquad1\le f\le N,
+ \label{mj:eq:first-count}
+\end{equation}
+is Part~III's \eqref{lj:eq:first-count}, which is Part~I's \eqref{eq:h}
+reindexed (\cref{lj:rem:first-entry}). Manuscripts~10 and~11 rederive it
+exactly as Part~III does: the maximum decomposition gives the bivariate
+first-value series \eqref{lj:eq:first-gf}, the substitution
+$(x,z)\mapsto(xu,u^{-1})$ gives the deficiency form
+\eqref{lj:eq:deficiency-gf}, deficiency $j$ has generating function
+$(x\Cat(x))^{j+1}$, and Lagrange inversion applied to $\Cat=1+x\Cat^2$
+gives $[x^k]\Cat(x)^q=\frac{q}{2k+q}\binom{2k+q}{k}$. The new content is a
+pair of bounds uniform in the size, which remain useful when the event
+being studied has probability only of order $n^{-1/2}$.
+
+\begin{lemma}[A uniform first-deficiency bound; both manuscripts]
+\label{mj:lem:first}
+For $n\ge1$ and $0\le j\le n-1$,
+\begin{equation}
+ \ljP(J_n=j)\le(j+1)2^{-j-1}\le(j+1)2^{-j},
+ \qquad \ljE J_n\le8,
+ \label{mj:eq:first-tight}
+\end{equation}
+and for every integer $h\ge0$,
+\begin{equation}
+ \ljP(J_n\ge h)\le(h+2)2^{-h}.
+ \label{mj:eq:first-tail}
+\end{equation}
+In particular $\ljP(J_n\ge h)$ is bounded by an absolute constant times
+$(h+1)2^{-h}$, uniformly in $n$.
+\end{lemma}
+Manuscript~10 states the weaker bound $(j+1)2^{-j}$, $\ljE J_n\le8$ and the
+last sentence; manuscript~11 states $(j+1)2^{-j-1}$ and
+\eqref{mj:eq:first-tail}. The proofs are the same computation.
+\begin{proof}
+For $n\ge2$, divide the count \eqref{mj:eq:first-count} with $f=n-j$ by
+$C_n$:
+\[
+ \ljP(J_n=j)=
+ (j+1)\frac{n+1}{2(2n-1)}
+ \prod_{r=0}^{j-1}\frac{n-1-r}{2n-2-r}.
+\]
+Indeed the ratio $\binom{2n-2}{n-1}/\binom{2n}{n}$ is $n/(2(2n-1))$, and
+lowering the first upper index a further $j$ times multiplies it by the
+product. The empty product is one, each product factor is at most $1/2$, and
+$(n+1)/(2(2n-1))\le1/2$. Thus $\ljP(J_n=j)\le(j+1)2^{-j-1}$ (manuscript~10
+bounds the prefactor $(j+1)(n+1)/(2(2n-1))$ by $j+1$ instead). Summing the
+infinite geometric-arithmetic tail gives
+$\sum_{j\ge h}(j+1)2^{-j-1}=(h+2)2^{-h}$. For $n=1$, the deficiency is zero
+and every inequality holds directly. Finally $\sum_{j\ge0}j(j+1)2^{-j}=8$.
+\end{proof}
+
+\subsection{Last entries: two endpoint modes}
+\label{mj:sec:last}
+The last-entry count
+\begin{equation}
+ \#\{\pi\in\Av_N(132):L(\pi)=\ell\}=C_{N-\ell}C_{\ell-1},
+ \qquad1\le\ell\le N,
+ \label{mj:eq:last-count}
+\end{equation}
+is Part~III's \eqref{lj:eq:last-count}, from the unique decomposition
+$\pi=(\tau+\ell)\,\sigma\,\ell$ with $|\tau|=N-\ell$, $|\sigma|=\ell-1$
+(\eqref{lj:eq:last-decomposition}); both manuscripts rederive it that way,
+noting that triples crossing the separated blocks cannot form $132$.
+
+\begin{lemma}[The last entry has two endpoint limits; both manuscripts]
+\label{mj:lem:last}
+As $n\to\infty$,
+\begin{equation}
+ L_n/n\Longrightarrow\tfrac12\delta_0+\tfrac12\delta_1.
+ \label{mj:eq:last-limit}
+\end{equation}
+More precisely, for every fixed $\eta\in(0,1/2)$, uniformly for integer
+$r\in[\eta N,(1-\eta)N]$,
+\begin{equation}
+ \ljP(L(\Pi_N)\ge r)=\frac12+O_\eta(N^{-1/2}),
+ \label{mj:eq:last-half}
+\end{equation}
+and the probability that $L(\Pi_N)/N$ belongs to $[\eta,1-\eta]$ is
+$O_\eta(N^{-1/2})$.
+\end{lemma}
+Manuscript~10 proves \eqref{mj:eq:last-limit}, manuscript~11 the
+quantitative form; the two proofs differ.
+\begin{proof}[Proof (manuscript~10)]
+For fixed $j\ge0$, Stirling's formula and \eqref{mj:eq:last-count} give
+\[
+ \ljP(L_n=j+1)\longrightarrow C_j4^{-j-1},\qquad
+ \ljP(L_n=n-j)\longrightarrow C_j4^{-j-1}.
+\]
+Each family of limiting masses sums to $\frac14\Cat(1/4)=1/2$. For a fixed
+endpoint cutoff the two families are disjoint for large $n$. Letting the
+cutoff tend to infinity leaves no asymptotic mass in the middle. This proves
+\eqref{mj:eq:last-limit}.
+\end{proof}
+\begin{proof}[Second proof, with the uniform estimate (manuscript~11)]
+The distribution \eqref{mj:eq:last-count} is symmetric under
+$\ell\mapsto N+1-\ell$. For $\eta N\le\ell\le(1-\eta)N$, the Catalan bounds
+\eqref{mj:eq:catalan-bounds} below bound each probability by
+$K_\eta N^{-3/2}$. Summing at most $N$ terms gives the middle-mass bound.
+Symmetry puts one half of the remaining mass at each end, proving
+\eqref{mj:eq:last-half} uniformly in the stated range.
+\end{proof}
+
+In particular, the first deficiency has an exponentially bounded tail,
+whereas the last entry converges after division by its size to an equal
+mixture of the endpoints zero and one. No independence between the two
+endpoints, or between $D_n$ and $L_n$, has been asserted or will be needed.
+Later, the fact that $D_n/n\to0$ in probability will make its macroscopic
+value deterministic inside a large unconditioned block, which is a different
+argument.
+
+\subsection{Uniform Catalan estimates}
+Manuscript~11 records the following bounds. Stirling's formula and
+adjustment of finitely many small indices give absolute constants
+$c_-,c_+>0$ such that
+\begin{equation}
+ c_-(j+1)^{-3/2}\le c_j\le c_+(j+1)^{-3/2},
+ \qquad
+ c_j=\frac{1+O(j^{-1})}{\sqrt\pi\,j^{3/2}}\quad(j\to\infty).
+ \label{mj:eq:catalan-bounds}
+\end{equation}
+(Manuscript~10 proves $c_h\le(h+1)^{-3/2}$ directly, in the proof of
+\cref{mj:lem:Ttail}.) All constants denoted by $K$ are absolute unless a
+subscript specifies otherwise; they can be enlarged from line to line. For
+$N\ge n/2$, \eqref{mj:eq:catalan-bounds} implies
+\begin{equation}
+ \frac{C_N}{C_n}\le K4^{N-n}.
+ \label{mj:eq:catalan-ratio}
+\end{equation}
+These inequalities are used as bounds, and the asymptotic formula only when
+all involved block sizes tend to infinity uniformly. The numbers $c_j$
+decrease strictly (\eqref{lj:eq:domination}), so
+$C_{n-t}/C_n\ge4^{-t}$ for $0\le t<n$.
+
+\section{Tail envelopes at the rare-event scale}
+\label{mj:sec:envelope}
+The proof of a rare-event limit needs an upper bound that survives
+multiplication by $\sqrt n$. Ordinary weak convergence of $D_n/n$ is not
+enough. Both manuscripts obtain such a bound from finite counting, without
+using Part~III's algebraic boundary law, by two different decompositions.
+
+\subsection{Stopping words and a deterministic deficit bound}
+Manuscript~10 uses Part~III's three reconstruction operations $R_\beta$, $A$
+and $T_\tau$ (\cref{lj:sec:skeleton}), with costs $|\beta|+1$, $1$ and
+$|\tau|+1$. It calls Part~III's skeletons \emph{stopping words}: a word in
+$R_\beta,A$ followed by one $T_\tau$, applied from the terminal operation
+outward. It has total cost $t$ and one unexpanded hole; filling that hole
+with a size-$N$ avoider produces size $N+t$.
+
+\begin{lemma}[Disjoint families and a deterministic deficit bound]
+\label{mj:lem:stopping}
+Fix $n$ and $h<n/2$. Reconstructions from different stopping words of cost
+$t\le h$ are disjoint, and the reconstruction map is injective in the
+size-$(n-t)$ hole. Every such reconstruction satisfies
+\begin{equation}
+ D(\pi)\le t-1.
+ \label{mj:eq:stopping-deficit}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Disjointness and injectivity are Part~III's \cref{lj:lem:injective};
+manuscript~10 rederives them by the same argument (the block containing the
+hole is larger than its finite sibling at every maximum decomposition, so
+the word and the hole are read off from the final permutation).
+
+For \eqref{mj:eq:stopping-deficit}: at the terminal, the jump from the
+maximum to the first value of $\tau$ has size at least $N+1$. Every outer
+operation preserves all existing internal differences, so the final maximum
+jump is still at least $N+1$. Thus $D\le(N+t)-(N+1)=t-1$. Notably, no
+first-entry condition on the hole is needed for this one-sided assertion,
+unlike the exact identity of Part~III's \cref{lj:lem:reconstruction}.
+\end{proof}
+
+\subsection{An elementary bound for the exact cost tail}
+The stopping words of cost $t$ are counted by Part~III's $b_t$, with
+generating function $B(x)=(\Cat(x)-1)^2$ (\eqref{lj:eq:cost-gf}): the
+numerator of $x(\Cat-1)/(1-x\Cat-x)$ counts terminals and the denominator an
+arbitrary prefix. In particular $B(1/4)=1$, so the weights $b_t4^{-t}$ form
+the probability law of Part~III's cost $T$; and $b_t=C_{t+1}-2C_t$ for $t\ge1$,
+$b_0=0$ (\eqref{lj:eq:b-t}). Manuscript~10 rederives all of this.
+
+\begin{lemma}[Exact tail and an elementary bound]
+\label{mj:lem:Ttail}
+For every integer $h\ge0$,
+\begin{equation}
+ \ljP(T>h)=\frac{2(h+1)(2h+1)}{h+2}\frac{C_h}{4^h}
+ \le\frac4{\sqrt{h+1}}.
+ \label{mj:eq:Ttail}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The equality is Part~III's \cref{lj:lem:cost-tail}, proved there, and in
+manuscript~10, from $c_{j+1}/c_j=(2j+1)/(2j+4)$,
+$\sum_{j=0}^hc_j=2-(2h+1)c_h$ and $b_t4^{-t}=4c_{t+1}-2c_t$ for $t\ge1$.
+For the bound (manuscript~10), $c_h\le(h+1)^{-3/2}$ by induction, because
+\[
+ (2h+1)^2(h+2)\le4(h+1)^3.
+\]
+The prefactor in \eqref{mj:eq:Ttail} is at most $4(h+1)$, proving the bound.
+\end{proof}
+
+\subsection{The uniform envelope}
+\begin{proposition}[Uniform finite-size deficit envelope; both manuscripts]
+\label{mj:prop:envelope}
+For $1\le d\le n$, put $h=\min\{d,\lfloor(n-1)/2\rfloor\}$. Then
+\begin{align}
+ \ljP(D_n\ge d)
+ &\le\ljP(T>h)\label{mj:eq:exact-envelope}\\
+ &\le\min\left\{1,\frac{4\sqrt2}{\sqrt d}\right\}.
+ \label{mj:eq:uniform-envelope}
+\end{align}
+Consequently $D_n/n\to0$ in probability and, for every $0<u\le1$,
+\begin{equation}
+ \sqrt n\,\ljP(D_n>un)\le4\sqrt2\,u^{-1/2}.
+ \label{mj:eq:scaled-envelope}
+\end{equation}
+\end{proposition}
+Manuscript~10 proves the explicit form given here. Manuscript~11 proves
+$\ljP(D_n\ge d)\le K/\sqrt d$ for $n\ge2$, $1\le d\le n-1$, with an
+unspecified absolute constant (\cref{mj:cor:all-tail}), by a different
+route.
+\begin{proof}
+By \cref{mj:lem:stopping}, the disjoint short-word families have total
+probability $\sum_{t\le h}b_tC_{n-t}/C_n$ and all satisfy $D_n<d$. Since
+$c_j$ decreases, $C_{n-t}/C_n=4^{-t}c_{n-t}/c_n\ge4^{-t}$. Their mass is
+therefore at least $\ljP(T\le h)$, proving the first inequality. Because
+$h+1\ge d/2$, \cref{mj:lem:Ttail} proves the second. Use
+$d=\lfloor un\rfloor+1>un$ to obtain the scaled bound, with the zero event
+handled separately when $u=1$.
+\end{proof}
+
+The same stopping construction occurs in Part~III's boundary-law proof. Its
+use here is deliberately weaker and cleaner: the preserved terminal jump
+supplies a tail bound directly, without reconstructing the exact limiting
+deficit or controlling an exceptional set of hole endpoints.
+
+\subsection{A canonical threshold parser}
+\label{mj:sec:parser}
+Manuscript~11 decomposes a bounded permutation differently. Its outer words
+use only the operations $R_\beta$ (with $\beta$ an arbitrary avoider,
+including $R_\varnothing$ at cost one) and $A$, with Part~III's costs; an
+\emph{outer word} is a finite word in these decorated operations, including
+the empty word, written outermost operation first, so that reconstruction
+applies it from right to left. Its cost is the sum of operation costs, and
+every operation preserves avoidance.
+
+Fix integers $n,m$ with
+\begin{equation}
+ n/2\le m\le n-1,\qquad d=n-m.
+ \label{mj:eq:threshold-range}
+\end{equation}
+Let $\mathcal E_{n,m}$ be the event $M_n\le m$. For an $m$-bounded
+permutation, start at its maximum decomposition. As long as a child block
+has more than $m$ entries, follow that block. A large right child records an
+$R_\beta$ operation. A large left child must have an empty right sibling, by
+the positional restriction, and records an $A$ operation. Stop at the first
+node whose two child blocks both have size at most $m$.
+
+\begin{lemma}[Canonical parsing and reconstruction; manuscript~11]
+\label{mj:lem:parse}
+Every permutation in $\mathcal E_{n,m}$ has a unique representation
+\begin{equation}
+ w\bigl((\sigma+b)\,N\,\tau\bigr),
+ \qquad a=|\sigma|,\quad b=|\tau|,
+ \label{mj:eq:parse}
+\end{equation}
+where $w$ is an outer word of cost $t$, and
+\begin{equation}
+ 0\le t\le d-1,\qquad N=n-t>m,
+ \qquad a+b=N-1,\qquad 0\le a,b\le m.
+ \label{mj:eq:parse-sizes}
+\end{equation}
+The word, all its decorations, and the terminal pair are recoverable from
+the permutation. For any fixed word of cost $t\le d-1$, reconstruction from
+terminal pairs satisfying \eqref{mj:eq:parse-sizes} is injective. Whenever
+the reconstructed permutation is $m$-bounded, its canonical word is exactly
+the prescribed word.
+\end{lemma}
+\begin{proof}
+At every stage the current block has more than $m$ entries. Under
+\eqref{mj:eq:threshold-range}, two children of more than $m$ entries are
+impossible by their total size; for bounded permutations the positional
+restriction also rules out a nonempty right child next to a left child of
+more than $m$ entries. The stated rule therefore gives a unique next
+operation whenever parsing continues. The followed size strictly decreases.
+At size $m+1$ both children have at most $m$ entries, so parsing has stopped
+by then. This proves $N\ge m+1$ and $t\le d-1$.
+
+Each maximum decomposition recovers its standardized children, so it also
+recovers every decoration and the terminal pair. Conversely, the core in
+\eqref{mj:eq:parse} and every intermediate core have more than $m$ entries.
+An $R$ decoration has size at most $t-1\le d-2<m$, while an $A$ operation has
+no right sibling. Hence the same parsing rule follows the reconstructed core
+at each operation and stops exactly at the specified terminal pair. This
+proves injectivity and the final assertion.
+\end{proof}
+
+\begin{remark}[The terminal pair is not a boundary-law skeleton]
+The absorbing skeleton of Part~III (manuscript~10's stopping word) stops at a
+finite right block next to a giant left block. The threshold parser stops
+when \emph{both} blocks lie below the adjacency threshold. Under a
+macroscopic deficit, these terminal blocks are themselves macroscopic. The
+two parsers serve different limits and must not be identified.
+\end{remark}
+
+Let $w_t$ count all individually decorated outer words of cost $t$, and let
+$w^R_t$ count those containing no $A$ operation. The generating function of
+one $R$ operation is $z\Cat(z)$, including $R_\varnothing$ at cost one.
+Therefore
+\begin{align}
+ \mathcal W(z):=\sum_{t\ge0}w_tz^t
+    &=\frac{1}{1-z\Cat(z)-z}=\Cat(z)^2,
+ \label{mj:eq:W}\\
+ \mathcal W_R(z):=\sum_{t\ge0}w^R_tz^t
+    &=\frac{1}{1-z\Cat(z)}=\Cat(z).
+ \label{mj:eq:WR}
+\end{align}
+Both identities follow from $z\Cat^2=\Cat-1$. In particular,
+\begin{equation}
+ w_t=C_{t+1},\qquad w^R_t=C_t.
+ \label{mj:eq:word-counts}
+\end{equation}
+At $z=1/4$ these series converge, with $\mathcal W(1/4)=4$ and
+$\mathcal W_R(1/4)=2$. This critical summability will allow the finite outer
+word to be summed without a spectral approximation. (Part~III's cost series
+factors as $B(z)=\mathcal W(z)\cdot z(\Cat(z)-1)$: an outer word followed by
+a terminal $T_\tau$, so the two parsers share their
+outer operations. This remark is the merge's.)
+
+\subsection{Tightness of the canonical cost}
+\label{mj:sec:tightness}
+The main technical point is not merely that the outer word is usually short
+under some limiting construction. Its tail must be negligible
+\emph{relative to a probability of order $n^{-1/2}$}. The following exact
+majorant supplies that missing uniformity. Let
+\begin{equation}
+ Q_{N,m}=\sum_{\substack{a+b=N-1\\0\le a,b\le m}}C_aC_b
+ \label{mj:eq:Q}
+\end{equation}
+count terminal pairs before checking the boundary jumps.
+
+\begin{lemma}[Terminal split bound; manuscript~11]
+\label{mj:lem:Q}
+For $m<N\le2m+1$, with $r=N-m\ge1$,
+\begin{equation}
+ Q_{N,m}\le\frac{K C_N}{\sqrt r}.
+ \label{mj:eq:Qbound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $r=1$, the full Catalan recurrence gives $Q_{N,m}\le C_N$. For $r\ge2$,
+every admissible pair has $a,b\ge r-1$. By symmetry we may sum the half with
+$a\le b$ and multiply by two. On that half, $b+1\ge N/2$, and the Catalan
+bounds give
+\[
+ \frac{C_aC_b}{C_N}\le\frac{K}{(a+1)^{3/2}}.
+\]
+The sum over $a\ge r-1$ is at most $K/\sqrt r$, by comparison with the
+integral of $u^{-3/2}$. This proves \eqref{mj:eq:Qbound}.
+\end{proof}
+
+On $\mathcal E_{n,m}$, write $T_{n,m}$ for the cost of the canonical outer
+word. It need not be defined outside that event.
+
+\begin{lemma}[Uniform tail of the canonical cost; manuscript~11]
+\label{mj:lem:cost-tail}
+Under \eqref{mj:eq:threshold-range}, for every integer $h\ge0$,
+\begin{equation}
+ \ljP(\mathcal E_{n,m},\ T_{n,m}>h)
+ \le K\left\{\frac{1}{\sqrt d\sqrt{h+1}}+\frac1d\right\}.
+ \label{mj:eq:rare-tail}
+\end{equation}
+Moreover,
+\begin{equation}
+ \ljP(\mathcal E_{n,m})\le\frac{K}{\sqrt d}.
+ \label{mj:eq:global-upper-half}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Discard every boundary constraint after applying the injective parser. For
+each cost $t$, there are $w_t$ words and at most $Q_{n-t,m}$ terminal pairs
+per word. Since $n-t\ge m+1\ge n/2$, \cref{mj:lem:Q},
+\eqref{mj:eq:catalan-ratio} and \eqref{mj:eq:word-counts} give
+\begin{align}
+ \ljP(\mathcal E_{n,m},T_{n,m}>h)
+ &\le \frac1{C_n}\sum_{h<t\le d-1}C_{t+1}Q_{n-t,m}\notag\\
+ &\le K\sum_{h<t\le d-1}
+       \frac{1}{(t+1)^{3/2}\sqrt{d-t}}.
+ \label{mj:eq:convolution-bound}
+\end{align}
+For $t\le d/2$, the sum is at most $Kd^{-1/2}\sum_{t>h}(t+1)^{-3/2}$, hence
+at most $K/\sqrt{d(h+1)}$. For $t>d/2$, put $r=d-t$. This part is at most
+\[
+ Kd^{-3/2}\sum_{1\le r\le d/2}r^{-1/2}\le Kd^{-1}.
+\]
+These bounds prove \eqref{mj:eq:rare-tail}. Starting the same sum at $t=0$
+proves \eqref{mj:eq:global-upper-half}, after enlarging $K$ for $d=1$.
+\end{proof}
+
+\begin{corollary}[An all-deficit envelope; manuscript~11]
+\label{mj:cor:all-tail}
+For every $n\ge2$ and $1\le d\le n-1$,
+\begin{equation}
+ \ljP(D_n\ge d)\le\frac{K}{\sqrt d}.
+ \label{mj:eq:all-tail}
+\end{equation}
+In particular, $D_n/n\to0$ in probability.
+\end{corollary}
+\begin{proof}[Proof, and second proof of \cref{mj:prop:envelope} up to the constant]
+For $d\le n/2$, apply \eqref{mj:eq:global-upper-half} with $m=n-d$. For
+$d>n/2$, use monotonicity and the bound at $\lfloor n/2\rfloor$. Since
+$d\le n$, the resulting $K/\sqrt n$ is at most a constant multiple of
+$d^{-1/2}$. Enlarge $K$ to cover the small values of $n$.
+\end{proof}
+
+\begin{remark}[The order of truncations]
+If $d_n/n\to u>0$, \eqref{mj:eq:rare-tail} yields
+\[
+ \limsup_{n\to\infty}\sqrt n\,
+ \ljP(\mathcal E_{n,n-d_n},T_{n,n-d_n}>h)\le K_u(h+1)^{-1/2}.
+\]
+Thus one first fixes a finite cost cutoff, takes $n\to\infty$, and only then
+lets the cutoff grow. Ordinary unscaled tightness would not justify this
+interchange. This estimate is the reason the finite-word calculation of
+\cref{mj:sec:words} determines the complete leading constant.
+\end{remark}
+
+\section{First proof of the profile: a renewal equation for the marked measure}
+\label{mj:sec:renewal}
+This section and the next are manuscript~10's proof of
+\cref{mj:thm:marked}, and with it of \cref{mj:thm:profile}.
+
+\subsection{Test functions and the append projection}
+It is enough initially to consider a Lipschitz function $f$ on $[0,1]^2$
+that is zero whenever the deficit coordinate satisfies $x\le\delta$, for
+some $\delta>0$. Set
+\begin{equation}
+ Z_n(f)=\sqrt n\,\ljE f(D_n/n,L_n/n).
+ \label{mj:eq:Zn}
+\end{equation}
+By \eqref{mj:eq:scaled-envelope}, this sequence is bounded, with a bound
+depending only on $\delta$ and $\|f\|_\infty$. Define
+\begin{equation}
+ S(x,\ell)=(\min(x,\ell),1),\qquad S^\ast f=f\circ S.
+ \label{mj:eq:S}
+\end{equation}
+Then $S^2=S$, hence $(S^\ast)^2=S^\ast$. Also $S^\ast f$ is Lipschitz and
+vanishes on the same low-deficit strip.
+
+The macroscopic source functional is
+\begin{equation}
+ \nu(f)=\frac1{8\sqrt\pi}\int_0^1
+ \frac{f(v(y),0)+f(v(y),1-y)}{[y(1-y)]^{3/2}}\,\dd y.
+ \label{mj:eq:nu}
+\end{equation}
+Its apparent endpoint singularities cause no problem: the numerator is zero
+when $v(y)\le\delta$.
+
+\begin{lemma}[Truncated renewal with a controlled remainder]
+\label{mj:lem:renewal}
+Put $r_a=C_a4^{-a-1}$. For each admissible Lipschitz $f$ there is a finite
+constant $K_f$ such that, for every sufficiently large integer $H$,
+\begin{multline}
+ \limsup_{n\to\infty}\left|
+ Z_n(f)-\sum_{a=0}^H r_aZ_{n-a-1}(f)
+       -\frac14 Z_{n-1}(S^\ast f)-\nu(f)\right|\\
+ \le K_f(H+1)^{-1/2}.
+ \label{mj:eq:renewal-approx}
+\end{multline}
+\end{lemma}
+
+\subsection{Proof of the truncated renewal}
+\begin{proof}[Proof of \cref{mj:lem:renewal}: small left blocks, the identity transition]
+Fix $H$ and use the exact root decomposition. If $0\le a\le H$ and
+$b=n-a-1$, \cref{mj:prop:root} gives
+\[
+ D_n=\min\{b-J_b,a+1+D_b\},\qquad L_n=L_b
+\]
+inside the conditional expectation. The distance between this normalized
+state and $(D_b/b,L_b/b)$ is bounded by an absolute constant times
+$(a+1+J_b)/n$. By \cref{mj:lem:first}, its expected value is $O_H(n^{-1})$.
+After multiplying by $\sqrt n$, the Lipschitz error tends to zero. Moreover
+\[
+ \frac{C_aC_b}{C_n}\sqrt{\frac nb}\longrightarrow C_a4^{-a-1}=r_a.
+\]
+Boundedness of $Z_b(f)$ therefore gives the small-left contribution
+$\sum_{a=0}^H r_aZ_{n-a-1}(f)+o(1)$.
+
+\emph{An empty right block: the append transition.}
+For $b=0$, the exact state differs from
+$S(D_{n-1}/(n-1),L_{n-1}/(n-1))$ by $O(n^{-1})$. The coefficient
+$(C_{n-1}/C_n)\sqrt{n/(n-1)}$ tends to $1/4$. Thus this contribution is
+$\frac14 Z_{n-1}(S^\ast f)+o(1)$. If $1\le b\le H$, then $D_n\le F_b\le H$
+exactly, so its contribution is zero for all sufficiently large $n$.
+
+\emph{Two macroscopic blocks: the source term.}
+Choose a fixed $0<\eta<\delta/4$ and consider $\eta n\le a,b\le(1-\eta)n$.
+Set $y=a/n$. The exact recursion and the endpoint lemmas give, uniformly in
+these sizes,
+\[
+ D_n/n-\min(a/n,b/n)\longrightarrow0
+ \quad\hbox{in probability},
+\]
+and the last coordinate is asymptotically $0$ or $b/n$, each with
+probability $1/2$. Indeed $J_b/b\to0$ and $D_b/b\to0$ uniformly for
+$b\ge\eta n$, while $L_b/b$ has the two-point limit of \cref{mj:lem:last}.
+Because the other coordinates have deterministic limiting values, no
+endpoint independence is required. The uniformity follows directly from
+convergence of the corresponding scalar sequences as their integer index
+tends to infinity, and uniform continuity of $f$ on a compact square.
+
+Stirling's formula gives, uniformly on the same interval,
+\begin{equation}
+ \frac{C_aC_b}{C_n}
+ =\frac{1+o(1)}{4\sqrt\pi\,n^{3/2}}
+   [y(1-y)]^{-3/2}.
+ \label{mj:eq:split-asymptotic-10}
+\end{equation}
+The replacement of $b/n=1-y-1/n$ by $1-y$ has vanishing effect. A Riemann
+sum therefore gives the source integral over $[\eta,1-\eta]$, which is
+exactly \eqref{mj:eq:nu}, since its integrand vanishes outside
+$[\delta,1-\delta]$.
+
+\emph{Mesoscopic left blocks: the indispensable error bound.}
+It remains to treat $H<a<\eta n$; the case $b<\eta n$ contributes zero
+because $D_n\le b<\delta n$. On the support of $f$, the root identity forces
+\[
+ a+1+D_b>\delta n,
+ \qquad\text{hence}\qquad D_b>\delta n/2
+\]
+for large $n$. By \cref{mj:prop:envelope}, its conditional probability is
+$O_\delta(n^{-1/2})$. In this range $b$ is a fixed positive fraction of $n$,
+so the Catalan ratio also gives
+\[
+ \frac{C_aC_b}{C_n}\le K r_a
+\]
+for an absolute constant $K$ depending at most on $\eta$. After
+multiplication by $\sqrt n$, the entire mesoscopic contribution is bounded
+by
+\[
+ K'_{f,\delta}\sum_{a>H}r_a
+ =O_{f,\delta}((H+1)^{-1/2}).
+\]
+Here the summable tail follows either from Stirling or from
+$c_a\le(a+1)^{-3/2}$ proved earlier. Combining all cases proves
+\eqref{mj:eq:renewal-approx}.
+\end{proof}
+
+\begin{remark}[Why a formal split heuristic is insufficient]
+\label{mj:rem:heuristic}
+Simply integrating the Catalan root-split density would give the source
+$\nu$, not the answer $\mu$. Small outer decorations recur, and appending a
+maximum can erase a rare deficit. Moreover, without the uniform tail
+envelope, the range $H<a=o(n)$ cannot be discarded after multiplication by
+$\sqrt n$. The proof handles both issues explicitly.
+\end{remark}
+
+\subsection{Solving the renewal equation without assuming convergence}
+The Catalan identity gives
+\begin{equation}
+ \sum_{a\ge0}r_a=\tfrac14\Cat(1/4)=\frac12.
+ \label{mj:eq:mass-r}
+\end{equation}
+Formally, a limit should satisfy
+$\mu(f)=\frac12\mu(f)+\frac14\mu(S^\ast f)+\nu(f)$. We now prove the limit
+exists rather than inserting this equation as an assumption.
+
+\begin{proof}[Proof of \cref{mj:thm:marked} for Lipschitz tests]
+First put $g=S^\ast f$, so that $S^\ast g=g$, and let
+$\bar Z_g=4\nu(g)$. All $Z_n(g)$ are bounded. Write
+$\bar r_H=\sum_{a=0}^H r_a$ and $e_g=\limsup_n|Z_n(g)-\bar Z_g|$.
+Applying \cref{mj:lem:renewal} to $g$ and subtracting $\bar Z_g$ yields
+\[
+ e_g\le(\bar r_H+\tfrac14)e_g
+       +K_g(H+1)^{-1/2}
+       +(\tfrac12-\bar r_H)|\bar Z_g|.
+\]
+Let $H\to\infty$. By \eqref{mj:eq:mass-r}, $e_g\le\frac34e_g$. Since $e_g$
+is finite, it is zero. Thus
+\begin{equation}
+ Z_n(S^\ast f)\longrightarrow4\nu(S^\ast f).
+ \label{mj:eq:projected-limit}
+\end{equation}
+
+Next set $\bar Z_f=2\nu(f)+2\nu(S^\ast f)$ and
+$e_f=\limsup_n|Z_n(f)-\bar Z_f|$. The already established convergence of the
+projected sequence gives
+\[
+ e_f\le\bar r_He_f+K_f(H+1)^{-1/2}
+             +(\tfrac12-\bar r_H)|\bar Z_f|.
+\]
+Letting $H\to\infty$ now gives $e_f\le\frac12e_f$, hence $e_f=0$. Therefore
+\begin{equation}
+ \mu(f)=2\nu(f)+2\nu(S^\ast f).
+ \label{mj:eq:resolvent}
+\end{equation}
+Since $f$ vanishes at deficit zero and $v(y)\le1-y$,
+\[
+ S^\ast f(v(y),0)=f(0,1)=0,
+ \qquad S^\ast f(v(y),1-y)=f(v(y),1).
+\]
+Substituting into \eqref{mj:eq:nu} proves precisely
+\eqref{mj:eq:marked-measure}.
+\end{proof}
+
+\subsection{Extension to continuous tests}
+An admissible continuous $f$ can be approximated uniformly by Lipschitz
+functions supported away from $x=0$, using piecewise-linear approximation on
+a rectangular mesh and a Lipschitz cutoff in the first coordinate. The scaled
+finite measures have uniformly bounded mass on every strip $x\ge\delta$ by
+\eqref{mj:eq:scaled-envelope}, and the limiting integral has finite mass
+there. Consequently the approximation error in both integrals is bounded by a
+constant times the uniform approximation error. Letting that error tend to
+zero proves the full theorem.
+
+\subsection{A reusable two-state resolvent}
+The calculation is an elementary renewal principle. If the total identity
+weight is $w_{\mathrm{id}}$, the weight of an idempotent endpoint operator
+$S^\ast$ is $w_S$, and $w_{\mathrm{id}}+w_S<1$, the analogous equation has
+the solution
+\begin{equation}
+ \mu(f)=\frac{\nu(f)}{1-w_{\mathrm{id}}}
+       +\frac{w_S}{(1-w_{\mathrm{id}})(1-w_{\mathrm{id}}-w_S)}\nu(S^\ast f).
+ \label{mj:eq:general-resolvent}
+\end{equation}
+The same bounded-sequence limsup proof establishes convergence whenever an
+analogue of \cref{mj:lem:renewal} is available. Here $w_{\mathrm{id}}=1/2$
+and $w_S=1/4$, so both coefficients in \eqref{mj:eq:resolvent} equal $2$.
+This algebraic principle is not itself advertised as a new general theorem;
+the work is in proving the appropriate source and uniform remainder for this
+statistic.
+
+\subsection{Evaluating the profile}
+\label{mj:sec:profile-proof}
+For a test depending only on the deficit, all three summands in
+\eqref{mj:eq:marked-measure} agree. Folding $y$ and $1-y$ onto $(0,1/2)$
+gives the density \eqref{mj:eq:rho}. Thus
+\begin{equation}
+ \mu\{x>u\}=\frac3{2\sqrt\pi}\int_u^{1/2}
+          [x(1-x)]^{-3/2}\,\dd x
+ \quad(0<u<1/2).
+ \label{mj:eq:tail-integral}
+\end{equation}
+The derivative identity
+\begin{equation}
+ \frac{\dd}{\dd x}
+ \frac{1-2x}{\sqrt{x(1-x)}}
+ =-\frac1{2[x(1-x)]^{3/2}}
+ \label{mj:eq:derivative}
+\end{equation}
+evaluates the integral as \eqref{mj:eq:Psi}. The limiting measure has no
+mass at any fixed positive deficit, including $1/2$. Continuous upper and
+lower approximations to the tail indicator therefore prove
+\eqref{mj:eq:profile-limit}.
+
+For uniformity on $[\delta,1]$, both the finite tails and $\Psi$ are
+nonincreasing, and $\Psi$ is continuous. Choose a finite mesh on which its
+oscillation is small, use pointwise convergence at the mesh points, and
+sandwich between adjacent points. This proves the uniform assertion in
+\cref{mj:thm:profile}. Finally \eqref{lj:eq:bridge}, continuity of $\Psi$,
+and $C_n\sim4^n/(\sqrt\pi n^{3/2})$ yield the moving-bound formulas
+\eqref{mj:eq:bulk-ratio} and \eqref{mj:eq:bulk-count}, including their floor
+conventions. (The sequence form \eqref{mj:eq:profile-sequence} follows from
+\eqref{mj:eq:profile-limit} in the same way, by monotonicity and continuity
+of $\Psi$; manuscript~11 proves it directly.)
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.9\linewidth]{figures/04-macroscopic-jump-bulk_profile.pdf}
+\caption{Manuscript~10: the proved macroscopic tail profile $\Psi$ and
+uniform Catalan sampling illustrations at $n=1{,}024$ and $16{,}384$, from the shipped simulation
+data of \cref{mj:tab:simulation}. Error bars show two
+estimated Monte Carlo standard errors; they do not bound finite-size bias and
+are not rigorous confidence certificates. In particular, positive
+finite-size tails beyond $u=1/2$ are compatible with the limiting zero
+there.}
+\label{mj:fig:profile-mc}
+\end{figure}
+
+\section{Second proof of the profile: the canonical threshold decomposition}
+\label{mj:sec:words}
+This section is manuscript~11's proof of \cref{mj:thm:profile} and of the
+deficit part of \cref{mj:thm:marked}. It uses the parser of
+\cref{mj:sec:parser} instead of the renewal equation.
+
+\subsection{The asymptotic contribution of one outer word}
+Fix a sequence $d_n/n\to u\in(0,1/2)$ and put $m_n=n-d_n$. In this subsection
+$w$ is one fixed, fully decorated outer word, of fixed cost $t$. Define its
+endpoint acceptance weight by
+\begin{equation}
+ \chi(w)=
+ \begin{cases}
+ 1,&w\text{ contains no }A,\\
+ 1/2,&w\text{ contains at least one }A.
+ \end{cases}
+ \label{mj:eq:acceptance}
+\end{equation}
+Let $\mathcal E_n(w)$ be the event that $M_n\le m_n$ and the canonical word
+is $w$. On this event, let $a$ be the left size at the terminal split and
+define $U_n=a/n$. Write
+\begin{equation}
+ \mathfrak k(y)=[y(1-y)]^{-3/2},\qquad
+ I(u)=\int_u^{1-u}\mathfrak k(y)\,\dd y.
+ \label{mj:eq:kernel}
+\end{equation}
+
+\begin{proposition}[Fixed-word contribution; manuscript~11]
+\label{mj:prop:fixedword}
+For every continuous function $g$ on $[0,1]$,
+\begin{equation}
+ \sqrt n\,\ljE\bigl[\one_{\mathcal E_n(w)}g(U_n)\bigr]
+ \longrightarrow
+ \frac{\chi(w)4^{-t}}{4\sqrt\pi}
+       \int_u^{1-u}g(y)\mathfrak k(y)\,\dd y.
+ \label{mj:eq:fixedword}
+\end{equation}
+The random variable inside the expectation is set to zero off
+$\mathcal E_n(w)$.
+\end{proposition}
+
+\begin{proof}[Proof of \cref{mj:prop:fixedword}: the endpoint step]
+The terminal core has size $N=n-t$ and is $(\sigma+b)N\tau$, with
+$a+b=N-1$ and $a,b\le m_n$. Fix a small $\eta>0$ such that
+$[u+\eta,1-u-\eta]$ is nonempty, and first consider splits with
+\begin{equation}
+ u+\eta\le a/n\le1-u-\eta.
+ \label{mj:eq:interior}
+\end{equation}
+For large $n$, both $a$ and $b$ are bounded below by a positive multiple of
+$n$, and each lies below $m_n$ by a positive multiple of $n$.
+
+All internal jumps in the two terminal blocks are at most $m_n$ simply
+because their sizes are at most $m_n$. The jump from the left block into $N$
+is at most $a$. The jump from $N$ into the right block equals
+\begin{equation}
+ N-F(\tau)=a+1+J(\tau).
+ \label{mj:eq:terminal-jump}
+\end{equation}
+By \cref{mj:lem:first}, the fraction of terminal pairs for which $J(\sigma)$
+or $J(\tau)$ exceeds a sufficiently small fixed multiple of $n$ is
+exponentially small, uniformly over \eqref{mj:eq:interior}. On the
+complementary set, \eqref{mj:eq:terminal-jump} is at most $m_n$.
+
+The first deficiency of the terminal core is $J(\sigma)+1$. An append
+operation increases a current first deficiency by one. An $R_\beta$ operation
+either makes the first entry the new maximum, when $\beta$ is empty, or makes
+its new first deficiency at most the operation cost, when $\beta$ is
+nonempty. Therefore, throughout the fixed outer word, the current first
+deficiency is at most $J(\sigma)+t+1$. Each new downward jump at an $R$
+operation is at most $J(\sigma)+2t+1$. Each finite decoration and its jump
+into the adjacent maximum have bounded size. These contributions are
+harmless on the same good set for large $n$.
+
+If $w$ contains no $A$, all constraints are now satisfied. Thus the accepted
+fraction of the $C_aC_b$ terminal pairs is $1-o(1)$, uniformly on
+\eqref{mj:eq:interior}.
+
+Suppose instead that $w$ contains an $A$. Apply the word from the inside out
+and let $s_w$ be the total cost of the $R$ operations encountered before the
+first such $A$. Those operations preserve the terminal last entry $L(\tau)$.
+The first append creates a jump bounded by $m_n$ exactly when
+\begin{equation}
+ L(\tau)\ge \ell_n(w):=N+s_w+1-m_n
+                  =d_n-t+s_w+1.
+ \label{mj:eq:append-threshold}
+\end{equation}
+After this append, the last entry is a maximum at least $N$. Subsequent $R$
+operations preserve that value, and every later append creates a jump of
+size at most $t$. Thus no further macroscopic last-entry condition is
+introduced.
+
+In the interior range, $\ell_n(w)/n\to u$, while both $\ell_n(w)$ and
+$b-\ell_n(w)$ are bounded below by positive multiples of $n$. By
+\cref{mj:lem:last}, the fraction satisfying \eqref{mj:eq:append-threshold}
+is $1/2+O_{u,\eta,w}(n^{-1/2})$. Removing the exponentially small bad
+first-deficiency set changes this by $o(1)$. We have not assumed that the
+first and last entries are independent: deleting any event of probability
+$o(1)$ changes the last-entry probability by at most $o(1)$.
+
+We have proved that, uniformly over \eqref{mj:eq:interior}, the accepted
+fraction of terminal pairs is
+\begin{equation}
+ \chi(w)+o(1).
+ \label{mj:eq:accepted-fraction}
+\end{equation}
+By \cref{mj:lem:parse} these are exactly the pairs counted by
+$\mathcal E_n(w)$, rather than merely a possibly overlapping construction.
+\end{proof}
+
+\begin{proof}[Proof of \cref{mj:prop:fixedword}: counting and boundary strips]
+For fixed $t$ and $a+b=n-t-1$, Stirling's formula gives, uniformly when
+$a/n$ stays in a compact subset of $(0,1)$,
+\begin{equation}
+ \frac{C_aC_b}{C_n}
+ =\frac{4^{-(t+1)}}{\sqrt\pi\,n^{3/2}}
+       \bigl\{\mathfrak k(a/n)+o(1)\bigr\}.
+ \label{mj:eq:split-asymptotic}
+\end{equation}
+The exponent $t+1$ is important: one unit is spent at the terminal maximum in
+addition to the $t$ units of outer cost. Combining
+\eqref{mj:eq:accepted-fraction} with \eqref{mj:eq:split-asymptotic},
+summing the interior splits, and using the Riemann-sum mesh $1/n$, gives the
+asserted limit with integral restricted to $[u+\eta,1-u-\eta]$.
+
+All raw terminal splits have
+\[
+ d_n-t-1\le a\le m_n.
+\]
+Thus their scaled range tends to $[u,1-u]$. In the two excluded strips, the
+number of terms is at most $2\eta n+o(n)$; every normalized count is at most
+$K_{u,w}n^{-3/2}$ because both block sizes remain macroscopic. The
+contribution of the strips after multiplication by $\sqrt n$ is at most
+$K_{u,w}\|g\|_\infty\eta+o(1)$. Let $\eta\downarrow0$. This proves
+\eqref{mj:eq:fixedword}, including the moving integer boundaries.
+\end{proof}
+
+\begin{remark}[Three distinct uniformities]
+The argument uses an exponentially uniform first-deficiency bound, a uniform
+half-mass estimate for the last entry away from both endpoints, and a Catalan
+asymptotic uniform on compact split intervals. The subsequent sum over words
+uses the separate rare-scale tail estimate of \cref{mj:lem:cost-tail}. None
+of these four tasks can be replaced by a pointwise ``typical block''
+statement.
+\end{remark}
+
+\subsection{Summing the endpoint-weighted words}
+\begin{proof}[Second proof of \cref{mj:thm:profile}, for $0<u<1/2$]
+Fix a cost cutoff $h$. There are finitely many decorated words of cost at
+most $h$. Apply \cref{mj:prop:fixedword} with $g=1$ and sum over them:
+\[
+ \sqrt n\,\ljP(\mathcal E_{n,m_n},T_{n,m_n}\le h)
+ \longrightarrow\frac{I(u)}{4\sqrt\pi}
+       \sum_{\ljcost(w)\le h}\chi(w)4^{-\ljcost(w)}.
+\]
+By \cref{mj:lem:cost-tail}, the limsup of the omitted scaled probability is
+at most $K_u(h+1)^{-1/2}$. It tends to zero as $h\to\infty$. The total
+weighted mass is, by \eqref{mj:eq:W}--\eqref{mj:eq:WR},
+\begin{align}
+ \sum_w\chi(w)4^{-\ljcost(w)}
+ &=\mathcal W_R(1/4)+\frac12\{\mathcal W(1/4)-\mathcal W_R(1/4)\}\notag\\
+ &=2+\frac12(4-2)=3.
+ \label{mj:eq:wordmass}
+\end{align}
+Thus the limit is $3I(u)/(4\sqrt\pi)$. To evaluate $I(u)$, use
+\eqref{mj:eq:derivative}: the expression being differentiated changes sign
+under $y\mapsto1-y$. Consequently,
+\begin{equation}
+ I(u)=\frac{4(1-2u)}{\sqrt{u(1-u)}},
+ \label{mj:eq:I}
+\end{equation}
+and the resulting limit is exactly \eqref{mj:eq:Psi}.
+\end{proof}
+
+\subsection{The edge at one half and compact uniformity}
+\begin{proof}[Completion of the second proof of \cref{mj:thm:profile}]
+Let $d_n/n\to u\ge1/2$. For any fixed $y<1/2$, eventually
+$d_n\ge\lceil yn\rceil$. Therefore
+\[
+ \limsup_{n\to\infty}\sqrt n\,\ljP(D_n\ge d_n)\le\Psi(y).
+\]
+Letting $y\uparrow1/2$ gives zero because $\Psi(y)\to0$. This proves the
+pointwise assertion at and above one half.
+
+For compact uniformity, fix $\delta>0$ and consider the nonincreasing
+functions $f_n(u)=\sqrt n\,\ljP(D_n\ge\lceil nu\rceil)$ on $[\delta,1]$. They
+converge pointwise to the continuous nonincreasing function $\Psi$. Given
+$\eps>0$, choose a finite partition of $[\delta,1]$ on which the oscillation
+of $\Psi$ in each interval is at most $\eps$. Pointwise convergence holds at
+every partition point, simultaneously for sufficiently large $n$.
+Monotonicity sandwiches $f_n$ between its endpoint values on each interval,
+so the uniform error is at most $3\eps$. This proves the claim. Substitution
+$d_n=n-\lfloor\theta n\rfloor$ in \eqref{lj:eq:bridge} gives
+\eqref{mj:eq:bulk-ratio} and the stated smaller-bound estimate.
+\end{proof}
+
+\subsection{The deficit measure}
+\label{mj:sec:words-measure}
+\begin{proof}[Second proof of the last assertion of \cref{mj:thm:marked}]
+For $0<x_1<x_2\le1$, the mass of $[x_1,x_2)$ is the difference of the two
+tail probabilities, with the corresponding integer rounding. Hence
+\cref{mj:thm:profile} gives convergence of these interval masses to
+$\Psi(x_1)-\Psi(x_2)$. On every $[x_1,1]$, the total masses are uniformly bounded
+by \cref{mj:cor:all-tail}. Approximating continuous functions there by
+interval step functions proves weak convergence on compact subintervals
+whose endpoints are not atoms of the limit. This is vague convergence on
+$(0,1]$.
+
+Differentiation, by \eqref{mj:eq:derivative}, gives
+\[
+ -\Psi'(x)=\frac{3}{2\sqrt\pi}[x(1-x)]^{-3/2}
+ \quad(0<x<1/2).
+\]
+There is no atom at $1/2$, because $\Psi$ is continuous there and is zero to
+its right. These facts identify \eqref{mj:eq:measure}. Its density is
+asymptotic to $3x^{-3/2}/(2\sqrt\pi)$ at zero, so its total mass is
+infinite, while its restriction to $[x_1,1]$ is finite for every $x_1>0$.
+\end{proof}
+
+\section{The ends of the profile and the conditional geometry}
+\label{mj:sec:conditional}
+
+\subsection{Matching the boundary, and the edge at one half}
+\label{mj:sec:edges}
+As $u\downarrow0$,
+\begin{equation}
+ \Psi(u)=\frac3{\sqrt\pi}u^{-1/2}
+       \left(1-\frac32u-\frac58u^2+O(u^3)\right).
+ \label{mj:eq:boundary-matching}
+\end{equation}
+(Manuscript~10 prints the expansion to $O(u^2)$, manuscript~11 to
+$O(u^3)$.) The leading term matches Part~III's boundary equivalent
+$\ljP(D_n\ge d)\sim3/\sqrt{\pi d}$ when $d\to\infty$ and $d=o(n)$
+(\cref{lj:thm:tail-main}), and its limiting tail constant $3/\sqrt\pi$
+(\eqref{lj:eq:tail-leading}): with $u=d/n$,
+$\Psi(u)/\sqrt n\approx3/\sqrt{\pi d}$. This is a consistency check between
+two proven regimes, not a proof of a uniform two-parameter expansion down to
+arbitrary $u=u_n\to0$, and not an illicit substitution of a moving $u=d/n$
+into a fixed-$u$ theorem. \Cref{mj:thm:profile} gives compact
+\emph{absolute} uniformity away from zero; it does not by itself give
+relative error estimates when $u\to0$.
+
+At the other endpoint, if $u=1/2-\varepsilon$ with $\varepsilon\downarrow0$,
+then
+\begin{equation}
+ \Psi(u)=\frac{12}{\sqrt\pi}\varepsilon+O(\varepsilon^3).
+ \label{mj:eq:half-edge}
+\end{equation}
+The profile vanishes linearly at one half. This signals the need for a
+smaller probability scale or a separate transition window, not an absence of
+bounded permutations on the other side: a shrinking neighbourhood of $1/2$ may
+interact with a smaller finite-size scale that the first-order theorem does
+not determine. (Both manuscripts; the two readings are theirs.)
+
+\subsection{Three equally weighted endpoint channels}
+Fix $0<u<1/2$ and condition on $D_n>un$. The split integral $I(u)$ of
+\eqref{mj:eq:I} satisfies
+\begin{equation}
+ I(u)=\int_u^{1-u}[y(1-y)]^{-3/2}\,\dd y
+ =\frac{4(1-2u)}{\sqrt{u(1-u)}},
+ \label{mj:eq:Iu}
+\end{equation}
+and $\Psi(u)=3I(u)/(4\sqrt\pi)$. The following is a sampling description of
+the limiting conditional law, not a claim that a unique finite tree split has
+already been identified (manuscript~10; but see \cref{mj:thm:conditional}).
+
+\begin{corollary}[Three equally weighted endpoint channels; manuscript~10]
+\label{mj:cor:conditional}
+Let $U^{(u)}$ have density $I(u)^{-1}[y(1-y)]^{-3/2}$ on $(u,1-u)$, and
+independently let $\xi$ be uniform on $\{\mathrm{low},\mathrm{interior},
+\mathrm{high}\}$. Define
+\[
+ V=\min(U^{(u)},1-U^{(u)}),\qquad
+ \zeta=\begin{cases}0,&\xi=\mathrm{low},\\1-U^{(u)},&\xi=\mathrm{interior},\\
+ 1,&\xi=\mathrm{high}.\end{cases}
+\]
+Then
+\begin{equation}
+ \ljLaw((D_n/n,L_n/n)\mid D_n>un)\Longrightarrow\ljLaw(V,\zeta).
+ \label{mj:eq:conditional-marked}
+\end{equation}
+The limiting last-entry law has atoms of mass $1/3$ at each of $0$ and $1$;
+its remaining mass $1/3$ has the displayed interior density. Also
+$F_n/n\to1$ in probability under the same conditioning.
+\end{corollary}
+\begin{proof}
+Restrict \cref{mj:thm:marked} to $x>u$ and divide by the positive limiting
+mass $\Psi(u)=3I(u)/(4\sqrt\pi)$. The three equal summands yield the
+sampling description. For the first value, \cref{mj:lem:first} makes
+$\ljP(J_n>\varepsilon n)$ exponentially small, whereas the conditioning event
+has probability asymptotic to $\Psi(u)n^{-1/2}$. Their ratio tends to zero.
+\end{proof}
+
+\subsection{Universal outer word and macroscopic split}
+The canonical parser of \cref{mj:sec:parser} yields more than the scalar
+tail. Fix $u\in(0,1/2)$, $d_n/n\to u$, and $m_n=n-d_n$. Condition on
+$\mathcal E_{n,m_n}$. Let $W_n$ be the canonical outer word and $U_n$ the
+terminal left size divided by $n$.
+
+\begin{theorem}[Universal outer word and macroscopic split; manuscript~11]
+\label{mj:thm:conditional}
+Conditionally on $\mathcal E_{n,m_n}$, the pair $(W_n,U_n)$ converges in law
+to an independent pair $(W,U^{(u)})$, where
+\begin{equation}
+ \ljP(W=w)=\frac{\chi(w)4^{-\ljcost(w)}}3
+ \label{mj:eq:word-law}
+\end{equation}
+and $U^{(u)}$ has density
+\begin{equation}
+ f_u(y)=\frac{\mathfrak k(y)}{I(u)}\one_{[u,1-u]}(y).
+ \label{mj:eq:split-law}
+\end{equation}
+The word space is the countable discrete space of individually decorated
+finite words. Its limiting law is independent of $u$.
+\end{theorem}
+\begin{proof}
+For each fixed word, divide \eqref{mj:eq:fixedword} by
+$\ljP(\mathcal E_{n,m_n})\sim3I(u)/(4\sqrt{\pi n})$. This gives the product
+law on that word and every continuous test function of $U_n$. The normalized
+version of \eqref{mj:eq:rare-tail}, together with the positive denominator
+constant, gives tightness of the word costs. There are finitely many words at
+each bounded cost, so the word variables are tight on the discrete space. The
+split variable lies in a compact interval. Finite-word convergence plus this
+tightness proves joint convergence. Equation \eqref{mj:eq:wordmass} verifies
+that \eqref{mj:eq:word-law} is normalized.
+\end{proof}
+
+The split law $U^{(u)}$ is the same in \cref{mj:cor:conditional} and
+\cref{mj:thm:conditional}: manuscript~10's split variable (its $Y$) and
+manuscript~11's (its $U_x$) have the same density.
+
+\begin{corollary}[A heavy-tailed cost but a short word; manuscript~11]
+\label{mj:cor:wordstats}
+Let $T_W=\ljcost(W)$. Then
+\begin{align}
+ \ljP(T_W=t)&=\frac{C_t+C_{t+1}}{6\,4^t}\quad(t\ge0),
+ \label{mj:eq:cost-law}\\
+ \ljE z^{T_W}&=\frac{\Cat(z/4)+\Cat(z/4)^2}{6},
+ \label{mj:eq:cost-pgf}\\
+ \ljP(\mjlen(W)=k)&=\frac{(1/2)^k+(3/4)^k}{6}\quad(k\ge0),
+ \label{mj:eq:length-law}\\
+ \ljE\,\mjlen(W)&=\frac73,
+ \qquad
+ \ljP(W\text{ has no }A)=\frac23.
+ \label{mj:eq:wordfacts}
+\end{align}
+Furthermore,
+\begin{equation}
+ \ljP(T_W>h)\sim\frac{5}{3\sqrt{\pi h}},\qquad \ljE T_W=\infty.
+ \label{mj:eq:cost-tail-limit}
+\end{equation}
+These expectation statements concern the limiting word law; convergence of
+finite-$n$ word expectations is not asserted.
+\end{corollary}
+\begin{proof}
+At cost $t$, there are $C_t$ words without $A$ and $C_{t+1}-C_t$ with at
+least one $A$. Sum \eqref{mj:eq:word-law} to obtain \eqref{mj:eq:cost-law},
+and then use \eqref{mj:eq:W}--\eqref{mj:eq:WR} for its probability generating
+function.
+
+The critical total weight of one $R$ operation is $1/2$, and that of one $A$
+is $1/4$. At length $k$, all words have weight $(3/4)^k$, whereas those
+without $A$ have weight $(1/2)^k$. The accepted weight is half the sum of
+these two quantities. Division by three gives \eqref{mj:eq:length-law}. The
+geometric-series identities give
+\[
+ \ljE\,\mjlen(W)=\frac16\left\{\frac{1/2}{(1-1/2)^2}
+                      +\frac{3/4}{(1-3/4)^2}\right\}=\frac73.
+\]
+The no-$A$ probability is $\mathcal W_R(1/4)/3=2/3$. Finally,
+\eqref{mj:eq:catalan-bounds} and $C_{t+1}/C_t\to4$ imply
+$\ljP(T_W=t)\sim5/(6\sqrt\pi\,t^{3/2})$. Summing this regularly varying
+power tail gives \eqref{mj:eq:cost-tail-limit} and infinite mean cost.
+\end{proof}
+
+The word typically has only a few operations, but one decoration can be
+large. This explains why summability alone was insufficient for the
+rare-scale interchange: the limiting cost has no finite first moment. (The
+limiting word cost $T_W$ is not Part~III's skeleton cost $T$, whose tail is
+$\sim4/\sqrt{\pi h}$ by \cref{lj:lem:cost-tail}.)
+
+\emph{Three equally weighted endpoint modes (manuscript~11).} Call the
+terminal right block's last-entry mode \emph{high} when $L(\tau)>b/2$ and
+\emph{low} otherwise. In the interior of the split range, the low and high
+modes each have unconditioned probability tending to one half. The proof of
+\cref{mj:prop:fixedword} therefore also yields the following table under
+$\mathcal E_{n,m_n}$:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Outer word & Terminal last-entry mode & Limiting probability\\
+\midrule
+No append & Low & $1/3$\\
+No append & High & $1/3$\\
+At least one append & High & $1/3$\\
+At least one append & Low & $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For a fixed no-append word, each mode has mass $4^{-t}/6$ in the conditional
+law. For a fixed word containing an append, only the high mode survives, also
+with mass $4^{-t}/6$. Summing over their respective critical word weights,
+both equal to two, proves the table. Boundary strips are removed exactly as
+in \cref{mj:prop:fixedword}. This is another interpretation of the factor
+three.
+
+\begin{proposition}[Geometric meaning of the rare-event measure; manuscript~11]
+\label{mj:prop:minsplit}
+Conditionally on $\mathcal E_{n,m_n}$,
+\begin{equation}
+ \frac{D_n}{n}-\min(U_n,1-U_n)\longrightarrow0
+ \quad\text{in probability}.
+ \label{mj:eq:minsplit}
+\end{equation}
+Consequently, for $y\ge u$,
+\begin{equation}
+ \ljP(D_n/n\ge y\mid \mathcal E_{n,m_n})\longrightarrow
+       \frac{\Psi(y)}{\Psi(u)},
+ \label{mj:eq:conditional-tail}
+\end{equation}
+with the right side zero for $y\ge1/2$.
+\end{proposition}
+\begin{proof}
+First restrict to a bounded outer cost and an interior split interval. By
+\cref{mj:cor:all-tail}, a uniform block of size $a$ has maximum jump
+$a-o(n)$ in probability, uniformly when $a$ is proportional to $n$; the same
+is true for the right block of size $b$. Deleting a set of such terminal
+pairs of relative probability $o(1)$ remains harmless after imposing the
+endpoint acceptance event, whose limiting fraction is either one or one half.
+
+The terminal downward jump is $a+1+J(\tau)=a+o(n)$ by \cref{mj:lem:first},
+and the upward jump into the terminal maximum is at most $a$. Every outer $R$
+jump is $o(n)$ on the same good endpoint set. If an append occurs,
+acceptance selects the high last-entry mode, and \cref{mj:lem:last} gives
+$L(\tau)=b-o(n)$ in conditional probability. Its first append jump is
+therefore $a+o(n)$; later append jumps are bounded by the fixed outer cost.
+Hence the global maximum jump is $\max(a,b)+o(n)$, and the deficit is
+$\min(a,b)+o(n)$. Since $(a+b)/n\to1$, this proves \eqref{mj:eq:minsplit}
+under the two restrictions. Remove the boundary strips and then the cost
+cutoff by \cref{mj:thm:conditional} and \cref{mj:lem:cost-tail}.
+
+The map $y\mapsto\min(y,1-y)$ sends \eqref{mj:eq:split-law} to density
+$2\mathfrak k(y)/I(u)$ on $[u,1/2]$. Its upper tail is $\Psi(y)/\Psi(u)$ by
+\eqref{mj:eq:I}, proving \eqref{mj:eq:conditional-tail}. The same tail
+statement also follows directly by taking the ratio in
+\cref{mj:thm:profile}.
+\end{proof}
+
+\subsection{How the two descriptions of the factor three match}
+\label{mj:sec:three-match}
+The two manuscripts explain the coefficient $3$ by three equally weighted
+alternatives, and the alternatives correspond. On the terminal split, with
+$y=a/n$ the left fraction, manuscript~11's modes and manuscript~10's channels
+match as follows. Without an append, the whole permutation ends with the
+terminal right block's last entry, since $R$ operations preserve the last
+entry; the low mode puts $L_n/n$ near $0$ (manuscript~10's \emph{low}
+channel), and the high mode puts $L_n/n$ near $b/n\approx1-y$ (its
+\emph{interior} channel, the mark $1-U^{(u)}$). With an append, the last entry
+is a maximum at least $N=n-t$, so $L_n/n\to1$ (its \emph{high} channel). The
+deficit is $\min(y,1-y)$ in all three cases (\cref{mj:prop:minsplit} and the
+proof of \cref{mj:lem:renewal}). Manuscript~10's corollary does not identify
+a canonical split; manuscript~11's parser supplies one, and
+\cref{mj:cor:conditional}'s interior mark is then its high-mode, no-append
+terminal block. This correspondence is the merge's reading of the two proofs;
+neither manuscript states it, and no joint limit theorem for $(W_n,U_n,L_n/n)$
+is claimed.
+
+\section{Moment constants and size-biased limits}
+\label{mj:sec:moments}
+
+\subsection{Uniform integrability at exactly the required threshold}
+\begin{proof}[Proof of \cref{mj:thm:moments} (both manuscripts)]
+For $p>0$, the tail formula for a nonnegative bounded random variable gives
+the layer-cake identity
+\begin{equation}
+ n^{1/2-p}\ljE D_n^p
+ =p\int_0^1x^{p-1}\sqrt n\,\ljP(D_n>nx)\,\dd x.
+ \label{mj:eq:layer-cake}
+\end{equation}
+Using a weak rather than a strict inequality changes only the integer
+threshold by at most one and has no effect on the pointwise limits. The
+bound \eqref{mj:eq:scaled-envelope} dominates the integrand by
+$4\sqrt2\,p x^{p-3/2}$ (manuscript~10). Equivalently (manuscript~11), by
+\cref{mj:cor:all-tail} the scaled tail is at most $Kx^{-1/2}$ for $nx\ge1$,
+and for $nx<1$ the trivial bound $\sqrt n\le x^{-1/2}$ gives the same
+envelope, so the integrand is at most $Kpx^{p-3/2}$. This is integrable at
+zero exactly when $p>1/2$. Dominated convergence and
+\cref{mj:thm:profile} therefore prove
+\begin{equation}
+ n^{1/2-p}\ljE D_n^p\longrightarrow
+ p\int_0^{1/2}x^{p-1}\Psi(x)\,\dd x.
+ \label{mj:eq:moment-tail-integral}
+\end{equation}
+Integration by parts is legitimate, because the boundary term at zero
+vanishes, $x^p\Psi(x)=O(x^{p-1/2})\to0$, and $\Psi(1/2)=0$; with
+\eqref{mj:eq:derivative} it gives \eqref{mj:eq:kappa-beta}. The constant is
+finite and positive. For the alternative formula, substitute
+\[
+ x=\frac{z^2}{1+z^2},\quad 0<z<1,
+ \qquad \dd x=\frac{2z}{(1+z^2)^2}\,\dd z.
+\]
+The integrand $x^{p-3/2}(1-x)^{-3/2}\,\dd x$ becomes
+$2(z^2/(1+z^2))^{p-1}\,\dd z$, proving \eqref{mj:eq:kappa-t}. At $p=1$ the
+integral is one, so $\mathfrak m_1=3/\sqrt\pi$. At $p=2$,
+\[
+ \int_0^1\frac{z^2}{1+z^2}\,\dd z
+       =\left[z-\arctan z\right]_0^1=1-\frac\pi4.
+\]
+Since $(\ljE D_n)^2\sim\mathfrak m_1^2n=o(n^{3/2})$, subtraction from the
+second moment gives $\mjVar(D_n)\sim\ljE D_n^2\sim\mathfrak m_2n^{3/2}$, which
+is \eqref{mj:eq:variance}. The identity $M_n=n-D_n$ gives the mean formula
+\eqref{mj:eq:mean-M} and equality of the variances.
+\end{proof}
+
+The convergence proof is not a formal interchange of limits. The finite
+counting envelope supplies exactly the near-zero domination needed for the
+moment integral; vague convergence alone would not do so.
+
+\subsection{Closed forms}
+\label{mj:sec:closed-forms}
+It is convenient to set
+\begin{equation}
+ \mathcal I(p)=\int_0^1\left(\frac{z^2}{1+z^2}\right)^{p-1}\dd z,
+ \qquad \mathfrak m_p=\frac3{\sqrt\pi}\mathcal I(p).
+ \label{mj:eq:Ip}
+\end{equation}
+Direct integration gives (manuscript~11; manuscript~10 prints the orders
+$1$, $2$, $3$):
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+$p$ & $\mathcal I(p)$ & $\mathfrak m_p$\\
+\midrule
+$1$ & $1$ & $3/\sqrt\pi$\\
+$3/2$ & $\sqrt2-1$ & $\frac3{\sqrt\pi}(\sqrt2-1)$\\
+$2$ & $1-\pi/4$ & $\frac3{\sqrt\pi}\bigl(1-\frac\pi4\bigr)$\\
+$3$ & $5/4-3\pi/8$ & $\frac3{\sqrt\pi}\bigl(\frac54-\frac{3\pi}8\bigr)$\\
+$4$ & $3/2-15\pi/32$ & $\frac3{\sqrt\pi}\bigl(\frac32-\frac{15\pi}{32}\bigr)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example,
+\[
+ \mathfrak m_1=1.6925687506\ldots,
+ \qquad \mathfrak m_2=0.3632283625\ldots.
+\]
+For $p=2$ the integral is $\int_0^1t^2/(1+t^2)\,\dd t=1-\pi/4$; for $p=3$,
+expand $t^4/(1+t^2)^2=1-2/(1+t^2)+1/(1+t^2)^2$. For any positive integer
+$p$, partial fractions in \eqref{mj:eq:kappa-t} reduce the constant to
+rational numbers and $\pi$, followed by the common factor $3/\sqrt\pi$
+(manuscript~10). For every $p>1/2$ with $p\ne1$, integration of
+\[
+ \frac{\dd}{\dd z}
+       \frac{z^{2p-1}}{(1+z^2)^{p-1}}
+ =(2p-1)\left(\frac{z^2}{1+z^2}\right)^{p-1}
+ -2(p-1)\left(\frac{z^2}{1+z^2}\right)^p
+\]
+over $[0,1]$ yields the recurrence (manuscript~11)
+\begin{equation}
+ \mathcal I(p+1)=\frac{(2p-1)\mathcal I(p)-2^{1-p}}{2(p-1)}.
+ \label{mj:eq:Irecurrence}
+\end{equation}
+At $p=1$ this identity degenerates; one must not divide by zero or use it to
+obtain $\mathcal I(2)$ without an additional calculation.
+
+The integral in \eqref{mj:eq:kappa-beta} can also be written
+$\frac3{2\sqrt\pi}B_{1/2}(p-1/2,-1/2)$, an incomplete beta function. The
+second parameter is negative, but the defining integral stops at $1/2$, not
+at its singular endpoint $1$, so it is convergent for every $p>1/2$
+(manuscript~10).
+
+\subsection{The two limits of the constant function}
+\begin{proposition}[Two limits of the constant function; manuscript~11, the first also manuscript~10]
+\label{mj:prop:constantlimits}
+As $p\downarrow1/2$ and as $p\to\infty$, respectively,
+\begin{align}
+ \mathfrak m_p&\sim\frac{3}{\sqrt\pi(2p-1)}=\frac3{2\sqrt\pi}\frac1{p-1/2},
+ \label{mj:eq:p-half}\\
+ \mathfrak m_p&\sim\frac{6}{\sqrt\pi\,p}\,2^{-p}.
+ \label{mj:eq:p-large}
+\end{align}
+These are statements about the constants after taking the fixed-$p$ limit in
+$n$, not joint limits with $p=p(n)$.
+\end{proposition}
+\begin{proof}
+Near zero the integrand of $\mathcal I(p)$ is $z^{2p-2}(1+z^2)^{1-p}$. For
+$p$ in a fixed right neighbourhood of $1/2$, subtracting $z^{2p-2}$ leaves an
+integrable function with uniformly bounded integral: the factor difference is
+$O(z^2)$. Hence $\mathcal I(p)=(2p-1)^{-1}+O(1)$, proving
+\eqref{mj:eq:p-half}. (Manuscript~10's argument is the same: the only
+divergent contribution is the integral of $t^{2p-2}$ near zero, and the
+remaining factor tends regularly to one there.)
+
+For large $p$, write $\varphi(z)=\log(z^2/(1+z^2))$. It is strictly
+increasing on $(0,1]$, with $\varphi(1)=-\log2$ and $\varphi'(1)=1$. For
+fixed $\eta>0$, the integral over $[0,1-\eta]$ is exponentially smaller than
+$2^{-(p-1)}$. On $[1-\eta,1]$, substitute $v=(p-1)(1-z)$ and use
+$\varphi(1-v/(p-1))=\varphi(1)-v/(p-1)+O(v^2/(p-1)^2)$. A one-sided
+derivative bound near one supplies an integrable exponential majorant.
+Dominated convergence yields $\mathcal I(p)\sim2^{-(p-1)}/(p-1)$, which is
+\eqref{mj:eq:p-large}.
+\end{proof}
+
+The pole in \eqref{mj:eq:p-half} is consistent with the logarithmic critical
+moment \eqref{lj:eq:critical-moment} of Part~III. It does not prove
+convergence of its centered $O(1)$ remainder. The proof of
+\cref{mj:thm:moments} deliberately stops at $p>1/2$: its integrable envelope
+fails at the critical order, dominated convergence fails at $p=1/2$, and
+vague convergence alone cannot repair that failure. That question remains
+separate (\cref{mj:sec:q-centered}).
+
+\subsection{General power bias and the uniform transformation}
+For $p>1/2$, define (manuscript~10)
+\[
+ \ljP_{n,p}^\star(B)=\frac{\ljE[D_n^p\one_B]}{\ljE D_n^p}.
+\]
+The same domination argument, first away from zero and then with the cutoff
+removed, proves
+\begin{equation}
+ \ljLaw_{\ljP_{n,p}^\star}(D_n/n)\Longrightarrow
+ \frac{x^p\rho(x)}{\mathfrak m_p}\,\dd x,
+ \qquad0<x<1/2.
+ \label{mj:eq:power-biased}
+\end{equation}
+To be explicit about the cutoff removal, \eqref{mj:eq:scaled-envelope} and
+layer cake bound the contribution from $D_n/n\le\varepsilon$ by a constant
+times $\varepsilon^{p-1/2}$, uniformly in $n$.
+
+\begin{proof}[Proof of \cref{mj:thm:uniform}]
+For $p=1$, the limiting density simplifies to
+\[
+ \frac12 x^{-1/2}(1-x)^{-3/2}
+ =\frac{\dd}{\dd x}\sqrt{\frac{x}{1-x}}.
+\]
+Its integral over $(0,1/2)$ is one. Thus its distribution function is
+\eqref{mj:eq:mean-cdf}; applying the increasing change of variable
+$t=\sqrt{x/(1-x)}$ proves \eqref{mj:eq:uniform-law}. At $x=1/5$, the value
+is $1/2$, giving \eqref{mj:eq:half-mean}.
+\end{proof}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.9\linewidth]{figures/04-macroscopic-jump-mean_weighted_law.pdf}
+\caption{Manuscript~10: the limiting fraction $H^\star(x)$ of the mean
+deficit contributed by permutations with $D_n\le xn$. This is a size-biased
+distribution, not the ordinary distribution of $D_n/n$, which converges to a
+point mass at zero.}
+\label{mj:fig:mean-law}
+\end{figure}
+
+\section{Constructive lower bounds beyond the half-size cutoff}
+\label{mj:sec:lower}
+The vanishing first-order profile below $M_n/n=1/2$ should not be mistaken
+for exponential suppression. A simple explicit family gives polynomial lower
+bounds in every fixed proportional-bound regime (manuscript~10).
+
+\begin{theorem}[A many-block lower bound; manuscript~10]
+\label{mj:thm:lower}
+Fix $0<\theta<1$ and an integer $r\ge1$ such that $(r+1)\theta>1$. There is
+a constant $\underline c_{\theta,r}>0$ such that, for all sufficiently large
+$n$,
+\begin{equation}
+ \ljP(M_n\le\lfloor\theta n\rfloor)
+ \ge \underline c_{\theta,r}n^{-r/2}.
+ \label{mj:eq:many-block-lower}
+\end{equation}
+Equivalently, $a_n^{(\lfloor\theta n\rfloor)}\ge\underline c'_{\theta,r}
+4^n n^{-(r+3)/2}$ for a positive constant $\underline c'_{\theta,r}$.
+\end{theorem}
+\begin{proof}
+Put $\theta_r=1/(r+1)<\theta$. Choose $\eta>0$ sufficiently small that
+$\theta_r-r\eta>0$ and $\theta_r+r\eta<\theta$. Choose $r$ integers
+$a_1,\ldots,a_r$ in intervals $|a_i/n-\theta_r|<\eta$, and put
+\[
+ b=n-r-\sum_{i=1}^ra_i.
+\]
+After slightly shrinking the intervals if necessary, there are at least
+$c n^r$ choices, every component size is bounded between two positive
+multiples of $n$, and all $a_i,b$ are at most $(\theta-\varepsilon)n$ for a
+fixed $\varepsilon>0$.
+
+Take arbitrary left decorations $\beta_i\in\Av_{a_i}(132)$ and a terminal
+core $\sigma\in\Av_b(132)$. Form
+\[
+ \pi=R_{\beta_1}R_{\beta_2}\cdots R_{\beta_r}(\sigma).
+\]
+The maximum decomposition along the right child recovers this fixed-length
+chain and every decoration uniquely. Restrict each component to have first
+deficiency at most $\varepsilon n/3$. By \cref{mj:lem:first}, the excluded
+proportion in each component is exponentially small in $n$.
+
+For an inner right subtree, \eqref{mj:eq:first-root} says that its first
+deficiency is either the deficiency of its left decoration plus one, or, at
+the final step, the deficiency of the core. The downward jump introduced by
+$R_{\beta_i}$ is therefore at most $a_i+1+\varepsilon n/3+1<\theta n-1$ for
+large $n$. By \eqref{mj:eq:M-root}, no internal jump in a left decoration can
+exceed that boundary jump. The core itself has maximum jump at most
+$b-1<\theta n$. Thus all these good reconstructions obey the required
+integer bound.
+
+For each length vector, their number is
+$(1-o(1))C_{a_1}\cdots C_{a_r}C_b$, uniformly on the chosen compact size
+intervals. Stirling's formula gives
+\[
+ \frac{C_{a_1}\cdots C_{a_r}C_b}{C_n}
+ \ge c''n^{-3r/2};
+\]
+the fixed exponential factor is $4^{-r}$ because the component sizes sum to
+$n-r$. Summing over at least $c n^r$ disjoint length vectors proves
+\eqref{mj:eq:many-block-lower}.
+\end{proof}
+
+For $1/3<\theta\le1/2$, this gives a lower bound of order $n^{-1}$, while
+\cref{mj:thm:profile} gives $o(n^{-1/2})$. The exact order and profile
+between those bounds are not proved here. For nonreciprocal $\theta$, the
+smallest admissible $r$ is $\lceil1/\theta\rceil-1$; at a reciprocal endpoint
+the strict condition requires a larger $r$. (For $\theta>1/2$, $r=1$ gives
+the order $n^{-1/2}$ of \eqref{mj:eq:bulk-ratio}; the merge's remark.)
+
+\section{Exact checks, exact data and sampling}
+\label{mj:sec:checks}
+
+\subsection{Exact finite checks of manuscript~10}
+The standard-library program \path{code/04-macroscopic-jump-verify.py}
+exhaustively checks all $82{,}499$ avoiding permutations of sizes $1$
+through $11$ generated by the Catalan decomposition. For each it compares the
+direct adjacent maximum with the exact root recurrence of
+\cref{mj:prop:root}. It checks both endpoint counting formulas and the finite
+tail envelope at every threshold in those sizes. For sizes $1$ through $8$, a
+separate three-index test applied to all ordinary permutations independently
+verifies the generated avoidance class. It additionally checks the exact
+stopping-cost tail \eqref{mj:eq:Ttail} for $h=0,\ldots,100$, and verifies the
+sampler's rotation multiplicities and full statistic histograms on all
+$2{,}352$ degree words of sizes $1$ through $6$. The outcome is recorded in
+\path{data/04-macroscopic-jump-verification.json}; the exact finite deficit
+histograms for $n=1,\ldots,11$ are retained as integer counts in
+\path{data/04-macroscopic-jump-exact_small_distributions.csv}. These tests are
+finite regression evidence, not a substitute for any asymptotic proof.
+
+\subsection{Exact finite and symbolic checks of manuscript~11}
+Manuscript~11's package contains a standard-library integer implementation of
+the endpoint recurrence, a separate exhaustive generator, a canonical parser
+and reconstructor, and exact-count data. The verification
+(\path{code/05-macroscopic-deficits-verify.py}) was executed with the
+following scope:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check & Executed cases\\
+\midrule
+Avoiders examined, sizes $2$ through $9$ & $6{,}916$\\
+Total counts versus exhaustive enumeration, every $1\le m<n$ & $36$\\
+Cumulative endpoint states versus enumeration, sizes through $7$ & $644$\\
+Canonical parsing and exact reconstruction checks & $18{,}738$\\
+Positive-cost coefficients of both word identities & $60$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first- and last-entry formulas were also checked against the same
+exhaustive classes. The report is retained in
+\path{data/05-macroscopic-deficits-verification.json}. These are finite checks
+of the combinatorial objects and implementation. They do not establish the
+universal analytic limits; the written proofs do that work.
+
+A separate SymPy script (\path{code/05-macroscopic-deficits-verify_symbolic.py})
+checked eleven groups of exact symbolic identities, including the derivative
+of $\Psi$, the split-integral primitive, the moment substitution and
+recurrence, the displayed moment integrals, and the word generating
+functions. Its executed report is retained in
+\path{data/05-macroscopic-deficits-symbolic_verification.json}; these checks
+do not verify limit interchanges or analytic hypotheses.
+
+\subsection{The exact recurrence used for manuscript~11's data}
+\label{mj:sec:exact-data}
+Manuscript~11 computes $a_n^{(m)}$ exactly with Part~I's endpoint counts
+$T^{(m)}_{u,v}(n)$ (\cref{prop:endpoint}): the number of $m$-bounded
+avoiders of length $n$ with $n-\pi_1\le u$ and $n-\pi_n\le v$. A negative
+threshold gives zero, $T^{(m)}_{u,v}(1)=1$ for nonnegative thresholds, and
+thresholds above $n-1$ can be capped at $n-1$. Let
+$\mathcal N_s(u)=\#\{\pi\in\Av_s(132):s-\pi_1\le u\}$; its values follow by
+summing \eqref{mj:eq:first-count}, and $\mathcal N_0(u)=1$ for $u\ge0$ and
+zero for $u<0$. The known endpoint recurrence of Mayama--Akita is
+\begin{equation}
+ T_{u,v}^{(m)}(n)=
+ \sum_{k=1}^{\min(m,n-1)} c_{k,u}\,
+        T_{m-k,v-k}^{(m)}(n-k)
+   +T_{u-1,m-1}^{(m)}(n-1),
+ \label{mj:eq:DP}
+\end{equation}
+where $c_{1,u}=1$ and $c_{k,u}=\mathcal N_{k-1}(u-1)$ for $k\ge2$: this is
+the coefficient form of Part~I's \eqref{eq:endpoint}, and $c_{k,u}$ is
+Part~I's \eqref{eq:c-def}. Manuscript~11 rederives it from the maximum
+bijection, as Part~I does, to make its computational certificates
+self-contained; the derivation is not repeated. When $n\le m+1$, the
+adjacency constraint is vacuous, and the last-entry formula gives the useful
+exact shortcut (manuscript~11)
+\begin{equation}
+ T_{u,v}^{(m)}(n)
+ =\mathcal N_{n-1}(u-1)+
+   \sum_{q=1}^{\min(v,n-1)}C_{n-q-1}\mathcal N_q(u)
+ \quad(n\ge2,\ n\le m+1).
+ \label{mj:eq:unrestrictedDP}
+\end{equation}
+For \eqref{mj:eq:unrestrictedDP}, consider a final value $\ell=n-q$. When
+$q\ge1$, the last-entry decomposition has a high initial block of size $q$,
+which contains the first entry, and a lower block of size $n-q-1$. The whole
+first deficiency is exactly the first deficiency in the high block. The count
+is therefore $C_{n-q-1}\mathcal N_q(u)$, while the last threshold is
+equivalent to $q\le v$. The separate case $q=0$ appends the maximum and
+contributes $\mathcal N_{n-1}(u-1)$.
+
+Memoization of \eqref{mj:eq:DP}, using \eqref{mj:eq:unrestrictedDP} whenever
+possible, produces the retained counts. The implementation caps vacuous
+thresholds and memoizes smaller-size states. It uses Python
+arbitrary-precision integers throughout. It is intended as a transparent
+verifier and moderate-size data generator, not as a claim of a new optimal
+counting algorithm. Every count and every Catalan number in the CSV files is
+an exact integer. Floating point is used only for the displayed ratios and
+figures.
+
+\subsection{The bulk profile is approached slowly}
+\begin{table}[htbp]
+\centering
+\caption{Manuscript~11: exact normalized counts $\sqrt n\,a_n^{(n-d)}/C_n$
+and their proved limits $\Psi(d/n)$. Here $d/n$ is exactly the displayed
+fraction. A dash means that case was not computed.}
+\label{mj:tab:bulk}
+\begin{tabular}{rccc}
+\toprule
+$n$ & $d/n=1/5$ & $d/n=3/10$ & $d/n=2/5$\\
+\midrule
+$40$  & $2.794323$ & $1.960484$ & $1.291077$\\
+$80$  & $2.823905$ & $1.897805$ & $1.178743$\\
+$160$ & $2.806836$ & $1.821163$ & $1.071493$\\
+$320$ & ---        & $1.746102$ & ---\\
+\midrule
+Limit & $2.538853$ & $1.477395$ & $0.690988$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The data in \cref{mj:tab:bulk} do not show rapid convergence, and the first
+column is not even monotone at these sizes. No monotonicity or finite-size
+error rate is claimed. This makes it especially important that the factor
+three was obtained from the endpoint calculation, not fitted to numerical
+values. The full integer certificates for all ten cases are in
+\path{data/05-macroscopic-deficits-bulk_counts.csv}.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.9\linewidth]{figures/05-macroscopic-deficits-bulk_profile.pdf}
+\caption{Manuscript~11: the proved limiting profile (labelled $\Phi(x)$ in
+the figure, $\Psi(u)$ here) and exact finite-size values
+$\sqrt n\,\ljP(D_n\ge d)$ against $x=d/n$. The visible separation is real
+finite-size behaviour, not a confidence interval or an error estimate for the
+theorem. Values at or beyond $1/2$ are zero only in the limiting profile.}
+\label{mj:fig:profile-exact}
+\end{figure}
+
+\subsection{Moment data without a fitted constant}
+For integer-valued positive $D_n$,
+\begin{align*}
+ \ljE D_n&=\sum_{d=1}^{n-1}\ljP(D_n\ge d),\\
+ \ljE D_n^2&=\sum_{d=1}^{n-1}(2d-1)\ljP(D_n\ge d).
+\end{align*}
+These identities allow the moments to be computed from exact bounded counts
+at every $m=1,\ldots,n-1$. The retained results (manuscript~11) are:
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$n$ & $\ljE D_n/\sqrt n$ & $\ljE D_n^2/n^{3/2}$\\
+\midrule
+$20$ & $1.229950$ & $0.498514$\\
+$40$ & $1.350574$ & $0.495311$\\
+$80$ & $1.443085$ & $0.479054$\\
+\midrule
+Limit & $1.692569$ & $0.363228$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The second column of moments is a \emph{second moment}, not a variance. Its
+leading constant equals that of the variance only asymptotically, because
+the squared mean is of smaller order. The complete rational values are
+retained as numerator and denominator integers in
+\path{data/05-macroscopic-deficits-moment_counts.csv}.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.8\linewidth]{figures/05-macroscopic-deficits-mean_constant.pdf}
+\caption{Manuscript~11: exact normalized mean deficits at three finite sizes.
+The dashed line is the analytically proved constant $3/\sqrt\pi$; it was not
+estimated from these three data points.}
+\label{mj:fig:mean-exact}
+\end{figure}
+
+\subsection{Uniform Catalan sampling without constructing permutations}
+\label{mj:sec:sampler}
+Manuscript~10's C++ sampler (\path{code/04-macroscopic-jump-simulate.cpp})
+uses a binary-tree preorder word with $n$ symbols $+1$ (internal nodes) and
+$n+1$ symbols $-1$ (leaves). A uniform shuffle of these symbols is rotated
+immediately after the first occurrence of its global minimum partial sum. The
+resulting word has nonnegative partial sums before its final $-1$ and encodes
+a full ordered binary tree.
+
+The elementary cycle lemma says each tree word has exactly $2n+1$ preimages
+under this rotation map. One can see uniqueness of the valid rotation from
+the integer partial sums and total sum $-1$. A nontrivial period is
+impossible: it would make $-1$ an integer multiple of the sum of one shorter
+period. Thus all $2n+1$ rotations are distinct. Uniformity of the shuffle,
+followed by the constant preimage count, proves uniformity of the Catalan
+tree. The maximum decomposition is a bijection between these trees and
+$132$-avoiders.
+
+The tree is then evaluated bottom-up using \cref{mj:prop:root}; no length-$n$
+permutation array is required. Each subtree stores only its size, first
+entry, last entry, and largest jump. One sample uses $O(n)$ time and $O(n)$
+working memory. The implementation uses a fixed pseudorandom seed, so its
+retained output is reproducible with the stated implementation. Different
+standard-library implementations of \texttt{std::shuffle} may produce
+different sample streams even with the same engine seed.
+
+\begin{table}[tbp]
+\centering
+\caption{Manuscript~10: numerical illustrations of the moment limits, from
+its shipped simulation data (\cref{mj:sec:reproduce}). Parenthesized values are one
+estimated Monte Carlo standard error for the mean column, not a bound on
+finite-size bias. The second-moment column is a sample estimate and is not
+presented as a certified interval.}
+\label{mj:tab:simulation}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & Samples & $\widehat{\ljE D_n}/\sqrt n$ &
+ $\widehat{\ljE D_n^2}/n^{3/2}$\\
+\midrule
+64    & 300,000 & $1.41333\ (0.00250)$ & 0.48329\\
+256   & 200,000 & $1.55368\ (0.00486)$ & 0.44632\\
+1,024 & 100,000 & $1.62981\ (0.01027)$ & 0.41261\\
+4,096 & 50,000  & $1.69621\ (0.02139)$ & 0.40232\\
+16,384& 25,000  & $1.66394\ (0.04260)$ & 0.37599\\
+\midrule
+Proved limit & & $3/\sqrt\pi\approx1.69257$ &
+ $3(4-\pi)/(4\sqrt\pi)\approx0.36323$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What the numerics do and do not say}
+The retained simulation has $675{,}000$ pseudorandom samples across five
+sizes. It illustrates approach to the profile and moment constants, but
+finite-size bias is visible, especially in the second moment and near the
+cutoff. The theorems are established by the proofs, not by a fit to
+\cref{mj:tab:simulation} or \cref{mj:tab:bulk}. The data are neither
+outward-rounded interval certificates nor a claimed convergence-rate
+estimate.
+
+\subsection{Rebuilding and rerunning}
+\label{mj:sec:reproduce}
+Part~IV's files are
+\begin{lstlisting}
+code/04-macroscopic-jump-verify.py       Standard-library exact finite checks
+code/04-macroscopic-jump-simulate.cpp    C++17 uniform Catalan-tree sampler
+code/04-macroscopic-jump-plot_results.py
+                                         Its two figures (NumPy, Matplotlib)
+code/04-macroscopic-jump-build.sh        Manuscript 10's three-pass build
+data/04-macroscopic-jump-*               Recorded check, exact histograms
+                                         n = 1..11, 675,000 samples,
+                                         delivery build audit
+04-macroscopic-jump-SOURCES.md           Manuscript 10's provenance ledger
+code/05-macroscopic-deficits-model.py    Exact endpoint counts, generator
+code/05-macroscopic-deficits-verify.py   Exhaustive combinatorial checks
+code/05-macroscopic-deficits-verify_symbolic.py
+                                         SymPy identity checks
+code/05-macroscopic-deficits-numerics.py Exact bulk and moment counts
+code/05-macroscopic-deficits-plot_results.py
+                                         Its two figures
+code/05-macroscopic-deficits-build.sh    Manuscript 11's latexmk build
+data/05-macroscopic-deficits-*           Recorded checks, exact counts,
+                                         environment, package audit
+05-macroscopic-deficits-SOURCES.md       Manuscript 11's source ledger
+figures/04-macroscopic-jump-*, figures/05-macroscopic-deficits-*
+                                         The four figures of this part
+\end{lstlisting}
+The scripts are shipped byte-identical to the deliveries and still use the
+delivered names: they read and write \path{data/verification.json},
+\path{data/exact_small_distributions.csv}, \path{data/simulation.csv},
+\path{data/symbolic_verification.json}, \path{data/bulk_counts.csv},
+\path{data/moment_counts.csv} and unprefixed files in \path{figures/}. Manuscript~11's verifier and data
+generator execute \texttt{from model import}; run in place, that import would
+load Part~I's different \texttt{code/model.py} and fail. The two build scripts
+change to their own directory and look for an \texttt{article.tex} there, so
+they fail in \texttt{code/}. The
+report's README gives a recipe that restores each delivered layout in a
+scratch copy; there, the manuscripts' instructions apply, and rerunning
+overwrites only the copy's recorded outputs. The exact verifications need
+Python 3.10 or later and no third-party package:
+\begin{verbatim}
+python code/verify.py                # either package
+python code/numerics.py              # manuscript 11; exact counts
+\end{verbatim}
+Do not use Python's \texttt{-O} option, which disables the verifiers'
+assertions. Manuscript~11's symbolic checks need SymPy, and both plot scripts
+need NumPy and Matplotlib:
+\begin{verbatim}
+python code/verify_symbolic.py       # manuscript 11
+python code/plot_results.py          # either package
+g++ -O3 -std=c++17 code/simulate.cpp -o simulate   # manuscript 10
+./simulate > data/simulation.csv
+\end{verbatim}
+Regenerating samples can change the numerical table unless the table is
+updated too; the article and data correspond to the retained run. The
+retained figures make Python unnecessary for rebuilding the article. The
+included count files record exact integers; rounded display columns and plots
+are not interval-arithmetic certificates.
+
+\section{Further research questions}
+\label{mj:sec:questions}
+The proved results remove the unknown leading constants from all
+supercritical moments and identify a positive part of the linear-bound
+regime. Several neighbouring problems remain substantial. The questions below
+separate statements proved above from plausible next steps. Manuscript~10
+proposes ten directions and manuscript~11 ten questions; where both ask the
+same question it is printed once with both texts, so thirteen remain.
+
+\subsection{The smaller-bound regime and the hierarchy below half size}
+\label{mj:sec:q-hierarchy}
+\emph{Manuscript~11.} Determine an asymptotic equivalent for
+$a_n^{(\lfloor\theta n\rfloor)}/C_n$ for each fixed $0<\theta<1/2$.
+\emph{Manuscript~10.} For a nonreciprocal $0<\theta<1$, set
+$r=\lceil1/\theta\rceil-1$. Is there a positive function $\Omega_r(\theta)$
+such that
+\[
+ \ljP(M_n\le\theta n)\sim\Omega_r(\theta)n^{-r/2}?
+\]
+This is a proposed conjectural hierarchy, not a theorem. The case $r=1$ is
+now proved (\cref{mj:thm:profile}), and \cref{mj:thm:lower} supplies the
+lower bound in every open interval. A proof of a matching upper bound would
+need control of repeated macroscopic splits and their endpoint marks.
+Manuscript~11 proves only $o(n^{-1/2})$ there, and adds: a single split into
+two blocks below the threshold is no longer available near the top. Several
+macroscopic pieces must be created before the threshold parser can stop.
+Thresholds at reciprocal integers $\theta=1/k$ are natural candidates for
+changes of behaviour, but no hierarchy of exponents or constants is
+established by manuscript~11. An analysis must retain the last-entry
+constraints through all large pieces rather than multiply independent split
+probabilities.
+
+\subsection{Reciprocal thresholds and the critical window at \texorpdfstring{$m=n/2$}{m = n/2}}
+\emph{Manuscript~10.} Determine the order of $\ljP(M_n\le n/2)$ and the
+transition when $M_n\le n/2+s_n$. \emph{Manuscript~11.} Find the probability
+scale and the transition function when $m=n/2+s_n$ and $s_n=o(n)$. The linear
+vanishing in \eqref{mj:eq:half-edge} is a constraint on any crossover formula,
+but does not determine the size of $s_n$, the width of the window, or the
+probability exactly at its centre. More generally, do the $\theta=1/r$ mark
+distinct polynomial or logarithmic transitions? The discarded terminal
+boundary strips, negligible at a fixed bulk fraction, may become part of the
+main term here. Rounding effects, parity and the terminal maximum's unit cost
+must be retained at a lattice scale rather than replaced by a continuum
+approximation too early.
+
+\subsection{A uniform relative boundary-to-bulk approximation}
+\emph{Manuscript~11.} Find a formula with relative error tending to zero in a
+range simultaneously covering $d\to\infty$, $d=o(n)$, and $d/n$ bounded
+inside $(0,1/2)$. A useful goal is an explicit error bound that exposes
+dependence on both $d$ and $n-2d$. The proof here truncates the word cost
+before taking the limit. A quantitative version would keep the slowly
+decaying word tail, the endpoint acceptance correction, and the two
+split-boundary strips in one estimate. Compact absolute uniformity is not
+enough when the main profile itself tends to zero or infinity.
+
+\subsection{A local macroscopic limit}
+\emph{Both manuscripts.} For $d_n/n\to x\in(0,1/2)$ (manuscript~11), or
+uniformly on compact subsets of $(0,1/2)$ with $d_n=\lfloor xn\rfloor$
+(manuscript~10), is it true that
+\[
+ n^{3/2}\ljP(D_n=d_n)\longrightarrow\frac3{2\sqrt\pi}[x(1-x)]^{-3/2}?
+\]
+This is consistent with \cref{mj:thm:marked}, but it is not a consequence of
+it: the vague limit controls intervals, not individual lattice masses, and
+differencing two tail estimates whose errors are merely $o(n^{-1/2})$ does not
+control a probability of order $n^{-3/2}$. A proof requires a local count or
+substantially sharper error control. A local theorem would substantially
+strengthen coefficient asymptotics and numerical certification.
+
+\subsection{The exact total-variation constant}
+\emph{Both manuscripts.} Part~III proves a sharp order but leaves the constant
+in $\ljTV(\ljLaw(D_n),\ljLaw(D))$ open (its Section~\ref{mj:sec:lj-tv}).
+Determine whether $\sqrt n\,\ljTV(\ljLaw(D_n),\ljLaw(D))$ converges, and
+compute the limit if it exists. The limiting boundary mass beyond $n/2$
+suggests a possible contribution $3\sqrt2/\sqrt\pi$, but neither manuscript
+asserts that this is the full constant (manuscript~10). The bulk measure
+identifies one source of mass at large deficits. Total variation also depends
+on signed finite-size corrections at small and intermediate deficits, so the
+answer cannot be obtained just by integrating the unsigned bulk density; the
+distinction between a weak rare-event measure and a signed correction measure
+is essential (manuscript~11). Establishing it requires control of the signs
+and aggregate size of discrepancies inside the finite range, which the
+present weak rare-event limit does not provide.
+
+\subsection{Centered critical and subcritical corrections}
+\label{mj:sec:q-centered}
+\emph{Manuscript~10.} Does
+\[
+ \ljE\sqrt{D_n}-\frac3{2\sqrt\pi}\log n
+\]
+converge, and what is its limit? Can one identify the leading correction to
+$\ljE D_n^p$ for $0<p<1/2$? These questions require a quantitative matching of
+the fixed-deficit law and the macroscopic measure near the singular boundary
+$x=0$. (The first is the critical part of Part~III's
+Section~\ref{mj:sec:lj-moments}, which Part~IV leaves open.)
+
+\subsection{Second-order moment asymptotics}
+\emph{Both manuscripts.} Determine the next term after $3\sqrt{n/\pi}$ in
+$\ljE D_n$, the next term in the second moment, and the next terms in
+$\ljE D_n^p$ for fixed $p>1/2$. The numerical tables show significant
+finite-size corrections, and the finite data do not establish whether the
+next mean term is constant, logarithmic, or of another order. The next
+contribution can mix a boundary correction with a bulk correction. An
+expansion for a fixed positive deficit fraction alone need not be integrable
+down to zero. Matched subtraction of the small-$u$ singular terms of
+\eqref{mj:eq:boundary-matching} is a possible route, but must come with a
+uniform remainder. A correct expansion must separate finite outer
+decorations, mesoscopic tails, and repeated macroscopic split events, rather
+than extrapolating a few simulated sizes.
+
+\subsection{A geometric conditional limit for the whole permutation}
+\emph{Manuscript~10.} \Cref{mj:cor:conditional} describes two marked
+statistics. Can one construct a conditioned tree or permutation limit under
+$D_n>un$, with an actual canonical macroscopic split and a finite outer
+decoration process? Such a result could determine the position of the
+largest jump and the joint sizes of the largest ascent and descent. The
+sampling representation of the limiting pair is not, by itself, such a full
+geometric theorem. [Merge note: manuscript~11's parser supplies the canonical
+split and its \cref{mj:thm:conditional} the limiting law of the finite outer
+word jointly with the split; the question is re-scoped to the full
+conditioned permutation, the position of the largest jump and the joint
+largest ascent and descent, which remain open. Compare Part~III's
+Section~\ref{mj:sec:lj-ascent}.]
+
+\subsection{Conditional cost moments and mesoscopic decorations}
+\emph{Manuscript~11.} Under $D_n\ge d_n$ with $d_n/n\to u\in(0,1/2)$,
+determine the growth of $\ljE\,\ljcost(W_n)$ and the distribution of the
+largest outer decoration. The limiting word has finite mean length $7/3$ but
+infinite mean cost. Hence convergence in law from \cref{mj:thm:conditional}
+does not determine these expectations. A joint theory of the word cost and a
+second large split may describe how the infinite limiting expectation is
+truncated at finite $n$.
+
+\subsection{A uniform bridge to shrinking adjacency fractions}
+\emph{Manuscript~10.} The current result fixes $\theta>1/2$, while the
+fixed-$m$ spectral program fixes $m$ before letting $n$ grow. Determine
+regimes with $m\to\infty$, $m/n\to0$. The lower-bound hierarchy suggests that
+the required number of large components itself grows, so a fixed-depth
+renewal expansion may cease to be uniform. (Compare Part~III's
+Section~\ref{lj:sec:q-reconnect}.)
+
+\subsection{Weighted refinements}
+\emph{Manuscript~11.} Extend the rare-event profile to avoiders weighted by
+descents, or record additional statistics jointly with the terminal split.
+The constant three arose from three equally weighted endpoint modes. Under a
+nonuniform weight those modes may no longer be equal, and the critical
+operation masses will change. A correct extension should derive those weights
+from the refined generating functions instead of replacing Catalan numbers by
+a new sequence without rechecking the endpoint law. (Compare Part~III's
+Section~\ref{mj:sec:lj-weighted}.)
+
+\subsection{Other classes, statistics and endpoint operators}
+\emph{Manuscript~10.} Identify statistics on other pattern-avoiding classes
+whose root recursion has an endpoint projection like $S$. If the source is a
+Catalan split measure but the finite endpoint transition has a different
+matrix, which rare-event exponents and coefficients persist? The useful
+target is a proved uniform-remainder theorem, not merely a formal matrix
+inverse. \emph{Manuscript~11.} Identify other recursively decomposable
+classes in which an extreme adjacency statistic has a tight ordinary limit
+but a nontrivial $n^{1/2}$-weighted macroscopic measure. The proof suggests a
+mechanism: a summable critical outer-word series, a square-root Catalan split
+law, and a finite endpoint acceptance matrix. These are hypotheses to verify
+in each class, not a universal theorem already proved. Symmetries preserving
+absolute adjacent differences give immediate equivalent formulations, but a
+genuinely new class needs a separate decomposition.
+
+\subsection{Formalization, certified and efficient computation}
+\emph{Manuscript~10.} A Lean development could first formalize the finite
+decomposition, \cref{mj:prop:root}, the endpoint counts, and the stopping-word
+injection. The analytic layer would then add the uniform tail envelope, the
+Riemann-sum source theorem, and the bounded-sequence contraction argument. The
+last two steps deserve separate reusable interfaces. No claim is made that
+these declarations already exist in the repository or that the current Python
+checks constitute a formal proof. \emph{Manuscript~11.} Formalize the
+threshold parser and the rare-scale tail argument, and improve the exact
+endpoint implementation for large linear bounds. Natural proof-assistant
+milestones are the reconstruction bijection, the word generating-function
+identities, the convolution tail estimate, and the fixed-word endpoint
+acceptance lemma. The dominated-convergence step should then expose its
+precise $p>1/2$ hypothesis. For computation, a batched treatment of all bounds
+could avoid rebuilding overlapping endpoint states. Neither a new formal
+library nor an optimal complexity claim is supplied.
+
+\section{Dependency audit, scope and conclusion}
+\label{mj:sec:audit}
+
+\subsection{The two dependency chains}
+Manuscript~11's proof dependency is
+\[
+ \begin{gathered}
+ \text{Catalan maximum and endpoint formulas}\\
+ \Downarrow\\
+ \text{canonical threshold parser and rare-scale cost tail}\\
+ \Downarrow\\
+ \text{fixed-word endpoint acceptance and Catalan split integral}\\
+ \Downarrow\\
+ \text{bulk profile and conditional structure}\\
+ \Downarrow\\
+ \text{all supercritical moment constants}.
+ \end{gathered}
+\]
+Manuscript~10's replaces the second and third lines by the exact deficit
+recursion with the stopping-word envelope, and the truncated renewal equation
+with its contraction proof. Neither depends on a fixed-$m$ exponential growth
+approximation, an unproved component ordering, a presumed uniform spectral
+gap, or the asymptotic theorems of Parts~I--III. The finite-state recurrence
+is used for computations and is explicitly attributed to its prior source.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Claim-by-claim status of Part~IV (manuscripts 10 and 11).}
+\label{mj:tab:audit}
+\begin{tabular}{p{.37\linewidth}p{.56\linewidth}}
+\toprule
+Claim & Basis and limitation\\
+\midrule
+Exact root identity (10) & Direct finite comparison of all possible adjacent
+ jumps; independently checked on all avoiders through size 11.\\
+Uniform tail envelope (both) & An injective stopping-word reconstruction and
+ exact Catalan coefficient identities (10); the canonical parser and a
+ convolution bound (11).\\
+Marked rare-event measure (10) & Endpoint limits, an explicit mesoscopic
+ remainder bound, and a contraction proof of convergence.\\
+Bulk profile for $0<d/n<1/2$ (both) & Two written proofs, each including
+ rare-scale tail control.\\
+Scaled zero limit at and above $d/n=1/2$ (both) & Written monotonicity proof;
+ no finer equivalent.\\
+All fixed-$p>1/2$ moment constants (both) & Evaluation of that measure and a
+ proved uniform integrable envelope for moment integrals.\\
+Conditional word and split laws (11); three channels (10) & Written joint
+ convergence proof (11); a sampling description of the limiting marked pair
+ (10).\\
+Deficit-size-biased uniform law (10) & A change of variable in the limiting
+ weighted density; not the unweighted permutation law.\\
+Sub-half-size regimes (10, 11) & Constructive polynomial lower bounds only
+ (10), $o(n^{-1/2})$ (both); matching upper bounds and equivalents remain
+ open.\\
+Computations (both) & Exact integer finite tests and exact symbolic checks
+ (11); explicitly labelled Monte Carlo illustrations (10); rounded displays of
+ exact counts (11). No asymptotic claim rests on computation.\\
+New Lean or Rocq declarations & None supplied or claimed.\\
+Novelty, review and formal status & New relative to the inspected report's
+ stated scope; not an exhaustive priority assessment, external review or a
+ proof-assistant verification.\\
+Local limit, critical window, smaller-bound bulk, centered half-moment, exact
+ TV constant & Open.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What is resolved}
+The advances claimed are deliberately specific. The positive linear-bound
+range $m/n\in(1/2,1)$ now has an explicit relative equivalent. Every fixed
+moment order above the threshold $1/2$ now has a proved leading constant,
+including the previously undetermined mean and variance constants. The
+conditional rare event has an explicit two-block geometry and a universal
+outer-word law. The entire linear-bound problem is not claimed solved,
+because smaller bounds are only shown to have lower-order probability, with
+polynomial lower bounds (manuscript~11's summary, extended by manuscript~10's
+lower bounds).
+
+\subsection{Conclusion}
+\emph{Manuscript~10.} The main obstruction in passing from a boundary law to
+exact moments is not integration but missing probability mass at macroscopic
+distances. The present work identifies that mass. A two-block Catalan
+source, modified by a finite endpoint renewal, produces the explicit measure
+\eqref{mj:eq:marked-measure}; its deficit marginal gives the complete
+first-order profile and all supercritical constants. The proof also isolates
+a useful methodological lesson. A finite exact identity can remove an
+apparently necessary subtree statistic. Once this identity is combined with a
+uniform counting envelope, the mesoscopic remainder becomes summable and a
+heuristic renewal equation becomes a convergent one. The equal three-channel
+endpoint mixture and the size-biased uniform law then emerge from an
+elementary explicit calculation.
+
+\emph{Manuscript~11.} The fixed-deficit law and the macroscopic deficit
+measure describe different parts of the same random statistic. The former
+governs ordinary probability and low moments; the latter accounts for rare
+configurations large enough to determine high moments. A canonical threshold
+parser makes that second regime accessible without importing a nonuniform
+spectral estimate. Its summable but heavy-tailed outer structure contributes
+an endpoint-weighted mass of three, and the remaining Catalan split integral
+can be evaluated exactly. This turns an order-of-magnitude moment statement
+into a complete family of explicit leading constants while leaving clear,
+nontrivial questions at the critical window and beyond it.
+
+\section{Small exact examples and normalization checks}
+\label{mj:sec:small}
+This section was manuscript~10's Appendix~B. For $n=3$, the five avoiders are
+$123$, $213$, $231$, $312$, $321$. Their deficits are respectively $2$, $1$,
+$1$, $1$, $2$. For
+example, $\pi=213$ is an append operation on $21$:
+\[
+ D(213)=\min\{D(21)+1,L(21)\}=\min\{2,1\}=1.
+\]
+For $\pi=231$, the nonempty right block is $1$ and the left size is one:
+\[
+ D(231)=\min\{F(1),2+D(1)\}=1.
+\]
+These examples illustrate why the append state needs the last value while a
+nonempty right block removes the left block's internal maximum.
+
+For the marked source, the total tail integral is
+\[
+ \int_u^{1-u}[y(1-y)]^{-3/2}\,\dd y
+ =4\frac{1-2u}{\sqrt{u(1-u)}}.
+\]
+Multiplying by the source coefficient $1/(4\sqrt\pi)$ gives the unmarked
+two-block source. The full renewal contributes a factor three, so its tail is
+exactly \eqref{mj:eq:Psi}. The folding factor two and the three endpoint
+channels are distinct factors; conflating them would produce an incorrect
+constant.
+
+Finally, the size-biased density integrates to one because
+\[
+ \frac12\int_0^{1/2}x^{-1/2}(1-x)^{-3/2}\,\dd x
+ =\left[\sqrt{\frac{x}{1-x}}\right]_0^{1/2}=1.
+\]
+This independently checks the normalization linking the marked source, the
+mean constant, and the uniform-law transformation.
+
+\section{Repository pins, literature scope and merge}
+\label{mj:sec:provenance}
+
+\subsection{Manuscript~10's pin and literature scope}
+This subsection was manuscript~10's Appendix~A. The inspected repository was
+pinned at commit
+\begin{center}\small\texttt{1ee53d57de253d16cdaad79d1f54bbd95d76d682}\end{center}
+(root tree \texttt{c772efcde0cc2db7902005598190606da6cb338c}). The relevant
+directory is
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+enumerative-combinatorics/adjacency-bounded-132-avoiders/.
+\end{quote}
+Its README at that pin describes the merger of three reports. The third,
+\emph{The Largest Jump Is Almost Maximal}, was placed with the
+\path{03-largest-jump-} prefix and appears as Part~III of the combined
+article. The README explicitly excludes a bulk joint limit and exact leading
+supercritical moment constants. The original standalone source,
+\texttt{article(20260929-161704).tex}, was also consulted through
+Vladimir's file library to inspect the questions and proofs in contiguous
+form; its own reference pin is \texttt{8d936ee23}, not manuscript~10's.
+
+Manuscript~10 uses the same notation for the largest-jump deficit, credits the
+stopping-word construction, and answers the designated bulk and moment
+questions. Its proof does not require the earlier algebraic probability
+generating function, a total-variation theorem, or any fixed-bound spectral
+asymptotic. Those statements are contextual results, not unverified premises
+imported into the present argument.
+
+A targeted literature check used the arXiv records of Nadler and
+Mayama--Akita, the latter's available HTML, and searches for largest adjacent
+differences in $132$-avoiding permutations. No matching macroscopic formula
+was established from the retrieved material. This is not an exhaustive
+search or evidence sufficient to certify priority. External papers and
+earlier repository manuscripts are not redistributed. The full ledger is
+\path{04-macroscopic-jump-SOURCES.md}.
+
+\subsection{Manuscript~11's pin and literature scope}
+Manuscript~11 inspected the repository snapshot
+\begin{center}\small\texttt{1ee53d57de253d16cdaad79d1f54bbd95d76d682},\end{center}
+the report at the repository-relative path
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+enumerative-combinatorics/\\
+adjacency-bounded-132-avoiders/article.tex,
+\end{quote}
+with Git blob \texttt{aeadaf364b083f7e25a475bd42b777cf926769b9}, including
+the report's statements about its unresolved bulk and moment questions. It
+builds on the report's subject and elementary decompositions, but does not
+assume its probabilistic or spectral theorems. The primary external records
+inspected were the arXiv version-one records and HTML texts of
+\cite{Nadler,MayamaAkita}, accessed September 29, 2026. Targeted searches for
+maximum adjacent differences and largest jumps in $132$-avoiders were also
+made. These checks locate the contribution relative to the inspected
+materials; they do not certify first-in-literature priority or exclude
+independent unpublished work. The full ledger is
+\path{05-macroscopic-deficits-SOURCES.md}.
+
+\subsection{Where the merge had to choose}
+\label{mj:sec:merge}
+\begin{itemize}
+\item \emph{Placement.} Part~IV follows Part~III and precedes Part~I's
+ appendices, which contain no numbered equations, tables or figures; no
+ number of Parts~I--III changed. Manuscript~10's two appendices are printed as
+ \cref{mj:sec:small} and the first subsection of \cref{mj:sec:provenance};
+ manuscript~11's Appendix~A (the recurrence) is \cref{mj:sec:exact-data} and
+ its Appendix~B (reproduction) is replaced by \cref{mj:sec:reproduce}. Both
+ title pages and abstracts are replaced by the opening note of Part~IV, the
+ status box of \cref{mj:sec:source} (which prints both research-status
+ boxes) and a paragraph of the report's abstract; every claim of both
+ abstracts is stated in \cref{mj:sec:introduction}.
+\item \emph{Base and order.} Manuscript~10 is the base. Its sections are
+ printed in its order, with manuscript~11's parser and tightness sections
+ beside its envelope (\cref{mj:sec:envelope}), manuscript~11's proof of the
+ profile after manuscript~10's (\cref{mj:sec:words}), and manuscript~11's
+ conditional structure, closed forms and exact data beside the corresponding
+ material of manuscript~10.
+\item \emph{Duplicates between the manuscripts.} Printed once, credited to
+ both: the profile theorem (manuscript~10's Theorem~1.1 with manuscript~11's
+ sequence form, Theorem~1.1 there), the deficit measure (manuscript~11's
+ Theorem~1.2 as the last assertion of \cref{mj:thm:marked}), the moment
+ theorem (both Theorems~1.3; one proof, with both domination arguments), the
+ first-entry bound (\cref{mj:lem:first}, both constants), the small-$u$ and
+ half-edge expansions, the critical pole (\cref{mj:prop:constantlimits}), and
+ seven research questions. Kept as second routes: manuscript~11's uniform
+ last-entry estimate (second proof of \cref{mj:lem:last}), its all-deficit
+ envelope (\cref{mj:cor:all-tail}, a second proof of
+ \cref{mj:prop:envelope} up to the constant), its proof of the profile
+ (\cref{mj:sec:words}) and of the deficit measure
+ (\cref{mj:sec:words-measure}). The constants checked equal: the mean
+ constant $3/\sqrt\pi$; the variance constants $3(4-\pi)/(4\sqrt\pi)$ and
+ $(3/\sqrt\pi)(1-\pi/4)$; manuscript~10's size-biased form and
+ manuscript~11's moment formula (the size-biased law has total mass
+ $\mathcal I(1)=1$, and manuscript~10's integral forms equal manuscript~11's
+ $\mathfrak m_p$ at $p=3/2$ and $p=3$ numerically and in general by the
+ substitution of \cref{mj:thm:moments}); and the small-$u$ tail, which is
+ Part~III's $3/\sqrt{\pi d}$.
+\item \emph{Duplicates with Parts~I--III.} The maximum decomposition and
+ positional restriction (Part~I, \cref{sec:endpoints}), the first- and
+ last-entry counts (Part~III, \eqref{lj:eq:first-count} and
+ \eqref{lj:eq:last-count}), Part~III's stopping words with their cost series,
+ exact cost tail and disjointness (\cref{lj:sec:skeleton},
+ \cref{lj:lem:cost-tail,lj:lem:injective}), and the endpoint recurrence
+ (Part~I, \cref{prop:endpoint}) are printed once, in the earlier parts, and
+ credited; both manuscripts rederive them by the same arguments, which are
+ therefore not reprinted. What the manuscripts add to them (the uniform
+ bounds of \cref{mj:lem:first,mj:lem:last}, the deficit bound
+ \eqref{mj:eq:stopping-deficit}, the bound in \eqref{mj:eq:Ttail}, the
+ shortcut \eqref{mj:eq:unrestrictedDP}) is printed with its proof.
+\item \emph{Notation.} Every rename is listed in \cref{mj:tab:notation}:
+ manuscript~11's $\Phi\to\Psi$, $x\to u$ (threshold), $u\to y$ (split),
+ $\kappa_p\to\mathfrak m_p$ (both), $I(p)\to\mathcal I(p)$, $I_x\to I(u)$,
+ $k(u)\to\mathfrak k(y)$, $W,W_R\to\mathcal W,\mathcal W_R$,
+ $r_t\to w^R_t$, $T\to T_W$, $K\to\mjlen(W)$, $\alpha(w)\to\chi(w)$,
+ $r_n(w)\to\ell_n(w)$, $E_{n,m},E_n(w)\to\mathcal E_{n,m},\mathcal E_n(w)$,
+ $U_x\to U^{(u)}$, $H_s(u)\to\mathcal N_s(u)$, $\mu\to\mu_D$, its core
+ $\rho$ in the operation definitions (not printed), its mode indicator $H_n$
+ (written out) and its $T_n^{(m)}(u,v)\to T^{(m)}_{u,v}(n)$ (Part~I's form);
+ manuscript~10's $E\to\mathcal X$, $Y_n\to\Xi_n$, $P\to S^\ast$,
+ $R_H\to\bar r_H$, $h\,(=Pf)\to g$, $c_h,c_f\to\bar Z_g,\bar Z_f$,
+ $E_h,E_f\to e_g,e_f$, the resolvent weights $r,a\to w_{\mathrm{id}},w_S$,
+ $H\to H^\star$, $\mathbb P^\star\to\ljP^\star$, its corollary's
+ $Y,B,W\to U^{(u)},\xi,\zeta$, $q\to\theta_r$ in \cref{mj:thm:lower},
+ $c_{\theta,r}\to\underline c_{\theta,r}$, $A_r(\theta)\to\Omega_r(\theta)$,
+ and the left and right blocks $L$, $R$ (written out). No normalization
+ changed. Manuscript~10's $\ljP(D_n>un)$ and manuscript~11's
+ $\ljP(D_n\ge\lceil xn\rceil)$ are kept as each stated them.
+\item \emph{References to this report.} Both manuscripts cite Parts~I--III as
+ a repository report (their references ``Repo'' and ``ProveIt''); here those
+ citations are internal cross-references, including Part~III's
+ Sections~\ref{mj:sec:lj-bulk} and~\ref{mj:sec:lj-moments}, whose headings
+ received labels in the merge. Their entries for Nadler and Mayama--Akita are
+ Part~I's.
+\item \emph{Research questions.} Manuscript~10's ten directions and
+ manuscript~11's ten questions are printed as thirteen subsections of
+ \cref{mj:sec:questions}; seven pairs asked the same question and are printed
+ once with both texts. Manuscript~10's question on a geometric conditional
+ limit is re-scoped by a merge note, because manuscript~11's
+ \cref{mj:thm:conditional} supplies part of it.
+\item \emph{The merge's own text.} \Cref{mj:sec:intro},
+ \cref{mj:sec:three-match}, the comparison with $3/\sqrt{\pi(1-\theta)n}$ in
+ \cref{mj:sec:scope}, the $\mathfrak m_p$ column of the table of closed
+ forms, the sentences and parentheses explicitly marked as the merge's, the
+ attributions ``(manuscript~10)'', ``(manuscript~11)'', ``(both)'', and this
+ list are the merge's.
+\item \emph{Reproduction.} The manuscripts' package listings and commands are
+ replaced by the shipped names and the copy recipes
+ (\cref{mj:sec:reproduce} and the README); their \texttt{article.tex},
+ \texttt{article.pdf}, \texttt{README.md} and \texttt{SHA256SUMS} are not
+ shipped.
+\item \emph{Figures.} The four figure PDFs were regenerated in the write
+ phase by the delivered plot scripts, run unchanged on copies of the
+ delivered layouts with Matplotlib 3.10.8 and \texttt{pdf.fonttype}~42, so
+ that they embed TrueType rather than Type~3 fonts; the delivered PDFs had
+ Type~3 DejaVu and STIX fonts. The plotted data are the shipped data. The PNG
+ previews in \texttt{figures/} are the delivered files.
+\item \emph{Stale sentences elsewhere.} The abstract, Part~II's research
+ direction on joint growth and its scope ledger (\cref{crem:tab:ledger}),
+ Part~III's scope paragraph
+ (\cref{lj:sec:scope}), its \cref{lj:rem:bulk}, the remark after
+ \cref{lj:cor:mean-var}, its audit table (\cref{lj:tab:audit}), its research
+ questions on the bulk profile and the moment constants, and Part~I's
+ \cref{app:reproduction} carry dated pointers to Part~IV; their original
+ wording is kept.
+\end{itemize}
+
+
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
@@ -4503,7 +7312,10 @@ data/large_m_scalar_bounds.csv     Scalar evaluations through m = 1000000
 the prefix \path{02-centered-remainder-} and are listed in
 \cref{crem:sec:reproduce}.
 Added 29 September 2026, batch 43: Part~III's carry the prefix
-\path{03-largest-jump-} and are listed in \cref{lj:sec:reproduce}.]
+\path{03-largest-jump-} and are listed in \cref{lj:sec:reproduce}.
+Added 29 September 2026, batch 52: Part~IV's carry the prefixes
+\path{04-macroscopic-jump-} and \path{05-macroscopic-deficits-} and are
+listed in \cref{mj:sec:reproduce}.]
 
 The primary reproducibility command needs no third-party Python packages:
 \begin{lstlisting}
