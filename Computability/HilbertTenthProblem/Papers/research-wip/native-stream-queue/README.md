@@ -40,6 +40,12 @@ New research, without a change to the complete universal bound:
 | [Paired ternary FIFO and delayed loader](native_ternary_pair_fifo50.md) | Exact native nine-symbol FIFO from ordinary `(x,0)`, originally50 and now49 via power42. A proved finite prefix inserts the handoff machine's delimiter while preserving x. | The finite prefix and subsequent universal controller still need arithmetic certification. Both append streams are positive; the optional joint bound is explicit. |
 | [Direct Boolean ternary rails](input_bridge_boolean_ternary60.md) | `Y=3s+1` certifies actual0/1 ternary digits: typing55 and an exact ordinary-input scalar FIFO in **60=31M+29A**. General and selected controller schedules cost69,68 and66. | All four rails must be nonzero. Code filters, input normalization and universal acceptance are absent. |
 | [Paid Rule110 scan controller](native_controller_rule110_selector73.md) | Six exact selectors and state-flow equations give a complete **73-operation** finite FIFO relation;74 pays a preamble visiting all labels. Terminal A is proved empty, terminal C means all-ones reachability, and free-terminal75 admits every input. | No universal input or halting interpretation for the actual terminal-C condition has been proved. |
+| [Raw Boolean gates](native_controller_raw_boolean_gates.md) | Exact four-field typing55, three selectors53, cyclic NAND64 and noncommuting NAND71, all with positive converses. The new selectors do not fix the first label. | Routing and universal input/acceptance remain absent; cyclic NAND still has its commuting collapse. |
+| [Paid append code](input_bridge_append_code74.md) | An exact68-operation append filter gives controller73 with an empty endpoint and nonempty74 at carry7. The complete31-edge block graph is audited. | Every fixed positive affine input map misses infinitely many ordinary inputs, so this architecture cannot represent all recursively enumerable sets. |
+| [Two-carry zero-code obstruction](input_bridge_two_carry_zero_code.md) | At every block length, two independent affine carry directions realizing the same six zero-code Rule110 paths force all three control states to coincide. | State refinement, different encodings and other local relations remain outside the theorem. |
+| [Nonabsorbing affine controllers](pell_kernel_nonabsorbing_determinant.md) | With nonzero coefficient determinant, the unfiltered paired FIFO language is decidable for arbitrary terminal states, with separate or [joint bounds](pell_kernel_nonabsorbing_joint.md). The proof includes effective duration reduction and a finite test for the remaining two powers. | The theorem does not remove Boolean rail filters. General proportional nonabsorbing coefficients are handled only in the stated subcases below. |
+| [Proportional carry reduction](pell_kernel_proportional_carry.md) | Exact factorization retains both the congruence and append-image guards. Absorbing, constant-factor and zero-intercept cases have complete decision procedures. | The general two-power divisibility case with all three coefficients nonzero remains unresolved. |
+| [Single-field compiler restrictions](native_controller_single_field_spectrum.md) | Every coefficientwise scalar convolution has a uniform bounded period except for precisely classified affine wire equations. The [guarded variant](native_controller_single_field_guard.md) has an elementary finite-state proof. | Deliberate variable carry streams or an additional variable field are outside the spectral theorem; a universal one-field compiler is still absent. |
 | [Weakened power42 counterexample](pell_kernel_power_geometry_weak42.md) | The distinct multiplication-saving auxiliary weakening admits strictly positive witnesses at `q=5`, despite retaining `r+1=q`. Main coordinates and residues are checked exactly; final auxiliary values have a proved parametric extension. | Refutes this specified geometry shortcut, not the strong42 construction or either old complete75 candidate. |
 | [Binary and ternary power geometry](pell_kernel_power_two43.md) | Exact positive predicates for `q=2^t` and, in the [ternary variant](pell_kernel_power_three43.md), `q=3^t`, each in **43=25M+18A**. Both reuse the existing `r+1` register; the smallest parameters are covered. | Geometry only; no digit fields, input, controller or acceptance are included. |
 | [Paired binary FIFO](native_binary_pair_fifo52.md) | Exact **52=29M+23A** paired FIFO initialized by ordinary `x` and a high marker, including powers and bounds. A general affine controller gives **61**. | Both append streams must be nonempty. Unrestricted absorbing affine control is decidable; a universal controller or paid filter is absent. |
@@ -120,6 +126,14 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_power_geometry_weak42.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_power_geometry42.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_boolean_ternary60.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_nonabsorbing_determinant.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_nonabsorbing_joint.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_raw_boolean_gates.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_append_code74.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_single_field_guard.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_single_field_spectrum.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_proportional_carry.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_two_carry_zero_code.py
 ```
 
 The immediate constructive targets are a compiler using the single masked
@@ -148,7 +162,18 @@ ternary rails also give a scalar FIFO in60 and exact affine control in69.
 Binary one-hot selectors give NAND ports in58 and an exact Rule110 scan
 relation in73, but its terminal condition has no universal halting theorem.
 These components leave more room for a synchronized universal controller;
-their operation counts do not supply one.
+their operation counts do not supply one. The unfiltered paired controller
+is now also decidable at arbitrary endpoints when its coefficient determinant
+is nonzero, including the joint bound. Proportional coefficients have an
+exact guarded reduction and three decidable subcases; the general case is
+open. In the filtered scalar architecture, the paid append-code74 source
+misses infinitely many inputs under every fixed positive affine input map.
+A second independent carry cannot repair the same direct zero-code Rule110
+embedding at any block length. The single-field alternative now requires a
+substantive change from coefficientwise scalar convolution: those equations
+have bounded periods except for affine wire relations. Deliberate carries,
+state refinement, richer filters and other local relations remain constructive
+possibilities that still require full proofs.
 Deleting the ternary FIFO width bound has now been ruled out for the
 precise affine family by a thin-set nonuniversality argument. A useful next
 construction must supply a synchronized controller, a proved universal

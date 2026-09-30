@@ -1,0 +1,85 @@
+{
+  "status": "PASS_TWO_CARRY_ZERO_CODE_RANK_OBSTRUCTION",
+  "symbolic": {
+    "matrix": [
+      [
+        "uA",
+        "C",
+        "R*vB + vA",
+        "C*(R + 1)"
+      ],
+      [
+        "uB",
+        "C",
+        "R*vD - vB + vC",
+        "C*R"
+      ],
+      [
+        "uC",
+        "C",
+        "vD*(R - 1)",
+        "C*(R - 1)"
+      ]
+    ],
+    "coefficient_coordinates": [
+      "read0-read1",
+      "read1",
+      "append0-append1",
+      "append1"
+    ],
+    "nonzero_minor": "-C^2",
+    "forced_left_relation": [
+      1,
+      -2,
+      1
+    ],
+    "state_elimination": [
+      "B=-append_weight(P_B)",
+      "C_state=-append_weight(P_D)"
+    ],
+    "collapse": "All three encoded states coincide in every coefficient direction of a rank-two matrix"
+  },
+  "finite": {
+    "all_split_domains": [
+      {
+        "length": 1,
+        "read_split_triples": 9,
+        "append_split_quadruples": 17,
+        "admitted_read_relations": 3,
+        "admitted_append_relations": 3
+      },
+      {
+        "length": 2,
+        "read_split_triples": 99,
+        "append_split_quadruples": 323,
+        "admitted_read_relations": 15,
+        "admitted_append_relations": 15
+      },
+      {
+        "length": 3,
+        "read_split_triples": 999,
+        "append_split_quadruples": 5831,
+        "admitted_read_relations": 63,
+        "admitted_append_relations": 63
+      },
+      {
+        "length": 4,
+        "read_split_triples": 9999,
+        "append_split_quadruples": 104975,
+        "admitted_read_relations": 255,
+        "admitted_append_relations": 255
+      }
+    ],
+    "existing_code_rank": 3,
+    "existing_code_nullity": 1,
+    "existing_states": [
+      0,
+      14,
+      7
+    ],
+    "scope": "Finite checks supplement the all-length digit and interval proofs"
+  },
+  "theorem": "Any direct distinct-three-state Rule110 embedding with zero code and one common nonzero block code has at most one independent affine carry coefficient direction",
+  "scope": "All block lengths, common Boolean rail realizations; does not exclude state refinement or different local relations",
+  "established_complete_universal_bound": 76
+}
