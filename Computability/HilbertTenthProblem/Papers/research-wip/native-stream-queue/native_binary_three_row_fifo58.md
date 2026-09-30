@@ -314,6 +314,13 @@ controller of this form is useful. No missing input or controller
 interface is included in the63 count, and no universality claim is made
 for(10).
 
+Subsequent [nonabsorbing-controller bounds](binary_nonabsorbing_cone_and_read_only.md)
+give a necessary coefficient cone and decide every read-only case a0=0,
+with the no11 restriction retained. The separate
+[fixed-idle classification](binary_fixed_idle_controller.md) covers
+a0=b0!=0,c0=-b0 and folds its specialized component to57 operations.
+Other coefficients inside the cone remain outside these results.
+
 ## 8. Checks and scope
 
 The [checker](native_binary_three_row_fifo58.py) expands every source

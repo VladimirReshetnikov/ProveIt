@@ -15,6 +15,12 @@ affine loaders. It is distinct from the
 the acceptance test here is reaching one fixed integer. The established
 complete universal bound remains **75=41M+34A**.
 
+The later [factored counter-step construction](residue_affine_factored_counter_step.md)
+improves the generic scalar graph to4b+3 operations using a third positive
+witness, gives explicit nonunit examples outside the pumping hypothesis,
+and counts the guards of a prime-encoded counter map. Its input loader and
+finite iteration remain separate obligations.
+
 ## 1. Model and source boundary
 
 Fix b>=2 and integer tables a_r,d_r, for 0<=r<b. On positive integers put

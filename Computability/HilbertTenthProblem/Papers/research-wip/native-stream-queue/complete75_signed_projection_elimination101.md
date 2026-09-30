@@ -272,6 +272,10 @@ Independent proof/source review and default replay passed. That review
 checked the pre-power shifted-packing bounds, conditional positivity of C
 and mu before W is decoded, exact index recovery, the signed representative
 window, the solution-set bijection, all gate changes, and the degree claim.
+A second independent proof/source review also passed and checked512
+additional old/new residual identities at B=16,32,64,128, including412
+assignments with negative restored W. These identity checks do not replace
+the proof of positivity on the zero set.
 
 From the repository root with the verification dependencies installed:
 

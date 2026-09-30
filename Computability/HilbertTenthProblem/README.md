@@ -54,12 +54,12 @@ universal Diophantine equations by James P. Jones and coauthors:
   with30 positive witnesses and19 equations; see
   [the complete proof](Papers/1980/FIXED_RAW_UNIVERSAL_75_PROOF.md).
   Three independent integration reviews and focused source/component checks
-  pass. The latest [positive-projection refinement](Papers/research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md)
-  retains75 operations with **21 positive witnesses and ten equations**.
-  An alternative76-operation system with20 positive witnesses gives one
-  degree-84 polynomial evaluable in **102=50M+52A operations**, with fixed
-  compiler numerals and ordinary input. These optimized results are not yet
-  Lean formalized.
+  pass. The latest [signed-projection refinement](Papers/research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
+  retains75 operations with **20 positive witnesses and nine equations**.
+  Its degree-84 polynomial is evaluable in **101=50M+51A operations**, with
+  fixed compiler numerals and ordinary input. Conditional positivity is
+  proved on the zero set; every original positive solution is preserved.
+  These optimized results are not yet Lean formalized.
 
 ## Building and checking
 

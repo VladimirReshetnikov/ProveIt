@@ -4,21 +4,23 @@
 > **75=41M+34A** universal certificate with30 positive witnesses and19 equations.
 > Start with [the current proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) and
 > [its consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
-> The latest [positive projection](complete75_gamma_dominance_elimination102.md)
-> retains75 operations with21 positive witnesses and ten equations. Its
-> stronger-bound alternative has20 witnesses and a **102-operation**
-> single-polynomial evaluation of exact degree84, starting from a76-operation
-> comparison system. The README indexes these proofs, the four-row queue
+> The latest [signed projection](complete75_signed_projection_elimination101.md)
+> retains75 operations with20 positive witnesses and nine equations. Its
+> single-polynomial evaluation costs **101=50M+51A**, with exact degree84.
+> It preserves every old positive solution and needs no stronger canonical
+> packing bound. The README indexes these proofs, the four-row queue
 > simulator, binaryFIFO58 and ternaryFIFO66, row-local controller obstruction,
 > residue-affine pumping, PCP/matrix continuations,
 > and rejected74 shortcuts. The operation-count target remains below75;
 > controller arithmetic and ordinary-input loading are still unpaid for
 > the new coded queue simulator.
-> The counted nonabsorbing63 binary carry interface remains open; its
-> nonzero terminal state forbids free zero padding. The centered61 family
-> is fully classified, and bounded row-only local tests cannot recover the
-> simulator's general finite control. Preserve those scope distinctions
-> when trying richer controllers or a different computational substrate.
+> In the counted nonabsorbing63 binary family, every read-only a=0 case is
+> decidable, widths are bounded outside the coefficient cone, and the
+> a=b,c=-b boundary reduces to the regular fixed-idle57 predicate. Other
+> cases inside the cone remain open; a nonzero terminal state forbids free
+> zero padding. The factored counter map escapes the unit-slope pumping
+> hypothesis, with scalar guards counted in10B+8, but its prime-power input
+> loader and finite history remain unpaid. Preserve those distinctions.
 
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.

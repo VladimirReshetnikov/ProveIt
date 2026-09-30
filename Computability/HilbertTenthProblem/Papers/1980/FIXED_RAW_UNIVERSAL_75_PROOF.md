@@ -8,16 +8,15 @@ Three independent full integration reviews passed without findings. This is
 a mathematical proof with symbolic and finite checks, not a Lean formalization
 or a new publication claim.
 
-The [positive-elimination refinement](../research-wip/native-stream-queue/complete75_positive_elimination.md)
-removes eight forced positive coordinates from this reference source. It
-preserves75 operations with22 positive witnesses and11 equations, and gives
-one degree-84 polynomial evaluable in107 operations. The later
-[shared-projection refinement](../research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md)
-reduces the75-operation source to21 positive witnesses and ten equations
-(104 operations for one polynomial). Combined with a stronger canonical
-packing bound, it gives a76-operation system with20 witnesses and nine
-equations, whose degree-84 polynomial costs102=50M+52A. The source and
-full compiler proof below retain their original30-coordinate presentation.
+The latest [signed-projection refinement](../research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
+preserves75 operations with20 positive witnesses and nine equations. Its
+degree-84 polynomial costs101=50M+51A. This follows the earlier
+[positive elimination](../research-wip/native-stream-queue/complete75_positive_elimination.md)
+and [shared-projection refinement](../research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md),
+but needs no stronger canonical packing bound: conditional positivity is
+proved on the zero set, and every original positive solution is preserved.
+The source and full compiler proof below retain their original30-coordinate
+presentation.
 
 This construction retains the strong auxiliary square and the cubed scales.
 It is distinct from the earlier auxiliary-scale, input-gap and squared-scale

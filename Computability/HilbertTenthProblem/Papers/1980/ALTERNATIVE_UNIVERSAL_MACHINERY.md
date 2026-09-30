@@ -3,13 +3,12 @@
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
 strong auxiliary square and saves the old doubled-index addition. The
-[positive-projection refinement](../research-wip/native-stream-queue/complete75_gamma_dominance_elimination102.md)
-reduces its30 positive witnesses and19 equations to **21 witnesses and
-ten equations** at the same operation count. Combining the projection
-with a stronger packing bound gives a76-operation system with20 witnesses
-and nine equations. Its single sum-of-squares polynomial has exact degree84
-and a **102=50M+52A** evaluation DAG; the75-operation alternative costs104
-when converted to one polynomial.
+[signed-projection refinement](../research-wip/native-stream-queue/complete75_signed_projection_elimination101.md)
+reduces its30 positive witnesses and19 equations to **20 witnesses and
+nine equations** at the same operation count. Its single sum-of-squares
+polynomial has exact degree84 and a **101=50M+51A** evaluation DAG.
+The proof restores positivity of signed coordinate definitions on the zero
+set and preserves every original positive solution.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
@@ -27,6 +26,14 @@ provably insufficient for universal representation. A separate
 [row-local-window obstruction](../research-wip/native-stream-queue/four_row_local_window_obstruction.md)
 also rules out replacing the simulator's arbitrary finite control by bounded
 row-only tests; it does not bound the cost of nonlocal arithmetic constraints.
+
+The subsequent [nonabsorbing-controller bounds](../research-wip/native-stream-queue/binary_nonabsorbing_cone_and_read_only.md)
+decide the entire read-only subclass and bound inputs outside a necessary
+coefficient cone. The [fixed-idle boundary](../research-wip/native-stream-queue/binary_fixed_idle_controller.md)
+has a57-operation predicate with an explicitly regular input language.
+The [factored residue-affine counter map](../research-wip/native-stream-queue/residue_affine_factored_counter_step.md)
+provides a universal coded simulation with paid scalar zero/decrement guards;
+it still needs certificates for its prime-power input loading and history.
 
 ## Historical 76-operation milestone
 
