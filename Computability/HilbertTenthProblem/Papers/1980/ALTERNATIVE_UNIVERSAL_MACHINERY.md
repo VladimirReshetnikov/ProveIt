@@ -20,6 +20,15 @@ Integer unit factorization and elementary negative-Pell obstructions
 justify merging four norm equations and the index equation. Its degree
 is266 and its underlying four-equation system costs80. Grouped variants
 give97 operations at degree84,95 at degree96, and93 at degree136.
+The [shifted transport product](../research-wip/native-stream-queue/complete75_norm_product90.md)
+then gives90 operations at degree276 and the separate96/degree84,
+94/degree96 and92/degree138 variants. The latest
+[eight-factor product](../research-wip/native-stream-queue/complete75_norm_product89.md)
+gives **89=48M+41A**, with19 positive witnesses and exact degree166.
+A folded Pell-sequence residue gap restores the auxiliary linear equation
+before the shifted-index proof applies. All eight units can therefore
+share one unsquared product minus one. Its comparison circuit costs88,
+so75 remains the comparison frontier;93/degree136 remains a degree tradeoff.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
@@ -51,10 +60,22 @@ provides a universal coded simulation with paid scalar zero/decrement guards;
 it still needs certificates for its prime-power input loading and history.
 The [two-stack alternative](../research-wip/native-stream-queue/two_stack_affine_input_step.md)
 supplies an ordinary-input loader in two operations and an exact positive
-scalar step in16B-3 operations for B branches. Fixed-duration unrolling has
-an explicit cost; a uniform varying-duration history certificate remains
-unpaid. The executable decoder fixture is distinguished from the generic
-universal two-stack simulation.
+scalar step in16B-3 operations for B branches. Its
+[factored read-selector successor](../research-wip/native-stream-queue/two_stack_factored_selector_step.md)
+uses8B+18 operations for a full B=9K table, with eight positive witnesses
+and seven equations. Fixed-duration unrolling has an explicit cost.
+The [typed-history audit](../research-wip/native-stream-queue/two_stack_polycyclic_history_obstruction.md)
+gives an exact synchronized two-Dyck-word contract and proves that direct
+inverse-group products lose stack guards. Exact bounded-depth linear
+actions need dimensionN=2^(H+1)-1; the paid positive basis loader costs2N.
+The [typed prefix merge](../research-wip/native-stream-queue/typed_prefix_normal_form_merge25.md)
+instead gives exact nonzero composition in25 operations with four positive
+auxiliary witnesses and seven equations. It proves output typing from
+typed inputs and accounts for every fixed composition tree. Leaf typing,
+empty tests, synchronized action selection and a uniform varying-duration
+history certificate remain unpaid. The
+executable decoder fixture is distinguished from the generic universal
+two-stack simulation.
 
 ## Historical 76-operation milestone
 

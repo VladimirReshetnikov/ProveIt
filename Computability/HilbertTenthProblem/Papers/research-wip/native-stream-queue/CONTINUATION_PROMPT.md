@@ -1,47 +1,64 @@
 # Continuation: universal straight-line certificates
 
-> Historical handoff below. The subsequent research completed a reviewed
-> **75=41M+34A** universal certificate with30 positive witnesses and19 equations.
-> Start with [the current proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) and
-> [its consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
-> The [signed projection](complete75_signed_projection_elimination101.md)
-> retains75 operations with20 positive witnesses and nine equations. Its
-> single-polynomial evaluation costs **101=50M+51A**, with exact degree84.
-> It preserves every old positive solution and needs no stronger canonical
-> packing bound. The newer [bounded projection](complete75_bounded_projection_elimination99.md)
-> gives a **99=49M+50A** degree84 polynomial with19 positive witnesses.
-> Its comparison system costs76 with eight equations. It uses a proved
-> canonical margin C+Z+F<q/3 and preserves accepted inputs; the75 comparison
-> bound is separate from polynomial evaluation. The latest
-> [norm-and-index product](complete75_norm_product91.md) gives **91=49M+42A** with
-> the same19 witnesses, degree266, and an80-operation four-equation system.
-> Negative-Pell descents make the product exactly restore four norms and the
-> index equation; signed computed roots cause no exception. Grouped variants
-> give97/degree84,95/degree96, and93/degree136. Preserve these degree tradeoffs.
-> The README indexes these proofs, the four-row queue
-> simulator, binaryFIFO58 and ternaryFIFO66, row-local controller obstruction,
-> residue-affine pumping, PCP/matrix continuations,
-> and rejected74 shortcuts. Targets are below75 for comparisons and below91
-> for one polynomial, with degree accounted for;
-> controller arithmetic and ordinary-input loading are still unpaid for
-> the new coded queue simulator.
-> In the counted nonabsorbing63 binary family, every read-only a=0 case is
-> decidable, widths are bounded outside the coefficient cone, and the
-> a=b,c=-b boundary reduces to the regular fixed-idle57 predicate. The
-> [odd-controller orbit analysis](binary_odd_controller_orbit.md) gives an exact
-> fixed-width guarded duration cutoff and proves bounded width also for
-> c=-b,a/b<1. Other
-> cases inside the cone remain open; a nonzero terminal state forbids free
-> zero padding. The factored counter map escapes the unit-slope pumping
-> hypothesis, with scalar guards counted in10B+8, but its prime-power input
-> loader and finite history remain unpaid. The
-> [two-stack substrate](two_stack_affine_input_step.md) instead has a two-operation
-> affine ordinary-input prefix and exact16B-3 scalar steps with paid empty-stack
-> guards. Its fixed-t unrolling costs2+t(16B-3), or(16B+12)t+1 for one polynomial.
-> The next missing piece is a uniform certificate for arbitrary finite duration;
-> the executable decoder is not a transcribed universal interpreter.
-> Preserve those distinctions, and preserve the separate75/91 universal frontiers
-> together with the degree84 option at97 operations.
+> Historical handoff below. The current comparison frontier is
+> **75=41M+34A**: see [the complete proof](../../1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
+> and [consolidated checker](../../verification/explore_fixed_raw_universal_75.py).
+> The original source has30 positive witnesses and19 equations; the
+> [signed projection](complete75_signed_projection_elimination101.md) retains75
+> with20 positive witnesses and nine equations.
+>
+> The current single-polynomial frontier is **89=48M+41A**, with19 positive
+> witnesses and exact degree166: see [the eight-factor proof](complete75_norm_product89.md).
+> It builds on the [bounded projection99](complete75_bounded_projection_elimination99.md),
+> [norm product91](complete75_norm_product91.md), and
+> [shifted transport90](complete75_norm_product90.md). The proofs recover
+> auxiliary signs and the original positive quotient in a specific order;
+> do not assume intermediate computed coordinates are positive off the zero set.
+> Lower-degree alternatives are96/degree84,94/degree96,93/degree136,
+> and92/degree138. Preserve the strong auxiliary norm and the exact linear
+> root. The comparison bound75 and polynomial bound89 are separate measures.
+>
+> The README indexes the four-row queue simulator, binaryFIFO58 and
+> ternaryFIFO66, row-local controller obstruction, residue-affine pumping,
+> PCP/matrix continuations and rejected shortcuts. Controller arithmetic
+> and ordinary-input loading remain unpaid for the coded queue simulator.
+> In the nonabsorbing63 binary family, all read-only cases are decidable;
+> width is bounded outside the cone and on the additional c=-b,a/b<1
+> boundary. The [odd-controller orbit analysis](binary_odd_controller_orbit.md)
+> gives exact guarded duration cutoffs at each fixed width. Other cases
+> inside the cone remain open; nonzero terminal states forbid free padding.
+> The [factored counter map](residue_affine_factored_counter_step.md) escapes
+> unit-slope pumping and pays10B+8 scalar guards, but its prime-power input
+> loading and history remain unpaid.
+>
+> The [two-stack substrate](two_stack_affine_input_step.md) has a two-operation
+> ordinary-input prefix. [Factored selectors](two_stack_factored_selector_step.md)
+> lower its exact scalar step to8B+18 for a full B=9K table, with eight
+> positive witnesses and seven equations. A fixed-t polynomial costs
+> (8B+39)t+1. The [typed-history audit](two_stack_polycyclic_history_obstruction.md)
+> retains stack guards with prefix maps and identifies their loss in direct
+> inverse-group products. Exact bounded-depth linear encodings need dimension
+> N=2^(H+1)-1 and a paid2N positive basis loader. A
+> [typed prefix merge](typed_prefix_normal_form_merge25.md) costs25 operations,
+> four auxiliary witnesses and seven equations. Fixed trees cost25(t-1);
+> output typing is proved, while arbitrary leaf typing and word/tree selection,
+> empty tests, synchronized control and arbitrary duration remain unpaid.
+>
+> Next targets are below75 comparisons or below89 polynomial operations,
+> with degree and positivity counted. These are reviewed mathematical
+> proofs with exact source audits, not Lean formalizations.
+
+One concrete **unverified next proposal** extends the typed prefix merge
+with cone/singleton domain flags. For input flags F,G in{0,1}, the local
+orientation e and tail code T suggest adding `F*e*(T-1)=0` and
+`G*(1-e)*(T-1)=0`, with output flag `F+G-FG`. Reusing the existing selected
+tail registers and storing flags positively as1+F suggests a33-operation
+merge with ten equations. This would admit a binary empty-test leaf;
+it still needs a full proof, literal source and independent review.
+Also check whether a typed root's conditions V=1 and U=kappa*x+lambda
+pay the ordinary-input endpoint directly, since root typing already
+supplies its domain length power. No uniform selected-word/tree compiler
+has been supplied by either proposal.
 
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.

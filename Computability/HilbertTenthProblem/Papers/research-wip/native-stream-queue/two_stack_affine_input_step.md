@@ -17,6 +17,12 @@ those steps gives **6t-2 positive witnesses**, **5t equations**, and cost
 **2+t(16B-3)**, including the input loader and the fixed accepting endpoint.
 One sum-of-squares polynomial costs **(16B+12)t+1**.
 
+The [factored read-selector successor](two_stack_factored_selector_step.md)
+reduces the scalar graph to **8B+18** for a full B=9K table, using eight
+witnesses and seven equations. It retains the machine and input contract
+proved here. The [typed-history audit](two_stack_polycyclic_history_obstruction.md)
+explains the stack guards and the cost of a bounded-depth linear encoding.
+
 This improves the ordinary-input contract of the
 [prime-counter substrate](residue_affine_factored_counter_step.md).
 It does not yet give a fixed-size certificate for an existentially chosen

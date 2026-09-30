@@ -17,6 +17,10 @@ a separate useful tradeoff. The best complete comparison-certificate
 bound remains75. These statements concern positive integer zero sets,
 not equality of the old and new polynomials away from zero.
 
+The [eight-factor successor](complete75_norm_product89.md) merges the two
+remaining equations and uses an unsquared product, giving89 operations
+at degree166. The lower-degree partitions here remain separate options.
+
 ## 1. Definitions and the new transport coordinate
 
 Keep the fixed compiler numerals from
@@ -391,9 +395,13 @@ B=64,d=6 and5,820 packing fixtures on the C=0 boundary. The generic
 rank and signed-index hypotheses in Section4 were checked directly
 against the retained half-binomial proof.
 
-An independent final proof/source/default review passed without findings.
-It checked the weak C>=0 bootstrap, the strong-rank hypotheses, the
-unchanged auxiliary root, and the eventual positive quotient recovery.
+A second independent full proof/source/default review also passed without
+findings. Its separate manual formulas checked512 grouped-polynomial
+assignments across96,94,92,90, including four negative computed input roots
+and64 deliberately zero restored quotients. Twelve weighted/offset
+specializations checked all six leading forms and degrees84,96,138,276.
+It also checked the C=0,Nt=-1 partial fixture and3,072 exact Pell
+duplication/ratio cases independently of the supplied checker.
 
 From the repository root with verification dependencies installed:
 

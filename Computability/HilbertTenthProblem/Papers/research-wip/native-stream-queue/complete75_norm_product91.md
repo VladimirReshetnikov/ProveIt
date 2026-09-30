@@ -14,6 +14,12 @@ bound remains75. These are integer zero-set equivalences; they do not
 identify the new polynomials with the old sum of squares away from zero.
 No global optimality or proof-assistant formalization is claimed.
 
+The [shifted transport successor](complete75_norm_product90.md) gives
+90 operations and improves the degree84 and96 options to96 and94
+operations. Its [eight-factor successor](complete75_norm_product89.md)
+gives89 operations at degree166. The93/degree136 option below remains
+a distinct degree/cost tradeoff.
+
 ## 1. Two elementary signed negative-unit obstructions
 
 For every integer A>=2, the equation

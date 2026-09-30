@@ -27,6 +27,15 @@ four original norms and the index equation, including for signed computed
 roots. Grouped variants give97 operations at degree84,95 at degree96, and93
 at degree136. The91 polynomial's four-equation comparison system costs80;
 it leaves this75 bound intact.
+The [shifted transport product](../research-wip/native-stream-queue/complete75_norm_product90.md)
+gives90 operations at degree276, with separate96/degree84,94/degree96,
+and92/degree138 variants. The latest
+[eight-factor product](../research-wip/native-stream-queue/complete75_norm_product89.md)
+gives **89=48M+41A** at exact degree **166**, still with19 positive
+witnesses. A residue argument recovers both auxiliary equations before
+the shifted index proof applies, allowing an unsquared product polynomial.
+The underlying single-comparison circuit costs88; this note's75-operation
+comparison certificate remains the best such bound.
 The source and full compiler proof below retain their original30-coordinate
 presentation.
 
