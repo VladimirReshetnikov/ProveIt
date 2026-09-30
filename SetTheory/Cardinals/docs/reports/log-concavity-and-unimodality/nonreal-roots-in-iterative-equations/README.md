@@ -1,25 +1,29 @@
 # Nonreal Roots Survive in Polynomial Iterative Equations
 
-**A cubic counterexample and a classification of circular spectra — Part II: the increasing spectral core on several circles — Part III: orientation-reversing spectra**
+**A cubic counterexample and a classification of circular spectra — Part II: the increasing spectral core on several circles — Part III: orientation-reversing spectra — Part IV: exact algebraic degree of polynomial coordinates**
 
-This is a research report in three parts. Part I is the original report of
+This is a research report in four parts. Part I is the original report of
 20 September 2026. Part II was added on 29 September 2026 in batch 41 of
 ProveIt's incoming-report intake, from a later manuscript that classifies
 what Part I left open for increasing maps: minimal iterative polynomials with
 roots on several distinct circles. Part III was added on the same day in
 batch 42, from a manuscript that treats the other orientation: decreasing
 homeomorphisms of the real line, the boundary both earlier parts left open,
-and Part II's first research question. All three sources were prepared for
-Vladimir Reshetnikov and are AI-assisted.
+and Part II's first research question. Part IV was added on the same day in
+batch 54, from a manuscript that answers Part III's Research question 35.7:
+the exact algebraic degree of a polynomial-coordinate solution
+`f = H ∘ (a·id) ∘ H⁻¹`. All four sources were prepared for Vladimir
+Reshetnikov and are AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection package *Nonreal Roots Survive in Polynomial Iterative Equations* (20 Sep 2026) | `nonreal_roots_research.zip` (as the collection manifest records it) | (none) | in ProveIt since `dc54c3cb3` | Part I: Sections 1–11 (pp. 6–22), Appendices A–B (pp. 69–70) |
-| 02 | batch 41, manuscript 02 (*The Complete Increasing Spectral Core: Arbitrary-radius classification, optimal order reduction, and fixed-point spectra for polynomial iterative equations*, 28 Sep 2026, 20-page Letter PDF as delivered) | `ProveIt_Increasing_Spectral_Core.zip` (inner `Increasing_Spectral_Core/`, main file `article.tex`) | blob `ae6ea0aa` of Part I's `article.tex` | `eaf787d50` (prefix `02-spectral-core-`) | Part II: Sections 12–24 (pp. 23–42) |
-| 03 | batch 42, manuscript 02 (*The Decreasing Spectral Core: Complete minimal spectra, finite-smoothness rigidity, and global polynomial conjugacy*, 29 Sep 2026, 27-page Letter PDF as delivered) | `ProveIt_Orientation_Reversing_Spectra.zip` (inner `ProveIt_Orientation_Reversing_Spectra/`, main file `article.tex`) | commit `afb2d1227` | `3609d0473` (prefix `03-decreasing-core-`) | Part III: Sections 25–37 (pp. 43–69) |
+| 01 (original) | Cardinals-collection package *Nonreal Roots Survive in Polynomial Iterative Equations* (20 Sep 2026) | `nonreal_roots_research.zip` (as the collection manifest records it) | (none) | in ProveIt since `dc54c3cb3` | Part I: Sections 1–11 (pp. 7–23), Appendices A–B (pp. 96–97) |
+| 02 | batch 41, manuscript 02 (*The Complete Increasing Spectral Core: Arbitrary-radius classification, optimal order reduction, and fixed-point spectra for polynomial iterative equations*, 28 Sep 2026, 20-page Letter PDF as delivered) | `ProveIt_Increasing_Spectral_Core.zip` (inner `Increasing_Spectral_Core/`, main file `article.tex`) | blob `ae6ea0aa` of Part I's `article.tex` | `eaf787d50` (prefix `02-spectral-core-`) | Part II: Sections 12–24 (pp. 24–43) |
+| 03 | batch 42, manuscript 02 (*The Decreasing Spectral Core: Complete minimal spectra, finite-smoothness rigidity, and global polynomial conjugacy*, 29 Sep 2026, 27-page Letter PDF as delivered) | `ProveIt_Orientation_Reversing_Spectra.zip` (inner `ProveIt_Orientation_Reversing_Spectra/`, main file `article.tex`) | commit `afb2d1227` | `3609d0473` (prefix `03-decreasing-core-`) | Part III: Sections 25–37 (pp. 44–70) |
+| 04 | batch 54, manuscript 01 (*Two Observations Determine the Coordinate: Exact algebraic degree, torsion exceptions, and nonradical solutions of order-two iterative equations*, 29 Sep 2026, 25-page Letter PDF as delivered) | `ProveIt_Exact_Algebraic_Degree.zip` (inner `ProveIt_Exact_Algebraic_Degree/`, main file `article.tex`) | commit `11e1e9001` (blob `b52eba81` of this report's `article.tex`, Parts I–III); Part III's source read from Vladimir's library as `article(20260929-151305).tex` (its `PROVENANCE.md`), i.e. the batch-42 arrival | `4d922d5b2` (prefix `04-exact-degree-`) | Part IV: Sections 38–50 (pp. 71–95) |
 
-The references (p. 71) are shared; the title page and abstract are p. 1 and
-the contents pp. 2–5.
+The references (p. 98) are shared; the title page and abstract are p. 1 and
+the contents pp. 2–6.
 
 **Pins.** Manuscript 02 of batch 41 is pinned by the Git blob
 `ae6ea0aa0566316ba9ed06b1750c6e73275059da` of Part I's `article.tex`, which
@@ -43,11 +47,27 @@ README and checksum ledger (`CHECKSUMS.sha256`, 8/8 verified at placement
 and again in the write phase) are not shipped and survive in the arrival
 commit.
 
+Manuscript 01 of batch 54 is pinned to commit
+`11e1e900114e7c0cfdcd19fe346ddb4f2852dbc5` (the fourth arrival commit of
+batch 52), an ancestor of its placement commit. At that commit this report
+already held Parts I–III, as the blob
+`b52eba816e4c6a108d740e4e4e0edd5b1f8631ec` of `article.tex`, which is
+unchanged up to the placement commit; so every statement the manuscript makes
+about "the repository" or "the source report" refers to the text of Parts
+I–III printed here. It also read Part III's source manuscript from Vladimir's
+file library (as `article(20260929-151305).tex`); the question it answers,
+its "Section 11.7", is printed here as Section 35.7, and its text was checked
+in the write phase against the batch-42 arrival `8315d24e3`. The archive
+arrived in `392fff082` and was placed in `4d922d5b2`; its manuscript, PDF,
+delivery README and checksum ledger (`CHECKSUMS.sha256`, 9/9 verified at
+placement) are not shipped and survive in the arrival commit.
+
 Each added part prints every result, proof, example, remark, limitation and
 question of its manuscript. What a manuscript reproves from an earlier part is
 printed once, in the earlier part, and credited at each use (Part II's
-Section 12.1 and Part III's Section 25.1 list these and every other point
-where the merge had to choose).
+Section 12.1, Part III's Section 25.1 and Part IV's Section 38.1 list these
+and every other point where the merge had to choose; Part IV reproves nothing
+from Parts I–III).
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The finite
@@ -59,8 +79,9 @@ proof of the universal statements. No part makes a priority claim.
 For `P(z) = Σ a_j z^j`, `P[f]` means `Σ a_j f^{∘j}` (composition, not
 pointwise powers); `μ_f` is the monic least-degree annihilator.
 
-**Part I** (unchanged apart from two added subtitle lines, two title-page
-paragraphs on Parts II–III and dated pointers) answers Problem 6.1 of Draga
+**Part I** (unchanged apart from three added subtitle lines, three
+title-page paragraphs on Parts II–IV, set in a smaller size since batch 54
+so that the title page stays one page, and dated pointers) answers Problem 6.1 of Draga
 and Morawiec (*Aequationes Math.* 90 (2016), 935–950; arXiv:1503.00570v2,
 p. 13) negatively: an odd increasing bi-Lipschitz homeomorphism `F` with
 `F^{∘3}(x) = 8x`, `F(1) = 3` and `μ_F = z^3 − 8` (Theorem 2.1, Hankel
@@ -149,7 +170,9 @@ multiplicity, odd when there is only one circle. It proves:
    real analytic, algebraic and bi-Lipschitz, with squarefree real-rooted
    spectrum `(z−1)^{[c≠0]} Π_{k∈K}(z − a^k)`. Nonanalytic smooth involutions
    are the exact exception (Corollary 31.4); rational solutions are affine
-   (Corollary 31.6). The threshold is sufficient, not claimed optimal.
+   (Corollary 31.6). The threshold is sufficient, not claimed optimal. The
+   algebraic degree of such `f` over `R(x)` is exactly `deg H` (Part IV,
+   Corollary 40.3; dated note after Corollary 31.6).
 5. **Smooth spectra and the smooth core** (Theorems 32.1, 32.2): the exact
    `C^∞`/analytic spectra and the smooth core `𝒞∞(P)`; the number of smooth
    witnesses is unbounded, while one `C^1` witness attains the continuous core
@@ -160,7 +183,9 @@ multiplicity, odd when there is only one circle. It proves:
    `(z+2)^2(z+4)^2`, an analytic nonlinear map with `μ = (z+2)(z−4)(z+8)`
    (Hankel 46656), and a sharp `C^1`/`C^2` example.
 7. Ten research questions and a formalization route (Sections 34–35; none
-   started).
+   started); §35.7 (exact algebraic degree) is answered by Part IV (dated
+   note there). Of its family question Part IV answers only the case of one
+   fixed coordinate; two unrelated coordinates stay open (Section 47.7).
 
 Added in the batch-42 merge (not stated by the manuscript): Remark 30.2
 expresses the decreasing core through Part II's positive-recurrence core,
@@ -175,6 +200,56 @@ Theorem 30.4 into an answer to Petrov's linearity question for every `P` with
 `P(0) ≠ 0`; the combination is immediate and not claimed as a result of
 either manuscript. A sentence after Corollary 29.2, also marked as added,
 notes that `P[f] = 0` has a continuous solution iff `P` has a real root.
+
+**Part IV** (batch-54 manuscript 01), for a nonconstant `H ∈ C[t]`, a
+multiplier `a ∈ C^×`, `f_a = H ∘ (a·id) ∘ H⁻¹` and the field
+`K_{H,a} = C(H(t), H(at))`; `adeg` is the algebraic degree over `R(x)`
+(equal to that over `C(x)`), not the iterative order `deg μ_f`. It proves:
+
+1. **Common-field theorem** (Theorem 39.3): `K_{H,a} = C(W(t))`, where `W`
+   is the unique monic, zero-constant right compositional factor of `H` of
+   maximal degree with `W(at) = a^{deg W} W(t)`; so `adeg f_a = deg H / deg W`.
+   The tools are polynomial Lüroth theory and uniqueness of a normalized
+   right factor of fixed degree (Lemmas 39.1, 39.2; classical, credited to
+   Zieve–Müller).
+2. **Infinite-order multipliers** (Theorem 40.2, Corollary 40.3): if `a` is
+   not a root of unity, `K_{H,a} = C(t^g)` with `g` the gcd of the positive
+   exponents of `H`, so `adeg = deg H / g`. For every coordinate of Part
+   III's Theorem 31.3 the degree is exactly `deg H`: compositional structure
+   of `H` causes no drop (example: `H = U∘U`, `U = t + t³`, `a = −2` gives
+   degree 9). When `g = 1`, any two distinct orbit observations recover `t` rationally,
+   and all nonzero iterates have the same degree (Corollary 40.6).
+3. **Torsion multipliers** (Theorem 41.1): `W = t^r R(t^q)` with
+   `r ≡ deg W (mod q)`; for involutions (`a = −1`) the degree is `deg H`
+   divided by the largest degree of an odd right factor (Corollary 41.2),
+   and for odd coordinate degree `n` the attainable degrees are exactly the
+   divisors of `n`, with rational realizations (Theorem 41.4).
+4. **Curves and algorithms**: the graph equation `F_{H,a}` has degree
+   `adeg` in each variable and genus 0, and
+   `Res_t(H(t)−X, H(at)−Y) = (−1)^n h_n^n F_{H,a}^{deg W}` (Theorem 42.1); a
+   terminating exact right-factor algorithm computes the degree for every
+   multiplier (Proposition 42.2); an explicit rational recovery for
+   `H = t + t² + t³`, `a = 2` (Example 42.3).
+5. **Monodromy** (Theorem 43.1, Lemma 43.3): the normal closure of the graph
+   extension is that of `C(s)/C(A(s))` for `H = A ∘ W`; Morse polynomials
+   have monodromy `S_r` (classical, credited to Kreso–Tichy).
+6. **Nonradical solutions**: for odd `n ≥ 3` and real `a ≠ 0, ±1`,
+   `H_n = t + t^n` gives `μ_f = (z−a)(z−a^n)`, `adeg n`, the graph equation
+   `(Y − a^n X)^n + (a − a^n)^{n−1}(Y − aX) = 0`, Galois group `S_n`, hence
+   no radical expression over `C(x)` for `n ≥ 5` (Theorem 44.1), with exact
+   distortion formulas (Proposition 44.3). For every odd `n ≥ 5` and every
+   `η > 0` there is a rational `ε ≠ 0` such that `H = t + t^n + εt^{n−1}`
+   gives a real-analytic involution with `μ = z² − 1`, `adeg n`, Galois
+   group `S_n`, distortion `< 1 + η`, not expressible by radicals
+   (Theorem 45.4); a terminating rational search finds `ε`, and
+   `ε = 1/200, 1/400, 1/600, 1/800, 1/1000` pass for `n = 3, 5, 7, 9, 11`
+   (distortion ≤ 10201/9801).
+7. Ten research questions, including a staged Lean or Rocq plan
+   (Section 47; none started).
+
+Added in the batch-54 merge (not stated by the manuscript): the notation
+table (Table 5), two dated notes in Part III (after Corollary 31.6 and after
+§35.7), and bracketed merge notes (Section 38.1 lists them).
 
 ## Not claimed
 
@@ -209,6 +284,27 @@ notes that `P[f] = 0` has a continuous solution iff `P` has a real root.
   28–29 September 2026; Part III read Yang–Zhang, Li–Zhang and Xia–Huo–Wang–Xia
   at abstract level only), not exhaustive; the research questions of
   Sections 21 and 35 are not claimed open throughout the literature.
+- Part IV: no classification of all continuous solutions of an iterative
+  equation, of all smooth involutions, or of all real algebraic
+  diffeomorphisms; its domain is the polynomial-coordinate family, and that
+  every sufficiently smooth non-involutive decreasing solution belongs to it
+  is Part III's theorem, not reproved there. No closed formula for the degree
+  at torsion multipliers (an exact algorithm and, for involutions, a complete
+  classification); no bit-complexity or numerical-stability bound for that
+  algorithm. No classification of field relations between two unrelated
+  coordinates `H`, `G` (Section 47.7), and no rational-coordinate,
+  positive-characteristic or multivariate analogue. The radical obstruction
+  concerns algebraic functions over `C(x)`: no claim that values at
+  particular inputs are nonradical (every normalized map takes the value 0
+  at 0), and no classification of the rational inputs where the specialized
+  Galois group drops. The fixed-involution examples rule out a degree bound
+  in terms of iterative order and distortion only, not bounds using
+  coefficient heights, a non-torsion multiplier, a coordinate-degree bound or
+  a ramification configuration. Its 447 finite test cases (315 + 90 + 8 +
+  18 + 7 + 1 + 1 + 2 + 5) check implementations and certify the listed
+  examples only. No priority:
+  its literature check (Zieve–Müller and Kreso–Tichy in full preprint,
+  Draga–Morawiec for context) was not a historical survey.
 - No referee report and no Lean or Rocq certification.
 
 ## Labels
@@ -233,6 +329,20 @@ numbered table is Table 4, its equations continue from (104), and its
 manuscript appendix is printed as Section 37. Part I's appendices come last
 and contain no numbered items.
 
+Part IV added **82** labels with the prefix `nrr:ed:` ("nonreal roots,
+exact degree"). Total: 322. Again no label was renamed or removed, and all
+240 earlier labels keep their numbers (compared in the `.aux` files of the
+committed and the new build). All 76 of the manuscript's labels are printed,
+each with the prefix (three of them, `app:reproduce`, `eq:iterative` and
+`sec:verification`, would otherwise collide with Part I). Six labels are
+new: `sec:source`, `sec:notation`, `tab:notation`, `sec:conclusion`,
+`q-coordinates` (Part IV's Section 47.7), and `q-degree`, which is placed
+in Part III's Section 35.7 so that Part IV can cite that question (each with
+the prefix). Part IV starts at Section 38; manuscript Section `k` is printed
+as Section `k + 37`, with the same theorem numbers inside it (manuscript
+Theorem 2.3 is Theorem 39.3); its notation table is Table 5, its equations
+are (146)–(188), and its two appendices are printed as Sections 49–50.
+
 ## Notation
 
 Part I's symbols keep their meanings; Tables 3 and 4 list Parts II's and III's
@@ -256,14 +366,22 @@ symbols with the tempting false readings. In particular:
   modulus bound `κ` → `ω`; `r(P)`, `R(P)` → `r_−(P)`, `r_+(P)`;
   `D_P(a)`, `D(P)` → `Θ_P(a)`, `Θ(P)`; the composition operator `T` → `E_g`;
   `mult_A(λ)` → `m_A(λ)`. No normalization changed.
+- Part IV (Table 5) renames nothing. Its `K_{H,a}` is a field, not Part
+  III's exponent set `K`; its `r(H,a)` is the algebraic degree, not a
+  radius, and `d(H,a)` the discarded common-fibre multiplicity, not the
+  degree; `adeg f` is not `deg μ_f` (Theorem 44.1: `adeg n`, iterative
+  order 2); its `H` and `a` are arbitrary unless stated, whereas Part III's
+  are always normalized with `a < 0`, `a ≠ −1`; its `δ = a − a^n` is not
+  Part II's `δ(P)`; its `ε` is a perturbation parameter, not Part III's
+  `ε±`.
 
 ## Files
 
 ```
 article.tex                     the report, standalone LaTeX with an internal bibliography
-article.pdf                     the compiled report, 71 Letter pages (title and abstract p. 1, contents pp. 2–5,
-                                Part I pp. 6–22, Part II pp. 23–42, Part III pp. 43–69, Part I's appendices
-                                pp. 69–70, references p. 71)
+article.pdf                     the compiled report, 98 Letter pages (title and abstract p. 1, contents pp. 2–6,
+                                Part I pp. 7–23, Part II pp. 24–43, Part III pp. 44–70, Part IV pp. 71–95,
+                                Part I's appendices pp. 96–97, references p. 98)
 README.md                       this guide
 Makefile                        Part I: verify, illustrations, pdf and clean targets (run in place; see below)
 STATUS.md                       Part I: claims, computations and limits as delivered (stale in two lines; see below)
@@ -272,6 +390,7 @@ requirements-optional.txt       Part I: matplotlib, needed only for `analytic_de
 02-spectral-core-STATUS.md      Part II: manuscript's status and claim boundaries (delivered as STATUS.md)
 02-spectral-core-source_audit.md  Part II: manuscript's source record (delivered as notes/source_audit.md)
 03-decreasing-core-STATUS.md    Part III: manuscript's status, validation and priority limits (delivered as STATUS.md)
+04-exact-degree-PROVENANCE.md   Part IV: manuscript's provenance and claim audit (delivered as PROVENANCE.md)
 code/verify.py                  Part I: exact rational checker (two independent cubic implementations)
 code/analytic_demo.py           Part I: floating-point illustration and optional plot generator
 code/02-spectral-core-spectral_core.py  Part II: exact root-level core and classification routines
@@ -280,6 +399,9 @@ code/02-spectral-core-verify.py Part II: finite grid, recurrence and Hankel chec
 code/02-spectral-core-example.py  Part II: the order-32 → 23 example (delivered as code/example.py)
 code/03-decreasing-core-verify.py  Part III: exact atlas, smooth-atlas and example checks (delivered as code/verify.py)
 code/03-decreasing-core-Makefile   Part III: pdf, verify and clean targets (delivered as Makefile; see below)
+code/04-exact-degree-verify.py  Part IV: exact SymPy right-factor algorithm and independent fibre-gcd checks
+                                (delivered as code/verify.py)
+code/04-exact-degree-Makefile   Part IV: all, verify and clean targets (delivered as Makefile; see below)
 data/exact_certificates.json    Part I: matrices, coefficients and results of code/verify.py
 data/numerical_illustration.json  Part I: explicitly noncertifying floating-point results
 data/selection.json             Part I: the random area draw and all 80 candidate areas
@@ -288,16 +410,20 @@ data/02-spectral-core-verification.txt   Part II: its short log (delivered as re
 data/02-spectral-core-example.txt        Part II: recorded output of the example (delivered as results/example.txt)
 data/03-decreasing-core-verification.json  Part III: recorded verifier output (delivered as results/verification.json)
 data/03-decreasing-core-verification.txt   Part III: the same bytes (delivered as results/verification.txt)
+data/04-exact-degree-verification.json     Part IV: recorded verifier output (delivered as results/verification.json)
+data/04-exact-degree-verification.txt      Part IV: its summary (delivered as results/verification.txt)
+data/04-exact-degree-requirements.txt      Part IV: sympy==1.14.0 (delivered as requirements.txt)
 figures/cubic_counterexample.pdf, figures/analytic_displacement.pdf   Part I: the two figures
 notes/literature_audit.md       Part I: source identifiers, what was checked, search limits
 notes/selection_and_exclusion.md  Part I: random-draw and manifest-exclusion record
 ```
 
-The eight `02-spectral-core-` files were staged in `eaf787d50` and the five
-`03-decreasing-core-` files in `3609d0473`, each byte-identical to its
-delivery (re-verified in the write phases against fresh extractions). The
-manuscripts' `article.tex`, `article.pdf`, `README.md` and checksum ledgers
-(`MANIFEST.sha256`, `CHECKSUMS.sha256`) are not shipped.
+The eight `02-spectral-core-` files were staged in `eaf787d50`, the five
+`03-decreasing-core-` files in `3609d0473` and the six `04-exact-degree-`
+files in `4d922d5b2`, each byte-identical to its delivery (re-verified in the
+write phases against fresh extractions). The manuscripts' `article.tex`,
+`article.pdf`, `README.md` and checksum ledgers (`MANIFEST.sha256`, and the
+two `CHECKSUMS.sha256` of batches 42 and 54) are not shipped.
 
 ## Build the article
 
@@ -308,20 +434,23 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 or run `pdflatex article.tex` three times. Build in a scratch copy of
 `article.tex` and `figures/`, so that no auxiliary files land here: Part I's
 `make pdf` and Part III's `code/03-decreasing-core-Makefile` run LaTeX in
-place. Needed packages: newtx, amsmath/amsthm/mathtools, geometry,
+place, and so would the `all` and `clean` targets of Part IV's
+`code/04-exact-degree-Makefile`. Needed packages: newtx, amsmath/amsthm/mathtools, geometry,
 microtype, graphicx, booktabs, tabularx, enumitem, fancyhdr, xurl, hyperref,
-listings, caption. No bibliography processor is needed. The shipped PDF was
-built with MiKTeX (pdfTeX) with no errors, no warnings, no undefined or
-multiply defined references, no duplicate destinations and no overfull or
-underfull boxes (as was the committed two-part text). The DejaVu Type 3
-fonts in it come from Part I's two Matplotlib figures.
+listings, caption, needspace (Part IV). No bibliography processor is needed.
+The shipped PDF was built with MiKTeX (pdfTeX) on 29 September 2026 with no
+errors, no warnings, no undefined or multiply defined references, no
+duplicate destinations and no overfull or underfull boxes (as was the
+committed three-part text). The DejaVu Type 3 fonts in it come from Part I's
+two Matplotlib figures; every other font is embedded Type 1.
 
 ## Rerun the checks
 
-Python with the standard library suffices for all three parts (Part I and
-II: 3.9+; Part III: 3.10+). Run Parts I–II normally, not with `-O`: their
-verifiers use assertions. Part III's verifier raises explicit exceptions and
-also passes under `-O`.
+Python with the standard library suffices for Parts I–III (Part I and II:
+3.9+; Part III: 3.10+); Part IV needs SymPy (tested with 1.14.0, pinned in
+`data/04-exact-degree-requirements.txt`). Run Parts I, II and IV normally,
+not with `-O`: their verifiers use assertions. Part III's verifier raises
+explicit exceptions and also passes under `-O`.
 
 **Part I.** `code/verify.py` writes `data/exact_certificates.json` by default
 and `code/analytic_demo.py` rewrites `data/numerical_illustration.json` (and,
@@ -392,6 +521,35 @@ which from this directory is **Part I's** verifier (overwriting
 `data/exact_certificates.json`), and its `pdf` and `clean` targets build or
 clean `article.*` in place. Do not use it here.
 
+**Part IV.** `code/04-exact-degree-verify.py` takes `--output-dir`
+(default `results`, relative to the working directory) and always writes
+`verification.json` and `verification.txt` there, with the platform's line
+endings (CRLF on Windows). Run in place with the default, it would create a
+stray `results/` directory here; in the delivered layout the default
+overwrites the recorded outputs. Run it in a scratch copy with an explicit
+output directory:
+
+```sh
+W=/path/to/scratch
+mkdir -p "$W/04/code" && cp code/04-exact-degree-verify.py "$W/04/code/verify.py"
+cd "$W/04" && uv run --no-project --with sympy==1.14.0 python code/verify.py --output-dir "$W/04/rerun"
+```
+
+This was run on 29 September 2026 (uv resolved Python 3.13.5; SymPy 1.14.0;
+about 11 s): all checks passed (315 support/multiplier cases over 63
+support polynomials, 90 seeded cases, 8 structured cases, 18 odd-divisor
+realizations, 7 binomial-family degrees, the rational recovery and the
+resultant multiplicity, 2 near-reflection resultant identities and 5
+near-reflection certificates), and both outputs equal
+`data/04-exact-degree-verification.json` and `.txt` byte for byte after
+CRLF → LF. The outputs record the Python and SymPy versions, so a run under
+another Python (for example `py`, 3.14.4) differs in those fields only.
+`code/04-exact-degree-Makefile` is the delivered `Makefile`: its `verify`
+target runs `python code/verify.py --output-dir results`, which from this
+directory calls **Part I's** verifier; that verifier rejects `--output-dir`
+with a usage error and writes nothing (checked on a copy). Its `all` and
+`clean` targets build or clean `article.*` in place. Do not use it here.
+
 ## Discrepancies and delivery names
 
 - **Stale delivered text.** Part I's `STATUS.md` lists, under "Not
@@ -417,11 +575,25 @@ clean `article.*` in place. Do not use it here.
   III); its verifier's docstring says it accompanies `article.tex` (the same
   manuscript), its usage message names `code/verify.py`, and its default
   output is `results/verification.json`; its Makefile names `article.tex` and
-  `code/verify.py` in the delivered layout.
+  `code/verify.py` in the delivered layout. Part IV's
+  `04-exact-degree-PROVENANCE.md` describes "the article" and "the included
+  PDF" of 25 pages (the unshipped delivered manuscript, printed here as Part
+  IV) and the Part III source `article(20260929-151305).tex` from
+  Vladimir's library (not in the repository; the batch-42 arrival
+  `8315d24e3` carries the same question); its verifier's docstring says to
+  run `python code/verify.py --output-dir results` from the package root;
+  its Makefile names `article.tex`, `code/verify.py` and `results` in the
+  delivered layout.
+- **Stale delivered text (Part IV).** The manuscript placed its question in
+  "Part III, Section 34"; it is Section 35.7, and the printed text carries a
+  merge note. Its sentence that the exact-degree question is "fully
+  answered" also carries a merge note: for torsion multipliers the answer is
+  an exact algorithm plus the involution classification, not a closed
+  formula.
 - **Delivery layout in Part I's text.** Part I's Appendix B and `Makefile`
   run from "the archive's top-level directory" and build in place; use the
   scratch-copy commands above instead.
-- **Page size.** All three parts are US Letter, as delivered.
+- **Page size.** All four parts are US Letter, as delivered.
 - **Citations.** Batch-41 manuscript 02 cites arXiv:1503.00570 without a
   version and Petrov's MathOverflow question with I. Bogdanov's comments;
   Part II uses Part I's bibliography entries for the same works, and the
@@ -434,21 +606,40 @@ clean `article.*` in place. Do not use it here.
   37) and for Part II's manuscript (a library file name) are replaced by
   references to Parts I and II. Its three new works (Yang–Zhang 2004,
   Li–Zhang 2013, Xia–Huo–Wang–Xia 2026) were added to the bibliography after
-  their DOIs were checked against Crossref in the write phase.
+  their DOIs were checked against Crossref in the write phase. Batch-54
+  manuscript 01 cites Draga–Morawiec by arXiv:1503.00570 without a version;
+  Part I's entry is used. Its entry for "the ProveIt report" (a GitHub tree
+  URL at `11e1e9001`, kept in Section 49) is replaced by references to Parts
+  I–III. Its two further works, Zieve–Müller (arXiv:0807.3578) and
+  Kreso–Tichy (arXiv:1601.07316), were added after their arXiv records
+  (titles, authors, submission dates) were checked in the write phase.
 - **Symbols.** Part III's renames are listed above and in Table 4; its
-  shipped status note and verifier keep the manuscript's names.
+  shipped status note and verifier keep the manuscript's names. Part IV
+  renames nothing (Table 5).
 
 ## Relation to neighbouring reports and to the formal project
 
 No other report in the research-report collection treats polynomial
-iterative equations, and neither added manuscript names a report other than
-this one, so no reciprocal note was written. The report sits in the
-`log-concavity-and-unimodality` category of the research-report collection of
-the `SetTheory/Cardinals` Lean project. That placement confers no formal
-status: no Lean or Rocq declaration anywhere in ProveIt formalizes any
-statement of Parts I–III. Section 21 (Q10) and Section 34.3 record the
-formalization plans the two manuscripts propose; none of them has been
-started.
+iterative equations, and none of the added manuscripts names a report other
+than this one, so no reciprocal note was written. Part IV's research
+question on arithmetic specialization and radical values (Section 47.5)
+bears on the collection report
+`SetTheory/Cardinals/docs/reports/galois-theory-and-radicals/specialization-safe-radical-solvers/`
+and on the Lean project `Algebra/PolynomialFormulas/`; a merge note there
+names them, and neither is used by Part IV. That project's
+`Algebra/PolynomialFormulas/Lean/PolynomialFormulas/AbelRuffini.lean`
+proves, for example, `LeanProofs.PolynomialFormulas.abelRuffiniQuintic_root_not_solvableByRad`
+(a root of the fixed rational quintic `X^5 − 4X + 2` is not expressible by
+radicals); that is a statement about constant-coefficient polynomials and
+formalizes nothing in Part IV, whose obstruction concerns algebraic functions
+over `C(x)`.
+
+The report sits in the `log-concavity-and-unimodality` category of the
+research-report collection of the `SetTheory/Cardinals` Lean project. That
+placement confers no formal status: no Lean or Rocq declaration anywhere in
+ProveIt formalizes any statement of Parts I–IV. Section 21 (Q10), Section
+34.3 and Section 47.10 record the formalization plans the three added
+manuscripts propose; none of them has been started.
 
 ## Sources and attribution
 
@@ -469,4 +660,8 @@ and Thangroongvongthana–Laohakosol–Mavecha, *Current Applied Science and
 Technology* 21(3) (2021), 495–523. Part III also cites D. Yang and W. Zhang,
 *Aequationes Math.* 67 (2004), 80–105; L. Li and W. Zhang, *Sci. China Math.*
 56 (2013), 1051–1058; and C. Xia, R. Huo, X. Wang and Z. Xia, *Aequationes
-Math.* 100 (2026), article 44. No third-party paper PDFs are included.
+Math.* 100 (2026), article 44. Part IV also cites M. E. Zieve and
+P. Müller, *On Ritt's polynomial decomposition theorems*, arXiv:0807.3578
+(Lemma 2.2, Corollary 2.9, Remark 2.16), and D. Kreso and R. F. Tichy,
+*Diophantine equations and the monodromy groups*, arXiv:1601.07316. No
+third-party paper PDFs are included.
