@@ -1,0 +1,14 @@
+.PHONY: pdf verify smoke clean
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/verify.py --max-n 5 --brute-n 4
+
+smoke:
+	python3 code/verify.py --max-n 3 --brute-n 3 --output /tmp/open-query-smoke
+
+clean:
+	rm -f article.aux article.log article.out article.toc

@@ -1,0 +1,2019 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,left=25mm,right=25mm,top=24mm,bottom=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,needspace}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark,xurl}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact type beyond log-convexity}
+\fancyhead[R]{\small Formal nonlinear calculus}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{leftmargin=1.7em,itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Type}{T_N}
+\newcommand{\inv}[1]{#1^{\langle-1\rangle}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\lp}{\log^{+}}
+\newcommand{\ent}{\mathfrak h}
+\newcommand{\snapshot}{\nolinkurl{3d5973524506411392a911470b5ddc35521568ea}}
+\hypersetup{pdftitle={Exact Type Beyond Log-Convexity},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},pdfsubject={Complete formal reversion criterion, supermultiplicative envelopes, optimal distortion, divergent composition, Banach-space formal maps}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{11mm}
+{\Large\scshape Transseries and nonlinear inversion\par}
+\vspace{12mm}
+{\Huge\bfseries Exact Type Beyond\\[3mm] Log-Convexity\par}
+\vspace{9mm}
+{\Large A complete reversion criterion, sharp distortion,\\[2mm]
+and dimension-free nonlinear calculus\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}
+29 September 2026
+\vspace{11mm}
+\begin{minipage}{0.91\textwidth}
+\begin{abstract}
+For an arbitrary positive coefficient weight $N=(N_n)$, we characterize
+exact preservation of exponential coefficient type under every formal
+compositional inverse. The criterion is superexponential root growth
+\emph{together} with subexponential agreement with the least supermultiplicative
+majorant
+\[
+ S_n=\max_{j_1+\cdots+j_k=n}\prod_{i=1}^{k}N_{j_i}.
+\]
+The central estimate is stronger: whenever $N_n^{1/n}\to\infty$, the
+positive extremal inverse has coefficient $S_n\exp(o(n))$, for every
+fixed positive input amplitude. Consequently
+$\limsup(S_n/N_n)^{1/n}$ is the exact optimal multiplicative distortion
+of type, not merely an upper bound.
+
+For the zero-loss weights we prove a sharp composition inequality for two
+divergent arguments, determine all possible cancellations at equal type,
+and extend inversion and composition to formal Banach-space maps without
+a dimension-dependent loss. Explicit oscillating weights show that
+log-convex approximation is not necessary; other examples realize every
+finite distortion and even send type zero to infinite type under inversion.
+The proofs are self-contained after elementary formal-series algebra.
+An exact finite verification program, a source audit, and a further
+research program accompany the article.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}\small
+\textbf{Status and scope.} Conventional mathematical proofs addressing
+explicit questions in ProveIt's \emph{Sharp Weighted Type Under Formal
+Reversion}. Not Lean-verified or independently peer-reviewed. The
+literature comparison is targeted; global publication priority is not
+asserted. These are formal coefficient theorems, not analytic summability
+theorems.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\vspace{7mm}
+\noindent\textbf{Reading guide.}
+The central argument is Sections~\ref{sec:envelope}--\ref{sec:classification}.
+Section~\ref{sec:composition} gives the complete scalar type calculus;
+Section~\ref{sec:banach} specifies the norms needed for its vector-valued
+extension. The examples in Section~\ref{sec:examples} separate the exact
+criterion from several tempting regularity assumptions. Verification,
+formalization, and genuinely remaining questions are treated separately.
+\clearpage
+
+\section{Research target and relation to prior work}
+\label{sec:context}
+
+\subsection{Three questions from the repository}
+
+The ProveIt article \emph{Sharp Weighted Type Under Formal Reversion}
+proves exact preservation of a weighted coefficient limsup for positive
+log-convex weights with superexponential roots. Its final research section
+asks for a necessary-and-sufficient criterion for arbitrary positive
+weights, a sharp rule when both composition arguments are divergent, and
+a multivariate or operator-valued extension \cite{repo-weight}. Those are
+the specific targets of the present article. We do not revisit the
+repository's quadratic-feedback coefficient asymptotics, inverse-digamma
+optimal truncation, or Hahn resonance calculations.
+
+The arbitrary-weight question is more than a technical relaxation.
+Nonlinear inversion can multiply coefficients whose degrees add to the
+requested excess degree. A weight may be large at the input degrees and
+have a very deep dip at the output degree. A root-growth condition alone
+cannot exclude this failure. Conversely, oscillation need not be harmful:
+the products may still fit the target weight with no exponential loss.
+The correct condition concerns all finite additive partitions, not
+convexity of a sequence of logarithms.
+
+We answer the first question completely for scalar formal power series.
+We also give a complete rule based only on the two scalar types: unequal
+types force equality in a maximum bound, while every smaller output type
+can occur at equal input type. For formal maps tangent to the identity on
+a Banach space, the same exact statements hold with multilinear operator
+norms. For a general invertible derivative we prove sharp two-sided norm
+bounds and explain why the derivative and one scalar input type cannot
+determine a single exact output type.
+
+\subsection{What is classical, and what is established here}
+
+The Lagrange inversion formula and its finite coefficient expansions are
+classical; Gessel's survey is an appropriate reference \cite{gessel}.
+We include the short formal argument needed here and make no novelty
+claim about formal invertibility, the coefficient formula, or scalar
+majorant methods.
+
+Rainer and Schindl characterize composition in ultradifferentiable
+classes \cite{rs-composition}, and characterize equivalences among
+composition, inversion, and differential-equation stability under stated
+regularity hypotheses \cite{rs-stability}. Their sequence formulation
+uses weak log-convexity, derivation conditions, and a Fa\`a di Bruno bound
+allowing a factor $C^n$. Their discussion also credits earlier
+Banach-space inverse-function results. Thus neither nonlinear class
+stability nor Banach-space inversion is a new concept here.
+
+The present question has a different precision and domain. We work with
+arbitrary \emph{formal coefficient weights}, retain the exact exponential
+limsup constant, and allow neither an unspecified exponential loss nor
+an implicit convexity or derivation hypothesis. We prove that one
+explicit supermultiplicative envelope measures the entire worst-case
+loss. The upper estimate does not assume that the envelope is close to
+the original weight. This allows a classification of failure as well as
+success, and makes the subsequent composition and vector-valued results
+consequences of a single scalar estimate.
+
+The proposed contributions are the envelope asymptotic, the complete
+arbitrary-weight criterion and optimal distortion theorem, the resulting
+exact scalar type calculus, and the explicit separating examples.
+Their proofs are supplied below. A targeted comparison is not an
+exhaustive priority search, and the assertions of this article should be
+independently checked before being treated as established literature.
+
+\subsection{Snapshot and dependency boundary}
+
+The repository checkpoint used for provenance is
+\begin{quote}\small\snapshot.\end{quote}
+The principal source is
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/\\
+Sharp\_Weighted\_Type\_Formal\_Reversion/article.tex.
+\end{quote}
+Its Git blob is
+\begin{quote}\small\nolinkurl{c2d9978806e0861f1bab7108b72ad92773e6a05c}.\end{quote}
+In particular, the pinned source's research questions on arbitrary
+weights, divergent composition, and multivariate inversion were read
+\cite{repo-weight}. Selected neighboring package descriptions were
+inspected to avoid obvious overlap. The whole repository, the canonical
+large transseries volume, and newly arrived binary research archives were
+not audited claim by claim. No upstream file was modified.
+
+No mathematical theorem from an unverified repository article is needed
+as a premise of the proofs below. The log-convex result is recovered
+independently in Proposition~\ref{prop:logconvex}. No proof assistant was
+run; the attached computations are finite checks, not substitutes for
+the quantified arguments.
+
+\section{Weights, excess degree, and the main statements}
+\label{sec:statements}
+
+\subsection{The exact type being measured}
+
+Throughout, a weight means a sequence
+\[
+ N_0=1,\qquad N_n\in(0,\infty)\quad(n\ge1).
+\]
+It need not be increasing, log-convex, weakly log-convex, or stable under
+a shift of its index. Let
+\begin{equation}
+ f(z)=z+\sum_{n\ge1}f_{n+1}z^{n+1}\in\C[[z]]
+ \label{eq:tangent}
+\end{equation}
+be tangent to the identity. Its \emph{excess-degree type} is
+\begin{equation}
+ \Type(f)=\limsup_{n\to\infty}
+ \left(\frac{|f_{n+1}|}{N_n}\right)^{1/n}\in[0,\infty].
+ \label{eq:type}
+\end{equation}
+The excess degree of $z^{n+1}$ is $n$. This indexing is natural because
+excess degrees add in the inverse coefficient formula. We write
+$\inv f$ for the compositional inverse and reserve $1/f$ for a
+multiplicative reciprocal.
+
+To translate the usual coefficient weight $M_m$, put $N_n=M_{n+1}$ for
+$n\ge1$. Replacing the exponent $1/n$ in \eqref{eq:type} by $1/(n+1)$
+does not change the extended-real limsup. Thus the convention measures
+exactly the same type as the repository's ordinary-degree convention,
+with the harmless finite linear coefficient omitted.
+
+For $A>0$, define the tangent dilation
+\begin{equation}
+ (\mathcal D_A f)(z)=A f(z/A).
+ \label{eq:dilation}
+\end{equation}
+Then
+\begin{equation}
+ \Type(\mathcal D_A f)=A^{-1}\Type(f),\qquad
+ \inv{(\mathcal D_A f)}=\mathcal D_A(\inv f).
+ \label{eq:dilationproperties}
+\end{equation}
+If $\Type(f)<A$, there is a finite $C>0$ such that
+\begin{equation}
+ |f_{n+1}|\le C A^nN_n\qquad(n\ge1).
+ \label{eq:coefficientbound}
+\end{equation}
+This follows directly from the definition of limsup, increasing $C$ to
+cover the finitely many exceptional coefficients.
+
+\begin{definition}[Envelope and distortion]
+The \emph{supermultiplicative envelope} of $N$ is $S_0=1$ and
+\begin{equation}
+ S_n=\max_{\substack{k\ge1,\ j_1,\ldots,j_k\ge1\\
+                         j_1+\cdots+j_k=n}}
+             \prod_{i=1}^{k}N_{j_i}\qquad(n\ge1).
+ \label{eq:envelope}
+\end{equation}
+Define
+\begin{equation}
+ \Delta(N)=\limsup_{n\to\infty}(S_n/N_n)^{1/n}\in[1,\infty].
+ \label{eq:delta}
+\end{equation}
+We call $N$ \emph{admissible} if
+\begin{equation}
+ N_n^{1/n}\longrightarrow\infty,
+ \qquad \log(S_n/N_n)=o(n).
+ \label{eq:admissible}
+\end{equation}
+\end{definition}
+
+There are only finitely many ordered compositions of each positive
+integer, so \eqref{eq:envelope} is a finite maximum even for arbitrary
+real weights. Positivity and finite support at each coefficient are all
+that is required for the formal manipulations.
+
+\subsection{The classification and its quantitative refinement}
+
+\begin{theorem}[Complete zero-loss classification]
+\label{thm:classificationintro}
+For every positive weight $N$, the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every tangent-to-identity scalar formal series satisfies
+$\Type(\inv f)=\Type(f)$, including types zero and infinity.
+\item $N$ is admissible in the sense of \eqref{eq:admissible}.
+\item There exists a positive supermultiplicative sequence $V$, with
+$V_0=1$, $V_n^{1/n}\to\infty$, and
+$\log(V_n/N_n)=o(n)$.
+\end{enumerate}
+\end{theorem}
+
+The equivalence is proved in Section~\ref{sec:classification}. The next
+statement quantifies how it fails. Let $\mathcal I(N)$ be the infimum of
+all finite $D\ge1$ such that
+\begin{equation}
+ \Type(\inv f)\le D\Type(f)
+ \quad\hbox{for every tangent-to-identity } f.
+ \label{eq:universalD}
+\end{equation}
+The infimum of the empty set is infinity; for finite $D$ we use
+$D\cdot0=0$ and $D\cdot\infty=\infty$.
+
+\begin{theorem}[Exact optimal distortion]
+\label{thm:distortionintro}
+For an arbitrary positive weight,
+\begin{equation}
+ \mathcal I(N)=
+ \begin{cases}
+ \Delta(N),&N_n^{1/n}\to\infty,\\
+ \infty,&N_n^{1/n}\not\to\infty.
+ \end{cases}
+ \label{eq:optimaldistortion}
+\end{equation}
+When $\Delta(N)<\infty$ and the roots tend to infinity,
+\begin{equation}
+ \frac{\Type(f)}{\Delta(N)}\le\Type(\inv f)
+             \le\Delta(N)\Type(f).
+ \label{eq:twosideddistortion}
+\end{equation}
+The upper constant is attained by the explicit series
+$f=z-\sum_{n\ge1}N_nz^{n+1}$, whose input type is one.
+\end{theorem}
+
+Thus there is a canonical obstruction, not just a list of sufficient
+regularity conditions. For instance, a weight may have roots tending to
+infinity yet have $\Delta(N)=2$, or $\Delta(N)=\infty$. Both possibilities
+will be realized by elementary explicit formulas.
+
+\subsection{The positive extremal series}
+
+For a fixed $C>0$, put
+\begin{equation}
+ W_N(z)=\sum_{n\ge1}N_nz^{n+1},\qquad
+ H_C(z)=\inv{(z-CW_N(z))}
+       =z+\sum_{n\ge1}h_{n+1}(C)z^{n+1}.
+ \label{eq:positiveinverse}
+\end{equation}
+It is equivalently the unique formal solution of
+\begin{equation}
+ H_C=z+C W_N(H_C).
+ \label{eq:fixedpoint}
+\end{equation}
+All its coefficients are nonnegative. The following is the technical
+core of the article.
+
+\begin{theorem}[Envelope asymptotic]
+\label{thm:envelopeintro}
+If $N_n^{1/n}\to\infty$, then for every fixed $C>0$,
+\begin{equation}
+ \boxed{\displaystyle
+ \lim_{n\to\infty}\left(\frac{h_{n+1}(C)}{S_n}\right)^{1/n}=1.}
+ \label{eq:central}
+\end{equation}
+No bound on $S_n/N_n$ is assumed.
+\end{theorem}
+
+The assertion is about an exponential scale, not an asymptotic equivalent
+$h_{n+1}(C)\sim S_n$. The residual ratio can grow or decay
+subexponentially and may oscillate. Both the uniformity in the
+coefficient index and the fact that $C$ may be smaller than one matter
+in the proof.
+
+\section{Envelope algebra and finite inverse coefficients}
+\label{sec:envelope}
+
+\subsection{A least supermultiplicative majorant}
+
+\begin{lemma}[Envelope calculus]
+\label{lem:envelopecalculus}
+For every positive $N$, its envelope satisfies
+\begin{equation}
+ S_n\ge N_n,\qquad S_{a+b}\ge S_aS_b\quad(a,b\ge0),
+ \qquad
+ S_n=\max_{1\le j\le n}N_jS_{n-j}.
+ \label{eq:envelopecalculus}
+\end{equation}
+It is the least pointwise supermultiplicative majorant of $N$ with zeroth
+term one. It is unchanged if ordered compositions in
+\eqref{eq:envelope} are replaced by unordered integer partitions.
+\end{lemma}
+\begin{proof}
+The one-part composition proves $S_n\ge N_n$. Concatenating maximizing
+compositions of $a$ and $b$ proves supermultiplicativity. Removing the
+first part of a composition, and conversely adjoining a first part,
+gives the recurrence. If $V\ge N$ and $V_{a+b}\ge V_aV_b$, repeated
+multiplication gives
+$V_n\ge\prod_iV_{j_i}\ge\prod_iN_{j_i}$ for every composition of $n$;
+hence $V_n\ge S_n$. Finally, the product depends on the multiplicities of
+parts, not their order.
+\end{proof}
+
+Writing $s_n=\log S_n$ and $a_n=\log N_n$ converts the recurrence to
+\begin{equation}
+ s_0=0,\qquad s_n=\max_{1\le j\le n}(a_j+s_{n-j}).
+ \label{eq:maxplus}
+\end{equation}
+This is a finite max-plus closure. The obstruction to zero loss is the
+excess $s_n-a_n$ on a linear scale. It is not the second difference of
+$a_n$, nor a bound on a single adjacent quotient.
+
+\subsection{Formal inversion and a residue calculation}
+
+Every series of the form \eqref{eq:tangent} has a unique formal inverse:
+the coefficient of degree $m$ in $f(g(z))=z$ determines $g_m$ using only
+earlier coefficients. Associativity then gives a two-sided inverse.
+All operations up to a prescribed degree use finitely many terms.
+
+For completeness, the needed Lagrange identity can be obtained directly
+from formal residues. If $g=\inv f$ and $m\ge1$, substitution $z=f(t)$
+in a residue gives
+\begin{align*}
+ [z^m]g(z)
+ &=\Res_z g(z)z^{-m-1}\,\dd z\\
+ &=\Res_t t f(t)^{-m-1}f'(t)\,\dd t
+  =\frac1m\Res_t f(t)^{-m}\,\dd t.
+\end{align*}
+The last equality follows because the residue of a formal derivative
+vanishes, applied to $\dd(t f(t)^{-m})/\dd t$. Formal substitution is
+legitimate since $f(t)=t$ times a unit. Therefore
+\begin{equation}
+ [z^m]g(z)=\frac1m[t^{m-1}]\left(\frac{t}{f(t)}\right)^m.
+ \label{eq:lagrange}
+\end{equation}
+This is the classical formula used below \cite{gessel}.
+
+\begin{lemma}[Positive coefficient formula and absolute majorant]
+\label{lem:lagrange}
+For \eqref{eq:positiveinverse} and $n\ge1$,
+\begin{equation}
+ h_{n+1}(C)=\frac1{n+1}\sum_{k=1}^{n}\binom{n+k}{k}C^k
+ \sum_{\substack{j_1+\cdots+j_k=n\\j_i\ge1}}
+                         \prod_{i=1}^{k}N_{j_i}.
+ \label{eq:orderedformula}
+\end{equation}
+Equivalently, summing over finitely supported multiplicity vectors
+$\boldsymbol m=(m_1,m_2,\ldots)$ with $\sum j m_j=n$ and
+$k=\sum m_j$,
+\begin{equation}
+ h_{n+1}(C)=
+ \sum_{\boldsymbol m}
+ \frac{(n+k)!}{(n+1)!\prod_jm_j!}
+ C^k\prod_j N_j^{m_j}.
+ \label{eq:partitionformula}
+\end{equation}
+If $|f_{n+1}|\le C N_n$ for all $n$, then
+\begin{equation}
+ |[z^{n+1}]\inv f|\le h_{n+1}(C).
+ \label{eq:absoluteinverse}
+\end{equation}
+\end{lemma}
+\begin{proof}
+In \eqref{eq:lagrange}, take $m=n+1$ and expand
+\[
+ \left(1-C\sum_{j\ge1}N_jt^j\right)^{-n-1}
+ =\sum_{k\ge0}\binom{n+k}{k}C^k
+                  \left(\sum_{j\ge1}N_jt^j\right)^k.
+\]
+Only $1\le k\le n$ contributes to degree $n$. Grouping the $k!/
+\prod_jm_j!$ orderings of a fixed partition gives
+\eqref{eq:partitionformula}. For a signed or complex input, the same
+finite expansion and the triangle inequality give
+\eqref{eq:absoluteinverse}.
+\end{proof}
+
+\begin{remark}[A coefficient lower bound]
+\label{rem:lowerpartition}
+For any ordered composition of $n$ with $k$ parts,
+\begin{equation}
+ h_{n+1}(C)\ge C^k\prod_iN_{j_i},
+ \label{eq:lowerpartition}
+\end{equation}
+because $\binom{n+k}{k}/(n+1)\ge1$. In particular,
+$h_{n+1}(1)\ge S_n$. A maximizing composition need not be unique; the
+next lemma controls the lengths of all maximizers.
+\end{remark}
+
+\section{Sparse products, dense suppression, and the central limit}
+\label{sec:centralproof}
+
+\subsection{Maximizing partitions have sublinear length}
+
+\begin{lemma}[Sparse maximizers]
+\label{lem:sparsemax}
+Assume $N_n^{1/n}\to\infty$. For every $\eta>0$, all compositions
+attaining $S_n$ have fewer than $\eta n$ parts once $n$ is sufficiently
+large. Equivalently, the maximum number of parts in a maximizing
+composition is $o(n)$.
+\end{lemma}
+\begin{proof}
+It suffices to consider $0<\eta\le1$. Set $L=\lceil2/\eta\rceil$ and
+\[
+ B=\max\left(1,\max_{1\le j\le L}N_j^{1/j}\right).
+\]
+Suppose a composition of $n$ has $k\ge\eta n$ parts. At most
+$n/(L+1)<\eta n/2$ parts exceed $L$. Thus more than $\eta n/2$ parts
+are at most $L$. Let $\ell$ be their total mass. Then
+$\ell\ge\eta n/2$, and their product is at most $B^\ell$.
+
+Since $N_\ell^{1/\ell}\to\infty$, for all sufficiently large $n$ we
+have $N_\ell>B^\ell$ whenever $\ell\ge\eta n/2$. Replace those small
+parts by the single part $\ell$. This preserves the sum $n$ and strictly
+increases the product. Consequently the original composition was not
+maximizing. The threshold is independent of the chosen composition.
+\end{proof}
+
+This argument does not assume monotone roots. The full root limit makes
+the replacement by one part valid uniformly beyond a large index. A deep
+dip could prevent that particular one-part replacement. A strengthened
+version, using a whole maximizing subpartition instead, is given at the
+end of this section.
+
+\subsection{A finite upper certificate}
+
+Define for $1\le k\le n$
+\begin{equation}
+ A_{n,k}=\frac1{n+1}\binom{n+k}{k}\binom{n-1}{k-1}.
+ \label{eq:Ank}
+\end{equation}
+The second binomial counts ordered compositions of $n$ with $k$ positive
+parts. For $0<\eta\le1/2$ and $C>0$, set
+\begin{align}
+ P_{n,\eta}(C)&=\sum_{1\le k\le\eta n}A_{n,k}C^k,
+ &Q_{n,\eta}(C)&=\sum_{\eta n<k\le n}A_{n,k}C^k.
+ \label{eq:PQ}
+\end{align}
+A sum with no indices is zero.
+
+\begin{theorem}[Exact finite sparse--dense bound]
+\label{thm:finitecertificate}
+Fix any positive weight, $n\ge1$, $C>0$, and $0<\eta\le1/2$.
+Let $L=\lceil2/\eta\rceil$ and choose $B\ge1$ satisfying
+$N_j\le B^j$ for $1\le j\le\min(L,n)$. Put
+\begin{equation}
+ R_{n,\eta,B}=
+ \max_{\lceil\eta n/2\rceil\le\ell\le n}\frac{B^\ell}{S_\ell}.
+ \label{eq:Rtail}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ h_{n+1}(C)\le S_n
+ \bigl(P_{n,\eta}(C)+Q_{n,\eta}(C)R_{n,\eta,B}\bigr).}
+ \label{eq:finitecertificate}
+\end{equation}
+No limiting hypothesis on $N$ is needed for this inequality.
+\end{theorem}
+\begin{proof}
+For compositions with $k\le\eta n$, each product is at most $S_n$;
+these give the first term. If $k>\eta n$, separate the parts at most
+$L$. Their number exceeds $\eta n/2$, as in
+Lemma~\ref{lem:sparsemax}, and their total mass $\ell$ satisfies
+$\ell\ge\lceil\eta n/2\rceil$. Their product is at most $B^\ell$.
+The product of the remaining parts is at most $S_{n-\ell}$, including
+the empty product $S_0=1$. Since
+$S_\ell S_{n-\ell}\le S_n$, the whole product divided by $S_n$ is at
+most $B^\ell/S_\ell\le R_{n,\eta,B}$. Count compositions and apply
+\eqref{eq:orderedformula}.
+\end{proof}
+
+All entries of \eqref{eq:finitecertificate} involve only the finite
+prefix $N_1,\ldots,N_n$. For rational weights an integer $B$ can be
+chosen by exact root comparisons, so this is an executable rational
+inequality rather than a certificate requiring floating-point logarithms.
+
+\subsection{Subexponential sparse entropy}
+
+Let $\ent(t)=-t\log t-(1-t)\log(1-t)$ for $0<t<1$, extended by zero
+at the endpoints. The elementary binomial entropy inequality is
+\begin{equation}
+ \binom{r}{s}\le\exp\bigl(r\ent(s/r)\bigr).
+ \label{eq:binomialentropy}
+\end{equation}
+For $0<s<r$, it follows by taking the $s$th term in
+$1=(s/r+(1-s/r))^r$ and rearranging; the endpoint cases are immediate.
+
+\begin{lemma}[Counting bounds]
+\label{lem:counting}
+For $0<\eta\le1/2$,
+\begin{equation}
+ P_{n,\eta}(C)\le n\exp\bigl(n E_C(\eta)\bigr),
+ \quad
+ E_C(\eta)=2\ent(\eta/2)+\ent(\eta)+\eta\lp C,
+ \label{eq:sparseentropy}
+\end{equation}
+where $E_C(\eta)\to0$ as $\eta\downarrow0$. Also
+\begin{equation}
+ Q_{n,\eta}(C)\le
+ n\bigl(8\max(1,C)\bigr)^n.
+ \label{eq:densecount}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $k\le\eta n$, use
+$\binom{n+k}{k}\le\binom{2n}{k}$ and
+$\binom{n-1}{k-1}=(k/n)\binom nk\le\binom nk$.
+The function $\ent$ is increasing on $[0,1/2]$, so
+\eqref{eq:binomialentropy} bounds the binomials by
+$\exp(2n\ent(\eta/2))$ and $\exp(n\ent(\eta))$, respectively.
+Also $C^k\le\exp(n\eta\lp C)$, and there are at most $n$ summands.
+For the second assertion use the cruder bounds
+$\binom{n+k}{k}\le2^{2n}$,
+$\binom{n-1}{k-1}\le2^n$, and
+$C^k\le\max(1,C)^n$.
+\end{proof}
+
+The sparse count has arbitrarily small exponential rate. The dense count
+can have a fixed exponential rate, but its products incur a stronger
+penalty from the weight. This separation is the reason no smoothness of
+the weight profile is required.
+
+\begin{lemma}[Dense suppression]
+\label{lem:densesuppression}
+If $N_n^{1/n}\to\infty$, then for fixed $\eta>0$ and fixed $B\ge1$,
+\begin{equation}
+ R_{n,\eta,B}^{1/n}\longrightarrow0.
+ \label{eq:densesuppression}
+\end{equation}
+\end{lemma}
+\begin{proof}
+We have $S_\ell\ge N_\ell$. Given $K>B$, eventually
+$S_\ell^{1/\ell}\ge K$ for every
+$\ell\ge\lceil\eta n/2\rceil$. Therefore
+\[
+ R_{n,\eta,B}\le(B/K)^{\eta n/2},\qquad
+ \limsup_nR_{n,\eta,B}^{1/n}\le(B/K)^{\eta/2}.
+\]
+Let $K\to\infty$.
+\end{proof}
+
+\subsection{Proof of the envelope asymptotic}
+
+\begin{proof}[Proof of Theorem~\ref{thm:envelopeintro}]
+For each $n$, select a maximizing composition with $k_n$ parts. By
+Lemma~\ref{lem:sparsemax}, $k_n/n\to0$. The lower bound
+\eqref{eq:lowerpartition} gives
+\[
+ \left(h_{n+1}(C)/S_n\right)^{1/n}\ge C^{k_n/n}\longrightarrow1.
+\]
+This works for every fixed $C>0$, including $C<1$.
+
+For the upper bound, fix $0<\eta\le1/2$, let
+$L=\lceil2/\eta\rceil$, and choose once and for all
+$B\ge\max(1,\max_{1\le j\le L}N_j^{1/j})$. Combining
+Theorem~\ref{thm:finitecertificate} and Lemmas~\ref{lem:counting} and
+\ref{lem:densesuppression} gives
+\begin{align*}
+ \limsup_n\left(h_{n+1}(C)/S_n\right)^{1/n}
+ &\le\max\left(\ee^{E_C(\eta)},0\right)
+ =\ee^{E_C(\eta)}.
+\end{align*}
+Here the $n$th root of the dense term tends to zero despite its fixed
+exponential counting factor. Letting $\eta\downarrow0$ gives an upper
+bound of one, and proves \eqref{eq:central}.
+\end{proof}
+
+\begin{corollary}[Type of the extremal inverse]
+\label{cor:extremaltype}
+If $N_n^{1/n}\to\infty$, then for every fixed $C>0$,
+\begin{equation}
+ \Type(H_C)=\Delta(N),\qquad \Type(z-CW_N)=1.
+ \label{eq:extremaltype}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Multiply $(h_{n+1}(C)/S_n)^{1/n}\to1$ by
+$(S_n/N_n)^{1/n}$ and take limsups, allowing infinity. For the input,
+$C^{1/n}\to1$.
+\end{proof}
+
+\subsection{A strengthening for unbounded root profiles}
+
+\begin{proposition}[The envelope needs only unbounded primitive roots]
+\label{prop:unboundedroots}
+For a positive weight $N$, the following are equivalent:
+\[
+ \sup_{n\ge1}N_n^{1/n}=\infty,
+ \qquad S_n^{1/n}\longrightarrow\infty.
+\]
+Under either condition the conclusion \eqref{eq:central} holds for every
+fixed $C>0$, even if $N_n^{1/n}$ itself does not tend to infinity.
+\end{proposition}
+\begin{proof}
+If the primitive roots are bounded by $K$, every composition product is
+at most $K^n$, and $S_n\le K^n$. Conversely, fix $m\ge1$ and write
+$n=qm+r$ with $0\le r<m$. Supermultiplicativity gives
+$S_n\ge N_m^qS_r$, so
+$\liminf_n S_n^{1/n}\ge N_m^{1/m}$. Taking arbitrarily large primitive
+roots proves the equivalence.
+
+In the proof of Lemma~\ref{lem:sparsemax}, the small parts have mass
+$\ell\ge\eta n/2$ and product at most $B^\ell$. Now
+$S_\ell>B^\ell$ for all such $\ell$ once $n$ is large. Replace those
+small parts by any composition attaining $S_\ell$, rather than by the
+single part $\ell$. This again strictly increases the product, so all
+maximizing compositions still have sublinear length. The lower bound
+for $h_{n+1}(C)/S_n$ follows unchanged. The finite upper certificate
+already holds for arbitrary weights, and the dense-suppression proof
+only needs $S_\ell^{1/\ell}\to\infty$. The entropy argument therefore
+proves \eqref{eq:central} under the weaker hypothesis.
+\end{proof}
+
+The full limit $N_n^{1/n}\to\infty$ remains necessary for universal
+zero loss, by the polynomial obstruction below. The strengthening
+concerns the extremal envelope asymptotic, not an exception to that
+classification. If the primitive roots are unbounded but have a bounded
+subsequence, $S_n^{1/n}\to\infty$ forces $\Delta(N)=\infty$.
+
+\section{Complete classification, optimal loss, and canonical repair}
+\label{sec:classification}
+
+\subsection{Why superexponential roots are necessary}
+
+\begin{lemma}[The polynomial obstruction]
+\label{lem:polynomial}
+If a finite $D$ satisfies \eqref{eq:universalD}, then
+$N_n^{1/n}\to\infty$.
+\end{lemma}
+\begin{proof}
+The polynomial $p(z)=z-z^2$ has type zero for every weight. Its inverse is
+\[
+ \inv p(z)=\frac{1-\sqrt{1-4z}}2
+ =\sum_{n\ge0}\frac1{n+1}\binom{2n}{n}z^{n+1}.
+\]
+The central binomial coefficient satisfies
+$4^n/(2n+1)\le\binom{2n}{n}\le4^n$: it is the largest of the
+$2n+1$ binomial coefficients whose sum is $4^n$. Consequently the $n$th
+root of the coefficient of $z^{n+1}$ tends to four. If
+$N_n^{1/n}$ does not tend to infinity, some subsequence has
+$N_n^{1/n}\le B<\infty$, and
+$\Type(\inv p)\ge4/B>0$. This contradicts
+$\Type(\inv p)\le D\Type(p)=0$.
+\end{proof}
+
+The obstruction concerns type zero, not just the growth of a generic
+divergent series. It explains why a criterion based solely on the envelope
+defect would be incomplete. For example, $N_n=1$ is already
+supermultiplicative and has $S_n=N_n$, but it cannot preserve the type of
+an inverse polynomial.
+
+\subsection{The exact distortion constant}
+
+\begin{proof}[Proof of Theorem~\ref{thm:distortionintro}]
+If the roots do not tend to infinity,
+Lemma~\ref{lem:polynomial} rules out every finite $D$, as claimed.
+Assume henceforth that $N_n^{1/n}\to\infty$.
+
+First suppose $\Delta=\Delta(N)<\infty$ and $\Type(f)<\infty$.
+For each $A>\Type(f)$, choose $C$ in
+\eqref{eq:coefficientbound}. The coefficients of $\mathcal D_A f$
+are bounded in absolute value by $CN_n$. Thus
+Lemma~\ref{lem:lagrange} and Corollary~\ref{cor:extremaltype} give
+\[
+ A^{-1}\Type(\inv f)
+ =\Type\bigl(\inv{(\mathcal D_A f)}\bigr)
+ \le\Type(H_C)=\Delta.
+\]
+Let $A\downarrow\Type(f)$. In particular a type-zero series has a
+type-zero inverse. The upper bound is automatic when $\Type(f)=\infty$.
+It therefore holds for every $f$. Applying it to $\inv f$ proves the
+lower bound in \eqref{eq:twosideddistortion}; when $\Type(f)=\infty$,
+a finite inverse type would contradict that same inequality.
+
+The input $z-W_N$ has type one and its inverse has type $\Delta$ by
+Corollary~\ref{cor:extremaltype}. Hence no smaller constant works.
+If $\Delta=\infty$, this same input rules out every finite constant.
+This proves the formula in all cases.
+\end{proof}
+
+The result controls a limsup type, not the ratio of individual signed
+inverse coefficients to their inputs. Individual coefficients may cancel
+completely. The positive extremal series removes cancellation and
+identifies the optimal universal obstruction.
+
+\subsection{Zero loss and equivalence of weights}
+
+Two positive weights will be called \emph{subexponentially equivalent}
+when
+\begin{equation}
+ \log(V_n/N_n)=o(n).
+ \label{eq:weightequivalence}
+\end{equation}
+They define the same exact type for every coefficient sequence: multiplying
+each normalized $n$th root by $(N_n/V_n)^{1/n}\to1$ preserves every
+extended-real limsup.
+
+\begin{proof}[Proof of Theorem~\ref{thm:classificationintro}]
+Assume (i). The polynomial obstruction gives superexponential roots.
+The input $z-W_N$ and Corollary~\ref{cor:extremaltype} then give
+$\Delta(N)=1$. Since $S_n/N_n\ge1$, this is equivalent to
+$\log(S_n/N_n)=o(n)$, proving (ii).
+
+If (ii) holds, Theorem~\ref{thm:distortionintro} with $\Delta=1$
+proves (i), and $V=S$ proves (iii).
+
+Finally suppose (iii). Since $V$ is supermultiplicative, its own envelope
+is exactly $V$. Its roots tend to infinity, so it is admissible and the
+already proved implication (ii)$\Rightarrow$(i) applies to $V$.
+Subexponential equivalence identifies the $V$-type and $N$-type of every
+series and its inverse. Hence (i) also holds for $N$.
+\end{proof}
+
+\begin{corollary}[Stability under subexponential perturbations]
+\label{cor:perturbations}
+If $N$ is admissible and $\log(V_n/N_n)=o(n)$, then $V$ is admissible.
+In particular, altering finitely many weights by arbitrary positive
+factors does not affect admissibility or any exact type.
+\end{corollary}
+\begin{proof}
+All exact types coincide for the two weights. Transfer the universal
+inversion identity and apply Theorem~\ref{thm:classificationintro}.
+\end{proof}
+
+This proof deliberately uses the characterization rather than multiplying
+pointwise $\exp(o(n))$ errors over an arbitrary partition. A partition
+could contain linearly many small parts; such an unqualified multiplication
+would lose the very precision at issue.
+
+\subsection{A minimal admissible repair}
+
+\begin{theorem}[Canonical envelope repair]
+\label{thm:repair}
+Suppose $N_n^{1/n}\to\infty$. Its envelope $S$ is admissible.
+For any admissible pointwise majorant $V\ge N$,
+\begin{equation}
+ \limsup_{n\to\infty}(S_n/V_n)^{1/n}\le1.
+ \label{eq:minimalrepair}
+\end{equation}
+Thus $S$ is the least supermultiplicative majorant pointwise, and is a
+minimal admissible repair up to subexponential domination.
+\end{theorem}
+\begin{proof}
+The sequence $S$ is supermultiplicative and has roots tending to infinity,
+so its own envelope is $S$ and it is admissible. Let $S^{V}$ denote the
+envelope of $V$. Monotonicity of the maximum-product construction gives
+$S_n\le S^{V}_n$. Since $V$ is admissible,
+$(S^{V}_n/V_n)^{1/n}\to1$, proving \eqref{eq:minimalrepair}.
+\end{proof}
+
+\begin{remark}[The precise minimality claim]
+We do not claim that $S$ is the pointwise smallest among all admissible
+majorants. An admissible weight may have a finite or subexponential defect
+from exact supermultiplicativity. The pointwise minimality applies to
+supermultiplicative majorants; \eqref{eq:minimalrepair} is the separate
+asymptotic statement for admissible ones.
+\end{remark}
+
+\subsection{Recovery of the log-convex theorem}
+
+\begin{proposition}[Log-convex weights need no eventual repair]
+\label{prop:logconvex}
+Let $M_0=1$ and let $M$ be positive and log-convex, with
+$M_m^{1/m}\to\infty$. Set $N_0=1$ and $N_n=M_{n+1}$ for $n\ge1$.
+Then its envelope satisfies $S_n=N_n$ for every sufficiently large $n$.
+In particular $N$ is admissible.
+\end{proposition}
+\begin{proof}
+Log-convexity says the quotients $M_j/M_{j-1}$ are nondecreasing.
+For integers $a\ge b\ge2$, transferring one unit from $b$ to $a$
+therefore gives
+$M_aM_b\le M_{a+1}M_{b-1}$ whenever $b\ge3$.
+Repeatedly transfer until all but one indices equal two. For
+$j_1+\cdots+j_k=n$, with $j_i\ge1$, this gives
+\begin{equation}
+ \prod_{i=1}^kM_{j_i+1}\le M_{n-k+2}M_2^{k-1}.
+ \label{eq:logconvexconcentration}
+\end{equation}
+Since $M_0=1$, convexity of $m\mapsto\log M_m$ implies
+$M_r\le M_{n+1}^{r/(n+1)}$ for $0\le r\le n+1$. Thus the
+right side of \eqref{eq:logconvexconcentration} is at most
+\[
+ M_{n+1}
+ \left(\frac{M_2}{M_{n+1}^{1/(n+1)}}\right)^{k-1}.
+\]
+For all sufficiently large $n$ the parenthesis is at most one,
+uniformly in $k$. Every partition product is then at most $M_{n+1}$,
+and the one-part partition attains that value. Also
+$N_n^{1/n}=\bigl(M_{n+1}^{1/(n+1)}\bigr)^{(n+1)/n}\to\infty$.
+\end{proof}
+
+This is the log-convex special case treated in the predecessor
+\cite{repo-weight}, recovered here rather than imported as a new result.
+It also explains why the one-step shift in the definition of $N$ is
+important: the products in inversion involve $M_{j_i+1}$, not $M_{j_i}$.
+The shifted weight itself need not satisfy a normalization-dependent
+log-convex condition at its first few indices.
+
+\section{Two divergent composition arguments and exact cancellation}
+\label{sec:composition}
+
+In this section $N$ is admissible. No convergence of a formal series in
+a nonzero disk is assumed.
+
+\subsection{The maximum bound}
+
+For nonnegative-coefficient series, write $F\preceq G$ when every
+coefficient of $F$ is at most the corresponding coefficient of $G$.
+Substitution by series with zero constant coefficient preserves this
+order. Put $B_C=z+CW_N$.
+
+\begin{lemma}[A single inverse majorizes a double composition]
+\label{lem:doublemajorant}
+For every $C>0$,
+\begin{equation}
+ B_C\circ B_C\preceq H_{2C}.
+ \label{eq:doublemajorant}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The identity $H_{2C}=z+2C W_N(H_{2C})$ gives
+$z\preceq B_C\preceq H_{2C}$. Consequently
+\[
+ B_C(B_C)=z+CW_N(z)+CW_N(B_C)
+ \preceq z+2CW_N(H_{2C})=H_{2C}.
+\]
+\end{proof}
+
+\begin{theorem}[Sharp composition law]
+\label{thm:composition}
+For tangent-to-identity formal series $f,g$,
+\begin{equation}
+ \boxed{\displaystyle
+ \Type(f\circ g)\le\max\{\Type(f),\Type(g)\}.}
+ \label{eq:compositionmax}
+\end{equation}
+If $\Type(f)\ne\Type(g)$, equality holds, including when one type is
+infinite.
+\end{theorem}
+\begin{proof}
+If both types are finite, take
+$A>\max\{\Type(f),\Type(g)\}$. After the common dilation
+$\mathcal D_A$, choose one $C$ bounding the absolute nonlinear
+coefficients of both inputs by $CN_n$. Their composite is bounded
+coefficientwise in absolute value by $B_C\circ B_C$, hence by $H_{2C}$.
+Admissibility and Corollary~\ref{cor:extremaltype} give type at most
+one after dilation. Since dilation commutes with composition, the
+undilated type is at most $A$. Let $A$ decrease to the maximum. If an
+input type is infinite, the upper bound is automatic.
+
+Suppose $\Type(f)>\Type(g)$. From
+$f=(f\circ g)\circ\inv g$, the already proved upper bound and exact
+inverse invariance give
+\[
+ \Type(f)\le\max\{\Type(f\circ g),\Type(g)\}.
+\]
+This forces $\Type(f\circ g)\ge\Type(f)$, also when $\Type(f)=\infty$.
+The other strict inequality is handled by
+$g=\inv f\circ(f\circ g)$.
+\end{proof}
+
+The estimate is not a product bound. Tangent dilations normalize both
+inputs at the same exponential scale, while every finite composition
+has only a subexponential overhead relative to the admissible envelope.
+The inverse identity then turns an upper bound into an exact law whenever
+the two scales differ.
+
+\subsection{Every allowed cancellation actually occurs}
+
+\begin{theorem}[Complete type-only cancellation spectrum]
+\label{thm:cancellation}
+Fix two types $s,t\in[0,\infty]$.
+If $s\ne t$, every composite of tangent series of these types has type
+$\max(s,t)$. If $s=t=T$, the set of possible composite types is exactly
+$[0,T]$, with the natural extended-real interpretation for $T=\infty$.
+\end{theorem}
+\begin{proof}
+The unequal case and the upper restriction in the equal case follow from
+Theorem~\ref{thm:composition}. Every finite positive type $t$ is realized
+by the positive series
+\[
+ f_t(z)=z+\sum_{n\ge1}t^nN_nz^{n+1}.
+\]
+The identity realizes zero, and
+$z+\sum_{n\ge1}n^nN_nz^{n+1}$ realizes infinity.
+
+Let $0\le S<T\le\infty$. Choose tangent $f$ of type $T$ and $h$ of
+type $S$, and set $g=\inv f\circ h$. The unequal-type law and inverse
+invariance imply $\Type(g)=T$. Yet $f\circ g=h$ has type $S$.
+For $S=T>0$, choose $f=g$ with nonnegative nonlinear coefficients and
+type $T$. Since $f(z)\succeq z$, we have $f\circ f\succeq f$, so
+the composite has type at least $T$, and hence exactly $T$. This also
+works at infinity. At $T=0$, the upper bound already forces zero.
+\end{proof}
+
+Thus there is no missing universal scalar formula in the equal-type case:
+all values allowed by the upper bound occur. A more precise prediction
+must use information beyond the two types, such as signs, coefficient
+profiles, or a specified relation between the series.
+
+\subsection{Type-zero coordinates need not be analytic}
+
+\begin{corollary}[Type-zero coordinate invariance]
+\label{cor:zerocoordinates}
+If $h$ is tangent to the identity and $\Type(h)=0$, then for every
+tangent $f$,
+\begin{equation}
+ \Type(h\circ f)=\Type(f\circ h)=\Type(f),
+ \qquad
+ \Type(\inv h\circ f\circ h)=\Type(f).
+ \label{eq:zerocoordinates}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use the unequal-type law when $\Type(f)>0$, and the maximum bound when
+it is zero. The inverse of $h$ also has type zero, so the conjugation
+statement follows by applying the two identities successively.
+\end{proof}
+
+Every analytic tangent germ has type zero because its coefficients have
+at most exponential growth while $N_n^{1/n}\to\infty$. But the
+corollary is strictly more general. For example,
+\begin{equation}
+ h(z)=z+\sum_{n\ge1}\sqrt{N_n}\,z^{n+1}
+ \label{eq:divergentzero}
+\end{equation}
+has radius of convergence zero, since
+$(\sqrt{N_n})^{1/(n+1)}\to\infty$, whereas
+\[
+ \Type(h)=\limsup_n N_n^{-1/(2n)}=0.
+\]
+It is therefore a genuinely divergent type-zero coordinate change under
+which every exact $N$-type is preserved.
+
+\subsection{Nonunit linear coefficients}
+
+For a formal series with zero constant coefficient and nonzero linear
+coefficient, use the same definition \eqref{eq:type} on its nonlinear
+part. Multiplying the whole series by a fixed nonzero scalar does not
+change the type. Precomposing by $z\mapsto bz$ multiplies type by $|b|$.
+
+\begin{corollary}[Scalar coordinate scaling]
+\label{cor:scalarscaling}
+Let $F'(0)=a\ne0$ and $G'(0)=b\ne0$. Then
+\begin{align}
+ \Type(\inv F)&=|a|^{-1}\Type(F),\label{eq:scalarinverse}\\
+ \Type(F\circ G)&\le
+       \max\{|b|\Type(F),\Type(G)\}.
+       \label{eq:scalarcomposition}
+\end{align}
+Equality holds in \eqref{eq:scalarcomposition} whenever the two entries
+of the maximum differ. If $h,k$ are invertible type-zero series with
+$h'(0)=b$, then
+\begin{equation}
+ \Type(k\circ F\circ h)=|b|\Type(F).
+ \label{eq:scalarcoordinates}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Write $F=af$ and $G=bg$ with $f,g$ tangent. Then
+$\inv F=(\inv f)(z/a)$, proving \eqref{eq:scalarinverse}. Also
+\[
+ F\circ G=ab\bigl(f_b\circ g\bigr),\qquad
+ f_b(z)=b^{-1}f(bz),\qquad \Type(f_b)=|b|\Type(F).
+\]
+Apply Theorem~\ref{thm:composition}. Applying the result twice with a
+type-zero outer or inner series proves \eqref{eq:scalarcoordinates};
+when the surviving type is zero, the upper bound itself gives equality.
+\end{proof}
+
+\subsection{A filtered formal group}
+
+Let $\mathcal G_{\le t}$ be the tangent formal series of type at most
+$t$. Exact inversion and the maximum bound show that each
+$\mathcal G_{\le t}$ is a group under composition. The function
+\begin{equation}
+ d(f,g)=\Type(f\circ\inv g)
+ \label{eq:pseudodistance}
+\end{equation}
+is a right-invariant extended ultrapseudometric:
+\[
+ d(f,g)=d(g,f),\qquad
+ d(f,h)\le\max\{d(f,g),d(g,h)\},\qquad
+ d(f\circ k,g\circ k)=d(f,g).
+\]
+Indeed the first identity follows from inversion invariance, the second
+from composition, and the third from cancellation of $k\circ\inv k$.
+It is a pseudometric rather than a metric because nontrivial type-zero
+series have zero distance from the identity. No left-invariance or
+normality of the type-zero subgroup is asserted.
+
+\section{Formal maps in several variables and Banach spaces}
+\label{sec:banach}
+
+\subsection{The coefficient norm must be specified}
+
+Let $E$ be a real or complex Banach space. A formal map tangent to the
+identity is a sequence of bounded symmetric multilinear maps
+$A_m:E^m\to E$, written
+\begin{equation}
+ F(x)=x+\sum_{m\ge2}A_m(x,\ldots,x).
+ \label{eq:banachmap}
+\end{equation}
+No convergence of the displayed series is required. The coefficient norm
+is the multilinear operator norm
+\begin{equation}
+ \|A_m\|=\sup_{\|x_1\|,\ldots,\|x_m\|\le1}
+                   \|A_m(x_1,\ldots,x_m)\|.
+ \label{eq:multilinearnorm}
+\end{equation}
+Define
+\begin{equation}
+ \Type(F)=\limsup_{n\to\infty}
+              \left(\frac{\|A_{n+1}\|}{N_n}\right)^{1/n}.
+ \label{eq:banachtype}
+\end{equation}
+The norm in \eqref{eq:multilinearnorm} is not silently replaced by the
+supremum of the diagonal polynomial on the unit ball. Polarization
+comparisons can have degree-dependent constants; exact exponential types
+must therefore keep the norm convention explicit.
+
+For an $m$-linear map $L$, write
+\[
+ \Sym L(x_1,\ldots,x_m)=\frac1{m!}
+ \sum_{\sigma\in\mathfrak S_m}L(x_{\sigma(1)},\ldots,x_{\sigma(m)}).
+\]
+Then $\|\Sym L\|\le\|L\|$. Normalized symmetrization, rather than an
+unnormalized sum, is essential here.
+
+\subsection{Scalar majorants survive multilinear contraction}
+
+Suppose $G(x)=\sum_{j\ge1}G_j(x,\ldots,x)$ has zero constant term.
+The degree-$m$ coefficient in $F\circ G$ is
+\begin{equation}
+ (F\circ G)_m=
+ \sum_{k=1}^m\ \sum_{\substack{j_1+\cdots+j_k=m\\j_i\ge1}}
+ \Sym\bigl(A_k(G_{j_1},\ldots,G_{j_k})\bigr),
+ \label{eq:banachcomposition}
+\end{equation}
+where $A_1=\id$ for a tangent map. In each summand the $m$ arguments
+are first divided into consecutive blocks of sizes $j_i$, then fed into
+the corresponding $G_{j_i}$, then into $A_k$; the result is symmetrized.
+On the diagonal, expansion of the polynomial composition gives exactly
+this formula.
+
+The norm of a summand is at most
+\begin{equation}
+ \|A_k\|\prod_{i=1}^k\|G_{j_i}\|.
+ \label{eq:contractionnorm}
+\end{equation}
+There is no factor depending on $\dim E$ and no extra factor $m!$.
+Thus scalar series with nonnegative coefficient bounds majorize all
+composition coefficients in this convention.
+
+\begin{lemma}[Formal inverse and its scalar majorant]
+\label{lem:banachinverse}
+A formal map \eqref{eq:banachmap} has a unique two-sided formal inverse
+$G$ tangent to the identity. If $\|A_{n+1}\|\le CN_n$, then
+\begin{equation}
+ \|G_{n+1}\|\le h_{n+1}(C)\qquad(n\ge1).
+ \label{eq:banachmajorant}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $G_1=\id$. At degree $m\ge2$, the equation $F\circ G=\id$
+requires
+\begin{equation}
+ G_m=-\sum_{k=2}^m\ \sum_{j_1+\cdots+j_k=m}
+          \Sym\bigl(A_k(G_{j_1},\ldots,G_{j_k})\bigr).
+ \label{eq:banachinverserecursion}
+\end{equation}
+Every $j_i$ in the sum is at most $m-1$, so the formula is a finite
+recursion defining a bounded symmetric coefficient. Formal composition
+is associative because every coefficient identity is an identity of
+finite polynomial substitutions. The same recursion gives a right
+inverse for $G$; associativity then makes it equal to $F$, proving that
+the inverse is two-sided.
+
+Taking norms in \eqref{eq:banachinverserecursion}, applying
+\eqref{eq:contractionnorm}, and inducting on $m$ yields the scalar
+coefficient recursion for $H_C=z+CW_N(H_C)$. This proves
+\eqref{eq:banachmajorant}.
+\end{proof}
+
+\subsection{Exact tangent calculus without a dimension loss}
+
+\begin{theorem}[Banach-space zero-loss calculus]
+\label{thm:banach}
+Let $N$ be admissible. For formal maps tangent to the identity on any
+real or complex Banach space, with norm \eqref{eq:multilinearnorm},
+\begin{align}
+ \Type(\inv F)&=\Type(F),\label{eq:banachinverseexact}\\
+ \Type(F\circ G)&\le\max\{\Type(F),\Type(G)\}.
+ \label{eq:banachcompositionexact}
+\end{align}
+The composition inequality is an equality when the two types differ.
+Type-zero tangent precomposition, postcomposition, and conjugation
+preserve type.
+\end{theorem}
+\begin{proof}
+Dilation $\mathcal D_A F(x)=A F(x/A)$ divides a homogeneous coefficient
+of degree $n+1$ by $A^n$, for positive real $A$. If the type is finite,
+normalize it with any larger $A$ and use
+Lemma~\ref{lem:banachinverse} and $\Type(H_C)=1$ to obtain the inverse
+upper bound. Let $A$ decrease to the type, and apply the bound to the
+inverse to get equality, exactly as in the scalar proof. Infinite types
+are handled by the same involution argument.
+
+For composition, \eqref{eq:banachcomposition} transfers the scalar
+majorant $B_C\circ B_C\preceq H_{2C}$ to the multilinear norms.
+Dilation gives the maximum bound. Associativity, the inverse equality,
+and the identities used in Theorem~\ref{thm:composition} give equality
+for unequal types. The type-zero assertions follow in the same way.
+\end{proof}
+
+The theorem concerns formal coefficient norms. It is not an analytic
+inverse-function theorem on an open ball, nor does it assert that a
+formal map is the Taylor expansion of a smooth map in a prescribed class.
+The scalar majorant argument removes a combinatorial exponential loss;
+it does not supply convergence where none was assumed.
+
+\subsection{A coefficient-sum convention in finite dimensions}
+
+There is a second useful norm convention for direct computation. For a
+homogeneous polynomial map $P:\C^d\to\C^d$ of degree $m$, put
+\begin{equation}
+ \|P\|_{\mathrm{coeff}}=
+ \max_{1\le r\le d}\sum_{|\alpha|=m}|[x^\alpha]P_r(x)|.
+ \label{eq:coefficientnorm}
+\end{equation}
+Multiplying scalar polynomials multiplies coefficient-sum majorants.
+For every monomial of the outer component, replacing all input variables
+by one common scalar majorant bounds its entire substitution. Summing the
+outer coefficients and taking the maximum over components therefore
+proves the same scalar composition bound as
+\eqref{eq:contractionnorm}. The inverse recursion and
+Theorem~\ref{thm:banach} consequently hold for the type defined using
+\eqref{eq:coefficientnorm} as well.
+
+This is the convention used by the finite bivariate checks. We do not
+identify it with the multilinear operator norm or transfer exact types
+between norm conventions by an unstated degree-dependent equivalence.
+The two theorems follow from their respective scalar majorization
+properties.
+
+\subsection{General derivatives: sharp bounds, not a single scalar law}
+
+\begin{theorem}[Sharp Jacobian bounds]
+\label{thm:jacobian}
+Let $N$ be admissible and let a formal map $F$ on a nonzero Banach space
+have bounded invertible linear coefficient $A$. Then
+\begin{equation}
+ \boxed{\displaystyle
+ \frac{\Type(F)}{\|A\|}\le\Type(\inv F)
+                         \le\|A^{-1}\|\Type(F).}
+ \label{eq:jacobianbounds}
+\end{equation}
+Both endpoints are sharp even in dimension two. In general the matrix
+$A$ and the scalar value $\Type(F)$ do not determine
+$\Type(\inv F)$.
+\end{theorem}
+\begin{proof}
+Multiplication of all output coefficients by a fixed bounded invertible
+operator does not change type, since its norm and inverse norm are
+constant factors whose $n$th roots tend to one. Precomposition by a
+nonzero bounded linear operator $B$ gives
+\[
+ \|P_{n+1}(B,\ldots,B)\|\le\|P_{n+1}\|\|B\|^{n+1},
+\]
+and hence multiplies type by at most $\|B\|$.
+
+Write $F=A\circ f$ with $f$ tangent. Then
+$\inv F=\inv f\circ A^{-1}$, so
+\[
+ \Type(\inv F)\le\|A^{-1}\|\Type(\inv f)
+                   =\|A^{-1}\|\Type(f)
+                   =\|A^{-1}\|\Type(F).
+\]
+Apply this inequality to $\inv F$, whose linear coefficient is
+$A^{-1}$, to obtain the lower bound.
+
+For sharpness, take $E=\C^2$ with the maximum norm and
+$A=\operatorname{diag}(a,b)$, where $0<a<b$. Let $\varphi$ be a
+scalar tangent series of finite positive type $T$, and define
+\[
+ F_1(x,y)=(a\varphi(x),by),\qquad
+ F_2(x,y)=(ax,b\varphi(y)).
+\]
+Both have derivative $A$ and type $T$. Their inverses are
+\[
+ \inv F_1(x,y)=(\inv\varphi(x/a),y/b),\qquad
+ \inv F_2(x,y)=(x/a,\inv\varphi(y/b)),
+\]
+and have types $T/a$ and $T/b$, respectively. Since
+$\|A^{-1}\|=1/a$ and $\|A\|=b$, the endpoints are attained with the
+same derivative and the same scalar input type.
+\end{proof}
+
+The obstruction is directional: the growing nonlinear coefficients can
+be placed in different eigendirections. An exact general-Jacobian theory
+must therefore retain directional or multihomogeneous growth data, not
+merely improve a combinatorial estimate in a scalar norm.
+
+\section{Explicit weights separating the possible behaviors}
+\label{sec:examples}
+
+The examples in this section require no undecided asymptotic input. Their
+envelopes are computed exactly. Together they show that the classification
+is neither a disguised log-convexity condition nor a consequence of root
+growth alone.
+
+\subsection{A staircase weight beyond every log-convex approximation}
+
+\begin{theorem}[Non-convex admissibility]
+\label{thm:staircase}
+The weight
+\begin{equation}
+ N_0=1,\qquad N_n=2^{\,n\lfloor\log_2n\rfloor}\quad(n\ge1)
+ \label{eq:staircase}
+\end{equation}
+is supermultiplicative and admissible. There is no positive eventually
+log-convex sequence $V$ satisfying $\log(V_n/N_n)=o(n)$.
+\end{theorem}
+\begin{proof}
+The roots $r_n=N_n^{1/n}=2^{\lfloor\log_2n\rfloor}$ are
+nondecreasing and tend to infinity. For any composition of $n$,
+\[
+ \prod_iN_{j_i}=\prod_i r_{j_i}^{j_i}
+                  \le r_n^{\sum_i j_i}=N_n.
+\]
+Thus $S_n=N_n$, proving supermultiplicativity and admissibility.
+
+Write $a_n=\log_2N_n=n\lfloor\log_2n\rfloor$. At $n=2^m$ with
+$m\ge1$, direct calculation gives
+\begin{equation}
+ 2a_n-a_{n-1}-a_{n+1}=n-1.
+ \label{eq:staircasedefect}
+\end{equation}
+Indeed $a_{n-1}=(n-1)(m-1)$, $a_n=nm$, and
+$a_{n+1}=(n+1)m$. If $\log_2V_n=a_n+e_n$ with $e_n=o(n)$,
+then $2e_n-e_{n-1}-e_{n+1}=o(n)$ along these indices. The convexity
+defect for $\log_2V$ is therefore $n-1+o(n)>0$, contradicting eventual
+log-convexity, which requires that defect to be at most zero.
+\end{proof}
+
+This disproves the necessity of the log-convex-envelope route suggested
+as one possible approach in the repository's arbitrary-weight question
+\cite{repo-weight}. Subexponential equivalence to a supermultiplicative
+sequence is necessary and sufficient; subexponential equivalence to a
+log-convex sequence is strictly more restrictive.
+
+\subsection{Admissibility without asymptotically nondecreasing roots}
+
+\begin{proposition}[Persistent downward root jumps]
+\label{prop:alternating}
+The weight
+\begin{equation}
+ N_0=1,\qquad N_n=2^{n^2+(-1)^n n}\quad(n\ge1)
+ \label{eq:alternating}
+\end{equation}
+is supermultiplicative and admissible. At every even $n$,
+\begin{equation}
+ \frac{N_{n+1}^{1/(n+1)}}{N_n^{1/n}}=\frac12.
+ \label{eq:rootdrop}
+\end{equation}
+It is not subexponentially equivalent to a sequence whose roots are
+eventually nondecreasing.
+\end{proposition}
+\begin{proof}
+Let $a_n=n^2+(-1)^n n$. For positive $u,v$, the difference
+$a_{u+v}-a_u-a_v$ equals $2uv$ when both are even, equals
+$2u(v-1)$ when $u$ is even and $v$ odd, and equals $2uv+2(u+v)$
+when both are odd. The remaining mixed case is symmetric. Each difference
+is nonnegative, so $N$ is supermultiplicative. Its roots are
+$2^{n+(-1)^n}\to\infty$, proving admissibility and
+\eqref{eq:rootdrop}.
+
+If $V$ were subexponentially equivalent to $N$, then
+$V_n^{1/n}/N_n^{1/n}\to1$. The ratio of successive roots of $V$
+along even $n$ would tend to $1/2$, contradicting eventual
+nondecrease.
+\end{proof}
+
+Hence even a root-monotonicity substitute, up to vanishing multiplicative
+error in the roots, is not necessary. The partition-product condition
+is genuinely more flexible.
+
+\subsection{Every finite distortion is realized}
+
+\begin{theorem}[A one-parameter finite-loss family]
+\label{thm:finiteloss}
+For $c>1$, define
+\begin{equation}
+ N_0=1,\qquad N_n=n!\,c^{-n\boldsymbol1_{\{n\text{ odd}\}}}.
+ \label{eq:finiteloss}
+\end{equation}
+Then $N_n^{1/n}\to\infty$, and its envelope is
+\begin{equation}
+ S_n=
+ \begin{cases}
+ n!,&n\text{ even},\\
+ \max\{n!c^{-n},(n-1)!/c\},&n\text{ odd}.
+ \end{cases}
+ \label{eq:finitelossenvelope}
+\end{equation}
+In particular, $\Delta(N)=\mathcal I(N)=c$. The series $z-W_N$
+has type one and inverse type exactly $c$.
+\end{theorem}
+\begin{proof}
+The roots tend to infinity because $n!$ has superexponential roots and
+the parity factor reduces them by at most $c$. One elementary lower
+bound is $n!\ge\lfloor n/2\rfloor^{\lceil n/2\rceil}$.
+
+For every composition of $n$, the product of the part factorials is at
+most $n!$, and all powers of $c^{-1}$ reduce it. If $n$ is even, the
+one-part composition attains $n!$. If $n$ is odd, a nontrivial
+composition contains an odd part and hence a penalty of at least $c^{-1}$.
+Also every nontrivial composition has factorial product at most
+$(n-1)!$. To see this, group parts to two positive integers $a,n-a$;
+then $a!(n-a)!=n!/\binom na\le(n-1)!$. The product before grouping is
+no larger. Therefore every nontrivial product is at most $(n-1)!/c$,
+attained by the partition $(n-1,1)$ for odd $n\ge3$. The one-part
+product is $n!c^{-n}$. At $n=1$ the displayed maximum has the same
+value $1/c$, so the formula remains valid.
+
+For even $n$, $S_n/N_n=1$. For odd $n$,
+\[
+ \frac{S_n}{N_n}=\max\left(1,\frac{c^{n-1}}{n}\right),
+\]
+whose $n$th root tends to $c$ along the odd indices. Apply
+Theorem~\ref{thm:distortionintro} and
+Corollary~\ref{cor:extremaltype}.
+\end{proof}
+
+A finite distortion larger than one does not necessarily destroy the
+zero-type class: \eqref{eq:twosideddistortion} still preserves type zero.
+It does destroy exact positive type. The next example demonstrates a
+stronger failure unavailable when the distortion is finite.
+
+\subsection{Deep dips and an exact supermultiplicative repair}
+
+\begin{theorem}[An infinite-distortion weight]
+\label{thm:deepdips}
+Let
+\begin{equation}
+ N_0=1,\qquad
+ N_n=
+ \begin{cases}
+ 2^{n^2},&n\text{ even},\\
+ 2^{(n^2-1)/4},&n\text{ odd}.
+ \end{cases}
+ \label{eq:deepdips}
+\end{equation}
+Then $N_n^{1/n}\to\infty$, but its envelope is
+\begin{equation}
+ S_n=
+ \begin{cases}
+ 2^{n^2},&n\text{ even},\\
+ 2^{(n-1)^2},&n\text{ odd},
+ \end{cases}
+ \label{eq:deepdipsenvelope}
+\end{equation}
+and $\Delta(N)=\infty$.
+\end{theorem}
+\begin{proof}
+The root exponents are $n$ on even indices and $(n^2-1)/(4n)$ on odd
+indices, so both tend to infinity. An odd part $j\ge3$ in a partition
+may be replaced by the even part $j-1$ and the part one without decreasing
+the product, because $N_1=1$ and
+\[
+ (j-1)^2-\frac{j^2-1}{4}=\frac{(3j-5)(j-1)}4\ge0.
+\]
+Parts equal to one are left alone. After all such replacements, combine
+the even parts into one even part: their squared exponents have sum at
+most the square of their sum. If the original total $n$ is even, the
+resulting product is at most $2^{n^2}$, attained by the one-part
+partition. If $n$ is odd, at least one part one remains, so the product
+is at most $2^{(n-1)^2}$, attained by $(n-1,1)$, or by $(1)$ when
+$n=1$.
+
+At odd $n$,
+\[
+ \frac1n\log_2\frac{S_n}{N_n}
+ =\frac34n-2+\frac{5}{4n}\longrightarrow\infty.
+\]
+Thus the envelope repair has an unbounded exponential defect.
+\end{proof}
+
+\begin{theorem}[Type zero can invert to infinite type]
+\label{thm:zerotoinfinity}
+For the weight \eqref{eq:deepdips}, define
+\begin{equation}
+ f(z)=z-z^2-
+ \sum_{\substack{n\ge2\\n\text{ even}}}
+          2^{n^2-n\lceil\sqrt n\rceil}z^{n+1}.
+ \label{eq:zerotoinfinityseries}
+\end{equation}
+Then $\Type(f)=0$ and $\Type(\inv f)=\infty$.
+\end{theorem}
+\begin{proof}
+At even $n$, the normalized $n$th root of the coefficient of $f$ is
+$2^{-\lceil\sqrt n\rceil}\to0$; at odd $n\ge3$ it is zero. The
+single quadratic coefficient does not affect type. Hence $\Type(f)=0$.
+
+Write the negative nonlinear coefficients of $f$ as $-b_{n+1}$ with
+$b_{n+1}\ge0$. Its inverse has nonnegative coefficients by
+Lemma~\ref{lem:lagrange}. For odd $n\ge3$, the two ordered compositions
+$(n-1,1)$ and $(1,n-1)$ in the $k=2$ term yield
+\begin{equation}
+ [z^{n+1}]\inv f\ge
+ (n+2)\,2^{(n-1)^2-(n-1)\lceil\sqrt{n-1}\rceil}.
+ \label{eq:zerotoinfinitylower}
+\end{equation}
+Indeed the Lagrange factor is
+$\binom{n+2}{2}/(n+1)=(n+2)/2$, and there are two distinct orderings;
+also $b_2=1$. After division by $N_n$, the base-two logarithm of the
+normalized $n$th root is bounded below by
+\[
+ \frac{\log_2(n+2)+(n-1)^2
+ -(n-1)\lceil\sqrt{n-1}\rceil-(n^2-1)/4}{n}
+ =\frac34n-\sqrt n+O(1),
+\]
+which tends to infinity along odd $n$. This proves the assertion.
+\end{proof}
+
+The mechanism is explicit: an even degree with a large weight mixes with
+a single quadratic term and lands in a much smaller odd-degree weight.
+The failure is not an oscillatory sign phenomenon; all inverse
+contributions used in the lower bound are positive.
+
+\subsection{Harmless oscillations can be very irregular locally}
+
+As a simple contrast, take
+\begin{equation}
+ N_n=(n+1)!,\qquad
+ V_n=(n+1)!\,2^{(-1)^n\lfloor\sqrt n\rfloor}
+ \quad(n\ge1),
+ \label{eq:harmlessperturbation}
+\end{equation}
+with zeroth terms one. Proposition~\ref{prop:logconvex} makes $N$
+admissible. Since $\log(V_n/N_n)=O(\sqrt n)=o(n)$,
+Corollary~\ref{cor:perturbations} makes $V$ admissible with exactly the
+same types. No direct check of adjacent quotients or log-convexity of
+$V$ is required. Together with the preceding examples, this emphasizes
+that the relevant scale is the envelope defect divided by $n$, not the
+visible size of local oscillations alone.
+
+\section{Consequences for coefficient transforms and transseries}
+\label{sec:transseries}
+
+\subsection{Exact radii of weight-normalized transforms}
+
+For a scalar formal series with nonlinear coefficients $f_{n+1}$, define
+its explicitly normalized transform
+\begin{equation}
+ \mathcal B_N f(\zeta)=
+ \sum_{n\ge1}\frac{f_{n+1}}{N_n}\zeta^n.
+ \label{eq:weighttransform}
+\end{equation}
+This definition is merely a coefficient normalization. It is not, for a
+general $N$, a claim that an associated Laplace kernel or a summation
+procedure exists.
+
+The radius of convergence $R_N(f)$ is
+\begin{equation}
+ R_N(f)=\frac1{\Type(f)},
+ \label{eq:radius}
+\end{equation}
+with $1/0=\infty$ and $1/\infty=0$. One can verify the formula directly:
+inside the reciprocal limsup radius the terms are eventually bounded by
+a convergent geometric series; outside it, a subsequence of terms fails
+to tend to zero.
+
+\begin{corollary}[Radius preservation and optimal radius distortion]
+\label{cor:radii}
+For admissible $N$, every tangent formal series satisfies
+\begin{equation}
+ R_N(\inv f)=R_N(f).
+ \label{eq:radiusinvariance}
+\end{equation}
+If $N_n^{1/n}\to\infty$ and $1\le\Delta(N)<\infty$, then for
+$0<R_N(f)<\infty$,
+\begin{equation}
+ \frac{R_N(f)}{\Delta(N)}\le R_N(\inv f)
+                              \le\Delta(N)R_N(f).
+ \label{eq:radiusdistortion}
+\end{equation}
+The constant is sharp. Radii zero and infinity are individually preserved
+when $\Delta(N)<\infty$.
+\end{corollary}
+\begin{proof}
+Take reciprocals in Theorems~\ref{thm:classificationintro} and
+\ref{thm:distortionintro}, with the endpoint cases handled by the
+zero- and infinite-type statements. The negative extremal input has
+radius one and inverse radius $1/\Delta(N)$.
+\end{proof}
+
+For log-convex factorial or refined factorial coefficient scales this
+recovers the radius interpretation that motivates the predecessor
+\cite{repo-weight}. The extension is that the same interpretation now
+has an exact necessary-and-sufficient criterion for arbitrary positive
+scales, including the non-convex examples above.
+
+\subsection{Where this fits in a transseries calculation}
+
+An integer-indexed sector of a transseries calculation can produce a
+formal series in a small parameter $q$, with a chosen coefficient scale.
+When its normalization is tangent to the identity, the results here apply
+to the reversion in $q$ without requiring the series to converge. They
+also apply to finite systems of such formal series through
+Section~\ref{sec:banach}. The envelope is an explicit preprocessing step:
+compute or estimate $S_n$, and distinguish whether its defect is
+sublinear, linear with finite limsup, or unbounded on the linear scale.
+
+For example, a coefficient calculation known to have finite exact type
+in the staircase scale \eqref{eq:staircase} can be inverted with precisely
+the same type even though no equivalent log-convex scale exists. In the
+family \eqref{eq:finiteloss}, a generic membership statement obscures a
+real factor $c$ in the worst possible transformed radius. The deep-dip
+example warns that a superexponential normalization by itself can hide
+an arbitrarily severe nonlinear growth instability.
+
+These statements should not be extrapolated to an arbitrary Hahn support
+by replacing the integer $n$ with an exponent. The proof uses finite
+compositions of an integer and a concrete count of the possible lengths.
+Accumulating action sets require a separate support-summability and
+counting theory. Similarly, no Stokes constant, angular continuation,
+Borel summability direction, or optimal truncation error follows merely
+from the radius in \eqref{eq:radius}.
+
+\section{Finite algorithms and executed verification}
+\label{sec:verification}
+
+\subsection{What a finite prefix can certify}
+
+For rational input weights $N_1,\ldots,N_d$, the recurrence
+\eqref{eq:envelopecalculus} computes $S_1,\ldots,S_d$ and records a
+maximizing composition for each degree. It uses $O(d^2)$ rational
+multiplications and comparisons. This is an arithmetic-operation count,
+not a polynomial bit-complexity claim: the numerators and denominators
+may be very large.
+
+A second computation uses the ordered Lagrange formula, precomputing
+truncated powers of $\sum_{j\ge1}N_jz^j$. An independent implementation
+enumerates unordered partitions and evaluates
+\eqref{eq:partitionformula}. Agreement of these paths checks the
+coefficient index, multiplicity factor, and sign convention. A third
+implementation computes a fixed number of formal Picard iterations and
+checks the inverse equations. It does not use the partition formula.
+
+For a chosen rational $\eta$ and $C$, an exact integer $B$ is found by
+binary-searching the inequalities $B^j\ge N_j$ over the required finite
+prefix. The quantities $P,Q,R$ of
+Theorem~\ref{thm:finitecertificate} are then rational, so the certificate
+can be tested with no transcendental arithmetic. Finite tests cannot
+verify that $N_n^{1/n}\to\infty$ or that a limsup equals one; those
+assertions are proved from the explicit hypotheses in the article.
+
+\subsection{Recorded checks}
+
+The accompanying standard-library Python program was executed with
+Python 3.13.5, seed $20260929$, and maximum excess degree $36$ (ordinary
+coefficient degree $37$). It reported \textbf{5,443 counted exact finite
+checks}, all passing. The counter names and precise scope are preserved
+in \texttt{data/verification.json}; a summary follows.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.70\textwidth}r@{}}
+\toprule
+Check family & Count\\
+\midrule
+Envelope witnesses and positive inverse lower bounds & 216\\
+Independent partition-formula comparisons & 108\\
+Exact sparse--dense upper certificates & 648\\
+Envelope supermultiplicativity inequalities & 3,780\\
+Six weight families: two-sided inverse and Picard audits & 6\\
+Explicit envelopes: two supermultiplicative families & 72\\
+Deep-dip and finite-loss envelope formulas & 72\\
+Additional arbitrary-weight finite audits & 144\\
+Signed coefficient majorants and dilation checks & 288\\
+Signed two-sided inverse cases & 24\\
+Type-zero-to-infinite-type finite lower bounds & 17\\
+Bivariate homogeneous coefficient-norm bounds & 48\\
+Bivariate two-sided inverse cases & 8\\
+Staircase convexity-defect identities & 12\\
+\midrule
+Total & 5,443\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The six structured families are the shifted factorial weight, the
+staircase weight, the alternating supermultiplicative weight, finite loss
+with $c=2$, deep dips, and the subexponential factorial perturbation.
+Their positive inverse coefficients and envelopes were computed through
+excess degree $36$. Independent partition enumeration was checked
+through excess degree $18$. The two scalar inverse compositions were
+checked through ordinary degree $16$ for these families, with independent
+Picard checks through degree $12$. Twenty-four seeded signed-series
+cases were checked through ordinary degree $13$.
+
+Eight seeded bivariate maps were inverted through total degree $7$.
+Both compositions were checked against the identity, and the homogeneous
+coefficient-sum norms \eqref{eq:coefficientnorm} were compared with the
+scalar inverse majorant. These are finite rational polynomial tests;
+the infinite-dimensional statement follows from the multilinear proof,
+not from sampling finite-dimensional cases.
+
+Every asserted identity and inequality in the verification program uses
+integers or rational numbers. The logarithms in the diagnostic tables
+below use ordinary floating-point arithmetic, are labeled accordingly,
+and are not interval certificates. A counted check may aggregate several
+coefficient comparisons; the total is an audit counter, not a count of
+independent mathematical theorems.
+
+\subsection{A diagnostic separating envelope defect from tree overhead}
+
+The finite observations are easiest to interpret after separating
+\begin{equation}
+ d_n=\frac1n\log_2(S_n/N_n),\qquad
+ r_n=\frac1n\log_2(h_{n+1}(1)/S_n).
+ \label{eq:diagnostics}
+\end{equation}
+The theorem predicts $r_n\to0$ for each of the displayed weights.
+The envelope defect $d_n$ behaves very differently: it is zero for the
+staircase, tends to one along odd indices in the $c=2$ finite-loss
+family, and tends to infinity along odd indices for deep dips.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Weight & Excess degree $n$ & $d_n$ & $r_n$\\
+\midrule
+Staircase & 9 & 0.000000 & 0.154819\\
+Staircase & 17 & 0.000000 & 0.066476\\
+Staircase & 25 & 0.000000 & 0.138526\\
+Staircase & 33 & 0.000000 & 0.032306\\
+\addlinespace
+Deep dips & 9 & 4.888889 & 0.384381\\
+Deep dips & 17 & 10.823529 & 0.249878\\
+Deep dips & 25 & 16.800000 & 0.190196\\
+Deep dips & 33 & 22.787879 & 0.155433\\
+\addlinespace
+Finite loss, $c=2$ & 9 & 0.536675 & 0.507991\\
+Finite loss, $c=2$ & 17 & 0.700737 & 0.273671\\
+Finite loss, $c=2$ & 25 & 0.774246 & 0.200121\\
+Finite loss, $c=2$ & 33 & 0.816837 & 0.161217\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are rounded diagnostics from exact rational coefficients, not
+certified logarithmic intervals. In particular, the staircase values of
+$r_n$ are visibly nonmonotone. The proofs require no monotone convergence
+and do not infer the limits from the displayed finite degrees.
+
+\subsection{Reproduction and output discipline}
+
+The package contains \texttt{article.tex}, its compiled PDF, the
+verification code, recorded JSON and CSV data, provenance and proof-audit
+notes, and build commands. The article embeds its bibliography and table;
+it compiles without reading the verification outputs or accessing the
+network. From the package directory, run
+\begin{quote}\small
+\begin{verbatim}
+python3 code/verify.py --order 36
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+\end{quote}
+The verifier's default output is \texttt{build/verification/}, leaving
+\texttt{data/} unchanged. An explicit \verb|--output| argument can
+select another destination. It requires no third-party Python package,
+contacts no external service, and does not modify the upstream repository.
+PDF build and rendering checks are recorded separately from the
+mathematical verification report.
+
+\section{Proof dependencies and a formalization route}
+\label{sec:formalization}
+
+\subsection{The short dependency chain}
+
+The universal classification rests on a particularly small chain of
+arguments. First, finite Lagrange inversion converts inverse coefficients
+to positive partition products. Second, replacing many small parts by
+one large part proves that maximizing partitions have sublinear length.
+Third, a sparse--dense decomposition bounds every product relative to
+the supermultiplicative envelope and separates a small entropy cost from
+an arbitrarily strong dense penalty. These three steps prove
+\eqref{eq:central}. Dilation, absolute values, and the inverse involution
+then prove the exact distortion and zero-loss criterion.
+
+Composition introduces only the majorant
+$B_C\circ B_C\preceq H_{2C}$. Unequal-type equality and all cancellation
+examples use formal group identities. The Banach extension requires the
+norm inequality for normalized symmetrized contractions, after which the
+same scalar majorants apply. No compactness theorem for smooth functions,
+analytic continuation theorem, or resurgent input is hidden in the chain.
+
+\subsection{Finite algebra before asymptotics}
+
+A practical formalization can begin with finite words of positive natural
+numbers and their sum. The envelope recurrence, concatenation inequality,
+and least-majorant property are finite statements about maxima. They can
+be separated from formal power series entirely. The next layer is the
+finite coefficient identity \eqref{eq:orderedformula}, together with
+its absolute-value majorant and the equivalence to multiplicity-vector
+sums.
+
+The finite sparse--dense certificate is a useful standalone target. It
+requires counting positive compositions and tracking the total mass of
+parts at most $L$, but contains no limit. Formalizing it first isolates
+the only combinatorial estimates needed for the asymptotic theorem.
+The lower bound from a maximizing word should also be stated separately,
+so that the $C<1$ case is not accidentally lost.
+
+\subsection{Limits and extended-real endpoints}
+
+The analytic layer can be divided into the sparse-maximizer lemma, the
+binomial entropy estimate, the dense-suppression limit, and the central
+root limit. One must preserve the order of quantifiers: first fix
+$\eta$, then fix $B$ from finitely many weights, then let $n\to\infty$,
+and only afterwards let $\eta\downarrow0$. The assertion is not uniform
+in all $C>0$ simultaneously; each $C$ is fixed before the limit.
+
+The type layer should make zero and infinity explicit. A convenient
+approach is to prove finite coefficient bounds for every
+$A>\Type(f)$, derive the upper inequality when the input type is finite,
+and handle infinite types by applying the same inequality to the inverse.
+The polynomial obstruction deserves its own lemma because it supplies
+the necessity of a full root limit, not merely an unbounded subsequence.
+
+\subsection{Vector-valued coefficients and what has not been checked}
+
+For the Banach extension, a representation by symmetric continuous
+multilinear coefficients avoids an implicit polarization loss. The
+formalization needs normalized symmetrization, contraction, finite formal
+composition, and the recursively defined inverse. Associativity can be
+proved coefficientwise, independently of any convergent power-series
+infrastructure.
+
+No new Lean code is supplied or claimed to compile in this package.
+The proposed stages are a dependency plan, not a statement that matching
+library declarations already exist. The executed rational verification
+program can provide regression examples after the formal statements are
+implemented, but it does not certify the universal theorems.
+
+\section{Further research questions and concrete next targets}
+\label{sec:questions}
+
+The arbitrary-weight scalar zero-loss classification and the scalar
+composition spectrum are settled by the proofs in this article. The
+following questions concern additional information not encoded by those
+answers. They are proposed research directions; not every item is
+claimed to be a previously published open problem.
+
+\subsection{Optimal subexponential overhead}
+
+Theorem~\ref{thm:envelopeintro} proves
+$\log h_{n+1}(C)-\log S_n=o(n)$, while
+Theorem~\ref{thm:finitecertificate} supplies an explicit but generally
+nonoptimal finite upper bound. Determine the smallest attainable
+subexponential overhead from a specified weight profile. A concrete first
+target is to express it in terms of the number and entropy of partitions
+whose products lie within a chosen factor of $S_n$. This would refine
+the repository's question on optimal reversion cost without presuming
+log-convex local quotient asymptotics.
+
+\subsection{Anisotropic exact types under a general Jacobian}
+
+Theorem~\ref{thm:jacobian} proves that one scalar type and an invertible
+matrix are insufficient for a unique inverse type. Define a directional
+or multihomogeneous type profile that transforms exactly under linear
+precomposition and is preserved, in an appropriate sense, by tangent
+inversion. A useful finite-dimensional target is a profile indexed by
+polyradii, together with an exact covariance law under diagonal
+Jacobians. Non-diagonal changes would then test how much angular data
+must be retained.
+
+\subsection{Exact composition distortion outside the zero-loss class}
+
+For a nonadmissible superexponential weight with finite $\Delta(N)$, the
+same positive majorant gives an upper bound
+$\Type(f\circ g)\le\Delta(N)\max(\Type(f),\Type(g))$. Is this
+constant optimal? A single composition has a restricted two-level
+substitution structure, whereas an inverse permits arbitrarily deep
+structures. Identify the correct restricted envelope and determine
+whether its defect can be strictly smaller than the inversion defect.
+This asks for a new classification, not a repetition of the zero-loss
+case.
+
+\subsection{Effective criteria for presented weights}
+
+The finite recurrence computes every prefix of $S$, but the condition
+$\log(S_n/N_n)=o(n)$ is asymptotic. For which explicitly presented
+families can it be decided or certified effectively? Candidate classes
+include piecewise-polynomial logarithmic weights on residue classes,
+regularly varying weights with controlled oscillation, and weights given
+by finite max-plus recurrences. An algorithm should output a modulus of
+the envelope defect, not extrapolate it from a long finite prefix.
+
+\subsection{Quantitative cancellation profiles}
+
+Theorem~\ref{thm:cancellation} determines everything that two scalar
+types alone can say. What additional finite or asymptotic data predicts
+the output type in a structured family of equal-type inputs? A concrete
+target is a noncancellation theorem for prescribed sign cones or for
+coefficients concentrated on separated degree sets. Another is a
+stability theorem describing how a small coefficient perturbation moves
+a pair away from the exact inverse relation.
+
+\subsection{Differentiation, flows, and iterative logarithms}
+
+Admissibility was characterized for inversion and composition only.
+Determine the additional exact-type conditions needed for differentiation,
+formal flows, and the iterative logarithm of a tangent map. Adjacent
+weight ratios, absent from the main criterion, may reappear when an
+operator changes degree. A basic test is the staircase weight: its exact
+composition stability coexists with large local changes in its growth
+profile. No implication about these other operations is assumed here.
+
+\subsection{Hahn supports and accumulating actions}
+
+Replace the integer excess degree by an ordered action semigroup. One
+must specify which decompositions are finite, how their number is
+controlled, and what notion of a coefficient-growth scale is invariant
+under support refinements. A first target is a finitely generated positive
+semigroup with a fixed positive additive degree. Only after that case is
+understood should one address accumulating actions, where a finite
+integer-composition count is no longer available.
+
+\subsection{Realization and summation compatible with the envelope}
+
+For which admissible but non-log-convex weights do formal series admit
+useful analytic realizations with bounds preserving the exact type?
+Can a moment transform or acceleration procedure be built directly from
+the envelope $S$, and when does its sum commute with inversion? These
+questions require analytic continuation and growth hypotheses beyond
+coefficient bounds. The equality of normalized-transform radii in
+Corollary~\ref{cor:radii} supplies a necessary consistency check, not a
+summation theorem.
+
+\subsection{Finite certificates with bit-complexity bounds}
+
+The present dynamic program has a quadratic count of rational operations,
+while the integers in the examples can be huge. Develop compressed
+representations for logarithmic or factorial weights and prove
+bit-complexity bounds for envelope witnesses and sparse--dense
+certificates. A useful target is an independently checkable certificate
+whose size is small relative to the requested degree and the description
+length of the weight, rather than to its expanded numerator.
+
+\subsection{A proof-assistant formalization of the classification}
+
+The finite maximum-product closure and the exact certificate offer a
+manageable entry point. The main goal is a formally checked theorem
+quantifying over all positive weights, including the necessity direction
+and types zero and infinity. The Banach-space extension should then reuse
+the scalar result through a single majorant interface. Formalizing just
+selected numerical examples would not establish the classification;
+formalizing the central root limit would be the decisive milestone.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+
+The obstacle to exact formal inversion is not the absence of
+log-convexity. It is the exponential discrepancy between a weight and the
+products that additive partitions can form from it. Superexponential root
+growth suppresses the combinatorial cost of dense products, leaving the
+supermultiplicative envelope as the exact exponential-scale answer.
+
+This observation yields a complete arbitrary-weight criterion, an optimal
+distortion constant, a canonical repair, and a sharp nonlinear type
+calculus. The examples show that every part of the criterion matters:
+strongly non-convex weights can work perfectly, finite parity penalties
+can create a prescribed loss, and deeper parity dips can turn a
+type-zero input into an inverse of infinite type. The same positive
+majorants survive in formal Banach-space maps once the coefficient norm
+is fixed precisely. What remains is not the basic scalar classification,
+but finer overheads, directional information, different support geometries,
+and analytic realization.
+
+\begin{thebibliography}{9}
+
+\bibitem{repo-weight}
+ProveIt repository, maintained by Vladimir Reshetnikov.
+\emph{Sharp Weighted Type Under Formal Reversion: Zero-loss inversion,
+exact Borel radii, and non-D-finiteness in countable exponential feedback}.
+Research article prepared 29 September 2026, including repository editorial
+amendments of that date. Pinned file at commit
+\nolinkurl{3d5973524506411392a911470b5ddc35521568ea}; Git blob
+\nolinkurl{c2d9978806e0861f1bab7108b72ad92773e6a05c}.
+Especially the research subsections ``Weights beyond log-convexity'',
+``Two divergent composition arguments'', and ``Multivariate and
+operator-valued inversion''.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/article.tex}.
+Accessed 29 September 2026.
+
+\bibitem{gessel}
+Ira M. Gessel.
+\emph{Lagrange Inversion}.
+arXiv:1609.05988, 2016.
+\url{https://arxiv.org/abs/1609.05988}.
+A survey of the classical coefficient formulas and their formal proofs.
+
+\bibitem{rs-composition}
+Armin Rainer and Gerhard Schindl.
+\emph{Composition in ultradifferentiable classes}.
+Studia Mathematica \textbf{224} (2014), no.~2, 97--131.
+arXiv:1210.5102.
+\url{https://arxiv.org/abs/1210.5102}.
+
+\bibitem{rs-stability}
+Armin Rainer and Gerhard Schindl.
+\emph{Equivalence of stability properties for ultradifferentiable
+function classes}.
+Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales.
+Serie A. Matem\'aticas \textbf{110} (2016), no.~1, 17--32.
+arXiv:1407.6673; the inspected preprint is version~2, 1 January 2015.
+\url{https://arxiv.org/html/1407.6673v2}.
+
+\end{thebibliography}
+\end{document}

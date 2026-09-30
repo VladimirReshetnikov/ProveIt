@@ -1,0 +1,1440 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor,xurl,fancyhdr,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,
+ urlcolor=blue!40!black,pdftitle={Algebraic Convergence Loci for Nonlinear Hahn--Fuchsian Systems},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\G}{\Gamma}
+\newcommand{\HH}{\mathscr H}
+\newcommand{\mm}{\mathfrak m}
+\newcommand{\Res}{\mathcal R}
+\newcommand{\Anc}{\mathcal A}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cV}{\mathcal V}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\snap}{\texttt{3d5973524506411392a911470b5ddc35521568ea}}
+\newcommand{\proj}{\operatorname{pr}}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.7em}
+\linespread{1.025}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Nonlinear Hahn--Fuchsian systems}
+\fancyhead[R]{\small Algebraic convergence loci}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setcounter{tocdepth}{1}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{8mm}
+\noindent{\large\scshape Transseries research}\par
+\vspace{10mm}
+\noindent{\LARGE\bfseries Algebraic Convergence Loci\par}
+\vspace{3mm}
+\noindent{\LARGE\bfseries for Nonlinear\par}
+\vspace{3mm}
+\noindent{\LARGE\bfseries Hahn--Fuchsian Systems\par}
+\vspace{7mm}
+\noindent{\large Finite resonances, bounded-exponent obstructions,\par
+and universality with accumulating supports}
+\vspace{9mm}\hrule\vspace{6mm}
+\noindent Research article prepared for Vladimir Reshetnikov\par
+\noindent 29 September 2026
+\vspace{7mm}
+\begin{abstract}
+Consider $Dy=Ay+F(x,y)$, where $D=x\,d/dx$, $A$ is an arbitrary complex
+matrix, $F(0,0)=0$, $F_y(0,0)=0$, and the coefficients of $F$ are absolutely
+convergent Hahn series supported in a fixed well-ordered positive real
+exponent monoid. Finite accumulation of exponents is allowed.
+
+We prove that the positive, logarithm-free formal solutions are parametrized
+by a finite affine algebraic set of resonant coefficients. More importantly,
+\emph{the subset of parameters producing absolutely convergent solutions is
+itself affine algebraic}, even when the spectral separation is zero.
+The proof separates a bounded exponent window from a contractive analytic
+tail, then takes a finite-dimensional algebraic quotient of coefficient
+families by $\ell^1$. The additional convergence equations have strictly
+bounded weighted degree. Convergent solutions have a common positive
+radius on each compact subset of their algebraic parameter locus.
+
+This conclusion is sharp in a geometric sense: every affine algebraic set
+occurs, after a harmless normalization, as the convergence locus of a
+triangular system with \emph{no formal compatibility obstruction}.
+We also prove an exact universal spectral-gap criterion, a finite-ancestry
+bound for formal obstructions, and a sharp nonlinear example in which the
+forcing stays away from the spectrum but quadratic interactions create
+an accumulation of small divisors. Its convergence threshold is exactly
+$p>2$.
+
+All theorem-level arguments are given in the article. The accompanying
+program checks 670 exact scalar equalities, including 21 finite systems.
+These computations are consistency checks, not a formal verification of
+the infinite-support results.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status.} A self-contained research extension of selected
+ProveIt material. Historical priority has not been independently established;
+no claim of a solution to a famous general transseries conjecture is made.\par
+\vspace{2mm}
+\noindent\small\textbf{Inspected repository snapshot.}\quad\snap
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+
+\section{The question and the proposed advance}
+\label{sec:intro}
+
+Formal solvability, the absence of logarithms, and analytic convergence are
+three different questions. For ordinary regular-singular equations their
+relationship is familiar. With Hahn exponents, infinitely many terms can
+lie below one fixed spectral value, and formal division can destroy
+absolute convergence without changing the support.
+
+The ProveIt package \emph{Finite Resonance Certificates and Sharp Analytic
+Normalization for Hahn--Fuchsian Systems} treats a linear matrix-gauge
+problem. It identifies a universal separation condition involving spectral
+differences, and gives accumulation examples where a formal normalizer
+diverges \cite{repo-linear}. Its further directions ask about constrained
+supports, cancellation, and the geometry of exceptional parameter sets.
+Those results are not reproved here as a new discovery. We change the
+problem: the unknown is a nonlinear solution germ, not a linear gauge, and
+we classify \emph{which resonant parameters yield convergent germs}.
+
+The precise research question is:
+\begin{quote}
+Can infinitely many small-divisor conditions impose a genuinely
+nonalgebraic convergence condition on the finite resonant parameters of a
+positive Hahn solution of a nonlinear regular-singular equation?
+\end{quote}
+Within the class specified in Section~\ref{sec:framework}, the answer is
+\emph{no}. The convergence locus is algebraic. Conversely, it can be any
+affine algebraic set, so there is no general smoothness, linearity, or
+irreducibility theorem to replace this answer.
+
+\subsection{A guide to the results}
+There are two finite-dimensional obstructions, with very different meanings.
+The formal compatibility map $\Psi$ depends on finitely many input
+coefficients. The analytic map $\chi$ has finitely many polynomial
+components, but can depend on the summability of infinite coefficient
+families. The main description is
+\begin{equation}\label{eq:main-description}
+ \cV_{\mathrm{formal}}=\{c:\Psi(c)=0\},\qquad
+ \cV_{\mathrm{an}}=\{c:\Psi(c)=0,\ \chi(c)=0\}.
+\end{equation}
+The second equality is not a finite-coefficient decision algorithm.
+
+Theorem~\ref{thm:formal} constructs $\Psi$ without an analytic assumption.
+Theorem~\ref{thm:window} locates every possible convergence obstruction in
+one bounded exponent window. Theorem~\ref{thm:algebraic} converts that
+infinite window into the finite polynomial map $\chi$.
+Theorem~\ref{thm:universality} realizes arbitrary affine algebraic sets as
+$\cV_{\mathrm{an}}$ while $\cV_{\mathrm{formal}}$ is affine space.
+Theorem~\ref{thm:gap} characterizes when $\chi$ vanishes for every input.
+The example in Section~\ref{sec:hidden} shows why checking only the original
+forcing support misses nonlinear small divisors.
+
+\subsection{Relation to established theory}
+Generalized-series fixed-point methods are established. Van der Hoeven's
+operator theory includes an implicit-function theorem for Noetherian
+operators \cite{vdh}. We use a direct positive-valuation argument in the
+restricted setting needed here. Neumann support finiteness is also
+classical; the inspected repository already has a Lean development of
+finite ordered-word representations \cite{repo-words}.
+
+Convergence of generalized series satisfying analytic differential equations
+has substantial antecedents. Gontsov and Goryuchkina study complex-exponent
+series with real parts tending to infinity, and prove a majorant convergence
+theorem \cite{gg2015}; their later work develops a broader functional-equation
+framework \cite{gg2024}. Our accumulating coefficient supports are not an
+ordinary holomorphic power series in $x$ at zero and are not covered merely
+by identifying our equation as regular singular. Absolute convergence for
+Hahn series itself is a standard notion, also used in higher-rank tropical
+geometry \cite{js2023}.
+
+The proposed advance is the algebraicity and universality of the
+\emph{parameter-dependent absolute-convergence locus at zero spectral gap}.
+The proof is supplied independently below. A targeted literature and
+repository comparison did not establish historical priority for this exact
+statement; the article does not assert exhaustive coverage of either.
+
+\subsection{Scope}
+Exponents are real and nonnegative, the exponent monoid is well ordered,
+and solutions have positive valuation. The constant matrix need not be
+semisimple and need not have real spectrum. We consider no powers of
+$\log x$ in the solution ansatz. Failure of formal compatibility means
+failure in this logarithm-free class, not nonexistence of other solutions.
+Divergence means failure of absolute Hahn convergence, not nonexistence of
+an analytic function with some weaker asymptotic interpretation.
+
+Under $x=e^{-t}$, the monomials become $e^{-\gamma t}$ and $D=-d/dt$.
+Thus this is also a theorem about exponential transseries sectors with
+possibly accumulating positive actions. It is not a theorem about every
+logarithmic or exponential level of the full transseries field.
+
+\section{The coefficient algebra and the nonlinear model}
+\label{sec:framework}
+
+\subsection{A fixed well-ordered monoid}
+Let $\G\subset\R_{\geq0}$ be a nontrivial additive submonoid, containing
+$0$, and well ordered in the usual real order. Put
+\begin{equation}\label{eq:delta}
+ \delta=\min\G_{>0}>0,
+ \qquad
+ \HH_\G=\left\{\sum_{\gamma\in\G}u_\gamma x^\gamma:
+ u_\gamma\in\C\right\},
+ \qquad
+ \mm_\G=\{u:u_0=0\}.
+\end{equation}
+Every subset of $\G$ is well ordered. We do not require
+$\G\cap[0,L]$ to be finite.
+
+\begin{lemma}[Finite additive ancestry]\label{lem:ancestry}
+For every $\rho\in\G$, the set
+\begin{equation}\label{eq:ancestors}
+ \Anc(\rho)=\{\alpha\in\G:\rho-\alpha\in\G\}
+\end{equation}
+is finite. If $\beta\in\Anc(\rho)$ and
+$\alpha\in\Anc(\beta)$, then $\alpha\in\Anc(\rho)$.
+Every ordered decomposition of $\rho$ into positive elements of $\G$
+has length at most $\lfloor\rho/\delta\rfloor$, and there are only
+finitely many such decompositions.
+\end{lemma}
+\begin{proof}
+If $\Anc(\rho)$ were infinite, successively taking least unused elements
+would give a strictly increasing sequence $\alpha_n$ in that set. Then
+$\rho-\alpha_n$ would be a strictly decreasing sequence in $\G$, contrary
+to well ordering. The hereditary assertion follows from
+$\rho-\alpha=(\rho-\beta)+(\beta-\alpha)\in\G$.
+Every positive summand is at least $\delta$, which proves the length bound.
+For each fixed length, finiteness follows inductively from the two-summand
+assertion just proved. Only finitely many lengths are possible.
+\end{proof}
+
+The same two-set argument proves that the sum of two well-ordered subsets
+of $\R_{\geq0}$ is well ordered and has finite coefficient antidiagonals.
+Consequently, a well-ordered set $E\subset\R_{>0}$ generates a well-ordered
+monoid: below a fixed real bound only finitely many word lengths occur,
+and each fixed-length sumset is well ordered. This supplies many admissible
+examples. The stronger general ordered-group word lemma in
+\cite{repo-words} is not claimed as a new result here.
+
+Convolution therefore defines a ring on $\HH_\G$. Define $D$ strongly by
+\begin{equation}\label{eq:D}
+ D\!\left(\sum_\gamma u_\gamma x^\gamma\right)
+   =\sum_\gamma\gamma u_\gamma x^\gamma.
+\end{equation}
+Finite convolutions give the Leibniz rule. For vector series use
+$\val(y)=\min\supp(y)$, with $\val(0)=+\infty$.
+
+\subsection{The equation}
+Fix $A\in\operatorname{Mat}_m(\C)$. Consider
+\begin{equation}\label{eq:system}
+ Dy=Ay+F(x,y),\qquad y\in\mm_\G^m,
+\end{equation}
+where
+\begin{equation}\label{eq:F}
+ F(x,y)=\sum_{\alpha\in\G}\sum_{k\in\N^m}
+                F_{\alpha,k}x^\alpha y^k,
+ \qquad F_{\alpha,k}\in\C^m,
+ \qquad F_{0,0}=0,\quad F_{0,e_i}=0.
+\end{equation}
+Here $y^k=y_1^{k_1}\cdots y_m^{k_m}$ and $|k|=\sum k_i$.
+The last two conditions are exactly the formal interpretation of
+$F(0,0)=0$ and $F_y(0,0)=0$. Constant and linear terms with \emph{positive}
+$x$-exponent are allowed.
+
+For fixed $\gamma$, a term contributing to $[x^\gamma]F(x,y)$ has
+$|k|\leq\gamma/\delta$. Every $x$-exponent and every factor exponent in
+that term belongs to $\Anc(\gamma)$. Thus the coefficient is a finite
+sum. If $|k|=1$, then $\alpha>0$; if $\alpha=0$, then $|k|\geq2$.
+In either case every solution coefficient used on the right has exponent
+strictly less than $\gamma$.
+
+\begin{lemma}[Uniform formal valuation gain]\label{lem:gain}
+For $y,z\in\mm_\G^m$,
+\begin{equation}\label{eq:gain}
+ \val\bigl(F(x,y)-F(x,z)\bigr)\geq\val(y-z)+\delta.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Factor the difference of each monomial $y^k-z^k$ into terms with one
+factor from $y-z$. A positive $x$-exponent supplies a gain of at least
+$\delta$. Otherwise $|k|\geq2$, and at least one additional positive
+solution factor supplies that gain. Coefficientwise sums are finite, so
+cancellation can only increase valuation.
+\end{proof}
+
+\subsection{Absolute Hahn convergence}
+Choose any norm on $\C^m$; for estimates below take the maximum-coordinate
+norm and its induced matrix norm. Define
+\begin{equation}\label{eq:norm}
+ \norm{y}_r=\sum_{\gamma\in\G}\norm{y_\gamma}r^\gamma,
+ \qquad B_r=\ell^1(\G,r^\gamma).
+\end{equation}
+Scalar $B_r$ is a Banach convolution algebra. Write $B_r^+$ for its
+positive-support ideal. A formal series is called \emph{convergent} if it
+belongs to some $B_r$, $r>0$.
+
+The analytic assumption on $F$, imposed from Section~\ref{sec:window}
+onward, is that for some $r_0,s_0>0$,
+\begin{equation}\label{eq:analytic-F}
+ \sum_{\alpha,k}\norm{F_{\alpha,k}}r_0^\alpha s_0^{|k|}<\infty.
+\end{equation}
+This is a precise joint majorant condition; it is not inferred from formal
+support. Put
+\begin{align}
+ b(r)&=\sum_\alpha\norm{F_{\alpha,0}}r^\alpha,\label{eq:b}\\
+ L(r,s)&=\sum_{\alpha,\,|k|\geq1}
+   |k|\norm{F_{\alpha,k}}r^\alpha s^{|k|-1}.
+ \label{eq:L}
+\end{align}
+For $s<s_0$ and $r\leq r_0$ these are finite, and
+\begin{equation}\label{eq:smallness}
+ b(r)\longrightarrow0\quad(r\downarrow0),\qquad
+ L(r,s)\longrightarrow0\quad(r,s\downarrow0).
+\end{equation}
+The assertions follow by dominated convergence, using the vanished
+constant-linear coefficients and, for $L$, a fixed smaller $y$-radius to
+absorb the factor $|k|$. For $\norm{y}_r,\norm{z}_r\leq s$,
+\begin{equation}\label{eq:lipschitz}
+ \norm{F(x,y)-F(x,z)}_r\leq L(r,s)\norm{y-z}_r,
+ \qquad \norm{F(x,y)}_r\leq b(r)+L(r,s)\norm{y}_r.
+\end{equation}
+These elementary inequalities supply every analytic fixed-point estimate
+used below.
+
+\section{Finite algebraic parametrization of formal solutions}
+\label{sec:formal}
+
+\subsection{Kernel and cokernel splittings}
+Let
+\begin{equation}\label{eq:resonance}
+ \Res=\G_{>0}\cap\spec(A),\qquad T_\gamma=\gamma I-A.
+\end{equation}
+Since $\gamma$ is real, only positive real eigenvalues lying in $\G$ occur.
+For $\gamma\notin\Res$ put $R_\gamma=T_\gamma^{-1}$ and $Q_\gamma=0$.
+For $\rho\in\Res$, choose complements
+\[
+ \C^m=\ker T_\rho\oplus U_\rho,
+ \qquad \C^m=\operatorname{im}T_\rho\oplus W_\rho.
+\]
+Let $Q_\rho$ be projection onto $W_\rho$, and let $R_\rho$ be the inverse
+of $T_\rho:U_\rho\to\operatorname{im}T_\rho$, extended by zero on
+$W_\rho$. Then
+\begin{equation}\label{eq:splitting}
+ T_\rho R_\rho=I-Q_\rho,\qquad
+ P_\rho:=I-R_\rho T_\rho
+ \text{ projects onto }\ker T_\rho.
+\end{equation}
+A kernel and a cokernel need not be the same subspace. This distinction is
+essential for Jordan blocks.
+
+Choose bases of all $\ker T_\rho$. Let $c\in\C^q$ collect their
+coordinates, where
+\begin{equation}\label{eq:q}
+ q=\sum_{\rho\in\Res}\dim\ker T_\rho\leq m.
+\end{equation}
+Denote the corresponding kernel vector at $\rho$ by $C_\rho(c)$, and put
+$C(x;c)=\sum_{\rho\in\Res}C_\rho(c)x^\rho$. Give each parameter $c_i$
+the positive weight $\tau_i=\rho$ of its resonance.
+
+\subsection{The universal formal candidate}
+
+\begin{theorem}[Formal compatibility is finite algebraic]
+\label{thm:formal}
+For every $c\in\C^q$ there is a unique formal candidate
+$Y(c)\in\mm_\G^m$ satisfying
+\begin{equation}\label{eq:candidate}
+ Y=C(x;c)+\mathscr R F(x,Y),
+ \qquad [x^\gamma]\mathscr R u=R_\gamma u_\gamma.
+\end{equation}
+Every coefficient $Y_\gamma(c)$ is a polynomial in $c$. There is a finite
+polynomial map
+\begin{equation}\label{eq:Psi}
+ \Psi(c)=\bigl(Q_\rho[x^\rho]F(x,Y(c))\bigr)_{\rho\in\Res}
+       \in\bigoplus_{\rho\in\Res}W_\rho
+\end{equation}
+such that $c\mapsto Y(c)$ is a bijection from $\Psi^{-1}(0)$ onto the
+positive formal solutions of \eqref{eq:system}. Moreover:
+
+\begin{enumerate}
+\item Only the finite hereditary set
+$\Anc_*:=\bigcup_{\rho\in\Res}\Anc(\rho)$ is needed to compute $\Psi$.
+\item Only coefficients $F_{\alpha,k}$ with $\alpha\in\Anc_*$ and
+$|k|\leq\lfloor R_*/\delta\rfloor$ can be needed, where
+$R_*=\max\Res$ when $\Res\ne\varnothing$.
+\item Each monomial $c^\nu$ occurring in $Y_\gamma$ has
+$\wt(\nu):=\sum_i\tau_i\nu_i\leq\gamma$.
+\end{enumerate}
+For $\Res=\varnothing$ the map $\Psi$ is empty and there is one formal
+solution.
+\end{theorem}
+\begin{proof}
+Define $Y^{(0)}=0$ and
+$Y^{(n+1)}=C+\mathscr R F(x,Y^{(n)})$.
+The operator $\mathscr R$ cannot lower exponents. Lemma~\ref{lem:gain}
+therefore gives
+\[
+ \val(Y^{(n+1)}-Y^{(n)})\geq(n+1)\delta.
+\]
+Every coefficient eventually stabilizes. Its limit is supported in $\G$,
+hence is a Hahn series, and finite coefficientwise evaluation shows that
+it satisfies \eqref{eq:candidate}. If two candidates have a nonzero
+difference of least exponent $\beta$, \eqref{eq:gain} would make the same
+difference have valuation at least $\beta+\delta$, a contradiction.
+
+Equivalently, at each exponent one computes the finite polynomial
+\begin{equation}\label{eq:recursion}
+ f_\gamma(c)=[x^\gamma]F(x,Y_{<\gamma}(c)),\qquad
+ Y_\gamma(c)=R_\gamma f_\gamma(c)+C_\gamma(c),
+\end{equation}
+where $C_\gamma=0$ off $\Res$. The right side uses only lower
+coefficients. All dependencies lie in the finite set $\Anc(\gamma)$,
+which proves polynomiality and finite dependence without making any
+local-finiteness assumption on the whole low-exponent region.
+
+Multiplying \eqref{eq:recursion} by $T_\gamma$ gives the exact residual
+\begin{equation}\label{eq:residual}
+ DY-AY-F(x,Y)=-\sum_{\rho\in\Res}\Psi_\rho(c)x^\rho.
+\end{equation}
+Thus $\Psi=0$ is sufficient. For any actual formal solution $y$, take
+$C_\rho=P_\rho y_\rho$. Applying $R_\gamma$ to its coefficient equations
+gives \eqref{eq:candidate}, so uniqueness proves necessity and the claimed
+bijection.
+
+Hereditary ancestry proves the first assertion. At exponents at most
+$R_*$, a monomial has at most $R_*/\delta$ positive solution factors,
+which proves the second. Finally, induction in \eqref{eq:recursion} shows
+that the sum of the parameter weights in a product cannot exceed the sum
+of its solution-factor exponents, which is at most the output exponent.
+The free term at $\rho$ has exactly its assigned weight $\rho$.
+\end{proof}
+
+\begin{remark}[A finite certificate is not a bounded ordinary jet]
+An infinite number of coefficients can lie below $R_*$. The theorem uses
+only additive divisors of the \emph{exact} resonances. In particular,
+``retain everything below the largest resonance'' is generally not a finite
+algorithm. The finite set $\Anc_*$ can be much smaller.
+\end{remark}
+
+\begin{proposition}[Coordinate independence]\label{prop:intrinsic}
+Different kernel/cokernel splittings give polynomially isomorphic formal
+parameter varieties. Their subsets of convergent solutions correspond
+under the same isomorphism.
+\end{proposition}
+\begin{proof}
+On a formal solution, the new parameter at $\rho$ is the new kernel
+projection applied to $Y_\rho(c)$. This is polynomial by
+Theorem~\ref{thm:formal}. Reversing the splittings gives the inverse map,
+since both parameter maps describe the same solution coefficients.
+Convergence concerns the solution itself and is unchanged.
+\end{proof}
+
+\subsection{A sharp degree bound}
+Treat the finitely relevant entries of $F_{\alpha,k}$ as variables as well
+as the kernel coordinates $c$. The entries of $A,R_\gamma,Q_\gamma$ are
+fixed constants.
+
+\begin{proposition}[Total coefficient degree]\label{prop:degree}
+The polynomial $Y_\gamma$ has total degree at most
+$2\lfloor\gamma/\delta\rfloor-1$. The same bound holds for
+$\Psi_\rho$ with $\gamma=\rho$. This bound is attained for arbitrarily
+large integer $\rho/\delta$.
+\end{proposition}
+\begin{proof}
+Expand the recursion into rooted substitution trees. A coefficient vertex
+$F_{\alpha,k}$ has $|k|$ children and contributes exponent $\alpha$; a
+free-parameter leaf contributes its resonance exponent. A zero-exponent
+coefficient vertex has at least two children. Every other vertex has
+positive exponent cost at least $\delta$. The sum of all costs is the
+output exponent $\gamma$.
+
+If $P$ is the number of positive-cost vertices and $Z$ the number of
+zero-cost vertices, then $P\leq\lfloor\gamma/\delta\rfloor$.
+Every leaf has positive cost, and a tree has at most its number of leaves
+minus one vertices of arity at least two. Thus $Z\leq P-1$ and the number
+of coefficient or parameter factors is at most $2P-1$.
+Finite ancestry and the finite word-length bound make this a finite
+polynomial expansion, not an unproved infinite tree sum.
+The sharp family is established next.
+\end{proof}
+
+\begin{example}[Exact sharp obstruction]\label{ex:sharp}
+For $n\geq2$, consider on $\G=\delta\N$
+\begin{equation}\label{eq:sharp}
+ (D-n\delta)y=a x^\delta+b y^2.
+\end{equation}
+The obstruction at $n\delta$ is exactly
+\begin{equation}\label{eq:sharp-obstruction}
+ \Psi_n=\frac{a^n b^{n-1}}{((n-1)!)^2\delta^{2n-2}}.
+\end{equation}
+Its total degree is $2n-1$, proving sharpness.
+
+For completeness, set $z=x^\delta$, $\theta=z\,d/dz$, and, initially
+for $b\ne0$, substitute $y=-(\delta/b)\theta u/u$, $u(0)=1$.
+The Riccati equation becomes
+\[
+ \theta(\theta-n)u+qzu=0,\qquad q=ab/\delta^2.
+\]
+For $1\leq j<n$, its coefficients satisfy
+$u_j=q u_{j-1}/(j(n-j))$, so
+$u_{n-1}=q^{n-1}/((n-1)!)^2$.
+The obstruction in the $y$ equation is $a u_{n-1}$, by multiplying the
+linear residual by $-\delta^2/(bu)$ and comparing at the first obstructed
+exponent. This is \eqref{eq:sharp-obstruction}.
+Both sides are polynomial in $a,b$, so the identity extends to $b=0$.
+\end{example}
+
+\subsection{Choosing the monoid from the equation}
+The fixed monoid is not necessarily an artificial restriction. Suppose
+all coefficient exponents of $F$ lie in a given well-ordered positive
+monoid $\G_0$. Adjoin all positive real eigenvalues of $A$ and take the
+generated monoid $\G$. It is again well ordered. Every positive real Hahn
+solution of the equation then lies in $\HH_\G^m$.
+
+Indeed, read its finitely many kernel coefficients at the eigenvalues,
+and construct the candidate in $\HH_\G^m$. Both satisfy the coefficientwise
+fixed-point equation with those kernel data. Their two supports and the
+input monoid have a common positive lower bound. Factoring their difference
+as in Lemma~\ref{lem:gain} rules out a least nonzero coefficient of the
+difference. Thus the arbitrary positive solution equals the constructed
+candidate. This argument requires positive real support, not a general
+higher-rank transseries support.
+
+\section{All divergence is confined to a bounded exponent window}
+\label{sec:window}
+
+Assume \eqref{eq:analytic-F}. Define the spectral cutoff
+\begin{equation}\label{eq:cutoff}
+ H=\max\bigl(\{0\}\cup(\spec(A)\cap\R_{>0})\bigr).
+\end{equation}
+It includes positive real eigenvalues whether or not they belong to $\G$.
+Write $J=\G\cap(0,H]$. This set may be infinite.
+
+\begin{lemma}[The tail inverse is bounded]\label{lem:tail-inverse}
+There is a finite constant
+\begin{equation}\label{eq:tail-M}
+ M_H=\sup_{\gamma\in\G,\ \gamma>H}\norm{(\gamma I-A)^{-1}}<\infty.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The nonempty set $\G\cap(H,\infty)$ has a least element $\gamma_+>H$.
+There is no real eigenvalue of $A$ in $[\gamma_+,\infty)$.
+The resolvent is continuous and bounded on each compact subinterval of
+that ray, and for $\gamma>\norm A$ the geometric-series estimate gives
+$\norm{(\gamma I-A)^{-1}}\leq(\gamma-\norm A)^{-1}$.
+Together these estimates prove the claim. The right-hand gap at $H$ follows
+from well ordering; no left-hand gap has been assumed.
+\end{proof}
+
+For an explicitly certified norm bound one may instead use a larger cutoff
+$H'>\norm A$, giving $M_{H'}\leq(H'-\norm A)^{-1}$.
+The smaller cutoff \eqref{eq:cutoff} is useful for sharp degree bounds.
+
+\begin{theorem}[Bounded-window convergence criterion]
+\label{thm:window}
+For every formal candidate $Y(c)$ of Theorem~\ref{thm:formal}, whether or
+not $\Psi(c)=0$,
+\begin{equation}\label{eq:window-equiv}
+ Y(c)\in B_r\text{ for some }r>0
+ \quad\Longleftrightarrow\quad
+ \sum_{\gamma\in J}\norm{Y_\gamma(c)}<\infty.
+\end{equation}
+In particular, a compatible formal solution cannot acquire a new absolute
+convergence obstruction above the largest positive real eigenvalue.
+\end{theorem}
+\begin{proof}
+On a bounded interval of exponents, the positive weights $r^\gamma$ are
+bounded above and below by positive constants. Thus membership of the
+truncation in any $B_r$ is equivalent to the right side of
+\eqref{eq:window-equiv}. Necessity follows at once.
+
+For sufficiency put
+$p=\sum_{\gamma\in J}Y_\gamma(c)x^\gamma$ and write $Y=p+z$.
+The assumed coefficient sum is finite. For $r\leq1$,
+\[
+ \norm p_r\leq r^\delta\sum_{\gamma\in J}\norm{Y_\gamma(c)},
+\]
+so $\norm p_r\to0$. Let $\Pi_{>H}$ denote exponent truncation, and let
+$\mathscr R_{>H}$ apply $(\gamma I-A)^{-1}$ on that tail.
+The required tail fixed-point equation is
+\begin{equation}\label{eq:tail-fixed}
+ z=\mathscr R_{>H}\Pi_{>H}F(x,p+z).
+\end{equation}
+Both truncation and the inverse are bounded on $B_r$, with norms at most
+$1$ and $M_H$.
+
+Choose $0<\eta<s_0$. By first making $\eta$ small and then $r$ small,
+we can arrange
+\begin{equation}\label{eq:tail-conditions}
+ \norm p_r\leq\eta/4,\qquad
+ M_H b(r)\leq\eta/8,\qquad M_H L(r,\eta)\leq1/2.
+\end{equation}
+The map on the right of \eqref{eq:tail-fixed} sends the closed tail ball
+$\norm z_r\leq\eta/2$ into itself: at $z=0$ its norm is at most
+$\eta/8+\eta/8=\eta/4$, and its Lipschitz constant is at most $1/2$.
+Banach's contraction theorem gives a convergent tail.
+
+Its formal coefficients equal those of the original candidate. Above $H$
+there is no resonance and both tails satisfy \eqref{eq:tail-fixed}.
+If they differed, their least different exponent would gain at least
+$\delta$ under the right side by Lemma~\ref{lem:gain}, which is impossible.
+The finite possible formal residuals below $H$ do not enter this argument.
+\end{proof}
+
+\begin{corollary}[Locally finite exponent supports]\label{cor:locfinite}
+If $\G\cap[0,L]$ is finite for every $L$, every positive formal solution
+of \eqref{eq:system} is convergent. In particular this holds for monoids
+generated by finitely many positive real numbers.
+\end{corollary}
+\begin{proof}
+The set $J$ is then finite. A finitely generated positive real monoid is
+locally finite because each generator count is bounded under a fixed
+exponent cutoff.
+\end{proof}
+
+\subsection{Analytic evaluation}
+A convergent Hahn series defines a holomorphic function on the logarithmic
+cover of $0<|x|<r$. For $0<r'<r$,
+\begin{equation}\label{eq:derivative-bound}
+ \norm{Dy}_{r'}\leq
+ \frac{\norm y_r}{e\log(r/r')},
+\end{equation}
+since $\sup_{t\geq0}t(r'/r)^t=1/(e\log(r/r'))$.
+Thus termwise differentiation is valid on smaller radii. Absolute
+convolution and \eqref{eq:analytic-F} also justify substitution into $F$.
+A compatible convergent candidate consequently solves the actual
+differential equation on that cover. These statements do not require
+$F$ or $y$ to extend holomorphically across $x=0$ in the ordinary sense.
+
+\section{The algebraic convergence-locus theorem}
+\label{sec:algebraic}
+
+This is the central result. The bounded exponent window can contain
+infinitely many non-summable coefficients. Nevertheless its dependence
+on finitely many positive-weight resonant parameters has bounded degree.
+That finite polynomial complexity is sufficient.
+
+\begin{theorem}[Algebraicity at zero spectral gap]
+\label{thm:algebraic}
+Assume \eqref{eq:analytic-F}. There are finitely many polynomials
+$\chi_1,\ldots,\chi_s\in\C[c_1,\ldots,c_q]$ such that
+\begin{equation}\label{eq:analytic-variety}
+ \{c:Y(c)\text{ is convergent}\}=\{c:\chi(c)=0\}.
+\end{equation}
+Consequently the positive convergent solutions are parametrized by the
+affine algebraic set $\cV_{\mathrm{an}}=V(\Psi,\chi)$.
+If $H>0$, the polynomials can be chosen to use only monomials satisfying
+\begin{equation}\label{eq:strict-weight}
+ \sum_{i=1}^q\tau_i\nu_i<H.
+\end{equation}
+The number $s$ is at most the number of such monomials. If $q>0$, their
+ordinary degrees are at most $\lceil H/\min_i\tau_i\rceil-1$.
+If $H=0$, there is no analytic obstruction.
+\end{theorem}
+\begin{proof}
+Suppose first that $H>0$. Theorem~\ref{thm:formal} gives, on the entire
+bounded window $J$, a uniform finite monomial expansion
+\begin{equation}\label{eq:finite-monomials}
+ Y_\gamma(c)=\sum_{\nu:\,\wt(\nu)\leq H} a_{\gamma,\nu}c^\nu,
+ \qquad a_\nu=(a_{\gamma,\nu})_{\gamma\in J}.
+\end{equation}
+There are only finitely many allowed $\nu$, since all parameter weights
+are positive. For $q=0$ the one possible monomial is the constant $1$.
+
+Let $\mathcal E=(\C^m)^J$ be the vector space of all coefficient families
+on $J$, and let $\mathcal L=\ell^1(J;\C^m)$ be its linear subspace of
+absolutely summable families. Form the \emph{algebraic} quotient
+$\mathcal E/\mathcal L$; no norm or Hausdorff topology on this quotient
+is used. The classes $[a_\nu]$ span a finite-dimensional subspace $W$.
+Choose a basis $w_1,\ldots,w_s$ of $W$ and write
+\[
+ [a_\nu]=\sum_{j=1}^s q_{j\nu}w_j.
+\]
+Define
+\begin{equation}\label{eq:chi}
+ \chi_j(c)=\sum_{\nu}q_{j\nu}c^\nu.
+\end{equation}
+The family $(Y_\gamma(c))_{\gamma\in J}$ lies in $\mathcal L$ exactly
+when its quotient class vanishes, and by linear independence this is
+exactly $\chi_1(c)=\cdots=\chi_s(c)=0$.
+Theorem~\ref{thm:window} proves \eqref{eq:analytic-variety}.
+
+If $\wt(\nu)=H$, then $a_{\gamma,\nu}=0$ for $\gamma<H$ by weighted
+degree. Its only possible nonzero entry in $J$ is at $\gamma=H$.
+Such a family is summable, so $[a_\nu]=0$. Those monomials may therefore
+be omitted, giving the strict inequality \eqref{eq:strict-weight}.
+The equation-count and ordinary-degree bounds follow immediately.
+When $H=0$, the set $J$ is empty, and Theorem~\ref{thm:window} makes every
+candidate convergent.
+\end{proof}
+
+\begin{remark}[Why this is more than a spectral-gap statement]
+No lower bound on the nonzero denominators below $H$ was used. Infinite
+families of unbounded coefficients may cancel after specializing $c$.
+The quotient keeps precisely the non-$\ell^1$ parts and does not replace
+such cancellation by an absolute tree majorant. This is why the theorem
+can describe exceptional convergent parameters in a zero-gap system.
+\end{remark}
+
+\begin{corollary}[The top resonant parameters are unrestricted analytically]
+A parameter of weight exactly $H$ does not occur in $\chi$. In particular,
+if all resonant parameters have weight $H$, the candidates are either all
+convergent or all divergent. This is a statement about the convergence
+condition; the separate compatibility equations $\Psi=0$ still apply.
+\end{corollary}
+
+\begin{theorem}[Uniform convergence on compact parameter sets]
+\label{thm:uniform}
+For every compact subset $K\subset\{\chi=0\}$ there is $r_K>0$ such that
+$Y(c)\in B_{r_K}$ for all $c\in K$, with uniformly bounded norms.
+Locally on the algebraic locus $\{\chi=0\}$, this family is the restriction
+of a holomorphic Banach-valued map. The assertion remains valid on singular
+or reducible loci and, in particular, on $V(\Psi,\chi)$.
+\end{theorem}
+\begin{proof}
+Choose actual coefficient families $\widetilde w_j\in\mathcal E$
+representing the basis classes $w_j$ used above. Then
+\[
+ b_\nu=a_\nu-\sum_jq_{j\nu}\widetilde w_j\in\mathcal L.
+\]
+For $c$ satisfying $\chi(c)=0$, its window family equals
+\begin{equation}\label{eq:window-polynomial}
+ (Y_\gamma(c))_{\gamma\in J}=\sum_\nu b_\nu c^\nu.
+\end{equation}
+The right side is a finite polynomial with values in $\ell^1$.
+It is uniformly bounded for $c\in K$. As a positive series its $B_r$ norm
+tends to zero uniformly on $K$ as $r\downarrow0$.
+
+The three inequalities \eqref{eq:tail-conditions} can therefore be imposed
+with a common $r$. The resulting contraction supplies a common tail ball
+and a common contraction constant. For the holomorphic assertion, use
+\eqref{eq:window-polynomial} as a polynomial definition of $p(c)$ also
+\emph{off} the locus. On a sufficiently small open parameter neighborhood
+it obeys the same strict bounds. Iterating the tail map gives holomorphic
+Banach-valued functions converging uniformly on smaller neighborhoods,
+so its fixed point is holomorphic. On the locus, uniqueness identifies it
+with the original formal candidate. Off the locus this extension need not
+solve the original full equation, and no such claim is needed.
+\end{proof}
+
+\subsection{What is and is not effective}
+The formal map $\Psi$ has finite input dependence. The map $\chi$ has
+finite output dimension and bounded polynomial degree, but its coefficients
+encode which finite linear combinations of the families $a_\nu$ lie in
+$\ell^1$. These summability relations need not be decidable from an arbitrary
+presentation of the input.
+
+In particular, $\mathcal E/\mathcal L$ above is not being treated as a
+Banach quotient, and no continuity of quotient-coordinate functionals is
+assumed. Choosing a basis of its finite-dimensional algebraic subspace is
+legitimate linear algebra. Replacing that choice by an effective exact
+algorithm is a separate question with additional hypotheses.
+
+\section{A sharp criterion for universal convergence}
+\label{sec:gap}
+
+Algebraicity describes a fixed equation even when some solutions diverge.
+There is also a precise condition under which every admissible analytic
+input has only convergent positive formal solutions. Here the relevant
+numbers are eigenvalues of $A$, not the eigenvalue \emph{differences} in a
+matrix-gauge problem.
+
+Define
+\begin{equation}\label{eq:gap}
+ g(A,\G)=\inf\{\abs{\gamma-\lambda}:\gamma\in\G_{>0},\
+ \lambda\in\spec(A),\ \gamma\ne\lambda\}.
+\end{equation}
+
+\begin{theorem}[Sharp universal convergence criterion]\label{thm:gap}
+For fixed $A$ and $\G$, the following are equivalent:
+\begin{enumerate}
+\item $g(A,\G)>0$.
+\item No positive real eigenvalue of $A$ is a left accumulation point of
+$\G$.
+\item For every $F$ satisfying \eqref{eq:F} and \eqref{eq:analytic-F},
+every positive formal solution in $\HH_\G^m$ is convergent.
+\end{enumerate}
+If these conditions fail, an $F$ with a genuinely quadratic nonlinear
+term and a divergent positive formal solution can be chosen arbitrarily
+small in any prescribed joint norm of the form
+\eqref{eq:analytic-F}.
+\end{theorem}
+\begin{proof}
+Since $\G_{>0}$ has least element $\delta$, zero and negative real
+eigenvalues cannot be approached. A nonreal eigenvalue has distance at
+least the absolute value of its imaginary part from real exponents.
+Only finitely many eigenvalues occur. Unbounded exponents cannot make
+the distances in \eqref{eq:gap} tend to zero. Finally, no real number can
+be a right accumulation point of a well-ordered real set: the part of
+that set strictly above the number, if nonempty, has a least member.
+It follows that failure of a positive gap is exactly left accumulation
+at a positive real eigenvalue. This proves the first equivalence.
+
+Assume $g(A,\G)>0$. The matrices $R_\gamma$ in
+Section~\ref{sec:formal} then have a common finite norm bound $M$.
+For nonresonant exponents this follows from boundedness of the matrix
+resolvent on bounded closed sets separated from its poles and its decay
+at infinity. At the finitely many exact resonances the chosen matrices
+$R_\rho$ are fixed and finite. For any fixed $c$, the kernel polynomial
+$C(x;c)$ tends to zero in $B_r$ as $r\downarrow0$.
+The estimates \eqref{eq:smallness}--\eqref{eq:lipschitz} make
+$y\mapsto C+\mathscr R F(x,y)$ a contraction on a sufficiently small
+$B_r$ ball after shrinking $r$. Its fixed point equals $Y(c)$ by formal
+uniqueness. Thus all candidates, and hence all compatible solutions,
+converge.
+
+For the converse let $\rho>0$ be a real eigenvalue approached from below.
+Select strictly increasing $\alpha_n\in\G$ with
+\begin{equation}\label{eq:bad-sequence}
+ \rho/2<\alpha_n<\rho,
+ \qquad 0<\rho-\alpha_n<2^{-2n}.
+\end{equation}
+Choose an eigenvector $v\ne0$ with $Av=\rho v$ and a linear functional
+$\ell$ with $\ell(v)=1$; $\ell$ need not be a left eigenvector.
+For positive constants $\varepsilon,\kappa$, put
+\begin{equation}\label{eq:quadratic-bad}
+ F(x,y)=\varepsilon\sum_{n\geq1}2^{-n}x^{\alpha_n}v
+           +\kappa\ell(y)^2v.
+\end{equation}
+This satisfies the analytic majorant condition at every fixed positive
+$x$-radius and finite $y$-radius. Taking $\varepsilon,\kappa$ small makes
+its norm arbitrarily small while keeping its nonlinear term nonzero.
+
+Seek a solution $y=u v$. The scalar equation is
+\[
+ (D-\rho)u=\varepsilon\sum_{n\geq1}2^{-n}x^{\alpha_n}+\kappa u^2.
+\]
+Set its optional free coefficient at $\rho$ to zero. Below $\rho$, all
+nonzero forcing exponents exceed $\rho/2$, so the quadratic term
+contributes nothing. At $\rho$ it contributes nothing either, and the
+forcing has no term there. Hence a formal solution exists, including when
+$\rho\notin\G$ so no compatibility equation is present. Its coefficients
+are
+\[
+ u_{\alpha_n}=\frac{\varepsilon 2^{-n}}{\alpha_n-\rho},
+ \qquad \abs{u_{\alpha_n}}>\varepsilon 2^n.
+\]
+Because the exponents stay bounded and tend to $\rho$, these coefficients
+are not summable at any positive radius. The full vector $uv$ is an
+actual formal solution of the matrix equation, regardless of the other
+eigenvalues of $A$. This disproves the universal convergence assertion.
+\end{proof}
+
+\begin{remark}[Necessity is a universal, not pointwise, claim]
+Zero gap does not imply that every equation, or every parameter choice,
+diverges. The algebraic convergence locus may be empty, all of parameter
+space, or a proper algebraic subset. The theorem constructs a bad input
+when the gap fails; it does not replace the cancellation-sensitive
+criterion for a particular input.
+\end{remark}
+
+\section{Universality: every affine algebraic set can occur}
+\label{sec:universality}
+
+The algebraicity theorem gives a substantial restriction, but it cannot
+be strengthened to linearity or smoothness. The following construction
+also separates formal solvability from convergence particularly cleanly.
+
+\begin{theorem}[Universality of the analytic selection locus]
+\label{thm:universality}
+Let $P_1,\ldots,P_s\in\C[c_1,\ldots,c_n]$ be arbitrary polynomials.
+There is a triangular system of the form \eqref{eq:system}, with convergent
+Hahn coefficients and no formal compatibility obstruction, whose formal
+solution parameter space is $\C^{n+s}$ and whose convergence locus is
+\begin{equation}\label{eq:universal-locus}
+ V(P_1,\ldots,P_s)\times\C^s.
+\end{equation}
+After normalizing the $s$ auxiliary resonant coefficients to zero, the
+formal parameter space is $\C^n$ and the convergence locus is exactly
+$V(P_1,\ldots,P_s)$.
+\end{theorem}
+\begin{proof}
+Choose $h>0$ and an integer $d\geq\max(2,\deg P_1,\ldots,\deg P_s)$.
+Set $\rho=(d+1)h$ and
+\begin{equation}\label{eq:g-universal}
+ g(x)=\sum_{r=2}^{\infty}\frac{x^{h-h/r}}{r^2},\qquad
+ \G=\left\langle h,\ h-h/r\ (r\geq2)\right\rangle.
+\end{equation}
+The generating set is positive and well ordered, with least element $h/2$,
+so $\G$ is admissible. The series $g$ is absolutely convergent at every
+positive radius, because its exponents lie in $[h/2,h)$ and
+$\sum r^{-2}<\infty$.
+
+Write $P_j(c)=\sum_k p_{j,k}c^k$. Use variables $u_1,\ldots,u_n$ and
+$v_1,\ldots,v_s$ and equations
+\begin{align}
+ Du_i&=h u_i,\qquad 1\leq i\leq n,\label{eq:univ-u}\\
+ Dv_j&=\rho v_j+g(x)\sum_k p_{j,k}
+               x^{(d-|k|)h}u^k,
+           \qquad 1\leq j\leq s.\label{eq:univ-v}
+\end{align}
+All $x$-exponents in the nonlinear part are positive, and $d-|k|\geq0$.
+Thus the structural conditions and the analytic majorant condition hold.
+The residue matrix is diagonal with entries $h$ and $\rho$.
+
+Every formal solution of \eqref{eq:univ-u} is $u_i=c_i x^h$.
+Substitution in \eqref{eq:univ-v} gives
+\[
+ (D-\rho)v_j=P_j(c)\sum_{r=2}^{\infty}\frac{x^{\rho-h/r}}{r^2}.
+\]
+There is no forcing coefficient at the exact resonance $\rho$, so every
+$c$ is formally allowed, and each $v_j$ has an independent free coefficient
+$z_j$ at $\rho$. The full formal solutions are exactly
+\begin{equation}\label{eq:univ-solution}
+ u_i=c_i x^h,\qquad
+ v_j=z_jx^\rho-\frac{P_j(c)}h
+                  \sum_{r=2}^{\infty}\frac{x^{\rho-h/r}}r.
+\end{equation}
+At any positive radius, the terms $r_0^{\rho-h/r}$ tend to
+$r_0^\rho>0$. The last series is therefore absolutely convergent exactly
+when its scalar prefactor vanishes. This proves
+\eqref{eq:universal-locus}. Normalizing $z_j=0$ removes the auxiliary
+affine factor and changes no convergence condition.
+\end{proof}
+
+The ordinary-degree bound in Theorem~\ref{thm:algebraic} is also sharp.
+Take one parameter of weight $h$ and a polynomial of exact degree $d$.
+Here $H=(d+1)h$, so the bound is $d$, and the construction realizes a
+degree-$d$ convergence equation. Choosing a polynomial with $d$ distinct
+roots ensures that no lower-degree equation defines the same locus
+in that parameter line.
+
+\begin{example}[A two-point convergence locus]
+Take $n=s=1$, $h=1$, $d=2$, and $P(c)=c^2-1$. The system is
+\begin{equation}\label{eq:two-points}
+ Du=u,\qquad Dv=3v+g(x)(u^2-x^2),\qquad
+ g(x)=\sum_{r=2}^{\infty}r^{-2}x^{1-1/r}.
+\end{equation}
+All $(c,z)\in\C^2$ give formal solutions,
+\[
+ u=cx,\qquad v=zx^3-(c^2-1)\sum_{r=2}^{\infty}r^{-1}x^{3-1/r}.
+\]
+The convergent locus is exactly
+$\{c=1\}\times\C\ \cup\ \{c=-1\}\times\C$.
+Every coefficient of the equation is convergent; convergence of the
+solution is selected by nonlinear cancellation, not by an input
+summability failure.
+\end{example}
+
+\begin{example}[Singular and reducible convergence loci]
+Using $P(c_1,c_2)=c_1c_2$ gives the union of the two coordinate axes.
+Using $P(c_1,c_2)=c_2^2-c_1^3$ gives a cusp. These examples show that the
+word ``algebraic'' in Theorem~\ref{thm:algebraic} does not hide an
+unproved regularity assertion. The theorem concerns the complex point
+set; no claim about a canonical nonreduced scheme structure is intended.
+\end{example}
+
+\subsection{Formal compatibility can also encode arbitrary varieties}
+For comparison, omit the accumulating multiplier $g$ and use
+\begin{equation}\label{eq:formal-univ}
+ Du_i=h u_i,\qquad
+ Dv_j=dh v_j+\sum_kp_{j,k}x^{(d-|k|)h}u^k.
+\end{equation}
+Now $u=cx^h$ gives exact-resonance forcing $x^{dh}P_j(c)$.
+The formal compatibility equations are $P_j(c)=0$, and the formal solution
+space is $V(P)\times\C^s$. All those solutions converge, by local
+finiteness. Thus the same algebraic set can arise either as a formal
+resonance obstruction or as a purely analytic selection condition. The
+accumulating construction proves that the two mechanisms are not the same.
+
+\section{Nonlinear generation of a sharp small-divisor threshold}
+\label{sec:hidden}
+
+The universal gap criterion uses the whole exponent monoid. It cannot in
+general be replaced by separation of the original forcing support. The
+following scalar example gives exact formulas and a complete threshold,
+including compatibility at the resonance.
+
+Let
+\begin{equation}\label{eq:hidden-support}
+ \alpha_n=2-\frac1n\quad(n\geq3),\qquad
+ \G=\langle1,\alpha_3,\alpha_4,\ldots\rangle.
+\end{equation}
+The least positive exponent is $1$, and the only members of $\G$ up to
+$3$ are
+\begin{equation}\label{eq:window-support}
+ 0,1,2,3,\qquad \alpha_n,\qquad 1+\alpha_n\quad(n\geq3).
+\end{equation}
+Indeed, two $\alpha$-generators have sum at least $10/3>3$.
+Below $3$, an integer plus an $\alpha$-generator can use at most one $1$.
+In particular,
+\begin{equation}\label{eq:hidden-ancestry}
+ \Anc(3)=\{0,1,2,3\},
+\end{equation}
+although infinitely many exponents lie below $3$.
+
+For $p>1$ and $a,b\in\C$ consider
+\begin{equation}\label{eq:hidden-system}
+ (D-3)y=a x+\sum_{n=3}^{\infty}n^{-p}x^{\alpha_n}
+                  +b y^2+2b^2y^3.
+\end{equation}
+Its forcing is absolutely convergent at every positive radius.
+Each original nonzero forcing exponent is at distance strictly greater
+than $1$ from the spectral value $3$; their infimum distance is $1$.
+There is no original forcing at the resonance.
+
+\begin{theorem}[Exact nonlinear threshold]\label{thm:hidden}
+Every $a,b$ and every free coefficient $c=y_3$ produce a unique positive
+formal solution of \eqref{eq:hidden-system}. Its coefficients in the
+critical window are
+\begin{align}
+ y_1&=-\frac a2,&y_2&=-\frac{a^2b}{4},\label{eq:hidden-coef1}\\
+ y_{\alpha_n}&=-\frac{n^{1-p}}{n+1},&
+ y_{1+\alpha_n}&=-\frac{ab\,n^{2-p}}{n+1},\label{eq:hidden-coef2}\\
+ y_3&=c.\label{eq:hidden-coef3}
+\end{align}
+The formal solution is convergent if and only if
+\begin{equation}\label{eq:hidden-threshold}
+ p>2\quad\text{or}\quad ab=0.
+\end{equation}
+The criterion is independent of the top resonant parameter $c$.
+\end{theorem}
+\begin{proof}
+At exponents $1$ and $2$, coefficient comparison gives
+$y_1=-a/2$ and $y_2=-b y_1^2=-a^2b/4$.
+The exponent $\alpha_n$ is below $2$, so no nonlinear term contributes:
+\[
+ y_{\alpha_n}=\frac{n^{-p}}{\alpha_n-3}
+             =-\frac{n^{1-p}}{n+1}.
+\]
+At $1+\alpha_n=3-1/n$, the only nonlinear contribution is
+$2b y_1y_{\alpha_n}$. The cubic term starts at exponent $3$.
+Dividing by $-1/n$ gives the second coefficient in
+\eqref{eq:hidden-coef2}.
+
+At the exact resonance $3$, only the ancestors in
+\eqref{eq:hidden-ancestry} can enter. The forcing is
+\[
+ 2b y_1y_2+2b^2y_1^3
+ =\frac{a^3b^2}{4}-\frac{a^3b^2}{4}=0.
+\]
+Hence compatibility holds for every $a,b$ and $c=y_3$ is free.
+Theorem~\ref{thm:formal} supplies the unique formal continuation.
+
+The first infinite coefficient family in \eqref{eq:hidden-coef2} is
+summable for every $p>1$. The second has magnitude comparable to
+$|ab|n^{1-p}$. It is summable exactly when $ab=0$ or $p>2$.
+All exponents in this calculation are bounded by $3$, so no radius can
+alter this summability test. Theorem~\ref{thm:window}, with $H=3$,
+proves that this is also sufficient for the full solution to converge.
+\end{proof}
+
+\begin{remark}[The two roles of cancellation]
+The cubic term is chosen to cancel the \emph{exact} resonance, making all
+formal branches exist. It does not cancel the infinitely many quadratic
+near-resonances below $3$. Thus formal compatibility alone cannot detect
+the threshold. Conversely, setting $a=0$ or $b=0$ removes the entire
+non-summable family, illustrating why an absolute path bound can miss a
+convergent specialization.
+\end{remark}
+
+\subsection{Finite coefficient data cannot determine the analytic locus}
+
+\begin{proposition}[No general finite-coefficient convergence certificate]
+\label{prop:no-finite}
+For a suitable fixed $A$ and $\G$, and any prescribed finite set of input
+coefficient positions, there exist two analytic inputs agreeing at all
+those positions and having identical formal compatibility maps, while one
+has convergent positive formal solutions and the other has none.
+The inputs can be arbitrarily close in the majorant norm.
+\end{proposition}
+\begin{proof}
+Take the scalar $A=1$ and
+$\G=\langle1,1-1/n\ (n\geq2)\rangle$.
+Use $F^{(0)}=0$ and, after discarding a sufficiently long finite prefix,
+\[
+ F^{(1)}(x,y)=\varepsilon\sum_{n>N}n^{-2}x^{1-1/n}.
+\]
+Choose $N$ so that none of the displayed coefficient positions is among
+the finitely prescribed ones. Both inputs have zero forcing at the exact
+resonance $1$, hence their compatibility maps are identically zero.
+The first has solutions $cx$. The second has solutions
+\[
+ cx-\varepsilon\sum_{n>N}n^{-1}x^{1-1/n},
+\]
+none of which is absolutely convergent. The norm of the difference tends
+to zero with $\varepsilon$, or with $N\to\infty$ at fixed radius.
+\end{proof}
+
+This does not contradict the finite polynomial description of the analytic
+locus. In the example the extra polynomial equation is simply a nonzero
+constant, so the locus is empty. Determining that constant obstruction
+requires information about an infinite coefficient tail.
+
+\section{Computation, proof audit, and a formalization route}
+\label{sec:verification}
+
+\subsection{What the supplied program checks}
+The program \path{verification/verify.py} uses exact rational exponents,
+exact SymPy matrices, and symbolic polynomial coefficients. Its central
+routine enumerates a \emph{finitely generated rational} monoid up to a
+cutoff and implements \eqref{eq:recursion}. At a singular $T_\rho$, it
+constructs a right inverse by pivot columns and rows, rather than assuming
+that kernel and cokernel projections coincide.
+
+After constructing each candidate, the program independently reevaluates
+$F$ and checks the residual identity \eqref{eq:residual} at every enumerated
+exponent. Thus an incompatible candidate is expected to have exactly the
+recorded resonant residual, not a spuriously vanishing one.
+
+The recorded run used Python 3.13.5 and SymPy 1.14.0, with seed $20260929$.
+It produced the following actual counts:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check category & Count\\
+\midrule
+Finite nonlinear systems & 21\\
+Exact scalar equalities, including matrix entries & 670\\
+Sharp Riccati coefficient identities in the independent recurrence & 24\\
+Seeded additional matrix systems & 12\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last two rows are included in, not added to, the equality and system
+counts. The systems include six sharp-degree examples, the generated
+small-divisor example, the arbitrary-variety construction, a Jordan-block
+example, and twelve seeded systems.
+
+For the sharpness family, the first coefficients of the obstruction after
+removing $a^n b^{n-1}\delta^{-2n+2}$ are
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+$n$ & Coefficient & Total degree\\
+\midrule
+2 & $1$ & 3\\
+3 & $1/4$ & 5\\
+4 & $1/36$ & 7\\
+5 & $1/576$ & 9\\
+6 & $1/14400$ & 11\\
+7 & $1/518400$ & 13\\
+\bottomrule
+\end{tabular}
+\end{center}
+These agree exactly with \eqref{eq:sharp-obstruction}.
+
+\subsection{A Jordan-block check}
+Take
+\[
+ A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+ F=x\begin{pmatrix}b\\a\end{pmatrix}.
+\]
+At exponent $1$, $T_1$ has image spanned by the first coordinate and
+kernel also spanned by the first coordinate, but the cokernel complement
+is the second coordinate. The correct compatibility condition is $a=0$,
+and the candidate coefficient is $(c,-b)^{\mathsf T}$. Projecting onto
+the kernel in place of the cokernel would give the wrong condition.
+This exact test exercises a distinction on which the general theorem
+depends.
+
+\subsection{Limits of the computation}
+The code does not prove that an arbitrary infinite set is well ordered,
+that an infinite coefficient family is summable, or that the algebraic
+quotient construction is effective. Restricting an infinite example to
+finitely many generators verifies its displayed coefficient identities,
+not its convergence threshold. The threshold and universality arguments
+are mathematical proofs in Sections~\ref{sec:universality} and
+\ref{sec:hidden}.
+
+No Lean theorem is supplied or claimed for the new results. The repository's
+\path{NeumannWords.lean} was inspected as an available support-theory
+component, not recompiled in this work. The numerical and symbolic checks
+must not be described as a proof-assistant verification.
+
+\subsection{A useful implementation contract}
+For effective finite data, the core formal algorithm is:
+\begin{enumerate}
+\item Determine the exact real resonances and certify their finite ancestor
+sets. Choose kernel and cokernel splittings over the coefficient field.
+\item Process only those ancestor exponents needed by the requested
+certificate. Compute $f_\gamma$, then $R_\gamma f_\gamma+C_\gamma$, and
+record $Q_\rho f_\rho$ at a resonance.
+\item For convergence, separately represent the window coefficient
+families and certify their linear relations modulo $\ell^1$. Only after
+that step construct the analytic equations $\chi$.
+\end{enumerate}
+The third step cannot generally be replaced by a finite coefficient cutoff,
+as Proposition~\ref{prop:no-finite} shows. An infinite-support API must
+expose exact ancestry and summability certificates, rather than pretending
+that ordinary bounded enumeration always terminates.
+
+\subsection{Formalization in layers}
+A Lean development can keep the difficult parts separate. The support layer
+can reuse positive-word and antidiagonal lemmas already present in ProveIt.
+The finite-dimensional layer needs right inverses, kernel/cokernel
+splittings, and the coefficient residual identity. The formal layer proves
+the uniform valuation gain and finite polynomial ancestry.
+
+The analytic layer then builds the weighted $\ell^1$ algebra, coefficient
+projections, resolvent bounds, and the tail contraction theorem. The central
+algebraicity step is a finite-dimensional linear-algebra argument in the
+quotient of all window families by the summable subspace. It requires no
+computability claim and no topology on that quotient. The uniform-parameter
+theorem additionally needs holomorphic dependence of a uniformly contractive
+Banach-space fixed point.
+
+A sensible first formal target is Theorem~\ref{thm:window}; it isolates the
+new analytic reduction and is independent of the choice of quotient basis.
+The universality construction is a second tractable target because all its
+coefficients and summability decisions are explicit.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+
+\subsection{Effective summability quotients}
+Theorem~\ref{thm:algebraic} reduces analytic classification to linear
+relations among finitely many coefficient families modulo $\ell^1$.
+For which exact sequence classes is this relation problem decidable?
+A first target is a family whose coefficients admit certified expansions
+in $n^\alpha(\log n)^\beta$ with summable remainders. One should prove
+that cancellation of the finitely many non-summable asymptotic types is
+both necessary and sufficient, then extract $\chi$ algorithmically.
+Oscillatory families require absolute, not merely conditional, summability.
+
+\subsection{Minimal analytic-obstruction dimension}
+The proof bounds the number of equations by a monomial count, which can be
+very loose. Determine the possible dimensions of the quotient span $W$ for
+a prescribed spectrum and coupling pattern. A concrete target is to
+classify two-component quadratic systems with two positive resonances,
+including when one obstruction polynomial suffices. The relevant invariant
+should retain cancellations rather than count all substitution trees.
+
+\subsection{Polynomial families of equations}
+If finitely many external parameters enter the coefficients with uniformly
+bounded polynomial degree, a bounded exponent window again has a finite
+polynomial template. Formulate a joint parameter theorem including both
+input parameters and resonant solution parameters, under a common analytic
+majorant on compact sets. Sharp degree bounds should account separately
+for positive exponent cost and zero-cost parameter dependence. Without a
+polynomial hypothesis, an algebraic conclusion is not expected.
+
+\subsection{Moving eigenvalues and wall crossing}
+Our matrix $A$ is fixed. When its eigenvalues vary, the resonant parameter
+space changes and the coefficient inverses become rational functions of
+the spectral parameters. Can one obtain algebraic or constructible
+convergence loci on a suitable stratification away from moving accumulation
+walls? The scalar multiplier $(\gamma-\lambda)^{-1}$ already shows why
+one cannot simply repeat the finite-degree proof with $\lambda$ treated as
+another polynomial parameter.
+
+\subsection{Logarithmic solutions after compatibility failure}
+The current theory deliberately excludes logarithms. If $\Psi(c)\ne0$,
+which nonlinear systems can be solved after adjoining a bounded degree in
+$\log x$, and when does the nonlinearity force an unbounded logarithmic
+expansion? A first test family is the sharp Riccati example
+\eqref{eq:sharp}, whose linearization gives explicit resonant behavior.
+The goal is a theorem distinguishing a finite log correction from a
+change of asymptotic scale.
+
+\subsection{Higher-rank exponent groups}
+The finite-degree argument uses the real bound $N\delta\leq H$ to bound
+$N$. It need not survive in a non-Archimedean ordered group, even though
+classical Neumann word finiteness remains available for each exact
+exponent. Find a substitute for a bounded real cost window that still
+bounds the number of parameter monomials relevant to analytic failure.
+A useful first result would be either a rank-two positive theorem under a
+cofinality hypothesis or an explicit nonalgebraic parameter locus.
+
+\subsection{Irregular equations and unbounded dangerous exponents}
+For $x^{k+1}y'=Ay+F(x,y)$ with $k>0$, coefficient transport is no longer
+purely diagonal in the exponent. Classical factorial divergence can
+persist at arbitrarily large exponents, so the bounded-window argument
+does not apply directly. Determine whether the parameter locus of a fixed
+Gevrey or Borel-summability class is still algebraic in a carefully chosen
+irregular model. This is a separate problem, not a consequence of the
+present theorem.
+
+\subsection{Summation beyond absolute convergence}
+The divergent candidates in the universality construction may still have
+renormalized analytic realizations. Classify realizations compatible with
+multiplication and $D$, and identify which normalization data are invisible
+to finite asymptotic prefixes. In that enlarged class the selected parameter
+locus could differ from $\cV_{\mathrm{an}}$. Absolute convergence must
+remain explicit in every comparison.
+
+\subsection{Geometry, stability, and certified computation}
+The convergence locus is algebraic for a fixed equation but can change
+under arbitrarily small input perturbations. Characterize subclasses in
+which its dimension or defining ideal is stable. A practical first target
+is a finite collection of certified non-summable asymptotic types with
+uniformly summable remainders; the problem may then reduce to finite matrix
+rank stability. Such a theorem would give meaningful perturbation
+certificates rather than an unjustified generic robustness claim.
+
+\subsection{A complete machine-checked model case}
+Formalize the two-point system \eqref{eq:two-points}, including positivity
+and well ordering of its generated support, exact formal coefficients,
+and the equivalence of convergence with $c^2=1$. This would provide a
+compact end-to-end test of support algebra, coefficient recursion, absolute
+summability, and parameter cancellation. The proof should be independent
+of numerical truncation.
+
+\section{Conclusion}
+
+The nonlinear problem has two separate algebraic geometries. Exact
+resonances give a finite-input compatibility variety. Absolute convergence
+gives another algebraic condition, obtained from possibly infinite
+coefficient families rather than from a finite input jet.
+
+The decisive analytic fact is that, for positive real Hahn exponents in a
+regular-singular Euler equation, every possible divergence lies below the
+largest positive real eigenvalue. Above that cutoff the resolvent is
+bounded and the nonlinear tail is contractive after shrinking the radius.
+Positive parameter weights make the remaining infinite window a finite
+polynomial family. Passing to the algebraic quotient by $\ell^1$ therefore
+produces finitely many convergence equations.
+
+The universality construction shows both the strength and the limit of
+this classification: the convergence locus cannot be an arbitrary
+nonalgebraic subset, but it can be an arbitrary affine algebraic set.
+The generated small-divisor example further shows that original forcing
+separation and exact-resonance cancellation do not by themselves imply
+convergence. These results provide a proof-based extension of the
+repository's linear accumulation analysis, with the unresolved effective,
+logarithmic, and higher-rank questions stated separately.
+
+\appendix
+\section{Proof dependencies and hypothesis audit}
+\label{app:audit}
+
+\begin{longtable}{@{}p{0.29\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Result & Essential hypotheses and dependency\\
+\midrule
+\endhead
+Formal parametrization & Positive real monoid; well ordering; no constant
+or zero-exponent linear term in $F$. Analytic convergence is not used.\\[4pt]
+Finite ancestry & Exact additive divisors, not finiteness of a bounded
+interval. The real lower bound supplies an explicit degree bound.\\[4pt]
+Tail convergence & Joint analytic majorant; fixed finite matrix; positivity
+of the unknown; well-order right gap above the final real eigenvalue. No
+left spectral gap is needed.\\[4pt]
+Algebraic analytic locus & Finite resonant parameter set with positive
+weights; bounded-window criterion; algebraic quotient by the $\ell^1$
+subspace. No topological quotient or effective basis is assumed.\\[4pt]
+Uniform radii & A finite polynomial representation by summable coefficient
+families on the locus, followed by a common contraction estimate.\\[4pt]
+Universal gap converse & Quantification over every admissible $F$; an
+invariant eigenvector direction and a selected left-accumulating sequence.
+The constructed nonlinear formal solution exists.\\[4pt]
+Universality & A fixed well-ordered accumulating monoid and polynomial
+coupling in the unknowns; all input coefficients are absolutely summable.
+Auxiliary free resonant coefficients account for the affine factor.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Frequently tempting but invalid shortcuts}
+A bounded set of Hahn exponents need not be finite. A formal coefficient
+recursion does not imply absolute convergence. An eigenvector is not
+necessarily paired with a left eigenvector having nonzero pairing, so the
+universal counterexample uses only an arbitrary functional $\ell(v)=1$
+and explicitly constructs a solution in the invariant line. A kernel
+projection does not replace a cokernel obstruction for a Jordan block.
+The quotient by summable families is used algebraically, without an
+unjustified continuity assertion. Finally, finite algebraicity of a
+parameter locus does not mean finite-coefficient decidability of that locus.
+
+\section{Repository provenance and literature boundary}
+\label{app:provenance}
+
+The source comparison used the following pinned commit:
+\begin{center}\snap\end{center}
+In particular, the linear Hahn--Fuchsian package was read in its README, introductory
+framework, explicit accumulation model, verification discussion, and
+further-research sections. The support module
+\path{Algebra/SurrealNumbers/Surreal/HahnSeries/NeumannWords.lean}
+was inspected through its definitions and principal word-finiteness proof.
+Repository searches also checked related resonance and convergence-locus
+terminology. This is not a line-by-line audit of the entire repository or
+its large canonical transseries volume.
+
+The cited Gontsov--Goryuchkina sources were checked for their stated
+convergence setting and finite-generation framework. Their results,
+van der Hoeven's generalized-series fixed-point theory, and existing Hahn
+convergence definitions are acknowledged as prior theory, not relabeled as
+new contributions. The proof of the central algebraic-locus theorem is
+self-contained, but independence of historical discovery remains a matter
+for further specialist review.
+
+The delivered package includes the standalone source, compiled PDF,
+reproduction script, recorded exact results, a source audit, and build
+instructions. No repository files were modified. No private data or
+external font files are required to rebuild the article.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo-linear}
+VladimirReshetnikov/ProveIt,
+\emph{Finite Resonance Certificates and Sharp Analytic Normalization for
+Hahn--Fuchsian Systems}, research package, 29 September 2026, with repository
+editorial amendments. Inspected at commit \snap.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/Hahn_Fuchsian_Resonance_Analytic_Normalization}.
+
+\bibitem{repo-words}
+VladimirReshetnikov/ProveIt,
+\emph{NeumannWords.lean}, module on positive ordered-word support finiteness
+and strongly summable labeled products. Inspected at commit \snap.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Algebra/SurrealNumbers/Surreal/HahnSeries/NeumannWords.lean}.
+
+\bibitem{vdh}
+J. van der Hoeven,
+\emph{Operators on generalized power series},
+Illinois Journal of Mathematics \textbf{45} (2001), 1161--1190.
+\url{https://doi.org/10.1215/ijm/1258138061}.
+Author version: \url{https://www.texmacs.org/joris/noeth/noeth.html}.
+
+\bibitem{gg2015}
+R. R. Gontsov and I. V. Goryuchkina,
+\emph{On the convergence of generalized power series satisfying an
+algebraic ODE}, Asymptotic Analysis \textbf{93} (2015), 311--325.
+\url{https://doi.org/10.3233/ASY-151297}.
+Preprint: \url{https://arxiv.org/abs/1407.1330}.
+
+\bibitem{gg2024}
+R. Gontsov and I. Goryuchkina,
+\emph{Convergence of (generalized) power series solutions of functional
+equations}, arXiv:2412.00778 (2024), extended abstract and manuscript.
+\url{https://arxiv.org/abs/2412.00778}.
+English extended abstract: \url{https://arxiv.org/html/2412.00778v1}.
+
+\bibitem{js2023}
+M. Joswig and B. Smith,
+\emph{Convergent Hahn series and tropical geometry of higher rank},
+Journal of the London Mathematical Society \textbf{107} (2023), 1450--1481.
+\url{https://doi.org/10.1112/jlms.12716}.
+\end{thebibliography}
+\end{document}
