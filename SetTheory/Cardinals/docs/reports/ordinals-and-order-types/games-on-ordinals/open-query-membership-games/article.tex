@@ -53,6 +53,12 @@
 \newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
+% Part II (batch 52): the manuscript's research questions, own counter.
+\theoremstyle{definition}
+\newtheorem{question}{Research question}
+\crefname{question}{research question}{research questions}
+\Crefname{question}{Research question}{Research questions}
+\crefname{part}{Part}{Parts}
 \newcommand{\sm}{\operatorname{sm}}
 \newcommand{\ps}{\operatorname{ps}}
 \newcommand{\cl}{\operatorname{cl}}
@@ -63,6 +69,45 @@
 \newcommand{\bigsqsum}{\bigsqcup}
 \newcommand{\Fin}{\operatorname{Fin}}
 \newcommand{\CB}{\operatorname{CB}}
+% Part II (batch 52): the manuscript's macros, unchanged, except that its
+% convergent tower K_m is printed \Tw_m (Part I's K_k is a different space).
+\newcommand{\W}{\mathcal W}
+\newcommand{\C}{\mathcal C}
+\newcommand{\A}{\mathcal A}
+\newcommand{\red}{\operatorname{red}}
+\newcommand{\scs}{\operatorname{scs}}
+\newcommand{\depth}{\operatorname{D}}
+\newcommand{\layers}{\operatorname{L}}
+\newcommand{\smq}{\operatorname{sm}_{q}}
+\newcommand{\NP}{\mathsf{NP}}
+\newcommand{\PT}{\mathsf{P}}
+\newcommand{\len}[1]{\lvert #1\rvert}
+\newcommand{\subseq}{\preccurlyeq}
+\newcommand{\pred}{\operatorname{Pred}}
+\newcommand{\cyc}{\operatorname{cyc}}
+\newcommand{\Tw}{\mathsf K}
+% [Added 29 September 2026, batch 52] Unnumbered notes added when Part II was
+% written into this report.  They use no counter, so no number of Part I moves.
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\sloppy
+ \noindent\textbf{[Added 29 September 2026, batch~52]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+% [Added 29 September 2026, batch 56] Notes added when Part III was written
+% in.  Like writenote, they use no counter.
+\newenvironment{writenotec}[1][]{\par\smallskip\begingroup\small\sloppy
+ \noindent\textbf{[Added 29 September 2026, batch~56]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+% Part III (batch 56): the manuscript's macros.  Its \smq (sm without the
+% subscript) clashes with Part II's \smq and is set as \sm; its \Lyr and
+% \Depth are set as Part II's \layers and \depth; its unused \rankone,
+% \supp and \im are dropped; \N and \ceil are shared.
+\newcommand{\F}{\mathcal F}
+\newcommand{\U}{\mathcal U}
+\newcommand{\I}{\mathcal I}
+\newcommand{\B}{\mathcal B}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\ac}{\alpha_{\mathrm{ac}}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\sq}{\mathbin{\sqcup}}
 \newtcolorbox{resultbox}{colback=Pale,colframe=Teal,boxrule=0.5pt,
  arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
@@ -100,7 +145,17 @@ satisfies $\sm(K_k)=k$ and $\sm(K_k\sqcup K_k)=k+1$.
 Complete ordinary mathematical proofs are included. The archive also contains
 an independent finite-poset verifier, exact data, and a machine-readable strategy
 certificate. The infinite-space results do not depend on numerical experiments.
-No claim of independent peer review or formal proof-assistant verification is made.\par}
+No claim of independent peer review or formal proof-assistant verification is made.\par
+\smallskip
+Part~II, added on 29 September 2026 (batch~52), extends the theory from a
+membership bit to $q$ output labels: sharp synchronization with overhead
+$\lceil\log_2q\rceil$, the exact $q$-label invariant of convergent towers, and
+a polynomial/NP-complete dichotomy between two and three labels.\par
+\smallskip
+Part~III, added on 29 September 2026 (batch~56), computes the $q$-label
+invariant exactly on every Hausdorff space with a finite nonempty derived set,
+through local filter capacities: three free-ultrafilter points need two
+questions at three labels, three convergent sequences three.\par}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
@@ -132,11 +187,40 @@ countable scattered Hausdorff spaces, and a quadratic-time target algorithm for
 finite posets. Independent minimax computations verify the finite normal form
 on all naturally labelled posets through six elements and all their targets:
 320,866 tests in total.
+
+\emph{Addition of 29 September 2026 (batch 52).} Part~II, from a later
+manuscript, lets the Seeker determine one of $q\ge2$ labels instead of a
+membership bit. Optimal depth is the ceiling of the binary logarithm of a
+minimum number of ordered open-suffix layers; on posets this number is a shortest common supersequence of
+chain words. Components with at most $m$ layers need at most $(q-1)m+1$ jointly,
+so combining them can cost exactly $\ceil{\log_2q}$ extra questions, sharply,
+already for fixed colorings of compact countable metrizable spaces. A space of
+last derivative rank $h$ with $s$ colors on its last derivative needs at most
+$(q-1)h+s$ layers, sharply; the worst case over $q$-colorings of $t$ convergent
+towers of rank $m-1$ is $\ceil{\log_2((q-1)(m-1)+\min(q,t))}$, which at $q=2$
+agrees with the formula above for $h=m-1$. Exact optimization is polynomial for two labels and
+NP-complete for three, with a polynomial algorithm within
+$\ceil{\log_2(q-1)}$ questions of optimal.
+
+\emph{Addition of 29 September 2026 (batch 56).} Part~III, from a further
+manuscript, answers Part~II's first research question for every $q$ on
+Hausdorff spaces with a finite nonempty derived set. Every finite coloring
+has a profile digraph $G_c$ on its $q_c$ colors, and the least number of
+layers is $q_c+\tau(G_c)$ for the directed feedback vertex number~$\tau$. The
+worst case over $q$-colorings depends only on the partition capacities of the
+neighborhood filters at the nonisolated points; the bound $(q-1)h+s$ at $h=1$
+is attained exactly when the points admit a bin partition with enough
+capacity. Hence three one-point free-ultrafilter spaces need at most two
+questions at three labels while three convergent sequences need three,
+although rank and derivative sizes agree; for sums of $t$ ultrafilter spaces
+every alphabet-dependent threshold is computed by an exact directed extremal
+calculation.
 \end{abstract}
 
 \setcounter{tocdepth}{1}
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \newpage
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Binary open-query games on ordinal spaces}
 
 \section{The selected problem and the status of the answer}
 
@@ -173,6 +257,14 @@ this question. This is a search statement, not a proof of priority. The
 closed-layer machinery belongs to the classical setting of Hausdorff difference
 hierarchies; we do not claim that framework as new \cite{BGKS}. All lemmas needed
 for the results here are proved below.
+
+\begin{writenote}[Part~II]
+Sections~1--13 and Appendices~A--B are this report as of 19 September 2026
+(Part~I). Part~II (\cref{fo:sec:provenance}) is a later manuscript that
+extends the game from a membership bit to $q$ output labels and reproduces
+Part~I's values at $q=2$ (\cref{fo:sec:crosswalk}). It does not change any
+statement of Part~I.
+\end{writenote}
 
 \section{A compact ordinal counterexample}\label{sec:small}
 
@@ -397,6 +489,13 @@ permits balanced search through nested open thresholds, reducing the count to
 $\ceil{\log_2 L}$. Conversely, a depth-$d$ tree has at most $2^d$ ordered leaf
 runs. Neither direction assumes that the space is ordered or Hausdorff.
 \end{remark}
+
+\begin{writenote}[$q$ labels]
+\Cref{fo:thm:normal} in Part~II is the same normal form for a coloring by $q$
+labels: the least number of ordered layers with open suffixes replaces
+$L(A,X)$, and the depth is again its ceiling logarithm. At $q=2$ it is
+\cref{thm:normal}, proved by a second route (\cref{fo:sec:crosswalk}).
+\end{writenote}
 
 \section{Canonical alternating closures and orientation}
 
@@ -756,6 +855,17 @@ $\ceil{\log_2(h+2)}$. Consecutive positive integers cross a ceiling-logarithm
 threshold exactly when the smaller is a power of two.
 \end{proof}
 
+\begin{writenote}[More than two labels]
+With $q$ output labels the one-extra-move bound fails for fixed colorings:
+components of depth at most $d$ can need exactly $d+\ceil{\log_2q}$ questions
+jointly, for fixed colorings of finite sums of compact countable metrizable
+spaces (\cref{fo:thm:sum-depth}); for $q=3$ and $d=1$ already of convergent
+sequences (\cref{fo:sec:three-colors}). For the supremum over colorings of
+finite sums of the towers $\Tw_m\cong[0,\omega^{m-1}]$ ($m\ge2$) the
+increase is still at most one (\cref{fo:thm:tower-invariant} and the remark
+after it); in Part~II's notation $K_k\cong\Tw_{2^k}$.
+\end{writenote}
+
 \subsection{Bounded finite heights}
 
 Let $\{X_i:i\in I\}$ be any nonempty family of nonempty Hausdorff spaces with
@@ -1007,6 +1117,16 @@ three questions. The archive contains an explicit optimal query tree for this
 eight-point example.
 \end{example}
 
+\begin{writenote}[Three labels]
+Part~II's six two-point chains $01,02,10,12,20,21$ (\cref{fo:sec:three-colors})
+are the three-label analogue: each chain takes one question, their union
+three. On posets, the least layer count for $q$ labels is the shortest common
+supersequence of the reduced chain words (\cref{fo:thm:chains}); its binary
+form \eqref{fo:eq:binary} is \eqref{eq:poset-profile} read from the other end of
+each chain, and for three labels the decision problem is NP-complete
+(\cref{fo:thm:NP}).
+\end{writenote}
+
 \begin{remark}
 This order-theoretic formula is not obtained by applying the Hausdorff
 finite-height theorem to a non-Hausdorff space. Both results are separate
@@ -1094,6 +1214,15 @@ To rebuild the PDF, execute \texttt{make pdf}, or run \texttt{pdflatex} three ti
 \texttt{article.tex}. All inputs needed for compilation are local; no network
 access, external bibliography processor, or data regeneration is required.
 
+\begin{writenote}[Reruns]
+Without \texttt{-{}-output}, \texttt{code/verify.py} writes into \texttt{data/}
+and replaces the recorded files there; pass \texttt{-{}-output} with a scratch
+directory to keep them. Part~II's verifier is
+\texttt{code/02-finite-output-verify.py} (\cref{fo:sec:verification}). Only
+Part~II's verifier accepts \texttt{-{}-brute-n}, and its \texttt{-{}-max-n} stops
+at~6.
+\end{writenote}
+
 \section{What is settled and what is not}
 
 The topological-sum identity \eqref{eq:question} is false as stated. The
@@ -1121,6 +1250,3221 @@ negative solution to an explicitly stated question, together with a complete add
 classification on a natural order-topological class. The proofs are intended
 to be independently checkable; their priority and presentation can be assessed
 separately from their mathematical content.
+
+%% ====================================================================
+%% Batch-52 addition (manuscript 12, "Finite-Output Open-Query Games:
+%% Sharp Synchronization and a Complexity Dichotomy").  Every label of
+%% Part II carries the prefix fo: (finite output).  Part I's labels are
+%% bare and unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part II.\quad Finite-output open-query games}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Finite-output open-query games: sharp synchronization and a complexity dichotomy}
+
+\noindent\emph{Sections~1--13 and Appendices~A and~B form the
+original report (Part~I) of 19 September 2026, unchanged except for dated
+pointers to this addition, marked \textup{[Added 29 September 2026,
+batch~52]}. Part~II was added on 29 September 2026 in batch~52 of ProveIt's
+incoming-report intake, from one manuscript written against the pinned state
+of Part~I. It replaces the membership bit of Part~I by a label from a finite
+alphabet of $q\ge2$ letters. At $q=2$ it reproduces Part~I's values
+(\cref{fo:sec:crosswalk}).}
+
+\section{Provenance, conventions and the binary case}
+\label{fo:sec:provenance}
+
+\subsection{One manuscript, one addition}
+\label{fo:sec:source}
+Part~II is batch-52 manuscript~12, \emph{Finite-Output Open-Query Games: Sharp
+Synchronization and a Complexity Dichotomy}, an AI-assisted research article
+``prepared for Vladimir Reshetnikov'' and dated 29 September 2026 (22 pages,
+US Letter, as delivered). It arrived as the archive
+\path{ProveIt_Finite_Output_Open_Query_Games.zip} (inner directory
+\path{finite_output_open_query_games/}) in ProveIt commit
+\texttt{11e1e9001} and was placed in \texttt{a701d9098}. It was written against
+ProveIt commit \texttt{5c695cfdf} (in full
+\texttt{5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864}), at which Part~I's
+\texttt{article.tex} had the Git blob \texttt{5e5ed2a806} and its
+\texttt{README.md} the blob \texttt{a8e024d1e3}. Both blobs are unchanged at the
+placement commit, so every statement the manuscript makes about ``the ProveIt
+report'' \cite{Repo} refers to Part~I as printed above.
+
+Its code and data are shipped beside Part~I's files with the prefix
+\path{02-finite-output-} (Part~I's unprefixed files count as~01): the
+verifier \path{code/02-finite-output-verify.py}, its Makefile, seven delivered
+records under \path{data/} (the verifier's five outputs, its console log and
+the build log of the delivered PDF), and its source audit and research-status record
+in the report root. Its manuscript, README and PDF are not shipped and survive
+in the arrival commit. The report README lists every file and every name the
+delivered files still use.
+
+The manuscript contributes, in the order printed here: a tree--layer normal
+form for $q$ labels on arbitrary spaces (\cref{fo:sec:normal}); an exact
+shortest-common-supersequence representation for posets
+(\cref{fo:sec:posets}); compact countable metrizable realizations of every
+reduced word (\cref{fo:sec:compact}); the restricted-start universal-word
+lemma (\cref{fo:sec:universal}); the sharp finite Cantor--Bendixson bound
+$(q-1)h+s$ and the exact $q$-label invariant of finite sums of convergent
+towers (\cref{fo:sec:CB}); sharp synchronization under topological sums, with
+exact extra cost $\ceil{\log_2q}$ (\cref{fo:sec:sums}); a polynomial binary
+case against NP-complete ternary decision problems (\cref{fo:sec:complexity});
+a cyclic approximation within $\ceil{\log_2(q-1)}$ questions and exact ideal
+search (\cref{fo:sec:algorithms}); finite obstructions
+(\cref{fo:sec:obstructions}); its finite checks (\cref{fo:sec:verification});
+its proof-dependency audit, relation to the literature and a formalization
+plan (\cref{fo:sec:audit}); ten research questions
+(\cref{fo:sec:questions}); a conclusion; and certificate conventions
+(Appendix~\ref{fo:app:certificates}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Duplicated binary material.} The manuscript states that Part~I's
+binary counterexample, binary alternating-chain algorithm and binary
+Cantor--Bendixson results are not claimed anew. Its $q$-label normal form
+(\cref{fo:thm:normal}) contains Part~I's \cref{thm:normal} at $q=2$, and its
+binary chain formula (\cref{fo:prop:binary}) is Part~I's \cref{thm:posets} in
+other notation. Both are printed in both parts, because Part~II states and
+proves them for $q$ labels in its own notation: at $q=2$ its proofs are second
+routes (Part~II orders the nonempty leaves of an arbitrary tree, Part~I pads
+the tree to full depth). The dictionary is \cref{fo:sec:crosswalk}.
+\item \emph{One renamed symbol.} The manuscript's convergent tower $K_m$ is
+printed as $\Tw_m$ throughout Part~II, because Part~I's $K_k$ is a different
+space (\cref{fo:sec:notation}). No other symbol is renamed, and no
+normalization is changed.
+\item \emph{Front matter.} The manuscript's title block, abstract and status
+paragraph are printed in \cref{fo:sec:abstract}; its sections~1--14 are
+Sections~15--28 here, and its Appendix~A is Appendix~\ref{fo:app:certificates}.
+Its theorems keep their positions within each section: its Theorem~$n.k$ is
+Theorem~$(n+14).k$ here. Its Research questions~1--10 keep their numbers.
+\item \emph{Bibliography.} Both manuscripts cite Chiozini, Csern\'ak and Soukup
+\cite{CCS}; the two entries are merged, with both access dates. The entry
+\cite{Repo} is Part~I at the pin.
+\item \emph{Shipped names.} Paths and commands in the manuscript's
+\cref{fo:sec:verification} and Appendix~\ref{fo:app:certificates} are
+rewritten to the shipped names; see the note there. The rewritten text
+promises no file that is not shipped.
+\end{itemize}
+
+\begin{writenotec}[Corrected count]
+When Part~II was written in, the two sentences above said ``nine research
+questions'' and ``Research questions~1--9''. Part~II prints ten
+(\cref{fo:sec:questions}), as did the delivered manuscript; the count is
+corrected here, and no question was added or removed. Part~III's research
+questions continue the same counter as Research questions~11--19.
+\end{writenotec}
+
+\begin{resultbox}
+\textbf{Status (manuscript 12).} The results of Part~II are proved in ordinary
+mathematics. The modified-supersequence hardness theorem of Lagoutte and
+Tavenas (\cref{fo:thm:MSCS}) is an explicitly identified external input; the
+transfer to a power-of-two depth budget is proved here. Part~II is not
+independently refereed and not proof-assistant verified; historical priority
+is not certified. It announces no named longstanding published open problem
+as solved and does not assert the word ``breakthrough''. The literature on
+finite partitions, difference hierarchies, typed graph fusion and
+supersequences may contain related or equivalent formulations. The exact tower
+formula (\cref{fo:thm:tower-invariant}) concerns the supremum over all
+$q$-colorings of the specified spaces, whereas the compact sharp
+synchronization examples (\cref{fo:thm:sum-layers,fo:thm:sum-depth}) concern
+particular colorings; the two must not be conflated. Finite computation does
+not prove the infinite-space statements, and the verifier's six-point option
+was not run. Nothing in Part~I or Part~II is formalized in Lean or Rocq in
+ProveIt, and the Lean library that shares the \path{SetTheory/Cardinals}
+directory (large cardinals) contains nothing about open-query games.
+\end{resultbox}
+
+\subsection{The manuscript's title block and abstract}
+\label{fo:sec:abstract}
+\begin{quote}\small
+\textbf{Finite-Output Open-Query Games. Sharp synchronization and a complexity
+dichotomy.} Topology\,/\,Order\,/\,Query complexity. Research article prepared
+for Vladimir Reshetnikov, 29 September 2026.
+
+An open-query algorithm asks whether a hidden point belongs to an open set and
+must determine one of finitely many labels. We extend the binary membership
+framework explored in ProveIt to an arbitrary finite output alphabet. Every
+finite correct query tree has an ordered monochromatic layer representation,
+and the optimal worst-case depth is the ceiling of the binary logarithm of the
+minimum layer count. For upper-set topologies of posets, this layer count is
+exactly the shortest common supersequence length of the reduced color words of
+chains.
+
+Our principal quantitative result is a sharp synchronization theorem. If each
+component admits at most $m$ layers over $q\ge2$ labels, their topological sum
+admits at most $(q-1)m+1$ layers, and this bound is best possible. Consequently,
+components of depth at most $d$ can require exactly
+$d+\ceil{\log_2 q}$ questions after being combined. Sharpness holds not only for
+finite posets but also for fixed colorings of compact countable metrizable
+spaces: an iterated convergent-sequence construction realizes every reduced
+word with exactly its supersequence profile.
+
+We also prove the sharp finite Cantor--Bendixson bound $(q-1)h+s$, where
+$h$ is the last derivative rank and $s$ is its number of colors, and compute the
+worst-case $q$-label query invariant of finite sums of convergent towers exactly.
+
+The same representation exposes an algorithmic threshold. Optimal depth is
+polynomial-time computable for two labels, whereas its decision version is
+NP-complete for three labels, even on a disjoint union of chains. The hardness
+uses the known three-letter modified-supersequence theorem; an exact
+common-prefix padding argument handles the power-of-two query budget. In
+contrast, a polynomial-time cyclic-layer algorithm is within
+$\ceil{\log_2(q-1)}$ questions of optimal, hence within one question for three
+labels. We also give finite obstruction bounds, exact algorithms, complete
+proofs, and reproducible checks on 102,331 colored finite posets.
+
+\textbf{Status.} The results are proved here in ordinary mathematics.
+The modified-supersequence hardness theorem is an explicitly identified
+external input. This article is not independently refereed or proof-assistant
+verified; historical priority is not certified.
+\end{quote}
+
+\subsection{Notation of Part~II}
+\label{fo:sec:notation}
+Part~II fixes a finite alphabet $\Sigma$ of $q$ letters and studies a
+\emph{coloring} $c:X\to\Sigma$; Part~I's target $A$ is the case
+$\Sigma=\{0,1\}$, $c=\mathbf 1_A$. Several letters carry different meanings in
+the two parts. Each meaning below is fixed for its part; where a false reading
+is tempting, the table prints it beside the true one.
+\begin{center}\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.47\linewidth}@{}}
+\toprule
+Symbol & Part~I & Part~II\\
+\midrule
+\endhead
+$K_k$, $\Tw_m$ & $K_k=[0,\omega^{2^k-1}]$, with $\sm(K_k)=k$ (\cref{thm:sharp}). &
+$\Tw_m$ (the manuscript's $K_m$) is the $m$-th convergent tower of
+\cref{fo:lem:towers}, of last derivative rank $m-1$; $\Tw_m\cong[0,\omega^{m-1}]$
+for $m\ge2$, so $K_k\cong\Tw_{2^k}$. \emph{Not} $\Tw_k=K_k$: its value is
+$\operatorname{sm}_2(\Tw_k)=\ceil{\log_2k}$.\\
+$c$ & An outer color $c\in\{0,1\}$ of a closed-layer chain; $C_c$ its color class. &
+The coloring $c:X\to\Sigma$. Part~I's outer color is the \emph{last} letter
+$w_m$ of a Part~II word, not its first.\\
+$h$ & Last derivative rank. & Last derivative rank in \cref{fo:sec:CB}; but
+$h_c$ in \cref{fo:cor:height} is the supremum of reduced chain-word lengths, and
+the column \texttt{h} of \path{data/02-finite-output-sharp_families.csv} is
+the word length $m$.\\
+$m$ & The multiplier in $X_{h,m}=[0,\omega^h\cdot m]$. & A number of layers, a word
+length, or the index of $\Tw_m$.\\
+$q$ & In the lower-bound proof of \cref{thm:height}, a second point of $X^{(h)}$. &
+The alphabet size $\lvert\Sigma\rvert$.\\
+$S$, $s$ & $S=[0,\omega]$. & $S\subseteq\Sigma$ a set of admissible first letters,
+$s=\lvert S\rvert$; in \cref{fo:thm:CB}, $s$ is the number of colors on $X^{(h)}$.\\
+$D$ & $D_j=X^{(j)}\setminus X^{(j+1)}$; $d_A(S)$ the verifier's minimax. &
+$\depth(X,c)$ the optimal fixed-coloring depth; $D(A)$ the verifier's minimax on
+a mask $A$.\\
+$L$ & $L(A,X)$, the least closed-layer length. & $\layers(X,c)$, the least
+admissible word length; $\layers(X,\mathbf 1_A)=L(A,X)$.\\
+$N$ & The oriented lengths $N_0,N_1$. & $N$ the total input length in the proof of
+\cref{fo:thm:NP}.\\
+$A$, $\A$ & The target. & $\A_{q,m}(S)$ a family of reduced words; $A$ a point mask
+(\cref{fo:sec:algorithms}) or a number (remark after \cref{fo:thm:tower-invariant}).\\
+$\sm$, $\smq$ & $\sm(X)$, an ordinal, the supremum over targets of the least
+winning length. & $\smq(X)$, the supremum over $q$-colorings of the finite depth
+$\depth$, or $\infty$. At $q=2$, $\operatorname{sm}_2(X)=\sm(X)$ whenever
+either is finite.\\
+$\infty$ & ``No finite decomposition''; not an ordinal. & ``No finite bound
+works''; not an ordinal rank.\\
+Layer order & $F_0=X\supseteq F_1\supseteq\cdots$; layer~$0$ is the outer (open)
+one. & Positions $1,\ldots,m$ from the bottom; suffixes are open. Part~I's
+layer $i$ is position $m-i$, and $F_i=\{\lambda\le m-i\}$.\\
+\bottomrule
+\end{longtable}
+\end{center}
+Part~II's macros $\W$, $\C$, $\A$, $\scs$, $\depth$, $\layers$, $\smq$ and
+$\subseq$ are defined as in the manuscript; its leaf order (the whole
+no-subtree before the whole yes-subtree) is Part~I's lexicographic order with
+$0<1$.
+
+\subsection{The binary case: what Part~II reproduces}
+\label{fo:sec:crosswalk}
+Take $q=2$, $\Sigma=\{0,1\}$ and $c=\mathbf 1_A$. The following checks were
+made when Part~II was added; they are consequences of the two parts' proofs,
+not new theorems.
+\begin{enumerate}
+\item \emph{Normal form.} A layering $\lambda$ with word $w_1\cdots w_m$ is the
+closed-layer chain $F_i=\{\lambda\le m-i\}$ of outer color $w_m$, so
+$\layers(X,c)=L(A,X)$, and \cref{fo:thm:normal} gives \eqref{eq:logdepth}. For
+an alternating word ending in the letter $e$, the elimination
+\eqref{fo:eq:closure} computes Part~I's canonical sequence \eqref{eq:greedy}
+with outer color $e$ term by term, so
+\cref{fo:prop:closure} contains \cref{thm:greedy}.
+\item \emph{Posets.} Part~I's $a_b$ reads chains from their greatest element,
+Part~II's $r_a$ from their least; \eqref{fo:eq:binary} and
+\eqref{eq:poset-profile} both give $1+\min(a_0,a_1)$ layers.
+\item \emph{Towers.} By \cref{fo:lem:towers}, $\bigsqcup_{i=1}^t\Tw_m$ is
+Hausdorff with last derivative rank $h=m-1$ and $t$ terminal points, so
+\cref{thm:height} gives $\ceil{\log_2m}$ for $t=1$ and $\ceil{\log_2(m+1)}$ for
+$t\ge2$: exactly \eqref{fo:eq:tower-invariant} at $q=2$. At $m=2$, $t=2$ this is
+the counterexample \eqref{eq:small}; at $m=2^k$ it is \eqref{eq:sharp} for
+finitely many copies. The formula was also compared with Part~I's recorded
+tables: all 129 rows of \path{data/ordinal_values.csv} ($h=0,\ldots,128$) and
+all 16 rows of \path{data/sharp_family.csv} agree.
+\item \emph{The identification $\Tw_m\cong[0,\omega^{m-1}]$} ($m\ge2$, used only
+to name Part~I's spaces). For $j\ge1$, the space $[0,\omega^{j+1}]$ is the
+disjoint union of the clopen intervals $[0,\omega^j]$ and
+$(\omega^j n,\omega^j(n+1)]$, $n\ge1$, each homeomorphic to $[0,\omega^j]$ by
+the order-type argument of \cref{sec:ordinals}, together with the point
+$\omega^{j+1}$, whose neighborhoods contain all but finitely many of these
+intervals. A compact Hausdorff space is the one-point compactification of the
+complement of any of its points, so induction from $\Tw_2\cong[0,\omega]$
+gives the claim.
+\item \emph{Sums.} At $q=2$, \cref{fo:thm:sum-layers,fo:thm:sum-depth} give
+$m+1$ layers and one extra question, as do \cref{lem:profiles} and
+\cref{prop:profile-sum}; Part~I's \cref{thm:sharp} attains the extra question
+for the supremum over targets, Part~II's families for fixed colorings. For
+$q\ge3$ the exact overhead $\ceil{\log_2q}$ exceeds one
+(\cref{fo:sec:three-colors}).
+\item \emph{Finite data.} The $q=2$ rows of
+\path{data/02-finite-output-sharp_families.csv} with word lengths~2 and~4
+are the chains $01,10$ (sum depth~2, a finite analogue of $S\sqcup S$) and
+$0101,1010$ (five layers, three questions), which is Part~I's eight-point
+example (profile $(5,5)$, \path{data/strategy_certificate.json}).
+\item \emph{The Cantor--Bendixson bound.} At $q=2$, \eqref{fo:eq:CB-bound}
+reads $\layers\le h+s$. Part~I's \cref{thm:height} shows that both values of
+$s$ that the terminal derivative allows are attained on \emph{every} Hausdorff
+space of finite height, not only on towers; see the note after Research
+question~1.
+\end{enumerate}
+
+\section{The research question and its relationship to ProveIt}
+\label{fo:sec:scope}
+
+\subsection{From a membership bit to a finite label}
+The natural object is a known labeling $c:X\to\Sigma$ of a topological space.
+A point $x\in X$ is hidden. An algorithm may ask any question of the form
+``is $x\in U$?'', where $U$ is open. Questions may depend on previous answers.
+The algorithm must eventually report $c(x)$, not necessarily identify $x$.
+For two labels this is a set-membership problem. With more labels, different
+components may demand incompatible orders of resolving the labels.
+
+Chiozini, Csern\'ak, and Soukup introduced the topological cut-and-choose
+framework and asked whether the set-membership number of a topological sum
+always equals the supremum of its component values \cite{CCS}. The ProveIt
+report \emph{Open-query games on ordinal spaces} gives a binary counterexample
+and develops a finite alternating-layer normal form \cite{Repo}. The present
+article starts from that direction but does not repeat its binary
+Cantor--Bendixson classification.
+
+We address the following finite-output questions. How much extra information
+can synchronization across components require? Does the efficient binary
+optimization survive a third label? Can a finite non-Hausdorff obstruction be
+realized in familiar compact metrizable spaces? Which information, beyond a
+single optimal-depth number, composes correctly under topological sums?
+
+The answers are the sharp bound $(q-1)m+1$, a binary/ternary complexity
+dichotomy, and the word profile introduced below. The compact realization
+result shows that the synchronization effect is not merely an artifact of
+finite specialization orders.
+
+\subsection{What is, and is not, being claimed}
+The repository baseline inspected here is the report in
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+ordinals-and-order-types/games-on-ordinals/\\
+open-query-membership-games/
+\end{quote}
+at commit \texttt{5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864}.
+The README and the introductory part of its article were read, together with
+repository search results. This is a targeted comparison, not a proof audit of
+the whole ProveIt repository.
+
+\begin{writenote}[The baseline is Part~I]
+That report is Part~I above, and its \texttt{article.tex} and
+\texttt{README.md} are the same blobs at the pin and at the placement of this
+addition (\cref{fo:sec:source}). The manuscript's source audit
+(\path{02-finite-output-SOURCES.md}) says it read that README and lines
+1--160 of the article.
+\end{writenote}
+
+The three-letter hardness of shortest common supersequences with no identical
+consecutive input letters is already known \cite{LT}. Related finite-partition
+and difference-hierarchy frameworks are also established subjects
+\cite{Selivanov}. Thus neither multi-valued descriptive complexity nor the
+underlying supersequence hardness is announced as a discovery here.
+The mathematical contribution developed in this article is the explicit
+open-query representation, its sharp synchronization consequences, the compact
+word realization, the exact depth reduction, and the additive query guarantee.
+Their historical novelty requires a broader independent literature review.
+
+All games in this article have \emph{finite worst-case budgets}. An infinite
+value means that no finite bound works. It is not an ordinal rank and makes no
+claim about transfinite determinacy, countable stopping times, or the full
+point-separating invariant of \cite{CCS}. Except where expressly stated, we
+study a \emph{fixed coloring}, not a supremum over all colorings of its space.
+
+\section{A normal form for arbitrary topological spaces}
+\label{fo:sec:normal}
+
+Fix a nonempty space $X$ and a finite alphabet $\Sigma$, of size $q\ge1$.
+No separation axiom is assumed.
+
+\begin{definition}[Depth, layers, and admissible words]
+For $c:X\to\Sigma$, let $\depth(X,c)$ be the minimum worst-case number of open
+questions in a finite correct deterministic decision tree, or $\infty$ if none
+exists. A word $w=w_1\cdots w_m\in\Sigma^m$ is \emph{admissible} if there is a
+map $\lambda:X\to\{1,\ldots,m\}$ satisfying
+\begin{equation}\label{fo:eq:layer}
+ c(x)=w_{\lambda(x)},\qquad
+ U_j:=\{x:\lambda(x)\ge j\}\text{ is open for every }j.
+\end{equation}
+The fibers of $\lambda$ are its ordered layers. Empty layers are allowed.
+Write $\W(X,c)$ for the set of admissible words, and set
+\[
+ \layers(X,c)=\min\{\len{w}:w\in\W(X,c)\},
+\]
+with the minimum of the empty set interpreted as $\infty$.
+\end{definition}
+
+In a minimal representation there are no empty layers. Also, two consecutive
+layers carrying the same color can be merged: the remaining suffixes are still
+open. Thus a shortest admissible word is \emph{reduced}, meaning that adjacent
+letters are distinct. This reduction is not deletion of all repeated letters;
+for example, $010$ is reduced.
+
+\begin{theorem}[Tree--layer normal form]\label{fo:thm:normal}
+For every $(X,c)$, the minimum number of nonempty leaves of a finite correct
+open-query tree equals $\layers(X,c)$. When this number is finite,
+\begin{equation}\label{fo:eq:depth-log}
+ \depth(X,c)=\ceil{\log_2\layers(X,c)}.
+\end{equation}
+In particular, a finite correct tree exists if and only if an admissible word
+exists.
+\end{theorem}
+
+\begin{proof}
+Order the leaves of a query tree recursively, placing the entire no-subtree
+before the entire yes-subtree. We show that the union of any suffix of its
+ordered leaf cells is open. The assertion is proved by induction on the tree,
+with the current possible-point set given its subspace topology.
+
+At the root, let the queried open set be $U$. If a suffix is contained entirely
+in the yes-subtree, induction expresses it as $U\cap V$ for an open set $V$ of
+the current space. If the suffix includes part of the no-subtree, it contains
+the whole yes-subtree and has the form
+\[
+ U\cup((X\setminus U)\cap V)=U\cup V,
+\]
+again open. The same argument works in every current subspace. The one-leaf
+case is immediate. Removing empty leaf cells preserves the suffix property.
+Correctness makes each remaining leaf monochromatic. Its leaf index therefore
+defines a layering, so $\layers(X,c)$ is at most the number of nonempty leaves.
+
+Conversely, given a layering with $m$ nonempty layers, locate its index by
+balanced binary search. At an interval of candidate indices, split the interval
+as evenly as possible and query the open suffix $U_j$ beginning at the split.
+This produces a correct tree with $m$ leaves and depth at most
+$\ceil{\log_2m}$.
+
+A binary tree of depth $d$ has at most $2^d$ leaves, so the first direction gives
+$\layers(X,c)\le2^d$ for any depth-$d$ correct tree. The balanced construction
+supplies the opposite depth inequality and proves \eqref{fo:eq:depth-log}.
+\end{proof}
+
+The theorem does not say that every optimal-depth tree has minimum leaf count.
+It says that minimum leaf count contains exactly the information needed to
+compute optimal worst-case depth. The class of all open sets is important:
+the proof uses closure under unions and finite intersections.
+
+\subsection{A fixed-word closure test}
+
+The following supplies a topological test without reference to a query tree.
+For a proposed word $w=w_1\cdots w_m$, define closed sets by
+\begin{equation}\label{fo:eq:closure}
+ G_0=X,\qquad
+ G_{t+1}=\cl_X\bigl(G_t\setminus c^{-1}(w_{m-t})\bigr)
+ \quad(0\le t<m).
+\end{equation}
+Thus we try to remove the top color, then the next color, retaining all limit
+points that cannot yet be discarded.
+
+\begin{proposition}[Greedy closed-set elimination]\label{fo:prop:closure}
+The word $w$ is admissible if and only if $G_m=\varnothing$.
+\end{proposition}
+\begin{proof}
+Suppose $\lambda$ witnesses admissibility. Put
+$R_t=\{x:\lambda(x)\le m-t\}$, so $R_t$ is closed. Inductively $G_t\subseteq
+R_t$: after excluding color $w_{m-t}$, all remaining points of $R_t$ lie in the
+closed set $R_{t+1}$. Taking closure therefore still stays in $R_{t+1}$.
+Consequently $G_m\subseteq R_m=\varnothing$.
+
+Conversely, suppose $G_m=\varnothing$. Give a point removed at step $t+1$ the
+index $m-t$. The removed set $G_t\setminus G_{t+1}$ has color $w_{m-t}$ because
+$G_{t+1}$ contains every point of $G_t$ of another color. These removed sets
+partition $X$. The suffix beginning at index $j$ is
+$X\setminus G_{m-j+1}$, which is open. This is the required layering.
+\end{proof}
+
+The proposition is a finite colored elimination statement. It should not be
+confused with a classification of all transfinite partition hierarchies.
+
+\section{Posets and shortest common supersequences}
+\label{fo:sec:posets}
+
+Give a poset $P$ its upper Alexandrov topology: $U$ is open exactly when
+$x\in U$ and $x\le y$ imply $y\in U$. A map $\lambda:P\to[m]$ has open suffixes
+exactly when it is order-preserving. This observation turns topology into a
+word-constrained monotone-map problem.
+
+For a finite nonempty chain $x_1<\cdots<x_r$, read the word
+$c(x_1)\cdots c(x_r)$ and collapse each maximal run of equal letters to one
+letter. Let $\C(P,c)$ denote the collection of all resulting reduced words.
+Write $u\subseq v$ when $u$ is a subsequence of $v$, using a strictly increasing
+map of positions. For a word family $\mathcal F$, $\scs(\mathcal F)$ is the
+minimum length of a common supersequence, or $\infty$ when no finite common
+supersequence exists.
+
+\begin{theorem}[Exact chain-language representation]\label{fo:thm:chains}
+For any poset, finite or infinite, and any finite word $v$,
+\begin{equation}\label{fo:eq:profile-chain}
+ v\in\W(P,c)
+ \quad\Longleftrightarrow\quad
+ u\subseq v\text{ for every }u\in\C(P,c).
+\end{equation}
+Consequently
+\begin{equation}\label{fo:eq:scs}
+ \layers(P,c)=\scs(\C(P,c)),\qquad
+ \depth(P,c)=\ceil{\log_2\scs(\C(P,c))}
+\end{equation}
+whenever the right-hand side is finite.
+\end{theorem}
+
+\begin{proof}
+An admissible map is weakly increasing along a chain. At a color change its
+index must increase strictly, since one word position has only one color.
+Selecting one point per color run embeds the reduced chain word into $v$.
+
+For the converse, greedily embed each reduced finite chain word into $v$.
+For $x\in P$, consider all finite chains ending at $x$, including the singleton
+chain. Their greedy last positions belong to the finite set
+$\{j:v_j=c(x)\}$. They are nonempty in number and all exist by hypothesis.
+Let $\lambda(x)$ be their maximum.
+
+If $x<y$, take a chain ending at $x$ whose greedy last position is
+$\lambda(x)$ and append $y$. If the last color repeats, reducing the word leaves
+the last greedy position unchanged; otherwise that position moves forward.
+The extended chain ends at $y$, so $\lambda(y)\ge\lambda(x)$. Also
+$v_{\lambda(x)}=c(x)$. Thus $\lambda$ is a color-respecting order-preserving map,
+which proves admissibility. The formulas follow from Theorem~\ref{fo:thm:normal}.
+\end{proof}
+
+\subsection{A linear-time feasibility test on a finite DAG}
+
+Let the order be the reachability relation of an acyclic directed graph with
+$n$ vertices and $e$ edges, supplied in a topological order. The input may
+contain just cover edges, all strict comparisons, or any generating DAG.
+For a finite word $v$, write
+\[
+ \operatorname{next}_a(b)=\min\{j\ge b:v_j=a\},
+\]
+where the minimum is $\infty$ if the set is empty. Process the vertices in
+order and compute
+\begin{equation}\label{fo:eq:greedy}
+ b(x)=\max\bigl(\{1\}\cup\{f(y):y\in\pred(x)\}\bigr),\qquad
+ f(x)=\operatorname{next}_{c(x)}(b(x)).
+\end{equation}
+Here $\pred(x)$ consists of incoming neighbors, not necessarily all predecessors.
+If a value is infinite the test rejects.
+
+\begin{proposition}[Least feasible map]\label{fo:prop:greedy}
+If the test succeeds, $f$ is the pointwise least order-preserving map compatible
+with $v$ and $c$. It succeeds exactly when $v$ is admissible. With a next-position
+table, its running time is $O(q\len{v}+n+e)$.
+\end{proposition}
+\begin{proof}
+If $g$ is any compatible monotone map, induction gives $f(y)\le g(y)$ at
+already processed vertices. Hence $b(x)\le g(x)$, and $g(x)$ is an occurrence
+of $c(x)$. The first possible such occurrence is at most $g(x)$. This proves
+minimality and shows that rejection precludes any compatible map. When all
+values are finite, monotonicity holds on every edge and hence on reachability.
+The recurrence uses one scan of the graph after constructing the next-position
+table backwards through the word.
+\end{proof}
+
+The weak inequality $j\ge b(x)$ is essential. Comparable points of the same
+color may use the same layer. Replacing it by $j>b(x)$ would compute a different
+problem and would make even a constant-colored long chain unnecessarily hard.
+
+\begin{corollary}[Disjoint chains]\label{fo:cor:chain-union}
+If $P$ is a disjoint union of finite chains whose reduced color words are
+$w_1,\ldots,w_r$, then
+\[
+ \layers(P,c)=\scs(w_1,\ldots,w_r).
+\]
+\end{corollary}
+\begin{proof}
+Every chain lies in a single component. Its reduced word is a subsequence of
+the component's reduced word. Thus the component words already impose all the
+constraints in Theorem~\ref{fo:thm:chains}.
+\end{proof}
+
+\section{Compact metrizable realizations of word profiles}
+\label{fo:sec:compact}
+
+Finite upper-set spaces are generally not Hausdorff. We now show that their
+word obstructions can survive in compact countable metrizable spaces.
+The result concerns the entire admissible-word profile, not only one numerical
+invariant.
+
+Define $\Tw_1$ to be a singleton. Recursively, $\Tw_m$ is the one-point
+compactification of the topological sum of countably many copies of $\Tw_{m-1}$.
+Denote the new point by $\infty_m$. In particular, $\Tw_2$ is a convergent sequence
+with its limit.
+
+\begin{lemma}[The convergent towers]\label{fo:lem:towers}
+Each $\Tw_m$ is countable, compact, and metrizable. Its last nonempty
+Cantor--Bendixson derivative is $\Tw_m^{(m-1)}=\{\infty_m\}$ for $m\ge2$;
+$\Tw_1^{(0)}=\Tw_1$ is also a singleton. A neighborhood of $\infty_m$ contains all
+but finitely many entire copies of $\Tw_{m-1}$.
+\end{lemma}
+\begin{proof}
+A compact subset of a topological sum of compact components meets only finitely
+many components: the components themselves form an open cover. The assertion
+about neighborhoods follows directly from the one-point compactification.
+Countability and compactness follow by induction and this neighborhood
+property.
+
+For metrizability, choose a metric $d_{m-1}\le1$ on each copy. Label copies by
+positive integers $n$. Within copy $n$, use $2^{-n}d_{m-1}$; give each of its
+points distance $2^{-n}$ from $\infty_m$; and give points in distinct copies
+$n,k$ distance $2^{-n}+2^{-k}$. This is a metric inducing precisely the stated
+topology. Each copy is open and closed. Taking derivatives inside a copy agrees
+with its own derivatives, while $\infty_m$ remains a limit point as long as
+infinitely many nonempty copies remain. Induction gives the derivative formula.
+\end{proof}
+
+For a reduced word $w=a_1\cdots a_m$, color $\Tw_m$ recursively: give
+$\infty_m$ color $a_1$, and give every copy of $\Tw_{m-1}$ the coloring for
+$a_2\cdots a_m$. For $m=1$, color its single point $a_1$. Call this coloring
+$c_w$. Equivalently, a point of Cantor--Bendixson rank $r$ has color $a_{m-r}$.
+
+\begin{theorem}[Exact compact word realization]\label{fo:thm:compact}
+For every reduced word $w$ and every finite word $v$,
+\begin{equation}\label{fo:eq:compact-profile}
+ v\in\W(\Tw_{\len{w}},c_w)\quad\Longleftrightarrow\quad w\subseq v.
+\end{equation}
+In particular, $\layers(\Tw_m,c_w)=m$ and
+$\depth(\Tw_m,c_w)=\ceil{\log_2m}$.
+\end{theorem}
+\begin{proof}
+The word $w$ itself is admissible. Put the top point in layer $1$, and use the
+recursive suffix layering, shifted by one, in every component. Suffixes starting
+after layer $1$ are unions of open subsets of the open components; the first
+suffix is the whole space. Embedding these layer indices in any supersequence
+$v$ preserves the openness of suffixes, so $w\subseq v$ implies admissibility.
+
+For the converse, induct on $m$. The singleton case is immediate. Suppose
+$\lambda$ witnesses admissibility of $v$ on $\Tw_m$, and set
+$j=\lambda(\infty_m)$, so $v_j=a_1$. The open suffix
+$\{x:\lambda(x)\ge j\}$ contains $\infty_m$. By Lemma~\ref{fo:lem:towers}, it
+contains an entire copy of $\Tw_{m-1}$. On that copy the restricted layering uses
+only indices $j,\ldots,\len{v}$. The induction hypothesis embeds
+$a_2\cdots a_m$ in $v_j\cdots v_{\len{v}}$. Since $a_2\ne a_1=v_j$, the first
+position of this embedding is strictly greater than $j$. Prefixing position
+$j$ embeds $a_1\cdots a_m=w$ into $v$, as required.
+\end{proof}
+
+\begin{corollary}[Compact realization of any finite colored poset]
+Every finite colored poset has the same admissible-word profile as some compact
+countable metrizable colored space of finite Cantor--Bendixson height.
+\end{corollary}
+\begin{proof}
+There are finitely many reduced chain words. Take the finite topological sum of
+one compact realization for each such word. A word is admissible on this sum
+exactly when it is admissible on every component: restriction proves necessity,
+and componentwise gluing proves sufficiency. Theorem~\ref{fo:thm:compact} and
+Theorem~\ref{fo:thm:chains} now give equality of profiles. A finite sum of compact
+countable metrizable spaces has the same properties.
+\end{proof}
+
+This construction is an existence theorem and can be exponentially large if
+one lists all chain words of a poset. For a given list of chain words, however,
+it preserves that list directly as a succinct description of the compact
+instance.
+
+\section{The extremal supersequence lemma}
+\label{fo:sec:universal}
+
+The exact constants come from a small extremal word problem. Let
+$\A_{q,m}(S)$ consist of all reduced words of length $m\ge1$ over $\Sigma$
+whose first letter lies in a fixed nonempty set $S\subseteq\Sigma$. Write
+$s=\len{S}$ and $\A_{q,m}=\A_{q,m}(\Sigma)$.
+
+\begin{theorem}[Restricted-start universal words]\label{fo:thm:universal}
+For $q\ge2$ and $1\le s\le q$,
+\begin{equation}\label{fo:eq:universal}
+ \scs(\A_{q,m}(S))=s+(q-1)(m-1).
+\end{equation}
+In particular,
+\begin{equation}\label{fo:eq:universal-all}
+ \scs(\A_{q,m})=(q-1)m+1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Order the alphabet cyclically, with the $s$ letters of $S$ first, and repeat this
+order indefinitely. Greedily embedding a word in $\A_{q,m}(S)$ puts its first
+letter at a position at most $s$. Every next letter differs from its predecessor
+and therefore occurs within the next $q-1$ positions. The prefix of length
+$s+(q-1)(m-1)$ is thus a common supersequence.
+
+For the lower bound, let $v$ be any common supersequence. Choose a first letter
+in $S$ whose first occurrence is latest. Its position is at least $s$. Having
+chosen a prefix ending with letter $a$ at its greedy position $j$, consider the
+next occurrences after $j$ of all $q-1$ letters different from $a$. Every such
+occurrence exists while the chosen prefix has length less than $m$: otherwise
+that prefix followed by the missing letter could be extended to a word in
+$\A_{q,m}(S)$ that does not embed in $v$.
+
+These $q-1$ next occurrences occupy different positions. Choose the latest;
+its distance from $j$ is at least $q-1$. Continuing this adversarial choice gives
+a reduced word of length $m$ whose greedy last position is at least
+$s+(q-1)(m-1)$. Its existence forces the same lower bound on $\len{v}$.
+\end{proof}
+
+\begin{corollary}[Bounded color alternation is exactly finite solvability]
+\label{fo:cor:height}
+For a nonempty colored poset, let $h_c$ be the supremum of lengths of reduced
+finite chain words. A finite correct open-query tree exists if and only if
+$h_c<\infty$. In that case
+\begin{equation}\label{fo:eq:height-bound}
+ h_c\le\layers(P,c)\le(q-1)h_c+1
+ \qquad(q\ge2).
+\end{equation}
+The upper bound is sharp for every $q\ge2$ and $h_c\ge1$.
+\end{corollary}
+\begin{proof}
+Every chain word must embed into an admissible word, giving the lower bound.
+If all reduced chain words have length at most $h_c$, extend each shorter one
+to a reduced word of length $h_c$. The universal word from
+Theorem~\ref{fo:thm:universal} embeds all of them, so Theorem~\ref{fo:thm:chains}
+gives the upper bound. A disjoint union of chains carrying every word of
+$\A_{q,h_c}$ attains equality. Unbounded lengths preclude any finite word.
+\end{proof}
+
+The lower bound in \eqref{fo:eq:height-bound} can be supplemented by the number of
+colors actually present. Neither bound alone determines the answer: chain
+words of the same length may synchronize in very different ways.
+
+\section{Sharp Cantor--Bendixson bounds and exact tower invariants}
+\label{fo:sec:CB}
+
+For a space $X$, let $X^{(0)}=X$ and let $X^{(r+1)}$ be the nonisolated-point
+subspace of $X^{(r)}$. Suppose $X^{(h)}\ne\varnothing$ and
+$X^{(h+1)}=\varnothing$, where $h$ is a nonnegative integer. The
+Cantor--Bendixson rank of $x$ is the unique $r$ with
+$x\in X^{(r)}\setminus X^{(r+1)}$.
+
+\begin{theorem}[A sharp finite-height layer bound]\label{fo:thm:CB}
+Let $X$ be a nonempty Hausdorff space of last derivative rank $h<\infty$.
+Let $c:X\to\Sigma$, where $q=\len{\Sigma}\ge2$, and let
+$s=\len{c(X^{(h)})}$ be the number of colors appearing on its last nonempty
+derivative. Then
+\begin{equation}\label{fo:eq:CB-bound}
+ \layers(X,c)\le(q-1)h+s,
+ \qquad
+ \depth(X,c)\le\ceil{\log_2((q-1)h+s)}.
+\end{equation}
+For every $q\ge2$, $h\ge0$, and $1\le s\le q$, the layer bound is attained by
+a compact countable metrizable colored space having exactly $s$ points in its
+last nonempty derivative, with distinct colors on those points.
+\end{theorem}
+
+\begin{proof}[Proof of the upper bound]
+Choose a cyclic order of the alphabet whose first $s$ entries are the colors
+on $X^{(h)}$. Let $v$ be the prefix of the repeated order of length
+$M=s+h(q-1)$. Give a point of rank $h$ the first occurrence of its color in $v$;
+its index is at most $s$.
+
+For a point of rank $r<h$, put
+\[
+ b_r=s+(h-1-r)(q-1)
+\]
+and assign it the first occurrence of its color at or after $b_r$. The interval
+$[b_r,b_r+q-1]$ has $q$ positions and contains the whole alphabet, so this
+assignment exists and lies in $[1,M]$. For two consecutive lower ranks, the
+maximum permitted index at the higher rank equals the minimum permitted index
+at the lower rank. The corresponding comparison also holds between rank $h$
+and rank $h-1$: their boundary is $s$.
+
+Every point $x$ of rank $r$ has an open neighborhood $V_x$ satisfying
+$V_x\cap X^{(r)}=\{x\}$, because it is isolated in $X^{(r)}$. Every other point
+of $V_x$ has smaller rank and hence an assigned index at least that of $x$.
+Thus $V_x\subseteq\{y:\lambda(y)\ge\lambda(x)\}$. Each suffix of $\lambda$ is
+a union of such neighborhoods, and is open. This proves admissibility of $v$.
+For $h=0$, the same argument simply orders the $s$ colors of the discrete space.
+The depth estimate follows from Theorem~\ref{fo:thm:normal}.
+\end{proof}
+
+To prove sharpness we need colorings richer than a single rank word. For
+$a\in\Sigma$ and $m\ge2$, color the top point of $\Tw_m$ by $a$. List every
+reduced word $u$ of length $m-1$ whose first letter differs from $a$, and use
+infinitely many component copies with coloring $c_u$ for each listed word.
+There are finitely many word types and countably many copies. Denote the
+resulting coloring by $b_{a,m}$. Put $b_{a,1}=a$ on $\Tw_1$.
+
+\begin{lemma}[All words with one prescribed initial color]\label{fo:lem:root-profile}
+For every $m\ge1$,
+\[
+ \W(\Tw_m,b_{a,m})
+ =\{v:w\subseq v\text{ for every }w\in\A_{q,m}(\{a\})\}.
+\]
+\end{lemma}
+\begin{proof}
+For $m=1$ the assertion is the singleton case. For $m\ge2$, suppose $v$ is
+admissible and its layering gives the top point index $j$, with $v_j=a$.
+The open suffix beginning at $j$ contains all but finitely many component
+copies. Since each word type $u$ occurs infinitely often, one entire copy of
+each type lies in that suffix. Theorem~\ref{fo:thm:compact} embeds $u$ into
+$v_j\cdots v_{\len{v}}$, and its first letter differs from $a$, so this embedding
+starts after $j$. Prefixing $j$ embeds every word $au$ in the required family.
+
+Conversely, suppose every $au$ embeds into $v$. Let $j$ be the first occurrence
+of $a$ in $v$. In an embedding of any $au$, the initial $a$ can be replaced by
+this earlier occurrence, so every $u$ embeds after $j$. Use such an embedding
+and Theorem~\ref{fo:thm:compact} to place the layers of every component after $j$;
+place the top point at $j$. Suffixes beginning at most at $j$ are the whole
+space, while later suffixes are unions of open subsets of components. This is
+an admissible layering.
+\end{proof}
+
+\begin{proof}[Completion of the sharpness proof of Theorem~\ref{fo:thm:CB}]
+Let $S$ be a set of $s$ alphabet letters and take one copy of
+$(\Tw_{h+1},b_{a,h+1})$ for each $a\in S$. For $h=0$ these are $s$ singletons.
+The last derivative consists of their $s$ top points. By
+Lemma~\ref{fo:lem:root-profile}, the word profile of the sum requires exactly the
+words of $\A_{q,h+1}(S)$ as subsequences. Its minimum word length is
+$s+(q-1)h$ by Theorem~\ref{fo:thm:universal}.
+\end{proof}
+
+Now take a supremum over all colorings, in contrast to the fixed-coloring
+invariant $\depth(X,c)$:
+\[
+ \smq(X):=\sup_{c:X\to\Sigma}\depth(X,c).
+\]
+The alphabet has $q$ available colors; a coloring need not use all of them.
+
+\begin{theorem}[Exact finite-output invariant of convergent towers]
+\label{fo:thm:tower-invariant}
+For all integers $m,t\ge1$ and $q\ge2$,
+\begin{equation}\label{fo:eq:tower-invariant}
+ \boxed{\displaystyle
+ \smq\!\left(\bigsqcup_{i=1}^{t}\Tw_m\right)
+ =\ceil{\log_2\bigl((q-1)(m-1)+\min(q,t)\bigr)}.}
+\end{equation}
+In particular,
+\begin{equation}\label{fo:eq:one-tower}
+ \smq(\Tw_m)=\ceil{\log_2\bigl(1+(q-1)(m-1)\bigr)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The last nonempty derivative is at rank $m-1$ and has $t$ points. Every coloring
+uses at most $\min(q,t)$ colors there. The upper bound is therefore
+Theorem~\ref{fo:thm:CB}. For the lower bound, choose $\min(q,t)$ distinct top
+colors and the corresponding colorings $b_{a,m}$. If extra copies remain,
+duplicate any one of those colored components. Duplicating its word constraint
+does not change the intersection of word profiles. The sharpness construction
+in Theorem~\ref{fo:thm:CB} gives exactly the claimed layer count and hence depth.
+\end{proof}
+
+For $q=2$, \eqref{fo:eq:tower-invariant} is
+$\ceil{\log_2m}$ for one tower and $\ceil{\log_2(m+1)}$ for two or more,
+consistent with the binary repository result \cite{Repo}. The theorem above
+supplies the finite-alphabet extension for this compact family, including its
+worst-case colorings and explicit proofs.
+
+\begin{writenote}[Checked against Part~I]
+The binary result is \cref{thm:height} applied to $\bigsqcup_{i=1}^t\Tw_m$
+(last derivative rank $m-1$, $t$ terminal points). At $m=2$, $t=2$ the value~2
+is Part~I's counterexample \eqref{eq:small}; since $\Tw_{2^k}\cong K_k$, the
+values $k$ and $k+1$ at $m=2^k$ are \eqref{eq:sharp}. The formula agrees with
+all rows of Part~I's recorded tables (\cref{fo:sec:crosswalk}, items~3 and~4).
+\end{writenote}
+
+\begin{remark}[A limitation and a useful distinction]
+Theorem~\ref{fo:thm:CB} gives a sharp \emph{uniform bound over a class of spaces};
+it does not assert that every coloring attains it, or that every Hausdorff
+space of the specified height has the same multi-output invariant.
+Theorem~\ref{fo:thm:tower-invariant} is an exact statement for the defined towers
+and their finite sums. When $m\ge2$, its formula shows that summing these
+uncolored towers can increase $\smq$ by at most one, even though fixed
+colorings can exhibit the larger increase established next.
+Indeed, if $A=(q-1)(m-1)+1$, then
+$A\le(q-1)(m-1)+\min(q,t)\le A+q-1\le2A$.
+\end{remark}
+
+\begin{writenotec}[Beyond towers at $m=2$]
+Part~III computes $\smq$ for every Hausdorff space with a finite nonempty
+derived set (\cref{fp:thm:capacity}). For $m=2$ the value
+\eqref{fo:eq:tower-invariant} holds for every such space whose nonisolated
+points are first countable or locally compact
+(\cref{fp:cor:regular-formula}), and it fails for sums of free-ultrafilter
+spaces (\cref{fp:thm:ultra}): at $q=t=3$ the tower value is~$3$, the
+ultrafilter value~$2$ \eqref{fp:eq:separation}.
+\end{writenotec}
+
+\section{Sharp synchronization under topological sums}
+\label{fo:sec:sums}
+
+\begin{proposition}[Profiles compose by intersection]\label{fo:prop:sum-profile}
+For any nonempty family of nonempty colored spaces, with the same alphabet,
+\begin{equation}\label{fo:eq:sum-profile}
+ \W\!\left(\bigsqcup_{i\in I}X_i,\bigsqcup_{i\in I}c_i\right)
+ =\bigcap_{i\in I}\W(X_i,c_i).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Restrict a layering of the sum to each component for one inclusion. For the
+other, take a layering of each component with the same word. Their maps glue,
+and every glued suffix is open because its restriction to each open component
+is open. One can choose component layerings by any such witnesses; alternatively
+Proposition~\ref{fo:prop:closure} provides canonical layers for the prescribed word.
+\end{proof}
+
+A scalar such as minimum depth or minimum length loses this compatibility
+information. Even the collection of shortest words alone need not be used as a
+substitute for the full admissibility profile: a longer locally admissible word
+may be useful for synchronization.
+
+\begin{theorem}[Sharp layer synchronization]\label{fo:thm:sum-layers}
+Let $q\ge2$ and $m\ge1$. If $\layers(X_i,c_i)\le m$ for every $i$, then
+\begin{equation}\label{fo:eq:sum-layers}
+ \layers\!\left(\bigsqcup_i X_i,\bigsqcup_i c_i\right)\le(q-1)m+1.
+\end{equation}
+For every $q,m$ the constant is best possible. Sharp examples can be chosen as
+finite disjoint unions of $m$-point chains, or as finite disjoint unions of
+copies of the compact countable metrizable space $\Tw_m$ with fixed rank-word
+colorings.
+\end{theorem}
+\begin{proof}
+Each component admits a reduced word of length at most $m$. Every such word
+embeds into a reduced word of length $m$ and hence into the single universal
+word of length $(q-1)m+1$ in Theorem~\ref{fo:thm:universal}. Inserting empty layers
+according to this embedding makes the universal word admissible on every
+component. Proposition~\ref{fo:prop:sum-profile} gives the upper bound, with no
+restriction on the number of components.
+
+For sharpness, take one component for each $w\in\A_{q,m}$, either the chain
+carrying $w$ or the compact colored tower $(\Tw_m,c_w)$. Each component has exactly
+$m$ layers. By Corollary~\ref{fo:cor:chain-union} or
+Theorem~\ref{fo:thm:compact}, the union's profile is exactly the common
+supersequence profile of $\A_{q,m}$, whose minimum length is $(q-1)m+1$.
+There are $q(q-1)^{m-1}$ components.
+\end{proof}
+
+\begin{theorem}[Exact maximal extra query cost]\label{fo:thm:sum-depth}
+For $q\ge2$ and $d\ge0$, if every component has fixed-coloring depth at most $d$,
+then
+\begin{equation}\label{fo:eq:sum-depth}
+ \depth\!\left(\bigsqcup_iX_i,\bigsqcup_ic_i\right)
+ \le d+\ceil{\log_2q}.
+\end{equation}
+Equality is attainable for every pair $(q,d)$, both by finite colored posets and
+by finite families of compact countable metrizable colored spaces.
+\end{theorem}
+\begin{proof}
+Use Theorem~\ref{fo:thm:normal} and Theorem~\ref{fo:thm:sum-layers} with $m=2^d$.
+If $k=\ceil{\log_2q}$, then $2^{k-1}\le q-1<2^k$, so
+\[
+ 2^{d+k-1}<(q-1)2^d+1\le2^{d+k}.
+\]
+Thus the ceiling of its logarithm is exactly $d+k$. The sharp examples of
+Theorem~\ref{fo:thm:sum-layers} have each component depth exactly $d$ and union
+depth exactly $d+k$.
+\end{proof}
+
+There is a simple independent intuition for the upper depth bound. Synchronize
+component trees for $d$ rounds, taking at each round the union of the appropriate
+component queries. After that transcript, the surviving points in each
+component have one known color, but different components may have different
+colors. Queries that are unions of whole components resolve the remaining
+$q$ possibilities in at most $\ceil{\log_2q}$ rounds. The layer theorem does more:
+it finds the exact extremal number of layers and proves the depth loss sharp.
+
+For the supremum-over-colorings invariant, the same upper estimate holds if
+$\smq(X_i)\le d$ for all $i$. It is sharp on finite upper-topology chains of
+$2^d$ points: their worst-case layer count is $2^d$, attained by an alternating
+two-color word. The compact sharpness construction in Theorem~\ref{fo:thm:sum-depth}
+is a statement about its \emph{specified colorings}. It does not assert that
+$\smq(\Tw_{2^d})=d$ for $q>2$; Equation~\eqref{fo:eq:one-tower} gives the different,
+correct value.
+
+\subsection{The first genuinely three-color example}
+\label{fo:sec:three-colors}
+
+Take six two-point chains with color words
+\[
+ 01,\quad02,\quad10,\quad12,\quad20,\quad21.
+\]
+Each needs one question. The word $01201$ is a common supersequence, with the
+following embeddings:
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+$01$ & $02$ & $10$ & $12$ & $20$ & $21$\\
+\midrule
+$(1,2)$ & $(1,3)$ & $(2,4)$ & $(2,3)$ & $(3,4)$ & $(3,5)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+No word of length four contains all six ordered pairs. Such a word must use all
+three colors, and at least two of the colors occur only once; only one order of
+those two colors can then be a subsequence. Hence the sum has exactly five
+layers and exactly three questions. In particular, the binary ``one extra
+question'' bound is false for fixed three-color targets.
+
+Replace each chain $ab$ by a convergent sequence whose limit has color $a$ and
+all isolated points have color $b$. Theorem~\ref{fo:thm:compact} preserves every
+word constraint. This gives the same one-to-three increase on a compact
+countable metrizable space that is a finite sum of convergent sequences.
+
+The six constraints are deletion-minimal for this three-query obstruction.
+More generally, if the ordered pair $ba$ is deleted from the full $q$-color
+pair family, let $R$ list all colors except $a,b$. The word $RabR$ has length
+$2q-2$ and contains every remaining ordered pair. For $q=3$ this is a four-layer,
+two-query solution after deleting any one component.
+
+\section{A binary/ternary complexity dichotomy}
+\label{fo:sec:complexity}
+
+A finite input poset is given by a generating DAG or by its order relation, with
+an explicit color at every vertex. The decision problems ask whether
+$\layers(P,c)\le k$ or whether $\depth(P,c)\le d$, with an integer budget supplied
+as part of the input.
+
+\subsection{The binary case}
+For colors $0,1$, let $r_a$ be the maximum length of a reduced chain word
+beginning with $a$, or zero if that color never occurs. Every reduced binary
+word alternates. An alternating master word starting with $a$ embeds a reduced
+chain word beginning with $a$ as soon as it has enough positions; embedding a
+word beginning with $1-a$ costs one additional initial position.
+
+\begin{proposition}[Exact binary formula]\label{fo:prop:binary}
+For a nonempty finite binary-colored poset,
+\begin{equation}\label{fo:eq:binary}
+ \layers(P,c)=
+ \min\{\max(r_0,r_1+1),\ \max(r_1,r_0+1)\}.
+\end{equation}
+Both $\layers$ and $\depth$ are polynomial-time computable.
+\end{proposition}
+\begin{proof}
+A shortest master word is reduced and therefore alternating. The two possible
+initial colors give the two displayed lengths, by the preceding observation
+and Theorem~\ref{fo:thm:chains}. To compute the $r_a$, process the transitive order
+in a linear extension. For each vertex $x$ and each starting color $a$, store
+the largest reduced-chain length beginning with $a$ and ending at $x$. Extending
+a chain from $y<x$ increases the value by $1$ precisely when $c(y)\ne c(x)$.
+This is a polynomial dynamic program; using an explicit order relation costs
+$O(n^2)$ after it is available. Finally apply Theorem~\ref{fo:thm:normal}.
+\end{proof}
+
+This is the binary phenomenon already present in the repository report
+\cite{Repo}, now expressed in the chain-language notation. It is included to
+make the contrast with three colors precise, not as a new binary theorem.
+
+\begin{writenote}[Where it is in Part~I]
+\Cref{thm:posets} and its quadratic-time corollary. Part~I's $a_b$ reads a
+chain from its greatest element, $r_a$ here from its least; both formulas give
+$1+\min(a_0,a_1)$ layers (\cref{fo:sec:crosswalk}, item~2).
+\end{writenote}
+
+\subsection{The imported hardness theorem}
+We use the following established result and no other external hardness
+assumption beyond ordinary NP-completeness terminology.
+
+\begin{theorem}[Lagoutte--Tavenas, modified SCS; external input]
+\label{fo:thm:MSCS}
+Over three letters, deciding whether a finite family of words has a common
+supersequence of length at most $k$ is NP-complete even when no input word has
+identical consecutive letters and no input word begins with a designated
+letter, which may be called $2$.
+\end{theorem}
+
+This is Corollary~6 of \cite{LT}; its strict-budget convention is equivalent by
+subtracting one from the budget. Its relationship to earlier typed-DAG fusion
+work of Darte is discussed there. We do not reprove that hardness theorem or
+claim that the reduced-word restriction is new.
+
+Corollary~\ref{fo:cor:chain-union} immediately transfers this result to the layer
+budget. The depth budget requires care: simply rounding $\log_2 k$ loses the
+exact threshold. The next lemma supplies the missing step.
+
+\begin{lemma}[Common-prefix cancellation]\label{fo:lem:prefix}
+For any finite word $p$ and any nonempty finite family of finite words,
+\begin{equation}\label{fo:eq:prefix}
+ \scs(pw_1,\ldots,pw_r)=\len{p}+\scs(w_1,\ldots,w_r).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Prefixing $p$ to a shortest common supersequence proves the upper bound.
+For the reverse bound, let $v$ contain every $pw_i$. Greedily embed $p$ into
+$v$, and let its last position be $j$. For any embedding of $pw_i$, the prefix
+$p$ finishes at a position at least $j$, so the embedded copy of $w_i$ lies
+entirely after $j$. Consequently the suffix of $v$ after $j$ is a common
+supersequence of all $w_i$. Since $j\ge\len{p}$, this gives the lower bound.
+For the empty prefix the assertion is immediate.
+\end{proof}
+
+\begin{theorem}[Three colors suffice for NP-completeness]
+\label{fo:thm:NP}
+For every fixed alphabet size $q\ge3$, each of the following is NP-complete:
+deciding $\layers(P,c)\le k$, and deciding $\depth(P,c)\le d$.
+The result holds already for disjoint unions of chains.
+\end{theorem}
+
+\begin{proof}
+First consider membership in NP. Every $n$-point colored poset has a layering
+of at most $n$ positions, obtained by listing its vertices in a linear
+extension. A word of length at most $n$ together with a color-respecting
+monotone map to its positions is a polynomial certificate. Its correctness is
+checked on the generating edges. For the depth problem, test whether its length
+is at most $2^d$. If $d\ge\ceil{\log_2n}$, the answer is automatically yes;
+otherwise the integer $2^d$ is at most $2n$ and causes no encoding problem.
+The same certificate proves membership for a layer budget.
+
+Layer hardness follows directly from Theorem~\ref{fo:thm:MSCS} by making a chain
+for each input word. For depth hardness, take a modified-SCS instance
+$(w_1,\ldots,w_r,k)$ over $\{0,1,2\}$ whose words do not begin with $2$.
+Delete empty words. Trivial budgets are decidable directly and can be mapped
+to fixed yes- or no-instances, so assume $1\le k<N$, where
+$N=\sum_i\len{w_i}$.
+
+Set
+\[
+ d=\ceil{\log_2k},\qquad B=2^d,\qquad t=B-k.
+\]
+If $t>0$, choose the alternating word over $\{0,2\}$ of length $t$ ending in
+$2$; call it $p$. If $t=0$, let $p$ be empty. Every word $pw_i$ is reduced,
+including across the joining boundary, because no $w_i$ starts with $2$.
+Let $P'$ be the disjoint union of chains carrying the words $pw_i$. By
+Corollary~\ref{fo:cor:chain-union} and Lemma~\ref{fo:lem:prefix},
+\[
+ \layers(P',c')=t+\scs(w_1,\ldots,w_r).
+\]
+Therefore
+\begin{align*}
+ \depth(P',c')\le d
+ &\Longleftrightarrow \layers(P',c')\le B\\
+ &\Longleftrightarrow \scs(w_1,\ldots,w_r)\le B-t=k.
+\end{align*}
+The output has $N+rt$ vertices. Since $t<k\le N$, its size is polynomial in
+the input size. This is an exact many-one reduction for the depth threshold.
+The three used colors can be viewed as a subset of any larger fixed alphabet.
+\end{proof}
+
+\begin{writenotec}[A second hardness route in Part~III]
+Part~III's \cref{fp:prop:complexity} is a second NP-completeness result, for
+profile-graph input with an unbounded alphabet, through directed feedback
+vertex set. For each fixed $q$ that input model is solved by a finite search,
+which does not conflict with \cref{fo:thm:NP}, whose instances are posets and
+tower lists with words of unbounded length.
+\end{writenotec}
+
+\subsection{The same hardness on succinct compact instances}
+
+The compact realization has an algorithmic consequence if the representation
+of an infinite space is specified rather than left implicit. Define a
+\emph{tower-list instance} to be a finite list of reduced words
+$w_1,\ldots,w_r$, denoting
+\[
+ \bigsqcup_{i=1}^r(\Tw_{\len{w_i}},c_{w_i}).
+\]
+Its input size is the total word length, not the cardinality of the infinite
+underlying space. The allowed open sets are still all open sets of that space.
+
+\begin{corollary}[Compact rank-word instances]
+For a fixed alphabet of at least three letters, deciding an exact finite layer
+budget or an exact finite query-depth budget on tower-list instances is
+NP-complete.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{fo:thm:compact} and Proposition~\ref{fo:prop:sum-profile} identify the
+entire admissible-word profile with the common supersequence profile of the
+input list. Thus the same certificates and the same padding reduction apply.
+\end{proof}
+
+This is a precisely defined succinct-input result, not a claim about an
+unspecified computational presentation of arbitrary topological spaces.
+
+\section{Efficient approximation and exact algorithms}
+\label{fo:sec:algorithms}
+
+\subsection{Cyclic master words}
+Fix a cyclic order of the $q$ letters. For each of its $q$ rotations, greedily
+map the input poset into the corresponding infinite periodic word using
+\eqref{fo:eq:greedy}. Next occurrences are computed by modular arithmetic, so no
+infinite object is stored. Let $M_r$ be the largest position used for rotation
+$r$. Return the shortest of the resulting prefixes, with its greedy rank map,
+and perform balanced suffix queries.
+
+\begin{theorem}[Additive approximation in query count]\label{fo:thm:approx}
+For a finite nonempty $q$-colored poset, $q\ge2$, the cyclic algorithm runs in
+$O(q(n+e))$ word operations and returns an admissible prefix of length at most
+\begin{equation}\label{fo:eq:approx-layers}
+ M_{\cyc}\le 1+(q-1)(\layers(P,c)-1).
+\end{equation}
+Its query tree has depth at most
+\begin{equation}\label{fo:eq:approx-depth}
+ \depth(P,c)+\ceil{\log_2(q-1)}.
+\end{equation}
+For two colors it is exact. For three colors it is within one additional
+question of optimal.
+\end{theorem}
+
+\begin{proof}
+Let $w$ be a shortest admissible word of length $L$. It is reduced. Choose the
+cyclic rotation starting with its first letter. Greedily embed $w$ into that
+periodic word. Its first position is $1$, and every successive letter advances
+by at most $q-1$, giving a last position at most $1+(q-1)(L-1)$.
+Composing this word embedding with a layering for $w$ produces a compatible
+monotone map into the periodic prefix. The greedy map is pointwise least by
+Proposition~\ref{fo:prop:greedy}, so its last position is no larger. Minimizing
+across rotations proves \eqref{fo:eq:approx-layers}.
+
+Since $M_{\cyc}\le(q-1)L$, taking logarithms and ceilings gives
+\[
+ \ceil{\log_2M_{\cyc}}
+ \le\ceil{\log_2L}+\ceil{\log_2(q-1)}.
+\]
+The normal form converts this to the depth estimate. For $q=2$, the length
+bound is $M_{\cyc}\le L$, forcing equality with the optimum.
+
+Each rotation requires one graph scan. Every rank is at most $qn$, since at
+most $n$ successive vertex assignments can increase a rank, each by at most
+$q$. The ranks therefore occupy $O(\log(qn))$ bits. This proves the stated
+word-operation bound; bit-operation costs include the corresponding integer
+arithmetic factor.
+\end{proof}
+
+With alphabet $\{0,\ldots,q-1\}$ and rotation starting with $a$, the next
+position of color $c$ at or after a 1-based lower bound $b$ is
+\[
+ b+\bigl(c-a-(b-1)\bmod q\bigr),
+\]
+where the remainder is in $\{0,\ldots,q-1\}$. This is the implementation used
+in the verifier.
+
+Empty positions may be deleted, and adjacent same-color occupied layers may
+then be merged, before building a query tree. These improvements only help;
+the theorem does not depend on applying them. The raw prefix-length bound is
+sharp for this particular algorithm: a chain following the reverse cyclic
+order has its first match at position $1$ in the best rotation and each later
+match $q-1$ positions farther along. For example, the chain $2102$ has optimum
+length $4$ but uses positions $1,3,5,7$ in the best $012$-cycle rotation.
+Deleting its unused positions recovers the optimum, so this example is
+\emph{not} a lower bound against improved approximation algorithms.
+
+\subsection{Exact search on ideals}
+Let $I$ be an order ideal, interpreted as the points already placed into early
+layers. Reading color $a$ can process all points whose as-yet-unprocessed
+predecessors have that color. More precisely, define
+\begin{equation}\label{fo:eq:ideal-transition}
+ T_a(I)=I\cup\{x\in P:\mathord\downarrow x\setminus I\subseteq c^{-1}(a)\}.
+\end{equation}
+It is an ideal. It can be computed by a topological scan that adds a vertex of
+color $a$ as soon as all its predecessors have been added.
+
+\begin{proposition}[Exact ideal automaton]\label{fo:prop:ideal}
+Starting at $\varnothing$, a word is admissible exactly when the successive
+transitions $T_a$ reach $P$. Breadth-first search of this finite state graph
+therefore returns a shortest admissible word. If $J(P)$ is the number of order
+ideals, the running time is $O(qJ(P)(n+e))$, with at most $J(P)\le2^n$ states.
+\end{proposition}
+\begin{proof}
+After a word prefix has been read, process every vertex as early as its color
+and predecessors allow. Equation~\eqref{fo:eq:ideal-transition} is precisely the
+maximal possible extension using the next single color: a point can be
+included if and only if every still-unprocessed point below it can be included
+in this same monochromatic layer. Induction on the word length shows that this
+process contains the processed ideal of any other compatible partial layering.
+Thus it reaches all vertices if and only if some complete layering exists.
+Breadth-first search minimizes the number of transitions. Each of the $q$
+transitions per reached state takes one graph scan.
+\end{proof}
+
+If a chain cover with chain lengths $n_1,\ldots,n_r$ is supplied, every ideal
+intersects each chain in a prefix. Consequently
+\[
+ J(P)\le\prod_{i=1}^{r}(n_i+1).
+\]
+This gives a polynomial algorithm for each fixed number of covering chains,
+including the familiar product-state algorithm for a fixed list of strings.
+It is an XP-type bound in that parameter, not an assertion of fixed-parameter
+tractability with an exponent independent of $r$.
+
+The verifier uses exhaustive legal-question minimax as a separate algorithm.
+For a nonempty possible-point mask $A$ that is not monochromatic,
+\begin{align*}
+ D(A)&=1+\min_{U}\max\{D(A\cap U),D(A\setminus U)\},\\
+ L_{\rm tree}(A)&=\min_U\{L_{\rm tree}(A\cap U)+L_{\rm tree}(A\setminus U)\},
+\end{align*}
+where the minimum runs over open sets splitting $A$ into two nonempty parts.
+A monochromatic nonempty mask has depth $0$ and one leaf. The ideal automaton
+does not call these recurrences, making their agreement a useful independent
+finite check of the normal form.
+
+\section{Finite obstructions and bounded-budget decidability}
+\label{fo:sec:obstructions}
+
+\begin{theorem}[Small finite witnesses of a failed layer budget]
+\label{fo:thm:obstruction}
+For any poset $P$, finite or infinite, with $q$ colors, if
+$\layers(P,c)>m$ for some $m\ge1$, there is an induced finite colored subposet
+$Q$ with
+\begin{equation}\label{fo:eq:obstruction}
+ \len{Q}\le(m+1)q^m,\qquad \layers(Q,c|_Q)>m.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For each word $v\in\Sigma^m$, Theorem~\ref{fo:thm:chains} gives a reduced finite
+chain word not embedding into $v$. Stop its greedy embedding at the first
+failure. Each previous letter uses a strictly later position, so failure occurs
+within at most $m+1$ letters. Selecting the corresponding chain points gives an
+obstructing chain of at most that size.
+
+Take the union of one such chain for each of the $q^m$ words. If the induced
+subposet admitted a word of length at most $m$, append empty positions to obtain
+one of length exactly $m$. Its stored obstructing chain would then embed,
+a contradiction. This proves the bound.
+\end{proof}
+
+In particular, a bounded finite query budget on an arbitrary Alexandrov poset
+is determined by its finite colored subposets. For a depth budget $d$, one may
+put $m=2^d$ in \eqref{fo:eq:obstruction}. The numerical bound is an upper bound,
+not a claim of optimality or of a polynomial kernel.
+
+On a finite DAG, enumerating the $q^{2^d}$ words of length $2^d$ and applying
+Proposition~\ref{fo:prop:greedy} gives an exact algorithm with time
+\[
+ O\!\left(q^{2^d}(q2^d+n+e)\right).
+\]
+Thus the problem is fixed-parameter tractable in the joint parameters $q,d$;
+for fixed $q$, it is fixed-parameter tractable in the allowed query depth.
+This does not conflict with NP-completeness when the depth is part of an
+unbounded input.
+
+\begin{proposition}[Finite witnesses for sum incompatibility]
+If every finite subfamily of a family of colored spaces has sum layer count
+at most $m$, then the entire sum has layer count at most $m$. If the bound fails,
+it fails already for a subfamily of at most $q^m$ components.
+\end{proposition}
+\begin{proof}
+There are only $q^m$ candidate words of length exactly $m$. If none is admissible
+on the whole sum, choose for each candidate a component on which it fails,
+using Proposition~\ref{fo:prop:sum-profile}. Those at most $q^m$ components already
+exclude every candidate. Padding an admissible shorter word shows that they
+also exclude every word of length at most $m$.
+\end{proof}
+
+The two finite-witness statements have different domains. The induced-subposet
+statement is not a general finite-subspace theorem for Hausdorff spaces. Every
+finite subspace of a Hausdorff space is discrete, so it can have at most $q$
+necessary color layers, while the compact towers above have arbitrarily large
+layer complexity. Their obstructions lie in accumulation, not in finite
+Hausdorff subspaces.
+
+\section{Reproducible verification and certificates}
+\label{fo:sec:verification}
+
+The archive includes a standard-library Python verifier, not a proof-assistant
+formalization. Its full recorded run is, with the shipped name and an explicit
+output directory,
+\begin{lstlisting}
+python3 code/02-finite-output-verify.py --max-n 5 --brute-n 4 --output <scratch>
+\end{lstlisting}
+A naturally labeled poset has every strict comparison directed from a smaller
+integer label to a larger one. Every finite poset admits such a labeling.
+The enumeration therefore covers every isomorphism type through the stated
+size, possibly many times; it is not an enumeration of unlabelled types.
+
+For every binary and ternary coloring of every enumerated poset, the verifier
+compares exhaustive open-question minimax with shortest-word breadth-first
+search on ideals. It checks both minimum leaf count and the logarithmic depth
+formula, the binary formula when applicable, greedy feasibility, and the cyclic
+approximation bounds. The counts are:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Points & Naturally labeled posets & Binary colorings & Ternary colorings\\
+\midrule
+1 & 1 & 2 & 3\\
+2 & 2 & 8 & 18\\
+3 & 7 & 56 & 189\\
+4 & 40 & 640 & 3,240\\
+5 & 357 & 11,424 & 86,751\\
+\midrule
+Total & 407 & 12,130 & 90,201\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus there are \textbf{102,331 colored-poset tests}. Through four points, the
+program additionally enumerates all reduced chain words and solves their SCS
+problem by brute force. It checks \textbf{4,156 colored instances} in this way.
+For every candidate master word of lengths $1$ through the point count in these
+instances, it compares chain subsequence containment, the greedy monotone map,
+and closed-set elimination. This gives \textbf{416,432 fixed-word checks}.
+
+The restricted-start universal families are checked for $2\le q\le4$,
+$1\le m\le4$, and every $1\le s\le q$: 36 parameter triples.
+For the 15 triples with $q\le3,m\le3$, the optimum is also found independently
+by exhaustive word enumeration. A further \textbf{1,176 tests} check exact
+common-prefix cancellation and the power-of-two reduction on pairs of small
+reduced ternary words.
+
+\begin{sloppypar}
+The twelve-point example has a machine-readable certificate recording its
+predecessor masks, colors, master word, rank map, and balanced query tree. Every
+query is checked to be an upper set, and every point is followed to a correct
+leaf. The full outcomes are in
+\path{data/02-finite-output-verification.json}; tables and the
+strategy certificate are provided separately as CSV and JSON.
+\end{sloppypar}
+
+\begin{writenote}[Shipped names]
+In the delivery the verifier was \path{code/verify.py}, its outputs lay in
+\path{results/}, and the command above read
+\begin{lstlisting}
+python3 code/verify.py --max-n 5 --brute-n 4
+\end{lstlisting}
+Here \path{code/verify.py} is Part~I's verifier, so the command above uses the
+shipped name. The recorded outputs are the five files and the console log
+\begin{itemize}
+\item \path{data/02-finite-output-verification.json},
+\item \path{data/02-finite-output-strategy_certificate.json},
+\item \path{data/02-finite-output-poset_counts.csv},
+\item \path{data/02-finite-output-sharp_families.csv},
+\item \path{data/02-finite-output-restricted_start_families.csv},
+\item \path{data/02-finite-output-verification.log}.
+\end{itemize}
+The verifier writes unprefixed names; without \texttt{-{}-output} it creates \path{results/} in the report
+directory. Its
+JSON files are written with the platform's line endings, so a rerun on
+Windows differs from the record by CRLF (and by the Python version and the
+elapsed time); its CSV files are CRLF on every platform, as delivered. The
+counts above agree with the recorded JSON and log.
+\end{writenote}
+
+These checks do not establish the infinite-space theorems, the general
+NP-hardness reduction, or historical novelty. Those claims rest respectively
+on the written proofs, the cited hardness input plus the written reduction,
+and a still-incomplete priority assessment. Finite Hausdorff subspaces are not
+used as substitutes for the compact tower arguments.
+
+\section{Proof dependencies, scope, and formalization}
+\label{fo:sec:audit}
+
+\subsection{Proof dependency audit}
+The proofs form a short dependency chain. Tree flattening and balanced suffix
+search prove the normal form. The poset representation follows from monotone
+maps and finite greedy embeddings; compact realization follows from cofinite
+component neighborhoods. The adversarial next-occurrence argument proves the
+universal-word constant. These feed the synchronization theorem and the exact
+tower formula. Closed-set elimination supplies an independent topological
+normal-form test.
+
+The only imported mathematical result needed for the NP-completeness claim is
+Theorem~\ref{fo:thm:MSCS}. The reduction to depth is proved here, including all
+boundary and input-size conditions. None of the topological or sharp-bound
+theorems depends on that complexity-theoretic input. No unproved conjecture is
+used as a theorem. The assertion that zero additive error cannot be guaranteed
+in polynomial time for three colors is, as usual, conditional on
+$\PT\ne\NP$.
+
+Indeed, Theorem~\ref{fo:thm:approx} gives one extra query for three colors. A
+uniform guarantee of fewer than one extra query would, by integrality, be an
+exact algorithm and would contradict Theorem~\ref{fo:thm:NP} if $\PT\ne\NP$.
+In this precise integer-additive sense, the three-color approximation guarantee
+is optimal under that assumption. No analogous optimality claim is made for
+the bound $\ceil{\log_2(q-1)}$ when $q\ge4$.
+
+\subsection{Relationship to the cited work}
+The binary repository layer framework is the direct starting point. Its
+binary counterexamples, binary alternating-chain algorithm, and binary
+Cantor--Bendixson results are not claimed anew. The finite-output exact tower
+formula, sharp synchronization family, and rounding-safe complexity transfer
+are the extensions developed here.
+
+The SCS connection also has precursors in typed-graph fusion, as documented in
+\cite{LT}; a mere change of vocabulary would not be a priority claim. Likewise,
+Selivanov's work places multi-valued partitions within a much broader
+descriptive-set-theoretic setting \cite{Selivanov}. The present article is
+specifically about finite worst-case open-query budgets, explicit word
+certificates, and sharp constants. An independent comparison with the full
+partition-hierarchy and typed-fusion literature remains appropriate before
+submission as a novelty-certified paper.
+
+\subsection{A concrete proof-assistant plan}
+The finite part has a small trusted mathematical interface. A useful Lean
+formalization would proceed in the following order.
+\begin{enumerate}
+\item Define finite words, subsequence embeddings, reduced words, and
+color-respecting monotone maps to finite chains. Verify the greedy next-position
+recurrence and its least-map property.
+\item Formalize finite binary query trees over a topology and the no-before-yes
+leaf order. Prove the suffix-open induction, then construct balanced suffix
+trees with the integer bound $m\le2^d$ rather than analytic logarithms.
+\item Prove the chain-language equivalence, the universal-word upper bound,
+and the adversarial lower-bound witness. These yield synchronization with
+purely finite arithmetic at the final step.
+\item Add a certified checker for a supplied word and rank map. A search
+program can remain untrusted: its positive certificates require only color
+agreement and monotonicity along input edges. Negative certificates can use
+an explicit failed chain for each candidate word or a verified ideal-state
+search, depending on the budget.
+\item Formalize the convergent towers and their neighborhood property, then
+their rank-word profiles, the finite-height interval construction, and the
+exact tower invariant. The topological definitions should be kept separate
+from executable finite certificates.
+\end{enumerate}
+The present archive contains no Lean file and makes no claim that any of these
+steps has been kernel-checked. The Python assertions are reproducible evidence
+about finite instances, not replacements for that formalization.
+
+\begin{writenote}[Status in ProveIt]
+None of these steps has been carried out in ProveIt, for Part~II or for
+Part~I: no Lean or Rocq file of the repository mentions open-query games, and
+the Lean library in the enclosing \path{SetTheory/Cardinals} directory is
+about large cardinals.
+\end{writenote}
+
+\section{Further research questions and proposed directions}
+\label{fo:sec:questions}
+
+The following questions define a continuation program. They are not assertions
+that every formulation is a previously published open problem; their literature
+status should be checked individually before a priority claim.
+
+\begin{question}[Exact invariants beyond convergent towers]\label{fo:q:invariants}
+For a general, possibly nonmetrizable or noncompact Hausdorff space of finite
+Cantor--Bendixson height, what local topological conditions make the uniform
+bound $(q-1)h+s$ attainable? Can the invariant be characterized by the word
+profiles that accumulate at its nonisolated points?
+\end{question}
+The upper-bound proof uses only rank neighborhoods. Sharpness requires enough
+incompatible color patterns, and the tower construction supplies them by
+repeating each type cofinally. Separating those two ingredients is a concrete
+way to extend the classification without assuming that rank alone is always
+sufficient.
+
+\begin{writenote}[Answered at $q=2$; open for $q\ge3$]
+For two labels Part~I answers both parts of this question. On every Hausdorff
+space of last derivative rank $h<\omega$ the bound $h+s$ is attained for $s=1$
+(the parity target of \cref{lem:parity}) and, when $\lvert X^{(h)}\rvert\ge2$,
+for $s=2$ (the lower-bound proof of \cref{thm:height}); no condition beyond
+the Hausdorff property is needed, and $\operatorname{sm}_2(X)=\sm(X)$ depends only on $h$ and on
+whether $X^{(h)}$ is a singleton, by \eqref{eq:height}. The question stands for
+$q\ge3$.
+\end{writenote}
+
+\begin{writenotec}[Answered for finite nonempty derived sets]
+Part~III answers both halves of this question for every $q$ on Hausdorff
+spaces whose derived set is finite and nonempty, a proper subclass of $h=1$.
+The accumulating profile of a coloring is a digraph $G_c$ on its colors, whose
+arcs are the two-letter words accumulating at the nonisolated points, and
+$\layers(X,c)=q_c+\tau(G_c)$ with $\tau$ the directed feedback vertex number
+(\cref{fp:thm:profile,fp:thm:fixed}). The bound $(q-1)h+s=q+s-1$ is attained
+with exactly $s$ colors on $X'$ if and only if the nonisolated points admit a
+bin partition by their local partition capacities
+(\cref{fp:thm:attainment}). Rank and the size of the last derivative do not
+determine $\operatorname{sm}_3$: three free-ultrafilter points give~$2$,
+three convergent sequences give~$3$ \eqref{fp:eq:separation}. If every
+nonisolated point is first countable or locally compact, some coloring
+attains the bound with $s=\min(q,t)$, where $t=\lvert X'\rvert$
+(\cref{fp:cor:regular-formula}). Heights $h\ge2$ and infinite derived sets
+remain open (\cref{fp:q:next-level,fp:q:compact-height,fp:q:infinite}).
+\end{writenotec}
+
+\begin{question}[Small sharp synchronization families]
+What is the smallest number of reduced words of length at most $m$ whose common
+supersequence length is $(q-1)m+1$? What is the smallest number needed merely
+to force the maximal depth $\ceil{\log_2((q-1)m+1)}$?
+\end{question}
+Our full family has $q(q-1)^{m-1}$ words. For $m=2$ the complete ordered-pair
+family is deletion-critical for its extremal layer count. For larger $m$,
+minimizing the obstruction family would substantially reduce both finite and
+compact examples.
+
+\begin{question}[Optimal finite obstruction bounds]
+Determine the least function $B(q,m)$ such that every failure of an $m$-layer
+budget on a poset is witnessed by at most $B(q,m)$ points. How far can the bound
+$(m+1)q^m$ be improved, and which colored posets are minimal obstructions?
+\end{question}
+The proof supplies explicit chains per candidate word but does not share their
+vertices efficiently. Critical SCS families are a natural first test class.
+
+\begin{question}[Width and cover-graph parameters]
+For three colors, can the ideal-state algorithm be improved from an
+$(n+1)^r$-type bound for an $r$-chain cover to a fixed-parameter algorithm with
+parameter $r$? Which cover-graph restrictions permit polynomial exact
+optimization when width is unbounded?
+\end{question}
+The finite-depth parameter is already fixed-parameter tractable by the word
+enumeration above. Width is different: long chains do not by themselves cause
+hardness, but synchronization among many chains does.
+
+\begin{question}[One-extra-query algorithms with four or more colors]
+Does every fixed $q\ge4$ admit a polynomial-time algorithm within one question
+of optimal, or is a larger additive gap necessary under an appropriate
+complexity assumption?
+\end{question}
+The cyclic construction gives $\ceil{\log_2(q-1)}$ extra questions. Exact
+three-color hardness only excludes zero error; it does not prove the cyclic
+bound optimal for larger alphabets. Improved SCS approximation or a direct
+query-tree method could give a better result.
+
+\begin{question}[Compact profile representations]
+Can the full word profile of a finite colored DAG be realized by a compact
+metrizable tower description of polynomial size without listing every chain
+word? Which sharing operations on descriptions preserve the profile exactly?
+\end{question}
+The current construction is exact but can duplicate exponentially many chains.
+A compositional representation of shared suborders would connect the topology
+more directly to symbolic verification and succinct optimization.
+
+\begin{question}[Expected query cost and nonuniform costs]
+When points have a probability distribution, or queries have different costs,
+what replaces the layer-count logarithm? Can one optimize jointly over
+admissible layerings and ordered coding trees without enumerating all words?
+\end{question}
+Balancing by number of layers minimizes a worst-case bound, not expected cost.
+The flattening theorem still supplies an ordered structure, but the masses of
+the layers and the choice of word become essential data.
+
+\begin{question}[Finite-output transfinite games]
+What analogue of the word profile describes well-founded, non-uniformly bounded
+query trees and games of ordinal length? Which synchronization laws survive at
+limit stages?
+\end{question}
+Neither $\ceil{\log_2 L}$ nor finite common-supersequence padding should be
+transferred mechanically to ordinal lengths. The treatment must specify the
+winning condition at limits and the kind of trees being ranked.
+
+\begin{question}[Restricted query bases and noisy answers]
+How do the results change when only a designated basis of open sets may be
+queried, or when finitely many answers may be incorrect? What closure conditions
+on a query family retain a useful ordered-layer normal form?
+\end{question}
+The proof of Theorem~\ref{fo:thm:normal} identifies the exact operations to
+investigate: finite intersections in a yes-branch and unions across a no-branch.
+Without these operations, the current equivalence need not persist.
+
+\begin{question}[Certified integration into ProveIt]
+Can the finite greedy checker, the sharp-word adversary, and the compact
+rank-bound theorem be formalized as reusable interfaces rather than as
+isolated examples? Can proof-producing search return short negative
+certificates for practical three-color instances?
+\end{question}
+A successful integration would distinguish four outputs explicitly: a proved
+general theorem, a checked instance certificate, a computational experiment,
+and a literature-status claim. These are different forms of evidence.
+
+\section{Conclusion}
+The information needed to combine finite-output open-query algorithms is not
+just their depths. It is the set of color words in which their possible answers
+can be arranged with open suffixes. For posets this profile is an exact chain
+supersequence constraint; for compact convergent towers the same constraints
+are imposed by accumulation.
+
+This representation yields three quantitative conclusions. First, the sharp
+uniform sum bound is $(q-1)m+1$ layers, with maximal depth increase
+$\ceil{\log_2q}$. Second, finite Cantor--Bendixson height gives the sharp bound
+$(q-1)h+s$, and the worst-case invariant of a finite sum of convergent towers is
+computed exactly by \eqref{fo:eq:tower-invariant}. Third, the introduction of a
+third label changes exact finite optimization from polynomial time to
+NP-completeness while still permitting a one-extra-query algorithm. All three
+conclusions have explicit witnesses and constructive proofs, and the finite
+part admits small, independently checkable certificates.
+
+%% ====================================================================
+%% Batch-56 addition (manuscript 05, "Filter Profiles and Open-Query
+%% Complexity").  Every label of Part III carries the prefix fp: (filter
+%% profiles).  The labels of Parts I and II are unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Filter profiles and open-query complexity}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Filter profiles and open-query complexity: exact finite-derivative classification, ultrafilter thresholds, and a three-color separation}
+
+\noindent\emph{Sections~1--13 and Appendices~A and~B form Part~I (19 September
+2026); Sections~14--28 and Appendix~C form Part~II (batch~52). Both are
+unchanged except for dated pointers, marked \textup{[Added 29 September 2026,
+batch~52]} or \textup{[Added 29 September 2026, batch~56]}, and the corrected
+count of Part~II's research questions (\cref{fo:sec:source}). Part~III was
+added on 29 September 2026 in batch~56 of ProveIt's incoming-report intake,
+from one manuscript written against the pinned state of Parts~I and~II. It
+answers Part~II's \cref{fo:q:invariants} for every number $q$ of labels on
+Hausdorff spaces with a finite nonempty derived set. At $q=2$ it reproduces
+Part~I's values, and on sums of convergent sequences Part~II's tower formula
+(\cref{fp:sec:crosswalk}).}
+
+\section{Provenance, conventions and the relation to Parts~I and~II}
+\label{fp:sec:provenance}
+
+\subsection{One manuscript, one addition}
+\label{fp:sec:source}
+Part~III is batch-56 manuscript~05, \emph{Filter Profiles and Open-Query
+Complexity: Exact finite-derivative classification, ultrafilter thresholds,
+and a three-color separation}, an AI-assisted research report ``prepared for
+Vladimir Reshetnikov'' and dated 29 September 2026 (20 pages, US Letter, as
+delivered). It arrived as the archive
+\path{ProveIt_Filter_Profiles_Open_Query_Complexity.zip} (inner directory
+\path{proveit_filter_games/}) in ProveIt commit \texttt{e47ed8547} and was
+placed in \texttt{ae718a441}. It was written against ProveIt commit
+\texttt{2d4919838} (in full \texttt{2d49198382cc068f46747d1b3d9067d47cee4f24}),
+which is later than Part~II's write (\texttt{f11edd3c5}). At that commit this
+report's \texttt{article.tex} had the Git blob \texttt{75f0c4d7ba} (Parts~I
+and~II, including the batch-52 note under \cref{fo:q:invariants}) and its
+\texttt{README.md} the blob \texttt{3357ea6820}; the manuscript records the
+first of these only. Both blobs are unchanged at the placement commit, so
+every statement the manuscript makes about ``the repository report'' refers
+to Parts~I and~II as printed above, and its ``Part II, Section 27, Research
+question 1'' is \cref{fo:q:invariants} of \cref{fo:sec:questions} here. Its
+source audit says that the README and the relevant article sections were
+read through the GitHub connector at that revision.
+
+The manuscript cites that state of the report as its reference
+\texttt{[ProveIt]}: ``V.~Reshetnikov's ProveIt repository, \emph{Open-query
+games on ordinal spaces}, Part~II, \emph{Finite-Output Open-Query Games: Sharp
+Synchronization and a Complexity Dichotomy}, especially Section~27, Research
+questions 1--2. Repository revision
+\texttt{2d49198382cc068f46747d1b3d9067d47cee4f24}, article blob
+\texttt{75f0c4d7ba520326e6adf029163f672d1f764192}. Source inspected
+September~29, 2026.'' It adds the repository URL and says that the exact
+relative path is recorded in its source audit, which is shipped. Inside this
+report the reference is internal, so its citations are replaced by
+cross-references (see below).
+
+\begin{sloppypar}
+Its code and data are shipped beside those of Parts~I and~II, and their
+names carry the prefix \path{03-filter-profiles-}; Part~I's unprefixed files
+count as~01 and Part~II's as~02. They are the verifier
+\path{code/03-filter-profiles-verify.py}, its delivered Makefile, six recorded
+outputs under \path{data/} (three JSON files, two CSV tables and the console
+log), and its source audit \path{03-filter-profiles-SOURCES.md} in the report
+root. Its manuscript, PDF, delivery README and checksum ledger
+(\texttt{SHA256SUMS}, twelve entries under the delivery names, verified 12/12
+at intake) are not shipped and survive in the arrival commit. The report
+README lists every file and every name the delivered files still use.
+\end{sloppypar}
+
+The manuscript contributes, in the order printed here: its statement of the
+question and of the main formulas (\cref{fp:sec:intro}); the ordered normal
+form, reproved (\cref{fp:sec:normal}); a clopen decomposition and a filter
+model for every Hausdorff space with a finite derived set
+(\cref{fp:sec:filters}); the exact admissible-word profile of every finite
+coloring as a directed graph, with layer count $q_c+\tau(G_c)$ for the
+directed feedback vertex number $\tau$ (\cref{fp:sec:profile}); local
+partition capacities, the capacity classification of $\sm_q$ and the
+bin-partition criterion for attaining the rank-one bound
+(\cref{fp:sec:capacity}); the complete three-label classification and the
+separation of three ultrafilter points from three convergent sequences
+(\cref{fp:sec:ternary}); the positive classification for first-countable or
+locally compact points (\cref{fp:sec:positive}); an exact directed extremal
+arc threshold with its equality graphs (\cref{fp:sec:extremal}); every
+threshold for sums of free-ultrafilter spaces (\cref{fp:sec:ultra}); an exact
+finite algorithm, its input qualification, NP-completeness for graph-profile
+input and a formalization route (\cref{fp:sec:algorithms}); its finite checks
+and dependency audit (\cref{fp:sec:verification}); nine research questions
+(\cref{fp:sec:questions}); a conclusion; and certificate conventions
+(Appendix~\ref{fp:app:certificates}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Front matter and numbering.} The manuscript's title block,
+abstract and status paragraph are printed in \cref{fp:sec:abstract}; its
+table of contents is dropped. Its Sections~1--13 are Sections~30--42 here,
+and its Appendix~A is Appendix~\ref{fp:app:certificates}, after the
+appendices of Parts~I and~II. Its theorems keep their positions within each
+section: its Theorem~$n.k$ is Theorem~$(n+29).k$ here. The manuscript numbers
+equations consecutively, (1)--(14); this report numbers them within sections,
+so its equation~(2) is~(30.2), and every equation keeps its label. Its
+Research questions~1--9 are Research questions~11--19 here, because the
+counter continues after Part~II's ten.
+\item \emph{Duplicated material.} The normal form \cref{fp:thm:normal} is
+Part~I's \cref{thm:normal} and Part~II's \cref{fo:thm:normal}; the manuscript
+reproves it to be independent of the repository, and its proof, the same
+leaf-order and balanced-suffix argument as Part~II's, is printed in full. The
+bound \eqref{fp:eq:active-centers} is Part~II's \cref{fo:thm:CB} at $h=1$,
+and \cref{fp:cor:regular-formula} contains Part~II's
+\cref{fo:thm:tower-invariant} at $m=2$; the manuscript says so itself. The
+checks are collected in \cref{fp:sec:crosswalk}.
+\item \emph{Renamed macros.} The manuscript's \verb|\smq| was
+$\operatorname{sm}$ with the subscript written after it ($\sm_q$, $\sm_3$,
+$\sm_2$); Part~II's \verb|\smq| already includes the subscript~$q$, so the
+manuscript's ten uses are set with Part~I's $\sm$. The printed symbol is
+unchanged. The manuscript's sans-serif layer count and depth
+$\mathsf L(X,c)$, $\mathsf d(X,c)$ are printed as Part~II's
+$\layers(X,c)$ and $\depth(X,c)$, which denote the same numbers, so that
+Parts~II and~III share one notation. Its unused macros for a phrase, for
+support and for image are dropped, and its \verb|\RaggedRight| table columns
+use \verb|\raggedright|. No normalization is changed. The notation table is
+\cref{fp:sec:notation}.
+\item \emph{The reference \texttt{[ProveIt]}.} Its three uses are replaced by
+cross-references: to \cref{fo:q:invariants} in \cref{fp:sec:intro}, and to
+\cref{thm:normal,fo:thm:normal} after \cref{fp:thm:normal}; the entry itself
+is quoted above.
+\item \emph{Bibliography.} The manuscript's entries for Chiozini, Csern\'ak
+and Soukup \cite{CCS} and for Lagoutte and Tavenas \cite{LT} are merged with
+those of Parts~I and~II (the manuscript cites the first under the arXiv
+record's shorter title and the second as arXiv:1309.0422, 2013). Its
+entries \cite{AGJS,AFH,GMM} are added.
+\item \emph{Shipped names.} Paths and commands in
+\cref{fp:sec:verification} and Appendix~\ref{fp:app:certificates} are
+rewritten to the shipped names, with an explicit output directory; the
+notes there quote the delivered text. The rewritten text promises no file
+that is not shipped.
+\item \emph{Notes.} Five dated notes are added inside Part~III: on the scope
+of the phrase ``hence for $h=1$'' (\cref{fp:sec:intro}), on the relation of
+\cref{fp:prop:complexity} to Part~II's \cref{fo:thm:NP}, on the status of
+formalization in ProveIt, and two on shipped names. In Part~II, notes
+pointing to Part~III follow \cref{fo:q:invariants}, the remark after
+\cref{fo:thm:tower-invariant} and the proof of \cref{fo:thm:NP}, and a note in
+\cref{fo:sec:source} corrects its count of research questions; the title
+page and the abstract gain a paragraph each.
+\end{itemize}
+
+\begin{resultbox}
+\textbf{Status (manuscript 05).} Part~III is an AI-assisted, unrefereed
+research manuscript. Its arguments are conventional mathematical proofs, not
+Lean or Rocq formalizations, and nothing in it is formalized in ProveIt. The
+contribution it proposes as new is the filter-profile classification, that
+is, the identification of the finite-output invariant with local filter
+capacities, and its consequences: the capacity-attainment criterion, the
+three-color separation and the ultrafilter threshold laws. It makes no
+separate priority claim for the elementary supersequence/feedback-set
+reduction (\cref{fp:lem:word-fvs}), the random-order bound
+(\cref{fp:lem:random}) or the balanced-clique arc extremum
+(\cref{fp:thm:turan}); its literature search was targeted, not exhaustive,
+and does not certify priority. The classification concerns a finite
+nonempty derived set: it does not settle finite heights $h\ge2$, infinite
+derived sets, transfinite play or expected-cost optimization, it makes no
+claim about arbitrary ordinal-length play or the point-separating invariant
+of \cite{CCS}, and it does not claim Part~II's Research question~2 on
+minimum synchronization families (its ultrafilter thresholds count local
+components while permitting every label at finitely many isolated
+exceptions, a specific input model). It does not refute Part~II's upper
+bound, which remains valid. Free ultrafilters are used in ZFC; their
+existence is not certified by the finite computations, which never construct
+or simulate an infinite ultrafilter. The only imported complexity-theoretic
+fact is the NP-completeness of directed feedback vertex set \cite{GMM}; the
+reductions to layer count and to rounded depth are proved, for an explicit
+finite profile encoding only.
+\end{resultbox}
+
+\subsection{The manuscript's title block and abstract}
+\label{fp:sec:abstract}
+\begin{quote}\small
+\textbf{Filter Profiles and Open-Query Complexity. Exact finite-derivative
+classification, ultrafilter thresholds, and a three-color separation.}
+Research report prepared for Vladimir Reshetnikov, September 29, 2026.
+
+An open-query strategy identifies the label of a hidden point by adaptively
+asking membership in open sets. We continue the finite-output open-query
+program in ProveIt, concentrating on its question about the local hypotheses
+needed for sharp Cantor--Bendixson bounds. For every Hausdorff space with a
+finite nonempty derived set, we describe the complete word profile of every
+finite coloring by a finite directed graph. The minimum layer count is the
+number of used colors plus the graph's minimum directed feedback vertex
+number; the minimum query depth is its binary logarithm rounded upward.
+
+The worst-case invariant depends only on finite partition capacities of the
+neighborhood filters at the nonisolated points. A precise bin-partition
+criterion characterizes attainment of the rank-one layer bound. For three
+colors it yields a complete numerical classification. In particular, three
+one-point free-ultrafilter spaces require at most two questions, whereas
+three convergent sequences can require three, although their
+Cantor--Bendixson derivative cardinalities agree. For sums of arbitrary numbers
+of ultrafilter components, an exact directed extremal calculation gives every
+alphabet-dependent threshold, with a characterization of the graphs attaining
+the minimum arc count. Full proofs, constructive strategy certificates,
+finite exhaustive checks, and a further research program are included.
+
+\textbf{Status and scope.}
+This is an AI-assisted, unrefereed research manuscript. The arguments below
+are conventional mathematical proofs, not Lean or Rocq formalizations.
+The new contribution proposed here is the filter-profile classification and
+its consequences for the repository's finite-output question. We make no
+separate priority claim for the elementary supersequence/feedback-set
+reduction or the extremal graph ingredients, and do not claim a solution of
+all finite-height or transfinite open-query problems. Free ultrafilters are
+used in ZFC; their existence is not certified by the finite computations.
+\end{quote}
+
+\subsection{Notation of Part~III}
+\label{fp:sec:notation}
+Part~III fixes a Hausdorff space $X$ with a finite nonempty derived set
+$X'=\{p_1,\ldots,p_t\}$ and a coloring $c:X\to[q]=\{1,\ldots,q\}$, Part~II's
+alphabet $\Sigma$ of $q$ letters. Several letters are used differently in
+Part~III and in Parts~I--II, and two carry two meanings inside Part~III. Where
+a false reading is tempting, the table prints it beside the true one.
+\begin{center}\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.44\linewidth}>{\raggedright\arraybackslash}p{0.35\linewidth}@{}}
+\toprule
+Symbol & Part~III & Parts~I--II\\
+\midrule
+\endhead
+$\sm_q$ & $\sm_q(X)=\sup_c\depth(X,c)$ over $c:X\to[q]$; colorings need not
+use every label. The manuscript's macro, printed identically. & Part~II's
+$\smq(X)$, the same invariant; Part~I's $\sm(X)$ is an ordinal, equal to
+$\operatorname{sm}_2(X)$ when either is finite.\\
+$\layers$, $\depth$ & Least number of layers and least worst-case depth,
+printed $\mathsf L$ and $\mathsf d$ in the manuscript. In
+\cref{fp:prop:complexity}, $\depth(G')$ is the depth of a space realizing the
+profile graph $G'$. & Part~II's $\layers(X,c)$, $\depth(X,c)$; Part~I's
+$L(A,X)$.\\
+$h$, ``rank one'' & Part~III settles the class $0<\lvert X'\rvert<\infty$,
+where $h=1$ and the rank-one bound is $(q-1)\cdot1+s=q+s-1$. \emph{False:}
+``Part~III settles every space with $h=1$''; $[0,\omega^2)$ has $h=1$ and an
+infinite derived set (\cref{fp:q:infinite}). & Last derivative rank.\\
+$t$ & $t=\lvert X'\rvert$, the number of nonisolated points. & Part~II: the
+number of towers; $\bigsqcup_{i=1}^t\Tw_2$ has $\lvert X'\rvert=t$, so the
+meanings agree.\\
+$D_i$, $D$, $N_i$, $Z$ & $X=Z\sq N_1\sq\cdots\sq N_t$ with clopen
+$N_i\ni p_i$; $D_i=N_i\setminus\{p_i\}$ its isolated part; $D$ an infinite
+set carrying a filter. \emph{Not} the depth $\depth$. & Part~I:
+$D_j=X^{(j)}\setminus X^{(j+1)}$ and the oriented lengths $N_0,N_1$; Part~II:
+$N$ an input length.\\
+$\F$, $\I_\F$, $\U$, $S(\F)$ & A free filter, its dual ideal, a free
+ultrafilter, and the one-point space on $D\cup\{p\}$ whose neighborhoods of
+$p$ are $\{p\}\cup A$, $A\in\F$. For the cofinite filter on a countable $D$,
+$S(\F)\cong[0,\omega]=\omega+1$. & Part~I: $S=[0,\omega]$; Part~II:
+$S\subseteq\Sigma$ a set of first letters.\\
+$b_i$, $b(\F)$, $\boldsymbol b$ & The partition capacity at $p_i$, in
+$\N_{>0}\cup\{\infty\}$, and the list of capacities. \emph{Not} Part~II's
+coloring $b_{a,m}$. & $b_{a,m}$ a coloring of $\Tw_m$
+(\cref{fo:sec:CB}).\\
+$B_i$, $B$, $\B$ & The sets of colors whose cells are positive at $p_i$;
+$\B=\PP(D)/\I_\F$ a Boolean algebra. & ---\\
+$s$, $S$ & In \eqref{fp:eq:active-centers} and \cref{fp:thm:attainment}: the
+number of colors on $X'$ and their set, as in Part~II's \cref{fo:thm:CB}. But
+in $T(q,r)$ and \cref{fp:thm:turan}, $q=ar+s$ with $0\le s<r$: $s$ is a
+\emph{remainder}. \emph{False:} reading the $s$ of $T(q,r)$ as a number of
+colors. & Part~II: $s=\lvert S\rvert$, the number of colors on
+$X^{(h)}$.\\
+$a$, $a_i$ & $a_i=c(p_i)$, the center color at $p_i$; but in $q=ar+s$, $a$ is
+a quotient. \emph{False:} the $a$ of $T(q,r)$ is a color. & Part~II: $a\in\Sigma$
+a letter.\\
+$q_c$, $\Sigma_c$ & The number and the set of colors $c$ uses. & ---\\
+$G_c$, $\tau$, $\ac$, $\ell$ & The profile digraph on $\Sigma_c$; the minimum
+directed feedback vertex number; the largest acyclic induced subgraph; the
+shortest word containing every vertex and arc as subsequences. & Part~I:
+$G_i$ open sets.\\
+$r$, $r_*$, $r_q$, $T$ & A bound on $\ac$ (the number of cliques of an
+extremal graph); $r_*(q,t)$ and $r_q$ of \eqref{fp:eq:ultra-intro} and
+\cref{fp:cor:jump}; $T(q,r)$ the least number of arcs with $\ac\le r$. &
+Part~II: $r$ the number of words or chains.\\
+$k$, $P$ & $k=\ceil{\log_2q}$ in \cref{fp:cor:jump}; a feedback budget in
+\cref{fp:prop:complexity} and the size of a feedback set in
+\cref{fp:lem:word-fvs}; $P$ a power of two in \cref{fp:prop:complexity}. &
+Part~I: $K_k$; Part~II: $P$ a poset.\\
+$X_t$ & The sum of $t$ one-point free-ultrafilter spaces
+(\cref{fp:sec:ultra}). & Part~I: $X_{h,m}=[0,\omega^h\cdot m]$.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Parts~I and~II inside Part~III}
+\label{fp:sec:crosswalk}
+The following checks were made when Part~III was added; they are
+consequences of the three parts' proofs, not new theorems.
+\begin{enumerate}
+\item \emph{Two labels.} For $q=2$ every capacity list is realizable with
+both arcs between the two labels as soon as $t\ge2$, and with at most one arc
+when $t=1$; so \cref{fp:thm:capacity} gives $\operatorname{sm}_2(X)=1$ for
+$t=1$ and $2$ for $t\ge2$, whatever the capacities. This is Part~I's
+\cref{thm:height} at $h=1$ ($\ceil{\log_22}=1$, $\ceil{\log_23}=2$) for
+spaces with a finite nonempty derived set. The manuscript states it for
+ultrafilter sums in \cref{fp:sec:ultra}.
+\item \emph{The upper bound.} When all $q$ labels are used,
+\eqref{fp:eq:active-centers} reads $\layers(X,c)\le q+s-1$, which is Part~II's
+\eqref{fo:eq:CB-bound} at $h=1$. \Cref{fp:thm:attainment} decides for every
+such space and every $s$ whether it is attained.
+\item \emph{Towers.} Part~II's $\Tw_2$ is the convergent sequence
+$[0,\omega]$, which is compact and first countable. For $t$ copies,
+\cref{fp:cor:regular-formula} gives
+$\ceil{\log_2(q-1+\min(q,t))}$, which is \eqref{fo:eq:tower-invariant} at
+$m=2$. Part~III extends that value to every space with a finite nonempty
+derived set whose nonisolated points are first countable or locally compact,
+and shows by \cref{fp:thm:ultra} that it fails for sums of free-ultrafilter
+spaces: at $q=t=3$ the tower value is $\ceil{\log_25}=3$, the ultrafilter
+value~$2$ \eqref{fp:eq:separation}.
+\item \emph{No contradiction.} Part~II's remark after
+\cref{fo:thm:tower-invariant} states that \cref{fo:thm:CB} is a uniform bound
+over a class and does not assert that every space of the given height has
+the same invariant; the README of this report says the same. The separation
+\eqref{fp:eq:separation} shows that for $q=3$ they do not. No statement of
+Part~I or Part~II is refuted, and none is retracted.
+\item \emph{Words.} By \cref{fp:thm:profile}, the words that accumulate at a
+point of a finite derived set are the two-letter words $ab$ of the arcs of
+$G_c$, and $\ell(G)$ of \cref{fp:lem:word-fvs} is the shortest common
+supersequence of these words and of the single letters: the two-letter case
+of Part~II's supersequence representation (\cref{fo:thm:chains}).
+\item \emph{Complexity.} Part~II's \cref{fo:thm:NP} (fixed $q\ge3$, posets and
+tower lists) and \cref{fp:prop:complexity} (unbounded $q$, profile graphs)
+concern different input models; see the note after
+\cref{fp:prop:complexity}.
+\item \emph{Independent checks.} A script written at intake and rerun at this
+write (not shipped) confirmed $\ell(G)=\lvert V\rvert+\tau(G)$ on all 4,165
+loopless digraphs on one to four labelled vertices by a breadth-first search
+over words; $T(q,r)$ and the symmetry of every equality graph for $q\le4$;
+on 172 capacity lists over $\{1,2,3,\infty\}$ for $q=2,3,4$, the ternary
+formula \eqref{fp:eq:ternary-intro}, the bin criterion against brute-force
+star realization, and, for lists of infinite capacities,
+\eqref{fo:eq:tower-invariant} at $m=2$; the layer formula of
+\cref{fp:thm:ultra} for $q\le4$; and all 63 rows of
+\path{data/03-filter-profiles-query_jump_thresholds.csv} against a direct
+scan.
+\end{enumerate}
+
+\section{The repository question and the main conclusions}
+\label{fp:sec:intro}
+
+\subsection{A specific source and a specific question}
+
+The starting point is ProveIt's report \emph{Open-query games on ordinal
+spaces}, particularly Part II, \cref{fo:sec:questions}, \Cref{fo:q:invariants}
+(Parts~I and~II above). The inspected revision is
+\begin{center}
+\texttt{2d49198382cc068f46747d1b3d9067d47cee4f24}.
+\end{center}
+The report asks which local conditions make the finite-output upper bound
+\((q-1)h+s\) attainable, and whether accumulating word profiles determine
+the invariant. Here \(h\) is the index of the last nonempty
+Cantor--Bendixson derivative and \(s\) is the number of colors on that
+last derivative. The report explicitly distinguishes this question for
+\(q\geq 3\) from its binary classification.
+
+We solve the profile problem for all Hausdorff spaces whose derived set is
+finite and nonempty, hence for \(h=1\). We also determine exactly when the
+bound is attained in that class. This is a resolution of a substantive
+special case of the repository question and a negative answer to the
+possible stronger assertion that rank and last-derivative size alone always
+suffice for finite-output games. It is not a refutation of the report's
+upper bound: that bound remains valid.
+
+\begin{writenotec}[Scope: ``hence for $h=1$'']
+The class settled here, Hausdorff spaces whose derived set $X'$ is finite
+and nonempty, lies inside the class $h=1$ but is a proper subclass of it: the
+ordinal space $[0,\omega^2)$ has the infinite discrete derived set
+$\{\omega\cdot n:n\ge1\}$ and empty second derivative, so $h=1$ there too.
+Such spaces are the subject of \cref{fp:q:infinite}. Part~II's
+\cref{fo:q:invariants} is therefore answered for finite nonempty derived
+sets, not for all of $h=1$ (see the note after that question).
+\end{writenotec}
+
+The broader cut-and-choose setting comes from Chiozini, Csern\'ak and
+Soukup \cite{CCS}. Our invariant is finite-output and finite-depth; no
+claim below concerns arbitrary ordinal-length play or the point-separating
+invariant of that paper.
+
+\subsection{Overview of the results}
+
+Fix a nonempty Hausdorff space \(X\) with
+\[
+ X'=\{p_1,\ldots,p_t\},\qquad 1\leq t<\infty.
+\]
+For a coloring \(c\), write \(q_c=|c[X]|\). There is a canonically determined
+local profile at each \(p_i\), after choosing disjoint clopen neighborhoods.
+It consists of the color \(a_i=c(p_i)\) and the colors \(B_i\) whose cells
+accumulate at \(p_i\). Form a loopless digraph \(G_c\) on the used colors
+with arcs
+\begin{equation}\label{fp:eq:graph-intro}
+ a_i\longrightarrow b\quad(b\in B_i,\ b\ne a_i).
+\end{equation}
+If \(\tau(G)\) is the minimum number of vertices whose deletion destroys
+all directed cycles, our first exact formula is
+\begin{equation}\label{fp:eq:main-intro}
+ \boxed{\quad
+ \layers(X,c)=q_c+\tau(G_c),\qquad
+ \depth(X,c)=\ceil{\log_2(q_c+\tau(G_c))}.
+ \quad}
+\end{equation}
+The full admissible-word profile, not merely these two minima, is described
+in \cref{fp:thm:profile}.
+
+A second invariant \(b_i\in\N_{>0}\cup\{\infty\}\) measures how many
+disjoint color cells can simultaneously accumulate at \(p_i\). These
+capacities determine the worst case over all \(q\)-colorings. For prescribed
+\(s\) colors on \(X'\), the maximum possible layer count equals \(q+s-1\)
+if and only if the indices \(1,\ldots,t\) can be partitioned into \(s\)
+nonempty classes, each with total capacity at least \(s-1\)
+(\cref{fp:thm:attainment}).
+
+For three colors, put
+\[
+ u=|\{i:b_i=1\}|,\qquad v=|\{i:b_i\geq2\}|.
+\]
+Then the entire worst-case query invariant has the simple form
+\begin{equation}\label{fp:eq:ternary-intro}
+ \boxed{\quad
+ \sm_3(X)=
+ \begin{cases}
+ 3,&v+\floor{u/2}\geq3,\\
+ 2,&v+\floor{u/2}<3.
+ \end{cases}\quad}
+\end{equation}
+Here \(b_i=1\) means exactly that the local neighborhood filter is an
+ultrafilter. Thus even the first nontrivial finite-output case detects
+local information absent from the derivative cardinalities.
+
+Finally, for a sum \(X_t\) of \(t\) free-ultrafilter components, define
+\begin{equation}\label{fp:eq:T-intro}
+ T(q,r)=r a(a-1)+2as,\qquad q=ar+s,\quad 0\leq s<r,
+\end{equation}
+and
+\[
+ r_*(q,t)=\min\{r\in\{1,\ldots,q\}:T(q,r)\leq t\}.
+\]
+The exact worst-case formulas are
+\begin{equation}\label{fp:eq:ultra-intro}
+ \boxed{\quad
+ \max_{c:X_t\to[q]}\layers(X_t,c)=2q-r_*(q,t),\qquad
+ \sm_q(X_t)=\ceil{\log_2(2q-r_*(q,t))}.
+ \quad}
+\end{equation}
+All displayed formulas are proved below, including their boundary cases.
+
+\section{Open questions, layers, and admissible words}
+\label{fp:sec:normal}
+
+\begin{definition}
+Let \(c:X\to\Sigma\) be a coloring into a finite set. An open-query
+strategy is a finite binary decision tree whose internal nodes are labeled
+by open subsets of \(X\). A point \(x\) follows the yes branch at a node
+labeled \(U\) precisely when \(x\in U\). A strategy is correct if the label
+at the reached leaf is \(c(x)\) for every \(x\in X\).
+The minimum worst-case depth is \(\depth(X,c)\). We set
+\[
+ \sm_q(X)=\sup\{\depth(X,c):c:X\to\{1,\ldots,q\}\}.
+\]
+Colorings need not be continuous. Queries have unit cost, and the objective
+is worst-case rather than expected depth.
+\end{definition}
+
+\begin{definition}
+A layer representation of \(c\) is a finite ordered partition
+\(X=E_1\sq\cdots\sq E_m\) into nonempty monochromatic sets such that
+every suffix
+\[
+ U_j=\bigcup_{k\geq j}E_k
+\]
+is open. Its word is the sequence of colors of its layers. The minimum
+number of layers is \(\layers(X,c)\). A word is called admissible if it
+supports such a representation with empty positions permitted.
+\end{definition}
+
+Allowing empty positions makes the profile upward closed under taking
+supersequences. It does not change the minimum length: delete empty
+positions, and merge consecutive positions of the same color when useful.
+
+\begin{theorem}[Ordered normal form]\label{fp:thm:normal}
+Whenever a finite layer representation exists,
+\[
+ \depth(X,c)=\ceil{\log_2\layers(X,c)}.
+\]
+Moreover, the least possible number of nonempty leaves of a correct
+strategy equals \(\layers(X,c)\).
+\end{theorem}
+\begin{proof}
+Order the leaves of a decision tree recursively by putting every no-subtree
+before the corresponding yes-subtree. We prove that every suffix of this
+leaf order has an open union of its point sets. At the root let the open
+question be \(U\). A suffix beginning inside the yes-subtree is relatively
+open in \(U\), by induction, and is therefore open in \(X\). A suffix
+beginning in the no-subtree has the form
+\[
+ U\cup\bigl((X\setminus U)\cap V\bigr)=U\cup V
+\]
+for some open \(V\subseteq X\), again by induction using the relative
+topology on \(X\setminus U\). Thus the ordered nonempty leaves give a
+layer representation. A depth-\(d\) tree has at most \(2^d\) leaves, so
+\(\layers(X,c)\leq2^d\).
+
+Conversely, given \(m\) ordered layers, ask membership in a suffix whose
+boundary divides the list into two parts of sizes differing by at most one.
+Continue recursively on the appropriate interval of positions. Every
+question is one of the original globally open suffixes. Balanced binary
+search has depth \(\ceil{\log_2m}\) and exactly \(m\) leaves. Taking the
+minimum proves both assertions.
+\end{proof}
+
+This is the normal-form mechanism used in the repository report
+(Part~I, \cref{thm:normal}; Part~II, \cref{fo:thm:normal}); it is reproduced to make the present proof independent of
+any formalization or unverified implementation in that repository.
+
+\section{Every finite derived set has a filter model}
+\label{fp:sec:filters}
+
+\subsection{The topological decomposition}
+
+\begin{lemma}\label{fp:lem:decomposition}
+If \(X\) is Hausdorff and \(X'=\{p_1,\ldots,p_t\}\) is finite, there are
+pairwise disjoint clopen neighborhoods \(N_i\) of the \(p_i\) such that
+\[
+ X=Z\sq N_1\sq\cdots\sq N_t,
+\]
+where \(Z\) is discrete and clopen and \(N_i'=\{p_i\}\).
+\end{lemma}
+\begin{proof}
+For each pair of distinct \(p_i,p_j\), choose disjoint open neighborhoods.
+Intersect the finitely many neighborhoods chosen at each point to obtain
+pairwise disjoint open sets \(N_i\), with no other \(p_j\) in \(N_i\).
+The complement of \(N_i\) is open: every isolated point in it is an open
+singleton, and each \(p_j\), \(j\ne i\), has the disjoint neighborhood
+\(N_j\). Hence \(N_i\) is clopen. Their finite union is clopen; its
+complement \(Z\) contains no nonisolated point. Finally, an open
+neighborhood of a nonisolated point cannot make that point isolated, so
+\(N_i'=\{p_i\}\).
+\end{proof}
+
+Write \(D_i=N_i\setminus\{p_i\}\). Every point of \(D_i\) is isolated,
+and \(D_i\) is infinite. Define
+\[
+ \F_i=\{A\subseteq D_i:\{p_i\}\cup A\text{ is open in }N_i\}.
+\]
+This is a proper filter containing all cofinite subsets of \(D_i\). We
+use ``free filter'' in precisely this sense. Conversely, for an infinite
+set \(D\) and such a filter \(\F\), let \(S(\F)=D\cup\{p\}\), with
+all subsets of \(D\) open and the open sets containing \(p\) exactly
+\(\{p\}\cup A\), \(A\in\F\). This is a zero-dimensional Hausdorff
+space with derivative \(\{p\}\). Indeed, cofinite neighborhoods separate
+\(p\) from isolated points, and every basic neighborhood of \(p\) is
+clopen.
+
+\subsection{Finite color quotients of a filter}
+
+The dual ideal of \(\F\) is
+\[
+ \I_{\F}=\{A\subseteq D:D\setminus A\in\F\}.
+\]
+A set is \(\F\)-positive if it does not belong to \(\I_{\F}\).
+Equivalently, it meets every member of \(\F\). For subsets of the
+isolated part, this says exactly that \(p\) belongs to their closure.
+The ideal contains all finite subsets of \(D\).
+
+For a finite coloring of \(D\), let \(C_b\) be its color cells and put
+\begin{equation}\label{fp:eq:Bdef}
+ B=\{b:C_b\text{ is }\F\text{-positive}\}.
+\end{equation}
+The set \(B\) is nonempty: a finite union of members of a proper ideal
+cannot be all of \(D\).
+
+\begin{lemma}[Positive-cell criterion]\label{fp:lem:positive}
+For every set \(J\) of colors,
+\[
+ \bigcup_{b\in J}C_b\in\F\quad\Longleftrightarrow\quad B\subseteq J.
+\]
+\end{lemma}
+\begin{proof}
+If \(B\subseteq J\), the complement is a finite union of nonpositive
+cells and belongs to \(\I_{\F}\). Conversely, if \(J\) omits a
+positive cell \(C_b\), its union cannot belong to \(\F\), since it is
+disjoint from a set meeting every filter member.
+\end{proof}
+
+This elementary finite quotient is the key distinction between cofinite
+and ultrafilter convergence. For a free ultrafilter, exactly one color
+cell is positive. For the cofinite filter on an infinite set, every infinite
+color cell is positive.
+
+\section{The complete profile is a directed graph}
+\label{fp:sec:profile}
+
+Let \(c:X\to\Sigma\) use exactly the \(q_c\) colors in \(\Sigma_c=c[X]\).
+In the clopen decomposition of \cref{fp:lem:decomposition}, set
+\[
+ a_i=c(p_i),\qquad
+ B_i=\{b:c^{-1}(b)\cap D_i\text{ is }\F_i\text{-positive}\}.
+\]
+Let \(G_c\) be the simple loopless digraph on \(\Sigma_c\) whose arcs
+are \(a_i\to b\) for \(b\in B_i\setminus\{a_i\}\). Repeated arcs
+are recorded once. An arc \(a\to b\) represents the two-letter
+subsequence requirement \(ab\), not a requirement of adjacency in a word.
+
+\begin{theorem}[Exact graph profile]\label{fp:thm:profile}
+A finite word \(w\) on \(\Sigma_c\) is admissible for \((X,c)\) if and
+only if it contains every color of \(\Sigma_c\) and, for every arc
+\(a\to b\) of \(G_c\), it contains \(ab\) as a subsequence.
+\end{theorem}
+\begin{proof}
+Suppose first that a layer representation has word \(w\), and \(p_i\)
+is in position \(k\). The suffix from \(k\) is an open neighborhood of
+\(p_i\). Its intersection with \(D_i\) belongs to \(\F_i\), so it
+meets every positive color cell. Thus each \(b\in B_i\) occurs at a
+position \(j\geq k\). If \(b\ne a_i\), then \(j>k\), which gives
+\(a_ib\) as a subsequence. All used colors must occur somewhere.
+
+Conversely, suppose the word has all these properties. Assign \(p_i\)
+to the \emph{first} occurrence of \(a_i\) in \(w\), and assign every
+isolated point of color \(b\), including points in \(Z\), to the
+\emph{last} occurrence of \(b\). For each \(b\in B_i\), the assigned
+position of its isolated points is at least the assigned position of
+\(p_i\). This is immediate if \(b=a_i\); otherwise it follows from
+the subsequence condition.
+
+Consider any suffix of the resulting assignment. If it does not contain
+\(p_i\), its intersection with \(N_i\) is a subset of the discrete part,
+so is open. If it contains \(p_i\), it contains all positive color cells
+of \(D_i\); \cref{fp:lem:positive} says that its isolated part belongs to
+\(\F_i\), so it is again open. The intersection with \(Z\) is open.
+Since the decomposition is clopen, the suffix is globally open. The
+assignment is color-respecting and proves admissibility.
+\end{proof}
+
+\begin{remark}[Why arbitrary words do not occur here]
+At a point of this first nontrivial derivative level, a finite coloring
+creates only two-letter constraints. Higher Cantor--Bendixson levels can
+create longer word constraints, which are not encoded by a single digraph
+on the colors. The reduction is complete for a finite derived set, not a
+purported classification of all scattered spaces.
+\end{remark}
+
+\subsection{Two-letter constraints and directed feedback sets}
+
+For a loopless digraph \(G\) on a finite vertex set \(V\), let
+\(\ac(G)\) be the largest size of a subset inducing an acyclic digraph.
+Then \(\tau(G)=|V|-\ac(G)\). Let \(\ell(G)\) be the shortest length
+of a word containing every vertex and every directed edge as a
+subsequence.
+
+\begin{lemma}\label{fp:lem:word-fvs}
+For every nonempty finite loopless digraph,
+\[
+ \ell(G)=|V|+\tau(G).
+\]
+An optimal word can be constructed from any minimum feedback vertex set
+and a topological ordering of its complement.
+\end{lemma}
+\begin{proof}
+Let \(w\) satisfy the requirements, and let \(R\) be the set of vertices
+appearing at least twice. Every vertex outside \(R\) appears once. Their
+order in \(w\) respects all arcs among them, so \(G[V\setminus R]\)
+is acyclic. Consequently \(R\) is a feedback vertex set and
+\[
+ |w|\geq |V|+|R|\geq |V|+\tau(G).
+\]
+
+Conversely, write a minimum feedback set as \(R=(r_1,\ldots,r_k)\),
+and let \(T\) be a topological ordering of \(G[V\setminus R]\).
+The word
+\begin{equation}\label{fp:eq:word-witness}
+ r_1\cdots r_k\;T\;r_k\cdots r_1
+\end{equation}
+contains every required pair. Arcs inside \(T\) are respected by its
+topological order. Arcs from \(R\) to \(T\) use the first block,
+and arcs from \(T\) to \(R\) use the last block. Every pair of distinct
+vertices of \(R\) occurs in both orders across its two blocks.
+The word has length \(|V|+k\). A minimum feedback set has a nonempty
+complement, so no degenerate empty middle block is needed.
+\end{proof}
+
+The shortest-common-supersequence viewpoint has a substantial independent
+literature; see, for example, Lagoutte and Tavenas \cite{LT}. We supply
+\cref{fp:lem:word-fvs} as an elementary bridge, not as a claim to have
+introduced either supersequences or feedback vertex sets.
+
+\begin{theorem}[Exact coloring complexity]\label{fp:thm:fixed}
+For every finite coloring of a Hausdorff space with a finite nonempty
+derived set, \cref{fp:eq:main-intro} holds. Both minima are finite, and
+\cref{fp:eq:word-witness} followed by balanced suffix search constructs an
+optimal strategy from a minimum feedback vertex set.
+\end{theorem}
+\begin{proof}
+Combine \cref{fp:thm:profile,fp:lem:word-fvs,fp:thm:normal}.
+\end{proof}
+
+\begin{corollary}[Positive label weights]\label{fp:cor:weights}
+Assign each used color a positive weight \(w_b\), and charge this weight
+once for each occurrence of the color in a layer word. The minimum weighted
+layer cost is
+\[
+ \sum_{b\in\Sigma_c}w_b+
+ \min_{R:\,G_c-R\text{ acyclic}}\sum_{b\in R}w_b.
+\]
+\end{corollary}
+\begin{proof}
+The repeated vertices of any admissible word form a feedback set, giving
+the lower bound. The doubled-feedback-set construction attains it for a
+minimum-weight feedback set.
+\end{proof}
+This is a statement about weighted layer occurrences. It is not a formula
+for expected query cost or for arbitrary unequal costs of open questions.
+
+\section{Local partition capacity and exact attainability}
+\label{fp:sec:capacity}
+
+\subsection{A local Boolean invariant}
+
+\begin{definition}
+The partition capacity \(b(\F)\) of a free filter is the supremum of the
+numbers of pairwise disjoint \(\F\)-positive subsets of its underlying
+set. Its value lies in \(\N_{>0}\cup\{\infty\}\). Here \(\infty\)
+means that such families exist at every finite size; no particular infinite
+family is asserted by the notation.
+\end{definition}
+
+Disjoint positive sets can be enlarged to a partition by adding the
+unassigned remainder to one of them. Thus \(b(\F)\) is also the maximum
+possible number of positive color cells, or the statement that this number
+is unbounded over finite colorings.
+
+\begin{proposition}\label{fp:prop:finite-capacity}
+The following statements hold.
+\begin{enumerate}
+\item Restricting a filter to one of its members does not change its
+partition capacity.
+\item \(b(\F)=1\) if and only if \(\F\) is an ultrafilter.
+\item If \(b(\F)=b<\infty\), then \(\F\) is the intersection of
+exactly \(b\) distinct free ultrafilters, uniquely determined as an unordered
+family. Conversely, such an intersection has capacity \(b\).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+For the first assertion, if \(A\in\F\), its complement belongs to the
+dual ideal. Intersecting a positive set with \(A\) preserves positivity.
+This transfers disjoint positive families in both directions.
+
+For the remaining assertions, consider the Boolean algebra
+\(\B=\PP(D)/\I_{\F}\). Positive sets represent its nonzero elements.
+Suppose the largest size of a disjoint nonzero family is the finite number
+\(b\). A family of maximum size covers the unit: otherwise its complement
+could be appended. Each member is an atom: otherwise splitting it would
+give a larger family. Every Boolean-algebra element is a union of some of
+these atoms, because intersecting it with an atom gives either that atom
+or zero. Thus \(\B\) is the Boolean algebra of subsets of a \(b\)-element
+set. Its \(b\) atom evaluations lift to distinct ultrafilters on \(D\).
+An element of \(\PP(D)\) lies in all of them exactly when its quotient
+class is the unit, which is equivalent to membership in \(\F\).
+
+Conversely, finitely many distinct ultrafilters can be separated by finitely
+many sets. The Boolean algebra generated by these sets has a cell belonging
+to each ultrafilter and to no other. It follows that the map to the
+\(b\) simultaneous truth values is onto \(\{0,1\}^b\), with the
+intersection filter as the inverse image of the all-one vector. Its dual
+quotient therefore has exactly \(b\) atoms. The case \(b=1\) gives the
+second assertion and uniqueness follows from the quotient atoms.
+\end{proof}
+
+Consequently \(b_i=b(\F_i)\) is independent of the clopen decomposition:
+two chosen neighborhoods have a common neighborhood obtained by
+intersection, and restriction does not alter the capacity.
+
+\subsection{Realizable stars and a complete finite optimization}
+
+\begin{lemma}\label{fp:lem:star-realization}
+At a point with capacity \(b_i\), any prescribed center color \(a_i\)
+and any prescribed set \(A_i\) of at most \(\min(b_i,q-1)\) other
+colors can be realized as exactly its outgoing neighbors in the profile
+graph. All \(q\) colors may be made to occur globally without changing
+any prescribed local graph.
+\end{lemma}
+\begin{proof}
+If \(A_i\) is nonempty, partition \(D_i\) into \(|A_i|\) positive
+sets and give them the colors in \(A_i\). If \(A_i\) is empty, color
+all of \(D_i\) by \(a_i\). Give \(p_i\) its prescribed center color.
+Any missing labels can be inserted at finitely many isolated points in one
+component, avoiding one reserved representative of every label already used.
+Finite sets belong to the dual ideal, and removing finitely many
+points from a positive set preserves positivity. Therefore these changes
+introduce no positive color cell and destroy none.
+\end{proof}
+
+For a list of capacities \(\boldsymbol b=(b_1,\ldots,b_t)\), let
+\(\mathcal G_q(\boldsymbol b)\) consist of all loopless digraphs on
+\(\{1,\ldots,q\}\) expressible as the union of stars
+\[
+ \{a_i\to x:x\in A_i\},\qquad
+ |A_i|\leq\min(b_i,q-1),\quad a_i\notin A_i.
+\]
+Centers may repeat and stars may be empty.
+
+\begin{theorem}[Capacity classification]\label{fp:thm:capacity}
+For every Hausdorff \(X\) with finite nonempty derived set and local
+capacity list \(\boldsymbol b\),
+\begin{align}
+ \max_{c:X\to[q]}\layers(X,c)
+ &=q+\max_{G\in\mathcal G_q(\boldsymbol b)}\tau(G),\label{fp:eq:capacity-L}\\
+ \sm_q(X)
+ &=\ceil{\log_2\!\left(q+\max_{G\in\mathcal G_q(\boldsymbol b)}\tau(G)\right)}.
+ \label{fp:eq:capacity-d}
+\end{align}
+In particular, \(\sm_q(X)\) depends only on the truncated capacities
+\(\min(b_i,q-1)\), not on the underlying infinite cardinalities or the
+particular ultrafilters.
+\end{theorem}
+\begin{proof}
+Every coloring using all \(q\) labels gives a graph in the displayed
+class by the definition of capacity. Conversely, every graph in the class
+is realized by \cref{fp:lem:star-realization}, using all \(q\) labels.
+A coloring using fewer labels can be enlarged to use all labels by finite
+changes at isolated points, preserving its graph and adding isolated graph
+vertices. By \cref{fp:thm:fixed}, this cannot lower its layer count.
+The maxima are over finite graph classes, and the logarithm is monotone,
+so \cref{fp:thm:fixed} gives both equalities.
+\end{proof}
+
+\subsection{Exactly when the rank-one bound is sharp}
+
+Let \(S=\{c(p_i):1\leq i\leq t\}\) and \(s=|S|\). All arcs of
+\(G_c\) originate in \(S\), so every directed cycle lies in \(S\).
+Consequently
+\begin{equation}\label{fp:eq:active-centers}
+ \tau(G_c)=s-\ac(G_c[S]),\qquad
+ \layers(X,c)=q_c+s-\ac(G_c[S])\leq q_c+s-1.
+\end{equation}
+This recovers the repository bound \((q-1)h+s\) at \(h=1\), when
+all \(q\) colors occur.
+
+\begin{theorem}[Sharp local attainment criterion]\label{fp:thm:attainment}
+Fix \(q\geq1\) and \(1\leq s\leq\min(q,t)\). There is a coloring
+using all \(q\) labels, exactly \(s\) labels on \(X'\), and having
+\(\layers(X,c)=q+s-1\), if and only if there is a partition
+\begin{equation}\label{fp:eq:bins}
+ \{1,\ldots,t\}=I_1\sq\cdots\sq I_s,
+ \qquad I_j\ne\varnothing,\qquad
+ \sum_{i\in I_j}b_i\geq s-1\quad(1\leq j\leq s).
+\end{equation}
+An infinite capacity is interpreted as exceeding every finite threshold.
+\end{theorem}
+\begin{proof}
+By \cref{fp:eq:active-centers}, equality holds precisely when
+\(\ac(G_c[S])=1\). A loopless digraph on \(s\) vertices has acyclic
+number one exactly when every pair of distinct vertices is joined by both
+arcs: if one arc is missing, that pair is acyclic; conversely every pair in
+a complete bidirected graph is a directed two-cycle.
+
+Group the nonisolated points according to their center colors. In a group
+\(I_j\), the outgoing stars must cover all \(s-1\) other center colors.
+Each star covers at most \(b_i\) of them, so \cref{fp:eq:bins} is necessary.
+
+Conversely, under \cref{fp:eq:bins}, assign center color \(j\) to every
+\(p_i\) with \(i\in I_j\). Distribute the \(s-1\) other center
+colors among those indices, assigning at most \(b_i\) distinct targets
+to index \(i\). This is possible because the total capacity is sufficient;
+some indices may receive no targets. Realize these stars by
+\cref{fp:lem:star-realization}. The induced graph on the center colors is
+complete bidirected. Add any missing labels by finite isolated exceptions.
+Then \cref{fp:eq:active-centers} gives exactly \(q+s-1\) layers.
+\end{proof}
+
+This is an exact criterion for \emph{layer} sharpness. Because a ceiling
+logarithm can identify different layer counts, failure of the criterion
+does not automatically imply a smaller worst-case query depth. The next
+section isolates a case where the depth really changes.
+
+\section{Three colors: a complete classification and a separation}
+\label{fp:sec:ternary}
+
+\begin{theorem}[All finite-derived-set spaces, three colors]\label{fp:thm:ternary}
+Let \(X\) be Hausdorff with a finite nonempty derived set. Put
+\[
+ u=|\{i:b_i=1\}|,\qquad v=|\{i:b_i\geq2\}|.
+\]
+Then \cref{fp:eq:ternary-intro} holds.
+\end{theorem}
+\begin{proof}
+Every such space is infinite, so some coloring uses all three labels;
+at least two queries are then necessary. By \cref{fp:thm:fixed}, at most
+five layers, hence three queries, suffice. Three queries are necessary
+for a coloring precisely when it needs five layers, which is equivalent
+to its graph being complete bidirected on three colors.
+
+Apply \cref{fp:thm:attainment} with \(q=s=3\). We need three nonempty
+groups, each of total capacity at least two. Every capacity at least two
+can supply one such group by itself; every two capacities equal to one
+can supply one group. Thus three groups exist if
+\(v+\floor{u/2}\geq3\). Conversely, in any three satisfactory groups,
+at most \(v\) groups contain a capacity at least two. Each remaining
+group consumes at least two of the \(u\) unit capacities. Hence the
+same inequality is necessary. Extra indices can be added to any group.
+\end{proof}
+
+\subsection{Two spaces with the same derivative cardinalities}
+
+Choose a free ultrafilter \(\U\) on \(\N\), whose existence is a
+standard consequence of ZFC, and let
+\[
+ X=S(\U)\sq S(\U)\sq S(\U).
+\]
+Its capacity list is \((1,1,1)\). On the other hand, let
+\[
+ Y=(\omega+1)\sq(\omega+1)\sq(\omega+1)
+\]
+with each summand a convergent sequence and its limit. Its local filters
+are cofinite and its capacity list is \((\infty,\infty,\infty)\).
+Both spaces are countably infinite and zero-dimensional Hausdorff, and
+\[
+ |X'|=|Y'|=3,\qquad X''=Y''=\varnothing.
+\]
+Nevertheless \cref{fp:thm:ternary} gives
+\begin{equation}\label{fp:eq:separation}
+ \boxed{\sm_3(X)=2\quad\text{and}\quad\sm_3(Y)=3.}
+\end{equation}
+Thus rank, cardinality, and the cardinality of the last derivative do not
+determine this invariant, even in this very small derivative-height class.
+The example changes local topology, not the number of nonisolated points.
+
+For an explicit hard coloring of \(Y\), color the three limit points
+\(0,1,2\), respectively. In the component with limit color \(a\),
+partition the isolated sequence into two infinite sets with the two other
+colors. The resulting profile contains all six directed pairs on three
+colors. It requires five layers; \(01210\) is an optimal word.
+
+For \(X\), each component contributes at most one arc, so a coloring
+has at most three distinct arcs. It cannot contain all six directed pairs.
+Therefore four layers always suffice. The coloring with component profiles
+\(01,12,20\) gives the cycle \(0\to1\to2\to0\), and the optimal
+word \(0120\) has four layers. Writing the nonisolated points as
+\(p_0,p_1,p_2\) and their discrete parts as \(D_0,D_1,D_2\), those
+layers can be chosen as
+\[
+ \{p_0\},\quad D_0\sq\{p_1\},\quad
+ D_1\sq\{p_2\},\quad D_2.
+\]
+Balanced suffix search uses two questions. The supplied certificate file
+contains both this tree and a five-layer tree for the convergent example.
+
+\subsection{Why the counterexample is not locally compact}
+
+\begin{proposition}\label{fp:prop:ultra-noncompact}
+A one-point free-ultrafilter space on \(\N\) is not locally compact at
+its nonisolated point and admits no injective sequence converging to it.
+\end{proposition}
+\begin{proof}
+Let \(A\in\U\). Split \(A\) into two infinite parts. Exactly one
+part, say \(B\), belongs to \(\U\). The cover of \(\{p\}\cup A\)
+consisting of \(\{p\}\cup B\) and the singleton sets from \(A\setminus B\)
+has no finite subcover. Basic neighborhoods are closed, so a compact
+neighborhood containing one would make that basic neighborhood compact,
+a contradiction.
+
+If an injective sequence converged to \(p\), split its range into the
+even- and odd-indexed subsequences. At least one of these two sets is not
+in \(\U\); its complement belongs to \(\U\) and gives a neighborhood
+of \(p\) omitting infinitely many terms. This contradicts convergence.
+\end{proof}
+
+\section{Positive classification under ordinary local hypotheses}
+\label{fp:sec:positive}
+
+\begin{proposition}\label{fp:prop:infinite-capacity}
+If a nonisolated point of a Hausdorff space with finite derived set is
+first countable, its local partition capacity is infinite. The same
+conclusion holds if the space is locally compact at that point.
+\end{proposition}
+\begin{proof}
+Pass to its one-point clopen neighborhood. In the first-countable case,
+choose a decreasing neighborhood base and recursively choose a new isolated
+point from each base member. This is possible because a neighborhood of a
+nonisolated point in a \(T_1\) space is infinite. The resulting injective
+sequence converges to the point. Splitting it into any prescribed finite
+number of infinite subsequences gives disjoint positive sets.
+
+In the locally compact case, take a compact neighborhood contained in the
+one-point clopen neighborhood. Within that compact subspace, every open
+neighborhood of the nonisolated point has finite complement: the complement
+is closed, compact, and discrete. Its isolated part is infinite. Partition
+that part into arbitrarily many infinite sets. Each accumulates at the
+nonisolated point in the compact subspace and hence in the ambient space.
+\end{proof}
+
+\begin{corollary}\label{fp:cor:regular-formula}
+Suppose \(X\) is Hausdorff, \(0<|X'|=t<\infty\), and every nonisolated
+point is either first countable or has a compact neighborhood. Then for
+every \(q\geq1\),
+\begin{align*}
+ \max_{c:X\to[q]}\layers(X,c)&=q-1+\min(q,t),\\
+ \sm_q(X)&=\ceil{\log_2\bigl(q-1+\min(q,t)\bigr)}.
+\end{align*}
+\end{corollary}
+\begin{proof}
+For any coloring, \cref{fp:eq:active-centers} bounds the layers by
+\(q-1+\min(q,t)\), also after adjoining unused labels. Every capacity
+is infinite by \cref{fp:prop:infinite-capacity}; therefore the partition
+criterion is satisfied with \(s=\min(q,t)\). It supplies equality.
+Apply \cref{fp:thm:normal}.
+\end{proof}
+
+This extends the rank-one convergent-tower formula to all spaces in the
+stated classes. Compactness and first countability are sufficient, not
+necessary: the exact hypothesis for layer attainment is the capacity
+partition criterion.
+
+\begin{example}[Mixed local behavior]
+For three labels, capacity lists \((2,2,1)\) and \((2,2,1,1)\) have
+worst-case depths two and three, respectively. In the second list the
+three required groups are the two single entries of capacity two and the
+pair of unit entries. An arbitrarily large capacity at just one point
+cannot be divided between several different center colors: each
+nonisolated point has only one color. This is why summing all capacities
+without the partition requirement would be incorrect.
+\end{example}
+
+\section{An exact directed extremal calculation}
+\label{fp:sec:extremal}
+
+To obtain a closed formula for unit capacities, we need the minimum number
+of arcs in a digraph on \(q\) vertices whose acyclic number is at most
+\(r\). Antiparallel arcs are allowed, but loops and multiple arcs are not.
+The random-order method below belongs to the Caro--Wei family of arguments;
+stronger directed bounds appear in \cite{AGJS,AFH}. Only the elementary
+one-sided version is needed here, and we prove it directly.
+
+\begin{lemma}[Random-order bound]\label{fp:lem:random}
+For every finite loopless digraph \(G\),
+\[
+ \ac(G)\geq\sum_{v\in V(G)}\frac{1}{d^+(v)+1}.
+\]
+\end{lemma}
+\begin{proof}
+Choose a uniformly random ordering of the vertices. Select a vertex if it
+appears before all its out-neighbors. Within the selected set, every arc
+goes forward in the ordering, so the selected set is acyclic. A vertex of
+out-degree \(d\) is selected with probability \(1/(d+1)\). Taking
+expectations proves the bound.
+\end{proof}
+
+\begin{theorem}[Exact arc threshold and equality]\label{fp:thm:turan}
+Let \(1\leq r\leq q\), and write \(q=ar+s\) with \(0\leq s<r\).
+The minimum number of arcs in a loopless digraph on \(q\) vertices with
+\(\ac(G)\leq r\) is
+\[
+ T(q,r)=ra(a-1)+2as.
+\]
+The graphs attaining this minimum under the stated acyclic-number
+constraint are exactly the disjoint unions of \(r\) complete bidirected
+graphs whose sizes differ by at most one: \(s\) have size \(a+1\), and
+\(r-s\) have size \(a\).
+\end{theorem}
+\begin{proof}
+For every nonnegative integer \(d\),
+\begin{equation}\label{fp:eq:integer-support}
+ \frac1{d+1}\geq\frac{2a-d}{a(a+1)}.
+\end{equation}
+Indeed, the difference is
+\[
+ \frac{(d-a)(d-a+1)}{(d+1)a(a+1)}\geq0,
+\]
+since the numerator is the product of consecutive integers. Equality
+holds precisely for \(d=a-1\) or \(d=a\).
+
+If \(m\) is the number of arcs, summing \cref{fp:eq:integer-support} and
+using \cref{fp:lem:random} gives
+\[
+ r\geq\ac(G)\geq\sum_v\frac1{d^+(v)+1}
+ \geq\frac{2aq-m}{a(a+1)}.
+\]
+Thus
+\[
+ m\geq2aq-ra(a+1)=ra(a-1)+2as=T(q,r).
+\]
+The union of balanced complete bidirected graphs described in the
+statement has acyclic number exactly \(r\) and has exactly that many
+arcs, proving sharpness.
+
+It remains to prove the equality classification. If \(m=T(q,r)\) and
+\(\ac(G)\leq r\), all inequalities above are equalities. In particular,
+the random selected set in \cref{fp:lem:random} has expectation \(r\) and
+always has size at most \(r\). It must therefore have size exactly
+\(r\) for every ordering.
+
+There can be no asymmetric arc \(u\to v\) with \(v\not\to u\).
+Compare an ordering beginning \(u,v\) with the ordering beginning
+\(v,u\), leaving all other vertices in the same later order. In the
+first ordering both \(u\) and \(v\) are selected. In the second,
+only \(v\) is selected. The selection status of every other vertex is
+unchanged, since both \(u,v\) remain before it. This changes the total
+by one, a contradiction. Thus all arcs occur in opposite pairs.
+
+Regard the resulting symmetric graph as undirected. It cannot contain an
+induced path \(u-v-w\) with no edge \(uw\). Put this triple first in
+the ordering. The order \(u,w,v\) selects its two endpoints; the order
+\(v,u,w\) selects only its middle vertex. All later selection statuses
+again remain unchanged. This is impossible. An undirected graph with no
+induced three-vertex path is a disjoint union of cliques: otherwise a
+shortest path between nonadjacent vertices in a connected component begins
+with such an induced path.
+
+Finally, equality in \cref{fp:eq:integer-support} requires every out-degree
+to be \(a-1\) or \(a\), so each clique has size \(a\) or \(a+1\).
+Its acyclic number is its number of components, which must be \(r\).
+The sum of component sizes gives the claimed multiplicities.
+\end{proof}
+
+\begin{remark}[What is and is not being claimed as new]
+The theorem is an elementary directed extremal calculation with familiar
+balanced-clique extremizers. Its proof is included in full so the
+open-query thresholds do not rely on a possibly mismatched graph citation.
+We do not assert historical priority for this standalone graph theorem.
+The source search located stronger degree-based acyclic-set bounds, not a
+priority certification for this exact reformulation.
+\end{remark}
+
+\section{All ultrafilter-sum thresholds}
+\label{fp:sec:ultra}
+
+Let
+\[
+ X_t=\bigsqcup_{i=1}^t S(\U_i),\qquad t\geq1,
+\]
+where the \(\U_i\) are arbitrary free ultrafilters on infinite sets.
+The sets and ultrafilters need not be isomorphic. An additional discrete
+summand makes no difference to the following formulas.
+
+\begin{theorem}\label{fp:thm:ultra}
+For \(q\geq1\), define \(r_*(q,t)\) as in \cref{fp:eq:ultra-intro}.
+Then \cref{fp:eq:ultra-intro} holds.
+\end{theorem}
+\begin{proof}
+Each component has capacity one and contributes at most one arc. Conversely,
+any digraph on \(q\) vertices with at most \(t\) arcs can be realized:
+use one component for each arc, give unused components an empty star,
+and introduce unused labels by finite exceptions. Therefore
+\[
+ \max_c\layers(X_t,c)
+ =q+\max\{\tau(G):|V(G)|=q,\ |E(G)|\leq t\}.
+\]
+Since \(\tau(G)=q-\ac(G)\), \cref{fp:thm:turan} says that the minimum
+possible acyclic number under this arc budget is exactly \(r_*(q,t)\).
+This proves the layer formula. Apply \cref{fp:thm:normal} for depth.
+The set defining \(r_*\) is nonempty because \(T(q,q)=0\).
+For \(q=1\), the formulas give one layer and zero questions, as required.
+\end{proof}
+
+\subsection{Exact threshold for the extra question}
+
+\begin{corollary}\label{fp:cor:jump}
+Let \(q\geq2\) and \(k=\ceil{\log_2q}\). Put
+\[
+ r_q=2q-2^k-1,\qquad t_q=T(q,r_q).
+\]
+Then \(1\leq r_q<q\), and
+\begin{equation}\label{fp:eq:jump}
+ \sm_q(X_t)=
+ \begin{cases}
+ k,&1\leq t<t_q,\\
+ k+1,&t\geq t_q.
+ \end{cases}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Using all \(q\) colors forces at least \(k\) questions. Since
+\(\tau(G)\leq q-1\), at most \(2q-1<2^{k+1}\) layers are needed,
+so at most \(k+1\) questions suffice. The larger depth occurs exactly
+when some graph with at most \(t\) arcs satisfies
+\[
+ q+\tau(G)>2^k
+ \quad\Longleftrightarrow\quad
+ \ac(G)\leq2q-2^k-1=r_q.
+\]
+Apply \cref{fp:thm:turan}. The inequalities for \(r_q\) follow directly
+from \(2^{k-1}<q\leq2^k\), including the case that \(q\) is a power
+of two.
+\end{proof}
+
+The threshold varies substantially with the alphabet size. If \(q\) is a
+power of two, \(t_q=2\). If \(q=2^{k-1}+1\), then \(r_q=1\), so
+\(t_q=q(q-1)\). Thus the number of components needed for one additional
+question ranges from two to a quadratic function of the number of labels.
+This variation comes from the exact rounding boundary of a binary tree,
+not from a change in derivative height.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Colors \(q\)&Baseline depth \(k\)&\(r_q\)&First \(t\) requiring \(k+1\)\\
+\midrule
+2&1&1&2\\
+3&2&1&6\\
+4&2&3&2\\
+5&3&1&20\\
+6&3&3&6\\
+7&3&5&4\\
+8&3&7&2\\
+9&4&1&72\\
+10&4&3&24\\
+11&4&5&14\\
+12&4&7&10\\
+13&4&9&8\\
+14&4&11&6\\
+15&4&13&4\\
+16&4&15&2\\
+\bottomrule
+\end{tabular}
+\end{center}
+The archive contains the exact table through \(q=64\)
+(shipped as \path{data/03-filter-profiles-query_jump_thresholds.csv}).
+
+\subsection{Binary and ternary checks}
+
+For two colors, \(r_*(2,1)=2\), while \(r_*(2,t)=1\) for \(t\geq2\).
+Thus
+\[
+ \sm_2(X_1)=1,\qquad \sm_2(X_t)=2\quad(t\geq2),
+\]
+which agrees with the repository's binary distinction between a singleton
+and a nonsingleton last derivative.
+
+For three colors,
+\[
+ \max_c\layers(X_t,c)=
+ \begin{cases}
+ 3,&t=1,\\
+ 4,&2\leq t\leq5,\\
+ 5,&t\geq6.
+ \end{cases}
+\]
+The query depth is consequently two for \(1\leq t\leq5\), and three
+for \(t\geq6\). In particular, three limit points do not suffice to
+force the extra query in the ultrafilter case, whereas they do in the
+cofinite case.
+
+\begin{corollary}[Layer saturation with prescribed top colors]
+For unit capacities and \(2\leq s\leq\min(q,t)\), the layer value
+\(q+s-1\) is attainable with exactly \(s\) colors on the derived set
+if and only if \(t\geq s(s-1)\). For \(s=1\), it is always attainable.
+\end{corollary}
+\begin{proof}
+Each of the \(s\) nonempty bins in \cref{fp:eq:bins} needs at least
+\(s-1\) unit entries, and this condition is also sufficient.
+\end{proof}
+
+\section{Algorithms, input models, and formalization boundaries}
+\label{fp:sec:algorithms}
+
+\subsection{An exact finite algorithm}
+
+For a supplied profile graph on \(q\) used labels, enumerate subsets
+\(R\) of its vertex set in increasing cardinality. Test whether
+\(G-R\) is acyclic by a topological sort. The first successful subset
+is a minimum feedback vertex set. Construct the word
+\cref{fp:eq:word-witness}, assign nonisolated points to first occurrences and
+isolated points to last occurrences as in \cref{fp:thm:profile}, and balance
+suffix queries.
+
+A direct implementation uses
+\[
+ O\bigl(2^q(q+|E|)\bigr)
+\]
+time for the graph optimization. This bound is independent of the sizes
+of the infinite discrete pieces once their finite profiles have been
+supplied. Directed feedback vertex set has more sophisticated parameterized
+algorithms; \cite{GMM} describes that line of work. Those algorithms are
+optional and are not needed for any theorem here.
+
+\paragraph{Essential input qualification.}
+We do not claim an algorithm can determine ultrafilter membership for an
+arbitrary presented infinite color cell. The finite algorithm takes the
+positive-cell sets \(B_i\), or equivalently the graph, as input. In the
+explicit extremal constructions the coloring is monochromatic on each
+ultrafilter component apart from finitely many exceptions, so these profiles
+are known without an oracle. For arbitrary colorings, obtaining the profile
+is a separate semantic or effective problem.
+
+\subsection{Why exact optimization can still be difficult}
+
+\begin{proposition}\label{fp:prop:complexity}
+For finite graph-profile input with an unbounded alphabet, deciding whether
+\(\layers\leq M\) is NP-complete. Deciding whether \(\depth\leq d\) is
+also NP-complete. These statements already hold for profiles realizable by
+finite sums of one fixed free-ultrafilter space, using colorings constant
+on each discrete component outside finitely many exceptions.
+\end{proposition}
+\begin{proof}
+A feedback vertex set and a topological ordering of its complement are
+polynomially checkable certificates. By \cref{fp:thm:fixed}, the layer
+question with \(M=q+k\) is exactly the directed feedback vertex set
+question \(\tau(G)\leq k\). The latter is a classical NP-complete
+problem; see the discussion and references in \cite{GMM}. Every graph
+profile is realizable by one ultrafilter component per arc.
+
+For depth, it is necessary to account for rounding rather than merely
+quote the layer reduction. Given \(G\) on \(q\) vertices and a
+nontrivial bound \(0\leq k\leq q-1\), let \(P\) be the least power
+of two satisfying \(P\geq q+k\), and adjoin
+\[
+ z=P-q-k
+\]
+isolated graph vertices. If \(G'\) is the resulting graph, then
+\(\tau(G')=\tau(G)\), and
+\[
+ \depth(G')\leq\log_2P
+ \quad\Longleftrightarrow\quad
+ q+z+\tau(G)\leq P
+ \quad\Longleftrightarrow\quad
+ \tau(G)\leq k.
+\]
+The number \(z\) is \(O(q)\), so the construction is polynomial.
+Unused colors are realized at finite isolated exceptions. A dummy
+empty-star component may be included when needed. Membership in NP follows
+from the same certificate, with the integer inequality
+\(q+|R|\leq2^d\); when \(d\) is unnecessarily large the instance is
+immediately positive by the universal \(2q-1\) layer bound.
+\end{proof}
+
+Unlike the general reduced-word supersequence setting studied in
+\cite{LT}, our profiles have only two-letter constraints. This is complexity
+for an explicit finite profile encoding, not for an unspecified encoding of
+arbitrary topological spaces or infinite sets.
+For every fixed \(q\), the graph search has a fixed finite bound.
+
+\begin{writenotec}[Relation to Part~II's hardness theorem]
+The last sentence does not conflict with Part~II's \cref{fo:thm:NP}, by
+which exact optimization is NP-complete for every fixed $q\ge3$. The input
+models differ: there the instances are finite posets (disjoint chains
+already suffice) or succinct tower lists, whose words have unbounded length, and the difficulty is the
+shortest common supersequence of those words; here the input is a profile
+graph on the colors, which for a space with finite nonempty derived set
+has at most $q(q-1)$ arcs, so for fixed $q$ only finitely many inputs exist.
+\Cref{fp:prop:complexity} is a second NP-completeness route, through
+directed feedback vertex set with an unbounded alphabet.
+\end{writenotec}
+
+\subsection{A concrete formalization route}
+
+The argument separates naturally into four interfaces. First formalize
+ordered words, subsequences, open suffixes, and the tree-to-layer normal
+form. Second formalize digraphs, topological orders, and the repeated-letter
+proof of \(\ell(G)=q+\tau(G)\). Third formalize the finite partition
+lemma for filters and its graph-profile bridge. Finally add the
+finite-derived-set decomposition, the Boolean-capacity argument, and the
+random-order extremal theorem.
+
+The graph portions admit purely finite certificates. A positive certificate
+consists of a feedback set, a topological order, an admissible word, and a
+balanced tree. A negative certificate can list a directed cycle in every
+induced subgraph that would contradict the proposed feedback lower bound,
+or use an independently verified exhaustive subset search. The filter
+existence and topology must remain separate mathematical obligations.
+The present archive contains no \texttt{.lean} or \texttt{.v} file and
+makes no kernel-verification claim.
+
+\begin{writenotec}[Status in ProveIt]
+None of these interfaces has been formalized in ProveIt: no Lean or Rocq
+file of the repository mentions open-query games, filter capacities or
+directed feedback vertex sets, and the Lean library in the enclosing
+\path{SetTheory/Cardinals} directory is about large cardinals.
+\end{writenotec}
+
+\section{Reproducible checks and proof audit}
+\label{fp:sec:verification}
+
+\subsection{Independent finite computations}
+
+Run the standard-library Python program, with the shipped name and an
+explicit output directory, as
+\begin{lstlisting}
+python3 code/03-filter-profiles-verify.py --output <scratch>
+\end{lstlisting}
+It enumerates all loopless directed graphs on up to four labeled vertices,
+allowing antiparallel arcs. Independently, it enumerates all reduced words
+through length \(2q-1\), records their covered ordered pairs, and performs
+a supermask-minimum transform. That computes the shortest admissible word
+for every target graph without calling the feedback-set routine. The two
+answers are then compared.
+
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+Vertices \(q\)&Digraphs checked&Reduced words enumerated\\
+\midrule
+1&1&1\\
+2&4&6\\
+3&64&93\\
+4&4,096&4,372\\
+\midrule
+Total&4,165&4,472\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For every graph, the verifier also constructs a doubled-feedback-set word
+and checks all required subsequences directly. It checks the extremal arc
+threshold for every \(1\leq r\leq q\leq4\), and verifies that every
+equality graph has the balanced complete-bidirected-component structure.
+
+There are also \textbf{11,515 positive-cell word checks}: direct existence
+of a common permitted position for the nonisolated point is compared with
+the pairwise subsequence requirements. A further \textbf{98 capacity
+cases} compare exhaustive star-union realizations with an independent
+bin-assignment test for \cref{fp:thm:attainment}. Finally, exact threshold
+tables and balanced extremal constructions are generated through 64 colors.
+The recorded run passed every assertion.
+
+These numbers describe finite evidence, not the scope of the theorems.
+In particular, no finite experiment can instantiate a free ultrafilter on
+\(\N\), prove the clopen decomposition for arbitrary Hausdorff spaces,
+or establish historical novelty.
+
+\begin{writenotec}[Shipped names]
+The delivered command was \texttt{python3 code/verify.py}, without an output
+option. Here \path{code/verify.py} is Part~I's verifier, so the command
+above uses the shipped name. Without \texttt{-{}-output} the verifier writes
+\path{results/} beside \path{code/}, with unprefixed names. The recorded
+outputs are shipped as
+\begin{itemize}
+\item \path{data/03-filter-profiles-verification.json},
+\item \path{data/03-filter-profiles-verification.log} (the console output,
+which is the same JSON),
+\item \path{data/03-filter-profiles-capacity_checks.json},
+\item \path{data/03-filter-profiles-strategy_certificates.json},
+\item \path{data/03-filter-profiles-extremal_thresholds.csv},
+\item \path{data/03-filter-profiles-query_jump_thresholds.csv}.
+\end{itemize}
+The counts above agree with the recorded JSON, which also records ten extremal
+threshold cases (one for each $1\le r\le q\le4$). A rerun on a copy
+(29 September 2026, Python~3.14.4, about four seconds) reproduced both CSV
+files byte for byte (they are CRLF on every platform, as delivered) and the
+JSON files and console log after CRLF~$\to$~LF (the verifier writes JSON with
+the platform's line endings).
+\end{writenotec}
+
+\subsection{Dependency and status audit}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Claim&Mathematical inputs&Status here\\
+\midrule
+Normal form&Finite binary trees and open suffixes&Reproved; repository input\\
+Graph profile&Clopen decomposition and finite filter quotient&Full proof\\
+Layer/FVS formula&Repeated letters and topological ordering&Full elementary proof\\
+Capacity criterion&Finite Boolean quotient and star realization&Full proof\\
+Three-color separation&Capacity criterion and a free ultrafilter&Full ZFC proof\\
+Ultrafilter thresholds&Random-order acyclic bound and integer support line&Full proof with equality cases\\
+Complexity assertions&Classical directed-FVS NP-completeness&Established input cited; reduction proved\\
+Finite checks&Exhaustive Python enumeration&Executed; not proof-assistant verification\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The substantive novelty proposed for further independent review is the
+identification of the finite-output topological invariant with local filter
+capacities and the resulting exact separation and threshold laws. The
+literature check is not exhaustive. The mathematical statements do not
+depend on a claim of priority.
+
+\section{Further research questions and topics}
+\label{fp:sec:questions}
+
+The first two directions continue the original repository question beyond
+the class settled here. The remaining directions arise from the exact
+classification above; they are proposed problems, not assertions that each
+formulation is a previously published open problem.
+
+\begin{question}[The next derivative level]\label{fp:q:next-level}
+For Hausdorff spaces with finite nonempty second derivative and empty third
+derivative, what finite local data replace the positive-color stars?
+Can an iterated filter quotient encode all admissible words without
+exponentially listing every lower-level profile?
+\end{question}
+The obstruction is correlation: a neighborhood may contain whole lower-level
+profiles, rather than independent color cells. Merely attaching a scalar
+capacity to each point is unlikely to record all such interactions; a proof
+or a counterexample would sharply delimit this extension.
+
+\begin{question}[Compact and first-countable finite-height spaces]\label{fp:q:compact-height}
+Does the repository bound \((q-1)h+s\) attain its full layer value under
+natural compactness or first-countability hypotheses at every finite height?
+The present paper proves this at \(h=1\), not at larger heights.
+\end{question}
+A promising approach is to construct enough incompatible colored profiles
+inside disjoint neighborhoods while controlling their accumulation at the
+next derivative. The proof must not assume metrizability or a countable
+local base when neither is available.
+
+\begin{question}[Intermediate-capacity extremal formulas]\label{fp:q:intermediate}
+Find a closed formula for
+\[
+ \max_{G\in\mathcal G_q(b_1,\ldots,b_t)}\tau(G)
+\]
+when some capacities lie strictly between one and \(q-1\). Determine
+whether suitable unions of bidirected cliques always optimize any important
+uniform-capacity subcase.
+\end{question}
+For a common finite capacity \(b\geq1\), a graph is realizable exactly when
+\(\sum_x\ceil{d^+(x)/b}\leq t\), with zero out-degree contributing
+zero. This follows by splitting each outgoing neighborhood into at most
+\(b\)-element stars. It converts the question into a discrete degree-cost
+extremal problem, but the linear-arc proof of \cref{fp:thm:turan} does not
+by itself solve the nonlinear cost problem.
+
+\begin{question}[Infinite derived sets]\label{fp:q:infinite}
+Which Hausdorff spaces with an infinite discrete derived set admit a useful
+filter-component decomposition for finite-output games? When such a global
+decomposition fails, can local profiles still determine the finite-depth
+invariant?
+\end{question}
+The finite proof uses pairwise disjoint neighborhoods chosen for finitely
+many nonisolated points. Replacing ``finite'' by ``infinite'' without a
+separation argument would be invalid.
+
+\begin{question}[Expected query cost]\label{fp:q:expected}
+For a probability distribution on the hidden point, characterize the minimum
+expected depth over all admissible layer assignments and ordered binary
+trees. How does the optimum depend on masses of positive and null color
+cells in the filter quotient?
+\end{question}
+The weighted-layer identity in \cref{fp:cor:weights} is only a preliminary
+algebraic analogue. Expected depth depends on leaf masses, and redistributing
+a color among repeated positions can change those masses.
+
+\begin{question}[Effective presentation of local profiles]\label{fp:q:effective}
+For computably presented filters and color cells, when can the positive-color
+sets \(B_i\) be computed or approximated? Which oracle strength is necessary
+for exact strategy synthesis in natural presentations?
+\end{question}
+This isolates the semantic task deliberately excluded from the finite
+feedback-set algorithm. Even a tiny profile graph need not be effectively
+recoverable from arbitrary infinite-set data.
+
+\begin{question}[Near-extremal stability]\label{fp:q:stability}
+If \(\ac(G)\leq r\) and \(|E(G)|\) is close to \(T(q,r)\), must
+\(G\) be close to a balanced union of complete bidirected graphs, in a
+quantitative sense useful for almost-sharp query families?
+\end{question}
+The equality proof supplies two concrete defects: asymmetric arcs and
+induced three-vertex paths. A stability theorem would need to control how
+many such defects can coexist with small slack in the random-order bound.
+
+\begin{question}[Recovering topology from the alphabet spectrum]\label{fp:q:spectrum}
+How much of a finite capacity list can be recovered from the sequence
+\((\sm_q(X))_{q\geq1}\)? Does recording maximum layer counts instead
+of rounded query depths make the capacity multiset identifiable?
+\end{question}
+The ceilings erase information: at three labels, one ultrafilter component
+has maximum layer count three, whereas two through five components have
+maximum layer count four, yet all have depth two. This suggests studying
+the unrounded layer spectrum first.
+
+\begin{question}[Choice strength and definability]\label{fp:q:choice}
+What is the weakest set-theoretic assumption supporting a countable
+three-color separation of the kind in \cref{fp:eq:separation}? Can comparable
+separations be obtained from explicitly definable neighborhood filters under
+additional descriptive restrictions?
+\end{question}
+The example here uses a free ultrafilter and is an existence construction
+in ZFC, not an explicitly computable list of open neighborhoods. Nothing
+in the finite certificate files resolves this foundational issue.
+
+\section{Conclusion}
+\label{fp:sec:conclusion}
+
+At the first nontrivial derivative level, the relevant local information is
+not merely the existence of an accumulation point. It is the family of
+color cells that may accumulate there simultaneously. A finite coloring
+turns that information into directed pair constraints; the cost of making
+those constraints compatible is exactly a feedback vertex number.
+
+This gives a complete fixed-color profile theorem for every Hausdorff space
+with a finite nonempty derived set, an exact local criterion for attainment
+of the rank-one bound, a full three-label classification, and all
+alphabet-dependent thresholds for ultrafilter sums. The resulting
+three-color separation shows concretely why the binary
+Cantor--Bendixson classification does not extend unchanged to finite output
+alphabets. Higher derivative levels, infinite derived sets, and general
+cost models remain distinct problems.
+
 
 \appendix
 \section{Why countable compact Hausdorff spaces are scattered}\label{app:compact}
@@ -1197,6 +4541,111 @@ The minimax implementation enumerates all open queries. It does not import the
 closed-layer answer as its return value. The mathematical proof and the
 finite computational check are deliberately distinct.
 
+\section{Certificate and reproduction conventions (Part~II)}
+\label{fo:app:certificates}
+
+In \path{data/02-finite-output-strategy_certificate.json} (Part~I's
+eight-point certificate is \path{data/strategy_certificate.json}), bit $i$ of
+a mask denotes vertex $i$,
+with numbering starting at zero. The predecessor mask of a vertex contains
+\emph{strict} predecessors. The supplied coloring consists of the chains
+$01,02,10,12,20,21$ in that order. The 1-based rank vector is
+\[
+ (1,2,\ 1,3,\ 2,4,\ 2,3,\ 3,4,\ 3,5).
+\]
+At an internal tree node, query the upper set encoded by
+\texttt{open\_mask}; follow \texttt{yes} or \texttt{no}. A leaf contains the
+reported color and its layer number. The word is $01201$, with five layers.
+
+The verifier requires Python 3.10 or later and no third-party packages.
+Do not use Python's \texttt{-O} option, which removes assertions. The default
+run is the recorded through-five-point run with through-four-point fixed-word
+checks. A smaller independent smoke test is
+\begin{lstlisting}
+python3 code/02-finite-output-verify.py --max-n 3 --brute-n 3 --output <scratch>
+\end{lstlisting}
+The six-point option is substantially more expensive because both the poset
+count and the number of colorings grow quickly. Its availability is not a
+claim that a six-point run was performed for this article.
+
+Build the PDF with two runs of
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The bibliography is embedded below; no BibTeX run, remote assets, or external
+figures are required. The archive also includes a Makefile and a source-status
+record. Font files are not distributed.
+
+\begin{writenote}[Shipped names]
+The smoke-test command above replaces the delivered
+\texttt{python3 code/verify.py -{}-max-n 3 -{}-brute-n 3 -{}-output /tmp/open-query-smoke}:
+\path{code/verify.py} is Part~I's verifier here, and \texttt{<scratch>} is any
+directory outside the report. The build paragraph describes the delivered
+standalone article. This merged report needs three \texttt{pdflatex} runs, as
+in \cref{sec:checks}. The delivered Makefile and source-status record are
+shipped as \path{code/02-finite-output-Makefile} and
+\path{02-finite-output-RESEARCH_STATUS.md}, with the source audit
+\path{02-finite-output-SOURCES.md}. That Makefile is written for the
+delivery's layout; run from this directory it would call Part~I's verifier and
+build this article in place, so it should not be used here.
+\end{writenote}
+
+\section{Certificate format and reproducibility (Part~III)}
+\label{fp:app:certificates}
+
+The archive contains (with the names shipped in this report; see the note
+below):
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}@{}}
+\toprule
+File&Purpose\\
+\midrule
+\path{article.tex}, \path{article.pdf}&This merged report and its compiled PDF\\
+\path{code/03-filter-profiles-verify.py}&Independent finite word, graph, and capacity checks\\
+\path{data/03-filter-profiles-verification.json}&Recorded verification summary\\
+\path{data/03-filter-profiles-verification.log}&Console output of the executed run\\
+\path{data/03-filter-profiles-capacity_checks.json}&The 98 capacity-case outcomes\\
+\path{data/03-filter-profiles-strategy_certificates.json}&Optimal words and balanced query trees\\
+\path{data/03-filter-profiles-extremal_thresholds.csv}&Small exhaustive graph thresholds and equality counts\\
+\path{data/03-filter-profiles-query_jump_thresholds.csv}&Exact component thresholds for 2--64 colors\\
+\path{03-filter-profiles-SOURCES.md}&Pinned source audit and novelty boundary\\
+\path{code/03-filter-profiles-Makefile}&The delivered build and verification targets (not for use here)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The strategy certificates use zero-based word positions. A node
+\texttt{ask\_suffix\_from\_position: j} asks membership in the union of
+positions \(j,j+1,\ldots\). The no branch goes to earlier positions and
+the yes branch to later positions. Leaf records give a position and its
+label. The interpretation as open subsets is supplied by
+\cref{fp:thm:profile}; the JSON is not an encoding of an entire infinite
+ultrafilter.
+
+The verifier uses Python's arbitrary-precision integers and assertions;
+run it without the \texttt{-O} flag. It has no third-party dependencies.
+The PDF can be rebuilt with two passes of \texttt{pdflatex}; the internal
+bibliography needs no separate BibTeX step.
+
+\begin{writenotec}[Shipped names]
+The delivered table listed \texttt{article.tex} and \texttt{article.pdf} (the
+manuscript's own source and PDF), \texttt{code/verify.py}, six files under
+\texttt{results/}, \texttt{SOURCES.md}, and \texttt{README.md} with
+\texttt{Makefile}. The manuscript, its PDF, its delivery README and its
+checksum ledger \texttt{SHA256SUMS} are not shipped; they survive in the
+arrival commit \texttt{e47ed8547}. \path{article.tex} and \path{article.pdf}
+here are the merged report, which needs three \texttt{pdflatex} runs, as in
+\cref{sec:checks}. The delivered Makefile is shipped as
+\path{code/03-filter-profiles-Makefile}; it is written for the delivery's
+layout. Run from this directory, its \texttt{verify} target would call
+Part~I's verifier \path{code/verify.py}, which without an output option
+replaces Part~I's recorded files in \path{data/}, and would write its console
+output to a new \path{results/verification.log}; its \texttt{pdf} target
+would build this article in place with two passes, and its \texttt{clean}
+target would delete this report's auxiliary files. It should not be used here; the report README gives the rerun
+commands.
+\end{writenotec}
+
 \begin{thebibliography}{9}
 \small
 \setlength{\itemsep}{0.35em}
@@ -1210,7 +4659,11 @@ The arXiv abstract record retains the shorter title
 \emph{Cut-and-choose games in topological spaces}.
 \url{https://arxiv.org/abs/2510.05754v3}.
 Problem 1.3 and Theorem 3.4 are the principal source references.
-Accessed 19 September 2026.
+Accessed 19 September 2026. Part~II's manuscript used the version-specific
+HTML text \url{https://arxiv.org/html/2510.05754v3}, retrieved 29 September
+2026, for the game context and the topological-sum question. Part~III's
+manuscript cites it under the shorter title, as arXiv:2510.05754v3, revised
+29 May 2026, for the broader cut-and-choose setting only.
 
 \bibitem{BGKS}
 C\'elia Borlido, Mai Gehrke, Andreas Krebs, and Howard Straubing,
@@ -1229,6 +4682,54 @@ New Zealand Journal of Mathematics \textbf{50} (2020), 207--218.
 Preprint: \url{https://arxiv.org/abs/2003.01512}.
 The volume PDF is dated 2020; the journal landing page records online
 publication in 2021. Cited for ordinal-space and derivative background.
+
+\bibitem{Repo}
+ProveIt research report.
+\emph{Open-query games on ordinal spaces: a negative solution to the
+topological-sum problem, with an exact Cantor--Bendixson classification}.
+Report dated 19 September 2026. Repository snapshot
+\texttt{5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/games-on-ordinals/open-query-membership-games}{Repository report at the pinned commit}. The full path is given in Section~\ref{fo:sec:scope}.
+[This is Part~I of the present report, unchanged at that commit; cited by
+Part~II.]
+
+\bibitem{LT}
+Aur\'elie Lagoutte and S\'ebastien Tavenas.
+\emph{The complexity of Shortest Common Supersequence for inputs with no
+identical consecutive letters}. arXiv:1309.0422v2, 2015. In particular,
+Corollary~6 and the discussion of typed fusions in the introduction.
+\url{https://arxiv.org/abs/1309.0422}.
+Part~III's manuscript cites the arXiv record (2013) as background for
+supersequences only; its hardness input is \cite{GMM}.
+
+\bibitem{AGJS}
+Saeed Akbari, Amir Hossein Ghodrati, Afrouz Jabalameli, and Morteza Saghafian.
+\emph{Chromatic Number and Dichromatic Polynomial of Digraphs}.
+arXiv:1711.06293, 2017.
+\url{https://arxiv.org/abs/1711.06293}.
+Cited by Part~III for an established directed acyclic-set degree bound; the
+weaker one-sided bound it uses is proved there.
+
+\bibitem{AFH}
+Shamil Asgarli, Donald Falkenhagen, and Kaya Hoshi.
+\emph{Improved lower bounds for the maximum order of an induced acyclic
+subgraph}. arXiv:2511.02819v3, revised 6 May 2026.
+\url{https://arxiv.org/abs/2511.02819v3}.
+Context for refinements of directed degree bounds; no bound from it is used.
+
+\bibitem{GMM}
+Alexander G\"oke, D\'aniel Marx, and Matthias Mnich.
+\emph{Parameterized Algorithms for Generalizations of Directed Feedback
+Vertex Set}. arXiv:2003.02483, 2020.
+\url{https://arxiv.org/abs/2003.02483}.
+Part~III's only imported complexity-theoretic fact is the NP-completeness of
+directed feedback vertex set discussed there.
+
+\bibitem{Selivanov}
+Victor Selivanov.
+\emph{Towards a Descriptive Theory of $cb_0$-Spaces}.
+arXiv:1406.3942, 2014.
+\url{https://arxiv.org/abs/1406.3942}.
 
 \end{thebibliography}
 \end{document}

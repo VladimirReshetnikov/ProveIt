@@ -5,6 +5,9 @@ import csv
 import mpmath as mp
 import matplotlib
 matplotlib.use('Agg')
+# ed. (2026-09-29): embed TrueType (Type 42) fonts instead of Type 3 in the PDF figure.
+matplotlib.rcParams['pdf.fonttype']=42
+matplotlib.rcParams['ps.fonttype']=42
 import matplotlib.pyplot as plt
 from verify import forward, jets
 
@@ -40,7 +43,8 @@ def main():
     fig.savefig(out/'fold_scaling.png',dpi=170)
     plt.close(fig)
     with (out/'fold_scaling.csv').open('w',newline='') as f:
-        w=csv.writer(f); w.writerow(['g','zeta','g_times_s_plus_one']); w.writerows(records)
+        # ed. (2026-09-29): LF line endings on every platform, like the filed files.
+        w=csv.writer(f,lineterminator='\n'); w.writerow(['g','zeta','g_times_s_plus_one']); w.writerows(records)
     print('Generated figure and 363 computed points.')
 
 if __name__=='__main__': main()

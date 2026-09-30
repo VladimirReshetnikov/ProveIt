@@ -1,0 +1,1411 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{libertinus}
+\usepackage{microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{booktabs,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\definecolor{ink}{HTML}{183249}
+\definecolor{accent}{HTML}{176B70}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Local Minimax Geometry of Uniform Convolution Factors},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov},
+ pdfsubject={Mixed collision strata, shifted moments, and Gaussian confounding}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Local minimax geometry of uniform factors}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.28em}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\kap}{\kappa}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\A}{\mathcal A_M}
+\newcommand{\Risk}{\mathcal R}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\title{\textbf{Local Minimax Geometry of\\Uniform Convolution Factors}\\[0.6em]
+\large Mixed collision strata, boundary-localized Gaussian confounding,\\and regular variance estimation at positive collisions}
+\author{Research article prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A global recovery rate can conceal radically different local statistical
+geometries. We study a known bounded background convolved with a fixed-capacity
+list of centered uniform laws and a Gaussian. At a reference factorization,
+let $r$ half-lengths be zero and let the distinct positive half-lengths have
+multiplicities $m_1,\ldots,m_s$. We prove matching minimax bounds on every
+sufficiently small fixed neighborhood of this configuration. A positive cluster
+of multiplicity $m_j$ has optimal half-length rate $n^{-1/(2m_j)}$, whether the
+Gaussian variance is known or unknown. The zero block, when present, has rate
+$n^{-1/(4r)}$ for known variance and $n^{-1/(4r+4)}$ for unknown variance.
+The unknown Gaussian variance itself has rate $n^{-1/(2r+2)}$; in particular,
+it remains root-$n$ estimable when $r=0$, even at arbitrarily high positive
+multiplicities. We also construct an asymptotically normal variance estimator
+in that case and give its influence polynomial explicitly.
+
+The main algebraic results are a cluster-local shifted-power-sum inequality
+and a positivity certificate for the missing first power sum. They separate
+positive collisions from the zero boundary without assuming that the clusters
+can be observed separately. One global moment estimator adapts to all fixed
+strata. Exact moment-preserving paths and weighted likelihood expansions give
+matching lower bounds and explicit Hellinger constants. The results refine,
+rather than reassert, the repository's existing global Gaussian-confounding
+rates. All central arguments are supplied as conventional proofs; the finite
+checks are supplementary, and no Lean verification or worldwide priority
+claim is made. Eight further research questions identify the remaining
+multiscale, efficiency, and unsmoothed-boundary problems.
+\end{abstract}
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{The research question and the contribution boundary}
+\label{sec:scope}
+
+\subsection{From a worst-case rate to a local classification}
+The Fabius--Rvachev branch of ProveIt studies exact uniform convolutions and
+inverse problems associated with them. Its report \emph{Gaussian Confounding
+and Sharp Recovery of Uniform Convolution Factors} \cite{RepoGaussian}
+establishes global half-length rates $n^{-1/(4M)}$ with known Gaussian variance
+and $n^{-1/(4M+4)}$ with unknown variance, together with variance rate
+$n^{-1/(2M+2)}$. Here $M$ is the maximum number of uniform factors, with absent
+factors represented by zero half-lengths. Its companion flat-boundary report
+extends the global theory to unsmoothed infinite-uniform backgrounds and
+% ed. (2026-09-29): the flat-boundary question on mixed strata is posed at the
+% zero-noise boundary and is not answered here; see the editorial note after
+% the proof of Corollary cor:joint.
+explicitly leaves mixed collision strata among its further questions
+\cite{RepoFlat}. These global statements
+are prior results, not discoveries claimed in this article.
+
+They leave a concrete refinement: what happens near a factorization containing
+\emph{both} nonzero collisions and vanishing factors? Does a zero block slow
+recovery of a distant positive block? Does estimating the Gaussian variance
+necessarily incur the same singularity as separating repeated positive roots?
+Can a single estimator attain the appropriate rates without being supplied
+the correct multiplicity pattern?
+
+We answer these questions for a positive Gaussian smoothing variance. The
+answer is not obtained by replacing the global capacity by one universal
+``effective number of factors.'' There are several simultaneously relevant
+exponents. Each positive cluster has its own multiplicity exponent; the zero
+block has an additional square-root singularity; and the missing variance
+information adds an extra order \emph{only at zero}. The noise variance depends
+on the size of the zero block, not on the largest positive multiplicity.
+
+\subsection{What is new relative to the inspected sources}
+The principal extension is the full blockwise statistical classification in
+Theorem~\ref{thm:main}, including matching lower bounds and a stratum-adaptive
+estimator. Its algebraic inputs are the localized shifted-moment theorem and
+the missing-first-sum certificate. The regular variance result and explicit
+influence polynomial at positive collisions are additional consequences.
+The all-zero specialization recovers the earlier global exponents.
+
+Cumulants, Newton identities, real-root perturbations, and moment matching
+are classical tools. The geometry of the Prony map and its collision
+singularities is studied by Batenkov--Yomdin \cite{BY}. Local minimax geometry
+and the distinction between local-uniform and pointwise rates are important
+in the finite-mixture work of Heinrich--Kahn \cite{HK}; denoised moment fitting
+and variance estimation appear in Wu--Yang \cite{WY}. Those models concern
+\emph{mixtures}, whereas our model is a \emph{sum of independent uniforms}.
+Their unknown weights and parameter metrics differ. Their results are context,
+not substitutes for a proof of the exponents below.
+
+The repository comparison is pinned to
+\begin{center}
+\small\texttt{11e1e900114e7c0cfdcd19fe346ddb4f2852dbc5}.
+\end{center}
+The accompanying source audit distinguishes the inspected statements from
+broader, unverified novelty claims. This is a proof-bearing research article,
+not a claim to have settled an unrelated named conjecture. Its mathematical
+arguments have not been independently refereed or checked in a proof assistant.
+
+\section{Model, neighborhoods, and the main theorem}
+\label{sec:main}
+
+Let $M\ge1$ be fixed. Let $Z$ have a known distribution with $|Z|\le L$ almost
+surely. Let $U_1,\ldots,U_M$ be independent uniforms on $[-1,1]$, and let $G$
+be standard Gaussian, independent of all other variables. Fix $A>0$ and set
+\begin{equation}
+ \A=\{a\in[0,A]^M:a_1\le\cdots\le a_M\},\qquad
+ X_{a,v}=Z+\sum_{i=1}^M a_iU_i+\sqrt v\,G,
+ \quad P_{a,v}=\Law(X_{a,v}).
+ \label{eq:model}
+\end{equation}
+There are $n$ independent observations. The variance is either known,
+$v=v_0>0$, or unknown in a fixed compact interval
+$J=[v_-,v_+]\subset(0,\infty)$ with $v_-<v_+$.
+
+Choose a reference vector
+\begin{equation}
+ a^0=(\underbrace{0,\ldots,0}_{r},
+ \underbrace{b_1,\ldots,b_1}_{m_1},\ldots,
+ \underbrace{b_s,\ldots,b_s}_{m_s}),
+ \quad 0<b_1<\cdots<b_s<A,
+ \quad r+\sum_{j=1}^s m_j=M.
+ \label{eq:base}
+\end{equation}
+The zero block may be absent, and the positive blocks may all be absent.
+Let $I_0,I_1,\ldots,I_s$ be their consecutive index sets, omitting $I_0$
+when $r=0$. Choose $\rho>0$ so small that the enlarged intervals
+$[0,2\rho]$ and $[b_j-2\rho,b_j+2\rho]$ are disjoint and the positive ones
+lie inside $(0,A)$. Define
+\begin{equation}
+ \Theta_\rho=\{(a,v):a\in\A,\ \norm{a-a^0}_\infty\le\rho,\ v\in J\}.
+ \label{eq:neighborhood}
+\end{equation}
+In the known-variance experiment replace $J$ by $\{v_0\}$.
+This is a neighborhood \emph{of a stratum}, not the stratum itself: repeated
+half-lengths may split, and zero half-lengths may become positive.
+
+For a block $I_j$, the loss is
+$d_j(a,\widetilde a)=\max_{i\in I_j}|a_i-\widetilde a_i|$.
+Let $\Risk_{j,n}$ be its minimax expected loss over $\Theta_\rho$.
+Let $\Risk_{v,n}$ use absolute variance loss. The infimum is over all
+measurable estimators. Write $f_n\asymp g_n$ when their ratio is bounded above
+and below by positive constants for all sufficiently large $n$.
+
+\begin{theorem}[Sharp local blockwise rates]
+\label{thm:main}
+For every fixed neighborhood above, the following rates hold:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Quantity & Known variance & Unknown variance\\
+\midrule
+Positive block $I_j$ & $n^{-1/(2m_j)}$ & $n^{-1/(2m_j)}$\\
+Zero block $I_0$, if $r\ge1$ & $n^{-1/(4r)}$ & $n^{-1/(4r+4)}$\\
+Gaussian variance & not estimated & $n^{-1/(2r+2)}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every displayed entry is an $\asymp$ statement for the corresponding minimax
+risk. One estimator, constructed on the full parameter space without knowing
+$a^0$, $r$, the positive centers, or the multiplicities, attains all the upper
+bounds simultaneously on every fixed such neighborhood.
+\end{theorem}
+
+The constants can depend on $M,A,L$, the background law, the variance interval,
+the centers, and $\rho$. No uniformity is asserted as the cluster gaps or the
+Gaussian variance tend to zero, or as $M$ tends to infinity.
+
+\begin{corollary}[Joint half-length loss]
+\label{cor:joint}
+Put $Q=\max_jm_j$, with $Q=0$ if there is no positive block. Define
+\begin{align}
+ D_{\rm K}&=\max\{Q,2r\},\\
+ D_{\rm U}&=
+ \begin{cases}
+ Q,&r=0,\\
+ \max\{Q,2r+2\},&r\ge1.
+ \end{cases}
+\end{align}
+The local minimax risk for $\norm{\widehat a-a}_\infty$ is
+$n^{-1/(2D_{\rm K})}$ with known variance and
+$n^{-1/(2D_{\rm U})}$ with unknown variance.
+\end{corollary}
+\begin{proof}
+The maximum of finitely many block losses is bounded above by their sum and
+below by each individual block loss. Apply Theorem~\ref{thm:main}.
+\end{proof}
+
+% ed. (2026-09-29): uncited conjecture proved here; scope of the answers to
+% the Sharp-Stability and flat-boundary questions.
+\begin{ednote}
+Corollary~\ref{cor:joint} proves, for unknown Gaussian variance and at the
+level of minimax sampling rates, the conjectural local denominator
+$\max(\{m_1,\dots,m_s\}\cup\{2(m_0+1):m_0>0\})$ of the research question
+``Classify all local strata with unknown variance'' in \cite{RepoGaussian}
+(its $m_0$, the number of zero slots, is $r$ here), which this article does not cite; the
+pairwise Hellinger-modulus form of that question is not stated here. The
+known-variance denominator $\max\{Q,2r\}$ is the total-variation
+denominator of the finite-factor report
+\path{inverse-and-sampling/Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/};
+its research question ``The optimal statistical experiment near collisions''
+is thereby answered for the Gaussian-smoothed model only. The mixed-strata
+question of \cite{RepoFlat} is posed at the zero-noise boundary and remains
+open; it is this article's own question on mixed strata without a positive
+variance floor. Notation differs: \cite{RepoGaussian} writes $m$ for the
+capacity and $r$ for a shift.
+\end{ednote}
+
+\begin{remark}[The absent-block convention matters]
+When $r=0$, there is no zero-block rate. Inserting $r=0$ into the expression
+$n^{-1/(4r+4)}$ would introduce a nonexistent $n^{-1/4}$ obstruction. In
+particular, distinct strictly positive half-lengths and the unknown variance
+are all estimable at rate $n^{-1/2}$.
+\end{remark}
+
+\section{Cumulants turn the problem into shifted moment inversion}
+\label{sec:cumulants}
+
+Set $x_i=a_i^2$ and $p_k(x)=\sum_i x_i^k$. For $U$ uniform on $[-1,1]$,
+\begin{equation}
+ \E e^{tU}=\frac{\sinh t}{t},\qquad
+ c_k:=\kap_{2k}(U)=\frac{2^{2k}B_{2k}}{2k}
+ =(-1)^{k+1}\frac{(2k)!\zeta(2k)}{k\pi^{2k}}\ne0.
+ \label{eq:uniformcumulant}
+\end{equation}
+Here $B_2=1/6$. One derivation is to logarithmically expand
+$\sinh t/t=\prod_{\nu\ge1}(1+t^2/(\pi^2\nu^2))$ near zero. The coefficient of
+$t^{2k}$ in its logarithm is
+$(-1)^{k+1}\zeta(2k)/(k\pi^{2k})$.
+In particular, $c_1=1/3$, $c_2=-2/15$, and $c_3=16/63$.
+
+Independence gives
+\begin{align}
+ \kap_2(X_{a,v})-\kap_2(Z)&=v+\frac13p_1(x),
+ \label{eq:variancecoord}\\
+ \kap_{2k}(X_{a,v})-\kap_{2k}(Z)&=c_kp_k(x),\qquad k\ge2.
+ \label{eq:highcoords}
+\end{align}
+Thus known variance gives $p_1,\ldots,p_M$, while unknown variance gives
+\begin{equation}
+ \eta(a,v)=\left(v+\frac13p_1(x),p_2(x),\ldots,p_{M+1}(x)\right).
+ \label{eq:eta}
+\end{equation}
+The first power sum is hidden, not the higher ones.
+
+The same reduction includes the Rvachev up background. It can be defined
+without any normalization ambiguity by
+\begin{equation}
+ Z_{\rm up}=\sum_{j=1}^\infty2^{-j}U_j,
+ \qquad |Z_{\rm up}|\le1,
+ \qquad \E e^{itZ_{\rm up}}=\prod_{j=1}^\infty\sinc(2^{-j}t).
+ \label{eq:up}
+\end{equation}
+This is the compactly supported up-law normalization discussed in the Fabius
+literature \cite{Arias}. Its known cumulants are
+\begin{equation}
+ \kap_{2k}(Z_{\rm up})=\frac{c_k}{2^{2k}-1}.
+\end{equation}
+Only boundedness and knowledge of the background law are used below. Its
+smoothness, symmetry, and Fourier zeros play no role in the statistical upper
+bounds or the Gaussian-smoothed likelihood arguments.
+
+\section{A cluster-local shifted-power-sum theorem}
+\label{sec:cluster}
+
+We first work directly with nonnegative nodes, not their square roots.
+Fix disjoint ordered compact intervals $K_0,K_1,\ldots,K_s$ in $[0,R]$,
+where $K_0$ starts at zero and each $K_j$, $j\ge1$, is bounded away from zero.
+Prescribe $r$ nodes in $K_0$ and $m_j$ in $K_j$, with total $M$; omit empty
+blocks. Let $x,y$ be sorted lists obeying these same counts. For an integer
+$\ell\ge0$ define
+\begin{equation}
+ \Delta_\ell(x,y)=\max_{\ell+1\le k\le\ell+M}|p_k(x)-p_k(y)|.
+ \label{eq:momentmetric}
+\end{equation}
+
+\begin{theorem}[Localized shifted moments]
+\label{thm:cluster}
+There is a constant $C$ depending only on the fixed intervals, counts, and
+$\ell$, such that
+\begin{align}
+ \max_{i\in I_j}|x_i-y_i|&\le C\Delta_\ell(x,y)^{1/m_j},
+ &&j\ge1,\label{eq:positiveinv}\\
+ \max_{i\in I_0}|x_i-y_i|&\le C\Delta_\ell(x,y)^{1/(r+\ell)},
+ &&r\ge1.\label{eq:zeroinv}
+\end{align}
+For intervals with nonempty interiors at the indicated centers, every exponent
+is optimal in the corresponding local pairwise sense. In particular, omitting
+initial power sums changes the exponent at zero but not at a separated
+positive cluster.
+\end{theorem}
+
+\subsection{The integer counting function}
+Define, outside the finitely many node locations,
+\begin{equation}
+ F(t)=\sum_{i=1}^M\ind_{\{x_i\le t\}}-
+       \sum_{i=1}^M\ind_{\{y_i\le t\}}.
+\end{equation}
+It vanishes in the gaps between the prescribed intervals, since the counts
+in each preceding block agree. Integration by parts gives
+\begin{equation}
+ p_k(x)-p_k(y)=-k\int_0^R t^{k-1}F(t)\dd t.
+ \label{eq:integrationbyparts}
+\end{equation}
+Within a block containing $m$ nodes from each list, the nonzero signs of $F$
+can change at most $m-1$ times. To see this, refine coincident jumps into unit
+jumps. A path beginning and ending at zero with $m$ upward and $m$ downward
+steps has at most $m$ nonzero excursions. Successive opposite signs require
+different excursions. Ignoring zero intervals or excursions of zero length
+can only decrease the number of sign changes.
+
+Choose one real root for each internal sign change, inside the corresponding
+zero interval or at the transition point. If necessary choose one further
+root at the midpoint of a prescribed interblock gap separating consecutive
+active blocks to match the signs in the two blocks. When inactive blocks
+lie between them, choose one of the genuine gaps, not a point inside an
+inactive block. There is a polynomial $q$, up to an overall
+sign, whose roots are these chosen points and such that
+\begin{equation}
+ q(t)F(t)\ge0\quad\hbox{almost everywhere},\qquad \deg q\le M-1.
+ \label{eq:signpoly}
+\end{equation}
+Its leading coefficient has absolute value one. At most $m_j-1$ of its roots
+lie in block $j$, and at most $r-1$ lie in the zero block. All roots lie in a
+fixed bounded interval, so the sum of the absolute values of its coefficients
+is bounded by a fixed constant. It follows from
+\eqref{eq:integrationbyparts} that
+\begin{equation}
+ \int_0^R t^\ell |q(t)|\,|F(t)|\dd t\le C\Delta_\ell(x,y).
+ \label{eq:weightedbudget}
+\end{equation}
+Crucially, no cancellation between blocks remains in this inequality.
+
+\subsection{A polynomial norm lower bound}
+\begin{lemma}
+\label{lem:polynorm}
+For fixed integers $d,\ell\ge0$ there is $c_{d,\ell}>0$ such that every monic
+real polynomial $Q$ of degree $d$ satisfies
+\begin{equation}
+ \int_0^1 u^\ell|Q(u)|\dd u\ge c_{d,\ell}.
+\end{equation}
+Consequently, for any interval $[\alpha,\alpha+h]\subset[0,\infty)$ and any
+monic polynomial $Q$ of degree $d$,
+\begin{equation}
+ \int_\alpha^{\alpha+h}t^\ell|Q(t)|\dd t\ge c_{d,\ell}h^{d+\ell+1}.
+ \label{eq:scalednorm}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The integral defines a norm on the finite-dimensional space of polynomials
+of degree at most $d$, because its weight is positive on $(0,1)$. The leading
+coefficient is a continuous linear functional in that norm. A monic
+polynomial therefore has norm bounded below. For the second assertion put
+$t=\alpha+hu$; $h^{-d}Q(\alpha+hu)$ is monic in $u$, and
+$(\alpha+hu)^\ell\ge h^\ell u^\ell$.
+\end{proof}
+
+\subsection{Proof of the inverse inequalities}
+Choose an index $i$ in a block where $h=|x_i-y_i|$ attains its block maximum.
+If $x_i<y_i$, then $F(t)\ge1$ throughout $(x_i,y_i)$: at least $i$ entries
+of $x$ and at most $i-1$ entries of $y$ lie to its left. The reverse ordering
+gives $F(t)\le-1$. Thus $|F|\ge1$ on an interval of length $h$ inside that
+block.
+
+Factor $q$ into roots internal to the block and roots external to it.
+The latter are a fixed positive distance from the entire block: internal
+roots of other blocks are separated by the prescribed gaps, and roots placed
+in gaps are their midpoints. The external product has absolute value bounded
+below by a fixed positive constant. If there are $d\le m_j-1$ internal
+roots in a positive block, then $t^\ell$ is bounded below there and
+Lemma~\ref{lem:polynorm} gives
+\begin{equation}
+ \int_{x_i\wedge y_i}^{x_i\vee y_i}
+ t^\ell|q(t)|\,|F(t)|\dd t\ge c h^{d+1}\ge c' h^{m_j}.
+\end{equation}
+The last adjustment uses only the fixed upper bound on $h$. In the zero
+block, the weighted version instead yields $c'h^{r+\ell}$.
+Combining with \eqref{eq:weightedbudget} proves
+\eqref{eq:positiveinv}--\eqref{eq:zeroinv}. The sharpness constructions are
+given in Section~\ref{sec:hardpaths}, completing the theorem.
+
+\begin{corollary}[Global identifiability]
+\label{cor:identifiability}
+Any $M$ consecutive positive-order power sums beginning at $\ell+1$ determine
+an ordered nonnegative list of length $M$. On a bounded node interval the
+inverse has global exponent $1/(M+\ell)$.
+\end{corollary}
+\begin{proof}
+Regard all nodes as belonging to the single interval $K_0=[0,R]$.
+\end{proof}
+
+For half-lengths, square roots are Lipschitz on a fixed positive block, while
+$|\sqrt x-\sqrt y|\le\sqrt{|x-y|}$ at zero. Hence the local inverse exponents
+for half-lengths are $1/m_j$ at a positive block, $1/(2r)$ at zero with
+$\ell=0$, and $1/(2r+2)$ at zero with $\ell=1$. Notice that these are
+\emph{moment-to-parameter} exponents; statistical rates require an additional
+factor $1/2$ in their powers of $n$.
+
+\section{A positivity certificate for the missing first power sum}
+\label{sec:p1}
+
+A bound on individual roots is not enough to obtain the sharp variance rate.
+Summing the positive-root bounds would incorrectly introduce their collision
+multiplicities into that rate. The following argument avoids that loss.
+
+Write $e_k(x)$ for the elementary symmetric polynomials, with $e_0=1$, and
+\begin{equation}
+ E_x(z)=\prod_{i=1}^M(1+x_i z)=\sum_{k=0}^M e_k(x)z^k.
+\end{equation}
+All its coefficients are nonnegative when the nodes are nonnegative.
+
+\begin{theorem}[Boundary-localized recovery of $p_1$]
+\label{thm:p1}
+Suppose $x,y\in[0,R]^M$ each have at least $M-r$ entries greater than or equal
+to a fixed $b>0$. Then
+\begin{equation}
+ |p_1(x)-p_1(y)|\le C\left(\max_{2\le k\le M+1}|p_k(x)-p_k(y)|\right)^{1/(r+1)}.
+ \label{eq:p1bound}
+\end{equation}
+For $r=M$, no lower bound $b$ is needed. On the mixed neighborhoods of
+Section~\ref{sec:main}, the exponent is optimal. When $r=0$, $p_1$ is locally
+Lipschitz regardless of positive-node collisions.
+\end{theorem}
+\begin{proof}
+Let $\delta$ denote the maximum in \eqref{eq:p1bound}. By swapping $x,y$,
+assume $u=p_1(x)-p_1(y)\ge0$. In the truncated formal power-series ring modulo
+$z^{M+2}$,
+\begin{equation}
+ E_x(z)=E_y(z)\exp\bigl(uz+R_\delta(z)\bigr),\qquad
+ R_\delta(z)=\sum_{k=2}^{M+1}\frac{(-1)^{k-1}}{k}
+                 \bigl(p_k(x)-p_k(y)\bigr)z^k.
+ \label{eq:generatingidentity}
+\end{equation}
+This is the logarithmic generating-function identity for the $e_k$.
+On the fixed bounded node set, all coefficients of
+$E_y(z)e^{uz}(e^{R_\delta(z)}-1)$ through degree $M+1$ are $O(\delta)$.
+For $\delta\le1$, this follows directly by expanding the truncated
+exponential: every nonconstant term contains a coefficient of $R_\delta$,
+and there are finitely many terms. For larger $\delta$ the desired conclusion
+follows from boundedness after increasing $C$.
+
+The coefficient of $z^{M+1}$ in $E_x$ is zero. Therefore
+\begin{equation}
+ 0\le [z^{M+1}]E_y(z)e^{uz}
+   =\sum_{k=0}^M e_k(y)\frac{u^{M+1-k}}{(M+1-k)!}
+   \le C\delta.
+ \label{eq:positivecertificate}
+\end{equation}
+Each term is nonnegative. Keeping the term $k=M-r$ gives
+\begin{equation}
+ e_{M-r}(y)\frac{u^{r+1}}{(r+1)!}\le C\delta.
+\end{equation}
+The coefficient $e_{M-r}(y)$ is at least $b^{M-r}$; when $r=M$ it equals one.
+This proves the bound. Sharpness for $r\ge1$ follows from the zero-block
+paths in Section~\ref{sec:hardpaths}, where the change in $p_1$ is of order
+$h^2$ but $\delta$ is of order $h^{2r+2}$. For $r=0$, varying one positive
+node shows that no exponent larger than one is possible.
+\end{proof}
+
+\begin{example}[A cubic certificate in a mixed configuration]
+For the squared-width base $(0,0,1,1,3)$,
+$E_0(z)=(1+z)^2(1+3z)$. Thus
+\begin{equation}
+ [z^6]E_0(z)e^{uz}
+ =\frac{u^3}{2}+\frac{7u^4}{24}+\frac{u^5}{24}+\frac{u^6}{720}.
+ \label{eq:cubiccertificate}
+\end{equation}
+The first nonzero power is $u^3$ because there are two zero nodes. The repeated
+positive node at $1$ does not change that order. This is the algebra behind
+the variance exponent $1/(r+1)$.
+\end{example}
+
+\section{Regular variance estimation at positive collisions}
+\label{sec:normal}
+
+There is more than a Lipschitz bound when all half-lengths are positive.
+Although recovering separate roots is singular at a positive collision,
+recovering their sum is an ordinary implicit-function problem.
+
+\begin{theorem}[Analytic recovery of the coefficient data]
+\label{thm:analytic}
+At any nonnegative node vector $x$ with $\prod_i x_i>0$, the first power sum
+$p_1$ and every $e_j(x)$ are real-analytic functions of
+$(p_2,\ldots,p_{M+1})$ on a neighborhood of that moment vector. The analytic
+extension is defined on an open set in moment space; it need not send every
+perturbed vector to a polynomial with only real roots. Its differential is
+\begin{equation}
+ \dd p_1=\sum_{k=2}^{M+1}
+       \frac{(-1)^k e_{M+1-k}(x)}{k e_M(x)}\,\dd p_k.
+ \label{eq:dp1}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Define $e_{M+1}$ as the coefficient of $z^{M+1}$ in
+\begin{equation}
+ \exp\left(\sum_{k=1}^{M+1}\frac{(-1)^{k-1}}{k}p_k z^k\right).
+\end{equation}
+This coefficient is a polynomial in the $p_k$ and vanishes for $M$ actual
+nodes. Differentiating its generating function gives
+\begin{equation}
+ \frac{\partial e_{M+1}}{\partial p_k}
+   =\frac{(-1)^{k-1}}{k}e_{M+1-k}.
+\end{equation}
+In particular, the derivative with respect to $p_1$ is $e_M=\prod_i x_i>0$.
+The real-analytic implicit-function theorem supplies $p_1$ as a local function
+of the other moments. Implicit differentiation yields \eqref{eq:dp1}, and
+Newton identities give each $e_j$. Distinct roots were never required.
+\end{proof}
+
+Here is an explicit statistical consequence. Put
+$M_X(t)=\E e^{tX}$, where $X$ has the distribution at the parameter under
+consideration. Define the centered cumulant influence polynomials
+\begin{equation}
+ \psi_j(y)=j![t^j]\left(\frac{e^{ty}}{M_X(t)}-1\right),\qquad j\ge1.
+ \label{eq:cumulantinfluence}
+\end{equation}
+Only a finite Taylor expansion is used. Each $\psi_j$ is a monic polynomial
+of degree $j$ and has expectation zero. For example,
+$\psi_2(y)=(y-\E X)^2-\operatorname{Var}(X)$.
+
+\begin{theorem}[Asymptotic normality of the variance estimator]
+\label{thm:clt}
+Suppose every $a_i>0$ and $v$ is an interior point of $J$. There is a
+consistent plug-in estimator $\widehat v_{\rm an}$ satisfying
+\begin{equation}
+ \sqrt n(\widehat v_{\rm an}-v)\ \Longrightarrow\ N(0,V_v),\qquad
+ 0<V_v=\E\psi_v(X)^2<\infty,
+ \label{eq:varianceclt}
+\end{equation}
+where
+\begin{equation}
+ \psi_v(y)=\psi_2(y)-\frac{1}{3e_M(x)}
+   \sum_{k=2}^{M+1}\frac{(-1)^k e_{M+1-k}(x)}{k c_k}\psi_{2k}(y).
+ \label{eq:varianceinfluence}
+\end{equation}
+This remains valid when any subset of the positive half-lengths coincides.
+No efficiency claim is made for this particular influence polynomial.
+\end{theorem}
+\begin{proof}
+Estimate raw moments through degree $2M+2$ by sample averages and form their
+cumulant polynomials. The joint central limit theorem applies because all
+moments of $X$ are finite. A first-order perturbation of $\log M_X(t)$ under
+an empirical-law perturbation is $e^{ty}/M_X(t)-1$, so the influence polynomial
+of the empirical cumulant of order $j$ is \eqref{eq:cumulantinfluence}.
+
+Use Theorem~\ref{thm:analytic} to recover a real $\widehat p_1$ from the
+estimated $p_2,\ldots,p_{M+1}$, and set
+$\widehat v_{\rm an}=\widehat\eta_0-\widehat p_1/3$.
+The local branch can be selected using any preliminary consistent full-model
+moment estimator, such as the one in the next section: choose the root of
+$e_{M+1}=0$ closest to its preliminary $p_1$. With probability tending to one,
+the correct simple root is the unique nearest one in a sufficiently small
+neighborhood. Arbitrary bounded values can be used outside this event, and
+clipping to $J$ does not affect the limit at an interior $v$.
+
+The multivariate delta method, applied to \eqref{eq:dp1}, gives
+\eqref{eq:varianceinfluence}. Its second moment is finite. Its coefficient of
+$y^{2M+2}$ is nonzero, because the $k=M+1$ summand has coefficient
+$(-1)^{M+1}/((M+1)c_{M+1})$ and $e_M>0$.
+No lower-degree summand can cancel it. Gaussian convolution gives a density
+strictly positive everywhere, so this nonzero polynomial has positive
+variance. This proves \eqref{eq:varianceclt}.
+\end{proof}
+
+For two identical positive squared widths $x_1=x_2=c>0$, the differential is
+particularly transparent:
+\begin{equation}
+ \dd p_1=\frac{1}{c}\dd p_2-\frac{1}{3c^2}\dd p_3,
+ \qquad
+ \dd v=\dd\eta_0-\frac{1}{3c}\dd p_2+\frac{1}{9c^2}\dd p_3.
+\end{equation}
+No inverse factor involving $|x_1-x_2|$ occurs. In contrast, distinguishing
+the two half-lengths has neighborhood minimax rate $n^{-1/4}$.
+
+\section{One moment estimator adapts to every fixed stratum}
+\label{sec:upper}
+
+\subsection{Uniformly estimating a finite cumulant vector}
+Let $K=M$ in the known-variance case and $K=M+1$ otherwise. Estimate raw
+moments through degree $2K$. The model has uniformly bounded moments of every
+fixed order: its non-Gaussian part is bounded by $L+MA$, and its Gaussian
+variance lies in a fixed compact interval. Consequently, for each
+$1\le j\le2K$,
+\begin{equation}
+ \E|\widehat\mu_j-\mu_j|\le C_jn^{-1/2}.
+\end{equation}
+To obtain a uniform bound after applying cumulant polynomials, clip each
+empirical raw moment to a fixed compact interval containing every possible
+population value. Clipping cannot increase its error. On this compact box,
+the cumulant polynomials are Lipschitz. They can be computed recursively from
+\begin{equation}
+ \kap_j=\mu_j-\sum_{q=1}^{j-1}
+       \binom{j-1}{q-1}\kap_q\mu_{j-q}.
+ \label{eq:cumulantrecurrence}
+\end{equation}
+After subtracting the known background cumulants and dividing by the fixed
+nonzero $c_k$, the estimated observation-coordinate vector satisfies
+\begin{equation}
+ \sup_{a,v}\E\norm{\widehat\eta-\eta(a,v)}_\infty\le Cn^{-1/2}.
+ \label{eq:etamean}
+\end{equation}
+With known variance use $\eta=(p_1,\ldots,p_M)$.
+
+\subsection{Feasible fitting without knowing the local pattern}
+On a deterministic grid of the entire compact parameter space, with mesh
+at most $1/n$ in each half-length and in $v$, minimize
+\begin{equation}
+ \norm{\eta(a,v)-\widehat\eta}_\infty.
+ \label{eq:momentfit}
+\end{equation}
+Include the endpoints and sort half-length coordinates. Break ties
+lexicographically. This gives a measurable estimator
+$(\widehat a,\widehat v)$ without any cluster information. Since $\eta$ is
+uniformly Lipschitz as a function of $(a,v)$, there is a grid point within
+$O(1/n)$ in coordinate error of the truth. Thus, with
+\begin{equation}
+ \varepsilon=2\norm{\widehat\eta-\eta(a,v)}_\infty+C/n,
+\end{equation}
+we have
+\begin{equation}
+ \norm{\eta(\widehat a,\widehat v)-\eta(a,v)}_\infty\le\varepsilon,
+ \qquad \E\varepsilon\le Cn^{-1/2}.
+ \label{eq:fitresidual}
+\end{equation}
+The grid proves statistical attainability; it is not advertised as an efficient
+large-capacity algorithm.
+
+\subsection{Localization and blockwise error}
+Corollary~\ref{cor:identifiability}, followed by square roots, gives a uniform
+global continuity modulus. Choose a fixed $\varepsilon_0>0$ so small that
+$\varepsilon\le\varepsilon_0$ forces
+$\norm{\widehat a-a}_\infty<\rho$. For true $a$ in the $\rho$-neighborhood,
+$\widehat a$ therefore has the correct numbers of roots in the enlarged
+$2\rho$-blocks. Their squared intervals are disjoint, with the positive ones
+bounded away from zero.
+
+Apply Theorem~\ref{thm:cluster} to the true and fitted squared widths. On this
+event,
+\begin{align}
+ d_j(\widehat a,a)&\le C\varepsilon^{1/m_j},&&j\ge1,\\
+ d_0(\widehat a,a)&\le
+ \begin{cases}
+ C\varepsilon^{1/(2r)},&\text{known variance},\\
+ C\varepsilon^{1/(2r+2)},&\text{unknown variance},
+ \end{cases}&&r\ge1.
+ \label{eq:blockerrors}
+\end{align}
+In the unknown-variance case, Theorem~\ref{thm:p1} and the first coordinate of
+\eqref{eq:eta} give
+\begin{equation}
+ |\widehat v-v|
+ \le\varepsilon+\frac13|p_1(\widehat a^2)-p_1(a^2)|
+ \le C\varepsilon^{1/(r+1)}.
+ \label{eq:varianceerror}
+\end{equation}
+This step is the reason positive multiplicities do not contaminate the variance
+rate.
+
+For $0<\alpha\le1$, Jensen's inequality gives
+$\E\varepsilon^\alpha\le(\E\varepsilon)^\alpha$.
+On the complementary event all losses are bounded, and
+\begin{equation}
+ \Pp\{\varepsilon>\varepsilon_0\}\le
+       \varepsilon_0^{-1}\E\varepsilon=O(n^{-1/2}).
+\end{equation}
+Combining these facts with \eqref{eq:blockerrors}--\eqref{eq:varianceerror}
+proves all upper bounds in Theorem~\ref{thm:main}, including its adaptivity
+assertion. The preliminary estimator used in Theorem~\ref{thm:clt} is also
+consistent by the same global continuity argument.
+
+\begin{remark}[What adaptivity means here]
+The estimator does not require the centers, multiplicities, or zero count as
+inputs. Its rate on each fixed neighborhood is the corresponding sharp rate.
+This does not assert uniform bounds when the neighborhoods, cluster gaps, or
+multiplicities themselves vary with $n$. Such moving-stratum transitions are
+among the further research questions.
+\end{remark}
+
+\section{Exact moment-preserving paths and sharpness}
+\label{sec:hardpaths}
+
+\subsection{A general shifted-moment flow at zero}
+Fix $r$ distinct positive nodes $z_1<\cdots<z_r$ and let
+$P_z(t)=\prod_{i=1}^r(t-z_i)$. For an integer $\ell\ge0$, consider the local
+ordinary differential equation
+\begin{equation}
+ \dot z_i=\frac{1}{z_i^\ell P_z'(z_i)}.
+ \label{eq:flow}
+\end{equation}
+The vector field is analytic while the nodes remain distinct and positive,
+so it has a local solution with those properties. Lagrange interpolation of
+monomials gives
+\begin{equation}
+ \sum_{i=1}^r\frac{z_i^j}{P_z'(z_i)}=
+ \begin{cases}
+ 0,&0\le j\le r-2,\\
+ 1,&j=r-1.
+ \end{cases}
+ \label{eq:lagrangeidentities}
+\end{equation}
+Indeed, these are the coefficients of $t^{r-1}$ in the interpolation formula
+for $t^j$ on the $r$ nodes.
+
+\begin{lemma}[Exact shifted cancellation]
+\label{lem:flow}
+Along \eqref{eq:flow},
+\begin{equation}
+ \frac{\dd}{\dd t}p_k(z)=0\quad(\ell+1\le k\le\ell+r-1),\qquad
+ \frac{\dd}{\dd t}p_{\ell+r}(z)=\ell+r.
+ \label{eq:flowmoments}
+\end{equation}
+When $\ell=1$,
+\begin{equation}
+ \frac{\dd}{\dd t}p_1(z)=\frac{(-1)^{r+1}}{\prod_i z_i}\ne0.
+ \label{eq:flowp1}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiating a power sum gives
+$k\sum_i z_i^{k-\ell-1}/P_z'(z_i)$, so
+\eqref{eq:flowmoments} follows from \eqref{eq:lagrangeidentities}.
+For \eqref{eq:flowp1}, use
+$1/P_z(t)=\sum_i1/(P_z'(z_i)(t-z_i))$ and evaluate at $t=0$.
+\end{proof}
+
+Choose two distinct nearby times and call the resulting node lists
+$\alpha,\beta$. Their power sums from $\ell+1$ through $\ell+r-1$ agree,
+while $p_{\ell+r}$ differs. Insert the lists $h^2\alpha$ and $h^2\beta$ into
+the squared-width zero block, keeping all positive blocks unchanged. Then
+\begin{equation}
+ d_0(a^{(\alpha)}(h),a^{(\beta)}(h))\asymp h,\qquad
+ \Delta_\ell\bigl((a^{(\alpha)}(h))^2,(a^{(\beta)}(h))^2\bigr)
+      \asymp h^{2r+2\ell}.
+ \label{eq:zerosharp}
+\end{equation}
+There is an actual differing node, and all tuples are fixed before $h$ tends
+to zero. This proves the sharp half-length zero-block exponent. Using $h$
+in place of $h^2$ as the node scale proves sharpness of
+Theorem~\ref{thm:cluster} directly. When $\ell=1$, the nonzero change in
+$p_1(\alpha)-p_1(\beta)$ also proves sharpness of Theorem~\ref{thm:p1}.
+
+\subsection{A positive collision of arbitrary multiplicity}
+Fix a positive squared-width center $c=b_j^2$ and put $q=m_j$. Choose a monic
+polynomial $P(t)=\prod_{i=1}^q(t-u_i)$ with distinct real roots. For a small
+nonzero constant $\tau$, the polynomial $P(t)+\tau$ has distinct real roots
+$w_1,\ldots,w_q$ close to the $u_i$: take small disjoint intervals around the
+simple roots on which the endpoint signs persist under the perturbation.
+Newton identities imply
+\begin{equation}
+ p_k(u)=p_k(w)\quad(1\le k<q),\qquad p_q(u)-p_q(w)=q\tau\ne0.
+ \label{eq:positivematching}
+\end{equation}
+For $q=1$, the first set of conditions is empty.
+
+Use squared widths $c+hu_i$ and $c+hw_i$ in block $j$. They are positive and
+belong to the required block for all sufficiently small $h>0$. Their ordered
+half-length distance is of order $h$. For any fixed integer $k\ge1$,
+\begin{equation}
+ \sum_i(c+hu_i)^k-\sum_i(c+hw_i)^k
+   =\sum_{d=q}^k \binom{k}{d}c^{k-d}h^d\bigl(p_d(u)-p_d(w)\bigr),
+ \label{eq:binomialcancel}
+\end{equation}
+where an empty sum is zero. Thus every finite collection of shifted moments
+differs by $O(h^q)$, and at least one moment in
+$\ell+1,\ldots,\ell+M$ has a nonzero coefficient of $h^q$.
+This proves the positive-block sharpness in Theorem~\ref{thm:cluster}.
+
+These paths establish algebraic sharpness but do not, by themselves,
+establish a sampling lower bound. That additional step is the purpose of
+the next section.
+
+\section{Weighted likelihood expansions}
+\label{sec:likelihood}
+
+We use the conventions
+\begin{equation}
+ H^2(P,Q)=\int(\sqrt p-\sqrt q)^2\dd y,\qquad
+ \chi^2(P,Q)=\int\frac{(p-q)^2}{q}\dd y.
+ \label{eq:divergences}
+\end{equation}
+The Gaussian component ensures that every density involved is strictly
+positive.
+
+\subsection{A common domination argument}
+\begin{lemma}[From density jets to likelihood distance]
+\label{lem:likelihood}
+Suppose two one-parameter families arise by convolving Gaussian densities
+with uniformly bounded random shifts that depend smoothly on $h$, and by
+allowing their Gaussian variances to depend smoothly on $h$. Assume their
+variances stay in a sufficiently small interval $[v_*,v^*]$ with
+$v^*<2v_*$, and the shift derivatives needed below are uniformly bounded.
+Suppose $p_0=q_0=f_0$ and the Taylor expansions satisfy
+\begin{equation}
+ p_h(y)-q_h(y)=h^d g(y)+O\bigl(h^{d+1}W(y)\bigr),
+ \label{eq:densityjet}
+\end{equation}
+where the remainder has a common Gaussian-times-polynomial envelope.
+Then
+\begin{align}
+ \chi^2(P_h,Q_h)&=h^{2d}\int\frac{g^2}{f_0}\dd y+o(h^{2d}),
+ \label{eq:chijet}\\
+ H^2(P_h,Q_h)&=\frac{h^{2d}}{4}\int\frac{g^2}{f_0}\dd y+o(h^{2d}).
+ \label{eq:helljet}
+\end{align}
+The integral is finite and is positive when $g$ is not identically zero.
+\end{lemma}
+\begin{proof}
+Let $B$ bound all shifts. Chain-rule differentiation of a Gaussian, including
+variance derivatives, gives for each required derivative an upper bound
+\begin{equation}
+ W(y)=C(1+|y|)^D
+  \exp\left(-\frac{((|y|-B)_+)^2}{2v^*}\right).
+ \label{eq:upperenvelope}
+\end{equation}
+Expectations preserve the bound. Each density has a lower bound
+\begin{equation}
+ p_h(y),q_h(y)\ge c\exp\left(-\frac{(|y|+B)^2}{2v_*}\right)=:\underline f(y).
+ \label{eq:lowerenvelope}
+\end{equation}
+The prefactors can be chosen uniformly on the variance interval.
+The ratio $W(y)^2/\underline f(y)$ is integrable because its quadratic
+exponent has leading coefficient $-1/v^*+1/(2v_*)<0$.
+Taylor's theorem therefore gives convergence of
+$h^{-d}(p_h-q_h)$ to $g$ with an integrable squared envelope after division
+by either density. Dominated convergence proves \eqref{eq:chijet}.
+For Hellinger distance use
+\begin{equation}
+ (\sqrt p-\sqrt q)^2=\frac{(p-q)^2}{(\sqrt p+\sqrt q)^2},
+\end{equation}
+whose denominator tends pointwise to $4f_0$ and is bounded below by a
+constant times $\underline f$. Positivity of the integral follows from
+$f_0>0$ and $g\ne0$.
+\end{proof}
+
+The variance interval condition is local to the hard paths. Even when the
+original interval $J$ is large, choose an interior $v_0$ and take $h$ small
+enough for both paths to lie in such a small interval. It is not an additional
+restriction on the model in Theorem~\ref{thm:main}.
+
+\subsection{Positive-block likelihood separation}
+Use the positive paths \eqref{eq:positivematching}, keep $v=v_0$ fixed, and
+keep every other block fixed at its reference value. Regard the density as
+a smooth symmetric function of the $q$ squared widths near $(c,\ldots,c)$.
+This smoothness follows from differentiating
+\begin{equation}
+ \E\,\phi_{v_0}\left(y-Z-\sum_i\sqrt{x_i}U_i\right),
+\end{equation}
+with all varied $x_i$ bounded away from zero.
+Its homogeneous Taylor coefficient of degree $d$ in the offsets is a
+symmetric homogeneous polynomial in $u_1,\ldots,u_q$, with coefficient
+functions of $y$. Every such polynomial is a polynomial in
+$p_1(u),\ldots,p_d(u)$: first use elementary symmetric polynomials and then
+Newton identities, noting the degrees. Hence \eqref{eq:positivematching}
+cancels all density Taylor coefficients below degree $q$.
+
+There is therefore a function $g_{q,c}$ such that
+\begin{equation}
+ p_h-q_h=h^qg_{q,c}+O(h^{q+1}W).
+ \label{eq:positivejet}
+\end{equation}
+It is not zero. Indeed, the cumulant of order $2q$ differs by
+\begin{equation}
+ \kap_{2q}(P_h)-\kap_{2q}(Q_h)
+    =c_q h^q\bigl(p_q(u)-p_q(w)\bigr)\ne0.
+ \label{eq:nonzerocumulant}
+\end{equation}
+For $q=1$ the same formula uses the second cumulant and the fixed Gaussian
+variance. If $g_{q,c}$ vanished, the envelope would force all fixed raw-moment
+differences, and therefore this cumulant difference, to be $O(h^{q+1})$,
+a contradiction. Lemma~\ref{lem:likelihood} yields
+\begin{equation}
+ H^2(P_h,Q_h)\asymp\chi^2(P_h,Q_h)\asymp h^{2q}.
+ \label{eq:positivehell}
+\end{equation}
+
+\subsection{Zero-block likelihood separation with known variance}
+Let $f_0$ be the density of the common background, all the fixed positive
+uniform factors, and a Gaussian of variance $v_0$. Choose
+$\alpha,\beta$ from the $\ell=0$ flow. For the $r$ small half-lengths use
+$h\sqrt{\alpha_i}$ and $h\sqrt{\beta_i}$, respectively. Since their first
+$r-1$ power sums agree, their logarithmic moment generating functions first
+differ at order $h^{2r}$. Finite Taylor expansion of the Gaussian under the
+bounded shifts gives
+\begin{equation}
+ p_h-q_h=h^{2r}\gamma_r f_0^{(2r)}+O(h^{2r+1}W),\qquad
+ \gamma_r=\frac{c_r\bigl(p_r(\alpha)-p_r(\beta)\bigr)}{(2r)!}\ne0.
+ \label{eq:knownzerojet}
+\end{equation}
+For clarity, this is a statement about finite Taylor coefficients, not an
+assumption that an infinite differential-operator series converges. At the
+finite-jet level, translation contributes $e^{-hWD}$ and changing Gaussian
+variance by $d h^2$ contributes $e^{d h^2D^2/2}$, where $D=\dd/\dd y$.
+Averaging their finite products reproduces the cumulant expansion; all
+relevant derivative orders here are even.
+
+The function $f_0^{(2r)}$ is not identically zero. Otherwise $f_0$ would be a
+polynomial of degree at most $2r-1$, incompatible with being a nonzero
+integrable density. Lemma~\ref{lem:likelihood} now gives
+\begin{equation}
+ H^2(P_h,Q_h)\sim\frac{\gamma_r^2 h^{4r}}{4}
+       \int\frac{(f_0^{(2r)})^2}{f_0}\dd y.
+ \label{eq:knownzerohell}
+\end{equation}
+The corresponding chi-square equivalent is four times as large.
+
+\subsection{Exact Gaussian compensation at zero}
+Choose $\alpha,\beta$ from the $\ell=1$ flow. The small uniform widths remain
+$h\sqrt{\alpha_i}$ and $h\sqrt{\beta_i}$, but set
+\begin{equation}
+ v_\alpha(h)=v_0-\frac{h^2}{3}p_1(\alpha),\qquad
+ v_\beta(h)=v_0-\frac{h^2}{3}p_1(\beta).
+ \label{eq:variancecompensation}
+\end{equation}
+Both lie in $J$ for small $h$ if $v_0$ is interior. Each total second cumulant
+is exactly that of $f_0$. The higher cumulants of orders $4,\ldots,2r$ also
+agree, by the flow. Consequently,
+\begin{equation}
+ p_h-q_h=h^{2r+2}\gamma_{r+1} f_0^{(2r+2)}+O(h^{2r+3}W),
+ \quad
+ \gamma_{r+1}=\frac{c_{r+1}\bigl(p_{r+1}(\alpha)-p_{r+1}(\beta)\bigr)}{(2r+2)!}
+ \ne0.
+ \label{eq:unknownzerojet}
+\end{equation}
+The same domination argument proves
+\begin{equation}
+ H^2(P_h,Q_h)\sim\frac{\gamma_{r+1}^2 h^{4r+4}}{4}
+       \int\frac{(f_0^{(2r+2)})^2}{f_0}\dd y,
+ \qquad \chi^2(P_h,Q_h)\asymp h^{4r+4}.
+ \label{eq:unknownzerohell}
+\end{equation}
+Meanwhile the variance difference is of order $h^2$, by
+\eqref{eq:flowp1}. This identifies both the scale-estimation obstruction and
+the sharper variance-estimation obstruction in the same pair of experiments.
+
+\section{Matching minimax lower bounds}
+\label{sec:lower}
+
+For completeness, a two-point argument suffices; no mixture-identifiability
+theorem is imported. If two parameters are separated by $d$ in the chosen
+metric, any estimator induces a test by choosing whichever of the two
+parameters is closer. The triangle inequality implies
+\begin{equation}
+ \max_{i=0,1}\E_i[\text{loss}]\ge
+     \frac{d}{4}\bigl(1-\TV(P_0^{\otimes n},P_1^{\otimes n})\bigr).
+ \label{eq:twopoint}
+\end{equation}
+Moreover,
+\begin{equation}
+ 1+\chi^2(P^{\otimes n},Q^{\otimes n})=(1+\chi^2(P,Q))^n,
+ \qquad \TV(P,Q)\le\frac12\sqrt{\chi^2(P,Q)}.
+\end{equation}
+Thus $\chi^2(P,Q)\le c/n$ with sufficiently small fixed $c$ makes the final
+factor in \eqref{eq:twopoint} bounded below by a positive constant.
+
+For positive block $j$, use \eqref{eq:positivehell} and choose
+$h=c_0n^{-1/(2m_j)}$. The half-length separation is of order $h$ and the
+$\chi^2$ distance is $O(1/n)$. These alternatives use the same variance, so
+the lower bound applies in both experiments.
+
+For the zero block with known variance, use \eqref{eq:knownzerohell} with
+$h=c_0n^{-1/(4r)}$. With unknown variance, use
+\eqref{eq:unknownzerohell} with $h=c_0n^{-1/(4r+4)}$.
+Both have half-length separation of order $h$. In the latter construction,
+the variance separation is of order $h^2=n^{-1/(2r+2)}$, proving the variance
+lower bound for $r\ge1$.
+
+If $r=0$, hold every half-length fixed and vary an interior variance by an
+amount $t$. Differentiation with respect to variance gives the density
+expansion $f_{v_0+t}-f_{v_0}=t f_{v_0}''/2+O(t^2W)$, so its chi-square
+distance is $O(t^2)$. Taking $t=c_0n^{-1/2}$ proves the remaining variance
+lower bound.
+
+All constructed alternatives lie in $\Theta_\rho$ for large enough $n$ and
+approach the same reference factorization. This completes the proof of
+Theorem~\ref{thm:main}.
+
+\begin{remark}[Two moving alternatives are essential]
+The hard pairs generally have \emph{both} endpoints depending on $n$.
+The theorem concerns minimax risk on a fixed neighborhood, not a testing
+problem with one endpoint held equal to $a^0$, and not the risk at a singleton
+parameter set. High-order cancellation between two splitting configurations
+can be much stronger than the cancellation between either configuration and
+the unsplit reference. Conflating these questions can produce incorrect
+``local'' exponents.
+\end{remark}
+
+\section{Examples, exact constants, and reproducible checks}
+\label{sec:examples}
+
+\subsection{Three mixed configurations}
+Consider the reference half-length vector
+\begin{equation}
+ a^0=(0,0,1,1,1,2,3),\qquad M=7,
+ \label{eq:mixedexample}
+\end{equation}
+with $A>3$. There are two zero slots, a positive triple collision, and two
+simple positive factors. On a sufficiently small fixed neighborhood,
+Theorem~\ref{thm:main} gives the following simultaneous rates.
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Target & Known variance & Unknown variance\\
+\midrule
+The two small factors & $n^{-1/8}$ & $n^{-1/12}$\\
+The three factors near $1$ & $n^{-1/6}$ & $n^{-1/6}$\\
+Each factor near $2$ or $3$ & $n^{-1/2}$ & $n^{-1/2}$\\
+Gaussian variance & not estimated & $n^{-1/6}$\\
+All half-lengths jointly & $n^{-1/8}$ & $n^{-1/12}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The earlier global unknown-variance rate at capacity seven is $n^{-1/32}$
+\cite{RepoGaussian}. It is attained near the all-zero configuration, not
+uniformly as the local obstruction at every factorization. The mixed rate
+$n^{-1/12}$ is faster, while its simple positive factors are faster still.
+
+For a second example, suppose there are five identical positive factors and
+one different positive factor, with no zero slots. The five-factor block has
+rate $n^{-1/10}$, but the remaining factor and the Gaussian variance both have
+rate $n^{-1/2}$. The analytic variance estimator of
+Theorem~\ref{thm:clt} applies directly at the fivefold collision.
+
+For a third example, take one zero slot and a positive block of multiplicity
+six. The joint half-length rate is $n^{-1/12}$ in both variance experiments:
+the positive block is the slowest component. Nevertheless, the zero-block
+rate itself changes from $n^{-1/4}$ to $n^{-1/8}$ when variance becomes
+unknown, and the variance has rate $n^{-1/4}$. A single joint exponent can
+therefore hide a genuine loss of information in one part of the model.
+
+\subsection{A fully explicit unknown-variance hard pair}
+Take two zero slots, no background, and limiting Gaussian variance $1$.
+Use the fixed squared-scale lists
+\begin{equation}
+ \alpha=(1,8),\qquad \beta=(4,7).
+\end{equation}
+Their power sums obey
+\begin{equation}
+ p_1(\alpha)-p_1(\beta)=-2,\qquad
+ p_2(\alpha)=p_2(\beta)=65,\qquad
+ p_3(\alpha)-p_3(\beta)=106.
+ \label{eq:explicitpowers}
+\end{equation}
+Define the half-length and variance pairs
+\begin{align}
+ a_\alpha(h)&=(h,\sqrt8\,h),&v_\alpha(h)&=1-3h^2,\\
+ a_\beta(h)&=(2h,\sqrt7\,h),&v_\beta(h)&=1-\frac{11}{3}h^2.
+ \label{eq:explicitpair}
+\end{align}
+The ordered half-length distance is exactly $h$, and the variance distance
+is $2h^2/3$. Both total variances equal one. Let $\phi$ be the standard
+Gaussian density. Since $c_3=16/63$,
+\begin{equation}
+ p_h-q_h=\frac{106}{2835}h^6\phi^{(6)}+O(h^7W).
+ \label{eq:explicitdensity}
+\end{equation}
+For every nonnegative integer $d$,
+\begin{equation}
+ \int\frac{(\phi^{(d)})^2}{\phi}\dd y=d!.
+ \label{eq:hermitenorm}
+\end{equation}
+One direct proof writes $\phi^{(d)}/\phi=(-1)^d\operatorname{He}_d$ and uses
+\[
+ \E\left[e^{tG-t^2/2}e^{sG-s^2/2}\right]=e^{ts}.
+\]
+Equating the coefficients of $t^d s^d$ proves
+\eqref{eq:hermitenorm}; this uses only finite coefficient identities.
+Therefore the exact likelihood constants are
+\begin{align}
+ \lim_{h\downarrow0}\frac{\chi^2(P_h,Q_h)}{h^{12}}
+   &=6!\left(\frac{106}{2835}\right)^2
+     =\frac{179776}{178605},\\
+ \lim_{h\downarrow0}\frac{H^2(P_h,Q_h)}{h^{12}}
+   &=\frac{44944}{178605}.
+ \label{eq:explicitconstants}
+\end{align}
+This one example witnesses both the $n^{-1/12}$ half-length obstruction and
+the $n^{-1/6}$ variance obstruction for a two-dimensional zero block.
+
+For comparison, with known variance take $\alpha=(1,4)$ and $\beta=(2,3)$.
+Their first power sums agree and their second power sums differ by $4$.
+The leading density difference is $-h^4\phi^{(4)}/45$, giving
+\begin{equation}
+ \lim_{h\downarrow0}\frac{\chi^2(P_h,Q_h)}{h^8}=\frac{8}{675},\qquad
+ \lim_{h\downarrow0}\frac{H^2(P_h,Q_h)}{h^8}=\frac{2}{675}.
+\end{equation}
+These are exact algebraic consequences of the likelihood lemma, not fitted
+exponents from numerical data.
+
+\subsection{Verification program and numerical diagnostic}
+The accompanying \texttt{verify\_results.py} uses exact rational and symbolic
+arithmetic for 186 assertions. It checks the shifted-flow tangent identities
+for $1\le r\le8$ and $0\le\ell\le3$, the additional first-sum identity for
+$\ell=1$, Newton-sum cancellation under constant-coefficient perturbations
+through multiplicity seven, the two explicit hard pairs, and the mixed
+positivity certificate \eqref{eq:cubiccertificate}.
+
+An optional high-precision diagnostic evaluates the unknown-variance pair
+\eqref{eq:explicitpair}. The density of a Gaussian convolved with uniforms
+of half-lengths $a,b>0$ can be evaluated as
+\begin{equation}
+ f(y;a,b,v)=\frac{T_v(y+a+b)-T_v(y+a-b)-T_v(y-a+b)+T_v(y-a-b)}{4ab},
+ \label{eq:densityformula}
+\end{equation}
+where
+\begin{equation}
+ T_v(t)=t\Phi(t/\sqrt v)+\sqrt v\,\phi(t/\sqrt v).
+\end{equation}
+Indeed, $T_v''=\phi_v$, so two integrations of the Gaussian density over the
+uniform intervals give \eqref{eq:densityformula}.
+The recorded 65-digit computation integrates over $[-12,12]$ and gives:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$h$ & $\chi^2/h^{12}$ & $H^2/h^{12}$\\
+\midrule
+$0.12$ & $1.029200612837$ & $0.257277110688$\\
+$0.09$ & $1.014079389051$ & $0.253515089592$\\
+$0.06$ & $1.008104404930$ & $0.252025629178$\\
+$0.04$ & $1.006868334558$ & $0.251717039656$\\
+Exact limiting value & $1.006556367403$ & $0.251639091851$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite integration window and floating-point arithmetic mean that this
+is corroboration, not an interval certificate. In particular, the displayed
+decimal places are numerical outputs, not certified error bounds. The exact
+limits follow from the proofs, independently of this table. No simulation of
+an estimator's minimax risk is claimed.
+
+\section{Implementation and formalization boundaries}
+\label{sec:implementation}
+
+\subsection{A concrete inference pipeline}
+The statistical construction can be implemented without differentiating an
+estimated characteristic function. Compute sample raw moments, convert them
+to cumulants using \eqref{eq:cumulantrecurrence}, subtract the known background
+cumulants, and fit the feasible coordinate vector \eqref{eq:eta}. For a fixed
+small capacity, exhaustive grids with deterministic tie-breaking are a complete
+implementation of the estimator used in the proof. More efficient nonlinear
+optimization is a useful replacement only if its residual error is controlled.
+An approximate optimizer whose moment residual exceeds the true optimum by
+$O(n^{-1/2})$ preserves the proved rates: simply add that error to
+$\varepsilon$ in \eqref{eq:fitresidual}.
+
+When the preliminary estimate lies near a configuration with all widths
+positive, variance can instead be estimated by the polynomial branch described
+in Section~\ref{sec:normal}. Its degree in the unknown $p_1$ is $M+1$, and the
+branch-selection step is essential. Solving the equation without identifying
+the branch can produce an algebraically valid but statistically irrelevant
+answer. Positivity and real-rootedness should be enforced when individual
+widths, rather than only the analytic variance functional, are recovered.
+
+The supplied program verifies algebra and evaluates a likelihood diagnostic;
+it is not a general-purpose implementation of this inference pipeline. The
+existence and rates of the grid estimator are proved in the article. Their
+proof does not establish polynomial computational complexity in $M$.
+
+\subsection{A modular path toward proof-assistant verification}
+A useful formalization should separate four logically different components.
+First, finite symmetric-polynomial identities cover cumulants, the generating
+function for $e_k$, the coefficient positivity certificate, and the Lagrange
+sum identities. These are exact algebraic statements and are natural early
+targets. Second, the ordered counting-function argument requires a finite
+sign-change lemma, a sign-matching polynomial, integration by parts for step
+functions, and a polynomial norm estimate. Those are the essential analytic
+ingredients of the new inverse theorem.
+
+Third, the stochastic layer requires finite-moment bounds, cumulant
+estimation, measurable grid minimization, and the elementary two-point testing
+bound. Fourth, the likelihood layer requires differentiating Gaussian mixtures
+under bounded shifts and dominated convergence with explicit Gaussian
+upper and lower envelopes. Replacing that last layer by unweighted Taylor
+expansions would lose the statistical lower-bound proof.
+
+This article does not supply purportedly checked Lean or Rocq code. Its
+symbolic program checks finite instances and identities, not all real-node
+configurations or all sample sizes. The claim ledger records which statements
+have complete conventional proofs, which have finite checks, and which remain
+research questions. No external theorem about a finite \emph{mixture} is silently
+used to certify this different convolution model.
+
+\section{Further research questions}
+\label{sec:questions}
+
+The following are proposed extensions, not conclusions already proved here.
+The fixed-neighborhood classification provides both candidate rates and
+specific obstacles for them.
+
+\begin{question}[Moving gaps and multiscale transitions]
+Determine sharp risk bounds when positive cluster gaps and positive centers
+approach zero at prescribed rates depending on $n$.
+\end{question}
+The constants hidden in Theorem~\ref{thm:cluster} contain separation factors
+from roots outside the target block. Tracking those factors explicitly should
+identify when two positive blocks behave separately, when they behave as one
+larger collision, and when a positive collision crosses into the zero-boundary
+regime. A complete answer needs matching transition inequalities, not just
+substitution of an $n$-dependent gap into one nonuniform bound. The simplest
+nontrivial test case is two small, nearly coincident positive factors with
+unknown Gaussian variance.
+
+\begin{question}[Limit experiments at singular strata]
+Identify the joint local limit experiments and optimal rescaled estimators
+at configurations with both zero and positive collision blocks.
+\end{question}
+The proof identifies first nonzero likelihood jets but does not describe the
+full set of attainable jets under all local perturbations. That set is
+constrained by real-rootedness and nonnegative squared widths. A promising
+formulation uses regular moment coordinates and their feasible tangent cones,
+followed by a singular inverse map to widths. It should explain the joint
+behavior of a root-$n$ variance functional and slower splitting coordinates,
+and clarify which limits are non-Gaussian. Ordinary unconstrained local
+asymptotic normality should not be assumed at the zero boundary.
+
+\begin{question}[Efficient variance inference at positive collisions]
+Determine the exact asymptotic information bound for Gaussian variance when
+all uniform widths are positive, including repeated widths.
+\end{question}
+The explicit polynomial influence function \eqref{eq:varianceinfluence}
+proves attainability and asymptotic normality, but need not minimize asymptotic
+variance among all estimators using the full sample. The relevant nuisance
+geometry includes splitting directions that appear at higher order in the
+raw width parameterization. A full solution should identify the appropriate
+regular functional and nuisance tangent space, compare its efficient influence
+function with the polynomial one, and construct an estimator attaining the
+bound without requiring distinct roots.
+
+\begin{question}[Honest adaptive confidence regions]
+Can one construct uniformly valid confidence regions whose blockwise widths
+adapt to the local exponents without prior knowledge of the strata?
+\end{question}
+Moment confidence sets followed by feasible inversion are a concrete starting
+point. Point estimation adapts by Section~\ref{sec:upper}, but confidence-set
+coverage near changing multiplicities and near zero is a stronger demand.
+An informative result would specify finite-sample or uniform asymptotic
+coverage, prove diameter bounds on fixed separated neighborhoods, and describe
+necessary losses at the transition scales. Exact multiplicity selection should
+not be substituted for uncertainty quantification when the data cannot
+reliably distinguish a collision from a small split.
+
+\begin{question}[Mixed strata without a positive variance floor]
+Extend the blockwise classification to zero Gaussian variance and to variances
+that decrease with $n$, for Fabius--Rvachev and more general flat backgrounds.
+\end{question}
+The repository's flat-boundary report already supplies global zero-noise
+results for infinite uniform backgrounds \cite{RepoFlat}; those global results
+should be treated as the starting point, not reasserted as an open problem.
+The missing issue is the mixed-stratum statistical geometry and its possible
+uniformity as variance vanishes. The present algebraic upper bounds survive,
+but the Gaussian lower-envelope argument does not. One must replace it with
+weighted square-root expansions for the relevant positive-collision paths,
+while tracking any changes caused by finite-order support boundaries.
+
+\begin{question}[Certified, computationally efficient moment fitting]
+Find a practical solver with a proved residual certificate and controlled
+complexity in both capacity and target accuracy.
+\end{question}
+The equal-multiplicity power-sum image is more restrictive than the usual
+moment cone with arbitrary positive weights. This may help or obstruct
+convex relaxations. A useful algorithm would combine moment denoising,
+coefficient recovery, certified real-root isolation, and branch selection;
+it would either return a feasible tuple with a certified near-optimal residual
+or report a quantified failure. The statistical theorem immediately transfers
+to such an algorithm once its excess residual is bounded at the sampling
+noise scale. The required numerical stability near high multiplicities is
+part of the problem.
+
+\begin{question}[Unknown capacity and calibrated backgrounds]
+What is recoverable when the capacity is not fixed in advance, or the background
+law is known only through an independent calibration sample?
+\end{question}
+Zero padding makes the number of genuinely nonzero factors unidentifiable
+without a separation requirement. A rigorous treatment should first specify
+minimum detectable widths or a loss that tolerates unresolved small factors.
+With a calibration sample for $Z$, subtraction of background cumulants incurs
+an additional error; for fixed capacity and suitable moment bounds it is
+natural to investigate rates driven by the combined moment-estimation error.
+The more difficult issue is uniformity as the capacity grows and the number
+of required moments increases. None of those growing-dimensional conclusions
+is supplied by the present fixed-capacity proof.
+
+\begin{question}[Multidimensional uniform directions]
+Develop an analogue for random vectors of the form
+$Z+\sum_i U_i a_i+G_\Sigma$, with unknown vectors $a_i$ and Gaussian covariance
+$\Sigma$.
+\end{question}
+The even cumulant tensors contain sums of the rank-one tensors
+$a_i^{\otimes 2k}$. Recovering the directions has an unavoidable sign and
+permutation ambiguity, and new degeneracies arise from parallel directions
+and from vanishing vectors. The one-dimensional result describes restrictions
+to a line but does not settle joint tensor identifiability or sharp rates.
+A first target is a two-direction model in the plane, distinguishing a
+near-parallel collision from two directions with a fixed angular separation.
+The covariance-confounding phenomenon then becomes matrix-valued.
+
+\section{Conclusion}
+The local statistical obstruction in uniform-factor recovery is not the total
+capacity alone. It is distributed among positive clusters and the zero block.
+Positive collisions contribute their multiplicity exponents; zeros contribute
+an additional square-root loss; and unknown Gaussian variance removes one
+more moment order only at that boundary. A sign-matching polynomial localizes
+the root-recovery problem, while a nonnegative coefficient identity protects
+the first power sum from positive-collision instability.
+
+Together with weighted likelihood expansions, these facts give a complete
+fixed-neighborhood blockwise minimax classification under positive Gaussian
+smoothing. They also show that a variance parameter can remain analytically
+regular and asymptotically normal while individual positive factors are
+singular. The open directions above concern changes in the experiment or its
+scaling, rather than gaps in the stated fixed-capacity positive-variance
+classification.
+
+\clearpage
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{RepoGaussian}
+ProveIt research corpus.
+\emph{Gaussian Confounding and Sharp Recovery of Uniform Convolution Factors:
+Shifted power sums, minimax estimation, and detection above a Fabius--Rvachev
+background}. Research report, 29 September 2026.
+Pinned repository version \texttt{11e1e900114e7c0cfdcd19fe346ddb4f2852dbc5};
+article and accompanying README in
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/11e1e900114e7c0cfdcd19fe346ddb4f2852dbc5/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Gaussian_Confounding_Sharp_Recovery_Uniform_Factors}{Pinned source directory and README}.
+
+\bibitem{RepoFlat}
+ProveIt research corpus.
+\emph{Flat Boundaries Preserve Information: Sharp recovery of uniform
+convolution factors without Gaussian smoothing}.
+Research report, 29 September 2026. Pinned README and source directory:
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/11e1e900114e7c0cfdcd19fe346ddb4f2852dbc5/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Flat_Boundaries_Sharp_Recovery_Uniform_Factors}{Pinned source directory and README}.
+
+\bibitem{BY}
+Dmitry Batenkov and Yosef Yomdin.
+\emph{Geometry and Singularities of the Prony mapping}.
+arXiv:1301.1336, 2013.
+\url{https://arxiv.org/abs/1301.1336}.
+
+\bibitem{HK}
+Philippe Heinrich and Jonas Kahn.
+\emph{Optimal rates for finite mixture estimation}.
+arXiv:1507.04313, 2015.
+\url{https://arxiv.org/abs/1507.04313}.
+
+\bibitem{WY}
+Yihong Wu and Pengkun Yang.
+\emph{Optimal estimation of Gaussian mixtures via denoised method of moments}.
+arXiv:1807.07237, 2018; version 2, 2019.
+\url{https://arxiv.org/abs/1807.07237}.
+
+\bibitem{Arias}
+Juan Arias de Reyna.
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}.
+arXiv:1702.05442, 2017. English translation of
+\emph{Definici\'on y estudio de una funci\'on indefinidamente diferenciable de
+soporte compacto}, Rev. Real Acad. Ciencias Madrid \textbf{76} (1982), 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+\end{thebibliography}
+\end{document}

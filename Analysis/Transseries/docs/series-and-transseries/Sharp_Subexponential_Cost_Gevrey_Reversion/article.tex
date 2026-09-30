@@ -1,0 +1,1407 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,pdftitle={Sharp Subexponential Reversion},pdfauthor={ChatGPT, prepared for Vladimir Reshetnikov}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Sharp subexponential reversion}
+\fancyhead[R]{\small Research article / 29 September 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\typ}{\tau_s}
+\newcommand{\coef}[2]{[z^{#1}]\,#2}
+\newcommand{\inv}{^{\langle-1\rangle}}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Exp}{\mathbb E}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\commit}{\texttt{5c695cfd\,f70a8b6c\,91bd5b2c\,1e99e3ba\,ecd5a864}}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\numberwithin{equation}{section}
+\begin{document}
+% ed. (2026-09-29): no PDF page anchor on the title page (the delivered build had a duplicate destination page.1)
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{10mm}
+{\color{MidnightBlue}\Large ProveIt research continuation\par}
+\vspace{12mm}
+{\Huge\bfseries Sharp Subexponential\par Reversion\par}
+\vspace{7mm}
+{\Large Exact extremal cost, a Gevrey transition,\par and composition of two divergent series\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large ChatGPT\par}
+{29 September 2026\par}
+\vspace{12mm}
+\begin{abstract}
+Exact preservation of a weighted coefficient type under formal reversion
+is already established in the inspected ProveIt corpus. It does not
+quantify the subexponential amplification at the critical coefficient
+radius. We address that subsequent question by solving a coefficientwise
+extremal problem for two factorial normalizations. A single negative
+series attains the worst inverse coefficient simultaneously at every
+degree. For its normalized inverse amplification $R_n$, we prove
+$\log R_n\sim Cn^{1-s}$ for every $0<s<1$, a multiplicative equivalent
+$R_n\sim\exp(Cn^{1-s})$ for $s>1/2$, and the exact additional constant
+at $s=1/2$. A uniform equivalent yields the crossover
+$R_n\to\exp(C\ee^{-t})$ when $s=1+t/\log n$. Consequently, fixed-radius
+factorial coefficient balls are stable under inversion exactly for
+$s\ge1$, despite exact type preservation at every positive order.
+
+A second result answers the Gevrey version of the repository's question
+about two divergent composition arguments: their types obey a sharp
+maximum inequality, with equality whenever the two competing types are
+unequal. Finally, an explicit positive-coefficient series has a full
+normalized root limit although its inverse has infinitely many zero
+coefficients. All proofs are supplied. Finite exact checks and numerical
+diagnostics are distinguished from proofs and from Lean verification.
+\end{abstract}
+\vfill
+\small
+\textbf{Scope and status.} Conventional mathematical proofs and reproducible
+finite calculations. No Lean formalization, analytic summation theorem,
+or worldwide priority claim is asserted. The contribution is measured
+against explicitly identified questions in the inspected repository.
+\end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+
+\section{Research target and contribution boundaries}\label{sec:target}
+
+\subsection{Which repository questions are actually still being extended?}
+The source for this continuation is the ProveIt package
+\emph{Sharp Weighted Type Under Formal Reversion: zero-loss inversion,
+exact Borel radii, and non-D-finiteness in countable exponential feedback}
+\cite{repo,weighted}. In its section on further research, the subsection
+``Optimal subexponential cost of reversion'' asks for the smallest
+universal overhead at fixed weight and fixed input constants, naming
+$M_n=(n!)^s$, $0<s<1$, as a first target. The subsection ``Two divergent
+composition arguments'' asks for a filtered composition estimate and a
+noncancellation condition when both arguments are divergent. These are
+the two concrete questions treated here.
+
+The inspection used the main-branch snapshot identified by
+\begin{center}\commit\end{center}
+The relevant source file is
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/\\
+Sharp\_Weighted\_Type\_Formal\_Reversion/article.tex.
+\end{quote}
+Its research questions occur in the inspected range 1418--1515; the
+individual subsection headings, rather than mutable line numbers, are
+the durable locators. The directory inventory and editorial notes were
+also consulted \cite{inventory}.
+
+There is a significant duplication trap. The amplitude--slope package
+\cite{amplitude} asks whether inverse and forward Gevrey types agree.
+The current inventory explicitly observes that the weighted-type theorem
+already answers that question. Accordingly, merely reproving equality of
+these types would not be a new repository contribution. The present work
+moves below the $n$th-root scale and treats two genuinely divergent
+composition inputs. The older type-invariance statement is reproved only
+as a short, self-contained tool.
+
+\subsection{Results and exact extent of the resolution}
+The principal result, \cref{thm:main}, identifies the exact finite-degree
+extremum and its leading subexponential asymptotics. For $0<s<1$, the
+coefficient in the exponent is determined, not just the power of $n$.
+For $s\ge1/2$, the statements give a full multiplicative equivalent,
+including the separate constant at the boundary $s=1/2$. For $0<s<1/2$,
+a complete multiplicative equivalent remains open here: further
+subexponential terms cannot in general be discarded.
+
+The maximum law in \cref{thm:composition} settles the factorial-weight
+version of the second question. It does not settle the same problem for
+every superexponential log-convex weight. Equal-type cancellation is
+unavoidable; unequal-type inputs supply an explicit sufficient
+noncancellation condition.
+% ed. (2026-09-29): the general-weight version is settled by a companion package of the same batch
+\begin{ednote}
+The companion package \path{Exact_Weighted_Type_Beyond_Log_Convexity/}
+(filed in the same batch, written independently from an earlier snapshot)
+proves the same maximum law, with equality for unequal types, for every
+positive weight that is subexponentially equivalent to a supermultiplicative
+weight with roots tending to infinity, in particular for every log-convex
+weight with $M_n^{1/n}\to\infty$ (its Corollary~\texttt{cor:scalarscaling}
+and Theorem~\texttt{thm:composition}). It also shows that at equal types $T$
+every composite type in $[0,T]$ occurs (its
+Theorem~\texttt{thm:cancellation}). The results of
+Section~\ref{sec:composition} are the factorial case of that law, proved
+here by a different majorant: one theorem with two independent proofs. The
+fixed-ball results of Sections~\ref{sec:main}--\ref{sec:type} are not in
+that package.
+\end{ednote}
+
+The positive-forward counterexample in \cref{thm:rootcounter} explains
+why exact type alone cannot be strengthened to a full inverse root limit,
+even after assuming positivity and a full root limit on the forward
+side. It is a general obstruction, not a claim about the signs of a
+particular exponential-feedback inverse.
+
+\subsection{Relation to established literature}
+Formal Lagrange inversion is classical; Gessel's survey supplies a
+systematic account of its coefficient forms and proofs \cite{gessel}.
+Composition and inverse stability in ultradifferentiable classes have
+been studied by Rainer and Schindl \cite{rscomposition,rsstability}.
+Borinsky develops composition and inversion in a factorially divergent
+coefficient-asymptotic algebra \cite{borinsky}. These precedents are
+relevant: neither Gevrey closure nor the usefulness of a single large
+coefficient should be advertised as newly discovered here.
+
+Our object is a sharp extremum over a \emph{fixed formal coefficient
+ball}, including its dependence on the order $s$, rather than stability
+of a function class after increasing an unspecified exponential constant.
+The proof is elementary and includes the exact constants needed for this
+object. The literature check was targeted, not an exhaustive priority
+search; the results should be independently reviewed before publication
+or incorporation as established repository theorems.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{p{.34\textwidth}p{.59\textwidth}}
+\toprule
+Assertion & Status in this article\\
+\midrule
+Coefficientwise extremal inverse & Exact finite identity and proof.\\
+Optimal logarithmic cost, $0<s<1$ & Upper and lower bounds with the same constant.\\
+Multiplicative cost, $s>1/2$ & Proved, locally uniformly in $s$ and $C$.\\
+Boundary $s=1/2$ & Proved with its additional constant.\\
+Two divergent composition inputs & Sharp type inequality; equality at unequal types.\\
+General type invariance & Existing repository result; factorial case reproved.\\
+Full feedback inverse asymptotics & Not inferred from a universal upper envelope.\\
+Computations & Exact finite tests and non-certified floating-point diagnostics.\\
+\bottomrule
+\end{tabular}
+\caption{Dependency and claim ledger. None of the mathematical results in this article is presented as Lean-verified.}
+\end{table}
+
+\section{The extremal problem and the main theorem}\label{sec:main}
+
+\subsection{Two normalizations, kept explicit}
+Fix $s>0$, $A>0$, $C>0$, and $\nu\in\{0,1\}$. For $j\ge1$, define
+\begin{equation}
+ w_j=w_j(s,\nu)=
+ \left(\frac{(j+\nu)!}{(1+\nu)!}\right)^s.
+ \label{eq:weights}
+\end{equation}
+In particular,
+\begin{equation}
+ w_1=1,\qquad w_2=(\nu+2)^s,\qquad
+ \frac{w_{j+1}}{w_j}=(j+\nu+1)^s.
+ \label{eq:ratios}
+\end{equation}
+The symbol $w_0$ is not needed. When it is useful in a computational
+recurrence, we set $w_0=1$ as a separate convention.
+
+\begin{definition}[A critical-radius coefficient ball]
+Let $\mathcal B_{s,A,C}^{(\nu)}$ be the set of all formal series
+\begin{equation}
+ f(z)=z+\sum_{j\ge1}a_{j+1}z^{j+1}\in\C[[z]],\qquad
+ |a_{j+1}|\le C A^j w_j.
+ \label{eq:ball}
+\end{equation}
+For $g=f\inv$, define the normalized extremal amplification
+\begin{equation}
+ R_n(s,C,\nu)=
+ \sup_{f\in\mathcal B_{s,A,C}^{(\nu)}}
+ \frac{|[z^n]f\inv|}{C A^{n-1}w_{n-1}},\qquad n\ge2.
+ \label{eq:extremum}
+\end{equation}
+The theorem below shows that this expression is independent of $A$.
+The inverse is compositional, not the reciprocal $1/f$.
+\end{definition}
+
+The case $\nu=0$ uses $(n-1)!^s$ for the $n$th coefficient. The case
+$\nu=1$ uses $(n!/2)^s$. Thus the conventional ball
+\begin{equation}
+ |a_n|\le B A^{n-1}(n!)^s\quad(n\ge2)
+ \label{eq:standardball}
+\end{equation}
+is exactly \eqref{eq:ball} with $\nu=1$ and $C=2^sB$.
+The two weights have identical $n$th-root types but different fixed-ball
+constants. This difference matters in every sharp subexponential formula.
+
+\begin{theorem}[Sharp extremal reversion cost]\label{thm:main}
+Let $s,A,C,\nu$ be as above. Define
+\begin{equation}
+ F_*(z)=z-C\sum_{j\ge1}A^j w_j z^{j+1},\qquad G_*=F_*\inv.
+ \label{eq:extremizer}
+\end{equation}
+All coefficients of $G_*$ after the constant term are strictly positive.
+The same series $F_*$ attains the supremum in \eqref{eq:extremum} for
+every $n$. Moreover:
+\begin{enumerate}[label=(\roman*),leftmargin=9mm]
+\item For every fixed $0<s<1$,
+\begin{equation}
+ \lim_{n\to\infty}\frac{\log R_n(s,C,\nu)}{n^{1-s}}=C.
+ \label{eq:logmain}
+\end{equation}
+\item For every fixed $s>1/2$,
+\begin{equation}
+ R_n(s,C,\nu)=\exp(Cn^{1-s})\,(1+o(1)).
+ \label{eq:multmain}
+\end{equation}
+The $o(1)$ is uniform for $s$ in a compact subset of $(1/2,\infty)$
+and $C$ in a compact subset of $(0,\infty)$.
+\item At $s=1/2$,
+\begin{equation}
+ R_n(1/2,C,\nu)=
+ \exp\left(C\sqrt n+\frac{3C^2}{4}+C\sqrt{\nu+2}\right)(1+o(1)).
+ \label{eq:halfmain}
+\end{equation}
+\item Uniformly for $t$ in every bounded real interval,
+\begin{equation}
+ R_n\left(1+\frac{t}{\log n},C,\nu\right)
+ \longrightarrow \exp(C\ee^{-t}).
+ \label{eq:crossover}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+The theorem gives the following sharp classification:
+\begin{equation}
+ \begin{array}{c|c}
+ \text{order} & \text{extremal amplification}\\ \hline
+ s>1 & R_n\longrightarrow1\\
+ s=1 & R_n\longrightarrow\ee^C\\
+ 0<s<1 & R_n\longrightarrow\infty,\quad
+          \log R_n\sim Cn^{1-s}.
+ \end{array}
+ \label{eq:phase}
+\end{equation}
+At $0<s<1$, this is an amplification at the \emph{same} $A$; it is
+still subexponential and hence invisible to the coefficient type.
+% ed. (2026-09-29): relation to the companion package's envelope asymptotic
+\begin{ednote}
+With $A=1$, $G_*$ is the positive extremal inverse $H_C$ of the companion
+package \path{Exact_Weighted_Type_Beyond_Log_Convexity/} for the
+excess-degree weight $N_j=w_j$, which is log-convex with $w_0=1$ and hence
+its own supermultiplicative envelope. That package proves $\log R_n=o(n)$
+for every weight with superexponential roots (its
+Theorem~\texttt{thm:envelopeintro}) and asks for the optimal overhead;
+Theorem~\ref{thm:main} answers that question for factorial weights.
+\end{ednote}
+
+\begin{corollary}[The unshifted factorial convention]\label{cor:unshifted}
+For the ball \eqref{eq:standardball}, normalize inverse coefficients by
+$B A^{n-1}(n!)^s$ and call their extremum $\widetilde R_n$.
+Then, for $0<s<1$,
+\[
+ \log\widetilde R_n\sim 2^s B n^{1-s}.
+\]
+For $s>1/2$, $\widetilde R_n\sim\exp(2^sBn^{1-s})$. At $s=1/2$,
+\[
+ \widetilde R_n\sim
+ \exp\left(\sqrt2 B\sqrt n+\frac32 B^2+\sqrt6 B\right).
+\]
+In particular, $\widetilde R_n\to\ee^{2B}$ when $s=1$.
+\end{corollary}
+\begin{proof}
+Use $\nu=1$ and $C=2^sB$ in \cref{thm:main}.
+\end{proof}
+
+\section{Finite coefficient algebra and uniform convolution bounds}
+\label{sec:finite}
+
+\subsection{An exact simultaneous extremizer}
+For $f=z(1+v)$ with $v\in z\C[[z]]$, formal Lagrange inversion gives
+\begin{equation}
+ [z^n]f\inv=\frac1n[z^{n-1}](1+v(z))^{-n}.
+ \label{eq:lagrange}
+\end{equation}
+Every coefficient is a finite sum; no radius of convergence is needed.
+Since
+\[
+ (1+v)^{-n}=\sum_{k\ge0}(-1)^k\binom{n+k-1}{k}v^k,
+\]
+taking absolute values and then replacing each $|[z^j]v|$ by its upper
+bound in \eqref{eq:ball} gives equality when all coefficients of $v$ are
+negative and saturate the bounds.
+
+For $m\ge k\ge1$, put
+\begin{equation}
+ P(m,k)=\sum_{\substack{j_1+\cdots+j_k=m\\j_i\ge1}}
+                   \prod_{i=1}^k w_{j_i}.
+ \label{eq:convolution}
+\end{equation}
+Also set $P(0,0)=1$ and $P(m,0)=0$ for $m>0$.
+Then the exact value of the extremum is
+\begin{equation}
+ R_n=\frac{1}{n w_{n-1}}
+ \sum_{k=1}^{n-1}\binom{n+k-1}{k}C^{k-1}P(n-1,k).
+ \label{eq:exactR}
+\end{equation}
+All powers of $A$ cancel because the indices in each composition sum to
+$n-1$. The $k=1$ summand is exactly $1$, so $R_n\ge1$. This proves
+all finite extremizer assertions of \cref{thm:main}.
+
+\subsection{A factorial convolution estimate}
+\begin{lemma}[Uniform two-part convolution]\label{lem:twoconv}
+There is a finite $K=K(s,\nu)\ge1$ such that
+\begin{equation}
+ \sum_{j=1}^{m-1} w_jw_{m-j}\le K w_{m-1}\qquad(m\ge2).
+ \label{eq:twoconv}
+\end{equation}
+The constant can be chosen bounded when $s$ varies in any compact subset
+of $(0,\infty)$. Consequently,
+\begin{equation}
+ P(m,k)\le K^{k-1}w_{m-k+1}\qquad(m\ge k\ge1).
+ \label{eq:manyconv}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $1\le j\le m/2$,
+\[
+ \binom mj=\frac mj\binom{m-1}{j-1}\ge\frac mj\,2^{j-1}.
+\]
+Indeed, each factor in the product for $\binom{m-1}{j-1}$ is at least
+$2$ when $m\ge2j$. For $\nu=0$ this gives
+\[
+ \frac{w_jw_{m-j}}{w_{m-1}}
+ =\left(\frac m{\binom mj}\right)^s
+ \le\left(\frac j{2^{j-1}}\right)^s.
+\]
+For $\nu=1$ the ratio is
+\[
+ \left(\frac{(j+1)(m-j+1)}{2\binom mj}\right)^s
+ \le\left(\frac{j(j+1)}{2^j}\right)^s.
+\]
+Reflect about $m/2$ and sum. Twice the corresponding infinite sum is a
+valid $K$ after increasing it to at least $1$. Both sums converge
+uniformly on compact positive $s$-intervals.
+
+To prove \eqref{eq:manyconv}, use induction on $k$. Splitting off the
+first part gives
+\[
+ P(m,k)\le K^{k-2}\sum_{j=1}^{m-k+1}w_jw_{m-k+2-j}
+ \le K^{k-1}w_{m-k+1}.
+\]
+The case $k=1$ is an equality.
+\end{proof}
+
+Let $T_{n,k}$ denote the $k$th summand in \eqref{eq:exactR}. For
+$k\le n/2$, \cref{lem:twoconv} implies
+\begin{equation}
+ T_{n,k}\le
+ 2\frac{(D n^{1-s})^{k-1}}{k!},\qquad
+ D=2^{s+1}CK.
+ \label{eq:poissontailbound}
+\end{equation}
+In fact, $\binom{n+k-1}{k}\le(2n)^k/k!$, and the ratio
+$w_{n-k}/w_{n-1}$ contains $k-1$ factors bounded by $(n/2)^{-s}$.
+For $k>n/2$, at least $\lfloor n/2\rfloor-1$ such factors remain,
+whereas the binomial coefficient is at most $4^n$. Thus
+\begin{equation}
+ \sum_{k>n/2}T_{n,k}
+ \le\exp\left(-\frac{s}{2}n\log n+O(n)\right).
+ \label{eq:longtail}
+\end{equation}
+Here and below constants are allowed to depend on fixed $s,C,\nu$.
+They are uniform on compact positive $s,C$ sets when that is asserted.
+Together these estimates give
+\begin{equation}
+ 1\le R_n\le 2\exp(D n^{1-s})+
+            \exp\left(-\frac{s}{2}n\log n+O(n)\right).
+ \label{eq:coarsecost}
+\end{equation}
+This already proves subexponential overhead. Determining its sharp
+constant requires more than replacing every convolution by $K$.
+
+\section{Localization at one large coefficient}\label{sec:giant}
+
+A positive composition of $m=n-1$ is called \emph{localized at scale $h$}
+if one of its parts is at least $m-h$, where $h<m/2$. Such a part is
+unique. This terminology concerns the finite Lagrange sum only.
+
+\begin{lemma}[Negligible configurations without a large part]
+\label{lem:localization}
+Let the contribution to \eqref{eq:exactR} of nonlocalized compositions
+be $E_n(h)$. Then:
+\begin{enumerate}[label=(\roman*),leftmargin=9mm]
+\item For fixed $0<\epsilon<1/2$ and $h=\lfloor\epsilon m\rfloor$,
+$E_n(h)\le\exp(-c_\epsilon n)$ for all sufficiently large $n$.
+\item If
+\begin{equation}
+ \max(1-s,0)<\kappa<\alpha<1,\qquad h=\lfloor n^\alpha\rfloor,
+ \label{eq:localpowers}
+\end{equation}
+then $E_n(h)=o(1)$. More precisely it is bounded by the sum of
+$\exp(-c n^\alpha\log n)$ and $\exp(-c' n^\kappa\log n)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+First restrict to compositions of length at most $t=o(n)$. If every
+part is at most $m-h$ and $m-h\ge m/2$, elementary factorial
+concentration gives
+\begin{equation}
+ \prod_i j_i!\le(m-h)!h!.
+ \label{eq:capconcentration}
+\end{equation}
+To see this, allow zero parts and transfer units from a smaller positive
+part to a larger one, without exceeding $m-h$. Each transfer weakly
+increases the factorial product. A maximizer has at most two positive
+parts, of sizes $m-h$ and $h$.
+
+For $\nu=0$, the normalized weight product is therefore at most
+$\binom mh^{-s}$. For $\nu=1$, there is an additional factor bounded
+by
+\[
+ \left(\prod_i(j_i+1)\right)^s
+ \le (1+m/k)^{sk}
+\]
+for a composition of length $k$, by the arithmetic--geometric mean
+inequality. The factors $2^{-sk}$ and the extra normalization in $w_m$
+only improve this upper bound.
+
+There are $\binom{m-1}{k-1}$ compositions of length $k$. Both this
+count and $\binom{n+k-1}{k}$ have logarithm
+$O(k\log(\ee n/k))$. The powers of $C$ have logarithm $O(k)$.
+Summing over $k\le t$ consequently bounds this portion by
+\begin{equation}
+ \exp\left\{-s\log\binom mh+
+       O\left(t\log\frac{\ee n}{t}+\log n\right)\right\}.
+ \label{eq:nogiantentropy}
+\end{equation}
+The function $k\log(\ee n/k)$ is increasing for the relevant $k$.
+
+Lengths $k>t$ are controlled by \eqref{eq:poissontailbound} and
+\eqref{eq:longtail}. If $t/n^{1-s}\to\infty$ and $t\le n/2$, the
+small-length tail is bounded, after harmless polynomial factors, by
+\begin{equation}
+ \exp\left\{-t\log\frac{t}{\ee D n^{1-s}}\right\}.
+ \label{eq:tailrate}
+\end{equation}
+This follows either from successive-term ratios or from $k!\ge(k/\ee)^k$.
+
+For (i), choose $t=\lfloor n/\sqrt{\log n}\rfloor$.
+The error term in \eqref{eq:nogiantentropy} is $o(n)$, while
+$\log\binom mh=nH(\epsilon)+o(n)$, where
+$H(x)=-x\log x-(1-x)\log(1-x)>0$. The exponent in
+\eqref{eq:tailrate} is at most $-(s+o(1))n\sqrt{\log n}$.
+For (ii), take $t=\lfloor n^\kappa\rfloor$.
+Then $\log\binom mh=(1-\alpha+o(1))n^\alpha\log n$ dominates
+$O(n^\kappa\log n)$, and \eqref{eq:tailrate} has a negative constant
+multiple of $n^\kappa\log n$. This proves both statements.
+\end{proof}
+
+\subsection{The exact localized sum}
+Write $m=n-1$ and let $R_n^{\mathrm{loc}}(h)$ be the localized
+contribution. Let the large part have size $m-d$, let $\ell$ be the
+number of other parts, and let $m_j$ count the other parts of size $j$.
+Then
+\begin{equation}
+ \ell=\sum_{j\ge1}m_j,\qquad d=\sum_{j\ge1}jm_j.
+ \label{eq:counts}
+\end{equation}
+Choosing the position of the large part changes the Lagrange factor by
+\[
+ \frac{\ell+1}{n}\binom{n+\ell}{\ell+1}=\binom{n+\ell}{\ell}.
+\]
+Thus, exactly,
+\begin{equation}
+ R_n^{\mathrm{loc}}(h)=
+ \sum_{\substack{m_1,m_2,\ldots\ge0\\d\le h}}
+ \binom{n+\ell}{\ell}\frac{\ell!}{\prod_jm_j!}\,
+ C^\ell\,\frac{w_{m-d}}{w_m}\prod_jw_j^{m_j}.
+ \label{eq:localizedexact}
+\end{equation}
+Only $j\le h$ can occur. The all-zero multiplicity vector contributes
+$1$. Formula \eqref{eq:localizedexact} is the source of all subsequent
+constants.
+
+% ed. (2026-09-29): \texorpdfstring added (the delivered build warned about math in the PDF bookmark)
+\section{Optimal logarithmic amplification for every \texorpdfstring{$0<s<1$}{0 < s < 1}}
+\label{sec:logcost}
+
+\subsection{Lower bound from quadratic decorations}
+In \eqref{eq:localizedexact}, retain only parts of size $1$ beside the
+large part. Their contribution for a given $\ell$ is
+\begin{equation}
+ L_{n,\ell}=\binom{n+\ell}{\ell} C^\ell
+             \frac{w_{n-1-\ell}}{w_{n-1}}.
+ \label{eq:ones}
+\end{equation}
+Take $\ell=\lfloor Cn^{1-s}\rfloor$. It tends to infinity and is
+$o(n)$. Uniform elementary product estimates give
+\begin{align}
+ \log\binom{n+\ell}{\ell}
+    &=\ell\log n-\log(\ell!)+O(\ell^2/n+\ell/n),\\
+ \log\frac{w_{n-1-\ell}}{w_{n-1}}
+    &=-s\ell\log n+O(\ell^2/n+\ell/n).
+ \label{eq:onesest}
+\end{align}
+Stirling's estimate then yields
+\[
+ \log L_{n,\ell}
+ =\ell\log\frac{Cn^{1-s}}{\ell}+\ell+o(\ell)
+ =Cn^{1-s}+o(n^{1-s}).
+\]
+For large $n$ the part $n-1-\ell$ is genuinely the unique large part,
+so these are actual distinct summands, not a formal overcount. Hence
+\begin{equation}
+ \liminf_{n\to\infty}\frac{\log R_n}{n^{1-s}}\ge C.
+ \label{eq:lowercost}
+\end{equation}
+
+\subsection{Upper bound with the same constant}
+Fix $0<\epsilon<1/2$, let $h=\lfloor\epsilon m\rfloor$, and put
+\begin{equation}
+ t_n=(m+\nu-h+1)^{-s}.
+\end{equation}
+For $d\le h$, each of the $d$ factors in the factorial quotient gives
+\[
+ \frac{w_{m-d}}{w_m}\le t_n^d.
+\]
+Define the finite polynomial $H_h(t)=\sum_{j=1}^h w_jt^j$.
+Extending the positive sum over the small parts and then over $\ell$
+in \eqref{eq:localizedexact} gives
+\begin{equation}
+ R_n^{\mathrm{loc}}(h)
+ \le\sum_{\ell\ge0}\binom{n+\ell}{\ell}
+                  (C H_h(t_n))^\ell
+ =\bigl(1-C H_h(t_n)\bigr)^{-n-1}.
+ \label{eq:negativebinomial}
+\end{equation}
+The last identity is used only when $n$ is sufficiently large that
+$C H_h(t_n)<1$.
+
+For $1\le j<h$, successive terms of $H_h(t_n)$ have ratio
+$(j+\nu+1)^s t_n$. Its maximum tends to
+$(\epsilon/(1-\epsilon))^s<1$. Therefore
+\[
+ H_h(t_n)=t_n+O(t_n^2),\qquad
+ t_n=(1-\epsilon)^{-s}n^{-s}(1+o(1)).
+\]
+Taking logarithms in \eqref{eq:negativebinomial} proves
+\[
+ \log R_n^{\mathrm{loc}}(h)
+ \le C(1-\epsilon)^{-s}n^{1-s}+o(n^{1-s}).
+\]
+The nonlocalized contribution is exponentially small by
+\cref{lem:localization}(i), whereas the localized contribution is at
+least $1$. Consequently,
+\[
+ \limsup_{n\to\infty}\frac{\log R_n}{n^{1-s}}
+ \le C(1-\epsilon)^{-s}.
+\]
+Letting $\epsilon\downarrow0$ and using \eqref{eq:lowercost} proves
+\eqref{eq:logmain}. In particular, no universal bound
+$\exp(o(n^{1-s}))$ is possible for this fixed ball, and no smaller
+leading constant than $C$ can hold.
+
+\section{Multiplicative asymptotics and the boundary constant}
+\label{sec:multcost}
+
+\subsection{A finite Poisson representation}
+The probability notation used here is just a convenient normalization of
+a finite positive sum. Fix a cutoff $h=o(n)$ and define
+\begin{equation}
+ \lambda_j=Cw_j n^{1-sj}\quad(1\le j\le h),\qquad
+ \Lambda_n=\sum_{j=1}^h\lambda_j.
+ \label{eq:intensities}
+\end{equation}
+Let $N_j$ be independent Poisson variables of means $\lambda_j$ and put
+\begin{equation}
+ L=\sum_{j=1}^h N_j,\qquad D_0=\sum_{j=1}^h jN_j.
+ \label{eq:poissonstats}
+\end{equation}
+The subscript on $D_0$ distinguishes this random total size from the
+constant $D$ in \eqref{eq:poissontailbound}.
+
+For a multiplicity vector of length $\ell$ and size $d$, extract
+$n^\ell$ from $(n+1)\cdots(n+\ell)$ and $n^{-sd}$ from the large
+weight quotient in \eqref{eq:localizedexact}. If $d\le h$,
+\begin{equation}
+ \log\left\{\frac{(n+1)\cdots(n+\ell)}{n^\ell}
+       \frac{w_{n-1-d}}{w_{n-1}}n^{sd}\right\}
+ =O\left(\frac{h^2+h}{n}\right).
+ \label{eq:uniformfactor}
+\end{equation}
+The constants are uniform on compact $s$-intervals.
+Thus, when $h^2/n\to0$,
+\begin{equation}
+ R_n^{\mathrm{loc}}(h)
+ =(1+o(1))\ee^{\Lambda_n}\Prob(D_0\le h).
+ \label{eq:poissonfirst}
+\end{equation}
+No probabilistic limit theorem is hidden in this identity: it follows by
+multiplying and dividing each summand by $\prod_j\ee^{-\lambda_j}$.
+
+\subsection{Proof of the equivalent above one half}
+Assume first that $s>1/2$. Choose
+\[
+ \max(1-s,0)<\kappa<\alpha<1/2,\qquad h=\lfloor n^\alpha\rfloor.
+\]
+Nonlocalized configurations contribute $o(1)$ by
+\cref{lem:localization}(ii). For the intensities in
+\eqref{eq:intensities}, successive terms have ratio
+\[
+ \frac{\lambda_{j+1}}{\lambda_j}
+ =\left(\frac{j+\nu+1}{n}\right)^s.
+\]
+Uniformly for $j<h$, this tends to zero. Since $w_1=1$,
+\begin{equation}
+ \Lambda_n=Cn^{1-s}+O(n^{1-2s}),\qquad
+ \Exp D_0=Cn^{1-s}+O(n^{1-2s}).
+ \label{eq:poissonmeans}
+\end{equation}
+The error in the first formula tends to zero. The mean in the second is
+$o(h)$, so Markov's inequality gives $\Prob(D_0\le h)\to1$.
+Formula \eqref{eq:poissonfirst} proves \eqref{eq:multmain}.
+
+For a compact interval of $s$-values with lower endpoint $s_0>1/2$,
+choose $\kappa,\alpha$ once with
+$\max(1-s_0,0)<\kappa<\alpha<1/2$. Every estimate just used is then
+uniform, as are the convolution constants. Compact variation in $C>0$
+is harmless. This proves the asserted local uniformity.
+
+At $s_n=1+t/\log n$, $n^{1-s_n}=\ee^{-t}$ exactly. For bounded $t$,
+$s_n$ eventually belongs to a fixed compact subinterval of
+$(1/2,\infty)$. The uniform formula gives \eqref{eq:crossover}.
+
+\subsection{Why the order-one-half constant is different}
+At $s=1/2$, the typical number of small parts is of order $\sqrt n$.
+Their squared total size divided by $n$ is no longer negligible. In
+addition, parts of size $2$ have a nonvanishing Poisson mean.
+
+Choose
+\begin{equation}
+ \frac12<\kappa<\alpha<\frac23,\qquad h=\lfloor n^\alpha\rfloor.
+ \label{eq:halfcutoff}
+\end{equation}
+Localization again leaves an absolute $o(1)$ remainder. Expansion of the
+two finite products in \eqref{eq:uniformfactor} now gives, uniformly for
+$\ell\le d\le h$,
+\begin{align}
+ \log\frac{(n+1)\cdots(n+\ell)}{n^\ell}
+   &=\frac{\ell(\ell+1)}{2n}+O(h^3/n^2),\\
+ \log\left(\frac{w_{n-1-d}}{w_{n-1}}n^{sd}\right)
+   &=\frac{s\{d^2+(1-2\nu)d\}}{2n}+O(h^3/n^2).
+ \label{eq:secondproduct}
+\end{align}
+The linear terms are $o(1)$, and $h^3/n^2=o(1)$. Hence
+\begin{equation}
+ R_n^{\mathrm{loc}}(h)
+ =\ee^{\Lambda_n}\Exp\left[
+   \exp\left(\frac{L^2+sD_0^2}{2n}+o(1)\right)
+   \boldsymbol1_{\{D_0\le h\}}\right],
+ \label{eq:secondpoisson}
+\end{equation}
+where the $o(1)$ inside the expectation is uniform on the indicated event.
+
+Here
+\begin{equation}
+ \lambda_1=C\sqrt n,\qquad \lambda_2=C\sqrt{\nu+2},\qquad
+ \sum_{j=3}^h j^r\lambda_j=O(n^{-1/2})\quad(r=0,1,2).
+ \label{eq:halfmeans}
+\end{equation}
+It follows that
+\begin{equation}
+ \Lambda_n=C\sqrt n+C\sqrt{\nu+2}+o(1),\qquad
+ \frac{L}{\sqrt n},\frac{D_0}{\sqrt n}\longrightarrow C
+ \quad\text{in probability}.
+ \label{eq:halfprob}
+\end{equation}
+For example, these convergences follow directly from the corresponding
+means and variances, which are $C\sqrt n+O(1)$.
+
+We must justify passage to the expectation of an exponential; convergence
+in probability alone would not suffice. Fix $\theta>0$. Successive
+intensities after multiplication by $\ee^{\theta j}$ still have ratio
+$o(1)$, so
+\begin{equation}
+ \Exp\ee^{\theta D_0}
+ =\exp\left(C(\ee^\theta-1)\sqrt n+O(1)\right).
+ \label{eq:chernoff}
+\end{equation}
+On $D_0\le h$, we have $L\le D_0$ and
+\[
+ \frac{L^2+sD_0^2}{2n}\le\frac{(1+s)hD_0}{2n}
+ \le\frac\theta2 D_0
+\]
+for all sufficiently large $n$. Consequently, for any sufficiently large
+fixed $K$,
+\begin{align*}
+ &\Exp\left[\exp\left(\frac{L^2+sD_0^2}{2n}\right)
+          \boldsymbol1_{\{K\sqrt n<D_0\le h\}}\right]\\
+ &\hspace{8mm}\le\ee^{-\theta K\sqrt n/2}\Exp\ee^{\theta D_0}
+ =\exp\left(\{C(\ee^\theta-1)-\theta K/2\}\sqrt n+O(1)\right)
+ \longrightarrow0.
+\end{align*}
+On $D_0\le K\sqrt n$, the integrand is bounded and converges in
+probability to $\exp((1+s)C^2/2)$. Thus the expectation in
+\eqref{eq:secondpoisson} tends to $\exp(3C^2/4)$.
+Combining this with \eqref{eq:halfprob} proves \eqref{eq:halfmain}.
+
+\begin{remark}[The two sources of the boundary constant]
+The term $3C^2/4$ is the combined curvature correction from the rising
+binomial product and the depleted factorial of the large part. The term
+$C\sqrt{\nu+2}$ is the contribution of size-two small parts. Omitting
+either mechanism gives a wrong multiplicative equivalent. The
+normalization shift $\nu$ changes the second contribution, but not the
+first.
+\end{remark}
+
+\section{Fixed-radius stability and exact coefficient type}
+\label{sec:type}
+
+\subsection{A sharp fixed-ball threshold}
+\begin{corollary}[Fixed-radius boundedness]\label{cor:fixedball}
+For fixed $s,A,C,\nu$, there is a finite $C'$ such that
+\[
+ f\in\mathcal B_{s,A,C}^{(\nu)}
+ \quad\Longrightarrow\quad
+ |[z^n]f\inv|\le C' A^{n-1}w_{n-1}\quad(n\ge2)
+\]
+if and only if $s\ge1$.
+\end{corollary}
+\begin{proof}
+The assertion is equivalent to boundedness of $R_n$. For $s\ge1$,
+\eqref{eq:phase} supplies a finite limit, and each of the finitely many
+initial $R_n$ is finite. For $0<s<1$, the single extremizer $F_*$ has
+$R_n\to\infty$.
+\end{proof}
+
+The threshold does not mean that Gevrey inversion fails below order one.
+For every $s>0$ and every $A'>A$, \eqref{eq:coarsecost} implies a bound
+at radius parameter $A'$ with a constant independent of $n$. What fails
+below one is retaining the \emph{same} $A$ with only a constant prefactor.
+
+\subsection{Type preservation, included as a tool}
+For $f(z)=\sum f_nz^n$, define
+\begin{equation}
+ \typ(f)=\limsup_{n\to\infty}
+     \left(\frac{|f_n|}{(n!)^s}\right)^{1/n}\in[0,\infty].
+ \label{eq:type}
+\end{equation}
+The convention $0^{1/n}=0$ is understood. Finite initial coefficients do
+not affect this value. Replacing $(n!)^s$ by $((n-1)!)^s$ does not alter
+it either, since $n^{s/n}\to1$.
+
+\begin{proposition}[Exact inverse type; a known repository result]
+\label{prop:inverse-type}
+For $s>0$ and $f(z)=az+O(z^2)$ with $a\ne0$,
+\begin{equation}
+ \typ(f\inv)=\frac{\typ(f)}{|a|}.
+ \label{eq:inversetype}
+\end{equation}
+The equality includes zero and infinite types.
+\end{proposition}
+\begin{proof}
+First suppose $a=1$ and $\typ(f)<\infty$. For every $A>\typ(f)$,
+there is a finite $C$ with $|f_{j+1}|\le CA^j(j!)^s$. This follows
+from the definition of limsup; the change of index and the polynomial
+factor $(j+1)^s$ can be absorbed in the strict exponential margin.
+The majorant \eqref{eq:coarsecost} gives $\typ(f\inv)\le A$.
+Let $A\downarrow\typ(f)$, including arbitrarily small positive $A$
+when the type is zero. Applying the same inequality to $f\inv$ proves
+the reverse inequality. If $f$ has infinite type but its inverse had
+finite type, this finite-type argument applied to the inverse would be
+a contradiction.
+
+For general $a$, let $F=f/a$. It is tangent to the identity and has the
+same type as $f$. Since $f\inv(w)=F\inv(w/a)$, input scaling gives
+\eqref{eq:inversetype}.
+\end{proof}
+
+The general log-convex theorem in \cite{weighted} is broader than
+\cref{prop:inverse-type}. The point of the present proof is that it
+exhibits the precise information that the type discards.
+
+\subsection{Borel radii, without a summability claim}
+For the coefficient normalization
+\[
+ \mathcal B_s f(\xi)=\sum_{n\ge0}\frac{f_n}{(n!)^s}\xi^n,
+\]
+Cauchy--Hadamard gives radius $1/\typ(f)$, with the usual conventions at
+zero and infinity. The frequently used normalization
+\[
+ \mathfrak B_s f(\xi)=\sum_{n\ge0}\frac{f_n}{\Gamma(1+sn)}\xi^n
+\]
+has radius $s^s/\typ(f)$, because Stirling's estimate gives
+\[
+ \left(\frac{(n!)^s}{\Gamma(1+sn)}\right)^{1/n}\longrightarrow s^{-s}.
+\]
+Neither radius determines analytic continuation, growth along a ray, or
+the existence of a Laplace integral. None of the extremal results above
+proves Borel summability or resurgence of the extremizer or of an
+exponential-feedback series.
+
+\section{Composition of two divergent series}\label{sec:composition}
+
+\begin{theorem}[A sharp maximum law]\label{thm:composition}
+Fix $s>0$. Let $f(z)=az+O(z^2)$ and $g(z)=bz+O(z^2)$, where
+$a,b\ne0$. Then
+\begin{equation}
+ \typ(f\circ g)\le\max\{\typ(g),\ |b|\typ(f)\}.
+ \label{eq:compositionbound}
+\end{equation}
+If $\typ(g)\ne |b|\typ(f)$, equality holds. The equality assertion
+also applies when exactly one of the competing types is infinite.
+\end{theorem}
+
+\subsection{The finite composition majorant}
+We first prove the inequality for tangent-to-identity inputs of finite
+type. Choose $A>\typ(f)$ and $B>\typ(g)$ and constants $C,D>0$ with
+\begin{equation}
+ |f_k|\le CA^{k-1}((k-1)!)^s,\quad
+ |g_k|\le DB^{k-1}((k-1)!)^s\qquad(k\ge2).
+ \label{eq:compositioninputs}
+\end{equation}
+In this section $P_0(m,\ell)$ denotes \eqref{eq:convolution} with
+$\nu=0$, and $K=K(s,0)$. Write $g=z(1+v)$.
+The terms $k=1$ and $k=n$ in $[z^n]f(g)$ contribute $g_n$ and $f_n$.
+In every other term, use $\ell\ge1$ nonlinear factors of $v$ in
+$(1+v)^k$. Their total extra degree is $n-k$, and their contribution is
+bounded by
+\begin{equation}
+ CA^{k-1}((k-1)!)^s\binom{k}{\ell}
+       D^\ell B^{n-k}P_0(n-k,\ell).
+ \label{eq:compositionterm}
+\end{equation}
+Let $T=\max(A,B)$. By \cref{lem:twoconv},
+\[
+ P_0(n-k,\ell)\le K^{\ell-1}((n-k-\ell+1)!)^s.
+\]
+Both factorial arguments $k-1$ and $n-k-\ell+1$ are positive, and
+sum to $n-\ell$. Hence
+\[
+ (k-1)!(n-k-\ell+1)!\le(n-\ell-1)!.
+\]
+Also $A^{k-1}B^{n-k}\le T^{n-1}$ and
+$\sum_k\binom{k}{\ell}\le\binom{n+1}{\ell+1}$.
+Summing \eqref{eq:compositionterm} proves
+\begin{align}
+ |[z^n]f(g)|\le{}&|f_n|+|g_n|+
+ C T^{n-1}((n-1)!)^s S_n,\label{eq:compositionfinite}\\
+ S_n={}&\sum_{\ell=1}^{n-2}D^\ell K^{\ell-1}
+ \binom{n+1}{\ell+1}
+ \left(\frac{(n-\ell-1)!}{(n-1)!}\right)^s.
+ \label{eq:Sn}
+\end{align}
+This is a finite inequality valid without positivity or convergence.
+
+For $\ell\le n/2$, the factorial ratio is at most
+$(n/2)^{-s\ell}$ and the binomial factor at most
+$(2n)^{\ell+1}/(\ell+1)!$. For larger $\ell$, the factorial ratio
+has at least $\lfloor n/2\rfloor$ factors of order $n^{-s}$, while
+all other factors together are at most exponential in $n$. Therefore
+\begin{equation}
+ S_n\le C_1 n\exp(C_2 n^{\max(1-s,0)})+
+               \exp(-c n\log n+O(n)).
+ \label{eq:Snbound}
+\end{equation}
+The right side has $n$th root tending to $1$. Thus
+$\typ(f\circ g)\le T$. Sending $A\downarrow\typ(f)$ and
+$B\downarrow\typ(g)$ proves the tangent inequality. If an input type
+is infinite the upper bound is automatic.
+
+For arbitrary nonzero linear coefficients, put
+$\widehat g=g/b$ and $F_b(z)=f(bz)/(ab)$. These are tangent to the
+identity, and $f\circ g=ab(F_b\circ\widehat g)$. Since
+$\typ(F_b)=|b|\typ(f)$ and $\typ(\widehat g)=\typ(g)$,
+\eqref{eq:compositionbound} follows.
+
+\subsection{Why unequal types cannot cancel}
+Let $h=f\circ g$, and abbreviate
+\[
+ X=|b|\typ(f),\qquad Y=\typ(g),\qquad Z=\typ(h).
+\]
+Apply the already proved inequality to
+$f=h\circ g\inv$ and $g=f\inv\circ h$, using
+\cref{prop:inverse-type}. One obtains
+\begin{equation}
+ X\le\max(Y,Z),\qquad Y\le\max(X,Z),\qquad Z\le\max(X,Y).
+ \label{eq:threemax}
+\end{equation}
+If $X\ne Y$, these three inequalities force $Z=\max(X,Y)$.
+This also proves the extended-real assertion. It completes the proof
+of \cref{thm:composition}.
+
+\begin{example}[Both equality and strict inequality are necessary]
+Let
+$f(z)=z+\sum_{n\ge2}A^{n-1}((n-1)!)^s z^n$ and define $g$ similarly
+with $B\ne A$. Then their types are $A,B$, and the composition has type
+$\max(A,B)$. On the other hand, taking $g=f\inv$ gives two equally
+typed divergent inputs whose composition is the identity. Its type is
+zero. Thus an unconditional equality in \eqref{eq:compositionbound}
+would be false.
+\end{example}
+
+\begin{corollary}[A type filtration]
+For each finite $T\ge0$, the tangent-to-identity formal series with
+$\typ(f)\le T$ form a group under composition. If the inner and outer
+types are different, the larger type survives composition.
+\end{corollary}
+\begin{proof}
+Use \cref{thm:composition,prop:inverse-type}; the identity has type zero.
+\end{proof}
+
+\begin{remark}[Analytic coordinate changes]
+For an analytic invertible $\phi(z)=cz+O(z^2)$,
+\[
+ \typ(\phi\inv\circ f\circ\phi)=|c|\typ(f).
+\]
+At positive type this follows from the unequal-type equality, since an
+analytic series has zero $s$-type for $s>0$. At zero type it follows
+from the upper bound. This recovers the factorial specialization of the
+coordinate law already present in \cite{weighted}; it is a consequence,
+not an additional novelty claim.
+\end{remark}
+
+\section{A positive-forward obstruction to inverse root limits}
+\label{sec:counterexample}
+
+\begin{theorem}[Full forward roots do not force full inverse roots]
+\label{thm:rootcounter}
+For every $s>0$ and $A>0$, there is a tangent-to-identity formal series
+$F$ with strictly positive coefficients in every positive degree and
+\begin{equation}
+ \lim_{n\to\infty}
+ \left(\frac{[z^n]F}{((n-1)!)^s}\right)^{1/n}=A,
+ \label{eq:fullforward}
+\end{equation}
+whose inverse has infinitely many zero coefficients and satisfies
+\begin{equation}
+ \liminf_{n\to\infty}
+ \left(\frac{|[z^n]F\inv|}{((n-1)!)^s}\right)^{1/n}=0,
+ \qquad
+ \limsup_{n\to\infty}
+ \left(\frac{|[z^n]F\inv|}{((n-1)!)^s}\right)^{1/n}=A.
+ \label{eq:sparseroots}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Define the sparse series
+\begin{equation}
+ H(z)=z-\sum_{\substack{n\ge2\\n\text{ even}}}
+                  A^{n-1}((n-1)!)^s z^n,
+ \qquad F=H\inv.
+ \label{eq:sparseH}
+\end{equation}
+The inverse equation is
+\[
+ F=z+\sum_{\substack{m\ge2\\m\text{ even}}}
+          A^{m-1}((m-1)!)^s F^m.
+\]
+Its recursive construction has nonnegative coefficients, and the term
+$AF^2$ alone forces strict positivity in every positive degree. In
+particular $F_2=A$.
+
+For even $n$, the term with $m=n$ yields
+\[
+ F_n\ge A^{n-1}((n-1)!)^s.
+\]
+For odd $n\ge3$, use $m=n-1$ and choose exactly one quadratic term in
+$F^{n-1}$:
+\[
+ F_n\ge A^{n-2}((n-2)!)^s(n-1)F_2
+       =A^{n-1}(n-1)((n-2)!)^s.
+\]
+After normalization by $((n-1)!)^s$, the latter lower bound is
+$A^{n-1}(n-1)^{1-s}$. Thus both parity subsequences have normalized
+root liminf at least $A$.
+
+The sparse series $H$ has type $A$, and
+\cref{prop:inverse-type} gives $\typ(F)=A$. The upper limsup for $F$
+is therefore $A$, proving \eqref{eq:fullforward}. Since $F\inv=H$,
+the odd coefficients vanish and the even normalized roots tend to $A$.
+This proves \eqref{eq:sparseroots}.
+\end{proof}
+
+This example is deliberately not an exponential-feedback kernel. It
+shows exactly what a theorem based only on positivity and a forward
+root limit cannot establish. Eventual nonvanishing, a sign law, or a
+full root limit for a particular feedback inverse needs additional
+structure specific to that kernel.
+
+The restriction $s>0$ throughout the type theory is essential. At
+$s=0$, $f=z-z^2$ has type zero, whereas its inverse has coefficients
+$\frac1n\binom{2n-2}{n-1}$ and type $4$. Positive factorial growth is
+what makes the nonlinear overhead subexponential.
+
+\section{Reproducible calculations and what they establish}
+\label{sec:computations}
+
+\subsection{An exact coefficient algorithm}
+Let $f(z)=z(1+\sum_{j\ge1}v_jz^j)$ and, for a fixed $n$, write
+$(1+\sum v_jz^j)^{-n}=\sum b_mz^m$. Differentiating formally gives
+\begin{equation}
+ b_0=1,\qquad
+ b_m=-\frac1m\sum_{j=1}^m\{m+(n-1)j\}v_jb_{m-j},\qquad
+ [z^n]f\inv=\frac{b_{n-1}}n.
+ \label{eq:algorithm}
+\end{equation}
+For integer input, the implementation checks exact divisibility in both
+steps rather than silently rounding. Composition is implemented by an
+independent truncated polynomial multiplication routine.
+
+The recorded standard-library run used degree $45$ and performed
+\textbf{5,338 scalar equalities or inequalities}. It checked both inverse
+identities for four factorial models, all $512$ sign assignments in a
+degree-ten coefficient box, the sparse-inverse counterexample and its
+lower bounds, and the identity
+$(f\circ g)\inv=g\inv\circ f\inv$ for two factorially divergent
+inputs. These are finite exact checks; they do not certify a limit.
+
+For $s=C=A=1$ and $\nu=0$, the initial coefficients of $G_*$ are
+\[
+ 1,\ 1,\ 4,\ 21,\ 128,\ 862,\ 6264,\ 48549,\ 399352,\ 3484746.
+\]
+For the sparse inverse in \eqref{eq:sparseH} at $s=A=1$, the forward
+coefficients begin
+\[
+ 1,\ 1,\ 2,\ 11,\ 50,\ 330,\ 1956,\ 15459,\ 109322,\ 1040414.
+\]
+The complete recorded coefficients and checks are in
+\texttt{data/recorded/verification.json}.
+
+\subsection{Positive-term diagnostics, not interval certificates}
+For the extremizer with $A=1$, normalize the recurrence by $w_m$.
+Writing $B_m=b_m/w_m$ for $m\ge1$ gives
+\begin{equation}
+ B_m=Cn+\frac Cm\sum_{j=1}^{m-1}\{m+(n-1)j\}
+              \frac{w_jw_{m-j}}{w_m}B_{m-j},\qquad
+ R_n=\frac{B_{n-1}}{nC}.
+ \label{eq:scaledalgorithm}
+\end{equation}
+This avoids building the final huge factorial before normalization.
+All summands are positive. The diagnostic implementation uses
+extended-range \texttt{longdouble}, rejects environments where that
+format has only ordinary double range, and checks finiteness. Three
+cases at degree $80$ were independently recomputed at $80$ decimal digits
+with \texttt{mpmath}; relative differences were below $5\cdot10^{-18}$.
+Neither computation uses directed rounding.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$s$ & $n$ & $\log R_n$ & $\log R_n/n^{1-s}$ & $\log R_n-n^{1-s}$\\
+\midrule
+\input{data/diagnostic_table.tex}
+\end{tabular}
+\caption{Recorded diagnostics for $C=1$, $\nu=0$. Every displayed entry is a rounded floating-point diagnostic. At $s=1/2$, the last column tends to $3/4+\sqrt2=2.16421356\ldots$; convergence is visibly not complete at the displayed degrees.}
+\label{tab:diagnostics}
+\end{table}
+
+At $s=1/4$, the ratio in the fourth column is still about $1.70$ at
+$n=1280$, although its proved limit is $1$. This is an important caution:
+a leading logarithmic theorem need not provide a useful small-degree
+approximation. We do not use the table to assert an onset or error rate.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+$t$ & $s=1+t/\log1280$ & observed $R_{1280}$ & $\exp(\ee^{-t})$\\
+\midrule
+\input{data/crossover_table.tex}
+\end{tabular}
+\caption{The order-one crossover with $C=1$, $\nu=0$. The rightmost column is the limit in \eqref{eq:crossover}, not a finite-degree enclosure.}
+\end{table}
+
+\subsection{Rebuilding without modifying recorded results}
+The package has no network dependency. From its root directory:
+\begin{quote}\small\ttfamily
+python code/verify.py --order 45\\
+python code/verify.py --order 45 --diagnostics --mp-check\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The exact tests need only Python's standard library. Diagnostics require
+NumPy, and the high-precision cross-check requires mpmath. The default
+output directory is \texttt{data/rerun/}, so an ordinary rerun does not
+overwrite the recorded evidence. The numerical tables used by this
+article are supplied as small TeX files generated from the recorded CSVs.
+
+\section{Implications for the transseries program}\label{sec:implications}
+
+\subsection{What the result adds below type preservation}
+A type identifies a coefficient series only up to factors whose $n$th
+roots tend to $1$. At fixed positive Gevrey order, that equivalence is
+too coarse to control a critical-radius coefficient norm. The extremal
+cost quantifies the missing information. In the shifted normalization,
+quadratic coefficients generate approximately $Cn^{1-s}$ small
+Lagrange blocks, and their accumulation produces $\exp(Cn^{1-s})$.
+At and above $s=1$ their number stays bounded or tends to zero.
+
+This has a practical implication for certified symbolic manipulation:
+retaining an optimal exponential constant does not by itself justify
+retaining a fixed coefficient prefactor. For $s<1$, a program that
+returns the same $A$ and a constant-size majorant after reversion will
+fail on the explicit extremizer. It must either track a subexponential
+envelope, allow an arbitrarily small increase of $A$, or exploit extra
+structure of its particular input.
+
+\subsection{What transfers to countable exponential feedback}
+The source weighted-type theorem is motivated by
+\[
+ U(q)=\sum_{j\ge1}c_jq^j\exp(\lambda_jU(q)).
+\]
+Once a separately established theorem places such a forward series in
+a particular factorial coefficient ball, the exact finite majorant
+\eqref{eq:exactR} bounds its inverse. The bound is universal and requires
+no information about the inverse signs. The composition theorem also
+controls the type when two divergent formal correction maps are nested.
+
+These statements do \emph{not} say that a particular feedback inverse
+attains the extremal amplification. The extremizer has negative
+nonlinear input coefficients; positive-feedback inputs can exhibit
+substantial cancellation after inversion. Consequently, this article
+makes no new signed equivalent, least-term error law, or summability
+claim for the feedback family. Its contribution is the universal
+fixed-ball estimate and the sharp filtered composition law.
+
+\subsection{Formal and analytic layers remain separate}
+Everything in the proofs before the numerical section concerns ordinary
+formal coefficient degrees. An exponential transseries with accumulating
+actions may not have a finite degree decomposition of the kind used in
+\eqref{eq:convolution}. Applying these arguments to such supports requires
+an additional finite-coefficient or summability theorem. Similarly,
+a formal inverse need not be the asymptotic expansion of a chosen
+analytic inverse without an analytic realization theorem. Neither issue
+is removed by the positivity of the extremal majorant.
+
+\section{Further research questions and concrete next targets}
+\label{sec:questions}
+
+\subsection{Complete multiplicative cost below one half}
+For $0<s<1/2$, determine a finite explicit expansion of $\log R_n$
+whose error is $o(1)$. The Poisson representation suggests a hierarchy
+of scales $n^{1-rs}$. Small parts of size $r$ become visible at
+$s=1/r$, but product curvature and tilted fluctuations also contribute.
+The formula for $s=1/2$ proves that simply summing the small-part
+intensities is insufficient. A useful next theorem would give the
+complete equivalent for $1/3<s<1/2$, with its constant at $s=1/3$.
+No coefficient for that further expansion is asserted here.
+
+\subsection{Uniform transitions at the lower thresholds}
+Construct analogues of \eqref{eq:crossover} around $s=1/r$ for
+$r\ge2$. The variables $(s-1/r)\log n$ are natural candidates, but
+one must first subtract all larger contributions. A successful theorem
+should specify both a uniform remainder and the normalization under
+which a finite limiting profile appears.
+
+\subsection{Replacing factorials by a local-quotient theory}
+For a log-convex weight $M$, seek hypotheses under which the critical
+inverse cost is controlled sharply by $nM_{n-1}/M_n$, after the
+appropriate index convention is fixed. In the present model the ratio
+is asymptotic to $n^{-s}$, explaining the scale $n^{1-s}$.
+Slowly varying perturbations, abrupt quotient changes, and factorial
+weights with logarithmic deficits need separate uniformity analysis.
+The repository's general zero-loss theorem alone is not enough to
+identify their extremal subexponential constants.
+
+\subsection{Two divergent inputs for general weights}
+Extend \cref{thm:composition} beyond factorial powers. A candidate
+hypothesis is a weighted two-part convolution estimate with
+subexponential constants uniform in the number of parts. Determine
+whether log-convexity and superexponential root growth alone suffice,
+or construct a counterexample. Equal-type cancellation must remain
+part of the statement.
+% ed. (2026-09-29): answered by the companion package
+\begin{ednote}
+Answered by \path{Exact_Weighted_Type_Beyond_Log_Convexity/}: log-convexity
+and superexponential root growth suffice, and more generally so does
+subexponential equivalence to a supermultiplicative weight with
+superexponential roots, with equal-type cancellation filling all of
+$[0,T]$; see the note at the end of Section~\ref{sec:target}.
+\end{ednote}
+
+\subsection{Typical inputs versus the extremizer}
+Classify coefficient sign patterns or asymptotic regularity assumptions
+under which $|[z^n]f\inv|$ is asymptotic to a fixed fraction of the
+extremal coefficient. An opposite target is a sharp suppression theorem
+for positive forward coefficients. The sparse example shows that a
+root-limit hypothesis by itself cannot provide such a classification.
+
+\subsection{Exact remainder bounds at finite degree}
+Turn the localization proof into a computable error certificate for
+\eqref{eq:multmain} and \eqref{eq:halfmain}, with an explicit optimal
+cutoff $h$ and a rigorous bound for every remainder. The finite sum
+\eqref{eq:exactR} already gives an exact extremum, but the present
+asymptotic proof does not supply an optimized, practical onset bound.
+Directed-rounding evaluation of the positive recurrence would provide
+a complementary finite-degree certificate.
+
+\subsection{Several variables and operator-valued coefficients}
+Define a coefficient ball for homogeneous polynomial maps or bounded
+multilinear operators with an invertible linear part. Determine which
+normed extremal problem replaces the one-variable negative series and
+whether the threshold $s=1$ persists without dimension-dependent
+exponential loss. A type-level theorem and a sharp fixed-ball theorem
+should be treated as different objectives.
+% ed. (2026-09-29): the type-level part is in the companion package
+\begin{ednote}
+The type-level statement for tangent maps on Banach spaces, with the
+multilinear operator norm and no dimension loss, and sharp two-sided bounds
+under a general invertible derivative, are proved in
+\path{Exact_Weighted_Type_Beyond_Log_Convexity/} (its
+Theorems~\texttt{thm:banach} and \texttt{thm:jacobian}). The fixed-ball
+problem posed here remains open.
+\end{ednote}
+
+\subsection{A realistic formalization sequence}
+A Lean formalization can begin with the finite identities
+\eqref{eq:lagrange}, \eqref{eq:exactR}, and \eqref{eq:compositionfinite}.
+The next independent component is the factorial concentration and
+convolution library, including a summable uniform bound for $K$.
+A third component proves the tail estimates and the type maximum law.
+Only after those finite and limsup statements are established is it
+reasonable to formalize localization, the Poisson normalization, and
+uniform asymptotics. The present Python checks should remain explicitly
+separate from that program.
+
+\section{Conclusion}
+The Gevrey version of the repository's optimal-overhead question has a
+sharp answer at the leading subexponential scale: a single extremizer
+attains $\log R_n\sim Cn^{1-s}$ for $0<s<1$. Its full multiplicative
+behavior is determined here at and above one half, including the
+boundary constant, while the uniform transition at order one separates
+fixed-radius boundedness from type preservation. Two divergent formal
+maps obey a maximum law at the level of Gevrey type, and unequal types
+cannot cancel. Full root limits require additional information, as the
+explicit positive-forward counterexample demonstrates.
+
+These are extensions of existing repository results, not replacements
+for the already established zero-loss theorem. They isolate what must
+be tracked beyond an optimal exponential constant and supply finite
+formulas suitable for both implementation and subsequent formalization.
+
+\appendix
+\section{A compact proof audit}\label{app:audit}
+The logical dependencies can be checked without reading the numerical
+section. Formal Lagrange inversion implies the exact extremizer formula.
+The two-part convolution lemma implies the length tail bound. Capped
+factorial concentration plus that length tail implies localization.
+Localization and an elementary negative-binomial upper bound, paired
+with the all-size-one lower bound, prove the sharp logarithmic cost.
+Localization at a shrinking cutoff and a finite Poisson normalization
+prove the multiplicative equivalent. The order-one-half correction uses
+one extra product expansion and a separately proved exponential
+integrability estimate. No empirical observation is used in these steps.
+
+The type-invariance proposition uses only the coarse convolution bound
+and inversion in both directions. The composition theorem uses the
+finite composition majorant for its upper bound and type invariance
+for its noncancellation conclusion. The root-limit counterexample uses
+positivity, two explicit coefficient lower bounds, and type invariance.
+
+The potentially delicate points are therefore exposed: uniformity in
+the convolution constant; entropy control with $t\log(\ee n/t)$ rather
+than the too-coarse $t\log n$ in the fixed-fraction localization proof;
+uniqueness of the large part; the distinction between an absolute
+$o(1)$ discarded contribution and a relative error; and the
+exponential-integrability argument at $s=1/2$. These points are all
+proved explicitly in the main text.
+
+\section{Package contents and provenance}\label{app:package}
+\begin{longtable}{>{\raggedright\arraybackslash}p{.39\textwidth}p{.54\textwidth}}
+\toprule
+File & Purpose\\
+\midrule
+\endhead
+\texttt{article.tex}, \texttt{article.pdf} & Source and compiled article.\\
+\texttt{README.md} & Scope, main results, and rebuild commands.\\
+\texttt{code/verify.py} & Exact finite checks and optional diagnostics.\\
+\texttt{code/render\_tables.py} & Regenerate the printed tables from CSV files.\\
+\path{data/recorded/verification.json} & Recorded exact-check ledger and high-precision comparisons.\\
+\texttt{data/recorded/diagnostics.csv} & Positive-term extremal computations.\\
+\texttt{data/recorded/crossover.csv} & Order-one transition diagnostics.\\
+\texttt{data/*\_table.tex} & Tables generated from the recorded CSVs.\\
+\texttt{data/build\_validation.json} & Build and layout validation record.\\
+\texttt{provenance.json} & Repository snapshot, source paths, and dependency boundaries.\\
+\bottomrule
+\end{longtable}
+No repository source file is changed by this package. No claim is made
+that the full ProveIt corpus was exhaustively searched. In particular,
+concurrently arriving or unintegrated archives are not certified to be
+disjoint from this article. The explicit crosswalk in \cref{sec:target}
+records the actual target and avoids claiming the already settled
+inverse-type question as a new result.
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot, inspected
+29 September 2026.\par
+\commit.\par
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864}{GitHub snapshot}.
+
+\bibitem{inventory}
+ProveIt contributors, \emph{Series and transseries}, directory README
+at the snapshot in \cite{repo}, including the arrival inventory and
+editorial scope notes.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864/Analysis/Transseries/docs/series-and-transseries/README.md}{Source inventory}.
+
+\bibitem{weighted}
+ProveIt research package, \emph{Sharp Weighted Type Under Formal
+Reversion: zero-loss inversion, exact Borel radii, and non-D-finiteness
+in countable exponential feedback}, 2026, conventional research
+manuscript with editorial notes; especially the further-research
+subsections on optimal subexponential cost and two divergent inputs.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864/Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/article.tex}{Pinned TeX source}.
+
+\bibitem{amplitude}
+ProveIt research package, \emph{Amplitude--Slope Compensation in
+Feedback Transseries: sharp regularity, negative-ray summation, and
+damping-induced condensation}, 2026. Its inverse-type question is
+cross-referenced as already answered by \cite{weighted} in
+\cite{inventory}. Used here only to identify this overlap, not as a
+mathematical input to any proof.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/5c695cfdf70a8b6c91bd5b2c1e99e3baecd5a864/Analysis/Transseries/docs/series-and-transseries/Amplitude_Slope_Compensation_Feedback_Transseries/article.tex}{Pinned source}.
+
+\bibitem{gessel}
+I. M. Gessel, Lagrange inversion, \emph{Journal of Combinatorial Theory,
+Series A} \textbf{144} (2016), 212--249.
+\href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018};
+\href{https://arxiv.org/abs/1609.05988}{arXiv:1609.05988}.
+
+\bibitem{borinsky}
+M. Borinsky, Generating asymptotics for factorially divergent sequences,
+\emph{Electronic Journal of Combinatorics} \textbf{25}(4) (2018), P4.1.
+\href{https://doi.org/10.37236/5999}{doi:10.37236/5999};
+\href{https://arxiv.org/abs/1603.01236}{arXiv:1603.01236}.
+
+\bibitem{rscomposition}
+A. Rainer and G. Schindl, Composition in ultradifferentiable classes,
+\emph{Studia Mathematica} \textbf{224}(2) (2014), 97--131.
+\href{https://doi.org/10.4064/sm224-2-1}{doi:10.4064/sm224-2-1};
+\href{https://arxiv.org/abs/1210.5102}{arXiv:1210.5102}.
+
+\bibitem{rsstability}
+A. Rainer and G. Schindl, Equivalence of stability properties for
+ultradifferentiable function classes, \emph{Revista de la Real Academia
+de Ciencias Exactas, Fisicas y Naturales. Serie A. Matematicas}
+\textbf{110} (2016), 17--32.
+\href{https://doi.org/10.1007/s13398-014-0216-0}{doi:10.1007/s13398-014-0216-0};
+\href{https://arxiv.org/abs/1407.6673}{arXiv:1407.6673}.
+\end{thebibliography}
+\end{document}

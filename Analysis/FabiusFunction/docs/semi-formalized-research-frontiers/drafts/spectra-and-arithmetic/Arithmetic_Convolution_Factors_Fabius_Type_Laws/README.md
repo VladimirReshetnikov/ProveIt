@@ -5,7 +5,7 @@ Research manuscript prepared for the ProveIt programme, 28 September 2026.
 
 ## Files
 
-- `article.pdf` — the 25-page article, including complete written proofs,
+- `article.pdf` — the 26-page article, including complete written proofs,
   ten further research questions, a verification ledger, and references.
 - `article.tex` — the self-contained LaTeX source used to generate that PDF.
 - `verify.py` — deterministic exact finite regression tests; standard library only.
@@ -94,3 +94,38 @@ Inspected commit: `fbba58593dc0622aa914972896150d4848f935b5`.
 See `SOURCES.md` for the exact inspected files and limitations. In particular,
 the large geometric-q monograph was not fully retrieved. Its unread content
 was not used as proof evidence or as a basis for a global novelty claim.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Made in the editorial pass after batch 56 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-29)`.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-29)" is defined in the preamble. A note after the discussion of
+  the question "Beyond divisibility ladders" records that the later
+  unreviewed draft `../Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`
+  answers it for prime-power geometric targets: there zero-divisor
+  domination is equivalent to a nested matching and to factorization by a
+  probability measure, and its base-six theorem gives the requested
+  counterexample (`Unif_{1/2} * Unif_{1/3}` does not divide `mu^[6]`
+  although all zeros cancel); targets that are not prime powers remain
+  open. The note also gives the normalization change (that draft's `X_p` is
+  twice a variable with law `mu^[p]`) and says that the draft does not cite
+  this article, whose one-ladder theorems are single-stream cases of its
+  results. A second note, after the discussion of "Multivariate arithmetic
+  factors", records that the same draft settles the product-target case:
+  a sum of uniform laws along arbitrary vectors divides `(mu^[p])^(tensor d)`
+  exactly when every generator is coordinate-aligned with a signed
+  reciprocal-integer length and each coordinate satisfies the matching
+  criterion, and the real matrices `C` for which the image law is a factor
+  are exactly the partial monomial matrices with nonzero entries `±1/n`;
+  nested boxes, parallelotopes and lattice fundamental domains in general
+  remain open. The title page no longer sets a PDF page anchor (it
+  duplicated the destination `page.1`).
+- `article.pdf`: rebuilt from the amended source by the three passes above
+  (MiKTeX pdfTeX 1.40.29): 26 pages (25 as delivered); the final log has no
+  error, overfull or underfull box, unresolved reference, duplicate
+  destination, or LaTeX warning; the pages carrying the notes were rendered
+  and inspected.
+- `README.md`: the page count under "Files", and this section.

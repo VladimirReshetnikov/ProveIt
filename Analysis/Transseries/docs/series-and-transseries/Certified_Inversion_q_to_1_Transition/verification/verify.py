@@ -206,7 +206,8 @@ def run():
         lastlo,lasthi=lo,hi
     report['pade']={'moments':[str(m) for m in mom],'D_numeric':text(D), 'bounds':bounds}
     report['assertions']='All assertions passed.'
-    out=Path(__file__).with_name('results.json');out.write_text(json.dumps(report,indent=2)+'\n')
+    # ed. (ProveIt, 2026-09-29): newline='\n' so that reruns write LF on Windows too.
+    out=Path(__file__).with_name('results.json');out.write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps(report,indent=2))
 
 if __name__=='__main__':

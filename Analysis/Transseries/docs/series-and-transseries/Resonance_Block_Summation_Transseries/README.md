@@ -76,6 +76,15 @@ The program uses no network access or external datasets. It writes generated
 files only under the local `results/` directory. The build additionally creates
 ordinary local TeX auxiliary files and logs.
 
+Since the editorial amendments below, `build.sh` no longer overwrites the
+recorded results: it runs `verify.py --stage all --outdir build/results`, writes
+its pass logs and TeX auxiliary files to `build/`, typesets the article from the
+recorded `results/coalescence_table.tex`, and replaces only `article.pdf`. Set
+`PYTHON` to choose the interpreter. The separate `verify.py` stages above still
+write into `results/` (including the table the article inputs, and the Python
+version recorded in `verification.json` and `verification.txt`); use `--outdir`
+or a copy to compare with the recorded files.
+
 ## Executed checks
 
 The distributed results record 36 exact symbolic assertions and 15 numerical
@@ -98,7 +107,61 @@ floating-point arithmetic.
 - `requirements.txt`, `build.sh`: dependencies and build command.
 - `SOURCES.md`: repository and primary-literature provenance.
 - `QA_REPORT.md`: compilation and visual-inspection record.
-- `SHA256SUMS.txt`: checksums of all packaged files except itself.
+- The delivered checksum ledger was verified in full on filing (batch 48) and
+  not kept; the delivered archive remains in the repository history (see
+  `docs/incoming/README.md`, batch 48 row).
 
 No repository files were changed. No external source corpus or font files are
 included.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Made in place after filing (batch 48 of `docs/incoming/README.md`). The author's
+text is otherwise unchanged; every change to the article source is preceded by a
+`% ed. (2026-09-29)` comment, and no label was renamed or theorem renumbered.
+
+- `article.tex`: two visible "Editorial note (ProveIt, 2026-09-29)" blocks. At the
+  start of Section 1, a scope note: the title is broader than the results, which
+  concern the sine-product kernels (plus the hypothesis-bound
+  `prop:abstract`), and its "resonances" are near-coincident Borel poles. In
+  Section 1.2: the report answers, without citing it, the forward half of the
+  research question "Countably many resurgent input poles" of
+  `../Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex`; the resurgent
+  half stays open (project 6). The abstract is unchanged. The title page no longer
+  carries a PDF page anchor (`\hypersetup{pageanchor=false}`), which removes a
+  pre-existing duplicate-destination warning.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf`; 26 pages (the
+  delivered PDF had 25; `QA_REPORT.md` describes the delivered build), no errors,
+  undefined references, multiply defined labels or duplicate destinations.
+- `verify.py`: writes LF on every platform, and accepts `--outdir` (default
+  unchanged).
+- `build.sh`: redirected to `build/` as described under "Reproduce". Tested on a
+  copy (SymPy 1.14.0, mpmath 1.3.0): the six files in `build/results/`, and the six
+  written by a default `verify.py --stage all`, are byte-identical to the filed
+  `results/`.
+- This README: the paragraph on `build.sh`, and the checksum-ledger entry.
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by a
+`% ed. (2026-09-29, batch 52)` comment.
+
+- `article.tex`: an editorial note after research Question 1 ("The boundary
+  of the raw-series half-plane"): answered by
+  `../Critical_Line_Continued_Fractions_Riesz_Summation/` (batch 52) for two
+  lattices with numerator `t^D`, `D >= 2` (this report's kernel is
+  `d = D = 2`). With `A_k = q_k^D q_(k+1) e^(-b q_k)` on `Re z = b = beta(alpha)`:
+  increasing-action convergence exactly when `A_k -> 0`, absolute exactly
+  when `sum A_k < infinity`, the separately indexed sums exactly when
+  `sum (-1)^(p_k+q_k+k) A_k e^(-i q_k Im z)` converges, with an
+  increasing-action sum whose separate sums diverge (`thm:classification`,
+  `ex:opposite`); absolute, conditional and term-test-failing behaviour at
+  every prescribed positive abscissa (`cor:types`). For `d` lattices, Riesz
+  means of integer order `m >= d - 1` recover the block sum on `Re z > 0`
+  with an exact finite derivative bias and no Diophantine condition
+  (`thm:riesz`), and `d - 1` is minimal for period-uniform bounds
+  (`thm:sharp`).
+- `article.pdf`: rebuilt (`latexmk -pdf`; 26 pages, unchanged; no errors,
+  undefined references, multiply defined labels or duplicate destinations).
+  `QA_REPORT.md` still describes the delivered build.
+- `README.md`: this subsection.

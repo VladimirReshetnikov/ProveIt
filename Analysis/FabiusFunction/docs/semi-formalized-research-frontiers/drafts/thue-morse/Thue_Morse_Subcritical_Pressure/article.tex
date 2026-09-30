@@ -1,0 +1,1491 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr,titlesec,xurl}
+\usepackage{aliascnt}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{26,53,74}
+\definecolor{muted}{RGB}{90,96,102}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Localized Spectral Response and the Full Subcritical Pressure Law},
+ pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={Thue--Morse digital products, moving zeros, weak perturbation, pressure cusps}}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Localized spectral response}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{.2em}
+\setlist{itemsep=.3em,topsep=.5em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Id}{\mathrm I}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\eps}{\boldsymbol\varepsilon}
+\newcommand{\vel}{\boldsymbol v}
+\newcommand{\Proj}{\Pi}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Holder}{C^\alpha(\TT)}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+{\small\sffamily\color{ink} PROVEIT\quad /\quad ANALYSIS AND DYNAMICAL SYSTEMS}\par
+\vspace{17mm}
+{\Huge\bfseries\color{ink} Localized Spectral Response\par}
+\vspace{5mm}
+{\LARGE\bfseries and the Full Subcritical\\[2mm] Pressure Law\par}
+\vspace{10mm}
+{\Large Moving zeros, a polyhedral cusp,\\[1mm] and finite-size scaling for digital products\par}
+\vspace{12mm}
+{\large Research draft prepared for Vladimir Reshetnikov\par}
+{Prepared with ChatGPT\quad\textbullet\quad 29 September 2026\par}
+\vspace{8mm}\hrule\vspace{4mm}
+\begin{abstract}
+The latest critical-pressure report in the ProveIt repository leaves the
+atomic-phase asymptotic unresolved for absolute-moment exponents
+$0<s\leq 1/2$. We close that local gap and obtain a quantitative result
+throughout $0<s<1$. For the normalized digital mask in every integer
+base $b\geq2$,
+\[
+ P_{b,s}(c)=(1-s)\log b
+ +(b-1)\pi s\tan(\pi s/2)|c|
+ +O_{b,s,\alpha}(|c|^{1+s-\alpha}),\qquad 0<\alpha<s.
+\]
+The missing ingredient is a cancellation estimate for the perturbation
+paired with the atomic left eigenfunctional. This pairing is $O(|c|)$
+on $C^\alpha$, although its total-variation norm is of order
+$|c|\log(1/|c|)$ and the full operator changes only by
+$O(|c|^{s-\alpha})$.
+
+A stronger multivariate theorem moves the $b-1$ mask zeros independently.
+With their displacements denoted by $\eps$, the leading pressure response
+is exactly $\pi s\tan(\pi s/2)\norm\eps_1$: the tangent cusp is
+polyhedral, not quadratic, and opposite zero motions do not cancel.
+We prove a weak distributional expansion, an explicit atomic spectral
+gap, the pressure--moment identification, a compact-parameter uniform
+version, and an operator finite-size law with an elementary amplitude.
+Every repository-specific ingredient is rederived. Reproducible numerical
+diagnostics and ten further research questions accompany the proofs.
+\end{abstract}
+\vfill
+{\small\color{muted} Status: unrefereed mathematical research draft. The proofs are not
+Lean/Rocq verified. Computations are diagnostics, not interval certificates.
+Independent priority and correctness review remain appropriate.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+
+\section{The question being resolved}
+\label{sec:scope}
+
+\subsection{A published regularity question and a precise repository gap}
+Generalized Thue--Morse products connect digital exponential sums,
+Riesz products, and thermodynamic formalism. Gohlke, Kesseb\"ohmer, and
+Schindler develop their spectral and fractal theory and obtain an
+analytic phase-dependence result at a particular integer pressure order
+\cite{GKS}. Gohlke, Lamprinakis, and Schmeling prove continuity in the
+singularity location for all nonnegative pressure orders. Following their
+Theorem~2.3, they ask about stronger regularity at general positive orders
+\cite{GLS}. These statements do not themselves determine a local modulus
+or a one-sided derivative at the exceptional atomic phase.
+
+The repository has recently isolated that phase in three reports on
+integer, supercritical fractional, and critical pressure. The last of
+these, \emph{Critical Cusps in Digital-Product Pressure} \cite{CriticalRepo},
+proves a subcritical formula for $1/2<s<1$ and explicitly asks whether it
+continues to $0<s\leq1/2$. Its scalar first-order coefficient is already
+valid below the cutoff. The obstruction is an error bound of the form
+$O(|c|^{2(s-\alpha)})$, obtained by squaring a strong operator norm.
+There is no $\alpha>0$ making that error $o(|c|)$ when $s\leq1/2$.
+
+The present article resolves this exact obstruction. The improvement is
+not an extrapolation from a first-order calculation. We prove an
+$O(|c|)$ bound after pairing the perturbation with the left
+eigenfunctional, and combine it with the strong eigenfunction estimate.
+The resulting nonlinear error is
+\[
+ O(|c|)\,O(|c|^{s-\alpha})=O(|c|^{1+s-\alpha})=o(|c|)
+\]
+for every $0<s<1$ and $0<\alpha<s$.
+
+% ed. (2026-09-29): relation to the predecessor, the uncited snapshot entry,
+% and the changed default output directory of code/verify.py.
+\begin{ednote}
+This article answers the research question ``The remaining subcritical
+interval'' of \cite{CriticalRepo} at the atomic phase, for every
+$0<s\le1/2$, and on $1/2<s<1$ it sharpens that article's $o(|c|)$
+remainder to $O(|c|^{1+s-\alpha})$. Nonzero phases remain open. The
+article is filed in the repository beside its predecessor as
+\path{thue-morse/Thue_Morse_Subcritical_Pressure/}; the repository
+snapshot it was written against is \cite{Repo}. The two tables of
+\cref{sec:numerics} are the recorded output of a run with \code{--full}.
+Since 2026-09-29, \code{code/verify.py} writes to \code{recomputed/}
+unless \code{--output-dir} is given, and it refuses to rewrite
+\code{data/} without \code{--full}.
+\end{ednote}
+
+\subsection{A broader result than a threshold extension}
+A common translation moves every zero by the same amount. Instead,
+we allow independent small displacements of all the mask zeros while
+keeping the modulus of the leading polynomial coefficient fixed. The
+main theorem shows that the first pressure increment is a constant
+multiple of the sum of the absolute displacements. Thus the method
+identifies a multivariate tangent geometry, in addition to removing the
+artificial threshold at $s=1/2$.
+
+The proof also distinguishes three different kinds of convergence:
+strong operator convergence, convergence after pairing with a regular
+test function, and total-variation convergence. Confusing them would
+lose exactly the cancellation that makes the result work.
+
+\subsection{What is, and is not, claimed}
+\begin{center}
+\begin{tabular}{@{}p{.25\textwidth}p{.68\textwidth}@{}}
+\toprule
+\textbf{Claim class}&\textbf{Scope}\\
+\midrule
+Proved here & Full fixed-subcritical cusp; quantitative remainder;
+independent-zero $\ell^1$ law; weak distributional response; compact-parameter
+uniformity; finite-size operator and moment scaling.\\[2mm]
+Reproved background & Atomic rank-one spectral gap; translated-zero
+coefficient; comparison of polynomial moments with cylinder pressure.\\[2mm]
+Not claimed & Global phase regularity; a two-point Lipschitz theorem on
+an entire phase neighborhood; a uniform limit as $s\downarrow0$ or
+$s\uparrow1$; a sharp next coefficient; formal verification; established
+worldwide priority.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The repository snapshot used for comparison is
+\begin{center}\small
+\nolinkurl{458ccfb80b9940220819091da107e82bb970dcca}.
+\end{center}
+The inspected critical report has Git blob
+\nolinkurl{c5491a93464668a8e20dd9afcda664a1c4b6cb81}. Its discussion of the
+remaining subcritical interval and its first research question specify
+the gap addressed here. The current primary literature and targeted
+searches were also checked. This establishes a concrete local
+contribution relative to those sources, not a guarantee that no related
+formula exists elsewhere. No unverified repository theorem is used as
+an axiom in the proofs below.
+
+\section{Definitions and main results}
+\label{sec:main}
+
+\subsection{Digital masks with independently moving zeros}
+Fix an integer $b\geq2$. Write $T_bx=bx\pmod1$ on
+$\TT=\RR/\ZZ$, and let
+\[
+ z_j=\frac jb,\qquad 1\leq j\leq b-1.
+\]
+For a real displacement vector
+$\eps=(\varepsilon_1,\ldots,\varepsilon_{b-1})$, define
+\begin{align}
+ p_{\eps}(z)&=\frac1b\prod_{j=1}^{b-1}
+       \bigl(z-e^{2\pi i(z_j+\varepsilon_j)}\bigr),
+       \label{eq:polynomial}\\
+ m_{\eps}(x)&=|p_{\eps}(e^{2\pi i x})|
+   =\frac1b\prod_{j=1}^{b-1}2|\sin\pi(x-z_j-\varepsilon_j)|.
+       \label{eq:mask}
+\end{align}
+Only sufficiently small displacements are considered, so the zeros
+remain separated. Put $\delta=\norm\eps_\infty$.
+At the origin of parameter space,
+\begin{equation}
+ m_0(x)=\left|\frac1b\sum_{r=0}^{b-1}e^{2\pi i r x}\right|
+       =\left|\frac{\sin\pi b x}{b\sin\pi x}\right|,
+ \label{eq:atomic-mask}
+\end{equation}
+with removable values at integers. A common displacement
+$\eps=c\mathbf1$ gives $m_{\eps}(x)=m_0(x-c)$ exactly.
+For independent displacements, the mask need not be a normalized
+probability $g$-function. The digital-product pressure defined below
+nevertheless makes sense without that additional property.
+
+For $0<s<1$, the transfer operator is
+\begin{equation}
+ (\Lop_{s,\eps}f)(x)=\sum_{k=0}^{b-1}
+ m_{\eps}\!\left(\frac{x+k}{b}\right)^s
+ f\!\left(\frac{x+k}{b}\right).
+ \label{eq:operator}
+\end{equation}
+There is \emph{no factor $1/b$} in this definition.
+The operator acts on $\Holder$, with
+$\norm f_\alpha=\norm f_\infty+[f]_\alpha$, where the seminorm uses
+circle distance. Spectral statements use the complexification.
+
+Let $N=b^n$ and let $\mathcal D_{b,n}$ be the $N$ intervals of length
+$1/N$. Define
+\begin{align}
+ Q_{n,\eps}(z)&=\prod_{r=0}^{n-1}p_{\eps}(z^{b^r}),
+ &\deg Q_{n,\eps}&=N-1,\\
+ F_{s,n,\eps}(x)&=|Q_{n,\eps}(e^{2\pi i x})|^s,
+ &M_{s,n}(\eps)&=\int_0^1F_{s,n,\eps}(x)\dd x,\\
+ Z_{s,n}(\eps)&=\sum_{I\in\mathcal D_{b,n}}
+       \sup_{x\in I}F_{s,n,\eps}(x),
+ &P_{b,s}(\eps)&=\lim_{n\to\infty}\frac1n\log Z_{s,n}(\eps).
+ \label{eq:pressure}
+\end{align}
+Existence of this limit near $\eps=0$ is part of the proof.
+For common displacement we abbreviate $P_{b,s}(c)=P_{b,s}(c\mathbf1)$.
+
+The useful atomic quantities are
+\begin{equation}
+ H(x)=\frac{|\sin\pi x|}{\pi},\quad H_s=H^s,\quad
+ \beta_s=b^{1-s},\quad
+ \nu_s(f)=\int_0^1\frac{f(x)}{H_s(x)}\dd x,\quad
+ \Proj_s=H_s\otimes\nu_s.
+ \label{eq:atomic-data}
+\end{equation}
+Since $s<1$, $\nu_s$ is bounded even on $C^0$, and
+$\nu_s(H_s)=1$. Finally set
+\begin{equation}
+ J_s=\pi s\tan\left(\frac{\pi s}{2}\right),\qquad
+ A_s=\frac{2}{\pi s}\tan\left(\frac{\pi s}{2}\right).
+ \label{eq:constants}
+\end{equation}
+
+\subsection{The full subcritical law and its multivariate strengthening}
+\begin{theorem}[Polyhedral pressure cusp]
+\label{thm:main}
+Let $b\geq2$, $0<s<1$, and $0<\alpha<s$. For all sufficiently small
+$\eps$, the pressure exists and equals the logarithm of a real positive,
+simple dominant eigenvalue of $\Lop_{s,\eps}$ on $\Holder$. Moreover,
+\begin{equation}
+ \boxed{\quad
+ P_{b,s}(\eps)=(1-s)\log b+J_s\norm\eps_1
+                   +O_{b,s,\alpha}(\delta^{1+s-\alpha}).
+ \quad}
+ \label{eq:main}
+\end{equation}
+The statement is uniform for $s$ in a compact subset $K\subset(0,1)$
+when $0<\alpha<\inf K$ is fixed: the displacement neighborhood and
+implicit constant can then be chosen independently of $s\in K$.
+\end{theorem}
+
+\begin{corollary}[The previously missing interval]
+\label{cor:binary}
+For every $0<s<1$,
+\begin{equation}
+ P_{b,s}(c)=(1-s)\log b+(b-1)J_s|c|
+                         +O_{b,s,\alpha}(|c|^{1+s-\alpha}).
+ \label{eq:common}
+\end{equation}
+In the binary convention $\psi_c(x)=\log\cos^2\pi(x-c)$, the pressure
+order is $q=s/2$. Thus for all $0<q<1/2$,
+\begin{equation}
+ P(q\psi_c)=(1-2q)\log2+2\pi q\tan(\pi q)|c|
+                     +O_{q,\alpha}(|c|^{1+2q-\alpha}),
+ \quad 0<\alpha<2q.
+ \label{eq:q-convention}
+\end{equation}
+In particular, at the formerly excluded endpoint $q=1/4$, the linear
+coefficient is $\pi/2$.
+\end{corollary}
+
+The sine convention in \cite{GLS} has its atomic phase at $1/2$.
+Replacing its parameter by $c+1/2$ gives the cosine convention above;
+there is no change in the pressure normalization. In the cosine
+convention the classical binary Thue--Morse phase is $c=1/2$, not $c=0$.
+
+\begin{corollary}[Pointwise geometry and one-sided derivatives]
+\label{cor:geometry}
+The point $\eps=0$ is a strict local minimum of $P_{b,s}$. For every
+fixed nonzero real vector $\vel$,
+\begin{equation}
+ \lim_{t\downarrow0}\frac{P_{b,s}(t\vel)-P_{b,s}(0)}{t}
+ =J_s\norm\vel_1.
+ \label{eq:direction}
+\end{equation}
+Consequently the pressure is not differentiable at the atomic point.
+For common phase displacement its right and left derivatives at zero
+are $(b-1)J_s$ and $-(b-1)J_s$, respectively. It has exact pointwise
+H\"older exponent one there.
+\end{corollary}
+Here pointwise H\"older exponent one means an optimal bound against the
+value at the distinguished point. It is not a claim about a uniform
+two-point Lipschitz seminorm throughout a neighborhood.
+
+\subsection{Finite-size scaling}
+\begin{theorem}[Operator and moment scaling]
+\label{thm:finite}
+Fix $b,s,\alpha$ as in \cref{thm:main}. There are $C_T<\infty$ and
+$\rho\in(0,1)$ such that, whenever $\delta$ is sufficiently small and
+$n\delta\leq T$,
+\begin{equation}
+ \left\|\beta_s^{-n}\Lop_{s,\eps}^{\,n}
+       -e^{nJ_s\norm\eps_1}\Proj_s\right\|_{\Holder\to\Holder}
+ \leq C_T\bigl(\delta^{s-\alpha}+\rho^n\bigr).
+ \label{eq:finite-operator}
+\end{equation}
+The analogous moment formula is
+\begin{equation}
+ b^{sn}M_{s,n}(\eps)
+   =A_s e^{nJ_s\norm\eps_1}
+      +O_T\bigl(\delta^{s-\alpha}+\rho^n\bigr).
+ \label{eq:finite-moment}
+\end{equation}
+In particular, if $\eps=h\vel$, $h\downarrow0$, $n\to\infty$, and
+$nh\to\tau\in[0,\infty)$, then
+\begin{equation}
+ b^{sn}M_{s,n}(h\vel)\longrightarrow
+ A_s e^{\tau J_s\norm\vel_1}.
+ \label{eq:finite-limit}
+\end{equation}
+Constants can be made uniform for $s\in K\Subset(0,1)$ and bounded
+$T$, with fixed $0<\alpha<\inf K$.
+\end{theorem}
+The condition $n\to\infty$ in the last statement matters when
+$\tau=0$. At fixed $n$ the initial rank-one relaxation has not vanished;
+the $\rho^n$ term records that initial layer explicitly.
+
+\section{Why the strong norm alone gives the wrong threshold}
+\label{sec:perturbation}
+
+The following elementary perturbation lemma isolates the mechanism. It
+is useful whenever a distinguished left eigenfunctional regularizes a
+perturbation more effectively than the ambient operator norm.
+
+\begin{lemma}[Strong--weak eigenvalue remainder]
+\label{lem:sw}
+Let $X$ be a complex Banach space and $L_0\in\mathcal B(X)$. Suppose
+$\beta$ is an isolated algebraically simple eigenvalue with
+$L_0h=\beta h$, $\nu L_0=\beta\nu$, and $\nu(h)=1$.
+For $L=L_0+\Delta$ with $\norm\Delta$ sufficiently small, let $\lambda$
+be the nearby eigenvalue. Then
+\begin{equation}
+ \lambda=\beta+\nu(\Delta h)
+       +O\bigl(\norm{\nu\Delta}_{X^*}\norm\Delta_{X\to X}\bigr).
+ \label{eq:sw}
+\end{equation}
+The constant depends on $L_0,h,\nu$ and an isolating contour, but not
+on the particular small perturbation.
+\end{lemma}
+\begin{proof}
+Choose a circle $\Gamma$ enclosing only $\beta$. The resolvent identity
+and the Neumann series imply that
+\[
+ \Proj_\Delta=\frac{1}{2\pi i}\int_\Gamma(z-L_0-\Delta)^{-1}\dd z
+\]
+is defined, has rank one, and satisfies
+$\norm{\Proj_\Delta-h\otimes\nu}=O(\norm\Delta)$.
+Indeed the inverse on $\Gamma$ is obtained by multiplying the old
+resolvent by a uniformly convergent Neumann series. The same contour
+formula, or its homotopy in the perturbation parameter, preserves rank.
+
+Normalize
+\[
+ h_\Delta=\frac{\Proj_\Delta h}{\nu(\Proj_\Delta h)}.
+\]
+The denominator is $1+O(\norm\Delta)$, hence is nonzero for small
+perturbations; $\nu(h_\Delta)=1$ and
+$\norm{h_\Delta-h}=O(\norm\Delta)$.
+Applying $\nu$ to $Lh_\Delta=\lambda h_\Delta$ gives the exact identity
+\[
+ \lambda-\beta=\nu(\Delta h_\Delta)
+ =\nu(\Delta h)+\nu\Delta(h_\Delta-h).
+\]
+The last term has the bound in \cref{eq:sw}.
+\end{proof}
+
+The customary norm-square estimate follows by replacing
+$\norm{\nu\Delta}$ by $\norm\nu\norm\Delta$. Here that replacement
+throws away useful information. We will instead show
+\begin{equation}
+ \norm\Delta_{\Holder\to\Holder}=O(\delta^{s-\alpha}),
+ \qquad
+ \norm{\nu_s\Delta}_{(\Holder)^*}=O(\delta).
+ \label{eq:two-norms}
+\end{equation}
+Neither estimate alone supplies the theorem. Their product is the
+nonlinear remainder that works for the entire subcritical interval.
+
+\section{The atomic operator: an explicit spectral gap}
+\label{sec:gap}
+
+\subsection{Coboundary and quadrature}
+The atomic mask satisfies, away from removable exceptional points,
+\begin{equation}
+ m_0(y)^s=\frac{H_s(by)}{b^sH_s(y)}.
+ \label{eq:coboundary}
+\end{equation}
+Multiplication by $H_s$ therefore conjugates the atomic operator to a
+uniform inverse-branch average, on the functions for which the quotient
+is meaningful. Direct substitution and a change of variables give
+\begin{equation}
+ \Lop_{s,0}H_s=\beta_sH_s,
+ \qquad \nu_s\Lop_{s,0}=\beta_s\nu_s.
+ \label{eq:eigenpair}
+\end{equation}
+The quotient $f/H_s$ can be singular at zero. We do not assume it lies
+in an unweighted H\"older space.
+
+\begin{lemma}[Weighted quadrature estimate]
+\label{lem:quadrature}
+For $0<s<1$ and $0<\alpha<s$, with $N=b^n$,
+\begin{equation}
+ \left\|\beta_s^{-n}\Lop_{s,0}^{\,n}f
+                  -H_s\nu_s(f)\right\|_\infty
+ \leq C_{b,s,\alpha}
+       \bigl(N^{-\alpha}+N^{s-1}\bigr)\norm f_\alpha.
+ \label{eq:quadrature}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $0<x<1$, telescoping \cref{eq:coboundary} gives
+\begin{equation}
+ \beta_s^{-n}\Lop_{s,0}^{\,n}f(x)
+ =H_s(x)\frac1N\sum_{k=0}^{N-1}
+       \frac{f((x+k)/N)}{H_s((x+k)/N)}.
+ \label{eq:riemann}
+\end{equation}
+The case $N=1$ is immediate after enlarging the constant. For $N\geq2$,
+compare the sum with the integral of $f/H_s$ by splitting off the two
+endpoint cells. On these cells $H_s(y)\asymp d(y,\mathbb Z)^s$.
+The endpoint integrals are $O(N^{s-1}\norm f_\infty)$ after multiplication
+by $H_s(x)$. The first sampled endpoint term is bounded by
+\[
+ \frac{H_s(x)}{N H_s(x/N)}\norm f_\infty
+ \leq C N^{s-1}\norm f_\infty,
+\]
+and the other endpoint is identical after reflection.
+
+On the interior cells, replacing the sampled numerator by its value at
+a point of the cell costs at most
+\[
+ C N^{-\alpha}[f]_\alpha\int_{1/N}^{1-1/N}H_s(y)^{-1}\dd y
+ \leq C N^{-\alpha}\norm f_\alpha.
+\]
+The variation of the denominator contributes at most a constant times
+\[
+ N^{-1}\norm f_\infty\int_{1/N}^{1/2}y^{-s-1}\dd y
+ \leq C N^{s-1}\norm f_\infty.
+\]
+Here one may first compare each cell to the minimum and maximum of the
+smooth denominator and then sum its variation; no derivative of $f$ is
+used. These estimates prove the uniform bound for $0<x<1$.
+At $x=0$, only the atomic fixed-point inverse branch survives at every
+iteration, and the normalized value is $N^{s-1}f(0)$. Since $H_s(0)=0$,
+the same estimate holds there.
+\end{proof}
+
+\begin{proposition}[Rank-one exponential relaxation]
+\label{prop:gap}
+For every $0<s<1$ and $0<\alpha<s$, there exist $C<\infty$ and
+$\rho_0<1$ such that
+\begin{equation}
+ \left\|\beta_s^{-n}\Lop_{s,0}^{\,n}-\Proj_s\right\|_{\Holder\to\Holder}
+ \leq C\rho_0^n.
+ \label{eq:gap}
+\end{equation}
+In particular, $\beta_s$ is an algebraically simple isolated dominant
+eigenvalue. The constants can be chosen uniformly on compact
+$s$-intervals whose lower endpoint exceeds $\alpha$.
+\end{proposition}
+\begin{proof}
+Write $B=\beta_s^{-1}\Lop_{s,0}$. The sup norms of $B^n1$ are uniformly
+bounded by \cref{lem:quadrature}. For each fixed $m$, pair corresponding
+inverse branches of $T_b^m$; they contract circle distance by $b^{-m}$.
+The finite collection of branch weights is $s$-H\"older and hence
+$\alpha$-H\"older. The difference of two output values therefore gives
+\begin{equation}
+ [B^mf]_\alpha\leq C_0 b^{-m\alpha}[f]_\alpha+C_m\norm f_\infty,
+ \label{eq:LY}
+\end{equation}
+where $C_0$ is independent of $m$ and $C_m$ is finite. The first
+coefficient comes from the sum of the nonnegative branch weights,
+namely $B^m1$; the second comes from their H\"older seminorms.
+Across the endpoint of the circle the inverse branches are relabeled
+cyclically, giving the same estimate.
+
+The subspace $\ker\nu_s$ is invariant. On it \cref{lem:quadrature}
+implies
+\[
+ \norm{B^nf}_\infty\leq C\theta^n\norm f_\alpha,
+ \qquad \theta=\max\{b^{-\alpha},b^{s-1}\}<1.
+\]
+Choose $m$ with $a=C_0b^{-m\alpha}<1$. If
+$u_k=[B^{km}f]_\alpha$, \cref{eq:LY} yields
+\[
+ u_{k+1}\leq a u_k+C_mC\theta^{km}\norm f_\alpha.
+\]
+A finite geometric convolution bounds $u_k$ by $C r^k\norm f_\alpha$
+for any fixed $r$ strictly between $\max\{a,\theta^m\}$ and one.
+The finitely many remaining residues of $n$ modulo $m$ change only the
+constant. This proves exponential contraction on $\ker\nu_s$ in the
+full norm. Since $\Proj_s$ is a commuting rank-one projection by
+\cref{eq:eigenpair}, \cref{eq:gap} follows.
+
+An additional eigenvalue of modulus at least one for $B$, or a
+nontrivial Jordan vector at one, contradicts this exponential convergence.
+The spectrum on the kernel is contained in a smaller disk by the
+spectral radius formula, proving the stated spectral conclusions.
+All estimates are uniform when $s$ stays away from zero and one and
+$\alpha$ is fixed below its lower endpoint; the same $m$ may then be used.
+\end{proof}
+
+\section{Translated zeros as weak distributions}
+\label{sec:distribution}
+
+\subsection{The universal one-zero constant}
+The following integral is the local contribution of opening a simple
+zero. Its evaluation appears in the predecessor report; we include the
+proof to keep the new argument independent.
+
+\begin{lemma}[Model singular integral]
+\label{lem:J}
+For $0<s<1$,
+\begin{equation}
+ \int_0^\infty u^{-s}
+       \bigl((u+1)^s+|u-1|^s-2u^s\bigr)\dd u
+ =J_s=\pi s\tan(\pi s/2).
+ \label{eq:J}
+\end{equation}
+The paired integrand is integrable at both zero and infinity.
+\end{lemma}
+\begin{proof}
+At zero it is $O(u^{-s})$; at infinity the two linear Taylor terms
+cancel, leaving $O(u^{-2})$. Substitute $u=1/v$ and integrate by parts.
+The endpoint terms vanish and the result, divided by $s$, is
+\begin{equation}
+ \int_0^\infty
+ \frac{(1+v)^{s-1}+\operatorname{sgn}(v-1)|v-1|^{s-1}}{v}\dd v.
+ \label{eq:Jparts}
+\end{equation}
+The terms at zero must remain paired. Transform the first term using
+$t=v/(1+v)$ and pair it with the negative term on $(0,1)$. Their sum is
+\[
+ \int_0^1\frac{(1-t)^{-s}-(1-t)^{s-1}}t\dd t
+ =\psi(s)-\psi(1-s)=-\pi\cot(\pi s).
+\]
+The remaining term is
+\[
+ \int_1^\infty\frac{(v-1)^{s-1}}v\dd v
+ =B(s,1-s)=\pi\csc(\pi s).
+\]
+The beta and digamma reflection identities used here are standard
+\cite[\S5.5]{DLMF}. Their sum is
+$\pi(\csc\pi s-\cot\pi s)=\pi\tan(\pi s/2)$.
+\end{proof}
+
+\subsection{A quantitative distributional expansion}
+For a point $z\in\TT$, define
+\[
+ q_{z,h}(x)=\left|\frac{\sin\pi(x-z-h)}{\sin\pi(x-z)}\right|^s-1,
+ \qquad k_z(x)=\pi\cot\pi(x-z).
+\]
+Values at the zero denominator are irrelevant for integration. The
+notation $\PV$ always means deletion of a symmetric interval around
+that zero, followed by a limit.
+
+\begin{lemma}[One-zero weak derivative]
+\label{lem:onezero}
+Let $0<s<1$ and $0<\alpha<1$. For $g\in C^\alpha(\TT)$,
+\begin{equation}
+ \int_0^1q_{z,h}(x)g(x)\dd x
+ =J_s|h|g(z)-sh\PV\!\int_0^1 k_z(x)g(x)\dd x
+     +O_{s,\alpha}(|h|^{1+\alpha}\norm g_\alpha).
+ \label{eq:onezero}
+\end{equation}
+The principal-value functional is bounded on $C^\alpha$. In particular,
+the left side is $O(|h|\norm g_\alpha)$.
+For $g=1$ the error can be improved to $O_s(h^2)$.
+\end{lemma}
+\begin{proof}
+Translation lets us take $z=0$. Choose a fixed small symmetric interval
+$(-r,r)$ about zero and use its signed real coordinate. There,
+$|\sin\pi x|=|x|a(x)$ with $a$ positive and smooth. Set
+\[
+ U_h(x)=|x-h|^s|x|^{-s},\qquad A(x)=a'(x)/a(x).
+\]
+Uniformly on this fixed interval,
+\begin{equation}
+ q_{0,h}(x)=U_h(x)-1-shA(x)U_h(x)+O(h^2U_h(x)).
+ \label{eq:local-factor}
+\end{equation}
+The integrals of $U_h$ on $(-r,r)$ are uniformly bounded.
+
+First take a constant test. Pairing positive and negative $x$ and
+scaling by $|h|$ gives
+\[
+ \int_{-r}^{r}(U_h-1)\dd x
+ =|h|J_s+O(h^2),
+\]
+because the tail of the paired integral in \cref{eq:J} is $O(1/R)$.
+The smooth correction in \cref{eq:local-factor} contributes
+$-sh\int_{-r}^{r}A+O(h^2)$. To see the stated error, use the estimate
+$\int(U_h-1)A=O(|h|)$: subtract $A(0)$, use its Lipschitz modulus,
+and pair the constant part. On the complement, ordinary Taylor
+expansion contributes $-sh\int k_0+O(h^2)$.
+The local and complementary linear terms add to
+$-sh\PV\int k_0=0$ by periodicity. This proves the constant-test
+assertion.
+
+For a general test, subtract $g(0)$ in the local interval. On
+$|x|\leq2|h|$, its modulus is at most $[g]_\alpha|x|^\alpha$.
+The integrals of
+\[
+ (U_h+1)|x|^\alpha
+ \quad\hbox{and}\quad |h||x|^{\alpha-1}
+\]
+over that region are $O(|h|^{1+\alpha})$; integrability of the first
+uses $s<1$ (indeed $\alpha-s>-1$). On
+$2|h|<|x|<r$, Taylor expansion gives
+\[
+ U_h-1+\frac{sh}{x}=O(h^2/x^2).
+\]
+Multiplying by $g(x)-g(0)$ and integrating costs
+\[
+ C h^2[g]_\alpha\int_{2|h|}^{r}x^{\alpha-2}\dd x
+ \leq C|h|^{1+\alpha}\norm g_\alpha.
+\]
+The smooth factors in \cref{eq:local-factor} and the complement have
+the same or a smaller remainder. One may use the elementary estimate
+$\int_{-r}^{r}|U_h-1|\dd x=O(|h|\log(1/|h|))$; multiplying by
+$|h|$ is still $O(|h|^{1+\alpha})$ since $\alpha<1$.
+
+Finally,
+$\PV\int_{-r}^{r}g(x)/x=\int_{-r}^{r}(g(x)-g(0))/x$ is absolutely
+convergent and bounded by $C[g]_\alpha$. The remaining smooth part is
+bounded by $C\norm g_\infty$. This proves both the expansion and the
+boundedness of its principal-value term.
+\end{proof}
+
+In distribution notation, for $h\downarrow0$,
+\begin{equation}
+ h^{-1}q_{z,\pm h}(x)\dd x
+ \longrightarrow J_s\delta_z\mp s\PV(k_z(x)\dd x)
+ \quad\hbox{in }(C^\alpha)^*.
+ \label{eq:distribution}
+\end{equation}
+The Dirac term is even in the displacement; the principal-value term
+is odd. The Dirac term cannot be recovered by pointwise differentiation
+away from the zero.
+
+\subsection{Several zeros and locally regular test functions}
+Let
+\begin{equation}
+ R_{\eps}(x)=\left(\frac{m_{\eps}(x)}{m_0(x)}\right)^s
+          =\prod_{j=1}^{b-1}(1+q_{z_j,\varepsilon_j}(x)).
+ \label{eq:ratio}
+\end{equation}
+Fix disjoint closed neighborhoods $U_j$ of the $z_j$, none containing
+zero. It is useful to allow a test function that is only integrable
+away from these neighborhoods. Write
+\[
+ \norm g_* =\norm g_{L^1(\TT)}+
+       \sum_{j=1}^{b-1}\norm{g|_{U_j}}_{C^\alpha(U_j)}.
+\]
+Shrinking a neighborhood slightly when multiplying by a fixed cutoff
+only changes constants.
+
+\begin{proposition}[Multizero weak expansion]
+\label{prop:multizero}
+For $0<s<1$, $0<\alpha<1$, and tests with finite $\norm g_*$,
+\begin{align}
+ \int_0^1(R_{\eps}-1)g\dd x
+ &=J_s\sum_{j=1}^{b-1}|\varepsilon_j|g(z_j)
+   -s\sum_{j=1}^{b-1}\varepsilon_j\PV\!\int_0^1 k_{z_j}(x)g(x)\dd x
+   +O(\delta^{1+\alpha}\norm g_*).
+ \label{eq:multizero}
+\end{align}
+In particular this is $O(\delta\norm g_*)$. For $g=1$,
+\begin{equation}
+ \int_0^1(R_{\eps}-1)\dd x
+       =J_s\norm\eps_1+O(\delta^2).
+ \label{eq:scalar}
+\end{equation}
+Constants are uniform when $s$ ranges over a compact subset of $(0,1)$.
+\end{proposition}
+\begin{proof}
+Use a smooth partition of unity subordinate to the $U_j$ and their
+complement. On a neighborhood of $z_j$, every factor with index
+$k\ne j$ has a smooth expansion
+\[
+ q_{z_k,\varepsilon_k}=-s\varepsilon_k k_{z_k}+O(\delta^2)
+\]
+with uniform bounds on a fixed number of derivatives. On the
+complement all factors have such expansions, and the error is bounded
+pointwise by $C\delta^2$, which can be integrated against $|g|$.
+
+For the terms linear in one $q_j$, apply \cref{lem:onezero} locally,
+using cutoffs, and use Taylor expansion elsewhere. A principal value
+at $z_j$ is well defined because $g$ is H\"older there; elsewhere its
+kernel is bounded against the integrable test.
+
+It remains to control mixed products of two or more distinct $q_j$.
+Near $z_j$, a mixed term containing $q_j$ has the form $q_j a g$,
+where $a$ is smooth with $C^1$ norm $O(\delta)$, or smaller. Apply the
+$O(|\varepsilon_j|)$ functional bound from \cref{lem:onezero} to the
+cutoff test $ag$. The result is $O(\delta^2\norm g_*)$.
+A mixed term not containing that local singular factor is pointwise
+$O(\delta^2)$. Thus all mixed terms are $O(\delta^2\norm g_*)$,
+not $O(\delta^2\log(1/\delta))$. This signed estimate is the place
+where absolute-value estimates would be needlessly wasteful.
+
+For $g=1$, each unmixed term has the improved $O(\varepsilon_j^2)$
+remainder from \cref{lem:onezero}, and
+$\PV\int_0^1 k_{z_j}=0$. Mixed terms retain the $O(\delta^2)$ bound.
+This proves \cref{eq:scalar}. Separation of the fixed zeros and compactness
+of the exponent interval give the stated uniformity.
+\end{proof}
+
+\section{The localized left-eigenfunctional estimate}
+\label{sec:weak}
+
+\subsection{An exact change-of-variables identity}
+Let $\Delta_{\eps}=\Lop_{s,\eps}-\Lop_{s,0}$. Combining the
+change of variables $x=T_by$ with \cref{eq:coboundary} gives
+\begin{equation}
+ \nu_s(\Delta_{\eps} f)
+ =\beta_s\int_0^1(R_{\eps}(y)-1)\frac{f(y)}{H_s(y)}\dd y.
+ \label{eq:weak-exact}
+\end{equation}
+This identity is valid for every continuous $f$. Near a mask zero, the
+ratio has a $|y-z_j|^{-s}$ singularity; near the atomic point zero,
+$H_s^{-1}$ is integrable and the ratio is smooth. Hence all its
+integrals exist when $s<1$.
+
+Define bounded functionals on $\Holder$ by
+\begin{equation}
+ E_j(f)=\frac{f(z_j)}{H_s(z_j)},\qquad
+ D_j(f)=\PV\!\int_0^1 k_{z_j}(y)\frac{f(y)}{H_s(y)}\dd y.
+ \label{eq:functionals}
+\end{equation}
+Near $z_j$ the denominator is smooth and nonzero. Near zero the
+cotangent kernel is bounded, so the remaining integrability follows
+from $s<1$. Thus $D_j$ is well defined even though $f/H_s$ need not
+be a globally continuous function.
+
+\begin{theorem}[Weak operator expansion]
+\label{thm:weak}
+For $0<s<1$ and $0<\alpha<s$,
+\begin{equation}
+ \nu_s\Delta_{\eps}
+ =\beta_s\left(J_s\sum_j|\varepsilon_j|E_j
+                   -s\sum_j\varepsilon_jD_j\right)
+       +O_{(\Holder)^*}(\delta^{1+\alpha}).
+ \label{eq:weak-expansion}
+\end{equation}
+Consequently,
+\begin{align}
+ \norm{\nu_s\Delta_{\eps}}_{(\Holder)^*}&\leq C\delta,
+ \label{eq:weak-bound}\\
+ \nu_s(\Delta_{\eps} H_s)&=\beta_sJ_s\norm\eps_1+O(\delta^2).
+ \label{eq:weak-scalar}
+\end{align}
+\end{theorem}
+\begin{proof}
+For $g=f/H_s$ in \cref{prop:multizero},
+\[
+ \norm g_{L^1}\leq\norm f_\infty\int H_s^{-1},\qquad
+ \norm{g|_{U_j}}_{C^\alpha}\leq C\norm f_\alpha.
+\]
+Thus $\norm g_*\leq C\norm f_\alpha$, and \cref{eq:multizero} applied
+to \cref{eq:weak-exact} proves \cref{eq:weak-expansion}.
+For $f=H_s$ the quotient test is exactly one. Therefore every $E_j$
+equals one, every $D_j$ equals zero, and the improved scalar estimate
+\cref{eq:scalar} proves \cref{eq:weak-scalar}.
+\end{proof}
+
+\subsection{Why a total-variation bound cannot replace cancellation}
+\begin{proposition}[Sharp logarithmic loss in the continuous dual norm]
+\label{prop:TV}
+For common displacement $\eps=c\mathbf1$ and fixed $0<s<1$,
+\begin{equation}
+ \norm{\nu_s\Delta_{c\mathbf1}}_{(C^0)^*}
+ =2\beta_s s\left(\sum_{j=1}^{b-1}H_s(z_j)^{-1}\right)
+       |c|\log\frac1{|c|}+O(|c|).
+ \label{eq:TV}
+\end{equation}
+In particular, an $O(|c|)$ estimate in this larger dual norm is false.
+\end{proposition}
+\begin{proof}
+By \cref{eq:weak-exact}, the functional is represented by the signed
+integrable density $\beta_s(R_{c\mathbf1}-1)H_s^{-1}$. Its norm on
+$C^0$ is its total variation; continuous tests approximate its sign
+in the corresponding $L^1$ space.
+In a signed coordinate $u$ around $z_j$, for
+$2|c|<|u|<r$,
+\[
+ R_{c\mathbf1}(z_j+u)-1=-\frac{sc}{u}
+                  +O(c^2/u^2)+O(|c|).
+\]
+Also $H_s(z_j+u)^{-1}=H_s(z_j)^{-1}+O(|u|)$.
+The two sides of the puncture therefore contribute
+$2sH_s(z_j)^{-1}|c|\log(1/|c|)+O(|c|)$.
+The inner interval $|u|\leq2|c|$ contributes $O(|c|)$ by scaling and
+$s<1$. Away from all the zeros the ratio difference is $O(|c|)$,
+and the atomic weight remains integrable. Summing and multiplying by
+$\beta_s$ gives \cref{eq:TV}.
+\end{proof}
+
+Thus the better estimate is genuinely weak: a H\"older test cannot
+follow the rapidly changing sign around a translated zero at unit
+amplitude. Pairing the two sides cancels the logarithmic divergence.
+The atom in \cref{eq:distribution} survives that cancellation and
+produces the cusp coefficient.
+
+\section{Strong perturbation and the pressure theorem}
+\label{sec:proof-main}
+
+\subsection{Translation in H\"older norm}
+\begin{lemma}[Strong operator modulus]
+\label{lem:strong}
+For $0<s<1$, $0<\alpha<s$, and sufficiently small $\eps$,
+\begin{equation}
+ \norm{\Lop_{s,\eps}-\Lop_{s,0}}_{\Holder\to\Holder}
+ \leq C\delta^{s-\alpha}.
+ \label{eq:strong}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Each function $u_j(x)=|\sin\pi(x-z_j)|^s$ is $s$-H\"older. Its
+translation difference satisfies
+\[
+ \norm{u_j(\cdot-h)-u_j}_\infty\leq C|h|^s,
+ \qquad [u_j(\cdot-h)-u_j]_s\leq C.
+\]
+Splitting the H\"older quotient at distance $|h|$, or using the
+minimum of these two estimates, gives
+\[
+ \norm{u_j(\cdot-h)-u_j}_{C^\alpha}\leq C|h|^{s-\alpha}.
+\]
+The identity
+$m_{\eps}^s=b^{-s}2^{s(b-1)}\prod_j u_j(\cdot-\varepsilon_j)$,
+a telescoping product, and the Banach algebra estimate for $C^\alpha$
+show that the weight difference has this same bound with
+$|h|$ replaced by $\delta$. The finite sum of contracted inverse-branch
+compositions in \cref{eq:operator} is bounded on $C^\alpha$.
+Cyclic relabeling at the circle endpoint again makes this a global
+estimate.
+\end{proof}
+
+\subsection{The eigenvalue expansion}
+\begin{proposition}[Quantitative spectral response]
+\label{prop:eigenvalue}
+Under the hypotheses of \cref{thm:main}, the eigenvalue near $\beta_s$
+is real, positive, and satisfies
+\begin{equation}
+ \lambda_s(\eps)=\beta_s\left(1+J_s\norm\eps_1\right)
+                       +O(\delta^{1+s-\alpha}).
+ \label{eq:eigenvalue}
+\end{equation}
+It is simple and strictly larger in modulus than all other spectrum.
+If $\Proj_{s,\eps}$ is its spectral projection, then
+\begin{equation}
+ \norm{\Proj_{s,\eps}-\Proj_s}=O(\delta^{s-\alpha}).
+ \label{eq:projection}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Apply \cref{lem:sw} using \cref{prop:gap,thm:weak,lem:strong}. The
+linear scalar term is \cref{eq:weak-scalar}; the nonlinear error is
+$O(\delta^{1+s-\alpha})$. The scalar $O(\delta^2)$ remainder is smaller,
+since $s-\alpha<1$. This proves \cref{eq:eigenvalue} and the contour
+construction gives \cref{eq:projection}.
+
+The atomic spectral gap supplies a fixed separating annulus. A
+Neumann-series resolvent argument on its compact boundary, together
+with the usual large-$z$ resolvent bound, keeps the complementary
+spectrum in a disk of radius strictly below $\beta_s$ for all small
+perturbations. The nearby eigenvalue tends to $\beta_s$ and stays
+outside that disk. Complex conjugation preserves the operator and the
+isolating circle, so uniqueness of the eigenvalue in the circle makes
+it real; it is positive by its limit. These conclusions do not rely
+on a positivity theorem for a strictly positive potential.
+\end{proof}
+
+\subsection{Why cylinder pressure equals moment growth}
+This step is needed because a singular logarithmic potential should
+not be placed into a classical positive-potential theorem without
+checking its hypotheses.
+
+\begin{lemma}[Polynomial sampling bound]
+\label{lem:sampling}
+For every fixed $s>0$ there is $C_s<\infty$ such that, for every
+polynomial $p$ of degree at most $N-1$,
+\begin{equation}
+ N\int_0^1|p(e^{2\pi i x})|^s\dd x
+ \leq\sum_{I\in\mathcal D_N}\sup_{x\in I}|p(e^{2\pi i x})|^s
+ \leq C_s N\int_0^1|p(e^{2\pi i x})|^s\dd x.
+ \label{eq:sampling}
+\end{equation}
+Here $\mathcal D_N$ is the uniform partition into $N$ intervals.
+\end{lemma}
+\begin{proof}
+The lower bound is immediate by integration on each cell. For the
+upper bound choose $R=1+1/N$. Subharmonicity of $|p|^s$ and the Poisson
+majorant on the disk of radius $R$ give
+\[
+ |p(e^{2\pi i x})|^s\leq
+ \int_0^1P_{1/R}(2\pi(x-y))|p(Re^{2\pi i y})|^s\dd y.
+\]
+The Poisson kernel is bounded by
+$C N/(1+N^2\dist(x-y,\mathbb Z)^2)$. For fixed $y$, summing its
+supremum over the $N$ cells gives at most $CN$: the bounded number
+of nearest cells contribute $O(N)$ and the others contribute a
+convergent $N\sum_{k\geq1}k^{-2}$ tail. Consequently the cylinder sum
+is bounded by
+$CN\int_0^1|p(Re^{2\pi i y})|^s\dd y$.
+
+If $D=\deg p$, the reciprocal polynomial $q(z)=z^Dp(1/z)$ and the
+monotonicity of radial means of a subharmonic function show that
+\[
+ \int_0^1|p(Re^{2\pi i y})|^s\dd y
+ \leq R^{Ds}\int_0^1|p(e^{2\pi i y})|^s\dd y.
+\]
+Indeed evaluate the radial mean of $|q|^s$ at radius $1/R$ and compare
+it with radius one. Since $D\leq N-1$, $R^{Ds}\leq e^s$.
+This proves the upper bound. Constant and zero polynomials are covered
+by the same inequality directly.
+\end{proof}
+
+A change of variables in the transfer operator gives the exact identity
+\begin{equation}
+ \int_0^1\Lop_{s,\eps}^{\,n}1\dd x=b^nM_{s,n}(\eps).
+ \label{eq:moment-transfer}
+\end{equation}
+The spectral projection amplitude at the atomic point is
+\begin{equation}
+ \int_0^1\Proj_s1\dd x
+ =\left(\int_0^1H_s\right)\left(\int_0^1H_s^{-1}\right)>0.
+ \label{eq:amp-positive}
+\end{equation}
+By \cref{eq:projection} this amplitude remains positive for small real
+$\eps$. The spectral decomposition therefore gives the logarithmic
+growth rate $\log\lambda_s(\eps)$ to the left side of
+\cref{eq:moment-transfer}. Applying \cref{lem:sampling} to
+$Q_{n,\eps}$ yields
+\begin{equation}
+ b^nM_{s,n}(\eps)\leq Z_{s,n}(\eps)
+                     \leq C_s b^nM_{s,n}(\eps).
+ \label{eq:pressure-comparison}
+\end{equation}
+Thus the pressure limit exists and equals $\log\lambda_s(\eps)$.
+
+\begin{proof}[Completion of \cref{thm:main}]
+Take the logarithm of \cref{eq:eigenvalue}. Its quadratic logarithmic
+correction is $O(\delta^2)$ and is absorbed into
+$O(\delta^{1+s-\alpha})$. The preceding comparison identifies the
+result with the pressure in \cref{eq:pressure}. Compact-parameter
+uniformity follows from the uniform estimates in the spectral gap,
+the local integral lemmas, and the strong translation bound. The
+isolating resolvent circles may be chosen at a fixed relative distance
+from $\beta_s$ because the normalized gap is uniform on such compact
+sets. This proves every assertion of the theorem.
+\end{proof}
+
+\begin{proof}[Proof of \cref{cor:geometry}]
+Since $J_s>0$ and $\norm\eps_1\geq\delta$, the error in
+\cref{eq:main} is smaller than $(J_s/2)\norm\eps_1$ for sufficiently
+small nonzero $\eps$. This proves the strict local minimum. Substitute
+$\eps=t\vel$ and divide by $t>0$ to obtain \cref{eq:direction}.
+The directional derivative is even in $\vel$ and positive for nonzero
+$\vel$, so it cannot be a linear functional. Common displacement gives
+the displayed left and right derivatives and the optimal pointwise
+exponent.
+\end{proof}
+
+\section{Finite-size law and explicit amplitude}
+\label{sec:finite-proof}
+
+The contour construction gives a uniform decomposition
+\begin{equation}
+ \beta_s^{-n}\Lop_{s,\eps}^{\,n}
+ =\left(\frac{\lambda_s(\eps)}{\beta_s}\right)^n\Proj_{s,\eps}
+       +R_{n,s,\eps},\qquad
+ \norm{R_{n,s,\eps}}\leq C\rho^n
+ \label{eq:spectral-powers}
+\end{equation}
+for some $\rho<1$. For example, integrate the complementary resolvent
+on a circle in the normalized spectral gap. Its uniformly bounded
+resolvent gives the displayed estimate, with a slight enlargement of
+the spectral radius if necessary.
+
+\begin{proof}[Proof of \cref{thm:finite}]
+By \cref{eq:eigenvalue},
+\[
+ \log\frac{\lambda_s(\eps)}{\beta_s}
+ =J_s\norm\eps_1+O(\delta^{1+s-\alpha}).
+\]
+When $n\delta\leq T$, the accumulated logarithmic error is bounded
+by $C_T\delta^{s-\alpha}$. Both the main exponential and the perturbed
+exponential are uniformly bounded on this time window. Therefore
+\[
+ \left|\left(\frac{\lambda_s(\eps)}{\beta_s}\right)^n
+             -e^{nJ_s\norm\eps_1}\right|
+ \leq C_T\delta^{s-\alpha}.
+\]
+Combine this with \cref{eq:projection,eq:spectral-powers} to obtain
+\cref{eq:finite-operator}.
+
+Apply the operator to $1$ and integrate. By
+\cref{eq:moment-transfer}, the resulting normalization is
+$\beta_s^{-n}b^n=b^{sn}$. The beta-integral evaluation
+\[
+ \int_0^1|\sin\pi x|^a\dd x
+ =\frac{\Gamma((a+1)/2)}{\sqrt\pi\,\Gamma(1+a/2)},\qquad a>-1,
+\]
+and the reflection identities \cite{DLMF} give
+\begin{align}
+ \left(\int H_s\right)\left(\int H_s^{-1}\right)
+ &=\frac{\Gamma((1+s)/2)\Gamma((1-s)/2)}
+          {\pi\Gamma(1+s/2)\Gamma(1-s/2)}\\
+ &=\frac{2}{\pi s}\tan(\pi s/2)=A_s.
+ \label{eq:amplitude}
+\end{align}
+This proves \cref{eq:finite-moment}. With $\eps=h\vel$,
+$n\norm\eps_1=nh\norm\vel_1$ and the two error terms tend to zero
+under the hypotheses of \cref{eq:finite-limit}.
+The same argument uses uniform constants on the stated compact
+parameter sets.
+\end{proof}
+
+An exact relation between the cusp and the amplitude is
+\begin{equation}
+ J_s=\frac{\pi^2s^2}{2}\,A_s.
+ \label{eq:amplitude-cusp}
+\end{equation}
+The factor $b-1$ in a common translation counts zeros; the amplitude
+$A_s$ itself is independent of the base. Neither fact extends to an
+arbitrary changed atomic mask without further analysis.
+
+\section{Consequences, examples, and normalization boundaries}
+\label{sec:examples}
+
+\subsection{Two concrete values in the newly covered range}
+At $s=1/4$, corresponding to pressure order $q=1/8$ in the binary
+squared-mask convention,
+\[
+ J_{1/4}=\frac\pi4(\sqrt2-1),\qquad
+ P_{2,1/4}(c)=\frac34\log2+\frac\pi4(\sqrt2-1)|c|
+           +O_\alpha(|c|^{5/4-\alpha}).
+\]
+At $s=1/2$, corresponding to $q=1/4$,
+\[
+ J_{1/2}=\frac\pi2,\qquad
+ P_{2,1/2}(c)=\frac12\log2+\frac\pi2|c|
+           +O_\alpha(|c|^{3/2-\alpha}).
+\]
+The second point is not a new phase transition. It was only the point
+where the old norm-square proof ceased to control its remainder.
+
+\subsection{Opposite zero motions do not cancel}
+For $b=3$, move the zeros at $1/3$ and $2/3$ by $t$ and $-t$.
+Their mean displacement is zero, but
+\begin{equation}
+ P_{3,s}(t,-t)=(1-s)\log3+2J_s|t|
+                         +O(|t|^{1+s-\alpha}).
+ \label{eq:opposite}
+\end{equation}
+A perturbation rule based only on the center of the zero configuration
+would incorrectly predict no first-order response. The pressure sees
+the total absolute opening of the simple zeros.
+
+\subsection{Smooth zero trajectories and amplitude changes}
+\begin{corollary}[Trajectory law]
+\label{cor:trajectory}
+Suppose $\varepsilon_j(t)=v_jt+O(t^2)$ as $t\to0$. For fixed
+$0<s<1$ and $0<\alpha<s$,
+\begin{equation}
+ P_{b,s}(\eps(t))=(1-s)\log b+J_s\sum_j|v_j|\,|t|
+                              +O(|t|^{1+s-\alpha}).
+ \label{eq:trajectory}
+\end{equation}
+If the mask is additionally multiplied by a positive factor $e^{a(t)}$,
+its pressure is increased by exactly $sa(t)$.
+\end{corollary}
+\begin{proof}
+The absolute value is Lipschitz, so
+$\norm{\eps(t)}_1=|t|\sum|v_j|+O(t^2)$; apply \cref{thm:main}.
+Multiplication of the mask by $e^{a(t)}$ multiplies every transfer
+operator by $e^{sa(t)}$, or every $n$-step product by $e^{nsa(t)}$.
+Taking logarithmic growth gives the exact second assertion.
+\end{proof}
+This normalization clause is essential. A varying leading coefficient
+adds an ordinary signed linear term and can obscure the cusp. The
+$\ell^1$ law is stated for the fixed coefficient modulus in
+\cref{eq:polynomial}.
+
+\subsection{Digital coefficients and the Thue--Morse connection}
+Write $p_{\eps}(z)=\sum_{r=0}^{b-1}a_r(\eps)z^r$. If
+$k=\sum_{j=0}^{n-1}d_jb^j$ with $0\leq d_j<b$, then
+\[
+ [z^k]Q_{n,\eps}(z)=\prod_{j=0}^{n-1}a_{d_j}(\eps).
+\]
+Thus independently moving the zeros produces a natural family of
+complex digit weights. It does not merely perturb an abstract
+transfer operator.
+
+For common phase displacement one may choose the equal-modulus
+polynomial with coefficients $b^{-1}e^{-2\pi i cr}$. Its product is
+\[
+ b^{-n}\sum_{k=0}^{b^n-1}e^{-2\pi i c\,s_b(k)}e^{2\pi i kx},
+\]
+where $s_b(k)$ is the base-$b$ digit sum. Its modulus is the one used
+throughout this article. For $b=2,c=1/2$, the coefficients reduce to
+$(-1)^{s_2(k)}$, the Thue--Morse signs. At the atomic phase $c=0$ the
+polynomial is the normalized Dirichlet polynomial
+$b^{-n}\sum_{k=0}^{b^n-1}z^k$. The singular limit studied here therefore
+starts from the simplest digital product but has nontrivial fractional
+moment response.
+
+\subsection{Endpoint information that does not justify exchanging limits}
+The explicit constants satisfy
+\begin{align}
+ J_s&=\frac{\pi^2s^2}{2}+\frac{\pi^4s^4}{24}+O(s^6),
+ &A_s&=1+\frac{\pi^2s^2}{12}+O(s^4)
+ &&(s\downarrow0),\\
+ J_s&\sim\frac{2}{1-s},
+ &A_s&\sim\frac{4}{\pi^2(1-s)}
+ &&(s\uparrow1).
+ \label{eq:endpoint-constants}
+\end{align}
+These are expansions of the explicit constants, not uniform
+joint-limit theorems for pressure. The proof uses a H\"older exponent
+below $s$, and the dual density ceases to be integrable at $s=1$.
+At criticality the predecessor report finds a different spectral
+mechanism involving a two-dimensional collision \cite{CriticalRepo}.
+The present theorem does not replace that critical analysis.
+
+\section{Numerical diagnostics and reproducibility}
+\label{sec:numerics}
+
+\subsection{What was actually run}
+The package includes \code{code/verify.py}, its complete output
+\code{data/verification.json}, and \code{data/run.log}. The included run
+used the \code{--full} option. Its checks have three independent roles:
+to evaluate the universal singular integral, to test the signed weak
+response on a nonconstant function, and to compare finite-dimensional
+transfer approximations with the pressure and finite-size formulas.
+They do not form part of the analytic proofs.
+
+The $J_s$ integral was evaluated at 65 decimal digits after substitutions
+removing the algebraic singularity at zero and mapping the infinite
+tail to a finite interval. At $s=0.1,0.25,0.5,0.75,0.9$ its discrepancy
+from the elementary expression was below $10^{-30}$. This is a
+high-precision quadrature check, not a rigorous interval enclosure.
+
+\subsection{A test that detects the principal-value sign}
+For the single binary zero $z=1/2$, use
+\[
+ g(x)=1+0.2\cos(2\pi x)+0.1\sin(2\pi x).
+\]
+Then $g(z)=0.8$ and
+\[
+ \PV\int_0^1\pi\cot\pi(x-1/2)g(x)\dd x=-0.1\pi.
+\]
+The sine term follows from
+$\tan(\pi x)\sin(2\pi x)=2\sin^2(\pi x)$; the other terms have
+zero principal value by reflection. Hence the limits of
+$|h|^{-1}\int q_{z,\pm h}g$ are
+\[
+ 0.8J_s\pm0.1\pi s.
+\]
+The code checks both signs at four exponents and three phase sizes.
+A check with the constant test alone would miss an incorrect sign in
+the principal-value part.
+
+The double-precision adaptive quadrature emitted a roundoff convergence
+warning in this diagnostic family. That warning is retained in the run
+log. The output includes the quadrature error estimates; it is not
+silently promoted to a certified result. The integral identity and its
+sign are established by \cref{lem:onezero}, not by this computation.
+
+\subsection{Pressure: mesh comparisons}
+Collocation uses a uniform periodic grid and linear interpolation at
+each inverse-branch point. The resulting operator is nonnegative.
+Power iteration is stopped when the sup norm change of the normalized
+iterate is less than $3\times10^{-13}$; the matrix residual is recorded.
+The coarse and fine meshes below have $262\,144$ and $524\,288$ points.
+The table shows
+\[
+ \frac{P^{\mathrm{grid}}_{b,s}(h\vel)-(1-s)\log b}{h}.
+\]
+For $b=2$ the velocity is $(1)$; for $b=3$ it is $(1,-1)$.
+\begin{center}\small
+\input{data/pressure_table.tex}
+\end{center}
+The low-exponent binary rows approach the predicted coefficient, and
+the base-three opposite-motion rows distinguish the $\ell^1$ law from
+a mean-displacement rule. Mesh changes remain visible after division
+by $h$. A small matrix residual only checks the discretized eigenproblem;
+it does not bound the distance to the infinite-dimensional spectrum.
+No number in the table is labeled a certified continuum digit.
+
+\subsection{Finite-size amplitude}
+For $b=2,s=1/4,\vel=(1)$ and $nh=0.1$, the prediction is
+$A_{1/4}e^{0.1J_{1/4}}$. Direct iteration of the normalized collocation
+operator on the fine mesh gives:
+\begin{center}\small
+\input{data/finite_size_table.tex}
+\end{center}
+The convergence includes both phase error and finite-size relaxation;
+it is not expected to be exact at a fixed mesh or a fixed number of
+steps. The gamma-product and elementary expressions for $A_s$ are also
+compared independently in the script.
+
+\subsection{Rebuilding}
+From the package root, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+OPENBLAS_NUM_THREADS=1 python code/verify.py --full
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The environment-variable syntax is for a POSIX shell; on Windows it can
+be set using the shell's equivalent syntax or omitted. A run without
+\code{--full} uses smaller meshes. The numerical output records the
+Python and numerical-library versions. The PDF is built from the
+provided source and two generated table fragments; all are in the ZIP.
+
+\section{Proof boundaries and a formalization route}
+\label{sec:audit}
+
+\subsection{Dependency audit}
+The mathematical dependency chain is short enough to audit explicitly.
+The pressure theorem requires the atomic spectral gap
+(\cref{prop:gap}), the strong--weak perturbation identity
+(\cref{lem:sw}), the weak pairing bound and scalar coefficient
+(\cref{thm:weak}), and the pressure--moment comparison
+(\cref{lem:sampling}). The atomic gap follows from an explicit weighted
+Riemann sum and a finite-iterate H\"older estimate. The weak pairing
+bound follows from a one-zero scaling calculation and cancellation of
+its odd tail; independent zero motions are added by a partition of
+unity with controlled mixed terms. No assumption of strictly positive
+weights, no unproved linear-response theorem, and no
+numerical spectral approximation is inserted into this chain.
+
+The special functions only evaluate the universal integral and the
+amplitude. Leaving those two quantities as their convergent integrals
+would preserve the qualitative cusp and finite-size statements. The
+closed forms make the laws explicit.
+
+The article proves a local result relative to a specific family. In
+particular, it does not prove a general universality theorem for all
+masks with the same number of zeros. The atomic coboundary and its
+spectral gap are indispensable model-specific structure. Independent
+motions are allowed because they start from exactly this atomic mask.
+
+\subsection{A staged Lean implementation}
+No Lean file is included or claimed to compile. A practical future
+formalization can isolate three layers. The finite layer consists of
+the root-factor mask identity, the digit-product coefficient formula,
+and the degree bound $b^n-1$. The real-analysis layer consists of the
+one-zero integral estimates, principal-value functionals on H\"older
+tests, and the weighted quadrature lemma. The operator layer consists
+of rank-one exponential relaxation, resolvent projections, and
+\cref{lem:sw}.
+
+The strong--weak eigenvalue lemma is a particularly reusable target:
+once a suitable spectral-projection API exists, its central equality
+is just
+\[
+ \lambda-\beta-\nu(\Delta h)=\nu\Delta(h_\Delta-h).
+\]
+The essential formal issue is preserving the different norm estimates,
+not replacing both by one ambient operator norm. For the singular
+integrals, symmetric cutoff limits should be explicit definitions;
+otherwise a principal value can be mistaken for an absolutely
+convergent integral.
+
+A useful executable certificate project would prove rigorous
+finite-dimensional upper and lower spectral bounds with a separately
+bounded interpolation error. The existing floating-point verifier is
+not such a certificate, and a future formal checker should not treat
+its output as trusted theorem data.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\begin{question}[The sharp next term]
+Can the remainder in \cref{eq:main} be sharpened to an asymptotic term?
+Determine whether the next correction is an ordinary quadratic term,
+a fractional term, or a logarithmic or log-periodic contribution.
+The present proof bounds the change of the eigenfunction only in a
+strong norm and does not compute its effect at the moved zeros.
+\end{question}
+
+\begin{question}[Removing the arbitrary H\"older loss]
+For fixed $0<s<1$, can one replace
+$O(\delta^{1+s-\alpha})$ for every $\alpha>0$ by
+$O(\delta^{1+s})$, perhaps with a logarithmic factor?
+A weighted space adapted simultaneously to the atomic point and the
+mask zeros could avoid choosing a smaller H\"older exponent. The
+optimal total-variation law \cref{eq:TV} is a constraint on any such
+argument, not by itself an answer.
+\end{question}
+
+\begin{question}[A joint limit as the moment order tends to zero]
+The coefficient behaves as $J_s\sim\pi^2s^2/2$, but the proof is not
+uniform as $s\downarrow0$. Determine the joint pressure asymptotic
+when $s\log(1/\delta)$ remains bounded. Does the apparent quadratic
+small-order response retain a universal scaling function, or do
+additional orbit effects become visible?
+\end{question}
+
+\begin{question}[Independent zero motions at criticality]
+At $s=1$, does the critical splitting depend only on
+$\sum_j|\varepsilon_j|$, or on a different weighted combination of
+zero motions? The atomic left density is no longer integrable and the
+rank-one argument here fails. One must compute the perturbation of
+the critical spectral block rather than substitute $s=1$ in the
+subcritical coefficient.
+\end{question}
+
+\begin{question}[Uniform matching as $s\uparrow1$]
+Can the compact-subcritical theorem be matched quantitatively to the
+critical two-parameter law in \cite{CriticalRepo}? An overlap region
+must control the blowup of $\nu_s$ and of the reduced resolvent.
+The pole $J_s\sim2/(1-s)$ identifies what must be matched but does not
+justify the interchange of limits.
+\end{question}
+
+\begin{question}[Two-point regularity and nonzero phases]
+Is the common-phase pressure locally Lipschitz on a whole neighborhood
+of the atomic phase for every fixed $0<s<1$? At nonzero phases, what
+regularity is forced or obstructed by returns of singularities under
+$T_b$? The estimate proved here is anchored to the atomic left
+functional and does not directly give a bound between two arbitrary
+nearby nonzero phases.
+\end{question}
+
+\begin{question}[Higher-multiplicity zeros]
+For an atomic model with zero multiplicities $r_j>1$, what replaces
+the integrability threshold and the coefficient $J_s$? A local factor
+suggests replacing $s$ by $r_js$, but a pressure theorem also needs
+an actual spectral gap and compatible dual density. Determine precise
+hypotheses under which local multiplicities determine a tangent law.
+\end{question}
+
+\begin{question}[Response of eigenfunctions and equilibrium data]
+Find a distributional or weighted-space expansion of the right and
+left spectral vectors themselves. This could yield first-order laws
+for observables and, in the probability-normalized subfamily,
+equilibrium measures. The pressure theorem only uses a norm estimate
+for the perturbed eigenfunction and does not identify its singular
+profile.
+\end{question}
+
+\begin{question}[Certified computation near a cusp]
+Develop interval quadrature and a proof-producing spectral enclosure
+whose error remains smaller than the $O(\delta)$ pressure increment.
+Uniform collocation spends many points away from the few translated
+zeros. A decomposition that treats their singular parts analytically
+could improve both efficiency and the trust boundary.
+\end{question}
+
+\begin{question}[An abstract moving-singularity response theorem]
+Which expanding maps and finite-zero weight families admit a weak
+expansion of the form ``Dirac masses plus principal values'' together
+with a strong--weak eigenvalue remainder? Formulate a theorem with
+explicit assumptions on the atomic spectral data, zero separation,
+local exponents, and test-function regularity. The digital masks here
+provide a complete worked example, not a proof for all such systems.
+\end{question}
+
+\section{Conclusion}
+The lower cutoff in the previous subcritical argument was a limitation
+of its perturbation estimate, not a spectral transition. Pairing the
+perturbation with the atomic left eigenfunctional preserves the
+cancellation around translated zeros and makes the nonlinear remainder
+smaller than the cusp for every $0<s<1$.
+The resulting theorem closes the repository's explicitly remaining
+subcritical interval, supplies a quantitative error, and extends the
+answer to independent zero motions. In this larger parameter space the
+first pressure increment is $J_s\norm\eps_1$, while finite products
+have the scaling amplitude $A_s$ and time scale $n\norm\eps_\infty$.
+The unresolved questions now concern sharper corrections, endpoint
+matching, nonzero phases, and certified implementation, rather than
+whether the leading fixed-subcritical cusp exists.
+
+\begin{thebibliography}{9}
+\bibitem{GKS}
+P.~Gohlke, M.~Kesseb\"ohmer, and T.~I.~Schindler,
+\emph{Generalized Thue--Morse measures: spectral and fractal analysis},
+arXiv:2509.22109, 2025.
+\url{https://arxiv.org/abs/2509.22109}.
+Theorems~2.3 and 2.7 and Section~6 describe the pressure framework and
+atomic comparison relevant here.
+
+\bibitem{GLS}
+P.~Gohlke, G.~Lamprinakis, and J.~Schmeling,
+\emph{On a family of singular potentials: Parameter dependence of
+thermodynamic characteristics}, arXiv:2603.19001, 2026.
+\url{https://arxiv.org/abs/2603.19001}.
+Theorem~2.2 proves positive-order phase continuity; the discussion
+following Theorem~2.3 poses the stronger-regularity question.
+
+\bibitem{CriticalRepo}
+ProveIt research corpus, research draft prepared with ChatGPT for
+V.~Reshetnikov,
+\emph{Critical Cusps in Digital-Product Pressure: A Jordan collision,
+square-root phase scaling, and explicit subcritical response},
+29 September 2026. Source in
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Critical_Pressure/article.tex},
+repository \url{https://github.com/VladimirReshetnikov/ProveIt},
+commit \nolinkurl{458ccfb80b9940220819091da107e82bb970dcca}.
+The subsection explaining the $s=1/2$ cutoff and the first research
+question state the gap addressed here. Unrefereed repository manuscript.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Chapter~5, especially \S5.5, functional and reflection relations for
+the gamma and digamma functions.
+\url{https://dlmf.nist.gov/5.5}.
+
+\bibitem{Repo}
+V.~Reshetnikov, \emph{ProveIt}, repository snapshot
+\nolinkurl{458ccfb80b9940220819091da107e82bb970dcca}, inspected
+29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The Thue--Morse branch readme distinguishes the existing integer,
+fractional, and critical-pressure reports and their unreviewed status.
+\end{thebibliography}
+
+\end{document}

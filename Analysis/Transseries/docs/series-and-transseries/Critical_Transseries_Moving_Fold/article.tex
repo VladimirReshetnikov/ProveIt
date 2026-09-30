@@ -34,6 +34,9 @@
 \newtheorem{question}{Research question}[section]
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Q}{\mathbb Q}
@@ -52,6 +55,8 @@
 \makeatother
 
 \begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which the titlepage environment numbers 1 like the following page (removes a duplicate-destination warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{13mm}
 \begin{center}
@@ -102,6 +107,7 @@ The new results are not Lean-formalized. Exact symbolic checks and
 for the proofs or for independent review. Worldwide priority is not claimed.
 \end{minipage}}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 {\small
 \setlength{\parskip}{0pt}
@@ -1099,6 +1105,23 @@ If every grouped coefficient vanishes, the absolutely convergent sum
 for $D(X)$ is identically zero, proving the first alternative.
 \end{proof}
 
+% ed. (2026-09-29): cross-reference to the later countable-action sibling package (batch 47), which extends this theorem.
+\begin{ednote}
+The later package \emph{Beyond Finite-Action Folds}, filed in batch~47
+as \path{Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/} in the
+series directory \path{Analysis/Transseries/docs/series-and-transseries/}, continues
+Theorem~\ref{thm:actions} from finitely many to countably many actions, for
+the feedback kernel $U=\beta\sum_j a_jq^je^{jU}$ with linear slopes and
+power-law amplitudes $a_j=a j^{-1-\alpha}$, $1<\alpha<2$. At the critical
+coupling the square-root fold becomes a nonanalytic boundary with exponent
+$1/\alpha$ and a convergent Hahn chart (its \texttt{thm:hahn}); its
+truncations to finitely many actions are ordinary folds of the kind treated
+here, whose critical-value and curvature drift it computes (its
+\texttt{thm:fold-drift}, \texttt{thm:hard}). It is a model-specific
+extension, not a generalization of Theorem~\ref{thm:actions}, and it does not
+settle the higher-multiplicity question of Section~\ref{sec:questions}.
+\end{ednote}
+
 \subsection{A constructive finite positive support grid}
 There is a useful stronger conclusion than mere local finiteness of the
 resulting support. Although the differences $\nu-\lambda$ need not
@@ -1266,6 +1289,20 @@ and the unit factor. Away from the fold, the second term in
 the first term remains finite. The accompanying script does not implement
 interval enclosures of the unit factor; the proposition gives the
 mathematical certificate that such an implementation should check.
+
+% ed. (2026-09-29): cross-link to a related machine-checked repository lemma, uncited in the delivered article.
+\begin{ednote}
+In the real, strictly monotone case the linear error transport recovered
+by the second term of \eqref{eq:residual-combined} is the residual bracket
+machine-checked in the repository as the Lean theorem
+\texttt{Fabius.exists\_eq\_in\_residual\_interval}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean}):
+if $f'\ge m>0$ on a convex set containing
+$[x-|f(x)-z|/m,\,x+|f(x)-z|/m]$, then $f$ takes the value $z$ in that
+interval. Proposition~\ref{prop:residual} is the complex fold counterpart
+and is not covered by that lemma. This article uses convergent profiles and
+contains no least-term truncation.
+\end{ednote}
 
 \section{Computation, reproducibility, and proof status}
 \label{sec:computation}
@@ -1458,6 +1495,18 @@ polynomial after a moving-discriminant normalization and when genuinely
 multivariate Newton polygons are unavoidable. Determine sharp support
 grid enlargements beyond the simple denominator doubling of a fold.
 \end{question}
+% ed. (2026-09-29): status of this question after the later sibling packages (batches 47-49).
+\begin{ednote}
+Still open. The countable-action package
+\path{Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/} of the same
+series states explicitly that it does not settle this question: its critical
+boundary is a nonanalytic point with exponent $1/\alpha$, not an analytic
+critical point of higher multiplicity. The later exponent-two endpoint
+packages of the series (logarithmic, marginal, confluent and stable--Gaussian)
+study the logarithmic boundary singularity of the same kernel at
+$\alpha=2$ and do not address it either; the finite-action folds of the
+logarithmic and marginal packages are ordinary square-root folds.
+\end{ednote}
 
 \begin{question}[Competing singularities and new coefficient windows]
 Extend the uniform large-sector theorem to a family in which two or more
@@ -1497,6 +1546,13 @@ joint scaling theory that distinguishes a genuine resonance from a
 near-resonance and identifies when a fixed finite support grid must be
 replaced by a parameter-dependent description.
 \end{question}
+% ed. (2026-09-29): status of this question after the countable-action sibling package (batch 47).
+\begin{ednote}
+Still open. The countable-action package
+\path{Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/} keeps its actions
+fixed; its own research question~6 (incommensurate actions and shrinking
+gaps) proposes a different part of this question as further work.
+\end{ednote}
 
 \begin{question}[Proof-producing critical inversion]
 Build an implementation that emits a finite certificate for the root
@@ -1600,6 +1656,11 @@ omits those final large-index diagnostics. The symbolic checks are
 identical in both modes. Re-running the script intentionally replaces
 the package's own \texttt{data/verification.json} and table fragments;
 it does not modify any repository or Library source.
+% ed. (2026-09-29): verify.py was changed on filing; the added sentence describes the change.
+Editorial note (ProveIt, 2026-09-29): in the filed package a
+\texttt{--quick} run writes into \texttt{data/quick/} and leaves the
+full-run files that this article inputs unchanged, and every output is
+written with LF line endings.
 
 The supplied PDF was compiled from this source and visually checked.
 The package records a mathematical proof manuscript and reproducible
@@ -1617,6 +1678,13 @@ README}, inspected at commit
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/20301601562cf84173f2b503b0dc9c3fbf21cd0c/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/README.md}{Pinned repository source}.
 The cited status concerns the distinctions between finite algebra,
 assembled formal-series theorems, and analytic identification.
+% ed. (2026-09-29): the pre-split path above is dead at the current revision; current path added.
+Editorial note (ProveIt, 2026-09-29): the pinned link still resolves at
+the cited commit, but since the repository split the README is at
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md},
+beside the canonical volume
+\path{transseries_and_inversion.tex}, which carries the three labels cited
+in the next entry.
 
 \bibitem{repo-catalan}
 Vladimir Reshetnikov, ProveIt module
@@ -1626,6 +1694,10 @@ Relevant volume labels are
 \repoLabel{p6:prop:quadratic-core-catalan},
 \repoLabel{p6:lem:quadratic-core}, and
 \repoLabel{p6:thm:deepest-pole}; the module states its formalization boundaries.
+% ed. (2026-09-29): path checked at the current revision.
+Editorial note (ProveIt, 2026-09-29): the module stayed in the Fabius
+Lean library; the path above is current and the file is unchanged since
+the pinned commit.
 
 \bibitem{predecessor}
 \emph{Support-Controlled Reversion and the Exact One-Exponential
@@ -1635,6 +1707,10 @@ the user's saved documents. In particular, the mixed inverse example,
 its deepest-pole resummation, and Research question 11.8.
 This is project-local predecessor material, not a claim of peer-reviewed
 publication.
+% ed. (2026-09-29): the predecessor is now filed in the repository (batch 45, together with this article).
+Editorial note (ProveIt, 2026-09-29): the predecessor is now filed in the
+same series as
+\path{Analysis/Transseries/docs/series-and-transseries/Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex}.
 
 \bibitem{corless}
 R.~M. Corless, G.~H. Gonnet, D.~E.~G. Hare, D.~J. Jeffrey, and D.~E. Knuth,

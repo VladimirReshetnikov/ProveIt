@@ -135,7 +135,8 @@ def main() -> None:
         for kind in ['direct','midpoint']:
             certs.append(certificate(x,m,kind,c,h))
     path=Path(__file__).with_name('exact_certificates.json')
-    path.write_text(json.dumps(certs,indent=2)+'\n')
+    # ed. (2026-09-29): LF line endings on every platform, like the filed file.
+    path.write_text(json.dumps(certs,indent=2)+'\n',newline='\n')
     print('All six exact sign/enclosure checks passed. Wrote',path.name)
 
 if __name__=='__main__':

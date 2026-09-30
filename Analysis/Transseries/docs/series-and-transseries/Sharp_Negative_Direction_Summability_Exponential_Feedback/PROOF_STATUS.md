@@ -81,3 +81,29 @@ The coefficient-to-remainder bridge and its model-specific sharp directional
 summability consequences are proposed research contributions. The article
 makes no certified global priority claim and does not call a classical method
 an invention. Independent mathematical review remains appropriate.
+
+## Editorial note (ProveIt, 2026-09-29)
+
+Status of the "Deliberately unresolved" items in the repository, from other
+packages in `Analysis/Transseries/docs/series-and-transseries/` (none
+independently reviewed):
+
+- Ordinary (k = 1) negative-direction summability for quadratic feedback: the
+  fine (half-strip) version holds for `lambda_j = O((j log j)^2)` by
+  `Negative_Ray_Summation_Exponential_Feedback/` (Theorem `thm:threshold`),
+  which was in this article's snapshot and is not cited by it; the ordinary
+  (angular) version fails for `lambda_j = j^2` by
+  `Natural_Boundaries_Quadratic_Exponential_Feedback/` (Theorem `thm:main`),
+  filed later.
+- Uniform estimates on the boundary rays: for `lambda_j = j^2` the
+  negative-ray package bounds the inverse `P = e^u Q` uniformly on a closed
+  left half-disc (Theorem `thm:remainder`); nothing comparable is proved for
+  `U` itself.
+- Sharp numerical types: the exact coefficient type is invariant under
+  inversion by `Sharp_Weighted_Type_Formal_Reversion/` (Theorem
+  `thm:inversefeedback`); the sharp remainder constant remains open.
+- Signed coefficient equivalents for the inverse: for `lambda_j = a j^2`
+  claimed, independently, by `Quadratic_Exponential_Feedback_After_Reversion/`
+  and `Signed_Quadratic_Feedback_Inversion/` (batch 49).
+
+The other items remain open.

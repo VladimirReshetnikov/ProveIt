@@ -1,0 +1,1431 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,tabularx,array,enumitem}
+\usepackage{fancyhdr,xurl,hyperref}
+\hypersetup{hidelinks,pdftitle={Path-Sensitive Small Divisors in Hahn--Fuchsian Systems},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Path-sensitive Hahn--Fuchsian normalization}
+\fancyhead[R]{\small 29 September 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\K}{\mathcal K}
+\newcommand{\A}{\mathcal A}
+\newcommand{\G}{\mathcal G}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\lc}{\operatorname{lc}_{\mathrm{dp}}}
+\newcommand{\Paths}{\operatorname{Paths}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\dplog}[1]{L^{[#1]}}
+\newcommand{\snap}{\texttt{9250bbf8af80dacf7b252d9d0320b122c80961ba}}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/ProveIt}}
+\newcommand{\eps}{\varepsilon}
+
+\title{\textbf{Path-Sensitive Small Divisors\\in Hahn--Fuchsian Systems}\\[5pt]
+\large Exact convergence criteria, resonance amplification,\\and stable analytic renormalization}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\begin{abstract}
+A recent ProveIt manuscript characterizes universal absolute convergence of
+Hahn--Fuchsian normalizers when every exponent in a prescribed semigroup is
+an allowed input. It leaves open the corresponding problem for a smaller
+input support and restricted matrix directions. We resolve that problem for
+strictly upper-triangular perturbations of a real diagonal matrix, with
+independently variable coefficients on each permitted edge. The exact
+criterion involves only exponent sums along actual directed matrix paths:
+no endpoint spectral difference may be a left accumulation point of its
+path sumset. Accumulations created by algebraically impossible products are
+irrelevant. Exact resonances are allowed.
+
+The proof gives an explicit polynomial-in-logarithm path kernel, an exact
+weighted multilinear norm criterion, and a conversion to the usual
+normalized log-free gauge. It also yields arbitrarily small,
+bounded-support counterexamples whenever the criterion fails. Two
+three-dimensional examples distinguish the path criterion from both a
+whole-semigroup test and an edge-by-edge test. An arbitrary-rank resonant
+chain exhibits a sharp loss of moments: coefficients $c_n$ require exactly
+$\sum n^{r-1}|c_n|<\infty$ in dimension $r$, although the original input
+only requires $\sum|c_n|<\infty$.
+
+For that chain, a stable basepoint-normalized analytic solution exists under
+the weaker input condition and realizes every fixed finite formal prefix.
+We prove a uniform $N\asymp\log(1/x)$ crossover with an explicit error bound.
+All specialized arguments are supplied. Exact finite checks and numerical
+illustrations accompany the article; they are not a Lean formalization.
+The research additions are relative to the inspected repository questions;
+worldwide priority has not been established.
+\end{abstract}
+
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\vspace{12pt}
+\section*{Notation at a glance}
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$D$, $L$ & Euler derivation $x\,d/dx$ and the formal logarithm, $DL=1$.\\
+$\Lambda$, $\G$ & Real diagonal constant matrix and the acyclic edge pattern.\\
+$E_p$, $\rho_p$ & Exponent sumset and spectral difference for a path $p$.\\
+$T_\beta$, $Q_p$ & Normalized polynomial inverse and its composed path kernel.\\
+$H$, $P$ & Canonical polynomial-log factor and normalized log-free gauge.\\
+$M_p(w)$, $\eta_p$ & Weighted path norm and the nonresonant path gap.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+\newpage
+
+\section{The research question and the scope of the answer}
+\label{sec:orientation}
+
+\subsection{A specific question in the repository}
+The ProveIt article \emph{Finite Resonance Certificates and Sharp Analytic
+Normalization for Hahn--Fuchsian Systems} studies
+\[
+ xY'=(A_0+A_+(x))Y
+\]
+with positive, well-ordered real exponents. Its universal convergence theorem
+quantifies over all coefficient series supported in an entire exponent
+semigroup. Section 11 then asks whether that criterion remains necessary
+when the input is restricted to a smaller generating support. It explicitly
+suggests a triangular three-dimensional system with two permitted matrix
+units and an accumulating two-letter sumset \cite{repo-hahn}.
+
+This is not a cosmetic change of quantifiers. A semigroup remembers which
+exponents can be added, but forgets whether the associated matrix products
+are nonzero. For instance, the repeated product of a matrix unit $E_{12}$
+is zero, whereas $E_{12}E_{23}=E_{13}$ is not. A spectral accumulation arising
+only from the first kind of word need not obstruct normalization. Conversely,
+a bad sum formed by the second kind can be invisible in both individual
+coefficient series.
+
+We solve this support-sensitive problem for every finite acyclic matrix
+pattern, not only the suggested three-dimensional example. After a
+permutation of vertices, such a pattern is strictly upper triangular.
+The constant term is diagonal with real eigenvalues; coefficients on
+different edges are independently variable. These are genuine restrictions,
+and the conclusions below retain them explicitly.
+
+\subsection{What is proved, and what is not}
+The principal results are as follows.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.28\textwidth}X@{}}
+\toprule
+Question or issue & Result in this article\\
+\midrule
+Smaller input supports and allowed matrix directions &
+An exact path--spectrum equivalence, including exact resonances;
+Theorems~\ref{thm:gap} and \ref{thm:gauge-equivalence}.\\[3pt]
+Weighted convergence when spectral gaps vanish &
+An exact necessary and sufficient path-kernel criterion for independent
+weighted $\ell^1$ input classes; Theorem~\ref{thm:weighted}.\\[3pt]
+How severe can resonance amplification be? &
+In dimension $r$, an explicit chain has the exact moment threshold
+$n^{r-1}$; Theorem~\ref{thm:chain}.\\[3pt]
+What replaces a divergent canonical expansion? &
+A basepoint-normalized realization for the chain, with finite-prefix
+asymptotics and a uniform crossover certificate;
+Theorems~\ref{thm:analytic-chain} and \ref{thm:crossover}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+We do not settle the smaller-support problem for arbitrary nontriangular
+matrices, fixed nonzero Jordan blocks, or coupled coefficient directions.
+We do not construct a multiplicative summation operation on an unrestricted
+Hahn field. The analytic realization theorem concerns the stated chain,
+not every formally divergent transseries equation. The distinction between
+universal independent inputs and correlated inputs is demonstrated
+explicitly in Section~\ref{sec:cancellation}.
+% ed. (2026-09-29): relation of thm:gap to the predecessor's universal theorem, and the later nonlinear counterpart of ex:hidden
+\begin{ednote}
+Theorem~\ref{thm:gap} specializes to the predecessor's
+\texttt{thm:universal} \cite{repo-hahn} when every edge carries the whole
+exponent semigroup and the constant term is diagonal; that theorem also
+covers nontriangular perturbations and a nilpotent part, which are excluded
+here. The linear phenomenon of Example~\ref{ex:hidden} has a nonlinear
+counterpart, a separated forcing whose products accumulate, in the later
+package \path{Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/} (its
+\texttt{thm:hidden}); the nonlinear universal gap criterion is proved there
+and, independently, in \path{Nonlinear_Hahn_Dulac_Finite_Resonance_Control/}.
+\end{ednote}
+
+\subsection{Relation to established theory}
+The Frobenius method, resonant Fuchsian normal forms, and the integration of
+nilpotent normal forms are classical; see Ilyashenko--Yakovenko
+\cite{iy,yakovenko}. Well-based series and their differential calculus belong
+to the established theory of transseries \cite{vdh}. Neither that general
+architecture nor the finite-dimensional inverse of
+$\beta+\partial_L$ is claimed as a new theorem.
+
+Gontsov--Goryuchkina give a convergence theorem for generalized power-series
+solutions of polynomial ordinary differential equations; their displayed
+class has $\operatorname{Re}s_k\to+\infty$ \cite{gg}. Our coefficient data can
+instead have infinitely many exponents below a finite cut and are not
+assumed polynomial in $x$. The small-divisor work of
+Gontsov--Goryuchkina--Lastra concerns generalized solutions of
+$q$-difference equations \cite{ggl}. It is relevant context, not a source of
+the graph-specific equivalence proved here.
+
+The proposed additions are the sharp fixed-pattern criterion, its exact
+weighted version, the all-radii counterexample consequence, and the
+resonant-chain moment and crossover package. The earlier repository
+manuscript already supplies a whole-semigroup criterion, finite resonance
+ancestry, and a rank-one accumulation model. We build on its questions
+rather than relabel those results as new.
+
+\subsection{Provenance and reading boundary}
+Repository comparisons use snapshot \snap. We inspected the series group
+index, the Hahn--Fuchsian package README, the article's setup and normal-form
+section and its further-questions section, the resonance-block package
+README, and the well-based-support Lean module \cite{repo-index,repo-hahn,
+repo-block,repo-lean}. The complete large canonical volume and every other
+research arrival were not audited. This is a targeted comparison, not a
+claim of exhaustive novelty checking across the repository or literature.
+No repository files were changed.
+
+\section{Fixed supports, directed paths, and coefficient spaces}
+\label{sec:setup}
+
+\subsection{The differential system}
+Fix $r\geq2$, real numbers $\lambda_1,\ldots,\lambda_r$, and
+\[
+ \Lambda=\diag(\lambda_1,\ldots,\lambda_r),\qquad
+ D=x\frac{d}{dx}.
+\]
+Let $\G$ be a directed graph on $\{1,\ldots,r\}$ whose edges have the form
+$i\to j$ with $i<j$. For every edge $e=(i,j)$ fix a nonempty well-ordered
+set $E_e\subset\R_{>0}$. A missing or empty edge is simply deleted.
+Consider
+\begin{equation}\label{eq:system}
+ DY=(\Lambda+A(x))Y,\qquad
+ A_{ij}(x)=\sum_{\alpha\in E_{ij}}a_{ij,\alpha}x^\alpha,
+\end{equation}
+with $A_{ij}=0$ off the prescribed edges. Coefficients are complex and may
+vanish. The support sets, graph, and spectrum are fixed; the coefficients
+are the variable data.
+
+We work formally in
+\[
+ \K=\C((x^\R)),\qquad \K[L],\qquad
+ D(x^\alpha)=\alpha x^\alpha,\quad DL=1.
+\]
+Here a Hahn support is well ordered in the ordinary order of real
+exponents. The variable $L$ is algebraically independent formally and is
+later evaluated as $\log x$. Smaller powers are dominant as $x\to0$.
+
+For a path $p=(i_0,i_1,\ldots,i_m)$ put
+\begin{equation}\label{eq:pathsum}
+ E_p=E_{i_0i_1}+\cdots+E_{i_{m-1}i_m},\qquad
+ \rho_p=\lambda_{i_0}-\lambda_{i_m}.
+\end{equation}
+The length $m$ is at most $r-1$. Write $S_{ij}$ for the finite union of all
+$E_p$ with endpoints $i,j$. No full additive semigroup is needed to describe
+these supports.
+
+\begin{lemma}[Finite path support arithmetic]\label{lem:support}
+Every $E_p$ and $S_{ij}$ is well ordered. For a fixed path and a fixed real
+$s$, there are only finitely many tuples
+$(\alpha_1,\ldots,\alpha_m)$, with each $\alpha_k$ in its edge support,
+whose sum is $s$.
+\end{lemma}
+\begin{proof}
+For two well-ordered subsets $U,V$ of a linearly ordered abelian group,
+$U+V$ is well ordered and every fixed sum has finitely many decompositions.
+In the present real case this can also be seen directly. Every sequence in
+a well-ordered set has a nondecreasing subsequence. A strictly decreasing
+sequence $u_n+v_n$ would therefore, after taking such a subsequence of the
+$u_n$, give a strictly decreasing sequence of $v_n$, a contradiction.
+If infinitely many distinct pairs had the same sum, their distinct first
+coordinates would have a strictly increasing subsequence, forcing strictly
+decreasing second coordinates. Induction proves both assertions for any
+fixed number of factors. There are only finitely many paths in the graph,
+and a finite union of well-ordered subsets of a linear order is well
+ordered.
+\end{proof}
+
+The elementary subsequence fact used here follows by choosing successive
+tail minima; equivalently, a sequence with no nondecreasing subsequence
+would yield an infinite strictly decreasing subsequence. The repository
+provides the corresponding two-factor support and finite-antidiagonal
+bridges as \texttt{Fabius.neumann\_add\_isPWO} and
+\texttt{Fabius.neumann\_finite\_decompositions} \cite{repo-lean}.
+
+\subsection{Divided powers and absolute coefficient norms}
+Put $\dplog{k}=L^k/k!$. For
+$u(L)=\sum_{k=0}^d u_k\dplog{k}$ define
+\begin{equation}\label{eq:polynorm}
+ |u|_{\mathrm{dp}}=\sum_{k=0}^d|u_k|.
+\end{equation}
+On a fixed degree bound, differentiation shifts the divided-power
+coefficients and has norm at most one. Integration with zero constant
+coefficient also has norm at most one, as a map to the next degree.
+
+For $R>0$, a fixed well-ordered $E$, and a positive finite weight
+$w:E\to(0,\infty)$, let
+\begin{equation}\label{eq:inputnorm}
+ X_R(E,w)=\left\{a:\sum_{\alpha\in E}|a_\alpha|R^\alpha
+                                      w(\alpha)<\infty\right\}.
+\end{equation}
+This is a Banach space, isometric to ordinary $\ell^1(E)$ after multiplying
+coordinates by $R^\alpha w(\alpha)$. For a fixed output support $S$ and
+degree bound $d$, use
+\begin{equation}\label{eq:outputnorm}
+ \norm{h}_{R,\mathrm{dp}}
+   =\sum_{s\in S}R^s|h_s(L)|_{\mathrm{dp}},\qquad
+ h=\sum_{s\in S}h_s(L)x^s.
+\end{equation}
+The resulting space is likewise Banach. Subsets of these fixed supports
+remain Hahn supports, so completion does not leave the formal class.
+
+Let $\A_R$ denote the collection of Hahn series with finite norm
+$\sum |f_s|R^s$, allowing any individual well-ordered support. It is a
+normed algebra under finite coefficient convolution. We do \emph{not}
+claim that this unrestricted-support algebra is complete: an $\ell^1$
+limit of changing supports need not have well-ordered support. All
+closed-graph arguments below take place in the fixed-support Banach spaces
+just defined.
+
+Membership in $\A_R[L]$ means that each of finitely many log coefficients
+belongs to $\A_R$. Multiplication by a finite sum of real monomials times
+log polynomials preserves this membership. Indeed, multiplication by
+$x^\beta$ scales the coefficient norm by $R^\beta$, and multiplication of
+fixed-degree polynomials changes norms by only a finite combinatorial
+constant. No completeness assertion is required for this observation.
+
+\section{The exact path kernel}
+\label{sec:kernel}
+
+\subsection{A polynomial inverse including exact resonance}
+For $\beta\in\R$ define a linear operator on $\C[L]$ by
+\begin{equation}\label{eq:T}
+ T_\beta u=
+ \begin{cases}
+ \displaystyle\sum_{k=0}^{\deg u}
+          \frac{(-1)^k}{\beta^{k+1}}\partial_L^k u,&\beta\ne0,\\[6pt]
+ \displaystyle\int_0^L u(v)\,dv,&\beta=0.
+ \end{cases}
+\end{equation}
+The zero polynomial is mapped to zero.
+
+\begin{lemma}[Polynomial right inverse]\label{lem:T}
+For every $u$, $(\beta+\partial_L)T_\beta u=u$.
+If $\beta\ne0$, $T_\beta u$ is the unique polynomial solution. If
+$\beta=0$, it is the unique polynomial solution with zero constant
+coefficient. For $u\ne0$, a nonzero $\beta$ preserves degree and divides
+the divided-power leading coefficient by $\beta$; $T_0$ raises degree by
+one and preserves that leading coefficient.
+\end{lemma}
+\begin{proof}
+For nonzero $\beta$ the finite geometric sum telescopes, because a
+sufficiently high derivative of $u$ is zero. A nonzero polynomial cannot
+lie in the kernel of $\beta+\partial_L$: its highest-degree coefficient
+would be multiplied by the nonzero scalar $\beta$. For $\beta=0$,
+differentiation and zero-constant integration are inverse in the stated
+sense. The leading-coefficient assertions follow directly in the
+$\dplog{k}$ basis.
+\end{proof}
+
+For degree at most $d$ and $\beta\ne0$,
+\begin{equation}\label{eq:Tbound}
+ |T_\beta u|_{\mathrm{dp}}
+ \leq\left(\sum_{k=0}^d|\beta|^{-k-1}\right)|u|_{\mathrm{dp}}.
+\end{equation}
+In particular, a uniform lower bound on nonzero $|\beta|$ bounds all
+operators needed for paths of bounded length.
+
+\subsection{Suffix spectral differences}
+Fix a path $p=(i_0,\ldots,i_m)$ and an exponent tuple
+$\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_m)$. Define
+\begin{equation}\label{eq:betas}
+ \beta_k=\alpha_k+\cdots+\alpha_m
+               -(\lambda_{i_{k-1}}-\lambda_{i_m}),
+ \qquad 1\leq k\leq m,
+\end{equation}
+and the polynomial path kernel
+\begin{equation}\label{eq:kernel}
+ Q_p(\boldsymbol\alpha;L)
+       =T_{\beta_1}T_{\beta_2}\cdots T_{\beta_m}1.
+\end{equation}
+The rightmost operator is applied first. The spectral differences refer
+to the \emph{same terminal vertex}. Replacing them by the individual edge
+differences is generally incorrect.
+
+\begin{lemma}[Degree and nonvanishing of a path kernel]\label{lem:leading}
+Let $z$ be the number of zero entries among $\beta_1,\ldots,\beta_m$.
+Then
+\begin{equation}\label{eq:leading}
+ \deg_L Q_p=z,\qquad
+ \lc Q_p=\prod_{\beta_k\ne0}\beta_k^{-1}.
+\end{equation}
+In particular, no path kernel is the zero polynomial.
+\end{lemma}
+\begin{proof}
+Start with the polynomial $1$ and apply Lemma~\ref{lem:T} from right to
+left. Every exact resonance raises degree by one without changing the
+divided-power leading coefficient. Every other step multiplies that
+coefficient by $\beta_k^{-1}$. These factors are nonzero.
+\end{proof}
+
+This formula is useful for the necessity direction. It avoids attempting
+to estimate a potentially cancellation-prone constant coefficient of a
+log polynomial. The highest divided-power coefficient is a single product.
+
+\section{A canonical Frobenius fundamental matrix}
+\label{sec:formal}
+
+We first construct a polynomial-logarithmic factor $H$ such that
+$Y=Hx^\Lambda$ solves \eqref{eq:system}. The log-free normalizer is denoted
+by $P$ and constructed separately in Section~\ref{sec:gauge}; keeping the
+two letters distinct prevents a change of normalization from being hidden.
+
+\begin{theorem}[Canonical path expansion]\label{thm:formal}
+There is a unique upper-unitriangular matrix $H\in\Mat_r(\K[L])$ with
+positive off-diagonal support that satisfies
+\begin{equation}\label{eq:H-equation}
+ DH=[\Lambda,H]+AH
+\end{equation}
+and the following normalization: whenever
+$s=\lambda_i-\lambda_j>0$, the polynomial coefficient $[x^s]H_{ij}$ has
+zero constant coefficient. Its entries are
+\begin{equation}\label{eq:H-path}
+ H_{ij}=
+ \sum_{p\in\Paths(i,j)}\ 
+ \sum_{\alpha_k\in E_{i_{k-1}i_k}}
+ \left(\prod_{k=1}^m a_{i_{k-1}i_k,\alpha_k}\right)
+ x^{\alpha_1+\cdots+\alpha_m}Q_p(\boldsymbol\alpha;L)
+ \quad(i<j).
+\end{equation}
+Every coefficient sum is finite, $\supp H_{ij}\subseteq S_{ij}$, and
+$\deg_LH_{ij}\leq j-i\leq r-1$. Thus $Hx^\Lambda$ is a formal
+fundamental matrix.
+\end{theorem}
+\begin{proof}
+Proceed by increasing $j-i$. With $H_{jj}=1$, the $(i,j)$ equation is
+\begin{equation}\label{eq:H-recursion}
+ (D-\rho_{ij})H_{ij}
+       =A_{ij}+\sum_{i<k<j}A_{ik}H_{kj},\qquad
+ \rho_{ij}=\lambda_i-\lambda_j.
+\end{equation}
+Its right side has already been defined. On a coefficient $x^s u(L)$,
+the left side acts as $x^s(s-\rho_{ij}+\partial_L)u$. Apply
+$T_{s-\rho_{ij}}$ to each coefficient. Lemma~\ref{lem:T} gives exactly the
+stated normalization and uniqueness. Positivity of input exponents and
+Lemma~\ref{lem:support} justify the coefficient operations.
+
+Expanding the recursion prepends one edge to a suffix path. The
+homological factor at that step is the corresponding $\beta_k$ in
+\eqref{eq:betas}. Induction therefore gives \eqref{eq:H-path}. There are
+at most $j-i$ edges in a path, and each $T_0$ raises degree by at most one.
+The determinant of $H$ is one, so $Hx^\Lambda$ is invertible.
+\end{proof}
+
+The theorem requires neither analytic convergence nor local finiteness of
+the supports. Infinite sets below a finite spectral value do not invalidate
+the formal recursion: a fixed coefficient still has only finitely many
+contributing tuples.
+
+\section{An exact weighted convergence criterion}
+\label{sec:weighted}
+
+\subsection{The path norm}
+Assign a weight $w_e:E_e\to(0,\infty)$ to each edge. For a path $p$ define
+\begin{equation}\label{eq:Mp}
+ M_p(w)=\sup_{\boldsymbol\alpha\in\prod E_e}
+ \frac{|Q_p(\boldsymbol\alpha;L)|_{\mathrm{dp}}}
+      {\prod_{e\in p}w_e(\alpha_e)}\ \in[0,\infty].
+\end{equation}
+The exponent-radius factors do not occur: $R^{\sum\alpha_e}$ cancels
+against $\prod R^{\alpha_e}$.
+
+\begin{theorem}[Exact independent-input criterion]\label{thm:weighted}
+Fix the graph, supports, spectrum, weights, and $R>0$. The following are
+equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item Every independent choice $a_e\in X_R(E_e,w_e)$ gives a canonical
+      $H$ with all coefficients in $\A_R[L]$.
+\item $M_p(w)<\infty$ for every directed path $p$.
+\end{enumerate}
+If these conditions hold, then
+\begin{equation}\label{eq:weightedbound}
+ \norm{H_{ij}}_{R,\mathrm{dp}}
+ \leq\sum_{p\in\Paths(i,j)}M_p(w)
+                \prod_{e\in p}\norm{a_e}_{X_R(E_e,w_e)}.
+\end{equation}
+Moreover, $M_p(w)$ is exactly the multilinear operator norm of the isolated
+path contribution, not merely an upper bound.
+\end{theorem}
+
+\begin{proof}[Sufficiency and exact norm]
+For a fixed path, the triangle inequality, \eqref{eq:Mp}, and the identity
+$R^{\sum\alpha_e}=\prod R^{\alpha_e}$ bound the output norm by
+$M_p(w)$ times the product of the input norms. Absolute summability
+justifies the resulting product of scalar sums. Adding the finitely many
+paths proves \eqref{eq:weightedbound}.
+
+To see sharpness, give each edge a single nonzero coefficient at
+$\alpha_e$, with magnitude $(R^{\alpha_e}w_e(\alpha_e))^{-1}$.
+Every input has norm one and the output norm is exactly the ratio in
+\eqref{eq:Mp}. Taking the supremum proves the reverse norm inequality.
+\end{proof}
+
+The necessity direction needs more than observing that single-coefficient
+examples have arbitrarily large norms. A map can be unbounded on a sequence
+of finite inputs without that observation alone producing one infinite
+input with divergent output. The following standard functional-analytic
+argument supplies the missing quantifier.
+
+\begin{lemma}[Automatic boundedness for the path map]\label{lem:closedgraph}
+Suppose the formal multilinear contribution of a fixed path maps every
+tuple of its fixed-support Banach input spaces into the fixed-support
+Banach output space of degree at most $r-1$. Then that multilinear map is
+bounded.
+\end{lemma}
+\begin{proof}
+Fix all but one input. Consider a sequence in the remaining input space
+converging in norm, whose outputs also converge in output norm. Every
+coefficient of a fixed exponent and fixed divided power is a finite sum
+of input coordinates by Lemma~\ref{lem:support}. Coordinate evaluation is
+continuous in each weighted $\ell^1$ space. Thus the output limit has the
+same coordinates as the formal output of the input limit. The graph of
+the resulting everywhere-defined linear map is closed. The closed graph
+theorem makes it continuous.
+
+The multilinear map is therefore separately continuous. Separate
+continuity on a finite product of Banach spaces implies joint boundedness.
+For completeness, argue by induction on the number of factors. Fixing the
+first factor, the induction hypothesis bounds the map on the unit balls
+of the remaining factors. Regard those remaining arguments as indexing a
+family of bounded linear maps of the first factor. That family is
+pointwise bounded by the induction hypothesis. The uniform boundedness
+principle supplies a uniform operator bound, as required.
+\end{proof}
+
+\begin{proof}[Necessity in Theorem~\ref{thm:weighted}]
+Fix a path and set every edge not on that path equal to zero. Between its
+endpoints, the retained graph has just that full path. Assumption (i)
+therefore says that its formal multilinear contribution maps every tuple
+of edge inputs into the fixed-support output Banach space. By
+Lemma~\ref{lem:closedgraph} it has finite norm. The single-coefficient tests
+in the first part of the proof show that this norm is $M_p(w)$.
+\end{proof}
+
+\begin{remark}[What the word ``exact'' means]
+The criterion is exact for the specified independent product of weighted
+$\ell^1$ spaces and for absolute coefficient convergence. It is not a
+necessary test for one selected input with cancellations, nor for a family
+whose edge coefficients satisfy additional algebraic relations. Nor does it
+claim that the infinite supremum is computable from every possible
+presentation of the supports and weights.
+\end{remark}
+
+\section{The path--spectrum gap theorem}
+\label{sec:gap}
+
+For every path define its nonresonant gap
+\begin{equation}\label{eq:gap}
+ \eta_p=\inf\{|s-\rho_p|:s\in E_p,\ s\ne\rho_p\},
+\end{equation}
+with infimum $+\infty$ for an empty set. Exact resonance is explicitly
+removed from the infimum.
+
+\begin{theorem}[Sharp accessible-spectrum criterion]\label{thm:gap}
+For the system \eqref{eq:system}, the following conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item For one fixed $R>0$, every input with
+      $\sum_{e,\alpha}|a_{e,\alpha}|R^\alpha<\infty$ has
+      $H\in\Mat_r(\A_R[L])$.
+\item The same assertion holds for every $R>0$.
+\item $\eta_p>0$ for every directed path $p$.
+\item No $\rho_p$ is a left accumulation point of its own path sumset
+      $E_p$.
+\end{enumerate}
+Thus a spectral difference matters only for paths with its specified
+endpoints. It is not enough to take an undifferentiated union of all path
+sumsets and all spectral differences.
+\end{theorem}
+
+\begin{proof}
+Assume (iii). There are finitely many paths, so every nonzero $\beta_k$
+in every path tuple is bounded away from zero by one common $\eta>0$.
+Indeed, a suffix is itself a path, and its $\beta_k$ is exactly a
+nonresonant endpoint difference for that suffix. Let $d=r-1$ and
+$h=\min(1,\eta)$. Equations~\eqref{eq:Tbound} and
+$|T_0u|_{\mathrm{dp}}=|u|_{\mathrm{dp}}$ give the uniform bound
+\[
+ |Q_p|_{\mathrm{dp}}
+ \leq\bigl((d+1)h^{-(d+1)}\bigr)^{|p|}.
+\]
+Consequently every unweighted $M_p$ is finite. Theorem~\ref{thm:weighted}
+proves (ii), which immediately implies (i).
+
+Conversely, suppose $\eta_p=0$ for a path of length $m$. Choose tuples
+with sums $s_n\ne\rho_p$ and $s_n\to\rho_p$. Their first homological
+factors satisfy $\beta_{1,n}=s_n-\rho_p\to0$. Because all input exponents
+are positive and $s_n$ is bounded, every suffix sum is bounded. Hence there
+is a fixed $B\geq1$ such that every $|\beta_{k,n}|\leq B$. By
+Lemma~\ref{lem:leading}, the highest divided-power coefficient of the
+kernel satisfies
+\begin{equation}\label{eq:blowup}
+ |Q_p(\boldsymbol\alpha_n)|_{\mathrm{dp}}
+ \geq\frac{1}{B^{m-1}|s_n-\rho_p|}\longrightarrow\infty.
+\end{equation}
+Zero suffix factors cause no problem: they are omitted from the leading
+coefficient product. Thus $M_p=\infty$, contradicting (i) by
+Theorem~\ref{thm:weighted}. This proves (i)$\Rightarrow$(iii).
+
+Finally, a well-ordered real set cannot accumulate at a finite point from
+above: one could successively choose smaller elements approaching that
+point and obtain an infinite decreasing sequence. If its distance from a
+point, with exact equality removed, is zero, it therefore accumulates from
+below. The reverse implication is immediate. Apply this to each $E_p$ to
+obtain (iii)$\Leftrightarrow$(iv).
+\end{proof}
+
+\begin{corollary}[Small inputs; no rescue by reducing the radius]
+\label{cor:allradii}
+If the gap condition fails, then for every $\eps>0$ there is an input
+supported on a single directed chain, with all input exponents in a
+bounded interval and
+$\sum_{e,\alpha}|a_{e,\alpha}|<\eps$, whose canonical $H$ fails absolute
+coefficient convergence at every radius $R>0$.
+\end{corollary}
+\begin{proof}
+Use a bad path from the proof of Theorem~\ref{thm:gap}. All exponents in
+its witnessing tuples lie below one finite $B_0$. Restrict each edge to
+$E_e\cap(0,B_0]$. The corresponding path norm remains infinite, so the
+necessity argument in Theorem~\ref{thm:weighted}, now at radius one,
+provides a tuple of $\ell^1$ inputs whose path output is not in $\ell^1$.
+Set all other edges to zero. Every output exponent lies in
+$(0,(r-1)B_0]$. On a bounded interval, the weights $R^s$ are bounded above
+and below by positive constants, so nonconvergence persists at every
+radius. Scaling all retained inputs by one sufficiently small positive
+number scales this isolated path contribution by a nonzero power of that
+number and makes the total input norm less than $\eps$.
+\end{proof}
+
+For $H$, the conclusion refers to its polynomial-logarithmic coefficient
+norm, not to every possible exceptional numerical value of $L$. The next
+section transfers it to a genuinely log-free gauge, where absolute
+convergence at radius $R$ is the ordinary absolute generalized-series test.
+
+\section{Equivalence with the normalized log-free gauge}
+\label{sec:gauge}
+
+\subsection{Triangular normal form without an analytic assumption}
+For $i<j$ put $\rho_{ij}=\lambda_i-\lambda_j$. We seek an upper-unitriangular
+log-free matrix $P$ and a strictly upper-triangular resonant matrix
+$\mathcal R$ satisfying
+\begin{equation}\label{eq:P-equation}
+ DP=(\Lambda+A)P-P(\Lambda+\mathcal R),
+\end{equation}
+where
+\begin{equation}\label{eq:Rform}
+ \mathcal R_{ij}=b_{ij}x^{\rho_{ij}}\quad\text{if }\rho_{ij}>0,
+ \qquad \mathcal R_{ij}=0\quad\text{otherwise},
+\end{equation}
+and $[x^{\rho_{ij}}]P_{ij}=0$ whenever $\rho_{ij}>0$.
+
+\begin{proposition}[Unique normalized log-free pair]\label{prop:normal}
+There is a unique pair $(P,\mathcal R)$ of this form with positive
+ off-diagonal support. The support of each entry is contained in its path
+sumset union. The matrix $B=(b_{ij})$ is constant and nilpotent, and
+\begin{equation}\label{eq:normalfund}
+ F=P x^\Lambda e^{BL}
+\end{equation}
+is a formal fundamental matrix. Every coefficient of $B$ depends
+polynomially on finitely many original input coefficients, with constants
+determined by the fixed support and spectral data.
+\end{proposition}
+\begin{proof}
+Proceed again by increasing $j-i$. Define, using previously computed
+entries,
+\begin{equation}\label{eq:Fij}
+ G_{ij}=A_{ij}+\sum_{i<k<j}A_{ik}P_{kj}
+                       -\sum_{i<k<j}P_{ik}\mathcal R_{kj}.
+\end{equation}
+If $\rho_{ij}>0$, put
+$b_{ij}=[x^{\rho_{ij}}]G_{ij}$; otherwise put $b_{ij}=0$. Set
+\begin{equation}\label{eq:Pcoeff}
+ P_{ij}=\sum_{s\ne\rho_{ij}}
+                 \frac{[x^s]G_{ij}}{s-\rho_{ij}}x^s.
+\end{equation}
+All supports are positive, so there is no omitted nonpositive resonance.
+This is exactly the coefficient equation for
+$(D-\rho_{ij})P_{ij}=G_{ij}-\mathcal R_{ij}$ and proves existence and
+uniqueness.
+
+Every product in \eqref{eq:Fij} concatenates two permitted paths.
+Consequently its support remains within $S_{ij}$. Lemma~\ref{lem:support}
+then proves finite coefficient dependence at each fixed resonance.
+Recursion uses only additions, multiplications, and division by fixed
+nonzero real numbers, so the dependence on input coefficients is
+polynomial. There are finitely many matrix entries.
+
+Since $B$ is strictly upper triangular, $B^r=0$. Equation~\eqref{eq:Rform}
+is $\mathcal R=x^\Lambda Bx^{-\Lambda}$. Differentiating
+\eqref{eq:normalfund} and using \eqref{eq:P-equation} now proves the
+fundamental-matrix assertion.
+\end{proof}
+
+The finite-dependence statement is compatible with, and not a replacement
+for, the more general finite-ancestry result in the predecessor
+\cite{repo-hahn}. Our triangular construction is included to make the
+normalization comparison self-contained.
+
+\subsection{Why the two convergence questions are the same}
+\begin{lemma}[Constants]\label{lem:constants}
+The constants of $\K[L]$ under $D$ are exactly $\C$.
+\end{lemma}
+\begin{proof}
+A constant Hahn series has only exponent zero, since its coefficient at
+$x^s$ is multiplied by $s$ under $D$. Also, no derivative of a Hahn series
+has a nonzero $x^0$ coefficient. If a nonzero polynomial
+$\sum_{k=0}^d f_kL^k$ had derivative zero and $d>0$, its highest coefficient
+would satisfy $Df_d=0$ and hence be a nonzero complex constant. The next
+equation would be $Df_{d-1}=-df_d$, contradicting the missing $x^0$
+coefficient. Thus $d=0$.
+\end{proof}
+
+\begin{theorem}[Convergence is independent of these two normalizations]
+\label{thm:gauge-equivalence}
+For every fixed formal input and every $R>0$,
+\begin{equation}\label{eq:equivalence}
+ H\in\Mat_r(\A_R[L])
+ \quad\Longleftrightarrow\quad P\in\Mat_r(\A_R).
+\end{equation}
+Consequently Theorem~\ref{thm:gap} is an exact universal convergence
+criterion for the normalized log-free gauge $P$. The weighted membership
+criterion of Theorem~\ref{thm:weighted} also transfers to $P$ for the same
+weighted input classes. If the gap condition fails, the small input in
+Corollary~\ref{cor:allradii} has a log-free normalizer diverging absolutely
+at every positive radius.
+\end{theorem}
+\begin{proof}
+Both $F=P x^\Lambda e^{BL}$ and $Y=Hx^\Lambda$ are invertible fundamental
+matrices over $\K[L]$. Their inverses lie in the same ring: upper
+unitriangular inverses and $e^{-BL}$ are finite sums, and the diagonal
+monomials are invertible. Therefore
+$C=F^{-1}Y$ has derivative zero and belongs to $\mathrm{GL}_r(\C)$ by
+Lemma~\ref{lem:constants}. We obtain
+\begin{equation}\label{eq:factorcomparison}
+ H=P\,x^\Lambda e^{BL}C x^{-\Lambda},\qquad
+ P=H\,x^\Lambda C^{-1}e^{-BL}x^{-\Lambda}.
+\end{equation}
+Each rightmost factor is a finite sum of monomials times log polynomials.
+Multiplication by it preserves $\A_R[L]$ membership. Since $P$ is
+log-free, \eqref{eq:equivalence} follows. The universal and all-radii
+conclusions are then immediate.
+\end{proof}
+
+This is an equivalence of membership for each input. It does not identify
+the path norm of $H$ with an identical operator norm of $P$, because the
+finite factors $B$ and $C$ depend on the input. The exact norm assertion in
+Theorem~\ref{thm:weighted} remains an assertion about the isolated
+polynomial-logarithmic path operator.
+
+On every smaller radius $0<R'<R$, an absolutely convergent gauge evaluates
+to an analytic function on a chosen logarithmic cover. Differentiation is
+legitimate there: multiplying coefficients by $s^k$ is controlled by the
+exponential margin $(R'/R)^s$, while all supports under consideration are
+bounded below. The formal equations therefore become analytic equations.
+No differentiability assertion at the outer boundary $|x|=R$ is needed.
+
+\section{What three and four dimensions already show}
+\label{sec:examples}
+
+\subsection{A bad semigroup accumulation that cannot occur in a matrix word}
+\begin{example}[The whole-semigroup condition is not necessary]
+\label{ex:harmless}
+Take
+\[
+ \Lambda=\diag(3,1,0),\qquad
+ E_{12}=\{3/2-1/n:n\geq2\},\qquad E_{23}=\{10\},
+\]
+with no other edges. The three permitted paths have data
+\[
+ \begin{array}{c|c|c}
+ p&E_p&\rho_p\\ \hline
+ 1\to2&E_{12}&2\\
+ 2\to3&\{10\}&1\\
+ 1\to2\to3&E_{12}+10&3.
+ \end{array}
+\]
+Their gaps are at least $1/2$, $9$, and $8$, respectively. Thus every
+absolutely convergent input has an absolutely convergent normalized gauge.
+Yet the full semigroup generated by $E_{12}\cup\{10\}$ contains
+$3-2/n\to3$ from below. The positive spectral difference $3$ is therefore
+a left accumulation point of that semigroup.
+\end{example}
+
+Here $2E_{12}$ describes a forbidden word, because $E_{12}E_{12}=0$ as a
+matrix product. Writing $A_{12}=\sum a_\alpha x^\alpha$ and
+$A_{23}=b x^{10}$, the actual nonresonant entries are
+\[
+ P_{12}=\sum\frac{a_\alpha}{\alpha-2}x^\alpha,\qquad
+ P_{23}=\frac b9x^{10},\qquad
+ P_{13}=\sum\frac{a_\alpha b}{9(\alpha+7)}x^{\alpha+10}.
+\]
+Every denominator is uniformly safe. This answers the necessity question
+negatively if it is phrased using the full generated semigroup without
+matrix-path information.
+
+\subsection{Safe edges whose composition is unsafe}
+\begin{example}[An accumulating two-letter sumset]\label{ex:hidden}
+Take
+\[
+ \Lambda=\diag(3,2,0),\qquad A_{12}=x^{1/2},\qquad
+ A_{23}=\sum_{n\geq3}n^{-p}x^{5/2-1/n},\qquad p>1.
+\]
+The individual gaps are $1/2$ and at least $1/6$. Nevertheless,
+$1/2+(5/2-1/n)=3-1/n\to3$, the endpoint difference for the composed path.
+There are no exact resonances, and
+\begin{align}
+ P_{12}&=-2x^{1/2},\nonumber\\
+ P_{23}&=\sum_{n\geq3}\frac{n^{-p}}{1/2-1/n}x^{5/2-1/n},\label{eq:hidden}\\
+ P_{13}&=-\sum_{n\geq3}\frac{n^{1-p}}{1/2-1/n}x^{3-1/n}.\nonumber
+\end{align}
+Thus the original input and both edge normalizations converge for $p>1$,
+whereas the full normalizer converges exactly when $p>2$.
+\end{example}
+
+The equivalence at every radius follows because all displayed exponent
+sets are bounded. The coefficients of $P_{13}$ have one sign, so there is
+no cancellation issue. This is the specific two-letter phenomenon proposed
+in the predecessor's further-questions section, now placed inside a
+necessary-and-sufficient theorem for all acyclic patterns.
+
+\subsection{Why independent inputs cannot be silently replaced by coupled inputs}
+\label{sec:cancellation}
+Take the same $f(x)=\sum_{n\geq3}n^{-p}x^{5/2-1/n}$, and set
+\[
+ \Lambda=\diag(3,2,2,0),\qquad
+ A_{12}=A_{13}=x^{1/2},\qquad A_{24}=f,\quad A_{34}=-f,
+\]
+with all other entries zero. The two paths from $1$ to $4$ have identical
+kernels and opposite coefficient products. Hence $H_{14}=P_{14}=0$.
+The remaining nonzero entries have the safe one-edge denominators in
+Example~\ref{ex:hidden}, and the whole system normalizes convergently for
+$p>1$ even though each of the two path sumsets accumulates at $3$.
+
+This does not contradict Theorem~\ref{thm:gap}: the selected coefficients
+are correlated. In matrix-direction language,
+$(E_{12}+E_{13})(E_{24}-E_{34})=0$. A graph that records the four edges
+but forgets this relation loses essential information. The exact weighted
+criterion handles all independent inputs; a genuinely optimal criterion
+for constrained matrix directions must retain the corresponding algebraic
+relations among words.
+
+\section{Resonant chains and sharp arbitrary-order moment loss}
+\label{sec:chain}
+
+\subsection{The family}
+For $r\geq2$, let
+\begin{equation}\label{eq:chain}
+ \lambda_i=r-i,\qquad
+ A_{12}=\sum_{n\geq2}c_nx^{1-1/n},\qquad
+ A_{j,j+1}=x\quad(2\leq j<r),
+\end{equation}
+with no other edges. The first edge approaches its resonance from below;
+every downstream edge is exactly resonant. Put $q=r-2$.
+
+\begin{theorem}[Exact moment threshold]\label{thm:chain}
+For every $R>0$, the input in \eqref{eq:chain} is absolutely convergent
+exactly when $\sum|c_n|<\infty$. Its normalized log-free gauge is
+\begin{equation}\label{eq:chainP}
+ P_{1j}=-\sum_{n\geq2}c_n n^{j-1}x^{j-1-1/n}
+       \quad(2\leq j\leq r),
+\end{equation}
+with all other off-diagonal entries zero. Its resonant constant matrix is
+$B_{j,j+1}=1$ for $2\leq j<r$, with all other entries zero. The full gauge
+converges absolutely if and only if
+\begin{equation}\label{eq:moment}
+ \sum_{n\geq2}|c_n|n^{r-1}<\infty.
+\end{equation}
+In particular, for $c_n=n^{-p}$ the input converges for $p>1$, while the
+normalizer converges exactly for $p>r$.
+\end{theorem}
+\begin{proof}
+For $P_{12}$, division by $(1-1/n)-1=-1/n$ gives
+\eqref{eq:chainP}. The downstream input edges are placed entirely in
+$\mathcal R$, and their gauge entries are zero. For $j>2$, the only
+nonzero term in \eqref{eq:Fij} is
+$-P_{1,j-1}\mathcal R_{j-1,j}=-xP_{1,j-1}$.
+Dividing again by $-1/n$ multiplies the previous coefficient by $n$.
+Induction proves the formula and the stated $B$.
+
+For fixed $j$ and $R>0$, the factors $R^{j-1-1/n}$ are bounded above and
+below by positive constants. Thus convergence of $P_{1j}$ is equivalent
+to $\sum|c_n|n^{j-1}<\infty$. The strongest condition occurs at $j=r$.
+The same bounded-exponent observation proves the input assertion. Finally,
+$\sum n^{r-1-p}$ converges exactly when $p>r$.
+\end{proof}
+
+The loss can therefore be made arbitrarily large by increasing the
+nilpotent chain length. A single division by the first small denominator
+does not measure the full cost of normalization.
+
+\subsection{The logarithmic explanation}
+For $2\leq j\leq r$,
+\[
+ H_{jr}=x^{r-j}\frac{L^{r-j}}{(r-j)!}.
+\]
+For a fixed $n$ in the first edge, the remaining $q$ homological factors
+are zero, so the top-right kernel is
+\begin{equation}\label{eq:chainQ}
+ T_{-1/n}\dplog{q}
+       =-\sum_{k=0}^q n^{k+1}\dplog{q-k}.
+\end{equation}
+Consequently
+\begin{equation}\label{eq:chainH}
+ H_{1r}=-\sum_{n\geq2}c_nx^{q+1-1/n}
+                      \sum_{k=0}^q n^{k+1}\frac{L^{q-k}}{(q-k)!}.
+\end{equation}
+Its divided-power coefficient norm is exactly
+$\sum |c_n|R^{q+1-1/n}\sum_{k=0}^q n^{k+1}$, confirming the same moment
+condition.
+
+For independent weighted inputs on the first edge, with the downstream
+coefficients allowed to vary over their one-dimensional spaces, the
+minimal weight growth is therefore $w(1-1/n)\asymp n^{r-1}$: more precisely,
+universal convergence holds exactly when
+$\sup_{n\geq2} n^{r-1}/w(1-1/n)<\infty$. This is an exact consequence of
+the path norm, not a guessed submultiplicative majorant.
+
+\section{Stable analytic realization beyond the moment threshold}
+\label{sec:analytic}
+
+\subsection{A convergent kernel instead of divergent constants}
+Assume only $\sum_{n\geq2}|c_n|<\infty$. Put $t=\log(1/x)$, initially
+for $0<x\leq1$. Define the entire function
+\begin{equation}\label{eq:Psi}
+ \Psi_q(z)=\frac1{q!}\int_0^1 e^{zu}u^q\,du
+          =\frac1{q!}\sum_{k\geq0}\frac{z^k}{k!(q+k+1)}.
+\end{equation}
+The integral or the positive series is a stable way to evaluate it near
+$z=0$.
+
+\begin{theorem}[Basepoint-normalized realization]\label{thm:analytic-chain}
+The chain \eqref{eq:chain} has a unique analytic fundamental matrix on the
+logarithmic cover with $Y(1)=I$. Writing it as
+$Y^{\mathrm{bp}}=H^{\mathrm{bp}}x^\Lambda$, its top-right entry is
+\begin{align}
+ H^{\mathrm{bp}}_{1r}(e^{-t})
+ &=\frac{(-1)^{q+1}e^{-(q+1)t}}{q!}
+      \sum_{n\geq2}c_n\int_0^t e^{v/n}v^q\,dv\label{eq:bp-int}\\
+ &=(-1)^{q+1}e^{-(q+1)t}t^{q+1}
+      \sum_{n\geq2}c_n\Psi_q(t/n).\label{eq:bp-stable}
+\end{align}
+The analogous formula with $q=j-2$ gives $H^{\mathrm{bp}}_{1j}$.
+All downstream entries are the finite resonant expressions already given.
+These functions are entire in $t$ and satisfy the differential system.
+
+Moreover, this analytic matrix realizes every fixed finite exponent-block
+prefix of the canonical expansion, even when \eqref{eq:moment} fails.
+\end{theorem}
+
+\begin{proof}
+For downstream entries, direct integration gives
+$x^{k-j}L^{k-j}/(k-j)!$. For the top-right entry, variation of constants
+in \eqref{eq:H-recursion}, with value zero at $x=1$, gives
+\[
+ H^{\mathrm{bp}}_{1r}(x)
+ =x^{q+1}\sum_{n\geq2}c_n\int_0^{\log x}
+                      e^{-u/n}\frac{u^q}{q!}\,du.
+\]
+The substitution $u=-v$ proves \eqref{eq:bp-int}, and $v=tu$ gives
+\eqref{eq:bp-stable}. For complex $t$ in a compact set,
+$|\Psi_q(t/n)|\leq e^{|t|/2}/(q+1)!$. Hence the sum converges normally
+under $\sum|c_n|<\infty$, and the same holds after any fixed number of
+$t$ derivatives. The equations and the basepoint normalization follow
+termwise. Triangular variation of constants also proves uniqueness.
+
+It remains to justify the formal-prefix assertion. For each fixed $n$,
+elementary integration gives, with $E_q(z)=\sum_{j=0}^qz^j/j!$,
+\begin{equation}\label{eq:subtraction}
+ H^{\mathrm{bp}}_{1r,n}(e^{-t})
+ =c_ne^{-(q+1)t}n^{q+1}
+       \bigl[1-e^{t/n}E_q(-t/n)\bigr].
+\end{equation}
+The term containing $e^{t/n}E_q(-t/n)$ is exactly the $n$th canonical
+block in \eqref{eq:chainH}; the remaining term has exponent $q+1$.
+Fix $M\geq2$ and subtract the canonical blocks $2\leq n\leq M$.
+The finitely many added exponent-$(q+1)$ terms are $O(x^{q+1})$.
+For the remaining basepoint terms and $t\geq1$,
+\begin{align*}
+ \sum_{n>M}|H^{\mathrm{bp}}_{1r,n}(e^{-t})|
+ &\leq \frac{e^{-(q+1)t}}{q!}
+     \sum_{n>M}|c_n|\int_0^t e^{v/(M+1)}v^q\,dv\\
+ &\leq \frac{M+1}{q!}\norm{c}_{\ell^1}
+          e^{-(q+1-1/(M+1))t}t^q.
+\end{align*}
+Thus the remainder is
+$O(x^{q+1-1/(M+1)}t^q)$. Its exponent is strictly larger than the last
+retained exponent $q+1-1/M$, so it is smaller than that block's monomial
+times every fixed inverse power of $t$. The same proof applies to each
+top-row entry. Downstream expansions are finite.
+\end{proof}
+
+Formula~\eqref{eq:subtraction} must be kept grouped when the relevant
+moments diverge. Splitting it into two separately summed expressions would
+introduce the divergent quantity $\sum c_nn^{q+1}$. The stable expression
+\eqref{eq:bp-stable} never forms that quantity. Indeed,
+\[
+ 1-e^zE_q(-z)=(-1)^{q+1}z^{q+1}\Psi_q(z),
+\]
+so precisely $q+1$ powers of the small parameter cancel.
+
+This is a selected analytic realization determined by a basepoint. It is
+not an assertion that the original canonical Hahn sum converges, or that
+formal series without a chosen analytic normalization determine unique
+functions. When the strong moment condition holds, the canonical and
+basepoint fundamental matrices are related by an ordinary finite constant
+matrix. Below that condition, their formal comparison cannot be justified
+by summing the divergent constants separately.
+
+\section{A uniform accumulation crossover with an error certificate}
+\label{sec:crossover}
+
+Set $c_n=n^{-p}$ with $p>1$. For $N\geq2$ define the grouped basepoint tail
+\begin{equation}\label{eq:tail}
+ \mathcal U_N(t)=(-1)^{q+1}e^{-(q+1)t}t^{q+1}
+                    \sum_{n\geq N}n^{-p}\Psi_q(t/n).
+\end{equation}
+This is a tail of the convergent grouped representation, not a tail
+obtained by separately summing the divergent canonical coefficients.
+Let
+\begin{equation}\label{eq:gI}
+ g_{p,q}(v)=v^{-p}\Psi_q(1/v),\qquad
+ I_{p,q}(c)=\int_c^\infty g_{p,q}(v)\,dv.
+\end{equation}
+Both are positive for $v,c>0$.
+
+\begin{theorem}[Uniform crossover and explicit two-sided error]
+\label{thm:crossover}
+Let $t>0$, $N\geq2$, $c=N/t$, and
+\[
+ \mathcal E_{N,t}=(-1)^{q+1}e^{(q+1)t}t^{p-q-2}\mathcal U_N(t).
+\]
+Then
+\begin{equation}\label{eq:rectangle}
+ I_{p,q}(c)\leq\mathcal E_{N,t}
+       \leq I_{p,q}(c)+\frac{g_{p,q}(c)}{t}.
+\end{equation}
+The sharper centered estimate is
+\begin{equation}\label{eq:trapezoid}
+ 0\leq\mathcal E_{N,t}-I_{p,q}(c)-\frac{g_{p,q}(c)}{2t}
+       \leq\frac{-g'_{p,q}(c)}{8t^2}.
+\end{equation}
+Consequently, if $N/t\to c_0\in(0,\infty)$,
+\[
+ \mathcal U_N(t)
+ \sim(-1)^{q+1}e^{-(q+1)t}t^{q+2-p}I_{p,q}(c_0).
+\]
+The error estimates are uniform for $c$ in compact subsets of $(0,\infty)$
+and $p$ in compact subsets of $(1,\infty)$, with fixed $q$.
+\end{theorem}
+
+\begin{proof}
+A direct rescaling gives
+\begin{equation}\label{eq:riemann}
+ \mathcal E_{N,t}=\frac1t\sum_{n\geq N}g_{p,q}(n/t).
+\end{equation}
+Expanding \eqref{eq:Psi},
+\begin{equation}\label{eq:gseries}
+ g_{p,q}(v)=\frac1{q!}\sum_{k\geq0}
+                       \frac{v^{-p-k}}{k!(q+k+1)}.
+\end{equation}
+It is positive, decreasing, convex, and tends to zero. The same series
+shows that its derivative tends to zero and that its second derivative is
+integrable on every $[c,\infty)$. The ordinary decreasing-function
+rectangle bounds for \eqref{eq:riemann} give \eqref{eq:rectangle}.
+
+For the sharper estimate, set $h=1/t$. The trapezoidal error on
+$[a,a+h]$ is
+\[
+ \frac h2\bigl(g(a)+g(a+h)\bigr)-\int_a^{a+h}g(v)\,dv
+ =\frac12\int_a^{a+h}(v-a)(a+h-v)g''(v)\,dv.
+\]
+Convexity makes it nonnegative, and the factor in front of $g''$ is at
+most $h^2/8$. Sum over all intervals beginning at $c$.
+Their total error is at most
+$\frac{h^2}{8}\int_c^\infty g''(v)\,dv=-h^2g'(c)/8$.
+The left-endpoint sum in \eqref{eq:riemann} is the infinite trapezoidal sum
+plus $hg(c)/2$. This proves \eqref{eq:trapezoid}. Uniformity follows from
+the displayed positive series and their derivatives on the stated compact
+parameter sets.
+\end{proof}
+
+\subsection{Evaluation formulas and the critical scaling}
+Termwise integration in \eqref{eq:gseries} gives a useful convergent
+representation
+\begin{equation}\label{eq:Iseries}
+ I_{p,q}(c)=\frac1{q!}\sum_{k\geq0}
+       \frac{c^{1-p-k}}{k!(q+k+1)(p+k-1)}.
+\end{equation}
+For the discrete quantity,
+\begin{equation}\label{eq:zeta}
+ \mathcal E_{N,t}
+ =\frac{t^{p-1}}{q!}\sum_{k\geq0}
+       \frac{t^k\zeta(p+k,N)}{k!(q+k+1)},
+\end{equation}
+where $\zeta(s,N)=\sum_{n\geq N}n^{-s}$ is the Hurwitz zeta tail for
+real $s>1$. All terms are positive, and successive-term ratio bounds
+$t/(N(k+1))$ and $1/(c(k+1))$ give elementary geometric tail estimates for
+\eqref{eq:zeta} and \eqref{eq:Iseries} once those ratios are below one.
+
+The scale $N\asymp t$ has a precise interpretation. For a fixed exponent
+index, $t/n$ becomes large, and the canonical exponential block resolves
+that term. For indices proportional to $t$, infinitely many nearly
+resonant blocks contribute together at scale
+$e^{-(q+1)t}t^{q+2-p}$. The moment threshold is $p=q+2=r$; at this threshold
+the extra power of $t$ is zero. This does not remove the divergence of the
+canonical gauge, which at equality has a harmonic coefficient sum.
+The grouped tail, rather than the raw canonical sum, has the crossover
+limit.
+
+\subsection{Numerical illustrations}
+Table~\ref{tab:crossover} uses $p=5/2$ and $c=1$. It includes dimensions in
+which the canonical gauge is divergent and nevertheless the stable
+representation and the proved bounds are valid.
+\begin{table}[htbp]
+\centering\small
+\input{results/crossover_table.tex}
+\caption{Crossover values and the upper bound in \eqref{eq:trapezoid}.
+The approximation is always below the scaled tail. Values are rounded;
+the inequalities are theorems, while these evaluations use ordinary
+high-precision arithmetic, not directed-rounding intervals.}
+\label{tab:crossover}
+\end{table}
+
+% ed. (2026-09-29): the rank-two chain is the predecessor's accumulation model (checked on filing)
+\begin{ednote}
+For $r=2$ ($q=0$) and $c_n=n^{-p}$ the chain \eqref{eq:chain} is the
+accumulation model of the predecessor \cite{repo-hahn}
+(\texttt{eq:p-system}, with $S=\operatorname{diag}(2,0)$) after the input
+and the gauge entry are multiplied by $x$, which moves $\lambda=(1,0)$ to
+$S$; the predecessor's input also has the term $n=1$, at the nonresonant
+exponent $1$. Theorem~\ref{thm:chain} then gives its exact threshold $p>2$
+(\texttt{prop:threshold}), and Theorem~\ref{thm:analytic-chain} its
+renormalized solution $h_p$ with $h_p(1)=0$ (\texttt{thm:renorm}), up to
+the gauge of that one term, since $t\Psi_0(t/n)=n(e^{t/n}-1)$ (the
+predecessor's $\Psi_p$ is a different function). Moreover
+$g_{p,0}(v)=v^{1-p}(e^{1/v}-1)$ is its $f_p$, so
+Theorem~\ref{thm:crossover} at $q=0$ is a second-order form, over
+$n\geq N$, of its fourth-order crossover \texttt{thm:crossover}; the two
+agree.
+\end{ednote}
+\section{Reproducibility, proof audit, and formalization targets}
+\label{sec:verification}
+
+\subsection{What was actually checked}
+The accompanying program \texttt{verification/verify.py} uses exact
+rational arithmetic for finite exponent supports and divided-power
+polynomials. Its recorded run, with seed $20260929$, reports:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Count\\
+\midrule
+Scalar polynomial-inverse identities &105\\
+Path-kernel degree and leading coefficient identities &210\\
+Finite triangular systems &30\\
+Differential-equation entry checks &540\\
+Normalized-gauge entry checks &540\\
+Constant-connection entry checks &540\\
+Weighted path norm bounds &349\\
+Explicit resonant-chain formulas &49\\
+Crossover parameter cases &96\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For each finite system, the code independently computes $H$ by path
+expansion and by triangular recursion and checks equality. It verifies
+\eqref{eq:H-equation}, constructs $(P,\mathcal R)$, verifies
+\eqref{eq:P-equation}, and checks that the connection between the two
+fundamental matrices is constant after the diagonal monomial shifts.
+The spectra include repeated eigenvalues, and the exponent samples include
+exact resonances. Finite tests also check the weighted inequality and the
+arbitrary-rank chain formula.
+
+The numerical cases use $q\in\{0,1,3,5\}$,
+$p\in\{1.5,2,2.5,6.5\}$, $c\in\{1/2,1,2\}$, and $t\in\{20,80\}$.
+They evaluate the positive series with analytic series-tail estimates and
+check both inequalities in Theorem~\ref{thm:crossover}. The executed
+environment was Python 3.13.5 and mpmath 1.3.0 at 75 decimal digits.
+Floating-point evaluations are not represented as interval certificates.
+
+These tests do not prove the infinite-support theorem, the closed-graph
+argument, or the universal quantifiers. Those are conventional mathematical
+proofs in the preceding sections. No Lean theorem implementing this
+article's new results was produced or kernel-checked.
+
+\subsection{Logical dependencies and delicate points}
+The core proof dependencies are
+\[
+\begin{aligned}
+ \text{finite path fibers}
+ &\Longrightarrow\text{formal path formula}\\
+ &\Longrightarrow\text{exact weighted criterion}\\
+ &\Longrightarrow\text{path gap equivalence}.
+\end{aligned}
+\]
+The normalized log-free conclusion adds only the triangular normal-form
+construction and the constant-field comparison. The chain formulas and
+crossover are explicit calculations that can be checked independently of
+the functional-analytic necessity proof.
+
+Several restrictions are indispensable to the stated argument. Acyclicity
+bounds the number of operators in a path and makes the set of paths finite.
+Independence of edge inputs permits isolation of one path. Positive real
+exponents make the bounded-total small-divisor argument transparent and
+fix the near-identity orientation. Well ordering, rather than local
+finiteness, provides finite exact coefficient fibers. The target of the
+closed-graph argument is a fixed-support Banach space. Exact resonances
+are handled by $T_0$ rather than by a fictitious division by zero.
+
+The normalization comparison is an equivalence of membership, not an
+identity of operator norms. The all-radii result is stated for the
+log-free gauge and for the coefficient norm of its polynomial-logarithmic
+counterpart. The basepoint realization is a grouped analytic expression;
+its divergent pieces are never summed separately. Finally, the
+crossover tail is defined before taking a limit and is not conflated with
+a raw Hahn coefficient tail.
+
+\subsection{A realistic Lean decomposition}
+The existing support bridge \cite{repo-lean} supplies the two-factor
+well-ordering and finite-decomposition interface. A formalization of the
+present results would add the following layers.
+
+First, finite acyclic paths and their exponent tuple fibers can be handled
+without analysis. The polynomial operators $T_\beta$, their right-inverse
+identities, and the divided-power leading-coefficient lemma are
+finite-dimensional algebra. These are especially suitable initial targets.
+
+Second, the formal path expansion and the triangular log-free normal form
+need explicit Hahn coefficient operations, a strong Euler derivation, and
+the polynomial-log constant-field lemma. Their proofs should expose the
+support bounds rather than rely on an informal field name.
+
+Third, the weighted theorem requires fixed-support $\ell^1$ spaces,
+coordinate continuity, closed graphs, and uniform boundedness. A formal
+statement should quantify over independent edge families. The exact
+operator-norm equality is a useful interface between the finite path
+algebra and the analytic layer.
+
+Finally, the sharp converse needs the bounded-tuple small-divisor sequence
+and the leading-coefficient lower bound. The crossover proof can be
+formalized separately as a positive-series and trapezoidal-error theorem.
+This decomposition distinguishes existing repository support lemmas from
+new proof obligations; the former do not automatically verify the latter.
+
+\section{Further research questions}
+\label{sec:future}
+
+\subsection{Cycles and infinite matrix-word languages}
+For a nontriangular perturbation, matrix words may have arbitrarily large
+length. Positive input exponents still bound the length of words below a
+fixed spectral cut, but they do not reduce the entire solution to finitely
+many multilinear maps. Can a finite critical-word condition, combined with
+a large-exponent majorant, characterize universal convergence? The first
+nontrivial case is a two-vertex directed cycle with two accumulating
+supports. A proof must address repeated occurrences of the same input,
+not merely replace ``path'' by ``walk'' in Theorem~\ref{thm:weighted}.
+
+\subsection{Fixed Jordan blocks and zero-action edges}
+A fixed nilpotent part in $A_0$ behaves like a collection of zero-exponent
+edges. For a triangular constant matrix, finite path length survives, but
+some edge coefficients are fixed rather than independently variable.
+Determine the exact accessible small-divisor powers in terms of the
+Jordan filtration and the variable-edge pattern. The chain in
+Section~\ref{sec:chain} suggests that logarithmic height, not merely the
+number of near-resonances, is the relevant weight exponent.
+
+\subsection{Coupled matrix directions and relations among words}
+The four-dimensional cancellation example shows that a graph alone is
+insufficient when coefficients multiply prescribed linear combinations of
+matrix units. A natural replacement is a word algebra modulo the matrix
+relations, with a kernel attached to each surviving coefficient tensor.
+Find an exact independent-parameter criterion that remains valid after
+these relations are imposed. Even two fixed nilpotent generators with a
+nontrivial quadratic relation would be a useful first classification.
+
+\subsection{Optimal factorized weights}
+The exact criterion asks for
+$|Q_p(\boldsymbol\alpha)|\leq C_p\prod w_e(\alpha_e)$.
+Which minimal or Pareto-optimal families of edge weights satisfy all these
+inequalities? For finitely sampled supports, taking logarithms leads to
+finite inequality systems; for accumulating supports, one must control
+asymptotic factorization of singular path kernels. Such a result would turn
+the criterion into a systematic regularity-design tool rather than a
+post hoc convergence test.
+
+\subsection{Moving spectra through an accumulation point}
+Let a spectral difference move by a parameter $\delta$ through a left
+accumulation point. Canonical normalizers have denominators such as
+$\delta-1/n$, while basepoint integrals can remain regular in $\delta$.
+Determine a uniform theorem when $t/n$ and $\delta t$ compete. Exact
+resonance, near resonance, and the accumulation boundary should be treated
+in a single analytic representation, not by separately divergent formulas.
+
+\subsection{Multiplicative realization and iterated integrals}
+The basepoint construction is compatible with ordinary analytic matrix
+products because it solves a genuine differential system. This does not
+yet define a product-preserving summation map on the underlying formal
+Hahn algebra. Can one identify a restricted algebra of accumulating-support
+symbols whose realizations are closed under products and satisfy the
+shuffle identities of iterated integrals? The first target should include
+two interacting resonant chains, where nonzero products force compatibility
+conditions beyond a scalar subtraction rule.
+
+\subsection{Triangular nonlinear systems and tree kernels}
+For polynomial triangular differential systems, substitutions branch into
+rooted trees rather than simple paths. Does a finite-tree analogue of the
+weighted kernel criterion hold, and when do diagonal coefficient
+identifications obstruct its necessity? Polarization may recover some
+independence, but repeated use of one input and coinciding exponents must
+be handled explicitly. This would connect the present classification to
+nonlinear transseries reversion without presupposing convergence.
+
+\subsection{Effective presentation of infinite supports}
+The criterion is semantic: it refers to left accumulation of exact
+sumsets. For which computable descriptions of $E_e$ can the condition be
+decided or certified? Finite rational supports are elementary, but arbitrary
+computable increasing sequences can encode difficult limiting questions.
+A useful next result would distinguish finite symbolic certificates,
+semidecidable obstruction searches, and genuinely decidable presentation
+classes.
+
+\subsection{Irregular exponential sectors}
+Our systems are regular singular in the Euler sense and the expansions
+use real powers and logarithms. Irregular systems introduce exponential
+sectors and potentially factorial coefficient growth. Can one separate
+an accessible finite-spectral accumulation obstruction from a Borel-plane
+summability obstruction in one explicit triangular irregular model?
+A successful theorem should retain two distinct norms, rather than call
+both mechanisms ``resurgence.''
+
+\subsection{Kernel-checked necessity, not only finite examples}
+The most valuable formal target is the full implication from universal
+convergence to bounded path kernels. Its proof exposes the quantifier that
+finite numerical experiments cannot establish. A staged implementation
+should first verify the scalar and finite-path algebra, then the
+fixed-support closed-graph lemma, and finally the exact gap equivalence.
+The supplied rational verifier is a reproducibility aid, not a substitute
+for this goal.
+
+\section{Conclusion}
+
+For acyclic matrix patterns, universal absolute convergence is governed by
+what the differential system can actually multiply. The complete exponent
+semigroup is too coarse, and inspecting each edge separately is too weak.
+The correct invariant is the family of endpoint-labelled path sumsets.
+The exact weighted refinement retains the full polynomial-logarithmic
+kernel and therefore detects powers of small denominators caused by
+resonant descendants.
+
+This resolves a concrete fixed-support question from the repository for a
+substantial precisely specified class, gives explicit counterexamples to
+two natural simplifications, and quantifies an arbitrary-rank resonance
+loss. The stable chain realization also demonstrates that divergence of
+a canonical normalizer is not nonexistence of analytic solutions or loss
+of every finite asymptotic prefix. The remaining questions concern the
+extra algebra introduced by cycles, coupled directions, nonlinear trees,
+and irregular exponential scales. Those are extensions of the proved
+boundary, not assumptions silently included in it.
+
+\clearpage
+\begin{thebibliography}{99}
+
+\bibitem{repo-index}
+Vladimir Reshetnikov, \emph{ProveIt: Series and transseries}, repository
+index at snapshot \snap, inspected 29 September 2026.
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9250bbf8af80dacf7b252d9d0320b122c80961ba/Analysis/Transseries/docs/series-and-transseries/README.md}{Pinned repository source}.
+
+\bibitem{repo-hahn}
+\emph{Finite Resonance Certificates and Sharp Analytic Normalization for
+Hahn--Fuchsian Systems}, research article and editorial amendments in
+ProveIt, 29 September 2026; particularly Sections 3 and 11.
+\path{Analysis/Transseries/docs/series-and-transseries/Hahn_Fuchsian_Resonance_Analytic_Normalization/hahn_fuchsian.tex}.
+Snapshot \snap.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9250bbf8af80dacf7b252d9d0320b122c80961ba/Analysis/Transseries/docs/series-and-transseries/Hahn_Fuchsian_Resonance_Analytic_Normalization/hahn_fuchsian.tex}{Pinned article source}.
+
+\bibitem{repo-lean}
+Vladimir Reshetnikov, \emph{Well-based supports: Dickson's lemma and
+Neumann's lemma}, Lean source in ProveIt.
+\path{Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}.
+Snapshot \snap.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9250bbf8af80dacf7b252d9d0320b122c80961ba/Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}{Pinned Lean source}.
+
+\bibitem{repo-block}
+\emph{Resonance-Block Summation of Transseries: Small divisors, coalescing
+Stokes actions, and nonlinear inversion}, package README in ProveIt,
+29 September 2026.
+\path{Analysis/Transseries/docs/series-and-transseries/Resonance_Block_Summation_Transseries/README.md}.
+Snapshot \snap.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9250bbf8af80dacf7b252d9d0320b122c80961ba/Analysis/Transseries/docs/series-and-transseries/Resonance_Block_Summation_Transseries/README.md}{Pinned package documentation}.
+
+\bibitem{vdh}
+Joris van der Hoeven, \emph{Transseries and Real Differential Algebra},
+Lecture Notes in Mathematics 1888, Springer, 2006.
+\href{https://www.texmacs.org/joris/ln/ln.html}{Author-hosted text}.
+
+\bibitem{iy}
+Yulij Ilyashenko and Sergei Yakovenko,
+\emph{Lectures on Analytic Differential Equations}, Graduate Studies in
+Mathematics 86, American Mathematical Society, 2008.
+\href{https://www.wisdom.weizmann.ac.il/~yakov/book-titlepage.htm}{Author-hosted bibliographic information}.
+
+\bibitem{yakovenko}
+Sergei Yakovenko, \emph{Local theory of Fuchsian systems}, Lecture 3,
+10 November 2014. Author's course notes on resonant normal forms and their
+fundamental matrices.
+\href{https://yakovenko.wordpress.com/2014/11/10/lecture-3-nov-10-2014/}{Author's lecture page}.
+
+\bibitem{gg}
+R. R. Gontsov and I. V. Goryuchkina,
+\emph{On the convergence of generalized power series satisfying an
+algebraic ODE}, Asymptotic Analysis 93 (2015), 311--325.
+\href{https://doi.org/10.3233/ASY-151297}{doi:10.3233/ASY-151297};
+\href{https://arxiv.org/abs/1407.1330}{arXiv:1407.1330}.
+
+\bibitem{ggl}
+Renat Gontsov, Irina Goryuchkina, and Alberto Lastra,
+\emph{Small divisors in the problem of the convergence of generalized
+power series solutions of $q$-difference equations}, 2022 preprint.
+\href{https://arxiv.org/abs/2209.09365}{arXiv:2209.09365}.
+
+\end{thebibliography}
+\end{document}

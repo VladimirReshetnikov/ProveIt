@@ -92,7 +92,8 @@ it is exactly `C^{⌈2q⌉−1}` there and no smoother, while at integer `q` the
 cusp cancels the Taylor coefficient that the integer article found missing.
 The argument works in every integer base through a periodized-sinc
 eigenfunction and a sharp Hölder-space relaxation estimate.  Nonzero phases
-and `q ≤ 1/2` are not settled.  Unreviewed; its numerics are diagnostics,
+and `q ≤ 1/2` are not settled (for `q < 1/2` at the atomic phase, see the
+critical and subcritical articles below).  Unreviewed; its numerics are diagnostics,
 not certificates; no Lean statement.
 
 ## Critical and subcritical pressure (arrival, 2026-09-29)
@@ -107,8 +108,41 @@ central eigenvalues of the atomic transfer operator collide in a size-two
 Jordan block, and the pressure has a square-root cusp
 `√(2(b−1) log b)·√|c|` in every base `b`; a detuned crossover joins it to
 the supercritical cusp; and for `1/4 < q < 1/2` the pressure has an
-explicit linear cusp `(b−1)π s tan(πs/2)|c|` (`s = 2q`).  `q ≤ 1/4` and
+explicit linear cusp `(b−1)π s tan(πs/2)|c|` (`s = 2q`).  `q ≤ 1/4` is
+taken up at the atomic phase by `Thue_Morse_Subcritical_Pressure/` below;
 nonzero phases are not settled.  Unreviewed; its numerics are
+diagnostics, not certificates; no Lean statement.
+
+## Subcritical pressure at the atomic phase (arrival, 2026-09-29)
+
+[`Thue_Morse_Subcritical_Pressure/`](Thue_Morse_Subcritical_Pressure/) holds
+*Localized Spectral Response and the Full Subcritical Pressure Law*
+(20-page A4 PDF, 1,491-line source, an mpmath/NumPy/SciPy diagnostic
+program), filed on 2026-09-29 by a quick archival intake.  It takes up the
+subcritical interval left open by the critical pressure article above:
+for every `0 < s < 1` (every `0 < q < 1/2` in the binary convention
+`q = s/2`) the pressure has the linear cusp
+`(b−1)π s tan(πs/2)|c|` at the atomic phase, with remainder
+`O(|c|^{1+s−α})` for every `0 < α < s`; when the mask zeros move
+independently the cusp is the polyhedral `π s tan(πs/2)‖ε‖₁`.  The key is
+an `O(|c|)` bound for the perturbation paired with the atomic left
+eigenfunctional.  Nonzero phases and uniformity at `s → 0, 1` are not
+settled.  Unreviewed; its numerics are diagnostics, not certificates; no
+Lean statement.
+
+## Critical corrections and equilibrium selection (arrival, 2026-09-29)
+
+[`Thue_Morse_Critical_Pressure_Corrections/`](Thue_Morse_Critical_Pressure_Corrections/)
+holds *Beyond the Square-Root Cusp* (21-page A4 PDF, 1,495-line source,
+an mpmath/NumPy/SciPy diagnostic program), filed on 2026-09-29 by a quick
+archival intake.  It takes up two questions of the critical pressure
+article above.  At the critical exponent the pressure is
+`κ_b√|c| − (b−1)|c| log(1/|c|) + [b log b + (b−1)(γ−1)]|c| + O(|c|^{3/2−η})`,
+so both a logarithmic and a linear term follow the square root; the
+equilibrium measures at small nonzero phases converge weakly to
+`½δ_0 + ½·Lebesgue`, and along the detuned window `s = 1 + u√|c|` to an
+explicit mixture.  The left boundary layer, a sharp next term and
+unbounded detuning are not settled.  Unreviewed; its numerics are
 diagnostics, not certificates; no Lean statement.
 
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,

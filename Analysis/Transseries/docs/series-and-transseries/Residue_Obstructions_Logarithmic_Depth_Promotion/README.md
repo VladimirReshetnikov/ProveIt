@@ -83,3 +83,86 @@ block-antiderivative file has blob SHA
 No repository files were changed. A natural location for a future intake is
 under `Analysis/Transseries/docs/series-and-transseries/`; this is a suggestion,
 not an upload that has been performed.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed unedited in batch 46 (see `docs/incoming/README.md`).
+The following changes were made afterwards; each change to the article is
+marked in the source by a `% ed. (2026-09-29)` comment, and every visible
+addition is an unnumbered "Editorial note (ProveIt, 2026-09-29)", so no
+theorem, section or equation number changed. Its repository paths were
+already current (the snapshot postdates the move to `Analysis/Transseries`),
+so none needed updating.
+
+- `residue_fredholm.tex`:
+  - Preamble: the unnumbered `ednote` environment.
+  - After Theorem 3.1 (`thm:residue`): the identity `Res_n ∘ D = 0` and the
+    non-membership of `log_{n+1} x` are the canonical volume's
+    `plt:thm:ext-tower-strict` (with `𝔫_n^{-1} = ρ_n`), which the article
+    re-derives without citing; the article strengthens it to exactness of
+    the residue sequence, with the explicit primitive `I_n`, and to `D^m`
+    (Theorem 4.1). Neither bears on `plt:rmk:ext-open-depth`.
+  - Section 11, "The exact minimal power of the promoted logarithm" and
+    "Matrix systems and nonreal indicial roots": the later package
+    `../Hahn_Fuchsian_Resonance_Analytic_Normalization/` answers the
+    homogeneous half of the first and the Jordan-chain part of the second
+    for first-order real-spectrum systems at depth 0 (`dim ker B^{d+1}`;
+    the nilpotency index of `B = N + ΣR_ρ`). Forced equations and depth
+    `n ≥ 1` are answered by `../Exact_Logarithmic_Degree_Smith_Invariants/`
+    (batch 50; see below), as is the cancellation question for a scalar
+    subclass; higher-order matrix polynomials and nonreal roots stay open.
+  - Section 11, "Other ordered exponent groups": the non-Archimedean
+    reversion package `../Reversion_Beyond_Archimedean_Valuations/` draws
+    the analogous separation for reversion; the operator question stays
+    open.
+- `residue_fredholm.pdf`: rebuilt from the amended source (`latexmk -pdf`):
+  27 pages (26 as delivered), no errors, undefined references, multiply
+  defined labels, duplicate destinations or overfull boxes.
+- `verification/verify.py`: `verification/results.json` is written as UTF-8
+  with `newline="\n"`, so a rerun on Windows no longer produces CRLF. A
+  rerun of the amended program (Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0)
+  on a copy reproduced the filed JSON byte for byte.
+
+### Batch-50 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 50 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `residue_fredholm.tex`: in `ed:filtration`, the last sentence "The
+  question as posed, at depth `n≥1` with the new logarithm `T` and with
+  forcing, remains open." is replaced by the answer of
+  `../Exact_Logarithmic_Degree_Smith_Invariants/` (batch 50; Smith exponents
+  `Σν_i = r`, `0 ≤ ν_i ≤ s`, decided by block Toeplitz ranks of a finite
+  jet; `thm:sharp-matrix` is its single-block case). A new note
+  `ed:resonance-graph` after "Cancellation-sensitive resonance graphs"
+  records that package's answer for operators `P(E) + σΣx^(-η)q_η(E)` with
+  simple real roots (the weighted graph `D_P^(-1)N`); the general case and
+  the sharper cutoff stay open.
+- `residue_fredholm.pdf`: rebuilt (27 pages, unchanged; no errors,
+  undefined references, multiply defined labels or duplicate destinations).
+
+### Batch-53 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 53 was filed; marked in the source by `% ed. (2026-09-29)` comments.
+
+- `residue_fredholm.tex`: a new note `ed:log-small` after "Perturbations
+  small only in logarithms": for first-order operators the later package
+  `../Triangular_Hahn_Differential_Systems_Without_Smallness/` (batch 53)
+  gives the classification asked for (a coefficient
+  `x^(-1)(λ + Σ_(β>0) c_β L^(-β))` is a logarithmic derivative exactly when
+  no exponent lies in `(0,1)`, and then only `T` is needed; otherwise, as
+  for `x^(-1)L^(-α)`, `0 < α < 1`, there is no homogeneous solution at any
+  finite logarithmic depth; further depth never creates one); higher-order
+  single-root operators are covered only when they factor over the field.
+  In `ed:matrix-systems`, one sentence added: that package bounds the
+  degree of triangular first-order systems at every depth by split factors
+  on a coupling path and classifies it by Smith exponents; nontriangular
+  systems and nonreal roots stay open. The same note's "(the setting of the
+  previous note)" now names the note it meant (the one after "The exact
+  minimal power of the promoted logarithm"), since other notes stand
+  between them.
+- `residue_fredholm.pdf`: rebuilt (`latexmk -pdf`): 28 pages (27 before);
+  no errors, undefined references, multiply defined labels, duplicate
+  destinations or overfull boxes; the two underfull-box warnings are in
+  delivered bibliography entries, as in the delivered build; no Type 3 font.
+- `notes/build_report.json` is kept as delivered (its `pages` is the
+  delivered 26).

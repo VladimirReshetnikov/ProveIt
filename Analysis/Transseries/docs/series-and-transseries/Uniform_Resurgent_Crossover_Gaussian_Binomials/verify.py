@@ -191,7 +191,10 @@ def run(outdir: pathlib.Path,quick: bool=False):
     assert displacement<0 and abs(displacement/first-1)<mp.mpf('1e-12')
     report['checks']['modular_inverse']={'h':str(h),'x0':str(x0),'displacement':mp.nstr(displacement,30),'first_term':mp.nstr(first,30),'ratio':mp.nstr(displacement/first,30)}
     outdir.mkdir(parents=True,exist_ok=True)
-    (outdir/'verification_results.json').write_text(json.dumps(report,indent=2)+'\n')
+    # ed. (ProveIt, 2026-09-29): a --quick run writes its own file, so it can no
+    # longer overwrite the recorded full run; newline='\n' keeps reruns LF on Windows.
+    name='verification_results_quick.json' if quick else 'verification_results.json'
+    (outdir/name).write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps(report,indent=2))
 
 

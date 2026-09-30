@@ -13,7 +13,9 @@ Research article prepared for Vladimir Reshetnikov, 29 September 2026.
 - `verification/results/`: recorded JSON and CSV outputs.
 - `verification/run_log.txt`: the recorded full verification run.
 - `requirements.txt`: numerical dependency versions used in the recorded run.
-- `SHA256SUMS.txt`: hashes of the other package files.
+- The delivered checksum ledger `SHA256SUMS.txt` was verified in full on
+  filing (batch 48) and not kept; the delivered archive remains in the
+  repository history (see `docs/incoming/README.md`, batch 48 row).
 
 ## Main mathematical result
 
@@ -124,3 +126,38 @@ they are not interval-certified enclosures or proofs of the asymptotic
 claims. The large-n critical-window table evaluates saddle quantities only,
 not coefficients of orders as large as 10^48. All asymptotic results are
 proved in the article independently of these computations.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 48 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `poisson_feedback_layers.tex`: an unnumbered "Editorial note (ProveIt,
+  2026-09-29)" environment was added to the preamble. An editorial note after
+  the abstract states the scope of the title: at the boundary `p = 1 + 1/M`
+  the missing factor diverges, consistently with the finite-core package's
+  cutoff theorem, and the finite Poisson limit occurs only in a moving window
+  above the boundary, outside that package's fixed-parameter theorem; it
+  records that the article sharpens that package (its intensity equals the
+  finite-core one-occurrence scale term by term) and that the
+  microscopic-condensation package proves the total-variation Poisson law at
+  diverging intensity for `lambda_j = j^2`. Short notes after the remark
+  "What is not a consequence here" and after the further-research questions
+  "A full local Poisson approximation at diverging intensity" (answered for
+  `M = 1`, `p = 2`, `a = 1` by the microscopic-condensation package) and "The
+  signed quadratic inverse conjecture" (claimed proved, independently and
+  unreviewed, by the two batch-49 quadratic-inverse packages) give the
+  cross-references. Every change is marked in the source by a
+  `% ed. (2026-09-29)` comment. No label, theorem or number changed.
+- `poisson_feedback_layers.pdf`: rebuilt from the amended source (still 20
+  pages).
+- `README.md`: the retired checksum ledger is no longer listed as a package
+  file (see "Contents").
+- `verification/verify.py`: the CSV and JSON writers emit LF line endings on
+  every platform. A rerun on a copy (`--output verification/results`)
+  reproduced `exact_checks.json` and `critical_window_saddles.csv` byte for
+  byte; `coefficient_diagnostics.csv` differed only in the last digits of two
+  floating values (NumPy/SciPy on Windows). `--output` is relative to the
+  working directory, and the default rewrites the recorded
+  `verification/results/`; run it on a copy. `verification/run_log.txt` is
+  recorded program output and is written by no script.

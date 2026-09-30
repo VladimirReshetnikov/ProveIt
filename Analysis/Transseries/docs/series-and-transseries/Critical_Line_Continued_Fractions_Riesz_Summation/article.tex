@@ -1,0 +1,1686 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem,fancyhdr,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\hypersetup{pdftitle={At the Critical Line: Continued Fractions and Sharp Riesz Summation of Resonant Transseries},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\im}{\operatorname{Im}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Hh}{\mathbb H}
+\newcommand{\Ssum}{\mathcal S}
+\newcommand{\Riesz}{\mathcal R}
+\newcommand{\Accel}{\mathcal A}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\repo}{\textit{ProveIt}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small At the Critical Line}
+\fancyhead[R]{\small Resonant transseries and summation}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{8mm}
+\noindent{\large\scshape Transseries / Small Divisors / Summability}\par
+\vspace{12mm}
+\noindent{\Huge\bfseries At the Critical Line}\par
+\vspace{6mm}
+\noindent{\LARGE Continued fractions and sharp Riesz\par\noindent summation of resonant transseries}\par
+\vspace{11mm}
+\noindent Research article prepared for Vladimir Reshetnikov\par
+\noindent 29 September 2026\par
+\vspace{10mm}
+\begin{abstract}
+The residue expansion of a meromorphic Borel transform can diverge even
+when its Stokes jump is holomorphic and has a normally convergent
+finite-block representation. We resolve the critical-line question
+explicitly left open in the \repo\ resonance-block report for two sine
+lattices with numerator $t^D$, $D\ge2$. If $p_k/q_k$ are the convergents of an irrational period ratio,
+$b=\limsup\log q_{k+1}/q_k\in(0,\infty)$, and
+$A_k=q_k^Dq_{k+1}\e^{-bq_k}$, then the increasing-action residue series
+converges on the entire line $\re z=b$ exactly when $A_k\to0$, and
+converges absolutely exactly when $\sum A_k<\infty$. The two separately
+indexed lattice series have a different exact criterion: convergence of
+$\sum(-1)^{p_k+q_k+k}A_k\e^{-\ii q_k\im z}$. The proof removes an
+absolutely summable remainder and isolates the primitive convergent
+pairs. Continued-fraction constructions realize absolute convergence,
+conditional convergence, bounded divergent spikes, and unbounded spikes
+at every prescribed positive critical abscissa. A derivative hierarchy
+shows precisely when an analytic sum permits termwise differentiation of
+its raw representation.
+
+For $d$ sine lattices we also prove that Riesz weighting of integer order
+$m\ge d-1$ recovers the block sum throughout $\re z>0$, without any
+Diophantine hypothesis. It has an exact finite derivative bias and an
+exponentially small remainder, uniform across arbitrarily close poles.
+The threshold $d-1$ is sharp for gap-independent uniform control, while
+continuity at a collision exactly on the cutoff requires one additional
+order. Richardson extrapolation removes the bias, and a local inverse
+stability theorem transports the exponential accuracy through nonlinear
+inversion. All new assertions are proved conventionally; 192 exact
+finite checks and 49 high-precision diagnostics accompany the article.
+No Lean verification or independently established publication priority
+is claimed.
+\end{abstract}
+\vfill
+\noindent\small Inspected repository snapshot:\par
+\noindent\small\texttt{3d5973524506411392a911470b5ddc35521568ea}.\par
+\noindent\small The source, PDF, verification code, recorded data, and build instructions
+are distributed together. No repository files were modified.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+
+\section{The open question and the results}
+\label{sec:introduction}
+
+\subsection{The precise repository frontier}
+The \repo\ report \emph{Resonance-Block Summation of Transseries}
+\cite{repo-block} studies
+\begin{equation}
+ \widehat F_{\boldsymbol\omega}(t)
+ =\frac{t^d}{\prod_{j=1}^{d}\sin(\pi\omega_jt)},\qquad \omega_j>0.
+ \label{eq:original-kernel}
+\end{equation}
+It proves a separation-independent block representation of the Stokes
+jump, identifies the open half-plane of absolute convergence for two
+irrationally related lattices, and transports the block sum through
+analytic inversion. These are antecedents, not results claimed here for
+the first time.
+
+Its further-research Question~1 asks for a continued-fraction criterion
+on the boundary of that half-plane, distinguishing separate lattice
+summation from increasing-action summation and constructing the possible
+convergence types. The main result below answers that question. The
+comparison is to the pinned source, especially its labels
+\texttt{thm:block}, \texttt{thm:arithmetic}, and Section~\texttt{sec:questions},
+Question~1. The repository inventory \cite{repo-index} was also checked;
+this is not an exhaustive priority audit of every document in the
+repository or in the literature.
+
+There is a useful distinction behind the problem. A complete close pair
+has a bounded sum, but either constituent can be enormous. A cutoff
+between the two poles reveals one constituent. Whether those unfinished
+pairs vanish is a different question from whether all their absolute
+values are summable. Continued fractions identify exactly which pairs
+matter at the critical line.
+
+\subsection{An overview in the original degree-two model}
+For $(\omega_1,\omega_2)=(1,\alpha)$ with $\alpha>0$ irrational, put
+\begin{equation}
+ b=\beta(\alpha)=\limsup_{n\to\infty}\frac{1}{n}
+                  \log\frac{1}{\dist(n\alpha,\Z)}.
+ \label{eq:intro-beta}
+\end{equation}
+The predecessor proves absolute convergence for $\re z>b$ and failure of
+the term test for $\re z<b$. For $0<b<\infty$, let $p_k/q_k$ be the
+continued-fraction convergents and set
+\begin{equation}
+ A_k=q_k^2q_{k+1}\e^{-bq_k},\qquad
+ \eta_k=(-1)^{p_k+q_k+k}.
+ \label{eq:intro-amplitudes}
+\end{equation}
+Our increasing-action classification on $\re z=b$ is
+\begin{center}
+\begin{tabular}{p{.42\textwidth}p{.46\textwidth}}
+\toprule
+Condition on $A_k$ & Raw residue series, ordered by action\\
+\midrule
+$\sum_k A_k<\infty$ & Absolutely convergent.\\
+$A_k\to0$ and $\sum_k A_k=\infty$ & Conditionally convergent.\\
+$A_k\not\to0$ & Divergent; its terms do not tend to zero.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The answer is the same at every imaginary height. By contrast, the two
+separate lattice series converge at $b+\ii y$ precisely when
+$\sum_k\eta_k A_k\e^{-\ii yq_k}$ converges. In particular, an
+increasing-action sum can converge although its separate lattice sums
+are respectively $+\infty$ and $-\infty$ at the real boundary point.
+
+The second part of the article supplies a different repair when ordinary
+summation fails. Write $\lambda$ for an action and $c_\lambda$ for its
+Borel residue. For two lattices,
+\begin{equation}
+ \Riesz_T^{(1)}(z)
+ =\sum_{\lambda<T}\left(1-\frac{\lambda}{T}\right)c_\lambda\e^{-\lambda z}
+ =\Ssum(z)+\frac{\Ssum'(z)}{T}+O_K(T\e^{-\sigma T}),
+ \label{eq:intro-riesz}
+\end{equation}
+where $K\Subset\{\re z>0\}$ and $\sigma=\min_K\re z$. Thus
+$2\Riesz_{2T}^{(1)}-\Riesz_T^{(1)}$ approximates the normalized Stokes
+jump $\Ssum$ with exponentially small error. This works even when
+$\beta(\alpha)=\infty$. It does not require finding the close pairs
+before defining the weighted finite sum.
+
+\subsection{Established ingredients and the novelty boundary}
+Continued-fraction approximation and the exponential approximation
+exponent are classical. In particular, Sondow's irrationality base has
+logarithm $\limsup\log q_{k+1}/q_k$ \cite{sondow}; our $b$ is that
+\emph{logarithm}, not the base itself. Divided differences and their
+Genocchi--Hermite representation are classical \cite{deboor}. Riesz means
+of general Dirichlet series have a substantial theory; the work of
+Defant and Schoolmann gives a modern primary reference
+\cite{defant-schoolmann}. Richardson extrapolation is ordinary polynomial
+interpolation at zero in the variable $1/T$; we prove the needed finite
+identities instead of attributing novelty to that procedure.
+
+The additions relative to the inspected repository report are the exact
+critical-line reduction, its ordering-sensitive realization theory, the
+raw derivative hierarchy, and the sharp cutoff-regularization theorem
+with its finite bias and exponential acceleration. These are
+model-specific results, not a general solution to all summability
+questions for transseries. Their proofs stand independently of a claim
+to being the first occurrence of every refinement in the literature.
+The computational checks are supplementary evidence, not substitutes
+for the proofs.
+
+\section{The Borel model, actions, and block summation}
+\label{sec:model}
+
+\subsection{Definitions and conventions}
+Fix integers $d\ge2$ and $D\ge d$. We use the slight extension
+\begin{equation}
+ \widehat H_{\boldsymbol\omega,D}(t)
+  =\frac{t^D}{\prod_{j=1}^d\sin(\pi\omega_jt)},\qquad
+ \Hh=\{z\in\C:\re z>0\}.
+ \label{eq:kernel}
+\end{equation}
+The singularity at zero is removable. The original model is $D=d$;
+allowing $D$ to vary makes differentiation transparent. To make the
+transseries connection explicit, expand the analytic germ at zero as
+$\widehat H(t)=\sum_{n\ge0}h_nt^n$. In the Borel convention used here it
+corresponds to the formal inverse-power series
+\begin{equation}
+ \widetilde H(z)=\sum_{n\ge0}n!h_nz^{-n-1}.
+ \label{eq:formal-borel}
+\end{equation}
+Its lateral Laplace realizations differ by the exponential residue
+corrections studied below. A finite union of positive action lattices
+is locally finite and lies in the additive monoid generated by their
+positive spacings. Thus the obstruction is not an invalid formal action
+support: it is failure of an infinite raw numerical sum at a fixed
+argument. Finite-block or Riesz realization repairs the latter without
+changing the input actions.
+
+Until the confluence discussion, assume that $\omega_i/\omega_j$ is irrational
+for $i\ne j$. All positive poles are then simple. At
+$\lambda=n/\omega_j$ their residues are
+\begin{equation}
+ c_{n/\omega_j}
+ =\frac{(-1)^n(n/\omega_j)^D}
+ {\pi\omega_j\prod_{\ell\ne j}\sin(\pi\omega_\ell n/\omega_j)}.
+ \label{eq:residue-general}
+\end{equation}
+The action set $\Lambda$ is the union of these $d$ positive lattices.
+It is locally finite. Define the increasing-action cutoff by
+\begin{equation}
+ P_T(z)=\sum_{\substack{\lambda\in\Lambda\\\lambda<T}}
+                    c_\lambda\e^{-\lambda z}.
+ \label{eq:raw-cutoff}
+\end{equation}
+Ordinary increasing-action convergence means that $P_T(z)$ has a limit
+as $T\to\infty$, with no restriction that $T$ avoid a small gap in a
+particular way. The strict inequality fixes values at poles but does
+not affect the convergence question.
+
+For two lattices we write the two separate series as
+\begin{align}
+ r_n(z)&=\frac{(-1)^n n^D\e^{-nz}}{\pi\sin(\pi\alpha n)},
+ &R(z)&=\sum_{n\ge1}r_n(z),\label{eq:two-r}\\
+ s_m(z)&=\frac{(-1)^m(m/\alpha)^D\e^{-(m/\alpha)z}}
+                  {\pi\alpha\sin(\pi m/\alpha)},
+ &S(z)&=\sum_{m\ge1}s_m(z).
+ \label{eq:two-s}
+\end{align}
+The capital letters $R,S$ in this display refer only to the separate
+series. The calligraphic $\Ssum$ below always denotes the block sum.
+
+\subsection{Uniform blocks: a recalled mechanism with proof}
+Fix a compact positive period box
+\begin{equation}
+ 0<m_0\le\omega_j\le M_0,\qquad
+ h=\frac{1}{8(d+1)M_0}.
+ \label{eq:box}
+\end{equation}
+Join successive pole occurrences when their gap is less than $h$.
+The connected components are called blocks. When a repeated pole is
+allowed, its occurrences belong to one block and are counted with
+multiplicity.
+
+\begin{lemma}[Geometry and pole-cancelled factors]
+\label{lem:block-geometry}
+Every block $C$ has at most $d$ occurrences and interval length at most
+$(d-1)h$. Consecutive blocks are separated by at least $h$. Their minima
+have a uniformly bounded count in every unit interval. Put $a_C=\min C$
+and
+\begin{equation}
+ g_C(t,z)=\e^{-zt}\widehat H_{\boldsymbol\omega,D}(t)
+                         \prod_{\lambda\in C}(t-\lambda).
+ \label{eq:regular-factor}
+\end{equation}
+There is a fixed tube around each real block interval on which $g_C$ is
+holomorphic. For every compact $K\Subset\Hh$ and every fixed integer
+$J\ge0$, constants independent of internal pole gaps satisfy
+\begin{equation}
+ \sup_{\substack{z\in K\\t\in[\min C,\max C]}}
+       |\partial_t^j g_C(t,z)|
+ \le C_{K,J}(1+a_C)^D\e^{-\sigma a_C},
+ \quad 0\le j\le J,\qquad \sigma=\min_K\re z.
+ \label{eq:regular-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $d+1$ successive occurrences belonged to a block, their first $d$
+gaps would give a span less than $dh<1/M_0$. Two occurrences would come
+from one lattice, contradicting its spacing $1/\omega_j\ge1/M_0$.
+This also shows that a block contains at most one occurrence from each
+lattice. The separation statement is the definition. A unit interval
+contains at most $d(M_0+1)$ pole occurrences, rounded upward if necessary,
+which bounds its number of block minima.
+
+Take a tube of radius, for example, $h/4$ around the block interval.
+An uncancelled positive zero is at distance at least $h$ from the
+interval. The tube also stays away from zero and the negative poles.
+For a lattice represented by a node $\lambda=n/\omega_j$, its cancelled
+factor is, up to sign,
+\[
+ \frac{t-\lambda}{\sin(\pi\omega_j(t-\lambda))}.
+\]
+It is uniformly bounded on a slightly larger tube: the argument remains
+strictly inside the distance to the next zero, and its removable value
+is $1/(\pi\omega_j)$. For a lattice not represented in the block, the
+sine factor is bounded away from zero on that tube. These assertions
+follow either from $|\sin(u+\ii v)|^2=\sin^2u+\sinh^2v$ or from
+compactness after reduction modulo its period. The period box supplies
+uniform constants.
+
+The numerator is bounded by a constant times $(1+a_C)^D$. On the tube,
+$|\e^{-zt}|\le C_K\e^{-\sigma a_C}$, since its width and the block
+length are fixed and $z$ ranges over $K$. Cauchy's estimates on a nested
+tube give every fixed derivative bound in \eqref{eq:regular-bound}.
+No step divides by an internal gap.
+\end{proof}
+
+For distinct real nodes $\lambda_1,\ldots,\lambda_r$, write
+\begin{equation}
+ [\lambda_1,\ldots,\lambda_r]f
+   =\sum_{i=1}^r\frac{f(\lambda_i)}
+           {\prod_{j\ne i}(\lambda_i-\lambda_j)}.
+ \label{eq:dd}
+\end{equation}
+The divided difference has its usual confluent meaning at repeated
+nodes. The Genocchi--Hermite formula, with simplex volume $1/(r-1)!$,
+gives
+\begin{equation}
+ |[\lambda_1,\ldots,\lambda_r]f|
+  \le\frac{\sup_I|f^{(r-1)}|}{(r-1)!},
+ \qquad I=[\min\lambda_i,\max\lambda_i].
+ \label{eq:dd-bound}
+\end{equation}
+This follows by iterating the fundamental theorem of calculus; see also
+\cite[formula (52)]{deboor}. The same estimate holds for distinct nodes
+when $f\in W^{r-1,\infty}(I)$, with the essential supremum on the right.
+Indeed, extend $f$ across the endpoints using its derivative traces,
+mollify, apply the smooth estimate, and pass to the uniform limit at
+the finitely many nodes. For $r=1$ it is simply a bound on a value.
+We will need this Sobolev version at a nonsmooth cutoff, but will not
+use it to assign an undefined derivative to a fully confluent node.
+
+\begin{proposition}[Block sum and the Stokes jump]
+\label{prop:block-sum}
+For a block $C$, let
+\begin{equation}
+ B_C(z)=\sum_{\lambda\in C\ \mathrm{distinct}}
+      \Res_{t=\lambda}\bigl(\e^{-zt}\widehat H(t)\bigr)
+       =[\lambda_1,\ldots,\lambda_r]g_C(\cdot,z).
+ \label{eq:block-residue}
+\end{equation}
+Then $\Ssum(z)=\sum_C B_C(z)$ converges absolutely and locally uniformly
+on $\Hh$, together with each fixed $z$-derivative. It is independent of
+the sufficiently small admissible block threshold. With lower and upper
+lateral Laplace integrals $F_-,F_+$,
+\begin{equation}
+ F_-(z)-F_+(z)=2\pi\ii\Ssum(z).
+ \label{eq:stokes}
+\end{equation}
+All block estimates are uniform on the period box, including confluent
+blocks.
+\end{proposition}
+\begin{proof}
+The residue identity follows from the contour formula for divided
+differences. Equations \eqref{eq:regular-bound} and \eqref{eq:dd-bound}
+majorize $|B_C(z)|$ by $C_K(1+a_C)^D\e^{-\sigma a_C}$. The bound on the
+number of minima in a unit interval makes the sum finite. Multiplying
+the numerator by any fixed power of $t$ proves the derivative assertion.
+
+For completeness, choose small rays above and below the positive axis
+such that $\re(z\e^{\ii\theta})>0$ along the intervening angles.
+The Laplace integrals converge at zero because $D\ge d$, and at infinity
+because the sine factors grow in either open half-plane. Close the rays
+at radii in the middle of the gaps between blocks. These radii stay a
+fixed distance from real poles. On the closing arcs, the sine factors
+are bounded away from zero near the real axis and grow away from it;
+the numerator is at most polynomial. The exponentially decaying
+Laplace factor makes the outer arc tend to zero. The residue theorem
+gives \eqref{eq:stokes}, with the lower ray traversed outward. Every
+admissible blocking has the same two lateral integrals, which proves
+independence. This is the predecessor's block argument with $D$ in
+place of $d$ \cite{repo-block}.
+\end{proof}
+
+\section{Continued fractions and exponentially weighted small divisors}
+\label{sec:cf}
+
+\subsection{The approximation facts, including their proofs}
+Write $\alpha=[a_0;a_1,a_2,\ldots]$ and use
+\begin{align*}
+ p_{-2}=0,\quad p_{-1}=1,&\qquad p_k=a_kp_{k-1}+p_{k-2},\\
+ q_{-2}=1,\quad q_{-1}=0,&\qquad q_k=a_kq_{k-1}+q_{k-2}.
+\end{align*}
+The index $k$ always retains this convention; it determines a sign in
+the main theorem. Finitely many initial exceptional indices, including
+a repeated initial denominator or a zero numerator, may be deleted
+from summability statements without renumbering the remaining indices.
+Set $\delta_k=\alpha q_k-p_k$.
+
+\begin{lemma}[Continued-fraction estimates]
+\label{lem:cf}
+For all sufficiently large $k$,
+\begin{equation}
+ \operatorname{sgn}\delta_k=(-1)^k,\qquad
+ q_{k+1}<|\delta_k|^{-1}<q_{k+1}+q_k.
+ \label{eq:cf-error}
+\end{equation}
+For $q_k\le n<q_{k+1}$,
+\begin{equation}
+ \|n\alpha\|\ge|\delta_k|,
+ \qquad \|u\|:=\dist(u,\Z).
+ \label{eq:best-approx}
+\end{equation}
+If integers $p,n$, $n>0$, satisfy $|n\alpha-p|<1/(2n)$, then the reduced
+fraction $p/n$ is a convergent. Finally, $q_k$ grows at least
+geometrically in $k$ after grouping adjacent indices.
+\end{lemma}
+\begin{proof}
+Let $\tau_{k+1}=a_{k+1}+\theta_k$ be the complete quotient, where
+$0<\theta_k<1$. The recurrence gives
+\[
+ \alpha=\frac{p_k\tau_{k+1}+p_{k-1}}
+               {q_k\tau_{k+1}+q_{k-1}},\qquad
+ \delta_k=\frac{(-1)^k}{q_k\tau_{k+1}+q_{k-1}},
+\]
+since $p_kq_{k-1}-p_{k-1}q_k=(-1)^{k-1}$. This proves
+\eqref{eq:cf-error} and
+$\delta_{k-1}=-\tau_{k+1}\delta_k$.
+
+To prove the best-approximation assertion, suppose $0<n<q_{k+1}$ and
+$|n\alpha-p|<|\delta_k|$. The determinant identity writes
+$(p,n)=u(p_k,q_k)+v(p_{k-1},q_{k-1})$ with $u,v\in\Z$. Thus
+$|u-v\tau_{k+1}|<1$. If $v>0$, this implies $u\ge va_{k+1}$ and
+$n\ge vq_{k+1}$, a contradiction. If $v<0$, it implies
+$u\le va_{k+1}$ and $n\le vq_{k+1}<0$. If $v=0$, it forces $u=0$.
+All possibilities are impossible. Taking the nearest $p$ proves
+\eqref{eq:best-approx}; eventually $p_k$ itself is nearest to
+$q_k\alpha$.
+
+For the Legendre assertion, first reduce $p/n=P/Q$. Its error is less
+than $1/(2Q^2)$. Choose $k$ with $q_k\le Q<q_{k+1}$. Unless
+$P/Q=p_k/q_k$, best approximation and the determinant bound give
+\[
+ 1\le|Pq_k-Qp_k|
+ \le q_k|Q\alpha-P|+Q|\delta_k|
+ \le2Q|Q\alpha-P|<1,
+\]
+a contradiction. Initial small-denominator cases follow from the same
+continued-fraction identities, or can be omitted in our tail arguments.
+Finally $q_{k+2}\ge q_{k+1}+q_k\ge2q_k$ once denominators increase.
+\end{proof}
+
+\begin{corollary}[Exponential exponent and reciprocity]
+\label{cor:beta}
+For every positive irrational $\alpha$,
+\begin{equation}
+ \beta(\alpha)=\limsup_k\frac{\log q_{k+1}}{q_k},
+ \qquad \alpha\beta(1/\alpha)=\beta(\alpha),
+ \label{eq:beta-cf}
+\end{equation}
+including the values zero and infinity.
+\end{corollary}
+\begin{proof}
+Evaluating at $n=q_k$ and using \eqref{eq:cf-error} proves one inequality
+in the first formula. For $q_k\le n<q_{k+1}$, best approximation bounds
+$n^{-1}\log(1/\|n\alpha\|)$ above by
+$q_k^{-1}\log(q_{k+1}+q_k)$. The difference between this and
+$q_k^{-1}\log q_{k+1}$ tends to zero. This proves equality. It agrees
+with the classical irrationality-base formula \cite{sondow}.
+
+Apart from initial terms, the convergents of $1/\alpha$ are $q_k/p_k$.
+Since $p_k/q_k\to\alpha$ and
+$\log p_{k+1}=\log q_{k+1}+O(1)$, the second equality follows, with
+extended-real limits understood.
+\end{proof}
+
+\subsection{An exact positive-series and term-test reduction}
+
+\begin{lemma}[Weighted denominator test]
+\label{lem:weighted-test}
+Let $x>0$ and $D\ge0$ be fixed, and set
+$A_k(x)=q_k^Dq_{k+1}\e^{-xq_k}$. Then
+\begin{align}
+ \sum_{n\ge1}\frac{n^D\e^{-xn}}{|\sin(\pi n\alpha)|}<\infty
+ &\quad\Longleftrightarrow\quad \sum_k A_k(x)<\infty,
+ \label{eq:positive-test}\\
+ \frac{n^D\e^{-xn}}{|\sin(\pi n\alpha)|}\longrightarrow0
+ &\quad\Longleftrightarrow\quad A_k(x)\longrightarrow0.
+ \label{eq:term-test}
+\end{align}
+\end{lemma}
+\begin{proof}
+Use $2\|u\|\le|\sin(\pi u)|\le\pi\|u\|$. For the integer block
+$q_k\le n<q_{k+1}$, Lemma~\ref{lem:cf} gives the upper bound
+\begin{align*}
+ \sum_{n=q_k}^{q_{k+1}-1}
+       \frac{n^D\e^{-xn}}{|\sin(\pi n\alpha)|}
+ &\le\frac{q_{k+1}+q_k}{2}
+                \sum_{n\ge q_k}n^D\e^{-xn}\\
+ &\le C_{x,D}q_k^Dq_{k+1}\e^{-xq_k}.
+\end{align*}
+Here $n=q_k+j$ and $(q_k+j)^D\le q_k^D(1+j)^D$ bound the last sum.
+The single convergent index $n=q_k$ is bounded below by
+$A_k(x)/\pi$. The denominator blocks partition a tail of the positive
+integers. These inequalities prove \eqref{eq:positive-test}. They also
+bound every term in the $k$th block by $C_{x,D}A_k(x)$, proving both
+directions of \eqref{eq:term-test}.
+\end{proof}
+
+This lemma already identifies the absolute convergence criterion on a
+critical line. Conditional convergence requires more information: the
+near-cancelling residues must be matched and their signs retained. That
+is the purpose of the next section.
+
+\section{Critical-line extraction and the complete ordering criterion}
+\label{sec:critical}
+Assume throughout this section that $D\ge2$, $\alpha>0$ is irrational,
+and $0<b=\beta(\alpha)<\infty$. Define
+\begin{equation}
+ A_k=q_k^Dq_{k+1}\e^{-bq_k},\qquad
+ \eta_k=(-1)^{p_k+q_k+k},\qquad
+ \lambda_k'=p_k/\alpha=q_k-\delta_k/\alpha.
+ \label{eq:critical-data}
+\end{equation}
+The two actions $q_k$ and $\lambda_k'$ will be called the primitive
+convergent pair.
+
+\subsection{The absolutely summable remainder}
+
+\begin{lemma}[Nonprimitive residues are summable]
+\label{lem:nonprimitive}
+After deleting $r_{q_k}$ from the first lattice and $s_{p_k}$ from the
+second lattice, the remaining residue terms on $\re z=b$ are absolutely
+summable. The sums of their absolute values are independent of $\im z$.
+\end{lemma}
+\begin{proof}
+First consider an integer $n$ in the first lattice. If
+$\|n\alpha\|\ge1/(2n)$, then
+$|r_n(b+\ii y)|\le n^{D+1}\e^{-bn}/\pi$, and these bounds sum.
+Otherwise choose the nearest integer $p$ and reduce $p/n$. By
+Lemma~\ref{lem:cf},
+\[
+ n=\ell q_k,\qquad p=\ell p_k,\qquad
+ \|n\alpha\|=\ell|\delta_k|
+\]
+for a unique reduced convergent and a positive integer $\ell$.
+A nonprimitive term has $\ell\ge2$. Its absolute value is at most
+\[
+ C q_k^D(q_{k+1}+q_k)\ell^{D-1}\e^{-b\ell q_k}.
+\]
+The sum over $\ell\ge2$ is at most
+$C_{b,D}q_k^D(q_{k+1}+q_k)\e^{-2bq_k}$.
+Because $\limsup\log q_{k+1}/q_k=b$, eventually
+$q_{k+1}\le\e^{3bq_k/2}$. Thus the last bound is summable in $k$,
+using geometric growth of $q_k$. Finitely many early $k$ cause no
+problem, since their sums over $\ell$ converge.
+
+Apply the same proof to $1/\alpha$ with the Laplace parameter
+$b/\alpha=\beta(1/\alpha)$. Its primitive denominators are $p_k$, apart
+from initial terms. The constant factor $\alpha^{-D-1}$ in the second
+lattice does not affect summability. Absolute values remove $y$ from
+both arguments.
+\end{proof}
+
+\begin{theorem}[Critical-line extraction modulo \(\ell^1\)]
+\label{thm:extraction}
+For every $Y<\infty$ there are functions $u_k,v_k$ on $[-Y,Y]$ such that
+\begin{align}
+ r_{q_k}(b+\ii y)
+    &=\frac{\eta_k}{\pi^2}A_k\e^{-\ii yq_k}+u_k(y),
+       \label{eq:r-extraction}\\
+ s_{p_k}(b+\ii y)
+    &=-\frac{\eta_k}{\pi^2}A_k\e^{-\ii yq_k}+v_k(y),
+       \label{eq:s-extraction}\\
+ \sum_k\sup_{|y|\le Y}\bigl(|u_k(y)|+|v_k(y)|\bigr)&<\infty.
+       \label{eq:ellone}
+\end{align}
+Together with Lemma~\ref{lem:nonprimitive}, these formulas account for
+all but finitely many raw residues.
+\end{theorem}
+\begin{proof}
+Let $F_z(t)=t^D\e^{-zt}$. The first residue has the form
+\[
+ r_{q_k}(z)=\frac{(-1)^{p_k+q_k}F_z(q_k)}{\pi\sin(\pi\delta_k)}.
+\]
+For small real $\delta$, $1/\sin(\pi\delta)=1/(\pi\delta)+O(|\delta|)$.
+Moreover
+$|\delta_k|^{-1}=q_{k+1}+\theta_kq_k$, $0<\theta_k<1$.
+Using $\operatorname{sgn}\delta_k=(-1)^k$ gives
+\eqref{eq:r-extraction}, with
+\begin{equation}
+ \sup_{|y|\le Y}|u_k(y)|\le C_Yq_k^{D+1}\e^{-bq_k}
+ \label{eq:error-majorant}
+\end{equation}
+for large $k$.
+
+For the companion residue, an exact sine identity gives
+\[
+ s_{p_k}(z)
+ =-\frac{(-1)^{p_k+q_k}F_z(q_k-\delta_k/\alpha)}
+             {\pi\alpha\sin(\pi\delta_k/\alpha)}.
+\]
+Replace $1/(\pi\alpha\sin(\pi\delta_k/\alpha))$ by
+$1/(\pi^2\delta_k)$; the error is $O(|\delta_k|)$.
+The mean-value integral on the short real segment yields, uniformly for
+$|y|\le Y$,
+\[
+ |F_{b+\ii y}(q_k-\delta_k/\alpha)-F_{b+\ii y}(q_k)|
+ \le C_Y|\delta_k|q_k^D\e^{-bq_k}.
+\]
+After division by $\delta_k$, this has a summable majorant. Replacing
+$|\delta_k|^{-1}$ by $q_{k+1}$ adds at most the bound in
+\eqref{eq:error-majorant}. This proves \eqref{eq:s-extraction} and
+\eqref{eq:ellone}.
+\end{proof}
+
+\subsection{The classification theorem}
+
+\begin{theorem}[All ordinary critical-line convergence types]
+\label{thm:classification}
+At every $z=b+\ii y$, the following statements hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The increasing-action series $P_T(z)$ converges if and only if
+$A_k\to0$. Its value, when it converges, is $\Ssum(z)$.
+\item It converges absolutely, equivalently unconditionally as a complex
+series, if and only if $\sum_k A_k<\infty$.
+\item The two separately indexed lattice series in
+\eqref{eq:two-r}--\eqref{eq:two-s} both converge if and only if
+\begin{equation}
+ \sum_k\eta_k A_k\e^{-\ii yq_k}
+ \quad\hbox{converges.}
+ \label{eq:separate-criterion}
+\end{equation}
+Either separate lattice series converges precisely under this same
+criterion. When they converge, their sum equals $\Ssum(z)$.
+\end{enumerate}
+If $A_k\to0$, increasing-action convergence is uniform on each compact
+segment of $\re z=b$, and on each compact rectangle
+$b\le\re z\le B$, $|\im z|\le Y$.
+\end{theorem}
+\begin{proof}
+Use the two-lattice blocks of Section~\ref{sec:model}; each has at most
+two nodes and its nodes are consecutive in action order. At a cutoff
+$T$, all retained blocks are complete except possibly the last one.
+The sum of the complete blocks tends locally uniformly to $\Ssum$.
+The incomplete block, if present, contributes exactly one raw residue.
+Therefore $P_T(z)$ converges to $\Ssum(z)$ whenever all individual
+residues tend to zero. Conversely, convergence of an ordinary series
+forces its individual terms to tend to zero.
+
+Lemma~\ref{lem:weighted-test} identifies the first-lattice term test
+with $A_k\to0$. For the second lattice, the same conclusion follows
+from Lemma~\ref{lem:nonprimitive} and Theorem~\ref{thm:extraction}.
+This proves (i). All term moduli on the critical line are independent
+of $y$; the same bounds decrease on moving to the right. The block
+sum is locally uniform on $\Hh$. These observations prove the stated
+uniformity.
+
+The absolute convergence equivalence follows either from
+Lemma~\ref{lem:weighted-test} and the companion estimates, or directly
+from extraction: an $\ell^1$ perturbation cannot change whether the
+positive sum of the leading moduli $A_k/\pi^2$ is finite. This proves
+(ii). Finally the deleted remainders and $u_k,v_k$ are absolutely
+summable, whereas the retained leading subseries are opposite scalar
+multiples of \eqref{eq:separate-criterion}. This proves (iii).
+If the separate sums converge, their increasing-action interleaving
+has their sum as its limit, which (i) identifies with $\Ssum$.
+\end{proof}
+
+\begin{remark}[What the separate criterion does and does not say]
+Equation \eqref{eq:separate-criterion} is a necessary-and-sufficient
+criterion in explicit continued-fraction data, not a sufficient
+Diophantine bound. It reduces the full lattice sums to one sparse
+signed exponential series, with an absolutely summable remainder.
+For general $y$ it retains a genuine phase-convergence question. The
+increasing-action criterion has no such residual phase dependence.
+A detailed classification of the set of imaginary heights satisfying
+\eqref{eq:separate-criterion} is a further problem, not hidden inside
+an assertion of absolute convergence.
+\end{remark}
+
+\subsection{The zero and infinite endpoints}
+The positive finite case is the only nontrivial ordinary boundary
+case. If $\beta(\alpha)=0$ and $\re z=0$, then
+\[
+ |r_n(z)|=\frac{n^D}{\pi|\sin(\pi n\alpha)|}\ge\frac{n^D}{\pi}.
+\]
+Thus both increasing-action and separate ordinary interpretations fail
+the term test on that entire boundary line. If $\beta(\alpha)=\infty$,
+there is no finite critical boundary, and the raw terms fail to vanish
+at every fixed $\re z>0$. The open-half-plane statements also follow
+from \eqref{eq:beta-cf}: the exponential root test gives absolute
+convergence for $\re z>\beta(\alpha)$ and nonvanishing terms below it.
+Together these facts and Theorem~\ref{thm:classification} complete the
+ordinary convergence classification requested in the predecessor's
+Question~1. No assertion about analytic continuation of $\Ssum$ across
+$\re z=0$ is needed.
+
+\section{Prescribing the boundary behavior}
+\label{sec:realization}
+
+\subsection{A continued-fraction amplitude construction}
+
+\begin{theorem}[Prescribed critical amplitudes]
+\label{thm:construction}
+Fix $b>0$ and an integer $D\ge2$. Start with a finite continued-fraction
+prefix. At stage $k$, choose a positive target $t_k$, and choose the next
+partial quotient within a bounded distance of
+\begin{equation}
+ X_k=\frac{t_k\e^{bq_k}}{q_k^{D+1}},
+ \label{eq:target-quotient}
+\end{equation}
+subject to positivity. One may require a specified parity, since the
+distance to a positive integer of that parity is bounded once $X_k$ is
+large. Suppose the chosen target prescription satisfies
+\begin{equation}
+ |\log t_k|=o(q_k)
+ \label{eq:target-condition}
+\end{equation}
+along the resulting construction. Then the resulting infinite continued
+fraction is irrational, has $\beta(\alpha)=b$, and satisfies
+\begin{equation}
+ A_k=t_k+O(q_k^{D+1}\e^{-bq_k}),\qquad
+ A_k/t_k\longrightarrow1,\qquad
+ \sum_k|A_k-t_k|<\infty.
+ \label{eq:target-error}
+\end{equation}
+The limits are unaffected by any finite initial choices.
+\end{theorem}
+\begin{proof}
+The recurrence and bounded rounding error give
+\[
+ q_{k+1}=\frac{t_k\e^{bq_k}}{q_k^D}+O(q_k),
+\]
+because $q_{k-1}\le q_k$ eventually. Multiplying by
+$q_k^D\e^{-bq_k}$ gives the first part of \eqref{eq:target-error}.
+Condition \eqref{eq:target-condition} ensures $X_k\to\infty$, so the
+rounding rule is feasible eventually and its error is negligible
+relative to $t_k$. Geometric denominator growth makes the error
+absolutely summable. Taking logarithms yields
+\[
+ \frac{\log q_{k+1}}{q_k}
+   =b+\frac{\log t_k-D\log q_k+o(1)}{q_k}\longrightarrow b.
+\]
+Corollary~\ref{cor:beta} proves the exponent assertion. An infinite
+simple continued fraction with positive partial quotients is irrational:
+its consecutive reduced convergents are distinct, with errors tending
+to zero and alternating signs. Equivalently, the complete-quotient
+formulas rule out a rational limit with a fixed denominator.
+\end{proof}
+
+The prescription can be an explicit function of the already known pair
+$(k,q_k)$; hence the construction is inductive, not an equation for an
+unknown irrational. For example $t_k=k^{-r}$ and
+$t_k=q_k^{-r}/k^s$ satisfy \eqref{eq:target-condition}. For the concrete
+examples, choose $a_0=1$, $a_1\ge2$, so $1<\alpha<2$.
+
+\begin{corollary}[Every ordinary boundary type at every positive abscissa]
+\label{cor:types}
+At each prescribed $b>0$ there are irrational period ratios exhibiting
+all three cases in Theorem~\ref{thm:classification}. Targets $k^{-2}$,
+$k^{-1}$, and $1$ give, respectively, absolute convergence, conditional
+increasing-action convergence, and failure of the term test. The target
+$k$ produces an unbounded subsequence of individual residue moduli.
+\end{corollary}
+\begin{proof}
+The first two claims follow from \eqref{eq:target-error}; the summable
+rounding errors cannot change the relevant positive-series tests.
+For the other two, $A_k\sim t_k$ and the extraction theorem give the
+asserted nonvanishing or unbounded primitive residues.
+\end{proof}
+
+\subsection{An increasing-action sum with divergent separate sums}
+
+\begin{example}[Opposite divergent lattice sums]
+\label{ex:opposite}
+Set $a_0=1$, choose all $a_j$ for $j\ge1$ even, and use the even
+rounding version of Theorem~\ref{thm:construction} with $t_k=1/k$ in
+the tail. Modulo two, the convergent vectors alternate as
+\[
+ (p_k,q_k)\equiv
+ \begin{cases}(1,1),&k\text{ even},\\(1,0),&k\text{ odd}.
+ \end{cases}
+\]
+This follows directly from
+$(p_{k+1},q_{k+1})\equiv(p_{k-1},q_{k-1})\pmod2$.
+Consequently $\eta_k=1$ for every $k$. At $z=b$, the first separate
+lattice series equals a positive harmonic-type divergent series plus
+a convergent remainder and tends to $+\infty$; the second tends to
+$-\infty$. Nevertheless, $A_k\to0$ and $\sum A_k=\infty$, so their
+increasing-action interleaving converges conditionally to $\Ssum(b)$.
+\end{example}
+
+This example is not an assignment of a finite value to
+$+\infty-\infty$. The increasing-action series is a separately defined
+ordinary series with its own partial sums. The ordering makes its
+close-pair cancellations occur before the next large-scale contribution,
+and the remaining unfinished term tends to zero.
+
+\begin{example}[Both separate lattice sums conditionally converge]
+\label{ex:separate-conditional}
+Choose $a_0=1$, $a_1$ even, $a_2$ odd, and all later partial quotients
+even. For $k\ge1$, the parity vectors alternate between $(1,0)$ and
+$(0,1)$. Therefore $\eta_k=(-1)^{k+1}$. Choose the tail quotients by
+Theorem~\ref{thm:construction} with $t_k=1/k$, respecting even parity.
+Then
+\[
+ \sum_k\eta_k A_k
+   =\sum_k\frac{(-1)^{k+1}}{k}
+        +\text{an absolutely convergent series}
+\]
+converges. Both separate lattice series converge at $b$, neither
+absolutely. Their increasing-action interleaving also converges.
+The argument uses a summable perturbation of the alternating harmonic
+series, not an unproved monotonicity assertion about $A_k$.
+\end{example}
+
+\subsection{A two-point cluster set for a divergent raw expansion}
+
+\begin{proposition}[Bounded spikes of prescribed height]
+\label{prop:spikes}
+Fix $L>0$. Use the parity pattern of
+Example~\ref{ex:separate-conditional} and the constant target $t_k=L$.
+At the real critical point $z=b$, the increasing-action partial sums
+have exactly two finite limit points:
+\begin{equation}
+ \Ssum(b)\quad\text{and}\quad\Ssum(b)+\frac{L}{\pi^2}.
+ \label{eq:cluster-set}
+\end{equation}
+They are bounded but do not converge. With the same parity pattern and
+$t_k=k$, a subsequence of partial sums tends to $+\infty$, while
+block-complete partial sums still tend to $\Ssum(b)$.
+\end{proposition}
+\begin{proof}
+For large $k$, $q_k$ and $\lambda_k'$ form one two-node block, since
+$|\delta_k|\to0$. If $k$ is even, $\delta_k>0$ and the companion
+$\lambda_k'<q_k$ is first. If $k$ is odd, the integer action $q_k$ is
+first. In either case the first residue has sign
+$(-1)^{p_k+q_k+1}=+1$ in its leading term and equals
+$A_k/\pi^2+o(1)$. The second residue cancels that leading term.
+
+Every nonprimitive residue belongs to an absolutely summable family
+by Lemma~\ref{lem:nonprimitive}, and hence tends to zero individually.
+Every primitive residue belongs to its indicated pair, apart from
+finitely many indices. A raw cutoff differs from its last completed
+block sum by either zero, a vanishing nonprimitive term, or the first
+term of a primitive pair. Completed block sums tend to $\Ssum(b)$.
+For $t_k=L$, the only possible limit points are the two in
+\eqref{eq:cluster-set}, and cuts after and inside the primitive pairs
+realize both. For $t_k=k$, the same cuts inside the pairs diverge to
+$+\infty$. No assertion is being made here about the cluster sets at
+nonzero imaginary heights.
+\end{proof}
+
+\section{The derivative hierarchy of a raw transseries}
+\label{sec:derivatives}
+A normally convergent block sum is holomorphic, but this does not
+license differentiating a different, conditionally convergent raw
+representation term by term at a boundary point.
+
+\begin{theorem}[Exact threshold for each formal derivative]
+\label{thm:derivatives}
+Under the hypotheses of Section~\ref{sec:critical}, fix an integer
+$j\ge0$. The increasing-action series formed by differentiating every
+raw term $j$ times converges at $b+\ii y$ if and only if
+\begin{equation}
+ q_k^jA_k\longrightarrow0.
+ \label{eq:derivative-test}
+\end{equation}
+It converges absolutely if and only if $\sum_k q_k^jA_k<\infty$.
+Whenever it converges, its value is $\Ssum^{(j)}(b+\ii y)$, uniformly
+on compact segments of the critical line. The separate derivative
+series converge precisely when
+\begin{equation}
+ \sum_k\eta_k q_k^jA_k\e^{-\ii yq_k}
+ \quad\hbox{converges.}
+ \label{eq:separate-derivative}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Differentiating $c_\lambda\e^{-\lambda z}$ multiplies it by
+$(-\lambda)^j$. Apart from the common factor $(-1)^j$, the result is
+exactly the degree-$D+j$ residue family. Its critical amplitude is
+$q_k^jA_k$. Apply the extraction and classification theorems with
+$D+j$ in place of $D$. Proposition~\ref{prop:block-sum} identifies
+the corresponding block sum with the derivative of $\Ssum$.
+\end{proof}
+
+\begin{corollary}[Arbitrarily prescribed finite differentiation depth]
+\label{cor:derivative-examples}
+Fix an integer $r\ge0$. There are period ratios with any prescribed
+$b>0$ for which derivatives of orders below $r$ have absolutely
+convergent raw series, order $r$ has a conditionally convergent
+increasing-action raw series, and order $r+1$ fails the term test.
+There are also examples with absolute raw convergence at every
+derivative order on $\re z=b$, while the absolute convergence abscissa
+remains exactly $b$.
+\end{corollary}
+\begin{proof}
+For the first statement prescribe
+$t_k=q_k^{-r}/k$. Then $q_k^jA_k$ differs from $q_k^{j-r}/k$ by a
+summable, exponentially small sequence for every fixed $j$.
+For $j<r$, geometric growth of $q_k$ gives summability. At $j=r$
+the amplitudes tend to zero but have divergent sum. At $j=r+1$,
+$q_k/k\to\infty$.
+
+For the second statement prescribe $t_k=\e^{-\sqrt{q_k}}$.
+Condition \eqref{eq:target-condition} holds, so $\beta(\alpha)=b$.
+For each fixed $j$, $\sum q_k^j\e^{-\sqrt{q_k}}<\infty$.
+Theorem~\ref{thm:derivatives} gives the assertion.
+\end{proof}
+
+The failure in the first statement belongs to the representation, not
+to the analytic function: $\Ssum$ has derivatives of all orders near
+every point with positive real part. At a high enough order the raw
+termwise derivative ceases to be an ordinary convergent series, but the
+block derivative remains valid. This separates analytic regularity from
+raw-sector regularity without changing the formal action set.
+
+\section{Riesz cutoff regularization without Diophantine assumptions}
+\label{sec:riesz}
+We now return to $d$ lattices, the period box \eqref{eq:box}, and
+$D\ge d$. No approximation exponent is assumed finite. Positive poles
+are simple in the principal theorem; rational confluence is treated
+separately in Section~\ref{sec:sharpness}.
+
+\subsection{A weighted cutoff that can split a block}
+For an integer $m\ge1$, define the finite Riesz mean
+\begin{equation}
+ \Riesz_T^{(m)}(z)=\sum_{\lambda<T}
+        \left(1-\frac{\lambda}{T}\right)^m c_\lambda\e^{-\lambda z},
+ \qquad T>0.
+ \label{eq:riesz-mean}
+\end{equation}
+This is the usual Riesz weight for a Dirichlet series indexed by the
+frequency $\lambda$; see \cite{defant-schoolmann} for general context.
+Our proof is a direct local argument for the present meromorphic
+kernel. In particular, it does not assume that the raw series has a
+nonempty half-plane of convergence.
+
+Let $w_{T,m}(t)=T^{-m}(T-t)_+^m$ on the real line, where
+$(u)_+=\max(u,0)$. For a simple block $C=\{\lambda_1,\ldots,\lambda_r\}$,
+its contribution to \eqref{eq:riesz-mean} is exactly
+\begin{equation}
+ [\lambda_1,\ldots,\lambda_r]\bigl(g_C(\cdot,z)w_{T,m}\bigr).
+ \label{eq:partial-block}
+\end{equation}
+The identity remains valid when the cutoff lies between nodes of that
+block. It is the central reason the pole gaps need not enter the bound.
+
+\begin{lemma}[A cutoff through a cluster]
+\label{lem:cutoff-cluster}
+Suppose a block of $r\le d$ distinct nodes straddles $T\ge1$ and
+$m\ge r-1$. For $K\Subset\Hh$,
+\begin{equation}
+ \sup_{z\in K}
+ \left|[\lambda_1,\ldots,\lambda_r]
+             \bigl(g_C(\cdot,z)w_{T,m}\bigr)\right|
+ \le C_K T^{D-m}\e^{-\sigma T},\qquad \sigma=\min_K\re z.
+ \label{eq:split-bound}
+\end{equation}
+The same estimate holds with the ordinary polynomial
+$T^{-m}(T-t)^m$ in place of $w_{T,m}$ on that block.
+\end{lemma}
+\begin{proof}
+The block interval has bounded length $W=(d-1)h$, so $|t-T|\le W$
+there. For $0\le j\le r-1\le m$, the weak derivatives satisfy
+\[
+ |w_{T,m}^{(j)}(t)|
+ \le (m)_jT^{-m}W^{m-j}
+\]
+almost everywhere, with harmless replacement by a larger constant if
+$W<1$. Here $(m)_j=m!/(m-j)!$. In particular,
+$w_{T,m}\in W^{r-1,\infty}$, including the endpoint case $m=r-1$.
+Leibniz's rule and \eqref{eq:regular-bound} bound the $(r-1)$st weak
+derivative of the product by
+$C_KT^{-m}(1+T)^D\e^{-\sigma T}$. The Sobolev divided-difference
+bound \eqref{eq:dd-bound} proves \eqref{eq:split-bound}.
+For the ordinary polynomial the same argument is smooth and identical.
+\end{proof}
+
+\subsection{The finite derivative bias and the exponential remainder}
+
+\begin{theorem}[Uniform Riesz recovery and its exact bias]
+\label{thm:riesz}
+Let $m\ge d-1$ be an integer. For every compact $K\Subset\Hh$, there
+is a constant depending only on $K,d,D,m,m_0,M_0$ such that, for all
+$T\ge1$ and every period vector in the box with simple positive poles,
+\begin{equation}
+ \sup_{z\in K}\left|
+ \Riesz_T^{(m)}(z)
+  -\sum_{j=0}^m\binom{m}{j}\frac{\Ssum^{(j)}(z)}{T^j}
+                 \right|
+ \le C_KT^{D-m}\e^{-\sigma T},\qquad \sigma=\min_K\re z.
+ \label{eq:riesz-jet}
+\end{equation}
+Consequently $\Riesz_T^{(m)}\to\Ssum$ locally uniformly on $\Hh$.
+The bound does not depend on any internal pole separation or on an
+exponential approximation exponent.
+\end{theorem}
+\begin{proof}
+First weight every complete block by the ordinary polynomial
+$(1-t/T)^m$, even for blocks above the cutoff. Its normally convergent
+sum is
+\begin{align}
+ Q_T(z)
+ &=\sum_C[\lambda_1,\ldots,\lambda_r]
+             \bigl(g_C(\cdot,z)(1-t/T)^m\bigr)\notag\\
+ &=\sum_{j=0}^m\binom{m}{j}\frac{\Ssum^{(j)}(z)}{T^j}.
+ \label{eq:full-polynomial}
+\end{align}
+Indeed the coefficient $(-t)^j$ in the polynomial is precisely the
+factor produced by differentiating $\e^{-zt}$ $j$ times. The derivative
+normal convergence in Proposition~\ref{prop:block-sum} justifies the
+finite expansion and the block summation.
+
+For blocks wholly below $T$, the polynomial weight equals the truncated
+weight. There is at most one block straddling $T$. Both of its weighted
+contributions are bounded by Lemma~\ref{lem:cutoff-cluster}, since
+$m\ge d-1\ge r-1$.
+
+It remains to bound polynomial-weighted blocks wholly above $T$.
+For such a block with minimum $a\ge T$, Leibniz's rule, the fixed
+interval length, and \eqref{eq:regular-bound} give
+\begin{equation}
+ \left|[\lambda_1,\ldots,\lambda_r]
+       \bigl(g_C(\cdot,z)(1-t/T)^m\bigr)\right|
+ \le C_KT^{-m}(1+a)^D(1+a-T)^m\e^{-\sigma a}.
+ \label{eq:above-cutoff}
+\end{equation}
+Bin the minima in $[T+\ell,T+\ell+1)$, using their bounded count.
+Because $T\ge1$, the sum of \eqref{eq:above-cutoff} is bounded by
+\[
+ C_KT^{D-m}\e^{-\sigma T}
+       \sum_{\ell\ge0}(1+\ell)^{D+m}\e^{-\sigma\ell}.
+\]
+The last series is finite. Absorb it in the constant. Combining this
+tail with the possible split block proves \eqref{eq:riesz-jet}.
+The derivative terms of positive order have factors $T^{-j}$ and are
+uniformly bounded on $K$, which gives convergence to $\Ssum$.
+\end{proof}
+
+\begin{remark}[What uniformity means]
+The period box may contain rational coincidences, while the principal
+formula \eqref{eq:riesz-mean} is initially evaluated on its simple-pole
+locus. The estimate is uniform as those coincidences are approached.
+It asserts a bound, not continuity of every finite cutoff at a
+coincidence situated exactly at $T$. That distinction is essential at
+minimal order. Also, the power $T^{D-m}$ may be negative when $m>D$;
+there is no restriction $m\le D$.
+\end{remark}
+
+\subsection{The two-lattice Ces\`aro interpretation}
+For simple poles, a finite interchange gives the exact identity
+\begin{equation}
+ \Riesz_T^{(1)}(z)=\frac1T\int_0^T P_u(z)\dd u.
+ \label{eq:cesaro}
+\end{equation}
+Thus for two lattices the continuous first Ces\`aro mean of the raw
+cutoff converges everywhere in $\Hh$, even when the raw cutoff fails
+the term test there. A huge unmatched residue persists only over the
+very small interval between its two actions. The factor
+$(1-\lambda/T)$ integrates that interval rather than estimating its
+height alone. Equation \eqref{eq:riesz-jet} is stronger than mere
+Ces\`aro convergence: it gives the exact $T^{-1}$ bias and an
+exponentially small remaining error.
+
+This interpretation does not say that a naive floating-point evaluation
+of \eqref{eq:riesz-mean} is well conditioned. Tiny sine denominators
+and cancellation can still require high precision or stable divided
+differences. The theorem controls the mathematical finite sum, not the
+roundoff error of an arbitrary implementation.
+
+\section{Sharp cutoff order, confluence, and exponential acceleration}
+\label{sec:sharpness}
+
+\subsection{The gap-independent threshold is sharp}
+
+\begin{theorem}[Minimal order for uniform collision control]
+\label{thm:sharp}
+For $d\ge2$, an integer order $m<d-1$ cannot give a bound uniform
+across all simple period vectors in a fixed compact positive box, even
+at a fixed positive cutoff and a fixed $z\in\Hh$. More precisely, take
+\begin{equation}
+ \lambda_1=1-\varepsilon,\qquad
+ \lambda_j=1+(j-1)\varepsilon\quad(2\le j\le d),\qquad
+ \omega_j=\lambda_j^{-1},\qquad T=1,
+ \label{eq:collision-family}
+\end{equation}
+with positive irrational $\varepsilon\to0$. Then the positive pole sets
+are pairwise disjoint and
+\begin{equation}
+ \Riesz_1^{(m)}(z)
+ =-\frac{\e^{-z}}{\pi^d\prod_{j=2}^d j}
+       \varepsilon^{m-d+1}(1+O_z(\varepsilon)).
+ \label{eq:sharp-scaling}
+\end{equation}
+Thus $d-1$ is the minimal integer order for the gap-independent uniform
+control proved in Theorem~\ref{thm:riesz}.
+\end{theorem}
+\begin{proof}
+For small $\varepsilon$, only the first pole $\lambda_1$ is below
+$T=1$; even its second lattice multiple is above one. Distinct ratios
+$(1+c_i\varepsilon)/(1+c_j\varepsilon)$ with different rational
+$c_i,c_j$ cannot be rational when $\varepsilon$ is irrational, so the
+positive pole sets are disjoint.
+
+At $\lambda_1$, the derivative of its own sine factor is
+$-\pi\omega_1$, while for $j\ge2$,
+\[
+ \sin(\pi\omega_j\lambda_1)
+   =\pi j\varepsilon(1+O(\varepsilon)).
+\]
+Also $\lambda_1^D=1+O(\varepsilon)$ and
+$\e^{-z\lambda_1}=\e^{-z}(1+O_z(\varepsilon))$.
+The residue formula, multiplied by
+$(1-\lambda_1)^m=\varepsilon^m$, gives
+\eqref{eq:sharp-scaling}. Its coefficient is nonzero, proving the
+claimed failure for $m<d-1$.
+\end{proof}
+
+The sharpness just proved is \emph{parameter-uniform}. It must not be
+misread as a proof that every fixed $d$-lattice input needs order $d-1$.
+Some inputs already have absolutely convergent raw expansions. For
+$d=2$, examples with $\beta=\infty$ do show that order zero can fail
+everywhere in $\Hh$ for one fixed irrational input. A sharp fixed-input
+classification for more lattices is a separate question.
+
+\subsection{Boundedness is not cutoff continuity}
+
+\begin{proposition}[One additional order for full cutoff confluence]
+\label{prop:confluence}
+At a block of multiplicity at most $d$, the finite-cutoff expressions
+have gap-independent bounds when $m\ge d-1$. If $m\ge d$, they also
+extend continuously as the nodes coalesce, including when their common
+limit equals $T$. At $m=d-1$, continuity can fail at that cutoff.
+\end{proposition}
+\begin{proof}
+The boundedness is Lemma~\ref{lem:cutoff-cluster}. If $m\ge d$, then
+$t\mapsto(T-t)_+^m$ is $C^{d-1}$. Divided differences of order at most
+$d-1$ of the smooth regular factor times this weight have their
+continuous confluent limits. This follows from the simplex formula
+and continuity of the required derivative, even when the limiting
+node equals the cutoff.
+
+For $m=d-1$, consider a $d$-node cluster approaching $T$ with a limiting
+regular factor $g(T,z)\ne0$. If all nodes approach from above, its
+truncated weighted contribution is zero. If all approach from below,
+its limit is
+\[
+ \frac{1}{(d-1)!}\left.
+    \partial_t^{d-1}\bigl(g(t,z)(1-t/T)^{d-1}\bigr)
+       \right|_{t=T^-}
+   =\frac{(-1)^{d-1}}{T^{d-1}}g(T,z),
+\]
+which is nonzero. Such configurations are obtained by taking the first
+poles of the sine lattices close to $T$. Intermediate configurations
+can give other limits, as the divided difference of a truncated power
+depends on how the cutoff cuts the collapsing nodes.
+\end{proof}
+
+At a coincident pole away from the cutoff, the correct definition is
+\begin{equation}
+ \Res_{t=\lambda}\left((1-t/T)^m\e^{-zt}\widehat H(t)\right),
+ \qquad \lambda<T,
+ \label{eq:multiple-weight}
+\end{equation}
+not $(1-\lambda/T)^m$ times the residue of
+$\e^{-zt}\widehat H(t)$. The two formulas agree at a simple pole but
+need not agree at a multiple pole, because derivatives of the weight
+contribute. For $m\ge d$, excluding a pole exactly at $T$ is compatible
+with the continuous extension, since all derivatives through order
+$d-1$ of the cutoff weight vanish there. At $m=d-1$ no convention at
+that exact pole can make every approach continuous. Uniform exponential
+error control survives this local ambiguity, but finite-cutoff
+continuity does not.
+
+\subsection{Removing the bias with finitely many cutoffs}
+
+\begin{corollary}[Exponentially accurate extrapolated action cuts]
+\label{cor:acceleration}
+For $m\ge d-1$, define
+\begin{align}
+ w_\ell&=\frac{(-1)^{m+1-\ell}\ell^m}
+                   {(\ell-1)!(m+1-\ell)!},
+       &&1\le\ell\le m+1,\label{eq:weights}\\
+ \Accel_T^{(m)}(z)&=\sum_{\ell=1}^{m+1}
+                          w_\ell\Riesz_{\ell T}^{(m)}(z).
+       \label{eq:acceleration}
+\end{align}
+Then, with the same uniformity as in Theorem~\ref{thm:riesz},
+\begin{equation}
+ \sup_{z\in K}|\Accel_T^{(m)}(z)-\Ssum(z)|
+      \le C_KT^{D-m}\e^{-\sigma T}.
+ \label{eq:accelerated-bound}
+\end{equation}
+In particular,
+\begin{align}
+ \Accel_T^{(1)}&=2\Riesz_{2T}^{(1)}-\Riesz_T^{(1)},\label{eq:accel-one}\\
+ \Accel_T^{(2)}&=\tfrac12\Riesz_T^{(2)}-4\Riesz_{2T}^{(2)}
+                         +\tfrac92\Riesz_{3T}^{(2)}.
+ \label{eq:accel-two}
+\end{align}
+\end{corollary}
+\begin{proof}
+The weights are the Lagrange interpolation weights for evaluating a
+polynomial of degree at most $m$ at zero from its values at
+$1,1/2,\ldots,1/(m+1)$. Indeed the weight at $1/\ell$ is
+\[
+ \prod_{r\ne\ell}\frac{-1/r}{1/\ell-1/r}
+ =\frac{(-1)^{m+1-\ell}\ell^m}{(\ell-1)!(m+1-\ell)!}.
+\]
+Therefore $\sum w_\ell=1$ and
+$\sum w_\ell\ell^{-j}=0$ for $1\le j\le m$.
+Apply these identities to the derivative polynomial in
+\eqref{eq:riesz-jet}. Its nonconstant terms cancel exactly.
+Each remaining error is bounded by
+$C_K(\ell T)^{D-m}\e^{-\sigma\ell T}$, and the finite weighted sum
+has the bound in \eqref{eq:accelerated-bound}.
+\end{proof}
+
+The acceleration is algebraic and exact, not a fitted numerical
+extrapolation. It uses $m+1$ cutoffs and no derivative values. Its
+largest action is $(m+1)T$, so enumeration is linear in $T$ for fixed
+$d,m$ before arithmetic precision is considered. An effective bit-cost
+claim would additionally require certified representations of the
+periods, reliable pole comparisons, and stable evaluation of the
+retained finite sums. Those requirements are not supplied merely by
+an analytic convergence theorem.
+
+\section{Transport through a nonlinear inverse}
+\label{sec:inverse}
+The predecessor already provides an analytic inverse calculus after
+block summation \cite{repo-block}. The result here is a quantitative
+compatibility statement for the new raw-data regularization: one may
+replace the block sum by an extrapolated finite Riesz sum and then
+invert, without losing exponential accuracy.
+
+\begin{theorem}[Certified local inverse stability]
+\label{thm:inverse}
+Fix a closed disk
+$\overline{D}=\{z:|z-z_0|\le\rho\}$ and a larger concentric disk
+$\overline{D^+}$ of radius $\rho+\eta$, where $\eta>0$ and
+$\overline{D^+}\subset\Hh$. Put
+\begin{equation}
+ M=\sup_{\overline D}|\Ssum|,\qquad
+ L=\sup_{\overline D}|\Ssum'|,
+ \qquad |\varepsilon|M\le\rho/4,\quad
+ |\varepsilon|L\le1/4.
+ \label{eq:inverse-hypotheses}
+\end{equation}
+For each $|w-z_0|\le\rho/2$, the equation
+\begin{equation}
+ z+\varepsilon\Ssum(z)=w
+ \label{eq:inverse-exact}
+\end{equation}
+has a unique solution in $\overline D$. For all sufficiently large $T$,
+the equation
+\begin{equation}
+ z_T+\varepsilon\Accel_T^{(m)}(z_T)=w
+ \label{eq:inverse-approximate}
+\end{equation}
+also has a unique solution there, where $m\ge d-1$. If
+$\delta_T=\sup_{\overline{D^+}}|\Accel_T^{(m)}-\Ssum|$, then
+\begin{equation}
+ |z_T-z|\le
+     \frac{|\varepsilon|}{1-|\varepsilon|L}\,\delta_T
+   \le\frac{4|\varepsilon|}{3}\,\delta_T.
+ \label{eq:inverse-error}
+\end{equation}
+In particular, the inverse error is
+$O(|\varepsilon|T^{D-m}\e^{-\sigma T})$ uniformly in these targets,
+where $\sigma=\min_{\overline{D^+}}\re z$.
+\end{theorem}
+\begin{proof}
+The map $z\mapsto w-\varepsilon\Ssum(z)$ sends $\overline D$ into
+its concentric disk of radius $3\rho/4$. On the convex disk its
+Lipschitz constant is at most $|\varepsilon|L\le1/4$.
+The contraction theorem gives the unique exact solution.
+
+Corollary~\ref{cor:acceleration} makes $\delta_T\to0$. Cauchy's
+estimate on circles of radius $\eta$ centered in $\overline D$ gives
+\[
+ \sup_{\overline D}|(\Accel_T^{(m)})'-\Ssum'|\le\delta_T/\eta.
+\]
+For large $T$, require
+$|\varepsilon|\delta_T\le\rho/8$ and
+$|\varepsilon|\delta_T/\eta\le1/4$. Then
+$z\mapsto w-\varepsilon\Accel_T^{(m)}(z)$ maps $\overline D$ into
+its disk of radius $7\rho/8$ and has Lipschitz constant at most $1/2$.
+It too has a unique fixed point.
+
+Subtract the two fixed-point equations and insert $\Ssum(z_T)$:
+\[
+ |z_T-z|\le|\varepsilon|L|z_T-z|
+          +|\varepsilon|\delta_T.
+\]
+Solving this scalar inequality proves \eqref{eq:inverse-error}, and
+\eqref{eq:accelerated-bound} gives the final rate. The argument also
+shows, by the holomorphic implicit function theorem, that the local
+inverse branches are holomorphic in the interior target disk.
+\end{proof}
+
+The factor $2\pi\ii$ converting $\Ssum$ into a Stokes jump can be
+absorbed in $\varepsilon$. More general exactly invertible cores can
+be treated in core coordinates, provided the image disks and derivative
+bounds are supplied. That coordinate reduction and the abstract
+contraction estimate are standard; the substantive new input is the
+uniform exponentially accurate approximation in
+Corollary~\ref{cor:acceleration}.
+
+The theorem concerns a local analytic inverse. It does not assert global
+univalence, a complete Borel singularity description for the inverse,
+or convergence of its fully expanded raw action series. In particular,
+when $\beta=\infty$, the unregularized linear residue contribution may
+fail the term test, while the regularized finite inverse converges to
+the correct local branch.
+
+\section{Reproducible checks and numerical behavior}
+\label{sec:verification}
+
+\subsection{What was actually checked}
+The supplied \path{verify.py} was executed with Python~3.13.5,
+SymPy~1.14.0, and mpmath~1.3.0 at 110 decimal digits. It passed
+\textbf{192 exact assertions} and \textbf{49 numerical assertions}.
+The exact checks are distributed as follows:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Finite identity family & Assertions\\
+\midrule
+Richardson moments, orders $1$ through $8$ &44\\
+Continued-fraction determinant and complete-quotient identities &36\\
+All-even parity pattern &31\\
+Alternating parity pattern &30\\
+Truncated-power collision scaling, $d=2,\ldots,7$ &18\\
+Divided-difference polynomial reproduction &27\\
+Weighted derivative identities &6\\
+\midrule
+Total &192\\
+\bottomrule
+\end{tabular}
+\end{center}
+The numerical checks comprise two reference-cutoff comparisons, ten
+finite-bias remainders, ten extrapolated remainders, four cutoff
+continuity diagnostics, fifteen actual sine-kernel collision scalings,
+and eight finite Legendre classifications encountered up to $n=500$.
+All tolerances and all measured values are recorded in
+\path{results/verification.json}.
+
+These are finite algebra checks and high-precision diagnostics, not
+directed-rounding interval certificates. In particular, the program
+does not approximate an entire rapidly growing continued-fraction
+construction and infer its infinite exponent from a finite prefix.
+The exponent and the endpoint types of those constructions are proved
+in Section~\ref{sec:realization}. The program also does not turn the
+analytic tail constants or the nonlinear inverse theorem into
+machine-checked proofs.
+
+\subsection{Derivative-bias removal}
+Table~\ref{tab:riesz} uses $z=0.8$. For $d=2$, the periods are
+$(1,\sqrt2)$, $D=2$, and $m=1$. For $d=3$, they are
+$(1,\sqrt2,\sqrt3)$, $D=3$, and $m=2$. Define
+\[
+ Q_T(z)=\sum_{j=0}^m\binom mj\frac{\Ssum^{(j)}(z)}{T^j}.
+\]
+The reference sums and derivatives use poles below 260; comparisons
+with a cutoff at 220 differed by less than $10^{-63}$ for the sum in
+both models. This is a finite reference comparison, not a proof of a
+$10^{-63}$ tail certificate. The displayed discrepancies are many
+orders of magnitude larger than that comparison scale.
+
+\begin{table}[htbp]
+\centering\small
+\input{results/riesz_table.tex}
+\caption{Finite Riesz bias and its extrapolated removal at $z=0.8$.
+Ordinary high-precision arithmetic; no interval enclosure is implied.}
+\label{tab:riesz}
+\end{table}
+
+The uncorrected error retains the algebraic derivative bias. Removing
+that bias exposes the exponential scale predicted by
+Theorem~\ref{thm:riesz}. There is no theorem that the error must decrease
+monotonically at every small cutoff: a moving cutoff can cross or split
+a block, and finite terms can cancel. The theorem is the uniform
+upper estimate, not a pointwise monotonicity rule.
+
+\subsection{A collision exactly at the cutoff}
+Set $D=2$, $z=1.7$, $T=2$, and
+\[
+ \alpha_\pm(k)=\frac32\pm\sqrt2\,10^{-k}.
+\]
+The actions $2$ and $3/\alpha$ collide at the cutoff as $k\to\infty$.
+Let $\Riesz_{2,\pm}^{(m)}$ denote the two finite sums. For $m=0$,
+use the raw cutoff $P_2$. Table~\ref{tab:collision} illustrates all
+three phenomena in Section~\ref{sec:sharpness}: the raw cutoff becomes
+large; the first-order cutoff remains bounded but has different limits
+from the two sides; the second-order difference tends to zero.
+
+\begin{table}[htbp]
+\centering\small
+\input{results/collision_table.tex}
+\caption{A cutoff collision distinguishes boundedness from continuity.}
+\label{tab:collision}
+\end{table}
+
+At $\alpha=3/2$ itself, the sine kernel has a double pole at action two.
+Using a simple-pole formula there would be invalid. The program avoids
+that error by using irrational perturbations for the table. The
+analytic discussion explains the correct multiple-pole residue and
+why order one cannot have a side-independent cutoff limit.
+
+\subsection{Rebuilding and the computational boundary}
+The package includes the recorded table inputs, so the article can be
+compiled without rerunning the computation. The commands
+\begin{verbatim}
+python verify.py --outdir build/results
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+regenerate checks in a separate directory and typeset the recorded
+article. The supplied build script directs TeX auxiliary output to
+\path{build/}. No network calls or external data are used by the
+verification program. Its simple-residue evaluator rejects a sine phase resolved as an
+integer, including the tested exact coincidences; it is a diagnostic implementation,
+not a general stable confluent-residue library.
+
+A production numerical method should use the divided-difference or
+contour representation for nearly colliding nodes, evaluate tail bounds
+with outward rounding, and certify comparisons against the cutoff.
+The present numerical tables should not be represented as having
+performed those additional tasks.
+
+\section{Further research questions and proposed projects}
+\label{sec:questions}
+The first question in the predecessor's list---ordinary convergence on
+the critical line---has been answered above. The following projects
+start at the remaining boundaries of the proved results rather than
+restating that question unchanged.
+
+\subsection*{1. The phase spectrum of the separate lattice sums}
+For an explicitly prescribed amplitude sequence and parity pattern,
+determine the set
+\[
+ E=\left\{y\in\R:
+       \sum_k\eta_kA_k\e^{-\ii yq_k}\text{ converges}\right\}.
+\]
+Theorem~\ref{thm:classification} gives an exact reduction to this set,
+not its measure, category, or Hausdorff dimension. A useful next result
+would compare almost-everywhere and exceptional-point convergence for
+superlacunary denominators while retaining the continued-fraction
+realizability constraint.
+
+\subsection*{2. Fixed-input minimal smoothing for three or more lattices}
+Theorem~\ref{thm:sharp} proves the sharp order for estimates uniform in
+the periods. For a fixed vector, smaller order may suffice. Seek a
+necessary-and-sufficient criterion expressed through simultaneous
+near-collisions and the effective multiplicities they create at large
+action. This requires more than applying a two-lattice exponent
+pairwise, because a cutoff can split a cluster of several poles.
+
+\subsection*{3. Fractional cutoff orders and the optimal boundary profile}
+The local scaling obstruction extends naturally to noninteger cutoff
+orders, but the finite polynomial bias is special to integer $m$.
+Develop a version for $(1-\lambda/T)_+^s$ with real $s$, giving its
+sharp regularity threshold and a uniform bias expansion. Determine
+which fractional combinations can improve error or reduce cancellation
+without sacrificing confluence control.
+
+\subsection*{4. Countably many lattices and unbounded cluster size}
+For infinitely many period lattices the pigeonhole argument no longer
+bounds cluster cardinality. Find a weighted criterion balancing the
+number of nodes, regular-factor norms, and action growth. The aim is
+a genuine countable-lattice theorem, not an invocation of
+Theorem~\ref{thm:riesz} outside its fixed-$d$ hypothesis.
+
+\subsection*{5. Algebraic and logarithmic Borel singularities}
+Replace meromorphic poles by branch singularities and identify a cutoff
+regularity rule that plays the role of multiplicity minus one. Such a
+theorem must specify branches and continuation paths, replace residues
+by Hankel contributions, and control merging singularities. It cannot
+be obtained merely by substituting a noninteger pole order in the
+present residue formulas.
+
+\subsection*{6. Compatibility with transseries products and composition}
+The local inverse theorem uses uniform approximation of one analytic
+function. A broader algebraic objective is a summation map compatible
+with products, differentiation, and composition on an explicit class
+of raw action expansions. Identify the topology in which the smoothed
+cutoffs define that map and determine when its actionwise coefficients
+agree with formal operations. Local inverse stability alone does not
+settle this algebraic compatibility.
+
+\subsection*{7. Certified adaptive action budgets and bit complexity}
+Make the constants in \eqref{eq:regular-bound} and
+\eqref{eq:accelerated-bound} effective and computationally sharp for
+specified period boxes. Combine interval representations of the periods,
+certified cluster comparisons, confluent divided differences, and
+outward-rounded tails. A useful output is an end-to-end algorithm whose
+bit cost includes near-collision precision, not just the number of
+retained actions.
+
+\subsection*{8. The line of zero real part after regularization}
+For the present $D\ge d$, ordinary raw convergence on $\re z=0$
+already fails the term test. Investigate what boundary values, analytic
+continuations, or distributional limits the Riesz sums possess there.
+The exponential majorants used in this article disappear at that line;
+a new oscillatory or distributional argument is required.
+
+\subsection*{9. General multipliers and logarithmic coefficient growth}
+A holomorphic multiplier with uniform tube bounds can replace $t^D$ in
+parts of the block argument. Determine the endpoint extraction and
+sharp Riesz tail for multipliers such as
+$t^D(\log t)^r$ or regularly varying functions. Zeros of the multiplier
+at convergent actions may alter the amplitude test, so a correct theorem
+must include nonvanishing or explicit cancellation hypotheses.
+
+\subsection*{10. A staged formalization in the repository}
+The arithmetic and analytic halves can be developed independently.
+First formalize the weighted denominator test and the primitive-pair
+extraction. Separately formalize divided differences of truncated
+powers with bounds that do not mention node separation. Then connect
+the finite polynomial identity to block sums and package the inverse
+stability estimate. The proof-dependency map below supplies concrete
+milestones. No claim is made that these new theorems are already
+available in Lean or that the required analytic interfaces have been
+checked in the current Mathlib version.
+
+\section{Proof audit, scope, and conclusions}
+\label{sec:audit}
+
+\subsection{Dependency map}
+The main logical dependencies are short enough to record explicitly.
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.61\textwidth}}
+\toprule
+Result & Essential inputs\\
+\midrule
+Critical absolute and term tests & Best approximation, exponential
+weights, consecutive denominator intervals.\\[3pt]
+Separate-series extraction & Legendre reduction, finite exponential
+exponent, exact companion-pole identity, summable errors.\\[3pt]
+Increasing-action classification & Two-node blocks, the individual term
+test, the normally convergent block sum.\\[3pt]
+Prescribed examples & Continued-fraction recurrence, bounded parity
+rounding, a summable realization error.\\[3pt]
+Riesz recovery & Bounded cluster size, pole-cancelled tube bounds,
+Sobolev divided differences, a polynomial weighted tail.\\[3pt]
+Sharpness and confluence & A first-pole collision family and the exact
+regularity of the truncated power at its cutoff.\\[3pt]
+Acceleration and inverse transport & Finite interpolation moments,
+uniform approximation, Cauchy estimates, contraction.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+None of the main existence or convergence claims relies on a numerical
+plot or on the observed behavior of a long but finite continued
+fraction. Conversely, the exact finite identities checked by the
+program do not verify all hypotheses of an infinite analytic theorem.
+The final article is a conventional proof document, not a formal proof
+assistant artifact.
+
+\subsection{Claims not made}
+The source comparison covers the named predecessor, its local
+statements and research question, and the cited inventory. It is not
+a claim that the entire repository was audited theorem by theorem.
+The general theory of Riesz summability, the irrationality-base
+formula, the divided-difference method, and the abstract local inverse
+estimate are credited rather than relabeled as discoveries.
+
+For fixed finite sine lattices, the new uniform Riesz theorem is
+unconditional on Diophantine approximation. The endpoint classification,
+however, concerns exactly two irrational lattices. No extension to
+arbitrary countable singular supports, no full inverse-resurgence
+theorem, and no global inverse univalence is asserted. The sharp
+cutoff-order claim is explicitly about period-uniform gap-independent
+control. Independent research priority and peer review remain separate
+from the correctness of the written arguments.
+
+\subsection{Conclusion}
+The critical line is governed by a finer invariant than its exponential
+abscissa. Continued fractions supply that invariant in the sequence
+$q_k^Dq_{k+1}\e^{-bq_k}$. Vanishing of these amplitudes controls unfinished
+pairs; summability controls absolute convergence; their parity and
+phases control the two separate lattice sums. This separates three
+questions that the open-half-plane root test cannot distinguish.
+
+The cutoff theorem provides a complementary answer that does not ask
+for small-divisor arithmetic at all. A truncated power with enough
+regularity controls the divided differences of a block even when the
+cutoff splits it. Its finite derivative bias can be cancelled exactly,
+yielding an exponentially accurate finite-action representation and a
+stable nonlinear inverse approximation. In this setting, both the
+arithmetic boundary and the analytic regularization can therefore be
+made precise without identifying a formal transseries with an
+unconditionally convergent raw numerical sum.
+
+\appendix
+\section{Repository and primary-literature provenance}
+\label{app:sources}
+The pinned repository commit is
+\begin{center}
+\texttt{3d5973524506411392a911470b5ddc35521568ea}.
+\end{center}
+The directly inspected predecessor source is
+\begin{quote}\small
+\path{Analysis/Transseries/docs/series-and-transseries/Resonance_Block_Summation_Transseries/article.tex}.
+\end{quote}
+Its Git blob identifier is
+\texttt{934422729a618bf2bb6792f4341ec73b9f5cf94e}.
+The inspected ranges include lines 1--240 (scope and conventions),
+440--710 (divided differences, block summation, residues, abscissa),
+1110--1370 (inverse transport and the general bounded-cluster criterion),
+and 1371--1580 (stable evaluation and the explicit boundary research
+question). Its package README and the group inventory were also read
+through the connected GitHub tools. The repository was not modified.
+
+For the external primary sources, Sondow's continued-fraction formula
+and Legendre lemma were checked in the PDF, including the displayed
+formula for the logarithm of the irrationality base. De Boor's
+Genocchi--Hermite formula and the contour/divided-difference discussion
+were inspected. The Defant--Schoolmann paper was used for the established
+Riesz-summability context, not as a black-box proof of
+Theorem~\ref{thm:riesz}. These references establish antecedents and
+notation; a comprehensive priority review of all specialized
+small-divisor and summability literature has not been performed.
+
+\begin{thebibliography}{9}
+
+\bibitem{repo-block}
+\repo\ repository,
+\emph{Resonance-Block Summation of Transseries: Small divisors,
+coalescing Stokes actions, and nonlinear inversion},
+research report filed 29 September 2026, with editorial amendments.
+Source pinned at commit \texttt{3d5973524506411392a911470b5ddc35521568ea}.
+Especially \texttt{thm:block}, \texttt{thm:arithmetic},
+\texttt{thm:inverse}, and further-research Question~1.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/Resonance_Block_Summation_Transseries/article.tex}.
+
+\bibitem{repo-index}
+\repo\ repository,
+\emph{Series and transseries}, group inventory,
+\path{Analysis/Transseries/docs/series-and-transseries/README.md},
+same pinned commit, inspected 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/README.md}.
+
+\bibitem{sondow}
+J.~Sondow,
+\emph{Irrationality Measures, Irrationality Bases, and a Theorem of
+Jarn\'ik}, arXiv:math/0406300 (2004).
+See Lemma~1 and Theorem~1, especially equation~(3).
+\url{https://arxiv.org/abs/math/0406300}.
+
+\bibitem{deboor}
+C.~de~Boor,
+\emph{Divided Differences},
+Surveys in Approximation Theory \textbf{1} (2005), 46--69.
+See the contour representation and the Genocchi--Hermite formula~(52).
+\url{https://arxiv.org/abs/math/0502036}.
+
+\bibitem{defant-schoolmann}
+A.~Defant and I.~Schoolmann,
+\emph{Riesz Summability on Boundary Lines of Holomorphic Functions of
+Finite Order Generated by Dirichlet Series},
+arXiv:2107.10145, version~3 (2022).
+The quoted title is the title printed in the inspected PDF.
+\url{https://arxiv.org/abs/2107.10145}.
+
+\end{thebibliography}
+\end{document}

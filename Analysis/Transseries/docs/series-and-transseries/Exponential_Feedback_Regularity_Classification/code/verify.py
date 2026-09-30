@@ -93,7 +93,9 @@ def quadratic_envelope(n: int) -> tuple[float, float, int]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--order", type=int, default=100)
+    # Editorial amendment (ProveIt, 2026-09-29): default 120 matches the recorded
+    # run, so a bare run no longer overwrites the degree-120 tables with shorter ones.
+    parser.add_argument("--order", type=int, default=120)
     parser.add_argument("--out", type=Path, default=Path(__file__).resolve().parents[1] / "data")
     args = parser.parse_args()
     if args.order < 12:
@@ -118,14 +120,14 @@ def main() -> None:
                     for j in range(n))
         assert value == Fraction(linear[n], math.factorial(n))
     with (args.out / "quadratic_coefficients.csv").open("w", newline="") as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, lineterminator="\n")  # LF on every platform (ProveIt, 2026-09-29)
         writer.writerow(["n", "factorial_scaled_coefficient", "coefficient", "normalized_log", "log_coefficient"])
         for n in range(1, nmax + 1):
             log_u = math.log(scaled[n]) - math.lgamma(n + 1)
             normalized = log_u/n - math.log(n) + 2*math.log(math.log(n)) if n > 1 else ""
             writer.writerow([n, scaled[n], str(Fraction(scaled[n], math.factorial(n))), normalized, log_u])
     with (args.out / "quadratic_envelopes.csv").open("w", newline="") as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, lineterminator="\n")  # LF on every platform (ProveIt, 2026-09-29)
         writer.writerow(["n", "normalized_log_lower", "normalized_log_upper", "maximizing_large_action", "scaled_large_action"])
         for n in [100, 1000, 10000, 100000, 1000000]:
             low, high, action = quadratic_envelope(n)
@@ -139,7 +141,7 @@ def main() -> None:
         "quadratic_logarithmic_constant": 2*math.log(2)-1,
         "status": "All exact checks passed. Floating-point tables are diagnostics, not proofs."
     }
-    (args.out / "verification.json").write_text(json.dumps(result, indent=2) + "\n")
+    (args.out / "verification.json").write_text(json.dumps(result, indent=2) + "\n", newline="\n")
     print(json.dumps(result, indent=2))
 
 

@@ -77,3 +77,30 @@ set and regenerates smaller tables. The included data are from a full run.
 Collocation runs use up to 262,144 grid points and require substantially more
 memory than the high-precision identity checks. No internet access is needed
 after the packages and TeX dependencies are installed.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+In the editorial pass after batch 54 of the repository-level `docs/incoming/`
+drop zone (see `docs/incoming/README.md`), a later package of this tree was
+found to take up its first research question. The article gains reciprocal notes; its
+mathematical text is unchanged.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style.
+- `article.tex`: after the research question "The remaining subcritical
+  interval", a note records that `../Thue_Morse_Subcritical_Pressure/`
+  (filed 2026-09-29, unreviewed) answers it at the atomic phase:
+  `eq:subcritical` holds for every `0 < s < 1`, with remainder
+  `O(|c|^(1+s-alpha))` for every `0 < alpha < s`; nonzero phases remain
+  open. The Status sentence above ("The interval `0 < s <= 1/2` is
+  explicitly left unresolved") remains true of this article.
+- `article.tex`: the title page no longer sets a hyperref page anchor
+  (`\hypersetup{pageanchor=false}` around it), because the build reported a
+  duplicate destination `page.1`. Both changes are marked `% ed.`.
+- `article.pdf`: rebuilt with `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX pdfTeX): 22 pages, as before, 779,453
+  bytes; no error, undefined reference, rerun request, duplicate
+  destination or overfull box; no Type 3 font.
+- `SHA256SUMS`, listed under Files, was retired when the package was filed
+  (batch 44 of `docs/incoming/`). Runs of `code/verify.py` without `--full`
+  (including `make quick`) still regenerate the two table files in `data/`
+  in place with smaller meshes, so run them only on a copy.

@@ -91,3 +91,31 @@ These are adjacent exact zero-divisor infrastructures.  They do not formalize
 the report's quotient family, its characteristic-function extension, divisor
 classification, quotient multiplicities, or spectral zeta formula.  Those
 claims remain manuscript-level results pending a dedicated Lean development.
+
+Editorial amendments (ProveIt, 2026-09-29)
+------------------------------------------
+Made in the editorial pass after batch 56 of docs/incoming/ (see
+docs/incoming/README.md); every change to the source is marked
+"% ed. (2026-09-29)".
+
+- Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex: an unnumbered
+  environment "Editorial note (ProveIt, 2026-09-29)" is defined in the
+  preamble. One note, after the paragraph following conj:general-base,
+  records that item 1 is proved for prime and prime-power bases b in the
+  later unreviewed draft
+  ../Simultaneous_Convolution_Divisors_Fabius_Type_Laws/, which recovers
+  thm:classification as the single-copy case of a simultaneous-divisor
+  criterion, and that for b prime and M = b^r its critical-regularity
+  theorem gives the box-law (B-spline) case of item 2; items 3 and 4, and
+  item 2 when b does not divide M, remain open there. The note also gives
+  that draft's normalization (the Phi_b law is the law of X_b/2 with
+  X_b = sum_k b^(-k) U_k, U_k uniform on [-1,1]). The source is now 2,321
+  lines and 91,688 bytes.
+- Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.pdf: rebuilt from
+  the amended source by the three passes above (MiKTeX pdfTeX 1.40.29):
+  35 A4 pages, 1,133,168 bytes; all 27 font entries embedded, none Type 3;
+  the final log has no error, overfull or underfull box, unresolved
+  reference or citation, duplicate destination, or rerun request; the page
+  carrying the note was rendered and inspected. The byte counts, digests
+  and the no-rebuild sentence under "Compile the report" describe the
+  2026-08-31 build and the later notation-only edit, not the filed files.

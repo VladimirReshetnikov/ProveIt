@@ -55,6 +55,18 @@ https://github.com/VladimirReshetnikov/ProveIt/blob/04e06e032dff1966513bfba31696
 
 Used for the relationship between the canonical and companion volumes, existing residual/error transport and staircase inversion, and qualifications about the formal crosswalk. No new formalization count or successful Lean build is asserted by the present article.
 
+## Editorial note (ProveIt, 2026-09-29)
+
+The two paths above are those of the pinned commit, before the transseries
+volumes moved out of the Fabius tree; the pinned URLs refer to that commit. At the
+current repository state the companion is
+`Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex`
+and the group README is
+`Analysis/Transseries/docs/series-and-transseries/README.md`. This package
+itself is filed at
+`Analysis/Transseries/docs/series-and-transseries/Uniform_q_Multinomial_Certified_Inversion/`
+(batch 45 of `docs/incoming/README.md`).
+
 ## Primary external sources
 
 - NIST DLMF §4.36, Infinite Products and Partial Fractions: https://dlmf.nist.gov/4.36

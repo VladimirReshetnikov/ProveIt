@@ -15,6 +15,10 @@ https://github.com/VladimirReshetnikov/ProveIt/blob/04e06e032dff1966513bfba31696
 
 README blob SHA: `de062c17cd19a309becb7cebcee773a3c3f771d0`.
 
+Editorial note (ProveIt, 2026-09-29): the URL above is valid at its commit; the
+series has since moved, and this README is now
+`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md`.
+
 The README identifies a canonical consolidated TeX source and distinguishes
 editorial consolidation from complete formalization. Its inventory includes
 exact logarithmic cores, flatness, Bell coefficients, and remainder transport.

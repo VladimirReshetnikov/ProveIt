@@ -12,6 +12,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{listings}
 \usepackage{caption}
+\usepackage{needspace}
 \captionsetup{font=small,labelfont=bf}
 \setlength{\parskip}{0.3em}
 \setlength{\parindent}{1.2em}
@@ -52,15 +53,25 @@
 \newcommand{\dcore}{\mathcal C_{\downarrow}}
 \newcommand{\smoothcore}{\mathcal C_{\infty}}
 \newcommand{\roots}{\operatorname{Roots}}
+% Part IV (batch 54): exact algebraic degree of polynomial coordinates.
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\algdeg}{\operatorname{adeg}}
+\newcommand{\field}{K_{H,a}}
+\newcommand{\eps}{\varepsilon}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
   keepspaces=true,showstringspaces=false,frame=single,framerule=0.3pt}
 \hypersetup{pdftitle={Nonreal Roots Survive in Polynomial Iterative Equations},
  pdfauthor={Research draft prepared for Vladimir Reshetnikov},
- pdfsubject={A counterexample to a published root-elimination question and a circular-spectrum classification; Part II: the increasing spectral core on several circles; Part III: orientation-reversing spectra, the decreasing spectral core and finite-smoothness rigidity}}
+ pdfsubject={A counterexample to a published root-elimination question and a circular-spectrum classification; Part II: the increasing spectral core on several circles; Part III: orientation-reversing spectra, the decreasing spectral core and finite-smoothness rigidity; Part IV: exact algebraic degree of polynomial-coordinate solutions and nonradical involutions}}
 \title{\textbf{Nonreal Roots Survive\\in Polynomial Iterative Equations}\\[0.5em]
   \large A cubic counterexample and a classification of circular spectra\\[0.2em]
   \large Part~II: the increasing spectral core on several circles\\[0.2em]
-  \large Part~III: orientation-reversing spectra}
+  \large Part~III: orientation-reversing spectra\\[0.2em]
+  \large Part~IV: exact algebraic degree of polynomial coordinates}
 \author{Research draft prepared for Vladimir Reshetnikov}
 \date{20 September 2026}
 
@@ -91,6 +102,8 @@ role of differentiability at a fixed point. Exact rational verification code,
 certificates, and the random area-selection record accompany the article.
 \end{abstract}
 
+\enlargethispage{\baselineskip}
+\begingroup\small
 \noindent\textbf{Status.} The counterexamples and classification are proved below.
 This is an AI-assisted, unrefereed research draft, not a proof-assistant-checked
 publication. A targeted literature search located the published open question
@@ -113,6 +126,14 @@ exact universal reduction $\dcore(P)$, which needs one or two witnesses
 (Theorem~\ref{nrr:dc:thm:core}), and proves polynomial-coordinate rigidity
 above a finite smoothness (Theorem~\ref{nrr:dc:thm:finite-threshold}). It is
 likewise AI-assisted and unrefereed, with no priority claim.
+
+\noindent\textbf{Part~IV} (added 29 September 2026, batch~54; from
+Section~\ref{nrr:ed:sec:scope} on) determines the exact algebraic degree of
+$H\circ(a\id)\circ H^{-1}$ (Theorem~\ref{nrr:ed:thm:common}) and gives nonradical
+involutions of every odd degree $n\ge5$
+(Theorem~\ref{nrr:ed:thm:fixed-involution}); likewise AI-assisted and
+unrefereed, with no priority claim.\par
+\endgroup
 
 \clearpage
 \begingroup
@@ -4115,6 +4136,9 @@ solutions, but this corollary prevents them from simplifying to
 nonlinear rational functions. The degree of $H$ bounds the algebraic
 degree of $f$ over $\R(x)$; that bound need not be asserted to be sharp
 in every specialization.
+[Added 29 September 2026, batch~54: the bound is attained: for every
+coordinate of Theorem~\ref{nrr:dc:thm:finite-threshold} the degree of $f$ over
+$\R(x)$ is exactly $\deg H$ (Part~IV, Corollary~\ref{nrr:ed:cor:normalized}).]
 
 \section{Exact smooth spectra and their universal core}
 \label{nrr:dc:sec:smooth-core}
@@ -4646,6 +4670,7 @@ no uniform bound on the answer exists, but says nothing about the
 complexity of computing that answer.
 
 \subsection{Algebraic degree and exceptional polynomial coordinates}
+\label{nrr:ed:q-degree}
 
 For $f=H\circ(a\id)\circ H^{-1}$, determine the exact degree of
 $f$ over $\R(x)$ from $H$ and $a$. The upper bound $\deg H$ can
@@ -4655,6 +4680,22 @@ polynomial-coordinate descriptions yield algebraically related maps.
 The normalized coordinate of a fixed non-involutive map is already
 unique; the unresolved issue concerns algebraic degree and families,
 not that uniqueness theorem.
+[Added 29 September 2026, batch~54: answered in Part~IV for polynomial
+coordinates and every nonzero multiplier. $\C(H(t),H(at))=\C(W(t))$, where $W$
+is the maximal normalized right compositional factor of $H$ with
+$W(at)=a^{\deg W}W(t)$, so the degree is $\deg H/\deg W$
+(Theorem~\ref{nrr:ed:thm:common}). If $a$ is not a root of unity the degree is
+$\deg H/g$, $g$ the gcd of the positive support exponents of $H$
+(Theorem~\ref{nrr:ed:thm:gcd}), hence exactly $\deg H$ when $H'(0)\ne0$:
+compositional structure causes no reduction
+(Corollary~\ref{nrr:ed:cor:normalized}). When $H'(0)\ne0$, reductions occur
+only at torsion multipliers, where a terminating exact algorithm computes the
+degree (Theorem~\ref{nrr:ed:thm:torsion},
+Proposition~\ref{nrr:ed:prop:algorithm}); for involutions of odd coordinate
+degree $n$ exactly the divisors of $n$ occur (Theorem~\ref{nrr:ed:thm:divisors}).
+The family question is answered for one fixed coordinate
+(Corollary~\ref{nrr:ed:cor:observations}); two unrelated coordinates remain
+open (Section~\ref{nrr:ed:q-coordinates}).]
 
 \subsection{Higher-dimensional ordered systems}
 
@@ -4783,6 +4824,1699 @@ All new proofs remain open to independent mathematical review.
 The manuscript's own status note is shipped verbatim as
 \nolinkurl{03-decreasing-core-STATUS.md}.
 
+
+%% ====================================================================
+%% Batch-54 addition (manuscript 01, "Two Observations Determine the
+%% Coordinate"). All labels of Part IV carry the prefix nrr:ed:
+%% (nonreal roots, exact degree).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part IV.\quad Exact algebraic degree: two observations determine the coordinate}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Exact algebraic degree: two observations determine the coordinate}
+
+\noindent\emph{Part~IV was added on 29 September 2026 in batch~54 of
+ProveIt's incoming-report intake, from one manuscript. It answers Part~III's
+Research question~35.7 (Section~\ref{nrr:ed:q-degree}), ``For
+$f=H\circ(a\id)\circ H^{-1}$, determine the exact degree of $f$ over $\R(x)$
+from $H$ and $a$'', and settles the remark after
+Corollary~\ref{nrr:dc:cor:rational}, which declined to assert that the upper
+bound $\deg H$ is sharp. Theorem~\ref{nrr:ed:thm:common} computes the field
+$\C(H(t),H(at))$ for every nonconstant polynomial $H$ and every nonzero
+multiplier $a$. For every coordinate of
+Theorem~\ref{nrr:dc:thm:finite-threshold} the degree is exactly $\deg H$
+(Corollary~\ref{nrr:ed:cor:normalized}); degree drops need a torsion
+multiplier or a vanishing linear term, and for involutions of odd coordinate
+degree $n$ exactly the divisors of $n$ occur
+(Theorem~\ref{nrr:ed:thm:divisors}). Part~IV also constructs nonradical
+algebraic solutions of order-two iterative equations, and of the single
+equation $f\circ f=\id$ in every odd degree $n\ge5$
+(Theorem~\ref{nrr:ed:thm:fixed-involution}), a phenomenon with no
+counterpart in Parts~I--III. Field relations between two unrelated
+coordinates remain open. Parts~I--III are unchanged except for the title page
+and two dated notes pointing to this addition.
+Section~\ref{nrr:ed:sec:source} records the provenance and
+Section~\ref{nrr:ed:sec:notation} fixes the notation of the addition.}
+
+\section{The question and the scope of the answer}
+\label{nrr:ed:sec:scope}
+
+\subsection{One manuscript, one addition}
+\label{nrr:ed:sec:source}
+
+Part~IV is batch-54 manuscript~01, an AI-assisted research draft prepared
+for Vladimir Reshetnikov, dated 29 September 2026 and titled \emph{Two
+Observations Determine the Coordinate: Exact algebraic degree, torsion
+exceptions, and nonradical solutions of order-two iterative equations}
+(25 US Letter pages as delivered). It arrived as the archive
+\texttt{ProveIt\_Exact\_Algebraic\_Degree.zip} (inner directory
+\texttt{ProveIt\_Exact\_Algebraic\_Degree/}) in ProveIt commit
+\texttt{392fff082} and was placed in \texttt{4d922d5b2}. It is pinned to
+ProveIt commit \texttt{11e1e9001} (full hash in
+Section~\ref{nrr:ed:app:provenance}). At that commit this report already held
+Parts~I--III, as the Git blob \texttt{b52eba81} of \texttt{article.tex}, and
+that blob is unchanged up to the placement commit; so the manuscript's
+``repository'', ``repository question'' and ``source report'' mean the text
+of Parts~I--III printed above. It also read Part~III's source manuscript from
+Vladimir's file library (as \nolinkurl{article(20260929-151305).tex}). The
+``Section~11.7'' it cites from that file is printed here as Part~III's
+Section~35.7; the question's text was checked in the write phase against the
+batch-42 arrival of that manuscript (commit \texttt{8315d24e3}) and agrees.
+The manuscript's verifier, Makefile, requirements file, recorded output and
+provenance note are shipped beside Parts~I--III with the prefix
+\nolinkurl{04-exact-degree-}; its manuscript, PDF, delivery README and
+checksum ledger (\texttt{CHECKSUMS.sha256}, 9/9 verified at placement) are
+not shipped and survive in the arrival commit.
+
+\begin{quote}\small
+\textbf{The manuscript's abstract.} The ProveIt report on decreasing
+polynomial iterative equations leaves open the exact algebraic degree of a
+solution written as $f=H\circ(a\id)\circ H^{-1}$. We determine it by
+computing the intermediate field $\C(H(t),H(at))$. If $a$ has infinite
+multiplicative order, this field is $\C(t^g)$, where $g$ is the greatest
+common divisor of the positive exponents occurring in $H$. Thus every
+normalized polynomial coordinate, with $H'(0)\ne0$, gives algebraic degree
+exactly $\deg H$. Nontrivial compositional structure of $H$ does not cause
+exceptions in this hyperbolic setting.
+
+For a root-of-unity multiplier, we give an exact maximal-right-factor
+criterion, a finite coefficient algorithm, and a complete list of degree
+drops for real polynomial-coordinate involutions of a prescribed coordinate
+degree. Two observations also recover a primitive coordinate rationally, so
+all nonzero hyperbolic iterates have the same algebraic degree and the same
+normal closure.
+
+The distinction between iterative order and algebraic complexity is
+substantial. An explicit order-two family has algebraic degree $n$ and
+symmetric monodromy $S_n$ for every odd $n\ge3$. More strongly, the single
+equation $f\circ f=\id$ admits, for every odd $n\ge5$, globally analytic
+algebraic solutions of degree $n$ that are not expressible by radicals and
+have bi-Lipschitz distortion arbitrarily close to one. Their coordinate
+polynomials can have rational coefficients. We prove these statements, give
+exact distortion formulas for the perturbation family, and supply
+independently cross-checked finite computations.
+\end{quote}
+
+The manuscript contributes, in the order printed here: the question, the two
+notions of degree and the principal conclusions (this section); the dilation
+common-field theorem (Section~\ref{nrr:ed:sec:field}); the support-gcd
+formula, the exact hyperbolic degree and the degree of all iterates
+(Section~\ref{nrr:ed:sec:infinite}); the torsion criterion and the exact
+degrees of polynomial-coordinate involutions
+(Section~\ref{nrr:ed:sec:torsion}); the graph curve, its resultant, a finite
+right-factor algorithm and rational recovery
+(Section~\ref{nrr:ed:sec:algorithms}); normal closures and the Morse
+monodromy criterion (Section~\ref{nrr:ed:sec:monodromy}); the binomial
+family of nonradical order-two solutions
+(Section~\ref{nrr:ed:sec:hyperbolic-family}); nonradical involutions near
+reflection (Section~\ref{nrr:ed:sec:reflection}); its finite checks,
+limitations and arithmetic interpretation
+(Section~\ref{nrr:ed:sec:verification}); ten research questions
+(Section~\ref{nrr:ed:sec:questions}); its conclusion
+(Section~\ref{nrr:ed:sec:conclusion}); its provenance, dependency and claim
+audit (Section~\ref{nrr:ed:app:provenance}); and its reproduction guide
+(Section~\ref{nrr:ed:app:reproduce}). Every result, proof, example, remark,
+limitation and question of the manuscript is printed.
+
+\paragraph{Where the merge had to choose.}
+\begin{enumerate}[label=\textnormal{(\alph*)},leftmargin=2.2em]
+\item Nothing in the manuscript repeats a result of Parts~I--III. Part~III
+proves that sufficiently smooth non-involutive decreasing solutions have the
+polynomial-coordinate form \eqref{nrr:dc:eq:poly-conjugacy} and records the
+upper bound $\deg H$; Part~IV starts from an explicit polynomial coordinate
+and uses neither Part~III's classification nor any other theorem of
+Parts~I--III as a premise. So every proof is printed in full, and nothing
+is credited across parts except that context.
+\item The manuscript cites Draga--Morawiec by arXiv:1503.00570 without a
+version; Part~I's entry for the same paper \cite{DM2016} is used. Its entry
+for ``the ProveIt report'' (a GitHub tree URL at the pin) is replaced by
+references to Parts~I--III, and the URL is kept in
+Section~\ref{nrr:ed:app:provenance}. Its two further works,
+Zieve--M\"uller \cite{ZM2008} and Kreso--Tichy \cite{KT2016}, were added to
+the bibliography after their arXiv records (titles, authors, dates) were
+checked in the write phase.
+\item Two sentences are corrected by bracketed merge notes rather than
+silently: the manuscript places its target question in ``Part~III,
+Section~34'' (it is Section~35.7), and its Section~\ref{nrr:ed:sec:verification}
+says the exact-degree question is ``fully answered'', which for torsion
+multipliers means an exact algorithm and the involution classification, not a
+closed formula.
+\item Its file names are replaced by the shipped names, and its reproduction
+guide (Section~\ref{nrr:ed:app:reproduce}) keeps the delivered commands and
+adds the scratch-copy command that works with them here. Its two appendices
+are printed as the last sections of Part~IV, so that Part~I's appendices keep
+their letters; its unnumbered verification table stays unnumbered.
+\item No symbol was renamed and no normalization changed. The manuscript's
+symbols collide with those of Parts~I--III in several places;
+Table~\ref{nrr:ed:tab:notation} lists them.
+\item Two dated notes were added to Part~III (after
+Corollary~\ref{nrr:dc:cor:rational} and after Research question~35.7), and a
+paragraph and a subtitle line to the title page.
+\end{enumerate}
+
+\paragraph{Status (manuscript 01 of batch 54).}
+AI-assisted, unrefereed, and not formalized in Lean or Rocq; no declaration in
+ProveIt formalizes any statement of Parts~I--IV. The main results are proved
+here from explicitly stated classical algebraic and covering-space facts
+(polynomial L\"uroth theory, uniqueness of a normalized right factor of fixed
+degree, and the Morse--monodromy criterion, all credited as classical). The
+claimed advance is relative to the inspected repository question; an
+exhaustive historical-priority claim is not made. The radical obstruction
+concerns algebraic functions over $\C(x)$; it does not assert nonradical
+values at particular numerical inputs. Part~IV does not classify all
+continuous solutions of an iterative equation, all smooth involutions, all
+real algebraic diffeomorphisms, or field relations between two unrelated
+polynomial coordinates. Its finite computations check implementations and
+listed examples; they are not proofs of the universal statements.
+
+\subsection{Notation across the four parts}
+\label{nrr:ed:sec:notation}
+
+Symbols of Parts~I--III keep their meanings in their parts.
+Table~\ref{nrr:ed:tab:notation} fixes the meanings used in Part~IV. Letters
+not listed ($\mu_f$, $\id$, $f^{\circ j}$, $\operatorname{Lip}$, $P[f]$)
+agree with Parts~I--III. In particular, iterative order ($\deg\mu_f$) and
+algebraic degree ($\algdeg f$) are different numbers: the maps of
+Theorem~\ref{nrr:ed:thm:binomial} have $\deg\mu_f=2$ and $\algdeg f=n$.
+
+\begin{table}[htbp]
+\centering
+\caption{Symbols of Part~IV, with the tempting false reading beside the true one.}
+\label{nrr:ed:tab:notation}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning in Part~IV & Not to be confused with\\
+\midrule
+$H$, $a$ & a nonconstant coordinate polynomial and a nonzero complex
+multiplier; normalized ($H(0)=0$, $H'(0)=1$, $H'>0$, $a$ real) only where
+stated & Part~III's $H$ and $a$, which always satisfy those normalizations
+and $a<0$, $a\ne-1$; Part~I's conjugating map $H$ \eqref{eq:conjF}\\
+$n$ & $\deg H$ & the iterate index $n$ of Parts~I--III\\
+$\field$ & the field $\C(H(t),H(at))$ \eqref{nrr:ed:eq:fields} & Part~III's
+exponent set $K$ of $H$ and its branch data $K_P(a)$\\
+$d(H,a)$ & $[\C(t):\field]$, the common-fibre multiplicity, which is
+discarded & the algebraic degree itself (the manuscript warns against this
+inversion in Section~\ref{nrr:ed:app:reproduce}); Part~I's degree $d$ of $P$\\
+$r(H,a)$ & $[\field:\C(H(t))]$, the algebraic degree of $f_a$; also written
+$r=n/d$ & the radii $r$, $r_\pm$ of Parts~I--III; locally, the residue $r$
+of \eqref{nrr:ed:eq:torsion-form}, $r=|s|$ in the proof of
+Theorem~\ref{nrr:ed:thm:divisors}, and the integers $r,s$ of
+Corollary~\ref{nrr:ed:cor:observations}\\
+$\algdeg(f)$ & the degree of $f$ over $\R(x)$, equal to that over $\C(x)$ &
+the iterative order $\deg\mu_f$\\
+$W$, $A$ & the maximal normalized right factor with $W(at)=a^{\deg W}W(t)$,
+and the outer polynomial, $H=A\circ W$ (Theorem~\ref{nrr:ed:thm:common}) &
+Part~II's spectrum polynomials $A$; Part~III's radius sets $A_S$; Part~I's
+function $A(t)$; the local $W$ of Parts~I--III\\
+$g(H)$ & the gcd of the positive exponents of $H$ & Part~III's $g$
+($f^{\circ2}$ or the centred map); Part~II's positive coordinate $g$\\
+$q$ & the multiplicative order of a torsion multiplier & ---\\
+$f_a$, $\iota_H$, $\iota_{n,\varepsilon}$ & $H\circ(a\id)\circ H^{-1}$ and
+its involutions ($a=-1$) & Part~III's involution exception, which allows
+nonanalytic involutions\\
+$F_{H,a}$, $\Phi_{n,a}$, $G_{n,\varepsilon}$ & the irreducible graph
+equation; those of the binomial and near-reflection families &
+Part~I's cubic counterexample $F$; Part~II's $\Phi$; the local $G$ of
+Parts~I--III\\
+$\delta$ & $a-a^n$ \eqref{nrr:ed:eq:binomial-def} & Part~II's $\delta(P)$,
+which is Part~III's $\varepsilon_+$\\
+$\varepsilon$, $\theta$, $L$ & the perturbation parameter of $H_{n,\varepsilon}$,
+the maximal ratio \eqref{nrr:ed:eq:theta}, and $(1+\theta)/(1-\theta)$ &
+Part~III's exponents $\varepsilon_\pm$; Part~I's coefficients $\varepsilon_j$
+and angle $\theta$\\
+$D(t)$, $E(t)$; $D_n$, $E_n$ & the even and odd parts of $H_{n,\varepsilon}'$;
+the discriminants of Lemma~\ref{nrr:ed:lem:exceptional} & Part~II's
+difference spectrum $\scD$; Part~I's dilations $D_2$, $D_8$; Part~III's
+composition operator $E_g$ and threshold $\Theta$\\
+$R(X,Y)$; $R(t^q)$ & a rational reconstruction \eqref{nrr:ed:eq:reconstruct};
+the polynomial in \eqref{nrr:ed:eq:torsion-form} & Part~III's nonunit part
+$R$ of $\mu$\\
+$M$, $\varepsilon_M$; $\eta$ & the parameter search
+\eqref{nrr:ed:eq:epsilon-search}; a distortion tolerance & Part~III's
+$M_P(a)$; the bump $\eta$ in Corollary~\ref{nrr:dc:cor:automatic}\\
+$T$ & an auxiliary polynomial variable & Part~II's $\Lambda$ (its
+manuscript's $T$); Part~III's $E_g$\\
+Morse & a complex polynomial with simple critical points and distinct
+critical values (Section~\ref{nrr:ed:sec:monodromy}) & ---\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{A specific repository question}
+
+For a polynomial $P(z)=\sum_{j=0}^m p_jz^j$, a \emph{polynomial iterative equation}
+is an identity
+\begin{equation}
+ P[f](x):=\sum_{j=0}^m p_j f^{\circ j}(x)=0,
+ \qquad f^{\circ0}=\id.
+ \label{nrr:ed:eq:iterative}
+\end{equation}
+The powers in this expression are iterates, not pointwise powers. The
+characteristic-root and order-reduction approach to such equations is an established
+subject; Draga and Morawiec \cite{DM2016} provide relevant background.
+
+Part~III of this report develops a classification of sufficiently smooth decreasing
+solutions in terms of polynomial coordinates. Its conclusion, for the
+non-involutive maps covered by that theorem, has the form
+\begin{equation}
+ f(c+H(t))=c+H(at),\qquad
+ a<0,\quad a\ne-1,\quad H(0)=0,\quad H'(0)=1,\quad H'>0\text{ on }\R.
+ \label{nrr:ed:eq:repo-coordinate}
+\end{equation}
+[Merge note: this is \eqref{nrr:dc:eq:poly-conjugacy} of Part~III's
+Theorem~\ref{nrr:dc:thm:smooth}, proved as
+Theorem~\ref{nrr:dc:thm:finite-threshold}.]
+The original manuscript's Section 11.7 asks for the exact degree of $f$ over
+$\R(x)$, possible reductions caused by composition in $H$, and relations between
+coordinate families. In the merged repository this is among the research questions
+in Part III, Section 34. [Merge note: this is Research question~35.7 of
+Part~III (Section~\ref{nrr:ed:q-degree}), not Section~34, which is
+Part~III's verification section.] The original question and the upper-bound
+discussion (after Corollary~\ref{nrr:dc:cor:rational}) were both inspected;
+provenance is recorded in Section~\ref{nrr:ed:app:provenance}.
+
+We settle the exact-degree part and the common-coordinate family part. In the
+hyperbolic normalized setting of \eqref{nrr:ed:eq:repo-coordinate}, the proposed possibility
+of a compositional degree drop does not occur. Such drops are genuine at torsion
+multipliers, notably at $a=-1$, and also without the nonzero-linear-term hypothesis.
+We classify these mechanisms rather than silently excluding them.
+
+The proofs below do \emph{not} assume the correctness of the repository's global
+smoothness classification. They begin with an explicit polynomial coordinate.
+Therefore they apply to every map satisfying \eqref{nrr:ed:eq:repo-coordinate}, independently
+of the other claims in that report. We neither reprove nor extend its differentiability
+threshold in this article.
+
+\subsection{Two different degrees}
+
+Fix a nonconstant $H\in\C[t]$ of degree $n$ and $a\in\C^\times$. Set
+\begin{equation}
+ \field=\C(H(t),H(at))\subseteq\C(t),\qquad
+ d(H,a)=[\C(t):\field],\qquad
+ r(H,a)=[\field:\C(H(t))].
+ \label{nrr:ed:eq:fields}
+\end{equation}
+The tower law gives $d(H,a)r(H,a)=n$.
+
+When $H\in\R[t]$, $H(0)=0$, and $H'>0$ on $\R$, it is a global real-analytic
+diffeomorphism of $\R$. Define
+\begin{equation}
+ f_a(x)=H\bigl(aH^{-1}(x)\bigr),\qquad a\in\R^\times.
+ \label{nrr:ed:eq:fa}
+\end{equation}
+Its algebraic degree is $\algdeg(f_a)=r(H,a)$, interpreted either through its
+real analytic germ or through the complex function field of its algebraic graph.
+The real and complex degrees agree in this setting, as proved below.
+
+By contrast, the \emph{minimal iterative polynomial} $\mu_f$ is the monic
+least-degree nonzero polynomial satisfying \eqref{nrr:ed:eq:iterative}. Our examples have
+$\deg\mu_f=2$ and $\algdeg(f)=n$ with $n$ arbitrarily large. Nothing identifies
+these two notions of degree.
+
+\subsection{The principal conclusions}
+
+The main field theorem will show that $\field=\C(W(t))$, where $W$ is the unique
+monic polynomial with $W(0)=0$ that has maximal degree among right compositional
+factors of $H$ satisfying
+\begin{equation}
+ W(at)=a^{\deg W}W(t).
+ \label{nrr:ed:eq:eigen-intro}
+\end{equation}
+This has three particularly useful consequences.
+
+First, if $a$ is not a root of unity and
+$g=\gcd\{k\ge1:[t^k]H\ne0\}$, then
+\begin{equation}
+ \field=\C(t^g),\qquad \algdeg(f_a)=\frac{n}{g}.
+ \label{nrr:ed:eq:main-preview}
+\end{equation}
+In particular, $H'(0)\ne0$ forces $g=1$ and exact degree $n$.
+
+Second, for polynomial-coordinate involutions, $d(H,-1)$ is the largest degree of
+an odd right compositional factor of $H$. For any fixed odd coordinate degree $n$,
+the possible algebraic degrees are exactly the positive divisors of $n$.
+
+Third, degree-one topological dynamics need not have degree-one algebra. There are
+nonradical algebraic involutions of every odd degree $n\ge5$, with symmetric
+monodromy $S_n$, whose derivatives are uniformly as close to $-1$ as prescribed.
+These solve the \emph{same} iterative equation $f^{\circ2}=\id$.
+
+\subsection{Classical ingredients and the novelty boundary}
+
+Polynomial L\"uroth theory and uniqueness of a normalized right factor of a fixed
+degree are classical. Zieve--M\"uller \cite[Lemma 2.2, Corollary 2.9 and
+Remark 2.16]{ZM2008} give the pertinent intermediate-field and decomposition
+facts. We include an elementary coefficient proof of the latter uniqueness, because
+it makes the dilation argument transparent. The implication from a Morse polynomial
+to symmetric monodromy is also classical; see Kreso--Tichy \cite{KT2016}.
+We give its covering-space proof and check the required hypotheses explicitly.
+
+The article's contribution to the repository is the exact common-field calculation,
+its degree and reconstruction consequences, the torsion analysis, and the resulting
+complexity examples. It would be misleading to label the classical ingredients, or
+an unrestricted historical priority for their consequences, as established novelties.
+
+\section{The dilation common-field theorem}
+\label{nrr:ed:sec:field}
+
+\subsection{Polynomial intermediate fields}
+
+\begin{lemma}[Polynomial form of L\"uroth's theorem]
+\label{nrr:ed:lem:luroth}
+Let $F\in\C[t]$ be nonconstant, and let
+$\C(F(t))\subseteq E\subseteq\C(t)$. Then there is a polynomial $W$ with
+$E=\C(W(t))$. Every polynomial in $t$ belonging to $E$ is a polynomial in $W$.
+Moreover,
+\[
+ [\C(t):\C(W(t))]=\deg W.
+\]
+The generator $W$ is unique after requiring it to be monic and to vanish at zero.
+\end{lemma}
+
+\begin{proof}
+Classical L\"uroth's theorem gives $E=\C(w(t))$ for a rational function $w$.
+Write $F=A\circ w$ with $A$ rational. The polynomial $F$ has exactly one pole
+on $\mathbf P^1$, namely infinity. The preimage under $w$ of every pole of $A$
+therefore consists only of infinity. Surjectivity of a nonconstant rational map
+shows that $A$ has a single pole, say $p$, and $w^{-1}(p)=\{\infty\}$.
+Postcompose $w$ by a M\"obius transformation sending $p$ to infinity. The resulting
+$W$ has its only pole at infinity, hence is polynomial. The corresponding outer
+function $A$ is polynomial as well.
+
+If a polynomial $G(t)$ equals a rational function $B(W(t))$, then a finite pole of
+$B$ would have a finite preimage under the nonconstant polynomial $W$, producing
+a finite pole of $G$. Thus $B$ is polynomial. The field-extension degree equals
+the degree of the rational map $W:\mathbf P^1\to\mathbf P^1$, hence equals
+$\deg W$. This is also obtained from the generic equation $W(T)-W(t)=0$.
+
+Two generators of the same rational function field differ by a M\"obius
+transformation. If both are polynomial in $t$, that transformation must be affine.
+Their monic leading coefficients and zero constant terms remove this ambiguity.
+\end{proof}
+
+\subsection{A rigid normalization}
+
+\begin{lemma}[Uniqueness of a right factor of prescribed degree]
+\label{nrr:ed:lem:unique}
+Suppose
+\[
+ F=A\circ U=B\circ V
+\]
+with nonconstant polynomials over a characteristic-zero field, and suppose $U,V$
+are monic of the same degree $d$ with $U(0)=V(0)=0$. Then $U=V$.
+\end{lemma}
+
+\begin{proof}
+Put $\deg F=md$ and let $h$ be the leading coefficient of $F$. Since $U$ and $V$
+are monic, the outer polynomials have leading coefficient $h$. Terms of
+$A(U)-hU^m$ and $B(V)-hV^m$ have degree at most $md-d$. Thus the coefficients
+of $F/h$ at degrees
+\[
+ md-1,\ md-2,\ \ldots,\ md-d+1
+\]
+are exactly those of $U^m$ and of $V^m$.
+
+Write $U=t^d+u_{d-1}t^{d-1}+\cdots+u_1t$ and similarly for $V$. The coefficient
+of $t^{md-j}$ in $U^m$, for $1\le j<d$, is
+\[
+ m u_{d-j}+\text{a polynomial in }u_{d-1},\ldots,u_{d-j+1}.
+\]
+Successively comparing these coefficients determines every $u_{d-j}$ uniquely.
+Division by $m$ is valid in characteristic zero. The constant terms have already
+been fixed at zero, so $U=V$. For $d=1$, both polynomials are simply $t$.
+\end{proof}
+
+\begin{theorem}[Exact common field under dilation]
+\label{nrr:ed:thm:common}
+For nonconstant $H\in\C[t]$ and $a\in\C^\times$, there is a unique monic
+polynomial $W$, with $W(0)=0$, generating $\field$. Write $d=\deg W$. Then
+\begin{equation}
+ H=A\circ W,\qquad W(at)=a^dW(t),\qquad
+ H(at)=A(a^dW(t))
+ \label{nrr:ed:eq:factor-covariance}
+\end{equation}
+for a polynomial $A$ of degree $n/d$.
+
+Equivalently, $W$ has the largest degree among all monic, zero-constant right
+compositional factors $V$ of $H$ satisfying $V(at)=a^{\deg V}V(t)$. In particular,
+\begin{equation}
+ d(H,a)=\deg W,\qquad r(H,a)=\frac{\deg H}{\deg W}.
+ \label{nrr:ed:eq:degree-theorem}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{nrr:ed:lem:luroth}, choose the normalized polynomial generator $W$ of
+$\field$. Since both observations are polynomials in $t$, there are polynomials
+$A,B$ with
+\[
+ H(t)=A(W(t)),\qquad H(at)=B(W(t)).
+\]
+Replacing $t$ by $t/a$ in the second equality gives
+\[
+ H(t)=B(W(t/a)).
+\]
+The polynomial $V(t)=a^dW(t/a)$ is monic of degree $d$ and vanishes at zero.
+Absorbing its scalar normalization into the outer polynomial gives two normalized
+right factors of $H$, namely $W$ and $V$. Lemma~\ref{nrr:ed:lem:unique} implies
+$W(t)=a^dW(t/a)$, or $W(at)=a^dW(t)$. Substituting this in $H(at)=A(W(at))$
+proves \eqref{nrr:ed:eq:factor-covariance}.
+
+Conversely, suppose $H=C\circ V$ and $V(at)=a^eV(t)$, where $e=\deg V$.
+Then both $H(t)$ and $H(at)$ belong to $\C(V(t))$, so
+\[
+ \field\subseteq\C(V(t))\subseteq\C(t).
+\]
+The tower law implies $e\le d$. The generator $W$ itself satisfies the criterion,
+so it is maximal. Any other normalized maximal candidate has degree $d$ and equals
+$W$ by Lemma~\ref{nrr:ed:lem:unique}. Finally, the degree formulas follow from
+Lemma~\ref{nrr:ed:lem:luroth} and the tower law.
+\end{proof}
+
+The crucial point is not merely that two polynomials have a common right factor.
+The two observations are related by a dilation of the input. Equal-degree
+right-factor uniqueness forces their common factor to transform as a single
+weight under that dilation. This reduces a functional decomposition problem to a
+coefficient restriction.
+
+\section{Infinite-order multipliers and exact hyperbolic degree}
+\label{nrr:ed:sec:infinite}
+
+\subsection{A support-gcd formula}
+
+\begin{definition}
+For a nonconstant polynomial $H$, define its positive support gcd by
+\[
+ g(H)=\gcd\{k\in\N:k\ge1,\ [t^k]H(t)\ne0\}.
+\]
+The constant coefficient is deliberately omitted.
+\end{definition}
+
+\begin{theorem}[Infinite-order field formula]
+\label{nrr:ed:thm:gcd}
+Suppose $a\in\C^\times$ is not a root of unity. Then
+\begin{equation}
+ \C(H(t),H(at))=\C(t^{g(H)}),\qquad
+ d(H,a)=g(H),\qquad r(H,a)=\frac{n}{g(H)}.
+ \label{nrr:ed:eq:gcd-formula}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $W$ be the generator from Theorem~\ref{nrr:ed:thm:common}, of degree $d$.
+If the coefficient of $t^k$ in $W$ is nonzero, its covariance gives $a^k=a^d$.
+Infinite multiplicative order forces $k=d$. Since $W$ is monic, $W=t^d$.
+Consequently $H$ is a polynomial in $t^d$, so $d$ divides $g=g(H)$.
+
+Conversely, $H(t)$ and $H(at)$ are both polynomials in $t^g$. Hence
+$\field\subseteq\C(t^g)$, and the tower law gives $d\ge g$. Together with
+$d\mid g$, this yields $d=g$. The field and remaining degree formulas follow.
+\end{proof}
+
+\begin{corollary}[The normalized hyperbolic answer]
+\label{nrr:ed:cor:normalized}
+Let $H\in\R[t]$ satisfy $H(0)=0$ and $H'>0$ on $\R$, and let
+$a\in\R\setminus\{0,1,-1\}$. Then
+\begin{equation}
+ \C(H(t),H(at))=\C(t),\qquad
+ [\R(x,f_a(x)):\R(x)]=[\C(x,f_a(x)):\C(x)]=\deg H.
+ \label{nrr:ed:eq:normalized-answer}
+\end{equation}
+The same degree conclusion holds for $x\mapsto c+f_a(x-c)$.
+\end{corollary}
+
+\begin{proof}
+The coefficient $H'(0)$ is nonzero, so $g(H)=1$. A nonzero real number other than
+$1$ and $-1$ has infinite multiplicative order. Theorem~\ref{nrr:ed:thm:gcd} gives the
+complex field equality and degree.
+
+For the real assertion, let $E_\R=\R(H(t),H(at))$. The equality over $\C$
+gives a rational expression $t=R(H(t),H(at))$ with complex coefficients.
+Conjugating the coefficients gives another such expression. Their average is
+fixed by complex conjugation and belongs to the real rational function field
+$E_\R$ (equivalently, take the fixed field in $E_\R(i)$). Thus
+$E_\R=\R(t)$, and the real tower degree is $\deg H$. Translating the two
+observations by constants does not change a field-extension degree.
+\end{proof}
+
+This proves that the degree upper bound in the repository question is always
+sharp under its normalized hyperbolic hypotheses. It is not necessary to assume
+that $H$ is indecomposable.
+
+\begin{example}[Composition is not a hyperbolic exception]
+Let $U(t)=t+t^3$ and $H=U\circ U$, so $\deg H=9$, $H'(0)=1$, and $H'>0$.
+For $a=-2$, the function $H\circ(-2\id)\circ H^{-1}$ has algebraic degree
+\emph{nine}, not three. In contrast, for $a=-1$ the same odd $H$ produces
+$-\id$, of degree one. The distinction is the multiplier, not merely the
+presence of a decomposition.
+\end{example}
+
+\begin{example}[Why the linear term matters]
+For $H=t^6+t^4$, one has $g(H)=2$, so an infinite-order multiplier gives degree
+$6/2=3$. For $H=t^6+t^3+7$, the degree is $6/3=2$. These statements concern
+algebraic branches of the parametrized graph; these $H$ are not the normalized
+real diffeomorphisms in Corollary~\ref{nrr:ed:cor:normalized}.
+\end{example}
+
+\subsection{Every nonzero iterate has the same degree}
+
+\begin{corollary}[Two observations and a whole orbit]
+\label{nrr:ed:cor:observations}
+Suppose $g(H)=1$ and $a$ has infinite multiplicative order. For distinct integers
+$r,s$,
+\begin{equation}
+ \C(H(a^rt),H(a^st))=\C(t).
+ \label{nrr:ed:eq:anytwo}
+\end{equation}
+For a real polynomial diffeomorphism $H$, every nonzero iterate of $f_a$ has
+algebraic degree $\deg H$. Moreover, there is a rational function $R(X,Y)$ such
+that, as a function-field identity,
+\begin{equation}
+ H^{-1}(x)=R(x,f_a(x)),\qquad
+ f_b(x)=H\bigl(bR(x,f_a(x))\bigr)\quad(b\in\C^\times).
+ \label{nrr:ed:eq:reconstruct}
+\end{equation}
+The complex expression is interpreted on the corresponding algebraic branch.
+\end{corollary}
+
+\begin{proof}
+Replace $t$ by $a^rt$ and apply Theorem~\ref{nrr:ed:thm:gcd} to the ratio $a^{s-r}$,
+which still has infinite order. For iterates, $f_a^{\circ j}=f_{a^j}$ for every
+integer $j$, and $j\ne0$ preserves infinite order. Finally,
+$\C(H(t),H(at))=\C(t)$ means precisely that $t$ is a rational function of those
+two observations. Substituting it into $H(bt)$ proves \eqref{nrr:ed:eq:reconstruct}.
+\end{proof}
+
+A rational reconstruction need not have a denominator nonzero at every real
+point. The assertion is an identity in the function field, valid off its poles;
+where the original real functions are analytic, apparent singularities can be
+handled through a different rational chart or by continuation. It is not a claim
+of a universally nonsingular numerical reconstruction formula.
+
+The consequence for families is exact but limited: all dilations using one fixed
+primitive coordinate $H$ lie in the same degree-$n$ extension of $\C(x)$. It does
+not classify arbitrary pairs of unrelated coordinate polynomials $H$ and $G$.
+
+\section{Torsion multipliers and real involutions}
+\label{nrr:ed:sec:torsion}
+
+\subsection{The complete coefficient restriction}
+
+\begin{theorem}[Torsion criterion]
+\label{nrr:ed:thm:torsion}
+Let $a$ have finite multiplicative order $q$. The generator $W$ of
+Theorem~\ref{nrr:ed:thm:common}, of degree $d$, is the maximal-degree normalized right
+factor of $H$ whose nonzero exponents are all congruent to $d$ modulo $q$.
+Equivalently,
+\begin{equation}
+ W(t)=t^rR(t^q),\qquad 0\le r<q,\qquad r\equiv d\pmod q,
+ \label{nrr:ed:eq:torsion-form}
+\end{equation}
+with $W(0)=0$. When $r=0$, the last condition requires $R(0)=0$.
+If $H'(0)\ne0$, then necessarily
+\begin{equation}
+ d\equiv1\pmod q,\qquad W(t)=tR(t^q),\qquad R(0)\ne0.
+ \label{nrr:ed:eq:torsion-linear}
+\end{equation}
+The algebraic observation degree remains exactly $n/d$.
+\end{theorem}
+
+\begin{proof}
+The covariance $W(at)=a^dW(t)$ is equivalent, coefficient by coefficient, to
+$a^k=a^d$ for every exponent in the support of $W$. For an element of order $q$,
+this is exactly $k\equiv d\pmod q$. This proves \eqref{nrr:ed:eq:torsion-form} and the
+maximal-factor characterization. If $H=A\circ W$ and $H'(0)\ne0$, the chain rule
+gives $A'(0)W'(0)\ne0$, since $W(0)=0$. Thus exponent one occurs in $W$, giving
+\eqref{nrr:ed:eq:torsion-linear}. The degree formula is Theorem~\ref{nrr:ed:thm:common}.
+\end{proof}
+
+For $a=1$, every right factor satisfies the covariance, and the maximal one is
+the normalized copy of $H$ itself. The observation degree is one, as it must be.
+For $a=i$, the polynomial $H=t+t^5$ also generates a degree-one observation:
+$H(it)=iH(t)$. If instead $H=(s+s^2)\circ(t+t^5)$, the maximal generator is
+$t+t^5$ and the observation degree is two. These examples show why the
+infinite-order qualification cannot be dropped.
+
+\subsection{Odd right factors are exactly the reflection exceptions}
+
+\begin{corollary}[Exact degree of a polynomial-coordinate involution]
+\label{nrr:ed:cor:odd-factor}
+Let $H\in\R[t]$ satisfy $H(0)=0$ and $H'>0$ on $\R$, and define
+\[
+ \iota_H=H\circ(-\id)\circ H^{-1}.
+\]
+Let $d$ be the largest degree of a monic odd polynomial $W$ with $H=A\circ W$.
+Then
+\begin{equation}
+ \algdeg(\iota_H)=\frac{\deg H}{d}.
+ \label{nrr:ed:eq:involution-degree}
+\end{equation}
+In particular, $\iota_H=-\id$ if and only if $H$ is odd.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{nrr:ed:thm:torsion} with $q=2$. Since $H'(0)\ne0$, the generator has
+odd degree and contains only odd powers. Conversely every odd right factor has
+$W(-t)=-W(t)$ and qualifies. Real coefficients follow either from the real form
+of Lemma~\ref{nrr:ed:lem:luroth} or from uniqueness under coefficient conjugation.
+The identity $\iota_H=-\id$ is equivalent to $H(-t)=-H(t)$.
+\end{proof}
+
+If $H=A\circ W$ with $W$ odd and $H'>0$, then $W'$ never vanishes. With the
+monic normalization, $W$ is an increasing odd-degree real polynomial and is a
+real diffeomorphism. The identity $W\circ(-\id)=(-\id)\circ W$ cancels that
+coordinate layer:
+\[
+ \iota_H=A\circ(-\id)\circ A^{-1}.
+\]
+This explains geometrically why an odd inner factor lowers the algebraic degree.
+It also shows why analogous cancellation is absent for a nonlinear normalized
+factor under an infinite-order dilation.
+
+\begin{lemma}[An adjacent coefficient forbids an odd inner factor]
+\label{nrr:ed:lem:adjacent}
+Let $U$ have odd degree $m$ and a nonzero coefficient of $t^{m-1}$. Then $U$
+has no odd right compositional factor of degree greater than one.
+\end{lemma}
+
+\begin{proof}
+Suppose $U=A\circ V$ with $V$ odd of degree $e>1$. Then $e\ge3$, $e\mid m$,
+and the coefficient of $t^{e-1}$ in $V$ is zero. The leading power
+$V^{m/e}$ therefore has zero coefficient at $t^{m-1}$. Every lower outer power
+has degree at most $m-e<m-1$. Hence $[t^{m-1}]U=0$, a contradiction.
+\end{proof}
+
+\begin{theorem}[All degree drops at a fixed real coordinate degree]
+\label{nrr:ed:thm:divisors}
+Fix an odd positive integer $n$. Among all $H\in\R[t]$ of degree $n$ with
+$H(0)=0$, $H'(0)=1$, and $H'>0$ on $\R$, the possible algebraic degrees of
+$\iota_H$ are exactly the positive divisors of $n$. Every such degree is
+realized with rational coefficients in $H$.
+\end{theorem}
+
+\begin{proof}
+Necessity follows from Corollary~\ref{nrr:ed:cor:odd-factor}: the algebraic degree is
+$n/d$, where $d\mid n$.
+
+For sufficiency, write $n=md$. All three integers are odd. Define
+\[
+ W_d(t)=
+ \begin{cases}t,&d=1,\\ t+t^d,&d>1,\end{cases}
+ \qquad
+ U_m(s)=
+ \begin{cases}s,&m=1,\\
+ s+s^m+\dfrac{s^{m-1}}{2(m-1)},&m>1.
+ \end{cases}
+\]
+Let $H=U_m\circ W_d$. Both component polynomials have derivative one at zero.
+The derivative of $W_d$ is positive. For $m>1$, put $r=|s|$. The potentially
+negative contribution to $U_m'$ has magnitude at most $r^{m-2}/2$. If $r\le1$,
+then $U_m'\ge1-1/2>0$. If $r\ge1$, then
+$mr^{m-1}-r^{m-2}/2>0$. Thus $H'>0$ everywhere.
+
+When $m>1$, Lemma~\ref{nrr:ed:lem:adjacent} and Corollary~\ref{nrr:ed:cor:odd-factor} imply
+$\C(U_m(s),U_m(-s))=\C(s)$. The same equality is immediate when $m=1$.
+Substituting $s=W_d(t)$, and using oddness of $W_d$, gives
+\[
+ \C(H(t),H(-t))=\C(W_d(t)).
+\]
+The observation degree is therefore $n/d=m$, as required. All coefficients are
+rational by construction.
+\end{proof}
+
+\section{Algebraic curves, resultants, and exact computation}
+\label{nrr:ed:sec:algorithms}
+
+\subsection{The graph and its normalization}
+
+\begin{theorem}[The graph equation and its resultant multiplicity]
+\label{nrr:ed:thm:curve}
+Let $W,A,d$ be as in Theorem~\ref{nrr:ed:thm:common}, and put $r=n/d$. There is a unique
+irreducible polynomial $F_{H,a}(X,Y)\in\C[X,Y]$, monic in $Y$, such that
+\[
+ F_{H,a}(H(t),H(at))=0.
+\]
+It has degree $r$ in each variable and total degree $r$. The normalization of
+its projective curve is $\mathbf P^1$, with birational parametrization
+\begin{equation}
+ X=A(s),\qquad Y=A(a^ds),\qquad s=W(t).
+ \label{nrr:ed:eq:normalization}
+\end{equation}
+If $h_n$ is the leading coefficient of $H$, then, with the usual resultant
+convention,
+\begin{equation}
+ \Res_t(H(t)-X,H(at)-Y)=(-1)^n h_n^n F_{H,a}(X,Y)^d.
+ \label{nrr:ed:eq:resultant-power}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The kernel of the substitution map
+$\C[X,Y]\to\C[t]$, $(X,Y)\mapsto(H(t),H(at))$, is a height-one prime ideal,
+so it is generated by one irreducible polynomial. Its degree in $Y$ is
+$[\field:\C(H(t))]=r$. The element $t$ is integral over $\C[H(t)]$ after
+dividing the leading coefficient out of $H(T)-H(t)$. Hence $H(at)$ is integral
+over this ring. The monic minimal polynomial of $H(at)$ over $\C(H(t))$ has
+coefficients in the integrally closed ring $\C[H(t)]$, allowing the stated
+monic normalization of $F_{H,a}$. Interchanging the observations gives degree
+$r$ in $X$ as well.
+
+Theorem~\ref{nrr:ed:thm:common} says that the function field of the curve is exactly
+$\C(s)$, with the two functions in \eqref{nrr:ed:eq:normalization}. They have degree
+$r$ as polynomials in $s$. Thus the parametrization is birational. It extends
+to a morphism from $\mathbf P^1$ to the projective plane: its two leading
+coefficients cannot vanish simultaneously at infinity. A generic line pulls
+back to a polynomial equation of degree $r$ with $r$ distinct finite solutions.
+Birationality therefore gives total curve degree $r$. The smooth projective
+normalization of its function field $\C(s)$ is $\mathbf P^1$.
+
+For the resultant, take a generic $X$. The polynomial $H(T)-X$ has $n$ distinct
+roots $t_1,\ldots,t_n$. The $r$ conjugate values of $H(at)$ over $\C(X)$ each
+occur exactly $d$ times among $H(at_1),\ldots,H(at_n)$, by the separable field
+tower of degrees $d$ and $r$. Therefore
+\[
+ \prod_{j=1}^n\bigl(Y-H(at_j)\bigr)=F_{H,a}(X,Y)^d.
+\]
+The root-product formula for the resultant multiplies
+$\prod_j(H(at_j)-Y)$ by $h_n^n$, proving \eqref{nrr:ed:eq:resultant-power} for generic
+$X$ and therefore as a polynomial identity.
+\end{proof}
+
+A rational normalization is not a rational inverse to the projection
+$(X,Y)\mapsto X$. That projection has degree $r$, which can be arbitrarily
+large and can have nonsolvable monodromy. In particular, genus zero does not
+supply a radical formula for $Y$ as a function of $X$.
+
+\subsection{A finite right-factor algorithm}
+
+The proof of Lemma~\ref{nrr:ed:lem:unique} is constructive. Let
+$H=h_nt^n+\cdots$, fix a divisor $d\mid n$, and put $m=n/d$. Begin with $W=t^d$.
+For $j=1,\ldots,d-1$, set
+\begin{equation}
+ [t^{d-j}]W=
+ \frac{[t^{n-j}](H/h_n)-[t^{n-j}]W_{\mathrm{previous}}^m}{m}.
+ \label{nrr:ed:eq:candidate}
+\end{equation}
+Only already determined coefficients occur on the right. This yields the unique
+possible monic zero-constant right factor of degree $d$. It need not actually
+be a right factor.
+
+To test that remaining property, subtract successive leading multiples of powers
+of $W$ from $H$. At each stage a nonzero remainder must have degree divisible
+by $d$; otherwise $H$ cannot belong to the polynomial ring $\C[W]$. Since every
+subtraction lowers the degree, the process terminates. A zero remainder supplies
+an outer polynomial $A$ with $H=A(W)$.
+
+\begin{proposition}[Exact finite computation of the degree]
+\label{nrr:ed:prop:algorithm}
+For input in an exactly computable characteristic-zero coefficient field, the
+following algorithm returns $d(H,a)$ and its normalized generator $W$:
+examine the divisors $d\mid n$ in decreasing order; construct the candidate by
+\eqref{nrr:ed:eq:candidate}; test $H\in k[W]$ and $W(at)=a^dW(t)$; return the first
+candidate passing both tests. The algorithm terminates and is correct.
+\end{proposition}
+
+\begin{proof}
+The candidate of any actual right factor is forced by Lemma~\ref{nrr:ed:lem:unique}.
+Theorem~\ref{nrr:ed:thm:common} proves that the largest successful degree is exactly
+$d(H,a)$. The candidate $W=t$ for $d=1$ always succeeds, proving termination.
+All tests involve finitely many coefficient operations and exact equalities.
+\end{proof}
+
+Rational and algebraic-number inputs are appropriate for an implementation.
+Arbitrary complex coefficients without an exact representation or equality oracle
+are not. The algorithm does not require an independent root-of-unity test: the
+covariance is checked directly. For a rational multiplier other than $0,1,-1$,
+the support-gcd formula is a much cheaper shortcut. No bit-complexity bound or
+numerical stability guarantee is asserted for the general decomposition algorithm.
+
+There is also a Laurent-series description of the same candidate. Take the formal
+$m$th root of $H/h_n$ at infinity with leading term $t^d$, retain its polynomial
+part, and subtract its constant term. The resulting polynomial is exactly the
+candidate in \eqref{nrr:ed:eq:candidate}; coefficient comparison proves this description
+without choosing analytic branches.
+
+\subsection{Rational recovery by elimination}
+
+When $d=1$, the common root of
+\[
+ H(T)-X=0,\qquad H(aT)-Y=0
+\]
+is generically unique \emph{on the graph curve}. Over its function field, the gcd
+of these polynomials in $T$ is linear. A nonzero linear subresultant therefore
+recovers $T$ as a rational function of $X,Y$. One must work modulo the graph
+relation or evaluate at its generic point: over the field $\C(X,Y)$ with
+independent $X,Y$, the two polynomials generally have gcd one.
+
+\begin{example}[An explicit non-binomial reconstruction]
+\label{nrr:ed:ex:recovery}
+Let $H=t+t^2+t^3$ and $a=2$. Then $H'=1+2t+3t^2>0$ and
+\begin{equation}
+ t=\frac{16X-Y}{16X-2Y+14},\qquad X=H(t),\quad Y=H(2t).
+ \label{nrr:ed:eq:cubic-recovery}
+\end{equation}
+Indeed, after substitution, the denominator is $14+12t+8t^2$, and the numerator
+is $t$ times that polynomial. The denominator is positive for real $t$, so this
+particular chart has no real singularities. The penultimate nonzero subresultant is
+\[
+ 2\bigl((16X-2Y+14)T-(16X-Y)\bigr).
+\]
+The resultant itself is the irreducible cubic
+\begin{align*}
+ &512X^3-192X^2Y+24XY^2-Y^3\\
+ &\hspace{1em}{}+256X^2-120XY+10Y^2+56X-28Y.
+\end{align*}
+It differs by a minus sign from the monic-in-$Y$ normalization of the graph equation.
+\end{example}
+
+\section{Normal closures and monodromy}
+\label{nrr:ed:sec:monodromy}
+
+\subsection{Transfer through the recovered coordinate}
+
+\begin{theorem}[Normal-closure transfer]
+\label{nrr:ed:thm:galois}
+Let $H=A\circ W$ be the normalized factorization in Theorem~\ref{nrr:ed:thm:common}.
+The normal closure of the graph-function extension
+\[
+ \C(X,Y)/\C(X),\qquad F_{H,a}(X,Y)=0,
+\]
+is the normal closure of $\C(s)/\C(A(s))$. Its permutation Galois group is
+therefore that of $A(S)-X$ on its $r=n/d$ roots.
+
+In particular, when $d=1$, it is the Galois group of $H(T)-X$. For an
+infinite-order multiplier with $g(H)=1$, all nonzero iterates have the same
+normal closure and the same permutation Galois group.
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{nrr:ed:thm:common} identifies the graph field with $\C(s)$, where
+$X=A(s)$ and $Y=A(a^ds)$. These are equal extensions over the common base
+$\C(X)$, not merely extensions of the same degree. Their normal closures in a
+fixed algebraic closure are consequently equal. Embeddings of $\C(s)$ over
+$\C(X)$ correspond to the roots of $A(S)-X$. The iterate assertion follows
+from Corollary~\ref{nrr:ed:cor:observations}.
+\end{proof}
+
+The theorem transfers nonsolvability, not just the count of algebraic branches.
+If the relevant normal-closure group is nonsolvable, no branch of $Y$ is
+expressible by radicals over $\C(X)$. A radical expression for one branch would
+put its simple extension inside a radical extension; its normal closure would
+then have solvable Galois group in characteristic zero with the roots of unity
+available. This would contradict the nonsolvable group of the same extension.
+
+This is a statement about an algebraic \emph{function}. It does not say that its
+value at every particular algebraic or real input is nonradical. For example, all
+our normalized maps take the radical value zero at zero.
+
+\subsection{A classical symmetric-monodromy criterion}
+
+\begin{definition}
+A complex polynomial is called \emph{Morse} here if all of its critical points
+are simple and their critical values are pairwise distinct.
+\end{definition}
+
+\begin{lemma}[Morse polynomials have full symmetric monodromy]
+\label{nrr:ed:lem:morse}
+If $A\in\C[t]$ is Morse of degree $r\ge2$, then $A(T)-X$ has Galois group $S_r$
+over $\C(X)$ in its natural action on the roots.
+\end{lemma}
+
+\begin{proof}
+Remove the finite critical values from the target plane and all their preimages
+from the source plane. The polynomial becomes an unbranched covering of degree
+$r$. Its source is a complex plane with finitely many points removed and is
+connected, so the monodromy action on a fiber is transitive.
+
+At a simple critical point $u$, local coordinates give
+$A(t)-A(u)=c(t-u)^2+\text{higher terms}$ with $c\ne0$. A small loop around $A(u)$
+therefore exchanges exactly the two local inverse branches. Since no other
+critical point has the same critical value, its monodromy permutation is a
+single transposition. Such small loops generate the fundamental group of the
+punctured target plane, so the monodromy group is generated by transpositions.
+
+Associate an edge to each generating transposition on the $r$ sheets. The orbits
+of the generated group are exactly the connected components of this graph.
+Transitivity makes it connected; transpositions along a connected graph generate
+all of $S_r$. The usual correspondence between algebraic-function monodromy and
+the Galois group of the normal closure gives the asserted Galois group.
+\end{proof}
+
+The covering-space and monodromy correspondence used here are classical; the
+criterion is included to make clear precisely what must be checked in the examples,
+not as a claimed new theorem. A reference and historical context appear in
+Kreso--Tichy \cite{KT2016}.
+
+\section{Explicit nonradical hyperbolic solutions of order two}
+\label{nrr:ed:sec:hyperbolic-family}
+
+\subsection{A closed algebraic equation in every odd degree}
+
+\begin{theorem}[Binomial-coordinate family]
+\label{nrr:ed:thm:binomial}
+Let $n\ge3$ be odd, let $a\in\R\setminus\{0,1,-1\}$, and put
+\begin{equation}
+ H_n(t)=t+t^n,\qquad f_{n,a}=H_n\circ(a\id)\circ H_n^{-1},\qquad
+ \delta=a-a^n.
+ \label{nrr:ed:eq:binomial-def}
+\end{equation}
+Then $f_{n,a}$ is a global real-analytic diffeomorphism, with
+\begin{equation}
+ \mu_{f_{n,a}}(z)=(z-a)(z-a^n),\qquad \algdeg(f_{n,a})=n.
+ \label{nrr:ed:eq:binomial-degrees}
+\end{equation}
+Its monic ordinary algebraic equation is
+\begin{equation}
+ \Phi_{n,a}(X,Y)=(Y-a^nX)^n+\delta^{n-1}(Y-aX)=0.
+ \label{nrr:ed:eq:binomial-curve}
+\end{equation}
+This polynomial is irreducible over $\C(X)$ and has Galois group $S_n$. Thus,
+for odd $n\ge5$, $f_{n,a}$ is not expressible by radicals over $\C(x)$.
+\end{theorem}
+
+\begin{proof}
+Since $n$ is odd,
+$H_n'(t)=1+nt^{n-1}>0$ on $\R$, and the odd-degree polynomial is onto. Thus it
+has a real-analytic inverse and defines the stated diffeomorphism.
+
+At a coordinate point $x=H_n(t)$, its iterates satisfy
+\begin{equation}
+ f_{n,a}^{\circ j}(H_n(t))=a^jt+a^{nj}t^n.
+ \label{nrr:ed:eq:binomial-orbits}
+\end{equation}
+For any polynomial $P$, this gives
+\[
+ P[f_{n,a}](H_n(t))=P(a)t+P(a^n)t^n.
+\]
+The monomials $t,t^n$ are linearly independent, and $a\ne a^n$. Therefore the
+annihilating ideal is exactly the set of polynomials vanishing at both $a$ and
+$a^n$, proving the minimal iterative polynomial assertion.
+
+The first two observations give an unusually simple inverse-coordinate formula:
+\begin{equation}
+ Y=a^nX+\delta t,\qquad t=\frac{Y-a^nX}{\delta}.
+ \label{nrr:ed:eq:binomial-recovery}
+\end{equation}
+Substitution in $t^n+t-X=0$ proves \eqref{nrr:ed:eq:binomial-curve}. Since $H_n'(0)=1$,
+Corollary~\ref{nrr:ed:cor:normalized} gives degree $n$. The displayed polynomial is
+monic of that degree in $Y$, hence is the irreducible minimal polynomial.
+
+It remains to establish its Galois group. The critical points of $H_n$ are the
+$n-1$ distinct nonzero roots of $nt^{n-1}=-1$. At such a point $u$,
+\[
+ H_n(u)=\frac{n-1}{n}u.
+\]
+Their critical values are therefore distinct. Thus $H_n$ is Morse and has
+monodromy $S_n$ by Lemma~\ref{nrr:ed:lem:morse}. Theorem~\ref{nrr:ed:thm:galois} transfers the
+same group to \eqref{nrr:ed:eq:binomial-curve}. For $n\ge5$, the symmetric group is
+nonsolvable, giving the radical obstruction.
+\end{proof}
+
+The source polynomial has discriminant
+\begin{equation}
+ \Disc_T(T^n+T-X)
+ =(-1)^{n(n-1)/2}\bigl(n^nX^{n-1}+(n-1)^{n-1}\bigr)
+ \qquad(n\text{ odd}).
+ \label{nrr:ed:eq:binomial-discriminant}
+\end{equation}
+One way to verify the formula is to use
+$\Disc(p)=(-1)^{n(n-1)/2}\Res(p,p')$ for monic $p$, evaluate the resultant at
+the roots of $p'=nT^{n-1}+1$, and use
+$p(u)=(n-1)u/n-X$. Since $n-1$ is even, the factor in parentheses has no real
+zero. This agrees with the absence of real critical values for the real inverse.
+
+\begin{example}[A decreasing quintic that satisfies a quadratic iterative equation]
+For $n=5$ and $a=-2$, one has $\delta=30$ and
+\begin{equation}
+ f^{\circ2}(x)+34f(x)+64x=0,
+ \qquad
+ (f(x)+32x)^5+30^4(f(x)+2x)=0.
+ \label{nrr:ed:eq:quintic-example}
+\end{equation}
+The inverse coordinate is $t=(f(x)+32x)/30$. The ordinary algebraic equation has
+exact degree five and Galois group $S_5$, although the minimal iterative equation
+has order two. For every real $x$ the algebraic equation displayed here has exactly
+one real root $f(x)$, because it is an affine change of $t^5+t-x=0$.
+This does \emph{not} say that the iterative equation alone has a unique solution;
+it also has the affine solutions $-2x$ and $-32x$.
+\end{example}
+
+\subsection{Exact distortion and a rational near-reflection sequence}
+
+\begin{proposition}[Distortion of the binomial family]
+\label{nrr:ed:prop:hyperbolic-distortion}
+Put $b=|a|$. Then
+\begin{equation}
+ |f_{n,a}'(H_n(t))|
+ =b\frac{1+nb^{n-1}t^{n-1}}{1+nt^{n-1}},
+ \label{nrr:ed:eq:derivative-hyperbolic}
+\end{equation}
+and
+\begin{equation}
+ \Lip(f_{n,a})=\max(b,b^n),\quad
+ \Lip(f_{n,a}^{-1})=\frac{1}{\min(b,b^n)},\quad
+ \Lip(f_{n,a})\Lip(f_{n,a}^{-1})=\max(b,b^{-1})^{n-1}.
+ \label{nrr:ed:eq:distortion-hyperbolic}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Differentiate the conjugacy. Since $n-1$ is even, $t^{n-1}$ ranges over
+$[0,\infty)$. The ratio in \eqref{nrr:ed:eq:derivative-hyperbolic} lies between its
+values at zero and at infinity, namely $b$ and $b^n$, and attains or approaches
+both endpoints. The mean value theorem identifies the Lipschitz constant of a
+$C^1$ map with the supremum of the absolute derivative. Apply the same argument
+to the inverse derivative to obtain the formulas.
+\end{proof}
+
+For an explicit rational-coefficient sequence, take odd $n\ge5$ and
+$a_n=-(1+n^{-2})$. Its distortion is
+\[
+ (1+n^{-2})^{n-1}<e^{1/n}\longrightarrow1.
+\]
+Moreover,
+\[
+ \sup_{x\in\R}|f_{n,a_n}'(x)+1|
+ =(1+n^{-2})^n-1\longrightarrow0.
+\]
+Each member still has algebraic degree $n$ and Galois group $S_n$. The coefficients
+of its order-two iterative polynomial are rational, and these polynomials tend
+to $(z+1)^2$. The next section strengthens the phenomenon by keeping the iterative
+polynomial exactly fixed.
+
+\section{One fixed equation: nonradical involutions near reflection}
+\label{nrr:ed:sec:reflection}
+
+\subsection{An exact distortion calculation}
+
+For odd $n\ge3$ and a real parameter $\eps$, define
+\begin{equation}
+ H_{n,\eps}(t)=t+t^n+\eps t^{n-1}.
+ \label{nrr:ed:eq:perturbed-coordinate}
+\end{equation}
+Whenever $H_{n,\eps}'>0$ on $\R$, write
+$\iota_{n,\eps}=H_{n,\eps}\circ(-\id)\circ H_{n,\eps}^{-1}$.
+The even term breaks the odd symmetry that would otherwise reduce this involution
+to $-\id$.
+
+\begin{proposition}[A closed symmetric equation and rational recovery]
+\label{nrr:ed:prop:reflection-curve}
+For $\eps\ne0$, the observations $X=H_{n,\eps}(t)$ and $Y=H_{n,\eps}(-t)$
+generate $\C(t)$ and have the irreducible monic algebraic equation
+\begin{equation}
+ G_{n,\eps}(X,Y)
+ =(X+Y)(X+Y+2\eps)^{n-1}-2\eps^n(X-Y)^{n-1}=0.
+ \label{nrr:ed:eq:reflection-curve}
+\end{equation}
+The coordinate is recovered by
+\begin{equation}
+ t=\frac{\eps(X-Y)}{X+Y+2\eps}.
+ \label{nrr:ed:eq:reflection-recovery}
+\end{equation}
+If $\eps$ is real and $H_{n,\eps}'>0$ on $\R$, the real zero set of $G_{n,\eps}$
+is the graph of $\iota_{n,\eps}$ together with the isolated point
+$(-\eps,-\eps)$. The denominator in \eqref{nrr:ed:eq:reflection-recovery} never
+vanishes on the actual real graph.
+\end{proposition}
+
+\begin{proof}
+Adding and subtracting the two observations gives
+\[
+ X+Y=2\eps t^{n-1},\qquad X-Y=2t(1+t^{n-1}).
+\]
+These identities prove both \eqref{nrr:ed:eq:reflection-recovery} and
+\eqref{nrr:ed:eq:reflection-curve}. The rational recovery gives the field equality,
+so the algebraic observation degree is $n$. Since $G_{n,\eps}$ is monic of
+degree $n$ in $Y$, it is the irreducible graph equation.
+
+On the real parametrized graph the denominator equals
+$2\eps(1+t^{n-1})$, which is nonzero because $n-1$ is even. Conversely, a real
+zero $(X,Y)$ with nonzero denominator determines a real $t$ by
+\eqref{nrr:ed:eq:reflection-recovery}. Equation~\eqref{nrr:ed:eq:reflection-curve} then gives
+$t^{n-1}=(X+Y)/(2\eps)$, and substitution in the preceding sum and difference
+identities yields $H_{n,\eps}(t)=X$, $H_{n,\eps}(-t)=Y$.
+
+If the denominator is zero, the graph equation forces $X-Y=0$, so the only
+remaining point is $(-\eps,-\eps)$. It does not belong to the real graph:
+the decreasing involution has its unique fixed point at zero. It is isolated
+in the real zero set, since a sequence of other real zeros tending to it would,
+by continuity of the graph, make it a graph point as well.
+\end{proof}
+
+At $\eps=0$, the coordinate $t+t^n$ remains Morse, but the two-observation field
+collapses to $\C(H_n(t))$ and the involution becomes $-\id$.
+The polynomial $G_{n,\eps}$ specializes to $(X+Y)^n$, while the irreducible graph
+equation becomes $X+Y=0$. Thus the degree collapse at zero is a loss of information
+in the observations, not a collision of critical values of the inverse-coordinate
+cover. It also illustrates why a real algebraic zero set should not automatically
+be identified with a single selected real branch.
+
+\Needspace{15\baselineskip}
+\begin{proposition}[Sharp derivative and distortion formulas]
+\label{nrr:ed:prop:reflection-distortion}
+Let
+\begin{equation}
+ \theta=|\eps|\left(\frac{n-2}{n}\right)^{(n-2)/(n-1)}.
+ \label{nrr:ed:eq:theta}
+\end{equation}
+Then $H_{n,\eps}'>0$ on $\R$ if and only if $\theta<1$. Under this condition,
+put $\iota_{n,\eps}=H_{n,\eps}\circ(-\id)\circ H_{n,\eps}^{-1}$ and
+$L=(1+\theta)/(1-\theta)$. Then
+\begin{align}
+ \Lip(\iota_{n,\eps})&=\Lip(\iota_{n,\eps}^{-1})=L,
+ \label{nrr:ed:eq:reflection-lip}\\
+ \Lip(\iota_{n,\eps})\Lip(\iota_{n,\eps}^{-1})&=L^2,
+ \label{nrr:ed:eq:reflection-distortion}\\
+ \sup_{x\in\R}|\iota_{n,\eps}'(x)+1|&=\frac{2\theta}{1-\theta}.
+ \label{nrr:ed:eq:reflection-derivative}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+The case $\eps=0$ is immediate; assume $\eps\ne0$. Write
+\[
+ H_{n,\eps}'(t)=D(t)+E(t),\qquad
+ D(t)=1+nt^{n-1}>0,\qquad E(t)=(n-1)\eps t^{n-2}.
+\]
+Here $D$ is even and $E$ is odd. For $s=|t|\ge0$,
+\[
+ \frac{|E(t)|}{D(t)}=
+ \frac{(n-1)|\eps|s^{n-2}}{1+ns^{n-1}}.
+\]
+The ratio vanishes at zero and tends to zero at infinity. Away from zero, the
+sign of its derivative is the sign of
+\[
+ (n-2)-ns^{n-1}.
+\]
+Thus its maximum occurs at $s^{n-1}=(n-2)/n$ and is exactly $\theta$. Because
+$E/D$ takes both signs, $D+E>0$ everywhere is equivalent to $\theta<1$.
+
+Differentiating the defining involution gives
+\[
+ \iota_{n,\eps}'(H_{n,\eps}(t))
+ =-\frac{D(t)-E(t)}{D(t)+E(t)}.
+\]
+The quantity $E/D$ ranges over $[-\theta,\theta]$, attaining both endpoints.
+Consequently the absolute derivative ranges over $[L^{-1},L]$. The Lipschitz
+constant is $L$, and the inverse equals the involution itself. Finally,
+$L-1\ge1-L^{-1}$, so the largest deviation of the derivative from $-1$ is
+$L-1=2\theta/(1-\theta)$.
+\end{proof}
+
+\subsection{Only finitely many parameters fail the monodromy test}
+
+\begin{lemma}[An exact finite exceptional set]
+\label{nrr:ed:lem:exceptional}
+For each fixed odd $n\ge3$, the polynomial $H_{n,\eps}$ is Morse for all but
+finitely many complex parameters $\eps$. The exceptional set does not contain
+zero. It is contained in the zero set of the explicitly computable nonzero
+polynomial
+\begin{equation}
+ E_n(\eps)=\Disc_X\!\left(\Disc_t(H_{n,\eps}(t)-X)\right)\in\Z[\eps].
+ \label{nrr:ed:eq:exceptional-polynomial}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $D_n(\eps,X)=\Disc_t(H_{n,\eps}(t)-X)$. Its degree in $X$ is $n-1$, with
+nonzero constant leading coefficient, independent of $\eps$. Up to a nonzero
+constant, it is the product of $X-H_{n,\eps}(u)$ over the roots $u$ of
+$H_{n,\eps}'$, counted with their multiplicities. Therefore a squarefree
+$D_n(\eps,X)$ implies that every critical point is simple and every critical
+value is different from the others.
+
+At $\eps=0$, formula~\eqref{nrr:ed:eq:binomial-discriminant} shows that $D_n(0,X)$ is
+squarefree: its constant term is nonzero, and its derivative can vanish at a
+root only if that root is zero. Hence $E_n(0)\ne0$. The polynomial $E_n$ is
+nonzero and has only finitely many roots. Outside those roots $D_n$ is squarefree,
+which gives the asserted Morse condition.
+\end{proof}
+
+\begin{theorem}[Nonradical involutions of unbounded degree at fixed iterative order]
+\label{nrr:ed:thm:fixed-involution}
+For every odd integer $n\ge5$ and every $\eta>0$, there exists a nonzero rational
+parameter $\eps$ such that $H=H_{n,\eps}$ defines a global real-analytic
+involution $\iota=H\circ(-\id)\circ H^{-1}$ satisfying all of the following:
+\begin{equation}
+ \mu_\iota(z)=z^2-1,\qquad \algdeg(\iota)=n,\qquad
+ \Gal(\iota/\C(x))\cong S_n,
+ \label{nrr:ed:eq:fixed-complexity}
+\end{equation}
+where the Galois group means that of the normal closure in its natural
+$n$-sheeted action. In addition,
+\begin{equation}
+ \Lip(\iota)\Lip(\iota^{-1})<1+\eta,\qquad
+ \sup_{x\in\R}|\iota'(x)+1|<\eta.
+ \label{nrr:ed:eq:near-isometry}
+\end{equation}
+In particular, $\iota$ is not expressible by radicals over $\C(x)$.
+\end{theorem}
+
+\begin{proof}
+Choose a sufficiently small nonzero rational $\eps$ outside the finite exceptional
+set of Lemma~\ref{nrr:ed:lem:exceptional}. Such parameters exist in every punctured
+neighborhood of zero. Since $\theta\to0$ with $\eps$, Proposition~\ref{nrr:ed:prop:reflection-distortion}
+ensures $H'>0$ and both strict bounds in \eqref{nrr:ed:eq:near-isometry}.
+
+By construction, $\iota^{\circ2}=\id$. The polynomial $H$ is not odd because
+$\eps\ne0$, so $\iota\ne-\id$. A monic linear iterative annihilator would have
+the form $z-c$, making $\iota(x)=cx$. Since $\iota$ is decreasing and an
+involution, this would force $c=-1$, which has just been excluded. Therefore
+its minimal iterative polynomial is exactly $z^2-1$.
+
+The nonzero coefficient of $t^{n-1}$ in $H$ rules out every nonlinear odd right
+factor by Lemma~\ref{nrr:ed:lem:adjacent}. Corollary~\ref{nrr:ed:cor:odd-factor} then gives
+$\C(H(t),H(-t))=\C(t)$ and exact algebraic degree $n$. The selected parameter
+makes $H$ Morse, so Lemma~\ref{nrr:ed:lem:morse} and Theorem~\ref{nrr:ed:thm:galois} give $S_n$.
+Its nonsolvability for $n\ge5$ proves the radical obstruction.
+\end{proof}
+
+This gives a negative answer to any proposed bound on algebraic degree in terms
+of iterative order and a distortion upper bound strictly larger than one, even
+when the iterative polynomial itself is fixed. It is also stronger than a
+statement involving merely convergence of polynomial coefficients: all these
+functions solve exactly $f\circ f=x$.
+
+The derivative bound gives a global normalized estimate as well. Since
+$\iota(0)=0$, the mean value theorem implies
+\begin{equation}
+ |\iota(x)+x|\le
+ \frac{2\theta}{1-\theta}|x|\qquad(x\in\R).
+ \label{nrr:ed:eq:global-near-reflection}
+\end{equation}
+Thus a sequence of such nonradical functions can converge to reflection in
+$C^1$ on every compact interval, with a uniform derivative estimate on the entire
+line. No convergence of all higher derivatives is asserted.
+
+\subsection{A terminating rational certificate search}
+
+The existential parameter choice is effective. Fix $n$ and choose an integer
+$M_0\ge2$ large enough for the desired conservative distortion bounds. Test
+\begin{equation}
+ \eps_M=\frac{1}{(n-1)M},\qquad M=M_0,M_0+1,\ldots.
+ \label{nrr:ed:eq:epsilon-search}
+\end{equation}
+For each $M$, compute
+$D_n(\eps_M,X)$ exactly and test
+\begin{equation}
+ \gcd\bigl(D_n(\eps_M,X),\partial_XD_n(\eps_M,X)\bigr)=1.
+ \label{nrr:ed:eq:disc-gcd}
+\end{equation}
+Only finitely many values fail, so this search terminates. It is unnecessary to
+construct the full bivariate exceptional polynomial $E_n$.
+
+Since $\theta<|\eps_M|<1/M$, a passing parameter has the rational certificates
+\begin{equation}
+ \Lip(\iota)\le\frac{M+1}{M-1},\qquad
+ \Lip(\iota)\Lip(\iota^{-1})\le\left(\frac{M+1}{M-1}\right)^2.
+ \label{nrr:ed:eq:coarse-cert}
+\end{equation}
+The sharper bound obtained by replacing $1/M$ with $|\eps_M|$ is also valid.
+The exact value is given by \eqref{nrr:ed:eq:theta}--\eqref{nrr:ed:eq:reflection-distortion}.
+
+With $M=100$, the exact test passes for $n=3,5,7,9,11$, using respectively
+$\eps=1/200$, $1/400$, $1/600$, $1/800$, $1/1000$. The common conservative distortion bound
+is $10201/9801$. These computations certify the listed examples; the theorem for
+every odd degree rests on the finite-exception argument, not on this finite list.
+For $n=5$, the sharper rational distortion bound is $160801/159201$.
+
+\subsection{The apparent symmetry paradox}
+
+There is no contradiction between involutivity and a nonsolvable normal closure.
+The map $t\mapsto-t$ induces an automorphism of the rational normalization and
+exchanges the two functions $X=H(t)$ and $Y=H(-t)$. It does not fix $X$, so it is
+not an automorphism over the base field $\C(X)$.
+
+The irreducible graph equation can be chosen symmetric in $X,Y$. Indeed, swapping
+$X,Y$ preserves its irreducible curve. Its defining polynomial is therefore
+carried to a scalar multiple of itself; the scalar is $1$ or $-1$. The second
+possibility would make it divisible by $X-Y$, forcing the curve to be the
+identity graph, which a decreasing involution is not. Symmetry of this algebraic
+relation is perfectly compatible with an $n$-sheeted projection of monodromy $S_n$.
+
+\section{Verification, limitations, and implications}
+\label{nrr:ed:sec:verification}
+
+\subsection{Independent exact checks}
+
+The accompanying \nolinkurl{code/04-exact-degree-verify.py} (delivered as
+\texttt{code/verify.py}; the file of that name here is Part~I's verifier) implements the right-factor algorithm
+using SymPy and exact rational or Gaussian-rational arithmetic. Its principal
+cross-check is not a second encoding of the same support criterion. Independently,
+it computes the degree in $T$ of
+\begin{equation}
+ \gcd\bigl(H(T)-H(t),\ H(aT)-H(at)\bigr).
+ \label{nrr:ed:eq:fiber-gcd}
+\end{equation}
+Over the generic parameter $t$, this degree is the number of points in a common
+fiber of the two observations, namely $d(H,a)$. Polynomial gcd computation is
+thus compared directly with the predicted maximal right-factor degree.
+
+The actual completed tests are summarized below. All passed with Python 3.13.5
+and SymPy 1.14.0. The random tests use the fixed seed 20260929; they are exactly
+reproducible and use no floating-point root approximations.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Test family & Cases \\
+\midrule
+Every nonempty positive support in $\{1,\ldots,6\}$, coefficients one;
+ five multipliers $2,-2,1/2,-1,1$ & 315 \\
+Thirty seeded monic rational polynomials of degree $2$--$9$;
+ three multipliers $-2,-1,1/2$ & 90 \\
+Structured decomposition, support-gcd, reflection, and fourth-root cases & 8 \\
+Every divisor realization for odd coordinate degrees $1$ through $15$ & 18 \\
+Binomial family identities and discriminants, odd degrees $3$ through $15$ & 7 \\
+Explicit cubic rational-coordinate recovery & 1 \\
+Resultant multiplicity for $H=t^6+t^3$, $a=2$ & 1 \\
+Near-reflection resultant identities in degrees $3$ and $5$ & 2 \\
+Critical-value and explicit graph-equation certificates for the near-reflection family & 5 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The first row comprises 63 distinct support polynomials, each with five
+multipliers. The second row is a seeded list of 30 generated polynomials rather
+than a claim of exhaustive enumeration of all polynomials in those degrees.
+Some structured examples can overlap other test families; the table counts test
+instances, not disjoint mathematical objects.
+
+The binomial-family checks substitute the coordinate into the ordinary algebraic
+equation, verify the order-two iterate identity, check the generic common-fiber
+gcd, and compare exact discriminants with \eqref{nrr:ed:eq:binomial-discriminant}.
+The resultant test verifies that the resultant is the third power of an
+irreducible quadratic graph equation in the nonprimitive example $H=t^6+t^3$.
+The near-reflection checks compute and record the critical-value discriminants
+and test their squarefreeness exactly. They also verify the symmetric graph equation
+and rational recovery by substitution; in degrees three and five, the resultant
+is independently compared with the negative of $G_{n,\eps}$.
+
+Full output is in \nolinkurl{data/04-exact-degree-verification.json} and
+\nolinkurl{data/04-exact-degree-verification.txt} (delivered as
+\texttt{results/verification.json} and \texttt{results/verification.txt}).
+(Merge note: in the write phase, 29 September 2026, the verifier was rerun in a
+scratch copy with its delivered name restored, under Python~3.13.5 and
+SymPy~1.14.0, in about 11~seconds; all checks passed, and both outputs equal
+the shipped records apart from Windows line endings.) These are finite implementation checks and
+example certificates. They do not prove the universal field theorem, the
+all-degree realization theorem, or the existence theorem for every small
+distortion tolerance; those assertions rest on the proofs in the article.
+
+\subsection{What has and has not been resolved}
+
+The exact-degree question is fully answered for polynomial coordinates and
+nonzero scalar multipliers. [Merge note: for torsion multipliers the answer
+is the terminating exact algorithm of Proposition~\ref{nrr:ed:prop:algorithm},
+with a complete classification for involutions
+(Corollary~\ref{nrr:ed:cor:odd-factor}, Theorem~\ref{nrr:ed:thm:divisors});
+no closed formula is claimed there.] The answer is explicit in the infinite-order case,
+and a finite maximal-right-factor computation in the torsion case. For the
+normalized hyperbolic maps in the repository question, it reduces to the single
+formula $\algdeg(f)=\deg H$, with no exceptional decompositions.
+
+We also answer the family question when all maps use one fixed coordinate:
+two distinct hyperbolic orbit observations generate the whole coordinate field,
+and every other dilation is rationally expressible from them. We do not claim
+to classify field intersections or composita arising from two unrelated
+coordinate polynomials.
+
+The fixed-involution examples separate algebraic and dynamical complexity in a
+particularly sharp way. They have the same exact iterative polynomial, uniformly
+controlled distortion, and arbitrarily large nonsolvable algebraic degree. This
+rules out a complexity bound based only on those data. It does not rule out
+bounds using additional restrictions, such as coefficient heights, a prescribed
+non-torsion multiplier, a bound on coordinate degree, or a prescribed ramification
+configuration.
+
+No result here is a classification of all continuous solutions of an iterative
+equation, all smooth involutions, or all possible real algebraic diffeomorphisms.
+The domain is a polynomial-coordinate family. The assertion that every sufficiently
+smooth non-involutive decreasing solution belongs to that family is part of the
+source report, not a theorem reproved here. No positive-characteristic analogue,
+multivariate analogue, or general rational-coordinate analogue is assumed.
+
+\subsection{Arithmetic interpretation}
+
+For the rational-coefficient examples, the monic graph equations have rational
+coefficients. Their geometric Galois group over $\C(X)$ is $S_n$, so the
+arithmetic group over $\Q(X)$ is also $S_n$: it acts on the same $n$ roots,
+contains the geometric group, and is contained in $S_n$. Thus the obstruction
+is not introduced by allowing arbitrary real coefficients.
+
+Individual rational specializations $X=x_0$ can have smaller Galois groups and
+can even make the selected value rational. The present argument does not
+classify those exceptional inputs. Separating generic functional nonsolvability
+from arithmetic specialization is essential for an accurate interpretation.
+
+\section{Further research questions}
+\label{nrr:ed:sec:questions}
+
+These questions continue the results proved here. They are stated as research
+targets, not as claims that every related special case is absent from the literature.
+
+\subsection{Effective complexity of two-observation recovery}
+
+The existence of a rational $R(X,Y)$ recovering $t$ is exact, and subresultants
+give an algorithm. Determine optimal bounds for the numerator and denominator
+degrees, coefficient heights, and bit complexity in terms of $\deg H$ and the
+input size. The generic subresultant bound need not be sharp for a dilated pair.
+A useful goal is a canonical reduced reconstruction certificate and a proof
+that it is minimal under a natural bidegree ordering.
+
+\subsection{Real charts and conditioning}
+
+The function-field reconstruction can have denominators that vanish on the real
+graph even though the real inverse coordinate is smooth. Characterize when one
+rational chart suffices globally, as in Example~\ref{nrr:ed:ex:recovery}; otherwise bound
+the number of charts needed. Then compare algebraic degree with the condition
+number of the coordinate-recovery map. The binomial identity shows that high
+degree and easy two-observation recovery can coexist, but its denominator
+$\delta=a-a^n$ becomes small near a resonant multiplier.
+
+\subsection{A fast torsion decomposition algorithm}
+
+The divisor-by-divisor algorithm is finite but not optimized. Can the residue-class
+support restriction $W=t^rR(t^q)$ be imposed during candidate construction to reduce
+coefficient growth or avoid most divisor tests? Determine the bit complexity for
+rational and algebraic-number input, including a compact certificate for the
+maximality of the returned factor. This is a more precise target than a generic
+polynomial decomposition implementation.
+
+\subsection{Monodromy at exceptional perturbation parameters}
+
+The discriminant method proves that the near-reflection family has only finitely
+many non-Morse parameters in each degree. Determine those parameters, the collision
+patterns of their critical values, and their resulting monodromy groups. The exact
+positivity range $\theta<1$ is already known from Proposition~\ref{nrr:ed:prop:reflection-distortion};
+it is natural to ask which monodromy degenerations can occur inside that range.
+A uniform description would turn the terminating rational search into a direct
+closed parameter choice.
+
+\subsection{Arithmetic specialization and radical values}
+
+For $\Phi_{n,a}$ and for the near-reflection graph equations, characterize rational
+inputs where the specialized Galois group is smaller than $S_n$, and determine
+which selected real values are solvable by radicals. The generic field result
+alone cannot answer this. Exact specialization certificates, rather than numerical
+root plots, would connect the present analysis to the repository's radical-solvability
+and polynomial-formula programs. [Merge note: these are the collection report
+\nolinkurl{galois-theory-and-radicals/specialization-safe-radical-solvers} and
+the Lean project \nolinkurl{Algebra/PolynomialFormulas}, whose
+\nolinkurl{AbelRuffini.lean} proves that a fixed rational quintic has a root
+not expressible by radicals; neither is used in Part~IV.]
+
+\subsection{Optimal regularity thresholds revisited}
+
+The source report's question about the least differentiability forcing a global
+polynomial coordinate remains open here. The exact-degree result supplies a new
+observable after that threshold: coordinate degree equals algebraic degree for
+hyperbolic normalized maps. Can finite jet data or the minimal iterative spectrum
+control this degree before a full coordinate is constructed? Any proposed argument
+must keep the involution branch separate, in light of Theorem~\ref{nrr:ed:thm:fixed-involution}.
+
+\subsection{Different coordinates and field intersections}
+\label{nrr:ed:q-coordinates}
+
+We have classified all dilations of one coordinate through a common rational
+function field. For two polynomials $H,G$, study the fields generated by
+$H(aH^{-1}(x))$ and $G(bG^{-1}(x))$ over $\C(x)$. Determine when their normal
+closures coincide, intersect nontrivially, or are linearly disjoint. This is the
+unresolved part of the repository's broader question about algebraically related
+coordinate descriptions; ordinary compositional equivalence is only one mechanism.
+
+\subsection{Rational coordinates and multiple poles}
+
+The polynomial proof exploits a unique pole at infinity and uniqueness of a
+normalized right factor of fixed degree. For rational coordinates, a common
+intermediate generator can have several poles, and that uniqueness argument no
+longer transfers unchanged. Identify the correct replacement for the dilation
+common-field theorem in terms of pole configurations and finite symmetries.
+Even a complete two-pole or Laurent-polynomial case would be a substantive extension.
+
+\subsection{Higher-dimensional observations}
+
+For a polynomial map $H:\C^m\to\C^m$ and a diagonal linear transformation $A$,
+consider the field generated by the components of $H(t)$ and $H(At)$. Determine
+hypotheses ensuring recovery of $\C(t_1,\ldots,t_m)$ and quantify the number of
+observations needed when two do not suffice. Resonances among coordinate weights
+and the failure of one-variable L\"uroth theory are genuine new obstacles, not
+minor notational changes.
+
+\subsection{A staged Lean or Rocq formalization}
+
+A practical first milestone is Lemma~\ref{nrr:ed:lem:unique}, using polynomial coefficients
+and degree arithmetic only. Next formalize the covariance deduction assuming a
+polynomial intermediate-field generator, then the support-gcd corollary. A separate
+layer can certify the executable right-factor search and the common-fiber gcd tests.
+The analytic realization and distortion formulas need only one-variable calculus.
+
+The final monodromy step should be isolated explicitly: formalize the elementary
+critical-point calculation and either import a precisely stated Morse-monodromy
+theorem or prove the covering-space correspondence. This separation would make
+clear which degree results are kernel-checked before the more demanding Galois
+and analytic infrastructure is completed. No such formalization is included in
+this package. (As of 29 September 2026 none of these stages has been started
+in ProveIt.)
+
+\section{Conclusion of Part~IV}
+\label{nrr:ed:sec:conclusion}
+
+The exact algebraic degree of a polynomial-coordinate iterative solution is a
+common-field problem. Polynomial intermediate fields and normalized right-factor
+rigidity force the common coordinate to be a dilation eigenfunction. Infinite-order
+dilations leave only monomial common factors, producing the support-gcd formula
+and exact degree $\deg H$ whenever the linear term is nonzero. Torsion multipliers
+retain residue-class factors, which explain every degree drop and give a complete
+odd-divisor realization theorem for polynomial-coordinate involutions.
+
+The same field identity transfers normal closures and recovers an entire dilation
+family from two observations. Its consequences go beyond sharpening an upper
+bound: order-two iterative equations can have solutions of arbitrarily large
+nonradical degree, and even the fixed equation $f\circ f=x$ admits such solutions
+arbitrarily close to reflection. Topological simplicity, small distortion, rational
+normalization, and low iterative order therefore do not force algebraic simplicity.
+
+\section{Provenance, dependencies, and claim audit of Part~IV}
+\label{nrr:ed:app:provenance}
+
+\subsection{Repository snapshot}
+
+The repository was inspected at the commit
+\begin{center}
+\small\texttt{11e1e900114e7c0cfdcd19fe346ddb4f2852dbc5}.
+\end{center}
+The relevant directory is
+\begin{quote}\small\ttfamily
+\path{SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/nonreal-roots-in-iterative-equations/}.
+\end{quote}
+Its merged \texttt{article.tex} was identified by the Git blob
+\begin{center}\small\ttfamily
+b52eba816e4c6a108d740e4e4e0edd5b1f8631ec.
+\end{center}
+The README records the three-part merger and the original Part III title
+\emph{The Decreasing Spectral Core: Complete minimal spectra, finite-smoothness
+rigidity, and global polynomial conjugacy}. The original Part III source was
+also inspected through the user's prior-file library as
+\texttt{article(20260929-151305).tex}. Its Section 11.7 identifies the exact-degree
+question; its discussion of rational solutions supplies the context for the
+existing degree upper bound. This source is an unrefereed companion, not an
+independent confirmation of the repository's claims.
+(The manuscript cites the report as the GitHub tree of that path at that commit,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/11e1e900114e7c0cfdcd19fe346ddb4f2852dbc5/SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/nonreal-roots-in-iterative-equations};
+that bibliography entry is replaced here by references to Parts~I--III. Its
+Section~11.7 is Part~III's Section~35.7, and its provenance note is shipped
+verbatim as \nolinkurl{04-exact-degree-PROVENANCE.md}.)
+
+\subsection{Dependency boundary}
+
+The common-field theorem uses the classical L\"uroth theorem, elementary facts
+about rational maps and their degrees, and the coefficient comparison proved in
+Lemma~\ref{nrr:ed:lem:unique}. The support-gcd, torsion, and degree results then follow
+without any iterative-equation classification theorem. The finite computation
+uses these proved criteria but is separately checked against polynomial gcds.
+
+The analytic examples additionally use the real inverse function theorem and the
+mean value theorem. Their degree claims follow from the common-field results.
+Their Galois claims use the classical complex covering-space/monodromy correspondence
+and the Morse criterion, whose local and permutation-group argument is given in
+Lemma~\ref{nrr:ed:lem:morse}. The all-degree perturbation construction uses only a nonzero
+polynomial discriminant and the finiteness of its exceptional parameter set.
+
+Neither the computations nor the source report's asserted smooth classification
+are premises of the central common-field theorem. No Lean or Rocq theorem is
+claimed to certify this manuscript. The paper resolves a question explicitly
+left open in the inspected repository, not a separately established long-standing
+open problem in the published literature.
+
+\subsection{Extent of the literature check}
+
+The relevant intermediate-field and equal-degree decomposition statements in
+Zieve--M\"uller \cite{ZM2008}, including the credited coefficient argument,
+were inspected in the full preprint. The Morse-monodromy discussion in
+Kreso--Tichy \cite{KT2016} was inspected as well. Draga--Morawiec
+\cite{DM2016} supplies the iterative-equation context; no priority claim
+about order-two constructions is inferred from its abstract or from an absence
+of a particular statement there.
+
+The search is not a complete historical survey of polynomial decomposition,
+algebraic involutions, or algebraic functional equations. Accordingly, the paper
+claims self-contained proofs of the stated extension of the ProveIt question,
+not proof that each consequence first appears here. Independent mathematical
+review and a broader bibliographic comparison remain appropriate.
+
+\section{Reproduction guide for Part~IV}
+\label{nrr:ed:app:reproduce}
+
+The package contains the article source and PDF, the exact checker, its recorded
+outputs, a Makefile, dependency information, and a checksum ledger. With the tested
+SymPy version installed, run from the package root:
+\begin{lstlisting}
+python code/verify.py --output-dir results
+latexmk -pdf -interaction=nonstopmode article.tex
+\end{lstlisting}
+(Merge note: those commands apply to the delivered package. Here the article is
+Part~IV of this report, the checker is \nolinkurl{code/04-exact-degree-verify.py},
+its outputs are \nolinkurl{data/04-exact-degree-verification.json} and
+\nolinkurl{data/04-exact-degree-verification.txt}, and the tested SymPy version is
+pinned in \nolinkurl{data/04-exact-degree-requirements.txt}; the manuscript's PDF
+and checksum ledger are not shipped. Run in this report's directory, the first
+command would call Part~I's verifier \texttt{code/verify.py}, which rejects the
+option \texttt{-{}-output-dir} with a usage error; the delivered Makefile, shipped
+as \nolinkurl{code/04-exact-degree-Makefile}, runs that command in its
+\texttt{verify} target and builds or cleans \texttt{article.*} in place in its
+other targets. In the delivered layout the default output directory
+\texttt{results} overwrites the recorded outputs. Rerun the checker in a scratch
+copy instead, for example with \texttt{W} a scratch directory:
+\begin{lstlisting}
+mkdir -p "$W/04/code"
+cp code/04-exact-degree-verify.py "$W/04/code/verify.py"
+cd "$W/04"
+uv run --no-project --with sympy==1.14.0 python code/verify.py --output-dir "$W/04/rerun"
+\end{lstlisting}
+The checker uses \texttt{assert}, so do not run it under \texttt{python -O}.
+The report's \texttt{README.md} records this rerun.)
+The checker does not require network access. The TeX source uses standard packages
+including Latin Modern (in the delivered manuscript; this report is set in newtx), AMS mathematics, microtype, hyperref, and listings.
+No external image or proprietary font file is required.
+
+For clarity, the main algorithm is summarized independently of the implementation:
+\begin{lstlisting}
+input: nonconstant H of degree n, nonzero a
+for d in divisors(n), in decreasing order:
+    m = n/d
+    W = t^d
+    for j = 1,...,d-1:
+        c = (coeff(H/lc(H),n-j) - coeff(W^m,n-j))/m
+        W = W + c*t^(d-j)
+    if W(a*t) != a^d*W(t): continue
+    if exact_composition_division(H,W) succeeds:
+        return (W, n/d)
+\end{lstlisting}
+The returned second component is the algebraic observation degree; the degree
+of $W$ is the discarded common-fiber multiplicity. Keeping these two outputs
+distinct avoids a frequent inversion of the degree formula.
 
 \appendix
 \section{Source and status audit}
@@ -4941,6 +6675,19 @@ C.~Xia, R.~Huo, X.~Wang, and Z.~Xia,
 iterative equation}, Aequationes Mathematicae \textbf{100} (2026), article~44.
 \href{https://doi.org/10.1007/s00010-026-01289-3}{doi:10.1007/s00010-026-01289-3}.
 [Part~III, added 29 September 2026.]
+
+\bibitem{ZM2008}
+M.~E. Zieve and P.~M\"uller,
+\emph{On Ritt's polynomial decomposition theorems},
+\href{https://arxiv.org/abs/0807.3578}{arXiv:0807.3578}, 23 July 2008;
+inspected preprint version, especially Lemma~2.2, Corollary~2.9 and
+Remark~2.16. [Part~IV, added 29 September 2026.]
+
+\bibitem{KT2016}
+D.~Kreso and R.~F. Tichy,
+\emph{Diophantine equations and the monodromy groups},
+\href{https://arxiv.org/abs/1601.07316}{arXiv:1601.07316}, 27 January 2016.
+[Part~IV, added 29 September 2026.]
 
 \end{thebibliography}
 \end{document}

@@ -62,8 +62,8 @@ New standalone intake members:
   `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
   All 24 non-ledger payloads were covered by its submitted ledger; six CSV
   hashes were refreshed after repository CRLF-to-LF normalization. The ledger
-  is now retired and recoverable from Git history. Its current 2,092-line,
-  89,360-byte source has SHA-256
+  is now retired and recoverable from Git history. Its 2026-09-04 2,092-line,
+  89,360-byte source had SHA-256
   `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`.
   Three serial halt-on-error passes from absent auxiliaries produced
   34 pages/1,152,987 bytes, 36 pages/1,171,153 bytes, and a final 36-page,
@@ -72,6 +72,17 @@ New standalone intake members:
   The final log, metadata, A4/rotation-zero, all-page render/text, and
   representative visual gates passed; all 27 font rows are embedded/subset,
   five are Libertinus, none is Type 3, and generated sidecars are absent.
+  On 2026-09-29 an editorial note under `conj:jet-small-ball` marked that
+  conjecture false for `q ≠ 1/e` (see the report README's erratum and
+  `Polynomial_Geometric_Small_Deviations_Fabius_Jets/`).  A second note of
+  the same day, after `conj:copula-endpoints`, points to
+  `Endpoint_Geometry_Common_Digit_Fabius_Laws/` for joint lower-tail rates
+  and threshold conditioning (the conjecture and exact-value conditioning
+  stay open).  A third note of the same day, after `conj:ray-decay`,
+  points to `Brownian_Matrix_Governing_Fabius_Smoothness/` for its leading
+  coefficient in a window sense (the pointwise form and the remainder stay
+  open); the source is now 2,151 lines/92,789 bytes and the rebuilt PDF
+  36 pages/1,297,530 bytes.
 
 - [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
   the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
@@ -147,6 +158,80 @@ of an existing draft; semantic consolidation is deferred to the post-
   filed and does not cite it; the two are to be compared, and possibly
   merged, after review.  Unreviewed; its numerics are not certificates; no
   Lean statement.
+- [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
+  *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
+  Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy
+  check program), filed on 2026-09-29 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  It answers the
+  equilibrium part of `question:design-limit` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  the volume-maximizing hyperbolic node designs on `[0, L]` have an
+  explicit limiting density, an elliptic deformation of the arcsine law,
+  whose constant `−log tanh` potential is a ratio of complete elliptic
+  integrals (the classical elliptic capacity, credited as such).  For
+  finite designs it proves energy bounds, a bounded total deviation from
+  equal spacing, a boundary correction uniform in the dimension, and a
+  sharp determinant transition `exp(−4e^{−2s})` at
+  `h = ½ log n + s`.  It also factors the report's equally spaced volume
+  exactly into bulk, MacMahon and tail products, the algebraic part of
+  `question:q-barnes`.  The endpoint spacings and the joint
+  `d → ∞`, `h ↓ 0` asymptotic stay open.  Its "transseries" are
+  convergent elliptic and modular expansions.  Unreviewed; its numerics
+  are not certificates; no Lean statement.
+- [`Polynomial_Geometric_Small_Deviations_Fabius_Jets/`](Polynomial_Geometric_Small_Deviations_Fabius_Jets/),
+  *Polynomial–Geometric Small Deviations: A Corrected Fabius-Jet
+  Conjecture* (25-page A4 PDF, 1,168-line source, an mpmath/SciPy/SymPy
+  check program), filed on 2026-09-29 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  It shows that the jet
+  small-ball conjecture `conj:jet-small-ball` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/)
+  is false whenever `q ≠ 1/e`: the logarithm of the small-ball
+  probability of `Σ_{n≥1} n^m q^n U_n` contains a term
+  `((m+1)² log λ/λ) log log(1/x)`, `λ = −log q`, which the conjectured
+  shape omits.  It replaces the conjecture by an all-order expansion in
+  an exact Lambert coordinate, with periodic coefficients whose leading
+  one is independent of `m` and has an explicit Gamma–zeta Fourier
+  series, and adds a comparison law for perturbed weights and an
+  inverse-quantile theorem.  For the Fabius law itself (`m = 0`,
+  `q = 1/2`) the expansion is the one already machine-checked in
+  `Analysis/FabiusFunction/Lean` (the corrected Lambert-phase and
+  explicit "Wikipedia" forms of the small-argument asymptotic), which the
+  article does not cite (an editorial note of 2026-09-29 now names them).  Unreviewed; its numerics are not certificates;
+  no Lean statement for the general case.
+- [`Endpoint_Geometry_Common_Digit_Fabius_Laws/`](Endpoint_Geometry_Common_Digit_Fabius_Laws/),
+  *The Endpoint Geometry of Common-Digit Fabius Laws* (22-page A4 PDF,
+  1,695-line source, a standard-library exact check program), filed on
+  2026-09-29 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It takes up the endpoint-dependence
+  direction of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  the probability that several common-digit laws `X_{q_i}` are all small
+  is governed by an upper envelope of lines, with an explicit three-term
+  expansion `−I t² − T t log t + A t`, a universal copula exponent
+  `2√A/(√A+√B)` on the diagonal, and Gaussian and extreme-tail limits
+  that do not commute although the correlation is constant.  It does not
+  claim the zonoid report's `conj:copula-endpoints`.  Its one-parameter
+  case agrees with the corrected jet small-ball form and, for the Fabius
+  law, with the machine-checked small-argument expansion in
+  `Analysis/FabiusFunction/Lean`, which it does not cite.  Unreviewed;
+  its asymptotic tables are not certificates; no Lean statement.
+- [`Brownian_Matrix_Governing_Fabius_Smoothness/`](Brownian_Matrix_Governing_Fabius_Smoothness/),
+  *The Brownian Matrix Governing Fabius Smoothness* (22-page A4 PDF,
+  1,534-line source, an exact-plus-mpmath check program), filed on
+  2026-09-29 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It takes up the sharp Fourier-decay
+  conjecture `conj:ray-decay` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  for distinct moduli every mixed derivative of the joint density obeys
+  `log ‖∂^α f‖_p = ½ αᵀMα + O(|α|+1)` with the Brownian covariance
+  matrix `M_ij = min(λ_i, λ_j)`, the leading ray coefficient of the
+  conjecture holds in a window and relative-measure sense, and at
+  opposite parameters `(r, −r)` the leading cost doubles.  Its envelope
+  area is the one that governs the joint small deviations of the
+  endpoint article above.  The finer periodic remainder is not claimed.
+  Unreviewed; its numerics are diagnostics; no Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

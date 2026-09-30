@@ -70,6 +70,8 @@
 \newtheorem{experiment}[theorem]{Numerical experiment}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 
 \newcommand{\Corr}{\operatorname{Corr}}
 \newcommand{\KL}{D_{\mathrm{KL}}}
@@ -1774,6 +1776,22 @@ translation part should generate a $q$-Weyl algebra closely related to the
 existing Koopman calculus.  This would connect the present Bayesian filtration to
 the repository's transfer determinants without duplicating the earlier operator
 results.
+% ed. (2026-09-29): the expected q^{mn} diagonal is incorrect for C_m.
+\begin{ednote}
+The expectation in the preceding paragraph is not correct for the
+operator \eqref{eq:Cm}.  Since $(\mathcal C_mx^n)(s)=\Expectation(s+q^mX_q')^n$
+with $X_q'$ an independent copy of $X_q$, $\mathcal C_m$ maps each monic
+polynomial of degree~$n$ to a monic polynomial of degree~$n$; and since the
+moment generating functions factor as $M_{X_q}(t)=M_{S_{q,m}}(t)\,M_{X_q}(q^mt)$,
+it carries the Appell polynomials of $X_q$ to those of $S_{q,m}$.  Its
+diagonal in the monomial and Appell bases is therefore identically~$1$; in
+the orthonormal polynomial bases it is $\sqrt{h_n(S_{q,m})/h_n(X_q)}$, with
+$h_n$ the squared norm of the degree-$n$ monic orthogonal polynomial, equal
+to $\sqrt{1-q^{2m}}$ at $n=1$.  The factors $q^{mn}$ belong to the dilation
+$g\mapsto g(q^m\,\cdot)$, not to $\mathcal C_m$.  The later unreviewed draft
+\path{Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/} of this group
+(2026-09-29) proves this and treats the singular system of $\mathcal C_m$.
+\end{ednote}
 
 \subsection{Thue--Morse information identities beyond KL}
 

@@ -45,6 +45,9 @@
 \newcommand{\snap}{\texttt{aa06d3e29498aaa37a5b7924764d8a7b6f9d9ce0}}
 
 \begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which removes the
+% duplicate hyperref destination page.1 (pdfTeX warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{12mm}
 {\color{MidnightBlue}\large TRANSSERIES RESEARCH / PROVEIT COMPANION\par}
@@ -68,6 +71,7 @@ A complementary fixed-index analysis gives a precise arithmetic distinction. The
 \vfill
 \noindent\small\textbf{Status.} A self-contained research derivation, not a peer-reviewed paper or a Lean-checked proof. It answers a specified uniform-matching question in the inspected repository for the central Gaussian family. Priority over the broader $q$-asymptotics literature is not asserted. Supporting computations are reproducibility checks, not interval certificates.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \tableofcontents
 \newpage
@@ -127,6 +131,43 @@ These conclusions are proved in \cref{sec:uniform,sec:optimal,sec:inverse,sec:ar
 The dilogarithmic crossover phase and its inversion away from $\tau=0$ are inherited from the repository, not presented as new here. Euler--Maclaurin summation, the Gamma and $q$-Gamma identities, the Dedekind eta transformation, Mellin inversion, and Bernoulli Fourier series are classical ingredients \cite{dlmfem,dlmfqgamma,dlmfeta,dlmfhurwitz,dlmfbern}. McIntosh's work already provides broad all-order $q$-shifted-factorial asymptotics \cite{mcintosh}. Resurgent analysis of related quantum dilogarithms is also established literature \cite{gk,sauzin}.
 
 The contribution of this manuscript is the explicit assembly and proof of the global Gamma-core remainder, its sharp exponential scale, its endpoint-stable inverse transport, and the stated arithmetic classification and defect formula for this interpolation. The repository comparison is specific and checkable. The literature search is not exhaustive, and neither an isolated coefficient formula nor the use of a classical method establishes historical novelty. No solution of a general open problem about all transseries, all $q$-products, or all inverse asymptotics is claimed.
+
+% ed. (2026-09-29): editorial note added by ProveIt (sibling packages,
+% uncited repository results); not part of the delivered text.
+\begin{quote}\small
+\textbf{Editorial note (ProveIt, 2026-09-29).}
+\emph{Sibling packages.} This article is one of five packages that answer
+the same gap of the companion for the same interpolation and are to be merged
+into its chapter on the singular transition $q\to1$ \cite{ed:siblings}: the
+$q$-multinomial, central Gaussian-binomial and certified-inversion articles,
+this article, and the theta-resolved article. The five write the interpolation in different normalizations ($q=\ee^h$ or $Q=\ee^{-h}$; remainders $R_K$, $r_K$, $R_M$ or $L_h-F_{h,K}$; smallest ray parameter $a_*$, $\alpha$ or $a_{\min}$); a normalization dictionary is left to the merge.
+This article is complementary rather than a duplicate: it keeps the Gamma
+quotient exact and expands in $h$, and its action $4\pi^2$ (in $1/h$) is
+that of the modular term $\ee^{-4\pi^2/h}$, while the other four truncate in
+powers of $1/x$ with least remainders of order $\ee^{-2\pi a_*x}$; the
+certified-inversion article's window theorem describes where the two
+exponentials compete ($hx$ near $2\pi$).
+
+\emph{Gaussian Coefficient Calculus.} Theorem \texttt{q3:thm:double-scaling}
+of the Fabius tree's Gaussian-coefficient volume \cite{ed:gcc} expands
+$\log\bigl[\begin{smallmatrix}n\\k\end{smallmatrix}\bigr]_{\ee^{-\tau/n}}$
+to all orders only for $0<\tau_0\le\tau\le\tau_1$, the restriction of
+\texttt{t3:prop:double-A}. Its central case $k/n=\frac12$ is this
+interpolation at integers ($n=2x$, its $\tau$ equal to $2hx$).
+\Cref{thm:uniform,thm:optimal} hold for all real $x\ge0$ but organize the
+expansion differently (the Gamma quotient is kept exact), so a term-by-term
+comparison with its coefficients is left to the merge. This article does
+not cite that volume.
+
+\emph{Canonical volume and Lean.} \Cref{thm:optimal,thm:sharp} are an
+instance, in the variable $1/h$, of the least-term mechanism of the
+canonical volume's \texttt{p0:thm:optimal-truncation} \cite{ed:tai}. The
+Lean theorems \path{Fabius.exists_eq_in_residual_interval} and
+\path{Fabius.transport_bound} \cite{ed:lean} check the residual-to-root step
+under a positive lower derivative bound; \cref{thm:inverse} deliberately
+avoids such a global bound at the zero-slope endpoint, so they are related,
+not relied on. This article cites neither.
+\end{quote}
 
 \section{The exact interpolation and its scales}
 \label{sec:exact}
@@ -1317,7 +1358,8 @@ The inverse analysis adds a second ingredient: a residual that vanishes to the c
 \section{Repository provenance and scope ledger}
 \label{app:provenance}
 
-The repository was inspected through its GitHub connector at the pinned tree
+% ed. (2026-09-29): "pinned tree" corrected to "pinned commit" (the pin is a commit).
+The repository was inspected through its GitHub connector at the pinned commit
 \begin{center}\small\snap\end{center}
 The comparison does not claim to cover unpublished conversations or commits added after that snapshot. The paths directly relevant to this work are:
 \begin{quote}\small\ttfamily\raggedright
@@ -1431,5 +1473,38 @@ any theorem in this manuscript.
 D.~Sauzin, \emph{Introduction to 1-summability and resurgence},
 arXiv:1405.0356, 2014.
 \url{https://arxiv.org/abs/1405.0356}.
+% ed. (2026-09-29): editorial bibliography entries added by ProveIt.
+\bibitem{ed:siblings}
+[Editorial addition, ProveIt, 2026-09-29.] The five packages of the
+$q\to1$ merge unit in the ProveIt series-and-transseries collection,
+\path{Analysis/Transseries/docs/series-and-transseries/}:
+\path{Uniform_q_Multinomial_Certified_Inversion/uniform_q_multinomial_transseries.tex};
+\path{Uniform_Resurgent_Crossover_Gaussian_Binomials/article.tex};
+\path{Certified_Inversion_q_to_1_Transition/q_transition.tex};
+\path{Gamma_Core_q_to_1_Crossover/Gamma_Core_Transseries.tex};
+\path{Theta_Resolved_Optimal_Truncation_q_Multinomial/article.tex}.
+Filed in batches 45 and 46 of \path{docs/incoming/README.md}; unrefereed.
+
+\bibitem{ed:gcc}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Gaussian
+Coefficient Calculus},
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/Gaussian_Coefficient_Calculus.tex},
+Theorem \texttt{q3:thm:double-scaling} (line 3942) and its domain
+\texttt{q3:eq:double-scaling-domain}.
+
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion} (canonical volume),
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Theorem \texttt{p0:thm:optimal-truncation} (line 39360).
+
+\bibitem{ed:lean}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt Lean library:
+\path{Fabius.exists_eq_in_residual_interval} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean}
+and \path{Fabius.transport_bound} (the crosswalk of the canonical volume's
+\texttt{p0:eq:transport-bound}) in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RemainderTransport.lean}.
 \end{thebibliography}
 \end{document}

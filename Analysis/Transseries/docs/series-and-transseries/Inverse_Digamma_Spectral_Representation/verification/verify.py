@@ -185,10 +185,11 @@ def run(dps: int = 240) -> dict:
             'symbolic':sym,'direct_remainders':rows,'densities':densities,
             'late_coefficient_comparison':late,
             'status':'All asserted finite checks passed; not interval arithmetic.'}
-    (DATA/'results.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-09-29): LF line endings on every platform, like the filed files.
+    (DATA/'results.json').write_text(json.dumps(result,indent=2)+'\n',newline='\n')
     for name,items in [('direct_remainders',rows),('density',densities),('late_coefficients',late)]:
         with (DATA/(name+'.csv')).open('w',newline='') as f:
-            writer=csv.DictWriter(f,fieldnames=list(items[0])); writer.writeheader();writer.writerows(items)
+            writer=csv.DictWriter(f,fieldnames=list(items[0]),lineterminator='\n'); writer.writeheader();writer.writerows(items)
     table=['\\begin{tabular}{rrrrr}','\\toprule',
            '$X$ & $M$ & Direct ratio & Two-correction prediction & Difference ratio \\\\',
            '\\midrule']
@@ -197,7 +198,7 @@ def run(dps: int = 240) -> dict:
             table.append(f"{row['X']} & {row['M']} & {float(row['direct_ratio']):.9f} & "
                          f"{float(row['prediction_2']):.9f} & {float(row['direct_minus_forward_ratio']):.9f} \\\\")
     table+=['\\bottomrule','\\end{tabular}']
-    (DATA/'direct_table.tex').write_text('\n'.join(table)+'\n')
+    (DATA/'direct_table.tex').write_text('\n'.join(table)+'\n',newline='\n')
     print(json.dumps(sym,indent=2),flush=True)
     return result
 

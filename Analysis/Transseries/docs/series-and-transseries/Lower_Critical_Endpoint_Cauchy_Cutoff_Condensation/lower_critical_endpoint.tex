@@ -1,0 +1,1706 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,array,longtable,enumitem,needspace}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The lower critical endpoint}
+\fancyhead[R]{\small Condensation and transseries}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.15em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ee}{\epsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ind}{\mathbf1}
+\newcommand{\dto}{\xrightarrow{\mathrm d}}
+\newcommand{\pto}{\xrightarrow{\Prob}}
+\newcommand{\law}{\mathcal L}
+\newcommand{\tv}{d_{\mathrm{TV}}}
+\newcommand{\coef}[2]{[#1]#2}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\commit}{\texttt{3d5973524506411392a911470b5ddc35521568ea}}
+\hypersetup{pdftitle={The Lower Critical Endpoint: Arbitrary-Rate Condensation, Cauchy Cutoff Laws, and Degenerating Transseries},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={A model-specific answer to the exponent-one endpoint question in ProveIt}}
+\begin{document}
+\begin{center}
+{\small\scshape Transseries, asymptotic inversion, and conditional probability}\par
+\vspace{12pt}
+{\LARGE\bfseries The Lower Critical Endpoint}\par
+\vspace{8pt}
+{\Large Arbitrary-Rate Condensation, Cauchy Cutoff Laws,\par and Degenerating Transseries}\par
+\vspace{14pt}
+{\normalsize Research article prepared for Vladimir Reshetnikov}\par
+{\small 29 September 2026}\par
+\end{center}
+\vspace{6pt}
+\begin{abstract}
+We study the critical countable-action equation
+\[
+ U_\ee(q)=c_\ee\bigl(\Li_{2+\ee}(qe^{U_\ee(q)})+P(qe^{U_\ee(q)})\bigr),
+ \qquad c_\ee=(\zeta(1+\ee)+P'(1))^{-1},
+\]
+where $P$ changes finitely many nonnegative action weights. For every joint
+limit $n\to\infty$, $\ee=\ee_n\downarrow0$, with no restriction on its rate,
+we prove
+\[
+ [q^n]U_\ee(q)\sim \rho_\ee^{-n}\frac{\ee}{n d_n},\qquad
+ d_n=\left(\frac{nc_\ee}{\ee}\right)^{1/(1+\ee)},\quad
+ \rho_\ee=e^{-c_\ee(\zeta(2+\ee)+P(1))}.
+\]
+The coefficient is produced by one exceptional action. Deleting that action
+from the exactly conditioned Poisson configuration recovers the
+unconditioned configuration in total variation. If $nc_\ee\to\infty$, the
+remaining actions have a Cauchy-domain cloud on the scale
+$b_n=(nc_\ee)^{1/(1+\ee)}$, and the largest action has a reflected, explicitly
+normalized $1$-stable fluctuation about an exact truncated-mean center
+$D_n$. Consequently, the minimal action cutoff retaining a fixed fraction
+$r$ of the coefficient is $D_n+b_nF^{-1}(r)+o(b_n)$. Replacing $D_n$ by
+$d_n$ is incorrect at that precision: their difference is asymptotic to
+$b_n\log(1/\ee)$. The bounded-intensity regime has instead a discrete
+compound-Poisson remainder. We also give a convergent two-coordinate
+critical inverse chart, uniform through the removable parameter endpoint,
+and explain why its endpoint is a degenerate equation rather than a new
+nonzero critical function. All probabilistic estimates needed for the
+moving-parameter limits are proved directly.
+\end{abstract}
+\noindent\textbf{Scope and status.}
+This article supplies a model-specific answer to the lower-endpoint part of
+Question~4 in the repository's \emph{Critical Hahn Transseries} report.
+Cauchy condensation and deletion of a largest summand are established
+mechanisms, not discoveries claimed here. The contribution is the explicit
+arbitrary-rate triangular theorem, its sparse/dense matching, and its
+transseries and action-budget consequences for this family. Publication
+priority has not been established. These are conventional mathematical
+proofs in an unrefereed research draft; no new Lean verification is claimed.
+
+\clearpage\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup\clearpage
+
+\section{The precise question and the contribution}
+\label{sec:intro}
+
+\subsection{A repository question not answered by the upper endpoint}
+The \texttt{ProveIt} transseries project contains a countable-action
+critical-inversion model with tail $a_j\asymp j^{-1-\alpha}$,
+$1<\alpha<2$. Its report \emph{Beyond Finite-Action Folds: Critical Hahn
+Transseries, Stable Sector Asymptotics, and Sharp Action Budgets} asks in
+Question~4 for joint limits $\alpha\downarrow1$ and $\alpha\uparrow2$ with
+coefficient index $n$ \cite{repo-critical}. The editorial note at the
+snapshot inspected here records several results near the upper endpoint,
+but explicitly leaves the lower endpoint untreated. The snapshot is
+\begin{center}\small\commit.\end{center}
+The relevant question occurs at source lines 1502--1507 of the critical
+Hahn article; the surrounding editorial note distinguishes the two endpoints.
+The separate transseries project and the intake ledger are documented in
+\cite{repo-project,repo-index}.
+
+At the upper endpoint the issue is a variance changing from infinite to
+finite. At the lower endpoint it is the mean that would cease to be finite
+without a simultaneous normalization. The critical normalization tends to
+zero. Thus a Gaussian argument with a modified variance cannot simply be
+reused, and a fixed-$\alpha$ stable local limit cannot be substituted into a
+moving-$\alpha$ problem without new estimates.
+
+We resolve this lower-endpoint problem for an exact power tail with a fixed
+finite prefix. The class is broad enough to test universality under local
+changes while retaining explicit normalization and exact tail sums. We do
+not purport to cover arbitrary slowly varying tails, moving prefixes, or a
+simultaneous departure from critical coupling.
+% ed. (2026-09-29): the same question posed by two other repository packages (uncited), the line shift of Question 4, and the scope of "resolve"
+\begin{ednote}
+The problem is resolved here on the boundary-critical path
+$c_\ee=1/(\zeta(1+\ee)+P'(1))$ only; the subcritical side and a coupling
+window around $c_\ee$ remain open. The same question is posed as
+Question~10 of \path{Confluent_Critical_Transseries_Exponent_Two_Boundary/}
+(a compensated core, and whether conditioning couples the largest actions
+to the total, for the coupling $c_\ee=1/\zeta(\alpha)$, the case $P=0$
+here) and as Question~8 of \path{Logarithmic_Critical_Endpoint_Lambert_Charts/}
+(renormalized coupling, critical coordinate and action budget). On the
+critical path they are answered here by the centre $D_n$ and the cloud
+scale $b_n$, by Theorem~\ref{thm:main}(a) (exactly one exceptional action),
+and by $\lambda=nc_\ee$, the chart coordinates of Theorem~\ref{thm:chart}
+and \eqref{eq:mainbudget}. The interior-fold side $c>1/\zeta(1+\ee)$ is
+treated in \path{Lower_Critical_Endpoint_Landau_Transseries/}. Lines
+1502--1507 of the critical Hahn article at the pinned revision were lines
+1509--1514 when this package was filed.
+\end{ednote}
+
+\subsection{What belongs to the literature}
+The change of variable $t=qe^U$, Lagrange inversion, and conditioning
+identities belong to the standard allocation and simply generated tree
+framework; Janson gives a comprehensive treatment \cite{janson}. The
+principle that one large summand realizes a heavy-tailed deviation, and
+that deleting it can restore the original joint law, is developed by
+Armend\'ariz and Loulakis \cite{al}. Critical Cauchy condensation, a
+separation between the largest component and the remaining extreme-value
+scale, and Cauchy fluctuations are already present in the work of
+Kortchemski and Richier \cite{kr}. Their setting is a fixed critical
+Cauchy-domain offspring law. Here the action law itself changes with $n$,
+its exponent approaches one from above, and its total intensity may tend
+to infinity, remain bounded, or vanish.
+
+Accordingly, the new result claimed within this article is not the
+existence of condensation in general. It is the particular uniform
+triangular-array theorem proved below, including exact critical centering,
+finite-prefix dependence, and the resulting coefficient and cutoff laws.
+We do not invoke a fixed-law condensation theorem as though it were uniform
+in our degenerating parameter. The direct estimates are included precisely
+to close that logical gap. The special-function input is the classical
+polylogarithm expansion recorded in DLMF~25.12.12 \cite{dlmf}.
+
+\subsection{A guide to the results}
+The main conclusions are collected in Theorem~\ref{thm:main}. The analytic
+chart is constructed in Section~\ref{sec:chart}. Sections~\ref{sec:estimates}
+and~\ref{sec:dense} prove the dense local theorem and deletion in total
+variation, without any rate restriction on $\ee_n$. Section~\ref{sec:sparse}
+handles bounded intensity, including intensity tending to zero. The
+Cauchy cloud, action cutoffs, and coefficient matching are established in
+Sections~\ref{sec:cloud}--\ref{sec:matching}. Exact algebra checks and
+floating-point diagnostics are separated in Section~\ref{sec:computations}.
+
+The strongest reusable ingredient is the deletion theorem. It transfers
+\emph{all bounded observables of the remaining configuration}, not just its
+largest member or its total weight. The distinction between the leading
+condensate scale $d_n$ and the fluctuation center $D_n$ is especially
+important for computation: asymptotically equivalent centers need not be
+interchangeable in a cutoff quantile.
+
+\section{Model, notation, and exact identities}
+\label{sec:model}
+
+\subsection{The finite-prefix class}
+Fix a real polynomial
+\begin{equation}\label{eq:prefix}
+ P(t)=\sum_{j=1}^{J}p_jt^j,
+ \qquad \kappa=P'(1)=\sum_{j=1}^{J}jp_j.
+\end{equation}
+Set $p_j=0$ for $j>J$. Assume that for all sufficiently small real
+$\ee>0$,
+\begin{equation}\label{eq:positivity}
+ j^{-2-\ee}+p_j\ge0\quad(j\ge1),\qquad 1+p_1>0.
+\end{equation}
+Negative $p_j$ are allowed; it is the resulting weights that must be
+nonnegative. The polynomial $P$ is fixed throughout every joint limit.
+Write
+\begin{align}
+ \alpha&=1+\ee,&
+ A_\ee(t)&=\Li_{2+\ee}(t)+P(t),\label{eq:A}\\
+ c_\ee&=\frac1{\zeta(1+\ee)+\kappa},&
+ m_\ee&=c_\ee A_\ee(1),&
+ \rho_\ee&=e^{-m_\ee}.\label{eq:c}
+\end{align}
+For sufficiently small $\ee$ we have $c_\ee>0$, and
+\begin{equation}\label{eq:criticalmean}
+ c_\ee A_\ee'(1)=1,\qquad
+ c_\ee=\ee-(\gamma+\kappa)\ee^2+O(\ee^3).
+\end{equation}
+Here $\gamma$ denotes Euler's constant.
+
+Define $U_\ee\in q\R[[q]]$ by
+\begin{equation}\label{eq:feedback}
+ U_\ee(q)=c_\ee A_\ee(qe^{U_\ee(q)}),\qquad
+ u_n(\ee)=[q^n]U_\ee(q).
+\end{equation}
+Each coefficient is determined recursively by lower coefficients. The
+analytic implicit function theorem at $(q,U)=(0,0)$ also gives a
+convergent solution near the origin. Positivity and the positive first
+weight imply $u_n(\ee)>0$ for every $n\ge1$.
+
+For an integer $M\ge0$, let $A_{\ee,M}$ retain only the terms of $A_\ee$
+with $j\le M$, and define $U_{\ee,M}$ and $u_{n,M}$ using the \emph{same}
+$c_\ee$. Truncation does not renormalize the coupling. This convention is
+essential to the cutoff identity below.
+
+\subsection{Poisson configurations}
+For each pair $(n,\ee)$, put
+\begin{equation}\label{eq:scales}
+ \lambda=nc_\ee,\qquad b=\lambda^{1/\alpha},\qquad
+ d=(\lambda/\ee)^{1/\alpha}.
+\end{equation}
+Let the independent variables $N_j$ have laws
+\begin{equation}\label{eq:poisson}
+ N_j\sim\Pois(\nu_j),\qquad
+ \nu_j=\lambda(j^{-1-\alpha}+p_j),\qquad
+ K=\sum_{j\ge1}jN_j.
+\end{equation}
+We extend $\nu_j=0$ for integer $j\le0$. A restricted power multiplied
+by an event indicator is evaluated on that event and defined to be zero
+outside it. Since $\sum_j\nu_j<\infty$, the count vector has finite support
+almost surely. Its total weight satisfies $\E K=n$. Conditioned on $K=n$, list the
+actions, with multiplicity, in nonincreasing order:
+\[
+ J_1\ge J_2\ge\cdots\ge0.
+\]
+Zeros pad a finite list. Let $\mathcal D(N)$ be the count vector after
+removing one occurrence of a largest action; the choice between equal
+largest occurrences does not change the count vector.
+
+We use $\tv(\mu,\nu)=\sup_E|\mu(E)-\nu(E)|$ for total variation distance.
+The space of finitely supported count vectors on the positive integers is
+countable, so no additional measurable-space construction is required.
+All conditional assertions about $J_i$ refer to $\Prob(\,\cdot\mid K=n)$.
+
+\begin{proposition}[Exact coefficient and cutoff identities]\label{prop:exact}
+With $t=qe^{U_\ee(q)}$,
+\begin{equation}\label{eq:parametric}
+ U_\ee=c_\ee A_\ee(t),\qquad q=t e^{-c_\ee A_\ee(t)},
+ \qquad
+ u_n(\ee)=\frac1n[t^n]e^{nc_\ee A_\ee(t)}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:coefficientprob}
+ u_n(\ee)=\frac{\rho_\ee^{-n}}n\Prob(K=n),\qquad
+ \frac{u_{n,M}(\ee)}{u_n(\ee)}
+ =\Prob(J_1\le M\mid K=n).
+\end{equation}
+The ratio is nondecreasing in $M$ and is exactly one for $M\ge n$.
+\end{proposition}
+\begin{proof}
+The first two identities are direct substitutions. Lagrange inversion for
+$t=q\exp(c_\ee A_\ee(t))$ gives
+\[
+ [q^n]c_\ee A_\ee(t(q))
+ =\frac1n[t^{n-1}]c_\ee A_\ee'(t)e^{nc_\ee A_\ee(t)}
+ =\frac1n[t^n]e^{nc_\ee A_\ee(t)}.
+\]
+For the last equality, differentiate the exponential and compare its
+coefficient of $t^{n-1}$. The probability generating function of $K$ is
+$\exp(nc_\ee(A_\ee(t)-A_\ee(1)))$, proving the first probability identity.
+Forbidding all actions above $M$ multiplies the truncated Poisson
+probability by $\exp(-\sum_{j>M}\nu_j)$. Thus its generating function is
+$\exp(nc_\ee A_{\ee,M}(t)-nc_\ee A_\ee(1))$, proving the second identity.
+Monotonicity and exactness for $M\ge n$ follow from the event description.
+\end{proof}
+
+\section{Main theorem: arbitrary-rate approach to the lower endpoint}
+\label{sec:main}
+Throughout a limit means $n\to\infty$ through integers and
+$\ee=\ee_n\to0^+$, unless a different limit is explicitly specified.
+Subscripts on $b,d,\lambda$ are often suppressed. No monotonicity of
+$\ee_n$ is required.
+
+Define the real random variable $Z$ by its characteristic function
+\begin{align}
+ \E e^{itZ}
+ &=\exp\left\{\int_0^\infty
+       (e^{itx}-1-itx\ind_{x\le1})\frac{\dd x}{x^2}\right\}\label{eq:stablecf}\\
+ &=\exp\left\{-\frac\pi2|t|+it(1-\gamma-\log|t|)\right\}
+ \quad(t\ne0),\nonumber
+\end{align}
+with value one at $t=0$. This is a totally right-skewed $1$-stable law
+with the displayed location convention; it is not a symmetric Cauchy
+law. Write
+\begin{equation}\label{eq:F}
+ F(x)=\Prob(-Z\le x).
+\end{equation}
+The function $F$ is continuous and strictly increasing from zero to one,
+as proved in Section~\ref{sec:cloud}.
+
+\begin{theorem}[Uniform coefficient, deletion, and cutoff laws]\label{thm:main}
+For the fixed-prefix family \eqref{eq:prefix}--\eqref{eq:feedback} the
+following statements hold.
+
+\smallskip\noindent\textbf{(a) Every rate of approach.}
+For every $\ee_n\to0^+$,
+\begin{equation}\label{eq:maincoefficient}
+ \boxed{\displaystyle
+ u_n(\ee_n)\sim\rho_{\ee_n}^{-n}\frac{\ee_n}{n d_n}.}
+\end{equation}
+In the conditioned configuration,
+\begin{equation}\label{eq:mainTV}
+ \tv\bigl(\law(\mathcal D(N)\mid K=n),\law(N)\bigr)\longrightarrow0,
+ \qquad \frac{J_1}{d_n}\pto1,\qquad \frac{J_2}{J_1}\pto0.
+\end{equation}
+
+\smallskip\noindent\textbf{(b) Diverging intensity.}
+Suppose $\lambda_n=nc_{\ee_n}\to\infty$. Put
+\begin{equation}\label{eq:D}
+ \mu_b=\sum_{j\le b}j\nu_j,\qquad D_n=n-\mu_b.
+\end{equation}
+For all sufficiently large $n$,
+\begin{equation}\label{eq:Dtail}
+ D_n=\lambda_n\zeta(1+\ee_n,\lfloor b_n\rfloor+1)
+     =\frac{b_n}{\ee_n}+O(1).
+\end{equation}
+Then
+\begin{equation}\label{eq:mainfluct}
+ \frac{J_1-D_n}{b_n}\dto-Z,
+ \qquad
+ \sum_{k\ge2}\delta_{J_k/b_n}\dto\Pi,
+\end{equation}
+where $\Pi$ is a Poisson point process on $(0,\infty)$ with intensity
+$x^{-2}\dd x$, with convergence of point measures away from zero.
+The two limits hold jointly, with $Z$ the compensated sum of this same
+point process. In particular, for $x\in\R$ and $r\in(0,1)$,
+\begin{align}
+ \frac{u_{n,\lfloor D_n+b_nx\rfloor}(\ee_n)}{u_n(\ee_n)}
+ &\longrightarrow F(x),\label{eq:maincutoff}\\
+ M_r(n):=\min\{M\in\N:u_{n,M}/u_n\ge r\}
+ &=D_n+b_nF^{-1}(r)+o(b_n).\label{eq:mainbudget}
+\end{align}
+
+\smallskip\noindent\textbf{(c) Bounded intensity.}
+If $\lambda_n\to\lambda_0\in[0,\infty)$, let independent
+$N_j^0\sim\Pois(\lambda_0(j^{-2}+p_j))$ and
+$S_{\lambda_0}=\sum_jjN_j^0$. Then
+\begin{equation}\label{eq:mainsparse}
+ n-J_1\dto S_{\lambda_0},\qquad
+ \Prob(K=n)\sim\lambda_n n^{-2-\ee_n}.
+\end{equation}
+The first convergence holds in total variation as a convergence of
+integer-valued laws. If $\lambda_0=0$, $J_1=n$ with probability tending to
+one.
+\end{theorem}
+
+\begin{remark}[Meaning of arbitrary-rate uniformity]\label{rem:uniform}
+Part (a) holds along every pair sequence $n\to\infty$, $\ee\to0^+$.
+Equivalently, for every $\eta>0$ there are $N$ and $\ee_0>0$ such that the
+relative error in \eqref{eq:maincoefficient} is below $\eta$ whenever
+$n\ge N$ and $0<\ee\le\ee_0$. This equivalence is the elementary
+sequential characterization of a two-variable limit. It gives existence
+of uniform thresholds, not effective numerical values of those thresholds.
+\end{remark}
+
+\begin{remark}[What is and is not universal]
+In (b) the limiting standardized cloud is independent of the finite
+prefix. The normalizers $c_\ee,\rho_\ee,b_n,D_n$ still depend on it.
+In (c) the limiting discrete cloud retains all finite-prefix weights.
+Neither statement says that changing a prefix leaves raw coefficients
+asymptotically unchanged: the factor $\rho_\ee^{-n}$ can magnify a small
+change exponentially.
+\end{remark}
+
+\section{A convergent critical inverse chart through the degenerating endpoint}
+\label{sec:chart}
+
+\subsection{Exact phase and removable singularities}
+Take $t=e^{-x}$, with a fixed branch of $\log x$ near the positive real
+axis, and let $h=\log(\rho_\ee/q)$. The exact parametrization gives
+\begin{equation}\label{eq:phaseexact}
+ h=x+c_\ee(A_\ee(e^{-x})-A_\ee(1)),\qquad
+ U_\ee=m_\ee+h-x.
+\end{equation}
+The polylogarithm expansion \cite[Eq.~25.12.12]{dlmf} yields
+\begin{equation}\label{eq:phase}
+ h=B_\ee x^{1+\ee}+c_\ee x^2 R_\ee(x),\qquad
+ B_\ee=c_\ee\Gamma(-1-\ee),
+\end{equation}
+where
+\begin{equation}\label{eq:R}
+ R_\ee(x)=\sum_{k\ge2}\frac{(-1)^k}{k!}
+ \left(\zeta(2+\ee-k)+\sum_{j=1}^Jp_jj^k\right)x^{k-2}.
+\end{equation}
+The radius in $x$ is at least $2\pi$ before choosing a smaller common
+polydisc. In particular the linear term in \eqref{eq:phaseexact} vanishes
+\emph{exactly}, by criticality.
+
+\begin{lemma}[Uniform analytic coefficients]\label{lem:analytic}
+There is $e_0>0$ such that $c_\ee$, $B_\ee$, and $R_\ee(x)$ extend
+holomorphically in $\ee$ to $|\ee|<e_0$, with $R$ jointly holomorphic for
+$|x|<r_0$ for some $r_0>0$. Moreover
+\begin{equation}\label{eq:Bexp}
+ c_0=0,\qquad B_0=1,\qquad
+ B_\ee=1-(1+\kappa)\ee+O(\ee^2).
+\end{equation}
+After shrinking $e_0$, $B_\ee$ has no zero there.
+\end{lemma}
+\begin{proof}
+Write $\zeta(1+\ee)=\ee^{-1}+\gamma+O(\ee)$ and
+$\Gamma(-1-\ee)=\ee^{-1}+\gamma-1+O(\ee)$.
+The first reciprocal has a simple zero at zero and cancels the latter
+pole. Multiplication proves \eqref{eq:Bexp}. The coefficients of
+\eqref{eq:R} have no pole near $\ee=0$. The convergent polylogarithm
+expansion, or its locally uniformly convergent power-series remainder,
+shows joint holomorphy in a smaller polydisc. Nonvanishing follows from
+$B_0=1$ and continuity.
+\end{proof}
+
+\subsection{Uniform two-coordinate inversion}
+Set $\delta=1-\ee=2-\alpha$ and
+\begin{equation}\label{eq:chartcoordinates}
+ y=(h/B_\ee)^{1/\alpha},\qquad
+ z=\frac{c_\ee}{B_\ee}y^\delta
+   =\frac{y^\delta}{\Gamma(-1-\ee)}.
+\end{equation}
+Branches are taken consistently with positive $h,x,y$ for positive real
+arguments. The variables $y,z$ in the next theorem are first independent
+complex coordinates; only afterwards are they specialized as above.
+
+\begin{theorem}[Uniform convergent inverse chart]\label{thm:chart}
+There are positive radii $r,s,e_1$ and a unique holomorphic function
+$V(y,z,\ee)$ near $\{|y|<r,|z|<s,|\ee|<e_1\}$, with
+$|V-1|<1/4$, satisfying
+\begin{equation}\label{eq:Veq}
+ V^\alpha\bigl(1+zV^\delta R_\ee(yV)\bigr)=1,
+ \qquad V(y,0,\ee)=1.
+\end{equation}
+In these coordinates the local inverse is
+\begin{equation}\label{eq:chart}
+ x=yV(y,z,\ee),\qquad
+ U_\ee=m_\ee+h-yV(y,z,\ee).
+\end{equation}
+The double power series of $V$ converges absolutely on a common smaller
+polydisc. Thus, for each sufficiently small real $\ee>0$, the specialized
+$x$ is a convergent Hahn series on the positive grid
+\begin{equation}\label{eq:haangrid}
+ \{1+k+m(1-\ee):k,m\in\N\}.
+\end{equation}
+The coefficient functions extend holomorphically through $\ee=0$.
+\end{theorem}
+\begin{proof}
+At $V=1,z=0$ the left side of \eqref{eq:Veq} minus one vanishes, and its
+$V$ derivative is $\alpha$, bounded away from zero for small complex
+$\ee$. The holomorphic implicit function theorem supplies the chart,
+uniformly after restricting $|y|,|\ee|$ to smaller closed discs. Equivalently,
+consider
+\[
+ T(V)=\bigl(1+zV^\delta R_\ee(yV)\bigr)^{-1/\alpha}.
+\]
+On $|V-1|\le1/4$, small common radii bound $R$, its derivative, and the
+chosen powers. For sufficiently small $s$, $T$ maps this closed disc into
+its interior and has derivative of modulus at most $1/2$. This proves
+uniqueness in the stated disc and gives a convergent iteration there.
+Substituting $x=yV$ into \eqref{eq:phase} gives exactly \eqref{eq:Veq}.
+Ordinary Cauchy estimates on a smaller polydisc prove absolute convergence
+of the double power series. Specialization of $z$ then produces the grid
+\eqref{eq:haangrid}. Its generators are strictly positive, so only finitely
+many pairs contribute below any fixed exponent bound. Coinciding
+exponents are simply collected. Holomorphic dependence on $\ee$ was part
+of the implicit-function construction.
+\end{proof}
+
+\begin{proposition}[First chart coefficients and a geometric error bound]
+\label{prop:chartcoeff}
+For fixed $\ee$, write $R=R_\ee(y)$ and $R'=R_\ee'(y)$. Then
+\begin{equation}\label{eq:Vcoeff}
+ V=1-\frac{R}{\alpha}z+
+ \frac{(5-\alpha)R^2+2yRR'}{2\alpha^2}z^2+O(z^3),
+\end{equation}
+uniformly on smaller $(y,\ee)$ polydiscs. Suppose $|V|\le H$ on
+$|y|\le r$, $|z|\le s$ at a fixed admissible parameter. If $V_{K,M}$
+retains $0\le k\le K$, $0\le m\le M$ in the double Taylor series, then
+for $a=|y|/r<1$ and $v=|z|/s<1$,
+\begin{equation}\label{eq:chartbound}
+ |V-V_{K,M}|
+ \le \frac{H(a^{K+1}+v^{M+1})}{(1-a)(1-v)}.
+\end{equation}
+The bound is uniform whenever the same $H,r,s$ work for the parameters.
+\end{proposition}
+\begin{proof}
+Using $\alpha+\delta=2$, rewrite \eqref{eq:Veq} as
+$V^\alpha+zV^2R_\ee(yV)=1$. Substitute $V=1+az+bz^2+O(z^3)$.
+The coefficients of $z$ and $z^2$ respectively give
+\[
+ \alpha a+R=0,\qquad
+ \alpha b+\frac{\alpha(\alpha-1)}2a^2+a(2R+yR')=0,
+\]
+which prove \eqref{eq:Vcoeff}. Cauchy's estimate gives
+$|[y^kz^m]V|\le Hr^{-k}s^{-m}$. Sum the two geometric tails outside the
+retained rectangle; counting their intersection twice only increases the
+upper bound.
+\end{proof}
+
+\subsection{The endpoint is degenerate, not a hidden nonzero solution}
+At $\ee=0$ we have $c_0=0$, $B_0=1$, and the specialized $z$ is zero.
+Hence $h=x$, $m_0=0$, and \eqref{eq:chart} gives $U_0=0$. This does not
+contradict the nontrivial coefficient theorem: $n$ grows while the parameter
+approaches its degenerate endpoint.
+
+\begin{proposition}[Fixed-domain limit]\label{prop:fixedq}
+On each closed disc $|q|\le r<1$,
+\begin{equation}\label{eq:fixedq}
+ \frac{U_\ee(q)}{c_\ee}\longrightarrow\Li_2(q)+P(q)
+\end{equation}
+uniformly as $\ee\downarrow0$.
+\end{proposition}
+\begin{proof}
+Choose $r<r'<1$. For $|q|\le r$ and $|U|$ small enough,
+$|qe^U|\le r'$. The functions $A_\ee$ and their derivatives are uniformly
+bounded on this latter disc and converge there uniformly to $A_0$.
+For small $c_\ee$, the map $U\mapsto c_\ee A_\ee(qe^U)$ is a uniform
+contraction on a disc of radius $C c_\ee$. Consequently $U_\ee=O(c_\ee)$
+uniformly. Divide the equation by $c_\ee$ and pass to the uniform limit.
+\end{proof}
+
+\section{Uniform estimates for the Poisson array}
+\label{sec:estimates}
+This section supplies the local estimates that cannot be obtained merely
+by substituting a moving exponent into a fixed-parameter theorem. Constants
+may depend on the fixed prefix, but not on $n$ or on sufficiently small
+$\ee$. Eventually we restrict $1<\alpha\le5/4$.
+
+\subsection{Tail sums and truncated variance}
+For $M>J$, define
+\begin{equation}\label{eq:truncated}
+ K_M=\sum_{j\le M}jN_j,\quad
+ \Lambda_M=\sum_{j>M}\nu_j,\quad
+ \Delta_M=n-\E K_M,\quad V_M=\Var K_M.
+\end{equation}
+The integral test gives, uniformly in the indicated range,
+\begin{align}
+ \Lambda_M&=\frac{\lambda M^{-\alpha}}{\alpha}
+             +O(\lambda M^{-1-\alpha}),\label{eq:tailnumber}\\
+ \Delta_M&=\frac{\lambda M^{-\ee}}{\ee}
+             +O(\lambda M^{-1-\ee}),\label{eq:tailmean}\\
+ V_M&\le C\lambda(M^{2-\alpha}+1),\qquad
+ \sup_{j>M}\nu_j\le C\lambda M^{-1-\alpha}.\label{eq:variance}
+\end{align}
+The mean identity uses $\E K=n$. Even when some $p_j$ are negative, the
+variance is bounded above using $\sum_{j\le J}|p_j|j^2$ plus the pure tail.
+If $b\to\infty$, \eqref{eq:tailmean} at $M=\lfloor b\rfloor$ gives
+\begin{equation}\label{eq:Dproof}
+ D=\lambda\sum_{j>\lfloor b\rfloor}j^{-1-\ee}
+   =\frac{b}{\ee}+O(1),
+\end{equation}
+because $\lambda=b^{1+\ee}$. The floor contributes only $O(1)$ as well.
+
+\begin{lemma}[Convolution bound for two or more large actions]
+\label{lem:twobig}
+Let $\nu^>$ be the measure on integers with mass $\nu_j$ at $j>M$,
+let $\Lambda=\|\nu^>\|_1$, and let $H_M=\sum_{j>M}jN_j$. Then
+\begin{equation}\label{eq:twobig}
+ \sup_k\Prob(K_M+H_M=k,\ \text{at least two actions exceed }M)
+ \le \|\nu^>\|_\infty\Lambda e^\Lambda.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The subprobability measure for exactly $l$ large actions is
+$e^{-\Lambda}(\nu^>)^{*l}/l!$. For $l\ge2$,
+$\|(\nu^>)^{*l}\|_\infty\le\|\nu^>\|_\infty\Lambda^{l-1}$.
+Convolution with the probability law of $K_M$ cannot increase the supremum
+norm. Sum over $l\ge2$ and use
+$\sum_{l\ge2}\Lambda^{l-1}/l!\le\Lambda e^\Lambda$.
+\end{proof}
+
+\subsection{A local bound preserved by positive exponential tilting}
+\begin{lemma}[Uniform lattice concentration]\label{lem:concentration}
+Assume $b\to\infty$ and $M/b\to\infty$. For every $t\ge0$, let
+$\widetilde K_M$ be compound Poisson with rates
+$\widetilde\nu_j=\nu_je^{tj}$, $j\le M$. There is a constant $C$ such that
+\begin{equation}\label{eq:lattice}
+ \sup_{k\in\mathbb Z}\Prob(\widetilde K_M=k)\le\frac Cb
+\end{equation}
+for all sufficiently large $n$, uniformly in $t$.
+\end{lemma}
+\begin{proof}
+Fourier inversion bounds the left side by
+\[
+ \frac1{2\pi}\int_{-\pi}^{\pi}
+ \exp\left(-\sum_{j\le M}\nu_je^{tj}(1-\cos j\theta)\right)\dd\theta.
+\]
+Since $t\ge0$, it suffices to bound the untilted integral. The interval
+$|\theta|\le b^{-1}$ contributes at most $2/b$. Choose a small fixed
+$\theta_0>0$ so that, for $b^{-1}\le|\theta|\le\theta_0$, the integers
+$j$ in $[1/(2|\theta|),1/|\theta|]$ include at least a constant multiple
+of $1/|\theta|$ indices above $J$. They are at most $b$ and hence below
+$M$. On this range, $1-\cos(j\theta)$ is bounded below by a positive
+constant. The exact tail gives
+\[
+ \sum_{j\le M}\nu_j(1-\cos j\theta)
+ \ge c\lambda|\theta|^\alpha=c(b|\theta|)^\alpha.
+\]
+The integral of this upper envelope is $O(1/b)$ uniformly for
+$1\le\alpha\le5/4$.
+
+On $\theta_0\le|\theta|\le\pi$, retain two consecutive fixed indices
+larger than $J$. Their trigonometric terms have no common zero in this
+compact set, and both rates are at least a positive constant times
+$\lambda$. The remaining integral is $O(e^{-c\lambda})=O(1/b)$.
+All estimates survive the positive tilt. This proves the claim.
+\end{proof}
+
+\begin{lemma}[Tilt bound at a prescribed lattice point]\label{lem:tilt}
+Under the hypotheses of Lemma~\ref{lem:concentration}, for $t\ge0$,
+\begin{equation}\label{eq:tiltbound}
+ \Prob(K_M=n)\le\frac Cb
+ \exp\left(-t\Delta_M+\frac{V_M}{M^2}e^{tM}\right).
+\end{equation}
+Without the concentration hypothesis, the corresponding exponential
+factor bounds the tail probability $\Prob(K_M\ge n)$.
+\end{lemma}
+\begin{proof}
+The exact exponential-tilt identity at $n$ contributes the factor
+$\exp(-tn+\sum_{j\le M}\nu_j(e^{tj}-1))$ multiplying the tilted local
+probability. For $0\le j\le M$, the power series of the exponential gives
+\[
+ e^{tj}-1-tj\le\frac{j^2}{M^2}(e^{tM}-1-tM)
+               \le\frac{j^2}{M^2}e^{tM}.
+\]
+Sum this inequality and use Lemma~\ref{lem:concentration}. The tail bound
+is the usual exponential Markov inequality with the same calculation.
+\end{proof}
+
+\section{Dense condensation and deletion in total variation}
+\label{sec:dense}
+Assume throughout this section that $\lambda\to\infty$, equivalently
+$b\to\infty$. The proof does not require $\ee\log n$ to be bounded.
+Define the positive real tail weight
+\begin{equation}\label{eq:wD}
+ w_D=\lambda D^{-1-\alpha}.
+\end{equation}
+This is evaluated at the real number $D$; replacing it by the weight at
+$\lfloor D\rfloor$ has relative error tending to zero.
+
+\begin{theorem}[Dense local one-action theorem]\label{thm:dense}
+For every sequence with $\lambda\to\infty$ and $\ee\to0^+$,
+\begin{equation}\label{eq:denselocal}
+ \Prob(K=n)\sim w_D.
+\end{equation}
+With conditional probability tending to one, exactly one action exceeds
+$\eta D$, for any one fixed sufficiently small $\eta>0$. That action,
+divided by $D$, tends to one in probability. Moreover the deletion
+conclusion \eqref{eq:mainTV} holds.
+\end{theorem}
+\begin{proof}
+Fix $\eta=1/64$ and take $M=\lfloor\eta D\rfloor$. Since
+$D=b/\ee+O(1)$,
+\begin{equation}\label{eq:densebounds}
+ \frac Mb\longrightarrow\infty,\qquad
+ \Lambda_M=O(\ee^\alpha)=o(1),\qquad
+ \sup_{j>M}\nu_j=O(w_D),\qquad
+ \frac{V_M}{D^2}=O(\ee^\alpha).
+\end{equation}
+Furthermore, using \eqref{eq:tailmean},
+\begin{equation}\label{eq:Deltaratio}
+ \frac{\Delta_M}{D}
+ =\left(\frac bM\right)^\ee(1+o(1))
+ =\left(\frac\ee\eta\right)^\ee(1+o(1))\longrightarrow1.
+\end{equation}
+Chebyshev's inequality therefore gives
+\begin{equation}\label{eq:typicalsmall}
+ \frac{n-K_M}{D}\pto1.
+\end{equation}
+This statement concerns the unconditioned small-action configuration.
+
+\smallskip\noindent\emph{No large action.}
+Set $tM=\tfrac12\log(1/\ee)$. The positive remainder in the exponent
+of \eqref{eq:tiltbound} is bounded by
+\[
+ C\lambda(M^{2-\alpha}+1)M^{-2}\ee^{-1/2}
+ =O(\ee^{\alpha-1/2})+o(1)=o(1).
+\]
+In the second term one may use
+$\lambda/M^2=b^{\alpha-2}O(\ee^2)$ and $\alpha\le5/4$.
+Meanwhile $t\Delta_M=(1/(2\eta)+o(1))\log(1/\ee)$.
+Thus for all sufficiently large $n$,
+\begin{equation}\label{eq:nobig}
+ \Prob(K_M=n)\le\frac Cb\ee^{16}=o(w_D),
+\end{equation}
+because $w_D\sim\ee^{1+\alpha}/b$. The joint probability with no large
+action is still smaller. The factor $1/b$ in this estimate is crucial;
+a bound only on the upper tail would not suffice for every possible rate
+of growth of $b$.
+
+\smallskip\noindent\emph{At least two large actions.}
+By Lemma~\ref{lem:twobig} and \eqref{eq:densebounds}, the local probability
+of $K=n$ with at least two actions above $M$ is
+$O(w_D\Lambda_M)=o(w_D)$.
+
+\smallskip\noindent\emph{Exactly one large action.}
+Its contribution is exactly
+\begin{equation}\label{eq:onebigexact}
+ e^{-\Lambda_M}\E\left[
+   \nu_{n-K_M}\ind_{n-K_M>M}\right].
+\end{equation}
+For large $n$ the prefix lies below $M$. Dividing the integrand by $w_D$
+gives a uniformly bounded nonnegative variable:
+\[
+ \frac{\nu_{n-K_M}}{w_D}\ind_{n-K_M>M}
+ =\left(\frac{n-K_M}{D}\right)^{-1-\alpha}
+       \ind_{n-K_M>M}\le C_\eta.
+\]
+By \eqref{eq:typicalsmall} it converges to one in probability and hence in
+$L^1$. Since $\Lambda_M\to0$, \eqref{eq:onebigexact} is asymptotic to
+$w_D$. The three disjoint cases prove \eqref{eq:denselocal} and show that
+exactly one large action accounts for asymptotically all the conditioned
+probability. Its size divided by $D$ tends to one by the same bounded
+weight argument.
+
+\smallskip\noindent\emph{Deletion.}
+On the event just considered, the conditional law of the small count
+vector has density
+\begin{equation}\label{eq:RN}
+ \frac{\nu_{n-K_M}\ind_{n-K_M>M}}
+      {\E[\nu_{n-K_M}\ind_{n-K_M>M}]}
+\end{equation}
+relative to its original Poisson law. This density converges to one in
+$L^1$, so the two laws converge in total variation. The original full
+configuration differs from the original small configuration with
+probability at most $1-e^{-\Lambda_M}\to0$, under their natural coupling.
+The exceptional conditioned events have probability tending to zero.
+Finally, on the exactly-one-large-action event the deleted action is the
+largest action. The triangle inequality for total variation proves the
+claim.
+\end{proof}
+
+\begin{remark}[Why critical mean does not prevent condensation]
+Every row has $\E K=n$, but its typical value is $\mu_b+O_{\Prob}(b)$,
+not $n$. Their difference is $D\sim b/\ee\gg b$. Very rare actions beyond
+the typical cloud carry the missing expectation. Conditioning on $K=n$
+selects one such action. There is no contradiction between deletion in
+total variation and a changed expectation, since total variation controls
+bounded observables and these weights are not uniformly integrable.
+The fluctuation assertion used in this explanation is proved next in
+Section~\ref{sec:cloud}; it is not needed in the local proof above.
+\end{remark}
+
+\section{Bounded intensity and the discrete remainder}
+\label{sec:sparse}
+The regime $\lambda=nc_\ee=O(1)$ is not a small variation on a stable
+local limit: $b$ need not diverge and can tend to zero. In particular a
+Fourier bound proportional to $1/b$ would be useless here. The following
+argument also keeps a factor of $\lambda$ when $\lambda\to0$, which is
+necessary for relative asymptotics.
+
+\begin{theorem}[Sparse local theorem]\label{thm:sparse}
+Uniformly along sequences with $\lambda=O(1)$ and $\ee\to0^+$,
+\begin{equation}\label{eq:sparselocal}
+ \Prob(K=n)\sim\lambda n^{-1-\alpha}.
+\end{equation}
+Deletion of one largest action again gives the original Poisson
+configuration in total variation. If $\lambda\to\lambda_0$, the conclusion
+\eqref{eq:mainsparse} follows.
+\end{theorem}
+\begin{proof}
+Since $c_\ee/\ee\to1$, bounded $\lambda$ implies $\ee=O(1/n)$ and hence
+$\ee\log n\to0$. Set $M=\lfloor\eta n\rfloor$ with $\eta=1/64$.
+Then
+\begin{equation}\label{eq:sparseestimates}
+ \E K_M\le C\lambda\log n,\quad
+ V_M\le C\lambda n,\quad
+ \Lambda_M=O(\lambda/n),\quad
+ \sup_{j>M}\nu_j=O(\lambda n^{-1-\alpha}).
+\end{equation}
+In particular $K_M/n\pto0$. Lemma~\ref{lem:twobig} makes the local
+contribution of at least two large actions negligible relative to
+$\lambda n^{-1-\alpha}$. Exactly one large action contributes
+\[
+ e^{-\Lambda_M}\E[\nu_{n-K_M}\ind_{n-K_M>M}]
+ \sim\lambda n^{-1-\alpha},
+\]
+by the same bounded-weight argument used in the dense case.
+
+It remains to estimate zero large actions \emph{relatively}, even when
+$\lambda$ is arbitrarily small. Let $tM=\tfrac12\log n$ and put
+$L=\sum_{j\le M}\nu_j$, $L_t=\sum_{j\le M}\nu_je^{tj}$.
+The exponential estimate used before now shows
+\[
+ L_t-L
+ \le t\E K_M+\frac{V_M}{M^2}e^{tM}
+ \le C\lambda\frac{\log^2n}{n}+C\lambda n^{-1/2}=o(1).
+\]
+For $n>0$, the zero configuration cannot contribute. Therefore
+\begin{align*}
+ \Prob(K_M=n)
+ &\le e^{-tn}\E[e^{tK_M};K_M>0]\\
+ &=e^{-tn-L}(e^{L_t}-1)
+ \le e^{-tn+L_t-L}L_t
+ \le C\lambda n^{-1/(2\eta)+1/2}.
+\end{align*}
+Here $L_t\le e^{tM}L\le C\lambda\sqrt n$.
+The final bound is $o(\lambda n^{-1-\alpha})$; we used
+$\ee\log n\to0$ to compare $n^{-1-\alpha}$ with $n^{-2}$.
+This proves the local equivalent without dividing by an uncontrolled
+small probability.
+
+The Radon--Nikodym density for the small configuration, conditioned on
+exactly one large action and total weight $n$, is again
+\eqref{eq:RN}. Its normalization is now $\lambda n^{-1-\alpha}$.
+The density converges to one in $L^1$, and $\Lambda_M\to0$, proving
+convergence after deletion in total variation.
+
+Finally, if $\lambda\to\lambda_0$, dominated convergence gives
+\[
+ \sum_{j\ge1}\left|
+ \lambda(j^{-2-\ee}+p_j)-\lambda_0(j^{-2}+p_j)\right|\longrightarrow0.
+\]
+Independent Poisson configurations whose rate measures differ by this
+$\ell^1$ amount can be coupled to agree except on an event of probability
+at most that amount, by using shared rates and independent excess rates.
+Thus the original full configuration converges in total variation to
+$(N_j^0)$. Deletion and the map $N\mapsto\sum jN_j$ preserve the resulting
+upper bound on total variation, and the total weight after deletion is
+exactly $n-J_1$. This proves the remaining assertions.
+\end{proof}
+
+\begin{remark}[Finite almost surely, infinite mean]
+For $\lambda_0>0$, the limiting sparse cloud has finite total number of
+actions almost surely because $\sum_j(j^{-2}+p_j)<\infty$. Its total
+weight is nevertheless unbounded and has infinite mean, since
+$\sum_j j(j^{-2}+p_j)=\infty$. There is no assertion of moment convergence
+in \eqref{eq:mainsparse}. When $\lambda_0=0$, its configuration is empty
+almost surely.
+\end{remark}
+
+\begin{corollary}[Discrete sparse cutoff law]\label{cor:sparsecutoff}
+If $\lambda\to\lambda_0\in[0,\infty)$, then for every fixed integer
+$k\ge0$,
+\begin{equation}\label{eq:sparsecutoff}
+ \frac{u_{n,n-k}(\ee)}{u_n(\ee)}
+ \longrightarrow\Prob(S_{\lambda_0}\ge k).
+\end{equation}
+For $\lambda_0=0$ the limits are one for $k=0$ and zero for each $k\ge1$.
+\end{corollary}
+\begin{proof}
+The event $J_1\le n-k$ is the event $n-J_1\ge k$. Apply the integer-law
+total variation convergence from Theorem~\ref{thm:sparse}.
+\end{proof}
+
+\section{The Cauchy cloud and conditional extremes}
+\label{sec:cloud}
+Return to the dense regime $\lambda\to\infty$. The deletion theorem
+reduces the conditional limit laws to an unconditioned Poisson limit,
+which we now prove with the required moving exponent.
+
+\subsection{Joint convergence of points and compensated sums}
+\begin{theorem}[Unconditioned triangular Cauchy limit]\label{thm:cloud}
+If $b\to\infty$ and $\ee\to0^+$, then
+\begin{equation}\label{eq:cloud}
+ \left(\sum_{j\ge1}N_j\delta_{j/b},\frac{K-\mu_b}{b}\right)
+ \dto(\Pi,Z),
+\end{equation}
+where $\Pi$ has intensity $x^{-2}\dd x$ and $Z$ is its compensated sum:
+\begin{equation}\label{eq:compensated}
+ Z=\lim_{a\downarrow0}
+ \left(\sum_{x\in\Pi,\ x>a}x-\log(1/a)\right).
+\end{equation}
+The small-point compensation converges in $L^2$; the finitely many points
+above one are left uncompensated. The point process and $Z$ are not
+independent.
+\end{theorem}
+\begin{proof}
+For a continuous function $f$ of compact support in $(0,\infty)$, eventually
+all indices in its support lie above the prefix. Since $\lambda=b^\alpha$,
+\begin{equation}\label{eq:Riemann}
+ \sum_j\nu_jf(j/b)
+ =\frac1b\sum_j (j/b)^{-1-\alpha}f(j/b)
+ \longrightarrow\int_0^\infty f(x)x^{-2}\dd x.
+\end{equation}
+This is a Riemann sum, uniformly on compact intervals separated from
+zero, and $\alpha\to1$. The Poisson Laplace functional
+$\exp(\sum_j\nu_j(e^{-f(j/b)}-1))$ proves convergence of point measures
+on those intervals. In addition,
+\begin{equation}\label{eq:largerpoints}
+ \Prob(\text{some action exceeds }Rb)
+ \le\sum_{j>Rb}\nu_j\le C R^{-\alpha}\le C/R\quad(R\ge1)
+\end{equation}
+for all sufficiently large $n$. This controls the passage to unbounded
+intervals at the upper end.
+
+Fix $0<a<1$. The contribution from points above $a$ to the centered sum is
+\[
+ \sum_{j>ab}\frac jbN_j-\sum_{ab<j\le b}\frac jb\nu_j.
+\]
+Together with the point process, it converges by \eqref{eq:Riemann} and
+\eqref{eq:largerpoints} to
+$\sum_{x\in\Pi,x>a}x-\int_a^1x^{-1}\dd x$.
+The error from the centered points below $a$ has variance
+\begin{align*}
+ \frac1{b^2}\sum_{j\le ab}j^2\nu_j
+ &\le C a^{2-\alpha}+C\lambda/b^2\\
+ &\le C a^{3/4}+o(1),
+\end{align*}
+where the second term bounds the fixed prefix and tends to zero because
+$\lambda/b^2=b^{\alpha-2}$. This variance bound tends to zero after first
+letting $n\to\infty$ and then $a\downarrow0$.
+The analogous limiting variance is
+$\int_0^a x^2x^{-2}\dd x=a$; hence the compensated small-point sum
+converges in $L^2$. Truncation at $a$ followed by these variance estimates
+proves the joint convergence and the construction \eqref{eq:compensated}.
+Its characteristic function is precisely \eqref{eq:stablecf}.
+\end{proof}
+
+\begin{proposition}[Normalization and regularity of the stable law]
+\label{prop:stable}
+The integral exponent in \eqref{eq:stablecf} equals
+$-\pi|t|/2+it(1-\gamma-\log|t|)$. The distribution of $Z$ has a continuous
+real-analytic density, and its distribution function, and hence $F$, is
+strictly increasing.
+\end{proposition}
+\begin{proof}
+For real $s>0$, differentiation under convergent truncated integrals gives
+\[
+ \frac{\mathrm d}{\mathrm ds}
+ \int_0^\infty(e^{-sx}-1+sx\ind_{x\le1})\frac{\dd x}{x^2}
+ =\log s+\gamma.
+\]
+For example, the constant at $s=1$ is the familiar integral
+$\int_0^1(1-e^{-x})\dd x/x-\int_1^\infty e^{-x}\dd x/x=\gamma$;
+the derivative of the right side with respect to $s$ is $1/s$.
+Integration from zero gives $s\log s+(\gamma-1)s$.
+Analytic continuation to $s=-it$ from $\Rea s>0$, or direct dominated
+limits in the compensated integral, gives the stated Fourier exponent.
+The continuous extension at zero follows from $t\log|t|\to0$.
+
+The characteristic function has modulus $e^{-\pi|t|/2}$. Fourier
+inversion therefore supplies a continuous density that extends
+holomorphically to a strip of width less than $\pi/2$ about the real axis.
+It is nonnegative and has integral one. A real-analytic function that
+vanishes throughout an interval must vanish identically; consequently this
+density has positive integral on every nonempty interval. The distribution
+function is continuous and strictly increasing, with limits zero and one.
+\end{proof}
+
+\subsection{Transfer through deletion}
+\begin{theorem}[Largest action and the remaining extremes]\label{thm:extremes}
+In the dense regime, under exact conditioning $K=n$,
+\begin{equation}\label{eq:extremes}
+ \left(\sum_{k\ge2}\delta_{J_k/b},\frac{J_1-D}{b}\right)
+ \dto(\Pi,-Z).
+\end{equation}
+For every $x>0$,
+\begin{equation}\label{eq:secondlargest}
+ \Prob(J_2/b\le x\mid K=n)\longrightarrow e^{-1/x}.
+\end{equation}
+More generally, for each integer $k\ge1$,
+\begin{equation}\label{eq:kthlargest}
+ \Prob(J_{k+1}/b\le x\mid K=n)
+ \longrightarrow e^{-1/x}\sum_{l=0}^{k-1}\frac{x^{-l}}{l!}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Total variation in Theorem~\ref{thm:dense} permits every measurable
+$n$-dependent mapping of the deleted configuration. Its point measure is
+the first component in \eqref{eq:extremes}. Its total weight is $n-J_1$,
+and
+\[
+ \frac{J_1-D}{b}=-\frac{(n-J_1)-\mu_b}{b}.
+\]
+Apply Theorem~\ref{thm:cloud}. To pass from point-process convergence to
+maxima, use \eqref{eq:largerpoints} to control points above an arbitrarily
+large bound; the limiting process almost surely has no point at a
+prescribed $x$. The number of limiting points above $x$ is Poisson with
+mean $\int_x^\infty y^{-2}\dd y=1/x$. Zero such points gives
+\eqref{eq:secondlargest}, and at most $k-1$ gives \eqref{eq:kthlargest}.
+\end{proof}
+
+\begin{corollary}[Separation of the condensate]\label{cor:separation}
+In the dense regime $J_1/D\pto1$ and $J_2/J_1\pto0$. In the sparse regime
+$J_1/n\pto1$ and again $J_2/J_1\pto0$.
+\end{corollary}
+\begin{proof}
+In the dense case, $b/D\sim\ee\to0$, so tightness in
+\eqref{eq:extremes} proves both claims. In the sparse case, bounded total
+intensity and the uniform bound $\sum_{j>R}\nu_j\le C/R$ imply tightness
+of the unconditioned largest action. Deletion in total variation transfers
+this tightness to $J_2$. Also $K_M/n\pto0$ in the one-action proof gives
+$J_1/n\pto1$. No assumption that $\lambda$ has a limit is needed for these
+tightness statements.
+\end{proof}
+
+\section{Sharp action budgets and the logarithmic centering correction}
+\label{sec:budgets}
+
+\subsection{From a conditional maximum to a coefficient cutoff}
+\begin{theorem}[Cutoff profile and its quantiles]\label{thm:budget}
+If $\lambda\to\infty$, then \eqref{eq:maincutoff} and
+\eqref{eq:mainbudget} hold for every real $x$ and every $r\in(0,1)$.
+\end{theorem}
+\begin{proof}
+Combine the exact cutoff identity \eqref{eq:coefficientprob} with
+Theorem~\ref{thm:extremes}. The floor changes the standardized threshold
+by at most $1/b\to0$, and $F$ is continuous.
+The threshold lies in $[0,n]$ eventually for every fixed $x$: $D/b\to\infty$,
+and nonnegative rates and the exact tail imply
+\[
+ \frac{\mu_b}{b}\ge\sum_{J<j\le b}\frac1j\longrightarrow\infty,
+\]
+since $b^\ee j^{-\ee}\ge1$ for $j\le b$.
+For a quantile, set $x_r=F^{-1}(r)$. For every $a>0$,
+$F(x_r-a)<r<F(x_r+a)$. The corresponding cutoff ratios eventually bracket
+$r$, so monotonicity brackets $(M_r-D)/b$ between $x_r-a+o(1)$ and
+$x_r+a+o(1)$. Let $a\downarrow0$.
+\end{proof}
+
+The quantile law is asymptotic, not a finite-$n$ certified error bound.
+In particular it does not license replacing $F$ by a floating-point
+quadrature and calling the resulting integer cutoff a proof certificate.
+
+\subsection{Why the leading coefficient scale is the wrong cutoff center}
+\begin{theorem}[Logarithmically many fluctuation widths]\label{thm:centering}
+In the dense regime,
+\begin{align}
+ \frac{D}{d}&\longrightarrow1,\label{eq:Doverd}\\
+ \frac{D-d}{b}
+ &=\frac{\log(1/\ee)}{1+\ee}
+   +O\bigl(\ee\log^2(1/\ee)\bigr)+O(1/b).\label{eq:centering}
+\end{align}
+Thus the quantile formula has the explicit form
+\begin{equation}\label{eq:explicitbudget}
+ \boxed{\displaystyle
+ M_r(n)=d_n+b_n\left(
+       \frac{\log(1/\ee_n)}{1+\ee_n}+F^{-1}(r)\right)+o(b_n).}
+\end{equation}
+For every fixed real $C$,
+\begin{equation}\label{eq:wrongcenter}
+ \frac{u_{n,\lfloor d_n+Cb_n\rfloor}(\ee_n)}{u_n(\ee_n)}
+ \longrightarrow0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+From $D=b/\ee+O(1)$ and $d=b\ee^{-1/\alpha}$,
+\[
+ \frac{D}{d}=\ee^{-\ee/(1+\ee)}+O(1/d)\longrightarrow1.
+\]
+Furthermore
+\[
+ \frac{D-d}{b}
+ =\frac1\ee\left(1-
+       \exp\left(-\frac{\ee}{1+\ee}\log(1/\ee)\right)\right)+O(1/b).
+\]
+Taylor's formula for the ordinary exponential gives \eqref{eq:centering}.
+The error there tends to zero, so Theorem~\ref{thm:budget} gives
+\eqref{eq:explicitbudget}. For the last assertion,
+$(d+Cb-D)/b\to-\infty$. Tightness of $(J_1-D)/b$ and the cutoff identity
+then imply \eqref{eq:wrongcenter}.
+\end{proof}
+
+\begin{remark}[A strong failure of a leading-order prescription]
+Both $d$ and $D$ are correct leading scales for the largest action.
+Nevertheless a cutoff equal to $d$ plus any fixed number of cloud widths
+retains an asymptotically vanishing fraction of the coefficient. This is
+not a small error in a constant; it changes a desired fixed-retention
+budget into a zero-retention prescription. The logarithm in
+\eqref{eq:explicitbudget} is therefore an essential part of the endpoint
+answer.
+\end{remark}
+
+\subsection{The macroscopic crossover}
+\begin{corollary}[Condensate fraction at every logarithmic rate]
+\label{cor:macro}
+If $\ee_n\log n\to\tau\in[0,\infty]$, then
+\begin{equation}\label{eq:macro}
+ \frac{J_1}{n}\pto e^{-\tau},
+\end{equation}
+where $e^{-\infty}=0$. For any arbitrary-rate sequence and any cutoffs
+with $M_n/d_n\to l\ne1$,
+\begin{equation}\label{eq:macrocutoff}
+ \frac{u_{n,M_n}}{u_n}\longrightarrow
+ \begin{cases}0,&0\le l<1,\\1,&l>1.\end{cases}
+\end{equation}
+At $l=1$ no universal retained fraction is determined by this leading
+ratio alone.
+\end{corollary}
+\begin{proof}
+Directly from \eqref{eq:scales},
+\begin{equation}\label{eq:logd}
+ \log(d/n)=-\frac{\ee}{1+\ee}\log n
+              +\frac1{1+\ee}\log(c_\ee/\ee).
+\end{equation}
+The last term tends to zero. The dense and sparse theorems give $J_1/d\pto1$;
+for a sequence crossing between the two regimes, apply the subsequence
+argument in Section~\ref{sec:matching}. Equation~\eqref{eq:logd} proves
+\eqref{eq:macro}, and convergence in probability gives
+\eqref{eq:macrocutoff}. Equations~\eqref{eq:maincutoff} and
+\eqref{eq:wrongcenter} exhibit different limits with $M_n/d_n\to1$.
+\end{proof}
+
+\begin{example}[Three concrete joint limits]\label{ex:regimes}
+For $\ee_n=n^{-1/2}$, $\lambda\sim\sqrt n\to\infty$ and the largest
+action occupies asymptotically all the mass, while its cloud has scale
+$b\sim\sqrt n$. A logarithmic budget shift of order $\sqrt n\log n$
+is still present between $d$ and the correct center.
+
+For $\ee_n=\tau/\log n$ with $0<\tau<\infty$,
+\[
+ d\sim e^{-\tau}n,\qquad
+ b\sim\frac{\tau e^{-\tau}n}{\log n},\qquad
+ D-d\sim\frac{\tau e^{-\tau}n\log\log n}{\log n}.
+\]
+Every row is exactly mean-critical, but the conditioned largest action
+carries the positive fraction $e^{-\tau}$.
+
+For $\ee_n=(\log n)^{-1/2}$, the largest action is sublinear in $n$,
+but still asymptotically unique on its own scale $d$. It remains much
+larger than the next action: $d/b=\ee^{-1/(1+\ee)}\to\infty$.
+\end{example}
+
+\section{Matching the coefficient laws and the critical transseries}
+\label{sec:matching}
+
+\subsection{The all-rate coefficient theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+First suppose $\lambda\to\infty$. Theorem~\ref{thm:dense} gives
+\[
+ \Prob(K=n)\sim\lambda D^{-1-\alpha}
+   \sim\frac{\ee^{1+\alpha}}b.
+\]
+The proposed universal expression is
+\[
+ \frac\ee d=\frac{\ee^{1+1/\alpha}}b.
+\]
+Their ratio is $\ee^{\alpha-1/\alpha}\to1$, because
+$(\alpha-1/\alpha)\log\ee\to0$. Combine this with
+Proposition~\ref{prop:exact}.
+
+If $\lambda=O(1)$, then $\ee\log n\to0$, $c_\ee/\ee\to1$, and
+$d/n\to1$. Theorem~\ref{thm:sparse} gives
+\[
+ \frac{\Prob(K=n)}{\ee/d}
+ \sim\frac{nc_\ee n^{-2-\ee}}{\ee/d}
+ =\frac{c_\ee}{\ee}\frac dn n^{-\ee}\longrightarrow1.
+\]
+Deletion and separation have already been proved in both regimes.
+
+For an arbitrary sequence, every subsequence has a further subsequence
+on which $\lambda$ is bounded or tends to infinity: if it has a bounded
+subsequence use it; otherwise select a subsequence diverging to infinity.
+If any of the claimed scalar errors or total variation errors failed to
+tend to zero, select a subsequence on which it stays bounded away from
+zero and apply this dichotomy to obtain a contradiction. The same
+argument applies to convergence-in-probability error probabilities.
+Thus part (a) holds without restrictions on $\lambda$.
+Part (b) is Theorems~\ref{thm:cloud}, \ref{thm:extremes}, and
+\ref{thm:budget}, with \eqref{eq:Dproof}. Part (c) is
+Theorem~\ref{thm:sparse}.
+\end{proof}
+
+\subsection{The familiar singular coefficient survives, but needs a new proof}
+Set $p=1/(1+\ee)$ and recall $B_\ee=c_\ee\Gamma(-1-\ee)$.
+The leading singular term in \eqref{eq:chart} is
+$-B_\ee^{-p}h^p$. Its familiar coefficient expression is
+\begin{equation}\label{eq:hahncoefficient}
+ H_n(\ee)=\rho_\ee^{-n}
+          \frac{B_\ee^{-p}}{-\Gamma(-p)}n^{-1-p}.
+\end{equation}
+It is positive for $0<p<1$. A fixed-$p$ singularity-transfer heuristic
+suggests this expression, but is not a uniform argument as $p\to1$:
+the reciprocal gamma factor vanishes at that endpoint.
+
+\begin{corollary}[Uniform recovery of the singular coefficient]
+\label{cor:hahncoefficient}
+For every sequence $n\to\infty$, $\ee_n\to0^+$,
+\begin{equation}\label{eq:hahnequiv}
+ u_n(\ee_n)\sim H_n(\ee_n).
+\end{equation}
+More precisely the ratio of $H_n$ to the elementary right side of
+\eqref{eq:maincoefficient} depends only on $\ee$:
+\begin{equation}\label{eq:constantcorrection}
+ C(\ee)=
+ \bigl(\ee\Gamma(-1-\ee)\bigr)^{-1/(1+\ee)}
+ \frac{-1}{\ee\Gamma(-1/(1+\ee))}
+ =1-\ee+O(\ee^2).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Cancellation of the powers of $n,c_\ee,\ee$ gives exactly
+\eqref{eq:constantcorrection}. The first factor tends to one.
+For the second, $1-p=\ee/(1+\ee)$ and
+$-1/\Gamma(-p)\sim1-p\sim\ee$, so it also tends to one.
+Combining with Theorem~\ref{thm:main} proves \eqref{eq:hahnequiv}.
+For the displayed expansion, use
+\[
+ \ee\Gamma(-1-\ee)=1+(\gamma-1)\ee+O(\ee^2),
+\]
+and, for $v=1-p$, $-1/\Gamma(-1+v)=v+(\gamma-1)v^2+O(v^3)$.
+The two first-order factors are
+$1-(\gamma-1)\ee+O(\ee^2)$ and
+$1+(\gamma-2)\ee+O(\ee^2)$, whose product is as stated.
+\end{proof}
+
+This corollary establishes a uniform coefficient statement without needing
+a uniform global complex contour or an unproved cancellation of all
+analytic terms at the moving endpoint. The local chart and the probability
+proof describe the same leading coefficient by independent routes. The
+corollary does \emph{not} give a relative error of order $o(\ee)$ for the
+true coefficients; \eqref{eq:constantcorrection} is an exact comparison of
+two candidate leading expressions, not a bound on their remaining errors.
+% ed. (2026-09-29): identification with the critical Hahn article's coefficient law (uncited by the author)
+\begin{ednote}
+The expression \eqref{eq:hahncoefficient} is the critical coefficient law
+\texttt{eq:critical-leading} of the critical Hahn article
+\cite{repo-critical} (its Theorem \texttt{thm:phases}), with $a=1$,
+$\beta=c_\ee$, $\alpha=1+\ee$ and $B_{\beta_c}=c_\ee\Gamma(-1-\ee)=B_\ee$,
+stated there for fixed $1<\alpha<2$. Corollary~\ref{cor:hahncoefficient}
+therefore proves that law uniformly as $\alpha\downarrow1$. That article's
+scale $b_n=(nB_\ee)^{1/\alpha}$ is asymptotic to $d_n$, not to the $b_n$
+used here.
+\end{ednote}
+
+\begin{remark}[Keep the exponential normalizer exact]
+The factor $\rho_\ee^{-n}=\exp(nc_\ee A_\ee(1))$ is exact in all displayed
+coefficient equivalents. Replacing its exponent by only the first term of
+its small-$\ee$ expansion generally leaves an error of order $n\ee^2$
+in the exponent. That error need not tend to zero in an arbitrary-rate
+limit. The uniform theorem therefore does not authorize such a replacement
+without an additional rate assumption. The same care is required when a
+leading scale is used as a fluctuation center.
+\end{remark}
+
+\subsection{Matching sparse coefficients}
+If $\lambda_n\to\lambda_0\in(0,\infty)$, then
+\begin{equation}\label{eq:sparsecoefficient}
+ u_n(\ee_n)\sim
+ e^{\lambda_0(\zeta(2)+P(1))}\frac{\lambda_0}{n^3}.
+\end{equation}
+If $\lambda_n\to0$, the useful relative formula is instead
+$u_n\sim\ee_n/n^2$. These follow from the sparse local theorem, since
+$\rho_\ee^{-n}=\exp(\lambda A_\ee(1))$.
+The endpoint coefficient for fixed $n$ from Proposition~\ref{prop:fixedq}
+is consistent with this very sparse regime, but it does not by itself
+justify letting $n$ grow.
+
+\subsection{Why no contradiction with fixed-exponent behavior arises}
+Fixing $\ee>0$ and letting $n\to\infty$ is not a sequence covered by the
+endpoint theorem. In particular the assertion that all but one action
+recover an unconditioned configuration in total variation is an endpoint
+statement, not a claim for every fixed $1<\alpha<2$. The parameter
+$\ee\to0$ makes the exceptional action larger than the ordinary cloud by
+an unbounded factor. Similarly, finite-$\ee$ numerical ratios need not
+approach one when compared with the elementary constant in
+\eqref{eq:maincoefficient}; their limiting constant can differ by
+$C(\ee)$. This distinction is visible in the diagnostics below.
+% ed. (2026-09-29): an independent later package on the same family; one theorem, two proofs, constants checked on filing
+\begin{ednote}
+An independent package of the same batch,
+\path{Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/},
+treats the same family at the same pinned revision. Its scale
+$B=(nK_\ee)^{1/(1+\ee)}$, $K_\ee=c_\ee\Gamma(-1-\ee)$, satisfies
+$B/d_n\to1$, $\ee B/b_n\to1$ and
+$B+\ee B\log(1/\ee)=D_n-(1-\gamma)b_n+o(b_n)$; its stable law is the
+standard Landau law $Z'=Z-(1-\gamma)$, so its cutoff quantiles are those of
+Theorem~\ref{thm:budget}. It proves the coefficient law
+\eqref{eq:hahnequiv}, whose leading term $H_n$ it shares, with the relative error
+$O(\ee n/B^2+n^2\mathrm e^{-\eta n})$ uniformly for $n\ge n_0$ and small
+$\ee$, every fixed order, and the first correction $\Delta$, which
+reproduces the gamma-ratio column of Table~\ref{tab:coefficients} to three
+or four digits. It does not claim the joint convergence of the cloud and
+the extremes proved here. Where the two articles overlap they state one
+theorem with two independent proofs, and every shared constant agrees. The
+interior-fold side $c>1/\zeta(1+\ee)$ is treated in
+\path{Lower_Critical_Endpoint_Landau_Transseries/}, whose Landau density
+$p$ is the law of $Z-(1-\gamma)$.
+\end{ednote}
+
+\section{Computation, exact checks, and reproducibility}
+\label{sec:computations}
+The archive contains \texttt{verify.py}, its recorded
+\texttt{verification\_results.json}, and the source of this article.
+The checks are supplementary; no proof above relies on extrapolating a
+numerical table.
+
+\subsection{Exact algebra}
+The script uses rational arithmetic in three different finite weight
+models. It computes the formal solution of the feedback equation through
+degree twelve and checks each coefficient against Lagrange inversion.
+It independently enumerates multiplicity vectors through degree eight and
+checks the exponential coefficient formula. These are 60 exact rational
+identities. Two further symbolic identities check the first two equations
+for the chart coefficients in Proposition~\ref{prop:chartcoeff}. All 62
+exact assertions passed in the recorded run.
+
+These tests validate the finite coefficient bookkeeping and the displayed
+chart expansion. They are not a finite substitute for the local
+probability estimates, which concern unbounded indices and moving
+parameters.
+
+\subsection{Positive coefficient recurrence}
+For the numerical model, a useful recurrence avoids cancellation. If
+$p_k=\Prob(K=k)$, then
+\begin{equation}\label{eq:panjer}
+ p_0=e^{-\sum_j\nu_j},\qquad
+ p_k=\frac1k\sum_{j=1}^k j\nu_jp_{k-j}.
+\end{equation}
+This follows by differentiating the probability generating function. To
+compute the joint probability of $K=n$ and no action above $M$, set the
+rates above $M$ to zero in the recurrence but retain the \emph{original}
+$p_0$. That convention preserves the probability of excluding the tail,
+so division by the untruncated $p_n$ gives the exact mathematical cutoff
+ratio. The floating implementation is not exact arithmetic.
+
+The recorded run uses extended-precision \texttt{numpy.longdouble}
+recurrences, with 70-digit \texttt{mpmath} normalization and chart
+calculations. It checks that the initial and final probabilities are
+positive and finite. Different platforms may provide a narrower
+\texttt{longdouble}; underflow raises an error rather than silently
+producing a result. The JSON records the mantissa precision.
+
+\begin{table}[htbp]
+\centering
+\caption{Coefficient diagnostics for $P=0$. The elementary ratio is $p_n/(\epsilon/d)$; the gamma ratio uses $n\rho^nH_n$. Holding $\epsilon$ fixed is not the joint limit in the theorem.}
+\label{tab:coefficients}
+\begin{tabular}{rrrr}
+\toprule $n$ & $\epsilon$ & Elementary ratio & Gamma ratio \\
+\midrule
+100 & 0.100 & 0.88565664 & 0.99693488 \\
+1500 & 0.100 & 0.88808230 & 0.99966531 \\
+4000 & 0.100 & 0.88824635 & 0.99984997 \\
+100 & 0.020 & 0.97903537 & 0.99964242 \\
+1500 & 0.020 & 0.97935966 & 0.99997353 \\
+4000 & 0.020 & 0.97937548 & 0.99998969 \\
+100 & 0.005 & 0.99488134 & 0.99992138 \\
+1500 & 0.005 & 0.99495423 & 0.99999463 \\
+4000 & 0.005 & 0.99495755 & 0.99999797 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Genuine triangular diagnostics: $\epsilon_n=n^{-1/2}$ and a sparse sequence $\epsilon_n=1/n$. All entries use $P=0$ and the elementary normalization in the main theorem.}
+\label{tab:triangular}
+\begin{tabular}{rrrr}
+\toprule $n$ & $\epsilon_n=n^{-1/2}$ & Dense ratio & Sparse ratio \\
+\midrule
+100 & 0.100000 & 0.88565664 & 0.98967840 \\
+500 & 0.044721 & 0.95224627 & 0.99798733 \\
+1500 & 0.025820 & 0.97314044 & 0.99933193 \\
+4000 & 0.015811 & 0.98379152 & 0.99974980 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Cutoff diagnostics, $P=0$, $\epsilon=0.02$, and $M=\lfloor D+bx\rfloor$. Fixed-$\epsilon$ bias remains; these values are not finite-$n$ error certificates.}
+\label{tab:cutoff}
+\begin{tabular}{rrrrr}
+\toprule $n$ & $x$ & $M$ & Retained fraction & Limit $F(x)$ \\
+\midrule
+1500 & -4 & 1276 & 0.351031 & 0.296865 \\
+1500 & -2 & 1332 & 0.526884 & 0.472186 \\
+1500 & 0 & 1387 & 0.817415 & 0.789298 \\
+1500 & 1 & 1415 & 0.951970 & 0.942065 \\
+4000 & -4 & 3339 & 0.351476 & 0.296865 \\
+4000 & -2 & 3484 & 0.525311 & 0.472186 \\
+4000 & 0 & 3629 & 0.817311 & 0.789298 \\
+4000 & 1 & 3702 & 0.951051 & 0.942065 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Stable quantiles and chart checks}
+For the reflected law the inversion formula is
+\begin{equation}\label{eq:cdfintegral}
+ F(x)=\frac12+\frac1\pi\int_0^\infty
+ e^{-\pi t/2}\frac{\sin(t(x+1-\gamma-\log t))}{t}\dd t.
+\end{equation}
+The apparent singularity at zero is integrable. The code uses numerical
+quadrature on a finite interval with an exponentially small omitted tail;
+its reported integration error is the quadrature routine's estimate, not
+a rigorous enclosure. Representative values and finite-$n$ cutoff ratios
+are in Table~\ref{tab:cutoff}. At these moderate parameters a visible
+finite-$\ee$ bias remains. The limiting theorem assumes both
+$\ee\to0$ and $b\to\infty$, rather than $n\to\infty$ with $\ee$ fixed.
+
+For $\ee\in\{0.2,0.05,0.001\}$ and
+$x\in\{0.01,0.001\}$, the program checks the exact phase against a
+30-term analytic remainder and reconstructs $x$ by the contraction map
+in the proof of Theorem~\ref{thm:chart}. The tested phase discrepancies
+are below $10^{-60}$ and the reconstructed discrepancies below $10^{-55}$
+in 70-digit arithmetic. Those thresholds describe the computation, not a
+certified analytic remainder bound; the general bound is
+\eqref{eq:chartbound}.
+
+\subsection{What has not been computationally certified}
+No interval-arithmetic cutoff algorithm is supplied. No numerical onset
+for the asymptotic equivalences is claimed. No floating-point table is
+called a proof of total variation convergence. No Lean file accompanies
+this article. The package separates a reproducible mathematical proof,
+exact finite algebra checks, and diagnostic floating calculations.
+
+\section{A formalization plan with explicit proof boundaries}
+\label{sec:formal}
+The repository already has support and asymptotic-scale infrastructure
+\cite{repo-project,repo-index}. One relevant module is
+\path{TransseriesWellBased.lean}. That infrastructure should not be
+mistaken for a formal proof of the new probability estimates. The natural
+formalization is modular.
+
+\paragraph{Finite algebra and exact coefficients.}
+First prove the exponential-series recurrence over a rational algebra and
+its multiplicity-vector formula. Connect the formal implicit solution to
+Lagrange inversion. The positivity and finite-cutoff monotonicity
+statements can then be developed without analytic limits. A certificate
+checker for a finite list of rational weights should sit above these
+proved identities, not replace them.
+
+\paragraph{Finite and countable Poisson configurations.}
+Construct finite-support count vectors under a summable rate sequence,
+prove the generating-function identity, and connect the cutoff event to
+the coefficient ratio. The convolution estimate for multiple large
+actions is an $\ell^1$--$\ell^\infty$ inequality and is a useful early
+formal target. The deletion map is elementary on the count-vector space.
+
+\paragraph{Uniform local control.}
+Formalize the integral-test bounds with explicit constants on
+$1\le\alpha\le5/4$, then the trigonometric lower bound and Fourier
+concentration estimate. The exponential-tilt identity should expose its
+hypotheses, particularly positivity of the tilt and the finite cutoff.
+Only then assemble the zero/one/multiple-action proof. The exact
+$L^1$ density argument is the central bridge from scalar estimates to
+total variation.
+
+\paragraph{Moving-parameter convergence.}
+A reusable Riemann-sum theorem with a parameter in a compact interval,
+a small-jump variance estimate, and a truncation lemma for joint weak
+convergence would support Theorem~\ref{thm:cloud}. Quantile convergence
+requires a separate continuity and strict-monotonicity interface; it is
+not an automatic consequence of pointwise coefficient asymptotics.
+
+\paragraph{Analytic chart.}
+The required ingredients are the polylogarithm expansion, cancellation of
+meromorphic poles in the parameter, and a parameter-uniform holomorphic
+implicit-function or contraction theorem. Ordinary multivariable power
+series can be used before constructing the specialized Hahn support.
+This keeps analytic existence distinct from formal support manipulation.
+
+This is a plan, not a claim that these interfaces are already implemented
+in the pinned repository. In particular the present article adds no
+formal declarations to that repository and makes no changes to its files.
+
+\section{Further research questions}
+\label{sec:future}
+The results above answer the exact-tail lower-endpoint question at leading
+coefficient order and at the sharp fluctuation and cutoff scale. They also
+make the remaining questions more specific.
+
+\paragraph{1. Effective error bounds and certified action selection.}
+The proof gives explicit inequalities before several asymptotic
+simplifications. Optimize the splitting threshold $M=\eta D$, retain
+constants in the Fourier concentration bound, and obtain a computable
+upper bound on the deletion distance. Combine that bound with rigorous
+enclosures of \eqref{eq:cdfintegral} to return a certified finite-$n$
+cutoff for a prescribed retained fraction. The difficult step is not
+numerical integration alone; it is a quantitative comparison between the
+finite conditional law and its limit.
+
+\paragraph{2. A uniform second-order coefficient theorem.}
+Equation~\eqref{eq:constantcorrection} compares two leading normalizations
+but does not bound the remainder by $o(\ee)$. Determine a joint expansion
+in $\ee$, $1/b$, and the logarithmic combinations generated by
+$\ee\log\ee$. A useful target is an error formula valid across
+$\lambda=O(1)$, $\lambda\to\infty$ slowly, and very large $b$, rather than
+three unrelated expansions with no common overlap.
+% ed. (2026-09-29): partly answered by a package of the same batch
+\begin{ednote}
+Partly answered by
+\path{Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/}: its
+\texttt{thm:uniform} gives a relative error $O(\ee n/B^2+n^2\mathrm e^{-\eta n})$
+valid for all $n\ge n_0$ and small $\ee$, its \texttt{thm:allorders} an
+expansion to every fixed order, and its \texttt{cor:first} the explicit
+first correction.
+\end{ednote}
+
+\paragraph{3. Slowly varying and nonexact tails.}
+Replace $j^{-2-\ee}$ by $j^{-2-\ee}L_\ee(j)$. Identify uniform regularity
+conditions on $L_\ee$ that preserve one-action condensation, and construct
+the correct cloud and mean-defect scales. Ordinary regular variation for
+each fixed parameter need not be uniform as the parameter moves. Determine
+when a de Bruijn conjugate or a more general implicit scale replaces the
+explicit powers $b$ and $d$.
+
+\paragraph{4. Simultaneous coupling displacement.}
+Allow the mean of $K$ to be $n(1-\delta_n)$ rather than $n$ while
+$\ee_n\to0$. Find the coupling window in which the imposed deficit,
+truncated-mean defect, and Cauchy cloud all interact. The natural
+centering candidate is $n-\sum_{j\le b}j\nu_j$, but positivity of that
+quantity and local one-action dominance must be re-established. The
+present proof does not address the side on which conditioning lies below
+the typical cloud.
+
+\paragraph{5. A growing prefix and the loss of universality.}
+Let the altered prefix length $J_n$ grow. Determine sharp conditions on its
+centered variance, maximum action, and tail intensity under which it is
+still invisible after scaling by $b_n$. A prefix with negligible total
+mass can nevertheless shift a fluctuation center if its first moment is
+large. The fixed-prefix proof isolates exactly where stronger conditions
+would be required.
+
+\paragraph{6. Several action species and competing condensates.}
+For a sum of several near-index-one tails, mark the species of each action.
+Determine when exactly one condensate still occurs and how its species is
+selected. If different exponents approach one at different rates, the
+largest-action weight at the mean defect may select one species while the
+ordinary cloud contains several. Prove the corresponding marked
+point-process and cutoff statements before assuming a single effective
+exponent.
+
+\paragraph{7. Geometry beyond the coefficient configuration.}
+The conditioned Poisson configuration encodes coefficient contributions,
+not by itself a complete tree metric. Use an explicit combinatorial
+bijection to connect this triangular model to tree degree sequences, and
+then investigate height, diameter, and scaling limits. The fixed-law
+Cauchy-tree literature \cite{kr} supplies relevant comparisons, but its
+geometric conclusions cannot be transferred without that additional
+structure.
+
+\paragraph{8. Complex continuation and additional transseries structure.}
+Theorem~\ref{thm:chart} is a convergent local critical chart. It does not
+establish global analytic continuation, resurgence, Borel summability, or
+Stokes constants. Determine what happens when $h$ and $\ee$ vary in larger
+complex domains, when the chosen branch winds, or when the parameter
+approaches other singularities of the normalization. State separately
+which properties follow from a finite-coordinate analytic chart and
+which require new global information.
+
+\paragraph{9. Machine-checked deletion and triangular limits.}
+Formalize the deletion theorem as a reusable interface: a negligible
+zero-large-action term, a negligible multi-large-action term, and an
+$L^1$-asymptotically constant one-action weight imply total variation
+recovery of the cloud. This abstract statement would support many
+condensation models beyond the explicit zeta family, while leaving the
+model-specific tail and concentration estimates as separate obligations.
+
+\section{Conclusion}
+The lower endpoint does not merely replace one stable exponent by another.
+It turns the vanishing critical coupling into a mean-defect problem, with
+one exceptional action and a smaller compensated Cauchy cloud. For the
+exact power tail with a fixed finite prefix, the coefficient equivalent
+holds at every rate of approach, including regimes in which the total
+Poisson intensity stays bounded or tends to zero. In the dense regime the
+cutoff quantiles require a logarithmic correction to the leading scale;
+omitting it gives asymptotically zero retention even though the cutoff is
+correct to relative leading order.
+
+The analytic and probabilistic descriptions fit together without a hidden
+uniformity assumption. A convergent critical chart persists through a
+removable parameter singularity, while a separate local probability proof
+establishes the uniform coefficient law. The matching gamma expression is
+therefore a conclusion, not a substitution-based justification. The
+remaining tasks concern quantitative certification, less rigid tails,
+additional moving parameters, and formal verification.
+
+\appendix
+\section{Proof-dependency and scope ledger}
+\label{app:ledger}
+\begin{longtable}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Statement & Proof inputs and boundary \\
+\midrule\endhead
+Exact coefficients and cutoffs & Formal Lagrange inversion and summable
+Poisson rates; reproved in Proposition~\ref{prop:exact}. No asymptotic
+assumption.\\[5pt]
+Uniform inverse chart & Classical polylogarithm expansion, removable pole
+cancellation, and a local holomorphic implicit-function argument. Local
+branches only.\\[5pt]
+Dense local equivalent & Integral-test estimates, a tilted Fourier
+concentration bound, and a decomposition into zero, one, or multiple
+large actions. No fixed-exponent local limit is imported.\\[5pt]
+Sparse local equivalent & A positive exponential-moment bound retaining a
+factor of $\lambda$, plus the same one-action decomposition. Valid when
+$\lambda$ tends to zero.\\[5pt]
+Deletion in total variation & An explicit bounded Radon--Nikodym weight
+converging to one in $L^1$; no moment convergence asserted.\\[5pt]
+Cauchy cloud & Poisson Laplace functionals, compact Riemann sums, uniform
+upper-tail bounds, and small-jump variance control. Requires $b\to\infty$.\\[5pt]
+Sharp action budgets & Exact cutoff identity, deletion, weak convergence,
+and strict continuity of the limiting quantile. Not a finite-$n$
+certificate.\\[5pt]
+All-rate coefficient law & Dense and sparse local equivalents joined by a
+subsequence dichotomy; fixed prefix throughout.\\[5pt]
+Publication novelty & Not established. The arbitrary-rate theorem is
+presented as a proved, scoped contribution; classical condensation
+mechanisms are credited.\\[5pt]
+Lean status & No new Lean proofs or repository modifications are included.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproduction instructions and source provenance}
+The article is self-contained at the level of the displayed conventional
+proofs. Its external mathematical input is identified in the bibliography.
+Repository claims are tied to \commit, not to a later moving
+\texttt{main} branch. The source notes in the archive list the inspected
+paths and the specific question answered.
+
+To rebuild the PDF from this directory, run
+\begin{verbatim}
+sh build.sh
+\end{verbatim}
+To reproduce all recorded checks, install the packages in
+\texttt{requirements.txt} and run
+\begin{verbatim}
+python verify.py
+\end{verbatim}
+The optional \texttt{--quick} run writes a separate file,
+\texttt{verification\_quick.json}, so it does not replace the full recorded
+results. Floating results can differ in their last digits across library
+versions and hardware. The program checks failure conditions but does not
+perform directed rounding.
+% ed. (2026-09-29): output location changed on filing; Windows long double
+\begin{ednote}
+As filed, both runs write under \path{build/} by default
+(\path{build/verification_results.json}, \path{build/verification_quick.json}),
+so no rerun replaces the recorded \path{verification_results.json}; writing
+the recorded file requires \texttt{--overwrite-recorded}. On Windows,
+NumPy's \texttt{longdouble} has 53 bits instead of the recorded 64, and a
+rerun there agrees with the record to a relative $10^{-13}$.
+\end{ednote}
+
+\begin{thebibliography}{9}
+\bibitem{repo-critical}
+V.~Reshetnikov, \emph{ProveIt repository: Beyond Finite-Action Folds:
+Critical Hahn Transseries, Stable Sector Asymptotics, and Sharp Action
+Budgets}, research report, 29 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}{Pinned TeX source}.
+Question~4, source lines 1502--1507, and the adjacent editorial note;
+model and exact coefficient identities in the opening sections.
+Repository ownership is recorded here, not an assertion about individual
+human authorship of every research draft.
+
+\bibitem{repo-project}
+V.~Reshetnikov, \emph{ProveIt: Analysis/Transseries}, project README at
+revision \texttt{3d5973524506}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/README.md}{Pinned project description}.
+
+\bibitem{repo-index}
+V.~Reshetnikov, \emph{ProveIt: Series and transseries}, documentation
+index at revision \texttt{3d5973524506}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/README.md}{Pinned documentation index}.
+In particular the editorial accounts of the upper-endpoint research
+packages and their remaining lower-endpoint question.
+
+\bibitem{janson}
+S.~Janson, \emph{Simply generated trees, conditioned Galton--Watson trees,
+random allocations and condensation}, Probability Surveys \textbf{9}
+(2012), 103--252. \href{https://doi.org/10.1214/11-PS188}{doi:10.1214/11-PS188}.
+\href{https://arxiv.org/abs/1112.0510}{arXiv:1112.0510}.
+
+\bibitem{al}
+I.~Armend\'ariz and M.~Loulakis, \emph{Conditional distribution of heavy
+tailed random variables on large deviations of their sum}, Stochastic
+Processes and their Applications \textbf{121}(5) (2011), 1138--1147.
+\href{https://doi.org/10.1016/j.spa.2011.01.011}{doi:10.1016/j.spa.2011.01.011}.
+\href{https://arxiv.org/abs/0912.1516}{arXiv:0912.1516}.
+
+\bibitem{kr}
+I.~Kortchemski and L.~Richier, \emph{Condensation in critical Cauchy
+Bienaym\'e--Galton--Watson trees},
+\href{https://arxiv.org/abs/1804.10183v3}{arXiv:1804.10183v3},
+21 November 2018. The cited version is the authors' final preprint;
+see its condensation and conditioned-walk limit theorems.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 25.12: Polylogarithms}, especially equation 25.12.12.
+\url{https://dlmf.nist.gov/25.12.E12}. Accessed 29 September 2026.
+\end{thebibliography}
+\end{document}

@@ -15,7 +15,7 @@
 \hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
  pdftitle={Specialization-Safe Radical Solvers},
  pdfauthor={Research prepared for Vladimir Reshetnikov},
- pdfsubject={Exact bad characteristics, subset resolvents, Fourier-Kummer charts, and a global obstruction}}
+ pdfsubject={Exact bad characteristics, subset resolvents, Fourier-Kummer charts, and a global obstruction; Part II: optimal Kummer atlases}}
 \titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
 \titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
 \pagestyle{fancy}\fancyhf{}
@@ -65,6 +65,25 @@
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
 \newcommand{\repo}[1]{\code{#1}}
+% [write] Batch 52: package and macros of Part II (manuscript 09), as delivered.
+\usepackage{needspace}
+\newcommand{\A}{\mathbb A}
+\newcommand{\Pj}{\mathbb P}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\EE}{\mathcal E}
+\newcommand{\CH}{\operatorname{CH}}
+\newcommand{\Tot}{\operatorname{Tot}}
+\newcommand{\Conf}{\operatorname{Conf}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\atlas}{\kappa}
+\newcommand{\gen}{\gamma}
+\newcommand{\alggen}{\alpha}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 \begin{document}
 \begin{center}
@@ -83,7 +102,12 @@ project \code{Algebra/PolynomialFormulas}. Batch~36, manuscript~04
 (archive \code{ProveIt_Radical_Solvers_Research}); pinned to ProveIt
 \code{e21766d04}. AI-assisted, unrefereed, not formalized.
 Notes marked \textbf{[write]} were added when the manuscript was written into
-the collection; see Section~\ref{rss:sec:provenance}.\par}
+the collection; see Section~\ref{rss:sec:provenance}.\par
+\smallskip
+Part~II (added 29 September 2026), \emph{Optimal Kummer atlases for prime
+cyclic configurations}: batch~52, manuscript~09 (archive
+\code{ProveIt_Optimal_Kummer_Atlases}); pinned to ProveIt \code{1ee53d57d};
+see Section~\ref{ka:sec:provenance}.\par}
 \end{center}
 \begin{abstract}
 A separable polynomial can have an inseparable auxiliary resolvent; a correct
@@ -136,6 +160,7 @@ degree is made.
 \endgroup
 \clearpage
 
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } Specialization-safe radical solvers}
 \section{Research target, provenance, and contribution boundary}
 \label{rss:sec:boundary}
 
@@ -343,7 +368,9 @@ commit \code{1a1396d4d}. It is filed in ProveIt's research-report collection
 and continues the formal project \code{Algebra/PolynomialFormulas}; it shares
 no theorem with any other report. Every statement, proof, table, example,
 remark, question and limitation of the delivered text is printed. No merge
-choice arose.
+choice arose. (This paragraph describes Part~I. Part~II, added on
+29 September 2026, is built from a second manuscript, batch~52
+manuscript~09; its provenance is Section~\ref{ka:sec:provenance}.)
 
 The write changed only the following. Every label carries the prefix
 \code{rss:}. The title-page provenance line, Sections~\ref{rss:sec:notation},
@@ -400,6 +427,10 @@ independent proof review. Parts of Section~\ref{rss:sec:criterion} (the
 relation-module viewpoint and characteristic-zero separation) may be close
 to the classical literature on linear relations among conjugates; this was
 not checked, and no priority is claimed.
+\item \textbf{Part~II} (added 29 September 2026) answers Research
+question~\ref{ka:q:rss-minimal-covers}. It is likewise AI-assisted,
+unrefereed and not formalized; its own status and non-claims are
+Section~\ref{ka:sec:nonclaims}.
 \end{itemize}
 
 \section{Subset-sum resolvents and the correct notion of separation}
@@ -1434,6 +1465,17 @@ cover. Relabelling the cyclic generator permutes the nonzero Fourier
 indices; choosing such a relabelling adaptively is another form of chart
 selection, not a contradiction.
 
+\begin{writenote}[Nonlinear covers, added 29 September 2026 (batch~52)]
+Part~II supplies that lower bound for covers of the universal cyclic
+quotient $\Spec B$ of Section~\ref{rss:sec:global}: every cover by regular
+Kummer charts, with arbitrary open sets and arbitrary nonlinear character
+sections, has at least $p-1$ members (Proposition~\ref{ka:prop:atlaslower}
+and Corollary~\ref{ka:cor:repo}). It concerns Zariski covers of that
+universal quotient, not the coverage of individual rational examples stated
+in the corollary above, so it complements the corollary rather than
+replacing it.
+\end{writenote}
+
 \subsection{Concrete rational examples}
 
 Taking every $c_k=1$, elimination of $Z$ from
@@ -2053,6 +2095,7 @@ that auxiliary invariants can introduce other primes. Unbalanced
 relations require separately treating their constant-character component.
 
 \begin{question}[Minimal nonlinear covers of the cyclic configuration]
+\label{ka:q:rss-minimal-covers}
 What is the smallest number of regular Kummer charts needed to cover
 $\Spec B$ when arbitrary nontrivial character sections are allowed?
 \end{question}
@@ -2060,6 +2103,26 @@ We prove that one global chart is impossible and that the standard Fourier
 coordinate cover needs all $p-1$ of its members. These facts do not settle
 the optimum among nonlinear choices. This question links radical formulas
 to the number of generators of the nontrivial invertible modules $L_j$.
+
+\begin{writenote}[Answered in Part~II, 29 September 2026 (batch~52)]
+The minimum is $d(p-1)$ charts for $\Conf_p(\A^d)/C_p$, hence $p-1$ for the
+question as posed ($d=1$): four for quintics and six for septics
+(Corollary~\ref{ka:cor:repo}). It comes from the integral Chow ring
+\[
+ \CH^*\bigl(\Conf_p(\A^d)/C_p\bigr)=\Z[t]/\bigl(pt,\,t^{d(p-1)}\bigr),
+ \qquad t=c_1(\LL)
+\]
+(Theorem~\ref{ka:thm:main}). A cover by $m$ regular Kummer charts
+trivializes the character line on every chart and so forces $t^m=0$
+(Lemma~\ref{ka:lem:covernilpotence}), while $t^{d(p-1)-1}\neq0$; the $d(p-1)$
+Fourier charts attain the bound (Proposition~\ref{ka:prop:fourieratlas}). The
+charts may be arbitrary Zariski opens with different nontrivial characters.
+Each nontrivial eigenmodule $L_j$ needs exactly $p-1$ generators as an
+invertible $B$-module, which settles the link named in the last sentence
+above. Part~II works over any field of characteristic different from $p$
+containing $\zeta$, so it covers this section's algebraically closed field of
+characteristic zero. Part~II is not formalized.
+\end{writenote}
 
 \begin{question}[Other permutation subgroups and their unit characters]
 Compute $\Pic(A^H)$ and its radical-coordinate obstructions for other
@@ -2247,6 +2310,1808 @@ Picard theorem, and no dependence of the Fourier chart theorem on the
 finite norm table. The three strands can be independently reviewed and
 formalized.
 
+
+%% ====================================================================
+%% Batch-52 addition (manuscript 09, "Optimal Kummer Atlases for Prime
+%% Cyclic Configurations"). All labels of Part II carry the prefix ka:.
+%% Sections continue Part I's arabic numbering (16 onwards) after its
+%% appendices A-B; the manuscript's appendix is Appendix C.
+%% ====================================================================
+\clearpage
+\setcounter{section}{15}
+\renewcommand{\thesection}{\arabic{section}}
+\makeatletter\gdef\theHsection{\arabic{section}}\gdef\Hy@chapapp{section}\makeatother
+\phantomsection\part*{Part II.\quad Optimal Kummer atlases for prime cyclic configurations}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Optimal Kummer atlases for prime cyclic configurations}
+
+\noindent\emph{Sections~1--15 and Appendices~A--B form
+the original report (Part~I), unchanged except for dated \textbf{[write]}
+notes pointing to this addition. Part~II was added on 29 September 2026 in
+batch~52 of ProveIt's incoming-report intake, from one manuscript written
+against Part~I as printed above. It answers Part~I's Research
+question~\ref{ka:q:rss-minimal-covers}: covering the cyclic quotient
+$\Spec B$ of the distinct-root configuration by regular Kummer charts, with
+arbitrary nonlinear character sections allowed, needs exactly $p-1$ charts.
+More generally, $\Conf_p(\A^d)/C_p$ has integral Chow ring
+$\Z[t]/(pt,t^{d(p-1)})$ and needs exactly $d(p-1)$ charts.
+Section~\ref{ka:sec:write} records the provenance, fixes the notation and
+states the formal status of the addition; Sections~\ref{ka:sec:introduction}--%
+\ref{ka:sec:conclusion} and Appendix~\ref{ka:app:provenance} are the
+manuscript.}
+
+\begin{center}
+{\small\sffamily\color{accent} PROVEIT RESEARCH COMPANION\par}
+\vspace{0.3cm}
+{\LARGE\bfseries\color{ink} Optimal Kummer Atlases for\\[2mm]
+ Prime Cyclic Configurations\par}
+\vspace{0.25cm}
+{\large Exact nonlinear chart complexity, torsion Chow classes,\\
+ and prime-degree radical reconstruction\par}
+\vspace{0.3cm}
+{Research prepared for Vladimir Reshetnikov\par}
+{29 September 2026\par}
+\vspace{0.2cm}
+{\small AI-assisted research manuscript; written proofs, not Lean/Rocq formalization.\par}
+\end{center}
+
+\begin{quote}\small
+\textbf{Abstract (manuscript~09).}
+The ProveIt report \emph{Specialization-Safe Radical Solvers} asks whether
+arbitrary nonlinear character sections can cover the universal cyclic
+root configuration with fewer regular Kummer charts than the standard
+$p-1$ Fourier charts. We answer this question: the exact minimum is
+$p-1$, even when the covering opens are arbitrary and the nontrivial
+character may vary between charts.
+
+More generally, let $p$ be prime, let $d\geq1$, and let $k$ have
+characteristic different from $p$ and contain a primitive $p$th root of
+unity. For the free cyclic quotient
+$X_{p,d}=\Conf_p(\A_k^d)/C_p$, write $\LL$ for a generating character
+line bundle and $N=d(p-1)$. We prove
+\[
+ \CH^*(X_{p,d})=\Z[t]/(pt,t^N),\qquad t=c_1(\LL).
+\]
+The exact regular Kummer-chart count and the exact number of global
+sections generating any nontrivial character line bundle are both $N$.
+The proof identifies the contribution of the full diagonal and proves
+that deleting all proper partial diagonals introduces no further Chow
+relations. It uses integral cycle classes; rational coefficients would
+erase the obstruction.
+
+Further consequences include sharp noncompression for nonlinear
+character covariants, explicit nonzero torsion cycles represented by
+pure Fourier-mode loci, and invariance under allowing arbitrary partial
+collisions while excluding the full diagonal. In a different measure of
+complexity, the finite algebra of the cyclic cover needs exactly $d$
+global algebra generators. Thus in the original one-dimensional problem
+the cover is globally monogenic as an ordinary polynomial algebra, even
+though its regular Kummer atlas needs $p-1$ charts. Exact finite checks,
+a proof-dependency audit, and concrete further research problems accompany
+the proofs. The resolution of the named repository question is explicit;
+priority over the entire literature is not asserted.
+\end{quote}
+
+\noindent\textbf{Main answer in the original setting.}
+For odd prime degree $p$, nonlinear regular Kummer charts cannot improve
+on the Fourier cover. The optimum is $p-1$: four charts for quintics and
+six for septics. This is a statement about a universal cyclic quotient,
+not a count of radicals needed for one polynomial.
+
+\section{[write] Provenance, conventions and status of Part~II}
+\label{ka:sec:write}
+
+\subsection{One manuscript, one addition}
+\label{ka:sec:provenance}
+
+Part~II is batch-52 manuscript~09, \emph{Optimal Kummer Atlases for Prime
+Cyclic Configurations: Exact nonlinear chart complexity, torsion Chow
+classes, and prime-degree radical reconstruction}, an AI-assisted research
+manuscript prepared for Vladimir Reshetnikov and dated 29 September 2026
+(22 pages, A4, as delivered). It arrived as the archive
+\code{ProveIt_Optimal_Kummer_Atlases.zip} (inner directory
+\code{Optimal_Kummer_Atlases/}, main file \code{optimal_kummer_atlases.tex})
+in ProveIt commit \code{458ccfb80} and was placed in \code{a701d9098}. It was
+written against ProveIt commit
+\code{1ee53d57de253d16cdaad79d1f54bbd95d76d682}, at which Part~I's
+\code{article.tex} had the Git blob \code{f8303298d0}. That blob was
+unchanged at the placement commit, so every statement the manuscript makes
+about ``the report'' refers to Part~I as printed above, before the dated
+notes of this write. Its secondary repository source,
+\code{Algebra/PolynomialFormulas/LazardQuinticFormalization.tex} (blob
+\code{5281cbf260}), is also unchanged. The manuscript's checker, build script
+and three JSON records are shipped beside Part~I's files with the prefix
+\code{02-kummer-atlases-} (Part~I's unprefixed files count as~01); its
+source, README and PDF are not shipped and survive in the arrival commit.
+The manuscript did not see any other batch-52 delivery.
+
+The manuscript contributes, in the order printed here: the question, the
+main theorem and its scope (Section~\ref{ka:sec:introduction}); character
+lines and the equivalence between Kummer charts and trivializations
+(Section~\ref{ka:sec:torsors}); the Chow ring of the quotient with only the
+full diagonal removed (Section~\ref{ka:sec:punctured}); invariance under
+deleting the partial diagonals (Section~\ref{ka:sec:deletion}); the exact
+chart count (Section~\ref{ka:sec:minimum}); eigenline generators and
+nonlinear covariant noncompression (Section~\ref{ka:sec:generators}); local
+reconstruction with one shared radical in every dimension~$d$
+(Section~\ref{ka:sec:reconstruction}); the exact ordinary
+algebra-generator number~$d$ and configuration noncompression
+(Section~\ref{ka:sec:algebragenerators}); invariance under allowed partial
+collisions (Section~\ref{ka:sec:robustness}); explicit torsion cycles and
+small cases (Section~\ref{ka:sec:cycles}); a proof audit, its finite checks
+and a formalization decomposition (Section~\ref{ka:sec:audit}); eight
+research questions (Section~\ref{ka:sec:questions}); its conclusion
+(Section~\ref{ka:sec:conclusion}); and its provenance and literature
+comparison (Appendix~\ref{ka:app:provenance}). Every result, proof,
+example, remark, table, limitation and question of the manuscript is
+printed.
+
+Where the merge had to choose:
+\begin{itemize}
+\item \textbf{Numbering.} The manuscript's Section~$n$ is Section~$n+16$
+here and its Appendix~A is Appendix~C; theorem-like numbers follow the
+sections (the manuscript's Theorem~1.1 is Theorem~\ref{ka:thm:main}). Equation
+numbers continue Part~I's: the manuscript's equation~($m$) is printed as
+equation~($m+30$).
+\item \textbf{Front matter.} The manuscript's title block, abstract and
+``Main answer'' paragraph open Part~II; its table of contents is replaced by
+the report's.
+\item \textbf{Overlap with Part~I.} Three results of Part~II restate or
+reprove Part~I in dimension one, and all are kept. The local reconstruction
+(Section~\ref{ka:sec:reconstruction}) is Part~I's Theorem~\ref{rss:thm:chart}
+and branch transition for every~$d$. The group $\CH^1=\Pic\simeq\Z/p\Z$ for
+$d=1$ is Part~I's Theorem~\ref{rss:thm:picard}, proved here by a different
+route. The Fourier charts and their covering property
+(Proposition~\ref{ka:prop:fourieratlas}) extend Part~I's
+\eqref{rss:eq:localKummer} to every~$d$. Dated notes at those places say so.
+\item \textbf{Bibliography.} Both sources cite the same Stacks Project
+section on Kummer theory; it is printed once, with both annotations. The
+manuscript's other five entries keep their text under keys prefixed
+\code{ka:}. Its entry for ``the report'' is Part~I at the pin.
+\item \textbf{Part~I} is unchanged except for the title-page provenance
+line, a sentence in Section~\ref{rss:sec:provenance}, an item in
+Section~\ref{rss:sec:nonclaims}, a label on Research
+question~\ref{ka:q:rss-minimal-covers}, dated notes after
+Corollary~\ref{rss:cor:charts} and after that question, a table-of-contents
+line for Part~I, and the merged Stacks Project entry.
+\end{itemize}
+
+\subsection{Conventions and notation}
+\label{ka:sec:notation}
+
+No symbol of the manuscript was renamed and no normalization was changed.
+Part~II uses Part~I's Fourier convention: $\sigma(x_{a,i})=x_{a,i+1}$ and
+$u_{a,j}=\sum_i\zeta^{-ij}x_{a,i}$ \eqref{ka:eq:fourier}, so for $d=1$ the
+mode $u_{1,j}$ is Part~I's $u_j$ \eqref{rss:eq:fourier}, with
+$\sigma(u_j)=\zeta^ju_j$ in both. The character line $\LL_j$ is the sheaf of
+$\zeta^j$-eigenfunctions, so for $d=1$ its module of global sections is
+Part~I's $L_j$ (Theorem~\ref{rss:thm:picard}). A \emph{regular Kummer chart}
+(Section~\ref{ka:sec:introduction}) has a unit radicand and a nontrivial
+character, as in Part~I's \eqref{rss:eq:globalKummer} and
+\eqref{rss:eq:localKummer}, but its open set is arbitrary, not necessarily
+principal or affine. Several letters carry more than one meaning inside
+Part~II or between the two parts:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.15\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Symbol & Meaning in Part~II & Not to be confused with\\
+\midrule
+$A$, $B$, $k$ &
+For $d=1$: $A=k[x_0,\ldots,x_{p-1},\Delta^{-1}]$, $B=A^{C_p}$
+\eqref{ka:eq:original}; $k$ any field with $\charac k\neq p$ containing
+$\zeta$ \eqref{ka:eq:field} &
+The same $A$, $B$ in Section~\ref{rss:sec:global}, where $k$ is
+algebraically closed of characteristic zero; $A$, $B$ as index subsets in
+Sections~\ref{rss:sec:subset}--\ref{rss:sec:repair}.\\
+$X$, $X_{p,d}$; $Y$ &
+The quotient $U_{p,d}/C_p$ (for $d=1$, $X=\Spec B$); $Y=U_0/C_p$, only the
+full diagonal removed &
+Part~I's polynomial variable $X$ and resolvent variable $Y$.\\
+$t$ &
+$c_1(\LL)\in\CH^1(X)$ &
+The transcendental $t$ of $X^7-t$ over $\F_{29}(t)$
+(Section~\ref{rss:sec:witnesses}).\\
+$N$ &
+$d(p-1)$ &
+Part~I's norm $N_{A,B}$, $N=\binom nk$ and a minimal normal subgroup.\\
+$F$ &
+The full diagonal $\{z_0=\cdots=z_{p-1}\}$ &
+The finite fields $\F_q$.\\
+$a$; $a_{a,j}$ &
+A coordinate index $1\le a\le d$; the radicand $a_{a,j}=u_{a,j}^p$ of the
+chart $D_{a,j}$; a unit radicand $a$ in $T^p-a$; a B\'ezout integer &
+Part~I's $a_j=u_j^p$ (for $d=1$, $a_{1,j}=a_j$).\\
+$c_{a',k}$; $c$ &
+$u_{a',k}/u^{e_j(k)}$ for a fixed pivot $u=u_{b,j}$, first index a
+coordinate \eqref{ka:eq:ratios}; $c$ is also a coordinate index and a ratio
+in the pivot change, and a Wilson coefficient in Section~\ref{ka:sec:punctured} &
+Part~I's $c_{j,k}$, first index the pivot. True: for $d=1$ Part~II's
+$c_{1,k}$ is Part~I's $c_{j,k}$. False: it is Part~I's $c_{1,k}$.\\
+$\atlas$, $\gen$, $\alggen$ &
+Least number of regular Kummer charts; least number of generating global
+sections; least number of global algebra generators &
+Part~I's $\alpha=2^{1/p}$ (Section~\ref{rss:sec:support},
+Appendix~\ref{rss:app:repro}).\\
+$q$ &
+The quotient map $U\to X$ &
+Part~I's $q_{A,B}$ \eqref{rss:eq:q}; field sizes $q$ in both checkers.\\
+$E$, $E_M$, $\EE_W$ &
+A vector bundle; $\A^M\setminus\{0\}$; the bundle of the representation $W$ &
+Part~I's field $E$ and descriptor $E(A)$.\\
+$W$, $W_\pi$ &
+An open set; the representation \eqref{ka:eq:normalrepresentation};
+$V_\pi\setminus F$ &
+Part~I's $L_W$ (Section~\ref{rss:sec:rigidity}).\\
+$Z$ &
+$Z_M$, the cycles $Z_S$, and $W/C_p$ in Theorem~\ref{ka:thm:sandwich} &
+$\Z$; Part~I's elimination variable $Z$.\\
+$C$, $C_b$ &
+The deleted locus $Y\setminus X$ and its filtration &
+The group $C_p$.\\
+$h$ &
+The hyperplane class of $\Pj^{M-1}$; a pivot index in \eqref{ka:eq:transition} &
+Part~I's $h$ in \eqref{rss:eq:transition}, the same role.\\
+$S$ &
+A smooth variety; strata $S_\pi$; an index set in Proposition~\ref{ka:prop:cycles} &
+Part~I's Fourier support $S$ (Theorem~\ref{rss:thm:support}); Lazard's $S_k$.\\
+$f$, $M$ &
+Covariants $f_i$, a morphism $f$, and $f(T)=\prod(T-x_i)$; a line bundle
+$M$ and the dimension $M$ of $E_M$ &
+Part~I's input polynomial $f$ and matrices $M_q$.\\
+$\CH$ &
+Integral Chow groups throughout &
+Rational Chow groups, which vanish in positive degree here
+(Section~\ref{ka:sec:deletion}).\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Two tempting false readings are ruled out in the text itself and are
+repeated here. First, a nonzero class in $\Pic B$ alone gives a lower bound
+of two charts, not $p-1$; the higher powers $t^2,\ldots,t^{p-2}$ are needed.
+Second, a cover by $p-1$ charts does \emph{not} mean that $p-1$ independent
+$p$th radicals are needed at one input: each chart uses one radical
+(Section~\ref{ka:sec:reconstruction}).
+
+\subsection{Formal status and what is not claimed}
+\label{ka:sec:nonclaims}
+
+\begin{itemize}
+\item \textbf{Not formalized.} No statement of Part~II is formalized in Lean
+or Rocq, and no \code{ka:} label has a Lean or Rocq counterpart. The
+repository has no Chow-group development. The nearest project declaration
+is the Rocq lemma \code{cyclic_kummer_generator}
+(\code{Algebra/PolynomialFormulas/Coq/LazardCyclicKummerGenerator.v}, l.~32):
+a cyclic Galois extension containing the needed roots of unity has one Kummer
+generator. It is a field-level existence statement; Part~II does not rely on
+it, and it says nothing about regular charts on the configuration space.
+Section~\ref{ka:sec:audit}'s formalization decomposition is a plan of
+proposed milestones, not existing declarations, and no Lean or Rocq code was
+delivered or is shipped.
+\item \textbf{Evidence.} The geometric results rest on written proofs that
+use standard integral intersection theory
+\cite{ka:Fulton,ka:Totaro,ka:EdidinGraham}. The finite checker verifies
+partition counts, Euler coefficients and Fourier identities only; it does not
+verify Chow groups, localization, or the atlas lower bound. Its Fourier tests
+are exhaustive over $\F_7$ and $\F_{11}$ and seeded samples over $\F_{29}$,
+and its branch checks cover 128 inputs per field.
+\item \textbf{The source's own non-claims} stand as printed: the Chow-theoretic
+machinery is established work, and Totaro's treatment of cyclic products is
+close background; no exhaustive priority review was made. Part~II does not
+solve the generic quintic over its symmetric coefficient field, does not
+compute coefficient-level invariants, does not minimize nested radicals for
+one input, and gives no lower bound for programs with case distinctions.
+It concerns regular Kummer presentations on Zariski opens of the specified
+universal cyclic quotient. Theorem~\ref{ka:thm:sandwich} concerns
+intermediate opens containing all distinct configurations, not further
+deletions, and the algebra-generator count is not asserted for those larger
+opens. The algebraic chart count is not claimed to equal holomorphic or
+continuous counts. The research questions of Section~\ref{ka:sec:questions}
+are not asserted to be known open problems.
+\item \textbf{Review.} AI-assisted and unrefereed. At the write the proofs
+were read; the checker was rerun on a copy (Appendix~\ref{ka:app:provenance});
+and a separate script recomputed the proper-partition orbit counts from
+Stirling numbers, the Wilson residues $((p-1)!)^d\equiv(-1)^d$, the integral
+identity behind \eqref{ka:eq:regularbundle} for $p\le13$, the quintic
+coefficient $2\cdot3\cdot4\equiv-1\pmod5$, the tuple and branch counts of
+the tables in Section~\ref{ka:sec:audit}, and the pivot-change shift
+$reh^{-1}\equiv rj^{-1}$. This is not an independent proof review.
+\end{itemize}
+
+\section{The question, the answer, and the scope}
+\label{ka:sec:introduction}
+
+\subsection{The repository problem}
+The starting point is Research Question~14.5, entitled
+\emph{Minimal nonlinear covers of the cyclic configuration}, in the
+ProveIt research report \emph{Specialization-Safe Radical Solvers}
+\cite{ka:ProveItReport}. Its setting is
+\begin{equation}
+ A=k[x_0,\ldots,x_{p-1},\Delta^{-1}],\qquad
+ \Delta=\prod_{i<j}(x_i-x_j)^2,\qquad B=A^{C_p},
+ \label{ka:eq:original}
+\end{equation}
+where $p$ is odd prime and a generator $\sigma$ cyclically permutes the
+variables. The report works over an algebraically closed field of
+characteristic zero for this geometric question. It establishes a
+nontrivial character line bundle, rules out a single global regular
+Kummer coordinate, and shows that none of the $p-1$ standard Fourier
+coordinate charts can simply be omitted. It leaves open the optimum
+when nonlinear character sections are allowed.
+
+The distinction is genuine. Showing that every member of one particular
+cover is necessary does not show that a different cover cannot be
+smaller. Nor does a nonzero class in $\Pic(B)$ alone give a lower bound
+larger than two. We determine the higher self-intersections of that class
+and use them to rule out \emph{all} smaller covers.
+
+The report is associated with the repository's polynomial-formula
+project and its audit of solvable-quintic reconstruction
+\cite{ka:ProveItLazard}. Our argument does not assume the correctness of any
+unformalized claim there: the Fourier construction, the line-bundle
+interpretation, and the needed obstruction are proved below.
+
+\begin{writenote}[The report cited here is Part~I]
+The report \cite{ka:ProveItReport} is Part~I of this report, cited at the
+pinned blob, which is the text of Part~I printed above apart from the dated
+\textbf{[write]} notes of batch~52. Its Research Question~14.5 is Research
+question~\ref{ka:q:rss-minimal-covers}; the Sections~8, 10 and~12 named in
+the bibliography entry are Sections~\ref{rss:sec:atlas},
+\ref{rss:sec:support} and~\ref{rss:sec:global}. The nontrivial character
+line bundle is Theorem~\ref{rss:thm:picard}, the impossibility of one global
+regular Kummer coordinate is Theorem~\ref{rss:thm:eigenunit}, and the
+irredundancy of the $p-1$ Fourier coordinate charts is
+Corollary~\ref{rss:cor:charts}.
+\end{writenote}
+
+\subsection{Notation and the main theorem}
+Fix throughout a prime $p$, an integer $d\geq1$, and a field $k$ satisfying
+\begin{equation}
+ \charac(k)\neq p,\qquad \zeta\in k,\qquad \ord(\zeta)=p.
+ \label{ka:eq:field}
+\end{equation}
+Put
+\begin{align}
+ V_{p,d}&=(\A_k^d)^p,\notag\\
+ U_{p,d}&=\Conf_p(\A_k^d)
+   =\{(z_0,\ldots,z_{p-1}):z_i\neq z_j\text{ for }i\neq j\},\notag\\
+ X_{p,d}&=U_{p,d}/C_p,\qquad N=d(p-1).
+ \label{ka:eq:spaces}
+\end{align}
+All inequalities in the configuration definition are scheme-theoretic
+open conditions, not restrictions to $k$-rational points. The action is
+cyclic permutation of the labels. The quotient map is denoted $q$.
+Let $\LL_j$ be its weight-$j$ character line bundle, so
+$\LL_j\otimes\LL_h\simeq\LL_{j+h}$ and $\LL_0=\OO_X$.
+We write $\LL=\LL_1$ and $t=c_1(\LL)$.
+
+A \emph{regular Kummer chart} is an open subset $W\subset X$ on which
+$q_*\OO_U$ has an equivariant presentation
+\[
+ (q_*\OO_U)|_W\simeq\OO_W[T]/(T^p-a),\qquad
+ a\in\Gamma(W,\OO_W^\times),\quad \sigma(T)=\zeta^jT,
+\]
+for some $j\in\{1,\ldots,p-1\}$. Opens need not be principal or affine.
+The number of charts in a smallest such finite cover is $\atlas(X)$.
+For a globally generated line bundle $M$, let $\gen(M)$ be the least
+number of global sections generating it at every point.
+
+\Needspace{14\baselineskip}
+\begin{theorem}[Exact ring and exact nonlinear chart complexity]
+\label{ka:thm:main}
+Under \eqref{ka:eq:field}, there is an isomorphism of graded integral rings
+\begin{equation}
+ \CH^*(X_{p,d})\simeq\Z[t]/(pt,t^{d(p-1)}),\qquad \deg t=1,
+ \label{ka:eq:mainring}
+\end{equation}
+carrying $t$ to $c_1(\LL)$. Moreover,
+\begin{equation}
+ \atlas(X_{p,d})=\gen(\LL_j)=d(p-1)
+ \qquad (1\leq j\leq p-1).
+ \label{ka:eq:maincounts}
+\end{equation}
+The chart lower bound permits arbitrary nonlinear regular character
+sections, arbitrary covering opens, and different nontrivial characters
+on different opens.
+\end{theorem}
+
+The ring calculation is proved in Sections~\ref{ka:sec:punctured} and
+\ref{ka:sec:deletion}; the chart and generator assertions are proved in
+Sections~\ref{ka:sec:minimum} and \ref{ka:sec:generators}.
+When $N>1$, the class $t^r$ has exact order $p$ for every
+$1\leq r<N$. When $N=1$, necessarily $(p,d)=(2,1)$, the Chow ring is
+$\Z$ and a single chart works. Including this boundary case prevents an
+incorrect blanket assertion that every character line bundle here is
+nontrivial.
+
+\begin{corollary}[Answer to the repository question]
+\label{ka:cor:repo}
+In \eqref{ka:eq:original}, the minimum number of regular Kummer charts
+covering $\Spec B$ is $p-1$. Each nontrivial character eigenspace of $A$
+requires exactly $p-1$ generators as an invertible $B$-module.
+\end{corollary}
+\begin{proof}
+For $d=1$, the ordered configuration is affine with coordinate ring $A$,
+and the finite quotient is $\Spec B$. Apply Theorem~\ref{ka:thm:main} and the
+equivalence between vector bundles on an affine scheme and finite
+projective modules.
+\end{proof}
+
+\subsection{What is and is not claimed}
+The mathematical contribution is a complete written answer to the named
+repository question, together with the higher-dimensional ring,
+noncompression, deletion-invariance, and generator statements proved
+here. The intersection-theoretic machinery is established work of
+Fulton, Totaro, and Edidin--Graham; our use of it is not a new foundation
+for Chow theory \cite{ka:Totaro,ka:EdidinGraham}. Totaro's treatment of cyclic
+products is particularly close background. A literature search and
+comparison with those sources do not constitute an exhaustive priority
+review, and no claim of first discovery of every intermediate formula is
+made.
+
+The article does not solve a generic quintic over its symmetric
+coefficient field. It does not compute coefficient-level invariants,
+minimize the number of nested radicals for an individual input, or give
+a lower bound for arbitrary programs with case distinctions. It treats
+\emph{regular Kummer presentations on Zariski opens of a specified
+universal cyclic quotient}. All main assertions have written proofs;
+none is asserted to have been checked by Lean or Rocq. The accompanying
+Python checks test finite combinatorics and Fourier identities only.
+
+\section{Cyclic torsors, eigenlines, and regular Kummer charts}
+\label{ka:sec:torsors}
+
+\subsection{The free locus and its quotient}
+Let $F\subset V=V_{p,d}$ be the full diagonal:
+\[
+ F=\{z_0=z_1=\cdots=z_{p-1}\}\simeq\A_k^d.
+\]
+If a nonidentity element of $C_p$ fixes a geometric point of $V$, it
+generates the entire group, and all the $p$ coordinates of that point
+are equal. Thus the action is free on
+\[
+ U_0=V\setminus F,
+\]
+and in particular on $U=U_{p,d}$. The quotients
+$Y=U_0/C_p$ and $X=U/C_p$ are smooth quasiprojective $k$-schemes. The
+quotient maps are finite \'etale $C_p$-torsors of degree $p$. These
+quotients can be constructed as opens of the finite affine quotient
+$V/C_p$; freeness makes the restrictions torsors. Smoothness descends
+along the \'etale quotient maps.
+
+Here a torsor means that every geometric fiber has a free transitive
+$C_p$-action. It does \emph{not} mean that this finite cover is trivial
+in the Zariski topology.
+
+\subsection{The character algebra}
+Because $p$ is invertible and $k$ contains $\zeta$, the projectors
+\begin{equation}
+ e_j=\frac1p\sum_{r=0}^{p-1}\zeta^{-jr}\sigma^r
+ \qquad (j\in\F_p)
+ \label{ka:eq:projectors}
+\end{equation}
+act on $q_*\OO_U$ and yield
+\begin{equation}
+ q_*\OO_U=\bigoplus_{j\in\F_p}\LL_j,
+ \qquad \LL_j=\{f:\sigma(f)=\zeta^j f\}.
+ \label{ka:eq:eigenalgebra}
+\end{equation}
+After a faithfully flat base change trivializing the torsor, this is the
+character decomposition of the algebra of functions on $C_p$. Each
+summand has rank one, and multiplication gives isomorphisms
+\begin{equation}
+ \LL_j\otimes\LL_h\xrightarrow{\sim}\LL_{j+h}.
+ \label{ka:eq:lineproduct}
+\end{equation}
+These properties descend. In particular, $\LL^{\otimes p}\simeq\OO_X$,
+$\LL_j\simeq\LL^{\otimes j}$, and $p\,t=0$.
+The same constructions apply on $Y$ and restrict to those on $X$.
+
+\begin{lemma}[A Kummer chart is a trivialization of a character line]
+\label{ka:lem:kummer}
+For a nonempty open $W\subset X$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $W$ is a regular Kummer chart.
+\item $\LL_j|_W$ is trivial for some $j\neq0$ in $\F_p$.
+\item $\LL|_W$ is trivial.
+\end{enumerate}
+If these conditions hold, every nontrivial character line is trivial on
+$W$.
+\end{lemma}
+\begin{proof}
+In a Kummer presentation, $T$ generates the relevant eigenline, proving
+(i)$\Rightarrow$(ii). If $j$ is nonzero modulo $p$, choose integers $a,b$
+with $aj+bp=1$. Using tensor powers and duals,
+\[
+ \LL\simeq\LL_j^{\otimes a}\otimes
+                    (\LL^{\otimes p})^{\otimes b}.
+\]
+Thus (ii) implies (iii), which also trivializes every $\LL_j$.
+
+Conversely, suppose $s$ is a generator of $\LL_j|_W$, where $j\neq0$.
+The multiplication isomorphisms show that $s^p=a$ is a unit of
+$\OO_W$. The powers $1,s,\ldots,s^{p-1}$ generate all $p$ distinct
+character pieces. They therefore give the asserted isomorphism
+$\OO_W[T]/(T^p-a)\simeq(q_*\OO_U)|_W$.
+\end{proof}
+
+This is the concrete form of the standard Kummer description by an
+invertible sheaf and a trivialization of its $p$th tensor power
+\cite{StacksKummer}. Notice that a trivial eigenline does not require
+$a$ to have a $p$th root on $W$. The finite torsor can remain nontrivial
+on a perfectly valid Kummer chart.
+
+\begin{remark}[Why the radicand must be a unit]
+If $a$ vanishes at a point, the fiber $T^p-a$ has a multiple root over an
+algebraic closure. It cannot present an \'etale cover there. Unit
+radicands are consequently forced by the intended geometry rather than
+added as an artificial restriction.
+\end{remark}
+
+\begin{remark}[Equivariance does not hide a simpler one-equation chart]
+All nonempty opens of $X$ are integral. Suppose the same cover has a
+$W$-algebra presentation $\OO_W[T]/(T^p-a)$ with $a$ a unit, without a
+specified action on $T$. On the integral inverse image of $W$,
+$\sigma(T)/T$ is a $p$th root of unity, hence one of the constant
+$\zeta^j$. It cannot be $1$, since then $T$ would be invariant and could
+not generate a degree-$p$ algebra. Thus such a presentation automatically
+has a nontrivial character, and is included in our chart definition.
+\end{remark}
+
+\section{The punctured cyclic quotient and its Chow ring}
+\label{ka:sec:punctured}
+
+\subsection{The intersection-theoretic input}
+We use integral Chow groups: $\CH_i(S)$ consists of $i$-dimensional
+algebraic cycles modulo rational equivalence. For smooth pure-dimensional
+$S$, put $\CH^r(S)=\CH_{\dim S-r}(S)$, with its intersection product.
+The needed properties are the following standard ones
+\cite{ka:Fulton,ka:Totaro,ka:EdidinGraham}: proper pushforward; pullback between smooth varieties; restriction to
+opens; the localization sequence
+\begin{equation}
+ \CH_i(Z)\longrightarrow\CH_i(S)\longrightarrow
+ \CH_i(S\setminus Z)\longrightarrow0;
+ \label{ka:eq:localization}
+\end{equation}
+homotopy invariance for vector bundles; Chern classes and their projection
+formula; and the projective-bundle calculation
+$\CH^*(\Pj^{M-1})=\Z[h]/(h^M)$.
+
+A zero section of a rank-$r$ vector bundle contributes its top Chern
+class under the vector-bundle identification of Chow groups. Thus, if
+$E\to S$ is a rank-$r$ vector bundle over a smooth base,
+\begin{equation}
+ \CH^*(\Tot(E)\setminus S)
+   \simeq \CH^*(S)/(c_r(E)).
+ \label{ka:eq:eulerquotient}
+\end{equation}
+Indeed, localization and homotopy invariance identify the image of the
+zero-section pushforward with multiplication by $c_r(E)$. All these
+operations are integral. In particular, no division by the degree of a
+finite quotient is permitted.
+
+The following elementary consequence will be central.
+\begin{lemma}[Chow groups of an open affine space]
+\label{ka:lem:openaffine}
+If $W$ is a nonempty open subset of $\A_k^m$, then
+$\CH_m(W)=\Z[W]$ and $\CH_i(W)=0$ for $i<m$.
+\end{lemma}
+\begin{proof}
+Homotopy invariance gives the assertion for affine space. Restriction to
+$W$ is surjective by localization, so all lower groups vanish. In top
+dimension there is one irreducible component, and there are no
+$(m+1)$-dimensional subvarieties on which a rational equivalence between
+top-dimensional cycles could be supported.
+\end{proof}
+
+\subsection{A finite approximation to the character class}
+We give an ordinary Chow-group proof of the first ring calculation;
+one may equivalently phrase it in equivariant Chow theory. This makes
+the integral coefficient issue and the stabilization range explicit.
+
+Let $E_M=\A_k^M\setminus\{0\}$, with the scalar action
+$v\mapsto\zeta v$, and let $Q_M=E_M/C_p$. The quotient $Q_M$ is the
+complement of the zero section in $\OO_{\Pj^{M-1}}(-p)$. To see this,
+regard $E_M$ as the punctured tautological line bundle
+$\OO_{\Pj^{M-1}}(-1)^\times$ and take the $p$th tensor power of a
+nonzero vector. The fibers of this map are precisely the $C_p$-orbits.
+Consequently, \eqref{ka:eq:eulerquotient} gives
+\begin{equation}
+ \CH^*(Q_M)=\Z[h]/(h^M,ph).
+ \label{ka:eq:approxclassifying}
+\end{equation}
+The character line of $E_M\to Q_M$ is the pullback of the tautological
+line or its dual, depending on the convention for the generator. Its
+first Chern class $t_M$ is therefore $h$ or $-h$. In particular,
+\begin{equation}
+ \CH^*(Q_M)=\Z[t_M]/(pt_M,t_M^M).
+ \label{ka:eq:approxclassifying2}
+\end{equation}
+The choice of sign never changes any ring or nonvanishing assertion
+below. On each space we consistently define the class by its character
+line.
+
+\subsection{Only the full diagonal removed}
+Since $p$ is invertible, taking the average of the $p$ points splits the
+permutation representation:
+\begin{equation}
+ V=F\oplus W,\qquad
+ W\simeq\bigoplus_{j=1}^{p-1}(\chi^j)^{\oplus d},
+ \qquad \dim W=N.
+ \label{ka:eq:normalrepresentation}
+\end{equation}
+Here $F$ is the trivial representation of dimension $d$, and $\chi$
+is a generating character. Thus
+$U_0\simeq\A^d\times(W\setminus\{0\})$.
+
+\begin{proposition}[Chow ring before deleting partial diagonals]
+\label{ka:prop:punctured}
+For $Y=(V\setminus F)/C_p$, with its character class $t_Y$,
+\begin{equation}
+ \CH^*(Y)=\Z[t_Y]/(pt_Y,t_Y^N).
+ \label{ka:eq:puncturedring}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Form the mixed quotient
+\[
+ Z_M=(U_0\times E_M)/C_p.
+\]
+There are two ways to view it. First, it is the complement of the zero
+section in the rank-$M$ vector bundle
+$(U_0\times\A^M)/C_p\to Y$. The zero section has codimension $M$,
+so homotopy invariance and localization give
+\begin{equation}
+ \CH^r(Y)\xrightarrow{\sim}\CH^r(Z_M)
+ \qquad\text{whenever }r<M.
+ \label{ka:eq:stablerange}
+\end{equation}
+The character line on $Y$ pulls back to the character line of the
+common torsor $U_0\times E_M\to Z_M$.
+
+Second, project $Z_M$ to $Q_M$. The decomposition
+\eqref{ka:eq:normalrepresentation} identifies $Z_M$ with a trivial
+$\A^d$-factor times the complement of the zero section of the associated
+rank-$N$ vector bundle $\EE_W\to Q_M$. Its line summands have first
+Chern classes $j t_M$, with $1\leq j\leq p-1$, each repeated $d$ times.
+A dual convention merely permutes this multiset. Hence
+\begin{equation}
+ c_N(\EE_W)=\left((p-1)!\right)^d t_M^N.
+ \label{ka:eq:euler}
+\end{equation}
+By \eqref{ka:eq:eulerquotient} and \eqref{ka:eq:approxclassifying2},
+\begin{equation}
+ \CH^*(Z_M)
+ =\Z[t_M]/\left(pt_M,t_M^M,((p-1)!)^d t_M^N\right).
+ \label{ka:eq:mixedring}
+\end{equation}
+The coefficient $((p-1)!)^d$ is relatively prime to $p$. If $c$ denotes
+this coefficient, choose integers $a,b$ with $ac+bp=1$. Since $N\geq1$,
+$pt_M^N=0$, and therefore $t_M^N=a c t_M^N$. Thus the ideal generated
+by the Euler class is exactly $(t_M^N)$. Equivalently, Wilson's theorem
+gives $c\equiv(-1)^d\pmod p$.
+
+Choose $M>\max\{N,r\}$. Then \eqref{ka:eq:mixedring}, together with
+\eqref{ka:eq:stablerange}, computes $\CH^r(Y)$ with generator $t_Y^r$.
+The identifications preserve products and character classes. Since $M$
+can be chosen arbitrarily large, they determine the entire graded ring
+and give \eqref{ka:eq:puncturedring}.
+\end{proof}
+
+The stable-range argument is the standard finite-dimensional
+classifying-space method of Totaro, also underlying the equivariant
+construction of Edidin--Graham \cite{ka:Totaro,ka:EdidinGraham}. What remains
+is not a formal consequence of the codimension of the full diagonal:
+the configuration space removes \emph{many additional} diagonals, some
+of low codimension. We must prove that they do not kill lower powers
+of $t_Y$.
+
+\section{Deleting partial diagonals creates no new Chow relations}
+\label{ka:sec:deletion}
+
+\subsection{Prime cyclic symmetry of the partition lattice}
+A partition $\pi$ of the label set $\F_p$ specifies the linear subspace
+\begin{equation}
+ V_\pi=\{z_i=z_j\text{ whenever }i,j\text{ lie in one block of }\pi\}
+       \simeq\A_k^{d b(\pi)},
+ \label{ka:eq:partitionflat}
+\end{equation}
+where $b(\pi)$ is the number of blocks. Let $S_\pi$ be the stratum on
+which $\pi$ is the \emph{exact} equality partition. Then
+\[
+ S_\pi\simeq\Conf_{b(\pi)}(\A_k^d),
+\]
+a nonempty open of $V_\pi$. The indiscrete partition corresponds to $F$;
+the discrete partition corresponds to $U$.
+
+\begin{lemma}[There are only two invariant partitions]
+\label{ka:lem:partitions}
+The only partitions of $\F_p$ fixed by translation by $1$ are the
+discrete and indiscrete partitions. Every other partition has trivial
+stabilizer under $C_p$ and lies in an orbit of size $p$.
+\end{lemma}
+\begin{proof}
+A translation-invariant partition defines a translation-invariant
+equivalence relation. Let $H$ be the equivalence class of $0$.
+If $a,b\in H$, then $a\sim b$, and translation by $-b$ gives
+$a-b\sim0$. Thus $H$ is an additive subgroup of $\F_p$. It is either
+$\{0\}$ or all of $\F_p$, and the other blocks are its cosets. This
+gives the two stated partitions. Finally, in a group of prime order,
+a nontrivial stabilizer would be the entire group.
+\end{proof}
+
+For a proper, nontrivial partition, the strata in its orbit are disjoint
+and form an induced $C_p$-scheme:
+\begin{equation}
+ \coprod_{g\in C_p}S_{g\pi}\simeq C_p\times S_\pi.
+ \label{ka:eq:inducedstratum}
+\end{equation}
+Its quotient is therefore isomorphic to $S_\pi$ itself. In particular,
+its ordinary Chow groups vanish below its top dimension, by
+Lemma~\ref{ka:lem:openaffine}. This is where primality performs the decisive
+work.
+
+\subsection{The vanishing pushforward}
+Let $q_0:U_0\to Y$ be the free quotient map. For a proper nontrivial
+partition, set
+\[
+ W_\pi=V_\pi\setminus F\subset U_0.
+\]
+This is a closed subvariety of $U_0$. It is also a nonempty open of the
+affine space $V_\pi$, and has codimension $d(p-b(\pi))>0$ in $U_0$.
+
+\begin{lemma}[Transfer-zero for a partial diagonal]
+\label{ka:lem:transferzero}
+The proper map $W_\pi\to Y$ has zero pushforward of its fundamental
+class:
+\begin{equation}
+ (q_0|_{W_\pi})_*[W_\pi]=0\quad\text{in }\CH_*(Y).
+ \label{ka:eq:transferzero}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Factor the map as the closed immersion
+$i_\pi:W_\pi\hookrightarrow U_0$ followed by the finite map $q_0$.
+The scheme $U_0$ is a nonempty open of the affine space $V$, so its
+Chow groups below dimension $dp$ vanish. The class
+$i_{\pi*}[W_\pi]$ lies in the strictly smaller dimension $db(\pi)$ and
+is therefore zero. Proper pushforward by $q_0$ preserves this zero.
+\end{proof}
+
+No division by $p$ appears. The argument proves zero by factoring a
+proper pushforward through a zero Chow group, not by multiplying a class
+by $p$ and then cancelling $p$. That cancellation would be invalid for
+the torsion classes we are trying to preserve.
+
+\subsection{From the strata to the whole deleted locus}
+Let
+\[
+ C=Y\setminus X=(V\setminus(U\cup F))/C_p.
+\]
+For $1\leq b\leq p-1$, the locus in $V$ consisting of tuples with at
+most $b$ distinct points is a finite union of the flats $V_\pi$, hence
+closed. Removing $F$ and taking the finite quotient provides a closed
+filtration
+\[
+ \varnothing=C_1\subset C_2\subset\cdots\subset C_{p-1}=C.
+\]
+The difference $C_b\setminus C_{b-1}$ is the disjoint union, over cyclic
+orbits of partitions with $b$ blocks, of the quotient strata in
+\eqref{ka:eq:inducedstratum}. Each is isomorphic to $S_\pi$.
+
+\begin{lemma}[Generators for the boundary Chow groups]
+\label{ka:lem:boundarygenerators}
+The groups $\CH_*(C)$ are generated, as abelian groups, by the images
+of $[W_\pi]$ under $W_\pi\to C$, where $\pi$ runs over one representative
+of every cyclic orbit with $2\leq b(\pi)\leq p-1$.
+\end{lemma}
+\begin{proof}
+Apply localization successively to the closed filtration above. On a
+stratum $S_\pi$, the only nonzero Chow group is generated by its
+fundamental class. The map $W_\pi\to C$ is proper: it is the
+restriction of the finite quotient map to a closed subvariety of $U_0$.
+On the dense stratum $S_\pi$ its map to the quotient stratum is an
+isomorphism, because the stabilizer of $\pi$ is trivial. Its fundamental
+class thus lifts the generator of that quotient stratum with coefficient
+one. Subtract these lifts from an arbitrary class. Localization leaves
+a class on the preceding closed piece. Induction finishes the proof.
+
+There can be relations between these generators; no independence claim
+is needed. The important point is that every generator has a specified
+proper lift whose pushforward can be evaluated.
+\end{proof}
+
+\begin{theorem}[Partial-diagonal deletion invariance]
+\label{ka:thm:deletion}
+Restriction induces an isomorphism of integral Chow rings
+\begin{equation}
+ \CH^*(Y)\xrightarrow{\sim}\CH^*(X_{p,d}).
+ \label{ka:eq:deletioniso}
+\end{equation}
+In particular, \eqref{ka:eq:mainring} holds.
+\end{theorem}
+\begin{proof}
+Localization gives the exact sequence
+\[
+ \CH_*(C)\xrightarrow{\iota_*}\CH_*(Y)
+      \longrightarrow\CH_*(X)\longrightarrow0.
+\]
+By Lemma~\ref{ka:lem:boundarygenerators}, it suffices to evaluate $\iota_*$
+on the proper lifts of the fundamental classes $[W_\pi]$.
+Every one of these pushforwards is zero by
+Lemma~\ref{ka:lem:transferzero}. Thus $\iota_*=0$, and restriction is an
+isomorphism. The schemes $X$ and $Y$ are smooth of the same dimension;
+restriction respects their intersection products. Their character lines
+also correspond under restriction. Proposition~\ref{ka:prop:punctured}
+therefore gives the claimed ring with precisely the stated generator.
+\end{proof}
+
+\subsection{What the calculation says in elementary terms}
+The full diagonal has normal representation consisting of all nontrivial
+characters, each $d$ times. Its Euler class gives the first relation
+$t^N=0$. The remaining equality strata have no cyclic stabilizer, and
+their classes disappear through ordinary affine-space rational
+equivalences before they reach the quotient. They therefore contribute
+no smaller relation.
+
+It follows that
+\begin{equation}
+ \CH^r(X_{p,d})=
+ \begin{cases}
+  \Z,&r=0,\\
+  \Z/p\Z,&1\leq r<N,\\
+  0,&r\geq N.
+ \end{cases}
+ \label{ka:eq:gradedgroups}
+\end{equation}
+In particular $\CH^*(X)\otimes\Q=\Q$. A calculation with rational
+Chow groups would have lost \emph{all} of the positive-degree evidence
+for the atlas lower bound. When $N>1$, smoothness gives
+$\Pic(X)=\CH^1(X)\simeq\Z/p\Z$, recovering the original report's
+one-dimensional Picard calculation while also determining its higher
+products.
+
+\begin{writenote}[Second route to Part~I's Picard group]
+Part~I's calculation is Theorem~\ref{rss:thm:picard}: for odd $p$ and $k$
+algebraically closed of characteristic zero, by descent from the explicit
+unit group (Lemma~\ref{rss:lem:descent}). For $d=1$ and odd $p$ the degree-one
+part of \eqref{ka:eq:gradedgroups} proves the same group by a different
+route (localization, the scalar approximation and the Euler class), over any
+field of characteristic different from $p$ that contains $\zeta$. Both proofs
+are printed. At $(p,d)=(2,1)$, $N=1$ and $\CH^1=0$; this case lies outside
+Part~I's hypothesis that $p$ is odd.
+\end{writenote}
+
+\section{The exact number of regular Kummer charts}
+\label{ka:sec:minimum}
+
+\subsection{A cover-nilpotence lemma}
+The lower bound works for arbitrary covering opens, not merely opens
+cut out by global sections. We isolate the precise fact needed.
+
+\begin{lemma}[A trivializing cover kills a Chern power]
+\label{ka:lem:covernilpotence}
+Let $S$ be a smooth pure-dimensional variety and let $M$ be a line
+bundle. If $S=W_1\cup\cdots\cup W_m$ and $M|_{W_i}$ is trivial for
+each $i$, then
+\begin{equation}
+ c_1(M)^m=0\quad\text{in }\CH^m(S).
+ \label{ka:eq:covernilpotence}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $D_i=S\setminus W_i$ and let $n=\dim S$.
+We construct a cycle class supported on
+$D_1\cap\cdots\cap D_r$ whose pushforward is
+$c_1(M)^r\cap[S]$. Start with $[S]$ when $r=0$.
+Suppose $\beta$ on $D_1\cap\cdots\cap D_{r-1}$ has the required
+pushforward. Apply the first Chern class of the restriction of $M$ to
+$\beta$. On the intersection with $W_r$, this line bundle is trivial,
+so the resulting class restricts to zero. Localization lifts it to a
+class on $D_1\cap\cdots\cap D_r$. The projection formula shows that
+its pushforward to $S$ is $c_1(M)^r\cap[S]$.
+
+For $r=m$, the support is empty because the $W_i$ cover $S$.
+The resulting class is zero. Identifying homological and cohomological
+Chow groups on the smooth variety $S$ proves the assertion.
+\end{proof}
+
+This proof uses Chern-class operations on the possibly singular closed
+intersections $D_1\cap\cdots\cap D_r$; it does not assume that the
+boundary divisors meet properly, or even that those closed sets are
+divisors.
+
+\begin{proposition}[Universal lower bound for the atlas]
+\label{ka:prop:atlaslower}
+Every regular Kummer-chart cover of $X_{p,d}$ has at least $N$ members.
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{ka:lem:kummer}, every chart trivializes $\LL$, regardless
+of its chosen nontrivial character. A cover with $m<N$ members would
+force $t^m=0$ by Lemma~\ref{ka:lem:covernilpotence}, contrary to
+\eqref{ka:eq:gradedgroups}. For $N=1$, a nonempty scheme cannot be
+covered by zero opens, which is the required lower bound.
+\end{proof}
+
+\subsection{Fourier charts attain the bound}
+Write $x_{a,i}$ for the $a$th coordinate of $z_i$, where
+$1\leq a\leq d$ and $i\in\F_p$. Choose the action on functions so that
+$\sigma(x_{a,i})=x_{a,i+1}$, and define
+\begin{equation}
+ u_{a,j}=\sum_{i=0}^{p-1}\zeta^{-ij}x_{a,i}
+ \qquad (j\in\F_p).
+ \label{ka:eq:fourier}
+\end{equation}
+A change of index and the finite geometric-series identity give
+\begin{equation}
+ \sigma(u_{a,j})=\zeta^j u_{a,j},\qquad
+ x_{a,i}=\frac1p\sum_{j=0}^{p-1}\zeta^{ij}u_{a,j}.
+ \label{ka:eq:fourierinverse}
+\end{equation}
+Thus $u_{a,j}$ is a global section of $\LL_j$. Let
+\[
+ a_{a,j}=u_{a,j}^p\in\Gamma(X,\OO_X),\qquad
+ D_{a,j}=\{a_{a,j}\neq0\}\subset X,
+ \quad 1\leq j\leq p-1.
+\]
+There are exactly $d(p-1)=N$ such opens.
+
+\begin{proposition}[Optimal Fourier atlas]
+\label{ka:prop:fourieratlas}
+The $D_{a,j}$ cover $X$ and are regular Kummer charts, with
+\begin{equation}
+ (q_*\OO_U)|_{D_{a,j}}
+ \simeq\OO_{D_{a,j}}[T]/(T^p-a_{a,j}),
+ \qquad T\longmapsto u_{a,j}.
+ \label{ka:eq:fourierchart}
+\end{equation}
+\end{proposition}
+\begin{proof}
+If all nonconstant modes vanish at a geometric point, Fourier inversion
+makes each coordinate $x_{a,i}$ independent of $i$. All $p$ points are
+then equal, which is impossible in $U$. Hence the displayed opens cover.
+On $D_{a,j}$, $u_{a,j}^p$ is a unit. Consequently $u_{a,j}$ is a unit
+on the inverse image, and it generates the line bundle $\LL_j$.
+Lemma~\ref{ka:lem:kummer} gives \eqref{ka:eq:fourierchart}.
+\end{proof}
+
+Propositions~\ref{ka:prop:atlaslower} and \ref{ka:prop:fourieratlas} prove
+$\atlas(X)=N$. Since the lower bound already covers all open sets and
+all nonlinear character sections, no further argument about special
+Fourier supports is needed for global optimality.
+
+\section{Minimal generators and nonlinear covariant noncompression}
+\label{ka:sec:generators}
+
+\subsection{Every nontrivial eigenline needs exactly \texorpdfstring{$N$}{N} sections}
+Fix $r\in\F_p^\times$. For $j\in\F_p^\times$, let $e_j(r)$ be the
+unique integer in $\{1,\ldots,p-1\}$ with
+\begin{equation}
+ j e_j(r)\equiv r\pmod p.
+ \label{ka:eq:exponents}
+\end{equation}
+Then
+\begin{equation}
+ s_{a,j}^{(r)}=u_{a,j}^{e_j(r)}\in\Gamma(X,\LL_r),
+ \qquad 1\leq a\leq d,\quad1\leq j\leq p-1.
+ \label{ka:eq:fixedweightsections}
+\end{equation}
+Their common zero locus is the same as that of all the nonconstant
+Fourier modes, hence is empty on $X$. They give a surjection
+$\OO_X^N\twoheadrightarrow\LL_r$.
+
+Conversely, $m$ global generators of $\LL_r$ produce a cover by their
+nonvanishing opens, on each of which $\LL_r$ and hence $\LL$ is trivial.
+Proposition~\ref{ka:prop:atlaslower} gives $m\geq N$. This proves
+$\gen(\LL_r)=N$ and completes Theorem~\ref{ka:thm:main}.
+
+There is also a useful direct Chern-class proof of this lower bound.
+If $\OO_X^m\twoheadrightarrow\LL_r$ has kernel $K$, then $K$ is a
+vector bundle of rank $m-1$ and
+\[
+ c(K)=\frac{1}{1+r t}.
+\]
+Its degree-$m$ component is $(-r t)^m$ and must vanish. For $m<N$,
+this contradicts \eqref{ka:eq:gradedgroups}, since $r^m$ is prime to $p$.
+
+\begin{example}[Four quintic generators of one fixed character]
+For $p=5$, $d=1$, the weight-one eigenmodule is generated by
+\[
+ u_1,\qquad u_2^3,\qquad u_3^2,\qquad u_4^4.
+\]
+Indeed, the weights of all four expressions are $1$ modulo $5$.
+No three elements of this invertible $B$-module can generate it,
+regardless of their polynomial degrees or their allowed denominators in
+$A$. Thus the result concerns module generation, not just the inability
+to omit one entry from this particular list.
+\end{example}
+
+\subsection{Unavoidable common exceptional points}
+\begin{theorem}[Sharp nonlinear character noncompression]
+\label{ka:thm:noncompression}
+Let $1\leq m<N$ and let
+$f_1,\ldots,f_m\in\Gamma(U_{p,d},\OO_U)$ be regular functions with
+\[
+ \sigma(f_i)=\zeta^{j_i}f_i,\qquad j_i\in\F_p^\times.
+\]
+Then the $f_i$ have a common zero on $U_{p,d}$ after passage to an
+algebraic closure of $k$. For $m=N$ there is a family without a common
+zero, namely the nonconstant Fourier modes.
+\end{theorem}
+\begin{proof}
+Each $f_i$ is a section of $\LL_{j_i}$ on $X$. If they had no common
+geometric zero, their tuple would be a nowhere-vanishing section of
+\[
+ E=\bigoplus_{i=1}^m\LL_{j_i}.
+\]
+It would define a trivial line subbundle of $E$, with a locally free
+quotient of rank $m-1$. The top Chern class of $E$ would therefore be
+zero. But
+\[
+ c_m(E)=(j_1\cdots j_m)t^m\neq0,
+\]
+by \eqref{ka:eq:gradedgroups}. The contradiction proves the first assertion.
+The Fourier family proves sharpness.
+\end{proof}
+
+Equivalently, there is no equivariant regular map from $U_{p,d}$ to the
+punctured affine representation with fewer than $N$ nontrivial character
+coordinates. The target coordinate weights may be chosen arbitrarily.
+In particular, increasing the nonlinear degree of the covariants does
+not remove this obstruction. In the affine one-dimensional case,
+regular functions already include expressions with poles along the
+excluded discriminant; allowing those denominators does not change the
+result.
+
+This is a more precise statement than saying that familiar radicals
+sometimes vanish. Any list that is too short has a common exceptional
+configuration, even when the list is designed by a completely different
+algebraic construction.
+
+\section{Explicit local reconstruction and coherent radical branches}
+\label{ka:sec:reconstruction}
+
+The chart optimum does not by itself explain how roots are recovered.
+We record the actual local algebra, keeping the denominator and branch
+conditions visible. For $d=1$, this is the Fourier--Kummer construction
+already developed in \cite{ka:ProveItReport}; its role here is to provide
+the upper bound and to connect the obstruction with radical solvers.
+
+\begin{writenote}[Relation to Part~I]
+For $d=1$, Proposition~\ref{ka:prop:branches} below is
+Theorem~\ref{rss:thm:chart}, with \eqref{ka:eq:allbranchshift} equal to
+\eqref{rss:eq:branchshift}, and \eqref{ka:eq:transition} is Part~I's branch
+transition \eqref{rss:eq:transition}; Part~I also gives the coefficient rule
+\eqref{rss:eq:transitioncoeff}, which is not restated here. They are printed
+because they are stated for every $d$. Index caution: in \eqref{ka:eq:ratios}
+the first index $a'$ of $c_{a',k}$ is a \emph{coordinate} index and the pivot
+$u_{b,j}$ is fixed, whereas the first index of Part~I's $c_{j,k}$ is the
+\emph{pivot}. True reading for $d=1$: Part~II's $c_{1,k}$ with pivot $u_{1,j}$
+is Part~I's $c_{j,k}$. False reading: Part~II's $c_{1,k}$ is Part~I's
+$c_{1,k}$ (true only for the pivot $j=1$). In the subsection on changing the
+pivot, $c$ is at once a coordinate index ($u_{c,h}$) and a ratio.
+Section~\ref{ka:sec:notation} lists the other overloaded letters.
+\end{writenote}
+
+Choose a pivot $u_{b,j}\neq0$, and abbreviate
+\[
+ u=u_{b,j},\qquad a=u^p,\qquad e_j(k)\in\{1,\ldots,p-1\},
+ \quad j e_j(k)\equiv k\pmod p.
+\]
+On the chart $D(a)$ define
+\begin{equation}
+ c_{a',k}=\frac{u_{a',k}}{u^{e_j(k)}}
+ \qquad (1\leq a'\leq d,\ 1\leq k\leq p-1).
+ \label{ka:eq:ratios}
+\end{equation}
+Every denominator is a unit on this chart. The covariance formula gives
+\[
+ \sigma(c_{a',k})=\zeta^{k-j e_j(k)}c_{a',k}=c_{a',k}.
+\]
+Thus all the $c_{a',k}$ and $u_{a',0}$ are regular invariant functions
+there. Also $c_{b,j}=1$.
+
+\begin{proposition}[One shared radical reconstructs the whole tuple]
+\label{ka:prop:branches}
+At a geometric point of $D(a)$, choose any root $\rho$ of $T^p-a$ and put
+\begin{equation}
+ y_{a',i}=\frac1p\left(u_{a',0}+
+       \sum_{k=1}^{p-1}\zeta^{ik}c_{a',k}\rho^{e_j(k)}\right).
+ \label{ka:eq:reconstruct}
+\end{equation}
+There is an $r\in\F_p$ such that simultaneously for every $a'$ and $i$,
+\begin{equation}
+ y_{a',i}=x_{a',i+rj^{-1}}.
+ \label{ka:eq:allbranchshift}
+\end{equation}
+In particular, all branches produce the same unordered configuration.
+\end{proposition}
+\begin{proof}
+Since $u\neq0$, all the roots of $T^p-u^p$ are
+$\rho=\zeta^r u$, with $r\in\F_p$. Substitution gives
+\[
+ c_{a',k}\rho^{e_j(k)}
+ =\zeta^{r e_j(k)}u_{a',k}
+ =\zeta^{rj^{-1}k}u_{a',k}.
+\]
+Fourier inversion proves \eqref{ka:eq:allbranchshift}. The same $r$ works
+for all coordinates because there was only one radical choice.
+\end{proof}
+
+\subsection{Changing the pivot}
+Suppose a second pivot $u_{c,h}$ is also nonzero. On the overlap set
+\[
+ e=e_j(h),\qquad c=\frac{u_{c,h}}{u_{b,j}^{e}},
+ \qquad a_{c,h}=c^p a_{b,j}^{e}.
+\]
+A branch $\rho_{b,j}$ determines the compatible branch
+\begin{equation}
+ \rho_{c,h}=c\rho_{b,j}^{e}.
+ \label{ka:eq:transition}
+\end{equation}
+If $\rho_{b,j}=\zeta^r u_{b,j}$, then
+$\rho_{c,h}=\zeta^{re}u_{c,h}$. Its reconstructed shift is
+$re h^{-1}=rj^{-1}$ modulo $p$, so the ordered reconstructed tuple is
+unchanged. This supplies exact transition data rather than an
+independent choice of a new radical on each chart.
+
+\subsection{What the local data do not supply}
+The formula assumes the invariant functions in \eqref{ka:eq:ratios} are
+already available in the relevant cyclic quotient or intermediate field.
+It is not an algorithm for computing them from symmetric polynomial
+coefficients. Indeed, for $d=1$ the field $\operatorname{Frac}(B)$ is
+larger than the symmetric coefficient field
+$k(x_0,\ldots,x_{p-1})^{S_p}$. The extension with group $C_p$ appears
+only after this change of base. Nothing here bypasses the Galois
+obstruction to solving a generic degree-$p$ polynomial by radicals over
+the original symmetric coefficient field.
+
+The theorem counts charts on that specified cyclic base. On a single
+chart only one $p$th radical is used. Having to cover the entire base
+with $p-1$ charts does not mean that $p-1$ independent $p$th radicals
+are needed at any individual input.
+
+\section{Ordinary algebra generators: a different exact complexity}
+\label{ka:sec:algebragenerators}
+
+The number of Kummer charts is not the number of generators of the
+finite algebra as an ordinary algebra. We can determine the latter
+number as well, and the two answers are markedly different.
+
+\begin{definition}
+Let $\alggen(q_*\OO_U)$ be the least number of global sections
+$y_1,\ldots,y_s$ that generate $q_*\OO_U$ as an $\OO_X$-algebra sheaf.
+Generation is local on the base, but the chosen sections themselves are
+global. These generators are not required to have character weights.
+\end{definition}
+
+\begin{theorem}[No regular equivariant configuration compression]
+\label{ka:thm:configurationcompression}
+If $d>s\geq1$, there is no $C_p$-equivariant regular morphism
+\begin{equation}
+ U_{p,d}\longrightarrow U_{p,s}.
+ \label{ka:eq:compression}
+\end{equation}
+If $d\leq s$, such a morphism exists by adjoining zero coordinates to
+each point.
+\end{theorem}
+\begin{proof}
+An equivariant morphism between the free spaces would induce a morphism
+$f:X_{p,d}\to X_{p,s}$ pulling back the target torsor, and hence its
+character line, to the source torsor and character line. Therefore
+$f^*(t_{p,s})=t_{p,d}$. Pullback on the Chow rings of the smooth varieties
+would imply
+\[
+ t_{p,d}^{s(p-1)}=f^*(t_{p,s}^{s(p-1)})=0.
+\]
+But $0<s(p-1)<d(p-1)$, so the left side is nonzero by
+Theorem~\ref{ka:thm:main}. This is a contradiction. The coordinate inclusion
+when $d\leq s$ visibly preserves distinctness and cyclic permutations.
+\end{proof}
+
+\begin{theorem}[Exact global algebra-generator number]
+\label{ka:thm:alggen}
+For the universal prime cyclic configuration cover,
+\begin{equation}
+ \alggen(q_*\OO_U)=d.
+ \label{ka:eq:alggen}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For the upper bound, take $x_{1,0},\ldots,x_{d,0}$, the coordinates
+of the point with label $0$. On a geometric fiber of $q$, their
+simultaneous values are precisely the $p$ distinct points
+$z_0,\ldots,z_{p-1}$. Polynomial functions in these $d$ coordinates
+separate those points and generate the full product algebra of functions
+on the fiber, by the Chinese remainder theorem for their distinct
+maximal ideals.
+
+To pass from fibers to sheaf generation, note that each multiplication
+operator by $x_{a,0}$ has a monic characteristic polynomial of degree
+$p$. By Cayley--Hamilton, the monomials
+$\prod_a x_{a,0}^{e_a}$ with $0\leq e_a<p$ span the subalgebra generated
+by the chosen sections. They define a morphism from a finite free sheaf
+to $q_*\OO_U$ that is surjective on every geometric fiber. Its coherent
+cokernel is zero by Nakayama's lemma. Thus $d$ generators suffice.
+
+For the lower bound, suppose $s$ global functions $y_1,\ldots,y_s$ on
+$U$ generate the algebra. On each geometric fiber their simultaneous
+values must distinguish all $p$ points: otherwise every polynomial in
+them would take equal values at two of the factors of the product
+algebra. The functions
+\[
+ (\sigma^i y_1,\ldots,\sigma^i y_s),\qquad i\in\F_p,
+\]
+therefore define an equivariant regular morphism
+$U_{p,d}\to U_{p,s}$. Theorem~\ref{ka:thm:configurationcompression} forces
+$s\geq d$. Zero generators cannot generate a rank-$p>1$ algebra, so
+this also covers the remaining possibility $s=0$.
+\end{proof}
+
+\subsection{The one-dimensional cover is globally monogenic}
+For $d=1$, define the invariant polynomial
+\begin{equation}
+ f(T)=\prod_{i=0}^{p-1}(T-x_i)\in B[T].
+ \label{ka:eq:ordinarypoly}
+\end{equation}
+There is an isomorphism
+\begin{equation}
+ B[T]/(f(T))\xrightarrow{\sim} A,
+ \qquad T\longmapsto x_0.
+ \label{ka:eq:monogenic}
+\end{equation}
+For a direct proof, base change along the faithfully flat map $B\to A$.
+All pairwise differences $x_i-x_j$ are units in $A$, so the Chinese
+remainder theorem identifies the source after base change with $A^p$.
+The torsor identity identifies $A\otimes_B A$ with the same product,
+and the map evaluates $T$ at the $p$ cyclic translates of $x_0$.
+It is an isomorphism after this base change, hence before it.
+
+Thus the original cover has one global \emph{ordinary} polynomial
+coordinate while requiring $p-1$ regular \emph{Kummer} charts. The
+obstruction is to the special equation $T^p-a$ with an eigen-coordinate,
+not to every possible global primitive element.
+
+\subsection{The regular-representation bundle detects the difference}
+There is also an informative Chern calculation. Let $E=q_*\OO_U$.
+Since $E=\bigoplus_{j=0}^{p-1}\LL_j$, the identity
+$\prod_{j=1}^{p-1}(1+jz)=1-z^{p-1}$ over $\F_p$ gives, integrally
+in our Chow ring,
+\begin{equation}
+ c(E)=1-t^{p-1}.
+ \label{ka:eq:regularbundle}
+\end{equation}
+The intermediate coefficients vanish because they are divisible by $p$
+and every positive power of $t$ is $p$-torsion. For $d\geq2$,
+$t^{p-1}\neq0$, so $E$ is not a free vector bundle. In particular,
+it cannot have a global monic one-variable polynomial presentation.
+For $d=1$, that Chern class vanishes, consistently with the explicit
+free basis $1,x_0,\ldots,x_0^{p-1}$ in \eqref{ka:eq:monogenic}.
+This Chern observation alone proves non-monogenicity for $d\geq2$;
+Theorem~\ref{ka:thm:alggen} supplies the exact stronger value $d$.
+
+\section{Allowing partial collisions does not improve the atlas}
+\label{ka:sec:robustness}
+
+The deletion theorem has a useful consequence that goes beyond the
+pairwise-distinct configuration space.
+
+\begin{theorem}[Intermediate-open invariance]
+\label{ka:thm:sandwich}
+Let $W\subset V_{p,d}$ be any $C_p$-invariant open satisfying
+\begin{equation}
+ U_{p,d}\subseteq W\subseteq V_{p,d}\setminus F.
+ \label{ka:eq:sandwich}
+\end{equation}
+Then, for $Z=W/C_p$ and its generating character line $\LL_Z$,
+\begin{equation}
+ \CH^*(Z)=\Z[t_Z]/(pt_Z,t_Z^N),\qquad
+ \atlas(Z)=\gen((\LL_Z)_j)=N\quad(j\neq0).
+ \label{ka:eq:sandwichconclusions}
+\end{equation}
+\end{theorem}
+\begin{proof}
+There are open immersions $X\subseteq Z\subseteq Y$. Both restriction
+maps in
+\[
+ \CH^*(Y)\longrightarrow\CH^*(Z)\longrightarrow\CH^*(X)
+\]
+are surjective by localization. Their composite is an isomorphism by
+Theorem~\ref{ka:thm:deletion}. The first map must therefore be injective
+as well, and then the second is an isomorphism. Character classes
+restrict compatibly, giving the ring formula.
+
+The cover-nilpotence argument gives the lower bound $N$ for Kummer
+charts. The same $N$ Fourier modes have no common zero anywhere outside
+$F$, so they supply the upper bound on $Z$. Their powers of a fixed
+nonzero weight similarly give the exact eigenline generator number.
+\end{proof}
+
+\begin{corollary}[Cyclic graph configurations]
+\label{ka:cor:graphs}
+Let $\Gamma$ be any nonempty simple graph on $\F_p$ invariant under
+translation. Impose only the inequalities $z_i\neq z_j$ for edges
+$\{i,j\}$ of $\Gamma$. The resulting free cyclic quotient has the same
+Chow ring and the same optimal Kummer-chart number $d(p-1)$.
+\end{corollary}
+\begin{proof}
+The open in question contains the pairwise-distinct configuration and
+excludes the full diagonal, because the graph has an edge. Apply
+Theorem~\ref{ka:thm:sandwich}.
+\end{proof}
+
+For example, imposing only consecutive cyclic inequalities
+$z_i\neq z_{i+1}$ already has the same obstruction as imposing every
+pairwise inequality. Thus adding a large family of allowed partial
+collisions does not create a smaller global Kummer atlas.
+
+The direction of the hypothesis is essential. If one deletes additional
+points from $U$, for instance by keeping only $D(u_{a,j}^p)$, a single
+Kummer chart does work. Our theorem concerns intermediate opens
+\emph{containing all distinct configurations}; it does not assert
+invariance under arbitrary further deletions. Likewise, the ordinary
+algebra-generator conclusion \eqref{ka:eq:alggen} is not asserted for these
+larger opens, since the point-coordinate values may now repeat.
+
+\section{Explicit torsion cycles and small-degree examples}
+\label{ka:sec:cycles}
+
+\subsection{Geometric representatives of every nonzero power}
+The obstruction is not merely a formal symbol in a presentation. Its
+powers admit very concrete cycle representatives.
+
+\begin{proposition}[Fourier-coordinate cycles]
+\label{ka:prop:cycles}
+Let $S$ be a subset of the $N$ index pairs $(a,j)$ with $j\neq0$, and
+write $r=|S|<N$. The equations $u_{a,j}=0$ for $(a,j)\in S$ define a
+nonempty smooth integral closed subvariety $Z_S$ of $X_{p,d}$ of
+codimension $r$. Its Chow class is
+\begin{equation}
+ [Z_S]=\left(\prod_{(a,j)\in S}j\right)t^r.
+ \label{ka:eq:cycles}
+\end{equation}
+For $1\leq r<N$ it is a generator of $\CH^r(X)\simeq\Z/p\Z$.
+\end{proposition}
+\begin{proof}
+The Fourier transform is an invertible linear change of coordinates on
+$V$. Thus these equations define a linear subspace of codimension $r$.
+Its intersection with $U$ is a smooth integral open subset. It is
+nonempty: retain any one of the nonconstant modes not in $S$, set it
+to a nonzero value, and set the other nonconstant modes to zero.
+Fourier inversion gives $p$ distinct points, since a nonzero character
+of $C_p$ takes $p$ distinct values.
+
+The intersection descends to a smooth integral closed subvariety of
+$X$, and regular-embedding codimension can be checked after the \'etale
+cover $U\to X$. Its equations are the components of a regular section
+of $\bigoplus_{(a,j)\in S}\LL_j$. Its fundamental class is the top
+Chern class of this bundle, which is \eqref{ka:eq:cycles}. The coefficient
+is nonzero modulo $p$, proving the last assertion.
+\end{proof}
+
+\subsection{A pure-mode locus represents the sharp obstruction}
+Take $S$ to contain every nonconstant index except one, $(b,h)$.
+The resulting locus has all nonconstant modes zero except
+$u_{b,h}\neq0$. Before quotienting it is $\A^d\times\mathbb G_m$,
+and the cyclic group scales the second factor with a nontrivial weight.
+Its quotient is again $\A^d\times\mathbb G_m$, with coordinate
+$u_{b,h}^p$ on the multiplicative factor. For $N>1$, this very simple
+subvariety represents a nonzero multiple of $t^{N-1}$, of exact order
+$p$ in the ambient Chow group.
+
+When $d=1$, its root configurations are
+\[
+ x_i=\eta+\beta\zeta^{hi},\qquad \beta\neq0,
+\]
+with root polynomial
+\begin{equation}
+ \prod_i(T-x_i)=(T-\eta)^p-\beta^p.
+ \label{ka:eq:binomiallocus}
+\end{equation}
+Thus the highest nonzero obstruction power is represented by a locus of
+translated binomial configurations. The cover itself is easy to write
+on that locus; its nonzero \emph{ambient cycle class} is what obstructs
+covering the whole space with too few charts. There is no contradiction
+between these two statements.
+
+\subsection{Numerical values and the exceptional smallest case}
+\begin{center}
+\begin{tabular}{@{}ccclcc@{}}
+\toprule
+$p$ & $d$ & $N$ & Integral Chow ring & Kummer charts & Algebra generators\\
+\midrule
+2 & 1 & 1 & $\Z$ & 1 & 1\\
+3 & 1 & 2 & $\Z[t]/(3t,t^2)$ & 2 & 1\\
+5 & 1 & 4 & $\Z[t]/(5t,t^4)$ & 4 & 1\\
+7 & 1 & 6 & $\Z[t]/(7t,t^6)$ & 6 & 1\\
+3 & 2 & 4 & $\Z[t]/(3t,t^4)$ & 4 & 2\\
+5 & 2 & 8 & $\Z[t]/(5t,t^8)$ & 8 & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last column concerns the distinct-point cover only, as in
+Theorem~\ref{ka:thm:alggen}. The chart count equals the eigenline generator
+count, not the ordinary algebra-generator count.
+
+For $p=2,d=1$, the single nonconstant Fourier mode is $x_0-x_1$, which
+is already a unit on the entire configuration space. It gives the global
+Kummer coordinate predicted by $N=1$.
+
+For a quintic, $t^3\neq0$ but $t^4=0$. The product coefficient for the
+pure weight-one locus is $2\cdot3\cdot4=24\equiv-1\pmod5$, so that
+locus represents $-t^3$. Three proposed nonlinear charts cannot cover
+$X_{5,1}$, because their trivializations would force this class to vanish.
+For a septic, the analogous obstruction is $t^5\neq0$; the exact optimum
+is six, not merely a bound between two and six.
+
+\section{Proof audit, reproducible checks, and formalization}
+\label{ka:sec:audit}
+
+\subsection{The logical dependency boundary}
+The main result is not inferred from finite experiments. Its proof has
+the following dependency structure.
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}Y>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\toprule
+Conclusion & Essential input & Evidence supplied\\
+\midrule
+Punctured-quotient Chow ring & Vector-bundle localization, scalar
+$C_p$ approximation, Euler class & Written proof,
+Proposition~\ref{ka:prop:punctured}\\
+Partial-diagonal deletion invariance & Prime cyclic partition lemma,
+ordinary Chow groups of open affine spaces, proper pushforward & Written
+proof, Theorem~\ref{ka:thm:deletion}\\
+Optimal arbitrary-open atlas & Nonzero powers of $c_1(\LL)$,
+cover-nilpotence, Fourier cover & Written proof,
+Section~\ref{ka:sec:minimum}\\
+Eigenline and algebra generators & Explicit sections, torsor fibers,
+configuration noncompression & Written proofs,
+Sections~\ref{ka:sec:generators} and \ref{ka:sec:algebragenerators}\\
+Finite orbit and Fourier identities & Integer and finite-field
+arithmetic & Executed Python checks; not kernel verification\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The classical Chow-theoretic properties are mathematical inputs, not
+newly formalized infrastructure. The finite checker supplies no evidence
+for localization, Chern-class functoriality, or the nonvanishing of a Chow
+class. Those assertions are established by the written arguments using
+standard intersection theory \cite{ka:Fulton,ka:Totaro,ka:EdidinGraham}.
+
+Several tempting but invalid shortcuts have been avoided. We do not
+cancel $p$ in a torsion group. We do not infer the nonlinear optimum
+from coordinate-cover irredundancy. We do not identify an ordinary
+monogenic presentation with a Kummer presentation. We do not confuse
+trivializing an eigenline with splitting the torsor. We do not apply the
+prime partition lemma in composite degree.
+
+\subsection{Exact checks included in the package}
+The finite checker, \code{code/verify_finite_checks.py}, uses only
+Python's standard library. It writes \code{data/finite_checks.json}.\footnote{[write]
+Shipped as \code{code/02-kummer-atlases-verify_finite_checks.py} and
+\code{data/02-kummer-atlases-finite_checks.json}. Its default output path is
+\code{data/finite_checks.json} beside the script's parent directory; always
+pass \code{--output} as in the note at the end of Appendix~\ref{ka:app:provenance}.}
+The recorded run used Python~3.13.5
+and completed successfully. It enumerates all set partitions for
+$p=2,3,5,7$, checks the cyclic orbits and the two fixed partitions,
+and compares the counts with independently computed Stirling numbers.
+For the proper partitions, the numbers of cyclic orbits are:
+\begin{center}
+\begin{tabular}{@{}ccl@{}}
+\toprule
+$p$ & Total partitions & Proper-partition orbit counts by increasing block number\\
+\midrule
+2 & 2 & none\\
+3 & 5 & $1$\\
+5 & 52 & $3,5,2$\\
+7 & 877 & $9,43,50,20,3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The program also checks that the proper partition
+$\{\{0,2\},\{1,3\}\}$ is fixed by the cyclic action in degree four,
+a concrete warning against dropping primality.
+
+The Fourier tests are exact finite-field calculations, not floating-point
+approximations. They check inversion, character covariance, the common
+zero locus of the nonconstant modes, the fixed-character powers
+\eqref{ka:eq:fixedweightsections}, invariant pivot ratios, and all branches
+on a selected group of inputs.
+\begin{center}
+\begin{tabular}{@{}ccccr@{}}
+\toprule
+$p$ & Field & Input coverage & Tuple checks & Branch checks\\
+\midrule
+3 & $\F_7$ & exhaustive & $343$ & $384$\\
+5 & $\F_{11}$ & exhaustive & $161051$ & $640$\\
+7 & $\F_{29}$ & seeded sample & $4096$ & $896$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For each row, branch checks use all $p$ branches on 128 nonconstant
+inputs; they are not exhaustive branch checks on all tuples.
+Additional tests examine 256 vector-valued tuples for each of the six
+pairs $(p,d)$ with $p\in\{3,5,7\}$ and $d\in\{2,3\}$, as well as
+Euler coefficients for six primes and four dimensions. The report
+records precisely which tests were exhaustive and which were sampled.
+The sampling seed is fixed for reproducibility.
+
+The general partition lemma and the Fourier identities have already
+been proved in the text. These tests are meant to catch normalization,
+index, and implementation errors, especially the sign of the Fourier
+transform and the branch-shift exponent. They do not replace those
+proofs and are not described as formal certificates for the article's
+geometric conclusions.
+
+\subsection{A realistic formalization decomposition}
+A proof-assistant implementation should separate the elementary and
+intersection-theoretic layers. The following are proposed milestones,
+not declarations claimed to exist in the repository.
+
+The first layer is finite and algebraic: define the prime cyclic action
+on equality partitions; prove Lemma~\ref{ka:lem:partitions}; verify the
+Fourier character projectors, inversion, and the pivot branch shift;
+and prove that all nonconstant modes vanish exactly on the full
+diagonal. These statements need finite group actions, field algebra,
+and finite sums, but no Chow theory.
+
+The next layer is geometric: construct the free quotient, its character
+line bundles, and the multiplication isomorphisms; prove the Kummer
+chart equivalence; and formalize the implication from a finite
+trivializing cover to vanishing of a Chern power. The last implication
+can be isolated as a generic theorem, independent of configuration
+spaces.
+
+The final layer is intersection-theoretic: establish the scalar finite
+approximation, its stable range, the Euler-class quotient, and the
+zero-pushforward boundary argument. The ordinary Chow proof in
+Section~\ref{ka:sec:deletion} is deliberately arranged to avoid building
+an equivariant intersection theory for every singular partial-diagonal
+union. A sufficient verified interface would consist of localization,
+proper pushforward, homotopy invariance, and first/top Chern-class
+operations with their required compatibilities.
+
+No audit of the current coverage of these facilities in a particular
+proof-assistant library was performed for this manuscript. A file that
+postulates them would be a conditional formalization, not a completed
+kernel proof. The delivered package contains no Lean or Rocq code.
+
+\section{Further research questions and topics}
+\label{ka:sec:questions}
+
+The original nonlinear-cover question is settled in the model specified
+here. The questions below concern genuine extensions or refinements of
+that model. They are proposed research targets, not assertions that each
+has already been posed as an open problem in the published literature.
+
+\begin{question}[Composite-degree cyclic configurations]
+For composite $n$, determine the integral Chow ring of
+$\Conf_n(\A^d)/C_n$ and the optimal regular Kummer-chart count when
+$\charac(k)\nmid n$ and $\mu_n\subset k$.
+\end{question}
+The action on distinct configurations remains free, but proper equality
+partitions can have nontrivial stabilizers. Their quotient strata need
+not have trivial positive-codimension Chow groups, so the deletion proof
+changes essentially. The degree-four partition in the finite checks is
+the first obstruction. An actionable first case is $n=4$, with separate
+tracking of the order-two and primitive order-four character pieces.
+The prime-degree formula should not be extrapolated without this work.
+
+\begin{question}[Descent without a primitive root of unity]
+What is the best replacement for an optimal character-line atlas over
+a field that does not contain $\mu_p$? How much of the atlas and its
+transition data descends from the cyclotomic extension?
+\end{question}
+The constant group $C_p$ and the group scheme $\mu_p$ must be
+separated. A local binomial presentation is not automatically an
+available model for every constant cyclic torsor over a nonsplitting
+base. A precise formulation should use Galois descent of the character
+pieces or their higher-rank sums, rather than silently reuse
+Lemma~\ref{ka:lem:kummer}. The split-base result supplies a lower-bound
+test after scalar extension but not a complete descended construction.
+
+\begin{question}[Other permutation groups and solvable towers]
+For a subgroup $H\leq S_n$, which products of character Chern classes
+survive on $\Conf_n(\A^d)/H$, and what exact local radical-coordinate
+complexity do they force along a solvable subgroup series?
+\end{question}
+The partition filtration still exists, but strata now contribute through
+their stabilizers. The natural next targets are prime-degree affine
+groups and small solvable imprimitive groups. This problem goes beyond
+computing $\Pic$: higher products are needed for sharp cover counts.
+A useful deliverable would identify the full image of each stabilizer's
+cycle pushforward, with integral coefficients throughout.
+
+\begin{question}[Coefficient-efficient optimal atlases]
+Can the optimal $p-1$ charts for $d=1$ be presented with substantially
+smaller exact invariant formulas, while preserving all specialization
+and branch conditions?
+\end{question}
+The chart count cannot improve, but expression degree, bit complexity,
+intermediate-field representation, and certificate size can. The
+quintic and septic pivot ratios are concrete test cases. Any proposed
+algorithm should compute its invariant data from the intended input
+field rather than assume an ordered root tuple. The geometric lower
+bound does not preclude significant algorithmic improvement here.
+
+\begin{question}[Regular versus holomorphic or continuous chart covers]
+For $k=\C$, compare the optimal regular Zariski Kummer atlas with
+holomorphic and continuous trivializing covers of the associated
+character line bundle.
+\end{question}
+The present proof uses algebraic Chow classes. To transfer it to another
+category, one must understand their cycle-class images and the relevant
+notion of an open cover. Equality of the algebraic and topological
+numbers is not a consequence of this paper. Computing the image of
+$t^r$ under realization, beginning with $p=5,d=1$, would clarify which
+part of the obstruction is specifically algebraic.
+
+\begin{question}[Beyond Chow groups: what changes under partial collisions?]
+The inclusions in \eqref{ka:eq:sandwich} induce isomorphisms of Chow rings.
+How do their higher Chow groups, algebraic cobordism groups, or motives
+differ?
+\end{question}
+The removed strata are nonempty, so an isomorphism of ordinary Chow
+rings should not be mistaken for an equivalence of all invariants.
+The proof identifies explicit boundary strata and zero ordinary
+pushforwards, providing a concrete starting point for studying higher
+localization maps. A first test is the comparison between consecutive-edge
+and complete-graph configurations in degree five.
+
+\begin{question}[Explicit rational equivalences for the obstruction cycles]
+Can the relations $p[Z_S]=0$ and the transfer-zero identities be realized
+by small, explicit rational-equivalence chains suitable for a verified
+cycle checker?
+\end{question}
+The current proof derives these relations through general Chow
+operations. Making the chains explicit could reduce the trusted
+geometric interface needed for the first concrete case. The pure-mode
+surface representing $t^3$ for quintics is a particularly small target.
+Such a chain must also be paired with a genuine nonvanishing argument;
+exhibiting $p$-torsion alone does not prove exact order $p$.
+
+\begin{question}[Global generators in other configuration families]
+For graph configurations or other free invariant opens, determine the
+minimum number of global ordinary algebra generators of the finite
+cover, and compare it with the unchanged Kummer-chart count.
+\end{question}
+On the distinct-point space that number is exactly $d$. When partial
+collisions are allowed, the coordinate functions at one label can fail
+to distinguish an entire cyclic fiber. The Chow ring remains the same
+under \eqref{ka:eq:sandwich}, but that fact alone supplies no matching
+upper bound for ordinary algebra generation. This separates a new
+constructive problem from the atlas problem already solved here.
+
+\section{Conclusion}
+\label{ka:sec:conclusion}
+The sharp answer to the repository's nonlinear-cover problem is
+$p-1$. Its explanation is the entire sequence of nonzero powers
+\[
+ t,t^2,\ldots,t^{p-2}
+ \quad\text{in}\quad
+ \CH^*(\Conf_p(\A^1)/C_p),
+\]
+not merely the first Picard-group obstruction. The higher-dimensional
+formula is $d(p-1)$, and the proof remains valid for every split base
+field of characteristic different from $p$.
+
+The essential geometric step is that all proper partial-diagonal strata
+have trivial cyclic stabilizer and push forward to zero through the
+ordinary Chow groups of an open affine space. Consequently, removing
+those strata preserves the characteristic classes of the punctured
+regular representation. A general cover-nilpotence lemma converts those
+classes into a sharp lower bound, matched by explicit Fourier charts.
+
+The same calculation controls nonlinear covariants, exhibits concrete
+torsion cycles, and determines the exact ordinary algebra-generator
+number $d$. In particular, a one-dimensional cyclic cover can have one
+global ordinary polynomial coordinate while needing $p-1$ regular
+Kummer charts. Keeping these different notions of complexity separate
+is essential for interpreting what an optimal radical atlas actually
+proves.
+
+% [write] The manuscript's Appendix A is printed as Appendix C (Part I has A and B).
+\setcounter{section}{2}
+\renewcommand{\thesection}{\Alph{section}}
+\makeatletter\gdef\theHsection{\Alph{section}}\gdef\Hy@chapapp{\Hy@appendixstring}\makeatother
+\section{Provenance, literature comparison, and reproducibility}
+\label{ka:app:provenance}
+
+\subsection{Repository snapshot}
+The relevant repository text was checked at the full commit
+\begin{center}
+\code{1ee53d57de253d16cdaad79d1f54bbd95d76d682}.
+\end{center}
+The selected source is
+\begin{quote}\small
+\path{SetTheory/Cardinals/docs/reports/galois-theory-and-radicals/}\allowbreak
+\path{specialization-safe-radical-solvers/article.tex}.
+\end{quote}
+Its inspected Git blob is
+\code{f8303298d0ed04eace36343ec5208c9dbe127042}.
+The question answered here is Section~14, Research Question~14.5 of
+that report. Its existing results distinguish the nonexistence of one
+global Kummer coordinate, its Picard-group calculation, and minimality
+within the coordinate Fourier cover. Our arbitrary-open lower bound
+addresses precisely the gap left by those results.
+
+The repository was changing during inspection; the commit above is an
+immutable anchor rather than a claim that a moving default branch will
+retain the same contents. The adjacent report directory was inspected,
+and targeted repository searches for the Kummer/Chow connection were
+performed. This was not a mathematical audit of every research archive
+or of all concurrent work in the repository.
+
+\subsection{Relationship to the external literature}
+Totaro's construction of $\CH^*(BG)$ and his analysis of cyclic products
+supply close methodological precedents \cite{ka:Totaro}. The scalar
+approximation and Euler-class quotient in
+Proposition~\ref{ka:prop:punctured} belong to this established framework.
+Edidin--Graham provide the systematic equivariant intersection theory
+behind the same calculation \cite{ka:EdidinGraham}; ordinary intersection
+theory supplies the localization and Chern-class operations
+\cite{ka:Fulton}. The eigenline interpretation of a Kummer torsor is also
+standard \cite{StacksKummer}.
+
+The explicit contribution developed here is the combination of the
+partial-diagonal zero-pushforward proof with the sharp arbitrary-open
+atlas lower bound and its concrete consequences for the specified
+repository question. The manuscript deliberately supplies a proof
+rather than infer novelty from a search failure. A specialist literature
+review could identify prior formulations or stronger existing results;
+such a discovery would change the attribution, not the logical role of
+the proof as an answer to the repository question.
+
+\subsection{Package contents and rebuild}
+The package contains the standalone LaTeX source and compiled PDF, this
+manuscript's README, the finite checker, its JSON output, and a source
+manifest. The bibliography is embedded in the \texttt{.tex} file; no
+BibTeX database or external graphics are needed.
+
+Run the finite checks with
+\begin{quote}\ttfamily\small
+python3 code/verify\_finite\_checks.py
+\end{quote}
+and compile with
+\begin{quote}\ttfamily\small
+pdflatex -interaction=nonstopmode -halt-on-error optimal\_kummer\_atlases.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error optimal\_kummer\_atlases.tex
+\end{quote}
+A third pass may be needed after changes to the table of contents. The
+included \texttt{build.sh} uses \texttt{latexmk} when available and
+otherwise runs three PDFLaTeX passes. No network access is needed to
+run the checker or build the article once the TeX packages are installed.
+
+\begin{writenote}[Shipped names and a safe rerun]
+The paragraph above describes the delivered package. In this report the
+checker is \code{code/02-kummer-atlases-verify_finite_checks.py}, its recorded
+output \code{data/02-kummer-atlases-finite_checks.json}, the source manifest
+\code{data/02-kummer-atlases-source_manifest.json}, the build record
+\code{data/02-kummer-atlases-build_check.json} (which describes the delivered
+22-page PDF, not this report's PDF), and the build script
+\code{code/02-kummer-atlases-build.sh}. The manuscript's source, PDF and
+README are not shipped; this report is built from \code{article.tex}.
+The build script does not work in the shipped layout: it changes to its own
+directory \code{code/} and then calls \code{code/verify_finite_checks.py} and
+compiles \code{optimal_kummer_atlases.tex}, neither of which exists there.
+In the delivered layout it reran the checker in place, overwriting the
+recorded \code{data/finite_checks.json}. Run without \code{--output}, the
+checker writes \code{data/finite_checks.json} relative to the report
+directory, an unshipped file beside the shipped record; on Windows its
+\code{write_text} emits CRLF line endings. Run from the report directory,
+writing to a scratch directory:
+\begin{lstlisting}
+py code/02-kummer-atlases-verify_finite_checks.py --output <tmpdir>/finite_checks.json
+\end{lstlisting}
+At the write this exited with \code{PASS} in about 9~s, and after removing
+carriage returns the fresh file equalled
+\code{data/02-kummer-atlases-finite_checks.json} except for the field
+\code{"python_version"} (3.14.4 at the write, 3.13.5 recorded).
+\end{writenote}
+
 \begin{thebibliography}{99}
 
 \bibitem{Lazard2004}
@@ -2272,6 +4137,9 @@ The Stacks Project Authors,
 Used for the standard line-bundle interpretation of Kummer torsors; the
 unit and Picard-group calculations for the present configuration are
 proved in this article.
+[write] Part~II cites the same section, especially the description of
+torsors by invertible sheaves with a trivialized tensor power (consulted
+September 2026).
 
 \bibitem{repoReadme}
 Vladimir Reshetnikov and contributors,
@@ -2325,6 +4193,45 @@ ProveIt project, [write]
 \code{Algebra/PolynomialFormulas/Coq/} (\code{.v}); status in
 \code{Algebra/PolynomialFormulas/LazardPaperClaimCrosswalk.md}, rows at
 l.~200 and~202.
+
+% [write] The five entries below are Part II's (batch 52, manuscript 09), as
+% delivered, with keys prefixed ka:.  Its Stacks Project entry is merged into
+% StacksKummer above.
+\bibitem{ka:ProveItReport}
+ProveIt research-report collection,
+\emph{Specialization-Safe Radical Solvers: Exact Bad Characteristics for
+Subset-Sum Resolvents, a Fourier--Kummer Atlas, and a Global Obstruction}.
+September 2026, batch 36, manuscript 04. In particular Sections 8, 10,
+12, and Research Question 14.5. AI-assisted, unrefereed report.
+Pinned source:\par
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1ee53d57de253d16cdaad79d1f54bbd95d76d682/SetTheory/Cardinals/docs/reports/galois-theory-and-radicals/specialization-safe-radical-solvers/article.tex}.
+
+\bibitem{ka:ProveItLazard}
+ProveIt project,
+\emph{A Lean transcription of the corrected Lazard quintic formula}.
+Repository audit report, inspected September 2026.\par
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1ee53d57de253d16cdaad79d1f54bbd95d76d682/Algebra/PolynomialFormulas/LazardQuinticFormalization.tex}.
+
+\bibitem{ka:Totaro}
+Burt Totaro,
+\emph{The Chow ring of a classifying space}.
+Preprint, 1998, arXiv:math/9802097. In particular Section 1 and
+Sections 7--8 on cyclic products.\par
+\url{https://arxiv.org/abs/math/9802097}.
+
+\bibitem{ka:EdidinGraham}
+Dan Edidin and William Graham,
+\emph{Equivariant intersection theory}.
+Preprint, 1996, arXiv:alg-geom/9603008, version 3;
+revised version arXiv:alg-geom/9609018.\par
+\url{https://arxiv.org/abs/alg-geom/9603008};
+\url{https://arxiv.org/abs/alg-geom/9609018}.
+
+\bibitem{ka:Fulton}
+William Fulton,
+\emph{Intersection Theory}, second edition.
+Springer, 1998. DOI: 10.1007/978-1-4612-1700-8.\par
+\url{https://doi.org/10.1007/978-1-4612-1700-8}.
 
 \end{thebibliography}
 \end{document}

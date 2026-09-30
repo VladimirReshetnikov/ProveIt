@@ -11,6 +11,7 @@
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
 \usepackage{pgfplots}% Part II figures (batch 43)
 \pgfplotsset{compat=1.18}
+\usepackage[capitalise,noabbrev]{cleveref}% Part III cross-references (batch 57)
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{.7em}{}
@@ -55,6 +56,12 @@
 \newcommand{\Tq}{T_{q,n}}
 \newcommand{\Rq}{R_{q,n}}
 \newcommand{\Zq}{Z_{q,n}}
+% Part III (batch 57, manuscript 04) macros
+\newcommand{\Int}{\operatorname{int}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\mcT}{\mathcal T}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\tr}{\operatorname{Tr}}
 \hypersetup{pdftitle={Two-coin counterexamples to the proposed generalized Shepp--Olkin thresholds},
  pdfauthor={AI-assisted research draft prepared for Vladimir Reshetnikov},
  pdfsubject={Bernoulli sums, Renyi and Tsallis entropy, concavity, exact counterexamples}}
@@ -72,6 +79,9 @@ and the fixed-mean entropy phase diagram\par}
 \vspace{.35cm}
 {\normalsize With Part~II (added 29 September 2026): \emph{Nine bits, ten
 bits}, sharp dimension\\ boundaries for product-Bernoulli entropy\par}
+\vspace{.2cm}
+{\normalsize With Part~III (added 29 September 2026): \emph{Beyond nine
+bits}, exact\\ alphabet-size criteria for product entropy\par}
 \vspace{.6cm}
 {\normalsize Research draft prepared for Vladimir Reshetnikov\par}
 \vspace{.2cm}
@@ -2405,6 +2415,12 @@ criterion and restriction to line segments.
 No blanket assertion about all categorical distributions follows without
 calculating their block quantities $M_j$. The theorem isolates exactly
 which estimate would be needed to generalize the nine-bit phenomenon.
+[Added 29 September 2026, batch~57: Part~III computes these block
+quantities for categorical simplices: $M_j=\Theta_{k_j}(q)$ for
+$0<q<1$ (Definition~\ref{bep:ae:def:theta}), attained only at one large
+and $k_j-1$ equal probabilities (Theorem~\ref{bep:ae:thm:extremal}), so
+$T_q$ is concave on $\prod_j\Delta_{k_j}$ if and only if
+$\sum_j\Theta_{k_j}(q)\leq1$ (Theorem~\ref{bep:ae:thm:subunit}).]
 
 \subsection{Suggested proof-assistant decomposition}
 The repository supplies motivation and a location for integration, but
@@ -2482,6 +2498,16 @@ Compute the block supremum $M_j$ for categorical probability simplices
 or structured finite distributions. Determine whether sharp integer
 dimension transitions analogous to nine versus ten persist, and how
 they depend on alphabet size.
+[Added 29 September 2026, batch~57: answered for categorical simplices
+in Part~III. The block supremum is $\Theta_k(q)$
+(Theorem~\ref{bep:ae:thm:subunit}); at $q=1/2$ three factors with a
+common alphabet are concave exactly for alphabets of at most seventeen
+symbols (Theorem~\ref{bep:ae:thm:17}); concavity for every choice of
+alphabets holds exactly when $nq\leq1$
+(Theorem~\ref{bep:ae:thm:allalphabets}); above order one a
+compression-matrix criterion replaces the additive budget
+(Theorem~\ref{bep:ae:thm:superunit}). Structured finite families other
+than full simplices are not treated (Part~III, question~AQ8).]
 
 \item \textbf{Optimal quantitative stability.}
 Determine the best strong-concavity constant, classify null directions
@@ -2633,6 +2659,1932 @@ the report directory (Python~3.14.4; SymPy~1.14.0): both passed, with
 17,927 and 14 checks, and every output agreed with the recorded file
 apart from line endings.]
 
+%% ====================================================================
+%% Part III: batch 57, manuscript 04 (ProveIt_Alphabet_Entropy)
+%% ====================================================================
+\clearpage
+\fancyhead[L]{\small Beyond nine bits}
+\fancyhead[R]{\small Part III: alphabet-size criteria}
+\phantomsection\part*{Part III.\quad Beyond nine bits: exact alphabet-size criteria and the Shannon boundary for product entropy}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Beyond nine bits: alphabet-size criteria for product entropy}
+
+\noindent\emph{Part~III was added on 29 September 2026 in batch~57 of
+ProveIt's incoming-report intake, from one manuscript written against
+the pinned state of Parts~I and~II. It answers Part~II's question~Q7
+(Section~\ref{bep:pe:sec:questions}) for full categorical simplices: it
+evaluates the block supremum of Part~II's block-product criterion
+(Theorem~\ref{bep:pe:thm:blocks}) for every finite alphabet, and so
+replaces the independent \emph{bits} of Part~II by independent
+categorical variables with arbitrary, possibly unequal, finite alphabets.
+Its binary case is Part~II's. Like Part~II it concerns the joint vector,
+not Part~I's ordinary sum. Parts~I and~II are unchanged except for two
+dated notes in Part~II (after Theorem~\ref{bep:pe:thm:blocks} and at
+question~Q7), a line on the title page, a contents entry, five macros and
+the \texttt{cleveref} package in the preamble, and a remark on the
+bibliography entry~\cite{bep:pe:Wang}. Section~\ref{bep:ae:sec:front}
+records the provenance, what is and is not settled, and the notation of
+the addition.}
+
+\section{Provenance and conventions of Part~III}\label{bep:ae:sec:front}
+
+\subsection{One manuscript, one addition}\label{bep:ae:sec:source}
+Part~III is batch-57 manuscript~04, \emph{Beyond Nine Bits: Exact
+Alphabet-Size Criteria and the Shannon Boundary for Product Entropy},
+subtitled ``A solution of the categorical-simplex part of the
+repository's higher-alphabet research question'', a research manuscript
+prepared with ChatGPT for Vladimir Reshetnikov and dated 29 September
+2026 (24~A4 pages as delivered). It arrived as the archive
+\nolinkurl{ProveIt_Alphabet_Entropy.zip} (inner directory
+\nolinkurl{ProveIt_Alphabet_Entropy/}, main file \nolinkurl{article.tex})
+in ProveIt commit \texttt{6ad01e9c8} and was placed in
+\texttt{70b39943a}. It was written against ProveIt commit
+\texttt{1085b506d65e207a05b7e9c861bb1fe88432fe38}, reading this report's
+\nolinkurl{article.tex} and \nolinkurl{README.md} there, through
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1085b506d65e207a05b7e9c861bb1fe88432fe38/SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/bernoulli-entropy-quasiconcavity}{the
+pinned report}. Between that commit and the placement commit the
+report's files are unchanged (the placement only added the eighteen
+\texttt{03-alphabet-entropy-} files), so every statement the manuscript
+makes about ``the repository'', ``the repository report'' or
+\emph{Nine Bits, Ten Bits} refers to Parts~I and~II as printed above,
+and its section numbers 22 and~23 are those of this report.
+
+\begin{sloppypar}
+The manuscript's code and data are shipped with the prefix
+\texttt{03-alphabet-entropy-} (Part~I's unprefixed files count as~01,
+Part~II's are~02): its four scripts and its Makefile in
+\nolinkurl{code/}; its figure data, its requirements file and eight of
+the nine records of its \nolinkurl{verification/} directory
+(certificates, numerical diagnostics, symbolic results, three console
+transcripts, build log, environment) in \nolinkurl{data/}; and its claim
+ledger, source notes and the ninth record, a layout check, at the report
+root. Its two figures are shipped as
+delivered, as \nolinkurl{figures/03-alphabet-entropy-alphabet_profiles.pdf}
+and \nolinkurl{figures/03-alphabet-entropy-shannon_window.pdf}. Its
+manuscript, delivery README and PDF are not shipped, and its checksum
+file (23 of 23 entries verified at placement) was retired; they survive
+in the arrival commit.
+\end{sloppypar}
+
+In Part~III, ``this article'', ``here'' and ``we'' refer to the
+manuscript; ``the repository'', ``the ProveIt report'' and its
+bibliography key \texttt{repo} refer to Parts~I--II. The manuscript contributes, in the order printed
+here: its target, contribution and provenance
+(Section~\ref{bep:ae:sec:intro}); the setting
+(Section~\ref{bep:ae:sec:setup}); the extremal power-sum product
+(Section~\ref{bep:ae:sec:extremal}); the subunit criterion
+(Section~\ref{bep:ae:sec:subunit}); seventeen versus eighteen symbols
+(Section~\ref{bep:ae:sec:half}); rational-order decisions
+(Section~\ref{bep:ae:sec:decision}); large alphabets
+(Section~\ref{bep:ae:sec:large}); the Shannon window
+(Section~\ref{bep:ae:sec:window}); orders above one
+(Section~\ref{bep:ae:sec:superunit}); quantum product states
+(Section~\ref{bep:ae:sec:quantum}); verification and a Lean plan
+(Section~\ref{bep:ae:sec:verification}); nine research questions
+(Section~\ref{bep:ae:sec:questions}); its conclusion
+(Section~\ref{bep:ae:sec:conclusion}); and its appendix of coefficients
+(Section~\ref{bep:ae:app:coefficients}). Every result, proof, example,
+remark, limitation and question of the manuscript is printed. Its
+abstract reads:
+\begin{quote}\small
+We determine exactly when the Tsallis entropy of an independent joint
+vector is concave in its marginal probability vectors, allowing arbitrary
+and unequal finite alphabets. Below order one, the answer is an additive
+curvature budget, with one explicitly computable scalar per alphabet.
+Its optimizer is unique up to permutation and has one large probability
+and equal remaining probabilities. This evaluates the block suprema left
+open by a recent ProveIt report. At order $1/2$, three factors are concave
+for every common alphabet of at most seventeen symbols, whereas eighteen
+symbols already admit a rational interior counterexample; both sides have
+exact certificates.
+
+We also give a mixed-alphabet matrix criterion above order one, transfer
+the classification to quantum product-state parameters, and derive a
+convergent large-alphabet expansion. The Shannon limit is nonuniform:
+when $q=1-\lambda/\log^2(k-1)$, the maximal block curvature tends to
+$\lambda/(4+\lambda)$. A uniform two-term expansion yields the local
+concavity boundary through order $\log^{-4}(k-1)$. All principal statements
+have proofs. Exact arithmetic certificates, symbolic and numerical
+checks, a formalization plan, and further research questions accompany
+the manuscript.
+\end{quote}
+Its title page adds:
+\begin{quote}\small
+\textbf{Scope and status.} Concavity refers to affine interpolation of the
+\emph{marginals}, not arbitrary mixtures of joint laws and not the entropy
+of their ordinary sum. These are conventional mathematical proofs in an
+unrefereed manuscript; no Lean verification is claimed. The extension is
+assessed against the inspected repository and primary-source records,
+not asserted to have globally certified bibliographic priority.
+\end{quote}
+
+\subsection{What Part~III settles in Part~II, and what it does not}
+\label{bep:ae:sec:settles}
+\begin{itemize}
+\item \textbf{Question~Q7 of Part~II, for full categorical simplices:
+answered.} For a block $\Delta_k$ the supremum $M_j$ of
+Theorem~\ref{bep:pe:thm:blocks} is $\Theta_k(q)$
+(Definition~\ref{bep:ae:def:theta}), attained exactly at the $k$
+permutations of one large and $k-1$ equal probabilities
+(Theorem~\ref{bep:ae:thm:extremal}); so for $0<q<1$ the product Tsallis
+entropy is concave on $\prod_i\Delta_{k_i}$ if and only if
+$\sum_i\Theta_{k_i}(q)\leq1$ (Theorem~\ref{bep:ae:thm:subunit}). Sharp
+integer transitions persist and depend on the alphabet: at $q=1/2$,
+three factors are concave exactly for common alphabets of at most
+seventeen symbols (Theorem~\ref{bep:ae:thm:17}; Table~\ref{bep:ae:tab:half}
+lists the largest concave factor count for twelve alphabet sizes, its
+caption two more), and
+concavity for \emph{every} finite choice of alphabets holds exactly when
+$nq\leq1$ (Theorem~\ref{bep:ae:thm:allalphabets}). The sentence after
+Theorem~\ref{bep:pe:thm:blocks}, ``No blanket assertion about all
+categorical distributions follows without calculating their block
+quantities $M_j$'', stays true as written; Part~III does that
+calculation for full simplices.
+\item \textbf{The binary case is Part~II.} For $k=2$ the block quantity
+$\tau_q$ of Lemma~\ref{bep:ae:lem:leverage} is Part~II's
+$\rho_q=b_q^2/d_q$ \eqref{bep:pe:eq:bdrho}: both are $g(D^{-1}g)$ for the
+one-dimensional binary block, and this ratio does not depend on how the
+segment is parametrized. Hence $\Theta_2(q)=\Psi(q)$, and
+Theorem~\ref{bep:ae:thm:subunit} for binary alphabets is Part~II's
+Theorem~\ref{bep:pe:thm:profile-summary}. The placement audit of
+this intake checked it numerically, independently of both manuscripts'
+code: $\Theta_2=1/11$,
+$1/10$ and $0.0657638785\ldots$ at $q=1/3$, $1/2$ and $0.8$, matching
+$N(1/3)=11$ and $N(1/2)=10$ (Theorems~\ref{bep:pe:thm:half}
+and~\ref{bep:pe:thm:third}); the binary entry of
+Table~\ref{bep:ae:tab:half} is Part~II's ten bits. The Shannon-end
+constant $V_2=t_0^2/4-1=0.4392288\ldots$ of
+Proposition~\ref{bep:ae:prop:endpoints} is Part~II's $C=t_*^2-1$
+(Theorem~\ref{bep:pe:thm:nearone}): at $k=2$, $c=0$ and $t_0=2t_*$. Its
+limit $\Theta_k(q)/q\to(k-1)/k$ at $q\to0$ gives $1/2$, the leading term
+of Part~II's $N(q)\sim2/q$ (Theorem~\ref{bep:pe:thm:smallq}). The binary
+statements of Proposition~\ref{bep:ae:prop:remaining} are Part~II's
+Theorems~\ref{bep:pe:thm:renyi} and~\ref{bep:pe:thm:tsallisabove}; the
+manuscript itself calls these recovered, not new.
+\item \textbf{Not settled.} Structured finite families other than full
+simplices (exponential families, grouped categories, constrained
+density matrices: question~AQ8), and the other half of Q7's
+``structured finite distributions''. Global unimodality of $\Theta_k$ or
+of Part~II's $\Psi$ (Part~II's Q1, Part~III's AQ1): the local uniqueness
+in the Shannon window (Corollary~\ref{bep:ae:cor:windowboundary}) is not
+global unimodality. Partially colliding weights and coarsenings
+(Part~II's Q4--Q5, Part~III's AQ5). Part~I's question for the
+\emph{ordinary sum}, which Part~III does not address: its concavity is in
+the marginals of the independent joint law, not under mixtures of joint
+laws, and not for the ordinary sum. The preprint of H.~Wang
+\cite{bep:pe:Wang} is recorded by this manuscript too from its abstract
+only; this report still has not read or verified it.
+\end{itemize}
+
+\subsection{Notation of Part~III beside Parts~I and~II}\label{bep:ae:sec:notation}
+Part~III keeps the manuscript's symbols except for two renamings (below).
+Its entropies use the unnormalized conventions of Parts~I and~II, applied
+to the independent joint law of categorical variables: for binary
+alphabets $F_q$, $T_q$ and $H_q$ are Part~II's $Z_{q,n}$, $T_{q,n}$ and
+$R_{q,n}$. Several letters carry other meanings in Parts~I and~II
+(Table~\ref{bep:ae:tab:notation}); within Part~III the Part~III meaning
+always applies.
+
+\begingroup\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.2\textwidth}
+ >{\raggedright\arraybackslash}p{.4\textwidth}
+ >{\raggedright\arraybackslash}p{.34\textwidth}@{}}
+\caption{Symbols of Part~III that differ from, or could be confused with,
+those of Parts~I and~II.}\label{bep:ae:tab:notation}\\
+\toprule
+Part~III symbol & Meaning in Part~III & Not to be read as (Parts~I, II)\\
+\midrule\endfirsthead
+\toprule
+Part~III symbol & Meaning in Part~III & Not to be read as (Parts~I, II)\\
+\midrule\endhead
+observable & independent joint law of $n$ categorical variables with
+ marginals $p^{(i)}\in\Delta_{k_i}$; concavity under affine
+ interpolation of the marginals & Part~I's ordinary sum
+ $S_{\boldsymbol p}$; a mixture of joint laws\\
+$k$, $k_i$; $n$ & alphabet sizes; number of factors & Part~II's $k$ in
+ $q=m/k$ (Theorem~\ref{bep:pe:thm:algebraic}); there $n$ counts bits\\
+$\Delta_k$, $E_k$; $\Delta$ & probability simplex and its tangent space;
+ the midpoint deficit of Proposition~\ref{bep:ae:prop:gap} & $\Delta$,
+ $\Delta_w$, Part~II's Jensen gaps\\
+$S_q(p)$ & $\sum_jp_j^q$, power sum of one marginal & Part~I's
+ $S_{\boldsymbol p}=X_1+\cdots+X_n$, the ordinary sum\\
+$F_q$ & $\prod_iS_q(p^{(i)})$, power sum of the joint law; Part~II's
+ $Z_{q,n}$ for binary alphabets & Part~I's $F_q$, power sum of the
+ ordinary sum \eqref{eq:powersum}\\
+$T_q$, $H_q$ & Tsallis and \emph{R\'enyi} entropy of the joint law
+ \eqref{bep:ae:eq:entropies} & Part~I's $\HT$, $\HR$ of the sum; Part~II's
+ $T_{q,n}$, $R_{q,n}$ (the binary case)\\
+$\Pi_\alpha(p)$, $\Pi^{*}_k(\alpha)$, $\Pi$ & $S_{1-\alpha}(p)S_{1+\alpha}(p)$,
+ its maximum over $\Delta_k$, and its value at the current $p$
+ (the manuscript's $R_\alpha$, $\mathcal R_k$, $R$) & Part~II's
+ R\'enyi entropy $R_{q,n}$\\
+$\alpha$ & $1-q$ below order one; $q-1$ in
+ Section~\ref{bep:ae:sec:superunit} & Part~I's $a=q-1$; Part~II's
+ $a=1-q$\\
+$c$; $t$; $x$ & $\log(k-1)$; the logarithm of the large-to-small
+ probability ratio (Theorem~\ref{bep:ae:thm:extremal}); the large
+ probability. In Section~\ref{bep:ae:sec:setup} and
+ \eqref{bep:ae:eq:strongglobal}, $t\in[0,1]$ is the interpolation
+ parameter & Part~II's half log-odds $t$ (at $k=2$, $c=0$ and $t$ here is
+ twice Part~II's); Part~I's imbalance $t$\\
+$A$, $g$, $D$; $D_i$, $D_0$ & tangent bilinear form, log-gradient,
+ $-D^2\log f=A+g\otimes g$; blocks; a diagonal matrix in the proof of
+ Theorem~\ref{bep:ae:thm:superunit}. $A$ also names two sums in the
+ proof of Theorem~\ref{bep:ae:thm:extremal} and a function in the proof
+ of Proposition~\ref{bep:ae:prop:gap} & Part~II's diagonal $D$ has the
+ same role for bits; Part~I's $D_q(p)$ \eqref{eq:D}\\
+$\omega$ & $g(A^{-1}g)$ in Lemma~\ref{bep:ae:lem:leverage} (the
+ manuscript's $K$) & ---\\
+$K$ & $k-1$ (Sections~\ref{bep:ae:sec:half}--\ref{bep:ae:sec:large}
+ and~\ref{bep:ae:app:coefficients}) & Part~II's $K_{m,k,n}$, $(P,K)$;
+ Part~I's $K(t)$\\
+$\tau_q(p)$, $\sigma$ & block curvature $g(D^{-1}g)$; its sum over
+ blocks & Part~II's $\rho_q(p)$ and $\lambda_j$ are the binary
+ case; Part~II's $\sigma$ is a sign vector\\
+$\Theta_k(q)$ & $\max\tau_q$ on $\Delta_k$, the alphabet profile &
+ $\Theta_2=\Psi$ (Part~II); $M_j$ of Theorem~\ref{bep:pe:thm:blocks} for
+ a full simplex\\
+$\kappa_q$, $\Gamma_k(q)$, $M(\cdot)$, $\gamma_i$ & above-one block
+ quantity, its maximum, compression matrix
+ (Section~\ref{bep:ae:sec:superunit}) & Part~II's block suprema $M_j$\\
+$C_q$; $C$; $C(\lambda)$ & large-alphabet constant \eqref{bep:ae:eq:C};
+ a diagonal matrix (proof of Theorem~\ref{bep:ae:thm:superunit}); a
+ coefficient (Corollary~\ref{bep:ae:cor:windowboundary}) & Part~II's
+ $C=t_*^2-1$, which is $V_2$ here; Part~I's $C=p^2$\\
+$V_k$ & $t_0^2/4-1$, the largest variance of $\log p_j$ on $k$ symbols
+ & $V_2=C$ of Part~II\\
+$\lambda$, $\lambda_n$ & Shannon-window scale $q=1-\lambda/c^2$;
+ its critical value & Part~II's block quantity $\lambda_j$\\
+$h$ & $h(z)$ in the proof of Theorem~\ref{bep:ae:thm:extremal};
+ the displacement $1/1000$ (Proposition~\ref{bep:ae:prop:gap});
+ $1/c$ (Section~\ref{bep:ae:sec:window}) & Part~II's one-bit power sum
+ $h_q(p)$, which is $f(p)$ in the proof of
+ Proposition~\ref{bep:ae:prop:remaining}\\
+$y$; $a/b$ & square root of the large-to-small ratio at $q=1/2$, and
+ $y=e^{t/b}$ in Theorem~\ref{bep:ae:thm:algebraic}; $q=a/b$ there &
+ Part~II's $y$, $q=m/k$, $a=1-q$ and gradient $b$\\
+$L$; $U$ & compact bound $[0,L]$ and $L(s)$; the Tsallis value $U(s)$
+ on the witness line and a function $U(h^2,\lambda)$ & Part~II's root
+ bounds $L,U$\\
+$\mathcal D_k$, $\rho_i$, $\mathcal T_q$ & density matrices and
+ quantum product Tsallis entropy (Section~\ref{bep:ae:sec:quantum}) &
+ Part~II's $\rho_q(p)$\\
+AQ1--AQ9 & Part~III's research questions (the manuscript's Q1--Q9) &
+ Part~II's Q1--Q10\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\noindent\textbf{Renamed symbols.} The manuscript's power-sum product
+$R_\alpha(p)$, its maximum $\mathcal R_k(\alpha)$ and the abbreviation
+$R$ are $\Pi_\alpha(p)$, $\Pi^{*}_k(\alpha)$ and $\Pi$ here, so that they
+cannot be read as Part~II's R\'enyi entropy $R_{q,n}$; and its quantity
+$K=g(A^{-1}g)$ of Lemma~\ref{bep:ae:lem:leverage} is $\omega$, since the
+manuscript itself uses $K=k-1$ from its next section on. Labels keep
+their names: the label of equation~\eqref{bep:ae:eq:K}, which displays
+$\omega$, still ends in \texttt{eq:K}. The shipped scripts
+and records keep the manuscript's names (for example \texttt{R\_witness}
+in the certificate file). No normalization changed.
+
+\subsection{Where the write had to choose}\label{bep:ae:sec:choices}
+\begin{itemize}
+\item \textbf{Placement and numbering.} Part~III follows Part~II and
+precedes Part~I's appendices, so no number of Parts~I and~II moves (the
+\texttt{.aux} numbers of all their labels were compared with a build of
+the committed text). The manuscript's Section~$n$ is Section~$n+26$ here
+($n=1,\ldots,13$), and each numbered statement and equation keeps its
+position: its Theorem~$n.m$ is Theorem~$(n+26).m$ and its equation
+$(n.m)$ is $(n+26.m)$. Its Appendix~A is
+Section~\ref{bep:ae:app:coefficients}. Its Figures~1--2 are
+Figures~\ref{bep:ae:fig:profiles}--\ref{bep:ae:fig:window} and its
+Table~1 is Table~\ref{bep:ae:tab:half}; its unnumbered verification
+table stays unnumbered, and Table~\ref{bep:ae:tab:notation} is new. Its
+questions are AQ1--AQ9.
+\item \textbf{Front matter.} The manuscript's title page, abstract and
+contents are replaced by this section (the abstract and the title-page
+scope statement are quoted above).
+\item \textbf{Bibliography.} The manuscript's entry for H.~Wang (it gives
+the forename Haoran) is the preprint already cited by Part~II and is
+cited as \cite{bep:pe:Wang}; its entries for Sakai--Iwata and Reeb--Wolf
+are added as \cite{bep:ae:sakai} and \cite{bep:ae:reeb}. Its citations of
+the repository report (\texttt{repo}) became references to Part~II's
+sections and theorems, and the pinned URL of that entry is in
+Section~\ref{bep:ae:sec:source}.
+\item \textbf{Figures and files.} The two figure PDFs are the delivered
+Matplotlib files, unchanged; like Part~I's two figures they embed Type~3
+fonts. File names of the delivered package are followed by the shipped
+names in brackets; its reproduction commands, which in this directory
+would run Part~I's scripts, are replaced by a safe recipe
+(Section~\ref{bep:ae:sec:verification}).
+\item \textbf{Dated notes and substitutions.} Text added at this write is
+marked ``[Write, 29 September 2026, batch~57: \ldots]'' in Part~III and
+``[Added 29 September 2026, batch~57: \ldots]'' in Part~II; shorter
+additions are in brackets. Unmarked substitutions in the manuscript's
+text are only these: ``Section~23'' and ``Section~22'' became references
+(Section~\ref{bep:ae:sec:intro}); its three citations of the repository
+report became ``(Part~II above)'', ``Part~II
+(Theorem~\ref{bep:pe:thm:blocks})'' and ``(Part~II,
+Theorems~\ref{bep:pe:thm:renyi} and~\ref{bep:pe:thm:tsallisabove})''; the
+two renamings above; the macro for the pinned commit and the repository
+path were written out; and its questions' labels Q1--Q9 became
+AQ1--AQ9. No mathematical statement of the manuscript or of Parts~I--II
+was changed, and nothing of the manuscript was omitted.
+\item \textbf{Status.} The placement audit of this intake checked, in
+high-precision or exact arithmetic and independently of the manuscript's
+code, the closed form of the block curvature against a direct tangent
+Hessian, the identification $\Theta_2=\Psi$, the values
+$3\Theta_{17}(1/2)=0.99403\ldots<1<1.00680\ldots=3\Theta_{18}(1/2)$, the
+witness values
+\eqref{bep:ae:eq:witnessvalues}, the identity \eqref{bep:ae:eq:SOS17},
+$U''(0)$, the finite gap \eqref{bep:ae:eq:finitegap}, the limits
+$\Theta_k\to q$ and the Shannon-window limit $\lambda/(4+\lambda)$; the
+quantum section (Section~\ref{bep:ae:sec:quantum}) was read but not
+independently checked. The write read the manuscript in full while
+merging it. None of this is an independent proof review. Part~III is AI-assisted and unrefereed, and nothing in it
+is formalized: the Lean decomposition in
+Section~\ref{bep:ae:sec:verification} and question~AQ9 are proposals,
+and ProveIt has no Lean or Rocq development of R\'enyi or Tsallis
+entropy. The four scripts were rerun on 29 September 2026 on a scratch
+copy with the delivered names (Python~3.13.5 via \texttt{uv}, NumPy~2.3.5,
+mpmath~1.3.0, SymPy~1.14.0, Matplotlib~3.10.8). All four finished
+normally, with 70 exact assertions, 4,595 numerical assertions and 7
+symbolic identities; the certificate, numerical and symbolic records
+equal the shipped \texttt{data/03-alphabet-entropy-} files after
+conversion of line endings, and the regenerated profile CSV differs from
+the shipped one only in the last digit of 386 of its 1,245 rows (relative
+difference at most $7.6\cdot10^{-16}$, platform floating point).
+\end{itemize}
+
+\section{Research target, contribution, and provenance}\label{bep:ae:sec:intro}
+
+\subsection{The explicit repository question}
+The ProveIt report \emph{Nine Bits, Ten Bits}, incorporated as Part~II of
+\emph{Two-coin counterexamples to the proposed generalized Shepp--Olkin
+thresholds}, studies the entropy of an independent \emph{bit vector}.
+It proves a scalar curvature criterion for binary factors and an abstract
+block-product criterion. Its Section~\ref{bep:pe:sec:questions},
+question~Q7, asks for the block supremum on categorical probability
+simplices and for alphabet-dependent integer transitions.
+Section~\ref{bep:pe:sec:blocks} explicitly stops short of a categorical
+classification (Part~II above).
+
+We solve that question for unrestricted finite categorical simplices,
+including unequal alphabets. The central advance is not a new rank-one
+matrix lemma: that part is already in the repository. It is the exact
+evaluation of the simplex block quantity, its unique optimizer, and the
+consequences that become accessible once that evaluation is available.
+The above-one matrix classification and the uniform Shannon transition
+provide further extensions.
+
+The inspected repository snapshot is
+\begin{center}\small\texttt{1085b506d65e207a05b7e9c861bb1fe88432fe38}.\end{center}
+The principal files are \code{article.tex} and \code{README.md} under
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+log-concavity-and-unimodality/\\
+bernoulli-entropy-quasiconcavity/
+\end{quote}
+In the article, the relevant contiguous ranges inspected were source
+lines 1470--1770 and 2350--2530. The latter contains the block theorem
+and Q7. [Line numbers of the pinned \code{article.tex}: the first range
+lies in Sections~\ref{bep:pe:sec:rankone}--\ref{bep:pe:sec:exactorders},
+the second in Sections~\ref{bep:pe:sec:algebraic}--\ref{bep:pe:sec:verification}
+of this report.] The present proofs do not require accepting unformalized
+repository claims as axioms: the required matrix argument is repeated.
+
+\subsection{What is proved}
+For an alphabet of size $k$, define $\Theta_k(q)$ by the unique scalar
+root in \cref{bep:ae:thm:extremal,bep:ae:thm:subunit}. For $0<q<1$, the complete answer is
+\begin{equation}\label{bep:ae:eq:introcriterion}
+ T_q\text{ is concave on }\Delta_{k_1}\times\cdots\times\Delta_{k_n}
+ \quad\Longleftrightarrow\quad
+ \sum_{i=1}^n\Theta_{k_i}(q)\leq1.
+\end{equation}
+At most one local curvature direction can violate concavity. A strict
+budget gives an explicit strong-concavity bound; equality gives a precise
+finite exceptional set and still permits strict concavity.
+
+The half-order result is especially concrete. For three independent
+variables with a common alphabet, the largest universally admissible
+alphabet size is \emph{seventeen}. An eighteen-symbol witness uses
+probabilities $81/98,1/98,\ldots,1/98$ and a rational line segment. A
+sum-of-squares identity proves the positive seventeen-symbol result.
+This is a sharp finite-dimensional theorem, not an inference from plots.
+
+For large alphabets, the block curvature tends to $q$. Consequently,
+concavity holds for \emph{every} finite choice of alphabets exactly when
+$nq\leq1$. This does not contradict continuity at $q=1$ for a fixed
+alphabet: the approach to the Shannon limit has a shrinking window of
+width $\log^{-2}k$. We identify that window and its first correction.
+Above order one a different, explicit matrix criterion replaces the
+additive budget. The same classical criteria govern quantum product
+states when their density matrices are interpolated affinely.
+
+\subsection{Literature and limits of the novelty claim}
+Two-order optimization of probability power sums belongs to an existing
+literature. Sakai and Iwata derive sharp comparisons between distinct
+R\'enyi orders by optimizing one norm at fixed another \cite{bep:ae:sakai}.
+The fixed-dimensional variance-of-surprisal problem appearing at the
+Shannon endpoint has a sharp classical and quantum treatment by Reeb and
+Wolf \cite{bep:ae:reeb}. We do not claim those problem families, or the
+rank-one product-Hessian method, as new. We supply a short self-contained
+extremal proof adapted to the present unconstrained product of two power
+sums, and use it to answer the repository's specific question.
+
+The source review was targeted, not exhaustive. For the two external
+papers just cited, the bibliographic records and abstracts were checked;
+the present derivations do not depend on an uninspected theorem in either
+paper. Global priority for the exact combined classification is not
+certified by that review.
+
+A separate recent preprint by Haoran Wang, submitted on 23 September
+2026, states a sharp threshold for the entropy of the \emph{ordinary sum}
+of independent Bernoulli variables \cite{bep:pe:Wang}. Its abstract was checked,
+not its proof. It is neither a premise nor a consequence of this article.
+The map from a vector to its sum merges outcomes, and the present product
+factorization is lost. No result here settles arbitrary coarsenings,
+partially colliding weighted sums, or all structured block families.
+
+\section{The parameter space and the meaning of concavity}\label{bep:ae:sec:setup}
+For $k\geq2$, let
+\[
+ \Delta_k=\{p\in[0,1]^k:\ \sum_{j=1}^k p_j=1\},\qquad
+ E_k=\{v\in\R^k:\ \sum_{j=1}^k v_j=0\}.
+\]
+Its relative interior consists of strictly positive vectors. Derivatives
+on the interior are restricted to the tangent space $E_k$; there is no
+implicit treatment of all $k$ coordinates as independent. Put
+\begin{equation}\label{bep:ae:eq:powersums}
+ S_q(p)=\sum_{j=1}^k p_j^q,\qquad q>0,
+\end{equation}
+with $0^q=0$. For marginals $p^{(i)}\in\Delta_{k_i}$ define
+\begin{align}
+ F_q(p^{(1)},\ldots,p^{(n)})&=\prod_{i=1}^n S_q(p^{(i)}),\label{bep:ae:eq:factor}\\
+ T_q&=\frac{F_q-1}{1-q},\qquad
+ H_q=\frac{\log F_q}{1-q}\quad(q\ne1).\label{bep:ae:eq:entropies}
+\end{align}
+These are respectively the power sum, Tsallis entropy, and R\'enyi entropy
+of the independent joint law: expanding the finite product proves
+\eqref{bep:ae:eq:factor}. At $q=1$ both entropies have the continuous limit
+\begin{equation}\label{bep:ae:eq:shannon}
+ T_1=H_1=-\sum_i\sum_j p^{(i)}_j\log p^{(i)}_j.
+\end{equation}
+Natural logarithms are used throughout. Multiplication by a positive
+normalizing constant would not change any concavity criterion.
+
+Concavity means that for marginal tuples $P,Q$ and $0\leq t\leq1$,
+\[
+ T_q((1-t)P+tQ)\geq(1-t)T_q(P)+tT_q(Q).
+\]
+The independent joint law associated with $(1-t)P+tQ$ is generally
+\emph{not} the mixture of the two joint laws. Ordinary concavity of an
+entropy as a function of a joint probability vector therefore does not
+answer this question.
+
+An alphabet of size one contributes the constant factor one and can be
+discarded. We set $\Theta_1(q)=0$ when discussing faces. A twice
+continuously differentiable function on the relative interior is concave
+there exactly when its tangent Hessian is negative semidefinite. To see
+the sufficient direction, restrict to any line segment and integrate the
+nonpositive second derivative. Continuity then extends concavity to the
+closed simplex product. Conversely, a strictly positive second derivative
+at an interior point yields a strict midpoint violation on a sufficiently
+short segment.
+
+\section{The extremal power-sum product}\label{bep:ae:sec:extremal}
+The same symmetric power-sum problem controls both sides of $q=1$.
+For $0<\alpha<1$, write
+\begin{equation}\label{bep:ae:eq:Rdefinition}
+ \Pi_\alpha(p)=S_{1-\alpha}(p)S_{1+\alpha}(p),\qquad
+ \Pi^{*}_k(\alpha)=\max_{p\in\Delta_k}\Pi_\alpha(p).
+\end{equation}
+Cauchy--Schwarz applied to
+$p_j^{(1-\alpha)/2}$ and $p_j^{(1+\alpha)/2}$ gives $\Pi_\alpha\geq1$.
+On the interior equality holds precisely at the uniform vector.
+
+\begin{theorem}[Exact optimizer and scalar reduction]\label{bep:ae:thm:extremal}
+Let $k\geq2$, $c=\log(k-1)$, and $0<\alpha<1$. There is a unique real
+$t>c$ satisfying
+\begin{equation}\label{bep:ae:eq:critical}
+ \tanh\!\left(\frac{t-c}{2}\right)
+ \tanh\!\left(\frac{\alpha t}{2}\right)=\alpha.
+\end{equation}
+All maximizers in \eqref{bep:ae:eq:Rdefinition} are the $k$ permutations of
+\begin{equation}\label{bep:ae:eq:maxdistribution}
+ p_{k,\alpha}=\left(x,\frac{1-x}{k-1},\ldots,
+                   \frac{1-x}{k-1}\right),\qquad
+ x=\frac1{1+e^{c-t}}>\frac12.
+\end{equation}
+The maximum is
+\begin{equation}\label{bep:ae:eq:Rformula}
+ \Pi^{*}_k(\alpha)
+ =1+\frac{\cosh(\alpha t)-1}{1+\cosh(t-c)}
+ =1+\frac{\sinh^2(\alpha t/2)}{\cosh^2((t-c)/2)}.
+\end{equation}
+It is strictly increasing in the integer $k$. For fixed $k$ it is real
+analytic in $\alpha\in(0,1)$.
+\end{theorem}
+
+\begin{proof}
+\emph{The maximum is interior.}
+The objective is continuous on the compact simplex. Suppose a candidate
+has a zero coordinate, and denote its two sums by $A,B>0$. Scale all its
+positive coordinates by $1-\varepsilon$ and assign $\varepsilon$ to one
+zero coordinate. The new product equals
+\begin{align*}
+ &(1-\varepsilon)^2 AB
+ +(1-\varepsilon)^{1+\alpha}B\varepsilon^{1-\alpha}
+ +(1-\varepsilon)^{1-\alpha}A\varepsilon^{1+\alpha}
+ +\varepsilon^2.
+\end{align*}
+Relative to $AB$, the leading change is
+$B\varepsilon^{1-\alpha}+O(\varepsilon)>0$ for small positive
+$\varepsilon$. No boundary point is a maximizer. A nonuniform interior
+vector has objective greater than one, so the uniform vector is not a
+maximizer either.
+
+\emph{At most two coordinate values.}
+At an interior stationary point, the Lagrange multiplier equation is
+\begin{equation}\label{bep:ae:eq:stationary}
+ h(p_j)=\mu,\qquad
+ h(z)=(1-\alpha)Bz^{-\alpha}+(1+\alpha)Az^\alpha.
+\end{equation}
+Multiplication by $z^\alpha$ turns this into a quadratic equation in
+$z^\alpha$, so there are at most two positive coordinate values. If there
+are two, call them $a<b$. The function $h$ strictly decreases and then
+strictly increases: its derivative changes sign exactly once. Therefore
+$h'(b)>0$.
+
+\emph{The larger value occurs once.}
+If two coordinates equal $b$, transfer a small amount between those two
+coordinates while fixing the others. The first directional derivatives
+of both $A$ and $B$ vanish. The second derivative of their product in this
+direction is $2h'(b)>0$, which is impossible at a maximum. Hence exactly
+one coordinate has the larger value, and all remaining coordinates are
+equal. This step eliminates all competing multiplicity patterns without
+a numerical comparison of their stationary values.
+
+\emph{The scalar maximum is unique.}
+Write the large-to-small ratio as $e^t$, so $t>0$, and put
+$c=\log(k-1)$. Direct multiplication yields
+\[
+ \Pi_\alpha(p)-1
+ =\frac{\sinh^2(\alpha t/2)}{\cosh^2((t-c)/2)}.
+\]
+This vanishes at $t=0$ and tends to zero as $t\to\infty$. Its logarithmic
+derivative on $t>0$ is
+\begin{equation}\label{bep:ae:eq:logderivative}
+ \alpha\coth(\alpha t/2)-\tanh((t-c)/2).
+\end{equation}
+For $t\leq c$ this is positive. For $t>c$ the first term is strictly
+decreasing and the second strictly increasing. Their difference is
+positive at $c$ (with the right-hand limit understood when $c=0$) and
+tends to $\alpha-1<0$. It has exactly one zero, equivalently
+\eqref{bep:ae:eq:critical}. This proves all maximizing and uniqueness claims.
+
+Embedding a maximizing $k$-vector as a boundary point of $\Delta_{k+1}$
+and using the earlier perturbation proves strict increase in $k$.
+Finally, the derivative in $t$ of \eqref{bep:ae:eq:logderivative} is strictly
+negative at the root, so the analytic implicit function theorem gives
+analytic dependence on $\alpha$. The same argument permits a continuous
+real parameter $c\geq0$ when asymptotic analysis requires it.
+\end{proof}
+
+\begin{remark}[Why two values are not by themselves enough]
+The Lagrange equations alone permit several coordinates at each of two
+values. The tangent second-variation argument is indispensable: without
+it, reducing immediately to one distinguished probability would leave a
+gap in the global optimization proof. Boundary exclusion is equally
+important because the tangent Hessian formulas later involve negative
+powers of probabilities.
+\end{remark}
+
+\section{Exact concavity below order one}\label{bep:ae:sec:subunit}
+Fix $0<q<1$, put $\alpha=1-q$, and abbreviate $f=S_q(p)$ and
+$\Pi=S_q(p)S_{2-q}(p)=\Pi_\alpha(p)$.
+
+\subsection{Evaluation of the categorical block quantity}
+On $E_k$ define the positive definite bilinear form $A$ and covector $g$ by
+\begin{align}
+ A(v,w)&=-\frac{D^2f[v,w]}f
+       =\frac{q\alpha}{f}\sum_j p_j^{q-2}v_jw_j,\label{bep:ae:eq:A}\\
+ g(v)&=\frac{Df[v]}f=\frac qf\sum_jp_j^{q-1}v_j.\label{bep:ae:eq:g}
+\end{align}
+The notation $A^{-1}g$ means the unique tangent vector $w$ satisfying
+$A(w,v)=g(v)$ for every tangent $v$.
+
+\begin{lemma}[Closed form for the block curvature]\label[lemma]{bep:ae:lem:leverage}
+With the preceding definitions, set $\omega=g(A^{-1}g)$ and
+$D=-D^2\log f=A+g\otimes g$. Then
+\begin{align}
+ (A^{-1}g)_j&=\frac1\alpha
+       \left(p_j-\frac{p_j^{2-q}}{S_{2-q}(p)}\right),\label{bep:ae:eq:inverseg}\\
+ \omega&=\frac q\alpha\left(1-\frac1\Pi\right),\label{bep:ae:eq:K}\\
+ \tau_q(p):=g(D^{-1}g)&=\frac{\omega}{1+\omega}
+                   =\frac{q(\Pi-1)}{\Pi-q}.\label{bep:ae:eq:tau}
+\end{align}
+In particular, $\tau_q(p)\geq0$, with equality only at the uniform vector.
+\end{lemma}
+\begin{proof}
+The right side of \eqref{bep:ae:eq:inverseg} sums to zero. Substitution into
+\eqref{bep:ae:eq:A} gives
+\[
+ A(A^{-1}g,v)=\frac qf\sum_j
+ \left(p_j^{q-1}-\frac1{S_{2-q}(p)}\right)v_j=g(v),
+\]
+because $\sum_jv_j=0$. Evaluating $g$ on that vector proves
+\eqref{bep:ae:eq:K}. If $w=A^{-1}g$, then
+$D(w,v)=(1+\omega)g(v)$, whence $D^{-1}g=w/(1+\omega)$.
+This proves \eqref{bep:ae:eq:tau}. Positivity follows from $\Pi\geq1$ and $q<1$.
+\end{proof}
+
+\begin{definition}[The alphabet curvature profile]\label[definition]{bep:ae:def:theta}
+For $k\geq2$ and $0<q<1$, let
+\begin{equation}\label{bep:ae:eq:theta}
+ \Theta_k(q)=
+ \frac{q\bigl(\Pi^{*}_k(1-q)-1\bigr)}{\Pi^{*}_k(1-q)-q}.
+\end{equation}
+\end{definition}
+The map $\Pi\mapsto q(\Pi-1)/(\Pi-q)$ has derivative
+$q(1-q)/(\Pi-q)^2>0$. Thus \cref{bep:ae:thm:extremal} and
+\cref{bep:ae:lem:leverage} prove that $\Theta_k(q)$ is exactly the maximum of
+$\tau_q$, attained only at the $k$ vectors in \eqref{bep:ae:eq:maxdistribution}.
+It is strictly increasing in $k$ and real analytic in $q\in(0,1)$.
+
+\subsection{The global theorem and the unstable direction}
+\begin{theorem}[Complete mixed-alphabet subunit criterion]\label{bep:ae:thm:subunit}
+Let $k_1,\ldots,k_n\geq2$ and $0<q<1$. Then $T_q$ is jointly concave on
+$\prod_i\Delta_{k_i}$ if and only if
+\begin{equation}\label{bep:ae:eq:budget}
+ \sum_{i=1}^n\Theta_{k_i}(q)\leq1.
+\end{equation}
+At an interior marginal tuple, put $\sigma=\sum_i\tau_q(p^{(i)})$.
+The tangent Hessian is negative definite if $\sigma<1$, has a
+one-dimensional kernel and no positive eigenvalue if $\sigma=1$, and
+has exactly one positive eigenvalue if $\sigma>1$.
+
+When $\sigma>1$, an explicit positive-curvature direction is
+$v_i=D_i^{-1}g_i$, with $D_i,g_i$ as in \cref{bep:ae:lem:leverage}.
+\end{theorem}
+\begin{proof}
+Let $g$ be the concatenated covector and let $D$ be block diagonal with
+blocks $D_i$. Differentiation of $\log F_q=\sum_i\log f_i$ gives
+\begin{equation}\label{bep:ae:eq:producthessian}
+ \frac{D^2F_q}{F_q}=g\otimes g-D.
+\end{equation}
+Choose orthonormal coordinates for each tangent space and conjugate by
+$D^{-1/2}$. The resulting matrix is $uu^{\mathsf T}-I$, where
+$\norm{u}^2=g(D^{-1}g)=\sigma$. It is $-I$ on $u^\perp$ and has the
+remaining eigenvalue $\sigma-1$. Congruence preserves inertia, proving
+the local assertions. The direction $v=D^{-1}g$ satisfies
+\begin{equation}\label{bep:ae:eq:explicitpositive}
+ (g\otimes g-D)[v,v]=\sigma^2-\sigma.
+\end{equation}
+The positive factor $F_q/(1-q)$ transfers these assertions to $T_q$.
+
+If \eqref{bep:ae:eq:budget} holds, then $\sigma\leq1$ everywhere. The Hessian
+criterion and continuity prove global concavity. If it fails, choose
+independently a maximizing marginal in each block. Then $\sigma>1$ and
+\eqref{bep:ae:eq:explicitpositive} produces an interior midpoint violation.
+This also proves necessity without assuming a maximum along a
+restricted diagonal family.
+\end{proof}
+
+\begin{corollary}[Quantitative and equality cases]\label[corollary]{bep:ae:cor:strict}
+If $\delta=1-\sum_i\Theta_{k_i}(q)>0$, then on the interior
+\begin{equation}\label{bep:ae:eq:strong}
+ D^2T_q[v,v]\leq-q\delta\sum_i\norm{v_i}_2^2.
+\end{equation}
+Consequently, on the closed domain,
+\begin{align}
+ T_q((1-t)P+tQ)\geq &(1-t)T_q(P)+tT_q(Q)\notag\\
+ &+\frac{q\delta}{2}t(1-t)\norm{P-Q}_2^2.\label{bep:ae:eq:strongglobal}
+\end{align}
+If $\sum_i\Theta_{k_i}(q)=1$, the function is strictly concave but not
+strongly concave. Its interior Hessian fails to be negative definite
+exactly at the $\prod_i k_i$ tuples of maximizing marginals, with kernel
+spanned by $(D_i^{-1}g_i)_i$ there.
+\end{corollary}
+\begin{proof}
+Weighted Cauchy--Schwarz gives $g(v)^2\leq\sigma D(v,v)$, so
+\eqref{bep:ae:eq:producthessian} is bounded above by $-\delta D(v,v)$.
+Since $D_i\succeq A_i$, $F_q/f_i\geq1$, and
+$p_j^{q-2}\geq1$, multiplication by $F_q/(1-q)$ gives
+\eqref{bep:ae:eq:strong}. Integrating along a segment proves
+\eqref{bep:ae:eq:strongglobal}, first in the interior and then on the boundary
+by continuity.
+
+At equality in the global budget, $\sigma=1$ requires equality in every
+block maximum. The optimizer theorem gives exactly the stated finite
+set. Every nonconstant interior segment has strictly negative second
+derivative except possibly at finitely many parameter values, proving
+strict concavity along it. More generally, a segment lies in the
+relative interior of the product of its minimal support faces. If this
+is a proper face, at least one alphabet size decreases. The strict
+increase of $\Theta_k$ in $k$, with $\Theta_1=0$, makes its restricted
+budget strictly smaller than one. The same segment argument applies on
+that face. A null Hessian direction at an interior maximizing tuple
+precludes any positive strong-concavity constant.
+\end{proof}
+
+\begin{corollary}[Quasiconcavity survives]\label[corollary]{bep:ae:cor:quasi}
+For every $0<q<1$ and every choice of alphabets, $T_q$ is quasiconcave and
+$H_q$ is strictly concave, whether or not \eqref{bep:ae:eq:budget} holds.
+\end{corollary}
+\begin{proof}
+Each $-D^2\log f_i=D_i$ is positive definite, so
+$\log F_q$ is strictly concave. Its upper level sets are convex.
+The functions $F_q$ and $T_q$ are increasing transforms of $\log F_q$,
+which preserves upper level sets. Division by $1-q>0$ gives the
+R\'enyi assertion. Strict concavity on faces follows in the same way.
+\end{proof}
+A failed Tsallis concavity test below one is therefore not a failure of
+quasiconcavity. Also, the block method in the proof is inherited from
+Part~II (Theorem~\ref{bep:pe:thm:blocks}); its categorical evaluation in \eqref{bep:ae:eq:tau}--\eqref{bep:ae:eq:theta}
+is the step that resolves Q7 for these domains.
+
+\section{A sharp seventeen-versus-eighteen-symbol theorem}\label{bep:ae:sec:half}
+At $q=1/2$, set $K=k-1$ and let $y>1$ be the square root of the
+large-to-small probability ratio. Then
+\begin{equation}\label{bep:ae:eq:halfR}
+ \Pi(y)=\frac{(y+K)(y^3+K)}{(y^2+K)^2}
+     =1+\frac{Ky(y-1)^2}{(y^2+K)^2}.
+\end{equation}
+Differentiating shows that the optimizer is the unique root in
+$y>\max(1,\sqrt K)$ of
+\begin{equation}\label{bep:ae:eq:halfcubic}
+ y^3-3y^2-3Ky+K=0.
+\end{equation}
+Indeed the derivative of $\Pi$ is
+\[
+ -\frac{K(y-1)(y^3-3y^2-3Ky+K)}{(y^2+K)^3},
+\]
+and uniqueness also follows directly from \cref{bep:ae:thm:extremal}.
+The curvature profile simplifies to
+\begin{equation}\label{bep:ae:eq:halftheta}
+ \Theta_k(1/2)=\frac{\Pi^{*}_k(1/2)-1}{2\Pi^{*}_k(1/2)-1}.
+\end{equation}
+
+\begin{theorem}[Three factors: exact alphabet threshold]\label{bep:ae:thm:17}
+For three independent categorical variables, $T_{1/2}$ is strongly
+concave whenever all three alphabets have at most seventeen symbols.
+For a common alphabet of size $k$, it is concave if and only if $k\leq17$.
+For every $k\geq18$ and every $n\geq3$, concavity fails on
+$(\Delta_k)^n$.
+\end{theorem}
+\begin{proof}
+By \eqref{bep:ae:eq:halftheta}, three identical alphabets are concave exactly
+when $\Pi^{*}_k(1/2)\leq2$. At $k=17$, the following polynomial identity is
+an exact strict certificate:
+\begin{align}
+ &(y^2+16)^2-16y(y-1)^2\notag\\
+ &\hspace{8mm}=(y^2-8y-1)^2+2(y-8)^2+127>0.\label{bep:ae:eq:SOS17}
+\end{align}
+Thus $\Pi(y)<2$ for every $y$, and its attained maximum is strictly below
+two. Hence $3\Theta_{17}(1/2)<1$. Monotonicity in the alphabet size
+proves the assertion for unequal alphabets all bounded by seventeen,
+and \cref{bep:ae:cor:strict} gives strong concavity.
+
+For $k=18$, the interior marginal
+\begin{equation}\label{bep:ae:eq:witnessp}
+ p_0=\left(\frac{81}{98},\underbrace{\frac1{98},\ldots,
+                                  \frac1{98}}_{17\text{ entries}}\right)
+\end{equation}
+has $K=17,y=9$, and hence
+\begin{equation}\label{bep:ae:eq:witnessvalues}
+ \Pi(p_0)=\frac{4849}{2401},\qquad
+ \tau_{1/2}(p_0)=\frac{2448}{7297},\qquad
+ 3\tau_{1/2}(p_0)-1=\frac{47}{7297}>0.
+\end{equation}
+The local criterion already proves nonconcavity for three factors.
+Larger alphabets contain the same simplex as a face, and additional
+factors may be held deterministic. A concave function has concave
+restrictions to faces, so the failure persists. Alternatively, continuity
+of the strict midpoint violation below allows perturbation into the full
+interior for any larger finite system.
+\end{proof}
+
+\subsection{An entirely explicit finite midpoint violation}
+\begin{proposition}[Rational endpoints and a certified gap]\label[proposition]{bep:ae:prop:gap}
+For $|s|<1$ let
+\begin{equation}\label{bep:ae:eq:witnessline}
+ p(s)=\frac1{98}(81+17s,1-s,\ldots,1-s)\in\Int\Delta_{18},
+ \qquad U(s)=T_{1/2}(p(s),p(s),p(s)).
+\end{equation}
+Then
+\begin{equation}\label{bep:ae:eq:witnesssecond}
+ U''(0)=\frac{10387\sqrt2}{83349}>0.
+\end{equation}
+At the rational displacement $h=1/1000$, the finite midpoint deficit
+$\Delta=(U(h)+U(-h))/2-U(0)$ satisfies
+\begin{equation}\label{bep:ae:eq:finitegap}
+ \frac{88119833628}{10^{18}}<\Delta<
+ \frac{88119833629}{10^{18}}.
+\end{equation}
+In particular, the endpoints and midpoint are rational marginal tuples,
+and their Tsallis values rigorously violate concavity.
+\end{proposition}
+\begin{proof}
+Put
+\[
+ g(s)=\frac{\sqrt{81+17s}+17\sqrt{1-s}}{\sqrt{98}}.
+\]
+Finite product factorization gives $U(s)=2(g(s)^3-1)$. If
+$A(s)=\sqrt{81+17s}+17\sqrt{1-s}$, then
+\[
+ A(0)=26,\quad A'(0)=-\frac{68}{9},\quad
+ A''(0)=-\frac{289}{2916}-\frac{17}{4}.
+\]
+Substitution into
+$U''=6g(2(g')^2+gg'')$ proves \eqref{bep:ae:eq:witnesssecond} by rational
+arithmetic.
+
+For completeness, \eqref{bep:ae:eq:finitegap} is a finite exact-arithmetic
+certificate supplied by \code{code/verify\_exact.py} [shipped here as
+\nolinkurl{code/03-alphabet-entropy-verify_exact.py}]. Its enclosure
+algorithm is elementary. For a nonnegative rational number $r$, set
+$B=10^{75}$ and
+\[
+ m=\left\lfloor\sqrt{\lfloor rB^2\rfloor}\right\rfloor.
+\]
+Then $m/B\leq\sqrt r<(m+1)/B$, as follows by squaring the endpoints.
+Apply this to $(81+17s)/98$ and $(1-s)/98$ for $s=-h,0,h$. Sum their
+intervals with weights $1,17$ to enclose $g(s)$. All endpoints are
+positive, so cubing preserves endpoint order. If $g_-(s),g_+(s)$ are
+the resulting lower and upper endpoints, the certified interval is
+\[
+ g_-(h)^3+g_-(-h)^3-2g_+(0)^3
+ <\Delta<
+ g_+(h)^3+g_+(-h)^3-2g_-(0)^3,
+\]
+with nonstrict endpoint enclosures also sufficient. The program checks
+by exact integer and rational comparison that this interval lies
+strictly inside \eqref{bep:ae:eq:finitegap}. No decimal rounding or sign of a
+floating-point eigenvalue enters the certificate.
+\end{proof}
+
+\subsection{Other half-order dimensions}
+For $n\geq2$, \eqref{bep:ae:eq:halftheta} gives the equivalent condition
+\begin{equation}\label{bep:ae:eq:halfpolytest}
+ (y^2+K)^2-(n-2)Ky(y-1)^2\geq0
+ \quad\text{at the maximizing root of \eqref{bep:ae:eq:halfcubic}}.
+\end{equation}
+Thus two factors are concave for every finite alphabet, but higher
+factor counts have finite thresholds. The table gives exact decisions;
+the root intervals underlying them are included in the certificate JSON
+[shipped as \nolinkurl{data/03-alphabet-entropy-exact_certificates.json}].
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrrrr}
+\toprule
+Alphabet $k$&2&3&4&5&7&8\\
+Largest concave $n$&10&6&5&4&3&3\\
+\midrule
+Alphabet $k$&10&16&17&18&32&64\\
+Largest concave $n$&3&3&3&2&2&2\\
+\bottomrule
+\end{tabular}
+\caption{Exact half-order dimension thresholds. Additional certified
+entries $k=128,256$ also have largest concave factor count two.
+Concavity here allows all marginal parameters, not only identical ones.}
+\label{bep:ae:tab:half}
+\end{table}
+
+The binary entry is the already known repository result. Its equality
+case is visible from
+\[
+ (y^2+1)^2-8y(y-1)^2=(y^2-4y+1)^2.
+\]
+The maximizing root $y=2+\sqrt3$ gives $\Pi^{*}_2(1/2)=9/8$ and
+$\Theta_2(1/2)=1/10$. This is a normalization check and recovery of an
+existing theorem, not a new ten-bit claim.
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\linewidth]{figures/03-alphabet-entropy-alphabet_profiles.pdf}
+\caption{Numerical profiles for several alphabets. The horizontal line
+is the three-factor budget $1/3$. The seventeen/eighteen distinction at
+$q=1/2$ is proved by \cref{bep:ae:thm:17}, not by the plot. No global
+unimodality assertion is inferred from these curves.}
+\label{bep:ae:fig:profiles}
+\end{figure}
+
+
+\section{Exact decisions at rational orders}\label{bep:ae:sec:decision}
+\begin{theorem}[Algebraic reduction]\label{bep:ae:thm:algebraic}
+Let $q=a/b\in(0,1)$ be in lowest terms, where $a,b$ are positive
+integers, and set $K=k-1$. The maximum determining $\Theta_k(q)$ is
+represented by the unique real root
+$y>\max(1,K^{1/b})$ of
+\begin{equation}\label{bep:ae:eq:algebraicpoly}
+ a y^{2b-a}-(2b-a)y^b-(2b-a)K y^{b-a}+aK=0.
+\end{equation}
+At that root,
+\begin{equation}\label{bep:ae:eq:algebraicR}
+ \Pi^{*}_k(1-q)=
+ \frac{(y^a+K)(y^{2b-a}+K)}{(y^b+K)^2}.
+\end{equation}
+For rational $q$ and finitely many integer alphabets, the concavity
+criterion \eqref{bep:ae:eq:budget}, including its equality case, is decidable
+by exact real-algebraic computation.
+\end{theorem}
+\begin{proof}
+Set $t=b\log y$ in \eqref{bep:ae:eq:critical}. Then
+\[
+ \frac{y^b-K}{y^b+K}\frac{y^{b-a}-1}{y^{b-a}+1}
+ =\frac{b-a}{b}.
+\]
+Every denominator is positive in the stated domain. Clearing them gives
+\eqref{bep:ae:eq:algebraicpoly}. The unique-root assertion follows from the
+unique $t>c$ proved in \cref{bep:ae:thm:extremal}. The one-large-coordinate
+probabilities are $y^b/(y^b+K)$ and $1/(y^b+K)$, which prove
+\eqref{bep:ae:eq:algebraicR}.
+
+Each profile value is therefore a specified real algebraic number.
+One may isolate the designated root of each integer polynomial, form
+the corresponding rational expression in a real algebraic number field,
+and determine the sign of their sum minus one. Standard exact polynomial
+operations and root isolation decide equality as well as strict signs.
+Equivalently, write a finite polynomial sign problem with isolated-root
+constraints and eliminate its real variables. This is a finite
+algorithmic assertion, not the assertion that progressively narrower
+strict intervals can always recognize zero.
+\end{proof}
+
+The included exact verifier implements a smaller, transparent part of
+this program. At $q=1/2$ it bisects the unique relevant cubic root using
+rational endpoints and evaluates \eqref{bep:ae:eq:halfpolytest} with outward
+rational interval arithmetic. It checks the largest admissible $n$ and
+failure at $n+1$ for fourteen alphabets. The binary equality case is
+handled by the exact square identity, not by a timeout. A general
+mixed-alphabet algebraic-number engine is \emph{not} included or claimed
+implemented.
+
+\section{Large alphabets and alphabet-free concavity}\label{bep:ae:sec:large}
+\subsection{A convergent expansion at fixed order}
+\begin{theorem}[Large-alphabet profile]\label{bep:ae:thm:large}
+Fix $0<q<1$ and let $\alpha=1-q$, $K=k-1$. Define
+\begin{equation}\label{bep:ae:eq:C}
+ C_q=\left(\frac{2-q}{2}\right)^{2-q}
+     \left(\frac q2\right)^q
+ =\left(\frac{1+\alpha}{2}\right)^{1+\alpha}
+  \left(\frac{1-\alpha}{2}\right)^{1-\alpha}.
+\end{equation}
+As $k\to\infty$,
+\begin{align}
+ x_{k,1-q}&\longrightarrow1-\frac q2,\label{bep:ae:eq:xlimit}\\
+ \Pi^{*}_k(1-q)&=C_qK^{1-q}+\frac{1+(1-q)^2}{2}
+                         +O_q(K^{-(1-q)}),\label{bep:ae:eq:Rlarge}\\
+ \Theta_k(q)&=q-\frac{q(1-q)}{C_q}K^{-(1-q)}
+                         +O_q(K^{-2(1-q)}).\label{bep:ae:eq:thetalarge}
+\end{align}
+The optimizer has a convergent power series in $\varepsilon=K^{-(1-q)}$
+near zero, and $\Pi^{*}_k$ a convergent Laurent series there. These expansions
+are locally uniform when $q$ ranges over a compact subinterval of $(0,1)$.
+\end{theorem}
+\begin{proof}
+Write the maximizing $t$ as $t=c+s$, where $c=\log K$, and put $u=e^s$.
+Clearing the hyperbolic-tangent denominators in \eqref{bep:ae:eq:critical} gives
+\begin{equation}\label{bep:ae:eq:IFTlarge}
+ (1-\alpha)u-(1+\alpha)
+ -\varepsilon u^{-\alpha}
+       \bigl((1+\alpha)u-(1-\alpha)\bigr)=0.
+\end{equation}
+At $\varepsilon=0$ its solution is
+$u_0=(1+\alpha)/(1-\alpha)$ and its derivative in $u$ is
+$1-\alpha>0$. The real analytic implicit function theorem gives a
+convergent series $u(\varepsilon)$ near zero. This solution has $u>1$;
+by uniqueness it is the desired maximizing solution for sufficiently
+large $K$. Compact parameter intervals allow a common small neighborhood
+by the parameter-dependent implicit function theorem and compactness.
+The large probability is $u/(1+u)$, giving \eqref{bep:ae:eq:xlimit}.
+
+Using \eqref{bep:ae:eq:Rformula} before expanding yields
+\begin{equation}\label{bep:ae:eq:Rlaurent}
+ \Pi^{*}_k=1+
+ \frac{\tfrac12\varepsilon^{-1}e^{\alpha s}-1
+                    +\tfrac12\varepsilon e^{-\alpha s}}
+      {1+\cosh s}.
+\end{equation}
+The leading coefficient
+$L(s)=e^{\alpha s}/(2(1+\cosh s))$ has derivative zero at
+$s_0=\log((1+\alpha)/(1-\alpha))$ and value $C_q$.
+Since $s=s_0+O(\varepsilon)$, its change contributes only
+$O(\varepsilon)$ after multiplication by $\varepsilon^{-1}$.
+The constant term in \eqref{bep:ae:eq:Rlaurent} is therefore
+\[
+ 1-\frac1{1+\cosh s_0}=\frac{1+\alpha^2}{2}.
+\]
+This proves \eqref{bep:ae:eq:Rlarge} and convergence of the Laurent expansion.
+Finally,
+\[
+ \Theta_k(q)=q-\frac{q(1-q)}{\Pi^{*}_k(1-q)-q},
+\]
+which gives \eqref{bep:ae:eq:thetalarge} and its asserted uniformity.
+\end{proof}
+
+\begin{theorem}[Sharp alphabet-independent range]\label{bep:ae:thm:allalphabets}
+Fix a positive integer $n$ and $0<q<1$. The product Tsallis entropy is
+concave for \emph{every} finite choice of $n$ alphabets if and only if
+\begin{equation}\label{bep:ae:eq:nq}
+ nq\leq1.
+\end{equation}
+For every particular finite alphabet tuple satisfying \eqref{bep:ae:eq:nq},
+concavity is strong. If $nq>1$, equal sufficiently large alphabets already
+fail. For each fixed $q$, the largest concave factor count at a common
+alphabet is eventually $\lfloor1/q\rfloor$ as the alphabet grows.
+\end{theorem}
+\begin{proof}
+The identity at the end of the preceding proof implies
+$0<\Theta_k(q)<q$ for every finite $k$. Thus
+$\sum_i\Theta_{k_i}(q)<nq\leq1$, and the strong-concavity theorem
+applies. Conversely \eqref{bep:ae:eq:thetalarge} gives
+$\Theta_k(q)\to q$, so $n\Theta_k(q)>1$ eventually whenever $nq>1$.
+The last assertion follows by applying these two statements to
+$n=\lfloor1/q\rfloor$ and $n+1$; it also covers reciprocal integer orders.
+\end{proof}
+The theorem displays a real difference from the binary nine-bit
+phenomenon. A factor-count statement valid uniformly over all orders
+for one fixed alphabet is not a statement uniform over all alphabets.
+
+\subsection{Where the first failing alphabet diverges}
+\begin{corollary}[Critical alphabet near the alphabet-free endpoint]
+\label[corollary]{bep:ae:cor:criticalalphabet}
+Fix $n\geq2$, let $q_0=1/n$, and let $k_{\rm fail}(q,n)$ be the least
+integer common alphabet size for which $n\Theta_k(q)>1$, for $q>q_0$
+sufficiently close to $q_0$. Then
+\begin{equation}\label{bep:ae:eq:kcritical}
+ k_{\rm fail}(q,n)-1\sim
+ \left(\frac{q_0(1-q_0)}{C_{q_0}(q-q_0)}\right)^{1/(1-q_0)}
+ \qquad(q\downarrow q_0).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Strict increase in $k$ makes the failure set an upper interval of
+integers. At each fixed $k$, $\Theta_k(q_0)<q_0$, so its first point
+escapes to infinity as $q\downarrow q_0$. By the locally uniform
+expansion \eqref{bep:ae:eq:thetalarge}, the sign change is governed by
+\[
+ q-q_0=\frac{q(1-q)}{C_q}K^{-(1-q)}
+                   +O(K^{-2(1-q)}).
+\]
+For any fixed positive relative perturbation of the claimed scale, this
+formula has opposite strict signs on the two sides when $q-q_0$ is
+small. Replacing $q$ by $q_0$ in the exponent causes relative error
+tending to zero because $(q-q_0)|\log(q-q_0)|\to0$. Integer rounding is
+negligible compared with the diverging scale. These two-sided bounds
+prove \eqref{bep:ae:eq:kcritical}.
+\end{proof}
+
+\subsection{Fixed-alphabet endpoints and the varentropy connection}
+\begin{proposition}[The two fixed-alphabet limits]\label[proposition]{bep:ae:prop:endpoints}
+For fixed $k\geq2$,
+\begin{equation}\label{bep:ae:eq:qzero}
+ \lim_{q\downarrow0}\frac{\Theta_k(q)}q=\frac{k-1}{k}.
+\end{equation}
+Set $c=\log(k-1)$ and let $t_0>c$ be the unique solution of
+\begin{equation}\label{bep:ae:eq:varroot}
+ \tanh((t_0-c)/2)=2/t_0.
+\end{equation}
+With $V_k=t_0^2/4-1$, as $\alpha\downarrow0$,
+\begin{align}
+ \Pi^{*}_k(\alpha)&=1+\alpha^2 V_k+O_k(\alpha^4),\label{bep:ae:eq:varR}\\
+ \Theta_k(1-\alpha)
+ &=\alpha V_k-\alpha^2 V_k(1+V_k)+O_k(\alpha^3).\label{bep:ae:eq:varTheta}
+\end{align}
+Here $V_k$ is the largest possible variance of $\log p_j$ under the law
+$p$ on $k$ symbols.
+\end{proposition}
+\begin{proof}
+For $0<q<1$, $S_q\leq k^{1-q}$ and $S_{2-q}\leq1$, so
+$\limsup_{q\downarrow0}\Pi^{*}_k(1-q)\leq k$. For every fixed strictly
+positive $p$, the product tends to $kS_2(p)$. Taking full-support
+vectors arbitrarily close to a vertex shows the matching lower bound
+$k$. Substitution in \eqref{bep:ae:eq:theta} proves \eqref{bep:ae:eq:qzero}.
+
+For the other endpoint, the critical equation can be written
+\[
+ \tanh((t-c)/2)=\frac2t\,
+ \left(\frac{\alpha t}{2}\coth\frac{\alpha t}{2}\right).
+\]
+The parenthesized expression extends analytically and evenly through
+$\alpha=0$. At zero, the left side minus $2/t$ is strictly increasing
+for $t>c$, from a negative value to a positive one. Its derivative at
+the unique root is positive. The implicit function theorem therefore
+gives $t=t_0+O_k(\alpha^2)$, analytic in $\alpha^2$ near zero.
+Expansion of \eqref{bep:ae:eq:Rformula} gives
+\[
+ \frac{\alpha^2t_0^2}{4\cosh^2((t_0-c)/2)}+O_k(\alpha^4)
+ =\alpha^2(t_0^2/4-1)+O_k(\alpha^4),
+\]
+using \eqref{bep:ae:eq:varroot}. Formula \eqref{bep:ae:eq:varTheta} follows by rational
+expansion of \eqref{bep:ae:eq:theta}.
+
+For every fixed interior $p$, expansion of the two power sums about
+order one gives
+$\Pi_\alpha(p)=1+\alpha^2\Var_p(\log p_j)+O_p(\alpha^4)$.
+The preceding expansion of the global maximum bounds every such
+variance by $V_k$. The limiting maximizing distribution in
+\eqref{bep:ae:eq:maxdistribution} attains $V_k$. Boundary laws follow by
+continuity of $p\log^m p$ for $m=1,2$ at zero. This proves the final
+interpretation.
+\end{proof}
+The variance-of-surprisal extremal problem is an established subject;
+Reeb and Wolf give a sharp finite-dimensional bound in both classical
+and quantum settings \cite{bep:ae:reeb}. The role of \cref{bep:ae:prop:endpoints} here
+is to connect that endpoint to the exact product-entropy curvature and
+to prepare the nonuniform limit, not to claim the classical varentropy
+problem as newly solved.
+
+\section{The nonuniform Shannon window}\label{bep:ae:sec:window}
+The limits in \cref{bep:ae:thm:large,bep:ae:prop:endpoints} do not commute:
+\[
+ \lim_{q\uparrow1}\lim_{k\to\infty}\Theta_k(q)=1,
+ \qquad
+ \lim_{k\to\infty}\lim_{q\uparrow1}\Theta_k(q)=0.
+\]
+This suggests a joint limit rather than an attempt to use the
+fixed-$q$ expansion uniformly up to one. The correct scale is
+$1-q$ times the square of the logarithm of the alphabet size.
+
+\begin{theorem}[Uniform Shannon-window expansion]\label{bep:ae:thm:window}
+Let $c=\log(k-1)\to\infty$, put $q=1-\lambda/c^2$, and extend
+$\Theta_k(1)=0$ and $\Pi^{*}_k(0)=1$. Uniformly for $\lambda$ in any fixed compact interval
+$[0,L]$,
+\begin{equation}\label{bep:ae:eq:windowtheta}
+ \Theta_k(1-\lambda/c^2)
+ =\frac{\lambda}{4+\lambda}
+ +\frac{16\lambda-4\lambda^2-\tfrac23\lambda^3}
+       {(\lambda+4)^2c^2}
+ +O_L(c^{-4}).
+\end{equation}
+For the optimizer $t=c+s$, with its continuous limiting selection at
+$\lambda=0$,
+\begin{align}
+ s&=\frac4c+\frac{\lambda^2-32}{3c^3}+O_L(c^{-5}),\label{bep:ae:eq:windows}\\
+ \Pi^{*}_k(\lambda/c^2)-1
+ &=\frac{\lambda^2}{4c^2}
+   +\frac{\lambda^2+\lambda^4/48}{c^4}
+   +O_L(\lambda^2c^{-6}).\label{bep:ae:eq:windowR}
+\end{align}
+In fact these quantities, after their displayed removable factors are
+removed, have locally convergent expansions in $c^{-2}$.
+\end{theorem}
+
+\begin{proof}
+Set $h=1/c$ and seek $s=hz$. Dividing the critical equation in the form
+\eqref{bep:ae:eq:logderivative} by $h$ gives
+\begin{equation}\label{bep:ae:eq:windowIFT}
+ G(z,h,\lambda):=
+ \frac{\tanh(hz/2)}h
+ -\lambda h\coth\!\left(\frac{\lambda h(1+h^2z)}2\right)=0.
+\end{equation}
+Both apparent singularities are removable: $\tanh w/w$ and $w\coth w$
+are analytic even functions near zero. Thus $G$ is real analytic in
+$h^2$, $z$, and $\lambda$ near every point $(z,h,\lambda)=(4,0,\lambda)$
+with bounded $\lambda$. Its value at $h=0$ is $z/2-2$, with derivative
+$1/2$ in $z$. The analytic implicit function theorem, made uniform on
+$0\leq\lambda\leq L$ by compactness, gives an analytic solution
+$z=z(h^2,\lambda)$ near $h=0$. It has $s>0$ for small positive $h$.
+For $\lambda>0$, uniqueness in \cref{bep:ae:thm:extremal} identifies it with
+the global optimizer. At zero it is the continuous varentropy selection.
+
+Expanding \eqref{bep:ae:eq:windowIFT} gives
+\[
+ z=4+\frac{\lambda^2-32}{3}h^2+O_L(h^4),
+\]
+proving \eqref{bep:ae:eq:windows}. The exact maximum satisfies
+\begin{equation}\label{bep:ae:eq:windowexactR}
+ r:=\Pi^{*}_k(\lambda h^2)-1
+ =\frac{\sinh^2\!\left(\lambda h(1+h^2z)/2\right)}
+        {\cosh^2(hz/2)}.
+\end{equation}
+Consequently
+\[
+ r=\lambda^2h^2\left(\frac14+
+                 \left(1+\frac{\lambda^2}{48}\right)h^2
+                 +O_L(h^4)\right).
+\]
+This proves the stronger factored error in \eqref{bep:ae:eq:windowR} and is
+important for uniformity at $\lambda=0$.
+
+Write $r=\lambda^2h^2 U(h^2,\lambda)$, where $U$ is analytic and
+$U(0,\lambda)=1/4$. Then the exact curvature formula becomes
+\begin{equation}\label{bep:ae:eq:windowremovable}
+ \Theta_k(1-\lambda h^2)
+ =(1-\lambda h^2)\frac{\lambda U(h^2,\lambda)}
+                             {1+\lambda U(h^2,\lambda)}.
+\end{equation}
+There is now no division by zero at $\lambda=0$. Expanding this analytic
+expression through $h^2$ gives \eqref{bep:ae:eq:windowtheta}; its denominator is
+uniformly bounded away from zero for bounded nonnegative $\lambda$ and
+small $h$. Analytic Taylor remainder bounds on a compact neighborhood
+give the stated uniform errors and convergence claims. This establishes
+an analytic expansion, rather than merely a formal substitution into a
+fixed-alphabet asymptotic series.
+\end{proof}
+
+\begin{corollary}[Local concavity boundary below Shannon order]
+\label[corollary]{bep:ae:cor:windowboundary}
+For fixed $n\geq2$, define
+\[
+ \lambda_n=\frac4{n-1},\qquad
+ d_n=-4\lambda_n+\lambda_n^2+\frac{\lambda_n^3}{6}.
+\]
+For all sufficiently large common alphabets, the equation
+$n\Theta_k(q)=1$ has a unique solution in a fixed small scaled
+neighborhood of $1-\lambda_n/c^2$. It satisfies
+\begin{equation}\label{bep:ae:eq:lowerboundary}
+ q^-_{n,k}=1-\frac{\lambda_n}{c^2}-\frac{d_n}{c^4}
+                 +O_n(c^{-6}),\qquad c=\log(k-1).
+\end{equation}
+Within that neighborhood, $q>q^-_{n,k}$ gives concavity, whereas
+$q<q^-_{n,k}$ gives nonconcavity. For example,
+\begin{align}
+ q^-_{3,k}&=1-\frac2{c^2}+\frac8{3c^4}+O(c^{-6}),\label{bep:ae:eq:n3boundary}\\
+ q^-_{2,k}&=1-\frac4{c^2}-\frac{32}{3c^4}+O(c^{-6}).\label{bep:ae:eq:n2boundary}
+\end{align}
+\end{corollary}
+\begin{proof}
+The limit profile $f(\lambda)=\lambda/(4+\lambda)$ satisfies
+$nf(\lambda_n)=1$ and $f'(\lambda_n)=4/(4+\lambda_n)^2>0$.
+Apply the analytic implicit function theorem to
+$n\Theta_k(1-\lambda h^2)-1$ using \eqref{bep:ae:eq:windowremovable}.
+The solution has
+$\lambda(h)=\lambda_n-C(\lambda_n)h^2/f'(\lambda_n)+O(h^4)$,
+where $C$ is the coefficient of $c^{-2}$ in \eqref{bep:ae:eq:windowtheta}.
+Its second coefficient simplifies to $d_n$. Substituting
+$q=1-\lambda(h)h^2$ proves \eqref{bep:ae:eq:lowerboundary}.
+The positive derivative in $\lambda$ persists locally and reverses sign
+when expressed in $q$, proving the final orientation of the boundary.
+\end{proof}
+
+\begin{remark}[Local does not mean globally unique]
+\Cref{bep:ae:cor:windowboundary} asserts uniqueness in the specified Shannon
+scaling neighborhood. It does not prove global unimodality of
+$\Theta_k(q)$ on $(0,1)$, nor that all nonconcave orders form one
+interval. Those are separate questions. In particular, both endpoints
+$q=0$ and $q=1$ are concave neighborhoods for every fixed finite system,
+but this alone does not control the number of intervening transitions.
+\end{remark}
+
+\begin{corollary}[Unequal large alphabets]\label[corollary]{bep:ae:cor:mixedwindow}
+Suppose $n$ is fixed, $c\to\infty$, and
+$\log(k_i-1)/c\to a_i\in(0,\infty)$. At $q=1-\lambda/c^2$,
+\begin{equation}\label{bep:ae:eq:mixedwindow}
+ \sum_i\Theta_{k_i}(q)\longrightarrow
+ \sum_i\frac{\lambda a_i^2}{4+\lambda a_i^2}.
+\end{equation}
+A limiting sum strictly below one implies eventual concavity, and a
+limiting sum strictly above one implies eventual nonconcavity. Equality
+requires next-order information and is not decided by the limit alone.
+\end{corollary}
+\begin{proof}
+Apply \cref{bep:ae:thm:window} in block $i$ with
+$\lambda_i=(1-q)\log^2(k_i-1)\to\lambda a_i^2$ and sum the finitely many
+limits. Strict inequalities persist and \cref{bep:ae:thm:subunit} applies.
+\end{proof}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.96\linewidth]{figures/03-alphabet-entropy-shannon_window.pdf}
+\caption{The Shannon-window limit and numerical finite-$c$ profiles.
+For visualization, $c$ is allowed to be continuous through the scalar
+optimizer equation; integer alphabets correspond to $c=\log(k-1)$.
+The rigorous uniform expansion is \cref{bep:ae:thm:window}.}
+\label{bep:ae:fig:window}
+\end{figure}
+
+
+\section{The complete criterion above order one}\label{bep:ae:sec:superunit}
+Below one, concavity of $T_q$ means concavity of $F_q$. Above one,
+$1-q<0$, so it means \emph{convexity} of $F_q$. Treating these as the same
+matrix problem would give an incorrect extension of the subunit theorem.
+
+\subsection{The local compression matrix}
+Fix $1<q<2$ and let $\alpha=q-1$. On a single tangent space define
+\[
+ A=\frac{D^2f}{f}>0,\qquad g=\frac{Df}{f},\qquad
+ \kappa_q(p)=g(A^{-1}g),\qquad f=S_q(p).
+\]
+The same tangent calculation as \cref{bep:ae:lem:leverage}, now with
+$\alpha=q-1$, gives
+\begin{equation}\label{bep:ae:eq:superK}
+ \kappa_q(p)=\frac q{q-1}\left(1-
+                \frac1{S_q(p)S_{2-q}(p)}\right).
+\end{equation}
+Because the power-sum product is symmetric about order one, its
+maximizers are still those of \cref{bep:ae:thm:extremal}. Define
+\begin{equation}\label{bep:ae:eq:Gamma}
+ \Gamma_k(q)=\frac q{q-1}\left(1-\frac1{\Pi^{*}_k(q-1)}\right).
+\end{equation}
+
+\begin{lemma}[One scalar direction per block]\label[lemma]{bep:ae:lem:compression}
+At an interior marginal tuple, convexity of $F_q$ is equivalent to
+positive semidefiniteness of the $n\times n$ matrix
+\begin{equation}\label{bep:ae:eq:M}
+ M(\kappa)_{ii}=1,\qquad
+ M(\kappa)_{ij}=\sqrt{\kappa_i\kappa_j}\quad(i\ne j),
+ \qquad \kappa_i=\kappa_q(p^{(i)}).
+\end{equation}
+All remaining normalized tangent directions have positive eigenvalue
+one. A zero $\kappa_i$ simply contributes an uncoupled identity direction.
+\end{lemma}
+\begin{proof}
+The diagonal Hessian blocks of $F_q/F_q$ are $A_i$ and the off-diagonal
+blocks are $g_i\otimes g_j$. Normalize by the positive block forms $A_i$.
+Each normalized block gradient is a vector $u_i$ of squared norm
+$\kappa_i$. The Hessian is identity on the direct sum of their orthogonal
+complements. On the space spanned by one unit gradient direction in
+each block, its entries are precisely \eqref{bep:ae:eq:M}. If $u_i=0$, choose
+any unit tangent vector in that block; it is uncoupled and the same
+statement holds. Congruence preserves positive semidefiniteness.
+\end{proof}
+
+\begin{theorem}[Exact mixed-alphabet superunit criterion]\label{bep:ae:thm:superunit}
+Let $1<q<2$ and $k_1,\ldots,k_n\geq2$. Write
+$\gamma_i=\Gamma_{k_i}(q)$. Then $T_q$ is concave on
+$\prod_i\Delta_{k_i}$ if and only if
+\begin{equation}\label{bep:ae:eq:supercriterion}
+ M(\gamma)\succeq0.
+\end{equation}
+Equivalently, one of the following holds:
+\begin{enumerate}[label=(\roman*),leftmargin=2.6em]
+\item every $\gamma_i\leq1$;
+\item exactly one $\gamma_j>1$, every other $\gamma_i<1$, and
+\begin{equation}\label{bep:ae:eq:asymmetriccriterion}
+ (\gamma_j-1)\sum_{i\ne j}\frac{\gamma_i}{1-\gamma_i}\leq1.
+\end{equation}
+\end{enumerate}
+The empty sum in (ii) is zero, so the theorem also covers a single factor.
+For two factors the criterion is $\gamma_1\gamma_2\leq1$.
+For $n\geq2$ equal alphabets, it reduces to
+\begin{equation}\label{bep:ae:eq:equalabove}
+ \Gamma_k(q)\leq1
+ \quad\Longleftrightarrow\quad \Pi^{*}_k(q-1)\leq q,
+\end{equation}
+independently of the number of factors.
+\end{theorem}
+\begin{proof}
+For any interior tuple, $0\leq\kappa_i\leq\gamma_i$, and all
+$\gamma_i>0$. Let $C$ be diagonal with entries
+$\sqrt{\kappa_i/\gamma_i}$. Direct entrywise calculation gives
+\begin{equation}\label{bep:ae:eq:matrixmonotone}
+ M(\kappa)=CM(\gamma)C+I-C^2.
+\end{equation}
+Thus \eqref{bep:ae:eq:supercriterion} implies positive semidefiniteness at
+every tuple. The local compression lemma, the sign $1-q<0$, and
+continuity prove global Tsallis concavity. Conversely, the block maxima
+are attained at interior marginals; selecting all of them realizes
+$M(\gamma)$. If it has a negative direction, $F_q$ has negative
+curvature and $T_q$ has positive curvature there. This proves necessity.
+
+For the scalar classification write
+\[
+ M(\gamma)=\diag(1-\gamma_i)+vv^{\mathsf T},\qquad v_i=\sqrt{\gamma_i}.
+\]
+If all $\gamma_i\leq1$, both terms are positive semidefinite. If at
+least two exceed one, a vector supported on those two coordinates and
+orthogonal to $v$ makes the quadratic form strictly negative. If
+exactly one, $\gamma_j$, exceeds one and another equals one, the
+corresponding $2\times2$ principal determinant is $1-\gamma_j<0$.
+
+It remains to suppose $\gamma_j>1$ and all the others are below one.
+Let $D_0=\diag(1-\gamma_i)_{i\ne j}>0$ and
+$s=\sum_{i\ne j}\gamma_i/(1-\gamma_i)$. The remaining principal block
+is $D_0+v_0v_0^{\mathsf T}$. Its inverse satisfies
+$v_0^{\mathsf T}(D_0+v_0v_0^{\mathsf T})^{-1}v_0=s/(1+s)$,
+by direct rank-one inversion. Its Schur complement in $M$ is
+$1-\gamma_j s/(1+s)$, nonnegative precisely when
+$(\gamma_j-1)s\leq1$. This proves (ii).
+For two factors the determinant condition gives the stated product.
+For equal alphabets the eigenvalues of $M$ are
+$1-\Gamma_k$ with multiplicity $n-1$ and
+$1+(n-1)\Gamma_k$ once. This proves \eqref{bep:ae:eq:equalabove}.
+\end{proof}
+
+This theorem has a useful asymmetric feature: one block may have a
+superunit quantity exceeding one without destroying product Tsallis
+concavity, provided the other blocks satisfy the compensation inequality
+\eqref{bep:ae:eq:asymmetriccriterion}. Replacing the matrix criterion by a
+requirement that every block separately have a concave logarithm would
+therefore be sufficient but not necessary for unequal alphabets.
+
+\subsection{Order two, orders above two, and R\'enyi entropy}
+\begin{proposition}[The remaining positive orders]\label[proposition]{bep:ae:prop:remaining}
+Discard all size-one alphabets and let $n$ count the remaining factors.
+\begin{enumerate}[label=(\roman*),leftmargin=2.6em]
+\item If $n=1$, $T_q$ is concave for every $q>0$.
+\item At $q=1$, $T_1=H_1$ is concave for all finite alphabet tuples.
+\item At $q=2$ and $n\geq2$, $T_2$ is concave if and only if every
+alphabet is binary.
+\item At $q>2$ and $n\geq2$, $T_q$ is not concave. In fact it fails
+quasiconcavity already on two binary faces.
+\end{enumerate}
+For product R\'enyi entropy, all finite alphabet tuples are concave at
+$0<q\leq1$. At $1<q<2$, the exact criterion is
+$\Gamma_{k_i}(q)\leq1$ for every block. At $q=2$ it is that every
+nontrivial alphabet be binary. For $q>2$, one nontrivial alphabet already
+precludes concavity.
+\end{proposition}
+\begin{proof}
+For one factor, $S_q$ has negative semidefinite Hessian below one and
+positive semidefinite Hessian above one. The denominator $1-q$ changes
+sign accordingly. The $q=1$ claim follows by differentiating
+$-\sum p_j\log p_j$, or by taking the continuous limit of its standard
+concavity inequality.
+
+At $q=2$, the tangent calculation for \eqref{bep:ae:eq:superK} gives
+\[
+ \kappa_2(p)=2\left(1-\frac1{kS_2(p)}\right),\qquad
+ \sup_{\Int\Delta_k}\kappa_2=2(1-1/k).
+\]
+The supremum is approached at a vertex. For binary factors it is one,
+so \eqref{bep:ae:eq:matrixmonotone} with all $\gamma_i=1$ proves sufficiency.
+If one alphabet has size greater than two and there is any other
+nontrivial block, their supremal quantities have product greater than
+one. Interior parameters sufficiently close to vertices make the
+$2\times2$ compression determinant negative. This proves necessity.
+
+For $q>2$, restrict two blocks to binary faces and write
+$f(p)=p^q+(1-p)^q$. Along $(p+s,p-s)$ the product has second derivative
+$2(ff''-(f')^2)$ at $s=0$. As $p\downarrow0$,
+\[
+ ff''-(f')^2\longrightarrow q(q-1)-q^2=-q<0.
+\]
+For sufficiently small positive $p$, $T_q$ has positive second
+derivative. Its values at $s$ and $-s$ are equal by symmetry and strictly
+larger than its midpoint value for small nonzero $s$, proving failure
+of quasiconcavity. Hold other blocks fixed at vertices.
+
+Finally $H_q=(1/(1-q))\sum_i\log f_i$, so its Hessian is block diagonal.
+Above one its concavity is equivalent to convexity of each $\log f_i$.
+For $1<q<2$, this means $A_i-g_i\otimes g_i\succeq0$, or
+$\kappa_i\leq1$ everywhere, giving the criterion involving $\Gamma$.
+The $q=2$ supremum gives the binary criterion. The same binary limit
+$ff''-(f')^2\to-q$ proves failure for $q>2$, even in one block.
+\end{proof}
+The binary specializations agree with the repository's previously
+established classifications (Part~II, Theorems~\ref{bep:pe:thm:renyi}
+and~\ref{bep:pe:thm:tsallisabove}). The new content here is the
+explicit higher-alphabet and mixed-alphabet evaluation, not the binary
+endpoint statements.
+
+\subsection{The upper Shannon boundary}
+\begin{corollary}[A local boundary above order one]\label[corollary]{bep:ae:cor:upperwindow}
+For $c=\log(k-1)\to\infty$ and bounded nonnegative $\lambda$,
+\begin{equation}\label{bep:ae:eq:gammawindow}
+ \Gamma_k(1+\lambda/c^2)
+ =\frac\lambda4+
+   \frac{\lambda+\lambda^2/4-\lambda^3/24}{c^2}
+   +O_L(c^{-4}),
+\end{equation}
+with the continuous extension at $\lambda=0$. For every fixed
+$n\geq2$ equal alphabets, the unique local concavity boundary above one
+is
+\begin{equation}\label{bep:ae:eq:upperboundary}
+ q^+_k=1+\frac4{c^2}-\frac{64}{3c^4}+O(c^{-6}).
+\end{equation}
+The boundary is independent of $n$: below it locally $T_q$ is concave,
+and above it locally it is not.
+\end{corollary}
+\begin{proof}
+Use the same $r=\Pi^{*}_k(\lambda/c^2)-1$ as in
+\eqref{bep:ae:eq:windowR}, now in
+\[
+ \Gamma_k(1+\lambda/c^2)
+ =\frac{1+\lambda/c^2}{\lambda/c^2}\frac r{1+r}.
+\]
+Its analytic removable extension gives \eqref{bep:ae:eq:gammawindow}.
+The equal-alphabet criterion is $\Gamma_k\leq1$. The limiting root is
+$\lambda=4$, with derivative $1/4$. The implicit function theorem gives
+$\lambda(c)=4-64/(3c^2)+O(c^{-4})$, proving
+\eqref{bep:ae:eq:upperboundary} and the local orientation.
+\end{proof}
+Together \cref{bep:ae:cor:windowboundary,bep:ae:cor:upperwindow} quantify how a
+finite-alphabet neighborhood of Shannon concavity narrows on both sides
+as the alphabet grows. They do not assert a global interval theorem at
+all orders.
+
+\section{Quantum product-state parameters have the same thresholds}
+\label{bep:ae:sec:quantum}
+Let $\mathcal D_k$ denote the compact convex set of $k\times k$ positive
+semidefinite Hermitian matrices of trace one. For density matrices
+$\rho_i\in\mathcal D_{k_i}$, define
+\begin{equation}\label{bep:ae:eq:quantumentropy}
+ \mcT_q(\rho_1,\ldots,\rho_n)
+ =\frac{\prod_i\tr(\rho_i^q)-1}{1-q},\qquad q\ne1.
+\end{equation}
+Eigenvalues of a tensor product are products of eigenvalues, so this is
+the Tsallis entropy of $\rho_1\otimes\cdots\otimes\rho_n$.
+The parameter domain is $\prod_i\mathcal D_{k_i}$; interpolation is affine
+in the individual matrices. It is not a claim about a new entanglement
+threshold or arbitrary mixtures in the full joint state space.
+
+\begin{theorem}[Classical--quantum equivalence for this parameterization]
+\label{bep:ae:thm:quantum}
+For every $q>0$ and finite alphabet dimensions $k_1,\ldots,k_n$, the
+quantum product entropy \eqref{bep:ae:eq:quantumentropy}, with its Shannon
+extension at one, is concave on $\prod_i\mathcal D_{k_i}$ if and only if
+the classical product entropy is concave on $\prod_i\Delta_{k_i}$.
+Thus \cref{bep:ae:thm:subunit,bep:ae:thm:superunit,bep:ae:prop:remaining} give its exact
+classification. The same equivalence holds for product R\'enyi entropy.
+
+Below one, the maximal block curvature occurs exactly at states whose
+spectra have the one-large-eigenvalue form \eqref{bep:ae:eq:maxdistribution}.
+Noncommuting tangent directions cannot create an additional instability.
+\end{theorem}
+\begin{proof}
+Necessity follows by restricting every matrix to be diagonal in a fixed
+basis. For sufficiency, work first at positive definite states. At any
+such state choose a unitary eigenbasis and write its eigenvalues as
+$p_1,\ldots,p_k>0$. A Hermitian trace-zero tangent matrix $H$ decomposes
+into its real diagonal part and its off-diagonal part. For
+$f(\rho)=\tr\rho^q$,
+\begin{align}
+ Df[H]&=q\sum_jp_j^{q-1}H_{jj},\label{bep:ae:eq:quantumfirst}\\
+ D^2f[H,H]
+ &=q(q-1)\sum_jp_j^{q-2}H_{jj}^2\notag\\
+ &\quad+2q\sum_{j<\ell}
+     \frac{p_j^{q-1}-p_\ell^{q-1}}{p_j-p_\ell}
+     |H_{j\ell}|^2.\label{bep:ae:eq:quantumsecond}
+\end{align}
+For distinct eigenvalues these identities follow by differentiating the
+eigenvalue equation: $p_j'=H_{jj}$ and
+$p_j''=2\sum_{\ell\ne j}|H_{j\ell}|^2/(p_j-p_\ell)$, and then summing
+$q p_j^{q-1}p_j''+q(q-1)p_j^{q-2}(p_j')^2$.
+For repeated eigenvalues, take limits; the divided difference extends
+to $(q-1)p_j^{q-2}$. This also follows by approximating the positive
+definite state by ones with simple spectrum, since the power function
+is smooth on a compact positive spectral interval.
+
+The first derivative in every off-diagonal direction vanishes. Thus
+all cross-block product-Hessian terms involve only the diagonal parts.
+The diagonal contribution to the entropy Hessian is exactly the
+classical tangent Hessian. The divided difference in
+\eqref{bep:ae:eq:quantumsecond} has the sign of $q-1$. After multiplying by
+the product of the other positive factors and dividing by $1-q$, its
+contribution to the Tsallis Hessian is strictly negative in every
+nonzero off-diagonal direction. It can only improve concavity.
+For R\'enyi entropy the additional gradient-square term is also purely
+diagonal, and the same sign argument applies. Hence the classical
+criterion is sufficient at every positive definite tuple.
+
+At $q=1$, apply the identical divided-difference argument to
+$-\tr\rho\log\rho$; its diagonal second derivatives and off-diagonal
+divided differences are negative. Continuity on the compact density
+matrix sets extends all concavity inequalities from positive definite
+states to the boundary.
+
+For the last claim, below one the positive form $-D^2\log f$ splits
+into the classical diagonal form and a positive off-diagonal form,
+whereas its gradient is diagonal. Its inverse applied to that gradient
+has no off-diagonal component. The block curvature is therefore exactly
+the classical $\tau_q(p)$, and \cref{bep:ae:thm:extremal} identifies its maximum.
+\end{proof}
+The eighteen-symbol witness from \cref{bep:ae:prop:gap} immediately gives a
+commuting density-matrix witness in dimension eighteen. Conversely,
+three quantum systems of dimensions at most seventeen satisfy the same
+half-order concavity theorem, even for noncommuting interpolation
+directions. The classical extremizers lift to unitary orbits; unlike
+the classical permutation set, this quantum extremal set is not finite.
+
+\section{Verification, implementation, and a formalization route}
+\label{bep:ae:sec:verification}
+\subsection{What the included checks establish}
+The proofs of the optimizer, global criteria, analytic expansions, and
+quantum equivalence are mathematical arguments in this article. The
+programs are independent implementation checks and exact finite
+certificates; they are not substitutes for those arguments.
+
+The supplied package contains three verification layers.
+\begin{center}
+\begin{tabular}{p{.23\linewidth}p{.13\linewidth}p{.52\linewidth}}
+\toprule
+Layer&Completed&Scope\\
+\midrule
+Exact rational/integer&70&Sum-of-squares identities, rational
+curvature witness, finite Jensen enclosure, and fourteen certified
+half-order alphabet/dimension entries.\\[3pt]
+Symbolic&7&Half-order derivative, rational-witness second
+derivative, and Shannon-window coefficients.\\[3pt]
+Numerical&4,595&Direct tangent Hessians, curvature contractions,
+inertia tests, 2,880 random extremal comparisons, and twelve quantum
+finite-difference checks.\\
+\bottomrule
+\end{tabular}
+\end{center}
+All three layers completed successfully in preparing this manuscript.
+The exact layer uses only Python's standard library. The symbolic layer
+uses SymPy; the numerical layer uses NumPy and mpmath with a recorded
+random seed. The maximum observed absolute error in the independently
+computed block contraction was approximately $3.6\cdot10^{-15}$; the
+maximum Hessian-identity entry error was approximately
+$2.9\cdot10^{-14}$. These are numerical diagnostics, not uniform error
+bounds for all inputs.
+
+The exact script outputs both an aggregate status and the rational
+isolating intervals used in its half-order decisions. The midpoint
+certificate is based on outward square-root intervals and rational
+arithmetic only. The algebraic equality at the binary ten-factor
+threshold is treated by a polynomial square identity. The scripts do
+not misinterpret a small decimal or a long-running interval calculation
+as an exact zero.
+
+The numerical Shannon-window table records scaled remainders for several
+values of $\lambda$ and $c$. It checks the derived expressions but does
+not supply the uniform analytic remainder theorem; that theorem follows
+from \eqref{bep:ae:eq:windowIFT}--\eqref{bep:ae:eq:windowremovable}. The figures are
+illustrations made from deterministic scalar-root computations.
+
+\subsection{A reproducible package}
+From the archive root, the principal commands are
+[of the delivered package, whose layout this report does not keep]
+\begin{verbatim}
+python code/verify_exact.py
+python code/verify_symbolic.py
+python code/verify_numerical.py
+python code/make_figures.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+[\emph{Do not run these commands in this report's directory:} there
+\nolinkurl{code/verify_exact.py}, \nolinkurl{code/verify_symbolic.py} and
+\nolinkurl{code/make_figures.py} are Part~I's scripts,
+\nolinkurl{code/verify_numerical.py} does not exist, and the last command
+builds the whole report. The shipped Makefile
+\nolinkurl{code/03-alphabet-entropy-Makefile} names the same delivered paths
+and must not be used here either. A safe rerun restores the delivered names
+in a scratch copy:]
+\begin{verbatim}
+W=/path/to/scratch
+mkdir -p "$W/03/code" "$W/03/verification" "$W/03/data" "$W/03/figures"
+for f in code/03-alphabet-entropy-*.py; do
+  cp "$f" "$W/03/code/${f#code/03-alphabet-entropy-}"
+done
+cd "$W/03"
+python code/verify_exact.py
+python code/verify_symbolic.py
+python code/verify_numerical.py
+python code/make_figures.py
+\end{verbatim}
+The package contains the compiled PDF, editable source, figures and
+figure data, exact and numerical logs, a claim ledger, bibliography and
+repository provenance notes, and a build file. No repository mutation
+or upload is required to reproduce these checks. No Lean installation
+or external network access is needed for the exact certificate script.
+
+\noindent[Write, 29 September 2026, batch~57: where the delivered
+package's files are in this report.
+\begingroup\raggedright
+\begin{itemize}
+\item Compiled PDF and source: the report's own \nolinkurl{article.pdf}
+and \nolinkurl{article.tex}.
+\item Figures, as delivered:
+\nolinkurl{figures/03-alphabet-entropy-alphabet_profiles.pdf},
+\nolinkurl{figures/03-alphabet-entropy-shannon_window.pdf}; figure data:
+\nolinkurl{data/03-alphabet-entropy-alphabet_profiles.csv}.
+\item The delivered \nolinkurl{verification/} records and
+\nolinkurl{requirements.txt}: \nolinkurl{data/03-alphabet-entropy-*}
+(ten files with the figure data); its layout check:
+\nolinkurl{03-alphabet-entropy-LAYOUT_QA.md}.
+\item Claim ledger and source notes:
+\nolinkurl{03-alphabet-entropy-CLAIM_LEDGER.md},
+\nolinkurl{03-alphabet-entropy-SOURCES.md}; build file:
+\nolinkurl{code/03-alphabet-entropy-Makefile}.
+\item Not shipped: the delivered PDF, README and checksum file.
+\end{itemize}
+\endgroup
+The scripts write \nolinkurl{verification/exact_certificates.json},
+\nolinkurl{verification/numerical_checks.json},
+\nolinkurl{verification/symbolic_checks.txt},
+\nolinkurl{data/alphabet_profiles.csv} and two PDFs in
+\nolinkurl{figures/}, all below their parent directory, which in the
+scratch copy above is \texttt{\$W/03}; compare them with the shipped
+\texttt{data/03-alphabet-entropy-} files. On Windows they write CRLF
+line endings. The rerun made for this write is recorded in
+Section~\ref{bep:ae:sec:choices}.]
+
+\subsection{Suggested Lean decomposition}
+The most efficient initial target is the half-order seventeen/eighteen
+result, rather than the entire analytic classification at once.
+
+\emph{Finite algebra and probability.} Define the product mass function
+on finite types and prove the power-sum factorization. Prove the
+seventeen-symbol polynomial identity with a ring-normalization tactic.
+Check the rational values in \eqref{bep:ae:eq:witnessvalues} and the normalized
+marginal line in \eqref{bep:ae:eq:witnessline}. This layer does not require
+transcendental asymptotics.
+
+\emph{Tangent linear algebra.} Represent the simplex tangent as the
+kernel of coordinate summation. Prove \eqref{bep:ae:eq:inverseg} by direct
+substitution, then the rank-one contraction formula and the
+Cauchy--Schwarz concavity criterion. The core equivalence can be proved
+without a spectral theorem; the exact one-positive-eigenvalue statement
+can be added later. For the above-one theorem, the finite compression
+matrix and identity \eqref{bep:ae:eq:matrixmonotone} isolate the algebraic core.
+
+\emph{Global optimization.} Formalize boundary improvement, Lagrange
+multipliers on the simplex interior, and the two-equal-large-coordinate
+second variation. The last argument is the critical logical step that
+justifies the one-large-coordinate reduction. The unique-root theorem
+then needs only elementary monotonicity of hyperbolic functions.
+
+\emph{Certified computation.} A verified integer square-root checker
+would turn the finite Jensen enclosure into a kernel-checked witness.
+A verified rational interval evaluator and a uniqueness theorem for the
+cubic would certify the half-order table. General rational-order
+algebraic equality requires additional root-isolation and sign machinery;
+it is not delivered by the current small script.
+
+\emph{Analytic and quantum extensions.} Only after these core results
+should one formalize the parameter-dependent analytic implicit function
+theorem, uniform Taylor bounds, and spectral divided differences.
+The source file contains ordinary proofs but no claimed Lean code or
+kernel certificate. A successful Python run is not a proof-assistant
+bridge from code execution to a real-analytic theorem.
+
+\section{Further research questions}\label{bep:ae:sec:questions}
+The categorical-simplex instance of repository Q7 is resolved above.
+The following continuations are not claimed solved.
+[Write, 29 September 2026, batch~57: ``repository Q7'' is Part~II's
+question~Q7 (Section~\ref{bep:pe:sec:questions}). The manuscript numbers
+its own questions Q1--Q9; they are printed as AQ1--AQ9 so that they cannot
+be confused with Part~II's Q1--Q10.]
+
+\begin{enumerate}[label=\textbf{AQ\arabic*.},leftmargin=3.6em]
+\item \textbf{Global shape and the number of concavity transitions.}
+Is $\Theta_k(q)$ strictly unimodal on $(0,1)$ for every $k$? More
+generally, how many crossings of one can
+$\sum_i\Theta_{k_i}(q)$ have? The exact optimizer allows implicit
+differentiation, and the present endpoint and Shannon-window expansions
+fix several signs, but neither fact rules out additional interior
+critical points. A proof would convert the present pointwise criterion
+into a global interval classification.
+
+\item \textbf{Equality orders and exact exceptional systems.}
+Classify rational orders and integer alphabet tuples with
+$\sum_i\Theta_{k_i}(q)=1$. At half order, the cubic and the polynomial
+in \eqref{bep:ae:eq:halfpolytest} make each equal-alphabet instance elementary
+real algebra, but a uniform classification of rational orders is a
+different problem. Useful first targets are all equal-alphabet equality
+cases at $q=1/2,1/3,2/3$ and small factor counts, with compact exact
+certificates rather than decimal lists.
+
+\item \textbf{Optimal stability of the extremal distribution.}
+Find sharp constants and exponents relating
+$\Pi^{*}_k(\alpha)-\Pi_\alpha(p)$ to the distance from $p$ to the maximizing
+permutation orbit. How do they degenerate as $k\to\infty$ or
+$\alpha\to0,1$? Such bounds would yield robust near-extremizer theorems
+and stronger certified approximations than a scalar root value alone.
+The strong-concavity constant in \eqref{bep:ae:eq:strong} is useful but not
+asserted optimal.
+
+\item \textbf{Affine constraints and conserved means.}
+Determine the exact criterion when each marginal or the combined system
+is restricted by prescribed linear statistics. The tangent inverse must
+then be projected onto a smaller constraint kernel. The unrestricted
+one-large-coordinate optimizer need not survive, because the Lagrange
+multiplier equation acquires coordinate-dependent terms. A promising
+first problem is one additional mean constraint with two distinct
+statistic values, followed by general prescribed spectra or costs.
+
+\item \textbf{Coarsenings of independent joint laws.}
+Which partitions of the product alphabet preserve subunit power-sum
+concavity in the marginal parameters? Singleton cells give the present
+problem; sums and other statistics merge cells and lose product
+factorization. The ordinary-sum claim in \cite{bep:pe:Wang} concerns a separate
+special structure, not a general answer. A useful classification should
+specify precisely which merging patterns remove or retain the
+rank-one obstruction.
+
+\item \textbf{The small-order, large-alphabet transition.}
+The endpoint law \eqref{bep:ae:eq:qzero} is for fixed $k$, whereas
+\eqref{bep:ae:eq:thetalarge} is for fixed $q$. Identify uniform joint
+asymptotics as $q\downarrow0$ and $k\to\infty$, including possible
+scales involving $q\log k$. This would complement the Shannon window
+and quantify the first failing alphabet when both the order and the
+factor count vary.
+
+\item \textbf{Infinite alphabets and energy-constrained quantum states.}
+The finite-alphabet theorem suggests the bound $nq\leq1$ as a starting
+point, but infinite sums may diverge and entropy need not be continuous
+in a weak topology. Formulate the right integrability or energy
+conditions, then determine which finite-dimensional arguments pass to
+limits. No unrestricted infinite-alphabet continuity assertion is
+implied by the finite result.
+
+\item \textbf{Geometry above one and structured blocks.}
+For unequal alphabets, understand the order dependence of the Schur
+condition \eqref{bep:ae:eq:asymmetriccriterion} and classify its equality
+loci. Extend the block evaluation from full simplices to exponential
+families, grouped categories, or constrained density matrices. The
+abstract product criterion alone does not compute those new suprema;
+this is the part of the broader block question that remains.
+
+\item \textbf{A small verified decision engine.}
+Implement the rational-order root isolation and equality branch of
+\cref{bep:ae:thm:algebraic} with checkable certificates, then formalize the
+optimizer and finite-dimensional curvature theorem in Lean. A useful
+milestone would be a kernel-checked seventeen-symbol inequality,
+eighteen-symbol rational midpoint witness, and exact decision for every
+half-order entry in \cref{bep:ae:tab:half}.
+\end{enumerate}
+
+\section{Conclusion and claim boundary}\label{bep:ae:sec:conclusion}
+The higher-alphabet question becomes tractable after a specific
+variational reduction. The tangent inverse of a categorical power sum
+is explicit; its curvature depends only on
+$S_qS_{2-q}$; the global maximum of that product has exactly one large
+coordinate; and the remaining optimization has one monotone scalar
+critical equation. These facts produce an exact classification rather
+than a collection of sufficient estimates.
+
+The sharp seventeen/eighteen-symbol transition is a finite consequence
+with rational failure data and a polynomial positivity certificate.
+The large-alphabet theorem and the uniform Shannon window then explain
+how this finite-dimensional geometry changes when the alphabet itself
+diverges. Above order one the correct object is a compression matrix,
+not the below-one additive budget. The spectral calculation shows that
+noncommuting quantum directions add no further obstruction for this
+product-state parameterization.
+
+The categorical-simplex portion of the repository's Q7 is therefore
+answered, with further quantitative and quantum extensions. The article
+does not claim global profile unimodality, a classification of arbitrary
+coarsenings or constraints, a proof of the ordinary-sum Shepp--Olkin
+problem, a fully implemented general algebraic decision engine, or a
+new Lean formalization. Those boundaries are mathematical distinctions,
+not qualifications on the exact criteria proved here.
+
+\section{Auditable coefficients and implementation details}\label{bep:ae:app:coefficients}
+\subsection{The Shannon-window coefficients before division}
+The implicit equation \eqref{bep:ae:eq:windowIFT} has the expansion
+\[
+ G=\frac z2-2+h^2\left(-\frac{z^3}{24}+2z-\frac{\lambda^2}{6}\right)
+ +O(h^4).
+\]
+Writing $z=4+z_2h^2+O(h^4)$ gives
+$z_2=(\lambda^2-32)/3$. Substituting into
+\eqref{bep:ae:eq:windowexactR}, stationarity eliminates any dependence of the
+following coefficient on the next unknown optimizer term:
+\begin{align}
+ r={}&\frac{\lambda^2}{4}h^2
+ +\left(\lambda^2+\frac{\lambda^4}{48}\right)h^4\notag\\
+ &+\left(\frac{\lambda^6}{1440}+\frac{\lambda^4}{4}
+                              -\frac{4\lambda^2}{3}\right)h^6
+ +O_L(\lambda^2h^8).\label{bep:ae:eq:Rthird}
+\end{align}
+These coefficients are checked symbolically in the supplied script.
+Their analytic validity and uniform remainder follow from the implicit
+function argument, not from symbolic series operations alone.
+
+For the lower boundary, division of the profile correction by its
+leading derivative gives
+\[
+ -\frac{C(\lambda)}{f'(\lambda)}
+ =-4\lambda+\lambda^2+\frac{\lambda^3}{6},
+ \qquad f(\lambda)=\frac\lambda{4+\lambda}.
+\]
+For the upper boundary, the correction at $\lambda=4$ in
+\eqref{bep:ae:eq:gammawindow} is $16/3$, and the derivative of the leading
+term is $1/4$, giving the coefficient $-64/3$.
+
+\subsection{Exact half-order root isolation}
+For $K\geq1$ let $P_K(y)=y^3-3y^2-3Ky+K$. It is negative at $y=1$
+and positive at $y=2K+10$. Its derivative is
+$3((y-1)^2-K-1)$, so it first decreases and then increases on $y>1$,
+and has exactly one root there. This root is greater than $\sqrt K$:
+on $1\leq y\leq\sqrt K$ the polynomial is decreasing from a negative
+value when that interval is nonempty. Thus ordinary rational bisection
+between $1$ and $2K+10$ isolates exactly the optimizer root.
+
+The verifier performs 300 such bisections, then checks both the sign
+bracket and the domain inequalities. To decide a strict threshold it
+evaluates the quartic \eqref{bep:ae:eq:halfpolytest} using interval Horner
+arithmetic with rational endpoints. A positive lower endpoint proves
+concavity; a negative upper endpoint proves failure. A separate square
+identity covers the binary equality. The exact intervals are saved in
+\code{verification/exact\_certificates.json} [shipped as
+\nolinkurl{data/03-alphabet-entropy-exact_certificates.json}], so their precision and
+root choice can be independently inspected.
+
+\subsection{Why the large-alphabet constant term is stable}
+In \eqref{bep:ae:eq:Rlaurent}, write the expression as
+$\varepsilon^{-1}L(s)+B(s)+\varepsilon C(s)$.
+The optimizer satisfies $s=s_0+s_1\varepsilon+\cdots$ and
+$L'(s_0)=0$. Hence
+\[
+ \varepsilon^{-1}L(s)=\varepsilon^{-1}L(s_0)
+       +\tfrac12L''(s_0)s_1^2\varepsilon+O(\varepsilon^2).
+\]
+There is no constant contribution from moving the optimizer. The
+constant term is exactly $B(s_0)=(1+\alpha^2)/2$. Ignoring this
+stationarity check is a common way to obtain an incorrect second term
+in a parameter-dependent extremal expansion.
+
 \clearpage
 \fancyhead[L]{\small Two-coin entropy counterexamples}
 \fancyhead[R]{\small Research draft}
@@ -2725,11 +4677,32 @@ Concavity Problem}, preprint, submitted 23 September 2026,
 Cited by Part~II's manuscript, which consulted its abstract and HTML and
 records its stated ordinary-sum theorem for context without relying on it;
 not read or verified for this report.
+[Added 29 September 2026, batch~57: Part~III's manuscript cites the same
+preprint, gives the author's forename, Haoran, and likewise inspected
+only its abstract.]
 
 \bibitem{bep:pe:Tsallis}
 C.~Tsallis,
 \emph{Possible generalization of Boltzmann--Gibbs statistics},
 Journal of Statistical Physics \textbf{52} (1988), 479--487.
 \href{https://doi.org/10.1007/BF01016429}{doi:10.1007/BF01016429}.
+
+\bibitem{bep:ae:sakai}
+Y.~Sakai and K.~Iwata,
+\emph{Sharp Bounds Between Two R\'enyi Entropies of Distinct Positive
+Orders}, preprint, 2016,
+\href{https://arxiv.org/abs/1605.00019}{arXiv:1605.00019v2}.
+Cited by Part~III's manuscript, which inspected the bibliographic record
+and abstract, for the antecedent two-order extremal problem, not as an
+uninspected proof dependency.
+
+\bibitem{bep:ae:reeb}
+D.~Reeb and M.~M.~Wolf,
+\emph{Tight bound on relative entropy by entropy difference},
+IEEE Transactions on Information Theory \textbf{61} (2015), 1458--1473.
+\href{https://arxiv.org/abs/1304.0036}{arXiv:1304.0036v3}.
+Cited by Part~III's manuscript, which inspected the bibliographic record
+and abstract; includes a sharp finite-dimensional variance-of-surprisal
+bound.
 \end{thebibliography}
 \end{document}

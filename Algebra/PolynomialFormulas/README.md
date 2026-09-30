@@ -311,7 +311,12 @@ sums of the roots of a prime-degree polynomial can collide (`{5}` for quintic
 pairs, `{2,7,29}` for septic triples), reconstructs all roots from one
 coherent radical on each Fourier chart once the intermediate-field invariant
 data are given (generalizing Lazard's pivot-one scheme; a coefficient-only
-solver is left as further work), and gives a Lean integration plan.  None of it is formalized.
+solver is left as further work), and gives a Lean integration plan.  Its
+Part II (batch 52) proves the optimal chart count: covering the cyclic
+quotient of the distinct-root configuration space by regular Kummer charts,
+even with nonlinear character sections, takes exactly `p − 1` charts (four
+for quintics), read off from the Chow ring `Z[t]/(pt, t^(p−1))`; this project
+has no Chow-group development.  None of it is formalized.
 
 A second report,
 [`sextic-block-resolvent-separators`](../../SetTheory/Cardinals/docs/reports/galois-theory-and-radicals/sextic-block-resolvent-separators/README.md),

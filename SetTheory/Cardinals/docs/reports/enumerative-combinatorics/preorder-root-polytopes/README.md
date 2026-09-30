@@ -1,8 +1,8 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; and gamma-positivity for every finite preorder**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; and the transversal matroid of a preorder**
 
-This is a research report in four parts. Part I is the original report of
+This is a research report in seven parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
 ProveIt's incoming-report intake, from a later manuscript that addresses the
 three questions Part I left open in its Section 10 ("What remains unresolved"):
@@ -16,6 +16,20 @@ manuscripts merged into one addition (batch-44 manuscripts 06, the base, and
 01), both prepared with ChatGPT for Vladimir Reshetnikov. Both prove
 Conjecture 5.2 (gamma-positivity) for every finite preorder, which answers
 Part II's Research question 1, "Extend the matching-support interpretation".
+Parts V–VII were added on 29 September 2026 in batch 55, from four
+manuscripts (sources 06–09 below; batch-55 manuscripts 01, 02, 04 and 05):
+**Part V** merges sources 06 (the base) and 07, two independent proofs that
+every bipartite demand-support enumerator and every `h_tau` is
+ultra-log-concave, with palindromic cores, probability, approximate counting
+and exact-counting hardness; **Part VI** merges source 08 (the base) with
+the stability sections of source 09: stability of the signed support
+polynomial is block-local, is classified for tree incidence–apex graphs (the
+ADE trees), books and multi-theta graphs, and is strictly stronger than
+real-rootedness; **Part VII** prints source 09's matroid sections: the
+transversal matroid of a preorder determines it up to isomorphism. Sources
+06, 07 and 09 credit ChatGPT on their title pages; source 08 calls itself
+"AI-assisted" and names no assistant. All four were prepared for Vladimir
+Reshetnikov.
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -28,13 +42,38 @@ Part II's Research question 1, "Extend the matching-support interpretation".
 > showed a relative date of about one month before 28 September 2026 and
 > marked the claim unverified).
 
+> **Priority (Part V).** The unweighted inequality of Part V's main theorem
+> is **not new**: it is Theorem A of F. Röhrle and M. Ulirsch, *Logarithmic
+> Concavity of Bimatroids*, Ann. Comb. 30 (2026), no. 2, 501–523 (online
+> 14 August 2025), doi:10.1007/s00026-025-00780-z, arXiv:2402.15317, applied
+> to the bimatroid of a relation (their Example 2.4), with the same
+> normalization `binomial(min(m,n), k)`; their Theorem E contains Part V's
+> intersection realization. Source 07 and source 09 credit this; source 06
+> does not cite Röhrle–Ulirsch, and Part V prints its statement with a merge
+> note. What is new in Part V is the composition with the published
+> support-counting bridge (hence every demand enumerator and every
+> preorder), the weighted two-shore form and the consequences. The mixing
+> and FPRAS machinery is Anari–Liu–Oveis Gharan–Vinzant's, the #P input
+> Colbourn–Provan–Vertigan's. Three batch-55 manuscripts (sources 06, 07,
+> 09) proved the transfer independently on the same day. The Röhrle–Ulirsch
+> record was checked in the write phase on 29 September 2026 against the
+> arXiv abstract page (v1 23 Feb 2024, v3 6 Aug 2025, "to appear in Annals
+> of Combinatorics") and the v3 HTML, which states Theorem A for regular
+> `k × k` minors with that normalization and Example 2.4 for relations; the
+> journal volume and pages are those recorded by source 07 and the batch-55
+> dossier (Crossref), not re-fetched.
+
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 6–18) and Appendices A–C (pp. 113–115) |
-| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 19–47) |
-| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 48–72) |
-| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 73–112) |
-| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 73–112) |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 9–21) and Appendices A–C (pp. 217–219) |
+| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 22–50) |
+| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 51–75) |
+| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 76–116) |
+| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 76–116) |
+| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 117–165) |
+| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 117–165) |
+| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 166–199) |
+| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 200–216); stability sections in Part VI; coefficient sections credited in Part V |
 
 Manuscript 02 names no ProveIt commit. It records the Git blob of the
 `article.tex` it consulted; that blob is Part I exactly as printed here
@@ -94,12 +133,75 @@ the merge had to choose. Manuscript 06's own numbering, used in its shipped
 notes, maps as follows: Theorem 2.2 → 48.2, Theorem 2.3 → 48.3, Lemma 3.1 →
 49.1, Lemma 4.1 → 50.1, Lemma 6.1 → 53.1.
 
+Batch 55's four manuscripts arrived in three commits: source 06 in
+`08985ea78` (it was held over from batch 54 to be merged with source 07),
+source 07 in `23dd71d2d`, sources 08 and 09 (with a manuscript for another
+report) in `2d4919838`. All were placed in `26473dfa0`. This report did not
+change from the earliest pin (`e9a57d735`) to the placement, so every
+statement of the four about "the repository" or "the report" concerns
+Parts I–IV exactly as printed; source 08 read only this README (blob
+`846d9f19`), the other three read the article (blob `d52a2633`). None saw
+another. The manuscripts, PDFs and delivery READMEs are not shipped; they
+survive in the arrival commits. Checksum lists verified at placement and
+retired: source 06 `SHA256SUMS.txt` 13/13, source 08 7/7, source 09 8/8;
+source 07 shipped none.
+
+- **Part V** merges 06 (base: held first, owner of prefix `06-`, and it
+  states the corollaries for this report's questions and has the larger
+  probabilistic and algorithmic layer) with 07 (palindromic cores, the
+  intersection realization, convex order and the equality classification,
+  exact-counting hardness, several examples, and the correct attribution).
+  A result proved in both is printed once with both sources named; the
+  genuinely different proofs are kept as marked second routes (07's import
+  of the bridge through Dai et al. and Davis–Kohl with subset inversion;
+  07's explicit factorial calculation of the Lorentzian criterion; 06's
+  logistic ODE proof of the binomial bound beside 07's convex-order proof;
+  07's Hessian variance bound; 07's explicit error allocation). Their
+  eighteen research questions become seven numbered ones, 37–43 (three
+  pairs merged), plus seven printed unnumbered next to the earlier question
+  they repeat, or with the Part V theorem that answers them (Section 80.1).
+  Section 66.4 lists where the merge had to choose.
+- **Part VI** is source 08 in its own order, with source 09's Sections
+  11–14.3 merged in: 09's bridge and induced-subgraph lemma after 08's
+  bridge (Section 85.2), 09's vertex-sum theorem **in place of** 08's
+  one-vertex gluing proposition (same formula and argument; 09's form covers
+  all simple graphs and adds block localization; Section 93), 09's stable
+  blocks and `K_{3,3} ∨ C_6` example as Section 94, and 09's Sturm chain and
+  Rayleigh certificate beside 08's `ϑ(3,3,3)` discriminant (Section 92).
+  08's nine questions and 09's two stability questions become Research
+  questions 44–53 (one pair merged). Section 83.4 lists the choices.
+- **Part VII** is source 09's Sections 1–2, 5–10, 14.4, 16–18, the first
+  paragraph of its conclusion and its Appendices A–B, in its order. Its
+  Sections 3–4 and the general part of 15 (ultra-log-concavity; binomial
+  convex domination) are the same theorems as Part V's and are credited
+  there, not reprinted (Section 100.4). Its Questions 5, 6, 8, 10 are
+  Research questions 54–57; 1–2 are in Part VI; 3, 4, 7, 9 are printed
+  unnumbered next to the earlier questions they repeat.
+
+Section numbers of the sources that their shipped notes use:
+source 09's `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites its Sections 4
+(→ Part V, not reprinted: Corollary 67.2 and Proposition 71.5), 5 → 103,
+6 → 104, 7 → 105, 8 → 106, 9 → 107, 10 → 108, 11 → 85.2, 12 → 93 (its
+Lemma 12.1 → 93.1, Theorem 12.2 → 93.2, Corollary 12.3 → 93.3) and
+13 → 94. Source 08's Sections 1–10 are Sections 84–93 here, and its
+Sections 11–13 and Appendices A–B are Sections 95–99; statement numbers
+follow the section (Theorem 1.1 → 84.1, Theorem 7.2 → 90.2) except in
+Sections 85 and 93, where source 09's statements were inserted (source 08's
+Proposition 10.1, the gluing, is Theorem 93.2). Source 07's
+`PROOF_STATUS.md` uses no numbers.
+
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The
 programs check finite instances; they do not prove the all-`n`, all-`m`,
 all-`r` or all-graph statements. (Part IV: the programs check all labeled
 preorders through `n = 5`; the all-preorder theorem rests on the written
-proof and on two imported published root-polytope theorems.)
+proof and on two imported published root-polytope theorems. Parts V–VII:
+the four programs check finite families, listed under "Data conventions";
+the general theorems rest on the written proofs and on imported published
+theorems — the support-counting bridge, the Lorentzian theory of matroid
+bases, Röhrle–Ulirsch's Theorem A, the basis-walk mixing theorem, the
+#P-completeness of transversal-base counting, the Ingleton–Piff
+characterization of gammoids — which are cited, not reproved.)
 
 ## Results
 
@@ -240,7 +342,103 @@ It proves:
    - the octopus formula of Athanasiadis–Xiao–Yan and Menon, recovered and
      credited (Section 55, 01).
 
-**What Parts II and III do to the open questions** (Sections 11.3 and 26.3;
+**Part V** (sources 06 and 07, merged) works with a finite bipartite graph
+`H = (X ⊔ Y, E)` and its demand vectors `c ∈ Z_{≥0}^Y` with
+`c(S) ≤ |N_H(S)|`, counted by support; by the counting bridge the support
+enumerator is `p_H`, which counts matchable support pairs. It proves:
+
+1. **Ultra-log-concavity** (Theorems 67.1 and 70.1, both sources; source
+   09 is a third proof): `a_k / binomial(min(m,n), k)` is log-concave with no
+   internal zeros, positive exactly for `0 ≤ k ≤ nu(H)`, also with positive
+   vertex weights on both shores (Theorem 67.3 states the order on the
+   nonisolated core). The unweighted inequality is **Röhrle–Ulirsch's
+   Theorem A** (see the priority box). Hence **every `h_tau` is
+   ultra-log-concave of order `n`** (Corollary 67.2), for every positive
+   integral dilation too (Corollary 71.3), and the **unimodality part of
+   Problem 5.3 of Dai et al. holds for every bipartite graph** (Corollary
+   70.2). The multivariate support polynomial is completely log-concave
+   (Theorem 69.3); integer capacities are covered (Corollary 70.5).
+2. **Height-two gamma vectors** (Corollary 71.6, 06): since
+   `Gamma_{P_H} = p_H`, every height-two `gamma_k / binomial(min(m,n), k)` is
+   log-concave.
+3. **Palindromic cores** (Theorem 67.4, Section 72, 07): `p_H` is
+   palindromic in its actual degree iff, after deleting isolated vertices,
+   the graph is balanced, has a perfect matching, and the matched relation is
+   a preorder; iff it is gamma-positive. Recognition takes a matching and a
+   transitive closure. The top coefficient factors as `|L|·|R| ≥
+   (a−r+1)(b−r+1)` (Proposition 72.1). This **answers Research question 23**
+   and extends Part IV's Corollary 53.2.
+4. **Intersection realization** (Proposition 73.1, 07): `p_H` is a
+   normalized mixed-volume polynomial (the realizable case of
+   Röhrle–Ulirsch's Theorem E).
+5. **Probability** (Section 74): conditional complete log-concavity
+   (Proposition 74.1, 06), a covariance-matrix bound `Cov(I) ⪯ diag(p) −
+   pp^T/m` (Theorem 74.3, 06), same-mean binomial **convex-order**
+   domination under every positive fugacity (Lemma 74.4, Theorem 74.5, 07;
+   06's Theorem 74.6 by a second route), and equality in the variance bound
+   **exactly for disjoint equal-strength stars** (Theorem 74.8, 07); for
+   preorders exactly for antichains (Corollary 74.9).
+6. **Approximate counting** (Section 75): an explicit matching oracle and
+   basis walk (Theorem 75.1, 07) give FPRASes for partition functions,
+   `|Q_tau ∩ Z^n|` (Theorem 75.2, both), a specified support fibre
+   (Corollary 75.3, 06) and **every single coefficient** `[t^k] h_tau` and
+   height-two `gamma_k` (Theorem 75.5, 06, by log-concave tilting).
+7. **Exact counting is hard** (Section 76, 07): `|D_H|` and `h_tau(1)` are
+   #P-complete under Turing reductions, already for posets of height two
+   (Theorems 76.2–76.3); as a merge consequence, so is a specified
+   `gamma_k` (Corollary 76.4).
+
+**Part VI** (source 08, with source 09's stability sections) studies real
+stability of Part III's signed support polynomial `Phi_G`. It proves:
+
+1. **ADE criterion** (Theorem 84.1, 08): for a tree `T`, the incidence–apex
+   graph `A(T)` has stable `Phi` iff `I − A_T/2 ⪰ 0` iff `rho(A_T) ≤ 2`,
+   i.e. for the finite and affine ADE trees (the list is classical,
+   Theorem 88.1), via the identity `F = det L + s·tr(adj(L) C_T)`
+   (Theorem 86.3) and explicit rational Rayleigh certificates
+   (Theorem 87.2); also after terminal subdivision (Theorem 89.1).
+2. **Books** (Theorems 84.2, 90.2, 08): `Phi_{B_m}` is stable iff `m ≤ 4`,
+   but `p_{B_m}` is real-rooted for every `m`; at `m = 5` the uniform basis
+   measure has a positively correlated pair (covariance 1/576). So
+   **stability of `Phi_G` is strictly stronger than real-rootedness of
+   `p_G`**, which Part III left open; `ϑ(3,3,5)` is a second witness
+   (equation 92.5). In Part II's labelling `B_m` is `Theta_m` plus one edge
+   and `p_{B_m} = p_{Theta_m} + u` (merge note, Section 90).
+3. **Multi-theta graphs** (Theorem 84.3, 08): all simple bipartite
+   multi-theta graphs are classified (all-even: stable; all-odd without a
+   direct edge: stable iff two paths; direct edge plus `m` odd paths: iff
+   `m ≤ 4`), with an expected-determinant proof for even paths
+   (Theorems 91.2, 91.4).
+4. **Block locality** (Lemma 93.1, Theorem 93.2, Corollary 93.3, 09; the
+   bipartite case also 08): `Phi` of a one-vertex sum is stable iff both
+   pieces are, so stability is decided on 2-connected blocks. **Every
+   `K_{l,r}` is a stable block** (Theorem 94.1, 09).
+5. **Infinitely many induced-minimal obstructions** (merge observation,
+   Section 92.6): every `ϑ(a,b,c)` with `a,b,c` odd ≥ 3 is unstable while
+   all its proper induced subgraphs are cacti, so there is no finite
+   obstruction set even for treewidth two and maximum degree three.
+
+**Part VII** (source 09) studies the transversal matroid `M_tau` on two
+copies `E^+ ⊔ E^-` of the ground set of a preorder (bases `I^+ ⊔ (E∖J)^-`
+for matchable `(I,J)`; the dual convention to Parts V–VI's `𝖬_H`). It
+proves:
+
+1. for a reflexive relation, transitivity iff the paired copies are clones
+   (Theorem 103.2; Part IV's Proposition 51.4 in matroid form);
+2. a symmetric presentation and the upset rank formula (Theorem 104.1);
+3. the clone classes are the doubled equivalence classes (Theorem 105.1),
+   **`M_tau` determines `tau` up to isomorphism** (Theorem 105.2), and
+   `|Aut M_tau| = |Aut(tau̅, m)| · Π_C (2 m_C)!` (Corollary 105.3);
+4. `M_tau^* = M_{tau^op}` and induced restrictions are minors
+   (Theorem 106.1);
+5. a multivariate orbit polynomial and a transport-weighted palindromic,
+   gamma-positive, ultra-log-concave `h_{tau,w}` (Theorems 107.1–107.2; the
+   unweighted orbit statement is Part IV's Theorem 52.1);
+6. every transversal matroid is an explicit minor of a height-two preorder
+   matroid, so these generate exactly the finite gammoids under minors
+   (Theorem 108.1, Corollary 108.2, with Ingleton–Piff's characterization).
+
+**What Parts II–VII do to the open questions** (Sections 11.3 and 26.3;
 Part II's dated pointers are in the abstract, the scope box, Sections 8 and
 10 and Appendix C; Part III's in the title block, the abstract, the
 reading-route box, Section 19 and Research questions 3 and 4 of Section 24;
@@ -248,7 +446,14 @@ Part IV's answers are in Section 46.3, and its dated pointers, marked
 "Added 29 September 2026, batch 44", in the title block, the abstract, the
 scope box, the reading-route box, Section 8.5, Section 10, Part II's status
 box, Section 11.3 and Research questions 1 and 2, and Part III's Section 26.3
-and Research question 18):
+and Research question 18; Parts V–VII's answers are in Sections 66.3, 83.3
+and 100.3, and their dated pointers, marked "Added 29 September 2026,
+batch 55", are in the title block, the abstract, the scope box, the
+reading-route box, Section 1, Part II's Research question 3, Part III's
+Corollary 37.4, the containment paragraph of Section 39 and Research
+questions 11 and 15, and Part IV's Corollary 50.3, Proposition
+51.4, Theorem 52.1, the remark after Corollary 53.2, Theorem 58.1 and
+Research questions 23, 24, 26, 28, 32 and 34):
 
 - Conjecture 5.3 (real roots) is **false** — first counterexample credited to
   Patel. Part I never asserted it, so nothing is retracted.
@@ -272,13 +477,30 @@ and Research question 18):
   **answered** by Part III: exactly the cacti, and strictly stronger than
   stability. Research question 3 (which graph structures preserve
   real-rootedness) is **re-scoped, still open**: Part III's `K_{2,3}` tree
-  attachments are noncacti with real-rooted `p_G`.
+  attachments are noncacti with real-rooted `p_G`. [Updated 29 September
+  2026, batch 55: Part VI shows that vertex sums preserve and reflect
+  stability, and that edge subdivision can restore real-rootedness without
+  stability (`ϑ(3,3,3)` vs `ϑ(3,3,5)`); real-rootedness alone under vertex
+  sums is not treated.]
 - [Added 29 September 2026, batch 44.] Conjectures 5.3 and 5.1(d) are
   unchanged by Part IV: gamma-positivity does not imply real-rootedness, and
   Part IV constructs no flag polytope (Research question 22). Part IV proves
   Conjecture 5.1(a)–(b) (palindromicity, unimodality) again, by a route
   independent of Part I's unrefereed geometry. It refutes nothing in Parts
   I–III; nothing is retracted.
+- [Added 29 September 2026, batch 55.] Part V strengthens unimodality to
+  **ultra-log-concavity of every `h_tau`** and of every height-two gamma
+  vector; **Research question 23 is answered** (palindromic support
+  polynomials of all bipartite graphs); Research question 24 is answered in
+  height two only; Research question 26's unrestricted complexity and
+  Research question 32's "specified `gamma_k`" are answered (#P-hard already
+  in height two, with FPRASes); Research question 28 gains binomial
+  convex-order domination, not a limit law. Part VI proves that **stability
+  of `Phi_G` is strictly stronger than real-rootedness of `p_G`** (Part
+  III left this open), answers Part III's gluing target in Research
+  question 11, and classifies two treewidth-two families; Research question
+  11 stays open in general. Conjectures 5.3 and 5.1(d) are unchanged. Parts
+  V–VII refute nothing in Parts I–IV; nothing is retracted.
 
 ## Not claimed
 
@@ -334,7 +556,10 @@ From Part III (see also `03-cactus-STATUS.md`, `03-cactus-SOURCES.md`):
   publisher abstract only) deserves further review.
 - No general characterization of real-stable or real-rooted matching-support
   polynomials (Research question 11), and no claim that the containment
-  "stable `Phi_G` ⇒ real-rooted `p_G`" is strict.
+  "stable `Phi_G` ⇒ real-rooted `p_G`" is strict. [Updated 29 September
+  2026, batch 55: strictness is proved in Part VI (books `B_m`, `m ≥ 5`;
+  `ϑ(3,3,5)`); a general characterization is still not claimed, but two
+  treewidth-two families are classified.]
 - No nonexistence theorem for larger determinantal pencils, auxiliary
   variables, sums of determinants or powers (Research question 15); only the
   vertex-indexed diagonal pencil is excluded.
@@ -366,11 +591,15 @@ From Part IV (see also `05-gamma-positivity-PROOF_STATUS.md`,
 - **Open conjectures and other statistics.** No flag-polytopal realization
   (Conjecture 5.1(d)). No real-rootedness, and no log-concavity or
   unimodality of the gamma vector. No identification of `h_tau` with the
-  Ehrhart numerator of the original `Q_tau`.
+  Ehrhart numerator of the original `Q_tau`. [Updated 29 September 2026,
+  batch 55: Part IV's own scope. Part V proves ultra-log-concave height-two
+  gamma vectors and ultra-log-concave `h_tau` for every preorder; gamma
+  log-concavity beyond height two remains open.]
 - **Limits of the reflexive-relation criterion.** It is no classification
   for unbalanced bipartite graphs, for balanced graphs without a perfect
   matching, or for graphs whose maximum matching is smaller than a shore.
-  It is no real-rootedness criterion.
+  It is no real-rootedness criterion. [Added 29 September 2026, batch 55:
+  Part V classifies palindromicity for every bipartite graph.]
 - **Credited, not claimed.** Nothing new is claimed for:
   - the matching-support interpretation (Ohsugi–Tsuchiya, Davis–Kohl);
   - the hypertree volume count (Kálmán–Postnikov);
@@ -390,6 +619,61 @@ From Part IV (see also `05-gamma-positivity-PROOF_STATUS.md`,
 - **Finite checks and formalization.** The finite checks do not prove the
   all-`n` statements. No Lean or Rocq formalization exists. Both
   manuscripts' formalization plans (Section 60) are unstarted.
+
+From Part V (see also `06-lorentzian-support-SOURCES.md`,
+`07-support-polynomials-PROOF_STATUS.md`, `07-support-polynomials-SOURCES.md`):
+
+- **Imported, not reproved:** the support-counting bridge (Ohsugi–Tsuchiya
+  and Oh for source 06; Dai et al. Theorem 1.2 and Davis–Kohl Theorem 3.10
+  for source 07), the Lorentzian theorems of Brändén–Huh, Röhrle–Ulirsch's
+  Theorems A and E, the Anari–Liu–Oveis Gharan–Vinzant mixing theorem, and
+  Colbourn–Provan–Vertigan's #P-completeness. The transversal-matroid model
+  is classical (Balas–Pulleyblank, as identified by Mori).
+- **No normalization by the matching number** `nu(H)` in place of the
+  smaller shore (Research question 37; a finite search found no
+  counterexample, which is evidence only).
+- **No gamma log-concavity beyond height two**; no real-rootedness
+  classification; the Lorentzian conclusions do not upgrade to real
+  stability (`Theta_3`); no flag realization; no limit theorem.
+- **No bijection and no lattice-point sampler.** The samplers return
+  supports or support pairs, not demand vectors or lattice points; no
+  demand/support bijection is constructed.
+- **No production FPRAS.** The coefficient FPRAS is a proved reduction;
+  the shipped sampler is a reference implementation, and no exact
+  polynomial-time counter or binary-capacity algorithm is claimed.
+- **No worldwide priority** for the applications; the palindromicity
+  classification re-proves Part IV's balanced case.
+
+From Part VI (see also `08-ade-stability-SOURCE_AUDIT.md`):
+
+- The ADE list of trees with spectral radius at most two is classical; the
+  `ϑ(3,3,3)` obstruction is Part II's (priority Patel); even-cycle stability
+  and tree attachments are not new; `K_{2,3}` stability without a faithful
+  matrix is Part III's.
+- No classification of all stable bipartite graphs, of all fundamental
+  transversal matroids with the half-plane property, or of all real-rooted
+  diagonals; source 08's Research question on tree diagonals is open (for
+  this merge the diagonal was checked real-rooted for all 986 trees with
+  `2 ≤ r ≤ 12`, evidence only).
+- Weighted real-rootedness of the books with `m ≥ 5` is not claimed; the
+  negative Rayleigh certificate is not a nonreal-root weighted diagonal.
+- No flag-polytope consequence; no worldwide priority (the literature
+  search was focused and found no earlier statement of the tree criterion);
+  no formalization.
+
+From Part VII (see also `09-matroid-lifts-CLAIMS_AND_SOURCES.md`):
+
+- The gammoid characterization (Ingleton–Piff) and the extended-matroid
+  construction (Röhrle–Ulirsch) are classical; the clone/transitivity
+  criterion is Part IV's cancellation criterion in matroid form, and the
+  orbit formula is Part IV's Boolean orbits with multivariate weights.
+- Reconstruction is proved inside the image of `tau ↦ M_tau`; no intrinsic
+  recognition of that image among all matroids (Research question 54).
+- No lattice-point interpretation of the transport weights and no action
+  of the clone group on lattice points; no gamma log-concavity; no
+  classification of stable 2-connected blocks (Part VI's question).
+- No Lean or Rocq verification; the staged formalization plan (Section 111)
+  is unstarted.
 
 ## Labels
 
@@ -424,6 +708,27 @@ Part IV. Part IV begins at Section 46, after Part III and before
 Part I's appendices, whose letters and numbers are unchanged. Its research
 questions continue the report's numbering as 20–36. Its tables are Tables
 3–5; they follow Part III's two tables, and Part I's appendices have none.
+
+Parts V–VII added **340** labels. Part V has 157: 95 with `lor:`
+("Lorentzian", source 06 and the merge's own), 56 with `lor:sp:` ("support
+polynomials", source 07), and 6 `lor:hq:` labels added to Part IV's Research
+questions 23, 24, 26, 28, 32 and 34 so that Part V can cite them. Part VI has
+126: 100 with `ade:` (source 08 and the merge's own), 23 with `ade:mat:`
+(source 09's stability sections), and 3 `ade:hq:` labels added to Part II's
+Research question 3 and Part III's Research questions 11 and 15. Part VII has
+57 with `mat:` (source 09). The sources' own labels (bare) were renamed into
+these prefixes before anything cited them; labels of passages that are not
+reprinted (source 07's duplicated statements, source 09's coefficient
+sections) are not carried over, and references to them point to the
+printed statements. New total: **686**. No earlier label was renamed or
+removed, and the numbers of all 346 earlier labels are unchanged (compared
+in the `.aux` files of the committed and the new build). Their page numbers
+moved by three or four pages (the title block, abstract, scope box and
+contents grew); those in Part I's appendices moved by 104. Parts V–VII begin
+at Sections 66, 83 and 100, after Part IV and before Part I's appendices,
+whose letters and numbers are unchanged. Their research questions continue
+the numbering as 37–43 (Part V), 44–53 (Part VI) and 54–57 (Part VII). Their
+tables are Tables 6–12 (notation tables 6, 8 and 12).
 
 ## Notation
 
@@ -479,15 +784,35 @@ Part IV's against all three. Watch in particular:
   there are a mixing variable and the support size (Part II's `S`). The
   letters `d`, `D`, `P`, `B_{s,r}`, `A_{s,r}` and `m_i` of the block
   formulas are not Part I's or Part II's symbols of the same letter.
+- **Parts V–VII (Tables 6, 8, 12).** Three renamings, no normalization
+  changed. The transversal matroid of a bipartite graph with private copies
+  of the left shore (sources 06, 07, 08) is printed `𝖬_H`/`𝖬_G` (sans
+  serif), because `M_G(u)` is Part II's matching polynomial; source 09's
+  matroid is printed `M_G`, `M_tau` as delivered and is the **dual**
+  (`M_G = 𝖬_G^*`; bases `I ⊔ (B∖J)` versus `(U∖I) ⊔ J`). Sources 06 and 07's
+  random support size `K` is printed `L`, as in Part IV's Theorem 58.1,
+  where `K` is the mixing variable (source 07's bit length becomes
+  `L_bit`). Source 08's thetas `Θ(a,b,c)` are printed `ϑ(a,b,c)`, extending
+  Part III's rule to any number of paths. Both sources' `Q_tau` is printed
+  `𝒬_tau`.
+- In Part V the letters `r` and `d` are **not** renamed and depend on the
+  source: in source 06's sections `r = min(m,n)` (isolated vertices kept);
+  in source 07's `r = nu(H)` and `d` is the smaller shore after deleting
+  isolated vertices; in Theorem 75.5 `d = nu(H)`. Source 06's `F_H` is
+  source 07's `D_H`.
+- Part VI's `L`, `B`, `T`, `C_T` are a pencil, an incidence matrix, a tree
+  and `I − A_T/2`, not Part V's support size or Parts I–III's symbols of
+  the same letters; `B_m` is a book.
 
 ## Files
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 116 pages, A4 (title p. 1, scope box and contents pp. 2–5,
-                                             Part I pp. 6–18, Part II pp. 19–47, Part III pp. 48–72,
-                                             Part IV pp. 73–112, Part I's appendices pp. 113–115,
-                                             references pp. 115–116)
+article.pdf                                  the compiled report, 220 pages, A4 (title p. 1, scope box and contents pp. 2–8,
+                                             Part I pp. 9–21, Part II pp. 22–50, Part III pp. 51–75,
+                                             Part IV pp. 76–116, Part V pp. 117–165, Part VI pp. 166–199,
+                                             Part VII pp. 200–216, Part I's appendices pp. 217–219,
+                                             references pp. 219–220)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -525,6 +850,36 @@ code/05-gamma-positivity-build.py            Part IV (manuscript 06): the delive
 data/05-gamma-positivity-preorders.csv       Part IV (manuscript 06): all 7,332 labeled preorders through n = 5, h- and gamma-vectors (CRLF)
 data/05-gamma-positivity-verification.json   Part IV (manuscript 06): detailed results of the recorded run, with all 140 samples
 data/05-gamma-positivity-verification.log    Part IV (manuscript 06): console transcript of that run
+06-lorentzian-support-SOURCES.md             Part V (source 06): sources, theorem dependencies and limits (delivered SOURCES.md)
+code/06-lorentzian-support-verify.py         Part V (source 06): exact finite checks (standard library)
+code/06-lorentzian-support-support_sampler.py  Part V (source 06): reference basis-walk support sampler (imports verify)
+code/06-lorentzian-support-test_sampler.py   Part V (source 06): seven unit tests (imports support_sampler, verify)
+code/06-lorentzian-support-build.sh          Part V (source 06): the delivered build script (do not run here)
+data/06-lorentzian-support-verification.json Part V (source 06): recorded output of verify.py (Python 3.13.5)
+data/06-lorentzian-support-verification.log  Part V (source 06): console transcript of that run
+data/06-lorentzian-support-sampler_smoke.json  Part V (source 06): 100-sample seeded sampler run on Theta_3
+data/06-lorentzian-support-sampler_smoke.log Part V (source 06): console output of that run
+data/06-lorentzian-support-sampler_tests.log Part V (source 06): unit-test transcript (7 tests)
+07-support-polynomials-PROOF_STATUS.md       Part V (source 07): proof and novelty ledger (delivered PROOF_STATUS.md)
+07-support-polynomials-SOURCES.md            Part V (source 07): primary sources and inspected versions (delivered SOURCES.md)
+code/07-support-polynomials-support_tools.py Part V (source 07): graph, matroid-oracle and sampler library (standard library)
+code/07-support-polynomials-verify.py        Part V (source 07): exact finite checks (imports support_tools)
+code/07-support-polynomials-example_certificate.py  Part V (source 07): discriminant, Sturm and Theta_3 certificate (imports support_tools)
+code/07-support-polynomials-build.sh         Part V (source 07): the delivered build script (do not run here)
+data/07-support-polynomials-verification.json  Part V (source 07): recorded output of verify.py
+data/07-support-polynomials-verification.log Part V (source 07): console transcript of that run
+data/07-support-polynomials-example_certificate.json  Part V (source 07): recorded certificate
+data/07-support-polynomials-example_certificate.log   Part V (source 07): its console output (byte-identical to the JSON)
+data/07-support-polynomials-build_validation.json     Part V (source 07): record of the delivered 23-page PDF's build
+08-ade-stability-SOURCE_AUDIT.md             Part VI (source 08): source and claim audit (delivered SOURCE_AUDIT.md)
+code/08-ade-stability-verify.py              Part VI (source 08): exact checks (SymPy, NetworkX)
+data/08-ade-stability-verification_results.json  Part VI (source 08): recorded output (Python 3.13.5, SymPy 1.14.0, NetworkX 3.6.1)
+data/08-ade-stability-requirements.txt       Part VI (source 08): pinned versions (delivered requirements.txt)
+09-matroid-lifts-CLAIMS_AND_SOURCES.md       Parts VI–VII (source 09): claim and dependency ledger (delivered)
+code/09-matroid-lifts-verify.py              Parts VI–VII (source 09): exact finite checks (standard library)
+code/09-matroid-lifts-Makefile               Parts VI–VII (source 09): the delivered Makefile (do not run here; see below)
+data/09-matroid-lifts-verification_results.json  Parts VI–VII (source 09): recorded output of verify.py
+data/09-matroid-lifts-verification_run.txt   Parts VI–VII (source 09): the same record (byte-identical)
 ```
 
 The ten `02-height-two-` files were staged in the placement commit
@@ -539,6 +894,14 @@ is all-CRLF as delivered (7,333 lines) and has its own `-text` line in
 `SetTheory/Cardinals/.gitattributes`; `data/05-gamma-positivity-verification.log`
 was force-added past the root `*.log` ignore rule. The other Part IV files are
 LF text.
+The 30 files of Parts V–VII (ten `06-`, eleven `07-`, four `08-`, five
+`09-`) were staged in `26473dfa0`, byte-identical to their deliveries
+(source 06's `results/` and source 09's package-root outputs became
+`data/`, programs and build files `code/`); all are LF text, and the five
+`.log` files were force-added past the root `*.log` ignore rule. Two pairs
+are byte-identical by delivery: source 07's `example_certificate.json` and
+`.log`, and source 09's `verification_results.json` and
+`verification_run.txt`.
 
 ## Data conventions
 
@@ -617,6 +980,35 @@ What the records show:
 Both are exact integer checks with no floating-point step. They are finite:
 they do not prove the all-`n` theorems.
 
+**Part V.** Source 06's JSON (`"finite_checks_only": true`, seed 20260929)
+records all bipartite graphs with shores of size at most 3 (689) and all
+4,096 on shores (3,4), 75 seeded graphs on (4,4), (5,4), (4,5) with their
+adjacency rows, 14,021 nonempty conditioning events, 685 exact covariance
+checks (principal minors), all 7,332 labeled preorders through `n = 5` by
+direct ideal enumeration, and 64 integer-capacity examples; the sampler
+JSON records 100 seeded supports (masks over four receivers) on `Theta_3`
+with donor rows `14,3,5,9`. Source 07's JSON (`"status": "PASS"`, seed
+20260929) records all 65,536 labeled 4×4 and 4,096 3×4 graphs (2,165,695 and
+68,832 supports; 9,268 and 707 palindromic; the receiver-refined Hall
+identity is checked on the 3×4 family only), the 390 labeled preorders
+through `n = 4`, 300 weighted graphs at fugacities 1/3, 1, 7/2, 32 leaf-
+transform identities, 30 sampler runs, and the `Theta_3` data (`p`,
+`h`, 1,281 points) and the failed two-sided normalization. Graphs are
+bitmask neighbourhoods; coefficients are in increasing degree.
+
+**Part VI.** Source 08's JSON records, for each `r ≤ 9`, the unlabeled
+trees, the number that are PSD/ADE and their types, the determinant-identity
+evaluations, books `m = 0,…,8`, the even-theta expected-minor checks, the
+contraction/deletion comparisons and the subdivision identities
+(Table 11 of the article). It has no timing field; the version strings are
+the only varying fields.
+
+**Part VII.** Source 09's JSON (`"status": "PASS"`) records 4,690 bipartite
+graphs, 4,165 reflexive relations and 389 preorders on 1–4 elements, 92,804
+rank checks, 34 automorphism counts, 592 minor constructions, 16 vertex-sum
+identities, and the `Theta_3` certificate (Rayleigh value −9 at the
+recorded assignment; two real roots). Its `elapsed_seconds` varies.
+
 ## Build the article
 
 ```sh
@@ -629,14 +1021,17 @@ Build in a scratch copy of `article.tex` so that no auxiliary files land here
 newpxmath, tcolorbox, titlesec, fancyhdr, listings, hyperref, …) plus TikZ
 and needspace for Part II; Part III adds only macros; Part IV adds macros,
 an `example` environment and the TikZ library `arrows.meta` (for manuscript
-01's dependency graph, Section 60). No image or font files are needed. The
-shipped PDF (116 pages) was built on 29 September 2026 with MiKTeX (pdfTeX
-1.40.26) by `latexmk`: no errors, no undefined or multiply defined
-references or citations, no duplicate destinations, no overfull boxes and no
-other LaTeX warnings; one underfull box (badness 1817) in Part II's
-provenance-ledger table, which the committed builds before Parts III and IV
-and the delivered manuscript 02's own build also show. (The earlier build
-of 29 September 2026, before Part IV, had 74 pages.)
+01's dependency graph, Section 60); Parts V–VII add macros and the TikZ
+library `positioning` (for source 06's dependency diagram, Section 67). No
+image or font files are needed. The shipped PDF (220 pages) was built on
+29 September 2026 with MiKTeX (pdfTeX 1.40.26) by `latexmk`: no errors, no
+undefined or multiply defined references or citations, no duplicate
+destinations, no overfull boxes and no other LaTeX warnings; five underfull
+boxes, one (badness 1817) in Part II's provenance-ledger table, which the
+committed builds before Parts III–VII and the delivered manuscript 02's own
+build also show, and four (badness 1024–6625) in paragraphs of Parts V and
+VI that set long shipped file names (Sections 78, 78.1 and 83.4). (The earlier builds of 29 September
+2026 had 74 pages before Part IV and 116 before Parts V–VII.)
 
 ## Rerun the checks
 
@@ -755,6 +1150,112 @@ There were no mismatches. The write phase recomputed the article's numerical
 examples by brute force. None of these scratch checks is shipped
 (Section 59.3).
 
+**Parts V–VII: common hazards.** The four packages' programs are shipped
+under prefixed names but still use their delivered names and layouts. Run
+them only as below, from this directory in Git Bash or another POSIX shell,
+with `W` a scratch directory outside the repository. On Windows every
+program writes its JSON with CRLF line endings (Python's `write_text`
+without `newline=`), so compare with the shipped LF files after
+`tr -d '\r'`. Use `py` (or `uv run --no-project … python`); the delivered
+READMEs and articles say `python` or `python3`. The delivered build scripts
+and Makefile cannot build this article: `code/06-lorentzian-support-build.sh`
+changes to `code/` and runs `pdflatex` on a nonexistent `code/article.tex`;
+`code/07-support-polynomials-build.sh` creates `code/build/` and fails on
+the unshipped `support_polynomials.tex`; `make -f code/09-matroid-lifts-Makefile`
+run here would rebuild this article in place with `pdflatex` (target `pdf`,
+leaving auxiliary files here), look for a nonexistent `verify.py` (target
+`verify`), and delete `article.aux`, `.log`, `.out`, `.toc`, `.fls` and
+`.fdb_latexmk` here (target `clean`). Do not run them here.
+
+**Part V, source 06.** Standard library, Python 3.10 or later. The sampler
+and the tests import `verify` and `support_sampler` under their delivered
+names, so under the shipped names here `verify` would resolve to **Part I's**
+`code/verify.py` (an `ImportError`, or a wrong module); and `verify.py`
+without `--output` writes `results/verification.json` relative to the
+working directory (in the delivered layout, its own recorded output).
+Restore the delivered names in a copy:
+
+```sh
+W=/path/to/scratch
+mkdir -p "$W/06/code" "$W/06/results"
+for f in code/06-lorentzian-support-*.py; do cp "$f" "$W/06/code/${f#code/06-lorentzian-support-}"; done
+cd "$W/06"
+py code/verify.py --max-preorder 5 --output results/rerun.json     # ends with the JSON; compare with data/06-lorentzian-support-verification.json
+py code/test_sampler.py                                            # 7 tests
+py code/support_sampler.py --rows 14,3,5,9 --receivers 4 --samples 100 --epsilon 1/100 --seed 20260929 --output results/smoke.json
+```
+
+Run this way on 29 September 2026 (Python 3.14.4, Windows, on a shared
+and loaded machine: about 150 s for the verifier; the recorded run took
+11 s under Python 3.13.5), all three passed. After CR stripping,
+`rerun.json` and the console output equal
+`data/06-lorentzian-support-verification.json` and `.log` except `python`
+and `elapsed_seconds`; the seven tests pass (the transcript differs only in
+its time); `smoke.json` equals `data/06-lorentzian-support-sampler_smoke.json`
+except `elapsed_seconds` (the same 100 supports for the seed). The shorter
+check `--max-preorder 4 --skip-3x4` is the program's own option.
+
+**Part V, source 07.** Standard library. `verify.py` and
+`example_certificate.py` import `support_tools` under its delivered name, so
+under the shipped names they fail with `ModuleNotFoundError`; `verify.py`
+without `--output` writes `../data/verification.json` **relative to the
+working directory** (from this directory that is
+`enumerative-combinatorics/data/`, outside the report). Its checks are
+`assert` statements: do not use `python -O`.
+
+```sh
+W=/path/to/scratch
+mkdir -p "$W/07/code" "$W/07/rerun"
+for f in code/07-support-polynomials-*.py; do cp "$f" "$W/07/code/${f#code/07-support-polynomials-}"; done
+cd "$W/07"
+py code/verify.py --output rerun/verification.json                 # compare with data/07-support-polynomials-verification.json
+py code/example_certificate.py --output rerun/example_certificate.json
+py code/support_tools.py
+```
+
+Run this way on 29 September 2026 (Python 3.14.4 on the loaded machine: the
+verifier took 300 s; the recorded run took 22 s), all three passed. After CR
+stripping, `verification.json` and the verifier's console output equal
+`data/07-support-polynomials-verification.json` and `.log` except
+`elapsed_seconds`; the certificate JSON and its console output are
+byte-identical to the shipped `example_certificate.json` and `.log`;
+`support_tools.py` prints the `Theta_3` coefficients, "Palindromic: False"
+and one sampler step. Use `--quick` for the program's own 3×3 check.
+
+**Part VI, source 08.** Needs SymPy 1.14.0 and NetworkX 3.6.1
+(`data/08-ade-stability-requirements.txt`) and imports no sibling module.
+Without `--output` it writes `data/verification_results.json` under the
+parent of its own directory, which here is **Part I's recorded output**:
+always pass `--output`.
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/08"
+uv run --no-project --with sympy==1.14.0 --with networkx==3.6.1 python code/08-ade-stability-verify.py --output "$W/08/ade.json"
+tr -d '\r' < "$W/08/ade.json" | cmp - data/08-ade-stability-verification_results.json
+```
+
+Run this way on 29 September 2026 (uv with Python 3.13.5, SymPy 1.14.0,
+NetworkX 3.6.1; about 25 s): "All exact checks passed", and the output is
+byte-identical to the shipped JSON after CR stripping (it has no timing
+field).
+
+**Parts VI–VII, source 09.** Standard library; no sibling imports. Without
+`--output` it writes `verification_results.json` in the working directory.
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/09" && cp code/09-matroid-lifts-verify.py "$W/09/" && cd "$W/09"
+py 09-matroid-lifts-verify.py --output out.json > console.txt
+```
+
+Run this way on 29 September 2026 (Python 3.14.4, about 11 s on the loaded
+machine), it passed: after CR stripping, `out.json` and `console.txt` (the
+program prints the JSON it writes) equal
+`data/09-matroid-lifts-verification_results.json` and
+`-verification_run.txt` except `elapsed_seconds`.
+
+None of these runs changed a file of this report (checked with
+`git status` and by comparing a copy of `code/` and `data/`).
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** Part II's programs, Makefile and status notes use the
@@ -854,6 +1355,45 @@ examples by brute force. None of these scratch checks is shipped
   Manuscript 05's equations, numbered (1)–(26) consecutively, are numbered by
   section here; its dependency ledger's second column is set ragged-right.
 
+- **Parts V–VII's delivery names** (all shipped files left
+  byte-identical):
+  - `06-lorentzian-support-SOURCES.md` speaks of "the article" and "this
+    package" (the delivered 23-page manuscript, printed in Part V), cites
+    its own "Lemma 2.1" (Lemma 68.1 here) and "Section 7" (Section 75), and
+    cites **Theorem 4.2** of Dai et al. for the augmented-root identity; the
+    inspected arXiv v2 has it as **Theorem 1.2** (Section 66.4 of the
+    article records the correction).
+  - `07-support-polynomials-PROOF_STATUS.md` and `-SOURCES.md` speak of
+    "the article", "this package" and "the predecessor" (Parts I–IV).
+    `data/07-support-polynomials-build_validation.json` describes the
+    delivered 23-page PDF's build (TeX Live 2025), not this article's.
+  - `08-ade-stability-SOURCE_AUDIT.md` names `data/verification_results.json`
+    (shipped as `data/08-ade-stability-verification_results.json`; the
+    unprefixed name here is Part I's file) and "this delivery".
+  - `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites the delivered section
+    numbers (mapped above) and "the article".
+  - The four programs' usage strings, console records and default paths use
+    the delivered layout (`results/`, `data/`, package root); the article
+    prints the delivered run commands, each followed by a merge note with
+    the shipped names (Sections 78, 78.1, 95, 110).
+  - The unshipped delivery READMEs list `SHA256SUMS.txt` (sources 06, 08,
+    09; verified and retired), the manuscripts and the PDFs.
+- **Parts V–VII's recorded outputs** were produced under Python 3.13.5
+  (sources 06–09; source 07's and 09's JSON do not record the version) and
+  contain an `elapsed_seconds` field (sources 06, 07, 09) that varies from
+  run to run; source 08's JSON has version strings only.
+- **Bylines.** Sources 06, 07 and 09 name ChatGPT on their title pages;
+  source 08 names no assistant ("mathematical development and exposition
+  with AI assistance"). The article's PDF metadata is unchanged.
+- **Merge observations not in any source** are marked as such in the
+  article: the #P-hardness of a specified height-two `gamma_k`
+  (Corollary 76.4), the infinitely many induced-minimal unstable graphs
+  (Section 92.6), `p_{B_m} = p_{Theta_m} + u` (Section 90), a finite search
+  on normalization by the matching number (Research question 37), the tree
+  diagonals for `r ≤ 12` (Section 96), and the comparison with the q-zeta
+  report's matroid (Section 106). Their finite checks were run by the
+  batch-55 dossier and write phase and are not shipped.
+
 ## Relation to neighbouring reports and to the formal projects
 
 Three other preorder reports in `enumerative-combinatorics/` concern the same
@@ -876,6 +1416,13 @@ gamma-positivity describe their own proofs and stay accurate. The q-zeta
 report's `H_tau` is a different polynomial, and none of those reports
 states Conjecture 5.2 as open. So Part IV adds no reciprocal note there
 either; the catalogue step may mention Part IV in the collection's entries.
+Parts V–VII (batch 55) touch one neighbour: the q-zeta report's
+transversal matroid `M_B` (its "Tutte evaluation" proposition) agrees, for
+all 5,930 pairs `(tau, B)` with `n ≤ 4`, with the minor
+`(M_{tau^op}/B^-) ∖ (E∖B)^-` of Part VII's matroid (a finite check recorded
+in Section 106 of the article, not a theorem; no note was added to that
+report in this batch). Part VI continues Parts II–III's stability questions
+only; the other neighbours treat neither stability nor log-concavity.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
@@ -889,6 +1436,12 @@ propose; none of them has been started. The same holds for Part IV: a search
 of the tracked `.lean` and `.v` files for gamma-positivity, Athanasiadis,
 matchable, root-polytope, preorder-polytope and transport-pair terms finds
 nothing, and Part IV's two formalization plans (Section 60) are unstarted.
+The same holds for Parts V–VII: no declaration formalizes any of their
+statements (a search of the tracked `.lean` and `.v` files outside `lib/`
+for matroid, bimatroid, gammoid, Lorentzian, ultra-log-concave, Dynkin,
+real-stable, matchable, incidence–apex and multi-theta finds nothing), and
+their formalization plans (Sections 79.3 and 95.4, and Section 111) are
+unstarted.
 
 ## Sources and attribution
 
@@ -919,5 +1472,19 @@ nothing, and Part IV's two formalization plans (Section 60) are unstarted.
 - Part IV's inputs are the Kálmán–Postnikov, Ohsugi–Tsuchiya (arXiv:1810.12258v4,
   Propositions 3.3–3.4), Davis–Kohl (Theorem 3.10) and Dai et al.
   (Theorems 1.2–1.3, Problem 5.3) entries above, and Part II's counting lemma.
+
+- Parts V–VII: F. Röhrle and M. Ulirsch, Ann. Comb. 30 (2026) 501–523,
+  doi:10.1007/s00026-025-00780-z, arXiv:2402.15317 (Theorems A and E,
+  Proposition 2.2, Example 2.4); P. Brändén and J. Huh, *Lorentzian
+  polynomials*, Ann. Math. 192 (2020), arXiv:1902.03719v8; N. Anari, K. Liu,
+  S. Oveis Gharan and C. Vinzant, arXiv:1811.01816 (basis-walk mixing and
+  FPRAS); E. Balas and W. R. Pulleyblank, Networks 13 (1983), and K. Mori,
+  Graphs Combin. (2023) (the transversal-matroid model); S. Oh, Electron.
+  J. Combin. 20(3) (2013) P14; C. J. Colbourn, J. S. Provan and D. Vertigan,
+  Combinatorica 15 (1995) (#P-completeness); Y.-B. Choe, J. G. Oxley,
+  A. D. Sokal and D. G. Wagner, Adv. Appl. Math. 32 (2004) (half-plane
+  property); J. McKee and C. Smyth, arXiv:2002.06082 (ADE context);
+  A. W. Ingleton and M. J. Piff, J. Combin. Theory Ser. B 15 (1973)
+  (gammoids).
 
 No third-party papers or font files are included.

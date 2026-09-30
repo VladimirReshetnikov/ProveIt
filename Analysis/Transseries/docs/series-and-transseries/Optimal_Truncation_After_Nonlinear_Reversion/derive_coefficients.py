@@ -30,7 +30,8 @@ D2=sp.factor(B.coeff(e,2)-cut2)
 print('D1',D1)
 print('D2',D2)
 print('D2 latex',sp.latex(sp.expand(D2)))
-Path(__file__).with_name('symbolic_results.txt').open('w').write('B1 = '+str(sp.factor(B.coeff(e,1)))+'\nB2 = '+str(sp.factor(B.coeff(e,2)))+'\nD1 = '+str(D1)+'\nD2 = '+str(D2)+'\n')
+# ed. (2026-09-29): LF line endings on every platform, like the filed file.
+Path(__file__).with_name('symbolic_results.txt').open('w',newline='\n').write('B1 = '+str(sp.factor(B.coeff(e,1)))+'\nB2 = '+str(sp.factor(B.coeff(e,2)))+'\nD1 = '+str(D1)+'\nD2 = '+str(D2)+'\n')
 
 # The corrected next-term weight is D(sigma)/(D(sigma)+D(sigma+1)).
 Den=2+(D1+D1.subs(sigma,sigma+1))*e+(D2+D2.subs(sigma,sigma+1))*e**2

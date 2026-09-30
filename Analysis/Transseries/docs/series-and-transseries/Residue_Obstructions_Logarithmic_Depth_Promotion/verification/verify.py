@@ -222,7 +222,8 @@ def main() -> None:
     result['numerical_illustrations']=numerical_illustrations()
     output=json.dumps(result,indent=2)
     print(output)
-    Path(__file__).with_name('results.json').write_text(output+'\n')
+    # ProveIt edit (2026-09-29): write UTF-8 with LF on every platform.
+    Path(__file__).with_name('results.json').write_text(output+'\n',encoding='utf-8',newline='\n')
 
 if __name__=='__main__':
     main()

@@ -236,7 +236,8 @@ def main():
         'zero_brackets':zero_bracket_checks(),
         'accumulating_atomic_inverse':accumulation_inverse_check(),
     }
-    args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    # ProveIt edit (2026-09-29): write LF on every platform.
+    args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(result,indent=2))
 
 if __name__=='__main__':

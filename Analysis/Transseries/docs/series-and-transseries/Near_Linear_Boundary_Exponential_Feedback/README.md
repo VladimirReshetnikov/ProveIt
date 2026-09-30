@@ -32,7 +32,7 @@ The stretched-logarithmic family `L(j) = exp((log j)^gamma)` yields a finite exp
 - `data/envelope_table.tex`, `data/resonance_table.tex`: generated tables used in the paper.
 - `SOURCES.md`: repository snapshot, primary references, and comparison boundaries.
 - `requirements.txt`, `Makefile`: reproduction instructions.
-- `SHA256SUMS.txt`: checksums for the archive contents other than this ledger itself.
+- The delivered checksum ledger `SHA256SUMS.txt` was verified in full on filing (batch 47) and not kept; the delivered archive remains in the repository history (see `docs/incoming/README.md`, batch 47 row).
 
 ## Reproduce
 
@@ -58,3 +58,58 @@ The coefficient result is an equivalent for the nth root, **not** a multiplicati
 Floating-point tables are **not outward-rounded interval certificates**. Resonance diagnostics evaluate the proved implicit asymptotic normalizer, not the infinite Borel function. Moderate-size envelopes can converge very slowly. The positive-ray obstruction does not rule out useful summation in other directions or a separately constructed compatible acceleration.
 
 The work answers the inspected repository question under the stated hypotheses. External publication priority has not been established by an exhaustive literature search. No repository branch was modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 47 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `near_linear_feedback.tex`: an unnumbered "Editorial note (ProveIt,
+  2026-09-29)" environment was added to the preamble. Editorial notes were
+  added after three further-research questions: "Growth away from the
+  positive Borel ray" (partly answered, for unit amplitudes, by the later
+  negative-ray package, where this class has `A = 0`, and by the
+  sectorial-summability package for every order `k > 1`), "Compatible
+  acceleration and optimal truncation" (its uniform-remainder part answered by
+  the sectorial-summability package; acceleration and optimal truncation
+  still open) and "Inversion and parameter limits beyond fixed resonances"
+  (a cross-link to the weighted-type package's zero-loss theorem, which does
+  not settle it; its limsup part is settled, by an editorial deduction,
+  through the batch-52 exact-type package, and a root limit remains open;
+  see below). In Appendix A the first pinned identifier, which the
+  delivered text called a "repository root tree", is now called a commit,
+  with an editorial note recording the correction. Every change is marked in
+  the source by a `% ed. (2026-09-29)` comment. No label, theorem or number
+  changed.
+- `near_linear_feedback.pdf`: rebuilt from the amended source (26 pages; the
+  delivered PDF had 25). `data/build_report.json` describes the delivered
+  build and was not updated.
+- `SOURCES.md`: the same identifier is labelled as a commit.
+- `README.md`: the retired checksum ledger is no longer listed as a package
+  file (see "Files").
+- `code/verify.py`: the JSON and table writers emit LF line endings on every
+  platform. A rerun on a copy reproduced `data/verification.json` and both
+  tables byte for byte. The program rewrites the two tables the article
+  inputs; run it on a copy.
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by
+`% ed. (2026-09-29, batch 52)` comments.
+
+- `near_linear_feedback.tex`: at "Inversion and parameter limits beyond
+  fixed resonances", the last clause of the existing editorial note ("so
+  the question stays open") now points to a new editorial note: by
+  `../Exact_Weighted_Type_Beyond_Log_Convexity/` (batch 52; its
+  `thm:classificationintro` and `cor:scalarscaling`), log-convexity is not
+  needed. Lemma 4.1 (`lem:b`) makes `b` eventually nondecreasing with
+  `b = o(log x)`, so the weight `e^(m b_m)` is admissible
+  (`V_n = exp(n max_{m<=n+1} b_m)` is a supermultiplicative representative),
+  and Theorem 2.3 (`thm:main`) then gives
+  `limsup |q_n|^(1/n) e^(-b_n) = 1` for the inverse coefficients. Whether
+  `|q_n|^(1/n) e^(-b_n)` converges remains open. The deduction is editorial;
+  it was re-derived on filing and is stated in neither article.
+- `near_linear_feedback.pdf`: rebuilt with `latexmk -pdf` (26 pages,
+  unchanged; no errors, undefined references, multiply defined labels,
+  duplicate destinations or overfull boxes). `data/build_report.json` still
+  describes the delivered build.

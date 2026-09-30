@@ -424,13 +424,20 @@ report answers.}
 
 \entry{Open-query games on ordinal spaces}
 {ordinals-and-order-types/games-on-ordinals/open-query-membership-games}
-{article.pdf}{ordinal\_membership\_games.zip}
+{article.pdf}{ordinal\_membership\_games.zip; batch~52: ProveIt\_Finite\_Output\_Open\_Query\_Games.zip}
 {A negative answer to Problem~1.3 of Chiozini, Csern\'ak and Soukup
 (arXiv:2510.05754v3): two copies of $[0,\omega]$ each have set-membership
 number~1, but their topological sum has value~2.  The general theorem computes
 the invariant for every nonempty Hausdorff space of finite Cantor--Bendixson
 height~$h$ as $\lceil\log_2(h+1)\rceil$ when the last nonempty derivative is a
-singleton and $\lceil\log_2(h+2)\rceil$ otherwise.}
+singleton and $\lceil\log_2(h+2)\rceil$ otherwise.  Part~II, added in
+batch~52, replaces the membership bit by one of $q$ output labels: the optimal
+depth is $\lceil\log_2 L\rceil$ for the least number $L$ of ordered layers with
+open suffixes; on Hausdorff spaces of finite height $L\le(q-1)h+s$, sharply,
+with $s$ the number of labels on the last derivative; a topological sum of
+components of depth at most $d$ has depth at most $d+\lceil\log_2 q\rceil$,
+sharply; and computing the optimal depth is polynomial for two labels but
+NP-complete for three, even on disjoint chains.  At $q=2$ it reproduces Part~I.}
 
 \subsection{Order-theoretic invariants without a subcategory}
 
@@ -666,7 +673,7 @@ show the regular fraction genuinely needs the last one.}
 
 \entry{Shifted Catalan Hankel Polynomials}
 {hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials}
-{article.pdf}{catalan\_hankel\_conjecture\_solution.zip; batch~39: ProveIt\_Catalan\_Root\_Collisions.zip; batch~42: ProveIt\_Cyclotomic\_Catalan\_Recurrences.zip}
+{article.pdf}{catalan\_hankel\_conjecture\_solution.zip; batch~39: ProveIt\_Catalan\_Root\_Collisions.zip; batch~42: ProveIt\_Cyclotomic\_Catalan\_Recurrences.zip; batch~53: Two\_Endpoint\_Catalan\_Confluence.zip; batch~55: ProveIt\_Interior\_Collision\_Research.zip}
 {For $D_N^{(m)}(a,b)=\det(aC_{i+j+m}+bC_{i+j+m+1})$, proves the
 denominator-exponent assertion on page~4 of Barry, arXiv:2011.10827v1, and
 shows the separately printed Conjecture~2 needs an explicit one-unit shift
@@ -680,7 +687,24 @@ recurrence order off resonance, a secondary-Hankel factorization and a
 certified root-free algorithm for the recurrence order.  Part~III, added in
 batch~42, gives every characteristic multiplicity for one repeated root at a
 cyclotomic resonance, and shows that the question it answers needed one more
-parameter: the sign of $z^L$, not only $t$ and $\operatorname{ord}(z^2)$.}
+parameter: the sign of $z^L$, not only $t$ and $\operatorname{ord}(z^2)$.
+Part~IV, added in batch~53, answers the endpoint half of Part~II's question on
+uniform limits: for fixed-size clusters of roots approaching the endpoints $0$
+and $4$ ($d$ roots in all) the normalized determinant is a convergent series
+in even powers of $1/(N+d/2)$, locally uniform through every collision inside
+a cluster, with a factorized leading profile, an explicit first interaction
+term, and ratio to the fixed-endpoint determinant tending to $1$ exactly when
+the outward displacements are $o(N^{-2})$.  Part~V, added in batch~55,
+answers the other half: for fixed-size clusters of roots colliding on the
+scale $1/N$ at fixed bases other than $0$ and $4$, the determinant is an exact
+finite sum of exponential sectors whose amplitudes are convergent series in
+$1/(N+d/2)$, uniform through every collision, with an explicit first
+correction (this expansion is not even), an explicit remainder bound, and
+factorized amplitudes for several separated clusters.  For two
+equal-multiplicity roots inside the spectrum the limit is an oscillatory
+Jacobi Hankel determinant, the first correction oscillates as
+$\sin(2(N+t)\theta)$, and simple zeros move by a convergent phase-dependent
+expansion.  Limits uniform up to the endpoints remain open.}
 
 \entry{Product formulas for ballot-polynomial Hankel determinants}
 {hankel-determinants/catalan-and-ballot/ballot-polynomial-hankel-determinants}
@@ -1063,7 +1087,7 @@ question stays open; an external claim about it is recorded as unverified.}
 
 \entry{Nonreal roots survive in polynomial iterative equations}
 {log-concavity-and-unimodality/nonreal-roots-in-iterative-equations}
-{article.pdf}{nonreal\_roots\_research.zip; batch~41: ProveIt\_Increasing\_Spectral\_Core.zip; batch~42: ProveIt\_Orientation\_Reversing\_Spectra.zip}
+{article.pdf}{nonreal\_roots\_research.zip; batch~41: ProveIt\_Increasing\_Spectral\_Core.zip; batch~42: ProveIt\_Orientation\_Reversing\_Spectra.zip; batch~54: ProveIt\_Exact\_Algebraic\_Degree.zip}
 {Here $P[f]=\sum_ja_jf^{\circ j}$ means a combination of \emph{iterates}, not a
 polynomial in pointwise values.  Gives a negative answer to Problem~6.1 of
 Draga--Morawiec (arXiv:1503.00570), which proposed deleting nonreal
@@ -1075,7 +1099,15 @@ increasing homeomorphisms with roots on several circles, through a universal
 spectral core and an affine rigidity theorem.  Part~III, added in batch~42,
 does the same for decreasing homeomorphisms with $P(0)\ne0$: two-cycle and
 one-sided spectra, a decreasing core with one or two witnesses, and a
-finite-smoothness classification.}
+finite-smoothness classification.  Part~IV, added in batch~54, answers
+Part~III's question on algebraic degree: for a polynomial coordinate $H$ and
+$f=H\circ(a\,\mathrm{id})\circ H^{-1}$ the degree of $f$ over $\mathbb{R}(x)$ is
+$\deg H/\deg W$, where $W$ is the largest normalized right compositional
+factor of $H$ with $W(at)=a^{\deg W}W(t)$, and it is exactly $\deg H$ for
+every coordinate of Part~III's finite-smoothness theorem.  For every odd
+$n\ge5$ it gives real-analytic involutions of algebraic degree~$n$, with
+distortion arbitrarily close to~$1$, whose graph extension has Galois group
+$S_n$, so they are not expressible by radicals.}
 
 \entry{Canonical binomial decomposition does not preserve real roots}
 {log-concavity-and-unimodality/binomial-decomposition-real-roots}
@@ -1243,7 +1275,7 @@ for the type of leaves in that tree.}
 
 \entry{Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations}
 {enumerative-combinatorics/adjacency-bounded-132-avoiders}
-{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip; batch~43: ProveIt\_Largest\_Jump\_Research.zip}
+{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip; batch~43: ProveIt\_Largest\_Jump\_Research.zip; batch~52: ProveIt\_Macroscopic\_Jump.zip, ProveIt\_Macroscopic\_Jump\_Research.zip}
 {For $132$-avoiding permutations with every adjacent difference at most $m$ and
 growth constant $\alpha_m$: proves $\alpha_{m+1}>\alpha_m$ for all $m\ge1$ ---
 the remaining strict-inequality part of Nadler's Conjecture~2 --- and the
@@ -1255,8 +1287,16 @@ numerics at $m=10^6$ (near $3.15$) are far from the limit and are not evidence
 for it.  The all-$m$ component ordering is still not claimed.  Part~III, added
 in batch~43, describes the joint limit near the boundary $m=n-d$: the
 distance $n-M_n$ of the largest jump converges in total variation at rate
-$n^{-1/2}$ to an explicit algebraic law, uniformly in $d=o(n)$; the bulk regime
-$n-m\asymp n$ stays open.}
+$n^{-1/2}$ to an explicit algebraic law, uniformly in $d=o(n)$.  Part~IV,
+merged in batch~52 from two manuscripts, treats the bulk regime $n-m\asymp n$:
+$\sqrt n\,P(n-M_n>un)\to(3/\sqrt\pi)(1-2u)/\sqrt{u(1-u)}$ for $0<u<1/2$ (and
+$\to0$ for $u\ge1/2$), so for $1/2<\theta<1$ the fraction of $132$-avoiders of
+length $n$ with every adjacent difference at most $\lfloor\theta n\rfloor$ is
+asymptotic to $3(2\theta-1)/\sqrt{\pi\theta(1-\theta)n}$, and the equivalent
+$3/\sqrt{\pi(1-\theta)n}$, which Part~III declined to assert, is false.  It
+also gives the exact constant of every moment $E(n-M_n)^p$, $p>1/2$ (for
+instance $E(n-M_n)\sim3\sqrt{n/\pi}$); for $\theta\le1/2$ only $o(n^{-1/2})$
+and polynomial lower bounds are proved.}
 
 \entry{Throwback Dynamics with Repeated Entries}
 {enumerative-combinatorics/throwback-queue-dynamics}
@@ -1332,7 +1372,7 @@ and Fibonacci numbers.}
 
 \entry{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}
 {enumerative-combinatorics/preorder-root-polytopes}
-{article.pdf}{preorder\_root\_polytopes.zip; batch~39: ProveIt\_Height\_Two\_Preorder\_Research.zip; batch~42: ProveIt\_Cactus\_Rigidity.zip}
+{article.pdf}{preorder\_root\_polytopes.zip; batch~39: ProveIt\_Height\_Two\_Preorder\_Research.zip; batch~42: ProveIt\_Cactus\_Rigidity.zip; batch~44: ProveIt\_Preorder\_Gamma.zip, ProveIt\_Preorder\_Gamma\_Research.zip; batch~55: ProveIt\_Lorentzian\_Support.zip, ProveIt\_Support\_Polynomials\_Research.zip, ProveIt\_ADE\_Stability.zip, ProveIt\_Matroid\_Lifts.zip}
 {Proves Conjecture~5.1(c) of Athanasiadis and Chapoton (arXiv:2605.26916v1): for
 a preorder $\tau$ on $[n]$ the directed root polytope
 $C_\tau=\mathrm{conv}(\{\pm e_i\}\cup\{e_i-e_j: j\le_\tau i\})$ is reflexive with
@@ -1354,8 +1394,24 @@ model, a property strictly stronger than real stability.  Part~IV, merged in
 batch~44 from two manuscripts, proves Conjecture~5.2 for every finite
 preorder: $\gamma_k$ counts ordered pairs of disjoint $k$-sets joined by a
 $\tau$-increasing bijection, and a reflexive relation gives a palindromic
-polynomial exactly when it is transitive.  A different conjecture of the same paper from the preorder-polytope
-reciprocity report.}
+polynomial exactly when it is transitive.  Part~V, merged in batch~55 from
+two manuscripts, shows that for a bipartite graph with shores of sizes $m$
+and $n$ every support enumerator divided by $\binom{\min(m,n)}{k}$ is
+log-concave (the unweighted inequality is Theorem~A of R\"ohrle and
+Ulirsch, arXiv:2402.15317, carried through the support-counting bridge), so
+every $h_\tau$ and every height-two $\gamma$-vector is ultra-log-concave; it
+classifies the palindromic support polynomials of all bipartite graphs, gives
+FPRASes for partition functions and for single coefficients, and shows exact
+counting \#P-complete already in height two.  Part~VI, added in batch~55 with
+the stability sections of a further manuscript, shows that stability of the
+signed support polynomial is block-local, holds for the incidence--apex graph
+of a tree exactly when the tree is a finite or affine ADE tree, and is
+classified for books and bipartite multi-theta graphs; the books show it
+strictly stronger than real-rootedness.  Part~VII, added in batch~55, shows
+that the transversal matroid of a preorder determines the preorder up to
+isomorphism and that height-two preorder matroids generate exactly the
+gammoids under minors.  Conjectures~7.2, 4.2 and~4.4 of the same paper are
+proved in the preorder-polytope reciprocity report.}
 
 \entry{Largest Simplex Faces under Ordinal Sums}
 {enumerative-combinatorics/simplex-faces-of-order-and-chain-polytopes}
@@ -1801,7 +1857,7 @@ quintic solver); none of its theorems is formalized.
 
 \entry{Specialization-safe radical solvers}
 {galois-theory-and-radicals/specialization-safe-radical-solvers}
-{article.pdf}{ProveIt\_Radical\_Solvers\_Research.zip}
+{article.pdf}{ProveIt\_Radical\_Solvers\_Research.zip; batch~52: ProveIt\_Optimal\_Kummer\_Atlases.zip}
 {Gives an exact cyclotomic-resultant criterion for the characteristics in which
 equal-cardinality subset sums of the roots of an irreducible prime-degree
 polynomial can collide, and evaluates it: the bad characteristics are $\{5\}$
@@ -1815,7 +1871,14 @@ intermediate-field invariant data are given (generalizing Lazard's pivot-one
 scheme for quintics; a coefficient-only solver is left as further work), realizes every Fourier support by
 rational polynomials with full affine Galois group, and shows the Picard group
 of the cyclic configuration quotient is $\mathbb{Z}/p$, so no single global
-Kummer coordinate exists.  The Picard result has a written proof only.}
+Kummer coordinate exists.  The Picard result has a written proof only.
+Part~II, added in batch~52, answers Part~I's question on the least number of
+charts: $\mathrm{CH}^*(\mathrm{Conf}_p(\mathbb{A}^d)/C_p)=\mathbb{Z}[t]/(pt,t^{d(p-1)})$,
+so every cover by regular Kummer charts, even with nonlinear character
+sections and different characters on different charts, needs exactly
+$d(p-1)$ charts ($p-1$ for polynomials: four for quintics, six for septics),
+and the Fourier charts attain it.  This too is a written proof, by integral
+intersection theory; its checker verifies only finite identities.}
 
 \entry{Finite separating ranges for sextic block resolvents}
 {galois-theory-and-radicals/sextic-block-resolvent-separators}

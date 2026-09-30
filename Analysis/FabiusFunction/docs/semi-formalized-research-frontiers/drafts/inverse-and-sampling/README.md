@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has eight live navigation targets:
+This theme has twelve live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -12,6 +12,10 @@ This theme has eight live navigation targets:
 - [`Geometric_Uniform_Entropic_Edgeworth/`](Geometric_Uniform_Entropic_Edgeworth/)
   — an archival arrival of 2026-09-28 that claims a proof of the
   information frontier's `conj:entropic-edgeworth`; unreviewed.
+- [`Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/`](Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/)
+  — an archival arrival of 2026-09-29 on the information frontier's
+  Bayesian prefix operator, prefix Rényi information and
+  corrected-prefix rate-distortion questions; unreviewed.
 - [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
   — an archival arrival of 2026-09-28 on the stability of recovering the
   uniform-factor spectrum from the law; unreviewed.
@@ -24,6 +28,17 @@ This theme has eight live navigation targets:
 - [`Flat_Boundaries_Sharp_Recovery_Uniform_Factors/`](Flat_Boundaries_Sharp_Recovery_Uniform_Factors/)
   — an archival arrival of 2026-09-29 on sharp minimax rates for
   recovering uniform factors without Gaussian smoothing; unreviewed.
+- [`Local_Minimax_Geometry_Uniform_Factors/`](Local_Minimax_Geometry_Uniform_Factors/)
+  — an archival arrival of 2026-09-29 on local minimax rates at mixed
+  collision strata under Gaussian smoothing; unreviewed.
+- [`Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/`](Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/)
+  — an archival arrival of 2026-09-29 on the infinite-factor model:
+  Gaussian-variance non-estimability and Christoffel recovery;
+  unreviewed.
+- [`Anchored_Dyadic_Recovery_Uniform_Spectrum/`](Anchored_Dyadic_Recovery_Uniform_Spectrum/)
+  — an archival arrival of 2026-09-29 on recovering the whole
+  uniform-factor spectrum, or a fixed prefix of it, at the dyadic
+  reference law; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -153,12 +168,16 @@ Merged TeX inputs are newer, so a synchronized comb rerender is pending.
 [`fabius_information_frontier/`](fabius_information_frontier/) remains an
 archival information-geometry intake. Its retired arrival and operational
 ledger checkpoints remain recoverable from Git and distinguish the submitted
-PDF from the current incoming publication checkpoint. The source is 2,138
-lines and 78,310 bytes (SHA-256
-`57a06279153b6e4c97ea0c084a193867b2f5c60a0163983149f36453eb196c9d`);
-passes 28/29/29 produced a final 790,802-byte PDF with SHA-256
-`3af03cd4dcc7fb1a502976f47edb56ee7d5c2b8dc9a8da537e79f8382ef885d5`.
+PDF from the current incoming publication checkpoint. Its 2026-09-04 source
+was 2,138 lines and 78,310 bytes, and passes 28/29/29 produced a final
+29-page, 790,802-byte PDF; the SHA-256 values once recorded here described
+that build, and the repository no longer keeps checksum receipts.
 Its recorded publication gates passed and no checksum ledger is a live gate.
+On 2026-09-29 an editorial note after `prob:Bayesian-spectrum` marked the
+report's expected `q^{mn}` Appell diagonal of `C_m` incorrect (the diagonal
+is identically 1; see the report README's erratum and
+`Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/`); the source is now
+2,156 lines/79,504 bytes and the rebuilt PDF 30 pages/888,775 bytes.
 Manuscript theorem
 labels do not by themselves establish current Lean verification.
 
@@ -172,6 +191,23 @@ all-orders expansion of the entropy deficit of the geometric uniform law as
 finite-prefix extensions.  It does not address `conj:deficit-monotone`.
 The claim has not been reviewed, the information frontier still states the
 conjecture as open, and no Lean statement exists.
+
+[`Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/`](Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/)
+holds *Beyond Polynomial Diagonals: Nuclear Bayesian Operators, Exact
+Null Modes, and a Rényi Phase Transition for Fabius–Rvachev Laws*,
+filed on 2026-09-29 by a quick archival intake (21-page A4 PDF,
+912-line source, an exact SymPy check program with high-precision
+eigenvalue diagnostics).  It studies the conditional expectation `C_m`
+of the information frontier above: `C_m` is in every Schatten class
+with an infinite-dimensional kernel of explicit null modes, its
+polynomial restrictions are unipotent (so the expected `q^{mn}` Appell
+diagonal is in fact 1, as the editorial note recorded above states) but
+badly conditioned, every finite-order Rényi information of the prefix
+channel is finite with an exact critical order 2 in the large-depth
+excess, and at the prefix's own distortion no postprocessing of the
+prefix is rate-distortion optimal.  A closed-form spectrum and the
+rate-distortion expansion remain open.  Unreviewed; its numerics are
+diagnostics; no Lean statement.
 
 [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
 holds *Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
@@ -230,8 +266,52 @@ as in the smoothed model, now with the Gaussian variance allowed to be zero:
 `n^{−1/(4m)}` for the half-lengths with known variance, `n^{−1/(4m+4)}` with
 unknown variance, `n^{−1/(2m+2)}` for the variance.  This settles the
 Gaussian-confounding article's first open problem for global rates; the
-finite-factor article's local rate at each collision pattern remains open.
+finite-factor article's local rate at each collision pattern remains open
+without Gaussian smoothing; with smoothing it is settled by
+`Local_Minimax_Geometry_Uniform_Factors/` below.
 Unreviewed; no Lean statement.
+
+[`Local_Minimax_Geometry_Uniform_Factors/`](Local_Minimax_Geometry_Uniform_Factors/)
+holds *Local Minimax Geometry of Uniform Convolution Factors*, filed on
+2026-09-29 by a quick archival intake (21-page A4 PDF, 1,411-line
+source, an exact SymPy check program with mpmath likelihood
+diagnostics).  It localizes the Gaussian-confounding article above:
+near a configuration with `r` vanishing half-lengths and positive
+clusters of multiplicities `m_j`, each cluster is recovered at rate
+`n^{−1/(2m_j)}` and the zero block at `n^{−1/(4r)}` (known variance) or
+`n^{−1/(4r+4)}` (unknown), and the variance at `n^{−1/(2r+2)}`, so it is
+root-`n` estimable when no factor vanishes.  This is the
+Gaussian-confounding article's conjectured classification of local
+strata, and, with Gaussian smoothing, the finite-factor article's local
+rate at each collision pattern; without smoothing both stay open.
+Unreviewed; no Lean statement.
+
+[`Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/`](Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/)
+holds *Gaussian Dust and Christoffel Recovery in Infinite Uniform
+Convolutions*, filed on 2026-09-29 by a quick archival intake (23-page US Letter PDF, 1,522-line source, an exact SymPy check program).  It
+drops the capacity bound: with infinitely many uniform factors of
+bounded total variance `V`, the Gaussian variance is identifiable but
+its exact minimax risk is `V/2` at every sample size, because many
+small uniform factors ("Gaussian dust") imitate a Gaussian; uniform
+consistency returns exactly on classes with uniformly vanishing tails.
+A Christoffel hierarchy on a variance-weighted spectral measure gives
+explicit bias bounds, exact for geometric spectra such as the up
+law's.  Unreviewed; its numerics are diagnostics; no Lean statement.
+
+[`Anchored_Dyadic_Recovery_Uniform_Spectrum/`](Anchored_Dyadic_Recovery_Uniform_Spectrum/)
+holds *Anchored Recovery of the Dyadic Uniform Spectrum*, filed on
+2026-09-29 by a quick archival intake (22-page A4 PDF, 1,622-line
+source, an exact check program with mpmath diagnostics).  It takes up
+the pointwise questions the uniform-factor recovery article above
+leaves open: comparing a law directly with the Rvachev law, the
+spectrum is recovered to within `exp[−Θ(√log(1/ε))]` from
+total-variation or Kolmogorov error `ε` — no Hölder exponent, even for
+smooth, fixed-variance, geometrically separated spectra, but far better
+than the pairwise `(log 1/ε)^{−2}` — while every fixed number of
+leading factors is recovered at Lipschitz rate with an arbitrary
+summable tail.  Testing the dyadic law against `δ`-separated
+alternatives needs `exp[Θ(log²(1/δ))]` samples.  The pairwise modulus
+remains open.  Unreviewed; no Lean statement.
 
 ## Formalization notes
 

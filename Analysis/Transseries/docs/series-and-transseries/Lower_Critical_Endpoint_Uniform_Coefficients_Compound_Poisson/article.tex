@@ -1,0 +1,1528 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={The Lower Critical Endpoint of Exponential-Feedback Transseries},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The lower critical endpoint}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist[enumerate]{leftmargin=*,itemsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Poi}{\operatorname{Pois}}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\rzero}{\rho_{\eps}}
+\makeatletter
+\newcommand{\inputtable}[1]{\@@input #1 }
+\makeatother
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\ImPart}{Im}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
+
+\begin{document}
+% ed. (2026-09-29): no PDF page anchor on the title page (the delivered build had a duplicate destination page.1)
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{9mm}
+\noindent\textsc{Research continuation \; / \; Analysis and probability}
+\vspace{12mm}
+\begin{center}
+{\LARGE\bfseries The Lower Critical Endpoint of\\[5pt]
+Exponential-Feedback Transseries}\par
+\vspace{8mm}
+{\large Uniform coefficient asymptotics, deletion of the largest action,\\[3pt]
+Landau cutoff profiles, and the compound-Poisson boundary}\par
+\vspace{11mm}
+{Prepared for Vladimir Reshetnikov}\par
+\vspace{3mm}
+{29 September 2026}
+\end{center}
+\vspace{9mm}
+\begin{abstract}
+We study the lower endpoint of the critical power-law feedback equation
+$U(q)=A_{\eps}(q e^{U(q)})$, where
+$A_{\eps}(z)=(\Li_{2+\eps}(z)+P(z))/(\zeta(1+\eps)+P'(1))$,
+$\eps>0$, and $P$ changes a fixed finite prefix while preserving
+nonnegative coefficients. This is the $\alpha\downarrow1$ half of
+Question~4 in the repository article \emph{Beyond Finite-Action Folds}.
+Writing $\alpha=1+\eps$, $\beta=1/\alpha$,
+$K_{\eps}=\Gamma(-\alpha)/(\zeta(\alpha)+P'(1))$,
+$B=(nK_{\eps})^{\beta}$, and
+$\rho_{\eps}=e^{-A_{\eps}(1)}$, we prove, uniformly down to arbitrarily
+small positive $\eps$,
+\[
+ [q^n]U(q)\sim
+ \frac{\rho_{\eps}^{-n}}{nB}\,
+ \frac{\beta}{\Gamma(1-\beta)}.
+\]
+A branch-cut integral retains the vanishing factor $\eps$ in both the
+main term and its error; it yields an explicit first correction and an
+arbitrary fixed-order expansion. The critical inverse has a convergent
+parameter-uniform Hahn chart, whose renormalized endpoint is a
+dilogarithm with its logarithmic singularity.
+
+For the associated Poisson action process, conditioned on total weight
+$n$, deleting the largest action leaves the unconditioned independent
+Poisson process in total variation, for every joint limit
+$n\to\infty$, $\eps\downarrow0$. When $n\eps\to\infty$, the largest
+action satisfies
+\[
+ \frac{J-B}{\eps B}+\log\eps\ \Longrightarrow\ -Z,
+ \qquad
+ \E e^{itZ}=\exp\{-\tfrac\pi2|t|-it\log|t|\}.
+\]
+This gives a sharp Landau-distribution cutoff window and its quantiles.
+When $n\eps\to\lambda<\infty$, the deficit $n-J$ instead converges in
+total variation to a discrete compound-Poisson law. These limits match
+as $\lambda\to\infty$. All proofs are conventional; reproducible exact
+finite checks and numerical diagnostics accompany the paper.
+\end{abstract}
+\vfill
+\noindent\textbf{Status.} This is a model-specific research manuscript with
+proofs, not a claim of a general transseries breakthrough or established
+publication priority. The classical analytic and condensation mechanisms
+are credited. No new Lean verification is claimed.
+\end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+
+\section{The repository question and the contribution}
+\label{sec:introduction}
+
+The critical countable-action model in \repo's article
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets} has a power-law exponent
+$1<\alpha<2$. Its Question~4 asks for joint limits at both endpoints.
+The editorial note at that question explicitly records that the later
+endpoint papers treat $\alpha\uparrow2$, but not $\alpha\downarrow1$
+\cite{repo-critical}. The present paper addresses the lower endpoint for
+the exact power-law tail with an arbitrary fixed admissible finite
+prefix. The repository snapshot used throughout is
+\begin{center}\small\texttt{3d5973524506411392a911470b5ddc35521568ea}.\end{center}
+The index and the question were read directly at that revision
+\cite{repo-index,repo-critical}. This is a statement about that snapshot,
+not a claim that no other unpublished work exists.
+
+There is a genuine obstruction to substituting $\alpha=1$ into a
+fixed-exponent answer. The first moment of $j^{-1-\alpha}$ diverges as
+$\alpha\downarrow1$. Critical normalization therefore sends each fixed
+action weight to zero. At the same time the central stable-density
+constant tends to zero. A local limit theorem with an absolute error
+$o(1)$ is not enough to divide by that constant, and a fixed-$\alpha$
+cutoff limit need not identify the new transition window.
+
+The principal contributions are the following linked statements.
+First, a \emph{relative}, parameter-uniform coefficient theorem includes
+arbitrarily small $\alpha-1$, even values much smaller than any
+exponential in $n$. Second, a total-variation deletion theorem describes
+the \emph{entire} remaining action process, not only the maximum. Third,
+the sharp continuous cutoff window becomes a reflected, completely
+asymmetric stable law of index one; a separate discrete
+compound-Poisson boundary is necessary when $n(\alpha-1)$ is bounded.
+A convergent critical chart, an all-order coefficient algorithm, and a
+precise matching of the two probability limits complete the picture.
+
+\subsection{Classical background and the novelty boundary}
+
+The substitution $w=qe^U$ and Lagrange inversion are classical. The
+relation of such equations to random allocations and conditioned
+branching structures is treated extensively by Janson
+\cite{janson}. Hankel contours and singularity transfer are established
+analytic tools \cite{flajolet-odlyzko}; the exact polylogarithm expansion
+used here is the standard continuation formula \cite{dlmf}.
+The principle that a rare large sum is carried by one exceptional
+summand, with the other summands asymptotically unaffected, is a classical
+condensation mechanism; Armend\'ariz and Loulakis prove general
+conditional distribution results of that kind \cite{armendariz}.
+We do not claim these mechanisms as new discoveries.
+
+What is proved here is their explicit, jointly varying realization at a
+\emph{critically normalized, degenerating mean endpoint}. The proofs
+retain the constants and scales that disappear in fixed-parameter
+statements. In particular, no fixed-distribution big-jump theorem or
+fixed-$\alpha$ local limit theorem is invoked to justify a triangular
+limit outside its hypotheses. The analytical coefficient estimate and
+the deletion density are established directly below.
+
+\subsection{Scope of the answer}
+
+The tail in this paper is exactly $j^{-2-\eps}$ after a fixed prefix.
+The critical coupling is exact. We allow the prefix coefficients to have
+either sign as perturbations, but the resulting action weights must be
+nonnegative. We do not cover arbitrary slowly varying tails, a prefix
+whose length grows with $n$, noncritical coupling windows, or unrestricted
+Borel summability and resurgence. Those are separate questions. Nor is
+there a nonzero finite-mean critical model obtained simply by setting
+$\eps=0$ before renormalizing.
+% ed. (2026-09-29): the same question posed by two other repository packages (uncited)
+\begin{ednote}
+The same question is posed as Question~10 of
+\path{Confluent_Critical_Transseries_Exponent_Two_Boundary/} (a compensated
+core, and whether conditioning couples the largest actions to the total,
+for the coupling $1/\zeta(\alpha)$, the case $P=0$ here) and as
+Question~8 of \path{Logarithmic_Critical_Endpoint_Lambert_Charts/}
+(renormalized coupling, critical coordinate and action budget). On the
+critical path treated here they are answered by the Landau limit of the
+cloud sum on the scale $\eps B$ (Theorem~\ref{thm:landau}), by the deletion of
+exactly one largest action (Theorem~\ref{thm:deletion}), and by the
+coupling $nc_\eps$, the chart coordinate $T$ and the cutoff budget of
+Section~\ref{sec:landau}. The interior-fold side $c>1/\zeta(1+\eps)$ is
+treated in \path{Lower_Critical_Endpoint_Landau_Transseries/}; the
+subcritical side stays open.
+\end{ednote}
+
+\section{Model and exact identities}
+\label{sec:model}
+
+Throughout, $\N=\{0,1,2,\ldots\}$; empty maxima and missing second maxima are zero.
+Fix a real polynomial
+\begin{equation}\label{eq:P}
+ P(z)=\sum_{j=1}^{J_*}p_jz^j,\qquad
+ p_k^{\langle\cdot\rangle}:=\sum_{j=1}^{J_*}p_jj^k,
+ \qquad \kappa=P'(1)=p_1^{\langle\cdot\rangle}.
+\end{equation}
+The superscript in $p_k^{\langle\cdot\rangle}$ distinguishes the finite
+prefix moment from the polynomial coefficient $p_k$. Assume that, for
+all sufficiently small $\eps\ge0$,
+\begin{equation}\label{eq:positive}
+ b_{j,\eps}=j^{-2-\eps}+p_j\ge0\quad(1\le j\le J_*),
+ \qquad b_{1,\eps}>0,
+\end{equation}
+where $p_j=0$ for $j>J_*$. Thus the tail is positive and aperiodic. Put
+\begin{align}
+ \alpha&=1+\eps,& \beta&=\frac1\alpha,&
+ c_{\eps}&=\frac1{\zeta(1+\eps)+\kappa},\label{eq:parameters1}\\
+ A_{\eps}(z)&=c_{\eps}\bigl(\Li_{2+\eps}(z)+P(z)\bigr)
+             =\sum_{j\ge1}a_{j,\eps}z^j,&
+ a_{j,\eps}&=c_{\eps}b_{j,\eps},\label{eq:parameters2}\\
+ d_{\eps}&=A_{\eps}(1),&
+ \rho_{\eps}&=e^{-d_{\eps}},&
+ K_{\eps}&=c_{\eps}\Gamma(-\alpha).
+ \label{eq:parameters3}
+\end{align}
+All these quantities are real, and $c_{\eps},K_{\eps}>0$ for small
+positive $\eps$. Criticality is the exact identity
+\begin{equation}\label{eq:criticality}
+ A_{\eps}'(1)=\sum_{j\ge1}j a_{j,\eps}=1.
+\end{equation}
+The feedback solution is the unique formal series with zero constant
+term satisfying
+\begin{equation}\label{eq:feedback}
+ U_{\eps}(q)=A_{\eps}\bigl(qe^{U_{\eps}(q)}\bigr),
+ \qquad u_{n,\eps}=[q^n]U_{\eps}(q).
+\end{equation}
+The analytic implicit function theorem also gives convergence near zero.
+The formal recursion has nonnegative coefficients, with $u_{n,\eps}>0$.
+On the positive branch, $q=w e^{-A_{\eps}(w)}$ is strictly increasing
+for $0<w<1$, since $wA_{\eps}'(w)<A_{\eps}'(1)=1$.
+It tends to $\rho_{\eps}$ as $w\uparrow1$, which fixes the real
+branch used in the local critical chart below.
+
+\begin{proposition}[Coefficient and conditioning identities]
+\label{prop:exact}
+For every $n\ge1$,
+\begin{equation}\label{eq:lagrange}
+ u_{n,\eps}=\frac1n[z^n]e^{nA_{\eps}(z)}.
+\end{equation}
+Let $\mathcal N_n=(N_j)_{j\ge1}$ be independent Poisson variables of
+means $\lambda_{j,n}=n a_{j,\eps}$, and set
+\begin{equation}\label{eq:S}
+ S_n=\sum_{j\ge1}jN_j,\qquad
+ M(\mathcal N_n)=\max\{j:N_j>0\},
+\end{equation}
+with maximum zero for the empty process. Then
+\begin{equation}\label{eq:probability}
+ u_{n,\eps}=\frac{\rho_{\eps}^{-n}}n\Prob(S_n=n),
+ \qquad \E S_n=n.
+\end{equation}
+If $u_{n,\eps}^{(m)}$ is the coefficient obtained by retaining only
+actions $j\le m$, then
+\begin{equation}\label{eq:budgetexact}
+ \frac{u_{n,\eps}^{(m)}}{u_{n,\eps}}
+ =\Prob\bigl(M(\mathcal N_n)\le m\mid S_n=n\bigr).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $w=qe^{U_{\eps}(q)}$. Then $w=q e^{A_{\eps}(w)}$ and
+$U_{\eps}=A_{\eps}(w)$. Lagrange inversion yields
+\[
+ [q^n]A_{\eps}(w(q))
+ =\frac1n[z^{n-1}]A_{\eps}'(z)e^{nA_{\eps}(z)}
+ =\frac1n[z^n]e^{nA_{\eps}(z)},
+\]
+where the last step differentiates the exponential. The total Poisson
+intensity is $n d_{\eps}<\infty$, so the process has finitely many atoms
+almost surely. Its probability generating function is
+$\exp(n(A_{\eps}(z)-d_{\eps}))$, proving
+\eqref{eq:probability}. The mean is \eqref{eq:criticality}.
+For \eqref{eq:budgetexact}, independence of the omitted coordinates
+contributes $\exp(-n\sum_{j>m}a_{j,\eps})$; multiplication by the
+truncated generating function leaves exactly
+$e^{-nd_{\eps}}\exp(n\sum_{j\le m}a_{j,\eps}z^j)$.
+\end{proof}
+
+An action is a part of size $j$ counted by $N_j$. We use
+\emph{condensation} below in the precise sense that, under $S_n=n$, a
+single exceptional action is separated from a much smaller residual
+maximum. It need not carry a positive fraction of $n$ in every regime.
+
+\section{A convergent chart through the lower endpoint}
+\label{sec:chart}
+
+Define the regular expansion coefficients
+\begin{equation}\label{eq:Dk}
+ D_k(\eps)=\zeta(2+\eps-k)+p_k^{\langle\cdot\rangle}
+ \quad(k\ge2).
+\end{equation}
+They are not moments of the infinite action distribution. For example,
+the actual second moment diverges, whereas $D_2(\eps)$ is finite and
+may be negative. The continuation formula for the polylogarithm gives,
+for $|x|<2\pi$ and $|\arg x|<\pi$,
+\begin{equation}\label{eq:polylog}
+ A_{\eps}(e^{-x})=d_{\eps}-x+K_{\eps}x^{\alpha}
+ +c_{\eps}\sum_{k\ge2}\frac{D_k(\eps)(-x)^k}{k!}.
+\end{equation}
+This is an exact convergent local expansion, not merely an asymptotic
+one \cite{dlmf}.
+
+\begin{lemma}[Removable endpoint parameters]\label{lem:removable}
+The functions $c_{\eps}$ and $K_{\eps}$ extend holomorphically through
+$\eps=0$, with
+\begin{equation}\label{eq:smallparameters}
+ c_0=0,\quad c_{\eps}=\eps+O(\eps^2),\quad
+ K_0=1,\quad K_{\eps}=1-(1+\kappa)\eps+O(\eps^2).
+\end{equation}
+On a fixed disk $|x|<r_0<2\pi$, the function
+\begin{equation}\label{eq:H}
+ H_{\eps}(x)=c_{\eps}\sum_{k\ge2}
+                  \frac{D_k(\eps)(-1)^kx^{k-2}}{k!}
+\end{equation}
+is jointly holomorphic in $(\eps,x)$ near $\eps=0$, and
+$H_{\eps}(x)=O(\eps)$ uniformly on smaller disks.
+\end{lemma}
+\begin{proof}
+Use $\zeta(1+\eps)=\eps^{-1}+\gamma+O(\eps)$ and
+\[
+ \Gamma(-1-\eps)=\frac{\Gamma(1-\eps)}{\eps(1+\eps)},
+ \qquad \Gamma(1-\eps)=1+\gamma\eps+O(\eps^2).
+\]
+The poles cancel in $K_{\eps}$. The only zeta pole in the full
+polylogarithm expansion near this parameter is the linear term, which
+has already been removed by criticality. The remaining series converges
+locally uniformly; the polynomial prefix is entire after composition
+with $e^{-x}$. This proves the last assertions.
+\end{proof}
+
+Write $w=e^{-x}$ and $t=\log(\rho_{\eps}/q)$, with branches continued
+from positive $q<\rho_{\eps}$. The exact normal form is
+\begin{equation}\label{eq:normal}
+ t=K_{\eps}x^{\alpha}+x^2H_{\eps}(x),
+ \qquad U_{\eps}=d_{\eps}+t-x.
+\end{equation}
+
+\begin{theorem}[Uniform convergent Hahn chart]\label{thm:chart}
+There are neighborhoods of zero, independent of sufficiently small
+$\eps\ge0$, and a jointly holomorphic function $V(\eps,T,R)$ such that
+\begin{align}
+ T&=(t/K_{\eps})^{\beta},& R&=T^{1-\eps},\label{eq:TR}\\
+ x&=T V(\eps,T,T^{1-\eps}),&
+ V^{\alpha}+\frac R{K_{\eps}}V^2H_{\eps}(TV)&=1.
+ \label{eq:V}
+\end{align}
+Here $V(0,T,R)=1$, and $V-1$ is divisible by $\eps R$ in the local
+holomorphic ring. In particular,
+\begin{equation}\label{eq:chartfirst}
+ x=T-\frac{c_{\eps}D_2(\eps)}{2\alpha K_{\eps}}
+                  T^{2-\eps}
+    +O\bigl(\eps |T|^{3-\eps}+\eps^2|T|^{3-2\eps}\bigr)
+\end{equation}
+on every sufficiently small fixed closed subsector. The full expansion
+is convergent and has support contained in
+\begin{equation}\label{eq:support}
+ \left\{\frac{1+k+(1-\eps)m}{1+\eps}:k,m\in\N\right\}.
+\end{equation}
+Taylor truncations in the independent variables $(T,R)$ have a geometric
+remainder on smaller polydisks, uniformly in $\eps$.
+\end{theorem}
+\begin{proof}
+Near $V=1$ define $V^{\alpha}$ by the local logarithm. The left side of
+\eqref{eq:V} minus one is jointly holomorphic and its derivative in $V$
+at $(T,R,V)=(0,0,1)$ is $1+\eps$, bounded away from zero. The
+parameter-dependent implicit function theorem applies on a uniform
+polydisk. At $\eps=0$, $H_0=0$ and the equation has solution $V=1$.
+At $R=0$ the same is true for every parameter. The Taylor expansion thus
+has the factor $\eps R$. Its coefficient linear in $R$ is
+$-H_{\eps}(T)/(\alpha K_{\eps})$ at $V=1$; expanding $H_{\eps}(T)$ at
+zero gives \eqref{eq:chartfirst}. Substitution of $R=T^{1-\eps}$ gives
+\eqref{eq:support}. Cauchy estimates on a slightly larger polydisk give
+the geometric remainder. No divergent formal expansion is being summed
+in this statement.
+\end{proof}
+
+The confluent coordinate can be written without hiding its large
+parameter combination:
+\begin{equation}\label{eq:confluent}
+ T=t\exp\left(-\frac{\eps}{1+\eps}\log t
+              -\frac{\log K_{\eps}}{1+\eps}\right).
+\end{equation}
+Expanding the exponential in powers of $\eps$ is inappropriate when
+$\eps\log(1/|t|)$ is not small. Keeping it exact is the lower-endpoint
+counterpart of a uniform critical chart.
+
+\begin{proposition}[Renormalized dilogarithmic endpoint]
+\label{prop:dilog}
+On every compact subset of $|z|<1$,
+\begin{equation}\label{eq:diloglimit}
+ \frac{U_{\eps}(\rho_{\eps}z)}{\eps}
+ \longrightarrow H_0^*(z):=\Li_2(z)+P(z).
+\end{equation}
+Its continuation near $z=e^{-t}=1$ has expansion
+\begin{equation}\label{eq:diloglocal}
+ H_0^*(e^{-t})=\zeta(2)+P(1)+t\log t-(1+\kappa)t
+       +\sum_{k\ge2}\frac{D_k(0)(-t)^k}{k!}.
+\end{equation}
+Thus the nontrivial endpoint is logarithmic after division by $\eps$;
+the unscaled limit is zero.
+\end{proposition}
+\begin{proof}
+On compact subdisks, $A_{\eps}(z)/\eps\to H_0^*(z)$ locally uniformly,
+while the implicit solution is $O(\eps)$. Substituting into the feedback
+equation proves \eqref{eq:diloglimit}; $\rho_{\eps}\to1$ does not change
+it. To obtain \eqref{eq:diloglocal}, combine the cancellation of the
+linear zeta pole with the expansion of $\Gamma(-1-\eps)t^{1+\eps}$,
+or differentiate \eqref{eq:normal} at $\eps=0$. The polynomial adds
+$P(1)-\kappa t+\sum_{k\ge2}p_k^{\langle\cdot\rangle}(-t)^k/k!$.
+\end{proof}
+
+\section{The uniform coefficient theorem}
+\label{sec:coefficient}
+
+For $n\ge1$ define
+\begin{equation}\label{eq:BJ}
+ B=B_{n,\eps}=(nK_{\eps})^{1/(1+\eps)},\qquad
+ h=\frac n{B^2},\qquad
+ J_r(\eps)=\frac{\Gamma((r+1)/\alpha)}{\pi\alpha}
+            \sin\!\left(\frac{\pi\eps(r+1)}\alpha\right).
+\end{equation}
+The basic constant has several equivalent forms:
+\begin{equation}\label{eq:J0}
+ J_0(\eps)=\frac{\beta}{\Gamma(1-\beta)}
+          =-\frac1{\Gamma(-\beta)}>0,
+ \qquad J_0(\eps)\sim\eps.
+\end{equation}
+For each fixed nonnegative integer $r$,
+\begin{equation}\label{eq:Jlimit}
+ J_r(\eps)\sim(r+1)!\eps,\qquad
+ \frac{J_r(\eps)}{J_0(\eps)}\longrightarrow(r+1)!.
+\end{equation}
+Individual $J_r$ with large $r$ can have either sign away from the
+endpoint; the formulas below retain their exact values.
+
+\begin{theorem}[Relative asymptotics uniform at a vanishing amplitude]
+\label{thm:uniform}
+For each fixed admissible prefix $P$, there are constants
+$\eps_*>0$, $C>0$, $\eta>0$, and $n_0$, with $\eps_*<1/4$, such that
+for all $n\ge n_0$ and $0<\eps\le\eps_*$,
+\begin{equation}\label{eq:uniform}
+ u_{n,\eps}=
+ \frac{\rho_{\eps}^{-n}J_0(\eps)}{nB}
+ \left[1+O\left(\eps\frac n{B^2}+n^2e^{-\eta n}\right)\right].
+\end{equation}
+The $O$-constant is independent of $n$ and $\eps$ in this range.
+Consequently the leading equivalent holds for \emph{every} joint limit
+$n\to\infty$, $\eps\downarrow0$, without a lower bound on $n\eps$ or
+on $\eps$ itself.
+\end{theorem}
+
+The theorem is stronger than replacing a fixed-exponent stable law by
+its limit. The main probability is of order $\eps/B$, not $1/B$.
+The proof in Section~\ref{sec:hankel} keeps the small sine factor in the
+integral and also in its error. This is the key uniformity mechanism.
+% ed. (2026-09-29): identification with the critical Hahn article's law, and the independent sibling package (constants checked on filing)
+\begin{ednote}
+The leading term $\rho_\eps^{-n}J_0/(nB)$ is the critical coefficient law
+\texttt{eq:critical-leading} of \cite{repo-critical} (its Theorem
+\texttt{thm:phases}, stated for fixed $1<\alpha<2$) with $a=1$,
+$\beta_c=c_\eps$ and $B_{\beta_c}=K_\eps$; Theorem~\ref{thm:uniform}
+proves it uniformly as $\alpha\downarrow1$.
+An independent package of the same batch,
+\path{Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/}, treats the same
+family at the same pinned revision and proves the same coefficient law for
+every rate of approach, with the same leading term but without an error
+rate. Its scales $d_n=(nc_\eps/\eps)^{1/(1+\eps)}$ and
+$b_n=(nc_\eps)^{1/(1+\eps)}$ satisfy $B/d_n\to1$ and $\eps B/b_n\to1$, and
+its truncated-mean centre satisfies
+$D_n=B+\eps B\log(1/\eps)+(1-\gamma)b_n+o(b_n)$. Its stable variable is
+$Z+1-\gamma$ for the standard Landau variable $Z$ used here, so the two
+cutoff laws coincide. It also proves the joint convergence of the residual
+extremes with the cloud, which Theorem~\ref{thm:extremes} does not claim.
+Corollary~\ref{cor:first} reproduces its recorded exact-recurrence
+coefficient ratios to three or four digits. Where the two articles overlap
+they state one theorem with two independent proofs, and every shared
+constant agrees.
+\end{ednote}
+
+\begin{corollary}[Macroscopic crossover of sector coefficients]
+\label{cor:window}
+Suppose $\eps\to0$ and $\eps\log n\to\tau\in[0,\infty)$. Then
+\begin{equation}\label{eq:window}
+ \frac Bn\longrightarrow e^{-\tau},\qquad
+ u_{n,\eps}\sim \frac{\eps e^{\tau}}{n^2}\rho_{\eps}^{-n}.
+\end{equation}
+When $\eps\log n\to\infty$, the general equivalent
+\eqref{eq:uniform} still applies, while $B/n\to0$.
+\end{corollary}
+\begin{proof}
+Take logarithms:
+$\log(B/n)=\beta\log K_{\eps}-\eps\beta\log n$.
+Use $K_{\eps}\to1$, $\beta\to1$, and $J_0/\eps\to1$.
+\end{proof}
+
+\begin{corollary}[Microscopic coefficient boundary]
+\label{cor:microcoeff}
+If $n\eps\to\lambda\in[0,\infty)$, then
+\begin{equation}\label{eq:microcoeff}
+ u_{n,\eps}\sim
+ \frac{\eps}{n^2}\exp\{\lambda(\zeta(2)+P(1))\}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Now $\eps\log n\to0$, while
+$nd_{\eps}=n\eps(\zeta(2)+P(1))+o(1)$.
+\end{proof}
+
+\section{Proof by a branch-cut integral}
+\label{sec:hankel}
+
+This section proves the uniform theorem without using a
+parameter-dependent local limit theorem. Let
+\begin{equation}\label{eq:regularR}
+ R_{\eps}(r)=c_{\eps}\sum_{k\ge2}\frac{D_k(\eps)r^k}{k!}.
+\end{equation}
+For fixed sufficiently small $r_0>0$, uniformly in the parameter,
+\begin{equation}\label{eq:Rbound}
+ |R_{\eps}(r)|\le C\eps r^2\qquad(0\le r\le r_0).
+\end{equation}
+On the upper bank of the cut $z=e^r>1$ one has
+$-\log z=-r-i0$. Equation~\eqref{eq:polylog} therefore gives
+\begin{equation}\label{eq:cutexponent}
+ A_{\eps}(e^r+i0)-d_{\eps}-r
+ =-K_{\eps}r^{\alpha}\cos(\pi\eps)
+   +iK_{\eps}r^{\alpha}\sin(\pi\eps)+R_{\eps}(r).
+\end{equation}
+The regular part is the same real number on both banks.
+
+\begin{lemma}[Uniform cut representation]\label{lem:cut}
+After decreasing $r_0$ and $\eps_*$ if necessary,
+\begin{align}
+ \Prob(S_n=n)
+ &=\frac1\pi\int_0^{r_0}
+ e^{-nK_{\eps}r^{\alpha}\cos(\pi\eps)+nR_{\eps}(r)}
+ \sin\bigl(nK_{\eps}r^{\alpha}\sin(\pi\eps)\bigr)\dd r
+ +E_{n,\eps},\label{eq:cut}\\
+ |E_{n,\eps}|&\le Cn\eps e^{-\eta n}.
+ \label{eq:arcerror}
+\end{align}
+\end{lemma}
+\begin{proof}
+Start with the coefficient integral for
+$e^{n(A_{\eps}(z)-d_{\eps})}$. The polylogarithm continues to the plane
+slit along $[1,\infty)$. Deform the circle about zero to the circle
+$|z|=e^{r_0}$ together with the two banks of the cut from $1$ to
+$e^{r_0}$. A small circle about $1$ contributes zero in the limit because
+the integrand is bounded there. Conjugacy of the banks and
+$\dd z/z=\dd r$ give \eqref{eq:cut} with the stated sign.
+
+On the outer circle, including its two limiting endpoints on the cut,
+$\Li_{2+\eps}(z)+P(z)$ is uniformly bounded for small $\eps$. Since
+$c_{\eps}=O(\eps)$, decrease $\eps_*$ until the real part of
+$A_{\eps}(z)-d_{\eps}-\log z$ is at most $-\eta<0$ there.
+To preserve the small factor in the error, subtract the constant
+$e^{-nd_{\eps}}$ inside the coefficient integrand. Its integral around
+the full outer circle is zero for $n\ge1$, and it has no cut jump.
+The inequality $|e^v-1|\le |v|e^{|v|}$ then bounds the remaining outer
+integral by $Cn\eps e^{-\eta n}$. This subtraction is important when
+$\eps$ is much smaller than $e^{-n}$.
+\end{proof}
+
+\begin{lemma}[The elementary Hankel moments]\label{lem:moments}
+For $r\ge0$ an integer and small positive $\eps$,
+\begin{equation}\label{eq:momentintegral}
+ \frac1\pi\int_0^\infty
+ s^r e^{-s^{\alpha}\cos(\pi\eps)}
+ \sin\bigl(s^{\alpha}\sin(\pi\eps)\bigr)\dd s
+ =J_r(\eps).
+\end{equation}
+Moreover, for fixed $r$, the integral of the absolute value is $O_r(\eps)$
+uniformly in $\eps$.
+\end{lemma}
+\begin{proof}
+Put $y=s^{\alpha}$ and take the imaginary part of
+\[
+ \frac1{\pi\alpha}\int_0^\infty
+ y^{(r+1)/\alpha-1}\exp(-e^{-i\pi\eps}y)\dd y
+ =\frac{\Gamma((r+1)/\alpha)}{\pi\alpha}
+   e^{i\pi\eps(r+1)/\alpha}.
+\]
+The absolute bound follows from
+$|\sin(s^{\alpha}\sin\pi\eps)|\le C\eps s^{\alpha}$ and a fixed
+positive lower bound for $\cos\pi\eps$. Euler's reflection formula
+then gives \eqref{eq:J0}, and Taylor expansion of the sine gives
+\eqref{eq:Jlimit}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:uniform}]
+In \eqref{eq:cut} set $s=Br$, so $nK_{\eps}r^{\alpha}=s^{\alpha}$.
+The part with $R_{\eps}=0$, extended to infinity, is $J_0(\eps)/B$.
+The extension error is $O(\eps n e^{-\eta n})$, after adjusting constants,
+by the last bound in Lemma~\ref{lem:moments} and
+$(Br_0)^{\alpha}=nK_{\eps}r_0^{\alpha}$.
+
+Choose $r_0$ so small that \eqref{eq:Rbound} implies
+\[
+ |nR_{\eps}(s/B)|\le\tfrac12\cos(\pi\eps)s^{\alpha}
+ \quad(0\le s\le Br_0).
+\]
+This follows since $r^2/r^{\alpha}=r^{2-\alpha}$ is small uniformly on
+that interval. Also
+$|nR_{\eps}(s/B)|\le C\eps(n/B^2)s^2$. Hence
+\begin{align*}
+ &\frac1B\int_0^{Br_0}
+ e^{-s^{\alpha}\cos(\pi\eps)}
+ |e^{nR_{\eps}(s/B)}-1|
+ \bigl|\sin(s^{\alpha}\sin\pi\eps)\bigr|\dd s\\
+ &\hspace{14mm}\le
+ \frac{C\eps^2}{B}\frac n{B^2}
+ \int_0^\infty e^{-c s^{\alpha}}s^{\alpha+2}\dd s
+ \le\frac{C\eps^2}{B}\frac n{B^2}.
+\end{align*}
+The integral is bounded uniformly for $1\le\alpha\le1+\eps_*$. Divide
+by $J_0(\eps)/B\asymp\eps/B$. Since $B\le Cn$, the outer error divided
+by the same main term is $O(n^2e^{-\eta n})$. This proves
+\eqref{eq:uniform} using \eqref{eq:probability}. Finally,
+$h=n/B^2\le Cn^{-(1-\eps_*)/(1+\eps_*)}\to0$ uniformly, so the stated
+joint-limit conclusion follows.
+\end{proof}
+
+\begin{remark}[What the proof avoids]
+The contour is a coefficient contour for the explicitly known function
+$\exp(nA_{\eps})$, not a conjectured global continuation of the inverse
+$U_{\eps}$. The proof therefore does not require a uniform global
+inverse-function domain. It also does not divide an absolute stable
+approximation by a density constant tending to zero.
+\end{remark}
+
+\section{All fixed orders and the first correction}
+\label{sec:allorders}
+
+For a finite multi-index $\nu=(\nu_2,\nu_3,\ldots)$ set
+\begin{equation}\label{eq:multi}
+ L(\nu)=\sum_{k\ge2}\nu_k,\quad
+ r(\nu)=\sum_{k\ge2}k\nu_k,\quad
+ d(\nu)=r(\nu)-L(\nu)=\sum_{k\ge2}(k-1)\nu_k.
+\end{equation}
+There are only finitely many multi-indices of a fixed cost $d$.
+
+\begin{theorem}[Uniform finite-order expansion]\label{thm:allorders}
+For every fixed integer $N\ge0$, uniformly in the range of
+Theorem~\ref{thm:uniform},
+\begin{align}
+ \frac{nB\rho_{\eps}^{n}u_{n,\eps}}{J_0(\eps)}
+ &=\sum_{d(\nu)\le N}
+ \frac{J_{r(\nu)}(\eps)}{J_0(\eps)}
+ \frac{(nc_{\eps})^{L(\nu)}}{B^{r(\nu)}}
+ \prod_{k\ge2}\frac{D_k(\eps)^{\nu_k}}
+ {(k!)^{\nu_k}\nu_k!}\notag\\
+ &\quad+O_N\bigl(\eps h^{N+1}+n^2e^{-\eta n}\bigr).
+ \label{eq:allorders}
+\end{align}
+The zero multi-index contributes one. The expansion is asymptotic to
+arbitrary fixed order; convergence as $N\to\infty$ is not asserted.
+\end{theorem}
+\begin{proof}
+Expand $e^{nR_{\eps}(s/B)}$ in \eqref{eq:cut}. Its monomial belonging to
+$\nu$ has coefficient
+\[
+ \frac{(nc_{\eps})^{L(\nu)}}{B^{r(\nu)}}
+ \prod_{k\ge2}\frac{D_k(\eps)^{\nu_k}}
+ {(k!)^{\nu_k}\nu_k!}\ s^{r(\nu)}.
+\]
+Lemma~\ref{lem:moments} integrates it exactly. To justify a fixed
+truncation, use the Taylor remainder for the analytic regular part on a
+smaller disk and the integral remainder for the exponential. Each
+nonconstant term carries at least one factor $c_{\eps}=O(\eps)$.
+Since $B\le Cn$, a monomial of cost $d$ satisfies
+\[
+ \frac{n^{L}}{B^r}
+ =h^{r-L}\left(\frac Bn\right)^{r-2L}
+ \le C_N h^d\quad(d\le N+1).
+\]
+More explicitly, for $N\ge1$, first retain the terms $k\le N+1$
+in $R_{\eps}$. Its omitted tail in the exponent has bound
+$C_N\eps n B^{-N-2}s^{N+2}$, which is at most
+$C_N\eps h^{N+1}s^{N+2}$. The retained exponent $Q(s)$ obeys
+$|Q(s)|\le C_N\eps h s^2$ on the cut. Expanding $e^{Q(s)}$ through
+power $N$ leaves an error bounded by
+$C_N\eps^{N+1}h^{N+1}s^{2N+2}e^{|Q(s)|}$. Among those finitely many
+powers, the monomials of cost greater than $N$ have the same required
+$h^{N+1}$ factor. By making the cut radius smaller if needed, both
+$e^{|Q(s)|}$ and the analogous factor for the analytic tail are absorbed
+by the decaying $e^{-c s^{\alpha}}$, just as in the preceding proof.
+The case $N=0$ is Theorem~\ref{thm:uniform}. The sine gives another
+factor $O(\eps)$ before division by $J_0\asymp\eps$. The relative
+remainder is therefore $O_N(\eps h^{N+1})$.
+Polynomial factors in the exponentially small contour tails are
+absorbed by decreasing $\eta$. This proves \eqref{eq:allorders}.
+\end{proof}
+
+\begin{corollary}[An explicit first correction]\label{cor:first}
+Let
+\begin{equation}\label{eq:delta}
+ \Delta_{n,\eps}=
+ \frac{nc_{\eps}D_2(\eps)}{2B^2}\,
+ \frac{J_2(\eps)}{J_0(\eps)}.
+\end{equation}
+Then
+\begin{equation}\label{eq:first}
+ u_{n,\eps}=\frac{\rho_{\eps}^{-n}J_0}{nB}
+ \left[1+\Delta_{n,\eps}
+ +O\bigl(\eps h^2+n^2e^{-\eta n}\bigr)\right].
+\end{equation}
+As $\eps\downarrow0$,
+\begin{equation}\label{eq:firstlimit}
+ \frac{\Delta_{n,\eps}}{\eps n/B^2}
+ \longrightarrow 3\left(-\frac12+p_2^{\langle\cdot\rangle}\right).
+\end{equation}
+In particular, the unperturbed prefix gives $-3/2$.
+\end{corollary}
+\begin{proof}
+At cost one the only multi-index is $\nu_2=1$. Apply
+$c_{\eps}/\eps\to1$, $D_2(0)=-1/2+p_2^{\langle\cdot\rangle}$, and
+$J_2/J_0\to6$.
+\end{proof}
+
+For clarity, the next cost adds exactly
+\begin{equation}\label{eq:secondcost}
+ \frac{nc_{\eps}D_3}{6B^3}\frac{J_3}{J_0}
+ +\frac{n^2c_{\eps}^2D_2^2}{8B^4}\frac{J_4}{J_0}.
+\end{equation}
+This is a finite, directly implementable expansion. The first prefix
+moment enters the exact core $K_{\eps}$; the second enters the first
+relative correction. There is no unexplained claim of prefix
+independence at orders where a prefix moment is visible.
+
+\section{Deleting the condensate: the entire cloud in total variation}
+\label{sec:deletion}
+
+Let $\mathcal N_n^*$ have the law of $\mathcal N_n$ conditioned on
+$S_n=n$. Remove one occurrence of its largest action and denote the
+remaining multiset by $\mathcal R_n$. The definition is unambiguous even
+when the maximum is repeated: remove one atom at that size. Write $J_n$
+for the removed size. All probability statements about $J_n$ henceforth
+use the conditioned law.
+
+\begin{lemma}[A deterministic first-order cloud deficit]
+\label{lem:cloudshift}
+For every joint limit $n\to\infty$, $\eps\downarrow0$, under the
+\emph{unconditioned} law,
+\begin{equation}\label{eq:cloudshift}
+ \frac{S_n-n}{B}\Longrightarrow-1,
+ \qquad \frac{M(\mathcal N_n)}B\longrightarrow0
+ \quad\hbox{in probability}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The logarithm of the characteristic function of the centered sum is,
+using \eqref{eq:polylog},
+\begin{equation}\label{eq:cloudcf}
+ \log\E e^{it(S_n-n)/B}
+ =(-it)^{\alpha}+O_t\left(\frac{nc_{\eps}}{B^2}\right).
+\end{equation}
+The error tends to zero uniformly, and $(-it)^{\alpha}\to-it$, with the
+principal logarithm and continuous value at $t=0$. L\'evy's continuity
+theorem gives the first assertion. For each fixed $d>0$, once $dB>J_*$,
+\[
+ \Prob(M(\mathcal N_n)>dB)
+ \le n c_{\eps}\sum_{j>dB}j^{-1-\alpha}
+ \le C_d n c_{\eps}B^{-\alpha}
+ =C_d\frac{c_{\eps}}{K_{\eps}}=O_d(\eps).
+\]
+This proves the second assertion.
+\end{proof}
+
+\begin{theorem}[Total-variation deletion theorem]\label{thm:deletion}
+For every joint limit $n\to\infty$, $\eps\downarrow0$,
+\begin{equation}\label{eq:TV}
+ \TV\bigl(\Law(\mathcal R_n),\Law(\mathcal N_n)\bigr)\longrightarrow0.
+\end{equation}
+The conditioned largest action is unique with probability tending to
+one, and
+\begin{equation}\label{eq:Jfirst}
+ \frac{J_n}{B}\longrightarrow1,
+ \qquad \frac{J_n^{(2)}}B\longrightarrow0
+ \quad\hbox{in probability},
+\end{equation}
+where $J_n^{(2)}$ is the second largest action, with multiplicities.
+\end{theorem}
+\begin{proof}
+Let $p_n=\Prob(S_n=n)$. For an unconditioned multiset $\nu$ with total
+weight $s$ and maximum $m$, define
+\begin{equation}\label{eq:density}
+ W_n(\nu)=\frac{\lambda_{n-s,n}}{p_n}
+          \1_{\{n-s>m,\ n-s\ge1\}},
+\end{equation}
+where a rate with nonpositive index is zero. The Poisson deletion
+identity gives, for every bounded nonnegative function $f$,
+\begin{equation}\label{eq:Mecke}
+ \E\bigl[f(\mathcal R_n);\ \mathcal N_n^*\text{ has a unique maximum}\bigr]
+ =\E\bigl[f(\mathcal N_n)W_n(\mathcal N_n)\bigr].
+\end{equation}
+Indeed, adding a strictly larger atom of size $j$ to $\nu$ multiplies its
+Poisson mass by $\lambda_{j,n}$; the total-weight condition forces
+$j=n-s$. Alternatively, sum the usual Poisson identity
+$\E[N_jf(\mathcal N_n-\delta_j)]=\lambda_{j,n}\E f(\mathcal N_n)$
+with the strict-largest condition. In particular, $\E W_n\le1$.
+
+By Lemma~\ref{lem:cloudshift}, $j=n-S_n$ satisfies $j/B\to1$ in
+probability and exceeds the unconditioned maximum with probability
+ tending to one. It is eventually beyond the fixed prefix, except on an
+event of probability tending to zero. There,
+\begin{equation}\label{eq:ratequotient}
+ \frac{\lambda_{j,n}}{p_n}
+ =\frac{c_{\eps}/K_{\eps}}{J_0(\eps)}
+   \left(\frac Bj\right)^{1+\alpha}(1+o(1))
+ \longrightarrow1,
+\end{equation}
+because $c_{\eps}/K_{\eps}=1/\Gamma(-1-\eps)\sim\eps$ and
+$J_0\sim\eps$. The $o(1)$ in the denominator is the relative error
+proved in Theorem~\ref{thm:uniform}. Hence $W_n\to1$ in probability.
+
+This convergence automatically upgrades to $L^1$: bounded convergence
+in probability gives $\E\min(W_n,1)\to1$; together with $\E W_n\le1$
+it yields $\E W_n\to1$ and
+\[
+ \E|W_n-1|=\E W_n+1-2\E\min(W_n,1)\longrightarrow0.
+\]
+Equation~\eqref{eq:Mecke} now proves both that repeated maxima have
+probability tending to zero and that the subprobability law on unique
+maxima converges in total variation to the unconditioned law. Adding the
+vanishing exceptional mass proves \eqref{eq:TV}.
+
+Under the conditioned law, $J_n=n-S(\mathcal R_n)$ and
+$J_n^{(2)}=M(\mathcal R_n)$. Total variation allows these
+$n$-dependent measurable maps, so \eqref{eq:Jfirst} follows from
+Lemma~\ref{lem:cloudshift}.
+\end{proof}
+
+\begin{remark}[Why the mean is not contradicted]
+The unconditioned process has mean total weight exactly $n$, although
+its typical total weight is $n-B+o_{\Prob}(B)$. Rare very large jumps
+carry the missing mean. Total variation does not preserve expectations
+of unbounded, non-uniformly-integrable observables. Thus deletion
+convergence is compatible with the deterministic bound
+$S(\mathcal R_n)<n$.
+\end{remark}
+
+The proof is a triangular-array version of a classical big-jump
+deletion mechanism. Its short final density argument is possible only
+after the vanishing central probability has been estimated
+\emph{relatively}. This connects the analytic part of the paper to the
+probabilistic part without an unproved uniform conditioning step.
+
+\section{Landau fluctuations and sharp continuous budgets}
+\label{sec:landau}
+
+\begin{definition}[The endpoint stable law]\label{def:Z}
+Let $Z$ be the probability law with characteristic function
+\begin{equation}\label{eq:LandauCF}
+ \varphi_Z(t)=\exp\{-it\log(-it)\}
+ =\exp\{-\tfrac\pi2|t|-it\log|t|\},
+ \quad \varphi_Z(0)=1.
+\end{equation}
+Let $G(z)=\Prob(-Z\le z)$ be its reflected distribution function.
+\end{definition}
+The logarithm in the first expression is principal. The specified
+characteristic function fixes location and scale; it avoids ambiguities
+among conventions for the Landau distribution. Existence also follows
+from the compound-Poisson approximation in Section~\ref{sec:matching}.
+Since $|\varphi_Z(t)|=e^{-\pi|t|/2}$, Fourier inversion gives a smooth
+real-analytic density. It is nonnegative and not identically zero;
+therefore it cannot vanish on an interval. The distribution functions of
+$Z$ and $-Z$ are continuous and strictly increasing.
+
+\begin{lemma}[The necessary microscopic scale]\label{lem:scale}
+If $\eps\to0$ and $n\eps\to\infty$, then
+\begin{equation}\label{eq:smallscale}
+ a_n:=\eps B\to\infty,
+ \qquad \frac n{\eps B^2}\to0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The bounded factors $K_{\eps}^{\beta}$ can be suppressed. If
+$\eps<n^{-1/2}$, then $\eps\log n\to0$, $B\sim n$, and the two
+assertions reduce to $n\eps\to\infty$. If $\eps\ge n^{-1/2}$, then
+$\eps B\ge n^{1/2-o(1)}$ and
+$n/(\eps B^2)\le n^{-1/2+o(1)}$. These two cases cover all indices.
+\end{proof}
+
+\begin{theorem}[Landau law for the cloud and condensate]
+\label{thm:landau}
+Assume $n\to\infty$, $\eps\downarrow0$, and $n\eps\to\infty$.
+Under the unconditioned law,
+\begin{equation}\label{eq:cloudLandau}
+ Z_n:=\frac{S_n-n+B}{\eps B}-\log\eps\Longrightarrow Z.
+\end{equation}
+Under the conditioned law,
+\begin{equation}\label{eq:condLandau}
+ \frac{J_n-B}{\eps B}+\log\eps\Longrightarrow-Z.
+\end{equation}
+The same limiting law applies for every fixed admissible prefix, provided
+the \emph{exact} prefix-dependent $K_{\eps}$ is used in $B$.
+\end{theorem}
+\begin{proof}
+Using \eqref{eq:polylog} at frequency $t/(\eps B)$ gives
+\begin{align}
+ \log\E e^{itZ_n}
+ &=\left(\frac{-it}{\eps}\right)^{1+\eps}
+   +\frac{it}{\eps}-it\log\eps
+   +O_t\left(\frac n{\eps B^2}\right).
+ \label{eq:LandauExpand}
+\end{align}
+The remainder tends to zero by Lemma~\ref{lem:scale}. For each fixed
+$t\ne0$, write $L=\log(-it)-\log\eps$. Then
+\[
+ \left(\frac{-it}{\eps}\right)^{1+\eps}
+ =\frac{-it}{\eps}e^{\eps L}
+ =\frac{-it}{\eps}-itL
+   +O_t\bigl(\eps(1+|\log\eps|)^2\bigr).
+\]
+Substitution into \eqref{eq:LandauExpand} leaves
+$-it\log(-it)+o(1)$. Continuity at zero and L\'evy's theorem prove
+\eqref{eq:cloudLandau}. For the conditional statement use
+$J_n=n-S(\mathcal R_n)$ and Theorem~\ref{thm:deletion}. The identity of
+the normalized variables has exactly the minus sign displayed in
+\eqref{eq:condLandau}.
+\end{proof}
+
+The logarithmic displacement is essential. The leading location is
+$B-\eps B\log\eps$, not simply $B$, on the fluctuation scale $\eps B$.
+Because $-\log\eps\to\infty$, dropping it changes every fixed cutoff
+quantile.
+
+\begin{theorem}[Sharp cutoff profile and quantiles]\label{thm:budget}
+Under the hypotheses of Theorem~\ref{thm:landau}, put
+\begin{equation}\label{eq:budgetwindow}
+ m_n(z)=\left\lfloor B+\eps B(z-\log\eps)\right\rfloor.
+\end{equation}
+For every real $z$,
+\begin{equation}\label{eq:budgetG}
+ \frac{u_{n,\eps}^{(m_n(z))}}{u_{n,\eps}}\longrightarrow G(z).
+\end{equation}
+For $\theta\in(0,1)$ let $q_\theta=G^{-1}(\theta)$ and define the
+minimal action budget
+\begin{equation}\label{eq:minbudget}
+ m^*_{n,\eps}(\theta)=\min\{m\in\N:
+              u_{n,\eps}^{(m)}/u_{n,\eps}\ge\theta\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:quantile}
+ m^*_{n,\eps}(\theta)
+ =B+\eps B(q_\theta-\log\eps)+o(\eps B).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:budgetexact}, Theorem~\ref{thm:landau}, and
+$\eps B\to\infty$ give \eqref{eq:budgetG}; the floor is negligible.
+Continuity and strict increase of $G$ imply quantile convergence: for
+any fixed $d>0$, the retained fraction at $m_n(q_\theta-d)$ is eventually
+less than $\theta$, and at $m_n(q_\theta+d)$ it is eventually greater.
+Monotonicity sandwiches the minimal budget, and then $d\downarrow0$.
+\end{proof}
+
+\begin{corollary}[Coarse cutoff step]\label{cor:step}
+For fixed $0<s<1$ the retained fraction at $m=\lfloor sB\rfloor$ tends to
+zero, and for fixed $s>1$ it tends to one. At $m=\lfloor B\rfloor$ it
+also tends to zero under $n\eps\to\infty$.
+\end{corollary}
+\begin{proof}
+The strict inequalities follow from $J_n/B\to1$. At $m=B$, the
+normalized threshold in \eqref{eq:condLandau} is $\log\eps+o(1)\to-\infty$;
+tightness proves the final assertion.
+\end{proof}
+
+\subsection{The residual extremes}
+
+\begin{theorem}[Poisson residual extremes]\label{thm:extremes}
+Under $n\eps\to\infty$, the point process of residual action sizes,
+rescaled by $a_n=\eps B$, converges on $(0,\infty)$, vaguely on sets
+bounded away from zero, to a Poisson point process of intensity
+$x^{-2}\dd x$. In particular,
+\begin{equation}\label{eq:secondlargest}
+ \Prob\left(\frac{J_n^{(2)}}{\eps B}\le x\right)
+ \longrightarrow e^{-1/x}\qquad(x>0).
+\end{equation}
+No independence between this extreme process and the Landau cloud sum
+is claimed.
+\end{theorem}
+\begin{proof}
+For the unconditioned process the rescaled intensity on a compact
+interval in $(0,\infty)$ is a Riemann sum with factor
+\[
+ n c_{\eps}a_n^{-\alpha}
+ =\frac{c_{\eps}}{K_{\eps}}\eps^{-\alpha}
+ \longrightarrow1,
+\]
+since $c_{\eps}/K_{\eps}\sim\eps$ and
+$\eps^{-\eps}\to1$. The lattice spacing $1/a_n$ tends to zero.
+Independence of disjoint Poisson counts gives convergence of Laplace
+functionals. The finite prefix disappears from every such interval.
+For the maximum, the exact omitted intensity satisfies
+$n\sum_{j>a_nx}a_{j,\eps}\to1/x$, so its zero-count probability tends
+to $e^{-1/x}$. Transfer both conclusions to the residual process using
+Theorem~\ref{thm:deletion}.
+\end{proof}
+
+\section{The discrete compound-Poisson boundary}
+\label{sec:poisson}
+
+Let $\mathcal C_\lambda$ be the independent Poisson action process with
+rates $\lambda b_{j,0}=\lambda(j^{-2}+p_j)$, and let $C_\lambda$ be its
+total weight. Its total intensity is finite even though its mean is
+infinite when $\lambda>0$. Its generating function is
+\begin{equation}\label{eq:CPpgf}
+ \E z^{C_\lambda}
+ =\exp\left\{\lambda\bigl(\Li_2(z)+P(z)-\zeta(2)-P(1)\bigr)\right\}.
+\end{equation}
+For $\lambda=0$ this is the point mass at zero.
+
+\begin{theorem}[Microscopic cloud and deficit in total variation]
+\label{thm:CP}
+If $n\eps\to\lambda\in[0,\infty)$, then
+\begin{equation}\label{eq:CPtv}
+ \TV\bigl(\Law(\mathcal R_n),\Law(\mathcal C_\lambda)\bigr)\to0,
+ \qquad
+ \TV\bigl(\Law(n-J_n),\Law(C_\lambda)\bigr)\to0.
+\end{equation}
+Consequently, for every fixed integer $k\ge0$,
+\begin{equation}\label{eq:CPbudget}
+ \frac{u_{n,\eps}^{(n-k)}}{u_{n,\eps}}
+ \longrightarrow\Prob(C_\lambda\ge k).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For each $j$, $n a_{j,\eps}\to\lambda b_{j,0}$. Since $n c_{\eps}$
+is bounded, dominated convergence with the summable tail $j^{-2}$ gives
+\[
+ \sum_{j\ge1}|n a_{j,\eps}-\lambda b_{j,0}|\longrightarrow0.
+\]
+Couple independent Poisson counts by their common intensities and
+independent excess counts. The probability of any disagreement is at
+most the sum above, so the unconditioned processes converge in total
+variation. Combine this with Theorem~\ref{thm:deletion}. The total-weight
+map preserves the total-variation bound, proving the deficit claim.
+Finally $J_n\le n-k$ is exactly $n-J_n\ge k$.
+\end{proof}
+
+For example, the limiting retained fraction when the single largest
+possible action is omitted is
+\begin{equation}\label{eq:lastaction}
+ \frac{u_{n,\eps}^{(n-1)}}{u_{n,\eps}}
+ \longrightarrow1-e^{-\lambda(\zeta(2)+P(1))}.
+\end{equation}
+When $n\eps\to0$, essentially all the coefficient comes from
+configurations whose largest action is exactly $n$; every cutoff below
+$n$ loses asymptotically all of it. This is not a continuous cutoff
+profile. For a prescribed retained fraction at a lattice boundary,
+quantile statements must respect atoms: one may compare the discrete
+tails in \eqref{eq:CPbudget}, but cannot assert convergence of the
+minimal integer budget at a threshold equal to a limiting tail
+probability without additional information.
+
+\section{Matching the two endpoint descriptions}
+\label{sec:matching}
+
+\begin{proposition}[Compound-Poisson to Landau matching]
+\label{prop:matching}
+As $\lambda\to\infty$,
+\begin{equation}\label{eq:matching}
+ \frac{C_\lambda}{\lambda}-\log\lambda-(1+\kappa)
+ \Longrightarrow Z.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $x=-it/\lambda$ in \eqref{eq:diloglocal}. The logarithm of the
+characteristic function of $C_\lambda/\lambda$ is
+\[
+ \lambda\bigl(H_0^*(e^{it/\lambda})-H_0^*(1)\bigr)
+ =-it\log(-it)+it\log\lambda+it(1+\kappa)+O_t(\lambda^{-1}).
+\]
+Subtracting the two centering terms gives \eqref{eq:LandauCF} in the
+limit. L\'evy's theorem proves the claim and, independently, establishes
+existence of the probability law in Definition~\ref{def:Z}.
+\end{proof}
+
+This calculation checks the otherwise delicate constant in the
+logarithmic displacement. For example, in the matching overlap
+\begin{equation}\label{eq:matchingoverlap}
+ \eps\log^2 n\longrightarrow0,\qquad n\eps\longrightarrow\infty,
+\end{equation}
+write $\lambda_n=n\eps$. Expansion of the exact core gives
+\begin{equation}\label{eq:Bexpand}
+ B=n-n\eps(\log n+1+\kappa)
+       +O\bigl(n\eps^2(1+\log n)^2\bigr).
+\end{equation}
+It follows that the conditional deficit, on the scale $\lambda_n$,
+is centered at
+\begin{equation}\label{eq:centerMatch}
+ n-B+\eps B\log\eps
+ =\lambda_n\bigl(\log\lambda_n+1+\kappa\bigr)+o(\lambda_n).
+\end{equation}
+Together with Theorem~\ref{thm:landau} this gives the same centered
+Landau law as \eqref{eq:matching}. Condition
+\eqref{eq:matchingoverlap} is stated explicitly: without it, replacing
+the exact $B$ by its first-order expansion need not be accurate on the
+fluctuation scale. The exact-core formulation requires no such extra
+condition.
+
+\subsection{A regime map}
+
+The two combinations $\eps\log n$ and $n\eps$ play different roles.
+The first controls the fraction of total mass in the exceptional action;
+the second determines whether the residual cloud is continuous after
+rescaling or remains discrete. Table~\ref{tab:regimes} summarizes this.
+All entries assume $\eps\downarrow0$ and $n\to\infty$.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}p{.25\textwidth}p{.28\textwidth}p{.38\textwidth}@{}}
+\toprule
+Parameter regime & Largest action & Residual description and budget \\
+\midrule
+$\eps\log n\to\tau\in(0,\infty)$
+& $J_n/n\to e^{-\tau}$
+& Landau window of width $\eps B$, centered at $B-\eps B\log\eps$.\\[5pt]
+$\eps\log n\to\infty$
+& $J_n\sim B=o(n)$
+& One action is still separated from the residual maximum by a factor
+of order $1/\eps$; the same Landau window applies.\\[5pt]
+$\eps\log n\to0$, $n\eps\to\infty$
+& $J_n/n\to1$
+& A diverging residual cloud; retain the exact $B$ for fluctuation-scale
+accuracy.\\[5pt]
+$n\eps\to\lambda\in(0,\infty)$
+& $J_n=n-O_{\Prob}(1)$
+& Deficit tends to $C_\lambda$; cutoff transitions are discrete.\\[5pt]
+$n\eps\to0$
+& $\Prob(J_n=n)\to1$
+& Omitting action $n$ loses asymptotically the whole coefficient.\\
+\bottomrule
+\end{tabular}
+\caption{The lower-endpoint regimes. ``$J_n\sim B$'' here means
+$J_n/B\to1$ in probability, not convergence of expectations.}
+\label{tab:regimes}
+\end{table}
+
+The leading coefficient remains the single expression
+$\rho_{\eps}^{-n}J_0/(nB)$ throughout this table. What changes is the
+structure of conditioning and the resolution needed for the action
+budget. This is why a coefficient equivalent alone would not answer the
+repository's cutoff question.
+
+\section{Reproducible checks and numerical evidence}
+\label{sec:computation}
+
+The package contains \texttt{verify.py} and its recorded output
+\texttt{verification\_results.json}. The program performs three distinct
+kinds of checks. First, 385 exact rational assertions compare a direct
+feedback recursion with Lagrange coefficients, enumerate finite action
+multisets, and check the Poisson deletion and cutoff identities.
+Second, an independent 80-digit recurrence at $n=100$, $\eps=0.05$
+agrees with the log-space numerical implementation to a relative
+difference of approximately $2.19\times10^{-15}$. Third, it evaluates
+the asymptotic and probability formulas at finite parameters. These last
+calculations are floating-point diagnostics, not proofs and not interval
+certificates.
+
+\subsection{Coefficient recurrence and normalization}
+
+For a fixed target index $n$, let
+$p_k=\Prob(S_n=k)$. Then
+\begin{equation}\label{eq:recurrence}
+ p_0=e^{-nd_{\eps}},\qquad
+ p_k=\frac nk\sum_{j=1}^k j a_{j,\eps}p_{k-j}\quad(1\le k\le n).
+\end{equation}
+The implementation uses log-sum-exp, so it does not require an extended
+floating-point exponent range. For a cutoff $m$, retain $j\le m$ in the
+sum but \emph{keep the same full} $p_0=e^{-nd_{\eps}}$. The resulting
+coefficient is $\Prob(S_n=k, N_j=0\text{ for }j>m)$, not the normalized
+probability under a different truncated process. This distinction is
+necessary for \eqref{eq:budgetexact}.
+
+Table~\ref{tab:coefficients} compares the leading and corrected formulas
+for the unperturbed prefix. All values in the tables below are generated
+from the recorded JSON output; no qualitative convergence assertion is
+inferred from a few finite ratios.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$\eps$ & $n$ & \shortstack{Recurrence /\\leading} & \shortstack{Recurrence /\\corrected}
+& \shortstack{Observed correction /\\predicted} \\
+\midrule
+\inputtable{coefficient_table.tex}
+\bottomrule
+\end{tabular}
+\caption{The first correction materially improves the coefficient
+approximation. ``Exact recurrence'' means the exact recurrence evaluated
+in floating point, not exact real arithmetic.}
+\label{tab:coefficients}
+\end{table}
+
+The program also checks the prefix
+$P(z)=z/2-z^2/16$. Here $\kappa=3/8$,
+$p_2^{\langle\cdot\rangle}=1/4$, and the limiting first-correction
+constant is $-3/4$, rather than $-3/2$. This checks the explicit prefix
+sensitivity rather than suppressing it.
+
+\subsection{Landau profile and finite-parameter limitations}
+
+Fourier inversion gives a convenient formula for the distribution of
+$Z$:
+\begin{equation}\label{eq:CDF}
+ F_Z(x)=\frac12+\frac1\pi\int_0^\infty
+ e^{-\pi t/2}\frac{\sin(t(x+\log t))}{t}\dd t,
+ \qquad G(z)=1-F_Z(-z).
+\end{equation}
+The integrable logarithmic singularity at zero is handled by splitting
+the integral. The exponential tail permits a controlled tail estimate,
+although the supplied quadrature itself does not use directed rounding.
+The numerical quantiles are
+\begin{equation}\label{eq:quantilenumbers}
+ q_{0.1}\approx-11.6492846845,\qquad
+ q_{0.5}\approx-1.3557804210,\qquad
+ q_{0.9}\approx1.0922545281.
+\end{equation}
+Table~\ref{tab:landau} deliberately shows that a sharp limit theorem need
+not give a high-accuracy finite-$\eps$ profile. The errors are still
+visible at the displayed parameters. No rate for
+Theorem~\ref{thm:budget} is claimed.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ & $\eps$ & $z$ & cutoff $m_n(z)$ & retained fraction & $G(z)$\\
+\midrule
+\inputtable{landau_table.tex}
+\bottomrule
+\end{tabular}
+\caption{Finite-parameter cutoff diagnostics. The discrepancies, rather
+than only favorable ratios, are retained in the report.}
+\label{tab:landau}
+\end{table}
+
+\subsection{The discrete boundary}
+
+For $k<n/2$, the event $J_n=n-k$ has a unique largest atom, so its
+probability is exactly
+\begin{equation}\label{eq:deficitExact}
+ \Prob(n-J_n=k)
+ =\frac{n a_{n-k,\eps}\Prob(S_n=k)}{\Prob(S_n=n)}.
+\end{equation}
+This allows a check of the finite-$\lambda$ cloud without Monte Carlo
+conditioning on a rare event. For $P=0$, $\lambda=1/2$, the mass at zero
+should tend to $e^{-\pi^2/12}\approx0.4393464341$. The computed values
+are $0.4343650385$ at $n=512$ and $0.4377984669$ at $n=2048$.
+The recorded output includes both prefixes, $\lambda=1/2,2$, and
+errors for deficits $0$ through $15$.
+
+\subsection{What has and has not been verified}
+
+The 385 rational assertions verify finite algebraic identities only.
+The numerical recurrences check the stated formulas and normalizations
+at their input parameters. The asymptotic theorems, total-variation
+convergence, and parameter-uniform errors are supported by the proofs in
+this paper, not by those tests. No interval-certified action budget has
+been produced, and no Lean file is included. The supplied sources are
+sufficient to rebuild the article and rerun every reported computation.
+
+\section{A formalization and implementation route}
+\label{sec:formalization}
+
+The repository separates the transseries foundations from its research
+reports \cite{repo-index}. Nothing in the present package should be
+marked as a Lean theorem merely because related foundational files
+exist. A practical formalization can nevertheless be decomposed into
+small interfaces.
+
+The finite algebra comes first: formal coefficient extraction,
+Lagrange inversion in the form \eqref{eq:lagrange}, the exponential
+coefficient recurrence, and the finite multiset cutoff identity. The
+next layer can treat a countable summable sequence of Poisson rates and
+prove the exact deletion density \eqref{eq:Mecke}. The upgrade from
+$W_n\to1$ in probability and $\E W_n\le1$ to $L^1$ convergence is a
+short, reusable lemma independent of transseries.
+
+The analytic layer needs the polylogarithm continuation formula with
+uniform parameter estimates on a compact slit contour, followed by the
+cut deformation, the elementary gamma integral, and the uniform
+exponential remainder bound. It is useful to state these as an abstract
+``regular part plus one branch term'' coefficient theorem before
+specializing to the zeta coefficients. Characteristic-function
+convergence and the exact-core expansion then provide the probability
+limits. Finally, quantile convergence follows from a general monotone
+CDF lemma.
+
+The code accompanying this paper is an implementation of finite
+recurrences and diagnostics. It is not a placeholder formal proof, and
+it does not replace any of those analytical obligations.
+
+\section{Further research questions}
+\label{sec:future}
+
+\paragraph{1. Quantitative deletion and Landau approximation.}
+The total-variation theorem here is qualitative. Derive an explicit
+bound for the deletion distance and for the cutoff CDF error, uniformly
+in both $n\eps$ and $\eps\log n$. The characteristic-function proof
+suggests contributions of order
+$\eps\log^2(1/\eps)$ and $n/(\eps B^2)$, but smoothing and the deletion
+density introduce additional terms. These suggestions are not error
+bounds proved in this paper. Such a result would explain and improve
+the visible finite-parameter discrepancies in Table~\ref{tab:landau}.
+
+\paragraph{2. An interval-certified minimal action budget.}
+Combine the exact positive recurrence with rigorous logarithmic
+arithmetic, certified zeta and gamma values, and a proved finite-$n$
+CDF bound. The goal is a program that returns the smallest cutoff with
+a guaranteed retained fraction, or a narrow certified bracket. The
+asymptotic quantile formula alone is not such a program.
+
+\paragraph{3. Slowly varying and nonexact tails.}
+Replace the exact tail by
+$j^{-2-\eps}L_{\eps}(j)$. Determine verifiable uniform regularity
+conditions under which the deletion theorem and Landau window persist,
+and identify the new centering constants. Without an analytic
+continuation of the generating function, the current cut proof is not
+available; a genuinely uniform local big-jump estimate would be needed.
+
+\paragraph{4. Growing or parameter-singular finite cores.}
+The proof allows any fixed admissible prefix, but not a prefix whose
+length tends to infinity or whose moments diverge with $\eps$.
+Find sharp criteria separating harmless prefix changes from a change
+in the limiting cloud. In particular, decide when the analytic regular
+part remains negligible on the scale $\eps B$.
+
+\paragraph{5. Expanding noncritical coupling windows.}
+For $U=\theta A_{\eps}(qe^U)$, criticality is $\theta=1$.
+Study the joint variables $1-\theta$, $\eps$, and $n$.
+A deterministic shift of the cloud competes with the exceptional action
+and can move the cutoff center by its entire width. The present exact
+critical normalization does not settle that crossover.
+
+\paragraph{6. Uniform matching beyond the first Landau order.}
+Construct a single approximation that retains the discrete
+compound-Poisson law for bounded $n\eps$, has a computable first
+Landau correction for diverging $n\eps$, and uses the exact core for
+arbitrary $\eps\log n$. This would refine both boundary descriptions
+without imposing \eqref{eq:matchingoverlap}.
+
+\paragraph{7. Large-order behavior of the endpoint expansion.}
+The convergent Hahn chart and the fixed-order sector expansion are
+not the same kind of series. Determine the growth of the coefficients
+in \eqref{eq:allorders}, an optimal truncation rule, and any additional
+exponentially small sectors. No Borel or resurgence conclusion follows
+from fixed-order uniformity alone.
+
+\paragraph{8. The unnormalized exponent-one model.}
+At exactly $\alpha=1$, the unnormalized kernel
+$a\Li_2(z)+P(z)$ has infinite first moment, and the normalization used
+here collapses to zero. Analyze its interior critical point as the
+coupling tends to zero, and match that problem to the renormalized
+endpoint studied here. It is a different order of limits, not a missing
+substitution in \eqref{eq:uniform}.
+% ed. (2026-09-29): the P = 0 case of this problem is treated by a batch-51 package, without the matching
+\begin{ednote}
+For $P=0$ this model is treated in
+\path{Lower_Critical_Endpoint_Landau_Transseries/}: an interior fold at
+distance $\delta=-\log(1-e^{-1/c})$, a Landau coefficient profile at
+$\lambda=nc\delta$, and a chart in $e^{-1/c}$. Its matching to the
+renormalized endpoint studied here is not addressed there.
+\end{ednote}
+
+\paragraph{9. Other analytic branch kernels and multivariate actions.}
+Abstract the sine-factor argument to kernels with a branch exponent
+approaching an integer and a simultaneously vanishing normalization.
+Determine which multivariate constraints admit an analogue of the
+one-atom deletion density, and when several exceptional actions rather
+than one are forced by geometry.
+
+\section{Conclusion}
+
+The lower critical endpoint can be analyzed without a formal
+substitution into a fixed-exponent theorem. The relevant coefficient
+probability vanishes like $\eps/B$, and a branch-cut proof preserves
+that small factor uniformly. Once the relative estimate is available,
+a direct deletion density proves convergence of the entire conditioned
+remainder to the unconditioned Poisson cloud. Its fluctuations produce
+a Landau cutoff window when $n\eps$ diverges and a discrete
+compound-Poisson deficit when it does not.
+
+These results answer the lower-endpoint chart, coefficient, and cutoff
+questions for the exact power-law model with a fixed admissible prefix.
+They also identify precisely what remains: quantitative conditional
+errors, certified budgets, nonexact tails, and noncritical or growing-core
+extensions. The distinction between a proved model-specific continuation
+and a general transseries theorem is maintained throughout.
+
+\appendix
+\section{Endpoint constants and sign checks}
+\label{app:constants}
+
+The expansions required to audit the centering are
+\begin{align}
+ c_{\eps}&=\eps-(\gamma+\kappa)\eps^2+O(\eps^3),\\
+ K_{\eps}&=1-(1+\kappa)\eps+O(\eps^2),\\
+ J_0(\eps)&=\eps+(\gamma-2)\eps^2+O(\eps^3),\\
+ K_{\eps}^{-\beta}J_0(\eps)
+ &=\eps\bigl[1+(\gamma-1+\kappa)\eps+O(\eps^2)\bigr].
+\end{align}
+The sign of the stable variable is checked directly from
+\[
+ -it\log(-it)=-\tfrac\pi2|t|-it\log|t|.
+\]
+For the largest action the variable is reflected because the exact
+identity is $J_n=n-S(\mathcal R_n)$. Its quantile center therefore is
+$B+\eps B(q_\theta-\log\eps)$, with a plus sign before $q_\theta$.
+The residual total weight uses the opposite sign.
+
+There is also a finite-$n$ perturbative check for $P=0$. At first order
+in $\eps$, $u_{n,\eps}=\eps/n^2+O_n(\eps^2)$. At second order,
+\begin{equation}\label{eq:perturbcheck}
+ \frac{n^2u_{n,\eps}}{\eps}
+ =1+\eps\left(nH_{n-1}^{(2)}+2H_{n-1}-\gamma-\log n\right)
+ +O_n(\eps^2),
+\end{equation}
+where $H_m=\sum_{j\le m}1/j$ and
+$H_m^{(2)}=\sum_{j\le m}1/j^2$. Indeed,
+\[
+ [z^n]\Li_2(z)^2
+ =\frac{2H_{n-1}^{(2)}}{n^2}+\frac{4H_{n-1}}{n^3},
+\]
+which follows by partial fractions in $j$ and $n-j$.
+Expanding the harmonic sums gives the relative correction
+$-3\eps/(2n)$ at the endpoint, agreeing with
+\eqref{eq:firstlimit}. The $O_n$ notation here is explicitly for fixed
+$n$; this perturbative check is not used as a uniform proof.
+
+\section{Rebuilding and source provenance}
+\label{app:reproduce}
+
+The archive contains the article source and compiled PDF, generated
+LaTeX tables, the verification program, its recorded JSON results,
+\texttt{README.md}, \texttt{requirements.txt}, and a build script.
+The computational commands are
+\begin{lstlisting}
+python verify.py --output verification_results.json
+python make_tables.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The \texttt{--quick} verification option omits the larger cutoff
+calculations, and should write to a different output filename when the
+recorded full output is to be preserved. No network access is required
+by the verification program. The numerical dependencies are NumPy,
+SciPy, and mpmath; exact assertions use Python's standard-library
+\texttt{fractions} module.
+% ed. (2026-09-29): output locations changed on filing
+\begin{ednote}
+As filed, \texttt{verify.py} writes \path{build/rerun_results.json} by
+default and refuses to replace the recorded
+\path{verification_results.json} unless \texttt{--overwrite-recorded} is
+given, so the first command above needs that option;
+\texttt{make\_tables.py} and \texttt{verify.py} write LF line endings on
+every platform, and \texttt{build.sh} regenerates the tables only when asked
+(\texttt{--tables}).
+\end{ednote}
+
+The repository question and model were read from the pinned
+\path{Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}
+under \path{Analysis/Transseries/docs/series-and-transseries/}.
+The motivating question is Section~``Further research questions'',
+Question~4; the exact coefficient and Poisson identities appear in its
+model section. The fixed-exponent chart motivates
+Section~\ref{sec:chart}, but all uniform endpoint, deletion, and cutoff
+arguments used here are proved in this manuscript. No assumption that
+the unreviewed predecessor is correct is needed to validate these proofs.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo-critical}
+\repo\ repository, maintained by V.~Reshetnikov,
+\emph{Beyond Finite-Action Folds: Critical Hahn Transseries, Stable Sector
+Asymptotics, and Sharp Action Budgets}, editorial revision of
+29 September 2026. Repository revision
+\texttt{3d5973524506411392a911470b5ddc35521568ea},
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-index}
+\repo\ transseries research index, maintained by V.~Reshetnikov, same revision,
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+Section~25.12, especially Eq.~25.12.12 (polylogarithm continuation).
+\url{https://dlmf.nist.gov/25.12}.
+Accessed 29 September 2026.
+
+\bibitem{flajolet-odlyzko}
+P.~Flajolet and A.~M.~Odlyzko,
+Singularity analysis of generating functions,
+\emph{SIAM Journal on Discrete Mathematics} \textbf{3} (1990), 216--240.
+\url{https://doi.org/10.1137/0403019}.
+
+\bibitem{janson}
+S.~Janson,
+Simply generated trees, conditioned Galton--Watson trees, random
+allocations and condensation,
+\emph{Probability Surveys} \textbf{9} (2012), 103--252.
+\url{https://arxiv.org/abs/1112.0510}.
+
+\bibitem{armendariz}
+I.~Armend\'ariz and M.~Loulakis,
+Conditional distribution of heavy tailed random variables on large
+deviations of their sum,
+\emph{Stochastic Processes and their Applications} \textbf{121} (2011),
+1138--1147.
+\url{https://arxiv.org/abs/0912.1516}.
+\end{thebibliography}
+\end{document}

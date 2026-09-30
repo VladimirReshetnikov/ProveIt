@@ -6,7 +6,10 @@ Date: 29 September 2026.
 
 Repository: https://github.com/VladimirReshetnikov/ProveIt
 
-Pinned tree: `db68f0853c3c69cd930caedab6f6ad9addb11eaf`
+Pinned commit: `db68f0853c3c69cd930caedab6f6ad9addb11eaf`
+
+(Editorial correction, ProveIt, 2026-09-29: delivered as "Pinned tree";
+the identifier is a commit.)
 
 Focused inspection included the `Analysis/Transseries` tree, the group README
 at `Analysis/Transseries/docs/series-and-transseries/README.md`, and the README

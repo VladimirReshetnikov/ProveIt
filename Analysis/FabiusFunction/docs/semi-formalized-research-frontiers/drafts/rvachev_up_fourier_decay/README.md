@@ -1,7 +1,9 @@
 # Rvachev up-function Fourier decay
 
 This group has one canonical synthesis, a separately supplied rewrite awaiting
-reconciliation, and one arrival addressing a gap the synthesis states. The canonical document is:
+reconciliation, and two arrivals: one addressing a gap the synthesis states,
+and one answering that arrival's finite-smoothness question. The canonical
+document is:
 
 - [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
 - [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — retained rendered checkpoint.
@@ -29,7 +31,7 @@ restoration of the older donor with the same directory name at the
 pre-consolidation pin below. Manuscript proof labels do not establish Lean
 coverage.
 
-## Arrival on the spectral/RMS gap
+## Arrivals on the spectral/RMS gap
 
 [`Spectral_Collapse_Alternating_RMS/`](Spectral_Collapse_Alternating_RMS/)
 holds *Spectral Collapse and Alternating RMS Asymptotics for the Rvachev
@@ -44,6 +46,25 @@ with `B` and `M` enclosed by an exact-rational interval certificate
 (`certify_integer.py`, standard library only) and an independent `mpmath.iv`
 cross-check.  The claims are unreviewed, the synthesis still states the gap,
 and no Lean statement exists.
+
+[`Sobolev_Spectral_Disks_Rvachev_Thue_Morse/`](Sobolev_Spectral_Disks_Rvachev_Thue_Morse/)
+holds *From Analytic Spectral Collapse to Sobolev Spectral Disks*
+(23-page A4 PDF, 1,729-line source, a standard-library exact check
+program), filed on 2026-09-29 by a quick archival intake.  It answers
+the Sobolev part of the arrival's question "Spectra at finite
+smoothness": on periodic Sobolev spaces `H^s` (with logarithmic
+refinements) the same operator has a whole disk of essential
+spectrum, of radius `2^{−s}√(1+√17)/4`, plus the eigenvalues `1/2` and
+`−1/4`, which are isolated only above `s_0 ≈ 0.1785` and `s_0 + 1`
+respectively; the same holds on interval spaces of integer order.  So
+`−1/4` is the second spectral value only on smooth enough spaces, not
+on `L²` or `H¹`.  At the critical order a logarithmic weight still
+gives a two-term moment law, although no operator-norm law of that
+order exists.  Its Thue–Morse/Stern cutoff identity and energy
+formulas are already in
+[`../thue-morse/Thue_Morse_Frontier_Deductions/`](../thue-morse/Thue_Morse_Frontier_Deductions/),
+Part I, which it does not cite.  Hölder spaces are not treated.
+Unreviewed; no Lean statement.
 
 ## Canonical synthesis
 

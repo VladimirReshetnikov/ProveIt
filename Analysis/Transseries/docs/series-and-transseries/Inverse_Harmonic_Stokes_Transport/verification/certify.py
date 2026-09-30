@@ -96,7 +96,8 @@ def main() -> None:
                     'exact_truncation_root_conditions_passed':True,
                     'certificate_arithmetic':'exact fractions and analytic remainder inequality'})
     dest=Path(__file__).resolve().parent/'certificates.json'
-    dest.write_text(json.dumps(out,indent=2)+'\n')
+    # ed. (2026-09-29): newline='\n' so that a rerun on Windows writes LF, like the filed file.
+    dest.write_text(json.dumps(out,indent=2)+'\n',newline='\n')
     print(json.dumps(out,indent=2))
 
 if __name__=='__main__':

@@ -54,6 +54,9 @@
 \emergencystretch=2em
 
 \begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which removes the
+% duplicate hyperref destination page.1 (pdfTeX warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{13mm}
@@ -103,6 +106,7 @@ worldwide priority for the refinements has not been established. No general
 open conjecture about all transseries is claimed solved.
 \end{resultbox}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \tableofcontents
 \newpage
@@ -172,6 +176,55 @@ contribution. A targeted comparison with the cited sources and the pinned
 repository does not constitute an exhaustive priority search. The assertions
 are deliberately formulated so that their correctness can be assessed without
 accepting a claim that they are unprecedented.
+
+% ed. (2026-09-29): editorial note added by ProveIt (sibling packages,
+% a duplicate principal theorem, uncited repository results); not part of
+% the delivered text.
+\begin{quote}\small
+\textbf{Editorial note (ProveIt, 2026-09-29).}
+\emph{Sibling packages.} This article is one of five packages that answer
+the same gap of the companion for the same interpolation and are to be merged
+into its chapter on the singular transition $q\to1$ \cite{ed:siblings}: the
+$q$-multinomial article (every positive ray; its interpolation at $r=2$,
+$\boldsymbol a=(1,1)$ is \eqref{eq:H}, and the constant
+$m_*/(2\pi\sqrt{\alpha x})$ of \cref{thm:shortest} is its sharp $h=0$
+constant), the central Gaussian-binomial article, this article, and the
+gamma-core and theta-resolved articles. The five write the interpolation in different normalizations ($q=\ee^h$ or $Q=\ee^{-h}$; remainders $R_K$, $r_K$, $R_M$ or $L_h-F_{h,K}$; smallest ray parameter $a_*$, $\alpha$ or $a_{\min}$); a normalization dictionary is left to the merge.
+
+\emph{Duplicate principal theorem.} \Cref{thm:optimal,thm:window}
+re-derive, independently, the principal theorem of the central
+Gaussian-binomial package, which this article, written from an earlier
+snapshot, does not cite. That article proves
+$\min_Kr_K=\ee^{-2\pi x}/(\pi\sqrt x)\,(1+O_T(1/x))$, with every minimizing
+index $\pi x+O_T(1)$, uniformly for $0\le hx\le T$: the leading term of
+\eqref{eq:optimal} on a wider range. Its boundary layer
+$hx=2\pi-(\log x)/(2x)+s'/x$, with optimal remainder over modular term
+tending to $\ee^{-s'}/\pi$, is \eqref{eq:swindow} with
+$s=s'+\log\pi+o(1)$, and its equal-size boundary agrees with
+\eqref{eq:tauc}. The hypothesis here, $hx$ in a compact subset of
+$(0,\infty)$, is narrower. These are one theorem with two independent
+proofs; new here are the relative correction $C_1(d)/(2\pi x)$, the
+Stieltjes--Pad\'e bounds, the parity-sensitive window and the exact
+cancellation point.
+
+\emph{Gaussian Coefficient Calculus.} Theorem \texttt{q3:thm:double-scaling}
+of the Fabius tree's Gaussian-coefficient volume \cite{ed:gcc} expands
+$\log\bigl[\begin{smallmatrix}n\\k\end{smallmatrix}\bigr]_{\ee^{-\tau/n}}$
+to all orders only for $0<\tau_0\le\tau\le\tau_1$, the restriction of
+\texttt{t3:prop:double-A}. Its central case $k/n=\frac12$ is this
+interpolation at integers, with $n=2x$ and its $\tau$ equal to $2hx$;
+\cref{cor:uniform} reaches $0<hx\le\tau_1$. This article does not cite that
+volume.
+
+\emph{Canonical volume and Lean.} \Cref{thm:optimal} is an explicit, sharp
+instance of the canonical volume's general least-term theorem
+\texttt{p0:thm:optimal-truncation} \cite{ed:tai}. The ``derivative lower
+bound and root-existence bracket'' that \cref{sec:integration} asks for are,
+in abstract form, the Lean theorems
+\path{Fabius.exists_eq_in_residual_interval} and \path{Fabius.transport_bound}
+\cite{ed:lean}; the special-function hypotheses are not formalized. This
+article cites neither.
+\end{quote}
 
 \section{Exact interpolation and the two small mechanisms}
 \label{sec:model}
@@ -1368,6 +1421,14 @@ series-and-transseries/\\
 Combinatorial\_Transseries\_Inverses/\\
 Combinatorial\_Transseries\_Inverses.tex.
 \end{quote}
+% ed. (2026-09-29): current path added by ProveIt.
+\noindent Editorial note (ProveIt, 2026-09-29): this is the pre-split path;
+the companion is now
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/\\
+Combinatorial\_Transseries\_Inverses/\\
+Combinatorial\_Transseries\_Inverses.tex.
+\end{quote}
 The following crosswalk prevents a formal coefficient identity from being
 silently upgraded into an analytic theorem.
 
@@ -1710,5 +1771,38 @@ Preprint \url{https://arxiv.org/abs/2506.08265}, version 2, 1 April 2026.
 B. Simon, ``The classical moment problem as a self-adjoint finite difference
 operator'', \emph{Advances in Mathematics} \textbf{137} (1998), 82--203.
 \url{https://arxiv.org/abs/math-ph/9906008}.
+% ed. (2026-09-29): editorial bibliography entries added by ProveIt.
+\bibitem{ed:siblings}
+[Editorial addition, ProveIt, 2026-09-29.] The five packages of the
+$q\to1$ merge unit in the ProveIt series-and-transseries collection,
+\path{Analysis/Transseries/docs/series-and-transseries/}:
+\path{Uniform_q_Multinomial_Certified_Inversion/uniform_q_multinomial_transseries.tex};
+\path{Uniform_Resurgent_Crossover_Gaussian_Binomials/article.tex};
+\path{Certified_Inversion_q_to_1_Transition/q_transition.tex};
+\path{Gamma_Core_q_to_1_Crossover/Gamma_Core_Transseries.tex};
+\path{Theta_Resolved_Optimal_Truncation_q_Multinomial/article.tex}.
+Filed in batches 45 and 46 of \path{docs/incoming/README.md}; unrefereed.
+
+\bibitem{ed:gcc}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Gaussian
+Coefficient Calculus},
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/Gaussian_Coefficient_Calculus.tex},
+Theorem \texttt{q3:thm:double-scaling} (line 3942) and its domain
+\texttt{q3:eq:double-scaling-domain}.
+
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion} (canonical volume),
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Theorem \texttt{p0:thm:optimal-truncation} (line 39360).
+
+\bibitem{ed:lean}
+[Editorial addition, ProveIt, 2026-09-29.] ProveIt Lean library:
+\path{Fabius.exists_eq_in_residual_interval} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/MeanValueBracket.lean}
+and \path{Fabius.transport_bound} (the crosswalk of the canonical volume's
+\texttt{p0:eq:transport-bound}) in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RemainderTransport.lean}.
 \end{thebibliography}
 \end{document}

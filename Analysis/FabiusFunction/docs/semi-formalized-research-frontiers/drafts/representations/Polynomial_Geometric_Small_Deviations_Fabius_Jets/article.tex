@@ -1,0 +1,1168 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor}
+\definecolor{linkblue}{RGB}{30,62,100}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Polynomial--geometric small deviations}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1.3em}
+\emergencystretch=2em
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calP}{\mathcal P}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\trunc}[1]{[\,\cdot\,]_{\leq #1}}
+\newcommand{\sourcecommit}{\texttt{aab173a7ccdd48add72191d68ce6b0c12ffd72fe}}
+\hypersetup{pdftitle={Polynomial-Geometric Small Deviations: A Corrected Fabius-Jet Conjecture},pdfauthor={AI-assisted research manuscript prepared for Vladimir Reshetnikov},pdfsubject={All-order Lambert asymptotics, periodic corrections, comparison laws, and inverse quantiles}}
+\title{\textbf{Polynomial--Geometric Small Deviations}\\[0.5em]
+\large A corrected Fabius-jet conjecture, all-order Lambert asymptotics,\\
+and inverse quantiles}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $S_{m,\lambda}=\sum_{n\geq1}n^m\ee^{-\lambda n}U_n$, where the $U_n$ are independent uniform random variables on $[0,1]$, $m\geq0$, and $\lambda>0$. A conjecture in the ProveIt repository proposes an additive $o(1)$ expansion for $\log\Prob(S_{m,\lambda}\leq x)$ using a quadratic polynomial in $\log(1/x)$ and $\log\log(1/x)$ together with a bounded periodic term. We show that its stated form is false whenever $\lambda\ne1$: it omits the unbounded term $(m+1)^2\lambda^{-1}\log\lambda\,\log\log(1/x)$.
+
+We replace it by an all-order relative expansion in the exact coordinate $x=R^{m+1}\ee^{-\lambda R}$. Its leading periodic correction is independent of $m$. We give that correction as both a convergent boundary product and a Gamma--zeta Fourier series, and derive a closed first correction and a finite formula for every subsequent coefficient. The proof factors the exact Laplace transform into a Gamma reference kernel and a uniformly controlled boundary amplitude; a direct contour estimate supplies every fixed-order remainder, uniformly in the lattice phase. A comparison theorem treats arbitrary multiplicative weight perturbations tending to one, including a precise $1/n$ threshold law. Finally, inversion gains one further inverse-power order in relative quantile accuracy.
+
+The contribution is a proved correction and extension of a specific repository conjecture. The Mellin--Fourier mechanism and geometric-weight small-deviation theory have prior literature; no claim of exhaustive global priority or Lean verification is made.
+\end{abstract}
+\noindent\textbf{Keywords.} Small deviations; Fabius function; polynomial--geometric weights; Lambert $W$; periodic asymptotics; Laplace inversion; quantiles.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The research target and the precise contribution}
+\label{sec:target}
+
+\subsection{A source-level question rather than a title-level analogy}
+The repository source \cite{repojets}, at the commit recorded in \cref{app:provenance}, defines
+\begin{equation}
+ S_{m,q}=\sum_{n\geq1}n^m q^n U_n,\qquad \lambda=-\log q,
+ \qquad L=\log(1/x).
+ \label{eq:model-source}
+\end{equation}
+The conjecture \nolinkurl{conj:jet-small-ball} proposes the following shape. The source display is labelled \nolinkurl{eq:small-ball-conjecture}:
+\begin{equation}
+\begin{split}
+ \log\Prob(S_{m,q}\leq x)
+ ={}&-\frac{L^2}{2\lambda}-\frac{m+1}{\lambda}L\log L
+       +A_{m,q}L+B_{m,q}(\log L)^2\\
+ &+\mathcal P_{m,q}\left(\frac{L+(m+1)\log L}{\lambda}\right)+o(1),
+\end{split}
+\label{eq:old-conjecture}
+\end{equation}
+where $\mathcal P_{m,q}$ is bounded and one-periodic. The source suggests a Lambert-$W_{-1}$ cutoff and Mellin analysis, but does not determine the coefficients or prove this expansion.
+
+There are two separate questions here. Does a periodic endpoint expansion exist at additive $o(1)$ precision? And does the displayed list of unbounded terms contain everything necessary? The answer to the first is yes. The answer to the second is no, except at the special normalization $\lambda=1$. The missing term is not an exponentially small subtlety: it diverges logarithmically.
+
+The source discusses nonnegative integer jet orders. Our proofs cover every fixed real $m\geq0$. Set throughout
+\begin{equation}
+ a_n=n^m\ee^{-\lambda n},\qquad p=m+1,
+ \qquad F_{m,\lambda}(x)=\Prob(S_{m,\lambda}\leq x).
+ \label{eq:model}
+\end{equation}
+A subscript is suppressed when no confusion is possible.
+
+\subsection{What is proved}
+The main result is not just a corrected list of logarithms. It is an all-order expansion with a relative remainder:
+\begin{equation}
+ F_{m,\lambda}(R^p\ee^{-\lambda R})
+ =\calF_{m,\lambda}(R)
+ \left(1+\sum_{j=1}^K\frac{A_{j,m,\lambda}(R)}{R^j}
+       +O(R^{-K-1})\right),
+ \label{eq:intro-main}
+\end{equation}
+where all $A_j$ are real-analytic and one-periodic, and
+\begin{equation}
+ \calF_{m,\lambda}(R)
+ =\frac{\exp\{-\lambda R^2/2+(\lambda/2+p)R-\Psi_\lambda(R)\}}
+ {(2\pi R)^{p/2}}.
+ \label{eq:leading}
+\end{equation}
+The single periodic function $\Psi_\lambda$ is independent of $m$. Dependence on $m$ first enters the periodic correction coefficients beyond this leading factor. We also prove a general perturbation comparison and an inverse-quantile error law.
+
+The statements of primary interest are \cref{thm:allorders,cor:logform,cor:refutation,thm:comparison,thm:quantile}. The technical mechanism is isolated in \cref{lem:gamma}, so the method can be reused without repeating an unspecified saddlepoint argument.
+
+\subsection{Relation to existing literature and limits of novelty}
+Small deviations of weighted independent sums have a substantial literature; Lifshits \cite{lifshits} is a relevant early general reference. Aurzada's geometric-weight theorem \cite[Theorem 4]{aurzada} already gives the leading log-quadratic scale for digits whose lower tail is a power. For uniform digits, that includes the leading $L^2/(2\lambda)$ rate of the $m=0$ case, up to a harmless index normalization. We do not present that rate as new.
+
+Mellin transforms of geometric harmonic sums and the resulting logarithmic periodicity are classical tools, systematically developed by Flajolet, Gourdon, and Dumas \cite{fgd}. More specifically, Tavares's recent preprint \cite[Proposition 6.3]{tavares} gives a Gamma--zeta Fourier correction for a base-three uniform-series density. Its nonzero Fourier coefficients agree, after the appropriate change of scale and sign, with the mechanism appearing below. Thus neither the existence of a geometric lattice oscillation nor the Gamma--zeta mechanism is claimed as a new phenomenon here. Our argument does not use that preprint's results about predecessor densities.
+
+The work performed here is the explicit correction of \eqref{eq:old-conjecture}, the polynomial-weight all-order construction with uniform phase control, the coefficient formula and first correction, and the comparison and quantile consequences. These are proved within this manuscript rather than inferred from titles of prior work. A complete priority investigation across the small-deviation literature has not been completed. ``Resolved'' below refers to the stated repository conjecture, not to an assertion that a long-established major open problem has been settled.
+% ed. (2026-09-29): the repository's own machine-checked Fabius case was not credited; recorded on filing (batch 50).
+\begin{ednote}
+The case $m=0$, $q=1/2$ (the Fabius law) of \cref{thm:allorders,cor:logform,thm:fourier} was already a machine-checked theorem of the repository when the conjecture was stated \cite{ed:fabiuslean}. In particular the term $\frac{\log\log2}{\log2}\log L$ of \eqref{eq:missing} is part of the elementary main term of \path{Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO}, so the Fabius case of the conjecture was already contradicted by a Lean theorem; this article does not cite it. The details are in the editorial note at the end of \cref{sec:correction}. The source report now carries an editorial note (2026-09-29) under \texttt{conj:jet-small-ball} marking the conjecture false for $\lambda\ne1$ and pointing to this article.
+\end{ednote}
+
+\section{The Lambert coordinate and the main theorem}
+\label{sec:main}
+
+\subsection{The large inverse branch}
+For $R>p/\lambda$, the function
+\begin{equation}
+ x(R)=R^p\ee^{-\lambda R}
+ \label{eq:xR}
+\end{equation}
+is strictly decreasing to zero. Consequently, sufficiently small $x>0$ has a unique representation \eqref{eq:xR} with $R>p/\lambda$. Equivalently,
+\begin{equation}
+ \lambda R-p\log R=L,
+ \qquad
+ R=-\frac p\lambda W_{-1}\left(-\frac\lambda p x^{1/p}\right).
+ \label{eq:lambert}
+\end{equation}
+The branch $W_{-1}$ is the real branch taking values at most $-1$ on $[-\ee^{-1},0)$; see \cite[\S4.13]{dlmf}. This is an exact coordinate, not a truncation of a logarithmic expansion.
+
+Define
+\begin{equation}
+ t=\frac R{x(R)}=\ee^{\lambda R}R^{-m},\qquad
+ N=\lfloor R\rfloor,\qquad s=R-N.
+ \label{eq:scaling}
+\end{equation}
+Then $tx=R$ and the continuously interpolated weight satisfies $t a_R=1$. These two identities explain the exponent $p=m+1$: the polynomial weight contributes $m$, while the number of active coordinates contributes one additional logarithm. We do not require $t$ to be the exact saddlepoint.
+
+\subsection{The universal periodic function}
+For real $s$ and $w$ in a neighborhood of $1$, put
+\begin{equation}
+\begin{split}
+ Q_0(s,w)={}&
+ \prod_{k\leq0}\left(1-\ee^{-w\ee^{-\lambda(k-s)}}\right)\\
+ &\times\prod_{k\geq1}
+ \frac{1-\ee^{-w\ee^{-\lambda(k-s)}}}{w\ee^{-\lambda(k-s)}},
+ \qquad C_0(s,w)=\log Q_0(s,w),
+\end{split}
+\label{eq:Q0}
+\end{equation}
+with the logarithm chosen real at $w=1$. The logarithmic series converges normally on sufficiently small complex neighborhoods of every compact real $s$-interval and $w=1$. We prove this in \cref{sec:boundary}. Define
+\begin{equation}
+ \Psi_\lambda(s)=\frac\lambda2(s-s^2)-C_0(s,1).
+ \label{eq:psi}
+\end{equation}
+Although the separate terms on the right are not periodic, their combination is.
+
+\begin{theorem}[All-order polynomial--geometric expansion]
+\label{thm:allorders}
+Fix $m\geq0$ and $\lambda>0$. For every integer $K\geq0$, there are real-analytic one-periodic functions $A_{j,m,\lambda}$, $0\leq j\leq K$, with $A_0=1$, such that \eqref{eq:intro-main} holds as $R\to\infty$. The error is uniform in $s=\{R\}$; for a fixed $K$, its constants can also be chosen uniformly when $(m,\lambda)$ ranges over a compact subset of $[0,\infty)\times(0,\infty)$.
+
+The leading function is \eqref{eq:leading}, with $\Psi_\lambda$ given by \eqref{eq:psi}. The first correction is
+\begin{equation}
+\boxed{\displaystyle
+ A_{1,m,\lambda}(s)
+ =\frac{1-2m}{24}+\frac1{2\lambda}
+   +m\,\partial_\lambda\Psi_\lambda(s)
+   +\frac{\Psi_\lambda''(s)-\Psi_\lambda'(s)^2}{2\lambda^2}.}
+ \label{eq:A1}
+\end{equation}
+The parameter derivative is taken at fixed $s$. Formula \eqref{eq:coefficient-algorithm} gives every coefficient by finitely many algebraic operations, derivatives, and absolutely convergent boundary sums.
+\end{theorem}
+
+The theorem is proved in \cref{sec:proof-main}. The uniformity statement is a fixed-order assertion, not a bound uniform in $K$. In particular, the theorem does not by itself determine the divergence rate of the coefficient sequence or justify optimal truncation.
+
+\begin{theorem}[Fourier form and nonconstancy]
+\label{thm:fourier}
+Let $\gamma$ denote Euler's constant and let $\gamma_1$ be defined by
+$\zeta(1+z)=z^{-1}+\gamma-\gamma_1z+O(z^2)$. Put
+\begin{equation}
+ C_* =\frac{\pi^2}{12}-\frac{\gamma^2}{2}-\gamma_1,
+ \qquad \omega_\ell=\frac{2\pi\ell}{\lambda}.
+ \label{eq:Cstar}
+\end{equation}
+Then
+\begin{equation}
+ \Psi_\lambda(s)=\frac\lambda{12}+\frac{C_*}{\lambda}
+ +\frac1\lambda\sum_{\ell\in\Z\setminus\{0\}}
+ \Gamma(-\ii\omega_\ell)\zeta(1-\ii\omega_\ell)
+ \ee^{2\pi\ii\ell s}.
+ \label{eq:fourier}
+\end{equation}
+The series and all its derivatives converge absolutely on the real line. It extends holomorphically to every closed substrip of $|\operatorname{Im}s|<\pi/(2\lambda)$. Every nonzero Fourier coefficient is nonzero, so $\Psi_\lambda$ is not constant.
+\end{theorem}
+
+The Fourier theorem is proved in \cref{sec:fourier-proof}. The nonvanishing input for $\zeta$ on $\operatorname{Re}z=1$ is classical, not a new zero-free result.
+
+\section{Why the repository conjecture is false}
+\label{sec:correction}
+
+\begin{corollary}[Expansion with additive vanishing error]
+\label{cor:logform}
+Let $d=\log L-\log\lambda$ and $T=(L+pd)/\lambda$. Then
+\begin{equation}
+\begin{split}
+ \log F_{m,\lambda}(\ee^{-L})={}&
+ -\frac{L^2}{2\lambda}-\frac p\lambda L\log L
+ +\left(\frac12+\frac{p(1+\log\lambda)}\lambda\right)L\\
+ &-\frac{p^2}{2\lambda}(\log L-\log\lambda)^2
+ -\frac p2\log(2\pi)-\Psi_\lambda(T)
+ +O\left(\frac{(\log L)^2}{L}\right).
+\end{split}
+\label{eq:Lform}
+\end{equation}
+In particular, the coefficient of the isolated term $\log L$ is
+\begin{equation}
+ \boxed{\displaystyle\frac{p^2\log\lambda}{\lambda}.}
+ \label{eq:missing}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+From \eqref{eq:lambert}, writing $Y=\lambda R$, a Taylor expansion with a uniform remainder gives
+\begin{equation}
+ Y=L+pd+\frac{p^2d}{L}+O\left(\frac{d^2}{L^2}\right).
+ \label{eq:Rexpand}
+\end{equation}
+For completeness, substitute $Y=L+u$ into
+$u=pd+p\log(1+u/L)$. First $u=O(\log L)$ by monotonicity of the defining equation, then $u=pd+O(d/L)$, and one further substitution proves \eqref{eq:Rexpand}.
+
+The logarithm of \cref{thm:allorders} at $K=0$ is
+\[
+ -\frac{Y^2}{2\lambda}+
+ \left(\frac12+\frac p\lambda\right)Y
+ -\frac p2\log(2\pi Y/\lambda)-\Psi_\lambda(Y/\lambda)+O(L^{-1}).
+\]
+Insert \eqref{eq:Rexpand}. The terms proportional to $d$ outside $d^2$ cancel:
+\[
+ -\frac{p^2}{\lambda}d+
+ \left(\frac p2+\frac{p^2}{\lambda}\right)d-\frac p2d=0.
+\]
+The unretained error is $O(d^2/L)$. Since $\Psi_\lambda'$ is bounded and
+$R-T=O(d/L)$, replacing its argument by $T$ costs only $O(d/L)$.
+This proves \eqref{eq:Lform}; expanding its square gives \eqref{eq:missing}.
+\end{proof}
+
+\begin{corollary}[Refutation and the exceptional normalization]
+\label{cor:refutation}
+For every $m\geq0$ and every $\lambda>0$ with $\lambda\ne1$, no choice of constants $A_{m,q},B_{m,q}$ and bounded periodic $\mathcal P_{m,q}$ can make \eqref{eq:old-conjecture} true. For $\lambda=1$, its shape is valid with
+\begin{equation}
+ A_{m,\ee^{-1}}=p+\frac12,\quad
+ B_{m,\ee^{-1}}=-\frac{p^2}{2},\quad
+ \mathcal P_{m,\ee^{-1}}(u)=-\frac p2\log(2\pi)-\Psi_1(u).
+ \label{eq:exception}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Comparison of the two formulas first forces the coefficient of $L$, then the coefficient of $(\log L)^2$. After those are matched, their difference is
+$p^2\lambda^{-1}\log\lambda\,\log L+O(1)$. The bounded periodic parts, including a constant phase shift $-p\log\lambda/\lambda$, cannot cancel that divergence. The coefficient vanishes exactly when $\lambda=1$. In that case \eqref{eq:exception} follows directly from \eqref{eq:Lform}.
+\end{proof}
+
+\subsection{The dyadic case}
+For $q=1/2$, $\lambda=\log2$, so the missing term is already present in the ordinary geometric case $m=0$. For polynomial jet order $m$, its coefficient is
+\[
+ \frac{(m+1)^2\log\log2}{\log2}<0.
+\]
+The squared factor $(m+1)^2$ makes the omission more pronounced as the jet order increases. Its sign does not depend on the phase of the lattice oscillation.
+
+A fixed-order expansion of $R$ that is adequate for relative accuracy in $R$ need not be adequate inside $\ee^{-\lambda R^2/2}$. An error $\Delta R$ there is amplified by a factor of order $R$ at the logarithmic level. Keeping the exact Lambert coordinate until the final conversion avoids this loss of precision.
+
+% ed. (2026-09-29): machine-checked counterparts of the dyadic case, uncited by the article; recorded on filing (batch 50).
+\begin{ednote}
+For $m=0$, $q=1/2$ (the Fabius law) \cref{thm:allorders}, \cref{cor:logform} and \cref{thm:fourier} have machine-checked counterparts in \path{Analysis/FabiusFunction/Lean/FabiusFunction/} \cite{ed:fabiuslean}:
+\path{Fabius.log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion} (\path{FabiusFullAsymptoticExpansion.lean}), whose main term \path{fabiusSharpLambertMain} is $\log\calF_{0,\log2}$ in the exact phase $\lambda2^{-\lambda}=x$ (this article's $R$);
+\path{Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO} (\path{FabiusSharpAsymptotic.lean}), whose elementary main term \path{fabiusWikipediaElementaryMain} contains the term $\frac{\log\log2}{\log2}\log L$ of \eqref{eq:missing}, with the error $O(1/L)$, sharper than the $O((\log L)^2/L)$ of \eqref{eq:Lform};
+\path{fabiusFirstSaddleCorrection}, which is $A_{1,0,\log2}$ with the periodic function of opposite sign (the Lean periodic function is $-\Psi_{\log2}$ up to an additive constant); and
+\path{hasSum_negativeLaplacePsi_gammaZeta_fourierSeries} and \path{negativeLaplacePsiFourierCoeff_ne_zero} (\path{PeriodicFourier.lean}), the Gamma--zeta Fourier form and the nonvanishing of its coefficients.
+The canonical Fabius volume (\path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/}) states them as \texttt{eq:sharp-main-lambda} and \texttt{eq:all-orders-log}. Term by term, including the constant, the Lean elementary main term agrees with \eqref{eq:Lform} at $(m,\lambda)=(0,\log2)$, apart from two further terms of order $(\log L)^2/L$. The general $m$ and $\lambda$, the comparison theorem and the quantile theorem are not formalized. This note is editorial.
+\end{ednote}
+
+\section{An exact Gamma reference for the probability}
+\label{sec:gamma}
+
+\subsection{Existence, positivity, and inversion}
+Since $0\leq U_n\leq1$ and $\sum a_n<\infty$, the series $S$ converges for every outcome on which all digits lie in $[0,1]$. Its support is the whole interval $[0,A]$, $A=\sum a_n$. Indeed, choose finitely many coordinates to approximate any desired point of that interval and then make the deterministic tail arbitrarily small. Every nonempty open subinterval of the support has positive probability.
+
+Writing $S=a_1U_1+T$ gives a density
+\[
+ f(x)=\frac1{a_1}\Prob\{x-a_1<T<x\},
+\]
+with immaterial endpoint modifications. The support argument applied to $T$ shows $f(x)>0$ for $0<x<A$. In fact $f$ is smooth: the characteristic function of the sum of any $r$ positive uniform summands is $O(|v|^{-r})$, while the remaining characteristic function has modulus at most one. Choosing $r$ arbitrarily large and applying Fourier inversion gives derivatives of every order. Thus $F$ is strictly increasing on $(0,A)$ and has an unambiguous small quantile inverse.
+
+The Laplace transform is
+\begin{equation}
+ \calL(t)=\E\ee^{-tS}
+ =\prod_{n\geq1}\frac{1-\ee^{-ta_n}}{ta_n},\qquad \operatorname{Re}t>0.
+ \label{eq:laplace}
+\end{equation}
+For positive real $t$, write $H(t)=-\log\calL(t)=\sum h(ta_n)$, where
+\begin{equation}
+ h(z)=\log z-\log(1-\ee^{-z}).
+ \label{eq:h}
+\end{equation}
+The product is justified by bounded convergence from the finite independent sums, and its logarithm converges normally on compact subsets of the right half-plane.
+
+\subsection{The exact factorization}
+At the scaling \eqref{eq:scaling}, put
+\begin{equation}
+ z_n=ta_n=(n/R)^m\ee^{\lambda(R-n)},
+ \qquad
+ B_R=N\log t+m\log\Gamma(N+1)-\frac\lambda2N(N+1).
+ \label{eq:zB}
+\end{equation}
+Separate the first $N$ uniform factors:
+\begin{equation}
+ Q_R(w)=\prod_{n\leq N}(1-\ee^{-wz_n})
+ \prod_{n>N}\frac{1-\ee^{-wz_n}}{wz_n}.
+ \label{eq:QR}
+\end{equation}
+Then, exactly,
+\begin{equation}
+ \calL(tw)=\ee^{-B_R}w^{-N}Q_R(w),
+ \qquad
+ F(x(R))=\frac{\ee^{-B_R}}{2\pi\ii}
+ \int_{1-\ii\infty}^{1+\ii\infty}
+ \ee^{wR}w^{-N-1}Q_R(w)\dd w.
+ \label{eq:exact-inversion}
+\end{equation}
+The second formula is the inverse Laplace formula for the CDF, including the factor $1/w$. It can also be obtained by ordinary Fourier inversion of $\ee^{-tx}F(x)$ on the positive half-line. The bounds below imply absolute convergence for large $N$, so no conditionally convergent contour manipulation is hidden in \eqref{eq:exact-inversion}.
+
+\begin{lemma}[Uniform amplitude bounds]
+\label{lem:amplitude}
+For fixed $m,\lambda$, as $R\to\infty$:
+\begin{equation}
+ \sup_{u\in\R}|Q_R(1+\ii u)|\leq C.
+ \label{eq:globalQ}
+\end{equation}
+For each sufficiently small fixed $\rho\in(0,1)$, $Q_R$ is holomorphic and uniformly bounded on $|w-1|\leq\rho$. All its fixed-order derivatives are uniformly bounded on a smaller disk, and $Q_R(1)$ is bounded below by a positive constant. The bounds are uniform in $s\in[0,1]$ and locally uniform in $m,\lambda$.
+\end{lemma}
+
+\begin{proof}
+For $\operatorname{Re}w=1$ and $z>0$,
+\[
+ \left|\frac{1-\ee^{-wz}}{wz}\right|
+ =\left|\int_0^1\ee^{-wzv}\dd v\right|\leq1,
+ \qquad |1-\ee^{-wz}|\leq1+\ee^{-z}.
+\]
+It suffices to bound $\sum_{n\leq N}\ee^{-z_n}$. For $n\leq R/2$,
+$z_n\geq R^{-m}\ee^{\lambda R/2}$, so this part is at most
+$R\exp\{-R^{-m}\ee^{\lambda R/2}\}$. For $R/2<n\leq N$,
+$z_n\geq2^{-m}\ee^{\lambda(R-n)}$; the remaining sum is bounded by a convergent doubly exponentially decreasing series indexed backwards from $N$. This proves \eqref{eq:globalQ}.
+
+On a disk with $\operatorname{Re}w\geq c>0$, early logarithmic factors and their derivatives are bounded by a polynomial in $z_n$ times $\ee^{-cz_n}$. Late logarithmic factors are $O(z_n)$ once $z_n$ is small, and the finitely many transition factors lie in a compact zero-free region. For $n>N$,
+\[
+ \sum z_n\leq C\sum_{k\geq1}(1+k/R)^m\ee^{-\lambda k}<C'.
+\]
+These estimates give normally convergent logarithmic products with uniformly bounded sums. The real logarithm at $w=1$ is bounded, giving the positive lower bound. Cauchy estimates on nested disks give every fixed derivative bound. All estimates remain uniform on the parameter compacts stated above.
+\end{proof}
+
+\subsection{The reusable inversion lemma}
+Define
+\begin{equation}
+ P_j(N,R)=\sum_{k=0}^j\binom jk(-1)^{j-k}
+ \frac{\fall N k}{R^k}.
+ \label{eq:Pj}
+\end{equation}
+These are finite algebraic expressions, not asymptotically defined quantities.
+
+\begin{lemma}[Gamma-reference expansion with a remainder]
+\label{lem:gamma}
+Suppose $N=R-s\in\N$, $s$ ranges over a fixed bounded interval, and the amplitudes $Q_R$ satisfy the bounds in \cref{lem:amplitude}. For every fixed integer $K\geq0$,
+\begin{equation}
+\begin{split}
+ &\frac{\Gamma(N+1)}{R^N}\frac1{2\pi\ii}
+ \int_{1-\ii\infty}^{1+\ii\infty}
+ \ee^{wR}w^{-N-1}Q_R(w)\dd w\\
+ &\hspace{1cm}=
+ \sum_{j=0}^{2K+1}\frac{Q_R^{(j)}(1)}{j!}P_j(N,R)
+ +O(R^{-K-1}).
+\end{split}
+\label{eq:gamma-lemma}
+\end{equation}
+The error is uniform in all parameters for which the amplitude bounds are uniform.
+\end{lemma}
+
+\begin{proof}
+For $N>j$, expansion of $(w-1)^j$ and the inverse Laplace identity for a power give
+\begin{equation}
+ \frac1{2\pi\ii}\int_{1-\ii\infty}^{1+\ii\infty}
+ \ee^{wR}w^{-N-1}(w-1)^j\dd w
+ =\frac{R^N}{\Gamma(N+1)}P_j(N,R).
+ \label{eq:gamma-moment}
+\end{equation}
+The identity for $w^{-a-1}$ is also immediate by closing the contour to the left and extracting the coefficient of $w^a$ in $\ee^{wR}$; here $a=N-k\geq1$, so absolute integrability is available.
+
+Taylor-expand $Q_R$ about $1$ to degree $2K+1$. On $w=1+\ii u$, $|u|\leq\eta$ for a fixed smaller disk, the remainder is at most $C_K|u|^{2K+2}$. Its integral in absolute value is bounded by
+\[
+ C_K\ee^R\int_{-\eta}^{\eta}
+ |u|^{2K+2}(1+u^2)^{-(N+1)/2}\dd u
+ =O(\ee^R N^{-K-3/2}).
+\]
+Indeed, $\log(1+u^2)\geq c_\eta u^2$ there, reducing the estimate to a Gaussian moment. Stirling's formula, with $N=R+O(1)$, gives
+\begin{equation}
+ \frac{R^N}{\Gamma(N+1)}\asymp\frac{\ee^R}{\sqrt R}.
+ \label{eq:gamma-normalization}
+\end{equation}
+Thus the normalized local error is $O(R^{-K-1})$.
+
+On $|u|\geq\eta$, the original amplitude is bounded and its Taylor polynomial grows at most like a fixed power of $|u|$. The factor $(1+u^2)^{-(N+1)/2}$ gives an exponentially small integral: reserve a fixed integrable power and bound the remainder by $(1+\eta^2)^{-cN}$. This is negligible relative to \eqref{eq:gamma-normalization}. Integrating the Taylor polynomial over the full line and using \eqref{eq:gamma-moment} proves the lemma.
+\end{proof}
+
+\begin{remark}
+The probabilistic interpretation is that the heavily tilted early uniform digits approach exponential variables; the exact kernel $w^{-N}$ retains their Gamma sum. The proof above needs neither an unquantified central limit theorem nor an assertion that an approximate saddle is exact.
+\end{remark}
+
+\section{The boundary expansion and all coefficient orders}
+\label{sec:boundary}
+
+\subsection{Boundary functions and differential operators}
+Write $u=k-s$, $z=\ee^{-\lambda u}$, and define
+\begin{equation}
+ G_-(w,z)=\log(1-\ee^{-wz}),\qquad
+ G_+(w,z)=\log\frac{1-\ee^{-wz}}{wz},\qquad D=z\partial_z.
+ \label{eq:G}
+\end{equation}
+The minus sign refers to $k\leq0$, and the plus sign to $k\geq1$; it does not denote the sign of the function. For $r\geq0$, let
+\begin{equation}
+ C_r(s,w)=\sum_{k\in\Z}(k-s)^r
+ \binom{mD}{r}G_{\pm}(w,z)\bigg|_{z=\ee^{-\lambda(k-s)}},
+ \label{eq:Cr}
+\end{equation}
+where
+\[
+ \binom{mD}{0}=1,\qquad
+ \binom{mD}{r}=\frac{(mD)(mD-1)\cdots(mD-r+1)}{r!}.
+\]
+The convention $G_-$ for $k\leq0$ and $G_+$ for $k\geq1$ is used in every such sum. At $r=0$, this agrees with $C_0$ in \eqref{eq:Q0} and is independent of $m$.
+
+\begin{lemma}[Normally convergent boundary expansion]
+\label{lem:boundary}
+For every fixed $K\geq0$,
+\begin{equation}
+ \log Q_R(w)=\sum_{r=0}^K\frac{C_r(s,w)}{R^r}+O(R^{-K-1}),
+ \label{eq:boundary-expansion}
+\end{equation}
+uniformly for $s\in[0,1]$ and $w$ in a sufficiently small fixed disk about $1$. The same holds after any fixed number of $w$ derivatives, using a smaller disk. All sums \eqref{eq:Cr} converge normally and are real-analytic in $s,\lambda$ for real $s$ and $\lambda>0$.
+\end{lemma}
+
+\begin{proof}
+For the factor with $n=N+k=R+u$,
+\[
+ z_n=z(1+u/R)^m.
+\]
+For $|u|\leq R/2$, Taylor expansion in $v=u/R$ gives
+\begin{equation}
+ G_\pm(w,z(1+v)^m)
+ =\sum_{r=0}^K v^r\binom{mD}{r}G_\pm(w,z)
+   +\mathcal R_{K+1}.
+ \label{eq:operator-taylor}
+\end{equation}
+This follows either by the chain rule or from
+$(1+v)^{mD}=\exp(m\log(1+v)D)$ as a formal operator identity.
+
+For late indices $u>0$, fixed derivatives of $G_+$ are bounded by $C\ee^{-\lambda u}$ once $u$ is large. For early indices $u<0$, fixed derivatives of $G_-$ are bounded by a polynomial in $\ee^{\lambda|u|}$ times $\exp\{-c\ee^{\lambda|u|}\}$. The same envelopes, with adjusted constants, bound the derivatives appearing in the Taylor remainder, since $(1+v)^m$ stays between fixed positive constants for $|v|\leq1/2$. Hence
+\[
+ |\mathcal R_{K+1}|\leq C_K R^{-K-1}|u|^{K+1}E_K(u),
+ \qquad \sum_{k\in\Z}|k-s|^{K+1}E_K(k-s)<C_K',
+\]
+uniformly in the phase.
+
+It remains to justify the replacement of the actual range $n\geq1$ by the bilateral lattice. For $u>R/2$, the true late factors have logarithmic size at most
+$C(1+u/R)^m\ee^{-\lambda u}$; their sum and all formal tail coefficients are exponentially small in $R$. For actual indices with $u<-R/2$, we have
+$z_n\geq R^{-m}\ee^{\lambda R/2}$, so their contributions are smaller than every inverse power of $R$. The additional negative indices of the bilateral sum have a doubly exponential envelope and the same property. Combining these estimates proves \eqref{eq:boundary-expansion}.
+
+All estimates remain valid on a small complex neighborhood of $s$ and $w=1$: choose it so that $w\ee^{\lambda s}$ has positive real part uniformly. Normal convergence then proves analyticity, and Cauchy estimates prove the derivative version. The envelopes are uniform on the parameter compacts of \cref{thm:allorders}.
+\end{proof}
+
+A useful first identity follows without expanding the operator further:
+\begin{equation}
+ C_1(s,w)=m\sum_k(k-s)DG_\pm(w,z)
+ =-m\,\partial_\lambda C_0(s,w).
+ \label{eq:C1}
+\end{equation}
+Both equalities hold with $s,w$ fixed.
+
+\subsection{Periodicity is an identity, not a floor discontinuity}
+Reindexing the bilateral product gives
+\begin{equation}
+ Q_0(s+1,w)=\frac{Q_0(s,w)}{w\ee^{\lambda s}},
+ \qquad C_0(s+1,w)=C_0(s,w)-\log w-\lambda s.
+ \label{eq:shift}
+\end{equation}
+At $w=1$, \eqref{eq:shift} immediately implies
+$\Psi_\lambda(s+1)=\Psi_\lambda(s)$. The identity holds on complex neighborhoods and therefore matches derivatives of every order at the endpoints of a period. The fractional-part coordinate in the construction does not make the resulting function nonsmooth.
+
+\subsection{Finite Gamma polynomials}
+Set $\varepsilon=R^{-1}$ and regard $N=\varepsilon^{-1}-s$ formally. Define the polynomial
+\begin{equation}
+ \calP_j(s,\varepsilon)=
+ \sum_{k=0}^j\binom jk(-1)^{j-k}
+ \prod_{a=0}^{k-1}(1-(s+a)\varepsilon).
+ \label{eq:calP}
+\end{equation}
+Thus $\calP_j(s,R^{-1})=P_j(N,R)$. In particular,
+\begin{align}
+ \calP_0&=1,&\calP_1&=-s\varepsilon,\nonumber\\
+ \calP_2&=-\varepsilon+(s^2+s)\varepsilon^2,&
+ \calP_3&=(3s+2)\varepsilon^2+O(\varepsilon^3),\nonumber\\
+ \calP_4&=3\varepsilon^2+O(\varepsilon^3).
+ \label{eq:lowP}
+\end{align}
+The important vanishing rule is
+\begin{equation}
+ \calP_j(s,\varepsilon)=O(\varepsilon^{\lceil j/2\rceil}).
+ \label{eq:moment-valuation}
+\end{equation}
+To prove it, use the exact generating identity
+\begin{equation}
+ \sum_{j\geq0}\calP_j(s,\varepsilon)\frac{z^j}{j!}
+ =\ee^{-z}(1+\varepsilon z)^{\varepsilon^{-1}-s}.
+ \label{eq:P-generating}
+\end{equation}
+The logarithm of the right side has at order $\varepsilon^r$ a polynomial in $z$ of degree at most $r+1\leq2r$. Its exponential therefore has degree at most $2r$ at that order. This proves \eqref{eq:moment-valuation} algebraically.
+
+\subsection{An explicit coefficient algorithm}
+Let $B_j(s)$ denote the Bernoulli polynomials with $B_1(s)=s-1/2$. For a formal series, $[\cdot]_{\leq K}$ means discard powers of $\varepsilon$ above $K$. The coefficient prescription is
+\begin{equation}
+\begin{split}
+ \sum_{k=0}^K A_{k,m,\lambda}(s)\varepsilon^k
+ =\Bigg[&\exp\left\{-p\sum_{r=1}^K
+ \frac{B_{r+1}(s)}{r(r+1)}\varepsilon^r\right\}\\
+ &\times\sum_{j=0}^{2K}
+ \frac{\calP_j(s,\varepsilon)}{j!Q_0(s,1)}
+ \left.\partial_w^j
+ \exp\left\{\sum_{r=0}^K C_r(s,w)\varepsilon^r\right\}
+ \right|_{w=1}\Bigg]_{\leq K}.
+\end{split}
+\label{eq:coefficient-algorithm}
+\end{equation}
+For any specified $K$, this uses finitely many derivatives and finitely many boundary sum types. It does not require solving a new implicit equation at every order. The boundary sums themselves are infinite but absolutely convergent, with explicit exponential or doubly exponential tail envelopes from \cref{lem:boundary}.
+
+\section{Proof of the all-order theorem and the first correction}
+\label{sec:proof-main}
+
+\subsection{Assembly of the exact factors}
+The shifted Stirling expansion is
+\begin{equation}
+ N\log R-\log\Gamma(N+1)
+ =R-\frac12\log(2\pi R)
+ -\sum_{r=1}^K\frac{B_{r+1}(s)}{r(r+1)R^r}
+ +O(R^{-K-1}).
+ \label{eq:stirling-shift}
+\end{equation}
+This follows from the Bernoulli-polynomial version of the logarithmic Gamma expansion \cite[\S5.11]{dlmf}; alternatively, substitute $N=R-s$ into ordinary Stirling and expand. The remainder is uniform for bounded $s$.
+
+Using \eqref{eq:zB}, the non-amplitude factor in \eqref{eq:exact-inversion} has logarithm
+\begin{equation}
+\begin{split}
+ -B_R+N\log R-\log\Gamma(N+1)
+ ={}&-\frac\lambda2R^2+\frac\lambda2R
+       +\frac\lambda2(s^2-s)\\
+ &+p\bigl(N\log R-\log\Gamma(N+1)\bigr).
+\end{split}
+\label{eq:factor-algebra}
+\end{equation}
+Apply \cref{lem:gamma} and then \cref{lem:boundary} to its derivatives. The leading amplitude is $Q_0(s,1)=\ee^{C_0(s,1)}$. Combining it with \eqref{eq:factor-algebra} and \eqref{eq:stirling-shift} gives exactly \eqref{eq:leading}, because
+\[
+ \frac\lambda2(s^2-s)+C_0(s,1)=-\Psi_\lambda(s).
+\]
+At order $K$, the $j=2K+1$ term in the Gamma lemma starts at order $K+1$ by \eqref{eq:moment-valuation}. The other terms give \eqref{eq:coefficient-algorithm}. All errors are uniform, and division by the leading amplitude is harmless because it is bounded away from zero. This proves the expansion and its remainder.
+
+To verify periodicity of every coefficient, temporarily permit $s$ to range in any fixed bounded real interval and choose an integer $N=R-s$. The exact factorization is valid for this choice even when $N\ne\lfloor R\rfloor$, and all proofs above still apply. Replacing $(N,s)$ by $(N-1,s+1)$ does not change the probability. The leading factor is already periodic. For the sequence $R=j+s$, subtract the two asymptotic expansions, multiply by the first inverse power at which their coefficients could differ, and let $j\to\infty$. This proves $A_k(s+1)=A_k(s)$ successively for all $k$. The coefficients are analytic from the normally convergent formulas, so their derivatives also match. This completes the proof of \cref{thm:allorders}, except for the simplified expression \eqref{eq:A1}.
+
+\subsection{Derivation of the closed first correction}
+At fixed $s$, set
+\begin{equation}
+ a=\partial_w C_0(s,1),\qquad b=\partial_w^2 C_0(s,1).
+ \label{eq:ab}
+\end{equation}
+The $R^{-1}$ terms of \eqref{eq:coefficient-algorithm} give
+\begin{equation}
+ A_1=-\frac p2B_2(s)+C_1(s,1)-sa-\frac{b+a^2}{2}.
+ \label{eq:A1raw}
+\end{equation}
+Since $G_\pm$ depends on $w,z$ through their product,
+$D G_\pm=w\partial_wG_\pm$. Differentiating \eqref{eq:psi} in $s$ yields
+\begin{equation}
+ a=\frac12-s-\frac{\Psi_\lambda'(s)}\lambda.
+ \label{eq:a}
+\end{equation}
+A second derivative, using $D^2G_\pm=w\partial_wG_\pm+w^2\partial_w^2G_\pm$, yields
+\begin{equation}
+ b=-\frac1\lambda-\frac{\Psi_\lambda''(s)}{\lambda^2}-a.
+ \label{eq:b}
+\end{equation}
+Finally, \eqref{eq:C1} and \eqref{eq:psi} imply
+\begin{equation}
+ C_1(s,1)=-m\left(\frac{s-s^2}{2}-\partial_\lambda\Psi_\lambda(s)\right).
+ \label{eq:C1psi}
+\end{equation}
+Insert \eqref{eq:a}--\eqref{eq:C1psi} and $B_2(s)=s^2-s+1/6$ into \eqref{eq:A1raw}. The coefficients of $s^2$ and $s$ cancel. The remaining constant and periodic terms are precisely \eqref{eq:A1}. This calculation is also checked symbolically in the accompanying program.
+
+\subsection{Why the leading oscillation is universal}
+Near the active index, $n=R+u$ with $u$ bounded, the scaled weight is
+\[
+ z_n=\ee^{-\lambda u}(1+u/R)^m
+     =\ee^{-\lambda u}\bigl(1+mu/R+O(R^{-2})\bigr).
+\]
+The limiting boundary lattice therefore depends on $\lambda$ but not on $m$. Polynomial weights contribute to the large exact product through $\Gamma(N+1)^m$ and perturb the boundary only at order $R^{-1}$. This is a structural explanation of the universal $\Psi_\lambda$, not merely a cancellation observed in a final expression.
+
+\section{The Fourier representation of the lattice correction}
+\label{sec:fourier-proof}
+
+\subsection{A convergent periodization}
+For real $u$, let
+\begin{equation}
+ g_\lambda(u)=h(\ee^{-\lambda u})+\lambda u\,\mathbf1_{\{u\leq0\}}.
+ \label{eq:g}
+\end{equation}
+Then for $0\leq s<1$,
+\begin{equation}
+ \Psi_\lambda(s)=\frac\lambda2(s-s^2)
+       +\sum_{k\in\Z}g_\lambda(k-s).
+ \label{eq:psi-periodization}
+\end{equation}
+The positive-$u$ tail is exponentially small, while the negative-$u$ tail is doubly exponentially small. Formula \eqref{eq:psi-periodization} is a stable real-variable way to compute the periodic term.
+
+Let $D=z\partial_z$ as before. Differentiating the normally convergent expression away from the endpoint of a period, and then using analytic continuation across that endpoint, gives
+\begin{equation}
+ \Psi_\lambda''(s)+\lambda
+ =\lambda^2\sum_{k\in\Z}D^2h(\ee^{\lambda(s-k)}).
+ \label{eq:psi-second}
+\end{equation}
+There are no distributional delta terms in this identity: the explicit quadratic term and the reindexing identity already account for the boundary joining.
+
+\subsection{The Mellin identity}
+On the strip $-1<\operatorname{Re}v<0$,
+\begin{equation}
+ \int_0^\infty z^{v-1}h(z)\dd z=\Gamma(v)\zeta(1+v).
+ \label{eq:Mellin-h}
+\end{equation}
+One direct derivation starts with
+$Dh(z)=1-z/(\ee^z-1)$ and integrates by parts. The Mellin integral of $1-z/(\ee^z-1)$ on this strip is the negative analytic continuation of $\Gamma(v+1)\zeta(v+1)$, obtained by subtracting its singular constant at zero. A second integration by parts gives
+\begin{equation}
+ \int_0^\infty z^{v-1}D^2h(z)\dd z
+ =v^2\Gamma(v)\zeta(1+v).
+ \label{eq:Mellin-second}
+\end{equation}
+This last integral actually converges for $\operatorname{Re}v>-1$, because $D^2h(z)=O(z)$ at zero and decreases exponentially at infinity. Analytic continuation therefore extends \eqref{eq:Mellin-second} to that half-plane, with the removable value $1$ at $v=0$.
+
+Here is the subtraction argument in more detail. For $-1<\operatorname{Re}v<0$, split the integral at $1$ and write
+\[
+ \int_0^\infty z^{v-1}\left(\frac z{\ee^z-1}-1\right)\dd z
+ =\int_0^1z^{v-1}\left(\frac z{\ee^z-1}-1\right)\dd z
+ +\int_1^\infty\frac{z^v}{\ee^z-1}\dd z+\frac1v.
+\]
+The right side is exactly the continuation of $\Gamma(v+1)\zeta(v+1)$ from $\operatorname{Re}v>0$. This validates the preceding integration by parts without separating divergent integrals.
+
+\subsection{Nonzero Fourier modes}
+For $\ell\ne0$, take the $\ell$th Fourier coefficient of \eqref{eq:psi-second}. Normal convergence permits unfolding the periodized integral to the real line. With $z=\ee^{\lambda y}$,
+\begin{align*}
+ &\int_0^1\sum_kD^2h(\ee^{\lambda(s-k)})
+            \ee^{-2\pi\ii\ell s}\dd s\\
+ &\qquad=\frac1\lambda\int_0^\infty
+ z^{-1-\ii\omega_\ell}D^2h(z)\dd z
+ =\frac{(-\ii\omega_\ell)^2}{\lambda}
+   \Gamma(-\ii\omega_\ell)\zeta(1-\ii\omega_\ell).
+\end{align*}
+The multiplier $-(2\pi\ell)^2$ on the left cancels the corresponding factor on the right, giving the nonzero coefficients in \eqref{eq:fourier}.
+
+\subsection{The mean and the constant convention}
+Averaging \eqref{eq:psi-periodization} gives
+\begin{equation}
+ \int_0^1\Psi_\lambda(s)\dd s
+ =\frac\lambda{12}+\frac1\lambda
+ \int_0^\infty\left(h(z)-\log z\,\mathbf1_{\{z\geq1\}}\right)\frac{\dd z}{z}.
+ \label{eq:mean-integral}
+\end{equation}
+The remaining integral is the constant Laurent coefficient of
+$\Gamma(v)\zeta(1+v)$ at $v=0$, after subtracting $1/v^2$.
+Using the Gamma and zeta expansions, with the Stieltjes convention in \cite[\S25.2]{dlmf},
+\[
+ \Gamma(v)\zeta(1+v)
+ =\frac1{v^2}+\frac{\pi^2}{12}-\frac{\gamma^2}{2}-\gamma_1+O(v).
+\]
+There is no simple-pole term. This proves the zero mode in \eqref{eq:fourier}.
+
+Finally, the vertical-line Gamma estimate \cite[\S5.11]{dlmf} gives the exponential factor $\ee^{-\pi^2|\ell|/\lambda}$ in the Fourier coefficients. A polynomial bound for $\zeta(1-\ii t)$, obtainable for example from its Euler--Maclaurin representation, suffices to prove normal convergence on the stated strips, including all derivatives. The Gamma function has no zeros, and the classical zero-free theorem gives $\zeta(1+\ii t)\ne0$ for $t\ne0$ \cite[\S25.10]{dlmf}. This proves nonconstancy and completes \cref{thm:fourier}.
+
+\section{A comparison theorem for perturbed weights}
+\label{sec:comparison}
+
+The boundary method also separates the influence of the early coordinates from that of the transition region. It yields a comparison law that does not require the logarithmic perturbations to be summable.
+
+\begin{theorem}[Vanishing logarithmic perturbations]
+\label{thm:comparison}
+Let $\eta_n\in\R$ and $\eta_n\to0$. Define
+\begin{equation}
+ \widetilde a_n=a_n\ee^{\eta_n},\qquad
+ \widetilde S=\sum_{n\geq1}\widetilde a_nU_n,
+ \qquad \widetilde F(x)=\Prob(\widetilde S\leq x).
+ \label{eq:perturbed-model}
+\end{equation}
+Use the unperturbed coordinate $x=R^p\ee^{-\lambda R}$ and $N=\lfloor R\rfloor$. Then
+\begin{equation}
+ \boxed{\displaystyle
+ \frac{\widetilde F(x(R))}{F(x(R))}
+ \exp\left(\sum_{n=1}^N\eta_n\right)\longrightarrow1.}
+ \label{eq:comparison}
+\end{equation}
+Equivalently,
+$\log\widetilde F(x(R))-\log F(x(R))=-\sum_{n\leq N}\eta_n+o(1)$.
+\end{theorem}
+
+\begin{proof}
+The sequence $\eta_n$ is bounded. The exact early product becomes
+$\widetilde B_R=B_R+\sum_{n\leq N}\eta_n$, and the boundary amplitude
+$\widetilde Q_R$ is \eqref{eq:QR} with $z_n$ replaced by $z_n\ee^{\eta_n}$. The proof of \cref{lem:amplitude} is unchanged, since these scaling factors lie in a fixed compact subinterval of $(0,\infty)$.
+
+On a small disk about $w=1$,
+\begin{equation}
+ \widetilde Q_R(w)-Q_R(w)\longrightarrow0
+ \label{eq:Qcomparison}
+\end{equation}
+uniformly, including any fixed number of derivatives on a smaller disk. To prove this, first restrict to $|n-R|\leq M$. For fixed $M$, all relevant $\eta_n$ tend to zero uniformly as $R\to\infty$, and the finite product differences tend to zero. Outside this window, the exponential and doubly exponential envelopes used earlier are uniformly summable, even after a bounded multiplicative change in $z_n$. Their tails tend to zero as $M\to\infty$. This two-stage limit proves \eqref{eq:Qcomparison}.
+
+The Gamma lemma at $K=0$ implies
+\[
+ F(x(R))=\ee^{-B_R}\frac{R^N}{\Gamma(N+1)}
+                 \bigl(Q_R(1)+O(R^{-1})\bigr),
+\]
+and the analogous formula holds with tildes. Both leading amplitudes are bounded below, and their ratio tends to one by \eqref{eq:Qcomparison}. Dividing the two expressions gives \eqref{eq:comparison}.
+\end{proof}
+
+\begin{corollary}[Summable perturbations and a critical harmonic tail]
+\label{cor:comparison-examples}
+If $\sum_n\eta_n$ converges, even conditionally, then
+\begin{equation}
+ \frac{\widetilde F(x)}{F(x)}\longrightarrow
+ \exp\left(-\sum_{n\geq1}\eta_n\right).
+ \label{eq:summable-comparison}
+\end{equation}
+If
+\begin{equation}
+ \eta_n=\frac c n+r_n,\qquad \sum_{n\geq1}r_n=E\quad\text{converges},
+ \label{eq:harmonic-eta}
+\end{equation}
+then
+\begin{equation}
+ \frac{\widetilde F(x(R))}{F(x(R))}
+ \sim\ee^{-c\gamma-E}R^{-c}.
+ \label{eq:harmonic-comparison}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For the first statement, the partial sums in \eqref{eq:comparison} converge. For the second, use
+$\sum_{n\leq N}n^{-1}=\log N+\gamma+o(1)$ and $N/R\to1$.
+\end{proof}
+
+A finite modification of the weights therefore multiplies the endpoint probability, asymptotically, by the reciprocal product of the weight multipliers. A harmonic logarithmic perturbation does something different: it inserts the extra factor $R^{-c}$, hence the additional unbounded term $-c\log L+O(1)$ in the logarithmic probability. This is a precise distinction between a change of constant normalization and a change of asymptotic scale.
+
+For example, weights
+$\widetilde a_n=(n+\alpha)^m\ee^{-\lambda n}$, with $\alpha>-1$, satisfy
+$\eta_n=m\log(1+\alpha/n)$. The convergent-product identity for the Gamma function gives
+\begin{equation}
+ \frac{\widetilde F(x(R))}{F(x(R))}
+ \sim\Gamma(1+\alpha)^m R^{-m\alpha}.
+ \label{eq:shifted-weight}
+\end{equation}
+Indeed, the finite multiplier product is
+$\prod_{n\leq N}(1+\alpha/n)^m
+ =[\Gamma(N+1+\alpha)/(\Gamma(1+\alpha)\Gamma(N+1))]^m$;
+Stirling and \cref{thm:comparison} prove \eqref{eq:shifted-weight}. This also shows why changing a starting-index convention can alter a logarithmic correction, not merely its periodic phase.
+
+\section{Inverse quantiles and error transport}
+\label{sec:quantiles}
+
+For small $u>0$, let $\mathfrak q(u)=F^{-1}(u)$ and set $y=-\log u$. Define
+\begin{equation}
+ J_0(R)=\frac\lambda2R^2-\left(\frac\lambda2+p\right)R
+       +\frac p2\log(2\pi R)+\Psi_\lambda(R).
+ \label{eq:J0}
+\end{equation}
+Let $b_j(s)$ be the formal logarithmic coefficients
+\begin{equation}
+ \log\left(1+\sum_{j\geq1}A_j(s)\varepsilon^j\right)
+ =\sum_{j\geq1}b_j(s)\varepsilon^j,
+ \qquad b_1=A_1,\quad b_2=A_2-\frac12A_1^2.
+ \label{eq:bj}
+\end{equation}
+Put
+\begin{equation}
+ J_K(R)=J_0(R)-\sum_{j=1}^K b_j(R)R^{-j}.
+ \label{eq:JK}
+\end{equation}
+The all-order theorem implies
+\begin{equation}
+ -\log F(x(R))=J_K(R)+O(R^{-K-1}).
+ \label{eq:log-remainder}
+\end{equation}
+
+\begin{theorem}[One extra inverse-power order for the quantile]
+\label{thm:quantile}
+For every fixed $K\geq0$ and sufficiently large $y$, the equation
+$J_K(\widehat R_K)=y$ has a unique sufficiently large solution. Then
+\begin{equation}
+ R(\mathfrak q(\ee^{-y}))-\widehat R_K
+   =O(\widehat R_K^{-K-2}),
+ \qquad
+ \frac{\mathfrak q(\ee^{-y})}{x(\widehat R_K)}
+   =1+O(\widehat R_K^{-K-2}).
+ \label{eq:quantile-error}
+\end{equation}
+Here $R(\cdot)$ denotes the large Lambert coordinate in \eqref{eq:lambert}.
+\end{theorem}
+
+\begin{proof}
+Periodicity and smoothness give $J_K'(R)=\lambda R+O(1)$, hence eventual strict monotonicity, divergence to infinity, and existence and uniqueness of the large root. Both the true coordinate and $\widehat R_K$ are asymptotic to $\sqrt{2y/\lambda}$, by their leading quadratic terms.
+
+At the true coordinate $R_y$, \eqref{eq:log-remainder} says
+$J_K(R_y)-y=O(R_y^{-K-1})$. Apply the mean value theorem to $J_K$ between $R_y$ and $\widehat R_K$. Its derivative there is bounded below by a positive constant times $\widehat R_K$, proving the first estimate in \eqref{eq:quantile-error}. Finally,
+$(\log x(R))'=p/R-\lambda$ is bounded; integration over that interval proves the second estimate. No derivative of the unknown remainder is required.
+\end{proof}
+
+The leading initialization is
+\begin{equation}
+ R_y=\sqrt{\frac{2y}{\lambda}}+\frac12+\frac p\lambda
+       +O\left(\frac{\log y}{\sqrt y}\right).
+ \label{eq:quantile-start}
+\end{equation}
+For a sharper practical evaluation, solve the smooth, eventually increasing equation $J_K(R)=y$ by Newton iteration with bracketing, rather than expanding its bounded oscillation away. Even $K=0$ yields relative quantile error $O(y^{-1})$; $K=1$ yields $O(y^{-3/2})$.
+
+\subsection{A conditional numerical certificate}
+The asymptotic constants in \eqref{eq:quantile-error} have not been numerically optimized in this manuscript. An actual certified bracket requires an evaluated error bound, not just a big-$O$ statement. The following elementary transport rule states exactly what is needed.
+
+Suppose on $I=[\widehat R-h,\widehat R+h]$ one has
+\[
+ |{-\log F(x(R))}-J_K(R)|\leq E,\qquad J_K'(R)\geq D>0,
+ \qquad J_K(\widehat R)=y,
+\]
+and $Dh\geq E$. Then monotonicity gives the rigorous bracket
+\begin{equation}
+ x(\widehat R+h)\leq\mathfrak q(\ee^{-y})\leq x(\widehat R-h).
+ \label{eq:quantile-bracket}
+\end{equation}
+The proof is simply evaluation at the endpoints, where the change in $J_K$ dominates the allowed residual. The contour and product estimates above provide a route to evaluating $E$ with interval arithmetic, but the included floating-point experiments do not claim to do so.
+
+\section{The Fabius-jet connection and the asymptotic algebra}
+\label{sec:interpretation}
+
+\subsection{Why these are genuinely parameter jets}
+For $0<q<1$, define on the same digit sequence
+\[
+ X(q)=\sum_{n\geq1}q^nU_n.
+\]
+The series is analytic in $q$ on the unit disk, uniformly on compact subdisks, since $|U_n|\leq1$. Termwise differentiation is therefore legitimate and gives, for integer $m\geq0$,
+\begin{equation}
+ (q\partial_q)^mX(q)=\sum_{n\geq1}n^m q^nU_n=S_{m,q}.
+ \label{eq:Euler-jets}
+\end{equation}
+Thus these laws are Euler-derivative parameter jets of the geometric uniform series, not an unrelated weighted-sum example attached to the Fabius name.
+
+For integer $j\leq m$, shifting the digits gives the joint distributional recursion
+\begin{equation}
+ S_j\ \overset{d}=\ qU+q\sum_{r=0}^j\binom jr S_r',
+ \label{eq:jet-recursion}
+\end{equation}
+where $(S_0',\ldots,S_m')$ uses one common fresh tail digit sequence and is independent of $U$. The common-tail qualification is essential: the variables $S_r'$ are not mutually independent. Equation \eqref{eq:jet-recursion} follows by expanding $(n+1)^j$.
+
+In the scalar case $m=0$, the CDF satisfies
+\[
+ F(x)=\int_0^1F(x/q-v)\dd v,\qquad
+ F'(x)=q^{-1}\bigl(F(x/q)-F(x/q-1)\bigr).
+\]
+For $q=1/2$ and $0<x<1/2$, this becomes the Fabius relation
+$F'(x)=2F(2x)$, with the normalized uniform-series support $[0,1]$. This establishes the direct endpoint connection without relying on a convention about names.
+
+\subsection{What ``transseries'' means here}
+The all-order expression belongs naturally to an asymptotic algebra with inverse powers of $R$ and analytic periodic coefficient functions of $R$. It can equivalently be written using Fourier modes $\ee^{2\pi\ii\ell R}$, together with the dominant log-quadratic exponential in \eqref{eq:leading}. Substitution of the exact Lambert coordinate then generates the power--logarithmic hierarchy in $L$.
+
+This is not an assertion that the resulting function is an element of a particular ordered field of nonoscillatory real transseries. Periodic coefficients have persistent zeros and sign changes; as a pointwise algebra they need not form a field. Our theorems concern genuine real probabilities and fixed-order asymptotic expansions with periodic coefficients. Their connection to the repository's general transseries and inversion program \cite{repotrans} is the controlled composition and remainder transport, not an unproved identification of ambient formal systems.
+
+There is also a useful scale separation. The Fourier expansion of each coefficient is convergent, whereas the outer expansion in $R^{-1}$ has only been proved to every fixed order. Convergence of the inner Fourier series does not imply convergence, Borel summability, or a particular Gevrey order of the outer series.
+
+\section{Reproducible numerical and symbolic checks}
+\label{sec:numerics}
+
+\subsection{What was computed}
+The archive contains \texttt{code/verify.py}, three CSV files, a run log, and machine-readable environment metadata. It performs three independent types of checks: symbolic cancellation in \eqref{eq:A1}; high-precision agreement between the boundary product and Fourier representations of $\Psi_\lambda$; and direct numerical Laplace inversion compared with the first two asymptotic coefficients. It also tests \cref{thm:comparison} for $\eta_n=0.7/n$.
+
+The recorded environment is Python 3.13.5, mpmath 1.3.0, NumPy 2.3.5, SciPy 1.17.0, and SymPy 1.14.0. Boundary and Fourier calculations use at least 60 decimal digits, with guard digits internally. The contour integral uses independent double-precision adaptive quadrature. All experiments are deterministic. To reproduce them, run from the package root:
+% ed. (2026-09-29): the delivered recipe wrote into the recorded results/; the program now refuses that without --overwrite-recorded (see the package README).
+\begin{verbatim}
+python code/verify.py --output rerun
+\end{verbatim}
+
+The script explicitly requests Euler--Maclaurin evaluation of $\zeta$ in the Fourier calculation, avoiding avoidable cancellation in eta-based formulas at frequencies commensurate with $\log2$. This is a numerical implementation choice, not a modification of \eqref{eq:fourier}.
+
+\subsection{Independent contour evaluation}
+Writing $w=1+\ii v/\sqrt R$, the normalized integral used is
+\begin{equation}
+\begin{split}
+ \mathcal J_R={}&\frac{\ee^R\Gamma(N+1)}{\pi R^N\sqrt R}
+ \int_0^\infty\operatorname{Re}\left[
+ \exp\left\{\frac{\ii vR}{\sqrt R}
+ -(N+1)\log\left(1+\frac{\ii v}{\sqrt R}\right)\right\}
+ Q_R\left(1+\frac{\ii v}{\sqrt R}\right)\right]\dd v.
+\end{split}
+\label{eq:numeric-integral}
+\end{equation}
+Then $F(x(R))=\ee^{-B_R}R^N\mathcal J_R/\Gamma(N+1)$ exactly. The evaluation keeps the large prefactors logarithmic, so it does not attempt to store the extremely small probability itself in ordinary floating point.
+
+The diagnostic integral was truncated at $v=20$ and repeated at $v=24$; the maximum change in the normalized probability across the recorded tests was $8.7\times10^{-15}$. The analytic kernel decay explains why these cutoffs are effective, but this repeatability check is not a rigorous enclosure of all roundoff or integration error. Likewise, adaptive quadrature's reported error is not an interval certificate.
+
+\subsection{Periodic-function agreement}
+At $\lambda=\log2,1,2$ and $s=0,0.37,0.91$, the largest absolute difference between the boundary and Fourier evaluations was below $7\times10^{-74}$. This is a finite set of numerical checks, not a proof of the identity on a continuum. The exact identity is proved in \cref{sec:fourier-proof}.
+
+\subsection{First and second correction orders}
+Let $\rho_R=F(x(R))/\calF_{m,\lambda}(R)$. If the first two coefficients are correct, then
+\[
+ R(\rho_R-1)\to A_1(s),\qquad
+ R^2(\rho_R-1-A_1(s)/R)\to A_2(s)
+\]
+along $R=N+s$. Representative outputs at $s=0.37$ are shown in \cref{tab:checks}. The second coefficient was evaluated from \eqref{eq:coefficient-algorithm}, not fitted to the data; its expanded computational form is in \cref{app:A2}.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}ccrrrr@{}}
+\toprule
+$m$&$\lambda$&$R$&$R(\rho_R-1)$&$R^2(\rho_R-1-A_1/R)$&$A_2(0.37)$\\
+\midrule
+0&$\log2$&40.37& 0.78331058&0.81927523&0.81120981\\
+0&$\log2$&160.37&0.76808898&0.81348645&0.81120981\\
+0&$\log2$&320.37&0.76555213&0.81236764&0.81120981\\
+\addlinespace
+1&$\log2$&40.37&-0.73375492&0.80148804&0.80943588\\
+1&$\log2$&160.37&-0.74857377&0.80741536&0.80943588\\
+1&$\log2$&320.37&-0.75108508&0.80842217&0.80943588\\
+\addlinespace
+3&2&40.37&-0.28652395&-0.29472644&-0.29571753\\
+3&2&160.37&-0.28106589&-0.29549323&-0.29571753\\
+3&2&320.37&-0.28014602&-0.29560735&-0.29571753\\
+\bottomrule
+\end{tabular}
+\caption{Independent inversion compared with the asymptotic coefficients. The corresponding $A_1(0.37)$ values are $0.76301642$, $-0.75360848$, and $-0.27922332$ for the three parameter blocks. Digits are diagnostic, not certified.}
+\label{tab:checks}
+\end{table}
+
+The additional recorded quantity
+$R^3(\rho_R-1-A_1/R-A_2/R^2)$ stays of constant size and approaches a limit in these examples, as predicted by the next order. The full CSV includes the $m=0,\lambda=2$ case and all intermediate $R$ values.
+
+For the perturbation check at $m=1$, $\lambda=\log2$, $s=0.37$, the quantity
+\[
+ \frac{\widetilde F(x(R))}{F(x(R))}R^{0.7}\ee^{0.7\gamma}
+\]
+takes the values $1.00044032$, $1.00011026$, $1.00002755$, and $1.00000687$ at $R=40.37$, $80.37$, $160.37$, and $320.37$, respectively. This agrees with \eqref{eq:harmonic-comparison} but is not used in its proof.
+
+\section{Formalization boundaries and a possible implementation path}
+\label{sec:formalization}
+
+No Lean source was produced or compiled for the new theorems in this package. The repository already distinguishes exact formal counterparts from partial crosswalks and informal frontier results \cite{repotrans}; that distinction is retained here. Symbolic identities verified by SymPy are also not Lean theorems.
+% ed. (2026-09-29): the existing Lean counterparts of the case m = 0, q = 1/2 are not named in this section.
+\begin{ednote}
+The Fabius case $m=0$, $q=1/2$ of the all-order expansion, of the $L$-form with the term \eqref{eq:missing}, of the first correction and of the Fourier theorem is already machine-checked in \path{Analysis/FabiusFunction/Lean/FabiusFunction/}; see the editorial note at the end of \cref{sec:correction}. A formalization of the general case would extend those modules rather than start from finite algebra alone.
+\end{ednote}
+
+A natural formalization order begins with finite algebra. The polynomials $\calP_j$, their exponential generating identity, their valuation bound, and the first-coefficient cancellation involve only finite sums, polynomial identities, and truncated power series. The shifted factorization \eqref{eq:factor-algebra} and the reindexing rule \eqref{eq:shift} have small algebraic cores. These are useful independent milestones.
+
+The next layer is analysis of the two tails. It requires explicit summable majorants, normal convergence of logarithmic products, and differentiation under uniformly convergent sums. The existing scale and flatness infrastructure is conceptually relevant, but it does not replace these concrete estimates. The central analytic milestone is \cref{lem:gamma}: an inverse Laplace identity, a Cauchy Taylor bound, a Gaussian moment estimate, and a large-frequency tail estimate.
+
+Only after those ingredients are checked should the assembled all-order expansion be registered as formal. The quantile transport theorem can be formalized separately from the probability construction: it needs eventual monotonicity of $J_K$, a uniform residual estimate, and the mean value theorem. An implementation should expose the remainder constant and threshold as data when claiming a numerical certificate, rather than storing only an existential big-$O$ theorem.
+
+\section{Further research questions}
+\label{sec:future}
+
+\subsection{Coefficient growth and optimal truncation}
+Determine the sharp growth of $A_{k,m,\lambda}$ as $k\to\infty$, in a norm controlling the periodic phase. Are these coefficients Gevrey of a definite order, and which singularities of the boundary amplitude control that order? The proof here fixes $K$ before letting $R$ grow; extracting useful $K$-dependent constants is a separate problem. A solution would turn an all-orders theorem into an optimal-truncation theorem.
+
+\subsection{Exponentially small sectors beyond the inverse-power hierarchy}
+The neglected boundary tails and the outer coefficient divergence need not produce the same exponentially small scale. Identify the leading beyond-all-orders correction to \eqref{eq:intro-main}, including its dependence on the fractional part of $R$. A useful target is a remainder description uniform through the points where the indexing convention changes, rather than a separate expansion on each phase interval.
+
+\subsection{The joint limit \texorpdfstring{$\lambda\downarrow0$}{lambda tends to zero}}
+As $q\uparrow1$, the boundary window has width of order $1/\lambda$, while the Fourier amplitudes contain $\ee^{-\pi^2/\lambda}$. Develop a uniform two-parameter expansion when $R\to\infty$ and $\lambda\to0$ together. The present local parameter uniformity excludes this limit. One must determine when curvature of the polynomial weights across the widening window competes with the first periodic correction.
+
+\subsection{Growing jet order}
+The proof is uniform for bounded $m$, not for $m=m(R)\to\infty$. The boundary deformation is governed by $m/R$; what changes when $m$ is comparable with $R$, or with a smaller intermediate scale? In particular, does a different effective lattice spacing emerge before the large Lambert branch ceases to describe the transition cleanly?
+
+\subsection{Nonuniform digits with a prescribed lower-end density}
+Replace $U_n$ by independent identically distributed digits with density
+$c\,u^{\alpha-1}(1+d_1u+\cdots)$ near zero. The natural early reference becomes a Gamma kernel of shape approximately $\alpha N$. Determine a full periodic expansion with explicit dependence on $\alpha$ and on the local density coefficients. Identify which parts depend only on the lower-end behavior and which retain the entire digit law.
+
+\subsection{Quantitative perturbation comparison}
+\Cref{thm:comparison} assumes only $\eta_n\to0$ and gives an $o(1)$ comparison after removing the partial sum. Obtain a sharp error bound in terms of the tail modulus $\sup_{n\geq N-M}|\eta_n|$ and the variation of $\eta_n$ across the active window. Expansions for $\eta_n=c/n+d/n^2+\cdots$ should admit a complete periodic coefficient calculus compatible with \eqref{eq:coefficient-algorithm}.
+
+\subsection{Multivariate jet small deviations}
+The joint recursion \eqref{eq:jet-recursion} uses common digits. Determine small probabilities for simultaneous constraints on several $S_j$, or for a positive linear combination whose polynomial weight has roots or changes its local slope near the active index. The scalar Gamma kernel will be replaced by a multidimensional integral, and the geometry of the constraint may generate a new phase diagram.
+
+\subsection{A certified inverse-quantile implementation}
+Evaluate the contour, product, and coefficient tail bounds by interval arithmetic and combine them with \eqref{eq:quantile-bracket}. The concrete goal is a program returning a provable interval for an arbitrarily small quantile from a requested relative tolerance, together with a checkable certificate. The existing verification program is a diagnostic prototype, not such a certified implementation.
+
+\subsection{Beyond a fixed geometric lattice}
+For weights $a_n=n^m\exp(-\lambda n+\theta_n)$ with bounded but nonconvergent $\theta_n$, \cref{thm:comparison} no longer applies. If $\theta_n$ is periodic, quasiperiodic, or generated by a substitution, characterize the boundary amplitude and its phase space. Determine conditions under which a finite-dimensional torus of coefficient functions replaces the single periodic function $\Psi_\lambda$.
+
+\section{Conclusion}
+The original repository conjecture correctly anticipates a Lambert phase and a bounded lattice oscillation, but its list of unbounded logarithmic terms is incomplete. The term in \eqref{eq:missing} supplies a direct refutation for every $\lambda\ne1$. The exact coordinate $x=R^{m+1}\ee^{-\lambda R}$ yields a stronger replacement: all fixed inverse-power orders, analytic periodic coefficients, and a universal leading oscillation independent of the polynomial jet order.
+
+The principal technical device is the exact Gamma-reference factorization. It makes the inversion remainder explicit enough to justify the expansion without an informal saddlepoint shortcut, separates early-weight normalization from boundary effects, and gives a comparison law for every vanishing logarithmic weight perturbation. The inverse-quantile theorem then follows from a controlled residual calculation and gains a further inverse-power order. These statements resolve the concrete source-level question while leaving coefficient growth, optimal truncation, singular parameter limits, and certified numerical inversion as specific next problems.
+
+\appendix
+\section{A second-coefficient formula for reproduction}
+\label{app:A2}
+
+All quantities in this appendix are evaluated at $(s,w)=(s,1)$. Write
+\[
+ a=C_0',\quad b=C_0'',\quad c=C_0''',\quad d=C_0'''',
+\]
+where primes here denote $w$ derivatives only, and let
+\begin{align*}
+ q_2&=b+a^2,\\
+ q_3&=c+3ab+a^3,\\
+ q_4&=d+4ac+3b^2+6a^2b+a^4.
+\end{align*}
+Thus $q_j=Q_0^{(j)}/Q_0$ for $j=2,3,4$. Let
+\begin{align}
+ V_1&=C_1-sa-\frac12q_2,\nonumber\\
+ V_2&=C_2+\frac12C_1^2-s(C_1'+aC_1)
+ -\frac12(C_1''+2aC_1'+q_2C_1)\nonumber\\
+ &\hspace{0.8cm}+\frac{s^2+s}{2}q_2+\frac{3s+2}{6}q_3+\frac18q_4,
+ \label{eq:V2}
+\end{align}
+and
+\[
+ T_1=-\frac p2B_2(s),\qquad
+ T_2=-\frac p6B_3(s)+\frac12T_1^2.
+\]
+Then
+\begin{equation}
+ A_1=T_1+V_1,\qquad A_2=T_2+T_1V_1+V_2.
+ \label{eq:A2}
+\end{equation}
+This is simply the order-two expansion of \eqref{eq:coefficient-algorithm}, using \eqref{eq:lowP}. It is displayed to make the numerical computation reproducible without implementing a general symbolic coefficient engine.
+
+For efficient evaluation, at $z=\ee^{-\lambda(k-s)}$ set
+$g_j=\partial_w^jG_\pm(1,z)$. Then
+\begin{align*}
+ C_1&=m\sum_k(k-s)g_1,\\
+ C_1'&=m\sum_k(k-s)(g_1+g_2),\\
+ C_1''&=m\sum_k(k-s)(2g_2+g_3),\\
+ C_2&=\frac12\sum_k(k-s)^2\bigl((m^2-m)g_1+m^2g_2\bigr).
+\end{align*}
+For the early factors,
+\[
+ g_j=(-1)^{j+1}z^j\sum_{r\geq1}r^{j-1}\ee^{-rz},\qquad j\geq1;
+\]
+for late factors, add $(-1)^j(j-1)!$. These sums reduce to elementary rational functions of $\ee^z$ for each fixed $j$. The included code uses the forms for $j\leq4$ with guarded precision.
+
+\section{Source provenance and claim audit}
+\label{app:provenance}
+
+\subsection{Pinned repository evidence}
+The repository was inspected at commit
+\begin{center}\small\sourcecommit.\end{center}
+The source of the conjecture is
+\begin{quote}\small\raggedright
+\nolinkurl{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/common_digit_fabius_zonoids_frontier_report/common_digit_fabius_zonoids.tex}.
+\end{quote}
+The inspected range was source lines 1690--1840, including the subsection on jet small balls and Lambert phases and labels \texttt{conj:jet-small-ball} and \texttt{eq:small-ball-conjecture}. The returned blob identifier was
+\begin{center}\small\texttt{dabfc501dfe952d826001703a087b47424568581}.\end{center}
+Search-index discovery also exposed an earlier commit, but all source-specific claims here refer to the pinned fetch rather than assuming the index was current.
+
+The general transseries context came from
+\begin{quote}\small\raggedright
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/README.md}
+\end{quote}
+at the same pinned commit. No theorem in the new manuscript is declared Lean-verified merely because that README describes other formalized results.
+
+\subsection{Evidence and limitations}
+\begin{longtable}{@{}p{0.28\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Claim & Status and supporting location\\
+\midrule
+\endhead
+Refutation of the source's stated shape & Proved in \cref{cor:refutation}; the case $\lambda=1$ is explicitly excepted.\\
+All fixed relative orders & Proved by the contour remainder lemma and boundary expansion, \cref{lem:gamma,lem:boundary,thm:allorders}. No uniform-in-order bound is asserted.\\
+Periodic Gamma--zeta factor & Derived in \cref{sec:fourier-proof}. The mechanism has prior literature; compare \cite{fgd,tavares}.\\
+First and second coefficient checks & Exact finite algebra plus floating-point checks. General validity comes from the proofs, not from a fit or a numerical limit.\\
+Perturbation comparison & Proved for every real sequence $\eta_n\to0$ in \cref{thm:comparison}. No absolute summability assumption is hidden.\\
+Inverse accuracy & Proved asymptotically in \cref{thm:quantile}. A numerical enclosure needs an evaluated error bound as in \eqref{eq:quantile-bracket}.\\
+Formal verification & No new Lean proof or Lean compilation in this package.\\
+Global priority & Not established. The manuscript claims a concrete correction and extension relative to the inspected repository source.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Package contents}
+The self-contained source is \texttt{article.tex}; its compiled version is \texttt{article.pdf}. The numerical implementation is \texttt{code/verify.py}. The \texttt{results/} directory contains the recorded CSV data, \texttt{verification.json}, and \texttt{run.txt}. The README gives build and reproduction commands. No external figure, bibliography database, or repository checkout is required to compile the article.
+
+\begin{thebibliography}{9}
+\bibitem{repojets}
+V. Reshetnikov, repository owner.
+\emph{Common-Digit Fabius Zonoids: Exact Volumes, Hyperbolic-Secant Geometry, Bernoulli Gaussianization, and Parameter Jets}.
+ProveIt repository research manuscript, source label \texttt{conj:jet-small-ball}, inspected at the commit in \cref{app:provenance}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/aab173a7ccdd48add72191d68ce6b0c12ffd72fe/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/common_digit_fabius_zonoids_frontier_report/common_digit_fabius_zonoids.tex}{Pinned source}.
+
+\bibitem{repotrans}
+V. Reshetnikov, repository owner.
+\emph{Series and transseries: repository overview and formal crosswalk}.
+ProveIt, \texttt{Analysis/Transseries/docs/series-and-transseries/README.md}, same pinned commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/aab173a7ccdd48add72191d68ce6b0c12ffd72fe/Analysis/Transseries/docs/series-and-transseries/README.md}{Pinned overview}.
+
+\bibitem{lifshits}
+M. A. Lifshits.
+On the lower tail probabilities of some random series.
+\emph{Annals of Probability} \textbf{25}(1) (1997), 424--442.
+\href{https://doi.org/10.1214/aop/1024404294}{doi:10.1214/aop/1024404294}.
+
+\bibitem{aurzada}
+F. Aurzada.
+\emph{A short note on small deviations of sequences of i.i.d. random variables with exponentially decreasing weights}.
+arXiv:0711.2576v2 (2008), especially Theorem 4.
+\href{https://arxiv.org/abs/0711.2576}{arXiv record}.
+
+\bibitem{fgd}
+P. Flajolet, X. Gourdon, and P. Dumas.
+Mellin transforms and asymptotics: harmonic sums.
+\emph{Theoretical Computer Science} \textbf{144} (1995), 3--58.
+\href{https://algo.inria.fr/flajolet/Publications/mellin-harm.pdf}{Authors' manuscript}.
+
+\bibitem{tavares}
+R. A. Tavares.
+\emph{Wirsching's Positive-Predecessor-Density Program: Proofs of Conjectures 1 and 3}.
+arXiv:2608.27617v1 (2026), especially \S6 and Proposition 6.3.
+\href{https://arxiv.org/html/2608.27617v1}{Version inspected}.
+Cited for the related base-three periodic correction, not as an input to the new proofs.
+
+% ed. (2026-09-29): bibliography entry for the editorial notes.
+\bibitem{ed:fabiuslean}
+ProveIt repository, Fabius Lean corpus, \path{Analysis/FabiusFunction/Lean/FabiusFunction/}
+(\path{FabiusSharpAsymptotic.lean}, \path{FabiusWikipediaExpansion.lean}, \path{FabiusFullAsymptoticExpansion.lean}, \path{FabiusFirstSaddleCorrection.lean}, \path{PeriodicFourier.lean}),
+and the canonical volume \path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex}.
+Editorial addition (2026-09-29).
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions.
+\S4.13 (Lambert $W$), \S5.11 (Gamma asymptotics), \S25.2 (zeta and Stieltjes constants), and \S25.10 (zeta zeros).
+\href{https://dlmf.nist.gov/}{DLMF}, accessed 29 September 2026.
+\end{thebibliography}
+\end{document}

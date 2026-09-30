@@ -41,7 +41,8 @@ for n in (20,36):
     row['nodes_per_interval']=n
     rows.append(row)
     print(json.dumps(row,indent=2),flush=True)
-(ROOT/'data'/'contour_check.json').write_text(json.dumps({
+# ed. (2026-09-29): LF line endings on every platform, like the filed files.
+(ROOT/'data'/'contour_check.json').write_text(newline='\n',data=json.dumps({
     'precision':mp.mp.dps,'R':str(R),'X':str(X),'M':M,
     'spectral_integral_upper_cutoff':20,'tests':rows,
     'status':'Finite floating-point quadrature tests, not certified error bounds.'},indent=2)+'\n')

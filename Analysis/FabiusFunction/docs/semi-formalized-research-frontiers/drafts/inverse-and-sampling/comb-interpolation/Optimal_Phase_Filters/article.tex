@@ -34,6 +34,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\Z}{\mathbb Z}
@@ -55,6 +57,8 @@
 \newcommand{\absB}{A_M}
 
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page (it duplicated page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \centering
 \vspace*{12mm}
@@ -103,6 +107,8 @@ not certified against the entire literature. This is an unrefereed research
 manuscript, not a claim to have solved a major named conjecture.
 \end{minipage}
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 
 \begingroup
 \small
@@ -1253,6 +1259,18 @@ this question but do not settle it. At the next degree, even aliases with
 valuation one also enter, and derivatives of the nonvanishing product
 tail occur at the odd aliases. The single first-harmonic estimate does
 not directly resolve the resulting competition.
+
+% ed. (2026-09-29): Question 1 is answered at dyadic meshes (and eventually for
+% every odd part) by a later draft; the lower levels stay open.
+\begin{ednote}
+Question~1 is answered affirmatively for every dyadic mesh $M=2^d$, and
+for $M=2^{r-1}m$ with $m$ odd from the explicit level
+$r\ge2\max\{2,1+\lceil\log_2m\rceil\}(m+1)+4$ on, by the later
+unreviewed draft \path{Fixed_Phase_Order_Rvachev_Quadrature/} of this
+directory (2026-09-29): both selected phases fail at degree $\nu_2(M)+2$,
+with a signed leading term. The finitely many lower levels of each
+non-dyadic mesh remain open.
+\end{ednote}
 
 \subsection{Sharp domination constants and absolute conditioning}
 

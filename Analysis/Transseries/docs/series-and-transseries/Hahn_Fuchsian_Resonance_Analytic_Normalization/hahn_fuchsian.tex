@@ -26,6 +26,9 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it
+% leaves every numbered statement of the delivered article unchanged.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
@@ -60,6 +63,9 @@
 \renewcommand{\headrulewidth}{0.3pt}
 \setcounter{tocdepth}{1}
 \begin{document}
+% ed. (2026-09-29): no hyperref page anchor on the title page, whose page
+% number 1 recurs after it (removes a duplicate-destination warning).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{10mm}
@@ -116,6 +122,8 @@ transseries differential equations and is not a Lean formalization.\par
 \noindent\small
 \textbf{Repository snapshot.}\quad\snap
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 \tableofcontents
 \newpage
 
@@ -327,6 +335,24 @@ nonzero $x^0$ coefficient. Thus $d=0$ and $g\in\C$.
 This elementary residue obstruction is the scalar mechanism behind the
 logarithmic variable. The matrix certificate below records how different
 spectral levels couple that mechanism.
+
+% ed. (2026-09-29): names the repository statements this lemma specializes;
+% the article could not read the canonical volume.
+\begin{ednote}\label{ed:constants}
+Lemma~\ref{lem:constants} is the depth-$0$ case, written for the Euler
+derivation $D=x\,d/dx$, of results in the canonical volume
+(\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}),
+which this article could not retrieve: since $[x^0](x\,dF/dx)=[x^{-1}]\,dF/dx$,
+its residue statement is equation \path{plt:eq:ext-residue} of Theorem
+\path{plt:thm:ext-tower-strict} at $r=0$, and its statements on constants
+are Corollary \path{plt:cor:dif-kernel}. At depth $n\ge1$ the
+residue-obstruction package
+\path{Analysis/Transseries/docs/series-and-transseries/Residue_Obstructions_Logarithmic_Depth_Promotion/}
+(\texttt{residue\_fredholm.tex}, Theorem \texttt{thm:residue}) sharpens the
+same residue to an exact sequence. The volume uses the large-variable
+convention; the Euler-form statement is unchanged by $x\mapsto1/x$, which
+only changes the sign of $D$.
+\end{ednote}
 
 \section{The homological equation and normalized gauge}
 \label{sec:normal}
@@ -665,6 +691,34 @@ principle. The distinction is the present matrix normal form, the complete
 log-degree filtration via powers of $B$, and especially the analytic
 criterion in the next section. The previous scalar fixed-depth problem and
 the present universal absolute-convergence problem are not interchangeable.
+
+% ed. (2026-09-29): records which questions of the residue-obstruction
+% article this article answers without citing them, and the checked
+% consistency between the two.
+\begin{ednote}\label{ed:residue-questions}
+This article knew the residue-obstruction package only through its README.
+Its source,
+\path{Analysis/Transseries/docs/series-and-transseries/Residue_Obstructions_Logarithmic_Depth_Promotion/residue_fredholm.tex},
+poses in its Section~11 two questions that Theorem~\ref{thm:logs} answers
+for the present class. ``The exact minimal power of the promoted
+logarithm'' asks for residue matrices whose ranks recover the full
+filtration by degree in the new logarithm: here, for homogeneous
+solutions, it is $\dim\Sol_{\le d}=\dim\ker B^{d+1}$ (particular solutions
+of forced equations are not treated). ``Matrix systems and nonreal
+indicial roots'' asks which invariant controls the new-logarithm degree:
+here it is the nilpotency index $\nu(B)$, which combines Jordan chains in
+$N$ with passages between root levels through the $R_\rho$ (real spectrum
+only). The two articles are consistent but not nested: that article works
+at depth $n\ge1$ with scalar operators $P(xD)+\sum a_j(xD)^j$, this one at
+depth $0$ with first-order systems. At $d=0$, $\dim\ker B=m-\rank B$ is the
+analogue of its kernel dimension $r-\rank M$ (Theorem \texttt{thm:fredholm});
+Example~\ref{ex:chain} is the analogue of its Jordan-shift family (Theorem
+\texttt{thm:sharp-matrix}); and when $N=0$, $B$ is strictly block-triangular
+over the $s$ distinct eigenvalues, so the logarithmic degree is at most
+$s-1$, its homogeneous bound (Theorem \texttt{thm:promotion}). With
+$N\ne0$ the degree can reach $m-1>s-1$, which is no contradiction: there
+the multiplicity logarithms already lie in the base field.
+\end{ednote}
 
 \section{A sharp criterion for universal analytic normalization}
 \label{sec:analytic}
@@ -1356,6 +1410,35 @@ is both sufficient for a Banach fixed-point argument and close to necessary.
 One candidate is the least submultiplicative majorant of the homological
 inverse norms. The main issue is whether cancellations permit substantially
 larger classes than any absolute path majorant can capture.
+% ed. (2026-09-29, batch 52): the two questions above are answered, for a restricted class, by a later package; recorded on filing.
+\begin{ednote}
+The two preceding questions (a fixed smaller input support; weighted
+convergence in the zero-gap case) are answered, for finite acyclic patterns
+with a diagonal real constant term, a well-ordered support on each edge and
+independently variable edge coefficients, by the later package
+\path{Analysis/Transseries/docs/series-and-transseries/Path_Sensitive_Small_Divisors_Hahn_Fuchsian/path_sensitive_hahn.tex}
+(batch~52; not reviewed). Universal convergence holds exactly when no
+endpoint spectral difference of a directed path is a left accumulation
+point of that path's own exponent sumset (its \texttt{thm:gap}), so an
+accumulating difference in \(\G\) that no path realizes is harmless; for
+independent weighted inputs it holds exactly when every path-kernel norm
+is finite, and that norm is the exact multilinear operator norm of the
+path contribution (its \texttt{thm:weighted}). Correlated inputs can do
+better: its example in Section~\texttt{sec:cancellation} cancels two
+accumulating paths. Its rank-\(r\) resonant chain converges exactly when
+\(\sum n^{r-1}\abs{c_n}<\infty\) (its \texttt{thm:chain}), which at
+\(r=2\) is the threshold \(p>2\) of Proposition~\ref{prop:threshold}. For
+the complete triangular pattern with the whole semigroup on every edge, its
+\texttt{thm:gap} reduces to the triangular case of
+Theorem~\ref{thm:universal} with a diagonal constant term, consistently;
+Theorem~\ref{thm:universal} also allows nontriangular perturbations and a
+nilpotent part, which that package excludes.
+Nonlinear counterparts of Theorem~\ref{thm:universal} are proved in
+\path{Nonlinear_Hahn_Dulac_Finite_Resonance_Control/} (its
+\texttt{thm:universal}) and
+\path{Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/} (its
+\texttt{thm:gap}), in the same directory.
+\end{ednote}
 
 \subsection{Renormalization compatible with multiplication and gauge change}
 The difference sum in \eqref{eq:Psi} gives one natural analytic realization
