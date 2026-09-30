@@ -1,0 +1,17 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: all pdf verify clean
+all: pdf verify
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error strict_contractions.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error strict_contractions.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error strict_contractions.tex
+
+verify:
+	$(PYTHON) verify_contraction.py --self-test --out verification
+	$(PYTHON) check_export.py verification
+
+clean:
+	rm -f strict_contractions.aux strict_contractions.log strict_contractions.out strict_contractions.toc
