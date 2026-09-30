@@ -16,6 +16,15 @@ already proves as `thm:phase-zero-set`.  Their comparison, merge and
 reconciliation with Chapter 3 of the synthesis are deferred; neither is
 Lean-checked.
 
+A third archival arrival, of 2026-09-29,
+[`Fixed_Phase_Order_Rvachev_Quadrature/`](Fixed_Phase_Order_Rvachev_Quadrature/)
+(*Sharp Fixed-Phase Order of Rvachev Quadrature*, 21-page A4 PDF), takes
+up the fixed-phase question both leave open: at every dyadic mesh `2^d`
+the two selected phases are exact through degree `d+1` and fail at
+degree `d+2`, with a signed leading term; for a mesh `2^{r−1}m` the same
+holds from an explicit level `r ≥ 2 max(2, 1+⌈log₂ m⌉)(m+1) + 4` on.
+Unreviewed; not Lean-checked.
+
 The canonical package keeps each kind of record in one place:
 
 - its [README](comb_interpolation_synthesis/README.md) is the reader and

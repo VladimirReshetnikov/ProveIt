@@ -214,6 +214,21 @@ of an existing draft; semantic consolidation is deferred to the post-
   law, with the machine-checked small-argument expansion in
   `Analysis/FabiusFunction/Lean`, which it does not cite.  Unreviewed;
   its asymptotic tables are not certificates; no Lean statement.
+- [`Brownian_Matrix_Governing_Fabius_Smoothness/`](Brownian_Matrix_Governing_Fabius_Smoothness/),
+  *The Brownian Matrix Governing Fabius Smoothness* (21-page A4 PDF,
+  1,511-line source, an exact-plus-mpmath check program), filed on
+  2026-09-29 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It takes up the sharp Fourier-decay
+  conjecture `conj:ray-decay` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  for distinct moduli every mixed derivative of the joint density obeys
+  `log ‖∂^α f‖_p = ½ αᵀMα + O(|α|+1)` with the Brownian covariance
+  matrix `M_ij = min(λ_i, λ_j)`, the leading ray coefficient of the
+  conjecture holds in a window and relative-measure sense, and at
+  opposite parameters `(r, −r)` the leading cost doubles.  Its envelope
+  area is the one that governs the joint small deviations of the
+  endpoint article above.  The finer periodic remainder is not claimed.
+  Unreviewed; its numerics are diagnostics; no Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

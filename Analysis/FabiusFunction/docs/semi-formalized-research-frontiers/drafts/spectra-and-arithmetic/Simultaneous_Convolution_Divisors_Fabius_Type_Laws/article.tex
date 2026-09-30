@@ -1,0 +1,1601 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{itemsep=0.3em,topsep=0.4em}
+\setlist[itemize]{itemsep=0.25em,topsep=0.4em}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Simultaneous convolution divisors}
+\fancyhead[R]{\small ProveIt research companion}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathbb R/\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Unif}{\mathsf U}
+\newcommand{\vp}{v_p}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\dil}[1]{\mathsf D_{#1}}
+\newcommand{\cf}[1]{\widehat{#1}}
+\newcommand{\eqd}{\overset{d}{=}}
+\newcommand{\pathtext}[1]{\nolinkurl{#1}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\diam}{diam}
+\hypersetup{pdftitle={Simultaneous Convolution Divisors of Fabius-Type Laws},
+ pdfauthor={Research report prepared for the ProveIt project},
+ pdfsubject={Prime-adic factorization, finite certificates, linear rigidity, and residual regularity}}
+
+\title{\bfseries Simultaneous Convolution Divisors\\of Fabius-Type Laws\\[0.5em]
+\large A prime-adic Hall criterion, finite certificates,\\linear rigidity, and a sharp regularity transition}
+\author{Research report prepared for the ProveIt project}
+\date{29 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $X_p=\sum_{k\ge0}p^{-k}U_k$, where $p$ is prime and the $U_k$ are independent
+uniform random variables on $[-1,1]$. We classify every convolution factor of
+$\Law(X_p)$ that is itself a finite or countable convolution of centered uniform
+laws. The factor $\Law(\sum_j a_jU_j)$ exists if and only if $a_j=1/n_j$ for positive
+integers $n_j$ and
+\[
+ \#\{j:v_p(n_j)\le K\}\le K+1\qquad(K\ge0).
+\]
+For this class, cancellation of all poles in the quotient of entire characteristic
+functions is already sufficient for positivity. A nested matching argument gives
+an explicit independent residual and finite obstruction certificates. For finitely
+many geometric streams, the infinitely many inequalities reduce to one finite
+window and a rational density condition.
+
+In several dimensions, every uniform generator of a convolution factor of an
+independent product law must lie on a coordinate axis. Consequently, its complete
+linear decomposability semigroup consists of partial monomial matrices whose
+nonzero entries are signed reciprocal integers. The scalar matching theorem
+extends to prime-power bases, but not to arbitrary composite bases: an explicit
+base-six quotient is entire and is the transform of a signed, not positive, measure.
+
+For pure prime-power scales, the residual has a canonical digit representation
+whose multiplicities are exactly the unused matching capacities. Positive capacity
+density gives a compactly supported smooth density, a sharp log-squared Fourier
+limsup, and differential non-finiteness. At zero capacity density, an eventually
+periodic digit profile gives a complete classification into finite atomic laws,
+splines, singular continuous laws, or densities of an explicitly determined exact
+finite differentiability order. All mathematical assertions designated as theorems
+are proved below; a standard-library Python companion checks finite certificates
+and examples.
+\end{abstract}
+
+\paragraph{Status and scope.}
+This is a proof-bearing research manuscript, not a report of a Lean verification or
+peer review. It develops extensions of the repository's already existing
+reciprocal-integer \emph{single-copy} divisor theorem, rather than claiming that
+result as new. The source review was targeted, not an exhaustive audit of every
+repository artifact or the entire literature. Global priority for the extensions
+proved here is not asserted.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The question and its relationship to the repository}
+\label{sec:intro}
+
+The Fabius and Rvachev functions provide a particularly concrete meeting point of
+probability, entire functions, arithmetic, and formal mathematics. Their Fourier
+transforms are infinite products of sinc functions. A zero of such a product is
+not just a point where a transform vanishes: its multiplicity records how many
+geometric scales coincide at that frequency. The question addressed here is
+whether that arithmetic record completely determines which independent uniform
+components can be removed from the distribution.
+
+The existing ProveIt report \emph{Reciprocal-Integer Convolution Divisors of the
+Rvachev Law} already constructs and classifies decompositions of the form
+$X\eqd cX'+Y$, where $X'$ is an independent copy of the same Rvachev law
+\cite{RepoDivisors}. Its reciprocal-integer classification, quotient cocycle, and
+odd/even regularity results are prior work relative to this manuscript. The
+repository also contains exact arithmetic descriptions of the zero divisor in
+\pathtext{GeneralizedZeroDivisor.lean} \cite{RepoLean}. Those results suggest a
+strictly larger problem:
+\begin{quote}
+Which \emph{collections} of scaled uniform laws, or of geometric uniform
+convolutions with different bases, can occur simultaneously as independent
+components of a fixed Fabius-type law?
+\end{quote}
+The distinction is substantial. Two factors can each be individually admissible
+but impossible to remove together. Conversely, several different geometric
+streams can interleave exactly, or leave a singular Cantor residual rather than a
+smooth function. Scalar variance inequalities do not detect these phenomena.
+
+The main contribution is an exact answer for prime and prime-power target bases.
+The answer has four interchangeable forms: convolution divisibility, analytic
+zero cancellation, a family of arithmetic inequalities, and a constructive
+matching of source factors to target scales. The matching is a special nested
+instance of the representative-selection principle associated with Hall's theorem
+\cite{Hall}; its proof here requires only sorting integer deadlines.
+
+\subsection{What is established here, and what is reused}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.29\textwidth}X@{}}
+\toprule
+Part of the argument & Role and status \\
+\midrule
+Infinite sinc product and its zeros & Established background; proved again in the normalization used here. \\
+Single scaled independent copy & Existing repository result; recovered as a corollary, not claimed as a new contribution. \\
+Simultaneous uniform factors & Complete classification and explicit residual construction in \cref{sec:hall}. \\
+Geometric streams & Necessary integer-base restriction and a complete finite decision criterion in \cref{sec:streams}. \\
+Multidimensional factors & Coordinate-direction rigidity and the complete matrix classification in \cref{sec:multi}. \\
+Analytic versus positive factorization & Equivalence for prime-power targets and a separating base-six example in \cref{sec:primepower}. \\
+Residual regularity & Exact subcritical Fourier limsup and critical periodic classification in \cref{sec:smooth,sec:critical}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The terminology of a linear decomposability or Urbanik semigroup is conventional;
+Jurek describes its relation to generalized Mehler semigroups \cite{Jurek}.
+The matrix classification below is proved directly and does not invoke an
+external semigroup-classification theorem.
+
+\subsection{A normalization warning}
+
+We use uniforms on $[-1,1]$ and the characteristic-function convention
+$\cf\mu(t)=\int e^{itx}\,d\mu(x)$. Thus $X_2$ is supported on $[-2,2]$.
+The classical Rvachev up-density on $[-1,1]$ is the density of $X_2/2$.
+Under the repository's convention $\int e^{2\pi izx}\,d\mu(x)$, the transform of
+$X_2/2$ is $\prod_{k\ge0}\sinc(\pi z/2^k)$, as in the classical account
+\cite{Arias}. Every scalar decomposition theorem is unchanged by this common
+normalization of source and target; explicit supports and digit locations are not.
+
+\section{Probability and analytic preliminaries}
+\label{sec:prelim}
+
+For $a>0$, let $\Unif_a$ denote the uniform law on $[-a,a]$, and put
+\[
+ \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+\]
+If $b>1$ is real and the $U_k$ are independent with law $\Unif_1$, define
+\begin{equation}
+ X_b=\sum_{k=0}^{\infty}b^{-k}U_k,
+ \qquad \mu_b=\Law(X_b),
+ \qquad \Phi_b(z)=\prod_{k=0}^{\infty}\sinc(z/b^k).
+ \label{eq:base-law}
+\end{equation}
+The series converges absolutely for every outcome. Its support is the interval
+$[-b/(b-1),b/(b-1)]$: finite sums have interval support with radii tending to
+$b/(b-1)$, and the remaining summands have radii tending to zero. Independence
+and bounded convergence give $\cf{\mu_b}(t)=\Phi_b(t)$. In particular,
+\begin{equation}
+ \E X_b=0,
+ \qquad \Var(X_b)=\frac13\sum_{k\ge0}b^{-2k}
+                 =\frac{b^2}{3(b^2-1)}.
+ \label{eq:variance}
+\end{equation}
+
+For a finite or countable indexed family $a=(a_j)$ of positive numbers with
+$\sum_j a_j<\infty$, let
+\begin{equation}
+ \nu_a=\Law\left(\sum_j a_jU_j\right),
+ \qquad \Psi_a(z)=\prod_j\sinc(a_jz).
+ \label{eq:uniform-source}
+\end{equation}
+The empty family gives the point mass $\delta_0$ and the product $1$.
+All copies of uniforms or other random variables occurring in an asserted
+independent sum are understood to be mutually independent.
+
+\begin{definition}[Convolution divisibility]
+A probability law $\nu$ divides a probability law $\mu$, written $\nu\mid_*\mu$,
+if there is a probability law $\rho$ such that $\mu=\nu*\rho$.
+The residual $\rho$ is not assumed to belong to any prescribed family.
+For a scalar $c$, $\dil c\nu$ denotes the pushforward of $\nu$ by $x\mapsto cx$.
+\end{definition}
+
+\begin{lemma}[Entire products and exact zeros]
+\label{lem:zeros}
+The products in \eqref{eq:base-law} and \eqref{eq:uniform-source} converge locally
+uniformly on $\C$ and are entire. They have precisely the zeros contributed by
+the individual factors, with multiplicities added. For prime $p$,
+\begin{equation}
+ Z(\Phi_p)=\{\pi m:m\in\Z\setminus\{0\}\},
+ \qquad \ord_{\pi m}\Phi_p=1+v_p(|m|).
+ \label{eq:target-zeros}
+\end{equation}
+Here $v_p(n)$ is the exponent of $p$ in a positive integer $n$.
+\end{lemma}
+\begin{proof}
+On a fixed compact set, $\sinc(a_jz)=1+O(a_j^2)$ uniformly once $a_j$ is small.
+Since $\sum a_j^2<\infty$, the product converges locally uniformly. Away from
+zeros of the finitely many large factors, a sufficiently far tail admits a
+uniformly absolutely convergent logarithm and hence is nonzero. At any fixed
+nonzero $z$, only finitely many factors can vanish, because a vanishing factor
+requires $a_j|z|\ge\pi$. The zeros of every individual sinc factor are simple.
+These observations prove the first assertion and the multiplicity rule.
+
+For $a_k=p^{-k}$, a zero is $\pi p^k\ell$ with $\ell$ a nonzero integer.
+Their union is exactly the nonzero integer multiples of $\pi$. At $\pi m$,
+the vanishing factors are those with $p^k\mid m$, namely
+$k=0,\ldots,v_p(|m|)$.
+\end{proof}
+
+\begin{lemma}[Compact residuals and uniqueness]
+\label{lem:residual}
+If compactly supported probability laws satisfy $\mu=\nu*\rho$, then $\rho$ is
+compactly supported. If $\cf\nu$ extends to a nonzero entire function, the
+residual is unique. In particular, $\nu_a\mid_*\mu_b$ implies that
+$\Phi_b/\Psi_a$ has an entire extension.
+\end{lemma}
+\begin{proof}
+For $x\in\supp\nu$ and $y\in\supp\rho$, every sufficiently small neighborhood
+of $x+y$ receives positive convolution mass from neighborhoods of $x$ and $y$.
+Thus $x+y\in\supp\mu$. Fixing one $x\in\supp\nu$ confines $\supp\rho$ to a
+translate of the compact set $\supp\mu$. The characteristic function of a
+compactly supported law is entire, by differentiation under a bounded-support
+integral. The convolution identity extends from the real line to $\C$ by the
+identity theorem, proving the quotient assertion.
+
+The real zeros of a nonzero entire function are isolated. Hence two residual
+characteristic functions agree on a dense subset of $\R$ by cancellation, and
+then everywhere by continuity. Uniqueness of characteristic functions gives
+uniqueness of the probability laws.
+\end{proof}
+
+\section{A complete prime-adic Hall criterion}
+\label{sec:hall}
+
+Each target uniform $p^{-k}U_k$ will be called supply slot $k$. A source uniform
+$U/n$ can be extracted from that slot whenever $p^k\mid n$. The crucial feature
+is that the eligible slots are a nested initial interval, not an arbitrary set.
+
+\begin{lemma}[Splitting one uniform]
+\label{lem:split}
+If $n,r\in\N$ and $a=r/n$, then
+\begin{equation}
+ \Unif_a=\Unif_{1/n}*\Law(V_{n,r}),\qquad
+ \Prob\left(V_{n,r}=\frac{2\ell-r+1}{n}\right)=\frac1r
+ \quad(0\le\ell<r).
+ \label{eq:split}
+\end{equation}
+For $r=1$ the digit law is $\delta_0$.
+\end{lemma}
+\begin{proof}
+The $r$ translates of $[-1/n,1/n]$ centered at the displayed points tile
+$[-r/n,r/n]$, with overlaps only at endpoints. Each mixture component has
+weight $1/r$ and density $n/2$, so the combined density is $1/(2a)$ on that
+interval and zero outside it. Notice also that $|V_{n,r}|\le a-1/n$.
+\end{proof}
+
+\begin{theorem}[Complete simultaneous-factor classification]
+\label{thm:hall}
+Let $p$ be prime and let $\nu_a$ be as in \eqref{eq:uniform-source}. The following
+conditions are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\nu_a\mid_*\mu_p$.
+\item $\Phi_p/\Psi_a$ extends to an entire function on $\C$.
+\item There are positive integers $n_j$ such that $a_j=1/n_j$ and
+\begin{equation}
+ D(K):=\#\{j:v_p(n_j)\le K\}\le K+1
+ \qquad\text{for every }K\in\Nzero.
+ \label{eq:hall}
+\end{equation}
+\item There are positive integers $n_j=1/a_j$ and an injection
+$j\mapsto k_j$ into $\Nzero$ such that $p^{k_j}\mid n_j$ for every $j$.
+\end{enumerate}
+When these conditions hold, the residual is unique and has an explicit
+representation as an absolutely convergent sum of independent finite digit
+variables and the unmatched target uniforms.
+\end{theorem}
+\begin{proof}
+\emph{(i)$\Rightarrow$(ii).} This is \cref{lem:residual}.
+
+\emph{(ii)$\Rightarrow$(iii).} The first positive zero $\pi/a_j$ of any source
+factor must be a zero of $\Phi_p$. By \eqref{eq:target-zeros}, $1/a_j$ is a
+positive integer, denoted $n_j$.
+
+Suppose \eqref{eq:hall} fails at $K$. Choose $K+2$ source indices whose
+$v_p(n_j)$ are at most $K$ and put $m$ equal to the least common multiple of
+these denominators. Then $v_p(m)\le K$. Every chosen factor vanishes at $\pi m$,
+so $\Psi_a$ has order at least $K+2$ there, whereas $\Phi_p$ has order at most
+$K+1$. The quotient has a pole, a contradiction. This argument also handles
+an infinite set of demands at a fixed deadline: a finite subfamily suffices.
+
+\emph{(iii)$\Rightarrow$(iv).} Write $d_j=v_p(n_j)$. Condition
+\eqref{eq:hall} makes each bounded-deadline set finite. Therefore the source
+indices can be enumerated in nondecreasing deadline order, with arbitrary
+fixed ordering of ties. Let $d_{(k)}$ be the deadline of the zero-indexed
+$k$th source in this enumeration. If $d_{(k)}<k$, the first $k+1$ sources
+would all have deadline at most $d_{(k)}$, contradicting
+$D(d_{(k)})\le d_{(k)}+1$. Thus $d_{(k)}\ge k$.
+Assign the $k$th source to slot $k$. This is the required injection.
+For a finite family only the corresponding finite initial set of slots is used.
+
+\emph{(iv)$\Rightarrow$(iii).} Every source of deadline at most $K$ must be
+assigned to one of slots $0,\ldots,K$. Injectivity gives \eqref{eq:hall}.
+
+\emph{(iv)$\Rightarrow$(i).} For the source assigned to slot $k_j$, put
+$r_j=n_j/p^{k_j}\in\N$. By \cref{lem:split},
+\[
+ p^{-k_j}U\eqd n_j^{-1}U'+V_{n_j,r_j}.
+\]
+Use this splitting independently at every matched slot. Keep the entire uniform
+$p^{-k}U_k$ at every unmatched slot. All the residual summands have absolute
+value at most $p^{-k}$ at their respective slots, so their sum converges
+absolutely. The extracted source variables also converge absolutely. Their
+independence and the slot-by-slot identity give
+$\mu_p=\nu_a*\rho$. Uniqueness follows from \cref{lem:residual}.
+\end{proof}
+
+\begin{remark}[Why positivity is a conclusion]
+An entire quotient of two characteristic functions need not be a characteristic
+function. In \cref{thm:hall}, positivity follows from the explicit independent
+construction, not from the analytic cancellation by itself. The arithmetic
+structure allows the cancellation condition to force a valid construction.
+Section~\ref{sec:primepower} gives an entire quotient for which positivity fails
+when that structure is absent.
+\end{remark}
+
+\begin{remark}[Summability is also forced by the certificate]
+If a countable family of positive integers satisfies \eqref{eq:hall}, its sorted
+enumeration has $n_{(k)}\ge p^k$. Consequently
+$\sum_j1/n_j\le p/(p-1)$. Thus the arithmetic condition itself supplies the
+absolute-convergence assumption needed to define the source probability law.
+\end{remark}
+
+\subsection{Finite witnesses and exact residual bounds}
+
+\begin{corollary}[A finite certificate for every failure]
+\label{cor:witness}
+For reciprocal-integer widths, failure of convolution divisibility has a finite
+witness: a finite subfamily whose least common multiple $m$ satisfies
+\[
+ \#\{j\text{ in the subfamily}:n_j\mid m\}>1+v_p(m).
+\]
+For a finite input family, sorting deadlines and testing $d_{(k)}\ge k$ either
+constructs the residual slot matching or produces such a witness.
+\end{corollary}
+\begin{proof}
+If $d_{(k)}<k$, take the first $k+1$ sorted sources. The valuation of their
+least common multiple is $d_{(k)}$, so the source order exceeds the target
+order. Conversely, such an excess prevents an entire quotient by
+\cref{lem:zeros}. The algorithm terminates after the finite sort and scan.
+\end{proof}
+
+\begin{proposition}[Support endpoints, variance, and a truncation certificate]
+\label{prop:residual-bounds}
+For an admissible source, put
+\[
+ R=\frac{p}{p-1}-\sum_j\frac1{n_j}.
+\]
+The residual is symmetric, is supported in $[-R,R]$, and has both $-R$ and $R$
+in its support. Its variance is
+\begin{equation}
+ \Var(\rho)=\frac13\left(\frac{p^2}{p^2-1}-\sum_j\frac1{n_j^2}\right).
+ \label{eq:residual-variance}
+\end{equation}
+If $\rho^{[K]}$ retains only residual summands assigned to target slots
+$0,\ldots,K-1$, then
+\begin{equation}
+ W_\infty(\rho,\rho^{[K]})\le\frac{p^{1-K}}{p-1}.
+ \label{eq:winfty}
+\end{equation}
+Here $W_\infty$ is the infimum of the essential maximum displacement over all
+couplings. No assertion that the residual support is an interval is intended.
+\end{proposition}
+\begin{proof}
+Each split digit law is symmetric and has extreme support points
+$\pm(p^{-k_j}-n_j^{-1})$. Unmatched slots have extreme points $\pm p^{-k}$.
+Summing these radii gives $R$. Every finite set of summands can simultaneously
+lie arbitrarily near their upper endpoints with positive probability, and the
+remaining total radius tends to zero. Thus $R$, and similarly $-R$, belongs to
+the support. Variances subtract in the independent decomposition and yield
+\eqref{eq:residual-variance}. Finally, couple the full residual and its truncation
+using the same retained summands. The discarded absolute displacement is at
+most $\sum_{k\ge K}p^{-k}=p^{1-K}/(p-1)$.
+\end{proof}
+
+\section{Geometric streams: an infinite problem with a finite certificate}
+\label{sec:streams}
+
+We next allow finitely many entire Fabius-type laws as source components. A
+geometric stream means the sequence of uniforms making up one scaled copy of
+$X_b$. Besides these streams, finitely many individual uniform factors may be
+present.
+
+\begin{theorem}[Classification of geometric source families]
+\label{thm:streams}
+Fix prime $p$. Consider the law of
+\begin{equation}
+ Y=\sum_{\ell=1}^{J}u_\ell U_\ell+
+   \sum_{i=1}^{r}c_iX_{b_i}^{(i)},
+ \qquad u_\ell,c_i>0,\quad b_i>1,
+ \label{eq:streams}
+\end{equation}
+with all components independent. It divides $\mu_p$ if and only if all of the
+following hold:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $u_\ell=1/N_\ell$ and $c_i=1/n_i$ for positive integers $N_\ell,n_i$;
+\item each $b_i$ is an integer divisible by $p$;
+\item writing $d_\ell=v_p(N_\ell)$, $a_i=v_p(n_i)$, and
+$s_i=v_p(b_i)\ge1$, one has
+\begin{equation}
+ D(K)=\sum_{\ell=1}^{J}\ind_{d_\ell\le K}
+      +\sum_{i=1}^{r}\max\left\{0,1+\left\lfloor\frac{K-a_i}{s_i}\right\rfloor\right\}
+      \le K+1
+ \quad(K\ge0).
+ \label{eq:stream-demand}
+\end{equation}
+\end{enumerate}
+Negative nonzero coefficients are handled by replacing them with their absolute
+values, since all source laws are symmetric. Zero coefficients may be discarded.
+\end{theorem}
+\begin{proof}
+Expand every $X_{b_i}$ into its uniform summands and apply \cref{thm:hall}.
+The first term of each stream forces $c_i=1/n_i$, and all stream denominators
+$n_ib_i^j$ must be integers. The case $j=1$ makes $b_i$ rational. Write
+$b_i=u/v$ in lowest terms. Since $n_iu^j/v^j$ is an integer for every $j$,
+$v^j$ divides $n_i$ for every $j$, and therefore $v=1$. Thus $b_i$ is an integer.
+If $p$ did not divide $b_i$, the infinitely many denominators of this stream
+would all have the same $p$-adic valuation, violating \eqref{eq:hall}.
+
+For an integer base divisible by $p$, the deadlines of stream $i$ are exactly
+$a_i+s_ij$ for $j\ge0$. Counting how many are at most $K$ gives
+\eqref{eq:stream-demand}. The converse follows by the same expansion and the
+sufficiency part of \cref{thm:hall}.
+\end{proof}
+
+Define
+\begin{equation}
+ A=\max(\{0\}\cup\{d_\ell\}\cup\{a_i\}),\quad
+ L=\lcm(s_1,\ldots,s_r),\quad
+ \eta=\sum_{i=1}^{r}\frac1{s_i},\quad \delta=1-\eta.
+ \label{eq:density}
+\end{equation}
+For no streams, the conventions are $L=1$ and $\eta=0$. Put
+$F(K)=K+1-D(K)$. The parameter $\delta$ is the asymptotic surplus of supply
+slots over source demands per valuation level.
+
+\begin{theorem}[Finite-window criterion]
+\label{thm:finite-window}
+All inequalities in \eqref{eq:stream-demand} hold if and only if
+\begin{equation}
+ \delta\ge0\quad\text{and}\quad
+ F(K)\ge0\quad\text{for }0\le K<A+L.
+ \label{eq:finite-window}
+\end{equation}
+More precisely, for every $K\ge A$,
+\begin{equation}
+ F(K+L)=F(K)+L\delta,
+ \qquad L\delta=L-\sum_iL/s_i\in\Z.
+ \label{eq:drift}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $K\ge A$, every finite demand has already arrived and every stream has
+started. Increasing $K$ by $L$ adds exactly $L/s_i$ demands from stream $i$ and
+adds $L$ supply slots. This proves \eqref{eq:drift}. If $L\delta<0$, iterating
+along any residue class eventually makes $F$ negative. If $L\delta\ge0$,
+every $K\ge A$ is obtained from a unique element of $[A,A+L-1]$ by adding a
+nonnegative multiple of $L$, and its slack cannot decrease. The earlier
+indices are precisely the remaining finite checks in \eqref{eq:finite-window}.
+\end{proof}
+
+\paragraph{Algorithmic interpretation.}
+Compute the valuations, $A$, $L$, and the integer drift $L\delta$. Scan the
+$A+L$ displayed inequalities. A negative entry is a finite rejection
+certificate. If all pass but the drift is negative, let
+$q=\lfloor F(A)/(-L\delta)\rfloor+1$; then $K=A+qL$ is an explicit violating
+index. If all pass and the drift is nonnegative, \eqref{eq:drift} certifies
+all remaining indices. The method is exact, but its least-common-multiple
+window need not be polynomial in the binary length of the input. An implementation
+must distinguish a resource limit from a negative mathematical certificate.
+
+\begin{example}[Density is necessary but not sufficient]
+For $p=2$, two unscaled copies of $X_4$ have deadline streams $0,2,4,\ldots$.
+Their combined density is $1/2+1/2=1$, but they already demand two slots at
+$K=0$, where only one is available. In contrast, the two streams
+$0,2,4,\ldots$ and $1,3,5,\ldots$ use every slot once and give
+\[
+ X_2\eqd X_4+\tfrac12X_4'.
+\]
+The simultaneous criterion distinguishes these cases before any analytic
+approximation or numerical positivity test is needed.
+\end{example}
+
+\begin{corollary}[The existing single-copy theorem, recovered]
+\label{cor:single}
+For $c\ne0$, $\dil c\mu_p\mid_*\mu_p$ if and only if $|c|=1/n$ for a positive
+integer $n$. Including $c=0$ gives the trivial factor $\delta_0$.
+\end{corollary}
+\begin{proof}
+A single stream with base $p$ has step $s=1$ and start $a=v_p(n)\ge0$;
+its demand is $\max(0,K-a+1)\le K+1$. Necessity is already part of
+\cref{thm:streams}. For $p=2$, this recovers the classification established
+in the repository's divisor report \cite{RepoDivisors}.
+\end{proof}
+
+\section{Multidimensional rigidity and the matrix semigroup}
+\label{sec:multi}
+
+The scalar classification has a strong geometric consequence. Let $d\ge1$ and
+consider the target product law $\mu_p^{\otimes d}$ on $\R^d$. Its characteristic
+function is
+\[
+ \Phi_{p,d}(t)=\prod_{q=1}^{d}\Phi_p(t_q).
+\]
+Its real zero set is a countable union of coordinate hyperplanes. A source
+uniform along an oblique line creates an oblique zero hyperplane, and there is
+no positive residual that can remove it.
+
+\begin{theorem}[Rigidity of uniform generators]
+\label{thm:vector}
+Let $v_j\in\R^d\setminus\{0\}$ be a finite or countable family with
+$\sum_j\|v_j\|<\infty$, and let $Y=\sum_jv_jU_j$. Then
+$\Law(Y)\mid_*\mu_p^{\otimes d}$ if and only if every generator has the form
+\begin{equation}
+ v_j=\varepsilon_j\frac{e_{q(j)}}{n_j},\qquad
+ \varepsilon_j\in\{-1,1\},\quad n_j\in\N,
+ \label{eq:vector-form}
+\end{equation}
+and each coordinate separately satisfies
+\begin{equation}
+ \#\{j:q(j)=q,\ v_p(n_j)\le K\}\le K+1
+ \qquad(q=1,\ldots,d;\ K\ge0).
+ \label{eq:row-hall}
+\end{equation}
+The residual is unique and is a product of its coordinate residual laws.
+\end{theorem}
+\begin{proof}
+Suppose first that the factorization exists. Fix a generator $v=v_j$. The
+source characteristic function vanishes everywhere on
+$H=\{t\in\R^d:v\cdot t=\pi\}$. Thus the target must vanish there, and
+\[
+ H\subseteq\bigcup_{q=1}^{d}\bigcup_{m\in\Z\setminus\{0\}}
+                  \{t:t_q=\pi m\}.
+\]
+If $v$ has at least two nonzero coordinates, no coordinate hyperplane in the
+union contains $H$. Its intersection with $H$ is consequently either empty
+or a proper affine subspace of $H$, hence closed and nowhere dense in $H$.
+The affine space $H$ is complete and cannot be a countable union of such
+subsets by the Baire category theorem. This contradiction proves that every
+$v_j$ lies on a coordinate axis. When $d=1$, that conclusion is automatic.
+
+After grouping generators by coordinate and absorbing their signs by symmetry,
+the coordinate projections of the purported factorization are scalar
+factorizations of $\mu_p$. Apply \cref{thm:hall} to each projection. It gives
+\eqref{eq:vector-form} and \eqref{eq:row-hall}.
+
+Conversely, the scalar construction supplies a residual in every coordinate.
+Taking their independent product gives the required vector decomposition.
+Finally, the source characteristic function is nonzero on a dense subset of
+$\R^d$: it is a product of one-variable entire functions with isolated real
+zeros. Thus cancellation and continuity make the residual characteristic
+function unique. It must be the product already constructed.
+\end{proof}
+
+\begin{definition}[Linear decomposability semigroup]
+For a probability law $\mu$ on $\R^d$, define
+\[
+ \mathcal D(\mu)=\{C\in\R^{d\times d}:\mu=(C_*\mu)*\rho
+                    \text{ for some probability law }\rho\}.
+\]
+This is a semigroup under matrix multiplication: combining factorizations for
+$C$ and $D$ gives a factorization for $CD$. A partial monomial matrix has at most
+one nonzero entry in each row and at most one in each column.
+\end{definition}
+
+\begin{theorem}[Complete matrix classification]
+\label{thm:matrix}
+For prime $p$ and every $d\ge1$,
+\begin{equation}
+ \mathcal D(\mu_p^{\otimes d})=
+ \left\{C:\ C\text{ is partial monomial and every nonzero entry is }
+                    \frac{\varepsilon}{n},\ 
+                    \varepsilon\in\{-1,1\},\ n\in\N\right\}.
+ \label{eq:matrix-semigroup}
+\end{equation}
+The invertible matrices in this set are signed permutation matrices with
+reciprocal-integer coordinate scalings. Its semigroup units are exactly the
+signed permutation matrices. Every continuous path taking values in
+$\mathcal D(\mu_p^{\otimes d})$ is constant.
+\end{theorem}
+\begin{proof}
+Let $X'$ have independent coordinates with law $\mu_p$. Writing each coordinate
+as its uniform series expresses $CX'$ using the generators $p^{-k}c_j$, where
+$c_j$ is column $j$ of $C$. By \cref{thm:vector}, every nonzero column is
+coordinate-aligned and its coefficient is a signed reciprocal integer.
+
+If two nonzero columns were assigned to the same row, that row would contain
+two deadline streams, each of step $1$. Their combined demand is $2K+O(1)$,
+which eventually exceeds $K+1$. Hence each row contains at most one nonzero
+column, proving the necessary partial monomial structure. Conversely, every
+nonzero row of such a matrix invokes exactly one admissible scalar
+single-copy factor from \cref{cor:single}; zero rows leave a full target
+coordinate as residual. The independent rowwise constructions prove sufficiency.
+
+Invertibility forces exactly one nonzero entry in each row and column. The
+inverse can also satisfy \eqref{eq:matrix-semigroup} only when every scaling
+integer is $1$, proving the assertion about units. Finally, each matrix entry
+of a continuous path lies in the countable subset
+$\{0\}\cup\{\pm1/n:n\in\N\}$ of $\R$. A connected subset of $\R$ with more
+than one point contains an interval and is uncountable. Each entry, and hence
+the path, must therefore be constant.
+\end{proof}
+
+\begin{corollary}[No continuous nontrivial linear scaling family]
+There is no continuous nonconstant family $C_t\in\mathcal D(\mu_p^{\otimes d})$
+with $C_0=I$. In particular, no continuous linear contraction semigroup tending
+to zero can provide decompositions of this fixed target law at every time.
+\end{corollary}
+\begin{proof}
+Apply the final assertion of \cref{thm:matrix}.
+\end{proof}
+
+This is a rigidity statement about \emph{exact independent decompositions}; it
+is not a prohibition on approximate decompositions, nonlinear dynamics, or
+unrelated stochastic processes. It also explains why the scalar reciprocal
+integers should not be mistaken for a continuous self-decomposability property.
+With different source bases, several columns may feed the same output
+coordinate, but the corresponding row must then satisfy the stream criterion
+of \cref{thm:streams}.
+
+\section{Prime-power targets and a composite-base obstruction}
+\label{sec:primepower}
+
+\begin{theorem}[Prime-power extension]
+\label{thm:primepower}
+Let $B=p^h$ with $p$ prime and $h\ge1$. For a summable uniform source $\nu_a$,
+convolution divisibility $\nu_a\mid_*\mu_B$ and entire extensibility of
+$\Phi_B/\Psi_a$ are equivalent. They hold exactly when $a_j=1/n_j$ with
+$n_j\in\N$ and
+\begin{equation}
+ \#\left\{j:\left\lfloor\frac{v_p(n_j)}h\right\rfloor\le K\right\}
+ \le K+1\qquad(K\ge0).
+ \label{eq:primepower-hall}
+\end{equation}
+The residual construction assigns source $j$ to a distinct slot $k_j$ with
+$B^{k_j}\mid n_j$ and splits that uniform as in \cref{lem:split}.
+\end{theorem}
+\begin{proof}
+The target zeros are still precisely $\pi m$, $m\ne0$, but their orders are
+\[
+ 1+\left\lfloor\frac{v_p(|m|)}h\right\rfloor.
+\]
+The allowed slots of denominator $n$ are the initial interval through
+$\lfloor v_p(n)/h\rfloor$. The least-common-multiple obstruction works because
+\[
+ \left\lfloor\frac{v_p(\lcm(n_1,\ldots,n_s))}h\right\rfloor
+ =\max_i\left\lfloor\frac{v_p(n_i)}h\right\rfloor.
+\]
+The necessity, sorted matching, and independent splitting proofs of
+\cref{thm:hall} therefore apply word for word with these deadlines and
+supply scales $B^{-k}$.
+\end{proof}
+
+For a general integer $B$, the eligible supply slots of a single denominator
+are still nested. What fails is the least-common-multiple reduction: different
+prime factors can be supplied by different denominators and can create extra
+powers of $B$ in their least common multiple. The resulting analytic zero
+condition can miss a genuine positivity obstruction.
+
+\begin{theorem}[An entire nonpositive quotient at base six]
+\label{thm:base6}
+The function
+\begin{equation}
+ Q(t)=\frac{\Phi_6(t)}{\sinc(t/2)\sinc(t/3)}
+ \label{eq:base6-quotient}
+\end{equation}
+extends to an entire function, is normalized by $Q(0)=1$, and is not the
+characteristic function of a probability measure. In particular,
+$\Unif_{1/2}*\Unif_{1/3}$ does not divide $\mu_6$.
+\end{theorem}
+\begin{proof}
+Peeling off the first two factors of $\Phi_6$ and using elementary trigonometric
+identities gives
+\begin{align}
+ Q(t)
+ &=\frac{\sinc t\,\sinc(t/6)}{\sinc(t/2)\sinc(t/3)}\Phi_6(t/36)\notag\\
+ &=\frac{\cos(t/2)}{\cos(t/6)}\Phi_6(t/36)\notag\\
+ &=\bigl(2\cos(t/3)-1\bigr)\Phi_6(t/36).
+ \label{eq:base6-signed}
+\end{align}
+The identities first hold away from their displayed denominators' zeros and
+then extend analytically. The final expression is entire.
+
+Let $\tau=\dil{1/36}\mu_6$. Its support is
+$[-1/30,1/30]$. Equation~\eqref{eq:base6-signed} is the characteristic transform
+of the finite signed measure
+\[
+ (\delta_{-1/3}+\delta_{1/3}-\delta_0)*\tau.
+\]
+The three translates have disjoint containing intervals. On the central
+interval $[-1/30,1/30]$, this signed measure has mass exactly $-1$.
+It is therefore not positive. Uniqueness of Fourier transforms for finite
+signed measures prevents a different positive measure from having the same
+transform. Finally, an actual convolution residual in
+\eqref{eq:base6-quotient} would have characteristic function $Q$, contradicting
+what was just proved.
+\end{proof}
+
+The example has an analytic quotient with every pole canceled, so it cannot be
+rejected by searching for an unremoved Fourier zero. It shows precisely why a
+positivity construction is indispensable and why the prime-power theorem is
+not a routine assertion about arbitrary entire quotients.
+
+\section{The residual digit profile}
+\label{sec:digits}
+
+From now until explicitly stated otherwise, the target base is prime $p$ and
+the source denominators are pure powers $n_j=p^{d_j}$ with $d_j\in\Nzero$.
+Assume the Hall inequalities hold. Define the \emph{digit slack}
+\begin{equation}
+ g_h=h-\#\{j:d_j<h\}=F(h-1),\qquad h\ge1.
+ \label{eq:digit-slack}
+\end{equation}
+In particular, $0\le g_h\le h$. This is the number of target digit layers
+remaining at level $h$ after all source digit layers are removed.
+
+Let $D_p$ be uniform on the centered digit set
+$\{2\ell-p+1:0\le\ell<p\}$ and write
+\begin{equation}
+ \chi_p(u)=\E e^{iuD_p}
+ =\frac1p\sum_{\ell=0}^{p-1}e^{i(2\ell-p+1)u}
+ =\frac{\sin(pu)}{p\sin u}.
+ \label{eq:digit-char}
+\end{equation}
+The quotient has its removable values at multiples of $\pi$; the finite sum
+is its globally valid definition.
+
+\begin{lemma}[Uniform digit expansion]
+\label{lem:uniform-digits}
+For every complex $z$,
+\begin{equation}
+ \sinc z=\prod_{h=1}^{\infty}\chi_p(z/p^h).
+ \label{eq:uniform-digits}
+\end{equation}
+Equivalently, $\sum_{h\ge1}p^{-h}D_{p,h}$ has law $\Unif_1$ for independent
+copies $D_{p,h}$ of $D_p$.
+\end{lemma}
+\begin{proof}
+The finite product telescopes to
+$\sin z/[p^N\sin(z/p^N)]$, with removable values understood. Its locally
+uniform limit is $\sinc z$. The digit series is absolutely convergent, and
+its characteristic function is the product on the right. Uniqueness of
+characteristic functions proves the probability statement.
+\end{proof}
+
+\begin{theorem}[Canonical residual digit law]
+\label{thm:digits}
+For the pure-power source above, the unique residual has the representation
+\begin{equation}
+ Z=\sum_{h=1}^{\infty}p^{-h}\sum_{\ell=1}^{g_h}D_{h,\ell},
+ \qquad
+ \cf\rho(t)=\prod_{h=1}^{\infty}\chi_p(t/p^h)^{g_h},
+ \label{eq:residual-digits}
+\end{equation}
+where the $D_{h,\ell}$ are independent with law $D_p$.
+The series is absolutely convergent. Moreover,
+\begin{equation}
+ \ord_{\pi p^K}\cf\rho=g_{K+1}=F(K)\qquad(K\ge0).
+ \label{eq:slack-zeros}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Expand every uniform using \cref{lem:uniform-digits}. The target product has
+exponent $h$ at digit level $h$: the pairs consisting of supply scale $k\ge0$
+and a positive relative digit index with sum $h$ number exactly $h$.
+A source uniform $p^{-d_j}U$ contributes one digit at every level $h>d_j$.
+The difference of the two multiplicities is exactly \eqref{eq:digit-slack}.
+
+Since $\sum_h h p^{-h}<\infty$ and $|D_p|\le p-1$, all these series and
+regroupings are absolutely convergent. The source digits plus the digits
+in \eqref{eq:residual-digits} reproduce the target digits independently.
+This proves the factorization and hence, by uniqueness, the claimed residual.
+The zero-order formula also follows by subtracting the source order
+$\#\{j:d_j\le K\}$ from the target order $K+1$ at $\pi p^K$.
+\end{proof}
+
+The construction in \cref{thm:hall} is a matching of \emph{whole uniforms};
+\cref{thm:digits} instead matches their \emph{individual digit layers}. They
+produce the same law but answer different questions. The first is well suited
+to an exact existence certificate for arbitrary integer denominators. The
+second exposes regularity, arithmetic scaling, and entire-function structure.
+
+For a finite-plus-geometric pure-power source, the definitions in
+\eqref{eq:density} give
+\begin{equation}
+ g_h=\delta h+O(1).
+ \label{eq:slack-asymptotic}
+\end{equation}
+If $\delta=0$, \eqref{eq:drift} says that $g_h$ is periodic with period $L$
+for every $h\ge A+1$. These two regimes lead to very different residuals.
+
+\section{Positive surplus: smoothness, sharp Fourier decay, and non-D-finiteness}
+\label{sec:smooth}
+
+\begin{theorem}[A sharp log-squared Fourier envelope]
+\label{thm:sharp}
+Let a pure-power source satisfy the Hall condition and suppose its digit slack
+has $g_h=\delta h+O(1)$ with $\delta>0$. Then its residual has a compactly
+supported $C^\infty$ density and
+\begin{equation}
+ \log|\cf\rho(t)|\le
+ -\frac{\delta}{2\log p}(\log|t|)^2+O(\log|t|)
+ \qquad(|t|\to\infty),
+ \label{eq:fourier-upper}
+\end{equation}
+where $\log0=-\infty$. The coefficient is sharp:
+\begin{equation}
+ \limsup_{|t|\to\infty}
+ \frac{\log|\cf\rho(t)|}{(\log|t|)^2}
+ =-\frac{\delta}{2\log p}.
+ \label{eq:fourier-limsup}
+\end{equation}
+The limsup is attained as a limit along $t_N=\pi p^N/(p+1)$.
+\end{theorem}
+\begin{proof}
+Choose a nonnegative constant $C$ so that $g_h\ge\delta h-C$ for all $h$,
+and define the nondecreasing integer minorant
+\[
+ e_h=\max(0,\lfloor\delta h-C\rfloor)\le g_h.
+\]
+For $j\ge1$, let $H_j$ be the first index with $e_h\ge j$. Then
+$H_j=j/\delta+O(1)$, and another application of the uniform digit expansion
+gives
+\begin{equation}
+ \prod_{h\ge1}\chi_p(t/p^h)^{e_h}
+   =\prod_{j\ge1}\sinc\bigl(t/p^{H_j-1}\bigr).
+ \label{eq:minorant-uniforms}
+\end{equation}
+The remaining digit multiplicities $g_h-e_h$ define a probability law, so their
+characteristic function has modulus at most $1$ on the real axis.
+
+Put $T=\log_p|t|$ and retain from \eqref{eq:minorant-uniforms} the
+$J=\delta T+O(1)$ factors with $H_j-1\le T$. The elementary bound
+$|\sinc u|\le\min(1,1/|u|)$ yields
+\begin{align*}
+ \log|\cf\rho(t)|
+ &\le -J\log|t|+\log p\sum_{j=1}^{J}(H_j-1)\\
+ &=-J\log|t|+\frac{\log p}{2\delta}J^2+O(J)\\
+ &=-\frac{\delta}{2\log p}(\log|t|)^2+O(\log|t|).
+\end{align*}
+This proves the upper bound uniformly in real $t$ of large modulus, including
+zeros with the stated convention.
+
+For sharpness, put $\alpha=\pi/(p+1)$ and $t_N=\alpha p^N$. Since
+$p\equiv-1\pmod{p+1}$, for every integer $j\ge0$,
+\[
+ |\sin(\alpha p^j)|=\sin\alpha,
+ \qquad |\chi_p(\alpha p^j)|=1/p.
+\]
+The first $N$ digit factors in \eqref{eq:residual-digits} therefore contribute
+\[
+ -\log p\sum_{h=1}^{N}g_h
+ =-\tfrac12\delta\log p\,N^2+O(N)
+\]
+to the logarithmic modulus. The remaining arguments are
+$\alpha/p^r$, $r\ge1$, on an interval where $\chi_p$ is positive and nonzero.
+Taylor's theorem and compactness give
+$0\le-\log\chi_p(\alpha/p^r)\le C_1p^{-2r}$ for a fixed constant $C_1$.
+Since $g_{N+r}=O(N+r)$, the entire tail contributes $O(N)$ in absolute value.
+Thus
+\[
+ \log|\cf\rho(t_N)|=-\tfrac12\delta\log p\,N^2+O(N).
+\]
+Dividing by $(N\log p+\log\alpha)^2$ proves the lower bound in
+\eqref{eq:fourier-limsup}; the upper bound was already established.
+
+Finally, \eqref{eq:fourier-upper} implies
+$\int_\R |t|^m|\cf\rho(t)|\,dt<\infty$ for every nonnegative integer $m$.
+Fourier inversion supplies a continuous density, and differentiation under the
+integral supplies continuous derivatives of every order. The law was already
+compactly supported, so this density is compactly supported as well.
+\end{proof}
+
+\begin{corollary}[Smoothness for arbitrary integer stream denominators]
+\label{cor:general-smooth}
+Every admissible finite-plus-geometric family in \cref{thm:streams} with
+$\delta>0$ has a compactly supported $C^\infty$ residual density. Its
+characteristic function satisfies the upper bound \eqref{eq:fourier-upper}
+with the same $\delta$. Sharpness of that coefficient is asserted here only
+for the pure-power case of \cref{thm:sharp}.
+\end{corollary}
+\begin{proof}
+Replace each source denominator $n$ by $p^{v_p(n)}$, making that source uniform
+larger. The new family has exactly the same deadlines, is admissible by
+\cref{thm:hall}, and has a pure-power residual $\rho_0$ governed by
+\cref{thm:sharp}. Each enlarged source uniform splits into the original
+uniform and an independent finite digit law, because $n/p^{v_p(n)}$ is an
+integer. Summing these splits is legitimate: the enlarged widths are summable
+by the Hall bound. Thus the enlarged source equals the original source
+convolved with a probability law $\sigma$, and the original residual is
+$\rho_0*\sigma$. Its Fourier modulus is bounded by $|\cf{\rho_0}|$.
+Fourier inversion gives the stated smoothness and upper bound.
+\end{proof}
+
+\begin{definition}[D-finiteness]
+An entire function $f$ is D-finite if it satisfies a nontrivial homogeneous
+linear differential equation
+$\sum_{j=0}^{r}P_j(z)f^{(j)}(z)=0$ with polynomial coefficients $P_j$.
+\end{definition}
+
+\begin{theorem}[Positive-surplus residuals are not D-finite]
+\label{thm:nonDfinite}
+For every admissible finite-plus-geometric source from \cref{thm:streams}
+with $\delta>0$, the entire residual characteristic function is not D-finite.
+This includes non-pure integer bases and denominators.
+\end{theorem}
+\begin{proof}
+At valuation cutoff $K$, the source denominators with $p$-adic valuation at
+most $K$ form a finite set of size $D(K)$. Let $q_K$ be the least common
+multiple of their prime-to-$p$ parts, with the empty least common multiple
+equal to $1$, and put $M_K=p^Kq_K$. Exactly those $D(K)$ source factors vanish
+at $\pi M_K$: their denominators divide $M_K$, while every other denominator
+has $p$-adic valuation greater than $K$. The target order there is $K+1$.
+Consequently
+\[
+ \ord_{\pi M_K}\cf\rho=K+1-D(K)=\delta K+O(1),
+\]
+which tends to infinity. These are infinitely many distinct points since
+$v_p(M_K)=K$.
+
+Suppose a differential equation of order $r$ with leading coefficient
+$P_r\not\equiv0$ existed. A nonzero entire function cannot satisfy a nontrivial
+order-zero equation, so $r\ge1$. At any point where $P_r$ does not vanish,
+local uniqueness for the linear analytic differential equation implies that a
+solution with its first $r$ initial derivatives zero is identically zero.
+Thus a nonzero solution has zero multiplicity less than $r$ at every such
+ordinary point. The leading polynomial has only finitely many exceptional
+points, contradicting the infinite sequence of unbounded multiplicities.
+The residual is nonzero because $\cf\rho(0)=1$.
+\end{proof}
+
+The zero-multiplicity obstruction for the original Rvachev transform is already
+present in the repository's representation work \cite{RepoAudit}. The content
+here is its extension to the residuals, where the remaining zero order is the
+explicit matching slack and is controlled by the geometric demand density.
+
+\section{Critical periodic slack: a complete regularity classification}
+\label{sec:critical}
+
+Assume the pure-power source is admissible and its slack $g_h$ is eventually
+periodic. This includes every finite-plus-geometric pure-power family with
+$\delta=0$, by \cref{thm:finite-window}. The result below is more general than
+that application: it only needs eventual periodicity of the actual slack.
+
+The distinction between an atomless singular law and a discrete law matters.
+Convolving either with a uniform produces an absolutely continuous law, but the
+singular continuous case gains one more order of continuous differentiability
+than the discrete case. We first prove the precise singularity statement needed
+for this distinction.
+
+\begin{lemma}[A missing periodic digit layer forces singular continuity]
+\label{lem:periodic-singular}
+Let $(r_h)_{h\ge1}$ be a periodic sequence of nonnegative integers. Suppose
+$\min_h r_h=0$ and the sequence is not identically zero. Then
+\begin{equation}
+ S=\sum_{h\ge1}p^{-h}\sum_{\ell=1}^{r_h}D_{h,\ell}
+ \label{eq:periodic-singular}
+\end{equation}
+has a singular continuous law: it is singular with respect to Lebesgue measure
+and has no atoms.
+\end{lemma}
+\begin{proof}
+Replace each centered digit $D_{h,\ell}$ by $2K_{h,\ell}-(p-1)$, where
+$K_{h,\ell}$ is uniform on $\{0,\ldots,p-1\}$. This changes the law by an
+invertible affine transformation. It therefore suffices to study
+\[
+ W=\sum_{h\ge1}p^{-h}\sum_{\ell=1}^{r_h}K_{h,\ell}.
+\]
+Let $L$ be a period and $B=p^L$. Grouping consecutive blocks of $L$ levels gives
+\begin{equation}
+ W=\sum_{j=0}^{\infty}B^{-(j+1)}A_j,
+ \label{eq:block-digits}
+\end{equation}
+where the $A_j$ are independent, identically distributed, integer-valued finite
+digits. They need not lie between $0$ and $B-1$; that restriction is not used.
+Modulo one, multiplication by $B$ deletes the initial block. Consequently the
+projected law $\lambda$ on $\T$ is invariant under $T_B(x)=Bx\pmod1$ and is a
+factor of the independent block shift.
+
+The independent block shift is ergodic. Indeed, sufficiently separated cylinder
+events are independent; approximation by cylinder events gives mixing for all
+measurable events. For a shift-invariant event $E$, this gives
+$\Prob(E)=\Prob(E)^2$. Every invariant event under the factor map pulls back
+to such an event, so $\lambda$ is ergodic as well.
+
+Choose $r_0\in\{1,\ldots,L\}$ with $r_{r_0}=0$, and set $n=p^{r_0-1}$.
+The Fourier coefficient $\int e^{2\pi inx}\,d\lambda(x)$ is a product of digit
+coefficients. At levels $h<r_0$ all factors are $1$. The potentially vanishing
+factor at level $h=r_0$ is absent. At levels $h>r_0$, the digit ratio is
+$e^{2\pi i/p^{h-r_0+1}}$, so its average over $p$ consecutive digits is
+nonzero. The resulting infinite tail product is nonzero as well: the digit
+multiplicities are bounded and the differences of these factors from $1$ are
+summable. Thus $\lambda$ has a nonzero Fourier coefficient at the nonzero
+integer $n$, and is not Haar measure.
+
+For completeness, an ergodic $T_B$-invariant probability on $\T$ that is not
+Haar must be singular. The map $T_B$ sends absolutely continuous measures to
+absolutely continuous measures and singular measures to singular measures:
+for the latter assertion, a null support remains null under the piecewise
+linear map. Uniqueness of the Lebesgue decomposition therefore makes the
+absolutely continuous and singular components of an invariant law separately
+invariant. Ergodicity forces one component to have full mass. One way to see
+this last assertion directly is to let $f=d\lambda_{\rm ac}/d\lambda$, so
+$0\le f\le1$. Invariance of both measures gives
+\[
+ \int f(f\circ T_B)\,d\lambda=\int f^2\,d\lambda,
+ \qquad
+ \int(f\circ T_B)^2\,d\lambda=\int f^2\,d\lambda.
+\]
+Hence $f=f\circ T_B$ almost everywhere, and ergodicity makes $f$ constant.
+If that constant is positive, the whole measure is absolutely continuous.
+But an absolutely continuous invariant probability has Fourier coefficients
+$\cf\lambda(n)=\cf\lambda(Bn)$, which tend to zero for $n\ne0$ by the
+Riemann--Lebesgue lemma. It is therefore Haar. Since the present law is not
+Haar, it is singular. The inverse image in $\R$ of a null set of full
+$\lambda$-measure is a countable union of null translates, proving singularity
+of the real law in \eqref{eq:block-digits}.
+
+Finally, there are infinitely many levels with $r_h>0$. Select one raw digit
+at each such level and put zeros at all other positions. The resulting base-$p$
+random expansion is atomless: every real number has at most two base-$p$
+expansions with digits $0,\ldots,p-1$, and every fixed infinite choice at the
+selected positions has probability zero. The remaining digits are independent
+of this selected subseries. Convolution with an atomless measure remains
+atomless, since the mass of a singleton is the integral of singleton masses.
+This proves the assertion for $W$ and hence for $S$.
+\end{proof}
+
+\begin{lemma}[A compact probability has no vanishing positive-order derivative]
+\label{lem:nonzero-derivative}
+If $\rho$ is a compactly supported probability measure and $m\ge1$, its
+$m$th distributional derivative is not the zero distribution.
+\end{lemma}
+\begin{proof}
+If it vanished, its Fourier transform would give
+$(-it)^m\cf\rho(t)=0$ for all real $t$ in our sign convention. Thus
+$\cf\rho(t)=0$ for $t\ne0$, contradicting continuity and $\cf\rho(0)=1$.
+\end{proof}
+
+\begin{theorem}[Exact critical regularity]
+\label{thm:critical}
+Let an admissible pure-power source have slack $g_h$ periodic for $h\ge H$.
+Set
+\[
+ m=\min_{h\ge H}g_h,\qquad r_h=g_h-m\quad(h\ge H),\qquad a=p^{1-H}.
+\]
+Let $P$ be the finite atomic law of the prefix digit sum at levels $h<H$.
+Then the residual has the factorization
+\begin{equation}
+ \rho=P*\Unif_a^{*m}*\sigma,
+ \label{eq:critical-decomposition}
+\end{equation}
+where $\sigma$ is the tail law made from the $r_h$ digits. Empty convolution
+powers mean $\delta_0$. Exactly the following alternatives hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $r_h=0$ throughout the periodic tail and $m=0$, then $\rho=P$ is
+finite atomic.
+\item If $r_h=0$ throughout the tail and $m\ge1$, then $\rho$ is a finite
+mixture of compact splines. For $m=1$ it has a piecewise constant density but
+no continuous density. For $m\ge2$ its density belongs to $C^{m-2}(\R)$ and
+not to $C^{m-1}(\R)$.
+\item If the periodic tail $r_h$ is not identically zero and $m=0$, then
+$\rho$ is singular continuous.
+\item If the periodic tail $r_h$ is not identically zero and $m\ge1$, then
+$\rho$ has a density in $C^{m-1}(\R)$ and not in $C^m(\R)$.
+\end{enumerate}
+These regularity statements concern existence of a globally continuous
+representative of the density and its derivatives, not arbitrary changes of
+a density on null sets.
+\end{theorem}
+\begin{proof}
+Separate the finite prefix in \cref{thm:digits}, and remove $m$ copies of a
+complete infinite digit tail. By \cref{lem:uniform-digits}, each complete tail
+starting at $H$ is uniform on $[-p^{1-H},p^{1-H}]$. This proves
+\eqref{eq:critical-decomposition}. If $r$ is nonzero, its periodic minimum is
+zero, and rescaling and reindexing the tail puts it under
+\cref{lem:periodic-singular}. Thus $\sigma$ is singular continuous.
+
+The distributional derivative of the uniform measure is
+\begin{equation}
+ D\Unif_a=\frac{\delta_{-a}-\delta_a}{2a}=:B_a.
+ \label{eq:uniform-derivative}
+\end{equation}
+If $\sigma=\delta_0$, the residual is a finite sum of translates of an
+$m$-fold uniform convolution. For $m\ge2$, each distributional derivative
+through order $m-2$ is a finite sum of translates of a convolution retaining
+at least two uniforms, and hence has a continuous density. This gives a
+$C^{m-2}$ density. Its derivative of order $m-1$ is a compactly supported
+piecewise constant function, because
+$D^{m-1}\rho=P*B_a^{*(m-1)}*\Unif_a$.
+If the original density were $C^{m-1}$, this piecewise constant derivative
+would have a continuous representative and would therefore be identically
+zero. That contradicts \cref{lem:nonzero-derivative}. The same compact
+piecewise-constant argument applied to the density itself handles $m=1$.
+The case $m=0$ is immediate.
+
+Now suppose $\sigma$ is singular continuous. Convolution with the finite
+atomic $P$ preserves both singularity and absence of atoms, proving (iii).
+For $m\ge1$, the law $\Unif_a*\sigma$ has the continuous density
+\[
+ x\longmapsto\frac{F_\sigma(x+a)-F_\sigma(x-a)}{2a},
+\]
+where $F_\sigma$ is continuous because $\sigma$ is atomless. Equation
+\eqref{eq:uniform-derivative} shows that the distributional derivative of
+$\rho$ through order $m-1$ has a continuous density, so $\rho$ has a
+$C^{m-1}$ density. Its next derivative is the finite signed measure
+\[
+ D^m\rho=P*B_a^{*m}*\sigma.
+\]
+This measure is singular, being a finite signed sum of translates of a
+singular measure, and is nonzero by \cref{lem:nonzero-derivative}. A $C^m$
+density would make the same derivative absolutely continuous, which is
+impossible. This proves (iv).
+\end{proof}
+
+\paragraph{Why the classification is effective.}
+For finitely many pure-power streams, the certificate already supplies a
+period $L$ and a valid start $H=A+1$. Computing the $L$ tail values of $g_h$
+determines their minimum $m$ and whether all values equal that minimum.
+The four-way classification thus needs only integer arithmetic after the
+existence test. A shorter actual period may be used but is not required.
+In contrast, no exact critical-regularity classification for arbitrary
+prime-to-$p$ parts is claimed here.
+
+\section{Explicit factorizations and diagnostic examples}
+\label{sec:examples}
+
+\subsection{Two identical source streams and a Cantor residual}
+
+\begin{theorem}[A singular residual from two identical geometric factors]
+\label{thm:cantor-example}
+For every prime $p$,
+\begin{equation}
+ X_p\eqd\frac1pX_{p^2}^{(1)}+\frac1pX_{p^2}^{(2)}+Z_p,
+ \qquad
+ Z_p=\sum_{j=0}^{\infty}p^{-(2j+1)}D_j,
+ \label{eq:cantor-decomposition}
+\end{equation}
+with independent terms and independent centered $p$-digit variables $D_j$.
+The residual $Z_p$ is singular continuous and has Hausdorff dimension $1/2$.
+Its extreme support points and variance are
+\begin{equation}
+ \pm\frac{p}{p+1},\qquad
+ \Var(Z_p)=\frac{p^2}{3(p^2+1)}.
+ \label{eq:cantor-stats}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Both source streams have start $1$ and step $2$. Their slack is
+$g_h=1$ at odd levels and $0$ at even levels, which satisfies the Hall
+inequalities. The canonical digit formula is exactly
+\eqref{eq:cantor-decomposition}; singular continuity follows from
+\cref{lem:periodic-singular}. The extreme radius is
+\[
+ (p-1)\sum_{j\ge0}p^{-(2j+1)}=\frac{p}{p+1}.
+\]
+Since $\Var(D_j)=(p^2-1)/3$, summing the independent variances gives
+\eqref{eq:cantor-stats}.
+
+The residual obeys the iterated-function identity
+$Z_p\eqd D_0/p+Z_p'/p^2$. Its $p$ first-level support intervals are disjoint
+with positive gaps, and every cylinder of depth $N$ has diameter
+$[2p/(p+1)]p^{-2N}$ and mass $p^{-N}$. Covering by these cylinders shows that
+the support has Hausdorff dimension at most $1/2$. Conversely, for any small
+radius $r$, choose $N$ with $p^{-2N}$ comparable to $r$. An interval of
+length $r$ meets at most a fixed number of depth-$N$ cylinders, by their
+uniformly separated geometry. Its mass is at most a constant times
+$p^{-N}\le C r^{1/2}$. Summing this bound over arbitrary interval covers
+shows the dimension is at least $1/2$. The same bound and the cylinder
+masses give dimension $1/2$ for the probability measure itself.
+\end{proof}
+
+For $p=2$, $D_j$ is a fair sign, and the formula becomes
+\[
+ X_2\eqd\tfrac12X_4^{(1)}+\tfrac12X_4^{(2)}
+             +\sum_{j\ge0}\frac{\varepsilon_j}{2\cdot4^j}.
+\]
+The residual is a centered, rescaled middle-half Cantor measure with support
+endpoints $\pm2/3$ and variance $4/15$. Each source component has a smooth
+density, but after both are removed the remaining law is singular. Thus the
+regularity of an admissible residual is not inferred from the regularity of
+its source components.
+
+\subsection{Every finite differentiability order from two base-four copies}
+
+\begin{corollary}[A tunable exact regularity family]
+\label{cor:tunable}
+For every integer $a\ge1$, two independent copies of $2^{-a}X_4$ jointly divide
+$X_2$. If $a=1$, their residual is the Cantor law above. If $a\ge2$, the residual
+has a density in $C^{a-2}(\R)$ and not in $C^{a-1}(\R)$.
+\end{corollary}
+\begin{proof}
+The two deadline streams both have start $a$ and step $2$. Their slack begins
+$g_h=h$ for $1\le h\le a$, then alternates between $a-1$ and $a$.
+It is nonnegative, so the factorization exists. The periodic tail has minimum
+$m=a-1$ and is not constant. Apply \cref{thm:critical}.
+\end{proof}
+
+In particular, two quarter-scaled base-four laws leave a continuous but not
+continuously differentiable density. Here the exact decomposition is
+\[
+ \rho=\Unif_1*\Law\left(\sum_{j\ge1}4^{-j}\varepsilon_j\right).
+\]
+Two eighth-scaled copies leave a $C^1$ but not $C^2$ density. These exact endpoint
+regularity obstructions arise from nonzero singular distributional derivatives,
+not merely from an inconclusive upper bound on a Fourier transform.
+
+\subsection{Checks across all four critical regimes}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.32\textwidth}p{0.22\textwidth}X@{}}
+\toprule
+Source removed from $X_2$ & First digit slacks & Residual conclusion \\
+\midrule
+$X_4+X_4'/2$ & $0,0,0,0,\ldots$ & Point mass at zero. \\
+$X_2'/2+U/2$ & $1,0,0,0,\ldots$ & Fair atoms at $\pm1/2$. \\
+$X_2'/2$ & $1,1,1,1,\ldots$ & Uniform on $[-1,1]$; no continuous density. \\
+$X_2'/4$ & $1,2,2,2,\ldots$ & A continuous piecewise linear density, not $C^1$. \\
+$(X_4^{(1)}+X_4^{(2)})/2$ & $1,0,1,0,\ldots$ & Singular continuous Cantor law. \\
+$(X_4^{(1)}+X_4^{(2)})/4$ & $1,2,1,2,\ldots$ & $C^0$ density, not $C^1$. \\
+$(X_4^{(1)}+X_4^{(2)})/8$ & $1,2,3,2,3,\ldots$ & $C^1$ density, not $C^2$. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The finite-spline rows recover familiar finite-head decompositions, and are
+included as normalization and boundary-case checks rather than as novelty
+claims. The singular and mixed smooth--singular rows demonstrate the additional
+behavior introduced by simultaneous streams.
+
+\subsection{A subcritical check and a rejected critical case}
+
+Removing one unscaled $X_4$ from $X_2$ leaves $\tfrac12X_4'$. Its stream has
+$\eta=1/2$, so $\delta=1/2$; the sharp coefficient in
+\eqref{eq:fourier-limsup} is $-1/(4\log2)$, agreeing with the direct base-four
+product. On the other hand, two unscaled copies of $X_4$ fail at $K=0$ despite
+$\eta=1$. Their characteristic-function quotient has a pole at $\pi$: the
+source order there is $2$ and the target order is $1$. This is the smallest
+possible exact rejection certificate.
+
+\subsection{Why periodicity cannot be dropped from the critical theorem}
+
+\begin{example}[Zero surplus density with a smooth residual]
+\label{ex:squares}
+Remove from $X_p$ exactly the target uniforms whose supply exponents are not
+perfect squares. The residual is then
+\[
+ Z=\sum_{j=0}^{\infty}p^{-j^2}U_j.
+\]
+The removed source has asymptotic deadline density $1$, because the number of
+unremoved exponents through $K$ is only $\lfloor\sqrt K\rfloor+1$.
+Nevertheless, the residual is $C^\infty$. For any fixed $N$, its first $N$
+uniform factors give a Fourier bound $O(|t|^{-N})$, while all remaining
+characteristic factors have modulus at most $1$. Taking $N$ arbitrarily large
+and applying Fourier inversion proves smoothness. Its slack is unbounded and
+nonperiodic. Thus the exact classification in \cref{thm:critical} depends on
+periodicity, not on the bare statement that the asymptotic surplus density is
+zero.
+\end{example}
+
+\section{Exact computation and a formalization boundary}
+\label{sec:verification}
+
+\subsection{The accompanying executable certificates}
+
+The file \pathtext{verify.py} uses Python 3.10 or later and only the standard
+library. Running
+\begin{quote}\ttfamily
+python verify.py --output verification.json
+\end{quote}
+reproduces the exact checks and the example certificates. Its public routines
+have the following roles.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.31\textwidth}X@{}}
+\toprule
+Routine & Contract \\
+\midrule
+\pathtext{finite_certificate} & For target base $p^{\mathtt{power}}$, returns a sorted slot matching or a least-common-multiple zero-order obstruction. \\
+\pathtext{stream_certificate} & Returns a complete finite-window certificate, or a violating deadline including its demand and capacity. Inputs are valuation starts, steps, and optional finite deadlines. \\
+\pathtext{demand} & Computes the exact integer expression in \eqref{eq:stream-demand}. \\
+\pathtext{run_tests} & Compares certificates with independent finite matching and zero-order checks, verifies moment identities, and writes diagnostic examples. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The distinction between a source denominator and its valuation is explicit:
+\pathtext{finite_certificate} takes denominators, whereas
+\pathtext{stream_certificate} takes deadlines. Invalid primes, nonpositive
+denominators, invalid steps, and exceeded resource limits raise exceptions.
+In particular, a large least common multiple is not silently treated as a
+mathematical rejection.
+
+The execution accompanying this article produced the following results.
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Exact check & Number completed \\
+\midrule
+Finite uniform families & 9,100 \\
+Finite families accepted & 546 \\
+Uniform interval partitions & 96 \\
+Rational moment identities through degree ten & 1,056 \\
+Finite-plus-geometric families & 8,855 \\
+Geometric families accepted & 1,275 \\
+Integer period-drift identities & 153,390 \\
+Base-six Laurent-polynomial identity & 1 \\
+Deliberately invalid or resource-limited cases & 4 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The finite-family tests cover all multisets of length at most four with
+denominators in $\{1,\ldots,12\}$ for target bases $2,3,5,4,9$.
+The stream tests cover all multisets of at most three streams with starts
+$0,\ldots,4$ and steps $1,\ldots,4$, each combined with five finite-deadline
+patterns. The finite matching oracle uses backtracking rather than the sorted
+deadline routine. The zero-order oracle checks least common multiples of
+subfamilies. The stream oracle checks a longer direct window and verifies every
+returned rejection witness, while separate exact tests check the period recurrence.
+All uniform moment calculations use rational arithmetic.
+
+These computations are finite implementation tests, not a replacement for the
+infinite arguments in the article. They do not numerically establish positivity,
+regularity, or a limit theorem. Those conclusions come from the proofs.
+
+\subsection{Existing Lean infrastructure and what remains to be formalized}
+
+The inspected file \pathtext{GeneralizedZeroDivisor.lean} already supplies a
+precise dyadic zero-divisor interface for weighted products. In particular,
+the source contains the declarations
+\begin{quote}\small\ttfamily
+Fabius.generalizedRvachevProduct\_eq\_zero\_iff\_int\\
+Fabius.analyticOrderAt\_generalizedRvachevProduct\_int
+\end{quote}
+with the summability and nonzero-integer hypotheses stated in that file
+\cite{RepoLean}. The first identifies the arithmetic zero set; the second
+identifies its multiplicity. The report-local README also explicitly distinguishes
+these adjacent zero-divisor theorems from a formalization of the divisor
+classification itself \cite{RepoDivisorsReadme}.
+
+This manuscript did not compile the repository or invoke Lean. It therefore
+makes no claim that its new theorems are already kernel checked. A realistic
+formalization sequence would be:
+\begin{enumerate}
+\item Establish the finite nested matching equivalence between prefix counts
+and sorted deadlines, including a proof-producing rejection witness.
+\item Extend that matching to countably many demands by the finite cardinality
+of every bounded-deadline set; record the bound on the sum of matched widths.
+\item Formalize the one-uniform digit split and its independent countable
+product construction, so that positivity is obtained from probability semantics.
+\item Connect analytic zero order to the least-common-multiple obstruction,
+using the existing dyadic interface first and then general prime powers.
+\item Prove the geometric deadline recurrence and verify the finite certificate
+checker against its universal quantified specification.
+\item Formalize the vector zero-hyperplane obstruction and the rowwise reduction.
+The regularity and ergodic arguments should be a separate final development,
+not hidden as assumptions inside the factorization theorem.
+\end{enumerate}
+The main existence theorem can be formalized without the critical singularity
+or smoothness theory. Keeping that dependency boundary explicit makes an initial
+verified implementation smaller and its trust story clearer.
+
+\section{Further research questions and proposed projects}
+\label{sec:research}
+
+The following are open directions \emph{within the development of this article}.
+They are not assertions that no corresponding theorem exists elsewhere in the
+literature. Each question specifies what the present results do and do not settle.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em]
+\item \textbf{Positive factorization for non-prime-power targets.}
+For integer $B$ with at least two distinct prime divisors, characterize all
+uniform-convolution factors of $\mu_B$. The base-six example proves that zero
+multiplicity is insufficient. A promising exact formulation should combine
+prime-vector divisibility with positivity of finite cyclotomic quotient masks,
+rather than simply replacing $v_p$ by the largest exponent of $B$ dividing an
+integer. The first useful milestone is a complete decision procedure for a fixed
+small number of source uniforms.
+
+\item \textbf{The full convolution-factor monoid.}
+The main theorem classifies factors that are themselves sums of independent
+uniforms. It does not classify every compact probability factor of $\mu_p$.
+The digit representation exhibits many purely discrete and singular factors
+outside that input class. Is there a canonical factor description in terms of
+integer-valued digit multiplicities and finite positive masks, and what
+indecomposable factors must be added? An answer would distinguish a genuine
+factorization theorem for all laws from the uniform-source theorem proved here.
+
+\item \textbf{Critical streams with prime-to-$p$ parts.}
+Existence depends only on valuations, but the residual law remembers the full
+integers. Determine exact smoothness, singularity, and Fourier dimension when
+$\delta=0$ and some source denominators or bases have nontrivial prime-to-$p$
+parts. The pure-power residual construction remains a convolution factor, but
+that alone does not determine the effect of the additional digit measures.
+The repository's one-stream reciprocal-integer family is an important test case,
+not a substitute for the simultaneous classification.
+
+\item \textbf{Nonperiodic capacity profiles.}
+Find necessary and sufficient regularity conditions directly in terms of the
+admissible sequence $g_h$. Example~\ref{ex:squares} shows that zero asymptotic
+surplus permits a smooth law when the leftover scales are sparse and nonperiodic.
+Can a bounded but nonperiodic profile produce a smooth residual? Which growth
+conditions give prescribed sub-log-squared Fourier scales, and what replaces the
+explicit maximizing sequence in \cref{thm:sharp}?
+
+\item \textbf{Shorter arithmetic certificates.}
+The finite-window algorithm is exact but can have a large period
+$\lcm(s_1,\ldots,s_r)$. Seek a certificate whose size is polynomial, or at least
+subexponential, in the binary input length for natural restricted stream classes.
+Useful possibilities include residue-class compression, rational generating
+functions for demand, and short proofs that a floor-sum never exceeds its affine
+capacity. Any speedup should still return a witness when the condition fails.
+
+\item \textbf{Stability under approximate factorization.}
+Exact reciprocal integrality and coordinate alignment are brittle conclusions.
+Quantify the distance from a proposed source to the admissible set when only an
+approximate convolution identity is known in a specified metric. A useful result
+must state its dependence on source support, observation bandwidth, and the
+smallest relevant Fourier zero. In several dimensions, a particularly concrete
+goal is a lower bound on approximation error caused by a small but nonzero
+oblique component.
+
+\item \textbf{Other target hyperplane arrangements.}
+Replace the independent coordinate target by an infinite box spline whose
+uniform directions form a nontrivial finite arrangement. The proof of
+\cref{thm:vector} suggests that every source direction must coincide with a target
+zero-hyperplane direction, but the multiplicity accounting can couple several
+arithmetic chains. Determine when a direction-by-direction matching is sufficient
+and when additional positivity obstructions, analogous to base six, appear.
+
+\item \textbf{Dimensions and fine regularity of critical digit laws.}
+For periodic excess profiles taking only the values $0$ and $1$, separated digit
+constructions give accessible dimensions. Repeated digit layers introduce carries
+and overlaps. Compute exact dimensions and local dimensions for these profiles,
+and determine fractional H\"older, Sobolev, or Besov regularity after the uniform
+smoothing layers are added. The present theorem settles exact integer
+$C^k$ thresholds but not these finer scales.
+
+\item \textbf{Certified construction and formal verification.}
+Implement a proof-producing checker for finite and geometric demands, then
+connect its output to a Lean probability-law construction. The natural initial
+endpoint is the prime-base existence equivalence, not every analytic corollary.
+A later certified sampler could use the uniform residual-tail bound
+\eqref{eq:winfty} to return a sample coupled to the exact residual with a rigorous
+error radius. This would connect arithmetic certificates, probability semantics,
+and practical computation in a single development.
+\end{enumerate}
+
+\section{Conclusion}
+
+For prime-base Fabius laws, a simultaneous factorization question in probability
+reduces exactly to a nested arithmetic allocation problem. Every source uniform
+must have reciprocal-integer width, and the number of sources whose eligible
+slots end by level $K$ cannot exceed $K+1$. The least-common-multiple zero
+obstruction proves necessity, while a uniform digit split proves sufficiency
+and supplies the residual constructively.
+
+The consequences go beyond an existence test. Geometric source families admit
+finite certificates. Multidimensional sources cannot use oblique directions,
+and exact linear copy-factors form a countable matrix semigroup with no
+nonconstant continuous paths.
+A prime-power extension and a base-six signed quotient identify the boundary
+between an analytic divisor and a positive convolution factor. Finally, unused
+digit capacity determines the residual's regularity: positive linear growth
+gives sharp log-squared Fourier decay, while periodic critical capacity gives an
+exact atomic--spline--singular--smooth classification.
+
+The mathematical core is self-contained and does not assume the correctness of
+unverified repository research claims. Its most direct next step is a verified
+matching-and-splitting implementation, followed by the harder classification of
+positive factors beyond prime-power target bases.
+
+\clearpage
+\appendix
+\section{Source provenance and the scope of the review}
+\label{app:sources}
+
+The repository's main tree was recorded at commit
+\begin{quote}\small\ttfamily
+23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae.
+\end{quote}
+The root and Fabius READMEs, the representation source audit, and the specific
+Lean zero-divisor source were inspected at that pinned snapshot. GitHub's
+indexed code-search results supplied the existing reciprocal-integer divisor
+report and its README at a second explicit snapshot,
+\begin{quote}\small\ttfamily
+e9c09b12549ea4e3bea7cebc52b450b761f6f581.
+\end{quote}
+These are two identified source versions, not a claim that all inspected
+material came from one synchronized checkout. The mathematical baseline for
+the single-copy result is the report cited in \cite{RepoDivisors}.
+
+The review deliberately checked for a collision with the proposed scalar
+factorization idea. The existing report was found, and the scalar theorem was
+therefore retained only as background. The article's focus shifted to the full
+simultaneous uniform-family criterion, multiple geometric streams, the matrix
+classification, and the residual capacity profile. The source review does not
+establish an exhaustive absence result for these extensions across every current
+or historical ProveIt document. Likewise, the external references establish
+background and terminology, not a global priority certificate.
+
+The external sources used substantively were Arias de Reyna's account of the
+compactly supported smooth function, Hall's original representative-selection
+paper, and Jurek's discussion of Urbanik and Mehler semigroups. The proofs here
+supply the particular matching, positivity, geometric, and regularity statements
+rather than assigning them to those references.
+
+\begin{thebibliography}{9}
+
+\bibitem{Arias}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition and
+Properties}, arXiv:1702.05442 (2017), English version of the author's earlier
+paper.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{Hall}
+P. Hall,
+\emph{On Representatives of Subsets},
+Journal of the London Mathematical Society \textbf{s1-10} (1935), no.~1,
+26--30. DOI: \href{https://doi.org/10.1112/jlms/s1-10.37.26}{10.1112/jlms/s1-10.37.26}.
+
+\bibitem{Jurek}
+Z. J. Jurek,
+\emph{On Relations Between Urbanik and Mehler Semigroups},
+Probability and Mathematical Statistics \textbf{29} (2009), 297--308.
+\url{https://arxiv.org/abs/0811.2989}.
+
+\bibitem{RepoDivisors}
+ProveIt research corpus,
+\emph{Reciprocal-Integer Convolution Divisors of the Rvachev Law:
+Arithmetic semigroups, singular-to-smooth parity, Thue--Morse quotients, zero
+zeta functions, and inverse-Fabius approximants}, report dated 30 August 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e9c09b12549ea4e3bea7cebc52b450b761f6f581/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex}{Pinned repository source (e9c09b12549e)}.
+
+\bibitem{RepoDivisorsReadme}
+ProveIt research corpus,
+\emph{Reciprocal-Integer Convolution Divisors: README and formalization boundary},
+same report directory and snapshot as \cite{RepoDivisors}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e9c09b12549ea4e3bea7cebc52b450b761f6f581/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/README.txt}{Pinned repository source (e9c09b12549e)}.
+
+\bibitem{RepoLean}
+ProveIt contributors,
+\emph{GeneralizedZeroDivisor.lean}, in the FabiusFunction Lean development.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae/Analysis/FabiusFunction/Lean/FabiusFunction/GeneralizedZeroDivisor.lean}{Pinned repository source (23dd71d2d3d5)}.
+
+\bibitem{RepoAudit}
+ProveIt research corpus,
+\emph{Source Audit and Novelty-Collision Record}, representation-frontier package.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Representation_Frontiers/assets/fabius_rvachev_representation_frontier/SOURCE_AUDIT.md}{Pinned repository source (23dd71d2d3d5)}.
+
+\end{thebibliography}
+\end{document}

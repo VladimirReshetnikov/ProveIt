@@ -250,6 +250,25 @@ encoding of inclusion modulo finite sets with a no-Borel-invariant theorem,
 arithmetical-hierarchy completeness results, and Wasserstein bounds.
 Unreviewed; no Lean statement.
 
+Archival arrival of 2026-09-29:
+[`Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`](Simultaneous_Convolution_Divisors_Fabius_Type_Laws/),
+*Simultaneous Convolution Divisors of Fabius-Type Laws* (23-page A4 PDF,
+1,601-line source, an exact standard-library certificate program), filed
+by a quick archival intake from the repository-level `docs/incoming/`
+drop zone.  It decides which families of uniform laws can be removed
+*together* from the prime-base law `X_p = Σ p^{−k}U_k`: exactly the
+reciprocal-integer widths `1/n_j` with `#{j : v_p(n_j) ≤ K} ≤ K+1` for
+every `K`, a Hall matching condition equivalent to entire extensibility
+of the Fourier quotient.  It adds finite certificates for geometric
+streams, prime-power targets, coordinate rigidity in several dimensions,
+and a regularity classification of the residual; a base-six quotient
+shows that zero cancellation does not imply positivity for composite
+bases.  Its one-stream cases are theorems of the two reports above, and
+it recovers the reciprocal-integer report's single-copy theorem; it does
+not cite the arithmetic-factor report, whose question "Beyond
+divisibility ladders" it answers for prime-power geometric targets.
+Unreviewed; no Lean statement.
+
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
 Product* (retained 24-page PDF checkpoint; current live TeX: 1,060 lines,

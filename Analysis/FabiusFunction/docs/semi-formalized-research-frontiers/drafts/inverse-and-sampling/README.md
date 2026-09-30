@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has ten live navigation targets:
+This theme has eleven live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -12,6 +12,10 @@ This theme has ten live navigation targets:
 - [`Geometric_Uniform_Entropic_Edgeworth/`](Geometric_Uniform_Entropic_Edgeworth/)
   — an archival arrival of 2026-09-28 that claims a proof of the
   information frontier's `conj:entropic-edgeworth`; unreviewed.
+- [`Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/`](Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/)
+  — an archival arrival of 2026-09-29 on the information frontier's
+  Bayesian prefix operator, prefix Rényi information and
+  corrected-prefix rate-distortion questions; unreviewed.
 - [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
   — an archival arrival of 2026-09-28 on the stability of recovering the
   uniform-factor spectrum from the law; unreviewed.
@@ -183,6 +187,23 @@ all-orders expansion of the entropy deficit of the geometric uniform law as
 finite-prefix extensions.  It does not address `conj:deficit-monotone`.
 The claim has not been reviewed, the information frontier still states the
 conjecture as open, and no Lean statement exists.
+
+[`Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/`](Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/)
+holds *Beyond Polynomial Diagonals: Nuclear Bayesian Operators, Exact
+Null Modes, and a Rényi Phase Transition for Fabius–Rvachev Laws*,
+filed on 2026-09-29 by a quick archival intake (21-page A4 PDF,
+889-line source, an exact SymPy check program with high-precision
+eigenvalue diagnostics).  It studies the conditional expectation `C_m`
+of the information frontier above: `C_m` is in every Schatten class
+with an infinite-dimensional kernel of explicit null modes, its
+polynomial restrictions are unipotent (so the expected `q^{mn}` Appell
+diagonal is in fact 1, as the editorial note recorded above states) but
+badly conditioned, every finite-order Rényi information of the prefix
+channel is finite with an exact critical order 2 in the large-depth
+excess, and at the prefix's own distortion no postprocessing of the
+prefix is rate-distortion optimal.  A closed-form spectrum and the
+rate-distortion expansion remain open.  Unreviewed; its numerics are
+diagnostics; no Lean statement.
 
 [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
 holds *Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
