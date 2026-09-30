@@ -1,8 +1,21 @@
 # Alternative universal machinery: an arithmetic research program
 
-**Status: a complete fixed-index universal certificate in 76 operations,
+**Current complete certificate: 75=41M+34A operations.** The
+[complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
+strong auxiliary square and saves the old doubled-index addition. The
+[positive-elimination refinement](../research-wip/native-stream-queue/complete75_positive_elimination.md)
+reduces its 30 positive witnesses and 19 equations to **22 witnesses and
+11 equations** at the same operation count. Its single sum-of-squares
+polynomial has exact degree84 and a **107=52M+55A** evaluation DAG.
+The comparison-based certificate count and single-polynomial evaluation
+count are separate measures. These are mathematical results with focused
+symbolic and executable audits, not Lean formalizations or publication claims.
+
+## Historical 76-operation milestone
+
+The preceding complete fixed-index universal certificate used 76 operations,
 41 multiplications and 35 additions/subtractions, with 30 positive witnesses
-and 19 equations.** The [complete proof](FIXED_RAW_UNIVERSAL_76_PROOF.md)
+and 19 equations. The [complete proof](FIXED_RAW_UNIVERSAL_76_PROOF.md)
 fixes all compiler numerals independently of the varying positive raw input.
 It removes the stride divisor P*v=q and both coordinates, using the main
 Pell power X=2^(2r+1), already computed by the kernel, for temporal rotation.
@@ -39,7 +52,7 @@ not a Lean theorem. The existing TeX/PDF remains89 and Lean remains90.
 The67 encoded-instance construction,69 cyclic Rule110 component and100
 counter-machine family keep their separate scopes and counts. The
 research history below retains milestone-relative statements about
-the formerly best universal bounds 89, 88, 84, 82, 81, 80, 78 and 77; the current complete bound is 76.
+the formerly best universal bounds 89, 88, 84, 82, 81, 80, 78 and 77; the current complete bound is 75.
 This note records the investigation of different universal models and
 their history encodings.
 Fixed numerals have no cost; multiplying a variable by a numeral still

@@ -54,7 +54,11 @@ universal Diophantine equations by James P. Jones and coauthors:
   with30 positive witnesses and19 equations; see
   [the complete proof](Papers/1980/FIXED_RAW_UNIVERSAL_75_PROOF.md).
   Three independent integration reviews and focused source/component checks
-  pass. This optimized bound is not yet Lean formalized.
+  pass. A [positive-elimination refinement](Papers/research-wip/native-stream-queue/complete75_positive_elimination.md)
+  retains 75 operations with **22 positive witnesses and 11 equations**;
+  combining those equations gives one degree-84 polynomial evaluable in
+  **107 operations**, with fixed compiler numerals. These optimized results
+  are not yet Lean formalized.
 
 ## Building and checking
 
