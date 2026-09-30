@@ -1,8 +1,8 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; and marked-tree stability for arbitrary apex neighbourhoods**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; and two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points**
 
-This is a research report in eight parts. Part I is the original report of
+This is a research report in nine parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
 ProveIt's incoming-report intake, from a later manuscript that addresses the
 three questions Part I left open in its Section 10 ("What remains unresolved"):
@@ -38,7 +38,19 @@ vertices is classified — a corollary of Part VI's theorems, which the
 manuscript also proves directly — and it adds linear-time recognition,
 exact polynomial-time counting, optimization and repair of the stable apex
 neighbourhoods, a sharp diameter window, and a path-only real-rootedness
-theorem for their size-counting polynomial.
+theorem for their size-counting polynomial. **Part IX** was added on
+30 September 2026 in batch 64, from one manuscript (source 11 below;
+batch-64 manuscript 01), prepared for Vladimir Reshetnikov with ChatGPT
+per its title page. Two minimum-cost transportation problems with integer
+margins and one cycle-generic cost system share an optimal spanning tree,
+which gives explicit polynomial-time inverse bijections between the demand
+vectors of a bipartite graph with a prescribed support and the supplier
+sets matchable to it (the existence of such a correspondence is Oh's).
+Composed with the matroid basis walk, this samples **actual lattice points**
+of every finite preorder polytope, not only their supports, which answers
+Part V's "Sampling boundary" and the bijection part of Research questions 2
+and 20; its disjoint union is an elementary proof, without Ehrhart theory,
+of the support-counting identity of Parts II, IV and V.
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -74,16 +86,17 @@ theorem for their size-counting polynomial.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 10–22) and Appendices A–C (pp. 245–247) |
-| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 23–51) |
-| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 52–76) |
-| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 77–117) |
-| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 77–117) |
-| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 118–166) |
-| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 118–166) |
-| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 167–200) |
-| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 201–217); stability sections in Part VI; coefficient sections credited in Part V |
-| 10 | batch 63, manuscript 03 (*Marked-Tree Stability: Complete Apex-Neighborhood Classification, Exact Enumeration, and Optimal Repair*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Marked_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `a4268e78e`) | commit `b57c0b5ff112e1a08af8add12b2d687b8ece91d0` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `62f1ad07c` (prefix `10-marked-trees-`) | Part VIII: Sections 116–131 (pp. 218–244) |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 11–23) and Appendices A–C (pp. 273–275) |
+| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 24–52) |
+| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 53–77) |
+| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 78–118) |
+| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 78–118) |
+| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 119–168) |
+| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 119–168) |
+| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 169–202) |
+| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 203–219); stability sections in Part VI; coefficient sections credited in Part V |
+| 10 | batch 63, manuscript 03 (*Marked-Tree Stability: Complete Apex-Neighborhood Classification, Exact Enumeration, and Optimal Repair*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Marked_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `a4268e78e`) | commit `b57c0b5ff112e1a08af8add12b2d687b8ece91d0` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `62f1ad07c` (prefix `10-marked-trees-`) | Part VIII: Sections 116–131 (pp. 220–246) |
+| 11 | batch 64, manuscript 01 (*Two-Flow Bijections for Demand Polytopes: Full-coordinate sampling, exact certificates, restriction laws, and preorder applications*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Two_Flow_Lattice_Sampling.zip` (inner `Two_Flow_Lattice_Sampling/`, main file `article.tex`; arrival `7747fcfdd`) | commit `6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `3025c15df` (prefix `11-two-flow-`) | Part IX: Sections 132–151 (pp. 247–273) |
 
 Manuscript 02 names no ProveIt commit. It records the Git blob of the
 `article.tex` it consulted; that blob is Part I exactly as printed here
@@ -213,6 +226,32 @@ README are not shipped; they survive in the arrival commit. Its
   the `ϑ(3,3,3)` quartic is kept as a second route. Section 116.4 lists
   every choice.
 
+Batch 64's manuscript 01 (source 11) arrived in `7747fcfdd` and was placed
+in `3025c15df`, together with manuscripts for four other reports and one
+Fabius-tree arrival. Its pin `6d04e1e38` records the same blob `920246d1…`
+of this report's `article.tex` as source 10's: Parts I–VII exactly as
+printed, before Part VIII was written, so its "Part V" and its line
+interval 9510–9555 (the "Sampling boundary" box) refer to that text; the
+box is unchanged and is now in Section 75. Its manuscript, PDF and
+delivery README are not shipped; they survive in the arrival commit. It
+shipped no checksum list.
+
+- **Part IX** is source 11 in its own order, behind a merge section
+  (Section 132). Source 11's Section k is Section k + 132 here (its
+  Appendices A–B are Sections 150–151), and statement and equation numbers
+  follow the section (Theorem 3.2 → 135.2); its two tables are Tables 17
+  (claim ledger) and 18 (verification), its figure is Figure 5, and its
+  eight questions are Research questions 66–73. Its first subsection, "A
+  precise gap in the repository", which cited the pinned blob's line
+  numbers, was rewritten as a pointer to Part V (Section 133.1). Its
+  preorder reduction (Proposition 146.1) is Part V's Lemma 71.1 and keeps
+  its statement and label with the proof replaced by a pointer; its lifted
+  matroid, conditioning minor, Hall lemma, basis walk and cloning keep
+  their short text with merge notes naming Part V's statements. Its
+  counting identity (Corollary 139.2) is kept as a **second route**: the
+  report's only proof of the support-counting identity of Parts II, IV and
+  V that uses no Ehrhart theory. Section 132.4 lists every choice.
+
 Section numbers of the sources that their shipped notes use:
 source 09's `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites its Sections 4
 (→ Part V, not reprinted: Corollary 67.2 and Proposition 71.5), 5 → 103,
@@ -223,7 +262,13 @@ Sections 11–13 and Appendices A–B are Sections 95–99; statement numbers
 follow the section (Theorem 1.1 → 84.1, Theorem 7.2 → 90.2) except in
 Sections 85 and 93, where source 09's statements were inserted (source 08's
 Proposition 10.1, the gluing, is Theorem 93.2). Source 07's
-`PROOF_STATUS.md` uses no numbers.
+`PROOF_STATUS.md` uses no numbers. Source 11's `11-two-flow-PROOF_STATUS.md`
+uses the delivered numbering: Theorem 3.2 → 135.2, Lemmas 4.1–4.2 →
+136.1–136.2, Sections 5–7 → 137–139, Theorem 8.1 → 140.1, Corollaries
+8.2–8.3 → 140.2–140.3, Propositions 9.1–9.2 → 141.1–141.2, Theorem 10.1 →
+142.1, Propositions 12.1–12.2 → 144.1–144.2, Theorems 13.1–13.2 →
+145.1–145.2, Proposition 14.1 and Corollary 14.2 → 146.1–146.2,
+Proposition A.1 → 150.1.
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The
@@ -240,7 +285,12 @@ characterization of gammoids — which are cited, not reproved. Part VIII:
 source 10's program checks every marking of every tree with at most nine
 vertices; the general theorems rest on the written proofs, on Part VI's
 theorems and on standard stable-polynomial closure properties and Perron
-positivity.)
+positivity. Part IX: source 11's program checks every bipartite graph with
+both shores of size at most three and every 4 × 3 graph, all 390 labeled
+preorders on at most four elements, 250 seeded random cases and two exact
+Markov chains; the general theorems rest on the written proofs, and the
+sampler theorem also on the imported Anari–Liu–Oveis Gharan–Vinzant mixing
+theorem.)
 
 ## Results
 
@@ -518,7 +568,58 @@ degree-two vertices of `K`, it proves:
    two-coefficient rigidity lemma, Lemma 126.2); for stars log-concavity
    fails from `m = 4` and unimodality from `m = 6` (equations 126.5–126.7).
 
-**What Parts II–VIII do to the open questions** (Sections 11.3 and 26.3;
+**Part IX** (source 11) works with a bipartite graph `H = (X ⊔ Y, E)`, its
+demand set `𝒟_H = {c ∈ Z_{≥0}^Y : c(A) ≤ |N_H(A)| for all A ⊆ Y}` (Part V's)
+and the matchable support pairs `(I, J)` (Part V's `𝓜(H)`). With a dummy
+receiver `0` joined to every supplier and cycle-generic edge costs (for
+instance `2^i` on the `i`-th augmented edge), it proves:
+
+1. **Two-flow correspondence** (Theorem 135.2): for `r = |J| > 0`, the
+   minimum-cost flow with margins `m·1_{x∈I} + 1` on suppliers and `m` on
+   `{0} ∪ J` and the one with margins `r + 1` on suppliers,
+   `(r+1)c_0 + r` at the dummy and `(r+1)c_y − 1` at `y ∈ J` are unique,
+   integral and supported on **the same spanning tree**; the forward map
+   `c_y = 1 + #(unselected supplier leaves at y)` and the inverse map
+   `I = {suppliers of degree 2}` are inverse bijections between the supplier
+   sets matchable to `J` and the demand vectors with support `J`. Proofs use
+   Hall's theorem, finite forests and strict tree potentials only (Sections
+   136–139), so the **support-counting identity** (Corollary 139.2 = Part V's
+   Proposition 68.3, Part IV's Proposition 49.3, Part II's Lemma 14.1)
+   gets an elementary proof without Ehrhart theory — a second route, not a
+   new identity.
+2. **Core factorization and restriction laws** (Section 140): a flow of
+   total value `r(r+1)` on the selected suppliers fixes prices, after which
+   every other supplier independently attaches to its unique cheapest
+   reduced-cost receiver or the dummy (Theorem 140.1); deleting or adding
+   suppliers outside `I` changes the vector by one unit each, monotonically
+   and commutatively (Corollary 140.2), and receivers outside `J` do not
+   matter (Corollary 140.3).
+3. **Perturbations and certificates** (Sections 141–143): explicit open
+   ranges of margins and costs, dependence only on cycle-sign chambers,
+   gauge invariance (Propositions 141.1–141.2); polynomial bit complexity
+   and an `O(m+r)`-entry exact primal–dual certificate whose checker proves
+   unique optimality (Theorem 142.1); a worked certificate (Section 143).
+4. **Obstructions** (Section 144): no deterministic support-preserving
+   bijection is equivariant under all automorphisms (`K_{2,1}`,
+   Proposition 144.1); no bijection moves coordinates by a bounded amount
+   per basis exchange (`K_{m,1}`, Proposition 144.2).
+5. **Full-coordinate sampling** (Section 145): the bijection pushes the
+   weighted basis law of Part V's matroid `𝖬_H` to the support-weighted law
+   on `𝒟_H` and preserves total-variation distance **exactly**
+   (Theorem 145.1); with the imported basis-walk mixing theorem this is a
+   polynomial-time almost-uniform sampler of actual demand vectors
+   (Theorem 145.2), also conditioned on prescribed zero and nonzero
+   coordinates.
+6. **Preorders** (Section 146): `𝒟_{H_tau} = 𝒬_tau ∩ Z^V` (Proposition
+   146.1, Part V's Lemma 71.1), hence an almost-uniform sampler of the actual
+   lattice points of every finite preorder polytope (Corollary 146.2), and
+   of its integral dilations by cloning (pseudopolynomially).
+7. **Inverse prices** (Section 150): the inverse tree's receiver potentials
+   are the unique maximizer of an explicit concave function, at which
+   exactly the selected suppliers have two minimizing receivers
+   (Proposition 150.1).
+
+**What Parts II–IX do to the open questions** (Sections 11.3 and 26.3;
 Part II's dated pointers are in the abstract, the scope box, Sections 8 and
 10 and Appendix C; Part III's in the title block, the abstract, the
 reading-route box, Section 19 and Research questions 3 and 4 of Section 24;
@@ -591,6 +692,27 @@ Research questions 23, 24, 26, 28, 32 and 34):
   reading-route box, after Theorem 84.1, in Sections 89.2 and 93.4, and
   after Research questions 45, 47 and 48. Conjectures 5.3 and 5.1(d) are
   unchanged; nothing is refuted or retracted.
+- [Added 30 September 2026, batch 64.] Part IX **answers Part V's
+  "Sampling boundary"** (Section 75.7) and "Precisely what is sampled for
+  a preorder" (Section 75.4): it samples actual demand vectors and preorder
+  lattice points almost uniformly. It **constructs the bijection** asked
+  for by Research questions 2 and 20 (and by the unnumbered source-06/07
+  paragraphs of Section 80.1), support-preserving and with an elementary,
+  Ehrhart-free proof; their compatibility clauses are answered only in
+  part (deletion outside the selected sets, support weights), full
+  equivariance is shown impossible, and the rest is Research question 71.
+  Source 09's "Direct lattice-point bijections" (Section 112.1) is answered
+  in its support-resolved part, not as a canonical or clone-compatible
+  bijection. Research questions 39 (binary capacities; label added) and 43
+  (formalization) stay open, extended by 68 and overlapped by 73.
+  Conjectures 5.3 and 5.1(d) are unchanged; nothing is refuted or
+  retracted. Its answers are in Section 132.3; its dated pointers, marked
+  "Added 30 September 2026, batch 64", are in the title block, the
+  abstract, the scope box, the reading-route box, after Part II's
+  Lemma 14.1 and Research question 2, after Part IV's Remark 49.4 and
+  Research question 20, in Part V's Sections 67.3 (claim table), 68.2,
+  75.4 and 75.7, after Research questions 39 and 43 and in Section 80.1,
+  and in Part VII's Sections 109 and 112.1.
 
 ## Not claimed
 
@@ -618,6 +740,10 @@ From Part II (see also `02-height-two-STATUS.md`, `02-height-two-sources.md`):
   not sufficient.
 - No canonical bijection in the counting lemma (Lemma 14.1 equates
   cardinalities through two imported root-polytope theorems).
+  [Added 30 September 2026, batch 64: Part IX constructs an explicit,
+  support-preserving bijection — cost-dependent, hence not canonical
+  (Proposition 144.1) — and its disjoint union proves the lemma without the
+  two root-polytope inputs (Theorem 135.2, Corollary 139.2).]
 - Part II itself gave no characterization of graphs admitting a cactus-style
   matrix (Part III now does); no claim that every noncactus graph fails
   real-rootedness (Part III shows some do not); no limiting root measure for
@@ -677,7 +803,10 @@ From Part IV (see also `05-gamma-positivity-PROOF_STATUS.md`,
 - **No bijections.** No canonical bijection between demand vectors and
   matchable support pairs is given. No natural Boolean action on the actual
   lattice points is given either: manuscript 01's toggles act on an
-  auxiliary support-pair model.
+  auxiliary support-pair model. [Added 30 September 2026, batch 64: Part
+  IX gives an explicit, support-preserving, non-canonical bijection
+  (Theorem 135.2); the Boolean action on actual lattice points is still
+  not given.]
 - **Open conjectures and other statistics.** No flag-polytopal realization
   (Conjecture 5.1(d)). No real-rootedness, and no log-concavity or
   unimodality of the gamma vector. No identification of `h_tau` with the
@@ -727,7 +856,10 @@ From Part V (see also `06-lorentzian-support-SOURCES.md`,
   stability (`Theta_3`); no flag realization; no limit theorem.
 - **No bijection and no lattice-point sampler.** The samplers return
   supports or support pairs, not demand vectors or lattice points; no
-  demand/support bijection is constructed.
+  demand/support bijection is constructed. [Added 30 September 2026, batch
+  64: this describes Part V. Part IX constructs the bijection
+  (Theorem 135.2) and an almost-uniform sampler of actual demand vectors and
+  preorder lattice points (Theorem 145.2, Corollary 146.2).]
 - **No production FPRAS.** The coefficient FPRAS is a proved reduction;
   the shipped sampler is a reference implementation, and no exact
   polynomial-time counter or binary-capacity algorithm is claimed.
@@ -790,6 +922,39 @@ From Part VIII (see also `10-marked-trees-SOURCE_AUDIT.md`):
 - No worldwide priority (the review was focused; principal extensions and
   transversal-matroid presentations deserve specialist comparison); no Lean
   or Rocq verification.
+
+From Part IX (see also `11-two-flow-PROOF_STATUS.md`,
+`11-two-flow-SOURCE_AUDIT.md`):
+
+- **Prior, not claimed:** the existence of the demand/base correspondence
+  and its leaf-count description (Oh; used by Ohsugi–Tsuchiya), the
+  support-counting identity it implies (Corollary 139.2; Parts II, IV and
+  V), rapid mixing of the basis walk (Anari–Liu–Oveis Gharan–Vinzant, whose
+  Theorem 1.1 is imported), the preorder polytopes (Athanasiadis–Chapoton),
+  and Part V's matroid, conditioning, preorder-reduction and cloning
+  constructions. Loho–Smith's closely related lattice-point bijections were
+  not audited in full, so no first priority is claimed for the min-cost-flow
+  realization.
+- **Not canonical, not local.** The maps depend on the cost chamber; no
+  deterministic support-preserving bijection is equivariant under all
+  automorphisms (Proposition 144.1), and none moves coordinates by a
+  bounded amount per basis exchange (Proposition 144.2). Restriction
+  compatibility holds only for receivers outside the support and suppliers
+  outside the selected set; no arbitrary-minor compatibility is claimed.
+- **Sampling scope.** The sampler is almost-uniform (total variation `η`),
+  assumes ideal random bits, and covers support-product weights only: no
+  exact independent uniform sampler, no magnitude-dependent weights
+  (`Π q_y^{c_y}`), no polynomial-in-log-capacity sampler (dilations go
+  through cloning), no production large-graph sampler, and no
+  reimplementation of the matroid FPRAS. The reference sampler uses
+  Python's pseudorandom generator and integer activities only; a smaller
+  `steps` override voids the mixing guarantee. The rational-activity and
+  support-conditioned samplers are proved but not packaged.
+- **Checks and formalization.** The finite suites (4,785 bipartite graphs,
+  390 preorders, 250 random cases, two exact chains) test the
+  implementation; they are not proofs, and a certificate checker in Python
+  can itself contain a bug. No Lean or Rocq formalization; the plan of
+  Section 147.3 and Research question 73 are unstarted.
 
 ## Labels
 
@@ -861,6 +1026,22 @@ appendices moved by 28. Part VIII begins at Section 116, after Part VII and
 before Part I's appendices, whose letters and numbers are unchanged. Its
 research questions are 58–65; its tables are Tables 13–15 (notation table
 13) and its figure is Figure 4.
+
+Part IX added **96** labels, all with the prefix `tf:` ("two-flow"): source
+11's 80 labels, prefixed before anything cited them (three of them,
+`thm:main`, `eq:B` and `sec:limits`, equal bare Part I labels), none
+dropped; 15 new ones (Section 132, its four subsections and its notation
+table, the rewritten Section 133.1, and the eight research questions); and
+`tf:hq:capacities` on Part V's previously unlabelled Research question 39,
+so that Part IX can cite it. New total: **877**. No earlier label was
+renamed or removed, and the numbers of all 781 earlier labels are
+unchanged (compared in the `.aux` files of the committed and the new
+build). Their page numbers moved by one or two pages (the title block,
+abstract, scope box, reading route and contents grew); those in Part I's
+appendices moved by 28. Part IX begins at Section 132, after Part VIII
+and before Part I's appendices, whose letters and numbers are unchanged.
+Its research questions are 66–73; its tables are Tables 16–18 (notation
+table 16) and its figure is Figure 5.
 
 ## Notation
 
@@ -944,16 +1125,28 @@ Part IV's against all three. Watch in particular:
   set** in Sections 124–125; its `Z_T` counts **stable markings**, not the
   supports `p_{A(T;S)}` of one marking; its `Q(R_1,R_2,R_3)` is not Part I's
   `Q_tau`.
+- **Part IX (Table 16).** Four renamings, no normalization changed:
+  source 11's `𝓑_H(J)` and `𝓑_H` (matchable supplier sets and pairs) are
+  printed `𝓜_J(H)` and `𝓜(H)` — Part V's pair set — because Part V's `𝓑_H`
+  is the **basis polynomial**; its `𝓓_H`, `M_H` and `Q_tau` are printed with
+  Part V's `𝒟_H`, `𝖬_H` and the report's `𝒬_tau`. Its `Phi_w`, `Psi_w` are
+  maps, not Part VI's polynomial `Phi_G`; its `r = |J|` is the support
+  size, not Part V's `r = min(m,n)` or `nu(H)`; its `L = r + 1` is a margin
+  scale, not Part V's random support size; its `T` is a spanning tree; its
+  `q` counts augmented edges except in Section 146.1 (a dilation factor)
+  and in `Π q_y^{c_y}` (magnitude weights); its preorder graph `H_tau` has
+  Part V's orientation (`x` supplies `y` iff `x ≤_tau y`), which is Part I's
+  `G_tau` with the shores exchanged.
 
 ## Files
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 249 pages, A4 (title p. 1, scope box and contents pp. 2–9,
-                                             Part I pp. 10–22, Part II pp. 23–51, Part III pp. 52–76,
-                                             Part IV pp. 77–117, Part V pp. 118–166, Part VI pp. 167–200,
-                                             Part VII pp. 201–217, Part VIII pp. 218–244,
-                                             Part I's appendices pp. 245–247, references pp. 247–249)
+article.pdf                                  the compiled report, 277 pages, A4 (title p. 1, scope box and contents pp. 2–10,
+                                             Part I pp. 11–23, Part II pp. 24–52, Part III pp. 53–77,
+                                             Part IV pp. 78–118, Part V pp. 119–168, Part VI pp. 169–202,
+                                             Part VII pp. 203–219, Part VIII pp. 220–246, Part IX pp. 247–273,
+                                             Part I's appendices pp. 273–275, references pp. 275–277)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -1028,6 +1221,19 @@ code/10-marked-trees-build.sh                Part VIII (source 10): the delivere
 data/10-marked-trees-requirements.txt        Part VIII (source 10): pinned versions (networkx==3.6.1, sympy==1.14.0)
 data/10-marked-trees-run.log                 Part VIII (source 10): console output of the recorded run (n = 1..9)
 data/10-marked-trees-verification.json       Part VIII (source 10): recorded output (Python 3.13.5)
+11-two-flow-PROOF_STATUS.md                  Part IX (source 11): proof, implementation and non-claim ledger (delivered PROOF_STATUS.md)
+11-two-flow-SOURCE_AUDIT.md                  Part IX (source 11): pin, inspected passage, literature and priority audit (delivered SOURCE_AUDIT.md)
+code/11-two-flow-transport_bijection.py      Part IX (source 11): exact flows, full/core maps, inverse, certificate checkers, sampler (standard library)
+code/11-two-flow-verify.py                   Part IX (source 11): exhaustive and random finite checks (imports transport_bijection)
+code/11-two-flow-build.sh                    Part IX (source 11): the delivered three-pass build script (do not run here)
+data/11-two-flow-small.json                  Part IX (source 11): all 689 graphs with m, n ≤ 3 (5,880 support pairs)
+data/11-two-flow-four_by_three.json          Part IX (source 11): all 4,096 graphs with (m, n) = (4, 3) (68,832 support pairs)
+data/11-two-flow-preorders.json              Part IX (source 11): all 390 labeled preorders on ≤ 4 elements (12,709 lattice points)
+data/11-two-flow-random.json                 Part IX (source 11): 250 seeded random graphs and cost orders (seed 20260930)
+data/11-two-flow-chain.json                  Part IX (source 11): two exact 17-state Markov chains, exact TV after 8 steps
+data/11-two-flow-example.json                Part IX (source 11): the worked certificate of Section 143 (zero-based labels)
+data/11-two-flow-environment.json            Part IX (source 11): Python, platform and pdfTeX versions of the recorded run
+data/11-two-flow-verification_run.txt        Part IX (source 11): console output of the recorded run (one JSON line per suite)
 ```
 
 The ten `02-height-two-` files were staged in the placement commit
@@ -1055,6 +1261,10 @@ byte-identical to their delivery (its `results/` directory and
 `requirements.txt` became `data/`, its programs and `build.sh` `code/`, its
 `SOURCE_AUDIT.md` the report root); all are LF text, and the `.log` file was
 force-added past the root `*.log` ignore rule.
+The thirteen `11-two-flow-` files of Part IX were staged in `3025c15df`,
+byte-identical to their delivery (its programs and `build.sh` became
+`code/`, its `data/` directory `data/`, its `PROOF_STATUS.md` and
+`SOURCE_AUDIT.md` the report root); all are LF text.
 
 ## Data conventions
 
@@ -1178,6 +1388,24 @@ and a nine-vertex subdivided tree with fringe); the star size enumerators
 for `m = 3, 4, 6`; and 5 path and 11 star formula checks. All arithmetic is
 exact. Its `elapsed_seconds` varies.
 
+**Part IX.** Source 11's six suite records each carry `"suite"`,
+`"passed": true` and `elapsed_seconds` (varies). `small` and
+`four_by_three` count graphs and matchable support pairs by `(m, n)`
+(689 graphs and 5,880 pairs; 4,096 and 68,832); `preorders` counts
+labeled preorders and lattice points by `n` (1, 1, 4, 29, 355 preorders;
+1, 2, 20, 376, 12,310 points; 390 and 12,709 in all); `random` records
+seed 20260930, 250 graphs, 4,256 feasible-pair trials, 9,427
+restriction/deletion and 8,512 chamber/gauge checks; `chain` records the
+two 17-state chains (activities all one, and `(2,3,5)` on the receivers),
+partition functions 17 and 144, the exact distances after eight steps
+`15185263/1734623424` and `89267905200632003/10715864763905280000`, and
+three rejected corrupted certificates; `example` is the worked certificate
+of Section 143 in code labels: suppliers and receivers zero-based, the
+dummy `-1`, flows as `[supplier, receiver, value]`, costs as
+`[supplier, receiver, cost]`. `verification_run.txt` holds the same six
+records, one JSON line each, in suite order. `environment.json` records
+Python 3.13.5 on Linux and pdfTeX from TeX Live 2025/dev.
+
 ## Build the article
 
 ```sh
@@ -1193,17 +1421,19 @@ an `example` environment and the TikZ library `arrows.meta` (for manuscript
 01's dependency graph, Section 60); Parts V–VII add macros and the TikZ
 library `positioning` (for source 06's dependency diagram, Section 67);
 Part VIII adds only macros (`\Hull`, `\Leaf`, `\diam`, `\Stab`, `\Zpoly`,
-`\pathin`) and does not load `cleveref`. No image or font files are needed.
-The shipped PDF (249 pages) was built on 30 September 2026 with MiKTeX
+`\pathin`) and does not load `cleveref`; Part IX adds one macro (`\TV`) and
+likewise no `cleveref` or `float`. No image or font files are needed.
+The shipped PDF (277 pages) was built on 30 September 2026 with MiKTeX
 (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull boxes and
 no other LaTeX warnings; five underfull boxes, the same five as the build of
-the committed Parts I–VII text: one (badness 1817) in Part II's
+the committed Parts I–VIII text (and of Parts I–VII before it): one (badness 1817) in Part II's
 provenance-ledger table, which the committed builds before Parts III–VII and
 the delivered manuscript 02's own build also show, and four (badness
 1024–6625) in paragraphs of Parts V and VI that set long shipped file names
 (Sections 78, 78.1 and 83.4). (The earlier builds of 29 September 2026 had
-74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII.)
+74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII;
+the build of 30 September 2026 before Part IX had 249.)
 
 ## Rerun the checks
 
@@ -1448,6 +1678,32 @@ and `console.txt` equals `data/10-marked-trees-run.log` except the path
 separator in its last line ("Saved results\verification.json" on Windows).
 That run wrote LF line endings.
 
+**Part IX, source 11.** Standard library only (Python ≥ 3.10); use `py` or
+`python3`. `11-two-flow-verify.py` imports its library by the delivered
+name `transport_bijection`, so under the shipped names it fails with
+`ModuleNotFoundError`; and it writes `data/<suite>.json` next to its own
+`code/` directory, which in this report would add unprefixed files to
+`data/`. Restore the delivered layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/11/code" "$W/11/data"
+cp code/11-two-flow-transport_bijection.py "$W/11/code/transport_bijection.py"
+cp code/11-two-flow-verify.py "$W/11/code/verify.py"
+cd "$W/11"
+py code/transport_bijection.py            # the worked example and one sample
+py code/verify.py --suite all > console.txt
+```
+
+Run this way on 30 September 2026 (Python 3.14.4 on Windows, about 70 s;
+the recorded run took about 29 s), it passed: after CR stripping, each
+`data/<suite>.json` equals the shipped `data/11-two-flow-<suite>.json`
+except `elapsed_seconds`, and `console.txt` equals
+`data/11-two-flow-verification_run.txt` except `elapsed_seconds`. On
+Windows both are written with CRLF line endings. The programmatic example
+of the unshipped delivery README (sampling with `Random(20260930)`, a
+three-element chain via `preorder_graph`) needs `code/` on the module path,
+as in this copy.
+
 None of these runs changed a file of this report (checked with
 `git status` and by comparing a copy of `code/` and `data/`).
 
@@ -1608,6 +1864,36 @@ None of these runs changed a file of this report (checked with
   for Vladimir Reshetnikov / Mathematical development and exposition with
   ChatGPT", and its PDF metadata name ChatGPT; the article records this in
   Section 116.1 and does not reprint the byline.
+- **Part IX's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/11-two-flow-verify.py` imports `transport_bijection` (shipped as
+    `code/11-two-flow-transport_bijection.py`) and writes
+    `data/small.json`, `data/four_by_three.json`, `data/preorders.json`,
+    `data/random.json`, `data/chain.json`, `data/example.json` (shipped as
+    `data/11-two-flow-<suite>.json`); `data/11-two-flow-verification_run.txt`
+    itself names no paths.
+  - `code/11-two-flow-build.sh` changes to its own directory and runs
+    `pdflatex` three times on a nonexistent `code/article.tex`, which fails:
+    do not run it. Source 11's file table called it a two-pass build; it
+    runs three passes (a merge note in Section 151 records this).
+  - `11-two-flow-PROOF_STATUS.md` numbers statements as in the delivered
+    article (mapping above) and speaks of `data/`; `11-two-flow-SOURCE_AUDIT.md`
+    gives the line interval 9510–9555 of the pinned blob (now Section 75.7,
+    moved by the Part VIII and Part IX front-matter additions), speaks of
+    "the delivered article", and its "Chapoton–Athanasiadis" heading
+    reverses the author order of arXiv:2605.26916 (Athanasiadis–Chapoton,
+    as the article prints it).
+  - The unshipped delivery README lists `article.tex`, `article.pdf`,
+    `README.md` and `data/*.json`, calls the PDF a "23-page article", and
+    uses `python`.
+  - The recorded run (`data/11-two-flow-environment.json`: Python 3.13.5,
+    Linux) records `elapsed_seconds` per suite, which varies.
+- **Bylines (Part IX).** Source 11's title page reads "Prepared for
+  Vladimir Reshetnikov / Mathematical development and implementation:
+  ChatGPT"; its PDF metadata read "AI-assisted research manuscript prepared
+  for Vladimir Reshetnikov", and its delivery README "prepared for Vladimir
+  Reshetnikov with ChatGPT". The article records this in Section 132.1 and
+  does not reprint the byline.
 - **Merge observations not in any source** are marked as such in the
   article: the #P-hardness of a specified height-two `gamma_k`
   (Corollary 76.4), the infinitely many induced-minimal unstable graphs
@@ -1650,7 +1936,13 @@ in Section 106 of the article, not a theorem; no note was added to that
 report in this batch). Part VI continues Parts II–III's stability questions
 only; the other neighbours treat neither stability nor log-concavity.
 Part VIII (batch 63) continues Part VI only; it touches no neighbouring
-report, and no reciprocal note was written.
+report, and no reciprocal note was written. Part IX (batch 64) continues
+Parts II, IV, V and VII; its dated pointers are inside this report. The
+neighbouring preorder reports sample no lattice points (their "samples"
+are random test relations), and their bijection questions concern other
+objects (the two binomial expansions of `preorder-polytope-reciprocity`,
+the sets `B_tau(T)` of `preorder-q-zeta-reciprocity`), so no reciprocal
+note was written.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
@@ -1672,7 +1964,12 @@ their formalization plans (Sections 79.3 and 95.4, and Section 111) are
 unstarted. The same holds for Part VIII: a search of the tracked `.lean` and
 `.v` files for matching-support, incidence–apex, Dynkin and marked-tree
 terms finds nothing, and its formalization boundary (Section 127.3) and
-Research question 65 describe unstarted work.
+Research question 65 describe unstarted work. The same holds for Part IX:
+a search of the tracked `.lean` and `.v` files outside `lib/` for
+transportation-polytope, min-cost-flow, demand-vector, transversal-matroid
+and Hall-marriage terms finds nothing (the only "hall" hits are unrelated
+hypothesis names in `Algebra/PolynomialFormulas`), and its formalization
+plan (Section 147.3) and Research question 73 are unstarted.
 
 ## Sources and attribution
 
@@ -1723,5 +2020,14 @@ Research question 65 describe unstarted work.
   half-plane property and related concepts*, SIAM J. Discrete Math. 37
   (2023) 2208–2227, arXiv:2111.09610; with Choe–Oxley–Sokal–Wagner and
   Brändén above.
+- Part IX: S. Oh, Electron. J. Combin. 20(3) (2013) P14, doi:10.37236/2769
+  (source 11 inspected arXiv:1005.5586v3, Section 4, Remark 4.4 and
+  Proposition 4.5) — the demand/base correspondence; G. Loho and B. Smith,
+  *Matching fields and lattice points of simplices*, Adv. Math. 370 (2020)
+  107232, doi:10.1016/j.aim.2020.107232, arXiv:1804.01595v4 (new to this
+  report; related lattice-point bijections); N. Anari, K. Liu, S. Oveis
+  Gharan and C. Vinzant, Ann. of Math. 199 (2024) 259–299,
+  doi:10.4007/annals.2024.199.1.4 (Theorem 1.1 of arXiv:1811.01816v3,
+  imported); Ohsugi–Tsuchiya and Athanasiadis–Chapoton above.
 
 No third-party papers or font files are included.

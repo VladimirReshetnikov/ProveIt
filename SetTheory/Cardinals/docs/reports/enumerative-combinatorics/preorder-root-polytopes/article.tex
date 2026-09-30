@@ -30,7 +30,8 @@
     Part V: ultra-log-concave support polynomials, palindromic cores, approximate and exact counting;
     Part VI: stability of signed matching supports, ADE trees, books and multi-theta graphs;
     Part VII: the transversal matroid of a preorder;
-    Part VIII: marked-tree stability, arbitrary apex neighbourhoods, enumeration and repair}}
+    Part VIII: marked-tree stability, arbitrary apex neighbourhoods, enumeration and repair;
+    Part IX: two-flow bijections, full-coordinate sampling of demand vectors and preorder lattice points}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -125,6 +126,8 @@
 \newcommand{\Stab}{\mathcal S}
 \newcommand{\Zpoly}{\mathcal Z}
 \newcommand{\pathin}[2]{\mathring P_{#1#2}}
+% Part IX (batch 64): macros of source 11
+\newcommand{\TV}{\operatorname{TV}}
 
 \begin{document}
 \thispagestyle{empty}
@@ -150,6 +153,9 @@ polynomials; stability of signed matching supports; the transversal matroid of a
 \vspace{3pt}
 {\normalsize\color{Ink} With Part~VIII (added 30 September 2026): marked-tree stability ---
 arbitrary apex neighbourhoods, enumeration and repair}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~IX (added 30 September 2026): two-flow bijections ---
+full-coordinate sampling of demand vectors and preorder lattice points}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -230,6 +236,19 @@ a direct proof, linear-time recognition, a sharp diameter window, exact
 polynomial-time counting, optimization and repair of stable neighbourhoods,
 and shows that their size-counting polynomial is real-rooted only for
 paths.
+
+\emph{Addition of 30 September 2026 (batch 64).} Part~IX, from a further
+manuscript, gives explicit polynomial-time inverse bijections between the
+demand vectors of a bipartite graph with a prescribed support and the
+supplier sets matchable to that support: two minimum-cost transportation
+problems with integer margins share one optimal spanning tree, whose
+supplier degrees and supplier leaves encode the two sides. The existence
+of such a correspondence is due to Oh. Composed with the matroid basis
+walk, the bijection samples actual lattice points of every finite preorder
+polytope almost uniformly, not only their supports, which answers
+Part~V's sampling boundary; its disjoint union is an elementary proof,
+without Ehrhart theory, of the support-counting identity of Parts~II, IV
+and~V.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -255,6 +274,9 @@ stronger than real-rootedness; see Sections~\ref{lor:sec:answers},
 \ref{ade:sec:answers} and~\ref{mat:sec:answers}.]
 [Added 30 September 2026, batch 63: Part~VIII classifies stability for
 every apex neighbourhood on a tree; see Section~\ref{mts:sec:answers}.]
+[Added 30 September 2026, batch 64: Part~IX constructs the
+demand/support bijection and a full-coordinate lattice-point sampler; see
+Section~\ref{tf:sec:answers}.]
 \end{tcolorbox}
 % Part III (batch 42): the page break that stood here was removed; the
 % longer abstract pushes this box to page 2, where the contents now follow it.
@@ -283,6 +305,10 @@ the transversal matroid of a preorder; they follow Part~IV.
 Part~VIII (Sections~\ref{mts:sec:prov}--\ref{mts:app:certificate}), added
 on 30 September 2026, classifies marked-tree stability; it follows
 Part~VII and precedes the appendices of Part~I.
+Part~IX (Sections~\ref{tf:sec:prov}--\ref{tf:app:algorithms}), added
+on 30 September 2026, constructs demand/support bijections and a
+full-coordinate sampler; it follows Part~VIII and precedes the appendices
+of Part~I.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -1725,6 +1751,12 @@ The tree construction is a bijection with \emph{hypertree vectors}, not
 with their realizing trees. Counting matchings or spanning trees with
 multiplicity at this step would invalidate the main formula.
 \end{remark}
+[Added 30 September 2026, batch 64: Part~IX constructs an explicit,
+support-preserving bijection between demand vectors and matchable support
+pairs (Theorem~\ref{tf:thm:main}), and its disjoint union proves the lemma
+without the two root-polytope inputs (Corollary~\ref{tf:cor:count}). The
+bijection depends on a choice of edge costs and is not canonical
+(Proposition~\ref{tf:prop:symmetry}).]
 
 \section{The height-two formula and its consequences}\label{htwo:sec:gamma}
 
@@ -3020,6 +3052,15 @@ solve this problem.
 uses the same counting lemma and constructs no such bijection; its Research
 question~\ref{gam:q:bijection} asks for one that also preserves the
 receiver support.]
+[Added 30 September 2026, batch 64: the bijection is constructed in
+Part~IX (Theorem~\ref{tf:thm:main}), with an elementary proof of equal
+cardinality (Corollary~\ref{tf:cor:count}). Compatibility with positive
+weights holds for support weights (Theorem~\ref{tf:thm:tv}); compatibility
+with vertex deletion and induced subgraphs is proved only for receivers
+outside the support and suppliers outside the selected set
+(Corollaries~\ref{tf:cor:receivers} and~\ref{tf:cor:deletion}), and no
+deterministic rule is equivariant under all automorphisms
+(Proposition~\ref{tf:prop:symmetry}). See Section~\ref{tf:sec:answers}.]
 
 \begin{question}[Which graph structures preserve real-rootedness?]\label{ade:hq:preserve}% label added in batch 55 (Part VI)
 Characterize useful hereditary classes of bipartite graphs for which
@@ -5113,6 +5154,9 @@ support pair. The explicit tree construction is a bijection with hypertree
 This distinction remains important when we introduce Boolean actions
 (Section~\ref{gam:gv:sec:orbits}).
 \end{remark}
+[Added 30 September 2026, batch 64: Part~IX gives such a map, support
+by support (Theorem~\ref{tf:thm:main}); it depends on a cost system and is
+not natural under automorphisms (Proposition~\ref{tf:prop:symmetry}).]
 
 \section{Proof of the general preorder theorem}\label{gam:sec:proof}
 The decisive step is to apply the bipartite identity to the zeros and the
@@ -6774,6 +6818,15 @@ construction would make the Boolean action on actual preorder lattice points
 explicit and would simplify a complete formalization (manuscript~01).
 [Merge note: this is Part~II's Research question~\ref{gam:q:bridge}, asked
 again with the receiver support preserved.]
+[Added 30 September 2026, batch 64: answered in Part~IX. The two-flow
+maps of Theorem~\ref{tf:thm:main} are explicit, polynomial-time and
+support-preserving, and their proof imports no Ehrhart theory
+(Corollary~\ref{tf:cor:count} and the merge note after it). The
+ordering sub-question is answered in part: the maps depend only on the
+chamber of a cost order (Proposition~\ref{tf:prop:chambers}) and obey
+deletion laws outside the selected sets; full automorphism-equivariance is
+impossible (Proposition~\ref{tf:prop:symmetry}), and the rest is Research
+question~\ref{tf:q:functoriality}.]
 
 \begin{question}[Boolean orbits on actual lattice points]\label{gam:q:orbits}
 Can one realize the terms in \eqref{gam:eq:main} as orbits of a natural system
@@ -7818,6 +7871,9 @@ Weighted basis-walk mixing and approximate counting & Anari--Liu--Oveis Gharan--
 \bottomrule
 \end{tabularx}
 \end{center}
+[Added 30 September 2026, batch 64: the row ``Direct demand/support
+bijection'' is resolved by Part~IX (Theorem~\ref{tf:thm:main}); flag
+realization and the real-root classification are not.]
 
 \subsection{A map of dependencies}
 \begin{center}
@@ -7986,6 +8042,10 @@ Consequently a uniform support sampler is not, by itself, a uniform sampler
 of the actual demand vectors. It does sample their support set $J$ with the
 correct multiplicity distribution, by Proposition~\ref{lor:prop:bridge}.
 \end{remark}
+[Added 30 September 2026, batch 64: Part~IX supplies the missing
+algorithmic bijection (Theorem~\ref{tf:thm:main}) and a second proof of
+Proposition~\ref{lor:prop:bridge} that imports no lattice-point theorem
+(Corollary~\ref{tf:cor:count}).]
 
 
 \subsection{A consistency check with the recent geometric formulation}
@@ -9412,6 +9472,8 @@ of a correspondingly weighted lattice point, by Proposition~\ref{lor:prop:bridge
 cardinality has exactly the $h_\tau$ distribution. The algorithm does not
 output the positive \emph{values} of that lattice point. A direct or efficiently
 invertible demand/support bijection would close this remaining algorithmic gap.
+[Added 30 September 2026, batch 64: Part~IX closes it; see
+Corollary~\ref{tf:cor:preordersampler}.]
 
 \subsection{A specified exact support fibre}
 \begin{corollary}\label{lor:cor:fibreFPRAS}
@@ -9569,6 +9631,13 @@ by themselves provide an efficient fibrewise bijection. The direct,
 restriction-compatible demand/support bijection remains a separate
 research task.
 \end{statusbox}
+[Added 30 September 2026, batch 64: Part~IX answers this.
+Theorems~\ref{tf:thm:main} and~\ref{tf:thm:sampler} return actual demand
+vectors, and Corollary~\ref{tf:cor:preordersampler} actual lattice points
+of $\Qt$, with the total-variation error transferred exactly
+(Theorem~\ref{tf:thm:tv}); the bijection is restriction-compatible for
+receivers outside the support and suppliers outside the selected set, not
+for arbitrary minors. See Section~\ref{tf:sec:answers}.]
 Similarly, these are randomized approximation results, not polynomial-time
 exact counting algorithms. No \#P-hardness classification is asserted.
 [Merge note: source~07 supplies one; see Section~\ref{lor:sp:sec:hardness}.]
@@ -10177,7 +10246,7 @@ positive weighting, is settled by source~07's
 Theorem~\ref{lor:sp:thm:equality}; source~06's antichain proposition is its
 preorder case.]
 
-\begin{question}[Binary capacities and approximation complexity]
+\begin{question}[Binary capacities and approximation complexity]\label{tf:hq:capacities}% label added in batch 64 (Part IX)
 Can partition functions or individual support coefficients for large
 binary-encoded capacities be approximated in time polynomial in the
 encoding length, without explicitly cloning donors? A compressed
@@ -10186,6 +10255,9 @@ support counts, would be needed.
 \end{question}
 This is the correct next step after Corollary~\ref{lor:cor:capacity}; the
 pseudo-polynomial cloned presentation is not already an answer.
+[Added 30 September 2026, batch 64: still open. Part~IX's bijection and
+sampler also reach dilations only by cloning, and its Research
+question~\ref{tf:q:capacities} asks the same for them.]
 
 \begin{question}[Deterministic and practical coefficient algorithms]
 Develop a deterministic approximation method for these special
@@ -10232,6 +10304,10 @@ ULC inequality.)
 A conditional Lean theorem about a supplied support-counting identity is a
 useful intermediate object, but should not be labeled an unconditional
 formal proof of the present theorem.
+[Added 30 September 2026, batch 64: the finite support-fibre count now
+has an elementary proof (Part~IX, Corollary~\ref{tf:cor:count}), a
+natural target for this layer; Research question~\ref{tf:q:formal} asks
+for a certified checker of its certificates.]
 
 These two projects isolate finite and elementary arguments from the large
 imported theories. They would substantially increase confidence in the new
@@ -10281,6 +10357,13 @@ A first test should reject any rule depending on a noncanonical chosen
 matching. Lexicographically selecting allocations and retaining one extreme
 supplier from each allocation can merge different demand vectors. A successful
 construction must control this loss of information.
+[Added 30 September 2026, batch 64: both paragraphs are answered by
+Part~IX. Its maps are evaluated and inverted in polynomial time, preserve
+the exact receiver support, and read the demand vector off a spanning
+tree extracted from an optimum, with no chosen matching; they turn the
+support sampler into an actual demand-vector sampler
+(Theorem~\ref{tf:thm:sampler}). Section~\ref{tf:sec:target} compares
+them with Oh's bijection, whose existence they realize.]
 
 
 \noindent\emph{Repeat Research questions~\ref{ade:hq:preserve},
@@ -13779,6 +13862,10 @@ provide a canonical bijection from lattice points to matching supports.
 They also do not show that the gamma sequence of an arbitrary preorder is
 ultra-log-concave. Distinguishing these statements prevents a valid
 matroid lift from being used to infer properties it does not possess.
+[Added 30 September 2026, batch 64: this describes source~09. Part~IX
+constructs a bijection from lattice points to matching supports
+(Theorem~\ref{tf:thm:main}); it is not canonical
+(Proposition~\ref{tf:prop:symmetry}).]
 
 \section{Exact computational verification}
 \label{mat:sec:verification}
@@ -13956,6 +14043,13 @@ Construct a canonical, support-resolved bijection realizing
 paired clone action in preorder cases. The present proof uses established
 root-polytope identities; equality of cardinalities alone does not lift the
 matroid automorphisms to explicit transformations of lattice points.
+[Added 30 September 2026, batch 64: Part~IX constructs a
+support-resolved bijection realizing~\eqref{lor:eq:FHmatching}, compatible
+with deletion of receivers outside the support and of suppliers outside
+the selected set. It is not canonical: it depends on the chamber of a
+cost system, no deterministic rule is equivariant under all automorphisms
+(Proposition~\ref{tf:prop:symmetry}), and compatibility with the paired
+clone action is not obtained. See Section~\ref{tf:sec:answers}.]
 
 
 \noindent\emph{Repeats Research question~\ref{lor:hq:limit}} (limit laws):
@@ -15974,6 +16068,1907 @@ substituted for any of its all-size steps.
 
 
 \clearpage
+\phantomsection\part*{Part IX.\quad Two-flow bijections: full-coordinate sampling of demand vectors and preorder lattice points}
+\addcontentsline{toc}{part}{Part IX.\texorpdfstring{\quad}{ } Two-flow bijections and full-coordinate sampling}
+
+\noindent\emph{Part~IX was added on 30 September 2026 in batch~64 of
+ProveIt's incoming-report intake, from one manuscript. For a bipartite
+graph and a fixed receiver support $J$, it gives explicit, mutually
+inverse, polynomial-time maps between the demand vectors of $\cD_H$ with
+support $J$ and the supplier sets matchable to $J$: two integer-margin
+minimum-cost transportation problems under one cycle-generic cost system
+have the same optimal spanning tree, whose supplier degrees give the
+supplier set and whose supplier leaves give every coordinate of the
+vector. The existence of such a correspondence is due to Oh; the
+realization, its certificates, a core factorization, restriction laws for
+receivers outside $J$ and suppliers outside the selected set, and two
+obstructions are the manuscript's. Composed with the matroid basis walk it
+samples actual demand vectors, and actual lattice points of every finite
+preorder polytope, with the total-variation error preserved exactly. This
+answers the ``Sampling boundary'' of Part~V and the bijection part of
+Research questions~\ref{gam:q:bridge} and~\ref{gam:q:bijection}, and the
+disjoint union of the bijections is an elementary, Ehrhart-free proof of
+the support-counting identity of Parts~II, IV and~V. Parts~I--VIII are
+unchanged except for dated pointers. Section~\ref{tf:sec:prov} records the
+provenance, fixes the notation and states what is answered.}
+
+\section{Provenance, conventions and what Part~IX answers}
+\label{tf:sec:prov}
+
+\subsection{The manuscript}
+\label{tf:sec:source}
+Part~IX is printed from batch-64 manuscript~01, called \emph{source~11}
+here after its file prefix: \emph{Two-Flow Bijections for Demand
+Polytopes: Full-coordinate sampling, exact certificates, restriction laws,
+and preorder applications}, dated 30 September 2026, 23 A4 pages as
+delivered. Its title page reads ``Prepared for Vladimir Reshetnikov /
+Mathematical development and implementation: ChatGPT'', and its PDF
+metadata call it an ``AI-assisted research manuscript prepared for
+Vladimir Reshetnikov''; that byline is recorded here and not reprinted.
+Its archive \nolinkurl{ProveIt_Two_Flow_Lattice_Sampling.zip} (inner
+directory \nolinkurl{Two_Flow_Lattice_Sampling/}, main file
+\nolinkurl{article.tex}) arrived in ProveIt commit \texttt{7747fcfdd} and
+was placed in \texttt{3025c15df}. It is pinned to commit
+\texttt{6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72}, with this report's
+\texttt{article.tex} as blob
+\texttt{920246d173bfbc708bcf\allowbreak dd6d67e0a6fc358cb3dc}: Parts~I--VII
+exactly as printed, before Part~VIII was written (the same blob that
+Part~VIII's source~10 read). Source~11 locates the question it answers as
+the ``Sampling boundary'' box in lines 9510--9555 of that blob, immediately
+after ``Sampling after fixing the support size''; the passage is unchanged
+and is now in Part~V's Section~\ref{lor:sec:algorithms}. Its library,
+verifier and build script are shipped in \nolinkurl{code/}, its recorded
+outputs, worked certificate, environment record and console log in
+\nolinkurl{data/}, and its proof-status and source-audit notes at the
+report root, all with the prefix \texttt{11-two-flow-}. The delivery had
+no checksum list. The manuscript, delivery README and PDF are not
+shipped; they survive in the arrival commit.
+
+Source~11 continues Part~V: it answers Part~V's sampling boundary and
+composes its decoder with Part~V's tilting method for a prescribed
+support size, both credited to ``the repository''. Its demand set, lifted
+matroid, conditioning minor, preorder reduction and cloning construction
+are also Part~V's, which source~11 does not say for the last four; merge
+notes record it. It did not read Part~VIII, and nothing in Part~VIII bears
+on it.
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of source~11 (as delivered).}
+For a bipartite graph $H=(X\sqcup Y,E)$, let $\cD_H$ consist of the
+nonnegative integral demand vectors $c$ satisfying
+$c(A)\le |N_H(A)|$ for all $A\subseteq Y$. A classical correspondence of
+Suho Oh identifies the vectors with a fixed positive support $J$ with the
+supplier sets $I$ matchable to $J$. We give an explicit algorithmic
+realization using two integer-margin minimum-cost transportation problems,
+each of total flow $|X|(|J|+1)$. A fixed cycle-generic cost system forces
+both optimal supports to be the same spanning tree. The supplier degrees
+recover $I$, while the supplier leaves recover every coordinate of $c$.
+We prove the inverse identities directly, without enumerating a mixed
+subdivision, and obtain polynomial bit complexity and short exact
+primal--dual certificates. A core factorization reduces the forward flow
+to $|J|(|J|+1)$, followed by independent supplier attachments.
+
+The construction closes the full-coordinate sampling gap recorded in the
+pinned ProveIt report on preorder root polytopes. Composing it with the
+established matroid basis walk gives almost-uniform samples of actual
+lattice points, not merely their supports; total-variation error is
+preserved exactly. We also prove support restrictions, unused-supplier
+deletion laws, perturbation invariance, and an obstruction to fully
+symmetry-natural deterministic bijections. The results apply to every
+finite preorder. An executable standard-library implementation is checked
+exhaustively on $4{,}785$ bipartite graphs and on all $390$ labeled
+preorders of order at most four.
+\end{tcolorbox}
+\noindent The abstract is reproduced as delivered, with source~11's
+$\mathcal D_H$ printed $\cD_H$. Its ``pinned ProveIt report'' is this
+report, and the gap is Part~V's sampling boundary.
+
+\begin{statusbox}
+\small\textbf{Contribution and status (source~11, as delivered).} The
+existence of the demand/base correspondence, its counting consequences,
+and rapid mixing on matroid bases are prior results. The contribution
+developed here is the explicit two-flow realization, its proofs and
+certificates, its compatibility laws, and the resulting full-coordinate
+sampler for the repository's problem. The manuscript does not assert
+first priority over all possible algorithmic realizations of Oh's
+construction. The proofs below are ordinary mathematical proofs; the
+implementation has been run and tested, but neither has been checked by
+Lean or Rocq or independently refereed.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (merge).}
+The correspondence between fixed-support demand vectors and matchable
+supplier sets, with its leaf-count description, is Oh's~\cite{Oh}
+(source~11 cites Section~4, Remark~4.4 and Proposition~4.5 of the arXiv
+version; this report's entry cites the journal numbering, Lemma~22 and
+Proposition~26), and Ohsugi--Tsuchiya use it~\cite{OT20}; Loho and
+Smith~\cite{LohoSmith} study closely related degree-vector and
+lattice-point bijections, and source~11's audit did not read their whole
+paper. The counting identity (Corollary~\ref{tf:cor:count}) is Part~II's
+Lemma~\ref{htwo:lem:count}, Part~IV's
+Proposition~\ref{gam:prop:gradedinput} and Part~V's
+Proposition~\ref{lor:prop:bridge}; its proof here is a further, elementary
+route (merge note after the corollary). The lifted matroid, the
+conditioning minor, the preorder reduction and the cloning construction
+are Part~V's Proposition~\ref{lor:prop:bases},
+Proposition~\ref{lor:sp:prop:conditioning},
+Lemma~\ref{lor:lem:preorderreduction} and
+Corollary~\ref{lor:cor:capacity}; the preorder reduction is printed once,
+as Proposition~\ref{tf:prop:preorder}, with its proof replaced by a
+pointer. The basis-walk mixing theorem is
+Anari--Liu--Oveis Gharan--Vinzant's~\cite{ALOV}, imported as in Part~V.
+New relative to Parts~I--VIII: the two-flow realization
+(Theorem~\ref{tf:thm:main}) with its explicit margins, the core
+factorization and restriction laws (Section~\ref{tf:sec:core}), the
+perturbation and chamber laws, the certificate theorem, the two
+obstructions (Section~\ref{tf:sec:limits}), the exact error transfer and
+the full-coordinate sampler (Section~\ref{tf:sec:sampling}), its
+preorder corollary, and the inverse prices (Section~\ref{tf:app:prices}).
+No worldwide priority is claimed for any result of Part~IX.
+\end{statusbox}
+
+\subsection{Notation of Part~IX}
+\label{tf:sec:notation}
+Part~IX uses Part~V's $\cD_H$, $\PM(H)$, $\mathsf M_H$, $N_H(\cdot)$ and
+$\Qt$, and Part~V's orientation of the preorder graph $H_\tau$ (an edge
+$x\to y$ exactly when $x\le_\tau y$). Table~\ref{tf:tab:notation} lists
+what Part~IX adds or uses differently. Four symbols of source~11 were
+changed; no normalization was changed:
+\begin{itemize}[leftmargin=1.4em]
+\item source~11's $\mathcal B_H(J)$ (supplier sets matchable to $J$) and
+$\mathcal B_H$ (all matchable pairs) are printed $\PM_J(H)$ and $\PM(H)$,
+because Part~V's $\cB_H$ is the basis polynomial~\eqref{lor:sp:eq:basis};
+\item source~11's $\mathcal D_H$ is printed $\cD_H$ (the same set as
+Part~V's);
+\item source~11's $M_H$ is printed $\mathsf M_H$, Part~V's symbol for the
+same matroid;
+\item source~11's $Q_\tau$ is printed $\Qt$, as in every other Part.
+\end{itemize}
+Source~11's macros $\Phi_w$, $\Psi_w$ are typeset directly, and its
+$\operatorname{TV}$ is the report's \verb|\TV|.
+
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Symbols of Part~IX. The last column prints the tempting false
+reading.}
+\label{tf:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.38\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~IX & Not to be confused with\\
+\midrule
+$H=(X\sqcup Y,E)$, $m$, $n$ & bipartite graph, suppliers $X$, receivers
+ $Y$, $m=|X|$, $n=|Y|$ & Part~I's ground set $E=[n]$; Part~VIII's tree
+ edges $E$.\\
+$\cD_H$, $\cD_H(J)$ & demand vectors; those with support exactly $J$ &
+ Part~V's support enumerators $D_H(t)$, $D_H(\mathbf z)$ (polynomials);
+ Part~II's polytope $D_G$.\\
+$\PM(H)$, $\PM_J(H)$ & matchable support pairs $(I,J)$; the supplier sets
+ matchable to $J$ (source~11's $\mathcal B_H$, $\mathcal B_H(J)$) &
+ Part~V's basis polynomials $\cB_H(\mathbf x,\mathbf y)$ and
+ $\mathcal B_H(a,z)$.\\
+$I$, $J$, $r=|J|$ & selected supplier set, receiver support, its size &
+ Part~V's $r=\min(m,n)$ (source~06) or $\nu(H)$ (source~07); Part~VI's
+ tree size $r$; Part~I's order ideals $I$.\\
+$0$, $G_J$, $E_J$, $c_0$ & dummy receiver; the augmented graph; its
+ edges; $m-\sum_{y\in J}c_y$ & receiver index $0$ in the code, where the
+ dummy is $-1$; Part~I's doubled graph $G_\tau$.\\
+$w$, $q$, $q_J$, $q_I$ & edge costs (for instance $w(e_i)=2^i$); numbers
+ of augmented edges & Part~VII's weights $w_i$; in
+ Section~\ref{tf:sec:preorders} $q$ is a dilation factor, and in
+ $\prod_yq_y^{c_y}$ the $q_y$ are magnitude weights.\\
+$\Phi_w$, $\Psi_w$, $\widehat\Phi_w$ & forward and inverse maps; the
+ lifted bijection~\eqref{tf:eq:liftedbijection} & Part~VI's signed support
+ polynomial $\Phi_G$.\\
+(A), (B), $L=r+1$ & the forward and inverse margin systems; the inverse
+ scale & Part~V's random support size $L$; Part~VI's pencil $L$.\\
+$T$, $T_I$ & the common optimal spanning tree; the core tree & Part~VIII's
+ host tree $T$; Part~V's subsets $T\subseteq Y$.\\
+$S_y$, $a_y$, $A_y$, $\ell_y$ & receivers, suppliers, supplier set and
+ supplier leaves below $y$ & Part~V's supports $S$.\\
+$u$, $v$, $s_{xy}$, $F$, $K$ & potentials, reduced costs, flows, core flow
+ & Part~IV's mixing variable $K$; Part~VIII's hull $K$.\\
+$\mathsf M_H$ & the lifted transversal matroid, bases $(X\setminus I)\cup J$
+ (source~11's $M_H$) & Part~VII's $M_G$, its dual; Part~II's matching
+ polynomial $M_G(u)$.\\
+$\theta$, $\mu_\theta$, $\pi_\theta$, $Z_\theta$ & receiver activities,
+ the demand law, the basis law, its partition function & Part~VIII's
+ enumerator $Z_T$; Part~V's activities $\alpha,\beta$.\\
+$N=m+n$, $W$, $t$, $\eta$ & ground-set size, largest activity, number of
+ walk steps, target error & the variable $t$ of $h_\tau(t)$; Part~V's
+ $N$.\\
+$\tau$, $V$, $H_\tau$, $\Qt$ & a preorder on $V$, its graph ($x$ supplies
+ $y$ iff $x\le_\tau y$), its polytope & Part~I's $G_\tau$, which has the
+ two shores exchanged (Part~IV's convention).\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~IX answers}
+\label{tf:sec:answers}
+Status after Part~IX, as of 30 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Part~V's ``Sampling boundary'' is answered.} Its samplers
+return support sets or support pairs; Theorem~\ref{tf:thm:sampler} and
+Corollary~\ref{tf:cor:preordersampler} return almost-uniform actual
+vectors of $\cD_H$ and of $\Qt\cap\Z^V$, with every coordinate value, and
+Theorem~\ref{tf:thm:tv} transfers the total-variation error exactly. The
+bijection is restriction-compatible in two stated senses: for receivers
+outside the support (Corollary~\ref{tf:cor:receivers}) and for suppliers
+outside the selected set (Corollary~\ref{tf:cor:deletion}); arbitrary
+minors are not covered. The approximate, not exact, sense of
+``almost-uniform'' is that of Part~V's support samplers. The same answers
+Part~V's ``Precisely what is sampled for a preorder'' and its two
+unnumbered questions ``An effective demand/support bijection (source~06)''
+and ``A direct demand/support bijection (source~07)''
+(Section~\ref{lor:sec:oldquestions}): the tree is extracted from an
+optimum, so no noncanonical chosen matching enters, as source~07's test
+demands.
+\item \textbf{The bijection of Research questions~\ref{gam:q:bridge}
+and~\ref{gam:q:bijection} is constructed}, explicitly, in polynomial time,
+preserving the exact receiver support, and with an elementary proof that
+imports no Ehrhart theory (Theorem~\ref{tf:thm:main} and the merge note
+after Corollary~\ref{tf:cor:count}). Their compatibility clauses are
+answered only in part: the cost system is a controlled ordering of the
+augmented edges, positive support weights are preserved
+(Theorem~\ref{tf:thm:tv}), and deletion laws hold outside $I$ and $J$;
+Proposition~\ref{tf:prop:symmetry} shows that no deterministic
+support-preserving rule is equivariant under all graph automorphisms, so
+full naturality is impossible. The rest is Research
+question~\ref{tf:q:functoriality}.
+\item \textbf{Part~VII's ``Direct lattice-point bijections
+(source~09)''} is answered in its support-resolved part; a
+\emph{canonical} bijection, and compatibility with the paired clone
+action, are not obtained (the maps depend on the cost chamber,
+Proposition~\ref{tf:prop:chambers}; symmetry is restored only in law, by
+a random cost order).
+\item \textbf{Not answered:} Part~V's Research
+question~\ref{tf:hq:capacities} (binary capacities), which
+Research question~\ref{tf:q:capacities} extends; Part~V's Research
+question~\ref{lor:q:last} (formalization), which Research
+question~\ref{tf:q:formal} overlaps. No other numbered research question
+of Parts~I--VIII is affected, and Conjectures~5.1(d) and~5.3
+of~\cite{AC} are untouched.
+\end{itemize}
+Part~IX refutes no statement of Parts~I--VIII, and nothing is retracted:
+the passages that said no bijection or no lattice-point sampler had been
+constructed described the report as it then was, and keep their text with
+dated pointers here (in Parts~II, IV, V and~VII). Part~V's Research
+question on binary capacities, unlabelled before, received the label
+\texttt{tf:hq:capacities}.
+
+\subsection{Where the merge had to choose}
+\label{tf:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Order.} Source~11's order of sections is kept; its
+Section~$k$ is Section~$k+132$ here, and its Appendices~A and~B are
+printed as ordinary Sections~\ref{tf:app:prices}
+and~\ref{tf:app:algorithms} at the end of Part~IX, so that Part~I's
+appendices keep their letters.
+\item \emph{Section~\ref{tf:sec:target}.} Its first subsection, ``A precise
+gap in the repository'', cited the pinned commit, the blob and a line
+interval of this report; it was rewritten as a pointer to Part~V's
+section, and the pin, blob and line interval are recorded in
+Section~\ref{tf:sec:source}. Its other subsections, the claim ledger
+included, are kept.
+\item \emph{Printed as pointers (duplicates of Parts~II--V).} The proof of
+the preorder reduction (Proposition~\ref{tf:prop:preorder}), which is
+Part~V's; the statement and its label are kept. The lifted matroid, the
+conditioning minor, the Hall lemma, the basis walk and the cloning
+construction keep source~11's short text and gain merge notes naming
+Part~V's statements.
+\item \emph{Second route kept.} Corollary~\ref{tf:cor:count}, whose proof
+through Theorem~\ref{tf:thm:main} is a further, elementary proof of the
+counting identity of Parts~II, IV and~V; source~11 itself calls the
+identity known.
+\item \emph{Research questions.} Source~11's eight questions continue the
+numbering as Research questions~\ref{tf:q:prices}--\ref{tf:q:formal}, each
+with a label; the three that extend earlier questions carry merge notes.
+\item \emph{Self-citation and file names.} Source~11's reference ``ProveIt
+repository'' (Part~V of this report at the pin) became references to
+Part~V's sections and statements, and its macro for the pinned commit was
+expanded. Its code, data and audit files keep their delivered base names
+behind the prefix \texttt{11-two-flow-}: \texttt{transport\_bijection.py},
+\texttt{verify.py} and \texttt{build.sh} in \nolinkurl{code/}; the six
+suite records \texttt{small.json}, \texttt{four\_by\_three.json},
+\texttt{preorders.json}, \texttt{random.json}, \texttt{chain.json},
+\texttt{example.json}, and \texttt{environment.json} and
+\texttt{verification\_run.txt}, in \nolinkurl{data/}; and
+\texttt{PROOF\_STATUS.md}, \texttt{SOURCE\_AUDIT.md} at the report root.
+Merge notes give the shipped names; its two code listings are kept with
+delivery names.
+\item \emph{Cross-references and layout.} Source~11 uses plain
+\verb|\ref|, like this report; no \texttt{cleveref} is loaded. Its
+preamble is dropped: its \verb|\N|, \verb|\R|, \verb|\Z|, \verb|\supp|,
+\verb|\one| agree with the host's, its \verb|\cost| and \verb|\NN| were
+unused, and \verb|\TV| was added to the preamble. Its box environment
+became the host's \texttt{statusbox}, and its claim-ledger table, placed
+with the \texttt{float} package's \texttt{[H]}, which this report does not
+load, is placed \texttt{[htbp]}. Its one \verb|\choose| is typeset with
+\verb|\binom|, and its two tagged displays (A) and~(B) were given PDF
+anchors of their own. Labels carry the prefix \texttt{tf:}; the
+eight questions, this section and its subsections, the notation table and
+the rewritten subsection gained labels. Its abstract and status box are
+printed in this section; its title page, table of contents and running
+head are dropped.
+\item \emph{Bibliography.} \cite{Oh}, \cite{OT20}, \cite{ALOV}
+and~\cite{AC} were already cited (source~11 records the published version
+of~\cite{ALOV}, \emph{Ann.\ of Math.} \textbf{199} (2024), 259--299, and
+takes its theorem numbering from arXiv:1811.01816v3); Loho--Smith is
+new~\cite{LohoSmith}.
+\end{itemize}
+
+\section{The question answered and the relation to prior work}
+\label{tf:sec:target}
+
+\subsection{The question left by Part~V}
+\label{tf:sec:gap}
+Parts~II, IV and~V of this report develop support enumerators, matroid
+models, and approximate counting for bipartite demand vectors. Part~V
+ends its sampling discussion (Section~\ref{lor:sec:algorithms}) with an
+explicit boundary, the ``Sampling boundary'' box after ``Sampling after
+fixing the support size'': the algorithms produce support sets or
+matchable support pairs, not the coordinate values of a uniform lattice
+point (see also ``Precisely what is sampled for a preorder'' in the same
+section). It asks for an efficiently invertible, restriction-compatible
+demand/support correspondence.
+
+[Merge note: source~11 identifies this passage by the pinned commit, the
+path and blob of this report's \texttt{article.tex}, and the line
+interval 9510--9555 of that blob (Section~\ref{tf:sec:source}); those
+line numbers refer to Parts~I--VII as printed before Part~VIII and no
+longer apply. Source~11 calls it ``a dated, identified question, not an
+inference from a missing theorem in a summary.'' Parts~II and~IV asked
+the same bijective question earlier, as Research
+questions~\ref{gam:q:bridge} and~\ref{gam:q:bijection}; Part~V repeats it
+in Section~\ref{lor:sec:oldquestions}, and Part~VII in its questions
+(``Direct lattice-point bijections (source~09)''). What Part~IX answers of
+each is stated in Section~\ref{tf:sec:answers}.]
+
+The distinction matters. Suppose a probability measure has the right
+support-size distribution. This does not specify the individual positive
+coordinates. Even knowing every fibre cardinality does not provide a
+polynomial-time decoder from a uniformly chosen object of an equinumerous
+family. The algorithm below supplies precisely that decoder and its inverse.
+
+\subsection{What is already known}
+Oh constructs a correspondence between bases of a transversal matroid and
+positive-coordinate lattice points of an associated generalized
+permutohedron \cite{Oh}. In the arXiv version inspected here,
+Section~4, Remark~4.4 and Proposition~4.5 describe the relevant
+zonotopal-cell correspondence and its leaf-count formula. Thus an
+abstract demand/base bijection is not a new theorem of this manuscript.
+Ohsugi--Tsuchiya use the same correspondence in the graph-polynomial
+setting \cite{OT20}. Loho--Smith study closely related degree-vector and
+lattice-point bijections for matching fields and triangulations
+\cite{LohoSmith}. Those works are important context for the present use of
+coherent spanning trees.
+
+The rapid-mixing theorem used later is due to Anari, Liu, Oveis Gharan,
+and Vinzant \cite{ALOV}. Their theorem gives polynomial-time approximate
+sampling of matroid bases. We do not prove a new general matroid mixing
+theorem. Likewise, the definition and lattice-point study of preorder
+polytopes originate in the work of Athanasiadis--Chapoton \cite{AC}.
+[Merge note: source~11 prints the author order ``Chapoton--Athanasiadis''
+here and in its bibliography; this report's entry~\cite{AC} and Part~I
+use the order of the arXiv record, Athanasiadis and Chapoton.]
+
+Our approach locates the relevant coherent tree with one min-cost flow in
+each direction. The important extra information is the explicit margins,
+finite perturbation sizes, bit bounds, independently checkable optimality
+certificate, and exact compatibility statements. No list of cells in a
+triangulation is an input. No numerical infinitesimal is required.
+
+\needspace{14\baselineskip}
+\subsection{Claim ledger}
+\begin{table}[htbp]\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.32\textwidth}Y@{}}\toprule
+Statement & Status and role\\\midrule
+Existence of a positive-support demand/base correspondence & Prior work of
+Oh; independently proved in the special form needed here.\\
+Two explicit integer-margin optimizations with inverse decoders & Main
+constructive result proved in Sections~\ref{tf:sec:main}--\ref{tf:sec:inverse}.\\
+Finite perturbation and restriction laws & Proved here for the stated cost-labelled setting;
+no arbitrary-minor naturality is asserted.\\
+Polynomial-time weighted basis sampling & Imported from the established
+matroid-walk theorem.\\
+Full-coordinate sampling of $\cD_H$ and preorder lattice points & Constructive
+consequence, closing the identified repository sampling gap.\\
+Lean or Rocq formalization & Not supplied or claimed; an explicit formalization
+plan is given in Section~\ref{tf:sec:formal}.\\\bottomrule
+\end{tabularx}
+\caption{Logical and novelty boundaries. ``Proved here'' identifies the
+manuscript's proof, not an assertion of worldwide first priority.}
+\end{table}
+
+\section{Demand vectors and matchable support pairs}
+\label{tf:sec:definitions}
+Let $H=(X\sqcup Y,E)$ be a finite simple bipartite graph, with
+$m=|X|$ suppliers and $n=|Y|$ receivers. For $A\subseteq Y$ put
+\[
+ N_H(A)=\{x\in X:\text{some }y\in A\text{ satisfies }xy\in E\},
+ \qquad c(A)=\sum_{y\in A}c_y.
+\]
+We study the finite set
+\begin{equation}
+ \cD_H=\{c\in\N^Y:c(A)\le |N_H(A)|\text{ for every }A\subseteq Y\}.
+ \label{tf:eq:demand}
+\end{equation}
+In particular, $\sum_yc_y\le m$. For $J\subseteq Y$, write
+\begin{equation}
+ \begin{aligned}
+ \cD_H(J)&=\{c\in\cD_H:\supp(c)=J\},\\
+ \PM_J(H)&=\{I\subseteq X:|I|=|J|,\ H[I,J]\text{ has a perfect matching}\}.
+ \end{aligned}
+ \label{tf:eq:fibres}
+\end{equation}
+A member of $\PM_J(H)$ is a supplier \emph{set}, not a perfect matching.
+Multiple perfect matchings on the same pair $(I,J)$ are counted once.
+We also use the disjoint union
+\[
+ \PM(H)=\{(I,J):J\subseteq Y,\ I\in\PM_J(H)\}.
+\]
+There is one empty pair, corresponding to the zero vector.
+[Merge note: $\cD_H$ is Part~V's demand set~\eqref{lor:sp:eq:hall} and
+Parts~II and~IV's $\mathcal R_H$; $\PM(H)$ is Part~V's set of matchable
+support pairs (written $U\sim_H S$ there, and $\mathcal M(H)$ in
+Part~IV). Source~11 writes $\mathcal B_H(J)$ and $\mathcal B_H$ for
+$\PM_J(H)$ and $\PM(H)$; they are renamed because Part~V's $\cB_H$ is the
+basis polynomial~\eqref{lor:sp:eq:basis} (Section~\ref{tf:sec:notation}).]
+
+\begin{lemma}[Integral allocation]
+\label{tf:lem:hall}
+A vector $c\in\N^Y$ belongs to $\cD_H$ if and only if there is a partial
+assignment of suppliers to adjacent receivers in which each supplier is
+used at most once and receiver $y$ receives exactly $c_y$ suppliers.
+\end{lemma}
+\begin{proof}
+An assignment immediately proves all the inequalities in
+\eqref{tf:eq:demand}. Conversely, replace receiver $y$ by $c_y$ identical
+copies. For a set $U$ of copies, let $A$ be the original receivers
+represented in $U$. Then
+$|U|\le c(A)\le |N_H(A)|=|N(U)|$.
+These inequalities imply a matching saturating every copy. To recall the
+augmenting-path argument, take a maximum matching. If a copy is unmatched,
+follow alternating paths from all unmatched copies. Every reachable
+supplier must be matched, or an augmenting path exists. Its matched copy
+is reachable too. The reachable copies therefore outnumber their entire
+supplier neighbourhood, contradicting the displayed inequality. The
+saturating matching is the required assignment.
+\end{proof}
+[Merge note: this is the clone-and-Hall argument of Part~II
+(Section~\ref{htwo:sec:count}) and Part~V's
+Lemma~\ref{lor:lem:hallmodel}, with the augmenting-path step spelled out
+as in Part~IV's manuscript~01 (after Lemma~\ref{gam:lem:count}).]
+
+For $J\ne\varnothing$ write $r=|J|$ and add a dummy receiver $0$ adjacent to
+every supplier. We use $0$ as a separate symbol, not as a member of $Y$.
+Let
+\begin{equation}
+ G_J=(X\sqcup(\{0\}\cup J),\ E_J),\qquad
+ E_J=\{xy\in E:y\in J\}\cup\{x0:x\in X\}.
+ \label{tf:eq:augmentation}
+\end{equation}
+An assignment may send an unused supplier to the dummy. For a demand
+vector define
+\begin{equation}
+ c_0=m-\sum_{y\in J}c_y.
+ \label{tf:eq:c0}
+\end{equation}
+This number is nonnegative. An empty fibre is detected by asking whether
+$J$ can be saturated by a matching; if it cannot, neither side of
+\eqref{tf:eq:fibres} has an element.
+
+\section{The two-flow theorem}
+\label{tf:sec:main}
+We first state the complete construction. Its proof occupies the next
+four sections.
+
+\begin{definition}[Cycle-generic costs]
+A real edge-cost assignment $w$ on the full dummy-augmented graph is
+\emph{cycle-generic} if the alternating sum of its costs around every
+simple even cycle is nonzero. All restrictions to $G_J$ use the same costs.
+\end{definition}
+
+For an explicit integral choice, order all $q=|E|+m$ augmented edges as
+$e_0,\ldots,e_{q-1}$ and set
+\begin{equation}
+ w(e_i)=2^i.
+ \label{tf:eq:costs}
+\end{equation}
+The largest power in a cycle sum exceeds the sum of all the smaller
+powers, so this choice is cycle-generic. Each cost has at most $q$ bits.
+
+\begin{theorem}[Explicit two-flow correspondence]
+\label{tf:thm:main}
+Fix cycle-generic costs $w$. For each nonempty $J$ with $r=|J|$,
+the following maps are well-defined inverse bijections
+\[
+ \Phi_w:\PM_J(H)\longrightarrow\cD_H(J),\qquad
+ \Psi_w:\cD_H(J)\longrightarrow\PM_J(H).
+\]
+
+\emph{Forward map.} Given $I\in\PM_J(H)$, minimize
+$\sum_{xy\in E_J}w_{xy}F_{xy}$ over nonnegative flows with margins
+\begingroup\renewcommand{\theHequation}{tf.two-flow.A}% unique PDF anchor for a tagged display (merge)
+\begin{equation}
+ \sum_y F_{xy}=m\one_{x\in I}+1\quad(x\in X),\qquad
+ \sum_x F_{xy}=m\quad(y\in\{0\}\cup J).
+ \tag{A}\label{tf:eq:A}
+\end{equation}\endgroup
+The positive-flow support is a unique spanning tree $T$. A supplier in
+$I$ has degree two and any other supplier has degree one. Set
+\begin{equation}
+ \Phi_w(I)_y=
+ \begin{cases}
+ 1+\#\{x\in X\setminus I:xy\in T\},&y\in J,\\
+ 0,&y\notin J.
+ \end{cases}
+ \label{tf:eq:leaf}
+\end{equation}
+
+\emph{Inverse map.} Given $c\in\cD_H(J)$, put $L=r+1$ and use
+\eqref{tf:eq:c0}. Minimize the same objective with margins
+\begingroup\renewcommand{\theHequation}{tf.two-flow.B}% unique PDF anchor for a tagged display (merge)
+\begin{equation}
+ \sum_y F_{xy}=L\quad(x\in X),\qquad
+ \sum_xF_{x0}=Lc_0+r,\qquad
+ \sum_xF_{xy}=Lc_y-1\quad(y\in J).
+ \tag{B}\label{tf:eq:B}
+\end{equation}\endgroup
+Again the support is a unique spanning tree $T$, every supplier has
+degree one or two, and
+\begin{equation}
+ \Psi_w(c)=\{x\in X:\deg_T(x)=2\}.
+ \label{tf:eq:inverse}
+\end{equation}
+If $c=\Phi_w(I)$, the two optimal trees in (A) and (B) are identical.
+Each optimization has integral optimal flow and total flow $m(r+1)$.
+For the costs \eqref{tf:eq:costs}, both maps are computable in polynomial bit
+time and admit exact certificates of polynomial length.
+\end{theorem}
+
+For $J=\varnothing$ the maps send $\varnothing$ to the zero vector and
+back. This convention covers $m=0$, $n=0$, and graphs with no ordinary
+edges. The theorem concerns \emph{one} optimization per direction, not
+an alternating iterative process between (A) and (B).
+
+\section{Why generic optimal supports are trees}
+\label{tf:sec:transport}
+For a bipartite graph $G=(X\sqcup C,E_G)$ and positive margins $a_x,b_y$
+with equal sums, a transportation flow is a family $F_{xy}\ge0$ on its
+edges satisfying the row and column sums. A feasible set is compact:
+every flow coordinate lies between zero and the total margin. Thus a
+linear cost has a minimum whenever the set is nonempty.
+
+\begin{lemma}[Acyclicity, uniqueness, and integrality]
+\label{tf:lem:forest}
+Under cycle-generic costs, every minimum-cost flow has an acyclic positive
+support, and the minimum-cost flow is unique. If its margins are integral,
+its positive flow values are integral.
+\end{lemma}
+\begin{proof}
+Suppose an optimal positive support contains a cycle. Add a sufficiently
+small $\eta$ to the alternate edges and subtract $\eta$ from the other
+edges. Both signs of $\eta$ preserve nonnegativity for sufficiently small
+$|\eta|$, and all margins are unchanged. The objective varies by a
+nonzero multiple of $\eta$, so one sign improves the cost. This is a
+contradiction.
+
+If $F$ and $F'$ were distinct optima, their average would also be optimal
+and its positive support would be the union of their supports. That union
+is therefore a forest. But $F-F'$ has zero row and column sums. Repeatedly
+remove a leaf of the forest: the difference on its sole edge must be zero.
+This removes every edge and shows $F=F'$.
+
+For integral margins, the same leaf elimination proves integrality of the
+unique feasible flow on its support forest. The sole edge at a leaf has
+its integral residual margin; subtracting that value leaves integral
+margins on the remaining forest.
+\end{proof}
+
+\begin{lemma}[Strict tree certificates]
+\label{tf:lem:dual}
+Suppose a minimum-cost flow is positive on a spanning tree $T$. There
+are potentials $u_x,v_y$, unique after fixing one of them, such that
+\begin{equation}
+ u_x+v_y=w_{xy}\quad(xy\in T),\qquad
+ u_x+v_y<w_{xy}\quad(xy\in E_G\setminus T).
+ \label{tf:eq:dual}
+\end{equation}
+Consequently, every other positive flow on $T$, for any other margins,
+is the unique minimum-cost flow for those margins.
+\end{lemma}
+\begin{proof}
+Fix one potential and propagate the equations along the tree. For an
+off-tree edge $xy$, its reduced cost
+$s_{xy}=w_{xy}-u_x-v_y$ is the alternating cost of the fundamental cycle
+formed by adding $xy$ to $T$. If $s_{xy}<0$, add a small positive flow on
+$xy$ and alternate along the tree path. All edges from which flow is
+subtracted are positive. The margins stay fixed and the cost decreases.
+Thus $s_{xy}\ge0$, and cycle-genericity excludes equality.
+
+For any flow $G$ of the new margins $a',b'$, one has
+\begin{equation}
+ \sum_{xy}w_{xy}G_{xy}
+ =\sum_xu_xa'_x+\sum_yv_yb'_y+
+   \sum_{xy\notin T}s_{xy}G_{xy}.
+ \label{tf:eq:dualgap}
+\end{equation}
+A flow on $T$ attains the first two terms. Strict positivity of the slacks
+forces every other optimum to be supported on $T$; leaf elimination then
+forces equality of the flows. This proves the assertion without requiring
+a separate appeal to a linear-programming duality theorem.
+\end{proof}
+
+These lemmas separate two issues. Genericity gives a forest, but not
+necessarily a connected support for arbitrary margins. The particular
+congruences in (A) and (B) supply connectedness. Once a tree is known,
+\eqref{tf:eq:dualgap} transfers its optimality between margin systems.
+
+\section{The forward optimization and the leaf decoder}
+\label{tf:sec:forward}
+Assume $I\in\PM_J(H)$, $r=|J|>0$. Choose any perfect matching between
+$I$ and $J$. Send $m$ units along every matching edge and one unit from
+every supplier to the dummy. This is a feasible flow for (A). In
+particular, all margins are strictly positive.
+
+\begin{lemma}[Connectedness from the forward margins]
+\label{tf:lem:Aconnected}
+The unique optimizer of (A) has connected support.
+\end{lemma}
+\begin{proof}
+Take a component of its positive-support forest, with supplier set $A$
+and receiver set $C\subseteq\{0\}\cup J$. Positive margins imply that
+every vertex is incident to a positive edge, so the component contains at
+least one supplier. Balancing its total margins gives
+\[
+ m|I\cap A|+|A|=m|C|.
+\]
+Hence $m$ divides $|A|$. Since $1\le |A|\le m$, the component contains all
+suppliers. There can be no second component, again because every component
+has a supplier.
+\end{proof}
+
+The optimizer is therefore a spanning tree with $m+r$ edges. Each
+supplier in $I$ has row sum $m+1$, larger than the column sum $m$ of any
+single receiver. Its degree is at least two. Every other supplier has
+degree at least one. The sum of these lower bounds is
+$2r+(m-r)=m+r$, exactly the number of tree edges. Thus all the degree
+bounds are equalities.
+
+Root the tree at the dummy $0$. A supplier in $I$ has one parent receiver
+and one child receiver; a supplier outside $I$ is a leaf. Conversely,
+every nonroot receiver has a parent supplier, and that supplier must have
+degree two. Consequently the parent--child edges from $I$ to $J$ form a
+perfect matching. This matching is extracted from the tree, and need not
+be the matching used to establish feasibility of (A).
+
+Assign each supplier in $I$ to its child receiver, and every supplier
+outside $I$ to its sole neighbour. Ignore assignments to $0$. Every
+receiver in $J$ gets one supplier from $I$, together with precisely its
+supplier leaves. It follows from Lemma~\ref{tf:lem:hall} that the vector
+in \eqref{tf:eq:leaf} lies in $\cD_H(J)$. This proves well-definedness of
+the forward map, including all coordinate values, rather than only its
+support.
+
+\section{The inverse optimization and its degree bound}
+\label{tf:sec:backward}
+Now let $c\in\cD_H(J)$ with $r>0$, and put $L=r+1$. By
+Lemma~\ref{tf:lem:hall}, allocate suppliers to realize $c$, sending unused
+ones to $0$. Scale that assignment by $L$. For each $y\in J$, choose one
+supplier assigned to $y$ and divert one unit of its flow from $y$ to the
+dummy. These chosen suppliers are distinct. This gives exactly the margins
+(B). All receiver margins are positive, including the dummy margin
+$Lc_0+r$.
+
+\begin{lemma}[Connectedness from the inverse margins]
+\label{tf:lem:Bconnected}
+The unique optimizer of (B) has connected support.
+\end{lemma}
+\begin{proof}
+If a positive-support component does not contain $0$, let its receiver
+set be $S\subseteq J$ and its supplier set be $A$. Positive margins imply
+$1\le |S|\le r$. The margin equality is
+\[
+ L|A|=L c(S)-|S|,
+\]
+which says that $L=r+1$ divides $|S|$. This is impossible. Hence every
+component contains the same vertex $0$, and there is only one.
+\end{proof}
+
+Root the resulting spanning tree at $0$. For a receiver $y\in J$, let
+$S_y$ denote the \emph{number} of receiver vertices from $J$ in the
+subtree rooted at $y$; let $A_y$ denote the set of suppliers in that
+subtree. Its parent supplier $x$ lies outside this subtree. Summing flow
+balances over the subtree yields
+\begin{equation}
+ F_{xy}=L\left(\sum_{z\text{ in the receiver subtree of }y}c_z-|A_y|\right)-S_y.
+ \label{tf:eq:cutB}
+\end{equation}
+The left side is positive and at most the whole row supply $L$ of $x$.
+The quantity in parentheses is an integer, and $1\le S_y\le r=L-1$.
+The only possible integer is therefore one. We have proved
+\begin{equation}
+ F_{xy}=L-S_y\qquad\text{for every supplier-to-child-receiver edge.}
+ \label{tf:eq:childB}
+\end{equation}
+
+\begin{lemma}[No branching at a supplier]
+\label{tf:lem:degreeB}
+Every supplier in the optimal tree of (B) has degree at most two.
+\end{lemma}
+\begin{proof}
+If a supplier had two distinct child receivers $y,z$, their subtrees
+would be disjoint, so $S_y+S_z\le r$. By \eqref{tf:eq:childB}, the sum of
+its flows to just those two children would be
+\[
+ 2L-(S_y+S_z)\ge 2L-r=L+1,
+\]
+exceeding its entire row supply $L$. Thus a supplier has at most one child
+receiver, in addition to its parent receiver.
+\end{proof}
+
+All supplier degrees are one or two. Since the tree has $m+r$ edges,
+exactly $r$ suppliers have degree two. Denote their set by $I$. The
+parent--child construction from the preceding section again gives a
+perfect matching between $I$ and $J$. It remains to check that the leaf
+formula recovers the original vector, not merely some demand vector.
+
+For $y\in J$, let $\ell_y$ be its number of supplier-leaf children. If a
+nonleaf supplier child of $y$ has child receiver $z$, its flow to $y$ is
+$L-(L-S_z)=S_z$. The flow into $y$ from its parent supplier is $L-S_y$.
+Since
+\[
+ S_y=1+\sum_{z}S_z,
+\]
+where the sum runs over these grandchildren, its column balance becomes
+\[
+ Lc_y-1=(L-S_y)+L\ell_y+\sum_z S_z=L(1+\ell_y)-1.
+\]
+Thus $c_y=1+\ell_y$, exactly \eqref{tf:eq:leaf}. At the dummy, the analogous
+identity gives $c_0=\ell_0$. This proves the local recovery assertion.
+
+\section{Why the two trees are identical: the inverse proof}
+\label{tf:sec:inverse}
+It is not enough to establish that the formulas have the right codomains.
+We must show that an optimal tree for one flow is optimal for the other.
+The strict tree certificate makes this possible.
+
+Call a rooted spanning tree of $G_J$ \emph{admissible} if every supplier
+has degree one or two. Write $I(T)$ for its degree-two suppliers and
+$c(T)$ for its leaf vector in \eqref{tf:eq:leaf}. For a receiver $y\in J$,
+write $S_y$ for its subtree's number of ordinary receivers and $a_y$ for
+its subtree's number of suppliers. The parent supplier of $y$ is outside
+that subtree. Consequently
+\begin{equation}
+ 1\le S_y\le r,\qquad 0\le a_y\le m-1.
+ \label{tf:eq:subbounds}
+\end{equation}
+
+\begin{lemma}[Two positive flows on every admissible tree]
+\label{tf:lem:twoflows}
+Every admissible tree supports a strictly positive flow for (A) with
+$I=I(T)$ and a strictly positive flow for (B) with $c=c(T)$. The flows
+are as follows. A supplier leaf sends $1$ in (A) and $L$ in (B) to its
+parent. If a degree-two supplier $x$ has child receiver $y$, then
+\begin{equation}
+\begin{array}{c|cc}
+ &x\longrightarrow y&x\longrightarrow\text{parent}(x)\\\hline
+ \text{flow (A)}&m-a_y&a_y+1\\
+ \text{flow (B)}&L-S_y&S_y
+\end{array}
+\label{tf:eq:twoflowtable}
+\end{equation}
+All entries are strictly positive integers.
+\end{lemma}
+\begin{proof}
+Positivity follows from \eqref{tf:eq:subbounds}. Row sums are immediate.
+For a nonroot receiver $y$, its supplier subtree consists of its supplier
+leaves and its nonleaf supplier children, together with the subtrees of
+their child receivers. Thus
+\[
+ a_y=\ell_y+\sum_z(1+a_z).
+\]
+Its column sum in (A) is therefore
+\[
+ (m-a_y)+\ell_y+\sum_z(a_z+1)=m.
+\]
+At $0$, every supplier is in one of the attached subtrees or is a leaf
+there, so the same identity gives column sum $m$.
+
+For (B), the column computation in Section~\ref{tf:sec:backward} gives
+$L(1+\ell_y)-1=Lc_y-1$ for $y\in J$. The dummy receives
+$L\ell_0+\sum_zS_z=Lc_0+r$. This is the required margin.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{tf:thm:main}]
+The preceding sections prove feasibility, uniqueness, connectedness,
+integrality, the supplier degree pattern, and both decoding formulas.
+Let $T$ be the optimizer of (A) for $I$, and set $c=c(T)$. By
+Lemma~\ref{tf:lem:twoflows}, $T$ supports a positive flow with margins (B).
+Its strict potentials from Lemma~\ref{tf:lem:dual} prove that this is the
+unique optimizer of (B). Therefore $\Psi_w(\Phi_w(I))=I$.
+
+Conversely, let $T$ be the optimizer of (B) for $c$ and let $I=I(T)$.
+Section~\ref{tf:sec:backward} proves $c(T)=c$ and $I\in\PM_J(H)$.
+Lemma~\ref{tf:lem:twoflows} puts a positive (A)-flow on $T$, and the same
+strict potentials make it the unique (A)-optimizer. Thus
+$\Phi_w(\Psi_w(c))=c$. The total margin in each case is $m(r+1)$.
+The polynomial complexity and certificate claims are proved in
+Section~\ref{tf:sec:algorithms}.
+\end{proof}
+
+\begin{corollary}[Supportwise counting identity]
+\label{tf:cor:count}
+For every bipartite graph $H$,
+\begin{equation}
+ \sum_{c\in\cD_H}\prod_{y\in\supp(c)}z_y
+ =\sum_{(I,J)\in\PM(H)}\prod_{y\in J}z_y.
+ \label{tf:eq:supportidentity}
+\end{equation}
+In particular, $|\cD_H(J)|=|\PM_J(H)|$ for every $J$.
+\end{corollary}
+\begin{proof}
+Take the disjoint union of the support-preserving bijections, including
+the empty fibre.
+\end{proof}
+The identity is a known consequence of the Oh correspondence, not a new
+counting formula claimed here. The theorem supplies an explicit decoder
+for each term on its right-hand side.
+
+[Merge note (second route): Corollary~\ref{tf:cor:count} is Part~V's
+Proposition~\ref{lor:prop:bridge} (identity~\eqref{lor:eq:FHmatching},
+with $S=J$) and Part~IV's Proposition~\ref{gam:prop:gradedinput}; setting
+every $z_y=1$ gives Part~II's Lemma~\ref{htwo:lem:count}. Its proof above
+is therefore a further proof of those three statements, and the only one
+in this report that uses no Ehrhart theory and no imported lattice-point
+theorem. Part~II and Part~IV reduce the count to K\'alm\'an--Postnikov and
+Ohsugi--Tsuchiya (as stated by Davis--Kohl); Part~V's source~06 imports
+Ohsugi--Tsuchiya's fixed-support count, which rests on Oh
+(Lemma~\ref{lor:lem:externalbridge}); its source~07 imports Dai et al.\
+and Davis--Kohl. Theorem~\ref{tf:thm:main} uses only Hall's theorem
+(Lemma~\ref{tf:lem:hall}), the existence of a minimum of a linear function
+on a nonempty compact set, and the forest and potential arguments of
+Section~\ref{tf:sec:transport}. This is the elementary proof that
+Research questions~\ref{gam:q:bridge} and~\ref{gam:q:bijection} ask for,
+as a way to remove ``the two root-polytope inputs'' and ``the largest
+formalization dependency''. It replaces only the counting input: the other
+imported theorems of Parts~II, IV and~V (for example Part~V's Lorentzian
+and R\"ohrle--Ulirsch inputs) are untouched, and, as source~11 says, the
+identity itself is not new.]
+
+\section{A smaller core flow and independent supplier attachments}
+\label{tf:sec:core}
+The forward optimization can be made substantially smaller when $m$ is
+large and the requested support has size $r$. Its essential tree is
+already determined by the $r$ selected suppliers.
+
+\begin{theorem}[Core-tree factorization]
+\label{tf:thm:core}
+Fix $I\in\PM_J(H)$ with $r=|I|=|J|>0$. Restrict the augmented graph to
+$I\sqcup(\{0\}\cup J)$, keeping the original costs. Solve its forward
+problem with $m$ replaced by $r$:
+\begin{equation}
+ \sum_y K_{xy}=r+1\quad(x\in I),\qquad
+ \sum_{x\in I}K_{xy}=r\quad(y\in\{0\}\cup J).
+ \label{tf:eq:coreflow}
+\end{equation}
+Let $T_I$ be its optimal tree and let $v_y$ be its receiver potentials,
+normalized by $v_0=0$. For every unselected supplier define
+\begin{equation}
+ a_I(x)=\underset{y\in (N_H(x)\cap J)\cup\{0\}}{\arg\min}
+              (w_{xy}-v_y),\qquad x\in X\setminus I.
+ \label{tf:eq:attach}
+\end{equation}
+Each minimizer is unique. The full optimal tree of (A) is
+\begin{equation}
+ T=T_I\cup\{x a_I(x):x\in X\setminus I\},
+ \label{tf:eq:coretree}
+\end{equation}
+and its demand vector is
+\begin{equation}
+ \Phi_w(I)_y=1+\#\{x\notin I:a_I(x)=y\}\quad(y\in J).
+ \label{tf:eq:coredecode}
+\end{equation}
+Thus the forward map needs a flow of total value $r(r+1)$ on only $r$
+supplier vertices, followed by independent reduced-cost comparisons for
+the other suppliers.
+\end{theorem}
+\begin{proof}
+The restriction has a perfect matching from $I$ to $J$, so the earlier
+forward argument applies. All its suppliers have degree two. Its strict
+potentials satisfy \eqref{tf:eq:dual} on the restricted graph.
+
+If two distinct receivers $y,z$ tied in \eqref{tf:eq:attach}, the path from
+$y$ to $z$ in $T_I$, together with $xy$ and $xz$, would form a simple
+cycle of alternating cost zero. This contradicts cycle-genericity.
+Define the new supplier potential by
+$u_x=w_{x,a_I(x)}-v_{a_I(x)}$. All its other incident edges then have
+strictly positive reduced cost.
+
+The graph \eqref{tf:eq:coretree} is an admissible spanning tree: it is
+obtained by attaching supplier leaves to $T_I$. The old potentials and
+the new $u_x$ satisfy the strict certificate on the entire graph. By
+Lemma~\ref{tf:lem:twoflows}, the tree supports a positive flow with the full
+margins (A), and \eqref{tf:eq:dualgap} proves it uniquely optimal. The leaf
+decoder is exactly \eqref{tf:eq:coredecode}.
+\end{proof}
+
+This factorization supplies a useful interpretation. The chosen supplier
+set determines a small price system $v$. Every other supplier chooses the
+unique cheapest receiver after subtracting that receiver's price, or
+chooses the dummy. Its contribution to the demand vector is independently
+one unit at the chosen ordinary receiver, or zero at the dummy. The
+independence here is \emph{deterministic additivity}, not a probabilistic
+independence assertion about a random supplier set.
+
+\begin{corollary}[Unused-supplier deletion and insertion]
+\label{tf:cor:deletion}
+Keep $I,J$ and inherited costs fixed, and replace $X$ by any subset
+$X'\supseteq I$. Then
+\begin{equation}
+ \Phi^{X'}_w(I)_y
+ =1+\#\{x\in X'\setminus I:a_I(x)=y\}\quad(y\in J).
+ \label{tf:eq:restriction}
+\end{equation}
+In particular, deleting one supplier outside $I$ subtracts one unit at
+its chosen receiver, or subtracts nothing if it chooses the dummy.
+All such deletions commute. If $I\subseteq X'\subseteq X''$, then
+\begin{equation}
+ \Phi^{X'}_w(I)\le\Phi^{X''}_w(I)\quad\text{coordinatewise},\qquad
+ \|\Phi^{X''}_w(I)-\Phi^{X'}_w(I)\|_1\le |X''\setminus X'|.
+ \label{tf:eq:monotone}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The core tree, its receiver potentials, and the minimizer for any
+remaining supplier do not change when another unselected supplier is
+deleted. Apply Theorem~\ref{tf:thm:core}. Every ordinary coordinate stays
+positive because of its initial contribution one.
+\end{proof}
+
+\begin{corollary}[Support restriction]
+\label{tf:cor:receivers}
+Deleting or adding receivers outside the fixed support $J$, together
+with their incident edges, does not change either map when the costs on
+the retained augmented edges are unchanged.
+\end{corollary}
+\begin{proof}
+Both optimizations are performed on exactly $G_J$, and the core
+construction uses only the same receivers.
+\end{proof}
+
+These are precise senses in which the correspondence is restriction
+compatible. Deleting a supplier \emph{inside} $I$, deleting a positive
+receiver, or changing the cost choices is a different operation and is
+not covered by these statements.
+
+\section{Finite perturbations and stability of the construction}
+\label{tf:sec:perturbations}
+
+\subsection{No infinitesimals are needed}
+The integral margins are normalized versions of two finite perturbations.
+They can be varied over explicit open ranges without changing the tree.
+
+\begin{proposition}[Margin invariance]
+\label{tf:prop:margins}
+Let $T$ be the common optimal tree corresponding to $(I,c)$. Both of the
+following transportation problems have the same optimal support $T$:
+\begin{align}
+ a_x&=\one_{x\in I}+\delta_x,& b_y&=1\quad(y\in\{0\}\cup J),
+ &\delta_x&>0,\quad\sum_x\delta_x=1; \label{tf:eq:delta}\\
+ a_x&=1,& b_0&=c_0+r\varepsilon,
+ & b_y&=c_y-\varepsilon\quad(y\in J),\quad 0<\varepsilon<1/r.
+ \label{tf:eq:epsilon}
+\end{align}
+\end{proposition}
+\begin{proof}
+Use the notation of Lemma~\ref{tf:lem:twoflows}. In \eqref{tf:eq:delta}, a
+supplier leaf sends $\delta_x$ to its parent. A selected supplier $x$
+with child receiver $y$ sends
+\[
+ 1-\sum_{z\in A_y}\delta_z\quad\text{to }y,
+ \qquad \delta_x+\sum_{z\in A_y}\delta_z\quad\text{to its parent},
+\]
+where $A_y$ is the supplier subtree of $y$. These quantities are strictly
+positive because $x\notin A_y$ and all $\delta$ are positive. The row
+sums are as required; partitioning supplier subtrees verifies that every
+column sum is one.
+
+For \eqref{tf:eq:epsilon}, a supplier leaf sends one. A selected supplier
+with child $y$ sends $1-\varepsilon S_y$ to $y$ and
+$\varepsilon S_y$ to its parent. These values are positive in the stated
+range. The calculation used for (B) gives the desired column sums.
+The strict potentials of $T$ prove optimality for both families by
+Lemma~\ref{tf:lem:dual}.
+\end{proof}
+
+Taking $\delta_x=1/m$ and multiplying by $m$ gives (A). Taking
+$\varepsilon=1/(r+1)$ and multiplying by $r+1$ gives (B). These choices
+have small exact denominators. The upper bound on $\varepsilon$ cannot be
+replaced uniformly by a non-strict bound: when a receiver subtree contains
+all $r$ ordinary receivers, the corresponding edge becomes zero at
+$\varepsilon=1/r$.
+
+\subsection{Cost chambers and gauge invariance}
+
+\begin{proposition}[Dependence only on cycle signs]
+\label{tf:prop:chambers}
+Two cycle-generic cost assignments with the same signs on every oriented
+alternating cycle induce the same maps. In particular, the maps are
+constant on each chamber of the finite arrangement of cycle-cost
+hyperplanes. Replacing $w_{xy}$ by $w_{xy}+\alpha_x+\beta_y$ leaves the
+maps unchanged.
+\end{proposition}
+\begin{proof}
+A positive feasible tree is optimal precisely when all its off-tree
+reduced costs are positive. Each is an oriented fundamental-cycle sum.
+Its feasibility depends on the margins, not on the costs. Thus the same
+trees are selected whenever all cycle signs agree. For the gauge change,
+every fixed-margin objective changes by the same constant
+$\sum_x\alpha_xa_x+\sum_y\beta_yb_y$, or equivalently every alternating
+cycle sum is unchanged.
+\end{proof}
+
+For the integral costs \eqref{tf:eq:costs}, every nonzero cycle sum has
+absolute value at least one. A simple cycle has at most $m+n+1$ edges.
+Consequently any perturbation satisfying
+\begin{equation}
+ \max_e|\widetilde w_e-w_e|<\frac{1}{m+n+1}
+ \label{tf:eq:costradius}
+\end{equation}
+preserves every cycle sign, hence all maps simultaneously. This is a
+mathematical robustness estimate, not a recommendation to replace exact
+arithmetic by unvalidated floating-point optimization.
+
+\section{Algorithms, bit complexity, and exact certificates}
+\label{tf:sec:algorithms}
+
+\subsection{Explicit complexity bounds}
+Let $q_J=|E_J|\le q=|E|+m$. With costs \eqref{tf:eq:costs}, either full
+flow problem is a network with $O(m+r)$ vertices, $O(q_J+m+r)$ arcs,
+and total integral flow
+\[
+ F=m(r+1)\le m(m+1).
+\]
+A successive shortest augmenting-path implementation makes at most $F$
+augmentations because each augmentation increases the sent flow by at
+least one. Reduced-cost potentials permit Dijkstra's algorithm at each
+iteration. This gives the conservative arithmetic-operation bound
+\begin{equation}
+ O\bigl(m(r+1)(q_J+m+r)\log(m+r+2)\bigr).
+ \label{tf:eq:complexity}
+\end{equation}
+The bit length of costs, distances, and potentials is
+$O(q+\log(m+r+2))$: initial costs have $q$ bits, and the algorithm uses
+shortest residual paths and tree-potential sums of polynomial length.
+Flow values have $O(\log(m+r+2))$ bits. Thus \eqref{tf:eq:complexity} is a
+polynomial bit-time bound as well, with the usual cost of operations on
+these integers included. It is not a unit-cost claim for exponentially
+large numbers. Reading the graph, constructing the globally ordered cost
+system, and writing the $n$ output coordinates add input-processing work;
+a canonical sorted edge order takes $O(q\log(q+2)+n)$ elementary operations.
+These costs are separate from the flow bound.
+
+The core version improves the forward bound. If $q_I$ is the number of
+augmented edges incident to $I$ and ending in $\{0\}\cup J$, its flow
+uses only $2r+1$ bipartite vertices, total flow $r(r+1)$, and then a
+linear scan of the remaining incident edges. A corresponding bound is
+\begin{equation}
+ O\bigl(r(r+1)(q_I+r)\log(r+2)+q_J+n\bigr)
+ \label{tf:eq:corecomplexity}
+\end{equation}
+on integers of the same polynomial bit length. This bound explains why
+it is useful to separate selected suppliers from unused suppliers.
+This is the mathematical flow-and-scan bound after the input representation
+has been prepared. The reference code favors a simple, checkable interface
+and may rebuild restricted graph data rather than cache it.
+
+The shipped optimizer starts with zero flow and nonnegative integral edge
+costs. It repeatedly uses a shortest residual augmenting path, increases
+flow by its bottleneck, and updates vertex potentials. It then derives a
+new set of row/column potentials directly from the final support tree and
+checks the certificate below. The correctness theorem does not require
+trusting the optimizer's internal floating-point tolerances: there are
+none. A different exact or numerical solver may be substituted, but its
+output must pass the same exact certificate checks.
+
+\subsection{A small trusted checker}
+For a claimed optimum on $G_J$, supply the following data: the $m+r$
+positive tree edges with their integral flows, $m$ row potentials, and
+$r+1$ column potentials. A checker verifies that the edges form a
+spanning tree, that all flows are positive, that the required margins
+hold, that every tree edge has reduced cost zero, and that every other
+allowed edge has strictly positive reduced cost.
+
+\begin{theorem}[Soundness of the certificate]
+\label{tf:thm:certificate}
+If these checks pass, the supplied flow is the unique minimum-cost flow
+for the stated margins. Checking the expected margins (A) or (B) and the
+appropriate degree/leaf decoder then certifies the corresponding map
+value. The certificate has $O(m+r)$ integer entries apart from endpoint
+labels, and can be verified with $O(q_J+m+r)$ elementary graph and
+arithmetic operations, up to the usual near-linear disjoint-set overhead.
+\end{theorem}
+\begin{proof}
+The objective-gap identity \eqref{tf:eq:dualgap} is valid for every competing
+feasible flow. All off-tree terms are nonnegative and have strictly
+positive coefficients. An optimum must therefore be supported on the
+claimed tree. Zero-margin differences on a tree vanish by leaf
+elimination. The remaining assertions follow from counting the listed
+entries and scanning the edges and margins.
+\end{proof}
+
+For the core algorithm, only the $2r$ core-tree edges and the core
+potentials need a transportation certificate. For each of the $m-r$
+remaining suppliers, the checker verifies the unique minimum in
+\eqref{tf:eq:attach}, then counts its contribution. This checks the
+smaller computation directly. It does not have to re-run the full flow.
+
+\subsection{Reproducible interface}
+The standard-library module
+\nolinkurl{code/11-two-flow-transport_bijection.py} (delivered as
+\nolinkurl{code/transport_bijection.py}) exposes the full forward map,
+the faster core forward map, the inverse map, both certificate checkers,
+and a basis-walk sampler. Suppliers and ordinary receivers use zero-based
+indices; the dummy is represented by $-1$. The mathematical $0$ denoting
+the dummy should not be confused with ordinary receiver index $0$ in the
+program.
+\begin{lstlisting}[language=Python]
+from transport_bijection import BipartiteDemand
+
+H = BipartiteDemand(4, 3,
+    [(0, 0), (1, 0), (1, 1), (2, 1), (2, 2), (3, 2)])
+I, J = (0, 1, 3), (0, 1, 2)
+
+c, cert = H.basis_to_demand_core(I, J, certificate=True)
+H.verify_core_certificate(c, cert)
+assert c == (1, 1, 2)
+assert H.demand_to_basis(c) == (I, J)
+assert H.basis_to_demand(I, J) == c
+\end{lstlisting}
+[Merge note: the import uses the delivered module name
+\texttt{transport\_bijection}; with the shipped file name it works only in
+a copy that restores the delivered layout, as the report's
+\texttt{README.md} describes.]
+The inverse rejects nonintegral, negative, overlarge, or infeasible
+inputs. Matching routines use iterative augmenting paths, so their graph
+size is not limited by Python's recursion depth. Enumeration routines
+occur only in the verifier, not in the production maps.
+
+\section{A complete worked certificate}
+\label{tf:sec:example}
+For readability this section numbers the suppliers $1,2,3,4$ and the
+ordinary receivers $1,2,3$. Take edges
+\[
+ 11,\quad21,\quad22,\quad32,\quad33,\quad43
+\]
+and choose $I=\{1,2,4\}$, $J=\{1,2,3\}$. Add all four dummy edges and
+assign powers-of-two costs in the following order:
+\begin{center}\small
+\begin{tabular}{c|rrrrrrrrrr}
+edge&$10$&$11$&$20$&$21$&$22$&$30$&$32$&$33$&$40$&$43$\\\hline
+cost&1&2&4&8&16&32&64&128&256&512
+\end{tabular}
+\end{center}
+The full forward margins are $(5,5,1,5)$ on suppliers and $(4,4,4,4)$
+on receivers $(0,1,2,3)$. The inverse margins for the decoded vector
+$c=(1,1,2)$ are $(4,4,4,4)$ on suppliers and $(3,3,3,7)$ on receivers.
+Both positive supports are the tree in Figure~\ref{tf:fig:tree}.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[scale=1.0,
+ receiver/.style={draw=Accent,fill=Pale,rounded corners=2pt,minimum size=7mm},
+ supplier/.style={circle,draw=Ink,minimum size=7mm},
+ every node/.style={font=\small}]
+\node[receiver] (d) at (0,3.7) {$0$};
+\node[supplier] (x1) at (-3,2.4) {$x_1$};
+\node[supplier] (x2) at (0,2.4) {$x_2$};
+\node[supplier] (x4) at (3,2.4) {$x_4$};
+\node[receiver] (y1) at (-3,1.1) {$y_1$};
+\node[receiver] (y2) at (0,1.1) {$y_2$};
+\node[receiver] (y3) at (3,1.1) {$y_3$};
+\node[supplier] (x3) at (3,-.2) {$x_3$};
+\draw (d)--node[above left] {$1/1$}(x1);
+\draw (d)--node[right] {$1/1$}(x2);
+\draw (d)--node[above right] {$2/1$}(x4);
+\draw (x1)--node[left] {$4/3$}(y1);
+\draw (x2)--node[left] {$4/3$}(y2);
+\draw (x4)--node[right] {$3/3$}(y3);
+\draw (y3)--node[right] {$1/4$}(x3);
+\node[align=left,text width=5cm] at (-1.3,-.25)
+ {Edge label: forward flow / inverse flow.\\
+ The only unselected supplier leaf is $x_3$.};
+\end{tikzpicture}
+\caption{The common tree. Edges are drawn as undirected tree edges;
+transportation flow always goes from a supplier to a receiver.}
+\label{tf:fig:tree}
+\end{figure}
+
+The row and column potentials are
+\begin{equation}
+ u=(1,4,-128,256),\qquad v=(0,1,12,256).
+ \label{tf:eq:examplepotentials}
+\end{equation}
+Every tree edge satisfies $u_x+v_y=w_{xy}$. The three off-tree edges
+$21,30,32$ have positive slacks $3,160,180$, respectively. The exact
+primal costs are $2253$ for (A) and $2363$ for (B); substituting the
+respective margins in $u\cdot a+v\cdot b$ gives those same values.
+These equalities and strict slacks certify both optima.
+
+Deleting supplier $3$ leaves the core tree. Its receiver potentials are
+still $v$. Supplier $3$ compares its three available reduced costs:
+\[
+ w_{30}-v_0=32,\qquad w_{32}-v_2=52,\qquad w_{33}-v_3=-128.
+\]
+It chooses receiver $3$. The core contributes $(1,1,1)$, and that single
+leaf contributes $(0,0,1)$, producing $(1,1,2)$. The core transport sends
+only $r(r+1)=12$ units, rather than the full transport's $m(r+1)=16$.
+The complete machine-readable certificates appear in
+\nolinkurl{data/11-two-flow-example.json} (delivered as
+\nolinkurl{data/example.json}), with the program's zero-based labels.
+
+\section{What compatibility can and cannot mean}
+\label{tf:sec:limits}
+
+\subsection{Equivariance with specified costs}
+A graph isomorphism which also transports the cost assignment takes
+feasible flows to feasible flows with the same objective. Uniqueness then
+transports the selected tree, and the degree and leaf formulas commute
+with the isomorphism. The correspondence is therefore natural for
+\emph{cost-labelled} graphs. The auxiliary costs cannot in general be
+removed while keeping a deterministic equivariant bijection.
+
+\begin{proposition}[A symmetry obstruction]
+\label{tf:prop:symmetry}
+There is no rule assigning to every unlabelled bipartite graph a
+support-preserving bijection $\PM(H)\to\cD_H$ that is equivariant under
+all graph automorphisms.
+\end{proposition}
+\begin{proof}
+Take two suppliers $x_1,x_2$, one receiver $y$, and both ordinary edges.
+In the positive-support fibre the two supplier sets are $\{x_1\}$ and
+$\{x_2\}$. The two demand vectors are $c_y=1$ and $c_y=2$.
+The automorphism swapping $x_1,x_2$ exchanges the supplier sets but fixes
+each demand vector. An equivariant map would have to give the exchanged
+sets the same image, contradicting injectivity.
+\end{proof}
+
+There is nevertheless an equivariant \emph{randomized} correspondence:
+choose a uniformly random ordering of all augmented edges, use
+\eqref{tf:eq:costs}, and apply the deterministic map for that order. A graph
+isomorphism transports the uniform distribution on orders to the uniform
+distribution on orders. This construction restores symmetry in law, not
+as a single deterministic bijection.
+
+\subsection{Basis locality does not imply coordinate locality}
+
+\begin{proposition}[Unavoidable large jumps]
+\label{tf:prop:jumps}
+There is no constant $C$, independent of the graph, such that a bijection
+from lifted matroid bases to full demand vectors always sends every basis
+exchange to a coordinate change of $\ell_1$-size at most $C$.
+\end{proposition}
+\begin{proof}
+Take $H=K_{m,1}$. Its demand vectors are the integers $0,1,\ldots,m$.
+The lifted matroid defined in the next section is the uniform matroid of
+rank $m$ on $m+1$ elements: omitting the receiver gives the empty support,
+and omitting any supplier gives a matchable singleton support. Its basis
+exchange graph is complete. Under any bijection, the bases mapped to $0$
+and $m$ are adjacent, so an exchange has coordinate displacement $m$.
+\end{proof}
+
+Thus the transported rapidly mixing chain is an exact chain on lattice
+points, but it need not be a nearest-neighbour lattice walk. This prevents
+an unwarranted local-move interpretation of the sampling theorem. It does
+not contradict the one-unit supplier-insertion law
+\eqref{tf:eq:monotone}, which changes the graph while keeping the selected
+supplier set fixed.
+
+\section{From matroid samples to full-coordinate samples}
+\label{tf:sec:sampling}
+
+\subsection{The lifted transversal matroid}
+Construct a transversal matroid $\mathsf M_H$ on the disjoint ground set
+$X\sqcup Y$ using a separate set of $m$ slots indexed by $X$. The ground
+element $x\in X$ can occupy only its own slot; the ground element $y\in Y$
+can occupy any slot in $N_H(y)$. The supplier elements themselves occupy
+all slots, so the matroid has rank $m$.
+
+A size-$m$ ground set $B$ is a basis exactly when
+\begin{equation}
+ B=(X\setminus I)\cup J\quad\text{for some }(I,J)\in\PM(H).
+ \label{tf:eq:lift}
+\end{equation}
+Indeed, the supplier elements in $B$ consume their own slots, leaving
+exactly $I$ available for the receiver elements $J$. These receivers fill
+those slots exactly when $I$ is matchable to $J$. This is a polynomial-time
+basis oracle using ordinary bipartite matching.
+[Merge note: this is Part~V's private-copy matroid $\mathsf M_H$ and its
+basis correspondence, Proposition~\ref{lor:prop:bases} (sources~06
+and~07, the same forced-slot argument), with the private elements
+identified with $X$ as in source~07; its basis polynomial is
+$\cB_H$ in~\eqref{lor:sp:eq:basis}. It is the dual of Part~VII's matroid
+(Section~\ref{mat:sec:prov}).]
+
+Taking the disjoint union of Theorem~\ref{tf:thm:main} gives an explicit
+bijection
+\begin{equation}
+ \widehat\Phi_w:\{\text{bases of }\mathsf M_H\}\longrightarrow\cD_H,
+ \qquad (X\setminus I)\cup J\longmapsto\Phi_w(I,J).
+ \label{tf:eq:liftedbijection}
+\end{equation}
+The faster core decoder from Theorem~\ref{tf:thm:core} may be used on the
+right. No perfect matching is included in the state, so matching
+multiplicity does not bias this correspondence.
+
+\subsection{The exact target measure}
+Give each receiver a positive rational activity $\theta_y$ and set the
+supplier activity to one. For a basis $B$, its weight is
+$\prod_{y\in B\cap Y}\theta_y$. The corresponding demand law is
+\begin{equation}
+ \mu_\theta(c)=\frac{1}{Z_\theta}
+       \prod_{y\in\supp(c)}\theta_y,
+ \qquad
+ Z_\theta=\sum_{c\in\cD_H}\prod_{y\in\supp(c)}\theta_y.
+ \label{tf:eq:measure}
+\end{equation}
+For $\theta_y=1$, this is the uniform distribution on individual demand
+vectors. It is not the distribution obtained by assigning suppliers
+independently and then recording their loads; the latter would weight a
+vector by the number of assignments realizing it.
+
+\begin{theorem}[Exact error transfer]
+\label{tf:thm:tv}
+Let $\pi_\theta$ be the weighted basis distribution on $\mathsf M_H$, and let
+$\nu$ be any probability distribution on its bases. Then
+\begin{equation}
+ (\widehat\Phi_w)_*\pi_\theta=\mu_\theta,
+ \qquad
+ \TV\bigl((\widehat\Phi_w)_*\nu,\mu_\theta\bigr)
+ =\TV(\nu,\pi_\theta).
+ \label{tf:eq:tv}
+\end{equation}
+In particular, decoding loses no accuracy and requires no fibre-size
+correction or rejection step.
+\end{theorem}
+\begin{proof}
+The bijection preserves the support, hence the weight of each individual
+state. For the second assertion, the sum
+$\frac12\sum_B|\nu(B)-\pi_\theta(B)|$ is merely reindexed by the
+bijection. This proves equality, rather than only the general
+non-increase under a pushforward.
+\end{proof}
+
+The exact target law is independent of the cost system used for decoding.
+A random independent choice of a cycle-generic cost system can therefore
+also be used: conditioning on that choice gives the same exact target
+law, and averaging preserves a uniform error bound.
+
+\subsection{A fully specified almost-uniform sampler}
+Use the weighted down-up walk on bases. From $B$, remove a uniformly
+chosen element, obtaining $A$. Among elements $e$ with $A\cup\{e\}$ a
+basis, choose $e$ with probability proportional to its activity and add
+it. The general matroid theorem gives spectral gap at least $1/m$ and a
+polynomial mixing bound for this walk \cite{ALOV}. Its applicability to
+positive product activities follows from the weighted basis-polynomial
+form of that theorem.
+
+For completeness, the quantities needed to turn the theorem into an
+explicit input-size bound are elementary. Put
+\[
+ N=m+n,\qquad W=\max(1,\max_y\theta_y).
+\]
+Start at $B_0=X$, which is always a basis of weight one. Its inverse
+stationary mass obeys
+\begin{equation}
+ \pi_\theta(B_0)^{-1}=Z_\theta
+ \le \binom NmW^m\le 2^N W^m.
+ \label{tf:eq:startmass}
+\end{equation}
+For $0<\eta<1$ and $m>0$, the conservative budget
+\begin{equation}
+ t=\left\lceil m\left(N\log2+m\log W
+                  +2\log(1/\eta)+2\right)\right\rceil
+ \label{tf:eq:budget}
+\end{equation}
+is sufficient for total-variation error at most $\eta$. For example, the
+usual reversible-chain estimate gives
+\[
+ \TV(P^t(B_0,\cdot),\pi_\theta)
+ \le\tfrac12\pi_\theta(B_0)^{-1/2}e^{-t/m},
+\]
+using the nonnegative spectrum of the down-up operator. Substituting
+\eqref{tf:eq:startmass} proves the claim with room to spare. Equivalently one
+can use the direct mixing-time bound in \cite[Theorem~1.1]{ALOV}.
+
+\begin{theorem}[Polynomial-time full-vector sampling]
+\label{tf:thm:sampler}
+Given an explicit bipartite graph, positive rational support activities,
+and $0<\eta<1$, one can sample a full vector whose distribution is within
+$\eta$ in total variation of \eqref{tf:eq:measure}, in time polynomial in
+the graph size, the activity bit lengths, and $\log(1/\eta)$.
+In the unit-activity case this is an almost-uniform sampler for $\cD_H$.
+\end{theorem}
+\begin{proof}
+Run the basis walk for \eqref{tf:eq:budget} steps and decode once at the end.
+At a step, list at most $N$ possible additions and test them by the
+matching oracle from \eqref{tf:eq:lift}. Positive rational choices can be
+made exactly using integer random choices after clearing denominators;
+the bit lengths remain polynomial. The mixing budget is polynomial in the
+claimed parameters. Apply the core decoder and Theorem~\ref{tf:thm:tv}.
+The cases $m=0$ or empty ground set return the unique zero vector.
+Exact bounded-integer draws give expected polynomial bit time. A worst-case
+polynomial-time approximate version runs the chain to error $\eta/2$ and
+caps each random-integer rejection routine, allocating total failure
+probability at most $\eta/2$ across all draws. Binary rejection has
+success probability at least $1/2$ at each attempt, so logarithmically
+many attempts per draw suffice; on failure one may return a fixed valid
+vector. This preserves the claimed total error and polynomial bound.
+\end{proof}
+
+The theorem uses ideal independent random bits. The shipped reference
+sampler uses Python's pseudorandom generator, with an optional seed for
+reproducibility, and implements positive \emph{integer} receiver
+activities directly. It uses an integer upper bound on
+\eqref{tf:eq:budget}, replacing natural logarithms by binary bit-length
+bounds, so a rounded logarithm cannot shorten its budget. The maps and
+certificate checkers themselves are
+fully exact and deterministic. An exact rational-activity implementation
+requires only replacing the weighted discrete choice, not a new
+mathematical argument. A deliberately shortened user-specified walk does
+not carry the stated mixing guarantee.
+[Merge note: the walk is the one of Part~V's
+Theorem~\ref{lor:thm:FPRASpartition} (both import~\cite{ALOV}); there a
+sample is a support pair, here it is decoded once, at the end, into the
+full vector.]
+
+\subsection{Conditioning on support information}
+For a fixed exact support $J$, the domain is the set of bases of the
+rank-$r$ transversal matroid on suppliers $X$ presented by slots $J$.
+A maximum matching either detects an empty fibre or supplies a starting
+basis. Sampling that matroid and applying $\Phi_w$ gives an almost-uniform
+\emph{full vector} conditioned on $\supp(c)=J$. Its internal coordinate
+values, not just the support, are sampled.
+
+More generally, prescribe disjoint sets $J_+$ and $J_-$ of receivers
+which must be positive and zero, respectively. In the lifted matroid,
+these are the conditions $J_+\subseteq B$ and $B\cap J_-=\varnothing$.
+If feasible, contracting $J_+$ and deleting $J_-$ gives a matroid whose
+bases, after adjoining $J_+$, are exactly the allowed bases. Feasibility
+requires that $J_+$ be independent in the deletion and that the deletion
+retain rank $m$; both are matching tests. The weighted basis sampler on
+this minor, followed by the same decoder, gives the corresponding
+conditioned full-vector law. General minor oracles are implemented by
+adjoining the contracted set before the original oracle query.
+[Merge note: the minor is Part~V's Proposition~\ref{lor:sp:prop:conditioning};
+what is new here is the decoding of its bases into full vectors.]
+
+The repository also provides a log-concave tilting and rejection method
+for a prescribed support \emph{size} (Part~V, ``Sampling after fixing the
+support size'' in Section~\ref{lor:sec:algorithms}, with
+Theorem~\ref{lor:thm:coefficients}). Composing its resulting
+basis distribution with \eqref{tf:eq:liftedbijection} supplies full vectors
+with no further loss of total-variation accuracy. This last assertion is
+a composition with the report's stated method; it is not a new proof of
+its coefficient-approximation theorem.
+
+Activities depending on coordinate magnitudes, such as
+$\prod_yq_y^{c_y}$, are not covered by the support-product theorem. Nor is
+an exact independent uniform sampler claimed. These are distinct problems.
+
+\section{Preorder polytopes and integral dilations}
+\label{tf:sec:preorders}
+Let $\tau$ be a preorder on a finite set $V$: the relation is reflexive
+and transitive, but need not be antisymmetric. A lower ideal is a set
+$A\subseteq V$ such that $y\in A$ and $x\le_\tau y$ imply $x\in A$.
+The associated preorder polytope is
+\begin{equation}
+ \Qt=\{c\in\R_{\ge0}^{V}:c(A)\le |A|
+                  \text{ for every lower ideal }A\}.
+ \label{tf:eq:preorderpolytope}
+\end{equation}
+This is the family studied in \cite{AC} and in this report
+(Part~I's~\eqref{eq:Q}; the lower ideals are Part~I's order ideals $\J$).
+
+Use one supplier and one receiver for each element of $V$, and define
+\begin{equation}
+ x\text{ supplies }y\quad\Longleftrightarrow\quad x\le_\tau y.
+ \label{tf:eq:orientation}
+\end{equation}
+The orientation is explicit because the output coordinates are labelled:
+reversing the preorder is not silently the same operation on those
+coordinates.
+
+\begin{proposition}[Exact demand realization]
+\label{tf:prop:preorder}
+For the bipartite graph $H_\tau$ in \eqref{tf:eq:orientation},
+\begin{equation}
+ \cD_{H_\tau}=\Qt\cap\Z^V.
+ \label{tf:eq:preorderequality}
+\end{equation}
+\end{proposition}
+\begin{proof}
+This is Part~V's Lemma~\ref{lor:lem:preorderreduction}, with the same
+orientation (an edge $i\to j$ exactly when $i\le_\tau j$, diagonal edges
+included) and the same lower-closure proof, which source~11 gives again:
+the neighbourhood of a receiver set $S$ is $\mathord\downarrow S$, so
+$c(S)\le c(\mathord\downarrow S)\le|\mathord\downarrow S|=|N_{H_\tau}(S)|$
+for $c\in\Qt\cap\Z^V$; conversely $N_{H_\tau}(A)=A$ for a lower ideal
+$A$, and the demand inequality for $A$ is the ideal inequality
+in~\eqref{tf:eq:preorderpolytope}.
+\end{proof}
+
+\begin{corollary}[Full lattice-point sampling for every finite preorder]
+\label{tf:cor:preordersampler}
+Every finite preorder admits an explicit invertible support-preserving
+encoding of the integer points of $\Qt$ by bases of a transversal
+matroid. The encoding and decoding are polynomial-time and admit the
+certificates above. In particular, there is a polynomial-time
+almost-uniform sampler of the actual integer points of $\Qt$, including
+their coordinate values, and corresponding samplers with positive support
+activities or prescribed zero/nonzero coordinates.
+\end{corollary}
+\begin{proof}
+Combine Proposition~\ref{tf:prop:preorder}, Theorem~\ref{tf:thm:main},
+\eqref{tf:eq:lift}, and Theorem~\ref{tf:thm:sampler} and its support-conditioning
+construction.
+\end{proof}
+
+No bound on the height of the preorder is imposed, and equivalence
+classes can have any size. The result does not rely on any of the
+repository's unformalized gamma-positivity or polytopal-realization
+arguments; its preorder specialization is the direct equality
+\eqref{tf:eq:preorderequality}.
+
+\subsection{Dilations and the encoding-size boundary}
+For a positive integer $q$, replace each supplier of $H_\tau$ by $q$
+distinguishable copies with the same neighbours. The neighbourhood of $S$
+then has size $q|\mathord\downarrow S|$, so its demand set is exactly
+$q\Qt\cap\Z^V$. The construction and sampler therefore apply to all
+positive integral dilations as well.
+
+This is polynomial in the \emph{expanded} input size $q|V|$, not a claim
+of polynomial complexity in $\log q$. When capacities are given in binary,
+explicit cloning may be exponentially expensive. Distinguishable clones
+also inherit distinct costs; their exchange symmetry is not used to
+identify bases. The symmetry obstruction in
+Proposition~\ref{tf:prop:symmetry} explains why careless quotienting can
+lose an injective correspondence.
+[Merge note: the cloned graph and its pseudopolynomial boundary are
+Part~V's capacity extension, Corollary~\ref{lor:cor:capacity} and the
+remark after it; Part~V's Research question~\ref{tf:hq:capacities} asks
+for the binary-capacity algorithm, and Research
+question~\ref{tf:q:capacities} below asks it again for the bijection and
+the sampler.]
+
+\section{Computational verification and the formal proof boundary}
+\label{tf:sec:formal}
+
+\subsection{Independent finite checks}
+The package includes a deterministic exact verifier using independent
+matching-permutation tests and demand-inequality enumeration. On every
+exhaustive graph instance it enumerates all matchable support pairs,
+checks both inverse identities, checks equality of the two optimal tree
+supports, checks the full and core forward implementations against each
+other, verifies the exact certificates, and compares the entire image
+with an independently enumerated demand set.
+
+\begin{table}[htbp]\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.42\textwidth}rY@{}}\toprule
+Suite & Instances & Coverage\\\midrule
+All bipartite graphs with $0\le m,n\le3$ & 689 & 5,880 support pairs;
+all demand vectors.\\
+All bipartite graphs with $(m,n)=(4,3)$ & 4,096 & 68,832 support pairs;
+all demand vectors.\\
+All labeled preorders with $0\le |V|\le4$ & 390 & 12,709 lattice points;
+ideal inequalities checked against demand inequalities.\\
+Seeded random graph and cost-order trials & 250 & 4,256 feasible-pair
+trials, 9,427 restriction/deletion checks, 8,512 chamber/gauge checks.\\
+Exact rational Markov chains & 2 & 17 states each; row sums, detailed
+balance, target point weights, and finite-time distances.\\\bottomrule
+\end{tabularx}
+\caption{Executed verification. Counts refer to the reported suites;
+random trials can revisit a pair, and the preorder suite can overlap the
+small graph suite.}
+\label{tf:tab:verification}
+\end{table}
+
+The $4{,}785$ exhaustive bipartite graphs contain $74{,}712$ matchable
+support pairs in total. The preorder counts by order are
+$1,1,4,29,355$, including the empty preorder. The random seed is
+$20260930$. The tests also replace powers of two by powers of three,
+which preserve all alternating-cycle signs, and add nonnegative row and
+column gauges. Three deliberately corrupted primal/dual certificates are
+rejected.
+
+For the two exact Markov-chain tests, the target partition functions are
+$17$ in the uniform case and $144$ with receiver activities $(2,3,5)$.
+Starting from the supplier basis, the exact total-variation distances
+after eight steps are approximately $0.00875421$ and $0.00833044$,
+respectively. These numbers are exact rational computations rounded for
+display, not statistical estimates or a proof of the general mixing
+bound. Their full fractions appear in
+\nolinkurl{data/11-two-flow-chain.json} (delivered as
+\nolinkurl{data/chain.json}).
+
+The verifier may be run, in the delivered layout, with
+\begin{lstlisting}[language=bash]
+python code/verify.py --suite all
+\end{lstlisting}
+It writes fresh JSON reports under \texttt{data/}; run it on a copy to
+preserve the delivered records. [Merge note: the shipped files are
+\nolinkurl{code/11-two-flow-verify.py}, which imports
+\texttt{transport\_bijection} by its delivered name, and
+\nolinkurl{data/11-two-flow-*.json}; the report's \texttt{README.md} gives
+a recipe that restores the delivered names in a copy.] No external Python package is required.
+Elapsed times are environment-dependent and are not mathematical claims.
+
+\subsection{What has and has not been certified}
+There are three distinct levels of assurance. First, the article proves
+the general theorems for arbitrary finite graphs. Second, the program
+emits exact arithmetic certificates whose mathematical soundness is
+Theorem~\ref{tf:thm:certificate}. Third, the exhaustive tests check many
+finite inputs with independent combinatorial predicates. None of these
+is a Lean or Rocq kernel check. The implementation and tests could still
+contain errors not found in the tested cases; the mathematical proofs
+remain the general justification.
+
+The supplied sampler implements the unconditioned law with integer
+support activities. The conditional samplers and rational-activity
+extension are specified and proved above, but are not separate packaged
+API wrappers. The package does not include an exact uniform sampler,
+a theorem-prover build, or a new implementation of the general matroid
+counting FPRAS.
+
+\subsection{A concrete formalization plan}
+A useful first milestone for ProveIt is a small certificate checker rather
+than a monolithic formalization of an optimization library. Represent a
+finite graph, flow, and potential by finite arrays of integers. Prove the
+margin-summation identity \eqref{tf:eq:dualgap}, then prove that a zero-margin
+flow supported on a finite tree vanishes. These two lemmas suffice for
+unique-optimality certificates.
+
+Next formalize the two component-balance congruences and the inverse
+subtree estimate \eqref{tf:eq:childB}. These establish connectedness and the
+degree-two condition. The leaf formula and the two explicit positive
+flows in \eqref{tf:eq:twoflowtable} then prove inverse correctness. The core
+factorization needs only the unique reduced-cost minimizer and the same
+certificate identity. The preorder specialization is the elementary
+lower-closure argument in Proposition~\ref{tf:prop:preorder}.
+
+An external optimizer can remain outside the trusted boundary for
+\emph{concrete} checked examples. A universal existence theorem for all
+inputs requires more: either a verified terminating min-cost-flow
+algorithm, or a formal proof that a feasible transportation polytope has
+an optimal vertex followed by the forest argument. Checking certificates
+alone does not prove that a solver always produces one. The general
+matroid mixing theorem is a separate, substantial dependency; it should
+be imported explicitly or formalized separately, not hidden behind a
+certificate for a single sample.
+
+\section{Further research questions and an actionable programme}
+\label{tf:sec:questions}
+The following questions are proposed continuations of this work. They
+are not assertions that each formulation is a recognized unsolved
+problem in the published literature.
+
+\begin{question}[A direct inverse price algorithm]\label{tf:q:prices}
+Can the unique inverse price vector described in
+Proposition~\ref{tf:prop:prices} below be computed by a substantially faster
+combinatorial procedure than a full transportation solve? The forward
+map already isolates a small core. An inverse method that discovers its
+$r$ indifferent suppliers without processing $m(r+1)$ units of flow
+would give a symmetric improvement. A useful first target is sparse
+incidence graphs of bounded treewidth.
+\end{question}
+
+\begin{question}[Cost compression]\label{tf:q:compression}
+For which graph classes can a cycle-generic cost system be chosen with
+polynomially bounded \emph{magnitudes}, rather than merely polynomial bit
+length? Independently, can the required comparisons be implemented
+lexicographically without manipulating the powers of two explicitly?
+The distinction is important: the current algorithm is already polynomial
+in bit complexity, but its constants and integer arithmetic can still be
+improved.
+\end{question}
+
+\begin{question}[Binary-encoded capacities]\label{tf:q:capacities}
+Can cloning be replaced by a compressed correspondence and sampler whose
+running time is polynomial in capacity bit lengths? One must preserve
+unit weight per demand vector rather than introduce the binomial
+multiplicities of identical supplier copies. A precise first case is a
+fixed small number of receiver types with large supplier capacities.
+\end{question}
+[Merge note: this extends Part~V's Research
+question~\ref{tf:hq:capacities} (``Binary capacities and approximation
+complexity''), which asks for the same compression for partition
+functions and support coefficients, from counting to the bijection and
+the sampler.]
+
+\begin{question}[Updating the selected core]\label{tf:q:core}
+Supplier insertions outside $I$ are independent leaf attachments. What is
+the cheapest update when a basis exchange changes $I$ itself? A dynamic
+algorithm should reuse old potentials and identify the changed tight
+edges. Proposition~\ref{tf:prop:jumps} rules out uniformly bounded coordinate
+movement, but not an efficient update of a possibly large movement.
+\end{question}
+
+\begin{question}[Magnitude-sensitive probability measures]\label{tf:q:magnitude}
+Which coordinate-dependent weights on $\cD_H$ become tractable weights on
+the lifted bases? In particular, determine useful conditions under which
+$\prod_yq_y^{c_y}$ or conditioning on a prescribed coordinate sum admits
+a rapid sampler through this correspondence. Support-product weights are
+already handled; arbitrary magnitude weights need a new argument.
+\end{question}
+
+\begin{question}[Stronger functoriality]\label{tf:q:functoriality}
+Characterize the receiver deletions or selected-supplier operations for
+which a meaningful commuting diagram survives, possibly after changing
+the support fibre. The existing results cover receiver operations outside
+$J$ and supplier operations outside $I$. Any stronger naturality theorem
+must respect the explicit symmetry obstruction.
+\end{question}
+[Merge note: this is what remains of the compatibility clauses of
+Research questions~\ref{gam:q:bridge} (induced subgraphs, vertex
+deletion) and~\ref{gam:q:bijection} (induced subgraphs, a controlled
+vertex ordering), and of source~09's ``Direct lattice-point bijections''
+(deletion, the paired clone action; Part~VII's questions); see
+Section~\ref{tf:sec:answers}.]
+
+\begin{question}[Geometric cells and chamber crossings]\label{tf:q:chambers}
+Describe how the decoded demand vector changes when the cost system
+crosses a single cycle-cost hyperplane. The chamber theorem proves
+constancy away from the walls but does not classify the corresponding
+bijection permutation across a wall. Such a description could connect
+local tree changes, mixed-subdivision flips, and coupling constructions.
+\end{question}
+
+\begin{question}[Certified implementation and formal extraction]\label{tf:q:formal}
+Implement the certificate checker in Lean or Rocq and prove its soundness,
+then formalize the two-flow inverse theorem. A practical intermediate
+deliverable is a verified core certificate with an external optimizer:
+it would certify full coordinate values with a small trusted checker
+before a full min-cost-flow algorithm or a matroid mixing theorem is
+formalized.
+\end{question}
+[Merge note: this overlaps Part~V's Research question~\ref{lor:q:last}
+(``Formalization in layers''), whose first layer is the private-copy basis
+correspondence and the preorder reduction; with
+Corollary~\ref{tf:cor:count} the finite support-fibre count of that
+question's second layer also has an elementary proof to formalize.]
+
+For an immediate continuation, the strongest sequence is: certify the
+small checker; benchmark and optimize the selected-core routine; then
+investigate dynamic core updates and binary capacities. This sequence
+produces useful artifacts at each stage and separates easy verification
+work from the genuinely new algorithmic questions.
+
+\section{Conclusion}
+The repository's missing step is not another equality of enumerators.
+It is a way to turn one sampled combinatorial state into a specified
+integer vector, with the right multiplicity and an efficiently checkable
+inverse. The two-flow construction supplies that step.
+
+A single generic cost system chooses an admissible tree. Two deliberately
+chosen margin systems recover that same tree from opposite sides of the
+correspondence. Supplier degrees encode the selected basis; supplier
+leaves encode the full coordinates. The smaller core formulation goes
+further: after one flow on the selected suppliers, every other supplier
+contributes by a separate reduced-cost minimum. The full-vector sampler
+then follows by a literal change of coordinates on the known matroid
+basis walk, preserving total-variation error exactly.
+
+These are constructive refinements of an existing geometric
+correspondence, not a replacement of the prior literature. They provide a
+complete answer to the identified full-coordinate sampling gap at the
+pinned repository snapshot, with precise restriction laws, counterexamples
+to stronger interpretations, explicit code, and a feasible route to
+formal verification.
+
+\section{The unique dual price vector}
+\label{tf:app:prices}
+\noindent\emph{(Source~11's Appendix~A.)}
+The core construction has a concise dual interpretation which also
+suggests an inverse algorithm. For $c\in\cD_H(J)$, $r>0$, and
+$\varepsilon=1/(r+1)$, set $v_0=0$ and consider the concave piecewise-linear
+function
+\begin{equation}
+ f_c(v)=\sum_{x\in X}\min_{y\in (N_H(x)\cap J)\cup\{0\}}
+                         (w_{xy}-v_y)
+              +\sum_{y\in J}(c_y-\varepsilon)v_y.
+ \label{tf:eq:priceobjective}
+\end{equation}
+
+\begin{proposition}[Unique inverse prices]
+\label{tf:prop:prices}
+Under cycle-generic costs, \eqref{tf:eq:priceobjective} has a unique
+maximizer. It is the receiver-potential vector of the optimal tree for
+(B), normalized by $v_0=0$. At this price vector, precisely the suppliers
+in $\Psi_w(c)$ have two minimizing receivers; every other supplier has a
+unique minimizing receiver. No supplier has three minimizing receivers.
+\end{proposition}
+\begin{proof}
+For any $v$, put $u_x=\min_y(w_{xy}-v_y)$. Then
+$u_x+v_y\le w_{xy}$ on every edge. Applying the objective-gap identity
+to the flow (B) divided by $L=r+1$ shows that $f_c(v)$ is bounded above
+by that flow's cost. The optimal tree potentials attain this bound,
+because every positive-flow edge is tight and every row has positive
+flow. Thus the maximum exists.
+
+If another $v$ attained the same bound, every positive-flow edge of the
+optimal tree would also have to be tight, since the objective gap is a
+sum of nonnegative edge slacks weighted by positive flow. Together with
+$v_0=0$, the tree equalities determine every potential uniquely.
+Finally, the strict off-tree slacks show that the minimizing edges at a
+supplier are exactly its incident tree edges. Their numbers are one or
+two, and the degree-two suppliers are precisely $\Psi_w(c)$.
+\end{proof}
+
+For the graph $K_{m,1}$ this interpretation becomes an ordinary ranking.
+Write $d_x=w_{xy}-w_{x0}$. Cycle-genericity makes these numbers distinct.
+For the singleton selected set $I=\{i\}$, the core price is $v_y=d_i$,
+and an unselected supplier chooses $y$ precisely when $d_x<d_i$.
+Therefore
+\[
+ \Phi_w(\{i\})_y=1+\#\{x:d_x<d_i\}.
+\]
+The positive demand values $1,\ldots,m$ are exactly the ranks of the
+supplier differences. The empty support gives zero. This simplest case
+already exhibits the role of costs, the impossibility of a completely
+symmetry-natural deterministic rule, and the difference between sampling
+supplier sets and sampling assignments.
+
+\section{Algorithm summary and delivered files}
+\label{tf:app:algorithms}
+\noindent\emph{(Source~11's Appendix~B.)}
+\begin{statusbox}
+\textbf{Forward, full form.} Validate the matchable pair $(I,J)$. Return
+zero if $J$ is empty. Otherwise solve (A), verify its strict tree
+certificate, and output one on every receiver in $J$ plus its number of
+unselected supplier leaves.
+
+\medskip
+\textbf{Forward, core form.} Solve \eqref{tf:eq:coreflow} on the selected
+suppliers only. Verify its certificate and extract $v$. For each
+unselected supplier, find the unique minimum \eqref{tf:eq:attach}; add one
+at its chosen receiver unless it chooses the dummy.
+
+\medskip
+\textbf{Inverse.} Set $J=\supp(c)$ and $c_0=m-\sum c_y$. Return the empty
+pair for zero. Otherwise solve (B), verify its strict tree certificate,
+and select exactly the suppliers of degree two.
+
+\medskip
+\textbf{Sampling.} Walk on lifted matroid bases for the explicit mixing
+budget, then run the core decoder once. No transportation optimization is
+needed during an ordinary basis-walk step.
+\end{statusbox}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.46\textwidth}Y@{}}\toprule
+File (shipped name) & Purpose\\\midrule
+\nolinkurl{code/11-two-flow-transport_bijection.py} & Exact flows, full/core maps,
+inverse, checkers, matching oracle, reference sampler.\\
+\nolinkurl{code/11-two-flow-verify.py} & Independent finite enumeration, compatibility
+checks, exact chain tests, and certificate example.\\
+\nolinkurl{data/11-two-flow-*.json} & Recorded results and explicit certificates.\\
+\nolinkurl{data/11-two-flow-verification_run.txt} & Console output of the recorded run.\\
+\nolinkurl{11-two-flow-PROOF_STATUS.md} & Claim-by-claim assurance and implementation boundaries.\\
+\nolinkurl{11-two-flow-SOURCE_AUDIT.md} & Repository provenance and literature/novelty audit.\\
+\nolinkurl{code/11-two-flow-build.sh} & The delivered build script (three
+\texttt{pdflatex} passes on the delivered \texttt{article.tex}).\\\bottomrule
+\end{tabularx}
+\end{center}
+[Merge note: source~11's table lists its own \texttt{article.tex},
+\texttt{article.pdf} and \texttt{README.md}, which are not shipped (they
+survive in the arrival commit; this report's \texttt{article.tex},
+\texttt{article.pdf} and \texttt{README.md} replace them), and describes
+\texttt{build.sh} as rebuilding ``with two LaTeX passes''; the script runs
+three. The table above gives the shipped names; the report's
+\texttt{README.md} maps them to the delivered ones.]
+
 \appendix
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
 \section{A hypertree proof of the known root identity}\label{app:hypertrees}
@@ -16319,6 +18314,12 @@ M. Kummer and B. Sert,
 \emph{Matroids on eight elements with the half-plane property and related
 concepts}, \emph{SIAM Journal on Discrete Mathematics} \textbf{37} (2023),
 no.~3, 2208--2227. doi:10.1137/22M1490648; \arxiv{2111.09610}.
+
+\bibitem{LohoSmith}
+G. Loho and B. Smith,
+\emph{Matching fields and lattice points of simplices},
+\emph{Advances in Mathematics} \textbf{370} (2020), 107232;
+doi:10.1016/j.aim.2020.107232; \arxiv{1804.01595v4}.
 
 \end{thebibliography}
 \end{document}
