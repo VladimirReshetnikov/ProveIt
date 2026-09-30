@@ -6,6 +6,7 @@
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype,booktabs,array,longtable}
+\usepackage{mathrsfs}% [Added 29 September 2026, batch 56] for Part II's \QQ, \AN, \GG
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem,fancyhdr}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
@@ -36,6 +37,21 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\bracket}[1]{\left[#1\right]}
 \DeclareMathOperator{\sgn}{sgn}
+% [Added 29 September 2026, batch 56] Macros of Part II (manuscript 01 of
+% batch 56).  Its \HH is printed as \Ht (the same glyph and object); its
+% \Q, \Z, \N, \CT are identical to the definitions above.
+\newcommand{\C}{\mathbb C}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\LC}{\operatorname{LC}}
+\newcommand{\UU}{\mathcal U}
+\newcommand{\VV}{\mathcal V}
+\newcommand{\QQ}{\mathscr Q}
+\newcommand{\AN}{\mathscr A}
+\newcommand{\GG}{\mathscr G}
+\newcommand{\XX}{\mathcal X}
+\newcommand{\rep}[2]{(#1)^{[#2]}}
+\newcommand{\pin}{e9c09b12549ea4e3bea7cebc52b450b761f6f581}
 \numberwithin{equation}{section}
 \pagestyle{fancy}
 \fancyhf{}
@@ -50,9 +66,11 @@
 
 \title{\color{Ink}\LARGE A parity factorization and sharp stabilization\\[0.25em]
 for Cigler's Hankel polynomials\\[0.5em]
-\large A proposed proof of Conjecture 16 in arXiv:2111.14492v3}
+\large A proposed proof of Conjecture 16 in arXiv:2111.14492v3\\[0.6em]
+\normalsize Part~II (added 29 September 2026): rectangular Schur structure\\
+\normalsize and sharp recurrences}
 \author{Research draft prepared for Vladimir Reshetnikov}
-\date{20 September 2026}
+\date{20 September 2026 (Part~I); 29 September 2026 (Part~II)}
 
 \begin{document}
 \maketitle
@@ -78,6 +96,8 @@ explicit nonminimal recurrence, and convergence on compact subsets of the
 open unit disk. Exact integer and polynomial verification programs accompany
 the article. A stronger rectangular-Schur identity suggested by computation
 is separated from the proved results and is not used in any proof.
+[Added 29 September 2026, batch 56: Part~II proves this identity and the
+exact minimal recurrence.]
 \end{abstract}
 
 \medskip
@@ -93,6 +113,7 @@ this specific conjecture; that is not a guarantee of priority.}}
 \tableofcontents
 \clearpage
 
+\phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A parity factorization and sharp stabilization}
 \section{The problem and the main result}
 \label{sec:main}
 
@@ -191,6 +212,15 @@ tridiagonal matrices. This establishes positivity and degree without any
 alternant or Schur identity. Finally, small alternant determinants give the
 first omitted terms of the two factors and hence the exact stable range.
 All determinant identities needed below are proved in the article.
+
+\noindent[Added 29 September 2026, batch 56: Sections~1--11 and
+Appendices~A and~B are this report as of 20 September 2026 (Part~I).
+Part~II (Sections~12--22 and Appendices~C and~D; provenance in
+Section~\ref{rs:sec:merge-provenance}) is a later manuscript written against
+this text. It proves the experimental formula of Section~\ref{sec:schur},
+determines the exact minimal recurrence that replaces the bound of
+Proposition~\ref{prop:recurrence}, and re-derives the parity factorization
+by a second route. It changes no statement of Part~I.]
 
 \section{Two auxiliary moment sequences}
 \label{sec:moments}
@@ -851,6 +881,17 @@ as follows by taking successive finite differences. Interleaving the
 even and odd subsequences replaces $E_m$ by $E^2$, proving the claim.
 \end{proof}
 
+\noindent[Added 29 September 2026, batch 56: in the notation of this
+proposition, the exact reduced denominator is $\prod_{q=0}^{k-1}(1-t^qx)^{1+\lfloor q(k-1-q)/2\rfloor}$, with no
+cancellation over $\Q(t)$ or at any real $t\notin\{0,\pm1\}$
+(Theorem~\ref{rs:thm:recurrence-main}; Part~II writes $z$ for the
+variable $x$). Part~II also gives the numerator degree and reciprocity sign
+(Theorem~\ref{rs:thm:numerator}), the signed denominator for odd $k$
+(Theorem~\ref{rs:thm:signed}), and the reduced denominators at $t=0,\pm1$
+(Theorem~\ref{rs:thm:real}). Cigler's denominators (84) and (86) are
+minimal; the positive sign printed in his (85) is false when $a$ is even,
+the correct sign being $(-1)^{a+1}$.]
+
 For the unadjusted normalized determinant
 $d_k(n;t)=t^{-\binom n2}D_k(n;t)$, the even-$k$ recurrence is unchanged.
 For odd $k$, the period-four sign replaces $1-t^{2q}x^2$ in the displayed
@@ -887,6 +928,12 @@ formulas. The earliest error has exponent $n+1$, exactly as in
 Section~\ref{sec:stable}; the largest polynomial exponent is $\binom a2$.
 The finitely many small cases can be absorbed in $C_{k,r}$.
 \end{proof}
+
+\noindent[Added 29 September 2026, batch 56: for fixed $0<t<1$ the exact
+rate is
+$\F_k(t)-\Ht_k(n;t)\sim n^{a-1}t^{n+1}/\bigl((a-1)!\,(1-t)^{b+1}(1-t^2)^{(a-1)b}\bigr)$,
+with relative error $O(1/n)$ locally uniformly on $(0,1)$
+(Theorem~\ref{rs:thm:asymptotic}).]
 
 \section{A stronger identity suggested by the computations}
 \label{sec:schur}
@@ -926,6 +973,12 @@ proof. The proof of Conjecture 16 instead uses the parity factors,
 coefficientwise total nonnegativity, and the fully derived alternant
 formulas. The larger conjecture can be deleted from this article without
 changing any proved statement.
+
+\noindent[Added 29 September 2026, batch 56:
+Conjecture~\ref{conj:schur} is proved in Part~II for all $k\ge1$, $n\ge0$
+as an identity in $\Z[t]$ (Theorem~\ref{rs:thm:schur}), through a Toeplitz
+factorization with a boundary parameter (Theorem~\ref{rs:thm:Toeplitz}).
+None of Part~I's proofs is changed.]
 
 \section{Reproducibility and proof audit}
 \label{sec:audit}
@@ -1010,6 +1063,11 @@ full argument for Conjecture 16 and the additional results explicitly
 proved here. Independent expert checking remains appropriate before
 publication or addition to a collection of established theorems.
 
+\noindent[Added 29 September 2026, batch 56: Part~II proves the Schur
+formula and corrected forms of the generating-function assertions of
+Conjecture~18; Conjecture~17 remains open
+(Section~\ref{rs:sec:further}).]
+
 \appendix
 \section{The removable specialization at \texorpdfstring{$t=1$}{t=1}}
 \label{app:one}
@@ -1062,6 +1120,1705 @@ division. It records the mathematical test ranges and software versions,
 not just a generic success message. Its stronger Schur checks are labelled
 \texttt{EXPERIMENTAL} in both the code and the output.
 
+%% ====================================================================
+%% Batch-56 addition (manuscript 01, "Rectangular Schur Structure and
+%% Sharp Recurrences for Cigler's Hankel Polynomials").  Every label of
+%% Part II carries the prefix rs: (rectangular Schur).  Part I's labels
+%% are bare and unchanged.  Part II's sections continue Part I's numbering
+%% (12-22) after Part I's Appendices A-B; its appendices are C-D.
+%% ====================================================================
+\clearpage
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theHsection}{rs.\arabic{section}}
+\setcounter{section}{11}
+\setlength{\emergencystretch}{3em}
+\makeatletter\g@addto@macro\UrlBreaks{\do\-}\makeatother
+\phantomsection\part*{Part II.\quad Rectangular Schur structure and sharp recurrences}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{ } Rectangular Schur structure and sharp recurrences}
+
+\noindent\emph{Sections~1--11 and Appendices~A and~B form the original
+report (Part~I) of 20 September 2026, unchanged except for dated pointers to
+this addition, marked \textup{[Added 29 September 2026, batch~56: \dots]}.
+Part~II was added on 29 September 2026 in batch~56 of ProveIt's
+incoming-report intake, from one manuscript written against the pinned state
+of Part~I. It proves Part~I's experimental rectangular-Schur formula
+(Conjecture~\ref{conj:schur}) and replaces the nonminimal recurrence of
+Proposition~\ref{prop:recurrence} by the exact minimal one. Its
+Sections~12--22 and Appendices~C and~D are the manuscript's Sections~1--11
+and Appendices~A and~B.}
+
+\section{The selected question and the results}
+\label{rs:sec:intro}
+
+\subsection{Provenance of Part~II}
+\label{rs:sec:merge-provenance}
+Part~II is batch-56 manuscript~01, \emph{Rectangular Schur Structure and
+Sharp Recurrences for Cigler's Hankel Polynomials: A proof of the
+repository's Schur conjecture, exact pole multiplicities, and corrected
+generating-function reciprocity}, an AI-assisted research draft ``prepared
+for Vladimir Reshetnikov'' and dated 29 September 2026 (22 pages, A4, as
+delivered). It arrived as the archive
+\path{ProveIt_Cigler_Schur_Recurrences.zip} (inner directory
+\path{cigler_schur_research/}, main file \path{article.tex}) in ProveIt
+commit \texttt{e47ed8547} and was placed in \texttt{ae718a441}. It was
+written against ProveIt commit \texttt{e9c09b125} (in full
+\texttt{\pin}), at which Part~I's \texttt{article.tex} was the Git blob
+\texttt{f33543af1f} and the \texttt{article.tex} of the sibling report
+\path{cigler-conjecture-8-schur} \cite{RepoEight} the blob
+\texttt{9c984baeeb}. No commit touched this report between \texttt{dc54c3cb3}
+(which brought the research-report collection into ProveIt) and the
+placement, so every statement the manuscript makes about ``the repository's
+report'' or ``the inspected ProveIt report'' refers to Part~I as printed
+above. The manuscript read Part~I at the pinned commit through a GitHub
+connector, not from a library copy (its source audit,
+\path{02-schur-recurrences-sources.md}); Part~I's file is
+\path{SetTheory/Cardinals/docs/reports/hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity/article.tex}.
+
+Its code and records are shipped beside Part~I's files with the prefix
+\path{02-schur-recurrences-} (Part~I's unprefixed files count as~01): the
+verifier \path{code/02-schur-recurrences-verify.py} and its Makefile
+\path{code/02-schur-recurrences-Makefile}; under \path{data/} the recorded
+run \path{02-schur-recurrences-verification.json} with its console log
+\path{02-schur-recurrences-verification.log}, the coefficient arrays
+\path{02-schur-recurrences-sample_polynomials.json}, the requirement pin
+\path{02-schur-recurrences-requirements.txt} and a hand-written layout
+record of the delivered PDF, \path{02-schur-recurrences-pdf_checks.json};
+and in the report root its research-status record
+\path{02-schur-recurrences-STATUS.md} and its source audit
+\path{02-schur-recurrences-sources.md}. These files are byte-identical to
+the delivery, so their text still uses the delivery names. The manuscript,
+its PDF and its README are not shipped; they survive in the arrival commit.
+The report README maps every delivery name to its shipped path, and
+Appendix~\ref{rs:app:package} explains why the shipped Makefile must not be
+run.
+
+The manuscript contributes, in the order printed here: a proof of Part~I's
+Conjecture~\ref{conj:schur} for all $k\ge1$ and $n\ge0$
+(Theorem~\ref{rs:thm:schur}), through a Toeplitz factorization with a
+boundary parameter (Theorem~\ref{rs:thm:Toeplitz}); a second derivation of
+Part~I's parity factorization (Proposition~\ref{rs:prop:parity}) and of
+Part~I's shape statements (Corollary~\ref{rs:cor:shape}); parity-wise
+unimodality for odd shifts (Proposition~\ref{rs:prop:parityunimodal}); a
+confluent spectral theorem for rectangular Schur polynomials with explicit
+nonzero leading coefficients (Theorem~\ref{rs:thm:cluster}); the exact
+minimal recurrence of Cigler's family (Theorem~\ref{rs:thm:recurrence-main}
+and Corollary~\ref{rs:cor:orders}); the degree and reciprocity sign of the
+generating numerator (Lemma~\ref{rs:lem:negative},
+Theorem~\ref{rs:thm:numerator}), with a correction of the sign printed in
+Cigler's equation~(85); the period-four signed normalization
+(Theorem~\ref{rs:thm:signed}); a sharp fixed-parameter convergence
+equivalent (Theorem~\ref{rs:thm:asymptotic}); the reduced denominators at
+every real parameter (Theorem~\ref{rs:thm:real}); its finite checks,
+proof-dependency audit and formalization plan
+(Section~\ref{rs:sec:audit}); six research topics
+(Section~\ref{rs:sec:further}); a conclusion; and small-shift examples and
+package notes (Appendices~\ref{rs:app:examples} and~\ref{rs:app:package}).
+Every result, proof, example, remark, limitation and question of the
+manuscript is printed.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Duplicated material.} Section~\ref{rs:sec:parity} re-derives
+Part~I's Sections~\ref{sec:moments}--\ref{sec:factor} (Gram identities in
+the bases $P_i$, $R_i$ and block elimination, in place of Part~I's
+tridiagonal principal minors); Corollary~\ref{rs:cor:shape} recovers the
+shape statements of Theorem~\ref{thm:main} through tableaux and is not
+claimed as new; equation~\eqref{rs:eq:old-defect} restates
+\eqref{eq:sharp}; Theorem~\ref{rs:thm:asymptotic} sharpens
+Proposition~\ref{prop:analytic} for real $0<t<1$; the definitions
+\eqref{rs:eq:moments}--\eqref{rs:eq:H} are those of
+\eqref{eq:source-moments}, \eqref{eq:D} and \eqref{eq:normalization}. The
+manuscript re-derives this material so that its argument does not rest on
+Part~I; it is printed in both parts, and Part~II's proofs are second routes.
+\item \emph{Numbering.} The manuscript's Section~$n$ is Section~$n+11$ here,
+and its Theorem, Lemma, Proposition, Corollary and equation $n.m$ are
+$(n+11).m$; its Appendices~A and~B are Appendices~C and~D. Its title block,
+abstract and status box are printed in Section~\ref{rs:sec:front}, and this
+subsection and the next two precede its Section~1.1, which is
+Section~\ref{rs:sec:source} here. Its table of contents is merged into the
+report's.
+\item \emph{Names.} Every label of Part~II carries the prefix
+\texttt{rs:}. The manuscript's macro for $\Ht$ is replaced by Part~I's
+\verb|\Ht|; both print the same glyph for the same object. Its bibliography
+key \texttt{CK} (Ciucu--Krattenthaler) is printed as \texttt{CiucuK},
+because Part~I's \texttt{CK} is Cigler--Krattenthaler, a different paper;
+its entry for Part~I is replaced by internal references, and its entry for
+Cigler's paper is merged with Part~I's (the same version~3). No printed
+symbol is renamed and no normalization is changed. Symbols that mean
+different things in the two parts are listed in
+Section~\ref{rs:sec:notation}.
+\item \emph{Added text.} Dated notes were added in Part~I (title, abstract,
+Section~1.3, after Propositions~\ref{prop:recurrence}
+and~\ref{prop:analytic}, at the end of Section~\ref{sec:schur} and in
+Section~11.3), and four bracketed notes in Part~II: on the pinned paths
+(Section~\ref{rs:sec:source}), on Cigler's printed page~24 (after
+\eqref{rs:eq:Ghat3}; an observation of this merge, not of the manuscript),
+on the shipped names and a rerun (Section~\ref{rs:sec:audit}), and on the
+delivered commands (Appendix~\ref{rs:app:package}). All are marked
+\textup{[Added 29 September 2026, batch~56: \dots]}.
+\end{itemize}
+
+\subsection{The manuscript's title, abstract and status}
+\label{rs:sec:front}
+The manuscript's title block reads \emph{Rectangular Schur Structure and
+Sharp Recurrences for Cigler's Hankel Polynomials}, with the subtitle
+\emph{A proof of the repository's Schur conjecture, exact pole
+multiplicities, and corrected generating-function reciprocity}, the author
+line ``Research draft prepared for Vladimir Reshetnikov'' and the date
+29~September 2026. Its abstract:
+\begin{quote}\small
+A report in the ProveIt repository leaves explicitly unproved a rectangular-Schur
+formula for normalized Hankel determinants of Cigler's third polynomial
+extension of the middle binomial coefficients. We prove that formula for all
+shifts and orders. Writing $a=\lfloor k/2\rfloor$ and
+$b=\lfloor(k-1)/2\rfloor$, the identity is
+\[
+ \Ht_k(n;t)=s_{(n^a)}(\rep1a,t,\rep{t^2}b).
+\]
+An elementary Toeplitz factorization supplies the missing bridge from the
+repository's parity factors to the Schur determinant. We then prove a
+confluent spectral theorem for rectangular Schur polynomials: each allocation
+of rows among repeated-variable clusters has an explicit nonzero leading
+coefficient. For Cigler's family this determines the \emph{minimal} generic
+recurrence, with characteristic polynomial
+\[
+ \prod_{q=0}^{k-1}(E-t^q)^{\,1+\lfloor q(k-1-q)/2\rfloor}.
+\]
+We determine the exact generating-numerator degree and reciprocity sign,
+correct a sign in the printed Conjecture~18, obtain a sharp fixed-parameter
+convergence equivalent, and classify the reduced denominators at every real
+parameter. Exact finite checks and a focused further-research program
+accompany the all-index arguments.
+\end{quote}
+Its status box:
+
+\medskip
+\noindent\fcolorbox{MidnightBlue}{blue!3}{\parbox{0.94\linewidth}{\small
+\textbf{Research status.} The conclusions are mathematical proof claims,
+with the arguments supplied below. They have not been independently refereed
+or checked in Lean or Rocq. The unresolved repository formula is identified
+at a fixed commit; the general Schur, character, and confluence machinery is
+classical and is credited. No exhaustive historical-priority claim is made.
+The literal entirety of Cigler's printed Conjecture~18 is \emph{not} asserted:
+one of its signs is false, and the corrected statements are given precisely.}}
+\medskip
+
+\subsection{Notation shared with Part~I}
+\label{rs:sec:notation}
+Part~II keeps the manuscript's notation. The two parts agree on $c_r(t)$,
+$D_k(n;t)$, $\Ht_k(n;t)$, $a$, $b$, $s=1+t$, $u_r$, $v_r$, the Laurent
+polynomial $Q(z)=Q_t(z)=(1+tz)(1+t/z)$, $h_j$, $s_{(n^a)}$ and the forward
+shift $E$. The following letters mean different things in the two parts;
+the right-hand column gives the tempting false reading where one exists.
+
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}@{}}
+\toprule
+Symbol & Part~I & Part~II & Do not read as\\
+\midrule
+\endhead
+$\mathcal U$, $\mathcal V$ &
+$\U_a(m;t)=\det(M_1^a[m])$, $\V_a(m;t)=\det(M_0^a[m])$: power $a$ first,
+size $m$ second &
+$\UU_m(q)$, $\VV_m(q)$: Gram determinants of size $m$ of a symbol $q$,
+\eqref{rs:eq:U}--\eqref{rs:eq:V}; $U_h(m)=\UU_m(Q_t^h)$,
+$V_h(m)=\VV_m(Q_t^h)$ &
+$\UU_m(q)$ as $\U_a(m;t)$ with $a=m$. The true dictionary is
+$\U_a(m;t)=U_a(m)=\UU_m(Q_t^a)$ and $\V_a(m;t)=V_a(m)=\VV_m(Q_t^a)$\\[3pt]
+italic $U$, $V$ &
+$U_a(r)$, $V_a(r)$: unnormalized moment matrices in the proof of
+Theorem~\ref{thm:factor}; $U_a^\infty$, $V_a^\infty$: limit series
+\eqref{eq:limits} &
+$U_h(m)$, $V_h(m)$: normalized determinants; the unnormalized matrices are
+$U'_r$ &
+Part~II's $U_h(m)$ as a matrix\\[3pt]
+$\F_k$, $F_k$ &
+$\F_k(t)$ \eqref{eq:F} &
+$F_k(t)$ \eqref{rs:eq:Fexact}, the same function &
+---\\[3pt]
+$d$ &
+$d_k$: coarse exponent bound of Proposition~\ref{prop:recurrence};
+$d_k(n;t)=t^{-\binom n2}D_k(n;t)$ &
+$d_k(n,t)$: the same unadjusted normalization (Cigler's); $d_{\boldsymbol r}$,
+$d_q$, $d_\pm$: polynomial degrees in $n$ &
+$d_q$ as Part~I's $d_k$\\[3pt]
+$N$ &
+$N^\delta_{a,m}(t)$: numerator determinants \eqref{eq:N} &
+$N_k$: order of the minimal recurrence \eqref{rs:eq:exponents} &
+---\\[3pt]
+$\delta$ &
+$\delta\in\{0,1\}$ in $N^\delta_{a,m}$ &
+$\delta_k=\lfloor k^2/4\rfloor$ \eqref{rs:eq:deltaR} &
+---\\[3pt]
+$C$ &
+$C_j(y)$: Chebyshev-type polynomials in the proof of
+Theorem~\ref{thm:alternant}; $C_{k,r}$: constant of
+Proposition~\ref{prop:analytic} &
+$C_k=\binom k2$; $C=K-A$ in Section~\ref{rs:sec:cluster}; $C_{2m}(u)$,
+$C_{2m+1}(u)$: normalizing scalars &
+---\\[3pt]
+$B$ &
+$B=1+t^2$ &
+$B(m,r)$: factorial ratio \eqref{rs:eq:Bfactor} &
+---\\[3pt]
+$M$ &
+$M_\eps$: tridiagonal matrices \eqref{eq:M} &
+$M=k-1$ \eqref{rs:eq:ab} &
+---\\[3pt]
+$x$, $z$ &
+$z$: Laurent variable; $x$: generating variable of
+Proposition~\ref{prop:recurrence} &
+$z$: Laurent variable (Sections~13--15) and generating variable
+(Sections~12 and~16--19, Appendix~C); $x=z+z^{-1}$ in Sections~13--14 &
+Cigler's generating variable $x$ (quoted in the note after
+\eqref{rs:eq:Ghat3}) as Part~II's $x=z+z^{-1}$\\[3pt]
+$e$ &
+$e_j$: standard basis vectors &
+$e_{k,q}$: pole multiplicities; $e_j(X)$: elementary symmetric
+polynomials; $(e_j)$: bialternant exponents &
+---\\[3pt]
+$h$ &
+--- (Part~I indexes the parity factors by $a$) &
+index of the parity factors in Section~\ref{rs:sec:parity}; derivative
+orders in Section~\ref{rs:sec:cluster} &
+$h$ as the complete homogeneous $h_j$\\[3pt]
+$A$, $\mathscr A$ &
+$A[m]$: principal submatrix; $A_j^\eps$: monic polynomials &
+$A$: height of the rectangle in Section~\ref{rs:sec:cluster};
+$\AN_k$: generating numerator &
+---\\[3pt]
+$J$ &
+$J=\diag(1,-1,1,\ldots)$ &
+the involution $Jf(z)=zf(z^{-1})$ &
+---\\[3pt]
+$L$ &
+the moment functional $L$ &
+$L_{\boldsymbol r}$: leading coefficients \eqref{rs:eq:LC}; $\LC$: leading
+coefficient &
+---\\
+\bottomrule
+\end{longtable}}
+
+
+\subsection{Provenance and what is added}
+\label{rs:sec:source}
+The source problem is Section~6 of Johann Cigler's paper
+\cite{Cigler}, version~3, dated 30 December 2021. Its moment family is denoted
+$c_n(t)$; it must not be confused with the paper's other families $a_n(t)$
+and $b_n(t)$. In ProveIt, the report \emph{A parity factorization and sharp
+stabilization for Cigler's Hankel polynomials} (Part~I of this report) proves a
+parity factorization, coefficient positivity, reciprocity, stable edge
+coefficients, and a first-defect formula. Its Section~10 explicitly records
+an experimental rectangular-Schur identity as a conjecture, not a proof
+dependency. Its recurrence bound is explicitly nonminimal.
+
+The inspected repository commit is
+\begin{center}\small\texttt{\pin}.\end{center}
+The source article's Git blob identifier is
+\texttt{f33543af1f846c24511dc3004fb3542c2a20c50f}.
+The selected conjecture belongs to the directory
+\texttt{cigler-conjecture-16-parity}; full paths are in the bibliography
+and the package's source audit. The related repository report on
+\emph{Conjecture~8} \cite{RepoEight} uses a Laurent--Gram/Schur method for the
+\emph{different} $b_n(t)$ moments. It is relevant methodological background,
+not a proof of the identity selected here.
+
+\noindent[Added 29 September 2026, batch 56: in this report the bibliography
+entry for Part~I is replaced by internal references; the pinned commit, blob
+identifiers and paths are recorded in Section~\ref{rs:sec:merge-provenance},
+and the package's source audit is shipped as
+\path{02-schur-recurrences-sources.md}.]
+
+
+Our principal addition is the missing all-index Schur identity. Beyond that
+identity, the essential new calculation relative to the inspected reports
+is a noncancellation theorem for confluent spectral terms. It proves exact
+pole multiplicities, rather than merely giving a denominator that might
+cancel. The resulting numerator reciprocity also distinguishes a genuine
+statement from a sign error in the original conjecture.
+
+Rectangular Schur factorizations at reciprocal alphabets are established
+mathematics; see Ciucu--Krattenthaler \cite{CiucuK}. Recurrence existence for
+stretched Schur polynomials is also established; see Alexandersson
+\cite{Alexandersson}. Repeated-variable bialternants are treated explicitly
+by Gonz\'alez-Serrano--Maximenko \cite{GSM}. We use and explain these kinds of
+classical tools, rather than advertising their existence as a discovery.
+The specific identity, exact multiplicities, constants, and source corrections
+are the objects proved here. A bounded literature search does not certify
+that no equivalent formulation has appeared elsewhere.
+
+\subsection{Definitions}
+For $r\ge1$, put
+\begin{equation}
+ c_r(t)=\sum_{j=1}^{r}
+ \binom{\lfloor(r-1)/2\rfloor}{\lfloor(j-1)/2\rfloor}
+ \binom{\lfloor r/2\rfloor}{\lfloor j/2\rfloor}t^{j-1},
+ \qquad c_0(t)=1.
+ \label{rs:eq:moments}
+\end{equation}
+A binomial coefficient is zero when its lower index is outside the usual
+range. These are Cigler's equation~(6), with the zero $j=0$ summand omitted.
+For a positive shift $k$ and order $n\ge0$, define
+\begin{align}
+ D_k(n;t)&=\det(c_{k+i+j}(t))_{0\le i,j<n},\label{rs:eq:D}\\
+ \Ht_k(n;t)&=(-1)^{k\binom n2}t^{-\binom n2}D_k(n;t).
+ \label{rs:eq:H}
+\end{align}
+Empty determinants are one. Initially \eqref{rs:eq:H} is read in $\Q(t)$;
+polynomiality and specialization at $t=0$ are conclusions.
+Throughout, write
+\begin{equation}
+ a=\lfloor k/2\rfloor,\quad b=\lfloor(k-1)/2\rfloor,\quad
+ M=k-1,\quad \XX_k=(\rep1a,t,\rep{t^2}b).
+ \label{rs:eq:ab}
+\end{equation}
+Here $x^{[r]}$ means $r$ copies of $x$, including no copies when $r=0$.
+The alphabet $\XX_k$ has exactly $k$ entries.
+
+For an alphabet $X$, define $h_j(X)$ and $e_j(X)$ by
+\begin{equation}
+ \sum_{j\ge0}h_j(X)w^j=\prod_{x\in X}(1-xw)^{-1},\qquad
+ \sum_{j\ge0}e_j(X)w^j=\prod_{x\in X}(1+xw).
+ \label{rs:eq:symmetric}
+\end{equation}
+Subscripts below zero give zero. The Schur polynomial of the rectangle with
+$a$ rows of length $n$ has the classical Jacobi--Trudi descriptions
+\begin{equation}
+ s_{(n^a)}(X)=\det(h_{n-i+j}(X))_{1\le i,j\le a}
+ =\det(e_{a-i+j}(X))_{1\le i,j\le n}.
+ \label{rs:eq:JT}
+\end{equation}
+These identities, the tableau interpretation, and the bialternant formula
+are standard Schur identities \cite{Fulton,GSM}. Empty rectangles have value
+one. They are the only symmetric-function identifications needed for the
+main determinant proof.
+
+\subsection{Main statements}
+\begin{theorem}[The repository's rectangular-Schur conjecture]
+\label{rs:thm:schur}
+For all $k\ge1$ and $n\ge0$, there is an identity in $\Z[t]$
+\begin{equation}
+ \boxed{D_k(n;t)=(-1)^{k\binom n2}t^{\binom n2}
+                 s_{(n^a)}(\XX_k).}
+ \label{rs:eq:main}
+\end{equation}
+Consequently $\Ht_k(n;t)=s_{(n^a)}(\XX_k)$, with no exceptional value of $t$.
+\end{theorem}
+
+\begin{theorem}[Exact generic recurrence]
+\label{rs:thm:recurrence-main}
+For $k\ge1$, set
+\begin{equation}
+ e_{k,q}=1+\left\lfloor\frac{q(k-1-q)}2\right\rfloor,
+ \qquad N_k=\sum_{q=0}^{k-1}e_{k,q}.
+ \label{rs:eq:exponents}
+\end{equation}
+Over $\Q(t)$, the reduced denominator of
+$\GG_k(z,t)=\sum_{n\ge0}\Ht_k(n;t)z^n$, normalized to have constant term one,
+is exactly
+\begin{equation}
+ \boxed{\QQ_k(z,t)=\prod_{q=0}^{k-1}(1-t^qz)^{e_{k,q}}.}
+ \label{rs:eq:denominator}
+\end{equation}
+Equivalently, the monic minimal constant-coefficient recurrence operator is
+$\prod_q(E-t^q)^{e_{k,q}}$, where $Ef(n)=f(n+1)$.
+There is no cancellation in \eqref{rs:eq:denominator}. The same statement holds
+at each real $t\notin\{0,1,-1\}$.
+\end{theorem}
+
+The precise numerator and its sign are given in
+Theorem~\ref{rs:thm:numerator}; the period-four signed normalization used by
+Cigler is treated in Theorem~\ref{rs:thm:signed}. Theorem~\ref{rs:thm:real} completes
+the real-parameter classification. The general mechanism that makes the
+recurrences minimal is Theorem~\ref{rs:thm:cluster}, whose explicit leading
+coefficient also gives the sharp asymptotic equivalent in
+Theorem~\ref{rs:thm:asymptotic}.
+
+\section{Laurent moments and the four parity factors}
+\label{rs:sec:parity}
+This section rederives the relevant part of Part~I (Sections~\ref{sec:moments}--\ref{sec:factor}), so the new
+argument does not depend on trusting an unverified report.
+
+\subsection{Two elementary Gram identities}
+Let $q(z)=q(z^{-1})$ be a symmetric Laurent polynomial, and put
+$q_j=[z^j]q(z)$, so $q_{-j}=q_j$. Define
+\begin{align}
+ \UU_m(q)&=\det(q_{i-j}+q_{i+j+1})_{0\le i,j<m},\label{rs:eq:U}\\
+ \VV_m(q)&=\det(q_{i-j}-q_{i+j+2})_{0\le i,j<m}.
+ \label{rs:eq:V}
+\end{align}
+Both empty determinants are one. Set $x=z+z^{-1}$ and $y=z-z^{-1}$.
+For $i\ge0$, the Laurent expressions
+\begin{equation}
+ P_i(x)=\frac{z^{i+1}+z^{-i}}{z+1},\qquad
+ R_i(x)=\frac{z^{i+1}-z^{-i-1}}{z-z^{-1}}
+ \label{rs:eq:PR}
+\end{equation}
+are monic polynomials in $x$ of degree $i$. Indeed, $P_0=R_0=1$,
+$P_1=x-1$, $R_1=x$, and each sequence satisfies
+$F_{i+1}=xF_i-F_{i-1}$.
+A direct multiplication gives
+\begin{align}
+ \tfrac12\CT_z q(z)(x+2)P_i(x)P_j(x)&=q_{i-j}+q_{i+j+1},\label{rs:eq:gramU}\\
+ \tfrac12\CT_z q(z)(4-x^2)R_i(x)R_j(x)&=q_{i-j}-q_{i+j+2}.
+ \label{rs:eq:gramV}
+\end{align}
+For example, $(x+2)=(z+1)^2/z$, and the product on the first line
+has four monomials before the constant term is taken. Symmetry of $q$
+merges them in pairs. For the second line use $4-x^2=-y^2$.
+Thus $\UU_m$ and $\VV_m$ are ordinary polynomial Gram determinants for
+the two displayed constant-term weights. Monicity means that replacing
+$P_i$ or $R_i$ by $x^i$ does not change either determinant.
+
+\subsection{The moments}
+Put
+\begin{equation}
+ Q_t(z)=1+t^2+t(z+z^{-1})=(1+tz)(1+t/z),\qquad s=1+t,
+ \label{rs:eq:Q}
+\end{equation}
+and define
+\begin{equation}
+ u_r=\CT_z(1+z)Q_t(z)^r,\qquad
+ v_r=\CT_z(1-z^2)Q_t(z)^r.
+ \label{rs:eq:uv}
+\end{equation}
+Symmetry allows the alternative weights $(x+2)/2$ and $(4-x^2)/2$,
+respectively. Expansion of the two binomials in $Q_t^r$ yields
+\begin{equation}
+ u_r=\sum_{j=0}^{r}\binom rj^2t^{2j}
+       +\sum_{j=0}^{r-1}\binom rj\binom r{j+1}t^{2j+1}.
+ \label{rs:eq:u-expansion}
+\end{equation}
+Separating parity in \eqref{rs:eq:moments} and applying Pascal's identity gives
+\begin{equation}
+ c_{2r+1}=u_r,\qquad c_{2r+2}=s u_r.
+ \label{rs:eq:pair}
+\end{equation}
+Moreover,
+$(s^2-Q_t)(1+z)=t(1+z-z^2-z^{-1})$.
+The constant terms of $zQ_t^r$ and $z^{-1}Q_t^r$ agree, so
+\begin{equation}
+ s^2u_r-u_{r+1}=t v_r.
+ \label{rs:eq:christoffel-pair}
+\end{equation}
+For short, write
+\begin{equation}
+ U_h(m)=\UU_m(Q_t^h),\qquad V_h(m)=\VV_m(Q_t^h)
+ \quad(h,m\ge0).
+ \label{rs:eq:UVh}
+\end{equation}
+Since $Q_t=1+t^2+tx$, its $i$th power has leading coefficient $t^i$
+as a polynomial in $x$. Applying the monic basis changes in
+\eqref{rs:eq:gramU}--\eqref{rs:eq:gramV} therefore gives
+\begin{align}
+ \det(u_{h+i+j})_{0\le i,j<m}&=t^{m(m-1)}U_h(m),\label{rs:eq:Gram-u}\\
+ \det(v_{h+i+j})_{0\le i,j<m}&=t^{m(m-1)}V_h(m).
+ \label{rs:eq:Gram-v}
+\end{align}
+The exponent is twice $\sum_{i=0}^{m-1}i$. These are polynomial identities,
+not assertions obtained by substituting zero into an undefined quotient.
+
+\subsection{Block elimination}
+\begin{proposition}[Parity formulas]
+\label{rs:prop:parity}
+For $h,m\ge0$,
+\begin{align}
+ \Ht_{2h+1}(2m;t)&=U_h(m)V_h(m),\label{rs:eq:parity1}\\
+ \Ht_{2h+1}(2m+1;t)&=U_h(m+1)V_h(m).
+ \label{rs:eq:parity2}
+\end{align}
+For $h\ge1$ and $m\ge0$,
+\begin{align}
+ \Ht_{2h}(2m;t)&=U_h(m)V_{h-1}(m),\label{rs:eq:parity3}\\
+ \Ht_{2h}(2m+1;t)&=(1+t)U_{h-1}(m+1)V_h(m).
+ \label{rs:eq:parity4}
+\end{align}
+\end{proposition}
+\begin{proof}
+Reorder both rows and columns of the Hankel matrix with the even indices
+first. The permutation signs cancel. For an odd shift $2h+1$, the four
+blocks have entries $u_{h+i+j}$, $s u_{h+i+j}$, $s u_{h+i+j}$, and
+$u_{h+i+j+1}$. Subtract $s$ times even row $i$ from odd row $i$.
+The lower-left block becomes zero; the lower-right block becomes
+$-t(v_{h+i+j})$. Its size is $m$ for both orders $2m$ and $2m+1$;
+the upper-left block has size $m$ or $m+1$. Equations
+\eqref{rs:eq:Gram-u}--\eqref{rs:eq:Gram-v} give the normalization powers
+$2m^2-m=\binom{2m}{2}$ and $2m^2+m=\binom{2m+1}{2}$.
+The remaining sign $(-1)^m$ equals $(-1)^{\binom n2}$.
+
+For an even shift $2h$ and even order, abbreviate the unnormalized moment
+matrices by $U'_r=(u_{r+i+j})_{0\le i,j<m}$. The reordered matrix is
+\[
+ \begin{pmatrix}sU'_{h-1}&U'_h\\ U'_h&sU'_h\end{pmatrix}.
+\]
+Over $\Q(t)$, subtract $s^{-1}$ times each lower row from the corresponding
+upper row. The upper-right block vanishes and the upper-left becomes
+$(t/s)(v_{h-1+i+j})$. The determinant is consequently
+$t^m\det(v_{h-1+i+j})\det(u_{h+i+j})$.
+
+For odd order $2m+1$, subtract $s^{-1}$ times even row $i+1$ from odd
+row $i$, for $0\le i<m$. The lower-left block vanishes; the lower-right
+is $(t/s)(v_{h+i+j})$, and the upper-left is
+$s(u_{h-1+i+j})$ of size $m+1$. The remaining scalar factor is $s t^m$.
+The same two normalization powers give \eqref{rs:eq:parity3} and
+\eqref{rs:eq:parity4}. All final expressions are polynomials, so the temporary
+use of $s^{-1}$ introduces no exception at $t=-1$.
+\end{proof}
+
+\section{The missing Toeplitz factorization}
+\label{rs:sec:toeplitz}
+For a Laurent polynomial $f$, let
+\begin{equation}
+ T_n(f)=\det([z^{j-i}]f(z))_{0\le i,j<n}.
+ \label{rs:eq:T}
+\end{equation}
+The following two formulas are the bridge needed by the repository's
+experimental conjecture. We prove them by elementary finite-dimensional
+linear algebra, rather than requiring a classical-group character
+factorization as a black box.
+
+\begin{theorem}[Two factorizations with a boundary parameter]
+\label{rs:thm:Toeplitz}
+For every symmetric Laurent polynomial $q$ and every $m\ge0$,
+\begin{align}
+ T_{2m}((1+z)(1+u/z)q)&=\UU_m(Q_uq)\VV_m(q),\label{rs:eq:Toeplitz-even}\\
+ T_{2m+1}((1+z)(1+u/z)q)&=(1+u)\UU_{m+1}(q)\VV_m(Q_uq),
+ \label{rs:eq:Toeplitz-odd}
+\end{align}
+where $Q_u=1+u^2+u(z+z^{-1})$. These are polynomial identities in $u$
+and the coefficients of $q$. In particular,
+\begin{equation}
+ T_n((1+z)q)=\UU_{\lceil n/2\rceil}(q)\VV_{\lfloor n/2\rfloor}(q).
+ \label{rs:eq:Toeplitz-zero}
+\end{equation}
+\end{theorem}
+\begin{proof}
+It is enough first to work over a characteristic-zero rational-function
+field, with $u\ne0,1,-1$ and independent coefficients for $q$.
+For Laurent polynomials define
+\[
+ \langle f,g\rangle_q=\CT_z q(z)f(z)g(z^{-1}).
+\]
+This form is symmetric. In consecutive monomial bases for a space $V$, the
+pairing of the left vectors $(1+z)z^i$ with the right vectors
+$(1+uz)z^j$ is the Toeplitz matrix of $(1+z)(1+u/z)q$.
+Translating all exponents by the same integer leaves its entries unchanged.
+We choose centered exponent ranges to expose the symmetry.
+
+\paragraph{Even order.}
+For $n=2m$, take
+\[
+ V=\operatorname{span}\{z^{-m},\ldots,z^{m-1}\},\qquad
+ W=\operatorname{span}\{z^{-m},\ldots,z^m\}.
+\]
+Every element of $W$ has a unique decomposition
+$p(x)+y r(x)$ with $\deg p\le m$ and $\deg r\le m-1$.
+The left space $(1+z)V$ is exactly the subspace of $W$ vanishing at $z=-1$.
+Thus it has basis
+\[
+ (x+2)x^i\ (0\le i<m),\qquad yx^i\ (0\le i<m).
+\]
+Put
+\[
+ z_0=-u^{-1},\qquad x_0=-(u+u^{-1}),\qquad y_0=u-u^{-1}.
+\]
+The right space $(1+uz)V$ is the kernel of evaluation at $z_0$ and has basis
+\[
+ (x-x_0)x^j\ (0\le j<m),\qquad
+ yx^j-y_0x_0^j\ (0\le j<m).
+\]
+Linear independence follows separately from the symmetric and antisymmetric
+parts; their total dimensions are $2m$. Symmetric Laurent polynomials are
+orthogonal to antisymmetric ones for $\langle\ ,\ \rangle_q$.
+The lower-left block is therefore zero. The two diagonal blocks are the
+moment matrices for the weights
+\[
+ (x+2)(x-x_0)q\quad\hbox{and}\quad(4-x^2)q.
+\]
+Because $u(x-x_0)=Q_u$, their determinants are, up to factors depending
+only on $u$ and $m$, $\UU_m(Q_uq)$ and $\VV_m(q)$ by
+\eqref{rs:eq:gramU}--\eqref{rs:eq:gramV}.
+
+Every basis change just made is independent of $q$. Consequently there is
+a nonzero rational function $C_{2m}(u)$, independent of $q$, such that the
+left side of \eqref{rs:eq:Toeplitz-even} equals
+$C_{2m}(u)\UU_m(Q_uq)\VV_m(q)$. We determine this scalar below.
+This observation avoids hiding any powers of two, powers of $u$, or basis
+orientation signs.
+
+\paragraph{Odd order.}
+For $n=2m+1$, take
+\[
+ V=\operatorname{span}\{z^{-m},\ldots,z^m\},\qquad
+ W=\operatorname{span}\{z^{-m},\ldots,z^{m+1}\}.
+\]
+The involution $Jf(z)=zf(z^{-1})$ is an isometry of the pairing.
+Its two eigenspaces are orthogonal, and every element of $W$ is uniquely
+\[
+ (1+z)p(x)+(z-1)r(x),\qquad \deg p,\deg r\le m.
+\]
+A basis of the left space is
+\[
+ (1+z)x^i\ (0\le i\le m),\qquad
+ (z-1)(x+2)x^i\ (0\le i<m).
+\]
+This follows by writing the symmetric and antisymmetric parts of $V$ and
+using $(1+z)y=(z-1)(x+2)$.
+Set $\gamma=(u-1)/(u+1)$. A basis of the right evaluation kernel is
+\[
+ (1+z)x^j+\gamma(z-1)x_0^j\ (0\le j\le m),\qquad
+ (z-1)(x-x_0)x^j\ (0\le j<m).
+\]
+Indeed $(1+z_0)+\gamma(z_0-1)=0$, and dimensions and independence again
+follow from the two eigenspaces. The upper-right block is zero. The diagonal
+blocks now have weights
+\[
+ (x+2)q\quad\hbox{and}\quad(4-x^2)(x-x_0)q,
+\]
+because $(z-1)(z^{-1}-1)=2-x$. Their determinants are proportional to
+$\UU_{m+1}(q)\VV_m(Q_uq)$, with a scalar $C_{2m+1}(u)$ independent of $q$.
+
+\paragraph{Normalization and specialization.}
+For $q=1$, both $\UU_m(1)$ and $\VV_m(1)$ equal one. Tridiagonal
+continuant recurrences give
+\begin{align*}
+ T_n((1+z)(1+u/z))&=1+u+\cdots+u^n,\\
+ \UU_m(Q_u)&=1+u+\cdots+u^{2m},\\
+ \VV_m(Q_u)&=1+u^2+\cdots+u^{2m}.
+\end{align*}
+For example, all three recurrences follow by expanding the last row; the
+first has diagonal $1+u$ and off-diagonal product $u$, while the other two
+have diagonal $1+u^2$, off-diagonal product $u^2$, and, for $\UU$, an extra
+$u$ in the first diagonal position. Their initial values fix the displayed
+sums. They imply $C_{2m}=1$ and $C_{2m+1}=1+u$.
+Both sides of the asserted identities are polynomials. Equality on the
+generic parameter field proves them identically, including $u=0,1,-1$ and
+singular choices of $q$. Substitution $u=0$ gives
+\eqref{rs:eq:Toeplitz-zero}.
+\end{proof}
+
+\section{Proof of the Schur identity and coefficient consequences}
+\label{rs:sec:schurproof}
+\begin{proof}[Proof of Theorem~\ref{rs:thm:schur}]
+Write $E_k(w)=\prod_{x\in\XX_k}(1+xw)$ and, temporarily over $\Q(t)$, put
+\begin{equation}
+ f_k(z)=t^a z^{-a}E_k(z/t).
+ \label{rs:eq:fk}
+\end{equation}
+Its coefficient at $z^{j-i}$ is $t^{i-j}e_{a+j-i}(\XX_k)$.
+The row factors $t^i$ and column factors $t^{-j}$ cancel in the determinant,
+so dual Jacobi--Trudi gives
+\begin{equation}
+ T_n(f_k)=s_{(n^a)}(\XX_k).
+ \label{rs:eq:Tschur}
+\end{equation}
+The point of the chosen alphabet is the following exact factorization:
+\begin{equation}
+ f_k(z)=
+ \begin{cases}
+ (1+z)Q_t(z)^a,&k=2a+1,\\
+ (1+z)(1+t/z)Q_t(z)^{a-1},&k=2a.
+ \end{cases}
+ \label{rs:eq:symbol}
+\end{equation}
+For instance, each paired factor contributes
+$t z^{-1}(1+z/t)(1+tz)=Q_t(z)$.
+For odd $k$, \eqref{rs:eq:Toeplitz-zero} yields exactly
+\eqref{rs:eq:parity1}--\eqref{rs:eq:parity2}. For even $k$, use
+\eqref{rs:eq:Toeplitz-even}--\eqref{rs:eq:Toeplitz-odd} with $u=t$ and
+$q=Q_t^{a-1}$; these yield \eqref{rs:eq:parity3}--\eqref{rs:eq:parity4}.
+Thus $T_n(f_k)=\Ht_k(n;t)$ in all four cases.
+The resulting equality \eqref{rs:eq:main} is between polynomials in $\Z[t]$,
+so it holds there and at every specialization. The case $k=1$ gives the
+empty-height Schur polynomial one.
+\end{proof}
+
+\subsection{A tableau model and reciprocal coefficients}
+The identity says that $\Ht_k(n;t)$ counts semistandard tableaux of shape
+$(n^a)$, with letters in an ordered alphabet of $k$ symbols whose weights are
+$0$ for the first $a$ letters, $1$ for the next, and $2$ for the last $b$.
+The exponent of $t$ is the sum of those weights. Thus the normalization in
+\eqref{rs:eq:H}, including its sign, turns the original Hankel determinant into
+a genuine nonnegative generating polynomial.
+
+\begin{corollary}[Previously known shape properties, recovered]
+\label{rs:cor:shape}
+The polynomial $\Ht_k(n;t)$ has exact degree $(k-1)n$, constant and leading
+coefficients one, positive coefficients at every intermediate degree, and
+\begin{equation}
+ \Ht_k(n;t^{-1})=t^{-(k-1)n}\Ht_k(n;t).
+ \label{rs:eq:Hreciprocity}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The all-zero-weight tableau is unique: every column must contain the first
+$a$ letters in order. Thus the constant term is one.
+For odd $k$, the inverse alphabet is a permutation of $t^{-2}\XX_k$.
+Homogeneity of Schur degree $an$ proves \eqref{rs:eq:Hreciprocity}.
+For even $k=2a$, use the rectangular complement identity
+\begin{equation}
+ s_{(n^{K-A})}(X)=(\prod X)^n s_{(n^A)}(X^{-1})
+ \quad(|X|=K).
+ \label{rs:eq:complement}
+\end{equation}
+It follows immediately by reversing the exponent columns in the
+bialternant, or by complementing columns of a rectangular tableau.
+Here $A=K-A=a$ and $\prod\XX_k=t^{k-1}$. This proves reciprocity and the
+assertion about the top degree and coefficient.
+
+For full support, regard a column as an increasing $a$-subset of
+$\{1,\ldots,k\}$. There is a saturated componentwise chain from the first
+$a$ letters to the last $a$ letters, increasing a single letter by one at
+each step. Each step changes the column weight by zero or one, so the chain
+contains columns of all weights $0,1,\ldots,k-1$. For a desired total
+weight between $0$ and $(k-1)n$, use some initial zero-weight columns, at
+most one intermediate-weight column from this chain, and some final
+maximum-weight columns. The columns are componentwise increasing, hence
+form a semistandard tableau. The empty cases are immediate.
+\end{proof}
+
+These shape properties are not claimed as new relative to Part~I (Theorem~\ref{thm:main}).
+The Schur identity gives a unified interpretation and an alternative proof.
+Ordinary unimodality is false: already
+\[
+ \Ht_4(2;t)=1+2t+5t^2+4t^3+5t^4+2t^5+t^6.
+\]
+A different, weaker coefficient inequality does follow for odd shifts.
+
+\begin{proposition}[Parity-wise unimodality for odd shifts]
+\label{rs:prop:parityunimodal}
+If $k=2a+1$ and $\Ht_k(n;t)=\sum_j c_jt^j$, then
+$c_j=c_{2an-j}$ and $c_j\le c_{j+2}$ whenever $0\le j\le an-1$.
+Thus the coefficients in each fixed parity class are unimodal.
+\end{proposition}
+\begin{proof}
+The eigenvalue alphabet $(\rep{t^{-1}}a,1,\rep ta)$ is the character
+alphabet of the $\SL_2(\C)$ module $(\C^2)^{\oplus a}\oplus\C$.
+The classical Schur-module character theorem \cite{Fulton} identifies
+$t^{-an}\Ht_{2a+1}(n;t)$ with the character of the Schur functor of shape
+$(n^a)$ on that module. Finite-dimensional $\SL_2$ modules in characteristic
+zero are sums of irreducibles, whose characters are
+$t^r+t^{r-2}+\cdots+t^{-r}$. Each such string is symmetric and has
+nondecreasing coefficients in steps of two toward the center. Their sum has
+the same properties. The representation-theoretic facts are imported
+classical results; they are not needed elsewhere in this article.
+\end{proof}
+
+\section{A confluent spectral theorem for rectangles}
+\label{rs:sec:cluster}
+The next theorem separates recurrence existence from recurrence minimality.
+A determinant expansion easily produces exponential terms, but cancellation
+can remove their highest powers of $n$. We identify a unique extremal
+confluent minor and evaluate its leading coefficient, which prevents that
+cancellation.
+
+\subsection{Statement with an explicit leading coefficient}
+Let $\xi_1,\ldots,\xi_\ell$ be distinct nonzero elements of a field of
+characteristic zero. Give them positive multiplicities $m_1,\ldots,m_\ell$,
+put $K=\sum_i m_i$, choose $1\le A<K$, and put $C=K-A$.
+For each allocation
+\begin{equation}
+ 0\le r_i\le m_i,\qquad \sum_i r_i=A,
+ \label{rs:eq:allocation}
+\end{equation}
+define
+\begin{equation}
+ s_i=m_i-r_i,\qquad
+ \lambda_{\boldsymbol r}=\prod_i\xi_i^{r_i},\qquad
+ d_{\boldsymbol r}=\sum_i r_i s_i,
+ \label{rs:eq:lambdad}
+\end{equation}
+and use the factorial ratio
+\begin{equation}
+ B(m,r)=\frac{\prod_{h=0}^{r-1}h!}
+              {\prod_{h=m-r}^{m-1}h!}.
+ \label{rs:eq:Bfactor}
+\end{equation}
+An empty product is one, so $B(m,0)=B(m,m)=1$.
+
+\begin{theorem}[Cluster allocation and exact polynomial degree]
+\label{rs:thm:cluster}
+There are polynomials $P_{\boldsymbol r}(n)$ such that, for every $n\ge0$,
+\begin{equation}
+ s_{(n^A)}(\rep{\xi_1}{m_1},\ldots,\rep{\xi_\ell}{m_\ell})
+ =\sum_{\boldsymbol r}P_{\boldsymbol r}(n)\lambda_{\boldsymbol r}^{\,n}.
+ \label{rs:eq:cluster-expansion}
+\end{equation}
+The canonical polynomials obtained by the confluent Laplace expansion have
+exact degree $d_{\boldsymbol r}$. Their leading coefficients are
+\begin{equation}
+ \boxed{\displaystyle
+ L_{\boldsymbol r}=
+ (-1)^{\sum_{i<j}r_i s_j}
+ \frac{\prod_i B(m_i,r_i)\xi_i^{C r_i-r_i s_i}}
+ {\prod_{i<j}(\xi_j-\xi_i)^{s_i r_j+r_i s_j}}.}
+ \label{rs:eq:LC}
+\end{equation}
+In particular every $L_{\boldsymbol r}$ is nonzero. If the products
+$\lambda_{\boldsymbol r}$ are pairwise distinct, the reduced generating
+function denominator is exactly
+\begin{equation}
+ \prod_{\boldsymbol r}(1-\lambda_{\boldsymbol r}z)^{d_{\boldsymbol r}+1},
+ \label{rs:eq:cluster-denominator}
+\end{equation}
+and the corresponding characteristic polynomial is the minimal recurrence.
+\end{theorem}
+
+Distinctness of the nodes is not the same as distinctness of the products.
+The first hypothesis suffices for the degree and leading-coefficient
+statements for the canonical summands. The second is essential to the
+last assertion: summands with a common product must otherwise be combined.
+
+\subsection{The confluent bialternant}
+For distinct variables $X=(x_1,\ldots,x_K)$, the rectangular bialternant is
+\begin{equation}
+ s_{(n^A)}(X)=
+ \frac{\det(x_i^{e_j})_{1\le i,j\le K}}
+      {\prod_{i<j}(x_j-x_i)},\qquad
+ (e_j)=(0,1,\ldots,C-1,n+C,\ldots,n+K-1).
+ \label{rs:eq:bialternant}
+\end{equation}
+To coalesce $m_i$ variables at $\xi_i$, replace their rows by the normalized
+derivative rows of orders $0,1,\ldots,m_i-1$. Taylor expansion and multilinearity
+show that the within-cluster Vandermonde factor cancels between numerator
+and denominator. Thus the numerator matrix has rows $(i,h)$ and entries
+\begin{equation}
+ \binom{e_j}{h}\xi_i^{e_j-h},\qquad 0\le h<m_i,
+ \label{rs:eq:confluent-entries}
+\end{equation}
+and its denominator is
+\begin{equation}
+ \Delta_{\boldsymbol m}(\boldsymbol\xi)
+   =\prod_{i<j}(\xi_j-\xi_i)^{m_i m_j}.
+ \label{rs:eq:confluent-den}
+\end{equation}
+Rows are ordered by increasing cluster label, then increasing derivative
+order. This convention fixes all signs. This limiting identity is a standard
+repeated-variable bialternant; \cite{GSM} supplies general treatments.
+The Taylor argument just described explains the factorial normalization
+used here.
+
+Expand the numerator along its last $A$ columns. Suppose these columns
+select $r_i$ rows from cluster $i$, with derivative-order set $R_i$.
+The remaining $C$ columns contain no $n$. From every selected cluster row
+in the last block one can extract $\xi_i^n$, leaving a polynomial in $n$.
+Grouping by $(r_1,\ldots,r_\ell)$ proves the existence of
+\eqref{rs:eq:cluster-expansion}. The main issue is its exact degree.
+
+\subsection{Degree loss forced by confluent rows}
+Write $D^h f=f^{(h)}/h!$ and $g_j(x)=x^{C+j}$ for $0\le j<A$.
+Normalized Leibniz expansion gives
+\begin{equation}
+ D^h(x^n g_j(x))\big|_{x=\xi_i}
+ =\xi_i^n\sum_{p=0}^{h}
+       \binom{n}{h-p}\xi_i^{p-h}D^p g_j(\xi_i).
+ \label{rs:eq:Leibniz}
+\end{equation}
+For a fixed cluster, the $r_i$ selected rows are linear combinations of the
+rows $(D^p g_j(\xi_i))_j$. In a nonzero determinant contribution, the selected
+$p$'s in that cluster must be distinct. Cauchy--Binet makes this statement
+literal: the coefficient matrix is block diagonal by cluster, so each
+nonzero minor selects exactly $r_i$ derivative rows from cluster $i$.
+The sum of their orders is at least $\binom{r_i}{2}$. Hence the degree of
+the high-column determinant, after removing $\lambda_{\boldsymbol r}^n$,
+is at most
+\begin{equation}
+ \sum_i\left(\sum_{h\in R_i}h-\binom{r_i}{2}\right).
+ \label{rs:eq:degree-bound}
+\end{equation}
+Among all $r_i$-subsets of $\{0,\ldots,m_i-1\}$, the sum of orders is
+uniquely maximized by
+\begin{equation}
+ R_i=\{s_i,s_i+1,\ldots,m_i-1\}.
+ \label{rs:eq:toprows}
+\end{equation}
+For that set the contribution to \eqref{rs:eq:degree-bound} is $r_i s_i$.
+Every other row selection has strictly lower total degree. This proves that
+only one Laplace row selection can contribute to $n^{d_{\boldsymbol r}}$.
+It remains to show that its coefficient is nonzero and to calculate it.
+
+\subsection{Evaluation of the unique leading term}
+For the choice \eqref{rs:eq:toprows}, the lowest possible derivative orders
+in \eqref{rs:eq:Leibniz} are $p=0,\ldots,r_i-1$. Since
+$\binom n{h-p}$ has leading coefficient $1/(h-p)!$, the local leading
+coefficient determinant is
+\begin{equation}
+ \det\left(\frac{1}{(s_i+h-p)!}\right)_{0\le h,p<r_i}
+ =B(m_i,r_i),
+ \label{rs:eq:factorial-det}
+\end{equation}
+where a negative factorial is interpreted as giving entry zero.
+To verify this identity, multiply row $h$ by $(s_i+h)!$. The entry in
+column $p$ becomes the monic falling-factorial polynomial
+$(s_i+h)_{\underline p}$ of degree $p$. Its determinant is the Vandermonde
+of $s_i,s_i+1,\ldots,s_i+r_i-1$, namely
+$\prod_{h=0}^{r_i-1}h!$. Division by the row factors proves
+\eqref{rs:eq:factorial-det}.
+The powers of $\xi_i$ in \eqref{rs:eq:Leibniz} supply
+$\xi_i^{-r_i s_i}$.
+
+The low-column minor uses derivative orders $0,\ldots,s_i-1$ in each cluster,
+so its determinant is
+$\prod_{i<j}(\xi_j-\xi_i)^{s_i s_j}$.
+The high-column derivative matrix with orders $0,\ldots,r_i-1$ is the
+confluent matrix of $g_j(x)=x^C x^j$. Multiplication by $x^C$ induces, within
+each cluster, a lower-triangular derivative change with diagonal $\xi_i^C$.
+Its determinant is therefore
+\[
+ \left(\prod_i\xi_i^{C r_i}\right)
+ \prod_{i<j}(\xi_j-\xi_i)^{r_i r_j}.
+\]
+In the full Laplace expansion the selected high rows follow the low rows
+within each cluster. Moving all low rows before all high rows crosses
+$r_i s_j$ pairs for each $i<j$, so the sign is
+$(-1)^{\sum_{i<j}r_i s_j}$. Finally, divide by
+\eqref{rs:eq:confluent-den}. The cross exponent becomes
+$m_i m_j-s_i s_j-r_i r_j=s_i r_j+r_i s_j$, giving exactly
+\eqref{rs:eq:LC}. None of its factors vanishes. This proves the exact degree.
+
+\subsection{Why the recurrence is minimal}
+For a nonzero polynomial $P$ of degree $d$ and nonzero $\lambda$,
+\[
+ (E-\lambda)(P(n)\lambda^n)
+ =\lambda^{n+1}(P(n+1)-P(n)).
+\]
+Thus $(E-\lambda)^{d+1}$ kills this sequence, whereas the $d$th power does
+not. If $\mu\ne\lambda$, applying $E-\mu$ preserves its polynomial degree
+and multiplies its leading coefficient by $\lambda-\mu$.
+These observations prove independence of the spaces
+$\{P(n)\lambda^n\}$ for distinct $\lambda$: apply operators killing all
+but one of a putative relation.
+Equivalently, $\sum_{n\ge0}P(n)(\lambda z)^n$ has a pole of exact order
+$d+1$ at $z=\lambda^{-1}$; its top pole coefficient is a nonzero multiple
+of $d!\LC(P)$. Distinct poles cannot cancel one another. Applying this to
+\eqref{rs:eq:cluster-expansion} proves \eqref{rs:eq:cluster-denominator} and
+finishes Theorem~\ref{rs:thm:cluster}.
+
+\section{Exact recurrences for Cigler's family}
+\label{rs:sec:recurrence}
+\begin{proof}[Proof of Theorem~\ref{rs:thm:recurrence-main}]
+For $k\ge2$, specialize Theorem~\ref{rs:thm:cluster} to cluster nodes
+$(1,t,t^2)$ and multiplicities $(a,1,b)$, omitting a zero-multiplicity cluster.
+The height is $A=a$. An allocation satisfies $r_1+r_2+r_3=a$ and
+$r_2\in\{0,1\}$. Its product is $t^q$, where $q=r_2+2r_3$.
+For each feasible $q$ the allocation is unique:
+\begin{equation}
+ r_3=\lfloor q/2\rfloor,\qquad r_2=q-2\lfloor q/2\rfloor,
+ \qquad r_1=a-\lceil q/2\rceil.
+ \label{rs:eq:qallocation}
+\end{equation}
+The feasible values are exactly $0\le q\le k-1$. Uniqueness is crucial:
+the algebraic relation between the three nodes creates no collision between
+different allocations because the middle cluster has multiplicity one.
+
+The exact degree is
+\begin{equation}
+ d_q=r_1(a-r_1)+r_3(b-r_3)
+     =\left\lfloor\frac{q(k-1-q)}2\right\rfloor.
+ \label{rs:eq:dq}
+\end{equation}
+For example, if $q=2h$ the first expression is $h(a+b-2h)$.
+If $q=2h+1$, it is $(a-h-1)(h+1)+h(b-h)$; substituting $b=a$ or $a-1$
+gives the displayed floor in either parity of $k$.
+Thus
+\begin{equation}
+ \Ht_k(n;t)=\sum_{q=0}^{k-1}P_{k,q}(n;t)t^{qn},\qquad
+ \deg_n P_{k,q}=e_{k,q}-1,
+ \label{rs:eq:spectralH}
+\end{equation}
+with nonzero leading coefficients supplied by \eqref{rs:eq:LC}.
+Over $\Q(t)$ the products $t^q$ are distinct; Theorem~\ref{rs:thm:cluster}
+proves minimality. At a real parameter outside $\{0,1,-1\}$, the nodes
+$1,t,t^2$ and the products $t^q$ remain distinct and nonzero, and all the
+same leading coefficients remain nonzero. The case $k=1$ is simply the
+constant sequence one.
+\end{proof}
+
+\begin{corollary}[Exact recurrence orders]
+\label{rs:cor:orders}
+For $a\ge1$,
+\begin{align}
+ N_{2a}&=2a+\frac{a(a-1)(2a-1)}3,\label{rs:eq:N-even}\\
+ N_{2a+1}&=2a+1+\frac{2a(a^2-1)}3.
+ \label{rs:eq:N-odd}
+\end{align}
+Also $N_1=1$.
+\end{corollary}
+\begin{proof}
+Sum \eqref{rs:eq:exponents}. If $k=2a$, the product $q(2a-1-q)$ is always
+even, so there is no rounding. If $k=2a+1$, subtract $1/2$ for each odd
+$q$ from $q(2a-q)/2$; there are $a$ such values. The usual sums of
+integers and squares give the formulas.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}c l r r@{}}
+\toprule
+$k$ & Pole multiplicities $(e_{k,0},\ldots,e_{k,k-1})$ & $N_k$ & $N_k-k$\\
+\midrule
+1 & $(1)$ & 1 & 0\\
+2 & $(1,1)$ & 2 & 0\\
+3 & $(1,1,1)$ & 3 & 0\\
+4 & $(1,2,2,1)$ & 6 & 2\\
+5 & $(1,2,3,2,1)$ & 9 & 4\\
+6 & $(1,3,4,4,3,1)$ & 16 & 10\\
+7 & $(1,3,5,5,5,3,1)$ & 23 & 16\\
+8 & $(1,4,6,7,7,6,4,1)$ & 36 & 28\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is stronger than recurrence existence and stronger than the repository's
+coarse product of powers of $E^2-t^{2q}$. The proof identifies every needed
+root and every needed multiplicity. It also explains why a numerical fit
+at $t=1$ would be misleading: that parameter merges all the roots, producing
+a very different reduced recurrence.
+
+\subsection{Exact computation without a large Hankel matrix}
+For fixed $k$, Jacobi--Trudi computes $\Ht_k(n;t)$ as an $a\times a$
+determinant, not an $n\times n$ determinant. Its entries are generated by
+\begin{equation}
+ \sum_{j\ge0}h_j(\XX_k)w^j
+ =\frac1{(1-w)^a(1-tw)(1-t^2w)^b}.
+ \label{rs:eq:h-generating}
+\end{equation}
+For many successive orders, one can instead compute an initial segment and
+use the exact order-$N_k$ recurrence. For an isolated very large order,
+recurrence exponentiation gives an alternative whose field-operation count
+is logarithmic in $n$ for fixed $k$. None of these statements removes output
+size or integer bit complexity: an expanded polynomial still has degree
+$(k-1)n$, and integer specializations may have linearly growing bit length.
+The polynomial $P_{k,q}(n;t)$ can be obtained directly from the finite
+confluent Laplace expansion, without guessing it by interpolation.
+
+\section{Generating numerators, negative indices, and a corrected sign}
+\label{rs:sec:numerator}
+Set
+\begin{equation}
+ \delta_k=a(k-a)=\lfloor k^2/4\rfloor,\qquad
+ C_k=\binom k2,\qquad R_k=N_k-k.
+ \label{rs:eq:deltaR}
+\end{equation}
+Here $\delta_k$ is not a Hankel determinant. It is the degree of the dimension
+polynomial that appears at $t=1$.
+
+\subsection{Negative-width continuation}
+The exponential-polynomial expression \eqref{rs:eq:spectralH} defines
+$\Ht_k(n;t)$ for every integer $n$, over $\Q(t)$. This is an algebraic
+continuation in the width index, not a combinatorial interpretation of a
+negative rectangle.
+
+\begin{lemma}[A zero gap and negative-index reciprocity]
+\label{rs:lem:negative}
+For $k\ge2$,
+\begin{align}
+ \Ht_k(-j;t)&=0&& (1\le j\le k-1),\label{rs:eq:negativezero}\\
+ \Ht_k(-k-r;t)&=(-1)^{\delta_k}t^{-C_k-(k-1)r}\Ht_k(r;t)
+ &&(r\ge0).
+ \label{rs:eq:negativeH}
+\end{align}
+For $k=1$, the second identity holds and the zero range is empty.
+\end{lemma}
+\begin{proof}
+Use the bialternant \eqref{rs:eq:bialternant}, initially for distinct nonzero
+variables. Its exponent columns are $0,\ldots,K-A-1$ and
+$n+K-A,\ldots,n+K-1$. If $n=-j$ with $1\le j\le K-1$, the two intervals
+overlap, so two columns coincide. If $n=-K-r$, the second interval is
+$-A-r,\ldots,-r-1$. Move that block before the first block, with sign
+$(-1)^{A(K-A)}$, then multiply each variable row by $x_i^{A+r}$.
+The resulting bialternant is that of $s_{(r^{K-A})}(X)$. Therefore the
+continued value is
+\[
+ (-1)^{A(K-A)}(\prod X)^{-A-r}s_{(r^{K-A})}(X)
+ =(-1)^{A(K-A)}(\prod X)^{-A}s_{(r^A)}(X^{-1}),
+\]
+where the last step is \eqref{rs:eq:complement}. The identities survive
+confluence. On $\XX_k$, one has
+$(\prod\XX_k)^a=t^{C_k}$, and \eqref{rs:eq:Hreciprocity} gives the remaining
+factor. Since both the bialternant and the spectral expansion agree for all
+$n\ge0$, their polynomial-exponential extensions agree identically.
+\end{proof}
+
+\subsection{The exact numerator theorem}
+\begin{theorem}[Degree and corrected reciprocity]
+\label{rs:thm:numerator}
+The reduced generating function has the form
+\begin{equation}
+ \GG_k(z,t)=\frac{\AN_k(z,t)}{\QQ_k(z,t)},\qquad
+ \AN_k\in\Z[t,z],\quad \AN_k(0,t)=1.
+ \label{rs:eq:Gfraction}
+\end{equation}
+Its numerator has exact $z$-degree $R_k=N_k-k$, with leading coefficient
+\begin{equation}
+ [z^{R_k}]\AN_k=(-1)^{N_k+\delta_k+1}t^{(k-1)R_k/2},
+ \label{rs:eq:numleading}
+\end{equation}
+and satisfies
+\begin{equation}
+ \boxed{\displaystyle
+ t^{(k-1)R_k/2}z^{R_k}
+ \AN_k\!\left(\frac1{t^{k-1}z},t\right)
+ =(-1)^{N_k+\delta_k+1}\AN_k(z,t).}
+ \label{rs:eq:numreciprocity}
+\end{equation}
+The sign is $(-1)^{a+1}$ when $k=2a$ and is $+1$ when $k$ is odd.
+\end{theorem}
+\begin{proof}
+Every exponential-polynomial sequence $F(n)$ has the following expansion
+of its ordinary rational generating function at infinity:
+\begin{equation}
+ \sum_{n\ge0}F(n)z^n=-\sum_{j\ge1}F(-j)z^{-j}.
+ \label{rs:eq:infinity}
+\end{equation}
+This is a statement about expansions of one rational function at two
+places, not an equality between two convergent series on a common annulus.
+For $F(n)=\lambda^n$ it is the two expansions of $(1-\lambda z)^{-1}$.
+Applying $(z\,d/dz)^h$ proves it for $n^h\lambda^n$, hence in general.
+
+Lemma~\ref{rs:lem:negative} shows that the first nonzero term at infinity is
+$-\Ht_k(-k;t)z^{-k}=(-1)^{\delta_k+1}t^{-C_k}z^{-k}$.
+The denominator has degree $N_k$, so the numerator has degree $N_k-k$.
+Its leading coefficient is obtained by multiplying that term by the leading
+coefficient $(-1)^{N_k}t^{\sum_q q e_{k,q}}$ of $\QQ_k$.
+Symmetry $e_{k,q}=e_{k,k-1-q}$ gives
+$\sum_q q e_{k,q}=(k-1)N_k/2$, proving \eqref{rs:eq:numleading}.
+The recurrence makes the numerator a finite convolution of polynomials in
+$\Z[t]$, so it lies in $\Z[t,z]$.
+
+Substitute $1/(t^{k-1}z)$ in the expansion at infinity and use
+\eqref{rs:eq:negativeH}. Since $k(k-1)=2C_k$, this gives
+\begin{equation}
+ \GG_k\!\left(\frac1{t^{k-1}z},t\right)
+ =(-1)^{\delta_k+1}t^{C_k}z^k\GG_k(z,t).
+ \label{rs:eq:Greciprocity}
+\end{equation}
+On the other hand,
+\[
+ \QQ_k\!\left(\frac1{t^{k-1}z},t\right)
+ =(-1)^{N_k}t^{-(k-1)N_k/2}z^{-N_k}\QQ_k(z,t).
+\]
+Combining these two formulas proves \eqref{rs:eq:numreciprocity}.
+For even $k=2a$, $N_k$ is even and $\delta_k=a^2$.
+For odd $k$, $N_k$ is odd and $\delta_k=a(a+1)$ is even.
+These parity facts give the stated signs. They also show explicitly that
+all displayed half-exponents of $t$ are integers.
+\end{proof}
+
+\subsection{What this says about the printed Conjecture 18}
+For even shift $k=2a$, Cigler's $d_{2a}(n,t)$ is exactly our
+$\Ht_{2a}(n;t)$. The denominator exponent in his equation~(84) is
+\[
+ aj-\frac{(j-1)(j+2)}2
+ =1+\frac{j(2a-1-j)}2=e_{2a,j}.
+\]
+Thus the present theorem proves that proposed denominator and proves it is
+minimal. Its numerator degree is
+\[
+ R_{2a}=\frac{a(a-1)(2a-1)}3.
+\]
+However, the positive-sign reciprocity printed in equation~(85) is false
+when $a$ is even. The corrected sign is $(-1)^{a+1}$.
+This is not a subtle large-index discrepancy: the same source prints
+\begin{equation}
+ \GG_4(z,t)=\frac{1-t^3z^2}
+ {(1-z)(1-tz)^2(1-t^2z)^2(1-t^3z)}.
+ \label{rs:eq:G4}
+\end{equation}
+For its numerator,
+$t^3z^2\AN_4(1/(t^3z),t)=t^3z^2-1=-\AN_4(z,t)$.
+This directly contradicts the positive sign in the printed equation.
+We therefore prove a corrected formulation, not the literal whole of
+Conjecture~18. The original source, printed page~24, was inspected directly
+for this comparison \cite{Cigler}.
+
+\subsection{The period-four signed normalization}
+The source uses $d_k(n,t)=t^{-\binom n2}D_k(n;t)$. For odd $k$ this is
+$\sigma_n\Ht_k(n;t)$, where
+\begin{equation}
+ \sigma_n=(-1)^{\binom n2}
+ =\frac{1-i}{2}i^n+\frac{1+i}{2}(-i)^n.
+ \label{rs:eq:sigma}
+\end{equation}
+The two normalizations must not be interchanged in a generating function.
+
+\begin{theorem}[Exact signed denominator and numerator]
+\label{rs:thm:signed}
+Let $k=2a+1$ and write
+$\widehat\GG_k(z,t)=\sum_{n\ge0}d_k(n,t)z^n$.
+Its reduced denominator over $\Q(t)$ is exactly
+\begin{equation}
+ \widehat\QQ_k(z,t)=\prod_{q=0}^{k-1}(1+t^{2q}z^2)^{e_{k,q}}.
+ \label{rs:eq:hatden}
+\end{equation}
+The numerator $\widehat\AN_k$ lies in $\Z[t,z]$, has constant term one
+and exact degree $\widehat R_k=2N_k-k$, and satisfies
+\begin{equation}
+ t^{(k-1)\widehat R_k/2}z^{\widehat R_k}
+ \widehat\AN_k\!\left(\frac1{t^{k-1}z},t\right)
+ =(-1)^a\widehat\AN_k(z,t).
+ \label{rs:eq:hatreciprocity}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Equation~\eqref{rs:eq:sigma} changes each spectral root $t^q$ into the two
+roots $it^q$ and $-it^q$, with nonzero coefficients. They are all distinct
+over $\Q(t,i)$, so the minimality argument doubles the recurrence order
+and gives \eqref{rs:eq:hatden}. The product has rational coefficients, and
+minimality over the extension implies minimality over $\Q(t)$.
+For negative indices, $\sigma_{-k-r}=(-1)^{a+1}\sigma_r$.
+Since $\delta_k$ is even, the proof of
+\eqref{rs:eq:Greciprocity} becomes
+\[
+ \widehat\GG_k\!\left(\frac1{t^{k-1}z},t\right)
+ =(-1)^a t^{C_k}z^k\widehat\GG_k(z,t).
+\]
+The gap of $k-1$ zero negative indices gives degree $2N_k-k$ as before.
+The quadratic denominator transforms without a sign, with factor
+$t^{-(k-1)N_k}z^{-2N_k}$. This proves
+\eqref{rs:eq:hatreciprocity} and the remaining assertions.
+\end{proof}
+
+As a useful normalization check, the first nontrivial odd shift gives
+\begin{equation}
+ \widehat\GG_3(z,t)=
+ \frac{1+(1+t+t^2)z-t(1+t+t^2)z^2-t^3z^3}
+ {(1+z^2)(1+t^2z^2)(1+t^4z^2)}.
+ \label{rs:eq:Ghat3}
+\end{equation}
+It has $d_3(1,t)=c_3(t)=1+t+t^2$, as the moment definition requires.
+The cubic term and the sign in \eqref{rs:eq:Ghat3} cannot be omitted. This
+provides a second direct check on the printed small-shift generating
+functions, independent of the general numerator proof.
+
+\noindent[Added 29 September 2026, batch 56. Observation of this merge,
+not of the manuscript; it concerns the external source only. The generating
+function for $d_3$ printed on p.~24 of \cite{Cigler}, with numerator
+$1+(1+t)^2x+t^2x^2$ over $(1+x^2)(1+t^2x^2)(1+t^4x^2)$, is incorrect: its
+coefficient of $x$ is $(1+t)^2$, whereas $d_3(1,t)=c_3(t)=1+t+t^2$ (at
+$t=2$: $9$ against $7$). The numerator of \eqref{rs:eq:Ghat3} factors as
+$(1-tz)\bigl(1+(1+t)^2z+t^2z^2\bigr)$, so the printed numerator omits the
+factor $1-tx$. Equation~\eqref{rs:eq:Ghat3} agrees with the determinants for
+$n<10$ at $t=2,3,-5/2$, and so do the printed generating functions for
+$d_1$, $d_2$ and $d_4$. In the same source, equation~(87), for the shift
+$2k+1$, has the sign $(-1)^k$ and the argument $1/(t^{2k}x)$ of
+Theorem~\ref{rs:thm:signed} with $a=k$, but its exponents of $x$ and $t$,
+$\rho(k)=\tfrac{2k(k-1)(2k-1)}3-2(k-1)^2+1$ and $k\rho(k)$, hold only with
+$\rho(k+1)=(4k^3+2k+3)/3=\widehat R_{2k+1}$ in place of $\rho(k)$: for the
+shift $3$ the printed exponent is $\rho(1)=1$, while the numerator
+\eqref{rs:eq:Ghat3} has degree $3$. So (87) mixes the indices of two shifts;
+its sign is right. Both readings were checked on a rendering of the printed
+page of arXiv:2111.14492v3 and by exact computation during the intake.]
+
+
+\section{Sharp convergence and all real specializations}
+\label{rs:sec:asymptotic}
+
+\subsection{The leading nonconstant spectral term}
+\begin{theorem}[Sharp fixed-parameter convergence equivalent]
+\label{rs:thm:asymptotic}
+Fix $k\ge2$ and $0<t<1$. Then, as $n\to\infty$,
+\begin{equation}
+ \boxed{\displaystyle
+ \frac1{(1-t)^a(1-t^2)^{ab}}-\Ht_k(n;t)
+ \sim
+ \frac{n^{a-1}t^{n+1}}
+ {(a-1)!(1-t)^{b+1}(1-t^2)^{(a-1)b}}.}
+ \label{rs:eq:sharp-asymptotic}
+\end{equation}
+The equivalent is uniform for $t$ in each compact subinterval of $(0,1)$;
+more precisely, its relative error is $O(1/n)$ on such a subinterval.
+\end{theorem}
+\begin{proof}
+At $q=0$, the allocation is $(a,0,0)$ and $d_0=0$.
+Formula~\eqref{rs:eq:LC} consequently gives the whole constant spectral term,
+not merely a leading approximation:
+\begin{equation}
+ P_{k,0}(n;t)=F_k(t):=\frac1{(1-t)^a(1-t^2)^{ab}}.
+ \label{rs:eq:Fexact}
+\end{equation}
+At $q=1$, the allocation is $(a-1,1,0)$, of degree $a-1$.
+Here $B(a,a-1)=1/(a-1)!$. Substitution into \eqref{rs:eq:LC}, followed by
+cancellation of the factors $t^2-t=t(t-1)$, yields
+\begin{equation}
+ [n^{a-1}]P_{k,1}(n;t)
+ =-\frac{t}{(a-1)!(1-t)^{b+1}(1-t^2)^{(a-1)b}}.
+ \label{rs:eq:L1}
+\end{equation}
+All remaining terms in \eqref{rs:eq:spectralH} contain $t^{qn}$ with $q\ge2$.
+For fixed $k$, their polynomial degrees are bounded and their rational
+coefficients are bounded on any compact subinterval of $(0,1)$.
+They are exponentially smaller than $n^{a-1}t^n$ there.
+The lower coefficients of $P_{k,1}$ give relative error $O(1/n)$;
+when $a=1$ there are no such coefficients. Equations
+\eqref{rs:eq:Fexact}--\eqref{rs:eq:L1} prove the assertion.
+\end{proof}
+
+The repository already identifies $F_k$ as the limiting series and proves
+the formal first defect
+\begin{equation}
+ \Ht_k(n;t)=F_k(t)-\binom{n+a}{a-1}t^{n+1}+O(t^{n+2})
+ \quad\hbox{in }\Q[[t]]
+ \label{rs:eq:old-defect}
+\end{equation}
+for fixed $n$ (Part~I, Theorem~\ref{thm:main}). The limit in
+\eqref{rs:eq:sharp-asymptotic} is a different statement: $t$ is fixed and
+$n$ grows, so all powers beyond $t^{n+1}$ can affect the prefactor.
+The rational factor in \eqref{rs:eq:sharp-asymptotic} accounts for those
+contributions. In particular, a formal first-defect formula alone would
+not justify this asymptotic equivalent. For example,
+\[
+ F_4(1/2)-\Ht_4(n;1/2)\sim\frac83 n\,2^{-n}.
+\]
+No uniform assertion near $t=1$ is made; the pole collision there requires
+a different scaling analysis.
+
+\subsection{The exceptional real parameters}
+\begin{theorem}[Complete real-parameter denominator classification]
+\label{rs:thm:real}
+For $\sum_{n\ge0}\Ht_k(n;t)z^n$, the reduced denominator at every real
+parameter is as follows, always normalized to constant term one:
+\begin{equation}
+\begin{array}{c|l}
+\text{parameter} & \text{reduced denominator}\\ \hline
+ t\notin\{0,1,-1\} & \displaystyle\prod_{q=0}^{k-1}(1-t^qz)^{e_{k,q}}\\[5pt]
+ t=0 & 1-z\\[2pt]
+ t=1 & (1-z)^{\delta_k+1}\\[2pt]
+ t=-1,\ k=2a & (1-z^2)^{a(a-1)+1}\\[2pt]
+ t=-1,\ k=2a+1 & (1-z)^{a^2+1}(1+z)^{a^2}.
+\end{array}
+\label{rs:eq:real-table}
+\end{equation}
+All exponents are exact, not just upper bounds. In particular the last
+line includes $k=1$ with $a=0$.
+\end{theorem}
+\begin{proof}
+The generic real case was proved in Theorem~\ref{rs:thm:recurrence-main}.
+At zero, the alphabet contains $a$ ones and zeros. Only the tableau using
+all $a$ one-valued letters in each column contributes, so $\Ht_k(n;0)=1$.
+
+At one, every alphabet entry is one. The confluent bialternant reduces to
+the elementary dimension product
+\begin{equation}
+ \Ht_k(n;1)=\prod_{i=1}^{a}\prod_{j=a+1}^{k}\frac{n+j-i}{j-i}.
+ \label{rs:eq:dimension}
+\end{equation}
+One can derive this directly: the determinant of the normalized derivative
+matrix at one is the Vandermonde of its exponent columns divided by
+$\prod_{h=0}^{k-1}h!$. The within-block factors cancel, leaving precisely
+the cross-block ratios in \eqref{rs:eq:dimension}. The product is a nonzero
+polynomial in $n$ of exact degree $\delta_k$. Its generating denominator is
+therefore $(1-z)^{\delta_k+1}$.
+
+At minus one, the alphabet is $1$ repeated $k-1$ times together with a
+single $-1$. For $k\ge2$, apply Theorem~\ref{rs:thm:cluster} with these two
+nodes. There are only two allocations: the $-1$ cluster contributes zero
+or one selected row. The spectral roots are $1$ and $-1$, and the polynomial
+degrees are respectively
+\[
+ d_+=a(k-1-a)=ab,\qquad d_-=(a-1)(k-a)=(a-1)(b+1).
+\]
+Their leading coefficients are nonzero by \eqref{rs:eq:LC}. If $k=2a$, both
+degrees are $a(a-1)$; if $k=2a+1$, they are $a^2$ and $a^2-1$.
+This proves the two last lines. For $k=1$ the sequence is one directly.
+\end{proof}
+
+The determinant values at $t=1$ and the Catalan-related simplifications at
+$t=-1$ are related to the source's specializations (\cite{Cigler}; Part~I, Section~\ref{sec:examples} and Appendix~\ref{app:one}).
+The conclusion here is an exact reduced-recurrence classification at those
+specializations, including the proof that the surviving poles really occur.
+It would be incorrect to substitute $t=1$ into the generic product and call
+the resulting multiplicity $N_k$ minimal: the actual multiplicity is
+$\delta_k+1$.
+
+\section{Reproducibility, proof dependencies, and formalization}
+\label{rs:sec:audit}
+
+\subsection{What the accompanying program actually checks}
+The package contains \texttt{code/verify.py}, a runnable verifier. It uses
+fraction-free Bareiss elimination with an exact-division check at every
+step. The original binomial moments and the Schur side are constructed
+independently. For the latter, complete homogeneous polynomials are
+computed from \eqref{rs:eq:h-generating}, then an $a\times a$ Jacobi--Trudi
+determinant is evaluated. All numerical checks use integers or rational
+numbers. SymPy is used only for exact polynomial-ring checks.
+
+The run supplied in \texttt{data/verification.json} and
+\texttt{data/verification.log} used Python~3.13.5 and SymPy~1.14.0.
+All of the following checks passed:
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.34\linewidth}p{0.45\linewidth}r@{}}
+\toprule
+Check & Range or method & Cases\\
+\midrule
+Original Hankel vs. Schur & $1\le k\le12$, $0\le n\le12$;
+$t=-3,-2,-1,1,2,3,5$ & 1,092\\[3pt]
+Universal Toeplitz factorization & 12 signed symmetric symbols;
+$0\le n\le12$; $u=-3,-2,-1,0,1,2,3$ & 1,092\\[3pt]
+Ordinary recurrence and numerator & $1\le k\le12$; $t=-2,2,3$;
+sequence checked through $2N_k+8$ & 36\\[3pt]
+Period-four signed recurrence & Odd $k$ from 1 to 11; $t=-2,2,3$ & 18\\[3pt]
+Numerator reciprocity coefficients & All coefficients of both tested
+numerator families & 2,052\\[3pt]
+Confluent leading coefficients & Five cluster-multiplicity families at
+prime nodes; also Cigler $2\le k\le10$, $t=2$ & 143\\[3pt]
+Exceptional real parameters & $1\le k\le12$, $t=0,1,-1$ & 36\\[3pt]
+Exact polynomial Hankel--Schur identity & $1\le k\le8$, $0\le n\le6$
+in $\Z[t]$ & 56\\
+\bottomrule
+\end{tabular}
+\end{center}
+The polynomial checks also test reciprocity, positive support, and the
+odd-shift parity-wise coefficient inequalities. Their actual coefficient
+arrays are saved in \texttt{data/sample\_polynomials.json}. The universal
+Toeplitz test uses a reproducible pseudorandom seed, $260929$, and includes
+negative coefficients, so it is not restricted to positive moment forms.
+The JSON record lists every cluster family and range explicitly.
+
+\noindent[Added 29 September 2026, batch 56: in this report the verifier
+is shipped as \path{code/02-schur-recurrences-verify.py} and its records as
+\path{data/02-schur-recurrences-verification.json},
+\path{data/02-schur-recurrences-verification.log} and
+\path{data/02-schur-recurrences-sample_polynomials.json};
+\path{code/verify.py} and \path{data/verification.json} are Part~I's files
+(Section~\ref{sec:verify}). Run the verifier with an explicit
+\texttt{--output} outside \path{data/}: by default it writes
+\path{data/verification.json}, and it always writes
+\path{sample_polynomials.json} next to its output, so a run without
+\texttt{--output} would overwrite Part~I's records. A rerun on a copy on
+29 September 2026 (Python 3.13.5, SymPy 1.14.0) passed every check and
+reproduced the recorded files up to line endings (the script writes CRLF on
+Windows) and the field \texttt{elapsed\_seconds}. For the exceptional
+parameters the recorded run checks that the denominators of
+Theorem~\ref{rs:thm:real} annihilate the sequences; their minimality is
+proved in the text, and an independent Berlekamp--Massey computation during
+the intake found exactly those minimal denominators for $k\le10$ at
+$t=0,\pm1$, and exactly $\QQ_k$ for $k\le9$ at $t=2,3,-2,1/2$.]
+
+
+There is a useful independent exact test of \eqref{rs:eq:LC}. For distinct
+spectral roots $\lambda_j$ with degrees $d_j$, the leading coefficient of
+$P_j$ can be extracted directly from the sequence $F$ by
+\begin{equation}
+ \LC(P_j)=
+ \frac{\left[\displaystyle\prod_{\ell\ne j}(E-\lambda_\ell)^{d_\ell+1}
+ (E-\lambda_j)^{d_j}F\right](0)}
+ {\lambda_j^{d_j}d_j!\displaystyle\prod_{\ell\ne j}
+ (\lambda_j-\lambda_\ell)^{d_\ell+1}}.
+ \label{rs:eq:projection-check}
+\end{equation}
+The verifier constructs the left-side sequence from Jacobi--Trudi, applies
+the operator using exact arithmetic, and compares the result with the
+factorial product \eqref{rs:eq:LC}. This checks the signs, the powers of the
+cluster nodes, and the cross-difference exponents independently of an
+implementation of the confluent determinant itself.
+
+Finite checks are not a proof of an infinite family. In particular they
+cannot establish the all-index minimality theorem or historical novelty.
+Those depend on the mathematical arguments in Sections~\ref{rs:sec:toeplitz}
+and~\ref{rs:sec:cluster}. No theorem prover was run for this article.
+
+\subsection{Dependency and trust boundaries}
+The main identity depends on the binomial definition, constant terms,
+finite-dimensional basis changes, block elimination, and dual Jacobi--Trudi.
+The exact recurrence additionally uses the bialternant, its Taylor confluence,
+Cauchy--Binet, and finite differences. The numerator theorem uses only those
+results and an algebraic expansion at infinity. The exceptional-parameter
+and asymptotic theorems depend on the same explicit leading coefficients.
+Only Proposition~\ref{rs:prop:parityunimodal} imports Schur-module characters
+and complete reducibility for $\SL_2$.
+
+Several points are especially important for an independent audit. The
+Toeplitz pairing is bilinear, not a positive Hermitian inner product; no
+positivity assumption is used. The odd-order pairing uses the involution
+$Jf=zf(z^{-1})$, not the ordinary inversion involution. The normalizing
+constants in the factorization are explicitly fixed at $q=1$.
+In the confluence calculation, normalized derivatives remove hidden
+factorials, and only the highest derivative-order row sets contribute to
+the maximal degree. Minimality is asserted only after spectral products
+have been checked for distinctness. Finally, generating functions for
+$\Ht_k$ and $d_k$ are kept separate throughout.
+
+\subsection{A finite-algebra formalization plan}
+A Lean implementation can be divided into three layers. First formalize
+symmetric Laurent coefficient sequences and the two Gram matrices, using
+finite support; prove the pairing identities and the parameterized
+Toeplitz factorization. A formal proof can compute basis-change determinants
+directly or prove their independence from the symbol and use the
+normalization specialization as above. All exceptional parameters should
+be handled by polynomial identity rather than separate division arguments.
+
+The second layer identifies the Toeplitz matrix with the elementary
+Jacobi--Trudi matrix. Depending on available symmetric-function support,
+one can initially define the rectangular Schur object by this determinant
+and separately prove its equality with the complete-homogeneous determinant.
+This already yields the Hankel identity without a representation-theoretic
+library.
+
+The third layer formalizes normalized derivative matrices, the factorial
+Vandermonde determinant \eqref{rs:eq:factorial-det}, and degree bounds for
+Laplace selections. The unique-maximizer argument is finite combinatorics;
+it is the most important piece to keep inside the trusted proof boundary.
+The final recurrence follows from explicit shift-operator lemmas. The
+Python code may generate examples and candidate identities but is not a
+trusted replacement for any of these steps. No uncompiled Lean skeleton is
+included as if it were a completed formalization.
+
+\section{Further research questions and topics}
+\label{rs:sec:further}
+The following questions are proposed extensions of the results in this
+article. Except where the original Cigler conjecture is named explicitly,
+they are not claims about the status of a separately published conjecture.
+
+\subsection{Full coefficient structure in Cigler's Conjecture 17}
+The spectral polynomials $P_{k,q}(n;t)$ have exact degrees in $n$, but the
+present paper does not identify all of their coefficient signs and
+factorizations after a common denominator is cleared. The numerator
+polynomials in the source's Conjecture~17 organize related information in a
+more refined way. A useful next target is to express those polynomials as
+flagged tableaux or minors with manifest sign, and to determine exactly
+which of the printed degree and reciprocity claims survive normalization.
+The confluent Laplace expansion gives a finite formula from which to start;
+it is not itself a proof of every Conjecture~17 assertion.
+
+\subsection{Complex roots of unity and spectral cancellation}
+At a complex root of unity, the roots $t^q$ can coincide even when
+$1,t,t^2$ are distinct. The exact reduced multiplicity is the degree of a
+sum of canonical $P_{k,q}$'s in one residue class, plus one, unless that sum
+vanishes. Determine a closed formula for these multiplicities as a function
+of $k$, the root order, and the residue class. The real points $0,1,-1$ are
+settled by Theorem~\ref{rs:thm:real}; simply substituting into the generic
+product does not solve the complex problem. Schur root-of-unity identities
+and cyclic-sieving methods may give a structural approach, but cancellation
+must be checked, not assumed absent.
+
+\subsection{Coefficient shape for even shifts}
+Odd shifts have an $\SL_2$ interpretation that proves parity-wise
+unimodality. Does the analogous step-two inequality hold for every even
+shift and every order? If not, what is the first structural obstruction, and
+what weaker inequalities characterize these tableau weights? The ordinary
+unimodality assertion is already false, so one should not promote a few
+unimodal examples into a general conjecture. A satisfactory result would
+explain the difference between the equal outer multiplicities of odd shifts
+and the unequal outer multiplicities of even shifts.
+
+\subsection{A two-parameter Hankel deformation}
+The Schur alphabet $(\rep1a,u,\rep vb)$ makes sense for independent $u,v$.
+The present moment construction lies on $v=u^2$. Find a natural two-parameter
+moment family whose normalized shifted Hankel determinants realize the
+full alphabet, or prove that a specified class of finite-period Jacobi
+recurrences cannot do so. The parameterized Toeplitz factorization offers a
+starting point, but the compatibility of all shifts within one moment
+sequence is a genuine additional condition.
+
+\subsection{A uniform crossover as the poles merge}
+Theorem~\ref{rs:thm:asymptotic} applies for fixed $t<1$, while at $t=1$ the
+answer grows like $n^{\delta_k}$. In the scaling $t=e^{-s/n}$, study
+\[
+ n^{-\delta_k}\Ht_k(n;e^{-s/n})
+\]
+for fixed $k$ and $s$ in bounded complex sets. Determine the limiting
+function, uniform error bounds, and an all-orders expansion. The finite
+confluent bialternant should allow a systematic derivation, but the separate
+spectral coefficients become singular and their cancellations must be
+organized before taking the limit. This is a natural meeting point of the
+repository's determinant and asymptotic-analysis programs.
+
+\subsection{Broader noncollision criteria and certified algorithms}
+The middle multiplicity one in $(a,1,b)$ makes
+$q=r_2+2r_3$ determine the whole allocation. For alphabets with more clusters,
+classify linear relations among their exponents that still yield a unique
+allocation, or yield a sum whose leading coefficient can be proved nonzero.
+Such a criterion would turn Theorem~\ref{rs:thm:cluster} into a reusable exact
+minimal-recurrence algorithm for specialized rectangular Schur families.
+A formalized implementation should output both the recurrence and a
+certificate for every pole multiplicity, rather than an annihilator alone.
+
+\section{Conclusion}
+The experimental Schur formula in the inspected ProveIt report admits a
+finite algebraic proof. Its decisive step is the equality of the original
+Hankel parity factors with the factors of a particular Toeplitz determinant.
+The resulting Schur structure supports a sharper conclusion than rationality:
+all generic recurrence roots and multiplicities are exact, with explicitly
+nonzero confluent leading coefficients. Negative-width continuation then
+fixes the numerator degree and reciprocity sign, including a necessary
+correction to the original printed conjecture. The same calculation gives
+a sharp convergence equivalent and all reduced denominators at real
+parameters. The remaining questions concern finer coefficient structure,
+complex spectral collisions, and uniform pole-merger asymptotics, rather
+than an unproved bridge in the central determinant identity.
+
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\theHsection}{rs.app.\Alph{section}}
+\setcounter{section}{2}
+\section{Small-shift formulas and independent checks}
+\label{rs:app:examples}
+The first three sign-adjusted sequences are
+\begin{align*}
+ \Ht_1(n;t)&=1,\\
+ \Ht_2(n;t)&=1+t+\cdots+t^n,\\
+ \Ht_3(n;t)&=h_n(1,t,t^2)
+ =\frac{(1-t^{n+1})(1-t^{n+2})}{(1-t)(1-t^2)}.
+\end{align*}
+The displayed quotient is interpreted by its polynomial continuation at
+$t=1,-1$. Their ordinary generating functions are respectively
+\[
+ \frac1{1-z},\qquad
+ \frac1{(1-z)(1-tz)},\qquad
+ \frac1{(1-z)(1-tz)(1-t^2z)}.
+\]
+For shift four, \eqref{rs:eq:G4} has numerator degree two, in agreement with
+$N_4-4=2$. At $t=-1$ it becomes
+\[
+ \sum_{n\ge0}\Ht_4(n;-1)z^n=\frac{1+z^2}{(1-z^2)^3},
+\]
+so $\Ht_4(2m;-1)=(m+1)^2$ and $\Ht_4(2m+1;-1)=0$.
+At $t=1$, the dimension product gives
+\[
+ \Ht_4(n;1)=\frac{(n+1)(n+2)^2(n+3)}{12}.
+\]
+These two specializations make visible the difference between a generic
+recurrence, a pole-merger specialization, and a parity-supported sequence.
+
+\section{Package contents and reproduction}
+\label{rs:app:package}
+The archive contains the present \texttt{article.tex} and its compiled
+\texttt{article.pdf}, the verifier, exact JSON records, a console log,
+\texttt{README.md}, \texttt{STATUS.md}, \texttt{sources.md}, and a small
+\texttt{Makefile}. To reproduce the checks and the PDF, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The recorded run completed all listed checks. Run time is environment-dependent
+and is not a complexity claim. The package does not include a Lean proof or
+assert independent referee approval.
+
+\noindent[Added 29 September 2026, batch 56: this report ships the
+verifier, the JSON records (including \path{data/pdf_checks.json}, a
+hand-written layout record of the delivered 22-page PDF), the console log,
+\texttt{STATUS.md}, \texttt{sources.md}, \texttt{requirements.txt} and the
+\texttt{Makefile} under the prefixed names listed in
+Section~\ref{rs:sec:merge-provenance}. The archive's \texttt{article.tex},
+\texttt{article.pdf} and \texttt{README.md} are not shipped: Part~II and the
+report's \texttt{article.pdf} replace them. The commands above are the
+delivery's and must not be used from this report's root: there
+\texttt{python code/verify.py} runs Part~I's verifier, which rewrites
+Part~I's records in \path{data/}, and \texttt{latexmk} rebuilds the whole
+report in place. The shipped \path{code/02-schur-recurrences-Makefile} runs
+exactly these commands (its \texttt{clean} target runs
+\texttt{latexmk -c article.tex}), so it must not be run from the report root,
+and from any other directory its paths do not resolve. Part~II's checks are
+reproduced, from the report root, by
+\begin{verbatim}
+uv run --no-project --with sympy==1.14.0 python \
+    code/02-schur-recurrences-verify.py --output <scratch>/verification.json
+\end{verbatim}
+with \verb|<scratch>| a directory outside the report.]
+
+
+
 \begin{thebibliography}{9}
 \bibitem{Cigler}
 Johann Cigler,
@@ -1070,6 +2827,8 @@ for some polynomial extensions and modifications},
 arXiv:2111.14492v3, 30 December 2021.
 The present target is Conjecture 16, pp.~21--22; the input moments are
 equation (6), p.~3.
+Part~II uses especially Section~6 and printed pages~22--24, including
+equations (84)--(87) of Conjecture~18.
 \url{https://arxiv.org/abs/2111.14492v3}.
 
 \bibitem{CK}
@@ -1094,5 +2853,46 @@ Search-index excerpts consulted 20 September 2026 identify the target as
 A339987. The complete PDF was not successfully retrieved; this reference
 is used only to disambiguate the numbered problem, not as a mathematical
 proof source.
+
+% [Added 29 September 2026, batch 56] References of Part II.  The
+% manuscript's key CK (Ciucu--Krattenthaler) is printed as CiucuK, because
+% CK above is Cigler--Krattenthaler, a different paper.  Its entry for
+% Part I (RepoParity) is replaced by internal references.
+\par\raggedright
+\bibitem{RepoEight}
+ProveIt research report,
+\emph{Rectangular Schur Polynomials and Cigler's Conjecture 8},
+20 September 2026. Repository \texttt{VladimirReshetnikov/ProveIt}, commit
+\texttt{\pin}, file
+\path{SetTheory/Cardinals/docs/reports/hankel-determinants/catalan-and-ballot/cigler-conjecture-8-schur/article.tex}.
+This report concerns the different moment family $b_n(t)$.
+
+\bibitem{CiucuK}
+M.~Ciucu and C.~Krattenthaler,
+\emph{A factorization theorem for classical group characters, with applications
+to plane partitions and rhombus tilings}, in
+\emph{Advances in Combinatorial Mathematics: Proceedings of the Waterloo
+Workshop in Computer Algebra 2008}, Springer, 2010, pp.~39--60.
+\url{https://arxiv.org/abs/0812.1251}.
+
+\bibitem{Alexandersson}
+P.~Alexandersson,
+\emph{Stretched skew Schur polynomials are recurrent},
+Journal of Combinatorial Theory, Series A \textbf{122} (2014), 1--8.
+DOI: \href{https://doi.org/10.1016/j.jcta.2013.09.009}{10.1016/j.jcta.2013.09.009}.
+\url{https://arxiv.org/abs/1210.0377}.
+
+\bibitem{GSM}
+L.~A.~Gonz\'alez-Serrano and E.~A.~Maximenko,
+\emph{Bialternant formula for Schur polynomials with repeating variables},
+Linear and Multilinear Algebra (2025).
+DOI: \href{https://doi.org/10.1080/03081087.2025.2464639}{10.1080/03081087.2025.2464639}.
+\url{https://arxiv.org/abs/2312.15680}.
+
+\bibitem{Fulton}
+W.~Fulton,
+\emph{Young Tableaux: With Applications to Representation Theory and Geometry},
+London Mathematical Society Student Texts~35, Cambridge University Press,
+1997. Used for classical Schur identities and Schur-module characters.
 \end{thebibliography}
 \end{document}
