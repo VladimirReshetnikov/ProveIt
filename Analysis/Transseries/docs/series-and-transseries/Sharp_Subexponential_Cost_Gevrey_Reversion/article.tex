@@ -25,6 +25,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
@@ -42,6 +44,8 @@
 \DeclareMathOperator{\supp}{supp}
 \numberwithin{equation}{section}
 \begin{document}
+% ed. (2026-09-29): no PDF page anchor on the title page (the delivered build had a duplicate destination page.1)
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{10mm}
 {\color{MidnightBlue}\Large ProveIt research continuation\par}
@@ -84,6 +88,8 @@ finite calculations. No Lean formalization, analytic summation theorem,
 or worldwide priority claim is asserted. The contribution is measured
 against explicitly identified questions in the inspected repository.
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page
+\hypersetup{pageanchor=true}
 \tableofcontents
 \clearpage
 
@@ -136,6 +142,22 @@ version of the second question. It does not settle the same problem for
 every superexponential log-convex weight. Equal-type cancellation is
 unavoidable; unequal-type inputs supply an explicit sufficient
 noncancellation condition.
+% ed. (2026-09-29): the general-weight version is settled by a companion package of the same batch
+\begin{ednote}
+The companion package \path{Exact_Weighted_Type_Beyond_Log_Convexity/}
+(filed in the same batch, written independently from an earlier snapshot)
+proves the same maximum law, with equality for unequal types, for every
+positive weight that is subexponentially equivalent to a supermultiplicative
+weight with roots tending to infinity, in particular for every log-convex
+weight with $M_n^{1/n}\to\infty$ (its Corollary~\texttt{cor:scalarscaling}
+and Theorem~\texttt{thm:composition}). It also shows that at equal types $T$
+every composite type in $[0,T]$ occurs (its
+Theorem~\texttt{thm:cancellation}). The results of
+Section~\ref{sec:composition} are the factorial case of that law, proved
+here by a different majorant: one theorem with two independent proofs. The
+fixed-ball results of Sections~\ref{sec:main}--\ref{sec:type} are not in
+that package.
+\end{ednote}
 
 The positive-forward counterexample in \cref{thm:rootcounter} explains
 why exact type alone cannot be strengthened to a full inverse root limit,
@@ -276,6 +298,16 @@ The theorem gives the following sharp classification:
 \end{equation}
 At $0<s<1$, this is an amplification at the \emph{same} $A$; it is
 still subexponential and hence invisible to the coefficient type.
+% ed. (2026-09-29): relation to the companion package's envelope asymptotic
+\begin{ednote}
+With $A=1$, $G_*$ is the positive extremal inverse $H_C$ of the companion
+package \path{Exact_Weighted_Type_Beyond_Log_Convexity/} for the
+excess-degree weight $N_j=w_j$, which is log-convex with $w_0=1$ and hence
+its own supermultiplicative envelope. That package proves $\log R_n=o(n)$
+for every weight with superexponential roots (its
+Theorem~\texttt{thm:envelopeintro}) and asks for the optimal overhead;
+Theorem~\ref{thm:main} answers that question for factorial weights.
+\end{ednote}
 
 \begin{corollary}[The unshifted factorial convention]\label{cor:unshifted}
 For the ball \eqref{eq:standardball}, normalize inverse coefficients by
@@ -504,7 +536,8 @@ Only $j\le h$ can occur. The all-zero multiplicity vector contributes
 $1$. Formula \eqref{eq:localizedexact} is the source of all subsequent
 constants.
 
-\section{Optimal logarithmic amplification for every $0<s<1$}
+% ed. (2026-09-29): \texorpdfstring added (the delivered build warned about math in the PDF bookmark)
+\section{Optimal logarithmic amplification for every \texorpdfstring{$0<s<1$}{0 < s < 1}}
 \label{sec:logcost}
 
 \subsection{Lower bound from quadratic decorations}
@@ -1194,6 +1227,14 @@ subexponential constants uniform in the number of parts. Determine
 whether log-convexity and superexponential root growth alone suffice,
 or construct a counterexample. Equal-type cancellation must remain
 part of the statement.
+% ed. (2026-09-29): answered by the companion package
+\begin{ednote}
+Answered by \path{Exact_Weighted_Type_Beyond_Log_Convexity/}: log-convexity
+and superexponential root growth suffice, and more generally so does
+subexponential equivalence to a supermultiplicative weight with
+superexponential roots, with equal-type cancellation filling all of
+$[0,T]$; see the note at the end of Section~\ref{sec:target}.
+\end{ednote}
 
 \subsection{Typical inputs versus the extremizer}
 Classify coefficient sign patterns or asymptotic regularity assumptions
@@ -1218,6 +1259,15 @@ normed extremal problem replaces the one-variable negative series and
 whether the threshold $s=1$ persists without dimension-dependent
 exponential loss. A type-level theorem and a sharp fixed-ball theorem
 should be treated as different objectives.
+% ed. (2026-09-29): the type-level part is in the companion package
+\begin{ednote}
+The type-level statement for tangent maps on Banach spaces, with the
+multilinear operator norm and no dimension loss, and sharp two-sided bounds
+under a general invertible derivative, are proved in
+\path{Exact_Weighted_Type_Beyond_Log_Convexity/} (its
+Theorems~\texttt{thm:banach} and \texttt{thm:jacobian}). The fixed-ball
+problem posed here remains open.
+\end{ednote}
 
 \subsection{A realistic formalization sequence}
 A Lean formalization can begin with the finite identities

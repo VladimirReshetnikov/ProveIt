@@ -3,12 +3,14 @@
 
 These tests check polynomial recurrences and illustrative inequalities, not the
 infinite-support theorems. No network access is used. Run with Python 3.10+,
-SymPy, and mpmath. Output is written beside this program.
+SymPy, and mpmath. Output is written to build/results.json (ed. 2026-09-29; as
+delivered it was written beside this program, over the recorded results.json).
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import argparse  # ed. (2026-09-29): --output / --overwrite-recorded
 import json
 import platform
 import random
@@ -166,6 +168,18 @@ def resonance_slope(solution: dict, blocks: Sequence[Block]):
 
 
 def main() -> None:
+    # ed. (2026-09-29): the default output is build/results.json beside verification/;
+    # writing the recorded verification/results.json needs --overwrite-recorded.
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path,
+                        default=Path(__file__).resolve().parents[1] / "build" / "results.json")
+    parser.add_argument("--overwrite-recorded", action="store_true",
+                        help="allow writing the recorded verification/results.json")
+    args = parser.parse_args()
+    recorded = Path(__file__).resolve().with_name("results.json")
+    if args.output.resolve() == recorded and not args.overwrite_recorded:
+        parser.error("refusing to overwrite the recorded verification/results.json; "
+                     "pass --overwrite-recorded or choose another --output")
     if not __debug__:
         raise RuntimeError("Run without -O: verification requires enabled assertions")
     rng = random.Random(20260929)
@@ -316,7 +330,8 @@ def main() -> None:
               "mpmath": mp.__version__, "counts": counts, "examples": records,
               "tail_bound_illustrations": numerical,
               "scope": "Exact finite identities plus floating-point illustrations; not a proof assistant or interval certificate."}
-    path = Path(__file__).with_name("results.json")
+    path = args.output
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps({"status": output["status"], "counts": counts}, indent=2))
 

@@ -20,6 +20,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
@@ -141,6 +143,26 @@ Within the class specified in Section~\ref{sec:framework}, the answer is
 \emph{no}. The convergence locus is algebraic. Conversely, it can be any
 affine algebraic set, so there is no general smoothness, linearity, or
 irreducibility theorem to replace this answer.
+% ed. (2026-09-29): independent second proof of thm:gap in a package of the same batch; linear counterpart of thm:hidden; the linear article's closest question
+\begin{ednote}
+A package of the same batch, written independently,
+\path{Nonlinear_Hahn_Dulac_Finite_Resonance_Control/}, proves the universal
+criterion of Theorem~\ref{thm:gap} for real spectrum, with resonant
+constants and logarithms allowed in the solution (its
+\texttt{thm:universal}): one criterion, two independent proofs, which agree
+where both apply. Its accumulation example (\texttt{thm:sharp-family},
+threshold \(p>2\)) has forcing that itself accumulates at the eigenvalue,
+whereas in Theorem~\ref{thm:hidden} the forcing is separated and the
+nonlinearity creates the accumulation. The linear counterpart of
+Theorem~\ref{thm:hidden}, safe edges whose composed path accumulates, is
+Example~\texttt{ex:hidden} of
+\path{Path_Sensitive_Small_Divisors_Hahn_Fuchsian/}, again with threshold
+\(p>2\). Among the further directions of \cite{repo-linear}, the closest to
+the present question is ``Geometry of the logarithmic strata'' (the
+algebraic loci on which logarithms disappear); the convergence loci here
+are a nonlinear counterpart of those strata, not an answer to that
+question.
+\end{ednote}
 
 \subsection{A guide to the results}
 There are two finite-dimensional obstructions, with very different meanings.

@@ -28,6 +28,8 @@ pdfsubject={Exact logarithmic slopes, finite algebraic certificates, nonlinear d
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\CC}{\mathbb C}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\NN}{\mathbb N}
@@ -164,6 +166,27 @@ cancellation loci and invariance under local coordinate changes.
 Our analytic gap measures distances to \emph{eigenvalues}, whereas the
 linear gauge-normalization problem naturally involves
 \emph{eigenvalue differences}. They are different operators.
+% ed. (2026-09-29): an independent second proof of thm:universal in a package of the same batch, and related later packages
+\begin{ednote}
+A package of the same batch, written independently,
+\path{Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/}, proves the
+universal criterion of Theorem~\ref{thm:universal} (positivity of the
+distance from the positive exponents to the eigenvalues they do not equal)
+for logarithm-free positive solutions and arbitrary complex \(A\) (its
+\texttt{thm:gap}), with genuinely quadratic counterexamples: one criterion,
+two independent proofs, which agree where both apply. That package also
+shows that nonlinear products of separated forcing can create the small
+divisors (its \texttt{thm:hidden}, again with the threshold \(p>2\)); the
+example of Section~\ref{sec:accumulation} instead has accumulating forcing.
+For linear gauges with prescribed edge supports the universal quantifier
+over all of \(\G\) is refined path by path in
+\path{Path_Sensitive_Small_Divisors_Hahn_Fuchsian/}. The exact logarithmic
+degree of linear scalar equations is determined by Smith invariants in
+\path{Exact_Logarithmic_Degree_Smith_Invariants/}, which was filed after
+the snapshot this article read. Theorem~\ref{thm:strata} is a nonlinear
+counterpart of the Hahn--Fuchsian article's question ``Geometry of the
+logarithmic strata'' \cite{repo-fuchsian}, not an answer to it.
+\end{ednote}
 
 \subsection{Established ingredients and proposed additions}
 General fixed-point methods for generalized series are established;
@@ -1850,6 +1873,13 @@ are installed. Random tests use a fixed seed. A successful run writes
 \texttt{verification/results.json}. Exact algebraic assertions raise
 an exception on failure; the program must be run without Python's
 \texttt{-O} option, which would disable assertions.
+% ed. (2026-09-29): output location changed on filing
+\begin{ednote}
+As filed, the program writes \path{build/results.json} (relative to the
+package root) by default, so a rerun leaves the recorded
+\path{verification/results.json} unchanged; writing the recorded file
+requires \texttt{--overwrite-recorded}.
+\end{ednote}
 
 \clearpage
 \begin{thebibliography}{9}

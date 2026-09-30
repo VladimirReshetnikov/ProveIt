@@ -74,7 +74,9 @@ following changes were made after filing; everything else is as delivered.
   the sectorial-summability package; acceleration and optimal truncation
   still open) and "Inversion and parameter limits beyond fixed resonances"
   (a cross-link to the weighted-type package's zero-loss theorem, which does
-  not settle it). In Appendix A the first pinned identifier, which the
+  not settle it; its limsup part is settled, by an editorial deduction,
+  through the batch-52 exact-type package, and a root limit remains open;
+  see below). In Appendix A the first pinned identifier, which the
   delivered text called a "repository root tree", is now called a commit,
   with an editorial note recording the correction. Every change is marked in
   the source by a `% ed. (2026-09-29)` comment. No label, theorem or number
@@ -89,3 +91,25 @@ following changes were made after filing; everything else is as delivered.
   platform. A rerun on a copy reproduced `data/verification.json` and both
   tables byte for byte. The program rewrites the two tables the article
   inputs; run it on a copy.
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by
+`% ed. (2026-09-29, batch 52)` comments.
+
+- `near_linear_feedback.tex`: at "Inversion and parameter limits beyond
+  fixed resonances", the last clause of the existing editorial note ("so
+  the question stays open") now points to a new editorial note: by
+  `../Exact_Weighted_Type_Beyond_Log_Convexity/` (batch 52; its
+  `thm:classificationintro` and `cor:scalarscaling`), log-convexity is not
+  needed. Lemma 4.1 (`lem:b`) makes `b` eventually nondecreasing with
+  `b = o(log x)`, so the weight `e^(m b_m)` is admissible
+  (`V_n = exp(n max_{m<=n+1} b_m)` is a supermultiplicative representative),
+  and Theorem 2.3 (`thm:main`) then gives
+  `limsup |q_n|^(1/n) e^(-b_n) = 1` for the inverse coefficients. Whether
+  `|q_n|^(1/n) e^(-b_n)` converges remains open. The deduction is editorial;
+  it was re-derived on filing and is stated in neither article.
+- `near_linear_feedback.pdf`: rebuilt with `latexmk -pdf` (26 pages,
+  unchanged; no errors, undefined references, multiply defined labels,
+  duplicate destinations or overfull boxes). `data/build_report.json` still
+  describes the delivered build.

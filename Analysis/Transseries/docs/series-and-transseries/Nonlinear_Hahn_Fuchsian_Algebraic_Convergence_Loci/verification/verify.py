@@ -7,6 +7,7 @@ rational and symbolic arithmetic. Run from any directory:
     python verification/verify.py
 """
 from __future__ import annotations
+import argparse  # ed. (2026-09-29): --output / --overwrite-recorded
 import json
 import platform
 import random
@@ -225,9 +226,24 @@ def main() -> None:
               "limitations":["Finite exact arithmetic only; not a Lean formalization.",
                  "Infinite convergence and universality theorems are proved in the article, not by this script.",
                  "No enumeration algorithm for arbitrary infinite real supports is asserted."]}
-    dest = Path(__file__).resolve().with_name('results.json')
-    dest.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    # ed. (2026-09-29): LF on every platform; default output outside the recorded results.json
+    dest = globals().get('OUTPUT', Path(__file__).resolve().parents[1]/'build'/'results.json')
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({k:result[k] for k in ['status','systems','scalar_equalities_checked','python','sympy']},indent=2))
 
 if __name__ == '__main__':
+    # ed. (2026-09-29): the default output is build/results.json beside verification/;
+    # writing the recorded verification/results.json needs --overwrite-recorded.
+    _parser = argparse.ArgumentParser(description=__doc__)
+    _parser.add_argument('--output', type=Path,
+                         default=Path(__file__).resolve().parents[1]/'build'/'results.json')
+    _parser.add_argument('--overwrite-recorded', action='store_true',
+                         help='allow writing the recorded verification/results.json')
+    _args = _parser.parse_args()
+    if (_args.output.resolve() == Path(__file__).resolve().with_name('results.json')
+            and not _args.overwrite_recorded):
+        _parser.error('refusing to overwrite the recorded verification/results.json; '
+                      'pass --overwrite-recorded or choose another --output')
+    OUTPUT = _args.output
     main()

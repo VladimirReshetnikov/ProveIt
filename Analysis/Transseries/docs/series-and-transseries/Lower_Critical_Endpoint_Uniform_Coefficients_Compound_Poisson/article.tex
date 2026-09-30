@@ -24,6 +24,8 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\Li}{\operatorname{Li}}
 \newcommand{\Prob}{\mathbb P}
@@ -47,6 +49,8 @@
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
 
 \begin{document}
+% ed. (2026-09-29): no PDF page anchor on the title page (the delivered build had a duplicate destination page.1)
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{9mm}
 \noindent\textsc{Research continuation \; / \; Analysis and probability}
@@ -108,6 +112,8 @@ proofs, not a claim of a general transseries breakthrough or established
 publication priority. The classical analytic and condensation mechanisms
 are credited. No new Lean verification is claimed.
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page
+\hypersetup{pageanchor=true}
 \tableofcontents
 \clearpage
 
@@ -179,6 +185,22 @@ whose length grows with $n$, noncritical coupling windows, or unrestricted
 Borel summability and resurgence. Those are separate questions. Nor is
 there a nonzero finite-mean critical model obtained simply by setting
 $\eps=0$ before renormalizing.
+% ed. (2026-09-29): the same question posed by two other repository packages (uncited)
+\begin{ednote}
+The same question is posed as Question~10 of
+\path{Confluent_Critical_Transseries_Exponent_Two_Boundary/} (a compensated
+core, and whether conditioning couples the largest actions to the total,
+for the coupling $1/\zeta(\alpha)$, the case $P=0$ here) and as
+Question~8 of \path{Logarithmic_Critical_Endpoint_Lambert_Charts/}
+(renormalized coupling, critical coordinate and action budget). On the
+critical path treated here they are answered by the Landau limit of the
+cloud sum on the scale $\eps B$ (Theorem~\ref{thm:landau}), by the deletion of
+exactly one largest action (Theorem~\ref{thm:deletion}), and by the
+coupling $nc_\eps$, the chart coordinate $T$ and the cutoff budget of
+Section~\ref{sec:landau}. The interior-fold side $c>1/\zeta(1+\eps)$ is
+treated in \path{Lower_Critical_Endpoint_Landau_Transseries/}; the
+subcritical side stays open.
+\end{ednote}
 
 \section{Model and exact identities}
 \label{sec:model}
@@ -447,6 +469,29 @@ The theorem is stronger than replacing a fixed-exponent stable law by
 its limit. The main probability is of order $\eps/B$, not $1/B$.
 The proof in Section~\ref{sec:hankel} keeps the small sine factor in the
 integral and also in its error. This is the key uniformity mechanism.
+% ed. (2026-09-29): identification with the critical Hahn article's law, and the independent sibling package (constants checked on filing)
+\begin{ednote}
+The leading term $\rho_\eps^{-n}J_0/(nB)$ is the critical coefficient law
+\texttt{eq:critical-leading} of \cite{repo-critical} (its Theorem
+\texttt{thm:phases}, stated for fixed $1<\alpha<2$) with $a=1$,
+$\beta_c=c_\eps$ and $B_{\beta_c}=K_\eps$; Theorem~\ref{thm:uniform}
+proves it uniformly as $\alpha\downarrow1$.
+An independent package of the same batch,
+\path{Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/}, treats the same
+family at the same pinned revision and proves the same coefficient law for
+every rate of approach, with the same leading term but without an error
+rate. Its scales $d_n=(nc_\eps/\eps)^{1/(1+\eps)}$ and
+$b_n=(nc_\eps)^{1/(1+\eps)}$ satisfy $B/d_n\to1$ and $\eps B/b_n\to1$, and
+its truncated-mean centre satisfies
+$D_n=B+\eps B\log(1/\eps)+(1-\gamma)b_n+o(b_n)$. Its stable variable is
+$Z+1-\gamma$ for the standard Landau variable $Z$ used here, so the two
+cutoff laws coincide. It also proves the joint convergence of the residual
+extremes with the cloud, which Theorem~\ref{thm:extremes} does not claim.
+Corollary~\ref{cor:first} reproduces its recorded exact-recurrence
+coefficient ratios to three or four digits. Where the two articles overlap
+they state one theorem with two independent proofs, and every shared
+constant agrees.
+\end{ednote}
 
 \begin{corollary}[Macroscopic crossover of sector coefficients]
 \label{cor:window}
@@ -1324,6 +1369,14 @@ here collapses to zero. Analyze its interior critical point as the
 coupling tends to zero, and match that problem to the renormalized
 endpoint studied here. It is a different order of limits, not a missing
 substitution in \eqref{eq:uniform}.
+% ed. (2026-09-29): the P = 0 case of this problem is treated by a batch-51 package, without the matching
+\begin{ednote}
+For $P=0$ this model is treated in
+\path{Lower_Critical_Endpoint_Landau_Transseries/}: an interior fold at
+distance $\delta=-\log(1-e^{-1/c})$, a Landau coefficient profile at
+$\lambda=nc\delta$, and a chart in $e^{-1/c}$. Its matching to the
+renormalized endpoint studied here is not addressed there.
+\end{ednote}
 
 \paragraph{9. Other analytic branch kernels and multivariate actions.}
 Abstract the sine-factor argument to kernels with a branch exponent
@@ -1408,6 +1461,16 @@ recorded full output is to be preserved. No network access is required
 by the verification program. The numerical dependencies are NumPy,
 SciPy, and mpmath; exact assertions use Python's standard-library
 \texttt{fractions} module.
+% ed. (2026-09-29): output locations changed on filing
+\begin{ednote}
+As filed, \texttt{verify.py} writes \path{build/rerun_results.json} by
+default and refuses to replace the recorded
+\path{verification_results.json} unless \texttt{--overwrite-recorded} is
+given, so the first command above needs that option;
+\texttt{make\_tables.py} and \texttt{verify.py} write LF line endings on
+every platform, and \texttt{build.sh} regenerates the tables only when asked
+(\texttt{--tables}).
+\end{ednote}
 
 The repository question and model were read from the pinned
 \path{Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}

@@ -4,7 +4,7 @@
 
 Prepared for Vladimir Reshetnikov, 29 September 2026.
 
-The package contains a 22-page research article, its LaTeX source, exact finite
+The package contains a 23-page research article (22 pages as delivered), its LaTeX source, exact finite
 verification code, and explicitly non-certified numerical diagnostics.
 
 ## Research target
@@ -89,11 +89,15 @@ recomputed with mpmath at 80 decimal digits. None is an interval certificate.
 The article does not infer an onset or a convergence rate from the diagnostics.
 
 The default output is `data/rerun`, so a rerun does not overwrite recorded data.
-To regenerate the printed tables from a diagnostic run:
+To regenerate the printed tables from a diagnostic run and compare them with
+the article's inputs `data/*_table.tex`:
 
-    python code/render_tables.py --input data/rerun --output data
+    python code/render_tables.py --input data/rerun --output data/rerun
 
-The supplied tables were generated from `data/recorded`.
+The supplied tables were generated from `data/recorded`; `render_tables.py`
+with no arguments re-renders them from there into `data/rerun`. (As
+delivered, both the default and this documented command wrote into `data/`,
+overwriting the article's table inputs; see the amendments below.)
 
 ## Files
 
@@ -106,3 +110,67 @@ The supplied tables were generated from `data/recorded`.
 * `provenance.json`: snapshot, source paths, and scope.
 
 No repository or persistent Library file is modified by this package.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 52 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `article.tex`: an unnumbered `ednote` environment (the article's remarks
+  share the theorem counter, so its numbering is unchanged) and four visible
+  "Editorial note (ProveIt, 2026-09-29)" paragraphs, each preceded by a
+  `% ed. (2026-09-29)` comment, recording the companion package of the same
+  batch, `../Exact_Weighted_Type_Beyond_Log_Convexity/`, written
+  independently from an earlier snapshot:
+  - end of Section 1.2: that package proves the maximum law of
+    Theorem 8.1 (`thm:composition`) for every weight subexponentially
+    equivalent to a supermultiplicative weight with superexponential roots,
+    with the full equal-type spectrum `[0, T]`; Section 8 is its factorial
+    case, proved here by a different majorant (one theorem, two independent
+    proofs). The fixed-ball results are not in that package;
+  - after the phase diagram `eq:phase`: with `A = 1`, `G_*` is that
+    package's extremal inverse `H_C` for `N_j = w_j`; it proves
+    `log R_n = o(n)` for every weight with superexponential roots and asks
+    for the optimal overhead, which Theorem 2.2 (`thm:main`) answers for
+    factorial weights;
+  - at the questions "Two divergent inputs for general weights" (answered
+    there) and "Several variables and operator-valued coefficients" (its
+    type-level part is there; the fixed-ball problem stays open).
+  Two hygiene fixes, also marked: the title page no longer creates a PDF
+  page anchor (removing the delivered build's duplicate destination
+  `page.1`), and the title of Section 5 uses `	exorpdfstring` (removing two
+  hyperref warnings). No label was renamed or removed.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf`
+  (23 pages; the delivered PDF had 22; no errors, undefined references,
+  multiply defined labels, duplicate destinations or overfull boxes).
+  Line numbers of `article.tex` after line 27 differ from the delivered file.
+- `data/build_validation.json`: `pdf_pages` recomputed; an
+  `editorial_rebuild` field says so; its other fields describe the
+  delivered build.
+- `code/verify.py`: both CSV writers pass `lineterminator='
+'` (the csv
+  default is CRLF on every platform, which is why the delivered
+  `data/recorded/*.csv` had CRLF line endings) and the JSON writer
+  `newline='
+'`; the default `--order` is now 45, the order of the recorded
+  run and of every documented command (it was 40).
+- `code/render_tables.py`: writes LF on every platform, and its default
+  `--output` is `data/rerun` instead of `data`, so a bare run no longer
+  overwrites the article's table inputs; this README's regeneration command
+  now writes to `data/rerun` too.
+- `data/recorded/crossover.csv` and `data/recorded/diagnostics.csv` were
+  delivered with CRLF line endings and are filed with LF (same content).
+- Windows stop: NumPy on Windows has no extended-range `longdouble`, so
+  `--diagnostics` (and hence `--mp-check`, which calls the same routine)
+  stops with `RuntimeError: Diagnostics require an extended-range NumPy
+  longdouble.` The recorded diagnostics therefore cannot be regenerated on
+  this machine. On filing, a float64 recomputation with log-scaled ratios
+  (not shipped) reproduced every printed table entry to six decimals and
+  every recorded CSV value to a relative 5e-13; run through the amended
+  writers, it produced LF CSV files with the recorded headers and row counts.
+- Rerun on a copy (Windows, `py code/verify.py`): 5,338 scalar checks and
+  512 sign patterns passed; `data/rerun/verification.json` is byte-identical
+  to the recorded ledger with its two diagnostic keys (`diagnostics`,
+  `high_precision_cross_checks`) removed. `py code/render_tables.py`
+  reproduced both `data/*_table.tex` files byte for byte. The documented
+  commands use bare `python`; on Windows use `py`.

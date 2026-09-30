@@ -211,3 +211,27 @@ to the article text is marked in `article.tex` by a comment beginning
 - `README.md`: the retired checksum ledger is no longer listed; the origin
   of `data/run.log`, the scope of the build report and the Windows rerun
   are documented; the page count is updated; this section.
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by `% ed. (2026-09-29,
+batch 52)` comments.
+
+- `article.tex`: an editorial note at the end of Section 11.1 ("The
+  boundary-critical side of the lower endpoint"): the path
+  `c = 1/zeta(1+eps)`, and with a fixed finite prefix `P`
+  `c = 1/(zeta(1+eps) + P'(1))`, is treated for `eps_n -> 0` at any rate by
+  two independent packages of batch 52,
+  `../Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/` and
+  `../Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/`, which
+  prove the same theorem (uniform coefficient law, one exceptional action, a
+  Landau cutoff profile for `n eps -> infinity`, a compound-Poisson deficit
+  for bounded `n eps`). The Landau law of the second is the law with this
+  article's density `p` (`eq:landau`); that of the first is its shift by
+  `1 - gamma`. Neither matches its results to the `delta > 0` chart here;
+  the subcritical paths `c < 1/zeta(1+eps)`, a theorem uniform across
+  `c = 1/zeta(1+eps)`, and that matching remain open.
+- `article.pdf`: rebuilt (26 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations; no Type 3
+  fonts). `notes/build_report.json` still describes the delivered build.
+- `README.md`: this subsection.

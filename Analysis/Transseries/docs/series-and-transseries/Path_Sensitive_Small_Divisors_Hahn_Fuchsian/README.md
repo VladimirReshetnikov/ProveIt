@@ -84,8 +84,10 @@ python -m pip install -r requirements.txt
 python verification/verify.py --outdir build/recheck
 ```
 
-The optional output directory keeps the distributed results unchanged. Omitting
-`--outdir` writes to `results/`, including the table used by the article.
+The default output directory is `build/recheck`, which keeps the distributed
+results unchanged. Writing to `results/`, which holds the table used by the
+article, requires `--overwrite-recorded` (as delivered, omitting `--outdir`
+wrote there; see the amendments below).
 The recorded seed is 20260929. The successful run contains:
 
 | Check | Count |
@@ -115,10 +117,55 @@ universal quantifiers.
 - `notes/proof_audit.md`: hypotheses, dependencies, and verification boundaries.
 - `notes/repository_provenance.json`: pinned sources and inspection scope.
 - `notes/build_report.json`: actual compilation and visual-check record.
-- `SHA256SUMS`: delivery-file integrity ledger.
 
 Repository: `VladimirReshetnikov/ProveIt`. Pinned snapshot reference:
 `9250bbf8af80dacf7b252d9d0320b122c80961ba`.
 Sources were read through the connected GitHub tools; primary public literature
 was checked separately. No repository files were changed. External source
 corpora and font files are not redistributed in this package.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 52 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `path_sensitive_hahn.tex`: an unnumbered `ednote` environment (the
+  article's remarks share the theorem counter, so its numbering is
+  unchanged) and two visible "Editorial note (ProveIt, 2026-09-29)"
+  paragraphs, each preceded by a `% ed. (2026-09-29)` comment:
+  - end of Section 1.2: Theorem 6.1 (`thm:gap`) specializes to the
+    Hahn–Fuchsian article's `thm:universal` when every edge carries the
+    whole semigroup and the constant term is diagonal (that theorem also
+    covers nontriangular perturbations and a nilpotent part); Example
+    `ex:hidden` has a nonlinear counterpart, `thm:hidden` of
+    `../Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/` (batch 52),
+    and the nonlinear gap criterion is proved there and, independently, in
+    `../Nonlinear_Hahn_Dulac_Finite_Resonance_Control/`;
+  - end of Section 11: for `r = 2` and `c_n = n^(-p)` the chain is the
+    Hahn–Fuchsian article's accumulation model (`eq:p-system`) after the
+    input and gauge entry are multiplied by `x` (`lambda = (1,0)` becomes
+    `S = diag(2,0)`; that model's input also has a nonresonant term
+    `n = 1`), so Theorems 9.1, 10.1 and 11.1 at `q = 0` give its
+    `prop:threshold` (`p > 2`), its renormalized solution `h_p` with
+    `h_p(1) = 0` (`thm:renorm`), and a second-order form of its fourth-order
+    `thm:crossover` (`g_{p,0}` is its `f_p`). Checked on filing, including
+    the recorded crossover case against the Hurwitz-zeta value; the two
+    agree.
+- `path_sensitive_hahn.pdf`: rebuilt from the amended source with
+  `latexmk -pdf` (21 pages, as delivered; no errors, undefined references,
+  multiply defined labels, duplicate destinations or overfull boxes).
+  Line numbers of `path_sensitive_hahn.tex` after line 27 differ from the
+  delivered file.
+- `notes/build_report.json`: `tex_sha256` and `pdf_sha256` recomputed for
+  the filed files; an `editorial_rebuild` field says so; its other fields
+  describe the delivered build.
+- `verification/verify.py`: both outputs are written with `newline='
+'`
+  (as delivered they were CRLF on Windows); the default `--outdir` is
+  `build/recheck` instead of `results/`, and writing `results/` requires
+  `--overwrite-recorded`. Rerun on a copy (Windows, Python 3.13.5, mpmath
+  1.3.0, default output): both outputs byte-identical to `results/`.
+- The delivered checksum ledger `SHA256SUMS` was verified in full on filing
+  (11/11, batch 52) and not kept; the delivered archive remains in the
+  repository history (see `docs/incoming/README.md`, batch 52 row). It is no
+  longer listed under "Contents and provenance".

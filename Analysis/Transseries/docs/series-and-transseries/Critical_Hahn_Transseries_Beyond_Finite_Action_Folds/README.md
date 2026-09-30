@@ -3,7 +3,7 @@
 
 Research article prepared for Vladimir Reshetnikov, 29 September 2026.
 
-The 25-page article (24 pages as delivered; see the amendments below) studies
+The 26-page article (24 pages as delivered; see the amendments below) studies
 
     U_beta(q) = beta * sum_{j>=1} a_j q^j exp(j U_beta(q)),
     a_j = a / j^(1+alpha) outside a finite set, 1 < alpha < 2,
@@ -119,7 +119,8 @@ to the article text is marked in `article.tex` by a comment beginning
     for the joint limit `alpha_n -> 2` of Question 4 the confluent and
     stable–Gaussian packages (independent, agreeing term by term). The lower
     endpoint `alpha -> 1` was left open there (it is answered on the
-    interior-fold side only by batch 51; see below), and no answer is marked
+    interior-fold side by batch 51 and on the boundary-critical path by
+    batch 52; see below), and no answer is marked
     beyond what was checked;
   - four editorial bibliography entries (`ed:lce`, `ed:mct`, `ed:cct`,
     `ed:sge`) for those packages.
@@ -161,3 +162,31 @@ Added when batch 51 was filed; marked in the source by `% ed. (2026-09-29)` comm
   editorial bibliography entry `ed:lcl`.
 - `article.pdf`: rebuilt (25 pages, unchanged; no errors, undefined
   references, multiply defined labels or duplicate destinations).
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by `% ed. (2026-09-29,
+batch 52)` comments.
+
+- `article.tex`: in the editorial note at Question 4, "The boundary-critical
+  and subcritical paths `beta <= beta_c` stay open." is replaced: on the
+  boundary-critical path `beta = beta_c = 1/(zeta(1+eps) + P'(1))` (`a = 1`,
+  finite prefix `P` fixed; `P = 0` gives `1/zeta(1+eps)`), the lower endpoint
+  is answered, for `eps_n -> 0` at any rate, by two independent packages of
+  batch 52, `../Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/` and
+  `../Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/`: the
+  law `eq:critical-leading` holds uniformly as `alpha -> 1` (with a relative
+  error bound and to every fixed order in the second), one exceptional
+  action, a Landau cutoff window of width `eps b_n` centred at
+  `b_n + eps b_n log(1/eps)`, and a compound-Poisson boundary when `n eps`
+  stays bounded; their constants agree (Landau variables differ by the
+  constant `1 - gamma`). The subcritical paths, couplings in the window
+  `lambda_n != 0` as `alpha -> 1`, and a matching with the interior-fold
+  chart of the batch-51 package stay open. The word "only" after
+  "interior-fold side" in the batch-51 sentence is dropped. Two new
+  editorial bibliography entries, `ed:lcc` and `ed:lcu`.
+- `article.pdf`: rebuilt (26 pages; it had 25; no errors, undefined
+  references, multiply defined labels or duplicate destinations).
+  `BUILD_VALIDATION.json` still describes the delivered build.
+- `README.md`: the page count and the status sentence on the lower endpoint
+  in the filing list above; this subsection.

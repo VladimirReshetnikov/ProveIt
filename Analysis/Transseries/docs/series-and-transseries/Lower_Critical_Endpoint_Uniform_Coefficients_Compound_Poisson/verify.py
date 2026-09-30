@@ -253,9 +253,18 @@ def contour_moment_checks() -> list[dict]:
 
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output',default='verification_results.json')
+    # ed. (2026-09-29): the default output is build/rerun_results.json beside this program (it was
+    # verification_results.json in the working directory); writing the recorded
+    # verification_results.json needs --overwrite-recorded.
+    here=Path(__file__).resolve().parent
+    parser.add_argument('--output',default=str(here/'build'/'rerun_results.json'))
     parser.add_argument('--quick',action='store_true',help='Omit the larger cutoff diagnostics')
+    parser.add_argument('--overwrite-recorded',action='store_true',
+                        help='allow writing the recorded verification_results.json')
     args=parser.parse_args()
+    if Path(args.output).resolve()==(here/'verification_results.json').resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded verification_results.json; '
+                     'pass --overwrite-recorded or choose another --output')
     result={'title':'Lower critical endpoint verification',
             'versions':{'python':platform.python_version(),'numpy':np.__version__,
                         'scipy':scipy.__version__,'mpmath':mp.__version__},
@@ -271,7 +280,9 @@ def main() -> None:
     if not args.quick:
         result['landau']=landau_cutoff_checks()
     output=Path(args.output)
-    output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n',encoding='utf-8')
+    output.parent.mkdir(parents=True,exist_ok=True)
+    # ed. (2026-09-29): newline='\n' so the JSON is LF on Windows too
+    output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n',encoding='utf-8',newline='\n')
     print(f"Exact assertions passed: {result['exact']['assertions_passed']}")
     print(f"Independent high-precision relative difference: {result['independent_multiprecision']['relative_difference_logspace']:.3g}")
     print(f"Wrote {output}")

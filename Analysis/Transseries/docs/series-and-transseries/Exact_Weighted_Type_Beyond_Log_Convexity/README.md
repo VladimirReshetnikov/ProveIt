@@ -89,7 +89,8 @@ Or run `make all` / `sh build.sh`. `PYTHON` and `PDFLATEX` can select other
 executables. Verification reruns default to `build/verification/` and do
 not overwrite the recorded `data/` files. The article compiles independently
 of all data files. PDF bytes can change on a rebuild because pdfTeX embeds
-timestamps; recorded build hashes describe the delivered files.
+timestamps; the recorded build hashes of `article.tex` and `article.pdf`
+describe the files as amended and rebuilt on filing (see below).
 
 ## Executed verification and mathematical status
 
@@ -105,3 +106,65 @@ audits, not Lean-verified or independently peer-reviewed results. The
 literature check was targeted and does not establish global publication
 priority. The package does not claim analytic summability, resurgence,
 arbitrary Hahn-support generality, or polynomial bit complexity.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 52 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `article.tex`: an unnumbered `ednote` environment (the article's remarks
+  share the theorem counter, so the notes leave its numbering unchanged) and
+  six visible "Editorial note (ProveIt, 2026-09-29)" paragraphs, each
+  preceded by a `% ed. (2026-09-29)` comment:
+  - end of Section 1.3: the exact lines of the three answered questions of
+    `../Sharp_Weighted_Type_Formal_Reversion/article.tex` at the pinned
+    revision (1485-1493, 1495-1503, 1505-1513; `notes/provenance.json`
+    records the wider range 1457-1547, and editorial notes added to that
+    article on filing move its line numbers), and the four questions of
+    that article that Section 12 re-poses without citing them;
+  - after Theorem 8.5 (`thm:zerotoinfinity`): the deep-dip weight shows that
+    the polynomial test (ii)⇔(iii) of that article's `thm:iff` genuinely
+    needs its log-convexity hypothesis (consistent with that theorem);
+  - end of Section 9.2: an editorial deduction for the uncited question of
+    `../Near_Linear_Boundary_Exponential_Feedback/` on the root scale of its
+    inverse. With that article's `lem:b` (`b` eventually nondecreasing,
+    `b → ∞`, `b = o(log x)`), the weight `e^{m b_m}` is admissible
+    (Theorem 2.2(iii), with `V_n = exp(n max_{m≤n+1} b_m)`), and
+    Corollary 6.5 gives `limsup |q_n|^{1/n} e^{−b_n} = 1` for the inverse
+    coefficients. It was re-derived on filing; it is a limsup, not a root
+    limit, and is in neither article;
+  - end of Section 11.4: the repository's existing Lean proofs of the finite
+    Lagrange–Bürmann formula (`Fabius.Lagrange.coeff_solution`) and of the
+    Catalan inverse of `z + cz²` (`QuadraticInverse.coeff_succ_inverse`),
+    both under `Analysis/FabiusFunction/Lean/FabiusFunction/`;
+  - at the question "Optimal subexponential overhead": answered for
+    factorial weights by the independent batch-52 package
+    `../Sharp_Subexponential_Cost_Gevrey_Reversion/`
+    (`log h_{n+1}(C) − log S_n ~ C n^{1−s}` for `0 < s < 1`; the fixed ball
+    is stable under inversion exactly for `s ≥ 1`); the general-weight
+    question stays open;
+  - at the question "Hahn supports and accumulating actions": the repository
+    packages on Hahn-support reversion (support controlled, beyond
+    Archimedean valuations, action accumulation), none of which treats
+    weighted coefficient types.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf`
+  (28 pages; the delivered PDF had 27; no errors, undefined references,
+  multiply defined labels, duplicate destinations or overfull boxes). Line
+  numbers of `article.tex` after line 203 differ from the delivered file.
+- `notes/build_report.json`: `article_pages` and the `article.tex` and
+  `article.pdf` digests were recomputed for the filed files; an
+  `editorial_rebuild` field says so. Its other fields describe the delivered
+  build.
+- `notes/provenance.json` is kept as delivered; its `pinned_question_range`
+  1457-1547 is a superset of the three answered questions (1485-1513).
+- The delivered checksum ledger `SHA256SUMS` was verified in full on filing
+  (14/14, batch 52) and not kept; the delivered archive remains in the
+  repository history (see `docs/incoming/README.md`, batch 52 row).
+- Rerun on a copy (Windows, Python 3.14.4, `py code/verify.py --order 36
+  --output build/verification`): 5,443 checks passed; the four CSV/TeX
+  outputs were byte-identical to `data/`, and `verification.json` differs
+  only in its `"python"` line, which records the interpreter version. The
+  program already writes LF on every platform and never writes to `data/`
+  by default. `Makefile` and `build.sh` call `python3`; on Windows pass
+  `PYTHON=py`. `make pdf` and `build.sh` rebuild `article.pdf` in place,
+  which changes its digest (pdfTeX embeds the build date).

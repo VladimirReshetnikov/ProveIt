@@ -91,8 +91,11 @@ make pdf     # typeset the article from recorded tables
 To regenerate the recorded tables intentionally, use:
 
 ```sh
-python verify.py --outdir results
+python verify.py --outdir results --overwrite-recorded
 ```
+
+(`python verify.py` alone writes to `build/results`; as delivered it wrote to
+`results/`. See the amendments below.)
 
 The verification program makes no network requests. Its numerical residue
 routine handles simple poles only. It rejects sine phases resolved as
@@ -108,3 +111,22 @@ Primary predecessor:
 `Analysis/Transseries/docs/series-and-transseries/Resonance_Block_Summation_Transseries/article.tex`.
 
 No repository files were changed.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 52 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; the article and its PDF are as
+delivered (its question is cited exactly, and no note was needed).
+
+- `verify.py`: the two TeX tables, `verification.json` and `run_summary.txt`
+  are written with `newline='\n'` (as delivered they were CRLF on Windows;
+  the CSVs were already LF). The default `--outdir` is `build/results`, the
+  directory `build.sh` and the Makefile already pass, instead of `results/`;
+  writing `results/` requires `--overwrite-recorded`.
+- Rerun on a copy (Windows, Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0,
+  default output): 192 exact and 49 numerical assertions passed; all six
+  outputs are byte-identical to `results/`.
+- `README.md`: the documented command for regenerating the recorded tables
+  now passes `--overwrite-recorded`; `build.sh`, the Makefile and the
+  documented commands call `python3`/`python` (on Windows use `py` or set
+  `PYTHON`).

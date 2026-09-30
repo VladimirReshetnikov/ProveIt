@@ -373,8 +373,15 @@ def numerical_checks():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--outdir',type=Path,default=Path(__file__).resolve().parents[1]/'results')
+    # ed. (2026-09-29): the default output is build/recheck; writing the recorded results/ needs --overwrite-recorded.
+    parser.add_argument('--outdir',type=Path,default=Path(__file__).resolve().parents[1]/'build'/'recheck')
+    parser.add_argument('--overwrite-recorded',action='store_true',
+                        help='allow writing the recorded results/ (verification.json and the table the article inputs)')
     args = parser.parse_args()
+    recorded = Path(__file__).resolve().parents[1]/'results'
+    if args.outdir.resolve() == recorded.resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded results/; '
+                     'pass --overwrite-recorded or choose another --outdir')
     args.outdir.mkdir(parents=True,exist_ok=True)
     counts,systems = exact_checks()
     cases,table = numerical_checks()
@@ -382,14 +389,15 @@ def main():
               "mpmath":mp.__version__,"working_decimal_digits":75,
               "exact_counts":counts,"exact_systems":systems,"numerical_cases":len(cases),
               "numerical_checks_are_interval_certificates":False,"crossover_cases":cases}
-    (args.outdir/'verification.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    # ed. (2026-09-29): newline='\n' so both outputs are LF on Windows too
+    (args.outdir/'verification.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
     lines = [r'\begin{tabular}{rrlll}',r'\toprule',
              r'$q$ & $t$ & Scaled tail $E$ & $I+g/(2t)$ & Error bound \\',r'\midrule']
     for row in table:
         fmt = lambda key: mp.nstr(mp.mpf(row[key]),9)
         lines.append(f"{row['q']} & {row['t']} & {fmt('scaled_tail')} & {fmt('trapezoid_approximation')} & {fmt('proved_error_bound')} \\\\")
     lines += [r'\bottomrule',r'\end{tabular}']
-    (args.outdir/'crossover_table.tex').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    (args.outdir/'crossover_table.tex').write_text('\n'.join(lines)+'\n',encoding='utf-8',newline='\n')
     summary = {'status':result['status'],**counts,'numerical_cases':len(cases),'python':result['python'],'mpmath':result['mpmath']}
     print(json.dumps(summary,indent=2))
 

@@ -200,3 +200,31 @@ Added when batch 51 was filed; marked in the source by `% ed. (2026-09-29)` comm
 - `Confluent_Critical_Transseries.pdf`: rebuilt (24 pages, unchanged; no
   errors, undefined references, multiply defined labels or duplicate
   destinations).
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by `% ed. (2026-09-29,
+batch 52)` comments.
+
+- `Confluent_Critical_Transseries.tex`: in the editorial note at Question 10,
+  "The boundary-critical side, on which this article's coupling
+  `c_eps = 1/zeta(alpha)` lies, remains open." is replaced: that path (at
+  `alpha = 1 + eps` the case `P = 0` of the coupling
+  `1/(zeta(1+eps) + P'(1))` with a fixed finite prefix) is answered, for
+  `eps_n -> 0` at any rate, by two independent packages of batch 52,
+  `../Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/` and
+  `../Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/`,
+  which prove the same theorem: the compensated core is the cloud below the
+  largest action, centred by a truncated mean on the scale
+  `(n c_eps)^(1/alpha)`, with a Landau limit for `n eps -> infinity` and a
+  compound-Poisson limit for bounded `n eps`; conditioning couples exactly
+  one largest action to the total. Their Landau variables differ by the
+  constant `1 - gamma`, and their cutoff quantiles coincide. The subcritical
+  side remains open. Two new editorial bibliography entries, `ed:lcc` and
+  `ed:lcu`, appended last. The statement above that the lower endpoint is
+  not covered by this article stays true.
+- `Confluent_Critical_Transseries.pdf`: rebuilt (24 pages, unchanged; no
+  errors, undefined references, multiply defined labels or duplicate
+  destinations). `BUILD_VALIDATION.json` still describes the delivered
+  build.
+- `README.md`: this subsection.

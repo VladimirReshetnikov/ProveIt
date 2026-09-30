@@ -4,7 +4,7 @@ Research article prepared for Vladimir Reshetnikov, 29 September 2026.
 
 ## Read
 
-- `hahn_fuchsian.pdf`: the compiled 24-page A4 article.
+- `hahn_fuchsian.pdf`: the compiled 25-page A4 article (24 pages as delivered; see the amendments below).
 - `hahn_fuchsian.tex`: standalone editable LaTeX source, with embedded bibliography.
 - `verification/verify.py`: exact finite matrix computations and numerical crossover checks.
 - `verification/results.json`: the recorded successful verification run.
@@ -132,3 +132,37 @@ theorem, section or equation number changed.
   (Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0, seed 20260929). It equals the
   delivered file except for the one added `exact_cases` entry; all counts,
   the 292 coefficient checks and the 36 crossover cases are unchanged.
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by a
+`% ed. (2026-09-29, batch 52)` comment.
+
+- `hahn_fuchsian.tex`: an editorial note at the end of Section 11.2
+  ("Weighted convergence in the zero-gap case"): the questions of
+  Sections 11.1 and 11.2 are answered, for finite acyclic patterns with a
+  diagonal real constant term, a well-ordered support on each edge and
+  independently variable edge coefficients, by
+  `../Path_Sensitive_Small_Divisors_Hahn_Fuchsian/` (batch 52): universal
+  convergence holds exactly when no endpoint spectral difference of a
+  directed path is a left accumulation point of that path's own sumset
+  (`thm:gap`), and for independent weighted inputs exactly when every
+  path-kernel norm is finite (`thm:weighted`, an exact multilinear norm);
+  correlated inputs can do better (`sec:cancellation`); the rank-`r` chain
+  converges exactly when `sum n^(r-1) |c_n| < infinity` (`thm:chain`), which
+  at `r = 2` is Proposition 8.1 (`p > 2`). For the complete triangular
+  pattern with the whole semigroup on every edge its `thm:gap` reduces to the
+  triangular, diagonal case of Theorem 6.2, which also covers nontriangular
+  perturbations and a nilpotent part. Nonlinear counterparts of Theorem 6.2:
+  `../Nonlinear_Hahn_Dulac_Finite_Resonance_Control/` (`thm:universal`) and
+  `../Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/` (`thm:gap`). The
+  note does not claim that the latter answers Section 11.8 ("Geometry of the
+  logarithmic strata"), to which its algebraic convergence loci are only a
+  nonlinear counterpart.
+- `hahn_fuchsian.pdf`: rebuilt (`latexmk -pdf`; 25 pages, the previous
+  build had 24; no errors, undefined references, multiply defined labels,
+  duplicate destinations or overfull boxes). No numbered statement changed.
+- `notes/build_report.json`: `pdf_pages`, `tex_sha256` and `pdf_sha256`
+  recomputed again for the filed files, and the `editorial_rebuild` field
+  says so; the other fields still describe the delivered build.
+- `README.md`: the page count under "Read"; this subsection.

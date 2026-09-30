@@ -140,3 +140,28 @@ text is otherwise unchanged; every change to the article source is preceded by a
   written by a default `verify.py --stage all`, are byte-identical to the filed
   `results/`.
 - This README: the paragraph on `build.sh`, and the checksum-ledger entry.
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by a
+`% ed. (2026-09-29, batch 52)` comment.
+
+- `article.tex`: an editorial note after research Question 1 ("The boundary
+  of the raw-series half-plane"): answered by
+  `../Critical_Line_Continued_Fractions_Riesz_Summation/` (batch 52) for two
+  lattices with numerator `t^D`, `D >= 2` (this report's kernel is
+  `d = D = 2`). With `A_k = q_k^D q_(k+1) e^(-b q_k)` on `Re z = b = beta(alpha)`:
+  increasing-action convergence exactly when `A_k -> 0`, absolute exactly
+  when `sum A_k < infinity`, the separately indexed sums exactly when
+  `sum (-1)^(p_k+q_k+k) A_k e^(-i q_k Im z)` converges, with an
+  increasing-action sum whose separate sums diverge (`thm:classification`,
+  `ex:opposite`); absolute, conditional and term-test-failing behaviour at
+  every prescribed positive abscissa (`cor:types`). For `d` lattices, Riesz
+  means of integer order `m >= d - 1` recover the block sum on `Re z > 0`
+  with an exact finite derivative bias and no Diophantine condition
+  (`thm:riesz`), and `d - 1` is minimal for period-uniform bounds
+  (`thm:sharp`).
+- `article.pdf`: rebuilt (`latexmk -pdf`; 26 pages, unchanged; no errors,
+  undefined references, multiply defined labels or duplicate destinations).
+  `QA_REPORT.md` still describes the delivered build.
+- `README.md`: this subsection.

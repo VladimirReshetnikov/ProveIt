@@ -25,6 +25,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -165,6 +167,18 @@ Hahn field. The analytic realization theorem concerns the stated chain,
 not every formally divergent transseries equation. The distinction between
 universal independent inputs and correlated inputs is demonstrated
 explicitly in Section~\ref{sec:cancellation}.
+% ed. (2026-09-29): relation of thm:gap to the predecessor's universal theorem, and the later nonlinear counterpart of ex:hidden
+\begin{ednote}
+Theorem~\ref{thm:gap} specializes to the predecessor's
+\texttt{thm:universal} \cite{repo-hahn} when every edge carries the whole
+exponent semigroup and the constant term is diagonal; that theorem also
+covers nontriangular perturbations and a nilpotent part, which are excluded
+here. The linear phenomenon of Example~\ref{ex:hidden} has a nonlinear
+counterpart, a separated forcing whose products accumulate, in the later
+package \path{Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/} (its
+\texttt{thm:hidden}); the nonlinear universal gap criterion is proved there
+and, independently, in \path{Nonlinear_Hahn_Dulac_Finite_Resonance_Control/}.
+\end{ednote}
 
 \subsection{Relation to established theory}
 The Frobenius method, resonant Fuchsian normal forms, and the integration of
@@ -1114,6 +1128,23 @@ high-precision arithmetic, not directed-rounding intervals.}
 \label{tab:crossover}
 \end{table}
 
+% ed. (2026-09-29): the rank-two chain is the predecessor's accumulation model (checked on filing)
+\begin{ednote}
+For $r=2$ ($q=0$) and $c_n=n^{-p}$ the chain \eqref{eq:chain} is the
+accumulation model of the predecessor \cite{repo-hahn}
+(\texttt{eq:p-system}, with $S=\operatorname{diag}(2,0)$) after the input
+and the gauge entry are multiplied by $x$, which moves $\lambda=(1,0)$ to
+$S$; the predecessor's input also has the term $n=1$, at the nonresonant
+exponent $1$. Theorem~\ref{thm:chain} then gives its exact threshold $p>2$
+(\texttt{prop:threshold}), and Theorem~\ref{thm:analytic-chain} its
+renormalized solution $h_p$ with $h_p(1)=0$ (\texttt{thm:renorm}), up to
+the gauge of that one term, since $t\Psi_0(t/n)=n(e^{t/n}-1)$ (the
+predecessor's $\Psi_p$ is a different function). Moreover
+$g_{p,0}(v)=v^{1-p}(e^{1/v}-1)$ is its $f_p$, so
+Theorem~\ref{thm:crossover} at $q=0$ is a second-order form, over
+$n\geq N$, of its fourth-order crossover \texttt{thm:crossover}; the two
+agree.
+\end{ednote}
 \section{Reproducibility, proof audit, and formalization targets}
 \label{sec:verification}
 

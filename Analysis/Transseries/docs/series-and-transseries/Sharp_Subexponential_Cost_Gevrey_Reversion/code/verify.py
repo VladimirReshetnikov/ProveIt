@@ -136,8 +136,9 @@ def diagnostics(out: Path) -> list[dict]:
                              'log_R':format(logR,'.16g'),
                              'log_R_over_n_power':format(logR/mu,'.16g'),
                              'log_R_minus_n_power':format(logR-mu,'.16g')})
+    # ed. (2026-09-29): lineterminator='\n' so the CSV is LF on every platform (the csv default is CRLF)
     with (out/'diagnostics.csv').open('w',newline='',encoding='utf-8') as fh:
-        w=csv.DictWriter(fh,fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+        w=csv.DictWriter(fh,fieldnames=list(rows[0]),lineterminator='\n'); w.writeheader(); w.writerows(rows)
     cross=[]
     for tau in (-2.,-1.,0.,1.,2.):
         for n in (80,320,1280):
@@ -146,8 +147,9 @@ def diagnostics(out: Path) -> list[dict]:
             cross.append({'n':n,'tau':tau,'s':s,
                           'R':format(R,'.16g'),
                           'predicted_limit':math.exp(math.exp(-tau))})
+    # ed. (2026-09-29): lineterminator='\n' so the CSV is LF on every platform
     with (out/'crossover.csv').open('w',newline='',encoding='utf-8') as fh:
-        w=csv.DictWriter(fh,fieldnames=list(cross[0])); w.writeheader(); w.writerows(cross)
+        w=csv.DictWriter(fh,fieldnames=list(cross[0]),lineterminator='\n'); w.writeheader(); w.writerows(cross)
     return rows
 
 def mp_cross_check() -> list[dict]:
@@ -172,7 +174,8 @@ def mp_cross_check() -> list[dict]:
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--order',type=int,default=40)
+    # ed. (2026-09-29): default order 45, the order of the recorded run and of every documented command (was 40)
+    parser.add_argument('--order',type=int,default=45)
     parser.add_argument('--diagnostics',action='store_true')
     parser.add_argument('--mp-check',action='store_true')
     parser.add_argument('--out',type=Path,default=ROOT/'data'/'rerun')
@@ -183,7 +186,8 @@ def main():
         report['diagnostics']='Positive-term longdouble computations, not interval certificates.'
     if args.mp_check:
         report['high_precision_cross_checks']=mp_cross_check()
-    (args.out/'verification.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    # ed. (2026-09-29): newline='\n' so the JSON is LF on Windows too
+    (args.out/'verification.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(report,indent=2))
 
 if __name__=='__main__':

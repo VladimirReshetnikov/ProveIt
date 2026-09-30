@@ -4,7 +4,7 @@ Research article prepared for Vladimir Reshetnikov, 29 September 2026.
 
 ## Read
 
-- `article.pdf` — the complete 22-page A4 article.
+- `article.pdf` — the complete 23-page A4 article (22 pages as delivered).
 - `article.tex` — standalone LaTeX source with an embedded bibliography.
 - `verification/verify.py` — exact finite symbolic checks.
 - `verification/results.json` — output of the successful verification run.
@@ -76,8 +76,9 @@ python verification/verify.py
 The delivered run used Python 3.13.5 and SymPy 1.14.0, with seed 20260929.
 It checked 21 finite systems and 670 exact scalar equalities in total,
 including 24 independent Riccati recurrence identities. All passed.
-The script writes its own `verification/results.json` and raises an exception
-on any failed check. The checks are not disabled by Python's optimization flag.
+The script writes `build/results.json` (relative to this directory; as
+delivered it overwrote `verification/results.json`, which now requires
+`--overwrite-recorded`) and raises an exception on any failed check. The checks are not disabled by Python's optimization flag.
 
 The program enumerates only finitely generated rational monoids below finite
 cutoffs. It checks exact recurrences, residuals, resonance projections,
@@ -106,3 +107,40 @@ logarithm-free solution class, not to all possible transseries extensions.
 
 Repository snapshot inspected:
 `3d5973524506411392a911470b5ddc35521568ea`.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 52 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `article.tex`: an unnumbered `ednote` environment (the article's remarks
+  share the theorem counter, so its numbering is unchanged) and one visible
+  "Editorial note (ProveIt, 2026-09-29)" paragraph at the end of the
+  introduction of Section 1, preceded by a `% ed. (2026-09-29)` comment:
+  the universal criterion of Theorem 6.1 (`thm:gap`) is proved
+  independently, for real spectrum with resonant constants and logarithms,
+  as `thm:universal` of `../Nonlinear_Hahn_Dulac_Finite_Resonance_Control/`
+  (batch 52; one criterion, two independent proofs, agreeing where both
+  apply), whose accumulation example (`thm:sharp-family`, `p > 2`) has
+  accumulating forcing, unlike Theorem 8.1 (`thm:hidden`); the linear
+  counterpart of `thm:hidden` is `ex:hidden` of
+  `../Path_Sensitive_Small_Divisors_Hahn_Fuchsian/`; and the Hahn–Fuchsian
+  article's further direction closest to this question is "Geometry of the
+  logarithmic strata", of which the convergence loci are a nonlinear
+  counterpart, not an answer (the article's own summary of those directions
+  mentions "exceptional parameter sets").
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf`
+  (23 pages; the delivered PDF had 22; no errors, undefined references,
+  multiply defined labels, duplicate destinations or overfull boxes).
+  Line numbers of `article.tex` after line 22 differ from the delivered
+  file.
+- `verification/verify.py`: writes LF on every platform (as delivered, its
+  `write_text` produced CRLF on Windows) and has `--output`, defaulting to
+  `build/results.json`; writing the recorded `verification/results.json`
+  requires `--overwrite-recorded`. Rerun on a copy (Windows, Python 3.13.5,
+  SymPy 1.14.0, default output): 670 equalities passed and the output is
+  byte-identical to `verification/results.json`.
+- `notes/build_report.json`: `pdf_pages` and the four `sha256` entries
+  recomputed for the filed files (`verification/results.json` is
+  unchanged); an `editorial_rebuild` field says so; its other fields,
+  including the per-page checks, describe the delivered build.

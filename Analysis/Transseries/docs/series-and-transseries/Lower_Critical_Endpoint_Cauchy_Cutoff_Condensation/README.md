@@ -1,7 +1,7 @@
 # The Lower Critical Endpoint
 ## Arbitrary-Rate Condensation, Cauchy Cutoff Laws, and Degenerating Transseries
 
-A 24-page research article prepared for Vladimir Reshetnikov, 29 September 2026.
+A 25-page research article (24 pages as delivered) prepared for Vladimir Reshetnikov, 29 September 2026.
 
 ## Files
 
@@ -89,14 +89,73 @@ With Python 3.10 or later:
     python -m pip install -r requirements.txt
     python verify.py
 
-The full run writes `verification_results.json`. A shorter run,
+The full run writes `build/verification_results.json`. A shorter run,
 
     python verify.py --quick
 
-writes `verification_quick.json` instead and does not replace the full record.
+writes `build/verification_quick.json` instead. Neither replaces the recorded
+`verification_results.json`, which only `--overwrite-recorded` may write (as
+delivered, the full run wrote over it; see the amendments below).
 
 The recorded run passed **62 exact algebra assertions**. The coefficient,
 cutoff, chart, finite-prefix, and CDF calculations are floating-point diagnostics,
 not interval certificates. The full run uses extended-precision long-double
 recurrences where supported and checks for underflow. The mathematical proofs
 do not depend on these numerical calculations.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 52 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `lower_critical_endpoint.tex`: an unnumbered `ednote` environment (the
+  article's remarks share the theorem counter, so its numbering is
+  unchanged) and five visible "Editorial note (ProveIt, 2026-09-29)"
+  paragraphs, each preceded by a `% ed. (2026-09-29)` comment:
+  - end of Section 1.1: the problem is resolved on the boundary-critical path
+    only (the subcritical side and a coupling window stay open); the same
+    question is Question 10 of
+    `../Confluent_Critical_Transseries_Exponent_Two_Boundary/` (coupling
+    `1/zeta(alpha)`, the case `P = 0`) and Question 8 of
+    `../Logarithmic_Critical_Endpoint_Lambert_Charts/`, answered on this path
+    by `D_n`, `b_n`, Theorem 3.1(a) (one exceptional action),
+    `lambda = n c_eps`, the chart and the budget; the interior-fold side is
+    `../Lower_Critical_Endpoint_Landau_Transseries/` (batch 51); the cited
+    lines 1502-1507 of the critical Hahn article were 1509-1514 on filing;
+  - after Corollary 10.1 (`cor:hahncoefficient`): `H_n` is the critical Hahn
+    article's `eq:critical-leading` (`thm:phases`) with `a = 1`,
+    `beta = c_eps`, `B = c_eps Gamma(-1-eps)`, so the corollary proves that
+    fixed-`alpha` law uniformly as `alpha -> 1`; that article's `b_n` is
+    asymptotic to `d_n` here;
+  - end of Section 10.4: the independent batch-52 package
+    `../Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/` treats
+    the same family at the same pin. One theorem with two independent proofs:
+    its `B` satisfies `B/d_n -> 1`, `eps B/b_n -> 1`,
+    `B + eps B log(1/eps) = D_n - (1-gamma) b_n + o(b_n)`, and its standard
+    Landau variable is `Z - (1-gamma)`, so the cutoff quantiles coincide; it
+    adds a quantitative uniform error, all fixed orders and the first
+    correction, which reproduces the gamma-ratio column of Table 1 to three
+    or four digits; it does not claim the joint cloud-extremes limit proved
+    here. These identities were checked on filing;
+  - at research question 2: partly answered by that package
+    (`thm:uniform`, `thm:allorders`, `cor:first`);
+  - Appendix (reproduction): the new default output location and the
+    Windows `longdouble`.
+- `lower_critical_endpoint.pdf`: rebuilt from the amended source with
+  `latexmk -pdf` (25 pages; the delivered PDF had 24; no errors, undefined
+  references, multiply defined labels, duplicate destinations or overfull
+  boxes). Line numbers of the source after line 29 differ from the
+  delivered file. `VALIDATION.md` (24 pages) describes the delivered build.
+- `verify.py`: as delivered, the full run always rewrote the recorded
+  `verification_results.json` beside the script. It now has `--output`,
+  defaulting to `build/verification_results.json` (or
+  `build/verification_quick.json` with `--quick`), and refuses to write the
+  recorded file without `--overwrite-recorded`. It already wrote LF.
+- Rerun on a copy (Windows, Python 3.13.5, mpmath 1.3.0, SymPy 1.14.0,
+  NumPy 2.3.5, SciPy 1.17.0, default output): 62 exact assertions passed.
+  NumPy's `longdouble` on Windows has 53 bits, not the recorded 64, so the
+  output records `long_double_bits` 53; every other number agrees with the
+  record to a relative 1e-13, except the quadrature's own error estimate
+  for one CDF value (7.64e-12 in both, differing in the sixth digit).
+- `build.sh` runs pdfLaTeX in this directory and leaves `build-pass-N.log`
+  and auxiliary files here (ignored by the repository).

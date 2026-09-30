@@ -86,6 +86,10 @@ python -m pip install -r verification/requirements.txt
 python verification/verify.py
 ```
 
+The program writes `build/results.json` (relative to this directory); writing
+the recorded `verification/results.json` requires `--overwrite-recorded` (see
+the amendments below).
+
 Python 3.10 or newer is required. The recorded environment was Python 3.13.5,
 SymPy 1.14.0, and mpmath 1.3.0, with seed 20260929. Run without `-O`; the program
 rejects disabled assertions. It uses no network once dependencies are installed.
@@ -106,3 +110,47 @@ Inspection was limited to selected relevant sources and documentation; it was
 not a complete audit of the repository or all newly delivered archives.
 No repository files were modified. Detailed provenance is in `notes/` and
 Appendix B.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 52 (see `docs/incoming/README.md`). The
+following changes were made on 2026-09-29; everything else is as delivered.
+
+- `nonlinear_hahn_dulac.tex`: an unnumbered `ednote` environment (the
+  article's remarks share the theorem counter, so its numbering is
+  unchanged) and two visible "Editorial note (ProveIt, 2026-09-29)"
+  paragraphs, each preceded by a `% ed. (2026-09-29)` comment:
+  - end of Section 1.1: the same universal criterion as Theorem 7.1
+    (`thm:universal`) is proved independently, for logarithm-free positive
+    solutions and arbitrary complex `A`, as `thm:gap` of
+    `../Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/` (batch 52;
+    one criterion, two independent proofs, agreeing where both apply); that
+    package's `thm:hidden` makes the small divisors from separated forcing,
+    whereas Section 10's example has accumulating forcing; the path-by-path
+    linear refinement is `../Path_Sensitive_Small_Divisors_Hahn_Fuchsian/`;
+    the exact logarithmic degree of linear scalar equations is
+    `../Exact_Logarithmic_Degree_Smith_Invariants/` (filed after this
+    article's snapshot); Theorem 5.2 (`thm:strata`) is a nonlinear
+    counterpart of the Hahn–Fuchsian question "Geometry of the logarithmic
+    strata", not an answer to it;
+  - Appendix (reproduction): the program's new default output location.
+- `nonlinear_hahn_dulac.pdf`: rebuilt from the amended source with
+  `latexmk -pdf` (28 pages; the delivered PDF had 27; no errors, undefined
+  references, multiply defined labels, duplicate destinations or overfull
+  boxes). Line numbers of the source after line 30 differ from the
+  delivered file.
+- `verification/verify.py`: as delivered it always rewrote the recorded
+  `verification/results.json`. It now has `--output`, defaulting to
+  `build/results.json`, and refuses to write the recorded file without
+  `--overwrite-recorded`. It already wrote LF. Rerun on a copy (Windows,
+  Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0, default output): byte-identical
+  to `verification/results.json`.
+- `notes/build_report.json`: `pdf_pages` and the `sha256` entries of the
+  source, PDF and `verification/verify.py` recomputed for the filed files
+  (`verification/results.json` is unchanged); an `editorial_rebuild` field
+  says so; its other fields describe the delivered build.
+- The delivered checksum ledger `SHA256SUMS.txt` was verified in full on
+  filing (10/10, batch 52) and not kept; the delivered archive remains in
+  the repository history (see `docs/incoming/README.md`, batch 52 row).
+- `build.sh` runs pdfLaTeX in this directory and leaves its auxiliary files
+  here (ignored by the repository).

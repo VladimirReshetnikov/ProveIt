@@ -1415,13 +1415,34 @@ or to the transition $\gamma\uparrow1$ at a rate depending on $t$.
 That limit requires uniform control of a growing number of reversion
 terms and should connect to the genuinely superlinear regime.
 % ed. (2026-09-29): cross-link to the weighted-type package's zero-loss theorem (not an answer).
+% ed. (2026-09-29, batch 52): last clause "so the question stays open" replaced by a pointer to the next note.
 \begin{ednote}
 \nolinkurl{Sharp_Weighted_Type_Formal_Reversion/} proves a
 kernel-independent zero-loss theorem (its Theorem~\texttt{thm:zeroloss}): for
 log-convex weights with $M_n^{1/n}\to\infty$ reversion preserves the
 weighted type. It would settle the root scale of the inverse here if the
 weight $e^{nb_n}$ were shown to be eventually log-convex; neither package
-proves this, so the question stays open.
+proves this. See the next note.
+\end{ednote}
+% ed. (2026-09-29, batch 52): the limsup root scale of the inverse follows from a later package (editorial deduction, re-derived on filing)
+\begin{ednote}
+Log-convexity is not needed. The later package
+\nolinkurl{Exact_Weighted_Type_Beyond_Log_Convexity/} (batch~52; not
+independently reviewed) shows that reversion preserves the type for every
+weight that is subexponentially equivalent to a supermultiplicative weight
+with roots tending to infinity (its Theorem~\texttt{thm:classificationintro}),
+and that a nonunit linear coefficient $c_1$ divides the inverse type by
+$|c_1|$ (its Corollary~\texttt{cor:scalarscaling}). By
+Lemma~\ref{lem:b}, $b$ is eventually nondecreasing with $b\to\infty$ and
+$b=o(\log x)$; so, after arbitrary positive values are given to $b_m$ at the
+finitely many small $m$ where it is undefined, $V_n=\exp(n\max_{m\le n+1}b_m)$
+has nondecreasing roots, is supermultiplicative with $V_n^{1/n}\to\infty$, and
+eventually $\log\bigl(V_n/\ee^{(n+1)b_{n+1}}\bigr)=-b_{n+1}=o(n)$. The weight
+$\ee^{mb_m}$ is therefore admissible, $\Uhat$ has type $c_1$ for it by
+Theorem~\ref{thm:main}, and the inverse coefficients $q_n$ satisfy
+$\limsup_n|q_n|^{1/n}\ee^{-b_n}=1$. Whether $|q_n|^{1/n}\ee^{-b_n}$
+converges remains open. This deduction is editorial; it is not stated in
+either article.
 \end{ednote}
 
 \subsection{Formal proofs and certified asymptotic computation}

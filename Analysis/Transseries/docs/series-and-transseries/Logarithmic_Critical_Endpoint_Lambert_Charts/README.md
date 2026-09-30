@@ -148,3 +148,28 @@ Added when batch 51 was filed; marked in the source by `% ed. (2026-09-29)` comm
   remains open. A new editorial bibliography entry `ed:lcl`.
 - `article.pdf`: rebuilt (29 pages, unchanged; no errors, undefined
   references, multiply defined labels or duplicate destinations).
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by `% ed. (2026-09-29,
+batch 52)` comments.
+
+- `article.tex`: in the editorial note at Question 8, "The boundary-critical
+  side, where `1/d_1 = 1/zeta(1+eps)` collapses, remains open." is
+  replaced: the path `beta = 1/d_1 = 1/(zeta(1+eps) + P'(1))` (tail
+  `j^(-2-eps)`, fixed finite prefix `P`) is answered, for `eps_n -> 0` at
+  any rate, by two independent packages of batch 52,
+  `../Lower_Critical_Endpoint_Cauchy_Cutoff_Condensation/` and
+  `../Lower_Critical_Endpoint_Uniform_Coefficients_Compound_Poisson/`, which
+  prove the same theorem: renormalized intensity `n/d_1` with the regime set
+  by `n eps`, a Hahn chart convergent uniformly as `eps -> 0`, and for
+  `n eps -> infinity` the action budget
+  `w_n (eps^(-1/(1+eps)) + log(1/eps)/(1+eps) + q_r) + o(w_n)`,
+  `w_n = (n/d_1)^(1/(1+eps))`, `q_r` a reflected Landau quantile. Their
+  Landau variables differ by the constant `1 - gamma`, and their cutoff
+  quantiles coincide. The subcritical side remains open. Two new editorial
+  bibliography entries, `ed:lcc` and `ed:lcu`.
+- `article.pdf`: rebuilt (29 pages, unchanged; no errors, undefined
+  references, multiply defined labels or duplicate destinations).
+  `BUILD_REPORT.json` still describes the delivered build.
+- `README.md`: this subsection.

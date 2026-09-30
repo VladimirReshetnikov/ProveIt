@@ -1431,6 +1431,18 @@ quotients $M_n/M_{n-1}$, and construct signed or nonnegative examples
 that attain it? A useful first target is $M_n=(n!)^s$ with $0<s<1$,
 where many small nonlinear blocks may still contribute a visible
 subexponential factor.
+% ed. (2026-09-29, batch 52): answered for factorial weights by a later package
+\begin{ednote}
+For $M_n=(n!)^s$, and for the shifted weight $((n-1)!)^s$, the later package
+\cite{ed:ssc} (batch~52; not independently reviewed) finds the worst case
+over the whole coefficient ball $|a_n|\le CA^{n-1}((n-1)!)^s$: one negative
+saturating series is extremal in every degree, its normalized inverse
+amplification $R_n$ satisfies $\log R_n\sim Cn^{1-s}$ for $0<s<1$ and
+$R_n\sim\exp(Cn^{1-s})$ for $s>1/2$, with an extra constant at $s=1/2$, and
+the fixed ball is stable under inversion exactly for $s\ge1$. So the
+overhead $\exp\{O(n/\sqrt{r_n})\}$ of Theorem~\ref{thm:finite} is not sharp.
+The local-quotient version for general weights remains open.
+\end{ednote}
 
 \subsection{Full inverse asymptotics for quadratic feedback}
 
@@ -1511,6 +1523,26 @@ transforms by a directional norm of the inverse Jacobian rather than a
 single scalar. A Banach-space formulation should distinguish constants
 coming from multilinear operator norms from combinatorial losses that
 are only subexponential in the degree.
+% ed. (2026-09-29, batch 52): the three preceding questions are answered or partly answered by later packages
+\begin{ednote}
+The later package \cite{ed:etb} (batch~52; conventional proofs, not
+independently reviewed) answers ``Weights beyond log-convexity'': for an
+arbitrary positive weight, with the shift $N_n=M_{n+1}$, tangent reversion
+preserves the type universally exactly when $N_n^{1/n}\to\infty$ and
+$\log(S_n/N_n)=o(n)$, where $S_n$ is the largest product
+$N_{j_1}\cdots N_{j_k}$ over compositions of $n$; when $N_n^{1/n}\to\infty$,
+$\limsup(S_n/N_n)^{1/n}$ is the optimal distortion. A log-convex envelope up
+to $\ee^{o(n)}$ is not necessary. It also shows that the equivalence
+(ii)$\Leftrightarrow$(iii) of Theorem~\ref{thm:iff} needs the
+log-convexity assumed there. For ``Two divergent composition arguments'' it
+proves $\typ(f\circ g)\le\max\{\typ(f),\typ(g)\}$, with equality for unequal types and
+every value in $[0,T]$ possible at equal types $T$; the factorial case was
+proved independently, by a different majorant, in \cite{ed:ssc}. For
+``Multivariate and operator-valued inversion'' it proves the tangent case on
+Banach spaces without dimension loss and sharp two-sided bounds
+$\typ(F)/\|A\|\le\typ(F^{-1})\le\|A^{-1}\|\typ(F)$ for a general derivative $A$,
+which a single scalar type cannot refine; a directional theory remains open.
+\end{ednote}
 
 \subsection{Hahn supports and accumulating action sets}
 
@@ -1723,5 +1755,21 @@ Finite-Core Resolution and Sharp Entire Borel Growth}, research draft
 prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
 \path{Analysis/Transseries/docs/series-and-transseries/Signed_Quadratic_Feedback_Inversion/article.tex}.
 Claimed proof, not independently reviewed.
+% ed. (2026-09-29, batch 52): editorial bibliography entries for the two batch-52 reversion packages
+\bibitem{ed:etb}
+[Editorial addition] \emph{Exact Type Beyond Log-Convexity: A complete
+reversion criterion, sharp distortion, and dimension-free nonlinear
+calculus}, research article prepared for Vladimir Reshetnikov, ProveIt,
+filed in batch~52,
+\path{Analysis/Transseries/docs/series-and-transseries/Exact_Weighted_Type_Beyond_Log_Convexity/article.tex}.
+Not independently reviewed.
+
+\bibitem{ed:ssc}
+[Editorial addition] \emph{Sharp Subexponential Reversion: Exact extremal
+cost, a Gevrey transition, and composition of two divergent series},
+research article prepared for Vladimir Reshetnikov, ProveIt, filed in
+batch~52,
+\path{Analysis/Transseries/docs/series-and-transseries/Sharp_Subexponential_Cost_Gevrey_Reversion/article.tex}.
+Not independently reviewed.
 \end{thebibliography}
 \end{document}

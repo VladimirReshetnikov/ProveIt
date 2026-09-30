@@ -210,13 +210,25 @@ def numeric_checks(quick):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--quick', action='store_true')
+    # ed. (2026-09-29): --output (default under build/); writing the recorded
+    # verification_results.json needs --overwrite-recorded.
+    parser.add_argument('--output', type=Path, default=None,
+                        help='default: build/verification_results.json, or build/verification_quick.json with --quick')
+    parser.add_argument('--overwrite-recorded', action='store_true',
+                        help='allow writing the recorded verification_results.json')
     args=parser.parse_args()
+    if args.output is None:
+        args.output=HERE/'build'/('verification_quick.json' if args.quick else 'verification_results.json')
+    if args.output.resolve()==(HERE/'verification_results.json').resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded verification_results.json; '
+                     'pass --overwrite-recorded or choose another --output')
     exact=exact_coefficient_checks()+exact_chart_checks()
     data=dict(status='passed',exact_assertions=exact,
               note='Numerical results are floating-point diagnostics, not interval certificates.',
               long_double_bits=int(np.finfo(np.longdouble).nmant)+1,
               numerical=numeric_checks(args.quick))
-    target=HERE/('verification_quick.json' if args.quick else 'verification_results.json')
+    target=args.output
+    target.parent.mkdir(parents=True,exist_ok=True)
     target.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(f'Passed {exact} exact algebra assertions; numerical diagnostics saved to {target.name}.')
     for row in data['numerical']['coefficients']:

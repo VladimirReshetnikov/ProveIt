@@ -157,3 +157,38 @@ following changes were made on 2026-09-29; everything else is as delivered.
   text writers `newline='\n'`, so a rerun on any platform emits LF, like
   the filed files. Rerun on a copy (`--order 70`, Windows): all four
   outputs were byte-identical to the filed files.
+
+### Batch-52 cross-reference notes (ProveIt, 2026-09-29)
+
+Added when batch 52 was filed; marked in the source by
+`% ed. (2026-09-29, batch 52)` comments.
+
+- `article.tex`: two editorial notes and two editorial bibliography entries
+  (`ed:etb`, `ed:ssc`):
+  - at the research question "Optimal subexponential cost of reversion":
+    answered for factorial weights by
+    `../Sharp_Subexponential_Cost_Gevrey_Reversion/` (one saturating series
+    is extremal over the whole coefficient ball, `log R_n ~ C n^(1-s)` for
+    `0 < s < 1`, `R_n ~ exp(C n^(1-s))` for `s > 1/2`, and the fixed ball is
+    stable under inversion exactly for `s >= 1`, so the overhead of
+    Theorem 3.1 (`thm:finite`) is not sharp); the local-quotient version
+    stays open;
+  - after the question "Multivariate and operator-valued inversion": the
+    three questions "Weights beyond log-convexity", "Two divergent
+    composition arguments" and "Multivariate and operator-valued inversion"
+    are answered (the last in part) by
+    `../Exact_Weighted_Type_Beyond_Log_Convexity/` (admissibility criterion
+    `N_n^(1/n) -> infinity`, `log(S_n/N_n) = o(n)`; optimal distortion;
+    the maximum law with the full equal-type spectrum, whose factorial case
+    the subexponential-cost package proves independently; Banach and
+    Jacobian bounds). That package also shows that (ii)⇔(iii) of
+    Theorem 4.2 (`thm:iff`) needs the log-convexity assumed there.
+- `article.pdf`: rebuilt with `latexmk -pdf` (24 pages; no errors,
+  undefined references, multiply defined labels, duplicate destinations or
+  overfull boxes). The questions "Weights beyond log-convexity", "Two
+  divergent composition arguments" and "Multivariate and operator-valued
+  inversion", at lines 1485-1513 before these notes (as cited by the batch-52
+  packages), are now at lines 1497-1525 (1497-1505, 1507-1515,
+  1517-1525).
+- `data/build_validation.json`: `pdf_pages`, `pdf_sha256` and
+  `source_sha256` recomputed again for the filed files.

@@ -9,7 +9,8 @@ def main() -> None:
     root=Path(__file__).resolve().parents[1]
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--input',type=Path,default=root/'data'/'recorded')
-    p.add_argument('--output',type=Path,default=root/'data')
+    # ed. (2026-09-29): default output data/rerun, so a bare run cannot overwrite the article's table inputs in data/
+    p.add_argument('--output',type=Path,default=root/'data'/'rerun')
     args=p.parse_args(); args.output.mkdir(parents=True,exist_ok=True)
     with (args.input/'diagnostics.csv').open(newline='',encoding='utf-8') as f:
         rows=list(csv.DictReader(f))
@@ -23,7 +24,7 @@ def main() -> None:
     if len(lines)!=10:
         raise ValueError('Expected ten rows for the main article table.')
     (args.output/'diagnostic_table.tex').write_text(
-        '\n'.join(lines)+'\n\\bottomrule\n',encoding='utf-8')
+        '\n'.join(lines)+'\n\\bottomrule\n',encoding='utf-8',newline='\n')  # ed. (2026-09-29): LF on Windows too
     with (args.input/'crossover.csv').open(newline='',encoding='utf-8') as f:
         rows=list(csv.DictReader(f))
     lines=[]
@@ -35,7 +36,7 @@ def main() -> None:
     if len(lines)!=5:
         raise ValueError('Expected five crossover rows.')
     (args.output/'crossover_table.tex').write_text(
-        '\n'.join(lines)+'\n\\bottomrule\n',encoding='utf-8')
+        '\n'.join(lines)+'\n\\bottomrule\n',encoding='utf-8',newline='\n')  # ed. (2026-09-29): LF on Windows too
 
 if __name__=='__main__':
     main()

@@ -199,7 +199,7 @@ def numerical_checks(outdir: Path, precision: int) -> None:
         r'\begin{tabular}{rrrlll}'+'\n'+r'\toprule'+'\n'+
         r'$d$&$m$&$T$&$|\Riesz_T^{(m)}-\Ssum|$&$|\Riesz_T^{(m)}-Q_T|$&$|\Accel_T^{(m)}-\Ssum|$\\'+'\n'+
         r'\midrule'+'\n'+'\n'.join(tex_rows)+'\n'+r'\bottomrule'+'\n'+r'\end{tabular}'+'\n',
-        encoding='utf-8')
+        encoding='utf-8',newline='\n')  # ed. (2026-09-29): LF on Windows too
 
     collision_rows, collision_tex=[],[]
     z=mp.mpf('1.7')
@@ -220,7 +220,7 @@ def numerical_checks(outdir: Path, precision: int) -> None:
         r'\begin{tabular}{r@{\qquad}llll}'+'\n'+r'\toprule'+'\n'+
         r'$k$&$P_{2,+}$&$\Riesz_{2,-}^{(1)}$&$\Riesz_{2,+}^{(1)}$&$|\Riesz_{2,+}^{(2)}-\Riesz_{2,-}^{(2)}|$\\'+'\n'+
         r'\midrule'+'\n'+'\n'.join(collision_tex)+'\n'+r'\bottomrule'+'\n'+r'\end{tabular}'+'\n',
-        encoding='utf-8')
+        encoding='utf-8',newline='\n')  # ed. (2026-09-29): LF on Windows too
 
     # Exact collision scaling constant for the actual d-lattice sine kernels.
     eps=mp.sqrt(2)*mp.mpf('1e-14')
@@ -249,9 +249,16 @@ def numerical_checks(outdir: Path, precision: int) -> None:
 
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--outdir',type=Path,default=Path(__file__).resolve().parent/'results')
+    # ed. (2026-09-29): the default output is build/results (as build.sh and the Makefile pass);
+    # writing the recorded results/ needs --overwrite-recorded.
+    parser.add_argument('--outdir',type=Path,default=Path(__file__).resolve().parent/'build'/'results')
     parser.add_argument('--precision',type=int,default=110)
+    parser.add_argument('--overwrite-recorded',action='store_true',
+                        help='allow writing the recorded results/ (including the two tables the article inputs)')
     args=parser.parse_args()
+    if args.outdir.resolve()==(Path(__file__).resolve().parent/'results').resolve() and not args.overwrite_recorded:
+        parser.error('refusing to overwrite the recorded results/; '
+                     'pass --overwrite-recorded or choose another --outdir')
     if args.precision<80:
         parser.error('--precision must be at least 80')
     args.outdir.mkdir(parents=True,exist_ok=True)
@@ -262,12 +269,13 @@ def main() -> None:
             "numerical_count":len(NUMERIC),"all_passed":True,
             "exact_checks":EXACT,"numerical_checks":NUMERIC,
             "scope":"Finite identities and high-precision diagnostics; no intervals, no Lean proof."}
-    (args.outdir/'verification.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    # ed. (2026-09-29): newline='\n' so the JSON and the summary are LF on Windows too
+    (args.outdir/'verification.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     text=(f"Exact assertions: {len(EXACT)} passed\nNumerical assertions: {len(NUMERIC)} passed\n"
           f"Decimal precision: {args.precision}\nPython {platform.python_version()}, "
           f"SymPy {sp.__version__}, mpmath {mp.__version__}\n"
           "No directed-rounding interval arithmetic or formal proof assistant was used.\n")
-    (args.outdir/'run_summary.txt').write_text(text,encoding='utf-8')
+    (args.outdir/'run_summary.txt').write_text(text,encoding='utf-8',newline='\n')
     print(text)
 
 if __name__=='__main__':

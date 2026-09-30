@@ -28,6 +28,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -201,6 +203,24 @@ as a premise of the proofs below. The log-convex result is recovered
 independently in Proposition~\ref{prop:logconvex}. No proof assistant was
 run; the attached computations are finite checks, not substitutes for
 the quantified arguments.
+% ed. (2026-09-29): exact location of the three questions at the pinned revision; other questions of that article re-posed in Section 12
+\begin{ednote}
+At the pinned revision of \cite{repo-weight} the three questions are the
+subsections ``Weights beyond log-convexity'', ``Two divergent composition
+arguments'' and ``Multivariate and operator-valued inversion'', lines
+1485--1493, 1495--1503 and 1505--1513 of
+\path{Sharp_Weighted_Type_Formal_Reversion/article.tex};
+\path{notes/provenance.json} records the wider range 1457--1547. (Editorial
+notes added to that article after this package was filed move these line
+numbers; the titles identify the questions.) In Section~\ref{sec:questions},
+``Optimal subexponential overhead'', ``Hahn supports and accumulating
+actions'', ``Realization and summation compatible with the envelope'' and
+the formalization question refine that article's own questions ``Optimal
+subexponential cost of reversion'' (pinned lines 1424--1433), ``Hahn supports
+and accumulating action sets'' (1515--1524), ``Summation compatible with
+refined inversion'' (1536--1543) and ``A staged Lean formalization target''
+(1545--1562), which this article does not cite individually.
+\end{ednote}
 
 \section{Weights, excess degree, and the main statements}
 \label{sec:statements}
@@ -1520,6 +1540,17 @@ The mechanism is explicit: an even degree with a large weight mixes with
 a single quadratic term and lands in a much smaller odd-degree weight.
 The failure is not an oscillatory sign phenomenon; all inverse
 contributions used in the lower bound are positive.
+% ed. (2026-09-29): consequence for the polynomial test of the predecessor's thm:iff, left implicit by the author
+\begin{ednote}
+Since $N_n^{1/n}\to\infty$ for the deep-dip weight, the inverse of every
+tangent-to-identity polynomial, whose coefficients grow at most
+exponentially, has type zero; Theorem~\ref{thm:zerotoinfinity}
+nevertheless gives a type-zero series whose inverse has infinite type.
+Hence the equivalence of conditions (ii) and (iii) in Theorem~\texttt{thm:iff}
+of \cite{repo-weight} (``the inverse of every tangent-to-identity polynomial
+has type zero'') genuinely needs its log-convexity hypothesis. This is
+consistent with that theorem, which assumes log-convexity.
+\end{ednote}
 
 \subsection{Harmless oscillations can be very irregular locally}
 
@@ -1612,6 +1643,28 @@ family \eqref{eq:finiteloss}, a generic membership statement obscures a
 real factor $c$ in the worst possible transformed radius. The deep-dip
 example warns that a superexponential normalization by itself can hide
 an arbitrarily severe nonlinear growth instability.
+% ed. (2026-09-29): consequence for the near-linear feedback article's inversion question (editorial deduction, re-derived on filing)
+\begin{ednote}
+The repository article \path{Near_Linear_Boundary_Exponential_Feedback/}
+asks for the exact root-growth scale of the compositional inverse of its
+series $\widehat U=\sum u_nq^n$, for which $u_n^{1/n}\sim c_1\ee^{b_n}$
+(its Theorem~\texttt{thm:main}); its editorial note says that the
+log-convex theorem of \cite{repo-weight} would settle this if $\ee^{nb_n}$
+were eventually log-convex. Log-convexity is not needed. That article's
+Lemma~\texttt{lem:b} makes $b$ eventually nondecreasing, with
+$b(x)\to\infty$ and $b(x)=o(\log x)$. Take the weight $M_m=\ee^{mb_m}$,
+so $N_n=\ee^{(n+1)b_{n+1}}$, with $b_m$ given arbitrary positive values at
+the finitely many small indices where it is undefined, and put
+$V_n=\exp(n\max_{m\le n+1}b_m)$. Its roots are nondecreasing, so $V$ is
+supermultiplicative, $V_0=1$, $V_n^{1/n}\to\infty$, and eventually
+$\log(V_n/N_n)=-b_{n+1}=o(n)$. By
+Theorem~\ref{thm:classificationintro}(iii) the weight is admissible;
+$\Type(\widehat U)=c_1$, so Corollary~\ref{cor:scalarscaling} gives
+$\Type(\inv{\widehat U})=1$, that is,
+$\limsup_n|q_n|^{1/n}\ee^{-b_n}=1$ for the inverse coefficients $q_n$.
+This is a limsup statement, not a root limit. The deduction is editorial;
+it is not in either article.
+\end{ednote}
 
 These statements should not be extrapolated to an arbitrary Hahn support
 by replacing the integer $n$ with an exponent. The proof uses finite
@@ -1840,6 +1893,18 @@ The proposed stages are a dependency plan, not a statement that matching
 library declarations already exist. The executed rational verification
 program can provide regression examples after the formal statements are
 implemented, but it does not certify the universal theorems.
+% ed. (2026-09-29): existing repository Lean for the finite Lagrange layer
+\begin{ednote}
+The repository already contains a residue-free Lean proof of the finite
+Lagrange--B\"urmann coefficient formula,
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/LagrangeInversion.lean}
+(\texttt{Fabius.Lagrange.coeff\_solution}), and of the Catalan inverse of
+$z+cz^2$ over any commutative ring,
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCompositionalInverse.lean}
+(\texttt{QuadraticInverse.coeff\_succ\_inverse}); at $c=-1$ the latter is
+the series used in Lemma~\ref{lem:polynomial}. Nothing about weights, types
+or envelopes is formalized.
+\end{ednote}
 
 \section{Further research questions and concrete next targets}
 \label{sec:questions}
@@ -1861,6 +1926,18 @@ target is to express it in terms of the number and entropy of partitions
 whose products lie within a chosen factor of $S_n$. This would refine
 the repository's question on optimal reversion cost without presuming
 log-convex local quotient asymptotics.
+% ed. (2026-09-29): answered for factorial weights by a package of the same batch
+\begin{ednote}
+For factorial weights this is answered by the independent package
+\path{Sharp_Subexponential_Cost_Gevrey_Reversion/} (filed in the same batch,
+written without knowledge of this article). For
+$N_j=((j+\nu)!/(1+\nu)!)^s$, $\nu\in\{0,1\}$, which is log-convex, so
+$S=N$, its extremal series is $H_C$, and its main theorem gives
+$\log h_{n+1}(C)-\log S_n\sim Cn^{1-s}$ for $0<s<1$, a multiplicative
+equivalent for $s>1/2$ (with an extra constant at $s=1/2$), and a bounded
+overhead for $s\ge1$, so the fixed coefficient ball is stable under
+inversion exactly for $s\ge1$. The general-weight question stays open.
+\end{ednote}
 
 \subsection{Anisotropic exact types under a general Jacobian}
 
@@ -1924,6 +2001,17 @@ under support refinements. A first target is a finitely generated positive
 semigroup with a fixed positive additive degree. Only after that case is
 understood should one address accumulating actions, where a finite
 integer-composition count is no longer available.
+% ed. (2026-09-29): repository packages on Hahn-support reversion
+\begin{ednote}
+For the support side of this question see the repository packages
+\path{Support_Controlled_Reversion_One_Exponential/} (Hahn
+Lagrange--B\"urmann inversion with a finite outer index bound at each
+exponent), \path{Reversion_Beyond_Archimedean_Valuations/} (positive-word
+support depth over an arbitrary ordered exponent group) and
+\path{Action_Accumulation_Nonlinear_Inversion/} (inversion of
+exponentially weighted action measures without a positive action gap).
+None of them treats weighted coefficient types.
+\end{ednote}
 
 \subsection{Realization and summation compatible with the envelope}
 
