@@ -46,6 +46,11 @@ New research, without a change to the complete universal bound:
 | [Nonabsorbing affine controllers](pell_kernel_nonabsorbing_determinant.md) | With nonzero coefficient determinant, the unfiltered paired FIFO language is decidable for arbitrary terminal states, with separate or [joint bounds](pell_kernel_nonabsorbing_joint.md). The proof includes effective duration reduction and a finite test for the remaining two powers. | The theorem does not remove Boolean rail filters. General proportional nonabsorbing coefficients are handled only in the stated subcases below. |
 | [Proportional carry reduction](pell_kernel_proportional_carry.md) | Exact factorization retains both the congruence and append-image guards. Absorbing, constant-factor and zero-intercept cases have complete decision procedures. | The general two-power divisibility case with all three coefficients nonzero remains unresolved. |
 | [Single-field compiler restrictions](native_controller_single_field_spectrum.md) | Every coefficientwise scalar convolution has a uniform bounded period except for precisely classified affine wire equations. The [guarded variant](native_controller_single_field_guard.md) has an elementary finite-state proof. | Deliberate variable carry streams or an additional variable field are outside the spectral theorem; a universal one-field compiler is still absent. |
+| [Current squared-scale75 refutation](complete75_squared_scale_refutation.md) | Deleting only the q³ scale multiplication from the actual76 source makes every positive input representable for every compiler produced by its construction. Sparse native words pass the weaker valuation threshold, and dummy bits align the actual main Pell power. | Full positive parametric counterexamples; illustrative finite tuples are separate. The two older complete75 candidates remain open. |
+| [Whole-coefficient index repair](pell_kernel_coefficient_congruence.md) | Replacing the weak auxiliary congruence by `U=jK-J` costs no extra operation and retains completeness, but the exact wrong-index family survives an audited even-modulus CRT. | Refutes the proposed kernel repair, not a full compiled75 instance. |
+| [Fixed Rule110 terminal patterns](input_bridge_rule110_terminal_patterns.md) | An arbitrary fixed positive terminal word costs74, or75 with the paid preamble. Singleton endpoints reduce to the old acceptance condition; fixed state-B words bound inputs. The literal Cook marker/state-A source is nonempty. | A complete finite orbit separates substring occurrence from whole-word reachability. No universal ordinary-input or boundary correspondence is supplied. |
+| [Carry-buffer design audit](native_controller_carry_buffer_design.md) | Exact modular buffer extension and an exact no-spill criterion; a local NAND carry gadget is valid, but its simplest feedback placement has an information collision. | A harmless spill/reset mechanism remains unpaid. The result refutes this particular design, not all deliberate-carry compilers. |
+| [Quadratic Sidon collision](native_controller_quadratic_sidon.md) | Fully typed one-field words with different local predicates have identical mixed square flags; rotating the second factor preserves the collision. | Fixed within-cell spacing does not isolate diagonal products. A different quadratic compiler must handle cross-cell terms explicitly. |
 | [Weakened power42 counterexample](pell_kernel_power_geometry_weak42.md) | The distinct multiplication-saving auxiliary weakening admits strictly positive witnesses at `q=5`, despite retaining `r+1=q`. Main coordinates and residues are checked exactly; final auxiliary values have a proved parametric extension. | Refutes this specified geometry shortcut, not the strong42 construction or either old complete75 candidate. |
 | [Binary and ternary power geometry](pell_kernel_power_two43.md) | Exact positive predicates for `q=2^t` and, in the [ternary variant](pell_kernel_power_three43.md), `q=3^t`, each in **43=25M+18A**. Both reuse the existing `r+1` register; the smallest parameters are covered. | Geometry only; no digit fields, input, controller or acceptance are included. |
 | [Paired binary FIFO](native_binary_pair_fifo52.md) | Exact **52=29M+23A** paired FIFO initialized by ordinary `x` and a high marker, including powers and bounds. A general affine controller gives **61**. | Both append streams must be nonempty. Unrestricted absorbing affine control is decidable; a universal controller or paid filter is absent. |
@@ -134,6 +139,11 @@ python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queu
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_single_field_spectrum.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_proportional_carry.py
 python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_two_carry_zero_code.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_carry_buffer_design.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/native_controller_quadratic_sidon.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/input_bridge_rule110_terminal_patterns.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_coefficient_congruence.py
+python3 Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete75_squared_scale_refutation.py
 ```
 
 The immediate constructive targets are a compiler using the single masked
@@ -174,6 +184,12 @@ substantive change from coefficientwise scalar convolution: those equations
 have bounded periods except for affine wire relations. Deliberate carries,
 state refinement, richer filters and other local relations remain constructive
 possibilities that still require full proofs.
+The direct q³-to-q² scale deletion is now refuted for the current76
+source itself, including the actual main-power shift and all positive
+input witnesses. The original auxiliary-scale and input-gap75 sources
+remain open. Fixed positive Rule110 endpoints and simple carry or square
+convolution designs have also been audited; none yet supplies the missing
+universal compiler.
 Deleting the ternary FIFO width bound has now been ruled out for the
 precise affine family by a thin-set nonuniversality argument. A useful next
 construction must supply a synchronized controller, a proved universal
