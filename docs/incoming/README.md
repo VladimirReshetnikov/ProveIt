@@ -607,3 +607,4 @@ ProveIt-era batches (from this directory):
 | 58 | `b30441a` (a new six-source Surreal-collection report, `surreal/polytopes-at-surreal-scales`; Part II of the research-report collection's `arithmetic-local-global-fibers`) | write phase for both reports pending | pending | — |
 | 59 | `f2cb203` (six surreal-polytope manuscripts, to become Parts VI–X of `surreal/polytopes-at-surreal-scales`) | write phase pending (after the batch-58 write) | pending | — |
 | 60 | `7498484` (two new research-report collection reports in a new category `hilbert-tenth-problem/` — `canonical-diophantine-certificates` from six manuscripts, `probabilistic-quantum-and-continuous-computation` from three; three arrival commits) | write phase for both reports pending | pending | — |
+| 61 | `3bf66a8` (one queue-certificate manuscript, a seventh member of `hilbert-tenth-problem/canonical-diophantine-certificates`, merged in the batch-60 write) | with the batch-60 write | pending | — |
