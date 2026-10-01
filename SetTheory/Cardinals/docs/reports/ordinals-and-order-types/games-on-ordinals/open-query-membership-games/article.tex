@@ -113,6 +113,11 @@
 \newenvironment{writenoted}[1][]{\par\smallskip\begingroup\small\sloppy
  \noindent\textbf{[Added 30 September 2026, batch~65]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
+% [Added 30 September 2026, batch 68] Notes added when Part V was written
+% in.  Like the other note environments, they use no counter.
+\newenvironment{writenotee}[1][]{\par\smallskip\begingroup\small\sloppy
+ \noindent\textbf{[Added 30 September 2026, batch~68]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 % Part IV (batch 65): the manuscript's macros.  Its one-argument \cl (an
 % overline) clashes with Part I's \cl and is set as \cwcl; its \rk (rho)
 % clashes with Part I's \rk and is written \rho; its \depth is set as
@@ -123,6 +128,14 @@
 \newcommand{\cwcl}[1]{\overline{#1}}
 \newcommand{\cwSig}{\mathcal S}
 \newcommand{\cwBas}{\mathcal B^{\mathrm{bas}}}
+% Part V (batch 68): the manuscript's macros.  Its \LA and \DD (sans-serif
+% L and D) are set as Part II's \layers and \depth; its \rank (rk) is
+% Part I's \rk; \N, \W, \A, \smq, \subseq, \ceil, \floor and \scs are
+% shared; its unused \supp and \Tw are dropped; \nextpos is new.  Its
+% figure needs TikZ (already loaded by tcolorbox) with arrows.meta.
+\newcommand{\nextpos}{\operatorname{next}}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
 \newtcolorbox{resultbox}{colback=Pale,colframe=Teal,boxrule=0.5pt,
  arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
@@ -131,17 +144,17 @@
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
-\vspace*{0.4in}
+\vspace*{0.1in}
 {\sffamily\color{Teal}\large ORDER TOPOLOGY \; / \; ORDINAL COMBINATORICS\par}
-\vspace{0.45in}
+\vspace{0.35in}
 {\sffamily\bfseries\color{Navy}\Huge Open-query games\\[0.15em] on ordinal spaces\par}
 \vspace{0.3in}
 {\sffamily\color{Navy}\Large A negative solution to the topological-sum problem,\\
 with an exact Cantor--Bendixson classification\par}
-\vspace{0.5in}
+\vspace{0.35in}
 {\large Research report\par}
 {\color{Gray}19 September 2026\par}
-\vspace{0.45in}
+\vspace{0.3in}
 \begin{resultbox}
 For the convergent ordinal sequence $S=[0,\omega]$,
 \[
@@ -175,7 +188,13 @@ questions at three labels, three convergent sequences three.\par
 Part~IV, added on 30 September 2026 (batch~65), characterizes the admissible
 layer words of every fixed coloring of every topological space by the reduced
 words surviving iterated color closures, classifies finite-depth behaviors,
-and gives the optimal height of a representative and an exact product law.\par}
+and gives the optimal height of a representative and an exact product law.\par
+\smallskip
+Part~V, added on 30 September 2026 (batch~68), computes the worst layer
+count over $q$-colorings, $h(q-1)+\min(q,\lvert X^{(h)}\rvert)$, on every
+locally compact or sequential Hausdorff space of finite height, through one
+coloring supported off a countable set, with product and sum laws and an
+inverse theory of query spectra.\par}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
@@ -250,6 +269,23 @@ derivative is empty, finite-poset obstructions need at most $mq(q-1)^{m-1}$
 points, and independent products satisfy
 $\rho(X\times Y)=\rho(X)+\rho(Y)-1$. Two colorings of one compact space that
 agree on every word of length at most three need three and four questions.
+
+\emph{Addition of 30 September 2026 (batch 68).} Part~V, from a further
+manuscript, computes the worst case over colorings at every finite height.
+On a Hausdorff space of last derivative rank $h$ that is locally compact or
+sequential, and more generally whenever every point of rank $r>0$ is the
+limit of an injective sequence of points of rank $r-1$, one coloring,
+constant off a countable set, has as admissible words exactly the common
+supersequences of all reduced words of length $h+1$ that start in a
+prescribed set of $s$ terminal colors. Hence the bound $(q-1)h+s$ is
+attained for every feasible $s$, and
+$\smq(X)=\ceil{\log_2(h(q-1)+\min(q,\lvert X^{(h)}\rvert))}$, also when
+$X^{(h)}$ is infinite; this answers Part~III's question on compact and
+first-countable spaces at every height. Exact formulas follow for finite
+products and bounded-height sums. On this class the worst layer counts over
+all $q$ determine $h$ and $\lvert X^{(h)}\rvert$ up to one finite/infinite
+ambiguity, whereas the worst depths can hide the terminal size, and a
+finite arithmetic test decides when they do.
 \end{abstract}
 
 \setcounter{tocdepth}{1}
@@ -2828,6 +2864,27 @@ a given space can have, is not answered by Part~IV and stays open for $q\ge3$ be
 Part~III's class (\cref{cw:q:fixed-space,fp:q:compact-height}).
 \end{writenoted}
 
+\begin{writenotee}[First half answered on locally compact and sequential spaces]
+Part~V answers the first half of this question on every Hausdorff space of
+finite height that is locally compact or sequential (in particular first
+countable), and more generally on every rank-accessible one, in which each
+point of positive rank $r$ is the limit of an injective sequence of points
+of rank $r-1$ (\cref{uw:def:accessible,uw:prop:lch,uw:prop:sequential}):
+for every $1\le s\le\min(q,t)$, with $t=\lvert X^{(h)}\rvert$ possibly
+infinite, some coloring with exactly $s$ colors on $X^{(h)}$ needs
+$(q-1)h+s$ layers; it realizes the whole profile
+$\operatorname{Up}(\A_{q,h+1}(S))$ and is constant off a countable set
+(\cref{uw:thm:profile,uw:thm:invariant}). Hence
+$\smq(X)=\ceil{\log_2(h(q-1)+\min(q,t))}$ there. The statements of the two
+notes above that this half remains open at heights $h\ge2$, on infinite
+derived sets and beyond Part~III's class now hold only for spaces that are
+not rank-accessible. Rank accessibility is sufficient, not necessary
+(\cref{uw:ex:cocountable}), and Part~III's ultrafilter spaces show that
+some local condition is needed; a characterization is asked as
+\cref{uw:q:necessary}. Which fixed colorings occur, in particular at height
+two, remains open (\cref{fp:q:next-level,cw:q:fixed-space}).
+\end{writenotee}
+
 \begin{question}[Small sharp synchronization families]
 What is the smallest number of reduced words of length at most $m$ whose common
 supersequence length is $(q-1)m+1$? What is the smallest number needed merely
@@ -4448,6 +4505,13 @@ Part~IV gives no capacity or local-star form of these data, and does not
 treat the worst case over colorings; the question stays open.
 \end{writenoted}
 
+\begin{writenotee}[Not answered by Part~V]
+Part~V computes the worst case over colorings at every finite height on
+rank-accessible spaces, but does not determine $\W(X,c)$ for an arbitrary
+fixed coloring at height two; it restates this question as
+\cref{uw:q:height-two}.
+\end{writenotee}
+
 \begin{question}[Compact and first-countable finite-height spaces]\label{fp:q:compact-height}
 Does the repository bound \((q-1)h+s\) attain its full layer value under
 natural compactness or first-countability hypotheses at every finite height?
@@ -4457,6 +4521,20 @@ A promising approach is to construct enough incompatible colored profiles
 inside disjoint neighborhoods while controlling their accumulation at the
 next derivative. The proof must not assume metrizability or a countable
 local base when neither is available.
+
+\begin{writenotee}[Answered in the affirmative]
+Part~V answers this question in the affirmative at every finite height: on
+every compact, more generally locally compact, and on every first-countable,
+more generally sequential, Hausdorff space of last derivative rank $h$, the
+bound $(q-1)h+s$ is attained for every $1\le s\le\min(q,\lvert
+X^{(h)}\rvert)$, the last derivative may be infinite, and
+$\max_c\layers(X,c)=h(q-1)+\min(q,\lvert X^{(h)}\rvert)$
+(\cref{uw:thm:intro,uw:thm:invariant}). The proof assumes neither
+metrizability nor a countable local base: a compact rank-one slice supplies
+a convergent injective sequence because its neighborhoods are cofinite
+(\cref{uw:prop:lch}), and the lower bound uses only convergent sequences of
+selected points (\cref{uw:lem:forcing}). The question is kept as printed.
+\end{writenotee}
 
 \begin{question}[Intermediate-capacity extremal formulas]\label{fp:q:intermediate}
 Find a closed formula for
@@ -4495,6 +4573,15 @@ a useful decomposition, and the worst case $\sm_q$ over colorings of such
 spaces, are not addressed.
 \end{writenoted}
 
+\begin{writenotee}[The worst case on rank-accessible spaces]
+Part~V bears on this question for the worst case over colorings: on a
+rank-accessible Hausdorff space with $X''=\varnothing$ and $X'$ infinite,
+for example a locally compact or a first-countable one,
+$\max_c\layers(X,c)=2q-1$ and $\sm_q(X)=\ceil{\log_2(2q-1)}$, with no
+filter-component decomposition (\cref{uw:thm:invariant}). Which spaces
+admit a useful decomposition is not addressed.
+\end{writenotee}
+
 \begin{question}[Expected query cost]\label{fp:q:expected}
 For a probability distribution on the hidden point, characterize the minimum
 expected depth over all admissible layer assignments and ordered binary
@@ -4532,6 +4619,19 @@ The ceilings erase information: at three labels, one ultrafilter component
 has maximum layer count three, whereas two through five components have
 maximum layer count four, yet all have depth two. This suggests studying
 the unrounded layer spectrum first.
+
+\begin{writenotee}[Bears on this question]
+On rank-accessible spaces (with a finite nonempty derived set: those whose
+capacities are all infinite, \cref{uw:sec:crosswalk}, item~4), Part~V
+answers the analogous question for the pair $(h,\lvert
+X^{(h)}\rvert)$ at every finite height: the unrounded spectrum
+$(\max_c\layers)_{q\ge2}$ determines it except that $(h,\infty)$ and
+$(h+1,1)$ agree (\cref{uw:thm:layer-inverse}); the depth spectrum loses
+more, for instance every terminal size $1\le t\le2^r$ at $h=2^r$
+(\cref{uw:cor:dyadic}), and its coincidences are decided by a finite test
+(\cref{uw:thm:depth-equality}). Finite capacity lists, as for ultrafilter
+spaces, are not treated.
+\end{writenotee}
 
 \begin{question}[Choice strength and definability]\label{fp:q:choice}
 What is the weakest set-theoretic assumption supporting a countable
@@ -4982,6 +5082,12 @@ stays open beyond Part~III's class, as the next sentence says; the
 question is therefore answered in part, and the note after
 \cref{fo:q:invariants} records the new scope.
 \end{writenoted}
+
+\begin{writenotee}[The first half on locally compact and sequential spaces]
+Part~V, added later, answers that first half on every rank-accessible, in
+particular every locally compact or sequential, Hausdorff space of finite
+height (the note after \cref{fo:q:invariants}).
+\end{writenotee}
 
 The comparison is targeted. We inspected the report's definitions, normal-form
 and elimination arguments, synchronization and complexity discussion,
@@ -6270,6 +6376,20 @@ Nested partition capacities or compatibility of locally attainable suffix
 signatures are plausible ingredients, but their exact axioms remain to be
 established.
 
+\begin{writenotee}[Bears on this question]
+Part~V gives a sufficient local condition at every height. On a
+rank-accessible Hausdorff space of last derivative rank $h$, for every set
+$S$ of at most $\lvert X^{(h)}\rvert$ colors, some coloring has as its
+signature the whole downset generated by $\A_{q,h+1}(S)$, the largest
+signature of any coloring whose colors on $X^{(h)}$ lie in $S$
+(\cref{cw:lem:derivative} and the note after \cref{uw:cor:upper}), and needs $(q-1)h+\lvert S\rvert$ layers
+(\cref{uw:thm:profile}, and item~7 of \cref{uw:sec:crosswalk}). The
+condition is not necessary (\cref{uw:ex:cocountable}), and the other
+signatures of a fixed space are not determined; \cref{uw:q:necessary} asks
+for a characterization. \Cref{fp:q:compact-height}, which this question
+contains, is answered by Part~V.
+\end{writenotee}
+
 \begin{question}[Optimal obstruction size]\label{cw:q:obstruction}
 Determine the least $B(q,m)$ such that every finite colored poset failing an
 $m$-layer budget has an induced subposet obstruction of at most $B(q,m)$
@@ -6375,6 +6495,1771 @@ settled statements: determine the signatures realizable by colorings of a
 \emph{fixed} space. That problem, rather than re-solving the game separately
 for each coloring, is a concrete next target for the repository's research
 program.
+
+%% ====================================================================
+%% Batch-68 addition (manuscript 02, "Universal Word Profiles on
+%% Scattered Spaces").  Every label of Part V carries the prefix uw:
+%% (universal words).  The labels of Parts I-IV are unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part V.\quad Universal word profiles}
+\addcontentsline{toc}{part}{Part V.\texorpdfstring{\quad}{ } Universal word profiles on scattered spaces: a finite-height attainment theorem, countable extremal witnesses and an inverse theory of query spectra}
+
+\noindent\emph{Sections~1--13 and Appendices~A and~B form Part~I (19 September
+2026); Sections~14--28 and Appendix~C form Part~II (batch~52); Sections~29--42
+and Appendix~D form Part~III (batch~56); Sections~43--58 and Appendices~E
+and~F form Part~IV (batch~65). They are unchanged except for dated pointers,
+marked \textup{[Added 29 September 2026, batch~52]}, \textup{[Added 29
+September 2026, batch~56]}, \textup{[Added 30 September 2026, batch~65]} or
+\textup{[Added 30 September 2026, batch~68]}. Part~V was added on 30
+September 2026 in batch~68 of ProveIt's incoming-report intake, from one
+manuscript written against the pinned state of Parts~I--III. On every
+locally compact or sequential Hausdorff space of finite Cantor--Bendixson
+height it computes the worst layer count over $q$-colorings,
+$h(q-1)+\min(q,t)$ with $t=\lvert X^{(h)}\rvert$, through one coloring
+supported off a countable set that realizes the whole profile of reduced
+words of length $h+1$. This answers Part~III's \cref{fp:q:compact-height}
+in the affirmative at every finite height, and the attainment half of
+Part~II's \cref{fo:q:invariants} on that class (\cref{uw:sec:crosswalk}).}
+
+\section{Provenance, conventions and the relation to Parts~I--IV}
+\label{uw:sec:provenance}
+
+\subsection{One manuscript, one addition}
+\label{uw:sec:source}
+Part~V is batch-68 manuscript~02, \emph{Universal Word Profiles on Scattered
+Spaces: A finite-height attainment theorem, countable extremal witnesses,
+and an inverse theory of query spectra}, dated 30 September 2026 (23 pages,
+US Letter, as delivered). Like the manuscripts of Parts~II--IV it is an
+AI-assisted research manuscript; it names no author, and its title page
+reads ``Prepared for Vladimir Reshetnikov'' (its PDF metadata: ``Research
+article prepared for Vladimir Reshetnikov''). It arrived as the archive
+\path{ProveIt_Universal_Word_Profiles.zip} (inner directory
+\path{proveit_universal_word_profiles/}, main file \path{article.tex}) in
+ProveIt commit \texttt{a866ff9a2} and was placed in \texttt{29e52fcdf}. It
+was written against ProveIt commit \texttt{781594d88} (in full
+\texttt{781594d886f8dc56069221e2b56bd1e94d9c6e5f}), which is later than
+Part~III's write (\texttt{f8a20bcb1}) and earlier than the placement
+(\texttt{3fd85006b}) and the write (\texttt{674300897}) of Part~IV. At that
+commit this report's \texttt{article.tex} had the Git blob
+\texttt{d1e50fd006} (Parts~I--III, including the notes of batches~52
+and~56) and its \texttt{README.md} the blob \texttt{465cb1e062}, both of
+which the manuscript records; both blobs are unchanged until the write of
+Part~IV. Every statement the manuscript makes about ``the repository'' or
+``the report'' therefore refers to Parts~I--III as printed above: its
+``Part II, Theorem 16.2'', ``Theorem 19.1'', ``Theorem 20.1'' and
+``Section 24'' are \cref{fo:thm:normal}, \cref{fo:thm:universal},
+\cref{fo:thm:CB} and \cref{fo:sec:obstructions}; its ``Part III, Theorem
+35.1'' is \cref{fp:thm:ternary}; and its ``Research question 12 of Part
+III, Section 41'' and ``Research question 11'' are \cref{fp:q:compact-height}
+and \cref{fp:q:next-level}. Its source audit says that the article's line
+ranges read through the connected GitHub tool at that revision include
+1100--1520, 1720--2050, 2470--2570, 2690--2820, 3920--4110, 4240--4390 and
+4570--4759, that the README's lines 210--400 were also read, and that some
+responses were truncated. The
+manuscript did not see Part~IV.
+
+The manuscript cites that state of the report as its reference
+\texttt{[Repo]}: ``ProveIt research report, \emph{Open-query games on
+ordinal spaces}, Parts I--III: the original binary report,
+\emph{Finite-output open-query games}, and \emph{Filter profiles and
+open-query complexity}. Original report dated 19 September 2026;
+continuations incorporated 29 September 2026. Repository snapshot
+\texttt{781594d886f8dc56069221e2\allowbreak b56bd1e94d9c6e5f}. Pinned article source.
+The exact path, blob, inspected ranges, and relevant theorem/question
+numbers are recorded in [its provenance section] and \texttt{SOURCES.md}.''
+This is not the entry \cite{Repo} of Part~II, which is Part~I at an earlier
+commit, nor Part~IV's \texttt{[Repo]}. Inside this report the reference is
+internal, so its citations and numbered mentions of Parts~II and~III are
+replaced by cross-references (see below).
+
+Its code and data are shipped beside those of Parts~I--IV, and their names
+carry the prefix \path{05-word-profiles-}; Part~I's unprefixed files count
+as~01, and Parts~II--IV's prefixes are \path{02-}, \path{03-} and \path{04-}.
+They are
+\begin{itemize}
+\item \path{code/05-word-profiles-verify.py}, the verifier;
+\item \path{code/05-word-profiles-Makefile}, its delivered Makefile;
+\item \path{data/05-word-profiles-verification.json}, the recorded run;
+\item \path{data/05-word-profiles-verification.log}, its captured console
+output (the same bytes);
+\item \path{data/05-word-profiles-certificate.json}, the certificate of
+\cref{uw:ex:height2};
+\item \path{data/05-word-profiles-depth_aliases.json}, the computed alias
+classes;
+\item \path{data/05-word-profiles-universal_words.csv}, the tested
+universal-family triples;
+\item \path{data/05-word-profiles-finite_forests.csv}, the finite-forest
+minimax outcomes;
+\item \path{data/05-word-profiles-sample_spectra.csv}, sample layer and depth
+values;
+\item \path{05-word-profiles-SOURCES.md}, the source audit, in the report
+root.
+\end{itemize}
+The manuscript, its PDF and its delivery README are not shipped and survive
+in the arrival commit; its checksum ledger (\texttt{SHA256SUMS}, 13
+entries, verified 13/13 at intake) was retired. The report README lists
+every file and every name the delivered files still use.
+
+The manuscript contributes, in the order printed here: the repository
+target and a map of its results (\cref{uw:sec:intro}); admissible words,
+restriction and enlargement, and the tree--layer normal form, credited to
+Part~II (\cref{uw:sec:normal}); the restricted-start word constant, credited
+to Part~II, a finite envelope test for universal words and the universal
+upper profile on every finite-height Hausdorff space (\cref{uw:sec:words});
+rank accessibility of locally compact and of sequential Hausdorff spaces,
+and disjoint thinning (\cref{uw:sec:accessibility}); countable forcing
+skeletons, rooted word forcing and the exact realization of the universal
+profile by a countably supported coloring with a countable witness
+(\cref{uw:sec:skeletons}); the exact worst invariants and examples
+(\cref{uw:sec:invariants}); finite products, bounded-height sums and the
+locality of the lower bound (\cref{uw:sec:products}); an inverse theory of
+layer and query-depth spectra (\cref{uw:sec:inverse}); a space showing that
+rank accessibility is not necessary (\cref{uw:sec:limits}); its finite
+checks (\cref{uw:sec:verification}); its provenance, claim boundaries and a
+formalization route (\cref{uw:sec:source-audit}); eight research questions
+(\cref{uw:sec:questions}); a conclusion; a worked layer map
+(Appendix~\ref{uw:app:worked}); and its package table
+(Appendix~\ref{uw:app:package}). Every result, example, remark, limitation
+and question of the manuscript is printed, and every proof except two that
+Part~II already prints (see below).
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Front matter and numbering.} The manuscript's title block,
+abstract and research-status box are printed in \cref{uw:sec:abstract}; its
+table of contents is dropped. Its Sections~1--13 are Sections~60--72 here,
+and its Appendices~A and~B are Appendices~\ref{uw:app:worked}
+and~\ref{uw:app:package}, after the appendices of Parts~I--IV, with
+``(Part~V)'' added to their titles. Its theorems and equations keep their
+positions within each section: its Theorem~$n.k$ is Theorem~$(n+59).k$ here
+and its equation~$(n.k)$ is~$(n+59.k)$. Its eight research questions
+are Research questions~29--36, because the counter continues after
+Part~IV's twenty-eight.
+\item \emph{Duplicated material.} The manuscript reproves Part~II's
+tree--layer normal form and restricted-start word constant ``to make the
+later profile arguments independent of any unverified topological claims''
+in the report. Both proofs are, step for step, the proofs Part~II prints for
+\cref{fo:thm:normal,fo:thm:universal}, so the statements
+\cref{uw:thm:normal,uw:thm:universal} are printed with their labels and their
+proofs point to Part~II; the sentence after \cref{uw:thm:normal} says that
+the manuscript includes the proof, where it said ``The proof is included'',
+and the claim table of \cref{uw:sec:source-audit} keeps its words
+``Existing; reproved''. Every other proof is printed in full, including
+those that are second routes: \cref{uw:cor:upper} is the upper bound of
+\cref{fo:thm:CB}, and the product identity in \cref{uw:lem:product-rank} is
+Part~I's \cref{lem:product}; dated notes there say so. The checks are
+collected in \cref{uw:sec:crosswalk}.
+\item \emph{Part~IV.} The manuscript was pinned before Part~IV existed and
+does not cite it. A dated note after \cref{uw:cor:upper} prints a second
+proof of \cref{uw:thm:upper-profile} through Part~IV's closure-word duality;
+the relations to Part~IV's other results are in \cref{uw:sec:crosswalk}.
+\item \emph{Renamed macros and symbols.} The manuscript's \verb|\LA| and
+\verb|\DD|, printed as sans-serif $\mathsf L$ and $\mathsf D$, are set as
+Part~II's $\layers$ and $\depth$ (the same numbers); its \verb|\rank|,
+printed $\operatorname{rk}$, is set with Part~I's \verb|\rk|, which prints
+the same; its \verb|\N|, \verb|\W|, \verb|\A|, \verb|\smq|, \verb|\subseq|,
+\verb|\ceil|, \verb|\floor| and \verb|\scs| are those of Parts~I--III, with
+the same meanings; its \verb|\nextpos| is new; its unused \verb|\supp| and
+\verb|\Tw| are dropped. Its arithmetic spectra $F_{h,t}(q)$ and $E_{h,t}(q)$
+of \eqref{uw:eq:arithmetic-spectrum} are printed $\Phi_{h,t}(q)$ and
+$\Psi_{h,t}(q)$ (and its $F(q)$, $F(Q)$ as $\Phi(q)$, $\Phi(Q)$), because
+Part~IV's $F_v$ is a nested closure and Part~I's $F_i$ a layer; the
+normalization is unchanged. The manuscript's ``height'' of a space is its
+last derivative rank $h$, as in the phrase ``heights $h\ge2$'' of
+Parts~II and~III, not the height $h+1$ of
+Part~I's Appendix~B and of Part~IV; the words are kept and the notation
+table says so. The notation table is \cref{uw:sec:notation}.
+\item \emph{The reference \texttt{[Repo]}.} Its five uses in the text (one
+plain, four with a Part and a theorem or section number) and the
+manuscript's uncited mentions ``Part II, Theorem 20.1'', ``Research
+question 12 of Part III, Section 41'', ``the repository's Research question
+12'' and ``the repository's Research question 11'' are printed as the corresponding cross-references, which print the same
+numbers; the plain one, after ``filter-profile continuations'', as
+``(printed above as Parts~I--III)''. The entry itself is quoted above, and
+the mentions in the quoted abstract and status box are left as delivered.
+\item \emph{Bibliography.} The manuscript's entries for Chiozini, Csern\'ak
+and Soukup \cite{CCS} and for Borlido, Gehrke, Krebs and Straubing
+\cite{BGKS} are works already cited by Parts~I--IV, and are merged with
+those entries; its annotations are added to them.
+\item \emph{Shipped names.} The source-audit file, the verifier, the
+certificate and the rerun command in
+\cref{uw:sec:inverse,uw:sec:verification,uw:sec:source-audit} and the
+package table of Appendix~\ref{uw:app:package} are printed with the shipped
+names and an explicit output path; the notes there quote the delivered
+text. The rewritten text promises no file that is not shipped.
+\item \emph{Notes.} Eight dated notes are added inside Part~V: on Part~IV
+and the target question (\cref{uw:sec:intro}), on Parts~II and~IV after
+\cref{uw:cor:upper}, on Part~I's product lemma (\cref{uw:sec:products}), on
+the cocountable example inside Parts~III and~IV (\cref{uw:sec:limits}), on
+shipped names (\cref{uw:sec:verification} and
+Appendix~\ref{uw:app:package}), on the pinned state
+(\cref{uw:sec:source-audit}) and on the relation of the research questions
+to those of Parts~II--IV (\cref{uw:sec:questions}). In Parts~II--IV, notes
+pointing to Part~V follow \cref{fo:q:invariants}, \cref{fp:q:next-level},
+\cref{fp:q:compact-height}, \cref{fp:q:infinite}, \cref{fp:q:spectrum}, the
+scope note of Part~IV's \cref{cw:sec:introduction} and
+\cref{cw:q:fixed-space}; the title page and the abstract gain a paragraph
+each, and the entries \cite{CCS} and \cite{BGKS} a sentence each.
+\end{itemize}
+
+\begin{resultbox}
+\textbf{Status (manuscript 02).} Part~V is an AI-assisted, unrefereed
+research manuscript. Its claims are ordinary mathematical proofs, not
+Lean- or Rocq-checked results; it ships an executable finite audit but no
+proof-assistant files (``No Lean source is supplied''), and nothing in it is
+formalized in ProveIt. Historical priority outside the inspected sources is
+not certified; its targeted literature searches were not exhaustive, and the
+advance it asserts is relative to the repository question at the pinned
+snapshot. It credits as prior material the tree--layer normal form and the
+restricted-start word constant of Part~II, which it reproves, and does not
+claim the derivative calculus of finite products as new. It answers
+\cref{fp:q:compact-height} for locally compact and for sequential
+(in particular first-countable) Hausdorff spaces; it does not classify every
+fixed coloring at height two (\cref{fp:q:next-level} stays open), does not
+cover all Hausdorff spaces without a local hypothesis (rank accessibility is
+sufficient, not necessary), does not assert that its countable witness is
+closed or compact, and does not treat transfinite games. Its arguments are
+in ZFC, with choices of points and sequences, no ultrafilter existence
+principle and no continuum hypothesis. The finite checks test the word
+calculus and the arithmetic only; they do not prove any infinite-space
+statement, and the recorded run time of 1.118~seconds is specific to the
+delivering environment.
+\end{resultbox}
+
+\subsection{The manuscript's title block and abstract}
+\label{uw:sec:abstract}
+\begin{quote}\small
+\textbf{Universal Word Profiles on Scattered Spaces. A finite-height
+attainment theorem, countable extremal witnesses, and an inverse theory of
+query spectra.} ProveIt research report, 30 September 2026.
+
+An open-query game asks for the color of a hidden point using adaptive
+membership questions about open sets. A ProveIt research report establishes
+the upper bound $(q-1)h+s$ for the number of ordered color layers on a
+Hausdorff space of finite Cantor--Bendixson height, where $h$ is the last
+nonempty derivative index and $s$ is the number of colors on that derivative.
+It explicitly leaves attainment under compactness or first countability open
+above height one. We prove attainment at every finite height for every locally
+compact Hausdorff space and every sequential Hausdorff space, including
+first-countable spaces.
+
+The proof gives more than equality of numerical bounds. Under a local
+rank-accessibility condition, one coloring has precisely the common-supersequence
+profile of all reduced words of length $h+1$ with prescribed initial colors.
+The coloring differs from a constant on only countably many points, and a
+countable subspace witnesses its entire profile. Consequently the maximum
+layer count is $h(q-1)+\min(q,|X^{(h)}|)$, and the worst query depth is its
+ceiling binary logarithm. We derive exact finite-product and bounded-height
+sum formulas, classify equality of complete layer spectra, and give a finite
+arithmetic algorithm deciding equality of all query-depth spectra. In
+particular, binary rounding can conceal different terminal derivative sizes
+for every alphabet size. All topological arguments are proved in the text;
+independent finite computations audit the word calculus and arithmetic.
+
+\textbf{Research status.} The target is Research question 12 of the pinned
+ProveIt report, not a newly claimed solution of its already-settled binary
+sum problem. This manuscript supplies ordinary mathematical proofs and
+executed finite checks. It is not independently refereed or proof-assistant
+verified. Historical priority outside the inspected sources is not certified.
+\end{quote}
+
+\subsection{Notation of Part~V}
+\label{uw:sec:notation}
+Part~V fixes a nonempty Hausdorff space $X$ of finite last derivative rank
+$h$, a finite alphabet $\Sigma$ of $q$ letters and an arbitrary (not
+necessarily continuous) coloring $c:X\to\Sigma$, as Part~II does. Several
+letters are used differently in Part~V and in Parts~I--IV. Where a false
+reading is tempting, the table prints it beside the true one.
+\begin{center}\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.45\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}@{}}
+\toprule
+Symbol & Part~V & Parts~I--IV\\
+\midrule
+\endhead
+$\Lambda_q(X)$, $\smq(X)$ & The worst layer count and the worst depth over
+all colorings $c:X\to\Sigma$. \emph{False:} $\Lambda_q$ is a fixed
+coloring's layer count. & Part~II: $\smq$; Part~III: $\max_c\layers(X,c)$
+(\cref{fp:cor:regular-formula}).\\
+$\W$, $\layers$, $\depth$ & Admissible words, least layer count, least
+worst-case depth: the manuscript's $\W$, $\mathsf L$ and $\mathsf D$. &
+Part~II's $\W$, $\layers$, $\depth$ (same notions).\\
+height & In the manuscript, ``height $h$'', ``height two'', ``height
+zero'' and the ``normalized height'' $H$ are last derivative ranks;
+``finite height'' means $h<\omega$ everywhere. \emph{False:} a
+``height-two space'' of Part~V has height two in Part~IV's sense. &
+Part~I, Appendix~B, and Part~IV: the height is $h+1$; Parts~II and~III
+write ``heights $h\ge2$''.\\
+$h$, $t$, $s$, $S$ & $h$ the last derivative rank, $t=\lvert
+X^{(h)}\rvert$, possibly infinite ($\min(q,t)=q$ then), $S$ a set of $s$
+colors prescribed on $X^{(h)}$. & Part~II: the same $h$, $s$, $S$; $t$ the
+number of towers. Part~III: $t=\lvert X'\rvert$, finite. Part~IV: $t$ a
+number of basis words.\\
+$\A_{q,m}(S)$, $\scs$, $\subseq$, $\operatorname{Up}$ & Reduced words of
+length $m$ starting in $S$, as in Part~II; shortest common supersequence
+length; subsequence; $\operatorname{Up}(\mathcal B)$ the words containing
+every member of $\mathcal B$. & Part~II: $\A_{q,m}(S)$, $\scs$, $\subseq$;
+Part~IV writes $\preceq$.\\
+$\nextpos_a(j)$, $b_0,\ldots,b_h$ & Inclusive next occurrence of $a$ in a
+word; the envelope positions \eqref{uw:eq:envelope}. \emph{False:} $b_k$ a
+capacity. & Part~II: the boundaries $b_r$ and the coloring $b_{a,m}$;
+Part~III: capacities $b_i$; Part~IV: a rank word $b$.\\
+$\rk_X(x)$ & The Cantor--Bendixson rank of a point (the manuscript's
+\verb|\rank|). \emph{False:} Part~IV's signature rank $\rho$. & Part~I's
+preamble defines the same \verb|\rk| (unused there); Part~IV:
+$\rho(X,c)$.\\
+$F$, $F_a$, $F_n$, $c_F$ & Countable point sets: a witness, its skeletons,
+and their colorings. \emph{False:} $F$ is a closed set or a filter. &
+Part~I: layers $F_i$; Part~III: a filter $\F$; Part~IV: nested closures
+$F_v$.\\
+$\Phi_{h,t}(q)$, $\Psi_{h,t}(q)$ & The arithmetic layer and depth spectra
+\eqref{uw:eq:arithmetic-spectrum}: the manuscript's $F_{h,t}(q)$ and
+$E_{h,t}(q)$, renamed. & ---\\
+$(H,T)$, $T_*$, $(K,U)$ & In \cref{uw:cor:sums}, the largest last rank and
+its total terminal size; in \cref{uw:sec:inverse}, normalized pairs.
+\emph{False:} $T$ is an arc count or a closure operator; $K$ a tower. &
+Part~I: $K_k$; Part~II: $\Tw_m$; Part~III: $T(q,r)$; Part~IV: $T_a$,
+$U(q,r)$.\\
+$Q_d$, $d_0$, $\ell$, $p$, $m$ & Depth thresholds, a starting index, the
+order of $2$ modulo the odd part $m$ of $H=2^pm$. \emph{False:} $m$ a word
+length here. & Part~II: $m$ a word length or tower index.\\
+$D$, $D_b$, $K$ & A compact rank-one slice and its closure set in
+\cref{uw:prop:lch}; an uncountable discrete set and its color cells in
+\cref{uw:ex:cocountable}. \emph{Not} the depth $\depth$. & Part~III: $D_i$,
+$D$ isolated parts; Part~IV: downsets $D$, $D_m$.\\
+$U$, $U_a$, $U_j$, $V$, $V_x$, $V_n$, $A_n$, $B_n$, $C_n$, $O_n$ & Open
+sets; $U_j$ the open suffixes of a layer map $\lambda$. & Part~II: $U_j$ (the
+same); Part~IV: $A_a$ color classes, $U(q,r)$; Part~III: $B_i$ color sets.\\
+$a_0$, $x_a$, $z_n$ & The baseline color, the selected terminal points, the
+selected children. & ---\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Parts~I--IV inside Part~V}
+\label{uw:sec:crosswalk}
+The following checks were made when Part~V was added; they are consequences
+of the five parts' proofs, not new theorems.
+\begin{enumerate}
+\item \emph{Normal form and word constant.} \Cref{uw:thm:normal,uw:thm:universal}
+are \cref{fo:thm:normal,fo:thm:universal}; at $q=2$ the first is Part~I's
+\cref{thm:normal}, and both are reproved in Part~IV
+(\cref{cw:thm:normal,cw:lem:universal}).
+\item \emph{Upper bound.} \Cref{uw:cor:upper} is the upper bound of
+\cref{fo:thm:CB}, and \cref{uw:thm:upper-profile} extends it from one word
+to the whole profile; Part~II's proof is the case of the cyclic universal
+word (the note after \cref{uw:cor:upper}). Part~IV's rank bound
+$\layers\le(q-1)h+q$ (item~3 of Part~IV's crosswalk, \cref{cw:sec:crosswalk}) is weaker, and Part~IV's duality gives a second
+proof of \cref{uw:thm:upper-profile} (the same note).
+\item \emph{Lower bound and towers.} Part~II attains $(q-1)h+s$ on a
+specific compact space, a sum of towers $\Tw_{h+1}$ with the colorings
+$b_{a,h+1}$, whose profile is $\operatorname{Up}(\A_{q,h+1}(S))$
+(\cref{fo:lem:root-profile}). \Cref{uw:thm:profile} realizes the same
+profile on every rank-accessible space; $\bigsqcup_t\Tw_m$ is compact
+metrizable, so \cref{uw:thm:invariant} for it is
+\cref{fo:thm:tower-invariant} (with $h=m-1$). The forcing argument differs:
+Part~II uses neighborhoods containing whole components, Part~V only
+convergent sequences of selected child points (the remark after
+\cref{uw:lem:forcing}).
+\item \emph{Rank one.} For a finite nonempty derived set, Part~III's
+hypotheses in \cref{fp:cor:regular-formula} (each nonisolated point first
+countable or with a compact neighborhood) make $X$ rank-accessible: the
+proof of \cref{fp:prop:infinite-capacity} constructs the sequence, and the
+compact case is the argument of \cref{uw:prop:lch}. So
+\cref{fp:cor:regular-formula} is \cref{uw:thm:invariant} at $h=1$, $t<\infty$.
+Conversely, a rank-accessible point has infinite partition capacity (split
+its sequence), so \cref{fp:thm:capacity} gives the same value. Part~V adds
+infinite $X'$ with $X''=\varnothing$, and every $h\ge2$.
+\item \emph{The binary case.} At $q=2$, \eqref{uw:eq:lambda} is
+$\Lambda_2(X)=h+\min(2,t)$, which is Part~I's maximum layer count $h+1$ or
+$h+2$ in \cref{thm:height}; Part~I needs no local hypothesis there (the note
+after \cref{fo:q:invariants}). \Cref{uw:cor:product} and \cref{uw:cor:sums}
+at $q=2$ give Part~I's \cref{cor:product} and \cref{thm:height} applied to
+a sum.
+\item \emph{The local hypothesis cannot be dropped.} Three one-point
+free-ultrafilter spaces have $h=1$, $t=3$ and $\sm_3=2$
+\eqref{fp:eq:separation}, while \eqref{uw:eq:sm} would give~$3$; they are not
+rank-accessible, having no convergent injective sequence
+(\cref{fp:prop:ultra-noncompact}). The cocountable space of
+\cref{uw:ex:cocountable} is a finite-derived-set space covered by Part~III
+(the note after it).
+\item \emph{Part~IV.} For the extremal coloring of \cref{uw:thm:profile},
+the admissible words determine the closure signature
+(\cref{cw:thm:recovery}), which is therefore the downset generated by
+$\A_{q,h+1}(S)$, of rank $h+1$; by \cref{cw:lem:derivative} and the
+argument of the note after \cref{uw:cor:upper}, this is the largest
+signature of any coloring whose colors on $X^{(h)}$ lie in $S$. Part~V thus realizes,
+on every rank-accessible space and every feasible $S$, the maximal
+signature, a sufficient condition for the attainment part of
+\cref{cw:q:fixed-space}; it does not determine the other signatures a fixed
+space can carry. Its product and sum laws concern the supremum over
+colorings; Part~IV's \cref{cw:thm:product} concerns one pair coloring and
+says that it does not concern the supremum. The two are complementary.
+\item \emph{The worked word.} The certificate word $01201$ of
+\cref{uw:ex:height2} ($q=3$, $h=2$, $S=\{0\}$, patterns $010$, $012$, $020$,
+$021$) is also the optimal word of Part~II's six two-point chains
+$01,02,10,12,20,21$ (\cref{fo:sec:three-colors}); both have five layers and
+three questions.
+\item \emph{Independent checks.} A script written at intake and rerun at
+this write (not shipped) confirmed $\scs(\A_{q,m}(S))=s+(q-1)(m-1)$ by
+exact breadth-first search for $q\le4$, $m\le4$ ($m\le3$ at $q=4$) and every
+$s$, skipping families of more than 200 words; that $01201$
+contains the four patterns of \cref{uw:ex:height2} and that their shortest
+common supersequence has length five; the closed threshold formula
+\eqref{uw:eq:threshold} against direct search (28,014 cases); dyadic
+aliasing \eqref{uw:eq:dyadic}, including the infinite-terminal type (80,132
+cases); the delivered \texttt{spectra\_equal} against a brute-force
+comparison over all $q\le4096$ for $h\le8$ and $t\le11$ or infinite (11,664
+pairs); and $\Phi_{h,\infty}=\Phi_{h+1,1}$. All agree. The proofs of
+\cref{uw:prop:lch,uw:prop:sequential,uw:lem:thinning,uw:lem:forcing,uw:thm:profile}
+and \cref{uw:ex:cocountable} were read at intake; no gap was found.
+\item \emph{No refutation.} No statement of Parts~I--IV is refuted or
+retracted: Part~II's remark after \cref{fo:thm:tower-invariant} never
+asserted that every space of a given height has the same invariant, and
+Part~III's separation shows only that a local hypothesis is needed.
+\end{enumerate}
+
+\section{The question and the contribution}\label{uw:sec:intro}
+
+\subsection{A precise repository target}
+The starting point is the report \emph{Open-query games on ordinal spaces}
+in ProveIt, including its finite-output and filter-profile continuations
+(printed above as Parts~I--III). We use the snapshot
+\begin{center}
+\texttt{781594d886f8dc56069221e2b56bd1e94d9c6e5f}.
+\end{center}
+The source path and blob identifier are recorded in \cref{uw:sec:source-audit}.
+Part~II, \Cref{fo:thm:CB} gives the sharp general upper bound
+\begin{equation}\label{uw:eq:old-bound}
+ \layers(X,c)\le (q-1)h+s.
+\end{equation}
+Here $c:X\to\Sigma$ is a coloring, $|\Sigma|=q$, $X^{(h)}$ is the last
+nonempty Cantor--Bendixson derivative, and $s=|c(X^{(h)})|$. The report
+constructs special compact metrizable extremizers. Part III subsequently
+classifies spaces with finite nonempty first derivative, but does not establish
+attainment on arbitrary compact or first-countable spaces at larger heights.
+
+\Cref{fp:q:compact-height} of Part~III, \Cref{fp:sec:questions} asks whether the full layer bound
+is attained at every finite height under natural compactness or
+first-countability hypotheses. Its accompanying paragraph emphasizes that a
+proof must not silently assume a countable local base in a nonmetrizable
+compact space. That is the question answered here.
+
+\begin{writenotee}[Part~IV and this question]
+The manuscript was written against Parts~I--III (\cref{uw:sec:source}).
+Part~IV, placed and written after that pin, does not answer this question
+either: it treats one fixed coloring at a time, and its note after
+\cref{fo:q:invariants} leaves the attainability half open beyond Part~III's
+class. Where Part~IV gives a second route to a result below, or bears on
+one, this is said in a dated note there and in \cref{uw:sec:crosswalk}.
+\end{writenotee}
+
+The broader game originates in the work of Chiozini, Csern\'ak and Soukup
+\cite{CCS}. Their binary membership game asks whether the remaining possible
+points lie wholly inside or wholly outside a specified target. Our $q$-color
+version replaces that target bit by a finite output label. Only finite
+worst-case decision trees are considered in this article. Neither transfinite
+point separation nor the arbitrary-cardinal product questions of
+\cite{CCS} are being resolved here.
+
+\subsection{What the answer says}
+Write $\Lambda_q(X)=\max_c\layers(X,c)$ for the worst layer count, and
+$\smq(X)=\max_c\depth(X,c)$ for the worst finite query depth. The definitions
+and the equality between query depth and logarithmic layer count are given
+in \cref{uw:sec:normal}.
+
+\begin{theorem}[Finite-height attainment]\label{uw:thm:intro}
+Let $X$ be a nonempty Hausdorff space with
+$X^{(h)}\ne\varnothing$ and $X^{(h+1)}=\varnothing$, for a finite integer
+$h\ge0$. Suppose that $X$ is locally compact or sequential. Put
+$t=|X^{(h)}|$. For every integer $q\ge2$,
+\begin{equation}\label{uw:eq:main-formula}
+ \boxed{\quad
+ \Lambda_q(X)=h(q-1)+\min(q,t),\qquad
+ \smq(X)=\ceil{\log_2\bigl(h(q-1)+\min(q,t)\bigr)}.
+ \quad}
+\end{equation}
+If $t$ is infinite, $\min(q,t)$ means $q$. More precisely, for each
+$1\le s\le\min(q,t)$ there is a coloring with exactly $s$ colors on
+$X^{(h)}$ and exactly $h(q-1)+s$ necessary layers. It can be chosen constant
+outside a countable set.
+\end{theorem}
+
+The theorem follows from a stronger profile statement, \cref{uw:thm:profile},
+under the weaker hypothesis of \emph{rank accessibility}. A point of rank
+$r>0$ is rank-accessible when it is the limit of an injective sequence of
+points of rank $r-1$. This local hypothesis is proved for both classes in
+\cref{uw:sec:accessibility}; first-countable Hausdorff spaces are covered because
+they are sequential.
+
+The central advance is the construction of a \emph{single} coloring that
+simultaneously forces all reduced words of length $h+1$ beginning in a
+prescribed set of colors. A numerical lower bound alone would not identify
+that entire profile. The construction requires neither an embedded compact
+ordinal interval nor neighborhoods containing whole lower-level components.
+It uses only convergent sequences of selected child points.
+
+\subsection{Additional consequences and boundaries}
+The local hypothesis is preserved under finite products. This yields exact
+formulas even for a product assembled from different kinds of factors, without
+assuming that the product remains sequential. The complete layer spectrum
+determines the pair $(h,t)$, with the sole finite/infinite ambiguity
+$(h,\infty)\sim(h+1,1)$. The query-depth spectrum loses more information;
+\cref{uw:sec:inverse} gives an exact finite test for all such ambiguities.
+
+These statements concern \emph{maxima over colorings}. They do not classify
+every fixed coloring of an arbitrary height-two space. Nor do they remove all
+local topological hypotheses: the repository's filter examples already show
+that terminal derivative data alone do not suffice for general Hausdorff
+spaces (Part~III, \Cref{fp:thm:ternary}). We also give a direct example
+showing that rank accessibility is sufficient but not necessary for universal
+profile attainment.
+
+\section{Queries, ordered layers, and admissible words}\label{uw:sec:normal}
+
+Fix a finite alphabet $\Sigma$ of cardinality $q\ge2$. A coloring is an
+arbitrary function $c:X\to\Sigma$; it is not assumed continuous. The seeker
+knows $c$ and may ask whether the hidden point belongs to an open set $U$.
+The next question may depend on earlier answers. A finite tree is correct if
+all points arriving at any nonempty leaf have the color written there.
+Let $\depth(X,c)$ be the least possible maximum number of questions, or $\infty$
+if no finite tree is correct. Throughout, $X$ is nonempty.
+
+\begin{definition}[Admissible words]\label{uw:def:word}
+A finite nonempty word $w=w_1\cdots w_m$ over $\Sigma$ is admissible for
+$(X,c)$ if there is a function $\lambda:X\to\{1,\ldots,m\}$ such that
+\begin{equation}\label{uw:eq:admissible}
+ c(x)=w_{\lambda(x)},\qquad
+ U_j:=\{x:\lambda(x)\ge j\}\text{ is open for every }j.
+\end{equation}
+Empty layers are permitted. Let $\W(X,c)$ be the set of admissible words and
+let $\layers(X,c)=\min\{|w|:w\in\W(X,c)\}$, with minimum $\infty$ if the set
+is empty.
+\end{definition}
+
+Thus early positions represent deeper, less open layers; the later positions
+form open suffixes. This orientation is important in every proof below.
+The relation $u\subseq w$ means that $u$ is a subsequence of $w$, with strictly
+increasing selected positions. It does not mean a contiguous subword.
+
+\begin{proposition}[Restriction and enlargement]\label{uw:prop:restriction}
+If $Y\subseteq X$ has its subspace topology, then
+$\W(X,c)\subseteq\W(Y,c|_Y)$. If $w\in\W(X,c)$ and $w\subseq v$, then
+$v\in\W(X,c)$.
+\end{proposition}
+\begin{proof}
+For restriction, intersect each open suffix with $Y$. For enlargement,
+compose $\lambda$ with the increasing embedding of word positions. A suffix
+of the new indexing pulls back to an old suffix, the empty set, or the whole
+space, all of which are open.
+\end{proof}
+
+\begin{theorem}[Tree--layer normal form; repository input]\label{uw:thm:normal}
+For any nonempty colored space, the least number of nonempty leaves of a
+correct finite query tree equals $\layers(X,c)$. Whenever this number is finite,
+\begin{equation}\label{uw:eq:normal}
+ \depth(X,c)=\ceil{\log_2\layers(X,c)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+This is Part~II's \cref{fo:thm:normal} (at $q=2$, Part~I's \cref{thm:normal}).
+The manuscript's proof orders the nonempty leaves with the no subtree before
+the yes subtree at every node, shows by induction on the tree that every
+suffix union of leaf regions is open, and conversely locates the index of an
+admissible word by balanced bisection with the open suffixes $U_j$; this is
+the proof printed for \cref{fo:thm:normal}, and it is not repeated here.
+\end{proof}
+
+This normal form is already established in the repository
+(Part~II, \Cref{fo:thm:normal}). The manuscript includes its proof to make the later
+profile arguments independent of any unverified topological claims in that
+report. Ordered layers are related to the classical difference-chain viewpoint;
+Borlido, Gehrke, Krebs and Straubing discuss that broader framework
+\cite{BGKS}. Neither difference hierarchies nor the normal form are claimed
+as new here.
+
+\section{Universal words and a full upper-profile theorem}\label{uw:sec:words}
+
+\subsection{The sharp word constant}
+A word is \emph{reduced} if consecutive letters are different. For
+$\varnothing\ne S\subseteq\Sigma$, let $\A_{q,m}(S)$ be all reduced words
+of length $m\ge1$ whose first letter belongs to $S$. Write $s=|S|$.
+The shortest common supersequence length of a finite family $\mathcal B$ is
+$\scs(\mathcal B)$.
+
+\begin{theorem}[Restricted-start universal words; repository input]
+\label{uw:thm:universal}
+For $q\ge2$, $m\ge1$, and $1\le s\le q$,
+\begin{equation}\label{uw:eq:universal}
+ \scs\bigl(\A_{q,m}(S)\bigr)=s+(q-1)(m-1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+This is Part~II's \cref{fo:thm:universal}. The manuscript's proof takes the
+cyclic order of the alphabet with the $s$ letters of $S$ first for the upper
+bound and, for the lower bound, builds a required word letter by letter,
+choosing each time the latest next occurrence among the $q-1$ admissible
+letters; this is the proof printed for \cref{fo:thm:universal}, and it is not
+repeated here.
+\end{proof}
+
+This is Part~II, \Cref{fo:thm:universal}; our new topological work concerns
+realizing its \emph{whole} family inside an arbitrary space satisfying a
+local condition, not reproving the extremal word constant as a novelty claim.
+
+\subsection{A finite envelope test}
+For a finite word $w$ of length $n$, define
+\[
+ \nextpos_a(j)=\min\{k\ge j:w_k=a\},
+\]
+with value $\infty$ when no such position exists. The inequality is inclusive.
+Put
+\begin{equation}\label{uw:eq:envelope}
+ b_0=\max_{a\in S}\nextpos_a(1),\qquad
+ b_{k+1}=\max_{a\in\Sigma}\nextpos_a(b_k)\quad(0\le k<h).
+\end{equation}
+Once a value is infinite, all subsequent values are treated as infinite.
+
+\begin{lemma}[Universal-word recognition]\label{uw:lem:envelope}
+A word $w$ contains every member of $\A_{q,h+1}(S)$ if and only if all of
+$b_0,\ldots,b_h$ in \eqref{uw:eq:envelope} are finite.
+\end{lemma}
+\begin{proof}
+Assume first that $w$ contains every required word. The position $b_0$ is the
+greedy endpoint of a one-letter word from $S$. Inductively, suppose $b_k$ is
+the greedy endpoint of a reduced word starting in $S$ of length at most
+$k+1$. If a maximizing next letter equals $w_{b_k}$, its next inclusive
+position is $b_k$, and the same witness works. Otherwise append that letter.
+The resulting reduced word has length at most $k+2\le h+1$, and it can be
+extended to length $h+1$. Universality therefore supplies its embedding and
+its finite greedy endpoint. This proves finiteness through $b_h$.
+
+Conversely, greedily embed a required reduced word. Its first position is at
+most $b_0$. Suppose its current endpoint is $j\le b_k$ and its next letter
+is $a$, different from the current letter. If $j<b_k$, an occurrence at or
+after $b_k$ is strictly after $j$. If $j=b_k$, then $w_{b_k}\ne a$, so the
+inclusive next occurrence is again strictly later. In either case the next
+greedy endpoint is at most $\nextpos_a(b_k)\le b_{k+1}$. Induction embeds the
+whole word.
+\end{proof}
+
+The test has time $O(qn+qh)$ after building the next-position table. It avoids
+listing the $s(q-1)^h$ required patterns. More importantly, the same numbers
+provide layer indices on every space of the relevant height.
+
+\subsection{Derivative conventions and the universal upper profile}
+For a Hausdorff space $X$, define $X^{(0)}=X$ and let $X^{(r+1)}$ be the
+nonisolated-point subspace of $X^{(r)}$. These derivatives are closed in $X$.
+For finite height, $\rk_X(x)=r$ means
+$x\in X^{(r)}\setminus X^{(r+1)}$. An isolated point has rank zero.
+
+We will use two elementary locality facts. If $V$ is open in $X$, then
+\begin{equation}\label{uw:eq:locality}
+ V^{(r)}=V\cap X^{(r)}.
+\end{equation}
+If $Y$ is any subspace, then $Y^{(r)}\subseteq X^{(r)}$. Both statements
+follow by induction: being nonisolated is locally determined in an open
+neighborhood, and a nonisolated point of a subspace remains nonisolated in
+the ambient space. Every rank-$r$ point $x$ has an open neighborhood $V_x$
+with $V_x\cap X^{(r)}=\{x\}$.
+
+\begin{theorem}[Universal upper profile]\label{uw:thm:upper-profile}
+Let $X$ be a nonempty Hausdorff space of last derivative rank $h<\omega$,
+and let $c:X\to\Sigma$ have $c(X^{(h)})\subseteq S$. If
+$u\subseq w$ for every $u\in\A_{q,h+1}(S)$, then $w\in\W(X,c)$.
+\end{theorem}
+\begin{proof}
+All envelope values are finite by \cref{uw:lem:envelope}. For a point of rank
+$h$, set $\lambda(x)=\nextpos_{c(x)}(1)\le b_0$. For a point of rank
+$h-1-k$, $0\le k<h$, set
+\begin{equation}\label{uw:eq:rank-map}
+ \lambda(x)=\nextpos_{c(x)}(b_k)\in[b_k,b_{k+1}].
+\end{equation}
+Every index exists and carries the correct color. The intervals are ordered
+so that every point of lower rank has index at least that of every point of
+higher rank. Equal indices at interval boundaries are allowed.
+
+Fix $x$ of rank $r$ and choose $V_x$ with
+$V_x\cap X^{(r)}=\{x\}$. Every other point $y$ of $V_x$ has lower rank,
+so $\lambda(y)\ge\lambda(x)$. Thus $V_x\subseteq U_{\lambda(x)}$.
+For any $j$, every $x\in U_j$ has this neighborhood contained in $U_j$.
+Hence $U_j$ is open. This proves admissibility. For $h=0$, the space is
+discrete and the first-occurrence assignment already proves the claim.
+\end{proof}
+
+\begin{corollary}[The general layer bound]\label{uw:cor:upper}
+For every finite-height Hausdorff colored space,
+\[
+ \layers(X,c)\le h(q-1)+|c(X^{(h)})|.
+\]
+\end{corollary}
+\begin{proof}
+Use the shortest universal word of \cref{uw:thm:universal} in
+\cref{uw:thm:upper-profile}, with $S=c(X^{(h)})$.
+\end{proof}
+
+The corollary recovers the known numerical bound. The theorem establishes
+the stronger inclusion of complete word profiles, which is the upper half of
+our exact realization theorem.
+
+\begin{writenotee}[Relation to Parts~II and~IV; a second proof]
+\Cref{uw:cor:upper} is the upper bound \eqref{fo:eq:CB-bound} of
+\cref{fo:thm:CB}. The proof of \cref{uw:thm:upper-profile} generalizes
+Part~II's proof of that bound from one word to every universal word: for
+the cyclic word of length $s+(q-1)h$ used there, the envelope values are
+$b_k=s+k(q-1)$, which are Part~II's boundaries $b_r$ at $r=h-1-k$, and
+\eqref{uw:eq:rank-map} is Part~II's assignment.
+
+\emph{Second proof of \cref{uw:thm:upper-profile} (through Part~IV, which
+the manuscript, pinned before Part~IV was placed, does not cite).} Let $v$
+be a word of the closure signature $\cwSig(X,c)$ of length $k$. By
+\cref{cw:lem:derivative}, $F_v\subseteq X^{(k-1)}$, so $k\le h+1$. If
+$k=h+1$ and $v=au$ begins with $a$, then $F_v=\cwcl{A_a\cap F_u}$ is a
+nonempty closed subset of the discrete set $X^{(h)}$; each of its points is
+isolated in it and so lies in $A_a\cap F_u$, whence $a\in c(X^{(h)})\subseteq S$.
+Every word of the signature therefore embeds in a member of $\A_{q,h+1}(S)$:
+one of length $h+1$ is a member; a shorter one, $v=v_1\cdots v_k$ with
+$k\le h$, is extended at the end to a reduced word of length $h+1$ if
+$v_1\in S$, and otherwise preceded by a letter of $S$ (necessarily different
+from $v_1$) and then extended. A word $w$ containing every member of
+$\A_{q,h+1}(S)$ thus contains every signature word, and is admissible by
+\cref{cw:thm:duality}. This route uses Part~IV's duality in place of the
+envelope recurrence and rank neighborhoods.
+\end{writenotee}
+
+\section{Rank accessibility without metrizability}\label{uw:sec:accessibility}
+
+\begin{definition}[Rank-accessible space]\label{uw:def:accessible}
+A Hausdorff space of finite Cantor--Bendixson height is \emph{rank-accessible}
+if every point of positive rank $r$ is the limit of an injective sequence
+of points of rank exactly $r-1$.
+\end{definition}
+
+This is a condition on immediate predecessor ranks, not merely the existence
+of some convergent sequence somewhere in the space. It is used only in the
+selected neighborhoods where a forcing skeleton is constructed.
+
+\begin{lemma}[Open inheritance]\label{uw:lem:open-inheritance}
+Every open subspace of a rank-accessible space is rank-accessible, with the
+same ranks at all its points.
+\end{lemma}
+\begin{proof}
+The ranks agree by \eqref{uw:eq:locality}. A convergent sequence to a point of
+an open subspace is eventually in that subspace; discard its finite prefix.
+\end{proof}
+
+\begin{proposition}[Local compactness supplies predecessor sequences]
+\label{uw:prop:lch}
+Every locally compact Hausdorff space of finite height is rank-accessible.
+\end{proposition}
+\begin{proof}
+Let $x$ have rank $r>0$. Choose an open set $U$ with
+$U\cap X^{(r)}=\{x\}$. Local compactness and the Hausdorff property give an
+open neighborhood $V$ of $x$ with compact closure $K=\overline V\subseteq U$.
+For completeness, this shrinking fact follows by first taking a compact
+neighborhood, then using regularity of that compact Hausdorff subspace to
+shrink inside its intersection with $U$ and the interior of the neighborhood.
+
+Subspace monotonicity gives $K^{(r)}\subseteq K\cap X^{(r)}\subseteq\{x\}$.
+On the other hand, $V$ is open in both $K$ and $X$, so locality implies
+$x\in V^{(r)}\subseteq K^{(r)}$. Thus $K^{(r)}=\{x\}$.
+
+The compact space $D=K^{(r-1)}$ has $D'=\{x\}$. Its isolated part
+$D\setminus\{x\}$ is infinite. Every neighborhood of $x$ in $D$ has compact
+complement consisting entirely of isolated points of $D$, hence a compact
+discrete complement, which must be finite. Choose any sequence of distinct
+points in $D\setminus\{x\}$. It converges to $x$. These points belong to
+$X^{(r-1)}$ and, because $K\subseteq U$, none belongs to $X^{(r)}$.
+Their ambient rank is exactly $r-1$.
+\end{proof}
+
+No countable neighborhood base at $x$ was chosen. The sequence converges because
+all neighborhoods have finite complement in the compact rank-one slice $D$,
+even when $D\setminus\{x\}$ is uncountable.
+
+\begin{proposition}[Sequential spaces supply predecessor sequences]
+\label{uw:prop:sequential}
+Every sequential Hausdorff space of finite height is rank-accessible.
+In particular, every first-countable Hausdorff space of finite height is
+rank-accessible.
+\end{proposition}
+\begin{proof}
+Recall that a space is sequential when every nonclosed subset contains a
+sequence converging to a point outside that subset. Sequentiality passes to
+closed subspaces. It also passes to open subspaces: if $A\subseteq U$ is
+sequentially closed in an open $U$, then $A\cup(X\setminus U)$ is
+sequentially closed in $X$. A sequence converging to a point of $U$ is
+ultimately in $U$, which verifies this assertion directly. Thus
+$A\cup(X\setminus U)$ is closed in $X$, and $A$ is closed in $U$.
+
+Let $x$ have rank $r>0$ and choose $U$ with
+$U\cap X^{(r)}=\{x\}$. The space $Y=U\cap X^{(r-1)}$ is a closed subspace
+of the open sequential space $U$, and $Y'=\{x\}$. The subset
+$Y\setminus\{x\}$ is not closed, so it contains a sequence converging to
+$x$. In a Hausdorff space each fixed point different from $x$ occurs only
+finitely often in such a sequence. An injective subsequence can therefore be
+extracted. Every term has ambient rank $r-1$.
+
+Finally, a first-countable space is sequential: at a closure point outside a
+set, choose one point of the set from each member of a nested countable local
+base. The resulting sequence converges to that closure point.
+\end{proof}
+
+\begin{lemma}[Disjoint thinning]\label{uw:lem:thinning}
+Let $x$ have rank $r>0$ in a Hausdorff finite-height space. Suppose an injective
+sequence of rank-$(r-1)$ points converges to $x$. Inside any open $U$ with
+$U\cap X^{(r)}=\{x\}$, one can find a subsequence $z_n\to x$ and pairwise
+disjoint open sets $V_n\subseteq U$ satisfying
+\begin{equation}\label{uw:eq:thinning}
+ z_n\in V_n,\qquad x\notin V_n,\qquad
+ V_n\cap X^{(r-1)}=\{z_n\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Discard a finite prefix so the given sequence lies in $U$. Maintain an open
+neighborhood $O_n$ of $x$, initially $U$, disjoint from the already chosen
+$V_i$. Choose a sufficiently late unused sequence term $z_n\in O_n$, using
+strictly increasing original indices. Separate $x$ and $z_n$ by disjoint open
+sets $B_n$ and $A_n$. Choose $C_n$ open with
+$C_n\cap X^{(r-1)}=\{z_n\}$. Set
+\[
+ V_n=O_n\cap A_n\cap C_n,
+ \qquad O_{n+1}=O_n\cap B_n.
+\]
+Then $O_{n+1}$ avoids $V_n$ and all earlier sets. All asserted properties
+follow, and $z_n\to x$ because it is a subsequence of the original sequence.
+Only Hausdorff separation, not regularity, is used here.
+\end{proof}
+
+\section{Countable forcing skeletons}\label{uw:sec:skeletons}
+
+\subsection{The recursive geometric construction}
+The next construction is a finite-depth, countably branching colored tree
+whose vertices are actual points of the space. The tree is an indexing device;
+the topology always remains the inherited Hausdorff topology.
+
+\begin{lemma}[Universal rooted skeleton]\label{uw:lem:skeleton}
+Let $X$ be rank-accessible, let $x$ have rank $r$, and let $U$ be an open
+neighborhood with $U\cap X^{(r)}=\{x\}$. For any prescribed color
+$a\in\Sigma$, there are a countable set $F\subseteq U$ containing $x$ and
+a coloring $c_F:F\to\Sigma$ with these properties:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $F^{(r)}=\{x\}$ and $F^{(r+1)}=\varnothing$;
+\item the points of $F$ are vertices of a rooted tree of depth $r$, with root
+$x$ of color $a$; a vertex at depth $d$ has ambient and subspace rank $r-d$;
+\item for every nonterminal vertex $y$ and every color $b\ne c_F(y)$, an
+injective sequence of its immediate children, all of color $b$, converges to
+$y$;
+\item different child subtrees of each vertex lie in pairwise disjoint open
+neighborhoods that do not contain that vertex.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Induct on $r$. For $r=0$, take $F=\{x\}$ and give it color $a$.
+For $r>0$, rank accessibility and \cref{uw:lem:thinning} give
+$z_n\to x$ with pairwise disjoint open $V_n\subseteq U$, each with
+last derivative rank $r-1$ and unique top point $z_n$. By open inheritance,
+these spaces are rank-accessible.
+
+Partition the indices into $q-1$ infinite sets, one for each
+$b\in\Sigma\setminus\{a\}$. On $V_n$, use the inductive construction with
+root $z_n$ prescribed the corresponding color $b$. Call the resulting
+countable colored skeleton $F_n$. Let
+$F=\{x\}\cup\bigcup_n F_n$ and give $x$ color $a$. The disjoint
+neighborhoods ensure that these color assignments do not conflict. A finite
+union of countably many recursive levels is countable. Each subsequence of
+children assigned a given $b$ converges to $x$.
+
+Subspace monotonicity bounds every vertex's rank in $F$ above by its ambient
+rank. For the reverse inequality, induct upward from the leaves: children
+of remaining height $k-1$ belong to $F^{(k-1)}$ and converge to their parent,
+putting the parent in $F^{(k)}$. Thus every vertex has exactly its assigned
+rank. Since $U$ contains no other ambient rank-$r$ point, $F^{(r)}=\{x\}$.
+All remaining properties follow from the construction and induction.
+\end{proof}
+
+\subsection{A rooted forcing statement}
+The essential quantifier is that every pattern can be embedded beginning at
+\emph{the actual layer index of the root}. This makes the induction work
+without uniform control of entire child neighborhoods.
+
+\begin{lemma}[Rooted word forcing]\label{uw:lem:forcing}
+Let $(F,c_F)$ be a skeleton of height $r$ from \cref{uw:lem:skeleton}, with root
+$x$ of color $a$. Suppose $w$ is admissible on $F$, witnessed by $\lambda$,
+and put $j=\lambda(x)$. Every reduced word $u$ of length $r+1$ beginning
+with $a$ embeds in $w$ with its first position exactly $j$.
+\end{lemma}
+\begin{proof}
+For $r=0$, use $w_j=c_F(x)=a$. Suppose $r>0$ and write the prescribed word
+as $u=abv$, where $b\ne a$. The suffix
+$\{y\in F:\lambda(y)\ge j\}$ is an open neighborhood of $x$ in $F$.
+A sequence of immediate children of color $b$ converges to $x$, so some such
+child $z$ lies in this suffix. Then $\lambda(z)\ge j$, and color disagreement
+forces $\lambda(z)>j$.
+
+Restrict the admissible map to the child skeleton rooted at $z$. By induction,
+the reduced word $bv$, of length $r$, embeds with first position
+$\lambda(z)$. Prefixing the position $j$ gives the required embedding of
+$abv$.
+\end{proof}
+
+\begin{remark}[Why this proof works outside compact towers]
+An open neighborhood of $x$ need not contain an entire child skeleton, even
+when it contains that child's root. The proof never makes this assumption.
+It first selects a child root in the appropriate open suffix and then applies
+the rooted statement to that child's restricted admissible map. Its conclusion
+already starts at the child's layer index and hence remains after the parent's
+index. This is precisely the feature that replaces the cofinite-whole-component
+property of the special compact towers in the repository.
+\end{remark}
+
+\subsection{Exact realization on the original space}
+For a word family $\mathcal B$, write
+\[
+ \operatorname{Up}(\mathcal B)=\{w:u\subseq w\text{ for every }u\in\mathcal B\}.
+\]
+This is an upward-closed family under subsequence enlargement.
+
+\begin{theorem}[Universal profiles with countable witnesses]\label{uw:thm:profile}
+Let $X$ be a nonempty rank-accessible Hausdorff space of last derivative
+rank $h<\omega$. Let $\varnothing\ne S\subseteq\Sigma$ have
+$s\le|X^{(h)}|$. There are a coloring $c:X\to\Sigma$, a color $a_0\in S$,
+and a countable subspace $F\subseteq X$ such that
+\begin{equation}\label{uw:eq:sparse}
+ c(X^{(h)})=S,
+ \qquad c(x)=a_0\text{ for every }x\notin F,
+ \qquad |F^{(h)}|=s,
+\end{equation}
+and, for every finite word $w$,
+\begin{equation}\label{uw:eq:exact-profile}
+ \boxed{\quad
+ w\in\W(X,c)
+ \ \Longleftrightarrow\ 
+ w\in\W(F,c|_F)
+ \ \Longleftrightarrow\ 
+ w\in\operatorname{Up}\bigl(\A_{q,h+1}(S)\bigr).
+ \quad}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For each $a\in S$, select a distinct point $x_a\in X^{(h)}$. A finite set
+of points in a Hausdorff space has pairwise disjoint open neighborhoods:
+choose disjoint neighborhoods for each pair and intersect finitely many
+neighborhoods at each point. Further intersect with rank-isolating
+neighborhoods to obtain $U_a$ with
+$U_a\cap X^{(h)}=\{x_a\}$.
+
+Use \cref{uw:lem:skeleton} inside $U_a$, prescribing color $a$ at $x_a$, and
+let $F_a$ be the resulting countable skeleton. The $F_a$ are disjoint. Put
+$F=\bigcup_{a\in S}F_a$, give it the constructed colors, and color all other
+points by a fixed $a_0\in S$. Each $F_a$ is open and closed in $F$, so its
+ranks are unchanged there. Hence $F^{(h)}=\{x_a:a\in S\}$, and
+\eqref{uw:eq:sparse} holds.
+
+Restriction gives $\W(X,c)\subseteq\W(F,c|_F)$. If a word is admissible on
+$F$, restriction to each $F_a$ and \cref{uw:lem:forcing} show that it contains
+all words in $\A_{q,h+1}(S)$. Conversely, any word containing all of these
+patterns is admissible on $X$ by \cref{uw:thm:upper-profile}. These inclusions
+close the cycle and prove \eqref{uw:eq:exact-profile}.
+\end{proof}
+
+The theorem does not say that $F$ is closed or compact. Its strength is
+preservation of the \emph{entire} admissible-word profile despite that absence
+of compactness. The countable exceptional set supporting the coloring is
+provided explicitly by a finite-depth recursive selection of sequences.
+
+\begin{corollary}[Extension of an arbitrary terminal coloring]
+\label{uw:cor:prescribed}
+Under the hypotheses of \cref{uw:thm:profile}, let
+$g:X^{(h)}\to\Sigma$ be any prescribed coloring with image $S$. It extends
+to a coloring $c:X\to\Sigma$ having the universal profile in
+\eqref{uw:eq:exact-profile}. Outside $X^{(h)}$, that extension can be constant
+except on a countable set.
+\end{corollary}
+\begin{proof}
+Choose one $x_a\in g^{-1}(a)$ for each $a\in S$ and construct the same
+skeletons. On the entire terminal derivative use $g$, on the lower-rank
+skeleton vertices use the assigned colors, and on all remaining lower-rank
+points use $a_0$. The assignments agree at the selected roots. Rooted forcing
+and the universal upper-profile theorem are unchanged.
+\end{proof}
+
+The corollary is stronger than choosing terminal colors favorably. Even an
+arbitrary assignment on an infinite terminal derivative can be extended to
+an extremal coloring. Its global support need not be countable because the
+prescribed terminal coloring itself need not have countable support.
+
+\section{Exact invariants and examples}\label{uw:sec:invariants}
+
+\begin{theorem}[Prescribed terminal colors and the worst invariant]
+\label{uw:thm:invariant}
+Let $X$ be rank-accessible, Hausdorff, nonempty, and of last derivative rank
+$h<\omega$. Put $t=|X^{(h)}|$. For every $q\ge2$ and every
+$1\le s\le\min(q,t)$,
+\begin{align}
+ \max_{c:\,|c(X^{(h)})|=s}\layers(X,c)&=h(q-1)+s,
+ \label{uw:eq:prescribed-layer}\\
+ \Lambda_q(X)&=h(q-1)+\min(q,t),\label{uw:eq:lambda}\\
+ \smq(X)&=\ceil{\log_2\bigl(h(q-1)+\min(q,t)\bigr)}.
+ \label{uw:eq:sm}
+\end{align}
+The maxima are attained by the countably supported colorings in
+\cref{uw:thm:profile}.
+\end{theorem}
+\begin{proof}
+The general upper bound is \cref{uw:cor:upper}. The coloring of
+\cref{uw:thm:profile} has exactly the universal word profile, whose shortest
+word has length $h(q-1)+s$ by \cref{uw:thm:universal}. This proves
+\eqref{uw:eq:prescribed-layer}. Maximize over the feasible values of $s$ to
+obtain \eqref{uw:eq:lambda}. Apply \cref{uw:thm:normal}; the same extremizing
+coloring attains the maximum depth because the ceiling logarithm is
+nondecreasing.
+\end{proof}
+
+\Cref{uw:prop:lch,uw:prop:sequential} now prove \cref{uw:thm:intro}, and answer the
+repository's \Cref{fp:q:compact-height} affirmatively for compact Hausdorff spaces,
+more generally locally compact Hausdorff spaces, and first-countable
+Hausdorff spaces, more generally sequential Hausdorff spaces. No finiteness
+assumption on the terminal derivative is needed. For $q=1$, every coloring
+is constant, so the layer and depth values are $1$ and $0$; the numerical
+formula extends to this case as well.
+
+\begin{example}[The first genuinely higher-height case]\label{uw:ex:height2}
+Let $X$ have height $h=2$ and one terminal point, and satisfy the local
+hypothesis. With three colors and $S=\{0\}$, the four required words are
+\[
+ 010,\quad012,\quad020,\quad021.
+\]
+Their shortest common supersequence length is five; $01201$ is one shortest
+word. Thus $\Lambda_3(X)=5$ and $\operatorname{sm}_3(X)=3$.
+This conclusion holds for every locally compact or sequential Hausdorff
+space with these derivative data, not only for a preselected ordinal tower.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[level distance=14mm,
+ level 1/.style={sibling distance=47mm},level 2/.style={sibling distance=23mm},
+ every node/.style={circle,draw,minimum size=7mm,inner sep=1pt},
+ edge from parent/.style={draw,-{Stealth[length=1.5mm]}}]
+\node {$0$}
+ child {node {$1$} child {node {$0$}} child {node {$2$}}}
+ child {node {$2$} child {node {$0$}} child {node {$1$}}};
+\end{tikzpicture}
+\caption{The finite pattern tree for \cref{uw:ex:height2}. In the actual
+Hausdorff forcing skeleton, each displayed child type is represented by an
+infinite sequence converging to its parent. The seven-point drawing is a
+pattern diagram, not a finite Hausdorff realization of the accumulation.}
+\label{uw:fig:tree}
+\end{figure}
+
+\begin{example}[Infinite terminal derivatives]
+For $X$ of rank $h$ with infinitely many terminal points,
+\[
+ \Lambda_q(X)=(h+1)q-h.
+\]
+For example, take a countably infinite disjoint sum of compact single-top
+height-two towers. The last derivative is infinite and
+$\Lambda_q=3q-2$. This is also the layer spectrum of any single-top
+height-three space satisfying the hypothesis. The two spaces have different
+heights, but no alphabet size distinguishes their worst layer counts.
+\end{example}
+
+\begin{example}[Discrete boundary]
+If $h=0$, $X$ is discrete. A coloring with $s$ used labels requires precisely
+$s$ layers and $\ceil{\log_2s}$ questions. Thus
+$\Lambda_q(X)=\min(q,|X|)$, including finite $X$ and the singleton case.
+The support construction at height zero is simply the choice of one point
+for each nonbaseline label.
+\end{example}
+
+\begin{remark}[Countable versus finite witnesses]
+The extremal profile has a countable witness, but generally not a finite
+one. Every finite subspace of a Hausdorff space is discrete, so its layer
+count is at most $q$. Whenever $h(q-1)+s>q$, no finite subspace can witness
+the extremal layer count. The accumulation used by the skeleton is therefore
+indispensable. This contrasts with finite-subposet obstruction principles
+for Alexandrov spaces in Part~II, \Cref{fo:sec:obstructions}.
+\end{remark}
+
+\section{Products, sums, and local robustness}\label{uw:sec:products}
+
+\subsection{Finite products}
+We first recall and prove the derivative calculation needed for the new
+invariant formulas. The derivative identity itself is not asserted to be a
+new topological result.
+
+\begin{lemma}[Product ranks]\label{uw:lem:product-rank}
+For finite-height Hausdorff spaces $X,Y$ and every integer $n\ge0$,
+\begin{equation}\label{uw:eq:product-derivative}
+ (X\times Y)^{(n)}=\bigcup_{i+j=n}X^{(i)}\times Y^{(j)}.
+\end{equation}
+Consequently
+$\rk_{X\times Y}(x,y)=\rk_X(x)+\rk_Y(y)$.
+\end{lemma}
+\begin{proof}
+For closed subspaces $A\subseteq X$, $B\subseteq Y$, a point $(a,b)$ is
+isolated in $A\times B$ exactly when both coordinates are isolated in their
+respective subspaces. Hence
+\[
+ (A\times B)'=(A'\times B)\cup(A\times B').
+\]
+The derivative of a finite union of closed subspaces equals the union of
+their derivatives. To verify the nontrivial inclusion, a point that is not a
+limit point of any of finitely many closed pieces has a neighborhood in which
+each piece contains at most that point; intersect these finitely many
+neighborhoods. Induct on $n$ to obtain \eqref{uw:eq:product-derivative}.
+A point with coordinate ranks $r,s$ belongs to the displayed union exactly
+for $n\le r+s$, giving the rank assertion.
+\end{proof}
+
+\begin{writenotee}[Part~I's product lemma]
+The identity \eqref{uw:eq:product-derivative} is Part~I's
+\eqref{eq:product-derivative} (\cref{lem:product}), proved there by the same
+argument, with the last rank $h+k$ and the terminal derivative
+$X^{(h)}\times Y^{(k)}$ of the product; the pointwise rank formula is the
+form used here. The manuscript, which read Parts~II and~III, does not cite it;
+it says only that the identity is not new.
+\end{writenotee}
+
+\begin{proposition}[Product inheritance]\label{uw:prop:product-accessible}
+A finite product of nonempty rank-accessible Hausdorff finite-height spaces
+is rank-accessible. Its last derivative rank is the sum of the factor ranks,
+and its terminal derivative is the product of their terminal derivatives.
+\end{proposition}
+\begin{proof}
+For two factors, a point of positive product rank has a coordinate of positive
+rank. Replace that coordinate along an injective sequence of immediate
+predecessor-rank points, keeping the other coordinate fixed. Product
+convergence and \cref{uw:lem:product-rank} give an injective sequence of rank
+one less converging to the point. The remaining claims follow from the same
+rank identity. Induct on the number of factors.
+\end{proof}
+
+\begin{corollary}[Exact finite-product formula]\label{uw:cor:product}
+Let $X_1,\ldots,X_n$ be nonempty rank-accessible Hausdorff spaces of finite
+last derivative ranks $h_i$, with $t_i=|X_i^{(h_i)}|$. Then
+\begin{equation}\label{uw:eq:product-invariant}
+ \Lambda_q\!\left(\prod_{i=1}^nX_i\right)
+ =(q-1)\sum_{i=1}^nh_i+\min\!\left(q,\prod_{i=1}^nt_i\right),
+\end{equation}
+and the worst query depth is the ceiling binary logarithm of this expression.
+\end{corollary}
+\begin{proof}
+Apply \cref{uw:thm:invariant} to \cref{uw:prop:product-accessible}.
+\end{proof}
+
+In particular, this applies when each factor is locally compact or sequential,
+with the choice allowed to vary between factors. We do not need or claim that
+an arbitrary finite product of sequential spaces is sequential.
+
+For a fixed space with $h>0$ and fixed $q\ge2$,
+\begin{equation}\label{uw:eq:powers}
+ \Lambda_q(X^n)=nh(q-1)+\min(q,t^n),\qquad
+ \smq(X^n)=\log_2 n+O(1).
+\end{equation}
+The last assertion follows because the additive terminal contribution lies
+between $1$ and $q$. It describes the exact finite-height regime, not
+unrestricted products in the original transfinite game.
+
+\subsection{Bounded-height topological sums}
+\begin{corollary}[Exact sum formula]\label{uw:cor:sums}
+Let $(X_i)_{i\in I}$ be a nonempty family of nonempty rank-accessible Hausdorff
+spaces whose finite last derivative ranks $h_i$ are bounded. Set
+\[
+ H=\max_{i\in I}h_i,\qquad
+ T=\sum_{i:\,h_i=H}|X_i^{(H)}|.
+\]
+Then
+\begin{equation}\label{uw:eq:sum-invariant}
+ \Lambda_q\!\left(\bigsqcup_{i\in I}X_i\right)=H(q-1)+\min(q,T),
+\end{equation}
+and the worst depth is its ceiling binary logarithm.
+\end{corollary}
+\begin{proof}
+Each summand is open and closed. Derivatives, ranks, and predecessor sequences
+are computed componentwise. The last derivative is the disjoint union of the
+terminal derivatives of exactly those components whose height is $H$.
+Apply \cref{uw:thm:invariant}.
+\end{proof}
+
+Lower-height summands cannot change this worst invariant once the maximal
+height and its terminal cardinality are fixed. This assertion is about the
+supremum over freely chosen colorings, not synchronization of particular
+fixed colorings. The latter can retain information discarded by these two
+parameters.
+
+\subsection{Locality of the lower bound}
+The full-space rank-accessibility hypothesis can be localized. To force the
+profile associated with $S$, it is enough that one selected top point of each
+color have an open rank-accessible neighborhood. The rest of the space may
+be an arbitrary Hausdorff finite-height space with the same last rank and
+terminal color set. The skeleton lower bound uses only those neighborhoods;
+the upper-profile theorem requires no accessibility at all. This observation
+can establish extremality even when some unrelated lower-rank regions fail
+the local condition.
+
+\section{An inverse theory of layer and query spectra}\label{uw:sec:inverse}
+
+Once the topological theorem has been proved, the inverse problem becomes
+finite arithmetic: what can one recover about a space from all its worst
+finite-output invariants? We give exact answers, including an algorithm for
+the information lost by binary rounding.
+
+For the rest of this section, terminal cardinalities are written as
+$t\in\N_{\ge1}\cup\{\infty\}$. All infinite cardinalities have the same
+meaning for a finite alphabet. Define
+\begin{equation}\label{uw:eq:arithmetic-spectrum}
+ \Phi_{h,t}(q)=h(q-1)+\min(q,t),\qquad
+ \Psi_{h,t}(q)=\ceil{\log_2\Phi_{h,t}(q)}\qquad(q\ge1).
+\end{equation}
+At $q=1$ the values are $1$ and $0$. The topological theorem identifies these
+with $\Lambda_q$ and $\smq$ on the class studied here.
+
+\subsection{Complete layer spectra}
+\begin{theorem}[Exact layer-spectrum coincidences]\label{uw:thm:layer-inverse}
+Two pairs $(h,t)$ and $(k,u)$ have the same function $\Phi(q)$ for all $q\ge2$
+if and only if one of the following holds:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $t,u$ are finite and $(h,t)=(k,u)$;
+\item $t=u=\infty$ and $h=k$;
+\item up to interchanging the pairs, $t=\infty$, $k=h+1$, and $u=1$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For finite $t$, all $q\ge t$ satisfy
+$\Phi_{h,t}(q)=hq+t-h$. For infinite $t$,
+$\Phi_{h,\infty}(q)=(h+1)q-h$ for every $q$. Equality for arbitrarily large
+integers $q$ forces equality of the slopes and constant terms of these
+affine functions. With two finite terminal parameters this gives $h=k$ and
+$t=u$. With two infinite parameters it gives $h=k$. In the mixed case it
+gives $k=h+1$ and $u-k=-h$, hence $u=1$. Conversely the first two cases are
+immediate, and in the third case
+\[
+ \Phi_{h,\infty}(q)=(h+1)q-h=\Phi_{h+1,1}(q)
+\]
+for every $q\ge1$.
+\end{proof}
+
+Thus finite terminal cardinalities are exactly recoverable from all layer
+counts once the finite/infinite ambiguity is accounted for. No finite-alphabet
+spectrum can distinguish two different infinite terminal cardinalities.
+
+\subsection{Normalization and exact depth thresholds}
+Replace a pair with infinite terminal cardinality by
+\begin{equation}\label{uw:eq:normalize}
+ (h,\infty)\longmapsto(H,T)=(h+1,1).
+\end{equation}
+Leave a finite pair unchanged: $(H,T)=(h,t)$. Every spectrum therefore has a
+representative with $T$ a positive integer. Call $H$ its \emph{normalized
+height}. It need not equal the original topological height.
+
+For $H\ge1$, put
+\begin{equation}\label{uw:eq:threshold-def}
+ Q_d(H,T)=\max\{q\ge1:\Psi_{H,T}(q)\le d\}\qquad(d\ge0).
+\end{equation}
+The maximum is finite because $\Phi_{H,T}(q)$ is strictly increasing and unbounded.
+The thresholds determine the whole depth spectrum, and conversely.
+
+\begin{theorem}[Closed threshold formula]\label{uw:thm:threshold}
+For $H\ge1$, $T\ge1$, and $d\ge0$,
+\begin{equation}\label{uw:eq:threshold}
+ \boxed{\quad Q_d(H,T)=
+ \max\left\{
+ \floor{\frac{2^d+H}{H+1}},\,
+ \floor{\frac{2^d+H-T}{H}}
+ \right\}.\quad}
+\end{equation}
+Moreover,
+\begin{equation}\label{uw:eq:recover-height}
+ \lim_{d\to\infty}\frac{2^d}{Q_d(H,T)}=H.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The layer formula can be written
+\[
+ \Phi_{H,T}(q)=\min\{(H+1)q-H,\ Hq+T-H\}.
+\]
+The inequality $\Phi_{H,T}(q)\le2^d$ holds if and only if at least one of these
+two affine quantities is at most $2^d$. The largest feasible integer $q$ is
+therefore the maximum of their two integer thresholds, giving
+\eqref{uw:eq:threshold}. The first displayed floor is always at least one;
+there is no difficulty if the second is nonpositive.
+
+For all sufficiently large $d$, the second floor dominates, and
+$Q_d(H,T)=2^d/H+O(1)$. This proves \eqref{uw:eq:recover-height}.
+\end{proof}
+
+Distinct positive normalized heights cannot have the same depth spectrum.
+The remaining ambiguity is in $T$, and it is governed by powers of two modulo
+$H$ rather than by a topological distinction.
+
+\subsection{A finite decision procedure for all alphabet sizes}
+Write $H=2^p m$ with $m$ odd. Let $\ell$ be the multiplicative order of $2$
+modulo $m$ if $m>1$; set $\ell=1$ if $m=1$. This order exists because $2$
+is invertible modulo the positive odd integer $m$.
+
+\begin{theorem}[Finite test for complete query-spectrum equality]
+\label{uw:thm:depth-equality}
+Consider two normalized pairs $(H,T)$ and $(K,U)$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $H=K=0$, their depth spectra coincide exactly when
+$\ceil{\log_2T}=\ceil{\log_2U}$.
+\item If precisely one of $H,K$ is zero, or if $H,K>0$ and $H\ne K$,
+the spectra do not coincide.
+\item Suppose $H=K\ge1$. Set $T_* =\max(T,U)$, and choose an integer
+$d_0\ge p$ such that
+\begin{equation}\label{uw:eq:d0}
+ 2^{d_0}\ge (H+1)T_*-H.
+\end{equation}
+Then the two spectra coincide for every $q\ge2$ if and only if
+\begin{equation}\label{uw:eq:finite-test}
+ Q_d(H,T)=Q_d(H,U)\qquad(0\le d<d_0+\ell).
+\end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For $H=0$,
+\[
+ \Psi_{0,T}(q)=\ceil{\log_2\min(q,T)}
+ =\min\{\ceil{\log_2q},\ceil{\log_2T}\}.
+\]
+This proves (i). Such a spectrum is bounded, whereas positive normalized
+height gives an unbounded spectrum. Equality of two positive-height spectra
+forces equality of their threshold sequences and hence their normalized
+heights by \eqref{uw:eq:recover-height}. This proves (ii).
+
+For (iii), $\Phi_{H,T}(T_*)\le(H+1)T_*-H$, and the same holds for $U$.
+For $d\ge d_0$, the largest feasible alphabet size lies at or beyond $T_*$,
+where the second affine branch of the layer formula applies. Consequently
+\begin{equation}\label{uw:eq:tail-threshold}
+ Q_d(H,T)=\floor{\frac{2^d+H-T}{H}},\qquad
+ Q_d(H,U)=\floor{\frac{2^d+H-U}{H}}.
+\end{equation}
+For $d\ge p$, the difference $2^{d+\ell}-2^d$ is divisible by $H$.
+Indeed it is divisible by $2^p$, and by $m$ because $2^\ell\equiv1\pmod m$.
+Replacing $d$ by $d+\ell$ therefore adds the same integer to the two floors
+in \eqref{uw:eq:tail-threshold}. Their difference is periodic with period
+$\ell$ for $d\ge d_0$. Checking the finite initial segment and one complete
+period is both necessary and sufficient for equality of every threshold.
+This is equivalent to equality of the depth spectra.
+\end{proof}
+
+This is an exact algorithm, not a test up to some experimentally chosen
+alphabet cutoff. Normalization, the finite-discrete cases, and the modular
+period together cover every pair of parameters in \eqref{uw:eq:arithmetic-spectrum}.
+The implementation in \path{code/05-word-profiles-verify.py} uses integer arithmetic only.
+
+\subsection{A large family of invisible terminal cardinalities}
+\begin{corollary}[Dyadic aliasing]\label{uw:cor:dyadic}
+Let $H=2^r$ and $1\le T\le H$. For every $q\ge2$,
+\begin{equation}\label{uw:eq:dyadic}
+ \Psi_{H,T}(q)=r+\ceil{\log_2q}.
+\end{equation}
+Hence all these different terminal cardinalities have the same complete
+query-depth spectrum. The infinite-terminal type $(H-1,\infty)$ shares this
+spectrum as well.
+\end{corollary}
+\begin{proof}
+For $q\ge2$,
+\[
+ H(q-1)<\Phi_{H,T}(q)\le Hq.
+\]
+There is no power of two strictly between $H(q-1)$ and $Hq$: every power of
+two at least $H$ is an integer multiple of $H$, and these are consecutive
+such multiples. Taking ceiling logarithms therefore gives
+$\ceil{\log_2 \Phi_{H,T}(q)}=\ceil{\log_2(Hq)}$, which is
+\eqref{uw:eq:dyadic}. The infinite-terminal assertion follows from
+\eqref{uw:eq:normalize}.
+\end{proof}
+
+For example, height-two spaces with one or two terminal points have different
+layer spectra $2q-1$ and $2q$, but the same query-depth spectrum for every
+$q\ge2$. A height-one space with infinitely many terminal points has the
+same spectrum, since its layer count is $2q-1$. At height four, terminal
+sizes $1,2,3,4$ are all invisible to the full query-depth spectrum. Thus even
+all finite-output query budgets need not recover the terminal derivative
+size, although all layer counts nearly do.
+
+\section{Limits of the hypothesis and a separating example}\label{uw:sec:limits}
+
+Rank accessibility is a convenient sufficient condition, not a disguised
+necessary-and-sufficient definition of the conclusion. The following direct
+example clarifies both the reach and the limitation of the countable-support
+method.
+
+\begin{example}[Universal attainment without predecessor sequences]
+\label{uw:ex:cocountable}
+Let $D$ be an uncountable discrete set, add a point $p$, and declare a set
+containing $p$ to be open exactly when its complement in $D$ is countable.
+All subsets of $D$ are open. This is a Hausdorff space $X$ with $X'=\{p\}$.
+No injective sequence from $D$ converges to $p$, because the neighborhood
+obtained by deleting its countable range contains none of its terms.
+
+Fix $a\in\Sigma$ and partition $D$ into $q-1$ uncountable cells $D_b$, one
+for each $b\ne a$. Color $p$ by $a$ and $D_b$ by $b$. Then
+\begin{equation}\label{uw:eq:cocountable-profile}
+ \W(X,c)=\operatorname{Up}\{ab:b\in\Sigma\setminus\{a\}\}.
+\end{equation}
+Indeed, if $\lambda(p)=j$, the open suffix at $j$ meets every uncountable
+$D_b$. Some point of that color has index strictly greater than $j$, forcing
+$ab\subseq w$. Conversely, if all $ab$ occur, take the first occurrence $j$
+of $a$ in $w$ and, for each $b$, a later occurrence $k_b$ of $b$. Assign
+index $j$ to $p$ and index $k_b$ to every point of $D_b$. Suffixes containing
+$p$ are the whole space; all other suffixes are subsets of the isolated part.
+The map is admissible. Thus the full universal single-root profile is attained,
+and the layer count is $q$, even though the space is not rank-accessible.
+\end{example}
+
+There is no coloring equal to the root color $a$ off a countable set that
+realizes \eqref{uw:eq:cocountable-profile}. For such a coloring every color cell
+is open: non-$a$ cells consist of isolated points, and the $a$ cell has
+countable complement and contains $p$. Hence every permutation listing the
+alphabet is admissible. A permutation ending in $a$ fails all required
+patterns $ab$. This contradicts the stated universal profile.
+
+\begin{writenotee}[The example inside Parts~III and~IV]
+The space of \cref{uw:ex:cocountable} has the finite derived set
+$X'=\{p\}$, so Part~III applies to it. Its neighborhood filter at $p$ is
+the cocountable filter on $D$, of infinite partition capacity (split $D$
+into infinitely many uncountable sets); the profile digraph of the coloring
+has the arcs $a\to b$ for every $b\ne a$, and Part~III's
+\cref{fp:thm:profile} gives \eqref{uw:eq:cocountable-profile}, as does
+Part~IV's \cref{cw:thm:rankone} through its arc relation. The layer count
+$q$ is \cref{fp:thm:attainment} with $t=s=1$, where the bin condition is
+empty. What the example adds is the separation stated after it: no coloring
+equal to the root color $a$ off a countable set realizes this profile.
+\end{writenotee}
+
+This example separates a numerical attainment question from a countably
+supported profile-realization question. It also indicates why a complete
+classification beyond rank accessibility may involve local partition
+properties of neighborhood filters rather than merely sequential convergence.
+The higher-level correlations for arbitrary fixed colorings remain a separate
+problem; our extremal construction does not encode every such correlation.
+
+\section{Executed finite verification}\label{uw:sec:verification}
+
+The archive contains a standard-library Python program, not a
+proof-assistant formalization. Its recorded run used Python 3.13.5 and passed
+all assertions. The logical content of the infinite-space theorems is supplied
+by the written proofs; finite enumeration cannot create an actual Hausdorff
+limit point or validate an arbitrary sequential space.
+
+\subsection{Independent word and tree checks}
+The first checker enumerates candidate words and tests universality by direct
+subsequence scans against every required pattern. Independently it applies
+the envelope recurrence \eqref{uw:eq:envelope}. For each selected $(q,h,s)$, it
+searches through the predicted minimum length and confirms that the first
+universal length is $h(q-1)+s$. Separate tests include consecutive repeated
+letters, which are useful for detecting an accidental strict rather than
+inclusive next-position convention.
+
+The second checker builds finite rooted ancestor posets with one child of
+each different color at every nonterminal vertex. It enumerates every open
+upper set and performs exhaustive minimax on the possible-point subsets.
+The minimum depth and the minimum number of leaves are optimized separately.
+These computations do not call the envelope recurrence or use the logarithm
+formula as their optimization rule. They agree with the universal-family
+formula and the normal form on every tested forest of at most ten points.
+These finite posets are not claimed to be Hausdorff skeletons; they independently
+check the corresponding finite pattern calculus.
+
+\begin{center}
+\begin{tabular}{@{}p{0.70\textwidth}r@{}}
+\toprule
+Check family & Cases\\
+\midrule
+Universal-family parameter triples & 36\\
+Reduced candidate words, direct scans versus envelopes & 185,322\\
+Unrestricted candidate words, including repetitions & 10,599\\
+Finite forests, independent legal-query minimax & 23\\
+Threshold boundary cases & 19,968\\
+Pairs in the finite all-spectrum equivalence test & 8,448\\
+Dyadic-alias formula cases & 64,449\\
+Infinite-terminal normalization cases & 4,352\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The reduced-word parameter ranges are $q=2$, $0\le h\le5$;
+$q=3$, $0\le h\le3$; and $q=4$, $0\le h\le2$, with every
+$1\le s\le q$. Alphabet symmetry permits using $S=\{0,\ldots,s-1\}$.
+For each triple, all reduced candidates through the predicted optimum length
+are inspected. Repeated-letter checks use $q=2,3$, lengths at most six,
+$0\le h\le2$, and every such $s$.
+
+\subsection{Arithmetic checks and a portable certificate}
+Threshold tests cover $1\le H\le24$, $1\le T\le64$, and $0\le d\le12$.
+Each asserted threshold $Q$ is checked directly against the two inequalities
+$\Phi(Q)\le2^d<\Phi(Q+1)$. For $1\le H\le16$ and terminal sizes through 32,
+the finite equivalence test is compared with 101 successive threshold values;
+positive equivalences are also checked directly on alphabet sizes through 256.
+Dyadic aliases are tested through $H=32$ and $q=1024$.
+
+The file \path{data/05-word-profiles-certificate.json} gives the five-letter certificate
+$01201$ of \cref{uw:ex:height2}: explicit embeddings of all four required
+patterns, the envelope positions, and a balanced suffix-query tree. Positions
+in that JSON are zero-based. Running each word position through the tree
+returns the correct color within three questions. The open-set interpretation
+on an infinite space is supplied by \cref{uw:thm:upper-profile}, not by a finite
+encoding of the topology.
+
+\begin{lstlisting}
+python3 code/05-word-profiles-verify.py --output <scratch>
+\end{lstlisting}
+
+The script accepts an alternate output directory to preserve the delivered
+records. Run without Python's \texttt{-O} option, because assertions are the
+verification conditions. Its recorded elapsed time was about 1.1 seconds;
+this is a report of one execution, not a portable performance guarantee.
+Detailed parameter tables and the recorded output accompany the article.
+
+\begin{writenotee}[Shipped names]
+The delivered text reads ``The implementation in \texttt{code/verify.py}'',
+``The file \texttt{results/certificate.json}'' and, as the command,
+\texttt{python3 code/verify.py -{}-output results}. Here
+\path{code/verify.py} is Part~I's verifier, and the delivered
+\path{results/} directory is shipped as \path{data/} with the prefix
+\path{05-word-profiles-}; the command above uses the shipped name and a
+directory \texttt{<scratch>} outside the report. Without
+\texttt{-{}-output} the shipped verifier writes a new \path{results/}
+directory beside \path{code/}, that is, in this report, with unprefixed
+names. It rewrites the two JSON records, the three CSV tables and
+\path{verification.json}; it writes JSON with the platform's line endings
+(CRLF on Windows; the recorded files are LF) and CSV with CRLF on every
+platform, like the recorded tables, which are kept byte for byte. It does
+not write a log: \path{data/05-word-profiles-verification.log} is a
+captured copy of its console output and is byte-identical to
+\path{data/05-word-profiles-verification.json}. A rerun on a copy
+(30~September 2026, Python~3.14.4, 2.6~seconds) reproduced the three CSV
+tables byte for byte and the JSON files after CRLF~$\to$~LF, except the
+fields \texttt{python} and \texttt{elapsed\_seconds}. The delivered
+Makefile, shipped as \path{code/05-word-profiles-Makefile}, is written for
+the delivery's layout and should not be used here: run from this
+directory, its \texttt{verify} target would call Part~I's
+\path{code/verify.py} with \texttt{-{}-output results}, its \texttt{pdf}
+target would build this article in place, and its \texttt{clean} target
+would delete this report's auxiliary files. This merged report is built as
+in \cref{sec:checks}; the report README gives the rerun commands.
+\end{writenotee}
+
+\section{Provenance, proof dependencies, and formalization}\label{uw:sec:source-audit}
+
+\subsection{Pinned repository audit}
+The inspected source is
+\begin{quote}\small\raggedright
+\path{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/}\allowbreak
+\path{games-on-ordinals/open-query-membership-games/article.tex}.
+\end{quote}
+At the commit listed in \cref{uw:sec:intro}, its Git blob is
+\begin{center}
+\texttt{d1e50fd006a8ba1fe645b41b4fb37ee35f7043fe}.
+\end{center}
+The accompanying README has blob
+\texttt{465cb1e0629201ff5b4a17565daa8c9da4705980}.
+The relevant portions were read using the GitHub connector: the compact
+word realizations and universal-word lemma; the finite-height upper bound;
+Part II's continuation questions; and Part III's finite-derivative status,
+Research questions 11 and 12, and bibliography. Exact source ranges are
+recorded in \path{05-word-profiles-SOURCES.md}.
+
+All arguments are carried out in ordinary ZFC. The main constructions use
+choices of points and sequences but no ultrafilter existence principle as a
+separate input, and impose no continuum hypothesis.
+
+This manuscript treats the repository as a research source rather than as a
+trusted proof kernel. The required finite normal form and universal-word
+constant are reproved above. The new topological conclusions depend on none
+of the repository's graph-hardness or ultrafilter-classification claims.
+The quoted gap is the one present at the specified snapshot; later commits
+are not asserted to have the same status.
+
+\begin{writenotee}[The pinned state and the source audit]
+The pin, the article blob \texttt{d1e50fd006} and the README blob
+\texttt{465cb1e062} are those of Parts~I--III with the notes of
+batches~52 and~56; both blobs were unchanged when this manuscript was
+placed, so the inspected text is Parts~I--III as printed above, and the
+line ranges in \path{05-word-profiles-SOURCES.md} refer to that blob, not
+to this \texttt{article.tex}. Part~IV and its notes were added after the
+pin (\cref{uw:sec:source}).
+\end{writenotee}
+
+\subsection{Claim boundaries}
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}
+ >{\raggedright\arraybackslash}p{0.38\textwidth}
+ >{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Result & Dependency & Status in this article\\
+\midrule
+Tree--layer normal form & Open suffixes, finite binary trees & Existing; reproved\\
+Restricted-start word constant & Greedy embeddings and an adversary & Existing; reproved\\
+Universal upper profile & Envelope recurrence and rank neighborhoods & Full proof\\
+Finite-height attainment & Rank accessibility and rooted forcing & Answers repository Q12\\
+Countable profile witness & Recursive disjoint sequence skeletons & Full proof\\
+Product/sum invariants & Derivative calculus plus attainment & Full proof; derivative calculus not claimed new\\
+Inverse spectrum theory & Exact affine formulas and dyadic residues & Full proof and executable test\\
+Historical priority & Broader literature comparison & Not certified\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The literature check included the version-specific primary game paper
+\cite{CCS}, the repository's discussion of difference hierarchies, and the
+primary abstract of \cite{BGKS}. Targeted web searches were not exhaustive and
+included many irrelevant results. We do not infer priority from a failure to
+find an equivalent theorem. The precise research advance asserted relative
+to the inspected report is the all-finite-height attainment theorem and its
+full-profile, countable-support strengthening.
+
+\subsection{A practical formalization route}
+A useful Lean development would keep four interfaces separate.
+First, define admissible words and prove the finite tree--layer normal form,
+using $m\le2^d$ as the primary bound rather than real logarithms. Second,
+formalize the envelope recurrence and reduced-word universality; this portion
+is finite and directly executable. Third, formalize derivative locality,
+rank accessibility, disjoint thinning, and finite-depth countably branching
+skeletons. Fourth, prove rooted forcing for an arbitrary admissible map,
+followed by the profile equivalence and the arithmetic corollaries.
+
+The rooted forcing lemma is especially suitable for a small inductive proof:
+it refers only to convergence of specified child sequences and openness of
+suffixes. It avoids a formal classification of compact countable spaces and
+does not require constructing an ordinal homeomorphism. The arithmetic
+spectrum-equivalence algorithm can then be verified separately. Search
+programs and choices of sequences may remain noncomputable while the proof
+of their mathematical properties is kernel-checked.
+
+No Lean source is supplied, and no such kernel verification was performed in
+this work. The included Python code is an independent finite audit, not a
+replacement for those missing formalization steps.
+
+\section{Further research questions and proposed topics}\label{uw:sec:questions}
+
+The following are precise continuation problems. They are not all claimed
+to have appeared previously in the published literature. The first two are
+particularly close to the remaining questions in the repository.
+
+\begin{writenotee}[Relation to the questions of Parts~II--IV]
+The eight questions below are Research questions~29--36 of this report,
+because the counter continues after Part~IV's twenty-eight.
+\Cref{uw:q:necessary} asks for the converse of \cref{uw:thm:invariant};
+for a finite nonempty derived set Part~III's bin criterion
+(\cref{fp:thm:attainment}) is such a characterization, and at every height
+it is the attainment part of \cref{fo:q:invariants} and of
+\cref{cw:q:fixed-space}. \Cref{uw:q:height-two} is \cref{fp:q:next-level};
+for one fixed coloring with $X'''=\varnothing$ Part~IV's closure-signature
+words of length at most three are complete data (the note after
+\cref{fp:q:next-level}), but no local or capacity form of them is known.
+\Cref{uw:q:effective} continues \cref{fp:q:effective,cw:q:effective};
+\cref{uw:q:compressed} is Part~II's Research question~2 for subfamilies of
+$\A_{q,h+1}(S)$ (at $S=\Sigma$ and $m=h+1$ the target length is the same
+$(q-1)m+1$); \cref{uw:q:aliases} continues \cref{fp:q:spectrum}; and
+\cref{uw:q:beyond} combines Part~II's Research questions~7 and~8 with
+\cref{fp:q:expected,cw:q:transfinite,cw:q:expected}.
+\Cref{uw:q:countable,uw:q:closed} are new.
+\end{writenotee}
+
+\begin{question}[Necessary local conditions for universal profiles]\label{uw:q:necessary}
+Characterize the finite-height Hausdorff spaces in which every feasible
+terminal color set $S$ admits the full profile
+$\operatorname{Up}(\A_{q,h+1}(S))$. Can this be expressed through iterated
+finite partition properties of neighborhood filters?
+\end{question}
+Rank accessibility is sufficient, but \cref{uw:ex:cocountable} shows it is not
+necessary. A useful characterization must distinguish local splitting into
+many persistent color classes from the existence of a convergent sequence.
+It should recover the repository's height-one filter-capacity criterion while
+retaining correlations between profiles at higher ranks.
+
+\begin{question}[Arbitrary fixed colorings at height two]\label{uw:q:height-two}
+For a Hausdorff space with finite nonempty second derivative and empty third
+derivative, find finite or effectively presented local data determining
+$\W(X,c)$ for an arbitrary fixed coloring $c$.
+\end{question}
+This is the substance of the repository's \Cref{fp:q:next-level} and is not
+settled by maximizing over colorings. Our forcing skeleton deliberately
+creates all patterns; an arbitrary coloring can contain only correlated
+subfamilies. A next step is a finite state algebra for the profile languages
+that accumulate at a rank-two point.
+
+\begin{question}[When is a countable extremal witness possible?]\label{uw:q:countable}
+Characterize universal profile attainment by colorings equal to one fixed
+color outside a countable set. Is there a local condition strictly weaker
+than rank accessibility that is both necessary and sufficient?
+\end{question}
+The cocountable example separates this from unrestricted attainment. The
+question is about complete profiles, not merely layer counts; a discrete
+color partition may accidentally have the same minimum length while imposing
+none of the same ordered patterns.
+
+\begin{question}[Closed or compact witnesses]\label{uw:q:closed}
+Under which additional hypotheses can the witness $F$ in
+\cref{uw:thm:profile} be chosen closed in $X$, or compact, while preserving its
+entire word profile and its terminal rank?
+\end{question}
+The proof given here intentionally does not require either property.
+First-countable nonregular spaces and locally compact spaces with complicated
+local bases should be treated separately. A compact-witness theorem would
+strengthen the result but must not replace the rooted forcing argument by an
+unjustified whole-component neighborhood assumption.
+
+\begin{question}[Efficient representations of universal skeletons]\label{uw:q:effective}
+For computably presented countable spaces with effective rank information,
+which additional sequence-selection operations make the extremizing coloring
+and its query strategy computable, and with what complexity?
+\end{question}
+The finite envelope test is effective, but choosing predecessor sequences in
+an arbitrary topological presentation is not automatically effective. A
+representation-sensitive theorem should state exactly what access to
+neighborhoods, ranks, and convergence certificates is assumed.
+
+\begin{question}[Compressed pattern obstructions]\label{uw:q:compressed}
+What is the smallest subfamily of $\A_{q,h+1}(S)$ that still requires
+$h(q-1)+s$ supersequence positions? What is the smallest subfamily that forces
+only the same query depth?
+\end{question}
+These are different optimization problems because of binary rounding.
+Smaller critical families would yield sparser descriptions and potentially
+more economical finite-height lower-bound constructions, even though a
+countable geometric witness is already available.
+
+\begin{question}[Closed descriptions of arithmetic alias classes]\label{uw:q:aliases}
+Can the finite modular test in \cref{uw:thm:depth-equality} be converted into a
+simple explicit classification of the allowable terminal sizes $T$ for each
+nondyadic normalized height $H$?
+\end{question}
+Decidability is already established, so the remaining issue is structural
+understanding and compact description. The residue orbit of powers of two
+modulo the odd part of $H$ gives a concrete starting point. One may also ask
+for the largest possible alias class as a function of $H$.
+
+\begin{question}[Beyond finite height and beyond worst-case cost]\label{uw:q:beyond}
+How do the rooted forcing method and countable-support phenomenon extend to
+transfinite derivatives or to expected-cost and randomized open-query games?
+\end{question}
+No ordinal logarithm is suggested by the finite identity
+$\depth=\ceil{\log_2\layers}$. A transfinite extension must specify the game length
+and stopping convention anew. Expected-cost variants additionally require a
+probability distribution and may no longer be captured by balanced trees or
+by one scalar layer count.
+
+\section{Conclusion}\label{uw:sec:conclusion}
+The repository's finite-height attainment question has a positive answer for
+locally compact Hausdorff spaces and, independently, sequential Hausdorff
+spaces. The decisive step is not a more elaborate compact tower. It is a
+rooted forcing statement that propagates word obstructions through child
+\emph{points} converging to their parent, without requiring an open query to
+contain whole lower-level components.
+
+That local argument produces a countably supported coloring with an exact
+universal profile on the original space. The layer and query formulas,
+finite-product and sum laws, and inverse-spectrum results follow from this
+profile theorem. The distinction between profiles, layer minima, and binary
+query depths remains essential: each successive invariant forgets information.
+The remaining classification problems concern precisely what local topology
+and arithmetic can hide at each level.
 
 \appendix
 \section{Why countable compact Hausdorff spaces are scattered}\label{app:compact}
@@ -6639,6 +8524,85 @@ It has length $3+2-1=4$. The corresponding closed set is exactly
 $F^X_{010}\times F^Y_{12}$, by \eqref{cw:eq:rectangle}. No relation between
 particular witness points in the two factors is required.
 
+\section{A worked layer map and decision tree (Part~V)}\label{uw:app:worked}
+For the word $w=01201$, with one-based positions, the next-occurrence envelope
+for $q=3$, $h=2$, $S=\{0\}$ is
+\[
+ b_0=1,\qquad b_1=3,\qquad b_2=5.
+\]
+The rank-envelope map on any height-two coloring with top color $0$ is:
+\begin{center}
+\begin{tabular}{@{}crrr@{}}
+\toprule
+Rank & Color 0 & Color 1 & Color 2\\
+\midrule
+2 & 1 & not present & not present\\
+1 & 1 & 2 & 3\\
+0 & 4 & 5 & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+The equality of the rank-one color-2 index and the rank-zero color-2 index
+is intentional. Same-colored points may share a layer across different ranks.
+Every lower-rank interval begins no earlier than the preceding higher-rank
+interval ends, which is the only ordering needed for openness.
+
+The four required embeddings are
+\[
+ 010\mapsto(1,2,4),\quad012\mapsto(1,2,3),\quad
+ 020\mapsto(1,3,4),\quad021\mapsto(1,3,5).
+\]
+An initial query asks whether the index is at least 3. On a no answer, one
+more suffix query at 2 distinguishes positions 1 and 2. On a yes answer,
+query at 4; a no answer identifies position 3, while a yes answer leaves
+positions 4 and 5, separated by a query at 5. The depth is three. Every query
+is an open suffix provided by the map above.
+
+\section{Package contents and reproduction (Part~V)}\label{uw:app:package}
+With the names shipped in this report (see the note below):
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.54\textwidth}
+ >{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\path{article.tex}, \path{article.pdf} & This merged report and its compiled PDF\\
+\path{05-word-profiles-SOURCES.md} & Provenance and claim boundaries\\
+\path{code/05-word-profiles-Makefile} & The delivered PDF and verification targets (not for use here)\\
+\path{code/05-word-profiles-verify.py} & Standard-library finite checker and spectrum-equivalence algorithm\\
+\path{data/05-word-profiles-verification.json} & Machine-readable execution summary\\
+\path{data/05-word-profiles-verification.log} & Recorded console output\\
+\path{data/05-word-profiles-universal_words.csv} & All tested universal-family parameter triples\\
+\path{data/05-word-profiles-finite_forests.csv} & Independent finite minimax outcomes\\
+\path{data/05-word-profiles-sample_spectra.csv} & Layer and depth values for sample parameters\\
+\path{data/05-word-profiles-depth_aliases.json} & Computed alias classes through normalized height 16\\
+\path{data/05-word-profiles-certificate.json} & The explicit five-layer word and query tree\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source uses an internal bibliography. Rebuild with three passes of
+\texttt{pdflatex}, or use \texttt{make pdf}. No network access, external image,
+BibTeX processor, or regenerated data is required to compile the article.
+The figure is drawn directly by TikZ. No font files are distributed.
+
+\begin{writenotee}[Shipped names]
+The delivered table listed \texttt{article.tex} and \texttt{article.pdf}
+(the manuscript's own source and PDF), \texttt{README.md} with
+\texttt{SOURCES.md}, \texttt{Makefile}, \texttt{code/verify.py}, seven
+files under \texttt{results/} and the checksum ledger \texttt{SHA256SUMS}.
+The manuscript, its PDF and its delivery README are not shipped; they
+survive in the arrival commit \texttt{a866ff9a2}. The ledger (13 entries,
+verified 13/13 at intake) was retired, as repository policy requires.
+\path{article.tex} and \path{article.pdf} here are the merged report, which
+needs three \texttt{pdflatex} runs, as in \cref{sec:checks}; the figure is
+drawn by TikZ, whose library \texttt{arrows.meta} the merged preamble now
+loads. The delivered Makefile is shipped as
+\path{code/05-word-profiles-Makefile} and should not be used here (the
+note in \cref{uw:sec:verification}); the report README gives the rerun
+commands.
+\end{writenotee}
+
 \begin{thebibliography}{9}
 \small
 \setlength{\itemsep}{0.35em}
@@ -6663,6 +8627,10 @@ cut-and-choose framework and its point-separating and set-membership
 invariants, from the abstract metadata and the HTML. [Added 30 September
 2026, batch~65: both titles belong to v3; the abstract page carries the
 shorter one, the v3 HTML full text the longer.]
+Part~V's manuscript cites it under the longer title (v3, revised 29 May
+2026, noting the shorter title of the abstract record) for the game context
+only, from the version-specific HTML and PDF inspected on 30 September 2026
+(Definition~1.1; Problems~1.3 and~1.4 are not its target).
 
 \bibitem{BGKS}
 C\'elia Borlido, Mai Gehrke, Andreas Krebs, and Howard Straubing,
@@ -6672,6 +8640,9 @@ Topology and its Applications \textbf{273} (2020), 106975.
 Preprint: \url{https://arxiv.org/abs/1812.01921}.
 Cited for the classical difference-chain framework, not as a source for the
 new game computations in this report.
+Part~V's manuscript cites the arXiv preprint (2018), of which it read the
+abstract, for the pre-existing difference-chain framework only, not as a
+source of its attainment theorem or its inverse-spectrum results.
 
 \bibitem{AM}
 Borys \'Alvarez-Samaniego and Andr\'es Merino,
