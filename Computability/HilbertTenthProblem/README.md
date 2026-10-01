@@ -134,6 +134,13 @@ universal Diophantine equations by James P. Jones and coauthors:
   fixed numeral margin supplied by an explicit padded universal enumeration.
   Some lower-degree alternatives retain additional equations. The illustrative
   ten-letter table costs302; it is not a numerical universal alphabet.
+  The [joint-bound and first-root composition](Papers/research-wip/native-stream-queue/group_projective_joint_first_norm.md)
+  saves five more polynomial operations and one witness, giving
+  **3m+3h+p+223+f_flow-3min(h,3)** operations,13 equations and m+30
+  positive witnesses, at degree160m+928 for the same options. The
+  illustrative table gives **259 certificate operations or297 polynomial
+  operations**, with46 witnesses. A wider radix makes the joint bound
+  sound; deleting the output bound is separately proved unsound.
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every

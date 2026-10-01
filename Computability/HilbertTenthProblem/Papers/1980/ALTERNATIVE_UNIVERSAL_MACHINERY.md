@@ -224,6 +224,35 @@ proofs; computed J is proved positive before native typing. The illustrative
 ten-letter table reaches258/302 at degree2974 with47 witnesses, but the
 universal numerical alphabet remains uninstantiated.
 
+The [first-root unit](../research-wip/native-stream-queue/group_projective_first_norm_unit.md)
+recodes the positive triangular Pell root as g=2tau+1-2XY²k. Its norm
+g²+4XY²k(g-k) excludes-1 modulo4 and costs the same six gates. Merging
+it saves two SOS additions; retaining it separately lowers the four-field
+degree. Both ratio slacks remain. Independently, the
+[joint history/output bound](../research-wip/native-stream-queue/group_projective_joint_bound.md)
+uses B=16D to fit one bound Hsum+Zsum+b=P+1. It restores both parent
+positive bounds before typing, then proves its inverse positive from
+the exclusive selected-digit sum. This saves3SOS operations and one
+positive witness at unchanged degree and certificate cost.
+
+Their [complete composition](../research-wip/native-stream-queue/group_projective_joint_first_norm.md)
+has certificateC+1. The merged six-field polynomial costsC+42-3chi,
+with14-chi equations,m+31-chi witnesses and exact degree
+(1+chi)*(38L+4m+60)+48. The merged four-field option costsC+48-3chi,
+with16-chi equations,m+33-chi witnesses and degree16(1+chi)L+42.
+Keeping the first norm separate adds two polynomial operations and lowers
+degree. The ten-letter example reaches259/297,13 equations,46 witnesses
+and degree3488; the separate option is258/299 at degree2974.
+
+The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
+shows why outright deletion is different: a fixed six-shear table with
+an empty true endpoint language acquires full positive zeros at every
+input. Noncanonical output lanes preserve the entire scalar AND but
+change paired differences to cancel a false endpoint. The packed output
+remains below its aggregate bound, so individual-lane typing must still
+be enforced. This rejects a uniform fixed-table deletion, without
+classifying that deletion on the special fixed universal subgroup.
+
 The [controlled4D mortality alternative](../research-wip/native-stream-queue/group_two_reset_mortality4.md)
 uses a two-operation affine rank-two reset matrix. Two resets require one
 common bridge word killing both blocks and represent universal membership.

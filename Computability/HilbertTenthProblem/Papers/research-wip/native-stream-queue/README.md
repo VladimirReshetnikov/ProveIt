@@ -270,7 +270,7 @@ An explicit repeated universal enumeration supplies this margin after
 its one fixed alphabet is built; no runtime input coding is introduced.
 
 For epsilon=1 when the controller mask is reused (m>=8), and chi=1 when
-P is computed, the current complete matrix certificate costs
+P is computed, the padded-program matrix certificate costs
 
     C=3m+3h+p+185+f_flow-3min(h,3)-epsilon.
 
@@ -282,10 +282,36 @@ m+34-chi witnesses and a C+53-3chi polynomial, with degrees12m+232,
 24m+136,24m+448 and48m+256 in the same order. Computing P saves three
 polynomial operations but increases degree.
 
-The illustrative ten-letter table now reaches258 certificate operations
+At this stage the illustrative ten-letter table reaches258 certificate operations
 and302 polynomial operations, with15 equations,47 positive witnesses
 and degree2974. This table is not a numerical universal alphabet;75/88
 remain the complete numerical frontiers.
+
+The [positive first-root unit](group_projective_first_norm_unit.md)
+preserves both ratio slacks and merges one more norm comparison, saving
+two polynomial additions. The [joint history/output bound](group_projective_joint_bound.md)
+changes B=8D to B=16D at the same multiplication cost and replaces two
+bounds by Hsum+Zsum+b=P+1. It restores both old positive slacks before
+typing, saving another three polynomial operations and one witness.
+
+Their [complete composition](group_projective_joint_first_norm.md) has
+certificate costC+1. Four computed fields give16-chi equations,
+m+33-chi witnesses and polynomialC+48-3chi; six give14-chi equations,
+m+31-chi witnesses and polynomialC+42-3chi. With L=m+18 or2m+10 and
+nu=1+chi, the merged exact degrees are16nu L+42 (four) and
+nu(38L+4m+60)+48 (six). The separate-root option costs two more polynomial
+operations at degrees10nu L+32 (four) andnu(32L+4m+60)+38 (six).
+The ten-letter example now reaches **259/297 operations,13 equations,
+46 positive witnesses and degree3488** with both optional projections.
+The separate-root version gives258/299 at degree2974. These remain
+parameterized fixed-table results, not a new numerical universal bound.
+
+Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
+a fixed six-shear table with an empty genuine endpoint language acquires
+positive solutions at every input. Noncanonical individual output lanes
+preserve their packed AND word while canceling a false endpoint. Even
+an aggregate bound on the packed output does not reject these aliases;
+the safe joint bound retains a positive condition on the individual lanes.
 
 The [four-dimensional reset construction](group_two_reset_mortality4.md)
 has a **two-operation affine input matrix**. A zero product with exactly
@@ -333,6 +359,10 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Joint bound and first-root composition](group_projective_joint_first_norm.md) | Merged six-field certificate C+1,14-chi equations,m+31-chi witnesses, polynomial C+42-3chi, degree(1+chi)(38L+4m+60)+48. | C is the padded-program cost above; L=m+18 or2m+10. Ten-letter example259/297; universal numerical table remains uninstantiated. |
+| [Joint history/output bound](group_projective_joint_bound.md) | B=16D allows one positive bound, saving1M+2A in SOS and one witness at unchanged certificate cost and degree. | Restore both parent bounds before typing; exclusivity proves the inverse joint slack positive. |
+| [Positive first-root unit](group_projective_first_norm_unit.md) | Merging the recoded first norm saves2A in SOS with unchanged witness count; a separate option lowers four-field degree at unchanged cost. | Both ratio slacks and strong auxiliary equality remain; root positivity and all unit signs are proved before typing. |
+| [Output-bound deletion obstruction](group_projective_output_bound_obstruction.md) | A fixed empty-language table acquires all positive inputs after the bound is projected out. | Full positive native extension follows from unchanged scalar AND fields; generic compiler failure, not a classification on the special universal subgroup alphabet. |
 | [Padded-program matrix margin](group_projective_padded_program_margin.md) | Complete C=3m+3h+p+185+f_flow-3min(h,3)-epsilon; six fields give16-chi equations,m+32-chi witnesses and polynomial C+47-3chi. | Fixed alpha+beta+1>=m; supplied by an explicit padded universal enumeration. Optional mask reuse epsilon requires m>=8; computed P is chi. Exact degree tradeoffs above; universal numerical alphabet uninstantiated. |
 | [Scalar projections](group_projective_scalar_projections.md) | Erases the repunit and radix-margin comparisons/witnesses, optionally P, at unchanged certificate cost. | Restores J>0 from history bound and repunit before typing; D=u+height_slack+m supplies B>m. Computing P increases degree. |
 | [Norm/checksum unit product](group_projective_unit_product.md) | Merges three comparisons into one; saves four polynomial operations, or five with controller-mask reuse. | Both norm factors exclude-1 modulo4 before typing. Reusing the mask enlarges the range region when m>8. |

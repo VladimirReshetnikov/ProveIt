@@ -325,6 +325,45 @@ Next targets include reducing the one AND kernel, replacing its packing,
 or a smaller effective macro table; no separate duration-height kernel
 is needed.
 
+The [positive first-root unit](group_projective_first_norm_unit.md) uses
+V=XY², k=eta+zeta and g=2tau+1-2Vk>0. Its six-gate norm
+N0=g²+4Vk(g-k) costs4M2A like the old triangular norm. N0=-1 is impossible
+modulo4. Joining N0 to the three-unit product adds1M and removes one
+comparison, saving2A in SOS. Restore tau=Vk+(g-1)/2 after N0=1 proves
+g odd; both ratio slacks stay positive and unchanged. Offzero identities
+use a rational parent root if g is even. Keeping N0 separate costs the
+same as the parent but lowers four-field degree to10nu L+32.
+
+The [joint bound](group_projective_joint_bound.md) changes B=8D to16D at
+the same gate cost and retains Hsum+Zsum+b=P+1. Restore the positive
+parent bounds P-Hsum=Zsum+b-1 and Hsum+b before any native typing.
+On every typed parent zero, Hsum+sum Zi<=5(2D-1)J, so its inverse
+b=P-Hsum-sum Zi-7 is at least(6D+4)J-6>0. It saves another comparison,
+positive witness and3SOS gates, with unchanged degrees. Computed P now
+has highest part16*(alpha*x+height_slack)*sum Ehat, not coefficient8.
+
+The [complete composition](group_projective_joint_first_norm.md) keeps
+certificate base C as defined above and costs C+1 with the norm merged.
+Four fields give16-chi equations,m+33-chi witnesses,C+48-3chi polynomial
+gates,degree16nu L+42; six give14-chi equations,m+31-chi witnesses,
+C+42-3chi gates,degree nu*(38L+4m+60)+48. The separate option costs C
+in the certificate and two more SOS gates, at degrees10nu L+32 (four)
+or nu*(32L+4m+60)+38 (six). Both rewrites compose without losing a
+positivity hypothesis. The ten-letter example with epsilon=chi=1 is
+259/297,13 equations,46 witnesses,degree3488; separate-root258/299 has
+degree2974. These are illustrative fixed-table counts.
+
+Do not remove the output bound instead of combining it. The
+[exact carry counterexample](group_projective_output_bound_obstruction.md)
+uses fixed macros3..8, whose first block preserves first coordinate1
+and can never reach e2. A true word8^(u-1),6,4^u ends at(1,0,0,1).
+With Omega=P/B and G=Omega*P*(P-1), replacing true output fields by
+Z0=G,Z1=G+Omega,Z2=0,Z3=T3-Omega preserves packed Z, but changes the
+two paired differences by-Omega,+Omega. All claimed endpoint residuals
+then vanish. The exact scalar AND supplies a positive native extension
+for every input, while the omitted output slack is negative. This
+refutes generic fixed-table soundness; even Zb<P^8 remains true.
+
 The [four-dimensional reset construction](group_two_reset_mortality4.md)
 uses a two-operation affine nonnegative rank-two idempotent reset R.
 A word with exactly two resets has zero product iff both blocks vanish
