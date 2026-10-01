@@ -2,31 +2,347 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=27mm]{geometry}
-\usepackage{lmodern,microtype,booktabs}
+\usepackage{lmodern,microtype,booktabs,array,longtable}
 \usepackage[hidelinks]{hyperref}
 \usepackage{xurl}
-\hypersetup{pdftitle={Weighted Rank Five and Covers with a Two Vertex Shore},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\hypersetup{pdftitle={Normalization by the Matching Number for Weighted Matching-Support Polynomials},pdfauthor={Research notes prepared for Vladimir Reshetnikov with OpenAI; merged in ProveIt's batch-72 intake}}
 \setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{2em}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
-\newcommand{\ULC}{\operatorname{ULC}}
-\newcommand{\HH}{\mathbb H}
-\newcommand{\e}{\mathrm e}
-\title{Weighted Rank Five\newline and Covers with a Two Vertex Shore}
-\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
-\date{1 October 2026}
+% Macros of the sources, collected (Section~\ref{mrn:sec:notions}).
+\newcommand{\ULC}{\operatorname{ULC}}      % every source
+\newcommand{\HH}{\mathbb H}                % sources 74, 76: upper half-plane
+\newcommand{\e}{\mathrm e}                 % source 74
+\newcommand{\EE}{\mathbb E}                % source 76
+\newcommand{\diag}{\operatorname{diag}}    % source 76
+\newcommand{\Hess}{\operatorname{Hess}}    % source 72
+\newcommand{\Span}{\operatorname{span}}    % source 72
+\newcommand{\RR}{\mathcal R}               % source 72: red elements
+\newcommand{\BB}{\mathcal B}               % source 72: blue elements
+\newcommand{\dd}{\,\mathrm d}              % source 72
+\newcommand{\gap}{\Delta}                  % sources 60, 63, 69, 73, 75
+\newcommand{\rk}{\operatorname{rank}}      % sources 01, 02, 03, 08, 08s, 13, 21
+\newcommand{\rank}{\operatorname{rank}}    % source 60 (source 69's \rank, = \nu, is printed as \nu)
+\newcommand{\spn}{\operatorname{span}}     % sources 01, 02, 03, 05, 08, 08s, 13, 21
+\newcommand{\nuG}{\nu(G)}                  % source 71
+\newcommand{\ind}{\mathbf1}                % source 29
+% Editorial marks of this merge.
+\newcommand{\mnote}[1]{[\textit{Merge note:} #1]}
+\newcommand{\prp}{\emph{preorder-root-polytopes}}
 \begin{document}
+\title{Normalization by the Matching Number for\\Weighted Matching-Support Polynomials\\[4pt]
+\large Small ranks, unit and one-shore counterexamples, rank six, and eventual scaling}
+\author{Research notes prepared for Vladimir Reshetnikov with OpenAI\\
+(source~72: AI-assisted mathematical research)\\[2pt]
+\small merged in ProveIt's batch-72 intake}
+\date{1 October 2026}
 \maketitle
+
 \begin{abstract}
-Every bipartite matching-support polynomial with a minimum vertex cover meeting one shore in at most two vertices is ultra-log-concave after normalization by its matching rank, for arbitrary positive activities on both shores. The main construction replaces a displayed $2+q$ cover by a rank-$(q+2)$ represented matroid whose Lorentzian basis polynomial specializes exactly to the homogenized support polynomial. Consequently weighted rank normalization holds through rank five, and known rank-six Hall obstructions show that the first weighted failure rank is exactly six. We also prove a sharp all-core boundary inequality with constant three, give independent Lorentzian transfer proofs for star cores, and derive quantitative eventual strictness under two natural activity scalings. Full proofs, finite exact coefficient certificates, sum-of-squares identities and independent verification scripts are included.
+For a finite bipartite graph $G$ with positive vertex activities, the
+matching-support polynomial $p_G(t)=\sum_k a_kt^k$ counts each pair of
+endpoint sets of a $k$-edge matching once, weighted by the product of its
+activities. Its degree is the matching number $\nu(G)$. This report collects
+batch-72 research notes on the question of
+\prp{} (Parts~XI--XIII) whether $p_G$ is ultra-log-concave of order
+$\nu(G)$.
+Part~I (sources~74, 72, 76 and~75) proves it for arbitrary positive
+activities on both shores whenever some minimum vertex cover meets one shore
+in at most two vertices, through an explicit transversal-matroid lift; in
+particular for every graph with $\nu(G)\le5$. With the rank-six Hall
+counterexample of \prp, the least matching number of a weighted failure
+is exactly six, and there are failures at every larger matching number.
+Equality in any one normalized inequality occurs only for balanced star
+forests; graphs with a vertex cover of two vertices on each shore have
+real-stable basis polynomials and real-rooted support polynomials; and the
+full Hall family is ultra-log-concave for all activities exactly when one
+core has at most two vertices.
+Nothing here is formalized in Lean or Rocq, and nothing is refereed.
 \end{abstract}
 
-\paragraph{Scope and status.}
-The rank-five weighted question posed in the inspected ProveIt draft is resolved here. At higher rank the theorem covers every minimum cover with a shore of size at most two; the unrestricted unit-weight and one-shore-weighted problems at higher rank are not addressed here. These are proofs in ordinary mathematics, not Lean-certified or independently refereed results. The work extends the inspected rank manuscript and the separate rank-four and full-Hall classification reports \cite{Rank,Four,Hall}; global priority is not claimed.
+\tableofcontents
 
-\section{Definitions and main conclusions}
+\section{Guide to this report}\label{mrn:sec:guide}
+
+\subsection{Sources, status and plan}\label{mrn:sec:scope}
+This report is a merge of research manuscripts delivered to ProveIt's
+incoming-report intake on 1 October 2026 (batch~72, arrival commit
+\texttt{1512ef835}, placement commit \texttt{8bb543f0f}). The sources are
+numbered by their batch-72 manuscript numbers. Twenty-six archives and one
+manuscript delivered only inside archive~08 (called 08s here) are sources;
+a twenty-eighth archive (78) is an exact duplicate of the leaf-compression
+manuscript already printed as Part~XIII of \prp{} and is not a source.
+The full record, archive by archive, is Appendix~\ref{mrn:sec:provenance}.
+At this stage of the write-up the report prints
+Part~I (sources 74, 72, 76 and 75); Parts~II--IV, built from the other
+twenty-three sources, are added in the following commits of the same write.
+
+Every source is printed in full: statements, proofs, examples, remarks,
+limitations and verification notes. A result proved by several sources is
+printed once, under the source named in the Part's introduction, and the
+other proofs follow as marked second routes. A result that \prp{} already
+proves is cited by its number there and is not presented as new; where a
+source re-proves it, the source's proof is either printed as a marked second
+route or replaced by a pointer, as recorded at the place and in
+Appendix~\ref{mrn:sec:provenance}.
+
+\emph{Status.} All sources are AI-assisted research notes (their title pages
+read ``Research note prepared for Vladimir Reshetnikov with OpenAI'', except
+source~72's ``AI-assisted mathematical research''). Their proofs are ordinary
+mathematical arguments supported by exact finite checks; they are not
+refereed, and nothing in them is formalized in Lean or Rocq. No source claims
+global priority. Text in square brackets marked \emph{Merge note} was added
+in this merge; everything else is the sources' text, with labels prefixed
+and section levels shifted (Section~\ref{mrn:sec:labels}).
+
+\subsection{What \texorpdfstring{\prp}{preorder-root-polytopes} already proves}\label{mrn:sec:prior}
+The neighbouring report
+\path{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/preorder-root-polytopes}
+(\cite{b:PRP}, cited here as \prp) introduced the question and proves
+the following. They are cited by their printed numbers and labels in that
+report and are not reprinted here.
+\begin{itemize}
+\item Part~V: Theorem~70.1 (\path{lor:thm:weightedULC}), the two-shore
+  inequality: $p_G$ is $\ULC_{\min(|X|,|Y|)}$ for arbitrary positive
+  activities (normalization by the smaller shore); its Research
+  question~37 (\path{lor:q:first}) asks for normalization by the matching
+  number.
+\item Part~VI: the stability tools, Theorem~85.3 (\path{ade:mat:thm:stable-bridge},
+  the reciprocal bridge between the signed support polynomial and the
+  basis polynomial), Theorem~91.2 (\path{ade:thm:expected}, independent-column
+  expectations are real stable), Theorem~93.2 (\path{ade:mat:thm:vertex-stable},
+  stability under one-vertex sums), Theorem~94.1 (\path{ade:mat:thm:biclique},
+  complete bipartite blocks are stable) and Corollary~94.3
+  (\path{ade:mat:cor:block-family}).
+\item Part~XI (Hall bottlenecks): the family $H_{s,n}$ and its exact
+  coefficient formula, Theorem~175.3 (\path{hb:thm:coefficients}); the
+  30-vertex counterexample $H_{4,11}$ with weight $500$ on both cores,
+  Theorem~176.1 (\path{hb:thm:witness}); the complete classification of
+  the core-three family $H_{3,n}$, Theorem~177.1
+  (\path{hb:thm:rank6phase}), whose last order-six margin fails at
+  $n=33$ (the rank-six counterexample $H_{3,33}$), with its asymptotic
+  Corollary~177.2 (\path{hb:cor:asymptoticweight}); the endpoint
+  threshold, Theorem~178.2 (\path{hb:thm:endpoint}); and the first-margin
+  defect identity with its equality case, Theorem~180.2
+  (\path{hb:thm:firstidentity}) and Corollary~180.3
+  (\path{hb:cor:equality}): $(r-1)a_1^2\ge2ra_2$ for every positively
+  weighted graph of matching number $r\ge2$, with equality exactly for $r$
+  disjoint stars of equal edge totals.
+\item Part~XII (rank-three matching supports): the first rank inequality,
+  Theorem~190.2 (\path{mr:thm:first}), and its unweighted equality case,
+  Theorem~190.3 (\path{mr:thm:equality}); normalization by the matching
+  number at unit weights for $\nu\le3$, Theorem~191.1
+  (\path{mr:thm:rankthree}); the explicit rank-three bimatroid
+  obstruction, Theorem~192.1 (\path{mr:thm:matrix}); and a connected
+  rank-four family, Theorem~196.1 (\path{mr:thm:family}).
+\item Part~XIII (leaf compression): the weighted smaller-shore inequality,
+  Lemma~205.1 (\path{lc:lem:ambient}); weighted leaf compression,
+  Lemma~206.1 (\path{lc:lem:compression}); normalization by the matching
+  number for every minimum cover with a singleton shore or on one shore,
+  Theorem~206.2 (\path{lc:thm:singleton}); and weighted rank three,
+  Corollary~206.3 (\path{lc:cor:rankthree}).
+\end{itemize}
+Archive~78 of this batch is byte-identical to the batch-71 archive printed as
+Part~XIII; it is not printed again.
+
+\subsection{Notions and notation}\label{mrn:sec:notions}
+The sources share one setting but not one vocabulary. The following
+conventions hold throughout; where a source uses another word or letter,
+it is listed here and kept in the source's text.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.72\textwidth}}
+\toprule
+Notion & Meaning in this report, and the readings to avoid\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Support polynomial $p_G(t)=p_G(t;u,v)=\sum_ka_kt^k$ &
+$a_k=\sum u_Iv_J$ over pairs $I\subseteq X$, $J\subseteq Y$ with
+$|I|=|J|=k$ for which $G[I,J]$ has a perfect matching. Each pair of endpoint
+sets is counted \emph{once}, not once per matching: this is not the
+matching (rook) polynomial. At unit activities it is the perfectly
+matchable set polynomial of Davis--Kohl \cite{b:DK}. Source~75 writes
+$P_H(t)=\sum p_kt^k$; \prp{} writes $p_G(t;u,v)$ (Part~XIII) and
+$A_H(t;u,v)$ (Part~V).\\
+Matching number $\nu(G)$, also $r$ &
+The maximum size of a matching. The sources call it the \emph{matching
+rank}; \prp{} calls it the \emph{matching number}. Both words are used
+here with one meaning. For positive activities $\deg p_G=\nu(G)$ and every
+$a_k$ with $0\le k\le\nu(G)$ is positive.\\
+$\ULC_D$ and the gaps $\Delta_k^{(D)}$ &
+$p$ is $\ULC_D$ if $a_k/\binom Dk$ (padded by zeros) is log-concave
+without internal zeros; for support polynomials this is
+$\Delta_k^{(D)}=k(D-k)a_k^2-(k+1)(D-k+1)a_{k-1}a_{k+1}\ge0$ for
+$1\le k\le D-1$ (display~\eqref{mrn:w:rf:eq:gap}). ``Normalization by the
+matching number'' means $D=\nu(G)$. The sources call $\Delta_k$ a
+\emph{gap}, \emph{margin}, \emph{normalized gap} or \emph{Newton gap};
+the \emph{first} gap is $k=1$, the \emph{last} is $k=D-1$. \emph{Strict}
+$\ULC_D$ means all $D-1$ gaps are positive.\\
+Weightings &
+\emph{Two-shore} (or simply \emph{weighted}): arbitrary positive activities
+$u$ on $X$ and $v$ on $Y$ (Part~I). \emph{Unit}: $u\equiv v\equiv1$
+(Research question~84 of \prp; Part~II). \emph{One-shore}: $u\equiv1$ on
+the left shore, $v$ arbitrary positive on the right shore (Research
+question~85 of \prp; Parts~II--IV). \emph{One common right-core
+activity}: activity $w$ on the right core of a full Hall graph and~$1$
+elsewhere, a special one-shore weighting (sources 73, 55, 47, 51).\\
+Displayed cover $A\sqcup B$ &
+A vertex cover with $A\subseteq X$ on the left and $B\subseteq Y$ on the
+right; $L=X\setminus A$ and $R=Y\setminus B$ are the exterior sets and
+there are no $L$--$R$ edges; $G[A,B]$ is the \emph{core}. Source~74 writes
+a $2+q$ cover for $|A|=2$, $|B|=q$; a cover is \emph{genuine} when
+$\nu(G)=|A|+|B|$, that is, when it is minimum.\\
+Full Hall graph $H_{a,b;n,m}$ &
+Core $A$ ($a$ vertices) and $B$ ($b$), exterior $L$ ($n$) and $R$ ($m$),
+edges $(A\times B)\cup(L\times B)\cup(A\times R)$ (sources~75, 73, 55, 47,
+51; source~74 writes $H_{a,b;N,M}$, source~76 $H_{2,s;n,m}$). \prp's
+$H_{s,n}$ is $H_{s,s;n,n}$ with weight $w$ on \emph{both} cores. The
+weighting differs by source: both cores (74, 75, \prp), the right core only
+(73, 55, 47, 51).\\
+Scalings &
+Two different scalings occur. Source~74 (Section~\ref{mrn:w:rf:sec:negative})
+multiplies the activities of a \emph{whole} minimum cover, on both shores,
+by a common factor; then failures persist at every matching number $\ge6$.
+The sources of Part~IV multiply only the \emph{right} part of a fixed
+minimum cover, with unit left activities; there no failure occurs through
+matching number eight. These statements do not conflict.\\
+Real stability, real-rootedness, Lorentzian &
+A polynomial is real stable if it has no zero with all variables in the
+upper half-plane $\HH$; a real-stable univariate polynomial is real-rooted.
+A homogeneous bivariate polynomial is Lorentzian exactly when its
+coefficients are $\ULC$ of its degree. Real-rootedness of $p_G$ implies
+$\ULC_{\deg p_G}$ by Newton's inequalities; the converse fails
+(source~75's rank-five example, Section~\ref{mrn:src:75}).\\
+Letters local to a source &
+Letters are local to the source (often to the section) that defines them.
+In particular $A,B$ are cover parts in source~74 but numerical gap factors
+in Section~3 of source~75 and \prp's core in Part~XI; $a,b,c$ are
+right-class activity sums in Section~\ref{mrn:w:rf:sec:fulllift} but core
+sizes in Section~\ref{mrn:w:rf:sec:negative}; $q$ is $|B|$ in source~74
+and $2^{-1/2}$ in source~76; $Q=ab+ac+bc+d$ in source~74; $H$ is $G[L,B]$
+in source~74, a full Hall graph in sources~75 and~76, and $H_{s,n}$ in
+\prp; $h$ is a residual sector in source~74 and a population offset in
+source~75.\\
+\end{longtable}
+
+\emph{Renamed symbols.} No printed symbol of a source was renamed.
+
+\subsection{Research questions of \texorpdfstring{\prp}{preorder-root-polytopes} answered here}\label{mrn:sec:rq}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}}
+\toprule
+Question of \prp & Status after this report\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+RQ~86 \path{hb:q:rank} (first possible weighted rank) &
+Answered: every weighted graph with $\nu\le5$ is $\ULC_\nu$
+(Corollary~\ref{mrn:w:rf:cor:rankfive}); Part~XI's $H_{3,33}$ fails at
+$\nu=6$. The least weighted failure rank is exactly six.\\
+RQ~87 \path{hb:q:order} (a universal rank-only order) &
+In part: $\mathcal D(4)=4$ and $\mathcal D(5)=5$
+(Corollary~\ref{mrn:w:rf:cor:rankfive}); the question beyond rank five is
+open.\\
+RQ~93 \path{mr:q:rankfour} (finish rank four) &
+Answered affirmatively, for unit and arbitrary two-shore weights
+(Corollary~\ref{mrn:w:rf:cor:rankfive}; second route by real stability,
+Corollary~\ref{mrn:w:sb:cor:rankfour}).\\
+RQ~89 \path{hb:q:asymmetry} (asymmetric bottlenecks) &
+In large part: full Hall graphs are $\ULC$ for all activities exactly when
+one core has at most two vertices (Theorem~\ref{mrn:w:fh:thm:classification});
+explicit failures for all unequal cores $a,b\ge3$
+(Sections~\ref{mrn:w:rf:sec:negative} and~\ref{mrn:w:fh:sec:negative}).
+\\
+RQ~90 \path{hb:q:defects} (higher-index defect identities) &
+Bears on it: under the two-vertex-shore cover hypothesis, equality in any
+one gap holds only for balanced star forests
+(Theorem~\ref{mrn:w:se:thm:main}); no higher defect identity is given.\\
+RQ~37 \path{lor:q:first} (Part~V) &
+Weighted: holds through $\nu=5$, fails from $\nu=6$ (Part~I).
+\\
+\end{longtable}
+
+\subsection{Labels and editorial marks}\label{mrn:sec:labels}
+Every label carries the prefix \texttt{mrn:}. Labels written in this merge
+are \texttt{mrn:sec:\dots}, \texttt{mrn:src:NN} (the start of source NN) and
+\texttt{mrn:w:tab:\dots}; a delivered label of source NN carries a
+sub-prefix naming its Part (\texttt{w} for Part~I, \texttt{u} for Part~II,
+\texttt{s} for Part~III, \texttt{e} for Part~IV) and the source, for example
+\texttt{mrn:w:rf:thm:main} for source~74's \texttt{thm:main}. The table of
+sub-prefixes is in Appendix~\ref{mrn:sec:provenance}. Source~74, the base,
+keeps its sections as sections of Part~I, and its appendices are ordinary
+sections there; every other source is one section, whose sections are
+subsections. Section and theorem numbers therefore differ from the
+delivered PDFs, which are not shipped.
+
+\clearpage
+\part{Weighted activities on both shores: normalization through matching number five}\label{mrn:part:one}
+
+\paragraph{Contents of Part~I.}
+Part~I prints four sources. Source~74, \emph{Weighted Rank Five and Covers
+with a Two Vertex Shore}, is the base of the whole report; its sections are
+Sections~\ref{mrn:src:74}--\ref{mrn:w:rf:sec:verification}, and its
+appendices are printed as ordinary sections
+(Sections~\ref{mrn:w:rf:sec:line}--\ref{mrn:w:rf:sec:verification}).
+Source~72 (Section~\ref{mrn:src:72}) classifies equality under the same
+cover hypothesis; source~76 (Section~\ref{mrn:src:76}) proves real stability
+for covers with two vertices on each shore; source~75
+(Section~\ref{mrn:src:75}) classifies the full Hall family.
+
+\paragraph{What is new here and what is cited.}
+New relative to \prp: the transversal lift of
+Theorem~\ref{mrn:w:rf:thm:main} and its consequences (normalization by the
+matching number for every minimum cover meeting one shore in at most two
+vertices, hence for $\nu\le5$, and the cover obstruction
+Corollary~\ref{mrn:w:rf:cor:coverobstruction}); the forced-sector and
+scaling refinements; the asymmetric negative shapes; the equality
+classification at every gap (source~72); real stability for $2+2$ covers,
+the $2\times s$ stability threshold and the 17-vertex example (source~76);
+the full Hall classification, its strictness and real-rootedness refinements
+and the nonreal rank-five example (source~75). Cited, not new: the
+smaller-shore inequality and leaf compression (Parts~V and~XIII of \prp;
+source~74's Lemmas~\ref{mrn:w:rf:lem:small} and~\ref{mrn:w:rf:lem:singleton}
+and the corresponding steps of sources~72 and~76 are pointers); the first-gap
+inequality with its equality case (Part~XI's Theorem~180.2 and
+Corollary~180.3, Part~XII's Theorem~190.2; the Motzkin--Straus proofs of
+sources~74 and~72 are printed as second routes); the rank-six and rank-eight
+witnesses $H_{3,33}$ and $H_{4,11}$ (Part~XI, restated by source~74); and
+the stability tools of source~76 (Part~VI).
+
+\paragraph{Same theorem in several sources.}
+Source~74's Corollary~\ref{mrn:w:rf:cor:rankfive} contains source~76's
+Corollary~\ref{mrn:w:sb:cor:rankfour} ($\nu\le4$) and Part~XIII's
+Corollary~206.3 ($\nu\le3$); source~76's real-stability route is printed as a
+second route. The positive half of source~75's
+Theorem~\ref{mrn:w:fh:thm:classification} is the full Hall case of source~74's
+Theorem~\ref{mrn:w:rf:thm:main}; source~75's comparison-polynomial proof is
+printed as a second route. For equal cores and populations the negative half
+of Theorem~\ref{mrn:w:fh:thm:classification} is Part~XI's endpoint theorem.
+
+\paragraph{Non-claims of Part~I.}
+Source~74's theorem asserts neither real-rootedness nor stability of the
+support polynomial (remark after
+Corollary~\ref{mrn:w:rf:cor:coverobstruction}); at higher rank it does not
+address the unrestricted unit-weight and one-shore problems
+(Section~\ref{mrn:w:rf:sec:verification}); finite computations are
+regression checks, not proofs (sources~72 and~74); source~76 does not assert
+real-rootedness for every graph of matching number four; source~75's
+classification concerns the full Hall family only and its negative assertion
+says nothing about unit or one-shore weights.
+
+%% ======================== source 74 ========================
+\paragraph{Abstract of source~74, as delivered.} Every bipartite matching-support polynomial with a minimum vertex cover meeting one shore in at most two vertices is ultra-log-concave after normalization by its matching rank, for arbitrary positive activities on both shores. The main construction replaces a displayed $2+q$ cover by a rank-$(q+2)$ represented matroid whose Lorentzian basis polynomial specializes exactly to the homogenized support polynomial. Consequently weighted rank normalization holds through rank five, and known rank-six Hall obstructions show that the first weighted failure rank is exactly six. We also prove a sharp all-core boundary inequality with constant three, give independent Lorentzian transfer proofs for star cores, and derive quantitative eventual strictness under two natural activity scalings. Full proofs, finite exact coefficient certificates, sum-of-squares identities and independent verification scripts are included.
+
+\paragraph{Scope and status.}
+The rank-five weighted question posed in the inspected ProveIt draft is resolved here. At higher rank the theorem covers every minimum cover with a shore of size at most two; the unrestricted unit-weight and one-shore-weighted problems at higher rank are not addressed here. These are proofs in ordinary mathematics, not Lean-certified or independently refereed results. The work extends the inspected rank manuscript and the separate rank-four and full-Hall classification reports \cite{b:RankMS,b:m76,b:m75}; global priority is not claimed.
+\mnote{The ``inspected ProveIt draft'' and ``rank manuscript'' \cite{b:RankMS} is the manuscript printed as Part~XII of \prp{} (pinned at \texttt{1b3960d8a}); the companions \cite{b:m76} and \cite{b:m75} are sources~76 and~75, printed in Sections~\ref{mrn:src:76} and~\ref{mrn:src:75}; \cite{b:LeafMS} and \cite{b:HallMS} are Parts~XIII and~XI of \prp. The unit-weight and one-shore problems that this paragraph leaves aside are the subject of Parts~II--IV (batch-72 sources 71, 73 and later).}
+
+\section{Definitions and main conclusions}\label{mrn:src:74}
 For a finite bipartite graph $G=(X,Y;E)$ and positive vertex activities $u_x,v_y$, write
 \[
  p_G(t)=\sum_{k=0}^{r}a_kt^k,
@@ -35,14 +351,14 @@ For a finite bipartite graph $G=(X,Y;E)$ and positive vertex activities $u_x,v_y
  \qquad r=\nu(G).
 \]
 Each endpoint pair is counted once. In particular $p_{K_{2,2}}(t)=1+4t+t^2$ at unit activities. The polynomial is $\ULC_D$, for $D\ge\deg p_G$, if its zero-padded sequence $a_k/\binom Dk$ is log-concave and has no internal zeros. Equivalently, for these support polynomials,
-\begin{equation}\label{eq:gap}
+\begin{equation}\label{mrn:w:rf:eq:gap}
  \Delta_k^{(D)}:=k(D-k)a_k^2-(k+1)(D-k+1)a_{k-1}a_{k+1}\ge0.
 \end{equation}
 Strict $\ULC_D$ means all $D-1$ displayed gaps are positive.
 
 A displayed $2+q$ cover is $A\sqcup B$, where $A=\{A_1,A_2\}\subseteq X$ and $|B|=q$, $B\subseteq Y$. Put $L=X\setminus A$ and $R=Y\setminus B$. There are no $L$--$R$ edges. The induced graph $G[A,B]$ is called the core. We call the displayed cover \emph{genuine} when $\nu(G)=q+2$.
 
-\begin{theorem}[A two-vertex cover shore]\label{thm:main}
+\begin{theorem}[A two-vertex cover shore]\label{mrn:w:rf:thm:main}
 If $G$ has a displayed $2+q$ cover, fix positive activities $v$ on its right shore. The homogeneous left marginal
 \[
  \sum_{\substack{I\subseteq X\\|I|\le q+2}}\left(\sum_{\substack{J\subseteq Y\\(I,J)\text{ feasible}}}v_J\right)z_I s^{q+2-|I|}
@@ -50,42 +366,38 @@ If $G$ has a displayed $2+q$ cover, fix positive activities $v$ on its right sho
 is Lorentzian. In particular, the degree-$(q+2)$ homogenization of its weighted matching-support polynomial is Lorentzian. Thus $p_G$ is $\ULC_{q+2}$ for every positive activity assignment. If the displayed cover is minimum, the normalization is by the actual matching rank.
 \end{theorem}
 
-\begin{corollary}[Weighted rank five and the first failure rank]\label{cor:rankfive}
+\begin{corollary}[Weighted rank five and the first failure rank]\label{mrn:w:rf:cor:rankfive}
 Every bipartite matching-support polynomial of matching rank $r\le5$ is $\ULC_r$ for arbitrary positive activities on both shores. The smallest rank admitting a weighted counterexample is exactly six. At every rank $r\ge6$ there is a weighted counterexample.
 \end{corollary}
-The positive conclusion follows from Theorem~\ref{thm:main}, the pure and singleton-side cover cases proved below, and K\H{o}nig's theorem. The negative construction is given in Section~\ref{sec:negative}. For nonnegative activities, delete zero-activity vertices first; the same conclusion holds with $r$ interpreted as the surviving degree.
+The positive conclusion follows from Theorem~\ref{mrn:w:rf:thm:main}, the pure and singleton-side cover cases proved below, and K\H{o}nig's theorem. The negative construction is given in Section~\ref{mrn:w:rf:sec:negative}. For nonnegative activities, delete zero-activity vertices first; the same conclusion holds with $r$ interpreted as the surviving degree.
+\mnote{Corollary~\ref{mrn:w:rf:cor:rankfive} contains Part~XIII's Corollary~206.3 of \prp{} ($\nu\le3$, \path{lc:cor:rankthree}) and source~76's Corollary~\ref{mrn:w:sb:cor:rankfour} ($\nu\le4$), which is printed in Section~\ref{mrn:src:76} as a second route by real stability. The rank-six counterexample it relies on is Part~XI's $H_{3,33}$ (Theorem~177.1 of \prp, restated in Section~\ref{mrn:w:rf:sec:negative}). It answers Research questions~86 and~93 of \prp{} and gives $\mathcal D(4)=4$, $\mathcal D(5)=5$ in its Research question~87 (Section~\ref{mrn:sec:rq}).}
 
-\begin{theorem}[Forced-sector and strict-scaling refinements]\label{thm:forcedleft}
+\begin{theorem}[Forced-sector and strict-scaling refinements]\label{mrn:w:rf:thm:forcedleft}
 For any displayed $2+q$ cover with $q\ge1$, the coefficient of the product of the two $A$ activities in $p_G$ is $t^2C(t)$, where $C$ is $\ULC_q$. For a genuine cover, common scaling of only the two $A$ activities makes $p_G$ strictly $\ULC_{q+2}$ for all sufficiently large scale factors.
 
 For a rank-five $2+3$ cover whose core has matching rank two, common scaling of all five cover activities also makes all four gaps strictly positive eventually. An explicit coefficient bound gives a sufficient threshold for both scalings.
 \end{theorem}
 Every fixed minimum-cover scaling at rank at most five is therefore $\ULC$ at \emph{every} positive scale factor. At each rank at least six, some fixed graph and minimum cover fail for every sufficiently large common cover scale, so the universal scaling threshold is sharp as well.
+\mnote{Here the whole minimum cover is scaled, on both shores. Sources 08s, 08, 03, 02 and~01 (Part~IV) scale only the right part of a minimum cover, with unit left activities, and there no failure occurs below matching number nine. See the entry ``Scalings'' in Section~\ref{mrn:sec:notions}.}
 
-\section{Lorentzian input and singleton covers}
-We use the following published facts from Br\"and\'en--Huh \cite{BH}: matroid basis polynomials are Lorentzian (Theorem 3.10); partial derivatives, nonnegative linear substitutions, products and coefficientwise limits preserve this class (Corollary 2.11, Theorem 2.10, Corollary 2.32, and closedness); homogeneous stability preservers that preserve nonnegative coefficients preserve Lorentzian polynomials (Theorem 3.4); and multiaffine truncation and polarization preserve the class (Corollary 3.5 and Proposition 3.1). A homogeneous bivariate polynomial of degree $D$ is Lorentzian exactly when its coefficients form a $\ULC_D$ sequence (Example 2.26). The zero polynomial is included by closure.
+\section{Lorentzian input and singleton covers}\label{mrn:w:rf:sec:lorentz}
+We use the following published facts from Br\"and\'en--Huh \cite{b:BH}: matroid basis polynomials are Lorentzian (Theorem 3.10); partial derivatives, nonnegative linear substitutions, products and coefficientwise limits preserve this class (Corollary 2.11, Theorem 2.10, Corollary 2.32, and closedness); homogeneous stability preservers that preserve nonnegative coefficients preserve Lorentzian polynomials (Theorem 3.4); and multiaffine truncation and polarization preserve the class (Corollary 3.5 and Proposition 3.1). A homogeneous bivariate polynomial of degree $D$ is Lorentzian exactly when its coefficients form a $\ULC_D$ sequence (Example 2.26). The zero polynomial is included by closure.
 
-\begin{lemma}[Weighted smaller-shore inequality]\label{lem:small}
+\begin{lemma}[Weighted smaller-shore inequality]\label{mrn:w:rf:lem:small}
 Every bipartite support polynomial is $\ULC_{\min(|X|,|Y|)}$.
 \end{lemma}
-\begin{proof}
-Add a private element $\bar x$ for each $x\in X$. The transversal matroid on $\bar X\sqcup Y$, matched into $X$, has bases exactly $\overline{X\setminus I}\sqcup J$ for feasible $(I,J)$. If $F$ is its basis polynomial, then
-\[
- \left(\prod_{x\in X}u_x\right)
- F\big((s/u_x)_{x\in X},(tv_y)_{y\in Y}\big)
- =\sum_k a_k s^{|X|-k}t^k.
-\]
-The Lorentzian facts give $\ULC_{|X|}$; transpose the graph for the other shore. This is the standard bimatroid specialization \cite{RU}.
+\begin{proof}[Proof (pointer)]
+This is Theorem~70.1 of \prp{} (Part~V, \path{lor:thm:weightedULC}), restated as Lemma~205.1 of its Part~XIII (\path{lc:lem:ambient}). \mnote{Source~74 proves it by the same specialization of the basis polynomial of the transversal matroid on the private copies $\bar X\sqcup Y$, at $s/u_x$ and $tv_y$, followed by the bivariate Lorentzian characterization and transposition, and calls it the standard bimatroid specialization \cite{b:RU}. That proof is Part~XIII's proof of Lemma~205.1 and is not reprinted.}
 \end{proof}
 
-\begin{lemma}[Singleton-side minimum covers]\label{lem:singleton}
+\begin{lemma}[Singleton-side minimum covers]\label{mrn:w:rf:lem:singleton}
 If a rank-$r$ graph has a minimum cover entirely on one shore or split as $1+(r-1)$, its support polynomial is $\ULC_r$ for all positive activities.
 \end{lemma}
-\begin{proof}
-For a pure cover, delete isolated vertices on that shore and apply Lemma~\ref{lem:small}. For a cover $\{x_0\}\sqcup B$, every nonisolated right vertex outside $B$ is a leaf at $x_0$. A feasible support contains at most one such leaf; replacing all of them by one leaf with activity equal to their sum preserves the entire support polynomial. There is at least one such leaf, since the rank exceeds $|B|$. The compressed graph has exactly $r$ active right vertices and the same polynomial, so Lemma~\ref{lem:small} applies. This is the exact leaf-compression argument of \cite{Leaf}.
+\begin{proof}[Proof (pointer)]
+This is Theorem~206.2 of \prp{} (Part~XIII, \path{lc:thm:singleton}), proved there by weighted leaf compression, Lemma~206.1 (\path{lc:lem:compression}). \mnote{Source~74's proof is the same argument (delete isolated vertices for a pure cover; for a cover $\{x_0\}\sqcup B$ merge the leaves at $x_0$ into one leaf carrying their total activity, which leaves $p_G$ unchanged, and apply Lemma~\ref{mrn:w:rf:lem:small}); source~74 credits it as ``the exact leaf-compression argument of'' \cite{b:LeafMS}, which is Part~XIII. It is not reprinted.}
 \end{proof}
 
-\section{The exact two-row formula}
+\section{The exact two-row formula}\label{mrn:w:rf:sec:tworow}
 Let the two $A$ activities be $x,y$, and let $H=G[L,B]$. For a virtual left vertex with neighborhood $S\subseteq B$ and activity one, define $g_S$ by
 \[
  p_H=f,\qquad p_{H+S}=f+t g_S.
@@ -103,21 +415,196 @@ For $R$, let $a,b,c$ be the sums of activities in classes with neighborhoods $\{
  \qquad 0\le d\le c^2/2.
 \]
 Then the exact full polynomial is
-\begin{align}\label{eq:union}
+\begin{align}\label{mrn:w:rf:eq:union}
  p_G={}&f\big[1+(x(a+c)+y(b+c))t+xyQt^2\big]
        +t(xg_1+yg_2)\notag\\
  &+xy t^2\big(h+a g_2+b g_1+c g_U\big).
 \end{align}
 To prove this, condition on the selected $A$ vertices and then on the number of selected $R$ vertices. With both $A$ selected, two selected $R$ contribute $Qf$; one singleton-class vertex forces the corresponding $A$ and gives $ag_2$ or $bg_1$; one common-class vertex leaves the union-neighborhood alternative and gives $cg_U$; no selected $R$ gives $h$. These cases have disjoint endpoint sets. In particular the common term is $cg_U$, not $c(g_1+g_2)$.
 
-\input{full_lift.tex}
-\input{negative_ranks.tex}
-\input{geometric_corollary.tex}
-\appendix
+%% --- inlined from source 74 file full_lift.tex ---
+\section{The full rank compression matroid lift}\label{mrn:w:rf:sec:fulllift}
+We prove Theorem~\ref{mrn:w:rf:thm:main}. First suppose $Q>0$. The same construction includes $q=0$, with no original $B$ slots. Form a transversal matroid matched into the $q+2$ slots
+\[
+ B\sqcup\{e_1,e_2\}.
+\]
+Its elements and allowed slots are as follows:
+\begin{itemize}
+\item a private element $\bar b$ for each $b\in B$, allowed only in slot $b$;
+\item an element for each $l\in L$, allowed in its original neighborhood in $B$;
+\item two augmented core elements $\widehat A_i$, allowed in $S_i\cup\{e_i\}$;
+\item two plane elements $P_1,P_2$, allowed only in $e_1,e_2$, respectively;
+\item one common element $Z_j$ for each common right-exterior vertex, allowed in both $e_1,e_2$.
+\end{itemize}
+The rank is $q+2$, since all private $B$ elements together with $P_1,P_2$ form a basis. Every basis is counted once, regardless of how many injections into the slots it admits. We call $P_1,P_2,Z_j$ the plane elements, as they use only the two additional slots.
 
-\section{A generic-line matroid model for the forced-left sector}\label{sec:line}
-By \eqref{eq:union}, the polynomial in Theorem~\ref{thm:forcedleft} is
-\begin{equation}\label{eq:C}
+Give the private $B$ variables the values $s/v_b$, and the exterior-left variables $tu_l$. Keep core variables $X,Y$, and specialize the plane variables to
+\begin{equation}\label{mrn:w:rf:eq:planeweights}
+ P_1:\frac{bs}{Q},\qquad P_2:\frac{as}{Q},\qquad
+ Z_j:\frac{r_js}{Q}.
+\end{equation}
+Multiply this basis specialization by $Q\prod_{b\in B}v_b$. It is Lorentzian by the matroid and nonnegative-substitution theorems.
+
+We now compute it exactly. Put
+\[
+ f_h=s^qf(t/s),\quad G_i=s^{q-1}g_i(t/s),\quad
+ G_U=s^{q-1}g_U(t/s),\quad H_h=s^{q-2}h(t/s),
+\]
+where $G_i=G_U=0$ is defined directly for $q=0$, and $H_h=0$ is defined directly for $q<2$; the displayed homogenizing formulas are used only for nonnegative exponents. Classify a basis by the number $k$ of core elements and $\ell$ of plane elements. Other elements use only the $q$ original slots, so $k+\ell\ge2$ and $0\le k,\ell\le2$. There are six cases.
+\begin{enumerate}
+\item $(k,\ell)=(0,2)$. Any pair of distinct plane elements can fill the two extra slots, and the other $q$ elements fill the $B$ slots. The sum of plane-pair activities is
+\[
+ \frac{s^2}{Q^2}\left(ab+(a+b)c+\sum_{i<j}r_ir_j\right)=\frac{s^2}{Q}.
+\]
+After the exterior factor $Q$, the contribution is $s^2f_h$.
+\item $(k,\ell)=(1,1)$. With core $\widehat A_1$, the plane element must be able to occupy $e_2$, hence is $P_2$ or a $Z_j$. Its total activity is $(a+c)s/Q$. The remaining $q$ elements fill the $B$ slots, giving $Xs(a+c)f_h$. With $\widehat A_2$, the contribution is $Ys(b+c)f_h$.
+\item $(k,\ell)=(1,2)$. The plane pair fills both extra slots, forcing the core element into $B$. The remaining support uses row $S_i$ and $q-1$ ordinary elements, with profile $G_i$. The contribution is $Xs^2G_1+Ys^2G_2$.
+\item $(k,\ell)=(2,0)$. The two core elements occupy their dedicated extra slots. The other $q$ elements fill $B$, contributing $QXYf_h$.
+\item $(k,\ell)=(2,1)$. The element $P_1$ occupies $e_1$, forcing $\widehat A_2$ into $e_2$ and $\widehat A_1$ into $B$; hence its profile is $G_1$ and its activity coefficient is $b$. Similarly $P_2$ gives $G_2$ with coefficient $a$. A common $Z_j$ can occupy either extra slot, so feasibility holds exactly when either core row completes the remaining $B$-slot support. This is the union profile $G_U$, counted once even if both alternatives work. Thus the contribution is $XYs(bG_1+aG_2+cG_U)$.
+\item $(k,\ell)=(2,2)$. The two plane elements fill the extra slots, forcing both core elements into $B$ together with $q-2$ other elements. The contribution is $XYs^2H_h$; this case is absent for $q<2$.
+\end{enumerate}
+Consequently the constructed Lorentzian polynomial is
+\begin{align}\label{mrn:w:rf:eq:fulllift}
+ \mathcal L(s,t,X,Y)={}&s^2f_h+sX\big[(a+c)f_h+sG_1\big]
+ +sY\big[(b+c)f_h+sG_2\big]\notag\\
+ &+XY\big[Qf_h+s(bG_1+aG_2+cG_U)+s^2H_h\big].
+\end{align}
+Set $X=xt$ and $Y=yt$. Equation~\eqref{mrn:w:rf:eq:union} identifies \eqref{mrn:w:rf:eq:fulllift} with $s^{q+2}p_G(t/s)$, proving the bivariate assertion for $Q>0$. More generally, keep each exterior-left element variable as its own $z_l$ rather than $tu_l$, and set $X=z_{A_1}$, $Y=z_{A_2}$. The same six basis cases give exactly the homogeneous left marginal in Theorem~\ref{mrn:w:rf:thm:main}. Every plane and private variable remains a nonnegative multiple of $s$, so this full marginal is Lorentzian. No analogous opposite-marginal assertion is inferred when $q>2$.
+
+The six cases are disjoint classes of matroid bases. In particular the union case does not count injections or matching allocations. The construction also has a generic matrix representation obtained by giving each allowed slot incidence its own indeterminate. Its six block-determinant expansions provide a second interpretation of the same identity, including dependent or zero original core-row vectors.
+
+If $Q=0$, add a singleton right vertex at each $A_i$ with activity $\varepsilon>0$. The perturbed graph still has a displayed $2+q$ cover, its $Q$ is positive, and its coefficients converge to those of the original graph as $\varepsilon\downarrow0$. Closedness gives the result. Other zero activities are handled by continuity at fixed order $q+2$; private reciprocals are used only before taking the positive-activity limit.
+
+\begin{corollary}\label{mrn:w:rf:cor:coverobstruction}
+Any failure of weighted rank-normalized ultra-log-concavity must have every minimum vertex cover meet both shores in at least three vertices.
+\end{corollary}
+\begin{proof}
+A pure or singleton-side minimum cover is covered by Lemma~\ref{mrn:w:rf:lem:singleton}; a cover meeting one shore in exactly two vertices is covered by Theorem~\ref{mrn:w:rf:thm:main}.
+\end{proof}
+
+\begin{remark}
+The new rank-$(q+2)$ transversal matroid is used through its Lorentzian basis polynomial. The theorem asserts neither real-rootedness of $p_G$ nor stability of the original complemented-row polynomial. The support identity, and not the values of nonzero determinants, determines all coefficients.
+\end{remark}
+%% --- end of full_lift.tex ---
+%% --- inlined from source 74 file negative_ranks.tex ---
+\section{Exact failure at rank six and at every higher rank}\label{mrn:w:rf:sec:negative}
+We include the elementary obstruction calculation to make the sharpness conclusion self-contained. It is the negative construction from the Hall reports \cite{b:m75,b:HallMS}.
+\mnote{\cite{b:m75} is source~75 (Section~\ref{mrn:w:fh:sec:negative}) and \cite{b:HallMS} is Part~XI of \prp. For $a=b$ and $N=M$ the graph $H_{a,b;N,M}$ with weight $w$ on both cores is Part~XI's $H_{s,n}$, and formula~\eqref{mrn:w:rf:eq:Hallcount} is Part~XI's Theorem~175.3 (\path{hb:thm:coefficients}) extended to unequal cores and populations. The endpoint quadratic below is the asymmetric form of Part~XI's endpoint analysis (Theorem~178.2, \path{hb:thm:endpoint}).}
+
+Let $H_{a,b;N,M}$ have a complete $a\times b$ core, $N$ exterior-left vertices adjacent to every right-core vertex, and $M$ exterior-right vertices adjacent to every left-core vertex. Give core vertices activity $w$ and exterior vertices activity one. If $N\ge b$ and $M\ge a$, the core is a minimum cover of size $r=a+b$: match its two shores independently into the opposite exterior sets.
+
+A size-$k$ endpoint support with $i$ selected left-core and $j$ selected right-core vertices is feasible exactly when $i+j\ge k$, subject to the cardinality bounds. Match all exterior vertices to the core first, then use the complete core for the remainder. Thus
+\begin{equation}\label{mrn:w:rf:eq:Hallcount}
+ a_k=\sum_{\substack{0\le i\le a,\ 0\le j\le b\\i+j\ge k}}
+ \binom ai\binom bj\binom N{k-i}\binom M{k-j}w^{i+j}.
+\end{equation}
+Put $A_i=\binom N{b-i}$, $B_i=\binom M{a-i}$ for $i=0,1,2$, and
+\[
+ X=aA_0B_1+bA_1B_0,\quad Y=aA_1B_2+bA_2B_1,
+ \quad Z=\binom a2A_0B_2+abA_1B_1+\binom b2A_2B_0.
+\]
+Counting at most two omitted core vertices gives
+\[
+ a_r=A_0B_0w^r,\quad
+ a_{r-1}=A_1B_1w^r+Xw^{r-1},\quad
+ a_{r-2}=A_2B_2w^r+Yw^{r-1}+Zw^{r-2}.
+\]
+Hence
+\begin{equation}\label{mrn:w:rf:eq:neggap}
+ \Delta_{r-1}^{(r)}=w^{2r-2}(\alpha w^2+\beta w+\gamma),
+\end{equation}
+where
+\begin{align*}
+ \alpha&=(r-1)A_1^2B_1^2-2rA_0A_2B_0B_2,\\
+ \beta&=2(r-1)A_1B_1X-2rA_0B_0Y,\\
+ \gamma&=(r-1)X^2-2rA_0B_0Z.
+\end{align*}
+
+\subsection{A concrete rank-six witness}
+Take $a=b=3$ and $N=M=33$. Here $A_0=B_0=5456$, $A_1=B_1=528$, $A_2=B_2=33$, and exact simplification of \eqref{mrn:w:rf:eq:neggap} gives
+\[
+ \Delta_5^{(6)}=404794368\,w^{10}(-w^2+26784w+522784).
+\]
+At $w=26804$, the parenthesis equals $-13296$. This is an exact positive-integer-activity counterexample on $72$ vertices and $207$ edges, with minimum cover and matching rank six. Combined with Corollary~\ref{mrn:w:rf:cor:rankfive}, the first weighted failure rank is exactly six.
+\mnote{This witness is Part~XI's $H_{3,33}$: Theorem~177.1 of \prp{} (\path{hb:thm:rank6phase}) gives the last order-six margin of $H_{3,n}$ at $n=33$ as $16$ times the same quadratic $-w^2+26784w+522784$. Source~74 restates and verifies it (its bibliography says so); it is not new here.}
+
+\subsection{Permanent scaling failure at every rank at least six}
+Let $a,b\ge3$. Write
+\[
+ K=(r-1)ab,\qquad J=(r+1)ab-2r(r-1).
+\]
+Because $ab\ge3(r-3)$ and $r\ge6$,
+\[
+ J\ge r^2-4r-9>0.
+\]
+Choose $N=b+30$, $M=a+30$, so that
+\[
+ \frac{A_1^2B_1^2}{A_0A_2B_0B_2}
+ =\frac{ab}{(a-1)(b-1)}\left(\frac{32}{31}\right)^2.
+\]
+The inequality $\alpha<0$ is equivalent to
+\[
+ K(2\cdot31+1)<J\cdot31^2.
+\]
+Indeed
+\[
+ 15J-K=(14r+16)ab-30r(r-1)
+ \ge12(r-6)(r+2)\ge0,
+\]
+and $63/961<1/15\le J/K$. Thus \eqref{mrn:w:rf:eq:neggap} is negative for every sufficiently large $w$. An explicit sufficient integer is
+\[
+ w\ge1+\left\lfloor\frac{|\beta|+|\gamma|}{-\alpha}\right\rfloor,
+\]
+since for $w\ge1$ the bracket is at most $w(\alpha w+|\beta|+|\gamma|)<0$.
+Taking $a=3$, $b=r-3$ supplies every $r\ge6$. In contrast, every graph of rank at most five remains $\ULC$ at every positive minimum-cover scale by Corollary~\ref{mrn:w:rf:cor:rankfive}. This proves the sharp universal rank threshold for minimum-cover scaling.
+
+\subsection{The shapes recorded by source~74's verifier}\label{mrn:w:sec:shapes}
+\mnote{This subsection was written in the merge from source~74's recorded output \path{data/74-weighted-rank-five-negative_shapes_verification.json}; its numbers were recomputed independently from \eqref{mrn:w:rf:eq:Hallcount}. Source~74's text does not print them.}
+Source~74's negative-family verifier records seven exact witnesses, listed in Table~\ref{mrn:w:tab:shapes}. Each has exterior activity one and one common integer activity $w$ on all $a+b$ core vertices; the populations are $N=b-1+h$ and $M=a-1+h$ with source~75's offset $h=1+\lceil2K/H\rceil$ (Section~\ref{mrn:w:fh:sec:negative}), and $w$ is the least integer at which the last gap $\Delta_{r-1}^{(r)}$ is negative for these populations: the primitive endpoint quadratic (the bracket of \eqref{mrn:w:rf:eq:neggap} divided by its content) is negative at $w$ and positive at $w-1$.
+\begin{table}[ht]
+\centering\small\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{ccccccrl}
+\toprule
+$(a,b)$ & $r$ & $(N,M)$ & vertices & edges & $w$ & primitive quadratic & in \prp\\
+\midrule
+$(3,3)$ & 6 & $(33,33)$ & 72 & 207 & 26804 & $-w^2+26784w+522784$ & Part~XI, $H_{3,33}$\\
+$(3,4)$ & 7 & $(16,15)$ & 38 & 121 & 2012 & $-3w^2+6006w+55601$ & new\\
+$(3,5)$ & 8 & $(15,13)$ & 36 & 129 & 418 & $-115w^2+46860w+469964$ & new\\
+$(4,4)$ & 8 & $(11,11)$ & 30 & 104 & 485 & $-w^2+480w+2304$ & Part~XI, $H_{4,11}$\\
+$(4,5)$ & 9 & $(11,10)$ & 30 & 115 & 203 & $-215w^2+42560w+192472$ & new\\
+$(5,5)$ & 10 & $(10,10)$ & 30 & 125 & 131 & $-11w^2+1400w+4928$ & new\\
+$(3,8)$ & 11 & $(16,11)$ & 38 & 185 & 235 & $-158w^2+34860w+518355$ & new\\
+\bottomrule
+\end{tabular}
+\caption{Exact last-gap failures of $H_{a,b;N,M}$ recorded by source~74's verifier (merge table).}\label{mrn:w:tab:shapes}
+\end{table}
+The $(4,4)$ row is Part~XI's 30-vertex counterexample (Theorem~176.1 of \prp, \path{hb:thm:witness}, which uses $w=500$); the $(3,3)$ row is its rank-six witness. The other five rows are asymmetric or larger-core shapes, which bear on Research question~89 of \prp; none has fewer than 30 vertices, and none has matching number below six, as Corollary~\ref{mrn:w:rf:cor:rankfive} requires.
+%% --- end of negative_ranks.tex ---
+%% --- inlined from source 74 file geometric_corollary.tex ---
+\section{An established geometric interpretation}\label{mrn:w:rf:sec:geometry}
+For unit activities, $p_G$ is the \emph{perfectly matchable set polynomial} of Davis--Kohl \cite{b:DK}. It is distinct from the ordinary matching or rook polynomial, which counts matchings with multiplicity. Their Theorem 3.10, restating results of Ohsugi--Tsuchiya, gives the following precise Ehrhart interpretation.
+
+Given bipartite $G=(X,Y;E)$, form $\widehat G$ by adjoining $x_0$ on the left and $y_0$ on the right, with edges from $x_0$ to every old right vertex, from $y_0$ to every old left vertex, and $x_0y_0$. For the edge polytope
+\[
+ Q_{\widehat G}=\operatorname{conv}\{e_x+e_y:xy\in E(\widehat G)\},
+\]
+one has
+\[
+ h^*(Q_{\widehat G};t)=p_G(t)=h^*(\operatorname{STAB}(\overline G);t).
+\]
+The second identity is their Lemma 3.11; $\operatorname{STAB}(\overline G)$ is the stable-set polytope of the complement.
+
+\begin{corollary}
+If $G$ has matching rank $r\le5$, or a minimum vertex cover meeting one shore in at most two vertices, these two $h^*$-polynomials are $\ULC_r$, normalized by their degree $r=\nu(G)$.
+\end{corollary}
+Only the unit-activity interpretation is used here. No assertion is made about arbitrary Ehrhart $h^*$-polynomials or about the $h^*$-polynomial of an unrelated preorder polytope.
+\mnote{At unit activities without the cover or rank hypothesis the conclusion fails: source~71 (Part~II) gives a connected graph with $\nu=3450$ whose two $h^*$-polynomials are not $\ULC_{3450}$.}
+%% --- end of geometric_corollary.tex ---
+ \mnote{Sections~\ref{mrn:w:rf:sec:line}--\ref{mrn:w:rf:sec:verification} were the appendices of source~74; they are printed here as ordinary sections of Part~I.}
+
+\section{A generic-line matroid model for the forced-left sector}\label{mrn:w:rf:sec:line}
+By \eqref{mrn:w:rf:eq:union}, the polynomial in Theorem~\ref{mrn:w:rf:thm:forcedleft} is
+\begin{equation}\label{mrn:w:rf:eq:C}
  C=Qf+a g_2+b g_1+c g_U+h.
 \end{equation}
 Write $f_h=s^qf(t/s)$, $G_i=s^{q-1}g_i(t/s)$, $G_U=s^{q-1}g_U(t/s)$ and $H_h=s^{q-2}h(t/s)$. For $q=1$ the last term is zero. The right-complement transversal matroid of $H+A$ gives a degree-$q$ basis specialization
@@ -133,7 +620,7 @@ Represent this matroid by a generic matrix: use an independent indeterminate for
 with generic coefficients, algebraically independent over the original matrix field. For a basis containing just one $U_j$ from this distinguished set, its determinant is $\alpha_jD_1+\beta_jD_2$ and is nonzero iff at least one of $D_1,D_2$ is nonzero. Thus its remaining-element profile is exactly $G_U$. Any pair of distinct distinguished columns has determinant a nonzero scalar multiple of the determinant using $v_1,v_2$, hence profile $H_h$. Three distinguished columns are dependent. These statements also hold when $v_1,v_2$ are dependent or zero: pair profiles then vanish, and the single profile remains the union.
 
 The resulting matroid basis specialization is therefore
-\begin{align}\label{eq:Fext}
+\begin{align}\label{mrn:w:rf:eq:Fext}
  F_{\rm ext}={}&f_h+z_1G_1+z_2G_2+\left(\sum_jZ_j\right)G_U\notag\\
  &+\left[z_1z_2+(z_1+z_2)\sum_jZ_j+\sum_{i<j}Z_iZ_j\right]H_h.
 \end{align}
@@ -145,9 +632,9 @@ The bracket becomes $s^2/Q$, and
 \[
  QF_{\rm ext}=Qf_h+s(aG_2+bG_1+cG_U)+s^2H_h=s^qC(t/s).
 \]
-This proves the first part of Theorem~\ref{thm:forcedleft}. For $Q=0$, add two singleton right vertices with positive activities tending to zero and use coefficientwise closedness.
+This proves the first part of Theorem~\ref{mrn:w:rf:thm:forcedleft}. For $Q=0$, add two singleton right vertices with positive activities tending to zero and use coefficientwise closedness.
 
-\begin{corollary}[Scaling only the two cover vertices]\label{cor:two-scale}
+\begin{corollary}[Scaling only the two cover vertices]\label{mrn:w:rf:cor:two-scale}
 For a genuine $2+q$ cover with $q\ge1$, scaling only the two $A$ activities by a common sufficiently large factor makes every $\ULC_{q+2}$ gap strictly positive.
 \end{corollary}
 \begin{proof}
@@ -165,12 +652,1397 @@ at powers $w^2,w^4$. For $k=i+2$, $1\le i<q$, the leading coefficient at $w^4$ i
 \[
  \frac{2(q-i+1)}{i}(\alpha\beta)^2C_{i-1}C_{i+1}>0,
 \]
-by substituting the $\ULC_q$ inequality for $C_i^2$ into \eqref{eq:gap}. Positive leading coefficients prove the claim.
+by substituting the $\ULC_q$ inequality for $C_i^2$ into \eqref{mrn:w:rf:eq:gap}. Positive leading coefficients prove the claim.
 \end{proof}
 
-\input{forced_core.tex}
-\input{star_transfer.tex}
-\input{first_gap.tex}
-\input{scaling_threshold.tex}
-\input{verification_scope.tex}
+%% --- inlined from source 74 file forced_core.tex ---
+\section{The sharp all-core inequality at rank five}\label{mrn:w:rf:sec:forcedcore}
+The full lift gives a short general boundary theorem before the independent rank-five certificate below.
+\begin{theorem}[Sharp all-core constant for a two-vertex shore]\label{mrn:w:rf:thm:generalcore}
+For a $2+q$ cover with $q\ge2$, factor the product of all core activities from the all-core sector and write it as $t^q(c_0+c_1t+c_2t^2)$. Then
+\[
+ c_1^2\ge\frac{2q}{q-1}c_0c_2,
+\]
+and the constant is optimal for every $q$.
+\end{theorem}
+\begin{proof}
+In the lifted matroid basis polynomial, set all private $B$ variables to zero and differentiate once in each augmented core variable $X,Y$. These operations preserve the Lorentzian property, giving a degree-$q$ polynomial. Under the remaining specializations its three plane-count sectors give, up to the fixed positive scaling factor,
+\[
+ c_0s^2t^{q-2}+c_1st^{q-1}+c_2t^q.
+\]
+The bivariate $\ULC_q$ inequality at index $q-1$ is the desired bound. Zero activities and $Q=0$ follow by continuity as before.
+
+For the complete $2\times q$ core with $N\ge q$ unit common-left vertices and $M\ge2$ unit common-right vertices,
+\[
+ c_0=\binom N{q-2},\qquad c_1=M\binom N{q-1},\qquad
+ c_2=\binom M2\binom Nq.
+\]
+Their ratio is
+\[
+ \frac{c_1^2}{c_0c_2}
+ =\frac{2q}{q-1}\frac{M}{M-1}\frac{N-q+2}{N-q+1}
+ \longrightarrow\frac{2q}{q-1}.
+\]
+\end{proof}
+
+The following argument independently proves the $q=3$ case using only a finite quartic coefficient test and explicit sums of squares. It does not rely on the full lift.
+
+Now fix a $2+3$ cover. Strip off the product of the five core activities from the sector in which all five core vertices are selected. Its polynomial is
+\[
+ t^3(c_0+c_1t+c_2t^2).
+\]
+\begin{theorem}[Sharp constant three]\label{mrn:w:rf:thm:three}
+For arbitrary nonnegative exterior activities and every $2+3$ core,
+\[
+ c_1^2\ge3c_0c_2.
+\]
+The constant $3$ cannot be increased uniformly.
+\end{theorem}
+
+Let $T$ be the weight of exterior-left triples matching all of $B$. Let $C$ be the weight of single exterior-left vertices which, together with the two core rows, match $B$. Let $P_i$ be the weight of exterior-left pairs completable with core row $S_i$, and let $P_U$ use the union row. Set
+\[
+ O=P_1+P_2-P_U.
+\]
+The union interpretation gives $0\le O\le\min(P_1,P_2)$. The central left-side inequality is
+\begin{equation}\label{mrn:w:rf:eq:leftkey}
+ 4P_1P_2-2O^2\ge3CT.
+\end{equation}
+
+\subsection{A finite exact coefficient certificate}
+Encode a nonempty neighborhood in $B$ by its bit mask $1,\ldots,7$. For three nonempty masks, let $M(r,s,t)$ be one exactly when they admit a matching to all three columns. Hall's condition gives the elementary rule: their bitwise union is $7$, and no singleton mask $1,2,4$ appears twice. For general tuples including an empty mask, use ordinary Boolean matchability.
+
+Index left exterior vertices by $i$, with masks $t_i$ and weights $z_i$. Put
+\begin{align*}
+ c_i&=M(S_1,S_2,t_i),&p_{ij}&=M(S_1,t_i,t_j),&q_{ij}&=M(S_2,t_i,t_j),\\
+ o_{ij}&=p_{ij}q_{ij},&\tau_{ijk}&=M(t_i,t_j,t_k).
+\end{align*}
+Then $C=\sum c_iz_i$, $P_1=\sum_{i<j}p_{ij}z_iz_j$, and similarly for $P_2,O,T$. In the quartic
+\[
+ I=4P_1P_2-2O^2-3CT
+\]
+every exponent is at most two. Its coefficient of $z_i^2z_j^2$ is $2o_{ij}\ge0$. Its coefficient of $z_i^2z_jz_k$ for distinct indices is
+\begin{equation}\label{mrn:w:rf:eq:repeatcoef}
+ 4(p_{ij}q_{ik}+p_{ik}q_{ij})-4o_{ij}o_{ik}-3c_i\tau_{ijk}.
+\end{equation}
+Its coefficient of $z_1z_2z_3z_4$ is
+\begin{equation}\label{mrn:w:rf:eq:squarefreecoef}
+ 4\sum_{ij\mid kl}(p_{ij}q_{kl}+p_{kl}q_{ij})
+ -4\sum_{ij\mid kl}o_{ij}o_{kl}
+ -3\sum_i c_i\tau_{[4]\setminus\{i\}},
+\end{equation}
+where each of the three unordered pair partitions is used once.
+
+If the core has matching rank at most one, $C=0$ and \eqref{mrn:w:rf:eq:leftkey} follows from $O^2\le P_1P_2$. Otherwise row exchange and column permutation give exactly the eight representatives in Table~\ref{mrn:w:rf:tab:coeff}. The table records the complete range of possible coefficients in \eqref{mrn:w:rf:eq:repeatcoef} and \eqref{mrn:w:rf:eq:squarefreecoef}. It is obtained by the stated three-row Boolean rule, over $7^3=343$ ordered triples and $\binom{10}{4}=210$ neighborhood multisets per core. The included exact verifier implements an independent permutation matcher and checks all $4424$ substitutions, as well as all $46$ labeled matching-rank-two cores.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccc}
+\toprule
+Core masks & Repeated-exponent coefficients & Squarefree coefficients\\
+\midrule
+$(1,2)$ & $0,1,4$ & $0,2,3$\\
+$(1,3)$ & $0,1,4$ & $0,2,3,6,8,12$\\
+$(1,6)$ & $0,1,4$ & $-4,0,2,3$\\
+$(1,7)$ & $0,1,4$ & $-4,0,2,3,8,12$\\
+$(3,3)$ & $0,1,4$ & $0,2,3,6,8,12$\\
+$(3,5)$ & $0,1,4$ & $0,2,3,8,12$\\
+$(3,7)$ & $0,1,4$ & $0,2,3,8,12$\\
+$(7,7)$ & $0,1,4$ & $0,2,3,8,12$\\
+\bottomrule
+\end{tabular}
+\caption{The complete finite coefficient test. In each exceptional row the only four negative neighborhood multisets are listed in \eqref{mrn:w:rf:eq:bad}.}\label{mrn:w:rf:tab:coeff}
+\end{table}
+
+Only cores $(1,6)$ and $(1,7)$ have negative coefficients. In both cases the negative neighborhood multisets are exactly
+\begin{equation}\label{mrn:w:rf:eq:bad}
+ (2,3,4,5),\quad(2,3,5,5),\quad(3,3,4,5),\quad(3,3,5,5),
+\end{equation}
+and each coefficient is $-4$. Thus every term involving another neighborhood class is nonnegative. It remains to treat the four classes $2,3,4,5$ in these two cores.
+
+\subsection{The four-class sum-of-squares certificate}
+For core $(1,6)$ let $a,b,c,d$ now denote the activity sums in classes $2,3,4,5$, and let $B_2,D_2$ be the second elementary moments of classes $3,5$. Put $u=a+b$, $v=c+d$. Exact support counting yields
+\begin{align*}
+ C&=u+v,& P_1&=uv,\\
+ P_2&=(a+c)(b+d)+bd+B_2+D_2,& O&=ad+bc+bd,\\
+ T&=v(ab+B_2)+u(cd+D_2).
+\end{align*}
+Since $0\le B_2\le b^2/2$ and $0\le D_2\le d^2/2$, and $I$ is affine in both moments, it suffices to check the four rectangle corners. Write $I_{00},I_{01},I_{10},I_{11}$ for the lower/lower, lower/upper, upper/lower and upper/upper choices. The following exact identities have only nonnegative summands:
+\begin{align*}
+ I_{00}={}&2(ad-bc)^2+uv(ab+cd)+(ac+bd)(ad+bc)+2b^2d^2,\\
+ I_{01}={}&\tfrac12d^2(a-b)^2+\tfrac12ad(b-d)^2
+          +ac(b-d)^2+bc(a-d)^2+R_{01},\\
+ R_{01}={}&a^2(bd+cd)
+ +a\left(\tfrac12b^2d+bc^2+c^2d+\tfrac12cd^2\right)\\
+ &+b^2(2c^2+cd)+b\left(c^2d+\tfrac12cd^2+\tfrac12d^3\right),\\
+ I_{11}={}&\tfrac12bd(u-v)^2+\tfrac12(ad+bc+3ac)(b-d)^2\\
+ &+(b+d)\left(ac(a+c)+\tfrac12(a^2d+bc^2)\right).
+\end{align*}
+The expression for $I_{10}$ is obtained from $I_{01}$ by interchanging $(a,b)$ with $(c,d)$. For core $(1,7)$, the restricted $P_2,O$ both increase by $ac$ while $C,T,P_1$ are unchanged. Since $P_1-O=ac$, its quartic is exactly the preceding $I+2a^2c^2$. This proves \eqref{mrn:w:rf:eq:leftkey} in every case. The included symbolic checker verifies all five identities exactly.
+
+\subsection{Passing to the right exterior and proving sharpness}
+Return to the right-side notation $a,b,c,d$ of Section~\ref{mrn:w:rf:sec:tworow} \mnote{source~74 writes ``Section 3''}. Selecting all core vertices gives
+\[
+ c_0=C,\qquad c_1=aP_2+bP_1+cP_U,\qquad c_2=TQ.
+\]
+Let $A=a+c$, $B=b+c$, $p=P_1$, $q=P_2$. Then
+\[
+ c_1=qA+pB-Oc,\qquad Q\le AB-c^2/2.
+\]
+For $pq>0$, the exact quadratic identity
+\begin{align*}
+ &(qA+pB-Oc)^2-(4pq-2O^2)(AB-c^2/2)\\
+ &\quad=\left(1-\frac{O^2}{2pq}\right)(qA-pB)^2
+ +\frac{[O(qA+pB)-2pqc]^2}{2pq}\ge0
+\end{align*}
+uses only $O^2\le pq$. Together with \eqref{mrn:w:rf:eq:leftkey} it implies $c_1^2\ge3CTQ=3c_0c_2$. If $pq=0$, the same assertion follows by continuity, or directly from $O=0$ and $CT=0$.
+
+For sharpness, take the complete $2\times3$ core, $N$ common left-exterior vertices and $M$ common right-exterior vertices, all with unit exterior activities. Then
+\[
+ c_0=N,\quad c_1=\binom N2M,\quad c_2=\binom N3\binom M2,
+ \qquad
+ \frac{c_1^2}{c_0c_2}=3\frac{N-1}{N-2}\frac{M}{M-1}\longrightarrow3.
+\]
+This completes Theorem~\ref{mrn:w:rf:thm:three}.
+%% --- end of forced_core.tex ---
+%% --- inlined from source 74 file star_transfer.tex ---
+\section{Lorentzian transfer across a star core}\label{mrn:w:rf:sec:stars}
+\begin{theorem}[Star-core transfer]\label{mrn:w:rf:thm:stars}
+For a displayed $2+q$ cover with matching-rank-at-most-one core, both root orientations admit direct Lorentzian transfer proofs of $\ULC_{q+2}$.
+\end{theorem}
+This is now a special case of Theorem~\ref{mrn:w:rf:thm:main}. We retain the independent proofs because the transfer operators and their interlacing certificates are useful beyond the full-lift construction.
+\subsection{A support-exact vertex-sum identity}
+Suppose $G_1,G_2$ intersect in just one vertex $v$ of activity $u$, and write
+\[
+ p_1=A(t)+utB(t),\qquad p_2=C(t)+utD(t).
+\]
+Then
+\begin{equation}\label{mrn:w:rf:eq:vertices}
+ p_{G_1\cup G_2}=AC+ut(BC+AD).
+\end{equation}
+If $v$ is absent, each component has balanced selected shores. If $v$ is selected, exactly one component uses it, and that component is determined by its selected-vertex imbalance away from $v$: its opposite shore has one extra selected vertex. Thus the two root-using terms cannot count the same endpoint support, even if that support has several perfect matchings.
+
+\subsection{Stars centered on the two-vertex shore}
+Suppose every core edge is incident with $v=A_1$. Let $G_1$ have shores $L\cup\{v\}$ and $B$, and let $G_2$ have shores $\{v,A_2\}$ and $R$. Their intersection is just $v$. The right-complement basis construction for $G_1$ gives a Lorentzian polynomial
+\[
+ F(s,t,z)=A_h(s,t)+zB_h(s,t),
+ \quad A_h=s^qA(t/s),\quad B_h=s^{q-1}B(t/s).
+\]
+Here $z$ is the root element variable; setting $z=ut$ gives the degree-$q$ homogenization of $p_1$.
+
+For $G_2$, write $C=1+dt$, $D=e+ft$. If $A_2$ has activity $y$, and the exterior class sums are $a,b,c$ with common second moment $\delta$, then
+\[
+ d=y(b+c),\quad e=a+c,\quad f=y(ab+ac+bc+\delta),
+ \qquad de-f=y(c^2-\delta)\ge0.
+\]
+The homogeneous quadratic
+\[
+ K(s,t,z)=s^2+dst+esz+ftz
+\]
+is Lorentzian. Its Hessian is
+\[
+ \begin{pmatrix}2&d&e\\d&0&f\\e&f&0\end{pmatrix},
+ \qquad \det=2f(de-f)\ge0.
+\]
+For $f>0$, its $t,z$ principal submatrix has one positive and one negative eigenvalue; the determinant and eigenvalue interlacing exclude two positive eigenvalues of the full Hessian. For $f=0$, $K=s(s+dt+ez)$ is a product of nonnegative linear forms.
+
+The product $FK$ is Lorentzian. Retain only its terms of degree at most one in $z$, then set $z=ut$. The output is
+\[
+ A_h(s^2+dst)+ut\big[B_h(s^2+dst)+A_h(es+ft)\big],
+\]
+which is the degree-$(q+2)$ homogenization of \eqref{mrn:w:rf:eq:vertices}. Partial truncation preserves Lorentzian polynomials: polarize $s,t$, take the full multiaffine part (only powers $z^2$ are then removed), and identify the polarized variables again. Thus the output is Lorentzian and $p_G$ is $\ULC_{q+2}$.
+
+\subsection{Stars centered on the opposite shore}
+Suppose every core edge is incident with $v=B_1$. Let $G_1=G[L,B]$ and let $G_2$ have shores $A$ and $R\cup\{v\}$. For $G_1$, the private-root variable now gives
+\[
+ F(s,t,z)=zA_h+tB_h,
+ \qquad A_h=s^{q-1}A(t/s),\quad B_h=s^{q-1}B(t/s).
+\]
+The other private variables are $s/v_b$, the left variables are $tu_l$, and the basis polynomial is multiplied by $\prod_{b\ne v}v_b$. Hence $F$ is Lorentzian and $uF(s,t,s/u)=s^qp_1(t/s)$.
+
+For $G_2$ put $C_h=s^2+c_1st+c_2t^2$ and $D_h=es+ft$. Give its two left vertices fixed activities $\alpha,\beta$; these are constants, distinct from the private-root indeterminate $z$. With exterior class sums $a,b,c$ and second moment $\delta$,
+\[
+ c_1=\alpha(a+c)+\beta(b+c),\qquad c_2=\alpha\beta(ab+ac+bc+\delta),
+\]
+so
+\[
+ c_1^2-4c_2=[\alpha(a+c)-\beta(b+c)]^2+4\alpha\beta(c^2-\delta)\ge0.
+\]
+The rooted interlacing inequality is
+\begin{equation}\label{mrn:w:rf:eq:rootinterlace}
+ c_1ef-f^2-c_2e^2\ge0.
+\end{equation}
+If $v$ is adjacent only to the first left vertex, $e=\alpha$, $f=\alpha\beta(b+c)$ and the expression is $\alpha^3\beta(c^2-\delta)$. The other singleton case gives $\alpha\beta^3(c^2-\delta)$. If $v$ is adjacent to both, $e=\alpha+\beta$, $f=\alpha\beta(a+b+c)$ and it is exactly
+\[
+ \alpha\beta\left[
+ \left(a\alpha-b\beta+\tfrac c2(\alpha-\beta)\right)^2
+ +\left(\tfrac{3c^2}{4}-\delta\right)(\alpha+\beta)^2\right]\ge0.
+\]
+An isolated root has $e=f=0$.
+
+Factor $C_h=(s+\lambda_1t)(s+\lambda_2t)$, with $0\le\lambda_1\le\lambda_2$. If $e>0$, \eqref{mrn:w:rf:eq:rootinterlace} gives $\lambda_1\le f/e\le\lambda_2$. Therefore
+\[
+ h(s,t)=\frac{stD_h}{C_h}
+\]
+is a nonnegative linear combination of $st/(s+\lambda_i t)$ with positive total coefficient. Each such fraction maps $\HH^2$ into $\HH$, since its reciprocal is $1/t+\lambda_i/s$, of strictly negative imaginary part. Repeated $\lambda_i$ give the same conclusion directly.
+
+Consider the homogeneous degree-two operator
+\[
+ \mathcal T(P)=C_hP+stD_h\partial_zP.
+\]
+It preserves real stability. At upper-half-plane values, a stable nonzero $P$ has $\operatorname{Im}(\partial_zP/P)\le0$, by its univariate factorization in $z$. A zero of $\mathcal T(P)$ with $D_h\ne0$ would require this quotient to equal $-1/h$, which has strictly positive imaginary part. If $D_h=0$, stable multiplication suffices.
+
+The operator also preserves nonnegative coefficients. Restrict it to any finite coordinatewise degree box containing $F$; its output lies in a larger degree box. Br\"and\'en--Huh's Theorem 3.4 applies, so $\mathcal T(F)$ is Lorentzian. Finally
+\[
+ u\mathcal T(F)|_{z=s/u}=sA_hC_h+utB_hC_h+ustA_hD_h
+\]
+is precisely the degree-$(q+2)$ homogenization of \eqref{mrn:w:rf:eq:vertices}. This proves the column-star case.
+
+Every nonempty bipartite graph of matching rank one has all its edges incident with a common vertex. The two orientations therefore exhaust such cores. An empty core gives a product of $\ULC_q$ and $\ULC_2$ polynomials, which is $\ULC_{q+2}$ by Lorentzian product closure. Theorem~\ref{mrn:w:rf:thm:stars} follows.
+%% --- end of star_transfer.tex ---
+%% --- inlined from source 74 file first_gap.tex ---
+\section{Exact equality in the first Newton gap}\label{mrn:w:rf:sec:firstgap}
+\mnote{The theorem of this section is \prp's Theorem~180.2 with Corollary~180.3 (Part~XI, \path{hb:thm:firstidentity} and \path{hb:cor:equality}), proved there by an exact defect identity over a minimum vertex cover; the inequality is also Part~XII's Theorem~190.2 (\path{mr:thm:first}), proved there by the same Motzkin--Straus route, and its unweighted equality case is Part~XII's Theorem~190.3. Source~74's proof is printed as a second route; no novelty is claimed. Source~72 proves the same statement by the same route (Theorem~\ref{mrn:w:se:thm:first}).}
+The following gives a useful structural interpretation of non-strictness. Its ingredient is the classical Motzkin--Straus bound \cite{b:MS}; we include the short argument in the form needed here.
+
+\begin{theorem}
+For a positive weighted bipartite graph of matching rank $r\ge2$,
+\[
+ (r-1)a_1^2-2ra_2=0
+\]
+if and only if every nontrivial connected component is a star and their weighted edge totals are all equal. In that case $p_G(t)=(1+Et)^r$ for their common edge total $E$; otherwise the first gap is strict.
+\end{theorem}
+\begin{proof}
+Form the compatibility graph $K$ whose vertices are the edges of $G$, with two vertices adjacent when the corresponding edges are disjoint. Give an edge $xy$ weight $w_{xy}=u_xv_y$. Put $S=\sum w_e=a_1$ and
+\[
+ m_2=\sum_{\{e,f\}\in E(K)}w_ew_f.
+\]
+The clique number of $K$ is $r$, and $m_2\ge a_2$ because $m_2$ counts two-edge matchings rather than endpoint supports.
+
+For completeness, the Motzkin--Straus bound is
+\[
+ m_2\le\frac{r-1}{2r}S^2.
+\]
+To see it, merge the weights of two nonadjacent vertices onto whichever has the larger weighted neighbor sum. This preserves $S$ and does not decrease $m_2$. Continue until the positive support is a clique of size at most $r$, where the bound follows from Cauchy--Schwarz.
+
+Equality in the asserted first gap forces equality in both preceding bounds. Since the original compatibility weights are all positive, they give an interior maximum of $m_2$ on the simplex of fixed sum. If $K$ were not complete multipartite, it would contain an induced edge $ik$ and a vertex $j$ nonadjacent to both. The sum-preserving direction $e_i-2e_j+e_k$ has strictly positive second derivative for $m_2$, contradicting a local maximum. Hence $K$ is complete multipartite. Its complement, the line graph of $G$, is a disjoint union of cliques. In a bipartite graph a nontrivial connected component whose edges are pairwise intersecting is a star. There are exactly $r$ such components. The compatibility bound is then equality precisely when the total weights in the $r$ parts are equal. Conversely, for stars support and matching counts coincide and the polynomial is the stated product.
+\end{proof}
+%% --- end of first_gap.tex ---
+%% --- inlined from source 74 file scaling_threshold.tex ---
+\section{Quantitative eventual strictness under common cover scaling}\label{mrn:w:rf:sec:scaling}
+Fix a genuine $2+3$ cover whose core has matching rank two. Write every cover activity as $w$ times its fixed positive relative activity. Let $e_1,e_2$ be the first two support coefficients of the induced core at those relative activities, and let $\zeta$ be the product of all five relative activities. For the all-core coefficients of Theorem~\ref{mrn:w:rf:thm:three}, set $\gamma_i=\zeta c_i$.
+
+Every size-five matching uses exactly one cover vertex per edge; a core edge would consume two cover vertices and preclude five edges. Thus the exterior-left graph matches all three $B$ vertices and the exterior-right graph matches both $A$ vertices, giving $c_2>0$. A core two-edge matching leaves one $B$ vertex unmatched; that vertex has an exterior-left neighbor, so adding it gives $c_0>0$. Also $e_1,e_2>0$ and $e_1^2\ge4e_2$ by Lemma~\ref{mrn:w:rf:lem:small} for the core.
+
+Counting selected cover vertices gives
+\begin{align*}
+ a_0&=1,&a_1&=e_1w^2+O(w),&a_2&=e_2w^4+O(w^3),\\
+ a_3&=\gamma_0w^5+O(w^4),&a_4&=\gamma_1w^5+O(w^4),&a_5&=\gamma_2w^5.
+\end{align*}
+Consequently the leading gap limits are
+\begin{align*}
+ \Delta_1^{(5)}/w^4&\longrightarrow4e_1^2-10e_2\ge6e_2>0,\\
+ \Delta_2^{(5)}/w^8&\longrightarrow6e_2^2>0,\\
+ \Delta_3^{(5)}/w^{10}&\longrightarrow6\gamma_0^2>0,\\
+ \Delta_4^{(5)}/w^{10}&\longrightarrow4\gamma_1^2-10\gamma_0\gamma_2
+ \ge2\gamma_0\gamma_2>0.
+\end{align*}
+The last inequality uses the sharp constant three from Theorem~\ref{mrn:w:rf:thm:three}. All four gaps are therefore strictly positive eventually. This is stronger than the already proved non-strict $\ULC_5$ property at every $w>0$.
+
+For either this scaling or Corollary~\ref{mrn:w:rf:cor:two-scale}, write each gap as
+\[
+ \Delta_k(w)=L_kw^{d_k}+\sum_{j<d_k}b_{kj}w^j,\qquad L_k>0.
+\]
+A directly computable sufficient threshold is
+\begin{equation}\label{mrn:w:rf:eq:positivethreshold}
+ W=1+\max_k\frac{\sum_{j<d_k}\max(-b_{kj},0)}{L_k}.
+\end{equation}
+For $w\ge W$, every negative lower term is bounded in magnitude by its coefficient times $w^{d_k-1}$, so every gap is positive. This threshold depends on the graph and its fixed field; no uniform bound is asserted.
+
+For a rank-five minimum cover of split $0+5$ or $1+4$, Lemma~\ref{mrn:w:rf:lem:singleton} already gives $\ULC_5$ at every scale. For a $2+3$ cover, Theorem~\ref{mrn:w:rf:thm:main} does likewise; the calculation above adds strictness when its core has matching rank two. Thus all choices of minimum cover are covered, with the relative activities fixed before scaling.
+%% --- end of scaling_threshold.tex ---
+%% --- inlined from source 74 file verification_scope.tex ---
+\section{Exact verification and scope of the conclusions}\label{mrn:w:rf:sec:verification}
+The proofs above are universal arguments. Their exact checks are independently implementable and do not use numerical root searches or numerical optimization as evidence for a theorem.
+\begin{itemize}
+\item The full transversal lift is checked by Boolean basis enumeration on $180$ weighted graphs with $q=0,1,2,3,4,5$. It tests $140450$ candidate basis subsets and compares the complete left-subset marginal, before diagonalizing the left variables.
+\item An independent finite-field representation check covers all $64$ labeled $2\times3$ cores and $73441$ basis determinants, comparing the full weighted support polynomial exactly. A separate generic-line check covers $192$ graphs and $23553$ determinants, including $54$ rank-deficient cores.
+\item The union formula is checked on $1352$ weighted graphs with $q=1,2,3,4$, including overlapping, nested and empty core neighborhoods.
+\item The rank-five quartic certificate checks all $4424$ stated coefficient cases, all $46$ labeled rank-two cores, the four moment-corner identities, the exceptional correction, and the right-side quadratic identity.
+\item The star-core and scaling checks cover $820$ weighted star-core graphs for $q=1,\ldots,5$ and $230$ rank-five common-scaling instances. All displayed interlacing sums of squares, grading identities and computed strictness thresholds are verified exactly.
+\item The negative-family verifier checks complete endpoint support counts for seven core shapes and the universal exterior population choice for all $3\le a,b\le20$. The rank-six witness and its exact negative gap are included.
+\end{itemize}
+The package contains the Python sources, fixed seeds and JSON outputs. Only SymPy is needed beyond the Python standard library. Run \texttt{python3 checks/run\_all.py}; the JSON outputs are regenerated in \texttt{data/}. The LaTeX sources compile with ordinary pdfLaTeX; \texttt{build\_local.sh} also handles the local TeX configuration used to generate this PDF.
+\mnote{In this report the scripts are shipped as \path{code/74-weighted-rank-five-*.py} and the outputs as \path{data/74-weighted-rank-five-*.json}; the delivered layout (\texttt{checks/}) is not kept, so rerun on a copy of the delivered layout as the README explains. \texttt{build\_local.sh} is not shipped, and the eight section files are inlined into this report's \texttt{article.tex}.}
+
+R\"ohrle--Ulirsch's bimatroid theorem \cite{b:RU} normalizes by the smaller ambient shore size. The new lift replaces that order by $q+2$, and hence by matching rank when the cover is minimum. The polynomial is the perfectly matchable set polynomial of \cite{b:DK}, not a matching count with multiplicities. A bounded primary-literature comparison located no prior universal $2+q$-cover or weighted rank-five theorem; global priority remains unclaimed.
+
+Higher-rank unrestricted unit-weight and one-shore-only questions are outside this report.
+\mnote{Both are answered negatively by later sources of this batch (sources~71 and~73, Part~II).} The proof uses Lorentzian matroid bases; it does not assume that transversal matroids have the half-plane property. The cover obstruction in Corollary~\ref{mrn:w:rf:cor:coverobstruction} is sharp.
+
+
+%% --- end of verification_scope.tex ---
+
+%% ======================== source 72 ========================
+\section{Strictness and equality for weighted matching-support polynomials (source~72)}\label{mrn:src:72}
+\paragraph{Abstract of source~72, as delivered.} For positively weighted bipartite graphs having a minimum vertex cover that meets one shore in at most two vertices, we characterize equality in every rank-normalized ultra-log-concavity inequality. Equality at any one index occurs precisely when all nontrivial connected components are stars with equal total edge activities. In that case the polynomial is $(1+Et)^r$; otherwise every inequality is strict. In particular, this characterizes equality for every bipartite graph of matching rank at most five and gives strictness for connected graphs in that range with rank at least two. The proof combines the recently obtained rank-compression lift with a direct weighted version of the Chan--Pak contraction criterion and explicit rank-two contraction witnesses. We also give a short Motzkin--Straus proof of the same equality characterization for the first inequality at every rank, without a cover restriction.
+
+\subsection{Definitions and conclusions}
+Let $G=(X,Y;E)$ be a finite simple bipartite graph, with positive vertex activities $u_x,v_y$. Its matching-support polynomial is
+\[
+ p_G(t)=\sum_{k=0}^{r}a_kt^k,\qquad
+ a_k=\sum_{\substack{I\subseteq X,\ J\subseteq Y\\|I|=|J|=k\\G[I,J]\text{ perfectly matchable}}}u_Iv_J,
+ \qquad r=\nu(G).
+\]
+An endpoint support is counted once, regardless of how many perfect matchings it has. Positive activities and a matching of size $r$ imply $a_k>0$ for every $0\le k\le r$. The order-$r$ normalized gap is
+\begin{equation}\label{mrn:w:se:eq:gap}
+ \Delta_k=k(r-k)a_k^2-(k+1)(r-k+1)a_{k-1}a_{k+1},
+ \quad 1\le k\le r-1.
+\end{equation}
+The condition $\Delta_k\ge0$ for all $k$ is $\ULC_r$. A star includes a single edge; isolated vertices are disregarded. The \emph{edge total} of a star is the sum of $u_xv_y$ over its edges, equivalently its center activity times the sum of its leaf activities.
+
+\begin{theorem}[Equality classification]\label{mrn:w:se:thm:main}
+Suppose $r\ge2$ and $G$ has a minimum vertex cover meeting one shore in at most two vertices. The following are equivalent:
+\begin{enumerate}
+\item $\Delta_k=0$ for at least one $k\in\{1,\ldots,r-1\}$;
+\item every nontrivial component of $G$ is a star and all its edge totals are equal to one common $E>0$;
+\item $p_G(t)=(1+Et)^r$ for some $E>0$.
+\end{enumerate}
+If these conditions fail, then $\Delta_k>0$ for every $1\le k\le r-1$.
+\end{theorem}
+
+\begin{corollary}\label{mrn:w:se:cor:smallrank}
+Theorem~\ref{mrn:w:se:thm:main} applies to every bipartite graph with $2\le r\le5$. Every connected graph in that range with rank at least two is strictly $\ULC_r$, for every positive activity assignment.
+\end{corollary}
+Indeed a minimum cover has size $r$ by K\H{o}nig's theorem, so its smaller shore contribution is at most two when $r\le5$.
+
+This is a companion to the rank-compression theorem \cite{b:m74}, which proves $\ULC_r$ under the cover hypothesis. \mnote{\cite{b:m74} is source~74: Theorem~\ref{mrn:w:rf:thm:main} and Corollary~\ref{mrn:w:rf:cor:rankfive}.} The lift is recalled precisely below. The unweighted matroid equality characterization is due to Chan--Pak \cite[Theorem 1.3]{b:CP}. Their Theorem 1.11 shows that single-index equality need not imply total equality in general matroids; our conclusion uses the special graph lift. We prove the needed real-weight version directly, rather than infer strictness by a limit from rational weights. The arguments are ordinary mathematical proofs, not externally refereed or proof-assistant formalized. No exhaustive publication-priority claim is made.
+
+\subsection{A weighted matroid equality criterion}
+Let $M$ be a rank-$r$ matroid on a ground set $E=\RR\sqcup\BB$, with positive element weights $\omega_e$. Define
+\[
+ P_j=\binom rj^{-1}
+ \sum_{\substack{S\text{ basis of }M\\|S\cap\RR|=j}}\prod_{e\in S}\omega_e.
+\]
+Loops are allowed. Parallel classes below refer only to nonloops.
+
+\begin{theorem}[Weighted contraction criterion]\label{mrn:w:se:thm:weighted}
+Let $1\le a\le r-1$ and $P_a>0$. Then $P_a^2=P_{a-1}P_{a+1}$ if and only if there is a common $\lambda>0$ such that, for every independent $I$ with
+\[
+ |I|=r-2,\qquad |I\cap\RR|=a-1,
+\]
+every nonloop parallel class $J$ of $M/I$ satisfies
+\begin{equation}\label{mrn:w:se:eq:parallel}
+ \sum_{e\in J\cap\RR}\omega_e
+ =\lambda\sum_{e\in J\cap\BB}\omega_e.
+\end{equation}
+In particular, one such contraction with a monochromatic nonloop parallel class proves strictness at index $a$.
+\end{theorem}
+
+We use two established Lorentzian facts from Br\"and\'en--Huh \cite{b:BH}: a matroid basis polynomial is Lorentzian (Theorem 3.10), and every nonnegative directional derivative preserves the class (Corollary 2.11). A quadratic Lorentzian polynomial has a Hessian with at most one positive eigenvalue.
+
+\begin{lemma}[Kernel form of equality]\label{mrn:w:se:lem:kernel}
+If a real symmetric matrix $H$ has at most one positive eigenvalue and $y^THy>0$, then its quadratic form is negative semidefinite on $\{z:z^THy=0\}$. If also $z^THz=0$, then $Hz=0$.
+\end{lemma}
+\begin{proof}
+Otherwise the span of $y$ and a positive vector in its $H$-orthogonal complement would have two positive directions. On that complement, zero quadratic value for a negative semidefinite form implies orthogonality to the whole complement. Together with orthogonality to $y$, it implies $Hz=0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{mrn:w:se:thm:weighted}: necessity]
+Let $F$ be the unweighted basis generating polynomial. Let $f_e=\omega_e$ on $\RR$ and zero on $\BB$, and let $g_e=\omega_e$ on $\BB$ and zero on $\RR$. Write $D_f,D_g$ for directional differentiation. The matrix
+\begin{equation}\label{mrn:w:se:eq:C}
+ C=\Hess\big(D_f^{a-1}D_g^{r-a-1}F\big)
+\end{equation}
+has at most one positive eigenvalue. Direct differentiation gives
+\begin{equation}\label{mrn:w:se:eq:bilinear}
+ f^TCf=r!P_{a+1},\qquad f^TCg=r!P_a,\qquad g^TCg=r!P_{a-1}.
+\end{equation}
+At equality both neighbors are positive. Set
+\[
+ \lambda=P_a/P_{a-1}=P_{a+1}/P_a,\qquad z=f-\lambda g.
+\]
+Then $z^TCg=z^TCz=0$, so Lemma~\ref{mrn:w:se:lem:kernel} gives $Cz=0$.
+
+Suppose first $r\ge3$ and $a\ge2$. For each red nonloop $i$, put
+\begin{equation}\label{mrn:w:se:eq:Mi}
+ M_i=\Hess\big(D_f^{a-2}D_g^{r-a-1}\partial_i F\big).
+\end{equation}
+The exponents are nonnegative, and the differentiated polynomial has degree two. Commuting derivatives yields
+\begin{equation}\label{mrn:w:se:eq:inherit}
+ C=\sum_{i\in\RR}\omega_i M_i,\qquad
+ (Cz)_i=z^TM_i f.
+\end{equation}
+Loop terms are zero.
+
+Every mixed value $f^TM_i g$ is strictly positive. Here is the required combinatorial verification. Equality supplies bases with red counts $a-1$ and $a+1$. Insert the nonloop $i$ into each by one basis exchange, or keep it if already present. The resulting bases containing $i$ have red counts at most $a$ and at least $a+1$, respectively. Bases of $M/i$ are connected by exchanges, and each exchange changes the red count by at most one. Consequently $M/i$ has a basis with exactly $a-1$ red elements. Its positive weight contributes to $f^TM_i g$.
+
+Equations~\eqref{mrn:w:se:eq:inherit} and $Cz=0$ now give
+\[
+ f^TM_i f=\lambda g^TM_i f>0.
+\]
+Each $M_i$ has at most one positive eigenvalue, so Lemma~\ref{mrn:w:se:lem:kernel} implies $z^TM_i z\le0$. Their positive-weighted sum is $z^TCz=0$; hence every term is zero. The same lemma gives $M_i z=0$. By \eqref{mrn:w:se:eq:bilinear} applied to $M/i$, equality propagates to index $a-1$ of that contraction with the same ratio $\lambda$.
+
+Contract red elements until the index is one. Then reverse colors and contract blue elements until rank two. Color reversal replaces $\lambda$ by $1/\lambda$, and reversing back restores $\lambda$. This covers $a=1$ by starting with blue contractions and $a=r-1$ by red contractions alone. Any independent $I$ of the specified color counts can be ordered with red elements first and blue elements second; all prefixes remain independent, so each element contracted is a nonloop. The result therefore applies to every required $M/I$.
+
+At rank two the Hessian has entry one on independent pairs and zero elsewhere. Its kernel equation for $z$ says that the sum of $z$ over the nonloops outside each parallel class is zero. Summing over the at least two classes makes the total over nonloops zero, and hence every class sum is zero. Loops have zero rows and impose no condition. This is precisely \eqref{mrn:w:se:eq:parallel}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{mrn:w:se:thm:weighted}: sufficiency]
+For each specified independent $I$, let $H_I$ be the Hessian of the basis polynomial of $M/I$. Condition~\eqref{mrn:w:se:eq:parallel} means $H_I z=0$. Expansion of the directional derivatives gives
+\[
+ C=(a-1)!(r-a-1)!\sum_I\omega_I H_I.
+\]
+Thus $Cz=0$. Since $f^TCg=r!P_a>0$ and $\lambda>0$, the three values in \eqref{mrn:w:se:eq:bilinear} are in geometric progression with ratio $\lambda$. This proves equality.
+\end{proof}
+
+This proof establishes the criterion for arbitrary positive real weights. Parallel cloning proves its rational-weight version, but continuity alone would not justify the necessity or strictness conclusions for real weights.
+
+\subsection{The rank compression lift and its two bases}\label{mrn:w:se:sec:lift}
+\mnote{The lift recalled here is source~74's, Section~\ref{mrn:w:rf:sec:fulllift}; its six basis classes are the six cases there.}
+Suppose a minimum cover is $A\sqcup B$, where $A=\{A_1,A_2\}$, $|B|=q$ and $r=q+2$. Put $L=X\setminus A$, $R=Y\setminus B$; there are no $L$--$R$ edges. A size-$r$ matching uses exactly one cover vertex per edge. Thus $L$ matches all $B$ and $R$ matches both $A$ vertices.
+
+Partition $R$ by neighborhoods $\{A_1\},\{A_2\},A$. Let their activity sums be $a,b,c$, and let the common-class individual activities be $r_j$. Put
+\[
+ d=\sum_{i<j}r_ir_j,\qquad Q=ab+ac+bc+d>0.
+\]
+The lift of \cite{b:m74} is a rank-$r$ transversal matroid with slots $B\sqcup\{e_1,e_2\}$. It has private columns for $B$, ordinary columns for $L$ on their original neighborhoods, augmented core columns on $S_i\cup\{e_i\}$, private plane columns on $e_1,e_2$, and common plane columns on both extra slots. Its red elements are the ordinary and augmented core columns; its blue elements are private and plane columns.
+
+Give the red elements their original left activities, the private blue element at $b$ weight $1/v_b$, and the plane elements weights
+\[
+ b/Q,\qquad a/Q,\qquad r_j/Q,
+\]
+respectively. Delete zero-weight plane elements before applying Theorem~\ref{mrn:w:se:thm:weighted}. The positive value of $Q$ guarantees a positive-weight independent pair of plane elements remains. The colored basis polynomial, multiplied by the harmless positive constant $Q\prod_bv_b$, is exactly
+\begin{equation}\label{mrn:w:se:eq:identity}
+ \sum_{k=0}^{r}a_k s^{r-k}t^k.
+\end{equation}
+The common positive prefactor does not affect equality or strictness of the binomial-normalized coefficients. This identity counts bases once, not matching injections. It follows by classifying selected augmented core and plane columns: their six possible counts are $(0,2),(1,1),(1,2),(2,0),(2,1),(2,2)$. The one-plane/two-core case uses the union of the two possible core-row completion profiles. The independent plane-pair activity sum is $1/Q$, while the eligible single-plane sums for $A_1,A_2$ are $(a+c)/Q,(b+c)/Q$. These are exactly the support alternatives with zero, one or two selected vertices in $R$.
+
+We use the following generic representation, which is the usual transversal representation after harmless column normalization. Let $V$ have dimension $q$ and let $E_0$ have basis $e_1,e_2$. Private $B$ columns are coordinate vectors of $V$. Ordinary $L$ columns have independent generic entries on their neighborhoods in $V$ and zero projection to $E_0$. The core columns are
+\[
+ (v_1,e_1),\qquad(v_2,e_2),
+\]
+with independent generic top entries on $S_1,S_2$. Plane columns are $(0,e_1),(0,e_2)$ and $(0,\alpha_j e_1+\beta_j e_2)$, with generic independent coefficients. A permitted square submatrix has nonzero determinant exactly when it admits a matching; different matching monomials do not cancel.
+
+Choose two positive-weight independent plane columns $P,Q_0$. Together with the $q$ private $B$ columns they form a blue basis. Order them so that the coefficient of $e_1$ along $P$ and of $e_2$ along $Q_0$ are nonzero. Such an ordering exists because the two-by-two change-of-basis matrix is invertible.
+
+Choose $q$ ordinary $L$ columns matching all $B$; together with the two core columns they form a red basis. Assign each ordinary column to its matching $B$ coordinate and the two core columns to $P,Q_0$. For every subset of assigned positions, the corresponding principal row-column submatrix is nonsingular over the generic field: the ordinary block contains its matching monomial, and the bottom block is empty, one of the selected nonzero diagonal entries, or the full invertible two-by-two block. The bottom-left block is zero.
+
+\subsection{Contractions witnessing strictness}
+We apply Theorem~\ref{mrn:w:se:thm:weighted} at an arbitrary index $k\in\{1,\ldots,r-1\}$. The following construction gives an independent $I$ with $r-2$ elements and $k-1$ red elements. Leave two assigned positions $i,j$ uncontracted. Select any $k-1$ of the other $r-2$ red basis elements, and contract them together with the blue basis elements at every remaining position except $i,j$. The principal-minor observation above shows that $I$ is independent and the two uncontracted blue coordinate images are independent in $M/I$.
+
+\subsubsection{An ordinary column with two neighbors}
+Suppose some $u\in L$ has two $B$ neighbors. Since the ordinary-column transversal matroid has rank $q$, its nonloop $u$ extends to a basis. Choose a matching of this basis assigning $u$ to $i$, and choose another neighbor $j$ of $u$. Leave $i,j$ uncontracted in the preceding construction, excluding both $u$ and the ordinary red basis column assigned to $j$ from $I$.
+
+The contraction set and all blue columns are independent of every incidence parameter in column $u$. Its two entries at $i,j$ are independent parameters multiplying independent quotient coordinate vectors. For any nonloop blue element $b$, the determinant of the images of $u,b$ is a nonzero polynomial in those two parameters: its two coefficients cannot both vanish. Hence $u$ is not parallel to any nonloop blue element in the generic matroid. Its parallel class is monochromatic red. Theorem~\ref{mrn:w:se:thm:weighted} proves strictness at $k$. The construction works for every $k$.
+
+\subsubsection{A nonempty core}
+Suppose a core edge $A_1B_i$ exists, and let $u=(v_1,e_1)$ be the augmented core column. Choose an ordinary basis matching all $B$. Leave the coordinate $B_i$ and the bottom coordinate $P$ uncontracted; exclude $u$ and the ordinary column matched to $B_i$ from the red contraction choices.
+
+The contraction set and all blue elements are independent of the top entries of $u$. Its entry at $B_i$ is an independent parameter multiplying the surviving $B_i$ coordinate. Moreover the image of $u_0=(0,e_1)$ is independent of that coordinate. Indeed the $q-1$ contracted top columns together with $B_i$ span $V$. The one contracted bottom projection is either $Q_0$, not parallel to $e_1$ by the chosen ordering, or $e_2$ from the other core column. In either case adding $e_1$ gives a nonzero full determinant.
+
+For any nonloop blue element $b$, if its determinant with the $B_i$ coordinate is nonzero, the corresponding top parameter makes the determinant with $u$ nonzero. Otherwise $b$ is parallel to $B_i$, and its determinant with $u_0$ is nonzero. Thus the determinant of $u,b$ is not identically zero in either case. The class of $u$ is monochromatic red, again proving strictness at every $k$. A core edge incident with $A_2$ is handled by interchanging labels.
+
+These arguments include empty singleton plane classes: only a positive-weight plane basis was used, not the presence of both private plane elements. They concern generic representation parameters, independent of the arbitrary positive activity values.
+
+\subsection{Completing the graph classification}
+Suppose neither witness case occurs. The core is empty, and every ordinary left vertex has at most one $B$ neighbor. Since $L$ matches all $B$, these components are stars with positive edge totals $E_1,\ldots,E_q$. The remaining graph is on $A_1,A_2$ and $R$. If the two left activities are $\xi,\eta$, its support polynomial is
+\[
+ 1+E t+\xi\eta Q t^2,\qquad
+ E=\xi(a+c)+\eta(b+c).
+\]
+Its discriminant equals
+\begin{equation}\label{mrn:w:se:eq:discriminant}
+ [\xi(a+c)-\eta(b+c)]^2+4\xi\eta(c^2-d)\ge0.
+\end{equation}
+Thus it factors as $(1+\lambda_1t)(1+\lambda_2t)$ with positive parameters. If $c>0$, then $c^2-d\ge c^2/2>0$, so the two parameters differ. If $c=0$, the whole graph is a disjoint union of stars, with additional edge totals $\xi a,\eta b$.
+
+\begin{lemma}\label{mrn:w:se:lem:product}
+For $r\ge2$ and $p(t)=\prod_{i=1}^{r}(1+\lambda_it)$ with all $\lambda_i>0$, equality in any one order-$r$ normalized gap occurs if and only if all $\lambda_i$ are equal.
+\end{lemma}
+\begin{proof}
+Use a direct sum of $r$ rank-one matroids, each with a red element of weight $\lambda_i$ and a blue element of weight one. For any two classes and any index $k$, contract one element from each other class, choosing exactly $k-1$ red elements. Theorem~\ref{mrn:w:se:thm:weighted} forces the two remaining class ratios to agree. Thus all $\lambda_i$ agree. The converse follows from $(1+\lambda t)^r$.
+\end{proof}
+
+Equation~\eqref{mrn:w:se:eq:discriminant} and Lemma~\ref{mrn:w:se:lem:product} complete the classification for genuine $2+q$ covers. They also handle $q=0$ directly.
+
+For a graph whose active right shore has size $r=\nu(G)$, use its ordinary right-complement transversal matroid with a blue coordinate basis. The first witness construction applies whenever a left vertex has two neighbors; otherwise the graph is a union of stars and Lemma~\ref{mrn:w:se:lem:product} applies. This proves the same classification for pure minimum covers.
+
+For a minimum cover split $1+(r-1)$, every nonisolated right vertex outside the cover is a leaf at its single left-cover vertex. Replace all these leaves by one with activity equal to their sum. \mnote{This is the weighted leaf compression of \prp, Lemma~206.1 (\path{lc:lem:compression}) of Part~XIII.} There is at least one such leaf, since otherwise the rank would be at most $r-1$. The support polynomial is unchanged and the compressed graph has an active right shore of size $r$. It is a union of stars exactly when the original graph is, and expansion of the compressed leaf preserves its component edge total. The pure-shore result therefore transfers. Shore reversal and K\H{o}nig's theorem prove Theorem~\ref{mrn:w:se:thm:main} and Corollary~\ref{mrn:w:se:cor:smallrank}.
+
+\subsection{The first inequality at every rank}
+The following result requires no restriction on the cover and does not depend on the lift or on higher-gap ultra-log-concavity.
+ \mnote{Theorem~\ref{mrn:w:se:thm:first} is \prp's Theorem~180.2 with Corollary~180.3 (Part~XI, \path{hb:thm:firstidentity}, \path{hb:cor:equality}), and the inequality is Part~XII's Theorem~190.2; it is also printed above as source~74's Section~\ref{mrn:w:rf:sec:firstgap}. Source~72's Motzkin--Straus proof is printed as a second route; as source~72 itself says below, it is not a new optimization theorem.}
+\begin{theorem}\label{mrn:w:se:thm:first}
+For every positively weighted bipartite graph of matching rank $r\ge2$,
+\[
+ (r-1)a_1^2\ge2r a_2.
+\]
+Equality occurs exactly for disjoint stars with equal edge totals.
+\end{theorem}
+\begin{proof}
+Give edge $xy$ weight $w_{xy}=u_xv_y$ and put $S=\sum_e w_e=a_1$. Let $m_2$ count pairs of disjoint edges with their weight products. Every feasible two-edge endpoint support has at least one such matching, with the same product, so $a_2\le m_2$.
+
+Form the edge-compatibility graph: its vertices are edges of $G$, and its adjacency means disjointness. Its clique number is $r$. The Motzkin--Straus theorem \cite{b:MS} gives $m_2\le(r-1)S^2/(2r)$. The upper bound also has a short proof: merge the masses of a nonadjacent pair onto the endpoint of larger weighted neighbor sum, without decreasing the objective, until the positive support is a clique; then apply Cauchy--Schwarz to the masses on that clique.
+
+If the support inequality is equality, the original strictly positive edge-weight vector is an interior global maximizer of the compatibility objective. If that graph were not complete multipartite, it would contain an edge $ik$ and a vertex $j$ nonadjacent to both. The fixed-sum direction $e_i-2e_j+e_k$ has positive second variation, contradicting an interior maximum. Thus the complement, which is the line graph of $G$, is a disjoint union of cliques. Each nontrivial component of $G$ has pairwise intersecting edges; in a bipartite graph such a component is a star. If their totals are $E_1,\ldots,E_r$, equality in $m_2=(S^2-\sum E_i^2)/2$ requires all totals equal. The converse follows from $p_G(t)=\prod_i(1+E_it)$.
+\end{proof}
+
+Theorem~\ref{mrn:w:se:thm:first} is a graph-support consequence of the classical Motzkin--Straus theorem, not a new quadratic optimization theorem. It should not be used to infer higher-gap strictness by coefficient comparison.
+
+\subsection{Verification and scope}
+The accompanying exact script \mnote{shipped as \path{code/72-strictness-verify.py} and \path{code/72-strictness-verify_witnesses.py}, with outputs \path{data/72-strictness-*}} enumerates all $512$ simple $3\times3$ bipartite graphs under three positive integer activity assignments. Excluding ranks zero and one, it verifies $1434$ weighted graph cases and $2175$ individual gaps: $42$ balanced-star cases have all gaps zero, and $1392$ cases have all gaps positive. An independent Boolean-transversal test examines $375$ genuine cover graphs with $q=0,\ldots,5$ and verifies $1589$ monochromatic contraction witnesses; four star cases have no such structural witness. These are finite regression tests, not proof of the universal statements.
+
+The novelty boundary is the separate rank-compression report \cite{b:m74}: the present companion adds equality classification and strictness to its nonnegative-gap theorem. The unweighted matroid characterization is credited to \cite{b:CP}; the weighted criterion above is proved directly, and no broad bibliographic priority claim is made for that extension. The full graph classification uses the particular generic contraction witnesses, not a general claim about all transversal or represented matroids.
+
+All activity assumptions in the strictness theorems are positive. If some activities vanish, delete those vertices and reconsider the surviving graph and its actual matching rank. A limit of strict inequalities need not be strict. In particular no unspecified continuity argument is used for equality cases.
+
+%% ======================== source 76 ========================
+\section{Stability of two-by-two covers and weighted rank four (source~76)}\label{mrn:src:76}
+\paragraph{Abstract of source~76, as delivered.} Every bipartite graph with a vertex cover consisting of two vertices on each shore has a real stable complemented-row matching-support polynomial. In particular, its matching-support polynomial is real-rooted under arbitrary positive vertex activities. The proof reduces to six four-vertex core types. Two independent-column covariance constructions treat the matching and three-edge cores; a two-block polarization argument treats the complete core. Together with the smaller-shore inequality and exact leaf compression, this settles rank-normalized ultra-log-concavity for every bipartite matching-support polynomial of rank at most four, including arbitrary weights on both shores. All finite certificates are exact, and the universal argument is given in full.
+
+\paragraph{Status and provenance.}
+This note answers the incoming ProveIt manuscript's question ``Finish rank four'' \cite{b:RankMS}, strengthening that question to arbitrary positive vertex activities. It follows the separate leaf-compression note \cite{b:LeafMS}, which settled weighted rank three and all singleton-side minimum covers. The conclusions are proofs in ordinary mathematics, not Lean-certified results or independently refereed theorems. The stability machinery is classical \cite{b:BB}; novelty is asserted only relative to the inspected ProveIt drafts, not as a claim of worldwide priority.
+\mnote{\cite{b:RankMS} is the manuscript printed as Part~XII of \prp, and ``Finish rank four'' is its Research question~93 (\path{mr:q:rankfour}); \cite{b:LeafMS} is Part~XIII. Source~74 (Corollary~\ref{mrn:w:rf:cor:rankfive}) answers the same question through matching number five, so Corollary~\ref{mrn:w:sb:cor:rankfour} below is printed as a second route. The real-stability Theorem~\ref{mrn:w:sb:thm:main} is not implied by source~74, which asserts no real-rootedness. The tools of Section~\ref{mrn:w:sb:sec:tools} are Part~VI's (see the notes there).}
+
+\subsection{Definitions and the conclusions}
+Let $G=(X,Y;E)$ be a finite simple bipartite graph. A pair $(I,J)$, with $I\subseteq X$, $J\subseteq Y$ and $|I|=|J|$, is \emph{feasible} when $G[I,J]$ has a perfect matching. For positive activities $u_x,v_y$, define
+\[
+ p_G(t;u,v)=\sum_{(I,J)\text{ feasible}}u_Iv_Jt^{|I|}
+          =\sum_{k=0}^r a_kt^k,
+ \qquad r=\nu(G).
+\]
+Each pair is counted once, regardless of the number of perfect matchings. Thus $p_{K_{2,2}}(t;\mathbf1,\mathbf1)=1+4t+t^2$.
+
+A degree-$r$ polynomial with nonnegative coefficients and no internal zeros is $\ULC_r$ when $a_k/\binom rk$ is log-concave. Equivalently,
+\begin{equation}\label{mrn:w:sb:eq:ulc}
+ k(r-k)a_k^2\ge(k+1)(r-k+1)a_{k-1}a_{k+1}
+ \qquad(1\le k<r).
+\end{equation}
+Write $\HH=\{z\in\mathbb C:\operatorname{Im}z>0\}$. A nonzero real polynomial is \emph{real stable} if it has no zero when every variable belongs to $\HH$.
+
+Introduce a private copy $\bar x$ of each $x\in X$ and put
+\begin{equation}\label{mrn:w:sb:eq:basis}
+ F_G(z;y)=\sum_{(I,J)\text{ feasible}}z^{\overline{X\setminus I}}y^J.
+\end{equation}
+This is the basis polynomial of the transversal matroid in which $\bar x$ is adjacent only to $x$ and each $y\in Y$ is adjacent to its neighbours in $G$. It is homogeneous of degree $|X|$ and multiaffine.
+
+\begin{theorem}[Two vertices on each shore]\label{mrn:w:sb:thm:main}
+If $G$ has a vertex cover $A\sqcup B$ with $A\subseteq X$, $B\subseteq Y$ and $|A|=|B|=2$, then $F_G$ is real stable. Consequently $p_G(t;u,v)$ has only real negative zeros for every positive activity assignment and is $\ULC_{\deg p_G}$.
+\end{theorem}
+
+\begin{corollary}[Weighted rank four]\label{mrn:w:sb:cor:rankfour}
+Every bipartite graph with matching rank $r\le4$ has $\ULC_r$ matching-support polynomial for arbitrary positive vertex activities. For nonnegative activities the same assertion holds with the actual surviving degree as normalization order. In rank four, the three inequalities are
+\[
+ 3a_1^2\ge8a_2,\qquad
+ 4a_2^2\ge9a_1a_3,\qquad
+ 3a_3^2\ge8a_2a_4.
+\]
+\end{corollary}
+The corollary does not assert real-rootedness for every rank-four graph. Its real-rootedness input concerns the two-plus-two cover class; other cover types use ultra-log-concavity directly.
+\mnote{Corollary~\ref{mrn:w:sb:cor:rankfour} is the case $\nu\le4$ of source~74's Corollary~\ref{mrn:w:rf:cor:rankfive}.}
+
+\subsection{Stability tools and the six cores}\label{mrn:w:sb:sec:tools}
+For a graph, also define its signed unmatched-support polynomial
+\[
+ \Phi_G(z)=\sum_{S\text{ perfectly matchable}}
+                 (-1)^{|S|/2}\prod_{v\notin S}z_v.
+\]
+For bipartite $G$, the exact inversion identity is
+\begin{equation}\label{mrn:w:sb:eq:bridge}
+ \Phi_G(z)=\left(\prod_{y\in Y}z_y\right)
+ F_G\big((z_x)_{x\in X};(-1/z_y)_{y\in Y}\big).
+\end{equation}
+The map $z\mapsto-1/z$ preserves $\HH$, and the inverse substitution has the same form. Thus $F_G$ is stable if and only if $\Phi_G$ is stable. Stability here concerns these polynomials, not the raw matched-support generating function.
+\mnote{Identity~\eqref{mrn:w:sb:eq:bridge} and this equivalence are \prp's Theorem~85.3 (Part~VI, \path{ade:mat:thm:stable-bridge}).}
+
+If $F_G$ is stable, substitute $z_x=1/u_x$ and $y_y=tv_y$ in \eqref{mrn:w:sb:eq:basis}. Boundary specialization and positive scaling preserve stability, possibly giving zero; here the constant term excludes zero. Therefore
+\begin{equation}\label{mrn:w:sb:eq:weighted}
+ p_G(t;u,v)=\left(\prod_{x\in X}u_x\right)
+ F_G\big((1/u_x)_x;(tv_y)_y\big)
+\end{equation}
+is a real stable univariate polynomial, so it is real-rooted. Its nonnegative coefficients and constant term one force all roots to be negative. Newton's inequalities give \eqref{mrn:w:sb:eq:ulc} with its actual degree.
+
+\begin{lemma}[Leaf attachment and vertex sums]\label{mrn:w:sb:lem:gluing}
+Attaching a leaf to a graph with stable $\Phi$ preserves stability. More generally, if two graphs with stable $\Phi$ intersect in one vertex and have no other connecting edges, their union has stable $\Phi$.
+\end{lemma}
+\begin{proof}[Proof (pointer)]
+The vertex-sum statement is \prp's Theorem~93.2 (Part~VI, \path{ade:mat:thm:vertex-stable}), proved there from the identity $\Phi_G=z_vA_1A_2+B_1A_2+A_1B_2$ and $\operatorname{Im}(B_i/A_i)\ge0$. Attaching a leaf is the one-vertex sum with an edge, whose signed polynomial $z_vz_w-1$ is stable. \mnote{Source~76 gives the same two arguments (for the leaf, $\Phi_{G+w}=z_w\Phi_G-\partial_v\Phi_G$ and the sign of the logarithmic derivative); they are not reprinted.}
+\end{proof}
+
+Delete isolated vertices and all exterior vertices whose neighbourhood in the opposite part of the cover is a singleton. These are pendant leaves and can be reattached by Lemma~\ref{mrn:w:sb:lem:gluing}. The remaining exterior vertices form sets $L=\{L_1,\ldots,L_n\}\subseteq X$ and $R=\{R_1,\ldots,R_m\}\subseteq Y$, where every $L_i$ is adjacent to both $B_1,B_2$ and every $R_j$ to both $A_1,A_2$. There are no edges between $L$ and $R$.
+
+Up to row and column permutations and transposition, the four-vertex core $G[A,B]$ has six types: empty, one edge, two adjacent edges, two disjoint edges, three edges, or four edges. For the first three types the graph is a vertex sum of complete bipartite graphs $K_{2,k}$, bridges and isolated vertices. The basis polynomial of $K_{2,k}$, with the two-vertex shore on the left, is the elementary symmetric polynomial $e_2$ on $k+2$ variables, hence is stable. Equation~\eqref{mrn:w:sb:eq:bridge} removes dependence on orientation. Lemma~\ref{mrn:w:sb:lem:gluing} handles these three cases.
+\mnote{Stability of $K_{2,k}$ is \prp's Theorem~94.1 (\path{ade:mat:thm:biclique}), and these three core types are covered by its Corollary~94.3 (\path{ade:mat:cor:block-family}). Only the matching, three-edge and complete cores treated below are new.}
+
+\subsection{Independent columns and Boolean minor weights}
+\begin{lemma}[Expected determinant]\label{mrn:w:sb:lem:expected}
+Let the columns $K_j$ of a real random matrix be independent and have finite second moments. Then
+\[
+ \EE\det\big(\diag(z)+K\diag(y)K^T\big)
+\]
+is real stable.
+\end{lemma}
+\begin{proof}[Proof (pointer)]
+This is \prp's Theorem~91.2 (Part~VI, \path{ade:thm:expected}). \mnote{Source~76's proof is the one given there: stability of $\det(\diag(z)+\sum_jt_jC_j)$ with $C_j=\EE(K_jK_j^T)$, the operators $1+y_j\partial_{t_j}$, specialization $t_j=0$, and independence of the columns. It is not reprinted.}
+\end{proof}
+This is standard stability machinery, also used in the repository's even-multi-theta argument \cite{b:PRP}; the covariance choices below are the particular constructions needed here.
+
+Cauchy--Binet expands the expected determinant as
+\begin{equation}\label{mrn:w:sb:eq:minors}
+ \sum_{|I|=|J|}\EE\det(K[I,J])^2\,z^{X\setminus I}y^J.
+\end{equation}
+It therefore equals $F_G$ if the squared-minor expectation is one on every feasible support and zero on every infeasible support.
+
+Set
+\[
+ q=2^{-1/2},\qquad \rho=\sqrt q=2^{-1/4}.
+\]
+Rows are indexed by $A_1,A_2,L_1,\ldots,L_n$. Every $R$-column has covariance supported on the two $A$ rows, with matrix
+\begin{equation}\label{mrn:w:sb:eq:Rcov}
+ \begin{pmatrix}1&q\\q&1\end{pmatrix}.
+\end{equation}
+All columns are independent. Within either $B$-column, the covariance on the $L$ rows is $(1-q)I+qJ$, so diagonal entries are one and distinct-row entries are $q$.
+
+\subsubsection{The matching core}
+Use core edges $A_2B_1,A_1B_2$. In the $B_1$ column, the $A_1$ entry is zero, the $A_2$ variance is one, and its covariance with each $L_i$ is $\rho$. In the $B_2$ column, the $A_2$ entry is zero, the $A_1$ variance is one, and its covariance with each $L_i$ is $-\rho$.
+
+These matrices are positive semidefinite in every dimension. For independent centred variance-one variables $Z,Z_1,\ldots,Z_n$, take the nonzero $A$ entry to be $Z$ or $-Z$, respectively, and take
+\[
+ K_{L_i}=\rho Z+\sqrt{1-q}\,Z_i.
+\]
+Use independent copies for different columns. Matrix~\eqref{mrn:w:sb:eq:Rcov} is positive definite, so it too is a covariance matrix.
+
+\subsubsection{The three-edge core}
+Use edges $A_1B_1,A_2B_1,A_1B_2$. In the $B_1$ column, the $A$-block is \eqref{mrn:w:sb:eq:Rcov}, and the covariance vector from $(A_1,A_2)$ to any $L_i$ is $(\rho/\sqrt2,0)$. For independent centred variance-one $Z,W,Z_i$, realize it by
+\[
+ K_{A_1}=(Z+W)/\sqrt2,\qquad K_{A_2}=W,
+ \qquad K_{L_i}=\rho Z+\sqrt{1-q}\,Z_i.
+\]
+In the $B_2$ column, take $K_{A_1}=Z$, $K_{A_2}=0$, and the same formula for $K_{L_i}$, using a fresh independent family. This realizes variance one at $A_1$ and covariance $\rho$ from $A_1$ to every $L_i$.
+
+\subsubsection{Verification of all minor types}
+Both constructions have the graph's zero pattern. Therefore unsupported minors vanish identically. Supported minors use at most two $L$ rows and two $R$ columns, and have size at most four.
+
+Size-one supported minors have expectation one. A size-two supported minor has either one matching, giving one by column independence and unit entry variances, or two matchings around a four-cycle. In the latter case the expectation is $2-2q^2=1$, except for the path core's $\{A_1,L_i\}\times\{B_1,B_2\}$ minor, where it is
+\[
+ 2-2(\rho/\sqrt2)\rho=1.
+\]
+
+For size three, the only case without a forced row or column uses rows $A_1,A_2,L_i$ and columns $B_1,B_2,R_j$. For the matching core, the two determinant terms have diagonal contributions one each, and their cross term is $-2\rho^2q$. Thus
+\[
+ \EE\det(K[I,J])^2=2-2\rho^2q=1.
+\]
+For the path core there are three matching terms. Their three pairwise cross terms are
+\[
+ -2(\rho/\sqrt2)\rho,\qquad -2q^2,\qquad 0,
+\]
+so the expectation is again one. In every other supported size-three case a forced entry lies in a column independent of the remaining minor; its variance is one and the remaining size-two minor has squared expectation one.
+
+Every supported size-four minor uses both $A$ rows, both $B$ columns, two $L$ rows and two $R$ columns. Up to sign its determinant factors as
+\[
+ \det K[\{L_i,L_j\},\{B_1,B_2\}]
+ \det K[\{A_1,A_2\},\{R_s,R_t\}].
+\]
+The factors depend on disjoint independent column families, and each has squared expectation one. This proves the Boolean identity required in \eqref{mrn:w:sb:eq:minors} for every minor size. Lemma~\ref{mrn:w:sb:lem:expected} proves stability for both core types.
+
+\subsection{The complete core by two-block polarization}
+Now suppose all four edges between $A$ and $B$ are present. Partition the ground set of the fundamental transversal matroid into
+\[
+ \mathcal U=\bar A\sqcup R,\qquad
+ \mathcal V=\bar L\sqcup B,
+ \qquad M=m+2,\quad N=n+2.
+\]
+Its bases are exactly the $N$-element subsets containing at most two elements of $\mathcal U$. Indeed, let a support select $i$ vertices of $A$, $j$ of $B$, $\ell$ of $L$ and $s$ of $R$. Size balance is $i+\ell=j+s$. Feasibility requires $s\le i$ and $\ell\le j$, and these conditions are equivalent under balance. They suffice: match the exterior vertices to the selected opposite core, then match the remaining equally numerous core vertices across the complete core. The corresponding basis contains $2-i+s$ elements of $\mathcal U$, so feasibility is exactly the bound of two.
+
+Consequently the basis polynomial is
+\begin{equation}\label{mrn:w:sb:eq:twoblock}
+ F_G=e_N(\mathcal V)+e_1(\mathcal U)e_{N-1}(\mathcal V)
+                          +e_2(\mathcal U)e_{N-2}(\mathcal V).
+\end{equation}
+Its separate block diagonal, with $\mathcal U$ variables set to $a$ and $\mathcal V$ variables to $b$, is
+\[
+ b^{N-2}\left(b^2+MNab+\binom M2\binom N2a^2\right).
+\]
+The quadratic discriminant is
+\begin{equation}\label{mrn:w:sb:eq:discriminant}
+ M^2N^2-4\binom M2\binom N2=MN(M+N-1)>0.
+\end{equation}
+Since $M,N\ge2$, its factors are $(b+\lambda_+a)(b+\lambda_-a)$ with both $\lambda_\pm>0$. The block diagonal is therefore stable.
+
+Polynomial~\eqref{mrn:w:sb:eq:twoblock} is exactly its separate multiaffine polarization in $M$ variables and $N$ variables. The Grace--Walsh--Szeg\H{o} theorem, in the convex upper half-plane, says that polarization preserves stability \cite{b:BB}. Thus $F_G$ is stable. This completes all six core cases; leaf reattachment proves Theorem~\ref{mrn:w:sb:thm:main}.
+
+\subsection{From stability to the rank-four inequalities}
+For completeness we recall the two inputs from the preceding note \cite{b:LeafMS}. \mnote{They are \prp's Theorem~70.1 (Part~V) or Lemma~205.1 (Part~XIII), and Lemma~206.1 with Theorem~206.2 (Part~XIII); source~74 states them as Lemmas~\ref{mrn:w:rf:lem:small} and~\ref{mrn:w:rf:lem:singleton}.} For arbitrary positive activities, $p_G$ is $\ULC_{\min(|X|,|Y|)}$: matroid basis polynomials are Lorentzian \cite{b:BH}, and the nonnegative linear substitution
+\[
+ \left(\prod_{x\in X}u_x\right)
+ F_G\big((s/u_x)_x;(tv_y)_y\big)
+ =\sum_k a_ks^{|X|-k}t^k
+\]
+preserves the Lorentzian property. The bivariate characterization gives $\ULC_{|X|}$; transpose the graph for $\ULC_{|Y|}$. This is the weighted form of the established smaller-shore input; see also \cite{b:RU}.
+
+If a minimum cover of size $r$ lies wholly on one shore, remove isolated vertices and apply that input. If a minimum cover is $\{x_0\}\sqcup B$ with $|B|=r-1$, every active right vertex outside $B$ is a leaf at $x_0$. A feasible support contains at most one such leaf, so replacing the class by one leaf of activity equal to the sum of its activities preserves the entire polynomial. The compressed right shore has size $r$, giving $\ULC_r$. The transposed case is identical.
+
+By K\H{o}nig's theorem a rank-four graph has a cover of size four. Its split is $0+4$, $1+3$, $2+2$, or a transpose. The preceding paragraph treats the first two types, and Theorem~\ref{mrn:w:sb:thm:main} treats the third by Newton's inequalities. Covers of size at most three have a pure or singleton-side split, proving the smaller ranks too. For zero activities, delete their vertices and apply the result with the surviving degree. This proves Corollary~\ref{mrn:w:sb:cor:rankfour}.
+
+\subsection{A sharp boundary for complete mixed cores}
+For integers $s\ge2$ and $n,m\ge0$, let $H_{2,s;n,m}$ have left core $A$ of size two, right core $B$ of size $s$, $n$ exterior left vertices $L$, and $m$ exterior right vertices $R$. Its edges are all pairs in
+\[
+ (A\times B)\cup(L\times B)\cup(A\times R),
+\]
+with no edges between $L$ and $R$. When $n\ge s$ and $m\ge2$, its matching rank is $s+2$.
+
+\begin{theorem}[Sharp stability criterion]\label{mrn:w:sb:thm:two-s-boundary}
+The signed support polynomial of $H_{2,s;n,m}$ is real stable if and only if
+\begin{equation}\label{mrn:w:sb:eq:two-s-stability}
+ (m+2)(n+2)s\ \ge\ 2(m+1)(n+1)(s-1).
+\end{equation}
+In particular every two by two Hall core is stable. For a two by three core, stability is equivalent to
+\begin{equation}\label{mrn:w:sb:eq:two-three-boundary}
+ (n-2)(m-2)\le12.
+\end{equation}
+\end{theorem}
+\begin{proof}
+In the extended transversal matroid put $F=\bar A\sqcup R$ and $O=\bar L\sqcup B$, with
+\[
+ M=|F|=m+2,\qquad N=|O|=n+s,\qquad r=n+2.
+\]
+Exactly as in the complete two by two core, the bases are all $r$-element subsets containing at most two members of $F$. To check sufficiency directly, a selected set with $k\le2$ elements of $F$ and $j$ elements of $B$ uses $r-k-j$ private $L$-elements. Match the $F$-elements into $A$, use $2-k$ selected $B$-elements on the remaining positions of $A$, and use the other $k+j-2$ selected $B$-elements on the vacant $L$-positions. All counts are nonnegative by the size of the selected subset.
+
+Thus its basis polynomial is
+\[
+ \mathcal B=\sum_{k=0}^2e_k(F)e_{r-k}(O).
+\]
+Its two-block diagonal is
+\[
+ y^n\left[
+ \binom Nr y^2+M\binom N{r-1}xy+
+ \binom M2\binom N{r-2}x^2
+ \right].
+\]
+All three bracketed coefficients are positive. The bracket is stable exactly when its discriminant is nonnegative, equivalently
+\[
+ M^2\binom N{r-1}^{\!2}
+ \ \ge\ 4\binom Nr\binom M2\binom N{r-2}.
+\]
+Using
+\[
+ \frac{\binom N{r-1}^{\!2}}{\binom Nr\binom N{r-2}}
+ =\frac r{r-1}\frac{N-r+2}{N-r+1}
+\]
+reduces this inequality to \eqref{mrn:w:sb:eq:two-s-stability}. Necessity for full stability follows by identifying all variables within each block. Sufficiency follows by polarization, using $M$ slots for $x$ and $N$ slots for $y$. The signed support polynomial is stable exactly when the extended basis polynomial is stable, by the invertible upper-half-plane substitution $z\mapsto-1/z$ on one shore. For $s=3$, expansion of \eqref{mrn:w:sb:eq:two-s-stability} gives \eqref{mrn:w:sb:eq:two-three-boundary}.
+\end{proof}
+
+\paragraph{A smallest unstable member of the rank-five family.}
+Among members with $s=3$, $n\ge3$ and $m\ge2$, instability requires $(n-2)(m-2)>12$. If $(n-2)+(m-2)\le7$, the product is at most $\lfloor 7^2/4\rfloor=12$. Thus every unstable member has at least $n+m+5=17$ vertices; $n=m=6$ attains this bound. Its diagonal factor is
+\[
+ y^6(9y^2+288xy+2352x^2),
+\]
+whose quadratic discriminant is $-1728$.
+
+This does not refute positive-field real-rootedness or rank-normalized ULC. Indeed the same graph with unit vertex weights has
+\[
+ p(t)=1+36t+333t^2+974t^3+1005t^4+300t^5,
+\]
+with five distinct negative roots. An exact certificate consists of its alternating signs at
+\[
+\begin{array}{c|rrrrrr}
+ t&-2&-1&-\tfrac12&-\tfrac15&-\tfrac1{20}&0\\\hline
+ p(t)&-51&29&-\tfrac{33}{16}&\tfrac{21}{25}&-\tfrac{1329}{16000}&1.
+\end{array}
+\]
+The intermediate value theorem supplies a root in each of the five disjoint intervals. Consequently the rank-four proof by universal signed stability has a genuine rank-five boundary, even though the rank-five ULC problem remains unresolved here.
+\mnote{The rank-five problem is settled affirmatively by source~74 (Corollary~\ref{mrn:w:rf:cor:rankfive}); this graph has the $2+3$ minimum cover $A\sqcup B$, so Theorem~\ref{mrn:w:rf:thm:main} gives $\ULC_5$ for every positive activity assignment.}
+
+\subsection{Scope and reproducibility}
+The rank-four question in \cite{b:RankMS} is therefore resolved for unit weights, one-shore weights and arbitrary two-shore weights. Combined with the rank-six weighted counterexamples in \cite{b:HallMS}, the first possible failure rank for arbitrary two-shore rank normalization lies in $\{5,6\}$. General unit-weight and one-shore rank normalization are not settled by this note.
+\mnote{Superseded within the batch: the first failure rank is exactly six by source~74 (Corollary~\ref{mrn:w:rf:cor:rankfive}). The shipped \path{76-rank-four-PROOF_STATUS.md} says likewise that ``the smallest failure rank is reduced to five or six''; it is kept as delivered. The unit-weight and one-shore questions are answered negatively in Part~II (sources~71 and~73).}
+
+The expected-determinant lemma, polarization theorem, uniform-matroid stability and gluing principles are established tools; they are not claimed as new. This note's contributions relative to the inspected drafts are the two covariance realizations, the complete-core two-block application, the resulting two-plus-two cover theorem, and the weighted rank-four conclusion. A targeted search of the stability literature did not certify global priority, which is not claimed.
+
+The accompanying scripts supplement the proof:
+\begin{itemize}
+\item \mnote{The scripts are shipped as \path{code/76-rank-four-verify_*.py} and their outputs as \path{data/76-rank-four-*_verification.json}; the build wrapper is not shipped.}
+\item \texttt{verify\_covariance.py} checks all 70 square minors of the four-by-four representative for each covariance construction, including infeasible and empty minors. All 140 exact identities pass in $\mathbb Q(2^{1/4})$. It also checks every principal covariance minor in those representatives.
+\item \texttt{verify\_complete\_core.py} independently checks the support-to-basis characterization and block counts for all 49 pairs $0\le n,m\le6$, together with the discriminant identity.
+\item \texttt{verify\_boundary.py} checks 75 complete mixed cores against the two-block basis description, the exact stability threshold, and the rank-five unit-weight polynomial and rational root certificate.
+\item The six-core proof and the classification of all possible supported minor types establish the universal assertions; the finite scripts do not replace those arguments.
+\end{itemize}
+Run the scripts with Python 3 and SymPy, and compile this source twice with \texttt{pdflatex}. The package includes a build wrapper for the preparation environment and recorded verification outputs.
+
+%% ======================== source 75 ========================
+\section{A sharp weighted classification of full Hall bottleneck graphs (source~75)}\label{mrn:src:75}
+\paragraph{Abstract of source~75, as delivered.} A full Hall-bottleneck graph has two complete core blocks, complete connections from each exterior block to the opposite core, and no exterior-to-exterior edges. We prove that this family satisfies matching-rank-normalized ultra-log-concavity for every positive vertex-activity assignment and every exterior population if and only if one core has size at most two. The new positive argument treats a two-by-$s$ core uniformly for every $s$: deleting the core edges gives a real-rooted comparison polynomial, and restoring them increases every Newton margin. A twelve-case coefficient calculation proves this using only binomial ratios and Newton inequalities for exterior elementary symmetric functions. When both cores have size at least three, we give explicit finite populations and an integer activity producing a failed last margin. The positive inequalities are strict in the genuine two-by-$s$ rank regime. An exact weighted rank-five example has nonreal roots despite strict ultra-log-concavity. The classification concerns this full Hall family; arbitrary graphs with a two-plus-$s$ minimum cover remain outside its scope.
+
+\paragraph{Status.}
+The results have ordinary mathematical proofs and reproducible exact algebraic checks. They are not formally verified in Lean or externally refereed. The contribution is compared with the inspected ProveIt Hall-bottleneck report; global priority is not asserted.
+\mnote{The inspected Hall-bottleneck report \cite{b:HallMS} is Part~XI of \prp{} (pinned at \texttt{4a3b6991d}). The positive half of Theorem~\ref{mrn:w:fh:thm:classification} is the full Hall case of source~74's Theorem~\ref{mrn:w:rf:thm:main}: for $n\ge b$, $m\ge a$ and $\min(a,b)\le2$ the core $A\sqcup B$ is a minimum cover with at most two vertices on one shore (for $\min(a,b)=1$ it is also Part~XIII's Theorem~206.2). Source~75's comparison-polynomial proof is printed as a second route, with what it adds: strictness when $\min(a,b)=2$, real-rootedness when $\min(a,b)=1$, and the nonreal rank-five example. For $a=b$ and $n=m$ the negative half is Part~XI's endpoint theorem (Theorem~178.2 of \prp, \path{hb:thm:endpoint}), and the population offset $h$ below gives $n=33$ and $n=11$ at $s=3,4$, Part~XI's minimal outer sizes; it is new for $a\ne b$ (Research question~89 of \prp).}
+
+\subsection{The family and the classification}
+For positive integers $a,b$, define $H_{a,b;n,m}$ by the disjoint shores
+\[
+ X=A\sqcup L,\qquad Y=B\sqcup R,
+ \qquad |A|=a,\quad |B|=b,\quad |L|=n,\quad |R|=m,
+\]
+and the exact edge set
+\begin{equation}\label{mrn:w:fh:eq:graph}
+ (A\times B)\cup(L\times B)\cup(A\times R).
+\end{equation}
+Thus every exterior-left vertex is adjacent to \emph{all} of $B$, every exterior-right vertex to \emph{all} of $A$, the core $A\times B$ is complete, and no exterior pair is adjacent. Assign an arbitrary positive activity to each vertex. Its support polynomial is
+\[
+ P_H(t)=\sum_{(I,J)\text{ feasible}}u_Iv_Jt^{|I|}
+       =\sum_k p_k t^k,
+\]
+where $I\subseteq X$, $J\subseteq Y$, $|I|=|J|$, and feasibility means that the induced bipartite graph admits a perfect matching. A pair of endpoint sets contributes once, regardless of how many matchings realize it.
+
+For a nonnegative degree-$d$ coefficient sequence with no internal zeros, write $\ULC_d$ for log-concavity of $p_k/\binom dk$. Equivalently,
+\begin{equation}\label{mrn:w:fh:eq:gaps}
+ \gap_k^{(d)}(P):=k(d-k)p_k^2-(k+1)(d-k+1)p_{k-1}p_{k+1}\ge0
+ \quad(1\le k<d).
+\end{equation}
+For positive activities the degree equals the maximum matching size. If $n\ge b$ and $m\ge a$, this rank is $d=a+b$: the core is a cover of that size, attained by matching each core into the opposite exterior block.
+
+\begin{theorem}[Sharp full-Hall classification]\label{mrn:w:fh:thm:classification}
+Fix positive core sizes $a,b$. The following are equivalent.
+\begin{enumerate}
+\item For all $n\ge b$, $m\ge a$ and every positive activity assignment, $P_{H_{a,b;n,m}}$ is $\ULC_{a+b}$.
+\item $\min(a,b)\le2$.
+\end{enumerate}
+If $\min(a,b)=2$, every internal inequality is strict. If $a,b\ge3$, the failure of the last inequality can be realized with activity one at every exterior vertex and one common positive integer activity at every core vertex; explicit parameters are given in Section~\ref{mrn:w:fh:sec:negative}.
+\end{theorem}
+The positive assertion also extends to smaller exterior populations with normalization by the actual matching rank, as explained in Section~\ref{mrn:w:fh:sec:small}. Zero activities are handled there separately. Nothing in the negative assertion concerns unit weights or activities on just one shore. \mnote{Those cases are treated by sources~71, 73, 55, 47 and~51 in Part~II.}
+
+\subsection{A uniform formula for a two by s core}
+Assume $a=2$, $b=s$, $n\ge s$ and $m\ge2$, and put $d=s+2$. Normalize both exterior activity sums to one by dividing every left activity by $e_1(L)$ and every right activity by $e_1(R)$. This only replaces $P_H(t)$ by $P_H(ct)$ for a positive $c$, and multiplies its $k$th margin by $c^{2k}$.
+
+Let $u_1,u_2$ be the normalized left-core activities, $v_1,\ldots,v_s$ the normalized right-core activities, and define
+\[
+ U_1=u_1+u_2,\quad U_2=u_1u_2,\qquad
+ V_j=e_j(v_1,\ldots,v_s),\qquad E_j=e_j(L),\qquad z=e_2(R).
+\]
+Here $E_0=E_1=1$, $0\le z\le1/2$, and every out-of-range elementary symmetric function is zero.
+
+A size-$k$ support selecting $i$ left-core and $j$ right-core vertices is feasible exactly when $i+j\ge k$. Necessity follows because its $k-i$ exterior-left vertices must be matched into its $j$ selected right-core vertices. Conversely match those exterior vertices first, then the selected exterior-right vertices into the left core, and finally the remaining core vertices to one another. Therefore
+\begin{equation}\label{mrn:w:fh:eq:coeff}
+ p_k=E_kV_k+U_1E_{k-1}(V_k+V_{k-1})
+      +U_2E_{k-2}(V_k+V_{k-1}+zV_{k-2}).
+\end{equation}
+Deleting the $2s$ core edges gives two disjoint complete bipartite graphs. Their support polynomial $Q$ has coefficients
+\begin{equation}\label{mrn:w:fh:eq:basecoeff}
+ q_k=E_kV_k+U_1E_{k-1}V_{k-1}+U_2E_{k-2}zV_{k-2}.
+\end{equation}
+The proof will establish the stronger comparison
+\begin{equation}\label{mrn:w:fh:eq:increment}
+ \gap_k^{(d)}(P_H)-\gap_k^{(d)}(Q)\ge0
+ \qquad(1\le k<d).
+\end{equation}
+
+\begin{lemma}[The comparison polynomial]\label{mrn:w:fh:lem:Q}
+The polynomial $Q$ has degree $d$ and only negative real zeros. Its order-$d$ Newton inequalities are strict.
+\end{lemma}
+\begin{proof}
+For a complete bipartite graph with left activities $\alpha_1,\ldots,\alpha_p$ and right activities $\beta_1,\ldots,\beta_q$, its support polynomial is
+\[
+ \left(\prod_i\alpha_i\right)
+ e_p(\alpha_1^{-1},\ldots,\alpha_p^{-1},t\beta_1,\ldots,t\beta_q).
+\]
+Elementary symmetric polynomials are real stable: differentiate $\prod_i(w+x_i)$ in $w$ the required number of times and specialize $w=0$. Differentiation, positive scaling, and real specialization preserve stability or give zero \cite{b:COSW}. The displayed univariate polynomial is nonzero with positive constant term and nonnegative coefficients, so its zeros are negative and real.
+
+Apply this to $K_{2,m}$ and $K_{n,s}$. Their product has degree $2+s=d$. The first factor is
+\[
+ 1+U_1t+zU_2t^2.
+\]
+Its discriminant obeys
+\[
+ U_1^2-4zU_2\ge(u_1-u_2)^2+2u_1u_2>0,
+\]
+so $Q$ has at least two distinct negative zeros. Newton's inequalities are strict at every internal index unless all roots coincide. This proves the lemma.
+\end{proof}
+
+\subsection{Twelve coefficient families}
+Every core variable has exponent at most two in the difference in \eqref{mrn:w:fh:eq:increment}. The possible nonzero left exponent patterns, up to swapping $u_1,u_2$, are
+\[
+ 10,\quad20,\quad11,\quad21,\quad22.
+\]
+Fix one representative monomial with left pattern $\lambda$. Suppose its right-core exponents have $p$ twos and $q$ ones, and put
+\[
+ a=k-p,\qquad j=2a-q,\qquad \ell=d-k,\qquad
+ A=k\ell,\qquad B=(k+1)(\ell+1).
+\]
+The letters $A,B$ in this section are numerical gap factors, not vertex blocks. A nonzero increment coefficient has
+\begin{equation}\label{mrn:w:fh:eq:constraints}
+ 0\le j<|\lambda|,\qquad k\ge a,\qquad
+ a\ge\lceil j/2\rceil,\qquad \ell\ge a-j+2.
+\end{equation}
+Indeed the total right-core degree is $2k-j$; a core-edge contribution raises total core degree above $2k$, giving $j<|\lambda|$. Also the number of right-core variables occurring is
+\[
+ p+q=k+a-j\le s=d-2,
+\]
+which gives the last inequality. These restrictions leave exactly twelve pattern--$j$ families.
+
+Divide the coefficient by the following positive central binomial factor:
+\[
+ C_0=\binom{2a}{a},\quad
+ C_1=\binom{2a-1}{a-1},\quad
+ C_2=\binom{2a-2}{a-1},\quad
+ C_3=\binom{2a-3}{a-2}.
+\]
+Each is used only when its indices are allowed by \eqref{mrn:w:fh:eq:constraints}. To derive the formulas below, the coefficient of a monomial with $p$ twos and $q$ ones in $V_iV_h$ is
+\begin{equation}\label{mrn:w:fh:eq:bincoef}
+ \binom q{i-p}\qquad(i+h=2p+q),
+\end{equation}
+with the usual zero convention. The repeated variables occur in both subsets; one chooses which of the $q$ single-occurrence variables belong to the first subset. Thus all twelve formulas follow by direct substitution of \eqref{mrn:w:fh:eq:coeff} and \eqref{mrn:w:fh:eq:basecoeff} into \eqref{mrn:w:fh:eq:gaps}, followed by elementary ratios of binomial coefficients. No matching multiplicities are introduced.
+
+We use these consequences of Newton's inequalities:
+\begin{align}
+ E_{k-2}E_{k+1}&\le\frac{k-1}{k+1}E_{k-1}E_k,\notag\\
+ E_{k-2}E_k&\le\frac{k-1}{k}E_{k-1}^2,&
+ E_{k-3}E_{k+1}&\le\frac{k-2}{k+1}E_{k-2}E_k,\label{mrn:w:fh:eq:Newton}\\
+ E_{k-3}E_k&\le\frac{k-2}{k}E_{k-2}E_{k-1},&
+ E_{k-3}E_{k-1}&\le\frac{k-2}{k-1}E_{k-2}^2.\notag
+\end{align}
+For $k\ge2$ these also cover boundary cases by the zero convention. They follow, for example, from log-concavity of $j!E_j$. The case $k=1$ is checked at the end of the argument.
+
+\subsubsection{Pattern 10}
+Only $j=0$ occurs. The normalized coefficient is
+\[
+ 2A E_kE_{k-1}-B\frac a{a+1}
+ \big(E_kE_{k-1}+E_{k-2}E_{k+1}\big).
+\]
+Using the first inequality in \eqref{mrn:w:fh:eq:Newton}, it is at least
+\[
+ \frac{2k(\ell-a)}{a+1}E_kE_{k-1}\ge0,
+\]
+since $\ell\ge a+2$.
+
+\subsubsection{Pattern 20}
+Put $X=E_{k-1}^2$ and $Y=E_{k-2}E_k$. For $j=0$ the normalized coefficient is
+\[
+ AX-B\frac a{a+1}Y;
+\]
+for $j=1$ it is twice this expression. The bound $Y\le(k-1)X/k$ reduces its sign to
+\[
+ k(a+1)\left(A-B\frac a{a+1}\frac{k-1}{k}\right)
+ =k^2(\ell-a)+a(\ell+1)\ge0.
+\]
+Here $\ell\ge a+1$ in both cases.
+
+\subsubsection{Pattern 11}
+Keep $X,Y$ and put $Z=E_{k-3}E_{k+1}$. The two normalized coefficients are
+\begin{align*}
+ j=0:\quad&2A(X+Y)-B\frac a{a+1}(X+2Y+Z),\\
+ j=1:\quad&4AX+2AY-B\left(X+\frac{4a}{a+1}Y+\frac{a-1}{a+1}Z\right).
+\end{align*}
+Use $Z\le(k-2)Y/(k+1)$, and write the resulting lower bound as
+\begin{equation}\label{mrn:w:fh:eq:decomp11}
+ \alpha\left(X-\frac{k}{k-1}Y\right)+\beta Y.
+\end{equation}
+For $j=0$ the two factors are
+\[
+ \alpha=2A-\frac{Ba}{a+1}\ge0,
+ \qquad
+ \beta=\frac{2k(2k-1)(\ell-a)}{(k-1)(a+1)}\ge0.
+\]
+The sign of $\alpha$ is immediate for $a=0$; for $a\ge1$, use $k\ge a$ and $\ell\ge a+2$ in $A/B=k\ell/((k+1)(\ell+1))$.
+
+For $j=1$ one has $a\ge1$, $\ell\ge a+1$, and
+\[
+ \alpha=4A-B\ge0,
+\]
+while
+\begin{align*}
+ \frac{(k-1)(a+1)}2\,\beta
+ ={}&\ell(3k^2-3k+1+a)\notag\\
+ &-a(3k^2-k-1)-2k+1.
+\end{align*}
+The right side increases with $\ell$. At $\ell=a+1$ it becomes
+\[
+ (a-k+1)(a-k+2)+2k(k-1)\ge0,
+\]
+because the first product consists of consecutive integers. Equation~\eqref{mrn:w:fh:eq:decomp11} and Newton's bound now prove both cases.
+
+\subsubsection{Pattern 21}
+Put $M=E_{k-2}E_{k-1}$ and $N=E_{k-3}E_k$. The normalized coefficient is
+\[
+ AM S_j-B(M H_j+N J_j),
+\]
+where
+\[
+\begin{array}{c|ccc}
+ j&S_j&H_j&J_j\\\hline
+0&2&\dfrac a{a+1}&\dfrac a{a+1}\\[5pt]
+1&4&\dfrac{2a}{a+1}&\dfrac{2a}{a+1}\\[5pt]
+2&2+\dfrac{2z(a-1)}a&z+\dfrac{a-1}a&
+\dfrac{a-1}a+\dfrac{z(a-1)(a-2)}{a(a+1)}
+\end{array}
+\]
+Newton gives $N\le\nu M$, where $\nu=(k-2)/k$. For $j=0,1$,
+\[
+ \frac{H_j+\nu J_j}{S_j}
+ =\frac a{a+1}\frac{k-1}{k}
+ \le\frac a{a+1}\frac k{k+1}\le\frac AB,
+\]
+using $\ell\ge a$. These two coefficients are nonnegative.
+
+For $j=2$, $a\ge1$ and $\ell\ge a$. Define
+\[
+ D(\ell,z)=k\ell S_2-(k+1)(\ell+1)(H_2+\nu J_2).
+\]
+It is affine in each of $\ell,z$. Direct simplification gives
+\[
+ D(a,0)=\frac{2(a^2+k^2-1)}{ak}\ge0,
+ \qquad
+ D(a,\tfrac12)=\frac{(k-a)^2+(k-a)+2a(a-1)}{ak}\ge0.
+\]
+Thus $D(a,z)\ge0$ on $0\le z\le1/2$. Since $H_2+\nu J_2\ge0$,
+\[
+ \frac{\partial D}{\partial\ell}
+ =\frac{D(a,z)+(k+1)(H_2+\nu J_2)}a\ge0.
+\]
+Therefore $D(\ell,z)\ge0$ for all $\ell\ge a$, proving the last case.
+
+\subsubsection{Pattern 22}
+Put $U=E_{k-2}^2$ and $W=E_{k-3}E_{k-1}$. The normalized coefficient is
+\[
+ AU S_j-BW T_j,
+\]
+with
+\[
+\begin{array}{c|cc}
+ j&S_j&T_j\\\hline
+0&1&\dfrac a{a+1}\\[5pt]
+1&2&\dfrac{2a}{a+1}\\[5pt]
+2&1+\dfrac{2z(a-1)}a&
+\dfrac{a-1}a+\dfrac{2z(a^2-a+1)}{a(a+1)}\\[5pt]
+3&2z&\dfrac{2z(a-1)}a
+\end{array}
+\]
+For $j\le2$, $T_j/S_j\le a/(a+1)$. In the $j=2$ row this follows by checking $z=0,1/2$ in the affine cross-multiplied inequality; the endpoint ratios are $(a-1)/a$ and $a/(a+1)$. For $j=3$ and $z>0$ the ratio is $(a-1)/a$; at $z=0$ the row is zero.
+
+Now
+\[
+ W\le\frac{k-2}{k-1}U,
+ \qquad \frac{k-2}{k-1}\le\frac k{k+1}.
+\]
+When $j\le2$, feasibility gives $\ell\ge a$, so $A/B$ dominates the product of the moment ratio and $a/(a+1)$. When $j=3$, use $\ell\ge a-1$ and the ratio $(a-1)/a$ instead. All four cases follow.
+
+\subsubsection{The small index boundary and completeness}
+At $k=2$, all displayed arguments remain valid with $E_{-1}=0$. At $k=1$, patterns 21 and 22 vanish. For patterns 10 and 11 with $j=0$ the normalized coefficient is $2A-Ba/(a+1)$; here $a=0$ or $1$ and $\ell\ge a+2$, making it nonnegative. Pattern 20 gives $A$ or $2A$, and pattern 11 with $j=1$ gives $4A-B\ge0$. Thus the boundary is covered without division by $k-1$.
+
+The twelve cases exhaust every nonzero monomial coefficient of the increment in the independent positive core activities. Every coefficient is nonnegative, proving \eqref{mrn:w:fh:eq:increment}. Lemma~\ref{mrn:w:fh:lem:Q} then proves strict $\ULC_{s+2}$ for every full two-by-$s$ Hall graph in the genuine-rank regime.
+
+\subsection{Singleton cores and deficient exterior populations}\label{mrn:w:fh:sec:small}
+A singleton-core case has an elementary stable-matroid description. Suppose $a=1$. In the extended transversal matroid, let
+\[
+ F=\bar A\sqcup R,\qquad O=\bar L\sqcup B.
+\]
+Its rank is $n+1$, and its bases are exactly the $(n+1)$-element subsets containing at most one element of $F$. Indeed $F$ can only be matched to the one core vertex, and every selected element of $B$ is available for any remaining left position. Its basis polynomial is
+\[
+ \mathcal B=e_{n+1}(O)+e_1(F)e_n(O).
+\]
+Its two-block diagonal is $y^n(c_0y+c_1x)$ for positive constants $c_0,c_1$. This is real stable, and polarization separately in the two blocks recovers $\mathcal B$, preserving stability \cite{b:COSW}. Setting each private variable to the inverse left activity and each right variable to $t$ times its activity recovers $P_H$, up to a positive factor. Thus $P_H$ is real-rooted and satisfies Newton's inequalities. Exchanging shores handles $b=1$.
+
+For $\min(a,b)\le2$ but insufficient exterior populations, the matching rank is
+\[
+ \min\{a+b,n+a,m+b\}.
+\]
+The support criterion proves this formula directly: for every $k$ below all three bounds, choose $i=\min(a,k)$ and $j=\min(b,k)$ selected core vertices. If $n<b$ or $m<a$, the formula equals the smaller shore size. The established weighted smaller-shore ULC theorem therefore applies \cite{b:RU,b:BH}. \mnote{This is \prp's Theorem~70.1 (Part~V), source~74's Lemma~\ref{mrn:w:rf:lem:small}.} Its weighted form follows by specializing the basis polynomial of the extended transversal matroid at private variables $s/u_x$ and right variables $tv_y$, then using the bivariate Lorentzian criterion. Hence Theorem~\ref{mrn:w:fh:thm:classification}'s positive direction holds for every exterior population when the actual rank is used.
+
+For nonnegative activities, delete the zero-activity vertices. The graph remains a full Hall graph with cores of size at most their original sizes. An empty core leaves a complete bipartite graph and isolates; singleton cores and all other cases are covered above. Thus the positive direction remains true with normalization by the surviving degree, not merely by its original value.
+
+\subsection{Explicit counterexamples when both cores are large}\label{mrn:w:fh:sec:negative}
+ \mnote{Source~74 (Section~\ref{mrn:w:rf:sec:negative}) prints the same family with the populations $N=b+30$, $M=a+30$; source~75's offset $h$ is a second choice, and Table~\ref{mrn:w:tab:shapes} records its first failing integer activities for seven shapes.}
+Now let $a,b\ge3$, and set
+\[
+ r=a+b,\qquad K=(r-1)ab,\qquad H=(r+1)ab-2r(r-1).
+\]
+Since $ab\ge3(r-3)$ and $r\ge6$,
+\[
+ H\ge r^2-4r-9>0.
+\]
+Choose the explicit integer
+\[
+ h=1+\left\lceil\frac{2K}{H}\right\rceil,
+ \qquad n=b-1+h,\qquad m=a-1+h.
+\]
+Give every exterior vertex activity one and every core vertex activity $w>0$. Put
+\[
+ A_i=\binom n{b-i},\qquad B_i=\binom m{a-i}\qquad(i=0,1,2),
+\]
+and define
+\begin{align*}
+ X&=aA_0B_1+bA_1B_0,\\
+ Y&=aA_1B_2+bA_2B_1,\\
+ Z&=\binom a2A_0B_2+abA_1B_1+\binom b2A_2B_0.
+\end{align*}
+The top three support coefficients are exactly
+\begin{align*}
+ p_r&=A_0B_0w^r,\\
+ p_{r-1}&=A_1B_1w^r+Xw^{r-1},\\
+ p_{r-2}&=A_2B_2w^r+Yw^{r-1}+Zw^{r-2}.
+\end{align*}
+They are obtained by omitting zero, one or two core vertices in the general support formula. Consequently
+\begin{equation}\label{mrn:w:fh:eq:negativegap}
+ \gap_{r-1}^{(r)}(P_H)
+ =w^{2r-2}(\alpha w^2+\beta w+\gamma),
+\end{equation}
+where
+\begin{align*}
+ \alpha&=(r-1)A_1^2B_1^2-2rA_0A_2B_0B_2,\\
+ \beta&=2(r-1)A_1B_1X-2rA_0B_0Y,\\
+ \gamma&=(r-1)X^2-2rA_0B_0Z.
+\end{align*}
+The leading coefficient is strictly negative. Indeed
+\[
+ \frac{A_1^2B_1^2}{A_0A_2B_0B_2}
+ =\frac{ab}{(a-1)(b-1)}\left(1+\frac1h\right)^2,
+\]
+while the choice of $h$ gives
+\[
+ \frac HK\ge\frac2{h-1}>\frac2h+\frac1{h^2}.
+\]
+Therefore this coefficient ratio is strictly below $2r/(r-1)$, exactly the threshold for $\alpha<0$.
+
+For a completely finite activity choice, take
+\[
+ w=1+\left\lfloor\frac{|\beta|+|\gamma|}{-\alpha}\right\rfloor.
+\]
+Then $w\ge1$ and
+\[
+ \alpha w^2+\beta w+\gamma
+ \le\alpha w^2+(|\beta|+|\gamma|)w<0.
+\]
+This gives an explicit positive-integer two-shore activity counterexample for every $a,b\ge3$, completing the negative direction of Theorem~\ref{mrn:w:fh:thm:classification}. The activity bound is conservative and is not claimed minimal.
+
+\subsection{A positive theorem does not imply real rootedness}
+The two-by-$s$ conclusion is genuinely an ultra-log-concavity theorem. For $s=3$, $n=m=9$, activity $100$ at all five core vertices and activity one at every exterior vertex, replacing $t$ by $t/100$ gives
+\[
+ F(t)=1+645t+38730t^2+124500t^3+37800t^4+3024t^5.
+\]
+Its discriminant is
+\[
+ -4431992565218959594687680000000<0,
+\]
+so not all roots are real. Exact root counting gives three real roots. Its four order-five margins are nevertheless
+\[
+ 1276800,\qquad8036447400,\qquad75433572000,\qquad1950480000,
+\]
+all strictly positive. The program \texttt{verify\_separation.py} \mnote{shipped as \path{code/75-full-hall-verify_separation.py}} regenerates these integers from the graph parameters.
+
+\subsection{Verification and the remaining questions}
+The accompanying exact programs generate the twelve normalized coefficient families directly from \eqref{mrn:w:fh:eq:coeff}--\eqref{mrn:w:fh:eq:basecoeff}. A separate check proves their signs by substituting the Newton bounds, reducing to corners of multilinear boxes, and verifying nonnegative polynomial coefficients in the free integer slacks. Denominator positivity and the $k=1,2$ boundary are checked explicitly. The generic extraction also reproduces all 49 orbit coefficients of the two-by-three case and all 80 of the two-by-four case exactly.
+
+The readable argument above is uniform in $s$; it is not an inference from finitely many core sizes. Exact scripts audit algebraic identities and boundary bookkeeping. They do not constitute a Lean formalization, and numerical root approximations are not used in any proof.
+
+The existing Hall-bottleneck report \cite{b:HallMS} already disproves universal weighted rank normalization using a three-by-three core and studies symmetric higher cores. Theorem~\ref{mrn:w:fh:thm:classification} gives a sharp boundary for the \emph{full} Hall-core shapes, including all unequal cores and arbitrary independent positive activities in the positive range. Arbitrary graphs with a two-plus-three minimum cover are still not classified here: missing core edges and proper exterior neighbourhoods need different arguments. In particular, this report does not settle whether the first weighted counterexample among all bipartite graphs has rank five or six, and gives no negative result for unit weights or weights confined to one shore.
+\mnote{Settled within the batch: the first weighted counterexample rank is exactly six (source~74, Corollary~\ref{mrn:w:rf:cor:rankfive}); unit-weight and one-shore counterexamples are sources~71 and~73 (Part~II). Source~75's delivered README, which is not shipped, likewise says that general weighted rank five remains open ``here''. Arbitrary graphs with a $2+3$ minimum cover, which source~75 leaves unclassified, are covered by source~74's Theorem~\ref{mrn:w:rf:thm:main}.}
+
+\appendix
+\section{Provenance of this report}\label{mrn:sec:provenance}
+
+\subsection{Sources}\label{mrn:sec:sources}
+All sources arrived in ProveIt's incoming directory in commit
+\texttt{1512ef835} (batch~72, 79 archives) and were placed in commit
+\texttt{8bb543f0f}. Each is dated 1 October 2026. Their delivered PDFs,
+manuscripts, READMEs, checksum ledgers and the identical helper
+\texttt{build\_local.sh} are not shipped; their code, data, audit and
+provenance files are, under the prefixes listed (README of this report).
+``Pin'' is a ProveIt commit that the manuscript itself cites; sources
+without a pin cite their siblings by archive name only.
+At this stage four sources are printed.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.06\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}}
+\toprule
+No. & Archive and title & Pin & Labels & Printed as\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+74 & \path{ProveIt_Weighted_Rank_Five_and_Two_Shore_Covers.zip}: \emph{Weighted Rank Five and Covers with a Two Vertex Shore} (16 pages, A4) & \texttt{1b3960d8a}, \texttt{a866ff9a2} (archives cited) & \texttt{mrn:w:rf:} & Sections~\ref{mrn:src:74}--\ref{mrn:w:rf:sec:verification} (base)\\
+72 & \path{strictness_equality_package.zip}: \emph{Strictness and equality for weighted matching support polynomials} (8 pages, Letter; ``AI-assisted mathematical research'') & none & \texttt{mrn:w:se:} & Section~\ref{mrn:src:72}\\
+76 & \path{ProveIt_Weighted_Rank_Four_Stability.zip}: \emph{Stability of Two by Two Covers and Weighted Rank Four} (8 pages) & \texttt{1b3960d8a}, \texttt{a866ff9a2} & \texttt{mrn:w:sb:} & Section~\ref{mrn:src:76}\\
+75 & \path{ProveIt_Sharp_Full_Hall_Classification.zip}: \emph{A Sharp Weighted Classification of Full Hall Bottleneck Graphs} (9 pages) & \texttt{4a3b6991d} & \texttt{mrn:w:fh:} & Section~\ref{mrn:src:75}\\
+\end{longtable}
+
+The full commit hashes are \path{1b3960d8acdabd983147b7c609bd9dfb2d67a0a0}
+(the batch-70 archive of the manuscript now printed as Part~XII of \prp),
+\texttt{a866ff9a2} (the batch-68 archive of the Hall-bottleneck manuscript,
+now Part~XI) and \path{4a3b6991d0cc12cc09b884e22728e2128a54c6e3} (the commit
+that wrote Part~XI). Source~72 cites source~74 by title, and its shipped
+\path{72-strictness-SOURCES.md} records a hash of source~74's delivered PDF;
+that file is kept as delivered.
+
+\subsection{What each source contributed}\label{mrn:sec:contrib}
+\begin{itemize}
+\item \textbf{74} (base): the $2+q$ transversal lift
+  (Theorem~\ref{mrn:w:rf:thm:main}), weighted normalization through matching
+  number five and the least weighted failure rank six
+  (Corollary~\ref{mrn:w:rf:cor:rankfive}), the cover obstruction
+  (Corollary~\ref{mrn:w:rf:cor:coverobstruction}), the forced-sector and
+  scaling refinements, the negative family at every rank $\ge6$, the Ehrhart
+  corollary, the generic-line matroid model, the sharp all-core constants
+  $2q/(q-1)$ and three, the star-core transfer proofs, a second route to the
+  first-gap equality case, and quantitative strictness thresholds.
+\item \textbf{72}: equality in any one gap only for balanced star forests,
+  and strict $\ULC_r$ otherwise, under the cover hypothesis of source~74
+  (Theorem~\ref{mrn:w:se:thm:main}); a weighted Chan--Pak contraction
+  criterion (Theorem~\ref{mrn:w:se:thm:weighted}); a second route to the
+  first-gap equality case.
+\item \textbf{76}: real stability of the basis polynomial, hence
+  real-rootedness of $p_G$, for every graph with a vertex cover of two
+  vertices on each shore (Theorem~\ref{mrn:w:sb:thm:main}); a second route to
+  weighted rank four; the sharp stability criterion for complete $2\times s$
+  mixed cores (Theorem~\ref{mrn:w:sb:thm:two-s-boundary}) and its 17-vertex
+  boundary example.
+\item \textbf{75}: the full Hall classification
+  (Theorem~\ref{mrn:w:fh:thm:classification}), with a second route to its
+  positive half, strictness, real-rootedness for a singleton core, explicit
+  asymmetric failures, and a strictly ultra-log-concave rank-five example
+  with nonreal zeros.
+\end{itemize}
+
+\subsection{Where the merge chose}\label{mrn:sec:choices}
+\begin{itemize}
+\item \emph{Placement and base.} The batch's manuscripts continue Parts~XI--XIII
+  of \prp{} and answer several of its research questions, but they form a
+  self-contained programme of 26 archives; they were placed as a new report in
+  \path{log-concavity-and-unimodality}, with source~74 as the base because it
+  proves the most general theorem and the others cite it. \prp{} is cited,
+  not reprinted, and receives dated pointers to this report.
+\item \emph{Source~74's layout.} Its eight section files were inlined into
+  \texttt{article.tex} and removed; its appendices are ordinary sections of
+  Part~I. Its two short lemmas that restate \prp{} (Lemmas~\ref{mrn:w:rf:lem:small}
+  and~\ref{mrn:w:rf:lem:singleton}) keep their statements and receive pointer
+  proofs. Table~\ref{mrn:w:tab:shapes} was added from its recorded verifier
+  output.
+\item \emph{Re-proofs of \prp.} Sources~74 and~72 re-prove Part~XI's
+  first-gap inequality and its equality case by the Motzkin--Straus route:
+  both proofs are printed, marked as second routes. Source~74's rank-six
+  witness is Part~XI's $H_{3,33}$ and its $(4,4)$ shape Part~XI's $H_{4,11}$:
+  printed with notes. The leaf compression of sources~72, 74 and~76 is
+  Part~XIII's; source~76's inversion identity, gluing lemma,
+  expected-determinant lemma and $K_{2,k}$ stability are Part~VI's: proofs
+  of those are pointers.
+\item \emph{Same theorem in the batch.} Source~76's weighted rank four and
+  the positive half of source~75's classification are cases of source~74's
+  theorem; both are printed in full as second routes, because their proofs
+  (real stability; a comparison polynomial) differ from source~74's and give
+  more (real-rootedness, strictness).
+\item \emph{Stale sentences.} Statements of sources~75 and~76 that the first
+  weighted failure rank is five or six, or that rank five is open, are kept
+  with notes: source~74 settles them.
+\end{itemize}
+
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{2pt}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{b:BH}
+P.~Br\"and\'en and J.~Huh, \emph{Lorentzian polynomials}, Annals of
+Mathematics \textbf{192} (2020), 821--891.
+\url{https://annals.math.princeton.edu/2020/192-3/p04},
+\href{https://arxiv.org/abs/1902.03719}{arXiv:1902.03719}.
+\mnote{Places used, as the sources name them: Theorem~2.10, Example~2.26,
+Corollary~2.32, Proposition~3.1, Theorem~3.4, Corollary~3.5 and
+Theorem~3.10 (source~74); Theorem~3.10, Corollary~2.11 and Theorem~2.10
+(source~72); cited without a theorem number by sources~75 and~76.
+}
+
+\bibitem{b:BB}
+J.~Borcea and P.~Br\"and\'en, \emph{The Lee--Yang and P\'olya--Schur
+programs. II. Theory of stable polynomials and applications}, Comm. Pure
+Appl. Math. \textbf{62} (2009), 1595--1631.
+\href{https://arxiv.org/abs/0809.3087}{arXiv:0809.3087}.
+
+\bibitem{b:CP}
+S.~H.~Chan and I.~Pak, \emph{Equality cases of the Stanley--Yan log-concave
+matroid inequality}, arXiv:2407.19608v2 (2026).
+\url{https://arxiv.org/abs/2407.19608}.
+\mnote{Theorems~1.3 and~1.11 (source~72).
+}
+
+\bibitem{b:COSW}
+Y.-B.~Choe, J.~G.~Oxley, A.~D.~Sokal and D.~G.~Wagner, \emph{Homogeneous
+multivariate polynomials with the half-plane property}, Advances in Applied
+Mathematics \textbf{32} (2004), 88--187.
+\href{https://arxiv.org/abs/math/0202034}{arXiv:math/0202034}.
+
+\bibitem{b:DK}
+R.~Davis and F.~Kohl, \emph{Perfectly Matchable Set Polynomials and
+$h^*$-polynomials for Stable Set Polytopes of Complements of Graphs},
+Discrete Mathematics \textbf{347}(7) (2024), 114018.
+\href{https://arxiv.org/abs/2207.14759}{arXiv:2207.14759}.
+\mnote{Theorem~3.10 and Lemma~3.11 state the geometric identities used
+(source~74).}
+
+\bibitem{b:MS}
+T.~S.~Motzkin and E.~G.~Straus, \emph{Maxima for Graphs and a New Proof of
+a Theorem of Tur\'an}, Canadian Journal of Mathematics \textbf{17} (1965),
+533--540, Theorem~1.
+\href{https://doi.org/10.4153/CJM-1965-053-6}{doi:10.4153/CJM-1965-053-6}.
+
+\bibitem{b:RU}
+F.~R\"ohrle and M.~Ulirsch, \emph{Logarithmic concavity of bimatroids},
+Annals of Combinatorics \textbf{30} (2026), 501--523, published online
+14 August 2025.
+\href{https://arxiv.org/html/2402.15317v3}{arXiv:2402.15317v3}.
+\mnote{Theorem~A and Example~2.4 (sources~74, 75, 76).}
+
+\bibitem{b:PRP}
+\emph{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}, ProveIt
+research report,
+\path{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/preorder-root-polytopes}
+(``\prp'' in this report), in thirteen Parts. Theorem numbers cited here are
+those of its \texttt{article.pdf} at the placement commit \texttt{8bb543f0f}.
+\mnote{Source~76 cites its Part~VI (independent-column expectations,
+complete bipartite stability and block locality), inspected 1 October 2026.}
+
+\bibitem{b:HallMS}
+\emph{Hall Bottlenecks and the Limits of Rank Normalization}, research
+manuscript prepared for Vladimir Reshetnikov with ChatGPT, 30 September 2026;
+now Part~XI of \prp. Cited as the incoming archive
+\path{ProveIt_Hall_Bottlenecks.zip} at commit \texttt{a866ff9a2} by
+sources~74 (``The rank-six witness is restated and verified here'') and~76,
+and as Part~XI of \prp{} pinned at commit
+\path{4a3b6991d0cc12cc09b884e22728e2128a54c6e3} by source~75.
+
+\bibitem{b:RankMS}
+\emph{Rank-Three Ultra-Log-Concavity and Exact Kernels for Matching
+Supports}, research manuscript prepared for Vladimir Reshetnikov with
+ChatGPT, 30 September 2026; now Part~XII of \prp. Cited by sources~74 and~76
+as the incoming archive \path{ProveIt_Matching_Rank_Research.zip} at commit
+\path{1b3960d8acdabd983147b7c609bd9dfb2d67a0a0}; source~76 refers to its
+question ``Finish rank four'' (Research question~93 of \prp).
+
+\bibitem{b:LeafMS}
+\emph{Leaf Compression and Weighted Rank Three for Matching Support
+Polynomials}, research note prepared for Vladimir Reshetnikov with OpenAI,
+1 October 2026, delivered as \path{ProveIt_Weighted_Rank_Three_Leaf_Compression.zip}
+in batch~71 and again (byte-identical) as archive~78 of batch~72; now
+Part~XIII of \prp. Source~74: ``The compression proof is repeated in''
+Lemma~\ref{mrn:w:rf:lem:singleton} (here a pointer to Part~XIII).
+
+\bibitem{b:m74}
+Batch-72 source~74, \emph{Weighted Rank Five and Covers with a Two Vertex
+Shore}, research note prepared for Vladimir Reshetnikov with OpenAI,
+1 October 2026; printed here as Sections~\ref{mrn:src:74}--\ref{mrn:w:rf:sec:verification}.
+Its Theorem~1.1 is Theorem~\ref{mrn:w:rf:thm:main} here, and its Sections~2
+and~3 are Sections~\ref{mrn:w:rf:sec:lorentz} and~\ref{mrn:w:rf:sec:tworow}. Source~72 cites it as an
+``AI-assisted ProveIt research report'' containing ``the rank-$(q+2)$
+transversal lift and weighted rank-five theorem; the lift's exact interface
+is recalled in'' Section~\ref{mrn:w:se:sec:lift}.
+
+\bibitem{b:m75}
+Batch-72 source~75, \emph{A Sharp Weighted Classification of Full Hall
+Bottleneck Graphs}, printed here as Section~\ref{mrn:src:75}. Source~74 cites
+it as \emph{Sharp Full Hall Classification}, a companion report: ``Its
+general negative-shape construction is reproduced in''
+Section~\ref{mrn:w:rf:sec:negative}.
+
+\bibitem{b:m76}
+Batch-72 source~76, \emph{Stability of Two by Two Covers and Weighted Rank
+Four}, printed here as Section~\ref{mrn:src:76}. Source~74: ``The present
+rank-five ULC proof is self-contained and does not import its stability
+constructions.''
+\end{thebibliography}
+
 \end{document}
