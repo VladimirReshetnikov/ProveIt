@@ -1,5 +1,11 @@
 # Factor the native index directly through its ports: a269-operation U9 polynomial
 
+The [shared-expression successor](neary_woods_universal_shared_history265.md)
+removes2M+2A from every schedule by exact integer identities. It gives
+265/degree-at-most3853 with43 witnesses and275/608 with44 witnesses;
+the fixed43-witness family reaches272/1344. All historical counts and
+finite-family scope below are retained.
+
 The [regrouped-family successor](neary_woods_universal_computed_ports_partitions.md)
 optimizes degree bounds across all16 inherited strong/scale bases, retaining
 this269 endpoint and improving intermediate options to275/1094,276/1048,

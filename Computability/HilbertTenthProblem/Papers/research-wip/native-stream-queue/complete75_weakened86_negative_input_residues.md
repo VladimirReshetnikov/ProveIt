@@ -1,5 +1,12 @@
 # Finite residue classification of the negative input-root86 subsystem
 
+The separate [auxiliary-sign successor](complete75_weakened86_auxiliary_sign_lift.md)
+now supplies the exact target-sign condition and all five positive
+auxiliary coordinates. Combined with this CRT test, it gives a full
+negative-input extension iff at fixed validated first/main/outer-transport
+data. No actual passing outer tuple or universal86 result is claimed;
+the subsystem theorem and historical evidence below retain their scope.
+
 The [weakened86 candidate](complete75_weakened_bound86_candidate.md)
 remains unresolved. This note treats its remaining **mu<0** branch
 without fixing the odd gap `2n-p`. For every fixed main and first Pell

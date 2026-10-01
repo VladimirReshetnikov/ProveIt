@@ -1,5 +1,12 @@
 # Tag-system halting needs no causal-prefix guards
 
+A [paid cyclic-tag sentinel-fold successor](../research-wip/native-stream-queue/queue_causality_sentinel_fold.md)
+implements the first-short-prefix projection with at most10T+1 operations
+and T positive witnesses. Its separate exact-run family uses a guard and
+at most14T-2 operations for T>=2. Both have fixed compiler horizon, so
+neither is a new fixed-arity universal bound; the historical scope and
+count statement below remain.
+
 This note removes a proof obligation from the finite-stream tag-system
 proposal. It does not supply a counted Diophantine encoding or improve
 the established universal bound of 90. The result is a general elementary

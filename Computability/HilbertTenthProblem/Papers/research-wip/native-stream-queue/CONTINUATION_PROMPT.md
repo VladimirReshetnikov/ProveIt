@@ -15,20 +15,21 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **269=136M+133A**,255 certificate operations,43 positive witnesses,
+> **265=134M+131A**,251 certificate operations,43 positive witnesses,
 > 5 comparisons and four positive program parameters, with degree
-> at most3853: [factored native ports](neary_woods_universal_factored_ports269.md).
-> Six additions disappear through exact identities in private registers.
-> The whole polynomial and positive domain are unchanged from
-> [computed275](neary_woods_universal_computed_ports275.md), on every integer assignment.
-> The [new grouped family](neary_woods_universal_computed_ports_partitions.md)
-> gives279/degree-at-most608 with44 witnesses; the fixed43-witness
-> alternative is276/1344. It optimizes all factor groups/anchors over16
-> inherited strong/scale bases for the stated propagated-degree objective.
-> The bound608 is not a lower bound on exact degree or all circuits.
+> at most3853: [shared history expressions](neary_woods_universal_shared_history265.md).
+> Exact reuse of a paid cubic, selector prefix and radix decrement saves
+> 2M+2A from the [factored269 parent](neary_woods_universal_factored_ports269.md).
+> Whole-polynomial values agree on every integer assignment, with the
+> same supplied positive domain. The sixteen-base grouped frontier shifts
+> uniformly to275/degree-at-most608 with44 witnesses; the fixed43-witness
+> alternative is272/1344. The [partition theorem](neary_woods_universal_computed_ports_partitions.md)
+> optimizes its stated finite propagated-degree objective. The bound608
+> is not a lower bound on exact degree or all circuits.
 > Within each fixed specialized base regrouping preserves positive zeros;
 > across bases completeness retains the inherited valid program slices.
-> The former mapped275/3853 through285/608 family remains reproducible.
+> Historical269/3853 through279/608 and mapped275/3853 through285/608
+> remain reproducible, as does computed275 with its unchanged coordinates.
 > The [duration-floor282 predecessor](neary_woods_universal_duration_floor282.md)
 > retains262 certificate gates,7eq46w and degree at most3980. Its
 > [positive-mask-gap285 parent](neary_woods_universal_mask_gap285.md)
@@ -811,7 +812,45 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The current [factored-port269 source](neary_woods_universal_factored_ports269.md)
+The current [shared-history265 source](neary_woods_universal_shared_history265.md)
+reuses P^3 in the four-term repunit, S0+P*S1 in the controller word,
+and B-1 in 2B-1. The exact local identities remove2M+2A from every
+optimized269-parent schedule without changing any supplied coordinate,
+comparison, group factor or complete polynomial value. Its default is
+251 certificate /265=134M+131A,5eq43w, four program parameters and
+degree at most3853. All seven nonempty rewrite subsets remain selectable;
+private consumers and nested interfaces are guarded.
+The shifted full frontier is265/3853,266/3437,267/3391,268/2273,
+269/1505,270/1459,271/1094,272/1048,273/734,274/706,275/608.
+The first three points use43 witnesses; subsequent full-frontier points
+use44. The fixed43-witness frontier is265/3853,266/3437,267/3391,
+268/2380,270/1810,272/1344. This uniform cost shift inherits the exact
+finite propagated-objective optimization; it is not a new lower bound
+on all arithmetic circuits. The receipt checks2,464 ledgers and6,048
+whole-output/register identities, including3,024 signed assignments.
+
+The [queue sentinel-fold packet](queue_causality_sentinel_fold.md) pays a
+new fixed-horizon schedule for imported canonical-certificate report07.
+It folds S(w)=2^|w|+val(w) backwards, joining content and length in one
+word equality, and uses integer-nonnegative b(b-1) terms without their
+outer squares. Retain the first-failure product for exact T and arbitrary
+terminal words; omit only strictly positive constant length factors.
+The old guard is a known positive multiple of the new guard. This gives
+at most14T-2=(6T-2)M+8TA for T>=2,T+1 positive witnesses,degree<=2T.
+The forward/SOS comparison at A=10,w=101,T32 is509 versus446; the
+planner uses nonnegative forward equations instead if cheaper.
+For empty terminal only, omitting the guard costs at most10T+1 with T witnesses;
+the first-short-prefix theorem then represents eventual halting after
+existentially choosing T. A later zero need not describe an exact run:
+A=1,w=0 admits a fake read0 followed by T-1 copies of1, while actual halt time is1.
+A=11,w=0,claimed reads01 also fakes nonempty terminal1, so that endpoint
+cannot use the guard-free theorem. The packet has no ordinary-x loader
+or fixed-arity unbounded-time polynomial. A future uniform packing must
+pay that interface; neither the one-sided sentinel fold nor the report's
+variable-horizon coordinate count removes it. Author/root and independent
+review checks are recorded in the packet, with finite fixtures scoped.
+
+The preceding [factored-port269 source](neary_woods_universal_factored_ports269.md)
 uses the exact identity
 r=(q-1)[1+A+(q+1)(Bprime+(q-1)Z)] for the packed native index after
 F1=A-Z,F2=Bprime-Z,F0=q-A-F2-1. Folding the already-paid A+1 and
@@ -1399,6 +1438,49 @@ proved finite reduction at those gaps, not their exclusion. Remaining
 work concerns odd gaps at least13 or mu<0 while retaining the actual
 main root, full strong norm and both ratios. The literal86 source and
 established75/87 bounds do not change.
+
+The [negative-input residue theorem](complete75_weakened86_negative_input_residues.md)
+now classifies the input norm/discriminant, retained first-index equation
+with positive slack, and necessary auxiliary target modulo c for fixed
+main/first data. For input Pell index v, intersect classes modulo2p,
+Delta and a finite Pell-state return period modulo E; then solve the two
+linear congruences for rho and test its least positive representative
+against rho<gamma. Passing classes yield arbitrarily large v and positive
+extensions of that subsystem with R<0,mu<0. They do not reconstruct the
+remaining auxiliary norm/linear equation, transport or product signs.
+The actual earlier ratio survivor q=16,p=21,n=15,X=2^21,Y=8192 has no
+negative-input extension: all20,160 necessary mask/offset/sign cases fail
+by target insolubility or rho>=gamma. Combined with its earlier positive-mu
+wrap rejection, this removes that one tuple for either input-root sign.
+It does not bound all main/first data, exclude mu<0 globally, or alter
+86/19w/degree203. Source/fresh and two independent reviews pass; small
+passing CRT hosts in that packet remain subsystem fixtures.
+
+The separate [auxiliary-sign lift](complete75_weakened86_auxiliary_sign_lift.md)
+closes the previously missing five-coordinate converse. For A>=3,
+odd p>=3,c=psi_A(p), positive normalized-strong/auxiliary witnesses exist
+exactly for target J_target=-p modc when p=1 mod4, or J_target=+/-p modc
+when p=3 mod4. The target may be arbitrarily negative. Choose main
+auxiliary index m=pc or2pc and an allowed odd ell, then increase ell by
+multiples of4m until V+J_target>0. The exact congruences make
+j=(V+J_target)/c and o=(V+c)/f positive integers, and all three affected
+source factors have the required values; the other five stay unchanged.
+For validated fixed first/main/outer data including both ratios, the
+computed main-root equation and transport sign nu, restrict the CRT test
+to those allowed target signs and lambda=epsilon*nu. A passing class now
+extends to a full positive candidate zero with R<0,mu<0, and every such
+extension gives a passing class. This is a conditional iff, not a search
+or bound over the fixed outer data. No actual passing outer tuple or
+false-input zero has been supplied. The rejected ratio tuple still has
+no classes. Canonical auxiliary examples are full auxiliary blocks only.
+The default modular period search raises after10,000 steps unless a
+valid return period is supplied; reaching that cap is not an exclusion.
+The mathematical finite criterion has no corresponding cutoff.
+Next work may search or exclude validated outer data under this criterion;
+transport must remain imposed, and an actual passing extension would
+still need its represented input checked before calling it false-input.
+Positive-mu gaps at least13 and the unbounded negative-mu outer-data
+problem remain open; universal soundness of86 is unresolved.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary
