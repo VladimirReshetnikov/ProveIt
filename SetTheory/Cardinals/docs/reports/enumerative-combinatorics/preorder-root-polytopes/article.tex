@@ -32,7 +32,8 @@
     Part VII: the transversal matroid of a preorder;
     Part VIII: marked-tree stability, arbitrary apex neighbourhoods, enumeration and repair;
     Part IX: two-flow bijections, full-coordinate sampling of demand vectors and preorder lattice points;
-    Part X: rare stable markings on random trees, sparse transitions and annealed--quenched separation}}
+    Part X: rare stable markings on random trees, sparse transitions and annealed--quenched separation;
+    Part XI: Hall bottlenecks and the limits of rank normalization}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -136,6 +137,8 @@
 \newcommand{\dto}{\xrightarrow{\ d\ }}
 \newcommand{\pto}{\xrightarrow{\ \PP\ }}
 \newcommand{\cst}{c_*}
+% Part XI (batch 68): macros of source 13
+\newcommand{\ULC}{\operatorname{ULC}}
 
 \begin{document}
 \thispagestyle{empty}
@@ -167,6 +170,9 @@ full-coordinate sampling of demand vectors and preorder lattice points}\par
 \vspace{3pt}
 {\normalsize\color{Ink} With Part~X (added 30 September 2026): rare stable markings on
 random trees --- sparse transitions and annealed--quenched separation}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~XI (added 30 September 2026): Hall bottlenecks and the
+limits of rank normalization}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -273,6 +279,21 @@ proves conditional Gaussian laws and a linear conditioned diameter at
 fixed $p$. For every fixed tree the probability is determined by the
 diameter up to a polynomial factor, which separates the typical-tree
 exponential rate $\log(1-p)$ from the averaged rate $-p$.
+
+\emph{Addition of 30 September 2026 (batch 68).} Part~XI, from a further
+manuscript, shows that Part~V's normalization by the smaller shore cannot
+in general be lowered to the matching number $\nu(H)$ when positive
+weights are placed on both shores: a graph with 30 vertices, 104 edges,
+matching number eight and vertex weights in $\{1,500\}$ violates the last
+rank-normalized inequality by an exact certificate. For a symmetric
+Hall-bottleneck family it gives a complete rank-six phase diagram and the
+endpoint threshold for every core size, and it shows that a normalization
+depending on the matching number alone must grow at least like
+$\frac43\nu(H)$ along even ranks. The first rank-normalized inequality
+holds for every positively weighted graph, with a defect identity and its
+equality cases, and the support polynomial can be computed exactly in time
+$2^{\nu(H)^2+O(\nu(H))}$ times a polynomial. The unit-weight and one-shore
+versions remain open.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -304,6 +325,9 @@ Section~\ref{tf:sec:answers}.]
 [Added 30 September 2026, batch 66: Part~X determines the probability
 that an independently marked random labelled tree is stable; see
 Section~\ref{rts:sec:answers}.]
+[Added 30 September 2026, batch 68: Part~XI answers the positively
+weighted version of Part~V's question on normalization by the matching
+number negatively; see Section~\ref{hb:sec:answers}.]
 \end{tcolorbox}
 % Part III (batch 42): the page break that stood here was removed; the
 % longer abstract pushes this box to page 2, where the contents now follow it.
@@ -339,6 +363,9 @@ of Part~I.
 Part~X (Sections~\ref{rts:sec:prov}--\ref{rts:app:regimes}), added
 on 30 September 2026, treats stable markings of random trees; it follows
 Part~IX and precedes the appendices of Part~I.
+Part~XI (Sections~\ref{hb:sec:prov}--\ref{hb:app:provenance}), added
+on 30 September 2026, treats normalization by the matching number; it
+follows Part~X and precedes the appendices of Part~I.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -6937,6 +6964,12 @@ already for posets of height two, and it has an FPRAS, as has every
 coefficient of $h_\tau$ (Part~V, Theorems~\ref{lor:sp:thm:preorderhard},
 \ref{lor:thm:FPRASpartition} and~\ref{lor:thm:coefficients}). The
 parameterized question remains open.]
+[Added 30 September 2026, batch 68: Part~XI computes every weighted
+support polynomial exactly in time $2^{\nu(H)^2+O(\nu(H))}$ times a
+polynomial (Theorem~\ref{hb:thm:FPT}), hence, through
+Theorem~\ref{htwo:thm:main}, $h_{P_G}$ in height two with the matching
+number of the comparability graph as parameter. The widths named here
+are a different parameter; the question remains open for them.]
 
 \begin{question}[A geometric interpretation of the gamma coefficients]
 The signed-vector formula counts balanced points of the cube
@@ -7013,6 +7046,10 @@ $\#\mathrm P$-hard to compute for unrestricted preorders, already in height
 two, where $\Gamma_{P_H}=p_H$ (Part~V, Corollary~\ref{lor:cor:gammahard}); it
 has an FPRAS in height two (Theorem~\ref{lor:thm:coefficients}). Efficient
 classes remain open.]
+[Added 30 September 2026, batch 68: one efficient class in height two:
+graphs of bounded matching number, by Part~XI's cover-type formula
+(Theorems~\ref{hb:thm:algorithmformula} and~\ref{hb:thm:FPT}), which
+groups vertices by their neighbourhoods in a minimum cover.]
 
 \begin{question}[Local changes of the relation; manuscript~01]
 Find effective formulas for the gamma increment when one adds a relation
@@ -8276,6 +8313,11 @@ The homogenizing degree in \eqref{lor:eq:homogenization} is $m$, not necessarily
 the actual degree $\nu(H)$. Dividing a Lorentzian polynomial by a power of
 a homogenizing variable does not automatically preserve the property.
 We therefore do not silently replace $m$ by $\nu(H)$.
+[Added 30 September 2026, batch 68: with positive weights on both shores
+the replacement is false. Part~XI's Corollary~\ref{hb:cor:division} is a
+Lorentzian polynomial of the form~\eqref{lor:eq:weightedhom}, of degree
+15, whose quotient by the seventh power of the homogenizing variable is
+not Lorentzian (Theorem~\ref{hb:thm:witness}).]
 
 \section{Weighted inequalities on both shores}
 \label{lor:sec:weighted}
@@ -8449,6 +8491,9 @@ equation~\eqref{lor:sp:eq:upper} is attained exactly.
 The theorem permits removal of isolated vertices before normalization. It does
 not silently replace $d$ by the maximum matching size $r$. That would be a
 stronger assertion when $r<d$; no such strengthening is proved here.
+[Added 30 September 2026, batch 68: with positive weights on both shores
+it is false (Part~XI, Theorem~\ref{hb:thm:witness}); with unit weights it
+is open (Research question~\ref{hb:q:unit}).]
 Nor may one divide by both shore binomial coefficients. The latter plausible
 variant is false even for forests; see Example~\ref{lor:sp:ex:bad-normalization}.
 
@@ -10253,6 +10298,24 @@ bivariate criterion, while $s^2+4st+5t^2$ fails the degree-two criterion.
 $2\le\nu(H)<d$, and 264 seeded random graphs with shores up to $(6,6)$, none
 violates log-concavity of $a_k/\binom{\nu(H)}k$. The question stays open.]
 
+[Added 30 September 2026, batch 68: answered negatively for positive
+vertex weights on both shores. Part~XI's Theorem~\ref{hb:thm:witness}
+gives a graph with 30 vertices, 104 edges and $\nu(H)=8<15=\min(m,n)$,
+with weight $500$ on eight core vertices and $1$ on the others, whose
+weighted support polynomial violates the last inequality of order eight;
+a family of matching number six fails as well
+(Theorem~\ref{hb:thm:rank6phase}), and any normalization depending on
+$\nu(H)$ alone must be at least about $\frac43\nu(H)$ along even ranks
+(Corollary~\ref{hb:cor:universalorder}). Every positively weighted graph
+satisfies the first rank-normalized inequality
+(Theorem~\ref{hb:thm:firstidentity}), hence all of them when
+$\nu(H)\le2$. The unit-weight version (the finite search above concerns
+it) and the version with weights on one shore remain open (Research
+questions~\ref{hb:q:unit} and~\ref{hb:q:oneshore}); no smallest
+counterexample is determined (Research question~\ref{hb:q:rank}). The
+division example of the preceding paragraph has an instance inside the
+class: Corollary~\ref{hb:cor:division}.]
+
 \begin{question}[Equality, rigidity, and sharper covariance bounds; sources~06 and~07]\label{lor:q:equality}
 Characterize equality at a single ultra-log-concavity index under positive
 weights, and characterize the null directions of
@@ -10275,6 +10338,12 @@ qualitative compactness when activities approach zero.
 positive weighting, is settled by source~07's
 Theorem~\ref{lor:sp:thm:equality}; source~06's antichain proposition is its
 preorder case.]
+[Added 30 September 2026, batch 68: equality at the first index is
+classified for the normalization by $\nu(H)$, under positive weights:
+exactly the disjoint unions of $\nu(H)$ stars with equal edge-weight sums
+(Part~XI, Corollary~\ref{hb:cor:equality}). For a larger normalization,
+including $\min(m,n)>\nu(H)$, the first inequality is strict
+(Section~\ref{hb:sec:answers}). Other indices remain open.]
 
 \begin{question}[Binary capacities and approximation complexity]\label{tf:hq:capacities}% label added in batch 64 (Part IX)
 Can partition functions or individual support coefficients for large
@@ -10289,7 +10358,7 @@ pseudo-polynomial cloned presentation is not already an answer.
 sampler also reach dilations only by cloning, and its Research
 question~\ref{tf:q:capacities} asks the same for them.]
 
-\begin{question}[Deterministic and practical coefficient algorithms]
+\begin{question}[Deterministic and practical coefficient algorithms]\label{hb:hq:algorithms}% label added in batch 68 (Part XI)
 Develop a deterministic approximation method for these special
 transversal-matroid partition functions, or a practically competitive
 implementation of the tilting FPRAS. Analyze dependence on graph width,
@@ -10299,6 +10368,10 @@ algorithms for the same classes.
 The rational-grid construction is designed to prove polynomial complexity,
 not to be the fastest numerical tuning rule. Its probability lower bound
 provides a useful correctness target for faster implementations.
+[Added 30 September 2026, batch 68: Part~XI gives an exact algorithm whose
+cost is governed by the matching number and by the neighbourhood types of
+the vertices outside a minimum cover (Theorems~\ref{hb:thm:algorithmformula}
+and~\ref{hb:thm:FPT}); approximation is not treated there.]
 
 \begin{question}[Algorithmic use of the preorder quotient]
 Exploit equivalence classes and the quotient poset to accelerate the independence
@@ -14052,6 +14125,10 @@ equality at every index is settled by Theorem~\ref{lor:cor:preorderintro}, but
 that does not settle individual equality cases. A structural criterion in
 terms of tight upset constraints or the symmetric matroid presentation
 would be more informative than a coefficient-only test.
+[Added 30 September 2026, batch 68: at the first index, equality in the
+unweighted inequality~\eqref{lor:eq:preorderULC} holds only for the
+antichain, by Part~XI's
+Corollary~\ref{hb:cor:equality} (Section~\ref{hb:sec:answers}).]
 
 
 \noindent\emph{Repeats Research question~\ref{lor:hq:shape}} (coefficient
@@ -19997,6 +20074,1785 @@ The critical and supercritical probability results do not by themselves
 imply uniform Gaussian or diameter limits when $p_n$ varies. Such
 extensions are explicitly left among the further questions.
 % End of Part X (batch 66).
+
+\phantomsection\part*{Part XI.\quad Hall bottlenecks and the limits of rank normalization}
+\addcontentsline{toc}{part}{Part XI.\texorpdfstring{\quad}{ } Hall bottlenecks and rank normalization}
+
+\noindent\emph{Part~XI was added on 30 September 2026 in batch~68 of
+ProveIt's incoming-report intake, from one manuscript. It answers Part~V's
+Research question~\ref{lor:q:first} (``Normalization by the matching
+number'') negatively in the version with positive weights on both shores:
+a bipartite graph with 30 vertices, 104 edges and matching number eight,
+with vertex weights in $\{1,500\}$, has a weighted support polynomial that
+is not ultra-log-concave of order eight, by an exact integer certificate,
+although Part~V's Theorem~\ref{lor:thm:weightedULC} makes it
+ultra-log-concave of order fifteen. A symmetric Hall-bottleneck family
+gives a complete rank-six phase diagram, the endpoint threshold for every
+core size, and a lower bound asymptotic to $\frac43\nu(H)$ along even ranks
+for any normalization depending on the matching number alone. In the
+positive direction the first rank-normalized inequality holds for every
+positively weighted graph, with a defect identity and its equality cases,
+and the support polynomial is computed exactly by an algorithm
+parameterized by the matching number. The unit-weight and one-shore
+versions of the question remain open. Parts~I--X are unchanged except for
+dated pointers. Section~\ref{hb:sec:prov} records the provenance, fixes
+the notation and states what is answered.}
+
+\section{Provenance, conventions and what Part~XI answers}
+\label{hb:sec:prov}
+
+\subsection{The manuscript}
+\label{hb:sec:source}
+Part~XI is printed from batch-68 manuscript~03, called \emph{source~13}
+here after its file prefix: \emph{Hall Bottlenecks and the Limits of Rank
+Normalization: Exact counterexamples, a complete rank-six phase diagram,
+and fixed-parameter counting of matching supports}, dated 30 September
+2026, 21 A4 pages as delivered. Its title page reads ``Prepared for
+Vladimir Reshetnikov / ChatGPT \textbullet{} 30 September 2026'' under
+the kicker ``ProveIt Research Continuation'', its PDF metadata give the
+author as ``ChatGPT, prepared for Vladimir Reshetnikov'', and its delivery
+README says ``Prepared for Vladimir Reshetnikov by ChatGPT''; that byline
+is recorded here and not reprinted. Its archive
+\nolinkurl{ProveIt_Hall_Bottlenecks.zip} (inner directory of the same
+name, main file \nolinkurl{article.tex}) arrived in ProveIt commit
+\texttt{a866ff9a2} and was placed in \texttt{29e52fcdf}. It is pinned to
+commit \texttt{0a543d5e435df885f78ca731d71856f3ee0ab2d4}, with this
+report's \texttt{article.tex} as blob
+\texttt{ba1cc4a6c99abd5ff808\allowbreak aae97df75efe434833e9}: Parts~I--IX
+exactly as printed (the same blob as source~12's pin; it did not see
+Part~X, which is unrelated). Its two programs and its build script are
+shipped in \nolinkurl{code/}; its recorded outputs, provenance record,
+requirements file and generated table file in \nolinkurl{data/}, all with
+the prefix \texttt{13-hall-bottlenecks-}. It shipped no checksum list and
+no audit or provenance notes in Markdown. The manuscript, delivery README
+and PDF are not shipped; they survive in the arrival commit.
+
+Source~13 continues Part~V. Its baseline, the smaller-shore inequality
+\eqref{hb:eq:baseline}, is Part~V's Theorem~\ref{lor:thm:weightedULC}
+(R\"ohrle--Ulirsch's Theorem~A for unit weights), which it credits and
+does not claim. It uses the transversal-matroid presentation of Part~V
+(the private-copy matroid $\mathsf M_H$, whose dual is Part~VII's $M_G$),
+and counts the matchable support pairs $\PM(H)$ that Part~IX also uses.
+It cites only Part~V; its provenance record says that the README and
+other Parts were inspected for existing continuations.
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of source~13 (as delivered).}
+The matching-support polynomial of a bipartite graph counts pairs of equally
+sized vertex sets admitting a perfect matching, with each pair counted once.
+Its known ultra-log-concavity uses the smaller shore size, not necessarily the
+maximum matching size. We resolve the universal \emph{positively weighted,
+two-shore} rank-normalization strengthening negatively. A graph with 30
+vertices, 104 edges, matching rank eight, and vertex weights in
+$\{1,500\}$ violates the final rank-normalized inequality by an exact integer
+certificate. A symmetric Hall-bottleneck family yields a complete rank-six
+phase diagram: for outer size $n\le32$ every positive core activity works,
+whereas for $n\ge33$ a single explicit quadratic gives the exact failure
+threshold. For arbitrary core size we determine the endpoint obstruction and
+prove that any universal rank-only normalization must be at least
+$\frac43r-O(1)$ along even ranks. In the positive direction, every graph
+satisfies the first rank-normalized inequality, with a defect identity and an
+exact equality classification. Finally, neighborhood types relative to a
+minimum vertex cover give an exact weighted counting algorithm in
+$2^{r^2+O(r)}\operatorname{poly}(|V|+|E|)$ time. Complete proofs, finite
+positive-coefficient certificates, executable code, and further questions are
+provided.
+\end{tcolorbox}
+\noindent The abstract is reproduced as delivered. Its $r$ is the matching
+number $\nu(H)$, as everywhere in Part~XI.
+
+\begin{statusbox}
+\small\textbf{Scope and status (source~13, as delivered).}
+The counterexamples concern arbitrary positive weights on \emph{both} shores.
+They do not settle the unit-weight or one-shore-only rank-normalization
+questions. The results below are proved in ordinary mathematics and checked
+by exact computations, not verified in Lean. They are newly derived for this
+article; global priority is not certified by the targeted literature review.
+No published smaller-shore theorem is contradicted.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (merge).}
+The smaller-shore inequality~\eqref{hb:eq:baseline} is not new: it is
+Part~V's Theorem~\ref{lor:thm:weightedULC}, and for unit weights it is
+Theorem~A of R\"ohrle and Ulirsch~\cite{RU} for the relation bimatroid of
+their Example~2.4; the Lorentzian inputs (matroid basis polynomials,
+nonnegative linear substitutions, the bivariate criterion) are
+Br\"and\'en--Huh's~\cite{BH}, exactly as in Part~V. Source~13's
+re-derivation of the baseline (its Section~2.1) is Part~V's proof and is
+not reprinted (Section~\ref{hb:sec:baseline}). K\H{o}nig's theorem
+(Lemma~\ref{hb:lem:konig}, proved with its classical alternating-path
+argument), elementary symmetric functions, augmenting-path matching tests
+and exact rational arithmetic are classical. New relative to Parts~I--X:
+the Hall family and its support criterion and coefficient formula
+(Section~\ref{hb:sec:family}), the 30-vertex counterexample and its
+corollaries (Section~\ref{hb:sec:witness}), the rank-six phase diagram
+(Section~\ref{hb:sec:rank6}), the endpoint threshold
+(Section~\ref{hb:sec:general}), the forced-core limiting order and the
+lower bound for rank-only normalizations (Section~\ref{hb:sec:limit}), the
+first-margin defect identity and its equality cases
+(Section~\ref{hb:sec:first}) and the cover-type counting algorithm
+(Section~\ref{hb:sec:algorithm}). Source~13's source review was targeted,
+not a comprehensive priority search; no worldwide priority is claimed for
+any result of Part~XI.
+\end{statusbox}
+
+\subsection{Notation of Part~XI}
+\label{hb:sec:notation}
+Part~XI uses Part~V's matchable support pairs $\PM(H)$ (source~13's
+$\mathcal M(H)$, the same glyph), its basis polynomial $\mathcal B_H(a,z)$
+of~\eqref{lor:eq:basispoly}, and the report's $\nu(H)$ for the maximum
+matching size. Table~\ref{hb:tab:notation} lists what Part~XI adds or uses
+differently. \textbf{One symbol is renamed:} source~13 writes the
+homogenizing variable of~\eqref{hb:eq:matroidspecialization} and
+Corollary~\ref{hb:cor:division} as $s$, and also uses $s$ for the core size
+of its Hall family from Section~\ref{hb:sec:family} on; here the
+homogenizing variable is printed $\sigma$ and the core size keeps $s$ (as
+in the shipped programs and data). Part~V's homogenizing variable $s$ in
+\eqref{lor:eq:homogenization} and \eqref{lor:eq:weightedhom} is the same
+variable as $\sigma$. No normalization was changed.
+
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Symbols of Part~XI. The last column prints the tempting false
+reading.}
+\label{hb:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.38\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~XI & Not to be confused with\\
+\midrule
+$H=(X,Y;E)$, $m$, $n$, $r$ & a bipartite graph, its shore sizes after
+ deleting isolated vertices, and $r=\nu(H)$, \emph{always} the matching
+ number & Part~V's $r=\min(m,n)$ in source~06's sections and in
+ Theorem~\ref{lor:thm:weightedULC}; its $d$ (smaller shore) in source~07's.
+ From Section~\ref{hb:sec:family} on, $n$ is the size of an outer block,
+ and $|Y|=n+s$.\\
+$\PM(H)$, $(I,J)$, $u_I$, $v_J$ & matchable support pairs, each counted
+ once; products of vertex weights & individual matchings; Part~I's order
+ ideals $I$; Part~IX's receiver support $J$ (the same kind of set).\\
+$p_H(t;u,v)=\sum_ka_kt^k$ & the weighted support polynomial & Part~V's
+ $A_H(t;u,v)$ of~\eqref{lor:eq:weighted}, the \emph{same} polynomial;
+ Part~II's $p_G$ is its unit-weight case.\\
+$\ULC_D$, $\Delta_k^{(D)}$, $D$ & ultra-log-concavity of order $D\ge r$
+ and its margins & Part~VI's $\del$ (the same glyph); in
+ Section~\ref{hb:sec:limit} source~13 also writes $D(j)$ for a denominator
+ and $\mathcal D(r)$ for a rank-only order.\\
+$\sigma$ & the homogenizing variable (source~13's $s$) & the core size
+ $s$.\\
+$H_{s,n}$, $L,R$, $A,B$, $w$ & the Hall family: outer blocks $L,R$ of size
+ $n$, cores $A,B$ of size $s$, core activity $w$ & Part~II's shores
+ $A\sqcup B$ and matrix $H_G$; Part~X's $H_n$ and $s$; Part~VIII's weights
+ $w_v$.\\
+$A$, $B$, $C$ in Sections~\ref{hb:sec:rank6} and~\ref{hb:sec:general} &
+ binomial \emph{numbers} $\binom n3$, $\binom n2$, resp.\ $\binom ns$,
+ $\binom n{s-1}$, $\binom n{s-2}$ & the core blocks $A,B$; the cover $C$ of
+ Sections~\ref{hb:sec:first}--\ref{hb:sec:algorithm}; Part~I's
+ $C_\tau$.\\
+$Q_n(w)$, $P_i(x,w)$, $x=n-2$, $w_c(n)$ & the rank-six quadratic, the
+ positive certificates, the critical activity & Part~I's equation
+ \eqref{eq:Q} and $\Qt$; posets $P$; Part~VIII's $Q(R_1,R_2,R_3)$.\\
+$R=2s$, $\alpha,\beta,\gamma$, $T_s$, $n_{\min}(s)$ & the rank of
+ $H_{s,n}$ and the endpoint data & Part~IV's $\gamma_k$; Part~X's
+ $\alpha_k$; the multiplicities $\alpha_T,\beta_S$ of
+ Section~\ref{hb:sec:algorithm}.\\
+$L_{s,n}(t)$, $R_j(n)$, $F_{s,j}(n)$, $D_{\mathrm{crit}}(s)$, $D_s$ &
+ forced-core limit, coefficient ratios, thresholds, critical and least
+ uniform orders & Part~V's random support size $L$ and $F_H$; Part~VIII's
+ arms $R_i$.\\
+$C$, $E_i$, $W_i$, $z_{xy}$, $K$, $B_4$, $m_2$ & a minimum vertex cover,
+ star classes, their weight sums, edge weights, the weighted overlap, the
+ weighted $K_{2,2}$-supports, the weighted two-edge matchings & the
+ binomial numbers $B$, $C$; Part~IV's mixing variable $K$; the shore size
+ $m$.\\
+$C_X,C_Y$, $p,q$, $X_T,Y_S$, $\alpha_T,\beta_S$, $U,V$, $e_j$,
+ $B_{p,q}$, $N$, $M$ & cover parts and their sizes, neighbourhood types,
+ multiplicities, selected core sets, elementary symmetric functions, the
+ profile bound, $|X|+|Y|$, $|E|$ & Part~IX's $q$ and Part~X's $p,q$;
+ Part~I's basis vectors $\ee_j$; Part~V's donor sets $U$.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~XI answers}
+\label{hb:sec:answers}
+Status after Part~XI, as of 30 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Part~V's Research question~\ref{lor:q:first} is answered
+negatively in its weighted version.} Source~07's formulation there asks to
+prove the replacement of $\binom dk$ by $\binom{\nu(H)}k$ ``or find a
+smallest counterexample, including positive vertex weights as a separate
+version''. With positive weights on both shores the replacement fails
+(Theorem~\ref{hb:thm:witness}), already at matching number six
+(Section~\ref{hb:sec:rank6}), and every normalization depending only on
+the matching number must be at least $\frac43\nu(H)-\frac{17}9+o(1)$
+along even ranks (Corollary~\ref{hb:cor:universalorder}). A
+smallest counterexample is not determined: the least possible matching
+number of a weighted counterexample is three, four, five or six (Research
+question~\ref{hb:q:rank}), and the 30-vertex example is not claimed to be
+smallest. The unit-weight version and the version with weights on one
+shore stay open (Research questions~\ref{hb:q:unit}
+and~\ref{hb:q:oneshore}); the core-three family is
+$\ULC_{\nu(H)}$ at unit weight (Corollary~\ref{hb:cor:asymptoticweight}),
+which is consistent with the batch-55 unit-weight search recorded after
+Research question~\ref{lor:q:first}. As subclasses, every positively
+weighted graph of matching number at most two satisfies the
+rank-normalized inequalities (Corollary~\ref{hb:cor:smallrank}), and every
+graph satisfies the first one (Theorem~\ref{hb:thm:firstidentity}).
+[Merge observation, not in source~13: for a preorder the question has no
+content, since the graph of Part~V's Section~\ref{lor:sec:preorders}
+contains its diagonal perfect matching, so $\nu(H_\tau)=n$ is the shore
+size and Corollary~\ref{lor:cor:preorderintro} is unaffected.]
+\item \textbf{Part~V's division caveat} (after Theorem~\ref{lor:thm:CLC} and
+after Research question~\ref{lor:q:first}) gains an instance inside the
+class: Corollary~\ref{hb:cor:division} is a Lorentzian polynomial of the
+form~\eqref{lor:eq:weightedhom} whose quotient by the seventh power of the
+homogenizing variable is not Lorentzian.
+\item \textbf{Part~V's Research question~\ref{lor:q:equality}} (equality at
+a single index under positive weights) \textbf{is answered at the first
+index} for the normalization by $\nu(H)$
+(Corollary~\ref{hb:cor:equality}: disjoint unions of $\nu(H)$ stars with
+equal edge-weight sums). [Merge observation, not in source~13: the
+threshold $(D-1)/(2D)$ of the first order-$D$ inequality increases with
+$D$, so Theorem~\ref{hb:thm:firstidentity} makes the first inequality
+strict for every order $D>\nu(H)$; equality at the first index of Part~V's
+inequality~\eqref{lor:eq:mainULC}, with or without positive weights,
+therefore holds exactly when the normalizing shore size equals $\nu(H)$
+and the nonisolated graph is such a union of stars. For a preorder, in the
+unweighted inequality~\eqref{lor:eq:preorderULC}, it holds exactly for the
+antichain, since each of the $n$ disjoint stars must then consist of one
+diagonal edge; this answers the first index of Part~VII's restatement in
+Section~\ref{mat:sec:oldquestions}.] Equality at other
+indices and the null directions of the covariance bound stay open.
+\item \textbf{Part~IV's Research questions~\ref{lor:hq:param}
+and~\ref{lor:hq:countcx}, and Part~V's Research
+question~\ref{hb:hq:algorithms}, gain one parameterized class.}
+Theorem~\ref{hb:thm:FPT} computes every weighted support polynomial exactly
+in $2^{\nu(H)^2+O(\nu(H))}$ times a polynomial; through Part~II's
+Theorem~\ref{htwo:thm:main} this computes $h_{P_G}$ and the height-two
+gamma polynomial $p_G$ exactly with the matching number of the
+comparability graph as parameter (merge observation). The widths and
+treewidths those questions name are a different parameter and remain open.
+The $\#\mathrm P$-hardness of Theorem~\ref{lor:sp:thm:preorderhard}
+concerns unrestricted matching numbers; for bounded matching number
+Theorem~\ref{hb:thm:FPT} is polynomial. The algorithm groups outside vertices by their neighbourhoods in
+a minimum cover, one form of the ``repeated neighborhoods'' that Research
+question~\ref{hb:hq:algorithms} names.
+\item \textbf{No other numbered research question of Parts~I--X is
+answered.} Part~IX samples demand vectors and lattice points; Part~XI
+counts support pairs exactly and is not a sampler. Part~VII's preorder
+matroid is not used beyond the duality noted in Section~\ref{hb:sec:source}.
+\end{itemize}
+Part~XI refutes no statement of Parts~I--X, and nothing is retracted:
+Part~V proves only the smaller-shore normalization and says that the
+replacement by $\nu(H)$ is not proved there. Part~V gains dated pointers
+after Theorem~\ref{lor:thm:CLC}, in its subsection on the smaller active
+shore (Section~\ref{lor:sec:sp:ulc}), after Research
+questions~\ref{lor:q:first}, \ref{lor:q:equality}
+and~\ref{hb:hq:algorithms} (which received a label), and after Part~IV's
+Research questions~\ref{lor:hq:param} and~\ref{lor:hq:countcx}; Part~VII
+gains one in Section~\ref{mat:sec:oldquestions}; the title block, the
+abstract, the scope box and the reading route gain dated sentences.
+
+\subsection{Where the merge had to choose}
+\label{hb:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Order.} Source~13's order of sections is kept: its
+Section~$k$ is Section~$k+172$ here. Its two appendices are printed as
+ordinary sections at the end of Part~XI (Sections~\ref{hb:app:positive}
+and~\ref{hb:app:provenance}), so that Part~I's appendices keep their
+letters.
+\item \emph{Duplicate of Part~V.} Source~13's Section~2.1 re-derives
+Part~V's Theorem~\ref{lor:thm:weightedULC} by Part~V's own argument. Its
+display~\eqref{hb:eq:matroidspecialization} and its
+conclusion~\eqref{hb:eq:baseline} keep their labels, because Part~XI
+cites them; the derivation is replaced by a merge note citing Part~V
+(Section~\ref{hb:sec:baseline}).
+\item \emph{Self-citation.} Source~13's reference ``Repo'' (this report at
+the pin, Part~V) became references to Part~V's statements, and the
+reference was dropped from the bibliography. Its statement of the pin,
+blob and inspected line ranges is kept in
+Section~\ref{hb:app:provenance}, with a merge note mapping the ranges to
+Part~V's sections.
+\item \emph{Research questions.} Source~13's nine questions, numbered with
+its theorems as delivered (11.1--11.9), continue the report's numbering as
+Research questions~\ref{hb:q:unit}--\ref{hb:q:formal}. Research
+question~\ref{hb:q:unit} restates the unit-weight half of Research
+question~\ref{lor:q:first}; it is numbered, with a merge note, because it
+also asks for the smallest-rank counterexample.
+\item \emph{File names.} Source~13's programs and records keep their
+delivered base names behind the prefix \texttt{13-hall-bottlenecks-}
+(\texttt{support\_count.py}, \texttt{verify.py} and \texttt{build.sh} in
+\nolinkurl{code/}; its five JSON records, its transcript, its
+\texttt{requirements.txt} and its generated \texttt{tex/positivity\_tables.tex}
+in \nolinkurl{data/}). Merge notes in Sections~\ref{hb:sec:algorithm},
+\ref{hb:sec:verification} and~\ref{hb:app:provenance} give the shipped
+names; its code example and reproduction commands are printed with
+delivery names.
+\item \emph{Cross-references.} Source~13 does not use \texttt{cleveref},
+and neither does this report; its references are plain \verb|\ref| and
+\verb|\eqref|, and nothing was converted.
+\item \emph{Macros, labels and layout.} Its preamble is dropped: its
+newtx fonts, page geometry, running heads, theorem setup and listings
+style give way to the report's. Its \verb|\N| ($\mathbb N$; the report's
+$\N$ is $\mathbb Z_{\ge0}$), \verb|\R|, \verb|\Q|, \verb|\supp|,
+\verb|\rank|, \verb|\wt| and \verb|\cbinom| are defined but unused in its
+text and are dropped; its \verb|\calM| and \verb|\calB| are printed with
+the report's \verb|\PM| and \verb|\mathcal B|, the same glyphs; its
+\verb|\e| (an upright e, five uses) is printed as \verb|\mathrm e|; its
+\verb|\ULC| was added to the preamble. Its 86 labels carry the prefix
+\texttt{hb:} (one of them, \texttt{eq:Q}, equals a bare Part~I label);
+this section's headings, its notation table, the subsections of
+Sections~\ref{hb:sec:intro} and~\ref{hb:sec:definitions} that state the
+repository target and the baseline, the conclusion, and Part~V's
+previously unlabelled Research question~\ref{hb:hq:algorithms} gained
+labels. Its abstract and status box are printed in this section; its
+title page, table of contents and running head are dropped. In its
+Figure~1 (Figure~\ref{hb:fig:family} here) the label ``No edges between
+$L$ and $R$'' overlapped the two upper boxes in the delivered PDF; it is
+set above them here, and its artifact table has ragged-right columns. Its
+generated positivity tables are printed between the two comment markers
+that its verifier reads (Section~\ref{hb:app:positive}).
+\item \emph{Bibliography.} Its two references besides ``Repo'' are already
+in the report: \cite{BH} (source~13 adds the DOI
+10.4007/annals.2020.192.3.4) and \cite{RU} (the same published version and
+arXiv record, v3 inspected). The report's entries are kept.
+\end{itemize}
+
+\needspace{7\baselineskip}
+\section{The question and its exact scope}
+\label{hb:sec:intro}
+
+A normalization parameter can carry genuine structural information. For a
+polynomial of degree $r$, it is tempting to assume that every binomially
+normalized coefficient inequality should use $\binom rk$. Matching-support
+polynomials show why this temptation requires a proof: their natural
+homogeneous realization remembers unused vertices on a shore, even when
+those vertices do not increase the largest possible matching.
+
+This article studies that issue in a concrete family. The main negative
+result is not merely a failure of a proposed proof technique. It is an exact
+counterexample to the strengthened inequality itself. The accompanying
+positive results isolate what survives, explain a mechanism for failure,
+and supply a counting procedure suitable for further investigations.
+
+\subsection{Repository target and published baseline}
+\label{hb:sec:repotarget}
+
+The repository target is Part~V of this report, at the fixed ProveIt
+snapshot recorded in Section~\ref{hb:app:provenance}. Its discussion of
+homogenization (after Theorem~\ref{lor:thm:CLC}) explicitly distinguishes
+the shore size from the actual matching rank. Its subsection on the
+smaller active shore (in Section~\ref{lor:sec:sp:ulc}) states that
+replacement by maximum matching size would be stronger and is not proved
+there; the question is its Research question~\ref{lor:q:first}.
+[Merge note: source~13 names this report by its title, \emph{A Reflexive
+Root-Polytope Model for Preorder $h$-Polynomials}, ``especially its
+Part~V'', and cites it as a repository reference; the citation is
+replaced by references to Part~V's statements, and the parenthetical
+pointers and the last clause were added. ``ProveIt'' and ``the
+repository'' in Part~XI mean Parts~I--IX of this report at the pin.]
+
+R\"ohrle and Ulirsch's Theorem A gives smaller-shore ultra-log-concavity for
+bimatroid regular-minor counts; their relation example includes the
+matching-support counts considered here \cite{RU}. The homogeneous
+polynomial tools used in the baseline are those of Br\"and\'en and Huh
+\cite{BH}. We retain that baseline, rather than presenting it as a new
+result, and ask whether the stronger normalization persists with arbitrary
+positive vertex weights.
+
+There are three different questions:
+\begin{equation}\label{hb:eq:threequestions}
+\begin{array}{ll}
+\text{unit-weight:} & u_x=v_y=1,\\
+\text{one-shore weighted:} & u_x=1,\quad v_y>0,\\
+\text{two-shore weighted:} & u_x>0,\quad v_y>0.
+\end{array}
+\end{equation}
+A counterexample to the third question need not answer either of the first
+two. All claims in this article respect this distinction.
+
+\subsection{Results and proof architecture}
+
+The central family is obtained by deleting one rectangular block from a
+complete bipartite graph. Small core sets on both shores form a minimum
+vertex cover; many outer vertices compete for these cores. Giving the core
+vertices a common activity $w$ produces an explicitly computable polynomial.
+
+The proof of the 30-vertex counterexample is in
+Section~\ref{hb:sec:witness}. The full rank-six classification is in
+Section~\ref{hb:sec:rank6}; its only substantial polynomial expansions are
+certified by positive coefficient tables in Section~\ref{hb:app:positive}.
+Section~\ref{hb:sec:general} treats the last inequality for every core size.
+Section~\ref{hb:sec:limit} identifies the exact normalization threshold for the
+forced-core limiting family and extracts a universal lower bound.
+Section~\ref{hb:sec:first} proves the first rank-normalized inequality for
+arbitrary graphs and explains equality. Section~\ref{hb:sec:algorithm} gives
+an exact algorithm parameterized by matching rank.
+
+The counterexample, phase diagram, endpoint calculation, limiting threshold,
+and elementary defect identity do not depend on any unrefereed assertion in
+ProveIt. The repository motivates the question. The Lorentzian corollary uses
+the established homogeneous polynomial results explicitly identified below.
+[Merge note: in this report the support criterion
+(Lemma~\ref{hb:lem:criterion}) is the only ingredient the counterexample
+needs; Part~V's theorems enter only through the baseline it is compared
+with.]
+
+\needspace{7\baselineskip}
+\section{Supports, weights, and normalization}
+\label{hb:sec:definitions}
+
+Let $H=(X,Y;E)$ be a finite simple bipartite graph. Isolated vertices may be
+removed whenever shore sizes are used. Write $m=|X|$, $n=|Y|$ after this
+removal, and let $r=\nu(H)$ be the maximum matching size.
+
+\begin{definition}
+A \emph{matchable support pair} is a pair $(I,J)$ with $I\subseteq X$,
+$J\subseteq Y$, $|I|=|J|$, such that $H[I,J]$ has a perfect matching.
+For positive vertex weights $u=(u_x)_{x\in X}$ and $v=(v_y)_{y\in Y}$, set
+\begin{equation}\label{hb:eq:supportpoly}
+ p_H(t;u,v)=\sum_{(I,J)\in\PM(H)}u_Iv_Jt^{|I|}
+          =\sum_{k=0}^{r}a_k t^k,
+ \qquad u_I=\prod_{x\in I}u_x,\quad v_J=\prod_{y\in J}v_y.
+\end{equation}
+The empty support has weight one. Each support pair occurs exactly once,
+regardless of the number of its perfect matchings.
+\end{definition}
+
+For example, the unit-weight polynomial of $K_{2,2}$ is
+$1+4t+t^2$, not $1+4t+2t^2$. The distinction between a support and a
+witnessing matching is essential both to the counterexamples and to the
+algorithm. A matching of size $r$ has submatchings of every size from zero
+to $r$, so all $a_0,\ldots,a_r$ are strictly positive.
+
+\begin{definition}
+For an integer $D\ge r$, the sequence $(a_k)_{k=0}^{r}$ is
+\emph{ultra-log-concave of order $D$}, abbreviated $\ULC_D$, when the
+zero-padded sequence $a_k/\binom Dk$, $0\le k\le D$, has no internal zeros
+and is log-concave. Define its margins by
+\begin{equation}\label{hb:eq:margin}
+ \Delta_k^{(D)}
+ =k(D-k)a_k^2-(k+1)(D-k+1)a_{k-1}a_{k+1},
+ \qquad 1\le k<D.
+\end{equation}
+Then $\ULC_D$ is equivalent to $\Delta_k^{(D)}\ge0$ for every such $k$.
+\end{definition}
+
+The formula follows by dividing consecutive binomial coefficients. At an
+index with three positive coefficients it is equivalently
+\begin{equation}\label{hb:eq:ratioULC}
+ \frac{a_k^2}{a_{k-1}a_{k+1}}
+ \ge \frac{k+1}{k}\frac{D-k+1}{D-k}.
+\end{equation}
+The right side decreases as $D$ increases. Thus $\ULC_{D_0}$ implies
+$\ULC_D$ for $D\ge D_0$. Replacing the smaller shore size by $r$ genuinely
+strengthens the assertion when $r<\min(m,n)$.
+
+\subsection{The established smaller-shore theorem}
+\label{hb:sec:baseline}
+
+[Merge note: source~13 here spells out, ``for reference'', the short
+specialization argument behind Part~V's
+Theorem~\ref{lor:thm:weightedULC}: the transversal matroid with one private
+element $\bar x$ for each $x\in X$, of rank $m$ (Part~V's $\mathsf M_H$),
+whose bases are exactly $\{\bar x:x\in X\setminus I\}\sqcup J$ for
+$(I,J)\in\PM(H)$, because the private elements occupy $X\setminus I$ and
+leave the vertices of $I$ to match $J$ (Part~V's
+Proposition~\ref{lor:prop:bases}, by the same forced-slot argument), and
+the substitution below, which is Part~V's display~\eqref{lor:eq:weightedhom}
+with its homogenizing variable $s$ printed $\sigma$. That is Part~V's proof
+and is not reprinted in full; the display and the conclusion are kept,
+because Part~XI cites them.]
+Let $\mathcal B_H(a,z)$ be the basis polynomial of this matroid,
+Part~V's~\eqref{lor:eq:basispoly}. Substitution gives
+\begin{equation}\label{hb:eq:matroidspecialization}
+ \left(\prod_{x\in X}u_x\right)
+ \mathcal B_H\bigl((\sigma/u_x)_{x\in X},(t v_y)_{y\in Y}\bigr)
+ =\sum_{k=0}^{r}a_k \sigma^{m-k}t^k.
+\end{equation}
+Matroid basis polynomials are Lorentzian, nonnegative linear substitutions
+preserve that property, and in two variables the degree-$D$ criterion is
+precisely $\ULC_D$ \cite{BH}. Applying these facts to
+\eqref{hb:eq:matroidspecialization}, and then transposing the graph, yields
+\begin{equation}\label{hb:eq:baseline}
+ p_H(t;u,v)\text{ is }\ULC_{\min(m,n)}.
+\end{equation}
+This is the weighted baseline already used in the repository (Part~V's
+Theorem~\ref{lor:thm:weightedULC}). For unit
+weights it also follows from the relation-bimatroid case of
+\cite[Theorem A and Example 2.4]{RU}.
+
+The polynomial in \eqref{hb:eq:matroidspecialization} has a factor $\sigma^{m-r}$.
+Deleting this factor changes the homogeneous degree. Nothing in the
+specialization argument permits one to delete it while retaining the
+Lorentzian property. Section~\ref{hb:sec:witness} shows that this is a real
+obstruction within these very specializations.
+
+\needspace{7\baselineskip}
+\section{A Hall-bottleneck family with an exact support formula}
+\label{hb:sec:family}
+
+Fix integers $n\ge s\ge1$. Partition the two shores into outer and core
+sets:
+\[
+ X=L\sqcup A,\qquad Y=R\sqcup B,
+ \qquad |L|=|R|=n,\quad |A|=|B|=s.
+\]
+Define $H_{s,n}$ by
+\begin{equation}\label{hb:eq:edges}
+ E=(L\times B)\cup(A\times R)\cup(A\times B).
+\end{equation}
+Every possible edge is present except those from $L$ to $R$. The core
+vertices in $A\sqcup B$ have weight $w>0$, and the outer vertices have
+weight one. We write $a_k^{s,n}(w)$, or simply $a_k(w)$, for its coefficients.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[every node/.style={font=\small},
+ box/.style={draw,rounded corners=2pt,minimum width=36mm,minimum height=12mm,align=center}]
+\node[box] (L) at (0,1.6) {$L$: $n$ outer vertices\\weight $1$};
+\node[box] (A) at (0,-0.5) {$A$: $s$ core vertices\\weight $w$};
+\node[box] (R) at (7,1.6) {$R$: $n$ outer vertices\\weight $1$};
+\node[box] (B) at (7,-0.5) {$B$: $s$ core vertices\\weight $w$};
+\draw[thick] (L.east)--(B.west);
+\draw[thick] (A.east)--(R.west);
+\draw[thick] (A.east)--(B.west);
+\node at (3.5,2.75) {No edges between $L$ and $R$};
+\end{tikzpicture}
+\caption{Each drawn connection denotes all edges between the indicated
+blocks. The core is a vertex cover of size $2s$.}
+\label{hb:fig:family}
+\end{figure}
+
+\begin{lemma}\label{hb:lem:rank}
+The graph $H_{s,n}$ has $2(n+s)$ vertices, $2ns+s^2$ edges, and matching
+rank $2s$.
+\end{lemma}
+\begin{proof}
+The vertex and edge counts follow from the disjoint blocks in
+\eqref{hb:eq:edges}. Every edge meets $A\sqcup B$, so a matching has at most
+$2s$ edges. Because $n\ge s$, we can match all of $B$ to $s$ distinct
+vertices of $L$, and all of $A$ to $s$ distinct vertices of $R$. The union
+has $2s$ edges, attaining the bound.
+\end{proof}
+
+\begin{lemma}[Exact support criterion]\label{hb:lem:criterion}
+Suppose a pair of supports of size $k$ selects $i$ vertices of $A$ and $j$
+vertices of $B$. It is matchable if and only if $i+j\ge k$.
+\end{lemma}
+\begin{proof}
+There are $k-i$ selected vertices of $L$, each of which must be matched to a
+selected vertex of $B$. Hence $k-i\le j$ is necessary. The symmetric
+condition $k-j\le i$ is the same inequality.
+
+Conversely, when $i+j\ge k$, match the $k-i$ selected vertices of $L$ to
+that many selected vertices of $B$, and match the $k-j$ selected vertices
+of $R$ to that many selected vertices of $A$. The unused selected core
+sets on the two shores both have size $i+j-k$. Match them to each other.
+Every required edge is present, and the three matchings are vertex-disjoint.
+\end{proof}
+
+\begin{theorem}[Exact coefficient formula]\label{hb:thm:coefficients}
+With binomial coefficients interpreted as zero outside their usual range,
+\begin{equation}\label{hb:eq:familycoeff}
+ a_k^{s,n}(w)=
+ \sum_{\substack{0\le i,j\le s\\i+j\ge k}}
+ \binom si\binom sj\binom n{k-i}\binom n{k-j}w^{i+j},
+ \qquad 0\le k\le2s.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Choose the two core subsets and the two outer subsets. Their counts are the
+four binomial coefficients in the summand, and their weight is $w^{i+j}$.
+Lemma~\ref{hb:lem:criterion} is exactly the condition for retaining that
+summand. No choice of a perfect matching appears in the count.
+\end{proof}
+
+The formula already reduces a potentially enormous support enumeration to
+$(s+1)^2$ terms per coefficient. Its utility is not merely numerical: only a
+few core choices can contribute to the highest three coefficients, allowing
+an exact obstruction analysis.
+
+\needspace{7\baselineskip}
+\section{An exact 30-vertex counterexample}
+\label{hb:sec:witness}
+
+\begin{theorem}[Failure of weighted rank normalization]\label{hb:thm:witness}
+Let $H=H_{4,11}$, with weight $500$ on its eight core vertices and weight
+one on its 22 outer vertices. Then $H$ has 30 vertices, 104 edges, and
+maximum matching size eight. Its support polynomial is not $\ULC_8$.
+Consequently the universal positively weighted, two-shore replacement of
+smaller-shore normalization by matching rank is false.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{hb:lem:rank} gives the graph parameters. Keeping $w$ symbolic,
+Theorem~\ref{hb:thm:coefficients} gives
+\begin{align}
+ a_6(w)&=3025w^6(w^2+24w+216),\label{hb:eq:witnessa6}\\
+ a_7(w)&=27225w^7(w+16),\label{hb:eq:witnessa7}\\
+ a_8(w)&=108900w^8.\label{hb:eq:witnessa8}
+\end{align}
+Here $3025=\binom{11}{2}^2$, $27225=\binom{11}{3}^2$, and
+$108900=\binom{11}{4}^2$. Substitution gives the identity
+\begin{equation}\label{hb:eq:witnessmargin}
+ 7a_7(w)^2-16a_6(w)a_8(w)
+ =9\cdot3025^2w^{14}(-w^2+480w+2304).
+\end{equation}
+At $w=500$ the quadratic on the right is $-7696$. The other factors are
+strictly positive. Thus $\Delta_7^{(8)}<0$, which violates the definition
+of $\ULC_8$.
+\end{proof}
+
+This is a short exact certificate: the graph definition, three polynomial
+coefficients, and the negative value of a quadratic suffice. Floating-point
+root finding, exhaustive enumeration, and an asymptotic limit are not
+needed for the proof.
+
+The first integer activity for which the \emph{last} inequality fails in
+this particular graph is $485$, since the reduced quadratic is $368$ at
+$484$ and $-121$ at $485$. We use $500$ for a simpler stated weight and a
+larger margin. This is not a claim that 30 is the smallest possible number
+of vertices in a counterexample.
+
+\begin{corollary}[A concrete failed degree reduction]\label{hb:cor:division}
+There is a bivariate Lorentzian polynomial of degree 15 arising from a
+positive specialization of a transversal-matroid basis polynomial such
+that division by its factor $\sigma^7$ is not Lorentzian.
+\end{corollary}
+\begin{proof}
+For the graph and weights of Theorem~\ref{hb:thm:witness}, let
+\[
+ F(\sigma,t)=\sum_{k=0}^8a_k \sigma^{15-k}t^k.
+\]
+Equation~\eqref{hb:eq:matroidspecialization} proves that $F$ is Lorentzian.
+The polynomial $F/\sigma^7$ has degree eight and the same coefficient sequence.
+The bivariate criterion would make that sequence $\ULC_8$ if the quotient
+were Lorentzian, contrary to Theorem~\ref{hb:thm:witness}.
+\end{proof}
+
+In particular, the failure does not depend on leaving the transversal
+setting or introducing coefficients of mixed sign. The coefficients of
+$p_H$ are positive, and its correct smaller-shore normalization is 15.
+The exact check in the accompanying data confirms all order-15 inequalities
+and the positivity of the first six order-eight margins. The proof of the
+counterexample itself only needs the seventh margin.
+
+\subsection{Nonreal zeros and robustness}
+
+\begin{corollary}\label{hb:cor:nonreal}
+The polynomial in Theorem~\ref{hb:thm:witness} has a nonreal zero. Its failure
+of rank-normalized ultra-log-concavity persists on an open neighborhood of
+the stated positive vertex weights.
+\end{corollary}
+\begin{proof}
+If all zeros were real, positivity of all coefficients and of the constant
+term would make them strictly negative. Write
+$p_H(t)=a_8\prod_{i=1}^8(t+\lambda_i)$ with $\lambda_i>0$, and put
+$S=\sum_i\lambda_i$. Then $a_7=a_8S$ and
+$a_6=a_8(S^2-\sum_i\lambda_i^2)/2$. The inequality
+$\sum_i\lambda_i^2\ge S^2/8$ would imply
+$7a_7^2-16a_6a_8\ge0$, contradicting \eqref{hb:eq:witnessmargin}.
+For robustness, every coefficient and every margin is a polynomial in the
+vertex weights. A strict negative value of one margin persists under
+sufficiently small perturbations.
+\end{proof}
+
+One can make the second assertion quantitative. Suppose
+$a_k^2/(a_{k-1}a_{k+1})=R_0$ violates the required ratio $R_*$, so
+$R_0<R_*$. If each individual vertex weight is multiplied by a number in
+$[\mathrm e^{-\eta},\mathrm e^\eta]$, then each monomial of $a_j$ changes by a factor in
+$[\mathrm e^{-2j\eta},\mathrm e^{2j\eta}]$. Positivity gives the same bounds for $a_j$.
+The perturbed ratio at $k$ is at most $\mathrm e^{8k\eta}R_0$. Therefore any
+\begin{equation}\label{hb:eq:robustness}
+ 0<\eta<\frac1{8k}\log\frac{R_*}{R_0}
+\end{equation}
+preserves the violation. For the lead example $k=7$ and $R_*=16/7$.
+Thus the obstruction is not an isolated equality accident.
+
+\needspace{7\baselineskip}
+\section{A complete rank-six phase diagram}
+\label{hb:sec:rank6}
+
+The rank-eight example is small in vertex count. Taking core size three
+instead gives a complete description of \emph{all} rank-normalized
+inequalities in the symmetric family, not just the last one.
+
+Let $n\ge3$, let $H=H_{3,n}$, and abbreviate
+$A=\binom n3$ and $B=\binom n2$. Formula~\eqref{hb:eq:familycoeff} becomes
+\begin{align}
+ a_0={}&1,\notag\\
+ a_1={}&9w^2+6nw,\notag\\
+ a_2={}&(6B+9n^2)w^2+18nw^3+9w^4,\notag\\
+ a_3={}&(2A+18nB)w^3+(6B+9n^2)w^4+6nw^5+w^6,\label{hb:eq:rank6coeffs}\\
+ a_4={}&(6nA+9B^2)w^4+6nBw^5+n^2w^6,\notag\\
+ a_5={}&6ABw^5+B^2w^6,\notag\\
+ a_6={}&A^2w^6.\notag
+\end{align}
+Define
+\begin{align}
+ Q_n(w)={}&(-n^2+34n-49)w^2\notag\\
+ &+12(n-1)(n-2)(n+3)w
+   +8(n-1)(n-2)^2(n+1).\label{hb:eq:Q}
+\end{align}
+
+\begin{theorem}[Complete classification in the core-three family]
+\label{hb:thm:rank6phase}
+For every integer $n\ge3$ and every real $w>0$, the first four
+order-six margins of $H_{3,n}$ are strictly positive. The fifth satisfies
+\begin{equation}\label{hb:eq:rank6last}
+ \Delta_5^{(6)}
+ =5a_5^2-12a_4a_6
+ =\frac{n^4(n-1)^2w^{10}}{48}Q_n(w).
+\end{equation}
+Consequently:
+\begin{enumerate}[label=\textnormal{(\alph*)}]
+\item If $3\le n\le32$, the polynomial is $\ULC_6$ for every $w>0$.
+\item If $n\ge33$, put
+\begin{align*}
+ a&=n^2-34n+49,\\
+ b&=12(n-1)(n-2)(n+3),\\
+ c&=8(n-1)(n-2)^2(n+1),
+\end{align*}
+and define
+\begin{equation}\label{hb:eq:criticalweight}
+ w_c(n)=\frac{b+\sqrt{b^2+4ac}}{2a}.
+\end{equation}
+Then $p_{H_{3,n}}(t;w)$ is $\ULC_6$ exactly for $0<w\le w_c(n)$.
+For $w>w_c(n)$, precisely the last of its five order-six margins is
+negative.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Insert \eqref{hb:eq:rank6coeffs} in \eqref{hb:eq:margin}. For the first four
+margins one obtains
+\begin{align}
+ \Delta_1^{(6)}&=9w^2P_1(n-2,w),&
+ \Delta_2^{(6)}&=3w^4P_2(n-2,w),\notag\\
+ \Delta_3^{(6)}&=w^6P_3(n-2,w),&
+ \Delta_4^{(6)}&=\frac{n^2w^8}{4}P_4(n-2,w),\label{hb:eq:positivefactors}
+\end{align}
+where all coefficients of the four polynomials $P_i(x,w)$ are
+nonnegative and their constant terms are positive. Their complete
+coefficient lists are in Section~\ref{hb:app:positive}; those lists, together
+with \eqref{hb:eq:rank6coeffs}, are finite algebraic certificates of
+\eqref{hb:eq:positivefactors}. Since $n-2\ge1$ and $w>0$, the four margins are
+strictly positive. Direct substitution for $a_4,a_5,a_6$ gives
+\eqref{hb:eq:rank6last}.
+
+The coefficient of $w^2$ in $Q_n$ changes sign between $n=32$ and $n=33$:
+its real roots as a polynomial in $n$ are $17\pm4\sqrt{15}$. The linear
+and constant coefficients in $Q_n$ are strictly positive for $n\ge3$.
+Thus $Q_n(w)>0$ for every positive $w$ when $3\le n\le32$.
+
+For $n\ge33$, write $Q_n(w)=-aw^2+bw+c$ with $a,b,c>0$. This quadratic
+has exactly one positive root, the value in \eqref{hb:eq:criticalweight}.
+It is nonnegative on $0<w\le w_c(n)$ and negative above that threshold.
+Equation~\eqref{hb:eq:rank6last} and the already established positivity of the
+other margins prove all assertions.
+\end{proof}
+
+\subsection{Exact witnesses and threshold values}
+
+At $n=33$ the obstruction simplifies to
+\begin{equation}\label{hb:eq:rank6example}
+ Q_{33}(w)=16(-w^2+26784w+522784).
+\end{equation}
+It is nonnegative at the integer $26803$ and negative at $26804$; more
+precisely, $Q_{33}(26804)=-212736$. Hence $H_{3,33}$ with core weight
+$26804$ is an exact rank-six counterexample on 72 vertices and 207 edges.
+The minimum matching rank of a two-shore weighted counterexample is
+therefore at most six. Section~\ref{hb:sec:first} shows it is at least three;
+we do not determine which of ranks three through six is the first possible.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+Outer size $n$ & Vertices & First integer failure & $Q_n$ at that integer\\
+\midrule
+33 & 72 & 26804 & $-212736$\\
+34 & 74 & 9589 & $-98473$\\
+36 & 78 & 4625 & $-534465$\\
+40 & 86 & 2671 & $-778249$\\
+48 & 102 & 1865 & $-1151481$\\
+50 & 106 & 1793 & $-1246737$\\
+64 & 134 & 1635 & $-3057345$\\
+100 & 206 & 1866 & $-6822324$\\
+\bottomrule
+\end{tabular}
+\caption{Exact integer thresholds in the rank-six family. Each row is
+certified by evaluating the quadratic at the listed integer and its
+predecessor, not by rounding a floating-point root.}
+\label{hb:tab:rank6}
+\end{table}
+
+The activity threshold is not monotone in outer size. Adding vertices can
+initially make failure easier because it changes the high-degree balance,
+while eventually the activity must scale linearly with the outer size.
+The following asymptotic statement makes the latter assertion precise.
+
+\begin{corollary}\label{hb:cor:asymptoticweight}
+As $n\to\infty$,
+\begin{equation}\label{hb:eq:weightasymptotic}
+ \frac{w_c(n)}{n}\longrightarrow 6+2\sqrt{11}.
+\end{equation}
+Every unit-weight member $H_{3,n}$, $n\ge3$, is nevertheless $\ULC_6$.
+\end{corollary}
+\begin{proof}
+In \eqref{hb:eq:criticalweight}, $a/n^2\to1$, $b/n^3\to12$, and
+$c/n^4\to8$. Divide the numerator and denominator by the corresponding
+powers of $n$ to obtain
+$(12+\sqrt{144+32})/2=6+2\sqrt{11}$.
+
+At $w=1$,
+\[
+ Q_n(1)=8n^4-20n^3+23n^2-18n-9.
+\]
+Writing $n=x+3$ gives
+\[
+ Q_{x+3}(1)=8x^4+76x^3+275x^2+444x+252,
+\]
+which is positive for $x\ge0$. Theorem~\ref{hb:thm:rank6phase} proves the
+unit-weight assertion.
+\end{proof}
+
+This family therefore supplies a useful warning about experiments: a
+search restricted to unit weights would miss its entire rank-six
+obstruction, no matter how many outer vertices it considered.
+
+\needspace{7\baselineskip}
+\section{The endpoint obstruction for every core size}
+\label{hb:sec:general}
+
+The previous computation is part of a general phenomenon. Fix $s\ge2$,
+$n\ge s$, let $R=2s$, and abbreviate
+\[
+ A=\binom ns,\qquad B=\binom n{s-1},\qquad C=\binom n{s-2}.
+\]
+These three letters denote numbers in this section, not the vertex blocks.
+
+\begin{proposition}[The last three coefficients]\label{hb:prop:tail}
+The coefficients of $H_{s,n}$ satisfy
+\begin{align}
+ a_R={}&A^2w^{2s},\notag\\
+ a_{R-1}={}&2sABw^{2s-1}+B^2w^{2s},\label{hb:eq:tail}\\
+ a_{R-2}={}&\bigl(s(s-1)AC+s^2B^2\bigr)w^{2s-2}
+            +2sBCw^{2s-1}+C^2w^{2s}.\notag
+\end{align}
+\end{proposition}
+\begin{proof}
+For $k=2s$, the condition $i+j\ge k$ forces $i=j=s$. For $k=2s-1$,
+the allowed pairs are $(s,s)$, $(s-1,s)$, and $(s,s-1)$. For
+$k=2s-2$, one adds $(s-1,s-1)$, $(s-2,s)$, and $(s,s-2)$.
+Substituting these choices in \eqref{hb:eq:familycoeff} gives
+\eqref{hb:eq:tail}. The two choices omitting two core vertices on the same
+shore contribute $2\binom s2 AC=s(s-1)AC$.
+\end{proof}
+
+Define
+\begin{align}
+ \alpha&=(2s-1)B^4-4sA^2C^2,\notag\\
+ \beta&=4sAB\bigl((2s-1)B^2-2sAC\bigr),\label{hb:eq:abcgeneral}\\
+ \gamma&=4s^2(s-1)A^2(B^2-AC).\notag
+\end{align}
+
+\begin{theorem}[Exact endpoint threshold]\label{hb:thm:endpoint}
+For $s\ge2$ and $n\ge s$,
+\begin{equation}\label{hb:eq:endpoint}
+ \Delta_{2s-1}^{(2s)}
+ =w^{4s-2}(\alpha w^2+\beta w+\gamma),
+\end{equation}
+where $\beta,\gamma>0$. Thus some positive activity makes the last
+rank-normalized inequality fail if and only if $\alpha<0$.
+
+For $s=2$ this never happens. For every $s\ge3$, put
+\begin{equation}\label{hb:eq:Ts}
+ T_s=\frac{2(s-1)}{\sqrt{s(2s-1)}}>1.
+\end{equation}
+Then the equivalent condition is
+\begin{equation}\label{hb:eq:ncondition}
+ n-s+1>\frac1{T_s-1}.
+\end{equation}
+In particular the smallest integer outer size with a possible endpoint
+failure is
+\begin{equation}\label{hb:eq:nmin}
+ n_{\min}(s)=s+\left\lfloor\frac1{T_s-1}\right\rfloor.
+\end{equation}
+For such an $n$, failure occurs exactly above the unique positive root of
+$\alpha w^2+\beta w+\gamma$.
+\end{theorem}
+\begin{proof}
+Expanding $(2s-1)a_{2s-1}^2-4s a_{2s-2}a_{2s}$ using
+\eqref{hb:eq:tail}, and removing $w^{4s-2}$, gives
+\eqref{hb:eq:abcgeneral}. The elementary ratio
+\begin{equation}\label{hb:eq:binomialratio}
+ \frac{B^2}{AC}
+ =\frac{s}{s-1}\frac{n-s+2}{n-s+1}
+\end{equation}
+is greater than $s/(s-1)$. Consequently $B^2>AC$ and
+$(2s-1)B^2>2sAC$, proving $\beta,\gamma>0$.
+
+If $\alpha\ge0$, the quadratic is positive for every $w>0$. If
+$\alpha<0$, its constant term is positive and it tends to $-\infty$;
+its two roots have opposite signs. This proves the first assertions.
+
+Using \eqref{hb:eq:binomialratio}, the condition $\alpha<0$ becomes
+\[
+ \frac{n-s+2}{n-s+1}<\frac{2(s-1)}{\sqrt{s(2s-1)}}.
+\]
+For $s=2$ the right side is less than one, so the inequality is impossible.
+For $s\ge3$ the right side is greater than one, and rearrangement gives
+\eqref{hb:eq:ncondition}. The least integer $n$ satisfying that strict
+inequality is \eqref{hb:eq:nmin}.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrl}
+\toprule
+$s$ & $n_{\min}(s)$ & Vertices & First integer failure & Reduced quadratic\\
+\midrule
+3 & 33 & 72 & 26804 & $-w^2+26784w+522784$\\
+4 & 11 & 30 & 485 & $-w^2+480w+2304$\\
+5 & 10 & 30 & 131 & $-11w^2+1400w+4928$\\
+6 & 10 & 32 & 96 & $-31w^2+2880w+8250$\\
+7 & 10 & 34 & 331 & $-29w^2+9520w+21120$\\
+8 & 11 & 38 & 92 & $-17w^2+1520w+3360$\\
+9 & 12 & 42 & 58 & $-271w^2+15120w+33280$\\
+10 & 13 & 46 & 45 & $-217w^2+9200w+20160$\\
+\bottomrule
+\end{tabular}
+\caption{The first outer size admitting an endpoint failure for each listed
+core size. ``Reduced'' means division of $\alpha,\beta,\gamma$ by their
+positive greatest common divisor. For $s\ge4$ this table classifies the
+endpoint only, not all intermediate margins.}
+\label{hb:tab:general}
+\end{table}
+
+The word ``endpoint'' is important. The positivity certificates in
+Section~\ref{hb:sec:rank6} establish a full phase diagram when $s=3$.
+Theorem~\ref{hb:thm:endpoint} alone does not rule out earlier-index failures
+for a larger core size or assert that the endpoint is always the first
+inequality to fail as $w$ increases.
+
+\needspace{7\baselineskip}
+\section{Forced cores and a universal normalization lower bound}
+\label{hb:sec:limit}
+
+For very large activity, supports containing every core vertex dominate.
+This limit separates a geometric shift in degree from the combinatorics of
+choosing outer vertices.
+
+\begin{lemma}[Forced-core limit]\label{hb:lem:limit}
+For fixed $s,n$ with $n\ge s$,
+\begin{equation}\label{hb:eq:limit}
+ w^{-2s}p_{H_{s,n}}(t;w)
+ \longrightarrow L_{s,n}(t)
+ :=t^s\sum_{j=0}^{s}\binom nj^2t^j
+ \qquad(w\to\infty)
+\end{equation}
+coefficientwise.
+\end{lemma}
+\begin{proof}
+In \eqref{hb:eq:familycoeff}, the largest possible power of $w$ is $2s$,
+and only $i=j=s$ contributes to that power. The corresponding support size
+is $k=s+j'$ with $0\le j'\le s$, and the coefficient is
+$\binom n{j'}^2$. All other terms vanish after division by $w^{2s}$.
+\end{proof}
+
+The coefficients of $L_{s,n}$ have leading zeros below degree $s$, but no
+internal zeros. Thus $\ULC_D$ is still meaningful for $D\ge2s$.
+Only the inequalities at $k=s+j$, $1\le j\le s-1$, are nontrivial ratios
+of three positive coefficients.
+
+\begin{lemma}\label{hb:lem:thresholdD}
+For $1\le j\le s-1$, set
+\begin{equation}\label{hb:eq:Rjn}
+ R_j(n)=\left(\frac{j+1}{j}\frac{n-j+1}{n-j}\right)^2.
+\end{equation}
+The order-$D$ inequality of $L_{s,n}$ at $k=s+j$ holds if and only if
+\begin{equation}\label{hb:eq:finiteDthreshold}
+ D\ge F_{s,j}(n):=s+j+
+ \frac{s+j+1}{(s+j)R_j(n)-(s+j+1)}.
+\end{equation}
+The denominator is positive. Moreover $F_{s,j}(n)$ increases with $n$ and
+converges to
+\begin{equation}\label{hb:eq:limitDthreshold}
+ F_{s,j}(\infty)=s+j+
+ \frac{j^2(s+j+1)}{s(2j+1)+j(j+1)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The ratio of consecutive positive coefficients of $L_{s,n}$ is
+\eqref{hb:eq:Rjn}. Substitute it into \eqref{hb:eq:ratioULC} with $k=s+j$.
+Since
+$R_j(n)>((j+1)/j)^2>(s+j+1)/(s+j)$, rearranging the inequality is valid
+and gives \eqref{hb:eq:finiteDthreshold}. The factor
+$(n-j+1)/(n-j)$ decreases with $n$, so $R_j(n)$ decreases and the
+threshold increases. Taking its limit and simplifying the denominator
+proves \eqref{hb:eq:limitDthreshold}.
+\end{proof}
+
+\begin{theorem}[Sharp uniform order for the limiting family]
+\label{hb:thm:limitingorder}
+Let $s\ge2$. Define
+\begin{equation}\label{hb:eq:criticalD}
+ D_{\mathrm{crit}}(s)=\frac{8s^2-11s+4}{3s-2},\qquad
+ D_s=\max\left\{2s,\left\lceil D_{\mathrm{crit}}(s)\right\rceil\right\}.
+\end{equation}
+Then $D_s$ is the least integer $D\ge2s$ for which \emph{every}
+$L_{s,n}$, $n\ge s$, is $\ULC_D$.
+\end{theorem}
+\begin{proof}
+The fraction in \eqref{hb:eq:limitDthreshold} is increasing in $j>0$.
+For an explicit verification write
+\[
+ N(j)=j^2(s+j+1),\qquad D(j)=s(2j+1)+j(j+1).
+\]
+The numerator of the derivative of $N/D$ is
+\begin{align*}
+ N'D-ND'={}&j^4+4sj^3+2j^3+2s^2j^2+6sj^2+j^2\\
+          &+2s^2j+2sj,
+\end{align*}
+which is positive for $j,s>0$. Therefore
+$F_{s,j}(\infty)=s+j+N(j)/D(j)$ is increasing, and its maximum over
+$j=1,\ldots,s-1$ occurs at $j=s-1$. Substitution yields
+\[
+ F_{s,s-1}(\infty)=\frac{8s^2-11s+4}{3s-2}.
+\]
+Every finite-$n$ threshold is below its limit, so any integer $D\ge2s$
+with $D\ge D_{\mathrm{crit}}(s)$ works for every $n$.
+
+Conversely, if $2s\le D<D_{\mathrm{crit}}(s)$, the increasing thresholds
+$F_{s,s-1}(n)$ eventually exceed $D$. The final interior inequality then
+fails for a sufficiently large $n$. Taking the smallest permitted integer
+$D$ proves the theorem.
+\end{proof}
+
+\begin{corollary}[Necessary size of any universal rank-only order]
+\label{hb:cor:universalorder}
+Suppose an integer-valued function $\mathcal D(r)\ge r$ has the property
+that every bipartite graph of matching rank $r$, with arbitrary positive
+weights on both shores, has a $\ULC_{\mathcal D(r)}$ support polynomial.
+Then for every $s\ge2$,
+\begin{equation}\label{hb:eq:universalorder}
+ \mathcal D(2s)\ge D_s.
+\end{equation}
+In particular, along even ranks,
+\begin{equation}\label{hb:eq:fourthirds}
+ \mathcal D(r)\ge\frac43r-\frac{17}{9}+o(1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+If an admissible integer $D$ is smaller than $D_s$,
+Theorem~\ref{hb:thm:limitingorder} supplies an $n$ and a strict negative
+order-$D$ margin of $L_{s,n}$. Coefficientwise convergence in
+\eqref{hb:eq:limit} implies convergence of each margin after multiplication by
+$w^{-4s}$. The same margin of $p_{H_{s,n}}$ is therefore negative for a
+sufficiently large but finite positive $w$. That graph has matching rank
+$2s$, contradicting universality of $D$.
+
+Polynomial division gives
+\[
+ D_{\mathrm{crit}}(s)
+ =\frac83s-\frac{17}{9}+\frac{2}{9(3s-2)}.
+\]
+Since $r=2s$, this proves \eqref{hb:eq:fourthirds}.
+\end{proof}
+
+For example, the limiting family requires orders at least $7$, $9$, and
+$12$ at matching ranks $6$, $8$, and $10$, respectively. These are lower
+bounds for the general weighted problem, not universal upper bounds.
+We have not proved that $D_s$ works for every finite-activity member of the
+Hall family, much less for every rank-$2s$ bipartite graph.
+
+\subsection{What drives the obstruction}
+
+The shift $t^s$ in \eqref{hb:eq:limit} is the decisive feature. Once all cores
+are forced, adding $j$ outer vertices on each shore gives squared binomial
+coefficients, but those coefficients occur at degrees $s+j$, not $j$.
+The binomial factors appropriate to an unshifted count no longer match the
+factor required at the upper end of a degree-$2s$ polynomial.
+
+This explanation also clarifies why a small rank does not mean a small
+homogeneous realization. A large reservoir of outer choices survives even
+though the core bounds every matching. The forced-core limit captures this
+reservoir while retaining the degree shift caused by the compulsory cores.
+
+\needspace{7\baselineskip}
+\section{A universal positive result at the first inequality}
+\label{hb:sec:first}
+
+The counterexamples leave room for genuine rank-sensitive inequalities.
+The first one always holds, and its equality cases have a particularly
+simple structure.
+
+\begin{lemma}[Minimum vertex cover]\label{hb:lem:konig}
+A bipartite graph of matching rank $r$ has a vertex cover of size $r$.
+\end{lemma}
+\begin{proof}
+Take a maximum matching $M$. Starting from the unmatched left vertices,
+follow alternating paths, using unmatched edges from left to right and
+matched edges from right to left. Let $Z_X,Z_Y$ be the reachable vertices
+on the two shores. No unmatched right vertex is reachable, since that
+would give an augmenting path.
+
+The set $C=(X\setminus Z_X)\sqcup Z_Y$ covers every edge. Indeed, an
+uncovered edge would run from a reachable left vertex to a nonreachable
+right vertex. An unmatched such edge would make the latter reachable; if
+the edge is matched, its right endpoint is the predecessor by which the
+matched left endpoint became reachable. Both alternatives are impossible.
+Every matched edge has exactly one endpoint in $C$: its endpoints are
+either both reachable or both nonreachable. Unmatched left vertices are
+reachable and unmatched right vertices are nonreachable. Thus $C$ has
+exactly $r$ vertices.
+\end{proof}
+
+Fix a minimum cover $C=\{c_1,\ldots,c_r\}$. Assign each edge to one of its
+incident cover vertices, choosing arbitrarily for edges with both endpoints
+in $C$. This partitions the edge set into star classes
+$E_1,\ldots,E_r$. Write
+\[
+ z_{xy}=u_xv_y,\qquad W_i=\sum_{e\in E_i}z_e,
+ \qquad a_1=\sum_{i=1}^r W_i.
+\]
+Let $K$ be the sum of $z_ez_f$ over pairs of edges assigned to different
+classes that meet at a vertex. Let $B_4$ be the sum of $u_Iv_J$ over all
+support pairs with $|I|=|J|=2$ for which all four possible edges are
+present. The symbols $K$ and $B_4$ are nonnegative weighted counts.
+
+\begin{theorem}[Exact first-margin defect identity]\label{hb:thm:firstidentity}
+For every positively weighted bipartite graph with matching rank $r\ge2$,
+\begin{equation}\label{hb:eq:defectidentity}
+ \frac{r-1}{2r}a_1^2-a_2
+ =\frac1{2r}\sum_{i<j}(W_i-W_j)^2+K+B_4.
+\end{equation}
+In particular,
+\begin{equation}\label{hb:eq:firstineq}
+ a_1^2\ge\frac{2r}{r-1}a_2,
+\end{equation}
+which is exactly the first $\ULC_r$ inequality because $a_0=1$.
+\end{theorem}
+\begin{proof}
+Let $m_2$ be the weighted number of individual two-edge matchings, where a
+matching has weight equal to the product of the weights of its four covered
+vertices. A two-edge matching cannot have both its edges assigned to the
+same cover vertex. Consequently
+\[
+ \sum_{i<j}W_iW_j=m_2+K.
+\]
+For a given support pair of size two, the number of perfect matchings is
+one or two. It is two exactly when its induced bipartite graph is $K_{2,2}$.
+Both matchings have the same support weight. Therefore $m_2=a_2+B_4$.
+Finally,
+\[
+ \frac{r-1}{2r}\left(\sum_iW_i\right)^2-\sum_{i<j}W_iW_j
+ =\frac1{2r}\sum_{i<j}(W_i-W_j)^2.
+\]
+Adding these identities proves \eqref{hb:eq:defectidentity}; every term on
+the right is nonnegative.
+\end{proof}
+
+The identity separates three sources of slack: unequal total weights of
+cover-centered star classes, overlap between different such classes, and
+multiple witnessing matchings on the same four-vertex support. The last
+term would be invisible if supports were mistakenly counted with matching
+multiplicity.
+
+\begin{corollary}[Equality classification]\label{hb:cor:equality}
+For positive vertex weights and $r\ge2$, equality holds in
+\eqref{hb:eq:firstineq} if and only if, after deleting isolated vertices, the
+graph is a disjoint union of $r$ stars whose edge-weight sums are equal.
+\end{corollary}
+\begin{proof}
+Equality in \eqref{hb:eq:defectidentity} implies $W_1=\cdots=W_r$. Since
+$a_1>0$, all these values are positive, so every class is nonempty.
+It also gives $K=0$. Positive weights then imply that any edge in one
+class is disjoint from any edge in a different class. Thus the vertex
+sets of the nonempty classes are disjoint. Each class is a star centered
+at its assigned cover vertex, so the nonisolated graph is a disjoint union
+of exactly $r$ stars, with equal edge-weight sums.
+
+Conversely, for disjoint stars with common edge-weight sum $W$, a matchable
+support chooses either no edge support or one edge support in each star.
+The support polynomial is $(1+Wt)^r$. Its first normalized inequality is
+an equality.
+\end{proof}
+
+\begin{corollary}\label{hb:cor:smallrank}
+Every positively weighted bipartite graph with matching rank at most two
+has a rank-normalized ultra-log-concave support polynomial.
+\end{corollary}
+\begin{proof}
+Ranks zero and one have no nontrivial interior inequality. In rank two,
+\eqref{hb:eq:firstineq} is the only one.
+\end{proof}
+
+The defect identity also gives a quantitative statement without any
+structural approximation theorem. If its left side is at most
+$\varepsilon a_1^2$, then
+\[
+ \sum_{i<j}(W_i-W_j)^2\le2r\varepsilon a_1^2,
+ \qquad K+B_4\le\varepsilon a_1^2.
+\]
+Small defect therefore forces the star-class weights to be nearly equal
+and the total weighted overlap and multiplicity to be small. Turning this
+weighted conclusion into a graph-edit theorem would require additional
+lower bounds on individual vertex weights.
+
+\needspace{7\baselineskip}
+\section{Exact counting parameterized by matching rank}
+\label{hb:sec:algorithm}
+
+The bottleneck viewpoint has an algorithmic benefit beyond the special
+family. A small maximum matching yields a small vertex cover, and outside
+vertices can be grouped by their neighborhoods in that cover. We give a
+formula that handles arbitrary positive rational weights without counting
+the same support repeatedly.
+
+\subsection{Neighborhood types and elementary symmetric weights}
+
+Let a minimum cover be $C=C_X\sqcup C_Y$ with
+\[
+ p=|C_X|,\qquad q=|C_Y|,\qquad p+q=r.
+\]
+There are no edges between $X\setminus C_X$ and $Y\setminus C_Y$.
+Every nonisolated outside left vertex has a nonempty neighborhood
+$T\subseteq C_Y$; let $X_T$ be the vertices of that type. Likewise let
+$Y_S$ be the outside right vertices with nonempty neighborhood
+$S\subseteq C_X$. There are at most $2^q-1$ left types and $2^p-1$ right
+types.
+
+For a finite collection of weights $z=(z_1,\ldots,z_h)$, write
+\[
+ e_j(z)=\sum_{1\le i_1<\cdots<i_j\le h}z_{i_1}\cdots z_{i_j},
+ \qquad e_0(z)=1.
+\]
+Set $e_j(z)=0$ for $j>h$. These elementary symmetric functions are the
+correct weights for choosing an \emph{unordered subset} of $j$ vertices
+of the same type.
+
+\begin{definition}
+A cover-type profile consists of selected core subsets
+$U\subseteq C_X$, $V\subseteq C_Y$, together with nonnegative integer
+multiplicities $\alpha_T$ and $\beta_S$ for the outside left and right
+types. It has size $k$ if
+\begin{equation}\label{hb:eq:profilesize}
+ |U|+\sum_T\alpha_T=|V|+\sum_S\beta_S=k.
+\end{equation}
+Its compressed graph contains the selected core vertices and exactly the
+specified number of indistinguishable copies of each outside type, with
+edges prescribed by the original neighborhoods and the core-induced graph.
+\end{definition}
+
+A feasible profile must satisfy
+\begin{equation}\label{hb:eq:profilecaps}
+ \sum_T\alpha_T\le q,\qquad \sum_S\beta_S\le p.
+\end{equation}
+Indeed, all selected outside left vertices must match into $V$, and all
+selected outside right vertices into $U$. We may use the weaker bounds
+$q,p$ for enumeration, and let the matching test enforce the stronger
+bounds involving $|V|,|U|$.
+
+\begin{theorem}[Exact cover-type formula]\label{hb:thm:algorithmformula}
+For every $k$, the coefficient $a_k$ is the sum, over the profiles satisfying
+\eqref{hb:eq:profilesize} and \eqref{hb:eq:profilecaps} whose compressed graph
+has a perfect matching, of
+\begin{equation}\label{hb:eq:profileweight}
+ u_Uv_V
+ \prod_T e_{\alpha_T}\bigl((u_x)_{x\in X_T}\bigr)
+ \prod_S e_{\beta_S}\bigl((v_y)_{y\in Y_S}\bigr).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Every support pair determines a unique profile by intersection with the
+cover and by counting its selected vertices of each outside type. Two
+actual support pairs with the same profile have isomorphic induced
+bipartite graphs under a map fixing the selected core vertices. Thus
+matchability depends only on the profile.
+
+Within a matchable profile, the sum of weights of all choices of outside
+vertices factors independently across types. The factor for selecting
+$\alpha_T$ vertices from $X_T$ is exactly the first elementary symmetric
+factor in \eqref{hb:eq:profileweight}, and similarly on the right. The selected
+core contributes $u_Uv_V$. Summing over profiles counts every support once
+and only once, regardless of the number of perfect matchings in its
+compressed graph.
+\end{proof}
+
+\subsection{A fixed-parameter bound}
+
+Let $N=|X|+|Y|$ and $M=|E|$. For $t$ types the number of nonnegative
+multiplicity vectors with total at most $q$ is $\binom{t+q}{q}$. Therefore
+the number of enumerated profiles is at most
+\begin{equation}\label{hb:eq:profilebound}
+ B_{p,q}=
+ 2^r\binom{2^q+q-1}{q}\binom{2^p+p-1}{p}.
+\end{equation}
+When $p=0$ or $q=0$, the corresponding binomial factor is interpreted as
+$\binom00=1$.
+
+\begin{theorem}[Exact fixed-parameter counting]\label{hb:thm:FPT}
+All coefficients of a positively rationally weighted matching-support
+polynomial can be computed exactly using
+\begin{equation}\label{hb:eq:time}
+ O\bigl((N+M)r+Nr+r^3 B_{p,q}\bigr)
+\end{equation}
+arithmetic operations, for $r\ge1$. In particular, the problem has a
+$2^{r^2+O(r)}\operatorname{poly}(N+M)$ algorithm parameterized by maximum
+matching size. Rank zero is immediate.
+\end{theorem}
+\begin{proof}
+A maximum matching and the cover in Lemma~\ref{hb:lem:konig} can be found
+with at most $r$ augmentations, each requiring $O(N+M)$ work. Group outside
+vertices by their cover neighborhoods. Compute the elementary symmetric
+functions in each left group up to degree $q$ and in each right group up
+to degree $p$, using the update
+\[
+ e_j\leftarrow e_j+z e_{j-1}
+\]
+in descending order of $j$ for each new weight $z$. The total cost is
+$O(Nr)$.
+
+Enumerate the profiles in \eqref{hb:eq:profilebound}. Discard those failing
+\eqref{hb:eq:profilesize}. Their compressed graphs have $k\le r$ vertices on
+each shore, so a simple augmenting-path perfect-matching test takes
+$O(r^3)$ operations. For every successful test add
+\eqref{hb:eq:profileweight} to $a_k$. Products and graph construction fit into
+the same bound.
+
+Finally, $2^q+q-1\le2^{q+1}$ for $q\ge1$, and similarly for $p$. Bounding
+$\binom{h}{j}$ by $h^j$ gives
+\[
+ B_{p,q}\le 2^{r+q(q+1)+p(p+1)}\le2^{r^2+2r}.
+\]
+This proves the fixed-parameter bound.
+\end{proof}
+
+The arithmetic model does not hide an uncontrolled coefficient-size issue.
+For rational input weights, a common denominator formed from the input
+denominators has bit length at most the sum of their bit lengths. Every
+support product has degree at most $2r$, and there are at most
+$\sum_{k\le r}\binom{|X|}{k}\binom{|Y|}{k}$ terms. Standard exact rational
+arithmetic therefore adds only a polynomial bit-complexity overhead in the
+input size and $r$. The reference implementation uses Python's
+\texttt{Fraction} for this reason.
+
+This algorithm is deliberately explicit rather than optimized. For dense
+graphs of large rank its parameter dependence is prohibitive. For a small
+cover with few realized neighborhood types, however, the actual profile
+count can be much smaller than the worst-case bound. The Hall family has
+only one outside type on each shore, which is why the 30-vertex example is
+especially easy to verify by an independent cover-type computation.
+
+\subsection{Implementation contract and example}
+
+The file \texttt{code/support\_count.py} accepts a list of right-neighbor
+indices for each left vertex, the right shore size, and optional positive
+integer or rational weights. It returns the exact coefficient list. The
+following uses the supplied API:
+\begin{lstlisting}[language=Python]
+from support_count import hall_graph, support_polynomial, ulc_margins
+
+s, n, w = 4, 11, 500
+adj = hall_graph(s, n)
+weights = [1] * n + [w] * s
+coefficients = support_polynomial(adj, n + s, weights, weights)
+assert ulc_margins(coefficients, 8)[-1] < 0
+assert all(d >= 0 for d in ulc_margins(coefficients, 15))
+\end{lstlisting}
+Invalid neighbor indices, nonpositive weights, and inexact floating-point
+weights are rejected. Isolated vertices are allowed and do not change the
+returned polynomial. The independent \texttt{brute\_force} function uses
+reachable right-support sets for each left subset; it is intended only for
+small cross-checks, not as the fixed-parameter method.
+[Merge note: the module is shipped as
+\nolinkurl{code/13-hall-bottlenecks-support_count.py}. A file name with
+hyphens cannot be imported by name, so the example above runs only on a
+copy saved as \texttt{support\_count.py}, as the report's README
+describes.]
+
+\needspace{7\baselineskip}
+\section{Verification, reproducibility, and limits}
+\label{hb:sec:verification}
+
+The accompanying program \texttt{code/verify.py} runs the exact checks
+below and writes its transcript and certificates to \texttt{data/}.
+No mathematical assertion about an infinite family rests solely on these
+tests; the proofs are given in the preceding sections.
+
+\paragraph{Independent counting checks.}
+The cover-type implementation was compared with the subset dynamic program
+on every one of the 512 labeled $3\times3$ bipartite graphs, both at unit
+weights and at the unequal weights $(2,3,5)$ and $(7,11,13)$. These are
+1,024 exact comparisons. An additional 200 seeded graphs with shore sizes
+from one to six and positive rational weights were checked. Thirty-six
+small Hall-family instances were compared simultaneously by the closed
+formula, the cover-type algorithm, and the subset dynamic program.
+The first-margin defect identity was also checked exactly on every
+rank-at-least-two instance in the $3\times3$ suite.
+
+\paragraph{Counterexample and symbolic checks.}
+The 30-vertex witness was counted by the Hall formula, the general
+cover-type algorithm, and full independent enumeration of its supports.
+All three coefficient lists agree. Its exact coefficients and margins are
+in \nolinkurl{data/rank8_witness.json}, together with an explicit maximum
+matching and minimum cover. The symbolic checks verify all rank-six coefficient
+formulas, all four positive-coefficient certificates, the final quadratic,
+and the general endpoint identity in independent symbols. The general
+tail formulas are also checked against the support sum for core sizes two
+through six. Integer threshold tables are obtained by exact evaluation and
+binary search, not numerical root rounding.
+
+\paragraph{Environment and reproducibility.}
+The delivered transcript records Python 3.13.5 and SymPy 1.14.0. The counting
+module itself has no third-party dependency; SymPy is used only by the
+symbolic verification driver. Running
+\begin{lstlisting}[language=bash]
+python code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+from the package root regenerates the data and PDF. The included build
+script automates the last two commands.
+[Merge note: in this report the verifier is
+\nolinkurl{code/13-hall-bottlenecks-verify.py}; it imports
+\nolinkurl{code/13-hall-bottlenecks-support_count.py} under its delivery
+name \texttt{support\_count}, and the records named in this section are
+shipped as \nolinkurl{data/13-hall-bottlenecks-<name>}. Besides
+\texttt{data/}, the verifier writes \texttt{tex/positivity\_tables.tex}
+(shipped as \nolinkurl{data/13-hall-bottlenecks-positivity_tables.tex}),
+reads the table block of the main article between the two comment
+markers of Section~\ref{hb:app:positive}, and fails without it; it
+rewrites its outputs in place. Run it only on a copy restored to the
+delivered layout, as the report's README describes. The build script,
+shipped as \nolinkurl{code/13-hall-bottlenecks-build.sh}, changes to its
+own directory and would compile a nonexistent \texttt{code/article.tex};
+this report is built with \texttt{latexmk}. The ``unequal weights
+$(2,3,5)$ and $(7,11,13)$'' of the first paragraph are the left and the
+right weights of \emph{one} weighting (the transcript says ``one positive
+unequal weight vector''): the 1,024 comparisons are 512 graphs at two
+weightings.]
+
+\paragraph{What was not verified.}
+There is no Lean formalization in this package, no proof-assistant kernel
+check, and no claim of exhaustive classification of all graphs of rank
+three through six. The 30-vertex example is not asserted to be smallest.
+The full phase diagram applies only to the explicitly defined symmetric
+core-three family. The endpoint classification for larger cores is not a
+classification of all inequalities. The exact limiting-family order is
+not a universal upper bound for arbitrary graphs.
+
+\paragraph{Novelty assessment.}
+The targeted source review establishes that the smaller-shore result is
+already published and that the cited ProveIt snapshot does not prove its
+rank replacement. The proofs here resolve the universally two-shore
+weighted strengthening and derive the associated structural and
+algorithmic results. They should be independently reviewed before any
+claim of publication priority. We do not describe the result as resolving
+a famous named conjecture or as refuting a theorem in the cited literature.
+
+\needspace{7\baselineskip}
+\section{Further research questions}
+\label{hb:sec:questions}
+
+The following questions are formulated to distinguish global classification
+from properties of the particular family. They are not used as premises
+in any proof above.
+
+\begin{question}[Unit weights]\label{hb:q:unit}
+Is every unit-weight matching-support polynomial $\ULC_r$, where
+$r=\nu(H)$? If not, what is the smallest-rank counterexample?
+\end{question}
+The core-three family cannot answer this negatively, by
+Corollary~\ref{hb:cor:asymptoticweight}. The cover-type formula provides an
+exact search framework that is better aligned with the rank parameter
+than enumeration by total vertex count. A proof would need to use the
+absence of external fields in an essential way.
+[Merge note: this is the unit-weight half of Part~V's Research
+question~\ref{lor:q:first}; the batch-55 search recorded after that
+question found no unit-weight counterexample in its finite families.]
+
+\begin{question}[One-shore external fields]\label{hb:q:oneshore}
+Does $\ULC_r$ hold when $u_x=1$ for every left vertex and the right weights
+$v_y$ are arbitrary positive numbers?
+\end{question}
+The counterexample forces cores on both shores, so it does not settle this
+version. One can first analyze a two-activity Hall family and specialize
+one activity to one. A general positive theorem here would sharply
+separate one-shore support weighting from two-shore weighting.
+[Merge note: with Research question~\ref{hb:q:unit}, this is what remains
+open of the weighted version of Research question~\ref{lor:q:first}.]
+
+\begin{question}[First possible weighted rank]\label{hb:q:rank}
+Do all positively weighted support polynomials of matching ranks three,
+four, or five satisfy rank-normalized ultra-log-concavity?
+\end{question}
+Corollary~\ref{hb:cor:smallrank} and the rank-six example leave the smallest
+possible rank in $\{3,4,5,6\}$. A promising approach is to enumerate
+cover-type structures, derive symbolic coefficient inequalities, and look
+for positive-coefficient or sum-of-squares certificates after reducing
+symmetries. Numerical sampling alone would be a poor substitute for these
+certificates because the known rank-six threshold can be large.
+
+\begin{question}[A universal rank-only order]\label{hb:q:order}
+Does there exist a finite function $\mathcal D(r)$ such that all positively
+weighted rank-$r$ support polynomials are $\ULC_{\mathcal D(r)}$?
+If so, what is its optimal growth and exact small-rank behavior?
+\end{question}
+Corollary~\ref{hb:cor:universalorder} rules out $\mathcal D(r)=r$ and any
+asymptotic slope below $4/3$ along even ranks. It does not prove existence
+of a rank-only order. The possibilities include a larger linear bound,
+a nonlinear bound, or failure of every finite uniform order at some rank.
+
+\begin{question}[Full Hall-family phase diagrams]\label{hb:q:phase}
+For $s\ge4$, is the endpoint always the first rank-normalized inequality
+to fail as the common activity $w$ increases? What is the exact smallest
+order that works for every finite activity and outer size at fixed $s$?
+\end{question}
+Theorem~\ref{hb:thm:endpoint} gives a necessary failure region, and
+Theorem~\ref{hb:thm:limitingorder} gives the exact limiting answer. The missing
+step is a uniform analysis of all intermediate margins. The positive
+coefficient method used at $s=3$ is one concrete candidate, but it must be
+proved rather than extrapolated from small cases.
+
+\begin{question}[Asymmetric bottlenecks]\label{hb:q:asymmetry}
+What happens when the two cores have different sizes, the outer blocks
+have different sizes, or the two cores have different activities?
+Can such asymmetry lower the first counterexample rank or the vertex count?
+\end{question}
+The support criterion still reduces to $i+j\ge k$, while the four
+binomial factors and the activity weights become asymmetric. The parameter space is larger, but
+endpoint coefficients still involve only a few core choices. This is a
+natural route to smaller certificates without asserting that the present
+symmetric witness is extremal.
+
+\begin{question}[Higher-index defect identities]\label{hb:q:defects}
+Is there a higher-degree analogue of \eqref{hb:eq:defectidentity} in which a
+rank-normalized margin decomposes into nonnegative terms plus an explicit
+Hall-bottleneck obstruction?
+\end{question}
+Such an identity could explain exactly why the first inequality is
+universal and higher ones fail. It might also isolate graph classes where
+all obstruction terms vanish, producing structural sufficient conditions
+for rank normalization rather than a new numerical bound alone.
+
+\begin{question}[Faster exact counting]\label{hb:q:algorithm}
+Can the $2^{r^2+O(r)}$ profile enumeration be reduced to a singly
+exponential dependence on $r$, or to a substantially better dependence on
+the number of realized neighborhood types?
+\end{question}
+The current procedure repeats matching tests for many profiles with shared
+structure. Dynamic programming over subsets of the cover, representative
+profile classes, or algebraic compression could help. Any improvement must
+preserve support counting, not silently replace it by the easier-to-write
+sum over individual matchings.
+[Merge note: compare Part~V's Research question~\ref{hb:hq:algorithms},
+which asks for exact algorithms depending on repeated neighbourhoods, and
+Part~IV's Research question~\ref{lor:hq:countcx}.]
+
+\begin{question}[Formal proof and certificate interfaces]\label{hb:q:formal}
+What is the smallest reusable formal interface that proves the support
+formula, certifies the counterexample, and verifies the cover-type count?
+\end{question}
+A first stage needs only finite bipartite matchings, binomial counting,
+exact polynomial identities, and ordered-field inequalities. The
+Lorentzian corollary can be separated as a later stage depending on the
+published homogeneous theorem. This separation would allow a short
+kernel-checked certificate of the negative answer without first
+formalizing the entire surrounding theory.
+[Merge note: Part~V's Research question~\ref{lor:q:last} asks for a
+layered formalization of Part~V's theorems; this question concerns
+Part~XI's finite certificate and its cover-type count. Nothing of either
+is formalized.]
+
+\needspace{7\baselineskip}
+\section{Conclusion}
+\label{hb:sec:conclusion}
+
+The difference between shore size and matching rank is substantive for
+positively weighted matching supports. A simple missing rectangular block,
+together with a core activity, already defeats the rank-normalized
+inequality. The resulting obstruction is exact, robust, and visible in a
+single quadratic; at rank six it admits a complete phase diagram.
+
+At the same time, rank remains useful. It controls a universal first
+inequality with a transparent equality theory, provides a parameter for
+exact support counting, and constrains any possible replacement
+normalization. The next decisive questions are therefore not whether the
+published smaller-shore theorem is valid---it is retained throughout---but
+which restrictions restore rank normalization and whether a universal
+rank-only order exists beyond the lower bound proved here.
+
+\needspace{7\baselineskip}
+\section{Finite positive-coefficient certificates}
+\label{hb:app:positive}
+\noindent\emph{(Source~13's Appendix~A. The tables between the two comment
+markers below are its generated block, character for character; the same
+text is shipped as \nolinkurl{data/13-hall-bottlenecks-positivity_tables.tex},
+and the shipped verifier compares the two.)}
+
+This appendix supplies the full data defining the polynomials in
+\eqref{hb:eq:positivefactors}. Put $x=n-2$. In the row labeled $j$, a list
+$(c_0,\ldots,c_h)$ means that the coefficient of $w^j$ is
+$\sum_{i=0}^h c_i x^i$. Thus the first table, for example, means
+\[
+ P_1(x,w)=24+20x+4x^2+(72+36x)w+33w^2.
+\]
+Every displayed coefficient is a positive integer. The tables are exact
+expansions, not fitted numerical values. Substituting $x=n-2$ and
+multiplying by the factors in \eqref{hb:eq:positivefactors} reproduces the
+four margins computed from \eqref{hb:eq:rank6coeffs}; this can be checked by
+ordinary polynomial multiplication. The supplied verifier performs the
+same identity checks symbolically and also exports the lists as JSON.
+
+%% BEGIN GENERATED POSITIVITY TABLES
+\begin{center}
+\small
+\begin{tabular}{r l}
+\toprule
+$w$ power & Coefficients in ascending powers of $x$ \\
+\midrule
+0 & $24,\;20,\;4$ \\
+1 & $72,\;36$ \\
+2 & $33$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Table for $P_1(x,w)$.
+
+\begin{center}
+\small
+\begin{tabular}{r l}
+\toprule
+$w$ power & Coefficients in ascending powers of $x$ \\
+\midrule
+0 & $2544,\;4640,\;3148,\;940,\;104$ \\
+1 & $3924,\;5442,\;2484,\;372$ \\
+2 & $2862,\;2871,\;720$ \\
+3 & $1128,\;564$ \\
+4 & $171$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Table for $P_2(x,w)$.
+
+\begin{center}
+\small
+\begin{tabular}{r l}
+\toprule
+$w$ power & Coefficients in ascending powers of $x$ \\
+\midrule
+0 & $5616,\;19776,\;28252,\;21012,\;8596,\;1836,\;160$ \\
+1 & $13968,\;38880,\;41364,\;21204,\;5256,\;504$ \\
+2 & $12756,\;26292,\;19845,\;6504,\;780$ \\
+3 & $5688,\;8652,\;4392,\;744$ \\
+4 & $1476,\;1530,\;396$ \\
+5 & $216,\;108$ \\
+6 & $9$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Table for $P_3(x,w)$.
+
+\begin{center}
+\small
+\begin{tabular}{r l}
+\toprule
+$w$ power & Coefficients in ascending powers of $x$ \\
+\midrule
+0 & $648,\;2736,\;4734,\;4292,\;2144,\;556,\;58$ \\
+1 & $1188,\;4250,\;5824,\;3774,\;1136,\;124$ \\
+2 & $1098,\;3145,\;3068,\;1157,\;136$ \\
+3 & $588,\;1056,\;540,\;72$ \\
+4 & $113,\;98,\;17$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\noindent Table for $P_4(x,w)$.
+
+%% END GENERATED POSITIVITY TABLES
+
+\needspace{7\baselineskip}
+\section{Repository pin, source audit, and artifact map}
+\label{hb:app:provenance}
+\noindent\emph{(Source~13's Appendix~B.)}
+
+The repository was inspected through its GitHub interface at commit
+\begin{center}
+\texttt{0a543d5e435df885f78ca731d71856f3ee0ab2d4}.
+\end{center}
+The relevant source file is
+\begin{quote}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/}\\
+\nolinkurl{preorder-root-polytopes/article.tex}.
+\end{quote}
+Its Git blob at that pin is
+\begin{center}
+\texttt{ba1cc4a6c99abd5ff808aae97df75efe434833e9}.
+\end{center}
+The inspected ranges 8190--8335 and 8400--8590 contain the homogeneous
+completion, two-shore weighted inequality, and the explicit distinction
+between active shore size and maximum matching rank. The local README was
+also inspected to identify the report's existing continuations. No claim is
+made to have audited every mathematical assertion in the whole repository.
+[Merge note: the pinned blob is this report exactly as it stood after
+Part~IX was written (also source~12's pin), so the source file is
+Parts~I--IX and the inspected passages are in Part~V. Lines 8190--8335 of
+that blob are the end of the subsection of
+Proposition~\ref{lor:sp:prop:conditioning}
+(Section~\ref{lor:sec:sp:lift}), the subsection with
+Theorem~\ref{lor:thm:CLC} and its homogenizing-degree caveat,
+Section~\ref{lor:sec:weighted} with Theorem~\ref{lor:thm:weightedULC}, and
+the opening of its subsection on sharpness. Lines 8400--8590 run from the
+subsection on bounds by the first and last coefficients through the
+subsections ``Why the order is the smaller active shore'', the forest
+example and integer capacities of Section~\ref{lor:sec:sp:ulc}, into the
+opening of Section~\ref{lor:sec:preorders}. The front-matter sentences of
+Parts~X and~XI and the dated pointers of Part~XI moved these lines by 67
+up to the dated pointer after Theorem~\ref{lor:thm:CLC}, by 72 from there
+to the dated pointer in the subsection on the smaller active shore, and by
+75 after it, in the present file.]
+
+The primary literature check used the arXiv v3 text of R\"ohrle--Ulirsch,
+its publisher record, and the official Annals record of Br\"and\'en--Huh.
+The normalized inequality in R\"ohrle--Ulirsch's Theorem A was checked in
+both the text and rendered PDF. The source review was targeted to the
+question and is not a comprehensive priority search for every elementary
+lemma or algorithmic ingredient used here.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.43\textwidth}>{\raggedright\arraybackslash}p{0.48\textwidth}}
+\toprule
+Artifact & Purpose\\
+\midrule
+\texttt{article.tex}, \texttt{article.pdf} & Self-contained source and compiled article.\\
+\nolinkurl{code/13-hall-bottlenecks-support_count.py} & Exact cover-type counting, independent subset count, and Hall formula.\\
+\nolinkurl{code/13-hall-bottlenecks-verify.py} & Reproducible exact and symbolic test driver.\\
+\nolinkurl{data/13-hall-bottlenecks-rank8_witness.json} & Full 30-vertex graph, weights, coefficients, matching, cover, and margins.\\
+\nolinkurl{data/13-hall-bottlenecks-rank6_positive_certificates.json} & Exact positive-coefficient lists for the four non-endpoint rank-six margins.\\
+\nolinkurl{data/13-hall-bottlenecks-rank6_thresholds.json} & Rank-six integer threshold table.\\
+\nolinkurl{data/13-hall-bottlenecks-general_endpoint_thresholds.json} & General-core endpoint table.\\
+\nolinkurl{data/13-hall-bottlenecks-verification_results.txt} & Transcript from the executed verification run.\\
+\nolinkurl{data/13-hall-bottlenecks-positivity_tables.tex} & Regenerated appendix tables; embedded directly in the main source.\\
+\texttt{README.md}, \nolinkurl{code/13-hall-bottlenecks-build.sh} & Scope, reproduction instructions, and PDF build command.\\
+\bottomrule
+\end{tabular}
+\end{center}
+[Merge note: the table above gives the shipped names. Source~13's
+\texttt{article.tex}, \texttt{article.pdf} and \texttt{README.md} are not
+shipped (they survive in the arrival commit; this report's
+\texttt{article.tex}, \texttt{article.pdf} and \texttt{README.md} replace
+them); its \texttt{tex/positivity\_tables.tex}, \texttt{build.sh} and the
+files of \texttt{code/} and \texttt{data/} carry the prefix
+\texttt{13-hall-bottlenecks-}. Two shipped files are not listed in the
+table: \nolinkurl{data/13-hall-bottlenecks-provenance.json} (the pin, the
+blob, the inspected line ranges and the two primary references, with
+``formal\_verification: Not performed'') and
+\nolinkurl{data/13-hall-bottlenecks-requirements.txt}
+(\texttt{sympy==1.14.0}).]
+% End of Part XI (batch 68).
 
 \appendix
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}

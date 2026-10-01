@@ -1,8 +1,8 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; and rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number**
 
-This is a research report in ten parts. Part I is the original report of
+This is a research report in eleven parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
 ProveIt's incoming-report intake, from a later manuscript that addresses the
 three questions Part I left open in its Section 10 ("What remains unresolved"):
@@ -65,7 +65,24 @@ is asymptotically "at most two marks"; at fixed `p` the marks and hull
 size given stability are jointly Gaussian and the conditioned diameter is
 linear; and for **every** fixed tree the probability is determined by the
 diameter up to a polynomial factor, which separates the typical-tree rate
-`log(1−p)` from the averaged rate `−p`.
+`log(1−p)` from the averaged rate `−p`. **Part XI** was added on
+30 September 2026 in batch 68, from one manuscript (source 13 below;
+batch-68 manuscript 03), prepared for Vladimir Reshetnikov with ChatGPT
+per its title page. It answers Part V's Research question 37
+("Normalization by the matching number") **negatively in its weighted
+version**: with positive vertex weights on both shores,
+`binomial(nu(H), k)` cannot replace `binomial(min(m,n), k)`. A graph with
+30 vertices, 104 edges and matching number 8, with weight 500 on its eight
+core vertices and 1 on the others, has
+`7a_7^2 − 16a_6a_8 = 9·3025^2·w^14·(−w^2 + 480w + 2304) < 0` at `w = 500`,
+although Part V makes it ultra-log-concave of order 15. It adds a complete
+rank-six phase diagram for a symmetric Hall-bottleneck family, the endpoint
+threshold for every core size, a lower bound `(4/3)·nu(H) − 17/9 + o(1)`
+along even ranks for any normalization depending on the matching number
+alone, the first rank-normalized inequality for every positively weighted
+graph with a defect identity and its equality cases, and an exact counting
+algorithm in `2^(nu^2 + O(nu))·poly` time. The unit-weight and one-shore
+versions stay open.
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -101,18 +118,19 @@ diameter up to a polynomial factor, which separates the typical-tree rate
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 12–24) and Appendices A–C (pp. 300–302) |
-| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 25–53) |
-| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 54–78) |
-| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 79–119) |
-| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 79–119) |
-| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 120–169) |
-| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 120–169) |
-| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 170–203) |
-| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 204–220); stability sections in Part VI; coefficient sections credited in Part V |
-| 10 | batch 63, manuscript 03 (*Marked-Tree Stability: Complete Apex-Neighborhood Classification, Exact Enumeration, and Optimal Repair*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Marked_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `a4268e78e`) | commit `b57c0b5ff112e1a08af8add12b2d687b8ece91d0` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `62f1ad07c` (prefix `10-marked-trees-`) | Part VIII: Sections 116–131 (pp. 221–247) |
-| 11 | batch 64, manuscript 01 (*Two-Flow Bijections for Demand Polytopes: Full-coordinate sampling, exact certificates, restriction laws, and preorder applications*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Two_Flow_Lattice_Sampling.zip` (inner `Two_Flow_Lattice_Sampling/`, main file `article.tex`; arrival `7747fcfdd`) | commit `6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `3025c15df` (prefix `11-two-flow-`) | Part IX: Sections 132–151 (pp. 248–274) |
-| 12 | batch 66, manuscript 06 (*Rare Stable Markings on Random Trees: Exact enumeration, sparse transitions, conditioned geometry, and annealed–quenched separation*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Random_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `9ad899cbe`) | commit `b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `4fee1cd07` (prefix `12-random-trees-`) | Part X: Sections 152–171 (pp. 274–299) |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 13–25) and Appendices A–C (pp. 327–330) |
+| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 26–54) |
+| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 55–79) |
+| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 80–121) |
+| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 80–121) |
+| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 122–171) |
+| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 122–171) |
+| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 172–205) |
+| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 206–222); stability sections in Part VI; coefficient sections credited in Part V |
+| 10 | batch 63, manuscript 03 (*Marked-Tree Stability: Complete Apex-Neighborhood Classification, Exact Enumeration, and Optimal Repair*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Marked_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `a4268e78e`) | commit `b57c0b5ff112e1a08af8add12b2d687b8ece91d0` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `62f1ad07c` (prefix `10-marked-trees-`) | Part VIII: Sections 116–131 (pp. 223–249) |
+| 11 | batch 64, manuscript 01 (*Two-Flow Bijections for Demand Polytopes: Full-coordinate sampling, exact certificates, restriction laws, and preorder applications*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Two_Flow_Lattice_Sampling.zip` (inner `Two_Flow_Lattice_Sampling/`, main file `article.tex`; arrival `7747fcfdd`) | commit `6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `3025c15df` (prefix `11-two-flow-`) | Part IX: Sections 132–151 (pp. 250–276) |
+| 12 | batch 66, manuscript 06 (*Rare Stable Markings on Random Trees: Exact enumeration, sparse transitions, conditioned geometry, and annealed–quenched separation*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Random_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `9ad899cbe`) | commit `b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `4fee1cd07` (prefix `12-random-trees-`) | Part X: Sections 152–171 (pp. 276–301) |
+| 13 | batch 68, manuscript 03 (*Hall Bottlenecks and the Limits of Rank Normalization: Exact counterexamples, a complete rank-six phase diagram, and fixed-parameter counting of matching supports*, 30 Sep 2026, 21-page A4 PDF as delivered) | `ProveIt_Hall_Bottlenecks.zip` (inner same, main file `article.tex`; arrival `a866ff9a2`) | commit `0a543d5e435df885f78ca731d71856f3ee0ab2d4` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `29e52fcdf` (prefix `13-hall-bottlenecks-`) | Part XI: Sections 172–186 (pp. 302–326) |
 
 Manuscript 02 names no ProveIt commit. It records the Git blob of the
 `article.tex` it consulted; that blob is Part I exactly as printed here
@@ -293,6 +311,31 @@ Its `SHA256SUMS.txt` was verified (19/19) at placement and retired.
   line ranges are kept in Section 153.1, with a merge note mapping the
   ranges to Part VIII's sections. Section 152.4 lists every choice.
 
+Batch 68's manuscript 03 (source 13) arrived in `a866ff9a2` and was placed
+in `29e52fcdf`, together with manuscripts for two other reports and three
+Fabius-tree arrivals. Its pin `0a543d5e4` records the same blob
+`ba1cc4a6…` of this report's `article.tex` as source 12's: Parts I–IX
+exactly as printed, before Part X was written (unchanged from the pin to
+the placement), so its "Part V" and its inspected line ranges 8190–8335
+and 8400–8590 refer to that text; Section 186 maps the ranges to Part V's
+sections. Its manuscript, PDF and delivery README are not shipped; they
+survive in the arrival commit. It shipped no checksum list and no notes
+in Markdown.
+
+- **Part XI** is source 13 in its own order, behind a merge section
+  (Section 172). Source 13's Section k is Section k + 172 here (its
+  Appendices A–B are Sections 185–186), and statement and equation numbers
+  follow the section (Theorem 4.1 → 176.1); its two tables are Tables
+  26–27 (Table 25 is the merge's notation table), its figure is Figure 6,
+  and its nine questions, numbered 11.1–11.9 as delivered, are Research
+  questions 84–92. Its Section 2.1 re-derives Part V's Theorem 70.1 by Part
+  V's own argument (Proposition 69.1 and display 70.2); the display and the
+  conclusion keep their labels, and the derivation is replaced by a merge
+  note citing Part V (Section 174.1). Its homogenizing variable `s` is
+  printed `σ`, because `s` is also its core size. Its reference to this
+  report became references to Part V's statements. Section 172.4 lists
+  every choice.
+
 Section numbers of the sources that their shipped notes use:
 source 09's `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites its Sections 4
 (→ Part V, not reprinted: Corollary 67.2 and Proposition 71.5), 5 → 103,
@@ -313,7 +356,9 @@ Proposition A.1 → 150.1. Source 12's `12-random-trees-PROOF_STATUS.md`
 uses no numbers (it names Part VIII's labels `mts:thm:main` and
 `mts:tab:ADE`, which are Theorem 118.2 and Table 14);
 `12-random-trees-SOURCE_AUDIT.md` gives line ranges of the pinned blob
-(mapped in Section 153.1).
+(mapped in Section 153.1). Source 13 shipped no notes; its records use no
+section numbers, and `data/13-hall-bottlenecks-provenance.json` gives the
+line ranges of the pinned blob (mapped in Section 186).
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The
@@ -341,7 +386,15 @@ high-precision values with exact histograms, check the Poisson identity
 exactly 170 times and the skeleton coefficients on all 435 unlabelled trees
 with 2–11 vertices; the general theorems rest on the written proofs and on
 Part VIII's classification, which is imported, and the finite checks test
-the ADE-admissible class, not polynomial stability.)
+the ADE-admissible class, not polynomial stability. Part XI: source 13's
+verifier compares its cover-type count with an independent subset count on
+all 512 labeled 3-by-3 bipartite graphs at two weightings and on 200
+seeded rationally weighted graphs, checks 36 small Hall-family instances
+and the 30-vertex witness by three counts, and checks the rank-six
+identities, the four positivity certificates and the endpoint identity
+with SymPy; the general theorems rest on the written proofs, and the
+comparison with the smaller-shore baseline on Part V's Theorem 70.1 and
+Brändén–Huh's Lorentzian theorems.)
 
 ## Results
 
@@ -719,7 +772,64 @@ annealed and `π_p(T)` the quenched stability probability. It proves:
    the same Gaussian covariance (Theorem 166.1); the geometric results
    need the ADE path shape and do not transfer.
 
-**What Parts II–X do to the open questions** (Sections 11.3 and 26.3;
+**Part XI** (source 13) works with a bipartite graph `H = (X, Y; E)`,
+positive vertex weights `u`, `v` on both shores, `r = nu(H)` and the
+weighted support polynomial `p_H(t; u, v) = Σ a_k t^k` (Part V's
+`A_H(t; u, v)`: each matchable support pair once, not each matching);
+`ULC_D` means that `a_k / binomial(D, k)` is log-concave without internal
+zeros, with margins `Δ_k^(D) = k(D−k)a_k^2 − (k+1)(D−k+1)a_{k−1}a_{k+1}`.
+The Hall family `H_{s,n}` has outer blocks `L`, `R` of size `n` (weight 1),
+cores `A`, `B` of size `s` (activity `w`), and every edge except those of
+`L × R`. It proves:
+
+1. **Support criterion and coefficients** (Section 175): a pair of size
+   `k` choosing `i` vertices of `A` and `j` of `B` is matchable iff
+   `i + j ≥ k` (Lemma 175.2), which gives a closed formula for every
+   coefficient (Theorem 175.3).
+2. **The counterexample** (Theorem 176.1): `H_{4,11}` with `w = 500`
+   (30 vertices, 104 edges, `nu = 8`) has
+   `7a_7^2 − 16a_6a_8 = 9·3025^2·w^14·(−w^2 + 480w + 2304)`, which is
+   `9·3025^2·500^14·(−7696) < 0`, so it is not `ULC_8`, although it is
+   `ULC_15` by Part V; for this graph the last inequality first fails at
+   the integer activity 485. Hence a degree-15 Lorentzian specialization of a
+   transversal-matroid basis polynomial whose quotient by `σ^7` is not
+   Lorentzian (Corollary 176.2), and a nonreal zero and an open set of
+   failing weights (Corollary 176.3).
+3. **Rank six** (Section 177): for `H_{3,n}` the first four order-6
+   margins are positive for every `w > 0` (finite positive-coefficient
+   certificates, Section 185) and
+   `Δ_5^(6) = n^4 (n−1)^2 w^10 Q_n(w) / 48`, so `H_{3,n}` is `ULC_6` for
+   every `w` iff `n ≤ 32`, and for `n ≥ 33` exactly for `w ≤ w_c(n)`
+   (Theorem 177.1); `H_{3,33}` with `w = 26804` (72 vertices) fails;
+   `w_c(n)/n → 6 + 2·sqrt(11)`, and every unit-weight member is `ULC_6`
+   (Corollary 177.2).
+4. **The endpoint for every core size** (Theorem 178.2): the last margin
+   is `w^(4s−2)·(αw^2 + βw + γ)` with `β, γ > 0`; it fails for some `w` iff
+   `α < 0`: never for `s = 2`, and for `s ≥ 3` iff
+   `n ≥ n_min(s) = s + ⌊1/(T_s − 1)⌋`, `T_s = 2(s−1)/sqrt(s(2s−1))`
+   (Table 27 lists `s = 3..10`; `s = 4` gives the 30-vertex witness).
+5. **Limiting order** (Section 179): as `w → ∞` the coefficients tend to
+   those of `L_{s,n}(t) = t^s·Σ_j binomial(n,j)^2 t^j`; the least order
+   that works for every `L_{s,n}` is
+   `D_s = max(2s, ⌈(8s^2 − 11s + 4)/(3s − 2)⌉)` (Theorem 179.3: 7, 9, 12 at
+   ranks 6, 8, 10), so any order depending on the rank alone satisfies
+   `D(2s) ≥ D_s`, that is `D(r) ≥ (4/3)r − 17/9 + o(1)` along even ranks
+   (Corollary 179.4).
+6. **First inequality** (Section 180): for every positively weighted graph
+   with `r ≥ 2`,
+   `((r−1)/(2r))·a_1^2 − a_2 = (1/(2r))·Σ_{i<j}(W_i − W_j)^2 + K + B_4`
+   over the star classes of a minimum vertex cover (Theorem 180.2), so the
+   first `ULC_r` inequality always holds, with equality exactly for
+   disjoint unions of `r` stars with equal edge-weight sums
+   (Corollary 180.3); matching number at most two is always `ULC_r`
+   (Corollary 180.4).
+7. **Exact counting** (Section 181): a formula over neighbourhood types
+   relative to a minimum vertex cover (Theorem 181.2) computes every
+   coefficient for positive rational weights in
+   `O((N+M)r + Nr + r^3·B_{p,q})` arithmetic operations, hence in
+   `2^(r^2 + O(r))·poly(N + M)` (Theorem 181.3).
+
+**What Parts II–XI do to the open questions** (Sections 11.3 and 26.3;
 Part II's dated pointers are in the abstract, the scope box, Sections 8 and
 10 and Appendix C; Part III's in the title block, the abstract, the
 reading-route box, Section 19 and Research questions 3 and 4 of Section 24;
@@ -827,6 +937,31 @@ Research questions 23, 24, 26, 28, 32 and 34):
   answers are in Section 152.3; its dated pointers, marked "Added
   30 September 2026, batch 66", are in the title block, the abstract, the
   scope box, the reading-route box and after Research question 63.
+- [Added 30 September 2026, batch 68.] Part XI **answers Part V's
+  Research question 37** ("Normalization by the matching number")
+  **negatively for positive weights on both shores** (Theorem 176.1; at
+  matching number six, Theorem 177.1). The unit-weight and one-shore
+  versions stay open (Research questions 84 and 85), and no smallest
+  counterexample is determined: the least matching number of a weighted
+  counterexample is 3, 4, 5 or 6 (Research question 86). It answers
+  Research question 38 at the first index for the normalization by
+  `nu(H)` (Corollary 180.3); the merge adds that the first inequality is
+  then strict for every larger order, so equality at the first index of
+  Part V's inequality needs `min(m,n) = nu(H)`, and for preorders only the
+  antichain attains it (the first index of Part VII's restatement in
+  Section 112.1). Its exact algorithm (Theorem 181.3) adds one
+  parameterized class to Research questions 26, 32 and 40 — bounded
+  matching number, which through Part II's Theorem 13.2 also covers
+  `h_{P_G}` — not the widths they name. For preorders, Research question
+  37 is vacuous (`nu(H_tau) = n` by the diagonal), so Corollary 67.2 is
+  unaffected. Conjectures 5.3 and 5.1(d) are unchanged; nothing is refuted
+  or retracted. Its answers are in Section 172.3; its dated pointers,
+  marked "Added 30 September 2026, batch 68", are in the title block, the
+  abstract, the scope box, the reading-route box, after Research questions
+  26 and 32, after Theorem 69.3 (the homogenizing-degree caveat), in
+  Section 70.4 ("Why the order is the smaller active shore"), after
+  Research questions 37, 38 and 40 (which received the label
+  `hb:hq:algorithms`), and in Part VII's Section 112.1.
 
 ## Not claimed
 
@@ -964,7 +1099,11 @@ From Part V (see also `06-lorentzian-support-SOURCES.md`,
   is classical (Balas–Pulleyblank, as identified by Mori).
 - **No normalization by the matching number** `nu(H)` in place of the
   smaller shore (Research question 37; a finite search found no
-  counterexample, which is evidence only).
+  counterexample, which is evidence only). [Updated 30 September 2026,
+  batch 68: with positive weights on both shores the replacement is
+  **false** (Part XI, Theorem 176.1); the search concerned unit weights,
+  and the unit-weight and one-shore versions remain open (Research
+  questions 84 and 85).]
 - **No gamma log-concavity beyond height two**; no real-rootedness
   classification; the Lorentzian conclusions do not upgrade to real
   stability (`Theta_3`); no flag realization; no limit theorem.
@@ -1104,6 +1243,39 @@ From Part X (see also `12-random-trees-PROOF_STATUS.md`,
   finding a prior publication of these formulas is not evidence of
   priority).
 
+From Part XI (source 13 shipped no status notes; its title-page scope box,
+Section 182 and its delivery README state these):
+
+- **Scope of the counterexample.** It concerns positive weights on
+  **both** shores. The unit-weight and one-shore versions of Research
+  question 37 are not settled (Research questions 84–85). The 30-vertex
+  example is not claimed to be smallest (500 is a convenient weight; the
+  last inequality of that graph first fails at the integer 485), and the least matching
+  number of a weighted counterexample is only known to lie in 3–6
+  (Research question 86). No published smaller-shore theorem is
+  contradicted.
+- **Scope of the classifications.** The full phase diagram is for the
+  symmetric core-three family only, not for all graphs of matching number
+  six; for `s ≥ 4`, Theorem 178.2 and Table 27 classify the endpoint
+  only, not every margin; `D_s` is a lower bound for any rank-only order,
+  not a universal upper bound, and is not proved to work for the finite
+  activities of the Hall family; whether any finite rank-only order exists
+  is open (Research question 87).
+- **Imported, not reproved:** the smaller-shore inequality (Part V's
+  Theorem 70.1; Röhrle–Ulirsch's Theorem A) and Brändén–Huh's Lorentzian
+  theorems (used for the baseline and Corollary 176.2 only). Classical:
+  König's theorem (Lemma 180.1, with its standard proof), augmenting
+  paths, elementary symmetric functions. The counting program is a
+  reference implementation, deliberately explicit and prohibitive at
+  large matching number; `brute_force` is for small cross-checks only.
+- **Checks.** The exact computations test finite instances; no statement
+  about an infinite family rests on them alone, and they are not
+  proof-assistant certificates.
+- **No Lean or Rocq verification, no independent refereeing, no
+  worldwide priority** (source 13's source review was targeted to the
+  question; it does not claim to resolve a named conjecture or to refute
+  a published theorem).
+
 ## Labels
 
 Part I's 60 labels are bare (`sec:`, `eq:`, `thm:`, `lem:`, `prop:`, `cor:`,
@@ -1207,6 +1379,24 @@ in Part I's appendices moved by 27. Part X begins at Section 152, after
 Part IX and before Part I's appendices, whose letters and numbers are
 unchanged. Its research questions are 74–83; its tables are Tables 19–24
 (notation table 19); it has no figure.
+
+Part XI added **96** labels, all with the prefix `hb:` ("Hall
+bottlenecks"): source 13's 86 labels, prefixed before anything cited them
+(one of them, `eq:Q`, equals a bare Part I label), none dropped; 9 new
+ones (Section 172, its four subsections and its notation table, the
+subsections 173.1 and 174.1 that state the repository target and the
+baseline, and the conclusion, Section 184); and `hb:hq:algorithms` on
+Part V's previously unlabelled Research question 40, so that Part XI can
+cite it. New total: **1101** (occurrences of the pattern
+`\\label(\[[^]]*\])?\{`). No earlier label was renamed or removed, and
+the numbers of all 1005 earlier labels are unchanged (compared in the
+`.aux` files of the committed and the new build). Their page numbers moved
+by one to three pages (the title block, abstract, scope box, reading
+route, contents and Part V's dated pointers grew); those in Part I's
+appendices moved by 27 or 28. Part XI begins at Section 172, after Part X
+and before Part I's appendices, whose letters and numbers are unchanged.
+Its research questions are 84–92; its tables are Tables 25–27 (notation
+table 25) and its figure is Figure 6.
 
 ## Notation
 
@@ -1315,16 +1505,34 @@ Part IV's against all three. Watch in particular:
   Part VI's `Phi_G` or Part IX's maps; `p`, `q = 1 − p`, `r = p/q` are not
   Part VI's `p_G` and `r` or Part IX's `q` and `r`; `J(δ)` is a rate, not
   `𝒥(τ)`.
+- **Part XI (Table 25).** One renaming, no normalization change: source
+  13's homogenizing variable `s` (display 174.4, Corollary 176.2) is
+  printed `σ`, because `s` is also its core size from Section 175 on (as
+  in the shipped programs and records); Part V's homogenizing variable `s`
+  in (69.7) and (70.2) is the same variable. Its `𝓜(H)` and `𝓑_H` are the
+  report's matchable pairs and Part V's basis polynomial, the same glyphs.
+  In Part XI `r = nu(H)` **always**, unlike Part V's `r = min(m,n)` in
+  source 06's sections and Theorem 70.1; its `n` is `|Y|` in Section 174
+  but the size of an outer block from Section 175 on (`|Y| = n + s`); its
+  `p_H(t;u,v)` is Part V's `A_H(t;u,v)`; `A`, `B` are core blocks in
+  Section 175 but `A`, `B`, `C` are binomial numbers in Sections 177–178,
+  and `C` is a minimum cover in Sections 180–181; `D` is an order, but
+  `D(j)` is a denominator in the proof of Theorem 179.3; `Q_n(w)` is not
+  Part I's `Q_tau` or equation (1.1); `K` (the weighted overlap) is not
+  Part IV's mixing variable; `p`, `q` are cover sizes, not Part IX's or
+  Part X's; `L_{s,n}` is the forced-core limit, not Part V's support size
+  `L`; `α, β, γ` are endpoint coefficients, not gamma coefficients.
 
 ## Files
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 304 pages, A4 (title p. 1, scope box and contents pp. 2–11,
-                                             Part I pp. 12–24, Part II pp. 25–53, Part III pp. 54–78,
-                                             Part IV pp. 79–119, Part V pp. 120–169, Part VI pp. 170–203,
-                                             Part VII pp. 204–220, Part VIII pp. 221–247, Part IX pp. 248–274,
-                                             Part X pp. 274–299, Part I's appendices pp. 300–302, references pp. 302–304)
+article.pdf                                  the compiled report, 332 pages, A4 (title p. 1, scope box and contents pp. 2–12,
+                                             Part I pp. 13–25, Part II pp. 26–54, Part III pp. 55–79,
+                                             Part IV pp. 80–121, Part V pp. 122–171, Part VI pp. 172–205,
+                                             Part VII pp. 206–222, Part VIII pp. 223–249, Part IX pp. 250–276,
+                                             Part X pp. 276–301, Part XI pp. 302–326, Part I's appendices pp. 327–330,
+                                             references pp. 330–332)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -1428,6 +1636,17 @@ data/12-random-trees-extra_checks.json       Part X (source 12): recorded output
 data/12-random-trees-extra_checks_console.txt  Part X (source 12): its console output (byte-identical to the JSON)
 data/12-random-trees-environment.json        Part X (source 12): Python, platform, package and pdfTeX versions of the recorded run
 data/12-random-trees-pdf_validation.json     Part X (source 12): the manuscript's record of its own 23-page PDF build
+code/13-hall-bottlenecks-support_count.py    Part XI (source 13): exact cover-type support counting, subset brute force, Hall formula (standard library)
+code/13-hall-bottlenecks-verify.py           Part XI (source 13): exact and symbolic checks (imports support_count; SymPy)
+code/13-hall-bottlenecks-build.sh            Part XI (source 13): the delivered two-pass build script (do not run here)
+data/13-hall-bottlenecks-requirements.txt    Part XI (source 13): sympy==1.14.0 (delivered requirements.txt)
+data/13-hall-bottlenecks-provenance.json     Part XI (source 13): pin, blob, inspected line ranges, primary references
+data/13-hall-bottlenecks-rank8_witness.json  Part XI (source 13): the 30-vertex witness (graph, weights, coefficients, margins, matching, cover)
+data/13-hall-bottlenecks-rank6_positive_certificates.json  Part XI (source 13): coefficient lists of P_1, …, P_4 (Section 185)
+data/13-hall-bottlenecks-rank6_thresholds.json  Part XI (source 13): Table 26 (first failing integer activities, n = 33..100)
+data/13-hall-bottlenecks-general_endpoint_thresholds.json  Part XI (source 13): Table 27 (core sizes s = 3..10)
+data/13-hall-bottlenecks-positivity_tables.tex  Part XI (source 13): the generated tables of Section 185 (delivered tex/positivity_tables.tex)
+data/13-hall-bottlenecks-verification_results.txt  Part XI (source 13): transcript of the recorded run (Python 3.13.5, SymPy 1.14.0)
 ```
 
 The ten `02-height-two-` files were staged in the placement commit
@@ -1467,6 +1686,11 @@ files are all-CRLF as delivered (Python's `csv` writer; 10 and 13 lines)
 and each has its own `-text` line in `SetTheory/Cardinals/.gitattributes`;
 the other fourteen are LF text. Two files are byte-identical by delivery:
 `extra_checks.json` and `extra_checks_console.txt`.
+The eleven `13-hall-bottlenecks-` files of Part XI were staged in
+`29e52fcdf`, byte-identical to their delivery (its programs and
+`build.sh` became `code/`; its `data/` directory, its `requirements.txt`
+and its generated `tex/positivity_tables.tex` became `data/`); all are LF
+text. It shipped no notes in Markdown and no checksum list.
 
 ## Data conventions
 
@@ -1631,6 +1855,24 @@ NetworkX 3.6.1, SymPy 1.14.0, NumPy 2.3.5 and pdfTeX from TeX Live
 2025/dev; `pdf_validation.json` records the delivered PDF's 23 pages and
 its own visual review.
 
+**Part XI.** Source 13's records are exact integers. `rank8_witness.json`
+records `s = 4`, `n = 11`, activity 500, 30 vertices, 104 edges, rank 8;
+the weights of each shore (outer vertices first: indices 0–10 weight 1,
+11–14 weight 500); the adjacency lists (left index → right indices); the
+nine coefficients `a_0, …, a_8`; the seven order-8 and the fourteen
+order-15 margins (`k = 1, …`); a minimum cover (`minimum_cover_left`,
+`minimum_cover_right`, here the eight cores); the mates of a maximum
+matching; and the reduced quadratic's value −7696.
+`rank6_positive_certificates.json` gives, for `k = 1..4`, the positive
+factor (`9*w**2`, …) and the rows of `P_k(x, w)` (`x = n − 2`, ascending
+powers of `x` for each power of `w`), as printed in Section 185.
+`rank6_thresholds.json` is Table 26 (`n`, vertices, first failing integer,
+`Q_n` there); `general_endpoint_thresholds.json` is Table 27 (`s`, least
+`n`, vertices, first failing integer, the primitive `(α, β, γ)`).
+`verification_results.txt` is the console transcript (13 PASS lines,
+Python 3.13.5, SymPy 1.14.0, elapsed 2.937 s). `provenance.json` is
+written by hand, not by the verifier.
+
 ## Build the article
 
 ```sh
@@ -1648,20 +1890,22 @@ library `positioning` (for source 06's dependency diagram, Section 67);
 Part VIII adds only macros (`\Hull`, `\Leaf`, `\diam`, `\Stab`, `\Zpoly`,
 `\pathin`) and does not load `cleveref`; Part IX adds one macro (`\TV`) and
 likewise no `cleveref` or `float`; Part X adds only macros (`\Pois`, `\st`,
-`\fall`, `\dto`, `\pto`, `\cst`; its `\mathscr` comes from newpxmath).
+`\fall`, `\dto`, `\pto`, `\cst`; its `\mathscr` comes from newpxmath);
+Part XI adds one macro (`\ULC`), and its figure uses the TikZ library
+`positioning`, already loaded.
 No image or font files are needed.
-The shipped PDF (304 pages) was built on 30 September 2026 with MiKTeX
+The shipped PDF (332 pages) was built on 30 September 2026 with MiKTeX
 (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull boxes and
 no other LaTeX warnings; five underfull boxes, the same five as the build of
-the committed Parts I–IX text (and of Parts I–VIII and I–VII before it): one (badness 1817) in Part II's
+the committed Parts I–X text (and of Parts I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
 provenance-ledger table, which the committed builds before Parts III–VII and
 the delivered manuscript 02's own build also show, and four (badness
 1024–6625) in paragraphs of Parts V and VI that set long shipped file names
 (Sections 78, 78.1 and 83.4). (The earlier builds of 29 September 2026 had
 74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII;
-the builds of 30 September 2026 before Part IX and before Part X had 249
-and 277.)
+the builds of 30 September 2026 before Part IX, before Part X and before
+Part XI had 249, 277 and 304.)
 
 ## Rerun the checks
 
@@ -1965,6 +2209,41 @@ equals `data/12-random-trees-extra_checks_console.txt`, again except
 `seconds`. On Windows the two JSON files are written with CRLF line
 endings.
 
+**Part XI, source 13.** Needs SymPy 1.14.0
+(`data/13-hall-bottlenecks-requirements.txt`; the counting module itself
+uses only the standard library, Python ≥ 3.10). Under the shipped names
+`13-hall-bottlenecks-verify.py` fails with `ModuleNotFoundError`, because
+it imports `support_count` by its delivery name. It also reads
+`article.tex` from the parent of its own directory and compares the text
+between the lines `%% BEGIN GENERATED POSITIVITY TABLES` and
+`%% END GENERATED POSITIVITY TABLES` with the tables it regenerates (the
+delivered manuscript is not shipped; this report's `article.tex` carries
+the same block in Section 185), and it rewrites
+`data/{general_endpoint_thresholds,rank6_positive_certificates,rank6_thresholds,rank8_witness}.json`
+and `data/verification_results.txt` and creates `tex/positivity_tables.tex`
+next to its own directory, which in this report would add unprefixed files
+and a `tex/` directory. Restore the delivered layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/13/code"
+cp code/13-hall-bottlenecks-support_count.py "$W/13/code/support_count.py"
+cp code/13-hall-bottlenecks-verify.py "$W/13/code/verify.py"
+cp article.tex "$W/13/article.tex"     # supplies the table block it compares
+cd "$W/13"
+uv run --no-project --with sympy==1.14.0 python code/verify.py > console.txt
+```
+
+Run this way on 30 September 2026 (uv with Python 3.13.5 on Windows, about
+20 s; the program reported 14.7 s, the recorded run 2.9 s), it exited 0
+with 13 PASS lines and "All checks passed": after CR stripping, the four
+JSON files equal the shipped `data/13-hall-bottlenecks-<name>.json`,
+`tex/positivity_tables.tex` equals
+`data/13-hall-bottlenecks-positivity_tables.tex`, and
+`data/verification_results.txt` equals the shipped transcript except the
+"Elapsed seconds" line; `console.txt` equals that transcript. On Windows
+all six outputs are written with CRLF line endings. The code example of
+Section 181.3 needs `code/` on the module path, as in this copy.
+
 None of these runs changed a file of this report (checked with
 `git status` and by comparing a copy of `code/` and `data/`).
 
@@ -2198,6 +2477,53 @@ None of these runs changed a file of this report (checked with
     `build.sh`, `requirements.txt` and `SHA256SUMS.txt` (verified, 19/19,
     and retired) at the package root, calls the PDF "the 23-page compiled
     article", and uses `python`.
+- **Part XI's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/13-hall-bottlenecks-verify.py` imports `support_count` (shipped
+    as `code/13-hall-bottlenecks-support_count.py`), reads the table block
+    of `../article.tex` (the unshipped manuscript), and writes
+    `data/*.json`, `data/verification_results.txt` and
+    `tex/positivity_tables.tex` relative to the parent of its own
+    directory (shipped as `data/13-hall-bottlenecks-<name>`): run it only
+    on a copy (above). Its docstring says "Run from any directory: python
+    code/verify.py".
+  - `code/13-hall-bottlenecks-build.sh` changes to its own directory and
+    runs `pdflatex` twice on a nonexistent `code/article.tex`, which
+    fails: do not run it. This report is built with `latexmk`.
+  - The article's Section 182 (as delivered) speaks of "the unequal
+    weights (2,3,5) and (7,11,13)"; they are the left and right weights of
+    one weighting, as the program and its transcript ("one positive
+    unequal weight vector") show. A merge note says so. The transcript's
+    line on the first-margin identity is printed after the seeded-graph
+    line, although the identity is checked inside the 3-by-3 loop.
+  - The artifact table of Section 186 (as delivered) lists `README.md` and
+    `article.pdf` (not shipped) and omits `data/provenance.json` and
+    `requirements.txt` (shipped); the printed table gives the shipped
+    names, with a merge note. Sections 181.3 and 182 keep the delivery
+    names `code/support_count.py`, `code/verify.py` and `data/…`, with
+    merge notes.
+  - `data/13-hall-bottlenecks-provenance.json` and the article's Section
+    186 give line ranges of the pinned blob, which the front-matter
+    sentences of Parts X and XI and Part XI's dated pointers moved by 67
+    to 75 lines (mapped in Section 186).
+  - The delivered PDF was built with newtx fonts and its own running
+    heads; Part XI is set in the report's fonts and layout. In its
+    Figure 1 (Figure 6 here) the label "No edges between L and R"
+    overlapped the two upper boxes; it is set above them here, and the
+    artifact table of Section 186 has ragged-right columns. No wording of
+    source 13 was changed except where merge notes, the rename of `s` to
+    `σ` and the replacement of the self-citation say so, and except that
+    "Appendix" became "Section" in cross-references.
+  - The unshipped delivery README lists `article.tex`, `article.pdf`,
+    `build.sh`, `requirements.txt`, `code/`, `data/` and `tex/` at the
+    package root and uses `python -m pip install -r requirements.txt`,
+    `python code/verify.py` and `sh build.sh`.
+- **Bylines (Part XI).** Source 13's title page reads "Prepared for
+  Vladimir Reshetnikov / ChatGPT • 30 September 2026" under the kicker
+  "ProveIt Research Continuation"; its PDF metadata give the author as
+  "ChatGPT, prepared for Vladimir Reshetnikov", and its delivery README
+  says "Prepared for Vladimir Reshetnikov by ChatGPT". The article records
+  this in Section 172.1 and does not reprint the byline.
 - **Bylines (Part X).** Source 12's title page reads "Prepared for
   Vladimir Reshetnikov / Mathematical development and computation:
   ChatGPT" under the kicker "ProveIt research continuation"; its PDF
@@ -2227,6 +2553,20 @@ None of these runs changed a file of this report (checked with
   `c_k` through `k = 13` including the `9/8` tail (hence the constant
   `(9/8)·sqrt(2π)`), the Poisson identity for `n ≤ 25`, and Table 23 and
   `Ψ(1)`; that check is not shipped.
+  Part XI adds three merge observations, marked in Section 172.3 and in
+  the dated pointers: Research question 37 is vacuous for preorders
+  (`nu(H_tau) = n`); the first order-`D` inequality is strict for every
+  `D > nu(H)`, so equality at Part V's first index needs
+  `min(m,n) = nu(H)` and, for preorders, the antichain; and Theorem 181.3
+  with Part II's Theorem 13.2 computes `h_{P_G}` with the matching number
+  as parameter. Research question 37's finite search (above) concerned
+  unit weights and is consistent with Part XI: the core-three family is
+  `ULC_6` at unit weight. The batch-68 placement dossier rechecked source
+  13 independently (the coefficient formula against brute-force support
+  enumeration for six `(s, n)` at three weights, the witness identity and
+  the first integer 485 at which its last inequality fails, the first inequality on 239 random
+  weighted graphs, Tables 26–27 and `D_s = 7, 9, 12`); that check is not
+  shipped.
 
 ## Relation to neighbouring reports and to the formal projects
 
@@ -2272,7 +2612,14 @@ random trees, Cayley trees, Galton–Watson trees and the continuum random
 tree finds only a bibliography entry of Janson's survey in
 `adjacency-bounded-132-avoiders` and uses of the tree function in the
 transseries volumes of `Analysis/Transseries`), so no reciprocal note was
-written.
+written. Part XI (batch 68) continues Part V and bears on Parts IV and
+VII; its dated pointers are inside this report (Parts IV, V and VII). No
+other report of the collection treats ultra-log-concavity of support
+polynomials or normalization by the matching number (a search of the
+collection's `.tex` files for both finds, outside this report, only
+unrelated uses of "matching number" in two automata reports and a notation
+remark in `simplex-faces-of-order-and-chain-polytopes`), so no reciprocal
+note was written.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
@@ -2308,6 +2655,14 @@ terms finds only the Fabius project's real Cayley tree function
 function, not the coefficients `n^(n−1)/n!` of the rooted-tree series that
 Part X uses; nothing about tree enumeration, stable markings or their
 probabilities is formalized, and Research question 83 is unstarted work.
+The same holds for Part XI: a search of the tracked `.lean` and `.v`
+files outside `lib/` for ultra-log-concave, Lorentzian, matching-number,
+vertex-cover, König, Hall and support-polynomial terms finds only
+unrelated hits (Hall-subgroup lemmas such as `pHallE` and `card_Hall` and
+hypothesis names `hall` in `Algebra/PolynomialFormulas`, and Hahn-series
+supports in `Algebra/SurrealNumbers`); nothing about matching supports,
+their log-concavity or their counting is formalized, and Research
+question 92 describes unstarted work.
 
 ## Sources and attribution
 
@@ -2376,5 +2731,9 @@ probabilities is formalized, and Research question 83 is unstarted work.
   Ann. Probab. 21 (1993) 248–289, doi:10.1214/aop/1176989404 (context for
   quenched fluctuations, Research question 75); with Choe–Oxley–Sokal–Wagner above. The
   imported classification is Part VIII's.
+- Part XI: F. Röhrle and M. Ulirsch (Theorem A, Example 2.4; source 13
+  inspected arXiv:2402.15317v3) and P. Brändén and J. Huh (source 13 adds
+  doi:10.4007/annals.2020.192.3.4), both above; the smaller-shore baseline
+  is Part V's.
 
 No third-party papers or font files are included.
