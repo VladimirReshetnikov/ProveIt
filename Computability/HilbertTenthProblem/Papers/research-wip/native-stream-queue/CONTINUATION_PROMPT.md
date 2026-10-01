@@ -404,24 +404,83 @@ replay and two primary-source proof reviews pass. This is a word-level
 bridge; the actual initial CTS word still contains mu^c0, with exact
 c0=2^ceil(log2 tape_length). No paid ordinary-input tag bound follows yet.
 
-The next counter-reuse candidate avoids an independent exponential scale.
-Conditionally format the TM tape with a fixed dyadic a cells per padded
-ordinary-input bit and fixed b>0 framing cells. Choose input duration n
-dyadic, n>=2 and an>=b. Then tape_length=an+b lies in(an,2an], so its
-EXACT minimal counter is c0=2an. If K is the binary length of one encoded
-CTS bit block, data width D=2azK gives counter length Kzc0=Dn. Both use
-the SAME recoder scale Q=2^(Dn), and counter value M_mu*R_mu satisfies
-(2^(Kz)−1)*R_mu=Q−1. Fixed program framing and the block-input machine
-normalization still need precise integration.
+The counter-reuse lead now has three separate proved packets; do not
+add their raw counts and call the result a universal polynomial yet.
+The [clockwise input normalization](clockwise_dyadic_input_normalization.md)
+compiles any fixed finite-alphabet clockwise machine to binary with
+power-of-two block size a. Every ordinary code starts0; a unique1-headed
+marker holds the current cell while the finite controller circles back
+and emits one or two logical output blocks. The explicit wrapper uses
+six logical symbols with codes0000,0001,0010,0011,0100,0101 (a=4)
+for a given binary clockwise machine on raw canonical input. It strips
+leading-zero padding by turning it into skipped cells, retains
+two fixed frame cells, and simulates the original positive canonical input.
+Initial binary tape length is4n+8, so dyadic n>=2 gives EXACT minimal
+counter c0=8n, with no extra program-dependent lower-bound parameter.
 
-Recover actual n from the recoder's J=(B^n−1)/(B−1) by positive v,l,g
-and equations J=(B−1)*v+l, l+g=B−1. Its actual base
-B=2^(D−1)*q^D dominates n, so 2<=n<B−1 makes l=n and v>0.
-This extraction is1M+2A, two comparisons and three new positives when
-B−1 is shared. The predicate l&(l−1)=0 and a fixed lower bound still
-need paid typing; a joined AND region may help. No new complete DAG or
-universal count is claimed. The poor earlier choice c=q=2^n would still
-require an exponential-of-exponential counter scale and is not used.
+Under the fixed tag morphism G_i=e(B_i), |G0|=|G1|=K, the CTS initial
+word has shape state+tau(leftframe)+tau(datablocks)+tau(rightframe)+mu^c0.
+Take t=z*K,D=8t. Its final binary tag-history input is exactly
+PREFIX DATA_w1...DATA_wn MIDDLE MU^(8n) TAIL, with |DATA_i|=D,|MU|=t.
+Data and counter share Q=2^(Dn). For the finite-alphabet semidecision
+route the same formulas use a fixed dyadic a, D=2azK and counter2an;
+they do not presume a4. Literal u starts bc, so G0>G1; the
+CTS tape codes tau0=01... and tau1=001... reverse that ordering. Hence
+the actual data blocks satisfy val(DATA1)>val(DATA0), retaining positive
+computed endpoints even before typing. Whole transition simulations and
+binary string fixtures supplement the parametric proof.
+
+The [dyadic-duration recoder](native_binary_dyadic_duration_recoder.md)
+now pays n within its existing two native cores. Recover n as positive
+ell using J=(B−1)v+ell and ell+g=B−1. The geometry independently gives
+q=2^popcount(J) and B dyadic. The joined AND scale B*q*P types P;
+then both repunits identify the common actual duration n, giving q=2^n
+and J=(B^n−1)/(B−1). Since2<=n<B−1, the residue forcesell=n. Feed
+(BH+ell) AND (BK+ell−1)=B(Ahat−1), with H=xJ and original scaleS=qP.
+The low block forcesell&(ell−1)=0; the high block restores H&K=Ahat−1.
+No unproved bound on Ahat is used to separate those low bits.
+Shared C=16B fuses the four native padding ports. Literal cost is
+137=68M69A at width2,36eq,52w; generic widthk>=3 costs136+mu(k),
+where mu(k)=bit_length(k)+popcount(k)−2. SOS adds107 gates; exact degree
+is12k+40. Registers Q,modulus=Q−1,duration,z are public. Native auxiliary
+witnesses must be freshly rebuilt at the joined scale.
+
+The [fixed-block counter loader](binary_tag_shared_counter_loader.md)
+uses just one positive r with L*r=Q−1,L=2^D−1. The counter repunit is
+Cmu*r with Cmu=L/(2^t−1), an exact fixed numeral. With fixed prefix
+sentinel p, data valuesv0,v1, middle lengthf/valueb and tail lengthg/valuee,
+its entire sentinel folds to (A*r+B*z)*Q+T*r+E, with
+A=2^(f+g)(pL+v0), B=2^(f+g)(v1−v0),
+T=2^g((2^f*p+b)L+M*Cmu), E=2^g(2^f*p+b)+e.
+This is8=5M3A including the repunit comparison,1eq1w, using the actual
+existing Q−1 register; computing that subtraction locally gives9. A
+supplied output adds one comparison. The signed correction to the direct
+concatenation formula is2^g(2^f*p*(Q+1)+b)*(Q−L*r−1). Boundary degree2
+is not the composed degree. Both coefficient orders are covered, with
+conditional positivity retained whenv1<v0; the intended blocks havev1>v0.
+
+Next: compose the dyadic recoder, eight-gate loader and selected tag
+history with literal names, all positive interfaces and actual source
+counts. Keep raw SOS as a complete baseline before trying native norm
+products; independent checksums cannot be merged without sign proofs.
+An instantiated fixed universal clockwise machine, its exact table and
+D=2azK (8zK in the a4 case) still need to be provided for a numerical
+universal count.
+
+A prospective program interface avoids a variable-length program prefix:
+choose one fixed ordinary semidecider for numbers y=2^e*(2x+1), accepted
+when program e accepts positive x. The valid fixed parameter Pprog=2^e
+allows loaded y=Pprog*(2x+1), costing1M2A with x+x, positive off-zero.
+The cited finite-alphabet clockwise simulation and binary block compiler
+provide some fixed dyadic a and b=2a. Feed loaded y to the dyadic recoder
+with that fixed format. An a4,b8 version would additionally require a
+fixed binary-CW recognizer on raw canonical y; it is not inferred from
+universality with an arbitrary input encoding. Instantiate the actual
+fixed table and audit composition before claiming a numerical bound;
+the three-gate loader alone does not establish that table or compiler.
+This is a follow-up lead, not an additional proved compiler. The earlier
+choice c=q=2^n would require an exponential-of-exponential counter scale
+and is not used.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 is separately preserved: remove the extra Z from C=q−F−Z−alpha−2dx,

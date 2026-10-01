@@ -166,7 +166,17 @@ The [fixed-rule TM halt bridge](binary_tag_fixed_halt_bridge.md) now
 proves halting equivalence for one fixed binary tag rule on the intended
 TM simulation slice. A unique pending halt object triggers parity cleanup;
 fixed equal-content blocks enforce the required length congruence. The
-exact dyadic initialization counter still needs a paid arithmetic loader.
+exact dyadic initialization counter now has three separate components:
+[fixed input-format normalization](clockwise_dyadic_input_normalization.md)
+gives a=4,b=8 and c0=8n for a given binary clockwise machine on raw
+canonical input and dyadic n>=2; the finite-alphabet semidecision route
+uses some fixed dyadic a,b=2a. The
+[dyadic-duration recoding](native_binary_dyadic_duration_recoder.md) pays
+that duration inside the existing AND; and the
+[shared counter loader](binary_tag_shared_counter_loader.md) costs
+8=5M+3A, one comparison and one positive witness using the existing Q-1.
+Full tag compilation and a fixed universal program interface remain to
+be audited. The component counts are not a complete universal bound.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 retains exact parent identities under alpha_old=alpha-Z and positive
@@ -1031,7 +1041,10 @@ New research and the completed75-operation construction:
 | [Prefix-coded Neary–Woods compiler](neary_woods_prefix_universal.md) | Same97 physical tiles, g6,N107,H823;977 certificate /1057=429M+628A universal polynomial,27eq,163w,degree201682. Supplied1060/28eq/164w/degree7332. | Fixed prefix-code injection, paid width64 recoder and framing. Three positive program parameters give valid universal slices; no identity with the old numeric encoding or improvement below75/87. |
 | [Three-core normalized complete compiler](gpcp_normalized_strong_compiler.md) | **734 certificate /805=352M+453A universal polynomial**,24eq,125w,degree205092; supplied808/126w/25eq/degree8532. | Three independent normalized strong witnesses retain the separate history checksum and complete positive ordinary-input interface; fifteen canonical auxiliaries may be rebuilt. |
 | [Ordered sparse universal table](gpcp_ordered_sparse_tm.md) | **728 certificate /808=349M+459A polynomial**,27eq,125w,degree130394; supplied811/126w/28eq/degree5204. | Descending slope-pair/upper-offset ordering is a fixed permutation of the same57 tiles. Chronology and actual word semantics are unchanged; the history is freshly compiled. |
-| [Fixed binary-tag halt bridge](binary_tag_fixed_halt_bridge.md) | One fixed production and equal-content block morphism on valid clockwise-TM simulation inputs; all halts are singleton b. | Primary stage-table index exclusion proves one pending halt object. The exact dyadic tape-length counter remains an unpaid ordinary-input arithmetic interface; no new universal operation bound. |
+| [Fixed clockwise input normalization](clockwise_dyadic_input_normalization.md) | Explicit binary transition compiler; a=4,b=8 for a given binary-CW raw-input language, or fixed dyadic a,b=2a for the finite-alphabet route. Exact c0=2an for dyadic n>=2. | Whole machine simulation and fixed block ordering proved. No Diophantine count or numerical universal machine instance asserted. |
+| [Dyadic-duration input recoder](native_binary_dyadic_duration_recoder.md) | Width2:137=68M+69A,36eq,52w; SOS244/degree64. Widthk>=3:136+mu(k), SOS243+mu(k),degree12k+40. | Actual duration n recovered from J mod(B-1); low B-sized block of the existing AND forces n&(n-1)=0. Geometry and both positive native cores remain paid. |
+| [Shared counter input loader](binary_tag_shared_counter_loader.md) | Incremental8=5M+3A,1eq,1w with actual shared Q-1; local subtraction gives9. Boundary output degree2. | Fixed word blocks, typed recoder input and exact counter exponent are explicit contracts. Off-zero correction and coefficient-sign caveats retained; no complete universal count. |
+| [Fixed binary-tag halt bridge](binary_tag_fixed_halt_bridge.md) | One fixed production and equal-content block morphism on valid clockwise-TM simulation inputs; all halts are singleton b. | Primary stage-table index exclusion proves one pending halt object. That packet alone leaves the exact dyadic counter unpaid; later separate recoder/loader components are listed above. No new universal operation bound. |
 | [Weakened-bound86 candidate](complete75_weakened_bound86_candidate.md) | **Unresolved:**86=48M+38A,19w,degree203; exact parent substitution alpha_old=alpha-Z. | Positive completeness and inverse only for alpha>Z. Outer negative-index fixtures refute the old positivity bootstrap but are not full polynomial zeros. Established75/87 bounds unchanged. |
 | [Normalized strong history unit](pcp_normalized_strong_history_units.md) | Generic native-unit polynomial saves1 operation (+1M−2A), with certificate+2M and one fewer comparison. Tag **196=93M+103A**,28w,degree1015 including singleton; nonempty194/1014. | Same positive outer projection through sign-safe normalization and fresh five-auxiliary reconstruction. Single-core scope; ordinary universal tag input remains unpaid. |
 | [Four-tile binary tag history](binary_tag_four_tile_history.md) | **195** operations for a nonempty matching history; **197=92M+105A**,28 positive witnesses,degree667 including the initially halted singleton. | Exact halting equivalence on the stated length-congruence word slices. The supplied input is the encoded-tag sentinel; the fixed-universal ordinary-input bridge remains unpaid. |

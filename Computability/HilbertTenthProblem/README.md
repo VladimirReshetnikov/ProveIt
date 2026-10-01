@@ -136,7 +136,11 @@ the matrix alphabet remains abstract.
   alternative remains available. The input is an encoded tag-word sentinel;
   its [fixed-rule TM halt bridge](Papers/research-wip/native-stream-queue/binary_tag_fixed_halt_bridge.md)
   now has a proved unique pending halt activation and fixed block morphism.
-  Arithmetic loading of the exact initialization counter remains unpaid.
+  A [shared counter loader](Papers/research-wip/native-stream-queue/binary_tag_shared_counter_loader.md)
+  now costs8 operations, with separate
+  [dyadic-duration recoding](Papers/research-wip/native-stream-queue/native_binary_dyadic_duration_recoder.md)
+  and [fixed input-format normalization](Papers/research-wip/native-stream-queue/clockwise_dyadic_input_normalization.md).
+  Full tag compilation and a fixed universal program interface remain to be audited.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
   finitely generated SL(4,Z) subgroup, with a fixed quadratic ordinary-input

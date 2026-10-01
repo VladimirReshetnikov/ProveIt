@@ -40,8 +40,12 @@ and degree1015. Its certificate grows by2M while one comparison is removed.
 The [fixed-rule TM halt bridge](../research-wip/native-stream-queue/binary_tag_fixed_halt_bridge.md)
 now proves a unique pending halt activation on valid machine inputs,
 all-b cleanup to singleton b, and a fixed equal-length block morphism.
-The exact dyadic initialization counter still needs a paid arithmetic
-loader; neither encoded-input count is a universal bound.
+The exact initialization counter now has separate proved components:
+a [fixed binary input format](../research-wip/native-stream-queue/clockwise_dyadic_input_normalization.md),
+a [paid dyadic-duration recoder](../research-wip/native-stream-queue/native_binary_dyadic_duration_recoder.md),
+and an [eight-operation shared-scale loader](../research-wip/native-stream-queue/binary_tag_shared_counter_loader.md).
+Their complete composition and fixed universal program interface remain
+unaudited; neither encoded-input count is a universal bound.
 
 A separate [weakened-bound86 candidate](../research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
 has the exact signed parent identity alpha_old=alpha-Z and positive
