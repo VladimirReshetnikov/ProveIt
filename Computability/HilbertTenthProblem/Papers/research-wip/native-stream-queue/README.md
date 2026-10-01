@@ -58,7 +58,7 @@ the new unit signs. The [retained-auxiliary partitions](complete75_auxiliary_deg
 give **93 operations at degree128** and **92 at degree136**. Together
 with96/degree84 and94/degree96, these are the earlier displayed tradeoffs.
 
-The latest [positive Pell-root coordinate](complete75_positive_root89.md)
+The [positive Pell-root coordinate](complete75_positive_root89.md)
 gives **89=47M+42A at exact degree148**, still with19 positive witnesses.
 The reconstruction `tau_old=XY^2*k+tau_gap` defines a bijection of the
 positive solution sets and cancels the highest-degree first-norm term.
@@ -67,6 +67,30 @@ The [regrouped positive-root variants](complete75_positive_root_degree_tradeoffs
 give **94 operations at degree84**, **93 at degree118**, and **92 at degree122**,
 all with19 positive witnesses. These improve the preceding96/84,93/128,
 and92/136 options; the94/96 option is also superseded.
+
+The [coupled index and linear units](complete75_coupled_index_linear88.md)
+now give **88=47M+41A**, with **19 positive witnesses** and exact degree
+**151**. Sharing k-hE saves one subtraction. Its additional sign branch
+recovers the full Pell kernel at R-2, where the compiler masks give a
+population-count upper bound one below the kernel's required minimum.
+The new and preceding89 polynomials have identical positive solution sets
+under the full fixed compiler contract. The89/148 result remains a
+separate cost/degree tradeoff;75 is still the comparison bound.
+The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
+retain the strong comparison separately and give **91 operations at
+exact degree130** and **93 at degree90**, with the same19 positive witnesses.
+The latter supersedes93/118. The current displayed choices are:
+
+| Polynomial operations | Exact degree | Positive witnesses |
+|---:|---:|---:|
+|88|151|19|
+|89|148|19|
+|91|130|19|
+|92|122|19|
+|93|90|19|
+|94|84|19|
+
+This table records established constructions, not a global optimality claim.
 
 The original30-witness source remains the reference for the full compiler
 and Pell proof. Earlier [107](complete75_positive_elimination.md),
@@ -88,7 +112,7 @@ finite experiments from the mathematical proofs. The complete75 checker
 also passes with the pinned SymPy dependency.
 
 The next operation-count targets are a comparison certificate below75 or
-a single universal polynomial below89, with the degree tradeoff recorded.
+a single universal polynomial below88, with the degree tradeoff recorded.
 The four-row queue simulator now supplies state-dependent physical output:
 its literal finite controller simulates arbitrary source queue rules on
 valid coded inputs. The exact66-operation ternary FIFO and the smaller
@@ -142,6 +166,23 @@ prefix and a swapped free basis, for **6=2M+4A** total program/input loading. Th
 degree two is necessary for this paired-SL2 subgroup interface; it does
 not give an operation lower bound or extend to general SL3/SL4 curves.
 
+The [four-register matrix history](group_four_register_history.md) uses a
+length-dependent test vector to reduce the two SL2 blocks from eight
+entries to four bounded registers. Its ordinary-input boundary costs
+**10=4M+6A**; the conditional packed interface costs **43=15M+28A** with
+20 positive history fields. Digit typing, eight selected-source products,
+a fixed regular macro controller and shared-duration power geometry remain
+unpaid, so43 is not a complete Diophantine bound.
+
+The [Heisenberg membership audit](heisenberg_two_generator_membership.md)
+gives a uniform four-witness certificate for any two fixed generators in
+H^r: **18r+10** graph operations, or **27r+12** for one degree-at-most-four
+polynomial. This entire two-generator family is decidable. With three
+letters, strict pair-count and weighted-triangle constraints already admit
+explicit nonrealizable targets. A primary-source audit distinguishes an
+existing H10-based universal Heisenberg compiler from an independent
+computational substrate and records its signed-parameter limitation.
+
 The historical native-stream
 component costs six operations with external bounds, or eight with a paid
 joint bound; finite-controller arithmetic and power geometry remain unpaid.
@@ -161,7 +202,11 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
-| [Positive-root degree tradeoffs](complete75_positive_root_degree_tradeoffs.md) | **94/degree84**, **93/degree118**, and **92/degree122**, each with19 positive witnesses. Full positive bijections retain the strong and linear auxiliary equations. | Exact partition bounds concern only the stated factor family. The94/84 result saves two operations at degree84; the global89-operation bound is unchanged. |
+| [Coupled index/linear universal polynomial](complete75_coupled_index_linear88.md) | **88=47M+41A**, 19 positive witnesses and exact degree151. One shared expression saves a subtraction; a compiler-mask population contradiction excludes the extra sign. | Positive zero-set equivalence uses the full compiled mask contract. The75 comparison bound and89/148 tradeoff remain separate. |
+| [Coupled-unit degree tradeoffs](complete75_coupled88_degree_tradeoffs.md) | **91/degree130** and **93/degree90**, each with19 positive witnesses and identical positive zeros to coupled88. | Exact partition bounds concern the seven fixed factors with the full strong equation retained separately. The compiler-specific sign proof is inherited intact. |
+| [Four-register matrix history](group_four_register_history.md) | Arbitrary-length paired-SL2 products need only four bounded signed registers. Paid ordinary-input boundary10 and conditional history interface43. | The20 positive history fields exclude power geometry; digit typing, selected-source products and regular macro control are still unpaid. |
+| [Two-generator Heisenberg membership](heisenberg_two_generator_membership.md) | Uniform four-positive-witness graph18r+10 or polynomial27r+12 of degree at most4; decidability for the entire two-generator family. | Three-letter pair/triangle relaxations fail, with an explicit strict-interior family. The cited universal construction compiles an existing Diophantine equation. |
+| [Positive-root degree tradeoffs](complete75_positive_root_degree_tradeoffs.md) | **94/degree84**, **93/degree118**, and **92/degree122**, each with19 positive witnesses. Full positive bijections retain the strong and linear auxiliary equations. | Exact partition bounds concern only the stated factor family. The94/84 result saves two operations at degree84; the subsequent88-operation bound uses a different coupled factor. |
 | [Affine subgroup-input obstruction](group_affine_input_obstruction.md) | Two independent affine SL2 blocks can yield only empty, singleton or arithmetic-progression subgroup membership sets. The quadratic degree of the universal paired-SL2 curve is sharp. | No operation lower bound; an explicit SL3 affine curve accepts exactly{1,2}, excluding an extension to general SL3/SL4 curves. |
 | [Positive first-root universal polynomial](complete75_positive_root89.md) | **89=47M+42A**,19 positive witnesses and exact degree148. An explicit positive-root coordinate gives a bijection with the degree160 source and retains all compiler hypotheses. | The comparison bound remains75. This changes a witness coordinate; it is not equality of the two polynomials at the same supplied values. |
 | [Group-commutator universal substrate](group_commutator_universal_substrate.md) | Every computably enumerable positive set is membership in a finitely generated SL(4,Z) subgroup along a fixed quadratic ordinary-input curve. | Uses an external effective Higman embedding theorem. The arbitrary selected matrix-product Diophantine certificate remains unpaid. |

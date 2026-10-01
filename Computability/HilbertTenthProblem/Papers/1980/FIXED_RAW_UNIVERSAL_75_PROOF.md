@@ -48,6 +48,15 @@ bijection of positive solution sets. Both ratio slacks remain present.
 Its [regrouped variants](../research-wip/native-stream-queue/complete75_positive_root_degree_tradeoffs.md)
 give94 operations at degree84,93 at degree118 and92 at degree122;
 the degree84 result saves two operations from its preceding96 bound.
+The [coupled index/linear successor](../research-wip/native-stream-queue/complete75_coupled_index_linear88.md)
+gives **88=47M+41A** with19 positive witnesses and exact degree151.
+Sharing k-hE saves one subtraction. Its extra sign branch is
+excluded by the full compiler's low mask bits and population identity;
+it has the same positive zero set as the89 source under that contract.
+Its [grouped variants](../research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
+retain the strong comparison and give91/degree130 and93/degree90, with
+identical positive zeros. The89/148,92/122 and94/84 tradeoffs and this
+note's75 comparison bound remain distinct.
 The source and full compiler proof below retain their original30-coordinate
 presentation.
 

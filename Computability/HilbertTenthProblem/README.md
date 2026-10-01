@@ -63,7 +63,7 @@ universal Diophantine equations by James P. Jones and coauthors:
   costs **99=49M+50A**, with **19 positive witnesses** and degree84.
   Its comparison system costs76 with eight equations; a proved canonical
   compiler margin preserves the same accepted ordinary inputs.
-  The latest [positive Pell-root coordinate](Papers/research-wip/native-stream-queue/complete75_positive_root89.md)
+  The [positive Pell-root coordinate](Papers/research-wip/native-stream-queue/complete75_positive_root89.md)
   gives **89=47M+42A**, with the same19 positive witnesses and exact
   degree148. It is bijective on positive solutions with the
   [reversed auxiliary degree160 source](Papers/research-wip/native-stream-queue/complete75_reversed_auxiliary89.md).
@@ -72,7 +72,16 @@ universal Diophantine equations by James P. Jones and coauthors:
   The [positive-root partitions](Papers/research-wip/native-stream-queue/complete75_positive_root_degree_tradeoffs.md)
   give **94 operations at degree84**, **93 at degree118**, and **92 at degree122**.
   In particular the degree84 option improves its preceding96-operation bound.
-  The75 comparison and89 polynomial bounds are distinct.
+  The [coupled index/linear product](Papers/research-wip/native-stream-queue/complete75_coupled_index_linear88.md)
+  now gives **88=47M+41A**, with **19 positive witnesses** and exact degree151.
+  Sharing k-hE removes one subtraction; the compiler masks exclude the
+  remaining negative sign through a population-count contradiction.
+  Its positive zero set equals the89 source's under the full compiler contract.
+  Its [grouped variants](Papers/research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
+  give **91 operations at degree130** and **93 at degree90**, retaining the
+  full strong equation and the same positive zero set. The93/90 option
+  supersedes93/118;92/122 and94/84 remain distinct.
+  The75 comparison bound,88 polynomial bound and89/148 tradeoff are distinct.
   These optimized results are not yet Lean formalized.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
@@ -81,7 +90,15 @@ universal Diophantine equations by James P. Jones and coauthors:
   all programs with a six-operation program/input loader. The group embedding
   theorem is cited explicitly; a uniform Diophantine certificate for arbitrary
   selected matrix products remains open. This is a substrate result, not a smaller
-  complete universal equation.
+  complete universal equation. The [four-register history interface](Papers/research-wip/native-stream-queue/group_four_register_history.md)
+  reduces the evolving matrix data from eight entries to four bounded
+  registers, with a paid10-operation input boundary and conditional43-operation
+  aggregate. Digit selection, typing, control and power geometry remain unpaid.
+- The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
+  gives a uniform four-positive-witness certificate for two fixed generators
+  in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree
+  at most4. That whole family is decidable. Explicit three-letter targets
+  show that pair counts and weighted-triangle bounds do not enforce order.
 
 ## Building and checking
 

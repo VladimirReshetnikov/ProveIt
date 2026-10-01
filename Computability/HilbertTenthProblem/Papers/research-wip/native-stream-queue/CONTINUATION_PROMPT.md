@@ -7,9 +7,11 @@
 > [signed projection](complete75_signed_projection_elimination101.md) retains75
 > with20 positive witnesses and nine equations.
 >
-> The current single-polynomial frontier is **89=47M+42A**, with19 positive
-> witnesses and exact degree148: see [the positive-root proof](complete75_positive_root89.md).
-> It gives a positive-solution bijection with the
+> The current single-polynomial frontier is **88=47M+41A**, with19 positive
+> witnesses and exact degree151: see [the coupled-unit proof](complete75_coupled_index_linear88.md).
+> It has the same positive zeros as [positive-root89](complete75_positive_root89.md)
+> under the full compiler mask contract. The89/degree148 option remains a
+> distinct tradeoff. The positive-root coordinate gives a bijection with the
 > [reversed auxiliary degree160 source](complete75_reversed_auxiliary89.md).
 > It builds on the [bounded projection99](complete75_bounded_projection_elimination99.md),
 > [norm product91](complete75_norm_product91.md), and
@@ -17,10 +19,12 @@
 > auxiliary signs and the original positive quotient in a specific order;
 > do not assume intermediate computed coordinates are positive off the zero set.
 > The [positive-root partitions](complete75_positive_root_degree_tradeoffs.md)
-> give94/degree84,93/degree118 and92/degree122, retaining19 positive
-> witnesses. The degree84 option saves two operations. Preserve both paid
-> auxiliary equations and ratio slacks. The comparison bound75 and
-> polynomial bound89 are separate measures.
+> give94/degree84 and92/degree122. The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
+> add91/degree130 and93/degree90, superseding93/118. All retain19 positive
+> witnesses. Preserve the paid strong equation and both ratio slacks;
+> the coupled linear unit is recovered by the complete sign proof.
+> The comparison bound75 and
+> polynomial bound88 are separate measures.
 >
 > The README indexes the four-row queue simulator, binaryFIFO58 and
 > ternaryFIFO66, row-local controller obstruction, residue-affine pumping,
@@ -51,7 +55,7 @@
 > Variable leaf selection, synchronized control and arbitrary duration
 > remain unpaid.
 >
-> Next targets are below75 comparisons or below89 polynomial operations,
+> Next targets are below75 comparisons or below88 polynomial operations,
 > with degree and positivity counted. These are reviewed mathematical
 > proofs with exact source audits, not Lean formalizations.
 
@@ -78,6 +82,20 @@ on every parent zero. The exact first factor is now
 `tau_gap^2+XY^2*k*(2*tau_gap-k)`, degree14 instead of26, at the same
 six operations. Do not replace the computed signed difference by an
 unconstrained positive witness: both original ratio slacks remain needed.
+
+The [coupled88 successor](complete75_coupled_index_linear88.md) shares
+k-hE between Nk and Lnew=V-jc+k-hE. Its product initially leaves
+Nk=Nt=-1 as an extra branch. Restore the entire half-binomial42 kernel
+at p=R-2 before using its population threshold; the true compiler masks
+then imply popcount(p)<=3t+1 instead of the required3t+2. Both low-bit
+mask congruences and popcount(MC)+popcount(MF)=d are essential here.
+Do not claim equivalence for arbitrary masks with only size bounds.
+With the strong comparison separated, the remaining factor degrees are
+(14,22,42,28,9,5,9), with78 paid definition operations. Grouping as
+(14+42+9,22+28+5+9) gives91/130; grouping as(42,14+28,22+9+5+9)
+gives93/90. Their sums of squares preserve the same positive zeros.
+Exhaustive partitions of these factors give no further displayed tradeoff;
+this is a scope restriction, not an optimality theorem for other circuits.
 
 The [group-commutator route](group_commutator_universal_substrate.md) is now
 proved as a universal computational substrate. For an r.e. positive set S,
@@ -115,6 +133,25 @@ ofZ (or empty sets), even in a general SL4 subgroup. Thus degree2 is sharp
 for this interface, but there is no arithmetic-operation lower bound.
 An affine SL3 counterexample accepts exactly{1,2}, bounding the theorem.
 The loader alone supplies no complete Diophantine bound.
+The [four-register history](group_four_register_history.md) evaluates each
+block on (q,1), q=2^t. The length-t shear bound and determinant one recover
+the whole target matrix from that vector; no input-height bound is needed.
+Shift by D=q^2 for positive fields. The paid boundary costs10, and the
+conditional four-lane packed interface costs43 with20 positive history
+fields, excluding q and P. Pay the eight digitwise source selections,
+selector/range typing, regular macro control and common-duration geometry
+q=2^t, P=(4q^2)^t before claiming a complete certificate.
+
+The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
+uniform four-witness representation for any two fixed H^r generators,
+with graph cost18r+10 and polynomial cost27r+12, degree at most4. The
+entire family is decidable, so it cannot by itself be universal. For
+three letters, even strict pair bounds and strict weighted-triangle
+bounds miss realizability: counts (m,2,2), pair data (1,1,2m-2), m>=3
+are impossible. Preserve the global order obligation. Roman'kov's cited
+universal compiler starts from H10 and is used only on a fixed positive
+parameter slice; its unqualified signed statement needs an orientation
+qualification.
 
 This WIP snapshot is on ProveIt's branch `codex/diophantine-native-stream-wip`.
 It preserves the unfinished end of the former Diophantine research session.

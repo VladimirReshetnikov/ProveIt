@@ -38,7 +38,7 @@ the added sign branches. The
 [retained-auxiliary partitions](../research-wip/native-stream-queue/complete75_auxiliary_degree_tradeoffs.md)
 improve the other options to93/degree128 and92/degree136;96/degree84 and
 94/degree96 remain available.
-The latest [positive first-root coordinate](../research-wip/native-stream-queue/complete75_positive_root89.md)
+The [positive first-root coordinate](../research-wip/native-stream-queue/complete75_positive_root89.md)
 gives **89=47M+42A at degree148**, with19 positive witnesses and an
 explicit bijection of positive solution sets. The old root is reconstructed
 as XY^2*k+tau_gap; its gap is positive on every parent zero. Both ratio
@@ -47,6 +47,16 @@ Its [regrouped versions](../research-wip/native-stream-queue/complete75_positive
 give **94/degree84**, **93/degree118**, and **92/degree122**. The first
 saves two operations at degree84. All retain19 positive witnesses, the
 strong auxiliary comparison and the exact linear comparison.
+The [coupled index/linear product](../research-wip/native-stream-queue/complete75_coupled_index_linear88.md)
+now gives **88=47M+41A at degree151**, with the same19 positive witnesses
+and identical positive solution sets under the full compiler mask contract.
+Sharing k-hE saves one subtraction. Its extra negative-sign branch would
+satisfy the complete half-binomial kernel at R-2, but the repeated masks
+make its population one bit too small. Its [grouped variants](../research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
+give **91/degree130** and **93/degree90**, retaining the full strong
+comparison separately. The latter supersedes93/118. The displayed choices
+are now88/151,89/148,91/130,92/122,93/90 and94/84, all with19 positive
+witnesses; no global optimality claim follows from this list.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
@@ -118,6 +128,23 @@ universal matrix alphabet with **6=2M+4A** total input loading. The
 proves quadratic degree necessary for the paired-SL2 subgroup interface;
 an explicit SL3 counterexample prevents extending that statement to
 arbitrary affine SL3 or SL4 curves. No operation lower bound follows.
+
+The [four-register history](../research-wip/native-stream-queue/group_four_register_history.md)
+uses the shear-height bound and determinant one to recover each target
+block from its action on (2^t,1). This reduces eight evolving matrix entries
+to four bounded registers. Its paid ordinary-input boundary costs10;
+a conditional packed interface costs43 with20 positive history fields.
+Typing, eight digitwise selected-source products, regular macro control and
+two power relations with the same duration remain unpaid.
+
+The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
+gives a uniform four-positive-witness certificate for two fixed generators
+in H^r: graph18r+10, or one degree-at-most-four polynomial at27r+12.
+That entire two-generator family is decidable. For three letters, explicit
+strict-interior counterexamples defeat pair bounds and weighted-triangle
+bounds together; global order still needs a certificate. The primary-source
+audit of a universal Heisenberg compiler records that it starts from an
+existing Diophantine equation and qualifies its signed-parameter claim.
 
 ## Historical 76-operation milestone
 
