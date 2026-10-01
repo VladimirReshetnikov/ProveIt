@@ -1,8 +1,8 @@
 # A cyclic-coloring obstruction to maximal binary DFAO reversal
 
-**Nonattainment of the full coloring space for every 3 ≤ k ≤ n, the exact three-output maximum for every n ≥ 7, the exact maximum for four and more outputs, and a second four-output route with stability and the missing orbits**
+**Nonattainment of the full coloring space for every 3 ≤ k ≤ n, the exact three-output maximum for every n ≥ 7, the exact maximum for four and more outputs, a second four-output route with stability and the missing orbits, a near-linear threshold with theta limits, and minimal recurrences with an arithmetic cancellation**
 
-This is a research report in four parts. Part I is the original report of
+This is a research report in six parts. Part I is the original report of
 20 September 2026, itself the merge of two independently prepared packages.
 Part II was added on 28 September 2026 in batch 39 of ProveIt's
 incoming-report intake, from a later manuscript that answers, for three
@@ -14,18 +14,28 @@ on 29 September 2026 in batch 43, merged from two manuscripts that, written
 before Part III was printed, re-derive its `k = 4` case with a much smaller
 analytic threshold (26 against `N(4) = 212`) and add stability theorems, the
 missing-orbit inventory, the count of extremal output maps and a recurrence of
-proved minimal order 15. All sources were prepared for Vladimir Reshetnikov and
-are AI-assisted.
+proved minimal order 15. Parts V and VI were added on 30 September 2026 in
+batch 67, one manuscript each: Part V proves Part III's formula for every
+`k ≥ 4` once `n ≥ T(k) = 4k log k + O(k)` instead of `n ≥ 3k^4`, with a
+theta-function limit and a Gaussian law for the optimal deficit (answering
+Part III's Question 44.2 in near-linear form); Part VI determines the minimal
+recurrences of the witness deficit for every fixed `k` — order 9 at three
+outputs, one genuine cancellation at nineteen outputs — answering Part III's
+Question 44.15. The two answer different questions and share no argument, so
+they are two Parts, not a merge. All sources were prepared for Vladimir
+Reshetnikov and are AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | two Cardinals-collection packages of 20 Sep 2026, `dfao-reversal-cyclic-coloring` (the spine) and `dfao-reversal-coloring-bound`, merged into one report | `dfao_reversal_research.zip` + `binary_dfao_reversal_research.zip` (as the collection manifest records them) | (none) | merged `8374aaa79` (Cardinals repository), in ProveIt since `dc54c3cb3` | Part I: Sections 1–12 (pp. 1–29), Appendices A–D (pp. 138–141); Section 1.3 records what each package contributed |
+| 01 (original) | two Cardinals-collection packages of 20 Sep 2026, `dfao-reversal-cyclic-coloring` (the spine) and `dfao-reversal-coloring-bound`, merged into one report | `dfao_reversal_research.zip` + `binary_dfao_reversal_research.zip` (as the collection manifest records them) | (none) | merged `8374aaa79` (Cardinals repository), in ProveIt since `dc54c3cb3` | Part I: Sections 1–12 (pp. 1–29), Appendices A–D (pp. 185–187); Section 1.3 records what each package contributed |
 | 02 | batch 39, manuscript 06 (*Exact Binary Reversal with Three Outputs: An all-state solution and rigidity of extremizers*, 28 Sep 2026, 19-page PDF as delivered) | `ProveIt_Three_Output_Reversal.zip` (inner `three_output_reversal/`, main file `article.tex`) | `fbba58593` | `e2b1f016a` (prefix `02-three-output-`) | Part II: Sections 13–27 (pp. 30–51) |
-| 03 | batch 40, manuscript 01 (*Eventual Optimality in Binary DFAO Reversal: Closest coprime cycles, a parity-sensitive defect law, and exact finite certificates*, 28 Sep 2026, 22-page PDF) | `ProveIt_DFAO_Eventual_Optimality.zip` (inner directory of the same name), arrived `017e6c0d8` | `2cdcd74f3` (with Part I's blobs `e6dbd47b` article, `13166e22` README) | `afb2d1227` (prefix `03-eventual-`) | Part III (pp. 52–106), label sub-prefix `evo:et:`: Sections 30, 35, 36, parts of 31–32, 38, 41, 44–47 |
+| 03 | batch 40, manuscript 01 (*Eventual Optimality in Binary DFAO Reversal: Closest coprime cycles, a parity-sensitive defect law, and exact finite certificates*, 28 Sep 2026, 22-page PDF) | `ProveIt_DFAO_Eventual_Optimality.zip` (inner directory of the same name), arrived `017e6c0d8` | `2cdcd74f3` (with Part I's blobs `e6dbd47b` article, `13166e22` README) | `afb2d1227` (prefix `03-eventual-`) | Part III (pp. 52–107), label sub-prefix `evo:et:`: Sections 30, 35, 36, parts of 31–32, 38, 41, 44–47 |
 | 04 | batch 40, manuscript 03 (*Binary DFAO Reversal: Exact Three-Output Complexity, Odd-Output Rigidity, and Sharp Deficit Asymptotics*, 28 Sep 2026, 21-page PDF) | `ProveIt_Binary_DFAO_Reversal.zip` (inner directory of the same name), arrived `017e6c0d8` | `2cdcd74f3` | `afb2d1227` (prefix `04-deficit-asymptotics-`) | Part III, label sub-prefix `evo:da:`: Sections 37, 38, 42, parts of 29, 32, 41, 43–47 |
 | 05 (base of Part III) | batch 41, manuscript 06 (*Eventual Exactness in Binary DFAO Reversal: Balanced coprime cycles, a uniform quartic threshold, and rank-sensitive obstructions*, 28 Sep 2026, 22-page PDF) | `ProveIt_Binary_Reversal_Exactness.zip` (inner `binary_reversal_eventual_exactness/`), arrived `9754e8360` | `e2b1f016a` | `eaf787d50` (prefix `05-quartic-threshold-`) | Part III, labels `evo:`: Sections 28–29, 31–34, 39–41, 43–47 |
-| 06 | batch 43, manuscript 03, called FO in Part IV (*Exact Four-Output Binary Reversal: Optimal state complexity, collision rigidity, and secondary asymptotics*, 29 Sep 2026, 21-page PDF) | `ProveIt_Four_Output_Reversal.zip` (inner directory of the same name), arrived `06bcc37a8` | `c130dba62` | `faef2ed2a` (prefix `06-four-output-`) | Part IV (pp. 107–138), label sub-prefix `fo:fo:` and shared `fo:` labels: the second routes of Sections 50–53, the penalty and stability of Section 53, parts of 49, 51, 54–59 |
+| 06 | batch 43, manuscript 03, called FO in Part IV (*Exact Four-Output Binary Reversal: Optimal state complexity, collision rigidity, and secondary asymptotics*, 29 Sep 2026, 21-page PDF) | `ProveIt_Four_Output_Reversal.zip` (inner directory of the same name), arrived `06bcc37a8` | `c130dba62` | `faef2ed2a` (prefix `06-four-output-`) | Part IV (pp. 108–139), label sub-prefix `fo:fo:` and shared `fo:` labels: the second routes of Sections 50–53, the penalty and stability of Section 53, parts of 49, 51, 54–59 |
 | 07 (base of Part IV) | batch 43, manuscript 05, called AS in Part IV (*Exact Binary Reversal with Four Outputs: An all-state formula, quantitative rigidity, and the structure of the missing reversal states*, 29 Sep 2026, 21-page PDF) | `ProveIt_Four_Output_Reversal (1).zip` (inner `four_output_reversal/`; a download-name collision, not a re-ship of 06), arrived `06bcc37a8` | `8315d24e3` (with this report's blobs `84923bc5` article, `f93f98bb` `03-eventual-SOURCE_AUDIT.md`) | `faef2ed2a` (prefix `07-all-state-`) | Part IV, labels `fo:as:` and shared `fo:`: Sections 48–59 |
+| 08 | batch 67, manuscript 01 (*Near-linear thresholds and theta limits for binary DFAO reversal: Occupancy amplification, exact extrema with growing output alphabets, and the distribution of missing reversal states*, 30 Sep 2026, 21-page PDF) | `ProveIt_Near_Linear_DFAO_Reversal.zip` (inner `near_linear_reversal/`), arrived `f4457a1d1` | `781594d88` (with this report's README blob `ac535a94`) | `d281a285a` (prefix `08-near-linear-`) | Part V (pp. 140–161), labels `nl:`: Sections 60–72 |
+| 09 | batch 67, manuscript 03 (*Arithmetic Spectral Cancellation in Binary DFAO Reversal: Exact minimal recurrences, a nineteen-output exception, and effective generating functions*, 30 Sep 2026, 22-page PDF) | `ProveIt_DFAO_Spectral_Cancellation.zip` (inner directory of the same name), arrived `f4457a1d1` | `0744012ba` (with this report's article blob `1b7f9ed9`) | `d281a285a` (prefix `09-spectral-cancellation-`) | Part VI (pp. 162–184), labels `sc:`: Sections 73–90 |
 
 The pins in full: `fbba58593dc0622aa914972896150d4848f935b5` (Part II),
 `2cdcd74f3abcbbff7bd47c6c4265522395def609` (batch-40 manuscripts 01 and 03)
@@ -40,13 +50,18 @@ only its files (and its source audit, which 06 read) existed. The batch-43 pins 
 `c130dba623c420551d90db41dae7b3d9cff72dfd` (FO); at both, `article.tex` had
 blob `84923bc5…` (Parts I–II printed, Part III staged but written only in
 `18634ca66`, after both pins), so neither Part IV manuscript knew Part III's
-threshold `N(k)` or its all-`n` closure of `4 ≤ k ≤ 7`. The manuscripts,
-PDFs and delivery READMEs of Parts II–IV are not shipped and survive in
+threshold `N(k)` or its all-`n` closure of `4 ≤ k ≤ 7`. The batch-67 pins in
+full are `781594d886f8dc56069221e2b56bd1e94d9c6e5f` (Part V) and
+`0744012ba29db0e345c44be953c6de3e000439e6` (Part VI); at both, and at the
+placement commit `d281a285a`, `article.tex` had blob `1b7f9ed9…` and
+`README.md` blob `ac535a94…` (the four-part report), so both manuscripts
+read Parts I–IV as printed here, and neither knew the other. The manuscripts,
+PDFs and delivery READMEs of Parts II–VI are not shipped and survive in
 the arrival commits. Each part prints every result, proof, example, remark,
 limitation and question of its manuscripts; what a manuscript re-derives from
 an earlier part is printed once and credited, and genuinely different proofs
-are kept as marked second routes. Sections 27.6, 47.7 and 59.7 of the article
-list where the merges had to choose.
+are kept as marked second routes. Sections 27.6, 47.7, 59.7, 72.6 and 90.8 of
+the article list where the merges and the batch-67 write had to choose.
 
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The finite
@@ -57,7 +72,12 @@ Davies's Theorem 3 / Corollary 3, and, in Part III's second route, the
 Holzer–König two-generation theorem for the monoid `U_{a,b}`; they are cited,
 not reproved. Part III's closure of `4 ≤ k ≤ 7` below its analytic threshold
 is computer-assisted, and so are Part IV's certificates below `n = 26`; Part
-IV's attainment imports the Holzer–König theorem.
+IV's attainment imports the Holzer–König theorem. Part V's upper bound is
+analytic (its finite checks are regression tests) and its attainment imports
+Davies's Theorem 3 / Corollary 3. Part VI's spectral theorems concern the
+explicit witness deficit; their transfer to the true optimum assumes Part
+III's eventual theorem (and, from `T(k)` on, Part V's), its "input (O)", and
+its upper order bound cites Ford's multiplication-table theorem.
 
 ## Results
 
@@ -102,7 +122,10 @@ construction `L(n,k)` on all 372 pairs `7 ≤ n ≤ 30`, `3 ≤ k < n`
 3. A `6AB` penalty for a second cross collision (Proposition 19.2), the orbit
    inventory of the missing colorings (Theorem 20.1), residue-class
    asymptotics `(3^n − R_2(n,3))/2^{n/2} → 9/√2, 15/2, 51/4` and an order-12
-   linear recurrence for the deficit (Corollaries 21.1, 21.2).
+   linear recurrence for the deficit (Corollaries 21.1, 21.2). That
+   recurrence is not minimal (it was not claimed to be): Part VI shows the
+   minimal order is 9, with characteristic polynomial
+   `(x−1)(x⁴−1)(x⁴−4)` (Theorem 78.1; dated note after Corollary 21.2).
 
 Added in that merge (not stated by the manuscript): Remark 18.3 shows
 `D(n,3) = D_n` and `U(n,3) = L(n,3) = R_2(n,3)` for every `n ≥ 7`; the closed
@@ -121,6 +144,8 @@ form equals the `upper` and `lower` columns and the split of all 24 rows
    comparisons in 2,217 rows (computer-assisted). Attainment is Davies's
    construction; original-state minimality is proved. Because the range
    `n ≥ 3k^4` lets `k` grow, the formula holds for every `4 ≤ k ≤ (n/3)^{1/4}`.
+   (Part V extends both ranges: every `k ≥ 4` once `n ≥ T(k)`, hence every
+   `4 ≤ k ≤ c n/log n` with `c < 1/4` for large `n`.)
 2. Manuscript 06 also proves strict bipartite balancing (Theorem 31.3, via
    total positivity of Stirling numbers), the necessary structure of every
    maximizer for `k ≥ 4` in its exactness range, including singular-letter
@@ -220,20 +245,107 @@ margins on `7 ≤ n ≤ 25`; Remark 55.4 shows that Part III's `k = 4` annihilat
 III's Question 44.15 at `k = 4`); Remark 50.6 compares the thresholds; and
 Proposition 53.4 is shown to imply Proposition 53.5.
 
+**Part V** (batch 67, one manuscript, labels `nl:`). With
+`S(k) = ⌈1 + 2k log(8k)⌉` and `T(k) = max{4k², 3S(k)+k+1, 6(k+2)}` for
+`4 ≤ k ≤ 20`, `T(k) = 2S(k)+k` for `k ≥ 21` (natural logarithms):
+
+1. **`R_2(n,k) = k^n − 𝓑_k(a_n,b_n) + a_n b_n` for every `k ≥ 4` and every
+   `n ≥ T(k)`**, as the maximum over all transformation pairs and output maps,
+   attained by an accessible minimal machine (Theorem 60.1); `n ≥ ⌈16k
+   log(8k)⌉` suffices, `T(k) = 4k log k + (4 log 8 + 1)k + O(1)`, so the
+   formula holds for every `4 ≤ k ≤ c n/log n`, `c < 1/4`, for large `n`
+   (Corollary 60.2). The formula is Part III's Theorem 28.1; what is new is the
+   range. `T(4..16) = 92, 120, 151, 196, 256, 324, 400, 484, 576, 676, 784,
+   900, 1024`, below `N(k)` in every case (Table 15; for `4 ≤ k ≤ 7`
+   Theorem 34.1 already covers every `n`), so the open window of Question 44.1
+   shrinks to `k ≥ 8`, `max(7,k+1) ≤ n < min(N(k),T(k))` outside the certified
+   finite ranges, e.g. `k = 8`, `101 ≤ n ≤ 255`. The upper bound is analytic:
+   a positive palette envelope with amplification and a tilt estimate
+   (Section 62), a paired-palette occupancy lower bound
+   `𝓑_k(u,v) ≥ λ_k^s 2^{h(1−e^{−s/(h+1)})}` (Theorem 63.1), and the exclusion
+   of every nonfull collision graph by more than `𝔄_k(n)/12`
+   (Proposition 64.1, Corollary 65.3). Attainment is Davies's Theorem 3 /
+   Corollary 3.
+2. Part III's rigidity theorem holds throughout `n ≥ T(k)` (Theorem 65.1);
+   conditions (i)–(iii) are not claimed sufficient.
+3. **Theta limit**: if `n/k² → t > 0` through one parity of `k`,
+   `D_k(n)/(C(k,⌊k/2⌋)(k/2)^n) → Θ_ε(t) = Σ_{j∈ℤ+ε} e^{−2tj²}`
+   (`ε = 0` or `1/2` for even or odd `k`), and the palette offset of a random
+   missing reversal state tends to the discrete Gaussian law
+   `e^{−2tj²}/Θ_ε(t)` (Theorem 60.3). **Broad-palette law**: if
+   `k log k = o(n)` and `n = o(k²)`, `D_k(n) ~ 2^k (k/2)^n √(k/n)`, with a
+   normal limit of variance 1/4 for the rescaled offset (Theorem 60.4).
+4. Exact regression checks (`--full`): 1,440 counting identities, 30 literal
+   enumerations, 550 balancing and 1,440 occupancy-subfamily comparisons, 477
+   structural rows with 167,095 strict comparisons; Decimal diagnostics
+   (1,296 occupancy, 90 imbalance, 90 saturation instances) that are not
+   interval certificates.
+
+**Part VI** (batch 67, one manuscript, labels `sc:`). For the explicit
+witness deficit `D*_k(n)` (Part III's (28.2)) and, through Part III's eventual
+theorem (Part VI's "input (O)"), for the optimal deficit `D_k(n)`:
+
+1. **Exact factor selection** (Theorems 76.2, 77.2): with three grouped
+   integer palette moments `T_{k,p}, U_{k,p}, V_{k,p}` per product
+   `p ∈ 𝒫_k`, the minimal polynomial on each residue class mod 4 contains
+   `x − p²` exactly when the relevant moment is nonzero, and a four-point
+   Fourier test (Table 17) selects the factors of the minimal full polynomial
+   `Q_k(x) = (x−1)³(x+1)(x²+1)∏F_{k,p}(x)`; `R_2(n,k)` then has minimal
+   polynomial `(x−k)Q_k(x)`.
+2. **Three outputs**: minimal order 9, `Q_3 = (x−1)(x⁴−1)(x⁴−4)`, order 3 on
+   each residue class (Theorem 78.1); Part II's order-12 relation contains the
+   unnecessary factor `(x+1)(x²+1)`. Four outputs reproduce Part IV's order-15
+   polynomial (a regression check, not new); five outputs give order 22.
+3. **A genuine cancellation at nineteen outputs**: `T_{19,12} = 0`
+   (`U = 10,581,480`, `V = 5,132,017,800`), so the base `144` leaves both odd
+   residue classes (orders 60, 59, 60, 59) while all four unit-step modes
+   survive (full order 222; Theorem 79.1). It is the only product-12
+   odd-residue cancellation at any `k ≥ 7`, and product 12 keeps its full
+   spectrum for every `k` (Theorem 80.1, Corollary 80.2).
+4. **Noncancellation**: parity-coherent product classes, in particular every
+   product not divisible by 4, never cancel (Theorem 81.2, Corollary 81.3);
+   for each fixed product the exceptional `k` form an effectively computable
+   finite set (Theorem 82.1). Orders are `k^{2−o(1)}` and `o(k²)`, the latter
+   with Ford's multiplication-table theorem (Theorem 83.1).
+5. **Generating functions**: explicit rational tail generating functions and
+   numerators (Proposition 84.1, (84.3)); a terminating algorithm for the
+   unknown finite prefix, proved but not implemented or run
+   (Theorem 85.1, conditional on `N(k) ≤ 3k^4`; with Part V's `T(k)` the same
+   proof works with `min(N(k),T(k))`, dated note).
+6. Exact audits (default run): 27 literal enumerations, 1,053 signed-versus-
+   positive identities, 280 modular Berlekamp–Massey reconstructions for
+   `3 ≤ k ≤ 30`, 8 tail-numerator identities, 282 product-12 identities, and
+   a moment scan through `k = 200` in which `T_{19,12}` is the only zero (a
+   finite observation, not a theorem).
+
+Added in the batch-67 write (not stated by the manuscripts): Table 15 and the
+status paragraph after Corollary 60.2 (Part V against Part III's `N(k)`), the
+dated notes in Sections 74.2 and 85 and Question 88.6 (`T(k)` in input (O)
+and in the prefix algorithm), the counterparts named in Sections 69 and 88,
+and dated pointers in Parts I–IV: Part I's reading-routes box and
+Sections 1.4, 12.1 and 12.3; Part II's Questions 23.1 and 23.6 and the note
+after Corollary 21.2; Part III's Sections 28.3 and 41.4 (two notes),
+Questions 44.1, 44.2, 44.14, 44.15 and 44.16, and Sections 47.5 and 47.6;
+Part IV's Questions 57.1 and 57.2. Sections 72.6 and 90.8 list them.
+
 ## Not claimed
 
 - Davies's Problem 2 in full: the exact maximum for `k ≥ 8` with
   `max(7,k+1) ≤ n < N(k)` stays open outside the certified finite ranges
   (Part I: `n ≤ 30`; manuscript 01: `n ≤ 100` for `k ≤ 12`), for example
-  `k = 8`, `101 ≤ n ≤ 2687`; so does the boundary `k = n` and the
-  near-diagonal regime. Part II's Question 23.1 is re-scoped, not closed
+  `k = 8`, `101 ≤ n ≤ 2687` — after Part V the window is
+  `max(7,k+1) ≤ n < min(N(k),T(k))`, for example `k = 8`, `101 ≤ n ≤ 255`;
+  so does the boundary `k = n` and the near-diagonal regime, and so does the
+  dense regime, `k` a positive proportion of `n` (Part V's Question 69.3). Part II's Question 23.1 is re-scoped, not closed
   (Question 44.1). None of the parts settles Davies's other Section 5
   questions or the largest-two-generated-transformation-monoid problem.
 - No least thresholds: `N(k)` is sufficient, not optimal; manuscripts 01 and
   03 prove only that some threshold exists. Part IV's `26` at `k = 4` is also
   only sufficient for its particular estimates. Every asymptotic statement of
   Part III is for fixed `k`; the only uniform statement is the threshold
-  `n ≥ 3k^4`. Manuscript 03's plateau theorem is first order and concerns the
+  `n ≥ 3k^4`. Part V's `T(k)` is likewise sufficient only: neither the
+  leading constant 4 nor the logarithm is claimed necessary (Questions 69.1,
+  69.2). Manuscript 03's plateau theorem is first order and concerns the
   witness family; it does not say that every split in the interval is exactly
   optimal (only the nearest split is, in the proved range).
 - No new proof of Davies's lower construction or of the Holzer–König
@@ -259,16 +371,29 @@ Proposition 53.4 is shown to imply Proposition 53.5.
   function, the diagonal specialization `k = n`, or graph coloring as a
   method. The threshold `n ≥ 7` is essential: at five states the coprime
   two-cycle construction is not optimal.
+- Part V: no intrinsic classification of extremizers, full rigidity for
+  near-extremizers (Corollary 65.3 excludes only nonfull graphs), uniform
+  second-order asymptotics, or interval certification of its Decimal
+  diagnostics; its theta diagnostics below `T(k)` assert no optimality.
+- Part VI: no uniform classification of cancellations in both `k` and `p`
+  (Questions 88.1–88.3); the scan through `k = 200` is a finite observation;
+  the prefix algorithm was not implemented or run, so no unknown initial
+  optimum (for example at nineteen outputs) is computed; transfer to the true
+  optimum rests on Part III's (and Part V's) eventual theorem; no novelty
+  for the degree-15 four-output polynomial (Part IV's) or for the palette,
+  Fourier and exponential-polynomial methods; and no asserted minimality
+  theorem is corrected — Part II's order-12 relation and Part III's
+  annihilator were never claimed minimal.
 - No priority. All literature checks were targeted (Part I on
   20 September 2026, Parts II and III on 28 September 2026, Part IV on
-  29 September 2026); none is an
+  29 September 2026, Parts V and VI on 30 September 2026); none is an
   exhaustive citation-index review, a survey of theses, or correspondence with
   the author. A missing search hit is not evidence that no earlier or later
   result exists.
 - No claim that random tests, finite enumerations or finite tables establish a
   universal theorem, that a finite region plus an unspecified tail covers
   every intervening `n`, or that all improper colorings are reachable in
-  arbitrary cases (Parts II–IV prove it only for extremizers).
+  arbitrary cases (Parts II–V prove it only for extremizers).
 
 ## Labels
 
@@ -280,16 +405,27 @@ manuscript 01's `evo:et:` and manuscript 03's `evo:da:` ("deficit
 asymptotics"). Part IV added **106** labels, all with the prefix `fo:` ("four
 outputs"): material only in manuscript AS uses `fo:as:` (23), material only in
 FO `fo:fo:` (20), and statements of both, or added in the merge, plain `fo:`
-(63). Total: 479 (pattern `\\label(\[[^]]*\])?\{`; 373 before Part IV, 172
-before Part III). No label was renamed or removed. Part III starts at Section 28; its
+(63). Part V added **81** labels, all `nl:` ("near-linear"), and Part VI
+**95**, all `sc:` ("spectral cancellation"); neither prefix occurred before.
+Total: 655 (pattern `\\label(\[[^]]*\])?\{`; 479 before Parts V–VI, 373
+before Part IV, 172 before Part III). Of the manuscripts' own 75 and 71
+labels, the nine and five on material printed once elsewhere (the split, the
+orbit reduction, the biclique counts and balancing; the split, the witness
+definition and the palette lemma) and the label of 01's rewritten
+source-audit appendix were not carried over, and the references
+to them point to the Part I and Part III labels. No label was renamed or removed. Part III starts at Section 28; its
 tables continue the numbering (Tables 6–11) and its figure is Figure 2. Part IV
-starts at Section 48 and has Tables 12–13. In the
+starts at Section 48 and has Tables 12–13. Part V starts at Section 60
+(Tables 14–15), Part VI at Section 73 (Tables 16–18). In the
 `.aux` files of the committed and the new build every label of Parts I and II
 has the same number (page numbers after Part I's Section 1.4 moved, because of
 the dated pointers). Comparing the `.aux` files of the committed three-part
 build and the four-part build, every one of the 373 earlier labels keeps its
 number; only pages in Part III (dated pointers) and in the appendices moved.
-Part I's appendices come after Part IV and contain no
+Comparing the four-part build with the six-part build, every one of the 479
+earlier labels keeps its number; pages moved only after the dated pointers
+(from Part I's Section 1.4 on), in Part IV, and in the appendices.
+Part I's appendices come after Part VI and contain no
 numbered equations, tables, figures or theorem-like items.
 
 As recorded for Part II, the theorem-like environments are declared through
@@ -332,16 +468,32 @@ reading. The most important points:
   normalization change. `J(r)` is Part II's largest partition product (01's
   `A(r)`); `γ_r = ⌊3^{r/3}⌋` is 06's `g_r`, not Landau's `g(k)`. The two
   cycles of a two-cycle permutation are `X, Y` (06's and 01's `A, B`).
+- Part V (Table 14, Section 60.2) and Part VI (Table 16, Section 73.2), the
+  batch-67 manuscripts, use Part III's `𝓑_k`, `(a_n,b_n)`, `δ_n`, `D_k`,
+  `D*_k`, `𝒫_k`; no normalization changed. Renamed: Part V's palette
+  envelope `𝒜_k(t)`, `𝒜_k(t,δ)` is printed `𝔄_k` (`\nlenv`), because Part
+  III's `𝒜_k(𝖤)` is an annihilator; its `λ`, `β` are Part III's `λ_k`, `β_k`
+  (same values); its `ϵ` is printed `ε`; its source macros for `𝓑` and `sc` are this
+  report's `\Bip` and `\statecomplex` (its `\D = 𝒟`, unused, clashed with this
+  report's `\D = Δ`). Part VI's falling factorial `X^{\underline d}` is
+  printed `(X)_d` (`\fall`) and its unit shift `E` is printed `𝖲` (Part IV's
+  shift in `n`; Part III's `𝖤` shifts the residue step `t`). Tempting false
+  readings: Part V's threshold `T(k)` versus Part VI's moments `T_{k,p}` and
+  Part I's `T_{r,k}`; Part V's `S(k)` versus Stirling numbers `S(a,i)`; Part
+  V's `F_k(s)` versus Part VI's spectral factor `F_{k,p}(x)`; Part V's random
+  palette offset `J` versus Part II's `J(r)`; Part VI's local `λ = √p` and
+  Fourier coefficient `β` versus `λ_k`, `β_k`; Part VI's `Q_k(x)` (minimal
+  polynomial) versus the state set `Q`.
 
 ## Files
 
 ```
 article.tex                            the report, standalone LaTeX with an internal bibliography; \inputs
                                        data/04-deficit-asymptotics-finite_table.tex
-article.pdf                            the compiled report, 147 pages (title page, contents pp. i–iv,
-                                       Part I pp. 1–29, Part II pp. 30–51, Part III pp. 52–106,
-                                       Part IV pp. 107–138, Part I's appendices pp. 138–141,
-                                       bibliography pp. 141–142)
+article.pdf                            the compiled report, 194 pages (title page, contents pp. i–v,
+                                       Part I pp. 1–29, Part II pp. 30–51, Part III pp. 52–107,
+                                       Part IV pp. 108–139, Part V pp. 140–161, Part VI pp. 162–184,
+                                       Part I's appendices pp. 185–187, bibliography p. 188)
 README.md                              this guide
 Makefile                               Part I: build, check and audit targets (build in place; see below)
 source_audit.md                        Part I: locations inspected in Davies v2, attribution, dependency boundary
@@ -357,6 +509,10 @@ LITERATURE_SEARCH.md                   Part I: that source's literature-search r
 06-four-output-PROOF_AUDIT.md          Part IV, FO: proof audit and verification boundaries (delivered as PROOF_AUDIT.md)
 07-all-state-SOURCE_AUDIT.md           Part IV, AS: source and novelty audit (delivered as notes/SOURCE_AUDIT.md)
 07-all-state-PROOF_AUDIT.md            Part IV, AS: proof and verification audit (delivered as notes/PROOF_AUDIT.md)
+08-near-linear-RESEARCH_STATUS.md      Part V: research and verification status, provenance, claims not made (delivered as RESEARCH_STATUS.md)
+09-spectral-cancellation-BUILD_QA.md   Part VI: build and presentation checks of the delivered 22-page PDF (delivered as notes/BUILD_QA.md)
+09-spectral-cancellation-PROOF_STATUS.md  Part VI: theorem-by-theorem dependencies and limits (delivered as notes/PROOF_STATUS.md)
+09-spectral-cancellation-SOURCES.md    Part VI: source pin, inspected scope, literature and novelty audit (delivered as notes/SOURCES.md)
 code/reversal.py                       Part I: primary implementation (composition, orbits, missing
                                        colorings, CRT membership, chromatic counts, structural bound, u_witness)
 code/run_checks.py                     Part I: primary Python suite and the finite-range CSV
@@ -389,6 +545,10 @@ code/06-four-output-Makefile           Part IV (FO): the delivered root Makefile
 code/07-all-state-verify.py            Part IV (AS): the 2,082-entry certificate, BFS witnesses, inventories, recurrence (delivered as code/verify.py)
 code/07-all-state-independent_check.py Part IV (AS): independent re-enumeration and integer BFS (delivered as code/independent_check.py)
 code/07-all-state-Makefile             Part IV (AS): the delivered root Makefile (all/pdf/check/clean)
+code/08-near-linear-verify.py          Part V: exact regression checks and Decimal diagnostics (delivered as code/verify.py)
+code/09-spectral-cancellation-spectral.py  Part VI: exact moments, minimal factors, witness values, tail numerators (delivered as code/spectral.py)
+code/09-spectral-cancellation-verify.py  Part VI: counting and Berlekamp–Massey audits, writes the five records (delivered as code/verify.py)
+code/09-spectral-cancellation-Makefile Part VI: the delivered root Makefile (all/pdf/check/clean)
 data/finite_range_bounds.csv           Part I: 372 rows of exact upper and lower values, split, minimizing graph
 data/verification_summary.json         Part I: primary check counts and recorded seed
 data/independent_bounds_check.json     Part I: independent arithmetic-verifier result
@@ -458,6 +618,13 @@ data/07-all-state-recurrence.json         Part IV (AS): denominator, numerator a
 data/07-all-state-verification_summary.json  Part IV (AS): producer record (PASS)
 data/07-all-state-independent_check.json  Part IV (AS): independent record (PASS)
 data/07-all-state-PDF_AUDIT.json          Part IV (AS): rendering audit of the delivered (unshipped) 21-page PDF (delivered as notes/PDF_AUDIT.json)
+data/08-near-linear-verification.json     Part V: full recorded output of the --full run (per-row strict margins, thresholds, theta diagnostics)
+data/08-near-linear-console.txt          Part V: the delivered run summary (names the delivery path /mnt/data/…)
+data/09-spectral-cancellation-audit.json  Part VI: run summary and the nineteen-output certificate
+data/09-spectral-cancellation-spectra.json  Part VI: moments and factors for k = 3..30
+data/09-spectral-cancellation-tail_generating_functions.json  Part VI: exact tail numerators and reduced denominators, k = 3..10, from n = 7
+data/09-spectral-cancellation-product12_polynomials.json  Part VI: the exact values used in the product-12 proof
+data/09-spectral-cancellation-orders.tex  Part VI: the generated order table (not input; equals Table 18)
 results/certificates.json              Part I: four certificates in the second schema
 results/exhaustive.json                Part I: per-row counts, maxima and one maximizer per row for n ≤ 4
 results/examples.json                  Part I: the four worked examples
@@ -470,7 +637,8 @@ results/pdf_checks.json                Part I: rendering audit of a 19-page pred
 
 The prefixed files were staged in the placement commits (`e2b1f016a` for
 `02-`, `afb2d1227` for `03-` and `04-`, `eaf787d50` for `05-`, `faef2ed2a` for
-`06-` and `07-`), byte-identical to the deliveries. Eleven of them are all-CRLF
+`06-` and `07-`, `d281a285a` for `08-` and `09-`), byte-identical to the
+deliveries (the 15 batch-67 files have no carriage return). Eleven of them are all-CRLF
 CSVs as delivered (written by `csv.writer`): Part II's `structural_checks.csv`,
 manuscript 01's `finite_certificates.csv` and `asymptotic_ratios.csv`,
 manuscript 06's four `finite_k*.csv` and `sample_values.csv`, FO's
@@ -489,20 +657,22 @@ cd "$W" && latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 or run `pdflatex article.tex` three times there. Build in a scratch copy, so
 that no auxiliary files land here: Part I's `make pdf` and the `pdf` targets
-of the six prefixed Makefiles all run LaTeX on `article.tex` in place (and
-`code/03-eventual-Makefile`'s and `code/05-quartic-threshold-Makefile`'s
-`clean` targets run `latexmk -c` in place, and
+of the seven prefixed Makefiles all run LaTeX on `article.tex` in place (and
+`code/03-eventual-Makefile`'s, `code/05-quartic-threshold-Makefile`'s and
+`code/09-spectral-cancellation-Makefile`'s `clean` targets run `latexmk -c`
+in place, and
 `code/04-deficit-asymptotics-Makefile`'s deletes `article.aux`, `.log`,
 `.out`, `.toc`, `.fls` and `.fdb_latexmk` here). The article `\input`s
 `data/04-deficit-asymptotics-finite_table.tex`, so that file must sit at that
 relative path. Needed packages: newtx, amsmath/amsthm/mathtools, microtype,
 geometry, booktabs, array, longtable, enumitem, fancyhdr, tcolorbox, TikZ,
 listings, aliascnt, hyperref, cleveref. No bibliography processor, font file
-or downloaded paper is needed. The shipped PDF was built with MiKTeX (pdfTeX
-1.40.26) with no errors, no warnings, no undefined or multiply defined
-references, no duplicate destinations and no overfull or underfull boxes
-(as was the build of the committed three-part text). The title page still fits
-one page; the dated pointers of Parts III and IV are in the reading-routes box
+or downloaded paper is needed; Parts V and VI need no package beyond these.
+The shipped PDF (194 pages) was built with MiKTeX 26.2 (pdfTeX 1.40.29) with
+no errors, no warnings, no undefined or multiply defined references, no
+duplicate destinations and no overfull or underfull boxes (as was the build
+of the committed four-part text). The title page still fits one page; the
+dated pointers of Parts III–VI are in the reading-routes box
 after the contents instead, because one more line on the title page would push
 it onto a second page.
 
@@ -592,7 +762,7 @@ its package root as `parents[1]` of its own path. Run in this directory:
   `data/base_certificate.csv` (a `FileNotFoundError` in place) and writes
   `data/independent_check.json`; the Makefile's `bfs` target writes
   `./witness_bfs` and `data/bfs.json`, and `clean` also removes `code/__pycache__`.
-- The six prefixed Makefiles name the delivered scripts (`code/verify.py`,
+- The seven prefixed Makefiles name the delivered scripts (`code/verify.py`,
   `code/independent_check.py`, `code/check_certificates.py`,
   `code/theorem_checks.py`, `code/supplementary_checks.py`,
   `code/witness_bfs.cpp`), which do not exist here; their `pdf` and `clean` targets act on the merged `article.tex` in
@@ -661,6 +831,52 @@ apart from line endings (orbits 15,472 … 16,744,863 for `n = 7..12`, and 212).
 AS certifies 2,082 entries for `n = 4..25` and FO 2,059 for `n = 7..25`, with
 the 752,291-entry sweep for `n ≤ 200` and 101,568 independently checked
 entries for `n ≤ 100`.
+
+**Parts V–VI (batch 67).** Standard library only (the delivered READMEs ask
+for Python 3.11+ and 3.10+). Both programs use explicit exceptions, so `-O`
+is harmless. Do not run them in this directory:
+
+- Part V's `code/08-near-linear-verify.py --full` writes
+  `<parents[1]>/data/verification.json` unless `--output` is given, i.e. a
+  stray unprefixed `data/verification.json` here, and prints a summary whose
+  `output` field is that path; `data/08-near-linear-console.txt` is that
+  summary as delivered.
+- Part VI's `code/09-spectral-cancellation-verify.py` does
+  `from spectral import …` (line 17), which fails under the prefixed name of
+  `code/09-spectral-cancellation-spectral.py`; with the delivered name it
+  writes `audit.json`, `spectra.json`, `tail_generating_functions.json`,
+  `product12_polynomials.json` and `orders.tex` into `<parents[1]>/data/`
+  unconditionally (it has no output option) and prints the audit record.
+  `make -f code/09-spectral-cancellation-Makefile check` runs
+  `python3 code/verify.py`, which does not exist here.
+- On Windows both write CRLF line endings; the shipped records are LF.
+
+Run them on a copy with the delivered layout (Git Bash, from this directory):
+
+```sh
+W=/path/to/scratch
+mkdir -p "$W/08/code" "$W/08/data" "$W/09/code" "$W/09/data"
+cp code/08-near-linear-verify.py "$W/08/code/verify.py"
+for f in spectral verify; do cp "code/09-spectral-cancellation-$f.py" "$W/09/code/$f.py"; done
+cp code/09-spectral-cancellation-Makefile "$W/09/Makefile"
+cd "$W/08" && py code/verify.py --full > data/console.txt       # writes data/verification.json
+cd "$W/09" && py code/verify.py > data/audit_console.txt        # writes data/audit.json, spectra.json, tail_generating_functions.json,
+                                                                #   product12_polynomials.json, orders.tex
+py code/spectral.py 19                                          # factors at k = 19; py code/spectral.py 3 --expanded
+```
+
+Compare the outputs with the shipped `data/08-near-linear-*` and
+`data/09-spectral-cancellation-*` records after removing carriage returns
+(for example `diff <(tr -d '\r' < data/audit.json) …`). The runs were made
+on 30 September 2026 in this way (Python 3.14.4; about 23 s and 26 s): both
+passed, with the counts of Sections 68.2 and 86.3 (Part V: 477 structural
+rows, 167,095 comparisons; Part VI: 27, 1,053, 280, 8 and 282 cases, the
+only vanishing moment `T_{19,12}`). Every regenerated file equals the shipped
+one apart from Windows line endings, except that Part V's
+`verification.json` and Part VI's `audit.json` record the Python version
+(`3.14.4` instead of the delivered `3.13.5`); Part V's console summary differs
+in its `output` path. Neither program enumerates automata or implements
+Part VI's prefix algorithm (Theorem 85.1).
 
 ## Discrepancies and delivery names
 
@@ -737,21 +953,63 @@ entries for `n ≤ 100`.
 - **Source-table note.** Part I (Section 10.3) corrects Davies's printed
   Table 2 entry for `n = 8, k = 5` from 368020 to 369020; manuscript 01's
   worked example (Example 35.2) reproduces 369020.
+- **Parts V–VI delivery names.** `08-near-linear-RESEARCH_STATUS.md` says
+  "`python code/verify.py --full` passed"; the shipped program is
+  `code/08-near-linear-verify.py`, and its record `data/verification.json` is
+  the shipped `data/08-near-linear-verification.json`.
+  `data/08-near-linear-console.txt` records the output path
+  `/mnt/data/proveit_research/near_linear_reversal/data/verification.json` of
+  the delivery machine, not a path of this report. Part VI's notes and
+  Makefile use the delivered layout: `09-spectral-cancellation-PROOF_STATUS.md`
+  names `python code/verify.py`, `data/audit.json` and `data/spectra.json`,
+  and `09-spectral-cancellation-SOURCES.md` names `PROOF_STATUS.md`;
+  `code/09-spectral-cancellation-Makefile`'s `pdf`, `check`
+  and `clean` targets act on `article.tex`, `code/verify.py` and
+  `code/__pycache__` relative to where `make` runs (here: this report's
+  merged `article.tex`, a missing `code/verify.py`); and
+  `data/09-spectral-cancellation-orders.tex` is a generated extract that the
+  article does not `\input` (its rows equal Table 18, inline).
+- **Unshipped files named by Parts V–VI's records.** The delivered READMEs,
+  `article.tex` and `article.pdf` of both manuscripts are not shipped (they
+  survive in `f4457a1d1`); `08-near-linear-RESEARCH_STATUS.md`'s sentences on
+  the compiled LaTeX and its rendered pages, and
+  `09-spectral-cancellation-BUILD_QA.md` as a whole, describe those delivered
+  21- and 22-page PDFs, not this report's 194-page build;
+  `09-spectral-cancellation-SOURCES.md` calls the report it read "the
+  original 147-page report" (the four-part build).
+- **Stale text of Parts V–VI's sources.** Both were pinned to the four-part
+  report. `08-near-linear-RESEARCH_STATUS.md` and
+  `09-spectral-cancellation-SOURCES.md` describe Part III's `N(k) ≤ 3k^4` as
+  the repository's threshold; Part VI's input (O) and its
+  prefix theorem use it. Part V now proves the formula from `T(k)` on, which
+  the article records in dated notes (Sections 74.2 and 85, Question 88.6);
+  the delivered files are kept verbatim.
+- **Second-hand title-page wording.** Manuscript 01's title page names an AI
+  system as author and Vladimir Reshetnikov as addressee; manuscript 03's
+  calls the work AI-assisted and "prepared for Vladimir Reshetnikov". The
+  article records this only in its provenance sections (60.1, 72.6, 73.1,
+  90.8), not in Part headings.
 
 ## Relation to neighbouring reports and to the formal project
 
-No other report in the research-report collection treats DFAO reversal, and
-the Part III and Part IV manuscripts name no report other than this one, so no
-reciprocal note was written. The report sits in the research-report collection of the
+No other report in the research-report collection treats DFAO reversal (the
+`tribonacci-additive-complexity` report mentions a DFAO only as a prior
+construction for a different problem), and the Part III–VI manuscripts name
+no report other than this one, so no reciprocal note was written. The report sits in the research-report collection of the
 `SetTheory/Cardinals` Lean project. That placement confers no formal status:
 no Lean or Rocq declaration anywhere in ProveIt formalizes any statement of
-Parts I–IV (a search of the tracked `.lean` and `.v` files for DFAOs,
+Parts I–VI (a search of the tracked `.lean` and `.v` files for DFAOs,
 automata with output or Davies finds none). Section 26 records the
 formalization plan Part II's manuscript proposes, and Question 44.16 the
 Part III manuscripts' proposals (a verified checker for the finite
 obligations first), Section 56.6 the Part IV manuscripts' plans (a verified
 partition and divisor enumerator for the 2,082 inequalities, with the
-Holzer–König theorem as an explicit hypothesis); none has been started.
+Holzer–König theorem as an explicit hypothesis), Question 69.8 Part V's
+(coloring actions, collision graphs, Stirling balancing, the occupancy
+construction, real-exponential estimates, with Davies's witness theorem as an
+explicit dependency) and Section 87 with Question 88.7 Part VI's (the signed
+multinomial expansion and residue table first, then finite integer
+certificates for the order-9 and `k = 19` statements); none has been started.
 
 ## Sources and attribution
 
@@ -773,5 +1031,16 @@ the `U_{a,b}` generator through Davies's account; not read in full.
 
 Marc Deléglise and Jean-Louis Nicolas, *The Landau Function and the Riemann
 Hypothesis*, arXiv:1907.07664 — cited only for the name of `g(k)`.
+
+Kevin Ford, *Integers with a divisor in (y,2y]*, arXiv:math/0607473
+(the multiplication-table estimate, page 1), and *The distribution of
+integers with a divisor in a given interval*, Annals of Mathematics 168
+(2008), 367–433, https://doi.org/10.4007/annals.2008.168.367 — cited in Part
+VI for the upper order bound only.
+
+James L. Massey, *Shift-register synthesis and BCH decoding*, IEEE
+Transactions on Information Theory 15 (1969), 122–127,
+https://doi.org/10.1109/TIT.1969.1054260 — cited in Part VI for the
+Berlekamp–Massey cross-checks only.
 
 No third-party paper PDFs or font files are included.

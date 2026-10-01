@@ -71,6 +71,11 @@
 % Part III (batches 40-41): onto-map counts and single-machine deficits.
 \newcommand{\sur}{\operatorname{sur}}
 \newcommand{\defi}{\operatorname{def}}
+% Part V (batch 67): the positive palette envelope (the manuscript's \mathcal A,
+% renamed because Part III's \mathcal A_k is an annihilator), ceiling and floor.
+\newcommand{\nlenv}{\mathfrak A}
+\newcommand{\nlceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\nlfloor}[1]{\left\lfloor #1\right\rfloor}
 \crefname{question}{question}{questions}
 \Crefname{question}{Question}{Questions}
 \newtcolorbox{resultbox}{enhanced,breakable,colback=PaleOlive,colframe=Olive,
@@ -178,6 +183,10 @@ $4\le k\le7$ and every $n\ge\max(7,k+1)$, and for every $k\ge4$ beyond an explic
 threshold. Part~IV (\cref{fo:sec:intro} onwards, added 29 September 2026)
 gives a second proof of the case $k=4$, analytic from $n=26$, with stability
 theorems, the missing-orbit inventory and a minimal recurrence.
+Parts~V and~VI (\cref{nl:sec:intro,sc:sec:intro} onwards, added
+30 September 2026) prove Part~III's formula for every $k\ge4$ once
+$n\ge T(k)=4k\log k+O(k)$, with theta and Gaussian limit laws, and determine
+the minimal recurrences of the witness deficit.
 \end{resultbox}
 \newpage
 
@@ -364,6 +373,9 @@ bound, and $U(n,k)=L(n,k)$, for $4\le k\le7$ and every $n\ge\max(7,k+1)$, and
 for every $k\ge4$ once $n\ge N(k)\le3k^4$ (\cref{evo:thm:main,evo:rem:UL}).
 The exact optimum for $k\ge8$ below $N(k)$, beyond the finite ranges already
 certified, remains open.]
+[Added 30 September 2026, batch~67: Part~V proves the equality also for every $k\ge4$ once
+$n\ge T(k)=4k\log k+O(k)$ (\cref{nl:thm:main}), so the open window is
+$n<\min(N(k),T(k))$.]
 
 The following are \emph{not} claimed. No proof of the exact optimal binary
 reversal complexity for arbitrary $n,k$, and no resolution of Davies's other
@@ -2149,6 +2161,8 @@ equality holds for $4\le k\le7$ and every $n\ge\max(7,k+1)$, and for every
 $k\ge4$ once $n\ge N(k)\le3k^4$ (\cref{evo:rem:UL}); it remains open for
 $k\ge8$ below $N(k)$ outside the certified finite ranges
 (\cref{evo:q:complete}).]
+[Added 30 September 2026, batch~67: Part~V proves it also once $n\ge T(k)=4k\log k+O(k)$
+(\cref{nl:thm:main}), so it remains open only below $\min(N(k),T(k))$.]
 
 \subsection{Using more than one collision}
 
@@ -2195,6 +2209,8 @@ Part~III proves $R_2(n,k)=k^n-B_k(a_n,b_n)+a_nb_n$, the optimality of the
 lower-bound family, for $4\le k\le7$ and every $n\ge\max(7,k+1)$ and for every
 $k\ge4$ once $n\ge N(k)\le3k^4$ (\cref{evo:thm:main}); the slice $k\ge8$
 below $N(k)$ and Davies's other open questions remain open.]
+[Added 30 September 2026, batch~67: Part~V adds every $k\ge4$ once $n\ge T(k)=4k\log k+O(k)$
+(\cref{nl:thm:main}); the slice $k\ge8$ below $\min(N(k),T(k))$ remains open.]
 
 The chromatic estimate suggests a concrete refinement program in three
 steps: optimize over collision pairs, count proper colorings for their
@@ -3324,6 +3340,12 @@ number. Applying a second forward difference annihilates it, giving
 coefficient calculation for a constant-coefficient recurrence.
 \end{proof}
 
+[Added 30 September 2026, batch~67: the order-$12$ relation is an annihilator, not a minimal
+one. The minimal polynomial of $(D_n)_{n\ge7}$ is $(x-1)(x^4-1)(x^4-4)$, of
+order~$9$, and each residue class has minimal order three (Part~VI's
+\cref{sc:thm:three}); the factor $(x+1)(x^2+1)$ of $(x^4-1)^2(x^4-4)$ is
+unnecessary. The corollary did not claim minimality.]
+
 \section{Reproducible finite checks and their limits}\label{tor:sec:verification}
 
 Manuscript~06 ships two standard-library Python programs,
@@ -3452,6 +3474,8 @@ closed: it remains open for $k\ge8$ and $\max(7,k+1)\le n<N(k)$, apart from
 $n\le30$ (\cref{prop:finite}) and, for $k\le12$, $n\le100$
 (\cref{evo:et:prop:finite}); for example $k=8$, $101\le n\le2687$. See
 \cref{evo:q:complete}.]
+[Added 30 September 2026, batch~67: Part~V lowers the bound $N(k)$ to $\min(N(k),T(k))$
+(\cref{nl:thm:main}); for example $k=8$, $101\le n\le255$.]
 
 \begin{question}[Classify the singular letter]\label{tor:q:singular}
 For the fixed optimal two-cycle permutation $p$, which rank-$(n-1)$ maps $s$
@@ -3513,6 +3537,10 @@ $4\le k\le(n/3)^{1/4}$ the extremizing split and collision graph are those of
 the fixed-output answer (\cref{evo:cor:quartic,evo:thm:rigidity}); larger
 $k$, in particular $k$ a positive proportion of $n$, remains open
 (\cref{evo:q:growing}).]
+[Added 30 September 2026, batch~67: Part~V extends this to every $4\le k\le c\,n/\log n$ with
+$c<1/4$, for $n$ large, and to every $n\ge T(k)$
+(\cref{nl:cor:simple,nl:thm:rigidity}); $k$ a positive proportion of $n$
+remains open (\cref{nl:q:dense}).]
 
 \begin{question}[Formal certification]\label{tor:q:formal}
 Can the upper bound and rigidity theorem be formalized with no admitted
@@ -4119,7 +4147,9 @@ batch~43: at $k=4$ Part~IV's second route is analytic from $n=26$
 stronger than a leading-order estimate. First, the entire integer optimum is
 determined, including the additive $a_nb_n$ term. Second, the range
 $n\ge3k^4$ permits $k$ to vary with $n$: the theorem applies simultaneously to
-every integer $4\le k\le(n/3)^{1/4}$.
+every integer $4\le k\le(n/3)^{1/4}$. [Added 30 September 2026, batch~67: Part~V's \cref{nl:thm:main} extends this to every
+$4\le k\le c\,n/\log n$, $c<1/4$, for all sufficiently large $n$
+(\cref{nl:cor:simple}).]
 
 The right side of \eqref{evo:eq:main} is Part~I's $L(n,k)$ of \eqref{eq:lower}
 (\cref{evo:cor:split} shows that the nearest coprime split maximizes it), so
@@ -6805,6 +6835,12 @@ exact expanded coefficients for $3\le k\le10$
 instances on the explicit candidate sequences. This does not supply missing
 initial values of the actual optimum before the eventual threshold; for
 $4\le k\le7$ \cref{evo:thm:smallk} now supplies them from $n=\max(7,k+1)$.
+[Added 30 September 2026, batch~67: Part~VI determines the minimal polynomials exactly
+(\cref{sc:thm:residue,sc:thm:full}): a factor $\mathsf E-q^2$ of
+\eqref{evo:et:eq:annihilator} is needed on a residue class exactly when one
+of three integer palette moments is nonzero; the first unnecessary factor
+is $\mathsf E-144$ on the odd residues at $k=19$ (\cref{sc:thm:k19}), and at
+$k=3$ the full minimal order is~$9$ (\cref{sc:thm:three}).]
 
 \begin{corollary}[Rationality on residue classes; manuscript~01]\label{evo:et:cor:rational}
 For fixed $k\ge3$ and $r\in\{0,1,2,3\}$, the ordinary generating function of
@@ -6828,6 +6864,10 @@ This is an existence theorem for a rational generating function, not an
 explicit numerator for the unknown finite initial segment. It concerns the
 fixed-$k$ optimum, not a generating function where $k$ varies with $n$. At
 $k=3$ it is Part~II's rationality statement in \cref{tor:cor:recurrence}.
+[Added 30 September 2026, batch~67: Part~VI gives the reduced denominators and explicit tail
+numerators (\cref{sc:prop:residueGF}, \eqref{sc:eq:fullGF}) and a
+terminating, unexecuted algorithm for the finite initial segment
+(\cref{sc:thm:prefix}).]
 
 \section{Even outputs: an interval of asymptotically optimal proportions}\label{evo:sec:plateau}
 
@@ -7080,7 +7120,10 @@ $4\le k\le7$ (\cref{evo:thm:smallk}), for $k\ge8$ once $n\ge N(k)$
 (\cref{evo:thm:eventual}), and for $8\le k\le12$, $n\le100$
 (\cref{evo:et:prop:finite}) and every $k<n\le30$ (\cref{prop:finite}). The
 remaining region is $k\ge8$ with $\max(7,k+1)\le n<N(k)$ outside those finite
-ranges. Manuscript~06: a direct target is to replace the palette estimates by
+ranges. [Added 30 September 2026, batch~67: Part~V settles it also for every $k\ge4$ once
+$n\ge T(k)$ (\cref{nl:thm:main}), so the remaining region is $k\ge8$,
+$\max(7,k+1)\le n<\min(N(k),T(k))$ outside the finite ranges; for example
+$k=8$, $101\le n\le255$.] Manuscript~06: a direct target is to replace the palette estimates by
 a global comparison of every disconnected or isolated biclique graph with the
 nearest full coprime biclique, including the period correction; finite
 verification can settle each additional fixed output count, but it cannot by
@@ -7109,7 +7152,11 @@ work was a usable uniform separation between the finite palette terms, with a
 controlled treatment of components whose smaller part has not reached the
 asymptotic regime. The sharper form stays open. [Added 29 September 2026,
 batch~43: at $k=4$ Part~IV lowers the analytic threshold from $N(4)=212$ to
-$26$ (\cref{fo:rem:threshold}); for general $k$ the question stays open.]
+$26$ (\cref{fo:rem:threshold}); for general $k$ the question stays open.] [Added 30 September 2026, batch~67: answered in near-linear form by Part~V: the formula holds
+for every $k\ge4$ once $n\ge T(k)=4k\log k+O(k)$, and
+$n\ge\lceil16k\log(8k)\rceil$ suffices (\cref{nl:thm:main,nl:cor:simple});
+a linear condition $n\ge Ck$ and the optimal constant stay open
+(\cref{nl:q:linear,nl:q:constant}).]
 Manuscript~06: the current
 losses have identifiable sources, namely the crude multinomial remainder
 $k^23^k\mu^n$, the conversion of many small graph components into a factor
@@ -7314,6 +7361,13 @@ and a uniform occupancy estimate is a natural replacement for the
 fixed-alphabet palette lemma. Manuscript~03: the number of palette terms, the
 onto-map approximation, and the strict gap \eqref{evo:da:eq:oddgap} all depend
 on $k$; treating these dependencies explicitly is necessary.
+[Added 30 September 2026, batch~67: partly answered by Part~V: the construction is exactly
+optimal, with the extremizer structure of \cref{evo:thm:rigidity}, for every
+$4\le k\le c\,n/\log n$, $c<1/4$, and $n$ large
+(\cref{nl:cor:simple,nl:thm:rigidity}); at $n\asymp k^2$ the optimal deficit
+has a theta-function limit, and for $k\log k\ll n\ll k^2$ a Gaussian law
+(\cref{nl:thm:thetaintro,nl:thm:gaussianintro}). The case $k$ a positive
+proportion of $n$ stays open (\cref{nl:q:dense}).]
 
 \begin{question}[Minimal recurrences and closed numerators; manuscript~01]\label{evo:q:recurrence}
 What is the minimal recurrence for $D_k(4t+r)$ for general fixed $k$? Which
@@ -7329,7 +7383,18 @@ remains; at $k=3$ Part~II's \cref{tor:cor:recurrence} gives the denominator
 $(1-4z^4)(1-z^4)^2$.) [Added 29 September 2026, batch~43: answered at $k=4$
 by Part~IV: the order-$15$ recurrence of \cref{fo:as:thm:recurrence} is minimal
 in $n$, and the annihilator of \cref{evo:et:thm:recurrence} is minimal on each
-residue class (\cref{fo:rem:residueminimal}).]
+residue class (\cref{fo:rem:residueminimal}).] [Added 30 September 2026, batch~67: answered for every fixed $k$ by Part~VI, for the explicit
+witness sequence and, through Part~III's eventual theorem, for $D_k$: the
+minimal residue and full polynomials are selected by three integer moments
+(\cref{sc:thm:residue,sc:thm:full}); the cancelling bases are classified for
+product~$12$ (only $k=19$, on the odd residues; \cref{sc:thm:unique12}), for
+products not divisible by four (none; \cref{sc:thm:parity}) and, for each
+fixed product, beyond an effective $k$ (\cref{sc:thm:fixedp}); at $k=3$ the
+minimal order is~$9$ (\cref{sc:thm:three}); the tail numerators are explicit
+(\cref{sc:prop:residueGF}), and the finite initial correction is computable
+by a terminating algorithm that was not run (\cref{sc:thm:prefix}). A
+uniform classification of cancellations stays open
+(\cref{sc:q:fullsector,sc:q:odd}).]
 
 \begin{question}[Formal verification of the proof chain; manuscripts~06, 01 and~03]\label{evo:q:formal}
 Can the graph reduction, strict balancing, effective estimates, finite
@@ -7357,6 +7422,11 @@ evaluator discharge the $3{,}717$ inequalities; the real-power estimates of
 the analytic tail can be replaced by suitably powered rational comparisons;
 and the lower construction should retain an explicit dependency declaration
 until its own generation theorem is formalized.
+[Added 30 September 2026, batch~67: Part~V's formalization plan is \cref{nl:q:formal}, with
+Davies's witness theorem as an explicit dependency; Part~VI's is
+\cref{sc:sec:formal} and \cref{sc:q:certificates}, starting from the signed
+multinomial expansion and finite integer certificates. Neither has been
+started.]
 
 \begin{question}[Beyond one cyclic permutation action; manuscripts~06, 01 and~03]\label{evo:q:groups}
 Which parts of the argument survive when the available permutation
@@ -7726,7 +7796,8 @@ following are \emph{not} claimed:
  manuscript~06 is uniform in $k$, but every displayed asymptotic expansion,
  and every theorem of manuscripts~01 and~03, is a fixed-$k$ statement; no
  uniform result is given for $k=k(n)\to\infty$ beyond
- $k\le(n/3)^{1/4}$.
+ $k\le(n/3)^{1/4}$. [Added 30 September 2026, batch~67: Part~V gives one, up to $k\le c\,n/\log n$
+ (\cref{nl:cor:simple}).]
 \item An exact value or asymptotic estimate for the least threshold: $N(k)$
  is a sufficient threshold, and manuscripts~01 and~03 prove only the
  existence of $N_\exists(k)$ (for odd $k\ge5$ in manuscript~03, with no
@@ -7762,6 +7833,9 @@ verification; noncyclic permutation groups and several singular letters.
 Problem~1, the nonattainment question of Part~I, is not affected by Part~III.
 [Added 29 September 2026, batch~43: at $k=4$ Part~IV settles the minimal
 recurrence and quantifies stability (\cref{fo:sec:audit}).]
+[Added 30 September 2026, batch~67: Part~V gives a near-linear threshold and uniform laws up
+to $k\asymp n/\log n$ (\cref{nl:sec:audit}), and Part~VI the minimal
+recurrences for every fixed $k$ (\cref{sc:sec:audit}).]
 
 \subsection{Where the merge had to choose}\label{evo:sec:merge}
 \begin{itemize}
@@ -9740,7 +9814,8 @@ equality be proved uniformly in $n$ and $k$ (FO)?
 $k=5,6,7$ and every $n\ge\max(7,k+1)$ (\cref{evo:thm:smallk}) and, for every
 $k\ge4$, with the explicit threshold $N(k)\le3k^4$ (\cref{evo:thm:eventual});
 the full two-parameter statement is \cref{evo:q:complete}, open for $k\ge8$
-below $N(k)$ outside the certified finite ranges. AS had observed that for four
+below $N(k)$ outside the certified finite ranges. [Added 30 September 2026, batch~67: below $\min(N(k),T(k))$ after Part~V's
+\cref{nl:thm:main}.] AS had observed that for four
 outputs the dominant palette split $2+2$ contributes the split-independent
 $6\cdot2^n$, whereas for five outputs the competing $2+3$ and $3+2$ terms
 depend on the imbalance of the cycles, so the leading palette terms should be
@@ -9758,7 +9833,8 @@ For which functions $k=k(n)$ can the published coprime two-cycle construction be
 proved optimal, and what inequalities would settle Davies's full Problem~2?
 \end{question}
 This is Part~III's \cref{evo:q:growing}, partly answered there ($4\le
-k\le(n/3)^{1/4}$). AS: it needs uniform control of proper-coloring counts and
+k\le(n/3)^{1/4}$). [Added 30 September 2026, batch~67: and by Part~V for $4\le k\le c\,n/\log n$
+(\cref{nl:cor:simple}).] AS: it needs uniform control of proper-coloring counts and
 available cyclic periods; an estimate valid for each fixed $k$ may lose all
 strength as $k$ grows, so explicit dependence on $k$ is an essential part of
 the question, not an afterthought.
@@ -10159,6 +10235,3116 @@ are Part~III's.
 \end{itemize}
 \endgroup
 
+%% ====================================================================
+%% Batch 67 addition: Part V, from one manuscript
+%% (batch-67 manuscript 01, file prefix 08-near-linear-).
+%% All labels of Part V carry the prefix nl: ("near-linear").
+%% ====================================================================
+\clearpage
+\begingroup
+% Part V only: let file paths also break after hyphens.
+\renewcommand{\UrlBreaks}{\do\.\do\@\do\\\do\/\do\!\do\_\do\|\do\;\do\>\do\]\do\)\do\,\do\?\do\'\do+\do\=\do\#\do\-}
+\phantomsection\part*{Part V.\quad Near-linear thresholds and theta limits}
+\addcontentsline{toc}{part}{Part V.\texorpdfstring{\quad}{ } Near-linear thresholds and theta limits}
+
+\noindent\emph{Part~V was added on 30 September 2026 in batch~67 of
+ProveIt's incoming-report intake, from one manuscript written against the
+four-part report. It proves Part~III's formula
+$R_2(n,k)=k^n-\Bip_k(a_n,b_n)+a_nb_n$ for every $k\ge4$ once
+$n\ge T(k)=4k\log k+O(k)$, instead of $n\ge3k^4$; $n\ge\lceil16k\log(8k)\rceil$
+suffices. The formula therefore holds for all $k$ up to $c\,n/\log n$,
+$c<1/4$. It adds a theta-function limit of the optimal deficit when $n/k^2$
+tends to a constant, a Gaussian law in between, and a quantitative gap for
+nonfull collision graphs. \Cref{nl:sec:intro} records the provenance and
+fixes the notation.}
+
+\section{Provenance, conventions and the statement}\label{nl:sec:intro}
+
+\subsection{One manuscript, one addition}\label{nl:sec:source}
+
+Part~V prints \emph{batch-67 manuscript~01}, \emph{Near-linear thresholds
+and theta limits for binary DFAO reversal: Occupancy amplification, exact
+extrema with growing output alphabets, and the distribution of missing
+reversal states}, an AI-assisted research manuscript prepared for Vladimir
+Reshetnikov and dated 30 September 2026 (21 A4 pages as delivered). Archive
+\texttt{ProveIt\_\allowbreak Near\_\allowbreak Linear\_\allowbreak DFAO\_\allowbreak Reversal.zip}
+(inner directory \texttt{near\_\allowbreak linear\_\allowbreak reversal/}),
+arrived in \texttt{f4457a1d1} and placed in \texttt{d281a285a}; in this
+report's local file sequence (Part~I's unprefixed files count as~01, and
+Parts~II--IV use~02 to~07) it is~08, file prefix \texttt{08-near-linear-}.
+It is pinned to ProveIt commit \texttt{781594d88}, at which this report's
+\texttt{README.md} had blob \texttt{ac535a94} and its \texttt{article.tex}
+was the four-part text printed here (unchanged since), so every statement
+the manuscript makes about Parts~I--IV refers to the text printed above. It
+did not know Part~VI, which arrived in the same batch.
+
+\begin{resultbox}
+\textbf{Status.} An unrefereed research manuscript with complete proposed
+proofs and reproducible regression checks, not a refereed or
+proof-assistant-checked publication. Nothing in Part~V is checked in Lean,
+Rocq or any other proof assistant, and no Lean or Rocq file is supplied; the
+repository's formal developments in other directories confer no formal
+status on these results. The lower-bound witness is a published theorem of
+Davies (Theorem~3 and Corollary~3 of \cite{Davies2017}), imported as an
+existence theorem; all upper-bound arguments used here are proved in Part~V.
+The claimed advance is the near-linear threshold and its joint-limit
+consequences, not the original witness, the collision mechanism, or the
+fixed-output formula. The full all-$n$, all-$k<n$ question
+(\cref{evo:q:complete}) and the diagonal $k=n$ are not claimed. Historical
+priority has not been established by an exhaustive literature review.
+\end{resultbox}
+
+\subsection{Notation of Part~V}\label{nl:sec:notation}
+
+Parts~I--IV's symbols keep their meanings; in particular $\Bip_k(a,b)$,
+$(a_n,b_n)$, $\delta_n$, $D_k(n)=k^n-R_2(n,k)$, $D^*_k(n)$, $N(k)$, $h$,
+$\lambda_k$ and $\beta_k$ are Part~III's (\cref{evo:tab:notation}), and
+$P_G(k)$ and $\statecomplex$ are Part~I's. The manuscript uses several
+letters that earlier parts already use, and two macros of its source
+collide with this report's; Part~V therefore fixes the convention of
+\cref{nl:tab:notation}. The renamings are typographical: no normalization
+changed.
+
+{\small
+\begin{longtable}{>{\raggedright}p{.15\linewidth}>{\raggedright}p{.17\linewidth}>{\raggedright}p{.30\linewidth}>{\raggedright\arraybackslash}p{.26\linewidth}}
+\caption{Symbols of Part~V. The second column gives the manuscript's own
+symbol. The last column prints the tempting false reading.}\label{nl:tab:notation}\\
+\toprule
+Symbol here & Manuscript & Meaning & Not to be confused with\\
+\midrule\endfirsthead
+\toprule
+Symbol here & Manuscript & Meaning & Not to be confused with\\
+\midrule\endhead
+\midrule\multicolumn{4}{r}{\footnotesize Continued on next page}\\\endfoot
+\bottomrule\endlastfoot
+$\Bip_k(a,b)$ & $\mathcal B_k(a,b)$ & proper $k$-colorings of $K_{a,b}$ (Part~III's) & ---\\
+$D^*_k(n)$, $L_2(n,k)$ & $D_k^*(n)$, $L_2(n,k)$ & $\Bip_k(a_n,b_n)-a_nb_n$ and $k^n-D^*_k(n)$ ($k\ge4$), \eqref{nl:eq:candidate} & $D_k(n)$, the optimum; Part~I's $L(n,k)$, which equals $L_2(n,k)$ for $k\ge4$ by \cref{evo:cor:split}.\\
+$S(k)$, $T(k)$ & $S(k)$, $T(k)$ & Part~V's saturation size and threshold \eqref{nl:eq:S}, \eqref{nl:eq:T} & Stirling numbers $S(a,i)$; Part~III's $\hat S$; Part~VI's moments $T_{k,p}$; Part~I's $T_{r,k}$.\\
+$\lambda_k$ & $\lambda$ & $\sqrt H=\sqrt{\lfloor k^2/4\rfloor}$, as in Part~III & Part~VI's $\lambda=\sqrt p$.\\
+$\beta_k$ & $\beta$ & $(k(k-1)(k-2))^{1/3}$, as in Part~III & Part~VI's Fourier coefficient $\beta$.\\
+$h$, $H$, $M$ & $h$, $H$, $M$ & $\lfloor k/2\rfloor$, $\lfloor k^2/4\rfloor$, $k^2/4$, \eqref{nl:eq:constants} & Part~I's $H_r(t)$ and $M(n,k)$; Part~III's $\hat H$, $\hat M$; $h=\lfloor n/2\rfloor$ in \eqref{evo:eq:split}.\\
+$\nlenv_k(t)$, $\nlenv_k(t,\delta)$ & $\mathcal A_k(t)$, $\mathcal A_k(t,\delta)$ & the positive palette envelopes \eqref{nl:eq:A}, \eqref{nl:eq:Adelta} & Part~III's annihilator $\mathcal A_k(\mathsf E)$.\\
+$C_k$, $c_k$ & $C_k$, $c_k$ & $\binom{k}{k/2}$ or $2\binom{k}{(k-1)/2}$; $\binom{k}{\lfloor k/2\rfloor}$ & Part~I's $C_L(k)$; Part~III's $C_0$, $\hat C$; Part~IV's $c_n$; Part~VI's $c_k(r,s)$.\\
+$F_k(s)$ & $F_k(s)$ & $h(1-e^{-s/(h+1)})$, \cref{nl:cor:occupancyranges} & Part~VI's spectral factor $F_{k,p}(x)$; Part~III's $F_r(t)$.\\
+$J$ & $J$ & labels used on the $a_n$-cycle minus $k/2$, for a random missing state & Part~II's $J(r)$.\\
+$\varepsilon_k$, $\Theta_\varepsilon(t)$ & $\epsilon_k$, $\Theta_\epsilon(t)$ & parity offset; the theta series \eqref{nl:eq:theta} & the $\Theta$ of order estimates.\\
+$W_{k,n}(j)$ & $W_{k,n}(j)$ & normalized palette term \eqref{nl:eq:term} & Part~VI's moment combination $W_{k,p}$.\\
+$Y$, $R$ & $Y$, $R$ & random variables in two proofs ($Y=i(k-i)$; $R$ the number of used label pairs) & the cycle $Y$; $R_2$.\\
+$\mathbb E$, $\mathbb P$ & $\mathbb E$, $\mathbb P$ & expectation, probability & Part~III's shift $\mathsf E$.\\
+\end{longtable}}
+
+The manuscript's macro for $\mathcal D$ is unused in its text, and its
+$\epsilon$ is printed $\varepsilon$ here. Its split
+\eqref{evo:eq:split} and the strict-balancing results are Part~III's
+(\cref{nl:sec:graphs}).
+
+\subsection{The problem and the result}\label{nl:sec:problem}
+
+A deterministic finite automaton with output (DFAO) attaches one output label
+to each state. It reads an entire word and returns the label at the final
+state. Reversal replaces the computed function $f(w)$ by $f(w^R)$, where
+$w^R$ is the reversed word. This is not a streaming transducer problem:
+the output is a single label, and ``binary'' refers to the input alphabet.
+
+For an $n$-state machine with $k$ labels, the usual reversal construction
+has at most $k^n$ states. Davies gives a binary construction based on two
+coprime permutation cycles and asks whether its lower bound is always
+optimal for $n\ge7$ \cite[Theorem~3, Corollary~3, Section~5, Problem~2]{Davies2017}.
+Parts~I--IV of this report develop the collision-graph obstruction,
+exact small-output cases, and an effective eventual theorem. Part~III,
+\cref{evo:thm:main,evo:thm:eventual} and \cref{evo:cor:quartic}, supplies a
+uniform bound $n\ge3k^4$; it also contains stronger individual thresholds
+and finite closures (\cref{evo:thm:smallk}; Part~IV's analytic threshold~$26$
+at $k=4$). Part~V addresses the remaining \emph{growing-output}
+question (\cref{evo:q:threshold,evo:q:growing}), rather than re-proving the
+fixed-$k$ headline as a new result.
+
+\subsection{Conventions and the candidate optimum}
+Write $[k]=\{1,\ldots,k\}$. Throughout the threshold theorems, $k\ge4$.
+All logarithms are natural. Formally, $R_2(n,k)$ is the maximum of
+$\statecomplex(f^R)$ over functions computed by minimal accessible $n$-state
+DFAOs on a two-letter input alphabet, with exactly $k$ output labels.
+For positive integers $a,b$, $\Bip_k(a,b)$ is the number of proper
+$[k]$-colorings of $K_{a,b}$. The vertices and the output labels are
+distinguished. The count is not restricted to colorings using all $k$
+labels. The nearest coprime split $(a_n,b_n)$, $n\ge7$, is Part~III's
+\eqref{evo:eq:split} (the manuscript prints the same formula); in
+particular, $1<a_n<b_n$, $\gcd(a_n,b_n)=1$, and $b_n-a_n\le4$.
+Put
+\begin{equation}\label{nl:eq:candidate}
+ D^*_k(n)=\Bip_k(a_n,b_n)-a_nb_n,
+ \qquad L_2(n,k)=k^n-D^*_k(n).
+\end{equation}
+We reserve $D_k(n)=k^n-R_2(n,k)$ for the \emph{actual} optimal deficit.
+The asterisk is important outside the proved exactness range.
+
+\subsection{An explicit near-linear threshold}
+Define
+\begin{align}
+ S(k)&=\nlceil{1+2k\log(8k)},\label{nl:eq:S}\\
+ T(k)&=\begin{cases}
+ \max\{4k^2,\ 3S(k)+k+1,\ 6(k+2)\},&4\le k\le20,\\
+ 2S(k)+k,&k\ge21.
+ \end{cases}\label{nl:eq:T}
+\end{align}
+These are sufficient thresholds, not minimal ones. The change at $k=21$
+comes from an analytic estimate, not an expected change in the optimum.
+
+\begin{theorem}[Exactness for growing output alphabets]\label{nl:thm:main}
+For every integer $k\ge4$ and every integer $n\ge T(k)$,
+\begin{equation}\label{nl:eq:main}
+ \boxed{R_2(n,k)=k^n-\Bip_k(a_n,b_n)+a_nb_n.}
+\end{equation}
+The same number is the maximum of $|\tau\langle p,s\rangle|$ over
+\emph{all} transformation pairs on an $n$-element set and all maps
+$\tau$ into $[k]$, whether or not they are surjective or define accessible
+machines. It is attained by an accessible, minimal machine using all $k$
+output labels.
+\end{theorem}
+
+\begin{corollary}[A simple universal condition]\label{nl:cor:simple}
+For $k\ge4$, the condition
+\begin{equation}\label{nl:eq:simple}
+ n\ge\nlceil{16k\log(8k)}
+\end{equation}
+suffices for \eqref{nl:eq:main}. Moreover,
+\[
+ T(k)=4k\log k+(4\log8+1)k+O(1)\qquad(k\longrightarrow\infty).
+\]
+Consequently, for any fixed $c<1/4$, the exact formula holds for all
+sufficiently large $n$ and every $4\le k\le c\,n/\log n$.
+\end{corollary}
+
+The constants are intentionally explicit. The sharper threshold in
+\eqref{nl:eq:T}, not the coefficient $16$ in \eqref{nl:eq:simple}, gives the
+asymptotic constant $1/4$ in the displayed growing-output range.
+The proof does not establish that this constant is optimal.
+
+\emph{Status of the statement (added in the write).} The formula is
+Part~III's \cref{evo:thm:main}; what \cref{nl:thm:main} changes is the range
+in which it is proved for $k\ge8$. Part~III proves it for every $k\ge4$ once
+$n\ge N(k)$, with $N(k)\le3k^4$ (\cref{evo:thm:eventual,evo:cor:quartic}),
+for $4\le k\le7$ and every $n\ge\max(7,k+1)$ (\cref{evo:thm:smallk},
+computer-assisted below $N(k)$), and for $7\le n\le100$,
+$k\le\min(12,n-1)$ by finite certificates (\cref{evo:et:prop:finite}); at
+$k=4$ Part~IV's second route is analytic from $n=26$
+(\cref{fo:rem:threshold}). \Cref{nl:thm:main} is analytic from $T(k)$, and
+$T(k)<N(k)$ for every $4\le k\le16$, the range of Part~III's threshold
+table (\cref{nl:tab:TN}); for $4\le k\le7$ it adds nothing to the all-$n$
+slices, as the manuscript says. Combining the theorems, the formula is
+proved for every $k\ge4$ and every $n\ge\min(N(k),T(k))$ and in Part~III's
+finite ranges, so the window of \cref{evo:q:complete} left open is
+$k\ge8$, $\max(7,k+1)\le n<\min(N(k),T(k))$ outside those ranges: for
+example $k=8$, $101\le n\le255$, instead of $101\le n\le2687$. Like $N(k)$,
+$T(k)$ is a sufficient threshold only. Part~V's proofs are, like Part~III's,
+unrefereed and not formalized.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrrrrrrrrrrrrr@{}}
+\toprule
+$k$ & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16\\\midrule
+$T(k)$ & 92 & 120 & 151 & 196 & 256 & 324 & 400 & 484 & 576 & 676 & 784 & 900 & 1024\\
+$N(k)$ & 212 & 240 & 954 & 840 & 2688 & 1863 & 5364 & 3883 & 10483 & 7137 & 18421 & 12000 & 30000\\
+\bottomrule
+\end{tabular}
+\caption{Part~V's threshold $T(k)$ of \eqref{nl:eq:T} against Part~III's
+$N(k)$ of \eqref{evo:eq:Ndef} (the key \texttt{N} of
+\texttt{data/\allowbreak 05-quartic-threshold-thresholds.json}). Added in the write; both
+are sufficient thresholds, and for $4\le k\le7$ \cref{evo:thm:smallk}
+already covers every $n\ge\max(7,k+1)$.}\label{nl:tab:TN}
+\end{table}
+
+\subsection{Two joint-limit laws}
+Let $\varepsilon_k=0$ for even $k$ and $\varepsilon_k=1/2$ for odd $k$, and define
+\begin{equation}\label{nl:eq:theta}
+ \Theta_\varepsilon(t)=\sum_{j\in\Z+\varepsilon}e^{-2tj^2},\qquad t>0.
+\end{equation}
+These are the elementary Gaussian-series forms of two Jacobi theta
+functions. No special-function facts are needed below.
+
+\begin{theorem}[Theta crossover of the optimum deficit]\label{nl:thm:thetaintro}
+Suppose $k\to\infty$ through one parity, $n=n(k)$ is integer, and
+$n/k^2\to t\in(0,\infty)$. Then exactness holds eventually and
+\begin{equation}\label{nl:eq:thetalimit}
+ \frac{D_k(n)}{\binom{k}{\nlfloor{k/2}}(k/2)^n}
+ \longrightarrow\Theta_{\varepsilon_k}(t).
+\end{equation}
+For a uniformly chosen missing reversal state of any extremizer, let
+$J$ be the number of labels used on the $a_n$-cycle, minus $k/2$.
+Then $J$ converges in total variation, on $\Z+\varepsilon_k$, to the law
+\[
+ \mathbb P(J=j)=\frac{e^{-2tj^2}}{\Theta_{\varepsilon_k}(t)}.
+\]
+\end{theorem}
+
+\begin{theorem}[The broad-palette regime]\label{nl:thm:gaussianintro}
+Suppose $k\to\infty$, $k\log k=o(n)$, and $n=o(k^2)$. Then
+\begin{equation}\label{nl:eq:gaussianintro}
+ D_k(n)\sim 2^k(k/2)^n\sqrt{\frac{k}{n}}.
+\end{equation}
+For the same random missing state, $J\sqrt n/k$ converges in distribution
+to the probability density $\sqrt{2/\pi}\,e^{-2x^2}$ on $\mathbb R$, equivalently
+a centered normal distribution of variance $1/4$.
+\end{theorem}
+
+The familiar fixed-output argument keeps one or two central palette sizes.
+At $n\asymp k^2$, an entire discrete Gaussian family remains visible;
+at $k\log k\ll n\ll k^2$, its width diverges. Thus the fixed-$k$ leading
+term is not a uniform approximation in these regimes.
+
+\subsection{What is new relative to the inspected sources}\label{nl:sec:ledger}
+\begin{center}\small
+\begin{tabular}{@{}p{0.31\textwidth}p{0.62\textwidth}@{}}
+\toprule
+Ingredient or conclusion & Attribution and role\\\midrule
+Coprime-cycle lower witness & Davies, imported as an existence theorem.\\
+Coloring orbits and collision graphs & Davies and Parts~I--III; recalled in \cref{nl:sec:graphs} (the manuscript reproves them).\\
+Strict biclique balancing & Part~III; the manuscript supplies a self-contained proof, printed in \cref{nl:sec:graphs} as a further proof of the Stirling inequality.\\
+Pair-occupancy lower bound & Developed here; controls small components uniformly in $k$.\\
+Positive-envelope amplification and tilt estimate & Developed here; avoids isolating a single palette mode.\\
+$T(k)=4k\log k+O(k)$ & Main extension beyond the quartic sufficient range of Part~III.\\
+Rigidity conditions & Already present in Part~III (\cref{evo:thm:rigidity}); extended to the new range.\\
+Theta and broad-palette laws & Joint-limit consequences developed here for the actual optimum.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The manuscript's repository snapshot is commit
+\texttt{781594d886f8dc56069221e2b56bd1e94d9c6e5f}, inspected on
+30 September 2026. A focused search located Davies's primary paper and
+related records, but did not establish a complete citation history or
+historical priority. ``Developed here'' describes the manuscript's
+contribution relative to those inspected sources, not a certified first
+publication claim.
+
+\section{What Part~V takes from Parts~I and~III}\label{nl:sec:graphs}
+
+The manuscript reproves the reversal-orbit description, the collision-graph
+machinery and strict balancing, with Part~I's composition convention:
+$Q$ is a finite state set, $M$ the monoid generated by the input
+transformations, $(u\circ v)(q)=u(v(q))$, and for an output map
+$\tau:Q\to[k]$, $\tau M=\{\tau\circ m:m\in M\}$. The reversal construction
+starts at the coloring $\tau$, sends a coloring $c$ to $c\circ t$ when it
+reads a letter with transformation $t$, and outputs $c(q_0)$, where $q_0$ is
+the original initial state; this gives the reversed word order under
+composition. The statements are printed once, in Parts~I and~III, and
+recalled here with credit; the three lemmas below are restated in the form
+in which Part~V uses them.
+
+\begin{itemize}
+\item \emph{Orbit reduction.} If the original DFAO is accessible, its
+ reversal has state complexity $|\tau M|$; for an arbitrary original
+ machine, $|\tau M|$ is an upper bound (\cref{prop:orbit}; Davies's
+ Proposition~4). The manuscript (its Proposition~2.1) reproves it by
+ Part~I's argument: the reachable colorings are exactly $\tau M$, and if two
+ of them differ at $q$, an input word reaching $q$, read in reverse,
+ distinguishes them; without accessibility some coordinates may not be
+ available for distinguishing states.
+\item \emph{Biclique counts.} With $S(a,i)$ the Stirling numbers of the
+ second kind ($S(a,0)=0$ for $a>0$, $S(a,i)=0$ for $i>a$) and
+ $\sur_i(a)=i!S(a,i)$ the number of onto maps to $i$ named labels, the
+ manuscript's Proposition~3.1 states Part~III's
+ \eqref{evo:eq:positivepalette} (summed to $i\le k-1$; the term $i=k$ is
+ zero) and its double-Stirling form
+ \[
+ \Bip_k(a,b)=\sum_{\substack{i,j\ge1\\i+j\le k}}\fall{k}{i+j}S(a,i)S(b,j)
+ \qquad(a,b\ge1),
+ \]
+ the count used in the proofs of \cref{evo:thm:balance,evo:et:thm:balance}:
+ partition both sides into their nonempty color classes and give all these
+ classes distinct labels.
+\item \emph{Strict balancing.} For $k\ge3$ and $b\ge a+2$,
+ $\Bip_k(a,b)-\Bip_k(a+1,b-1)\ge\fall{k}{3}(2^{b-2}-2^{a-1})>0$, and among
+ positive coprime pairs $a<b$ with sum $n\ge7$, $\Bip_k(a,b)-ab$ is uniquely
+ minimized by \eqref{evo:eq:split}. This is Part~III's
+ \cref{evo:et:thm:balance} (manuscript~01 of batch~40, with the same
+ statement and the same pairing proof) together with
+ \cref{evo:cor:split,evo:et:lem:coprime}; Part~V's manuscript (its
+ Proposition~3.3) reproves it by that pairing argument, from the
+ Stirling inequality \eqref{evo:eq:stirlingtp}, for which it gives a
+ further proof, printed below.
+\end{itemize}
+
+\noindent\emph{Another proof of \cref{evo:lem:stirlingtp} (Part~V's
+manuscript, its Lemma~3.2; it avoids importing a total-positivity
+theorem).} For positive integers $a\le c$ and $i<j$ the claim is
+$S(a,i)S(c,j)\ge S(a,j)S(c,i)$. First, each Stirling row is log-concave
+with no internal zero. Here is an explicit recurrence proof. Extend a row
+$a_j$ by zeros and put $b_j=ja_j+a_{j-1}$. For $j\ge1$,
+\begin{align*}
+ b_j^2-b_{j-1}b_{j+1}
+ ={}&(j^2-1)(a_j^2-a_{j-1}a_{j+1})+a_j^2\\
+ &+(j+1)(a_ja_{j-1}-a_{j-2}a_{j+1})
+   +(a_{j-1}^2-a_{j-2}a_j).
+\end{align*}
+Every term is nonnegative for a nonnegative log-concave row without
+internal zeros. The middle cross-product inequality follows by multiplying
+the monotone adjacent-ratio inequalities; boundary zeros cause no problem.
+Starting with $S(1,1)=1$, the recurrence
+$S(m+1,j)=jS(m,j)+S(m,j-1)$ proves the assertion by induction.
+Where $S(m,j)>0$, the ratio
+\[
+ \frac{S(m+1,j)}{S(m,j)}
+ =j+\frac{S(m,j-1)}{S(m,j)}
+\]
+is increasing in $j$, because the second term is increasing by row
+log-concavity. If $j\le a$, multiply these inequalities for
+$m=a,\ldots,c-1$ and compare the indices $i,j$, obtaining
+\eqref{evo:eq:stirlingtp}. If $j>a$, its right side vanishes. This covers
+all cases. (Part~III's proof of \cref{evo:lem:stirlingtp} obtains row
+log-concavity from the real-rootedness of the Touchard polynomials
+instead.)
+
+\subsection{The rightmost singular factor}
+Suppose $p$ is a permutation, $s$ is singular, and $s(x)=s(y)$ with $x\ne y$.
+Let $G(p;x,y)$ have vertex set $Q$ and edge set
+\begin{equation}\label{nl:eq:edges}
+ \bigl\{\{p^j(x),p^j(y)\}:j\in\Z\bigr\}.
+\end{equation}
+Call a coloring proper when the endpoints of each edge have different labels.
+
+\begin{lemma}[Collision bound; Part~I's \cref{lem:rightmost} and \cref{prop:chromatic}, recalled]\label{nl:lem:collision}
+If $P_G(k)$ denotes the number of proper $k$-colorings of $G=G(p;x,y)$, then
+\begin{equation}\label{nl:eq:collision}
+ |\tau\langle p,s\rangle|\le k^n-P_G(k)+\ord(p).
+\end{equation}
+Only the pure $p$-orbit of $\tau$ can contain reachable proper colorings.
+If equality holds in \eqref{nl:eq:collision}, then $\tau$ is proper, its pure
+orbit has length $\ord(p)$, and every improper coloring is reachable.
+\end{lemma}
+\begin{proof}
+This is Part~I's \eqref{eq:chromaticbound} with its equality case, as
+recalled in Part~III's \cref{evo:sec:imported}. The manuscript's proof is
+Part~I's: a composition involving $s$ has the form $u\circ s\circ p^j$, by
+choosing its rightmost occurrence of $s$, and its output coloring agrees at
+$p^{-j}(x)$ and $p^{-j}(y)$, an edge of $G$; a composition not involving $s$
+is a power of $p$, and the graph is $p$-invariant, so properness is
+constant on any pure $p$-orbit. At most $\ord(p)$ proper colorings are
+reachable, which proves the bound and its equality conditions.
+\end{proof}
+
+\begin{lemma}[Classification of a collision graph; Part~I's \eqref{eq:samecount} and \eqref{eq:diffcount}, recalled]\label{nl:lem:classify}
+If $x,y$ lie on different cycles of lengths $a,b$, put
+$d=\gcd(a,b)$, $u=a/d$, $v=b/d$, and $r=n-a-b$. Then
+\begin{equation}\label{nl:eq:cross}
+ G=dK_{u,v}\sqcup rK_1,\qquad
+ P_G(k)=\Bip_k(u,v)^d k^r,
+ \qquad n=d(u+v)+r.
+\end{equation}
+If they lie on one cycle of length $m$, let the displacement be $z$ and
+$d=\gcd(m,z)$. Then the active graph is a union of $d$ cycles of length
+$\ell=m/d\ge2$, with $n-m$ isolated vertices. A length-two component means
+a single undirected edge. Its coloring count is
+\begin{equation}\label{nl:eq:same}
+ P_G(k)=\bigl((k-1)^\ell+(-1)^\ell(k-1)\bigr)^d k^{n-m}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The manuscript reproves Part~I's classification with Part~I's
+Chinese-remainder and trace arguments: simultaneous rotation connects
+precisely the cross pairs whose positions agree modulo $d$; on a single
+cycle the components are the cosets of the subgroup generated by $z$ in
+$\Z/m\Z$; and the cycle count is the trace of the $\ell$th power of the
+adjacency matrix of the loopless complete graph on $k$ colors (eigenvalues
+$k-1$ and $-1$, the latter with multiplicity $k-1$), which at $\ell=2$
+gives $k(k-1)$, the correct edge count.
+\end{proof}
+
+A cross-cycle graph is \emph{full} when $(d,r)=(1,0)$: it is one biclique
+on all $n$ vertices. The main comparison will exclude every nonfull graph.
+
+\subsection{Unmixed generators and elementary order estimates}
+\begin{lemma}[Part~III's \cref{evo:lem:easy,evo:lem:order}, recalled]\label{nl:lem:unmixed}
+If both generators are permutations, then $|\tau M|\le k^{n-1}$.
+If both are singular and $n\ge3$, then
+\[
+ |\tau M|\le k^n-(k-1)^2k^{n-2}+1.
+\]
+Every permutation of $n$ points has order at most $3^{n/3}$.
+\end{lemma}
+\begin{proof}
+The manuscript's proof is Part~III's: permutations preserve all color
+multiplicities, and in a family with fixed multiplicities restriction to
+any $n-1$ coordinates is injective; for two singular maps every nonempty
+composition agrees on the collision pair of its rightmost factor, and the
+selected one or two edges have at least $(k-1)^2k^{n-2}$ proper colorings;
+permutation order is at most the product of cycle lengths, and
+$j\le3^{j/3}$ for every positive integer $j$.
+\end{proof}
+
+\section{Positive palette envelopes}\label{nl:sec:envelope}
+
+Set
+\begin{equation}\label{nl:eq:constants}
+ h=\nlfloor{k/2},\qquad H=\nlfloor{k^2/4},\qquad
+ \lambda_k=\sqrt H,\qquad M=k^2/4.
+\end{equation}
+For real $t\ge0$, define
+\begin{align}
+ \nlenv_k(t)&=\sum_{i=1}^{k-1}\binom ki [i(k-i)]^{t/2},\label{nl:eq:A}\\
+ \nlenv_k(t,\delta)&=\sum_{i=1}^{k-1}\binom ki
+           i^{t/2-\delta}(k-i)^{t/2+\delta}.
+ \label{nl:eq:Adelta}
+\end{align}
+Also put
+\[
+ C_k=\begin{cases}\binom{k}{k/2},&k\text{ even},\\
+                  2\binom{k}{(k-1)/2},&k\text{ odd}.
+       \end{cases}
+\]
+Pairing $i$ with $k-i$ expresses \eqref{nl:eq:Adelta} as the corresponding
+weighted sum of
+$[i(k-i)]^{t/2}\cosh(\delta\log((k-i)/i))$.
+
+\begin{remark}[An envelope, not an exact count]
+A proper coloring admits a complementary partition of all $k$ labels into
+allowed left and right palettes. Unused labels can be assigned to either
+side, so it may admit more than one such partition. Therefore
+\begin{equation}\label{nl:eq:envelopeupper}
+ \Bip_k(a,b)\le\nlenv_k(a+b,(b-a)/2),
+\end{equation}
+but equality is not asserted. Keeping this distinction is essential:
+positive allowed-palette sums cannot be used as exact chromatic formulas.
+\end{remark}
+
+\begin{lemma}[Scaling and amplification]\label{nl:lem:amplify}
+For $t,r\ge0$ and every integer $d\ge1$,
+\begin{align}
+ 6\lambda_k^t&\le C_k\lambda_k^t\le\nlenv_k(t)
+                \le(2^k-2)\lambda_k^t,\label{nl:eq:Abounds}\\
+ \nlenv_k(t+r)&\le\lambda_k^r\nlenv_k(t),\label{nl:eq:scaling}\\
+ \nlenv_k(t)^d&\ge k^{d-1}\nlenv_k(dt).\label{nl:eq:amplification}
+\end{align}
+\end{lemma}
+\begin{proof}
+The central palette products equal $H$, all others are at most $H$, and
+$C_k\ge6$. The sum of the binomial coefficients excluding the two endpoints
+is $2^k-2$. These observations prove the first two assertions.
+For the third, expand the $d$th power and retain only diagonal terms with
+all $d$ indices equal. Since $\binom ki\ge k$ for $1\le i\le k-1$,
+\[
+ \nlenv_k(t)^d\ge\sum_i\binom ki^{\!d}[i(k-i)]^{dt/2}
+ \ge k^{d-1}\nlenv_k(dt).
+\]
+All omitted terms are positive.
+\end{proof}
+
+\subsection{Saturation at a coupon-collection scale}
+\begin{lemma}[Uniform onto loss]\label{nl:lem:onto}
+For positive integers $a,b$, with $m=\min(a,b)$,
+\begin{equation}\label{nl:eq:ontoenvelope}
+ (1-k e^{-m/k})\nlenv_k(a+b,(b-a)/2)
+ \le\Bip_k(a,b)\le\nlenv_k(a+b,(b-a)/2).
+\end{equation}
+In particular, if $s\ge S(k)$, then for every positive $u+v=s$,
+\begin{equation}\label{nl:eq:saturated}
+ \Bip_k(u,v)\ge\frac78\nlenv_k(s).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix complementary palettes of sizes $i$ and $k-i$. For independent uniform
+assignments on the two sides, a union bound shows that the probability of
+missing at least one required color is at most
+\[
+ i(1-1/i)^a+(k-i)(1-1/(k-i))^b
+ \le i e^{-a/i}+(k-i)e^{-b/(k-i)}
+ \le k e^{-m/k}.
+\]
+A palette of size one causes no difficulty; the first expression then has
+zero missing probability on that side. Colorings using every color in
+both prescribed palettes have a unique complementary partition, so these
+families are disjoint as the palettes vary. Summing gives the lower bound;
+\eqref{nl:eq:envelopeupper} gives the upper bound. The lower bound remains
+valid, though uninformative, if its prefactor is negative.
+
+For the balanced split of $s$, $m=\nlfloor{s/2}\ge(s-1)/2$.
+The definition of $S(k)$ makes $ke^{-(s-1)/(2k)}\le1/8$.
+Furthermore $\nlenv_k(s,\delta)\ge\nlenv_k(s)$ by the paired hyperbolic-cosine
+expression. Thus \eqref{nl:eq:saturated} holds for the balanced split.
+Strict balancing, applied until that split is reached, gives it for every
+$u,v$ of the same sum.
+\end{proof}
+
+Notice the denominator $2k$ in the last exponential. Complementary palettes
+need not have nearly equal sizes: some contain $k-1$ labels. An onto bound
+that replaces all palette sizes by $k/2$ would be invalid for this envelope.
+Our constants retain the correct uniform denominator.
+
+\subsection{A uniform bound for the nearest-coprime imbalance}
+\begin{lemma}[Small-imbalance control]\label{nl:lem:imbalance}
+For $|\delta|\le2$,
+\begin{equation}\label{nl:eq:imbalance}
+ \nlenv_k(n,\delta)<\frac32\nlenv_k(n)
+\end{equation}
+whenever either $k\ge21$ and $n\ge16$, or $k\ge4$ and $n\ge4k^2$.
+\end{lemma}
+\begin{proof}
+Put $y=((2i-k)/k)^2\in[0,1)$. Direct algebra gives
+\[
+ \cosh\!\left(2\log\frac{k-i}{i}\right)
+ =\frac{1+6y+y^2}{(1-y)^2}\le(1-y)^{-8}.
+\]
+Indeed $(1-y)^{-6}\ge1+6y+21y^2$. Monotonicity of $\cosh$ in the
+absolute value of its argument therefore yields, for $n\ge16$,
+\begin{equation}\label{nl:eq:shift16}
+ \nlenv_k(n,\delta)\le M^8\nlenv_k(n-16).
+\end{equation}
+We first prove the large-$k$ assertion. On the finite set $1\le i\le k-1$,
+give $i$ weight proportional to $\binom ki$ and put $Y=i(k-i)$.
+Tilting a probability measure by a nonnegative increasing function of $Y$
+can only increase the expectation of any increasing function of $Y$.
+For clarity, this is the covariance identity
+\[
+ 2\operatorname{Cov}(f(Y),g(Y))
+ =\mathbb E\bigl[(f(Y)-f(Y'))(g(Y)-g(Y'))\bigr]\ge0,
+\]
+where $Y'$ is an independent copy and $f,g$ are increasing.
+Tilt by $Y^{(n-16)/2}$ and use Jensen's inequality:
+\[
+ \frac{\nlenv_k(n)}{\nlenv_k(n-16)}
+ \ge \mathbb E(Y^8)\ge (\mathbb E Y)^8
+ \ge\left(\frac{k(k-1)}4\right)^8.
+\]
+The final mean is the binomial-$\operatorname{Bin}(k,1/2)$ value;
+conditioning away $i=0,k$, where $Y=0$, can only increase it. Combining
+with \eqref{nl:eq:shift16} gives a ratio at most
+$(k/(k-1))^8\le(21/20)^8<3/2$.
+
+For the all-$k$ assertion, isolate the central palette indices only for
+this short estimate. For even $k=2h$, the noncentral pairs are $h\pm j$
+and have product $H-j^2$. For odd $k=2h+1$, they are $h-j,h+1+j$,
+$j\ge1$, with product $H-j(j+1)\le H-j^2$.
+The sum of binomial coefficients in each pair is at most $2C_k$.
+By the same hyperbolic-cosine bound, the noncentral part divided by
+$C_k\lambda_k^n$ is at most
+\[
+ 2(M/H)^8\sum_{j\ge1}
+ \exp\left(-\frac{n/2-8}{H}j^2\right).
+\]
+For $n\ge4k^2$, $(n/2-8)/H\ge6$. Also $(M/H)^8=1$ for even $k$,
+and for odd $k\ge5$ it is at most $(25/24)^8<3/2$.
+Since $e>2$ and $j^2\ge j$, the last display is less than
+$3\sum_{j\ge1}2^{-6j}=1/21$.
+The central factor is one for even $k$, and at most
+$\cosh(2\log(3/2))=97/72$ for odd $k$.
+Thus
+\[
+ \frac{\nlenv_k(n,\delta)}{C_k\lambda_k^n}
+ <\frac{97}{72}+\frac1{21}=\frac{703}{504}<\frac32.
+\]
+Use $C_k\lambda_k^n\le\nlenv_k(n)$ to finish.
+\end{proof}
+
+For the candidate split $|\delta|=(b_n-a_n)/2\le2$. Every $n\ge T(k)$
+satisfies the relevant hypothesis of \cref{nl:lem:imbalance}, so
+\begin{equation}\label{nl:eq:candidateupper}
+ \Bip_k(a_n,b_n)<\frac32\nlenv_k(n).
+\end{equation}
+This estimate keeps the whole central band, including the modes that
+matter when $n$ is far smaller than $k^2$.
+
+\section{Occupancy amplification for small components}\label{nl:sec:occupancy}
+
+The saturation estimate is useful when a component has many vertices.
+A different bound is needed when the collision graph has many small
+components. A fixed pairing of labels supplies it.
+
+\begin{theorem}[Paired-palette occupancy bound]\label{nl:thm:occupancy}
+For every $k\ge4$ and every $u,v\ge1$, with $s=u+v$ and
+$h=\nlfloor{k/2}$,
+\begin{equation}\label{nl:eq:occupancy}
+ \boxed{\Bip_k(u,v)\ge
+ \lambda_k^s\,2^{\,h(1-e^{-s/(h+1)})}.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+First let $k=2h$. Partition the colors into $h$ fixed unordered pairs.
+For every pair choose an orientation: one of its colors is allowed only
+on the left and the other only on the right. Give each vertex a pair
+index, from $1$ to $h$. If $R$ distinct pair indices occur among the $s$
+vertices, precisely $2^R$ distinct colorings arise as orientations vary.
+Orientations of unused pairs do not change the coloring; orientations of
+used pairs do. Conversely, the final coloring determines all vertex
+pair indices and all orientations of used pairs. Thus this construction
+has no remaining multiplicity, and its size is
+\[
+ h^s\mathbb E 2^R,
+\]
+where the pair indices are independent and uniform. Moreover,
+\[
+ \mathbb E R=h\bigl(1-(1-1/h)^s\bigr)
+ \ge h\bigl(1-e^{-s/(h+1)}\bigr).
+\]
+Jensen's inequality gives $\mathbb E2^R\ge2^{\mathbb E R}$, and $h=\lambda_k$.
+
+Now let $k=2h+1$, and interchange the sides if necessary so that $v\ge u$.
+Pair $2h$ colors and allow the extra unpaired color only on the larger
+side. The left vertices choose among $h$ pair indices; the right vertices
+choose among those $h$ indices and the extra color. The exact count of
+constructed colorings is
+\[
+ h^u(h+1)^v\mathbb E 2^R.
+\]
+For each paired index, its probability of being unused is
+$(1-1/h)^u(1-1/(h+1))^v\le e^{-s/(h+1)}$.
+Consequently the same lower bound for $\mathbb E R$ holds. Finally,
+$h^u(h+1)^v\ge[h(h+1)]^{s/2}=\lambda_k^s$, since $v\ge u$.
+Apply Jensen once more. All constructed colorings are proper because
+each paired color is confined to one side, and so is the extra color.
+\end{proof}
+
+\begin{corollary}[Two elementary ranges]\label{nl:cor:occupancyranges}
+Write $F_k(s)=h(1-e^{-s/(h+1)})$. Then
+\begin{equation}\label{nl:eq:Franges}
+ F_k(s)\ge
+ \begin{cases}s/6,&0\le s\le3(h+1),\\7h/8,&s\ge3(h+1).
+ \end{cases}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Since $e^3>8$, $1-e^{-3}>7/8$.
+Concavity of $1-e^{-x}$ on $[0,3]$ gives
+$1-e^{-x}\ge7x/24$ there. As $h/(h+1)\ge2/3$,
+$F_k(s)\ge7s/36\ge s/6$ on the first range.
+Monotonicity gives the second range.
+\end{proof}
+
+The estimate is purposely weaker than the exact occupancy count. Its
+advantage is uniformity in both the imbalance and the component size.
+For tiny components its exponent grows linearly in the number of vertices;
+for large components it reaches a positive fraction of the available labels.
+That is exactly the dichotomy needed for collision graphs.
+
+\section{Excluding every nonfull collision graph}\label{nl:sec:separation}
+
+\begin{proposition}[Uniform nonfull-graph separation]\label{nl:prop:nonfull}
+For $k\ge4$, $n\ge T(k)$, and a nonfull cross-cycle graph
+$G=dK_{u,v}\sqcup rK_1$, one of the following bounds holds:
+\begin{equation}\label{nl:eq:separation}
+ P_G(k)\ge\frac74\nlenv_k(n)
+ \qquad\text{or}\qquad
+ P_G(k)\ge2^{k+1}\lambda_k^n\ge2\nlenv_k(n).
+\end{equation}
+In particular, every mixed transformation pair admitting such a collision
+graph has orbit size strictly less than $L_2(n,k)$ by more than
+$\nlenv_k(n)/12$.
+\end{proposition}
+\begin{proof}
+Put $s=u+v$, so $n=ds+r$. We repeatedly use $k/\lambda_k\ge2$.
+By \cref{nl:thm:occupancy},
+\begin{equation}\label{nl:eq:graphoccupancy}
+ P_G(k)\ge\lambda_k^n 2^{dF_k(s)+r}.
+\end{equation}
+Suppose first that $k\ge21$. If $r\ge k+1$, this already proves the
+second bound. If $d\ge3$ and $s\ge3(h+1)$, then
+\[
+ dF_k(s)\ge21h/8\ge k+1,
+\]
+where the final inequality follows directly for $k=2h$ or $2h+1$ with
+$h\ge10$. If $d\ge3$ and $s\le3(h+1)$, then
+$dF_k(s)+r\ge ds/6+r\ge n/6\ge k+1$.
+Here $n\ge2S(k)+k\ge6(k+1)$, as follows for example from
+$\log(8k)>3$.
+
+It remains, for $k\ge21$, to consider $d\le2$ and $r\le k$.
+The threshold implies
+$s=(n-r)/d\ge S(k)$. Thus \cref{nl:lem:onto,nl:lem:amplify} give
+\begin{align}
+ P_G(k)&\ge(7/8)^d\nlenv_k(s)^d k^r\\
+ &\ge(7/8)^d k^{d-1}(k/\lambda_k)^r\nlenv_k(n)
+ \ge(7/8)^d k^{d-1}2^r\nlenv_k(n).\label{nl:eq:smallcomponentnumber}
+\end{align}
+If $d=1$, nonfullness forces $r\ge1$, so the factor is at least $7/4$.
+If $d\ge2$, its minimum is at $d=2,r=0,k=4$, where it is
+$49/16>7/4$; every further increment of $d$ multiplies it by
+$7k/8>1$.
+
+For $4\le k\le20$, use slightly more conservative cutoffs.
+If $r\ge k+2$, \eqref{nl:eq:graphoccupancy} suffices.
+If $d\ge4$ and $s\ge3(h+1)$, then
+$dF_k(s)\ge7h/2\ge k+2$ for all $h\ge2$ and both parities.
+If $d\ge4$ and $s\le3(h+1)$, the exponent is at least
+$n/6\ge k+2$ by the definition of $T(k)$.
+In the remaining cases, $d\le3$, $r\le k+1$, and
+$n\ge3S(k)+k+1$ ensures $s\ge S(k)$. Apply
+\eqref{nl:eq:smallcomponentnumber} again. This proves \eqref{nl:eq:separation}.
+
+Finally $\ord(p)\le3^{n/3}<\lambda_k^n\le\nlenv_k(n)/6$.
+By \cref{nl:lem:collision} and \eqref{nl:eq:candidateupper}, the difference
+between the candidate orbit size and the orbit under consideration is
+\[
+ P_G(k)-\ord(p)-\Bip_k(a_n,b_n)+a_nb_n
+ >\left(\frac74-\frac16-\frac32\right)\nlenv_k(n)
+ =\frac1{12}\nlenv_k(n).
+\]
+The alternative $P_G(k)\ge2\nlenv_k(n)$ is stronger.
+\end{proof}
+
+\begin{lemma}[The other graph types are separated]\label{nl:lem:othercases}
+For $n\ge T(k)$, every same-cycle collision case and both unmixed
+generator cases have orbit size strictly smaller than $L_2(n,k)$.
+\end{lemma}
+\begin{proof}
+Let $q=k-1$ and $\beta_k=[k(k-1)(k-2)]^{1/3}=(q^3-q)^{1/3}$.
+For even $\ell\ge2$, $q^\ell+q>\beta_k^\ell$.
+For odd $\ell\ge3$,
+\[
+ q^\ell-q=q^\ell(1-q^{1-\ell})
+ \ge q^\ell(1-q^{-2})^{\ell/3}=\beta_k^\ell.
+\]
+Indeed the factor on the left is at least $1-q^{-2}$, and raising a
+number in $(0,1)$ to a power at least one decreases it. Isolated vertices
+supply at least $\beta_k$ choices each, so \eqref{nl:eq:same} is at least
+$\beta_k^n$.
+The uncorrected two-singular deficit $(k-1)^2k^{n-2}$ is also at least
+$\beta_k^n$ for $n\ge3$: check $n=3$, then increase $n$.
+The two-permutation deficit $(k-1)k^{n-1}$ exceeds $\beta_k^n$.
+Furthermore
+\[
+ (\beta_k/\lambda_k)^3
+ \ge8(1-1/k)(1-2/k)\ge3.
+\]
+Our thresholds satisfy $n\ge6(k+1)$, hence in particular
+$\beta_k^n\ge2^{k+1}\lambda_k^n\ge2\nlenv_k(n)$.
+In the mixed case subtract at most $3^{n/3}<\nlenv_k(n)/6$;
+in the two-singular case subtract one, also at most $\nlenv_k(n)/6$.
+The remaining deficit exceeds the candidate bound
+$\Bip_k(a_n,b_n)<3\nlenv_k(n)/2$. This proves all exclusions.
+\end{proof}
+
+\section{Proof of the exactness theorem and rigidity}\label{nl:sec:exact}
+
+\begin{proof}[Proof of \cref{nl:thm:main}]
+Consider arbitrary transformations and an arbitrary output map into $[k]$.
+By \cref{nl:lem:othercases}, both unmixed cases are strictly below the proposed
+optimum. In the mixed case select any collision pair of the singular
+transformation. A same-cycle graph is excluded by the same lemma, and a
+nonfull cross-cycle graph is excluded by \cref{nl:prop:nonfull}.
+The only remaining graph is a full biclique. Thus the permutation has
+exactly two cycles of coprime lengths $a,b$ with $a+b=n$, and its order is
+$ab$. By \cref{nl:lem:collision,evo:et:thm:balance},
+\[
+ |\tau M|\le k^n-\Bip_k(a,b)+ab
+ \le k^n-\Bip_k(a_n,b_n)+a_nb_n.
+\]
+A cycle of length one is permitted in this upper-bound argument; strict
+balancing excludes it from equality. This proves a universal orbit bound
+without any surjectivity or accessibility assumption.
+
+For the reverse inequality, apply Davies's Theorem~3 and Corollary~3
+\cite{Davies2017}: for $4\le k<n$ and $1<a<b$ coprime, an accessible binary
+DFAO with all $k$ labels attains $k^n-\Bip_k(a,b)+ab$.
+Our thresholds imply $k<n$, and \eqref{evo:eq:split} meets all cycle conditions.
+This published witness theorem is the one substantive external existence
+result imported into the proof.
+
+It remains to check that the witness is minimal with $n$ original states.
+From \eqref{nl:eq:candidateupper} and \eqref{nl:eq:Abounds},
+\[
+ \Bip_k(a_n,b_n)<\tfrac32\,2^k\lambda_k^n
+ \le\tfrac32\,2^{k-n}k^n.
+\]
+Since $n\ge k+3$, the attained orbit has more than $13k^n/16$, hence more
+than $k^{n-1}$. If two original states were equivalent, every orbit
+coloring would agree at those two coordinates; there are only $k^{n-1}$
+such colorings. Thus the accessible witness is minimal. The orbit
+interpretation now proves \eqref{nl:eq:main} with the stated meanings of the
+maximum.
+\end{proof}
+
+\begin{proof}[Proof of \cref{nl:cor:simple}]
+Let $L=\log(8k)$, so $S(k)<2+2kL$.
+For $k\ge21$, $2S(k)+k<4kL+k+4<16kL$.
+For $4\le k\le20$, the inequalities
+$3S(k)+k+1<6kL+k+7<16kL$ and $6(k+2)<16kL$ are immediate from $L>3$.
+Also $4k^2\le16kL$ because $k\le4\log(8k)$ on this interval:
+the difference $4\log(8x)-x$ decreases for $x\ge4$ and is positive at
+$x=20$ (already $\log160>5$ suffices). Thus \eqref{nl:eq:simple} implies
+$n\ge T(k)$. The asymptotic formula follows directly from \eqref{nl:eq:S}.
+For $k\le c n/\log n$ with $c<1/4$, one has
+$T(k)\le4k\log k+O(k)\le4cn+o(n)$ uniformly for growing $k$;
+bounded $k$ are eventually covered as well.
+\end{proof}
+
+\subsection{Structural consequences in the larger range}
+\begin{theorem}[Rigidity propagated to the near-linear range]\label{nl:thm:rigidity}
+If $n\ge T(k)$ and a transformation pair and output map attain
+\eqref{nl:eq:main}, then, after interchanging the input letters:
+\begin{enumerate}[label=(\roman*)]
+\item one letter is a permutation with exactly the two cycles
+of lengths $a_n,b_n$;
+\item the other has rank $n-1$, with its unique double fiber crossing
+the two cycles;
+\item the output coloring is proper for $K_{a_n,b_n}$ and has pure
+permutation orbit of length $a_nb_n$;
+\item the reachable colorings are precisely all improper colorings,
+together with that one proper orbit.
+\end{enumerate}
+The omitted colorings are therefore all proper colorings except those
+$a_nb_n$ colorings. Conditions (i)--(iii) alone are not asserted sufficient.
+\end{theorem}
+\begin{proof}
+The strict exclusions and strict balancing in the preceding proof force
+(i). Equality in the collision bound gives (iii)--(iv).
+If any fiber of the singular letter contained two vertices from the same
+cycle, the same-cycle exclusion would apply. Thus every nontrivial fiber
+has size two and crosses the two cycles. If there were at least two such
+fibers, every composition involving the singular letter would have at
+least two distinct cross-cycle equalities, after translating both pairs
+by a permutation power. Choose one vertex from each cycle, give those
+two vertices label one, all remaining vertices on the first cycle label
+two, and all remaining vertices on the second label three. This coloring
+has exactly one cross-cycle equality. It is improper, but is reached
+neither by a singular-containing composition nor by a pure permutation
+power of the proper output coloring. This contradicts (iv). Hence exactly
+one double fiber exists, proving (ii).
+\end{proof}
+
+This is Part~III's \cref{evo:thm:rigidity}, whose proof needs exactness and
+the strict separations of Part~III's range, carried over to $n\ge T(k)$ by
+Part~V's separations; the minimality step in the proof of \cref{nl:thm:main}
+is Part~III's \cref{evo:da:lem:minimal}.
+
+\begin{remark}[Necessity versus generation]
+Part~III already makes this distinction (\cref{evo:ex:nonsaturation}): a singular map can have
+the correct kernel but an image arrangement that leaves too many
+colorings unreachable. Our proof preserves, rather than removes, that
+issue. Once (i)--(iii) hold, attaining the optimum is equivalent to reaching
+every improper coloring. A structural condition on the singular map that
+ensures that saturation would be stronger than restating it as a
+reachability condition.
+\end{remark}
+
+\begin{corollary}[A robust structural exclusion]\label{nl:cor:gap}
+For $n\ge T(k)$, an orbit lying within $\nlenv_k(n)/12$ of the optimum cannot
+admit a nonfull cross-cycle collision graph. In particular, small losses
+on that scale cannot be caused by unused permutation cycles or by several
+congruence-class biclique components.
+\end{corollary}
+\begin{proof}
+This is the contrapositive of the strict quantitative assertion of
+\cref{nl:prop:nonfull}. It does not assert full rigidity for all near-extremizers;
+other structural failures require their own loss estimates.
+\end{proof}
+
+\section{Theta crossover and the missing-state distribution}\label{nl:sec:theta}
+
+The new exactness range allows $k$ to grow quickly enough that several
+palette sizes contribute at leading order. Let
+\[
+ c_k=\binom{k}{\nlfloor{k/2}},\qquad
+ a=a_n,\quad b=b_n,\quad\delta=(b-a)/2.
+\]
+Always $|\delta|\le2$.
+
+\subsection{Reduction to one positive sum}
+\begin{lemma}[Uniform all-colors reduction]\label{nl:lem:asympreduction}
+If $k\to\infty$ and $k\log k=o(n)$, then
+\begin{equation}\label{nl:eq:asympreduction}
+ \Bip_k(a_n,b_n)\sim\nlenv_k(n,\delta),\qquad
+ D_k(n)\sim\nlenv_k(n,\delta).
+\end{equation}
+Among proper colorings, the probability that some output label is unused
+tends to zero. The same is true among missing colorings of any extremizer.
+\end{lemma}
+\begin{proof}
+Since $\min(a,b)\ge n/2-2$, the relative error from
+\cref{nl:lem:onto} is at most $ke^{-(n/2-2)/k}=o(1)$.
+The disjoint all-used families in that proof have total at least
+$(1-o(1))\nlenv_k(n,\delta)$, whereas the total proper count is at most
+$\nlenv_k(n,\delta)$; this also proves the probability assertion for proper
+colorings. Exactness holds eventually by \cref{nl:thm:main}.
+The term $ab\le n^2/4$ is negligible compared with
+$\nlenv_k(n,\delta)\ge6\lambda_k^n$, which proves the deficit assertion.
+By \cref{nl:thm:rigidity}, the missing set removes exactly $ab$ colorings
+from the proper set. The total variation distance between the uniform
+laws on these two sets is $ab/\Bip_k(a,b)=o(1)$.
+\end{proof}
+
+\subsection{The discrete Gaussian band}
+Index a palette by $j=i-k/2\in\Z+\varepsilon_k$. Its normalized contribution is
+\begin{equation}\label{nl:eq:term}
+ W_{k,n}(j)=
+ \frac{\binom{k}{k/2+j}}{c_k}
+ \left(1-\frac{4j^2}{k^2}\right)^{n/2}
+ \left(\frac{k/2-j}{k/2+j}\right)^\delta,
+ \qquad |j|<k/2.
+\end{equation}
+It is zero at all other indices in the lattice. The sum of these terms is
+$\nlenv_k(n,\delta)/(c_k(k/2)^n)$.
+
+\begin{lemma}[Gaussian domination]\label{nl:lem:domination}
+For $n\ge16$ and all allowed $j$,
+\begin{equation}\label{nl:eq:domination}
+ 0\le W_{k,n}(j)\le
+ 2\exp\left(-\frac{2(n-16)j^2}{k^2}\right).
+\end{equation}
+For each fixed lattice index $j$, if $n/k^2\to t>0$, then
+$W_{k,n}(j)\to e^{-2tj^2}$.
+\end{lemma}
+\begin{proof}
+The binomial ratio is at most one. Each imbalance factor is at most twice
+its paired hyperbolic cosine, which by the proof of \cref{nl:lem:imbalance}
+is at most $2(1-4j^2/k^2)^{-8}$. Use $1-z\le e^{-z}$ to obtain
+\eqref{nl:eq:domination}. At fixed $j$, the binomial ratio tends to one,
+the imbalance factor tends to one, and
+\[
+ \frac n2\log(1-4j^2/k^2)\longrightarrow-2tj^2.
+\]
+This proves the pointwise limit for either fixed parity lattice.
+\end{proof}
+
+\begin{proof}[Proof of \cref{nl:thm:thetaintro}]
+The hypothesis $n/k^2\to t>0$ implies $k\log k=o(n)$.
+For sufficiently large $k$, \eqref{nl:eq:domination} is bounded by a fixed
+summable Gaussian, for example $2e^{-tj^2}$.
+Dominated convergence on $\Z+\varepsilon_k$ gives
+\[
+ \frac{\nlenv_k(n,\delta)}{c_k(k/2)^n}
+ \longrightarrow\sum_{j\in\Z+\varepsilon_k}e^{-2tj^2}.
+\]
+Apply \cref{nl:lem:asympreduction} to obtain \eqref{nl:eq:thetalimit}.
+
+On the all-used event, the number of proper colorings with $i$ labels on
+the left is
+\[
+ \binom ki\sur_i(a)\sur_{k-i}(b).
+\]
+Uniformly in $i$, the ratio of this count to the corresponding
+allowed-palette term lies between $1-ke^{-(n/2-2)/k}$ and one.
+Thus the distribution of $J=i-k/2$ differs by $o(1)$ in total variation
+from the normalization of $W_{k,n}$.
+The dominated-convergence argument gives convergence of the latter
+probability mass functions in $\ell^1$, hence in total variation.
+The unused event has probability $o(1)$ and can be restored without
+changing the limit. Finally use the total variation comparison between
+proper and missing colorings in \cref{nl:lem:asympreduction}.
+\end{proof}
+
+\begin{example}[A visible parity effect]
+At $t=1$, the limiting factors are
+\[
+ \Theta_0(1)=\sum_{j\in\Z}e^{-2j^2}\approx1.2713415222,
+ \qquad
+ \Theta_{1/2}(1)\approx1.2352867659.
+\]
+At $t=1/2$ they are approximately $1.7726372048$ and $1.7722704960$.
+These are numerical evaluations of the explicitly defined series, not
+fitted constants. The parity of the \emph{output} alphabet determines
+whether the central palette lattice contains zero. In contrast, the
+bounded mod-four displacement of the nearest coprime \emph{state} split
+disappears in this leading joint limit.
+\end{example}
+
+\section{The broad-palette Gaussian regime}\label{nl:sec:gaussian}
+
+We give the details of the second asymptotic regime rather than deriving
+it by an unjustified interchange of the limits $k\to\infty$ and $t\to0$
+in the theta theorem.
+
+\begin{lemma}[Uniform central binomial ratios]\label{nl:lem:binomial}
+If $k\to\infty$ and $|j|=o(\sqrt k)$ on the allowed parity lattice, then
+\[
+ \binom{k}{k/2+j}/c_k\longrightarrow1
+\]
+uniformly on any prescribed range with that bound.
+\end{lemma}
+\begin{proof}
+For even $k=2h$ and integer $j\ge0$, the ratio equals
+$\prod_{r=1}^j(h-r+1)/(h+r)$. For $j=o(\sqrt h)$, the logarithm of this
+product has absolute value $O((j^2+j)/h)=o(1)$, using
+$|\log(1+x)|\le2|x|$ for $|x|\le1/2$.
+For odd $k=2h+1$, start at either of the two equal central binomial
+coefficients and use the same consecutive-ratio product. The bound becomes
+$O((j^2+1)/k)$. Symmetry covers negative $j$ in both cases.
+\end{proof}
+
+\begin{proof}[Proof of \cref{nl:thm:gaussianintro}]
+Let $\Delta=\sqrt n/k$. The assumptions give $\Delta\to0$ and $n/k\to\infty$.
+Write $x=j\Delta$. On each bounded $x$-interval,
+$|j|=O(k/\sqrt n)=o(\sqrt k)$, so \cref{nl:lem:binomial} applies uniformly.
+The logarithm of the middle factor of \eqref{nl:eq:term} is
+\[
+ \frac n2\log(1-4x^2/n)=-2x^2+O(x^4/n),
+\]
+and the imbalance factor is $1+o(1)$ uniformly there.
+Consequently $W_{k,n}(j)=e^{-2x^2}+o(1)$ locally uniformly in $x$.
+Moreover, \cref{nl:lem:domination} gives the uniform majorant
+$W_{k,n}(j)\le2e^{-x^2}$ once $n\ge32$.
+
+Riemann sums on bounded intervals therefore converge. Their tails are
+uniformly negligible as the interval grows: a decreasing Gaussian on each
+half-line bounds a lattice sum by its adjacent integral plus one mesh
+rectangle, uniformly for $0<\Delta\le1$. Hence
+\begin{equation}\label{nl:eq:riemann}
+ \Delta\sum_jW_{k,n}(j)\longrightarrow
+ \int_{\mathbb R}e^{-2x^2}\,dx=\sqrt{\pi/2}.
+\end{equation}
+Use \cref{nl:lem:asympreduction} and the classical central-binomial
+asymptotic, obtained directly from Stirling's formula,
+\[
+ c_k\sim2^k\sqrt{2/(\pi k)}.
+\]
+Equation \eqref{nl:eq:riemann} becomes
+\[
+ D_k(n)\sim c_k(k/2)^n\frac{k}{\sqrt n}\sqrt{\pi/2}
+ \sim2^k(k/2)^n\sqrt{k/n},
+\]
+as asserted. Repeating the same Riemann-sum argument with a bounded
+continuous test function of $x$ proves convergence to the density
+$\sqrt{2/\pi}e^{-2x^2}$ for the normalized palette weights.
+The all-used and missing-state comparisons of \cref{nl:lem:asympreduction}
+transfer it to $J\sqrt n/k$.
+\end{proof}
+
+\begin{remark}[Three distinct scales]
+For fixed $k$ and large $n$, the largest one or two products $i(k-i)$
+dominate, as in Part~III (\cref{evo:sec:asymptotics}). When $n/k^2\to t>0$, the appropriate
+limiting object is a discrete Gaussian on a parity lattice. When
+$k\log k\ll n\ll k^2$, there are order $k/\sqrt n$ relevant palette sizes
+and a continuous Gaussian emerges. The last two regimes are not obtained
+by replacing $k$ with $k(n)$ in a fixed-$k$ error term.
+\end{remark}
+
+\section{Quantitative examples and reproducible checks}\label{nl:sec:checks}
+
+\subsection{Threshold comparison}
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$k$ & $S(k)$ & Part~V: $T(k)$ & Part~III's coarse $3k^4$\\\midrule
+4&29&92&768\\
+8&68&256&12\,288\\
+16&157&1\,024&196\,608\\
+20&205&1\,600&480\,000\\
+21&217&455&583\,443\\
+32&356&744&3\,145\,728\\
+50&601&1\,252&18\,750\,000\\
+100&1\,338&2\,776&300\,000\,000\\
+1\,000&17\,976&36\,952&3\,000\,000\,000\,000\\
+\bottomrule
+\end{tabular}
+\end{center}
+The final column is Part~III's \emph{uniform polynomial bound}, not
+its best individual threshold (\cref{nl:tab:TN}). In particular, its all-state results for
+$k=4,\ldots,7$ are stronger than the corresponding sufficient bounds here.
+The downward jump at $k=21$ is an artifact of our two imbalance estimates.
+Combining all available theorems should always take their union of ranges.
+No finite check is needed to establish any row of Part~V's threshold
+theorem: the numerical rows merely evaluate its explicit definition.
+(The four smallest rows were recomputed in the write from \eqref{nl:eq:S}
+and \eqref{nl:eq:T}; so were the thirteen values of $T(k)$ in \cref{nl:tab:TN}.)
+
+\subsection{What the supplied program checks}
+The standard-library Python program \path{code/08-near-linear-verify.py}
+(delivered as \path{code/verify.py}) was run with \texttt{--full}; its
+record is \path{data/08-near-linear-verification.json}. It separates exact arithmetic from numerical diagnostics.
+The completed exact checks are:
+\begin{center}
+\begin{tabular}{@{}p{0.70\textwidth}r@{}}
+\toprule
+Check & Count\\\midrule
+Agreement of the two positive biclique formulas & 1\,440\\
+Literal small coloring enumerations & 30\\
+Strict balancing comparisons & 550\\
+Exact paired-occupancy subfamily counts below the full count & 1\,440\\
+Compressed collision-graph rows & 477\\
+Strict structural comparisons in those rows & 167\,095\\
+\bottomrule
+\end{tabular}
+\end{center}
+The structural rows include every $4\le k\le12$ and
+$\max(7,k+1)\le n\le60$, and the single threshold row $n=T(k)$ for
+$k\in\{4,5,6,7,8,10,16,20,21,22,30,40\}$.
+The program checks the unique distinguished equality separately and checks
+original-state minimality by the $k^{n-1}$ test.
+
+For each row the cross-cycle comparisons are compressed, using strict
+balancing, to the nearest positive coprime split $(u_s,v_s)$ at each
+component total $s$. They check
+\[
+ \Bip_k(u_s,v_s)^d k^r-du_sv_s\nlfloor{3^{r/3}}>D^*_k(n)
+ \quad(ds+r=n),
+\]
+except for the distinguished full candidate, where equality is required.
+The factor $du_sv_s$ bounds the active permutation order, and the integer
+cube root computes the residual bound exactly. Same-cycle cases are
+checked for every $\ell\mid m$, $2\le\ell\le m\le n$.
+The two unmixed cases are checked as well.
+
+Separately, Decimal evaluations at 65--70 digits test 1,296 instances of
+the analytic occupancy inequality, 90 instances each of saturation and
+small-imbalance control, and the comparison between the simple and
+piecewise thresholds for $4\le k\le1,000$.
+These floating-point evaluations are diagnostics, not interval certificates.
+Their success is not used in the mathematical proofs. In particular, a
+rounded logarithm does not define the theorem: \eqref{nl:eq:S} defines an
+exact real-number ceiling independently of its displayed evaluations.
+
+\subsection{Numerical theta diagnostics}
+The following values evaluate $D^*_k(n)$ from the exact integer formula,
+then scale at high precision. Here $n=k^2$; rows with $k\ge40$ are within
+our theorem's range. The smaller rows illustrate convergence of the
+candidate count, not a new optimality assertion there.
+\begin{center}
+\begin{tabular}{@{}rrcc@{}}
+\toprule
+$k$ & $n$ & $D^*_k(n)/(c_k(k/2)^n)$ & Predicted limit\\\midrule
+20&400&1.2489410443&1.2713415222\\
+40&1\,600&1.2589664635&1.2713415222\\
+80&6\,400&1.2648386599&1.2713415222\\
+21&441&1.2316087355&1.2352867659\\
+41&1\,681&1.2332560046&1.2352867659\\
+81&6\,561&1.2342230523&1.2352867659\\
+\bottomrule
+\end{tabular}
+\end{center}
+The limits themselves were calculated from \eqref{nl:eq:theta}. The supplied
+JSON also records $n\approx k^2/4$ and $n\approx k^2/2$ diagnostics,
+including the exact value of $n/k^2$ after integer rounding.
+
+\subsection{Reproduction and interpretation}\label{nl:sec:reproduction}
+The manuscript's instruction is to run, from its package directory,
+\texttt{python code/verify.py --full} and then
+\texttt{latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex}.
+The program writes \path{data/verification.json} next to its own
+\path{code/} directory unless \texttt{--output} names another file; in this
+report the program is \path{code/08-near-linear-verify.py}, so a run in
+place would write an unprefixed stray \path{data/verification.json}
+(not the shipped \path{data/08-near-linear-verification.json}), with
+Windows line endings on Windows. The README gives a recipe on a copy.
+The record's data include the minimum strict margin in every structural
+row, rather than just a pass/fail flag; \path{data/08-near-linear-console.txt}
+records the delivered run (its \texttt{output} field names the delivery
+path, not a path of this report). The program uses explicit exceptions,
+not optional Python assertions. It does not explore all automata, verify
+the imported monoid-generation theorem, or constitute a formal proof of
+any infinite statement. A rerun in the write phase, on a copy with the
+delivered layout (Python~3.14.4, about $20$~s), passed with the same counts;
+its JSON equals the shipped record apart from Windows line endings and the
+recorded Python version (\texttt{3.13.5} as delivered).
+
+\section{Further research questions}\label{nl:sec:questions}
+
+The following questions separate genuinely remaining problems from
+statements already proved in Parts~I--IV or in Part~V. Each names its
+counterpart among the earlier parts' questions.
+
+\begin{question}[Remove the coupon-collection logarithm]\label{nl:q:linear}
+Can the exact formula be proved whenever $n\ge Ck$ for an absolute
+constant $C$, or even throughout $n\ge\max(7,k+1)$?
+\end{question}
+The present logarithm enters when every allowed palette is required to be
+fully used in \cref{nl:lem:onto}. In the linear regime this is too strong:
+unused colors are common. A promising replacement is to work directly
+with exact used palettes and their unused-label multiplicities, rather
+than approximating them by the all-used event. The occupancy construction
+still applies, but the comparison between a full component and a nearly
+full component needs a new normalization.
+Counterpart: \cref{evo:q:threshold} (its linear form, which stays open).
+
+\begin{question}[Optimize the leading threshold constant]\label{nl:q:constant}
+What is the smallest constant $c$ for which an argument uniform in $k$
+proves exactness for $n\ge(c+o(1))k\log k$?
+\end{question}
+The coefficient four here is not supported as an obstruction. It comes
+from a worst-case palette-size bound and the possibility of two active
+components before saturation. Weighted, rather than worst-case, missing-color
+estimates might improve it. Any improvement must keep track of the full
+palette band; a single central-mode estimate loses uniformity precisely
+where the new theorem is useful.
+Counterpart: \cref{evo:q:threshold}.
+
+\begin{question}[The dense-output regime]\label{nl:q:dense}
+When $k/n\to\alpha\in(0,1)$, is the nearest-coprime two-cycle construction
+still optimal, and what is the exponential rate of its deficit?
+\end{question}
+This regime is not covered by the present proof. It requires a saddle-point
+analysis of exact occupancy counts with unused labels, together with an
+upper-bound comparison over collision graph components. Neither the
+fixed-$k$ mode nor the all-used-palette approximation is valid there.
+The diagonal $k=n$ additionally connects to maximal two-generated
+transformation monoids and should not be silently identified with $k<n$.
+Counterparts: \cref{evo:q:growing,evo:q:diagonal,tor:q:growing}.
+
+\begin{question}[Intrinsic extremizer classification]\label{nl:q:classify}
+For a fixed nearest-coprime permutation $p$, characterize all rank-$(n-1)$
+singular maps $s$ whose coloring action reaches every improper coloring
+from some proper full-period output map.
+\end{question}
+A useful answer would be in terms of the image placement and interaction
+of $s$ with the two cycles, not a restatement in terms of orbit saturation.
+It would strengthen the necessary conditions of \cref{nl:thm:rigidity} and
+could lead to a polynomial-time recognition algorithm for extremizers.
+The correct cycle and kernel data alone do not suffice.
+Counterparts: \cref{tor:q:singular} and Part~III's classification questions (\cref{evo:sec:questions}); \cref{fo:q:saturate} at $k=4$.
+
+\begin{question}[Second-order uniform asymptotics]\label{nl:q:second}
+Can the theta limit be expanded with an explicit error uniform for
+$t=n/k^2$ on compact subsets of $(0,\infty)$, and then matched to the
+broad-palette regime as $t\downarrow0$?
+\end{question}
+Expanding the binomial ratio, the factor
+$(1-4j^2/k^2)^{n/2}$, and the imbalance factor suggests corrections expressible
+as Gaussian moments, equivalently derivatives of $\Theta_\varepsilon$.
+The bounded displacement of the nearest coprime split should reappear in
+lower-order terms. Uniform summable remainders, rather than formal
+expansions at each fixed $j$, are the main analytic obligation.
+Counterpart: none; Part~III's expansions are fixed-$k$ (\cref{evo:sec:asymptotics}).
+
+\begin{question}[Joint occupancy statistics of missing states]\label{nl:q:occupancy}
+What are the joint laws of palette sizes, color multiplicities, and the
+number of unused labels near $n\asymp k\log k$ and $n\asymp k$?
+\end{question}
+The present discrete and continuous Gaussian laws concern palette size
+in a range where unused colors disappear. A sharper description would
+resolve the transition that currently limits the threshold proof. The
+sampling problem is also concrete: generate a uniformly random missing
+coloring of an extremal reversal machine with certified total variation
+error, without constructing its exponentially large reversal.
+Counterpart: none.
+
+\begin{question}[Sharp stability scales]\label{nl:q:stability}
+Can a loss smaller than a specified second-order deficit force the full
+cycle lengths, the unique cross collision, and an almost-saturating action?
+\end{question}
+The gap $\nlenv_k(n)/12$ excludes nonfull graphs, but it does not by itself
+classify every near-extremizer. Full bicliques with slightly different
+splits and image-placement defects can live on smaller scales. Matching
+those scales with the theta expansion would connect analytic and algebraic
+stability.
+Counterparts: \cref{evo:q:stability}; \cref{fo:q:stability} at $k=4$.
+
+\begin{question}[Formal certification]\label{nl:q:formal}
+Can the collision classification, positive-envelope inequalities, and
+threshold theorem be formalized in Lean, with Davies's witness theorem
+isolated as an explicit dependency until its finite monoid proof is ported?
+\end{question}
+A practical order is: finite coloring actions; collision graphs; exact
+biclique formulas and Stirling balancing; the finite occupancy construction;
+real-exponential estimates; and finally the two-generator witness.
+Finite computations can be represented as checked certificates, but the
+analytic theorem here does not need their finite ranges. A fully closed
+formal result must ultimately remove, not conceal, the imported existence
+dependency.
+Counterparts: \cref{evo:q:formal,tor:q:formal}.
+
+\section{Conclusion of Part~V}\label{nl:sec:conclusion}
+
+The growing-output problem is substantially different from the fixed-output
+one. The threshold loss in Part~III's proof arose from
+isolating the largest palette products and then forcing every component
+past that spectral separation scale. Keeping the positive envelope avoids
+the first loss. Pair-occupancy amplification avoids the second by controlling
+many small components directly. Together they give the exact optimum at
+$n=4k\log k+O(k)$, with an explicit sufficient threshold.
+
+The same perspective explains the asymptotic shape of the omitted reversal
+states. A parity-sensitive discrete Gaussian appears at $n\asymp k^2$;
+a continuous Gaussian and the factor $\sqrt{k/n}$ appear below that scale
+but above $k\log k$. These statements concern the actual optimum, not
+merely one candidate construction, because the near-linear theorem places
+both regimes inside the exactness range. The remaining dense-output and
+intrinsic-generation questions are narrower and more clearly separated
+than before, but are not resolved by the present argument.
+
+\section{Proof dependency and failure-mode audit}\label{nl:app:audit}
+
+\subsection{Dependency graph}
+The exact upper bound follows along the chain
+\[
+ \begin{gathered}
+ \text{coloring action}\ \longrightarrow\ \text{collision classification},\\
+ \text{Stirling balancing}+
+ \text{positive envelope}+
+ \text{paired occupancy}\ \longrightarrow\ \text{nonfull exclusion},\\
+ \text{nonfull exclusion}+
+ \text{cycle estimate}\ \longrightarrow\ \text{universal upper bound}.
+ \end{gathered}
+\]
+Davies's witness theorem supplies attainment, after which the elementary
+$k^{n-1}$ argument supplies original minimality. The probabilistic limit
+laws depend on this exactness result, the uniform onto estimate, and
+Gaussian sum or Riemann-sum arguments. No unformalized theorem of
+Parts~I--IV is needed as an unproved assumption of the upper-bound proof:
+balancing and the collision reduction are re-derived by the manuscript
+(and recalled with credit in \cref{nl:sec:graphs}).
+
+\subsection{Points at which a plausible argument could fail}
+\begin{description}[style=nextline]
+\item[Allowed palettes versus used palettes.]
+$\nlenv_k$ overcounts. Its lower comparison is justified only by disjoint
+onto families with an explicit missing-color loss. Unused orientations
+in the paired construction are also removed explicitly by using $2^R$,
+not $2^h$.
+\item[The worst palette can be large.]
+The denominator in the saturation threshold is $2k$, not $k$:
+complementary palette sizes range all the way up to $k-1$.
+This is why the theorem is stated with leading coefficient four.
+\item[Disconnected graph order.]
+The proof subtracts a bound on the entire permutation order, including
+residual cycles. It never replaces that order by the active product
+when isolated vertices remain. The finite program uses a separate
+residual-order factor.
+\item[Exactness versus asymptotic optimality.]
+All excluded graph types lose by an explicit positive amount.
+For the one remaining full graph, strict balancing and the exact
+permutation order $ab$ give the complete integer answer, including its
+additive correction.
+\item[Minimality of the original automaton.]
+Accessibility of a witness does not alone prove minimality.
+The orbit-size comparison with $k^{n-1}$ is included for this reason.
+\item[Uniform limit interchanges.]
+The theta theorem uses a fixed summable Gaussian majorant.
+The broad-palette theorem uses a different Riemann-sum proof with
+controlled tails; it is not inferred by interchanging two limits in the
+theta formula.
+\item[Scope of rigidity.]
+The correct cycles, kernel, and output period are necessary, not sufficient.
+The saturation condition is stated separately. Part~V does not
+solve the intrinsic generation classification.
+\end{description}
+
+\subsection{Verification status}
+Every theorem of Part~V is presented with a mathematical proof, except
+for the explicitly cited witness existence theorem. The exact finite tests
+exercise the counting formulas and collision comparisons; high-precision
+tests exercise additional analytic formulas. There is no claim of formal
+proof-assistant checking, independent peer review, or exhaustive
+bibliographic novelty certification. A numerical diagnostic may suggest
+behavior beyond a proved range without extending that range.
+
+\section{Sources, dependency boundaries and provenance}\label{nl:sec:audit}
+
+\subsection{Repository evidence the manuscript inspected}
+The repository source inspected was this report's directory
+\begin{quote}\small
+\path{SetTheory/Cardinals/docs/reports/}\\
+\path{automata-and-formal-languages/}\\
+\path{dfao-reversal-coloring-obstruction/}
+\end{quote}
+with its README and unified \path{article.tex}, at commit
+\texttt{781594d88} (README blob \texttt{ac535a94}). In particular,
+Part~III's explicit threshold, palette estimates, collision
+classification, and questions about growing $k$ were read, together with
+the README's account of Part~IV. The pinned snapshot prevents subsequent
+repository additions from silently changing the baseline. The manuscript
+modified no repository file.
+
+\subsection{Primary published source}
+Davies's arXiv v2 \cite{Davies2017} was inspected directly, including the
+stated open problems on printed page~17. The manuscript relies on the
+content of that paper, not on search-result snippets, for the imported
+witness theorem (Theorem~3 and Corollary~3, which supply accessible
+two-generated witnesses for $4\le k<n$ and coprime cycle lengths
+$1<a<b$; their proof rests on a two-generation theorem for the monoid
+$U_{a,b}$, which the manuscript imports and does not claim to reprove; see
+Part~III's \cref{evo:sec:witness}). Original-state minimality is proved
+separately (\cref{nl:sec:exact}). Focused public searches did not establish
+an exhaustive bibliography or a priority claim; absence of a search hit is
+not evidence that no related result exists.
+
+\subsection{The delivered package and what is shipped}
+The archive contained the self-contained \path{article.tex}, its compiled
+\path{article.pdf} (21 pages), \path{README.md}, \path{RESEARCH_STATUS.md},
+the standard-library verification program, its JSON output, and its
+console record. The source did not require images, external bibliography
+files, or repository-specific LaTeX macros; building it did not download
+any mathematical source or execute any verification code. The manuscript,
+its PDF and its delivery README are not shipped in this report; they
+survive in the arrival commit \texttt{f4457a1d1}. The other four files are
+shipped byte-identical under the report's prefix:
+\path{08-near-linear-RESEARCH_STATUS.md} (the manuscript's provenance,
+limitations and verification audit), \path{code/08-near-linear-verify.py},
+\path{data/08-near-linear-verification.json} and
+\path{data/08-near-linear-console.txt}. Their text uses the delivered names
+(\path{code/verify.py}, \path{data/verification.json}); the console record
+also names the delivery machine's path.
+
+\subsection{Claims and nonclaims}
+The claimed advance is the sufficient threshold $T(k)=4k\log k+O(k)$ of
+\cref{nl:thm:main}, the gap of \cref{nl:prop:nonfull} and
+\cref{nl:cor:gap}, rigidity in the larger range (\cref{nl:thm:rigidity}),
+and the joint-limit laws \cref{nl:thm:thetaintro,nl:thm:gaussianintro}.
+The following are \emph{not} claimed (manuscript, its README and its
+research-status record):
+\begin{itemize}
+\item independent peer review, Lean or other proof-assistant verification,
+ or an exhaustive novelty review;
+\item a best possible threshold constant, or a linear threshold
+ (\cref{nl:q:linear,nl:q:constant});
+\item exactness in the dense regime, $k$ proportional to $n$
+ (\cref{nl:q:dense}), the full all-$n$, all-$k<n$ question
+ (\cref{evo:q:complete}), or the diagonal $k=n$ and the two-generated
+ transformation-monoid problem;
+\item novelty for the coprime-cycle witness, the collision mechanism, the
+ fixed-output formula, the orbit reduction or strict balancing, which are
+ Davies's and Parts~I--III's (\cref{nl:sec:ledger,nl:sec:graphs});
+\item sufficiency of the rigidity conditions (i)--(iii) of
+ \cref{nl:thm:rigidity}, or an intrinsic classification of extremizers
+ (\cref{nl:q:classify}); full rigidity for near-extremizers
+ (\cref{nl:cor:gap} excludes nonfull graphs only);
+\item that the Decimal diagnostics of \cref{nl:sec:checks} are interval
+ certificates, or that the finite structural rows prove any infinite
+ statement; the theta diagnostics below $T(k)$ make no optimality
+ assertion there.
+\end{itemize}
+
+\subsection{What remains open}
+A linear threshold and the optimal constant (\cref{nl:q:linear,nl:q:constant});
+the dense-output regime and the diagonal (\cref{nl:q:dense}); an intrinsic
+classification of extremizers (\cref{nl:q:classify}); uniform second-order
+asymptotics, joint occupancy laws and sharp stability scales
+(\cref{nl:q:second,nl:q:occupancy,nl:q:stability}); formal certification
+(\cref{nl:q:formal}). Below $\min(N(k),T(k))$, the window of
+\cref{evo:q:complete} with $k\ge8$ stays open outside the certified finite
+ranges.
+
+\subsection{Where the write had to choose}\label{nl:sec:merge}
+\begin{itemize}
+\item \emph{One Part per manuscript.} Batch~67 delivered two manuscripts on
+ this report, this one and Part~VI's; they answer different questions of
+ Part~III (\cref{evo:q:threshold} and \cref{evo:q:recurrence}), share no
+ argument and do not cite each other, so each is its own Part, in the order
+ of their manuscript numbers.
+\item \emph{Placement.} Part~V follows Part~IV's last section and precedes
+ Part~I's appendices, which contain no numbered equations, tables, figures
+ or theorem-like items; no number of Parts~I--IV changed (compared in the
+ \texttt{.aux} files of the committed and the new build). The manuscript's
+ citations of Part~III by printed number (Theorems~28.1 and~33.4,
+ Corollary~33.5) are therefore still correct; here they are
+ cross-references.
+\item \emph{Printed once.} The manuscript's Proposition~2.1 (orbit
+ reduction), Proposition~3.1 (biclique counts), Proposition~3.3 (strict
+ balancing) and its display of the split are Parts~I and~III's and are
+ recalled in \cref{nl:sec:graphs} without their labels; its Lemma~3.2 is
+ printed there as another proof of \cref{evo:lem:stirlingtp}. Its
+ collision, classification and unmixed lemmas are restated, with credit
+ and with their proofs shortened to Part~I's argument, because Part~V
+ cites them in the form it uses.
+\item \emph{Notation.} All renamings are in \cref{nl:tab:notation}: the
+ manuscript's $\mathcal A_k$ is $\nlenv_k$ (Part~III's $\mathcal A_k$ is an
+ annihilator), its $\lambda$ and $\beta$ are Part~III's $\lambda_k$ and
+ $\beta_k$ (same values), its $\epsilon$ is $\varepsilon$, and its macros
+ for $\mathcal B$ and $\operatorname{sc}$ are this report's $\Bip$ and
+ $\statecomplex$ (its macro for $\mathcal D$, unused, clashed with this
+ report's $\D=\Delta$). No normalization changed.
+\item \emph{References to Parts~I--IV.} The manuscript cites the report as
+ a repository package; here those citations are internal cross-references,
+ and its bibliography entry for Davies is Part~I's \cite{Davies2017}.
+ Sentences in which the manuscript speaks of ``the repository'' are
+ printed with ``Parts~I--IV'' or ``Part~III''; ``this article'' is printed
+ as ``Part~V'' where it refers to the manuscript.
+\item \emph{Added in the write.} The status paragraph after
+ \cref{nl:cor:simple} with \cref{nl:tab:TN}, the relation sentence after
+ \cref{nl:thm:rigidity}, the counterparts named in
+ \cref{nl:sec:questions}, this section's structure, and dated pointers in
+ Part~I's reading-routes box and \cref{sec:introduction,sec:conclusion},
+ Part~II's \cref{tor:q:four,tor:q:growing}, Part~III's
+ \cref{evo:sec:answer}, \cref{evo:q:complete,evo:q:threshold,evo:q:growing,evo:q:formal},
+ \cref{evo:sec:audit}, and Part~IV's \cref{fo:q:next,fo:as:q:growing}.
+\item \emph{Provenance wording.} The delivered title page names an AI
+ system as author and Vladimir Reshetnikov as addressee; that wording is
+ recorded only here and in \cref{nl:sec:source}.
+\end{itemize}
+\endgroup
+
+%% ====================================================================
+%% Batch 67 addition: Part VI, from one manuscript
+%% (batch-67 manuscript 03, file prefix 09-spectral-cancellation-).
+%% All labels of Part VI carry the prefix sc: ("spectral cancellation").
+%% ====================================================================
+\clearpage
+\begingroup
+% Part VI only: let file paths also break after hyphens.
+\renewcommand{\UrlBreaks}{\do\.\do\@\do\\\do\/\do\!\do\_\do\|\do\;\do\>\do\]\do\)\do\,\do\?\do\'\do+\do\=\do\#\do\-}
+\phantomsection\part*{Part VI.\quad Minimal recurrences and arithmetic spectral cancellation}
+\addcontentsline{toc}{part}{Part VI.\texorpdfstring{\quad}{ } Minimal recurrences and arithmetic spectral cancellation}
+
+\noindent\emph{Part~VI was added on 30 September 2026 in batch~67 of
+ProveIt's incoming-report intake, from one manuscript written against the
+four-part report. It answers Part~III's \cref{evo:q:recurrence} for every
+fixed number of outputs: exact integer criteria select the factors of the
+minimal recurrence of the explicit witness deficit on each residue class
+modulo four and for the full sequence. The minimal order at three outputs
+is~$9$ (Part~II's relation has order~$12$); at nineteen outputs the
+product-$12$ mode cancels on the odd residues but not in the full sequence,
+and this is the only product-$12$ cancellation at any number of outputs;
+products not divisible by four never cancel; the tail numerators are
+explicit, and a terminating (unexecuted) algorithm computes the finite
+prefix. The transfer to the true optimum uses Part~III's eventual theorem.
+\Cref{sc:sec:intro} records the provenance and fixes the notation.}
+
+\section{Provenance, conventions and the question}\label{sc:sec:intro}
+
+\subsection{One manuscript, one addition}\label{sc:sec:source}
+
+Part~VI prints \emph{batch-67 manuscript~03}, \emph{Arithmetic Spectral
+Cancellation in Binary DFAO Reversal: Exact minimal recurrences, a
+nineteen-output exception, and effective generating functions}, an
+AI-assisted research manuscript prepared for Vladimir Reshetnikov and dated
+30 September 2026 (22 A4 pages as delivered). Archive
+\texttt{ProveIt\_\allowbreak DFAO\_\allowbreak Spectral\_\allowbreak Cancellation.zip}
+(inner directory of the same name), arrived in \texttt{f4457a1d1} and
+placed in \texttt{d281a285a}; in this report's local file sequence it
+is~09, file prefix \texttt{09-spectral-cancellation-}. It is pinned to
+ProveIt commit \texttt{0744012ba} (full hash
+\texttt{0744012ba29db0e345c44be953c6de3e000439e6}), at which this report's
+\texttt{article.tex} had blob \texttt{1b7f9ed9}, the four-part text printed
+here (unchanged since). It did not know Part~V, which arrived in the same
+batch.
+
+\begin{resultbox}
+\textbf{Status.} An AI-assisted mathematical research manuscript with
+complete proofs as written and reproducible exact-arithmetic audits. Not
+externally refereed or verified in a proof assistant; nothing in Part~VI is
+checked in Lean, Rocq or any other proof assistant, no Lean or Rocq file is
+supplied, and the repository's formal developments in other directories
+confer no formal status on these results. The finite audits do not replace
+the universal proofs. The general two-parameter reversal optimum and a
+uniform classification of all arithmetic cancellations are not claimed. The
+spectral theorems are proved for the explicit witness sequence; their
+transfer to the true optimum uses Part~III's eventual-optimality theorem,
+itself unrefereed and not formalized, as the explicitly identified input
+(O) of \cref{sc:sec:imported}. The finite-prefix algorithm of
+\cref{sc:sec:prefix} is proved but was neither implemented nor run.
+\end{resultbox}
+
+\subsection{Notation of Part~VI}\label{sc:sec:notation}
+
+Parts~I--IV's symbols keep their meanings; in particular $\Bip_k(a,b)$,
+$(a_n,b_n)$, $\delta_n$, $D_k(n)$, $D^*_k(n)$, $\mathcal P_k$ and $N(k)$ are
+Part~III's (\cref{evo:tab:notation}), and Part~V's $T(k)$ is
+\eqref{nl:eq:T}. The manuscript's own letters for its spectral objects
+collide with several of those, and Part~VI fixes the convention of
+\cref{sc:tab:notation}. The only symbol changed is the falling factorial,
+printed $\fall{X}{d}=X(X-1)\cdots(X-d+1)$ as in Parts~I--V (the manuscript
+writes $X^{\underline d}$), and the unit shift, printed $\mathsf S$ as in
+Part~IV (the manuscript writes $E$). No normalization changed.
+
+{\small
+\begin{longtable}{>{\raggedright}p{.16\linewidth}>{\raggedright}p{.13\linewidth}>{\raggedright}p{.33\linewidth}>{\raggedright\arraybackslash}p{.26\linewidth}}
+\caption{Symbols of Part~VI. The second column gives the manuscript's own
+symbol. The last column prints the tempting false reading.}\label{sc:tab:notation}\\
+\toprule
+Symbol here & Manuscript & Meaning & Not to be confused with\\
+\midrule\endfirsthead
+\toprule
+Symbol here & Manuscript & Meaning & Not to be confused with\\
+\midrule\endhead
+\midrule\multicolumn{4}{r}{\footnotesize Continued on next page}\\\endfoot
+\bottomrule\endlastfoot
+$D^*_k(n)$ & $D_k^*(n)$ & the explicit witness deficit, Part~III's \eqref{evo:eq:Dstar} & $D_k(n)$, the optimum; they agree eventually by (O).\\
+$\mathcal P_k$ & $\mathcal P_k$ & $\{rs:r,s\ge1,\ r+s\le k\}$, as in Part~III & Part~I's $P_G(k)$.\\
+$c_k(r,s)$ & $c_k(r,s)$ & signed multinomial coefficient \eqref{sc:eq:coefficient} & Part~V's $c_k$; Part~IV's $c_n$.\\
+$T_{k,p}$, $U_{k,p}$, $V_{k,p}$ & $T,U,V$ & grouped palette moments \eqref{sc:eq:T}--\eqref{sc:eq:V} & Part~V's threshold $T(k)$; Part~I's $U(n,k)$.\\
+$W_{k,p}$, $Z_{k,p}$ & $W,Z$ & $pU\pm V$, \eqref{sc:eq:WZ} & Part~V's $W_{k,n}(j)$.\\
+$A_{k,p,\rho}$, $A_{k,\rho}(x)$ & same & residue amplitudes; minimal residue polynomials & Part~III's annihilator $\mathcal A_k(\mathsf E)$; Part~V's envelope $\nlenv_k$.\\
+$Q_k(x)$ & $Q_k(x)$ & minimal full characteristic polynomial \eqref{sc:eq:Q} & the state set $Q$; Part~IV's $\mathcal Q_4(z)$, a denominator in $z$.\\
+$F_{k,p}(x)$ & $F_{k,p}(x)$ & the rational spectral factor of product $p$ (\cref{sc:tab:factor}) & Part~V's $F_k(s)$; Part~III's $F_r(t)$.\\
+$\lambda$, $\alpha_\pm$, $\beta$ & same & in \cref{sc:lem:fourier}: $\sqrt p$ and the Fourier coefficients; in \cref{sc:lem:minimal}, $\lambda_j$ are general roots & Part~III's $\lambda_k$ and $\beta_k$.\\
+$\mathsf S$ & $E$ & forward shift in $n$; for a residue class the same letter shifts $t$ ($n=4t+\rho$) & Part~III's $\mathsf E$, the shift in $t$; expectation.\\
+$\rho$ & $\rho$ & residue of $n$ modulo four & Part~III's residue letter $r$.\\
+$\fall{X}{d}$ & $X^{\underline d}$ & falling factorial & ---\\
+$M_j(k,p)$, $P_j(x)$, $H_{p,j}(X)$, $R(x)$ & same & moment polynomials in \cref{sc:thm:unique12,sc:thm:fixedp} & Part~I's $M(n,k)$, $P_G$, $H_r(t)$; $R_2$.\\
+$d_k$, $d_{k,\rho}$, $L_m$, $K_p$ & same & recurrence orders; distinct odd products; an exception bound & a gcd $d$; Part~I's $L(n,k)$; $K_{a,b}$.\\
+$O(a,j)$ & $O(a,j)$ & onto maps from an $a$-set to $j$ labels, Part~III's $\sur_j(a)$ & order symbols $O(\cdot)$.\\
+$\widehat q(z)$, $P_{k,N}(z)$ & same & reciprocal polynomial; tail numerator \eqref{sc:eq:fullGF} & Part~IV's $\mathcal N_4(z)$.\\
+\end{longtable}}
+
+\subsection{Why recurrence minimality is not automatic}
+A deterministic finite automaton with output, or DFAO, attaches a label to
+each state. Reading a word produces the label of the final state. Reversing
+the input words can require many more states than reading them forwards.
+Davies~\cite{Davies2017} studies this operation and identifies its state count
+with the orbit of the output map under the transition monoid. In the binary
+input case this becomes a problem about two transformations acting on
+colorings of an $n$-element set.
+
+Parts~I--IV develop a proposed exact eventual formula for the optimum.
+Part~III's \cref{evo:q:recurrence} asks for the minimal recurrence of the
+residue subsequences, the product bases that cancel, and exact rational
+generating functions. Part~III gives an annihilator
+(\cref{evo:et:thm:recurrence}) but explicitly does not assert its general
+minimality. Part~IV's four-output analysis settles that particular case
+(\cref{fo:as:thm:recurrence,fo:rem:residueminimal}).
+
+The distinction is substantive. Grouping two terms with the same
+exponential base can reduce the recurrence order. More subtly, taking every
+fourth term merges four different unit-step modes. A cancellation after
+this merging need not remove any of the original modes. We exhibit exactly
+this phenomenon at $(k,p)=(19,12)$.
+
+The answer developed here is an exact finite formula rather than a
+case-free rule that declares every possible factor present. For each fixed
+$k$, it determines all minimal recurrence factors using integer sums of at
+most $k(k-1)/2$ contributions. It needs neither numerical eigenvalues nor
+recurrence guessing from a finite list of terms.
+
+\subsection{Pinned repository source}
+All repository comparisons in the manuscript refer to commit
+\texttt{0744012ba} and to this report's \path{article.tex} (blob
+\texttt{1b7f9ed9d7831b88ac999fc1d665d14caabf6481}) and
+\path{README.md}. The relevant source locations are Part~III's
+\cref{evo:sec:asymptotics} (its Section~41.4, the exponential expansion
+and annihilator), \cref{evo:q:recurrence} (Question~44.15, minimality and
+numerators), and Part~IV's \cref{fo:sec:recurrence} (Section~55, the
+four-output result); the manuscript cites them by these printed numbers,
+which are unchanged. These source claims are research claims, not Lean
+theorems. The manuscript does not confer formal status on them by importing
+them.
+
+\subsection{What is new here, and what is not}
+The main contributions are the exact factor-selection formulas in
+\cref{sc:thm:residue,sc:thm:full}, the explicit nineteen-output cancellation and
+its all-$k$ product-$12$ classification in \cref{sc:thm:k19,sc:thm:unique12}, and the
+noncancellation and fixed-product results in
+\cref{sc:thm:parity,sc:thm:fixedp}. The small-output recurrence improvement,
+order-growth bounds, and effective numerator construction are additional
+consequences. These statements answer a concrete question of this report
+(\cref{evo:q:recurrence}); this is not a claim to have settled all of
+Davies's questions.
+
+The palette expansion, the general connection between exponential
+polynomials and recurrences, Fourier decomposition on four residues, and
+multiplication-table estimates are not claimed as new methods. The
+four-output order-$15$ polynomial is already Part~IV's
+(\cref{fo:as:thm:recurrence}) and is used as a regression check, not as a
+new result. The work here makes the cancellation arithmetic explicit and
+proves its consequences.
+
+A targeted literature search located Davies's primary paper and the
+sources listed in the bibliography, but did not locate this particular
+nineteen-output cancellation or the factor-selection formulas below.
+That is not an exhaustive priority determination. The strongest novelty
+claim justified here is a new, proved continuation relative to the pinned
+repository material actually inspected.
+
+\section{Definitions and the explicit sequence}\label{sc:sec:definitions}
+
+\subsection{Reversal optimum and closest coprime split}
+For $n\ge k\ge3$, let $R_2(n,k)$ be the largest reversal state complexity
+among minimal, accessible $n$-state DFAOs with a binary input alphabet and
+exactly $k$ output labels used, and $D_k(n)=k^n-R_2(n,k)$. $\Bip_k(a,b)$
+is the number of proper colorings of the complete bipartite graph $K_{a,b}$
+by $k$ labeled colors: the colors used on the two sides must be disjoint,
+but not every available color has to be used. The closest positive coprime
+split $(a_n,b_n)$ of $n\ge7$ and $\delta_n=(b_n-a_n)/2$ are Part~III's
+\eqref{evo:eq:split}; the manuscript prints the same formula with the same
+admissibility argument (an odd total admits the consecutive central pair;
+for $n=2h$ the pair $(h-1,h+1)$ has gcd $\gcd(h-1,2)$, and when $h$ is odd
+$(h-2,h+2)$ has gcd $\gcd(h-2,4)=1$). Thus $a_n=n/2-\delta_n$,
+$b_n=n/2+\delta_n$, with
+\begin{equation}\label{sc:eq:delta}
+ \delta_n=\begin{cases}
+ 1/2,&n\text{ odd},\\1,&n\equiv0\pmod4,\\2,&n\equiv2\pmod4.
+ \end{cases}
+\end{equation}
+The basic sequence is Part~III's witness deficit \eqref{evo:eq:Dstar},
+defined without any optimality assumption: $D^*_3(n)=\Bip_3(a_n,b_n)-b_n$
+and $D^*_k(n)=\Bip_k(a_n,b_n)-a_nb_n$ for $k\ge4$, $n\ge7$. The manuscript
+calls it the \emph{explicit witness deficit}. When $n<k$, it is simply
+an integer sequence given by a formula; no automaton using all $k$ labels
+is being asserted. All recurrence statements are unchanged by starting
+later, for example at $n\ge\max(7,k+1)$.
+
+\subsection{The imported optimality statement}\label{sc:sec:imported}
+The following is the exact boundary between the spectral arguments here
+and the optimization arguments of Parts~II--IV.
+
+\begin{description}[style=nextline,leftmargin=1.0cm]
+\item[Repository input (O).]
+For each fixed $k\ge3$, $D_k(n)=D^*_k(n)$ for all sufficiently large $n$.
+The report gives $n\ge7$ for $k=3$ (\cref{tor:thm:main}), and an explicit
+threshold $N(k)\le3k^4$ for $k\ge4$ (\cref{evo:thm:eventual,evo:cor:quartic}).
+It also claims equality throughout $n\ge\max(7,k+1)$ for $4\le k\le7$
+(\cref{evo:thm:smallk}).
+\end{description}
+
+The manuscript cites (O) from Parts~II--III; it does not reprove their
+collision-graph optimization, finite certificates, or published
+witness-generation dependencies. Every assertion below about $D^*_k$ is
+independent of (O). Every assertion about the eventual recurrence of $D_k$
+is a corollary \emph{assuming (O)}. The bound $3k^4$ is needed only for the
+finite-prefix algorithm in \cref{sc:sec:prefix}, not for the spectral
+calculations. [Added 30 September 2026, batch~67: Part~V proves (O) for
+every $k\ge4$ also once $n\ge T(k)=4k\log k+O(k)$ (\cref{nl:thm:main}), so
+(O) holds from $n\ge\min(N(k),T(k))$; the dependency is of the same kind,
+unrefereed and not formalized.]
+
+\subsection{Minimality means eventual minimality}
+Let $\mathsf S$ denote the forward shift: $(\mathsf Sf)(n)=f(n+1)$. A
+polynomial $q(x)$ annihilates a sequence eventually when
+$q(\mathsf S)f(n)=0$ for all sufficiently large $n$. The monic polynomial of
+smallest degree with this property is its \emph{minimal eventual
+characteristic polynomial}. Its degree is the minimal eventual recurrence
+order. In the explicit sequences here it also annihilates from the start of
+every tail on which the defining formulas apply.
+
+For $D^*_k(4t+\rho)$ we use the same convention, but the shift increases
+$t$ by one (Part~III's $\mathsf E$). It therefore increases $n$ by four.
+Confusing this shift with the unit shift is precisely what obscures the
+nineteen-output example.
+
+\section{The three palette moments}\label{sc:sec:moments}
+
+\subsection{A signed expansion, with a positive cross-check}
+Define
+\begin{equation}\label{sc:eq:coefficient}
+ c_k(r,s)=(-1)^{k-r-s}\frac{k!}{r!\,s!\,(k-r-s)!}
+ \quad(r,s\ge1,\ r+s\le k)
+\end{equation}
+and the finite product set
+\begin{equation}\label{sc:eq:productset}
+ \mathcal P_k=\{rs:r,s\ge1,\ r+s\le k\}.
+\end{equation}
+
+The manuscript's palette expansion (its Lemma~3.1) is Part~III's
+\cref{evo:prop:palette}: for positive $a,b$,
+$\Bip_k(a,b)=\sum_{r,s\ge1,\ r+s\le k}c_k(r,s)r^as^b$
+\eqref{evo:eq:signedpalette}, and independently, with $S(a,j)$ the Stirling
+numbers of the second kind,
+$\Bip_k(a,b)=\sum_{j=1}^{k-1}\binom kj j!S(a,j)(k-j)^b$
+\eqref{evo:eq:positivepalette}. Its proof of the positive form is
+Part~III's (choose the exact palette used on the left side: $\binom kj$
+choices and $j!S(a,j)$ surjections onto it, and each vertex on the right
+can use any of the other $k-j$ colors). Its proof of the signed form
+differs from both proofs printed in Part~III and is kept.
+
+\noindent\emph{Third proof of \eqref{evo:eq:signedpalette} (Part~VI's
+manuscript).} Choose disjoint palettes of
+sizes $i,j$ for the two sides and require both maps to be surjective.
+Expand each surjection count by inclusion--exclusion. For fixed surviving
+subpalettes of sizes $r,s$, the remaining $m=k-r-s$ colors can be omitted,
+put in the excluded part of the left palette, or put in the excluded part
+of the right palette. The last two choices each carry a minus sign.
+Summing over these assignments gives $(1-1-1)^m=(-1)^m$. The number of
+choices of the two surviving subpalettes is
+$k!/(r!s!m!)$. Terms with $r=0$ or $s=0$ vanish because $a,b>0$.
+This proves \eqref{evo:eq:signedpalette}.\hfill$\square$
+
+The signed expansion is efficient for symbolic spectra; the positive
+expansion is useful for an independent numerical audit. The manuscript's
+verification program evaluates sequence values from \eqref{evo:eq:positivepalette}, rather than
+reusing the spectral moments that it is checking.
+
+\begin{definition}[Grouped moments]\label{sc:def:moments}
+For $p\in\mathcal P_k$ put
+\begin{align}
+ T_{k,p}&=\sum_{\substack{rs=p\\r+s\le k}}c_k(r,s)s,\label{sc:eq:T}\\
+ U_{k,p}&=\sum_{\substack{rs=p\\r+s\le k}}c_k(r,s)s^2,\label{sc:eq:U}\\
+ V_{k,p}&=\sum_{\substack{rs=p\\r+s\le k}}c_k(r,s)s^4.\label{sc:eq:V}
+\end{align}
+All sums are over \emph{ordered} pairs. In particular, an off-diagonal pair
+contributes twice, with its two different powers of the second coordinate.
+\end{definition}
+
+The moments are integers, even though some residue amplitudes below are
+rational. Product collisions such as $12=1\cdot12=2\cdot6=3\cdot4$ are
+fully grouped before any nonvanishing assertion is made.
+
+\subsection{Residue-class amplitudes}
+\begin{lemma}\label{sc:lem:residueexpansion}
+For $n=4t+\rho\ge7$, the contribution of product $p$ to
+$\Bip_k(a_n,b_n)$ is $A_{k,p,\rho}(p^2)^t$, where
+\begin{equation}\label{sc:eq:amplitudes}
+\begin{array}{c|cccc}
+\rho&0&1&2&3\\\hline
+A_{k,p,\rho}&U_{k,p}/p&T_{k,p}&V_{k,p}/p&pT_{k,p}.
+\end{array}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The exponent pairs in the four residues are respectively
+\[
+(2t-1,2t+1),\quad(2t,2t+1),\quad
+(2t-1,2t+3),\quad(2t+1,2t+2).
+\]
+For the first pair,
+$r^{2t-1}s^{2t+1}=(rs)^{2t}s/r=(p^2)^t s^2/p$.
+The other three factors are $s$, $s^4/p$, and $ps$, respectively.
+Summing their signed coefficients proves the table.
+\end{proof}
+
+\section{Exact minimal recurrences on each residue class}\label{sc:sec:residue}
+
+We first record the elementary independence fact that makes nonzero
+amplitudes an exact criterion rather than merely an upper bound.
+
+\begin{lemma}[Minimality of an exponential polynomial]\label{sc:lem:minimal}
+Let $\lambda_1,\ldots,\lambda_m$ be distinct nonzero complex numbers, and
+let $P_j$ be nonzero polynomials. On any integer tail the sequence
+\[
+ f(n)=\sum_{j=1}^m P_j(n)\lambda_j^n
+\]
+has minimal characteristic polynomial
+\[
+ \prod_{j=1}^m(x-\lambda_j)^{1+\deg P_j}.
+\]
+If $f$ and the displayed polynomial have rational coefficients, the same
+polynomial is minimal over $\mathbb Q$.
+\end{lemma}
+\begin{proof}
+On a term $P(n)\lambda^n$,
+\[
+ (\mathsf S-\mu)(P(n)\lambda^n)
+ =\lambda^n\bigl(\lambda P(n+1)-\mu P(n)\bigr).
+\]
+When $\mu=\lambda$, the polynomial degree drops by one unless $P$ is
+constant, in which case the term becomes zero. When $\mu\ne\lambda$, its
+leading coefficient is multiplied by $\lambda-\mu$, so its degree does not
+drop.
+
+For completeness, the different exponential-polynomial subspaces are
+linearly independent on a tail. In a putative relation, apply, for every
+$j\ne i$, the operator $(\mathsf S-\lambda_j)^{1+\deg P_j}$. It kills those terms
+and leaves a nonzero polynomial times $\lambda_i^n$, since all operators
+with a different root preserve degree and nonzero leading coefficient.
+Such a sequence cannot vanish on infinitely many integers. This is a
+contradiction.
+
+The displayed product annihilates each term. Conversely, factor any
+annihilating polynomial at $\lambda_i$. The factors not vanishing there
+preserve the degree of the $i$th polynomial, while each copy of
+$\mathsf S-\lambda_i$ lowers it by exactly one. Independence forces at least
+$1+\deg P_i$ copies. This proves necessity at every root, and hence
+minimality. The rational conclusion follows because any smaller rational
+annihilator would also be a smaller complex one.
+\end{proof}
+
+\begin{theorem}[Minimal residue polynomials]\label{sc:thm:residue}
+For $k\ge4$, the minimal characteristic polynomials of
+$D^*_k(4t+\rho)$ are
+\begin{align}
+ A_{k,0}(x)&=(x-1)^3
+   \prod_{\substack{p\in\mathcal P_k\setminus\{1\}\\U_{k,p}\ne0}}(x-p^2),
+   \label{sc:eq:res0}\\
+ A_{k,1}(x)=A_{k,3}(x)&=(x-1)^3
+   \prod_{\substack{p\in\mathcal P_k\setminus\{1\}\\T_{k,p}\ne0}}(x-p^2),
+   \label{sc:eq:resodd}\\
+ A_{k,2}(x)&=(x-1)^3
+   \prod_{\substack{p\in\mathcal P_k\setminus\{1\}\\V_{k,p}\ne0}}(x-p^2).
+   \label{sc:eq:res2}
+\end{align}
+Under repository input (O), these are also the minimal eventual
+polynomials of $D_k(4t+\rho)$.
+\end{theorem}
+\begin{proof}
+By \cref{sc:lem:residueexpansion}, each $p>1$ gives one constant-amplitude
+exponential with base $p^2$, present exactly when its listed moment is
+nonzero. Distinct positive products give distinct bases. The term
+$-a_{4t+\rho}b_{4t+\rho}$ is a quadratic polynomial in $t$ with leading
+coefficient $-4$. The contribution for $p=1$ is constant, so it cannot
+remove this leading term. The base-$1$ polynomial therefore has degree
+exactly two. Apply \cref{sc:lem:minimal}. Eventual equality in (O) preserves
+all minimal eventual annihilators.
+\end{proof}
+
+This answers the factor-selection part of \cref{evo:q:recurrence} for every fixed
+$k$: all factors are selected by three explicit integer sums. It does not
+assert that these sums never vanish. The next sections show both why they
+can vanish and what can be proved uniformly about their zero sets.
+
+\section{The exact unit-step spectrum}\label{sc:sec:spectrum}
+
+\subsection{Fourier decomposition of a product class}
+Fix $p\in\mathcal P_k$ and suppress the subscripts $k,p$ on $T,U,V$. Put
+\begin{equation}\label{sc:eq:WZ}
+ W=pU+V,\qquad Z=pU-V,\qquad \lambda=\sqrt p>0.
+\end{equation}
+After division by $\lambda^n$, the four residue amplitudes of the product
+class are
+\begin{equation}\label{sc:eq:normalamps}
+ \frac Up,\quad\frac T{\sqrt p},\quad\frac V{p^2},\quad\frac T{\sqrt p}.
+\end{equation}
+In particular the two odd amplitudes coincide. The discrete Fourier
+transform of these four numbers gives the following exact identity.
+
+\begin{lemma}[Four modes, three tests]\label{sc:lem:fourier}
+The product-$p$ contribution to the full chromatic sequence is
+\begin{equation}\label{sc:eq:fourier}
+ \alpha_+\lambda^n+\alpha_-(-\lambda)^n
+       +\beta(i\lambda)^n+\beta(-i\lambda)^n,
+\end{equation}
+where
+\begin{equation}\label{sc:eq:fouriercoeff}
+ \alpha_\pm=\frac{W\pm2p^{3/2}T}{4p^2},\qquad
+ \beta=\frac Z{4p^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $n\equiv0\pmod4$, the normalized sum is
+$\alpha_++\alpha_-+2\beta=U/p$.
+If $n\equiv2\pmod4$, it is
+$\alpha_++\alpha_--2\beta=V/p^2$.
+For either odd residue it is
+$\alpha_+-\alpha_-=T/\sqrt p$.
+These are exactly \eqref{sc:eq:normalamps}; multiplying by $\lambda^n$
+proves the identity.
+\end{proof}
+
+For nonsquare $p$, the two real-root coefficients vanish simultaneously
+exactly when $W=T=0$. Indeed, an equation
+$W\pm2p^{3/2}T=0$ between integers and an irrational multiple of an integer
+forces both integers to be zero. For square $p=m^2$, the two real-root
+conditions are separate integer tests. The imaginary pair always has the
+single rational coefficient $\beta$.
+
+\subsection{An exact product over rational factors}
+For $p>1$, define $F_{k,p}(x)$ by multiplying exactly the factors prescribed
+in \cref{sc:tab:factor}. An empty product means $1$.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Product type & Include factor & Precisely when\\
+\midrule
+$p$ nonsquare & $x^2-p$ & $(W_{k,p},T_{k,p})\ne(0,0)$\\
+$p=m^2$ & $x-m$ & $W_{k,p}+2m^3T_{k,p}\ne0$\\
+$p=m^2$ & $x+m$ & $W_{k,p}-2m^3T_{k,p}\ne0$\\
+Every $p$ & $x^2+p$ & $Z_{k,p}\ne0$\\
+\bottomrule
+\end{tabular}
+\caption{Integer tests for the exact rational spectral factor $F_{k,p}$.}
+\label{sc:tab:factor}
+\end{table}
+
+\begin{theorem}[Minimal full-sequence polynomial]\label{sc:thm:full}
+For every $k\ge4$, the minimal characteristic polynomial of $D^*_k(n)$ is
+\begin{equation}\label{sc:eq:Q}
+ Q_k(x)=(x-1)^3(x+1)(x^2+1)
+        \prod_{p\in\mathcal P_k\setminus\{1\}}F_{k,p}(x).
+\end{equation}
+It is a monic integer polynomial. Under (O), it is also the minimal
+eventual polynomial of $D_k(n)$. Under the same input, the minimal eventual
+polynomial of the optimum $R_2(n,k)$ is
+\begin{equation}\label{sc:eq:Rpolynomial}
+ (x-k)Q_k(x).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $p>1$, \cref{sc:lem:fourier} and the rationality observations above prove
+exactly the selection rules in \cref{sc:tab:factor}. Distinct $p$ give disjoint
+sets of roots: all four roots arising from $p$ have modulus $\sqrt p$.
+They also have modulus greater than one, so do not overlap the following
+polynomial and periodic terms.
+
+For $p=1$ the only pair is $(1,1)$, whose contribution is the constant
+$(-1)^kk(k-1)$. Moreover
+\begin{equation}\label{sc:eq:deltasquare}
+ -a_nb_n=-\frac{n^2}{4}+\delta_n^2,
+ \qquad
+ \delta_n^2=\frac{11}{8}+\frac98(-1)^n
+               -\frac34\bigl(i^n+(-i)^n\bigr).
+\end{equation}
+The latter identity is checked on the four residues using
+\eqref{sc:eq:delta}. The base-$1$ polynomial has degree two and nonzero
+leading coefficient $-1/4$; the other three unit-modulus coefficients are
+nonzero constants. Their exact factor is therefore
+$(x-1)^3(x+1)(x^2+1)$.
+
+Apply \cref{sc:lem:minimal} to all these pairwise disjoint modes.
+Each rational factor in \cref{sc:tab:factor} is integral, proving the asserted
+coefficient property as well. Eventual equality gives the statement for
+$D_k$. Finally $R_2(n,k)=k^n-D_k(n)$ and all chromatic roots have modulus
+at most $k/2$, since $rs\le k^2/4$. The extra root $k$ is distinct from
+them and from the unit roots, and has coefficient one. This proves
+\eqref{sc:eq:Rpolynomial}.
+\end{proof}
+
+\begin{remark}[Aliasing and what it does not imply]
+A root $\lambda$, $-\lambda$, $i\lambda$, or $-i\lambda$ becomes the same
+base $\lambda^4=p^2$ when only one residue modulo four is observed.
+Its residue amplitude is a signed sum of four full-sequence amplitudes.
+Thus $T_{k,p}=0$ can occur even though every full-sequence mode at modulus
+$\sqrt p$ survives. A minimal full recurrence cannot be obtained simply by
+replacing $x$ by $x^4$ in a minimal residue recurrence.
+\end{remark}
+
+\section{Small output alphabets and a shorter three-output recurrence}\label{sc:sec:small}
+
+\subsection{Three outputs}
+The $k=3$ definition subtracts $b_n$, not $a_nb_n$. The two-color palette
+possibilities give
+\begin{equation}\label{sc:eq:B3}
+ \Bip_3(a,b)=3(2^a+2^b-2).
+\end{equation}
+The product set is $\mathcal P_3=\{1,2\}$. For $p=2$ the moments are
+\[
+ T_{3,2}=9,\qquad U_{3,2}=15,\qquad V_{3,2}=51,
+ \qquad W_{3,2}=81,\quad Z_{3,2}=-21.
+\]
+Consequently all four nonunit modes survive.
+
+\begin{theorem}[Minimal order nine at three outputs]\label{sc:thm:three}
+The minimal characteristic polynomial of $D_3^*(n)$ is
+\begin{equation}\label{sc:eq:Q3}
+ Q_3(x)=(x-1)^2(x+1)(x^2+1)(x^4-4)
+       =(x-1)(x^4-1)(x^4-4).
+\end{equation}
+Its degree is nine. On each residue subsequence the minimal polynomial is
+$(x-1)^2(x-4)$, of degree three. Under (O), these are the corresponding
+minimal polynomials for $D_3$, and $R_2(n,3)$ has minimal order ten.
+\end{theorem}
+\begin{proof}
+The nonunit part was computed above. The remaining correction is
+\begin{equation}\label{sc:eq:deltaFourier}
+ -b_n=-\frac n2-\delta_n,
+ \qquad
+ \delta_n=1+\frac12(-1)^n-\frac14\bigl(i^n+(-i)^n\bigr).
+\end{equation}
+Thus the polynomial at root one has degree one, whereas the coefficients
+at $-1,i,-i$ are nonzero constants. The $p=1$ term of \eqref{sc:eq:B3} only
+changes the constant at root one. This proves \eqref{sc:eq:Q3} by
+\cref{sc:lem:minimal}. On a fixed residue $b_{4t+\rho}$ is linear in $t$,
+and every product-$2$ residue amplitude is nonzero. The residue and optimum
+claims follow as before.
+\end{proof}
+
+In expanded form the order-nine recurrence is
+\begin{equation}\label{sc:eq:rec3}
+ f(n+9)=f(n+8)+5f(n+5)-5f(n+4)-4f(n+1)+4f(n).
+\end{equation}
+Part~II's order-$12$ polynomial
+$(x^4-1)^2(x^4-4)$ of \eqref{tor:eq:recurrence12} is a valid annihilator; the factor
+$(x^4-1)/(x-1)=(x+1)(x^2+1)$ is unnecessary. The three nontrivial fourth
+roots of unity have multiplicity one, not two. This corrects no asserted
+minimality theorem: the source did not establish such minimality there.
+
+\subsection{Four outputs, as a consistency check}
+For $k=4$ the product set is $\{1,2,3,4\}$. Product $4$ has only the
+pair $(2,2)$, and contributes just the root $2$, rather than all four roots
+of $x^4-16$. Products $2$ and $3$ contribute four roots each. Therefore
+\begin{equation}\label{sc:eq:Q4}
+ Q_4(x)=(x-1)^3(x+1)(x^2+1)(x-2)(x^4-4)(x^4-9),
+\end{equation}
+which is exactly the degree-$15$ polynomial already proved in
+Part~IV's \cref{fo:as:thm:recurrence}. Each residue has order six. This example
+also shows why blindly assigning four roots to every product overcounts
+before any arithmetic cancellation is considered.
+
+For $k=5$, all nonunit products $2,3,4,6$ have full support, so
+\[
+ Q_5(x)=(x-1)^3(x+1)(x^2+1)
+          (x^4-4)(x^4-9)(x^4-16)(x^4-36),
+\]
+of degree $22$. These explicit specializations are independently checked
+from positive coloring counts in the accompanying program.
+
+\section{A genuine cancellation at nineteen outputs}\label{sc:sec:nineteen}
+
+\begin{theorem}[An odd-residue cancellation]\label{sc:thm:k19}
+At $k=19$, product $p=12$ has
+\begin{equation}\label{sc:eq:19moments}
+ T_{19,12}=0,\qquad U_{19,12}=10\,581\,480,
+ \qquad V_{19,12}=5\,132\,017\,800.
+\end{equation}
+Hence the base $144^t$ is absent from both odd residue subsequences, and
+present in both even residue subsequences. Nevertheless
+$F_{19,12}(x)=x^4-144$: none of its four full-sequence modes vanishes.
+\end{theorem}
+\begin{proof}
+The unordered factor pairs of $12$ and their coefficients are
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$r$&$s$&$c_{19}(r,s)=c_{19}(s,r)$\\\midrule
+1&12&$352\,716$\\
+2&6&$-2\,116\,296$\\
+3&4&$1\,763\,580$\\\bottomrule
+\end{tabular}
+\end{center}
+These values follow directly from \eqref{sc:eq:coefficient}. Therefore
+\begin{align*}
+ T_{19,12}
+ &=13(352\,716)-8(2\,116\,296)+7(1\,763\,580)=0,\\
+ U_{19,12}
+ &=145(352\,716)-40(2\,116\,296)+25(1\,763\,580)\\
+ &=10\,581\,480,\\
+ V_{19,12}
+ &=20\,737(352\,716)-1\,312(2\,116\,296)+337(1\,763\,580)\\
+ &=5\,132\,017\,800.
+\end{align*}
+The residue assertion follows from \eqref{sc:eq:amplitudes}. Moreover
+\[
+ W_{19,12}=5\,258\,995\,560,\qquad
+ Z_{19,12}=-5\,005\,040\,040.
+\]
+Both are nonzero. Product $12$ is nonsquare, so \cref{sc:tab:factor} includes
+both $x^2-12$ and $x^2+12$, giving $x^4-144$.
+\end{proof}
+
+The cancellation identity has only three summands, so its verification
+requires no large enumeration. It proves that Part~III's universal
+residue annihilator \eqref{evo:et:eq:annihilator} can contain an unnecessary factor. It does not merely
+show that a numerical recurrence finder happened to return a smaller
+order on a short prefix.
+
+The exact enumeration of all product classes at $k=19$ gives
+$|\mathcal P_{19}|=58$. The orders of the four residue sequences are
+\begin{equation}\label{sc:eq:19orders}
+ (\deg A_{19,0},\deg A_{19,1},\deg A_{19,2},\deg A_{19,3})
+       =(60,59,60,59),
+\end{equation}
+and the full order is $222$. These order totals use finite integer tests
+for the other product classes as well; their complete records are in
+\path{data/09-spectral-cancellation-spectra.json}. Under (O), the corresponding full optimum
+order is $223$. This is an eventual statement: the formula for the
+nineteen-output optimum below its imported threshold is not being assumed.
+
+\section{Product twelve: a complete all-output classification}\label{sc:sec:twelve}
+
+The preceding cancellation can be located uniquely, not just found by
+search. Write $\fall Xd=X(X-1)\cdots(X-d+1)$, with $\fall X0=1$.
+For nonnegative integral $X<d$, this polynomial is zero.
+
+\begin{theorem}[Uniqueness of the product-$12$ residue cancellation]\label{sc:thm:unique12}
+For every integer $k\ge7$,
+\[
+ T_{k,12}=0\quad\Longleftrightarrow\quad k=19.
+\]
+For every such $k$, $U_{k,12}\ne0$ and $V_{k,12}\ne0$.
+\end{theorem}
+\begin{proof}
+Put $x=k-7$. For $j\in\{1,2,4\}$ let $M_j$ denote $T,U,V$, respectively.
+Using the three unordered factor pairs gives
+\begin{equation}\label{sc:eq:12polynomial}
+ M_j(k,12)=(-1)^{k-7}\frac{\fall k7}{12!}\,P_j(x),
+\end{equation}
+where
+\begin{equation}\label{sc:eq:Pj}
+ P_j(x)=(1+12^j)\fall x6
+ -\frac{12!}{2!6!}(2^j+6^j)x
+ +\frac{12!}{3!4!}(3^j+4^j).
+\end{equation}
+The expression remains correct at $7\le k<13$: the unavailable pair
+$(1,12)$ has vanished automatically through $\fall x6$; at $k=7$ the
+pair $(2,6)$ vanishes through $x$. The scalar in \eqref{sc:eq:12polynomial}
+is nonzero for all $k\ge7$.
+
+Write $P_j(x)=A_j\fall x6-B_jx+C_j$. Its coefficients are
+\begin{center}
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$j$&$A_j$&$B_j$&$C_j$\\\midrule
+1&13&$2\,661\,120$&$23\,284\,800$\\
+2&145&$13\,305\,600$&$83\,160\,000$\\
+4&$20\,737$&$436\,423\,680$&$1\,120\,996\,800$\\\bottomrule
+\end{tabular}
+\end{center}
+The forward difference has the especially simple form
+\begin{equation}\label{sc:eq:diffP}
+ P_j(x+1)-P_j(x)=6A_j\fall x5-B_j.
+\end{equation}
+For integer $x=0,\ldots,4$, the falling factorial is zero. For integers
+$x\ge5$ it is strictly increasing. Direct substitution on either side of
+the crossing shows that the right side of \eqref{sc:eq:diffP} is negative for
+$x<h_j$ and positive for $x\ge h_j$, where
+\[
+ h_1=11,\qquad h_2=10,\qquad h_4=8.
+\]
+Thus $P_j$ strictly decreases on the nonnegative integers up to $h_j$,
+and strictly increases thereafter. There is only one integer minimum.
+
+It remains to locate the sign crossings on these two monotone intervals.
+The following exact values suffice:
+\begin{center}
+\small
+\begin{tabular}{@{}crr@{}}
+\toprule
+Polynomial&Argument&Value\\\midrule
+$P_1$&9&$120\,960$\\
+&10&$-1\,360\,800$\\
+&11&$-1\,663\,200$\\
+&12&$0$\\
+&13&$4\,752\,000$\\\midrule
+$P_2$&6&$3\,430\,800$\\
+&7&$-9\,248\,400$\\
+&11&$-14\,968\,800$\\
+&12&$19\,958\,400$\\\midrule
+$P_4$&2&$248\,149\,440$\\
+&3&$-188\,274\,240$\\
+&10&$-107\,805\,600$\\
+&11&$3\,218\,292\,000$\\\bottomrule
+\end{tabular}
+\end{center}
+Each $P_j(0)=C_j$ is positive. On the decreasing interval, the displayed
+positive and negative values occur at consecutive integers, ruling out a
+zero there. On the increasing interval the same is true for $P_2$ and
+$P_4$, while $P_1$ has exactly the zero $x=12$. Monotonicity also handles
+all larger integers, not just those in the table. Since $k=x+7$, the
+claimed unique zero is $k=19$.
+\end{proof}
+
+\begin{corollary}[Full product-$12$ support for every admissible output count]\label{sc:cor:12full}
+For every $k\ge7$, $F_{k,12}(x)=x^4-144$.
+\end{corollary}
+\begin{proof}
+Since $12$ is nonsquare, the real pair could vanish only if $T=W=0$.
+By \cref{sc:thm:unique12}, the only possible index is $k=19$, and
+\cref{sc:thm:k19} gives $W\ne0$ there. Thus both real roots always survive.
+
+For the imaginary pair, put
+\[
+ R(x)=P_4(x)-12P_2(x)
+      =18\,997\fall x6-276\,756\,480x+123\,076\,800.
+\]
+Equation \eqref{sc:eq:12polynomial} shows that $Z_{k,12}$ is a nonzero
+scalar multiple of $-R(k-7)$. Its forward difference is
+$6(18\,997)\fall x5-276\,756\,480$, negative for integer $x<7$
+and positive for $x\ge7$. Thus $R$ decreases to its unique integer
+minimum at $7$, then increases. The values
+\[
+\begin{array}{c|rrrr}
+x&0&1&9&10\\\hline
+R(x)&123\,076\,800&-153\,679\,680&-1\,218\,792\,960&227\,858\,400
+\end{array}
+\]
+locate both sign changes strictly between consecutive integers. Hence
+$R$ has no nonnegative integer zero and $Z_{k,12}\ne0$ for all $k\ge7$.
+Both imaginary roots survive as well.
+\end{proof}
+
+This proof explains an otherwise isolated-looking exception. The competing
+factor-pair sums have different totals, hence different falling-factorial
+degrees and alternating signs. At one integer output count their linear
+moments balance exactly; the square and fourth moments weight the pairs
+differently and cannot balance at an integer.
+
+\section{Uniform noncancellation from parity}\label{sc:sec:parity}
+
+\begin{definition}
+A product class $(k,p)$ is \emph{parity-coherent} if all its allowed
+factor pairs $rs=p$, $r+s\le k$ have the same parity of $r+s$.
+It is \emph{diagonal-only} if its only allowed ordered pair is $(m,m)$,
+necessarily with $p=m^2$.
+\end{definition}
+
+\begin{theorem}[A noncancellation criterion]\label{sc:thm:parity}
+For every parity-coherent product class, $T_{k,p}$, $U_{k,p}$ and
+$V_{k,p}$ are nonzero. For $p>1$, its full factor is
+\begin{equation}\label{sc:eq:coherentfactor}
+ F_{k,p}(x)=
+ \begin{cases}
+ x-\sqrt p,&\text{the class is diagonal-only},\\
+ x^4-p^2,&\text{an off-diagonal pair is allowed}.
+ \end{cases}
+\end{equation}
+In particular, these conclusions hold whenever $4\nmid p$.
+\end{theorem}
+\begin{proof}
+All $c_k(r,s)$ in a parity-coherent class have the same nonzero sign.
+Since the weights $s,s^2,s^4$ are positive, the three moments are nonzero.
+For the stronger Fourier claim we must also analyze possible subtraction
+between the moments.
+
+Group an off-diagonal pair as $r<s$ with its reversal, put
+$u=\sqrt{s/r}>1$, and let $y=u+u^{-1}>2$. Apart from the common signed
+coefficient, the normalized pair amplitude at displacement $\delta$ is
+$u^{2\delta}+u^{-2\delta}$. Set
+\[
+ H_{1/2}=y,\qquad H_1=y^2-2,\qquad H_2=y^4-4y^2+2.
+\]
+The numerators of its two real Fourier coefficients are proportional to
+$H_1+H_2\pm2H_{1/2}$; the common imaginary coefficient is proportional
+to $H_1-H_2$. Their factorizations are
+\begin{align}
+ H_1+H_2+2H_{1/2}&=y(y+2)(y-1)^2>0,\label{sc:eq:pluspositive}\\
+ H_1+H_2-2H_{1/2}&=y(y-2)(y+1)^2>0,\label{sc:eq:minuspositive}\\
+ H_1-H_2&=-(y^2-1)(y^2-4)<0.\label{sc:eq:imagnegative}
+\end{align}
+Thus every off-diagonal pair has the same sign contribution to each of
+the three sectors. A diagonal pair contributes only to the positive-root
+sector, also with the common sign. If there is an off-diagonal pair, none
+of the four coefficients can cancel. If there is none, the sole sequence
+is a nonzero multiple of $(\sqrt p)^n$, proving \eqref{sc:eq:coherentfactor}.
+
+Finally, for odd $p$ both factors are odd, so their sum is even. For
+$p\equiv2\pmod4$, precisely one factor is even, so the sum is odd.
+These exhaust $4\nmid p$ and prove the last assertion.
+\end{proof}
+
+\begin{corollary}\label{sc:cor:fourdivides}
+Any accidental vanishing of a residue moment, or of a full-sequence mode
+in a class having an off-diagonal pair, requires $4\mid p$ and both
+parities of factor-pair sums among the allowed pairs.
+\end{corollary}
+
+The divisibility condition is necessary, not sufficient. For example,
+many products divisible by four still have coherent allowed pairs at a
+given $k$; others have mixed signs but no cancellation. Product $12$ is
+the smallest product with three distinct unordered factor pairs and mixed
+parity of their sums: $(2,6)$ has even sum, whereas $(3,4)$ and
+$(1,12)$ have odd sums.
+
+\section{Every fixed product has only finitely many exceptional output counts}\label{sc:sec:fixed}
+
+The preceding theorem uses the signs within one product class. A different
+argument handles variation in $k$ for an arbitrary fixed product.
+
+\begin{theorem}[Polynomial zero sets and eventual full support]\label{sc:thm:fixedp}
+Fix an integer $p>1$. There is an effectively computable integer $K_p$
+such that for every $k\ge K_p$, all three residue moments are nonzero
+and $F_{k,p}(x)=x^4-p^2$. In particular, all exceptional output counts
+for this fixed product form a finite, effectively computable set.
+\end{theorem}
+\begin{proof}
+For $j\in\{1,2,4\}$ define a rational polynomial
+\begin{equation}\label{sc:eq:Hpolynomial}
+ H_{p,j}(X)=\sum_{rs=p}(-1)^{r+s}\frac{s^j}{r!s!}\fall X{r+s},
+\end{equation}
+now including all ordered factor pairs, with no constraint on their sum.
+At a nonnegative integer $k$, terms with $r+s>k$ vanish, so
+\begin{equation}\label{sc:eq:Hidentity}
+ M_j(k,p)=(-1)^k H_{p,j}(k).
+\end{equation}
+The largest possible factor-pair sum is $p+1$, attained only by
+$(1,p)$ and $(p,1)$. Indeed
+$p+1-(r+s)=(r-1)(s-1)$, which is positive for an off-endpoint pair.
+Consequently $H_{p,j}$ has degree exactly $p+1$ and leading coefficient
+\begin{equation}\label{sc:eq:Hleading}
+ (-1)^{p+1}\frac{1+p^j}{p!}\ne0.
+\end{equation}
+Each moment can therefore vanish at only finitely many integers.
+
+For full Fourier support, set
+$H_W=pH_{p,2}+H_{p,4}$ and $H_Z=pH_{p,2}-H_{p,4}$.
+After suppressing the common nonzero scalar $(-1)^{p+1}/p!$, their
+leading coefficients are respectively
+\begin{equation}\label{sc:eq:WZleading}
+ (p+1)(p^3+1),\qquad -(p-1)(p^3-1).
+\end{equation}
+They are nonzero for $p>1$. If $p=m^2$, the leading coefficients for
+the two real-sector polynomials $H_W\pm2m^3H_{p,1}$ are
+\begin{equation}\label{sc:eq:squareleading}
+ (p+1)(p^{3/2}\pm1)^2,
+\end{equation}
+again nonzero. Thus the zero sets for every sector test are finite.
+For nonsquare $p$, eventual nonvanishing of $T$ and $Z$ alone already
+ensures all four modes.
+
+All these polynomials are explicit. Clear denominators, discard the
+finitely many indices at which $p\notin\mathcal P_k$, and determine their integer
+roots. This is an effective finite procedure: for a polynomial
+$a_dX^d+\cdots+a_0$ with $a_d\ne0$, every complex root lies in
+$|X|\le1+\max_{j<d}|a_j/a_d|$, as follows by comparing the leading term
+with the geometric bound on the others outside that disk. Testing the
+nonnegative integers up to a rational upper bound therefore terminates.
+Take $K_p$ larger than all such roots and at least $p+1$. At that point
+all factor pairs are present and every required sector is nonzero.
+\end{proof}
+
+\begin{remark}[The quantifiers matter]
+For every fixed $p$ there are finitely many exceptional $k$. This does
+not imply that the union of exceptions over all $p$ is finite, nor that
+there is a universal output count beyond which no new product cancels.
+Products of size comparable to $k^2$ enter as $k$ grows. A classification
+uniform in both parameters remains a separate research question.
+\end{remark}
+
+\section{How large are the minimal recurrence orders?}\label{sc:sec:orders}
+
+Let $d_k=\deg Q_k$ for $k\ge4$, and $d_{k,\rho}=\deg A_{k,\rho}$.
+The product set gives immediate bounds
+\begin{equation}\label{sc:eq:degreeupper}
+ d_k\le6+4(|\mathcal P_k|-1),\qquad d_{k,\rho}\le |\mathcal P_k|+2.
+\end{equation}
+The parity theorem also gives a substantial lower bound which does not
+require a classification of mixed-parity cancellations.
+
+\begin{theorem}[Near-quadratic order, with a subquadratic upper bound]\label{sc:thm:degreegrowth}
+There is an absolute constant $c>0$ such that, for all sufficiently large
+$k$ and every residue $\rho$,
+\begin{equation}\label{sc:eq:degreelower}
+ d_k\ge c\frac{k^2}{\log k},\qquad
+ d_{k,\rho}\ge c\frac{k^2}{\log k}.
+\end{equation}
+Using Ford's multiplication-table theorem~\cite{FordShort,FordAnnals},
+\begin{equation}\label{sc:eq:fordupper}
+ d_k,\ d_{k,\rho}
+ =O\!\left(\frac{k^2}{(\log k)^\eta(\log\log k)^{3/2}}\right),
+ \qquad
+ \eta=1-\frac{1+\log\log2}{\log2}>0.
+\end{equation}
+Consequently each of these orders is $k^{2-o(1)}$ and is $o(k^2)$.
+\end{theorem}
+\begin{proof}
+Set $m=\lfloor k/2\rfloor$ and consider products of two odd positive
+integers at most $m$. Every such product belongs to $\mathcal P_k$ and is odd.
+Let $L_m$ be their number of distinct products, and let $r(q)$ count their
+ordered representations. The total number of ordered pairs is
+$\lceil m/2\rceil^2\ge m^2/4$. By Cauchy--Schwarz,
+\begin{equation}\label{sc:eq:energybound}
+ L_m\ge \frac{m^4}{16\sum_q r(q)^2}.
+\end{equation}
+Bound the denominator by the energy of \emph{all} products of two
+integers at most $m$, dropping the oddness restriction.
+
+Every solution $ab=cd$ with $1\le a,b,c,d\le m$ is uniquely written
+\[
+ a=gu,\quad c=gv,\quad b=hv,\quad d=hu,
+ \qquad \gcd(u,v)=1.
+\]
+For fixed $u,v$, both $g$ and $h$ are at most $m/\max(u,v)$. Hence the
+unrestricted energy is
+\[
+ \sum_{\substack{u,v\le m\\\gcd(u,v)=1}}
+       \left\lfloor\frac m{\max(u,v)}\right\rfloor^2.
+\]
+There is one pair with maximum one and at most $2t$ pairs with maximum
+$t\ge2$. It follows that this sum is at most
+\[
+ m^2+2m^2\sum_{t=2}^m\frac1t
+       \le m^2(1+2\log m).
+\]
+Inserting this into \eqref{sc:eq:energybound} gives
+\begin{equation}\label{sc:eq:oddproducts}
+ L_m\ge\frac{m^2}{16(1+2\log m)}.
+\end{equation}
+By \cref{sc:thm:parity}, every one of these odd products except $1$ provides
+at least one nonunit full root and one residue root. The unit parts
+contribute degrees six and three. Thus
+$d_k\ge L_m+5$ and $d_{k,\rho}\ge L_m+2$, proving
+\eqref{sc:eq:degreelower}.
+
+For the upper bound, $\mathcal P_k$ is a subset of the distinct products in a
+$k$ by $k$ multiplication table. Ford's theorem states that their number
+has order
+$k^2/((\log k)^\eta(\log\log k)^{3/2})$; see the introduction of
+\cite{FordShort}, where the parameter is the largest product, so set
+that parameter to $k^2$. Combining this estimate with
+\eqref{sc:eq:degreeupper} proves \eqref{sc:eq:fordupper}.
+The logarithm of either lower or upper bound, divided by $\log k$, tends
+to two, while the displayed upper bound divided by $k^2$ tends to zero.
+\end{proof}
+
+Only the improved upper bound uses Ford's theorem. The lower bound and
+the elementary upper bound $O(k^2)$ are fully proved above. In particular,
+no random model of integer factors or heuristic independence assumption
+is involved. The theorem gives the scale of recurrence complexity, not a
+sharp asymptotic constant or an exact order of magnitude within the
+remaining logarithmic gap.
+
+\section{Exact rational generating functions}\label{sc:sec:gf}
+
+\subsection{A closed rational expression for every residue tail}
+Fix $k\ge4$, a residue $\rho$, and $t_0$ with $n_0=4t_0+\rho\ge7$.
+Put $a_0=a_{n_0}$, $b_0=b_{n_0}$ and $c_1=(-1)^kk(k-1)$. Define
+\[
+ G_{k,\rho,t_0}(z)=\sum_{m\ge0}D^*_k(n_0+4m)z^m.
+\]
+
+\begin{proposition}[Explicit rational residue tails]\label{sc:prop:residueGF}
+With the amplitudes of \eqref{sc:eq:amplitudes},
+\begin{align}
+ G_{k,\rho,t_0}(z)
+ &=\frac{c_1-a_0b_0}{1-z}
+   -\frac{2n_0z}{(1-z)^2}
+   -\frac{4z(1+z)}{(1-z)^3}\notag\\
+ &\quad+\sum_{p\in\mathcal P_k\setminus\{1\}}
+       \frac{A_{k,p,\rho}(p^2)^{t_0}}{1-p^2z}.
+ \label{sc:eq:resGF}
+\end{align}
+The exact reduced denominator, normalized to have constant coefficient
+one, is the reciprocal of $A_{k,\rho}(x)$:
+$z^{d_{k,\rho}}A_{k,\rho}(1/z)$.
+For $k=3$, replace the first three terms of \eqref{sc:eq:resGF} by
+\[
+ \frac{-6-b_0}{1-z}-\frac{2z}{(1-z)^2}.
+\]
+\end{proposition}
+\begin{proof}
+Along this tail the split is $(a_0+2m,b_0+2m)$. Its product equals
+$a_0b_0+2n_0m+4m^2$. The sums of $1,m,m^2$ are
+$1/(1-z)$, $z/(1-z)^2$, and $z(1+z)/(1-z)^3$, respectively.
+Each exponential term gives its geometric series. The $p=1$ chromatic
+term is $c_1$. For $k=3$ the correction is $-(b_0+2m)$ instead.
+The exact denominator follows either from distinct poles in this
+expression or from \cref{sc:thm:residue,sc:thm:three}.
+\end{proof}
+
+Thus the tail numerator is explicitly computable by finite rational
+operations, not merely known to exist. The vanishing moments are exactly
+the missing simple poles. The polynomial correction cannot cancel the
+highest-order pole at one.
+
+\subsection{Minimal full-tail numerators from finitely many values}
+Let $q(x)=x^d+q_{d-1}x^{d-1}+\cdots+q_0$ be the minimal full
+polynomial $Q_k$, or $Q_3$ when $k=3$, and put
+\begin{equation}\label{sc:eq:reciprocal}
+ \widehat q(z)=z^dq(1/z)=\sum_{j=0}^d h_jz^j,\qquad h_0=1.
+\end{equation}
+For any $N\ge7$, write $f_j=D^*_k(N+j)$. Then
+\begin{equation}\label{sc:eq:fullGF}
+ \sum_{j\ge0}f_jz^j=\frac{P_{k,N}(z)}{\widehat q(z)},\qquad
+ P_{k,N}(z)=\sum_{i=0}^{d-1}
+       \left(\sum_{j=0}^{i}h_jf_{i-j}\right)z^i.
+\end{equation}
+Indeed, multiplying the series by $\widehat q$ gives these initial
+coefficients, and all subsequent coefficients are zero by the recurrence.
+Minimality implies that numerator and denominator are relatively prime:
+a cancellation would supply a smaller characteristic polynomial.
+
+An alternative full-tail expression is obtained by interleaving the four
+functions in \cref{sc:prop:residueGF}. For each $\rho$ choose
+$e_\rho\in\{0,1,2,3\}$ with $N+e_\rho\equiv\rho\pmod4$ and put
+$t_\rho=(N+e_\rho-\rho)/4$. Then the full series is
+\[
+ \sum_{\rho=0}^3 z^{e_\rho}G_{k,\rho,t_\rho}(z^4).
+\]
+This expression need not be reduced; \eqref{sc:eq:fullGF} gives its exact
+minimal denominator after all inter-residue cancellation is accounted for.
+
+\begin{example}[An explicit three-output numerator]
+For the tail starting at $n=7$, \eqref{sc:eq:fullGF} becomes
+\begin{align}
+ \sum_{j\ge0}D_3^*(7+j)z^j
+ &=\frac{P_{3,7}(z)}{(1-z)(1-z^4)(1-4z^4)},\label{sc:eq:GF3}\\
+ P_{3,7}(z)
+ &=62+47z+24z^2+262z^3-429z^4-44z^5\notag\\
+ &\qquad-24z^6-256z^7+364z^8.\notag
+\end{align}
+The denominator is reduced by \cref{sc:thm:three}. The file
+\path{data/09-spectral-cancellation-tail_generating_functions.json} contains exact numerators
+and reduced denominators for $3\le k\le10$, all starting at $7$.
+For $k>7$ this start is an algebraic-sequence convention, not an assertion
+that all of those initial terms represent an actual $k$-output optimum.
+\end{example}
+
+\subsection{Finite changes cannot remove the eventual poles}
+Suppose (O) holds and choose $N$ within its equality range. Give $D_k(n)$
+any fixed convention at $n<k$, for example zero. Its full generating
+function is
+\begin{equation}\label{sc:eq:prefixGF}
+ \sum_{n\ge0}D_k(n)z^n
+ =\sum_{n=0}^{N-1}D_k(n)z^n
+       +z^N\frac{P_{k,N}(z)}{\widehat Q_k(z)}.
+\end{equation}
+The finite prefix changes the numerator but not the exact reduced
+denominator. At every root of $\widehat Q_k$ the first term is a
+polynomial, and $z^N$ is nonzero because all denominator roots are
+nonzero. Therefore neither can remove any pole of the reduced tail.
+This proves that our factor formulas determine the exact denominator even
+when the initial optimum values have not been computed.
+
+\section{A terminating algorithm for the missing finite prefix}\label{sc:sec:prefix}
+
+The explicit tail does not by itself supply the unknown initial optimum
+values. An effective response to \cref{evo:q:recurrence} must keep this issue
+separate rather than silently substituting witness values everywhere.
+The following algorithm supplies a complete, although expensive, answer.
+
+\begin{theorem}[Effective full numerator, conditional only on the stated threshold]\label{sc:thm:prefix}
+Assume repository input (O) with its bound $N(k)\le3k^4$ for $k\ge4$.
+For each $k$, the exact full rational generating function of $D_k(n)$,
+with the convention $D_k(n)=0$ for $n<k$, is computable by a terminating
+algorithm. A direct exhaustive implementation has a bit-operation bound
+$\exp(O(k^4\log k))$. Once the prefix and the minimal denominator are
+known, the numerator has degree less than $N+d_k$, where one may take
+$N=3k^4$.
+\end{theorem}
+\begin{proof}
+For each $n=k,\ldots,N-1$, enumerate all pairs of transformations of
+$\{0,\ldots,n-1\}$ and all surjective output maps to
+$\{0,\ldots,k-1\}$. Fix initial state zero: any distinguished initial
+state can be relabeled to zero, so nothing is lost. There are at most
+$n^{2n}k^n$ triples.
+
+Discard triples that are not accessible from zero. Discard those whose
+original DFAO is not minimal, using the finite refinement of the partition
+by outputs: repeatedly split states according to the blocks of their two
+successors, until the partition stabilizes. Stability with singleton
+blocks is equivalent to pairwise distinguishability of original states,
+by induction on the length of distinguishing words.
+
+For a remaining triple $(s,t,\tau)$, enumerate the coloring orbit from
+$\tau$ using transitions
+\[
+ c\longmapsto c\circ s,\qquad c\longmapsto c\circ t.
+\]
+There are at most $k^n$ colorings, so breadth-first search terminates.
+Its orbit size is the reversal state complexity. To recall the short
+argument behind Davies's orbit characterization~\cite{Davies2017}, the reverse
+automaton has these colorings as states and output $c(0)$. If two
+colorings differ at a state $q$, accessibility supplies a word taking
+zero to $q$ in the original automaton. Its reversed word distinguishes
+the two colorings in the reverse automaton. Thus no two reachable
+colorings can be identified. Taking the largest orbit size over all
+retained triples computes $R_2(n,k)$ exactly. This family is nonempty:
+use an $n$-cycle and the identity, with one output label occurring exactly
+once and every other label occurring at least once. The unique occurrence
+forces distinct cyclic shifts, so the original DFAO is minimal.
+
+An orbit search costs at most a polynomial factor in $n$ times $k^n$;
+its counts and labels have bit lengths polynomial in $n\log k$.
+Consequently a naive bound per $n$ is a polynomial factor times
+$n^{2n}k^{2n}$. Summing to $N=3k^4$ gives
+$\exp(O(k^4\log k))$. For $k=3$, use $N=7$ instead. This computes the
+whole finite prefix. Compute $P_{k,N}$ by \eqref{sc:eq:fullGF} and combine
+using \eqref{sc:eq:prefixGF}. The prefix has degree at most $N-1$;
+multiplication by a degree-$d_k$ denominator and addition of the shifted
+tail numerator gives degree at most $N+d_k-1$.
+\end{proof}
+
+[Added 30 September 2026, batch~67: by Part~V's \cref{nl:thm:main}, input
+(O) holds for every $k\ge4$ from $n\ge T(k)$, so for $k\ge8$ the theorem and
+its proof hold unchanged with $N=\min(N(k),T(k))$ in place of $3k^4$, and
+$T(k)\le\lceil16k\log(8k)\rceil$ (\cref{nl:cor:simple}); for $4\le k\le7$
+Part~III's \cref{evo:thm:smallk} already gives (O) from $n=\max(7,k+1)$.
+With $N=O(k\log k)$ the same count bounds the enumeration by
+$\exp(O(k(\log k)^2))$ bit operations; this bound is a write-phase
+observation, not the manuscript's. The algorithm remains unexecuted.]
+
+The large-prefix enumeration in this theorem was \emph{not run}. It is
+an effective algorithm and a complexity bound, not a delivered table of
+unknown optima. The accompanying implementation computes witness tails,
+minimal factors, and exact tail numerators; it does not claim to solve
+all small-$n$ optimization instances. A compact closed form for the finite
+correction, or a practical algorithm throughout the two-parameter region,
+remains a stronger question.
+
+\section{Algorithms and reproducible finite evidence}\label{sc:sec:verification}
+
+\subsection{The exact spectral compiler}
+The program \path{code/09-spectral-cancellation-spectral.py} (delivered as
+\path{code/spectral.py}) constructs all moments by looping
+over positive $r,s$ with $r+s\le k$, computing the signed multinomial
+coefficient and adding its three contributions to a dictionary keyed by
+$p=rs$. It then emits the factors in \cref{sc:tab:factor}, together with the
+appropriate unit-root factors. All tests are exact integer comparisons.
+No square roots are numerically approximated: perfect squares are detected
+by the integer square-root function, and the nonsquare case uses the
+rationality criterion proved above.
+
+There are $k(k-1)/2$ ordered contributions. With a Pascal table for
+binomial coefficients, generating the grouped moments takes $O(k^2)$
+integer arithmetic steps; the supplied implementation uses the standard
+library binomial routine instead. Signed coefficients are bounded in
+absolute value by $3^k$, so the moment integers have $O(k+\log k)$ bits.
+The factored output is preferable to expanding a high-degree polynomial,
+but the program supports both. Coefficients of an expanded degree-$d$
+polynomial have $O(d\log(k+1))$ bits by the product bound on its roots.
+
+For example, in the delivered layout (here the programs carry the report's
+file prefix, and the verifier imports \texttt{spectral} under its delivered
+name, so the README gives a recipe on a copy):
+\begin{lstlisting}
+python code/spectral.py 19
+python code/spectral.py 3 --expanded
+python code/verify.py
+\end{lstlisting}
+These commands use Python's standard library only. Polynomial coefficient
+lists are always in ascending order; connection polynomials returned by
+the finite-sequence reconstruction routine have constant coefficient one.
+The conversion between them is explicit in the checker.
+
+\subsection{Independent arithmetic paths}
+The verification program does not take the moment formula as its only
+source of sequence values. It uses three routes. First, small graph
+colorings are enumerated literally. Second, onto-map counts are computed
+by the positive recurrence
+\[
+ O(a,j)=j\bigl(O(a-1,j)+O(a-1,j-1)\bigr),\qquad O(0,0)=1,
+\]
+and inserted in \eqref{evo:eq:positivepalette}. Third, the signed moments give the
+predicted minimal factors.
+
+For the recurrence audit, sequence values from the positive formula are
+reduced modulo each of $1\,000\,000\,007$ and $998\,244\,353$. A
+Berlekamp--Massey reconstruction~\cite{Massey} on $2d+16$ terms is compared
+with the predicted degree-$d$ polynomial. The sequence starts at
+$\max(7,k+1)$, or the first appropriate residue at or above that point.
+This checks indexing, shifts, signed grouping, perfect-square sectors,
+and the unit-root multiplicities through a different numerical route.
+The universal minimality proof remains \cref{sc:lem:minimal}, not a guess
+from these reconstructions.
+
+\subsection{Results actually obtained}
+The default run was completed with Python~3.13.5. It produced (records
+\path{data/09-spectral-cancellation-*}, delivered as \path{data/*}):
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.72\textwidth}r@{}}
+\toprule
+Audit & Cases\\\midrule
+Literal coloring enumeration against both palette formulas & 27\\
+Positive versus signed coloring formula, $3\le k\le15$, $1\le a,b\le9$ & 1,053\\
+Full and four residue recurrences, two moduli, $3\le k\le30$ & 280\\
+Exact integer tail-numerator identities, $3\le k\le10$ & 8\\
+Product-$12$ polynomial identities, $7\le k\le100$, three moments & 282\\\bottomrule
+\end{tabular}
+\end{center}
+All checks passed. In addition, every product class for $3\le k\le200$
+was scanned with exact integers. The only zero among $T,U,V$ for $p>1$
+in that range was $T_{19,12}$. No off-diagonal class in that range lost a
+full-sequence mode. The latter observation is \emph{not} used as a
+universal theorem. It suggests the first question in
+\cref{sc:sec:questions}, but does not settle it. A rerun in the write phase, on a copy with the
+delivered layout (Python~3.14.4, about $25$~s), passed; the five regenerated
+files equal the shipped ones apart from Windows line endings and, in the
+audit record, the Python version.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$k$&$|\mathcal P_k|$&$d_{k,0}$&$d_{k,1}$&$d_{k,2}$&$d_{k,3}$&$d_k$\\\midrule
+3 & 2 & 3 & 3 & 3 & 3 & 9 \\
+4 & 4 & 6 & 6 & 6 & 6 & 15 \\
+5 & 5 & 7 & 7 & 7 & 7 & 22 \\
+6 & 8 & 10 & 10 & 10 & 10 & 31 \\
+7 & 10 & 12 & 12 & 12 & 12 & 39 \\
+8 & 13 & 15 & 15 & 15 & 15 & 48 \\
+9 & 16 & 18 & 18 & 18 & 18 & 60 \\
+10 & 19 & 21 & 21 & 21 & 21 & 75 \\
+11 & 21 & 23 & 23 & 23 & 23 & 83 \\
+12 & 26 & 28 & 28 & 28 & 28 & 100 \\
+13 & 29 & 31 & 31 & 31 & 31 & 115 \\
+14 & 34 & 36 & 36 & 36 & 36 & 132 \\
+15 & 39 & 41 & 41 & 41 & 41 & 152 \\
+16 & 44 & 46 & 46 & 46 & 46 & 169 \\
+17 & 48 & 50 & 50 & 50 & 50 & 185 \\
+18 & 53 & 55 & 55 & 55 & 55 & 202 \\
+19 & 58 & 60 & 59 & 60 & 59 & 222 \\
+20 & 65 & 67 & 67 & 67 & 67 & 250 \\
+25 & 97 & 99 & 99 & 99 & 99 & 378 \\
+30 & 134 & 136 & 136 & 136 & 136 & 523 \\
+\bottomrule
+\end{tabular}
+\caption{Exact orders computed from the proved factor-selection rules.
+At $k=3$ the polynomial correction is linear, so the separate formulas of
+\cref{sc:thm:three} apply. These are orders for the explicit sequence;
+interpretation as optimal reversal orders uses (O).}
+\label{sc:tab:orders}
+\end{table}
+
+The table and JSON outputs are generated by the checker. The full
+three-moment records through $k=30$ allow an independent implementation
+to reconstruct every factor, rather than trusting order totals alone.
+The product-$12$ identity has its complete six ordered-pair certificate
+in \path{data/09-spectral-cancellation-audit.json}. The checker also writes
+the table as \path{data/09-spectral-cancellation-orders.tex}, which is not
+input here; its twenty rows equal \cref{sc:tab:orders} (checked in the write).
+
+\subsection{What these checks do not establish}
+They do not enumerate automata at nineteen outputs, prove
+input (O), settle the all-$n$ optimum, or show that there are no further
+cancellations above $k=200$. Neither program has been verified in a proof
+assistant. Two arithmetic routes written for this investigation are
+implementation cross-checks, not independent external review. Every
+failure check is an explicit exception, so running Python with optimization
+does not disable the checks.
+
+\section{Proof status and a route to formalization}\label{sc:sec:formal}
+
+The core result is deliberately separated from the automata optimization
+problem. Its formalization can begin with finite sums and exact polynomial
+identities, without importing the much larger collision-graph proof.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+Statement & Proof basis here & External boundary\\\midrule
+Minimal residue/full factors & Palette identity, four-residue algebra,
+exponential independence & None for $D^*_k$\\
+Three-output order nine & Explicit correction and four nonunit modes &
+None for $D_3^*$\\
+Nineteen-output cancellation & Three signed coefficients & None\\
+Product-$12$ classification & Falling-factorial identity and monotone
+integer differences & None\\
+Parity and fixed-product theorems & Signs and leading coefficients & None\\
+Order-growth lower bound & Elementary multiplicative-energy estimate & None\\
+Subquadratic order upper bound & Product-set inclusion & Ford's theorem\\
+True optimum and full prefix & Eventual transfer and finite enumeration &
+Repository input (O)\\\bottomrule
+\end{tabular}
+\end{center}
+
+A useful Lean or Rocq development would first formalize the signed
+multinomial expansion and the residue table. The order-nine example and
+the $k=19,p=12$ certificate then reduce to finite integer identities,
+with no analysis or asymptotics. The all-$k$ minimality theorem needs a
+library result about independent exponential-polynomial sequences, or an
+equivalent rational-function pole argument. The latter can be implemented
+algebraically over a suitable splitting field and then descended to
+$\mathbb Q$.
+
+An especially small certificate format consists of the product list,
+the three moments for each product, and the rational factors selected by
+\cref{sc:tab:factor}. A verified checker can recompute the moments from $k$
+and confirm every zero/nonzero test. Proving that these data exhaust all
+allowed factor pairs is essential; merely replaying a table is not the
+universal theorem. The stronger result about the true optimum must keep
+(O) visible in its assumptions until that separate development is verified.
+
+No Lean or Rocq source is supplied here, because no such formalization
+was compiled or checked during this investigation. The mathematical proofs
+and executable audits are the delivered verification artifacts.
+
+\section{Further research questions}\label{sc:sec:questions}
+
+The following questions arise from the proved results. They are not hidden
+assumptions of any theorem above, and they are not all claimed to be
+previously published open problems. Each names its counterpart among the
+earlier parts' questions.
+
+\begin{question}[Can a full off-diagonal sector actually cancel?]\label{sc:q:fullsector}
+Does every allowed product class with an off-diagonal pair satisfy
+$F_{k,p}(x)=x^4-p^2$, for all $k$ and $p>1$?
+\end{question}
+The exact scan through $k=200$ gives no counterexample. The parity theorem
+settles all coherent classes, and \cref{sc:thm:fixedp} settles every fixed
+product eventually. The remaining case requires a uniform inequality or
+an integer-root obstruction for mixed-parity factor sums. The cancellation
+$T_{19,12}=0$ does not refute this stronger full-support statement.
+Counterpart: \cref{evo:q:recurrence} (its cancellation part).
+
+\begin{question}[Can an even-residue moment vanish?]\label{sc:q:even}
+Are $U_{k,p}$ and $V_{k,p}$ always nonzero for every $p\in\mathcal P_k$?
+\end{question}
+The product-$12$ theorem answers this for the class responsible for our
+odd-residue exception, not generally. A positive answer would give a particularly
+simple minimal denominator for both even residues while allowing genuine
+odd-residue defects. The stronger Fourier question involves additional
+linear combinations and is not equivalent to this one.
+Counterpart: \cref{evo:q:recurrence}.
+
+\begin{question}[Classify all odd-residue cancellations]\label{sc:q:odd}
+Which integer pairs $(k,p)$ satisfy $T_{k,p}=0$ with $p\in\mathcal P_k$?
+Are there infinitely many such pairs?
+\end{question}
+The falling-factorial polynomials $H_{p,1}$ give finite exact tests for each
+fixed $p$, and \cref{sc:cor:fourdivides} restricts all exceptions to
+mixed-parity classes with $4\mid p$. The challenge is uniform control as
+the degree $p+1$ and the factorization pattern both vary.
+Counterpart: \cref{evo:q:recurrence}, the remaining uniform part of its question which bases cancel.
+
+\begin{question}[The sharp recurrence-order scale]\label{sc:q:scale}
+Is the order $d_k$ comparable to the multiplication-table upper bound in
+\eqref{sc:eq:fordupper}? What is the sharp order of each $d_{k,\rho}$, and
+what proportion of the product classes are diagonal-only?
+\end{question}
+The elementary lower bound loses a logarithmic factor through an energy
+estimate. Stronger information on odd products, or on the density of
+noncancelling mixed-parity classes, could close the gap. Counting product
+classes alone is not quite enough for an exact asymptotic, because their
+spectral multiplicities differ.
+Counterpart: none.
+
+\begin{question}[Explicit exceptional thresholds for a product]\label{sc:q:thresholds}
+How small can the least $K_p$ in \cref{sc:thm:fixedp} be, in terms of $p$
+and its divisor structure?
+\end{question}
+Cauchy's root bound proves effectivity but can be very wasteful.
+Separating the endpoint pairs from the next-largest factor-pair sum may
+give much sharper thresholds. Product $12$ demonstrates that a bound must
+allow exceptions beyond the point $k=p+1$ at which every pair is present.
+Counterpart: none.
+
+\begin{question}[A practical finite optimum correction]\label{sc:q:prefix}
+Can the numerator in \eqref{sc:eq:prefixGF} be computed without exhaustive
+enumeration of all transition pairs? In particular, can Part~III's
+$O(k^4)$ threshold be replaced by a near-linear threshold or an exact
+all-$n$ formula?
+\end{question}
+This reconnects the spectral problem with the unresolved optimization
+region. The minimal denominator is already determined by the tail, but
+its finite numerator correction encodes genuine small-state information
+that spectral algebra alone does not recover.
+Counterparts: \cref{evo:q:recurrence} (its finite initial correction), \cref{evo:q:complete,evo:q:threshold}. [Added 30 September 2026, batch~67: the near-linear part is answered by Part~V, $n\ge T(k)=4k\log k+O(k)$ (\cref{nl:thm:main}); a practical algorithm and an all-$n$ formula stay open.]
+
+\begin{question}[Verified recurrence certificates]\label{sc:q:certificates}
+Can the three-moment compiler be formalized with an exact theorem that
+its output is the minimal polynomial, not merely an annihilator?
+\end{question}
+The first useful tests are the order-nine three-output polynomial, the
+existing four-output polynomial, and the nineteen-output vanishing
+certificate. The proof should explicitly include multiplicity at root one
+and the distinction between unit shifts and residue shifts.
+Counterparts: \cref{evo:q:formal,nl:q:formal}.
+
+\begin{question}[Beyond a four-residue split]\label{sc:q:beyond}
+For other optimal constructions whose component sizes depend periodically
+on $n$, which grouped moments determine the exact spectrum? Can a similar
+method handle more than two cycles or a noncyclic permutation group?
+\end{question}
+A finite Fourier transform always decomposes a known periodic amplitude,
+but obtaining that amplitude from a new automata extremum is a separate
+problem. More components would produce multivariate palette products and
+higher-dimensional arithmetic collisions. One should not infer the needed
+extremal construction from the spectral formalism alone.
+Counterpart: \cref{evo:q:groups}.
+
+\section{Conclusion of Part~VI}\label{sc:sec:conclusion}
+
+The minimal-recurrence question is governed by arithmetic, not just by
+the list of available exponential bases. Three integer palette moments
+resolve the residue sequences; their four-point Fourier transform
+resolves the full sequence. This gives exact, implementable minimal-factor
+formulas for every output count, detects a genuine nineteen-output
+cancellation, and explains why that cancellation is invisible in the
+full unit-step spectrum.
+
+Several statements are stronger than a finite computation: the uniqueness
+of the product-$12$ cancellation for all admissible $k$, parity-based
+noncancellation, finite exceptional sets for every fixed product, and the
+asymptotic scale of the recurrence orders. At the same time the boundaries
+are explicit. The full classification of mixed-parity cancellations
+remains open, and identification with the actual reversal optimum relies
+on Part~III's separate eventual-optimality argument. The manuscript
+therefore advances a specific open direction without disguising
+these remaining problems as solved.
+
+\section{Sources, dependency boundaries and provenance}\label{sc:sec:audit}
+
+\subsection{Repository evidence the manuscript inspected}
+The manuscript's source and novelty audit
+(\path{09-spectral-cancellation-SOURCES.md}) records that the repository was
+read through a GitHub connector at commit \texttt{0744012ba}: this report's
+README, status record, the relevant article sections (Part~III's
+\cref{evo:sec:asymptotics} and \cref{evo:q:recurrence}, Part~IV's
+\cref{fo:sec:recurrence} and \cref{fo:rem:residueminimal}, Parts~II--III's
+exact formulas and Part~III's threshold $N(k)\le3k^4$ and all-$n$ slices
+$4\le k\le7$), and related search results. The 147-page report was not
+audited line by line in its entirety. The manuscript does not claim a
+counterexample to an asserted minimality theorem: the source anticipated
+that some factors might be unnecessary.
+
+\subsection{Primary published sources}
+Davies \cite{Davies2017}: definitions, the reverse coloring automaton, the
+orbit characterization (cited, with its short accessibility argument
+recalled in the proof of \cref{sc:thm:prefix}), and the binary lower bounds
+and questions of its Section~5. Ford \cite{FordShort,FordAnnals}: the
+multiplication-table estimate and its exponent
+$1-(1+\log\log2)/\log2$, read on the first page of the arXiv version; the
+Annals paper's publisher metadata and abstract were checked, and the exact
+formula is taken from the arXiv version. Massey \cite{Massey}: bibliographic
+details checked in the author's publication archive; the algorithm is a
+finite cross-check only, and the universal minimality proofs do not depend
+on trusting its implementation.
+
+\subsection{Literature-search scope}
+The targeted searches covered DFAO reversal, minimal recurrences, spectral
+cancellation and nineteen-output coloring terms. They found Davies's paper
+and no external result matching the nineteen-output certificate or the
+three-moment factor tests; results were often sparse or irrelevant. There
+was no exhaustive citation-index review, survey of theses, or
+correspondence with authors, so absence of a matching hit is not proof of
+priority. The priority claim is restricted to a continuation relative to
+the pinned ProveIt material inspected.
+
+\subsection{Dependency ledger}
+The manuscript's proof-status record
+(\path{09-spectral-cancellation-PROOF_STATUS.md}) keeps $D^*_k$ (an
+algebraic formula that exists independently of any optimality theorem)
+apart from $D_k$ (the true optimum); their eventual equality is input (O),
+not reproved. Removing (O) leaves every witness-sequence result intact. The
+imported statements are (O), for the transfer to the optimum and for the
+finite bound on the initial correction; Ford's estimate, for the
+subquadratic upper bound of \cref{sc:thm:degreegrowth} only (the lower
+bound and the elementary $O(k^2)$ upper bound do not use it); and
+classical finite-automaton minimization and the reversal-orbit facts in
+the prefix algorithm, whose arguments are recalled. The table of
+\cref{sc:sec:formal} lists the boundary statement by statement.
+
+\subsection{The delivered package and what is shipped}
+The archive contained \path{article.tex}, \path{article.pdf} (22 pages),
+\path{README.md}, \path{Makefile}, \path{code/spectral.py},
+\path{code/verify.py}, five records in \path{data/} and three notes in
+\path{notes/}. The manuscript, its PDF and its delivery README are not
+shipped; they survive in the arrival commit \texttt{f4457a1d1}. The other
+eleven files are shipped byte-identical, each name prefixed with
+\texttt{09-spectral-cancellation-}: the three notes at the report root, the
+Makefile and the two programs in \path{code/}, and the five records in
+\path{data/} (the README lists them). Their text uses the delivered names:
+the Makefile's targets act on \path{article.tex} and \path{code/verify.py}
+in its own directory, the verifier writes the five records into the
+\path{data/} directory next to its \path{code/} directory by default, and
+\path{09-spectral-cancellation-BUILD_QA.md} describes the delivered 22-page
+PDF, not this report's build.
+
+\subsection{Claims and nonclaims}
+The claimed results are the factor-selection formulas
+(\cref{sc:thm:residue,sc:thm:full}), the order-nine recurrence at three
+outputs (\cref{sc:thm:three}), the nineteen-output cancellation and its
+product-$12$ classification (\cref{sc:thm:k19,sc:thm:unique12,sc:cor:12full}),
+parity noncancellation (\cref{sc:thm:parity,sc:cor:fourdivides}), finite
+exception sets (\cref{sc:thm:fixedp}), the order scale
+(\cref{sc:thm:degreegrowth}), the tail numerators
+(\cref{sc:prop:residueGF}) and the prefix algorithm (\cref{sc:thm:prefix}).
+The following are \emph{not} claimed (manuscript, its README and notes):
+\begin{itemize}
+\item an exhaustive transition-pair search for the unknown initial
+ nineteen-output optimum or the finite prefix for general $k$; the
+ prefix algorithm is proved but neither implemented by the shipped
+ programs nor executed;
+\item a resolution of the two-parameter optimum (\cref{evo:q:complete}), the
+ diagonal monoid problem, or a classification of extremal transition pairs;
+\item a uniform classification of all cancellations in both $k$ and $p$
+ (\cref{sc:q:fullsector,sc:q:even,sc:q:odd}), or any inference that the
+ scan through $k=200$ implies noncancellation beyond it;
+\item novelty for the degree-$15$ four-output polynomial (Part~IV's), the
+ palette expansion, the link between exponential polynomials and
+ recurrences, four-residue Fourier analysis or the multiplication-table
+ theorem;
+\item a correction of an asserted minimality theorem: Part~II's order-$12$
+ relation and Part~III's annihilator were never claimed minimal;
+\item exhaustive literature priority, external refereeing, or proof-assistant
+ verification of the proofs or of the programs.
+\end{itemize}
+
+\subsection{What remains open}
+The uniform classification of cancellations
+(\cref{sc:q:fullsector,sc:q:even,sc:q:odd}); the sharp order scale and the
+least exception thresholds (\cref{sc:q:scale,sc:q:thresholds}); a practical
+finite correction (\cref{sc:q:prefix}); verified recurrence certificates
+(\cref{sc:q:certificates}); constructions beyond a four-residue split
+(\cref{sc:q:beyond}).
+
+\subsection{Where the write had to choose}\label{sc:sec:merge}
+\begin{itemize}
+\item \emph{One Part per manuscript.} See \cref{nl:sec:merge}: Part~VI
+ answers \cref{evo:q:recurrence}, Part~V \cref{evo:q:threshold}; they share
+ no argument and do not cite each other. Part~VI's one dependence on
+ Part~V, the threshold in (O), is recorded by dated notes in
+ \cref{sc:sec:imported,sc:sec:prefix,sc:q:prefix}.
+\item \emph{Placement.} Part~VI follows Part~V and precedes Part~I's
+ appendices; no number of Parts~I--IV changed, so the manuscript's
+ citations by printed number (Section~41.4, Question~44.15, Section~55)
+ remain correct and are printed as cross-references.
+\item \emph{Printed once.} The manuscript's split and witness definition
+ (its (2.1) and (2.3)) are Part~III's \eqref{evo:eq:split} and
+ \eqref{evo:eq:Dstar}, and its Lemma~3.1 is Part~III's
+ \cref{evo:prop:palette}; they are recalled without their labels, and the
+ manuscript's inclusion--exclusion proof of the signed form is printed as
+ a third proof. The explicit case list \eqref{sc:eq:delta} of $\delta_n$ is
+ kept because the proofs use it.
+\item \emph{Notation.} \Cref{sc:tab:notation}; the falling factorial
+ $X^{\underline d}\to\fall{X}{d}$ and the shift $E\to\mathsf S$ are the
+ only symbols changed. The manuscript's $\lambda$, $\beta$ and $c_k$ are
+ local and keep their letters. No normalization changed.
+\item \emph{References to Parts~I--IV.} The manuscript cites the report as
+ a repository package; here those citations are internal cross-references,
+ and its entry for Davies is Part~I's \cite{Davies2017}. Ford's two works
+ and Massey's paper are added to the bibliography.
+\item \emph{Added in the write.} The dated notes in
+ \cref{sc:sec:imported,sc:sec:prefix,sc:q:prefix}, the counterparts named
+ in \cref{sc:sec:questions}, the rerun sentence and the comparison of
+ \path{data/09-spectral-cancellation-orders.tex} with \cref{sc:tab:orders}
+ in \cref{sc:sec:verification}, this section's structure, and dated
+ pointers in Part~II's \cref{tor:sec:asymptotics} (after \cref{tor:cor:recurrence}) and Part~III's
+ \cref{evo:sec:asymptotics}, \cref{evo:q:recurrence,evo:q:formal}.
+\item \emph{Provenance wording.} The delivered title page and README call the
+ work AI-assisted and prepared for Vladimir Reshetnikov; that wording is
+ recorded only here and in \cref{sc:sec:source}.
+\end{itemize}
+\endgroup
+
 
 \appendix
 \section{Explicit small witnesses}\label{app:witnesses}
@@ -10412,5 +13598,33 @@ arXiv:1907.07664, 2019.
 \url{https://arxiv.org/abs/1907.07664}.
 Cited only for the standard name and definition of $g(k)$; no analytic
 result from this work is used.
+
+\bibitem{FordShort}
+Kevin Ford,
+\emph{Integers with a divisor in $(y,2y]$},
+arXiv:math/0607473.
+\href{https://arxiv.org/abs/math/0607473}{arXiv record};
+\href{https://arxiv.org/pdf/math/0607473}{full text}.
+Cited in Part~VI, after its manuscript: the multiplication-table estimate
+used there is stated in the introduction, page~1. The retrieved PDF carries
+version label v5 and an internal date of 26 November 2024; no claim depends
+on reconciling those date fields.
+
+\bibitem{FordAnnals}
+Kevin Ford,
+\emph{The distribution of integers with a divisor in a given interval},
+Annals of Mathematics \textbf{168} (2008), 367--433.
+\href{https://doi.org/10.4007/annals.2008.168.367}{doi:10.4007/annals.2008.168.367}.
+Cited in Part~VI.
+
+\bibitem{Massey}
+James L. Massey,
+\emph{Shift-register synthesis and BCH decoding},
+IEEE Transactions on Information Theory \textbf{15} (1969), 122--127.
+\href{https://doi.org/10.1109/TIT.1969.1054260}{doi:10.1109/TIT.1969.1054260}.
+Cited in Part~VI, after its manuscript, which checked the bibliographic
+details against the
+\href{https://www.isiweb.ee.ethz.ch/archive/massey_pub/dir/pdf.html}{author's publication archive}.
+The algorithm is used only for finite implementation cross-checks.
 \end{thebibliography}
 \end{document}
