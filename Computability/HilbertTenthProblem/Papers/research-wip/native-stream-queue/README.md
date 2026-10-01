@@ -40,17 +40,19 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [U15 tag successor](neary_woods_universal_tag_chain.md)
-now gives **454 certificate /528=322M+206A polynomial operations**,
-25 comparisons,69 positive witnesses and four positive program parameters.
-A131-multiplication fixed-exponent schedule saves29 operations from the
-[557-operation baseline](neary_woods_universal_tag557.md), and the
-fixed frame coefficient E also bounds the duration. The full
-ordinary-input, exact-counter and fixed-production interfaces are proved.
+The explicit [U9 tag polynomial](neary_woods_universal_u9_tag_chain.md)
+now gives **450 certificate /524=318M+206A polynomial operations**,
+25 comparisons, 69 positive witnesses and four positive program parameters.
+Its 127-multiplication fixed-exponent schedule improves the
+[528-operation U15 successor](neary_woods_universal_tag_chain.md)
+by four operations. The fixed frame coefficient E also bounds the duration.
+The ordinary-input, exact-counter and fixed-production interfaces are proved
+on the U9 simulation slice with its persistent nonempty suffix.
 Huge fixed numerals have exact finite recipes; every use is charged.
-Its total degree is at most496070855427922989652813345268287100, so
-the805 construction remains a much lower-degree alternative. The
-separate75/87 frontier is unchanged.
+Its total degree is at most 26082961986495105871681692197398140, so
+the 805 construction remains a much lower-degree alternative. The
+[557-operation baseline](neary_woods_universal_tag557.md)
+remains reproducible. The separate 75/87 frontier is unchanged.
 
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
 retains **75=41M+34A** with **20 positive witnesses and nine equations**.
@@ -1072,6 +1074,8 @@ New research and the completed75-operation construction:
 | [Complete fixed-family tag compiler](binary_tag_complete_dyadic_compiler.md) | Illustrative399=194M+205A,69w,25eq,degree4452; generic H161 count396+mu(D). | Fully paid ordinary-input recoder, shared-counter loader and independent nonempty history. The illustrative word family is not universal. |
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
+| [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [U9 clockwise/tag metadata](neary_woods_u9_tag_metadata.md) | Actual binaryQ1968, beta1182020, D47946621298704238734708993009920. | Actual table, physical length64n+b, positive ordered data blocks and shared counter. The known singleton-A escape lies outside the proved slice. |
 | [U15 clockwise/tag metadata](neary_woods_u15_tag_metadata.md) | Actual binaryQ3089,beta1854620,D911894954830740789802965708213760,mu(D)160. | Full sparse CTS rows, track counts, physical interior cut, positive frame coefficients and shared counter width. No expanded giant production needed. |
 | [Compressed tag program interface](binary_tag_parameterized_compressed_compiler.md) | Normalized397+mu(D),69w,25eq, degree bound544D+1660; five positive program ports. | Exact fixed numeral recipes; direct duration=bound+gap costs1A. Whole arithmetic source is complete on valid fixed-word program slices. |
 | [Ordinary TM to clockwise compiler](ordinary_tm_clockwise_compiler.md) | Actual binary table:Q=(C-1)2^(a-1)+(2a-1)E+2. | Left/right/stationary moves, blank extensions, rejecting loops and padding prelude are explicit. Fixed framed inputs may use their actual interior head cut. |

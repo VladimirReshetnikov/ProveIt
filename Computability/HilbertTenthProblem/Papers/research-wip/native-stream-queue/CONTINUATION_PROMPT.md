@@ -559,11 +559,30 @@ identities after the program substitution; modular full-output checks
 supplement the exponent proof. The557 source remains the baseline.
 Neither chain optimality nor exact total degree is claimed.
 
-Next fixed-machine lead: U9's bit pairs A3 A1 versus A1 A3 have16
-physical symbols, so four-bit binary coding would give64n+b and
-counter128n. Actual table metadata suggests fewer states and a smaller D;
-its interior cut, valid simulation slice and full arithmetic composition
-must be reviewed separately before reporting another universal bound.
+The [U9 metadata and input theorem](neary_woods_u9_tag_metadata.md)
+and [complete U9 arithmetic composition](neary_woods_universal_u9_tag_chain.md)
+now close that smaller-machine route. Actual bit pairs A3 A1 versus A1 A3
+have16 physical symbols; the exact original interior cut gives64n+b_S
+binary cells and counter128n for dyadic n>E_S. The valid simulation slice
+has at least six persistent A symbols. Its nonempty remaining suffix
+supports the primary U9 index/copy/restore proof and excludes the known
+singleton-A escape; do not cite unrestricted arbitrary-bi-tag simulation.
+
+The actual Q1968 table yields z59101,beta1182020 and
+D47946621298704238734708993009920. A127-multiplication exact exponent
+chain gives **524=318M+206A**, 450 certificate,69w25eq and four positive
+program parameters. Degree is at most26082961986495105871681692197398140.
+Raw602 and old-unit527 variants remain. Source/proof/fresh-default reviews
+passed, with independently addressed production letters and signed
+whole-DAG identities. The U15 528/557 routes and separate75/87 frontier
+remain unchanged.
+
+Next machine lead: exact graph reachability and output-word bisimulation
+can merge binary-clockwise control states while preserving every tape/head
+trajectory and halting. Adding unreachable copy states can then improve
+the fixed exponent's addition chain. Temporary counts are not complete
+universal bounds: record the actual quotient/padded table, rebuild CTS/tag
+metadata, and review the entire composition before promoting a successor.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 is separately preserved: remove the extra Z from C=q−F−Z−alpha−2dx,

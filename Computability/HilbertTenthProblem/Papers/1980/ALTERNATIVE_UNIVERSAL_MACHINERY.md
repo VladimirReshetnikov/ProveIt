@@ -29,17 +29,19 @@ and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_brac
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [U15 tag successor](../research-wip/native-stream-queue/neary_woods_universal_tag_chain.md)
-now gives **454 certificate /528=322M+206A polynomial operations**,
-25 comparisons,69 positive witnesses and four positive program parameters.
-A131-multiplication fixed-exponent schedule saves29 operations from the
-[557-operation baseline](../research-wip/native-stream-queue/neary_woods_universal_tag557.md), and the
-fixed frame coefficient E also bounds the duration. The full
-ordinary-input, exact-counter and fixed-production interfaces are proved.
+The explicit [U9 tag polynomial](../research-wip/native-stream-queue/neary_woods_universal_u9_tag_chain.md)
+now gives **450 certificate /524=318M+206A polynomial operations**,
+25 comparisons, 69 positive witnesses and four positive program parameters.
+Its 127-multiplication fixed-exponent schedule improves the
+[528-operation U15 successor](../research-wip/native-stream-queue/neary_woods_universal_tag_chain.md)
+by four operations. The fixed frame coefficient E also bounds the duration.
+The ordinary-input, exact-counter and fixed-production interfaces are proved
+on the U9 simulation slice with its persistent nonempty suffix.
 Huge fixed numerals have exact finite recipes; every use is charged.
-Its total degree is at most496070855427922989652813345268287100, so
-the805 construction remains a much lower-degree alternative. The
-separate75/87 frontier is unchanged.
+Its total degree is at most 26082961986495105871681692197398140, so
+the 805 construction remains a much lower-degree alternative. The
+[557-operation baseline](../research-wip/native-stream-queue/neary_woods_universal_tag557.md)
+remains reproducible. The separate 75/87 frontier is unchanged.
 
 The [four-tile binary-tag representation](../research-wip/native-stream-queue/binary_tag_four_tile_history.md)
 uses a fixed terminal boundary in place of a selectable terminal pair.
