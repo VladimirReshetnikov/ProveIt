@@ -215,6 +215,24 @@ of an existing draft; semantic consolidation is deferred to the post-
   agrees with the article above; for other complements the two treat
   different coordinates and complement each other.  Unreviewed; its
   numerics are not certificates; no Lean statement.
+- [`Second_Order_Critical_Complements_Fabius_Conditioning/`](Second_Order_Critical_Complements_Fabius_Conditioning/),
+  *Second Order Critical Complements in Fabius Conditioning* (9-page A4
+  PDF, 685-line source, an mpmath diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It continues the two bullets above in
+  the window where the number `m` of hidden bulk coordinates is
+  comparable with `log n`, for both of their masks (the last `m` hidden,
+  as in the second bullet, and the first `m` hidden, as in the first
+  bullet's fixed-`r` setting).  It expands the overlap through the
+  constant term, where the geometric phase reappears, and the next
+  `1/m` term, uniformly in that window, with the `log log n` and
+  rounding corrections made explicit; and it proves that hiding the
+  earliest coordinates leaves eventually more overlap than hiding the
+  latest.  This answers the second article's question on second-order
+  crossover terms and the logarithmic slice of the first article's
+  growing-complement question; thinner and thicker complements stay
+  open.  Unreviewed; its numerics are not certificates; no Lean
+  statement.
 - [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
   Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy
