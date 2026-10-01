@@ -1,4 +1,18 @@
 """Adaptive exact local-arc certificate; all accepted cells are rational enclosures."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from pathlib import Path
 import json,time,hashlib
@@ -33,5 +47,6 @@ while stack:
 area=sum((F(c[1])-F(c[0]))*(F(c[3])-F(c[2]))for c in accepted)
 if area!=(hi-lo)*qmax:raise ArithmeticError('domain area')
 out=dict(all_cells_strict=True,domain_t=[str(lo),str(hi)],domain_theta_over_pi=['0',str(qmax)],accepted_cells=len(accepted),visited_nodes=visited,maximum_depth=maxdepth,maximum_Q_squared_upper=str(maxq),strict_domain_slack=True,cells=accepted,seconds=time.time()-start)
-(root/'local_complex_arc_certificate.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('local_complex_arc_certificate.json', json.dumps(out,indent=2)+'\n')
 print('LOCAL CERTIFICATE PASSES',len(accepted),'cells; max Q squared',float(maxq),'seconds',round(time.time()-start,2),flush=True)

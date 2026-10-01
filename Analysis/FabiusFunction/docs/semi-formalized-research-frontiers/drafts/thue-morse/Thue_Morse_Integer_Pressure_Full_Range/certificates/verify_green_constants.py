@@ -1,4 +1,18 @@
 """Exact rational checks used by the C1 frozen Green bound; no floating decisions."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from pathlib import Path
 import json
 from exact_intervals import F,I,S,iv,PI,sinp,cosp
@@ -38,5 +52,6 @@ assert row0<F(4,5) and row1<F(4,5)
 assert gamma*F(5*(d0+1)+8,5*d0+8)<1
 assert F(8,9)*F(d0+1,d0)<1
 out={'r':'2/5','hprime_quarter':list(map(str,[F(quarter.lo,S),F(quarter.hi,S)])),'hprime_three_eighths_upper':str(F(three_eighths.hi,S)),'hprime_half_lower':str(F(half.lo,S)),'H_quarter_upper':str(F(Hq.hi,S)),'L_interval':list(map(str,[F(L.lo,S),F(L.hi,S)])),'bminus_two_fifths_upper':str(F(bminus.hi,S)),'pminus_two_fifths_upper':str(F(pm.hi,S)),'cutoff_d':d0,'row0_less_than_four_fifths':row0<F(4,5),'row1_less_than_four_fifths':row1<F(4,5),'tail_geometric_cutoff':K,'all_comparisons_exact':True}
-Path(__file__).with_name('green_constants_certificate.json').write_text(json.dumps(out,indent=2))
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('green_constants_certificate.json', json.dumps(out,indent=2))
 print(json.dumps(out,indent=2))

@@ -49,6 +49,8 @@
 \aliascntresetthe{remark}
 % ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (no counter is shifted).
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a second unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\TT}{\mathbb T}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\CC}{\mathbb C}
@@ -1396,6 +1398,29 @@ Differentiating \cref{eq:feedback} two additional times reduces the
 problem to the second phase derivative of $h_{m,c}(1/2)$ at zero.
 The completely explicit base spectrum might permit a finite resolvent
 sum with a useful sign structure.
+% ed. (2026-10-01): this question is answered by later packages (batch 72)
+\begin{ednotelater}
+The positivity question is answered, and the executed checks are overtaken, by thirteen later
+packages filed beside this article on 2026-10-01 (batch~72 of the repository's
+\path{docs/incoming/}; unreviewed). \path{../Thue_Morse_Integer_Pressure_First_Positive/}
+proves $[t^{2m+2}]p_m(t/\pi)>0$ for every integer $m\ge2$ along the route suggested here: the
+quadratic coefficient in $a=\tan\pi c$ of the normalized eigenfunction at $1/2$ is a finite sum
+over the atomic eigenbasis with positive rational coefficients built from Bernoulli numbers,
+and
+\[
+ [t^{2m+2}]p_m(t/\pi)=\sum_{j=1}^{m-1}b_{m,j}R_{m-j}+\frac{2m}{3}R_m-\frac{m}{m+1}R_{m+1},
+\]
+with $R_m$ as in \cref{thm:main-jet} and explicit positive rationals $b_{m,j}$. That is a
+closed form in this finite sense; no elementary closed form is given, and the reduced
+denominators are left open there. Moreover every even coefficient strictly between degrees
+$2m$ and $6m$ is positive for every $m\ge2$
+(\path{../Thue_Morse_Integer_Pressure_Full_Range/}), and degree $6m$ cannot be included in
+general: $[t^{12}]p_2(t/\pi)=-35360872/93555$. The first negative degree $N_m$ above $2m$
+satisfies $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$
+(\path{../Thue_Morse_Integer_Pressure_First_Negative/}), and it is certified for
+$2\le m\le128$ in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}. The other
+packages of the series are listed in the README of \path{../}.
+\end{ednotelater}
 
 \subsection{Optimal phases for higher moments}
 \begin{question}

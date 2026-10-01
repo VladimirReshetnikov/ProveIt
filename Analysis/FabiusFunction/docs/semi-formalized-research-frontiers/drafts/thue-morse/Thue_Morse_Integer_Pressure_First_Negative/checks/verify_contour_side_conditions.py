@@ -1,4 +1,18 @@
 """Exact non-grid constants and saddle coverage for the first-negative contour proof."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from pathlib import Path
 import json,sys
@@ -37,5 +51,6 @@ checks={
  'third_cluster_range':F(833,250)<F(7,2),
 }
 need(all(checks.values()),'local complex side condition')
-Path(__file__).with_name('contour_side_conditions.json').write_text(json.dumps(dict(all_checks_passed=True,checks=checks,second_saddle_t_interval=[str(tlo),str(thi)],slope_interval=['33/10','833/250'],both_model_exponential_rates_exceed=3),indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('contour_side_conditions.json', json.dumps(dict(all_checks_passed=True,checks=checks,second_saddle_t_interval=[str(tlo),str(thi)],slope_interval=['33/10','833/250'],both_model_exponential_rates_exceed=3),indent=2)+'\n')
 print('All local analytic constants, saddle coverage, and both model rates>3 pass exactly.')

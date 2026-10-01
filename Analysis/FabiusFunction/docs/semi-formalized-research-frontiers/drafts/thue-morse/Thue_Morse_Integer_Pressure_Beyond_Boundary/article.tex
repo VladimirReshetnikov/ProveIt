@@ -6,6 +6,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}\newcommand{\ev}{\operatorname{ev}}\newcommand{\Z}{\mathbb Z}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \title{Positivity Beyond the First Thue Morse Feedback Boundary}
 \author{Research note prepared for Vladimir Reshetnikov with OpenAI}\date{1 October 2026}
 \begin{document}\maketitle
@@ -55,6 +57,14 @@ m\ge2048,\qquad 200(s+1)\log(2m)\le m.
 \end{equation}
 \end{theorem}
 Thus the pressure range extends beyond degree $4m$ by an unbounded number of even degrees. The logarithmic condition allows offsets of order $m/\log m$. Both cutoffs are deliberately loose. The statement does not prove positivity throughout $2m<\deg<6m$. The eventual scope for responses is necessary: $H_{2,3}=-488/27$, whereas its degree-$10$ pressure counterpart is positive \cite{boundary}.
+% ed. (2026-10-01): the pressure half of the theorem is contained in the full range
+\begin{ednote}
+Both conditions \eqref{eq:strip} and \eqref{eq:logstrip} imply $s<m$, so the pressure half of
+Theorem~\ref{thm:main}, $E_{m,m+s}>0$, is contained in Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/}
+($E_{m,r}>0$ for every $m\ge2$ and $1\le r<2m$). The response positivity $H_{m,m+s}>0$ and the
+fixed-offset asymptotic \eqref{eq:asymptotic} are this note's own; for $s=0$ the asymptotic is
+that of \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}.
+\end{ednote}
 
 \section{An exact two-cluster expansion}
 Work in the invariant Fourier space with indices $1-m,\ldots,m-1$. Let $A=V_0$, $h_0=h_{a=0}$, $Pf=f(0)h_0$, $Q=I-P$, and $\ev f=f(1/2)$. The atomic basis
@@ -304,7 +314,25 @@ Its logarithm divided by $d$ is at most $31/1600-10/21<0$, using $\log60<5$ and 
 The bundle contains exact Fourier recursions checking all $195$ pressure coefficients in $2m<\deg<6m$ for $m=2,\ldots,14$, and $35$ independent checks of~\eqref{eq:restoration} for all $s<m$, $m=2,\ldots,8$. It includes a finite-coordinate matching check, the rational strip verifier, and the earlier half-angle certificate locating the saddle. These calculations check identities and constants; the universal results follow from the analytic inequalities.
 
 The full conjecture $E_{m,r}>0$ for every $1\le r<2m$ remains open. Finite first-negative-degree data and the heuristic rate near $6.662966658$ do not enter the proof. Uniform sharp cutoffs or a formula for those first negative degrees require further control of the feedback clusters.
+% ed. (2026-10-01): the conjecture and the rate of this paragraph are settled by later packages
+\begin{ednote}
+The conjecture of the preceding paragraph, also called open in the abstract, is proved for
+every $m\ge2$ in \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and it is sharp:
+$E_{2,4}=[t^{12}]p_2(t/\pi)=-35360872/93555<0$. The rate near $6.662966658$ is now a theorem:
+the first negative degree satisfies $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$ (\path{../Thue_Morse_Integer_Pressure_First_Negative/}), and $N_m$
+is certified for $2\le m\le128$ in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}.
+\end{ednote}
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the fifth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{integer}, cited as \emph{Integer Thue--Morse Pressure}, is \path{../Thue_Morse_Integer_Pressure/}, whose title
+is \emph{Integer Pressure and a Missing Taylor Coefficient} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical); \cite{triangle},
+cited under the title \emph{The Full Pre Feedback Positivity Triangle for Thue Morse Pressure},
+is \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, titled \emph{The Full Positive Triangle in Integer Thue Morse
+Pressure}; and \cite{boundary} is \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}. The copies of these three
+sources that the package bundled under \path{background/} were not filed.
+\end{ednote}
 \begin{thebibliography}{9}\small\raggedright
 \bibitem{integer} V. Reshetnikov, \emph{Integer Thue--Morse Pressure}, ProveIt incoming research source, revision \texttt{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, source blob \texttt{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.
 \bibitem{triangle} \emph{The Full Pre Feedback Positivity Triangle for Thue Morse Pressure}, companion research report prepared for V. Reshetnikov with OpenAI, 1 October 2026.

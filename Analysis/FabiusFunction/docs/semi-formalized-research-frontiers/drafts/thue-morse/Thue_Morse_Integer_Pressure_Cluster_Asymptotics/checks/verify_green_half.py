@@ -1,4 +1,18 @@
 """Exact scalar certificate for the new radius-one-half Green norm."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from dataclasses import dataclass
 from math import factorial
@@ -116,5 +130,6 @@ result={"radius":"1/2","cutoff_d":d0,"scale":str(S),"product_truncation":K,
  "bminus_derivative_lower_cells":monotone,"bminus_two_fifths":out(bminus),
  "pminus_two_fifths":out(pminus),"row0":str(row0),"row1":str(row1),
  "all_comparisons_exact":True,"all_comparisons_passed":True}
-Path(__file__).with_name('scalar_certificate.json').write_text(json.dumps(result,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('scalar_certificate.json', json.dumps(result,indent=2)+'\n')
 print(json.dumps({k:v for k,v in result.items() if k not in ['row0','row1','bminus_derivative_lower_cells']},indent=2))

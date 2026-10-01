@@ -225,3 +225,25 @@ Made in the editorial pass after batch 71 of `docs/incoming/` (see
   for the filed files.
 - `README.md`: the page count, the parenthesis after the 2026-09-30 bullet
   on the growing early-coordinate complement, and this section.
+
+A third note of the same date was added in the editorial pass after batch 72
+of `docs/incoming/`:
+
+- `article.tex`: after the batch-71 note that follows the first question of
+  Section 13, a reciprocal note: Corollary 4.2 of
+  `../Strict_Fabius_Conditioning_Order/` (batch 72, unreviewed) proves, in the
+  model of Section 2 (its tilt is `rho'' q^{-(n+1)}`, so `rho'' = rho q`), that
+  the block `{r+1, ..., n}` observed here has strictly more overlap than the
+  prefix `{1, ..., n-r}` for every `0 < q < 1`, `rho > 0`, `n >= 2` and
+  `1 <= r < n`; so the comparison that the batch-71 note states for large `n`
+  (fixed `r >= 1`, or `r_n/log n -> c`) holds at every size. The asymptotic
+  formulas are not affected.
+- `article.pdf`: rebuilt with `latexmk -pdf` (MiKTeX pdfTeX 1.40.29), on a
+  copy: 26 pages (as before), 1,011,766 bytes, with no error, undefined
+  reference, multiply defined label, duplicate destination or overfull box
+  (the three underfull boxes of the previous build remain); every font is
+  embedded and none is Type 3. The page carrying the note was rendered and
+  inspected.
+- `validation.json`: `pdf_bytes`, `pdf_sha256` and the `article.tex` entry of
+  `effective_tex_input_sha256` were recomputed for the filed files.
+- `README.md`: this paragraph and the three bullets above.

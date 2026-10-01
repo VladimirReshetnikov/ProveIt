@@ -1,4 +1,18 @@
 """Independent exact Fourier calculation of the second normalized eigenfunction jet."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from pathlib import Path
 import json
 import sympy as s
@@ -33,5 +47,6 @@ if __name__=='__main__':
     for row in rows:
         if row['m'] in known:assert row['C']==known[row['m']]
     result={'convention':'V_a = L_(atan(a)/pi) / cos(atan(a))^(2m), normalized h_a(0)=1','rows':rows,'source_m2_m3_m4_exactly_matched':True,'all_checks_passed':True}
-    (Path(__file__).resolve().parent.parent/'data'/'second_response_checks.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('second_response_checks.json', json.dumps(result,indent=2)+'\n')
     print(json.dumps(result,indent=2))

@@ -1,4 +1,18 @@
 """Exact weighted outer-product certificate; no floating decisions."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from exact_intervals import *
 R=iv(F(2,5));N=1024;Z=512;worst=-1;where=None;start=time.time()
 for cell in range(N):
@@ -30,5 +44,6 @@ for cell in range(N):
   if normalized>worst:worst=normalized;where=[cell,k]
   assert normalized*10000 <2401*S,(cell,k,F(normalized,S))
 result=dict(statement='sup |H_a(x)|/H_(2/5)(dist(x,Z)) < 49/100 for |a|<=2/5 and 1<=|x|<=2',x_cells=N,cos_phase_cells=Z,fixed_point_scale=str(S),machin_pi_lower=str(plo),machin_pi_upper=str(phi),squared_bound_upper=str(F(worst,S)),squared_threshold='2401/10000',worst_cell=where,all_cells_strict=True)
-Path(__file__).with_name('weighted_outer_certificate.json').write_text(json.dumps(result,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('weighted_outer_certificate.json', json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))

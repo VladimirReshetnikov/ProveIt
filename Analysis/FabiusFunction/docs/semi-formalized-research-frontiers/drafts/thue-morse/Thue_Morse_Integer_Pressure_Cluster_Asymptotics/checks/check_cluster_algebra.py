@@ -1,4 +1,18 @@
 """Independent exact Lagrange-polynomial regressions with the standard library."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from math import factorial
 from pathlib import Path
@@ -38,4 +52,5 @@ for k in range(1,13):
  rows.append(dict(k=k,monomials=len(C),before_parity=str(leading),after_parity=str(2*leading)))
  print(k,len(C),2*leading)
 out=dict(all_exact_checks_pass=True,finite_regressions_only=True,general_identity_proved_in_article=True,rows=rows)
-Path(__file__).with_name('cluster_algebra_stdlib.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('cluster_algebra_stdlib.json', json.dumps(out,indent=2)+'\n')

@@ -67,7 +67,7 @@ lists the formalization targets.
 
 [`Thue_Morse_Integer_Pressure/`](Thue_Morse_Integer_Pressure/) holds
 *Integer Pressure and a Missing Taylor Coefficient* (25-page A4 PDF,
-1,621-line source, two exact-arithmetic verifiers), filed on 2026-09-28 by a
+1,646-line source, two exact-arithmetic verifiers), filed on 2026-09-28 by a
 quick archival intake.  For the phase-shifted Riesz weight `cos²π(x−c)`
 under the doubling map it claims that every positive-integer pressure
 `p_m(c)` is real-analytic in `c` (a simple Perron eigenvalue of an explicit
@@ -77,7 +77,10 @@ a strict local maximum of the sixth-moment rate.  At `c = 1/2` these are the
 Mauduit–Montgomery–Rivat moments of the Thue–Morse generating product that
 `Thue_Morse_Frontier_Deductions/` treats (fourth moment as a Stern energy),
 and the `L^q` pressure of the sine cocycle in
-`../rvachev_up_fourier_decay/`.  Unreviewed; no Lean statement.
+`../rvachev_up_fourier_decay/`.  Its question "The first coefficient after
+the cancellation" is answered by the thirteen arrivals of 2026-10-01 below
+(a dated editorial note at the question says so).  Unreviewed; no Lean
+statement.
 
 ## Fractional pressure at the atomic phase (arrival, 2026-09-29)
 
@@ -208,11 +211,20 @@ archives and of `Thue_Morse_Integer_Pressure/article.tex` were not filed.
 A nine-page predecessor of the full-range package (*… for Large Integer
 Orders*, `m ≥ 4096`) and a duplicate archive were not filed.  The
 feedback-boundary and full-range packages name trace and interval
-archives that were not delivered.  Several results are proved more than
-once (the triangle contains the first two packages; the full range
-contains the pressure statements of the boundary, offset and linear
-packages); consolidating the thirteen into one companion volume is a
-follow-up.  Unreviewed; no Lean statement.
+archives that were not delivered; the dataset's intervals re-certify the
+full range's finite part (positive throughout `(2m, 6m)` for
+`2 ≤ m ≤ 128`, checked on filing).  The editorial pass of 2026-10-01 gave
+every package a dated series map naming these directories and the filed
+directory of every source it cites, and notes saying which package
+subsumes which (the triangle contains the first two packages; the full
+range contains the pressure statements of the boundary, offset and linear
+packages; the first-negative asymptotic implies the `liminf` bound; the
+densities imply the infinite sign changes) and which later package answers
+each question left open; every checker that rewrote a record now writes to
+`rerun/` (see each README, "Editorial amendments").  Consolidating the
+thirteen into one companion volume remains a follow-up.  Unreviewed; no
+Lean statement of these results (crosswalk notes in the first-positive and
+cluster packages name neighbouring declarations).
 
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total

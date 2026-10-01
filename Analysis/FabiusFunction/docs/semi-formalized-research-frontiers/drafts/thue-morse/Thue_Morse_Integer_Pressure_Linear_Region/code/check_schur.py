@@ -1,4 +1,18 @@
 """Exact Schur-complement coefficients below the third feedback cluster."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from pathlib import Path
 import json,sys,time
 import sympy as s
@@ -42,8 +56,11 @@ def run(m):
     old={x['degree']:s.Rational(x['coefficient'])for x in row['coefficients_after_missing']}
     assert E==[old[2*m+2*r]for r in range(1,2*m)]
     out={'m':m,'F':list(map(str,F)),'G':list(map(str,G)),'feedback_K':list(map(str,K)),'pressure':list(map(str,E)),'pieces':pieces,'F_signs':[int(s.sign(v))for v in F],'G_signs':[int(s.sign(v))for v in G],'pressure_signs':[int(s.sign(v))for v in E],'exact_direct_phase_comparison':True,'runtime_seconds':time.time()-start}
-    (ROOT/f'schur_m{m:03}.json').write_text(json.dumps(out,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write(f'schur_m{m:03}.json', json.dumps(out,indent=2)+'\n')
     print('m',m,'F signs',out['F_signs'],'G signs',out['G_signs'],'E signs',out['pressure_signs'],'seconds',round(time.time()-start,2),flush=True)
 
 if __name__=='__main__':
-    for m in map(int,sys.argv[1:] or range(2,9)):run(m)
+    # ed. (2026-10-01): the moment orders are the positional arguments; --output-dir is read by _ed_write.
+    import argparse as _ap;_eda=_ap.ArgumentParser(add_help=False);_eda.add_argument('--output-dir')
+    for m in map(int,_eda.parse_known_args()[1] or range(2,9)):run(m)

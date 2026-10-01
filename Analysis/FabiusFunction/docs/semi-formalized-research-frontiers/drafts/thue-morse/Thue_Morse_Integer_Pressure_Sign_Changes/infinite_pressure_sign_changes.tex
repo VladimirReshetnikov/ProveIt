@@ -7,6 +7,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\T}{\mathbb T}\newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}\newcommand{\E}{\mathbb E}
 \newcommand{\Lop}{\mathcal L}
@@ -53,6 +55,12 @@ Thus neither sign eventually disappears, and neither sign is exponentially small
 After zero coefficients are omitted, infinitely many sign changes occur.
 This does not imply consecutive alternation or a density of either sign.
 For $m=1$, pressure is identically zero and the conclusion is false.
+% ed. (2026-10-01): notation: R_m here differs from R_m elsewhere in the series
+\begin{ednote}
+Here $R_m$ is the Taylor radius of $P_m$. In \path{../Thue_Morse_Integer_Pressure/} and in every other package of
+this series, $R_m$ denotes instead
+$2(2^{2m}-1)\zeta(2m)/\pi^{2m}=\sum_{w\in\mathbb Z+1/2}(\pi w)^{-2m}$.
+\end{ednote}
 
 The analytic mechanism is classical: a finite-radius nonnegative series has a singularity at its positive radius, by Pringsheim \cite{FS}. The application to this pressure family, rather than that general principle, is the result of this note.
 The argument is independent of finite coefficient sampling.
@@ -349,10 +357,27 @@ A targeted literature search found no earlier statement, but this is not an exha
 The proof does not locate $R_m$, select a dominant algebraic branch point, give a density of signs, or determine the asymptotic location of $N_m$ as $m$ grows.
 A real discriminant zero can involve two other eigenvalues and need not limit the pressure Taylor series.
 The first-negative table should not be used as a substitute for that branch analysis.
+% ed. (2026-10-01): later packages of the series go beyond this note
+\begin{ednote}
+Later packages of this series go beyond this note. \path{../Thue_Morse_Integer_Pressure_Sign_Densities/} proves that
+each strict sign has lower natural density at least $1/[16m(m-1)^2]$ among the $c_{m,k}$, and
+separately among the $c_{m,2j}$ and among the $c_{m,2j+1}$. This contains the infinite-sign
+statements of Theorems~\ref{thm:sign} and~\ref{thm:filters}, but not the radius bound,
+\eqref{eq:scale} or the corollary on $N_m$, and its proof uses the finite radii and the
+continuation proved here. \path{../Thue_Morse_Integer_Pressure_First_Negative/} proves $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$.
+\path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} certifies $N_m$ for $2\le m\le128$; for $m\le20$ its values
+equal the table above. The dominant singularity is not located in the series.
+\end{ednote}
 
 The source bundle contains this editable manuscript, a build script, the exact rational checker and data for $m=2,\ldots,20$, the independent characteristic-polynomial checker, validation records and source hashes.
 The proof has been checked by direct derivation and exact arithmetic; it is not externally refereed or formally verified.
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the eighth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{Repo} is \path{../Thue_Morse_Integer_Pressure/} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical), and \cite{Window}, ``delivered as report
+63'', is \path{../Thue_Morse_Integer_Pressure_Full_Range/}.
+\end{ednote}
 \begin{thebibliography}{9}
 \bibitem{Repo}
 \emph{Integer Pressure and a Missing Taylor Coefficient: Analytic phase dependence and the sixth-moment optimum for generalized Thue--Morse products}.

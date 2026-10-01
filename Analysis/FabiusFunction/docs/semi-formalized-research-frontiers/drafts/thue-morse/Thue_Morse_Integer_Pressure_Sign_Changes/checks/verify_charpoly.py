@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
 """Independent characteristic-polynomial check of finite pressure coefficients."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from pathlib import Path
 from fractions import Fraction as F
 from math import factorial
@@ -47,5 +61,6 @@ for m in range(2,7):
     print(rows[-1],flush=True)
 if F(json.loads((ROOT/"m002.json").read_text())["pressure_even_coefficients"][6])!=F(-35360872,93555):
     raise ArithmeticError("m2 endpoint mismatch")
-(ROOT/"independent_charpoly_checks.json").write_text(json.dumps({"passed":True,"rows":rows,"total_coefficients":sum(r["exact_coefficients_compared"] for r in rows)},indent=2)+"\n")
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('independent_charpoly_checks.json', json.dumps({"passed":True,"rows":rows,"total_coefficients":sum(r["exact_coefficients_compared"] for r in rows)},indent=2)+"\n")
 

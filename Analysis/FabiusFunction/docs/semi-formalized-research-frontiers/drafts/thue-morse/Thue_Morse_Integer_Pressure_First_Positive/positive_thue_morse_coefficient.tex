@@ -10,6 +10,8 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{question}{Question}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\Z}{\mathbb Z}\newcommand{\T}{\mathbb T}\newcommand{\E}{\mathcal E}
 \newcommand{\Lop}{\mathcal L}\newcommand{\ii}{\mathrm i}
 \title{The First Positive Coefficient in Integer Thue Morse Pressure}
@@ -74,6 +76,18 @@ The negative lower even coefficients, the missing coefficient, and the new resul
  +C_mt^{2m+2}+O_m(t^{2m+4}),\qquad C_m>0.
 \end{equation}
 The sign statement is uniform over all integer orders, although the local analytic remainder here is for each fixed $m$.
+% ed. (2026-10-01): later packages of the series contain the theorem
+\begin{ednote}
+In the notation of the later packages of this series, $C_m=E_{m,1}$ and
+$B_m=H_{m,1}=[a^2]h_a(1/2)$, by \eqref{eq:pointwise} and \eqref{eq:Bfinite}, since
+$F_{2j}(1/2)=R_{m-j}$. Theorem~\ref{thm:main} and the positivity of $B_m$ are the case $r=1$
+of Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/} ($H_{m,r}>0$ and $E_{m,r}>0$ for
+$1\le r<m$), proved there by a coefficientwise comparison of dyadic tangent products, and
+$C_m>0$ is also the case $r=1$ of Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/} ($E_{m,r}>0$
+for $1\le r<2m$). The finite Bernoulli formula, the positivity of $[a^2]h_a(x)$ at every
+noninteger $x$ (Theorem~\ref{thm:finitebasis}), the lower bound \eqref{eq:lower} and
+Corollary~\ref{cor:large} are proved only here.
+\end{ednote}
 
 \section{Local transfer data and the feedback identity}\label{sec:local}
 The space
@@ -380,10 +394,31 @@ Can the reduced denominators of $C_m$ be characterized uniformly from \eqref{eq:
 \begin{question}
 What is the sign pattern of subsequent coefficients $[t^{2m+2r}]p_m(t/\pi)$ for $r\ge2$? Higher inverse-branch derivatives introduce products of tangent sums, and the domination used here requires additional analysis at the smallest moment orders.
 \end{question}
+% ed. (2026-10-01): the second question is answered by later packages of the series
+\begin{ednote}
+The second question is answered by later packages of this series:
+$[t^{2m+2r}]p_m(t/\pi)>0$ for every $m\ge2$ and $1\le r<2m$, that is, at every even degree
+strictly between $2m$ and $6m$ (\path{../Thue_Morse_Integer_Pressure_Full_Range/}), and this range is sharp, since
+$[t^{12}]p_2(t/\pi)=-35360872/93555$. Beyond $6m$ both signs occur infinitely often, with
+positive lower densities (\path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}). The
+first negative degree $N_m$ above $2m$ satisfies $N_m\ge6m$ and $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$ (\path{../Thue_Morse_Integer_Pressure_First_Negative/}), and it is certified for $2\le m\le128$ in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}.
+The first and third questions are not treated in the series.
+\end{ednote}
 \begin{question}
 Can the local expansion be made uniform in a joint limit $m\to\infty$, $t\to0$? Formula~\eqref{eq:largem} concerns the coefficient sequence; it does not provide a uniform radius or remainder for the pressure itself.
 \end{question}
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the first of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{integer} is \path{../Thue_Morse_Integer_Pressure/}; the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical. A note of 2026-10-01 at its question
+``The first coefficient after the cancellation'' now records the answer given here and its
+extensions. No Lean declaration of the repository concerns $p_m$ or its Taylor coefficients;
+the Bernoulli evaluation of $\zeta(2j)$ that makes the $c_j$ and $R_m$ rational is
+\path{Fabius.evenZeta_eq_bernoulli} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/EvenZetaValues.lean}, for the series
+\path{Fabius.evenZeta} of \path{EvenZetaSeries.lean} in the same directory.
+\end{ednote}
 \begin{thebibliography}{9}\small
 \bibitem{integer} \emph{Integer Pressure and a Missing Taylor Coefficient: Analytic phase dependence and the sixth-moment optimum for generalized Thue--Morse products}. ProveIt research manuscript, 28 September 2026, current version inspected 1 October 2026.\newline
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}

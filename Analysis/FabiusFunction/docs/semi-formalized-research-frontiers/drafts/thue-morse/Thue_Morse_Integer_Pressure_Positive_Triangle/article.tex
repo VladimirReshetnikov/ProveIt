@@ -9,6 +9,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\Z}{\mathbb Z}\newcommand{\E}{\mathcal E}\newcommand{\ii}{\mathrm i}
 \newcommand{\Lop}{\mathcal L}
 \title{The Full Positive Triangle in Integer Thue Morse Pressure}
@@ -60,6 +62,17 @@ then
 \end{align}
 \end{theorem}
 At fixed $m$, the positive pressure degrees supplied by this theorem are $2m+2,2m+4,\ldots,4m-2$. The statement is about coefficients; it does not assert a uniform radius of analyticity as $m$ varies. A later coefficient can be negative: the exact value $E_{2,4}=-35360872/93555$ is recalled in Section~\ref{sec:checks}.
+% ed. (2026-10-01): the theorem contains the first two packages of the series and is contained in the full range
+\begin{ednote}
+For $r=1$, Theorem~\ref{thm:main} contains Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_First_Positive/}
+($E_{m,1}>0$; that note proves $[a^2]h_a(x)>0$ at every noninteger $x$, not only at $1/2$).
+It contains Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Higher_Positive/} except the case $m=r=2$
+($H_{2,2}=536/27$, $E_{2,2}=6836/189$), which lies at degree $4m$ and is covered by
+\path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}. Its pressure statement is in turn contained in
+Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/} ($E_{m,r}>0$ for $1\le r<2m$), which cites this
+theorem for $r<m$; the response positivity and the lower bounds
+\eqref{eq:sharpbound}--\eqref{eq:universalbound} are this note's own.
+\end{ednote}
 
 \section{Local spectral data and the inverse branch formula}
 The finite Fourier space
@@ -320,7 +333,23 @@ Its branch through $(\lambda,C)=(1,1)$ is simple, with $\partial_\lambda\chi=3/8
  &-\frac{35360872}{93555}t^{12}+O(t^{14}).
 \end{align*}
 The included standard-library checker certifies this polynomial residual. Determining the general first negative degree after the positive triangle remains open in this note.
+% ed. (2026-10-01): the first negative degree is determined by later packages of the series
+\begin{ednote}
+It is determined, asymptotically, by later packages of this series. Every even coefficient
+strictly between degrees $2m$ and $6m$ is positive (\path{../Thue_Morse_Integer_Pressure_Full_Range/}), so the first
+negative degree $N_m$ above $2m$ satisfies $N_m\ge6m$, with equality for $m=2,3,4$; it exists
+for every $m\ge2$ (\path{../Thue_Morse_Integer_Pressure_Sign_Changes/}), satisfies $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$ (\path{../Thue_Morse_Integer_Pressure_First_Negative/}), and is certified for $2\le m\le128$ in
+\path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}. The conjecture on individual eigenbasis coefficients
+is not treated in the series.
+\end{ednote}
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the third of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{integer} is \path{../Thue_Morse_Integer_Pressure/} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical), \cite{first} is
+\path{../Thue_Morse_Integer_Pressure_First_Positive/} (main source \path{positive_thue_morse_coefficient.tex}), and
+\cite{higher} is \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}.
+\end{ednote}
 \begin{thebibliography}{9}\small
 \bibitem{integer}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript, 28 September 2026. Version inspected 1 October 2026: commit \nolinkurl{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, blob \nolinkurl{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.\newline
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.

@@ -1,4 +1,18 @@
 """Exact rational side conditions for the uniform-strip proof."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as Q
 from math import factorial
 import json
@@ -27,5 +41,6 @@ checks['log4096_below_nine']=sum(Q(3)**k/factorial(k)for k in range(5))>16
 checks['sqrt_scaled_derivative_signs']=all(B-Q(A,2)-Q(B,2)<=0 for A,B in [(22,8),(2,2),(6,2)])
 checks['log_endpoint_domain']=1600>3 and 4096>3
 assert all(checks.values())
-(Path(__file__).resolve().parents[1]/'data'/'explicit_strip_checks.json').write_text(json.dumps({'all_checks_passed':True,'checks':checks,'scope':'Rational side conditions; the analytic inequalities are proved in explicit_strip_proof.md'},indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('explicit_strip_checks.json', json.dumps({'all_checks_passed':True,'checks':checks,'scope':'Rational side conditions; the analytic inequalities are proved in explicit_strip_proof.md'},indent=2)+'\n')
 print('All',len(checks),'exact side conditions pass')

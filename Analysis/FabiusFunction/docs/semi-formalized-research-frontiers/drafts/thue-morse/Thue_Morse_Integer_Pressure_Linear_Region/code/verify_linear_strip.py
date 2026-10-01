@@ -1,4 +1,18 @@
 """Exact arithmetic side conditions for the linear-strip theorem."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as Q
 from math import factorial
 from pathlib import Path
@@ -26,5 +40,6 @@ for x,y in [(5,132),(6,288),(4,24),(8,768)]:
  checks[f'exp_{x}_exceeds_{y}']=sum(Q(x)**j/factorial(j)for j in range(30))>y
 checks['log_two_below_three_quarters']=sum(Q(3,4)**j/factorial(j)for j in range(5))>2
 assert all(checks.values())
-(Path(__file__).resolve().parents[1]/'data/linear_strip_checks.json').write_text(json.dumps({'all_checks_passed':True,'checks':checks},indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('linear_strip_checks.json', json.dumps({'all_checks_passed':True,'checks':checks},indent=2)+'\n')
 print('All',len(checks),'linear-strip side conditions pass')

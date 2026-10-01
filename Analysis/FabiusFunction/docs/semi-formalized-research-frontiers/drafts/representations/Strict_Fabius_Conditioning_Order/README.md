@@ -61,7 +61,11 @@ written: `../Exact_Fabius_Mask_Order/`, `../Universal_Garbling_Classification/`,
   and inspected.
 - A reciprocal note of 2026-10-01 now stands after Corollary 3.3
   (`cor:comparison`) of
-  `../Second_Order_Critical_Complements_Fabius_Conditioning/`.
+  `../Second_Order_Critical_Complements_Fabius_Conditioning/`, and (added in
+  the editorial pass after batch 72) a second one after the batch-71 note on
+  the first question of Section 13 of
+  `../Critical_Complements_Fabius_Conditioning/`, whose block comparison is
+  the same one (the observed block `{r+1, ..., n}` against the prefix).
 - `checks/verify_strictness_exact.py`: new option `--output-dir`.
   As delivered, the program overwrote the recorded file beside itself, with
   CRLF line endings on Windows; it now writes `checks/rerun/strictness_exact.json` (or

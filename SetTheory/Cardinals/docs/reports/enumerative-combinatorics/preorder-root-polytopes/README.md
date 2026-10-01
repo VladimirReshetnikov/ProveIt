@@ -1,6 +1,6 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number; and matching supports through rank three: normalization by the matching number at unit weights for `nu ≤ 3`, a bimatroid obstruction, and exact support kernels for graphs, relations and preorder gamma vectors; and leaf compression: normalization by the matching number for every positive weighting through matching number three**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number; and matching supports through rank three: normalization by the matching number at unit weights for `nu ≤ 3`, a bimatroid obstruction, and exact support kernels for graphs, relations and preorder gamma vectors; and leaf compression: normalization by the matching number for every positive weighting through matching number three; continued, from batch 72, in the separate report matching-rank-normalization**
 
 This is a research report in thirteen parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
@@ -82,7 +82,8 @@ along even ranks for any normalization depending on the matching number
 alone, the first rank-normalized inequality for every positively weighted
 graph with a defect identity and its equality cases, and an exact counting
 algorithm in `2^(nu^2 + O(nu))·poly` time. The unit-weight and one-shore
-versions stay open. **Part XII** was added on 30 September 2026 in
+versions stay open [updated 1 October 2026, batch 72: both fail; see the
+paragraph on [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) below]. **Part XII** was added on 30 September 2026 in
 batch 70, from one manuscript (source 14 below; batch-70 manuscript 05),
 prepared for Vladimir Reshetnikov with ChatGPT per its title page. It
 answers the **unit-weight version of Research question 37
@@ -106,7 +107,9 @@ preorder satisfies `gamma_1^2 ≥ (2d/(d−1))·gamma_2`, `d = deg Gamma_tau`
 (Corollary 197.2), and its gamma vector and lattice-point count are
 computable in `2^(O(d^2))·poly` time (Corollary 197.4). Unit weights from
 matching number four on, and weighted rank three, stay open [updated
-30 September 2026, batch 71: weighted rank three is settled by Part XIII].
+30 September 2026, batch 71: weighted rank three is settled by Part XIII]
+[updated 1 October 2026, batch 72: unit weights hold at matching numbers
+four and five and fail at 3450; see below].
 **Part XIII** was added on 30 September 2026 in batch 71, from one
 manuscript (source 15 below; batch-71 manuscript 02), whose title page
 reads "Research note prepared for Vladimir Reshetnikov with OpenAI". It
@@ -129,6 +132,28 @@ not contradict Part XI: its counterexamples `H_{4,11}` and `H_{3,n}`
 one vertex on one shore and two on the other has a real-rooted support
 polynomial for all positive activities (Theorem 207.1), a conclusion
 already available from Part VI.
+
+**Continued in [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) (batch 72).** On
+1 October 2026, 27 further manuscripts on the same question were placed as
+a separate report in `log-concavity-and-unimodality` rather than as
+Parts XIV ff. here; it cites Parts V, VI and XI–XIII of this report by
+their printed numbers and does not reprint them. It proves normalization
+by the matching number for arbitrary positive weights on both shores
+whenever a minimum cover meets one shore in at most two vertices, hence
+for `nu ≤ 5`, so that the least matching number of a weighted
+counterexample is **exactly six** (Research questions 86, 87 at ranks 4
+and 5, and 93); it answers Research questions 84 and 94 (**unit weights:
+false**, a connected graph with 6916 vertices and `nu = 3450`) and 85
+(**one-shore weights: false**, `nu = 50` with 125 vertices; for one common
+right-core activity on full Hall graphs the least failing matching number
+is exactly 38) negatively; it classifies the full Hall family (Research
+question 89), proves the second and last rank-six inequalities for every
+one-shore graph, and proves eventual normalization through `nu = 8` after
+scaling the right part of a minimum cover. Research question 88 is not
+answered there (only its one-shore analogue). Its archive 78 was a
+byte-identical repeat of the batch-71 manuscript printed here as
+Part XIII. This report's article gains dated pointers marked "Added
+1 October 2026, batch 72" (listed under the answers below).
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -1175,7 +1200,9 @@ Research questions 23, 24, 26, 28, 32 and 34):
   at most three by Part XII; see the next item], and no smallest
   counterexample is determined: the least matching number of a weighted
   counterexample is 3, 4, 5 or 6 (Research question 86) [updated
-  30 September 2026, batch 71: it is 4, 5 or 6, by Part XIII]. It answers
+  30 September 2026, batch 71: it is 4, 5 or 6, by Part XIII] [updated
+  1 October 2026, batch 72: it is exactly 6, and the unit-weight and
+  one-shore versions fail; see [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization)]. It answers
   Research question 38 at the first index for the normalization by
   `nu(H)` (Corollary 180.3); the merge adds that the first inequality is
   then strict for every larger order, so equality at the first index of
@@ -1204,7 +1231,9 @@ Research questions 23, 24, 26, 28, 32 and 34):
   (one-shore weights) and 86 (weighted ranks 3–5, of which Research
   question 95 is the rank-three case) are untouched [updated 30 September
   2026, batch 71: Part XIII settles rank three for 85 and 86 and answers
-  95; see the next item]. It answers Research
+  95; see the next item] [updated 1 October 2026, batch 72: 84 and 94 are
+  answered negatively, 93 affirmatively, 85 negatively and 86 completely,
+  in [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization)]. It answers Research
   question 24 at the first index for every finite preorder and entirely
   in gamma degree at most two (Corollary 197.2), and improves the height-two
   normalization of Corollary 71.6 from `min(m,n)` to `nu` for the classes
@@ -1251,6 +1280,24 @@ Research questions 23, 24, 26, 28, 32 and 34):
   XII's non-claim on nonuniform activities (Section 199.2) and in its
   conclusion (Section 201); the Röhrle–Ulirsch bibliography entry gains a
   sentence.
+- [Added 1 October 2026, batch 72.] The separate report
+  [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) (27 manuscripts) answers Research questions 84, 85 and 94
+  **negatively** (unit weights fail at `nu = 3450`; one-shore weights fail
+  at `nu = 50` and 38), answers 86 (the least weighted failure rank is
+  exactly 6) and 93 (rank four holds, unit and weighted), gives
+  `𝒟(4) = 4` and `𝒟(5) = 5` in 87, answers 89 in large part (full Hall
+  classification, asymmetric failures), bears on 90 (equality only for
+  balanced star forests under its cover hypothesis) and answers 101 in
+  part (rank-two exterior column blocks); it does not answer 88. For
+  Research question 37: the weighted version holds exactly through `nu = 5`,
+  and the unit-weight and one-shore versions fail. Nothing in this report
+  is refuted or retracted; its statements that these questions are open
+  became stale. The dated pointers, marked "Added 1 October 2026,
+  batch 72", are in the scope box,
+  Section 70.4, after Research question 37, in Part XI's opening paragraph,
+  after its delivered scope box, in Section 172.3, after Corollary 177.2,
+  after Research questions 84–90, 93, 94 and 101, and in Section 208; the
+  bibliography gains the entry `[MRN]`.
 
 ## Not claimed
 
@@ -1404,6 +1451,12 @@ From Part V (see also `06-lorentzian-support-SOURCES.md`,
   remains open with weights at `nu(H) = 4, 5` and at unit weights from
   `nu(H) = 4` on, in both cases only for graphs whose minimum covers all
   meet both shores in at least two vertices.]
+  [Updated 1 October 2026, batch 72: with positive weights on both shores
+  the replacement is **proved for `nu(H) ≤ 5`** and for every graph with a
+  minimum cover meeting one shore in at most two vertices, so it holds
+  exactly through `nu(H) = 5`; at unit weights and with weights on one
+  shore it is **false** (graphs with `nu(H) = 3450` and `nu(H) = 50`); see
+  [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization).]
 - **No gamma log-concavity beyond height two** [Updated 30 September 2026,
   batch 70: except at the first index, and hence in gamma degree at most
   two, for every finite preorder (Part XII, Corollary 197.2)]; no real-rootedness
@@ -1557,8 +1610,9 @@ Section 182 and its delivery README state these):
   last inequality of that graph first fails at the integer 485), and the least matching
   number of a weighted counterexample is only known to lie in 3–6
   (Research question 86) [updated 30 September 2026, batch 71: in 4–6,
-  by Part XIII]. No published smaller-shore theorem is
-  contradicted.
+  by Part XIII] [updated 1 October 2026, batch 72: it is exactly 6, and
+  the unit-weight and one-shore versions fail, by [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization)]. No
+  published smaller-shore theorem is contradicted.
 - **Scope of the classifications.** The full phase diagram is for the
   symmetric core-three family only, not for all graphs of matching number
   six; for `s ≥ 4`, Theorem 178.2 and Table 27 classify the endpoint
@@ -1628,7 +1682,11 @@ these):
   unit-weight and one-shore normalization from rank four on, and a
   universal rank-only order stay open (Research questions 84–87, 93–94);
   source 15: "General unit-weight and one-shore rank normalization in rank
-  four and higher remain unresolved here."
+  four and higher remain unresolved here." [Updated 1 October 2026,
+  batch 72: rank four (with `2 + 2` covers) and rank five hold, the first
+  weighted failure rank is 6, unit-weight and one-shore normalization fail,
+  and `𝒟(4) = 4`, `𝒟(5) = 5`, by [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization); a universal rank-only
+  order stays open.]
 - **Compression is for single neighbours only.** Vertices with a common
   neighbourhood of two or more vertices cannot be merged (Section 208).
 - **Real-rootedness** (Theorem 207.1) is not claimed as a new structural
@@ -1801,6 +1859,14 @@ appendices, whose letters and numbers are unchanged. It adds no research
 question (the next number would be 102); its only table is Table 29
 (notation); it has no figure.
 
+The batch-72 reciprocal notes (1 October 2026) added **no** label (still
+1213 occurrences of the pattern) and renamed or removed none; the numbers
+of all labels are unchanged (compared in the `.aux` files of the committed
+and the new build). The pages of 474 labels are unchanged; the other 736
+moved by one to three pages, because dated notes were added from Part V's
+Section 70.4 on (after Research questions 37 and 84–90, 93, 94 and 101,
+and in Parts XI–XIII). The bibliography gains one entry, `MRN`.
+
 ## Notation
 
 Table 1 (Section 11.2) fixes Part II's symbols against Part I's; Table 2
@@ -1960,13 +2026,13 @@ Part IV's against all three. Watch in particular:
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 372 pages, A4 (title p. 1, scope box and contents pp. 2–13,
+article.pdf                                  the compiled report, 374 pages, A4 (title p. 1, scope box and contents pp. 2–13,
                                              Part I pp. 14–26, Part II pp. 27–55, Part III pp. 56–80,
-                                             Part IV pp. 81–122, Part V pp. 123–172, Part VI pp. 173–206,
-                                             Part VII pp. 207–223, Part VIII pp. 224–250, Part IX pp. 251–277,
-                                             Part X pp. 277–302, Part XI pp. 303–328, Part XII pp. 329–357,
-                                             Part XIII pp. 357–367, Part I's appendices pp. 368–370,
-                                             references pp. 370–372)
+                                             Part IV pp. 81–122, Part V pp. 123–173, Part VI pp. 174–207,
+                                             Part VII pp. 208–224, Part VIII pp. 225–251, Part IX pp. 252–278,
+                                             Part X pp. 278–303, Part XI pp. 304–329, Part XII pp. 330–359,
+                                             Part XIII pp. 359–369, Part I's appendices pp. 369–372,
+                                             references pp. 372–374)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -2388,11 +2454,11 @@ Part XI adds one macro (`\ULC`), and its figure uses the TikZ library
 `positioning`, already loaded; Part XII adds two macros (`\GammaD`,
 `\poly`); Part XIII adds none.
 No image or font files are needed.
-The shipped PDF (372 pages) was built on 30 September 2026 with MiKTeX
-(pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
+The shipped PDF (374 pages) was built on 1 October 2026, after the
+batch-72 reciprocal notes, with MiKTeX (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
 references or citations, no duplicate destinations, no overfull boxes and
 no other LaTeX warnings; five underfull boxes, the same five as the build of
-the committed Parts I–XII text (and of Parts I–XI, I–X, I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
+the committed Parts I–XIII text before the batch-72 notes and of the Parts I–XII text (and of Parts I–XI, I–X, I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
 provenance-ledger table, which the committed builds before Parts III–VII and
 the delivered manuscript 02's own build also show, and four (badness
 1024–6625) in paragraphs of Parts V and VI that set long shipped file names
@@ -2400,7 +2466,7 @@ the delivered manuscript 02's own build also show, and four (badness
 74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII;
 the builds of 30 September 2026 before Part IX, before Part X, before
 Part XI, before Part XII and before Part XIII had 249, 277, 304, 332 and
-362.)
+362, and the build of Parts I–XIII before the batch-72 notes had 372.)
 
 ## Rerun the checks
 
@@ -3283,6 +3349,12 @@ treats the same objects as Part XI, so no other report gains a note.
 Part XIII (batch 71) continues Parts V, XI and XII and cites Part VI; its
 dated pointers are inside this report (Parts V, XI and XII). It treats the
 same objects, so no other report gains a note.
+Batch 72 continued Parts XI–XIII in the separate report
+[`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) (see the paragraph after Part XIII's
+summary above); this report received only dated pointers to it, and that
+report cites this one by printed theorem number. The search above for other
+treatments of normalization by the matching number is therefore out of
+date in one respect: that report now treats it.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq

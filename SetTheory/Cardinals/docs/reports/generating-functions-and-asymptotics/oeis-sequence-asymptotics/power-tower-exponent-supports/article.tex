@@ -3,23 +3,151 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=26mm]{geometry}
 \usepackage{lmodern,microtype}
+\usepackage{booktabs,array}
 \usepackage[hidelinks]{hyperref}\usepackage{xurl}
-\hypersetup{pdftitle={Derivative Supports of x to the Power x to the Power a},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\hypersetup{pdftitle={Derivative Supports of x to the Power x to the Power a},pdfauthor={Research notes prepared for Vladimir Reshetnikov with OpenAI; merged in ProveIt}}
 \setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\numberwithin{equation}{section}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \newcommand{\ee}{\mathrm e}
-\title{Derivative Supports of $x^{x^a}$\\\large A common leading asymptotic for every fixed positive integer exponent}
-\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\newcommand{\fp}{\mathfrak p}
+\newcommand{\fq}{\mathfrak q}
+% Text written when the seven sources were merged is marked [merge].
+\newcommand{\mergenote}[1]{\par\smallskip{\small\noindent\textbf{[merge]}\enspace#1\par}\smallskip}
+\newcommand{\src}[1]{\texorpdfstring{\textup{(source~#1)}}{(source #1)}}
+\title{Derivative Supports of $x^{x^a}$\\[4pt]\large Leading asymptotics for every integer exponent and for the half exponent;\\ fixed-defect cancellations for rational, algebraic and irrational exponents}
+\author{Built from seven research notes prepared for Vladimir Reshetnikov with OpenAI\\(batch 72A manuscripts 28, 31, 34, 26, 20, 20r and 16)}
 \date{1 October 2026}
-\begin{document}\maketitle
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\maketitle
+\thispagestyle{empty}
 \begin{abstract}
-For each fixed positive integer $a$, let $A_a(N)$ count the nonzero monomials in the fully expanded $N$th derivative of $x^{x^a}$. We prove $A_a(N)=N^2/2+o(N^2)$. An exact coefficient transformation gives positivity throughout the nonnegative power columns. In the remaining tail, circles in the coordinate $z=\tanh(t/2)$ and horizontal lines provide globally dominant saddles for every integer $a$. A factorwise angular inequality handles the additional imaginary numerator zeros, while a finite Jensen inequality handles the horizontal profiles. A convex-envelope argument proves complete contour coverage. The connected oscillatory regions have nontrivial phase curvature, so an integer-triangle estimate and compact exhaustion give density one of nonzero tail coefficients. We also classify every negative-column coefficient at depths one and two. Constants may depend on $a$; exact noncancellation at arbitrary depth and growing-exponent uniformity remain open.
+For a positive exponent $a$, write the $N$th derivative of $x^{x^a}$ as $x^{x^a}$ times a finite sum of monomials $x^{a\ell-N}(\log x)^k$, and let $A_a(N)$ count the nonzero ones.
+
+\emph{Integer exponents (Part~\ref{pte:part:integer}).} For every fixed positive integer $a$ we prove $A_a(N)=N^2/2+o_a(N^2)$. An exact coefficient transformation gives positivity throughout the nonnegative power columns. In the remaining tail, circles in the coordinate $z=\tanh(t/2)$ and horizontal lines provide globally dominant saddles; a convex-envelope argument proves complete contour coverage; nonzero phase curvature, an integer-triangle estimate and compact exhaustion give density one of nonzero tail coefficients. Every negative-column coefficient at depths one and two is classified, and outside a countable algebraic set of real exponents the count is exactly $N(N+3)/2$. For $a=1$ this is the asymptotic $a(N)\sim N^2/2$ of OEIS A293239, equivalently density zero for the zeros of the first-kind Lehmer--Comtet triangle; for $a=2$ it is $\lim a(N)/N^2=1/2$ for OEIS A290268. Both were also proved separately, with more explicit detail at those exponents, and are printed as second routes.
+
+\emph{The half exponent (Part~\ref{pte:part:half}).} For $x^{\sqrt x}$ the same leading asymptotic holds, by a circle-only saddle selection, and two infinite families of cancellations lie off the reflection line.
+
+\emph{Fixed defects (Part~\ref{pte:part:defects}).} On a fixed factor defect $r=N-\ell$: for rational $a\ne1$ and $r\ge4$ only finitely many coefficients vanish off an explicit reflection line (Schur, Siegel, and two certified quartics); for algebraic $a$ of degree $D$ the same holds on $r\ge4D+2$; for irrational $a$ there are at most $(2\lfloor r/2\rfloor)^2-1$ cancellation cells, effectively, at most one on each of defects two and three, and none for transcendental $a$; for rational $1/2<a<1$ the nonreflection cancellations on defects two and three are counted exactly to $O(1)$ by explicit square-root laws.
+
+All asymptotic statements are ineffective: no power-saving remainder or numerical order threshold is asserted, exact noncancellation at arbitrary depth is not proved, and no exponent grows with $N$. The proofs are conventional mathematics, not proof-assistant formalizations or refereed publications.
 \end{abstract}
 
-\section{Statement and exact coefficient coordinates}
+\mergenote{This report merges seven AI-assisted research notes dated 1 October 2026, all pinned to commit \texttt{ca81647a9} of the neighbouring report \emph{Term counts in the derivatives of power towers} (\texttt{power-\allowbreak{}tower-\allowbreak{}derivative-\allowbreak{}term-\allowbreak{}counts}), except source 20, which names no pin. It answers that report's Question~6 and the closing remark of its Part~2. Section~\ref{pte:sec:guide} says what each note contributed and where the merge had to choose; Section~\ref{pte:sec:conventions} fixes the notation.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\setcounter{page}{1}
+\tableofcontents
+\clearpage
+
+\section{How this report is built}\label{pte:sec:guide}
+\subsection{Sources}\label{pte:sec:sources}
+The report is built from seven manuscripts of batch 72A of ProveIt's incoming-reports intake. Batch 72 arrived in commit \texttt{1512ef835}; the manuscripts are numbered by archive modification time as in the batch index, and their code and data were placed in commit \texttt{d292c6765}. Source 20r was never delivered on its own: it arrived only as \texttt{rational\_\allowbreak{}companion\_\allowbreak{}source.\allowbreak{}zip} (with its PDF) inside archive 20. Every source carries the author line ``Research note prepared for Vladimir Reshetnikov with OpenAI''. The zip entry times show that the notes were written in the order 34, 31, 28, 26, 20r, 20, 16 on 1 October 2026, which is the order in which ``earlier'' and ``preceding'' in their texts should be read.
+
+\begin{table}[ht]
+\centering\small
+\caption{The seven sources.  ``Pin'' is the commit of the host report each source inspected; ``pp.'' is the length of the delivered PDF, which is not shipped.}\label{pte:tab:sources}
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.43\textwidth}l>{\raggedright\arraybackslash}p{0.27\textwidth}@{}}
+\toprule
+Source & Archive and delivered title & Pin & Printed here\\
+\midrule
+28 (base) & \texttt{ProveIt\_\allowbreak{}All\_\allowbreak{}Integer\_\allowbreak{}Exponent\_\allowbreak{}Derivative\_\allowbreak{}Supports}; \emph{Derivative Supports of $x^{x^a}$: a common leading asymptotic for every fixed positive integer exponent}, 10 pp. & \texttt{ca81647a9} & Sections~\ref{pte:sec:ga-coordinates}--\ref{pte:sec:ga-depths}\\
+31 & \texttt{ProveIt\_\allowbreak{}A293239\_\allowbreak{}Leading\_\allowbreak{}Asymptotic}; \emph{The Leading Asymptotic of OEIS A293239: sparse zeros of the Lehmer--Comtet triangle}, 8 pp. & \texttt{ca81647a9} & Section~\ref{pte:sec:lc} (second route at $a=1$)\\
+34 & \texttt{ProveIt\_\allowbreak{}A290268\_\allowbreak{}Leading\_\allowbreak{}Asymptotic}; \emph{The Leading Asymptotic of OEIS A290268}, 11 pp. (main file and \texttt{tanh\_\allowbreak{}sections.\allowbreak{}tex}) & \texttt{ca81647a9} & Section~\ref{pte:sec:as} (second route at $a=2$)\\
+26 & \texttt{ProveIt\_\allowbreak{}Half\_\allowbreak{}Exponent\_\allowbreak{}Derivative\_\allowbreak{}Supports}; \emph{Derivative Supports of $x^{\sqrt x}$: a leading-density theorem with two infinite extra-cancellation families}, 7 pp. & \texttt{ca81647a9} & Section~\ref{pte:sec:he}\\
+20r & inside \texttt{ProveIt\_\allowbreak{}Algebraic\_\allowbreak{}Exponents\_\allowbreak{}and\_\allowbreak{}Cancellation\_\allowbreak{}Frequencies}, as \texttt{rational\_\allowbreak{}companion\_\allowbreak{}source.\allowbreak{}zip} (folder \texttt{Rational\_\allowbreak{}Exponent\_\allowbreak{}Fixed\_\allowbreak{}Defects}); \emph{Reflection and Finite Exceptions: fixed defects in derivatives of $x^{x^a}$ for positive rational $a\ne1$}, 6 pp. & \texttt{ca81647a9} & Sections~\ref{pte:sec:shared}, \ref{pte:sec:rf}\\
+20 & \texttt{ProveIt\_\allowbreak{}Algebraic\_\allowbreak{}Exponents\_\allowbreak{}and\_\allowbreak{}Cancellation\_\allowbreak{}Frequencies}; \emph{Algebraic Degrees and Exact Cancellation Frequencies: two fixed-defect extensions for derivatives of $x^{x^a}$}, 4 pp. & none named & Sections~\ref{pte:sec:shared}, \ref{pte:sec:ac}\\
+16 & \texttt{ProveIt\_\allowbreak{}Irrational\_\allowbreak{}Exponents\_\allowbreak{}Effective\_\allowbreak{}Cancellation\_\allowbreak{}Bounds}; \emph{Effective Bounds for Irrational Exponents: fixed-defect cancellations in derivatives of $x^{x^a}$}, 6 pp. & \texttt{ca81647a9} & Sections~\ref{pte:sec:shared}, \ref{pte:sec:ir}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every result, proof, example, remark, question and limitation of the seven sources is printed. Section headings carry the source number; within a section the text is the source's, apart from the renamings of Section~\ref{pte:sec:conventions} and the passages marked \textbf{[merge]}, which were written when the sources were merged. Each source's closing section on verification, source position and scope is printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}.
+
+\subsection{What was merged, and where the merge had to choose}\label{pte:sec:merged}
+No source cites another, except that 20 cites 20r as its companion. Apart from the coefficient setup shared by 20r, 20 and 16, the duplication between them is mathematical, not textual.
+\begin{itemize}
+\item \textbf{One theorem, three proofs.} Source 28 proves $A_a(N)=N^2/2+o_a(N^2)$ for every fixed positive integer $a$ (Theorem~\ref{pte:ga:main}). Source 31 proved the case $a=1$, OEIS A293239, and source 34 the case $a=2$, OEIS A290268, half an hour and an hour earlier, by the same contour method (tanh circles, horizontal lines, the kernel $U(s,y)$, the integer-triangle lemma and compact exhaustion). The general theorem is stated once. The statements of 31 and 34 are printed as Corollaries~\ref{pte:lc:main} and~\ref{pte:as:main}, in the forms their sources gave them, each followed by its source's complete proof as a second route. Those proofs are kept because their steps are genuinely more explicit at the two exponents: source 31 classifies every critical point and identifies the real fold $\ee^{T_*}=1+T_*+T_*^2$, $\rho_*\approx1.29843$; source 34 proves real-saddle positivity on the whole strict real region and gives a rational curvature certificate at $T=14/5$. All three proofs are credited at each statement.
+\item \textbf{One lemma, four proofs.} The integer-triangle lemma is proved with the same argument in sources 28, 31, 34 and 26. It is printed once, as Lemma~\ref{pte:ga:lattice}, whose proof includes the two details that only 31 and 34 spell out; the four labels of the sources all point to it.
+\item \textbf{One coefficient setup.} Sources 20r, 20 and 16 open with the same centered coefficient identity, in nearly the same words. It is printed once, in Section~\ref{pte:sec:shared}, in source 20r's words, together with the degree lemma that only source 16 contains.
+\item \textbf{A finiteness theorem implied twice.} Source 20's Theorem~\ref{pte:ac:algebraic} (finitely many nonreflection cancellations on every fixed defect $r\ge4D+2$, for algebraic $a$ of degree $D$) is implied by 20r's Theorem~\ref{pte:rf:main} for rational $a$ and by 16's Theorem~\ref{pte:ir:main} for irrational $a$. Its proof, by field degrees and Siegel's theorem over $\mathbb Q(a)$, is a different route and is printed as such. Source 20's counting theorem and its window corollary are new and are printed in full.
+\item \textbf{One pair of families, two derivations.} Source 26's two infinite zero families at $a=1/2$ (Theorem~\ref{pte:he:families}) are 20r's residual formulas~\eqref{pte:rf:low} specialized to $a=1/2$, and 20's endpoint remark counts them. The families are stated once, as Theorem~\ref{pte:he:families} with 26's zero lists and Bell-block proof; the specialization is recorded where 20r's formulas are printed.
+\item \textbf{A clause implied by a corollary.} The transcendental clause of 16's Theorem~\ref{pte:ir:main} also follows from 28's Corollary~\ref{pte:ga:generic}.
+\item \textbf{Re-derivations of the host.} Several statements re-derive results already proved in \texttt{power-\allowbreak{}tower-\allowbreak{}derivative-\allowbreak{}term-\allowbreak{}counts}. They are kept, and the host statement is cited next to each, as a second route and never as new: 28's Proposition~\ref{pte:ga:bulk} at $a=2$, Theorem~\ref{pte:ga:depthtwo} at $a=1,2$ and~\eqref{pte:ga:folded} at $a=2$; 31's expansion and count; 34's coefficient model, its tanh coefficient formula and its upper bound, which is weaker than the host's.
+\end{itemize}
+The merge chose 28 as the base because it is the most general of the three proofs, and printed the a=1 and a=2 material after it, rather than splitting 31 and 34 into the host report, which would have printed the a=1, 2 theorem twice in the collection. It chose to print 20's algebraic-degree theorem in full although it is implied, because its proof is the only one of the three that works uniformly over $\mathbb Q(a)$. It renamed symbols only where two meanings would meet in one statement, and lists every renaming in Section~\ref{pte:sec:conventions}.
+
+\subsection{Relation to the host report and to formal developments}\label{pte:sec:host}
+The neighbouring report \texttt{power-\allowbreak{}tower-\allowbreak{}derivative-\allowbreak{}term-\allowbreak{}counts} (here called \emph{the host}) studies the derivative supports of $x^x$ (its Part~2, OEIS A293239), $x^{x^2}$ (Part~3, OEIS A290268) and $x^{x^x}$ (Part~4). Its numbering below is that of its text at the pin \texttt{ca81647a9}.
+\begin{itemize}
+\item \textbf{Answered: the closing remark of the host's Part~2.} The host proves $n+1+\lfloor n^2/4\rfloor\le a(n)\le q(n)$ for A293239 (its Theorem~2.16), shows that $a(n)\sim n^2/2$ is equivalent to $E(n)=o(n^2)$ and calls this ``potentially a weaker target than the complete zero classification'', and closes Part~2 by noting that ``it suffices to bound their cumulative number by $o(n^2)$'' while its argument ``proves quadratic order but not this sharper estimate''. Theorem~\ref{pte:ga:main} at $a=1$, equivalently Corollary~\ref{pte:lc:main}, proves that estimate. It is ineffective, so the host's explicit lower bounds (its Theorem~2.16 and Corollary~2.17) remain the only explicit ones.
+\item \textbf{Answered: the host's Question~6} (Section~3.24): ``Establish the conjectured leading term $a(N)\sim N^2/2$ without first proving every individual nonvanishing claim.'' Theorem~\ref{pte:ga:main} at $a=2$, equivalently Corollary~\ref{pte:as:main}, does so. The explicit lower bounds of the host (leading constant $3/8$) are not superseded as explicit bounds.
+\item \textbf{Partly answered: the host's Question~8} (extend the method to $x^{x^r}$, $r\ge3$, after rederiving the depth generating function and the symmetry centre) and its Research question~3.68 (``which functions $x^{x^m}$ have only symmetry-forced holes, and for which $m$ do sporadic cancellations occur?''). The leading asymptotic for every integer exponent, the depth generating function~\eqref{pte:ga:tanh}, the symmetry centre $q=ad$ and the complete first two depths are here (Part~\ref{pte:part:integer}); for $a=1/2$ there are infinite non-reflection families (Part~\ref{pte:part:half}), and for non-integer rational, algebraic and irrational $a$ each fixed defect has only finitely many non-reflection zeros (Part~\ref{pte:part:defects}). Exact noncancellation at arbitrary depth remains open for every exponent.
+\item \textbf{Bears on the host's synthesis.} The host's Section~5 observes that every cancellation it can prove in its three functions is a parity zero of one falling factorial about its centre. That remains true of those three functions. For $a=1/2$ (Theorem~\ref{pte:he:families}) and for every rational $1/2<a<1$ (Corollary~\ref{pte:rf:infinite}) there are infinite cancellation families that are not reflection zeros.
+\end{itemize}
+The host itself was not edited when this report was written. Its dated notes and reciprocal remarks pointing here are a separate change.
+
+None of the results of this report is formalized in Lean or Rocq. The repository's Lean library for A290268 (\texttt{Combinatorics/\allowbreak{}DerivativeExpansions/\allowbreak{}A290268/\allowbreak{}Lean}) defines the coefficients and the count of Corollary~\ref{pte:as:main}, \texttt{LeanProofs.\allowbreak{}A290268.\allowbreak{}coeff} and \texttt{LeanProofs.\allowbreak{}A290268.\allowbreak{}a}, in the same lattice $x^{x^2+j}(\log x)^k$ as Section~\ref{pte:sec:as}. It proves the support window, the table identity \texttt{a\_\allowbreak{}values\_\allowbreak{}le\_\allowbreak{}53} for $n\le53$, and the conditional reduction \texttt{a\_\allowbreak{}eq\_\allowbreak{}closedForm\_\allowbreak{}of\_\allowbreak{}support\_\allowbreak{}all}. It contains no asymptotic statement, and nothing here discharges its hypotheses. No Lean or Rocq development exists for $x^x$, for the Lehmer--Comtet triangle, or for $x^{x^a}$ with $a\ne2$.
+
+\section{Conventions and notation}\label{pte:sec:conventions}
+\subsection{Coordinates}
+Throughout, $a>0$ is the exponent (a positive integer in Part~\ref{pte:part:integer}, $a=1/2$ in Part~\ref{pte:part:half}, a positive real in Part~\ref{pte:part:defects}) and
+\[
+ \frac{d^N}{dx^N}x^{x^a}=x^{x^a}\sum_{\ell,k}p_{N,\ell,k}(a)\,x^{a\ell-N}(\log x)^k .
+\]
+Here $\ell$ is the number of exponent factors and $k$ the power of $\log x$. Table~\ref{pte:tab:conventions} lists the derived coordinates and how the host writes them. At an integer exponent, Part~\ref{pte:part:integer} writes the same coefficient as $c_{a,N}(j,k)$, the coefficient of $x^j(\log x)^k$ with $j=a\ell-N$.
+
+\begin{table}[ht]
+\centering\small
+\caption{Coordinates used throughout, against the host report.  ``Host, $a=1$'' is the host's Part~2 and ``host, $a=2$'' its Part~3 (the depth-coordinate subsections 3.14--3.26 use the letters of this report).}\label{pte:tab:conventions}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\toprule
+Here & Meaning & Host & Tempting false reading\\
+\midrule
+$d=\ell-k$ & depth & $a=1$: the column $r$ of $b(m,r)$; $a=2$: the deficit $m=k-j$ & \textbf{false:} the host's Part~2 $d=m-r$, an \emph{offset}\\
+$r=N-\ell$ & factor defect (Parts~\ref{pte:part:half}, \ref{pte:part:defects}) & $a=1$: $N-\ell$ is the offset $d$ of Part~2; $a=2$: $n-k$ & \textbf{false:} the host's $r=M-k$ of Section~3.14 or its column $r$\\
+$q=-j-1$ & tail offset, $N=a(k+d)+q+1$ & $a=2$: $q$ of Section~3.14, which is $d=n-2k-1$ elsewhere in Part~3 & \textbf{false:} the denominator of a rational $a$, which is written $\fq$ here\\
+$M=N-k$ & coefficient index & $a=2$: $M$ of Section~3.14 & ---\\
+$\kappa=k/d$, $\eta=q/d$ & ratios (Part~\ref{pte:part:integer}) & not used & \textbf{false:} $\hat\eta$ of Part~\ref{pte:part:half}, which is a different ratio\\
+$b(M,d)$ & Lehmer--Comtet number, $d$ = column (Section~\ref{pte:sec:lc}) & $b(m,r)$, $r$ = column & \textbf{false:} $d$ as the host's offset\\
+$H_{a;d,k,q}$ & the integer~\eqref{pte:ga:H}; $H_{d,k,q}=H_{2;d,k,q}$ & $H_{d,k,q}$ of Section~3.14 & \textbf{false:} the host's $H(u)=\operatorname{arctanh}(u)/u$\\
+$K$ & reflection form~\eqref{pte:rf:center} (Part~\ref{pte:part:defects}) & --- & \textbf{false:} the host's constants $K_d$\\
+$U(s,y)$ & partial-fraction kernel~\eqref{pte:ga:UV} & --- & \textbf{false:} the host's proposed count $U(n)=n^2/2+n+1$ (Part~3)\\
+$L_a(t)$, $L_\rho(t)$, $L(t)$ & actions of the contour integrals & --- & \textbf{false:} the host's $L=\log x$\\
+$z$ & $\tanh(t/2)$ (Parts~\ref{pte:part:integer}, \ref{pte:part:half}), a formal series variable (Part~\ref{pte:part:defects}) & $x^2$ in Part~3 & \textbf{false:} $z=x^2$\\
+$\ee$, $e$ & Euler's number; a tilt magnitude & --- & \textbf{false:} $e$ as Euler's number\\
+$P_d(\tau)$ & $\operatorname{Im}(\tau+i\pi)^d$ (Section~\ref{pte:sec:ga-depths}) & $\pi R_d(\tau)$ in Prop.~3.30 & \textbf{false:} a Gaussian prefactor $P$, $P_c$, $P_h$, or the host's $P_n$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Renamed symbols}\label{pte:sec:renames}
+Where one letter carried two meanings that would meet in this report, one of them was renamed. No normalization was changed.
+\begin{itemize}
+\item The ratio $r=a+\eta$ of sources 28, 31 ($r=\rho$) and 34 ($r=\eta+2$) is written $\omega$, because $r$ is the factor defect in Parts~\ref{pte:part:half} and~\ref{pte:part:defects}. Source 34's critical map $F_{r,e}$ is $F_{\omega,e}$.
+\item Source 28's polynomial $R_a(x)=x^a-(-1)^a$ in Section~\ref{pte:sec:ga-depths} is $\mathcal R_a(x)$, because $R_{a,r,N}$ is the residual of Part~\ref{pte:part:defects}.
+\item In source 34: the functions $A(s)$, $B(s)$ of the horizontal lemma are $B_1(s)$, $B_2(s)$, as in source 28, which uses those names for the same functions; the circle parameter $a$ and radius $\rho$ of the tanh sections are $\alpha$ and $R$, as in source 28; the phase curvature $C(\kappa,\eta)$ is written $\operatorname{Im}D^2S$ with $D=\partial_\kappa-2\partial_\eta$, source 28's notation at $a=2$; the branch functions $K(T)$, $F(T)$ of the curvature seed are $\mathcal K(T)$, $\mathcal F(T)$.
+\item In source 26: the ratio $\eta=2\nu+\kappa-1$ is $\hat\eta$ (it is not source 28's $\eta=q/d$), and the favoured real point $z=-r$ of Section~\ref{pte:sec:he-real} is $z=-\sigma$, because $r$ is the defect in Section~\ref{pte:he:diagonals}.
+\item In Part~\ref{pte:part:defects} a rational exponent is written $a=\fp/\fq$ (sources 20r and 20 write $p/q$), because $p$ is the coefficient $p_{N,\ell,k}$ and $q$ the tail offset. Source 20's three uses of $L$ become $\mathbb L=\mathbb Q(a)$, $\widetilde K=\fq K$ and the Laguerre polynomials $L_m^{(\pm1/2)}$, which keep their name.
+\item In source 16: the leading line $L_a(N,k)$ is $\Lambda_a(N,k)$ (source 28's $L_a(t)$ is an action); in Section~\ref{pte:sec:ir-order} the coefficient sum $C_a$ is $\Sigma_a$ (source 28's $C_a(z)$ is a polynomial), the constant $A_a=(C_a/|c_r|)^{1/e}$ is $\Gamma_a=(\Sigma_a/|c_r|)^{1/s_r}$ (source 16 also uses $A_a$ for a power series) and the exponent $e=s_r$ is written $s_r$; in the proof of Corollary~\ref{pte:ir:onecell} the local quantities $d=2u-k$, $q=1/u$, $t=d/u$ are $\delta$, $\varpi$, $\tau$. Source 16's $R_r(a;N,k)$ is $R_{a,r,N}(k)$ viewed in $\mathbb Q[a,N,k]$, and its $K_a$ is $K$; Section~\ref{pte:sec:shared} uses the latter names, and Section~\ref{pte:sec:ir} keeps source 16's.
+\end{itemize}
+
+\subsection{Letters local to one section}
+The following letters keep their sources' meanings but only inside the section or proof where they are defined: $A(t)$, $B(t)$, $b(t)$, $E(T;\kappa)$, $M_a(\kappa)$ and $W_a$ (Part~\ref{pte:part:integer}), where also $\alpha$ is the circle parameter $(1-R^2)/(1+R^2)$ in Sections~\ref{pte:sec:ga-selection} and~\ref{pte:sec:as}, but a real exponent, with $E$ an exceptional set, in Section~\ref{pte:sec:ga-generic}; $s$, $y$, $C=\cosh s$, $S=\sinh s$, $c=\cos y$ and $D=s^2+y^2$ in the contour estimates (where $S$ is also, in the cosine-law subsections, the stationary action); the constants $m$, $M$, $A$, $c$ and the block length $H$ of Lemma~\ref{pte:ga:lattice}; $G(t)$, $F(t)$, $J(s)$ and $h$ in Section~\ref{pte:sec:lc}; $\nu$, $E(\sigma;\kappa)$, $M(\kappa)$, $F(z,\varepsilon)$, $h=\sqrt\varepsilon$, $D=\partial_\kappa-\partial_\nu$ and $L=\log x$ (in Section~\ref{pte:he:diagonals}) in Part~\ref{pte:part:half}; and $U$, $V$, $b$, $e$, $f_r$, $Y_r$, $C$, $C_r$, $E_r$, $m=\lfloor r/2\rfloor$ in Part~\ref{pte:part:defects}. The letter $h$ always denotes a decay height $\min(a,\eta)$ in Part~\ref{pte:part:integer} contour estimates, with the values $\min(1,\rho-1)$ at $a=1$ and $\min(2,\eta)$ at $a=2$.
+
+\subsection{Part numbers in the sources}
+Sources 31 and 28 call the host's parts ``Part~I'' (for $x^x$) and ``Part~II'' (for $x^{x^2}$), numbering only its three investigations. The host numbers them Part~2 (Section~2) and Part~3 (Section~3). Where those words are printed, a \textbf{[merge]} note gives the host's numbering.
+
+\part{Integer exponents}\label{pte:part:integer}
+\mergenote{Sections~\ref{pte:sec:ga-coordinates}--\ref{pte:sec:ga-depths} are source 28, the base of this report, in its own order. Section~\ref{pte:sec:lc} is source 31 (the exponent $a=1$) and Section~\ref{pte:sec:as} is source 34 (the exponent $a=2$). Source 28's closing section is printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}.}
+
+\section{Statement and exact coefficient coordinates \src{28}}\label{pte:sec:ga-coordinates}
 For $a\in\mathbb Z_{\ge1}$, write
 \[
  \frac{d^N}{dx^N}x^{x^a}=x^{x^a}
@@ -27,16 +155,18 @@ For $a\in\mathbb Z_{\ge1}$, write
 \]
 with like monomials collected, and let $A_a(N)$ count the nonzero coefficients.
 
-\begin{theorem}\label{ga:main}
+\begin{theorem}\label{pte:ga:main}
 For every fixed positive integer $a$,
-\begin{equation}\label{ga:mainlimit}
+\begin{equation}\label{pte:ga:mainlimit}
  A_a(N)=\frac{N^2}{2}+o_a(N^2)\qquad(N\to\infty).
 \end{equation}
 More precisely, only $o_a(N^2)$ candidate coefficients cancel in the negative-column tail specified below. The theorem does not classify individual extra zeros, provide a global power-saving remainder, or assert uniformity when $a$ grows with $N$.
 \end{theorem}
 
+\mergenote{Theorem~\ref{pte:ga:main} is proved by source 28 for every fixed positive integer $a$ (Sections~\ref{pte:sec:ga-coordinates}--\ref{pte:sec:ga-density}). Its two cases that are OEIS sequences were proved separately and earlier on the same day, by the same contour method: $a=1$, the derivatives of $x^x$ (OEIS A293239), by source 31, printed as Corollary~\ref{pte:lc:main} with its proof in Section~\ref{pte:sec:lc}; and $a=2$, the derivatives of $x^{x^2}$ (OEIS A290268), by source 34, printed as Corollary~\ref{pte:as:main} with its proof in Section~\ref{pte:sec:as}. None of the three sources cites the others. At $a=1$ the theorem proves the estimate $E(n)=o(n^2)$ that the host report's Part~2 leaves open in its closing remark; at $a=2$ it answers the host's Question~6 (Section~\ref{pte:sec:host}). Like those two proofs, it is ineffective.}
+
 Taylor expansion at a fixed $x>0$ gives
-\begin{equation}\label{ga:taylor}
+\begin{equation}\label{pte:ga:taylor}
  c_{a,N}(j,k)=\frac{N!}{k!d!}[w^N]
  \bigl((1+w)^a-1\bigr)^k(1+w)^{ad}\log^d(1+w),
  \qquad j=a(k+d)-N.
@@ -46,31 +176,33 @@ $x^a((1+w)^a-1)\log x+x^a(1+w)^a\log(1+w)$.
 Set
 \begin{gather}
  q=-j-1,\qquad N=a(k+d)+q+1,\notag\\
- M=N-k=(a-1)k+ad+q+1,\label{ga:coordinates}\\
+ M=N-k=(a-1)k+ad+q+1,\label{pte:ga:coordinates}\\
  H_{a;d,k,q}=\frac{M!}{d!}[w^M]
  \left(\frac{(1+w)^a-1}{w}\right)^k
- (1+w)^{ad}\log^d(1+w).\label{ga:H}
+ (1+w)^{ad}\log^d(1+w).\label{pte:ga:H}
 \end{gather}
 Then $c_{a,N}(-q-1,k)=\binom Nk H_{a;d,k,q}$.
 
 Define the even polynomial
-\begin{equation}\label{ga:Ca}
+\begin{equation}\label{pte:ga:Ca}
  C_a(z)=\frac{(1+z)^a-(1-z)^a}{2az}
  =\sum_{m\ge0}\frac1a\binom a{2m+1}z^{2m}.
 \end{equation}
 It has positive coefficients on its even support and constant term one. The two changes of variable $w=\ee^t-1$ and $z=\tanh(t/2)$ yield the exact identity
-\begin{equation}\label{ga:tanh}
+\begin{equation}\label{pte:ga:tanh}
  H_{a;d,k,q}=\frac{M!}{d!}\,a^k2^{-(a-1)(k+d)-q-1}
  [z^M]C_a(z)^k(\operatorname{arctanh}z)^d
           (1+z)^{ad}(1-z)^q.
 \end{equation}
 This algebraic identity is valid also for negative $q$ whenever the original indices are admissible. Its powers include the transformed Cauchy differential.
 
-\begin{proposition}[The exact positive bulk]\label{ga:bulk}
+\mergenote{At $a=2$ one has $C_2=1$, and~\eqref{pte:ga:tanh} is source 34's identity~\eqref{pte:as:tanhcoefficient}, which is in turn the host's transformed coefficient formula (its Proposition~3.6, \texttt{xxb:prop:mobius}) written in depth coordinates. At $a=1$ it is source 31's formula~\eqref{pte:lc:tanhcoefficient}, with $H_{1;d,k,q}=b(M,d)$.}
+
+\begin{proposition}[The exact positive bulk]\label{pte:ga:bulk}
 Every candidate with $j\ge0$ is strictly positive. The $j=-1$ boundary is strictly positive when $d\ge1$ and structurally zero when $d=0$.
 \end{proposition}
 \begin{proof}
-For $j\ge0$, one has $q\le-1$. Every factor in~\eqref{ga:tanh} has nonnegative coefficients, and $(1-z)^q$ has strictly positive coefficients at every degree. Since $M=N-k\ge d$, the extracted coefficient is positive. At $q=0$, $d\ge1$, the series $(\operatorname{arctanh}z)^d$ supplies every degree of its parity above $d$, and $(1+z)^{ad}$ supplies both parities. At $d=0$, $q=0$, the index $M=(a-1)k+1$ exceeds the degree of $C_a^k$, so the coefficient is zero.
+For $j\ge0$, one has $q\le-1$. Every factor in~\eqref{pte:ga:tanh} has nonnegative coefficients, and $(1-z)^q$ has strictly positive coefficients at every degree. Since $M=N-k\ge d$, the extracted coefficient is positive. At $q=0$, $d\ge1$, the series $(\operatorname{arctanh}z)^d$ supplies every degree of its parity above $d$, and $(1+z)^{ad}$ supplies both parities. At $d=0$, $q=0$, the index $M=(a-1)k+1$ exceeds the degree of $C_a^k$, so the coefficient is zero.
 \end{proof}
 
 The recurrence obtained by differentiating once preserves
@@ -78,24 +210,26 @@ The recurrence obtained by differentiating once preserves
  \ell=k+d=(N+j)/a\in\mathbb Z,\qquad 0\le k\le\ell\le N.
 \]
 Differentiation leaves $\ell$ fixed and leaves $k$ fixed or lowers it by one; multiplication by $x^{a-1}(a\log x+1)$ raises $\ell$ by one and raises $k$ by zero or one. Thus $A_a(N)\le(N+1)(N+2)/2$. The positive nonnegative columns contain
-\begin{equation}\label{ga:bulkcount}
+\begin{equation}\label{pte:ga:bulkcount}
  \sum_{\ell=\lceil N/a\rceil}^N(\ell+1)
  =\left(\frac12-\frac1{2a^2}\right)N^2+O_a(N).
 \end{equation}
 The outside tail $d\ge1$, $k\ge0$, $q\ge1$ has
-\begin{equation}\label{ga:tailcount}
+\begin{equation}\label{pte:ga:tailcount}
  \sum_{\ell=1}^{\lfloor(N-2)/a\rfloor}\ell
  =\frac{N^2}{2a^2}+O_a(N)
 \end{equation}
 candidates. We prove density one of nonzero coefficients there.
 
-\section{A meromorphic action}
+\mergenote{At $a=2$, Proposition~\ref{pte:ga:bulk} is the host's nonvanishing region (its Theorem~3.7, \texttt{xxb:thm:positive}), whose top logarithmic column is its Proposition~3.9, and the bulk count~\eqref{pte:ga:bulkcount} has the leading term $3N^2/8$ of the host's exact lower bound $\Lambda(N)=\beta(N)$ (its Theorem~3.1 and equation~(3.85)); source 34 cites the same result as~\eqref{pte:as:bulk}. The upper bound $(N+1)(N+2)/2$ is source 34's~\eqref{pte:as:upper} at $a=2$; there the host's Theorem~3.14 proves the sharper $a(N)\le U(N)=N^2/2+N+1$.}
+
+\section{A meromorphic action \src{28}}\label{pte:sec:ga-action}
 For now let $d\ge1$, $\kappa=k/d>0$, $\eta=q/d>0$, and $\eta\ne a$. Put
 \[
- r=a+\eta,\qquad e=\frac{|a-\eta|}{2},\qquad h=\min(a,\eta)>0.
+ \omega=a+\eta,\qquad e=\frac{|a-\eta|}{2},\qquad h=\min(a,\eta)>0.
 \]
-Here $e$ denotes a tilt magnitude and $\ee$ denotes Euler's number. Formula~\eqref{ga:H} becomes
-\begin{equation}\label{ga:contour}
+Here $e$ denotes a tilt magnitude and $\ee$ denotes Euler's number. Formula~\eqref{pte:ga:H} becomes
+\begin{equation}\label{pte:ga:contour}
  H_{a;d,k,q}=\frac{M!}{d!}\frac1{2\pi i}
  \oint\frac{\exp(dL_a(t))}{4\sinh^2(t/2)}\,dt,
 \end{equation}
@@ -103,28 +237,28 @@ where
 \begin{align}
  L_a(t)={}&\log t+\frac{a-\eta}{2}t+\kappa\log\sinh(at/2)
  -(a\kappa+a+\eta)\log\sinh(t/2)\notag\\
- &-\bigl((a-1)\kappa+a+\eta\bigr)\log2\label{ga:action}\\
+ &-\bigl((a-1)\kappa+a+\eta\bigr)\log2\label{pte:ga:action}\\
  ={}&\log t+at+\kappa\log(\ee^{at}-1)
               -(a\kappa+a+\eta)\log(\ee^t-1).\notag
 \end{align}
-The integer powers make the full integrand single-valued. Its nonzero poles are at $2\pi i\mathbb Z$; numerator zeros are zeros of the integrand, not singularities. The residual differential under $z=\tanh(t/2)$ is exactly $dz/(2z^2)$, proving~\eqref{ga:tanh}.
+The integer powers make the full integrand single-valued. Its nonzero poles are at $2\pi i\mathbb Z$; numerator zeros are zeros of the integrand, not singularities. The residual differential under $z=\tanh(t/2)$ is exactly $dz/(2z^2)$, proving~\eqref{pte:ga:tanh}.
 
 Reflect the real coordinate if $\eta<a$, so the favored side is left. The reflected modulus is obtained by replacing $(a-\eta)t/2$ by $-et$; call its action $L_c$. For $t=-s-iy$, $s>0$, $0<y<\pi$, define
-\begin{equation}\label{ga:UV}
+\begin{equation}\label{pte:ga:UV}
  U(s,y)=\frac{s\coth s-y\cot y}{s^2+y^2},\qquad
- V(s)=\frac r2-e\coth s.
+ V(s)=\frac\omega2-e\coth s.
 \end{equation}
-The partial fractions of $\coth$ and $\cot$~\cite{dlmf} give
+The partial fractions of $\coth$ and $\cot$~\cite{pte-dlmf4} give
 \[
  U(s,y)=2\sum_{n\ge1}
  \frac{(n\pi)^2}{(s^2+(n\pi)^2)((n\pi)^2-y^2)}.
 \]
 Consequently $U_s<0$, $U_y>0$, and $V'>0$.
 
-\section{A uniform angular-selection mechanism}
+\section{A uniform angular-selection mechanism \src{28}}\label{pte:sec:ga-selection}
 \subsection{Tanh circles, including circles through numerator zeros}
 The roots of $C_a$ are purely imaginary:
-\begin{equation}\label{ga:factorization}
+\begin{equation}\label{pte:ga:factorization}
  C_a(z)=\prod_{j=1}^{\lfloor(a-1)/2\rfloor}
        (1+z^2/\lambda_j),\qquad
  \lambda_j=\tan^2(\pi j/a).
@@ -137,7 +271,7 @@ Write $C=\cosh s$, $v_j=R^2/\lambda_j$. The exact geometry yields
 \begin{gather}
  \cos^2(\arg z)=\frac{1-C^{-2}}{1-\alpha^2},\notag\\
  |1+z^2/\lambda_j|^2=A_j-B_j/C^2,\quad
- B_j=\frac{4v_j}{1-\alpha^2}>0,\quad A_j=(1-v_j)^2+B_j\ge B_j.\label{ga:factorcircle}
+ B_j=\frac{4v_j}{1-\alpha^2}>0,\quad A_j=(1-v_j)^2+B_j\ge B_j.\label{pte:ga:factorcircle}
 \end{gather}
 Hence
 \[
@@ -145,7 +279,7 @@ Hence
  =\tanh s\,\frac{B_j}{A_jC^2-B_j}.
 \]
 The other $\kappa$-dependent power of $|z|$ is constant on the circle. Direct differentiation of the full action gives
-\begin{equation}\label{ga:circleprofile}
+\begin{equation}\label{pte:ga:circleprofile}
  \frac d{ds}\operatorname{Re}L_c(-s-iy(s))
  =\tanh s\left[U(s,y(s))-V(s)
        +\kappa\sum_j\frac{B_j}{A_jC^2-B_j}\right].
@@ -157,7 +291,7 @@ It follows that each favored quadrant has one maximum, either a strict interior 
 \subsection{Horizontal lines and a finite Jensen inequality}
 Fix $\pi/2\le y\le\pi$ and write $C=\cosh s$, $S=\sinh s$, $c=\cos y\le0$ and $D=s^2+y^2$. For $u(s,y)=\operatorname{Re}L_c(-s-iy)$, the multiplication formula for $\coth$ gives
 \begin{align}
- u_s\frac{C-c}{S}&=B_1(s)+eB_2(s)-\frac r2+\kappa W_a(C,c),\label{ga:horizontalprofile}\\
+ u_s\frac{C-c}{S}&=B_1(s)+eB_2(s)-\frac\omega2+\kappa W_a(C,c),\label{pte:ga:horizontalprofile}\\
  B_1&=\frac{s(C-c)}{DS},\qquad B_2=\frac{C-c}{S},\notag\\
  W_a(C,c)&=\frac12\sum_{j=0}^{a-1}\frac{c_j-c}{C-c_j},\qquad
  c_j=\cos(y+2\pi j/a).\notag
@@ -177,37 +311,37 @@ For $a\ge2$, the numbers $c_j$ average to zero. With
 \]
 Jensen's inequality gives $\sum_jg(c_j)\ge ag(0)=-ac/C^2\ge0$. Thus $W_a$ is nonincreasing in $C$. Equality throughout is possible at $a=2$, $y=\pi/2$, but the other terms still decrease strictly. For $a=1$, $W_a=0$ identically, so the same conclusion holds.
 
-The bracket in~\eqref{ga:horizontalprofile} runs from $+\infty$ to $-h$. It therefore gives a unique favored-side maximum $s(y)>0$, with $u_{ss}<0$. Reflection strictly suppresses the opposite side. The resulting horizontal envelope $J(y)=u(s(y),y)$ satisfies
-\begin{equation}\label{ga:horizontalconvex}
+The bracket in~\eqref{pte:ga:horizontalprofile} runs from $+\infty$ to $-h$. It therefore gives a unique favored-side maximum $s(y)>0$, with $u_{ss}<0$. Reflection strictly suppresses the opposite side. The resulting horizontal envelope $J(y)=u(s(y),y)$ satisfies
+\begin{equation}\label{pte:ga:horizontalconvex}
  J''=u_{yy}-u_{sy}^2/u_{ss}
      =-u_{ss}-u_{sy}^2/u_{ss}>0,
 \end{equation}
 by harmonicity at the maximum. At $y=\pi$ all the hyperbolic logarithmic factors have zero $y$ derivative for every integer $a$, and therefore
-\begin{equation}\label{ga:endpoint}
+\begin{equation}\label{pte:ga:endpoint}
  J'(\pi)=\frac{\pi}{s(\pi)^2+\pi^2}>0.
 \end{equation}
 The horizontal tails satisfy $\operatorname{Re}L_c\le\log(1+s)-hs+O(1)$. Closing the strip encloses only the original pole at zero, and the vertical contributions vanish. Thus every high favored saddle is globally selected. These assertions are locally uniform for $\kappa>0$, $\eta>0$, $\eta\ne a$.
 
-\section{Complete coverage from two convex envelopes}
+\section{Complete coverage from two convex envelopes \src{28}}\label{pte:sec:ga-coverage}
 Let $\mathcal M(\xi)$ be the maximum of $\operatorname{Re}L_a$ on $|z|=\ee^\xi$, $\xi<0$. Up to a real additive constant, the modulus is
-\begin{equation}\label{ga:subharmonic}
+\begin{equation}\label{pte:ga:subharmonic}
  \log|\operatorname{arctanh}z|+\kappa\log|C_a(z)|
  +a\log|1+z|+\eta\log|1-z|-\nu\log|z|,
  \quad \nu=(a-1)\kappa+a+\eta.
 \end{equation}
 It is subharmonic on every annulus. Comparing it with a harmonic affine function of $\log|z|$ whose boundary values are the two boundary maxima proves that $\mathcal M$ is convex in $\xi$. Its slope near $-\infty$ is $1-\nu<0$.
 
-The unique favored maximum in~\eqref{ga:circleprofile} makes the envelope differentiable, including a transition between a real endpoint and a conjugate pair. Conjugate maxima have the same radial derivative. At an interior complex maximum, harmonicity and its strict angular curvature give strictly positive envelope second derivative. The same holds at a nondegenerate real maximum. A flat interval with $\mathcal M'=0$ is impossible: an interior maximum would have positive second derivative, while an interval of real stationary maxima would force $L_a'$ to vanish identically, contrary to its pole at zero. Therefore a stationary minimum, if present, is unique.
+The unique favored maximum in~\eqref{pte:ga:circleprofile} makes the envelope differentiable, including a transition between a real endpoint and a conjugate pair. Conjugate maxima have the same radial derivative. At an interior complex maximum, harmonicity and its strict angular curvature give strictly positive envelope second derivative. The same holds at a nondegenerate real maximum. A flat interval with $\mathcal M'=0$ is impossible: an interior maximum would have positive second derivative, while an interval of real stationary maxima would force $L_a'$ to vanish identically, contrary to its pole at zero. Therefore a stationary minimum, if present, is unique.
 
 As $\xi\uparrow0$, the mapped circles tend locally to $y=\pi/2$. Their maxima remain in a bounded $s$ interval: the uniform estimate $\log(1+s)-hs+O(1)$ makes large $s$ unfavorable, whereas a fixed interior point has finite action. The maxima converge to the unique horizontal maximum $s(\pi/2)$. Since $dt/d\xi=\sinh t=-i\cosh s$ at the joining line,
-\begin{equation}\label{ga:join}
+\begin{equation}\label{pte:ga:join}
  \mathcal M'(0-)=\cosh(s(\pi/2))J'(\pi/2).
 \end{equation}
-If this value is positive, convexity and the negative initial slope give a stationary circle with $R<1$. If it is negative,~\eqref{ga:horizontalconvex} and~\eqref{ga:endpoint} give a stationary horizontal line with $\pi/2<y<\pi$. If it is zero, the joining contour itself selects the saddle. The selected critical point is unique up to conjugation.
+If this value is positive, convexity and the negative initial slope give a stationary circle with $R<1$. If it is negative,~\eqref{pte:ga:horizontalconvex} and~\eqref{pte:ga:endpoint} give a stationary horizontal line with $\pi/2<y<\pi$. If it is zero, the joining contour itself selects the saddle. The selected critical point is unique up to conjugation.
 
 Strict global gaps and nonzero curvature persist under small parameter changes. At the artificial joining height the contour can be perturbed locally, so it causes no genuine singularity of the selected simple saddle. We have proved complete selection of one real saddle or one complex conjugate pair, except for possible degenerate real saddles. This argument uses exact Cauchy cycles throughout.
 
-\section{The real boundary and connected oscillatory regions}
+\section{The real boundary and connected oscillatory regions \src{28}}\label{pte:sec:ga-real}
 Use the original coordinate and put
 \[
  A(t)=\frac{\ee^t}{\ee^t-1},\quad
@@ -215,7 +349,7 @@ Use the original coordinate and put
  b(t)=\frac{B(t)}{A(t)}=-a\frac{\ee^{(a-1)t}-1}{\ee^{at}-1}.
 \]
 The positive real saddle equation is $\eta=E(T;\kappa)$, where
-\begin{equation}\label{ga:realmap}
+\begin{equation}\label{pte:ga:realmap}
  E(T;\kappa)=(a+1/T)(1-\ee^{-T})-a+\kappa b(T).
 \end{equation}
 For $a\ge2$, it tends to $1-a-(a-1)\kappa<0$ as $T\downarrow0$, is positive for sufficiently large $T$, and tends to zero at infinity. Also $b(T)<0$ and
@@ -223,7 +357,7 @@ For $a\ge2$, it tends to $1-a-(a-1)\kappa<0$ as $T\downarrow0$, is positive for 
  E(T;\kappa)<\frac{1-\ee^{-T}}T<1.
 \]
 Thus
-\begin{equation}\label{ga:realboundary}
+\begin{equation}\label{pte:ga:realboundary}
  M_a(\kappa)=\max_{T>0}E(T;\kappa)
 \end{equation}
 is positive, less than one, continuous, and nonincreasing. For continuity, on each bounded $\kappa$ interval a positive common lower bound for the maximum and the bound $E\le1/T$ confine all maximizers to a common compact interval.
@@ -235,7 +369,7 @@ When $\eta<M_a(\kappa)$, the first simple real crossing has $E_T>0$, so $L_{tt}=
 Consequently the selected saddle is complex in the epigraph $\eta>M_a(\kappa)$. The two regions separated by $\eta=a$ are connected: below $a$, move through a horizontal level in $(1,a)$, and above $a$ use the whole half-plane.
 
 For $a\ge2$ the real-degenerate parameter set has area zero. At a real $t\ne0$, the two equations $L_t=L_{tt}=0$ form a nonsingular affine system for $(\kappa,\eta)$, with determinant, up to sign,
-\begin{equation}\label{ga:determinant}
+\begin{equation}\label{pte:ga:determinant}
  A(t)^2b'(t)>0.
 \end{equation}
 Indeed, for $x=\ee^t>0$,
@@ -248,9 +382,11 @@ and the final fraction strictly increases. The degenerate set lies in the image 
 \paragraph{The endpoint $a=1$.}
 Here $b=0$ and $E$ is independent of $\kappa$. Writing $\rho=1+\eta$, its real equation is $(1+1/T)(1-\ee^{-T})=\rho$. Its unique turning point solves $\ee^T=1+T+T^2$, as follows directly by differentiating. The derivative changes sign once, so the real-fold set is a single line $\eta=M_1\in(0,1)$. The same first-real-root and complex-epigraph description follows. Both complex regions separated by $\eta=1$ are connected. Thus the zero-area and connectedness conclusions hold for this endpoint as well.
 
-\section{Uniform local asymptotics and a nonzero curvature anchor}
+\mergenote{Source 31 treats this endpoint in full (Section~\ref{pte:sec:lc-critical}): with $\rho=M/d$, its saddle map is $F(t)=(1+1/t)(1-\ee^{-t})$, the turning point is $T_*\in(1,2)$ of~\eqref{pte:lc:fold}, numerically $T_*=1.79328\ldots$, and the fold value is $\rho_*=F(T_*)=1.29843\ldots$, so that $M_1=\rho_*-1$. The values are those of the delivered diagnostic \texttt{data/\allowbreak{}31-\allowbreak{}a293239-\allowbreak{}saddle\_\allowbreak{}normalization.\allowbreak{}json}.}
+
+\section{Uniform local asymptotics and a nonzero curvature anchor \src{28}}\label{pte:sec:ga-cosine}
 Return to original coordinates. Let $t_s$ be the selected lower complex saddle and set $S=L_a(t_s)$. On a tanh circle define
-\begin{equation}\label{ga:prefactors}
+\begin{equation}\label{pte:ga:prefactors}
  z_s=\tanh(t_s/2),\quad C_s=\sinh^2(t_s)L_{tt}(t_s),\quad
  P_c=\frac1{2z_s\sqrt{C_s}}.
 \end{equation}
@@ -260,25 +396,25 @@ The residual $dz/(2z^2)$ explains the factor $1/(2z_s)$. On a horizontal contour
 \]
 Square-root branches are fixed by the oriented Gaussian contour; the horizontal lower line runs left to right.
 
-\begin{proposition}\label{ga:cosine}
+\begin{proposition}\label{pte:ga:cosine}
 On every compact simple complex-saddle patch,
-\begin{equation}\label{ga:cosinelaw}
+\begin{equation}\label{pte:ga:cosinelaw}
  H_{a;d,k,q}=\frac{2M!}{d!}\frac{\ee^{d\operatorname{Re}S}|P|}{\sqrt{2\pi d}}
  \left\{\cos\bigl(d\operatorname{Im}S+\arg P\bigr)+O_a(d^{-1})\right\}.
 \end{equation}
 The error is additive and compact-uniform, including at zeros of the cosine. A selected real saddle has a single positive leading contribution and is eventually nonzero on each compact simple real-saddle patch.
 \end{proposition}
 \begin{proof}
-The preceding sections supply an exact contour with a strict global gap and nonzero Gaussian curvature. In a local saddle coordinate, Taylor expansion under the $d^{-1/2}$ rescaling gives the Gaussian integral; odd terms cancel and the first remaining relative error is $O(d^{-1})$ for one saddle. The complementary contour is exponentially smaller. The conjugate contributions give~\eqref{ga:cosinelaw}, without division by its cosine. At a positive real saddle all leading factors are positive.
+The preceding sections supply an exact contour with a strict global gap and nonzero Gaussian curvature. In a local saddle coordinate, Taylor expansion under the $d^{-1/2}$ rescaling gives the Gaussian integral; odd terms cancel and the first remaining relative error is $O(d^{-1})$ for one saddle. The complementary contour is exponentially smaller. The conjugate contributions give~\eqref{pte:ga:cosinelaw}, without division by its cosine. At a positive real saddle all leading factors are positive.
 \end{proof}
 
 For a fixed-$N$ row with $d$ fixed, $\eta=(N-1)/d-a\kappa-a$. Set $D=\partial_\kappa-a\partial_\eta$. Affine parameter dependence and stationarity yield
-\begin{equation}\label{ga:curvature}
+\begin{equation}\label{pte:ga:curvature}
  DS=\log(\ee^{at_s}-1),\qquad
  D^2S=-\frac{[a\ee^{at_s}/(\ee^{at_s}-1)]^2}{L_{tt}(t_s)}.
 \end{equation}
 This phase curvature is not identically zero on either connected complex region. At $\kappa=0$, $\eta=a$, the lower saddle is $t=-iT$, with
-\begin{equation}\label{ga:anchor}
+\begin{equation}\label{pte:ga:anchor}
  \tan(T/2)=aT,\quad \pi/2<T<\pi,\qquad
  L_{tt}=\frac{2a-1-a^2T^2}{2aT^2}<0.
 \end{equation}
@@ -293,14 +429,16 @@ Strict monotonicity of $\tan(T/2)/T$ implies $T>T_0$. Hence $\delta=a(\pi-T)/2\i
           \end{cases}
 \]
 Both values are finite and nonzero. For $a=1$, $\cot(T/2)=1/T>0$ directly. Therefore
-\begin{equation}\label{ga:nonzeroanchor}
+\begin{equation}\label{pte:ga:nonzeroanchor}
  \operatorname{Im}D^2S=-\frac{a^2\cot(aT/2)}{2L_{tt}}\ne0.
 \end{equation}
 The anchor also excludes a numerator zero at $t=-iT$, so it persists for small positive $\kappa$. Connectedness and real analyticity now show that the curvature-zero set has area zero on both complex regions. Logarithm branches add only affine parameter terms and do not change this curvature.
 
-\section{Integer points and full tail density}
+\mergenote{At $a=1$ the anchor~\eqref{pte:ga:anchor} is source 31's centre~\eqref{pte:lc:center} with the sign~\eqref{pte:lc:branchsign}, and its curvature is the value $S''(2)$ computed after~\eqref{pte:lc:curvature}. At $a=2$, source 34 uses a different, rational base point, $T=14/5$ on the line $\eta=2$ with $\kappa=\mathcal K(T)>1/250$ (Section~\ref{pte:sec:as-density}).}
+
+\section{Integer points and full tail density \src{28}}\label{pte:sec:ga-density}
 We state the elementary lattice estimate with its proof.
-\begin{lemma}\label{ga:lattice}
+\begin{lemma}[Integer-triangle estimate; sources 28, 31, 34, 26]\label{pte:ga:lattice}\label{pte:lc:lattice}\label{pte:as:lattice}\label{pte:he:lattice}
 Let $f\in C^2(J)$, where $J$ has length $O(d)$, and suppose $f''$ has one sign with $m/d\le|f''|\le M/d$. For fixed $A,m,M>0$, only $O(d^{2/3})$ integers $k\in J$ satisfy $\operatorname{dist}(f(k),\mathbb Z)\le A/d$.
 \end{lemma}
 \begin{proof}
@@ -311,7 +449,9 @@ Split $J$ into blocks of length $H=c d^{1/3}$. Round candidate values to integer
 Integer spacing implies $\lfloor(n-1)^2/4\rfloor\le4A/m$, hence $n\le2+4\sqrt{A/m}$. Each block contains only a constant number, and there are $O(d^{2/3})$ blocks.
 \end{proof}
 
-On a compact complex patch where $|\operatorname{Im}D^2S|$ is bounded below, an exact zero in~\eqref{ga:cosinelaw} satisfies
+\mergenote{Sources 31 (its Lemma~5.1), 34 (its Lemma~7.1) and 26 (its Lemma~5.1) state and prove the same lemma by the same argument, each for its own phase function. Two of them spell out steps that the proof above leaves implicit. Source 34 fixes the block constant by $Mc^3/2<1/4$. Source 31 makes the integer spacing explicit: for distinct integer abscissae and a middle index $i$, $x_i-x_1\ge i-1$ and $x_n-x_i\ge n-i$, which gives $\lfloor(n-1)^2/4\rfloor\le4A/m$; and finitely many small $d$ are absorbed in the implied constant. The applications in Sections~\ref{pte:sec:lc}, \ref{pte:sec:as} and~\ref{pte:sec:he} cite this lemma. The letters $m$, $M$, $A$, $c$ and $H$ are local to the lemma: here $M$ is not the coefficient index and $H$ is not $H_{a;d,k,q}$.}
+
+On a compact complex patch where $|\operatorname{Im}D^2S|$ is bounded below, an exact zero in~\eqref{pte:ga:cosinelaw} satisfies
 \[
  \operatorname{dist}\!\left(
  \frac{d\operatorname{Im}S+\arg P}{\pi}-\frac12,\mathbb Z\right)
@@ -321,7 +461,7 @@ The phase second derivative with respect to integer $k$, at fixed $d,N$, is
 \[
  \frac{\operatorname{Im}D^2S}{\pi d}+O(d^{-2}).
 \]
-Lemma~\ref{ga:lattice} gives $O(d^{2/3})$ zero cells per row and $O(N^{5/3})$ on each such compact patch. Real-saddle patches contain no zeros for sufficiently large $d$.
+Lemma~\ref{pte:ga:lattice} gives $O(d^{2/3})$ zero cells per row and $O(N^{5/3})$ on each such compact patch. Real-saddle patches contain no zeros for sufficiently large $d$.
 
 For exhaustion, first restrict to compact physical rectangles bounded away from $\kappa=0$ and $\eta=0$, and remove a narrow neighborhood of $\eta=a$. Every positive real saddle there has $T\le1/\eta$ and is bounded away from zero. Thus its real-degenerate locus lies in a compact analytic-curve image. Remove a small-area neighborhood of this locus before taking compact analytic exceptional-set covers for the phase curvature. The remaining compact sets admit finite simple-saddle covers and the preceding bound. A finite union of boxes of arbitrarily small area covers the omitted sets; its lattice count is its scaled area plus $O(N)$. Taking $N\to\infty$ first and the removed area to zero afterward proves zero density on every compact physical rectangle.
 
@@ -332,14 +472,14 @@ The exact ratio-to-lattice map is
         \frac\kappa{a(\kappa+1)+\eta}\right),
 \]
 with Jacobian $[a(\kappa+1)+\eta]^{-3}$. Its full integral is
-\begin{equation}\label{ga:area}
+\begin{equation}\label{pte:ga:area}
  \int_0^\infty\int_0^\infty
  \frac{d\eta\,d\kappa}{[a(\kappa+1)+\eta]^3}
  =\frac1{2a^2}.
 \end{equation}
-This equals the leading candidate area in~\eqref{ga:tailcount}. Compact exhaustion therefore leaves an arbitrarily small normalized number of omitted candidates. The whole tail has only $o_a(N^2)$ zeros. Adding~\eqref{ga:bulkcount} and using the candidate upper bound proves Theorem~\ref{ga:main}.
+This equals the leading candidate area in~\eqref{pte:ga:tailcount}. Compact exhaustion therefore leaves an arbitrarily small normalized number of omitted candidates. The whole tail has only $o_a(N^2)$ zeros. Adding~\eqref{pte:ga:bulkcount} and using the candidate upper bound proves Theorem~\ref{pte:ga:main}.
 
-\section{An elementary exact count for generic real parameters}
+\section{An elementary exact count for generic real parameters \src{28}}\label{pte:sec:ga-generic}
 The integer-exponent theorem contrasts with a simple algebraic genericity statement. Allow a real parameter $\alpha\ne0$ and write
 \[
  \frac{d^N}{dx^N}x^{x^\alpha}
@@ -347,15 +487,15 @@ The integer-exponent theorem contrasts with a simple algebraic genericity statem
                  x^{\alpha\ell-N}(\log x)^k.
 \]
 Differentiation gives the polynomial recurrence
-\begin{align}\label{ga:parameterrecurrence}
+\begin{align}\label{pte:ga:parameterrecurrence}
  p_{N+1,\ell,k}(\alpha)={}&(\alpha\ell-N)p_{N,\ell,k}(\alpha)
  +(k+1)p_{N,\ell,k+1}(\alpha)\notag\\
  &+p_{N,\ell-1,k}(\alpha)
  +\alpha p_{N,\ell-1,k-1}(\alpha),
 \end{align}
-starting from $p_{0,0,0}=1$ and with out-of-range entries zero. Thus every coefficient belongs to $\mathbb Z[\alpha]$. For $N\ge1$, the potential cells are $1\le\ell\le N$, $0\le k\le\ell$. None of these coefficient polynomials is identically zero: choose an integer $a>N$, for which every such cell lies in the strictly positive bulk of Proposition~\ref{ga:bulk}.
+starting from $p_{0,0,0}=1$ and with out-of-range entries zero. Thus every coefficient belongs to $\mathbb Z[\alpha]$. For $N\ge1$, the potential cells are $1\le\ell\le N$, $0\le k\le\ell$. None of these coefficient polynomials is identically zero: choose an integer $a>N$, for which every such cell lies in the strictly positive bulk of Proposition~\ref{pte:ga:bulk}.
 
-\begin{corollary}\label{ga:generic}
+\begin{corollary}\label{pte:ga:generic}
 There is a countable set $E$ of real algebraic numbers such that every real $\alpha\notin E$ has, for every $N\ge1$, exactly
 \[
  \frac{N(N+3)}2
@@ -367,22 +507,24 @@ Take $E$ to contain zero and all roots of the nonzero integer polynomials $p_{N,
 \end{proof}
 This corollary does not classify the exceptional algebraic parameters. Such exceptions occur even at order two, where $p_{2,1,0}(\alpha)=2\alpha-1$ and $p_{2,1,1}(\alpha)=\alpha(\alpha-1)$. Positive noninteger algebraic parameters therefore remain a meaningful separate frontier.
 
-\section{An exact classification at the first two depths}
+\mergenote{That frontier is the subject of Part~\ref{pte:part:defects}, on fixed defects $r=N-\ell$. Both exceptions displayed above lie on defect one, where the residual is $R_{\alpha,1,N}=-K/2$ (equation~\eqref{pte:rf:low}): at $N=2$ the reflection form~\eqref{pte:rf:center} is $K=1-2\alpha$ for $k=0$ and $K=1-\alpha$ for $k=1$, so $p_{2,1,0}$ vanishes at $\alpha=1/2$ and $p_{2,1,1}$ at $\alpha=1$, both on the reflection line. Corollary~\ref{pte:ga:generic} implies the transcendental clause of source 16's Theorem~\ref{pte:ir:main}, which source 16 proves per defect from the positive leading coefficient~\eqref{pte:ir:positiveleading}. In this section $\alpha$ is a real exponent and $E$ an exceptional set; in Sections~\ref{pte:sec:ga-selection} and~\ref{pte:sec:ga-real} the same letters denote the circle parameter $(1-R^2)/(1+R^2)$ and the real saddle map.}
+
+\section{An exact classification at the first two depths \src{28}}\label{pte:sec:ga-depths}
 The branch cut of the original coefficient formula gives an additional exact result. For $d\ge1$, $k,q\ge0$, set
 \[
- R_a(x)=x^a-(-1)^a,\qquad P_d(\tau)=\operatorname{Im}(\tau+i\pi)^d.
+ \mathcal R_a(x)=x^a-(-1)^a,\qquad P_d(\tau)=\operatorname{Im}(\tau+i\pi)^d.
 \]
 Deforming the coefficient contour to $w=-1-x$ is justified by its $O(w^{-q-2}\log^d w)$ decay and integrability at the branch endpoint. Folding $x\leftrightarrow1/x$ yields
 \begin{align}
  c_{a,N}(-q-1,k)
  ={}&\frac{(-1)^qN!}{\pi k!d!}\int_1^\infty
- \frac{R_a(x)^kP_d(\log x)}{(1+x)^{N+1}}\notag\\
+ \frac{\mathcal R_a(x)^kP_d(\log x)}{(1+x)^{N+1}}\notag\\
  &\hspace{17mm}\cdot\left[x^{ad}+(-1)^{(a-1)k+d-1}x^q\right]dx.
- \label{ga:folded}
+ \label{pte:ga:folded}
 \end{align}
-The signs follow from $R_a(1/x)=(-1)^{a-1}x^{-a}R_a(x)$ and $P_d(-\tau)=(-1)^{d-1}P_d(\tau)$. In particular the reflection line is $q=ad$, with a forced zero when $(a-1)k+d$ is even.
+The signs follow from $\mathcal R_a(1/x)=(-1)^{a-1}x^{-a}\mathcal R_a(x)$ and $P_d(-\tau)=(-1)^{d-1}P_d(\tau)$. In particular the reflection line is $q=ad$, with a forced zero when $(a-1)k+d$ is even.
 
-\begin{theorem}\label{ga:depthtwo}
+\begin{theorem}\label{pte:ga:depthtwo}
 For every integer $a\ge1$, all $k,q\ge0$, and $d\in\{1,2\}$:
 \begin{itemize}
 \item if $(a-1)k+d$ is odd, the coefficient is nonzero with sign $(-1)^q$;
@@ -390,27 +532,1706 @@ For every integer $a\ge1$, all $k,q\ge0$, and $d\in\{1,2\}$:
 \end{itemize}
 \end{theorem}
 \begin{proof}
-For $x>1$, $R_a(x)>0$. Also $P_1(\log x)=\pi>0$ and $P_2(\log x)=2\pi\log x>0$. The remaining factor in~\eqref{ga:folded} is either a strictly positive sum or a difference of the fixed strict sign stated in the theorem.
+For $x>1$, $\mathcal R_a(x)>0$. Also $P_1(\log x)=\pi>0$ and $P_2(\log x)=2\pi\log x>0$. The remaining factor in~\eqref{pte:ga:folded} is either a strictly positive sum or a difference of the fixed strict sign stated in the theorem.
 \end{proof}
 
-\clearpage\section{Source position and verification}
-Question 8 of the inspected ProveIt source~\cite{source} explicitly asks for extension to $x^{x^r}$, $r\ge3$, and cautions that the coefficient generating function and symmetry center must be rederived. This paper supplies both and proves the leading-support theorem for every fixed positive integer exponent. For $a=1$ and $a=2$, the live OEIS entries~\cite{a293239,a290268} concern the same derivative-count convention; the exact coefficient triangles and their identities have classical antecedents~\cite{jeong}. No claim of exhaustive worldwide priority is made.
+\mergenote{At $a=2$, where $d$ is the host's deficit $m$, Theorem~\ref{pte:ga:depthtwo} is the host's Theorems~3.16 and~3.17 (\texttt{xxb:thm:m1}, \texttt{xxb:thm:m2}), proved there by the same pairing, and the depths one and two of its first-four-depth classification (Theorem~3.23); \eqref{pte:ga:folded} is the host's branch-cut formula (its Proposition~3.30, \texttt{xxb:dc:prop:integral}) after $x=1/t$, with $P_d(\tau)=\pi R_d(\tau)$ for the host's $R_d$; and the reflection line $q=2d$ is the host's all-depth symmetry holes (its Theorem~3.29). At $a=1$, where $d$ is the Lehmer--Comtet column, the theorem is the host's Proposition~2.15 (column~1 has no zero, column~2 only $b(5,2)=0$), and the reflection line $q=d$ is its symmetry zeros $b(4h+1,2h)=0$ (Proposition~2.8). These are second routes. For $a\ge3$ the theorem is new; it supplies the symmetry centre that the host's Question~8 asks to rederive.}
 
-The standard-library verifier \texttt{verify\_general\_coefficients.py} checks 631 exact identities for $a=1,\ldots,8$, including 104 zero cases, 187 strictly positive bulk cases, and 252 depth-one/two sign cases. The output is recorded in \texttt{general\_coefficient\_checks.json}. These finite checks supplement the analytic proof; they do not replace its global contour selection or establish exact noncancellation at arbitrary depth.
+\section{The exponent \texorpdfstring{$a=1$}{a=1}: OEIS A293239 and the Lehmer--Comtet triangle \src{31}}\label{pte:sec:lc}
+\mergenote{This section is source 31, \emph{The Leading Asymptotic of OEIS A293239: sparse zeros of the Lehmer--Comtet triangle}, without its integer-triangle lemma (printed as Lemma~\ref{pte:ga:lattice}) and its closing section (printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}). Its main statement is Theorem~\ref{pte:ga:main} at $a=1$ and is printed as Corollary~\ref{pte:lc:main}; the rest of the section is source 31's proof, a second route to that case. It was written about half an hour before source 28 and does not cite it. What it adds at $a=1$ is the explicit picture: the identification of the missing terms with Lehmer--Comtet zeros, a complete classification of the critical points of a one-parameter integral (one real fold, $\ee^{T_*}=1+T_*+T_*^2$, $\rho_*\approx1.29843$), the real-saddle law~\eqref{pte:lc:reallaw}, and the curvature value $S''(2)$. Source 28's coordinates at $a=1$ are $H_{1;d,k,q}=b(M,d)$ with $M=N-k=d+q+1$, so source 31's ratio is $\rho=M/d=1+\eta+1/d$. In this section $h$ and $j$ in $c_N(h,j)$ are the $x$-deficit and the logarithm exponent; elsewhere $j$ is an $x$-exponent. The ratio that source 31 writes $r$ (equal to $\rho$) is written $\omega$ (Section~\ref{pte:sec:renames}).}
 
-The proof is conventional mathematics, not a proof-assistant formalization or an externally refereed publication. Its asymptotic constants and thresholds may depend on the fixed exponent. The exact support formula for general $a$, a full classification of deeper cancellations, and any theorem with $a$ growing with $N$ remain separate questions. Corollary~\ref{ga:generic} settles the generic real parameter by an elementary polynomial argument, but it does not settle the exceptional noninteger algebraic parameters.
+\subsection{The count and the theorem}
+Let $a(N)$ be the number of distinct nonzero terms after collecting like monomials in
+\[
+ \frac{d^N}{dx^N}x^x=x^x\sum_{h,j\ge0}c_N(h,j)x^{-h}(\log x)^j.
+\]
+Put $\Phi(w)=(1+w)\log(1+w)$ and define the first-kind Lehmer--Comtet numbers by
+\begin{equation}\label{pte:lc:definition}
+ b(M,d)=\frac{M!}{d!}[w^M]\Phi(w)^d,\qquad 0\le d\le M.
+\end{equation}
+Here $b(0,0)=1$ and $b(M,0)=0$ for $M>0$. These classical numbers are OEIS A008296; their relation to derivatives of $x^x$ is recorded in the primary literature and in the inspected repository~\cite{pte-jeong,pte-a008296,pte-host}.
 
-\begin{thebibliography}{9}
-\bibitem{source}
-V. Reshetnikov, repository owner, \emph{Term counts in the derivatives of power towers}, ProveIt research report, Part II, depth-coordinate Question 8. File commit \texttt{ca81647a9f67}, inspected 1 October 2026.\par
+\begin{corollary}[Source 31; Theorem~\ref{pte:ga:main} at $a=1$]\label{pte:lc:main}
+The zeros of the Lehmer--Comtet triangle satisfy
+\begin{equation}\label{pte:lc:zerodensity}
+ Z(N):=\#\{(M,d):1\le d\le M\le N,\ b(M,d)=0\}=o(N^2).
+\end{equation}
+Consequently the derivative-term sequence OEIS A293239 satisfies
+\[
+ a(N)=\frac{N^2}{2}+o(N^2).
+\]
+This is an asymptotic statement; no global power-saving remainder or effective order threshold is asserted.
+\end{corollary}
+
+\mergenote{By~\eqref{pte:lc:count} below, the corollary is equivalent to Theorem~\ref{pte:ga:main} at $a=1$, with the same (ineffective) strength. Its proofs: source 28's, in Sections~\ref{pte:sec:ga-coordinates}--\ref{pte:sec:ga-density}, which at $a=1$ reduce to the endpoint paragraph of Section~\ref{pte:sec:ga-real}; and source 31's, which is the rest of this section.}
+
+To obtain the exact counting bridge, expand at a fixed $x>0$:
+\[
+ \frac{(x+u)^{x+u}}{x^x}
+ =\exp(u\log x)\exp\bigl(x\Phi(u/x)\bigr).
+\]
+Coefficient extraction gives
+\begin{equation}\label{pte:lc:expansion}
+ \frac{d^N}{dx^N}x^x
+ =x^x\sum_{M=0}^N\binom NM(\log x)^{N-M}
+                   \sum_{d=0}^M b(M,d)x^{d-M}.
+\end{equation}
+The pair of powers $(N-M,d-M)$ determines $(M,d)$ uniquely. Thus
+\begin{equation}\label{pte:lc:count}
+ a(N)=1+\frac{N(N+1)}2-Z(N).
+\end{equation}
+It remains to prove~\eqref{pte:lc:zerodensity}. The known reflection zeros $b(4j+1,2j)=0$ and the sporadic zero $b(8,5)=0$ are fully compatible with it. We do not prove these are the only zeros.
+
+\mergenote{The expansion~\eqref{pte:lc:expansion} and the count~\eqref{pte:lc:count} are the host's Theorems~2.3 and~2.7 (\texttt{xx:thm:expansion}, \texttt{xx:thm:count}), re-derived here; the host writes $b(m,r)$ with $r$ the column and $Z(n)$ for the same zero count. The reflection zeros are the host's Proposition~2.8, and $b(8,5)=0$ is the exception it proves in Part~2. The host's Conjecture~2.9 asserts that these are the only zeros; the corollary does not decide it.}
+
+\subsection{The integral and the complete critical-point classification}\label{pte:sec:lc-critical}
+Fix $d\ge1$ and $M>d$, and write $\rho=M/d>1$. The change of variable $w=\ee^t-1$ in~\eqref{pte:lc:definition} gives
+\begin{align}
+ b(M,d)&=\frac{M!}{d!}\frac1{2\pi i}\oint \exp(dL_\rho(t))A(t)\,dt,\label{pte:lc:integral}\\
+ L_\rho(t)&=\log t+t-\rho\log(\ee^t-1)\notag\\
+ &=\log t+(1-\rho/2)t-\rho\log\sinh(t/2)-\rho\log2,\label{pte:lc:action}\\
+ A(t)&=\frac{\ee^t}{\ee^t-1}.\notag
+\end{align}
+The full integer-parameter integrand is single-valued; its poles other than zero lie at $2\pi i\mathbb Z\setminus\{0\}$. The saddle equation is
+\begin{equation}\label{pte:lc:F}
+ F(t):=(1+1/t)(1-\ee^{-t})=\rho.
+\end{equation}
+
+\subsubsection{A positive kernel}
+For the modulus put
+\[
+ \omega=\rho,\qquad e=\frac{|\rho-2|}{2},\qquad
+ h=\frac\omega2-e=\min(1,\rho-1)>0.
+\]
+Here $e$ is a tilt magnitude; Euler's number is denoted $\ee$. Reflect the real coordinate when $1<\rho<2$, so the favored direction is left. Up to a constant phase the reflected action is
+\[
+ L_c(t)=\log t-et-\omega\log\sinh(t/2)-\omega\log2.
+\]
+For $t=-s-iy$, $s>0$, $0<y<\pi$, define
+\begin{equation}\label{pte:lc:UV}
+ U(s,y)=\frac{s\coth s-y\cot y}{s^2+y^2},\qquad
+ V(s)=\frac\omega2-e\coth s=h-\frac{2e}{\ee^{2s}-1}.
+\end{equation}
+The classical partial-fraction expansions of $\coth$ and $\cot$~\cite{pte-dlmf4} give
+\begin{equation}\label{pte:lc:kernel}
+ U(s,y)=2\sum_{n\ge1}
+ \frac{(n\pi)^2}{(s^2+(n\pi)^2)((n\pi)^2-y^2)}.
+\end{equation}
+In particular $U_s<0$, $U_y>0$, and $U(s,0)$ decreases from $1/3$ to zero. If $\rho\ne2$, then $V'>0$ and $V$ increases from $-\infty$ to $h$. There is a unique $s_0>0$ such that $U(s_0,0)=V(s_0)$. For every $s>s_0$ there is a unique $y(s)\in(0,\pi)$ satisfying $U(s,y(s))=V(s)$. It is strictly increasing and tends to $\pi$.
+
+Introduce the auxiliary critical map
+\begin{equation}\label{pte:lc:G}
+ G(t)=\frac{\sinh t}{t}-\frac\omega2(1+\cosh t)-e\sinh t,
+ \qquad L_c'(t)=\frac{G(t)}{\sinh t}.
+\end{equation}
+Direct algebra gives
+\[
+ \operatorname{Im}G(-s-iy)=\sinh s\sin y\,[U(s,y)-V(s)].
+\]
+Along the curve $U=V$, the Cauchy--Riemann equations imply
+\begin{align}
+ \operatorname{Re}G'(-s-iy)&=-\sinh s\sin y\,U_y<0,\notag\\
+ \frac d{ds}\operatorname{Re}G(-s-iy(s))
+ &=-\operatorname{Re}G'(-s-iy(s))(1+y'(s)^2)>0.\label{pte:lc:criticalcurve}
+\end{align}
+The real critical value tends to $+\infty$: indeed $U=V\to h$ implies $y\to\pi$, and substitution into~\eqref{pte:lc:G} gives $\ee^{-s}G(-s-iy(s))\to h/2$. Thus the critical curve runs increasingly from $G(-s_0)$ to infinity, and all its roots are simple.
+
+\subsubsection{The single real fold}
+For $\rho>2$ one has
+\[
+ G(-s)=\frac{\sinh s}{s}-\sinh s-\frac\rho2(1+\ee^{-s})
+ \le\frac{\sinh s}{s}-(1+\cosh s)<0,
+\]
+since $\tanh(s/2)<s$. Hence a unique favored complex pair exists for every $\rho>2$.
+
+For $1<\rho<2$, the original favored side is positive real. On this axis
+\begin{equation}\label{pte:lc:realmap}
+ G(-T)=\frac{\ee^T+1}{2}\bigl(F(T)-\rho\bigr),\qquad
+ F'(T)=\frac{\ee^{-T}(T^2+T+1)-1}{T^2}.
+\end{equation}
+The equation
+\begin{equation}\label{pte:lc:fold}
+ \ee^{T_*}=1+T_*+T_*^2
+\end{equation}
+has exactly one positive solution. To see this, differentiate $\ee^T-1-T-T^2$ twice: its second derivative changes sign once, forcing first a decrease and then a single crossing back to positive values. The inequalities $\ee<3$ and $\ee^2>7$ show $1<T_*<2$. Thus $F$ increases from $1$ to
+\[
+ \rho_*:=F(T_*)=\frac{(T_*+1)^2}{T_*^2+T_*+1}\in(1,2)
+\]
+and decreases to $1$. Also $dG(-T)/dT=\sinh T[U(T,0)-V(T)]$, so $G(-T)$ has its unique maximum at $s_0$. Its sign at that maximum is the sign of $\rho_*-\rho$, by~\eqref{pte:lc:realmap}. Combining this fact with~\eqref{pte:lc:criticalcurve} proves the classification:
+\begin{itemize}
+\item if $1<\rho<\rho_*$, there are two positive real saddles, and the smaller one satisfies $T<s_0$;
+\item if $\rho>\rho_*$ and $\rho\ne2$, there is exactly one favored complex pair in $0<|\operatorname{Im}t|<\pi$;
+\item at $\rho=\rho_*$ there is a real double saddle.
+\end{itemize}
+At $\rho=2$, the lower simple saddle is $t=-iT$, where
+\begin{equation}\label{pte:lc:center}
+ \tan(T/2)=T,\qquad \pi/2<T<\pi.
+\end{equation}
+The positive solution is unique because $\tan(T/2)/T$ is strictly increasing there, begins below one, and diverges. Moreover
+\begin{equation}\label{pte:lc:branchsign}
+ L_2''(-iT)=\frac{1-T^2}{2T^2}<0,\qquad
+ \operatorname{Re}\left.\frac{dt}{d\rho}\right|_{\rho=2}
+ =\frac1{2L_2''(-iT)}<0.
+\end{equation}
+The implicit continuation is therefore on the favored side for both signs of $\rho-2$. Uniqueness identifies it with the preceding branches. The complex-saddle domain is the connected interval $(\rho_*,\infty)$.
+
+\subsection{Global selection by explicit contours}
+The classification alone does not identify a Cauchy contribution. We next provide contours on which the selected saddles are the only global modulus maxima.
+
+\subsubsection{The tanh coordinate}
+Set $z=\tanh(t/2)$, so $t=2\operatorname{arctanh}z$ is analytic and univalent on $|z|<1$. Exactly,
+\begin{equation}\label{pte:lc:differential}
+ A(t)\,dt=\frac{dz}{z(1-z)}.
+\end{equation}
+Consequently
+\begin{equation}\label{pte:lc:tanhcoefficient}
+ b(M,d)=\frac{M!}{d!}\,2^{d-M}[z^M]
+ (\operatorname{arctanh}z)^d(1+z)^d(1-z)^{M-d-1}.
+\end{equation}
+Every circle $|z|=R<1$ represents the exact original Cauchy cycle. Its image is a simple contour around zero in $|\operatorname{Im}t|<\pi/2$.
+
+On a favored quadrant write $t=-s-iy$. Since
+\[
+ |\tanh(t/2)|^2=\frac{\cosh s-\cos y}{\cosh s+\cos y},
+\]
+the circle is described by $\cos y/\cosh s=(1-R^2)/(1+R^2)>0$. Along its arc,
+\[
+ y'(s)=-\tanh s\cot y<0.
+\]
+Direct differentiation, without imposing stationarity, gives
+\begin{equation}\label{pte:lc:bent}
+ \frac d{ds}\operatorname{Re}L_c(-s-iy(s))
+ =\tanh s\,[U(s,y(s))-V(s)].
+\end{equation}
+The bracket strictly decreases, because its derivative is $U_s+U_y y'-V'<0$. The left side tends to $e>0$ at the imaginary endpoint.
+
+For any favored complex saddle with height below $\pi/2$, choose $R=|\tanh(t_s/2)|$. Its equation $U=V$ places it at the unique strict maximum of the favored quadrant. At that point the second derivative in~\eqref{pte:lc:bent} is strictly negative. Reflection to the other half-contour lowers the real action by $2e|\operatorname{Re}t|$. The two conjugate favored saddles are therefore the only global maxima, with nonzero Gaussian curvature.
+
+For the smaller positive real saddle $T<s_0$, choose $R=\tanh(T/2)$. Every interior point of the favored arc satisfies
+\[
+ U(s,y)>U(s,0)>V(s),\qquad s<T.
+\]
+Thus the arc is strictly increasing up to $T$, which is the unique global maximum on the full contour. Its angular curvature is positive, since $F'(T)>0$.
+
+\subsubsection{Horizontal contours for high saddles}
+Suppose $\pi/2\le y<\pi$. On the line $t=-s-iy$, put $C=\cosh s$, $S=\sinh s$, $c=\cos y$ and $D=s^2+y^2$. For $J(s)=\operatorname{Re}L_c(-s-iy)$,
+\begin{equation}\label{pte:lc:horizontal}
+ J'(s)\frac{C-c}{S}=B_1(s)+eB_2(s)-\frac\omega2,
+ \quad B_1=\frac{s(C-c)}{DS},\quad B_2=\frac{C-c}{S}.
+\end{equation}
+Both $B_1$ and $B_2$ strictly decrease. Indeed
+\[
+ B_2'(s)=\frac{C c-1}{S^2}<0,
+\]
+and the periodized partial-fraction identity gives
+\begin{equation}\label{pte:lc:B1}
+ \frac1{B_1(s)}=2\sum_{n\in\mathbb Z}
+ \frac{s^2+y^2}{s^2+(y+2\pi n)^2}.
+\end{equation}
+Every summand with $n\ne0$ strictly increases, because $|y+2\pi n|>y$. The series and its differentiated series converge locally uniformly. The right side of~\eqref{pte:lc:horizontal} decreases from $+\infty$ to $-h$. It has a unique zero, the favored saddle, which is the unique favored-side maximum. Reflection strictly suppresses the other side.
+
+Close the horizontal strip by vertical segments and let their real coordinates tend to infinity. Its only enclosed pole is zero. The estimate
+\[
+ \operatorname{Re}L_c(t)\le \log(1+|\operatorname{Re}t|)
+                       -h|\operatorname{Re}t|+O(1)
+\]
+and boundedness of $A$ on the two horizontal lines justify the limit and exponential tail control. Thus the lower and upper favored saddles are the only contributing maxima. Their horizontal Gaussian curvature has positive real part. All these bounds are uniform on compact parameter intervals away from the real fold, $\rho=2$, and, if desired, the contour-switch points where $|\operatorname{Im}t_s|=\pi/2$.
+
+\subsection{The additive cosine law and its phase curvature}
+Use the original, unreflected lower saddle $t_s$, and write $S(\rho)=L_\rho(t_s)$.
+On a tanh circle define
+\begin{equation}\label{pte:lc:circleprefactor}
+ z_s=\tanh(t_s/2),\quad C_s=\sinh^2(t_s)L_\rho''(t_s),\quad
+ P_c=\frac1{(1-z_s)\sqrt{C_s}},
+\end{equation}
+where the square root has positive real part. The curvature satisfies $\operatorname{Re}C_s>0$. Parameterizing $z=R\ee^{i\theta}$ in~\eqref{pte:lc:differential} gives the Cauchy amplitude $1/(1-z)$, which explains the entire factor in~\eqref{pte:lc:circleprefactor}. On a horizontal contour the lower-saddle factor is instead
+\begin{equation}\label{pte:lc:horizontalprefactor}
+ P_h=-i\frac{A(t_s)}{\sqrt{-L_\rho''(t_s)}}.
+\end{equation}
+The lower boundary is traversed left to right, accounting for $-i$. Consistent local branches give the same saddle contribution when the contours can be compared.
+
+\begin{proposition}\label{pte:lc:cosine}
+On every compact interval in the complex-saddle region admitting one of the preceding contour choices,
+\begin{equation}\label{pte:lc:cosinelaw}
+ b(M,d)=\frac{2M!}{d!}\frac{\ee^{d\operatorname{Re}S}|P|}{\sqrt{2\pi d}}
+ \left\{\cos\bigl(d\operatorname{Im}S+\arg P\bigr)+O(d^{-1})\right\},
+\end{equation}
+where $P=P_c$ or $P_h$. The error is uniform and additive, including at cosine zeros. The stationary action and the nonzero prefactor are locally analytic in $\rho$.
+For a compact interval in $1<\rho<\rho_*$, the selected real saddle gives
+\begin{equation}\label{pte:lc:reallaw}
+ b(M,d)=\frac{M!}{d!}\frac{\ee^{dL_\rho(T)}}
+ {(1-\tanh(T/2))\sqrt{2\pi d C_T}}
+ \{1+O(d^{-1})\}>0
+\end{equation}
+for all sufficiently large $d$, where $C_T=\sinh^2(T)L_\rho^{\prime\prime}(T)>0$.
+\end{proposition}
+\begin{proof}
+The strict contour maxima provide a uniform gap off fixed local saddle neighborhoods. Inside a neighborhood the action is analytic with nonzero Gaussian curvature and the amplitude is analytic. Taylor expansion under the rescaling $\theta=d^{-1/2}u$ gives the leading Gaussian integral. Odd terms integrate to zero; the first remaining error is $O(d^{-1})$ relative to the single-saddle amplitude. The far arcs and horizontal tails are exponentially small. Summing the conjugate contributions gives~\eqref{pte:lc:cosinelaw}; no division by its cosine occurs. For a real saddle there is one contribution and all factors in~\eqref{pte:lc:reallaw} are positive.
+\end{proof}
+
+Stationarity and the affine dependence of $L$ on $\rho$ give
+\begin{equation}\label{pte:lc:curvature}
+ S'(\rho)=-\log(\ee^{t_s}-1),\qquad
+ S''(\rho)=-\frac{\ee^{t_s}}{(\ee^{t_s}-1)F'(t_s)}.
+\end{equation}
+At $\rho=2$, relation~\eqref{pte:lc:center} implies
+\[
+ \ee^{-iT}=\frac{1-iT}{1+iT},\qquad
+ F'(-iT)=\frac{1-T^2}{T(T+i)},\qquad
+ S''(2)=\frac12+i\frac{T}{T^2-1}.
+\]
+Thus $\operatorname{Im}S''(2)>0$. The real-analytic function $\operatorname{Im}S''$ is not identically zero on the connected complex interval $(\rho_*,\infty)$; its zeros are discrete. The same holds for the artificial height-switch set, since the height near $\rho=2$ is strictly greater than $\pi/2$.
+
+\subsection{Sparse integer points and exhaustion of the triangle}
+We include the elementary counting argument so that the density conclusion does not depend on a presumed equidistribution theorem.
+
+\mergenote{Source 31 states and proves here, as its Lemma~5.1, the integer-triangle estimate printed once as Lemma~\ref{pte:ga:lattice}; its proof, with the two details only source 31 spells out, is given there.}
+
+On a compact ratio interval where $|\operatorname{Im}S''|$ is bounded below, define for each fixed $d$
+\[
+ f_d(M)=\frac{d\operatorname{Im}S(M/d)+\arg P(M/d)}\pi-\frac12.
+\]
+An exact zero in~\eqref{pte:lc:cosinelaw} satisfies $\operatorname{dist}(f_d(M),\mathbb Z)\le C/d$. Also
+\[
+ f_d''(M)=\frac{\operatorname{Im}S''(M/d)}{\pi d}+O(d^{-2}),
+\]
+so Lemma~\ref{pte:lc:lattice} applies. The number of zero cells with such ratios is $O(d^{2/3})$ per depth and $O(N^{5/3})$ after summing over $d\le N$. Compact intervals in the real-saddle region have no zeros for large $d$.
+
+Fix a compact subinterval of $(1,\infty)$. First remove arbitrarily small neighborhoods of the real fold $\rho_*$ and of $\rho=2$. The remaining complex portions are compactly contained in $(\rho_*,\infty)$, so they contain only finitely many curvature or contour-switch zeros. Cover these by additional intervals, with the total removed length less than $\varepsilon$. The lattice count in the removed intervals is $O(\varepsilon N^2)+O_\varepsilon(N)$. Cover the remaining compact set by finitely many intervals to which the preceding estimates apply. Taking $N\to\infty$ and then $\varepsilon\downarrow0$ shows that the zero cells have density zero on every compact ratio interval.
+
+Finally restrict the full candidate triangle to
+\[
+ \varepsilon N\le d\le M\le N,\qquad M/d\ge1+\varepsilon.
+\]
+The ratios now lie in $[1+\varepsilon,1/\varepsilon]$. The excluded candidates have area $O(\varepsilon)$ after scaling by $N$, and their boundary contributes only $O(N)$. The compact-ratio zero count is $o(N^2)$. Taking $N\to\infty$ first and $\varepsilon\downarrow0$ afterward proves~\eqref{pte:lc:zerodensity}. Equation~\eqref{pte:lc:count} completes the proof of Corollary~\ref{pte:lc:main}.
+
+\section{The exponent \texorpdfstring{$a=2$}{a=2}: OEIS A290268 \src{34}}\label{pte:sec:as}
+\mergenote{This section is source 34, \emph{The Leading Asymptotic of OEIS A290268}, with its input file \texttt{tanh\_\allowbreak{}sections.\allowbreak{}tex} printed in place as Sections~\ref{pte:as:tanhsection}--\ref{pte:as:coverage}, without its integer-triangle lemma (printed as Lemma~\ref{pte:ga:lattice}) and with its closing section printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}. Its main statement is Theorem~\ref{pte:ga:main} at $a=2$ and is printed as Corollary~\ref{pte:as:main}; the rest is source 34's proof, a second route. Source 34 was the first of the three proofs to be written, about an hour before source 28, and it does not cite source 28. It adds at $a=2$: the monotone critical curve (Lemma~\ref{pte:as:criticalcurve}), a direct proof that every complex saddle with $\eta>2$ is high, real-saddle positivity on the whole strict real region (Theorem~\ref{pte:as:realpositivity}), and a rational certificate for the curvature seed. Its coordinates are source 28's at $a=2$: $H_{d,k,q}=H_{2;d,k,q}$, and its action~\eqref{pte:as:action} is~\eqref{pte:ga:action} at $a=2$, because $\sinh t=2\sinh(t/2)\cosh(t/2)$. Renamed here (Section~\ref{pte:sec:renames}): the ratio $r=\eta+2$ is $\omega$; the host's $r=2d+q+1$, which source 34 writes $R$, is $M-k$; $A(s)$, $B(s)$ are $B_1(s)$, $B_2(s)$; the circle parameter and radius are $\alpha$ and $R$; the curvature $C(\kappa,\eta)$ is $\operatorname{Im}D^2S$; and $K(T)$, $F(T)$ are $\mathcal K(T)$, $\mathcal F(T)$. Source 34's Laurent polynomial $P_N(x,\log x)$ is not the host's canonical polynomial $P_n(z,L)$.}
+
+\subsection{The result and the coefficient model}
+Define the Laurent polynomial in the formal symbols $x$ and $\log x$ by
+\[
+ \frac{d^N}{dx^N}x^{x^2}=x^{x^2}P_N(x,\log x),\qquad
+ P_N=\sum_{j\in\mathbb Z,\,k\ge0}c_N(j,k)x^j(\log x)^k,
+\]
+and let $a(N)$ count its nonzero coefficients.
+
+\begin{corollary}[Source 34; Theorem~\ref{pte:ga:main} at $a=2$]\label{pte:as:main}
+For the derivative-term sequence OEIS A290268,
+\[
+ \lim_{N\to\infty}\frac{a(N)}{N^2}=\frac12.
+\]
+More precisely, the outside-bulk tail candidate set described below has only $o(N^2)$ exact zero coefficients. No numerical error rate or order threshold is asserted, and individual extra cancellations are not classified.
+\end{corollary}
+
+\mergenote{The corollary is Theorem~\ref{pte:ga:main} at $a=2$, with the same (ineffective) strength. Its proofs: source 28's, in Sections~\ref{pte:sec:ga-coordinates}--\ref{pte:sec:ga-density}, and source 34's, which is the rest of this section. It answers the host's Question~6. It does not supersede the host's explicit lower bounds, which have leading term $3N^2/8$ and hold for every $N$.}
+
+The source~\cite{pte-host} gives, for $d\ge1$ and $k,q\ge0$,
+\begin{gather}
+ M=k+2d+q+1,\\
+ H_{d,k,q}=\frac{M!}{d!}[w^M](2+w)^k(1+w)^{2d}\log^d(1+w),\label{pte:as:H}\\
+ N=2k+2d+q+1,\quad j=-q-1,\qquad
+ c_N(j,k)=\binom Nk H_{d,k,q}.\label{pte:as:bridge}
+\end{gather}
+The bridge is injective in $(d,k)$ at fixed $N$. The positive bulk already proved in the source consists of the nonnegative $x$-power columns and the positive $j=-1$ boundary. Its exact size is
+\begin{equation}\label{pte:as:bulk}
+ \beta(N)=\begin{cases}
+ (3N^2+10N+8)/8,&N\text{ even},\\
+ (3N^2+12N+1)/8,&N\text{ odd}.
+ \end{cases}
+\end{equation}
+Cells with $q\ge1$ lie outside this bulk. Depth zero contributes no additional negative-column cells: its coefficient reduces to $[w^{k+q+1}](2+w)^k=0$. The proved reflection holes are $q=2d$, $k+d$ even; their existence is consistent with the density theorem.
+
+An upper bound is immediate and requires no noncancellation claim. The recurrence
+\begin{equation}\label{pte:as:recurrence}
+ P_{N+1}=\frac{d}{dx}P_N+x(2\log x+1)P_N,\qquad P_0=1,
+\end{equation}
+preserves the constraints
+\[
+ \ell=(N+j)/2\in\mathbb Z,\qquad 0\le k\le\ell\le N.
+\]
+Indeed multiplication by $x$ raises $\ell$ by one and raises $k$ by either zero or one; differentiation leaves $\ell$ fixed and leaves $k$ fixed or lowers it by one. Thus
+\begin{equation}\label{pte:as:upper}
+ a(N)\le\frac{(N+1)(N+2)}2=\frac{N^2}2+O(N).
+\end{equation}
+The work below proves the matching lower bound.
+
+\mergenote{The model~\eqref{pte:as:H}--\eqref{pte:as:bridge} is the host's depth-coordinate coefficient (its Section~3.14); the bulk is the host's nonvanishing region (Theorem~3.7), and $\beta(N)$ is the host's $\Lambda(N)$ (Theorem~3.1) and $\beta(N)$ (equation~(3.85)); the reflection holes are the host's Theorem~3.29. The upper bound~\eqref{pte:as:upper} is weaker than the host's Theorem~3.14, $a(N)\le U(N)=N^2/2+N+1$, which source 34 does not cite; it suffices here. The recurrence~\eqref{pte:as:recurrence}, read on coefficients, is the recurrence by which the repository's Lean library defines \texttt{LeanProofs.\allowbreak{}A290268.\allowbreak{}coeff} (its lemma \texttt{coeff\_\allowbreak{}succ}; Section~\ref{pte:sec:host}).}
+
+\subsection{An exact contour and the favored critical points}
+Put
+\[
+ \kappa=k/d,\qquad \eta=q/d,\qquad \delta=\eta-2,\qquad \omega=\eta+2.
+\]
+The substitution $w=\ee^t-1$ in~\eqref{pte:as:H} gives exactly
+\begin{equation}\label{pte:as:contour}
+ H_{d,k,q}=\frac{M!}{d!}\frac1{2\pi i}
+       \oint\frac{\exp(dL(t))}{4\sinh^2(t/2)}\,dt,
+\end{equation}
+where
+\begin{equation}\label{pte:as:action}
+ L(t)=\log t-\frac\delta2t+\kappa\log\cosh(t/2)
+       -(\kappa+\omega)\log\sinh(t/2)-\omega\log2.
+\end{equation}
+For example, the unsimplified integrand is
+$2^{-(M-k)-1}t^d\ee^{-(q-2d)t/2}\cosh^k(t/2)/\sinh^{M+1}(t/2)$.
+The extra powers in the denominator include the Cauchy differential. The original integer powers make the integrand single-valued despite local logarithm choices; its other poles are at $2\pi i\mathbb Z\setminus\{0\}$.
+
+We first work off the line $\eta=2$. Write $\ee$ for Euler's number, and let
+\[
+ e=|\eta-2|/2>0,\qquad h=\omega/2-e=\min(2,\eta)>0.
+\]
+The left half-plane is favored in modulus when $\eta>2$, and the right half-plane when $0<\eta<2$. Reflection of the real coordinate reduces both cases to
+\begin{equation}\label{pte:as:centered}
+ L_c(t)=\log t-et+\kappa\log\cosh(t/2)
+                 -(\kappa+\omega)\log\sinh(t/2)-\omega\log2.
+\end{equation}
+For $0<\eta<2$, the reflected parameters are $h=\eta$, $\omega=\eta+2$, $e=(2-\eta)/2$. Reflection preserves real action values and sends a lower-left critical point of the favored model to the original lower-right point.
+
+On the lower favored quadrant write $t=-s-iy$, $s>0$, $0<y<\pi$. The classical partial fractions~\cite{pte-dlmf4} give
+\begin{equation}\label{pte:as:U}
+ U(s,y)=\frac{s\coth s-y\cot y}{s^2+y^2}
+ =2\sum_{n\ge1}\frac{(n\pi)^2}
+ {(s^2+(n\pi)^2)((n\pi)^2-y^2)}.
+\end{equation}
+The series and its derivatives converge locally uniformly. Hence $U_s<0$, $U_y>0$, $U(s,0)$ decreases from $1/3$ to zero, and $U(s,y)\to\infty$ as $y\uparrow\pi$.
+
+The critical equation is $F_{\omega,e}(t)=\kappa$, with
+\[
+ F_{\omega,e}(t)=\frac{\sinh t}{t}-\frac\omega2(1+\cosh t)-e\sinh t.
+\]
+Its imaginary part is
+\begin{equation}\label{pte:as:imaginary}
+ \operatorname{Im}F_{\omega,e}(-s-iy)
+ =\sinh s\sin y\{U(s,y)-V(s)\},\qquad
+ V(s)=h-\frac{2e}{\ee^{2s}-1}.
+\end{equation}
+The function $V$ increases from $-\infty$ to $h>0$. There is one $s_0>0$ with $U(s_0,0)=V(s_0)$, and for $s>s_0$ one curve $y(s)\in(0,\pi)$ solving $U(s,y)=V(s)$. It increases strictly from zero to $\pi$.
+
+\begin{lemma}[Monotone favored critical curve]\label{pte:as:criticalcurve}
+Along this curve, the real critical value
+$\kappa(s)=\operatorname{Re}F_{\omega,e}(-s-iy(s))$ increases strictly to infinity. Every interior critical point on it is simple.
+\end{lemma}
+\begin{proof}
+At a zero of the imaginary part,
+\[
+ \operatorname{Re}F_{\omega,e}'(-s-iy)=-\sinh s\sin y\,U_y<0.
+\]
+The Cauchy--Riemann equations along the real-value curve imply
+\[
+ \kappa'(s)=-\operatorname{Re}F_{\omega,e}'(-s-iy)(1+y'(s)^2)>0.
+\]
+As $s\to\infty$, the height tends to $\pi$ and the real critical value has a positive term of leading size $h\ee^s/2$; the term $\sinh t/t$ is smaller by $O(1/s)$. Thus $\kappa(s)\to\infty$. The strict derivative also makes $F_{\omega,e}'$ nonzero. Since $L_c'=(F_{\omega,e}-\kappa)/\sinh t$ in the open strip, the saddle is simple.
+\end{proof}
+
+For $\eta>2$, every $\kappa\ge0$ has a favored complex saddle of height greater than $\pi/2$. Here $h=2$. With $C=\cosh s$, $c=\cos y$, $D=s^2+y^2$, eliminating $e$ gives
+\begin{equation}\label{pte:as:elimination}
+ \frac\kappa{C+c}
+ =\ee^s\left\{\frac{s+y(\ee^{-s}-c)/\sin y}{D}-2\right\}.
+\end{equation}
+At $y=\pi/2$, the numerator after subtracting $2D$ decreases with $s$, because its derivative is
+$1-(y/\sin y)\ee^{-s}-4s<1-\ee^{-s}-s<0$.
+Its value at zero is $y-2y^2<0$. Thus the height-$\pi/2$ crossing has negative $\kappa$, and monotonicity proves the assertion.
+
+\subsection{Horizontal contours for the high complex saddles}
+\begin{lemma}[Global horizontal selection]\label{pte:as:horizontal}
+Every favored complex saddle of height $\pi/2\le y<\pi$ is the unique global modulus maximum on its lower horizontal line. The upper line has the conjugate maximum, and both horizontal Hessians are nondegenerate.
+\end{lemma}
+\begin{proof}
+In the reflected favored model, put $J_y(s)=\operatorname{Re}L_c(-s-iy)$, $C=\cosh s$, $S=\sinh s$, and $c=\cos y\le0$. Differentiation yields
+\[
+ J_y'(s)\frac{C-c}{S}
+ =B_1(s)+eB_2(s)-\frac\omega2-\frac{\kappa c}{C+c},
+\]
+where
+\[
+ B_1(s)=\frac{s(C-c)}{(s^2+y^2)S},\qquad B_2(s)=\frac{C-c}{S}.
+\]
+The partial-fraction identity
+\[
+ \frac1{B_1(s)}=2\sum_{n\in\mathbb Z}
+                  \frac{s^2+y^2}{s^2+(y+2\pi n)^2}
+\]
+makes $B_1$ strictly decreasing: the $n=0$ term is constant and every other term increases. Also $B_2'(s)=(C\cos y-1)/S^2<0$, while the last term is nonincreasing. The entire right side therefore decreases strictly from $+\infty$ to $e-\omega/2=-h<0$. Its unique zero is the classified saddle, and $J_y''<0$ there.
+
+At the reflected point on the other half-line, the real action is smaller by $2es$. Thus the selected point is the unique maximum on the whole line. In original coordinates this gives $\operatorname{Re}(-L''(t_s))>0$.
+\end{proof}
+
+The small contour~\eqref{pte:as:contour} deforms to the boundary of $|\operatorname{Im}t|\le y$, with vertical sides tending to infinity. No other pole is enclosed. Uniformly on compact parameter sets, the real action on the ends is at most $\log(1+|\operatorname{Re}t|)-h|\operatorname{Re}t|+C$, so the vertical integrals vanish and the tails are negligible. The unique maxima and their Hessians give a uniform gap away from the two local saddle arcs.
+
+For the original lower favored saddle define
+\begin{equation}\label{pte:as:horizontalprefactor}
+ P_h=\frac{-i}{4\sinh^2(t_s/2)\sqrt{-L''(t_s)}},\qquad
+ \Theta_h=d\operatorname{Im}L(t_s)+\arg P_h.
+\end{equation}
+The square root has positive real part. The resulting compact-uniform asymptotic is
+\begin{equation}\label{pte:as:horizontalcosine}
+ H_{d,k,q}=\frac{2M!}{d!\sqrt{2\pi d}}
+  \ee^{d\operatorname{Re}L(t_s)}|P_h|
+  \{\cos\Theta_h+O(d^{-1})\}.
+\end{equation}
+The lower horizontal integral is traversed left to right, the upper right to left. They are conjugates, so division by $2\pi i$ extracts the lower imaginary part and produces the factor $-i$. Expanding the analytic exponent through its cubic term and the prefactor through its linear term, odd Gaussian terms cancel; the remaining normalized moments are $O(d^{-1})$. The error in~\eqref{pte:as:horizontalcosine} is additive, including at cosine zeros.
+
+\subsection{Tanh circles select the low-height saddles}
+\label{pte:as:tanhsection}
+The remaining contour is particularly simple after one more change of
+coordinate.  It is a circle in the variable $z=\tanh(t/2)$, although its
+image in the $t$-plane is bent.
+
+\begin{lemma}[Exact tanh-coordinate integral]\label{pte:as:tanhidentity}
+Let $\widehat L(z)=L(2\operatorname{arctanh}z)$.  For every $0<R<1$,
+\begin{equation}\label{pte:as:tanhintegral}
+ H=\frac{M!}{d!}\frac1{2\pi i}
+       \int_{|z|=R}\frac{\ee^{d\widehat L(z)}}{2z^2}\,dz.
+\end{equation}
+Equivalently,
+\begin{equation}\label{pte:as:tanhcoefficient}
+ H=\frac{M!}{d!}\,2^{-d-q-1}
+       [z^M](1+z)^{2d}(1-z)^q
+                 \operatorname{arctanh}(z)^d.
+\end{equation}
+The full integrand in \eqref{pte:as:tanhintegral} is single-valued at the
+integer parameters.  The image of the circle is a bounded simple
+positively oriented contour around zero in $|\operatorname{Im}t|<\pi/2$.
+\end{lemma}
+\begin{proof}
+The inverse map $t=2\operatorname{arctanh}z
+=\log((1+z)/(1-z))$ is analytic and univalent on the unit disk: the
+fraction in the logarithm maps that disk onto the right half-plane.
+In particular its image lies in $|\operatorname{Im}t|<\pi/2$.  Directly,
+\begin{equation}\label{pte:as:tanhdifferential}
+ \frac{dt}{4\sinh^2(t/2)}=\frac{dz}{2z^2}.
+\end{equation}
+Furthermore $\omega d=2d+q$ and $\delta d=q-2d$, so
+\[
+ \ee^{d\widehat L(z)}
+ =\frac{(2\operatorname{arctanh}z)^d
+             (1+z)^{2d}(1-z)^q}
+            {2^{2d+q}z^{k+2d+q}}.
+\]
+Substitution in the exact $t$-integral proves both identities, including the
+coefficient index $M=k+2d+q+1$.  Inside the disk the only singularity of
+the full integrand is its pole at zero, so each circle represents the
+original residue contour.
+\end{proof}
+
+\mergenote{The coefficient identity~\eqref{pte:as:tanhcoefficient} is source 28's~\eqref{pte:ga:tanh} at $a=2$, and it is the host's transformed coefficient formula (its Proposition~3.6, \texttt{xxb:prop:mobius}), which source 34 does not cite, written in depth coordinates ($k_{\mathrm{host}}=k+d$, $j_{\mathrm{host}}=k$, $m=d$). The batch-72A intake checked the host's formula and~\eqref{pte:as:tanhcoefficient} against the exact coefficients for every $n\le16$ (for the latter, on all 168 cells with $q\ge0$, $d\ge1$), with no mismatch; that check is not shipped.}
+
+For the modulus use the reflected favored model
+\begin{gather*}
+ L_c(t)=\log t-e t+\kappa\log\cosh(t/2)
+                 -(\kappa+\omega)\log\sinh(t/2)-\omega\log2,\\
+ e=|\delta|/2,\quad h=\omega/2-e>0.
+\end{gather*}
+Here the favored half-plane is the left half-plane.  Reflection changes
+only phase conventions, not the real-action comparison; the final
+normalizations below are always in the original coordinate.
+
+\begin{lemma}[The bent-arc derivative]\label{pte:as:bentderivative}
+On the lower favored arc of $|\tanh(t/2)|=R<1$, put $t=-s-iy$.
+There is an $\alpha\in(0,1)$ such that
+\begin{equation}\label{pte:as:bentgeometry}
+ \frac{\cos y}{\cosh s}=\alpha=\frac{1-R^2}{1+R^2},\qquad
+ 0\le s\le s_{\rm end}:=\operatorname{arcosh}(1/\alpha),\qquad
+ y'(s)=-\tanh s\cot y.
+\end{equation}
+For $J(s)=\operatorname{Re}L_c(-s-iy(s))$, one has the exact identity
+\begin{equation}\label{pte:as:bentderivativeidentity}
+ J'(s)=\tanh s\,[U(s,y(s))-V(s)],
+ \qquad V(s)=\frac\omega2-e\coth s
+            =h-\frac{2e}{\exp(2s)-1}.
+\end{equation}
+If $e>0$, the bracket is strictly decreasing on the open arc.  Thus its
+modulus profile either increases throughout or has exactly one critical
+point, a strict global maximum.
+\end{lemma}
+\begin{proof}
+Writing $C=\cosh s$, $S=\sinh s$, and $c=\cos y$, the identity
+\[
+ |\tanh((-s-iy)/2)|^2=\frac{C-c}{C+c}
+\]
+gives \eqref{pte:as:bentgeometry}.  For
+$u(s,y)=\operatorname{Re}L_c(-s-iy)$, differentiation gives
+\begin{align*}
+ u_s&=\frac{s}{s^2+y^2}+e
+       +\frac\kappa2\frac{S}{C+c}
+       -\frac{\kappa+\omega}{2}\frac{S}{C-c},\\
+ u_y&=\frac{y}{s^2+y^2}
+       -\frac\kappa2\frac{\sin y}{C+c}
+       -\frac{\kappa+\omega}{2}\frac{\sin y}{C-c}.
+\end{align*}
+In $u_s+y'u_y$, all $\kappa$ terms cancel.  What remains is
+\[
+ \tanh s\left[
+   \frac{s\coth s-y\cot y}{s^2+y^2}-\frac\omega2+e\coth s
+ \right],
+\]
+which proves \eqref{pte:as:bentderivativeidentity}.  The kernel signs in
+\eqref{pte:as:U} give $U_s<0$ and $U_y>0$; also $V'(s)=e\operatorname{csch}^2s>0$.
+Consequently
+\begin{equation}\label{pte:as:bentstrict}
+ \frac d{ds}[U(s,y(s))-V(s)]
+       =U_s+U_y y'-V'<0.
+\end{equation}
+At the initial endpoint $J'(s)\to e>0$.  The assertion follows.
+\end{proof}
+
+\begin{theorem}[Global selection below height $\pi/2$]
+\label{pte:as:lowheightselection}
+Suppose $e>0$, $h>0$, and a favored off-axis saddle has height strictly
+between $0$ and $\pi/2$.  Its circle in the $z$-coordinate selects it and
+its conjugate as the only global maxima of the leading modulus.  The
+angular Gaussian curvature has strictly positive real part at each.
+\end{theorem}
+\begin{proof}
+In reflected coordinates write the lower saddle as $t_s=-s_s-iy_s$ and
+choose $R=|\tanh(t_s/2)|<1$.  Its imaginary critical equation is
+$U(s_s,y_s)=V(s_s)$, by \eqref{pte:as:imaginary}.  Lemma~\ref{pte:as:bentderivative}
+therefore makes it the unique maximum on the lower favored arc, with
+\[
+ J''(s_s)=\tanh(s_s)[U_s+U_y y'-V']<0.
+\]
+The arc parameter is regular at this interior point, so the same strict
+sign holds for the real part of the angular second derivative.  The
+upper favored arc is its conjugate.  Both axis endpoints are strictly
+below the two interior maxima.  At every point in the other open
+half-contour, reflection to the favored side increases the real action
+by $2e|\operatorname{Re}t|$.  No further global maximum is possible.
+\end{proof}
+
+\begin{proposition}[Low-height two-arc normalization]\label{pte:as:tanhcosine}
+In the original, unreflected coordinate let $t_s$ be the lower favored
+saddle from Theorem~\ref{pte:as:lowheightselection}, and put
+\begin{align}
+ z_s&=\tanh(t_s/2),&
+ C_s&=z_s^2\widehat L''(z_s)
+       =\sinh(t_s)^2L''(t_s),\label{pte:as:tanhcurvature}\\
+ P_c&=\frac1{2z_s\sqrt{C_s}},&
+ \Theta_c&=d\operatorname{Im}L(t_s)+\arg P_c.
+\end{align}
+The square root has positive real part.  Uniformly on every compact
+family of such saddles,
+\begin{equation}\label{pte:as:tanhcosinelaw}
+ H=A_c\{\cos\Theta_c+O(d^{-1})\},\qquad
+ A_c=\frac{2(M!/d!)\ee^{d\operatorname{Re}L(t_s)}|P_c|}
+               {\sqrt{2\pi d}}>0.
+\end{equation}
+This is an additive error estimate, including at the cosine zeros.
+The stationary action and the nonzero prefactor are locally analytic
+functions of the parameters.
+\end{proposition}
+\begin{proof}
+Parameterize the $z$-circle by its positive angle.  The residual
+amplitude in \eqref{pte:as:tanhintegral} is then $1/(2z)$.  At a saddle,
+$\widehat L'=0$ and $z\,dt/dz=\sinh t$, proving
+\eqref{pte:as:tanhcurvature}.  The angular second derivative is $-C_s$, and
+Theorem~\ref{pte:as:lowheightselection} gives $\operatorname{Re}C_s>0$.
+
+On a fixed compact parameter family, all relevant derivatives are
+bounded, the local negative quadratic bound is uniform, and the strict
+modulus gap off the two saddle neighborhoods is uniform.  Taylor
+expansion on symmetric angular neighborhoods of radius $d^{-2/5}$,
+followed by Gaussian integration, has relative error $O(d^{-1})$ for
+each single saddle contribution: the terms of order $d^{-1/2}$ are odd
+and integrate to zero.  The other portions of those neighborhoods are
+$O(\exp(-c d^{1/5}))$ on the leading scale, and the arcs outside them
+have a fixed exponential gap.  The lower contribution is
+\[
+ \frac{M!}{d!}\frac{\ee^{dL(t_s)}P_c}{\sqrt{2\pi d}}
+       \{1+O(d^{-1})\}.
+\]
+The upper contribution is its conjugate.  Their sum proves
+\eqref{pte:as:tanhcosinelaw} without division by the leading cosine.
+Local analyticity follows from the simple critical-point equation and
+from the nonvanishing factors in $P_c$.
+\end{proof}
+
+Where the horizontal and bent contours are both admissible, these
+are the same local Gaussian contributions.  With consistent lower-saddle
+branches, $\sqrt{C_s}=i\sinh(t_s)\sqrt{-L''(t_s)}$, and hence
+\[
+ P_c=\frac{-i}{4\sinh^2(t_s/2)\sqrt{-L''(t_s)}}.
+\]
+This is exactly the horizontal prefactor.  Local branch choices suffice
+for all phase-counting arguments.
+
+\subsection{The entire strict real-saddle region}
+\label{pte:as:realsection}
+For $0<\eta<2$ the favored direction in the original coordinate is the
+positive real direction.  Set
+\begin{equation}\label{pte:as:realmap}
+ f_\eta(T)=\frac{\sinh T}{T}-\ee^{-T}-1
+                    -\frac\eta2(1+\ee^T).
+\end{equation}
+The real saddle equation is $f_\eta(T)=\kappa$.  Here
+$e=(2-\eta)/2$, $\omega=\eta+2$, and $h=\eta$ in the reflected modulus model.
+
+\begin{lemma}[A unique real turning point]\label{pte:as:realturning}
+There is exactly one $s_0=s_0(\eta)>0$ with
+$U(s_0,0)=V(s_0)$.  The function $f_\eta$ increases strictly on
+$(0,s_0)$ and decreases strictly on $(s_0,\infty)$.  Its maximum
+\begin{equation}\label{pte:as:realmaximum}
+ \kappa_0(\eta)=f_\eta(s_0(\eta))
+\end{equation}
+is analytic for $0<\eta<2$.
+\end{lemma}
+\begin{proof}
+The function $U(T,0)$ decreases from $1/3$ to zero, whereas $V(T)$
+increases from $-\infty$ to $\eta>0$.  Direct differentiation of
+\eqref{pte:as:realmap} gives
+\begin{equation}\label{pte:as:realderivative}
+ f_\eta'(T)=\sinh T\,[U(T,0)-V(T)].
+\end{equation}
+This proves the unique turning point and the derivative signs.
+The strict derivative of $U(T,0)-V(T)$ also proves analytic dependence
+by the implicit function theorem.
+\end{proof}
+
+\begin{theorem}[Unrestricted smaller-real-saddle positivity]
+\label{pte:as:realpositivity}
+If $0<\eta<2$ and $0\le\kappa<\kappa_0(\eta)$, the smaller positive
+solution $T$ of $f_\eta(T)=\kappa$ is selected by its tanh circle as the
+unique global modulus maximum.  Put
+\[
+ C_T=\sinh(T)^2L''(T)=\sinh(T)f_\eta'(T)>0.
+\]
+Uniformly on every compact subset of this strict parameter region,
+\begin{equation}\label{pte:as:realasymptotic}
+ H=\frac{(M!/d!)\ee^{dL(T)}}
+          {2\tanh(T/2)\sqrt{2\pi d C_T}}
+          \{1+O(d^{-1})\}>0
+\end{equation}
+for sufficiently large $d$.  No upper bound on $T$ is required.
+\end{theorem}
+\begin{proof}
+Since $f_\eta(0)=-1-\eta<0$ and $f_\eta(T)\to-\infty$, the assumed
+strict inequality gives a unique smaller root $T\in(0,s_0)$.
+Choose $R=\tanh(T/2)$.  On the favored bent arc ending at $T$, every
+interior point has $s<T$ and
+\[
+ U(s,y(s))>U(s,0)>V(s).
+\]
+Thus the profile in Lemma~\ref{pte:as:bentderivative} is strictly increasing
+up to its real endpoint.  Reflection strictly suppresses the unfavored
+half-contour, making $T$ the unique global maximum.  The curvature
+identity follows from $L'=(f_\eta-\kappa)/\sinh T$ at the real saddle.
+It is positive by \eqref{pte:as:realderivative}.  The one-arc Gaussian
+calculation is the same as in Proposition~\ref{pte:as:tanhcosine}, with
+positive amplitude $1/(2R)$ and with no factor of two.  This proves
+\eqref{pte:as:realasymptotic}; all of its leading factors are positive.
+\end{proof}
+
+\subsection{Coverage and connected phase regions}
+\label{pte:as:coverage}
+For $0<\eta<2$, the favored off-axis critical curve starts at
+$(s_0,0)$ and its real critical value increases strictly from
+$\kappa_0(\eta)$ to infinity, by Lemma~\ref{pte:as:criticalcurve}.
+Consequently every $\kappa\ge0$ strictly below the turning value is
+covered by Theorem~\ref{pte:as:realpositivity}; every $\kappa$ strictly above
+it has one favored conjugate pair.  Theorem~\ref{pte:as:lowheightselection}
+selects that pair below height $\pi/2$, and the horizontal theorem
+selects it at larger height.
+
+At height exactly $\pi/2$, the horizontal proof also remains strict:
+the term proportional to $\cos y$ vanishes while the other derivative
+terms remain strictly negative.  Alternatively this contour-switch
+curve can be omitted from a density exhaustion, as it has area zero.
+For $\eta>2$ the earlier horizontal result already selects every favored
+saddle.  The lines $\eta=2$, $\eta=0$, and $\kappa=0$, together with the
+real turning curve, also have area zero.
+
+
+\subsection{Compact density away from the analytic exceptional sets}\label{pte:sec:as-density}
+The two complex-saddle regions are
+\begin{align*}
+ \mathcal C_-&=\{0<\eta<2,\ \kappa>0,\ \kappa>\kappa_0(\eta)\},\\
+ \mathcal C_+&=\{\eta>2,\ \kappa>0\}.
+\end{align*}
+Both are connected. For $\mathcal C_-$, raise $\kappa$ above the maximum of the continuous $\kappa_0$ on the compact interval between any two chosen $\eta$ values, move across that interval, and lower it again. The second region is immediate. On each, the favored saddle and its stationary action
+$S(\kappa,\eta)=L(t_s(\kappa,\eta))$ are analytic.
+
+The directional phase curvature relevant to a fixed derivative order is
+\begin{equation}\label{pte:as:curvature}
+ \operatorname{Im}D^2S(\kappa,\eta)=(\partial_\kappa-2\partial_\eta)^2\operatorname{Im}S,\qquad D=\partial_\kappa-2\partial_\eta.
+\end{equation}
+It is not identically zero in either connected region. To check this without numerical evidence, put
+\[
+ \mathcal K(T)=\frac{\sin T}{T}-2\cos T-2,\qquad
+ \mathcal F(T)=(2T^2-1)\sin T+T\cos T.
+\]
+At $T=14/5$, alternating Taylor bounds give $\mathcal K(T)>1/250$ and $\mathcal F(T)>2$. Thus $\eta=2$, $\kappa=\mathcal K(T)$ has a nondegenerate saddle $t_s=-iT$ with $L''(t_s)<0$. Its continuation enters the favored side as $\eta\to2^\pm$, since
+$\operatorname{Re}(\partial_\eta t_s)=1/(2L''(t_s))<0$.
+
+The action is affine in $\kappa,\eta$, and
+$L_{t\kappa}-2L_{t\eta}=1+\coth t$. Stationary differentiation gives
+\[
+ (\partial_\kappa-2\partial_\eta)^2 S
+ =-\frac{(1+\coth t_s)^2}{L''(t_s)}.
+\]
+At the displayed base point its imaginary part is
+$2T^2\cos T/\mathcal F(T)<0$. Therefore~\eqref{pte:as:curvature} is a nonzero real-analytic function on each complex region.
+
+\mergenote{Source 34 states and proves here, as its Lemma~7.1, the integer-triangle estimate printed once as Lemma~\ref{pte:ga:lattice}, whose proof records its choice $Mc^3/2<1/4$ of the block constant.}
+
+On any compact complex patch with $\operatorname{Im}D^2S$ of constant sign bounded away from zero, the selected contour gives
+\[
+ H=\mathcal A\{\cos(d\operatorname{Im}S+\arg P)+O(d^{-1})\},
+ \qquad \mathcal A>0,
+\]
+with analytic nonzero prefactor $P$. At fixed $N,d$ let
+\[
+ \eta=\frac{N-1-2d-2k}{d},\qquad
+ f_{d,N}(X)=\frac1\pi\left[d\operatorname{Im}S
+ \left(\frac Xd,\frac{N-1-2d-2X}{d}\right)+\arg P\right]-\frac12.
+\]
+Its second derivative is bounded between fixed positive multiples of $1/d$ in one sign. An exact zero forces $\operatorname{dist}(f_{d,N}(k),\mathbb Z)=O(d^{-1})$, by the additive cosine law. Lemma~\ref{pte:as:lattice} bounds zeros by $O(d^{2/3})$ per row. Over a fixed compact parameter patch, $d\asymp N$ and there are $O(N)$ rows, yielding $O(N^{5/3})$ zeros.
+
+The remaining exceptional sets have area zero: the line $\eta=2$, the real turning curve $\kappa=\kappa_0(\eta)$, the contour-switch curve $\operatorname{Im}t_s=-\pi/2$, and the zero set of~\eqref{pte:as:curvature}. The first two are explicit analytic curves. The latter two are zero sets of nonzero real-analytic functions on connected complex regions; nontriviality of the height condition follows from the same regular limit. A nonzero real-analytic function has an area-zero zero set: at each zero a finite-order directional derivative is nonzero, and Rolle's theorem followed by Fubini's theorem proves the assertion locally. A countable cover completes the proof.
+
+Now fix a compact rectangle $\Omega$ inside $\kappa>0$, $\eta>0$. Cover the exceptional set in its scaled lattice image by finitely many open boxes of total area less than $\epsilon$. If necessary first cover the turning and switch boundaries, then the remaining compact analytic zero sets. Outside those boxes there is a finite cover by complex patches of nonzero curvature and real-saddle patches. The latter have no zero coefficients once $N$ is large, uniformly on each compact patch. The former have $O_\epsilon(N^{5/3})$ zeros. The boxes contain at most $\epsilon(N-1)^2+O_\epsilon(N)$ candidates. Taking $N\to\infty$ first and then $\epsilon\downarrow0$ proves that every compact $\Omega$ has only $o(N^2)$ exact cancellations.
+
+\subsection{Exhausting the full tail and completing the count}
+The ratio-to-lattice map is
+\begin{equation}\label{pte:as:Jacobian}
+ x=\frac d{N-1}=\frac1{2+2\kappa+\eta},\qquad
+ y=\frac k{N-1}=\frac\kappa{2+2\kappa+\eta},\qquad
+ \left|\frac{\partial(x,y)}{\partial(\kappa,\eta)}\right|
+ =(2+2\kappa+\eta)^{-3}.
+\end{equation}
+The image of a fixed compact rectangle has piecewise smooth boundary. Its candidate count is its area times $(N-1)^2$, with $O(N)$ boundary error. Exhaust the parameter cone by $\Omega_m=[1/m,m]^2$. The areas increase to
+\begin{equation}\label{pte:as:tailarea}
+ \int_0^\infty\int_0^\infty
+       (2+2\kappa+\eta)^{-3}\,d\eta\,d\kappa=\frac18.
+\end{equation}
+All analytic constants are fixed before $N$ tends to infinity; there is no global uniform power-saving error claim.
+
+The complete outside-bulk candidate list has $d\ge1$, $k\ge0$, $q\ge1$ and $N=2k+2d+q+1$. Let $m_N=\lfloor(N-2)/2\rfloor$. Its exact size is
+\begin{equation}\label{pte:as:tailcount}
+ \sum_{s=1}^{m_N}s=\frac{m_N(m_N+1)}2
+                  =\frac{N^2}{8}+O(N).
+\end{equation}
+For each fixed $m$, the compact patch $\Omega_m$ has only $o(N^2)$ zeros. The number of candidates outside it, divided by $N^2$, has limsup at most $1/8-I_m$, where $I_m$ is its area under~\eqref{pte:as:Jacobian}. Letting $m\to\infty$ proves that the entire tail candidate set has only $o(N^2)$ zeros. Boundary rows such as $k=0$ are absorbed by this exhaustion and its exact total count.
+
+The nonzero tail therefore has $N^2/8+o(N^2)$ cells. These give distinct monomials by~\eqref{pte:as:bridge}, all with $j\le-2$, so they are disjoint from~\eqref{pte:as:bulk}. Hence
+\[
+ a(N)\ge\beta(N)+\frac{N^2}{8}+o(N^2)
+        =\frac{N^2}{2}+o(N^2).
+\]
+Together with the recurrence upper bound~\eqref{pte:as:upper}, this proves Corollary~\ref{pte:as:main}.
+
+\part{The half exponent}\label{pte:part:half}
+\section{Derivative supports of \texorpdfstring{$x^{\sqrt x}$}{x to the power sqrt(x)} \src{26}}\label{pte:sec:he}
+\mergenote{This section is source 26, \emph{Derivative Supports of $x^{\sqrt{x}}$: a leading-density theorem with two infinite extra-cancellation families}, without its integer-triangle lemma (printed as Lemma~\ref{pte:ga:lattice}) and with its closing section printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}. Its exponent $a=1/2$ is not an integer, so Theorem~\ref{pte:he:main} is not a case of Theorem~\ref{pte:ga:main}; the method is the same family, adapted. Source 26 was written about twenty minutes after source 28 and alludes to it (``the integer-exponent horizontal proof'') without citing it. Its ratio $\eta=2\nu+\kappa-1$ is written $\hat\eta$ here, because it is not source 28's $\eta=q/d$, and its favoured real point $z=-r$ is $z=-\sigma$, because $r$ is the defect in Section~\ref{pte:he:diagonals}. Its $\nu=(N-k)/d=M/d$ plays the role of source 28's radial exponent $\nu$ in~\eqref{pte:ga:subharmonic}, and its direction $D=\partial_\kappa-\partial_\nu$ the role of source 28's $D$. The two families of Theorem~\ref{pte:he:families} are, in Part~\ref{pte:part:defects}'s language, defects two and three at $a=1/2$.}
+
+\subsection{The theorem and an exact reciprocal coefficient}
+For $x>0$, define coefficients by
+\begin{equation}\label{pte:he:expansion}
+ \frac{d^N}{dx^N}x^{\sqrt{x}}
+ =x^{\sqrt{x}}\sum_{\ell,k}p_{N,\ell,k}
+             x^{\ell/2-N}(\log x)^k.
+\end{equation}
+For $N\ge1$, the potential cells are $1\le\ell\le N$, $0\le k\le\ell$, with distinct monomials. Let $A(N)$ be the number of nonzero coefficients.
+
+\begin{theorem}\label{pte:he:main}
+The number of zero candidates in~\eqref{pte:he:expansion} is $o(N^2)$. Consequently
+\[
+ A(N)=\frac{N^2}{2}+o(N^2).
+\]
+No global power-saving remainder or effective order threshold is asserted. The exact cancellation families in Section~\ref{pte:he:diagonals} show that reflection is not the only zero mechanism.
+\end{theorem}
+
+Put $d=\ell-k\ge0$. Taylor expansion gives
+\begin{equation}\label{pte:he:taylor}
+ p_{N,\ell,k}=\frac{N!}{k!d!}[w^N]
+ (\sqrt{1+w}-1)^k(1+w)^{d/2}\log^d(1+w).
+\end{equation}
+Use the reciprocal coordinate
+\[
+ \sqrt{1+w}=\frac{1+z}{1-z},\qquad
+ w=\frac{4z}{(1-z)^2},\qquad
+ dw=\frac{4(1+z)}{(1-z)^3}\,dz.
+\]
+Then $\sqrt{1+w}-1=2z/(1-z)$ and $\log(1+w)=4\operatorname{arctanh}z$. The exact result is
+\begin{equation}\label{pte:he:coefficient}
+ p_{N,\ell,k}=\frac{N!}{k!d!}\,2^k4^{d-N}
+ [z^{N-k}](\operatorname{arctanh}z)^d
+ (1+z)^{d+1}(1-z)^{2N-k-d-1}.
+\end{equation}
+The map $4z/(1-z)^2$ is univalent from the unit disk onto the plane cut along $(-\infty,-1]$, with the displayed inverse and branches. Every circle $|z|=R<1$ is therefore an exact coefficient cycle.
+
+For the interior $d>0$, introduce
+\begin{equation}\label{pte:he:ratios}
+ \nu=\frac{N-k}{d}>1,\qquad \kappa=\frac{k}{d}>0,\qquad
+ \hat\eta=2\nu+\kappa-1>1.
+\end{equation}
+Writing
+\begin{equation}\label{pte:he:Psi}
+ \Psi(z)=\log\operatorname{arctanh}z+\log(1+z)
+                  +\hat\eta\log(1-z)-\nu\log z,
+\end{equation}
+the residual differential in~\eqref{pte:he:coefficient} is
+\begin{equation}\label{pte:he:differential}
+ \frac{1+z}{z(1-z)}\,dz.
+\end{equation}
+All outside constants in~\eqref{pte:he:coefficient} are positive. The original integer powers make the full integrand single-valued despite local logarithm choices.
+
+\subsection{Circle-only global saddle selection}
+Set $t=2\operatorname{arctanh}z$. Up to the real constant $-\log2$, the action is
+\begin{equation}\label{pte:he:taction}
+ L(t)=\log t-\frac{\hat\eta-1}{2}t
+           +(\nu-\hat\eta-1)\log\cosh(t/2)-\nu\log\sinh(t/2).
+\end{equation}
+The effective $\cosh$ exponent is $\nu-\hat\eta-1=-\nu-\kappa<0$. Thus no integer-exponent horizontal monotonicity theorem is being assumed.
+
+On $|z|=R<1$, the favored side is left. Write $t=-s-iy$ in its lower quadrant. The circle satisfies
+\[
+ \frac{\cos y}{\cosh s}=\frac{1-R^2}{1+R^2}>0,
+ \qquad y'(s)=-\tanh s\cot y<0.
+\]
+Define
+\[
+ U(s,y)=\frac{s\coth s-y\cot y}{s^2+y^2},\qquad
+ V(s)=\frac{\hat\eta+1}{2}-\frac{\hat\eta-1}{2}\coth s.
+\]
+The partial-fraction identity~\cite{pte-dlmf4}
+\[
+ U(s,y)=2\sum_{n\ge1}
+ \frac{(n\pi)^2}{(s^2+(n\pi)^2)((n\pi)^2-y^2)}
+\]
+implies $U_s<0$, $U_y>0$ and $V'>0$. The radial power in~\eqref{pte:he:Psi} has constant modulus on the circle. Direct differentiation gives
+\begin{equation}\label{pte:he:angular}
+ \frac d{ds}\operatorname{Re}L(-s-iy(s))
+      =\tanh s\,[U(s,y(s))-V(s)].
+\end{equation}
+The bracket strictly decreases because $U_s+U_y y'-V'<0$. The derivative is positive near the imaginary endpoint. Thus each favored quadrant has one maximum, either a strict interior maximum or its negative real endpoint. Reflection lowers the real action by $(\hat\eta-1)|\operatorname{Re}t|$, so the opposite side is strictly suppressed. Every selected complex saddle has nonzero angular curvature.
+
+\subsubsection{The positive terminal derivative}
+Let $\mathcal M(\xi)$ be the maximum of $\operatorname{Re}\Psi$ on $|z|=\ee^\xi$, $\xi<0$. The modulus in~\eqref{pte:he:Psi} is subharmonic on annuli; comparison with a harmonic affine function of $\log|z|$ proves convexity of $\mathcal M$. Its initial slope is $1-\nu<0$.
+
+As $R\uparrow1$, the maxima remain at bounded $s$, because the favored-end action is at most $\log(1+s)-s+O(1)$. The limiting circle is the line $y=\pi/2$. On that line $U(s,\pi/2)-V(s)$ strictly decreases from $+\infty$ to $-1$, giving a unique limiting horizontal maximum. The circle maxima converge to it.
+
+For $u(s,y)=\operatorname{Re}L(-s-iy)$, differentiation of~\eqref{pte:he:taction} at $y=\pi/2$ gives
+\begin{equation}\label{pte:he:terminal}
+ u_y=\frac{\pi}{2(s^2+\pi^2/4)}
+ -\frac{2(\nu-\hat\eta-1)+\hat\eta+1}{2\cosh s}
+ =\frac{\pi}{2(s^2+\pi^2/4)}+\frac\kappa{2\cosh s}>0.
+\end{equation}
+Since $dt/d\xi=\sinh t=-i\cosh s$ at this line, the envelope has strictly positive terminal derivative. Convexity now forces a stationary minimum strictly inside $R<1$.
+
+This minimum is unique. At a complex angular maximum, harmonicity gives strictly positive radial envelope curvature. A flat zero-slope interval could therefore contain only real stationary maxima, which would make the analytic action derivative vanish on an interval and hence identically, contradicting its pole at zero. Conjugate angular maxima have the same radial derivative, so the envelope is differentiable even when the maximum changes between the real endpoint and a conjugate pair.
+
+We have obtained a selected real saddle or conjugate pair for every interior physical parameter using exact circles only. Except at degenerate real saddles, the selected saddle is simple, the global gap is strict, and the geometry persists uniformly on compact parameter patches.
+
+\subsection{A real threshold and one connected complex region}\label{pte:sec:he-real}
+Write the favored real point as $z=-\sigma $, $0<\sigma <1$. Its logarithmic radial derivative is
+\begin{align}
+ &\frac{\sigma }{(1-\sigma ^2)\operatorname{arctanh}\sigma }
+       -\frac \sigma {1-\sigma }+\frac{\hat\eta \sigma }{1+\sigma }-\nu\notag\\
+ &\hspace{12mm}=\frac{1-\sigma }{1+\sigma }\,[E(\sigma ;\kappa)-\nu],\label{pte:he:realderivative}
+\end{align}
+where
+\begin{equation}\label{pte:he:realmap}
+ E(\sigma ;\kappa)=f(\sigma )+\kappa g(\sigma ),\quad
+ f(\sigma )=\frac \sigma {(1-\sigma )^2}\left(\frac1{\operatorname{arctanh}\sigma }-2\right),\quad
+ g(\sigma )=\frac \sigma {1-\sigma }.
+\end{equation}
+One has $f(\sigma )<1$, since $\sigma /\operatorname{arctanh}\sigma <1$. Also
+\[
+ f(\sigma )=1-\frac43\sigma ^2+O(\sigma ^3),\qquad
+ E(\sigma ;\kappa)\longrightarrow-\infty\quad(\sigma \uparrow1).
+\]
+For each $\kappa>0$, the linear term $\kappa \sigma $ makes $E>1$ near zero. Hence
+\begin{equation}\label{pte:he:threshold}
+ M(\kappa)=\max_{0<\sigma <1}E(\sigma ;\kappa)>1
+\end{equation}
+exists, is continuous and nondecreasing, and tends to one as $\kappa\downarrow0$. The dominant negative $(1-\sigma )^{-2}$ term confines maximizers away from $\sigma =1$ on bounded $\kappa$ intervals. On compact subintervals, $f<1$ and $\kappa g\to0$ uniformly; together with the limit $f(0)=1$, this proves the last assertion and continuity at zero.
+
+When $1<\nu<M(\kappa)$, a first simple real crossing has $E_\sigma >0$. Equation~\eqref{pte:he:realderivative} gives positive radial curvature and hence a local angular maximum. The uniqueness proved in~\eqref{pte:he:angular} makes it the selected global real maximum. For $\nu>M(\kappa)$ there is no favored real stationary point, so the selected saddle is complex. This complex region is the connected epigraph above $M$.
+
+The degenerate real locus has area zero. The equations $E=\nu$ and $E_\sigma =0$ solve affinely for $(\kappa,\nu)$ because $g'(\sigma )=(1-\sigma )^{-2}>0$; their solutions form an analytic curve image. On compact parameter rectangles away from $\nu=1$, $\kappa=0$, real stationary points stay away from both $\sigma =0$ and $\sigma =1$, so the exceptional image is compact there. Nongeneric tangencies do not produce an additional open complex component, by the stability of a selected complex saddle and the density of parameters with simple first real crossings.
+
+A selected negative-real saddle contributes a single nonzero term. Its sign is $(-1)^{N-k-d}$, coming from $(\operatorname{arctanh}z)^d z^{-(N-k)}$; positivity is not required for the density argument.
+
+\subsection{A compact-uniform cosine law and its curvature seed}
+Let $z_s$ be the selected lower complex saddle and put
+\begin{equation}\label{pte:he:prefactor}
+ S=\Psi(z_s),\qquad C_s=z_s^2\Psi''(z_s),\qquad
+ P=\frac{1+z_s}{(1-z_s)\sqrt{C_s}}.
+\end{equation}
+The square root is fixed by the positively oriented Gaussian circle, with $\operatorname{Re}C_s>0$. The ratio $(1+z_s)/(1-z_s)$ is the full amplitude obtained from~\eqref{pte:he:differential}.
+
+\begin{proposition}\label{pte:he:cosine}
+On every compact simple complex-saddle patch,
+\begin{align}\label{pte:he:cosinelaw}
+ p_{N,\ell,k}
+ ={}&\frac{N!}{k!d!}\,2^k4^{d-N}
+ \frac{2\ee^{d\operatorname{Re}S}|P|}{\sqrt{2\pi d}}\notag\\
+ &\cdot\left\{\cos\bigl(d\operatorname{Im}S+\arg P\bigr)+O(d^{-1})\right\}.
+\end{align}
+The error is additive and compact-uniform. On a compact simple real-saddle patch, the analogous one-saddle expansion has a nonzero leading term.
+\end{proposition}
+\begin{proof}
+The selected circle has a strict global modulus gap and nonzero local Gaussian curvature. Taylor expansion under the $d^{-1/2}$ rescaling and cancellation of odd Gaussian terms give a relative $O(d^{-1})$ error for each individual saddle. The complementary arcs are exponentially smaller. Summing the conjugate contributions gives~\eqref{pte:he:cosinelaw}; the error is never divided by the cosine.
+\end{proof}
+
+At fixed $N,d$, increasing $k$ follows $D=\partial_\kappa-\partial_\nu$. Affine parameter dependence and stationarity imply
+\begin{equation}\label{pte:he:phasecurvature}
+ DS=\log\frac{z_s}{1-z_s},\qquad
+ D^2S=-\frac1{z_s^2(1-z_s)^2\Psi''(z_s)}.
+\end{equation}
+We give an explicit boundary expansion to prove this curvature is not identically zero.
+
+Set $\kappa=0$, $\nu=1+\varepsilon$, $\hat\eta=1+2\varepsilon$. The saddle equation is exactly
+\begin{equation}\label{pte:he:F}
+ F(z,\varepsilon)=\frac z{\operatorname{arctanh}z}-1-\varepsilon
+                   -2\varepsilon z-(1+\varepsilon)z^2=0,
+ \qquad \Psi_z=\frac F{z(1-z^2)}.
+\end{equation}
+Let $\varepsilon=h^2$. Since
+\[
+ \frac{F(hv,h^2)}{h^2}=-1-\frac43v^2-2hv+O(h^2),
+\]
+the analytic implicit-function theorem at the lower root gives
+\begin{equation}\label{pte:he:saddleseed}
+ z=-i\frac{\sqrt3}{2}h-\frac34h^2+O(h^3).
+\end{equation}
+Its negative real part identifies the favored side. At $\kappa=0$, the inequality $f<1$ excludes a real saddle for every $\nu>1$, so uniqueness identifies this local branch with the selected complex saddle.
+
+At that saddle,~\eqref{pte:he:phasecurvature} simplifies to
+\[
+ D^2S=-\frac{1+z}{z(1-z)F_z}.
+\]
+If $v_0=-i\sqrt3/2$, then $F_z=-(8/3)hv_0+O(h^3)$: the $h^2$ term cancels because the next coefficient in~\eqref{pte:he:saddleseed} is $-3/4$. Substitution gives
+\begin{equation}\label{pte:he:seedcurvature}
+ D^2S=-\frac1{2\varepsilon}
+           +i\frac{\sqrt3}{4\sqrt\varepsilon}+O(1).
+\end{equation}
+Its imaginary part is positive for sufficiently small fixed $\varepsilon>0$. It persists at small positive $\kappa$ because $M(\kappa)\to1$. Connectedness of the complex region and real analyticity now show that $\operatorname{Im}D^2S$ has a zero set of area zero.
+
+\subsection{Density in the full candidate triangle}
+We recall the elementary integer-triangle estimate in the form needed here.
+
+\mergenote{Source 26 states and proves here, as its Lemma~5.1, the integer-triangle estimate printed once as Lemma~\ref{pte:ga:lattice}.}
+
+On a compact patch avoiding the phase-curvature zero set, an exact zero in~\eqref{pte:he:cosinelaw} lies within $O(1/d)$ of a half-integer normalized phase. Its second derivative in integer $k$, with $d,N$ fixed, is
+\[
+ \frac{\operatorname{Im}D^2S}{\pi d}+O(d^{-2}).
+\]
+Lemma~\ref{pte:he:lattice} gives $O(d^{2/3})$ zeros per row and $O(N^{5/3})$ on the compact patch. Simple real-saddle patches contain no zeros for large $d$.
+
+First remove neighborhoods of the boundaries $\nu=1$ and $\kappa=0$, and restrict to compact parameter rectangles. Remove a small-area neighborhood of the compact real-degenerate locus before taking finite small-area covers of the remaining analytic exceptional set. The complement has a finite simple-saddle cover. Taking $N\to\infty$ first, then the removed area to zero, proves zero density on every compact physical rectangle.
+
+The ratio-to-lattice map is
+\[
+ \left(\frac dN,\frac kN\right)
+ =\left(\frac1{\nu+\kappa},\frac\kappa{\nu+\kappa}\right),
+\]
+with Jacobian $(\nu+\kappa)^{-3}$. Its full area is
+\[
+ \int_1^\infty\int_0^\infty\frac{d\kappa\,d\nu}{(\nu+\kappa)^3}
+ =\frac12.
+\]
+This is exactly the interior area of $1\le\ell\le N$, $0\le k\le\ell$, with $\ell=k+d$. The boundaries $d=0$, $k=0$, and $\ell=N$ contain only $O(N)$ cells. Compact exhaustion therefore gives $o(N^2)$ zero candidates in the full triangle. Since its exact size is $N(N+3)/2$, Theorem~\ref{pte:he:main} follows.
+
+\subsection{Two infinite nonreflection zero families}\label{pte:he:diagonals}
+The defect $r=N-\ell$ counts the loss in the number of exponent factors. It is different from the depth $d=\ell-k$. Let $g(x)=\sqrt{x}\log x$ and $L=\log x$. The required low derivatives are
+\begin{align*}
+ g'&=x^{-1/2}(1+L/2),&
+ g''&=x^{-3/2}(-L/4),\\
+ g'''&=x^{-5/2}(3L/8-1/4),&
+ g''''&=x^{-7/2}(1-15L/16).
+\end{align*}
+At defect one, the exponential Bell expansion contains one $g''$ and $N-2$ copies of $g'$. Thus, for $N\ge2$, the unique zero on $\ell=N-1$ is $k=0$. This is the reciprocal-reflection family.
+
+\begin{theorem}\label{pte:he:families}
+For every $N\ge3$ and $0\le k\le N-2$,
+\begin{equation}\label{pte:he:defecttwo}
+ p_{N,N-2,k}=\frac{2^{-k}N(N-1)}{96}\binom{N-2}k
+                         (3k^2+13k-4N+8).
+\end{equation}
+Its zeros are exactly
+\begin{equation}\label{pte:he:familytwo}
+ N=\frac{3k^2+13k+8}{4},\qquad
+ k\ge1,\quad k\equiv0,1\pmod4.
+\end{equation}
+For every $N\ge4$ and $0\le k\le N-3$,
+\begin{equation}\label{pte:he:defectthree}
+ p_{N,N-3,k}=-\frac{2^{-k}N(N-1)(N-2)}{384}\binom{N-3}k
+                   (k+4)(k^2+9k-4N+12).
+\end{equation}
+Its zeros are exactly
+\begin{equation}\label{pte:he:familythree}
+ N=\frac{k^2+9k+12}{4},\qquad
+ k\ge3,\quad k\equiv0,3\pmod4.
+\end{equation}
+Both families are infinite and lie outside the reflection line.
+\end{theorem}
+\begin{proof}
+For defect two the block-size patterns are $3$ and $2+2$. With $u=L/2$, the corresponding logarithmic polynomial is
+\[
+ \binom N3\frac{(1+u)^{N-4}}{16}
+       \bigl(3(N+1)u^2+8u-4\bigr).
+\]
+Coefficient extraction and cancellation of the binomial factors give~\eqref{pte:he:defecttwo}. The same identity holds directly at $N=3$, using $g'''$, so no division at a vanishing binomial denominator is used.
+
+For defect three the patterns are $4$, $3+2$, and $2+2+2$. Their multiplicities are $\binom N4$, $10\binom N5$, and $15\binom N6$, respectively. The logarithmic polynomial becomes
+\[
+ \binom N4\frac{(1+u)^{N-6}}{16}
+ \bigl(16+2(2N-7)u-4(2N+3)u^2-(N+1)(N+2)u^3\bigr).
+\]
+Extracting coefficients gives~\eqref{pte:he:defectthree}; $N=4,5$ follow directly from the available block patterns.
+
+The zero equations reduce to the quadratics displayed in~\eqref{pte:he:familytwo} and~\eqref{pte:he:familythree}. Reduction modulo four gives their congruence classes. At defect two, $k=0$ formally gives $N=2$, outside the $N\ge3$ domain; every listed $k\ge1$ is admissible. At defect three, $k=0$ gives $N=3$, outside $N\ge4$; the listed $k\ge3$ are all admissible. The reflection condition is $N=(k+2d)/2+1$, which at defect $r$ reads $r+k/2=1$. It has no admissible point at defects two or three.
+\end{proof}
+
+The first members of~\eqref{pte:he:familytwo} are $(N,k)=(6,1),(27,4),(37,5),(76,8)$; those of~\eqref{pte:he:familythree} are $(12,3),(16,4),(31,7),(37,8)$. These sparse families approach the boundary corner $(\kappa,\nu)=(0,1)$, so their existence is consistent with the compact zero-density proof.
+
+\mergenote{Theorem~\ref{pte:he:families} is also a case of source 20r's general residuals, by a different derivation. In the notation of Section~\ref{pte:sec:shared}, at $a=1/2$ the reflection form is $K=k/2+r-1$ and $c=-1$, and the exact residuals~\eqref{pte:rf:low} give
+\[
+ R_{1/2,2,N}=\frac{3k^2+13k+8-4N}{96},\qquad
+ R_{1/2,3,N}=-\frac{(k+4)(k^2+9k+12-4N)}{384},
+\]
+which by the bridge~\eqref{pte:rf:bridge} are~\eqref{pte:he:defecttwo} and~\eqref{pte:he:defectthree}. Source 20r's reflection line~\eqref{pte:rf:line} at $a=1/2$ is $k=-2(r-1)$, physical only on defect one, where it is the reciprocal-reflection family $k=0$ above; 26's condition $r+k/2=1$ is $K=0$. Source 20r's Corollary~\ref{pte:rf:infinite} on infinite nonreflection families concerns the open interval $1/2<a<1$; at the endpoint $a=1/2$ only the positive branch of each parabola is physical, and source 20's endpoint remark after Theorem~\ref{pte:ac:counts} counts these two families through order $X$ as $\sqrt{X/3}+O(1)$ and $\sqrt X+O(1)$. None of the three sources cites the others. The verification of Section~\ref{pte:sec:verification} finds, for $N\le150$, sixteen nonreflection zeros, all in these two families (six and ten).}
+
+\part{Fixed defects for non-integer exponents}\label{pte:part:defects}
+\mergenote{Part~\ref{pte:part:defects} is sources 20r, 20 and 16, written in that order within about forty minutes. All three slice the coefficients by a fixed factor defect $r=N-\ell$ as $N$ grows, the other natural slicing besides fixed depth. At $a=1$ a fixed defect is a fixed Lehmer--Comtet offset, the subject of the host's Conjecture~2.9, which all three exclude; at an integer $a\ge2$ every cell with $N\ge2r$ lies in the positive bulk of Proposition~\ref{pte:ga:bulk} (at $a=2$, the host's Theorem~3.7), so a fixed defect is eventually nonzero there for an elementary reason. The fixed-defect theorems therefore have content for non-integer $a$. A rational exponent is written $a=\fp/\fq$ in lowest positive terms (Section~\ref{pte:sec:renames}).}
+
+\section{The centered coefficient identity \texorpdfstring{\textup{(sources 20r, 20, 16)}}{(sources 20r, 20, 16)}}\label{pte:sec:shared}
+\mergenote{Sources 20r, 20 and 16 each open with this setup in nearly the same words. It is printed once, in source 20r's words, with the sentences only source 20 or only source 16 contains. Source 16 writes the residual as $R_r(a;N,k)$, a polynomial in $(a,N,k)$, and the reflection form as $K_a$; in this section, including source 16's Lemma~\ref{pte:ir:degrees}, they are $R_{a,r,N}(k)$ and $K$, and Section~\ref{pte:sec:ir} keeps source 16's notation. Ten equation labels of sources 20 and 16 name equations of this section and were merged into source 20r's labels (the README lists them).}
+
+For fixed $a>0$, write
+\begin{equation}\label{pte:rf:derivative}
+ \frac{d^N}{dx^N}x^{x^a}
+ =x^{x^a}\sum_{\ell,k}p_{N,\ell,k}(a)
+                      x^{a\ell-N}(\log x)^k.
+\end{equation}
+The factor defect is $r=N-\ell$. Throughout a physical cell means
+\begin{equation}\label{pte:rf:physical}
+ N\ge r+1,\qquad 0\le k\le N-r,\qquad N,k\in\mathbb Z.
+\end{equation}
+Distinct pairs $(\ell,k)$ represent distinct monomials because $a>0$.
+
+Set
+\[
+ A_a(z)=\frac{(1+z)^a\log(1+z)}z,\qquad
+ B_a(z)=\frac{(1+z)^a-1}{az}.
+\]
+Both power series have constant term one. Taylor expansion of $x^a\log x$ and the partial Bell-polynomial formula give
+\begin{align}
+ p_{N,N-r,k}(a)
+ &=a^k\frac{N!}{(N-r)!}\binom{N-r}k R_{a,r,N}(k),\label{pte:rf:bridge}\\
+ R_{a,r,N}(k)&=[z^r]A_a(z)^{N-r-k}B_a(z)^k.\label{pte:rf:residual}
+\end{align}
+The prefactor in~\eqref{pte:rf:bridge} is positive throughout~\eqref{pte:rf:physical}. At each fixed $r$, the residual is a polynomial in $N,k$ with rational coefficients when $a$ is rational. \src{16}~The coefficients of $A_a$ and $B_a$ are polynomials in $a$; the apparent singularity of $B_a$ at zero is removable coefficient by coefficient. Thus $R_{a,r,N}(k)\in\mathbb Q[a,N,k]$.
+
+Write
+\begin{equation}\label{pte:rf:center}
+ K=ak-(2a-1)N+2ar-1,\qquad c=(a-1)(2a+1).
+\end{equation}
+\mergenote{Source 20r defines $K$ in its Theorem~1.1 and $c$ in its Section~3; source 20 defines both together, as here, and source 16 writes $K_a$ for $K$. On an odd defect, $K=0$ is the \emph{reflection line}.}
+
+The substitution $t=\log(1+z)$ in the coefficient integral, including its differential, gives
+\begin{equation}\label{pte:rf:even}
+ R_{a,r,N}(k)=[t^r]\exp(-Kt/2)
+ \left(\frac{\sinh(at/2)}{at/2}\right)^k
+ \left(\frac{t/2}{\sinh(t/2)}\right)^{N+1}.
+\end{equation}
+Indeed,
+\[
+ A_a=e^{(a-1/2)t}\frac{t/2}{\sinh(t/2)},\qquad
+ B_a=e^{(a-1)t/2}\frac{\sinh(at/2)}{a\sinh(t/2)},
+\]
+and the Cauchy differential supplies $e^{(1-r)t/2}(t/(2\sinh(t/2)))^{r+1}$. The exponential factors combine to $e^{-Kt/2}$, and the remaining factors combine as displayed.
+
+Both hyperbolic ratios in~\eqref{pte:rf:even} are even functions. Thus the residual vanishes at $K=0$ whenever $r$ is odd. After expressing $k$ linearly in $N,K$, this is an exact polynomial factor. Equivalently, the reciprocal substitution $z\mapsto-z/(1+z)$ multiplies $A_a$ by $(1+z)^{1-2a}$ and $B_a$ by $(1+z)^{1-a}$, while the Cauchy differential contributes $(-1)^r(1+z)^{r-1}$. The combined power of $1+z$ is exactly $K$.
+
+\subsection{Degrees of the residual \src{16}}
+\begin{lemma}\label{pte:ir:degrees}
+As a polynomial in $(N,k)$ at fixed $a$, $R_{a,r,N}(k)$ has total degree $r$, with leading homogeneous part
+\begin{equation}\label{pte:ir:line}
+ \frac{\Lambda_a(N,k)^r}{r!},\qquad
+ \Lambda_a(N,k)=(a-1/2)N-ak/2.
+\end{equation}
+At every physical cell, $R_{a,r,N}(k)$ is a nonzero polynomial in $a$ of exact degree $r$.
+\end{lemma}
+\begin{proof}
+The first coefficients of $\log A_a$ and $\log B_a$ are respectively $a-1/2$ and $(a-1)/2$. In
+\[
+ [z^r]\exp\bigl((N-r-k)\log A_a+k\log B_a\bigr),
+\]
+parameter degree $r$ can come only from $r$ linear-in-$z$ factors. The constant shift $-r$ lowers parameter degree. This proves~\eqref{pte:ir:line}; the line is nonzero for every $a$.
+
+Moreover $[z^j]A_a$ has degree $j$ in $a$ with leading coefficient $1/j!$, and $[z^j]B_a$ has degree $j$ with leading coefficient $1/(j+1)!$. Put $d=N-r-k\ge0$. The coefficient of $a^r$ in~\eqref{pte:rf:residual} is exactly
+\begin{equation}\label{pte:ir:positiveleading}
+ [w^r]e^{dw}\left(\frac{e^w-1}{w}\right)^k>0.
+\end{equation}
+Both series have nonnegative coefficients. Since $d+k=N-r\ge1$, at least one factor has strictly positive coefficients in every degree. This proves strict positivity and exact degree.
+\end{proof}
+\mergenote{In this proof $d=N-r-k=\ell-k$ is the depth, as everywhere in this report, and $e$ is Euler's number. Source 16's leading line is written $\Lambda_a$ here; source 28's $L_a(t)$ is an action.}
+
+\section{Rational exponents \texorpdfstring{$a\ne1$}{a<>1} \src{20r}}\label{pte:sec:rf}
+\mergenote{This section is source 20r, \emph{Reflection and Finite Exceptions: fixed defects in derivatives of $x^{x^a}$ for positive rational $a\ne1$}, which arrived only inside archive 20 as its companion. Its coefficient setup is Section~\ref{pte:sec:shared}; its closing section is printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}.}
+
+\begin{theorem}\label{pte:rf:main}
+Fix $a\in\mathbb Q_{>0}\setminus\{1\}$ and an integer $r\ge4$. With $K$ as in~\eqref{pte:rf:center}, only finitely many physical cells have $p_{N,N-r,k}(a)=0$, after excluding $K=0$ when $r$ is odd. No exclusion is needed for even $r$. In particular each fixed defect is eventually free of nonreflection cancellations. Every odd defect has the exact reflection factor $K$.
+\end{theorem}
+
+Here ``eventually'' allows a threshold depending on both $a$ and $r$. The proof provides no numerical threshold or complete list of the finite exceptions. It does not establish a support-density theorem when the defect grows with $N$.
+
+\mergenote{Source 20r states the theorem in its Section~1 with the definition~\eqref{pte:rf:center} of $K$ inside it. Source 20's Theorem~\ref{pte:ac:algebraic} (defects $r\ge4D+2$, so $r\ge6$ at $D=1$) is weaker for rational $a$, and source 20 says so; source 16's Theorem~\ref{pte:ir:main} covers irrational $a$.}
+
+\subsection{The weighted edge and defects at least six}
+Put
+\[
+ k=\frac{K+(2a-1)N-2ar+1}{a},
+\]
+with $c=(a-1)(2a+1)\ne0$ as in~\eqref{pte:rf:center}. Assign weight two to $N$ and weight one to $K$. In the exponent of~\eqref{pte:rf:even}, the only terms whose parameter weight equals their $t$ degree are
+\[
+ -Kt/2+cNt^2/24.
+\]
+This follows from $\log(\sinh(at/2)/(at/2))=a^2t^2/24+O(t^4)$ and $\log((t/2)/\sinh(t/2))=-t^2/24+O(t^4)$. Hence the top weighted part of the centered residual is
+\[
+ [t^r]\exp(-Kt/2+cNt^2/24).
+\]
+For $r=2m$ use the whole centered residual as $F_r(N,K)$; for $r=2m+1$ divide it by its exact factor $K$. Its top weighted part is respectively
+\begin{align}
+ E_{2m}(N,K)&=\frac{m!}{(2m)!}\left(\frac{cN}{6}\right)^m
+       L_m^{(-1/2)}\left(-\frac{3K^2}{2cN}\right),\label{pte:rf:edgeeven}\\
+ E_{2m+1}(N,K)&=-\frac{m!}{2(2m+1)!}\left(\frac{cN}{6}\right)^m
+       L_m^{(1/2)}\left(-\frac{3K^2}{2cN}\right).\label{pte:rf:edgeodd}
+\end{align}
+These identities follow from the standard Hermite--Laguerre relations~\cite{pte-dlmf18}. Both expressions are polynomials, of weighted degree $2m$ and degree $m$ in $N$, with nonzero constant leading $N$ coefficient.
+
+Schur's theorem states that $L_m^{(-1/2)}$ and $L_m^{(1/2)}$ are irreducible over $\mathbb Q$ for every $m\ge1$; a primary research account explicitly records the theorem and its original references~\cite[pp.~1--2]{pte-schur}. Rational reciprocal rescaling shows that $E_r(v,1)$ is irreducible in $\mathbb Q[v]$. After extending to the purely transcendental field $\mathbb Q(K)$ and replacing $v$ by $N/K^2$, it remains irreducible. The constant leading $N$ coefficient makes it primitive over $\mathbb Q[K]$, so Gauss's lemma gives irreducibility in $\mathbb Q[N,K]$.
+
+The top weighted parts of any two polynomial factors of $F_r$ would multiply to $E_r$. Since every nonconstant polynomial has positive weighted degree, irreducibility of $E_r$ forces one such factor to be constant. Therefore $F_r$ is irreducible over $\mathbb Q$.
+
+The Laguerre roots are positive and simple. The roots of $E_r(v,1)$ are thus distinct and nonzero, whether $c$ is positive or negative. Write them as $\alpha_1,\ldots,\alpha_m$. With $t=1/K$, $N=v/t^2$, the expression
+\[
+ t^{2m}F_r(v/t^2,1/t)
+\]
+is analytic at $t=0$ and specializes to $E_r(v,1)$. The implicit-function theorem gives $m$ distinct branches
+\begin{equation}\label{pte:rf:branches}
+ v=v_i(t),\quad v_i(0)=\alpha_i,\qquad K=t^{-1},\quad N=t^{-2}v_i(t).
+\end{equation}
+They are distinct points on the smooth projective normalization, and $K$ has a simple pole at each. They exhaust the points above $K=\infty$ because the degree in $N$ is $m$ with constant leading coefficient.
+
+To finish for $r\ge6$, first suppose $F_r$ is not absolutely irreducible. Its absolute components are Galois conjugate. A rational point lies on every conjugate of any component containing it, so it belongs to a finite intersection of distinct components. Thus there are only finitely many rational affine points in this case.
+
+Otherwise take the smooth projective normalization $C$. Its affine singular points form a finite set, and nonsingular rational points lift uniquely to $C(\mathbb Q)$. Write $a=\fp/\fq$ in lowest positive terms. At an integer cell,
+\[
+ \fq K=\fp k-(2\fp-\fq)N+2\fp r-\fq\in\mathbb Z.
+\]
+By~\eqref{pte:rf:branches}, the rational function $\fq K$ on $C$ has $m\ge3$ distinct geometric poles. The three-pole form of Siegel's theorem~\cite[Theorem 1.1]{pte-levin} makes the set of rational points with $\fq K$ integral finite, regardless of genus. The linear change $(N,k)\mapsto(N,K)$ is injective. This proves Theorem~\ref{pte:rf:main} for every $r\ge6$.
+
+
+\subsection{Parameterized quartics at defects four and five}
+Expansion of~\eqref{pte:rf:even} through degree five uses
+\[
+ U=a^2k-N-1=aK+cN+C_r,\quad C_r=-2a^2r+a-1,\qquad
+ V=N+1-a^4k.
+\]
+Introduce the rational functions
+\begin{equation}\label{pte:rf:parameters}
+ b=-\frac{2a^3+a^2+a+1}{2a+1},\qquad
+ e=\frac{a(a+1)}{2a+1},\qquad
+ f_r=-\frac{2a(a+1)((r+1)a-1)}{2a+1}.
+\end{equation}
+Direct substitution gives $V=bU+eK+f_r$. Coefficient extraction is finite algebra:
+\begin{align}
+ 5760R_{a,4,N}&=15K^4+30K^2U+5U^2+2V,\label{pte:rf:r4}\\
+ 11520R_{a,5,N}&=-K(3K^4+10K^2U+5U^2+2V).\label{pte:rf:r5}
+\end{align}
+Set $Y_4=5U+15K^2+b$ and $Y_5=5U+5K^2+b$. Away from $K=0$ in the odd case, the cancellation equations become
+\begin{align}
+ Y_4^2&=150K^4+30bK^2-10eK+b^2-10f_4,\label{pte:rf:q4}\\
+ Y_5^2&=10K^4+10bK^2-10eK+b^2-10f_5.\label{pte:rf:q5}
+\end{align}
+Since $c\ne0$, each correspondence is injective: from $K,Y_r$, recover $U$ and then $N=(U-aK-C_r)/c$, followed by $k$ from~\eqref{pte:rf:center}.
+
+\begin{lemma}\label{pte:rf:smooth}
+Both quartics in~\eqref{pte:rf:q4}--\eqref{pte:rf:q5} are squarefree for every positive rational $a$.
+\end{lemma}
+\begin{proof}
+Let $Q_r(a,K)$ be the right-hand quartic multiplied by $(2a+1)^2$, so $Q_r\in\mathbb Z[a,K]$. Exact expansion gives
+\begin{align}
+ \operatorname{disc}_K Q_4&=27000000(2a+1)^6D_4(a),\label{pte:rf:d4}\\
+ \operatorname{disc}_K Q_5&=8000(2a+1)^6D_5(a),\label{pte:rf:d5}
+\end{align}
+where $D_4,D_5$ are degree-$18$ integer polynomials. The definitions~\eqref{pte:rf:parameters}--\eqref{pte:rf:d5} specify them exactly; their full coefficient lists and an exact discriminant verifier accompany this note.
+
+Here is a short certificate that neither has a rational root. The leading coefficient of $D_4$ is $512$, congruent to $2$ modulo $3$, and
+\[
+ D_4(a)\equiv2\pmod{(3,\ a^3-a)}.
+\]
+The leading coefficient of $D_5$ is $4608$, congruent to $10$ modulo $11$. Its remainder modulo $11$ and $a^{11}-a$ is
+\begin{align*}
+ &-2a^{10}-a^9+3a^8+3a^7+5a^6+5a^5\\
+ &\hspace{20mm}-4a^4+4a^3+2a^2+4a-5.
+\end{align*}
+At $a=0,1,\ldots,10$ its successive values modulo $11$ are
+\[
+ 6,3,8,8,8,8,3,2,9,7,6,
+\]
+all nonzero. Suppose a reduced rational number $u/v$ were a root. If the selected prime divides $v$, the homogenized identity contradicts the nonzero leading coefficient modulo that prime. Otherwise $u/v$ reduces to a field element, contradicting the displayed root-free values. Thus both $D_r$ have no rational root. Finally $2a+1\ne0$ for $a>0$, so neither discriminant vanishes.
+\end{proof}
+\mergenote{The coefficient lists of $D_4$ and $D_5$ and the exact verifier that ``accompany this note'' are shipped with this report as \texttt{data/\allowbreak{}20r-\allowbreak{}rational-\allowbreak{}certificates.\allowbreak{}json} and \texttt{code/\allowbreak{}20r-\allowbreak{}rational-\allowbreak{}verify.\allowbreak{}py}, with the independent replay \texttt{code/\allowbreak{}20r-\allowbreak{}rational-\allowbreak{}replay\_\allowbreak{}independent.\allowbreak{}py} and its output (Section~\ref{pte:sec:verification}).}
+
+A squarefree degree-four equation $Y^2=Q(K)$ has a genus-one smooth projective completion: the double cover of the $K$-line has four simple branch points. Siegel's positive-genus theorem~\cite[Theorem 4]{pte-lang}, applied to the rational function $\fq K$, therefore makes the rational points with $\fq K\in\mathbb Z$ finite. The injective correspondence proves Theorem~\ref{pte:rf:main} for $r=4,5$. This completes its proof in all cases.
+
+The modular certificates rule out exceptional \emph{rational parameters}; they are not searches over parameter values. They do not exclude singular quartics at every irrational algebraic parameter.
+
+\subsection{Reflection lines and the first three defects}
+For $a=\fp/\fq$ in lowest positive terms, solving $K=0$ over integers gives exactly
+\begin{equation}\label{pte:rf:line}
+ N=1+\fp h,\qquad k=(2\fp-\fq)h-2(r-1),\qquad h\in\mathbb Z,
+\end{equation}
+subject to~\eqref{pte:rf:physical}. Indeed, reduction of $K=0$ modulo $\fp$ gives $N\equiv1\pmod \fp$.
+
+If $1/2<a<1$, then $0<2\fp-\fq<\fp$. On every fixed odd defect, all sufficiently large positive $h$ in~\eqref{pte:rf:line} are physical. These reflection cells have cumulative count $X/\fp+O_{a,r}(1)$. At $a=1/2$, the line is $k=-2(r-1)$, so only $r=1$ supplies a physical infinite family. For $a<1/2$ or $a>1$, the line eventually lies outside the physical range.
+
+The first three exact residuals are
+\begin{equation}\label{pte:rf:low}
+ R_{a,1,N}=-K/2,\qquad
+ R_{a,2,N}=(3K^2+U)/24,\qquad
+ R_{a,3,N}=-K(K^2+U)/48,
+\end{equation}
+where $U=aK+cN-2a^2r+a-1$ uses the corresponding defect. In particular, the nonreflection zero equations at defects two and three are
+\begin{align}
+ N&=-\frac{3K^2+aK-4a^2+a-1}{c},\label{pte:rf:parabola2}\\
+ N&=-\frac{K^2+aK-6a^2+a-1}{c}.\label{pte:rf:parabola3}
+\end{align}
+\mergenote{At $a=1/2$ these residuals are source 26's exact diagonal formulas (Theorem~\ref{pte:he:families}; the computation is recorded after it). Source 26 derives them by a different route, from the exponential Bell blocks of $g(x)=\sqrt x\log x$.}
+
+\begin{corollary}\label{pte:rf:infinite}
+For every rational $1/2<a<1$, defects two and three each have infinitely many physical nonreflection cancellations. On every fixed defect $r\ge4$, all sufficiently late cancellations are precisely the physical reflection cells when $r$ is odd, and there are no cancellations when $r$ is even.
+\end{corollary}
+\begin{proof}
+Each parabola contains the structural rational point $(N,K)=(r,r-1)$ with $k=0$, outside the physical domain. Set $K=r-1+Mh$. Because the formulas for $N$ and recovered $k$ are rational polynomials in $h$ with integer constant terms, a sufficiently divisible positive integer $M$ makes both integer for every integer $h$. When $1/2<a<1$, $c<0$, so $N\to+\infty$ as $|h|\to\infty$, while
+\[
+ \frac{k}{N}\longrightarrow2-\frac1a\in(0,1).
+\]
+Consequently the cells are physical and $K\ne0$ for all sufficiently large $|h|$. The last assertion follows from Theorem~\ref{pte:rf:main} and the exact odd factor.
+\end{proof}
+\mergenote{Source 20's Theorem~\ref{pte:ac:counts} counts the families of the first assertion exactly, up to $O(1)$. They are not reflection zeros, so the host's observation that every cancellation it proves is a parity zero (Section~\ref{pte:sec:host}) does not extend to $x^{x^a}$ for these $a$. In the proof, $M$ is a positive integer and $h$ an integer parameter, as in~\eqref{pte:rf:line}.}
+
+There is also an elementary description outside that interval. Uniformly for $0\le k\le N-r$ at fixed $a,r$,
+\begin{equation}\label{pte:rf:ordinary}
+ R_{a,r,N}(k)=\frac{[N(a-1/2)-ak/2]^r}{r!}
+                    +O_{a,r}(N^{r-1}).
+\end{equation}
+This is the highest ordinary-degree part of~\eqref{pte:rf:residual}; the fixed shift $r$ affects only lower degree. For $a>1$, the bracket is at least $(a-1)N/2$, so every fixed defect is eventually positive. For $0<a<1/2$, it is at most $-(1/2-a)N$, so the eventual sign is $(-1)^r$. These statements concern each fixed defect, not the whole derivative support.
+\mergenote{The bracket in~\eqref{pte:rf:ordinary} is source 16's leading line $\Lambda_a(N,k)$ of Lemma~\ref{pte:ir:degrees}.}
+
+The exception $a=1$ is structural. Then $c=0$, $K=k-N+2r-1$, and~\eqref{pte:rf:residual} becomes
+\[
+ [z^r]\left(\frac{(1+z)\log(1+z)}z\right)^{r-1-K},
+\]
+independent of $N$ after centering. Its possible integer roots produce entire coefficient lines, so the preceding finite-exception proof does not apply.
+\mergenote{At $a=1$ a fixed defect is a fixed Lehmer--Comtet offset. The batch-72A intake's exact scan (Section~\ref{pte:sec:questions}) shows such a line: the host's sporadic zero $b(8,5)=0$ recurs at every $k$, at the cells $(N,\ell,k)=(k+8,k+5,k)$.}
+
+
+\section{Algebraic exponents: a degree bound and exact frequencies \src{20}}\label{pte:sec:ac}
+\mergenote{This section is source 20, \emph{Algebraic Degrees and Exact Cancellation Frequencies: two fixed-defect extensions for derivatives of $x^{x^a}$}. Its Section~1 is the identity of Section~\ref{pte:sec:shared}; its closing section is printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}. Renamed here: the field $L=\mathbb Q(a)$ is $\mathbb L$; the coordinate $L=qK$ of its Section~3 is $\widetilde K=\fq K$; a rational exponent $p/q$ is $\fp/\fq$. The Laguerre polynomials keep the name $L_m^{(\pm1/2)}$. In the proof of Theorem~\ref{pte:ac:algebraic}, $b$ is a positive integer and $d_i$ are degrees of factors; neither is the depth.}
+
+\subsection{An algebraic-degree bound}
+\begin{theorem}\label{pte:ac:algebraic}
+Let $a>0$, $a\ne1$ be algebraic of degree $D=[\mathbb Q(a):\mathbb Q]$. Fix a defect $r$ with
+\[
+ \left\lfloor\frac r2\right\rfloor>2D,
+ \quad\text{equivalently}\quad r\ge4D+2.
+\]
+Only finitely many physical cells have $p_{N,N-r,k}(a)=0$ after excluding $K=0$ for odd $r$. If $a$ is irrational, no physical cell lies on that reflection line, so all coefficients on the fixed defect are nonzero for sufficiently large $N$.
+\end{theorem}
+
+\mergenote{Theorem~\ref{pte:ac:algebraic} is implied by the other two fixed-defect theorems: for rational $a$ ($D=1$, $r\ge6$) by source 20r's Theorem~\ref{pte:rf:main} ($r\ge4$), and for irrational $a$ by source 16's Theorem~\ref{pte:ir:main}, which bounds the cancellation cells by $(2\lfloor r/2\rfloor)^2-1$ on every defect $r\ge2$, effectively. Source 20 says the first (after the proof below); source 16 calls the theorem ``a prior sufficient algebraic-degree threshold'' without naming it. The proof below, by field degrees and Siegel's theorem over $\mathbb Q(a)$, is a second route and is printed as such.}
+
+\begin{proof}[Proof \src{20}]
+Put $\mathbb L=\mathbb Q(a)$ and $m=\lfloor r/2\rfloor$. Express $k=(K+(2a-1)N-2ar+1)/a$ in~\eqref{pte:rf:even}. Let $F_r(N,K)$ be this centered residual for even $r$, and its quotient by $K$ for odd $r$. It is a polynomial over $\mathbb L$.
+
+Assign weights two and one to $N$ and $K$. Its top weighted part $E_r$ has weight $2m$ and is given by~\eqref{pte:rf:edgeeven}--\eqref{pte:rf:edgeodd}. Indeed the highest-weight terms of the exponent in~\eqref{pte:rf:even} are $-Kt/2+cNt^2/24$, and the Hermite--Laguerre relations give those formulas. The assumption $a>0$, $a\ne1$ makes $c\ne0$.
+
+Schur's theorem makes each Laguerre polynomial in~\eqref{pte:rf:edgeeven}--\eqref{pte:rf:edgeodd} irreducible of degree $m$ over $\mathbb Q$~\cite{pte-schur}. If $\theta$ is one of its roots, the field-degree inequality gives
+\[
+ [\mathbb L(\theta):\mathbb L]\ge\frac{[\mathbb Q(\theta):\mathbb Q]}{[\mathbb L:\mathbb Q]}
+ =\frac mD.
+\]
+The roots of $E_r(v,1)$ have the form $-3/(2c\theta)$, so their degrees over $\mathbb L$ satisfy the same bound.
+
+Factor $E_r(v,1)$ over $\mathbb L$ into monic irreducibles $f_i(v)$ of degrees $d_i$. Each $d_i\ge\lceil m/D\rceil\ge3$. Its corresponding homogeneous factor is
+\[
+ H_i(N,K)=K^{2d_i}f_i(N/K^2).
+\]
+Purely transcendental extension and Gauss's lemma show that $H_i$ is irreducible in $\mathbb L[N,K]$. The edge is squarefree because the Laguerre roots are simple.
+
+Now factor $F_r$ into irreducibles over $\mathbb L$. The top weighted part of each nonconstant factor is a nonempty product of distinct $H_i$. There is no nonconstant factor of degree zero in $N$, since the leading $N$ coefficient of $F_r$ is a nonzero constant. Thus each factor has degree at least $\lceil m/D\rceil$ in $N$. More explicitly, if its edge has weight $2n$, it contains a nonzero $N^n$ term; weighted degree bounds its $N$ degree by $n$, so that degree is exactly $n$.
+
+Each such factor has distinct infinity branches. Setting $t=1/K$, $N=v/t^2$ and multiplying by $t^{2n}$ gives an analytic equation whose specialization at $t=0$ has $n$ simple roots. The implicit-function theorem gives $n$ distinct normalization points, with local coordinate $t$, at which $K=t^{-1}$ has simple poles. Every component therefore has at least three geometric poles of $K$.
+
+If an $\mathbb L$-irreducible factor is not absolutely irreducible, its $\mathbb L$-rational points lie in finite intersections of distinct Galois-conjugate absolute components. Otherwise, apart from finitely many singular points, they lift to the smooth projective normalization. Choose a fixed positive integer $b$ with $ba$ an algebraic integer. At every integer pair $(N,k)$,
+\[
+ bK=(ba)(k-2N+2r)+b(N-1)\in\mathcal O_{\mathbb L}.
+\]
+The function $bK$ has at least three poles. Siegel's theorem over $\mathbb L$~\cite[Theorem 1.1]{pte-levin} therefore gives only finitely many $\mathbb L$-rational points where $bK$ is integral. Taking the finite union over all components proves finiteness of cancellation cells off the discarded factor.
+
+Finally, if $a$ is irrational, the equation
+\[
+ a(k-2N+2r)+(N-1)=0
+\]
+with integer variables forces $N=1$ and $k=2-2r$. This contradicts~\eqref{pte:rf:physical} for $r\ge1$, proving the last assertion.
+\end{proof}
+\mergenote{Source 20 displays the edge formulas again in its proof, under the label \texttt{ac:edges}; they are source 20r's~\eqref{pte:rf:edgeeven}--\eqref{pte:rf:edgeodd} and are cited instead.}
+
+The degree threshold is sufficient, not claimed optimal. For rational $a\ne1$, the companion theorem (Theorem~\ref{pte:rf:main}) improves the threshold from six to four using two explicit genus-one quartics. The present argument does not classify every smaller defect at an arbitrary algebraic exponent.
+
+\subsection{Exact low-defect constants for rational exponents}
+Fix a reduced rational $a=\fp/\fq$ with $1/2<a<1$. Put
+\[
+ C=(\fq-\fp)(2\fp+\fq)>0,\qquad \widetilde K=\fq K.
+\]
+For $r=2$ set $t_r=3$, and for $r=3$ set $t_r=1$. Direct expansion of~\eqref{pte:rf:even} gives the nonreflection zero equations
+\begin{align}
+ N&=\frac{t_r\widetilde K^2+\fp\widetilde K-2\fp^2r+\fp\fq-\fq^2}{C},\label{pte:ac:parabola}\\
+ k&=\frac{\widetilde K+(2\fp-\fq)N-2\fp r+\fq}{\fp}.\label{pte:ac:recover}
+\end{align}
+For instance the centered residuals are $(3K^2+U)/24$ and $-K(K^2+U)/48$, with $U=aK+cN-2a^2r+a-1$.
+
+Let $S_r$ be the number of classes $\widetilde K\pmod{\fp C}$ making both expressions~\eqref{pte:ac:parabola}--\eqref{pte:ac:recover} integral. This is an explicit finite congruence count.
+
+\begin{theorem}\label{pte:ac:counts}
+The number of physical nonreflection cancellation cells on defect $r\in\{2,3\}$ through order $X$ is
+\begin{equation}\label{pte:ac:sqrt}
+ \frac{2S_r}{\fp\sqrt{Ct_r}}\sqrt X+O_{a,r}(1).
+\end{equation}
+Moreover $S_r>0$, and it is the product of the number of roots of
+\[
+ t_r\widetilde K^2+\fp\widetilde K-2\fp^2r+\fp\fq-\fq^2\equiv0\pmod C
+\]
+and the number of roots of
+\[
+ t_ry^2-y-2\equiv0\pmod \fp.
+\]
+The latter polynomials factor as $(3y+2)(y-1)$ for $r=2$, and $(y-2)(y+1)$ for $r=3$.
+\end{theorem}
+\begin{proof}
+Since $C\equiv\fq^2\pmod \fp$ and $\gcd(\fp,\fq)=1$, also $\gcd(\fp,C)=1$. The first integrality condition is exactly the stated congruence modulo $C$. Modulo $\fp$, it gives
+\[
+ N\equiv t_r(\widetilde K/\fq)^2-1.
+\]
+Substituting in~\eqref{pte:ac:recover} makes the second integrality condition precisely $t_ry^2-y-2\equiv0$, where $y=\widetilde K/\fq$ modulo $\fp$. Multiplication by $\fq$ is a bijection modulo $\fp$, and the Chinese remainder theorem proves the product formula. The structural point $\widetilde K=\fq(r-1)$, $N=r$, $k=0$ proves that at least one class exists; it is used only to establish solvability, not as a physical cell.
+
+As $|\widetilde K|\to\infty$, the first equation gives $N\sim t_r\widetilde K^2/C$ and the second gives $k/N\to2-1/a\in(0,1)$. Thus both tails are physical, after deleting finitely many initial points. The constraint $N\le X$ gives a real interval of length
+\[
+ 2\sqrt{C/t_r}\sqrt X+O_{a,r}(1)
+\]
+in the variable $\widetilde K$. Each admissible class modulo $\fp C$ contributes its interval length divided by $\fp C$, up to $O(1)$. Summing the $S_r$ classes proves~\eqref{pte:ac:sqrt}. The coordinate $\widetilde K$ determines $(N,k)$ injectively. Omitting $\widetilde K=0$ in the odd case affects at most a bounded term.
+\end{proof}
+
+For example, $a=3/4$ gives $C=10$ and $S_2=S_3=4$. Its two square-root constants are
+\[
+ \frac8{3\sqrt{30}},\qquad \frac8{3\sqrt{10}}.
+\]
+At the endpoint $a=1/2$, only the positive $\widetilde K$ tail is physical. The same congruence calculation has $C=4$, $S_2=S_3=2$, and halving~\eqref{pte:ac:sqrt} recovers the constants $1/\sqrt3$ and $1$.
+\mergenote{The endpoint constants count source 26's two families of Theorem~\ref{pte:he:families}: through order $X$ they have $\sqrt{X/3}+O(1)$ and $\sqrt X+O(1)$ members. For $a=3/4$ the batch-72A intake enumerated the two families to $X=10^8$ and found $4{,}866$ and $8{,}430$ members, against $4{,}868.6$ and $8{,}432.7$ from~\eqref{pte:ac:sqrt}; that check is not shipped.}
+
+\begin{corollary}\label{pte:ac:window}
+For a fixed rational $1/2<a=\fp/\fq<1$ and fixed $R\ge3$, the total number of cancellation cells on defects $0\le r\le R$ through derivative order $X$ is
+\begin{equation}\label{pte:ac:windowformula}
+ \frac{\lceil R/2\rceil}{\fp}X
+ +\frac2{\fp\sqrt C}\left(\frac{S_2}{\sqrt3}+S_3\right)\sqrt X
+ +O_{a,R}(1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+On each odd defect, the exact reflection family is
+\[
+ N=1+\fp h,\qquad k=(2\fp-\fq)h-2(r-1),
+\]
+which contributes $X/\fp+O_{a,r}(1)$ physical cells. There are $\lceil R/2\rceil$ odd defects in the window. Defect zero has none, and defect one has only reflection. Theorem~\ref{pte:ac:counts} supplies the two nonreflection square-root terms. The rational fixed-defect theorem (Theorem~\ref{pte:rf:main}) says every remaining fixed defect contributes only finitely many nonreflection exceptions; their finite sum is $O_{a,R}(1)$. All cells on different defects are disjoint.
+\end{proof}
+\mergenote{Source 20 cites the companion (source 20r) here as ``the accompanying files \texttt{rational\_\allowbreak{}companion.\allowbreak{}pdf} and \texttt{rational\_\allowbreak{}companion\_\allowbreak{}source.\allowbreak{}zip}''. Neither file is shipped; the companion's text is Section~\ref{pte:sec:rf}, and its code and data are shipped under the prefix \texttt{20r-\allowbreak{}}. The corollary needs Theorem~\ref{pte:rf:main} and is new in source 20.}
+
+
+\section{Irrational exponents: effective bounds \src{16}}\label{pte:sec:ir}
+\mergenote{This section is source 16, \emph{Effective Bounds for Irrational Exponents: fixed-defect cancellations in derivatives of $x^{x^a}$}, from its Section~2 on; its Section~1 is Section~\ref{pte:sec:shared} with Lemma~\ref{pte:ir:degrees}, and its closing section is printed in Sections~\ref{pte:sec:questions} and~\ref{pte:sec:verification}. Because it compares the residual at two conjugate values of the exponent, this section keeps source 16's notation $R_r(a;N,k)=R_{a,r,N}(k)$ and $K_a=K$ of~\eqref{pte:rf:center}. Renamed here: the leading line $L_a$ is $\Lambda_a$; in Section~\ref{pte:sec:ir-order} the coefficient sum $C_a$ is $\Sigma_a$, the constant $A_a$ is $\Gamma_a$ and the exponent $e=s_r$ is written $s_r$; in the proof of Corollary~\ref{pte:ir:onecell}, $d=2u-k$, $q=1/u$ and $t=d/u$ are $\delta$, $\varpi$ and $\tau$. The letter $b$ denotes a conjugate of $a$.}
+
+\subsection{A uniform finite bound by conjugates}
+Let
+\[
+ s_r=2\lfloor r/2\rfloor.
+\]
+\begin{theorem}\label{pte:ir:main}
+For every positive irrational $a$ and every fixed $r\ge2$, at most $s_r^2-1$ physical cells satisfy $p_{N,N-r,k}(a)=0$. There are no physical cancellations when $r=1$.
+
+If $a$ is transcendental, there are no cancellations on any fixed defect. If $a$ is algebraic of degree $D>s_r$, there are no cancellations on defect $r$ either.
+\end{theorem}
+\begin{proof}
+The transcendental assertion follows immediately from Lemma~\ref{pte:ir:degrees}. Suppose now that $a$ is irrational algebraic, and choose a distinct conjugate $b$.
+
+For even $r$, put $F_a=R_r(a;N,k)$. For odd $r\ge3$, put $F_a=R_r(a;N,k)/K_a$. This quotient is polynomial, and its leading homogeneous part is
+\[
+ -\frac{\Lambda_a(N,k)^{r-1}}{2r!},
+\]
+because the top homogeneous part of $K_a$ is $-2\Lambda_a$. Thus in either parity $F_a$ has total degree $s_r$ and leading form a nonzero constant times $\Lambda_a^{s_r}$. The same holds at $b$.
+
+At an integer cell the equation $K_a=0$ would read
+\[
+ a(k-2N+2r)+(N-1)=0.
+\]
+Irrationality forces $N=1$ and $k=2-2r$, contradicting~\eqref{pte:rf:physical}. Hence a physical zero for odd $r$ is a zero of $F_a$. Applying the embedding sending $a$ to $b$ shows it is also a zero of $F_b$.
+
+The two leading lines are distinct, since
+\begin{equation}\label{pte:ir:det}
+ \det\begin{pmatrix}a-1/2&-a/2\\ b-1/2&-b/2\end{pmatrix}
+ =\frac{b-a}{4}\ne0.
+\end{equation}
+A common nonconstant factor of $F_a,F_b$ would have a leading homogeneous part dividing both $\Lambda_a^{s_r}$ and $\Lambda_b^{s_r}$, impossible. The two curves are therefore coprime. Their projective closures have no common point at infinity, again by~\eqref{pte:ir:det}. B\'ezout's theorem~\cite[I, Theorem 1.18]{pte-milne} bounds their affine common points by $s_r^2$, counting multiplicity.
+
+The structural point $(N,k)=(r,0)$ is always common: $R_r(a;r,0)=[z^r]1=0$. In the odd case $K_a(r,0)=r-1\ne0$, so it survives division. This point lies outside~\eqref{pte:rf:physical}; removing at least this one intersection leaves at most $s_r^2-1$ physical zeros.
+
+For the degree restriction, the even case is Lemma~\ref{pte:ir:degrees}. At a physical cell with odd $r$, $K_a$ as a polynomial in $a$ has nonzero leading coefficient
+\[
+ k-2(N-r)\le-(N-r)<0.
+\]
+The reduced coefficient polynomial consequently has exact degree $r-1=s_r$ in $a$, with rational coefficients. An algebraic number of degree greater than $s_r$ cannot be its root. Finally, $R_1=-K_a/2$, so the absence of irrational reflection cells settles $r=1$.
+\end{proof}
+
+In particular, every fixed defect is entirely nonzero beyond some derivative order. The bound is independent of the algebraic degree and does not invoke an integral-point finiteness theorem. It does not by itself control the union of defects growing with $N$.
+
+\mergenote{The transcendental clause also follows from source 28's Corollary~\ref{pte:ga:generic}, which gives every transcendental exponent the full count $N(N+3)/2$ at every order; both rest on the coefficient polynomials not vanishing identically. For irrational $a$ the theorem implies source 20's Theorem~\ref{pte:ac:algebraic}, effectively and on every defect $r\ge2$.}
+
+\subsection{Sharp bounds on defects two and three}
+\begin{corollary}\label{pte:ir:onecell}
+For each fixed positive irrational exponent, there is at most one physical cancellation cell on defect two, and at most one on defect three. Both bounds are attained.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{pte:ir:main} excludes degrees greater than two, so only quadratic irrational exponents need consideration. Put $u=N-r\ge1$, $\delta=2u-k$, and
+\[
+ \varpi=1/u>0,\qquad \tau=\delta/u\in[1,2].
+\]
+For defect two, direct expansion gives
+\[
+ 24R_2=(3\delta^2+k)a^2-6(u+1)\delta a+u(3u+5).
+\]
+Normalize its positive constant term to one, writing the quadratic as $Pa^2-Sa+1$. Then
+\[
+ S=\frac{6\tau(1+\varpi)}{3+5\varpi},\qquad
+ P=\frac{3\tau^2+(2-\tau)\varpi}{3+5\varpi}.
+\]
+A common irrational root forces two rational quadratics to be proportional, so their normalized pairs $(S,P)$ agree. Along a fixed $S$, the function $\tau=S(3+5\varpi)/(6(1+\varpi))$ increases with $\varpi$. Direct differentiation gives
+\[
+ \left.\frac{dP}{d\varpi}\right|_S
+ =-\frac{15\varpi\tau^2+5\varpi\tau-6\varpi+3\tau^2+3\tau-6}{(\varpi+1)(5\varpi+3)^2}<0.
+\]
+The numerator equals $14\varpi>0$ at $\tau=1$ and increases with $\tau\ge1$. Between two admissible values of $\varpi$, the increasing $\tau(\varpi)$ remains in $[1,2]$. Thus $P$ is strictly decreasing along that interval and determines $\varpi$ uniquely. It then determines $\tau$, hence $u,\delta,N,k$.
+
+For defect three, remove the nonvanishing irrational reflection factor $K_a$. The exact quadratic is
+\[
+ -48R_3/K_a=(\delta^2+k)a^2-2(u+2)\delta a+u(u+3).
+\]
+Its corresponding pair is
+\[
+ S=\frac{2\tau(1+2\varpi)}{1+3\varpi},\qquad
+ P=\frac{\tau^2+(2-\tau)\varpi}{1+3\varpi},
+\]
+with $\tau=S(1+3\varpi)/(2(1+2\varpi))$ again increasing. Here
+\[
+ \left.\frac{dP}{d\varpi}\right|_S
+ =-\frac{6\varpi\tau^2+3\varpi\tau-4\varpi+\tau^2+\tau-2}{(2\varpi+1)(3\varpi+1)^2}<0.
+\]
+The numerator is $5\varpi$ at $\tau=1$ and increases thereafter, proving uniqueness in the same way. The defect-two example in Section~\ref{pte:ir:example} attains one cell. At defect three, either $a=(3\pm\sqrt5)/2$ gives the physical cell $(N,k)=(4,0)$, so that bound is also sharp.
+\end{proof}
+\mergenote{In this proof $P$ and $S$ are the normalized coefficients of a quadratic, not a prefactor or an action, and $R_2$, $R_3$ abbreviate $R_2(a;N,k)$, $R_3(a;N,k)$.}
+
+\subsection{An explicit order bound and exact elimination}\label{pte:sec:ir-order}
+There is also a direct upper bound on the order of an algebraic cancellation. Use the compared residual $F_a$ from Theorem~\ref{pte:ir:main}, with $s_r\ge2$, and write
+\[
+ F_a=c_r\Lambda_a^{s_r}+Q_a,\qquad \deg Q_a\le s_r-1,
+ \qquad
+ c_r=\begin{cases}1/r!,&r\text{ even},\\-1/(2r!),&r\text{ odd}.\end{cases}
+\]
+Let $\Sigma_a$ be the sum of the absolute values of all coefficients of $Q_a$, and put $\Gamma_a=(\Sigma_a/|c_r|)^{1/s_r}$. Define $\Sigma_b,\Gamma_b$ for any distinct conjugate $b$ in the same way. At a physical zero, $N\ge1$ and $0\le k\le N$ imply
+\[
+ |Q_a(N,k)|\le\Sigma_aN^{s_r-1},\qquad
+ |\Lambda_a(N,k)|\le\Gamma_aN^{1-1/s_r},
+\]
+and similarly for $b$. Since $b\Lambda_a-a\Lambda_b=(a-b)N/2$, every physical zero satisfies
+\begin{equation}\label{pte:ir:orderbound}
+ \boxed{\displaystyle
+ N\le\left(\frac{2(|b|\Gamma_a+|a|\Gamma_b)}{|a-b|}\right)^{s_r}.}
+\end{equation}
+All quantities are algebraic and computable from exact algebraic input. Rational upper bounds for the numerator and a positive rational lower bound for $|a-b|$ give an explicit finite search rectangle. The case $r=1$ has no zeros and needs no such bound.
+
+Suppose $a$ is specified by an exact irreducible minimal polynomial $P(A)\in\mathbb Q[A]$ of degree $D\ge2$, together with an embedding selecting a positive real root. Fix $r$. Reduce the raw residual modulo $P$:
+\begin{equation}\label{pte:ir:remainders}
+ R_r(A;N,k)\equiv\sum_{j=0}^{D-1}A^jf_j(N,k)\pmod{P(A)},
+ \qquad f_j\in\mathbb Q[N,k].
+\end{equation}
+For integer $N,k$, cancellation is equivalent to $f_j(N,k)=0$ for every $j$, by linear independence of $1,a,\ldots,a^{D-1}$ over $\mathbb Q$.
+
+The common complex variety of the $f_j$ is contained in the intersection of the raw conjugate curves $R_r(a;N,k)=R_r(b;N,k)=0$. The leading-line argument of~\eqref{pte:ir:det}, applied before any odd division, makes this intersection finite. Thus the rational polynomial system~\eqref{pte:ir:remainders} is zero-dimensional or empty.
+
+Exact Gr\"obner elimination or resultants therefore compute a finite candidate set. Concretely, a nonzero univariate elimination polynomial in $N$ supplies all possible integer $N$ by rational-root extraction. At each such value, the remaining polynomials in $k$ supply all possible integer $k$. Check every candidate in all $f_j$ and apply~\eqref{pte:rf:physical}. Equivalently, univariate elimination polynomials in both coordinates give explicit rational Cauchy bounds, followed by a finite exact integer enumeration. A unit ideal means there are no candidates.
+
+This is a terminating exact procedure for the complete physical zero list. One plus its largest derivative order is an explicit eventual threshold; if the list is empty, the entire physical range is already nonzero. The statement does not promise a small computational cost. It requires exact algebraic input, and does not provide an algorithm to recognize transcendence from arbitrary numerical data.
+
+\subsection{A complete quadratic example}\label{pte:ir:example}
+Take either
+\[
+ a=1\pm\frac1{\sqrt3}>0,\qquad P(A)=3A^2-6A+2,
+\]
+and fix $r=2$. At $(N,k)=(3,0)$,
+\[
+ R_2(a;3,0)=a^2/2-a+1/3=0.
+\]
+Thus an irrational exponent can have a genuine physical cancellation.
+
+Reducing the full residual modulo $P$ and computing a rational Gr\"obner basis gives the equivalent equations
+\begin{align}
+ &(N-2)(N-3)(9N^2-N-2)=0,\label{pte:ir:exampleN}\\
+ &k=-\frac34N^3+\frac{37}{12}N^2-\frac76N-4.\label{pte:ir:examplek}
+\end{align}
+The only integer roots of~\eqref{pte:ir:exampleN} are $N=2,3$, since the remaining quadratic has nonsquare discriminant $73$. Both yield $k=0$. The point $(2,0)$ is structural and lies outside $N\ge3$. Therefore, for each of the two exponents, the complete physical defect-two zero list is
+\[
+ \boxed{\{(N,k)=(3,0)\}.}
+\]
+Every coefficient on that defect is nonzero at every order $N\ge4$. The accompanying exact checker verifies both directions of the ideal equivalence in~\eqref{pte:ir:exampleN}--\eqref{pte:ir:examplek}, so this is a complete elimination rather than a bounded numerical search.
+
+There is no uniform derivative-order cutoff as the irrational exponent varies, even at defect two. For an integer $u\ge1$, direct substitution gives
+\[
+ R_2(a;u+2,0)=\frac{u}{24}
+       \bigl(12ua^2-12(u+1)a+3u+5\bigr).
+\]
+Its two roots are
+\[
+ a=\frac{u+1}{2u}\pm\frac{\sqrt{3(u+3)}}{6u}.
+\]
+Both are positive, and they are quadratic irrational whenever $3(u+3)$ is nonsquare. Taking $u=3h^2$ with integers $h\ge1$ supplies such exponents with unbounded cancellation order $N=u+2$. Thus the cell-count bound is uniform, while an eventual order threshold genuinely depends on the exponent.
+\mergenote{In this example $P(A)$ is a minimal polynomial in the variable $A$, not the series $A_a$. The two exponents $1\pm1/\sqrt3$ are the roots of source 28's $p_{3,1,0}(\alpha)=3\alpha^2-6\alpha+2$; the batch-72A intake also checked that $p_{4,1,0}(\alpha)=2(2\alpha-3)(\alpha^2-3\alpha+1)$, whose quadratic factor has the roots $(3\pm\sqrt5)/2$ of the defect-three example. ``The accompanying exact checker'' is shipped as \texttt{code/\allowbreak{}16-\allowbreak{}irrational-\allowbreak{}verify.\allowbreak{}py}.}
+
+
+\part*{Scope, verification and provenance}
+\addcontentsline{toc}{part}{Scope, verification and provenance}
+
+\section{Source positions, scope and open questions}\label{pte:sec:questions}
+Each source closes with a statement of its position relative to the host report and the literature, and of what it does not claim. They are printed here, source by source, in the sources' words; Section~\ref{pte:sec:openlist} collects the open questions.
+
+\subsection{Integer exponents \src{28}}
+Question 8 of the inspected ProveIt source~\cite{pte-host} explicitly asks for extension to $x^{x^r}$, $r\ge3$, and cautions that the coefficient generating function and symmetry center must be rederived. This paper supplies both and proves the leading-support theorem for every fixed positive integer exponent. For $a=1$ and $a=2$, the live OEIS entries~\cite{pte-a293239,pte-a290268} concern the same derivative-count convention; the exact coefficient triangles and their identities have classical antecedents~\cite{pte-jeong}. No claim of exhaustive worldwide priority is made.
+
+The proof is conventional mathematics, not a proof-assistant formalization or an externally refereed publication. Its asymptotic constants and thresholds may depend on the fixed exponent. The exact support formula for general $a$, a full classification of deeper cancellations, and any theorem with $a$ growing with $N$ remain separate questions. Corollary~\ref{pte:ga:generic} settles the generic real parameter by an elementary polynomial argument, but it does not settle the exceptional noninteger algebraic parameters.
+
+\mergenote{Source 28's bibliography calls the host's Section~3 ``Part~II''; the host numbers it Part~3. Source 28 does not mention the host's Question~6, which its case $a=2$ answers.}
+
+\subsection{The exponent \texorpdfstring{$a=1$}{a=1} \src{31}}
+The inspected repository source~\cite{pte-host}, Part I, states only $a(N)=\Theta(N^2)$ and isolates $a(N)\sim N^2/2$ as a weaker target than its exact zero conjecture. The live OEIS entry~\cite{pte-a293239}, checked on 1 October 2026, still attributes the asymptotic conjecture to V. Kote\v{s}ovec, dated 5 October 2017. Jeong's recent primary treatment~\cite{pte-jeong} develops coefficient identities and recurrences; no zero-density statement was located there. This is a bounded source comparison, not an exhaustive claim of worldwide priority.
+
+The proof is a conventional analytic argument, not a Lean formalization or an externally refereed publication. It does not identify every zero of A008296, prove the proposed exact rational generating function for A293239, or remove the known sporadic cancellation $b(8,5)=0$.
+
+\mergenote{``Part~I'' is the host's Part~2 (its Section~2). The statements it describes are the host's Theorem~2.16 and equation~(2.35), \texttt{xx:eq:asympeq}.}
+
+\subsection{The exponent \texorpdfstring{$a=2$}{a=2} \src{34}}
+The proof supplies explicit contours in every simple favored-saddle regime. It does not infer dominance from a critical-point equation, a genericity assumption, or a proposed homology decomposition. The contour-switch and turning sets are removed only for an area argument; no claim is made about every coefficient on them.
+
+A bounded primary-source check on 1 October 2026 confirmed that the current OEIS entry~\cite{pte-a290268} still labels its generating function and exact formula conjectural. The inspected repository article still lists the leading asymptotic as Question~6 in its depth-coordinate research questions; its latest file commit remains the one cited below. Corollary~\ref{pte:as:main} answers that leading-asymptotic question, with the exact support problem still unresolved.
+
+The complete argument received independent mathematical review, including a fresh review of the full-cone conclusion. It has not been formalized in Lean or externally refereed, and no exhaustive priority claim is made. The leading asymptotic is proved here; the stronger assertion that the known reflection holes are the only cancellations, and the resulting exact term-count formula or generating function, remain unresolved.
+
+\mergenote{Source 34 writes ``Theorem'' for its main statement, printed here as Corollary~\ref{pte:as:main}. ``The one cited below'' is the pin \texttt{ca81647a9} in the bibliography entry~\cite{pte-host}; it was the latest commit to the host's article when source 34 was written, and it is kept as provenance, not as a statement about the host's current text. The ``independent mathematical review'' is the source's own statement and was not repeated by the repository.}
+
+\subsection{The half exponent \src{26}}
+The inspected ProveIt derivative-support report~\cite{pte-host} explicitly asks for extensions beyond the square exponent. This paper treats the specific noninteger algebraic parameter $a=1/2$. A bounded repository and primary-source search located no matching half-exponent derivative-count theorem; this is not an exhaustive priority claim. We do not assign this sequence an OEIS identifier.
+
+The proof is conventional analysis, not a proof-assistant formalization or an externally refereed publication. A complete all-defect zero classification and a global quantitative asymptotic remainder remain open. The negative effective exponent in~\eqref{pte:he:taction} explains why the integer-exponent horizontal proof cannot simply be copied; the positive terminal derivative~\eqref{pte:he:terminal} supplies the required separate argument.
+
+\mergenote{``The integer-exponent horizontal proof'' is source 28's Section~\ref{pte:sec:ga-selection}, which source 26 does not cite.}
+
+\subsection{Rational exponents \src{20r}}
+The inspected ProveIt manuscript asks about derivative supports for further exponents~\cite{pte-host}; this note is an arithmetic continuation in that direction. Schur irreducibility, the orthogonal-polynomial identities and Siegel finiteness are classical inputs. No exhaustive priority claim is made. The full finite exceptional lists, effective thresholds, the exponent $a=1$ fixed-defect integer-root problem, and global support-density theorems for general noninteger rational exponents are separate questions. The proof is conventional mathematics, not proof-assistant formalization or an externally refereed publication.
+
+\subsection{Algebraic exponents \src{20}}
+The rational fixed-defect note used in Corollary~\ref{pte:ac:window} is included as a companion PDF and source package, so its explicit quartic argument and certificates are available with this report. No numerical effective threshold, uniform growing-defect assertion, or complete finite exceptional list is claimed. The exceptional exponent $a=1$ remains a separate persistent-zero-line problem. Classical inputs are attributed below, and no exhaustive priority claim or formal verification is asserted.
+
+\mergenote{The companion PDF and source package are not shipped. The companion's text is Section~\ref{pte:sec:rf} of this report, and its verifier, certificates and replay are shipped as the four \texttt{20r-\allowbreak{}} files (Section~\ref{pte:sec:verification}).}
+
+\subsection{Irrational exponents \src{16}}
+The result continues the derivative-support program in the inspected ProveIt source~\cite{pte-host}. B\'ezout's theorem and exact polynomial elimination are classical inputs. This theorem strengthens a prior sufficient algebraic-degree threshold to every fixed defect, with an explicit uniform cell bound and effective elimination for algebraic inputs. Rational exponents are excluded from the conjugate argument and retain their separate arithmetic behavior. Complete zero classification when defects grow, practical complexity bounds for elimination, and global support asymptotics for arbitrary algebraic exponents are not asserted. No exhaustive priority claim, proof-assistant formalization or external-referee approval is made.
+
+\mergenote{``A prior sufficient algebraic-degree threshold'' is source 20's Theorem~\ref{pte:ac:algebraic}.}
+
+\subsection{The open questions, collected}\label{pte:sec:openlist}
+\mergenote{This list is written for the merge. Every item is stated as open by at least one source, named after it; none is answered by another source.}
+\begin{enumerate}
+\item \emph{Exact supports.} Classify every cancellation: for $a=1$, every zero of the Lehmer--Comtet triangle A008296, which would settle the host's Conjecture~2.9 and the proposed rational generating function of A293239 (source~31); for $a=2$, whether the reflection holes are the only cancellations, and with it the exact term-count formula and generating function of A290268 (source~34); for every integer $a$, the exact support formula and the deeper cancellations (source~28); for $a=1/2$, every defect (source~26).
+\item \emph{Quantitative remainders.} A power-saving remainder or an effective order threshold in Theorems~\ref{pte:ga:main} and~\ref{pte:he:main} (sources~28,~31,~34,~26); effective thresholds and complete finite exceptional lists on fixed defects (sources~20r,~20).
+\item \emph{Growing parameters.} Uniformity when $a$ grows with $N$ (source~28); support density, or a zero classification, when the defect grows with $N$ (sources~20r,~20,~16).
+\item \emph{Non-integer exponents globally.} Global support asymptotics for general non-integer rational (source~20r) and arbitrary algebraic exponents (source~16), beyond the half exponent; the exceptional algebraic parameters of Corollary~\ref{pte:ga:generic} (source~28); the defects below $4D+2$ at an algebraic exponent of degree $D$ (source~20), and whether that threshold is optimal (source~20); singular quartics at irrational algebraic parameters (source~20r).
+\item \emph{The exponent $a=1$ on fixed defects.} The integer-root problem of the centered residual at $a=1$, where roots give persistent zero lines (sources~20r,~20).
+\item \emph{Computation.} Practical complexity bounds for the elimination of Section~\ref{pte:sec:ir-order}, and recognition of transcendence from numerical data (source~16).
+\end{enumerate}
+
+\mergenote{\emph{A finite data point for the host's Question~8 and Research question~3.68.} The batch-72A intake scanned the exact recurrence~\eqref{pte:ga:parameterrecurrence} for $a=1,\ldots,5$ and $N\le70$. For $a=2,3,4,5$ every zero is structural ($d=0$) or a reflection zero on $q=ad$ with $(a-1)k+d$ even ($144$, $60$, $36$ and $18$ of them); there is no other zero. For $a=1$ there are $578$ reflection zeros and $63$ others, which are the host's sporadic zero $b(8,5)=0$ repeated along the line $(N,\ell,k)=(k+8,k+5,k)$, $0\le k\le62$. This is a finite observation, not a theorem; the scan is not shipped.}
+
+\section{Verification, files and provenance}\label{pte:sec:verification}
+\subsection{The delivered checks}
+Each source's verification paragraph is printed here, followed by the names under which its files are shipped. Every program writes its output beside itself under its delivered name (the README gives rerun instructions that leave the shipped files untouched). None of these finite checks replaces an analytic proof.
+
+\emph{Source 28.} The standard-library verifier \texttt{verify\_\allowbreak{}general\_\allowbreak{}coefficients.\allowbreak{}py} checks 631 exact identities for $a=1,\ldots,8$, including 104 zero cases, 187 strictly positive bulk cases, and 252 depth-one/two sign cases. The output is recorded in \texttt{general\_\allowbreak{}coefficient\_\allowbreak{}checks.\allowbreak{}json}. These finite checks supplement the analytic proof; they do not replace its global contour selection or establish exact noncancellation at arbitrary depth.
+\mergenote{Shipped as \texttt{code/\allowbreak{}28-\allowbreak{}all-\allowbreak{}integer-\allowbreak{}verify\_\allowbreak{}general\_\allowbreak{}coefficients.\allowbreak{}py} and \texttt{data/\allowbreak{}28-\allowbreak{}all-\allowbreak{}integer-\allowbreak{}general\_\allowbreak{}coefficient\_\allowbreak{}checks.\allowbreak{}json}.}
+
+\emph{Source 31.} The accompanying standard-library program \texttt{verify\_\allowbreak{}coefficients.\allowbreak{}py} independently checks 510 rational coefficient identities in~\eqref{pte:lc:tanhcoefficient}, including seven zero cases. It also compares the exact derivative recurrence with the Lehmer--Comtet recurrence through order $200$. For example $a(100)=5026$ and $a(200)=20051$. The optional \texttt{check\_\allowbreak{}saddle\_\allowbreak{}normalization.\allowbreak{}py} checks the Gaussian factors numerically in real, low-complex, and horizontal regimes; these computations are diagnostic and are not substitutes for the proof.
+\mergenote{Shipped as \texttt{code/\allowbreak{}31-\allowbreak{}a293239-\allowbreak{}verify\_\allowbreak{}coefficients.\allowbreak{}py} with \texttt{data/\allowbreak{}31-\allowbreak{}a293239-\allowbreak{}coefficient\_\allowbreak{}checks.\allowbreak{}json}, and \texttt{code/\allowbreak{}31-\allowbreak{}a293239-\allowbreak{}check\_\allowbreak{}saddle\_\allowbreak{}normalization.\allowbreak{}py} (needs mpmath) with \texttt{data/\allowbreak{}31-\allowbreak{}a293239-\allowbreak{}saddle\_\allowbreak{}normalization.\allowbreak{}json}.}
+
+\emph{Source 34.} The exact transformed coefficient identity was independently replayed against the source $w$-formula for 432 integer triples, including 16 zero cases. A separate rational certificate verifies the elementary trigonometric inequalities used to show that the phase curvature is nontrivial. An independent exact derivative-recurrence regression through $N=200$ checks the support envelope, bulk, and reflection holes; for example $a(100)=5101$ and $a(200)=20201$. These finite checks detect normalization mistakes and do not prove the exact noncancellation conjecture; the asymptotic theorem follows from the written analytic and counting proofs.
+\mergenote{Shipped as \texttt{code/\allowbreak{}34-\allowbreak{}a290268-\allowbreak{}verify\_\allowbreak{}tanh\_\allowbreak{}identity.\allowbreak{}py}, \texttt{-\allowbreak{}verify\_\allowbreak{}curvature\_\allowbreak{}seed.\allowbreak{}py} and \texttt{-\allowbreak{}verify\_\allowbreak{}derivative\_\allowbreak{}counts.\allowbreak{}py}, with \texttt{data/\allowbreak{}34-\allowbreak{}a290268-\allowbreak{}tanh\_\allowbreak{}identity\_\allowbreak{}checks.\allowbreak{}json}, \texttt{-\allowbreak{}curvature\_\allowbreak{}seed.\allowbreak{}json} and \texttt{-\allowbreak{}derivative\_\allowbreak{}counts.\allowbreak{}json}. The last records its own running time, so a rerun never reproduces it byte for byte.}
+
+\emph{Source 26.} The verifier \texttt{verify\_\allowbreak{}half\_\allowbreak{}coefficients.\allowbreak{}py} uses exact rational arithmetic to check 455 reciprocal-transform identities and 33,523 complete coefficient identities on defects one through three. An independent integer recurrence scans all derivative rows through $N=150$. In that finite range, the two families above account for all 16 observed nonreflection zeros. That observation is not used to infer a global classification. For orientation, $A(50)=1324$, $A(100)=5149$, and $A(150)=11474$.
+\mergenote{Shipped as \texttt{code/\allowbreak{}26-\allowbreak{}half-\allowbreak{}exponent-\allowbreak{}verify\_\allowbreak{}half\_\allowbreak{}coefficients.\allowbreak{}py} and \texttt{data/\allowbreak{}26-\allowbreak{}half-\allowbreak{}exponent-\allowbreak{}half\_\allowbreak{}coefficient\_\allowbreak{}checks.\allowbreak{}json}. ``The two families above'' are those of Theorem~\ref{pte:he:families}.}
+
+\emph{Source 20r.} The supplied symbolic verifier derives the residual directly from the $A_a/B_a$ power series for arbitrary symbolic $a$ through $r=6$. It checks the exact reflection factor, weighted degree, both Laguerre constants, the fourth and fifth residual formulas, the two discriminant identities, and the modular certificates. A separate standard-library verifier derives the two discriminant identities using the closed depressed-quartic formula, verifies both modular remainders, and checks 19,712 direct differentiation versus power-series identities through $N=28$. These include 4,984 centered fourth/fifth-defect identities and 103 physical reflection checks. These are finite exact identity checks. The unrestricted fixed-$r$ argument uses the written generating-function proof, Schur's theorem, the normalization branches and Siegel's theorem.
+\mergenote{Shipped as \texttt{code/\allowbreak{}20r-\allowbreak{}rational-\allowbreak{}verify.\allowbreak{}py} (needs SymPy) with \texttt{data/\allowbreak{}20r-\allowbreak{}rational-\allowbreak{}certificates.\allowbreak{}json}, and \texttt{code/\allowbreak{}20r-\allowbreak{}rational-\allowbreak{}replay\_\allowbreak{}independent.\allowbreak{}py} with \texttt{data/\allowbreak{}20r-\allowbreak{}rational-\allowbreak{}replay\_\allowbreak{}independent.\allowbreak{}json}. The replay reads \texttt{certificates.\allowbreak{}json} from its own directory.}
+
+\emph{Source 20.} A separate standard-library checker verifies the congruence-product formula and direct integer parametrization in 102 parameter/defect cases with denominator at most 18, including the half-exponent endpoint and the example $3/4$. The algebraic-degree theorem is proved uniformly by field degrees, factorization and Siegel's theorem, not by a finite scan.
+\mergenote{Shipped as \texttt{code/\allowbreak{}20-\allowbreak{}algebraic-\allowbreak{}replay\_\allowbreak{}low\_\allowbreak{}counts.\allowbreak{}py} and \texttt{data/\allowbreak{}20-\allowbreak{}algebraic-\allowbreak{}replay\_\allowbreak{}low\_\allowbreak{}counts.\allowbreak{}json}.}
+
+\emph{Source 16.} The symbolic verifier derives the residual from the defining power series and checks the degree statements, parity reduction, and structural point through $r=6$. A separate exact checker verifies both low-defect quadratic formulas and the fixed-$S$ derivative identities. The first checker also reproduces the quadratic minimal-polynomial reduction, the Gr\"obner basis, and the exact integer filtering. These finite identities supplement the all-$r$ leading-form and conjugate proof.
+\mergenote{Shipped as \texttt{code/\allowbreak{}16-\allowbreak{}irrational-\allowbreak{}verify.\allowbreak{}py} with \texttt{data/\allowbreak{}16-\allowbreak{}irrational-\allowbreak{}checks.\allowbreak{}json}, and \texttt{code/\allowbreak{}16-\allowbreak{}irrational-\allowbreak{}check\_\allowbreak{}low\_\allowbreak{}defect\_\allowbreak{}injectivity.\allowbreak{}py}, which prints its result and writes no file. Both need SymPy.}
+
+\mergenote{At placement every shipped program was rerun on a copy; each output equalled the delivered one apart from line endings and the timing field of \texttt{34-\allowbreak{}a290268-\allowbreak{}derivative\_\allowbreak{}counts.\allowbreak{}json}.}
+
+\subsection{Provenance}\label{pte:sec:provenance}
+This report was built from seven manuscripts of batch 72A (Table~\ref{pte:tab:sources}): base 28, members 31, 34, 26, 20, 20r and 16. All arrived in commit \texttt{1512ef835}, inside six archives; 20r is the folder \texttt{Rational\_\allowbreak{}Exponent\_\allowbreak{}Fixed\_\allowbreak{}Defects} of the zip \texttt{rational\_\allowbreak{}companion\_\allowbreak{}source.\allowbreak{}zip} in archive 20 (\texttt{Algebraic\_\allowbreak{}Exponents\_\allowbreak{}and\_\allowbreak{}Cancellation\_\allowbreak{}Frequencies/\allowbreak{}}). The placement commit \texttt{d292c6765} staged source 28's \texttt{article.\allowbreak{}tex} and \texttt{README.\allowbreak{}md} unprefixed and the code and data of all seven with the prefixes \texttt{28-\allowbreak{}all-\allowbreak{}integer-\allowbreak{}}, \texttt{31-\allowbreak{}a293239-\allowbreak{}}, \texttt{34-\allowbreak{}a290268-\allowbreak{}}, \texttt{26-\allowbreak{}half-\allowbreak{}exponent-\allowbreak{}}, \texttt{20-\allowbreak{}algebraic-\allowbreak{}}, \texttt{20r-\allowbreak{}rational-\allowbreak{}} and \texttt{16-\allowbreak{}irrational-\allowbreak{}}; this text replaces both staged files. Sources 28, 31, 34, 26, 20r and 16 pin the host at \texttt{ca81647a9}; source 20 names no commit.
+
+What each contributed: source 28 the general theorem for integer exponents, its proof, the generic-parameter corollary and the depth-one and depth-two classification (Sections~\ref{pte:sec:ga-coordinates}--\ref{pte:sec:ga-depths}); source 31 the case $a=1$ with its explicit Lehmer--Comtet analysis (Section~\ref{pte:sec:lc}); source 34 the case $a=2$ with its tanh sections and curvature certificate (Section~\ref{pte:sec:as}); source 26 the half exponent and its two families (Section~\ref{pte:sec:he}); source 20r the centered identity and the rational fixed-defect theorem (Sections~\ref{pte:sec:shared}, \ref{pte:sec:rf}); source 20 the algebraic-degree theorem and the exact low-defect frequencies (Section~\ref{pte:sec:ac}); source 16 the degree lemma and the effective irrational bounds (Sections~\ref{pte:sec:shared}, \ref{pte:sec:ir}). Where the merge had to choose is recorded in Section~\ref{pte:sec:merged}.
+
+Not shipped: the manuscripts, READMEs and PDFs of sources 31, 34, 26, 20 and 16 (with 34's \texttt{tanh\_\allowbreak{}sections.\allowbreak{}tex}, printed in Section~\ref{pte:sec:as}); source 28's delivered PDF; source 20r's \texttt{article.\allowbreak{}tex}, \texttt{article.\allowbreak{}pdf} and \texttt{README.\allowbreak{}md}; archive 20's \texttt{rational\_\allowbreak{}companion.\allowbreak{}pdf} and the zip itself; and the seven copies of a Linux build script, \texttt{build\_\allowbreak{}local.\allowbreak{}sh}, one in each of the seven packages. They survive in commit \texttt{1512ef835}.
+
+Every source carries the author line ``Research note prepared for Vladimir Reshetnikov with OpenAI''. Their READMEs state that each proof received independent mathematical review and that every rendered page was inspected; those statements are the sources' own. This report is AI-assisted and unrefereed, and none of its results is formalized.
+
+\begin{thebibliography}{99}
+\bibitem{pte-host}
+V. Reshetnikov, repository owner, \emph{Term counts in the derivatives of power towers}, ProveIt research report \texttt{power-\allowbreak{}tower-\allowbreak{}derivative-\allowbreak{}term-\allowbreak{}counts}: Part~2 (the sources' ``Part~I'') on $x^x$, Part~3 (the sources' ``Part~II'') on $x^{x^2}$, including its depth-coordinate Questions~6 and~8. File commit \texttt{ca81647a9f679e96d49ffdbc54b0c0ab13d10a36}, inspected 1 October 2026.\par
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/ca81647a9f679e96d49ffdbc54b0c0ab13d10a36/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts/article.tex}{Pinned source: power-tower-derivative-term-counts/article.tex}.
-\bibitem{a293239}
-V. Reshetnikov and contributors, \emph{A293239: Number of terms in the fully expanded $n$th derivative of $x^x$}, OEIS. \url{https://oeis.org/A293239}.
-\bibitem{a290268}
-V. Reshetnikov and contributors, \emph{A290268: Number of terms in the fully expanded $n$th derivative of $x^{x^2}$}, OEIS. \url{https://oeis.org/A290268}.
-\bibitem{jeong}
+\bibitem{pte-a293239}
+V. Reshetnikov and contributors, \emph{A293239: Number of terms in the fully expanded $n$th derivative of $x^x$}, The On-Line Encyclopedia of Integer Sequences. Asymptotic conjecture attributed to V. Kote\v{s}ovec. Checked 1 October 2026. \url{https://oeis.org/A293239}.
+\bibitem{pte-a290268}
+V. Reshetnikov and contributors, \emph{A290268: Number of terms in the fully expanded $n$th derivative of $x^{x^2}$}, OEIS, inspected 1 October 2026. \url{https://oeis.org/A290268}.
+\bibitem{pte-a008296}
+N. J. A. Sloane and contributors, \emph{A008296: Triangle of Lehmer--Comtet numbers of the first kind}, OEIS. \url{https://oeis.org/A008296}.
+\bibitem{pte-jeong}
 S. Jeong, \emph{On a Question of Lehmer concerning the Comtet Numbers}, arXiv:2607.26613v1, 2026. \url{https://arxiv.org/html/2607.26613v1}.
-\bibitem{dlmf}
-F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, equations 4.22.3 and 4.36.3. \url{https://dlmf.nist.gov/4.22.E3}; \url{https://dlmf.nist.gov/4.36.E3}.
+\bibitem{pte-dlmf4}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, \S4.22 and \S4.36 (trigonometric and hyperbolic infinite products and partial fractions), equations 4.22.3 and 4.36.3. \url{https://dlmf.nist.gov/4.22.E3}; \url{https://dlmf.nist.gov/4.36.E3}.
+\bibitem{pte-dlmf18}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, equations 18.7.11, 18.7.19 and 18.7.20. \url{https://dlmf.nist.gov/18.7}.
+\bibitem{pte-schur}
+S. Laishram and T. N. Shorey, \emph{Irreducibility of generalized Hermite--Laguerre polynomials III}, arXiv:1306.0736v2 (2016), pp.~1--2, recording Schur's 1929 and 1931 results on half-integer Laguerre irreducibility. \url{https://arxiv.org/abs/1306.0736}.
+\bibitem{pte-levin}
+A. Levin, \emph{Siegel's theorem and the Shafarevich conjecture}, Journal de Th\'eorie des Nombres de Bordeaux \textbf{24} (2012), 705--727, Theorem 1.1. \url{https://jtnb.centre-mersenne.org/item/10.5802/jtnb.818.pdf}.
+\bibitem{pte-lang}
+S. Lang, \emph{Integral points on curves}, Publications Math\'ematiques de l'IH\'ES \textbf{6} (1960), 27--43, Theorem 4. \url{https://www.numdam.org/article/PMIHES_1960__6__27_0.pdf}.
+\bibitem{pte-milne}
+J. S. Milne, \emph{Elliptic Curves}, BookSurge, 2006, Chapter I, Theorem 1.18 (B\'ezout), p.~13. \url{https://www.jmilne.org/math/Books/ectext6.pdf}.
 \end{thebibliography}
+\mergenote{The bibliography merges the sources' own. Each source's entry for the host became~\cite{pte-host}; source 34's two DLMF entries and sources 28, 31 and 26's single one became~\cite{pte-dlmf4}; source 20's entry for its companion became references to Section~\ref{pte:sec:rf}.}
 \end{document}

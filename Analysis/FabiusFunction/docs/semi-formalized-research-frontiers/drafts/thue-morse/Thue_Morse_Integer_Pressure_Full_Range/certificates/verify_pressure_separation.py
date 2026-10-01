@@ -1,4 +1,18 @@
 """Exact scalar side checks for the Green-bound pressure reduction."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from math import isqrt
 from pathlib import Path
@@ -53,4 +67,5 @@ assert pol[0]>0
 alpha=F(707,275);rho2=F(7,25)/(F(19,50)**2*alpha);rho3=F(7,25)/(F(19,50)**3*2*alpha)
 assert rho2<1 and rho3<1
 out=dict(all_checks_passed=True,saddle_interval=[str(a0),str(a1)],C_lower=str(Clow),C_lower_exceeds='101/25',L_upper=str(Lup),L_upper_below='49/40',atan_lower=str(atlo),atan_lower_exceeds='19/50',tan_square_polynomial_ascending_coefficients=list(map(str,pol)),sturm_sequence_ascending_coefficients=[list(map(str,z))for z in seq],positive_root_count=v0-vinf,endpoint_ratio_2=str(rho2),endpoint_ratio_3=str(rho3),green_bound_proved_in_article=True)
-Path(__file__).with_name('pressure_separation_certificate.json').write_text(json.dumps(out,indent=2)+'\n');print('All exact pressure-separation side checks pass. The Green bound is proved in the article.');print('endpoint ratios',float(rho2),float(rho3))
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('pressure_separation_certificate.json', json.dumps(out,indent=2)+'\n');print('All exact pressure-separation side checks pass. The Green bound is proved in the article.');print('endpoint ratios',float(rho2),float(rho3))

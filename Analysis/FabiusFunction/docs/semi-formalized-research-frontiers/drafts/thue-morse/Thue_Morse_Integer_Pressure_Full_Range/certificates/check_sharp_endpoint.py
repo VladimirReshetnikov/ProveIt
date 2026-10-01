@@ -1,4 +1,18 @@
 """Independent exact three-mode determinant and pressure endpoint check."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from math import factorial
 from itertools import permutations
@@ -37,5 +51,6 @@ p=[F(0)]*(N+1)
 for n in range(1,N+1):p[n]=u[n]-sum((F(j,n)*p[j]*u[n-j]for j in range(1,n)),F(0))
 assert p[1:]==[F(-2),F(0),F(376,45),F(6836,189),F(105448,2025),F(-35360872,93555)]
 out={'all_checks_passed':True,'m':2,'coefficients':{str(2*j):str(p[j])for j in range(1,N+1)},'determinant_verified':True,'series_residual_verified':True}
-Path(__file__).with_name('sharp_endpoint_certificate.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('sharp_endpoint_certificate.json', json.dumps(out,indent=2)+'\n')
 print('Exact m=2 endpoint verified:',p[6])

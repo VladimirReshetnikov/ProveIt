@@ -15,11 +15,11 @@ This is unrefereed ordinary mathematics with rigorous finite arithmetic certific
 - `finite/independent_manifest.json`: independent verification provenance and coverage
 - `finite/state_indices/`: SHA256 of each canonical full integer state, including the exact scale and operator norms
 - `finite/producer_versions.json`: both producer source hashes and the bitwise m=2 regression
-- `inputs/`: the unchanged positive-triangle proof and versioned repository normalization source
+- `inputs/`: the unchanged positive-triangle proof and versioned repository normalization source (not filed; see the editorial amendments below)
 - `PROVENANCE.md`: source and mathematical scope
 - `chunks_manifest.json`: interval ZIP ranges and SHA256 hashes
 
-The five accompanying interval ZIPs contain `data/interval_mNNN.json`. Extract them into this package directory. All 110 original files are preserved without altering their runtime metadata. Their 37,070 nonconstant response orders correspond to 37,180 state records including the initial vector in each case.
+The five accompanying interval ZIPs contain `data/interval_mNNN.json`. Extract them into this package directory. All 110 original files are preserved without altering their runtime metadata. Their 37,070 nonconstant response orders correspond to 37,180 state records including the initial vector in each case. (These five archives were not delivered; see the editorial amendments below.)
 
 ## Check the scalar proofs and delivered intervals
 
@@ -50,3 +50,103 @@ The Python version is intended for transparent low-order replay; the independent
 ## Build the paper
 
 A standard TeX installation with the AMS, geometry, Latin Modern, microtype, hyperref and xurl packages can compile `article.tex` in two pdflatex passes. `build_local.sh` reproduces the explicit TeX configuration used in the reference environment. Rebuilding may change metadata while leaving the text unchanged.
+
+
+## Editorial amendments (ProveIt, 2026-10-01)
+
+Made in the editorial pass after batch 72 of `docs/incoming/` (see
+`docs/incoming/README.md`). Every change to the source is marked
+`% ed. (2026-10-01)`, every change to a program `ed. (2026-10-01)`. The
+mathematical text is unchanged; the byline and `pdfauthor` entry ("Research
+note prepared for Vladimir Reshetnikov with OpenAI") are kept as delivered.
+This is the seventh of thirteen packages of one series, filed beside the
+manuscript they continue, `../Thue_Morse_Integer_Pressure/`, in logical order:
+the positivity series `../Thue_Morse_Integer_Pressure_First_Positive/`,
+`../Thue_Morse_Integer_Pressure_Higher_Positive/`,
+`../Thue_Morse_Integer_Pressure_Positive_Triangle/`,
+`../Thue_Morse_Integer_Pressure_Feedback_Boundary/`,
+`../Thue_Morse_Integer_Pressure_Beyond_Boundary/`,
+`../Thue_Morse_Integer_Pressure_Linear_Region/`,
+`../Thue_Morse_Integer_Pressure_Full_Range/`, and the sign series, which
+imports the full-range theorem,
+`../Thue_Morse_Integer_Pressure_Sign_Changes/`,
+`../Thue_Morse_Integer_Pressure_Sign_Densities/`,
+`../Thue_Morse_Integer_Pressure_Negative_Bound/`,
+`../Thue_Morse_Integer_Pressure_First_Negative/`,
+`../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/`, with the dataset
+`../Thue_Morse_Integer_Pressure_First_Negative_Data/`. An earlier version of
+`../Thue_Morse_Integer_Pressure_Full_Range/`, *The Full Pressure Positivity
+Range for Large Integer Orders* (`m >= 4096`), was superseded by it and not
+filed; neither was a duplicate archive.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note (ProveIt,
+  2026-10-01)") is defined after the theorem environments (no counter
+  changes). Four notes:
+  - after Theorem 1.1 and its paragraph: it contains the pressure statements
+    of `../Thue_Morse_Integer_Pressure_First_Positive/`,
+    `../Thue_Morse_Integer_Pressure_Higher_Positive/`,
+    `../Thue_Morse_Integer_Pressure_Positive_Triangle/` (cited for `r < m`),
+    `../Thue_Morse_Integer_Pressure_Feedback_Boundary/` (`r = m`, re-proved),
+    `../Thue_Morse_Integer_Pressure_Beyond_Boundary/` and
+    `../Thue_Morse_Integer_Pressure_Linear_Region/` (`s < m`), not their
+    response statements;
+  - after Proposition 8.1: the interval archives were not delivered (see
+    below); the finite range is certified again, with separate certificates,
+    by `../Thue_Morse_Integer_Pressure_First_Negative_Data/` (positive lower
+    endpoints at every even degree strictly between `2m` and `6m` for
+    `2 <= m <= 128`; for `m = 24` its intervals enclose all 48 exact values of
+    `finite/exact_reference_m024.json`, degrees 48 to 142; both checked on
+    filing);
+  - after the open questions: the first negative degree exists
+    (`../Thue_Morse_Integer_Pressure_Sign_Changes/`), so `N_m >= 6m`, and
+    `N_m = gamma m - log log(2m)/Lambda + O(1)`
+    (`../Thue_Morse_Integer_Pressure_First_Negative/`);
+    `../Thue_Morse_Integer_Pressure_First_Negative_Data/` gives `N_m = 6m` for
+    `m = 2, 3, 4` and a positive coefficient at `6m` for `5 <= m <= 128`;
+  - before the bibliography, a series map: the thirteen packages in logical
+    order, the superseded earlier version of the full-range article, and the
+    filed directory of every source cited; this article is the revised and
+    extended version of *The Full Pressure Positivity Range for Large Integer
+    Orders* (`m >= 4096`; same batch, not filed), which it does not cite.
+- `article.pdf`: rebuilt from the amended source with three `pdflatex` passes
+  (MiKTeX 26.2, pdfTeX 1.40.29), on a copy: 13 A4 pages (12 as delivered),
+  378,904 bytes; all 16 fonts embedded, none Type 3; the final log has no
+  error, overfull or underfull box, undefined or multiply defined reference,
+  duplicate destination, or rerun request. The pages carrying the notes were
+  rendered and inspected.
+- **Undelivered interval archives.** The five archives
+  `ProveIt_Thue_Morse_All_Orders_Intervals_01.zip` to `_05.zip` (about 36 MB;
+  `data/interval_mNNN.json` for `m = 2..111`) named above and in
+  `chunks_manifest.json` were not delivered; there is no `data/` directory. So
+  `finite/check_coverage.py` and `finite/check_exact_reference.py` stop with
+  `FileNotFoundError`; `finite/check_reference_provenance.py` passes. If the
+  archives are delivered later, they belong in this directory, filed in a
+  commit of their own. Meanwhile
+  `../Thue_Morse_Integer_Pressure_First_Negative_Data/` re-certifies
+  `m <= 128` (see the note after Proposition 8.1).
+- `certificates/run_all.py` and its six stages: new option `--output-dir`
+  (default `certificates/rerun/`; `run_all.py` passes it on), with LF line
+  endings. As delivered, every checker overwrote its recorded file beside
+  itself, with CRLF line endings on Windows. Pass `--output-dir certificates`,
+  on a copy, to regenerate the recorded files. A checker that reads another
+  checker's record reads the recorded file, as delivered. On the ProveIt
+  machine use `py` rather than `python3`/`python`. A rerun of `run_all.py` on
+  a copy (2026-10-01, Python 3.14.4, standard library) passed in 59 s (the
+  524,288-cell `verify_weighted_outer.py` takes nearly all of it; about 4 min
+  on a loaded machine) and wrote all six certificates equal to the recorded
+  ones byte for byte.
+- `finite/exact_reference_m024.json` stores 14 of its 72 pressure coefficients
+  as unreduced fractions (for example `-8/2`, `0/4`), although the article
+  calls these calculations fully reduced; the values are correct.
+  `finite/replay_one.py` and `finite/replay_all.py` (C++, GMP, zlib; not run)
+  write under `finite/generated/` and expect compiled binaries in `finite/`.
+- The `inputs/` copies (the positive-triangle article and the repository
+  manuscript) were not filed; they are
+  `../Thue_Morse_Integer_Pressure_Positive_Triangle/` and
+  `../Thue_Morse_Integer_Pressure/`. The submitted checksum ledger was
+  retired. Commands use `python3`; use `py` on the ProveIt machine.
+- `build_local.sh`: kept as delivered. It sets `TEXMF` to the Debian paths
+  `/usr/share/texlive/texmf-dist` and `/usr/share/texmf`, writes `build/` here
+  and copies the result over the filed PDF: build on a copy.
+- `README.md`: parentheses after the `inputs/` line and after the paragraph on
+  the interval archives, and this section.

@@ -6,6 +6,8 @@
 \setlength{\parskip}{2pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\ev}{\operatorname{ev}}\newcommand{\Z}{\mathbb Z}
 \newcommand{\HH}{\mathcal H}\newcommand{\GG}{\mathcal G}
 \title{First Negative Degrees in\\Integer Thue--Morse Pressure}
@@ -61,6 +63,16 @@ As the integer $m$ tends to infinity,
 In particular $N_m/m\to\gamma\in(6.662966,6.662968)$.
 \end{theorem}
 All unqualified logarithms are natural. The bounded term includes the even-degree lattice. No unconditional rounding formula is asserted.
+% ed. (2026-10-01): the theorem implies the liminf bound of the preceding package; consistency with the dataset
+\begin{ednote}
+Theorem~\ref{thm:main} implies the bound $\liminf N_m/m\ge33/5$ of \cite{Bound66}, filed as
+\path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, whose theorem, cubic envelope and Schur expansion are inputs
+here; its strict positivity statement is not implied. For $2\le m\le128$ the values of $N_m$
+certified in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} satisfy
+$-1.75<N_m-(\gamma m-\Lambda^{-1}\log\log(2m))<0.36$ (checked on filing, with $\gamma$ and
+$\Lambda$ evaluated numerically from their definitions), consistent with the bounded error
+term.
+\end{ednote}
 
 \paragraph{Related context.}
 Fan, Schmeling and Shen~\cite{FSS} study the same phase-dependent cosine-product family through ergodic optimization and multifractal analysis. Baake, Gohlke, Kesseb\"ohmer and Schindler~\cite{BGKS} study pressure and scaling for the classical Thue--Morse measure. The variable and asymptotic regime here concern high-order phase Taylor signs as the integer moment order grows. These references provide context, rather than an exhaustive novelty determination.
@@ -210,6 +222,12 @@ For even $d,N$, the last coefficient equals
 \]
 The mixed term is exponentially negligible. On $|z|=t_2$ its product modulus is strictly below $\GG(t_2)^2$, uniformly on the compact saddle interval. Equality for the first factor would require $z/t_2=1$, while equality for the second would require $z/t_2=-1$, since consecutive coefficients are positive. Finally $F_<^2/2$ contributes only $O(A_2)$. This proves~\eqref{eq:K2asymp}.
 \end{proof}
+% ed. (2026-10-01): a later package contains this proposition on a larger window
+\begin{ednote}
+Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/} contains Proposition~\ref{prop:quadratic}
+as its case $k=2$ (there $C_2=-K_2$) and extends its window from $(2,2\mu(\arctan R))$,
+$R=2/5$, to $(2,2\mu(\arctan(1/2)))$.
+\end{ednote}
 
 \section{A bounded local frozen correction}
 The first-model saddle lies outside the Green disk. We do not approximate the actual frozen function there. Instead, subtract its explicit nearest model and estimate the remainder on the smaller second-saddle contour.
@@ -494,6 +512,17 @@ The real frozen correction contains a bounded oscillation in $\log_2d$. Its cont
 
 The source archive contains the compact local and outer partitions, portable exact checkers, model-crossing certificate, source hashes, and unchanged analytic prerequisites. The supplied first-negative finite data, when distributed as a companion, are supplementary and are not a premise of the theorem.
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the eleventh of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{Repo}, cited as \emph{Thue--Morse Integer Pressure}, is \path{../Thue_Morse_Integer_Pressure/}, whose title
+is \emph{Integer Pressure and a Missing Taylor Coefficient} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical); \cite{AllOrders}
+is \path{../Thue_Morse_Integer_Pressure_Full_Range/}; \cite{Bound66} is \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}; and
+\cite{Signs} is \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}. The first-negative finite data of the last
+section are \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}. Of the copies bundled under \path{inputs/},
+only the independent outer-contour replay \path{inputs/independent_outer_certificate.zip} is
+filed.
+\end{ednote}
 \begin{thebibliography}{9}
 \bibitem{Repo} V.~Reshetnikov, \emph{Thue--Morse Integer Pressure}, repository research manuscript, pinned at commit \texttt{63a7a325109ba611a1816b61dfd0eb072b896a7a}. Source included.\newline
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}

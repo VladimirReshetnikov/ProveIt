@@ -5,6 +5,20 @@ final interval arithmetic, and exact/full-vector cross-comparisons. The
 matrix inverses and per-coordinate rounding are certified in the audited
 generator by exact identities and inequalities.
 """
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from pathlib import Path
 from math import comb,factorial,gcd
 from functools import reduce
@@ -76,5 +90,9 @@ if __name__=='__main__':
         else:good.append(r)
     out={'range':[2,69],'certified_moments':len(good),'checked_response_orders':sum(r['orders'] for r in good),
          'missing':missing,'records':good,'complete':not missing}
-    (BASE.parent/'trace_checks.json').write_text(json.dumps(out,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('trace_checks.json', json.dumps(out,indent=2)+'\n')
     print('Verified',len(good),'moment traces;',out['checked_response_orders'],'response orders; missing:',missing)
+    # ed. (2026-10-01): an absent trace is reported, not passed over in silence; the exit
+    # status is unchanged (as delivered, this audit verifies nothing without the trace archives).
+    if missing:print('WARNING: trace audit incomplete:',len(missing),'of 68 trace files absent (complete: false)',flush=True)

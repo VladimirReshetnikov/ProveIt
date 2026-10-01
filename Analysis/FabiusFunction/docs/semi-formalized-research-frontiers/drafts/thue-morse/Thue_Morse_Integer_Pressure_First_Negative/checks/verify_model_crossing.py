@@ -1,4 +1,18 @@
 """Rational model-crossing certificate; the article proves the pressure identification."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from pathlib import Path
 import json,sys
@@ -43,5 +57,6 @@ for sigma,proposals in cases:
 out=dict(all_checks_passed=True,model_only=True,rows=rows)
 out['pressure_slope_interval']=[str(2*F(3331483,10**6)),str(2*F(3331484,10**6))]
 require(2*F(3331484,10**6)<F(20,3),"strictly below20/3")
-Path(__file__).with_name('model_crossing_certificate.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('model_crossing_certificate.json', json.dumps(out,indent=2)+'\n')
 print('Unique model crossing slope is between',*out['pressure_slope_interval'],'strictly below20/3. This checker certifies the model crossing; pressure identification is proved separately in the article.')

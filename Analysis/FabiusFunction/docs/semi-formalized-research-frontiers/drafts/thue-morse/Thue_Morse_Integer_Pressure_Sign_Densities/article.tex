@@ -6,6 +6,8 @@
 \setlength{\parskip}{2pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\C}{\mathbb C}\newcommand{\Z}{\mathbb Z}
 \newcommand{\ldens}{\underline{\operatorname{dens}}}
 \title{Quantitative Taylor Sign Densities\\in Integer Thue--Morse Pressure}
@@ -36,6 +38,15 @@ For each $\varepsilon\in\{-1,1\}$,
 \end{align*}
 \end{theorem}
 The last two densities are relative to their own coefficient indices: they concern pressure degrees $4j$ and $4j+2$. Omitting finitely many initial terms has no effect. The bound tends to zero with $m$; no positive constant independent of $m$ is claimed.
+% ed. (2026-10-01): the theorem contains the infinite-sign statements of the preceding package
+\begin{ednote}
+Since a set of positive lower density is infinite, Theorem~\ref{thm:main} contains the
+statements of \path{../Thue_Morse_Integer_Pressure_Sign_Changes/} that both signs occur infinitely often, among all
+even coefficients and in each degree class modulo~4. It does not contain that package's radius
+bound (its $R_m$ is the Taylor radius), its equal exponential scales, or its first-negative
+corollary and table, and it uses that package's finite radii and analytic continuation as
+inputs.
+\end{ednote}
 
 The preceding sign-law theorem~\cite{Signs} proves that the three real-coefficient germs
 \begin{equation}\label{eq:three}
@@ -181,9 +192,22 @@ Lemmas~\ref{lem:puiseux} and~\ref{lem:darboux} apply to all three germs, since e
 The proof strengthens infinite sign changes to a quantitative recurrence of each strict sign. It also gives, for each fixed order and each of the three series, an oscillatory coefficient expansion of the form~\eqref{eq:asymptotic}. The unknown singular amplitudes may improve the lower-density constant, but the displayed bound does not require locating any singularity or computing an amplitude.
 
 The argument does not prove that a sign density exists. It does not control the spacing of individual sign changes or the first negative degree as $m$ varies. The earlier positive range $2m<N<6m$ and its exact finite certificates remain separate, unchanged results. There is no numerical sign sampling in the present density proof.
+% ed. (2026-10-01): the uncited positive range and the first negative degree
+\begin{ednote}
+The earlier positive range is Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, not cited here:
+every even coefficient strictly between degrees $2m$ and $6m$ is positive. The first negative
+degree as $m$ varies is treated in \path{../Thue_Morse_Integer_Pressure_First_Negative/}: $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$.
+\end{ednote}
 
 The source bundle includes this manuscript, the preceding sign-law note containing the analytic inputs, the pinned repository normalization source, and a reproducible build helper. The proof uses ordinary complex analysis and finite-dimensional spectral theory; it is not externally refereed or formally verified.
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the ninth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{Repo} is \path{../Thue_Morse_Integer_Pressure/} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical), and \cite{Signs} is
+\path{../Thue_Morse_Integer_Pressure_Sign_Changes/} (main source \path{infinite_pressure_sign_changes.tex}); the copies
+bundled under \path{inputs/} were not filed.
+\end{ednote}
 \begin{thebibliography}{9}\small
 \bibitem{Repo}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript. Inspected commit \nolinkurl{63a7a325109ba611a1816b61dfd0eb072b896a7a}, blob \nolinkurl{1444c01b4b30020f727172f0ee0060cab644f444}.\newline
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.

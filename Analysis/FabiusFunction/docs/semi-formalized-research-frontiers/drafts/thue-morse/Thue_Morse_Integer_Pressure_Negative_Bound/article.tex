@@ -6,6 +6,8 @@
 \setlength{\parskip}{2pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\ev}{\operatorname{ev}}\newcommand{\Z}{\mathbb Z}
 \newcommand{\HH}{\mathcal H}\newcommand{\GG}{\mathcal G}
 \title{An Asymptotic Lower Bound for the First Negative\\Thue--Morse Pressure Degree}
@@ -34,6 +36,14 @@ one has $[t^N]P_m(t)>0$. In particular,
 \]
 \end{theorem}
 The existing theorem~\cite{AllOrders} gives positivity for every $m\ge2$ throughout $d<N<3d$. We prove the additional interval $3d\le N\le33d/10$ uniformly for all sufficiently large $d$.
+% ed. (2026-10-01): the liminf bound is implied by the first-negative asymptotic
+\begin{ednote}
+The bound on $\liminf N_m/m$ is implied by Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_First_Negative/},
+$N_m/m\to\gamma>6.662966>33/5$, which uses this theorem, Lemma~\ref{lem:cubic} and the Schur
+expansion \eqref{eq:cluster} as inputs; the strict positivity for $2m<N\le33m/5$ and $m\ge m_0$
+is not implied by that statement. The certified value $N_{50}=330=33\cdot50/5$ of
+\path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} shows that $m_0\ge51$.
+\end{ednote}
 
 The normalized transfer operator is
 \[
@@ -280,7 +290,23 @@ Thus the positive term exponentially dominates $E_3$ and $E_{\cos}$ as well. Equ
 The included standard-library checker proves every new scalar side condition using exact rational or outward integer interval arithmetic. It records the two saddle brackets and endpoint ratios. The existence threshold from the uniform local limit theorem has not been made effective. Consequently no finite table is used to fill an unspecified complement.
 
 A separate model comparison suggests a sharper crossing. If $t_k$ solves $\mu(t_k)=\sigma/k$, define $\Phi_k=k\log\GG(t_k)-\sigma\log t_k$. A second rational checker certifies that the unique crossing $\Phi_1=\Phi_2$ has slope $2\sigma$ between $6.662966$ and $6.662968$, strictly below $20/3$. Uniqueness follows from $(\Phi_2-\Phi_1)'=\log(t_1/t_2)>0$. This is a statement about the positive model only. Identifying it with $\lim N_m/m$, or proving that this limit exists, requires a sign-sensitive comparison of the actual first and second Schur terms. Neither is claimed here.
+% ed. (2026-10-01): the identification is proved by a later package
+\begin{ednote}
+Both are proved in \path{../Thue_Morse_Integer_Pressure_First_Negative/}: $\lim N_m/m$ exists and equals the slope
+$\gamma=2\sigma$ of this crossing, with $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$, where
+$\Lambda=\log(t_1/t_2)>0$ at the crossing. The last sentence printed by
+\path{checks/verify_model_crossing.py} (``Actual-pressure identification remains unproved'') is
+superseded in the same way.
+\end{ednote}
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the tenth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{Repo}, cited as \emph{Thue--Morse Integer Pressure}, is \path{../Thue_Morse_Integer_Pressure/}, whose title
+is \emph{Integer Pressure and a Missing Taylor Coefficient} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical); \cite{AllOrders}
+is \path{../Thue_Morse_Integer_Pressure_Full_Range/}; and \cite{Signs} is \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}. The copies
+bundled under \path{inputs/} were not filed.
+\end{ednote}
 \begin{thebibliography}{9}
 \bibitem{Repo} V.~Reshetnikov, \emph{Thue--Morse Integer Pressure}, repository research manuscript, pinned at commit \texttt{63a7a325109ba611a1816b61dfd0eb072b896a7a}. Source included in the package.\newline
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}
