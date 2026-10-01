@@ -36,7 +36,27 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [history-unit U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_history_units260.md)
+The latest explicit [offset-shifted U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_offset258.md)
+gives **257 certificate /258=133M+125A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most3861**. Its fixed offset parameter represents E−1;
+the same ordinary inputs are accepted on the corresponding valid program
+slices. The affine parent map is not an all-tuple positive bijection.
+The [259 lower-unit predecessor](research-wip/native-stream-queue/neary_woods_universal_lower_unit259.md)
+retains the old program recipes and the same positive coordinates on
+valid slices, excluding a negative transport unit by the encoded input's
+forbidden suffix. Mapped258 schedules give269/608 with44 witnesses and
+266/1344 with43; these selected schedules are not an exhaustive search.
+
+The separate [all-factor history-unit search](research-wip/native-stream-queue/neary_woods_universal_history_unit_partitions.md)
+keeps the older E parameter meaning and searches32 bases: all sixteen
+strong/scale choices, with lower transport retained or absorbed. Its
+finite propagated-degree frontier includes259/3861 with43 witnesses,
+266/1106,267/1060,268/738 and270/608 with44. Regrouping preserves positive
+zeros within each fixed valid-program base. The claimed optima concern
+this finite family and propagated bounds, not exact degree or all circuits.
+
+The preceding explicit [history-unit U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_history_units260.md)
 gives **255 certificate /260=134M+126A polynomial operations**,
 2 comparisons,43 positive witnesses, four positive program parameters
 and degree **at most3866**. Absorbing the upper history transport and
@@ -88,7 +108,17 @@ with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
 
-The independent [packed-register compiler](research-wip/native-stream-queue/korec_packed_counter_compiler.md)
+The independent [U21 counter-unit compiler](research-wip/native-stream-queue/korec_packed_counter_units.md)
+gives **410 certificate /411=147M+264A polynomial operations**, one
+comparison,50 positive witnesses and degree **at most42589**. Its literal
+strongly universal table uses one positive program parameter and ordinary
+positive input directly. Shared register-based control codes, computed
+truth fields and three sign-proved chronological units preserve the full
+positive halting converse. The final polynomial is a nine-factor product
+minus1; an SOS alternative costs412. This is a complete independent
+universal route, above258 and the established75/87 bounds.
+
+The preceding independent [packed-register compiler](research-wip/native-stream-queue/korec_packed_counter_compiler.md)
 instantiates the actual strongly universal U22 machine at
 **436 certificate /453=138M+315A polynomial operations**,6 comparisons,
 54 positive witnesses and degree **at most43897**. It has one positive
@@ -98,6 +128,15 @@ lanes and one counter-transport equation pay increment, decrement and
 zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
+
+The [packed residue-affine history compiler](research-wip/native-stream-queue/residue_affine_packed_history.md)
+pays a fixed-arity, unbounded-duration orbit relation for each fixed
+positive residue-affine map. Its shortcut-Collatz example costs
+**134=64M+70A**,21 positive witnesses, five comparisons and degree
+**at most748**; allowing a zero-step orbit costs two more operations.
+This does not assert Collatz universality or convergence. The related
+prime-encoded counter substrate still needs its separate paid ordinary-input
+exponent loader before any numerical universal claim.
 
 The [paid queue sentinel fold](research-wip/native-stream-queue/queue_causality_sentinel_fold.md)
 gives fixed-horizon cyclic-tag certificates with at most14T-2 operations

@@ -1,5 +1,13 @@
 # Two positive history units give260 operations
 
+**Successors:** the [lower-history unit259](neary_woods_universal_lower_unit259.md)
+preserves supplied positive zeros on valid input slices; the
+[offset-shifted258](neary_woods_universal_offset258.md) changes the fixed
+program parameter to E−1 and preserves accepted inputs on the corresponding
+valid slices. The separate [all-factor partition search](neary_woods_universal_history_unit_partitions.md)
+keeps the older E semantics. This note retains its original260 theorem,
+source and counts.
+
 The [literal compiler](neary_woods_universal_history_units260.py) reduces the
 complete [263-operation U9 polynomial](neary_woods_universal_mask_unit263.md)
 to **260=134M+126A**, with **255 certificate operations=132M+123A**, two
