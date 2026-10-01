@@ -40,12 +40,28 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [combined U9 population polynomial](neary_woods_universal_population377.md)
-now gives **318 certificate /377=183M+194A polynomial operations**,
-20 comparisons, 66 positive witnesses and four positive program parameters.
-Its total degree is **at most 2285**, including all program coordinates.
-Keeping the history checksum separate gives **317 certificate /379=183M+196A**,
-21 comparisons, the same66 witnesses and degree at most2241.
+The explicit [two-core U9 universal polynomial](neary_woods_universal_joint_and_units.md)
+now gives **256 certificate /303=144M+159A polynomial operations**,
+16 comparisons,51 positive witnesses and four positive program parameters.
+Its total degree is **at most2285**, including all program coordinates.
+The unnormalized unit form gives252 certificate / **305=142M+163A**,
+18 comparisons,51 witnesses and degree at most1475. The
+[raw joint-AND form](neary_woods_universal_joint_and.md) gives246 certificate /
+**356=155M+201A**,37 comparisons,64 witnesses and degree at most580.
+
+One joint AND replaces the separate recoder and selected-history AND
+cores, retaining the independent population geometry. A paid bound on
+the lower output makes the binary split unique; fresh positive native
+extensions prove both directions. This preserves the complete outer
+relation, not every old native witness tuple. The two remaining cores
+have only one checksum, so the earlier history-checksum sign lemma is
+not needed by the new unit finalizer.
+
+The [377-operation predecessor](neary_woods_universal_population377.md)
+remains available with318 certificate operations,20 comparisons,66
+witnesses and degree at most2285. Keeping its checksum separate gives
+317 certificate /379=183M+196A,21 comparisons,66 witnesses and degree
+at most2241.
 
 Three changes compose on the [389-operation parent](neary_woods_universal_population_projection389.md):
 the [joint scale bound](neary_woods_universal_population_joint_bound386.md)
@@ -1103,6 +1119,8 @@ New research and the completed75-operation construction:
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [Two-core U9 universal polynomial](neary_woods_universal_joint_and_units.md) | **256 certificate /303=144M+159A polynomial**,16eq,51w,four positive program parameters,degree at most2285. Unnormalized units:252 certificate /305=142M+163A,18eq,51w,degree at most1475. | Six norm units plus one checksum, then two independent strong normalizations. Full positive input relation; fresh canonical auxiliaries preserve completeness. |
+| [Joint recoder/history AND](neary_woods_universal_joint_and.md) | **246 certificate /356=155M+201A raw polynomial**,37eq,64w,four positive program parameters,degree at most580. | Paid lower-output bound and pretyping low-block bounds recover both AND graphs from one concatenation. Fresh native extensions prove outer-coordinate equivalence; no full old/new witness bijection. |
 | [Combined U9 universal polynomial](neary_woods_universal_population377.md) | **318 certificate /377=183M+194A polynomial**,20eq,66w,four positive program parameters,degree at most2285. Separate checksum:317 certificate /379=183M+196A,21eq,66w,degree at most2241. | Composes the joint bound,154-gate history and conditional checksum sign theorem. Same complete ordinary-input relation and fixed U9 table;40 source configurations retain degree alternatives. |
 | [Padded history checksum sign](neary_woods_universal_population_checksum387.md) | On the389 parent:325 certificate /387=189M+198A,21eq,67w,degree at most2285. | Negative checksum would force field residues(3,4,2,8) and population at least one above the restored native kernel's value. Same positive zeros; the output polynomial changes off zero. |
 | [Joint recoder scale bound](neary_woods_universal_population_joint_bound386.md) | On the389 parent:324 certificate /386=188M+198A,21eq,66w,degree at most2241. | Q=q+z+g joins two positive gaps. Typed q and spread bound prove g>0 in the inverse; exact complete polynomial identity under the positive lift. |

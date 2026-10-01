@@ -41,12 +41,28 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [combined U9 population polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_population377.md)
-now gives **318 certificate /377=183M+194A polynomial operations**,
-20 comparisons, 66 positive witnesses and four positive program parameters.
-Its total degree is **at most 2285**, including all program coordinates.
-Keeping the history checksum separate gives **317 certificate /379=183M+196A**,
-21 comparisons, the same66 witnesses and degree at most2241.
+The explicit [two-core U9 universal polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_units.md)
+now gives **256 certificate /303=144M+159A polynomial operations**,
+16 comparisons,51 positive witnesses and four positive program parameters.
+Its total degree is **at most2285**, including all program coordinates.
+The unnormalized unit form gives252 certificate / **305=142M+163A**,
+18 comparisons,51 witnesses and degree at most1475. The
+[raw joint-AND form](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and.md) gives246 certificate /
+**356=155M+201A**,37 comparisons,64 witnesses and degree at most580.
+
+One joint AND replaces the separate recoder and selected-history AND
+cores, retaining the independent population geometry. A paid bound on
+the lower output makes the binary split unique; fresh positive native
+extensions prove both directions. This preserves the complete outer
+relation, not every old native witness tuple. The two remaining cores
+have only one checksum, so the earlier history-checksum sign lemma is
+not needed by the new unit finalizer.
+
+The [377-operation predecessor](Papers/research-wip/native-stream-queue/neary_woods_universal_population377.md)
+remains available with318 certificate operations,20 comparisons,66
+witnesses and degree at most2285. Keeping its checksum separate gives
+317 certificate /379=183M+196A,21 comparisons,66 witnesses and degree
+at most2241.
 
 Three changes compose on the [389-operation parent](Papers/research-wip/native-stream-queue/neary_woods_universal_population_projection389.md):
 the [joint scale bound](Papers/research-wip/native-stream-queue/neary_woods_universal_population_joint_bound386.md)

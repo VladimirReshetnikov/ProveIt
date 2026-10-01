@@ -35,14 +35,23 @@ frontiers alongside the historical handoff. The
 supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound. The separate explicit
-[combined U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_population377.md)
-now gives318 certificate / **377=183M+194A polynomial operations**,
-20 comparisons,66 positive witnesses, four positive program parameters
-and degree at most2285. Keeping its history checksum separate gives
-317 certificate /379=183M+196A,21 comparisons,66 witnesses and degree
-at most2241. These bounds include all program coordinates.
+[two-core U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_joint_and_units.md)
+now gives256 certificate / **303=144M+159A polynomial operations**,
+16 comparisons,51 positive witnesses, four positive program parameters
+and degree at most2285. The unnormalized unit form gives252 certificate /
+305=142M+163A,18 comparisons,51 witnesses and degree at most1475. Its
+[raw joint-AND parent](research-wip/native-stream-queue/neary_woods_universal_joint_and.md)
+gives246 certificate /356=155M+201A,37 comparisons,64 witnesses and
+degree at most580. These bounds include all program coordinates.
 
-The composition joins the [joint positive scale bound](research-wip/native-stream-queue/neary_woods_universal_population_joint_bound386.md),
+A paid lower-output bound permits one native AND to replace the separate
+recoder/history AND cores. Positive native extensions are rebuilt;
+the complete outer relation is preserved without a bijection of all old
+and new native tuples. The two remaining cores have one checksum.
+The [377/379 predecessor](research-wip/native-stream-queue/neary_woods_universal_population377.md)
+remains reproducible at66 witnesses and degree bounds2285/2241.
+
+That predecessor joins the [joint positive scale bound](research-wip/native-stream-queue/neary_woods_universal_population_joint_bound386.md),
 [154-gate shared history](research-wip/native-stream-queue/neary_woods_universal_shared_history382.md)
 and [padded checksum sign lemma](research-wip/native-stream-queue/neary_woods_universal_population_checksum387.md).
 The [389-operation projections](research-wip/native-stream-queue/neary_woods_universal_population_projection389.md),

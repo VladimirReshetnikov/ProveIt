@@ -14,13 +14,16 @@
 > The full compiler contract, both ratio slacks and `F>0` are retained.
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
-> The independently proved explicit U9/tag route now costs
-> **377=183M+194A**,318 certificate operations,66 positive witnesses,
-> 20 comparisons and four positive program parameters, with total degree
-> at most2285: [complete combined source](neary_woods_universal_population377.md).
-> Keeping the history checksum separate gives317 certificate operations,
-> **379=183M+196A**,21 comparisons,66 witnesses and degree at most2241.
-> All degree bounds include the program coordinates.
+> The latest complete explicit U9/tag source costs
+> **303=144M+159A**,256 certificate operations,51 positive witnesses,
+> 16 comparisons and four positive program parameters, with total degree
+> at most2285: [two-core unit construction](neary_woods_universal_joint_and_units.md).
+> Unnormalized units give252 certificate /305=142M+163A,18 comparisons,
+> 51 witnesses and degree at most1475. The [raw joint-AND parent](neary_woods_universal_joint_and.md)
+> gives246 certificate /356=155M+201A,37 comparisons,64 witnesses and
+> degree at most580. All degree bounds include the program coordinates.
+> The377/379 predecessors remain available. Root integration and both
+> independent full proof/source/fresh-replay reviews passed.
 > This alternative does not improve the separate75/87 frontier.
 > The [88-operation degree151 construction](complete75_coupled_index_linear88.md)
 > remains a lower-degree alternative. It has the same positive zeros as
@@ -699,6 +702,59 @@ the merged correction is F_389(lift(y))-F_377(y)=U*(C-1)*(C-2-S).
 The `complete_parent389`, `joint_scale_parent`, `arithmetic_parent` and
 `checksum_parent` metadata identify distinct audit stages; restore each
 stage's coordinates before reusing its historical audit helpers.
+
+The [raw joint-AND compiler](neary_woods_universal_joint_and.md) replaces
+both prescribed-scale AND cores of raw377 with one. Write S=qP,L=BS,
+Hr=BxJ+ell,Mr=BK+ell-1,Zr=B(Ahat-1); keep the history's nonnegative
+Hh,Mh,Zh and Th=Ph^11. Retained repunit, input and duration equations
+bound Hr,Mr<L before typing. A new positive slack pays Ahat+beta=S,
+which bounds Zr<L; every old zero has beta=S-Ahat>=2. The joint ports
+are16(Hr+L*Hh)+12,16(Mr+L*Mh)+10,16(Zr+L*Zh)+8, at scale L*Th.
+The complete AND first makes L and Th dyadic, then low-block uniqueness
+recovers both original AND graphs and high-word ranges. Both directions
+use fresh positive native extensions; there is no old/new full-native-
+tuple bijection or off-zero identity between the two full polynomials.
+The exact counter, loader, geometry and chronological history stay paid.
+
+Deleting the64-gate history AND and adding eight packing/bound gates
+leaves246=118M+128A certificate operations,37eq and64w. Its raw SOS
+costs **356=155M+201A** with degree at most580. The historical history
+packet still describes its standalone component; `history_core_embedded=False`
+and the actual retained prefixes `geo__`,`and__` identify the new source.
+
+The [two-core unit successor](neary_woods_universal_joint_and_units.md)
+projects13 positive definitions and merges six independently sign-safe
+norms with the sole checksum. Its safe product finalizer restores all
+remaining comparisons and costs **305=142M+163A**,252 certificate,
+18eq,51w,degree at most1475. The separate-history checksum sign theorem
+is no longer required. Normalizing each of the two strong witnesses
+adds a sign-safe factor and reconstructs its five canonical auxiliaries
+independently. This gives **303=144M+159A**,256 certificate,16eq,51w,
+four positive program parameters and degree **at most2285**. The
+accepted outer relation and original U9 universal slices are unchanged;
+strong-normalization completeness rebuilds auxiliaries rather than
+asserting a bijection on arbitrary supplied native tuples.
+
+The unit receipt contains **six ledgers**, for raw/unit/normalized forms
+and the two duration-bound interfaces. It checks256 complete two-core
+unit corrections (128 signed), then128 complete normalization corrections
+against the actual restored parent sources. The source audits every
+projected coordinate, both first-root lifts and all ten privately rebuilt
+strong auxiliaries. All fixed numeral roles remain the exact original
+recipes; finite substitutions test algebra and do not materialize giant
+positive Pell witnesses. Literal degree propagation with guarded main-
+norm cancellations bounds the normalized product by1915 and the largest
+retained residual by185, giving **1915+370=2285**. The unit alternative
+uses1063+2*206=1475; these are upper bounds, not exact degrees.
+
+Author writer/default, root integration/fresh replay and both independent
+full proof/source/fresh-replay reviews passed without findings. Independent
+audits added192 complete output identities (96 signed) and128 complete
+restored raw-factor/output corrections (64 signed), with half-integral
+off-zero first-root lifts included. Every303-source gate reaches the final
+output, and all13 local links in the raw/unit notes resolve. These finite
+checks supplement the proved positive witness maps; they do not replace
+the universality proof or materialize the huge Pell witnesses.
 
 The [counter-initialization obstruction](clockwise_cts_counter_initialization_obstruction.md)
 executes the printed Q3 CTS table: counter3 on tape01 falsely activates
