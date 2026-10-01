@@ -185,6 +185,21 @@ Uniform word choice and packing are still unpaid for this alternative.
 The packet also gives explicit torsion and nonnegative-support obstructions
 to dropping the fixed macro group or removing all signed generators.
 
+The newer [projective endpoint](../research-wip/native-stream-queue/group_projective_zero_mortality6.md)
+uses the special Schreier stabilizer and graph-group abelianization to
+replace full matrix equality by paired action on(-1,alpha*x+beta+1),
+ending at e2. The vector loader costs2; its fixed6D scalar-zero and
+unrestricted mortality lift has a3-operation positive quadratic input.
+The [complete range compiler](../research-wip/native-stream-queue/group_range_projective_compiler.md)
+adds explicit history-range and radix regions to the existing AND,
+removing geometry47 and saving37 certificate operations. Its cost is
+C=3m+3h+p+185+f_flow-3min(h,3). The [positive definition elimination](../research-wip/native-stream-queue/group_projective_computed_kernel_fields.md)
+then gives20 equations,m+34 witnesses and aC+59 polynomial of exact
+degree24m+444. A22-equation,m+36-witness alternative costsC+65 at
+degree12m+232. These are complete constructions for the fixed abstract
+universal alphabet, with every input, control and history condition paid;
+they do not instantiate its numerical table or improve75/88.
+
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators
 in H^r: graph18r+10, or one degree-at-most-four polynomial at27r+12.

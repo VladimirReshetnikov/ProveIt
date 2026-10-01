@@ -228,7 +228,7 @@ definitions and remove their supplied witnesses and comparisons. Positivity
 is unconditional from positive edge hats; a stable topological reorder
 puts the existing port gates before their history/AND consumers.
 
-The current complete comparison count is
+The previous matrix-equality comparison count is
 C=3m+3h+p+222+f_flow-3min(h,3), with39 equations andm+59 witnesses.
 Its polynomial costsC+116 and has exact degree12m+112. This trades degree
 against the original separate-kernel compiler. A fixed universal alphabet
@@ -248,6 +248,53 @@ at exact degree8. Its variable word, macro control and uniform history are
 still unpaid. Preserve this distinction from the completed four-register
 compiler. Next targets are cheaper complete kernels or computational
 substrates, with ordinary input and all typing obligations accounted for.
+
+The new [projective endpoint](group_projective_zero_mortality6.md) is the
+preferred subgroup interface. For the swapped rank-four Schreier group,
+Gamma is the kernel of the lower4 shear exponent modulo3. Mod4 diagonal
+congruences exclude negative triangular elements, giving lower stabilizer
+exactly<b>. Thus P(-1,r+1)=e2 iff P=b^n L_r. For a pair in the conjugated
+Mihailova subgroup, pull its equality into the embedded original G_U;
+the b-exponent gives equal ambiguities, and graph-kernel abelianization
+forces that common index zero. Do not assume these homomorphisms extend
+to the finite presentation H. The vector loader is2 operations using
+u=alpha*x+(beta+1); the6D scalar/mortality sentinel loader is3=2M1A.
+
+The [range-typed compiler](group_range_projective_compiler.md) removes the
+entire geometry47 kernel. Set D=u+height_slack, B=8D; retain the repunit,
+controller and selected-source tests. Join two more AND regions:
+Hb subset (2D-1)J*K8 in eight lanes, and B AND(B-1)=0 in two lanes.
+The new scale is16P^(m+18). Before typing, the scalar checksum/port and
+history/output bounds give all region bounds, including B<=P<P².
+Native AND then types P; the high region types B; repunit givesP=B^t
+for t>=1. The range region gives history digits in[0,2D). Successive
+modulo-B recurrence coefficients have absolute value<3D<B, proving the
+exact signed trace without a duration-height relation. Completeness chooses
+D dyadic above the finite trace and the macro table; no length-height
+link or free digit condition remains.
+
+Its certificate costs C=3m+3h+p+185+f_flow-3min(h,3), with26 equations,
+m+40 witnesses; the polynomial isC+77,degree12m+232. The [computed kernel
+fields](group_projective_computed_kernel_fields.md) give two exact positive
+bijections. Eliminating a,d,k,s yields22 equations,m+36 witnesses,C+65,
+same degree. Adding c,r gives20 equations,m+34 witnesses,C+59, with
+exact degree24m+444. The source certificate cost staysC. In particular
+computed r has degree4(m+18)-2, so do not claim its substitution preserves
+degree. All expressions are positive before using any comparison; whole
+source and SOS identities also hold on signed assignments.
+
+The best illustrative ten-letter table now costs259/318 and has50 witnesses
+in the six-field variant; it is not a numerical universal alphabet.
+Root and independent proof/source reviewers passed the new packets.
+Next useful targets are reducing the remaining one AND kernel, replacing
+its product/packing structure, or a smaller effective macro table. A
+separate duration-height kernel is no longer needed for this route.
+The primary75/88 frontier remains unchanged. An [exact input-translation
+obstruction](complete75_input_bound_absorption_obstruction.md) rejects the
+specific apparent87 shortcut that absorbs2d*x into alpha: x shifts by
+M/gcd(2d,M), delta drops by2d/gcd(2d,M), and all eight units are invariant.
+The odd Pell expansion proves the new delta stays positive at every old
+zero, so every nonempty finite language acquires a false input.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,

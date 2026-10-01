@@ -214,7 +214,7 @@ Scalar checksum and port bounds exclude carries before Boolean typing.
 weights and paid checksum sums. Their [combined source](group_shared_sparse_matrix_compiler.md)
 also shares repeated geometric registers. Finally, [computed selector ports](group_computed_selector_ports.md)
 remove eight positive witnesses and eight equations through an exact
-positive graph substitution. The current certificate cost is
+positive graph substitution. That matrix-equality certificate costs
 
     C=3m+3h+p+222+f_flow-3min(h,3),
 
@@ -233,6 +233,36 @@ exact because the underlying free group has no torsion. A fixed shear
 word has a positive certificate costing4t+17 and a degree-eight polynomial
 costing10t+19. Variable words, control and uniform packing remain unpaid
 for this alternative, so these are not complete universal operation bounds.
+
+The [projective endpoint theorem](group_projective_zero_mortality6.md) now
+replaces matrix equality by paired action on the affine vector(-1,u),
+u=alpha*x+beta+1, ending at e2. Its stabilizer ambiguities disappear using
+the original group's shift and graph-vertex abelianizations. The endpoint
+needs no word-height hypothesis. Its six-dimensional scalar-zero and
+mortality lift has a **3=2M+1A** positive quadratic input loader.
+
+The [range-typed complete compiler](group_range_projective_compiler.md)
+uses that endpoint and adds history-range and radix tests to the existing
+AND. This removes the entire47-operation duration-height kernel and saves
+**37 certificate operations**, giving
+
+    C=3m+3h+p+185+f_flow-3min(h,3).
+
+It has26 equations andm+40 witnesses; its polynomial costsC+77 and has
+exact degree12m+232. The [computed kernel fields](group_projective_computed_kernel_fields.md)
+then remove already paid positive definitions. Four definitions give
+**22 equations,m+36 witnesses,C+65 polynomial operations**, retaining
+degree12m+232. All six give **20 equations,m+34 witnesses,C+59 operations**,
+at degree24m+444. The ten-letter example now costs259/318 using all six;
+it remains an illustrative table. This is a complete universal theorem
+for the inherited fixed alphabet, whose numerical table is still not
+instantiated. The global75/88 frontiers remain unchanged.
+
+The apparent one-gate reduction below88 obtained by absorbing the ordinary
+input width is [provably unsound](complete75_input_bound_absorption_obstruction.md).
+An exact positive-witness input translation makes the modified compiler
+for every nonempty finite language accept an additional input. This rules
+out that precise shortcut, without asserting a general lower bound.
 
 The [Heisenberg membership audit](heisenberg_two_generator_membership.md)
 gives a uniform four-witness certificate for any two fixed generators in
@@ -263,6 +293,10 @@ New research and the completed75-operation construction:
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
 | [Positive auxiliary-gap degree tradeoffs](complete75_auxiliary_gap_degree_tradeoffs.md) | **90/131,91/128,98/54,99/52**,19 positive witnesses. | The strong rank argument restores V>1 before using the computed positive auxiliary ordinate. |
+| [Computed projective kernel fields](group_projective_computed_kernel_fields.md) | Complete cost C=3m+3h+p+185+f_flow-3min(h,3);20 equations,m+34 witnesses; polynomial C+59,degree24m+444. | Four-field alternative gives22 equations,m+36 witnesses,C+65,degree12m+232. Positive graph bijections; numerical universal alphabet remains uninstantiated. |
+| [Range-typed projective compiler](group_range_projective_compiler.md) | Complete C=3m+3h+p+185+f_flow-3min(h,3),26 equations,m+40 witnesses; polynomial C+77,degree12m+232. | Removes geometry47 using paid range and radix regions in the shared AND. Generic vector action; universality uses the special subgroup theorem. |
+| [Projective scalar zero and mortality](group_projective_zero_mortality6.md) | Fixed6D universal alphabet; positive quadratic scalar/sentinel input costs3=2M+1A. Affine vector input costs2. | Graph-group abelianization removes projective ambiguity. Fixed-word polynomial degree4; the range compiler separately pays uniform vector histories. |
+| [Input-bound absorption obstruction](complete75_input_bound_absorption_obstruction.md) | Rejects the apparent87/88 schedules by exact positive input translation. | Applies to the specified width deletion; not a global arithmetic lower bound. |
 | [Computed selector ports](group_computed_selector_ports.md) | Complete cost C=3m+3h+p+222+f_flow-3min(h,3),39 equations,m+59 witnesses; SOS C+116,degree12m+112. | Universal alphabet remains numerically uninstantiated. Port positivity follows directly from positive edge hats. |
 | [Shared typing and sparse flow](group_shared_sparse_matrix_compiler.md) | Identical47 residuals and polynomial to the shared-typing parent, with sparse state weights and3min(h,3) common-register savings. | Its positive supplied ports are eliminated by the next successor. |
 | [Shared controller/selection kernel](group_shared_typing_matrix_compiler.md) | Saves50 certificate gates,89 SOS gates and20 witnesses by using one joint AND. | The low-mask bound must precede the upper-region decoding; this raises the polynomial degree. |

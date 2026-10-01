@@ -115,6 +115,17 @@ universal Diophantine equations by James P. Jones and coauthors:
   positive input column, or by mortality with one nonnegative input matrix
   loaded in **13=5M+8A**. All other generators are fixed. A fixed-word
   polynomial has degree8; a uniform selected-word certificate remains open.
+- The [projective endpoint](Papers/research-wip/native-stream-queue/group_projective_zero_mortality6.md)
+  replaces matrix equality by an affine vector-action query. Its6D scalar
+  and mortality input matrix costs **3=2M+1A**. The
+  [range-typed compiler](Papers/research-wip/native-stream-queue/group_range_projective_compiler.md)
+  pays the uniform vector histories with one AND kernel, removing the
+  separate duration-height kernel. Its certificate costs
+  **C=3m+3h+p+185+f_flow-3min(h,3)**. The
+  [computed-kernel refinement](Papers/research-wip/native-stream-queue/group_projective_computed_kernel_fields.md)
+  gives20 equations,m+34 positive witnesses and a **C+59** polynomial of
+  degree24m+444. A degree12m+232 alternative uses22 equations,m+36 witnesses
+  andC+65 operations. The fixed universal table is still uninstantiated.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree
