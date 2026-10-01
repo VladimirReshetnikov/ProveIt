@@ -1,0 +1,247 @@
+"""One sign-safe native unit product in the complete affine-pair history.
+
+This is a positive-coordinate bijection, not an off-zero identity with
+the parent's sum-of-squares polynomial. All outer history fields stay paid.
+"""
+import argparse
+from collections import Counter
+from fractions import Fraction
+import hashlib
+import json
+from pathlib import Path
+import random
+
+import sympy as sp
+import pcp_uniform_affine_pair_history as parent
+from native_binary_input_dilation_unit179 import sort_source
+
+execute = parent.execute
+
+
+def rewrite(old, prefix='and__'):
+    """Apply to a compatible complete positive-AND packet, retaining outer guards."""
+    n = lambda name: prefix+name
+    rows = {name: (name,op,a,b) for name,op,a,b in old['source']}
+    expected = {
+        'R15': ('+',n('Ac2'),1), 'P17': ('-',1,n('aux_y2')),
+        'L17': ('*',n('ic22'),n('aux_square_gap')),
+        'bs_q': ('+',n('bs_Q'),1),
+        'tauplus1': ('+',n('tau'),1), 'R9': ('*',n('tau'),n('tauplus1')),
+        'UM2': ('*',n('UM'),n('UM')),
+        'scaled_norm_coefficient': ('+',n('UM2'),n('wn2')),
+        'ratio_product2': ('*',n('ksn2'),n('ksn2')),
+        'L9': ('*',n('scaled_norm_coefficient'),n('ratio_product2')),
+        'R10b': ('+',n('eta'),n('zeta')),
+        'R10a': ('+',n('ksn2'),n('eta')),
+        'R12': ('+',n('UM'),n('sn2')),
+        'R14': ('+',n('D1'),n('gam')),
+        'bs_odd': ('+',n('bs_even'),1),
+        'R16': ('*',n('A'),n('f_square_minus_one')),
+    }
+    assert all(rows[n(key)][1:] == value for key,value in expected.items())
+    deleted = {n(key) for key in ('tauplus1','R9','UM2','scaled_norm_coefficient','ratio_product2','L9')}
+    for name in deleted:
+        assert {key for key,_,a,b in old['source'] if name in (a,b)} <= deleted
+    for name in ('R15','P17','bs_q'):
+        assert not any(n(name) in (a,b) for _,_,a,b in old['source'])
+    changes = {
+        n('R15'): (n('R15'),'-',n('L15'),n('Ac2')),
+        n('L17'): (n('L17'),'*',n('R16'),n('aux_square_gap')),
+        n('P17'): (n('P17'),'+',n('L17'),n('aux_y2')),
+        n('bs_q'): (n('bs_q'),'-',n('q'),n('bs_Q')),
+    }
+    source = [changes.get(name,(name,op,a,b)) for name,op,a,b in old['source'] if name not in deleted]
+    source += [(n('gap_square'),'*',n('tau_gap'),n('tau_gap')),
+               (n('root_base'),'*',n('UM'),n('ksn2')),
+               (n('signed_gap'),'-',n('tau_gap'),n('k')),
+               (n('gap_cross'),'*',n('root_base'),n('signed_gap')),
+               (n('four_cross'),'*',4,n('gap_cross')),
+               (n('first_unit'),'+',n('gap_square'),n('four_cross'))]
+    factors = [n('R15'),n('P17'),n('first_unit'),n('bs_q')]
+    last=factors[0]
+    for i,factor in enumerate(factors[1:]):
+        nxt=n(f'history_unit_product{i}')
+        source.append((nxt,'*',last,factor));last=nxt
+    aliases = {n(key):n(value) for key,value in
+               [('k','R10b'),('c','R10a'),('a','R12'),('d','R14'),('s','bs_odd'),('r','bs_packed')]}
+    removed = [(n('L15'),n('R15')),(n('L17'),n('P17')),
+               (n('L9'),n('R9')),(n('bs_q'),n('q'))]
+    for key,value in aliases.items():
+        pair=(key,value) if (key,value) in old['comparisons'] else (value,key)
+        assert pair in old['comparisons'];removed.append(pair)
+    assert len(set(removed))==10 and all(pair in old['comparisons'] for pair in removed)
+    assert (n('ic22'),n('R16')) in old['comparisons']
+    resolve=lambda value:aliases.get(value,value)
+    source=[(key,op,resolve(a),resolve(b)) for key,op,a,b in source]
+    pairs=[(resolve(a),resolve(b)) for a,b in old['comparisons'] if (a,b) not in removed]+[(last,1)]
+    aux=[n('tau_gap') if key==n('tau') else key for key in old['auxiliaries'] if key not in aliases]
+    source=sort_source(source,old['parameters']+aux)
+    counts=Counter('M' if op=='*' else 'A' for _,op,_,_ in source)
+    assert len(source)==old['operations']+3
+    assert counts==dict(M=old['multiplications']+3,A=old['additions_subtractions'])
+    assert len(pairs)==len(old['comparisons'])-9 and len(aux)==len(old['auxiliaries'])-6
+    return dict(old,source=source,comparisons=pairs,auxiliaries=aux,
+                operations=len(source),multiplications=counts['M'],additions_subtractions=counts['A'],
+                equations=len(pairs),witnesses=len(aux),positive_witnesses=len(aux),
+                core_prefix=prefix,unit_factors=factors,unit_register=last,
+                removed_parent_comparisons=removed,projection_aliases=aliases,
+                parent_operations=old['operations'],parent_auxiliaries=old['auxiliaries'],
+                root_coordinate=n('tau_gap'),exact_degree=None)
+
+
+def build(maps=parent.DEFAULT_MAPS,layout='auto'):
+    packet=rewrite(parent.build(maps,layout))
+    N=packet['scale_exponent']
+    packet.update(exact_degree=58*N+28,alternative_SOS_degree=84*N+16)
+    return packet
+
+
+def build_from_tiles(tiles,width,layout='auto'):
+    return build(parent.maps_from_tiles(tiles,width),layout)
+
+
+def polynomial_source(packet,*,sum_of_squares=False):
+    if sum_of_squares:return parent.native.parent.sos_source(packet['source'],packet['comparisons'])
+    source=list(packet['source']);last=None
+    for i,(a,b) in enumerate(packet['comparisons'][:-1]):
+        residual,square=f'history_unit_residual{i}',f'history_unit_square{i}'
+        source += [(residual,'-',a,b),(square,'*',residual,residual)]
+        if last is None:last=square
+        else:
+            total=f'history_unit_sum{i}';source.append((total,'+',last,square));last=total
+    source += [('history_outer_positive','+',last,1),
+               ('history_outer_product','*',packet['unit_register'],'history_outer_positive'),
+               ('history_output','-','history_outer_product',1)]
+    assert len(source)==packet['operations']+3*packet['equations']-1
+    return source,'history_output'
+
+
+def lift(packet,values):
+    env=execute(packet['source'],values);prefix=packet['core_prefix']
+    old={name:values[name] for name in packet['parameters']+packet['parent_auxiliaries'] if name in values}
+    old.update({name:env[target] for name,target in packet['projection_aliases'].items()})
+    old[prefix+'tau']=env[prefix+'root_base']+Fraction(values[prefix+'tau_gap']-1,2)
+    return old
+
+
+def project(packet,values,oldenv):
+    result={name:values[name] for name in packet['parameters']+packet['auxiliaries'] if name in values}
+    prefix=packet['core_prefix']
+    result[prefix+'tau_gap']=2*values[prefix+'tau']+1-2*oldenv[prefix+'UM']*oldenv[prefix+'ksn2']
+    return result
+
+
+def audit_identity(old,packet,values):
+    circuit,out=polynomial_source(packet);env=execute(circuit,values)
+    before=execute(old['source'],lift(packet,values))
+    rr={(a,b):parent.scalar(a,before)-parent.scalar(b,before) for a,b in old['comparisons']}
+    n=lambda value:packet['core_prefix']+value
+    factors=[1+rr[(n('L15'),n('R15'))],
+             1+rr[(n('L17'),n('P17'))]-rr[(n('ic22'),n('R16'))]*before[n('aux_square_gap')],
+             1-4*rr[(n('L9'),n('R9'))],
+             1-rr[(n('bs_q'),n('q'))]]
+    assert factors==[env[name] for name in packet['unit_factors']]
+    product=1
+    for f in factors:product*=f
+    removed=set(packet['removed_parent_comparisons'])
+    for pair,value in rr.items():
+        if pair in removed and any(name in packet['projection_aliases'] for name in pair):
+            assert value==0
+    others=[value for pair,value in rr.items() if pair not in removed]
+    assert others==[parent.scalar(a,env)-parent.scalar(b,env) for a,b in packet['comparisons'][:-1]]
+    assert env[out]==product*(1+sum(value*value for value in others))-1
+    sos,sosout=polynomial_source(packet,sum_of_squares=True)
+    assert execute(sos,values)[sosout]==(product-1)**2+sum(value*value for value in others)
+    assert project(packet,lift(packet,values),before)==values
+    if all(value>0 for value in values.values()):assert all(value>0 for value in lift(packet,values).values())
+
+
+def ledger(packet):
+    keys=('layout','tiles','K','scale_exponent','operations','multiplications',
+          'additions_subtractions','equations','witnesses','exact_degree','alternative_SOS_degree')
+    answer={key:packet[key] for key in keys}
+    e=packet['equations']
+    answer['polynomial']=dict(operations=packet['operations']+3*e-1,
+                              multiplications=packet['multiplications']+e,
+                              additions_subtractions=packet['additions_subtractions']+2*e-1)
+    return answer
+
+
+def degree_audit(packet):
+    t=sp.Symbol('t');names=packet['parameters']+packet['auxiliaries']
+    weights={name:1+i%3 for i,name in enumerate(names)}
+    n=lambda name:packet['core_prefix']+name
+    weights[n('tau_gap')]=1;weights[n('eta')]=weights[n('zeta')]=1
+    values={name:sp.Poly(weights[name]*t+i+1,t) for i,name in enumerate(names)}
+    source=[row for row in packet['source'] if not row[0].startswith(n('history_unit_product'))]
+    env=execute(source,values)
+    factors=[sp.Poly(env[name],t) for name in packet['unit_factors']]
+    outer=[sp.Poly(parent.scalar(a,env)-parent.scalar(b,env),t) for a,b in packet['comparisons'][:-1]]
+    N=packet['scale_exponent'];d=2*N
+    assert [v.degree() for v in factors]==[5*d+7,12*d-4,3*d+5,d]
+    degrees=[v.degree() for v in outer]
+    assert max(degrees)==4*d+10 and degrees.count(4*d+10)==1
+    top=1
+    for factor in factors:top*=factor.LC()
+    top*=sum(v.LC()**2 for v in outer if v.degree()==4*d+10)
+    assert top and sum(v.degree() for v in factors)+2*max(degrees)==packet['exact_degree']
+    assert 2*sum(v.degree() for v in factors)==packet['alternative_SOS_degree']
+    return dict(layout=packet['layout'],tiles=packet['tiles'],scale_exponent=N,
+                unit_degrees=[v.degree() for v in factors],outer_degrees=degrees,
+                exact_degree=packet['exact_degree'],SOS_degree=packet['alternative_SOS_degree'],
+                nonzero_top_sign=1 if top>0 else -1,
+                top_sha256=hashlib.sha256(str(top).encode()).hexdigest())
+
+
+def verify():
+    rng=random.Random(193217)
+    tables=[((1,0,1,0),),((3,2,5,1),(1,4,7,0)),parent.DEFAULT_MAPS,
+            tuple((2,i,4,i%3) for i in range(5))]
+    ledgers=[];positive=signed=0
+    for maps in tables:
+      for layout in ('contiguous','interleaved'):
+        old=parent.build(maps,layout);packet=build(maps,layout);ledgers.append(ledger(packet))
+        for sos in (False,True):
+            circuit,out=polynomial_source(packet,sum_of_squares=sos)
+            counts=Counter('M' if op=='*' else 'A' for _,op,_,_ in circuit)
+            assert len(circuit)==old['operations']+32
+            assert counts==dict(M=old['multiplications']+13,A=old['additions_subtractions']+19)
+        for case in range(64):
+            v={name:rng.randrange(1,7) if case<48 else rng.randrange(-4,5)
+               for name in packet['parameters']+packet['auxiliaries']}
+            if case<48:v[packet['root_coordinate']]=2*rng.randrange(1,7)+1
+            audit_identity(old,packet,v)
+            if case<48:positive+=1
+            else:signed+=1
+    sign_cases=0
+    for a in range(8):
+      for d in range(4):
+       for c in range(4):
+        delta=a*a+4*a+3
+        assert (d*d-delta*c*c)%4 != 3
+        for f in range(4):
+         K=delta*(f*f-1)
+         for U in range(4):
+          for y in range(4):
+           assert (K*(U*U-y*y)+y*y)%4 != 3
+           sign_cases+=1
+    example=build()
+    degree=[degree_audit(build(maps,layout)) for maps in tables[:3]
+            for layout in ('contiguous','interleaved')]
+    return dict(status='PASS_PCP_UNIFORM_AFFINE_PAIR_UNITS',ledgers=ledgers,
+                example=dict(ledger=ledger(example),source=example['source'],comparisons=example['comparisons'],
+                             auxiliaries=example['auxiliaries'],projection_aliases=example['projection_aliases']),
+                checks=dict(positive_integer_restorations_off_norm_zeros=positive,
+                            signed_complete_factor_residual_product_identities=signed,
+                            modulo_four_cases=sign_cases,full_Pell_witnesses_materialized=False),
+                degree_audits=degree,
+                scope='Exact same positive nonempty affine-pair word relation as the complete parent, '
+                      'under the explicit positive-root and six-definition bijection.')
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--write',action='store_true');args=parser.parse_args()
+    result=json.loads(json.dumps(verify()));path=Path(__file__).with_suffix('.json')
+    if args.write:path.write_text(json.dumps(result,indent=2)+'\n')
+    else:assert json.loads(path.read_text())==result,'receipt mismatch'
+    print(result['status'])
