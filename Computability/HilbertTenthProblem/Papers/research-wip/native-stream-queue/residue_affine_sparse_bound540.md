@@ -1,5 +1,10 @@
 # Removing dominated bounds in the sparse universal compiler
 
+> The [computed-scale successor](residue_affine_sparse_scale538.md) gives538
+> operations, seven comparisons and degree at most5091, with the same67
+> witnesses and complete positive zero set. This540 bound-pruning theorem
+> and its exact slack identity remain available independently.
+
 The [complete source](residue_affine_sparse_bound540.py) lowers the
 [551-operation compiler](residue_affine_sparse_factored.md) to
 **540 = 193M + 347A**, with **67 positive witnesses**, **8 comparisons**

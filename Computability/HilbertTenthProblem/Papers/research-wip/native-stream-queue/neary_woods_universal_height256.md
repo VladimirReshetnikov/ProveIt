@@ -1,5 +1,10 @@
 # A dominated terminal endpoint gives256 operations
 
+> The [terminal-bound successor](neary_woods_universal_terminal_bound255.md)
+> gives255 operations at the same43 witnesses and degree bound1384.
+> It removes the final endpoint from the height and derives its radix bound
+> from typed updates and transport; the256 theorem below remains unchanged.
+
 The [literal builder](neary_woods_universal_height256.py) removes one addition
 from the [257-operation history-scale compiler](neary_woods_universal_history_scale257.md).
 The default complete polynomial has **256=133M+123A**, **43 positive

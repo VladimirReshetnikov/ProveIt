@@ -36,7 +36,20 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [dominated-endpoint U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_height256.md)
+The latest explicit [terminal-bound U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_terminal_bound255.md)
+gives **254 certificate /255=133M+122A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most1384**. Only the initial word remains in the paid
+height. Native typing first bounds every update digit; the transport
+then bounds each terminal digit below the radix. Direct soundness and
+a positive forward height map preserve accepted inputs on valid shifted
+program slices, without assuming a positive inverse. The inherited finite
+partition family shifts down one operation: **267/212 with44 witnesses**,
+or **263/456 with43**. These are propagated-bound objectives for that
+family, not exact-degree or all-circuit optima. The E'=E−1 recipe and
+paid ordinary-input interface remain unchanged.
+
+The preceding explicit [dominated-endpoint U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_height256.md)
 gives **255 certificate /256=133M+123A polynomial operations**,
 one comparison,43 positive witnesses, four positive program parameters
 and degree **at most1384**. The computed terminal endpoint already exceeds
@@ -108,6 +121,15 @@ reach270/608 with44 witnesses; the fixed43-witness family reaches267/1344.
 Only the new factors' placement in selected inherited partitions is
 optimized, not all partitions of the enlarged factor set. The actual U9
 program/input contract and exact initialization counter remain paid.
+
+The [already-paid input-modulus obstruction](research-wip/native-stream-queue/complete75_input_modulus_register_obstruction.md)
+rejects a different degree shortcut: substituting H=4a+3 for Delta in
+the input-index bridge keeps87=48M+39A and19 witnesses, with formal degree187,
+but makes every valid compiler slice **EMPTY**. Eight other named paid
+moduli force 2dx+b to be1 or7 modulo8; for the standard odd d,b recipe,
+two input classes modulo4 are excluded. The latter is a scoped necessary
+condition, not a blanket theorem for other even-width input bridges.
+The established75/87 constructions and distinct86 statuses remain unchanged.
 
 A different [multiplicative-gamma86 shortcut](research-wip/native-stream-queue/complete75_multiplicative_gamma86_obstruction.md)
 replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
@@ -184,7 +206,38 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The [factored prime/action successor](research-wip/native-stream-queue/residue_affine_sparse_factored.md)
+The latest [terminal-bound sparse compiler](research-wip/native-stream-queue/residue_affine_sparse_terminal537.md)
+gives **517 certificate /537=193M+344A polynomial operations**,
+seven comparisons,67 positive witnesses and degree **at most5091**.
+It removes the final payload F from the height: h=E+x+eta. Native typing
+bounds the current and following payload words; exact transport then
+forces F below the radix and gives complete chronology. The positive map
+eta_new=eta_old+F preserves parent zeros. Its affine inverse can be
+nonpositive, so soundness is proved directly and no positive-zero
+bijection is claimed. The fixed U21, one program parameter E=3^e and
+ordinary positive x retain the same universal represented sets.
+
+The preceding [positive computed-scale sparse compiler](research-wip/native-stream-queue/residue_affine_sparse_scale538.md)
+gives **518 certificate /538=193M+345A polynomial operations**,
+seven comparisons,67 positive witnesses and degree **at most5091**.
+The scale P is the positive bound sum; its repunit relation becomes a
+unit. Local native rank and exponent recovery type the scale before a
+Mersenne residue excludes the negative sign, so no AND lane split is
+assumed prematurely. The complete positive zero set agrees with its
+540 parent on the same supplied coordinates. The actual U21 table,
+one fixed program parameter E=3^e, ordinary positive x and fully paid
+prefix/control/payload chronology remain unchanged.
+
+The [dominated sparse-bound predecessor](research-wip/native-stream-queue/residue_affine_sparse_bound540.md)
+gives **517 certificate /540=193M+347A**,8 comparisons,67 witnesses and
+degree at most10052. Nonnegative coefficient domination and the retained
+remainder equation remove eleven bound additions before native typing.
+A slack translation is an exact integer polynomial identity and a full
+positive-zero bijection with the corresponding551 form; its inverse may
+leave the positive domain off zero. These sparse refinements remain independent
+universal routes above255, Korec411 and the established75/87 frontier.
+
+The [factored prime/action predecessor](research-wip/native-stream-queue/residue_affine_sparse_factored.md)
 reduces the sparse prime-payload construction to **528 certificate /
 551=193M+358A polynomial operations**,8 comparisons,67 positive witnesses
 and degree **at most10052**. Seven prime selections and two action

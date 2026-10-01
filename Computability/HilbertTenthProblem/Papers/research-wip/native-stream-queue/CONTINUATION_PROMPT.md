@@ -14,7 +14,28 @@
 > The full compiler contract, both ratio slacks and `F>0` are retained.
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
-> The latest explicit [dominated-endpoint U9 polynomial](neary_woods_universal_height256.md)
+> The latest explicit [terminal-bound U9 polynomial](neary_woods_universal_terminal_bound255.md)
+> gives **254 certificate /255=133M+122A polynomial operations**,
+> one comparison,43 positive witnesses, four positive program parameters
+> and degree **at most1384**. Only the initial word remains in the paid
+> height. Native typing first bounds every update digit; the transport
+> then bounds each terminal digit below the radix. Direct soundness and
+> a positive forward height map preserve accepted inputs on valid shifted
+> program slices, without assuming a positive inverse. The inherited finite
+> partition family shifts down one operation: **267/212 with44 witnesses**,
+> or **263/456 with43**. These are propagated-bound objectives for that
+> family, not exact-degree or all-circuit optima. The E'=E−1 recipe and
+> paid ordinary-input interface remain unchanged.
+>
+> The255 shifted frontier is255/1384,257/1242,258/1196,259/858,
+> 260/606,261/560,262/458,263/412,264/306,265/276,266/230 and267/212.
+> The first four use43 witnesses and the rest44; fixed43 ends263/456
+> and fixed45 ends270/212. The inverse parent height gap can be nonpositive.
+> The proof derives terminal bounds from typed updates and exact transport,
+> then excludes the negative lower unit using the existing sentinel word
+> obstruction. It never presumes the endpoints fit the current-state height.
+>
+> The preceding explicit [dominated-endpoint U9 polynomial](neary_woods_universal_height256.md)
 > gives **255 certificate /256=133M+123A polynomial operations**,
 > one comparison,43 positive witnesses, four positive program parameters
 > and degree **at most1384**. The computed terminal endpoint already exceeds
@@ -26,7 +47,7 @@
 > This preserves the inherited propagated-bound scope, not an all-circuit
 > optimum. The E'=E−1 recipe and paid ordinary-input interface are unchanged.
 >
-> The uniformly shifted operation/degree-bound frontier is256/1384,
+> The256 predecessor's uniformly shifted operation/degree-bound frontier is256/1384,
 > 258/1242,259/1196,260/858,261/606,262/560,263/458,264/412,265/306,
 > 266/276,267/230 and268/212. The first four use43 witnesses and the rest44;
 > fixed43 ends264/456 and fixed45 ends271/212. Source guards reconstruct
@@ -104,6 +125,15 @@
 > The [mask-unit263 parent](neary_woods_universal_mask_unit263.md) retains
 > 252 certificate gates,4eq43w and degree at most3857; its selected
 > degree608 option costs273 with44 witnesses.
+>
+> The [already-paid input-modulus obstruction](complete75_input_modulus_register_obstruction.md)
+> rejects a different degree shortcut: substituting H=4a+3 for Delta in
+> the input-index bridge keeps87=48M+39A and19 witnesses, with formal degree187,
+> but makes every valid compiler slice **EMPTY**. Eight other named paid
+> moduli force 2dx+b to be1 or7 modulo8; for the standard odd d,b recipe,
+> two input classes modulo4 are excluded. The latter is a scoped necessary
+> condition, not a blanket theorem for other even-width input bridges.
+> The established75/87 constructions and distinct86 statuses remain unchanged.
 >
 > A different [multiplicative-gamma86 shortcut](complete75_multiplicative_gamma86_obstruction.md)
 > replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
@@ -260,7 +290,46 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > 134=64M+70A,21w5eq,degree at most748; zero duration costs two more gates.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
-> The [factored prime/action successor](residue_affine_sparse_factored.md)
+>
+> The latest [terminal-bound sparse compiler](residue_affine_sparse_terminal537.md)
+> gives **517 certificate /537=193M+344A polynomial operations**,
+> seven comparisons,67 positive witnesses and degree **at most5091**.
+> It removes the final payload F from the height: h=E+x+eta. Native typing
+> bounds the current and following payload words; exact transport then
+> forces F below the radix and gives complete chronology. The positive map
+> eta_new=eta_old+F preserves parent zeros. Its affine inverse can be
+> nonpositive, so soundness is proved directly and no positive-zero
+> bijection is claimed. The fixed U21, one program parameter E=3^e and
+> ordinary positive x retain the same universal represented sets.
+>
+> Its normalized uncoupled-unit option costs540=193M+347A, with514
+> certificate operations, nine comparisons,67 witnesses and degree at
+> most5345. Both forms retain the exact paid loader count. The smaller
+> pretyping minimum h>=3 suffices for weak-repunit and packed-word bounds;
+> dyadic recovery later gives h>=4. Terminal F may exceed h while staying
+> below the radix, so the inverse slack map must not be used for soundness.
+>
+> The preceding [positive computed-scale sparse compiler](residue_affine_sparse_scale538.md)
+> gives **518 certificate /538=193M+345A polynomial operations**,
+> seven comparisons,67 positive witnesses and degree **at most5091**.
+> The scale P is the positive bound sum; its repunit relation becomes a
+> unit. Local native rank and exponent recovery type the scale before a
+> Mersenne residue excludes the negative sign, so no AND lane split is
+> assumed prematurely. The complete positive zero set agrees with its
+> 540 parent on the same supplied coordinates. The actual U21 table,
+> one fixed program parameter E=3^e, ordinary positive x and fully paid
+> prefix/control/payload chronology remain unchanged.
+>
+> The [dominated sparse-bound predecessor](residue_affine_sparse_bound540.md)
+> gives **517 certificate /540=193M+347A**,8 comparisons,67 witnesses and
+> degree at most10052. Nonnegative coefficient domination and the retained
+> remainder equation remove eleven bound additions before native typing.
+> A slack translation is an exact integer polynomial identity and a full
+> positive-zero bijection with the corresponding551 form; its inverse may
+> leave the positive domain off zero. These sparse refinements remain independent
+> universal routes above255, Korec411 and the established75/87 frontier.
+>
+> The [factored prime/action predecessor](residue_affine_sparse_factored.md)
 > reduces the sparse prime-payload construction to **528 certificate /
 > 551=193M+358A polynomial operations**,8 comparisons,67 positive witnesses
 > and degree **at most10052**. Seven prime selections and two action
@@ -284,11 +353,20 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > standalone exponent predicate. Acceptance targets the fixed halting
 > control class with a positive existential payload. Raw705/88w has degree
 > at most1564. This independent route is above257,411 and75/87.
-> Further work can reduce the551 source's remaining selector/control
-> arithmetic or prove safe transport units while preserving the paid
-> prefix and complete positive converse. The fixed-modulus count shortcut
-> above does not transfer this loader to complete75's fixed cell radix;
-> the multiplicative-gamma86 shortcut must not be promoted again.
+> Keep x in h=E+x+eta: a two-step loader has L=1+B, so removing that
+> input bound permits the same count with x=B+1 and d_hat=1. For a fixed
+> powers-of-two program accepting2, this transfers a complete accepted
+> extension to the nonpower B+1; the retained height bound blocks the alias.
+>
+> A concrete unimplemented next lead is to reuse already paid prime and
+> action selector groups in an injective instruction-code assignment,
+> adding corrections only for repeated register/operation pairs. Targets
+> must use the same codes, the loader must remain0 and halt positive, and
+> the radix multiplier must exceed every code. Charge all resulting fixed
+> coefficients and preserve prefix contiguity, control and zero tests;
+> no further saving is established. The fixed-modulus count shortcut does
+> not transfer this loader to complete75's fixed cell radix, and neither
+> the multiplicative-gamma86 nor H-input-modulus shortcut may be promoted.
 >
 > The [two-stack substrate](two_stack_affine_input_step.md) has a two-operation
 > ordinary-input prefix. [Factored selectors](two_stack_factored_selector_step.md)

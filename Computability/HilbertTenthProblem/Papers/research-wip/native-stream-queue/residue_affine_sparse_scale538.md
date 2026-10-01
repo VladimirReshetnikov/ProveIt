@@ -1,5 +1,11 @@
 # A positive computed scale gives sparse universality in538 operations
 
+> The [terminal-bound successor](residue_affine_sparse_terminal537.md) gives537
+> operations with the same67 witnesses, seven comparisons and degree bound5091.
+> It derives the final payload's radix bound from typed transport. Its positive
+> forward map preserves the represented relation, without claiming a positive
+> inverse; the538 same-coordinate theorem below remains unchanged.
+
 The [literal source](residue_affine_sparse_scale538.py) improves the
 [540-operation sparse compiler](residue_affine_sparse_bound540.md) to
 **538=193M+345A**, with **67 positive witnesses**, **seven comparisons**
