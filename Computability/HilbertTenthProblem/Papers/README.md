@@ -34,9 +34,14 @@ frontiers alongside the historical handoff. The
 [complete half-binomial75 proof](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
 supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
-supplies the single-polynomial bound. The separate explicit
-[coupled-unit U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
-now gives262 certificate / **297=144M+153A polynomial operations**,
+supplies the single-polynomial bound. The latest explicit
+[positive-scale U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_positive_scale291.md)
+gives262 certificate / **291=142M+149A polynomial operations**,10 comparisons,
+49 positive witnesses, four positive program parameters and degree at most3980.
+Absorbing both native size bounds preserves positive zeros by an explicit
+coordinate bijection, including the shifted joint-index branch. Its
+[coupled297 parent](research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
+gives262 certificate / **297=144M+153A polynomial operations**,
 12 comparisons,51 positive witnesses, four positive program parameters
 and degree at most2311. It preserves the accepted outer relation through
 sign recovery and a conditional positive restoration; the supplied
@@ -79,7 +84,22 @@ initialization of literal Wang input uses two gates after a paid initial
 head/read predicate. The [packed tape successor](research-wip/native-stream-queue/wang_b_packed_tape.md)
 pays arbitrary-duration chronological reads and optional marks in139
 certificate /192 polynomial operations,18 comparisons,31 witnesses and
-degree at most232. Head motion, control and TM input coding remain open.
+degree at most232. That packet does not pay head motion, control or TM
+input coding.
+
+The [Wang tape-and-motion batch](research-wip/native-stream-queue/wang_b_packed_motion.md) additionally pays
+left/right/stay heads: **188 certificate /244=100M+144A polynomial**,
+19 comparisons,35 witnesses and degree at most316. Its existential endpoint
+projection is exactly non-erasing tape inclusion with dyadic initial/final
+heads. Finite program control and ordinary TM-input coding remain unpaid.
+
+The [chronological toggle-tape component](research-wip/native-stream-queue/langton_ant_packed_toggle_tape.md)
+costs **105 certificate /158=66M+92A polynomial**,18 comparisons,28 witnesses
+and degree at most124. A mixed native scale types both positive radices;
+all free-head endpoint pairs are realizable. Ant turns/motion, its periodic
+hardware background, the input perturbation and acceptance remain outside
+the component. These paid histories do not establish universal bounds.
+
 The [finite-game positive NOR compiler](research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes on every fixed acyclic option graph with
 one bilinear row per nonterminal. Its degree-at-most-four family grows
@@ -98,7 +118,10 @@ polynomial zeros; the87-operation,degree183 candidate remains unresolved.
 The [positive-index86 theorem](research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
 proves the unresolved86 candidate sound whenever its computed R>0,
 without assuming alpha>Z. R=0 is impossible; the negative-R branch
-remains unresolved, so the established75/87 bounds are unchanged.
+remains unresolved. The [index-gap restrictions](research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
+prove the main Pell index p odd globally; when R<0 and mu>0 they give
+n<p<=2n-3, with E<3p in the zero-wrap case. These are necessary conditions,
+not a universal86 theorem; the established75/87 bounds are unchanged.
 Native queue components retain their separate scope.
 
 - Every displayed system, machine table and count of the six articles was

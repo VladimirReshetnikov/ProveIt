@@ -41,8 +41,17 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [coupled-unit U9 universal polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
-now gives **262 certificate /297=144M+153A polynomial operations**,
+The latest explicit [positive-scale U9 polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_positive_scale291.md)
+gives **262 certificate /291=142M+149A polynomial operations**,
+10 comparisons,49 positive witnesses and four positive program parameters,
+with degree **at most3980**. Two positive scale parametrizations absorb
+native bound comparisons. The explicit inverse remains positive on the
+shifted joint-index branch, giving a positive zero-set bijection with the
+297 parent after the stated coordinate change. The separate75/87 frontier
+is unchanged.
+
+The [coupled297 parent](Papers/research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled.md)
+gives **262 certificate /297=144M+153A polynomial operations**,
 12 comparisons,51 positive witnesses and four positive program parameters.
 Its total degree is **at most2311**, including every program coordinate.
 The negative geometry-index branch is excluded by a joint population
@@ -111,6 +120,19 @@ also types every positive one-hot head, the radix and a positive duration.
 Heads remain independently chosen: motion, instruction/control selection
 and the published TM-to-Wang input encoding remain unpaid. No universal
 Wang-program bound is claimed.
+
+The [Wang tape-and-motion batch](Papers/research-wip/native-stream-queue/wang_b_packed_motion.md) additionally pays
+left/right/stay heads: **188 certificate /244=100M+144A polynomial**,
+19 comparisons,35 witnesses and degree at most316. Its existential endpoint
+projection is exactly non-erasing tape inclusion with dyadic initial/final
+heads. Finite program control and ordinary TM-input coding remain unpaid.
+
+The [chronological toggle-tape component](Papers/research-wip/native-stream-queue/langton_ant_packed_toggle_tape.md)
+costs **105 certificate /158=66M+92A polynomial**,18 comparisons,28 witnesses
+and degree at most124. A mixed native scale types both positive radices;
+all free-head endpoint pairs are realizable. Ant turns/motion, its periodic
+hardware background, the input perturbation and acceptance remain outside
+the component. These paid histories do not establish universal bounds.
 
 A separate [positive NOR compiler for finite game graphs](Papers/research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
@@ -246,8 +268,10 @@ retains its full strong equation.
   has exact signed parent identities and positive completeness. Its new
   [positive-index theorem](Papers/research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
   proves soundness whenever computed R>0, without alpha>Z. R=0 is
-  impossible; R<0 remains unresolved. This is not a universal86 bound.
-  These optimized results are not yet Lean formalized.
+  impossible; R<0 remains unresolved. The [index-gap theorem](Papers/research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
+  makes p odd globally and, for R<0 with mu>0, gives n<p<=2n-3;
+  zero wrap requires E<3p. These necessary conditions do not establish
+  a universal86 bound. These optimized results are not yet Lean formalized.
 - The [normalized sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
   gives a second complete universal route at **805 operations**,125 positive
   witnesses and degree205092. Fixed orientations and shared forced edge

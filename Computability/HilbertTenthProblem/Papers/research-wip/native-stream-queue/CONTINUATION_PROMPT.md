@@ -15,11 +15,14 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **297=144M+153A**,262 certificate operations,51 positive witnesses,
-> 12 comparisons and four positive program parameters, with degree
-> at most2311: [coupled native linear units](neary_woods_universal_joint_and_coupled.md).
-> It preserves the accepted outer relation through a conditional positive
-> restoration, not an asserted bijection of all supplied zeros. The
+> **291=142M+149A**,262 certificate operations,49 positive witnesses,
+> 10 comparisons and four positive program parameters, with degree
+> at most3980: [positive scale coordinates](neary_woods_universal_positive_scale291.md).
+> Absorbing two native bound comparisons gives an explicit positive
+> zero-set bijection with the [coupled297 parent](neary_woods_universal_joint_and_coupled.md),
+> which retains51 witnesses,12 comparisons and degree at most2311.
+> That parent's earlier coupling preserves accepted outer instances,
+> not every supplied positive tuple. The
 > [coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md)
 > gives301/degree-at-most1092,302/756 and304/608, all with51 witnesses.
 > The304 option costs257 certificate gates with16 comparisons. The exact
@@ -783,6 +786,20 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
+The latest [positive-scale291 source](neary_woods_universal_positive_scale291.md)
+keeps262=132M+130A certificate gates but removes two comparisons and two
+witnesses:291=142M+149A,10eq49w,four program parameters,degree at most3980.
+In each core replace X=q*w and X=r+beta by X=q*(r+b), b>0. The forward
+lift w_old=r+b,beta_old=q*(r+b)-r is positive before typing and gives an
+exact whole-polynomial identity. Conversely the coupled parent recovers
+X=2^(2r'+1),q=2^popcount(r'),r'=r or r-2; therefore w_old>r even on
+the shifted joint branch, and b=w_old-r>0. This gives a full positive
+zero-set bijection with297. Both cores' q,r dependency closures avoid
+the changed coordinates. Twelve ledgers,768 full output identities
+(384 signed),768 coordinate round trips and384 positive lifts are checked.
+The degree bound is3892+2*44=3980; the parent alternatives below retain
+smaller degree bounds. The separate75/87 frontier is unchanged.
+
 The [coupled linear-unit successor](neary_woods_universal_joint_and_coupled.md)
 replaces U=jc-(2r+1) by V=of-c in each auxiliary norm and adds
 Nl=V-jc+2K, K=k-hE. Each coupling saves two polynomial additions.
@@ -899,11 +916,47 @@ P=B^t. Bounded G plus J supplies a positive head in each row without
 borrowing. The folded comparison B(T+W-V)+T0=T+P*Tt is carry-free and
 recovers all chronological updates. Every genuine finite sequence has
 global_bound>=(3D+1)J-5>0 and a fresh full positive native extension.
-The139/192 relation allows unrelated heads in successive rows. Movement,
-instruction/control selection, jumps and the published TM-to-Wang input
-encoding remain open. No numerical universal Wang program or bound is
+The139/192 relation allows unrelated heads in successive rows. That packet
+does not pay movement, instruction/control selection, jumps or the
+published TM-to-Wang input encoding. No numerical universal Wang program or bound is
 claimed. Independent review added192 complete identities (96 signed)
 and96 physical prefixes/639 steps; outer paths are not full Pell zeros.
+
+The [Wang motion batch](wang_b_packed_motion.md) now pays head chronology
+as well:188=81M+107A certificate,19eq35w;244=100M+144A SOS,degree at
+most316. Four positive action hats give J=I+L+R+Stay and Move=L+R,
+so selector masks are canonical before typing. Twelve AND lanes at
+Scale=B*P^12 type both positive radices without reserved radix lanes.
+The paid folded head comparison B(H+MH-LH)+H0=H+P*Hf+(B/2)LH is
+proved by doubled-head digits H,2H,4H for left/stay/right; B/2=4D is
+computed. It forbids left at head1. Both transports and fresh positive
+native extensions hold at arbitrary nonempty duration. Its exact
+existential endpoint relation is dyadic H0,Hf and T0 AND Tf=T0.
+Program counter, conditional jumps, acceptance and the ordinary-input
+morphism remain unpaid. Independent review adds192 full identities
+(96 signed) and128 physical prefixes/1,616 steps, including355 left moves.
+
+The [toggle-tape component](langton_ant_packed_toggle_tape.md) uses four
+lanes at Scale=B*P^4 with B=4D, shared high packing suffixes, and
+B(T+H-2C)+T0=T+P*Tt. It costs105=48M+57A certificate,18eq28w and
+158=66M+92A SOS,degree at most124. Range-typed G plus J prevents zero
+heads and borrowing; exact reads give T_next=T XOR H in every row.
+The global slack is at least(D+1)J-2>0 on a sufficiently large dyadic
+window, so the native converse is complete. Every nonnegative endpoint
+pair admits a nonempty free-head path; two repeated flips suffice for
+equal endpoints and also exhibit a non-ant path. The actual turmite
+universality theorem uses periodic infinite hardware plus a finite input
+perturbation. Its loading, planar motion/turns and acceptance are absent;
+finite physical-ant fixtures do not pay them or establish a universal count.
+
+A concrete next task, **not implemented or counted as a current result**, is
+adapting291's positive scale parametrization to standalone prescribed AND64:
+replace X=q*w with X=q*(r+beta), reuse the bound gate, and remove w and
+the size comparison. The intended inverse uses the raw native conclusion
+X=2^(2r+1) and X/q>r. A full generic rewrite/domain audit is still needed;
+only then could the possible three-operation polynomial saving be applied
+to the frozen244 Wang or158 toggle source. Unit and definition projections
+are further proposals, not included savings.
 
 The [finite lattice-game NOR compiler](lattice_game_positive_nor.md) is a
 separate exact degree-four family. At each nonterminal use positive
@@ -964,6 +1017,18 @@ unchanged and does not impose R>0. Paying that condition is still an
 obligation. The source checks512 full restoration identities,256 signed;
 neither its fixtures nor the older negative-index family settle universal
 soundness. Established75/87 and independent-gamma87 status are unchanged.
+
+The committed [86 index-gap restrictions](complete75_weakened86_index_gap.md)
+strengthen that open branch without changing the circuit. The normalized
+strong norm gives p*c|m; the auxiliary odd index is congruent to±p modulo
+m, so p is odd globally. For R<0 and mu>0, set M=q^2-1 and write the
+wrapped target as omega*p-j*c,0<=j<=2M-1. ModuloY,
+j*psi_2(p)+2n-omega*p-lambda=0. Its positive size gives
+Y<=(2M-1)*psi_2(p)+3p-1. Ratio growth contradicts this if p=2n-1;
+hence n<p<=2n-3. At zero wrap omega=-1 and E divides2n+p-lambda<3p,
+so E<3p. Other odd gaps and the mu<0 branch remain unexcluded. The512
+modular fixtures,1,950 growth cases and90 incompatible-interval checks
+are partial audits, not full candidate zeros. No universal86 bound follows.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary

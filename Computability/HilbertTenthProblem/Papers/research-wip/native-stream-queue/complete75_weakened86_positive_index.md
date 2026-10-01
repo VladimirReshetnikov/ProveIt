@@ -13,6 +13,11 @@ The [checker](complete75_weakened86_positive_index.py) and
 original-source restoration and the new boundary arguments. The best
 established75-certificate/87-polynomial bounds remain unchanged.
 
+The [subsequent index-gap theorem](complete75_weakened86_index_gap.md)
+proves p odd globally and, on the remaining R<0,mu>0 branch, excludes
+p=2n-1 and requires n<p<=2n-3; zero wrap requires E<3p. These further
+necessary conditions still leave the86 candidate unresolved.
+
 ## 1. Definitions and signs available at any candidate zero
 
 Retain every fixed compiler hypothesis of
