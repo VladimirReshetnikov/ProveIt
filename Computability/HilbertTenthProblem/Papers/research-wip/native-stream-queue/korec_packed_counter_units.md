@@ -1,5 +1,10 @@
 # A 411-operation universal counter compiler with exact chronological units
 
+> The [positive-program successor](korec_packed_positive_program410.md)
+> gives410 operations with one program parameter and the same degree bound.
+> A [two-program-parameter variant](korec_packed_program_radix409.md) gives409
+> operations with uniform degree bound80458; the parameter interfaces differ.
+
 The explicit Korec route has a **411=147M+264A** successor to the
 [453-operation U22 compiler](korec_packed_counter_compiler.md). It has
 **50 positive witnesses**, one positive program parameter, ordinary

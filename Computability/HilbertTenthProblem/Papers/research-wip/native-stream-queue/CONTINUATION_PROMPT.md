@@ -14,7 +14,25 @@
 > The full compiler contract, both ratio slacks and `F>0` are retained.
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
-> The latest explicit [language-bound U9 polynomial](neary_woods_universal_initial_bound254.md)
+> The latest [product-scale group compiler](group_projective_product_radix_scale.md)
+> saves one multiplication by using q=32BP^a to type both history radices,
+> then simplifying the top AND mask to2. The illustrative ten-letter table
+> has **227 certificate /244=103M+141A operations**,6 comparisons,36 witnesses
+> and degree at most3396. It preserves the complete fixed-table accepted
+> relation with fresh native witnesses. The numerical universal subgroup
+> alphabet remains uninstantiated, so244 is not a numerical universal bound.
+>
+> The latest [native-bound U9 polynomial](neary_woods_universal_native_bound254.md)
+> keeps **254=133M+121A operations**,43 positive witnesses and four fixed
+> program parameters, while lowering its degree bound **1379 to1203**.
+> The already paid factor S in r=(q-1)S supplies X=q(S+beta)>r before
+> native typing. The recovered exponent makes the inverse parent gap
+> positive at zeros, proving a triangular positive-zero bijection on valid
+> shifted program/input slices. Eight bases with joint scale projection
+> are supported. Mapped fixed43 examples include258/756,260/514 and262/392;
+> these new weights have not yet been repartitioned exhaustively.
+>
+> The preceding explicit [language-bound U9 polynomial](neary_woods_universal_initial_bound254.md)
 > gives **253 certificate /254=133M+121A polynomial operations**,
 > one comparison,43 positive witnesses, four positive program parameters
 > and degree **at most1379**. The supplied height is used directly. Native
@@ -29,7 +47,7 @@
 > witnesses**, or **262/456 with43**. The degree212 floor applies only to
 > this propagated-bound objective; it is not a global circuit lower bound.
 >
-> The reoptimized finite frontier is254/1379,256/1237,257/1191,258/854,
+> Before the native-bound rewrite, the finite frontier is254/1379,256/1237,257/1191,258/854,
 > 259/601,260/555,261/454,262/408,263/302,264/272,265/228 and266/212.
 > The first four use43 witnesses and the remainder44. Fixed43 additionally
 > contains259/808,260/610 and262/456; fixed45 ends269/212. The original254
@@ -157,6 +175,16 @@
 > condition, not a blanket theorem for other even-width input bridges.
 > The established75/87 constructions and distinct86 statuses remain unchanged.
 >
+> The [positive-complement86 obstruction](complete75_positive_complement86_obstruction.md)
+> shows why supplying q-F as a positive coordinate does not restore F>0.
+> The literal86=48M+38A candidate has complete positive19-coordinate zeros
+> with R>q^4,C=0 and a negative input Pell root; the inverse F is negative.
+> An exact progression, irrational rotation and normalized auxiliary lift
+> prove an infinite family, with an integer-interval-certified concrete
+> recipe. This is a scalar mask-contract obstruction, not an instantiated
+> compiled false input or a new universal bound; its accepted-language
+> claim remains unproved by this packet.
+>
 > A different [multiplicative-gamma86 shortcut](complete75_multiplicative_gamma86_obstruction.md)
 > replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
 > Its valid compiler slices are **EMPTY**, including accepted inputs: a
@@ -184,7 +212,20 @@
 > not the possibility of a different86-operation universal construction.
 > Established75/87 and the separate independent-gamma87 status are unchanged.
 >
-> The independent [U21 counter-unit route](korec_packed_counter_units.md)
+> The [positive-program U21 compiler](korec_packed_positive_program410.md)
+> gives **409 certificate /410=147M+263A polynomial operations**, one
+> comparison,50 witnesses, one fixed program parameter and degree at most42589.
+> Exact symbolic loops show that programs0 and2 both diverge on every input;
+> the effective replacement0→2 permits a positive program coordinate and
+> removes its private subtraction. The direct proof includes height slack1.
+> A [fixed program-radix tradeoff](korec_packed_program_radix409.md)
+> uses **two fixed program parameters** E,C and gives **408 certificate
+> /409=148M+261A operations**, the same50 witnesses and uniform degree at
+> most80458. Fix dyadic C>=4 with C>E, then use h=x+eta,D=Ch. One C serves
+> all ordinary inputs; the proof includes h=2. Fixed-C algebraic maps may
+> leave the positive domain and do not assert identical supplied zeros.
+>
+> The preceding [U21 counter-unit route](korec_packed_counter_units.md)
 > gives **411=147M+264A**,410 certificate operations,1 comparison,
 > 50 positive witnesses and degree at most42589. One positive program
 > parameter and ordinary x retain the actual strongly universal input.
@@ -403,7 +444,9 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > costs for both current and target sums. Further code changes must preserve
 > injectivity, fixed radix bounds and the complete zero set after typing;
 > no optimality over code plans is claimed. The finite partitions after254
-> have now been reoptimized against their emitted degree dictionaries.
+> have been reoptimized for the initial-bound source. The newer native
+> bound changes eight base dictionaries again; rerun the full finite
+> partition search before promoting a new optimized frontier.
 > The504 variant requires an extra fixed dyadic program parameter; it does
 > not justify dropping E from the height in the one-parameter505 interface.
 > The fixed-modulus count shortcut does not transfer this loader to
@@ -430,7 +473,7 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > with degree and positivity counted. These are reviewed mathematical
 > proofs with exact source audits, not Lean formalizations.
 
-The latest matrix packet is the
+The preceding matrix packet is the
 [label-aligned lane planner](group_projective_label_aligned_lanes.md),
 which retains the [reindexed shared-pack compiler](group_projective_reindexed_shared_pack.md)
 as an explicit fallback. Its fixed-m candidate injections never reorder
@@ -2794,7 +2837,7 @@ can have scalar zero. This proves only a minimal dimension for that
 guard model, not for arbitrary mortality constructions. Both physical
 and guard scalar series changed, so the old6/9 exact-series lower bounds
 are respected. The cone packet keeps the stable named279 endpoint
-import; composing the latest equivalent compiler gives245/3504 for its
+import; composing the preceding equivalent compiler gives245/3504 for its
 illustrative table. Finite fixtures, all-word proofs and independent
 source/default reviews pass; the universal numerical alphabet and a
 certificate of a separately supplied arbitrary word remain uninstantiated.
@@ -2832,7 +2875,7 @@ two occurrences can give zero, even with an accepting bridge.
 This proves unrestricted5D affine2 mortality without a guard or a free
 regular-language constraint. It complements4D quadratic3; neither is a
 global minimum claim. Both packets retain the named279 endpoint import,
-and the latest245 compiler composes through their existence equivalence.
+and the preceding245 compiler composes through their existence equivalence.
 Separate arbitrary supplied-word certification remains unpaid. Exact
 all-word proofs, source/default checks and independent rational channel
 and repeated-reset reviews passed.

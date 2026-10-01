@@ -1,5 +1,10 @@
 # Repartitioning the recovered initial bound improves six degree points
 
+> The [native-bound successor](neary_woods_universal_native_bound254.md)
+> changes eight base degree dictionaries and reaches254/1203 and262/392/43w.
+> This packet's exact finite frontier applies to its original bound source;
+> the new degree dictionaries have not yet been exhaustively repartitioned.
+
 The [literal compiler](neary_woods_universal_initial_bound_partitions.py)
 reruns the complete finite partition search after the
 [254-operation initial-bound rewrite](neary_woods_universal_initial_bound254.md).

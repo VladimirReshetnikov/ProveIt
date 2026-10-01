@@ -1,5 +1,10 @@
 # Recovering the initial radix bound gives254 operations
 
+> The [paid native-bound successor](neary_woods_universal_native_bound254.md)
+> retains254 operations while lowering the default degree bound to1203.
+> Its triangular coordinate map is a positive-zero bijection on valid slices;
+> the partition results below retain their original native bound and scope.
+
 > The [complete finite repartitioning](neary_woods_universal_initial_bound_partitions.md)
 > improves six degree points, including258/854 and262/408, while retaining
 > the254/1379 minimum-cost and266/212 endpoints. The mapped schedules

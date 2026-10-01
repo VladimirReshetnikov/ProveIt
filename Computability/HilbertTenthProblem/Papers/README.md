@@ -36,7 +36,25 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [language-bound U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_initial_bound254.md)
+The latest [product-scale group compiler](research-wip/native-stream-queue/group_projective_product_radix_scale.md)
+saves one multiplication by using q=32BP^a to type both history radices,
+then simplifying the top AND mask to2. The illustrative ten-letter table
+has **227 certificate /244=103M+141A operations**,6 comparisons,36 witnesses
+and degree at most3396. It preserves the complete fixed-table accepted
+relation with fresh native witnesses. The numerical universal subgroup
+alphabet remains uninstantiated, so244 is not a numerical universal bound.
+
+The latest [native-bound U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_native_bound254.md)
+keeps **254=133M+121A operations**,43 positive witnesses and four fixed
+program parameters, while lowering its degree bound **1379 to1203**.
+The already paid factor S in r=(q-1)S supplies X=q(S+beta)>r before
+native typing. The recovered exponent makes the inverse parent gap
+positive at zeros, proving a triangular positive-zero bijection on valid
+shifted program/input slices. Eight bases with joint scale projection
+are supported. Mapped fixed43 examples include258/756,260/514 and262/392;
+these new weights have not yet been repartitioned exhaustively.
+
+The preceding explicit [language-bound U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_initial_bound254.md)
 gives **253 certificate /254=133M+121A polynomial operations**,
 one comparison,43 positive witnesses, four positive program parameters
 and degree **at most1379**. The supplied height is used directly. Native
@@ -146,6 +164,16 @@ two input classes modulo4 are excluded. The latter is a scoped necessary
 condition, not a blanket theorem for other even-width input bridges.
 The established75/87 constructions and distinct86 statuses remain unchanged.
 
+The [positive-complement86 obstruction](research-wip/native-stream-queue/complete75_positive_complement86_obstruction.md)
+shows why supplying q-F as a positive coordinate does not restore F>0.
+The literal86=48M+38A candidate has complete positive19-coordinate zeros
+with R>q^4,C=0 and a negative input Pell root; the inverse F is negative.
+An exact progression, irrational rotation and normalized auxiliary lift
+prove an infinite family, with an integer-interval-certified concrete
+recipe. This is a scalar mask-contract obstruction, not an instantiated
+compiled false input or a new universal bound; its accepted-language
+claim remains unproved by this packet.
+
 A different [multiplicative-gamma86 shortcut](research-wip/native-stream-queue/complete75_multiplicative_gamma86_obstruction.md)
 replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
 Its valid compiler slices are **EMPTY**, including accepted inputs: a
@@ -200,7 +228,20 @@ with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
 
-The independent [U21 counter-unit compiler](research-wip/native-stream-queue/korec_packed_counter_units.md)
+The [positive-program U21 compiler](research-wip/native-stream-queue/korec_packed_positive_program410.md)
+gives **409 certificate /410=147M+263A polynomial operations**, one
+comparison,50 witnesses, one fixed program parameter and degree at most42589.
+Exact symbolic loops show that programs0 and2 both diverge on every input;
+the effective replacement0→2 permits a positive program coordinate and
+removes its private subtraction. The direct proof includes height slack1.
+A [fixed program-radix tradeoff](research-wip/native-stream-queue/korec_packed_program_radix409.md)
+uses **two fixed program parameters** E,C and gives **408 certificate
+/409=148M+261A operations**, the same50 witnesses and uniform degree at
+most80458. Fix dyadic C>=4 with C>E, then use h=x+eta,D=Ch. One C serves
+all ordinary inputs; the proof includes h=2. Fixed-C algebraic maps may
+leave the positive domain and do not assert identical supplied zeros.
+
+The preceding [U21 counter-unit compiler](research-wip/native-stream-queue/korec_packed_counter_units.md)
 gives **410 certificate /411=147M+264A polynomial operations**, one
 comparison,50 positive witnesses and degree **at most42589**. Its literal
 strongly universal table uses one positive program parameter and ordinary
