@@ -1,5 +1,10 @@
 # Excluding gap nine by exact residue cutoffs and one wrap test
 
+The [gap-eleven successor](complete75_weakened86_gap_eleven.md) strengthens
+the same R<0,mu>0 branch to n<p<=2n-13. It also proves an effective finite
+necessary-domain reduction for every fixed odd gap, without bounding the
+gap. The86 candidate remains unresolved; this gap-nine proof is unchanged.
+
 Every positive zero of the [unchanged86 candidate](complete75_weakened_bound86_candidate.md)
 with **R<0 and mu>0** satisfies
 

@@ -1,5 +1,11 @@
 # Factor the native index directly through its ports: a269-operation U9 polynomial
 
+The [regrouped-family successor](neary_woods_universal_computed_ports_partitions.md)
+optimizes degree bounds across all16 inherited strong/scale bases, retaining
+this269 endpoint and improving intermediate options to275/1094,276/1048,
+277/734 and278/706. Its finite propagated-objective minimum608 is reached
+at279 operations; it is not an all-circuit or exact-degree lower bound.
+
 The [computed-fields275 construction](neary_woods_universal_computed_ports275.md)
 has an algebraic successor costing **269=136M+133A**, with **255=131M+124A
 certificate operations**, **five comparisons**, **43 positive witnesses**,
@@ -191,3 +197,13 @@ folding modes. Every surviving source register and unit factor matched;
 the complete degree dictionaries were unchanged in all64 composition
 contexts. These additional fixtures use the new partition-base builders
 and are off-zero algebra checks, not full positive Pell witnesses.
+
+Gibbs's second independent proof/source review and fresh default replay
+also pass, with no findings. Independent symbolic expansions verify both
+local identities. A separate numeral-aware executor checks256 complete
+output, retained-register and group identities, split evenly between
+signed and positive assignments, across sixteen contexts: both folding
+modes, both program interfaces and four parent schedules, including the
+fixed43-witness alternative. The erased fields and Ahat are reconstructed
+manually without the author's restoration helper. Live metadata, supplied
+domains, comparisons and degree records agree throughout.

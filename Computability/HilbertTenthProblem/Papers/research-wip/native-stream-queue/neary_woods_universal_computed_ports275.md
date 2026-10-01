@@ -1,5 +1,10 @@
 # Compute the three joined-AND fields: a275-operation U9 polynomial
 
+The [factored-port successor](neary_woods_universal_factored_ports269.md)
+gives269 operations at the same degree bound3853 and43 witnesses. It
+saves six additions by exact polynomial identities, with unchanged
+supplied coordinates and positive domain; this275 packet remains reproducible.
+
 The explicit U9 universal construction now costs **275=136M+139A**, with
 **261=131M+130A certificate operations**, **five comparisons**,
 **43 positive existential witnesses**, four positive program parameters

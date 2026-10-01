@@ -1,5 +1,10 @@
 # An explicit erasing-TM compiler with a paid framed input
 
+The [compact-record compiler](wang_b_erasing_bridge_compact.md) further
+reduces the same illustrative machine to41286 operations through four-bit
+records, an exact control quotient and shorter Wang macros. It preserves
+the general finite-machine theorem without instantiating a universal table.
+
 The [dependency-projection successor](native_binary_dependency_projection.md)
 now materializes the full illustrative Wang source and framed composition:
 312942 operations,25 comparisons,23763 witnesses and degree at most12092924.

@@ -29,7 +29,25 @@ and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_brac
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The latest explicit [computed-port U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_computed_ports275.md)
+The latest explicit [factored-port U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_factored_ports269.md)
+gives **255 certificate /269=136M+133A polynomial operations**,
+5 comparisons,43 positive witnesses and four positive program parameters,
+with degree **at most3853**. Factoring the native packed index and folding
+existing affine expressions saves six additions from275. The complete
+polynomial is identical on every integer assignment, with unchanged
+supplied coordinates and positive domain. The separate75/87 frontier is unchanged.
+
+The [new grouped degree tradeoffs](../research-wip/native-stream-queue/neary_woods_universal_computed_ports_partitions.md)
+optimize all factor partitions and permitted anchors over16 inherited
+strong-treatment/positive-scale bases after checksum specialization.
+They give275/degree-at-most1094,276/1048,277/734,278/706 and279/608,
+all with44 witnesses; the fixed43-witness family reaches276/1344.
+These are exact optima of the stated finite propagated-degree objective.
+The minimum bound608 is not a lower bound on exact degree or all circuits.
+Regrouping preserves positive zeros within each fixed base; different
+bases retain the same accepted relation on valid program slices.
+
+The preceding [computed-port U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_computed_ports275.md)
 gives **261 certificate /275=136M+139A polynomial operations**,
 5 comparisons,43 positive witnesses and four positive program parameters,
 with degree **at most3853**. Retained mask and history bounds make three
@@ -246,6 +264,15 @@ both guards and every returned arithmetic packet; it makes the literal
 large build feasible. This actual source count supersedes the earlier
 conservative312967 estimate for the example, not the universal75/87 bounds.
 
+The [compact record compiler](../research-wip/native-stream-queue/wang_b_erasing_bridge_compact.md)
+now realizes the same illustrative machine at **41286=15648M+25638A**,
+41210 certificate operations,25 comparisons,3153 witnesses and degree
+**at most1581824**. Four-bit records, an exact control quotient and shorter
+paired Wang macros give377 nonhalting binary states and2362 instructions.
+The complete framed ordinary-input source is emitted and every gate
+reaches its output. This improves the general finite compiler and example;
+it does not instantiate a universal table or a new universal bound.
+
 A separate [positive NOR compiler for finite game graphs](../research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
 For a fixed acyclic graph with N vertices,h nonterminals and E edges,
@@ -312,8 +339,11 @@ and exact input/main-root residues exclude all three small-X lanes.
 The [gap-nine successor](../research-wip/native-stream-queue/complete75_weakened86_gap_nine.md) now gives
 **n<p<=2n-11**, using uniform cutoffs in82 low-X lanes and exact tests on
 215 finite domains. The sole ratio-compatible case fails all four wrap
-classes. Gaps at least11 and mu<0 remain open; no universal improvement
-below87 is claimed.
+classes. The [gap-eleven successor](../research-wip/native-stream-queue/complete75_weakened86_gap_eleven.md)
+now gives **n<p<=2n-13** on R<0,mu>0: all1,413 remaining ratio domains
+fail. Its general theorem gives an effective finite reduction for each
+fixed odd gap, without bounding the gap. Gaps at least13 and mu<0 remain
+open; no universal improvement below87 is claimed.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the

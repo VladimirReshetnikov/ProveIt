@@ -1,5 +1,11 @@
 # Bounded dependency guards and a materialized Wang example
 
+The [compact-record successor](wang_b_erasing_bridge_compact.md) reduces
+the same illustrative complete example to41286 operations,25 comparisons,
+3153 witnesses and degree at most1581824. Its record, quotient and Wang
+macro changes are separate from the guard optimization audited here;
+this312942 source remains reproducible and neither example is universal.
+
 Two implementation-only guard changes replace full free-input dependency
 sets with their exact intersections with the names each guard queries.
 The emitted arithmetic sources, accepted guard contracts, positive-domain

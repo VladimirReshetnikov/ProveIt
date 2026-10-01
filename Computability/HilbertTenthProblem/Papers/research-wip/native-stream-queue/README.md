@@ -40,7 +40,25 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The latest explicit [computed-port U9 polynomial](neary_woods_universal_computed_ports275.md)
+The latest explicit [factored-port U9 polynomial](neary_woods_universal_factored_ports269.md)
+gives **255 certificate /269=136M+133A polynomial operations**,
+5 comparisons,43 positive witnesses and four positive program parameters,
+with degree **at most3853**. Factoring the native packed index and folding
+existing affine expressions saves six additions from275. The complete
+polynomial is identical on every integer assignment, with unchanged
+supplied coordinates and positive domain. The separate75/87 frontier is unchanged.
+
+The [new grouped degree tradeoffs](neary_woods_universal_computed_ports_partitions.md)
+optimize all factor partitions and permitted anchors over16 inherited
+strong-treatment/positive-scale bases after checksum specialization.
+They give275/degree-at-most1094,276/1048,277/734,278/706 and279/608,
+all with44 witnesses; the fixed43-witness family reaches276/1344.
+These are exact optima of the stated finite propagated-degree objective.
+The minimum bound608 is not a lower bound on exact degree or all circuits.
+Regrouping preserves positive zeros within each fixed base; different
+bases retain the same accepted relation on valid program slices.
+
+The preceding [computed-port U9 polynomial](neary_woods_universal_computed_ports275.md)
 gives **261 certificate /275=136M+139A polynomial operations**,
 5 comparisons,43 positive witnesses and four positive program parameters,
 with degree **at most3853**. Retained mask and history bounds make three
@@ -265,6 +283,15 @@ both guards and every returned arithmetic packet; it makes the literal
 large build feasible. This actual source count supersedes the earlier
 conservative312967 estimate for the example, not the universal75/87 bounds.
 
+The [compact record compiler](wang_b_erasing_bridge_compact.md)
+now realizes the same illustrative machine at **41286=15648M+25638A**,
+41210 certificate operations,25 comparisons,3153 witnesses and degree
+**at most1581824**. Four-bit records, an exact control quotient and shorter
+paired Wang macros give377 nonhalting binary states and2362 instructions.
+The complete framed ordinary-input source is emitted and every gate
+reaches its output. This improves the general finite compiler and example;
+it does not instantiate a universal table or a new universal bound.
+
 A separate [positive NOR compiler for finite game graphs](lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
 For a fixed acyclic graph with N vertices,h nonterminals and E edges,
@@ -485,8 +512,12 @@ and exact input/main-root residues exclude all three small-X lanes.
 The [gap-nine successor](complete75_weakened86_gap_nine.md) now gives
 **n<p<=2n-11**. Uniform cutoffs handle82 low-X lanes;215 finite domains
 leave one ratio-compatible case, excluded by all four wrap classes.
-Gaps at least11 and mu<0 remain open. Partial outer fixtures are not
-complete polynomial zeros; no universal86 proof follows.
+The [gap-eleven successor](complete75_weakened86_gap_eleven.md) now gives
+**n<p<=2n-13** on R<0,mu>0: all1,413 finite ratio domains fail. Its
+reusable theorem gives an effective finite necessary-domain reduction
+for every fixed odd gap, without a uniform gap bound. Gaps at least13
+and mu<0 remain open. Partial fixtures are not complete polynomial zeros;
+no universal86 proof follows.
 
 ## Research checkpoint, 2026-10-01
 
@@ -1350,6 +1381,8 @@ New research and the completed75-operation construction:
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [Factored native ports in U9](neary_woods_universal_factored_ports269.md) | **255 certificate /269=136M+133A**,5eq43w,four program parameters,degree at most3853. | Exact whole-polynomial identity on all integer assignments removes6 additions; supplied positive domain unchanged from275. |
+| [Regrouped computed-port family](neary_woods_universal_computed_ports_partitions.md) | Factored frontier269/3853 through279/608; new275/1094,276/1048,277/734,278/706 use44w. Fixed43w reaches276/1344. | Exact16-base factor-partition/anchor search for propagated degree bounds. Same positive zeros within a fixed specialized base; valid-program outer equivalence across bases. Minimum bound608 is not an exact-degree or all-circuit lower bound. |
 | [Computed native ports in U9](neary_woods_universal_computed_ports275.md) | **261 certificate /275=136M+139A**,5eq43w,four program parameters,degree at most3853. Mapped lower-degree285/608/44w; fixed43w282/1344. | Positive outer margins compute three native truth fields. One- and two-field modes are positive-zero graph bijections; all-fields mode preserves accepted outer instances after private sign normalization. Twelve selected parent schedules only; no new partition optimum. |
 | [Duration-floor U9 polynomial](neary_woods_universal_duration_floor282.md) | **262 certificate /282=139M+143A**,7eq46w,degree at most3980; lower-degree292/608/47w. | Input scale above the duration removes its bound. Positive forward lift and valid-program padding completeness; retained historical predecessor of275. |
 | [Positive mask-gap U9 polynomial](neary_woods_universal_mask_gap285.md) | **262 certificate /285=140M+145A**,8eq47w,four program parameters,degree at most3980. Low degree:295=140M+155A/608,257 certificate,13eq48w; fixed47w:292/1344. | Positive zero-set bijection with loader288; retained scale equality supplies sound slack positivity, typed recoder supplies the inverse. Inherited completeness remains scoped to valid program slices. |
@@ -1374,6 +1407,7 @@ New research and the completed75-operation construction:
 | [Non-erasing TM-to-Wang compiler](wang_b_nonerasing_tm_compiler.md) | Example with one nonhalting state **642=285M+357A**,566 certificate,25eq83w,degree at most16124 on ordinary positive input; paired-word child454. | Explicit Theorem7 instruction expansion, paid pair loader and initialized finite blank exterior prove full equivalence for every fixed total non-erasing binary TM. This packet supplies the non-erasing stage; the record-compiler successor now supplies erasing-to-non-erasing microcode. No universal table is instantiated;642 is not a universal bound. |
 | [Finite erasing-TM record compiler](wang_b_erasing_bridge_compiler.md) | Default1481 nonhalting binary states,2962 rows,19254 Wang instructions; paid loader190=94M+96A,16eq38w,degree at most402. | Explicit finite erasing-to-non-erasing simulation and framed ordinary-input map for every fixed total binary TM. No instantiated universal table/input slice. |
 | [Dependency projection and materialized record example](native_binary_dependency_projection.md) | **312866 certificate /312942=118706M+194236A**,25eq23763w,degree at most12092924; every gate reaches the output. | Exact finite-set projection preserves two guards and all returned arithmetic packets. Literal large Wang child plus paid record loader; illustrative source count, not a universal bound. |
+| [Compact erasing-TM record compiler](wang_b_erasing_bridge_compact.md) | **41210 certificate /41286=15648M+25638A**,25eq3153w,degree at most1581824;377 nonhalting binary states,2362 Wang instructions. | Four-bit records, exact control quotient and variable-length paired macros. Complete emitted ordinary-input example and general finite-machine theorem, not an instantiated universal table. |
 | [Finite-game positive NOR compiler](lattice_game_positive_nor.md) | For N vertices,h nonterminals,E edges: E+3h certificate, N+h witnesses; target polynomial E+3h+3N+2,degree4 if h>0. | Complete Boolean outcome projection on each fixed acyclic graph. All legal options and predecessor closure matter; graph size and the primary unbounded-position input interface remain unpaid. |
 | [Two-core U9 universal polynomial](neary_woods_universal_joint_and_units.md) | **256 certificate /303=144M+159A polynomial**,16eq,51w,four positive program parameters,degree at most2285. Unnormalized units:252 certificate /305=142M+163A,18eq,51w,degree at most1475. | Six norm units plus one checksum, then two independent strong normalizations. Full positive input relation; fresh canonical auxiliaries preserve completeness. |
 | [Joint recoder/history AND](neary_woods_universal_joint_and.md) | **246 certificate /356=155M+201A raw polynomial**,37eq,64w,four positive program parameters,degree at most580. | Paid lower-output bound and pretyping low-block bounds recover both AND graphs from one concatenation. Fresh native extensions prove outer-coordinate equivalence; no full old/new witness bijection. |
@@ -1396,7 +1430,7 @@ New research and the completed75-operation construction:
 | [Dyadic-duration native units](native_binary_dyadic_duration_units.md) | Width2:191 operations,39w,degree382; lower-degree193/244. | Complete two-core recoder graph, positive projected ports and independent canonical strong witnesses. Generic normalized cost190+mu(D). |
 | [Shared counter input loader](binary_tag_shared_counter_loader.md) | Incremental8=5M+3A,1eq,1w with actual shared Q-1; local subtraction gives9. Boundary output degree2. | Fixed word blocks, typed recoder input and exact counter exponent are explicit contracts. Off-zero correction and coefficient-sign caveats retained; no complete universal count. |
 | [Fixed binary-tag halt bridge](binary_tag_fixed_halt_bridge.md) | One fixed production and equal-content block morphism on valid clockwise-TM simulation inputs; all halts are singleton b. | Primary stage-table index exclusion proves one pending halt object. That packet alone leaves the exact dyadic counter unpaid; later separate recoder/loader components are listed above. No new universal operation bound. |
-| [Weakened-bound86 candidate](complete75_weakened_bound86_candidate.md) / [positive-index soundness](complete75_weakened86_positive_index.md) / [index-gap restrictions](complete75_weakened86_index_gap.md) / [gap-three exclusion](complete75_weakened86_gap_three.md) / [gap-five exclusion](complete75_weakened86_gap_five.md) / [gap-seven exclusion](complete75_weakened86_gap_seven.md) / [gap-nine exclusion](complete75_weakened86_gap_nine.md) | **Unresolved:**86=48M+38A,19w,degree203; exact signed parent identity and positive completeness. | R>0 is sound via101 and R=0 impossible. Globally p is odd; R<0,mu>0 requires n<p<=2n-11: gap nine uses82 uniform low-X cutoffs and215 finite domains; its sole ratio survivor fails all four wrap classes. Earlier gap-seven/five/three exclusions remain reproducible; zero wrap E<3p. Gaps at least11 and mu<0 remain open. No full false-input zero or universal86 proof; established75/87 unchanged. |
+| [Weakened-bound86 candidate](complete75_weakened_bound86_candidate.md) / [positive-index soundness](complete75_weakened86_positive_index.md) / [index-gap restrictions](complete75_weakened86_index_gap.md) / [gap-three exclusion](complete75_weakened86_gap_three.md) / [gap-five exclusion](complete75_weakened86_gap_five.md) / [gap-seven exclusion](complete75_weakened86_gap_seven.md) / [gap-nine exclusion](complete75_weakened86_gap_nine.md) / [gap-eleven exclusion](complete75_weakened86_gap_eleven.md) | **Unresolved:**86=48M+38A,19w,degree203; exact signed parent identity and positive completeness. | R>0 is sound via101 and R=0 impossible. Globally p is odd; R<0,mu>0 requires n<p<=2n-13: gap eleven excludes1,413 finite ratio domains. Every fixed odd gap has an effective finite necessary-domain reduction, with no uniform gap bound. Earlier exclusions remain reproducible; zero wrap E<3p. Gaps at least13 and mu<0 remain open. No full false-input zero or universal86 proof; established75/87 unchanged. |
 | [Normalized strong history unit](pcp_normalized_strong_history_units.md) | Generic native-unit polynomial saves1 operation (+1M−2A), with certificate+2M and one fewer comparison. Tag **196=93M+103A**,28w,degree1015 including singleton; nonempty194/1014. | Same positive outer projection through sign-safe normalization and fresh five-auxiliary reconstruction. Single-core packet; the later557 composition supplies ordinary universal input. |
 | [Four-tile binary tag history](binary_tag_four_tile_history.md) | **195** operations for a nonempty matching history; **197=92M+105A**,28 positive witnesses,degree667 including the initially halted singleton. | Exact halting equivalence on the stated word slices. Its input is an encoded-tag sentinel; the later557 composition pays the fixed-universal ordinary-input bridge. |
 | [Sparse oriented machine rules](sparse_tm_rewriting.md) | Exact symbolic rule saving `t*ell-k_R-k_L`; local moves share forced edge repairs. | Fixed state orientations preserve deterministic runs and accepting cleanup. A before-oriented start preserves the existing ordinary-input prefix; arithmetic compilation rebuilds the actual table. |

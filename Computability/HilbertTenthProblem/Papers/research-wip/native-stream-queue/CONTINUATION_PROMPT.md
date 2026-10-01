@@ -15,15 +15,20 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **275=136M+139A**,261 certificate operations,43 positive witnesses,
+> **269=136M+133A**,255 certificate operations,43 positive witnesses,
 > 5 comparisons and four positive program parameters, with degree
-> at most3853: [computed native ports](neary_woods_universal_computed_ports275.md).
-> Retained outer margins make three computed truth fields positive.
-> One- and two-field modes are positive-zero graph bijections; the all-fields mode
-> preserves accepted outer instances using the private checksum/index
-> sign normalization. The low-degree option is285=136M+149A/degree-at-most608,
-> 256 certificate,10eq44w; the fixed43-witness alternative is282/1344.
-> These are mapped selected schedules, not a rerun partition search.
+> at most3853: [factored native ports](neary_woods_universal_factored_ports269.md).
+> Six additions disappear through exact identities in private registers.
+> The whole polynomial and positive domain are unchanged from
+> [computed275](neary_woods_universal_computed_ports275.md), on every integer assignment.
+> The [new grouped family](neary_woods_universal_computed_ports_partitions.md)
+> gives279/degree-at-most608 with44 witnesses; the fixed43-witness
+> alternative is276/1344. It optimizes all factor groups/anchors over16
+> inherited strong/scale bases for the stated propagated-degree objective.
+> The bound608 is not a lower bound on exact degree or all circuits.
+> Within each fixed specialized base regrouping preserves positive zeros;
+> across bases completeness retains the inherited valid program slices.
+> The former mapped275/3853 through285/608 family remains reproducible.
 > The [duration-floor282 predecessor](neary_woods_universal_duration_floor282.md)
 > retains262 certificate gates,7eq46w and degree at most3980. Its
 > [positive-mask-gap285 parent](neary_woods_universal_mask_gap285.md)
@@ -806,7 +811,42 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The current [computed-port275 source](neary_woods_universal_computed_ports275.md)
+The current [factored-port269 source](neary_woods_universal_factored_ports269.md)
+uses the exact identity
+r=(q-1)[1+A+(q+1)(Bprime+(q-1)Z)] for the packed native index after
+F1=A-Z,F2=Bprime-Z,F0=q-A-F2-1. Folding the already-paid A+1 and
+recoder Ahat-1 expressions saves six additions in all. This gives
+255 certificate /269=136M+133A,5eq43w and degree at most3853.
+Every retained register and the complete polynomial are identical on
+arbitrary integer assignments; supplied coordinates and positive domain
+are unchanged. The intermediate factorization costs272. No new sign or
+rank theorem is used for this arithmetic rewrite.
+
+The [regrouped computed-port family](neary_woods_universal_computed_ports_partitions.md)
+removes the checksum before searching the16 inherited strong/positive-scale
+bases. The exact subset DP covers every factor partition and every
+possible single anchor for each group count. Factoring the same private
+port graph subtracts6 from every cost while preserving its polynomial
+and propagated degree, so it preserves the finite optimization result.
+The final cost/degree-bound frontier is269/3853,270/3437,271/3391,
+272/2273,273/1505,274/1459,275/1094,276/1048,277/734,278/706,279/608.
+The first three use43 witnesses; the rest use44. The exact43-witness
+frontier is269/3853,270/3437,271/3391,272/2380,274/1810,276/1344.
+Both program-bound interfaces and the separate45-witness stratum remain
+explicit. The minimum propagated objective608 is attained, but is not
+a lower bound on exact polynomial degree, arbitrary circuits, different
+kernel rewrites or other finalizers.
+Within each fixed specialized base the checksum-one coupled theorem
+forces every factor to1, so every grouping has the same positive zeros.
+Across different strong/scale bases the theorem is equality of accepted
+ordinary-input instances on valid program slices. Author/peer checks
+cover352 optimized ledgers and64 additional schedules, with full grouped
+and factored outputs; they are algebraic checks, not full Pell zeros.
+The next arithmetic target is a cheaper guarded native/port subgraph or
+a degree improvement outside this now-searched family. No such result
+is presumed. The separate75/87 frontier is unchanged.
+
+The preceding [computed-port275 source](neary_woods_universal_computed_ports275.md)
 computes F1=joined_A-F3,F2=joined_B-F3 and F0=q-joined_A-F2-1.
 Retained mask/global bounds prove all three positive at zeros before
 native typing. One- and two-field modes give positive-zero graph bijections.
@@ -827,9 +867,8 @@ apply to signed assignments; positivity is claimed at zeros only.
 Root, Gibbs and author full proof/source/fresh reviews pass; an additional
 independent executor checks288 complete outputs,144 signed. Current group
 metadata is remapped with the product aliases, including checksum removal.
-A next arithmetic target is recomputing grouping/strong-treatment degree
-tradeoffs after this checksum specialization. Better degree at fixed cost
-is a research possibility; no further operation saving is presumed.
+The later exact regrouping above completes the grouping/strong-treatment
+search left open by this selected-schedule packet.
 
 The [duration-floor282 source](neary_woods_universal_duration_floor282.md)
 reuses the input bound to set q=x+duration+input_slack. Then B-1 exceeds
@@ -1191,8 +1230,25 @@ The earlier312967 conservative estimate remains valid historically.
 This is an illustrative fixed erasing machine, not an instantiated
 universal table or numerical universal bound.
 
+The [compact record successor](wang_b_erasing_bridge_compact.md) now
+reduces that example to an actual41286=15648M+25638A polynomial,
+41210 certificate,25eq3153w,degree at most1581824. Four-bit record symbols
+are a checked restriction/relabeling of the old block protocol. An
+all-row control bisimulation reduces764 nonhalting binary states to377;
+variable-length paired Wang macros emit2362 instructions and725 jumps,
+with3087 chronological edges. The child costs41094/degree-at-most790912.
+Its width8 framed loader costs189=93M+96A,142 certificate,16eq38w,
+degree at most348, with y=40285+8182272*r+2048*z. The complete disjoint
+composition pays three more square/sum gates, and every gate reaches
+the output. This is the same general finite erasing-TM compiler theorem,
+including the initially halted table; it instantiates no universal table.
+An independent full proof/source/fresh review checks52 full-record traces,
+720 multi-state Wang macros and70 direct paired-input words. Those
+finite traces supplement the exact simulation and positive-converse proof.
+The312942 predecessor remains reproducible.
+
 Next Wang work is a concrete universal transition table with its proved
-ordinary-input slice, or a smaller record/control compiler. The
+ordinary-input slice, or further record/control compiler reductions. The
 [2014 primary paper](https://mural.maynoothuniversity.ie/id/eprint/12409/1/Woods_Wang_2014.pdf),
 Lemma5, printed p637, gave only the copying overview; the new finite
 record compiler supplies an explicit implementation. The imported
@@ -1311,7 +1367,7 @@ integer strictly between-H andH, forces j=0, and contradicts R<0.
 Both independent full reviews/fresh replays pass, including independent
 closed coefficient and residue audits. These are necessary-domain and
 component checks, not constructed complete candidate zeros.
-The [gap-nine successor](complete75_weakened86_gap_nine.md) now gives
+The [gap-nine successor](complete75_weakened86_gap_nine.md) gives
 **n<p<=2n-11** on R<0,mu>0. The residue/growth split leaves X=2^p with
 odd p<57, or X+1<2^18. The latter has82 lanes(q,w); exact integer
 induction cutoffs identify the input index and force a divisible residue
@@ -1322,9 +1378,27 @@ The remaining q=16,p=21,w=512,s=2 fixture satisfies both ratios, but
 its four required wrap residues1292,4078,2454,5240 all exceed j<=509.
 It is not a full candidate zero. Both full independent reviews and fresh
 replays pass, with independently generated coefficient, tail-cutoff and
-wrap certificates. Remaining work concerns odd gaps at least11 or mu<0,
-preserving the actual main root and full compiler relation. The literal86
-source and established75/87 bounds do not change.
+wrap certificates.
+
+The [gap-eleven successor](complete75_weakened86_gap_eleven.md) now proves
+**n<p<=2n-13** on R<0,mu>0. Its reusable theorem makes every fixed odd
+gap g an effective finite necessary-domain search: either X=2^p with
+3p<19g, or X+1<2^(2g), giving finitely many actual compiler lanes.
+The exact packing identity K-MC=M((q-1)C+q(alpha+2dx))+positive_mask_term
+makes the residue Theta positive without the former small-q restriction.
+For low X, e(p)=floor((h(p-g)-2(g+1))/(2g)) and e(p+2g)=e(p)+h
+prove uniform tail cutoffs across every odd residue class, including h<g.
+The retained full input congruence and main norm then force j=0,R>0,
+excluding that tail. This is not a uniform bound on g.
+For g=11,1,414 compiler lanes have cutoffs69..317. Their finite residue
+filters leave1,113 low-X triples and300 power-X triples. All1,413 ratio
+domains fail exact monotone endpoint tests:2,826 coefficient-sign
+certificates,2,276 distinct arrays and2,720 Horner endpoint checks.
+General-cutoff fixtures include gaps13,21,51,101, but claim only the
+proved finite reduction at those gaps, not their exclusion. Remaining
+work concerns odd gaps at least13 or mu<0 while retaining the actual
+main root, full strong norm and both ratios. The literal86 source and
+established75/87 bounds do not change.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary
