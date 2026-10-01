@@ -1,5 +1,12 @@
 # A paid finite orbit for residue-affine maps
 
+The later [sparse prime-payload compiler](residue_affine_sparse_universal.md)
+pays an ordinary-input doubling prefix for the actual U21 universal body:
+674 operations,81 positive witnesses, one fixed program parameter E=3^e
+and raw positive x, with degree at most10416. Its branching prefix and
+halting control-class endpoint are separate from this packet's fixed-map,
+fixed-integer orbit theorem; no Collatz universality claim is added here.
+
 The [literal compiler](residue_affine_packed_history.py) gives a fixed-arity
 Diophantine representation of arbitrarily long finite trajectories of a fixed
 positive residue-affine map. The ordinary starting integer and target enter

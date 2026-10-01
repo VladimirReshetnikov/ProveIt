@@ -36,7 +36,28 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [offset-shifted U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_offset258.md)
+The latest explicit [positive-history-scale U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_history_scale257.md)
+gives **256 certificate /257=133M+124A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most1384**. It computes the history scale from the positive
+global sum and retains its repunit relation as an integer unit. Native
+scales are typed before a reserved AND lane excludes the negative sign.
+The slack map beta_new=beta_parent+1 is a positive-zero bijection on valid
+program/input slices; it is not an arbitrary-point polynomial identity.
+The offset parameter retains the E'=E−1 recipe and ordinary input is unchanged.
+
+The new [all-factor history-scale search](research-wip/native-stream-queue/neary_woods_universal_history_scale_partitions.md)
+optimizes all partitions and either finalizer across sixteen native bases.
+Its operation/degree-bound frontier is257/1384,259/1242,260/1196,261/858,
+262/606,263/560,264/458,265/412,266/306,267/276,268/230 and269/212.
+The first four use43 witnesses and the rest44; fixed43 witnesses also
+reach265/456. The endpoint is **269=133M+136A**. These are exact optima
+for the finite propagated-bound objective, not exact-degree or all-circuit
+lower bounds. Within a fixed valid-program base, regrouping preserves
+positive zeros; across native bases the inherited projections remain.
+The separate75/87 frontier is unchanged.
+
+The preceding explicit [offset-shifted U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_offset258.md)
 gives **257 certificate /258=133M+125A polynomial operations**,
 one comparison,43 positive witnesses, four positive program parameters
 and degree **at most3861**. Its fixed offset parameter represents E−1;
@@ -47,6 +68,12 @@ retains the old program recipes and the same positive coordinates on
 valid slices, excluding a negative transport unit by the encoded input's
 forbidden suffix. Mapped258 schedules give269/608 with44 witnesses and
 266/1344 with43; these selected schedules are not an exhaustive search.
+
+The [preceding shifted-offset partition search](research-wip/native-stream-queue/neary_woods_universal_offset_partitions.md)
+uses the same E' program recipe but the older history-scale definition.
+Its exact sixteen-base frontier includes265/1112,266/1066,267/742 and
+268/712 with44 witnesses, ending at269/608. These historical bounds
+belong to a separate family from the new257 history-scale search.
 
 The separate [all-factor history-unit search](research-wip/native-stream-queue/neary_woods_universal_history_unit_partitions.md)
 keeps the older E parameter meaning and searches32 bases: all sixteen
@@ -116,7 +143,7 @@ positive input directly. Shared register-based control codes, computed
 truth fields and three sign-proved chronological units preserve the full
 positive halting converse. The final polynomial is a nine-factor product
 minus1; an SOS alternative costs412. This is a complete independent
-universal route, above258 and the established75/87 bounds.
+universal route, above257 and the established75/87 bounds.
 
 The preceding independent [packed-register compiler](research-wip/native-stream-queue/korec_packed_counter_compiler.md)
 instantiates the actual strongly universal U22 machine at
@@ -129,14 +156,27 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
+The independent [sparse prime-payload compiler](research-wip/native-stream-queue/residue_affine_sparse_universal.md)
+gives **651 certificate /674=249M+425A polynomial operations**,
+eight comparisons,81 positive witnesses and degree **at most10416**.
+One fixed positive program parameter E=3^e and ordinary positive x supply
+the actual U21 universal input. A counted branching prefix doubles the
+payload exactly x times; its count equation costs three gates and one
+comparison within the fully paid chronology. The deterministic body is
+a total residue-affine map. The sparse compiler uses34 body branches and
+two prefix edges, avoiding expansion of the body's223092870-row residue
+table. Its target is a halting control class with positive existential
+payload. This complete independent route remains above257,411 and the
+established75/87 bounds.
+
 The [packed residue-affine history compiler](research-wip/native-stream-queue/residue_affine_packed_history.md)
 pays a fixed-arity, unbounded-duration orbit relation for each fixed
 positive residue-affine map. Its shortcut-Collatz example costs
 **134=64M+70A**,21 positive witnesses, five comparisons and degree
 **at most748**; allowing a zero-step orbit costs two more operations.
-This does not assert Collatz universality or convergence. The related
-prime-encoded counter substrate still needs its separate paid ordinary-input
-exponent loader before any numerical universal claim.
+This does not assert Collatz universality or convergence. That orbit packet
+leaves prime-power ordinary-input loading separate; the sparse universal
+successor above pays it inside a branching prefix.
 
 The [paid queue sentinel fold](research-wip/native-stream-queue/queue_causality_sentinel_fold.md)
 gives fixed-horizon cyclic-tag certificates with at most14T-2 operations
