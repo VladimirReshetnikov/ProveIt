@@ -35,6 +35,8 @@
 \newtheorem{remark}[theorem]{Remark}
 % ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a second unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Pp}{\mathbb P}
 \newcommand{\R}{\mathbb R}
@@ -191,6 +193,12 @@ here, an entropy there) and $\delta$ mean different things in the two
 articles. The growing early-coordinate complement of the first question
 of \cref{sec:future} is not treated there and remains open.
 \end{ednote}
+% ed. (2026-10-01): the logarithmic slice of that question is now treated (batch 71).
+\begin{ednotelater}
+Its logarithmic slice $r_n\asymp\log n$ is now treated, for the overlap
+only, by a later article; see the note after that question in
+\cref{sec:future}.
+\end{ednotelater}
 
 \subsection{Relation to existing methods}
 Exponential-family conditioning and finite-block approximation have a
@@ -1476,6 +1484,42 @@ is clipped. A useful first target is an explicit regime such as
 $r_n(\log n)^2=o(n)$, followed by identification of the sharp
 condition. That displayed regime is a suggested starting point,
 not a proved sufficient condition here.
+% ed. (2026-10-01): the logarithmic slice of this question is answered by a later package (batch 71).
+\begin{ednotelater}
+The logarithmic slice of this question is answered, for the overlap
+only, by a later article, \emph{Second Order Critical Complements in
+Fabius Conditioning}, filed as
+\path{../Second_Order_Critical_Complements_Fabius_Conditioning/}
+(batch~71 of the repository's \path{docs/incoming/}; unreviewed). Its
+``early'' mask observes $\{r_n+1,\ldots,n\}$ (its ``early'' and ``late''
+name the hidden coordinates), and its tilt is $\rho'q^{-(n+1)}$, so
+$\rho=\rho'/q$ as in the note at the end of Section~1.1. Uniformly for
+$c_0\log n\le r_n\le c_1\log n$, with $0<c_0<c_1$ fixed, it proves
+\[
+\frac{\OO_{n,r_n}}{c_n}=r_n(y_+-y_-)+[F]_{y_-}^{y_+}
+ +\frac1{r_n}[B]_{y_-}^{y_+}
+ +O\Bigl(\frac1{r_n^2}+\frac{r_n^3}{n}\Bigr),\qquad
+F(y)=\frac{\log\E e^{(1-1/y)R_\rho}+1}{1-1/y},
+\]
+where $y_-<1<y_+$ solve $y-1-\log y=\log(n/r_n)/(2r_n)$ and $B$ is an
+explicit coefficient built from the same moment generating function. The
+leading term is the Lambert-$W$ crossover that
+\path{../Critical_Complements_Sharp_Information_Loss/} (its Theorem~2.2)
+proves for the other mask, which hides the last $r_n$ bulk coordinates.
+By \eqref{eq:R}, $\E e^{R_\rho}=K$; so as $r_n/\log n=c\downarrow0$ the
+constant $[F]_{y_-}^{y_+}$ tends to $\log K+1$, the constant of
+\eqref{eq:mainoverlap} at $r=0$ (a consistency check outside the
+theorem's range; the value $\log K=0.486134172\ldots$ of
+\eqref{eq:dyadicconstants} was reproduced on filing as
+$\log\E e^{R_\rho}$, to 30 digits). It also proves that for
+$r_n/\log n\to c\in(0,\infty)$ the block observed here keeps eventually
+strictly more overlap than the prefix $\{1,\ldots,n-r_n\}$, as it does
+for fixed $r\ge1$ by \eqref{eq:mainoverlap} and that article's
+Theorem~2.1, where the gap grows like $r\log\Lambda_n$. Thinner and
+thicker growing complements ($r_n/\log n\to0$ or $\infty$), uniformity
+as $c\downarrow0$ or $c\to\infty$, and the information formulas asked
+for here remain open.
+\end{ednotelater}
 
 \begin{question}[The optimal finite-$n$ error]
 Can the $O((\log n)^3/n)$ error in \eqref{eq:quantJ} be replaced by

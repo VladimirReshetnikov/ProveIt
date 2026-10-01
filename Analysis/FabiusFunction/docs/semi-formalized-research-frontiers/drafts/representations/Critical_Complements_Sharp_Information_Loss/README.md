@@ -132,7 +132,9 @@ delivered.
     different marginals; "crossover", `K`, `h` and `delta` mean different
     things in the two articles. The growing boundary-adjacent complement
     (Theorems 2.2, 2.3) is not treated there; a growing early-coordinate
-    complement is open in both;
+    complement is open in both (its logarithmic slice was treated later,
+    for the overlap only; see the editorial amendments of 2026-10-01
+    below);
   - after the proof of Proposition 3.1 (`prop:profile`): for `q = 1/2`,
     `F_q` is the Fabius function, machine-checked as
     `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal` and
@@ -167,3 +169,52 @@ delivered.
   floats, and the re-rendered figure PDFs embed TrueType fonts only.
 - `README.md`: the page count, the retired ledger, the output location, and
   this section.
+
+## Editorial amendments (ProveIt, 2026-10-01)
+
+Made in the editorial pass after batch 71 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-10-01)`. The mathematical text is unchanged.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-10-01)") is defined after `ednote`. Two notes:
+  - after Question 3, "Second-order crossover terms" (Section 10): the
+    later article `../Second_Order_Critical_Complements_Fabius_Conditioning/`
+    (filed 2026-09-30, batch 71, unreviewed) answers it in the compact
+    window. It uses this article's tilt, for every `rho > 0`, and its
+    "late" mask is the prefix `B_{n,m}` observed here (its "early" and
+    "late" name the hidden coordinates). Uniformly for
+    `c_0 log n <= m <= c_1 log n`, with `y_pm = y_pm(z_{n,m})` of (2.14),
+    it proves
+    `O_{n,m}/eps_n = m (y_+ - y_-) + [F] + [B]/m + O(m^{-2} + m^3/n)`,
+    `F(y) = (log H(1 - 1/y) + 1)/(1 - 1/y)` with `H` the limit of (4.12)
+    (`eq:Hdef`) and an explicit `B` built from `H`, `H'` and `H''`. The
+    leading term is that of (2.15); the geometric phase reappears at
+    constant order through `log H(1 - 1/y_pm)`. With `l = log n`,
+    `c_n = m/l`, `Y_pm = y_pm(1/(2 c_n))` and
+    `D = 1/(1 - 1/Y_+) - 1/(1 - 1/Y_-)` it separates `log(n/m)` from
+    `log n`: `O_{n,m}/eps_n = l C(c_n) - (1/2) D log(c_n l) + [F] + O((log l)^2/l)`,
+    with `C` of (2.17); for `m = c l + beta_n` with bounded `beta_n` the
+    rounding contributes `beta_n C'(c) + o(1)`. For the mask hiding the
+    first `m` bulk coordinates (that of
+    `../Critical_Complements_Fabius_Conditioning/`, there for fixed `r`)
+    `H` is replaced by `E exp(s R_0)`: same leading term, and for
+    `m/log n -> c in (0, infinity)` the prefix observed here keeps
+    eventually strictly less overlap. Thinner and thicker growing
+    complements, uniformity as `c` tends to 0 or infinity, and entropy are
+    not treated there;
+  - after the 2026-09-30 note at the end of Section 1.1, which says that a
+    growing early-coordinate complement is open in both articles: its
+    logarithmic slice is now treated, for the overlap only, with a pointer
+    to the note above.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf` (MiKTeX
+  pdfTeX 1.40.29): 25 pages, as before, 462,709 bytes, with no error,
+  undefined reference, multiply defined label, duplicate destination,
+  overfull or underfull box; every font is embedded and none is Type 3.
+  Theorem, section and equation numbers are unchanged, so
+  `CLAIM_STATUS.md` stays correct. The two pages carrying the notes were
+  rendered and inspected.
+- `validation.json`: `pdf_pages`, `pdf_bytes`, `pdf_sha256` and
+  `tex_sha256` were recomputed again for the filed files.
+- `README.md`: the parenthesis after the 2026-09-30 bullet on the growing
+  early-coordinate complement, and this section.

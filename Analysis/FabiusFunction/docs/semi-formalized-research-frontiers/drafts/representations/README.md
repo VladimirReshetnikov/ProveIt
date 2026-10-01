@@ -179,11 +179,11 @@ of an existing draft; semantic consolidation is deferred to the post-
   uniform-series article above.  Unreviewed; its numerics are not
   certificates; no Lean statement.
 - [`Critical_Complements_Fabius_Conditioning/`](Critical_Complements_Fabius_Conditioning/),
-  *Critical Complements in Fabius Conditioning* (25-page A4 PDF,
-  1,704-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
+  *Critical Complements in Fabius Conditioning* (26-page A4 PDF,
+  1,748-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
-  `docs/incoming/` drop zone and amended editorially the same day (its
-  README lists the amendments).  In the setting of the uniform-series
+  `docs/incoming/` drop zone and amended editorially the same day and on
+  2026-10-01 (its README lists the amendments).  In the setting of the uniform-series
   article above, for geometric weights (the Fabius law at `q = 1/2`) and a
   fixed number `r` of unobserved early coordinates, it replaces the
   Gaussian profile by an explicit boundary kernel: the overlap
@@ -193,17 +193,19 @@ of an existing draft; semantic consolidation is deferred to the post-
   `log 2`, and a universal normal-tail profile connects them on the scale
   `α√n`; for `r = 0` the flat Fabius endpoint appears in the residual
   (logarithm `∼ −√(log(1/q) log n)`).  It answers the bounded-complement
-  part of that article's `q:critical`; a growing number of hidden early
-  coordinates stays open (growing boundary-adjacent complements are
-  treated in the bullet below).  Unreviewed; its numerics are not certificates; no Lean
+  part of that article's `q:critical`.  For a growing number of hidden
+  early coordinates only the logarithmic slice `r ≍ log n` is treated,
+  for the overlap and not the information (in the second bullet below);
+  the rest stays open (growing boundary-adjacent complements are treated
+  in the bullet below).  Unreviewed; its numerics are not certificates; no Lean
   statement.
 - [`Critical_Complements_Sharp_Information_Loss/`](Critical_Complements_Sharp_Information_Loss/),
   *Critical Complements in Fabius Conditioning: Sharp information loss,
   geometric phase constants, and a logarithmic crossover* (25-page A4
-  PDF, 1,682-line source, a NumPy/SciPy diagnostic program), filed on
+  PDF, 1,730-line source, a NumPy/SciPy diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
-  `docs/incoming/` drop zone and amended editorially the same day (its
-  README lists the amendments); an independently written second answer to
+  `docs/incoming/` drop zone and amended editorially the same day and on
+  2026-10-01 (its README lists the amendments); an independently written second answer to
   the uniform-series article's `q:critical`, under the same title as the
   bullet above.  It observes a prefix and hides the last `m` bulk
   coordinates with the tail: for fixed `m` the overlap is
@@ -213,13 +215,15 @@ of an existing draft; semantic consolidation is deferred to the post-
   the leading overlap, which changes regime at `m ≍ log n`, and relative
   entropy is `½ log(n/m) − ½ + o(1)`.  With only the tail hidden it
   agrees with the article above; for other complements the two treat
-  different coordinates and complement each other.  Unreviewed; its
+  different coordinates and complement each other.  Its question on
+  second-order crossover terms is answered in the bullet below.  Unreviewed; its
   numerics are not certificates; no Lean statement.
 - [`Second_Order_Critical_Complements_Fabius_Conditioning/`](Second_Order_Critical_Complements_Fabius_Conditioning/),
-  *Second Order Critical Complements in Fabius Conditioning* (9-page A4
-  PDF, 685-line source, an mpmath diagnostic program), filed on
+  *Second Order Critical Complements in Fabius Conditioning* (10-page A4
+  PDF, 731-line source, an mpmath diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
-  `docs/incoming/` drop zone.  It continues the two bullets above in
+  `docs/incoming/` drop zone and amended editorially on 2026-10-01 (its
+  `README.txt` lists the amendments).  It continues the two bullets above in
   the window where the number `m` of hidden bulk coordinates is
   comparable with `log n`, for both of their masks (the last `m` hidden,
   as in the second bullet, and the first `m` hidden, as in the first

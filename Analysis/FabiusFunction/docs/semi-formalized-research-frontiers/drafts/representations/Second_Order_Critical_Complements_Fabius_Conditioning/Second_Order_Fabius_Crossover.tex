@@ -32,6 +32,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Pp}{\mathbb P}
 \newcommand{\R}{\mathbb R}
@@ -94,6 +96,23 @@ The proposed contribution here is the explicit clipped-density expansion
 and its application to these two specified masks. The literature check was
 targeted, not exhaustive. No famous conjecture, publication priority, or
 Lean verification is claimed.
+% ed. (2026-10-01): Lean counterpart of the Fabius identification, not cited by the note
+\begin{ednote}
+For $q=1/2$ the probability representation cited above is machine-checked
+in the repository:
+\path{Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal}
+states that the distribution function of $\sum_{j\ge1}2^{-j}U_j$ is the
+Fabius function on the whole real line, and
+\path{Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}
+gives its density as $2\,\mathrm{up}(2x-1)$; both are in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/ProbabilityRepresentation.lean}.
+No result of this note is formalized. The two source articles are filed
+beside this package as \path{../Critical_Complements_Sharp_Information_Loss/}
+(\cite{repo-late}, batch~68 of the repository's \path{docs/incoming/})
+and \path{../Critical_Complements_Fabius_Conditioning/}
+(\cite{repo-early}, batch~66); editorial notes of 2026-10-01 at the two
+questions answered here point back to this package.
+\end{ednote}
 
 \section{The geometric model and the two masks}
 Fix $q\in(0,1)$ and $\rho>0$. Let
@@ -160,6 +179,33 @@ with each removable value interpreted continuously.
 The first source \cite{repo-early} uses $t_n=\rho_{\rm first}q^{-n}$.
 The exact phase match to our convention is $\rho_{\rm first}=\rho/q$.
 No asymptotic reindexing is hidden in this comparison.
+% ed. (2026-10-01): dictionary of masks, phases and letters across the three articles
+\begin{ednote}
+The superscripts here name the hidden bulk coordinates, while both source
+articles name the observed block: $B^{\mathrm{early}}_{n,m}$ is the block
+$\{r+1,\ldots,n\}$ observed in \cite{repo-early} with $r=m$, and
+$B^{\mathrm{late}}_{n,m}$ is the prefix $B_{n,m}$ of \cite{repo-late}.
+The $\rho$ here is that of \cite{repo-late}, which states its theorems
+for $1\le\rho<q^{-1}$; any $\rho>0$ is allowed here. The constant
+$H_0(1)=\E e^{R_0}=\prod_{\ell\ge0}\rho q^\ell/(1-e^{-\rho q^\ell})$ is
+the product $K$ of \cite{repo-early} (at its phase $\rho/q$), and
+$\log H_0(1)$ is $K_{q,\rho,0}$ of \cite{repo-late}; at $q=1/2$,
+$\rho=1/2$ (the dyadic example $\rho_{\rm first}=1$ of \cite{repo-early})
+it is $0.486134172\ldots$, as printed there, reproduced on filing to
+30 digits. Since $s(Y_+(c))\to1$ and $s(Y_-(c))\to-\infty$ as
+$c\downarrow0$, $K_{\mathrm{early}}(c)\to\log H_0(1)+1$, the constant of
+both fixed-complement theorems when only the tail is hidden; and the
+limit in \eqref{eq:ordering} tends to $-\infty$, matching for fixed
+$m\ge1$ the divergent gap
+$m\log\Lambda_n-\log(m!)+K_{q,\rho,0}-K_{q,\rho,m}$,
+$\Lambda_n=\frac12\log(2\pi n)$, between those two theorems (both are
+consistency checks outside the range of \cref{thm:main}). At $q=1/2$,
+$\rho=1$ that limit is $-1.0279$ for $c=1$ and $-20.44$ for $c=0.002$.
+Of the letters $A,B,C,D,F,K_j,L,W$ here only $C(c)$ has the same
+meaning in \cite{repo-late} (as do $I$, $y_\pm$, $z$ and $\eps_n$); there $K_m=\log\E e^{R_m}$ and $D_{n,m}$ is a relative
+entropy, and in \cite{repo-early} $K$ is a product, $C=\rho q/(1-q)$ and
+$c_n=\eps_n$, whereas here $c_n=m/\log n$.
+\end{ednote}
 
 \section{The uniform expansion}
 Let
