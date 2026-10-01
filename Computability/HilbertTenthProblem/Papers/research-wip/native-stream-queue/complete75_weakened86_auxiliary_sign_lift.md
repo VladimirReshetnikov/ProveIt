@@ -1,5 +1,11 @@
 # Exact auxiliary signs and positive lifts for the86 candidate
 
+The later [all-input collapse](complete75_weakened86_all_input_collapse.md) uses
+this lift to produce complete zeros at every positive input on every actual modified
+compiler slice. The [rejecting compiler
+recipe](complete75_weakened86_rejecting_compiler.md) refutes this specific86
+proposal. The conditional theorem below remains unchanged.
+
 The [complete negative-input successor](complete75_weakened86_full_negative_family.md)
 uses this conditional lift to construct infinitely many full positive
 19-coordinate zeros at x=1 for stated scalar compiler constants. No
@@ -25,8 +31,8 @@ Together with the prior CRT test, this gives an exact existence
 criterion for **full R<0,mu<0 candidate extensions of fixed valid first,
 main and outer transport data**. This conditional packet itself supplies
 no passing actual outer tuple or false-input full zero. The [weakened86 candidate](complete75_weakened_bound86_candidate.md)
-therefore remains unresolved: this is a conditional characterization,
-not a universal86 proof or a counterexample.
+was unresolved when this conditional characterization was proved;
+this packet alone was neither a universal86 proof nor a counterexample.
 
 The [checker](complete75_weakened86_auxiliary_sign_lift.py) and
 [receipt](complete75_weakened86_auxiliary_sign_lift.json) retain the
@@ -317,7 +323,6 @@ positive auxiliary blocks, including a negative target that forces a
 further4m index shift. These complete blocks remain local auxiliary
 fixtures, not complete candidate zeros.
 
-No candidate source or prior proof packet is changed. The full86
-question remains open, now with a full
-conditional negative-input extension criterion and an exact auxiliary
-sign restriction.
+This packet changed no candidate source or prior proof. It supplied a full
+conditional negative-input extension criterion and an exact auxiliary sign
+restriction; the later all-input theorem uses them to refute the proposal.

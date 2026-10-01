@@ -1,5 +1,12 @@
 # Complete negative-input zeros of the86 candidate at fixed scalar data
 
+The [all-input collapse successor](complete75_weakened86_all_input_collapse.md) now
+applies to every actual modified compiler parity class and every positive input.
+Together with the [actual rejecting
+compiler](complete75_weakened86_rejecting_compiler.md), it refutes this specific86
+proposal on actual program slices. The scalar-data theorem below remains unchanged
+and did not alone establish that semantic conclusion.
+
 The [infinite outer-family theorem](complete75_weakened86_infinite_outer_family.md)
 left the input and index congruences unpaid. This successor pays them,
 then applies the [exact positive auxiliary lift](complete75_weakened86_auxiliary_sign_lift.md).

@@ -36,7 +36,34 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [positive-mask-unit U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_mask_unit263.md)
+The latest explicit [history-unit U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_history_units260.md)
+gives **255 certificate /260=134M+126A polynomial operations**,
+2 comparisons,43 positive witnesses, four positive program parameters
+and degree **at most3866**. Absorbing the upper history transport and
+its global bound as units saves three polynomial additions from263.
+The sign proof first restores native typing using the paid loader, then
+the upper low digit and the global product. The private bound slack has
+the positive bijection beta_parent=beta_new+1; complete positive zero sets
+correspond, with explicit off-zero correction identities. Mapped schedules
+reach270/608 with44 witnesses; the fixed43-witness family reaches267/1344.
+Only the new factors' placement in selected inherited partitions is
+optimized, not all partitions of the enlarged factor set. The actual U9
+program/input contract and exact initialization counter remain paid.
+
+The specific [weakened-bound86 proposal](research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
+is now **REFUTED**. The [all-input collapse theorem](research-wip/native-stream-queue/complete75_weakened86_all_input_collapse.md)
+constructs infinitely many complete positive19-coordinate zeros for every
+positive x when B=2^d, d,b are odd,3 does not divide d and MC is even.
+Every actual modified compiler slice satisfies these hypotheses. The
+[actual rejecting-program recipe](research-wip/native-stream-queue/complete75_weakened86_rejecting_compiler.md)
+has empty language but the same weakened polynomial accepts x=1 and
+every positive input. Dirichlet's theorem, irrational rotation and a
+positive Pell lift prove existence; giant constants and full witnesses
+are specified effectively, not materialized. This refutes this particular
+86-operation relaxation, not all possible86-operation constructions.
+The established75 certificate and87 polynomial remain unchanged.
+
+The preceding explicit [positive-mask-unit U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_mask_unit263.md)
 gives **252 certificate /263=134M+129A polynomial operations**,
 4 comparisons,43 positive witnesses, four positive program parameters
 and degree **at most3857**. Absorbing the recoder's second repunit
@@ -60,6 +87,17 @@ inherited finite frontier to271/1094,272/1048,273/734,274/706 and275/608
 with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
+
+The independent [packed-register compiler](research-wip/native-stream-queue/korec_packed_counter_compiler.md)
+instantiates the actual strongly universal U22 machine at
+**436 certificate /453=138M+315A polynomial operations**,6 comparisons,
+54 positive witnesses and degree **at most43897**. It has one positive
+program parameter and the unchanged ordinary positive input x. A single
+chronological word packs all eight registers; two joined-AND counter
+lanes and one counter-transport equation pay increment, decrement and
+zero tests, with instruction/control chronology also paid. The raw
+484-operation/61-witness option has degree at most7024. This is another
+complete universal route, above260 and the separate75/87 bounds.
 
 The [paid queue sentinel fold](research-wip/native-stream-queue/queue_causality_sentinel_fold.md)
 gives fixed-horizon cyclic-tag certificates with at most14T-2 operations
@@ -322,9 +360,9 @@ The [local target CRT theorem](research-wip/native-stream-queue/complete75_linea
 realizes nearby wrong targets for a weakened auxiliary system, not full
 polynomial zeros; the87-operation,degree183 candidate remains unresolved.
 The [positive-index86 theorem](research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
-proves the unresolved86 candidate sound whenever its computed R>0,
-without assuming alpha>Z. R=0 is impossible; soundness on actual program
-slices with R<0 remains unresolved. The [index-gap restrictions](research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
+proves conditional soundness of the now-refuted86 proposal whenever R>0,
+without assuming alpha>Z. R=0 is impossible; the later all-input theorem
+refutes actual-program soundness through R<0,mu<0. The [index-gap restrictions](research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
 prove the main Pell index p odd globally, with E<3p at zero wrap on
 R<0,mu>0. The [gap-three exclusion](research-wip/native-stream-queue/complete75_weakened86_gap_three.md)
 strengthens R<0,mu>0 to n<p<=2n-5 by excluding all237 necessary triples
@@ -355,9 +393,9 @@ and +/-p for p=3 mod4, and constructs all five positive auxiliary fields.
 Together with the CRT test, this gives a full negative-mu extension iff
 for each fixed set of validated first/main and outer-transport data.
 That conditional packet alone supplies no passing outer tuple. The
-full scalar-data extension below supplies complete zeros, while the
-86/19-witness/degree203 source and actual-program soundness question
-remain unchanged.
+full scalar-data extension below supplies complete zeros; the later
+all-input collapse and actual rejecting compiler now settle this specific
+proposal negatively. Its literal86/19-witness/degree203 source is unchanged.
 
 The [negative-input power-branch theorem](research-wip/native-stream-queue/complete75_weakened86_negative_power_gap.md)
 gives **n<p<=2n-19 only when R<0,mu<0 and X=2^p**. It bounds Y and
@@ -378,8 +416,9 @@ They have R<0,mu<0 and unbounded odd gaps. Exact modular certificates and
 directed integer bounds verify a concrete deterministic Pell recipe for
 all19 coordinates without materializing the enormous integers. No actual
 universal program with these constants or false membership of x=1 is
-established. The universal86 question and the established75/87 bounds
-therefore remain unchanged.
+established by that scalar-data packet. The later all-input collapse
+removes that limitation and refutes this specific proposal on actual
+compiler slices. The established75/87 bounds remain unchanged.
 
 
 Native queue components retain their separate scope.

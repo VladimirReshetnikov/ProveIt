@@ -1,8 +1,10 @@
-"""UNRESOLVED 86-operation candidate: omit the strengthened Z slack.
+"""REFUTED 86-operation candidate: omit the strengthened Z slack.
 
 Exact signed parent substitution and positive forward inclusion are proved.
-The reverse positive projection is proved only on alpha>Z.  The supplied
-outer family obstructs the old positivity bootstrap, not universality.
+The reverse positive projection holds on alpha>Z. The separate all-input
+collapse theorem proves that actual compiler slices accept every positive
+input after this weakening; the rejecting-compiler packet gives a false
+input. The historical outer fixtures below are still not full zeros.
 """
 import argparse
 from collections import Counter
@@ -68,7 +70,7 @@ def verify_source():
     assert restricted and nonpositive_restoration
     return dict(certificate=dict(operations=85,multiplications=48,additions_subtractions=37,equations=1,witnesses=19),
         polynomial=dict(operations=86,multiplications=48,additions_subtractions=38,degree=203,witnesses=19),
-        status='UNRESOLVED_CANDIDATE_NOT_A_UNIVERSAL_BOUND',
+        status='REFUTED_CANDIDATE_ACTUAL_COMPILER_ALL_INPUT_COLLAPSE',
         removed_register='q_minus_FZ',changed_registers=['C_after_alpha','gap_product','gap'],
         unchanged_literal_gates=82,retained_positive_witnesses=RETAINED,
         comparisons=pairs,polynomial_schedule=polynomial,
@@ -131,7 +133,9 @@ def verify_outer_obstruction():
 def verify():
     return dict(status='PASS_SCOPED_WEAKENED_BOUND86_CANDIDATE_AUDIT',
         source=verify_source(),degree=verify_degree(),outer_obstruction=verify_outer_obstruction(),
-        conclusion='Universal completeness is inherited from87. Positive soundness for alpha<=Z remains open; no below87 universal bound or lower bound is proved.')
+        conclusion='Universal completeness is inherited from87, but this candidate is unsound: the separate all-input-collapse theorem makes every actual modified compiler accept every positive input. A rejecting compiler gives false membership at x1. This audit retains the original source/degree/substitution claims; the sound75/87 bounds are unchanged.',
+        refutation_references=['complete75_weakened86_all_input_collapse.md',
+                               'complete75_weakened86_rejecting_compiler.md'])
 
 
 if __name__=='__main__':
