@@ -333,6 +333,15 @@ for $36\le m\le49$ and $51\le m\le67$ the filed intervals are the only finite ev
 $H_{m,m}>0$. The pressure coefficient $E_{m,m}$ is proved again in \path{../Thue_Morse_Integer_Pressure_Full_Range/} (whose own finite intervals were not delivered either), and its positivity for
 $2\le m\le128$ is certified by the filed intervals of \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}.
 \end{ednote}
+% ed. (2026-10-01): the missing traces can be reconstructed from the filed producer
+\begin{ednote}
+The missing traces can be regenerated, byte for byte, with the filed producer
+\path{code/check_boundary_parity.cpp}: see the section ``Reconstructing the trace archives''
+of \path{README.md}. On filing, the traces for $m=2,3,10,20,35,50,69$ were regenerated on a
+copy: the interval records agree with the filed ones, the compressed traces reproduce the
+hashes recorded in \path{data/trace_checks.json}, and the trace audit passes on them. The full
+set (68 orders, about 45~MB compressed, a few minutes of computation) was not regenerated.
+\end{ednote}
 
 \section{Later negative coefficients and open directions}
 The response theorem cannot uniformly extend to $r=m+1$. For $m=2$, set $x=a^2$ and write $\Lambda(a)=\lambda_2(a)$. The pressure cubic in \cite{integer}, under $\rho=\Lambda/(1+a^2)^2$ and $\cos2t=(1-x)/(1+x)$, gives

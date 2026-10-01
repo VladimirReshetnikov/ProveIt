@@ -213,8 +213,12 @@ Orders*, `m ≥ 4096`) and a duplicate archive were not filed.  The
 feedback-boundary and full-range packages name trace and interval
 archives that were not delivered; the dataset's intervals re-certify the
 full range's finite part (positive throughout `(2m, 6m)` for
-`2 ≤ m ≤ 128`, checked on filing).  The editorial pass of 2026-10-01 gave
-every package a dated series map naming these directories and the filed
+`2 ≤ m ≤ 128`, checked on filing).  Both sets can be regenerated from the
+filed producers and match their recorded hashes byte for byte (tested on
+filing for seven orders each; see each README's section "Reconstructing
+the trace archives" or "Reconstructing the interval archives").
+The editorial pass of 2026-10-01 gave every package a dated series map
+naming these directories and the filed
 directory of every source it cites, and notes saying which package
 subsumes which (the triangle contains the first two packages; the full
 range contains the pressure statements of the boundary, offset and linear
