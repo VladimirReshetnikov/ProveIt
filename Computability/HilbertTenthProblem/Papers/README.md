@@ -35,10 +35,24 @@ frontiers alongside the historical handoff. The
 supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound. The separate explicit
-[U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_population_projection389.md)
-now costs389 operations, with67 positive witnesses, four positive program
-parameters and degree at most2241. Native queue components retain their
-separate scope.
+[combined U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_population377.md)
+now gives318 certificate / **377=183M+194A polynomial operations**,
+20 comparisons,66 positive witnesses, four positive program parameters
+and degree at most2285. Keeping its history checksum separate gives
+317 certificate /379=183M+196A,21 comparisons,66 witnesses and degree
+at most2241. These bounds include all program coordinates.
+
+The composition joins the [joint positive scale bound](research-wip/native-stream-queue/neary_woods_universal_population_joint_bound386.md),
+[154-gate shared history](research-wip/native-stream-queue/neary_woods_universal_shared_history382.md)
+and [padded checksum sign lemma](research-wip/native-stream-queue/neary_woods_universal_population_checksum387.md).
+The [389-operation projections](research-wip/native-stream-queue/neary_woods_universal_population_projection389.md),
+[395-operation bound deletion](research-wip/native-stream-queue/neary_woods_universal_population_bound395.md)
+and [399-operation population parent](research-wip/native-stream-queue/neary_woods_universal_population_tag.md)
+remain reproducible. The separate75/87 frontier is unchanged.
+The [local target CRT theorem](research-wip/native-stream-queue/complete75_linear_strong87_target_crt.md)
+realizes nearby wrong targets for a weakened auxiliary system, not full
+polynomial zeros; the87-operation,degree183 candidate remains unresolved.
+Native queue components retain their separate scope.
 
 - Every displayed system, machine table and count of the six articles was
   re-derived by the checkers. The corrections to the printed articles are

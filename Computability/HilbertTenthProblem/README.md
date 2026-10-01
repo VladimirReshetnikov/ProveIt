@@ -41,13 +41,25 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [U9 population polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_population_projection389.md)
-now gives **324 certificate /389=189M+200A polynomial operations**,
-22 comparisons, 67 positive witnesses and four positive program parameters.
-Its total degree is **at most 2241**. The alternative projecting only the
-output coordinate costs392 operations with68 witnesses and degree at most2206;
-the [395-operation parent](Papers/research-wip/native-stream-queue/neary_woods_universal_population_bound395.md)
-has degree at most2204. These bounds include all program coordinates.
+The explicit [combined U9 population polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_population377.md)
+now gives **318 certificate /377=183M+194A polynomial operations**,
+20 comparisons, 66 positive witnesses and four positive program parameters.
+Its total degree is **at most 2285**, including all program coordinates.
+Keeping the history checksum separate gives **317 certificate /379=183M+196A**,
+21 comparisons, the same66 witnesses and degree at most2241.
+
+Three changes compose on the [389-operation parent](Papers/research-wip/native-stream-queue/neary_woods_universal_population_projection389.md):
+the [joint scale bound](Papers/research-wip/native-stream-queue/neary_woods_universal_population_joint_bound386.md)
+saves three polynomial operations and one witness;
+[shared history arithmetic](Papers/research-wip/native-stream-queue/neary_woods_universal_shared_history382.md)
+reduces its raw history from161 to154 gates; and the
+[padded checksum sign lemma](Papers/research-wip/native-stream-queue/neary_woods_universal_population_checksum387.md)
+saves two more operations by merging the history checksum into the unit
+product. The first change is a positive zero-set bijection, the second
+preserves the entire polynomial, and the last preserves positive zeros
+through a separate sign proof. The389 parent, its392-operation
+output-only projection and the [395-operation parent](Papers/research-wip/native-stream-queue/neary_woods_universal_population_bound395.md)
+remain available at degree bounds2241,2206 and2204 respectively.
 
 A [population-width recoder](Papers/research-wip/native-stream-queue/native_binary_population_width_recoder.md)
 replaces the enormous fixed-exponent chain with two paid gates, giving the
@@ -63,6 +75,13 @@ The [519-operation quotient-chain](Papers/research-wip/native-stream-queue/neary
 [528-operation U15](Papers/research-wip/native-stream-queue/neary_woods_universal_tag_chain.md) and
 [557-operation baseline](Papers/research-wip/native-stream-queue/neary_woods_universal_tag557.md) remain reproducible.
 The separate75 certificate /87 polynomial frontier is unchanged.
+
+The [local target CRT theorem](Papers/research-wip/native-stream-queue/complete75_linear_strong87_target_crt.md)
+shows that the weakened linear-strength auxiliary system admits arbitrary
+positive targets, including R=p+4 within the preliminary first-index
+bounds. These are not full polynomial zeros. The87-operation candidate
+of degree183 remains unresolved; the established87/degree203 theorem
+retains its full strong equation.
 
 ## Layout
 

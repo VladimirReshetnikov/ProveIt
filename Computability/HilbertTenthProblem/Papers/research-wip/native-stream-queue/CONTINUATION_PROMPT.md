@@ -15,9 +15,12 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The independently proved explicit U9/tag route now costs
-> **389=189M+200A**,67 positive witnesses,22 comparisons and four positive
-> program parameters, with total degree at most2241:
-> [complete source and positive projections](neary_woods_universal_population_projection389.md).
+> **377=183M+194A**,318 certificate operations,66 positive witnesses,
+> 20 comparisons and four positive program parameters, with total degree
+> at most2285: [complete combined source](neary_woods_universal_population377.md).
+> Keeping the history checksum separate gives317 certificate operations,
+> **379=183M+196A**,21 comparisons,66 witnesses and degree at most2241.
+> All degree bounds include the program coordinates.
 > This alternative does not improve the separate75/87 frontier.
 > The [88-operation degree151 construction](complete75_coupled_index_linear88.md)
 > remains a lower-degree alternative. It has the same positive zeros as
@@ -49,8 +52,15 @@ positive local tuples with A>=3,p>=7,p=3mod4 have main indexp and target
 R=5p while satisfying both auxiliary norms, minus congruences and strong
 size bounds. The proof uses the odd Chebyshev quotient and fifth Pell
 power. These are not full polynomial zeros, and do not refute every
-possible new proof. Preserve the separate scopes of this obstruction,
-weakened86 and independent-gamma87.
+possible new proof. The [local target CRT theorem](complete75_linear_strong87_target_crt.md)
+extends the auxiliary construction to every positive target when p=3mod4
+and p divides A. For p>=7 it includes R=p+4 with n=(p+5)/2, so n<p<2n and
+2n=R+1: the first-index lower bound excludes the earlier R=5p family
+but does not by itself repair the local lemma. The common first Pell
+norm, ratio definitions, computed main root and full outer/input system
+are not imposed by these fixtures. The full87-operation,degree183
+candidate remains unresolved. Preserve its scope separately from the
+established87/degree203 theorem, weakened86 and independent-gamma87.
 >
 > The README indexes the four-row queue simulator, binaryFIFO58 and
 > ternaryFIFO66, row-local controller obstruction, residue-affine pumping,
@@ -637,6 +647,58 @@ degrees. Complete off-zero polynomial identities under restoration and
 positive zero-set bijections hold for all24 interface/form/options.
 The saved `projection_parent` is the old audit interface; restore J/Ahat
 before invoking inherited unit audit helpers on their parent metadata.
+
+The [joint scale bound](neary_woods_universal_population_joint_bound386.md)
+next replaces Q=q+power_gap and z+output_slack=Q by Q=q+z+g at the same
+two-addition cost. The lift power_gap=z+g, output_slack=q+g is positive
+on all new positive tuples. At every old zero, q=2^n,Q=q^D give
+q<=Q/4, while z<Q/7, so g=Q-q-z>17Q/28>0. Removing the comparison and
+one supplied gap yields **386=188M+198A**,324 certificate,21eq,66w and
+degree at most2241, preserving positive zeros bijectively.
+
+The [shared history rewrite](neary_woods_universal_shared_history382.md)
+independently reduces raw H161 to H154. Retain P2,P3,P6,P7 and compute
+P9=P7*P2,P11=P9*P2; rewrite Hb=T+P2*HV using paid T=HU+P*HV;
+reuse the two paid disjoint selector sums. Private-consumer guards and
+topological sorting justify deleting5M+2A. Every residual and the full
+polynomial are identical over integers. On389 alone this gives382;
+composing with the joint bound in either order gives **379=183M+196A**,
+317 certificate,21eq,66w and degree at most2241.
+
+The [padded checksum sign lemma](neary_woods_universal_population_checksum387.md)
+allows the remaining history checksum C into the unit product, saving
+another2A. At a new zero all sign-safe norms first restore the native
+equations. If C=-1, the positive fields sum to q_history+1 and are each
+less than q_history. The raw native kernel therefore recovers
+q_history=2^m and popcount(r_history)=m before full AND interpretation.
+The unchanged padded field residues(3,4,2,8) modulo16 have low
+population5 and high-part sum2^(m-4)-1, forcing population at leastm+1.
+Thus C=1; the other checksum is then1 from the product. This sign
+argument, not an off-zero polynomial identity, preserves positive zeros.
+Applied to389 alone it gives387/67w/degree at most2285.
+
+The [complete composition](neary_woods_universal_population377.md) gives
+**318 certificate /377=183M+194A polynomial operations**,20eq,66w,
+four program parameters and total degree **at most2285**. It retains
+the original U9 table, exact least counter128n, fixed numeral recipes,
+positive program slice and complete chronological selected history.
+The separate-checksum379 form has the lower degree bound2241. Further
+normalized choices (separate / merged checksum) are385/383 with68w
+and degree bounds2204/2248 when neither J nor Ahat is projected;
+Ahat-only gives382/380 with67w and2206/2250. These are upper bounds,
+not asserted exact degrees or optimal schedules.
+
+The receipt covers **40 configurations**: raw, native-unit and normalized
+forms, four J/Ahat projection choices, both duration-bound interfaces,
+and both checksum settings for the two unit forms. The default uses
+four program values; the optional independent duration bound uses five.
+It checks640 full original/final identities or corrections (320 signed)
+and640 further complete evaluations in the opposite joint-bound/history
+order. With U the old unit product and S the retained residual SOS,
+the merged correction is F_389(lift(y))-F_377(y)=U*(C-1)*(C-2-S).
+The `complete_parent389`, `joint_scale_parent`, `arithmetic_parent` and
+`checksum_parent` metadata identify distinct audit stages; restore each
+stage's coordinates before reusing its historical audit helpers.
 
 The [counter-initialization obstruction](clockwise_cts_counter_initialization_obstruction.md)
 executes the printed Q3 CTS table: counter3 on tape01 falsely activates

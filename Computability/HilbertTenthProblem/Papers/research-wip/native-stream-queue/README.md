@@ -40,13 +40,25 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [U9 population polynomial](neary_woods_universal_population_projection389.md)
-now gives **324 certificate /389=189M+200A polynomial operations**,
-22 comparisons, 67 positive witnesses and four positive program parameters.
-Its total degree is **at most 2241**. The alternative projecting only the
-output coordinate costs392 operations with68 witnesses and degree at most2206;
-the [395-operation parent](neary_woods_universal_population_bound395.md)
-has degree at most2204. These bounds include all program coordinates.
+The explicit [combined U9 population polynomial](neary_woods_universal_population377.md)
+now gives **318 certificate /377=183M+194A polynomial operations**,
+20 comparisons, 66 positive witnesses and four positive program parameters.
+Its total degree is **at most 2285**, including all program coordinates.
+Keeping the history checksum separate gives **317 certificate /379=183M+196A**,
+21 comparisons, the same66 witnesses and degree at most2241.
+
+Three changes compose on the [389-operation parent](neary_woods_universal_population_projection389.md):
+the [joint scale bound](neary_woods_universal_population_joint_bound386.md)
+saves three polynomial operations and one witness;
+[shared history arithmetic](neary_woods_universal_shared_history382.md)
+reduces its raw history from161 to154 gates; and the
+[padded checksum sign lemma](neary_woods_universal_population_checksum387.md)
+saves two more operations by merging the history checksum into the unit
+product. The first change is a positive zero-set bijection, the second
+preserves the entire polynomial, and the last preserves positive zeros
+through a separate sign proof. The389 parent, its392-operation
+output-only projection and the [395-operation parent](neary_woods_universal_population_bound395.md)
+remain available at degree bounds2241,2206 and2204 respectively.
 
 A [population-width recoder](native_binary_population_width_recoder.md)
 replaces the enormous fixed-exponent chain with two paid gates, giving the
@@ -62,6 +74,13 @@ The [519-operation quotient-chain](neary_woods_universal_u9_quotient_chain.md),
 [528-operation U15](neary_woods_universal_tag_chain.md) and
 [557-operation baseline](neary_woods_universal_tag557.md) remain reproducible.
 The separate75 certificate /87 polynomial frontier is unchanged.
+
+The [local target CRT theorem](complete75_linear_strong87_target_crt.md)
+shows that the weakened linear-strength auxiliary system admits arbitrary
+positive targets, including R=p+4 within the preliminary first-index
+bounds. These are not full polynomial zeros. The87-operation candidate
+of degree183 remains unresolved; the established87/degree203 theorem
+retains its full strong equation.
 
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
 retains **75=41M+34A** with **20 positive witnesses and nine equations**.
@@ -1084,6 +1103,10 @@ New research and the completed75-operation construction:
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [Combined U9 universal polynomial](neary_woods_universal_population377.md) | **318 certificate /377=183M+194A polynomial**,20eq,66w,four positive program parameters,degree at most2285. Separate checksum:317 certificate /379=183M+196A,21eq,66w,degree at most2241. | Composes the joint bound,154-gate history and conditional checksum sign theorem. Same complete ordinary-input relation and fixed U9 table;40 source configurations retain degree alternatives. |
+| [Padded history checksum sign](neary_woods_universal_population_checksum387.md) | On the389 parent:325 certificate /387=189M+198A,21eq,67w,degree at most2285. | Negative checksum would force field residues(3,4,2,8) and population at least one above the restored native kernel's value. Same positive zeros; the output polynomial changes off zero. |
+| [Joint recoder scale bound](neary_woods_universal_population_joint_bound386.md) | On the389 parent:324 certificate /386=188M+198A,21eq,66w,degree at most2241. | Q=q+z+g joins two positive gaps. Typed q and spread bound prove g>0 in the inverse; exact complete polynomial identity under the positive lift. |
+| [Shared four-tile history arithmetic](neary_woods_universal_shared_history382.md) | Raw history161 becomes154, saving5M+2A. On the389 parent:317 certificate /382=184M+198A,22eq,67w,degree at most2241. | Reuses paid powers, selected-history transport and selector sums; every comparison residual and complete polynomial are identical over integers. |
 | [Positive-coordinate U9 universal polynomial](neary_woods_universal_population_projection389.md) | **324 certificate /389=189M+200A polynomial**, 22eq,67w,four positive program parameters,degree at most2241. | Exact positive zero-set bijections eliminate supplied J/Ahat; complete polynomial identities hold after restoration. Ahat-only gives392/68w/degree2206; actual original U9 table and exact counter retained. |
 | [Redundant-bound U9 universal polynomial](neary_woods_universal_population_bound395.md) | **324 certificate /395=191M+204A polynomial**, 24eq,69w,four positive program parameters,degree at most2204. | Positive duration implies J>=B before native typing and restores the deleted bound slack. Off-zero restoration may be signed; all forms have exact output identities. |
 | [Population-width U9 universal polynomial](neary_woods_universal_population_tag.md) | **325 certificate /399=192M+207A polynomial**, 25eq,70w,four positive program parameters,degree at most2204. | Two population gates replace127 exponent multiplications; actual original U9 fixed coefficients, complete input/counter/program slice and independent history are retained. |
@@ -1130,6 +1153,7 @@ New research and the completed75-operation construction:
 | [Shifted native quotient](group_projective_shifted_X_quotient.md) | Six-field C-1 certificate,9-chi equations,m+27-chi witnesses, product C+25-3chi, degree(1+chi)(44L+9m+135)+44. Illustrative257/280,8 equations,42 witnesses,degree4298. | Positive bijection retains q divides X. Supplied-P and factored-parent options trade more gates for lower degree; numerical75/87 remain separate. |
 | [Factored native index](group_projective_factored_native_index.md) | Four additions removed by an exact polynomial identity. Six-field C-1 certificate and C+28-3chi polynomial; illustrative257/283,degree2376. | Every residual, witness and positive zero is unchanged. Four-field option also saves four additions. |
 | [Nine-dimensional mortality and selected durations](group_affine_guarded_mortality9.md) | Guard dimension drops to3 with loader2. Fixed selected duration n>=2 has polynomial(16n-8)s+24n-20,6n-3 positive witnesses,degree at most2s. | Uniform existence projects to the named paid four-history compiler under the subgroup/input congruence. A separately supplied arbitrary mortality word is not certified by that projection. |
+| [Arbitrary local targets by CRT](complete75_linear_strong87_target_crt.md) | Weakened t=ic auxiliary system admits every positive target in the stated Pell family; R=p+4 also satisfies n<p<2n and2n=R+1. | The first-index lower bound alone does not repair the local rank lemma. No full polynomial zero is supplied; the87-operation,degree183 candidate remains unresolved. |
 | [Linear strong-parameter obstruction](complete75_linear_strong87_obstruction.md) | Replacing ic^2 by ic retains87 gates with candidate degree183, but its inherited local rank/index lemma fails. | Exact positive family has main indexp and target5p; not a full polynomial zero or a universality refutation. |
 | [Independent-quotient87 candidate](complete75_independent_gamma87_alias.md) | Literal87-operation,degree151 relaxation and positive forward map from88; conditional input aliases identify the lost v<R bound. | Full independent-gamma87 soundness is unresolved. The R=11 main component is outside the full compiler range and is not a full counterexample. |
 | [Unsquared outer product](group_projective_unsquared_outer_product.md) | Same six-field C+32-3chi polynomial cost and positive zeros, degree(1+chi)(27L+m+15)+46. Illustrative287/degree2376, or288/degree1944 without mask reuse. | Uses Punit*(1+SOSouter)-1 with every outer residual retained. Four-field variant unchanged; numerical75/87 remain separate. |
