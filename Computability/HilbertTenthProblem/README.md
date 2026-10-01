@@ -27,16 +27,19 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
-The separate [sparse oriented GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
-now has57 physical tiles and a paid ordinary-input bridge:
-**730 certificate /810=349M+461A polynomial operations**,27 comparisons,
-125 positive witnesses, three positive program parameters and degree130394.
-Supplying the initial history value gives813 operations,126 witnesses and
-degree5204. Forced boundary repairs and fixed state orientations preserve
-the original universal machine; the actual table and arithmetic are rebuilt.
-The [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
-and its decidable odd-integer579 example remain reproducible. These are
-alternative universal bounds above75/87; the matrix alphabet remains abstract.
+The separate [three-core normalized GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
+has57 physical tiles and a paid ordinary-input bridge:
+**734 certificate /805=352M+453A polynomial operations**,24 comparisons,
+125 positive witnesses, three positive program parameters and degree205092.
+Supplying the initial history value gives808 operations,25 comparisons,
+126 witnesses and degree8532. A [fixed rule permutation](Papers/research-wip/native-stream-queue/gpcp_ordered_sparse_tm.md)
+first saves two additions, then three normalized strong witnesses save
+three polynomial operations while retaining the separate history checksum.
+The unnormalized ordered808/degree130394 and supplied811/degree5204
+versions remain lower-degree alternatives. The [sparse810 predecessor](Papers/research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
+and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+remain reproducible. These are alternative universal bounds above75/87;
+the matrix alphabet remains abstract.
 
 ## Layout
 
@@ -117,18 +120,23 @@ alternative universal bounds above75/87; the matrix alphabet remains abstract.
   parent equation through `i_old=Delta*i`; rebuilding five canonical
   auxiliaries proves converse input projection. All packed positivity,
   both ratio slacks and the ordinary-input contract remain unchanged.
-  The75 comparison bound and87 polynomial bound remain distinct.
+  The75-operation certificate bound and87-operation polynomial bound remain distinct.
+  The [weakened-bound86 candidate](Papers/research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
+  has exact signed parent identities and positive completeness, but its
+  inverse is proved only for alpha>Z. It is not a new universal bound.
   These optimized results are not yet Lean formalized.
-- The [sparse oriented TM compiler](Papers/research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
-  gives a second complete universal route at **810 operations**,125 positive
-  witnesses and degree130394. Fixed orientations make27 moves local;
-  shared forced edge repairs give57 tiles. A tuned fixed prefix code saves
-  five further arithmetic gates over the balanced815 alternative.
+- The [normalized sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
+  gives a second complete universal route at **805 operations**,125 positive
+  witnesses and degree205092. Fixed orientations and shared forced edge
+  repairs give57 tiles. Paid rule reordering and three strong-witness
+  normalizations preserve the complete ordinary-input interface.
 - The [normalized four-tile tag predicate](Papers/research-wip/native-stream-queue/pcp_normalized_strong_history_units.md)
   costs **196=93M+103A operations**,28 positive witnesses and degree1015,
   including initially halted input. The preceding197-operation degree667
   alternative remains available. The input is an encoded tag-word sentinel;
-  its fixed-universal ordinary-input bridge remains unpaid.
+  its [fixed-rule TM halt bridge](Papers/research-wip/native-stream-queue/binary_tag_fixed_halt_bridge.md)
+  now has a proved unique pending halt activation and fixed block morphism.
+  Arithmetic loading of the exact initialization counter remains unpaid.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
   finitely generated SL(4,Z) subgroup, with a fixed quadratic ordinary-input

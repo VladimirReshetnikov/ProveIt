@@ -26,16 +26,19 @@ numerical universal alphabet remains uninstantiated. Mortality now has
 [a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
 the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
-The separate [sparse oriented GPCP compiler](gpcp_sparse_tm_compiler.md)
-now has57 physical tiles and a paid ordinary-input bridge:
-**730 certificate /810=349M+461A polynomial operations**,27 comparisons,
-125 positive witnesses, three positive program parameters and degree130394.
-Supplying the initial history value gives813 operations,126 witnesses and
-degree5204. Forced boundary repairs and fixed state orientations preserve
-the original universal machine; the actual table and arithmetic are rebuilt.
-The [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
-and its decidable odd-integer579 example remain reproducible. These are
-alternative universal bounds above75/87; the matrix alphabet remains abstract.
+The separate [three-core normalized GPCP compiler](gpcp_normalized_strong_compiler.md)
+has57 physical tiles and a paid ordinary-input bridge:
+**734 certificate /805=352M+453A polynomial operations**,24 comparisons,
+125 positive witnesses, three positive program parameters and degree205092.
+Supplying the initial history value gives808 operations,25 comparisons,
+126 witnesses and degree8532. A [fixed rule permutation](gpcp_ordered_sparse_tm.md)
+first saves two additions, then three normalized strong witnesses save
+three polynomial operations while retaining the separate history checksum.
+The unnormalized ordered808/degree130394 and supplied811/degree5204
+versions remain lower-degree alternatives. The [sparse810 predecessor](gpcp_sparse_tm_compiler.md)
+and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
+remain reproducible. These are alternative universal bounds above75/87;
+the matrix alphabet remains abstract.
 
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
 retains **75=41M+34A** with **20 positive witnesses and nine equations**.
@@ -159,6 +162,18 @@ restores the full old strong comparison; canonical reconstruction at the
 actual native index proves converse projection. This saves one polynomial
 operation while increasing the certificate by2M and raising the degree.
 The original197/667 option remains a degree alternative.
+The [fixed-rule TM halt bridge](binary_tag_fixed_halt_bridge.md) now
+proves halting equivalence for one fixed binary tag rule on the intended
+TM simulation slice. A unique pending halt object triggers parity cleanup;
+fixed equal-content blocks enforce the required length congruence. The
+exact dyadic initialization counter still needs a paid arithmetic loader.
+
+The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
+retains exact parent identities under alpha_old=alpha-Z and positive
+completeness, with degree203 and19 witnesses. Its inverse is proved only
+for alpha>Z; full soundness elsewhere remains open. The negative-index
+outer fixtures are not complete polynomial zeros, so neither a new bound
+nor a full false-input counterexample is claimed.
 
 ## Research checkpoint, 2026-10-01
 
@@ -1014,6 +1029,10 @@ New research and the completed75-operation construction:
 | [Complete slope-class GPCP compiler](gpcp_slope_class_compiler.md) | Prior34-tile example526 certificate /603=259M+344A polynomial,26eq,98w,degree6202; supplied endpoint606/2608, raw678/2596 or681/1048. | All baseline pairs are paid and scored, with factored per-tile fallback. Ordinary input and program loaders remain paid. The example is not a numerical universal alphabet;75/87 unchanged. |
 | [State-free copied contexts](gpcp_state_free_copies.md) | Same odd recognizer with30 tiles:510 certificate /587=254M+333A polynomial,26eq,94w,degree5642. Supplied590/2384; raw662/2356 or665/952. | Full alphabet/codes/loader unchanged. Unique-state contexts need no state-copy tiles; accepted-input equivalence on valid starts with distinct initial/accepting states. No numerical universal improvement. |
 | [Prefix-coded Neary–Woods compiler](neary_woods_prefix_universal.md) | Same97 physical tiles, g6,N107,H823;977 certificate /1057=429M+628A universal polynomial,27eq,163w,degree201682. Supplied1060/28eq/164w/degree7332. | Fixed prefix-code injection, paid width64 recoder and framing. Three positive program parameters give valid universal slices; no identity with the old numeric encoding or improvement below75/87. |
+| [Three-core normalized complete compiler](gpcp_normalized_strong_compiler.md) | **734 certificate /805=352M+453A universal polynomial**,24eq,125w,degree205092; supplied808/126w/25eq/degree8532. | Three independent normalized strong witnesses retain the separate history checksum and complete positive ordinary-input interface; fifteen canonical auxiliaries may be rebuilt. |
+| [Ordered sparse universal table](gpcp_ordered_sparse_tm.md) | **728 certificate /808=349M+459A polynomial**,27eq,125w,degree130394; supplied811/126w/28eq/degree5204. | Descending slope-pair/upper-offset ordering is a fixed permutation of the same57 tiles. Chronology and actual word semantics are unchanged; the history is freshly compiled. |
+| [Fixed binary-tag halt bridge](binary_tag_fixed_halt_bridge.md) | One fixed production and equal-content block morphism on valid clockwise-TM simulation inputs; all halts are singleton b. | Primary stage-table index exclusion proves one pending halt object. The exact dyadic tape-length counter remains an unpaid ordinary-input arithmetic interface; no new universal operation bound. |
+| [Weakened-bound86 candidate](complete75_weakened_bound86_candidate.md) | **Unresolved:**86=48M+38A,19w,degree203; exact parent substitution alpha_old=alpha-Z. | Positive completeness and inverse only for alpha>Z. Outer negative-index fixtures refute the old positivity bootstrap but are not full polynomial zeros. Established75/87 bounds unchanged. |
 | [Normalized strong history unit](pcp_normalized_strong_history_units.md) | Generic native-unit polynomial saves1 operation (+1M−2A), with certificate+2M and one fewer comparison. Tag **196=93M+103A**,28w,degree1015 including singleton; nonempty194/1014. | Same positive outer projection through sign-safe normalization and fresh five-auxiliary reconstruction. Single-core scope; ordinary universal tag input remains unpaid. |
 | [Four-tile binary tag history](binary_tag_four_tile_history.md) | **195** operations for a nonempty matching history; **197=92M+105A**,28 positive witnesses,degree667 including the initially halted singleton. | Exact halting equivalence on the stated length-congruence word slices. The supplied input is the encoded-tag sentinel; the fixed-universal ordinary-input bridge remains unpaid. |
 | [Sparse oriented machine rules](sparse_tm_rewriting.md) | Exact symbolic rule saving `t*ell-k_R-k_L`; local moves share forced edge repairs. | Fixed state orientations preserve deterministic runs and accepting cleanup. A before-oriented start preserves the existing ordinary-input prefix; arithmetic compilation rebuilds the actual table. |

@@ -15,16 +15,19 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
-The separate [sparse oriented GPCP compiler](../research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
-now has57 physical tiles and a paid ordinary-input bridge:
-**730 certificate /810=349M+461A polynomial operations**,27 comparisons,
-125 positive witnesses, three positive program parameters and degree130394.
-Supplying the initial history value gives813 operations,126 witnesses and
-degree5204. Forced boundary repairs and fixed state orientations preserve
-the original universal machine; the actual table and arithmetic are rebuilt.
-The [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
-and its decidable odd-integer579 example remain reproducible. These are
-alternative universal bounds above75/87; the matrix alphabet remains abstract.
+The separate [three-core normalized GPCP compiler](../research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
+has57 physical tiles and a paid ordinary-input bridge:
+**734 certificate /805=352M+453A polynomial operations**,24 comparisons,
+125 positive witnesses, three positive program parameters and degree205092.
+Supplying the initial history value gives808 operations,25 comparisons,
+126 witnesses and degree8532. A [fixed rule permutation](../research-wip/native-stream-queue/gpcp_ordered_sparse_tm.md)
+first saves two additions, then three normalized strong witnesses save
+three polynomial operations while retaining the separate history checksum.
+The unnormalized ordered808/degree130394 and supplied811/degree5204
+versions remain lower-degree alternatives. The [sparse810 predecessor](../research-wip/native-stream-queue/gpcp_sparse_tm_compiler.md)
+and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+remain reproducible. These are alternative universal bounds above75/87;
+the matrix alphabet remains abstract.
 
 The [four-tile binary-tag representation](../research-wip/native-stream-queue/binary_tag_four_tile_history.md)
 uses a fixed terminal boundary in place of a selectable terminal pair.
@@ -34,8 +37,17 @@ zero-run and queue proofs establish halting equivalence on the specified
 length-congruence slices. The [normalized strong-witness successor](../research-wip/native-stream-queue/pcp_normalized_strong_history_units.md)
 saves one polynomial operation, giving196=93M+103A with the same28 witnesses
 and degree1015. Its certificate grows by2M while one comparison is removed.
-A paid bridge from ordinary inputs to a fixed universal tag program is
-still required; neither encoded-input count is a universal bound.
+The [fixed-rule TM halt bridge](../research-wip/native-stream-queue/binary_tag_fixed_halt_bridge.md)
+now proves a unique pending halt activation on valid machine inputs,
+all-b cleanup to singleton b, and a fixed equal-length block morphism.
+The exact dyadic initialization counter still needs a paid arithmetic
+loader; neither encoded-input count is a universal bound.
+
+A separate [weakened-bound86 candidate](../research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
+has the exact signed parent identity alpha_old=alpha-Z and positive
+completeness. Its inverse is proved only for alpha>Z. Positive outer
+fixtures with negative packed index obstruct the old bootstrap, but are
+not full polynomial zeros. No universal improvement below87 is claimed.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
