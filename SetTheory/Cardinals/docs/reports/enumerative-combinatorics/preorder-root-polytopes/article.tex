@@ -31,7 +31,8 @@
     Part VI: stability of signed matching supports, ADE trees, books and multi-theta graphs;
     Part VII: the transversal matroid of a preorder;
     Part VIII: marked-tree stability, arbitrary apex neighbourhoods, enumeration and repair;
-    Part IX: two-flow bijections, full-coordinate sampling of demand vectors and preorder lattice points}}
+    Part IX: two-flow bijections, full-coordinate sampling of demand vectors and preorder lattice points;
+    Part X: rare stable markings on random trees, sparse transitions and annealed--quenched separation}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -128,6 +129,13 @@
 \newcommand{\pathin}[2]{\mathring P_{#1#2}}
 % Part IX (batch 64): macros of source 11
 \newcommand{\TV}{\operatorname{TV}}
+% Part X (batch 66): macros of source 12
+\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\st}{\mathsf E}
+\newcommand{\fall}[2]{(#1)_{#2}}
+\newcommand{\dto}{\xrightarrow{\ d\ }}
+\newcommand{\pto}{\xrightarrow{\ \PP\ }}
+\newcommand{\cst}{c_*}
 
 \begin{document}
 \thispagestyle{empty}
@@ -156,6 +164,9 @@ arbitrary apex neighbourhoods, enumeration and repair}\par
 \vspace{3pt}
 {\normalsize\color{Ink} With Part~IX (added 30 September 2026): two-flow bijections ---
 full-coordinate sampling of demand vectors and preorder lattice points}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~X (added 30 September 2026): rare stable markings on
+random trees --- sparse transitions and annealed--quenched separation}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -249,6 +260,19 @@ polytope almost uniformly, not only their supports, which answers
 Part~V's sampling boundary; its disjoint union is an elementary proof,
 without Ehrhart theory, of the support-counting identity of Parts~II, IV
 and~V.
+
+\emph{Addition of 30 September 2026 (batch 66).} Part~X, from a further
+manuscript, answers Part~VIII's question on random trees for the uniform
+labelled tree with independent marks of probability $p$: from Part~VIII's
+classification it derives exact counts, generating functions and a
+Poisson identity, shows that the probability of a stable marking is
+asymptotic to $\frac98\sqrt{2\pi}\,p^3n^{5/2}e^{-pn}$ whenever
+$p\sqrt n\to\infty$, describes the window $p\sqrt n\to\lambda$ by an
+explicit entire function and the sparse regime by at most two marks, and
+proves conditional Gaussian laws and a linear conditioned diameter at
+fixed $p$. For every fixed tree the probability is determined by the
+diameter up to a polynomial factor, which separates the typical-tree
+exponential rate $\log(1-p)$ from the averaged rate $-p$.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -277,6 +301,9 @@ every apex neighbourhood on a tree; see Section~\ref{mts:sec:answers}.]
 [Added 30 September 2026, batch 64: Part~IX constructs the
 demand/support bijection and a full-coordinate lattice-point sampler; see
 Section~\ref{tf:sec:answers}.]
+[Added 30 September 2026, batch 66: Part~X determines the probability
+that an independently marked random labelled tree is stable; see
+Section~\ref{rts:sec:answers}.]
 \end{tcolorbox}
 % Part III (batch 42): the page break that stood here was removed; the
 % longer abstract pushes this box to page 2, where the contents now follow it.
@@ -309,6 +336,9 @@ Part~IX (Sections~\ref{tf:sec:prov}--\ref{tf:app:algorithms}), added
 on 30 September 2026, constructs demand/support bijections and a
 full-coordinate sampler; it follows Part~VIII and precedes the appendices
 of Part~I.
+Part~X (Sections~\ref{rts:sec:prov}--\ref{rts:app:regimes}), added
+on 30 September 2026, treats stable markings of random trees; it follows
+Part~IX and precedes the appendices of Part~I.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -15927,6 +15957,18 @@ small-leaf hulls and their allowable marked paths. Paths and stars show
 that no universal order of magnitude is possible without hypotheses.
 A meaningful analysis must specify both the host-tree model and the
 marking probabilities.
+[Added 30 September 2026, batch 66: answered in Part~X for uniform
+labelled trees with independent marks of one common probability $p$,
+in every regime of $p$ (Theorems~\ref{rts:thm:jointcount},
+\ref{rts:thm:poisson}, \ref{rts:thm:rare}, \ref{rts:thm:sparse}
+and~\ref{rts:thm:critical}): for instance the probability is asymptotic
+to $\frac98\sqrt{2\pi}\,p^3n^{5/2}e^{-pn}$ whenever $p\sqrt n\to\infty$.
+For deterministic families Part~X gives the probability only within a
+polynomial factor, from the diameter (Theorem~\ref{rts:thm:quenched});
+an asymptotic equivalent there, other random-tree laws and
+vertex-dependent markings remain open (Research
+questions~\ref{rts:q:quenched}, \ref{rts:q:models}
+and~\ref{rts:q:inhomogeneous}). See Section~\ref{rts:sec:answers}.]
 
 \begin{question}[Restricted obstruction certificates]\label{mts:q:certificates}
 Within this family, identify economical canonical-matroid certificates
@@ -17969,6 +18011,1993 @@ survive in the arrival commit; this report's \texttt{article.tex},
 three. The table above gives the shipped names; the report's
 \texttt{README.md} maps them to the delivered ones.]
 
+\phantomsection\part*{Part X.\quad Random trees: rare stable markings, sparse transitions and annealed--quenched separation}
+\addcontentsline{toc}{part}{Part X.\texorpdfstring{\quad}{ } Rare stable markings on random trees}
+
+\noindent\emph{Part~X was added on 30 September 2026 in batch~66 of
+ProveIt's incoming-report intake, from one manuscript. It answers Part~VIII's
+Research question~\ref{mts:q:random} for the uniform labelled (Cayley)
+tree on $n$ vertices with every vertex marked independently with
+probability $p$. From Part~VIII's classification it derives an exact
+joint count of stable markings by number of marks and hull size, an exact
+two-colour generating function and a Poisson identity with eight finite
+corrections; the annealed stability probability is asymptotic to
+$\frac98\sqrt{2\pi}\,p^3n^{5/2}e^{-pn}$ whenever $p\sqrt n\to\infty$, an
+explicit entire function governs the window $p\sqrt n\to\lambda$, and
+below it stability is asymptotically the event of at most two marks. At
+fixed $p$ it proves a joint Gaussian law for marks and hull size given
+stability, and a linear conditioned diameter. For every fixed host it
+determines the stability probability up to a polynomial factor by the
+diameter, which separates the typical-host rate $\log(1-p)$ from the
+annealed rate $-p$. Parts~I--IX are unchanged except for dated pointers.
+Section~\ref{rts:sec:prov} records the provenance, fixes the notation and
+states what is answered.}
+
+\section{Provenance, conventions and what Part~X answers}
+\label{rts:sec:prov}
+
+\subsection{The manuscript}
+\label{rts:sec:source}
+Part~X is printed from batch-66 manuscript~06, called \emph{source~12}
+here after its file prefix: \emph{Rare Stable Markings on Random Trees:
+Exact enumeration, sparse transitions, conditioned geometry, and
+annealed--quenched separation}, dated 30 September 2026, 23 A4 pages as
+delivered. Its title page reads ``Prepared for Vladimir Reshetnikov /
+Mathematical development and computation: ChatGPT'' under the kicker
+``ProveIt research continuation'', and its PDF metadata give the author
+as ``ChatGPT; prepared for Vladimir Reshetnikov''; that byline is
+recorded here and not reprinted. Its archive
+\nolinkurl{ProveIt_Random_Tree_Stability.zip} (inner directory of the
+same name, main file \nolinkurl{article.tex}) arrived in ProveIt commit
+\texttt{9ad899cbe} and was placed in \texttt{4fee1cd07}. It is pinned to
+commit \texttt{b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042}, with this
+report's \texttt{article.tex} as blob
+\texttt{ba1cc4a6c99abd5ff808\allowbreak aae97df75efe434833e9}: Parts~I--IX
+exactly as printed, unchanged from the pin to the placement (the last
+change before it was \texttt{8a8c07210}, the writing of Part~IX). Its two
+programs and its build script are shipped in \nolinkurl{code/}; its
+recorded outputs, two CSV tables, console logs, environment and
+requirements records and its own PDF-validation record in
+\nolinkurl{data/}; and its proof-status and source-audit notes at the
+report root, all with the prefix \texttt{12-random-trees-}. Its checksum
+list \texttt{SHA256SUMS.txt} was verified (19/19) at placement and
+retired. The manuscript, delivery README and PDF are not shipped; they
+survive in the arrival commit.
+
+Source~12 continues Part~VIII only. It imports Part~VIII's classification
+(Theorem~\ref{mts:thm:main} with Table~\ref{mts:tab:ADE}) as a stated
+dependency, credits Part~VIII's path-only real-rootedness theorem,
+endpoint enumerator, repair algorithm and spectral test, and does not
+re-prove any of them. It did not use Part~IX, which is unrelated.
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of source~12 (as delivered).}
+A research question in ProveIt's marked-tree stability report asks for the
+probability that an independently marked random tree has a real-stable
+incidence--apex matching-support polynomial. We answer it for uniform
+labelled trees. Using the report's credited ADE-skeleton classification,
+we derive an exact exponential generating function and an exact joint
+count by the number of marks and the marked-hull size. For Bernoulli
+marking with probability $p$, the annealed stability probability satisfies
+\[
+ \pi_n(p)\sim \frac98\sqrt{2\pi}\,p^3n^{5/2}e^{-pn}
+\]
+whenever $p\sqrt n\to\infty$, including every fixed $p>0$. An exact
+finite-correction Poisson identity makes this statement uniform up to
+$p=1$. In the critical window $p\sqrt n\to\lambda$, an explicit entire
+function describes the crossover, the limiting number of marks, and a
+mixture of chi-distributed hull sizes. Below that window, stability is
+asymptotically equivalent to having at most two marks.
+
+For fixed $0<p<1$, conditioning on stability produces $np^2+O_{\PP}(\sqrt n)$
+marks and a hull of size $np+O_{\PP}(\sqrt n)$, with an explicit joint
+Gaussian law and constant-order moment corrections. The host diameter
+differs from the hull size by $O_{\PP}(\log n)$. In contrast, for every
+fixed host tree the stability probability is determined, up to a
+polynomial factor, by its diameter. This yields a strict separation
+between the typical-host exponential rate $\log(1-p)$ and the annealed
+rate $-p$. Exact finite checks and a dependency ledger accompany the proofs.
+\end{tcolorbox}
+\noindent The abstract is reproduced as delivered. Its ``marked-tree
+stability report'' is Part~VIII of this report, and ``the report's
+credited ADE-skeleton classification'' is Theorem~\ref{mts:thm:main}.
+
+\begin{statusbox}
+\small\textbf{Status and scope (source~12, as delivered).} The ADE
+characterization is an imported repository theorem, not a new result of
+this article. The enumerative and probabilistic results below are proved
+here for the precisely specified model. The proofs and programs are not
+Lean- or Rocq-verified, and have not been independently refereed. Global
+publication priority is not asserted. No repository file was modified.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (merge).}
+The stability classification is Part~VIII's Theorem~\ref{mts:thm:main}
+(itself a corollary of Part~VI), imported and not re-proved: every
+probability in Part~X is a probability of Part~VIII's branch-complete ADE
+markings, and Part~X's finite checks test that combinatorial class, not
+polynomial stability. The ADE list is classical and is Part~VI's
+Theorem~\ref{ade:thm:ADElist}; its spectral context is credited to
+McKee--Smyth~\cite{McKeeSmythJA}, a different paper from the two
+McKee--Smyth papers already cited (\cite{McKeeSmyth}
+and~\cite{McKeeSmythIMRN}). The half-plane-property framework is
+Choe--Oxley--Sokal--Wagner's~\cite{COSW}. The labelled-tree and
+rooted-forest counts, the matrix-tree expansion, Pr\"ufer codes, Lagrange
+inversion, Cauchy coefficient bounds, Stirling's formula, Poisson central
+limits, Chernoff bounds and the characteristic-function method are
+classical (Flajolet--Sedgewick~\cite{FS}); the long-path calculation
+behind the diameter rate~\eqref{rts:eq:diamLD} is included with its proof
+and is not claimed as new. The model of Section~\ref{rts:sec:model}
+restates Part~VIII's, and Lemma~\ref{rts:lem:almostpath} sharpens the
+inspection behind Part~VIII's Theorem~\ref{mts:thm:diameter} (merge note
+after it). New relative to Parts~I--IX: the skeleton series and its
+eventual constant $\frac98$ (Proposition~\ref{rts:prop:constant}, with
+the automorphism column of Table~\ref{rts:tab:ADE}), the joint count, the
+generating functions and the Poisson identity
+(Sections~\ref{rts:sec:counts}--\ref{rts:sec:poisson}), the fixed-$k$,
+supercritical, sparse and critical limits
+(Sections~\ref{rts:sec:fixedk}, \ref{rts:sec:rare}--\ref{rts:sec:critical}),
+the conditional Gaussian laws and family weights
+(Section~\ref{rts:sec:Gaussian}), the conditioned diameter
+(Section~\ref{rts:sec:geometry}), the quenched sandwich and the
+annealed--quenched gap (Section~\ref{rts:sec:quenched}), and the
+universality theorem (Section~\ref{rts:sec:universality}). Source~12's
+audit was focused and found no prior publication of these formulas,
+which is not evidence of first priority; no worldwide priority is claimed
+for any result of Part~X.
+\end{statusbox}
+
+\subsection{Notation of Part~X}
+\label{rts:sec:notation}
+Part~X uses Part~VIII's incidence--apex graph $\calA(T;S)$, its
+polynomial $F_{T,S}$ of~\eqref{mts:eq:F}, its hull $\Hull_T(S)$, its
+branch-complete markings and its terminal skeletons, and the report's
+macros for $\PP$, $\EE$, $\Var$, $\Cov$, $\ind$, $\Aut$ and $\diam$.
+Table~\ref{rts:tab:notation} lists what Part~X adds or uses differently.
+No symbol of source~12 was renamed and no normalization was changed: its
+$\mathcal A(T;S)$ is printed with the report's \verb|\calA|, which is the
+same symbol. The letters $K$, $H$, $\alpha$, $C$, $A$, $s$, $\tau$,
+$\Phi$, $\Psi$ and the sans-serif $\mathsf E$ mean something else in
+Part~X than in earlier Parts; the table prints the false readings.
+
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Symbols of Part~X. The last column prints the tempting false
+reading.}
+\label{rts:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.38\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~X & Not to be confused with\\
+\midrule
+$T_n$, $n$, $[n]$ & the uniform labelled (Cayley) tree on $[n]$; a fixed
+ host is $T$ & Part~VIII's fixed host $T$; Part~I's ground set
+ $E=[n]$.\\
+$p$, $q=1-p$, $r=p/q$ & common marking probability, its complement, the
+ odds & Part~VIII's vertex probabilities $p_v$; Part~VI's polynomial
+ $p_G$ and tree size $r$; Part~V's $r$; Part~IX's $q$ and $r=|J|$.\\
+$S$, $\st_n=\mathsf E_n$ & the random marking; the event that it is
+ stable & Part~III's $\Ecore=\mathsf E$ (the same glyph, a different
+ object).\\
+$K_n$, $H_n$ & the \emph{numbers} of marks and of hull vertices
+ ($H_n=0$ without marks) & Part~VIII's hull $K=\Hull_T(S)$ and terminal
+ skeleton $H(T,S)$, which are trees.\\
+$\pi_n(p)$, $\pi_p(T)$ & annealed and quenched stability probabilities &
+ Part~IX's basis law $\pi_\theta$.\\
+$a_k$, $c_k$, $\cst$, $\delta_k$ & allowed labelled skeletons on $k$
+ labels; $a_k/k!$; the eventual value $\frac98$; $c_k-\cst$ &
+ Part~VIII's scores $c_v$; the diameter fraction $\delta$ of
+ \eqref{rts:eq:diamLD}; Part~VI's $\del$.\\
+$A(y)$, $\mathscr H$, $c_k^{\mathscr H}$ & the skeleton series; a class
+ of skeletons and its coefficients & the graph $\calA(T;S)$; adjacency
+ matrices $A_H$; Part~IV's $\mathscr M_\tau$.\\
+$C_{n,k,\ell}$, $C(u,v)$ & joint counts; the moving-pole amplitude &
+ Part~VIII's $C_H$ and $C$; Part~I's $C_\tau$.\\
+$f_{n,\ell}$, $R_{n,k}$, $b_{n,k}$, $W_{n,k}$ & rooted-forest count;
+ attachment factor; stability probability of a fixed $k$-set; the
+ coefficient-one contribution & Part~VIII's arms $R_i$.\\
+$U(x)$, $s$, $t$, $B_n$ & rooted-tree series; $s=U(qt)$; the series
+ variable; $n!/n^{n-2}$ & the apex variable $s$ of $F_{T,S}(x;y,s)$;
+ the variable $t$ of $h_\tau(t)$; Part~I's $\Bt$ and Part~V's $\cB_H$.\\
+$\mathcal F$, $\mathcal F_p$ & series of stable marked trees & the
+ polynomial $F_{T,S}$.\\
+$\alpha_k$, $\chi_k$ & chi constants~\eqref{rts:eq:alpha} and chi laws &
+ Part~VIII's largest stable size $\alpha_{\mathrm{st}}(T)$.\\
+$\lambda$, $\Psi$, $\Phi$, $w_k(\lambda)$ & window parameter; the
+ crossover function; the standard normal distribution function; the
+ critical weights & Part~IX's maps $\Phi_w$, $\Psi_w$; Part~VI's
+ polynomial $\Phi_G$; Part~VIII's weights $w_v$.\\
+$\tau(u,v)$, $d(u)$, $s_0$, $\Lambda$, $\Sigma_p$, $\theta$ & moving
+ pole and its data; log-growth; covariance; a ratio below one & a
+ preorder $\tau$; the multi-theta graphs $\vartheta(\cdots)$; Part~IX's
+ activities $\theta$.\\
+$I(p)$, $J(\delta)$, $J_0$, $M_n$, $X$ & rate gap; diameter rate; a
+ constant; the main term; a Poisson variable & Part~I's order ideals $I$
+ and $\J$; Part~IX's receiver support $J$ and suppliers $X$.\\
+$d$, $D$, $N_d$ & a diameter (in edges); the random diameter in the
+ variational formula; the number of length-$d$ paths & Part~IX's
+ neighbourhoods $N_H(\cdot)$; the $D$ and $\widetilde D$ skeletons.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~X answers}
+\label{rts:sec:answers}
+Status after Part~X, as of 30 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Part~VIII's Research question~\ref{mts:q:random} is answered
+for random labelled trees} under independent marking with one common
+probability $p$, in every regime of $p$: the probability is exact
+(Theorems~\ref{rts:thm:jointcount}, \ref{rts:thm:GF}
+and~\ref{rts:thm:poisson}) and asymptotically determined below, in and
+above the window $p\asymp n^{-1/2}$ (Theorems~\ref{rts:thm:sparse},
+\ref{rts:thm:critical} and~\ref{rts:thm:rare},
+Corollary~\ref{rts:cor:sparse}), and Section~\ref{rts:app:regimes}
+summarizes the regimes. The question's
+second half, \emph{deterministic families with growing branching
+complexity}, is answered only on the exponential scale:
+Theorem~\ref{rts:thm:quenched} determines the stability probability of
+every host within a polynomial factor from its diameter, without an
+asymptotic equivalent (Research question~\ref{rts:q:quenched}). Other
+random-tree laws and vertex-dependent or correlated markings remain open
+(Research questions~\ref{rts:q:models} and~\ref{rts:q:inhomogeneous}).
+Part~VIII's remark that a meaningful analysis must specify the host model
+and the marking law is borne out: the constant $\frac98$ and the rate
+$-p$ belong to this model (Research question~\ref{rts:q:models}).
+\item \textbf{No other numbered research question of Parts~I--IX is
+answered.} Part~VIII's Research question~\ref{mts:q:apices} is posed again,
+with a random-tree layer, as Research question~\ref{rts:q:apices}, and
+Part~VIII's Research question~\ref{mts:q:compiler} is overlapped by
+Research question~\ref{rts:q:sampling}.
+\end{itemize}
+Part~X refutes no statement of Parts~I--IX, and nothing is retracted.
+Part~VIII gains a dated pointer after Research
+question~\ref{mts:q:random}; the title block, the abstract, the scope box
+and the reading route gain dated sentences.
+
+\subsection{Where the merge had to choose}
+\label{rts:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Order.} Source~12's order of sections is kept: its Section~$k$
+is Section~$k+152$ here. Its two appendices are printed as ordinary
+sections at the end of Part~X (Sections~\ref{rts:app:audit}
+and~\ref{rts:app:regimes}), so that Part~I's appendices keep their
+letters.
+\item \emph{Duplicates of Part~VIII, kept with merge notes.} Source~12's
+model (Section~\ref{rts:sec:model}) restates Part~VIII's definitions, and
+its imported Theorem~\ref{rts:thm:imported} is Part~VIII's
+Theorem~\ref{mts:thm:main}; both are short and cited throughout, so they
+are printed with pointers rather than replaced. Its
+Table~\ref{rts:tab:ADE} is Part~VIII's Table~\ref{mts:tab:ADE} in another
+layout with a new automorphism column. Lemma~\ref{rts:lem:almostpath}
+is kept as a second, stronger route to the inspection behind Part~VIII's
+Theorem~\ref{mts:thm:diameter}.
+\item \emph{Self-citation.} Source~12's reference ``ProveIt'' (this
+report at the pin, Part~VIII) became references to Part~VIII's
+statements, and the reference was dropped from the bibliography. Its
+statement of the pin, blob and inspected line ranges is kept in
+Section~\ref{rts:sec:question}, with a merge note mapping the ranges to
+Part~VIII's sections.
+\item \emph{Research questions.} Source~12's ten unlabelled questions
+continue the numbering as Research
+questions~\ref{rts:q:quenched}--\ref{rts:q:sampling} and received labels;
+the two that restate or overlap Part~VIII's questions are numbered, with
+merge notes, because their formulations are broader.
+\item \emph{File names.} Source~12's programs and records keep their
+delivered base names behind the prefix \texttt{12-random-trees-}
+(\texttt{verify.py}, \texttt{extra\_checks.py} and \texttt{build.sh} in
+\nolinkurl{code/}; its ten \texttt{data/} files and
+\texttt{requirements.txt} in \nolinkurl{data/}; \texttt{PROOF\_STATUS.md}
+and \texttt{SOURCE\_AUDIT.md} at the report root). Merge notes in
+Section~\ref{rts:sec:verification} give the shipped names; its
+reproduction commands are printed with delivery names.
+\item \emph{Cross-references.} Source~12 does not use \texttt{cleveref};
+its references are plain \verb|\ref| and \verb|\eqref|, as in the rest of
+the report, and nothing was converted.
+\item \emph{Macros, labels and layout.} Its preamble is dropped. Its colour
+definitions \texttt{Ink}, \texttt{Accent} and \texttt{Pale} use other hex
+values than the report's and would have recoloured the whole report; its
+redefinitions of \texttt{statusbox}, of the section formats and running
+heads, and of the \texttt{question} environment are dropped in favour of
+the report's own. Its \verb|\R|,
+\verb|\C|, \verb|\PP|, \verb|\EE|, \verb|\Var|, \verb|\Cov|, \verb|\ind|,
+\verb|\Aut|, \verb|\Hull| and \verb|\diam| agree with the report's; its
+$\mathbb N$ macro (unused in its text, and the report's $\N$ is
+$\mathbb Z_{\ge0}$) and an unused big-$O$ macro are dropped. Its
+\verb|\Pois|, \verb|\st|, \verb|\fall|, \verb|\dto|, \verb|\pto| and
+\verb|\cst| were added to the preamble. Its 111 labels carry the prefix
+\texttt{rts:} (one of them, \texttt{app:audit}, equals a bare Part~I
+label); this section's headings, its notation table, the subsection of
+Section~\ref{rts:sec:intro} that states the pin and the ten questions
+gained labels. Its abstract and status box are printed in this section;
+its title page, table of contents and running head are dropped.
+\item \emph{Bibliography.} \cite{COSW} was already cited (the report's
+entry gives the arXiv record, source~12's the DOI and the LSU record of
+the same paper). Source~12's \texttt{McKeeSmyth} is J.~Algebra~317
+(2007), a different paper from the report's \cite{McKeeSmyth}
+(arXiv:2002.06082) and from \cite{McKeeSmythIMRN}; it is printed
+as~\cite{McKeeSmythJA}, so that its one citation does not silently point
+to the wrong paper. Flajolet--Sedgewick~\cite{FS} and Aldous~\cite{Aldous}
+are new.
+\end{itemize}
+
+\needspace{7\baselineskip}
+\section{The question answered and the contribution boundary}
+\label{rts:sec:intro}
+
+\subsection{An explicit repository question}
+\label{rts:sec:question}
+Part~VIII of this report asks for asymptotic stable-marking probabilities
+for random labelled trees, while emphasizing that the tree model and
+marking law must be specified (Research question~\ref{mts:q:random}). The
+source label is \texttt{mts:q:random}. This is a repository research
+question, not a claim that a named conjecture in the published literature
+is being settled.
+We choose the uniform Cayley tree and independent Bernoulli marking,
+and determine the probability throughout its principal scaling regimes.
+We also obtain a deterministic estimate that applies to every host tree.
+
+The inspected source was pinned to commit
+\begin{quote}\small\ttfamily
+b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042.
+\end{quote}
+The relevant file is
+\begin{quote}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/enumerative-combinatorics/}\newline
+\nolinkurl{preorder-root-polytopes/article.tex},
+\end{quote}
+with Git blob
+\texttt{ba1cc4a6c99abd5ff808aae97df75efe434833e9}.
+The source ranges inspected include lines 14560--14710 (definitions and
+classification), 15210--15385 (ADE list and geometric consequences), and
+15900--16200 (the question and the contribution boundary). These refer to
+the pinned file, not to an indefinitely changing branch.
+[Merge note: the pinned blob is this report exactly as it stood after
+Part~IX was written, so ``the source'' in this section is Part~VIII.
+Lines 14560--14710 of that blob are the end of
+Section~\ref{mts:sec:provenance} and Section~\ref{mts:sec:main} into the
+first proof of Theorem~\ref{mts:thm:main}; lines 15210--15385 are
+Table~\ref{mts:tab:ADE}, the rest of Section~\ref{mts:sec:spectral},
+Section~\ref{mts:sec:recognition} with Theorem~\ref{mts:thm:diameter}, and
+the opening of Section~\ref{mts:sec:enumeration}; lines 15900--16200 are
+Research questions~\ref{mts:q:faster}--\ref{mts:q:compiler}, among them
+Research question~\ref{mts:q:random} itself, Part~VIII's conclusion,
+Sections~\ref{mts:app:source} and~\ref{mts:app:certificate}, and the
+opening of Part~IX (the last range runs past Part~VIII; nothing in
+Part~IX bears on Part~X). Part~X's additions to the front matter moved
+these lines by 30 in the present file, and those after Research
+question~\ref{mts:q:random} by 42, because of the dated pointer added
+there.]
+
+The source has already classified all markings on all finite trees
+(Theorem~\ref{mts:thm:main}) and already proved that the
+stable-neighbourhood counting polynomial is real-rooted exactly when the
+host is a path (Theorem~\ref{mts:thm:Zroots}). Neither statement is posed
+as an open question here. Nor do we reclaim the source's deterministic
+endpoint enumerator (Theorems~\ref{mts:thm:enumerator}
+and~\ref{mts:thm:counting}), optimal-repair algorithm
+(Theorem~\ref{mts:thm:optimization}, Corollary~\ref{mts:cor:repair}), or
+ADE spectral test.
+
+\subsection{What is proved here}
+Let $T_n$ be uniform among the $n^{n-2}$ trees on $[n]$, and mark each
+vertex independently with probability $p$. Write $\st_n$ for stability,
+$K_n$ for the number of marks, and $H_n$ for the number of vertices of
+their hull, with $H_n=0$ for no marks. The main conclusions are:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item An exact labelled decomposition and a finite joint counting formula
+for $(K_n,H_n)$ on $\st_n$; an exact Poisson-tail formula with only eight
+exceptional coefficient corrections.
+\item A three-regime probability theory: at most two marks dominate below
+$p\asymp n^{-1/2}$; an explicit crossover function governs that window;
+and $\frac98\sqrt{2\pi}p^3n^{5/2}e^{-pn}$ is an equivalent throughout
+$p\sqrt n\to\infty$.
+\item At fixed marking density, explicit conditional Gaussian laws and
+constant-order moment corrections, limiting skeleton-family weights,
+and a linear-diameter conditioned geometry.
+\item A diameter-based, polynomial-factor estimate for every host, and
+therefore an annealed--quenched exponential-rate separation.
+\end{enumerate}
+The factor $9/8$ has a transparent source: the three infinite families of
+allowed labelled skeletons contribute $1/2$, $1/2$, and $1/8$ to the
+exponential generating-function coefficients. The probabilistic conclusions
+are not numerical extrapolations; they follow from exact identities.
+
+\subsection{Prior methods and limits of the audit}
+The general relation between stable multiaffine polynomials and matroids
+belongs to the established half-plane-property literature \cite{COSW}.
+The spectral setting of the ADE list is classical \cite{McKeeSmythJA}.
+Labelled substitution, Lagrange inversion, and meromorphic coefficient
+asymptotics are standard methods of analytic combinatorics \cite{FS}.
+We use these methods with their usual credit and supply the needed
+calculations. The continuum-random-tree literature \cite{Aldous} provides
+natural context for later quenched fluctuation questions, but no continuum
+limit theorem is needed for our proofs.
+
+The source audit was focused, not an exhaustive reading of the entire
+repository or all random-tree literature. It did not establish a prior
+publication containing these precise stable-marking formulas. That
+negative search outcome is not evidence of first priority. The defensible
+claim is an explicit mathematical continuation of the pinned question,
+with an auditable separation of imported and newly derived statements.
+
+\needspace{7\baselineskip}
+\section{The model and the imported structural theorem}
+\label{rts:sec:model}
+
+All trees are finite, simple, undirected, and nonempty. A marking is a
+subset $S$ of the vertex set of a tree $T=(V,E)$. Form a bipartite graph
+$\calA(T;S)$ with left shore $V$ and right shore
+$E\sqcup\{\star\}$. An edge-element $e=ab$ is adjacent to $a,b$; the
+apex element $\star$ is adjacent precisely to $S$.
+
+For $I\subseteq V$ and $J\subseteq E\sqcup\{\star\}$, write $I\sim J$
+when $|I|=|J|$ and there is a perfect matching between them. The canonical
+basis polynomial is
+\begin{equation}
+ F_{T,S}(x;y,s)=\sum_{I\sim J}
+       \prod_{v\in V\setminus I}x_v
+       \prod_{e\in J\cap E}y_e\ s^{\ind_{\{\star\in J\}}}.
+ \label{rts:eq:basis}
+\end{equation}
+A feasible support contributes once, even if several matchings realize
+it. This distinction is essential. A real polynomial is \emph{real stable}
+when it is nonzero whenever every variable has positive imaginary part.
+
+For $S\ne\varnothing$, the marked hull $\Hull_T(S)$ is the least connected
+subtree containing $S$. Every leaf of this hull belongs to $S$. A marking
+is \emph{branch-complete} when every vertex of degree at least three in
+its hull is marked. Suppressing the unmarked degree-two hull vertices
+then produces a tree on $S$, the \emph{terminal skeleton}.
+[Merge note: this is Part~VIII's model (Section~\ref{mts:sec:main}),
+restated by source~12: $\calA(T;S)$ is Part~VIII's incidence--apex graph,
+\eqref{rts:eq:basis} is~\eqref{mts:eq:F}, the hull is Part~VIII's
+$K=\Hull_T(S)$ and the terminal skeleton is Part~VIII's $H(T,S)$. In
+Part~X the letters $K$ and $H$ denote the \emph{numbers} $K_n=|S|$ and
+$H_n=|\Hull_T(S)|$ instead (Table~\ref{rts:tab:notation}).]
+
+\begin{theorem}[Imported marked-tree classification, Part~VIII]
+\label{rts:thm:imported}
+The polynomial \eqref{rts:eq:basis} is real stable if and only if either
+$S=\varnothing$, or $S$ is branch-complete and the adjacency matrix of
+its terminal skeleton has spectral radius at most two. Equivalently,
+the skeleton belongs to Table~\ref{rts:tab:ADE}.
+\end{theorem}
+This is the pinned source's theorem \texttt{mts:thm:main}, with its
+spectral list \texttt{mts:tab:ADE}: Part~VIII's
+Theorem~\ref{mts:thm:main}, (i)$\Leftrightarrow$(iii)$\Leftrightarrow$(iv),
+with Table~\ref{mts:tab:ADE}. It is used as a dependency,
+not silently reproved or declared formally verified by this article.
+All subsequent combinatorics can alternatively be read as unconditional
+statements about the explicitly defined class of ADE-admissible markings.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{.23\textwidth}Xr@{}}
+\toprule
+Family & Skeleton shape & $|\Aut|$\\
+\midrule
+$A_k$, $k\ge2$ & Path on $k$ vertices & $2$\\
+$D_4$ & Three-leaf star & $6$\\
+$D_k$, $k\ge5$ & Three arms $(1,1,k-3)$ & $2$\\
+$E_6,E_7,E_8$ & Arms $(1,2,2),(1,2,3),(1,2,4)$ & $2,1,1$\\
+$\widetilde E_6,\widetilde E_7,\widetilde E_8$
+ & Arms $(2,2,2),(1,3,3),(1,2,5)$ & $6,2,1$\\
+$\widetilde D_4$ & Four-leaf star, five vertices & $24$\\
+$\widetilde D_{d+4}$, $d\ge1$
+ & Two trivalent vertices joined by a length-$d$ path,
+ with two immediate leaves at each end & $8$\\
+\bottomrule
+\end{tabularx}
+\caption{The allowed nontrivial skeletons. Arm lengths count skeleton
+edges, not host edges. The singleton $A_1$ has one automorphism. The
+spectral classification is imported; the automorphism counts are elementary.}
+\label{rts:tab:ADE}
+\end{table}
+\noindent[Merge note: Table~\ref{rts:tab:ADE} is Part~VIII's
+Table~\ref{mts:tab:ADE} (Part~VI's list of Theorem~\ref{ade:thm:ADElist})
+in source~12's layout: $D_4$ is listed apart from $D_k$, $k\ge5$ (Part~VIII's
+$D_{c+3}$, $c\ge1$), $A_1$ is in the caption, and the $|\Aut|$ column is
+new. It is kept because later statements of Part~X cite it and because
+the automorphism counts give~\eqref{rts:eq:A}.]
+
+\begin{definition}[Annealed and quenched probabilities]
+Fix $n\ge1$. Let $T_n$ be uniform among labelled trees on $[n]$,
+independently of Bernoulli marks with parameter $p$. Put
+\[
+ \pi_n(p)=\PP(\st_n),\qquad
+ \pi_p(T)=\PP(S\text{ is stable}\mid T).
+\]
+The first averages over both sources of randomness (\emph{annealed}); the
+second holds the tree fixed (\emph{quenched}). We use $q=1-p$ and,
+when $q>0$, $r=p/q$. The hull size counts vertices; diameter counts edges.
+\end{definition}
+
+For $n=1$, the number of trees is one and both markings are stable.
+For $p=0$, $\pi_n(0)=1$. For $p=1$, stability means that the entire tree
+is an ADE tree. Statements involving $r$ or $\log q$ exclude $p=1$.
+
+\needspace{7\baselineskip}
+\section{The skeleton generating function}
+\label{rts:sec:skeleton}
+Let $a_k$ be the number of allowed skeletons on a prescribed $k$-element
+label set, and put $c_k=a_k/k!$. Relabelling a fixed unlabelled tree
+produces $k!/|\Aut|$ labelled trees. Consequently Table~\ref{rts:tab:ADE} gives
+\begin{align}
+ A(y):=\sum_{k\ge1}c_ky^k
+ ={}&y+\frac{y^2}{2(1-y)}+\frac{y^4}{6}
+       +\frac{y^5}{2(1-y)}+\frac{y^5}{24}
+       +\frac{y^6}{8(1-y)} \notag\\
+   &+\frac{y^6}{2}+\frac{7y^7}{6}
+       +\frac{3y^8}{2}+y^9.
+ \label{rts:eq:A}
+\end{align}
+For example, at seven vertices the exceptional contributions are
+$E_7$ and $\widetilde E_6$, of weights $1$ and $1/6$. At eight vertices
+they are $E_8$ and $\widetilde E_7$, of weights $1$ and $1/2$.
+
+\begin{proposition}[Eventual coefficient constancy]
+\label{rts:prop:constant}
+With $\cst=9/8$, one has
+\begin{equation}
+ A(y)=y+\cst\frac{y^2}{1-y}+\sum_{k=2}^9\delta_ky^k,
+ \qquad c_k=\cst\quad(k\ge10),
+ \label{rts:eq:delta}
+\end{equation}
+where Table~\ref{rts:tab:coeff} gives the complete exceptional prefix.
+\end{proposition}
+\begin{proof}
+Expand the three geometric series in \eqref{rts:eq:A}. Their eventual
+coefficients are $1/2+1/2+1/8=9/8$; every other summand is a polynomial.
+\end{proof}
+
+\begin{table}[htbp]\centering
+\begin{tabular}{@{}crrrrrrrrr@{}}
+\toprule
+$k$ & 1&2&3&4&5&6&7&8&9\\
+\midrule
+$c_k$ & $1$&$\frac12$&$\frac12$&$\frac23$&$\frac{25}{24}$&$\frac{13}{8}$&$\frac{55}{24}$&$\frac{21}{8}$&$\frac{17}{8}$\\[2pt]
+$\delta_k$ & --&$-\frac58$&$-\frac58$&$-\frac{11}{24}$&$-\frac1{12}$&$\frac12$&$\frac76$&$\frac32$&$1$\\
+\bottomrule
+\end{tabular}
+\caption{Skeleton coefficients and finite corrections to $9/8$.}
+\label{rts:tab:coeff}
+\end{table}
+
+The constant coefficients are not a statement about uniform unlabelled
+random trees. The factorial normalization comes from labelled enumeration,
+and changing the random-tree model changes the analysis.
+
+\needspace{7\baselineskip}
+\section{Exact joint enumeration by marks and hull size}
+\label{rts:sec:counts}
+
+\subsection{A rooted-forest counting lemma}
+We use the falling factorial $\fall nk=n(n-1)\cdots(n-k+1)$.
+
+\begin{lemma}[Prescribed roots]
+\label{rts:lem:forest}
+For a prescribed root set of size $\ell$ in $[n]$, the number of forests
+whose components each contain exactly one root is
+\begin{equation}
+ f_{n,\ell}=\ell n^{n-\ell-1}\quad(1\le\ell\le n),
+ \label{rts:eq:forest}
+\end{equation}
+with value one when $\ell=n$.
+\end{lemma}
+\begin{proof}
+Orient every edge toward its component root. The directed forest
+matrix-tree expansion reduces the count to the determinant of
+$nI_m-J_m$, where $m=n-\ell$ indexes the nonroots. To recall the
+combinatorics of this expansion, choose one outgoing edge from each
+nonroot; the alternating terms in the determinant cancel exactly the
+choices containing a directed cycle among nonroots. The remaining
+functional digraphs all reach a root and are precisely the desired
+forests. The matrix has eigenvalues $n$ with multiplicity $m-1$ and
+$n-m=\ell$ with multiplicity one, giving \eqref{rts:eq:forest}. If $m=0$,
+the empty determinant is one, also the value of $\ell n^{-1}$.
+\end{proof}
+
+\begin{theorem}[Exact joint count]
+\label{rts:thm:jointcount}
+Let $C_{n,k,\ell}$ count pairs $(T,S)$ with stable marking, $|S|=k$,
+and $|\Hull_T(S)|=\ell$. For $2\le k\le\ell\le n$,
+\begin{equation}
+ C_{n,k,\ell}=
+ \binom nk a_k\fall{n-k}{\ell-k}
+ \binom{\ell-2}{k-2}f_{n,\ell}.
+ \label{rts:eq:jointcount}
+\end{equation}
+The remaining nonzero entries are
+$C_{n,0,0}=n^{n-2}$ and $C_{n,1,1}=n^{n-1}$, with the single-vertex
+convention already stated. Thus
+\begin{equation}
+ \pi_n(p)=\frac1{n^{n-2}}\sum_{k,\ell}C_{n,k,\ell}p^kq^{n-k}.
+ \label{rts:eq:probcount}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Choose the $k$ marked labels and one of their $a_k$ allowed skeletons.
+Set $j=\ell-k$. On the $k-1$ skeleton edges, insert ordered lists of
+$j$ distinct unmarked labels. Orient each skeleton edge by any fixed
+label-dependent convention; this avoids introducing a spurious factor
+of two. The list lengths form a weak composition of $j$ into $k-1$
+parts, of which there are $\binom{j+k-2}{k-2}$. Choosing and ordering
+the subdivision labels gives $\fall{n-k}j$ possibilities.
+
+The resulting subdivided skeleton is exactly the hull. Attach the
+remaining vertices by a rooted forest whose roots are the $\ell$ hull
+vertices; Lemma~\ref{rts:lem:forest} counts these attachments. Every attached
+vertex is unmarked. Conversely, pruning all unmarked fringe and
+suppressing the unmarked degree-two hull vertices recovers each choice
+uniquely. This proves the product formula. Zero and one mark are always
+stable and give the two remaining entries.
+\end{proof}
+
+\begin{corollary}[A fixed marked set]
+\label{rts:cor:R}
+For a prescribed $k$-element marked set, $k\ge2$, write
+$b_{n,k}=\PP(\st_n\mid S=[k])$. Then
+\begin{align}
+ b_{n,k}&=a_k R_{n,k},\notag\\
+ R_{n,k}&=n^{1-k}\sum_{j=0}^{n-k}
+ \frac{\fall{n-k}j}{n^j}\binom{k+j-2}{k-2}(k+j).
+ \label{rts:eq:R}
+\end{align}
+Conditional on stability and this marked set, the labelled terminal
+skeleton is exactly uniform among its $a_k$ possibilities, for every
+finite $n\ge k$.
+\end{corollary}
+\begin{proof}
+Divide \eqref{rts:eq:jointcount} by $\binom nk n^{n-2}$ and sum over $\ell$.
+The attachment factor does not depend on the shape of the skeleton.
+\end{proof}
+
+\subsection{A nonnegative one-dimensional kernel}
+Substituting $a_k=k!c_k$ into \eqref{rts:eq:jointcount} and collecting by
+$\ell$ gives the useful exact identity
+\begin{equation}
+ \frac{\pi_n(p)}{q^n}=1+nr+
+ n\sum_{\ell=2}^n\frac{\fall n\ell}{n^\ell}\,\ell
+       \sum_{k=2}^{\ell}c_k\binom{\ell-2}{k-2}r^k.
+ \label{rts:eq:kernel}
+\end{equation}
+Every summand here is nonnegative. Since $c_k=\cst$ after $k=9$, the
+inner sum has the computationally economical form
+\begin{equation}
+ \cst r^2(1+r)^{\ell-2}
+ +\sum_{k=2}^{\min(9,\ell)}\delta_k\binom{\ell-2}{k-2}r^k.
+ \label{rts:eq:kernelinner}
+\end{equation}
+This evaluates the probability in $O(n)$ arithmetic operations after
+updating the falling-factorial ratio recursively. It is an arithmetic
+operation count, not a claim of linear bit complexity at arbitrary
+precision. The correction form can exhibit cancellation; the nonnegative
+form remains available for independent exact verification.
+
+\needspace{7\baselineskip}
+\section{The labelled generating function and its deformations}
+\label{rts:sec:GF}
+Let $U(x)$ be the exponential generating function for rooted labelled
+trees:
+\begin{equation}
+ U(x)=xe^{U(x)},\qquad
+ U(x)=\sum_{n\ge1}\frac{n^{n-1}}{n!}x^n.
+ \label{rts:eq:tree}
+\end{equation}
+Its unrooted counterpart is $U-U^2/2$. For completeness,
+$x\frac{d}{dx}(U-U^2/2)=U$, so the latter has coefficient
+$n^{n-2}/n!$ and zero constant term. The rooted equation follows by
+removing the root and obtaining a labelled set of rooted trees, or by
+Lagrange inversion \cite{FS}.
+
+\begin{theorem}[Exact two-colour generating function]
+\label{rts:thm:GF}
+Let $x$ count unmarked vertices and $z$ marked vertices in the labelled
+exponential convention. Stable marked trees have generating function
+\begin{equation}
+ \mathcal F(x,z)=U(x)-\frac{U(x)^2}{2}
+ +(1-U(x))A\left(\frac{ze^{U(x)}}{1-U(x)}\right).
+ \label{rts:eq:GF}
+\end{equation}
+For $0<p<1$, put $s=U(qt)$. Then
+\begin{align}
+ \mathcal F_p(t)&=s-\frac{s^2}{2}
+ +(1-s)A\left(\frac{ps}{q(1-s)}\right),\label{rts:eq:GFp}\\
+ \pi_n(p)&=B_n[t^n]\mathcal F_p(t),
+ \qquad B_n=\frac{n!}{n^{n-2}}.\label{rts:eq:Bn}
+\end{align}
+More generally, marking fugacity $u$ and hull-size fugacity $v$ give
+\begin{equation}
+ \mathcal F_p(t;u,v)=s-\frac{s^2}{2}
+ +(1-vs)A\left(\frac{vpu\,s}{q(1-vs)}\right),
+ \label{rts:eq:GFuv}
+\end{equation}
+and $B_n[t^n]\mathcal F_p(t;u,v)=\EE[u^{K_n}v^{H_n}\ind_{\st_n}]$.
+\end{theorem}
+\begin{proof}
+At each marked skeleton vertex, attach an arbitrary labelled set of
+rooted unmarked trees, giving the factor $ze^U$. Each unmarked vertex
+inserted along a skeleton edge, together with its own fringe, has weight
+$xe^U=U$. An ordered sequence of such vertices has weight $(1-U)^{-1}$.
+Thus a skeleton with $k$ vertices and $k-1$ edges contributes
+$c_k(ze^U)^k(1-U)^{-(k-1)}$. Summing gives the last term of
+\eqref{rts:eq:GF}; the first two terms count the empty marking.
+This decomposition is the labelled version of Theorem~\ref{rts:thm:jointcount}.
+
+Substitute $x=qt$, $z=pt$ and use $te^s=s/q$. For the refinement, each
+marked vertex acquires $uv$, every subdivision vertex acquires $v$,
+and no fringe vertex acquires $v$. Replacing $ze^U$ by $uvpt e^s$ and
+$U$ along edges by $vs$ gives \eqref{rts:eq:GFuv}. In particular, $v$ counts
+hull vertices, not the total size of the attached rooted trees.
+\end{proof}
+
+The rational skeleton function has its only pole at $y=1$. For fixed
+$0<p<1$, this produces a pole at $s=q$, hence at
+\begin{equation}
+ t_0=e^{-q}.
+ \label{rts:eq:t0}
+\end{equation}
+The rooted-tree branch point is at $t=1/(eq)$, and
+$t_0<1/(eq)$ because $q e^{1-q}<1$ for $0<q<1$. The collision of these
+two singularities as $p\downarrow0$ explains why a separate critical
+analysis is needed; the fixed-$p$ pole argument alone is not a uniform
+proof in that limit.
+
+\needspace{7\baselineskip}
+\section{A fixed number of marks: chi hulls and uniform subdivisions}
+\label{rts:sec:fixedk}
+Define
+\begin{equation}
+ \alpha_k=\frac{2^{k/2-1}\Gamma(k/2)}{(k-2)!}
+ =\frac{\sqrt\pi\,2^{1-k/2}}{\Gamma((k-1)/2)}
+ \qquad(k\ge2).
+ \label{rts:eq:alpha}
+\end{equation}
+
+\begin{theorem}[Fixed-$k$ asymptotics]
+\label{rts:thm:fixedk}
+For every fixed $k\ge2$,
+\begin{equation}
+ R_{n,k}\sim\alpha_kn^{1-k/2},\qquad
+ b_{n,k}\sim a_k\alpha_kn^{1-k/2}.
+ \label{rts:eq:fixedk}
+\end{equation}
+There is a constant $M_k$ with $R_{n,k}\le M_kn^{1-k/2}$ for all $n\ge k$.
+Given stability and $K_n=k$,
+\begin{equation}
+ \frac{H_n}{\sqrt n}\dto\chi_k,
+ \label{rts:eq:chi}
+\end{equation}
+where $\chi_k$ has density
+$x^{k-1}e^{-x^2/2}/(2^{k/2-1}\Gamma(k/2))$ on $x>0$.
+\end{theorem}
+\begin{proof}
+For $j/\sqrt n$ in a fixed compact interval,
+\[
+ \frac{\fall{n-k}j}{n^j}
+ =\prod_{i=0}^{j-1}\left(1-\frac{k+i}{n}\right)
+ =e^{-j^2/(2n)+o(1)},
+\]
+uniformly in that interval. Also
+$\binom{k+j-2}{k-2}(k+j)\sim j^{k-1}/(k-2)!$ as $j\to\infty$.
+The Riemann sum in \eqref{rts:eq:R} therefore yields
+\[
+ n^{k/2-1}R_{n,k}\longrightarrow
+ \frac1{(k-2)!}\int_0^\infty x^{k-1}e^{-x^2/2}\,dx=\alpha_k.
+\]
+To justify tails and obtain the stated upper bound, use
+\[
+ \frac{\fall{n-k}j}{n^j}
+ \le \exp\left(-\frac{kj+j(j-1)/2}{n}\right)
+\]
+and bound the remaining factor by a constant depending on $k$ times
+$(j+1)^{k-1}$. Comparison with a Gaussian integral is uniform in $n$;
+the finitely many small $n$ can be absorbed into $M_k$.
+
+The exact joint count assigns to $j=H_n-k$ precisely the normalized
+summands of \eqref{rts:eq:R}. Applying the same Riemann-sum argument to
+bounded continuous test functions proves the chi limit.
+\end{proof}
+
+For $k=2$, $a_2=\alpha_2=1$, and in fact stability has probability one.
+For $k=3$, $a_3=3$ and
+\begin{equation}
+ b_{n,3}\sim 3\sqrt{\frac\pi2}\,n^{-1/2}.
+ \label{rts:eq:k3}
+\end{equation}
+Three marks fail generically because the branching point of their hull
+need not itself be marked; \eqref{rts:eq:k3} quantifies the exceptional event.
+
+\begin{corollary}[Limiting metric skeleton at fixed $k$]
+\label{rts:cor:dirichlet}
+Given stability and $K_n=k\ge2$, the labelled skeleton is exactly uniform
+among the $a_k$ possibilities. Conditional on $H_n=k+j$, its subdivision
+counts are uniform among weak compositions of $j$ into $k-1$ parts.
+As $n\to\infty$, the normalized edge-length vector converges to
+$\operatorname{Dirichlet}(1,\ldots,1)$, independently of the uniform
+skeleton and the limiting chi radius $H_n/\sqrt n$.
+\end{corollary}
+\begin{proof}
+For a fixed composition, the ordered subdivision labels and the attached
+forests have counts independent of that composition and of the skeleton.
+Uniform lattice points in the dilated simplex, divided by $j$, converge
+by elementary Riemann sums to uniform simplex measure, namely the stated
+Dirichlet law. By Theorem~\ref{rts:thm:fixedk}, $j\to\infty$ in probability.
+Conditioning on $j$ and then using bounded test functions proves joint
+convergence and independence. Replacing subdivision counts by edge lengths
+adds one to each coordinate and does not alter the limit.
+\end{proof}
+
+\needspace{7\baselineskip}
+\section{An exact Poisson identity with finite corrections}
+\label{rts:sec:poisson}
+For $2\le k\le n$ put
+\begin{equation}
+ W_{n,k}(p)=\fall nk p^kq^{n-k}R_{n,k}.
+ \label{rts:eq:W}
+\end{equation}
+This is the probability contribution that a skeleton coefficient equal
+to one would give at size $k$; the actual contribution is $c_kW_{n,k}$.
+
+\begin{theorem}[Finite-correction Poisson formula]
+\label{rts:thm:poisson}
+For $n\ge2$ and $0<p<1$, if $X\sim\Pois(nq)$, then
+\begin{align}
+ \pi_n(p)={}&q^n+npq^{n-1}
+ +\cst p^3B_ne^{nq}\PP(X\le n-2)\notag\\
+ &+\cst p^2n(n-1)q^{n-1}
+ +\sum_{k=2}^{\min(9,n)}\delta_k W_{n,k}(p).
+ \label{rts:eq:poisson}
+\end{align}
+The formula is exact, not asymptotic. The exponential and the Poisson
+probability may be replaced together by their finite sum.
+\end{theorem}
+\begin{proof}
+The singleton and empty terms in \eqref{rts:eq:delta} give the first two
+terms of \eqref{rts:eq:poisson}; its finite polynomial gives the last sum by
+Theorem~\ref{rts:thm:jointcount}. For the geometric tail, set
+$y=ps/[q(1-s)]$ and calculate
+\begin{equation}
+ (1-s)\cst\frac{y^2}{1-y}
+ =\cst p^2\left(\frac q{q-s}-1-\frac sq\right).
+ \label{rts:eq:tailalgebra}
+\end{equation}
+Lagrange inversion for $s=qt e^s$ gives
+\begin{equation}
+ [t^n]\frac q{q-s}
+ =\sum_{i=0}^{n-1}\left(1-\frac in\right)\frac{(nq)^i}{i!}.
+ \label{rts:eq:Lagrange}
+\end{equation}
+Indeed, apply $[t^n]g(s)=q^n[n^{-1}z^{n-1}]g'(z)e^{nz}$,
+expand $g'(z)=q/(q-z)^2$, and change the summation index.
+Since $[t^n]s/q=(nq)^{n-1}/n!$, subtraction and the identity
+$\sum_{i=1}^{n-1}i(nq)^i/i!=nq\sum_{i=0}^{n-2}(nq)^i/i!$ yield
+\begin{align*}
+ [t^n]\left(\frac q{q-s}-1-\frac sq\right)
+ =p\sum_{i=0}^{n-2}\frac{(nq)^i}{i!}
+   +\left(1-\frac1n\right)\frac{(nq)^{n-1}}{(n-1)!}.
+\end{align*}
+Multiplying by $\cst p^2B_n$ gives the middle two terms of
+\eqref{rts:eq:poisson}.
+\end{proof}
+
+A useful exact interpretation is that every departure from the universal
+geometric skeleton tail is confined to the eight sizes $2,\ldots,9$.
+The negative corrections in Table~\ref{rts:tab:coeff} are algebraic correction
+terms, not probabilities. Their signed appearance must not be used to
+infer a probabilistic mixture.
+
+\needspace{7\baselineskip}
+\section{The rare-event equivalent above the critical window}
+\label{rts:sec:rare}
+
+\begin{theorem}[Uniform supercritical equivalent]
+\label{rts:thm:rare}
+For any sequence $0<p_n\le1$ with $p_n\sqrt n\to\infty$,
+\begin{equation}
+ \pi_n(p_n)\sim\cst p_n^3 B_n e^{n(1-p_n)}
+ \sim\frac98\sqrt{2\pi}\,p_n^3n^{5/2}e^{-np_n}.
+ \label{rts:eq:rare}
+\end{equation}
+In particular, for every fixed $0<p\le1$,
+$n^{-1}\log\pi_n(p)\to-p$.
+\end{theorem}
+\begin{proof}
+First suppose $0<p\le1/2$, set $x=p\sqrt n$, and assume $x\ge2$.
+Define the positive rate gap
+\begin{equation}
+ I(p)=-p-\log(1-p)\ge p^2/2.
+ \label{rts:eq:I}
+\end{equation}
+Let $M_n=\cst p^3B_ne^{nq}$. Stirling's lower bound gives
+$M_n\ge C p^3n^{5/2}e^{-np}$ with an absolute $C>0$.
+For each fixed $2\le k\le9$, Theorem~\ref{rts:thm:fixedk} implies
+\begin{equation}
+ \frac{|\delta_k|W_{n,k}}{M_n}
+ \le C_k x^{k-3}q^{-k}e^{-nI(p)}.
+ \label{rts:eq:corrbound}
+\end{equation}
+The zero- and one-mark terms, and the extra boundary term in
+\eqref{rts:eq:poisson}, are bounded similarly; the latter has ratio at most
+$C x^{-1}q^{-1}e^{-nI(p)}$.
+
+For the Poisson tail use the Chernoff bound at $n-1>nq$:
+\[
+ \PP(X\ge n-1)\le
+ \exp\left(-(n-1)\log\frac{n-1}{nq}+n-1-nq\right)
+ \le C e^{-nI(p)}.
+\]
+The last constant is absolute because $q\ge1/2$; the difference between
+the two exponents is
+$\log(1/q)-(n-1)\log(1-1/n)-1$, which is bounded.
+Thus, uniformly in this range,
+\begin{equation}
+ \frac{\pi_n(p)}{M_n}
+ =1+O\left((1+x^6)e^{-nI(p)}\right).
+ \label{rts:eq:uniformsmallp}
+\end{equation}
+It tends to one whenever $x\to\infty$.
+
+For $1/2\le p<1$, set $J_0=\log2-1/2>0$. For every fixed
+$k\le9$ and $n\ge18$, the function
+$q^{n-k}e^{n(1-q)}$ is increasing on $0<q\le1/2$, so it is at most
+$2^ke^{-nJ_0}$. The same bounds as above, now retaining this expression
+instead of $q^{-k}e^{-nI(p)}$, show that all correction ratios are
+$O(n^3e^{-nJ_0})$. The Poisson-tail ratio is bounded uniformly by its
+value at mean $n/2$, with the same exponential rate. The remaining
+terms are smaller. Hence $\pi_n/M_n\to1$ uniformly in this second range.
+
+At $p=1$ and $n\ge10$, \eqref{rts:eq:probcount} reduces exactly to
+$\pi_n(1)=a_n/n^{n-2}=\cst B_n$. Finally,
+$B_n\sim\sqrt{2\pi}n^{5/2}e^{-n}$ proves the second equivalent.
+\end{proof}
+
+\begin{proposition}[Fixed-density meromorphic strengthening]
+\label{rts:prop:pole}
+For fixed $0<p<1$, there is $0<\theta_p<1$ such that
+\begin{equation}
+ \pi_n(p)=\cst p^3B_ne^{nq}(1+O(\theta_p^n)).
+ \label{rts:eq:fixedpole}
+\end{equation}
+Consequently the expansion from Stirling, beginning with the factor
+$1+1/(12n)+O(n^{-2})$, may be appended to \eqref{rts:eq:rare}.
+\end{proposition}
+\begin{proof}
+The same conclusion follows from \eqref{rts:eq:poisson}, or directly from
+\eqref{rts:eq:GFp}. Near $t_0=e^{-q}$,
+$s'=s/[t(1-s)]$ implies
+\[
+ \mathcal F_p(t)=\frac{\cst p^3}{1-t/t_0}+\text{an analytic remainder}.
+\]
+Choose $R$ strictly between $t_0$ and $1/(eq)$. The principal rooted-tree
+branch is analytic in $|t|<1/(eq)$; the equation $s=q$ has the unique
+solution $t=t_0$ there. After subtracting the displayed pole, all other
+terms are analytic on a slightly larger disc than $|t|\le R$.
+Cauchy's coefficient bound gives an error $O(R^{-n})$, proving the result.
+\end{proof}
+
+The exponential factor is $e^{-pn}$, not $(1-p)^n$. Replacing the former
+by the latter loses an exponentially significant factor when $p$ is
+fixed. Section~\ref{rts:sec:quenched} explains why the latter nevertheless
+appears naturally when the host tree is held fixed.
+
+\needspace{7\baselineskip}
+\section{Below the window: at most two marks dominate}
+\label{rts:sec:sparse}
+
+\begin{theorem}[Uniform sparse comparison]
+\label{rts:thm:sparse}
+As $p\sqrt n\to0$, with $0\le p<1$,
+\begin{equation}
+ \pi_n(p)=q^n\left(1+nr+\binom n2r^2\right)
+                 (1+O(r\sqrt n)).
+ \label{rts:eq:sparse}
+\end{equation}
+At $p=0$ interpret the formula exactly. In particular, stability and the
+event $K_n\le2$ have asymptotically equal probabilities.
+\end{theorem}
+\begin{proof}
+Every zero-, one-, or two-mark set is stable, so the displayed main term
+is a lower bound. By \eqref{rts:eq:kernel} and $c_k\le21/8$, the contribution
+of $k\ge3$, divided by $q^n$, is at most
+\begin{align*}
+ Cn r^2\sum_{\ell=2}^n\ell\frac{\fall n\ell}{n^\ell}
+             \big((1+r)^{\ell-2}-1\big)
+ &\le Cn r^3\sum_{\ell=2}^n\ell^2
+        \exp\left(-\frac{\ell(\ell-1)}{2n}+r\ell\right).
+\end{align*}
+When $r\sqrt n\le1/4$, Gaussian integral comparison bounds the sum by
+$C'n^{3/2}$. The remainder is therefore at most
+$C''n^{5/2}r^3$. For $n\ge2$, divide by the two-mark main term
+$\binom n2r^2$ to obtain $O(r\sqrt n)$; the zero case is immediate.
+Since $p\sqrt n\to0$ also implies $r\sqrt n\to0$, the claim follows.
+\end{proof}
+
+\begin{corollary}[Two sparse subregimes]
+\label{rts:cor:sparse}
+If $np\to\mu\in[0,\infty)$, then
+\begin{equation}
+ \pi_n(p)\longrightarrow e^{-\mu}(1+\mu+\mu^2/2).
+ \label{rts:eq:poissontruncated}
+\end{equation}
+For $\mu>0$, the conditional mark count tends to a Poisson random variable
+of mean $\mu$ conditioned to be at most two; for $\mu=0$ it tends to zero.
+If instead $np\to\infty$ and $p\sqrt n\to0$, then
+\begin{equation}
+ \pi_n(p)\sim\binom n2p^2q^{n-2},\qquad
+ \PP(K_n=2\mid\st_n)\longrightarrow1.
+ \label{rts:eq:twomarks}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use the elementary binomial-to-Poisson limit in the first case. In the
+second case the two-mark term dominates the zero- and one-mark terms.
+Theorem~\ref{rts:thm:sparse} shows that stable configurations with three or
+more marks have negligible mass in both cases.
+\end{proof}
+
+In the second regime the original, unconditioned expected number of marks
+$np$ diverges, but stability selects just two. This selection changes in
+the window $p\asymp n^{-1/2}$, not when $np$ first becomes large.
+
+\needspace{7\baselineskip}
+\section{The critical crossover and its limiting distributions}
+\label{rts:sec:critical}
+Define the entire function
+\begin{equation}
+ \Psi(\lambda)=\sum_{k\ge2}c_k\alpha_k\lambda^k.
+ \label{rts:eq:psi-series}
+\end{equation}
+The gamma denominator in \eqref{rts:eq:alpha} and boundedness of $c_k$ give
+infinite radius of convergence. For real $\lambda>0$ it is strictly
+positive. A form involving just eight correction terms is
+\begin{align}
+ \Psi(\lambda)={}&\cst\left[\lambda^2+
+ \sqrt{\frac\pi2}\lambda^3e^{\lambda^2/2}
+       \left(1+\operatorname{erf}\frac{\lambda}{\sqrt2}\right)\right]
+ +\sum_{k=2}^9\delta_k\alpha_k\lambda^k.
+ \label{rts:eq:psi-closed}
+\end{align}
+
+\begin{lemma}[Integral form]
+\label{rts:lem:psi}
+For real $\lambda\ge0$,
+\begin{equation}
+ \Psi(\lambda)=\int_0^\infty e^{-x^2/2}
+       \sum_{k\ge2}\frac{c_k\lambda^kx^{k-1}}{(k-2)!}\,dx.
+ \label{rts:eq:psi-int}
+\end{equation}
+This identity gives \eqref{rts:eq:psi-closed}. It also yields
+\begin{equation}
+ \Psi(\lambda)\sim\tfrac12\lambda^2\quad(\lambda\downarrow0),
+ \qquad
+ \Psi(\lambda)\sim\cst\sqrt{2\pi}\lambda^3e^{\lambda^2/2}
+       \quad(\lambda\to\infty).
+ \label{rts:eq:psiasympt}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Integrate each monomial using \eqref{rts:eq:alpha}; nonnegativity justifies
+interchange for real $\lambda\ge0$. For the constant tail the inner
+sum is $\cst\lambda^2x e^{\lambda x}$. Completing the square and
+integrating by parts gives
+\[
+ \int_0^\infty x e^{-x^2/2+\lambda x}\,dx
+ =1+\lambda\sqrt{\frac\pi2}e^{\lambda^2/2}
+           \left(1+\operatorname{erf}\frac{\lambda}{\sqrt2}\right).
+\]
+The finite corrections are immediate. The first nonzero series coefficient
+is $c_2\alpha_2=1/2$; at infinity the finite polynomial is negligible
+beside the positive exponential term.
+\end{proof}
+
+\begin{theorem}[Critical probability]
+\label{rts:thm:critical}
+If $p_n\sqrt n\to\lambda\in(0,\infty)$, then
+\begin{equation}
+ \frac{\pi_n(p_n)}{nq_n^n}\longrightarrow\Psi(\lambda).
+ \label{rts:eq:critical}
+\end{equation}
+The normalization uses the actual $q_n^n$; replacing it merely by
+$e^{-\lambda\sqrt n}$ can lose a constant or a larger factor for general
+sequences approaching the same $\lambda$.
+\end{theorem}
+\begin{proof}
+Use the exact formula \eqref{rts:eq:poisson}. For $X\sim\Pois(nq_n)$,
+the centered standardized threshold tends to $\lambda$, so
+$\PP(X\le n-2)\to\Phi(\lambda)$, where $\Phi$ is the standard normal
+CDF. This Poisson central limit follows, for example, by expanding its
+characteristic function
+$\exp(m(e^{it/\sqrt m}-1-it/\sqrt m))$ as $m\to\infty$.
+Also $nI(p_n)\to\lambda^2/2$. Thus the main Poisson term, divided by
+$nq_n^n$, tends to
+$\cst\sqrt{2\pi}\lambda^3e^{\lambda^2/2}\Phi(\lambda)$.
+The boundary term tends to $\cst\lambda^2$.
+For each fixed $k$, Theorem~\ref{rts:thm:fixedk} gives
+\[
+ \frac{W_{n,k}(p_n)}{nq_n^n}
+ =\frac{\fall nk r_n^kR_{n,k}}n\longrightarrow\alpha_k\lambda^k.
+\]
+The zero- and one-mark terms vanish after normalization. Since
+$2\Phi(\lambda)=1+\operatorname{erf}(\lambda/\sqrt2)$, these limits
+are exactly \eqref{rts:eq:psi-closed}.
+\end{proof}
+
+\begin{theorem}[Critical mark count and hull mixture]
+\label{rts:thm:critical-law}
+Under the hypotheses of Theorem~\ref{rts:thm:critical}, conditional on
+stability,
+\begin{equation}
+ \PP(K_n=k\mid\st_n)\longrightarrow
+ w_k(\lambda):=\frac{c_k\alpha_k\lambda^k}{\Psi(\lambda)}
+ \quad(k\ge2).
+ \label{rts:eq:criticalweights}
+\end{equation}
+These limits sum to one. The limiting probability generating function
+is $\Psi(\lambda u)/\Psi(\lambda)$, with convergence of every fixed
+moment. Jointly with this discrete limit, $H_n/\sqrt n$ tends to the
+mixture that, given $K=k$, has law $\chi_k$. Equivalently, the limiting pair $(K_\lambda,X_\lambda)$ has joint
+mass--density
+\begin{equation}
+ \PP(K_\lambda=k,\ X_\lambda\in dx)=
+ \frac{c_k\lambda^k}{(k-2)!\Psi(\lambda)}
+       x^{k-1}e^{-x^2/2}\,dx,\qquad x>0.
+ \label{rts:eq:criticaldensity}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact probability contribution for $K_n=k$ is $c_kW_{n,k}$.
+The calculation in the preceding proof gives \eqref{rts:eq:criticalweights},
+and \eqref{rts:eq:psi-series} shows that no probability escapes to infinity.
+The chi mixture follows from Theorem~\ref{rts:thm:fixedk} and truncating the
+mark count at a large fixed value.
+
+For moment convergence, let $u>0$ be fixed and put $d=q+pu$,
+$p'=pu/d$, $q'=q/d$. Tilting the independent mark law gives exactly
+\begin{equation}
+ \EE[u^{K_n}\ind_{\st_n}]=d^n\pi_n(p').
+ \label{rts:eq:tilt}
+\end{equation}
+Now $p'\sqrt n\to\lambda u$ and $d^n(q')^n=q^n$. The critical
+probability theorem yields the asserted generating-function limit for
+every fixed positive $u$. Taking some $u>1$ bounds exponential moments
+and gives uniform integrability of every fixed power of $K_n$.
+\end{proof}
+
+Conditional on the limiting value $K=k$, the skeleton and edge proportions
+retain the independent uniform and Dirichlet laws of
+Corollary~\ref{rts:cor:dirichlet}. Formula~\eqref{rts:eq:criticaldensity} describes
+the marked hull, not the full host diameter: in this sparse window the
+unmarked fringe need not have logarithmic height.
+
+The large-$\lambda$ asymptotic in \eqref{rts:eq:psiasympt} agrees with
+Theorem~\ref{rts:thm:rare}, because
+$q^n=e^{-np-np^2/2+O(np^3)}$ when the expansion is applicable. This is a
+consistency check of the overlap of the two descriptions; the uniform
+supercritical theorem itself was proved without extrapolating a
+fixed-$\lambda$ limit.
+
+\needspace{7\baselineskip}
+\section{Fixed-density conditional Gaussian laws}
+\label{rts:sec:Gaussian}
+Throughout this section $0<p<1$ is fixed. Introduce complex fugacities
+$u,v$ near one, and define
+\begin{align}
+ d(u)&=q+pu,\notag\\
+ s_0(u,v)&=\frac{q}{v d(u)},\notag\\
+ \tau(u,v)&=\frac1{v d(u)}\exp\left(-\frac q{v d(u)}\right),\label{rts:eq:tau}\\
+ C(u,v)&=\cst\left(\frac{pu}{d(u)}\right)^2
+                    \left(1-\frac q{v d(u)}\right).
+ \label{rts:eq:amplitude}
+\end{align}
+At $u=v=1$, $\tau=e^{-q}$ and $C=\cst p^3$.
+
+\begin{lemma}[Uniform moving-pole estimate]
+\label{rts:lem:movingpole}
+In a complex neighbourhood of $(1,1)$,
+\begin{equation}
+ \EE[u^{K_n}v^{H_n}\mid\st_n]
+ =\frac{C(u,v)}{\cst p^3}
+    \left(\frac{e^{-q}}{\tau(u,v)}\right)^n
+       (1+O(\theta^n)),
+ \label{rts:eq:quasipowers}
+\end{equation}
+for some $\theta<1$, uniformly in that neighbourhood. Derivatives of
+any fixed order satisfy the corresponding exponentially small error.
+\end{lemma}
+\begin{proof}
+In \eqref{rts:eq:GFuv}, the equation making the skeleton argument equal to
+one is $s=s_0(u,v)$. Invert $s=qt e^s$ to obtain \eqref{rts:eq:tau}.
+The singular summand of $A$ is $\cst/(1-y)$; consequently the singular
+part of the last term of \eqref{rts:eq:GFuv} is
+\[
+ \frac{\cst q(1-vs)^2}{q-vd(u)s}.
+\]
+Since $t s'=s/(1-s)$, its coefficient in front of
+$(1-t/\tau)^{-1}$ is
+$\cst(1-vs_0)^2(1-s_0)=C(u,v)$.
+Choose a radius strictly between $e^{-q}$ and $1/(eq)$. For $u,v$
+sufficiently close to one, this remains a disc with exactly that pole;
+potential poles at $s=1/v$ and the tree branch point stay outside a
+slightly larger circle. Subtract the moving pole and apply Cauchy's
+bound uniformly on the circle. Divide by the estimate at $(1,1)$.
+Cauchy's formula in the parameter variables controls the derivatives.
+\end{proof}
+
+Put $u=e^a,v=e^b$. The logarithm of the exponential factor is
+\begin{equation}
+ \Lambda(a,b)=b+\log(q+pe^a)+\frac{qe^{-b}}{q+pe^a}-q.
+ \label{rts:eq:Lambda}
+\end{equation}
+Its gradient and Hessian at zero are
+\begin{equation}
+ \nabla\Lambda(0,0)=(p^2,p),\qquad
+ \Sigma_p=\begin{pmatrix}2p^2q&pq\\pq&q\end{pmatrix}.
+ \label{rts:eq:Sigma}
+\end{equation}
+The determinant is $p^2q^2>0$.
+
+\begin{theorem}[Joint central limit and moment corrections]
+\label{rts:thm:CLT}
+Conditional on $\st_n$,
+\begin{equation}
+ \frac1{\sqrt n}\begin{pmatrix}K_n-np^2\\H_n-np\end{pmatrix}
+ \dto N(0,\Sigma_p).
+ \label{rts:eq:CLT}
+\end{equation}
+For a suitable $\theta_p<1$, the conditional moments satisfy
+\begin{align}
+ \EE K_n&=np^2+3q+O(\theta_p^n),&
+ \EE H_n&=np+q/p+O(\theta_p^n),\label{rts:eq:means}\\
+ \Var K_n&=2np^2q-3pq+O(\theta_p^n),&
+ \Var H_n&=nq-q/p^2+O(\theta_p^n),\label{rts:eq:variances}\\
+ \Cov(K_n,H_n)&=npq-q/p+O(\theta_p^n).&&\label{rts:eq:cov}
+\end{align}
+All expectations in these displays are conditional on stability.
+\end{theorem}
+\begin{proof}
+Insert $a=i\xi/\sqrt n$, $b=i\eta/\sqrt n$ into
+\eqref{rts:eq:quasipowers} and expand \eqref{rts:eq:Lambda} to second order.
+After centering, the logarithm of the characteristic function tends to
+$-\frac12(\xi,\eta)\Sigma_p(\xi,\eta)^T$. The amplitude tends to one.
+The continuity theorem proves \eqref{rts:eq:CLT}.
+
+For the refined moments, differentiate the logarithm of
+\eqref{rts:eq:quasipowers}. The first derivatives of
+$\log C(e^a,e^b)$ at zero are $3q$ and $q/p$; its second derivatives
+in $(a,a),(b,b),(a,b)$ are respectively $-3pq,-q/p^2,-q/p$.
+Combining these with \eqref{rts:eq:Sigma} proves the formulas. The uniform
+analytic estimate justifies the exponentially small differentiated errors.
+\end{proof}
+
+\begin{corollary}[Three limiting skeleton families]
+\label{rts:cor:families}
+At fixed $0<p<1$, conditional on stability, the skeleton lies asymptotically
+in the path, long-$D$, and double-fork affine-$D$ families with probabilities
+\begin{equation}
+ \frac49,\qquad\frac49,\qquad\frac19,
+ \label{rts:eq:families}
+\end{equation}
+respectively. Every other family has exponentially small conditional
+probability. The limiting family is independent of the Gaussian vector
+in \eqref{rts:eq:CLT}.
+\end{corollary}
+\begin{proof}
+The three family generating functions have residues $1/2$, $1/2$, and
+$1/8$ at $y=1$; their finite exceptional terms have no such pole.
+Repeat Lemma~\ref{rts:lem:movingpole} separately for each family. The moving
+pole and its exponential factor are unchanged; the amplitude is merely
+multiplied by its residue divided by $9/8$. This proves both the family
+probabilities and independence from the limiting Gaussian fluctuations.
+\end{proof}
+
+These statements require fixed $p$ for their present uniformity. They do
+not assert a triangular-array central limit theorem throughout the full
+supercritical range of Theorem~\ref{rts:thm:rare}.
+
+\needspace{7\baselineskip}
+\section{The conditioned host has linear diameter}
+\label{rts:sec:geometry}
+The hull-size law alone does not determine the host diameter: fringe
+might be tall, or a hull might branch too much. The next two estimates
+control these issues in the fixed-density conditional model.
+
+\begin{lemma}[Height of a uniform rooted forest]
+\label{rts:lem:height}
+Let a forest on $[n]$ be uniform among forests rooted at a prescribed set
+of $\ell$ vertices, and write $m=n-\ell$. For $1\le h\le m$, the expected
+number of vertices at distance exactly $h$ from the root set is
+\begin{equation}
+ (\ell+h)\frac{\fall mh}{n^h}.
+ \label{rts:eq:forestheight}
+\end{equation}
+If $\ell\ge\varepsilon n$ for a fixed $\varepsilon>0$, the maximum
+root distance is $O_{\PP}(\log n)$, uniformly in the root set and $\ell$.
+\end{lemma}
+\begin{proof}
+Choose a root and an ordered list of $h$ distinct nonroots, prescribing
+a directed path to that root. There are $\ell\fall mh$ choices.
+The probability that a fixed such path occurs is
+\begin{equation}
+ \frac{(\ell+h)n^{m-h-1}}{\ell n^{m-1}}.
+ \label{rts:eq:pathforest}
+\end{equation}
+To see the numerator, contract the fixed path to its root. An edge from
+an outside nonroot into the contracted component has $h+1$ possible
+original targets; edges to each other root have one. The directed forest
+matrix on the remaining $m-h$ nonroots is again $nI-J$, whose determinant
+is $(\ell+h)n^{m-h-1}$. When $m=h$, it is the empty determinant, and the
+same formula is one. The denominator is Lemma~\ref{rts:lem:forest}.
+Each vertex at distance $h$ has exactly one path to its root, so multiplying
+\eqref{rts:eq:pathforest} by the number of choices proves
+\eqref{rts:eq:forestheight}.
+
+A forest reaching depth at least $h$ has a vertex at depth $h$. Markov's
+inequality gives probability at most
+$(\ell+h)(m/n)^h\le2n(1-\varepsilon)^h$. Take a sufficiently large
+constant times $\log n$.
+\end{proof}
+
+\begin{lemma}[Longest subdivision chain]
+\label{rts:lem:composition}
+If $(J_1,\ldots,J_d)$ is uniform among weak compositions of $j$ into
+$d\ge2$ parts, then
+\begin{equation}
+ \PP(J_i\ge a)=\frac{\binom{j-a+d-1}{d-1}}{\binom{j+d-1}{d-1}}
+ \le\left(\frac{j}{j+d-1}\right)^a
+ \quad(0\le a\le j).
+ \label{rts:eq:compositiontail}
+\end{equation}
+If $d/(j+d)$ is bounded below by a positive constant, the maximum part
+is $O_{\PP}(\log(j+d+1))$.
+\end{lemma}
+\begin{proof}
+Subtract $a$ from the chosen part and count compositions. The ratio is
+$\fall ja/\fall{j+d-1}a$, whose successive factors are bounded by the
+first one. A union bound over the $d$ parts proves the second assertion.
+The case $j=0$ is immediate.
+\end{proof}
+
+\begin{theorem}[Diameter and joint fluctuations]
+\label{rts:thm:diameter}
+For fixed $0<p<1$, conditional on stability,
+\begin{equation}
+ \diam(T_n)=H_n+O_{\PP}(\log n),\qquad
+ \frac{\diam(T_n)}n\pto p.
+ \label{rts:eq:diamlinear}
+\end{equation}
+The joint central limit theorem \eqref{rts:eq:CLT} remains valid if $H_n$ is
+replaced by $\diam(T_n)$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{rts:thm:CLT} gives $K_n/n\to p^2$ and $H_n/n\to p$ in
+conditional probability. Given $n,k,\ell$, the skeleton, and the
+subdivision data, the fringe forest is uniform on the prescribed $\ell$
+roots by the exact counting construction. Lemma~\ref{rts:lem:height} therefore
+makes its height $O_{\PP}(\log n)$.
+
+Given the skeleton and hull size, its $j=\ell-k$ subdivision vertices
+are distributed uniformly among the $d=k-1$ edge lists. Since
+$d/(j+d)\to p$, Lemma~\ref{rts:lem:composition} bounds every subdivided
+edge length by $O_{\PP}(\log n)$.
+
+By Corollary~\ref{rts:cor:families}, with probability tending to one the
+skeleton is a path, a long $D$ tree, or a double fork. In these cases it
+has a path omitting at most two pendant edges and their leaf endpoints.
+After subdivision, the hull has a path containing all but at most twice
+the maximum edge length of its vertices. Its diameter consequently
+differs from $\ell$ by $O_{\PP}(\log n)$. Attaching a forest can increase
+the diameter by at most twice its maximum root distance. This proves
+\eqref{rts:eq:diamlinear}; since $\log n=o(\sqrt n)$, Slutsky's theorem
+gives the final assertion.
+\end{proof}
+
+The error estimate in \eqref{rts:eq:diamlinear} is probabilistic. It does not
+claim a constant-order expansion for the mean diameter, nor replace the
+exact constant corrections for $H_n$ in \eqref{rts:eq:means} by unproved
+corrections for diameter. It also does not extend automatically to the
+critical window, where $H_n$ is only of order $\sqrt n$ and the root
+fraction in Lemma~\ref{rts:lem:height} vanishes.
+
+\needspace{7\baselineskip}
+\section{A deterministic diameter estimate and annealed--quenched separation}
+\label{rts:sec:quenched}
+
+\begin{lemma}[Two marks away from a path]
+\label{rts:lem:almostpath}
+For every stable marking $S$ on any finite tree $T$, there is a host path
+$P$ such that $|S\setminus P|\le2$. Conversely, every marking contained
+in a path is stable.
+\end{lemma}
+\begin{proof}
+The empty marking is immediate. Inspection of Table~\ref{rts:tab:ADE} shows
+that each allowed skeleton has a path omitting at most two vertices.
+For a one-branch skeleton, choose the two longest arms; the third arm has
+length at most two in every listed case. For the four-leaf star, choose
+two leaves; for a double fork, choose one leaf at each end. The lifted
+path in the hull omits precisely those marked skeleton vertices, regardless
+of how long the unmarked subdivisions are. This proves the first claim.
+A marking contained in a host path has a path hull and path skeleton,
+so Theorem~\ref{rts:thm:imported} proves the converse.
+\end{proof}
+\noindent[Merge note: the converse is the lower-bound half of the proof
+of Part~VIII's Theorem~\ref{mts:thm:diameter}, and the first claim
+refines its upper-bound inspection $|V(H)|\le\diam(H)+3$: Part~VIII
+bounds the \emph{number} of marks by the diameter, Lemma~\ref{rts:lem:almostpath}
+places all but two of them on one host path. It is kept as a second,
+stronger route, because Theorem~\ref{rts:thm:quenched} needs the path.]
+
+\begin{theorem}[Quenched probability within a polynomial factor]
+\label{rts:thm:quenched}
+Let $T$ be any tree on $n$ vertices, with diameter $d$, and let $0<p<1$.
+Then
+\begin{align}
+ q^{n-d-1}\le\pi_p(T)
+ \le\min\left\{1,
+ \frac{n(n+1)}2\left(1+nr+\binom n2r^2\right)q^{n-d-1}\right\}.
+ \label{rts:eq:sandwich}
+\end{align}
+Consequently, for fixed $p$,
+\begin{equation}
+ \log\pi_p(T)=(n-d-1)\log q+O_p(\log(n+1)),
+ \label{rts:eq:quenchedlog}
+\end{equation}
+uniformly over all host trees. The subscript on $O_p$ here denotes
+dependence on the fixed parameter $p$, not stochastic order.
+\end{theorem}
+\begin{proof}
+Choose a longest path. The event that all marks lie on it has probability
+$q^{n-d-1}$, with no restriction on marks along the path, and is stable.
+This proves the lower bound.
+
+There are exactly $n(n+1)/2$ unoriented nonempty paths, allowing a single
+vertex. By Lemma~\ref{rts:lem:almostpath}, stability implies that at least
+one such path has at most two marks outside it. If that path has $a$
+vertices, this event has probability
+\[
+ q^{n-a}\left(1+(n-a)r+\binom{n-a}{2}r^2\right).
+\]
+Since $a\le d+1$, this is at most
+$q^{n-d-1}(1+nr+\binom n2r^2)$. The union bound proves
+\eqref{rts:eq:sandwich}. Its multiplicative factor grows at most polynomially
+in $n$ at fixed $p$, proving \eqref{rts:eq:quenchedlog}.
+\end{proof}
+
+This bound holds for paths, stars, balanced trees, and arbitrary labelled
+or unlabelled hosts. It supplies an exponential-scale description without
+running the source's exact endpoint algorithm. It is not a relative-error
+approximation scheme: the uncontrolled factor can still be polynomially
+large.
+[Merge note: ``the source's exact endpoint algorithm'' is Part~VIII's
+formula~\eqref{mts:eq:probability} with Theorem~\ref{mts:thm:counting},
+which evaluates $\pi_p(T)$ exactly for one given host in $O(n^5)$
+arithmetic operations but gives no asymptotics;
+Theorem~\ref{rts:thm:quenched} gives its exponential order for every host
+without evaluating it.]
+
+\subsection{An elementary diameter large-deviation calculation}
+The following standard Cayley-forest calculation is included as an
+independent check of the exponential rate; first priority for this
+random-tree diameter rate is not claimed.
+
+\begin{lemma}[Counting long paths]
+\label{rts:lem:longpaths}
+Let $N_d(T_n)$ be the number of unoriented paths of length $d\ge1$ in a
+uniform Cayley tree. Then
+\begin{equation}
+ \EE N_d(T_n)=\frac{\fall n{d+1}(d+1)}{2n^d}.
+ \label{rts:eq:pathcount}
+\end{equation}
+For any fixed $0<\delta<1$ and integers $d_n/n\to\delta$,
+\begin{equation}
+ \frac1n\log\PP(\diam(T_n)\ge d_n)\longrightarrow-J(\delta),
+ \quad
+ J(\delta)=\delta+(1-\delta)\log(1-\delta).
+ \label{rts:eq:diamLD}
+\end{equation}
+In particular $\diam(T_n)/n\to0$ in probability.
+\end{lemma}
+\begin{proof}
+A fixed length-$d$ labelled path is contained in
+$(d+1)n^{n-d-2}$ Cayley trees: contract the path to a component of weight
+$d+1$, keeping all other vertices as weight-one components, and use the
+weighted tree identity. This identity follows directly from a Pr\"ufer
+code: for component weights $w_i$, summing edge-target choices gives
+$(\prod_iw_i)(\sum_iw_i)^{m-2}$ for $m$ components. Thus the probability
+of the fixed path is $(d+1)/n^d$. There are $\fall n{d+1}/2$ candidate
+unoriented paths, proving \eqref{rts:eq:pathcount}.
+
+A tree has diameter at least $d$ exactly when $N_d\ge1$, and
+$N_d\le n(n-1)/2$. Hence its probability is between
+$\EE N_d/n^2$ and $\EE N_d$. The logarithm of the factorial ratio in
+\eqref{rts:eq:pathcount}, divided by $n$, tends to
+\[
+ \int_0^\delta\log(1-x)\,dx
+ =-\delta-(1-\delta)\log(1-\delta).
+\]
+All other factors have logarithm $O(\log n)$. Since $J(\delta)>0$ for
+$\delta>0$, the last assertion follows.
+\end{proof}
+
+\begin{theorem}[Strict annealed--quenched gap]
+\label{rts:thm:gap}
+For fixed $0<p<1$ and a uniform Cayley host,
+\begin{equation}
+ \frac1n\log\pi_p(T_n)\pto\log(1-p),
+ \qquad
+ \frac1n\log\EE[\pi_p(T_n)]\longrightarrow-p.
+ \label{rts:eq:gap}
+\end{equation}
+These rates differ strictly, since $\log(1-p)<-p$.
+More precisely, uniformly over hosts,
+\begin{equation}
+ \log\pi_p(T)-n\log q=-(\diam(T)+1)\log q+O_p(\log(n+1)).
+ \label{rts:eq:quenchedfluct}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Combine Theorem~\ref{rts:thm:quenched} with
+$\diam(T_n)/n\to0$ for the first limit. The second follows from
+Theorem~\ref{rts:thm:rare} and $\EE\pi_p(T_n)=\pi_n(p)$.
+The inequality follows from the power series of $\log(1-p)$ or its
+strict concavity. Equation~\eqref{rts:eq:quenchedfluct} is a rearrangement
+of \eqref{rts:eq:quenchedlog}.
+\end{proof}
+
+There is also a variational explanation. The polynomial-factor sandwich
+reduces the annealed exponential rate to the exponential moment of the
+diameter. The tail estimate \eqref{rts:eq:diamLD}, upper bounds on a finite
+mesh, and the lower bound from any one tail event give
+\begin{align}
+ \lim_{n\to\infty}\frac1n\log\pi_n(p)
+ &=\log q+\sup_{0\le\delta\le1}
+       \{-\delta\log q-J(\delta)\}\notag\\
+ &=-p.
+ \label{rts:eq:variational}
+\end{align}
+Here $J(0)=0,J(1)=1$ by continuity. To justify the upper bound, partition
+$D/n$ into mesh intervals, bound the increasing weight $q^{-D}$ by its
+right endpoint and the probability by the left-endpoint tail, then let
+the mesh tend to zero. For the lower bound, on $D\ge\delta n$ the
+weight is at least $q^{-\delta n}$. Polynomial factors disappear after
+dividing logarithms by $n$.
+
+Differentiation gives the unique maximizing diameter fraction
+$\delta=p$. Substitution gives
+$\log q-p\log q-p-q\log q=-p$.
+Thus the exponential gain in the average is supplied by atypically long
+trees, consistent with the stronger conditioned-diameter theorem. This
+argument recovers the exponential rate but neither the factor
+$\frac98\sqrt{2\pi}p^3n^{5/2}$ nor the Gaussian covariance.
+
+\needspace{7\baselineskip}
+\section{A general eventual-coefficient universality principle}
+\label{rts:sec:universality}
+The calculation is not tied to the names of the ADE diagrams. It uses
+an invariant class of terminal skeletons whose labelled coefficients
+are eventually constant.
+
+\begin{theorem}[Constant-tail skeleton universality]
+\label{rts:thm:universal}
+Let $\mathscr H$ be an isomorphism-invariant class of finite trees, with
+$c_k^{\mathscr H}$ equal to its number of labelled $k$-vertex members
+divided by $k!$. Suppose $c_k^{\mathscr H}=c>0$ for all sufficiently
+large $k$. Define admissible markings by requiring a branch-complete
+hull and a terminal skeleton in $\mathscr H$, allowing the empty marking.
+Then for $p\sqrt n\to\infty$,
+\begin{equation}
+ \PP(\mathscr H\text{-admissible})
+ \sim c\sqrt{2\pi}p^3n^{5/2}e^{-pn}.
+ \label{rts:eq:universal}
+\end{equation}
+At fixed $0<p<1$, the conditional joint Gaussian law for marks and hull
+size has exactly the covariance \eqref{rts:eq:Sigma}, and the constant-order
+moment corrections \eqref{rts:eq:means}--\eqref{rts:eq:cov} are unchanged.
+In the critical window, replace $c_k$ by $c_k^{\mathscr H}$ in
+\eqref{rts:eq:psi-series}; the resulting function gives the same type of
+critical limit.
+\end{theorem}
+\begin{proof}
+The exact skeleton decomposition remains valid with
+$A_{\mathscr H}(y)=\sum c_k^{\mathscr H}y^k$. Write it as
+$c y^2/(1-y)$ plus a polynomial (allowing the singleton coefficient to
+differ). The Poisson formula then has finitely many fixed-$k$ corrections;
+Theorem~\ref{rts:thm:fixedk} bounds each one. The proof of
+Theorem~\ref{rts:thm:rare} applies with a finite, possibly larger polynomial
+in $p\sqrt n$ multiplying $e^{-nI(p)}$.
+
+At fixed density the moving pole is unchanged, and the amplitude is
+\eqref{rts:eq:amplitude} with $\cst$ replaced by $c$. Its constant multiplier
+cancels in the conditional generating function. In the critical window,
+the same finite-correction argument or the nonnegative kernel gives the
+stated replacement of $\Psi$. Possible changes to the singleton term
+vanish after normalization by $nq^n$.
+\end{proof}
+
+The geometric results do \emph{not} follow merely from eventual
+coefficient constancy. The diameter theorem used the concrete path-like
+shape of the three infinite ADE families; the deterministic sandwich used
+the stronger fact that every allowed skeleton is within two vertices of
+a path. These hypotheses must not be dropped when transferring the
+probabilistic algebra to another skeleton class.
+
+\needspace{7\baselineskip}
+\section{Computational verification and reproducibility}
+\label{rts:sec:verification}
+
+\subsection{Exact checks and their scope}
+[Merge note: source~12's programs and records are shipped with the prefix
+\texttt{12-random-trees-}: \texttt{code/verify.py} and
+\texttt{code/extra\_checks.py} are
+\nolinkurl{code/12-random-trees-verify.py} and
+\nolinkurl{code/12-random-trees-extra_checks.py}; every file of its
+\nolinkurl{data/} directory keeps its name behind the same prefix in
+\nolinkurl{data/}; and its \texttt{requirements.txt} and
+\texttt{build.sh} are \nolinkurl{data/12-random-trees-requirements.txt}
+and \nolinkurl{code/12-random-trees-build.sh}. The text below keeps the
+delivered names.]
+The accompanying program \texttt{code/verify.py} independently generates
+labelled trees by Pr\"ufer codes, enumerates all markings, prunes unmarked
+leaves to obtain their hulls, rejects unmarked hull branches, and tests
+the explicit ADE shape list. Its resulting histogram of $(K,H)$ is
+compared to \eqref{rts:eq:jointcount} using exact integers.
+
+The completed exhaustive run covers all $18{,}249$ labelled trees of
+orders one through seven and all $2{,}238{,}526$ marked-tree pairs. Every
+one of the 70 nonzero joint bins agrees. It also checks 306 high-precision
+probability and conditional-moment identities against exact rational
+histograms at orders two through eighteen and three rational marking
+probabilities. These tests exercise enumeration, not a numerical
+stable-polynomial oracle.
+
+The independent \texttt{code/extra\_checks.py} performs 170 exact rational
+checks of \eqref{rts:eq:poisson}, at orders two through thirty-five and five
+marking probabilities. It enumerates all 435 nonisomorphic trees of
+orders two through eleven, compares the shape criterion with an exact
+positive-semidefiniteness test for $2I-A$, and sums inverse automorphism
+orders to recover Table~\ref{rts:tab:coeff} and the $9/8$ tail at orders ten
+and eleven. The spectral test uses exact characteristic-polynomial
+coefficients, not floating-point eigenvalues. Since the matrix is real
+symmetric, all coefficients of $\det(tI+2I-A)$ are nonnegative exactly
+when it has no positive root, equivalently when $2I-A\succeq0$.
+Ten symbolic derivatives check the Gaussian covariance and the
+constant-order cumulant corrections.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & Labelled trees & Marked-tree pairs & Stable pairs by $K=0,1,\ldots,n$\\
+\midrule
+1 & 1 & 2 & $1,1$\\
+2 & 1 & 4 & $1,2,1$\\
+3 & 3 & 24 & $3,9,9,3$\\
+4 & 16 & 256 & $16,64,96,60,16$\\
+5 & 125 & 4000 & $125,625,1250,1110,560,125$\\
+\bottomrule
+\end{tabular}
+\caption{Small exact checks. The machine-readable verification file also
+contains the larger orders six and seven and all joint-bin comparisons.}
+\label{rts:tab:exact}
+\end{table}
+
+None of these finite tests proves the imported all-size equivalence
+between polynomial stability and the ADE criterion. They also do not
+replace the analytic arguments for limits. Their role is to detect
+normalization mistakes, double counting, wrong exceptional coefficients,
+and algebraic errors in identities derived in the manuscript.
+
+\subsection{Numerical asymptotics}
+Table~\ref{rts:tab:fixednum} compares the exact finite kernel with the leading
+equivalent in \eqref{rts:eq:rare}. At large $n$ the ratio is visibly governed
+by the first Stirling correction. The larger error for $p=0.2,n=100$
+is not a failure of the equivalent: that instance remains close enough
+to the crossover for finite corrections to matter.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ &$p$& $\pi_n(p)$ & Ratio to \eqref{rts:eq:rare} & $\EE[K\mid\st]$ & $\EE[H\mid\st]$\\
+\midrule
+100 & .2 & $6.14309\cdot10^{-6}$ & 1.32112609 & 7.024910 & 25.433451\\
+500 & .2 & $4.71640\cdot10^{-39}$ & 1.00531355 & 22.327837 & 103.788321\\
+2000 & .2 & $7.72917\cdot10^{-168}$ & 1.00004167 & 82.400000 & 404.000000\\
+100 & .5 & $6.80496\cdot10^{-18}$ & 1.00091538 & 26.498531 & 50.998162\\
+500 & .5 & $5.26053\cdot10^{-103}$ & 1.00016668 & 126.500000 & 251.000000\\
+2000 & .8 & $3.47484\cdot10^{-687}$ & 1.00004167 & 1280.600000 & 1600.250000\\
+\bottomrule
+\end{tabular}
+\caption{Finite-kernel evaluations, not Monte Carlo estimates. Expectations
+are conditional on stability. Full precision and additional rows are in
+the CSV files.}
+\label{rts:tab:fixednum}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$\lambda$ & $\Psi(\lambda)$ & $\pi_n(p)/(nq^n\Psi(\lambda))$ & $\EE[K\mid\st]$\\
+\midrule
+0.5 & 0.2774707592 & 1.01426855 & 2.936290\\
+1 & 3.5933595528 & 0.99547405 & 4.580012\\
+2 & 222.66178789 & 1.02695628 & 7.407558\\
+3 & 8469.3489971 & 1.10010587 & 11.175896\\
+\bottomrule
+\end{tabular}
+\caption{Critical-window check at $n=10{,}000$ and $p=\lambda/\sqrt n$.
+Convergence is visibly slower at $\lambda=3$; no uniform finite-$n$ error
+bound in $\lambda$ is asserted by Theorem~\ref{rts:thm:critical}.}
+\label{rts:tab:criticalnum}
+\end{table}
+
+\subsection{How to reproduce the package}
+The main verifier needs Python 3.10 or later and \texttt{mpmath} for
+high-precision evaluations. The extra verifier also uses \texttt{networkx}
+and \texttt{sympy}. From the package directory run
+\begin{quote}\ttfamily\small
+python code/verify.py -{}-max-n 7 -{}-tables\\
+python code/extra\_checks.py
+\end{quote}
+The first script's work grows rapidly with the exhaustive order; its
+finite scope should not be increased inadvertently. Both scripts write
+machine-readable records in \texttt{data/}. The shipped scripts and
+results were actually run for the bounds reported above. Rebuilding the
+PDF uses \texttt{build.sh}, which invokes \texttt{pdflatex} twice. No
+external figures or bibliography database are required.
+[Merge note: in this report the two programs cannot be run in place.
+\nolinkurl{code/12-random-trees-extra_checks.py} imports the main verifier
+by its delivered module name \texttt{verify}, and both programs write
+unprefixed files (\texttt{verification.json}, \texttt{fixed\_density.csv},
+\texttt{critical\_window.csv}, \texttt{extra\_checks.json}) into the
+\nolinkurl{data/} directory beside \nolinkurl{code/}; no shipped file has
+those names, but they would be added there unprefixed. The main verifier's default is \texttt{-{}-max-n 6}; the
+recorded run used \texttt{-{}-max-n 7}, which must be passed. The report's
+README gives commands that restore the delivered layout in a scratch copy.
+\nolinkurl{code/12-random-trees-build.sh} builds source~12's own
+\texttt{article.tex}, which is not shipped; this report is built from its
+own \texttt{article.tex} instead.]
+
+\needspace{7\baselineskip}
+\section{Further research questions and proposed approaches}
+\label{rts:sec:questions}
+The source question is now answered for the uniform labelled host and
+independent common-parameter marking law, with precise scaling limits.
+The following questions concern genuinely additional conclusions rather
+than restatements of the proved results.
+[Merge note: ``the source question'' is Part~VIII's Research
+question~\ref{mts:q:random}. Source~12's ten questions continue the
+report's numbering as Research
+questions~\ref{rts:q:quenched}--\ref{rts:q:sampling}; source~12 did not
+label them, and the labels are new. Research question~\ref{rts:q:apices}
+restates Part~VIII's Research question~\ref{mts:q:apices} (itself Part~VI's
+Research question~\ref{mts:hq:apices}) and adds a random-tree layer;
+Research question~\ref{rts:q:sampling} overlaps Part~VIII's Research
+question~\ref{mts:q:compiler}. Both are numbered, with pointers, because
+their formulations are broader. The other eight are new.]
+
+\begin{question}[The polynomial factor in the quenched estimate]\label{rts:q:quenched}
+Determine an asymptotic equivalent for $\pi_p(T_n)$ conditional on a
+Cayley host, beyond the diameter-based estimate
+\eqref{rts:eq:quenchedlog}. Which combination of near-diameter path
+multiplicities and allowed one- or two-mark exceptions supplies the
+prefactor?
+\end{question}
+The exact endpoint formulas in the source
+(Section~\ref{mts:sec:enumeration}) and
+Lemma~\ref{rts:lem:almostpath} suggest grouping stable markings by a canonical
+near-longest path. A naive union bound over all paths overcounts heavily;
+a canonical decomposition is the missing step.
+
+\begin{question}[Quenched fluctuations from continuum diameter]\label{rts:q:crt}
+Use \eqref{rts:eq:quenchedfluct} with a precisely normalized continuum-random-tree
+diameter theorem to identify the limit law of
+$(\log\pi_p(T_n)-n\log q)/\sqrt n$.
+\end{question}
+The error in our deterministic estimate is negligible on this scale.
+The substantive task is an accurate comparison of normalization
+conventions in the continuum-tree literature \cite{Aldous}, followed by
+any desired stronger coupling or tail refinement. No unexplained factor
+of two should be inserted into such a transfer.
+
+\begin{question}[Uniform conditional limits when $p\downarrow0$]\label{rts:q:uniform}
+Extend the fixed-density conditional Gaussian laws to sequences
+$p\to0$ with $p\sqrt n\to\infty$. Determine the correct centering,
+scaling, and uniform remainder across the overlap with the critical law.
+\end{question}
+The moving pole approaches the rooted-tree branch point, so the fixed
+complex neighbourhood in Lemma~\ref{rts:lem:movingpole} collapses. The exact
+Poisson identity already controls the probability; derivatives of a
+suitable uniformly deformed identity are a concrete route to the
+conditional laws.
+
+\begin{question}[Critical corrections and local limits]\label{rts:q:critical}
+Compute the first $n^{-1/2}$ correction to \eqref{rts:eq:critical} for a
+specified expansion of $p_n$, and prove a local limit theorem for the
+joint discrete pair $(K_n,H_n)$ in the window.
+\end{question}
+Expand the falling factorial in \eqref{rts:eq:kernel} or use an Edgeworth
+expansion of the Poisson term together with the finite fixed-$k$
+corrections. The dependence on the second term of $p_n$ must be retained;
+Theorem~\ref{rts:thm:critical} deliberately avoids hiding it in the normalization.
+
+\begin{question}[Fringe structure and extreme heights under stability]\label{rts:q:fringe}
+Identify the empirical distribution of fringe components in the
+fixed-density conditioned model, and sharpen the $O_{\PP}(\log n)$
+bounds for the tallest fringe and longest subdivision chain.
+\end{question}
+The exact conditional forest law and uniform compositions reduce these
+to classical-looking occupancy and branching calculations, but their
+conditioning and dependence must be tracked. This would also refine the
+difference $\diam(T_n)-H_n$ beyond our logarithmic bound.
+
+\begin{question}[Other random-tree laws]\label{rts:q:models}
+Determine counterparts for simply generated trees, conditioned
+Galton--Watson trees, uniform unlabelled trees, and random trees with a
+prescribed degree sequence.
+\end{question}
+The structural classification still applies to each host. The attachment
+count and the relative weights of skeletons change, however; the factor
+$9/8$ and the exponent $-p$ should not be presumed universal across these
+models. A first tractable case is a degree-weighted labelled tree family
+with an analytic rooted-tree equation.
+
+\begin{question}[Inhomogeneous and dependent markings]\label{rts:q:inhomogeneous}
+Replace the common Bernoulli parameter by vertex-dependent activities or
+by marks correlated through a tree-indexed process. Determine which
+parts of the diameter sandwich and critical scaling survive.
+\end{question}
+The event that all marks lie on a path remains a useful lower bound,
+and the two-outside-marks necessity remains deterministic. Their
+probabilities no longer reduce to a function of path length alone;
+weighted path optimization becomes part of the problem.
+[Merge note: for independent vertex-dependent probabilities $p_v$ on one
+given host, Part~VIII's formula~\eqref{mts:eq:probability} already
+evaluates the stability probability exactly; the question asks for the
+asymptotic laws.]
+
+\begin{question}[Several apices]\label{rts:q:apices}
+For two or more independently marked apex elements over the same tree
+incidence graph, obtain a structural stability criterion and then a
+random-tree probability theory.
+\end{question}
+This is not covered by the single-apex covariance or skeleton theorem.
+It requires a new stability analysis before enumerative substitutions
+are justified. Small exact Rayleigh certificates and covariance-rank
+constraints are plausible initial probes.
+[Merge note: the structural half is Part~VIII's Research
+question~\ref{mts:q:apices}, which is Part~VI's Research
+question~\ref{mts:hq:apices} with a request for a terminal-geometry
+criterion; source~12 adds the random-tree probability theory.]
+
+\begin{question}[More general skeleton singularities]\label{rts:q:singularities}
+Classify attainable labelled skeleton coefficient sequences and derive
+probability laws when their generating functions have a higher-order
+pole or a non-polar dominant singularity.
+\end{question}
+The substitution in Theorem~\ref{rts:thm:GF} remains valid for a specified
+class. Its singularity controls both the prefactor and the conditional
+parameter laws. Theorem~\ref{rts:thm:universal} settles only the eventual
+constant-coefficient case; geometric consequences need separate shape
+hypotheses.
+
+\begin{question}[Exact conditioned sampling and formal verification]\label{rts:q:sampling}
+Build an exact sampler for stable marked Cayley trees, and a
+proof-assistant verification of the decomposition and its connection to
+polynomial stability.
+\end{question}
+The joint counts choose $(k,\ell)$; then choose an allowed labelled
+skeleton, a uniform weak composition, subdivision labels, and a rooted
+forest. Correctness follows from the bijection once the component samplers
+are verified. A formal development should separate the imported analytic
+stability theorem, the finite combinatorial bijection, and the later
+asymptotic analysis; accepting a tested shape classifier alone would not
+prove the polynomial statement.
+[Merge note: the formal half overlaps Part~VIII's Research
+question~\ref{mts:q:compiler} (a verified compiler from trees to
+stability certificates); the exact sampler is new.]
+
+\needspace{7\baselineskip}
+\section{Conclusion}
+The marked-tree classification turns a multivariate zero-free condition
+into a finite list of terminal shapes. Labelled decomposition then turns
+that list into a rational skeleton series. Its eventual coefficient
+$9/8$ produces both an exact Poisson-tail identity and a uniform rare-event
+equivalent. The critical window retains all finite skeleton sizes through
+one explicit entire function, while fixed-density conditioning selects
+three long, path-like families with Gaussian fluctuations.
+
+The geometric conclusion is sharper than a probability estimate:
+stability at positive density is realized by host trees with diameter
+asymptotic to $pn$. A typical unconditioned host has sublinear diameter
+and a different exponential stability rate. The deterministic
+polynomial-factor sandwich identifies diameter as the quantity that
+separates the two perspectives. Together these results answer the pinned
+random-tree question for a concrete model and expose several precise
+next problems, without confusing an ordinary mathematical proof with a
+formal proof certificate or a priority claim.
+
+\needspace{7\baselineskip}
+\section{Proof dependencies and claim audit}
+\label{rts:app:audit}
+\noindent\emph{(Source~12's Appendix~A. ``Pinned ProveIt Part~VIII,
+theorem \texttt{mts:thm:main}'' is Theorem~\ref{mts:thm:main}, and the
+tree proof of the ADE list is Part~VI's Theorem~\ref{ade:thm:ADElist},
+which Part~VIII cites as Proposition~\ref{mts:prop:ADE}.)}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Claim or ingredient & Dependency and status\\
+\midrule
+Stability iff branch-complete ADE skeleton
+ & Imported from pinned ProveIt Part VIII, theorem \texttt{mts:thm:main}.
+ No new formal verification is claimed.\\
+ADE tree list
+ & Imported spectral classification; the source supplies a tree proof.
+ Classical spectral context is credited separately.\\
+Automorphism factors and $A(y)$
+ & Derived here by counting the explicitly listed shapes. Independently
+ checked through eleven vertices.\\
+Rooted-forest formula and long-path count
+ & Classical matrix-tree/Pr\"ufer tools, with derivations included.
+ Not claimed as new random-tree enumeration theorems.\\
+Exact $(K,H)$ count, generating function, Poisson identity
+ & Proved here from a reversible skeleton--subdivision--forest decomposition.
+ Exact finite verification accompanies the proofs.\\
+Fixed-$k$, sparse, critical, and uniform supercritical limits
+ & Proved here from the exact identities, Gaussian Riemann sums,
+ elementary Poisson bounds, and Stirling's formula.\\
+Conditional cumulants and Gaussian law
+ & Proved here by a uniformly isolated moving pole and explicit
+ characteristic-function expansion. Fixed $p$ only.\\
+Conditioned diameter and quenched sandwich
+ & Proved here using the ADE path structure, a rooted-forest height count,
+ and a uniform-composition bound.\\
+Finite computations
+ & Executed Python checks. Neither exhaustive at all sizes nor
+ proof-assistant certificates.\\
+Publication novelty or independent verification
+ & Not established. The claim boundary is relative to the inspected
+ repository question and the precise statements proved in this article.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\needspace{7\baselineskip}
+\section{A compact map of parameter regimes}
+\label{rts:app:regimes}
+\noindent\emph{(Source~12's Appendix~B.)}
+For $q_n=1-p_n$, the following summary keeps the normalizations distinct.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Regime & Proved conclusion\\
+\midrule
+$np_n\to\mu<\infty$
+ & $\pi_n\to e^{-\mu}(1+\mu+\mu^2/2)$; conditional marks are
+ Poisson truncated to $0,1,2$.\\
+$np_n\to\infty$, $p_n\sqrt n\to0$
+ & $\pi_n\sim\binom n2p_n^2q_n^{n-2}$; conditional mark count tends to two.\\
+$p_n\sqrt n\to\lambda\in(0,\infty)$
+ & $\pi_n\sim nq_n^n\Psi(\lambda)$; discrete mark-count law
+ $w_k(\lambda)$ and a chi hull mixture.\\
+$p_n\sqrt n\to\infty$
+ & $\pi_n\sim\frac98\sqrt{2\pi}p_n^3n^{5/2}e^{-np_n}$,
+ uniformly along every such sequence.\\
+Fixed $p\in(0,1)$, conditioned on stability
+ & $K_n/n\to p^2$, $H_n/n\to p$, $\diam(T_n)/n\to p$;
+ explicit joint Gaussian law.\\
+Fixed $p\in(0,1)$, typical unconditioned host
+ & $n^{-1}\log\pi_p(T_n)\to\log(1-p)$ in probability.\\
+$p_n=1$, $n\ge10$
+ & Exact identity $\pi_n(1)=\frac98\,n!/n^{n-2}$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The critical and supercritical probability results do not by themselves
+imply uniform Gaussian or diameter limits when $p_n$ varies. Such
+extensions are explicitly left among the further questions.
+% End of Part X (batch 66).
+
 \appendix
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
 \section{A hypertree proof of the known root identity}\label{app:hypertrees}
@@ -18320,6 +20349,32 @@ G. Loho and B. Smith,
 \emph{Matching fields and lattice points of simplices},
 \emph{Advances in Mathematics} \textbf{370} (2020), 107232;
 doi:10.1016/j.aim.2020.107232; \arxiv{1804.01595v4}.
+
+% Part X (batch 66): references of source 12 not already cited above.
+\bibitem{McKeeSmythJA}
+J. McKee and C. Smyth,
+\emph{Integer symmetric matrices having all their eigenvalues in the
+interval $[-2,2]$}, \emph{Journal of Algebra} \textbf{317} (2007), 260--290.
+Author's publication record:
+\url{https://webhomes.maths.ed.ac.uk/~chris/papers/papers.html}.
+Cited by source~12 as spectral context; the operative finite-tree list is
+Part~VIII's table. A different paper from~\cite{McKeeSmyth}
+and~\cite{McKeeSmythIMRN}.
+
+\bibitem{FS}
+P. Flajolet and R. Sedgewick,
+\emph{Analytic Combinatorics}, Cambridge University Press, 2009.
+Official author book page and chapter guide:
+\url{https://sedgewick.io/books/analytic-combinatorics/}.
+See labelled constructions, meromorphic asymptotics, and multivariate
+random-structure methods.
+
+\bibitem{Aldous}
+D. Aldous, \emph{The continuum random tree III},
+\emph{Annals of Probability} \textbf{21} (1993), 248--289.
+\url{https://doi.org/10.1214/aop/1176989404}.
+Cited as context for a proposed further question, not as an unproved
+normalization input to the present theorems.
 
 \end{thebibliography}
 \end{document}
