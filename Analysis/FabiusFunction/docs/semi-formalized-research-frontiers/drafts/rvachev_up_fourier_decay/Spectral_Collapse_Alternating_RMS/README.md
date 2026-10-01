@@ -160,3 +160,30 @@ unchanged.
 - `CHECKSUMS.sha256`, listed under "Contents", was verified (15/15) and
   retired when the package was filed (batch 38 of `docs/incoming/`); the
   delivered archive remains in the repository history.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 69 and 70 of `docs/incoming/` (see
+`docs/incoming/README.md`); the change to the source is marked
+`% ed. (2026-09-30)`.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-09-30)") is defined after `ednote`. Under Question
+  12.2 ("Spectra at finite smoothness"), after the 2026-09-29 note, a note
+  records that the later article
+  `../Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/` (filed 2026-09-30,
+  batch 70, unreviewed) answers the integer `C^r` part: on `C^r` of the
+  circle and on `C^r([0,1])` the essential spectrum of `L_2` is the closed
+  disk of radius `2^(-r-1)`, every interior point an eigenvalue of infinite
+  multiplicity, and the spectrum adds only `1/2` (isolated and simple
+  exactly for `r >= 1`; on `C^0` it lies on the boundary of the disk) and
+  `-1/4` (isolated, semisimple of multiplicity two, exactly for `r >= 2`);
+  unmatched endpoint jets add no spectrum for this mask, and the essential
+  disk is proved for every smooth dyadic Markov weight. Noninteger Hoelder
+  and weighted endpoint spaces remain open.
+- `article.pdf`: rebuilt with three `pdflatex` passes (MiKTeX 26.2, pdfTeX
+  1.40.29): 23 pages, as before; no error, undefined reference, duplicate
+  destination or overfull box (the two underfull boxes of the previous
+  build remain); no Type 3 font; the page carrying the note was rendered and
+  inspected.
+- `README.md`: this section.

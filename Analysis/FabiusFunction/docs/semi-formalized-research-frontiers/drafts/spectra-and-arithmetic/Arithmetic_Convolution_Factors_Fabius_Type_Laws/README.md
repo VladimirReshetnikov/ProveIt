@@ -129,3 +129,46 @@ Made in the editorial pass after batch 56 of `docs/incoming/` (see
   destination, or LaTeX warning; the pages carrying the notes were rendered
   and inspected.
 - `README.md`: the page count under "Files", and this section.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 69 and 70 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-30)`.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-09-30)") is defined after `ednote`. Three notes cite
+  the later unreviewed draft
+  `../Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/` (batch 69,
+  2026-09-30), written in this article's normalization:
+  - after the 2026-09-29 note to "Beyond divisibility ladders": a second
+    sufficient hypothesis, pairwise rationally incommensurable target
+    lengths, under which zero-divisor domination, entire extension of the
+    Fourier quotient, and an injective assignment of the uniforms to target
+    coordinates refined by integers are equivalent (its `thm:separated`);
+    its `thm:channels` does the same for `mu_p`, `p = r^(-e/h)`, `r` prime;
+  - after the discussion of "Two arbitrary geometric ratios": answered for
+    every target ratio `p` with no rational positive power
+    (`mu_p = D_c mu_q * nu` exactly when `c = p^a/n`, `q = p^m/d`,
+    `m, n, d >= 1`; its `thm:geometric`) and, by a finite orbit criterion,
+    for `p = r^(-e/h)` (its `thm:orbit`), zero inclusion being sufficient in
+    both cases; with this article's `thm:crossbase`, open only for targets
+    whose least rational power `p^h` is `A/B` with `A > 1`, or `1/B` with
+    `h >= 2` and `B` not a prime power; the draft re-proves
+    `thm:self-spectrum` (its `prop:same`) without citing this article;
+  - after the discussion of "Optimal approximate factorization": the draft's
+    `thm:metric` bounds `inf_nu W_1(mu_q, U_{1/N} * U_{1/M} * nu)` below for
+    nonresonant `q` by the mechanism of `prop:wasserstein` (uncited), and its
+    `thm:perturbation` gives a family near `q = 1/2` on which exact
+    factorability fails while the distance tends to zero; the sharp rate is
+    open there too.
+- Relation recorded elsewhere: `thm:self-spectrum` with `q = 1/b` proves
+  item 1 of `conj:general-base` of
+  `../Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/` for every
+  integer base `b >= 2`; that report now carries a second note saying so.
+- `article.pdf`: rebuilt from the amended source by the three passes above
+  (MiKTeX 26.2, pdfTeX 1.40.29): 26 pages, as before; no error, undefined
+  reference, multiply defined label, duplicate destination, overfull or
+  underfull box; no Type 3 font. The pages carrying the notes were rendered
+  and inspected.
+- `README.md`: this section.

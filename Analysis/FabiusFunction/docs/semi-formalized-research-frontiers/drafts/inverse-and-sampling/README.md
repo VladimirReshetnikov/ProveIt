@@ -234,7 +234,8 @@ radial and allocation large deviations.  The critical crossover
 [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
 holds *Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
 Instability Near the Fabius–Rvachev Law*, filed on 2026-09-28 by a quick
-archival intake (20-page A4 PDF, 1,438-line source, an exact SymPy check
+archival intake (21-page A4 PDF, 1,516-line source since its editorial
+notes; 20 pages and 1,438 lines as delivered; an exact SymPy check
 program with 90-digit diagnostics).  It asks how reliably the half-lengths
 `a_j` of `Σ_j a_j U_j` can be recovered from the law near the dyadic
 spectrum: finitely many moments never suffice (an analytic isomoment curve
@@ -245,7 +246,11 @@ minimax lower bound.  Full-law identifiability is credited to
 Billey–Swanson.  The exact dyadic-scale identifiability of
 `GeneralizedRvachevIdentifiability.lean` and the factor classification of
 `../spectra-and-arithmetic/Arithmetic_Convolution_Factors_Fabius_Type_Laws/`
-are related and not cited.  Unreviewed; no Lean statement.
+are related and not cited.  Editorial notes of 2026-09-29 and 2026-09-30
+under its research questions point to the later articles of this group
+that answer them at the dyadic reference (including the boundary case
+`q = 1/2` of "Geometrically separated classes").  Unreviewed; no Lean
+statement.
 
 [`Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/`](Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/)
 holds *Sharp Stability Strata for Finite Fabius–Rvachev Deconvolution*,

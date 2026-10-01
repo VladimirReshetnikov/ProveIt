@@ -151,3 +151,35 @@ Made in the editorial pass after batch 56 of `docs/incoming/` (see
 - `README.md`: the page count and the `build.sh` line under "Contents",
   the command and output file under "Reproduce the exact tests", the
   `build.sh` sentence under "Compile the article", and this section.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 69 and 70 of `docs/incoming/` (see
+`docs/incoming/README.md`); the change to the source is marked
+`% ed. (2026-09-30)`.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-09-30)") is defined after `ednote`. Under Q6
+  ("Stability under approximate factorization") a note records that the
+  later unreviewed draft
+  `../Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/` (batch 69)
+  gives, in one dimension and for nonresonant geometric targets
+  `sum_k q^k U_k` (`U_k` uniform on `[-1/2,1/2]`), an explicit Wasserstein
+  lower bound against every law with a factor made of two uniforms of
+  lengths `1/N` and `1/M` (its `thm:metric`), and a family near `q = 1/2`
+  on which exact factorability fails while that distance tends to zero (its
+  `thm:perturbation`); it treats neither the prime-base targets `X_p` of
+  this article nor several dimensions. That draft credits and re-proves
+  `thm:primepower` (its `lem:hall`) and `thm:base6` (its `prop:base6`).
+- Correction to a record outside this package: the draft manifest said that
+  this article proves item 1 of `conj:general-base` of
+  `../Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/` for prime and
+  prime-power bases. It does, but item 1 holds for every integer base, by
+  `thm:self-spectrum` of `../Arithmetic_Convolution_Factors_Fabius_Type_Laws/`
+  (filed a day earlier); the manifest row and that report now say so.
+- `article.pdf`: rebuilt from the amended source with the three `pdflatex`
+  passes that `build.sh` runs (MiKTeX 26.2, pdfTeX 1.40.29): 24 pages, as
+  before; no error, undefined reference or citation, duplicate destination,
+  overfull or underfull box; no Type 3 font. The page carrying the note was
+  rendered and inspected.
+- `README.md`: this section.

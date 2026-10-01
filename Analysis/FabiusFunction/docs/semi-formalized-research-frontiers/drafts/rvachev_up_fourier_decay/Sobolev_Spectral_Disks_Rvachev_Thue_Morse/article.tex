@@ -34,6 +34,8 @@
 \newtheorem{remark}[theorem]{Remark}
 % ed. (2026-09-29): unnumbered environment for editorial notes.
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Q}{\mathbb Q}
@@ -1623,6 +1625,26 @@ gap for every such $\alpha$. This does not conflict with
 two statements concern different norms, $L^2$-based Sobolev norms here and
 sup-norm H\"older norms there. The question above remains open.
 \end{ednote}
+% ed. (2026-09-30): the integer C^r part of the question is answered by a later package (batch 70).
+\begin{ednotelater}
+Its $C^r$ part is answered, for integer $r\ge0$, by the later repository
+article
+\path{rvachev_up_fourier_decay/Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/}
+(filed 2026-09-30, batch~70 of the repository's \path{docs/incoming/};
+unreviewed). For the quadratic dyadic operator
+$f\mapsto\frac12\bigl[\sin^2(\pi x/2)f(x/2)+\cos^2(\pi x/2)f((x+1)/2)\bigr]$
+on $C^r$ of the circle and of $[0,1]$, the essential spectrum is the closed
+disk of radius $2^{-r-1}$ and the spectrum adds only $1/2$ and $-1/4$,
+isolated exactly for $r\ge1$ and for $r\ge2$ respectively; for every smooth
+weight $\omega$ with $\omega(x+1)=1-\omega(x)$ the operator
+$f\mapsto\omega f(\cdot/2)+(1-\omega)f((\cdot+1)/2)$ has essential spectral
+radius $2^{-r}$ on $C^r$ of the circle. The radius in the supremum-jet
+geometry is therefore $2^{-r-1}$, smaller than the value
+$2^{-r}\sqrt{1+\sqrt{17}}/4$ on the $L^2$-based spaces $H^r$ here. On $C^1$
+the value $1/2$ is isolated, consistent with the spectral gap on
+$C^\alpha[0,1]$ recalled in the note above; on $C^0$ it lies on the
+boundary of the essential disk. Noninteger H\"older spaces remain open.
+\end{ednotelater}
 
 \begin{question}[A proof-producing computational interface]
 Construct a verified procedure that takes an integer dilation and a rational
