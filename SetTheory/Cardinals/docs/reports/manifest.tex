@@ -426,7 +426,7 @@ report answers.}
 
 \entry{Open-query games on ordinal spaces}
 {ordinals-and-order-types/games-on-ordinals/open-query-membership-games}
-{article.pdf}{ordinal\_membership\_games.zip; batch~52: ProveIt\_Finite\_Output\_Open\_Query\_Games.zip; batch~56: ProveIt\_Filter\_Profiles\_Open\_Query\_Complexity.zip}
+{article.pdf}{ordinal\_membership\_games.zip; batch~52: ProveIt\_Finite\_Output\_Open\_Query\_Games.zip; batch~56: ProveIt\_Filter\_Profiles\_Open\_Query\_Complexity.zip; batch~65: ProveIt\_Closure\_Word\_Duality.zip; batch~68: ProveIt\_Universal\_Word\_Profiles.zip}
 {A negative answer to Problem~1.3 of Chiozini, Csern\'ak and Soukup
 (arXiv:2510.05754v3): two copies of $[0,\omega]$ each have set-membership
 number~1, but their topological sum has value~2.  The general theorem computes
@@ -447,8 +447,23 @@ feedback vertex number of a color digraph; the bound is attained exactly
 under a bin-partition condition on the partition capacities of the
 neighborhood filters; and at three labels a sum of three one-point
 free-ultrafilter spaces has value~$2$ while a sum of three convergent
-sequences has value~$3$.  Heights $h\ge2$ and infinite derived sets remain
-open.}
+sequences has value~$3$.  Part~IV, added in batch~65, drops the separation
+and finiteness hypotheses for a fixed coloring: a layer word is admissible
+exactly when it contains as subsequences all reduced words whose nested color
+closure is nonempty.  It classifies the finite-depth behaviors, shows that the
+longest such word has the length of the least Cantor--Bendixson height of a
+Hausdorff representative, gives $q_c+\tau(G_c)$ layers whenever the second
+derivative is empty, bounds finite-poset obstructions by $mq(q-1)^{m-1}$
+points, and proves the product law $\rho(X\times Y)=\rho(X)+\rho(Y)-1$ for
+that longest length~$\rho$.  Part~V, added in batch~68, computes the worst
+case over colorings at every finite height on locally compact or sequential
+(more generally rank-accessible) Hausdorff spaces: $\max_cL=h(q-1)+\min(q,t)$
+with $t$ the size of the last nonempty derivative, also when $t$ is
+infinite, attained by one coloring constant off a countable set; it adds
+product and sum laws and an inverse theory of layer and query-depth spectra.
+Local data determining an arbitrary fixed coloring at height two, and a
+characterization of the spaces attaining that worst case (rank accessibility
+is sufficient, not necessary), remain open.}
 
 \subsection{Order-theoretic invariants without a subcategory}
 
@@ -551,7 +566,7 @@ kept.}}
 
 \entry{A coloring obstruction to maximal binary DFAO reversal}
 {automata-and-formal-languages/dfao-reversal-coloring-obstruction}
-{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip; batches~40--41: ProveIt\_DFAO\_Eventual\_Optimality.zip, ProveIt\_Binary\_DFAO\_Reversal.zip, ProveIt\_Binary\_Reversal\_Exactness.zip; batch~43: ProveIt\_Four\_Output\_Reversal.zip, ProveIt\_Four\_Output\_Reversal~(1).zip}
+{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip; batches~40--41: ProveIt\_DFAO\_Eventual\_Optimality.zip, ProveIt\_Binary\_DFAO\_Reversal.zip, ProveIt\_Binary\_Reversal\_Exactness.zip; batch~43: ProveIt\_Four\_Output\_Reversal.zip, ProveIt\_Four\_Output\_Reversal~(1).zip; batch~67: ProveIt\_Near\_Linear\_DFAO\_Reversal.zip, ProveIt\_DFAO\_Spectral\_Cancellation.zip}
 {For transformations $a,b$ on an $n$-element set and an output map to $k$
 labels, proves $|\tau\langle a,b\rangle|\le k^n-k!+g(k)<k^n$ for $3\le k\le n$,
 with $g(k)$ the largest order of a permutation of $k$ symbols --- the
@@ -571,11 +586,20 @@ threshold: $R_2(n,k)=k^n-\mathrm{Bip}_k(a_n,b_n)+a_nb_n$ once $n\ge N(k)\le3k^4$
 and for all $n\ge\max(7,k+1)$ when $k=4,\dots,7$ (computer-assisted below
 $N(k)$), with the lower construction imported from Davies; a non-effective
 eventual route for every $k\ge3$, 919 finite certificates and a second proof of
-the $k=3$ formula are kept.  Explicit exactness for $k\ge8$ at small $n$ stays
-open.  Part~IV, merged in batch~43 from two manuscripts on $k=4$, re-derives
-that case with an analytic threshold $n\ge26$ (against $212$), and adds
-stability, the missing-orbit inventory, the extremal output maps and a minimal
-order-15 recurrence.}
+the $k=3$ formula are kept.  Explicit exactness for $k\ge8$ below
+$\min(N(k),T(k))$, with $T(k)$ the threshold of Part~V, stays open.  Part~IV,
+merged in batch~43 from two manuscripts on $k=4$, re-derives that case with an
+analytic threshold $n\ge26$ (against $212$), and adds stability, the
+missing-orbit inventory, the extremal output maps and a minimal order-15
+recurrence.  Part~V, added in batch~67, proves the formula for every $k\ge4$
+once $n\ge T(k)=4k\log k+O(k)$ instead of $n\ge3k^4$ (so for all $k$ up to
+$cn/\log n$, $c<1/4$), with a theta-function limit of the optimal deficit when
+$n/k^2$ tends to a constant and a Gaussian law in between.  Part~VI, added in
+batch~67, determines the minimal recurrences of the explicit witness deficit
+for every fixed $k$: order~9 at three outputs (against Part~II's~12), a
+product-12 cancellation on the odd residues but not in the full sequence at
+nineteen outputs, the only product-12 cancellation at any $k$, and explicit
+tail numerators.}
 
 \entry{Synchronizing D\.zyga's automata by a cyclic retract}
 {automata-and-formal-languages/dzyga-synchronizing-retract}
@@ -593,7 +617,7 @@ $\tau(q_0)\ge4k+8$ is not proved.}
 
 \entry{Gaps in bounded-shuffle hierarchies}
 {automata-and-formal-languages/insertion-degree-spectra}
-{article.pdf}{shuffle\_spectra\_research.zip; batch~41: ProveIt\_Binary\_Insertion\_Spectra.zip}
+{article.pdf}{shuffle\_spectra\_research.zip; batch~41: ProveIt\_Binary\_Insertion\_Spectra.zip; batch~66: ProveIt\_Sharp\_Insertion\_Isolation.zip}
 {A counterexample to the insertion-degree No-Gap Conjecture of Hughes,
 arXiv:2608.27755v1, Section~11, followed by positive results: every finite set
 of positive integers containing~1 is the insertion-degree spectrum of two
@@ -607,17 +631,33 @@ iteration-depth no-gap conjecture is proved for arbitrary languages.  Part~II,
 added in batch~41, fixes the alphabet: every finite set containing~1 is the
 spectrum of finite \emph{binary} languages with the single inserted word $a^m$,
 so two letters always suffice; its $m^2$ length bound holds in its
-full-coverage class only.}
+full-coverage class only.  Part~III, added in batch~66, determines that class
+exactly: an isolated degree-$m$ output with $g$ gaps between its $a$'s
+(the two end gaps included) and $T$ letters~$a$ exists exactly when $g\ge m$
+and $T\ge\max(g(m-1)+1,\tau_m)$, with $\tau_3=12$ and $\tau_m=5m-2$ for
+$m\ge4$, so the minimum lengths for $m=3,4,5$ are $14$, $21$ and~$27$.  It
+characterizes the extremal centers and the mandatory targets, and at $m=3$
+classifies the shortest target languages: $3^9=19{,}683$ of them, of minimum
+size~37, attained by~512.}
 
 \entry{Constrained crossover closure}
 {automata-and-formal-languages/constrained-crossover-closure}
-{article.pdf}{ProveIt\_Constrained\_Crossover.zip (batch~44)}
+{article.pdf}{ProveIt\_Constrained\_Crossover.zip (batch~44); batch~66: ProveIt\_Crossover\_Stabilization.zip, ProveIt\_Crossover\_Classification.zip}
 {Answers the question Hughes (arXiv:2608.27755v1, Section~4) leaves open on
 the complexity of deciding $L\otimes_c L=L$ for the constrained crossover of a
 context-free language: it is co-r.e.-complete.  Adds an aligned-rank no-gap
 theorem for iterated crossover and effectivity results in which Presburger
 quantifier elimination is used only as an algorithmic step.  Related to, but
-using nothing from, the insertion-degree report above.}
+using nothing from, the insertion-degree report above.  Part~II, added in
+batch~66, shows finite stabilization of regular seeds PSPACE-complete for NFA
+input, already over two letters; the upper bound also covers DFA input,
+improving Part~I's EXPSPACE bound, while the exact DFA complexity stays open;
+in the stabilizing case the rank is at most quadratic in the number of
+states.  Part~III, added in batch~66, decides regularity, inclusion and
+equality of the full closures of context-free seeds, classifies the finitely
+stabilizing sparse one-marker seeds into regular, linear non-regular and
+non-context-free closures, and shows that thresholding the exact
+stabilization depth is coNP-complete for succinct ray input.}
 
 \entry{A cut-sensitive attack on the first open MIX grammar case}
 {automata-and-formal-languages/mix-grammar-cut-sensitive}
@@ -746,7 +786,7 @@ different conjecture of that paper from the ballot-polynomial entry
 
 \entry{A parity factorization for Cigler's Conjecture 16}
 {hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity}
-{article.pdf}{cigler\_conjecture16\_research.zip; batch~56: ProveIt\_Cigler\_Schur\_Recurrences.zip}
+{article.pdf}{cigler\_conjecture16\_research.zip; batch~56: ProveIt\_Cigler\_Schur\_Recurrences.zip; batch~66: ProveIt\_Cyclotomic\_Pole\_Collapse.zip}
 {A complete proof of Conjecture~16 in Cigler, arXiv:2111.14492v3, Section~6
 (pp.~21--22), on the Hankel polynomials, together with a sharp stabilization
 statement: the report also determines the first coefficient at which the
@@ -759,6 +799,11 @@ $\prod_{q=0}^{k-1}(1-t^qz)^{1+\lfloor q(k-1-q)/2\rfloor}$ over $\Q(t)$ and at
 every real $t\ne0,\pm1$, proves Cigler's denominators (84) and (86) minimal,
 and shows that the positive reciprocity sign printed in his (85), part of
 Conjecture~18, is false when $k=2a$ with $a$ even; Conjecture~17 stays open.
+Part~III, added in batch~66, determines the reduced denominator and the
+minimal recurrence at every complex parameter: at a primitive root of unity
+of order $\ell\ge3$ at most one residue class loses pole order, decided by an
+explicit parity test, and it loses one order except for a loss of three at
+primitive fourth roots when $k\equiv1\pmod4$.
 Its own README explains why this is a different problem from the other
 Cigler entries in this collection.}
 
@@ -1238,13 +1283,20 @@ central limit theorem, and linear-time recognition and exact uniform sampling.}
 
 \entry{A bicyclic 30-vertex graph with domination root $-4$}
 {graph-theory/domination-root-minus-four-order-30}
-{domination\_root\_30.pdf}{domination\_root\_30\_research.zip}
+{domination\_root\_30.pdf}{domination\_root\_30\_research.zip; batch~67: ProveIt\_Domination\_Cycle\_Obstructions.zip}
 {An explicit connected planar graph on 30 vertices and 31 edges, treewidth 2 and
 domination number 10, with $D(G,x)=x^{10}(x+4)Q_{19}(x)$ --- a negative answer
 to question~2 of Section~4 in Alikhani and Griswold, arXiv:2608.00109v1, which
 asks whether 33 is the minimum order.  Their 33-vertex example had already
 disproved the original integer-root conjecture; no claim of global minimality
-at 30 is made.  Three independent exact polynomial computations agree.}
+at 30 is made.  Three independent exact polynomial computations agree.
+Part~II, added in batch~67, proves $1\le|D(G,-1)|\le3^\beta$ sharply for
+cycle rank~$\beta$, a simultaneous divisibility budget for integer roots and
+their multiplicities, and the exact value sets of $|D(G,-1)|$: $\{1,3,7,9\}$
+for $\beta\le2$, so no root $-6$ at cycle rank at most two, and a
+ten-element set for $\beta\le3$ (computer-assisted).  Part~I's zero-$C$
+four-cycle search forces $|D(G,-1)|=3$, so it can produce no integer root
+below $-2$ other than a simple $-4$; no root $-6$ or $-8$ is constructed.}
 
 \entry{A marked-cycle proof of the trapezohedral domination conjecture}
 {graph-theory/trapezohedral-minimal-dominating-sets}
@@ -1315,7 +1367,7 @@ for the type of leaves in that tree.}
 
 \entry{Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations}
 {enumerative-combinatorics/adjacency-bounded-132-avoiders}
-{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip; batch~43: ProveIt\_Largest\_Jump\_Research.zip; batch~52: ProveIt\_Macroscopic\_Jump.zip, ProveIt\_Macroscopic\_Jump\_Research.zip; batch~64: ProveIt\_Critical\_Jump\_Moments.zip}
+{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip; batch~43: ProveIt\_Largest\_Jump\_Research.zip; batch~52: ProveIt\_Macroscopic\_Jump.zip, ProveIt\_Macroscopic\_Jump\_Research.zip; batch~64: ProveIt\_Critical\_Jump\_Moments.zip; batch~68: ProveIt\_Polynomial\_Rarity.zip}
 {For $132$-avoiding permutations with every adjacent difference at most $m$ and
 growth constant $\alpha_m$: proves $\alpha_{m+1}>\alpha_m$ for all $m\ge1$ ---
 the remaining strict-inequality part of Nadler's Conjecture~2 --- and the
@@ -1335,11 +1387,15 @@ length $n$ with every adjacent difference at most $\lfloor\theta n\rfloor$ is
 asymptotic to $3(2\theta-1)/\sqrt{\pi\theta(1-\theta)n}$, and the equivalent
 $3/\sqrt{\pi(1-\theta)n}$, which Part~III declined to assert, is false.  It
 also gives the exact constant of every moment $E(n-M_n)^p$, $p>1/2$ (for
-instance $E(n-M_n)\sim3\sqrt{n/\pi}$); for $\theta\le1/2$ only $o(n^{-1/2})$
-and polynomial lower bounds are proved.  Part~V, added in batch~64, settles
+instance $E(n-M_n)\sim3\sqrt{n/\pi}$); for $\theta\le1/2$ it proves only
+$o(n^{-1/2})$ and polynomial lower bounds.  Part~V, added in batch~64, settles
 the critical moment, $E\sqrt{n-M_n}=\frac{3}{2\sqrt\pi}\log n+c_\star+o(1)$
 with an explicit $c_\star\approx-0.9421$, and gives the first correction to
-every subcritical moment.}
+every subcritical moment.  Part~VI, added in batch~68, gives the order of
+Part~IV's fraction for every fixed $0<\theta<1$: it is
+$\Theta(n^{-\lfloor1/\theta\rfloor/2})$, with an order-crossover scale
+$n^{1-1/(2(q-1))}$ near each $\theta=1/q$ (so the fraction is $\Theta(1/n)$
+at $\theta=1/2$); amplitudes and crossover functions stay open.}
 
 \entry{Throwback Dynamics with Repeated Entries}
 {enumerative-combinatorics/throwback-queue-dynamics}
@@ -1415,7 +1471,7 @@ and Fibonacci numbers.}
 
 \entry{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}
 {enumerative-combinatorics/preorder-root-polytopes}
-{article.pdf}{preorder\_root\_polytopes.zip; batch~39: ProveIt\_Height\_Two\_Preorder\_Research.zip; batch~42: ProveIt\_Cactus\_Rigidity.zip; batch~44: ProveIt\_Preorder\_Gamma.zip, ProveIt\_Preorder\_Gamma\_Research.zip; batch~55: ProveIt\_Lorentzian\_Support.zip, ProveIt\_Support\_Polynomials\_Research.zip, ProveIt\_ADE\_Stability.zip, ProveIt\_Matroid\_Lifts.zip; batch~63: ProveIt\_Marked\_Tree\_Stability.zip; batch~64: ProveIt\_Two\_Flow\_Lattice\_Sampling.zip}
+{article.pdf}{preorder\_root\_polytopes.zip; batch~39: ProveIt\_Height\_Two\_Preorder\_Research.zip; batch~42: ProveIt\_Cactus\_Rigidity.zip; batch~44: ProveIt\_Preorder\_Gamma.zip, ProveIt\_Preorder\_Gamma\_Research.zip; batch~55: ProveIt\_Lorentzian\_Support.zip, ProveIt\_Support\_Polynomials\_Research.zip, ProveIt\_ADE\_Stability.zip, ProveIt\_Matroid\_Lifts.zip; batch~63: ProveIt\_Marked\_Tree\_Stability.zip; batch~64: ProveIt\_Two\_Flow\_Lattice\_Sampling.zip; batch~66: ProveIt\_Random\_Tree\_Stability.zip; batch~68: ProveIt\_Hall\_Bottlenecks.zip}
 {Proves Conjecture~5.1(c) of Athanasiadis and Chapoton (arXiv:2605.26916v1): for
 a preorder $\tau$ on $[n]$ the directed root polytope
 $C_\tau=\mathrm{conv}(\{\pm e_i\}\cup\{e_i-e_j: j\le_\tau i\})$ is reflexive with
@@ -1462,7 +1518,24 @@ paths.  Part~IX, added in batch~64, gives explicit polynomial-time two-flow
 bijections between the demand vectors of a bipartite graph with prescribed
 support and the supplier sets matchable to it (the correspondence itself is
 Oh's), and with them an almost-uniform sampler of actual lattice points of
-every finite preorder polytope.  Conjectures~7.2, 4.2 and~4.4 of the same
+every finite preorder polytope.  Part~X, added in batch~66, answers
+Part~VIII's question for a uniform random labelled tree with every vertex
+marked independently with probability~$p$: the probability that the marking
+is stable is asymptotic to $\frac98\sqrt{2\pi}\,p^3n^{5/2}e^{-pn}$ whenever
+$p\sqrt n\to\infty$, an explicit entire function governs the window
+$p\sqrt n\to\lambda$, and below it stability is asymptotically the event of
+at most two marks; for a fixed host the diameter determines the probability
+up to a polynomial factor, separating the typical rate $\log(1-p)$ from the
+annealed rate $-p$.  Part~XI, added in batch~68, answers Part~V's question on
+normalization by the matching number negatively for positive vertex weights
+on both shores: a graph with 30 vertices, 104 edges, matching number eight
+and weights in $\{1,500\}$ has a weighted support polynomial that is not
+ultra-log-concave of order eight.  A Hall-bottleneck family gives a rank-six
+phase diagram, the endpoint threshold for every core size and a lower bound
+asymptotic to $\frac43\nu$ for any normalization depending on the matching
+number $\nu$ alone; the first rank-normalized inequality holds for every
+positively weighted graph, with a defect identity.  The unit-weight and
+one-shore versions stay open.  Conjectures~7.2, 4.2 and~4.4 of the same
 paper are proved in the preorder-polytope reciprocity report.}
 
 \entry{Largest Simplex Faces under Ordinal Sums}

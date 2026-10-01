@@ -164,7 +164,34 @@ Part VIII to
 (rational tubes for polynomial flows) and a Part V to
 [`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
 (critical moments of the largest jump); its sixth manuscript went to the
-Fabius drafts tree.
+Fabius drafts tree.  Batch 65 added a Part IV to
+[`open-query-membership-games`](ordinals-and-order-types/games-on-ordinals/open-query-membership-games)
+(closure-word duality for fixed colorings); its other four manuscripts went
+to the Fabius drafts tree and the Transseries tree.  Batch 66 added Parts II
+and III to
+[`constrained-crossover-closure`](automata-and-formal-languages/constrained-crossover-closure)
+(PSPACE-complete finite stabilization for NFA input; decidable regularity of
+the full closure), a Part III to
+[`cigler-conjecture-16-parity`](hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity)
+(cyclotomic pole collapse), a Part III to
+[`insertion-degree-spectra`](automata-and-formal-languages/insertion-degree-spectra)
+(sharp isolation thresholds) and a Part X to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(rare stable markings on random trees); its remaining manuscript went to the
+Fabius drafts tree.  Batch 67 added Parts V and VI to
+[`dfao-reversal-coloring-obstruction`](automata-and-formal-languages/dfao-reversal-coloring-obstruction)
+(a near-linear threshold with theta limits; minimal recurrences and a
+nineteen-output cancellation) and a Part II to
+[`domination-root-minus-four-order-30`](graph-theory/domination-root-minus-four-order-30)
+(cycle budgets for integer domination roots); its remaining manuscript went
+to the Fabius drafts tree.  Batch 68 added a Part V to
+[`open-query-membership-games`](ordinals-and-order-types/games-on-ordinals/open-query-membership-games)
+(universal word profiles at every finite height), a Part XI to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(Hall bottlenecks for normalization by the matching number) and a Part VI to
+[`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
+(a staircase of polynomial rarity below half size); its other three
+manuscripts went to the Fabius drafts tree.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
