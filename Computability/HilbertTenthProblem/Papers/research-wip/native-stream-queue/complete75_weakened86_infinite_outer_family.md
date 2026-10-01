@@ -1,5 +1,12 @@
 # Infinite low-X outer families for the86 candidate
 
+The [complete negative-input successor](complete75_weakened86_full_negative_family.md)
+pays the missing input/index congruences and all five auxiliary coordinates
+for one fixed scalar compiler instance, giving infinitely many full positive
+19-coordinate zeros at x=1. It does not instantiate an actual universal
+program or establish false membership. The outer-only theorem and
+certificate below remain unchanged.
+
 There is no uniform bound on the first/main Pell indices or their odd
 gap that follows from the **first norm, main norm, both strict ratios,
 actual main-root congruence and outer transport equation alone**. For

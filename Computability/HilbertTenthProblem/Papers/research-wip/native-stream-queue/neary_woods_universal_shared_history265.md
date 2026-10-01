@@ -1,5 +1,12 @@
 # Share paid powers, selector prefixes and the radix decrement
 
+The [positive-mask-unit successor](neary_woods_universal_mask_unit263.md)
+gives263=134M+129A,252 certificate operations,4 comparisons,43 witnesses
+and degree at most3857. It preserves the complete positive zero set on
+the same supplied coordinates; off-zero values have explicit corrections.
+Its mapped273/608 option uses44 witnesses. The exact integer identities
+and all historical265 counts below remain unchanged.
+
 The [factored partition compiler](neary_woods_universal_computed_ports_partitions.md)
 has an exact algebraic successor costing **265=134M+131A**, with
 **251=129M+122A certificate operations**, **five comparisons**, **43

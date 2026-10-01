@@ -1,5 +1,11 @@
 # Exact auxiliary signs and positive lifts for the86 candidate
 
+The [complete negative-input successor](complete75_weakened86_full_negative_family.md)
+uses this conditional lift to construct infinitely many full positive
+19-coordinate zeros at x=1 for stated scalar compiler constants. No
+actual universal program or false input membership is identified.
+The conditional theorem and historical scope of this packet remain intact.
+
 The [negative-input residue packet](complete75_weakened86_negative_input_residues.md)
 classifies a retained subsystem. This separate successor closes its
 auxiliary converse after imposing one exact sign condition. At fixed
@@ -17,8 +23,8 @@ targets of arbitrarily large magnitude.
 
 Together with the prior CRT test, this gives an exact existence
 criterion for **full R<0,mu<0 candidate extensions of fixed valid first,
-main and outer transport data**. No passing actual outer tuple or
-false-input full zero is supplied. The [weakened86 candidate](complete75_weakened_bound86_candidate.md)
+main and outer transport data**. This conditional packet itself supplies
+no passing actual outer tuple or false-input full zero. The [weakened86 candidate](complete75_weakened_bound86_candidate.md)
 therefore remains unresolved: this is a conditional characterization,
 not a universal86 proof or a counterexample.
 
@@ -256,7 +262,7 @@ return period is supplied explicitly. Thus the mathematical finite
 criterion is unrestricted, while the default implementation is guarded;
 no claim of practical enumeration for every actual outer tuple is made.
 
-No actual passing outer tuple has been found or is asserted here. The
+This conditional packet alone supplies no passing outer tuple. The
 implemented literal example uses the previous rejected ratio data
 `q=16,p=21,n=15,X=2^21,Y=8192`, with `F=2,alpha=3`, the masks10/12,
 offset3 and `K0=83`. Its first/main factors are1 and transport factor

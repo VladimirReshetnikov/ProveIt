@@ -36,7 +36,20 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [shared-history U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_shared_history265.md)
+The latest explicit [positive-mask-unit U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_mask_unit263.md)
+gives **252 certificate /263=134M+129A polynomial operations**,
+4 comparisons,43 positive witnesses, four positive program parameters
+and degree **at most3857**. Absorbing the recoder's second repunit
+comparison into a unit group saves two polynomial additions. The native
+equations first make its scale factors dyadic; a Mersenne residue then
+excludes the negative mask unit. Complete positive zero sets are unchanged
+on the same supplied coordinates, while off-zero values obey explicit
+correction identities. Mapped schedules reach273/608 with44 witnesses;
+the fixed43-witness family reaches270/1344. These optimize the new
+factor's placement within selected inherited partitions, not all partitions
+of the enlarged factor set. The established75/87 frontier is unchanged.
+
+The preceding explicit [shared-history U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_shared_history265.md)
 gives **251 certificate /265=134M+131A polynomial operations**,
 5 comparisons,43 positive witnesses, four positive program parameters
 and degree **at most3853**. Reusing paid powers, a selector prefix and
@@ -56,6 +69,17 @@ first-failure guard and exact-execution uniqueness. The guard-free
 an existential choice of horizon. Input words and T are fixed compiler
 data; this is not a fixed-arity universal bound. A two-schedule planner
 retains the cheaper forward form when sentinel folding loses.
+
+The [periodic-routing outcome compiler](research-wip/native-stream-queue/routing_balance_outcome_compiler.md)
+uses **67=21M+46A** operations,11 positive witnesses,8 residuals and
+degree at most4 on its two-router example, versus166 for the canonical
+odometer certificate. For fixed topology its size is independent of firing
+duration: balance alone forces termination and the exact sink vector,
+although candidate odometers may contain artificial circulations. Positive
+block lengths, initial-load hats and queried-output hats are free parameters.
+The explicit periodic family is decidable; this is a fixed-arity outcome
+compiler, not a universal bound. Algorithmic universal stack ranks would
+still need a paid arithmetic interface.
 
 The preceding explicit [factored-port U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_factored_ports269.md)
 gives **255 certificate /269=136M+133A polynomial operations**,
@@ -299,8 +323,8 @@ realizes nearby wrong targets for a weakened auxiliary system, not full
 polynomial zeros; the87-operation,degree183 candidate remains unresolved.
 The [positive-index86 theorem](research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
 proves the unresolved86 candidate sound whenever its computed R>0,
-without assuming alpha>Z. R=0 is impossible; the negative-R branch
-remains unresolved. The [index-gap restrictions](research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
+without assuming alpha>Z. R=0 is impossible; soundness on actual program
+slices with R<0 remains unresolved. The [index-gap restrictions](research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
 prove the main Pell index p odd globally, with E<3p at zero wrap on
 R<0,mu>0. The [gap-three exclusion](research-wip/native-stream-queue/complete75_weakened86_gap_three.md)
 strengthens R<0,mu>0 to n<p<=2n-5 by excluding all237 necessary triples
@@ -316,8 +340,8 @@ leave one ratio-compatible case, excluded by all four wrap classes.
 The [gap-eleven successor](research-wip/native-stream-queue/complete75_weakened86_gap_eleven.md)
 now gives **n<p<=2n-13** on R<0,mu>0 by excluding all1,413 finite ratio
 domains. Every fixed odd gap has a proved effective finite necessary-domain
-reduction, but the gap remains unbounded. Gaps at least13 and mu<0 remain
-unresolved;75/87 remain unchanged.
+reduction, but the gap remains unbounded. Positive-mu gaps at least13
+remain open;75/87 remain unchanged.
 The [negative-input residue theorem](research-wip/native-stream-queue/complete75_weakened86_negative_input_residues.md)
 classifies an exact finite subsystem for fixed main/first Pell data:
 the negative input norm/discriminant, positive first-index slack, and
@@ -330,9 +354,33 @@ now proves that the exact allowed target residues are -p for p=1 mod4,
 and +/-p for p=3 mod4, and constructs all five positive auxiliary fields.
 Together with the CRT test, this gives a full negative-mu extension iff
 for each fixed set of validated first/main and outer-transport data.
-No passing actual outer tuple is supplied; those outer data remain
-unbounded. No global mu<0 exclusion, new gap bound or universal86 proof
-follows, and the86/19-witness/degree203 source is unchanged.
+That conditional packet alone supplies no passing outer tuple. The
+full scalar-data extension below supplies complete zeros, while the
+86/19-witness/degree203 source and actual-program soundness question
+remain unchanged.
+
+The [negative-input power-branch theorem](research-wip/native-stream-queue/complete75_weakened86_negative_power_gap.md)
+gives **n<p<=2n-19 only when R<0,mu<0 and X=2^p**. It bounds Y and
+reduces every fixed odd gap to a finite domain;2,475 ratio domains exclude
+all odd gaps through17 after the existing all-mask rejection of the sole
+survivor. It does not bound the negative-input X<2^p branch.
+
+The [infinite low-X outer family](research-wip/native-stream-queue/complete75_weakened86_infinite_outer_family.md)
+shows that the first/main norms, both ratios, actual main-root congruence
+and transport alone permit unbounded odd gaps at every fixed width d>=4.
+Its exact large-index certificate is only an outer subsystem; the next
+result pays the missing input, index and auxiliary conditions.
+
+The [complete negative-input family](research-wip/native-stream-queue/complete75_weakened86_full_negative_family.md)
+proves infinitely many **full positive19-coordinate zeros at x=1** for
+scalar constants B=16,d=4,b=1,MC=6,MF=12 and arbitrary positive DC,DR.
+They have R<0,mu<0 and unbounded odd gaps. Exact modular certificates and
+directed integer bounds verify a concrete deterministic Pell recipe for
+all19 coordinates without materializing the enormous integers. No actual
+universal program with these constants or false membership of x=1 is
+established. The universal86 question and the established75/87 bounds
+therefore remain unchanged.
+
 
 Native queue components retain their separate scope.
 
