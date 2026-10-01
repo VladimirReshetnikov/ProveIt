@@ -1,0 +1,207 @@
+\section{The limiting Jacobi roots}
+For each fixed $d$, the monic polynomials
+\[
+ L_j(x)=i^{-j}G_j(ix,R)
+\]
+obey
+\[
+ L_{j+1}(x)=xL_j(x)-j(j+R)L_{j-1}(x).
+\]
+Thus $L_k$ is the characteristic polynomial of the $k\times k$ real symmetric Jacobi matrix $J_{d,k}$ with zero diagonal and off-diagonal entries $\sqrt{j(j+R)}$, $1\le j<k$. Its roots $\lambda$ are real, simple, and symmetric. For every positive root put $\alpha=\lambda^2/4$. Then
+\begin{equation}\label{fr:rootproduct}
+ G_k(2u,R)=(2u)^k\prod_{\lambda>0}(1+\alpha/u^2).
+\end{equation}
+Empty products are one, and empty root maxima are zero. The elementary matrix norm bound gives, for $k\ge2$,
+\begin{equation}\label{fr:rootbound}
+ \max\alpha\le(k-1)(k-1+R).
+\end{equation}
+
+\begin{lemma}[A finite-mass arcsine mixture]\label{fr:measurelemma}
+If $k/d\to\kappa\ge0$, then the finite measures
+\[
+ \nu_{d,k}=\frac1d\sum_{L_k(\lambda)=0}\delta_{\lambda/d}
+\]
+converge weakly to the measure characterized by
+\begin{equation}\label{fr:measure}
+ \int f\,d\nu_\kappa
+ =\frac1\pi\int_0^\kappa\int_0^\pi
+ f\bigl(2\sqrt{x(x+4)}\cos\theta\bigr)\,d\theta\,dx.
+\end{equation}
+The measure has total mass $\kappa$. For each continuous $f$ on a common compact spectral interval, convergence to the right-hand side with $\kappa=k/d$ is uniform when $k/d$ ranges over a compact interval.
+\end{lemma}
+\begin{proof}
+The norm bound gives a common compact spectral interval whenever $k/d$ is bounded. Odd trace moments vanish. For a fixed even power $2p$, expand the diagonal entries of $(J_{d,k}/d)^{2p}$ as sums over nearest-neighbor returning paths. Away from the $O(p)$ boundary rows, there are $\binom{2p}{p}$ such paths. At a row with $j/d\to x$, every path product tends to $[x(x+4)]^p$. The convergence is uniform on compact $x$ intervals, because $\sqrt{x(x+4)}$ is continuous there. The boundary rows contribute $o(1)$ after dividing the trace by $d$. Riemann sums therefore give
+\[
+ \frac1d\operatorname{tr}(J_{d,k}/d)^{2p}
+ \longrightarrow\binom{2p}{p}\int_0^\kappa[x(x+4)]^p\,dx.
+\]
+These are exactly the moments of~\eqref{fr:measure}; the zeroth moment is $k/d\to\kappa$. Polynomial approximation on the common compact support proves weak convergence. The case $\kappa=0$ also follows directly from the vanishing total mass. Uniformity follows by the same estimates, or by extracting a convergent subsequence from any hypothetical sequence violating it.
+\end{proof}
+
+Lemma~\ref{fr:measurelemma} is an elementary specialization of the classical varying-recurrence zero-distribution theorem of Kuijlaars and Van Assche~\cite[Theorem 1.4]{kuijlaars}. The proof above is included so that no general zero-distribution theorem is required for the argument.
+
+\section{The exterior saddle and its regular branch}
+Define
+\begin{equation}\label{fr:Laurent}
+ D(v)=A(v)B(v),\qquad
+ A(v)=\prod_{j=1}^m(1+v/j^2),\qquad
+ B(v)=\prod_{\lambda>0}(1-\alpha/v).
+\end{equation}
+For $\rho>\max\alpha$, the value $D(\rho)$ is positive, and
+\begin{align}
+ \mu(\rho)&=\frac{\rho D'(\rho)}{D(\rho)}
+ =\sum_{j=1}^m\frac{\rho}{\rho+j^2}
+   +\sum_{\lambda>0}\frac{\alpha}{\rho-\alpha},
+ \label{fr:mean}\\
+ V(\rho)&=\frac{d\mu}{d\log\rho}=V_A-V_B,
+ \label{fr:curvaturefinite}\\
+ V_A&=\sum_{j=1}^m\frac{\rho j^2}{(\rho+j^2)^2},\qquad
+ V_B=\sum_{\lambda>0}\frac{\alpha\rho}{(\rho-\alpha)^2}.
+ \nonumber
+\end{align}
+Write $\rho=d^2y$. If $k/d\to\kappa$ and $y>\kappa(\kappa+4)$, the norm bound separates this radius from all roots. Lemma~\ref{fr:measurelemma} gives
+\begin{equation}\label{fr:meanlimit}
+ \frac{\mu(d^2y)}d\longrightarrow M(\kappa,y)
+ =\sqrt y\arctan\frac2{\sqrt y}
+ +\frac12\int_0^\kappa
+ \left(\sqrt{\frac y{y-x(x+4)}}-1\right)\,dx.
+\end{equation}
+The factor $1/2$ counts one root from each symmetric pair; a possible zero root contributes zero. The convergence, including derivatives in $y$, is uniform on compact subsets of the strict exterior region. Indeed all the rational test functions and their derivatives are uniformly bounded there.
+
+Put
+\begin{equation}\label{fr:J}
+ \mathcal J(\kappa,y)=\int_0^\kappa\frac{dx}{\sqrt{y-x(x+4)}}
+ =\arcsin\frac{\kappa+2}{\sqrt{y+4}}
+  -\arcsin\frac2{\sqrt{y+4}}.
+\end{equation}
+Since $h/d\to(1-\kappa)/2$, the limiting equation $\mu(\rho)=h$ becomes
+\begin{equation}\label{fr:saddleequation}
+ \sqrt y\left(\arctan\frac2{\sqrt y}
+       +\arcsin\frac{\kappa+2}{\sqrt{y+4}}\right)=1.
+\end{equation}
+Equivalently, $2\sqrt y\arctan(2/\sqrt y)+\sqrt y\,\mathcal J(\kappa,y)=1$.
+
+To describe the relevant branch explicitly, define
+\begin{align}
+ K(t)&=\frac{\sin t}{t}-2\cos t-2,
+ \label{fr:K}\\
+ F(t)&=(2t^2-1)\sin t+t\cos t,\qquad
+ D_0(t)=\cos t+2t\sin t.
+ \label{fr:FD}
+\end{align}
+Let $t_0$ be the unique nonzero solution of $\tan(t_0/2)=2t_0$ in $(0,\pi)$. The derivative of $\tan(t/2)-2t$ increases strictly on this interval, begins negative, and tends to infinity; this proves uniqueness. Evaluation at $3\pi/4$ gives $t_0>3\pi/4$. The earlier fixed-degree parameter satisfies $t_0=1/(2a_0)$, where $a_0\arctan(1/a_0)=1/4$.
+
+\begin{proposition}[The positive-curvature branch]\label{fr:branch}
+There is a unique $t_c\in(t_0,\pi)$ with $F(t_c)=0$. Set
+\[
+ \kappa_c=K(t_c).
+\]
+The function $K$ increases strictly from zero to $\kappa_c$ on $[t_0,t_c]$. For every $0\le\kappa<\kappa_c$, let $t=t(\kappa)$ be its inverse on this interval. Then
+\begin{equation}\label{fr:parametric}
+ y(\kappa)=\frac1{t(\kappa)^2}
+\end{equation}
+solves~\eqref{fr:saddleequation}, lies strictly outside the root support, and has limiting curvature
+\begin{equation}\label{fr:curvaturelimit}
+ yM_y(\kappa,y)=\frac{F(t)}{4tD_0(t)}>0.
+\end{equation}
+At $\kappa_c$ the curvature is zero while the root gap is still positive. No global uniqueness assertion for all exterior saddles is made.
+\end{proposition}
+\begin{proof}
+One has $K(t_0)=0$, $K'(t)=F(t)/t^2$, and
+\[
+ F(t_0)=\frac{t_0(4t_0^2-3)}{1+4t_0^2}>0,\qquad F(\pi)=-\pi.
+\]
+For $3\pi/4<t<\pi$,
+\[
+ F'(t)=t(3\sin t+2t\cos t)<0,
+\]
+because $\sin t\le-\cos t$ and $2t>3$. Thus $F$ has exactly one zero in $(t_0,\pi)$, proving the asserted monotonicity of $K$.
+
+On $[t_0,t_c]$, $D_0$ is positive: $D_0(t_0)=1$, its derivative $\sin t+2t\cos t$ is negative, and $F(t_c)=0$ gives $D_0(t_c)=\sin(t_c)/t_c>0$. Direct substitution into~\eqref{fr:K} gives the exact gap identity
+\begin{equation}\label{fr:gap}
+ \frac1{t^2}-K(t)(K(t)+4)
+ =\frac{D_0(t)^2}{t^2}>0.
+\end{equation}
+Furthermore, $t-\arctan(2t)$ is positive and less than $\pi/2$: it lies in $(0,\pi)$, and its cosine has the positive sign of $D_0(t)$. Therefore
+\[
+ \arcsin\frac{K(t)+2}{\sqrt{t^{-2}+4}}
+ =t-\arctan(2t),
+\]
+with the principal inverse-sine branch. This proves~\eqref{fr:saddleequation}.
+
+Finally set $E(\kappa,y)=2M(\kappa,y)+\kappa-1$. From~\eqref{fr:saddleequation},
+\[
+ E_\kappa(\kappa,y)=\frac{\sqrt y}{\sqrt{y-\kappa(\kappa+4)}}.
+\]
+Differentiate $E(K(t),t^{-2})=0$ and use~\eqref{fr:gap}. The result is
+\[
+ yM_y=\frac{K'(t)}{4\sqrt{y-\kappa(\kappa+4)}}
+      =\frac{F(t)}{4tD_0(t)}.
+\]
+It is positive before $t_c$ and zero there, whereas~\eqref{fr:gap} remains strictly positive at $t_c$.
+\end{proof}
+
+For orientation only, the implicit constants are approximately
+\[
+ t_0\approx2.78649815065118,\qquad
+ t_c\approx2.96463500776812,\qquad
+ \kappa_c\approx0.0281461097171248.
+\]
+These decimals are not used to prove the branch statements.
+
+\begin{lemma}[An explicit rational subinterval]\label{fr:rationalband}
+One has $\kappa_c>1/36$.
+\end{lemma}
+\begin{proof}
+At $x=74/25$, let
+\[
+ S_n(x)=\sum_{j=0}^n\frac{(-1)^jx^{2j+1}}{(2j+1)!},\qquad
+ C_n(x)=\sum_{j=0}^n\frac{(-1)^jx^{2j}}{(2j)!}.
+\]
+The alternating Taylor bounds give $S_5<\sin x<S_6$ and $C_5<\cos x<C_6$. Exact rational arithmetic gives
+\[
+ \frac{S_5(x)}x-2C_6(x)-2>\frac1{36},\qquad
+ (2x^2-1)S_5(x)+xC_5(x)>0.
+\]
+The inequalities can also be verified directly by clearing factorials and powers of $25$; an accompanying exact-rational script records both positive differences. The elementary bounds $31/10<\pi<22/7$ place $x$ in $(3\pi/4,\pi)$. Hence $K(x)>1/36$ and $F(x)>0$, so Proposition~\ref{fr:branch} gives $t_0<x<t_c$ and $\kappa_c>1/36$.
+\end{proof}
+
+\section{Uniform positive saddle coefficients}
+\begin{lemma}\label{fr:Gaussian}
+Fix a compact interval $I\subset[0,\kappa_c)$. For all sufficiently large $d$ and integers $k$ with $k/d\in I$, there is a solution $\rho$ of $\mu(\rho)=h$ in a neighborhood of $d^2y(k/d)$, unique in that neighborhood. Uniformly over these pairs,
+\begin{equation}\label{fr:finitesaddle}
+ \frac{\rho}{d^2}-y(k/d)\longrightarrow0,\qquad
+ \frac{V(\rho)}d-\frac{F(t(k/d))}{4t(k/d)D_0(t(k/d))}\longrightarrow0.
+\end{equation}
+Let $C_h=[v^h]D(v)$. Then
+\begin{equation}\label{fr:positivecoefficient}
+ C_h=\frac{D(\rho)\rho^{-h}}{\sqrt{2\pi V(\rho)}}(1+o(1))>0.
+\end{equation}
+For every fixed integer $j$,
+\begin{equation}\label{fr:coefficientratio}
+ \frac{[v^{h-j}]D(v)}{\rho^j C_h}\longrightarrow1
+\end{equation}
+uniformly on the same interval of ratios.
+\end{lemma}
+\begin{proof}
+The limiting root gap and limiting curvature have positive uniform lower bounds on $I$. The norm estimate~\eqref{fr:rootbound} and uniform convergence in~\eqref{fr:meanlimit}, including its derivative, therefore provide a common neighborhood of the branch on which the finite mean is strictly increasing and its values surround $h$. The intermediate value theorem gives the saddle and~\eqref{fr:finitesaddle}.
+
+Write $x_\lambda=\alpha/\rho$. For every real $\theta$ there is the exact bound
+\begin{equation}\label{fr:angular}
+ \left|\frac{D(\rho e^{i\theta})}{D(\rho)}\right|
+ \le\exp\bigl(-2(V_A-V_B)\sin^2(\theta/2)\bigr).
+\end{equation}
+Indeed, for an $A$ factor the squared normalized modulus is $1-4p(1-p)\sin^2(\theta/2)$, with $p=\rho/(\rho+j^2)$. For a $B$ factor it is
+\[
+ \left|\frac{1-x_\lambda e^{-i\theta}}{1-x_\lambda}\right|^2
+ =1+\frac{4x_\lambda\sin^2(\theta/2)}{(1-x_\lambda)^2}.
+\]
+Apply $\log(1+z)\le z$ to both products. This proves~\eqref{fr:angular}; if an $A$ factor vanishes, the desired bound follows immediately.
+
+The quantities $x_\lambda$ are uniformly bounded away from one. There are $O(d)$ factors, and every third logarithmic derivative near $\theta=0$ has a common bound after summation. Consequently
+\[
+ \log\frac{D(\rho e^{i\theta})}{D(\rho)}-ih\theta
+ =-\frac{V(\rho)}2\theta^2+O(d|\theta|^3)
+\]
+uniformly. On $|\theta|\le d^{-2/5}$ the remainder tends to zero; outside this arc,~\eqref{fr:angular} and $V(\rho)\ge c_I d$ give exponential decay. Cauchy's coefficient formula, valid for Laurent polynomials on every circle of positive radius, now gives~\eqref{fr:positivecoefficient} by the Gaussian integral. Inserting $e^{ij\theta}$ gives~\eqref{fr:coefficientratio}. The leading expression in~\eqref{fr:positivecoefficient} is positive, proving eventual positivity of $C_h$.
+\end{proof}

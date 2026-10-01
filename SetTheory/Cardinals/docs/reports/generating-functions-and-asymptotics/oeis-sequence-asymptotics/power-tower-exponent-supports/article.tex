@@ -1,0 +1,416 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=26mm]{geometry}
+\usepackage{lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Derivative Supports of x to the Power x to the Power a},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\ee}{\mathrm e}
+\title{Derivative Supports of $x^{x^a}$\\\large A common leading asymptotic for every fixed positive integer exponent}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For each fixed positive integer $a$, let $A_a(N)$ count the nonzero monomials in the fully expanded $N$th derivative of $x^{x^a}$. We prove $A_a(N)=N^2/2+o(N^2)$. An exact coefficient transformation gives positivity throughout the nonnegative power columns. In the remaining tail, circles in the coordinate $z=\tanh(t/2)$ and horizontal lines provide globally dominant saddles for every integer $a$. A factorwise angular inequality handles the additional imaginary numerator zeros, while a finite Jensen inequality handles the horizontal profiles. A convex-envelope argument proves complete contour coverage. The connected oscillatory regions have nontrivial phase curvature, so an integer-triangle estimate and compact exhaustion give density one of nonzero tail coefficients. We also classify every negative-column coefficient at depths one and two. Constants may depend on $a$; exact noncancellation at arbitrary depth and growing-exponent uniformity remain open.
+\end{abstract}
+
+\section{Statement and exact coefficient coordinates}
+For $a\in\mathbb Z_{\ge1}$, write
+\[
+ \frac{d^N}{dx^N}x^{x^a}=x^{x^a}
+ \sum_{j\in\mathbb Z,\,k\ge0}c_{a,N}(j,k)x^j(\log x)^k,
+\]
+with like monomials collected, and let $A_a(N)$ count the nonzero coefficients.
+
+\begin{theorem}\label{ga:main}
+For every fixed positive integer $a$,
+\begin{equation}\label{ga:mainlimit}
+ A_a(N)=\frac{N^2}{2}+o_a(N^2)\qquad(N\to\infty).
+\end{equation}
+More precisely, only $o_a(N^2)$ candidate coefficients cancel in the negative-column tail specified below. The theorem does not classify individual extra zeros, provide a global power-saving remainder, or assert uniformity when $a$ grows with $N$.
+\end{theorem}
+
+Taylor expansion at a fixed $x>0$ gives
+\begin{equation}\label{ga:taylor}
+ c_{a,N}(j,k)=\frac{N!}{k!d!}[w^N]
+ \bigl((1+w)^a-1\bigr)^k(1+w)^{ad}\log^d(1+w),
+ \qquad j=a(k+d)-N.
+\end{equation}
+Indeed the logarithm of the Taylor ratio splits into
+$x^a((1+w)^a-1)\log x+x^a(1+w)^a\log(1+w)$.
+Set
+\begin{gather}
+ q=-j-1,\qquad N=a(k+d)+q+1,\notag\\
+ M=N-k=(a-1)k+ad+q+1,\label{ga:coordinates}\\
+ H_{a;d,k,q}=\frac{M!}{d!}[w^M]
+ \left(\frac{(1+w)^a-1}{w}\right)^k
+ (1+w)^{ad}\log^d(1+w).\label{ga:H}
+\end{gather}
+Then $c_{a,N}(-q-1,k)=\binom Nk H_{a;d,k,q}$.
+
+Define the even polynomial
+\begin{equation}\label{ga:Ca}
+ C_a(z)=\frac{(1+z)^a-(1-z)^a}{2az}
+ =\sum_{m\ge0}\frac1a\binom a{2m+1}z^{2m}.
+\end{equation}
+It has positive coefficients on its even support and constant term one. The two changes of variable $w=\ee^t-1$ and $z=\tanh(t/2)$ yield the exact identity
+\begin{equation}\label{ga:tanh}
+ H_{a;d,k,q}=\frac{M!}{d!}\,a^k2^{-(a-1)(k+d)-q-1}
+ [z^M]C_a(z)^k(\operatorname{arctanh}z)^d
+          (1+z)^{ad}(1-z)^q.
+\end{equation}
+This algebraic identity is valid also for negative $q$ whenever the original indices are admissible. Its powers include the transformed Cauchy differential.
+
+\begin{proposition}[The exact positive bulk]\label{ga:bulk}
+Every candidate with $j\ge0$ is strictly positive. The $j=-1$ boundary is strictly positive when $d\ge1$ and structurally zero when $d=0$.
+\end{proposition}
+\begin{proof}
+For $j\ge0$, one has $q\le-1$. Every factor in~\eqref{ga:tanh} has nonnegative coefficients, and $(1-z)^q$ has strictly positive coefficients at every degree. Since $M=N-k\ge d$, the extracted coefficient is positive. At $q=0$, $d\ge1$, the series $(\operatorname{arctanh}z)^d$ supplies every degree of its parity above $d$, and $(1+z)^{ad}$ supplies both parities. At $d=0$, $q=0$, the index $M=(a-1)k+1$ exceeds the degree of $C_a^k$, so the coefficient is zero.
+\end{proof}
+
+The recurrence obtained by differentiating once preserves
+\[
+ \ell=k+d=(N+j)/a\in\mathbb Z,\qquad 0\le k\le\ell\le N.
+\]
+Differentiation leaves $\ell$ fixed and leaves $k$ fixed or lowers it by one; multiplication by $x^{a-1}(a\log x+1)$ raises $\ell$ by one and raises $k$ by zero or one. Thus $A_a(N)\le(N+1)(N+2)/2$. The positive nonnegative columns contain
+\begin{equation}\label{ga:bulkcount}
+ \sum_{\ell=\lceil N/a\rceil}^N(\ell+1)
+ =\left(\frac12-\frac1{2a^2}\right)N^2+O_a(N).
+\end{equation}
+The outside tail $d\ge1$, $k\ge0$, $q\ge1$ has
+\begin{equation}\label{ga:tailcount}
+ \sum_{\ell=1}^{\lfloor(N-2)/a\rfloor}\ell
+ =\frac{N^2}{2a^2}+O_a(N)
+\end{equation}
+candidates. We prove density one of nonzero coefficients there.
+
+\section{A meromorphic action}
+For now let $d\ge1$, $\kappa=k/d>0$, $\eta=q/d>0$, and $\eta\ne a$. Put
+\[
+ r=a+\eta,\qquad e=\frac{|a-\eta|}{2},\qquad h=\min(a,\eta)>0.
+\]
+Here $e$ denotes a tilt magnitude and $\ee$ denotes Euler's number. Formula~\eqref{ga:H} becomes
+\begin{equation}\label{ga:contour}
+ H_{a;d,k,q}=\frac{M!}{d!}\frac1{2\pi i}
+ \oint\frac{\exp(dL_a(t))}{4\sinh^2(t/2)}\,dt,
+\end{equation}
+where
+\begin{align}
+ L_a(t)={}&\log t+\frac{a-\eta}{2}t+\kappa\log\sinh(at/2)
+ -(a\kappa+a+\eta)\log\sinh(t/2)\notag\\
+ &-\bigl((a-1)\kappa+a+\eta\bigr)\log2\label{ga:action}\\
+ ={}&\log t+at+\kappa\log(\ee^{at}-1)
+              -(a\kappa+a+\eta)\log(\ee^t-1).\notag
+\end{align}
+The integer powers make the full integrand single-valued. Its nonzero poles are at $2\pi i\mathbb Z$; numerator zeros are zeros of the integrand, not singularities. The residual differential under $z=\tanh(t/2)$ is exactly $dz/(2z^2)$, proving~\eqref{ga:tanh}.
+
+Reflect the real coordinate if $\eta<a$, so the favored side is left. The reflected modulus is obtained by replacing $(a-\eta)t/2$ by $-et$; call its action $L_c$. For $t=-s-iy$, $s>0$, $0<y<\pi$, define
+\begin{equation}\label{ga:UV}
+ U(s,y)=\frac{s\coth s-y\cot y}{s^2+y^2},\qquad
+ V(s)=\frac r2-e\coth s.
+\end{equation}
+The partial fractions of $\coth$ and $\cot$~\cite{dlmf} give
+\[
+ U(s,y)=2\sum_{n\ge1}
+ \frac{(n\pi)^2}{(s^2+(n\pi)^2)((n\pi)^2-y^2)}.
+\]
+Consequently $U_s<0$, $U_y>0$, and $V'>0$.
+
+\section{A uniform angular-selection mechanism}
+\subsection{Tanh circles, including circles through numerator zeros}
+The roots of $C_a$ are purely imaginary:
+\begin{equation}\label{ga:factorization}
+ C_a(z)=\prod_{j=1}^{\lfloor(a-1)/2\rfloor}
+       (1+z^2/\lambda_j),\qquad
+ \lambda_j=\tan^2(\pi j/a).
+\end{equation}
+An empty product equals one. On $|z|=R<1$, let $\alpha=(1-R^2)/(1+R^2)$. In the favored quadrant the image in the $t$ plane satisfies
+\[
+ \cos y=\alpha\cosh s,\qquad y'=-\tanh s\cot y<0.
+\]
+Write $C=\cosh s$, $v_j=R^2/\lambda_j$. The exact geometry yields
+\begin{gather}
+ \cos^2(\arg z)=\frac{1-C^{-2}}{1-\alpha^2},\notag\\
+ |1+z^2/\lambda_j|^2=A_j-B_j/C^2,\quad
+ B_j=\frac{4v_j}{1-\alpha^2}>0,\quad A_j=(1-v_j)^2+B_j\ge B_j.\label{ga:factorcircle}
+\end{gather}
+Hence
+\[
+ \frac d{ds}\log|1+z^2/\lambda_j|
+ =\tanh s\,\frac{B_j}{A_jC^2-B_j}.
+\]
+The other $\kappa$-dependent power of $|z|$ is constant on the circle. Direct differentiation of the full action gives
+\begin{equation}\label{ga:circleprofile}
+ \frac d{ds}\operatorname{Re}L_c(-s-iy(s))
+ =\tanh s\left[U(s,y(s))-V(s)
+       +\kappa\sum_j\frac{B_j}{A_jC^2-B_j}\right].
+\end{equation}
+Every term in the bracket decreases strictly in $s$: $U_s+U_y y'<0$, $-V'<0$, and each rational summand decreases. The derivative is positive near the imaginary endpoint. If $R^2=\lambda_j$, the logarithm tends to $-\infty$ at that endpoint and its derivative diverges positively; the maximum remains away from the zero. A zero-weight factor when $\kappa=0$ is simply omitted.
+
+It follows that each favored quadrant has one maximum, either a strict interior maximum or its real endpoint. Reflection to the other half-contour lowers the real action by $2e|\operatorname{Re}t|$. In particular every off-axis saddle of height less than $\pi/2$ is globally selected on its tanh circle, with nonzero angular curvature. This includes $a\ge5$, when some numerator zeros lie inside the unit disk.
+
+\subsection{Horizontal lines and a finite Jensen inequality}
+Fix $\pi/2\le y\le\pi$ and write $C=\cosh s$, $S=\sinh s$, $c=\cos y\le0$ and $D=s^2+y^2$. For $u(s,y)=\operatorname{Re}L_c(-s-iy)$, the multiplication formula for $\coth$ gives
+\begin{align}
+ u_s\frac{C-c}{S}&=B_1(s)+eB_2(s)-\frac r2+\kappa W_a(C,c),\label{ga:horizontalprofile}\\
+ B_1&=\frac{s(C-c)}{DS},\qquad B_2=\frac{C-c}{S},\notag\\
+ W_a(C,c)&=\frac12\sum_{j=0}^{a-1}\frac{c_j-c}{C-c_j},\qquad
+ c_j=\cos(y+2\pi j/a).\notag
+\end{align}
+Both $B_1$ and $B_2$ strictly decrease, because
+\[
+ B_2'=(C c-1)/S^2<0,\qquad
+ \frac1{B_1}=2\sum_{n\in\mathbb Z}
+ \frac{s^2+y^2}{s^2+(y+2\pi n)^2}.
+\]
+All summands in the second identity are nondecreasing and some strictly increase; the differentiated series converges locally uniformly.
+
+For $a\ge2$, the numbers $c_j$ average to zero. With
+\[
+ g(x)=\frac{x-c}{(C-x)^2},\qquad
+ g''(x)=\frac{4C+2x-6c}{(C-x)^4}>0\quad(-1\le x\le1),
+\]
+Jensen's inequality gives $\sum_jg(c_j)\ge ag(0)=-ac/C^2\ge0$. Thus $W_a$ is nonincreasing in $C$. Equality throughout is possible at $a=2$, $y=\pi/2$, but the other terms still decrease strictly. For $a=1$, $W_a=0$ identically, so the same conclusion holds.
+
+The bracket in~\eqref{ga:horizontalprofile} runs from $+\infty$ to $-h$. It therefore gives a unique favored-side maximum $s(y)>0$, with $u_{ss}<0$. Reflection strictly suppresses the opposite side. The resulting horizontal envelope $J(y)=u(s(y),y)$ satisfies
+\begin{equation}\label{ga:horizontalconvex}
+ J''=u_{yy}-u_{sy}^2/u_{ss}
+     =-u_{ss}-u_{sy}^2/u_{ss}>0,
+\end{equation}
+by harmonicity at the maximum. At $y=\pi$ all the hyperbolic logarithmic factors have zero $y$ derivative for every integer $a$, and therefore
+\begin{equation}\label{ga:endpoint}
+ J'(\pi)=\frac{\pi}{s(\pi)^2+\pi^2}>0.
+\end{equation}
+The horizontal tails satisfy $\operatorname{Re}L_c\le\log(1+s)-hs+O(1)$. Closing the strip encloses only the original pole at zero, and the vertical contributions vanish. Thus every high favored saddle is globally selected. These assertions are locally uniform for $\kappa>0$, $\eta>0$, $\eta\ne a$.
+
+\section{Complete coverage from two convex envelopes}
+Let $\mathcal M(\xi)$ be the maximum of $\operatorname{Re}L_a$ on $|z|=\ee^\xi$, $\xi<0$. Up to a real additive constant, the modulus is
+\begin{equation}\label{ga:subharmonic}
+ \log|\operatorname{arctanh}z|+\kappa\log|C_a(z)|
+ +a\log|1+z|+\eta\log|1-z|-\nu\log|z|,
+ \quad \nu=(a-1)\kappa+a+\eta.
+\end{equation}
+It is subharmonic on every annulus. Comparing it with a harmonic affine function of $\log|z|$ whose boundary values are the two boundary maxima proves that $\mathcal M$ is convex in $\xi$. Its slope near $-\infty$ is $1-\nu<0$.
+
+The unique favored maximum in~\eqref{ga:circleprofile} makes the envelope differentiable, including a transition between a real endpoint and a conjugate pair. Conjugate maxima have the same radial derivative. At an interior complex maximum, harmonicity and its strict angular curvature give strictly positive envelope second derivative. The same holds at a nondegenerate real maximum. A flat interval with $\mathcal M'=0$ is impossible: an interior maximum would have positive second derivative, while an interval of real stationary maxima would force $L_a'$ to vanish identically, contrary to its pole at zero. Therefore a stationary minimum, if present, is unique.
+
+As $\xi\uparrow0$, the mapped circles tend locally to $y=\pi/2$. Their maxima remain in a bounded $s$ interval: the uniform estimate $\log(1+s)-hs+O(1)$ makes large $s$ unfavorable, whereas a fixed interior point has finite action. The maxima converge to the unique horizontal maximum $s(\pi/2)$. Since $dt/d\xi=\sinh t=-i\cosh s$ at the joining line,
+\begin{equation}\label{ga:join}
+ \mathcal M'(0-)=\cosh(s(\pi/2))J'(\pi/2).
+\end{equation}
+If this value is positive, convexity and the negative initial slope give a stationary circle with $R<1$. If it is negative,~\eqref{ga:horizontalconvex} and~\eqref{ga:endpoint} give a stationary horizontal line with $\pi/2<y<\pi$. If it is zero, the joining contour itself selects the saddle. The selected critical point is unique up to conjugation.
+
+Strict global gaps and nonzero curvature persist under small parameter changes. At the artificial joining height the contour can be perturbed locally, so it causes no genuine singularity of the selected simple saddle. We have proved complete selection of one real saddle or one complex conjugate pair, except for possible degenerate real saddles. This argument uses exact Cauchy cycles throughout.
+
+\section{The real boundary and connected oscillatory regions}
+Use the original coordinate and put
+\[
+ A(t)=\frac{\ee^t}{\ee^t-1},\quad
+ B(t)=\frac{a\ee^{at}}{\ee^{at}-1}-aA(t),\quad
+ b(t)=\frac{B(t)}{A(t)}=-a\frac{\ee^{(a-1)t}-1}{\ee^{at}-1}.
+\]
+The positive real saddle equation is $\eta=E(T;\kappa)$, where
+\begin{equation}\label{ga:realmap}
+ E(T;\kappa)=(a+1/T)(1-\ee^{-T})-a+\kappa b(T).
+\end{equation}
+For $a\ge2$, it tends to $1-a-(a-1)\kappa<0$ as $T\downarrow0$, is positive for sufficiently large $T$, and tends to zero at infinity. Also $b(T)<0$ and
+\[
+ E(T;\kappa)<\frac{1-\ee^{-T}}T<1.
+\]
+Thus
+\begin{equation}\label{ga:realboundary}
+ M_a(\kappa)=\max_{T>0}E(T;\kappa)
+\end{equation}
+is positive, less than one, continuous, and nonincreasing. For continuity, on each bounded $\kappa$ interval a positive common lower bound for the maximum and the bound $E\le1/T$ confine all maximizers to a common compact interval.
+
+When $\eta<M_a(\kappa)$, the first simple real crossing has $E_T>0$, so $L_{tt}=AE_T>0$ and its tanh angular curvature is positive. The angular-selection lemma makes it the selected global real maximum. When $\eta>M_a(\kappa)$, there is no positive real saddle. Negative real saddles are impossible at $\eta>0$: for $t=-s$,
+\[
+ E(-s;\kappa)=\frac{\ee^s-1}s-a\ee^s+\kappa b(-s)<0.
+\]
+Consequently the selected saddle is complex in the epigraph $\eta>M_a(\kappa)$. The two regions separated by $\eta=a$ are connected: below $a$, move through a horizontal level in $(1,a)$, and above $a$ use the whole half-plane.
+
+For $a\ge2$ the real-degenerate parameter set has area zero. At a real $t\ne0$, the two equations $L_t=L_{tt}=0$ form a nonsingular affine system for $(\kappa,\eta)$, with determinant, up to sign,
+\begin{equation}\label{ga:determinant}
+ A(t)^2b'(t)>0.
+\end{equation}
+Indeed, for $x=\ee^t>0$,
+\[
+ \frac{x^{a-1}-1}{x^a-1}
+ =1-\frac{x^{a-1}}{1+x+\cdots+x^{a-1}},
+\]
+and the final fraction strictly increases. The degenerate set lies in the image of a real-analytic map of one variable, hence is a countable union of compact curve images and has planar measure zero. Nongeneric real crossings cannot create another open complex region: neighboring simple first crossings are selected real, whereas a selected complex saddle would persist on an open neighborhood.
+
+\paragraph{The endpoint $a=1$.}
+Here $b=0$ and $E$ is independent of $\kappa$. Writing $\rho=1+\eta$, its real equation is $(1+1/T)(1-\ee^{-T})=\rho$. Its unique turning point solves $\ee^T=1+T+T^2$, as follows directly by differentiating. The derivative changes sign once, so the real-fold set is a single line $\eta=M_1\in(0,1)$. The same first-real-root and complex-epigraph description follows. Both complex regions separated by $\eta=1$ are connected. Thus the zero-area and connectedness conclusions hold for this endpoint as well.
+
+\section{Uniform local asymptotics and a nonzero curvature anchor}
+Return to original coordinates. Let $t_s$ be the selected lower complex saddle and set $S=L_a(t_s)$. On a tanh circle define
+\begin{equation}\label{ga:prefactors}
+ z_s=\tanh(t_s/2),\quad C_s=\sinh^2(t_s)L_{tt}(t_s),\quad
+ P_c=\frac1{2z_s\sqrt{C_s}}.
+\end{equation}
+The residual $dz/(2z^2)$ explains the factor $1/(2z_s)$. On a horizontal contour the equivalent lower-saddle factor is
+\[
+ P_h=-\frac{i}{4\sinh^2(t_s/2)\sqrt{-L_{tt}(t_s)}}.
+\]
+Square-root branches are fixed by the oriented Gaussian contour; the horizontal lower line runs left to right.
+
+\begin{proposition}\label{ga:cosine}
+On every compact simple complex-saddle patch,
+\begin{equation}\label{ga:cosinelaw}
+ H_{a;d,k,q}=\frac{2M!}{d!}\frac{\ee^{d\operatorname{Re}S}|P|}{\sqrt{2\pi d}}
+ \left\{\cos\bigl(d\operatorname{Im}S+\arg P\bigr)+O_a(d^{-1})\right\}.
+\end{equation}
+The error is additive and compact-uniform, including at zeros of the cosine. A selected real saddle has a single positive leading contribution and is eventually nonzero on each compact simple real-saddle patch.
+\end{proposition}
+\begin{proof}
+The preceding sections supply an exact contour with a strict global gap and nonzero Gaussian curvature. In a local saddle coordinate, Taylor expansion under the $d^{-1/2}$ rescaling gives the Gaussian integral; odd terms cancel and the first remaining relative error is $O(d^{-1})$ for one saddle. The complementary contour is exponentially smaller. The conjugate contributions give~\eqref{ga:cosinelaw}, without division by its cosine. At a positive real saddle all leading factors are positive.
+\end{proof}
+
+For a fixed-$N$ row with $d$ fixed, $\eta=(N-1)/d-a\kappa-a$. Set $D=\partial_\kappa-a\partial_\eta$. Affine parameter dependence and stationarity yield
+\begin{equation}\label{ga:curvature}
+ DS=\log(\ee^{at_s}-1),\qquad
+ D^2S=-\frac{[a\ee^{at_s}/(\ee^{at_s}-1)]^2}{L_{tt}(t_s)}.
+\end{equation}
+This phase curvature is not identically zero on either connected complex region. At $\kappa=0$, $\eta=a$, the lower saddle is $t=-iT$, with
+\begin{equation}\label{ga:anchor}
+ \tan(T/2)=aT,\quad \pi/2<T<\pi,\qquad
+ L_{tt}=\frac{2a-1-a^2T^2}{2aT^2}<0.
+\end{equation}
+Its implicit $\eta$ derivative has real part $1/(2L_{tt})<0$, identifying both favored continuations. For $a\ge2$, at $T_0=\pi(1-1/a)$ one has
+\[
+ \tan(T_0/2)=\cot(\pi/(2a))<2a/\pi<aT_0.
+\]
+Strict monotonicity of $\tan(T/2)/T$ implies $T>T_0$. Hence $\delta=a(\pi-T)/2\in(0,\pi/2)$, and
+\[
+ \cot(aT/2)=\begin{cases}-\cot\delta,&a\text{ even},\\
+                         \tan\delta,&a\text{ odd}.
+          \end{cases}
+\]
+Both values are finite and nonzero. For $a=1$, $\cot(T/2)=1/T>0$ directly. Therefore
+\begin{equation}\label{ga:nonzeroanchor}
+ \operatorname{Im}D^2S=-\frac{a^2\cot(aT/2)}{2L_{tt}}\ne0.
+\end{equation}
+The anchor also excludes a numerator zero at $t=-iT$, so it persists for small positive $\kappa$. Connectedness and real analyticity now show that the curvature-zero set has area zero on both complex regions. Logarithm branches add only affine parameter terms and do not change this curvature.
+
+\section{Integer points and full tail density}
+We state the elementary lattice estimate with its proof.
+\begin{lemma}\label{ga:lattice}
+Let $f\in C^2(J)$, where $J$ has length $O(d)$, and suppose $f''$ has one sign with $m/d\le|f''|\le M/d$. For fixed $A,m,M>0$, only $O(d^{2/3})$ integers $k\in J$ satisfy $\operatorname{dist}(f(k),\mathbb Z)\le A/d$.
+\end{lemma}
+\begin{proof}
+Split $J$ into blocks of length $H=c d^{1/3}$. Round candidate values to integers within $A/d$. The integer determinant of any three rounded points in a block has absolute value at most $MH^3/(2d)+4AH/d<1$ for small fixed $c$ and large $d$, so it is zero. All candidates in the block are collinear. After changing sign, assume $f''\ge m/d$. For a middle candidate $x_i$ between the extreme candidates $x_1,x_n$, the chord inequality gives
+\[
+ \frac m{2d}(x_i-x_1)(x_n-x_i)\le\frac{2A}d.
+\]
+Integer spacing implies $\lfloor(n-1)^2/4\rfloor\le4A/m$, hence $n\le2+4\sqrt{A/m}$. Each block contains only a constant number, and there are $O(d^{2/3})$ blocks.
+\end{proof}
+
+On a compact complex patch where $|\operatorname{Im}D^2S|$ is bounded below, an exact zero in~\eqref{ga:cosinelaw} satisfies
+\[
+ \operatorname{dist}\!\left(
+ \frac{d\operatorname{Im}S+\arg P}{\pi}-\frac12,\mathbb Z\right)
+ \le\frac Cd.
+\]
+The phase second derivative with respect to integer $k$, at fixed $d,N$, is
+\[
+ \frac{\operatorname{Im}D^2S}{\pi d}+O(d^{-2}).
+\]
+Lemma~\ref{ga:lattice} gives $O(d^{2/3})$ zero cells per row and $O(N^{5/3})$ on each such compact patch. Real-saddle patches contain no zeros for sufficiently large $d$.
+
+For exhaustion, first restrict to compact physical rectangles bounded away from $\kappa=0$ and $\eta=0$, and remove a narrow neighborhood of $\eta=a$. Every positive real saddle there has $T\le1/\eta$ and is bounded away from zero. Thus its real-degenerate locus lies in a compact analytic-curve image. Remove a small-area neighborhood of this locus before taking compact analytic exceptional-set covers for the phase curvature. The remaining compact sets admit finite simple-saddle covers and the preceding bound. A finite union of boxes of arbitrarily small area covers the omitted sets; its lattice count is its scaled area plus $O(N)$. Taking $N\to\infty$ first and the removed area to zero afterward proves zero density on every compact physical rectangle.
+
+The exact ratio-to-lattice map is
+\[
+ \left(\frac d{N-1},\frac k{N-1}\right)
+ =\left(\frac1{a(\kappa+1)+\eta},
+        \frac\kappa{a(\kappa+1)+\eta}\right),
+\]
+with Jacobian $[a(\kappa+1)+\eta]^{-3}$. Its full integral is
+\begin{equation}\label{ga:area}
+ \int_0^\infty\int_0^\infty
+ \frac{d\eta\,d\kappa}{[a(\kappa+1)+\eta]^3}
+ =\frac1{2a^2}.
+\end{equation}
+This equals the leading candidate area in~\eqref{ga:tailcount}. Compact exhaustion therefore leaves an arbitrarily small normalized number of omitted candidates. The whole tail has only $o_a(N^2)$ zeros. Adding~\eqref{ga:bulkcount} and using the candidate upper bound proves Theorem~\ref{ga:main}.
+
+\section{An elementary exact count for generic real parameters}
+The integer-exponent theorem contrasts with a simple algebraic genericity statement. Allow a real parameter $\alpha\ne0$ and write
+\[
+ \frac{d^N}{dx^N}x^{x^\alpha}
+ =x^{x^\alpha}\sum_{\ell,k}p_{N,\ell,k}(\alpha)
+                 x^{\alpha\ell-N}(\log x)^k.
+\]
+Differentiation gives the polynomial recurrence
+\begin{align}\label{ga:parameterrecurrence}
+ p_{N+1,\ell,k}(\alpha)={}&(\alpha\ell-N)p_{N,\ell,k}(\alpha)
+ +(k+1)p_{N,\ell,k+1}(\alpha)\notag\\
+ &+p_{N,\ell-1,k}(\alpha)
+ +\alpha p_{N,\ell-1,k-1}(\alpha),
+\end{align}
+starting from $p_{0,0,0}=1$ and with out-of-range entries zero. Thus every coefficient belongs to $\mathbb Z[\alpha]$. For $N\ge1$, the potential cells are $1\le\ell\le N$, $0\le k\le\ell$. None of these coefficient polynomials is identically zero: choose an integer $a>N$, for which every such cell lies in the strictly positive bulk of Proposition~\ref{ga:bulk}.
+
+\begin{corollary}\label{ga:generic}
+There is a countable set $E$ of real algebraic numbers such that every real $\alpha\notin E$ has, for every $N\ge1$, exactly
+\[
+ \frac{N(N+3)}2
+\]
+nonzero derivative monomials. In particular this exact count holds for every transcendental real $\alpha$.
+\end{corollary}
+\begin{proof}
+Take $E$ to contain zero and all roots of the nonzero integer polynomials $p_{N,\ell,k}$. It is countable and algebraic. For $\alpha\ne0$, distinct $(\ell,k)$ give distinct monomials: after $x=\ee^t$, finite sums of the functions $\ee^{(\alpha\ell-N)t}t^k$ with distinct exponents are linearly independent. All candidate coefficients are nonzero outside $E$, and their number is $\sum_{\ell=1}^N(\ell+1)=N(N+3)/2$.
+\end{proof}
+This corollary does not classify the exceptional algebraic parameters. Such exceptions occur even at order two, where $p_{2,1,0}(\alpha)=2\alpha-1$ and $p_{2,1,1}(\alpha)=\alpha(\alpha-1)$. Positive noninteger algebraic parameters therefore remain a meaningful separate frontier.
+
+\section{An exact classification at the first two depths}
+The branch cut of the original coefficient formula gives an additional exact result. For $d\ge1$, $k,q\ge0$, set
+\[
+ R_a(x)=x^a-(-1)^a,\qquad P_d(\tau)=\operatorname{Im}(\tau+i\pi)^d.
+\]
+Deforming the coefficient contour to $w=-1-x$ is justified by its $O(w^{-q-2}\log^d w)$ decay and integrability at the branch endpoint. Folding $x\leftrightarrow1/x$ yields
+\begin{align}
+ c_{a,N}(-q-1,k)
+ ={}&\frac{(-1)^qN!}{\pi k!d!}\int_1^\infty
+ \frac{R_a(x)^kP_d(\log x)}{(1+x)^{N+1}}\notag\\
+ &\hspace{17mm}\cdot\left[x^{ad}+(-1)^{(a-1)k+d-1}x^q\right]dx.
+ \label{ga:folded}
+\end{align}
+The signs follow from $R_a(1/x)=(-1)^{a-1}x^{-a}R_a(x)$ and $P_d(-\tau)=(-1)^{d-1}P_d(\tau)$. In particular the reflection line is $q=ad$, with a forced zero when $(a-1)k+d$ is even.
+
+\begin{theorem}\label{ga:depthtwo}
+For every integer $a\ge1$, all $k,q\ge0$, and $d\in\{1,2\}$:
+\begin{itemize}
+\item if $(a-1)k+d$ is odd, the coefficient is nonzero with sign $(-1)^q$;
+\item if $(a-1)k+d$ is even, it vanishes exactly at $q=ad$, and otherwise has sign $(-1)^q\operatorname{sgn}(ad-q)$.
+\end{itemize}
+\end{theorem}
+\begin{proof}
+For $x>1$, $R_a(x)>0$. Also $P_1(\log x)=\pi>0$ and $P_2(\log x)=2\pi\log x>0$. The remaining factor in~\eqref{ga:folded} is either a strictly positive sum or a difference of the fixed strict sign stated in the theorem.
+\end{proof}
+
+\clearpage\section{Source position and verification}
+Question 8 of the inspected ProveIt source~\cite{source} explicitly asks for extension to $x^{x^r}$, $r\ge3$, and cautions that the coefficient generating function and symmetry center must be rederived. This paper supplies both and proves the leading-support theorem for every fixed positive integer exponent. For $a=1$ and $a=2$, the live OEIS entries~\cite{a293239,a290268} concern the same derivative-count convention; the exact coefficient triangles and their identities have classical antecedents~\cite{jeong}. No claim of exhaustive worldwide priority is made.
+
+The standard-library verifier \texttt{verify\_general\_coefficients.py} checks 631 exact identities for $a=1,\ldots,8$, including 104 zero cases, 187 strictly positive bulk cases, and 252 depth-one/two sign cases. The output is recorded in \texttt{general\_coefficient\_checks.json}. These finite checks supplement the analytic proof; they do not replace its global contour selection or establish exact noncancellation at arbitrary depth.
+
+The proof is conventional mathematics, not a proof-assistant formalization or an externally refereed publication. Its asymptotic constants and thresholds may depend on the fixed exponent. The exact support formula for general $a$, a full classification of deeper cancellations, and any theorem with $a$ growing with $N$ remain separate questions. Corollary~\ref{ga:generic} settles the generic real parameter by an elementary polynomial argument, but it does not settle the exceptional noninteger algebraic parameters.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+V. Reshetnikov, repository owner, \emph{Term counts in the derivatives of power towers}, ProveIt research report, Part II, depth-coordinate Question 8. File commit \texttt{ca81647a9f67}, inspected 1 October 2026.\par
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ca81647a9f679e96d49ffdbc54b0c0ab13d10a36/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts/article.tex}{Pinned source: power-tower-derivative-term-counts/article.tex}.
+\bibitem{a293239}
+V. Reshetnikov and contributors, \emph{A293239: Number of terms in the fully expanded $n$th derivative of $x^x$}, OEIS. \url{https://oeis.org/A293239}.
+\bibitem{a290268}
+V. Reshetnikov and contributors, \emph{A290268: Number of terms in the fully expanded $n$th derivative of $x^{x^2}$}, OEIS. \url{https://oeis.org/A290268}.
+\bibitem{jeong}
+S. Jeong, \emph{On a Question of Lehmer concerning the Comtet Numbers}, arXiv:2607.26613v1, 2026. \url{https://arxiv.org/html/2607.26613v1}.
+\bibitem{dlmf}
+F. W. J. Olver et al., eds., \emph{NIST Digital Library of Mathematical Functions}, equations 4.22.3 and 4.36.3. \url{https://dlmf.nist.gov/4.22.E3}; \url{https://dlmf.nist.gov/4.36.E3}.
+\end{thebibliography}
+\end{document}
