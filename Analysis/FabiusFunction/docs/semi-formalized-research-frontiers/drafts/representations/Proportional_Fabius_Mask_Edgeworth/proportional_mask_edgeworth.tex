@@ -1,0 +1,308 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,booktabs}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={A Uniform Second-Order Profile for Proportional Fabius Masks},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Var}{\operatorname{Var}}\newcommand{\Law}{\operatorname{Law}}\newcommand{\KL}{\operatorname{KL}}
+\newcommand{\ind}{\mathbf1}\newcommand{\dd}{\,\mathrm d}\newcommand{\ph}{\varphi}
+\title{A Uniform Second-Order Profile\\for Proportional Fabius Masks}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+The repository already proves a Gaussian variance-fraction limit for arbitrary observation masks in conditioned uniform random series. We answer its quantitative and conditional Edgeworth questions in the geometric proportional regime. Uniformly over all masks whose hidden and observed bulk counts are both proportional to $n$, we give a total-variation expansion through order $1/n$ with an $O(n^{-3/2})$ remainder. At this order mask geometry enters only through the hidden and observed variance defects. Equivalently, the correction is universal after using the exact variance fraction. For the two canonical early-hidden and late-hidden masks, this gives an explicit positive phase-dependent overlap difference of order $1/n$. The proof uses an exact exponential-slack identity and a uniformly controlled signed-Gamma convolution. Forward relative entropy and positive-order R\'enyi limits are recorded with their proper scope; reverse relative entropy is infinite at finite $n$ and does not approach its Gaussian counterpart.
+\end{abstract}
+
+\section{Source question, model, and result}
+\emph{Sharp Conditioning Laws for Uniform Random Series} already proves the Gaussian binary limit, its total-variation profile, and its forward relative-entropy limit for arbitrary deterministic masks and general positive summable weights \cite{Repository}. Its questions \texttt{q:rates} and \texttt{q:edgeworth} ask for uniform errors and phase-sensitive conditional expansions. The contribution here is the explicit correction and uniform remainder in the geometric proportional regime. Exponential tilting, Gibbs conditioning, and Edgeworth methods are classical; see, for example, \cite{DZ}. No general new Edgeworth principle or worldwide priority claim is made.
+
+Fix $q\in(0,1)$ and $\rho>0$. Under $Q_n$, let the coordinates be independent with densities
+\begin{equation}\label{eq:coordinates}
+ \frac{e^{-x}}{1-e^{-a_j}}\ind_{(0,a_j)}(x),
+ \qquad a_j=\rho q^{j-n-1},\quad j\ge1.
+\end{equation}
+Write $S=\sum_jX_j$ and $\mu=\E_{Q_n}S$. Let $P_n$ be the original uniform product on these caps conditioned by $S\le\mu$. For an arbitrary hidden mask $H$, let $O=\mathbb N\setminus H$ be the observed mask and set
+\[
+ h=|H\cap\{1,\ldots,n\}|,\quad k=n-h,\quad
+ \eta=h/n,\quad\alpha=1-\eta.
+\]
+Membership of the entire infinite tail is arbitrary. All uniform statements below assume
+\begin{equation}\label{eq:interior}
+ \delta\le\eta\le1-\delta
+\end{equation}
+for a fixed $0<\delta<1/2$. Constants may depend on $q,\rho,\delta$ but not on the mask or $n$.
+
+Define the exact variance defects
+\[
+ v_H=\Var_Q(S_H)-h,\qquad v_O=\Var_Q(S_O)-k,
+ \qquad v_T=v_H+v_O.
+\]
+They are uniformly bounded; $v_T$ is independent of the mask. Let $\ph,\Phi$ be the standard normal density and CDF, and put
+\begin{equation}\label{eq:profiles}
+ c=c(\eta)=\sqrt{\frac{-\eta\log\eta}{1-\eta}},\quad
+ \mathcal V(\eta)=2\{\Phi(c/\sqrt\eta)-\Phi(c)\},\quad
+ \mathcal U(\eta)=\frac{\ph(c)c(2c^4-c^2-3\eta\alpha)}{18\eta^2}.
+\end{equation}
+
+\begin{theorem}[Uniform second-order TV profile]\label{thm:main}
+Uniformly over all masks satisfying \eqref{eq:interior},
+\begin{equation}\label{eq:main}
+ \TV((P_n)_O,(Q_n)_O)
+ =\mathcal V(\eta)+\frac1n
+ \left\{\ph(c)c\left(v_O-\frac\alpha\eta v_H\right)
+             +\mathcal U(\eta)\right\}+O(n^{-3/2}).
+\end{equation}
+Equivalently, with $V_T=\Var_Q(S)$ and $\xi=\Var_Q(S_H)/V_T$,
+\begin{equation}\label{eq:varianceform}
+ \TV((P_n)_O,(Q_n)_O)
+ =\mathcal V(\xi)+\frac{\mathcal U(\xi)}{V_T}+O(V_T^{-3/2}).
+\end{equation}
+The variance defects may oscillate with $n$; no limiting cap profile is required.
+\end{theorem}
+
+For one coordinate, $v(a)=1-a^2e^a/(e^a-1)^2$. Consequently
+\begin{equation}\label{eq:defect}
+ v_H=-\sum_{\substack{j\le n\cr j\in H}}
+       \frac{a_j^2e^{a_j}}{(e^{a_j}-1)^2}
+       +\sum_{\substack{j>n\cr j\in H}}v(a_j).
+\end{equation}
+The first sum is bounded by a convergent geometrically spaced defect series; the second is bounded by a geometric cap-square sum. The same holds for $O$. Thus \eqref{eq:main} identifies exactly which cap-profile data enter at order $1/n$. Mean defects disappear under exact centering. Bounded third- and fourth-cumulant defects do not enter this coefficient.
+
+\section{An exact slack identity and uniform signed measures}
+Let $E\sim\operatorname{Exp}(1)$ be independent of all coordinates under $Q_n$. The coordinate law conditional on $S+E=\mu$ is exactly $P_n$. Indeed, its density with respect to $Q_n$ is
+\[
+ \frac{e^{S-\mu}\ind_{\{S\le\mu\}}}{f_{S+E}(\mu)}.
+\]
+The factor $e^S$ cancels the coordinate tilt. The continuous denominator is positive, and this formula specifies the canonical conditional law at the stated sum. It follows that the observed likelihood is exactly
+\begin{equation}\label{eq:slack}
+ L_O(s)=\frac{f_{S_H+E}(\mu-s)}{f_{S+E}(\mu)}.
+\end{equation}
+In particular the vector observation and its sum carry the same likelihood information.
+
+Let $\gamma_m(x)=e^{-x}x^{m-1}\ind_{(0,\infty)}(x)/\Gamma(m)$ for $m\ge1$, and use the measure convention $\gamma_0=\delta_0$. For $a>0$, set
+\[
+ \nu_a=\frac{\delta_0-e^{-a}\delta_a}{1-e^{-a}}.
+\]
+The density in \eqref{eq:coordinates} equals $\gamma_1*\nu_a$. Hence for any block $B$ with bulk count $b$,
+\begin{equation}\label{eq:signed}
+ \Law_Q(S_B)=\gamma_b*\nu_B,\qquad
+ \nu_B=\Law_Q(S_{B\cap\{j>n\}})
+              *\mathop{*}_{\substack{j\le n\cr j\in B}}\nu_{a_j}.
+\end{equation}
+The real signed measure $\nu_B$ has mass one. For fixed $0<\theta<1$,
+\begin{equation}\label{eq:weighted}
+ \int e^{\theta u}|\nu_B|(\dd u)
+ \le e^{\theta\rho/(1-q)}
+ \prod_{r\ge1}\frac{1+e^{-(1-\theta)\rho q^{-r}}}
+                      {1-e^{-\rho q^{-r}}}<\infty,
+\end{equation}
+uniformly over all blocks and $n$. The tail sum has bounded support and the product converges superexponentially. The mean $b_B=\E S_B-b$, its signed centered second moment $v_B$, and all centered absolute moments are therefore uniformly bounded. Also $\nu_H*\nu_O=\nu_T$ exactly. This signed representation is a convenient explicit form of the Gamma perturbations used in the earlier critical-complement analysis \cite{Critical}; the present use is uniform over arbitrary masks.
+
+\section{A uniform Gamma perturbation estimate}
+Write $H_j$ for probabilists' Hermite polynomials.
+
+\begin{lemma}[Second-order density expansion]\label{lem:gamma}
+Let $\nu$ be a real signed measure of mass one satisfying
+$\int e^{\theta|u|}|\nu|(\dd u)\le C$, with mean $b$ and signed centered second moment $v$. For $e\in\{0,1\}$ define
+\[
+ r_m^e(x)=\sqrt m\,(\gamma_{m+e}*\nu)(m+b+\sqrt m\,x).
+\]
+Uniformly over this class of measures,
+\begin{equation}\label{eq:gammaexp}
+ r_m^e(x)=\ph(x)\left\{1+\frac{A_e(x)}{\sqrt m}
+                  +\frac{B_e(x)+(v/2)H_2(x)}m\right\}+R_m^e(x),
+\end{equation}
+where
+\begin{align*}
+ A_0(x)&=x^3/3-x=H_3(x)/3,&A_1(x)&=x^3/3,\\
+ B_0(x)&=x^6/18-7x^4/12+x^2-1/12
+             =H_4(x)/4+H_6(x)/18,\\
+ B_1(x)&=x^6/18-x^4/4-1/12.
+\end{align*}
+There is a constant depending only on $C,\theta$ such that
+\begin{equation}\label{eq:gammaerror}
+ \|R_m^e\|_1+|R_m^e(0)|=O(m^{-3/2}),\qquad
+ \sup_x|r_m^e(x)|=O(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix $\varepsilon=1/20$. Stirling's formula and the Taylor series of $\log(1+x/\sqrt m)$ give \eqref{eq:gammaexp} for $\nu=\delta_0$, $v=0$, on $|x|\le2m^\varepsilon$, with error bounded by
+\[
+ C_1m^{-3/2}(1+|x|^9)\ph(x).
+\]
+For example the exponent for $\gamma_{m+1}$ is
+$-x^2/2+x^3/(3\sqrt m)-x^4/(4m)+O(|x|^5m^{-3/2})$,
+and the prefactor is $1-1/(12m)+O(m^{-2})$. For $\gamma_m$ the additional factor $(1+x/\sqrt m)^{-1}$ gives $A_0,B_0$. Since $|x|^3/\sqrt m$ is bounded in this range, exponentiation preserves the displayed error bound.
+
+Center the signed measure by $U=u-b$ and split at $|U|=m^\varepsilon$. Its discarded variation and moments are exponentially small, uniformly. The global bound $\sqrt m\sup\gamma_{m+e}=O(1)$ makes the discarded contribution negligible pointwise and in central $L^1$. On the retained part and $|x|\le m^\varepsilon$, the shifted argument $x-U/\sqrt m$ stays in the Taylor range, and $e^{|xU|/\sqrt m}$ is bounded. Taylor-expand the leading Gaussian to order two. Its centered linear term vanishes and the quadratic term is
+\[
+ \frac{v}{2m}\ph''(x)=\frac{v}{2m}H_2(x)\ph(x).
+\]
+Expand the first correction to first order; its centered linear term again vanishes. Uniform higher absolute moments bound the remaining terms by $O(m^{-3/2})$ in central $L^1$, and at zero. The second correction needs only its zeroth-order value. Replacing truncated moments by full moments incurs exponentially small errors.
+
+For $|x|>m^\varepsilon$, integrate the absolute convolution against $|\nu|$ and split at $|U|=\tfrac12m^{1/2+\varepsilon}$. The large-$U$ part is exponentially small. Otherwise the Gamma variable must deviate from its mean by at least a constant times $m^{1/2+\varepsilon}$. Its elementary Chernoff bound is $O(e^{-c_1m^{2\varepsilon}})$. The polynomial-Gaussian approximation has a similarly negligible tail. This proves the global $L^1$ claim. The global supremum bound follows directly from the variation of $\nu$ and the Gamma maximum. Signedness causes no problem because every error bound uses absolute variation.
+\end{proof}
+
+The measures in \eqref{eq:weighted}, after centering if needed, satisfy this lemma with fixed constants. It therefore applies simultaneously to $H,O$, and the full set, uniformly over all masks.
+
+\section{Density multiplication and the moving TV crossings}
+Standardize the observed sum by its exact reference mean and bulk count:
+\[
+ z=\frac{S_O-\E_Q S_O}{\sqrt k}.
+\]
+Its $Q$-density is $r_k^0(z)$. From \eqref{eq:slack}, its $P$-density is exactly
+\begin{equation}\label{eq:product}
+ p_n(z)=\eta^{-1/2}
+ \frac{r_k^0(z)r_h^1(-\sqrt{\alpha/\eta}\,z)}{r_n^1(0)}.
+\end{equation}
+Here the full correction measure is $\nu_T$, so
+\begin{equation}\label{eq:denom}
+ r_n^1(0)=\ph(0)\left\{1-\frac{1/12+v_T/2}{n}\right\}+O(n^{-3/2}).
+\end{equation}
+It is bounded away from zero for large $n$.
+
+Let $\ph_\eta$ denote the density of $N(0,\eta)$. Lemma~\ref{lem:gamma} and \eqref{eq:product} give
+\begin{align}
+ q_n(z)&=\ph(z)\{1+n^{-1/2}Q_1(z)+n^{-1}Q_2(z)\}
+                        +O_{L^1}(n^{-3/2}),\label{eq:Qexp}\\
+ p_n(z)&=\ph_\eta(z)\{1+n^{-1/2}P_1(z)+n^{-1}P_2(z)\}
+                        +O_{L^1}(n^{-3/2}),\label{eq:Pexp}
+\end{align}
+uniformly, where $\lambda=\sqrt{\alpha/\eta}$ and
+\begin{align*}
+ Q_1(z)&=A_0(z)/\sqrt\alpha,&
+ Q_2(z)&=\{B_0(z)+(v_O/2)H_2(z)\}/\alpha,\\
+ W_1(z)&=-\frac{\alpha^{3/2}z^3}{3\eta^2},&
+ W_2(z)&=\{B_1(-\lambda z)+(v_H/2)H_2(\lambda z)\}/\eta,\\
+ P_1&=Q_1+W_1,&P_2&=Q_2+W_2+Q_1W_1+1/12+v_T/2.
+\end{align*}
+For the product error, multiply an observed $L^1$ error by the hidden density's uniform supremum. The other error is bounded by the observed polynomial-Gaussian supremum times the rescaled hidden $L^1$ error. The scaling factor and all polynomial coefficients stay bounded under \eqref{eq:interior}. This proves the stated uniform $L^1$ remainders without assuming a global relative density approximation.
+
+Put
+\[
+ D_0=\ph_\eta-\ph,\quad D_1=\ph_\eta P_1-\ph Q_1,
+ \quad D_2=\ph_\eta P_2-\ph Q_2.
+\]
+The leading difference is positive on $(-c,c)$ and has simple roots at $\pm c$. The first correction is odd. Expanding the positive-part integral at the two moving roots of the polynomial-Gaussian approximant gives
+\begin{equation}\label{eq:boundary}
+ \TV=\int_{-c}^cD_0(z)\dd z+\frac1n
+ \left\{\int_{-c}^cD_2(z)\dd z+
+                   \frac{D_1(c)^2}{|D_0'(c)|}\right\}+O(n^{-3/2}).
+\end{equation}
+Indeed, the first root displacement is $-n^{-1/2}D_1/D_0'$ and Taylor integration contributes one half of the displayed boundary term at each root. All derivatives and inverse root slopes are bounded uniformly on the compact fraction range. The bulk $n^{-1/2}$ term integrates to zero.
+
+For completeness, this local calculation controls the full positive-part integral. Replacing the actual difference by \eqref{eq:Qexp}--\eqref{eq:Pexp} costs $O(n^{-3/2})$ by $L^1$ Lipschitz continuity. On fixed compact sets away from the two roots, its sign is unchanged. Beyond a sufficiently large fixed compact set, $\ph_\eta/\ph$ is uniformly small; up to $|z|\le n^{1/20}$ the correction polynomials are uniformly small after their powers of $n$ are included. The remaining polynomial-Gaussian tails are exponentially small. Hence no remote sign change affects \eqref{eq:boundary}.
+
+At the crossing, $\ph_\eta(c)=\ph(c)$ and
+\[
+ D_1(c)=-\frac{\ph(c)\alpha^{3/2}c^3}{3\eta^2},\qquad
+ |D_0'(c)|=\frac{\ph(c)c\alpha}{\eta}.
+\]
+Thus the moving-boundary contribution is
+\begin{equation}\label{eq:boundaryterm}
+ \frac{\ph(c)\alpha^2c^5}{9\eta^3n}>0.
+\end{equation}
+It must not be dropped. Integrating $D_2$ and adding \eqref{eq:boundaryterm} yields exactly \eqref{eq:main}. One convenient algebraic check uses
+\[
+ \int_{-c}^c z^{2j}\ph_\sigma(z)\dd z
+ =(2j-1)\sigma\int_{-c}^c z^{2j-2}\ph_\sigma(z)\dd z
+      -2\sigma c^{2j-1}\ph_\sigma(c).
+\]
+Both second-order density polynomials have zero total Gaussian mass, so only boundary terms remain. The included exact symbolic checker verifies this cancellation and the full simplified coefficient.
+
+Finally,
+\[
+ \mathcal V'(\eta)=-\frac{\ph(c)c}{\eta},\qquad
+ \xi=\eta+\frac{\alpha v_H-\eta v_O}{n}+O(n^{-2}).
+\]
+A uniform Taylor expansion absorbs the profile term into $\mathcal V(\xi)$. Replacing $\mathcal U(\eta)/n$ by $\mathcal U(\xi)/V_T$ costs $O(n^{-2})$. This proves \eqref{eq:varianceform} and completes Theorem~\ref{thm:main}.
+
+\section{Which mask geometry survives?}
+Write $\mathcal O(H)=1-\TV((P_n)_{H^c},(Q_n)_{H^c})$.
+\begin{corollary}[First profile difference]\label{cor:difference}
+If two arbitrary hidden masks $H_1,H_2$ have the same bulk count $h$ satisfying \eqref{eq:interior}, then uniformly
+\begin{equation}\label{eq:profilediff}
+ \mathcal O(H_1)-\mathcal O(H_2)
+ =\frac{\ph(c)c}{\eta n}
+       \{\Var_Q(S_{H_1})-\Var_Q(S_{H_2})\}+O(n^{-3/2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The universal correction cancels and $v_H+v_O=v_T$ is independent of the mask. Apply \eqref{eq:main} and reverse the sign for overlap.
+\end{proof}
+
+For the two source masks, both hidden sets include the full tail $\{j>n\}$. Their hidden bulk portions are $\{1,\ldots,h\}$ for early-hidden and $\{n-h+1,\ldots,n\}$ for late-hidden. Set
+\begin{equation}\label{eq:Dphase}
+ \mathcal D(q,\rho)=\sum_{r\ge1}
+       \frac{(\rho q^{-r})^2e^{\rho q^{-r}}}
+            {(e^{\rho q^{-r}}-1)^2}>0.
+\end{equation}
+The early-hidden bulk has a superexponentially small variance defect; the late-hidden bulk has defect $-\mathcal D(q,\rho)$ up to such an error. Their common tail variance cancels. Therefore
+\begin{corollary}[Canonical mask separation]\label{cor:canonical}
+Uniformly under \eqref{eq:interior},
+\begin{equation}\label{eq:canonical}
+ \mathcal O^{\rm early}_{n,h}-\mathcal O^{\rm late}_{n,h}
+ =\frac{\ph(c)c\mathcal D(q,\rho)}{\eta n}+O(n^{-3/2}).
+\end{equation}
+\end{corollary}
+The labels refer to the \emph{hidden} blocks; the late-hidden mask observes earlier, larger caps. The coefficient in \eqref{eq:canonical} is strictly positive. This quantifies the separate exact strict-order theorem \cite{Strict} in the proportional regime. For arbitrary profiles with a variance difference of order $n^{-1/2}$ or smaller, \eqref{eq:profilediff} alone need not determine the sign.
+
+\section{Gaussian approximation and divergence scope}
+Equations~\eqref{eq:Qexp}--\eqref{eq:Pexp} give the quantitative scalar approximation
+\[
+ \TV(\Law_Q(z),N(0,1))=O(n^{-1/2}),\qquad
+ \TV(\Law_P(z),N(0,\eta))=O(n^{-1/2}),
+\]
+uniformly over masks. Because the exact likelihood depends only on the observed sum, this describes the full binary comparison after passing to that sufficient statistic. The qualitative Gaussian conclusion is already in \cite{Repository}; the displayed rate follows from the present estimates.
+
+The exact likelihood is uniformly bounded: the hidden density supremum is $O(h^{-1/2})$, while \eqref{eq:denom} gives a denominator of order $n^{-1/2}$. With $L_\eta(z)=\ph_\eta(z)/\ph(z)$, the explicit bridge
+\[
+ \int q_n|L_O-L_\eta|
+ \le\|p_n-\ph_\eta\|_1+\|L_\eta\|_\infty\|q_n-\ph\|_1
+ =O(n^{-1/2})
+\]
+therefore gives convergence for every functional $\E_Q\psi(L_O)$ with $\psi$ continuous on a fixed interval containing all likelihood values. This includes total variation, Hellinger affinity, forward relative entropy, and every positive finite forward R\'enyi order. For a fixed $r>0$, $r\ne1$,
+\begin{equation}\label{eq:renyi}
+ D_r(P_O\Vert Q_O)=
+ -\frac12\log\eta-\frac{\log(\eta+r(1-\eta))}{2(r-1)}+o(1),
+\end{equation}
+uniformly over the masks in question. Along $\eta\to\eta_0\in(0,1)$ this gives the limit evaluated at $\eta_0$. At $r=1$,
+\[
+ \KL(P_O\Vert Q_O)=\frac{-\log\eta-(1-\eta)}2+o(1).
+\]
+These formulas follow by integrating the Gaussian likelihood
+$\eta^{-1/2}\exp(-(1-\eta)z^2/(2\eta))$ against $N(0,1)$.
+
+Reverse relative entropy behaves differently. The $k$ smallest bulk caps already have sum at least $\rho q^{-k}$, whereas $\mu=n+O(1)$. Uniformly under \eqref{eq:interior}, the observed cap sum therefore exceeds $\mu$ for all sufficiently large $n$. Its reference sum law has full support, so
+\[
+ Q_O(S_O>\mu)>0,\qquad P_O(S_O>\mu)=0.
+\]
+Thus $\KL(Q_O\Vert P_O)=\infty$ at finite $n$ in this range. Reverse R\'enyi orders above one are also infinite; positive reverse orders below one reduce to positive likelihood powers and do converge. No convergence of all $f$-divergences, or higher-order entropy correction, is asserted.
+
+\section{Verification and limits of the result}
+The package includes an exact symbolic check of both second-order density normalizations, the moving-boundary term, and the final TV coefficient. Independent Gamma/Beta calculations in the zero-defect model give, for example,
+\begin{center}
+\begin{tabular}{ccc}\toprule
+$\eta$ & Predicted $\mathcal U(\eta)$ & $n(\TV-\mathcal V)$ at $n=10000$\\\midrule
+0.3 & $-0.08384639653$ & $-0.08384645051$\\
+0.5 & $-0.02516862868$ & $-0.02516730695$\\
+0.8 & $\phantom{-}0.00462343894$ & $\phantom{-}0.00462747805$\\\bottomrule
+\end{tabular}
+\end{center}
+These are numerical regression checks, not certified enclosures or substitutes for the uniform proof. Additional one-cap calculations test nonzero variance defects and exact mean centering.
+
+The constants in the theorem are finite uniform bounds, not numerically optimized error constants. Fractions approaching zero or one require a different analysis; the present result does not replace the critical-complement expansions. Higher profile cumulants and further terms remain possible continuations. The theorem answers a specified repository question in this geometric regime. It is an ordinary mathematical proof, not formal verification or an externally refereed result.
+
+\begin{thebibliography}{9}\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{Repository} V. Reshetnikov, ProveIt, \emph{Sharp Conditioning Laws for Uniform Random Series}, source at commit \texttt{7421a4ca60fd}, inspected 1 October 2026; variance-fraction theorem and questions \texttt{q:rates}, \texttt{q:edgeworth}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7421a4ca60fdf125411edf412f825aac54278b37/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Sharp_Conditioning_Laws_Uniform_Random_Series/article.tex}{Pinned source on GitHub}.
+\bibitem{DZ} A. Dembo and O. Zeitouni, \emph{Refinements of the Gibbs conditioning principle}, Probability Theory and Related Fields \textbf{104} (1996), 1--14. \href{https://doi.org/10.1007/BF01303799}{doi:10.1007/BF01303799}. \href{https://www.wisdom.weizmann.ac.il/~zeitouni/pdf/sanovreffull.pdf}{Author manuscript}.
+\bibitem{Critical} \emph{Second Order Critical Complements in Fabius Conditioning}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{Second\_Order\_Fabius\_Crossover.tex}; signed-Gamma transfer and geometric correction measures.
+\bibitem{Strict} \emph{Strict Conditioning Order for Fabius Observation Masks}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{strict\_fabius\_conditioning\_order.tex}.
+\end{thebibliography}
+\end{document}

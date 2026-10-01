@@ -1,0 +1,746 @@
+{
+  "schema_version": 1,
+  "scope": "Exact finite-n Gamma/Beta distribution identities evaluated in floating point. Tests the explicit proportional-mask coefficient and first crossing shift. The one-cap family tests nonzero variance defects and exact-mean cancellation. These checks do not prove or rigorously certify the uniform remainder.",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "floating_point": "IEEE-754 binary64 in NumPy/SciPy calls"
+  },
+  "gamma_cases": [
+    {
+      "eta_requested": 0.3,
+      "records": [
+        {
+          "n": 200,
+          "h": 60,
+          "k": 140,
+          "eta": 0.3,
+          "tv": 0.2824406938701539,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": -0.08384639652885505,
+          "n_times_tv_minus_leading": -0.08384699727270739,
+          "coefficient_error": -6.007438523442099e-07,
+          "standardized_crossings": [
+            -0.7519982702285964,
+            0.6842867143077571
+          ],
+          "scaled_crossing_midpoint": -0.4787930035631761,
+          "predicted_scaled_crossing_midpoint": -0.4796742468636395,
+          "maximum_log_likelihood_root_residual": 3.410605131648481e-13
+        },
+        {
+          "n": 1000,
+          "h": 300,
+          "k": 700,
+          "eta": 0.3,
+          "tv": 0.28277608199724535,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": -0.08384639652885505,
+          "n_times_tv_minus_leading": -0.08384685927209645,
+          "coefficient_error": -4.627432414056054e-07,
+          "standardized_crossings": [
+            -0.7334503647475092,
+            0.7031242525478667
+          ],
+          "scaled_crossing_midpoint": -0.4794979356434468,
+          "predicted_scaled_crossing_midpoint": -0.4796742468636395,
+          "maximum_log_likelihood_root_residual": 2.2737367544323206e-13
+        },
+        {
+          "n": 5000,
+          "h": 1500,
+          "k": 3500,
+          "eta": 0.3,
+          "tv": 0.2828431595559623,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": -0.08384639652885505,
+          "n_times_tv_minus_leading": -0.08384650277581951,
+          "coefficient_error": -1.0624696446248638e-07,
+          "standardized_crossings": [
+            -0.725099218167329,
+            0.7115329790938631
+          ],
+          "scaled_crossing_midpoint": -0.47963898220228146,
+          "predicted_scaled_crossing_midpoint": -0.4796742468636395,
+          "maximum_log_likelihood_root_residual": 0.0
+        },
+        {
+          "n": 10000,
+          "h": 3000,
+          "k": 7000,
+          "eta": 0.3,
+          "tv": 0.2828515442114662,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": -0.08384639652885505,
+          "n_times_tv_minus_leading": -0.08384645051262574,
+          "coefficient_error": -5.398377068976945e-08,
+          "standardized_crossings": [
+            -0.7231162594383275,
+            0.7135231271511999
+          ],
+          "scaled_crossing_midpoint": -0.4796566143563774,
+          "predicted_scaled_crossing_midpoint": -0.4796742468636395,
+          "maximum_log_likelihood_root_residual": 3.637978807091713e-12
+        }
+      ]
+    },
+    {
+      "eta_requested": 0.5,
+      "records": [
+        {
+          "n": 200,
+          "h": 100,
+          "k": 100,
+          "eta": 0.5,
+          "tv": 0.16593856578640698,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": -0.02516862867731044,
+          "n_times_tv_minus_leading": -0.025101839421148853,
+          "coefficient_error": 6.678925616158612e-05,
+          "standardized_crossings": [
+            -0.8552893703472606,
+            0.8091386635100424
+          ],
+          "scaled_crossing_midpoint": -0.3263347776114937,
+          "predicted_scaled_crossing_midpoint": -0.3267527144895157,
+          "maximum_log_likelihood_root_residual": 0.0
+        },
+        {
+          "n": 1000,
+          "h": 500,
+          "k": 500,
+          "eta": 0.5,
+          "tv": 0.16603891959811767,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": -0.02516862867731044,
+          "n_times_tv_minus_leading": -0.025155385395048135,
+          "coefficient_error": 1.3243282262303396e-05,
+          "standardized_crossings": [
+            -0.8428167450947246,
+            0.8221563761026702
+          ],
+          "scaled_crossing_midpoint": -0.3266691165720451,
+          "predicted_scaled_crossing_midpoint": -0.3267527144895157,
+          "maximum_log_likelihood_root_residual": 4.547473508864641e-13
+        },
+        {
+          "n": 5000,
+          "h": 2500,
+          "k": 2500,
+          "eta": 0.5,
+          "tv": 0.1660590417865936,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": -0.02516862867731044,
+          "n_times_tv_minus_leading": -0.025165984595676427,
+          "coefficient_error": 2.6440816340116136e-06,
+          "standardized_crossings": [
+            -0.8371617485413543,
+            0.8279202590473451
+          ],
+          "scaled_crossing_midpoint": -0.3267359944739056,
+          "predicted_scaled_crossing_midpoint": -0.3267527144895157,
+          "maximum_log_likelihood_root_residual": 0.0
+        },
+        {
+          "n": 10000,
+          "h": 5000,
+          "k": 5000,
+          "eta": 0.5,
+          "tv": 0.1660615582528181,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": -0.02516862867731044,
+          "n_times_tv_minus_leading": -0.02516730694623881,
+          "coefficient_error": 1.32173107162889e-06,
+          "standardized_crossings": [
+            -0.8358152511866822,
+            0.8292803641026127
+          ],
+          "scaled_crossing_midpoint": -0.32674435420347314,
+          "predicted_scaled_crossing_midpoint": -0.3267527144895157,
+          "maximum_log_likelihood_root_residual": 0.0
+        }
+      ]
+    },
+    {
+      "eta_requested": 0.8,
+      "records": [
+        {
+          "n": 200,
+          "h": 160,
+          "k": 40,
+          "eta": 0.8,
+          "tv": 0.05396241019438619,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": 0.004623438937765394,
+          "n_times_tv_minus_leading": 0.0048278301309823135,
+          "coefficient_error": 0.00020439119321691984,
+          "standardized_crossings": [
+            -0.9561064093531316,
+            0.9326073377681049
+          ],
+          "scaled_crossing_midpoint": -0.16616352869360515,
+          "predicted_scaled_crossing_midpoint": -0.16632138315976183,
+          "maximum_log_likelihood_root_residual": 0.0
+        },
+        {
+          "n": 1000,
+          "h": 800,
+          "k": 200,
+          "eta": 0.8,
+          "tv": 0.05394293496257496,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": 0.004623438937765394,
+          "n_times_tv_minus_leading": 0.004663918843683668,
+          "coefficient_error": 4.047990591827394e-05,
+          "standardized_crossings": [
+            -0.9499391079406208,
+            0.9394220168273417
+          ],
+          "scaled_crossing_midpoint": -0.16628981138738835,
+          "predicted_scaled_crossing_midpoint": -0.16632138315976183,
+          "maximum_log_likelihood_root_residual": 0.0
+        },
+        {
+          "n": 5000,
+          "h": 4000,
+          "k": 1000,
+          "eta": 0.8,
+          "tv": 0.05393919734755781,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": 0.004623438937765394,
+          "n_times_tv_minus_leading": 0.004631519132658468,
+          "coefficient_error": 8.080194893074488e-06,
+          "standardized_crossings": [
+            -0.9470973270047998,
+            0.9423932264972296
+          ],
+          "scaled_crossing_midpoint": -0.16631506841429833,
+          "predicted_scaled_crossing_midpoint": -0.16632138315976183,
+          "maximum_log_likelihood_root_residual": 0.0
+        },
+        {
+          "n": 10000,
+          "h": 8000,
+          "k": 2000,
+          "eta": 0.8,
+          "tv": 0.05393873379153635,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": 0.004623438937765394,
+          "n_times_tv_minus_leading": 0.0046274780507449265,
+          "coefficient_error": 4.0391129795327996e-06,
+          "standardized_crossings": [
+            -0.9464165477583906,
+            0.9430901832673314
+          ],
+          "scaled_crossing_midpoint": -0.1663182245529582,
+          "predicted_scaled_crossing_midpoint": -0.16632138315976183,
+          "maximum_log_likelihood_root_residual": 0.0
+        }
+      ]
+    }
+  ],
+  "one_cap_cases": [
+    {
+      "eta_requested": 0.3,
+      "cap_location": "hidden",
+      "cap": 2.0,
+      "mean_defect": -0.3130352854993313,
+      "variance_defect": -0.7240616609663105,
+      "records": [
+        {
+          "n": 1000,
+          "h": 300,
+          "k": 700,
+          "eta": 0.3,
+          "mu": 999.6869647145006,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.2831499875030631,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": 0.29020984327039046,
+          "n_times_tv_minus_leading": 0.2900586465456323,
+          "coefficient_error": -0.00015119672475816248,
+          "standardized_crossings": [
+            -0.7331252372228199,
+            0.7027222523816713
+          ],
+          "maximum_log_likelihood_root_residual": 2.6645352591003757e-13
+        },
+        {
+          "n": 5000,
+          "h": 1500,
+          "k": 3500,
+          "eta": 0.3,
+          "mu": 4999.6869647145,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.2829179648721367,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": 0.29020984327039046,
+          "n_times_tv_minus_leading": 0.29018007809633595,
+          "coefficient_error": -2.976517405450796e-05,
+          "standardized_crossings": [
+            -0.7250300525644477,
+            0.7114569456778945
+          ],
+          "maximum_log_likelihood_root_residual": 7.771561172376096e-13
+        },
+        {
+          "n": 10000,
+          "h": 3000,
+          "k": 7000,
+          "eta": 0.3,
+          "mu": 9999.686964714501,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.2828889483555366,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": 0.29020984327039046,
+          "n_times_tv_minus_leading": 0.2901949901912282,
+          "coefficient_error": -1.485307916226919e-05,
+          "standardized_crossings": [
+            -0.7230811806502407,
+            0.7134856205730835
+          ],
+          "maximum_log_likelihood_root_residual": 7.700506898800086e-13
+        }
+      ]
+    },
+    {
+      "eta_requested": 0.3,
+      "cap_location": "observed",
+      "cap": 2.0,
+      "mean_defect": -0.3130352854993313,
+      "variance_defect": -0.7240616609663105,
+      "records": [
+        {
+          "n": 1000,
+          "h": 300,
+          "k": 700,
+          "eta": 0.3,
+          "mu": 999.6869647145006,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.28261584320803257,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": -0.24415621358567452,
+          "n_times_tv_minus_leading": -0.2440856484848819,
+          "coefficient_error": 7.05651007926189e-05,
+          "standardized_crossings": [
+            -0.7332251001495187,
+            0.7029172314428253
+          ],
+          "maximum_log_likelihood_root_residual": 2.5579538487363607e-13
+        },
+        {
+          "n": 5000,
+          "h": 1500,
+          "k": 3500,
+          "eta": 0.3,
+          "mu": 4999.6869647145,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.28281110042683266,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": -0.24415621358567452,
+          "n_times_tv_minus_leading": -0.24414214842394255,
+          "coefficient_error": 1.40651617319687e-05,
+          "standardized_crossings": [
+            -0.7250551969307087,
+            0.7114905896870863
+          ],
+          "maximum_log_likelihood_root_residual": 7.638334409421077e-13
+        },
+        {
+          "n": 10000,
+          "h": 3000,
+          "k": 7000,
+          "eta": 0.3,
+          "mu": 9999.686964714501,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.28283551393811635,
+          "leading_tv": 0.28285992885651745,
+          "predicted_coefficient": -0.24415621358567452,
+          "n_times_tv_minus_leading": -0.24414918401105545,
+          "coefficient_error": 7.029574619066281e-06,
+          "standardized_crossings": [
+            -0.7230943697678303,
+            0.7135018144233615
+          ],
+          "maximum_log_likelihood_root_residual": 1.5480949855373183e-12
+        }
+      ]
+    },
+    {
+      "eta_requested": 0.5,
+      "cap_location": "hidden",
+      "cap": 2.0,
+      "mean_defect": -0.3130352854993313,
+      "variance_defect": -0.7240616609663105,
+      "records": [
+        {
+          "n": 1000,
+          "h": 500,
+          "k": 500,
+          "eta": 0.5,
+          "mu": 999.6869647145006,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.166209009561425,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": 0.14488400041992466,
+          "n_times_tv_minus_leading": 0.1449345779122868,
+          "coefficient_error": 5.057749236214715e-05,
+          "standardized_crossings": [
+            -0.8426747431758647,
+            0.8219615393607994
+          ],
+          "maximum_log_likelihood_root_residual": 4.218847493575595e-13
+        },
+        {
+          "n": 5000,
+          "h": 2500,
+          "k": 2500,
+          "eta": 0.5,
+          "mu": 4999.6869647145,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.1660930538172444,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": 0.14488400041992466,
+          "n_times_tv_minus_leading": 0.14489416865839932,
+          "coefficient_error": 1.0168238474661528e-05,
+          "standardized_crossings": [
+            -0.8371304957423306,
+            0.8278842855596005
+          ],
+          "maximum_log_likelihood_root_residual": 1.3464784842653899e-12
+        },
+        {
+          "n": 10000,
+          "h": 5000,
+          "k": 5000,
+          "eta": 0.5,
+          "mu": 9999.686964714501,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.1660785638922959,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": 0.14488400041992466,
+          "n_times_tv_minus_leading": 0.14488908783166776,
+          "coefficient_error": 5.087411743098791e-06,
+          "standardized_crossings": [
+            -0.8357992834438659,
+            0.8292627275582016
+          ],
+          "maximum_log_likelihood_root_residual": 3.04911651483053e-12
+        }
+      ]
+    },
+    {
+      "eta_requested": 0.5,
+      "cap_location": "observed",
+      "cap": 2.0,
+      "mean_defect": -0.3130352854993313,
+      "variance_defect": -0.7240616609663105,
+      "records": [
+        {
+          "n": 1000,
+          "h": 500,
+          "k": 500,
+          "eta": 0.5,
+          "mu": 999.6869647145006,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.16586893403629008,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": -0.19522125777454552,
+          "n_times_tv_minus_leading": -0.19514094722264397,
+          "coefficient_error": 8.031055190155234e-05,
+          "standardized_crossings": [
+            -0.8423708805061333,
+            0.8217320987668245
+          ],
+          "maximum_log_likelihood_root_residual": 2.842170943040401e-14
+        },
+        {
+          "n": 5000,
+          "h": 2500,
+          "k": 2500,
+          "eta": 0.5,
+          "mu": 4999.6869647145,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.16602503393510126,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": -0.19522125777454552,
+          "n_times_tv_minus_leading": -0.19520524205729473,
+          "coefficient_error": 1.6015717250794648e-05,
+          "standardized_crossings": [
+            -0.8370738053548943,
+            0.8278342466909385
+          ],
+          "maximum_log_likelihood_root_residual": 7.638334409421077e-13
+        },
+        {
+          "n": 10000,
+          "h": 5000,
+          "k": 5000,
+          "eta": 0.5,
+          "mu": 9999.686964714501,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.16604455365823206,
+          "leading_tv": 0.16606407498351272,
+          "predicted_coefficient": -0.19522125777454552,
+          "n_times_tv_minus_leading": -0.19521325280658086,
+          "coefficient_error": 8.004967964658771e-06,
+          "standardized_crossings": [
+            -0.8357714232762468,
+            0.829237218840406
+          ],
+          "maximum_log_likelihood_root_residual": 1.5480949855373183e-12
+        }
+      ]
+    },
+    {
+      "eta_requested": 0.8,
+      "cap_location": "hidden",
+      "cap": 2.0,
+      "mean_defect": -0.3130352854993313,
+      "variance_defect": -0.7240616609663105,
+      "records": [
+        {
+          "n": 1000,
+          "h": 800,
+          "k": 200,
+          "eta": 0.8,
+          "mu": 999.6869647145006,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.05398665269782721,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": 0.04828786606551115,
+          "n_times_tv_minus_leading": 0.048381654095930315,
+          "coefficient_error": 9.378803041916461e-05,
+          "standardized_crossings": [
+            -0.9499173332064034,
+            0.9393545654010481
+          ],
+          "maximum_log_likelihood_root_residual": 4.2366110619695974e-13
+        },
+        {
+          "n": 5000,
+          "h": 4000,
+          "k": 1000,
+          "eta": 0.8,
+          "mu": 4999.6869647145,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.05394793236116788,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": 0.04828786606551115,
+          "n_times_tv_minus_leading": 0.04830658718299463,
+          "coefficient_error": 1.8721117483480598e-05,
+          "standardized_crossings": [
+            -0.9470904883893215,
+            0.9423823064381565
+          ],
+          "maximum_log_likelihood_root_residual": 4.023448241241567e-12
+        },
+        {
+          "n": 10000,
+          "h": 8000,
+          "k": 2000,
+          "eta": 0.8,
+          "mu": 9999.686964714501,
+          "v_H": -0.7240616609663105,
+          "v_O": 0.0,
+          "tv": 0.05394310076616657,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": 0.04828786606551115,
+          "n_times_tv_minus_leading": 0.04829722435290007,
+          "coefficient_error": 9.358287388919195e-06,
+          "standardized_crossings": [
+            -0.9464128322720982,
+            0.9430850249520333
+          ],
+          "maximum_log_likelihood_root_residual": 4.32898161761841e-12
+        }
+      ]
+    },
+    {
+      "eta_requested": 0.8,
+      "cap_location": "observed",
+      "cap": 2.0,
+      "mean_defect": -0.3130352854993313,
+      "variance_defect": -0.7240616609663105,
+      "records": [
+        {
+          "n": 1000,
+          "h": 800,
+          "k": 200,
+          "eta": 0.8,
+          "mu": 999.6869647145006,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.05376837814801355,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": -0.17003426957321768,
+          "n_times_tv_minus_leading": -0.16989289571772703,
+          "coefficient_error": 0.00014137385549065073,
+          "standardized_crossings": [
+            -0.9483877838279138,
+            0.9379048259950149
+          ],
+          "maximum_log_likelihood_root_residual": 4.263256414560601e-13
+        },
+        {
+          "n": 5000,
+          "h": 4000,
+          "k": 1000,
+          "eta": 0.8,
+          "mu": 4999.6869647145,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.05390426981594271,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": -0.17003426957321768,
+          "n_times_tv_minus_leading": -0.17000613894285754,
+          "coefficient_error": 2.8130630360140296e-05,
+          "standardized_crossings": [
+            -0.9467891835229926,
+            0.9420881359208237
+          ],
+          "maximum_log_likelihood_root_residual": 2.8741453661496053e-12
+        },
+        {
+          "n": 10000,
+          "h": 8000,
+          "k": 2000,
+          "eta": 0.8,
+          "mu": 9999.686964714501,
+          "v_H": 0.0,
+          "v_O": -0.7240616609663105,
+          "tv": 0.05392126902240693,
+          "leading_tv": 0.05393827104373128,
+          "predicted_coefficient": -0.17003426957321768,
+          "n_times_tv_minus_leading": -0.17002021324347139,
+          "coefficient_error": 1.4056329746298113e-05,
+          "standardized_crossings": [
+            -0.9462627142646425,
+            0.9429374291335898
+          ],
+          "maximum_log_likelihood_root_residual": 5.727862628646108e-12
+        }
+      ]
+    }
+  ],
+  "regression_checks": {
+    "purpose": "Platform-tolerant floating-point regression only; no rigorous asymptotic error certification.",
+    "all_passed": true,
+    "cases": [
+      {
+        "family": "gamma",
+        "eta_requested": 0.3,
+        "cap_location": null,
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 1e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "gamma",
+        "eta_requested": 0.5,
+        "cap_location": null,
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 1e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "gamma",
+        "eta_requested": 0.8,
+        "cap_location": null,
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 1e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "one_cap",
+        "eta_requested": 0.3,
+        "cap_location": "hidden",
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 3e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "one_cap",
+        "eta_requested": 0.3,
+        "cap_location": "observed",
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 3e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "one_cap",
+        "eta_requested": 0.5,
+        "cap_location": "hidden",
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 3e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "one_cap",
+        "eta_requested": 0.5,
+        "cap_location": "observed",
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 3e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "one_cap",
+        "eta_requested": 0.8,
+        "cap_location": "hidden",
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 3e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      },
+      {
+        "family": "one_cap",
+        "eta_requested": 0.8,
+        "cap_location": "observed",
+        "finite_tv_in_unit_interval": true,
+        "coefficient_absolute_tolerance_at_n_10000": 3e-05,
+        "coefficient_within_tolerance": true,
+        "absolute_coefficient_error_decreased_from_n_1000_to_10000": true,
+        "log_likelihood_roots_resolved_to_1e_minus_8": true,
+        "passed": true
+      }
+    ]
+  }
+}

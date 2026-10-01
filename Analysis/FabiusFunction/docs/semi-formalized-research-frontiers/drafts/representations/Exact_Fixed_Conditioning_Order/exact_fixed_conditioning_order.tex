@@ -1,0 +1,236 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Exact Conditioning Order for Fabius Observation Masks},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
+\newcommand{\Law}{\operatorname{Law}}\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\ind}{\mathbf1}\newcommand{\dd}{\,\mathrm d}
+\title{Exact Conditioning Order for Fabius Observation Masks}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For independent common-tilt uniform coordinates, replacing an observed coordinate by one with a smaller cap decreases the information distinguishing the reference product law from any fixed bounded log-concave reweighting of the total sum. We prove convex ordering of the projected likelihood ratios, and hence binary Blackwell comparison and every $f$-divergence inequality. Common observations, overlapping masks, and countably many coordinates are permitted. The key is an elementary rectangle inequality for a function that is positive on one interval and nonpositive outside it. Applied to the original uniform product conditioned below a threshold, the result proves the earlier-versus-later mask comparison for every geometric ratio $0<q<1$ and every finite parameter value. The realizing binary kernel may depend on the chosen weight; no common kernel for all weights is asserted. All inequalities are nonstrict.
+\end{abstract}
+
+\section{Model and comparison theorem}
+Let $I$ be finite or countably infinite. Under $Q$, the coordinates are independent with densities
+\begin{equation}\label{eq:density}
+ q_{\beta,a_i}(x)=\frac{e^{-\beta x}}{Z_\beta(a_i)}\ind_{(0,a_i)}(x),
+ \qquad Z_\beta(a)=\int_0^a e^{-\beta x}\dd x,
+\end{equation}
+where $\beta\in\R$, $a_i>0$, and $A=\sum_i a_i<\infty$. Put $S=\sum_iX_i$. Fix a bounded nonnegative Borel log-concave function $w:\R\to[0,\infty)$ with
+\begin{equation}\label{eq:weight}
+ M=\E_Qw(S)>0,\qquad \frac{\dd P_w}{\dd Q}=\frac{w(S)}M.
+\end{equation}
+Log-concavity allows zero values and interval supports. The expectation $M$ is a global normalization; no positive conditional normalization will be required.
+
+A mask $E\subseteq I$ observes $V_E=(X_i)_{i\in E}$. Its projected likelihood is
+\begin{equation}\label{eq:likelihood}
+ L_E=\E_Q\left[\frac{w(S)}M\,\middle|\,V_E\right].
+\end{equation}
+It is bounded, nonnegative, and has reference mean one. We use $\preceq_{\rm cx}$ for convex order of real random variables.
+
+\begin{theorem}[Cap comparison for a fixed weight]\label{thm:main}
+Suppose there is an injection $\pi:L\to E$ satisfying
+\begin{equation}\label{eq:matching}
+ a_{\pi(j)}\ge a_j\qquad(j\in L).
+\end{equation}
+Masks may overlap, be empty or countably infinite, and have different cardinalities. Then
+\begin{equation}\label{eq:cx}
+ L_L\preceq_{\rm cx}L_E
+\end{equation}
+under their respective reference marginals. There is a Markov kernel taking both $Q_E$ to $Q_L$ and $(P_w)_E$ to $(P_w)_L$. In particular, for every convex divergence generator $\varphi$ with $\varphi(1)=0$,
+\begin{equation}\label{eq:divergence}
+ D_\varphi((P_w)_E\Vert Q_E)
+ \ge D_\varphi((P_w)_L\Vert Q_L),
+\end{equation}
+with the usual extended-value convention. Therefore
+\begin{equation}\label{eq:tv}
+ \TV((P_w)_E,Q_E)\ge\TV((P_w)_L,Q_L),
+ \qquad \operatorname{Overlap}_E\le\operatorname{Overlap}_L.
+\end{equation}
+The binary kernel is allowed to depend on the fixed weight $w$.
+\end{theorem}
+
+The cap condition is sufficient for this binary comparison; no necessity or complete classification for a fixed weight is claimed. Strictness is also not asserted. For example, constant $w$ gives $P_w=Q$ and equality for every mask.
+
+\section{The rectangle inequality}
+For a real number $x$, write $x_+=\max(x,0)$.
+
+\begin{lemma}[One positive interval]\label{lem:rectangle}
+Let $a\ge b>0$, $L=a+b$, and let $g\in L^1([0,L])$. Suppose that, for some $0\le u\le v\le L$, $g\le0$ almost everywhere on $[0,u]$ and $[v,L]$, while $g\ge0$ almost everywhere on $[u,v]$. Then
+\begin{equation}\label{eq:rectangle}
+ \int_0^a\left(\int_0^b g(x+y)\dd y\right)_+\dd x
+ \ge
+ \int_0^b\left(\int_0^a g(x+y)\dd x\right)_+\dd y.
+\end{equation}
+No zero-integral assumption is needed.
+\end{lemma}
+\begin{proof}
+Let $G(x)=\int_0^xg(s)\dd s$. It is absolutely continuous and is nonincreasing, then nondecreasing, then nonincreasing. For $0<h<L$, put
+\[
+ J(h)=\int_0^{L-h}[G(x+h)-G(x)]_+\dd x.
+\]
+The elementary layer-cake identity gives
+\begin{equation}\label{eq:layercake}
+ J(h)=\int_{\R}\int_0^{L-h}
+ \bigl(\ind_{\{G(x+h)>t\}}-\ind_{\{G(x)>t\}}\bigr)_+
+ \dd x\dd t.
+\end{equation}
+Tonelli applies; $G$ is bounded on its compact domain.
+
+At each level $t$, the superlevel set of $G$ is, up to endpoints, an initial interval together with at most one later interval. Write it as
+\[
+ [0,p]\cup[q,r],\qquad 0\le p\le q\le r\le L,
+\]
+allowing empty or degenerate intervals. This representation follows directly from the three monotone pieces of $G$. Plateaus at level $t$ belong to the complement; any plateau between the two superlevel components is included in $[p,q]$. Thus no exceptional-level argument is needed.
+
+A positive indicator increment starts in the gap $[p,q]$ and ends in the later interval $[q,r]$. Its length is
+\[
+ f(h)=|[p,q]\cap[q-h,r-h]|.
+\]
+The restriction to $[0,L-h]$ is automatic for such endpoints. With $u_0=q-p$ and $v_0=r-q$,
+\begin{equation}\label{eq:trapezoid}
+ f(h)=\max\bigl(0,\min(h,u_0,v_0,u_0+v_0-h)\bigr).
+\end{equation}
+Here $u_0+v_0=r-p\le a+b$. If $f(a)>0$, then $f(a)$ is at most $u_0$, $v_0$, and $u_0+v_0-a$. The last quantity is at most both $b$ and $u_0+v_0-b$, because $u_0+v_0\le a+b$ and $a\ge b$. Therefore $f(a)\le f(b)$. The same conclusion is immediate if $f(a)=0$.
+
+Integrating this levelwise comparison in \eqref{eq:layercake} gives $J(b)\ge J(a)$, which is exactly \eqref{eq:rectangle}.
+\end{proof}
+
+\section{From the rectangle to likelihood convex order}
+\begin{proposition}[Two coordinates]\label{prop:pair}
+Let $X,Y$ be independent with the densities \eqref{eq:density} on caps $a\ge b$. Let $h\ge0$ be bounded and have interval superlevel sets. Set
+\[
+ H_X(x)=\E h(x+Y),\qquad H_Y(y)=\E h(X+y).
+\]
+Then $H_Y(Y)\preceq_{\rm cx}H_X(X)$. This includes $h\equiv0$.
+\end{proposition}
+\begin{proof}
+The variables have the same mean $\E h(X+Y)$. For a stop-loss level $t\ge0$, put
+\[
+ g_t(s)=e^{-\beta s}(h(s)-t),\qquad 0\le s\le a+b.
+\]
+The positive set of $g_t$ is an interval, so Lemma~\ref{lem:rectangle} applies. Writing $Z_a=Z_\beta(a)$ and $Z_b=Z_\beta(b)$, positive homogeneity of $x_+$ gives the exact identity
+\begin{equation}\label{eq:stoploss}
+ \E(H_X(X)-t)_+
+ =\frac1{Z_aZ_b}\int_0^a
+ \left(\int_0^b e^{-\beta(x+y)}(h(x+y)-t)\dd y\right)_+\dd x.
+\end{equation}
+The target has the reversed rectangle integral. Thus its stop-loss expectation is no larger for every $t\ge0$. At negative $t$, equality follows from nonnegativity and equal means. The stop-loss characterization of convex order proves the result.
+\end{proof}
+
+\subsection{Hidden and common coordinates}
+Compare observing $(V_C,X)$ with observing $(V_C,Y)$, where $C$ is any common coordinate mask disjoint from the two coordinates and all remaining coordinates are hidden. Let $R$ be their hidden sum. Conditional on $V_C=v$, put $c=\sum_{i\in C}v_i$ and define
+\begin{equation}\label{eq:effective}
+ h_c(s)=\frac{\E_R w(c+s+R)}M.
+\end{equation}
+This is bounded and log-concave in $s$. For finitely many hidden coordinates, it follows by applying Pr\'ekopa's marginalization theorem \cite[Theorem 6]{Prekopa} to
+\[
+ w\left(c+s+\sum_jr_j\right)\prod_jq_{\beta,a_j}(r_j).
+\]
+Each factor is log-concave, including the interval supports. If there are no hidden coordinates, \eqref{eq:effective} is just a translate of $w$ divided by $M$.
+
+For countably many hidden coordinates, their finite partial sums converge almost surely to $R$. A nonempty hidden sum has a density, since it contains one independent absolutely continuous coordinate. A bounded nonzero log-concave function is continuous in the interior of its interval support and can have discontinuities only at its endpoints. For each fixed $s$, bounded convergence therefore gives the pointwise limit of the finite effective profiles. Pointwise limits preserve log-concavity. A profile may be identically zero for some $c$; that conditional comparison is trivial and requires no division by its mean.
+
+The projected likelihoods conditional on $V_C=v$ are precisely $H_X(X)$ and $H_Y(Y)$ from Proposition~\ref{prop:pair}, with $h=h_c$. Apply \eqref{eq:stoploss} for each $v$ and integrate against the shared reference law $Q_C$. This proves convex-order comparison of the full likelihood ratios for the cap-decreasing exchange, with all common observations included.
+
+\subsection{Finite and countable mask comparisons}
+For finite masks of equal size satisfying \eqref{eq:matching}, the matching may be chosen to fix every common index. To see this, if a common index $j$ is matched from $i\ne j$ and is itself used as the source for another target $k$, replace these two assignments by $j\mapsto j$ and $i\mapsto k$. The inequalities $a_i\ge a_j\ge a_k$ preserve admissibility. If $j$ was unused as a source, match it to itself and free $i$. Repeating fixes all common indices.
+
+The remaining source and target indices are disjoint. Replace one matched source by its target at a time, treating every other currently observed coordinate as common. The preceding exchange comparison applies at each step for the same fixed pair $(P_w,Q)$. Extra source observations can be discarded by conditional Jensen. This proves \eqref{eq:cx} for all finite target masks.
+
+For a countably infinite target mask, take increasing finite prefixes $L_k$ and their matched finite source sets $E_k\subseteq E$. Then, for every real $t$,
+\[
+ \E_Q(L_{L_k}-t)_+
+ \le\E_Q(L_{E_k}-t)_+
+ \le\E_Q(L_E-t)_+.
+\]
+The bounded likelihood martingale $L_{L_k}$ converges in $L^1$ to $L_L$. Since stop-loss functions are Lipschitz, the inequality passes to the limit. This proves \eqref{eq:cx} for arbitrary masks in the theorem.
+
+\subsection{The binary kernel and divergences}
+For completeness, convex ordering yields the asserted kernel through the classical martingale-coupling theorem of Strassen \cite{Strassen}. Let $\xi$ have the reference law of $L_E$ and $\eta$ that of $L_L$. There is a coupling with
+\[
+ \E[\xi\mid\eta]=\eta.
+\]
+Given a source observation, compute its likelihood $\xi$, draw $\eta$ from this coupling conditional on $\xi$, then draw a target observation from $Q_L$ conditional on its likelihood being $\eta$. These conditional kernels exist on the finite or countable product Borel spaces used here. Under $Q_E$ the output law is $Q_L$. Under $(P_w)_E$, the coupling is weighted by $\xi$; conditioning on $\eta$ changes that weight to $\eta$, which gives exactly $(P_w)_L$. Null-set versions are immaterial because $P_w\ll Q$.
+
+Finally, $D_\varphi((P_w)_E\Vert Q_E)=\E_Q\varphi(L_E)$, so convex order gives \eqref{eq:divergence}, or equivalently one may use the resulting binary kernel and data processing. The same kernel compares divergences in the reverse orientation. Since $\TV(P,Q)=\E_Q(L-1)_+$ and overlap is $1-\TV$, equation~\eqref{eq:tv} follows. This completes the proof of Theorem~\ref{thm:main}.
+
+\section{Original uniform conditioning and the Fabius masks}
+Let $P_0$ be the original product of uniforms on the caps, and let $Q_\beta$ be its common exponential tilt:
+\[
+ \frac{\dd Q_\beta}{\dd P_0}
+ =\frac{e^{-\beta S}}{\E_{P_0}e^{-\beta S}}.
+\]
+For any threshold $\tau$ with $P_0(S\le\tau)>0$, the conditioned law $P_0(\,\cdot\mid S\le\tau)$ is a reweighting of $Q_\beta$ by
+\[
+ w(s)=e^{\beta s}\ind_{[0,\tau]}(s).
+\]
+The total is nonnegative, so the lower cutoff does not change the law. This weight is bounded and log-concave. Theorem~\ref{thm:main} therefore applies for every real tilt, every admissible threshold, and every cap-dominating mask injection.
+
+\paragraph{A direct check of the effective profile.}
+In this application, on the relevant range $s\ge0$, \eqref{eq:effective} is a positive constant times
+\begin{equation}\label{eq:cdfprofile}
+ e^{\beta s}F_R^0(\tau-c-s),
+\end{equation}
+where $F_R^0$ is the hidden-sum CDF under the original uniform product. For $k$ hidden coordinates, the sublevel sets
+\[
+ B_t=\{r\in\textstyle\prod_{j=1}^k[0,a_j]:\sum_jr_j\le t\}
+\]
+satisfy $(1-\lambda)B_s+\lambda B_t\subseteq B_{(1-\lambda)s+\lambda t}$. Brunn--Minkowski followed by the arithmetic-geometric mean inequality makes their volume, and hence $F_R^0$, log-concave. For infinitely many hidden coordinates, the partial-sum CDFs decrease pointwise to $F_R^0$, preserving log-concavity. For no hidden coordinates the CDF is a half-line indicator. Thus \eqref{eq:cdfprofile} supplies a direct verification for the actual conditioning rule.
+
+To match the Fabius source convention exactly, let
+\[
+ S_q=\sum_{j\ge1}q^jU_j,\quad U_j\overset{\rm iid}{\sim}\operatorname{Unif}[0,1],
+ \quad t_n=\rho q^{-(n+1)},\quad T_n=t_nS_q,
+\]
+and define
+\[
+ \frac{\dd Q_n}{\dd P_0}=\frac{e^{-T_n}}{\E_{P_0}e^{-T_n}},
+ \qquad \mu_n=\E_{Q_n}T_n,\qquad
+ P_n=P_0(\,\cdot\mid T_n\le\mu_n).
+\]
+Under $Q_n$, $X_j=t_nq^jU_j$ has cap $a_j=\rho q^{j-n-1}$ and tilt $\beta=1$. The two masks in the critical-complement comparison are
+\begin{equation}\label{eq:masks}
+ B^{\rm late}_{n,m}=\{1,\ldots,n-m\},
+ \qquad B^{\rm early}_{n,m}=\{m+1,\ldots,n\}.
+\end{equation}
+The superscript names the \emph{hidden} bulk block. Both masks also hide the entire infinite boundary tail. The late-hidden mask observes the larger, earlier caps.
+
+\begin{corollary}[Every geometric ratio and finite parameter]\label{cor:fabius}
+For every $q\in(0,1)$, $\rho>0$, $n\ge2$, and $1\le m<n$, the binary experiment $(P_n,Q_n)$ observed on $B^{\rm late}_{n,m}$ Blackwell-dominates that observed on $B^{\rm early}_{n,m}$. In particular,
+\begin{equation}\label{eq:fabiusorder}
+ \operatorname{Overlap}^{\rm late}_{n,m}
+ \le\operatorname{Overlap}^{\rm early}_{n,m}.
+\end{equation}
+All $f$-divergences have the corresponding opposite information-loss order. Common observations outside the two masks may be included in both.
+\end{corollary}
+\begin{proof}
+Pair the $r$th source index $r$ with the target $m+r$. Its source cap is larger by the factor $q^{-m}>1$. Apply Theorem~\ref{thm:main} to the bounded log-concave weight $e^{T_n}\ind_{\{T_n\le\mu_n\}}$. Common observations are handled by adjoining the same indices to both masks and retaining an admissible cap matching.
+\end{proof}
+
+\section{Scope and verification}
+The kernel in Theorem~\ref{thm:main} may depend on $w$. There is generally no single kernel valid for every log-concave weight: lower-threshold indicators are themselves log-concave, and one kernel for every threshold already determines the entire sum-reweighting experiment. The arithmetic obstructions proved in \cite{Arithmetic} therefore remain valid. The present theorem settles a different comparison, the binary pair for each fixed log-concave weight.
+
+Arbitrary additive noise is not included without a further hypothesis. The proof requires interval superlevel sets for the effective conditional profile; a log-concave hidden-sum law is sufficient. The ordinary finite or countable truncated-exponential sums in the stated model meet this condition. No strict inequality is claimed; equality and strictness for the particular Fabius thresholds remain separate questions.
+
+The source's arbitrary-mask question \cite{Repository} concerns sharper cap-profile-dependent crossover behavior. The finite-parameter order \eqref{eq:fabiusorder} complements those asymptotic questions. It strengthens the comparison of the two specified masks beyond the eventual critical-window comparison in \cite{SecondOrder}, while using their exact observed-versus-hidden convention.
+
+The package contains exact rational checks of the rectangle inequality for piecewise-constant sign profiles, together with reproducible finite-product numerical checks. These support the formulas and orientation; the proofs above establish the continuous and countable statements. Pr\'ekopa marginalization, Brunn--Minkowski, convex order, and martingale coupling are classical inputs. The report makes no worldwide priority claim and is an ordinary mathematical proof, not a formalized or externally refereed result.
+
+\begin{thebibliography}{9}\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{Prekopa} A. Pr\'ekopa, \emph{On logarithmic concave measures and functions}, Acta Scientiarum Mathematicarum (Szeged) \textbf{34} (1973), 335--343, especially Theorems 6--8. \url{https://acta.bibl.u-szeged.hu/14411/1/math_034_335-343.pdf}.
+\bibitem{Strassen} V. Strassen, \emph{The existence of probability measures with given marginals}, Annals of Mathematical Statistics \textbf{36} (1965), 423--439. \href{https://doi.org/10.1214/aoms/1177700153}{doi:10.1214/aoms/1177700153}.
+\bibitem{SecondOrder} \emph{Second Order Critical Complements in Fabius Conditioning}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{Second\_Order\_Fabius\_Crossover.tex}.
+\bibitem{Arithmetic} \emph{Arithmetic Classification of Geometric Observation Masks}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{arithmetic\_geometric\_mask\_order.tex}.
+\bibitem{Repository} V. Reshetnikov, ProveIt, \emph{Critical Complements in Fabius Conditioning}, source at commit \texttt{7421a4ca60fd}, inspected 1 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7421a4ca60fdf125411edf412f825aac54278b37/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Sharp_Information_Loss/article.tex}{Pinned source on GitHub}. Full identifiers and the exact question scope are recorded in the package.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,263 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Uniform Smoothing and Commensurate Observation Masks},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\title{Uniform Smoothing and Commensurate Observation Masks}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+Universal comparison of commensurate tilted-uniform observation masks of unequal cardinalities reduces to positivity of an explicit signed cardinal spline. We prove that a finite signed lattice measure becomes nonnegative after sufficiently many convolutions with a unit uniform precisely when its generating polynomial is positive on the positive real axis. The sufficiency is a direct consequence of classical P\'olya positivity and the half-unit digit decomposition of a uniform variable. Consequently, adding sufficiently many base-cap observations to the source makes universal comparison possible exactly when the associated denominator polynomial divides the numerator. The criterion is finite and arithmetic. For the quotient $1-u+u^2$, we give an exact Bernstein certificate showing that the least smoothing order is nine, whereas every order at most eight fails.
+\end{abstract}
+
+\section{Unequal numbers of commensurate observations}
+Under a reference law $Q$, let the independent coordinates have densities
+\begin{equation}\label{eq:density}
+ q_{\beta,c}(x)=\frac{e^{-\beta x}}{Z_\beta(c)}\ind_{(0,c)}(x),
+ \qquad Z_\beta(c)=\int_0^c e^{-\beta u}\dd u,
+\end{equation}
+with a common real tilt $\beta$. The total of all coordinate caps is finite. An arbitrary independent real noise may be added to the total $T$; no moment condition is imposed on it. A mask $E$ universally dominates a mask $L$ when one Markov kernel from the $E$-observation to the $L$-observation works under every probability law
+\[
+ \frac{\dd P_w}{\dd Q}=\frac{w(T)}{\E_Qw(T)},
+ \qquad w\ge0,\quad 0<\E_Qw(T)<\infty.
+\]
+The kernel observes the source mask alone. Masks may overlap. One kernel for every positive-probability lower-threshold conditioning is equivalent to this full weight formulation \cite{Masks}.
+
+Let $\mu_E,\mu_L$ be the reference laws of the two observed sums. We use the mask convolution criterion
+\begin{equation}\label{eq:maskcriterion}
+ E\longrightarrow L
+ \quad\Longleftrightarrow\quad
+ \mu_E=\mu_L*\nu\text{ for a probability measure }\nu.
+\end{equation}
+This includes overlapping masks and independent noise \cite{Masks}. To recall why, the conditional vector law given its sum is unchanged by total-sum weighting. The sum experiments therefore suffice. A universal sum kernel, together with complement independence and cancellation of the noise characteristic function near zero, gives
+\[
+ \E[e^{zX}f(Y)]=\frac{F_E(z)}{F_L(z)}\E[e^{zY}f(Y)]
+\]
+near zero, where $X$ is the source sum and $Y$ is the kernel output with law $\mu_L$. Taking $f(y)=e^{-zy}g(y)$ shows that $X-Y$ is independent of $Y$, first near zero in transform space and then everywhere by compactness. This gives \eqref{eq:maskcriterion}. Conversely a factorization permits the conditional kernel of the target summand given its sum with the independent factor. Complement transforms cancel to give the matching target experiment. The factor is unique and compactly supported.
+
+Suppose the finite source mask has $m$ caps $ha_1,\ldots,ha_m$ and the target has $n$ caps $hb_1,\ldots,hb_n$, where $h>0$ and the cap integers are positive. Empty lists are allowed. Define
+\begin{equation}\label{eq:notation}
+ \begin{gathered}
+ r=m-n,\qquad [a]_u=1+u+\cdots+u^{a-1},\qquad \rho=e^{-\beta h},\\
+ A(u)=\prod_{i=1}^m[a_i]_u,\qquad
+ C(u)=\prod_{i=1}^n[b_i]_u,\qquad P(u)=A(u)/C(u).
+ \end{gathered}
+\end{equation}
+Write $\mu_{\beta,h}$ for the base-cap law in \eqref{eq:density}.
+
+\begin{theorem}[Exact criterion at a fixed cardinality]\label{thm:fixed}
+Universal dominance holds precisely when $r\ge0$, $C$ divides $A$ as polynomials, and the following signed measure is nonnegative:
+\begin{equation}\label{eq:candidate}
+ \nu_\beta=\mu_{\beta,h}^{*r}*
+ \left(\frac1{P(\rho)}\sum_jp_j\rho^j\delta_{hj}\right),
+ \qquad P(u)=\sum_jp_ju^j.
+\end{equation}
+The candidate has total mass one and is the unique possible factor. At $r=0$ its positivity is exactly coefficientwise nonnegativity of $P$.
+\end{theorem}
+\begin{proof}
+The block decomposition of a cap into intervals of length $h$ gives
+\[
+ F_{\beta,ha}(z)=F_{\beta,h}(z)
+ \frac{[a]_{e^{h(z-\beta)}}}{[a]_{e^{-\beta h}}},
+\]
+and hence near zero
+\begin{equation}\label{eq:transformratio}
+ \frac{F_E(z)}{F_L(z)}
+ =F_{\beta,h}(z)^r\frac{P(e^{h(z-\beta)})}{P(\rho)}.
+\end{equation}
+At $z=\beta+2\pi\ii/h$, each coordinate transform has exactly one simple zero. The entire-factor identity $F_E=F_LF_\nu$ forces $m\ge n$.
+
+Every root $\omega$ of $C$ is a root of unity different from one. Choose $z_0$ with $e^{h(z_0-\beta)}=\omega$. The base transform $F_{\beta,h}$ does not vanish there, and the exponential map has nonzero derivative. Comparing zero multiplicities forces $A$ to vanish at $\omega$ at least as often as $C$. Thus $C$ divides $A$. Monic division gives $P\in\mathbb Z[u]$, with constant coefficient and leading coefficient both one.
+
+Now \eqref{eq:transformratio} is exactly the transform of \eqref{eq:candidate}, whose mass is one and whose denominator is positive because $P(\rho)=A(\rho)/C(\rho)>0$. Compact-transform uniqueness proves necessity of positivity. If it is positive, the same transform identity proves the convolution factorization, and \eqref{eq:maskcriterion} gives sufficiency.
+\end{proof}
+
+\section{The signed spline and a finite positivity test}
+Let $\lambda$ be uniform probability measure on $[0,1]$, let $B_r$ be the density of $\lambda^{*r}$ for $r\ge1$, and put $\lambda^{*0}=\delta_0$. For $P(u)=\sum_jp_ju^j$, set
+\begin{equation}\label{eq:spline}
+ \eta_P=\sum_jp_j\delta_j,
+ \qquad f_{r,P}(x)=\sum_jp_jB_r(x-j)\quad(r\ge1).
+\end{equation}
+For $r\ge1$, the candidate in \eqref{eq:candidate} has density
+\begin{equation}\label{eq:tiltscaling}
+ \frac{h^{r-1}e^{-\beta x}}{Z_\beta(h)^rP(\rho)}
+ f_{r,P}(x/h).
+\end{equation}
+Indeed each of the $r$ uniform densities contributes its exponential tilt, and the tilt in each lattice coefficient supplies the missing shift factor. This proves that the sign is independent of $\beta$. Nonnegativity is understood almost everywhere; for $r\ge2$ the spline is continuous and the condition is equivalent to pointwise nonnegativity.
+
+The cardinal-spline formula is
+\begin{equation}\label{eq:truncatedpower}
+ B_r(x)=\frac1{(r-1)!}\sum_{k=0}^r(-1)^k\binom rk(x-k)_+^{r-1}.
+\end{equation}
+At $r=1$, interpret $y_+^0$ as $\ind_{\{y>0\}}$; knot values do not affect the law. Formula~\eqref{eq:truncatedpower} follows inductively by convolution over $[0,1]$, since integrating a truncated power gives the difference of the next two shifted powers and the binomial recurrence combines their coefficients.
+
+Let
+\[
+ c_k=[u^k](1-u)^rP(u).
+\]
+On a unit cell $x=j+t$, $0<t<1$,
+\begin{equation}\label{eq:cell}
+ (r-1)!f_{r,P}(j+t)=\sum_{k=0}^jc_k(j+t-k)^{r-1}.
+\end{equation}
+The degree-$(r-1)$ Bernstein coefficients of this polynomial are
+\begin{equation}\label{eq:bernstein}
+ b_{j,\ell}=\sum_{k=0}^jc_k
+ (j-k)^{r-1-\ell}(j+1-k)^\ell,
+ \qquad 0\le\ell\le r-1,
+\end{equation}
+with $0^0=1$. This is the binomial expansion of
+\[
+ (v+t)^{r-1}=[v(1-t)+(v+1)t]^{r-1}
+\]
+in the nonnegative basis $\binom{r-1}{\ell}t^\ell(1-t)^{r-1-\ell}$. Consequently nonnegative coefficients in \eqref{eq:bernstein} give an exact positivity certificate. If they have mixed signs, formula~\eqref{eq:cell} still permits a complete test by polynomial sign determination on $[0,1]$. For rational data this is decidable using exact real-root isolation or Sturm sequences. Only the finitely many cells in the support $[0,r+\deg P]$ are needed.
+
+\section{Eventual positivity from the theorem of P\'olya}
+The next result is a direct consequence of classical P\'olya positivity \cite{PowersReznick,Corners}. The half-unit decomposition makes its continuous-uniform application elementary.
+
+\begin{theorem}[Uniform smoothing criterion]\label{thm:smoothing}
+For a nonzero real polynomial $P$, the following are equivalent:
+\begin{enumerate}
+ \item $P(u)>0$ for every real $u>0$;
+ \item $\lambda^{*r}*\eta_P$ is a nonzero nonnegative measure for some integer $r\ge0$;
+ \item the same is true for every sufficiently large integer $r$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For real $t$, the bilateral Laplace transform of a nonzero nonnegative compact measure is strictly positive. The transform in condition 2 is $F_\lambda(t)^rP(e^t)$, and $F_\lambda(t)>0$. Thus condition 2 implies condition 1.
+
+Conversely assume condition 1. Remove an initial monomial factor $u^k$ if necessary; it only translates the signed measure. We may therefore suppose $p_0>0$. Positive-axis positivity also forces the leading coefficient to be positive. A positive constant polynomial is immediate, so let $d=\deg P\ge1$. The homogeneous form
+\[
+ H(s,t)=\sum_{j=0}^dp_js^{2j}t^{2d-2j}
+\]
+is strictly positive on $s,t\ge0$, $s+t=1$. In the interior this is $t^{2d}P((s/t)^2)>0$; at the two endpoints it is a positive extreme coefficient. P\'olya's theorem supplies $N$ for which
+\begin{equation}\label{eq:polya}
+ (1+u)^NP(u^2)
+\end{equation}
+has nonnegative coefficients, and in fact every coefficient can be made positive.
+
+Let $\lambda_{1/2}$ be uniform probability measure on $[0,1/2]$ and $\epsilon=(\delta_0+\delta_{1/2})/2$. The digit decomposition is
+\[
+ \lambda=\lambda_{1/2}*\epsilon.
+\]
+Therefore
+\begin{equation}\label{eq:halfsplit}
+ \lambda^{*N}*\eta_P
+ =\lambda_{1/2}^{*N}*
+ \left(2^{-N}\sum_\ell
+ [u^\ell]\bigl((1+u)^NP(u^2)\bigr)\delta_{\ell/2}\right).
+\end{equation}
+Both measures on the right are nonnegative. Convolving with further copies of $\lambda$ proves condition 3. Its implication to condition 2 is immediate.
+\end{proof}
+
+\paragraph{A self-contained coefficient justification.}
+For the precise P\'olya step above, put $D=2d$ and $n=N+D$. The coefficient of $u^k$ in \eqref{eq:polya}, divided by $\binom nk$, equals
+\begin{equation}\label{eq:falling}
+ \sum_{j=0}^dp_j\frac{(k)_{2j}(n-k)_{D-2j}}{(n)_D},
+\end{equation}
+where $(v)_s=v(v-1)\cdots(v-s+1)$. This follows by dividing $\binom N{k-2j}$ by $\binom nk$, with out-of-range binomial coefficients zero. Uniformly for $0\le k\le n$, expression~\eqref{eq:falling} converges to $H(k/n,1-k/n)$: divide each of its finitely many factors by $n$, whose errors are uniformly $O(1/n)$, and note that $(n)_D/n^D\to1$. The limiting form has a positive minimum on the closed simplex, so every coefficient is eventually positive. This is the classical uniform-coefficient mechanism of P\'olya's theorem, included to make the required step explicit.
+
+\section{Stabilization by adding base-cap observations}
+Adding $k$ independent base-cap $h$ coordinates to the source observation changes the cardinality difference from $r$ to $r+k$. It leaves $P=A/C$ unchanged because $[1]_u=1$. The same argument applies when such independent coordinates are already available but previously unobserved.
+
+\begin{corollary}[Exact stabilization criterion]\label{cor:stabilization}
+For finite commensurate masks, some finite number of additional base-cap source observations makes universal dominance possible if and only if $C$ divides $A$. Equivalently,
+\begin{equation}\label{eq:divisors}
+ \#\{i:d\mid a_i\}-\#\{j:d\mid b_j\}\ge0
+ \quad\text{for every integer }d\ge2.
+\end{equation}
+It suffices to test $d$ up to the largest cap integer.
+\end{corollary}
+\begin{proof}
+The polynomial divisibility obstruction in Theorem~\ref{thm:fixed} is unchanged by additional base-cap coordinates. Conversely, a polynomial quotient $P=A/C$ is strictly positive on the positive real axis, since both products of $q$-integers are positive there. Theorem~\ref{thm:smoothing} gives a sufficiently large total smoothing order. The equivalence with \eqref{eq:divisors} follows from the classical factorization
+\[
+ [a]_u=\prod_{\substack{d\mid a\\d>1}}\Phi_d(u)
+\]
+into cyclotomic polynomials.
+\end{proof}
+
+\paragraph{A terminating exact algorithm.}
+First test \eqref{eq:divisors}; if it fails, no finite addition suffices. Otherwise compute $P$, and search $N\ge0$ until every coefficient of $(1+u)^NP(u^2)$ is nonnegative. Theorem~\ref{thm:smoothing} proves termination and certifies every total smoothing order at least $N$.
+
+To find the minimum number of added observations, test the admissible total orders
+\begin{equation}\label{eq:searchrange}
+ s=\max(0,r),\ldots,\max(N,r).
+\end{equation}
+For $s=0$ inspect the coefficients of $P$; for $s\ge1$ use the finitely many rational cell polynomials in \eqref{eq:cell}. Exact real-root isolation determines their signs between their roots, including endpoints by continuity when needed. If $s_*$ is the first successful order, the answer is $k_*=s_*-r$. The lower limit in \eqref{eq:searchrange} enforces $k\ge0$, including when the original source already has more coordinates than the target. Once an order succeeds, every later order succeeds by convolution.
+
+\section{An exact threshold of nine uniform convolutions}
+Take source caps $h$ times the list consisting of one $6$ and $r+1$ copies of $1$, and target caps $(2h,3h)$. The cardinality difference is $r$, and
+\[
+ P(u)=\frac{[6]_u}{[2]_u[3]_u}=1-u+u^2.
+\]
+At $\beta=0$ and $h=1$, the signed candidate measure is
+\[
+ \lambda^{*r}*(\delta_0-\delta_1+\delta_2),
+\]
+with density $f_r(x)=B_r(x)-B_r(x-1)+B_r(x-2)$ for $r\ge1$.
+
+\begin{theorem}[Sharp smoothing order]\label{thm:nine}
+The candidate is nonnegative if and only if $r\ge9$. Consequently, for every real common tilt, precisely nine additional base-cap observations are necessary and sufficient to make the source $(h,6h)$ universally dominate the target $(2h,3h)$.
+\end{theorem}
+\begin{proof}
+The order-eight density satisfies
+\begin{align*}
+ 7!f_8(5)
+ &=5^7-9\cdot4^7+37\cdot3^7-92\cdot2^7+154=-34,\\
+ f_8(5)&=-\frac{17}{2520}<0.
+\end{align*}
+It is continuous, so the corresponding measure is not nonnegative. If any order $0\le r\le8$ were nonnegative, convolving it with $\lambda^{*(8-r)}$ would make order eight nonnegative. Thus all those orders fail.
+
+For order nine, the coefficients of $(1-u)^9(1-u+u^2)$ are
+\[
+ (1,-10,46,-129,246,-336,336,-246,129,-46,10,-1).
+\]
+Formula~\eqref{eq:bernstein} gives the exact certificate in Table~\ref{tab:certificate}. All coefficients are nonnegative. Since $B_9(x)=B_9(9-x)$, the density $f_9$ is symmetric about $11/2$, so the first six cells cover the remaining cells by reflection. Its support is $[0,11]$, and the displayed coefficients show strict positivity throughout the interior. Its integral is $P(1)=1$. This proves order nine is a probability density. Every later order is its convolution with additional uniforms, and the sign under any common tilt is unchanged by \eqref{eq:tiltscaling}.
+\end{proof}
+
+\begin{table}[ht]
+\centering\small\setlength{\tabcolsep}{4pt}
+\begin{tabular}{r|rrrrrrrrr}
+\toprule
+$j$ & $b_{j,0}$ & $b_{j,1}$ & $b_{j,2}$ & $b_{j,3}$ & $b_{j,4}$ & $b_{j,5}$ & $b_{j,6}$ & $b_{j,7}$ & $b_{j,8}$\\
+\midrule
+0&0&0&0&0&0&0&0&0&1\\
+1&1&2&4&8&16&32&64&128&246\\
+2&246&364&536&784&1136&1624&2276&3094&4047\\
+3&4047&5000&6088&7280&8512&9680&10648&11300&11573\\
+4&11573&11846&11740&11192&10192&8816&7240&5672&4293\\
+5&4293&2914&1724&904&608&904&1724&2914&4293\\
+\bottomrule
+\end{tabular}
+\caption{Degree-eight Bernstein coefficients of $8!f_9(j+t)$ on $0\le t\le1$. Symmetry about $11/2$ supplies the other five cells.}\label{tab:certificate}
+\end{table}
+
+At the exact threshold the source has ten $h$-cap coordinates and one $6h$-cap coordinate, while the target has two coordinates. The polynomial still has a negative coefficient. This shows why coefficientwise positivity was necessary in the equal-cardinality theorem of \cite{Masks} but is not necessary after uniform smoothing.
+
+For comparison, the first nonnegative half-step coefficient certificate occurs at $N=11$. The coefficients of $(1+u)^{11}(1-u^2+u^4)$ are
+\[
+ (1,11,54,154,276,308,187,33,33,187,308,276,154,54,11,1).
+\]
+This proves a sufficient bound through \eqref{eq:halfsplit}; the spline certificate improves it to the optimal order nine.
+
+\clearpage
+\section{Attribution and interpretation}
+The eventual coefficient-positivity mechanism is P\'olya's theorem. Powers and Reznick \cite{PowersReznick,Corners} give primary accounts and quantitative refinements. Handelman \cite{Handelman}, introduction pages 2--3, discusses eventual positivity of finite signed lattice measures under convolution powers and traces the discrete theory to earlier work. These are substantial antecedents; the present note makes no broad priority claim for eventual positivity.
+
+The use here is the half-unit decomposition \eqref{eq:halfsplit}, the resulting exact stabilization criterion for commensurate observation masks, and the explicit minimal-order spline certificate. The fixed-order result extends the preceding mask report \cite{Masks} to unequal cardinalities. All conclusions concern one kernel valid throughout the total-sum weight or threshold family. They do not assert that every individual two-hypothesis comparison has the same obstruction. The proofs are ordinary mathematical arguments, not formalized or externally refereed results.
+
+\begin{thebibliography}{9}\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{PowersReznick} V. Powers and B. Reznick, \emph{A new bound for P\'olya's theorem with applications to polynomials positive on polyhedra}, Journal of Pure and Applied Algebra \textbf{164} (2001), 221--229. \href{https://doi.org/10.1016/S0022-4049(00)00155-9}{doi:10.1016/S0022-4049(00)00155-9}.
+\bibitem{Corners} V. Powers and B. Reznick, \emph{A quantitative P\'olya's theorem with corner zeros}, author-hosted manuscript, 19 June 2006, introduction and Theorem 1. \url{https://www.math.emory.edu/~vicki/pub/polya2.pdf}.
+\bibitem{Handelman} D. Handelman, \emph{Matrices of positive polynomials}, Electronic Journal of Linear Algebra \textbf{19} (2009), 2--89. \href{https://doi.org/10.13001/1081-3810.1348}{doi:10.13001/1081-3810.1348}. \href{https://journals.uwyo.edu/index.php/ela/article/download/697/697/697}{Publisher full text}.
+\bibitem{Masks} \emph{Universal Comparison of Fabius Observation Masks}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{universal\_fabius\_mask\_criterion.tex}, Theorems 1.1 and 3.1. The relevant ProveIt source question is pinned in that report at commit \texttt{7421a4ca60fd}.
+\end{thebibliography}
+\end{document}
