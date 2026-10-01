@@ -323,7 +323,13 @@ byte-identical to the delivered file.
 - The sibling report
   `SetTheory/Cardinals/docs/reports/automata-and-formal-languages/constrained-crossover-closure`
   concerns constrained crossover (front-matter note of batch 44); it uses
-  nothing proved here.
+  nothing proved here. A dated note of batch 66 after Corollary 4.3 (no fixed
+  plateau test), which extends that front-matter note, summarizes its
+  Parts II–III (commit `202aafd08`): PSPACE-complete finite stabilization for
+  NFA seeds, PSPACE for DFA seeds, a quadratic rank bound, decidable
+  regularity of the full closure of context-free seeds, and a classification
+  of finitely stabilizing sparse one-marker seeds. None of it concerns
+  insertion degrees.
 - The neighbouring report
   `SetTheory/Cardinals/docs/reports/automata-and-formal-languages/shuffle-six-state-bound`
   concerns the state complexity of the shuffle operation (the six-state
