@@ -1,6 +1,6 @@
 # Exponents and q-series
 
-There are two live document packages and one unmerged archival arrival:
+There are two live document packages and two unmerged archival arrivals:
 
 - [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
   is the single canonical synthesis of forward q-series and branch-aware
@@ -21,6 +21,15 @@ There are two live document packages and one unmerged archival arrival:
   cyclotomic poles of the moment coefficients; and the exterior
   transform's pole divisor with multiplicities. Unreviewed; no Lean
   statement.
+- [`Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/`](Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/)
+  — an archival arrival of 2026-09-30, filed whole (23-page A4 PDF,
+  1,202-line source, an exact and high-precision check program): at the
+  endpoint `q → 1`, with the transform argument scaled by `t = −log q`,
+  the centered q-Fabius cumulant series is Gevrey one with refined type
+  `1/(2π)`, its Borel minor is entire and sums it exactly on the positive
+  ray, yet a natural-boundary interval rules out every sectorial
+  exponential bound — the endpoint case of the unit-circle-barrier
+  article's summation question. Unreviewed; no Lean statement.
 
 ## The 2026-09-02 consolidation
 
