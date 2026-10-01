@@ -1,0 +1,13 @@
+.PHONY: pdf verify clean
+
+pdf:
+	mkdir -p build
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=build article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=build article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error -output-directory=build article.tex
+
+verify:
+	python3 code/verify.py --output-dir audit-output
+
+clean:
+	rm -rf build audit-output

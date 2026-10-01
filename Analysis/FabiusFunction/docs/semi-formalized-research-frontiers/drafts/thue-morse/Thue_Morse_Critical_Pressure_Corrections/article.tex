@@ -35,6 +35,8 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\TT}{\mathbb T}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\CC}{\mathbb C}
@@ -959,6 +961,18 @@ The divergence order is already visible in the predecessor's spectral
 projectors. Formula \cref{eq:amplitude-c} records its exact constant for
 the normalization \cref{eq:operator}. The two successive limits in this
 corollary are not a new uniform finite-size theorem.
+% ed. (2026-09-29): the amplitude asymptotic is already in the predecessor.
+\begin{ednote}
+The asymptotic \cref{eq:amplitude-c} is not new: the predecessor
+\cite{CriticalRepo} already states, for its two simple eigenprojections
+$P_\pm(c)$, that
+$\int_0^1P_\pm(c)1\dd x\sim\pm a_b/(\pi^2\kappa_b\sqrt{|c|})$ with
+$a_b=2\log b$ (its display labelled \texttt{eq:critical-amplitudes}), and
+$\mathcal A_b(c)$ here is exactly $\int_0^1P_+(c)1\dd x$. What this article
+adds is the derivation from the normalized eigenvectors of
+\cref{thm:selection-critical}. The same applies to the corresponding
+phrases in the abstract and in the claims table of \cref{sec:intro}.
+\end{ednote}
 
 \section{Detuned eigenvectors and the selected mixture}
 \label{sec:detuning}
@@ -1299,10 +1313,13 @@ OPENBLAS_NUM_THREADS=1 python code/verify.py
 The environment-variable syntax shown is for a POSIX shell; it only
 limits numerical threading. On other shells set it using their syntax
 or omit it. The script records library versions and computation residuals.
+% ed. (2026-09-29): the default output directory is now recomputed/; double
+% hyphens are set with -{}- (\code set them as en dashes in this font).
 To skip collocation and retain only the special-function diagnostics,
-use \code{python code/verify.py --identities-only}. The option
-\code{--output-dir} sends outputs to a different directory so the shipped
-receipt need not be overwritten. The PDF is rebuilt by the supplied
+use \texttt{python code/verify.py -{}-identities-only}. By default the
+outputs go to \code{recomputed/}; the option \texttt{-{}-output-dir}
+selects another directory, and only \texttt{-{}-output-dir data}
+overwrites the shipped receipt and tables. The PDF is rebuilt by the supplied
 \code{Makefile}, or by three successive runs of pdfLaTeX. No network
 access is needed once the dependencies are installed.
 

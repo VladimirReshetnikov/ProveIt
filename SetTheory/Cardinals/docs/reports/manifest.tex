@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 111 independent mathematical research packages}}
+  pdfsubject={Catalogue of 115 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,22 +53,22 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and eleven independent mathematical research packages,\\
+  {\large One hundred and fifteen independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 29 September 2026}
+  {\normalsize 30 September 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and eleven research packages stored
+This document catalogues the one hundred and fifteen research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other nine came through ProveIt's incoming-reports procedure
-(\dir{docs/incoming}) --- six in batch~36 and one each in batches~40, 41
-and~44 --- whose archives remain in the repository's history.  Later batches
+other thirteen came through ProveIt's incoming-reports procedure
+(\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
+and~44, two in batch~60 and one each in batches~62 and~70 --- whose archives remain in the repository's history.  Later batches
 also extended existing reports; their entries name the batch.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
@@ -178,11 +178,13 @@ original archive names are recorded with every entry.
 \midrule
 \dir{quaternionic-analysis} & --- & 1\\
 \midrule
-\dir{jacobian-conjecture} & --- & 3\\
+\dir{jacobian-conjecture} & --- & 4\\
 \midrule
 \dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{111}\\
+\dir{hilbert-tenth-problem} & --- & 3\\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{115}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -424,7 +426,7 @@ report answers.}
 
 \entry{Open-query games on ordinal spaces}
 {ordinals-and-order-types/games-on-ordinals/open-query-membership-games}
-{article.pdf}{ordinal\_membership\_games.zip; batch~52: ProveIt\_Finite\_Output\_Open\_Query\_Games.zip}
+{article.pdf}{ordinal\_membership\_games.zip; batch~52: ProveIt\_Finite\_Output\_Open\_Query\_Games.zip; batch~56: ProveIt\_Filter\_Profiles\_Open\_Query\_Complexity.zip; batch~65: ProveIt\_Closure\_Word\_Duality.zip; batch~68: ProveIt\_Universal\_Word\_Profiles.zip}
 {A negative answer to Problem~1.3 of Chiozini, Csern\'ak and Soukup
 (arXiv:2510.05754v3): two copies of $[0,\omega]$ each have set-membership
 number~1, but their topological sum has value~2.  The general theorem computes
@@ -437,7 +439,31 @@ open suffixes; on Hausdorff spaces of finite height $L\le(q-1)h+s$, sharply,
 with $s$ the number of labels on the last derivative; a topological sum of
 components of depth at most $d$ has depth at most $d+\lceil\log_2 q\rceil$,
 sharply; and computing the optimal depth is polynomial for two labels but
-NP-complete for three, even on disjoint chains.  At $q=2$ it reproduces Part~I.}
+NP-complete for three, even on disjoint chains.  At $q=2$ it reproduces Part~I.
+Part~III, added in batch~56, answers Part~II's question of when that bound is
+attained, for spaces whose derived set is finite and nonempty: a coloring with
+$q_c$ colors needs exactly $q_c+\tau(G_c)$ layers, $\tau$ the directed
+feedback vertex number of a color digraph; the bound is attained exactly
+under a bin-partition condition on the partition capacities of the
+neighborhood filters; and at three labels a sum of three one-point
+free-ultrafilter spaces has value~$2$ while a sum of three convergent
+sequences has value~$3$.  Part~IV, added in batch~65, drops the separation
+and finiteness hypotheses for a fixed coloring: a layer word is admissible
+exactly when it contains as subsequences all reduced words whose nested color
+closure is nonempty.  It classifies the finite-depth behaviors, shows that the
+longest such word has the length of the least Cantor--Bendixson height of a
+Hausdorff representative, gives $q_c+\tau(G_c)$ layers whenever the second
+derivative is empty, bounds finite-poset obstructions by $mq(q-1)^{m-1}$
+points, and proves the product law $\rho(X\times Y)=\rho(X)+\rho(Y)-1$ for
+that longest length~$\rho$.  Part~V, added in batch~68, computes the worst
+case over colorings at every finite height on locally compact or sequential
+(more generally rank-accessible) Hausdorff spaces: $\max_cL=h(q-1)+\min(q,t)$
+with $t$ the size of the last nonempty derivative, also when $t$ is
+infinite, attained by one coloring constant off a countable set; it adds
+product and sum laws and an inverse theory of layer and query-depth spectra.
+Local data determining an arbitrary fixed coloring at height two, and a
+characterization of the spaces attaining that worst case (rank accessibility
+is sufficient, not necessary), remain open.}
 
 \subsection{Order-theoretic invariants without a subcategory}
 
@@ -540,7 +566,7 @@ kept.}}
 
 \entry{A coloring obstruction to maximal binary DFAO reversal}
 {automata-and-formal-languages/dfao-reversal-coloring-obstruction}
-{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip; batches~40--41: ProveIt\_DFAO\_Eventual\_Optimality.zip, ProveIt\_Binary\_DFAO\_Reversal.zip, ProveIt\_Binary\_Reversal\_Exactness.zip; batch~43: ProveIt\_Four\_Output\_Reversal.zip, ProveIt\_Four\_Output\_Reversal~(1).zip}
+{article.pdf}{dfao\_reversal\_research.zip + binary\_dfao\_reversal\_research.zip; batch~39: ProveIt\_Three\_Output\_Reversal.zip; batches~40--41: ProveIt\_DFAO\_Eventual\_Optimality.zip, ProveIt\_Binary\_DFAO\_Reversal.zip, ProveIt\_Binary\_Reversal\_Exactness.zip; batch~43: ProveIt\_Four\_Output\_Reversal.zip, ProveIt\_Four\_Output\_Reversal~(1).zip; batch~67: ProveIt\_Near\_Linear\_DFAO\_Reversal.zip, ProveIt\_DFAO\_Spectral\_Cancellation.zip}
 {For transformations $a,b$ on an $n$-element set and an output map to $k$
 labels, proves $|\tau\langle a,b\rangle|\le k^n-k!+g(k)<k^n$ for $3\le k\le n$,
 with $g(k)$ the largest order of a permutation of $k$ symbols --- the
@@ -560,11 +586,20 @@ threshold: $R_2(n,k)=k^n-\mathrm{Bip}_k(a_n,b_n)+a_nb_n$ once $n\ge N(k)\le3k^4$
 and for all $n\ge\max(7,k+1)$ when $k=4,\dots,7$ (computer-assisted below
 $N(k)$), with the lower construction imported from Davies; a non-effective
 eventual route for every $k\ge3$, 919 finite certificates and a second proof of
-the $k=3$ formula are kept.  Explicit exactness for $k\ge8$ at small $n$ stays
-open.  Part~IV, merged in batch~43 from two manuscripts on $k=4$, re-derives
-that case with an analytic threshold $n\ge26$ (against $212$), and adds
-stability, the missing-orbit inventory, the extremal output maps and a minimal
-order-15 recurrence.}
+the $k=3$ formula are kept.  Explicit exactness for $k\ge8$ below
+$\min(N(k),T(k))$, with $T(k)$ the threshold of Part~V, stays open.  Part~IV,
+merged in batch~43 from two manuscripts on $k=4$, re-derives that case with an
+analytic threshold $n\ge26$ (against $212$), and adds stability, the
+missing-orbit inventory, the extremal output maps and a minimal order-15
+recurrence.  Part~V, added in batch~67, proves the formula for every $k\ge4$
+once $n\ge T(k)=4k\log k+O(k)$ instead of $n\ge3k^4$ (so for all $k$ up to
+$cn/\log n$, $c<1/4$), with a theta-function limit of the optimal deficit when
+$n/k^2$ tends to a constant and a Gaussian law in between.  Part~VI, added in
+batch~67, determines the minimal recurrences of the explicit witness deficit
+for every fixed $k$: order~9 at three outputs (against Part~II's~12), a
+product-12 cancellation on the odd residues but not in the full sequence at
+nineteen outputs, the only product-12 cancellation at any $k$, and explicit
+tail numerators.}
 
 \entry{Synchronizing D\.zyga's automata by a cyclic retract}
 {automata-and-formal-languages/dzyga-synchronizing-retract}
@@ -582,7 +617,7 @@ $\tau(q_0)\ge4k+8$ is not proved.}
 
 \entry{Gaps in bounded-shuffle hierarchies}
 {automata-and-formal-languages/insertion-degree-spectra}
-{article.pdf}{shuffle\_spectra\_research.zip; batch~41: ProveIt\_Binary\_Insertion\_Spectra.zip}
+{article.pdf}{shuffle\_spectra\_research.zip; batch~41: ProveIt\_Binary\_Insertion\_Spectra.zip; batch~66: ProveIt\_Sharp\_Insertion\_Isolation.zip}
 {A counterexample to the insertion-degree No-Gap Conjecture of Hughes,
 arXiv:2608.27755v1, Section~11, followed by positive results: every finite set
 of positive integers containing~1 is the insertion-degree spectrum of two
@@ -596,17 +631,38 @@ iteration-depth no-gap conjecture is proved for arbitrary languages.  Part~II,
 added in batch~41, fixes the alphabet: every finite set containing~1 is the
 spectrum of finite \emph{binary} languages with the single inserted word $a^m$,
 so two letters always suffice; its $m^2$ length bound holds in its
-full-coverage class only.}
+full-coverage class only.  Part~III, added in batch~66, determines that class
+exactly: an isolated degree-$m$ output with $g$ gaps between its $a$'s
+(the two end gaps included) and $T$ letters~$a$ exists exactly when $g\ge m$
+and $T\ge\max(g(m-1)+1,\tau_m)$, with $\tau_3=12$ and $\tau_m=5m-2$ for
+$m\ge4$, so the minimum lengths for $m=3,4,5$ are $14$, $21$ and~$27$.  It
+characterizes the extremal centers and the mandatory targets, and at $m=3$
+classifies the shortest target languages: $3^9=19{,}683$ of them, of minimum
+size~37, attained by~512.}
 
 \entry{Constrained crossover closure}
 {automata-and-formal-languages/constrained-crossover-closure}
-{article.pdf}{ProveIt\_Constrained\_Crossover.zip (batch~44)}
+{article.pdf}{ProveIt\_Constrained\_Crossover.zip (batch~44); batch~66: ProveIt\_Crossover\_Stabilization.zip, ProveIt\_Crossover\_Classification.zip; batch~71: quadratic-finite-rank-package.zip}
 {Answers the question Hughes (arXiv:2608.27755v1, Section~4) leaves open on
 the complexity of deciding $L\otimes_c L=L$ for the constrained crossover of a
 context-free language: it is co-r.e.-complete.  Adds an aligned-rank no-gap
 theorem for iterated crossover and effectivity results in which Presburger
 quantifier elimination is used only as an algorithmic step.  Related to, but
-using nothing from, the insertion-degree report above.}
+using nothing from, the insertion-degree report above.  Part~II, added in
+batch~66, shows finite stabilization of regular seeds PSPACE-complete for NFA
+input, already over two letters; the upper bound also covers DFA input,
+improving Part~I's EXPSPACE bound, while the exact DFA complexity stays open;
+in the stabilizing case the rank is at most quadratic in the number of
+states.  Part~III, added in batch~66, decides regularity, inclusion and
+equality of the full closures of context-free seeds, classifies the finitely
+stabilizing sparse one-marker seeds into regular, linear non-regular and
+non-context-free closures, and shows that thresholding the exact
+stabilization depth is coNP-complete for succinct ray input.  Part~IV, added
+in batch~71, shows that the quadratic order is attained for NFAs: the
+largest finite rank $F(s)$ of a binary language recognized by an $s$-state
+NFA satisfies $(s-3)^2\le F(s)\le(2s+5)^2$ for $s\ge4$, the lower bound
+replacing Part~II's linear one; the leading constant, the exact $F(s)$ and
+the order for DFAs stay open.}
 
 \entry{A cut-sensitive attack on the first open MIX grammar case}
 {automata-and-formal-languages/mix-grammar-cut-sensitive}
@@ -673,7 +729,7 @@ show the regular fraction genuinely needs the last one.}
 
 \entry{Shifted Catalan Hankel Polynomials}
 {hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials}
-{article.pdf}{catalan\_hankel\_conjecture\_solution.zip; batch~39: ProveIt\_Catalan\_Root\_Collisions.zip; batch~42: ProveIt\_Cyclotomic\_Catalan\_Recurrences.zip; batch~53: Two\_Endpoint\_Catalan\_Confluence.zip; batch~55: ProveIt\_Interior\_Collision\_Research.zip}
+{article.pdf}{catalan\_hankel\_conjecture\_solution.zip; batch~39: ProveIt\_Catalan\_Root\_Collisions.zip; batch~42: ProveIt\_Cyclotomic\_Catalan\_Recurrences.zip; batch~53: Two\_Endpoint\_Catalan\_Confluence.zip; batch~55: ProveIt\_Interior\_Collision\_Research.zip; batch~57: ProveIt\_Catalan\_Growing\_Shifts.zip}
 {For $D_N^{(m)}(a,b)=\det(aC_{i+j+m}+bC_{i+j+m+1})$, proves the
 denominator-exponent assertion on page~4 of Barry, arXiv:2011.10827v1, and
 shows the separately printed Conjecture~2 needs an explicit one-unit shift
@@ -704,7 +760,13 @@ factorized amplitudes for several separated clusters.  For two
 equal-multiplicity roots inside the spectrum the limit is an oscillatory
 Jacobi Hankel determinant, the first correction oscillates as
 $\sin(2(N+t)\theta)$, and simple zeros move by a convergent phase-dependent
-expansion.  Limits uniform up to the endpoints remain open.}
+expansion.  Limits uniform up to the endpoints remain open.  Part~VI, added
+in batch~57, lets the shift grow with the determinant size: for real $a\ge0$
+the ratio $D_N^{(m)}(a,1)/D_N^{(m)}(0,1)$ tends to $1$ exactly when
+$aN(N+m+1)/(4m+2)\to0$, at any relative growth of $N$ and $m$; the
+size-biased inverse Jacobi zeros follow a shifted Marchenko--Pastur
+(Catalan-moment) law, and three critical scales, an algebraic free energy
+and a uniform saddle prefactor describe the crossover.}
 
 \entry{Product formulas for ballot-polynomial Hankel determinants}
 {hankel-determinants/catalan-and-ballot/ballot-polynomial-hankel-determinants}
@@ -729,12 +791,35 @@ different conjecture of that paper from the ballot-polynomial entry
 
 \entry{A parity factorization for Cigler's Conjecture 16}
 {hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity}
-{article.pdf}{cigler\_conjecture16\_research.zip}
+{article.pdf}{cigler\_conjecture16\_research.zip; batch~56: ProveIt\_Cigler\_Schur\_Recurrences.zip; batch~66: ProveIt\_Cyclotomic\_Pole\_Collapse.zip; batch~70: ProveIt\_Cigler\_Conjecture17\_Resolution.zip}
 {A complete proof of Conjecture~16 in Cigler, arXiv:2111.14492v3, Section~6
 (pp.~21--22), on the Hankel polynomials, together with a sharp stabilization
 statement: the report also determines the first coefficient at which the
-conjectured stabilization fails.  Its own README explains why this is a
-different problem from the other Cigler entries in this collection.}
+conjectured stabilization fails.  Part~II, added in batch~56, proves the
+report's experimental rectangular-Schur formula: with $a=\lfloor k/2\rfloor$
+and $b=\lfloor(k-1)/2\rfloor$ the normalized determinant is
+$s_{(n^a)}(1^a,t,(t^2)^b)$ for all $k\ge1$ and $n\ge0$.  It determines the
+exact minimal recurrence at each shift, with reduced denominator
+$\prod_{q=0}^{k-1}(1-t^qz)^{1+\lfloor q(k-1-q)/2\rfloor}$ over $\Q(t)$ and at
+every real $t\ne0,\pm1$, proves Cigler's denominators (84) and (86) minimal,
+and shows that the positive reciprocity sign printed in his (85), part of
+Conjecture~18, is false when $k=2a$ with $a$ even.
+Part~III, added in batch~66, determines the reduced denominator and the
+minimal recurrence at every complex parameter: at a primitive root of unity
+of order $\ell\ge3$ at most one residue class loses pole order, decided by an
+explicit parity test, and it loses one order except for a loss of three at
+primitive fourth roots when $k\equiv1\pmod4$.  Part~IV, added in batch~70,
+proves Cigler's Conjecture~17 in sign-corrected form: once his denominator
+$(1-t)^a(1-t^2)^{ab}$ is cleared, the determinant splits into $k$ blocks,
+polynomials in $t$ whose coefficients are integer-valued polynomials in $n$,
+of exact
+degrees $q(k-1-q)$ in $t$ and $\lfloor q(k-1-q)/2\rfloor$ in $n$, with
+explicit leading terms in $n$; their reciprocity sign is $-1$ exactly when
+$4\mid k$.  The sign printed in Cigler's (83) fails for every
+$k\equiv1\pmod4$ from $5$ on (his displayed block for $k=5$ is
+palindromic), so the conjecture as printed is false.
+Its own README explains why this is a different problem from the other
+Cigler entries in this collection.}
 
 \subsection{Arithmetic Hankel determinants}
 
@@ -1073,7 +1158,7 @@ claimed as new.}
 
 \entry{Two-coin counterexamples to generalized Shepp--Olkin thresholds}
 {log-concavity-and-unimodality/bernoulli-entropy-quasiconcavity}
-{article.pdf}{bernoulli\_entropy\_research.zip; batch~43: proveit\_product\_entropy.zip}
+{article.pdf}{bernoulli\_entropy\_research.zip; batch~43: proveit\_product\_entropy.zip; batch~57: ProveIt\_Alphabet\_Entropy.zip}
 {For every finite real $q>1$, both the R\'enyi-$q$ and the Tsallis-$q$ entropy of
 a sum of independent Bernoulli variables fail even \emph{quasi}concavity as a
 function of the parameter vector, already on the open square $(0,1)^2$ with two
@@ -1082,8 +1167,16 @@ $3.65986\ldots$ --- adjoined to Conjecture~4.2 of arXiv:1503.01570 and restated
 in arXiv:1510.05390, Section~8.  Part~II, added in batch~43, settles the
 subunit joint-concavity question for the joint bit vector only: product R\'enyi
 entropy is concave in every dimension for $0<q\le2$, and product Tsallis entropy
-is concave for every $0<q<1$ exactly when $n\le9$.  For the ordinary sum the
-question stays open; an external claim about it is recorded as unverified.}
+is concave for every $0<q<1$ exactly when $n\le9$.  Part~III, added in
+batch~57, answers Part~II's question on larger alphabets for full categorical
+simplices: for $0<q<1$ product Tsallis entropy on
+$\Delta_{k_1}\times\dots\times\Delta_{k_n}$ is concave exactly when
+$\sum_i\Theta_{k_i}(q)\le1$ for an explicit alphabet profile $\Theta_k$; at
+$q=1/2$ three factors with a common alphabet of $k$ symbols are concave
+exactly when $k\le17$; concavity for every choice of $n$ alphabets holds
+exactly when $nq\le1$; and for $1<q<2$ concavity reduces to positive
+semidefiniteness of an $n\times n$ compression matrix.  For the ordinary sum Part~I's question stays open; an
+external claim about it is recorded as unverified.}
 
 \entry{Nonreal roots survive in polynomial iterative equations}
 {log-concavity-and-unimodality/nonreal-roots-in-iterative-equations}
@@ -1142,15 +1235,16 @@ clause~(c) is the subject of the higher-order Stirling rows entry.}
 
 \section{Quaternionic analysis}
 
-One report, merged from ten manuscripts.  The subject is new to this
+One report, first merged from ten manuscripts and since extended by two
+more.  The subject is new to this
 collection, and the delivery was unusual: one expository survey and nine
 independent attempts at the same follow-up problem, all written on the same
 day.  The nine agree, which is the substance of the entry.
 
 \entry{Slice regularity and the global inverse Fueter problem}
 {quaternionic-analysis/slice-regularity-and-fueter-inversion}
-{article.pdf}{quaternionic\_analysis.zip and nine companion archives; batch~39: ProveIt\_Fueter\_Polynomial\_Periods.zip}
-{One article assembled from ten manuscripts.  Part~I is the delivered
+{article.pdf}{quaternionic\_analysis.zip and nine companion archives; batch~39: ProveIt\_Fueter\_Polynomial\_Periods.zip; batch~64: ProveIt\_Fueter\_Global\_Inversion.zip}
+{One article, first assembled from ten manuscripts.  Part~I is the delivered
 expository survey: slice regularity and Cauchy--Fueter regularity side by side,
 with Cauchy formulas, Taylor and Laurent expansions, the regular product and
 the geometry of zeros, the argument principle, Rouch\'e, open mappings,
@@ -1180,7 +1274,12 @@ report's open problem on higher dimensions in large part: in ambient dimension
 $2h+2$ one polynomial closed form of degree $2h-1$ (at $h=1$ the form
 $\theta_g+t\,\omega_g$) gives a complete obstruction, with a constructive
 inverse, a cokernel of dimension $2h\,d_V\,m$, an exact residue filtration and
-sharp size and energy constants.}
+sharp size and energy constants.  Part~XIV, added in batch~64 from a twelfth
+manuscript, carries this across the real axis and to planar domains of
+arbitrary, also infinite, connectivity: every admissible polynomial period
+character is realized, a continuous linear right inverse of the period map
+exists exactly when the admissible period rank is finite, and a continuous
+nonlinear section exists always.}
 
 \section{Graph theory}
 
@@ -1198,13 +1297,20 @@ central limit theorem, and linear-time recognition and exact uniform sampling.}
 
 \entry{A bicyclic 30-vertex graph with domination root $-4$}
 {graph-theory/domination-root-minus-four-order-30}
-{domination\_root\_30.pdf}{domination\_root\_30\_research.zip}
+{domination\_root\_30.pdf}{domination\_root\_30\_research.zip; batch~67: ProveIt\_Domination\_Cycle\_Obstructions.zip}
 {An explicit connected planar graph on 30 vertices and 31 edges, treewidth 2 and
 domination number 10, with $D(G,x)=x^{10}(x+4)Q_{19}(x)$ --- a negative answer
 to question~2 of Section~4 in Alikhani and Griswold, arXiv:2608.00109v1, which
 asks whether 33 is the minimum order.  Their 33-vertex example had already
 disproved the original integer-root conjecture; no claim of global minimality
-at 30 is made.  Three independent exact polynomial computations agree.}
+at 30 is made.  Three independent exact polynomial computations agree.
+Part~II, added in batch~67, proves $1\le|D(G,-1)|\le3^\beta$ sharply for
+cycle rank~$\beta$, a simultaneous divisibility budget for integer roots and
+their multiplicities, and the exact value sets of $|D(G,-1)|$: $\{1,3,7,9\}$
+for $\beta\le2$, so no root $-6$ at cycle rank at most two, and a
+ten-element set for $\beta\le3$ (computer-assisted).  Part~I's zero-$C$
+four-cycle search forces $|D(G,-1)|=3$, so it can produce no integer root
+below $-2$ other than a simple $-4$; no root $-6$ or $-8$ is constructed.}
 
 \entry{A marked-cycle proof of the trapezohedral domination conjecture}
 {graph-theory/trapezohedral-minimal-dominating-sets}
@@ -1275,7 +1381,7 @@ for the type of leaves in that tree.}
 
 \entry{Strict growth and the Catalan limit for adjacency-bounded 132-avoiding permutations}
 {enumerative-combinatorics/adjacency-bounded-132-avoiders}
-{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip; batch~43: ProveIt\_Largest\_Jump\_Research.zip; batch~52: ProveIt\_Macroscopic\_Jump.zip, ProveIt\_Macroscopic\_Jump\_Research.zip}
+{article.pdf}{strict\_growth\_132.zip; batch~38: Closing\_Catalan\_Growth\_Gap.zip; batch~43: ProveIt\_Largest\_Jump\_Research.zip; batch~52: ProveIt\_Macroscopic\_Jump.zip, ProveIt\_Macroscopic\_Jump\_Research.zip; batch~64: ProveIt\_Critical\_Jump\_Moments.zip; batch~68: ProveIt\_Polynomial\_Rarity.zip; batch~71: 132\_Avoider\_Crossover\_Package.zip}
 {For $132$-avoiding permutations with every adjacent difference at most $m$ and
 growth constant $\alpha_m$: proves $\alpha_{m+1}>\alpha_m$ for all $m\ge1$ ---
 the remaining strict-inequality part of Nadler's Conjecture~2 --- and the
@@ -1295,8 +1401,22 @@ length $n$ with every adjacent difference at most $\lfloor\theta n\rfloor$ is
 asymptotic to $3(2\theta-1)/\sqrt{\pi\theta(1-\theta)n}$, and the equivalent
 $3/\sqrt{\pi(1-\theta)n}$, which Part~III declined to assert, is false.  It
 also gives the exact constant of every moment $E(n-M_n)^p$, $p>1/2$ (for
-instance $E(n-M_n)\sim3\sqrt{n/\pi}$); for $\theta\le1/2$ only $o(n^{-1/2})$
-and polynomial lower bounds are proved.}
+instance $E(n-M_n)\sim3\sqrt{n/\pi}$); for $\theta\le1/2$ it proves only
+$o(n^{-1/2})$ and polynomial lower bounds.  Part~V, added in batch~64, settles
+the critical moment, $E\sqrt{n-M_n}=\frac{3}{2\sqrt\pi}\log n+c_\star+o(1)$
+with an explicit $c_\star\approx-0.9421$, and gives the first correction to
+every subcritical moment.  Part~VI, added in batch~68, gives the order of
+Part~IV's fraction for every fixed $0<\theta<1$: it is
+$\Theta(n^{-\lfloor1/\theta\rfloor/2})$, with an order-crossover scale
+$n^{1-1/(2(q-1))}$ near each $\theta=1/q$ (so the fraction is $\Theta(1/n)$
+at $\theta=1/2$).  Part~VII, added in batch~71, finds the first amplitude and
+crossover function: $n$ times the fraction at $\lfloor n/2+t\sqrt n\rfloor$
+tends to $6+12t_+/\sqrt\pi$, locally uniformly in real $t$, so the fraction
+at $\lfloor n/2\rfloor$ is asymptotic to $6/n$; and for $1/3<\theta\le1/2$
+the fraction at $\lfloor\theta n\rfloor$ is asymptotic to
+$I_3(\theta)/(2\pi n)$, with an explicit two-dimensional integral $I_3$ and
+$I_3(1/2)=12\pi$.  The amplitudes for $\theta\le1/3$ and the crossover
+functions near $\theta=1/q$, $q\ge3$, stay open.}
 
 \entry{Throwback Dynamics with Repeated Entries}
 {enumerative-combinatorics/throwback-queue-dynamics}
@@ -1372,7 +1492,7 @@ and Fibonacci numbers.}
 
 \entry{A Reflexive Root-Polytope Model for Preorder $h$-Polynomials}
 {enumerative-combinatorics/preorder-root-polytopes}
-{article.pdf}{preorder\_root\_polytopes.zip; batch~39: ProveIt\_Height\_Two\_Preorder\_Research.zip; batch~42: ProveIt\_Cactus\_Rigidity.zip; batch~44: ProveIt\_Preorder\_Gamma.zip, ProveIt\_Preorder\_Gamma\_Research.zip; batch~55: ProveIt\_Lorentzian\_Support.zip, ProveIt\_Support\_Polynomials\_Research.zip, ProveIt\_ADE\_Stability.zip, ProveIt\_Matroid\_Lifts.zip}
+{article.pdf}{preorder\_root\_polytopes.zip; batch~39: ProveIt\_Height\_Two\_Preorder\_Research.zip; batch~42: ProveIt\_Cactus\_Rigidity.zip; batch~44: ProveIt\_Preorder\_Gamma.zip, ProveIt\_Preorder\_Gamma\_Research.zip; batch~55: ProveIt\_Lorentzian\_Support.zip, ProveIt\_Support\_Polynomials\_Research.zip, ProveIt\_ADE\_Stability.zip, ProveIt\_Matroid\_Lifts.zip; batch~63: ProveIt\_Marked\_Tree\_Stability.zip; batch~64: ProveIt\_Two\_Flow\_Lattice\_Sampling.zip; batch~66: ProveIt\_Random\_Tree\_Stability.zip; batch~68: ProveIt\_Hall\_Bottlenecks.zip; batch~70: ProveIt\_Matching\_Rank\_Research.zip; batch~71: ProveIt\_Weighted\_Rank\_Three\_Leaf\_Compression.zip}
 {Proves Conjecture~5.1(c) of Athanasiadis and Chapoton (arXiv:2605.26916v1): for
 a preorder $\tau$ on $[n]$ the directed root polytope
 $C_\tau=\mathrm{conv}(\{\pm e_i\}\cup\{e_i-e_j: j\le_\tau i\})$ is reflexive with
@@ -1410,8 +1530,52 @@ classified for books and bipartite multi-theta graphs; the books show it
 strictly stronger than real-rootedness.  Part~VII, added in batch~55, shows
 that the transversal matroid of a preorder determines the preorder up to
 isomorphism and that height-two preorder matroids generate exactly the
-gammoids under minors.  Conjectures~7.2, 4.2 and~4.4 of the same paper are
-proved in the preorder-polytope reciprocity report.}
+gammoids under minors.  Part~VIII, added in batch~63, classifies stability
+for one apex adjacent to an arbitrary set of vertices of a tree (a corollary
+of Part~VI, also proved directly), with exact $O(n^5)$ enumeration,
+optimization and repair of the stable apex neighbourhoods, a sharp diameter
+window, and real-rootedness of their size-counting polynomial exactly for
+paths.  Part~IX, added in batch~64, gives explicit polynomial-time two-flow
+bijections between the demand vectors of a bipartite graph with prescribed
+support and the supplier sets matchable to it (the correspondence itself is
+Oh's), and with them an almost-uniform sampler of actual lattice points of
+every finite preorder polytope.  Part~X, added in batch~66, answers
+Part~VIII's question for a uniform random labelled tree with every vertex
+marked independently with probability~$p$: the probability that the marking
+is stable is asymptotic to $\frac98\sqrt{2\pi}\,p^3n^{5/2}e^{-pn}$ whenever
+$p\sqrt n\to\infty$, an explicit entire function governs the window
+$p\sqrt n\to\lambda$, and below it stability is asymptotically the event of
+at most two marks; for a fixed host the diameter determines the probability
+up to a polynomial factor, separating the typical rate $\log(1-p)$ from the
+annealed rate $-p$.  Part~XI, added in batch~68, answers Part~V's question on
+normalization by the matching number negatively for positive vertex weights
+on both shores: a graph with 30 vertices, 104 edges, matching number eight
+and weights in $\{1,500\}$ has a weighted support polynomial that is not
+ultra-log-concave of order eight.  A Hall-bottleneck family gives a rank-six
+phase diagram, the endpoint threshold for every core size and a lower bound
+asymptotic to $\frac43\nu$ for any normalization depending on the matching
+number $\nu$ alone; the first rank-normalized inequality holds for every
+positively weighted graph, with a defect identity.  Part~XII, added in
+batch~70, answers the unit-weight version affirmatively for matching number
+at most three, by a sum-of-squares identity, and for a connected family of
+matching number four and disjoint unions; unit weights from matching number
+four on and the one-shore version stay open.  It also proves the first
+rank-normalized inequality for weighted directed relations, gives a $9\times9$
+rank-three bimatroid obstruction, exact neighbourhood-type kernels with an
+exact support sampler, and for every finite preorder the first
+gamma-vector inequality $\gamma_1^2\ge\frac{2d}{d-1}\gamma_2$, with $d$ the
+gamma degree, which also bounds the cost of computing the gamma vector.
+Part~XIII, added in batch~71, merges leaves with a common single neighbour
+into one leaf of summed weight without changing the support polynomial, and
+so proves normalization by the matching number for arbitrary positive
+weights on both shores whenever a minimum vertex cover is split
+$1+(\nu-1)$ between the shores, hence for every weighted graph of matching
+number at most three.  A positively weighted counterexample therefore has
+matching number four, five or six, and every minimum vertex cover of it
+meets both shores in at least two vertices; at matching number four, with
+or without weights, only covers split $2+2$ remain open.
+Conjectures~7.2, 4.2 and~4.4 of the same
+paper are proved in the preorder-polytope reciprocity report.}
 
 \entry{Largest Simplex Faces under Ordinal Sums}
 {enumerative-combinatorics/simplex-faces-of-order-and-chain-polytopes}
@@ -1664,7 +1828,8 @@ $B_n-a(n)$.}
 \entry{Term counts in the derivatives of power towers}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts}
 {article.pdf}{A293239\_research\_report.zip, A290268\_partial\_results.zip,
-A281434\_exact\_algorithm\_and\_cubic\_growth.zip; batch~42: ProveIt\_A290268\_Finite\_Certificates.zip}
+A281434\_exact\_algorithm\_and\_cubic\_growth.zip; batch~42: ProveIt\_A290268\_Finite\_Certificates.zip;
+batch~70: ProveIt\_A290268\_Depth3\_Article.zip}
 {One article on three OEIS sequences that ask the same question of three
 functions: how many distinct monomials are in the fully collected $n$th
 derivative of $x^x$ (A293239), $x^{x^2}$ (A290268) and $x^{x^x}$ (A281434)?
@@ -1692,7 +1857,12 @@ Batch~42 added to the $x^{(x^2)}$ part depth certificates that close the
 nonvanishing problem at logarithmic deficits $3$ and~$4$ for every $n$ and
 improve its lower bound on the count; the open region is now deficit at least
 $5$.  Where that manuscript re-derived results already in the report, it is
-printed as a second route.}
+printed as a second route.  Batch~70 added a second proof of the
+deficit-three case (no zeros beyond the forced holes), by a
+harmonic sign law and positivity propagation in $k$ with its own finite
+certificate; that sign law proves a sign change the batch-42 data had only
+observed.  Its manuscript's claim that deficit three was still open is
+corrected in the text.}
 
 \entry{Iterated sums and products from one}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a352969-correctness-and-growth}
@@ -1782,14 +1952,15 @@ boxed identities were character-identical up to macro names.}
 
 \section{The Jacobian conjecture and Keller maps}
 
-Three reports continuing the formal project \dir{Algebra/JacobianConjecture},
+Four reports continuing the formal project \dir{Algebra/JacobianConjecture},
 which verifies in Lean and Rocq Alpöge's three-variable counterexample and a
 degree-six stable representative in five variables (its stabilization to all
 higher dimensions in Lean only); its further degree reductions are SymPy
-certificates.  None of the three
+certificates.  None of the four
 reports' own theorems is formalized; each README names the project
-declarations it builds on.  Two study the project's three-variable map; the
-third studies a different map, Gao's five-dimensional~$F_6$.
+declarations it builds on.  Three study the project's three-variable map,
+one of them its iteration; the fourth studies a different map, Gao's
+five-dimensional~$F_6$.
 
 \entry{The fiber geometry of Gao's Keller map $F_6$}
 {jacobian-conjecture/gao-f6-fiber-geometry}
@@ -1813,7 +1984,7 @@ verified dimension-five stable map.}
 
 \entry{Arithmetic local--global dichotomies for the three-variable Keller map}
 {jacobian-conjecture/arithmetic-local-global-fibers}
-{article.pdf}{ProveIt\_Arithmetic\_Local\_Global.zip}
+{article.pdf}{ProveIt\_Arithmetic\_Local\_Global.zip; batch~58: ProveIt\_Dense\_Integral\_Hasse.zip; batch~64: ProveIt\_Beyond\_Split\_Fibers.zip}
 {For the project's three-variable Keller map, gives an explicit infinite
 family of integral targets with a preimage in every $\mathbb{Z}_p^3$ but none
 in $\mathbb{Z}^3$ (each fiber is three rational points, so these are not
@@ -1825,7 +1996,17 @@ it with a rational Hasse principle over every number field.  The complex
 stratification is credited to Gao and the finite-field histograms to an
 external note.  An intake remark records an integral triple collision over the
 project's own collision value.  Not a new disproof of the Jacobian
-conjecture.}
+conjecture.  Part~II, added in batch~58, answers Part~I's density question:
+such failures are Zariski dense in every plane $C=c\ne0$, hence in
+$\mathbb{A}^3$, and none lies on $C=0$.  It gives a complete local criterion
+for completely split fibers, finds finitely many integral split fibers on
+each plane, and proves $\#\mathcal H^{\mathrm{sp}}_c(T)\sim\kappa(c)T^{2/3}$
+for the completely split failures in square boxes $|A|,|B|\le T$, with
+$\kappa(c)$ an explicit Gamma factor times an Euler product.  Part~III, added
+in batch~64, gives a complete local-integral certificate for every target,
+nonsplit fibers included, and on $C=2$ counts the integral Hasse failures in
+the same boxes: $\frac{27}{2\pi^2}T\log T+O(T)$, almost all of them
+nonsplit.}
 
 \entry{All-degree rigidity of a weighted Keller class}
 {jacobian-conjecture/weighted-keller-rigidity}
@@ -1848,6 +2029,28 @@ coefficient of $v$ in $r$: whenever $p,q,r$ are affine in $v$ that coefficient
 is constant, so the classification covers the whole affine-in-$z$ class; it
 adds dual-number slopes of every degree and a universal second-order
 obstruction.}
+
+\entry{Dynamical degrees of the three-variable Keller map}
+{jacobian-conjecture/keller-map-dynamical-degrees}
+{article.pdf}{ProveIt\_Keller\_Dynamics.zip (batch~70)}
+{Studies the project's three-variable Keller map $F$ under iteration, which
+neither the project nor the other reports touch.  Over any field of
+characteristic other than three, $\deg F^n$ satisfies
+$d_{n+2}=6d_{n+1}+d_n$ with $d_0=1$, $d_1=7$ ($1,7,43,265,\dots$), so the
+first dynamical degree is $3+\sqrt{10}$; every positive weighted degree of
+every iterate is explicit, and every coordinate's downward-completed Newton
+polyhedron has exactly two vertices.  Outside characteristic three,
+composing with a shear $z\mapsto z+y^2h(xy)$, $h\ne0$ of degree~$m$, gives
+first dynamical degree $\bigl(2m+7+\sqrt{4m^2+32m+61}\bigr)/2$; in
+characteristic zero these maps are all Keller, noninjective, of generic
+degree three and in one tame left--right equivalence class, yet their
+dynamical degrees are unbounded.  In characteristic three the second
+coordinate is $y$ exactly and the degrees follow separate closed formulas
+(first dynamical degree $4$ or $m+3$); in characteristic two the map is
+purely inseparable of degree two.  A monomial-dominance
+escape theorem gives a forward-invariant complex escape region, and integral
+points there have maximal arithmetic degree and are Zariski dense.  No Lean
+or Rocq source is supplied; the formalization route is a plan.}
 
 \section{Galois theory and radicals}
 
@@ -1882,12 +2085,128 @@ intersection theory; its checker verifies only finite identities.}
 
 \entry{Finite separating ranges for sextic block resolvents}
 {galois-theory-and-radicals/sextic-block-resolvent-separators}
-{article.pdf}{ProveIt\_Finite\_Sextic\_Separators.zip (batch~41)}
+{article.pdf}{ProveIt\_Finite\_Sextic\_Separators.zip (batch~41); batch~57: ProveIt\_Three\_Plus\_One\_Resolvents.zip; batch~70: ProveIt\_Zero\_Parameter\_Sextics.zip}
 {The project finds parameters separating the sextic pair and triple
 block-resolvent descriptors by an unbounded \texttt{Nat.find} search.  This
 report proves in writing that on the curve $(t,2t^2)$ one of $t=1,\dots,196$
 always separates both families, sharply for arbitrary complex test sets, by
 orbit counting.  The bound is not formalized; formalizing it would make that
-search bounded, and two further unbounded searches of the project remain.}
+search bounded, and two further unbounded searches of the project remain.
+Part~II, added in batch~57, shows that deciding radical solvability of an
+irreducible sextic needs no separating parameter: the sextic is solvable
+exactly when its triple resolvent has a base-field root at one parameter
+chosen in advance, or its matching resolvent has one at each of three
+distinct parameters, because a base-field matching root of a nonsolvable
+sextic comes from a Galois-invariant pentad, of which there is at most one,
+and occurs at no more than two parameters.  Part~III, added in batch~70,
+sharpens this: one compressed matching test at $t=0$ together with one triple
+test decides, by an integer certificate that the five values of a pentad
+are never all equal and by reciprocal transport; and since a pentad's
+points span an affine space of dimension at least two, the polynomial of
+false-positive parameters has degree at most one and does not vanish at
+zero, so any two distinct matching parameters suffice.  It adds a
+denominator-free Pfaffian of order twenty for the constant triple resolvent
+and a cubic $15\times15$ matrix polynomial whose determinant is the cube of
+the constant matching resolvent.}
+
+\section{Hilbert's tenth problem}
+
+Three reports continuing the formal project
+\dir{Computability/HilbertTenthProblem}, which proves MRDP in both
+directions in Lean, the universal pair $(58,4)$ and the single-fold unary
+exponential representation of Jones and Matiyasevich.  None of the reports'
+own theorems is formalized; each README names the project declarations it
+builds on.
+
+\entry{Canonical Diophantine certificates}
+{hilbert-tenth-problem/canonical-diophantine-certificates}
+{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip; batch~62: Names\_to\_Numbers\_Diophantine\_Heaps.zip, order\_free\_diophantine.zip, ProveIt\_Priority\_Pumping\_Diophantine.zip, one\_shared\_fallback\_research.zip; batch~63: Diophantine\_Certificates\_Without\_Histories.zip}
+{Diophantine representations that control their witnesses, not only their
+existence.  For Petri nets and interval-guarded translations, a convex
+quadratic integer polynomial whose natural zeros are in bijection with the
+commutation classes of enabled executions of length~$T$ (its real zero set
+is a rational polytope with exactly those lattice points), with quartic
+second routes, a Cartier--Foata variant for bounded causal height, exact
+commutation tests, $\#\mathrm P$-completeness of counting and an
+exponential lower bound for normal-form automata.  Single-fold quartics for
+multisets and nested repetitions of counter actions independent of the
+repetition counts, for ``$p(i)\ge0$ for all $i\le T$'' with $O((d+1)^3)$
+witnesses independent of~$T$, for memory logs with $24L$ witnesses, and for
+FRACTRAN and scheduled SKI runs.  For cyclic-tag and deletion-tag systems
+and fixed-read FIFO networks, certificates with one coordinate per consumed
+symbol and one guard slack, with no intermediate queue quantified; faithful
+word memory with polynomial insertion at both ends needs two natural
+coordinates.  Proves that a single-fold (finite-fold) universal halting
+polynomial exists exactly when every enumerable set has such a
+representation, an open problem not solved here.  Parts~X--XIII, added in
+batch~62 from four manuscripts: quartic certificates for dynamic heaps and
+local graph programs, with birth-order normalization of fresh names,
+two-stack universality and a proof that perpetual memory safety has no
+existential representation; for polynomials nonnegative on the real orthant,
+degrees two and three represent exactly the semilinear sets and degree four
+every enumerable set, with single-fold quadratics for semilinear sets and
+order-free self-assembly compilers; for first-enabled-rule multiset and
+FRACTRAN programs the sharp pumping threshold $2H+1$, a uniform single-fold
+quartic and c.e.-completeness of eventual periodicity; and conservative
+priority reaction networks with one shared fallback, with single-fold trace
+and minimum-fuel quartics and a least-reservoir relation whose single-fold
+(finite-fold) representability is again equivalent to that of every c.e.\ set.
+Part~XIV (batch~63): one quartic per run-length routing topology with exactly
+$4n+4m+s$ witnesses and a unique root iff the run terminates, and a fixed
+polynomial-time rank function whose single-fold (finite-fold) graph is
+equivalent to the corresponding principle for all c.e.\ sets.  Merged from
+twelve manuscripts; not a Lean formalization.}
+
+\entry{Diophantine laws of probabilistic, quantum and continuous computation}
+{hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation}
+{article.pdf}{ProveIt\_Diophantine\_Quantum\_Normalization.zip, quantum\_diophantine\_research.zip, ProveIt\_Diophantine\_Barriers.zip (batch~60); batch~62: Quartic\_Probability\_Landscapes.zip, ProveIt\_Reversible\_Equilibria.zip, Diophantine\_Certificates\_for\_Coherent\_Computation.zip, proveit\_rational\_rotations\_research.zip, dense\_rotations\_research.zip, strict\_contractions\_research.zip, Diophantine\_Contracting\_2Adic.zip, Precision\_Is\_Memory\_Diophantine\_Neural\_Computation.zip; batch~64: Rational\_Tubes\_Integer\_Zeros.zip}
+{One fixed quartic represents the output law of every effective
+probabilistic or quantum program as masses of projected roots; exact
+normalization budgets with a unique-witness quartic certificate;
+normalized two-outcome probabilities are exactly the weakly computable
+reals, and conditional comparisons are $\Sigma^0_2$-complete.  Deciding
+whether a seven-outcome rational quantum instrument in dimension four has
+an impossible outcome word is undecidable (via Neary's matrix-mortality
+theorem), with bijective quartics for words of fixed length.  One rational
+piecewise-affine map of the cube realizes every disjoint pair of
+enumerable sets as exact acceptance and robust rejection, with quartic
+safety certificates for a computable critical-noise radius.  Parts~V--VII,
+added in batch~62 from eight manuscripts: Boolean circuits compile to
+coercive integer quartics of height at most~4 whose real zeros are Boolean,
+with uniform Hessian and rounding constants, so that halting probabilities
+of fair-coin programs are root counts, component counts or Euler
+characteristics; birth--death chains with defect environments have the sharp
+spectral gap $(3-2\sqrt2)/4$ and a root mass that is rational exactly for
+eventually periodic environments; unique-witness quartics for coherent
+contraction trees over $\mathbb{Z}[e^{i\pi/4}]$, and dense rational
+$\mathrm{SO}(4)$ gate groups from the rotations $(3\pm4i)/5$, $(3\pm4j)/5$ with
+c.e.-complete state transfer or c.e.-complete membership; a fixed
+$1/2$-Lipschitz rational piecewise-linear map of $\mathbb{R}^4$ and a
+$1/2$-contraction of $\mathbb{Z}_2$ with $\Sigma^0_1$-complete exact
+half-space reachability and exact extinction; and unique-witness quadratics
+for rational clipped neural networks, whose tied four-layer synthesis is
+equivalent to Hilbert's tenth problem over~$\mathbb{Q}$.  Part~VIII (batch~64):
+complete integer tube certificates, sums of squares of quadratics with at
+most one witness, for reaching open rational targets under rational
+polynomial flows, and global mass-action normal forms that carry them to
+chemical reachability.  Merged from twelve manuscripts; not a Lean
+formalization.}
+
+\entry{Beyond halting: recurrence, progress deadlines and Diophantine liveness}
+{hilbert-tenth-problem/liveness-beyond-halting}
+{article.pdf}{Beyond\_Halting\_Diophantine\_Liveness.zip, Quadratic\_Diophantine\_Dynamics.zip (batch~62); batch~63: quadratic\_infinite\_computation.zip}
+{For computable finitely branching systems, existence of a recurrent run
+with a computable progress deadline is $\Sigma^0_3$-complete and equivalent
+to a nonempty effectively closed class of accepting schedules, and to an
+accepting schedule of hyperimmune-free degree; fixed deadlines are
+$\Pi^0_1$, bounded gaps $\Sigma^0_2$, unrestricted recurrence
+$\Sigma^1_1$-complete, with strict separations and every c.e.\ degree as an
+exact deadline spectrum.  An auxiliary-free degree-two polynomial with
+coefficients at most eight gives the transition relation of counter
+networks (degree two is minimal); a second, incoming-edge encoding has
+height six, a sum-of-squares quartic companion and an exact planar
+realization; and a two-stack quartic certifies finite runs meeting
+prescribed deadlines.  Merged from three manuscripts; not a Lean
+formalization.}
 
 \end{document}

@@ -1,0 +1,2986 @@
+{
+  "domain": "nonnegative integers",
+  "parameter": "n",
+  "polynomial": "sum of squares of residuals",
+  "degree_upper_bound": 4,
+  "time_bound": 5,
+  "input_bits": 3,
+  "machine": {
+    "states": 3,
+    "start": 0,
+    "halt": 2,
+    "r": 2,
+    "K": 5,
+    "rules": [
+      {
+        "state": 0,
+        "read": 0,
+        "target": 1,
+        "write": 1,
+        "move": "L"
+      },
+      {
+        "state": 0,
+        "read": 1,
+        "target": 0,
+        "write": 0,
+        "move": "R"
+      },
+      {
+        "state": 1,
+        "read": 0,
+        "target": 2,
+        "write": 1,
+        "move": "S"
+      },
+      {
+        "state": 1,
+        "read": 1,
+        "target": 2,
+        "write": 0,
+        "move": "L"
+      }
+    ]
+  },
+  "variables": [
+    "d_0",
+    "d_1",
+    "d_2",
+    "x_0",
+    "x_1",
+    "x_2",
+    "x_3",
+    "y_0",
+    "y_1",
+    "y_2",
+    "y_3",
+    "L_0",
+    "L_1",
+    "L_2",
+    "L_3",
+    "L_4",
+    "L_5",
+    "R_0",
+    "R_1",
+    "R_2",
+    "R_3",
+    "R_4",
+    "R_5",
+    "s_0_0",
+    "s_0_1",
+    "s_0_2",
+    "s_1_0",
+    "s_1_1",
+    "s_1_2",
+    "s_2_0",
+    "s_2_1",
+    "s_2_2",
+    "s_3_0",
+    "s_3_1",
+    "s_3_2",
+    "s_4_0",
+    "s_4_1",
+    "s_4_2",
+    "s_5_0",
+    "s_5_1",
+    "s_5_2",
+    "a_0",
+    "b_0",
+    "A_0",
+    "B_0",
+    "e_0_0_0",
+    "e_0_0_1",
+    "e_0_1_0",
+    "e_0_1_1",
+    "e_0_2_0",
+    "e_0_2_1",
+    "a_1",
+    "b_1",
+    "A_1",
+    "B_1",
+    "e_1_0_0",
+    "e_1_0_1",
+    "e_1_1_0",
+    "e_1_1_1",
+    "e_1_2_0",
+    "e_1_2_1",
+    "a_2",
+    "b_2",
+    "A_2",
+    "B_2",
+    "e_2_0_0",
+    "e_2_0_1",
+    "e_2_1_0",
+    "e_2_1_1",
+    "e_2_2_0",
+    "e_2_2_1",
+    "a_3",
+    "b_3",
+    "A_3",
+    "B_3",
+    "e_3_0_0",
+    "e_3_0_1",
+    "e_3_1_0",
+    "e_3_1_1",
+    "e_3_2_0",
+    "e_3_2_1",
+    "a_4",
+    "b_4",
+    "A_4",
+    "B_4",
+    "e_4_0_0",
+    "e_4_0_1",
+    "e_4_1_0",
+    "e_4_1_1",
+    "e_4_2_0",
+    "e_4_2_1"
+  ],
+  "residuals": [
+    {
+      "label": "input bit 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "d_0",
+            "d_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "input bit 1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "d_1",
+            "d_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "input bit 2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "d_2",
+            "d_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial binary accumulator",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "x_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial base-four accumulator",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "y_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "binary Horner 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_2"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "x_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "x_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "base-four Horner 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_2"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "y_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "y_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "binary Horner 1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "x_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "x_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "base-four Horner 1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_1"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "y_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "y_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "binary Horner 2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_0"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "x_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "x_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "base-four Horner 2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "d_0"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "y_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "y_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "input packing",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "n"
+          ]
+        },
+        {
+          "coefficient": -16,
+          "factors": [
+            "y_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial left tape",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial right tape",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "x_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 0/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_0",
+            "s_0_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 0/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_1",
+            "s_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 0/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_0_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_2",
+            "s_0_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "one state 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 1/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_1_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_0",
+            "s_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 1/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_1_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_1",
+            "s_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 1/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_1_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_2",
+            "s_1_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "one state 1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 2/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_2_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_0",
+            "s_2_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 2/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_1",
+            "s_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 2/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_2_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_2",
+            "s_2_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "one state 2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 3/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_3_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_0",
+            "s_3_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 3/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_3_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_1",
+            "s_3_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 3/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_3_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_2",
+            "s_3_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "one state 3",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 4/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_4_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_0",
+            "s_4_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 4/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_4_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_1",
+            "s_4_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 4/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_4_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_2",
+            "s_4_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "one state 4",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 5/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_5_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_0",
+            "s_5_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 5/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_5_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_1",
+            "s_5_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state bit 5/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_5_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_2",
+            "s_5_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "one state 5",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial state 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial state 1",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "initial state 2",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_0_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left division 0",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "A_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right division 0",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left bit 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "a_0",
+            "a_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right bit 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_0",
+            "b_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 0/0/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_0",
+            "s_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_0_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_0_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 0/0/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_0",
+            "s_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_0_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 0/1/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_0",
+            "s_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_0_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 0/1/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_0",
+            "s_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_0_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 0/2/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_0",
+            "s_0_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_0_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_0_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 0/2/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_0",
+            "s_0_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_0_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 0/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_0_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 0/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_0_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 0/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_0_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_0_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_0_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_0_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_1_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left update 0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_0",
+            "e_0_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_0",
+            "e_0_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "L_0",
+            "e_0_0_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_0",
+            "e_0_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_0",
+            "e_0_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_0",
+            "e_0_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right update 0",
+      "terms": [
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_0",
+            "e_0_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "B_0",
+            "e_0_0_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_0",
+            "e_0_1_0"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_0",
+            "e_0_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_0",
+            "e_0_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_0",
+            "e_0_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_0",
+            "e_0_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_0",
+            "e_0_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "e_0_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_0_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left division 1",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "A_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right division 1",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left bit 1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "a_1",
+            "a_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right bit 1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_1",
+            "b_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 1/0/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_1",
+            "s_1_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_1_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 1/0/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_1",
+            "s_1_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_1_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 1/1/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_1",
+            "s_1_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_1_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 1/1/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_1",
+            "s_1_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_1_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 1/2/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_1",
+            "s_1_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_1_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_1_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 1/2/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_1",
+            "s_1_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_1_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 1/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_1_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 1/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_1_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 1/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_1_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_1_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_1_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_1_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_2_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left update 1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_1",
+            "e_1_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_1",
+            "e_1_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "L_1",
+            "e_1_0_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_1",
+            "e_1_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_1",
+            "e_1_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_1",
+            "e_1_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right update 1",
+      "terms": [
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_1",
+            "e_1_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "B_1",
+            "e_1_0_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_1",
+            "e_1_1_0"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_1",
+            "e_1_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_1",
+            "e_1_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_1",
+            "e_1_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_2"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_1",
+            "e_1_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_1",
+            "e_1_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "e_1_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_1_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left division 2",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "A_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_2"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right division 2",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_2"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left bit 2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "a_2",
+            "a_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right bit 2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_2",
+            "b_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 2/0/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_2",
+            "s_2_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_2_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_2_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 2/0/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_2",
+            "s_2_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_2_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 2/1/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_2",
+            "s_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_2_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 2/1/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_2",
+            "s_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_2_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 2/2/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_2",
+            "s_2_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_2_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_2_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 2/2/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_2",
+            "s_2_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_2_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 2/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_2_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 2/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_2_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 2/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_2_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_2_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_2_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_2_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_3_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left update 2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_2",
+            "e_2_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_2",
+            "e_2_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "L_2",
+            "e_2_0_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_2",
+            "e_2_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_2",
+            "e_2_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_2",
+            "e_2_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right update 2",
+      "terms": [
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_2",
+            "e_2_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "B_2",
+            "e_2_0_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_2",
+            "e_2_1_0"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_2",
+            "e_2_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_2",
+            "e_2_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_2",
+            "e_2_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_3"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_2",
+            "e_2_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_2",
+            "e_2_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "e_2_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_2_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left division 3",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "A_3"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_3"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right division 3",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_3"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_3"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left bit 3",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_3"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "a_3",
+            "a_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right bit 3",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_3"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_3",
+            "b_3"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 3/0/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_3",
+            "s_3_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_3_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_3_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 3/0/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_3",
+            "s_3_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_3_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 3/1/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_3",
+            "s_3_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_3_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_3_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 3/1/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_3",
+            "s_3_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_3_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 3/2/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_3",
+            "s_3_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_3_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_3_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 3/2/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_3",
+            "s_3_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_3_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 3/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_3_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 3/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_3_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 3/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_3_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_3_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_3_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_3_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_4_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left update 3",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_3",
+            "e_3_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_3",
+            "e_3_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "L_3",
+            "e_3_0_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_3",
+            "e_3_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_3",
+            "e_3_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_3",
+            "e_3_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right update 3",
+      "terms": [
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_3",
+            "e_3_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "B_3",
+            "e_3_0_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_3",
+            "e_3_1_0"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_3",
+            "e_3_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_3",
+            "e_3_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_3",
+            "e_3_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_4"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_3",
+            "e_3_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_3",
+            "e_3_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "e_3_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_3_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left division 4",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "A_4"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_4"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right division 4",
+      "terms": [
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_4"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_4"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left bit 4",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_4"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "a_4",
+            "a_4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right bit 4",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_4"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_4",
+            "b_4"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 4/0/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_4",
+            "s_4_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_4_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_4_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 4/0/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_4",
+            "s_4_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_4_0_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 4/1/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_4",
+            "s_4_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_4_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_4_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 4/1/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_4",
+            "s_4_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_4_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 4/2/0",
+      "terms": [
+        {
+          "coefficient": 1,
+          "factors": [
+            "b_4",
+            "s_4_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_4_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "s_4_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "selector 4/2/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "b_4",
+            "s_4_2"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "e_4_2_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 4/0",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_4_0_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 4/1",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_4_0_0"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_1"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "state update 4/2",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_4_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_4_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_4_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_4_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_2"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left update 4",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_4",
+            "e_4_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "A_4",
+            "e_4_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "L_4",
+            "e_4_0_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_4",
+            "e_4_1_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_4",
+            "e_4_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "L_4",
+            "e_4_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "L_5"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right update 4",
+      "terms": [
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_4",
+            "e_4_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "B_4",
+            "e_4_0_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "B_4",
+            "e_4_1_0"
+          ]
+        },
+        {
+          "coefficient": -4,
+          "factors": [
+            "B_4",
+            "e_4_1_1"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_4",
+            "e_4_2_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "R_4",
+            "e_4_2_1"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "R_5"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_4",
+            "e_4_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "a_4",
+            "e_4_1_1"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "factors": [
+            "e_4_0_0"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "factors": [
+            "e_4_1_0"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "final halt",
+      "terms": [
+        {
+          "coefficient": -1,
+          "factors": []
+        },
+        {
+          "coefficient": 1,
+          "factors": [
+            "s_5_2"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1421 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,array,longtable,xcolor}
+\usepackage{enumitem,fancyhdr,xurl,hyperref,cleveref}
+\usepackage{aliascnt}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,
+ urlcolor=blue!40!black,pdftitle={Quadratic Renyi Growth in Geometric Convolution Channels},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Quadratic R\'enyi growth}
+\fancyhead[R]{\small Geometric convolution channels}
+\fancyfoot[L]{\small 30 September 2026}\fancyfoot[R]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.1em}
+\setlist{nosep,leftmargin=*}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+% ed. (2026-09-30): plural names corrected (delivered: "corollarys", "Corollarys").
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\theoremstyle{definition}\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Research question}
+\aliascntresetthe{problem}
+\crefname{problem}{research question}{research questions}
+\Crefname{problem}{Research question}{Research questions}
+\theoremstyle{remark}\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+\newcommand{\E}{\mathbb E}\newcommand{\Prb}{\mathbb P}
+\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\KL}{\operatorname{D}_{\mathrm{KL}}}
+\newcommand{\Bf}{\mathrm B}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\logp}{\log^+}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\asympc}{\asymp}
+\newcommand{\repo}{\texttt{ProveIt}}
+\makeatletter\let\inputtable\@@input\makeatother
+\title{\LARGE\bfseries Quadratic R\'enyi Growth\\[5pt]
+\Large A Universal Linear Correction and Endpoint Selection\\
+in Geometric Convolution Channels}
+\author{Research article prepared for Vladimir Reshetnikov}
+\date{30 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The \repo\ research draft \emph{Beyond Polynomial Diagonals} proves that the
+R\'enyi information between a geometric-uniform random series and its first
+$m$ terms has a critical order at two, but leaves the supercritical growth
+rate open. We resolve that fixed-order growth question. If $0<q<1$ is fixed,
+$L=\log(1/q)$, and $\alpha>2$, then
+\[
+ I_\alpha(S_m;X)=\frac{L}{2}(\alpha-2)m^2+B(\alpha)m
+                  +O_{q,\alpha}\bigl((\log(m+1))^2\bigr),
+\]
+where
+\[
+ B(\alpha)=\frac{\alpha(\alpha-2)}{\alpha-1}\log\alpha
+                  -(\alpha-1)\log(\alpha-1).
+\]
+In particular, the linear coefficient is independent of $q$ and there is no
+$m\log m$ term. We prove the broader result for independent
+$\operatorname{Beta}(\theta_0,\theta_1)$ innovations with
+$\theta_0,\theta_1\ge1$: both displayed coefficients are multiplied by
+$\max\{\theta_0,\theta_1\}$. The endpoint with the larger exponent supplies the
+dominant contribution.
+
+The proof combines a positive-simplex estimate for the endpoint density,
+a uniform finite-prefix estimate, and a two-variable saddle analysis whose
+allocation integral is asymptotically a beta integral. Under the probability
+measure tilted by the R\'enyi integrand, a dominant endpoint is approached on
+the scale $q^{(\alpha-1)m+o(m)}$, the residual tail on the scale
+$q^{(\alpha-2)m+o(m)}$, and the prefix accounts for the fraction
+$(\alpha-1)^{-2}$ of the endpoint deficit. We establish large-deviation
+statements for these assertions and supply exact algebraic and dyadic-density
+checks. These are mathematical proofs with computational diagnostics, not Lean
+certificates; literature-wide priority and a uniform critical crossover are
+not claimed.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The research question and the answer}
+\label{sec:introduction}
+
+\subsection{The repository-local open problem}
+The information-theoretic research program under
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/}
+studies the statistical content of the finite prefixes of an infinite
+geometric convolution. Its \emph{Nuclear Bayesian Operators} draft
+\cite{prior} establishes the existence of every finite R\'enyi order at every
+finite depth, and proves a transition in the large-depth excess above Shannon
+information. In its section ``Further research questions and proposed
+routes,'' the problem headed ``Growth above the critical R\'enyi order'' asks
+for matching growth estimates when $\alpha>2$, explicitly proposing quadratic
+growth in $m$ as a first target. The present article answers that question and
+identifies the next coefficient.
+
+This is a specific continuation, not another treatment of the polynomial
+singular spectrum, exact null modes, or the prefix-only rate-distortion
+obstruction already discussed in that draft. We do not use an unreviewed
+repository claim as a black box in the new asymptotic proof. All density and
+integral estimates needed below are proved here.
+
+The R\'enyi information throughout is
+\begin{equation}
+ I_\alpha(S;X)=D_\alpha(P_{S,X}\Vert P_S\otimes P_X).
+ \label{eq:information-convention}
+\end{equation}
+It is not Sibson information, Arimoto information, or a minimized conditional
+R\'enyi quantity. These different definitions need not have the same
+asymptotics. Our divergence convention is the standard one in
+\cite{renyi}.
+
+\subsection{The uniform channel}
+Let $U_0,U_1,\ldots$ be independent, uniform on $[0,1]$, and define
+\begin{equation}
+ X=(1-q)\sum_{j\ge0}q^jU_j,
+ \qquad S_m=(1-q)\sum_{j=0}^{m-1}q^jU_j,
+ \qquad r=q^m,\quad L=\log(1/q).
+ \label{eq:uniform-channel}
+\end{equation}
+Then $X=S_m+rZ$, where $Z$ is independent of $S_m$ and has the same law as
+$X$. The support of $X$ is $[0,1]$ and that of $S_m$ is $[0,1-r]$.
+At $q=1/2$ this is the standard geometric-uniform probability construction
+behind the Fabius function; its density is the rescaled Rvachev up-function
+\cite{arias}. In this article $f$ always denotes the \emph{density}, not the
+Fabius cumulative distribution function.
+
+The predecessor uses innovations on $[-1,1]$. Its variables are obtained by
+$X_{\mathrm{old}}=2X-1$ and
+$S_{m,\mathrm{old}}=2S_m-(1-r)$. Applying these separate invertible affine
+maps leaves the divergence in \eqref{eq:information-convention} unchanged,
+so the information values and our answer use exactly the same normalization.
+
+\begin{theorem}[The supercritical uniform law]
+\label{thm:uniform}
+For every fixed $q\in(0,1)$ and $\alpha>2$, as $m\to\infty$,
+\begin{equation}
+ \boxed{\displaystyle
+ I_\alpha(S_m;X)=\frac{\alpha-2}{2}L m^2+B(\alpha)m
+                   +O_{q,\alpha}\bigl((\log(m+1))^2\bigr),}
+ \label{eq:uniform-main}
+\end{equation}
+where
+\begin{equation}
+ B(\alpha)=\frac{\alpha(\alpha-2)}{\alpha-1}\log\alpha
+                -(\alpha-1)\log(\alpha-1).
+ \label{eq:Balpha}
+\end{equation}
+Consequently,
+\begin{align}
+ \lim_{m\to\infty}\frac{I_\alpha(S_m;X)}{m^2}
+      &=\frac{\alpha-2}{2}\log(1/q),\label{eq:quadratic-limit}\\
+ \lim_{m\to\infty}\frac{I_\alpha(S_m;X)
+                  -\frac12(\alpha-2)Lm^2}{m}
+      &=B(\alpha).\label{eq:linear-limit}
+\end{align}
+\end{theorem}
+The statement is for \emph{fixed} $q$ and \emph{fixed} $\alpha>2$.
+In particular, substituting an $m$-dependent order into
+\eqref{eq:uniform-main} is not justified by this theorem.
+
+The Shannon information is exactly $mL$. Thus the open problem phrased in
+terms of excess information has the answer
+\begin{equation}
+ I_\alpha(S_m;X)-mL
+   =\frac{\alpha-2}{2}Lm^2+\bigl(B(\alpha)-L\bigr)m
+     +O\bigl((\log(m+1))^2\bigr).
+ \label{eq:excess-main}
+\end{equation}
+Notice the subtraction of $L$ from the linear coefficient of the
+\emph{excess}. Confusing information with excess information would lose
+precisely this term.
+
+\subsection{A universality theorem}
+The phenomenon is not restricted to uniform innovations. Let the $U_j$ instead
+have the beta density
+\begin{equation}
+ h(u)=\frac{u^{\theta_0-1}(1-u)^{\theta_1-1}}
+                   {\Bf(\theta_0,\theta_1)}\,\boldsymbol1_{(0,1)}(u),
+ \qquad \theta_0,\theta_1\ge1,
+ \label{eq:beta-innovation}
+\end{equation}
+and define $X,S_m,r,L$ by the same formulas. Write
+$\theta_* =\max\{\theta_0,\theta_1\}$.
+
+\begin{theorem}[Beta-innovation universality and endpoint selection]
+\label{thm:beta-main}
+For fixed parameters in \eqref{eq:beta-innovation}, $q\in(0,1)$ and
+$\alpha>2$,
+\begin{equation}
+ I_\alpha(S_m;X)
+   =\theta_*\left[\frac{\alpha-2}{2}Lm^2+B(\alpha)m\right]
+     +O\bigl((\log(m+1))^2\bigr).
+ \label{eq:beta-main}
+\end{equation}
+If $\theta_0>\theta_1$, the lower endpoint dominates the R\'enyi integral;
+if $\theta_1>\theta_0$, the upper endpoint dominates. If the exponents are
+equal, the channel is symmetric and its two endpoint contributions are equal.
+The precise exponential comparison is given in \cref{cor:selection}.
+\end{theorem}
+The larger exponent means a thinner innovation density near that endpoint.
+The high-order likelihood moment is therefore governed by the more strongly
+suppressed endpoint, rather than the more probable one. The finite prefix
+and the infinite tail share this suppression, and their relative constraints
+produce the explicit competition studied below.
+
+\subsection{Scope and status of the contribution}
+The geometric series representation, R\'enyi divergence, the beta integral,
+Stirling asymptotics, and the Dirichlet simplex distribution are established
+tools \cite{arias,renyi,dlmf-beta,dlmf-gamma}. They are not claimed as new.
+The contribution is the proved two-term supercritical law, its beta-family
+universality, and the associated selection and allocation results for this
+channel. The inspected predecessor does not contain these results; its
+supercritical question is explicitly left open. A targeted search of the
+available primary literature did not establish a prior identical theorem,
+but that is not a certification of literature-wide priority.
+
+\section{Exact channel identities and the critical order}
+\label{sec:channel}
+Put $c=1-q$, and denote the densities of $X$ and $S_m$ by $f$ and $b_m$.
+The density of $rZ$ is $r^{-1}f(\cdot/r)$, so
+\begin{equation}
+ f(x)=\int b_m(s)r^{-1}f((x-s)/r)\dd s.
+ \label{eq:convolution}
+\end{equation}
+The joint density of $(S_m,Z)$ is $b_m(s)f(z)$. For $\alpha>1$, put
+$a=\alpha-1$ and define
+\begin{align}
+ J_{\alpha,m}&=\exp\bigl(a I_\alpha(S_m;X)\bigr),\label{eq:J}\\
+ M_{\alpha,m}&=r^aJ_{\alpha,m}
+       =\exp\bigl(a(I_\alpha(S_m;X)-mL)\bigr).
+ \label{eq:M}
+\end{align}
+A change of variables $x=s+rz$ gives
+\begin{equation}
+ M_{\alpha,m}
+ =\iint b_m(s)f(z)^\alpha f(s+rz)^{-a}\dd s\dd z.
+ \label{eq:master-integral}
+\end{equation}
+All integrands here and below are nonnegative. Integrals can first be
+interpreted in $[0,\infty]$; finiteness will follow from the endpoint estimates.
+
+\begin{lemma}[Conditional form]
+\label{lem:conditional}
+For $\alpha>1$,
+\begin{equation}
+ M_{\alpha,m}=
+ \int_0^1 f(x)^{2-\alpha}
+       \E\bigl[f(Z)^{\alpha-1}\mid X=x\bigr]\dd x.
+ \label{eq:conditional-M}
+\end{equation}
+In particular, for any measurable $E\subset(0,1)$, the contribution with
+$X\in E$ is at most
+\begin{equation}
+ \|f\|_\infty^{\alpha-1}\int_E f(x)^{2-\alpha}\dd x.
+ \label{eq:central-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The conditional density of $Z$ given $X=x$ is
+$f(z)b_m(x-rz)/f(x)$. Substitution in the right side of
+\eqref{eq:conditional-M} gives
+$\int\!\int f(z)^\alpha b_m(x-rz)f(x)^{1-\alpha}\dd z\dd x$,
+which equals \eqref{eq:master-integral}. The upper bound follows because
+$f(Z)^{\alpha-1}\le\|f\|_\infty^{\alpha-1}$.
+\end{proof}
+
+\begin{lemma}[Regularity, positivity, and convergence of prefixes]
+\label{lem:regularity}
+For the beta family with $\theta_0,\theta_1\ge1$, $f$ is bounded,
+$C^\infty$ on $\R$, positive on $(0,1)$, and zero outside $[0,1]$.
+It is flat at both endpoints. Moreover, $b_m\to f$ uniformly on $\R$.
+\end{lemma}
+\begin{proof}
+A beta density with these parameters, extended by zero, is bounded and of
+bounded variation: on $(0,1)$ it is unimodal, and endpoint jumps are allowed.
+Its distributional derivative is a finite signed measure. The convolution
+of two bounded integrable densities is continuous. To obtain $k$ continuous
+derivatives, differentiate $k$ of the first $k+2$ scaled factors in the
+distributional sense; the result is a finite signed measure convolved with
+a continuous compactly supported function. The remaining probability
+convolution preserves continuity. This works for every $k$ and proves the
+smoothness of $f$. Compact support then proves flatness.
+
+Each finite convolution is positive on the interior of its support.
+For a fixed interior point, choose a prefix long enough that the whole
+possible residual displacement remains inside that support. Integrating
+its positive density over the tail proves $f>0$ there. Boundedness follows
+already by convolution with the first bounded factor.
+
+Let $g$ be the convolution of the first two factors. It is bounded and
+uniformly continuous. Every $b_m$ for $m\ge2$ has modulus of continuity no
+larger than that of $g$. Since $0\le rZ\le r$ and $f=b_m*P_{rZ}$,
+$\|f-b_m\|_\infty\le\omega_g(r)\to0$.
+\end{proof}
+
+\begin{proposition}[The finite-excess side of the transition]
+\label{prop:subcritical}
+For the uniform and beta channels above,
+\begin{equation}
+ I_1(S_m;X)=mL.
+ \label{eq:Shannon}
+\end{equation}
+For fixed $1<\alpha\le2$,
+\begin{equation}
+ I_\alpha(S_m;X)-mL\longrightarrow
+ \frac1{\alpha-1}\log\left[
+   \left(\int_0^1 f(x)^\alpha\dd x\right)
+   \left(\int_0^1 f(x)^{2-\alpha}\dd x\right)\right].
+ \label{eq:subcritical-limit}
+\end{equation}
+At order two the second integral is $1$, the length of the support.
+\end{proposition}
+\begin{proof}
+Boundedness and compact support give finite differential entropy. Since
+$X\mid S_m=s$ has the law of $s+rZ$, the entropy difference is
+$h(X)-h(rZ)=mL$, proving \eqref{eq:Shannon}.
+For fixed $x\in(0,1)$, uniform convergence of $b_m$ gives
+\[
+ \E[f(Z)^{\alpha-1}\mid X=x]
+ =\frac{\int f(z)^\alpha b_m(x-rz)\dd z}{f(x)}
+ \longrightarrow \int f(z)^\alpha\dd z.
+\]
+Use \cref{lem:conditional}, its uniform bound on the conditional expectation,
+and dominated convergence. The dominating function $f^{2-\alpha}$ is
+integrable for these orders.
+\end{proof}
+For uniform innovations this is the previously established transition
+\cite{prior}, reproduced to fix conventions and to show how the beta extension
+fits it. The new issue is what happens after dominated convergence fails.
+Flatness alone proves divergence for $\alpha>2$, but says nothing about its
+speed. In particular, replacing the moving conditional expectation by its
+pointwise limit in \eqref{eq:conditional-M} would give an infinite integral
+and discard the finite-depth regularization that determines the answer.
+% ed. (2026-09-30): the two predecessor theorems reproved here, by label, and the agreement of constants
+\begin{ednote}
+The predecessor results reproved in \cref{prop:subcritical,prop:finiteness}
+are Theorem~\texttt{thm:renyi-phase} (the limit for $1<\alpha\le2$ and
+divergence for $\alpha>2$) and Theorem~\texttt{thm:all-renyi} (finiteness
+of every finite order at every finite depth) of
+\path{../Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/article.tex}.
+For uniform innovations these are second proofs of the same statements
+(finiteness here by the saddle bound, there by a root-Lipschitz lemma);
+the beta extension is new. The limits agree under $X_{\mathrm{old}}=2X-1$:
+the product $\int f^\alpha\cdot\int f^{2-\alpha}$ is unchanged by the affine
+map, and at $\alpha=2$ the predecessor's second integral is $2$, the length
+of $[-1,1]$, where it is $1$ here. That article now carries a reciprocal
+note at its question ``Growth above the critical R\'enyi order''.
+\end{ednote}
+
+\section{Endpoint geometry from positive simplex integrals}
+\label{sec:geometry}
+We work at the lower endpoint. Put
+\begin{equation}
+ \theta=\theta_0,\qquad \beta=\theta_1,\qquad
+ H=\frac{\Gamma(\theta+\beta)}{\Gamma(\beta)},
+ \qquad w_j=cq^j.
+ \label{eq:endpoint-notation}
+\end{equation}
+At the upper endpoint the same formulas hold after interchanging
+$\theta$ and $\beta$ and reflecting $x$ to $1-x$.
+
+\subsection{The unrestricted power simplex}
+For $n\ge1$, convolution of the functions
+$w_j^{-\theta}u^{\theta-1}/\Bf(\theta,\beta)$ on the positive half-line gives
+\begin{equation}
+ A_n(t)=K_n t^{\theta n-1},\qquad
+ K_n=\frac{H^n}{\Gamma(\theta n)c^{\theta n}
+                         q^{\theta n(n-1)/2}},\qquad t>0.
+ \label{eq:power-simplex}
+\end{equation}
+The identity follows by repeated application of Euler's beta integral
+\cite{dlmf-beta}. It can also be proved by the change of variables
+$u_j=tD_j$ on $\sum u_j=t$, where
+$(D_0,\ldots,D_{n-1})$ has Dirichlet parameters $(\theta,\ldots,\theta)$.
+In particular, $\E D_j=1/n$.
+
+The actual prefix density $b_n(t)$ is $A_n(t)$ multiplied by the Dirichlet
+expectation
+\begin{equation}
+ \E_D\left[\prod_{j<n}
+ (1-tD_j/w_j)^{\beta-1}
+ \boldsymbol1_{\{tD_j\le w_j\text{ for every }j\}}\right].
+ \label{eq:dirichlet-factor}
+\end{equation}
+The integrand in \eqref{eq:dirichlet-factor} is defined to be zero whenever
+any support constraint fails; the powers are evaluated only on the allowed
+simplex. This avoids taking a noninteger power of a negative number.
+This positive representation is useful because it avoids subtracting large
+alternating truncated-power terms.
+
+\begin{lemma}[Uniform prefix comparison in the final cell]
+\label{lem:prefix}
+Choose $\eta>0$ so small that $\eta q/c\le1/2$. For every $m$ and
+$0<u<\eta q^m$,
+\begin{equation}
+ e^{-C}K_m u^{\theta m-1}\le b_m(u)\le K_m u^{\theta m-1},
+ \label{eq:prefix-bounds}
+\end{equation}
+where $C$ depends on $q,\theta,\beta,\eta$, not on $m$ or $u$.
+For uniform innovations, $\theta=\beta=1$, equality holds with $C=0$.
+\end{lemma}
+\begin{proof}
+Here $u/w_{m-1}<\eta q/c\le1/2$, so all the indicators in
+\eqref{eq:dirichlet-factor} equal one. Since $\beta\ge1$, the product is at
+most one. Also $\log(1-v)\ge-2v$ for $0\le v\le1/2$, and
+\[
+ \sum_{j<m}\frac{uD_j}{w_j}\le\frac{u}{w_{m-1}}
+                                  \le\frac{\eta q}{c}.
+\]
+Thus the product is bounded below by
+$\exp(-2(\beta-1)\eta q/c)$, uniformly on the simplex.
+\end{proof}
+
+\subsection{A density estimate, not merely a small-ball estimate}
+The denominator of the R\'enyi integrand contains a \emph{density}. A
+small-ball estimate for $\Prb(X\le x)$ alone would not be an adequate
+substitute. The next lemma supplies a direct density estimate to enough
+precision that the $m\log m$ cancellation can be controlled.
+
+\begin{lemma}[Endpoint logarithm with a controlled linear term]
+\label{lem:density-log}
+As $T\to\infty$,
+\begin{equation}
+ \log f(e^{-T})
+ =-\frac{\theta}{2L}T^2-\frac{\theta}{L}T\log T+A_\theta T
+      +O\bigl((\log(T+1))^2\bigr),
+ \label{eq:density-log}
+\end{equation}
+where
+\begin{equation}
+ A_\theta=
+ \frac{\theta}{L}\left(1+\log\frac{L}{\theta c}\right)
+       +\frac{\log H}{L}+1-\frac{\theta}{2}.
+ \label{eq:Atheta}
+\end{equation}
+More strongly, there is an integer-valued choice
+\begin{equation}
+ n(T)=\left\lfloor\frac{T+\log(T+1)}{L}\right\rfloor-K
+       =\frac{T+\log T}{L}+O(1)
+ \label{eq:nT}
+\end{equation}
+with a fixed sufficiently large integer $K$, for which
+\begin{equation}
+ \log f(e^{-T})=\log K_{n(T)}-(\theta n(T)-1)T+O(1).
+ \label{eq:bounded-log-remainder}
+\end{equation}
+All constants are fixed once the innovation law and $q$ are fixed.
+\end{lemma}
+\begin{proof}
+Write $x=e^{-T}$ and $n=n(T)$. The choice in \eqref{eq:nT} ensures that
+$nq^n/x$ stays between positive finite constants. Taking $K$ sufficiently
+large also makes
+\begin{equation}
+ \frac{x}{n}\sum_{j<n}\frac1{w_j}
+ \le\frac{x}{ncw_{n-1}}\le\frac14
+ \label{eq:Dirichlet-small}
+\end{equation}
+for all sufficiently large $T$. Increasing $K$ multiplies $w_{n-1}/x$
+by a fixed geometric factor; this is compatible with $q^n/x=O(1/n)$.
+
+For any $t\in[x-q^n,x]$, the Dirichlet expectation of
+$\sum tD_j/w_j$ is at most $1/4$. Markov's inequality gives probability
+at least $1/2$ that this sum is at most $1/2$. On that event every
+$tD_j/w_j$ is at most $1/2$, all support restrictions are satisfied, and
+\[
+ \prod_{j<n}(1-tD_j/w_j)^{\beta-1}\ge e^{-(\beta-1)}.
+\]
+The upper bound by one remains valid everywhere. Hence
+\begin{equation}
+ \tfrac12 e^{-(\beta-1)}A_n(t)\le b_n(t)\le A_n(t)
+ \qquad (x-q^n\le t\le x).
+ \label{eq:head-density-comparison}
+\end{equation}
+For large $T$, $q^n/x<1/2$ and $\theta n-1>0$. Because
+$nq^n/x=O(1)$,
+\[
+ \frac{A_n(x-q^n)}{A_n(x)}
+  =(1-q^n/x)^{\theta n-1}\ge e^{-C_1}>0.
+\]
+The self-similar decomposition gives
+$f(x)=\E[b_n(x-q^nZ)]$ with $0\le Z\le1$. Thus
+$f(x)\asympc A_n(x)$ with constants independent of $T$, proving
+\eqref{eq:bounded-log-remainder}.
+
+To expand it, use
+\begin{align}
+ \log A_n(e^{-T})={}&-(\theta n-1)T+n\log H-\theta n\log c
+       +\frac{\theta L}{2}n(n-1)-\log\Gamma(\theta n).
+ \label{eq:An-log}
+\end{align}
+Stirling's formula \cite{dlmf-gamma}, together with
+$n=(T+\log T)/L+O(1)$, gives the two leading terms in
+\eqref{eq:density-log}. The coefficient of $T$ is
+\[
+ \frac{\theta}{L}\log L-\frac{\theta}{L}\log\theta
+ -\frac{\theta}{L}\log c+\frac{\theta}{L}
+ +\frac{\log H}{L}+1-\frac{\theta}{2},
+\]
+which is \eqref{eq:Atheta}. All remaining products contain at most two
+factors of $\log(T+1)$, or are bounded; this proves the stated remainder.
+\end{proof}
+
+\begin{remark}[Why a rough log-normal equivalent is insufficient]
+The statement $\log f(e^{-T})\sim-\theta T^2/(2L)$ would determine the
+quadratic coefficient of $I_\alpha$, but not its linear coefficient.
+The term $-\theta T\log T/L$ and the explicit $A_\theta T$ are needed:
+they cancel the prefix gamma normalization and the endpoint normalization.
+The bounded-remainder formula \eqref{eq:bounded-log-remainder} also leaves
+room for bounded lattice-scale effects; no nonexistent constant limit is
+assumed for such effects.
+\end{remark}
+
+\section{The endpoint moment and its two saddle variables}
+\label{sec:saddle}
+From now on $\alpha>2$, and we use
+\begin{equation}
+ a=\alpha-1>1,\qquad b=\alpha-2>0,
+ \qquad 1+\alpha b=a^2.
+ \label{eq:ab}
+\end{equation}
+Choose $\eta=e^{-T_0}$ sufficiently small for \cref{lem:prefix}, for the
+endpoint estimates, and for the positive beta parameters below. Let
+$M_{\alpha,m}^{(0)}$ be the part of \eqref{eq:master-integral} with
+$0<X<\eta r$.
+
+\subsection{The change of variables and every normalization factor}
+On this region set
+\begin{equation}
+ x=s+rz,\qquad \lambda=\frac{s}{x},\qquad
+ s=\lambda x,\quad z=(1-\lambda)x/r,
+ \quad x=r e^{-W},\quad W>T_0.
+ \label{eq:edge-coordinates}
+\end{equation}
+Here $0<\lambda<1$. The Jacobian of $(x,\lambda)\mapsto(s,z)$ is $x/r$.
+Using \cref{lem:prefix}, and writing $F(T)=\log f(e^{-T})$, gives
+\begin{equation}
+ M_{\alpha,m}^{(0)}\asympc
+ D_m\int_{T_0}^\infty e^{-(\theta m+1)W-aF(W+mL)}
+ \int_0^1\lambda^{\theta m-1}
+       e^{\alpha F(W-\log(1-\lambda))}\dd\lambda\dd W,
+ \label{eq:edge-master}
+\end{equation}
+with constants independent of $m$, where
+\begin{equation}
+ D_m=K_m r^{\theta m},\qquad
+ \log D_m=-\frac{\theta L}{2}m(m+1)+m\log H
+             -\theta m\log c-\log\Gamma(\theta m).
+ \label{eq:Dm}
+\end{equation}
+For uniform innovations the comparison in \eqref{eq:edge-master} is an
+identity. The factors $x/r$ from the Jacobian and $\dd x=x\dd W$ are
+responsible for the $+1$ in $\theta m+1$; omitting it changes the linear term.
+
+The variable $W$ determines how far inside the last geometric scale the
+source approaches the endpoint. The variable $\lambda$ determines how much
+of this deficit is supplied by the prefix. Both must be optimized.
+
+\subsection{Reducing the allocation integral to a beta integral}
+Define the smooth comparison function
+\begin{equation}
+ F_0(T)=-\frac{\theta T^2}{2L}-\frac{\theta T\log T}{L}+A_\theta T.
+ \label{eq:F0}
+\end{equation}
+By \cref{lem:density-log}, $F(T)=F_0(T)+O((\log(T+1))^2)$.
+
+\begin{lemma}[Uniform allocation estimate]
+\label{lem:allocation-integral}
+Fix $0<d_1<d_2<\infty$. Uniformly for $d_1m\le W\le d_2m$,
+\begin{align}
+ \log\int_0^1\lambda^{\theta m-1}
+ e^{\alpha F(W-\log(1-\lambda))}\dd\lambda
+  =\alpha F_0(W)
+    +\log\Bf\left(\theta m,\frac{\alpha\theta W}{L}+1\right)
+    +O\bigl((\log(m+1))^2\bigr).
+ \label{eq:allocation-beta}
+\end{align}
+\end{lemma}
+\begin{proof}
+Put $k=-\log(1-\lambda)\ge0$. For all sufficiently large $W$, the explicit
+formula for $F_0$ gives
+\begin{align*}
+ F_0(W+k)-F_0(W)
+  ={}&-\frac{\theta Wk}{L}-\frac{\theta k^2}{2L}+A_\theta k\\
+ &-\frac{\theta}{L}\bigl((W+k)\log(W+k)-W\log W\bigr).
+\end{align*}
+The last bracket is nonnegative. The error $O(\log^2(W+k+1))$ can be bounded
+by $C\log^2(W+1)+\theta k^2/(4L)+C'$. Consequently,
+\begin{equation}
+ F(W+k)\le F_0(W)
+    -\left(\frac{\theta W}{L}-A_\theta\right)k
+    +C\log^2(W+1)+C'.
+ \label{eq:allocation-upper}
+\end{equation}
+Integration proves an upper bound with beta parameters
+$\theta m$ and $\alpha\theta W/L-\alpha A_\theta+1$.
+On the stated range, shifting the second beta parameter by the fixed number
+$-\alpha A_\theta$ changes its logarithm by $O(1)$, by the gamma ratio
+formula or Stirling's formula.
+
+For a lower bound, restrict $\lambda$ to a fixed compact interval inside
+$(0,1)$ containing the means of the beta distributions with parameters
+$\theta m$ and $\alpha\theta W/L+1$, for every $W/m\in[d_1,d_2]$.
+On this interval $k$ is bounded and
+\[
+ F(W+k)=F_0(W)-\frac{\theta Wk}{L}+O(\log^2(W+1)).
+\]
+The chosen interval contains at least half the beta mass for all sufficiently
+large $m$, uniformly in $W$: its mean stays away from the endpoints and its
+variance is $O(1/m)$, as follows from the beta integral. This proves the
+matching lower bound.
+\end{proof}
+
+\subsection{Global localization before local expansion}
+It is not enough to find a favorable stationary point. The very small
+endpoint tail and the regions where $\lambda$ approaches zero or one must
+also be controlled.
+
+\begin{lemma}[Localization of the radial integral]
+\label{lem:localization}
+There are constants $0<d_1<bL<d_2<\infty$ such that the part of
+\eqref{eq:edge-master} with $W\notin[d_1m,d_2m]$ is exponentially smaller,
+at speed $m^2$, than its whole value. On the retained interval its logarithm
+differs by $O(\log^2(m+1))$ from the logarithm of
+\begin{equation}
+ \int_{d_1m}^{d_2m}\exp(E_m(W))\dd W,
+ \label{eq:Em-integral}
+\end{equation}
+where
+\begin{align}
+ E_m(W)={}&\log D_m-(\theta m+1)W
+       +\alpha F_0(W)-aF_0(W+mL)\nonumber\\
+       &+\log\Bf\left(\theta m,\frac{\alpha\theta W}{L}+1\right).
+ \label{eq:Em}
+\end{align}
+\end{lemma}
+\begin{proof}
+Take $T_0$ large enough that the second beta parameter in the upper bound
+\eqref{eq:allocation-upper} is at least one. That beta integral is at most
+$1/(\theta m)$. The quadratic part of the remaining exponent, including the
+quadratic term of $\log D_m$, is exactly
+\begin{equation}
+ \frac{\theta L}{2}abm^2
+             -\frac{\theta}{2L}(W-bmL)^2.
+ \label{eq:quadratic-landscape}
+\end{equation}
+All other terms are bounded in absolute value by
+$C(m+W+1)\log(m+W+2)$. For $W$ of order $m$, this is $o(m^2)$.
+For $W$ much larger than $m$, it is dominated by a fixed positive fraction of
+$W^2$, uniformly once $m$ is large. Thus choosing $d_1<bL<d_2$ away from
+$bL$ and $d_2$ sufficiently large gives a Gaussian-integrable upper bound
+outside the interval, with a loss $c_1m^2$ from the maximum in
+\eqref{eq:quadratic-landscape}.
+
+A lower bound of size
+$\exp(\theta Labm^2/2-O(m\log(m+1)))$ is obtained by taking $W$ in a fixed
+width interval about $bmL$ and $\lambda$ in a fixed compact subinterval of
+$(0,1)$. This proves that the omitted tails are relatively
+$\exp(-c_2m^2)$ after increasing $m$ if necessary. Finally,
+\cref{lem:allocation-integral} and the uniform bound
+$F(W+mL)-F_0(W+mL)=O(\log^2(m+1))$ prove the assertion on the retained
+interval. Multiplicative constants from \cref{lem:prefix} contribute only
+$O(1)$ to its logarithm.
+\end{proof}
+
+\subsection{Evaluation of the radial saddle}
+\begin{lemma}[Saddle evaluation at logarithmic-square accuracy]
+\label{lem:radial}
+With $W_0=bmL$,
+\begin{equation}
+ \log M_{\alpha,m}^{(0)}=E_m(W_0)+O(\log^2(m+1)).
+ \label{eq:radial-evaluation}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiate the explicit comparison exponent \eqref{eq:Em}, not the
+unknown error in $F$. Since
+$F_0''(T)=-\theta/L-\theta/(LT)$, and the second derivative of the log beta
+term is $O(1/m)$ when both parameters are proportional to $m$, one has
+\begin{equation}
+ E_m''(W)=-\frac{\theta}{L}+O(1/m)
+ \label{eq:Em-concavity}
+\end{equation}
+uniformly on the interval in \cref{lem:localization}. The beta derivative
+assertion follows directly from
+$\Bf(u,v)=\Gamma(u)\Gamma(v)/\Gamma(u+v)$ and the usual differentiated
+Stirling estimates. Alternatively, the trigamma series gives it directly.
+The same formulas give
+\begin{equation}
+ E_m'(W_0)=O(\log(m+1)).
+ \label{eq:Em-first-derivative}
+\end{equation}
+In fact its leading term is $-\theta\log m/L$, but its value is not needed.
+The maximum of $E_m$ is therefore within $O(\log(m+1))$ of $W_0$ and its
+height differs from $E_m(W_0)$ by $O(\log^2(m+1))$.
+Uniform strict concavity bounds the integral above by a constant times the
+exponential of that height. Integrating over an interval of length one about
+$W_0$ supplies a lower bound with logarithmic loss at most $O(\log(m+1))$.
+Apply \cref{lem:localization}.
+\end{proof}
+
+\subsection{The cancellation that produces universality}
+The next evaluation is the algebraic center of the proof. All terms of size
+$m\log m$ must be retained before cancellation.
+
+\begin{proposition}[One-endpoint asymptotic]
+\label{prop:endpoint-asymptotic}
+Let $K(\alpha)=\alpha b\log\alpha-a^2\log a=aB(\alpha)$. Then
+\begin{align}
+ \log M_{\alpha,m}^{(0)}
+  & =\frac{\theta L}{2}abm^2
+       +\bigl(-aL+\theta K(\alpha)\bigr)m
+       +O(\log^2(m+1)),\label{eq:endpoint-M}\\
+ \log J_{\alpha,m}^{(0)}
+  & =\frac{\theta L}{2}abm^2
+       +\theta K(\alpha)m+O(\log^2(m+1)).
+ \label{eq:endpoint-J}
+\end{align}
+Here $J^{(0)}=r^{-a}M^{(0)}$ is the corresponding contribution to the
+unnormalized R\'enyi moment.
+\end{proposition}
+\begin{proof}
+By \cref{lem:radial}, it suffices to evaluate $E_m(bmL)$. Stirling's formula
+and $1+\alpha b=a^2$ give
+\begin{equation}
+ \log\Bf(\theta m,\alpha\theta bm+1)
+ =\theta m\bigl[\alpha b\log(\alpha b)-2a^2\log a\bigr]
+       +O(\log(m+1)).
+ \label{eq:beta-stirling}
+\end{equation}
+The quadratic coefficient is
+\[
+ \theta L\left(-\frac12-b-\frac{\alpha b^2}{2}
+                                    +\frac{a^3}{2}\right)
+       =\frac{\theta L}{2}ab.
+\]
+The $m\log m$ coefficient is $-\theta+\theta(a^2-\alpha b)=0$.
+Before simplification, the remaining coefficient of $m$ is
+\begin{align}
+ C={}&-\frac{\theta L}{2}+\log H-\theta\log c
+          -\theta\log\theta+\theta-bL-A_\theta L\nonumber\\
+    &+\theta\bigl[-\alpha b\log(bL)+a^2\log(aL)\bigr]
+      +\theta\bigl[\alpha b\log(\alpha b)-2a^2\log a\bigr].
+ \label{eq:raw-linear}
+\end{align}
+Inserting \eqref{eq:Atheta} cancels $\log H$, $\log c$, $\log\theta$, and
+$\log L$. The result is
+\begin{equation}
+ C=-aL+\theta\bigl[\alpha b\log\alpha-a^2\log a\bigr].
+ \label{eq:linear-cancelled}
+\end{equation}
+This proves \eqref{eq:endpoint-M}. Multiplying by $r^{-a}$ adds $aLm$ to the
+logarithm and proves \eqref{eq:endpoint-J}.
+\end{proof}
+The parameter $H$ contains the normalization at the chosen innovation
+endpoint and depends on the opposite beta exponent. Its cancellation is
+why the linear coefficient is not contaminated by that normalization.
+Only the endpoint exponent $\theta$ survives.
+
+\section{Assembling the two endpoints and the interior}
+\label{sec:assembly}
+Let $M^{(1)}$ be the contribution with $1-\eta r<X<1$, and let
+$M^{\mathrm{mid}}$ be the remaining contribution. Reflection changes the
+lower-endpoint exponent $\theta_0$ to $\theta_1$, so
+\cref{prop:endpoint-asymptotic} applies to $M^{(1)}$ as well.
+
+\begin{lemma}[The interior is negligible above order two]
+\label{lem:middle}
+For fixed $\alpha>2$,
+\begin{equation}
+ \log M_{\alpha,m}^{\mathrm{mid}}
+ \le\frac{\theta_*L}{2}b m^2+O(m\log(m+1)).
+ \label{eq:middle-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+On a fixed closed subinterval of $(0,1)$, $f$ is bounded below by a positive
+constant. On the two remaining portions of
+$[\eta r,1-\eta r]$, \cref{lem:density-log} and its reflected version give
+\[
+ -\log f(x)\le\frac{\theta_*L}{2}m^2+O(m\log(m+1)),
+\]
+since the corresponding logarithmic endpoint distance is at most
+$mL+T_0$. The estimate \eqref{eq:central-bound} now proves the claim.
+\end{proof}
+The largest endpoint coefficient in \eqref{eq:endpoint-M} is
+$\theta_*Lab/2$, which exceeds the middle coefficient
+$\theta_*Lb/2$ by $\theta_*Lb^2/2>0$.
+Hence the middle contribution is relatively exponentially small at speed
+$m^2$. Taking the logarithm of the sum of the two endpoint terms selects
+% ed. (2026-09-30): "the larger $\theta_e$" read "the endpoint with the larger exponent"; $\theta_e$ is defined only in Section 6.
+the endpoint with the larger exponent $\theta_0$ or $\theta_1$; when they are equal, summing them changes the logarithm
+only by $\log2$. Finally divide \eqref{eq:endpoint-J} by $a$.
+This proves \cref{thm:beta-main}, and \cref{thm:uniform} is its
+$\theta_0=\theta_1=1$ case.
+
+\begin{corollary}[Quantitative endpoint selection]
+\label{cor:selection}
+The two endpoint contributions satisfy
+\begin{equation}
+ \log\frac{M_{\alpha,m}^{(0)}}{M_{\alpha,m}^{(1)}}
+ = (\theta_0-\theta_1)
+    \left[\frac{Lab}{2}m^2+K(\alpha)m\right]
+       +O(\log^2(m+1)).
+ \label{eq:endpoint-ratio}
+\end{equation}
+The normalized middle contribution satisfies
+\begin{equation}
+ \limsup_{m\to\infty}\frac1{m^2}
+ \log\frac{M_{\alpha,m}^{\mathrm{mid}}}{M_{\alpha,m}}
+ \le-\frac{\theta_*L}{2}b^2.
+ \label{eq:middle-probability}
+\end{equation}
+If the endpoint exponents are equal, each endpoint carries asymptotically
+one half of the tilted mass. If they differ, the larger-exponent endpoint
+carries asymptotically all of it.
+\end{corollary}
+
+\begin{proposition}[Every finite order at every finite depth]
+\label{prop:finiteness}
+For each fixed $m\ge1$ and every finite $\alpha>1$, $I_\alpha(S_m;X)$ is
+finite for the beta channels considered here.
+\end{proposition}
+\begin{proof}
+The middle contribution is finite because its denominator is bounded below.
+For an endpoint, use \eqref{eq:edge-master} and the bound
+\eqref{eq:allocation-upper}. With $m$ fixed, the coefficient of $W^2$ in
+$\alpha F_0(W)-aF_0(W+mL)$ is $-\theta/(2L)$. All remaining terms are
+$O(W\log(W+1))$ or linear in $W$. The radial integral is therefore finite.
+The inner allocation integral is bounded by a beta integral once $T_0$ is
+large enough; the omitted finite $W$ interval can be treated by increasing
+$T_0$ and regarding it as part of the middle region. Reflect for the other
+endpoint.
+\end{proof}
+Thus quadratic divergence with depth is fully compatible with existence
+at every fixed depth. No finite-$m$ singularity at $\alpha=2$ is asserted.
+
+\section{Which rare configurations create the large moment?}
+\label{sec:tilt}
+The saddle variables also have a probabilistic interpretation. Define a
+probability measure $\mathsf Q_{\alpha,m}$ on $(s,z)$ by
+\begin{equation}
+ \mathsf Q_{\alpha,m}(\dd s\dd z)
+ =\frac{b_m(s)f(z)^\alpha f(s+rz)^{-a}}{M_{\alpha,m}}
+                          \dd s\dd z.
+ \label{eq:tilted-measure}
+\end{equation}
+This is the \emph{R\'enyi-tilted} measure, not the ordinary joint law of the
+prefix and the tail. Statements about its typical configurations describe
+which events dominate a likelihood moment; they do not say that an ordinary
+sample of $X$ usually lies near an endpoint.
+
+For endpoint $e=0$, let
+$d=x$, $u=s$, and $v=z$. For endpoint $e=1$, let
+$d=1-x$, $u=(1-r)-s$, and $v=1-z$. In either case
+\begin{equation}
+ d=u+rv,\qquad \lambda=u/d,\qquad W=\log(r/d),
+ \label{eq:deficit-coordinates}
+\end{equation}
+and we condition on the endpoint cell $d<\eta r$. Write
+$\mathsf Q_{\alpha,m}^{(e)}$ for this conditional measure and
+$\theta_e$ for its innovation exponent.
+
+\begin{theorem}[Radial large deviations inside an endpoint cell]
+\label{thm:radial-LDP}
+Under $\mathsf Q_{\alpha,m}^{(e)}$, the variables
+$W/(mL)$ satisfy a large-deviation principle on $[0,\infty)$ with speed
+$m^2$ and good rate function
+\begin{equation}
+ R_e(t)=\frac{\theta_eL}{2}(t-b)^2,
+ \qquad t\ge0.
+ \label{eq:radial-rate}
+\end{equation}
+In particular $W/(mL)\to b$ in probability.
+\end{theorem}
+\begin{proof}
+On every compact subinterval of $(0,\infty)$, put $W=mLt$ in the
+endpoint integral. \Cref{lem:density-log,lem:prefix} and the beta integral
+estimate show that its logarithmic density, divided by $m^2$, converges
+uniformly to
+\[
+ \frac{\theta_eL}{2}\bigl(ab-(t-b)^2\bigr).
+\]
+The factor $mL$ from the change of variables is negligible on this scale.
+The upper estimates in \cref{lem:localization} give exponential tightness
+at $+\infty$. At $t=0$, a lower bound is obtained by integrating over a
+fixed positive-length interval of $W>T_0$ and a compact interval of
+$\lambda$; its coefficient is $\theta_eLb/2$, the same as the continuous
+extension of the displayed expression at zero. Upper bounds near zero
+follow from the same quadratic bound with errors $O(m\log(m+1))$.
+
+Cover a compact closed set by finitely many small intervals and apply the
+uniform upper bound; integrate on a small interval about any point of an
+open set for the lower bound. Exponential tightness handles the unbounded
+remainder. Subtract the normalizing coefficient $\theta_eLab/2$ from
+\eqref{eq:endpoint-M}. This gives the upper and lower large-deviation
+bounds with \eqref{eq:radial-rate}. Its sublevel sets are compact.
+\end{proof}
+
+\begin{theorem}[Universal allocation and its exponential penalty]
+\label{thm:allocation-LDP}
+Under $\mathsf Q_{\alpha,m}^{(e)}$, the variables $\lambda$ satisfy a
+large-deviation principle with speed $m$ and rate function
+\begin{equation}
+ A_e(\lambda)=\theta_e\left[
+   \log\frac{\lambda_*}{\lambda}
+   +\alpha b\log\frac{1-\lambda_*}{1-\lambda}\right],
+ \quad 0<\lambda<1,\qquad \lambda_*=\frac1{a^2},
+ \label{eq:allocation-rate}
+\end{equation}
+with value $+\infty$ at zero and one. In particular,
+\begin{equation}
+ \frac{u}{d}\longrightarrow\frac1{(\alpha-1)^2},\qquad
+ \frac{rv}{d}\longrightarrow\frac{\alpha(\alpha-2)}{(\alpha-1)^2}
+ \label{eq:allocation-limits}
+\end{equation}
+in probability. The rate can equivalently be written as
+$\theta_ea^2\KL(\operatorname{Bern}(\lambda_*)\Vert
+\operatorname{Bern}(\lambda))$.
+\end{theorem}
+\begin{proof}
+For $\lambda$ in any fixed compact subinterval of $(0,1)$, $k=-\log(1-\lambda)$
+is bounded. Use $F(W+k)=F_0(W)-\theta_eWk/L+O(\log^2(m+1))$ uniformly
+for $W$ proportional to $m$. The proof of \cref{lem:radial} works with
+$\lambda$ fixed in that compact interval: the second derivative of its
+comparison exponent is $-\theta_e/L+O(1/m)$, and its first derivative at
+$bmL$ is $O(\log(m+1))$ uniformly there. After integrating in $W$, the
+$\lambda$-dependent part of the logarithm is therefore
+\begin{equation}
+ \theta_e m\bigl[\log\lambda+\alpha b\log(1-\lambda)\bigr]
+                           +O(\log^2(m+1)),
+ \label{eq:allocation-logdensity}
+\end{equation}
+up to a term independent of $\lambda$.
+This strictly concave bracket has its unique maximum at
+$\lambda_*=1/(1+\alpha b)=a^{-2}$. Subtracting that maximum gives
+\eqref{eq:allocation-rate}.
+
+For completeness, the endpoints cannot hide additional mass. First remove
+$|W/(mL)-b|>\delta$ using \cref{thm:radial-LDP}; this costs an amount
+exponentially small at speed $m^2$. On the remainder,
+\eqref{eq:allocation-upper} bounds the allocation integral by beta powers
+with the second exponent at least $\alpha\theta_e(b-\delta)m-O(1)$.
+The integral over $\lambda<\eps$ is bounded by a constant times
+$\eps^{\theta_e m}$ times the common radial factor; the integral over
+$\lambda>1-\eps$ has a bound with a positive multiple of
+$m\log\eps$ from the second beta exponent. To see that the common radial factor costs only $O(m)$ relative to the
+normalization, drop the beta term from \eqref{eq:Em} and apply the same
+strict-concavity argument as in \cref{lem:radial}. At $W=bmL$ its
+$m\log m$ coefficient is still $-\theta_e+\theta_e(a^2-\alpha b)=0$;
+its logarithmic integral is therefore
+$\theta_eLabm^2/2+O(m)$. Equation~\eqref{eq:endpoint-M} gives the same
+quadratic normalization. Their logarithmic ratio is thus $O(m)$,
+independently of $\eps$. Letting $\eps\downarrow0$ makes both upper bounds arbitrarily
+negative at speed $m$. Thus the laws are exponentially tight away from
+zero and one at that speed. Compact-set upper and open-set lower bounds
+now follow by the same interval-covering argument applied to
+\eqref{eq:allocation-logdensity}. The two probability limits follow from
+uniqueness of the minimum, and the Bernoulli expression is an algebraic
+rewriting of the rate.
+\end{proof}
+
+\begin{corollary}[The source and tail scales]
+\label{cor:scales}
+Conditional on either endpoint cell, under the tilted measure,
+\begin{equation}
+ \frac{-\log d}{mL}\to\alpha-1,
+ \qquad \frac{-\log v}{mL}\to\alpha-2.
+ \label{eq:scales}
+\end{equation}
+Equivalently,
+$d=q^{(\alpha-1)m+o_{\mathsf Q}(m)}$ and
+$v=q^{(\alpha-2)m+o_{\mathsf Q}(m)}$.
+\end{corollary}
+\begin{proof}
+The first follows from $-\log d=mL+W$. For the second, use
+$v=(1-\lambda)e^{-W}$ and \cref{thm:allocation-LDP}; the logarithm of
+$1-\lambda$ is bounded in probability and is therefore negligible after
+division by $mL$.
+\end{proof}
+For example, at $\alpha=3$ the dominant prefix fraction is $1/4$, and the
+residual tail contributes $3/4$ of the endpoint deficit. The source lies
+on scale $q^{2m+o(m)}$ and the rescaled tail on scale $q^{m+o(m)}$.
+The allocation fractions are independent of $q$, the beta exponents, and
+which endpoint wins.
+
+\section{Consequences, checks, and the limits of the expansion}
+\label{sec:consequences}
+
+\subsection{The linear coefficient is positive and universal}
+\begin{proposition}
+$B(\alpha)$ is strictly increasing on $(2,\infty)$, with
+\begin{equation}
+ B(2+)=0,\qquad \lim_{\alpha\to\infty}B(\alpha)=1.
+ \label{eq:B-limits}
+\end{equation}
+In particular $0<B(\alpha)<1$. Near the critical order,
+\begin{equation}
+ B(2+\eps)=(2\log2-1)\eps+O(\eps^2).
+ \label{eq:B-near2}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $a=\alpha-1>1$. Then
+$B=(a-a^{-1})\log(a+1)-a\log a$, so
+\[
+ a^2B'(a)=a^2\log(1+1/a)-a+\log(a+1).
+\]
+The inequality $\log(1+t)\ge t-t^2/2$ for $0\le t\le1$ gives
+$a^2B'(a)\ge\log(a+1)-1/2>0$. The endpoint limits and the expansion at
+$a=1$ follow by direct Taylor expansion.
+\end{proof}
+For $q=1/2$, $\alpha=3$ and uniform innovations,
+\begin{equation}
+ I_3(S_m;X)=\frac{\log2}{2}m^2
+       +\left(\frac32\log3-2\log2\right)m+O(\log^2(m+1)).
+ \label{eq:alpha3}
+\end{equation}
+The linear coefficient is approximately $0.2616240719$. For
+$\operatorname{Beta}(2,5)$ innovations the two coefficients are both
+multiplied by five, and the upper endpoint dominates. This is an application
+of the theorem, not a numerical fit.
+
+\subsection{Why neither endpoint flatness nor a single saddle is enough}
+Endpoint flatness explains divergence of negative powers of $f$, but all
+finite-depth R\'enyi integrals remain finite. The finite-prefix factor
+$u^{\theta m-1}/\Gamma(\theta m)$ regulates the apparent singularity.
+The tail factor contributes another logarithmic-square penalty. Their
+competition yields \eqref{eq:quadratic-landscape}.
+
+Optimizing only the radial exponent finds the $m^2$ coefficient, but loses
+the beta allocation entropy, which is of order $m$. Replacing
+$\lambda$ by an arbitrary constant gives a strictly smaller linear term
+unless it equals $a^{-2}$. Conversely, differentiating a small-tail
+asymptotic with an uncontrolled error is unnecessary: the proof differentiates
+only $F_0$ and the beta comparison exponent. This is why a mere value estimate
+with a quantified remainder is sufficient.
+
+\subsection{Nonuniform limits}
+At $\alpha=2$, \cref{prop:subcritical} gives
+$I_2=mL+\log\int f^2+o(1)$. At every fixed $\alpha>2$, the leading order is
+$m^2$. There is no contradiction: the constants and localization intervals
+in the supercritical proof depend on $b=\alpha-2$. They degenerate as
+$b\downarrow0$.
+
+In particular, \eqref{eq:beta-main} does not solve the joint scaling
+$\alpha=2+u/m$. It also is not uniform as $q\uparrow1$, as
+$\alpha\to\infty$, or as beta parameters vary. Nor does it give an exact
+finite-depth formula for $I_\alpha$. A rigorous asymptotic statement with a
+specified range should not be advertised as any of these stronger claims.
+
+\section{Reproducible algebra and tail-density diagnostics}
+\label{sec:computations}
+The accompanying \path{checks/verify.py} separates exact arithmetic from
+floating-point diagnostics. It requires only the packages in
+\path{requirements.txt}. No plot or decimal calculation is used as a proof
+of an analytic assertion.
+
+\subsection{Exact checks of the cancellation and the allocation}
+SymPy checks the quadratic identity in \cref{prop:endpoint-asymptotic},
+the complete cancellation from \eqref{eq:raw-linear} to
+\eqref{eq:linear-cancelled}, and stationarity of
+$\log\lambda+\alpha(\alpha-2)\log(1-\lambda)$ at
+$\lambda=(\alpha-1)^{-2}$. The symbolic endpoint constants $c,H,\theta,L$
+are retained independently until the cancellation step.
+
+For the dyadic uniform law, moments $\mu_n=\E X^n$ are calculated exactly
+as rational numbers using
+\begin{equation}
+ \mu_0=1,\qquad
+ \mu_n=\frac1{2^n-1}\sum_{j=0}^{n-1}
+             \binom nj\frac{\mu_j}{n-j+1}.
+ \label{eq:moment-recurrence}
+\end{equation}
+This follows by expanding $X\overset d=(U+X')/2$.
+The checks include $\E X=1/2$ and $\Var X=1/36$.
+
+\subsection{Exact dyadic densities}
+\begin{proposition}[A finite exact evaluation identity]
+\label{prop:dyadic}
+For integers $n\ge1$ and $1\le k\le2^n$, the density of the dyadic uniform
+series satisfies
+\begin{equation}
+ f(k2^{-n})=
+ \frac{2^{(-n^2+3n)/2}}{(n-1)!}
+ \sum_{j=0}^{k-1}(-1)^{s_2(j)}\E[(k-j-X)^{n-1}],
+ \label{eq:dyadic-density}
+\end{equation}
+where $s_2(j)$ is the sum of the binary digits of $j$.
+For $k=1$ this simplifies to
+\begin{equation}
+ f(2^{-n})=\frac{2^{(-n^2+3n)/2}}{(n-1)!}\mu_{n-1}.
+ \label{eq:dyadic-one}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Inclusion--exclusion on the boxes of the first $n$ uniforms gives
+\[
+ b_n(t)=\frac{1}{(n-1)!\prod_{j=1}^n2^{-j}}
+       \sum_{j=0}^{2^n-1}(-1)^{s_2(j)}(t-j2^{-n})_+^{n-1}.
+\]
+Convolve with $2^{-n}X'$. At $t=k2^{-n}$, exactly the terms $j<k$ can
+contribute; in each of them $k-j-X'\ge0$. Factoring out
+$2^{-n(n-1)}$ gives \eqref{eq:dyadic-density}. Symmetry $1-X\overset d=X$
+gives \eqref{eq:dyadic-one}. For $n=1$ the endpoint values of the
+piecewise-constant prefix are irrelevant to the convolution.
+\end{proof}
+This is a convenient verification identity, not a claim to a new
+arithmetic theory of dyadic Fabius values; that theory is classical
+\cite{arias}. The script checks $f(1/2)=2$, $f(1/4)=1$, $f(1/8)=5/36$,
+and 24 independent dyadic refinement equalities.
+% ed. (2026-09-30): uncited Lean counterparts of the dyadic values (names checked in Analysis/FabiusFunction/Lean)
+\begin{ednote}
+At $q=1/2$ these values are machine-checked in ProveIt's Lean development
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/}), which the article
+does not cite. There $f(x)=2\,\mathrm{up}(2x-1)$
+(\path{Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}),
+equivalently $f(x)=2F(2x)$ on $[0,1/2]$ for the Fabius distribution
+function $F$; the exact dyadic values of $F$ are computed by a verified
+evaluator (\path{Fabius.fabiusDyadicValue_cast}), for instance
+$F(1/4)=5/72$ and $F(3/4)=67/72$ (\path{Fabius.fabiusReal_quarter},
+\path{Fabius.fabiusReal_three_quarters}), giving $f(1/8)=5/36$ and
+$f(3/8)=67/36$; and $f(1/2)=2$ is \path{Fabius.deriv_fabiusReal_half}.
+No R\'enyi statement of the article has a Lean counterpart.
+\end{ednote}
+
+\subsection{A tail evaluator with an analytic truncation bound}
+For a non-dyadic $x\in(0,1/2]$, choose $n$ and put $k=2^nx$,
+$K=\lfloor k\rfloor$. In the same inclusion--exclusion formula,
+all terms $j<K$ are exactly computable from ordinary moments. There is
+only one additional possible term, with $j=K$, whose absolute contribution
+before the common prefactor is at most
+\begin{equation}
+ (k-K)^{n-1}.
+ \label{eq:density-remainder}
+\end{equation}
+All terms with $j>K$ vanish. Thus if $S$ is the computed signed moment sum
+and $S>(k-K)^{n-1}$, the relative omitted-term error is at most
+$(k-K)^{n-1}/(S-(k-K)^{n-1})$. This is an analytic truncation estimate.
+The floating-point implementation does not add interval bounds for rounding,
+so its decimal output is not an end-to-end certified enclosure.
+
+\subsection{Executed point diagnostics}
+For $\alpha=3$, $q=1/2$, take $h=\lfloor\log_2m\rfloor$,
+$x=2^h2^{-2m}$ and $\lambda=1/4$. Then
+$z=3\,2^{-(m-h+2)}$, so both densities in the transformed endpoint integrand
+are exactly rational by \eqref{eq:dyadic-density}. Table~\ref{tab:saddle}
+compares its logarithmic point value, converted to the information scale,
+with the two-term expression in \eqref{eq:alpha3}.
+\begin{table}[htbp]
+\centering\small
+\caption{Exact dyadic point diagnostics, with logarithms rounded for display.
+The point value is \emph{not} the integrated R\'enyi information.}
+\label{tab:saddle}
+\begin{tabular}{@{}rrrr@{}}\toprule
+$m$&Point value&Two-term expression&Difference\\\midrule
+\inputtable checks/saddle_rows.tex 
+\bottomrule\end{tabular}
+\end{table}
+The modest residuals are consistent with the logarithmic-square error,
+but finitely many such values cannot establish an asymptotic theorem.
+
+\subsection{Windowed quadrature diagnostics}
+For the same $q,\alpha$, the optional quadrature evaluates both endpoint
+cells using Gauss--Legendre nodes in $W$ and $\lambda$, with
+\[
+ W\in[\log4,\,m\log2-\log m+12].
+\] It excludes the middle region and truncates the
+radial tail. The output explicitly labels these computations as
+\emph{not certified full information values}. The JSON files record the
+number of nodes, precision, integration window, and omitted-density-term
+bound. Comparing node counts is a numerical stability check, not a substitute
+for the proved global estimates.
+
+To reproduce the exact checks and point table, run
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python checks/verify.py --dps 100
+\end{verbatim}
+An optional numerical run is
+\begin{verbatim}
+python checks/verify.py --quadrature 8 12 --nodes 24 --dps 80
+\end{verbatim}
+The PDF can be rebuilt independently of Python, because the generated table
+is included:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+
+\section{Proof audit and a formalization route}
+\label{sec:audit}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.25\textwidth}
+ >{\raggedright\arraybackslash}p{.45\textwidth}
+ >{\raggedright\arraybackslash}p{.24\textwidth}@{}}
+\toprule
+Claim&Dependency and proof boundary&Status\\\midrule
+\endhead
+Uniform two-term law&Special case of the beta theorem; endpoints plus the
+middle estimate&Proved in this article\\
+Beta universality&Positive simplex density comparison, controlled endpoint
+logarithm, beta allocation, radial comparison saddle&Proved for
+$\theta_0,\theta_1\ge1$ only\\
+Endpoint selection&Comparison of the two separately computed endpoint
+moments&Proved\\
+Radial and allocation laws&The same integral with restricted radial or
+allocation domains; exponential tightness&Proved for the tilted measures\\
+Finite-order existence&Quadratic decay of the logarithmic radial integrand
+at fixed $m$&Proved\\
+Critical and subcritical excess&Conditional representation and dominated
+convergence; uniform case already in the predecessor&Reproved and extended
+to the beta family\\
+Exact algebra and dyadic values&Fraction arithmetic and symbolic identities&Executed
+finite checks\\
+Numerical endpoint quadrature&Floating-point density evaluation and a finite
+integration window&Diagnostic only\\
+Lean or Rocq verification&No theorem-prover files are included&Not performed\\
+Joint critical crossover&Requires uniform estimates as $\alpha\downarrow2$&Open here\\
+\bottomrule
+\end{longtable}
+
+A formalization can be staged without treating the whole asymptotic argument
+as an indivisible task. The first layer comprises the independent-prefix
+identity, density changes of variables, \eqref{eq:master-integral}, and
+\eqref{eq:conditional-M}. A second layer formalizes the positive simplex
+integral and its Dirichlet expectation representation. The endpoint lemma
+then becomes a quantitative inequality about nonnegative integrals, Markov's
+inequality, and gamma asymptotics. Finally, a reusable one-dimensional
+comparison-saddle lemma can package strict concavity with bounded value
+errors. The proof carefully avoids differentiating an uncontrolled remainder,
+which also simplifies such an interface.
+
+Exact symbolic cancellations are particularly suitable early targets:
+\eqref{eq:raw-linear} contains all normalizations and can be checked
+independently of probability theory. Numerical quadrature should remain
+outside the trusted theorem boundary unless an interval integration checker
+is added.
+
+\section{Further research questions and proposed routes}
+\label{sec:future}
+
+\begin{problem}[The logarithmic term and lattice-scale modulation]
+Improve the $O(\log^2m)$ error to an explicit logarithmic correction and a
+bounded remainder, or identify the actual next scale. The stronger endpoint
+representation \eqref{eq:bounded-log-remainder} is a starting point.
+A refined density expansion may contain bounded modulation from the
+geometric lattice; it should be retained rather than silently replaced by
+a constant.
+\end{problem}
+
+\begin{problem}[A uniform critical crossover]
+Determine the asymptotics for $\alpha=2+u/m$, and identify the correct
+transition scale and profile. The existing fixed-order theorem is not
+uniform there: the saddle $W\sim(\alpha-2)mL$ leaves the range in which
+both beta parameters are proportional to $m$, and the allocation approaches
+an endpoint. A uniform analysis must match the ordinary bulk contribution,
+the final-cell contribution, and the allocation boundary layer.
+\end{problem}
+% ed. (2026-09-30): the same question is open in the predecessor
+\begin{ednote}
+This is the predecessor's question ``Critical crossover'' (the scaling
+$\alpha=2+u/m$), in
+\path{../Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/article.tex};
+it remains open there and here.
+\end{ednote}
+
+\begin{problem}[Fluctuations beyond large deviations]
+Find the limiting distribution of the centered radial variable and of
+$\sqrt m(\lambda-\lambda_*)$. The allocation entropy suggests Gaussian
+behavior in the latter variable, but the bounded geometric-lattice
+modulation in the radial density may survive centering. Prove joint limits
+rather than inferring them from the leading saddle alone.
+\end{problem}
+
+\begin{problem}[Endpoint exponents below one]
+Extend the beta theorem to $0<\theta_0,\theta_1<1$ or mixed parameter
+ranges. The final-cell comparison still has a natural form, but the
+unrestricted power-simplex upper bound in \cref{lem:density-log} no longer
+follows from $(1-u)^{\beta-1}\le1$. A positive tilted-Laplace argument or a
+carefully weighted simplex estimate is required. No extension to that
+range has been assumed in this article.
+\end{problem}
+
+\begin{problem}[Regularly varying endpoint masks]
+Replace beta innovations by densities
+$h(u)\sim d_0u^{\theta_0-1}\ell_0(u)$ and
+$h(1-u)\sim d_1u^{\theta_1-1}\ell_1(u)$, with slowly varying factors.
+Determine exactly when the quadratic law persists, whether $B(\alpha)$
+remains universal, and which slowly varying factors create an additional
+$m\log\log m$ or other term. The cancellation of endpoint constants above
+does not by itself imply cancellation of varying factors.
+\end{problem}
+
+\begin{problem}[Nongeometric weights]
+For $X=\sum w_jU_j$ with $\log(1/w_j)\sim Lj^\rho$, determine the depth
+scale and endpoint-selection law. Geometric weights make the small-tail
+cost quadratic in a logarithmic coordinate and the prefix normalization
+quadratic in $m$. A general weight profile should lead to a different
+variational problem and perhaps a different power of $m$.
+\end{problem}
+
+\begin{problem}[Certified finite-depth R\'enyi computation]
+Combine the one-term density enclosure in \eqref{eq:density-remainder}
+with interval arithmetic and explicit domain truncation bounds. The goal
+is a certified upper and lower enclosure for the full $I_\alpha$, not
+merely a stable endpoint quadrature. Such a tool could also test the
+critical crossover before its proof is complete.
+\end{problem}
+
+\begin{problem}[Other R\'enyi information definitions]
+Analyze Sibson and Arimoto information for the same channel. Their
+optimization or different marginal weighting changes the endpoint balance.
+The order-two transition and the coefficient in \eqref{eq:beta-main}
+should not be transferred to those definitions without a separate proof.
+\end{problem}
+
+\begin{problem}[Products, common digits, and dependent innovations]
+For vector-valued series, compare independent-coordinate products with
+common-digit geometric convolutions. In a product channel, ordinary
+additivity gives a direct benchmark; for common digits the relevant
+geometry is a boundary face or cone rather than two scalar endpoints.
+Determine how face dimension and local density exponents replace the
+scalar selection rule.
+\end{problem}
+
+\section{Provenance and conclusion}
+\label{sec:provenance}
+The source target was read through the GitHub connector at the pinned
+repository commit
+\begin{center}\small
+\texttt{a4268e78ebd0f6bf71ba609c07f4b3415748f532}.
+\end{center}
+The inspected predecessor is
+\begin{quote}\small\path{Analysis/FabiusFunction/docs/}\allowbreak
+\path{semi-formalized-research-frontiers/drafts/}\allowbreak
+\path{inverse-and-sampling/}\allowbreak
+\path{Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/article.tex}.
+\end{quote}
+Its returned blob SHA is
+\begin{center}\small
+\texttt{960890e910fcb8bfb857dfb0e08b4303c3f139f5}.
+\end{center}
+This records a specific inspected source, not a claim that the repository
+will remain unchanged. The current article is a separate deliverable; no
+repository files were modified.
+
+The principal advance is sharper than the initially proposed quadratic
+upper and lower bounds. The fixed-supercritical information has two explicit
+terms, no $m\log m$ term, and a logarithmic-square remainder. Its second
+coefficient is independent of the contraction parameter. The beta extension
+shows that this is an endpoint phenomenon rather than a peculiarity of one
+special function, while the tilted allocation law identifies the rare
+configurations that produce it. The unresolved crossover and finer lattice
+terms are separate, precisely stated next questions.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V.~Reshetnikov, \emph{ProveIt}, GitHub repository, inspected 30 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{prior}
+\emph{Beyond Polynomial Diagonals: Nuclear Bayesian Operators, Exact Null
+Modes, and a R\'enyi Phase Transition for Fabius--Rvachev Laws}, research
+article prepared for Vladimir Reshetnikov, 29 September 2026, with repository
+editorial notes. Pinned source and blob recorded in \cref{sec:provenance}.
+In particular, the further question ``Growth above the critical R\'enyi
+order.'' Available within the repository \cite{repo} at the recorded path.
+
+\bibitem{arias}
+J.~Arias de Reyna, \emph{An infinitely differentiable function with compact
+support: Definition and properties}, English translation of the 1982 paper,
+arXiv:1702.05442, 2017.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{renyi}
+T.~van Erven and P.~Harremo\"es, \emph{R\'enyi divergence and
+Kullback--Leibler divergence}, IEEE Transactions on Information Theory
+\textbf{60} (2014), 3797--3820; arXiv:1206.2459.
+\url{https://arxiv.org/abs/1206.2459}.
+
+\bibitem{dlmf-beta}
+NIST, \emph{Digital Library of Mathematical Functions}, \S5.12,
+Euler's beta integral, especially Eq.~5.12.1. Accessed 30 September 2026.
+\url{https://dlmf.nist.gov/5.12}.
+
+\bibitem{dlmf-gamma}
+NIST, \emph{Digital Library of Mathematical Functions}, \S5.11,
+gamma and digamma asymptotics and gamma ratios. Accessed 30 September 2026.
+\url{https://dlmf.nist.gov/5.11}.
+\end{thebibliography}
+\end{document}

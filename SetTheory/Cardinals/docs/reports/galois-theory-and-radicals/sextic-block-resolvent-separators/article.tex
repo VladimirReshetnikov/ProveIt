@@ -9,6 +9,7 @@
 \usepackage[most]{tcolorbox}
 \usepackage{aliascnt}
 \usepackage{listings}% [write] for Part II's two code listings
+\usepackage{needspace}% [write] for Part III's one \Needspace
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
  urlcolor=MidnightBlue,pdftitle={Finite Separators and Discriminant Factorizations for Sextic Block Resolvents},
@@ -65,6 +66,17 @@
 \newcommand{\tpoM}{\mathcal M}
 \newcommand{\tpoT}{\mathcal T}
 \newcommand{\tpopin}{\texttt{e47ed8547bd021f9bd85bdcf767c94a2fcb41001}}
+% [write] Macros of Part III (batch 70, manuscript 04).  Its \Q, \Z, \M,
+% \T are \QQ, \ZZ, \tpoM, \tpoT above and its \pin is \zptpin; its unused
+% \C, \E and \diag are not carried over.  The rest are its own.
+\newcommand{\zptpin}{\texttt{1156651a9417231a9a54442b420f099ee85ae7fe}}
+\DeclareMathOperator{\pf}{pf}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\Roots}{Roots}
+\newcommand{\Ares}{M_f}\newcommand{\Tres}{T_f}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\roots}[1]{\Roots_K(#1)}
 \lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
  frame=single,rulecolor=\color{black!25},xleftmargin=3pt,xrightmargin=3pt}
 \newtcolorbox{resultbox}{enhanced,breakable,colback=MidnightBlue!3,
@@ -94,10 +106,11 @@
 project \src{Algebra/PolynomialFormulas}. Batches~40--41 intake, batch~41,
 manuscript~03 (archive \src{ProveIt_Finite_Sextic_Separators}); pinned to
 ProveIt \src{e2b1f016a}. Part~II: batch~57, manuscript~03 (archive
-\src{ProveIt_Three_Plus_One_Resolvents}), pinned to \src{e47ed8547}.
+\src{ProveIt_Three_Plus_One_Resolvents}), pinned to \src{e47ed8547}. Part~III: batch~70, manuscript~04 (archive
+\src{ProveIt_Zero_Parameter_Sextics}), pinned to \src{1156651a9}.
 AI-assisted, unrefereed, not formalized. Notes marked \textbf{[write]} were
 added when the manuscripts were written into the collection; see
-\cref{sbr:sec:provenance,sbr:sec:formal,tpo:sec:write}.\par}
+\cref{sbr:sec:provenance,sbr:sec:formal,tpo:sec:write,zpt:sec:write}.\par}
 \vspace{0.16in}
 \begin{abstract}
 The sextic radical-solvability development in \repo\ uses terminating but
@@ -341,6 +354,19 @@ always mean the batch-41 source. Part~I is unchanged except for the
 title-page line, this paragraph, a contents line, labels on three research
 questions, dated notes after \cref{sbr:thm:criterion} and those questions,
 and bibliography annotations. Neither part is formalized.
+
+\emph{Part~III.} On 30 September 2026 a third manuscript, batch~70
+manuscript~04 (\emph{The Missing Zero-Parameter Test}, archive
+\src{ProveIt_Zero_Parameter_Sextics}, pinned to ProveIt commit \src{1156651a9},
+placed in \src{51c6943bf}), was added as Part~III; its provenance, notation
+and status are in \cref{zpt:sec:write}, and its files carry the prefix
+\src{03-zero-parameter-}. It was written against Parts~I and~II as printed
+here, before the dated batch-70 notes. Part~I is unchanged by that addition
+except for the title-page line, this paragraph, a label on the remark in
+\cref{sbr:sec:compression} on the zero parameter, dated notes after
+\cref{sbr:thm:criterion} and after Research
+questions~\ref{tpo:q:sbr-irreducible} and~\ref{tpo:q:sbr-circuits}, and a
+bibliography annotation. No part is formalized.
 
 \emph{Relation to the sibling report.} The manuscript does not know
 \src{specialization-safe-radical-solvers} \cite{rss}. That report's
@@ -631,6 +657,7 @@ $2\binom{15}{2}+\binom{10}{2}=255$ bad parameters. The next two sections
 remove repeated collision factors and reduce this to 195.
 
 \begin{remark}[The zero parameter and the source coordinate order]
+\label{zpt:rem:sbr-zero}
 The compressed families make sense and may separate at $t=0$, but the
 original descriptors on the curve all collapse within each family there,
 because the multiplier $2t^2$ vanishes. We use positive integer tests when
@@ -1315,6 +1342,17 @@ improve the 196-point separation bound, and it writes the resolvents with
 the parameter first, $\Rtwo(t,Z)$.
 \end{writenote}
 
+\begin{writenote}[Added 30 September 2026, batch~70]
+Part~III reduces the matching tests further: with one triple test at an
+arbitrary $u$, a single matching test at $t=0$ decides
+(\cref{zpt:thm:main}), and so do matching tests at any two distinct
+parameters (\cref{zpt:cor:two}). At $t=0$ the test is a base-field root of
+the compressed $\Rtwo(Z,0)=\prod_P(Z+C_P)$, not of a descriptor on the curve,
+which collapses there (\cref{zpt:rem:sbr-zero}). In the nonsolvable case a
+false-positive matching parameter is unique if it exists, and it is nonzero
+(\cref{zpt:thm:exceptional}). The 196-point bound is again not improved.
+\end{writenote}
+
 For a monic integer sextic, both resolvents are monic integer polynomials
 in $Z$. Any rational root is therefore an integer, so the final condition
 can be decided using a finite integer interval. No splitting field or
@@ -1797,6 +1835,12 @@ irreducible sextic, $E_f(t_0)=0$ at a base-field $t_0$ forces
 $U_f(t_0)=0$.
 \end{writenote}
 
+\begin{writenote}[Added 30 September 2026, batch~70]
+Part~III reduces the four fixed tests to two: one triple test and the
+compressed matching test at $t=0$ (\cref{zpt:thm:main}). The open parts
+named above are not affected.
+\end{writenote}
+
 \begin{question}[Alternative low-degree curves]
 Can a different scalar compression or a different curve in descriptor
 space lower the maximum number of exceptional parameters below 195?
@@ -1842,6 +1886,14 @@ $45$- and $20$-dimensional compound matrices of the companion matrix
 extraction, and an implementation. It gives no operation counts or height
 estimates and no evaluator for $E_f$; its Research
 question~\ref{tpo:q:smaller} asks for smaller realizations.
+\end{writenote}
+
+\begin{writenote}[Added 30 September 2026, batch~70]
+Part~III adds a denominator-free Pfaffian of order~$20$ for the constant
+triple resolvent $T_f$ and a $15\times15$ cubic matrix polynomial with a
+trace recurrence for the constant matching resolvent $M_f$
+(\cref{zpt:thm:pf,zpt:thm:cubic-matrix}); again without operation counts or
+height estimates, and with no evaluator for $E_f$.
 \end{writenote}
 
 \begin{question}[End-to-end formal primitive recursiveness]
@@ -2030,7 +2082,11 @@ question~\ref{tpo:q:sbr-irreducible} for the decision only, not for the
 separation bounds. \Cref{tpo:sec:write} records the provenance, fixes the
 notation and states the formal status of the addition;
 Sections~\ref{tpo:sec:scope}--31 and
-Appendices~\ref{tpo:app:pentads}--\ref{tpo:app:audit} are the manuscript.}
+Appendices~\ref{tpo:app:pentads}--\ref{tpo:app:audit} are the manuscript.
+[Added 30 September 2026, batch~70:] Part~III reduces the matching tests to
+one at $t=0$, or to two at any distinct parameters
+(\cref{zpt:thm:main,zpt:cor:two}), and the bound on false-positive
+parameters from two to one (\cref{zpt:thm:exceptional}).}
 
 \begin{center}
 {\color{MidnightBlue}\large\scshape Galois theory / Finite geometry / Exact computation\par}
@@ -2079,6 +2135,15 @@ historical priority is not certified. General decidability and polynomial-time
 decidability of radical solvability are classical. No claim is made that three
 matching tests are optimal, or that a false-positive parameter exists.
 \end{resultbox}
+
+\begin{writenote}[Added 30 September 2026, batch~70]
+Two statements of this abstract are sharpened by Part~III: one matching
+test at $t=0$, or two at any distinct parameters, suffice with the triple
+test (\cref{zpt:thm:main,zpt:cor:two}), and false positives occur at no more
+than one parameter, never at $t=0$ (\cref{zpt:thm:exceptional}). The
+abstract is the manuscript's and is kept as delivered; no false-positive
+parameter is known.
+\end{writenote}
 
 \section{[write] Provenance, conventions and status of Part~II}
 \label{tpo:sec:write}
@@ -2295,6 +2360,8 @@ matrix identities \cref{tpo:thm:pairmatrix,tpo:thm:triplematrix} were also
 formalized as the coefficient evaluator, and \src{linearTotalCode}
 (\src{SexticReducibleDecision.lean}, l.~72) remains on the reducible
 branch in any case (\cref{tpo:sec:integration} says the same).
+\emph{Added 30 September 2026, batch~70.} Part~III's results would reduce
+the four fixed parameters to two (\cref{zpt:sec:formal}).
 
 \subsection{What is not claimed}
 \label{tpo:sec:nonclaims}
@@ -2416,6 +2483,16 @@ The proof is completed in Section~\ref{tpo:sec:decision}. The formula has an
 \emph{and} between the three matching tests, and an \emph{or} between the
 matching branch and the triple branch. Replacing the former by an or is not
 justified by this article.
+
+\begin{writenote}[Added 30 September 2026, batch~70]
+Part~III proves the same equivalence with two distinct matching
+parameters instead of three (\cref{zpt:cor:two}), and with the single
+compressed matching test at $t=0$ (\cref{zpt:thm:main}); for example
+$t=0$ and $u=1$, or $t_1=1$, $t_2=2$ and $u=1$, work for every irreducible
+rational sextic. Replacing the \emph{and} between two matching tests by an
+\emph{or} is still not justified: whether one prescribed nonzero parameter
+suffices is Question~\ref{zpt:q:nonzero-safe}.
+\end{writenote}
 
 \subsection{What is classical, inherited, and proposed here}
 Solvability by radicals is equivalent to solvability of the Galois group in
@@ -2911,6 +2988,17 @@ verification sample below contains no such example. Accordingly, the number
 two is a proved upper bound, not a proved maximum.
 \end{remark}
 
+\begin{writenote}[Added 30 September 2026, batch~70]
+Part~III's \cref{zpt:thm:exceptional} sharpens \cref{tpo:thm:exceptional}:
+$\deg J_f\le1$ and $J_f(0)\ne0$, so $|\mathcal B_f|\le1$ and
+$0\notin\mathcal B_f$, and a nonconstant $J_f$ is $t-\tau$ with $\tau\ne0$.
+The degree bound comes from the affine rank of a pentad (\cref{zpt:thm:rank}),
+the value at zero from an integer certificate (\cref{zpt:thm:noncollapse})
+and reciprocal transport (\cref{zpt:cor:zero}). As here, no nonempty
+$\mathcal B_f$ is known; one is again an upper bound
+(Question~\ref{zpt:q:nonzero}).
+\end{writenote}
+
 \section{Decision certificates and the proof of three plus one}
 \label{tpo:sec:decision}
 
@@ -2926,6 +3014,11 @@ at most two matching parameters with a base-field root. Three distinct
 matching parameters therefore cannot all succeed. Thus neither branch of
 \eqref{tpo:eq:main} can hold.
 \end{proof}
+
+\begin{writenote}[Added 30 September 2026, batch~70]
+With Part~III's bound $|\mathcal B_f|\le1$ (\cref{zpt:thm:exceptional}) the
+same argument gives \cref{zpt:cor:two}.
+\end{writenote}
 
 \subsection{Positive and negative certificates}
 There are several ways for exact computations to terminate early. A root of
@@ -3473,6 +3566,7 @@ or implementation boundary. They are open within this article; no claim is
 made that each is an unrecorded open problem in the literature.
 
 \begin{question}[Can the exceptional set ever be nonempty?]
+\label{zpt:q:tpo-nonempty}
 Does there exist an irreducible nonsolvable $f\in\QQ[X]$ and $t\in\QQ$ such
 that $\Rtwo(t,Z)$ has a rational root? If yes, produce an exact example with
 its multiplicity-five factor and nonsolvable Galois certificate. If no, prove
@@ -3483,7 +3577,14 @@ Theorem~\ref{tpo:thm:fiber} turns this from an unrestricted resolvent search int
 a constrained problem: the five matching values in one pentad must equal
 $\mu_f(t)$, while the original sextic remains irreducible and nonsolvable.
 
+\begin{writenote}[Narrowed in Part~III, 30 September 2026 (batch~70)]
+By \cref{zpt:thm:exceptional} an example would have $J_f=t-\tau$ with
+$\tau\ne0$: a single nonzero parameter, never $t=0$. The question stays open
+and continues as Question~\ref{zpt:q:nonzero}.
+\end{writenote}
+
 \begin{question}[How many matching tests are really necessary?]
+\label{zpt:q:tpo-fewer}
 Can three matching evaluations in Theorem~\ref{tpo:thm:main} be reduced to two,
 or to one? There are distinct versions: a universal choice of one or two
 rational parameters; every choice of distinct parameters; and an adaptive
@@ -3491,13 +3592,34 @@ choice depending on the sextic coefficients. The two-point upper bound does
 not prove optimality in any of these versions.
 \end{question}
 
+\begin{writenote}[Answered in two versions in Part~III, 30 September 2026 (batch~70)]
+For a universal choice, one matching test suffices: the compressed test at
+$t=0$ (\cref{zpt:thm:main}). For every choice of distinct parameters, two
+suffice (\cref{zpt:cor:two}). Open is whether \emph{every} single
+prescribed parameter, in particular every nonzero one, suffices
+(Question~\ref{zpt:q:nonzero-safe}). The manuscript does not discuss the
+adaptive version; a universal choice is in particular an adaptive one, so
+one test suffices there too (an observation of this write). Whether the
+matching branch could be dropped altogether is not asked: the triple test is
+not complete (\cref{tpo:sec:triple}).
+\end{writenote}
+
 \begin{question}[Classify the exceptional polynomial]
+\label{zpt:q:tpo-classify}
 For the unique invariant pentad, which degrees and factorization types can
 $J_f$ have under the nonsolvable hypothesis? Determine whether degree two can
 occur, whether its discriminant is constrained by $f$, and whether a linear
 factor forces an additional block system. An answer could strengthen the
 criterion without changing the resolvent evaluators.
 \end{question}
+
+\begin{writenote}[Answered as to the degree in Part~III, 30 September 2026 (batch~70)]
+Degree two cannot occur: $J_f$ is constant or $t-\tau$ with $\tau\ne0$
+(\cref{zpt:thm:exceptional}, from \cref{zpt:thm:rank}), so the question about
+its discriminant no longer arises. Whether a linear $J_f$ occurs at all is
+Question~\ref{zpt:q:tpo-nonempty}, and the last clause of this question is
+not addressed.
+\end{writenote}
 
 \begin{question}[Eliminate the pentad from the coefficient description]
 Can $J_f$, or just its rational zero set, be recovered directly from
@@ -3526,6 +3648,15 @@ construction intentionally counts each matching three times and each triple
 partition twice. Removing that redundant incidence information without a
 coefficient-table search is a concrete algorithmic target.
 \end{question}
+
+\begin{writenote}[Partly addressed in Part~III, 30 September 2026 (batch~70)]
+For the constant resolvents, Part~III gives a $15\times15$ cubic matrix
+polynomial with $\det Q(Z)=M_f(Z)^3$ and a trace recurrence
+(\cref{zpt:thm:cubic-matrix}), and an order-$20$ Pfaffian equal to $T_f$
+itself, without the condition $f(u)\ne0$ (\cref{zpt:thm:pf}). Neither is a
+linear matrix of size $15$ or $10$; Question~\ref{zpt:q:smaller} asks for
+that.
+\end{writenote}
 
 \begin{question}[Certified modular acceleration]
 Develop modular characteristic-polynomial evaluation, rational reconstruction,
@@ -3562,6 +3693,15 @@ identify practical root-existence procedures compatible with the same
 three-plus-one theorem.
 \end{question}
 
+\begin{writenote}[Added 30 September 2026, batch~70]
+Part~III bears on Questions~30.5, 30.7, 30.8 and~30.10 as well: its
+\cref{zpt:sec:example} is an irreducible example of a rational matching
+value that labels no fixed matching, and its
+Questions~\ref{zpt:q:witness}, \ref{zpt:q:modular}, \ref{zpt:q:formal}
+and~\ref{zpt:q:char} continue them; \cref{zpt:sec:formalization} gives a
+formalization order. Questions~30.4 and~30.9 are not addressed.
+\end{writenote}
+
 \section{Conclusion}
 
 The central gain is a change in what has to be certified. To decide radical
@@ -3579,6 +3719,14 @@ the root-counting bound is sharp. The proof and implementation together provide
 a concrete new branch to formalize in ProveIt, without claiming that the
 repository already contains it or that classical decidability has been
 rediscovered as a new theorem.
+
+\begin{writenote}[Added 30 September 2026, batch~70]
+The bound ``two'' in this conclusion and in the chain of
+\cref{tpo:app:audit} (``at most two bad parameters'') is Part~II's; Part~III
+lowers it to one and excludes $t=0$ (\cref{zpt:thm:exceptional}), and
+reduces the three matching tests to one at $t=0$ or two at any distinct
+parameters.
+\end{writenote}
 
 \appendix
 \setcounter{section}{2}% [write] Part II's appendices follow Part I's A--B
@@ -3697,6 +3845,1805 @@ sign convention, the signs in $N_0$, and exact square/cube-root reconstruction
 are the most sensitive points. All receive either explicit proofs or separate
 identity checks above; none is justified only by floating-point evidence.
 
+
+% ======================================================================
+% [write] Part III: batch 70, manuscript 04 (archive
+% ProveIt_Zero_Parameter_Sextics), added 30 September 2026.  Labels of
+% this part carry the prefix zpt:.
+% ======================================================================
+\setcounter{section}{31}
+\renewcommand{\thesection}{\arabic{section}}
+\makeatletter\gdef\theHsection{\arabic{section}}\gdef\Hy@chapapp{section}\makeatother
+\phantomsection\part*{Part III.\quad The missing zero-parameter test}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } The missing zero-parameter test}
+
+\noindent\emph{Sections~1--17 and Appendices~A--B form Part~I, and
+Sections~18--31 and Appendices~C--E form Part~II; both are unchanged except
+for dated \textbf{[write]} notes pointing to this addition. Part~III was
+added on 30 September 2026 in batch~70 of ProveIt's incoming-report intake,
+from one manuscript written against Parts~I and~II as printed above (without
+those notes). For the Boolean decision on irreducible sextics it reduces
+Part~II's three matching tests to a single compressed matching test at
+$t=0$ (\cref{zpt:thm:main}), or to two tests at arbitrary distinct
+parameters (\cref{zpt:cor:two}), and it shows that Part~II's exceptional
+polynomial has degree at most one and does not vanish at zero
+(\cref{zpt:thm:exceptional}). This answers Part~II's
+Question~\ref{zpt:q:tpo-classify} and two versions of
+Question~\ref{zpt:q:tpo-fewer}. \Cref{zpt:sec:write} records the
+provenance, fixes the notation and states the formal status of the
+addition; Sections~\ref{zpt:sec:target}--45 and
+Appendices~\ref{zpt:app:package}--\ref{zpt:app:ledger} are the manuscript.}
+
+\begin{center}
+{\color{MidnightBlue}\large\scshape Algebra / Galois theory / Exact computation\par}
+\vspace{0.2in}
+{\LARGE\bfseries The Missing Zero-Parameter Test\par}
+\vspace{0.12in}
+{\Large Collision certificates, affine-rank rigidity,\par and a two-resolvent sextic criterion\par}
+\vspace{0.12in}
+{Research article prepared for Vladimir Reshetnikov\par 30 September 2026\par}
+\end{center}
+
+\begin{quote}\small
+\textbf{Abstract (manuscript~04).}
+The ProveIt sextic-resolvent report proves that three matching evaluations
+and one triple evaluation decide radical solvability of an irreducible
+sextic, without separating its resolvents. It leaves open whether fewer
+matching evaluations suffice and whether its quadratic exceptional
+polynomial can actually have degree two. We give explicit answers to both
+questions. A short integer polynomial certificate excludes the simultaneous
+collapse of five pair-product sums belonging to a one-factorization of
+$K_6$. By reciprocal transport, the compressed matching resolvent at
+parameter zero is always a safe positive solvability certificate. Thus one
+matching test at zero and one triple test suffice. A separate affine-rank
+argument shows that the exceptional polynomial has degree at most one,
+so even when zero is disallowed, two arbitrary distinct matching parameters
+suffice. We also give a denominator-free Pfaffian realization of the triple
+resolvent and a $15\times15$ cubic-matrix realization of the simpler matching
+resolvent. The package contains exact coefficient-only implementations,
+a standard-library polynomial-certificate checker, and reproducible tests.
+The classical sextic resolvent framework is explicitly distinguished from
+these collision arguments and repository-specific improvements.
+\end{quote}
+
+\begin{resultbox}
+\textbf{Status.} Complete written arguments and executed exact checks;
+AI-assisted, unrefereed, and not formalized in Lean or Rocq.
+No claim of historical priority or of a solution to general radical
+construction is made. The existence of a nonzero exceptional parameter for
+an irreducible nonsolvable sextic remains unresolved here.
+\end{resultbox}
+
+\section{[write] Provenance, conventions and status of Part~III}
+\label{zpt:sec:write}
+
+\subsection{One manuscript, one addition}
+\label{zpt:sec:provenance}
+
+Part~III is batch-70 manuscript~04, \emph{The Missing Zero-Parameter Test.
+Collision certificates, affine-rank rigidity, and a two-resolvent sextic
+criterion}, an AI-assisted research article ``prepared for Vladimir
+Reshetnikov'' and dated 30 September 2026 (20 pages, US Letter, as
+delivered). It arrived as the archive
+\src{ProveIt_Zero_Parameter_Sextics.zip} (16 files; inner directory of the
+same name, main file \src{article.tex}) in ProveIt commit \src{1b3960d8a}
+and was placed in \src{51c6943bf}. It was written against ProveIt commit
+\zptpin{} (\src{1156651a9}). There this report's \src{article.tex} had the
+Git blob \src{efcff1403} and its \src{README.md} the blob \src{54d7469ae},
+the blobs they still had at the placement commit; so every statement the
+manuscript makes about ``the predecessor'', ``Part~II'' or ``the inspected
+report'' refers to Parts~I and~II as printed above, before the dated
+batch-70 notes. The one Lean file it cites, \src{SexticRadicalDecision.lean},
+has the blob \src{c19d91c58} at its pin, at the pins of Parts~I and~II and at
+the placement commit. The Git blob it records for its SymPy test-seed file is
+external to ProveIt and was not checked.
+
+The manuscript's three programs, build script, requirements file, five data
+files and source ledger are shipped beside the files of Parts~I and~II with
+the prefix \src{03-zero-parameter-} (the next number of this report's own
+sequence: Part~I's unprefixed files count as~01, Part~II's are~02):
+\src{code/03-zero-parameter-sextic_resolvents.py},
+\src{code/03-zero-parameter-verify.py},
+\src{code/03-zero-parameter-check_certificate.py},
+\src{code/03-zero-parameter-build.sh},
+\src{data/03-zero-parameter-requirements.txt},
+\src{data/03-zero-parameter-verification.json},
+\src{data/03-zero-parameter-verification.log},
+\src{data/03-zero-parameter-certificate-check.txt},
+\src{data/03-zero-parameter-sources.json},
+\src{data/03-zero-parameter-build_record.json},
+\src{data/03-zero-parameter-pdf-fonts.txt} and
+\src{03-zero-parameter-SOURCES.md}, all byte-identical to the delivery.
+Its source, README and PDF are not shipped and survive in the arrival
+commit; its checksum file \src{SHA256SUMS} (15 of 15 verified at placement)
+is not shipped. The manuscript did not see the other batch-70 deliveries.
+
+The manuscript contributes, in the order printed here: the target and the
+precise advance, with its classical overlap (\cref{zpt:sec:target}); the
+definitions, the constant resolvents $M_f$, $T_f$ and the two-resolvent
+theorem (\cref{zpt:sec:definitions}); the block criterion, the
+invariant-graph lemma and the pentads, reproved (\cref{zpt:sec:groups});
+the integer certificate excluding pentad collapse and the safe matching
+test at zero (\cref{zpt:sec:certificate}); the triple argument, reproved,
+the proof of the main theorem and why the descriptor must not be
+evaluated at zero (\cref{zpt:sec:decision}); pentad affine rank, the linear
+exceptional polynomial and two arbitrary matching parameters
+(\cref{zpt:sec:rank}); a denominator-free Pfaffian for the triple
+resolvent and its odd-middle-degree generalization
+(\cref{zpt:sec:pfaffian}); a $15\times15$ cubic matrix polynomial and a
+trace recurrence for the matching resolvent
+(\cref{zpt:sec:matching-matrix}); the decision procedure, root boxes, a
+bounded realization and the exact checks, with
+Table~\ref{zpt:tab:groups} (\cref{zpt:sec:algorithm}); an example whose
+positive decision recovers no matching (\cref{zpt:sec:example}); a
+formalization route (\cref{zpt:sec:formalization}); eight research
+questions (\cref{zpt:sec:questions}); its conclusion (Section~45); and two
+appendices, the package contents and the proof-dependency and non-claim
+ledger (Appendices~\ref{zpt:app:package}--\ref{zpt:app:ledger}). Every
+result, proof, remark, example, table, limitation and question of the
+manuscript is printed.
+
+Where the merge had to choose:
+\begin{itemize}
+\item \textbf{Numbering.} The manuscript's Section~$n$ is Section~$n+32$
+here, and its Appendices~A--B are Appendices~F--G. Theorem-like and
+equation numbers follow the sections: the manuscript's Theorem~2.1 is
+\cref{zpt:thm:main} and its equation~(2.1) is~\eqref{zpt:eq:f}. Its one
+table, Table~1 there, is Table~\ref{zpt:tab:groups} here, because the
+report's earlier tables share the table counter. Its eight ``Research
+questions~1--8'', numbered by a counter of their own, are
+Questions~\ref{zpt:q:nonzero}--\ref{zpt:q:formal} here, because in this
+report questions share the theorem counter; the one cross-reference among
+them (``Question~1'' in the second) is now a reference.
+\item \textbf{Front matter.} The manuscript's title page, abstract and
+status box open Part~III; its table of contents is replaced by the
+report's.
+\item \textbf{Overlap with Parts~I and~II, kept.} The manuscript reproves
+what it inherits and says so (``it is not a new claim in this article'',
+\cref{zpt:sec:decision}). \Cref{zpt:lem:block,zpt:lem:graphs,zpt:lem:pentads}
+and \eqref{zpt:eq:sums} are Part~II's
+\cref{tpo:lem:block,tpo:lem:graphs,tpo:lem:pentads,tpo:lem:averages};
+\cref{zpt:lem:pair-products,zpt:prop:triple} are
+\cref{tpo:lem:products,tpo:thm:triple}; the fiber argument of
+\cref{zpt:sec:rank} before \cref{zpt:thm:exceptional} reproves
+\cref{tpo:lem:shared,tpo:lem:disjoint,tpo:thm:fiber,tpo:cor:mu}; the
+collapse of the descriptors at zero is noted in Part~I
+(\cref{zpt:rem:sbr-zero}) and Part~II (after \eqref{tpo:eq:curve}); the
+completion cubic \eqref{zpt:eq:completion}, the matrices $E_j$ of
+\eqref{zpt:eq:Ej} and the bounds \eqref{zpt:eq:bounds} are Part~II's
+\eqref{tpo:eq:quartic}, $r_j$ of \eqref{tpo:eq:rmat}, and part of the display
+before \eqref{tpo:eq:bounds}. The proofs are the same arguments, written
+more briefly; they are printed again, with notes, as Part~II printed Part~I's.
+\item \textbf{Improvements, not retractions.} \Cref{zpt:thm:main} and
+\cref{zpt:cor:two} sharpen Part~II's \cref{tpo:thm:main},
+\cref{zpt:thm:exceptional} sharpens \cref{tpo:thm:exceptional}, and the
+matrix theorems \cref{zpt:thm:pf,zpt:thm:cubic-matrix} are further
+realizations beside \cref{tpo:thm:triplematrix,tpo:thm:pairmatrix};
+\cref{zpt:prop:bounded} is a second route to \cref{tpo:prop:primrec}.
+Part~II called its bounds upper bounds and claimed no optimality, so
+nothing in it is withdrawn; dated notes there say what changed.
+\item \textbf{Questions of Part~II.} The manuscript answers
+Question~\ref{zpt:q:tpo-classify} (no degree two), answers
+Question~\ref{zpt:q:tpo-fewer} for a universal single parameter (zero) and
+for every choice of two parameters, narrows
+Question~\ref{zpt:q:tpo-nonempty} and addresses
+Question~\ref{tpo:q:smaller} in part. Dated notes after those questions
+say so; the questions stay printed.
+\item \textbf{Bibliography.} Boswell--Glasser, which all three parts cite,
+is printed once, with the manuscript's annotation added. The manuscript's
+\src{repo-lean} is the entry \cite{repo-decision} (same file, same blob)
+and its \src{sympy-tests} is Part~II's entry \cite{tpo:sympy-tests} (same
+file and version); both gain a note. Its entry for this report is
+\cite{zpt:repo-report}, and its other two entries keep their text under
+keys prefixed \src{zpt:}. The manuscript attributes the report to
+``Vladimir Reshetnikov / ProveIt research collection'' and the Lean file to
+``Vladimir Reshetnikov / ProveIt contributors''; Part~I's wording of the
+Lean entry is kept.
+\item \textbf{Macros.} The manuscript's \verb|\Q|, \verb|\Z|, \verb|\M|,
+\verb|\T| and \verb|\pin| are \verb|\QQ|, \verb|\ZZ|, \verb|\tpoM|,
+\verb|\tpoT| and \verb|\zptpin| here, with the same printed symbols
+($\QQ$, $\ZZ$, $\tpoM$, $\tpoT$, the full pin); its \verb|\Gal|,
+\verb|\Rtwo| and \verb|\Rthree| are the report's, with identical
+definitions. Its unused \verb|\C|, \verb|\E| and \verb|\diag| were not
+carried over. Its own \verb|\Ares|, \verb|\Tres|, \verb|\code|,
+\verb|\roots|, \verb|\Roots|, \verb|\pf|, \verb|\tr| and \verb|\aff| are
+new to the report and kept, and the \src{needspace} package was added for
+its one \verb|\Needspace|.
+\item \textbf{Shipped names.} The manuscript names its files by their
+delivered paths. Notes in \cref{zpt:sec:algorithm} and
+\cref{zpt:app:package} give the shipped names; in particular its
+\src{data/verification.json} is
+\src{data/03-zero-parameter-verification.json}, and the file
+\src{data/verification.json} of this directory is Part~I's.
+\item \textbf{Parts~I and~II} are unchanged except for the title-page
+provenance line; a paragraph in \cref{sbr:sec:provenance}; the label
+\src{zpt:rem:sbr-zero} on an unlabelled remark of Part~I and the labels
+\src{zpt:q:tpo-nonempty}, \src{zpt:q:tpo-fewer} and
+\src{zpt:q:tpo-classify} on Part~II's Questions~30.1--30.3; dated notes
+after \cref{sbr:thm:criterion}, after Research
+questions~\ref{tpo:q:sbr-irreducible} and~\ref{tpo:q:sbr-circuits}, after
+Part~II's status box and \cref{tpo:thm:main}, after its proof and the
+remark following \cref{tpo:thm:exceptional}, after
+Questions~\ref{zpt:q:tpo-nonempty}, \ref{zpt:q:tpo-fewer},
+\ref{zpt:q:tpo-classify} and~\ref{tpo:q:smaller} and at the end of
+\cref{tpo:sec:questions}, and after Part~II's conclusion; dated sentences
+in Part~II's opening paragraph and in \cref{tpo:sec:formal}; and the
+bibliography notes just described.
+\end{itemize}
+
+\subsection{Conventions and notation}
+\label{zpt:sec:notation}
+
+No symbol printed in the manuscript was renamed and no normalization was
+changed. Part~III keeps its own notation, which agrees with Part~II's
+except at the places listed below; the manuscript itself reuses several
+letters between sections. Where a false reading is tempting it is printed
+beside the true one.
+
+\begin{center}
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}
+ >{\raggedright\arraybackslash}p{0.74\textwidth}@{}}
+\toprule
+Symbol & Meaning in Part~III, and readings to avoid\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$\Rtwo(t,Z)$, $\Rthree(u,Z)$ & The compressed resolvents
+\eqref{zpt:eq:R}, parameter \emph{first} as in Part~II
+\eqref{tpo:eq:resolvents}; Part~I writes $\Rtwo(Z,t)$, $\Rthree(Z,t)$.\\[3pt]
+$M_f$, $T_f$ & New: the constant resolvents
+$\prod_P(Z-A_P)$ and $\prod_T(Z-b_T)$ of \eqref{zpt:eq:MT}.
+\emph{False readings:} $M_f$ as the set $\tpoM$ of matchings (printed
+$\mathcal M$), or as Part~I's splitting field $M$; $T_f$ as the set $\tpoT$
+of triple partitions. Also $M_f\ne\Rtwo(0,Z)=\prod_P(Z+C_P)$; and
+$\Rthree(0,Z)=\prod_T(Z+b_T)$ has the roots of $T_f$ with opposite signs
+(the delivered README stresses both; root existence in $K$ is the same).\\[3pt]
+$\Roots_K(Q)\ne\varnothing$ & ``$Q$ has a root in $K$''; Part~II writes
+$\operatorname{Root}_K(Q)$. No algorithm over an arbitrary $K$ is
+implied.\\[3pt]
+$K$, $L$, $G$; $K_2$, $K_6$ & As in Part~II: base field (not containing
+the roots), splitting field, Galois group. $K_2(t)$ is the polynomial of
+\eqref{zpt:eq:curve}, as in Part~II; $K_6$ is the complete graph.
+\emph{False reading:} $L$ as Part~I's $L_f$ or as the matrices $L_1,L_2,L_3$
+of \eqref{zpt:eq:Ls}.\\[3pt]
+$b$, $c$, $e$; $s_b,p_b$ & Edges of $K_6$ (in \eqref{zpt:eq:ABC} $b,c$ are
+edges of $P$), with $s_b$, $p_b$ their root sum and product; $s_e,p_e$ are
+also the eigenvalues of $S$, $P$ in \cref{zpt:sec:matching-matrix}.
+\emph{False readings:} $b$ as $b_T$; $s_j$ in \eqref{zpt:eq:traces}, which
+are power sums of the $A_P$, as edge sums.\\[3pt]
+$a,b,c,d$; $c$, $c'$; $r$ & In the proof of \cref{zpt:thm:noncollapse},
+normalized root values (roots $(0,1,a,b,c,d)$) and $r,s$ the affine change;
+in \cref{zpt:cor:A-safe}, $c$ is a root of $M_f$, $a,b,c',d$ root values and
+$r$ the fiber size. Not $a_T,b_T$, $B_P$, $C_P$.\\[3pt]
+$F_i$, $H_i$ & The certificate polynomials of
+\eqref{zpt:eq:F}--\eqref{zpt:eq:H}. \emph{False readings:} Part~II's
+scalar $F=f(u)$, the field $F=\QQ(\sqrt{-7},\zeta)$ of
+\cref{zpt:sec:example}, the fiber $\mathcal F$, the height $H$ or the
+matrix $H$.\\[3pt]
+$x_i$, $D$, $E_j$; $v_0,v_1,w_0,w_1$ & In the proof of \cref{zpt:thm:rank}:
+the five translated nonzero roots, their product, and their elementary
+symmetric functions; scalars of an affine line. \emph{False readings:}
+$D=\bigwedge^3C$ of \cref{zpt:sec:pfaffian}, Part~II's
+$D=(uI_6-C)^{\wedge3}$, a descriptor $D_P$; the matrices $E_j$ of
+\eqref{zpt:eq:Ej}; Part~I's $E_f$; the basis vectors $v_i$ of
+\cref{zpt:sec:pfaffian}.\\[3pt]
+$C$, $J$, $D$, $D^\dagger$, $H$ & In \cref{zpt:sec:pfaffian}: the
+companion matrix, the $20\times20$ pairing matrix, $\bigwedge^3C$ (not
+$(uI_6-C)^{\wedge3}$ as in Part~II), its adjoint and $H=D+D^\dagger$.
+\emph{False readings:} $J$ as the exceptional polynomial $J_f$; $H$ as the
+coefficient height $H$ of \cref{zpt:sec:algorithm} (the manuscript uses the
+letter for both) or Part~II's matrix $H$ of \eqref{tpo:eq:QH}; $C$ as
+$C_P$.\\[3pt]
+$S,P$; $E_j$; $Q(Z)$, $L_j$; $U,V,W$; $W_j$, $m_j$ & In
+\cref{zpt:sec:matching-matrix}: Part~II's compounds $S=C^{[2]}$,
+$P=\bigwedge^2C$ of \eqref{tpo:eq:SP}; Part~II's $r_j$ of \eqref{tpo:eq:rmat};
+the cubic matrix polynomial and its coefficients; the variable of the
+completion cubic and two of its coefficients, matrices in \eqref{zpt:eq:Ls}
+($V,W$ here are Part~II's $U,V$ of
+\eqref{tpo:eq:UV}); power-sum matrices and the coefficients of $M_f$.
+\emph{False readings:} $P$ as a matching; $Q(Z)$ as Part~I's $Q_f$,
+Part~II's matrix $Q$ or $q_e$.\\[3pt]
+$H$, $R=1+H$ & In \cref{zpt:sec:algorithm}, as in Part~I's
+\cref{sbr:sec:algorithm} and Part~II's \cref{tpo:sec:algorithm}: the
+largest absolute value of the nonleading coefficients and a root bound.
+$R$ is not a resolvent.\\[3pt]
+$f^*$ & The reciprocal monic sextic $X^6f(1/X)/e_6$ of
+\eqref{zpt:eq:zero-implementation}.\\[3pt]
+$u,v$, $y_1,y_2$, $\zeta$ & In \cref{zpt:sec:example}: cube roots
+$u^3=y_1$, $v^3=y_2$ of the roots of $Y^2+Y+2$, and a primitive cube root of
+unity. \emph{False reading:} the parameter $u$ or the descriptor variable
+$v$.\\[3pt]
+$\mu_f$, $J_f$, $\mathcal B_f$, $q_e$, $h_P$, $k_T$, $A_P,B_P,C_P$,
+$a_T,b_T$ & As in Part~II, term by term; \eqref{zpt:eq:mu} is
+\eqref{tpo:eq:mu} and \eqref{zpt:eq:J} is \eqref{tpo:eq:J} (``monicgcd''
+there is ``monic gcd''), but now with $\deg J_f\le1$.\\
+\end{longtable}
+\end{center}
+
+\subsection{Formal status in ProveIt}
+\label{zpt:sec:formal}
+
+\textbf{None of Part~III is formalized.} No \src{zpt:} label has a Lean or
+Rocq counterpart. The certificate \eqref{zpt:eq:certificate}, the
+noncollapse and rank theorems, the zero-parameter safety, the exceptional
+polynomial, \cref{zpt:thm:main}, the Pfaffian and cubic-matrix identities and
+\cref{zpt:prop:bounded} have written proofs only;
+\cref{zpt:prop:bounded} is a mathematical argument, not a \src{Primrec}
+proof. Placement beside a Lean and Rocq development confers no formal
+status. What the project does prove, in the file the manuscript cites and
+in the files Parts~I and~II cite, is listed in \cref{sbr:sec:formal}; the
+blob of \src{SexticRadicalDecision.lean} is the same.
+
+\emph{What formalizing Part~III would give (a formalization target, not a
+claim).} On the irreducible branch, where Part~II's results would let Lean
+test four fixed parameters (\cref{tpo:sec:formal}), \cref{zpt:thm:main}
+would need two tests: one triple test and the \emph{compressed} matching
+test at $t=0$. That test cannot be read off the existing bivariate
+descriptors: at $x=(0,0)$ they collapse, as \cref{zpt:sec:decision}
+warns, so it needs a new evaluator of $\prod_P(Z+C_P)$ (or of $M_f$).
+Staying with the existing descriptor definitions on the curve, where the
+values at $t\ne0$ are affine images of the compressed ones
+\eqref{tpo:eq:curve}, \cref{zpt:cor:two} would allow the two points
+$x=(2,1)$ and $x=(8,2)$ (Lean's order $x=(2t^2,t)$ for $t=1,2$) together
+with one triple test. In either case \src{elementaryCode} remains unless the
+matrix identities are formalized as the coefficient evaluator, and
+\src{linearTotalCode} remains on the reducible branch, as
+\cref{tpo:sec:formal} describes.
+\Cref{zpt:sec:formalization} gives the manuscript's own order.
+
+\subsection{What is not claimed}
+\label{zpt:sec:nonclaims}
+
+The manuscript states each of the following, and each is kept where it
+states it. It is AI-assisted, unrefereed and not formalized in Lean or
+Rocq; the repository was inspected at the pin and was neither modified nor
+rebuilt; the programs are exact implementations and checkers, not
+extractions of Lean proofs, and no Lean file is supplied as if checked.
+No claim of historical priority is made and no exhaustive priority search
+was done; the matching invariant (Boswell--Glasser's is $e_6A_P$ after
+relabeling) and the idea of a two-resolvent sextic criterion are classical,
+and the claimed contributions are the collision certificate, the
+selected-zero result for this family, the affine-rank bound and the matrix
+realizations. No solution to general radical construction, no new general
+decidability theorem, no optimal count of root-finder calls (one could
+multiply the two resolvents), no optimal separator bound, no classification
+of exceptional sextics, no nonzero exceptional example and no automatic
+recovery of a matching from a rational matching value is claimed. The
+196-point theorem of Part~I is neither refuted nor improved: it solves a
+stronger task under weaker hypotheses. An upper bound of one exceptional
+parameter is not an existence theorem, and the existence of a nonzero
+exception is unresolved. \Cref{zpt:cor:two} does not make an arbitrary
+prescribed nonzero single parameter safe. The descriptors on the curve
+still collapse at zero, so the safe test uses the compressed polynomial;
+removing an interface check that rejects zero while keeping the
+uncompressed formula would be an error. The Pfaffian formula has no
+denominators, but the supplied elimination algorithm divides by rational
+pivots; Pfaffian theory itself is standard; nothing is deduced about
+radical solvability in higher degree; and the $15\times15$ realization is a
+cubic matrix polynomial, not a linear pencil or an optimal circuit. The
+procedure rejects reducible input and does not replace the repository's
+reducible branch; \cref{zpt:prop:bounded} is not a Lean \src{Primrec}
+theorem, its root boxes are not a recommended method and are exponential in
+bit length, and no bit complexity or speed advantage over production Galois
+software is claimed. The recorded running time is an observation, not a
+benchmark; the classifier shares SymPy's arithmetic, so the comparison is
+not an independent verification, and the finite checks are regression
+tests, not proofs. The example of \cref{zpt:sec:example} is not a
+counterexample to the decision theorem or to Part~II's fiber lemma. The
+research questions are proposed targets, not claimed to be unstudied
+elsewhere. The delivered README adds that its checksum file is not a theorem
+certificate or a signature.
+
+At placement the manuscript's two checkers were rerun on a copy of the
+delivered package with its delivered names (Python~3.13.5, SymPy~1.14.0,
+Windows): the certificate checker printed exactly
+\src{data/03-zero-parameter-certificate-check.txt}; the verifier exited~0
+after about 80~s and wrote only \src{rerun/verification.json} (with CRLF
+line endings), equal to \src{data/03-zero-parameter-verification.json}
+after removing carriage returns except for \src{elapsed_seconds} (74.763
+against 15.044); its console output equalled
+\src{data/03-zero-parameter-verification.log} except for the final
+\emph{Written} line, which names the output path. A separate script (not
+shipped) found the residual of \eqref{zpt:eq:certificate} to be zero and the
+$F_i$ to be the stated differences; checked \eqref{zpt:eq:sums} and
+\eqref{zpt:eq:reciprocal} symbolically, and the coordinates
+\eqref{zpt:eq:rank-coords}; found, exhaustively over $\mathbb F_7$,
+$\mathbb F_{11}$ and $\mathbb F_{13}$ (720, 30\,240 and 95\,040
+translation-normalized root tuples, all six pentads), no collapse of the
+$A_P$ on a pentad and no pentad of affine rank below two, and over
+$\mathbb F_7$ and $\mathbb F_{11}$ with nonzero roots no collapse of the
+$C_P$; verified on five split root tuples, among them tuples with a zero and
+with repeated roots, $\det(ZI-H)=T_f^2$, $D^TJD=(\det C)J$, $\det
+Q(z)=M_f(z)^3$ at 46 points (enough for these degree-45 polynomials),
+\eqref{zpt:eq:zero-implementation} where $e_6\ne0$, and $D_P(0,0)=-e_6$;
+and reproduced \eqref{zpt:eq:example-M} and \eqref{zpt:eq:example-T} from
+60-digit numerical roots (not a proof). None of this is an independent
+proof review.
+
+\section{The research target and the precise advance}
+\label{zpt:sec:target}
+The distinction between a separating invariant and a decision invariant is
+central to effective Galois theory. A separating invariant distinguishes
+every object in a finite permutation representation. A decision invariant
+may identify several objects, provided that these collisions cannot imitate
+a positive answer to the intended question. The sextic setting is a useful
+place to study that distinction: the relevant block systems are the fifteen
+perfect matchings and the ten partitions into two triples of a six-element
+root set.
+
+This article continues Parts I and II of the ProveIt report
+\emph{Finite Separators and Discriminant Factorizations for Sextic Block
+Resolvents}, whose second part is \emph{Three Plus One: Radical-Solvability
+Tests Without Separating Sextic Resolvents} \cite{zpt:repo-report}.
+All repository references are pinned to commit
+\begin{center}\small\texttt{\zptpin}\end{center}
+The inspected report has source blob
+\code{efcff1403f3ea21e3925042a8618a18e4df847b5}.
+Its Part II proves a four-test criterion and an exceptional-set bound of
+two. Its Questions 30.2 and 30.3 ask whether fewer tests suffice and whether
+the exceptional polynomial can have degree two. Its Question 30.6 asks
+for smaller or more structured coefficient-only realizations.
+
+\begin{writenote}[The report cited here is Parts~I and~II]
+The inspected report \cite{zpt:repo-report} is this report, and the blob
+\src{efcff1403} is its \src{article.tex} as it stood until this write:
+Parts~I and~II as printed above, without the dated batch-70 notes. Its
+four-test criterion is \cref{tpo:thm:main}, its exceptional-set bound
+\cref{tpo:thm:exceptional}, and its Questions~30.2, 30.3 and~30.6 are
+Questions~\ref{zpt:q:tpo-fewer}, \ref{zpt:q:tpo-classify}
+and~\ref{tpo:q:smaller} above; Part~II's section numbers are this report's.
+\end{writenote}
+
+\subsection{Answers and remaining limits}
+Our answers have three logically distinct levels.
+
+\textbf{Decision.} The compressed matching test at $t=0$ is safe for every
+irreducible sextic over a characteristic-zero field. Together with one
+triple test, it decides radical solvability. The original bivariate
+\emph{descriptor evaluated on the repository's curve} still collapses at
+$t=0$. The improvement therefore uses the compressed polynomial, not a
+forbidden substitution into a formula whose affine multiplier vanishes.
+
+\textbf{Collision geometry.} In every pentad, the five vectors
+$(A_P,B_P,C_P)$ have affine dimension at least two. Consequently a common
+quadratic factor of their differences is impossible. Under the nonsolvable
+hypothesis, the exceptional polynomial is constant or linear, and zero is
+not a root. This also reduces three arbitrary matching parameters to two.
+
+\textbf{Coefficient realization.} The triple resolvent is a Pfaffian of
+order twenty rather than an unspecified square root of a characteristic
+polynomial. Its formula has polynomial entries even when the companion
+matrix is singular. The simpler matching resolvent is the cube root of a
+$15\times15$ \emph{cubic matrix polynomial} determinant; a trace recurrence
+computes it without forming a $45\times45$ characteristic polynomial.
+This is a structured realization, not a claimed $15\times15$ linear matrix
+pencil or an optimal arithmetic circuit.
+
+The older $196$-point simultaneous-separation theorem is neither refuted nor
+improved by the decision result. Its task is stronger and its hypotheses
+allow arbitrary separable sextics. Nor do we prove that any nonsolvable
+false positive occurs at a nonzero parameter: an upper bound of one is not
+an existence theorem.
+
+\subsection{Classical overlap and what is not a discovery claim}
+Boswell and Glasser already employ degree-fifteen and degree-ten sextic
+resolvents \cite{boswell-glasser}. Their displayed matching invariant is,
+after relabeling, exactly $e_6 A_P$. Thus the pair-product matching invariant,
+and the general idea of a two-resolvent sextic criterion, are not new.
+Their triple invariant is different from the product-sum invariant used
+below. Our contribution is an explicit treatment of specialized collision
+fibers, the zero-parameter consequence for the inspected ProveIt family,
+the affine-rank obstruction, and the stated matrix realizations. An
+exhaustive literature-priority assessment has not been made.
+
+All group-theoretic steps needed below are proved, rather than inferred
+from a generic stabilizer calculation. This matters: a rational value of an
+invariant need not label a single Galois-fixed partition. Section
+\ref{zpt:sec:example} gives a concrete example of that failure, while preserving
+the correctness of the solvability decision.
+
+\subsection{Formal and computational boundaries}
+The repository's \code{SexticRadicalDecision.lean} proves a total computable
+criterion and its equivalence to the all-roots radical-solvability predicate
+\cite{repo-decision}. Its documentation explicitly distinguishes computability
+from a primitive-recursive claim because a separating-invariant search is
+unbounded. The new arguments here have not been added to that development,
+and no repository rebuild was performed. Our supplied Python programs are
+exact implementations and checkers, not extracted Lean proofs.
+
+\section{Definitions and the main theorem}
+\label{zpt:sec:definitions}
+Let $K$ be a field of characteristic zero, and let
+\begin{equation}
+ f(X)=X^6-e_1X^5+e_2X^4-e_3X^3+e_4X^2-e_5X+e_6
+ \label{zpt:eq:f}
+\end{equation}
+be irreducible in $K[X]$. Let $L$ be its splitting field, let
+$\alpha_1,\ldots,\alpha_6$ be its distinct roots, and write
+$G=\Gal(L/K)\le S_6$. Irreducibility makes this action transitive and implies
+$\alpha_i\notin K$, in particular $e_6\ne0$.
+
+Let $\tpoM$ be the fifteen perfect matchings of $[6]$, and let $\tpoT$ be the ten
+partitions into two unordered triples. For an edge $b=\{i,j\}$ put
+$s_b=\alpha_i+\alpha_j$ and $p_b=\alpha_i\alpha_j$. For $P\in\tpoM$ set
+\begin{align}
+ A_P&=\sum_{b\in P}p_b, &
+ B_P&=\sum_{\substack{b,c\in P\\b\ne c}}s_b p_c, &
+ C_P&=\sum_{\{b,c\}\subset P}p_b p_c,\label{zpt:eq:ABC}\\
+ h_P(t)&=A_Pt^2+B_Pt-C_P.\label{zpt:eq:h}
+\end{align}
+The sum defining $B_P$ is ordered and has six summands. For $T\in\tpoT$ define
+\begin{equation}
+ a_T=\sum_{B\in T}\sum_{\{i,j\}\subset B}\alpha_i\alpha_j,
+ \qquad b_T=\sum_{B\in T}\prod_{i\in B}\alpha_i,
+ \qquad k_T(u)=a_Tu-b_T.\label{zpt:eq:k}
+\end{equation}
+These agree with the predecessor's compressed invariants. Its resolvents are
+\begin{equation}
+ \Rtwo(t,Z)=\prod_{P\in\tpoM}(Z-h_P(t)),\qquad
+ \Rthree(u,Z)=\prod_{T\in\tpoT}(Z-k_T(u)).\label{zpt:eq:R}
+\end{equation}
+We shall also use the simpler constant resolvents
+\begin{equation}
+ \Ares(Z)=\prod_{P\in\tpoM}(Z-A_P),\qquad
+ \Tres(Z)=\prod_{T\in\tpoT}(Z-b_T).\label{zpt:eq:MT}
+\end{equation}
+All coefficients belong to $K$; in fact they are integer polynomials in the
+$e_j$ (and the parameter where applicable). This follows from symmetry in
+six independent root indeterminates and the fundamental theorem of
+symmetric polynomials.
+
+Write $\roots{Q}\ne\varnothing$ to mean that $Q\in K[Z]$ has a root in $K$.
+This notation does not assume an algorithm for arbitrary $K$.
+
+\begin{writenote}[Same objects as Parts~I and~II]
+\eqref{zpt:eq:f}, \eqref{zpt:eq:ABC}, \eqref{zpt:eq:h}, \eqref{zpt:eq:k}
+and \eqref{zpt:eq:R} are Part~II's \eqref{tpo:eq:f}, \eqref{tpo:eq:h},
+\eqref{tpo:eq:k} and \eqref{tpo:eq:resolvents} (Part~I's \eqref{sbr:eq:h},
+\eqref{sbr:eq:k} and \eqref{sbr:eq:resolvents}, there with $Z$ first). New
+are the constant resolvents \eqref{zpt:eq:MT}: $A_P$ is the
+$t^2$-coefficient of $h_P$ and $-b_T=k_T(0)$. $M_f$ is not
+$\Rtwo(0,Z)=\prod_P(Z+C_P)$, and $\Rthree(0,Z)=\prod_T(Z+b_T)$ has the
+roots of $T_f$ with opposite signs; neither change affects whether a root
+lies in $K$. Part~II's $\operatorname{Root}_K(P)$ is $\roots{P}\ne\varnothing$
+here.
+\end{writenote}
+
+\Needspace{15\baselineskip}
+\begin{theorem}[Two resolvents, with a safe zero parameter]
+\label{zpt:thm:main}
+For an irreducible sextic \eqref{zpt:eq:f}, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},itemsep=1pt]
+\item all roots of $f$ are expressible by radicals over $K$;
+\item $\roots{\Ares}\ne\varnothing$ or $\roots{\Tres}\ne\varnothing$;
+\item for any prescribed $u\in K$,
+\[
+ \roots{\Rtwo(0,Z)}\ne\varnothing
+ \quad\text{or}\quad
+ \roots{\Rthree(u,Z)}\ne\varnothing.
+\]
+\end{enumerate}
+No squarefreeness test or separating-parameter search is required.
+Each positive root-existence test in (ii) or (iii) is individually safe as a
+solvability certificate, but need not identify a fixed partition of its own
+type.
+\end{theorem}
+
+The theorem is proved in Section \ref{zpt:sec:decision} after two elementary
+collision arguments. It concerns a Boolean decision, not a radical
+expression, a subfield generator, or a witness to a particular block system.
+
+\section{Small permutation groups and pentads}
+\label{zpt:sec:groups}
+\begin{lemma}[The sextic block criterion]
+\label{zpt:lem:block}
+A transitive subgroup of $S_6$ is solvable if and only if it fixes a matching
+in $\tpoM$ or a triple partition in $\tpoT$.
+\end{lemma}
+\begin{proof}
+The stabilizers of these partitions are $S_2\wr S_3$ and $S_3\wr S_2$.
+Both are solvable: each is an extension of a product of solvable groups by
+a solvable group. Their subgroups are solvable.
+
+For the converse, a faithful finite solvable primitive permutation group
+has prime-power degree. To see this, choose a minimal nontrivial normal
+subgroup $N$. Its commutator subgroup is characteristic, hence normal in
+the whole group. Minimality and solvability make $N$ abelian. Its primary
+components and its subgroup of elements killed by a prime show, again by
+minimality, that $N$ is elementary abelian. The $N$-orbits form a block
+system. Primitivity and faithfulness force $N$ to be transitive. A
+transitive abelian permutation group is regular: its point stabilizers
+coincide, and their common intersection is the trivial kernel. Thus the
+degree equals $|N|$, a prime power.
+
+Six is not a prime power. A solvable transitive subgroup of $S_6$ is
+therefore imprimitive. A nontrivial block system has blocks of size two or
+three, exactly the two possibilities in the assertion.
+\end{proof}
+
+\begin{lemma}[Invariant graphs]
+\label{zpt:lem:graphs}
+A transitive subgroup of $S_6$ preserving a simple regular graph of degree
+$1$, $2$, $3$, or $4$ is solvable. Consequently a nonsolvable transitive
+subgroup is transitive on the fifteen unordered pairs of vertices.
+\end{lemma}
+\begin{proof}
+A $1$-regular graph is a perfect matching. A $2$-regular graph on six
+vertices is a six-cycle or two triangles. Their automorphism groups are,
+respectively, a solvable wreath product, a dihedral group of order twelve,
+and $S_3\wr S_2$. Taking graph complements handles degrees four and three.
+For the final assertion, the union of an edge orbit is regular by vertex
+transitivity. A nonempty proper edge orbit would give one of the four
+forbidden degrees.
+\end{proof}
+
+\begin{definition}
+A \emph{pentad} is a set of five pairwise edge-disjoint perfect matchings of
+$K_6$; equivalently, it is a one-factorization of $K_6$.
+\end{definition}
+
+One example, used throughout the polynomial calculation, is
+\begin{equation}
+\begin{array}{lll}
+ P_0=12|34|56,&P_1=13|25|46,&P_2=14|26|35,\\
+ P_3=15|24|36,&P_4=16|23|45.&
+\end{array}\label{zpt:eq:pentad}
+\end{equation}
+Here $12$ denotes the edge $\{1,2\}$, not a product or an integer label.
+
+\begin{lemma}[Pentad incidence geometry]
+\label{zpt:lem:pentads}
+There are six pentads. Each matching belongs to two pentads. Distinct
+pentads intersect in one matching. All pentads are related by a relabeling
+of the vertices.
+\end{lemma}
+\begin{proof}
+Fix $12|34|56$. A pentad containing it must use an edge $13$, and the
+matching containing that edge must be either $13|25|46$ or $13|26|45$.
+In either case the union of these two matchings is a six-cycle; its
+complement is a triangular prism. That prism has a unique
+one-factorization. Indeed, a perfect matching in the prism uses either
+all three vertical edges or one vertical edge and one edge in each
+triangle. The all-vertical choice leaves two triangles, which cannot be
+partitioned into perfect matchings. The other three choices partition all
+prism edges and are forced.
+
+Thus a fixed matching lies in exactly two pentads; the two choices are
+interchanged by a relabeling preserving the fixed matching. Relabeling also
+moves any matching to any other. This proves transitivity on pentads, and
+incidence counting gives $15\cdot2/5=6$ pentads.
+
+Two pentads cannot share two matchings, since the complementary triangular
+prism would then have two different one-factorizations. Each of the fifteen
+matchings accounts for one pair of pentads, and these pairs are all
+different. There are $\binom62=15$ pairs, so every pair of pentads intersects.
+\end{proof}
+
+The following sums will be useful:
+\begin{equation}
+ \sum_{P\in\Sigma}A_P=e_2,\qquad
+ \sum_{P\in\Sigma}B_P=3e_3,\qquad
+ \sum_{P\in\Sigma}C_P=e_4
+ \quad\text{for every pentad }\Sigma.\label{zpt:eq:sums}
+\end{equation}
+For the first, each edge appears once. For the second, a fixed triple of
+vertices contains three edges, each in a different matching of the pentad;
+these give its three appearances in the ordered sums defining $B$.
+For the third, a fixed four-set contributes precisely in the matching
+containing its complementary edge. These arguments prove the identities
+with independent indeterminates, so they hold under every specialization.
+
+\begin{writenote}[Reproved from Part~II]
+\Cref{zpt:lem:block,zpt:lem:graphs,zpt:lem:pentads} are Part~II's
+\cref{tpo:lem:block,tpo:lem:graphs,tpo:lem:pentads} (the first also Part~I's
+\cref{sbr:lem:primitive-group} with \cref{sbr:prop:blocks-galois}), and
+\eqref{zpt:eq:sums} is \cref{tpo:lem:averages}; the proofs are the same
+arguments. \Cref{zpt:lem:pentads} adds that the pentads are permuted
+transitively by relabeling. The pentad \eqref{zpt:eq:pentad} is $\Sigma_1$
+of \cref{tpo:app:pentads}: $P_0,\ldots,P_4$ are matchings $1,5,9,11,13$
+there.
+\end{writenote}
+
+\section{An explicit certificate excluding pentad collapse}
+\label{zpt:sec:certificate}
+This is the first new algebraic ingredient. It does not assume that the
+roots belong to an irreducible polynomial.
+
+\begin{theorem}[Pair-product sums do not collapse on a pentad]
+\label{zpt:thm:noncollapse}
+Let $\alpha_1,\ldots,\alpha_6$ be distinct elements of a field of
+characteristic different from two. For every pentad $\Sigma$, the five
+values $A_P$, $P\in\Sigma$, are not all equal.
+\end{theorem}
+\begin{proof}
+Relabel the pentad as in \eqref{zpt:eq:pentad}. Under a common affine change
+$\alpha_i\mapsto r\alpha_i+s$, with $r\ne0$,
+\[
+ A_P\mapsto r^2 A_P+rs\sum_i\alpha_i+3s^2.
+\]
+Equality of the five values is preserved. Normalize the six roots to
+$(0,1,a,b,c,d)$. Their distinctness implies, in particular,
+$c,d\notin\{0,1\}$.
+
+Subtracting $A_{P_0}$ from the other four values gives
+\begin{align}
+ F_1&=-ab+bd-cd+c,&F_2&=-ab+ac-cd+d,\notag\\
+ F_3&=-ab+ad+b-cd,&F_4&=-ab+a+bc-cd.\label{zpt:eq:F}
+\end{align}
+Define four integer polynomials
+\begin{align}
+ H_1&=-\bigl(a^2b-a^2c+ab-a-bc+b+2cd-2d\bigr),\notag\\
+ H_2&=a^2-ab^2+abc+ab-ac+b^2-2bd,\notag\\
+ H_3&=(b-1)(ab-ac+a-c),\notag\\
+ H_4&=(a^2+1)(b-c).\label{zpt:eq:H}
+\end{align}
+Direct multiplication in $\ZZ[a,b,c,d]$ gives the identity
+\begin{equation}
+ \boxed{\quad\sum_{i=1}^4 H_iF_i=2c(c-1)d(d-1).\quad}
+ \label{zpt:eq:certificate}
+\end{equation}
+This displayed identity is the complete certificate: it can be checked by
+expanding its two sides, without trusting how the cofactors were found.
+The package supplies both a SymPy expansion check and an independent
+sparse-polynomial checker using only Python integers.
+
+If all five $A$-values were equal, all $F_i$ would vanish. The right-hand
+side of \eqref{zpt:eq:certificate} is nonzero under our assumptions, a
+contradiction.
+\end{proof}
+
+\begin{remark}[A certificate rather than a numerical test]
+The right-hand side of \eqref{zpt:eq:certificate} is a product of differences
+that must be nonzero in the normalized configuration. This is an exact
+ideal-membership obstruction on the open set of distinct roots. Testing
+many root tuples would not prove that obstruction. Conversely, the short
+identity is sufficient; no Gr\"obner-basis completeness theorem is needed
+in the final proof.
+\end{remark}
+
+\begin{corollary}[The simpler matching test is safe]
+\label{zpt:cor:A-safe}
+If $f$ is irreducible over a characteristic-zero field and
+$\roots{\Ares}\ne\varnothing$, then $G$ is solvable.
+\end{corollary}
+\begin{proof}
+Suppose instead that $G$ is nonsolvable, and let $c\in K$ be a root of
+$\Ares$. Its nonempty fiber
+$\mathcal F=\{P\in\tpoM:A_P=c\}$ is $G$-invariant.
+Distinct matchings in the fiber cannot share an edge. Indeed, on their
+four other vertices, with root values $a,b,c',d$, two different pairings
+have product-sum difference such as
+\[
+ ab+c'd-ac'-bd=(a-d)(b-c'),
+\]
+which is nonzero for distinct roots.
+
+If $r=|\mathcal F|$, its matchings therefore form a simple $r$-regular
+$G$-invariant graph. Necessarily $1\le r\le5$. Lemma \ref{zpt:lem:graphs}
+excludes $r=1,2,3,4$, so $r=5$ and $\mathcal F$ is a pentad. Theorem
+\ref{zpt:thm:noncollapse} excludes that final possibility.
+\end{proof}
+
+\begin{corollary}[Reciprocal transport and the zero parameter]
+\label{zpt:cor:zero}
+For irreducible $f$ as above, a root in $K$ of $\Rtwo(0,Z)$ implies that
+$G$ is solvable.
+\end{corollary}
+\begin{proof}
+The six reciprocals are distinct, and their Galois permutation action is
+identical. For every matching,
+\begin{equation}
+ C_P(\alpha_1,\ldots,\alpha_6)
+ =e_6 A_P(\alpha_1^{-1},\ldots,\alpha_6^{-1}).\label{zpt:eq:reciprocal}
+\end{equation}
+For example, multiplication of one reciprocal pair product by $e_6$
+gives the product of the other four roots, precisely one term of $C_P$.
+Since $h_P(0)=-C_P$ and $e_6\in K^\times$, a rational fiber for
+$h_P(0)$ gives one for $A_P$ on reciprocal roots. Apply Corollary
+\ref{zpt:cor:A-safe} to the reciprocal irreducible sextic.
+\end{proof}
+
+The same argument also proves that, for any six distinct \emph{nonzero}
+roots, the five $C_P$ in a pentad cannot all coincide, regardless of their
+Galois group.
+
+\section{The safe triple test and the decision theorem}
+\label{zpt:sec:decision}
+We reproduce the necessary triple argument from the predecessor report
+\cite{zpt:repo-report}. Its role is complementary to the new matching
+certificate; it is not a new claim in this article.
+
+\begin{lemma}[Distinct shifted pair products]
+\label{zpt:lem:pair-products}
+Assume $G$ is nonsolvable, fix $u\in K$, and set $\beta_i=u-\alpha_i$.
+The fifteen products $\beta_i\beta_j$ with $i<j$ are pairwise distinct.
+\end{lemma}
+\begin{proof}
+The $\beta_i$ are distinct and nonzero. Equality of products defines a
+$G$-invariant equivalence relation on edges. Edge transitivity, supplied
+by Lemma \ref{zpt:lem:graphs}, makes all classes have a common size $m$.
+Edges in the same class are disjoint: cancellation at a shared vertex
+would equate two distinct $\beta$'s. Thus $m\le3$, and $m$ divides fifteen.
+The only possibilities are $1$ and $3$.
+
+In the latter case the five classes are perfect matchings. Their five
+distinct common products $c$ satisfy
+$c^3=\prod_i\beta_i=f(u)$, impossible for a cubic polynomial over a field.
+Hence $m=1$.
+\end{proof}
+
+\begin{proposition}[Triple safety at every base-field parameter]
+\label{zpt:prop:triple}
+If $G$ is nonsolvable, then the ten $k_T(u)$ are distinct for every $u\in K$,
+and $\Rthree(u,Z)$ has no root in $K$. In particular $\Tres$ has no root
+in $K$.
+\end{proposition}
+\begin{proof}
+After relabeling and, if necessary, exchanging the blocks of a partition,
+two different triple partitions can be written
+$abc|def$ and $abd|cef$. Their shifted block-product sums differ by
+\[
+ (\beta_c-\beta_d)(\beta_a\beta_b-\beta_e\beta_f),
+\]
+which is nonzero by Lemma \ref{zpt:lem:pair-products}. The shifted sum is
+\[
+ \prod_{i\in B}(u-\alpha_i)+\prod_{i\notin B}(u-\alpha_i)
+ =2u^3-e_1u^2+k_T(u).
+\]
+Thus all $k_T(u)$ are distinct. A value in $K$ would have a unique
+antecedent $T$, which equivariance would make $G$-fixed. Lemma
+\ref{zpt:lem:block} gives a contradiction. At $u=0$, $k_T(0)=-b_T$.
+\end{proof}
+
+\begin{writenote}[Reproved from Part~II]
+\Cref{zpt:lem:pair-products} is \cref{tpo:lem:products} and
+\cref{zpt:prop:triple} is \cref{tpo:thm:triple}, with the remark on $T_f$
+added; the arguments are the same, as the manuscript says above.
+\end{writenote}
+
+\begin{proof}[Proof of Theorem \ref{zpt:thm:main}]
+In characteristic zero, radical solvability is equivalent to solvability
+of the finite Galois group. By Lemma \ref{zpt:lem:block}, a solvable $G$ fixes
+a matching or a triple partition. In the first case its $A_P$, $C_P$ and
+$h_P(0)$ belong to $K$; in the second case its $b_T$ and $k_T(u)$ belong
+to $K$. This proves both positive disjunctions. Conversely, Corollaries
+\ref{zpt:cor:A-safe} and \ref{zpt:cor:zero}, and Proposition \ref{zpt:prop:triple},
+show that any positive test in those disjunctions forces solvability.
+\end{proof}
+
+\subsection{Why the original descriptor must not be evaluated at zero}
+For a block $B$, put
+$p_B(u)=\prod_{i\in B}(u-\alpha_i)$ and
+$D_P(u,v)=\prod_{B\in P}(v-p_B(u))$.
+The repository uses
+\begin{equation}
+ D_P(t,2t^2)=K_2(t)-2t^2h_P(t),\qquad
+ K_2(t)=2t^6+2e_2t^4-f(t).\label{zpt:eq:curve}
+\end{equation}
+For nonzero $t$, this is a common invertible affine transformation of the
+matching values. At zero, however, $D_P(0,0)=-e_6$ for every $P$.
+The original descriptor test there is useless: it has a base-field root
+for every input. Our safe test uses the well-defined polynomial
+$\Rtwo(0,Z)=\prod_P(Z+C_P)$ instead. A source-level implementation must
+introduce or evaluate that compressed polynomial directly. Deleting an
+interface check that rejects zero, while leaving the uncompressed
+formula unchanged, would be an error.
+
+\begin{writenote}[Already observed in Parts~I and~II]
+That the descriptors on the curve collapse at $t=0$ while the compressed
+families still make sense there is said in Part~I (\cref{zpt:rem:sbr-zero})
+and in Part~II after \eqref{tpo:eq:curve}, which is \eqref{zpt:eq:curve};
+Part~II's prototype accordingly rejects a zero parameter
+(\cref{tpo:sec:verification}). New here is that the single compressed test
+at zero is safe (\cref{zpt:cor:zero}).
+\end{writenote}
+
+\section{Affine-rank rigidity and a linear exceptional polynomial}
+\label{zpt:sec:rank}
+The next result is independent of the explicit certificate and gives a
+second improvement to the repository's collision analysis.
+
+\begin{theorem}[Pentad affine rank]
+\label{zpt:thm:rank}
+For six distinct elements of any field and any pentad $\Sigma$,
+\begin{equation}
+ \dim\aff\{(A_P,B_P,C_P):P\in\Sigma\}\ge2.\label{zpt:eq:rank}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Under a common translation of all roots by $s$, differences between
+matching coordinates transform as
+\begin{equation}
+ \Delta A'=\Delta A,\quad
+ \Delta B'=\Delta B+2s\Delta A,\quad
+ \Delta C'=\Delta C+s\Delta B+s^2\Delta A.\label{zpt:eq:translation}
+\end{equation}
+Expanding \eqref{zpt:eq:ABC} proves these identities. The transformation is
+triangular with diagonal entries one, so it preserves affine rank.
+Translate one root to zero and name the other five distinct nonzero
+roots $x_1,\ldots,x_5$. Put
+$D=\prod_i x_i$ and $E_j=e_j(x_1,\ldots,x_5)$.
+
+The pentad contains exactly one matching $P_i$ pairing zero with $x_i$.
+Write $(A_i,B_i,C_i)$ for its coordinates. Then
+\begin{equation}
+ C_i=\frac D{x_i},\qquad
+ B_i=x_iA_i+E_3-x_iE_2+x_i^2E_1-x_i^3.\label{zpt:eq:rank-coords}
+\end{equation}
+For the first identity, $C_i$ is the product of the four roots not paired
+with zero. For the second, the terms of $B_i$ involving the edge
+$\{0,x_i\}$ contribute $x_iA_i$; the other two edges contribute the
+third elementary symmetric function of the remaining four roots.
+Removing $x_i$ from $E_3$ gives the stated expression.
+
+The $C_i$ are distinct. If the five points were contained in an affine
+line, there would therefore be $v_0,v_1,w_0,w_1$ in the field such that
+\[
+ A_i=v_0+\frac{v_1}{x_i},\qquad
+ B_i=w_0+\frac{w_1}{x_i}.
+\]
+Substitute into \eqref{zpt:eq:rank-coords} and multiply by $x_i$. Every $x_i$
+would be a root of the monic quartic
+\begin{equation}
+ X^4-E_1X^3+(E_2-v_0)X^2+(w_0-v_1-E_3)X+w_1.\label{zpt:eq:quartic-obstruction}
+\end{equation}
+Five distinct roots of a monic quartic are impossible. Rank zero is
+already excluded by the distinct $C_i$, so \eqref{zpt:eq:rank} follows.
+\end{proof}
+
+\begin{corollary}[At most one common collapse parameter for a pentad]
+\label{zpt:cor:one-pentad}
+For six distinct roots in a field and a pentad $\Sigma$, the nonzero
+polynomials among $h_P-h_Q$, $P,Q\in\Sigma$, have a greatest common
+divisor of degree at most one. If the roots are nonzero and the field has
+characteristic different from two, that gcd does not vanish at zero.
+\end{corollary}
+\begin{proof}
+A common divisor of degree two would make every difference a scalar
+multiple of the same quadratic. Comparing coefficients in
+$\Delta h=\Delta A\,t^2+\Delta B\,t-\Delta C$ would put all difference
+vectors in a one-dimensional space, contrary to Theorem \ref{zpt:thm:rank}.
+The differences are not all zero for the same reason. At zero, simultaneous
+vanishing would make all $C_P$ equal, which is excluded by
+\eqref{zpt:eq:reciprocal} and Theorem \ref{zpt:thm:noncollapse}.
+\end{proof}
+
+\subsection{Recovering the nonsolvable fiber geometry}
+For an edge $e=\{i,j\}$ set
+\begin{equation}
+ q_e(t)=t^2+(\alpha_i+\alpha_j)t-\alpha_i\alpha_j.\label{zpt:eq:q}
+\end{equation}
+If distinct matchings $P,Q$ share $e$, expansion gives
+\begin{equation}
+ h_P(t)-h_Q(t)=(A_P-A_Q)q_e(t),\quad A_P-A_Q\ne0.\label{zpt:eq:shared}
+\end{equation}
+Indeed, changing the pairing of the other four roots changes $B$ by
+$s_e\Delta A$ and $C$ by $p_e\Delta A$.
+
+Assume $G$ nonsolvable and $t\in K$. Edges with $q_e(t)=0$ form a
+$G$-invariant graph of maximum degree one. For fixed $i$, the equation
+\[
+ (t-\alpha_i)\alpha_j=-t^2-t\alpha_i
+\]
+has at most one possible partner because $t\ne\alpha_i$. Transitivity
+makes the graph either empty or a perfect matching; the latter would make
+$G$ solvable. Thus all $q_e(t)$ are nonzero.
+
+A base-field value $c=h_P(t)$ consequently has an edge-disjoint invariant
+fiber. The invariant-graph argument makes it a pentad, of size exactly
+five. Moreover $G$ preserves at most one pentad: two invariant pentads
+would have a common matching fixed by $G$, by Lemma \ref{zpt:lem:pentads}.
+Finally, \eqref{zpt:eq:sums} shows that the common value on the pentad is
+necessarily
+\begin{equation}
+ \mu_f(t)=\frac{e_2t^2+3e_3t-e_4}{5}.\label{zpt:eq:mu}
+\end{equation}
+This reconstructs the predecessor's pentad obstruction without assuming
+its other claims.
+
+\begin{writenote}[Reproved from Part~II]
+\eqref{zpt:eq:q} and \eqref{zpt:eq:shared} are \eqref{tpo:eq:qedge} and
+\cref{tpo:lem:shared} (Part~I's \cref{sbr:lem:shared}); the paragraphs above
+reprove \cref{tpo:lem:disjoint}, \cref{tpo:thm:fiber} and \cref{tpo:cor:mu},
+and \eqref{zpt:eq:mu} is \eqref{tpo:eq:mu}.
+\end{writenote}
+
+\begin{theorem}[The exceptional polynomial is constant or linear]
+\label{zpt:thm:exceptional}
+Let $f$ be irreducible with nonsolvable Galois group over $K$. Define
+\[
+ \mathcal B_f=\{t\in K:\roots{\Rtwo(t,Z)}\ne\varnothing\}.
+\]
+Then $|\mathcal B_f|\le1$ and $0\notin\mathcal B_f$.
+If $G$ preserves no pentad, $\mathcal B_f$ is empty. Otherwise let
+$\Sigma$ be its unique invariant pentad and define
+\begin{equation}
+ J_f(t)=\operatorname{monicgcd}_{P\in\Sigma}
+           \bigl(h_P(t)-\mu_f(t)\bigr)\quad\text{in }L[t].\label{zpt:eq:J}
+\end{equation}
+Then $J_f\in K[t]$, $\deg J_f\le1$, $J_f(0)\ne0$, and
+$\mathcal B_f=\roots{J_f}$. A nonconstant $J_f$ is therefore $t-\tau$
+for one nonzero $\tau\in K$. At that parameter the unique base-field
+resolvent root has multiplicity five.
+\end{theorem}
+\begin{proof}
+The preceding fiber argument proves the assertions in the absence of an
+invariant pentad and the necessity of collapse on $\Sigma$ otherwise.
+The family in \eqref{zpt:eq:J} is permuted by $G$, so its monic gcd is fixed
+coefficientwise and belongs to $K[t]$. Its generated ideal is the same as
+the ideal generated by all $h_P-h_Q$: taking the average over the pentad
+expresses $h_P-\mu_f$ as a $1/5$-weighted sum of differences, and differences
+of the centered polynomials give the reverse inclusion. Corollary
+\ref{zpt:cor:one-pentad} gives the degree and nonvanishing assertions.
+
+Conversely, a zero $t\in K$ of $J_f$ makes all five values equal to
+$\mu_f(t)\in K$. This is a resolvent root; the fiber argument proves its
+multiplicity and uniqueness. A linear polynomial over $K$ has its single
+root in $K$, and the constant case has none.
+\end{proof}
+
+\begin{corollary}[Two arbitrary matching parameters]
+\label{zpt:cor:two}
+For distinct $t_1,t_2\in K$ and any $u\in K$, an irreducible sextic is
+solvable by radicals if and only if
+\[
+ \roots{\Rthree(u,Z)}\ne\varnothing
+ \quad\text{or}\quad
+ \bigl(\roots{\Rtwo(t_1,Z)}\ne\varnothing
+       \ \text{and}\ \roots{\Rtwo(t_2,Z)}\ne\varnothing\bigr).
+\]
+\end{corollary}
+\begin{proof}
+A fixed matching supplies roots at both parameters, and a fixed triple
+partition supplies the other branch. A nonsolvable group cannot pass the
+triple test or two distinct matching tests, by Theorem
+\ref{zpt:thm:exceptional}.
+\end{proof}
+This resolves the predecessor's ``every choice of two distinct parameters''
+version. Theorem \ref{zpt:thm:main} separately resolves its ``one universally
+chosen parameter'' version by selecting zero. It does not prove that an
+arbitrary prescribed nonzero single parameter is safe.
+
+\begin{writenote}[What changes in Part~II]
+\Cref{zpt:thm:exceptional} sharpens \cref{tpo:thm:exceptional}
+($\deg J_f\le2$, $|\mathcal B_f|\le2$ there), and \cref{zpt:cor:two} and
+\cref{zpt:thm:main} sharpen \cref{tpo:thm:main} (three matching tests
+there). This answers Question~\ref{zpt:q:tpo-classify} as to the degree and
+Question~\ref{zpt:q:tpo-fewer} in the two versions named here; the version
+``one arbitrary prescribed parameter'' is Question~\ref{zpt:q:nonzero-safe}
+below. Dated notes at those places in Part~II say so.
+\end{writenote}
+
+\section{A denominator-free Pfaffian triple resolvent}
+\label{zpt:sec:pfaffian}
+The decision theorem can use $\Tres$, which has a particularly clean
+coefficient-only realization. We state the matrix identity without any
+irreducibility or invertibility hypothesis.
+
+Let $V$ have ordered basis $v_1,\ldots,v_6$, and equip $\bigwedge^3V$ with
+the bilinear pairing defined by
+\[
+ u\wedge v=\langle u,v\rangle\,
+ v_1\wedge\cdots\wedge v_6.
+\]
+In the lexicographically ordered basis of triples this has a fixed
+$20\times20$ matrix $J$. Only complementary triples pair nontrivially;
+the nonzero entries are signs. In particular,
+\begin{equation}
+ J^T=-J,\qquad J^2=-I,\qquad \pf(J)\in\{1,-1\}.\label{zpt:eq:Jmatrix}
+\end{equation}
+For a $6\times6$ matrix $C$, let
+\begin{equation}
+ D=\bigwedge^3 C,\qquad D^\dagger=J^{-1}D^TJ,
+ \qquad H=D+D^\dagger.\label{zpt:eq:D-H}
+\end{equation}
+The entries of $D$ are the $3\times3$ minors of $C$; the entries of
+$D^\dagger$ have the same polynomial degree, since $J^{-1}=-J$.
+
+\begin{theorem}[Middle-exterior Pfaffian formula]
+\label{zpt:thm:pf}
+Let $C$ be the companion matrix of an arbitrary monic sextic, with roots
+$\alpha_1,\ldots,\alpha_6$ counted with multiplicity in a splitting ring or
+field as appropriate. Then
+\begin{equation}
+ \boxed{\quad
+ T_f(Z)=\frac{\pf\bigl(J(ZI-H)\bigr)}{\pf(J)}.
+ \quad}\label{zpt:eq:pf}
+\end{equation}
+The right-hand side is a monic polynomial of degree ten whose coefficients
+are integer polynomials in the entries of $C$. The identity is valid for
+singular and nonseparable inputs; it involves no division by $e_6$.
+Furthermore
+\begin{equation}
+ \det(ZI-H)=T_f(Z)^2.\label{zpt:eq:pf-square}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The adjoint is an involution, so $H^\dagger=H$. Equivalently $H^TJ=JH$;
+therefore $J(ZI-H)$ is skew-symmetric. Its Pfaffian is a polynomial in its
+entries. Its leading coefficient is $\pf(J)$, which is a unit sign, proving
+monicity and integrality of the coefficients in \eqref{zpt:eq:pf}.
+
+Work first with six independent eigenvalues over characteristic zero.
+In an eigenbasis of $C$, $D$ is diagonal with entries
+$d_I=\prod_{i\in I}\alpha_i$. The pairing pairs $I$ with its complement,
+so $D^\dagger$ has diagonal entries $d_{I^c}$. Hence $H$ has the ten
+values $d_I+d_{I^c}$, each twice. These assertions are independent of
+rescaling the volume form or changing the basis: the adjoint defined by
+the pairing and the endomorphism $H$ transport with that basis. Thus
+\eqref{zpt:eq:pf-square} holds on the dense set of diagonalizable matrices
+with distinct eigenvalues.
+
+The identity $\pf(A)^2=\det A$ shows that the square of the monic
+polynomial in \eqref{zpt:eq:pf} is the same product square. In a
+characteristic-zero integral domain the two monic polynomials must be
+equal. Both sides are polynomial expressions with integer coefficients
+in the universal matrix entries, so equality on this dense set proves a
+polynomial identity. It specializes to every matrix, including singular
+ones, and after reduction to every commutative coefficient ring. For
+nonseparable polynomials, the product interpretation uses repeated roots;
+there is no separability step left in the specialized identity.
+\end{proof}
+
+\subsection{Why no inverse is needed}
+The exterior pairing also gives the universal identity
+\begin{equation}
+ D^TJD=(\det C)J.\label{zpt:eq:similitude}
+\end{equation}
+It follows directly by applying $C$ to the wedge of two three-vectors.
+When $C$ is invertible,
+\begin{equation}
+ D^\dagger=(\det C)D^{-1},\qquad
+ H=D+(\det C)D^{-1}.\label{zpt:eq:inverse}
+\end{equation}
+Thus the predecessor's inverse-based construction is recovered in its
+nonsingular domain. Formula \eqref{zpt:eq:D-H} extends it polynomially rather
+than attempting to cancel a numerical zero denominator. The Pfaffian also
+fixes the sign that an unqualified square root of a determinant would leave
+ambiguous.
+
+Pfaffian algorithms and their exact or numerical variants are standard
+linear algebra; Wimmer gives a systematic algorithmic treatment
+\cite{zpt:wimmer}. The contribution here is the complementary-triple
+construction and its precise specialization to the sextic coefficient
+problem, not Pfaffian theory itself.
+
+\begin{writenote}[Part~II's triple matrix]
+``The predecessor's inverse-based construction'' is Part~II's
+\cref{tpo:thm:triplematrix}, $\det(ZI_{20}-B_3(u))=\Rthree(u,Z)^2$ with
+$B_3(u)=D+FD^{-1}-(2u^3-e_1u^2)I_{20}$, where Part~II's $D$ is
+$(uI_6-C)^{\wedge3}$ and $F=f(u)=\det(uI_6-C)$ must be nonzero. With
+$uI_6-C$ in place of $C$, \eqref{zpt:eq:inverse} turns Part~II's $D+FD^{-1}$
+into the $H$ of \eqref{zpt:eq:D-H}. \Cref{zpt:thm:pf} itself is stated for
+the companion matrix, that is for $T_f$, whose roots are $b_T=-k_T(0)$; the
+general \cref{zpt:thm:general-pf} applies to any matrix.
+\end{writenote}
+
+\subsection{Generalization to odd middle degree}
+\begin{theorem}[Complementary block-product resolvents]
+\label{zpt:thm:general-pf}
+Let $k$ be odd, $n=2k$, and $N=\binom{2k}{k}$. For an $n\times n$ matrix
+$C$, form $D=\bigwedge^k C$ and the middle-wedge pairing matrix $J$ on
+$\bigwedge^k V$. Set $H=D+J^{-1}D^TJ$. Then
+\begin{equation}
+ \frac{\pf\bigl(J(ZI-H)\bigr)}{\pf(J)}
+ =\prod_{\substack{\{I,I^c\}\\|I|=k}}
+       \left(Z-\prod_{i\in I}\alpha_i-\prod_{i\notin I}\alpha_i\right).
+ \label{zpt:eq:general-pf}
+\end{equation}
+This is a monic polynomial of degree $N/2$ and an integral universal
+identity, including at singular matrices.
+\end{theorem}
+\begin{proof}
+The wedge pairing is alternating because $k$ is odd, and it pairs each
+basis subset only with its distinct complement. Hence $N$ is even and
+$J$ is unimodular. Repeat the proof of Theorem \ref{zpt:thm:pf}: the adjoint
+exchanges complementary eigenvalue products, each sum occurs twice,
+and the Pfaffian selects the monic square root as a polynomial identity.
+\end{proof}
+No radical-solvability characterization in higher degree is being deduced.
+The group-theoretic safety argument was specific to six vertices. When
+$k$ is even, the middle pairing is symmetric, so this direct Pfaffian
+construction does not apply.
+
+\section{A cubic matrix polynomial for the matching resolvent}
+\label{zpt:sec:matching-matrix}
+Let $C$ now be the companion matrix of \eqref{zpt:eq:f}, with no
+irreducibility needed for this section. On $\bigwedge^2K^6$ put
+\begin{equation}
+ S=C^{[2]},\qquad P=\bigwedge^2C,\label{zpt:eq:SP}
+\end{equation}
+where the additive compound $C^{[2]}$ acts by
+$C^{[2]}(u\wedge v)=Cu\wedge v+u\wedge Cv$.
+Both matrices have size fifteen. They commute: this follows immediately
+in an eigenbasis for generic $C$, and then universally by polynomial
+specialization. Their eigenvalues on an edge $e=\{i,j\}$ are $s_e$ and
+$p_e$.
+
+Define commuting matrices $E_{-1}=0$, $E_0=I$, and
+\begin{equation}
+ E_j=e_jI-SE_{j-1}-PE_{j-2}\qquad(1\le j\le4).\label{zpt:eq:Ej}
+\end{equation}
+On the edge eigenspace, $E_j$ is the $j$th elementary symmetric function
+of the other four roots. This is coefficient comparison in
+\[
+ \prod_{i=1}^6(1+\alpha_i z)
+ =(1+s_ez+p_ez^2)\prod_{i\notin e}(1+\alpha_i z).
+\]
+
+\begin{lemma}[Four-root completion cubic]
+\label{zpt:lem:completion}
+For four roots with elementary symmetric functions $E_1,E_2,E_3,E_4$,
+their three pairing product sums are the roots of
+\begin{equation}
+ U^3-E_2U^2+(E_1E_3-4E_4)U
+ -(E_1^2E_4+E_3^2-4E_2E_4).\label{zpt:eq:completion}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The three values are $ab+cd$, $ac+bd$, and $ad+bc$.
+Their sum is $E_2$, their pairwise-product sum is $E_1E_3-4E_4$, and their
+product is $E_1^2E_4+E_3^2-4E_2E_4$. Multiplication proves the displayed
+cubic. The package checks the identity with four independent symbols.
+\end{proof}
+
+Use \eqref{zpt:eq:completion} in the commutative algebra generated by $S,P$,
+and substitute $U=ZI-P$. Write the resulting cubic matrix polynomial as
+$Q(Z)=Z^3I+L_1Z^2+L_2Z+L_3$. Explicitly, with
+$V=E_1E_3-4E_4$ and $W=E_1^2E_4+E_3^2-4E_2E_4$,
+\begin{align}
+ L_1&=-3P-E_2,\notag\\
+ L_2&=3P^2+2E_2P+V,\notag\\
+ L_3&=-P^3-E_2P^2-VP-W.\label{zpt:eq:Ls}
+\end{align}
+
+\begin{theorem}[Fifteen-dimensional cubic determinant]
+\label{zpt:thm:cubic-matrix}
+For every monic sextic,
+\begin{equation}
+ \boxed{\qquad\det Q(Z)=M_f(Z)^3.\qquad}\label{zpt:eq:cubic-det}
+\end{equation}
+The identity is universal, including at repeated or zero roots.
+\end{theorem}
+\begin{proof}
+In a generic eigenbasis, the cubic associated to edge $e$ has roots
+$p_e$ plus each of the three pairing sums of the complementary four
+roots. These are exactly the three values $A_P$ for matchings containing
+$e$. Taking the determinant multiplies over all fifteen edges; each
+matching is counted once for each of its three edges. This proves
+\eqref{zpt:eq:cubic-det} generically. Both sides are integral polynomial
+expressions, so the identity specializes without a separability
+hypothesis.
+\end{proof}
+
+\subsection{Extracting coefficients without a large characteristic polynomial}
+Let $W_j$ be the power-sum matrices for the roots of the cubic $Q$ over
+the commuting coefficient algebra. Newton identities give
+\begin{align}
+ W_0&=3I,& W_1&=-L_1,\notag\\
+ W_2&=-L_1W_1-2L_2,&
+ W_3&=-L_1W_2-L_2W_1-3L_3,\label{zpt:eq:Winitial}\\
+ W_j&=-L_1W_{j-1}-L_2W_{j-2}-L_3W_{j-3}\quad(j\ge4).\notag
+\end{align}
+The matching power sums are
+\begin{equation}
+ s_j=\sum_{P\in\tpoM}A_P^j=\frac{\tr W_j}{3}\qquad(1\le j\le15).
+ \label{zpt:eq:traces}
+\end{equation}
+Writing $M_f(Z)=Z^{15}+m_1Z^{14}+\cdots+m_{15}$, put $m_0=1$ and use
+\begin{equation}
+ m_j=-\frac1j\sum_{i=1}^j m_{j-i}s_i.\label{zpt:eq:Newton}
+\end{equation}
+Every operation is in a fixed-size rational matrix or a fixed finite list.
+The divisions are by fixed positive integers and are exact in $\QQ$;
+for an integral input the final coefficients are integers by symmetry.
+There is no search for an elementary-symmetric coefficient table.
+
+Similarly the triple coefficient power sums are $\tr(H^j)/2$ for
+$1\le j\le10$, followed by \eqref{zpt:eq:Newton} with degree ten. This trace
+implementation is compared with a separate Pfaffian interpolation routine:
+eleven exact values determine the monic degree-ten polynomial. The
+Pfaffian \emph{formula} has no denominators in input coefficients; the
+supplied elimination \emph{algorithm} uses rational pivot divisions.
+Those two statements should not be confused.
+
+\begin{writenote}[Part~II's matching matrix]
+Part~II's \cref{tpo:thm:pairmatrix} realizes the specialized resolvent:
+$\det(ZI_{45}-B_2(t))=\Rtwo(t,Z)^3$ with a linear $45\times45$ matrix.
+\Cref{zpt:thm:cubic-matrix} realizes the constant resolvent $M_f$ by a
+$15\times15$ \emph{cubic} matrix polynomial. $S$ and $P$ are Part~II's
+\eqref{tpo:eq:SP}, the $E_j$ of \eqref{zpt:eq:Ej} are its $r_j$ of
+\eqref{tpo:eq:rmat}, and \eqref{zpt:eq:completion} is its
+\eqref{tpo:eq:quartic}, with $V,W$ here its $U,V$ of \eqref{tpo:eq:UV}.
+This bears on Question~\ref{tpo:q:smaller}; a linear $15\times15$
+realization is asked for in Question~\ref{zpt:q:smaller}.
+\end{writenote}
+
+\section{Exact decision, bounds, and reproducibility}
+\label{zpt:sec:algorithm}
+\subsection{A usable coefficient-only procedure}
+For $f\in\QQ[X]$ of degree six, normalize its leading coefficient to one
+and check irreducibility. On the irreducible branch, compute $M_f$ using
+\eqref{zpt:eq:Winitial}--\eqref{zpt:eq:Newton}. If it has a rational root, accept.
+Otherwise compute $T_f$ using the middle-exterior construction and accept
+exactly when it has a rational root. Rational roots are found by exact
+factorization over $\QQ$ and extraction of linear factors. This procedure
+is implemented by \code{decide\_irreducible\_sextic}.
+
+The public function rejects reducible inputs. This is a mathematical
+precondition, not an incidental software restriction: transitivity was
+used in the safety proofs. For a general sextic, factorization can expose
+irreducible factors of degrees at most four, which are solvable, or a
+quintic requiring a separate quintic criterion. The repository already
+has a reducible branch; this article does not silently replace it.
+
+The actual compressed zero resolvent can also be computed. Define
+$f^*(X)=X^6f(1/X)/e_6$, the monic polynomial of the reciprocal roots.
+Then
+\begin{equation}
+ R_{2,f}(0,Z)=(-e_6)^{15}M_{f^*}(-Z/e_6).\label{zpt:eq:zero-implementation}
+\end{equation}
+The implementation provides this operation and checks the corresponding
+two-test decision separately from the simpler $M_f,T_f$ decision.
+
+\subsection{Explicit bounded arithmetic}
+Suppose $f$ is monic integral, let $H$ be the maximum absolute value of
+its six nonleading coefficients, and put $R=1+H$. The geometric-sum
+estimate gives $|\alpha_i|\le R$. Hence
+\begin{equation}
+ |A_P|\le3R^2,\qquad |b_T|\le2R^3,\qquad |C_P|\le3R^4.
+ \label{zpt:eq:bounds}
+\end{equation}
+The resolvents are monic integral, so their rational roots are integers.
+Thus $M_f$ and $T_f$ need only be tested on
+\begin{equation}
+ [-3R^2,3R^2]\cap\ZZ,\qquad[-2R^3,2R^3]\cap\ZZ.\label{zpt:eq:boxes}
+\end{equation}
+For $R_{2,f}(0,Z)$ the corresponding box is $[-3R^4,3R^4]\cap\ZZ$.
+These are smaller root-height exponents for the simpler invariants than
+for general $h_P(t)$, but enumeration of the boxes is not recommended as
+the fastest practical algorithm.
+
+\begin{writenote}[Also in Part~II]
+The bounds \eqref{zpt:eq:bounds} are among those displayed before
+Part~II's \eqref{tpo:eq:bounds}, with the same $H$ and $R$ (Part~I's
+\cref{sbr:sec:algorithm} too). \Cref{zpt:prop:bounded} is a second route to
+\cref{tpo:prop:primrec}: its boxes \eqref{zpt:eq:boxes} replace Part~II's
+$[-66R^4,66R^4]$ and $[-8R^3,8R^3]$, and no matrix inverse is needed.
+\end{writenote}
+
+\begin{proposition}[A bounded realization]
+\label{zpt:prop:bounded}
+On monic irreducible integer sextics, the two-resolvent criterion has a
+primitive-recursive realization with explicit bounds and no parameter
+minimization. Irreducibility of a monic integer sextic can itself be checked
+by a bounded coefficient search.
+\end{proposition}
+\begin{proof}
+The fixed-size matrix formulas, finite recurrences, and rational
+arithmetic operations have primitive-recursive encodings. The final root
+searches are bounded by \eqref{zpt:eq:boxes}. To check irreducibility, a
+reducible monic integral sextic has a monic integral factor of degree at
+most three. Its coefficient at distance $j$ from the leading term is
+bounded by $\binom djR^j$, since its roots are among the six roots of $f$.
+Enumerate those finite coefficient boxes and test exact division.
+\end{proof}
+This is a mathematical realization, not a newly accepted Lean
+\code{Primrec} theorem. It is not a new general decidability theorem.
+The naive searches in \eqref{zpt:eq:boxes} are polynomial in a coefficient
+\emph{magnitude} bound and can be exponential in its bit length. No
+bit-complexity or performance superiority over a production Galois package
+is claimed. For integral nonmonic input with leading coefficient $a$,
+$a^5f(Y/a)$ is monic integral and preserves the splitting field; rational
+coefficients can first be cleared of denominators.
+
+\subsection{What was actually checked}
+The delivered run used Python 3.13.5 and SymPy 1.14.0. SymPy's documented
+Galois-group routines provide a separate classification route for the
+finite comparison \cite{zpt:sympy-docs,tpo:sympy-tests}. The exact checks include:
+\begin{enumerate}[itemsep=2pt]
+\item the polynomial certificate \eqref{zpt:eq:certificate}, both in SymPy and
+in a standard-library sparse integer-polynomial checker;
+\item all six pentads and their incidences, the eighteen pentad-sum
+identities, the affine-translation identities for fourteen independent
+matching differences, and the four-root completion cubic;
+\item direct root-product comparisons for seven rational root tuples,
+including distinct roots, zero roots, repeated roots, the all-zero tuple,
+and a tuple with nonintegral rational entries;
+\item forty-eight irreducible sextics representing all sixteen transitive
+sextic group types, each in three affine coordinate variants: thirty-six
+solvable and twelve nonsolvable cases, with both two-test variants agreeing
+with the Galois classifier in every case;
+\item Pfaffian-versus-trace triple computations on all sixteen seeds and
+all seven split tuples, plus exact skew-matrix and exterior-pairing checks.
+\end{enumerate}
+The main verification run completed in 15.044 seconds in the recorded
+environment. This is an observation about that run, not a benchmark or a
+performance guarantee. The supplied verifier defaults to a separate
+\code{rerun/} directory and does not overwrite the delivered record.
+
+\begin{writenote}[Shipped names]
+In this report the files are \src{code/03-zero-parameter-sextic_resolvents.py},
+\src{code/03-zero-parameter-verify.py},
+\src{code/03-zero-parameter-check_certificate.py},
+\src{data/03-zero-parameter-verification.json},
+\src{data/03-zero-parameter-verification.log} and
+\src{data/03-zero-parameter-certificate-check.txt}. The files
+\src{code/verify.py} and \src{data/verification.json} of this directory are
+Part~I's. The verifier imports \src{sextic_resolvents} under its delivered
+name, so under its shipped name it fails before writing anything; and its
+default output, \src{rerun/verification.json} beside the \src{code/}
+directory, would be a new directory in the report itself. Run it on a copy
+(\cref{zpt:app:package}).
+\end{writenote}
+
+The group classifier and the new implementation share SymPy's arithmetic
+library, so the comparison is not an independent formal verification.
+The theorem proofs use no list of transitive group types. The finite data
+are useful regression tests for signs, multiplicities, coefficient
+conventions, and edge cases; they do not replace the group and polynomial
+arguments.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrccl@{}}
+\toprule
+Group label & Order & Solvable & $M_f$ has a $\QQ$-root & $T_f$ has a $\QQ$-root\\
+\midrule
+$C_6$ &6&yes&yes&yes\\
+$S_3$ &6&yes&yes&yes\\
+$D_6$ &12&yes&yes&yes\\
+$A_4$ &12&yes&yes&yes\\
+$G_{18}$ &18&yes&yes&yes\\
+$A_4\times C_2$ &24&yes&yes&yes\\
+$S_4^+$ &24&yes&yes&yes\\
+$S_4^-$ &24&yes&yes&no\\
+$G_{36}^-$ &36&yes&yes&yes\\
+$S_4\times C_2$ &48&yes&yes&yes\\
+$\operatorname{PSL}_2(5)$ &60&no&no&no\\
+$\operatorname{PGL}_2(5)$ &120&no&no&no\\
+$G_{36}^+$ &36&yes&no&yes\\
+$G_{72}$ &72&yes&no&yes\\
+$A_6$ &360&no&no&no\\
+$S_6$ &720&no&no&no\\
+\bottomrule
+\end{tabular}
+\caption{Seed-case checks. Labels follow SymPy; they distinguish different
+embeddings of isomorphic groups. Complete polynomials, multiplicities,
+affine variants, and zero-matching results are in the verification JSON.}
+\label{zpt:tab:groups}
+\end{table}
+
+\section{A positive decision does not recover a matching}
+\label{zpt:sec:example}
+Consider
+\begin{equation}
+ f(X)=X^6+X^3+2.\label{zpt:eq:example}
+\end{equation}
+The exact coefficient formulas give
+\begin{align}
+ M_f(Z)&=Z^3(Z^3-54)
+       (Z^9-33Z^6+147Z^3+343),\label{zpt:eq:example-M}\\
+ T_f(Z)&=(Z+1)(Z^3-6Z+2)^3.\label{zpt:eq:example-T}
+\end{align}
+Thus the matching invariant has the rational root zero with multiplicity
+three. Nevertheless, this irreducible sextic has no Galois-fixed matching.
+We give a field argument for that distinction, rather than relying only
+on its computed group label.
+
+Let $y_1,y_2$ be the roots of $Y^2+Y+2$, and let $\zeta$ be a primitive
+cube root of unity. Put $F=\QQ(\sqrt{-7},\zeta)$, a degree-four biquadratic
+field, and choose $u^3=y_1$, $v^3=y_2$. The splitting field is
+$L=F(u,v)$, since its roots are $u\zeta^j,v\zeta^j$, $j=0,1,2$.
+Conversely those roots contain their cubes, their ratio $\zeta$, and
+$y_1-y_2=\sqrt{-7}$, so $F\subset L$.
+
+The cube classes of $y_1,y_2$ in $F^\times/F^{\times3}$ are independent.
+Here is a direct valuation check. In $\QQ(\sqrt{-7})$, the polynomial
+$Y^2+Y+2$ has two distinct roots modulo two. The two primes above two
+therefore separate $y_1$ and $y_2$: their valuation pairs are $(1,0)$
+and $(0,1)$, because $y_1y_2=2$ and their sum is $-1$. Adjoining $\zeta$
+has ramification index one at these primes: locally its polynomial
+$X^2+X+1$ has irreducible separable reduction over $\mathbb F_2$.
+The same valuation pairs hold in $F$. If $y_1^a y_2^b$ is a cube, both
+$a$ and $b$ must be divisible by three.
+
+For completeness, this independence gives $[L:F]=9$ without invoking a
+classification of groups. First $X^3-y_1$ is irreducible by its valuation,
+and $F(u)/F$ is cyclic of order three. If $w\in F(u)$ had $w^3=y_2$,
+a generator $\sigma$ would satisfy $\sigma(w)/w\in\{1,\zeta,\zeta^2\}$.
+The corresponding eigenspaces in the basis $1,u,u^2$ are $F$, $Fu$, and
+$Fu^2$. Hence $w=cu^j$, implying $y_2=c^3y_1^j$, contrary to the two
+valuation conditions. Thus adjoining $v$ has degree three also.
+
+It follows that $[L:\QQ]=36$, and the subgroup over $F$ is
+$C_3\times C_3$. The action on the six roots is transitive: this subgroup
+cycles each triple, and an automorphism extending the interchange of
+$y_1,y_2$ exchanges the triples. Thus \eqref{zpt:eq:example} is irreducible.
+A group fixing a matching is a subgroup of $S_2\wr S_3$, which has order
+$48$ and has no subgroup of order nine. Consequently the Galois group of
+\eqref{zpt:eq:example} fixes no matching.
+
+Finally the three matchings pairing $u\zeta^i$ with $v\zeta^{i+k}$,
+for $k=0,1,2$, all have
+\[
+ A_P=uv\zeta^k\sum_{i=0}^2\zeta^{2i}=0.
+\]
+They explain the rational collision in \eqref{zpt:eq:example-M}. The correct
+conclusion is \emph{solvability}, supplied here also by the invariant
+partition into the two root triples; it is not ``this root of $M_f$
+exhibits an invariant matching.'' This example is not a counterexample
+to the decision theorem or to the predecessor's nonsolvable-fiber lemma.
+
+The classical matching invariant $e_6A_P$ has the same collision. This
+shows why a generic stabilizer argument cannot, by itself, justify a
+partition-recovery statement for every specialized sextic. It is not
+being used to refute a theorem restricted to a different normal form or
+to additional hypotheses.
+
+\begin{writenote}[Relation to Parts~I and~II]
+Part~II's remark after \eqref{tpo:eq:curve} and Part~I's discussion after
+\cref{sbr:thm:criterion} warn that a rational value need not label a fixed
+partition; this is an explicit irreducible instance, for the constant
+resolvent $M_f$. It bears on Part~II's question on witnesses
+(\cref{tpo:sec:questions}, Question~30.5), continued in
+Question~\ref{zpt:q:witness}.
+\end{writenote}
+
+\section{A practical route into the formal development}
+\label{zpt:sec:formalization}
+The main Boolean theorem has a smaller formalization boundary than the
+full coefficient implementation. A useful order is the following.
+
+\textbf{First: the ring certificate and finite geometry.} Formalize
+\eqref{zpt:eq:certificate} over an arbitrary commutative ring, then deduce
+Theorem \ref{zpt:thm:noncollapse} in fields with $2\ne0$. The polynomial
+identity itself is a direct normalization target. Prove the pentad
+incidence statements structurally, or by finite reflection against a
+checker whose soundness theorem connects the enumeration to matchings.
+
+\textbf{Second: Galois-fiber safety.} Formalize the regular-graph lemma,
+then the pair-product and matching-fiber arguments. No classification of
+all transitive sextic subgroups is needed. The reciprocal identity and
+nonzero constant-term hypothesis give the safe compressed zero test.
+This produces the mathematical decision theorem before matrix code is
+involved.
+
+\textbf{Third: coefficient evaluation.} Define the two compounds and the
+middle pairing. Prove the universal polynomial identities for independent
+indeterminates, then specialize. The Pfaffian theorem can be postponed if
+a trace or perfect-square extraction route is easier to formalize; it is
+not a logical prerequisite for the two-test criterion. Likewise the
+rank theorem is needed for the arbitrary-two-parameter improvement,
+not for the selected-zero theorem.
+
+\textbf{Finally: replace the decision path, not the separator API.}
+The existing separating-invariant interfaces may still be required for
+witness recovery or other clients. A new compressed decision route should
+prove its own semantic equivalence and only then be composed with the
+repository's monicization and reducible branches. In particular, the
+coordinate convention in the existing bivariate code is $(v,u)$;
+changing it accidentally while introducing a new evaluator would not be
+caught by a proof stated only about abstract roots.
+
+No Lean file is supplied as if it were already checked. The intended new
+statements are Theorem \ref{zpt:thm:main}, Theorem \ref{zpt:thm:rank}, Theorem
+\ref{zpt:thm:exceptional}, and the two universal coefficient identities.
+The source audit and their proofs, not a borrowed formal-status label,
+are the deliverable of this article.
+
+\begin{writenote}[Formal status here]
+Nothing of this section exists in ProveIt; \cref{zpt:sec:formal} says what
+the project does prove and what formalizing Part~III would replace. The
+coordinate convention $(v,u)$ quoted above is the one checked at Part~I's
+write (\cref{sbr:sec:notation}): Lean's $x(0)=2t^2$, $x(1)=t$.
+\end{writenote}
+
+\section{Further research questions}
+\label{zpt:sec:questions}
+The first two questions below continue genuinely unresolved parts of the
+inspected report. The later questions are proposed targets, not claims
+that no one has studied them elsewhere.
+
+\begin{question}[Does a nonzero exception exist?]
+\label{zpt:q:nonzero}
+Find an irreducible nonsolvable sextic over $\QQ$ and a nonzero rational
+$t$ at which $R_{2,f}(t,Z)$ has a rational root, or prove that none exists.
+The present work confines any example to a unique invariant pentad and a
+single simple common-collapse parameter. An example must carry both an
+exact multiplicity-five certificate and a nonsolvable Galois certificate.
+\end{question}
+
+\begin{question}[Classify the affine-rank-two locus]
+\label{zpt:q:rank-two}
+Determine the equations and irreducible components of the locus of six
+distinct roots for which a pentad's $(A,B,C)$ vectors have affine rank two.
+Which components meet the Galois-specialization locus of Question~\ref{zpt:q:nonzero}?
+The quartic obstruction rules out rank one, but does not classify rank
+two or prove that its normal vector gives an admissible $h$-parameter.
+\end{question}
+
+\begin{question}[Uniform safety at nonzero parameters]
+\label{zpt:q:nonzero-safe}
+For a prescribed nonzero $t\in\QQ$, is the matching test safe for every
+irreducible sextic? What changes over a general characteristic-zero base
+field? The chosen universal value zero is now settled; the assertion for
+an arbitrary chosen nonzero value is stronger and is not proved here.
+\end{question}
+
+\begin{question}[Recover a useful witness from a collided value]
+\label{zpt:q:witness}
+Given a positive $M_f$ or $T_f$ test, recover an invariant block system or
+a small subfield without assuming the displayed rational value has a
+single antecedent. The example in Section \ref{zpt:sec:example} rules out a
+naive matching-recovery rule. One may need to switch block type or refine
+the invariant after the Boolean decision is already known.
+\end{question}
+
+\begin{question}[Smaller structured coefficient realizations]
+\label{zpt:q:smaller}
+Can the $15\times15$ cubic matrix polynomial be replaced by a degree-fifteen
+linear representation built directly from the coefficient algebra,
+without a search for a universal coefficient table? Can the degree-ten
+Pfaffian be evaluated by a smaller structured exact circuit? Constructing
+a companion matrix after already knowing the resolvent does not answer
+the coefficient-generation problem.
+\end{question}
+
+\begin{question}[Certified modular computation]
+\label{zpt:q:modular}
+Develop modular trace or Pfaffian evaluation, coefficient bounds, Chinese
+remainder reconstruction, and small independently checkable certificates.
+Compare actual bit complexity and running time with established Galois
+implementations. The present rational prototype is a correctness-oriented
+baseline, not a claimed optimized solver.
+\end{question}
+
+\begin{question}[Other characteristics and even middle degree]
+\label{zpt:q:char}
+The noncollapse certificate works in characteristic different from two;
+the affine-rank theorem works in every characteristic. Determine the
+corresponding solvable-group criteria for separable sextics in positive
+characteristic, with careful treatment of radical semantics. Separately,
+find an appropriate structured counterpart of the middle-exterior
+Pfaffian when the middle degree is even and the pairing is symmetric.
+\end{question}
+
+\begin{question}[A minimal formal proof boundary]
+\label{zpt:q:formal}
+Implement the explicit certificate, regular-graph classification, and
+reciprocal transport in Lean, then connect the compressed test to the
+existing all-roots semantics. Measure the actual trusted dependencies and
+proof size before adding the optional rank and Pfaffian layers. This
+would turn the paper-level improvement into a repository theorem rather
+than merely another archived report.
+\end{question}
+
+\begin{writenote}[Relation to Part~II's questions]
+Question~\ref{zpt:q:nonzero} is Part~II's Question~\ref{zpt:q:tpo-nonempty},
+narrowed to one nonzero parameter; Question~\ref{zpt:q:nonzero-safe} is the
+version of Question~\ref{zpt:q:tpo-fewer} left open;
+Questions~\ref{zpt:q:witness}, \ref{zpt:q:smaller}, \ref{zpt:q:modular},
+\ref{zpt:q:char} and~\ref{zpt:q:formal} continue Part~II's
+Questions~30.5, \ref{tpo:q:smaller}, 30.7, 30.10 and~30.8. Part~II's
+Questions~30.4 and~30.9 are not addressed. Question~\ref{zpt:q:rank-two} is
+new.
+\end{writenote}
+
+\section{Conclusion}
+The safe parameter is already present in the compressed family, but the
+vanishing affine multiplier of the original descriptor curve hides it.
+An explicit pentad noncollapse certificate makes the zero test rigorous.
+A different argument, based on five roots of an impossible quartic, lowers
+the remaining exceptional degree from two to one. Together these results
+answer two concrete questions in the inspected ProveIt report while
+preserving the distinction between decision, separation, and witness
+recovery. The Pfaffian and cubic-matrix formulas supply exact
+coefficient-level realizations, and the delivered checks exercise their
+singular, repeated-root, and Galois-theoretic edge cases.
+
+The unresolved issue is now narrower: a nonsolvable false positive, if one
+exists, must occur at a single nonzero parameter with a multiplicity-five
+fiber on the unique invariant pentad. Neither the proof nor the finite
+tests establish existence. That precise remaining obstruction is a more
+useful research target than an unqualified claim that all specialization
+collisions have been eliminated.
+
+\appendix
+\setcounter{section}{5}% [write] Part III's appendices follow A--E
+\section{Package contents and reproduction}
+\label{zpt:app:package}
+The archive is self-contained except for the standard TeX installation and
+the pinned Python dependency. It contains the following primary files:
+\begin{center}\small
+\begin{tabular}{@{}p{0.40\textwidth}p{0.54\textwidth}@{}}
+\toprule
+File & Purpose\\
+\midrule
+\code{article.tex}, \code{article.pdf}&This article and its compiled PDF.\\
+\code{code/sextic\_resolvents.py}&Exact coefficient-only evaluator and guarded decision API.\\
+\code{code/verify.py}&Symbolic, root-level, group-type, and matrix regression checks.\\
+\code{code/check\_certificate.py}&Independent standard-library ring-identity check.\\
+\code{data/verification.json}&Executed results, all forty-eight inputs, roots, and multiplicities.\\
+\code{data/certificate-check.txt}&Recorded output of the independent certificate checker.\\
+\code{SOURCES.md}&Pinned source map and contribution/status ledger.\\
+\code{README.md}, \code{build.sh}&Usage, constraints, and PDF build command.\\
+\bottomrule
+\end{tabular}
+\end{center}
+From the package directory:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/check_certificate.py
+python code/verify.py
+python code/sextic_resolvents.py 1 0 0 1 0 0 2
+bash build.sh
+\end{verbatim}
+The third command writes new results to \code{rerun/verification.json}.
+The fourth supplies coefficients in descending order and prints a Boolean
+solvability result for $X^6+X^3+2$. An explicit \code{--output} argument
+can change the verification destination. The delivered records are not
+used as assertions inside the checker.
+
+\begin{writenote}[The shipped layout]
+The archive and the commands above are the delivered package; do not run
+them in the report directory. The table's files are
+\src{code/03-zero-parameter-sextic_resolvents.py},
+\src{code/03-zero-parameter-verify.py},
+\src{code/03-zero-parameter-check_certificate.py},
+\src{data/03-zero-parameter-verification.json},
+\src{data/03-zero-parameter-certificate-check.txt} and
+\src{03-zero-parameter-SOURCES.md}; \src{requirements.txt} and
+\src{build.sh} are \src{data/03-zero-parameter-requirements.txt} and
+\src{code/03-zero-parameter-build.sh}. The delivered \src{article.tex},
+\src{article.pdf} and \src{README.md} are not shipped (the source is
+printed here as Part~III), and the build script, which changes to its own
+directory, fails from \src{code/}; build the report with \src{latexmk -pdf}
+from a copy of the directory. The certificate checker and the evaluator
+import nothing local and write nothing, so they run in place:
+\begin{verbatim}
+py code/03-zero-parameter-check_certificate.py
+uv run --no-project --with sympy==1.14.0 \
+  python code/03-zero-parameter-sextic_resolvents.py 1 0 0 1 0 0 2
+\end{verbatim}
+The verifier must run on a copy with the delivered names, from an empty
+scratch directory \src{W}:
+\begin{verbatim}
+mkdir -p W/code
+cp code/03-zero-parameter-verify.py W/code/verify.py
+cp code/03-zero-parameter-sextic_resolvents.py W/code/sextic_resolvents.py
+cd W && uv run --no-project --with sympy==1.14.0 python code/verify.py
+\end{verbatim}
+Then compare \src{W/rerun/verification.json} with
+\src{data/03-zero-parameter-verification.json} after removing carriage
+returns (on Windows the script writes CRLF); only \src{elapsed_seconds}
+differs.
+\end{writenote}
+
+\section{Proof dependency and non-claim ledger}
+\label{zpt:app:ledger}
+The chosen-zero theorem needs the block criterion, invariant graphs,
+pentad noncollapse, reciprocal transport, and the inherited triple
+argument. It does not need the rank theorem or the Pfaffian construction.
+The one-exception theorem additionally needs pentad incidence, the
+shared-edge factorization, and affine rank. The coefficient realization
+needs only universal algebraic identities, not irreducibility or Galois
+group classification. This separation permits independent review and a
+staged formalization.
+
+For clarity, none of the following is asserted: a new general algorithmic
+decidability theorem; an optimal count of abstract root-finder calls
+(one could trivially multiply the two resolvents); an optimal separator
+bound; a complete classification of exceptional sextics; a nonzero
+exceptional example; automatic recovery of a matching from a rational
+matching value; a new proof assistant verification; or a priority claim
+for the classical matching resolvent. The theorems actually proved have
+explicit hypotheses, and the new computations have separately recorded
+finite scopes.
+
+
 \begin{thebibliography}{99}
 \addcontentsline{toc}{section}{References}
 
@@ -3717,6 +5664,9 @@ arXiv:math-ph/0504001.
 The two imprimitive subgroup types are described on page 3.
 Part~II cites it ``for the classical sextic block-resolvent context, not for
 the collision-aware criterion proved here''.
+Part~III cites \url{https://arxiv.org/pdf/math-ph/0504001}: ``The matching
+invariant in equation (3) is $e_6A_P$ after relabeling; its degree-fifteen
+framework predates this article.''
 
 \bibitem{fieker-klueners}
 Claus Fieker and J\"urgen Kl\"uners,
@@ -3735,6 +5685,9 @@ Abel--Ruffini obstruction}, repository documentation, snapshot
 Vladimir Reshetnikov, \emph{SexticRadicalDecision.lean}, same snapshot.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e2b1f016a94102663f12b970e6dd434229f90d01/Algebra/PolynomialFormulas/Lean/PolynomialFormulas/SexticRadicalDecision.lean}.
 Also cited by Part~II, at commit \src{e47ed8547} (same blob).
+Also cited by Part~III, at commit \src{1156651a9} (same blob
+\src{c19d91c58}), with the attribution ``Vladimir Reshetnikov / ProveIt
+contributors''.
 
 \bibitem{repo-search}
 Vladimir Reshetnikov, \emph{SexticIrreducibleDecision.lean}, same snapshot.
@@ -3800,6 +5753,9 @@ SymPy contributors,
 \src{sympy/polys/numberfields/tests/test_galoisgroups.py}.
 \url{https://github.com/sympy/sympy/blob/1.14.0/sympy/polys/numberfields/tests/test_galoisgroups.py}.
 The file attributes its polynomial examples to Cohen.
+Also cited by Part~III (the same file at version 1.14.0), whose sixteen
+degree-six seed polynomials ``were read from the installed 1.14.0
+distribution and transcribed into the supplied verifier''.
 
 \bibitem{tpo:separators}
 ProveIt research-report collection,
@@ -3808,6 +5764,33 @@ research manuscript dated September 28, 2026, and its repository README.
 Unrefereed, not formalized. Inspected at commit \tpopin.
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/e47ed8547bd021f9bd85bdcf767c94a2fcb41001/SetTheory/Cardinals/docs/reports/galois-theory-and-radicals/sextic-block-resolvent-separators}.
 [write: Part~I of this report, printed above.]
+
+% [write] The three entries below are Part III's (batch 70, manuscript 04),
+% under keys prefixed zpt:.
+\bibitem{zpt:repo-report}
+Vladimir Reshetnikov / ProveIt research collection.
+\emph{Finite Separators and Discriminant Factorizations for Sextic Block
+Resolvents}, including Part II, \emph{Three Plus One:
+Radical-Solvability Tests Without Separating Sextic Resolvents}.
+AI-assisted research report, 28--29 September 2026; source and README at
+commit \zptpin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1156651a9417231a9a54442b420f099ee85ae7fe/SetTheory/Cardinals/docs/reports/galois-theory-and-radicals/sextic-block-resolvent-separators}.
+[write: Parts~I and~II of this report, printed above.]
+
+\bibitem{zpt:wimmer}
+M.~Wimmer.
+\emph{Efficient numerical computation of the Pfaffian for dense and
+banded skew-symmetric matrices}.
+ACM Transactions on Mathematical Software \textbf{38}, article 30 (2012).
+Preprint arXiv:1102.3440.
+\url{https://arxiv.org/abs/1102.3440}.
+
+\bibitem{zpt:sympy-docs}
+SymPy contributors.
+\emph{Number fields: Galois groups}, SymPy 1.14.0 documentation.
+\url{https://docs.sympy.org/latest/modules/polys/numberfields.html}.
+Used for the independent finite classifier comparison, not for the
+mathematical proof.
 
 \end{thebibliography}
 \end{document}

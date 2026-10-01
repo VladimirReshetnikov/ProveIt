@@ -16,6 +16,8 @@
  pdfsubject={Full-configuration simplex coupling, sharp total-variation thresholds, and boundary phases},
  pdfkeywords={Fabius function, small deviations, Gibbs conditioning, lacunary series, total variation, Dirichlet distribution}
 }
+% ed. (2026-09-30): hypertexnames=false removes the delivered build's duplicate destination equation.2.1 (the tagged display (L) and equation (2.1) shared it).
+\hypersetup{hypertexnames=false}
 \usepackage{bookmark}
 \usepackage{url}
 \definecolor{heading}{HTML}{203B53}
@@ -40,6 +42,9 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\PP}{\mathbb P}
 \newcommand{\EE}{\mathbb E}
 \newcommand{\RR}{\mathbb R}
@@ -1467,6 +1472,22 @@ The Dirichlet representation suggests a Poisson limit inherited from
 exponential order statistics, but the common normalization and the infinite
 tail must be controlled jointly. The present manuscript proves only the
 maximum limit and its independence from slack and boundary windows.
+% ed. (2026-09-30): the qualitative part is answered by a later package of the same directory; the rates stay open
+\begin{ednote}
+The qualitative part of Q7 is answered by the later package
+\path{representations/Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/}
+(filed in batch~65 of the repository drop zone, written against this
+article unchanged and in its notation; unreviewed, no Lean proof). For
+every weight sequence satisfying \eqref{eq:lacunary}, the dyadic Fabius
+weights included, its Theorem~\texttt{thm:lacunary} proves that the marked
+extremes $\sum_j\delta_{(j/n,\,Y_j-\log n)}$ converge to a Poisson process
+with intensity $\mathbf 1_{[0,1]}(u)\,du\,e^{-z}\,dz$, jointly with the
+Brownian bridge of a variance-clock polygonal process and the exponential
+slack, and that the three limits are independent; the location of the
+maximum on the scale $n$ is asymptotically uniform. The explicit rates
+asked for here are not given there and remain open (its first research
+question).
+\end{ednote}
 
 \paragraph{Q8. Certified sampling and complexity.}
 Turn the global approximation into a finite algorithm with an explicit

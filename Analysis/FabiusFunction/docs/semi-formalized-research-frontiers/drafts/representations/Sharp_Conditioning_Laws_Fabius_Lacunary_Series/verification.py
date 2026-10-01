@@ -22,6 +22,9 @@ from scipy.special import ndtr
 from scipy.stats import beta, gamma
 import matplotlib
 matplotlib.use("Agg")
+# ed. (2026-09-30): TrueType (Type 42) fonts in the PDF figures instead of Type 3.
+matplotlib.rcParams["pdf.fonttype"] = 42
+matplotlib.rcParams["ps.fonttype"] = 42
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent

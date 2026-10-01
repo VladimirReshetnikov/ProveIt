@@ -3,7 +3,8 @@
 **Exact regularity thresholds and sharp endpoint laws for Rvachev–Thue–Morse transfer operators**
 
 Research manuscript prepared for Vladimir Reshetnikov, 29 September 2026
-(Pacific time). The compiled article has 23 A4 pages.
+(Pacific time). The compiled article has 24 A4 pages (23 as delivered; the
+editorial notes of 2026-09-29 add one).
 
 ## Main conclusions
 
@@ -33,13 +34,14 @@ questions, provenance, bibliography, and a staged formalization plan.
 ## Files
 
 - `article.tex`: self-contained LaTeX source, including bibliography.
-- `article.pdf`: compiled, visually inspected 23-page article.
+- `article.pdf`: compiled, visually inspected article (rebuilt 2026-09-29).
 - `verify.py`: exact finite checks; Python standard library only.
-- `verification.json`, `verification.log`: executed verification results.
+- `verification.json`, `verification.log`: executed verification results; the
+  log is the program's console output (the same JSON without `energy_data`).
 - `provenance.json`: repository pin and source/claim boundaries.
 - `BUILD_REPORT.md`: build and validation receipt.
 - `Makefile`: reproducible PDF and verification commands.
-- `CHECKSUMS.sha256`: hashes of the delivered files except itself.
+- The submitted `CHECKSUMS.sha256` was verified in full (9/9) on filing (batch 57 of `docs/incoming/`) and not kept; the delivered archive remains in the repository history (see `docs/incoming/README.md`, batch 57 row).
 
 ## Reproduce the checks
 
@@ -47,8 +49,14 @@ Python 3.10 or later is sufficient; the executed run used Python 3.13.5.
 No third-party Python packages are required.
 
 ```sh
-python verify.py --output verification.json
+py verify.py
 ```
+
+This writes `rerun/verification.json` beside the program (another path with
+`--output`); `make verify` writes `rerun/verification.json` and
+`rerun/verification.log`. The recorded run is `verification.json` and
+`verification.log`; only an explicit `--output verification.json` run from
+this directory overwrites it.
 
 The default run checks levels 0 through 12, reaching absolute frequency 4096.
 It passed 16,395 cutoff coefficient checks, 24,579 dual-functional checks,
@@ -90,3 +98,66 @@ and the classical sequences are credited rather than claimed as discoveries.
 The paper does not resolve the Hölder/C^r spectrum, general fractional interval
 spaces, or the full decomposition of the interior Sobolev disk into point,
 continuous, and residual spectra. No repository files were changed.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Made in the editorial pass after batch 57 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-29)`, every change to the program and `Makefile`
+`ed. (2026-09-29)`. The byline "OpenAI ChatGPT" is kept as delivered.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-29)" is defined in the preamble. A note at the end of Section 1.2
+  records the repository results the article re-derives without citing
+  them. Part I of `../../thue-morse/Thue_Morse_Frontier_Deductions/` (filed
+  2026-09-05) already proves, for the same Riesz product and sequences, the
+  cutoff identity with `a_k = B_k(-2)` (its `bc:thm:boundary`,
+  `bc:eq:Stern-identification`), the tail formula (`bc:thm:distribution`),
+  the energy recurrences and closed forms (`bc:prop:energies`,
+  `bc:cor:energy-closed`, with a trapezoidal endpoint weight), the exponents
+  `s_0 = sigma`, `s_1 = s_*` (`bc:eq:exponents`), the unweighted (`beta = 0`)
+  thresholds (`bc:thm:regularity`) and remainder rates in `H^(-s)`; it
+  credits the growth rate `1 + sqrt(17)` to Zaks, Pikovsky and Kurths. The
+  operator form of the cutoff identity is the finite-mode reduction
+  `prop:finite-mode` of the predecessor `../Spectral_Collapse_Alternating_RMS/`.
+  New in this article are the logarithmic refinement, the two-sided
+  remainder laws, the critical scalar/operator separation and the
+  operator-spectral classification. The same note names the uncited Lean
+  theorems: the eigen-identities are `Fabius.rms_transfer_const_eigen`,
+  `Fabius.rms_transfer_sin_eigen`, `Fabius.rms_transfer_one_add_cos_eigen`,
+  `Fabius.rms_transfer_cos_even_mode` and `Fabius.rms_transfer_sin_even_mode`
+  (`Analysis/FabiusFunction/Lean/FabiusFunction/RMSTransferEigenfunctions.lean`),
+  and the recursion for `eta` is that of `Fabius.limitingAutocorrelation`
+  (`ThueMorseAutocorrelationLimit.lean`). A second note, after Question 12.9
+  (Hoelder and `C^r` spaces), records that the rewrite
+  `../Rvachev_Up_Fourier_Decay-2/` imports a Ruelle-Perron-Frobenius spectral
+  gap on `C^alpha[0,1]`, which concerns sup-norm Hoelder spaces and does not
+  conflict with Theorem 6.1; the question stays open. The hypothesis display
+  `(P)` is set with `equation*`, because the numbered environment gave
+  hyperref a duplicate destination `equation.2.5` (also in the delivered
+  build); its tag and references are unchanged. The verification paragraph
+  of Section 11 gives the new default command and output.
+- The article also settles, on the Sobolev spaces `H^(s,beta)` with
+  `s > s_1`, the canonical synthesis's statement that `-1/4` has not been
+  shown to be the second spectral value; on `L^2` and `H^1` it is not
+  isolated. The canonical text is unchanged.
+- Reciprocal notes now stand under the questions "Spectra at finite
+  smoothness" and "Arithmetic and regularity of the correction functional"
+  of `../Spectral_Collapse_Alternating_RMS/article.tex`.
+- `article.pdf`: rebuilt with `latexmk -pdf -interaction=nonstopmode
+  -halt-on-error article.tex` (MiKTeX 26.2 pdfTeX 1.40.29): 24 pages (23 as delivered),
+  523,816 bytes; no error, undefined reference, duplicate destination or
+  overfull box; no Type 3 font. The pages carrying the notes were rendered
+  and inspected. `BUILD_REPORT.md` is the delivered build receipt and
+  describes the 23-page PDF.
+- `verify.py`: the default `--output` is now `rerun/verification.json` beside
+  the program instead of `./verification.json`, and the JSON is written with
+  LF line endings on Windows too. `Makefile`: the `verify` target writes
+  `rerun/verification.json` and `rerun/verification.log` instead of the
+  recorded files. A rerun of the amended program on a copy (2026-09-29,
+  `uv run --no-project --python 3.13.5 python verify.py`, under a second)
+  passed and reproduced `verification.json` byte for byte, and its console
+  output equals `verification.log` after CRLF-to-LF normalization of the
+  Windows console capture.
+- `README.md`: the page count, the file list (ledger, log), the reproduction
+  command and output location, and this section.

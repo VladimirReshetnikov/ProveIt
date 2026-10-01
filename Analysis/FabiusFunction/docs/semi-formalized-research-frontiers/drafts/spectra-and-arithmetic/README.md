@@ -268,6 +268,29 @@ not cite the arithmetic-factor report, whose question "Beyond
 divisibility ladders" it answers for prime-power geometric targets.
 Unreviewed; no Lean statement.
 
+Archival arrival of 2026-09-30:
+[`Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/`](Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/),
+*Arithmetic Rigidity off Resonance* (24-page US Letter PDF, 852-line
+source, an exact standard-library certificate program), filed by a
+quick archival intake from the repository-level `docs/incoming/` drop
+zone.  It takes the convolution-factor problem of the two articles
+above off integer ratios: when the source widths are pairwise
+rationally incommensurable, a family of uniforms divides the law
+exactly when its Fourier quotient is entire, exactly when each uniform
+refines its own source coordinate by an integer.  So for every `q`
+with no rational positive power, `D_cμ_ρ` divides `μ_q` exactly when
+`c = q^a/n` and `ρ = q^m/d`, and several geometric factors divide
+together exactly when their source progressions are disjoint; at
+`q = p^{−e/h}` the problem splits into `h` prime-adic Hall problems,
+with a finite-orbit criterion for one geometric factor.  It answers the
+arithmetic-factor article's question "Two arbitrary geometric ratios"
+for all but countably many target ratios, credits the simultaneous
+article's prime-power Hall theorem and base-six example, and re-proves,
+uncited, the arithmetic-factor article's self-spectrum theorem; it adds
+a Wasserstein separation bound and a family near `q = 1/2` on which
+exact factorability fails while the distance to it tends to zero.
+Unreviewed; no Lean statement.
+
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
 Product* (retained 24-page PDF checkpoint; current live TeX: 1,060 lines,

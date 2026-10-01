@@ -37,6 +37,8 @@
 \newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
 % ed. (2026-09-29): unnumbered environment for editorial notes.
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\TT}{\mathbb T}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\CC}{\mathbb C}
@@ -1436,6 +1438,20 @@ coarse H\"older translation bound and retaining the second-order chart
 correction. An explicit coefficient would explain the slow approach in
 the critical numerical table.
 \end{question}
+% ed. (2026-09-29): this question is answered by a later package.
+\begin{ednote}
+The later repository article
+\path{thue-morse/Thue_Morse_Critical_Pressure_Corrections/} (filed
+2026-09-29, unreviewed) answers this question: both corrections occur. For
+every $0<\eta<1/2$,
+\[
+ P_{b,1}(c)=\kappa_b\sqrt{|c|}-(b-1)|c|\log(1/|c|)
+ +\bigl[b\log b+(b-1)(\gamma-1)\bigr]|c|+O(|c|^{3/2-\eta}),
+\]
+with $\gamma$ Euler's constant. The logarithm arises from a finite-part
+dual functional paired with the exact response of the eigenfunction $H$. A
+sharp next term is not claimed.
+\end{ednote}
 
 \begin{question}[A uniform matching region]
 Extend \cref{thm:crossover} from bounded $u$ to a quantitatively
@@ -1463,6 +1479,17 @@ orbits of zeros may lead to different finite-dimensional obstructions,
 while recurrent nonperiodic zero orbits may require a different
 functional setting.
 \end{question}
+% ed. (2026-09-30): a later package bears on this question
+\begin{ednotelater}
+\path{../Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/} (batch~68 of
+the repository's \path{docs/incoming/}) computes exactly the pressure of
+products of shifted digital masks whose phases fill complete periodic
+orbits of $x\mapsto bx\bmod1$, with a common exponent on each orbit,
+together with every equilibrium measure and the resulting mixed-moment
+exponents, in every base. The zeros of such a product are mapped by $x\mapsto bx$ onto the selected periodic orbits. It bears on this question but does not
+answer it: the phases are fixed, a single mask whose phase has period at
+least two is not covered, and no regularity in the phase is proved.
+\end{ednotelater}
 
 \begin{question}[Beyond consecutive digital masks]
 Find hypotheses on a trigonometric mask that imply an isolated Jordan
@@ -1489,6 +1516,19 @@ eigenvectors, and translate them into statements about equilibrium
 measures. The operator limit alone does not establish a variational
 classification of such measures.
 \end{question}
+% ed. (2026-09-29): answered, except the left boundary layer, by a later package.
+\begin{ednote}
+The later article
+\path{thue-morse/Thue_Morse_Critical_Pressure_Corrections/} gives the first
+normalized corrections of the left and right eigenvectors, a boundary layer
+of the right eigenfunction on the scale $\sqrt{|c|}$, and the weak limits of
+the unique equilibrium measures: $\tfrac12\delta_0+\tfrac12$ Lebesgue
+measure at $s=1$ as $c\to0$, and, along $s=1+u\sqrt{|c|}$ with $u$ in a
+compact set, the mixture of $\delta_0$ and Lebesgue measure with atomic
+weight $\tfrac12\bigl(1+u\log b/\sqrt{u^2\log^2b+4\kappa_b^2}\bigr)$. At
+$(s,c)=(1,0)$ the equilibrium measures are exactly the segment between
+$\delta_0$ and Lebesgue measure. The left boundary layer remains open.
+\end{ednote}
 
 \begin{question}[Certified spectral numerics]
 Replace the collocation diagnostics by explicit operator bounds and

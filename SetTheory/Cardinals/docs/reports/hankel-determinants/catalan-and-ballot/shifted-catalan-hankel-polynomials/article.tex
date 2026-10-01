@@ -11,6 +11,7 @@
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{listings}
+\usepackage{graphicx}% Part VI's two figures
 \usepackage{hyperref}
 \definecolor{inkblue}{HTML}{173B57}
 \definecolor{muted}{HTML}{526576}
@@ -83,6 +84,19 @@
 \newcommand{\RR}{\mathbb R}
 \newcommand{\bx}{\boldsymbol x}
 \newcommand{\EE}{\mathcal E}
+% Part VI (batch 57, manuscript 02): the manuscript's macros; its \R
+% (\mathcal R) is typed \Rgs and its \E (\mathbb E) \Egs, since the
+% report's \E is Part II's shift; its \dd (\,\mathrm d) is printed \,\dd;
+% its unused \NN, \supp, \Cat and \onehalf are dropped.
+\newcommand{\Rgs}{\mathcal R}
+\newcommand{\Egs}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\MP}{\mathrm{MP}_1}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\calF}{\mathcal F}
 \lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
  frame=single,rulecolor=\color{muted},backgroundcolor=\color{lightblue},
  keepspaces=true,showstringspaces=false}
@@ -91,18 +105,18 @@
 \thispagestyle{empty}
 \begin{center}
 {\small\sffamily\bfseries\color{muted}EXACT ENUMERATION \quad / \quad GENERATING FUNCTIONS \quad / \quad ASYMPTOTICS}\par
-\vspace{3mm}
+\vspace{1mm}
 {\LARGE\bfseries\color{inkblue}Shifted Catalan Hankel Polynomials}\par
-\vspace{3mm}
+\vspace{1mm}
 {\Large Exact coefficients, sharp recurrences,\par and a denominator conjecture}\par
-\vspace{3mm}
+\vspace{1mm}
 {A research note prepared with OpenAI ChatGPT}\par
 {19 September 2026}\par
-\vspace{2mm}
-{\small\color{muted}With Part~II (28 September 2026): root collisions and sharp
-recurrences for arbitrary polynomial multipliers,\par
-and Parts~III--V (29 September 2026): cyclotomic resonances,
-two-endpoint confluence, and interior root collisions}
+\vspace{1mm}
+{\footnotesize\color{muted}With Part~II (28 September 2026): root collisions and sharp
+recurrences for arbitrary polynomial multipliers,
+and Parts~III--VI (29 September 2026): cyclotomic resonances,
+two-endpoint confluence, interior root collisions, and growing shifts}
 \end{center}
 \vspace{1mm}
 \begin{abstract}
@@ -144,6 +158,8 @@ displacements are negligible exactly when they are $o(N^{-2})$.
 
 \emph{Addition of 29 September 2026 (batch 55).} Part~V lets roots
 collide away from $0$ and $4$ on the scale $N^{-1}$.
+\emph{Addition of 29 September 2026 (batch 57).} Part~VI lets the shift
+$m$ grow with $N$.
 \end{abstract}
 \vspace{1mm}
 \noindent\colorbox{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
@@ -1012,6 +1028,17 @@ away from the collision itself, but a different uniform asymptotic
 analysis would be required.  At a collision, use the exact exceptional
 formulas from Section~\ref{sec:recurrence} instead.
 
+\noindent[Added 29 September 2026, batch 57: for this family with real
+$a/b\ge0$, limits with $m$ growing with $N$ are treated in Part~VI.
+With $v=m+\tfrac12$, $B=N+m+1$ and $\tau=(a/b)NB/(4v)$, the ratio
+$D_N^{(m)}(a,b)/D_N^{(m)}(0,b)$ tends to $1$ exactly when $\tau\to0$,
+for every relative growth of $N$ and $m$
+(Corollary~\ref{gs:cor:invisibility}); when $N,m\to\infty$ its
+logarithm is governed by $\beta=\bigl(1+c(v+\tfrac32)\bigr)/(v+1)$,
+$c=v/(NB)$, with critical scales $\tau\asymp\beta^{-1/2}$,
+$\beta^{-2/3}$ and $\beta^{-1}$ (Theorem~\ref{gs:thm:overview}).
+Coalescing roots and $a/b<0$ are not treated there.]
+
 \section{Worked examples and integer sequences}\label{sec:examples}
 
 \subsection{Small shifts}
@@ -1276,6 +1303,14 @@ when $a/b=o(N^{-2})$, to an explicit profile when $N^2a/b$ converges, and
 to infinity when $N^2a/b\to\infty$ (Theorem~\ref{tec:thm:scale} and
 Section~\ref{tec:sec:answers}).  Joint limits with growing $m$ remain
 open.]
+
+\noindent[Added 29 September 2026, batch 57: joint limits with growing
+$m$ are treated in Part~VI for this one-factor family with $a/b\ge0$
+(Theorems~\ref{gs:thm:overview}, \ref{gs:thm:spectral},
+\ref{gs:thm:freeenergy} and~\ref{gs:thm:prefactor}); for fixed $m$ its
+criterion reduces to Part~IV's $N^2a/b\to0$.  A combinatorial
+interpretation of $c_{N,m,k}$ and a product formula for
+$M_{m,\ell}(N)$ remain open.]
 
 %% ====================================================================
 %% Batch-39 addition (manuscript 03, "Root Collisions and Sharp
@@ -3825,6 +3860,30 @@ of the following two disjoint cases:
 There is no defect when $t$ and $L$ have different parity.
 \end{corollary}
 
+\noindent[Added 30 September 2026, batch 66: the sibling report
+\nolinkurl{cigler-conjecture-16-parity} (same directory) proves the
+analogous classification for a different family in its Part~III, written
+in commit \texttt{e1817651a}: the reduced denominator and the minimal
+recurrence of Cigler's Hankel polynomials at every complex value of their
+parameter (its Theorem~24.1 and Corollary~31.1).  Here that parameter is
+written $\tau$, the size index $\kappa$, and the order of $\tau$ is $L'$,
+because $t$ and $k$ are a multiplicity and a sector index in this Part.
+At a primitive root of unity of order $L'\ge3$ the exponents start, as in
+\eqref{cyc:eq:mainchar}, from one plus the largest sector degree in each
+residue class, there $\lfloor j(\kappa-1-j)/2\rfloor$.  At most one
+residue class, that of $(\kappa-1-L')/2$ when $L'\le\kappa-1$ and
+$L'\equiv\kappa-1\pmod2$, can lose order, and an explicit parity test in
+$\kappa$ and $L'$ alone decides whether it does.  The loss is one order,
+except at primitive fourth roots with $\kappa\equiv1\pmod4$: there it is
+three orders for $\kappa\ge9$, and for $\kappa=5$ the factor disappears.
+So the single tied residue class of Theorem~\ref{cyc:thm:main} has a
+counterpart there, but the bound of one order in
+Remark~\ref{cyc:rem:onedefect} does not hold for that family, and its test
+needs no sign datum such as $z^L$ in Corollary~\ref{cyc:cor:sign}.  The
+two classifications were proved independently and neither uses the other;
+that report's Section~23.1 records the same parallel.  Nothing in this
+Part is changed.]
+
 The proof of the theorem occupies Sections~\ref{cyc:sec:orthogonal}--\ref{cyc:sec:orders}.
 The remaining parameter is governed by a known product.
 
@@ -5550,6 +5609,12 @@ interior roots and are not addressed; Part~IV's second research question
 (endpoint clusters in the presence of fixed interior roots) is close to
 the first of them.
 
+\noindent[Added 29 September 2026, batch 57: for the cluster
+$x^m(x+\varepsilon)$ of $m+1$ roots at $0$ with one outward
+displacement $\varepsilon\ge0$, Part~VI treats $m$ growing with $N$ at
+every relative rate (Section~\ref{gs:sec:answers}); see the note under
+Section~\ref{gs:x:tecq4}.]
+
 \emph{Consistency with Parts~II and~III} (observations of this merge,
 checked by a separate exact computation not shipped with the report).
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
@@ -6658,13 +6723,28 @@ connected-interaction expansion. Its elementary factors already show
 that only even orders can occur, but do not automatically give the most
 compact differential representation.
 
-\subsection{Multiplicities growing with determinant size}
+\subsection{Multiplicities growing with determinant size}\label{gs:x:tecq4}
 The theorem keeps $m,\ell$ fixed. Find a regime $m=m_N$, $\ell=\ell_N$
 in which the factorized leading profile or the first correction remains
 uniform. The explicit bound here is deliberately too coarse to locate a
 sharp growth threshold. Such a threshold should account simultaneously
 for the number of pair interactions, growth of the confluent kernels,
 and the shrinking domain on which an effective relative error is small.
+
+\noindent[Added 29 September 2026, batch 57: partly answered by Part~VI,
+for $\ell=0$ and the cluster $x^m(x+\varepsilon)$ with one outward
+displacement $\varepsilon\ge0$: the ratio to $H_N(x^{m+1})$ tends to $1$
+exactly when $\varepsilon N(N+m+1)/(4m+2)\to0$, for every growth of $m$
+(Corollary~\ref{gs:cor:invisibility}).  For fixed $m$ this is the
+threshold $N^2\varepsilon\to0$ of Theorem~\ref{tec:thm:scale}, and when
+$N^2\varepsilon\to y$ the limit is ${}_0F_1(;m+\tfrac12;y/4)$
+\eqref{gs:eq:fixed-m}; for $N,m\to\infty$ the fixed-$m$ profile is
+replaced by $e^\tau$ with the corrections of
+Theorem~\ref{gs:thm:hierarchy}, on the critical scales of
+Theorem~\ref{gs:thm:overview}.  Several displaced roots, $\ell>0$, the
+first correction in the sense of Theorem~\ref{tec:thm:main} and an
+approximation uniform in $1\le m\le N$ (Section~\ref{gs:x:bridge})
+remain open (Section~\ref{gs:sec:answers}).]
 
 \subsection{Other Jacobi endpoint exponents}
 Replace the Catalan weight by $x^\alpha(4-x)^\beta$ with
@@ -9020,6 +9100,1840 @@ phase in the main formulas.
 
 \setlength{\emergencystretch}{2em}% end of Part V
 
+%% ====================================================================
+%% Batch-57 addition (manuscript 02, "A Catalan Law Behind Growing
+%% Shifts").  All labels of Part VI carry the prefix gs: (growing shifts).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part VI.\quad Growing shifts}
+\addcontentsline{toc}{part}{Part VI.\texorpdfstring{\quad}{ } Growing shifts}
+
+\noindent\emph{Part~VI was added on 29 September 2026 in batch~57 of
+ProveIt's incoming-report intake, from one manuscript written against this
+report as it stood with Parts~I--IV.  It takes up the regime that Part~I
+(Sections~\ref{sec:asymptotics} and~\ref{sec:status}) and Part~IV
+(Section~\ref{tec:sec:answers}) left open: the shift $m$ growing with the
+determinant size $N$.  For the one-factor family $D_N^{(m)}(a,1)$ with
+$a\ge0$ and arbitrary relative growth of $N$ and $m$, it proves an exact
+criterion for when the factor $x+a$ is invisible, a uniform bound on the
+largest inverse Jacobi zero, a size-biased inverse-zero law equal to a
+shifted Catalan (Marchenko--Pastur) law, an all-orders hierarchy of
+critical scales, an algebraic free-energy limit, the exact total-variation
+transition away from the nominal Poisson law, and a uniform saddle prefactor
+in proportional growth.  Several moving factors, both endpoint exponents
+growing, and a sharp extreme-zero theorem remain open.  Parts~I--V are
+unchanged except for dated pointers to this addition (Sections~\ref{sec:asymptotics}
+and~\ref{sec:status}, Section~\ref{tec:sec:answers} and
+Section~\ref{gs:x:tecq4}), a longer line on the title page (now set in a
+smaller font, with the title page's vertical spaces reduced by a
+further 7\,mm, so that the page still fits), a sentence run into the last
+paragraph of the abstract, a contents entry, three bibliography entries
+used only by
+Part~VI, a clause in the closing note on source dates, one new label on
+Part~IV's Section~\ref{gs:x:tecq4} so that it can be cited, and the
+\texttt{graphicx} package, which Part~VI's two figures need.
+Section~\ref{gs:sec:intro} records the provenance and fixes the notation
+of the addition.}
+
+\section{Provenance and conventions of Part~VI}\label{gs:sec:intro}
+
+\subsection{One manuscript, one addition}\label{gs:sec:source}
+Part~VI is batch-57 manuscript~02, \emph{A Catalan Law Behind Growing
+Shifts}, subtitled \emph{Three critical scales, an all-orders hierarchy, and
+uniform Hankel asymptotics}, an AI-assisted research article dated
+29 September 2026 (21 A4 pages as delivered).  Its byline reads
+``AI-assisted research prepared for Vladimir Reshetnikov / In continuation
+of the ProveIt repository'', and its PDF metadata gives the same author
+string; it names no assistant.  It arrived as the archive
+\nolinkurl{ProveIt_Catalan_Growing_Shifts.zip} (inner directory
+\nolinkurl{Catalan_Growing_Shifts/}, main file \nolinkurl{article.tex}) in
+ProveIt commit \texttt{6ad01e9c8} and was placed in \texttt{70b39943a}.
+
+It was written against a ProveIt commit (a fix commit for the batch-54
+Fabius-tree arrivals), and it records two Git blobs there, both checked for
+this merge:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+commit & \texttt{1085b506d65e207a05b7e9c861bb1fe88432fe38}\\
+this report's \nolinkurl{article.tex} & \texttt{b23831b8f20efab08342b11bb4939809d0a8047e}\\
+this report's \nolinkurl{README.md} & \texttt{ce3436af04afdb64c683d9d36be3f0b45c6ccf5e}
+\end{tabular}
+\end{center}
+At that commit the article held Parts~I--IV;
+Part~V was written into it afterwards, in \texttt{b2aed2d23}, and that is
+the only change to the report between the pin and the placement commit.
+Every passage the manuscript continues (Part~I's
+Sections~\ref{sec:asymptotics} and~\ref{sec:status}, Part~I's
+Theorem~\ref{thm:coeff}, Part~IV's Section~\ref{tec:sec:answers} and its
+research questions in Section~\ref{tec:sec:future}) is textually unchanged
+between the pin and the placement commit, only shifted in the source, apart
+from the dated notes that Part~V added to Sections~\ref{tec:sec:answers}
+and~\ref{tec:x:q1} and its label on Section~\ref{ic:x:tecq2}; so
+the manuscript's ``repository'', ``combined source manuscript'' and
+``inspected reports'' are Parts~I--IV as printed above, its ``Part~I'' is
+Part~I, and its ``later endpoint-confluence part'' is Part~IV.  Its source
+audit also names Part~V's shipped source notes,
+\nolinkurl{05-interior-collision-SOURCES.md}, which were already in the
+repository at the pin (placed in \texttt{26473dfa0}); it read them only to
+avoid treating that fixed-degree direction as new.  The line numbers the
+source audit gives for ``the combined source'' refer to the article at the
+pin, not to the present file.
+
+The manuscript's program, its figure script and its recorded outputs are
+shipped beside the earlier files with the prefix
+\texttt{06-growing-shifts-} (Part~I's unprefixed files count as~01, and
+Parts~II--V have \texttt{02-} to~\texttt{05-}), its dependency file under
+\nolinkurl{data/}, its delivered \nolinkurl{Makefile} under
+\nolinkurl{code/}, and its source audit, proof audit and build check,
+delivered as \nolinkurl{SOURCES.md}, \nolinkurl{PROOF_AUDIT.md} and
+\nolinkurl{BUILD_CHECK.md}, at the report root:
+{\raggedright
+\begin{itemize}[leftmargin=2em,itemsep=0pt,topsep=2pt]
+\item \nolinkurl{code/06-growing-shifts-verify.py} and
+ \nolinkurl{code/06-growing-shifts-make_figures.py} (delivered as
+ \nolinkurl{code/verify.py} and \nolinkurl{code/make_figures.py}; the second
+ imports the first by its delivered name, Section~\ref{gs:app:reproduction});
+\item \nolinkurl{code/06-growing-shifts-Makefile} (delivered at the package
+ root as \nolinkurl{Makefile}; it must not be run in this directory);
+\item \nolinkurl{data/06-growing-shifts-verification_summary.json} and the
+ four CSV files \nolinkurl{data/06-growing-shifts-critical_scales.csv},
+ \nolinkurl{-spectral_moments.csv}, \nolinkurl{-free_energy.csv} and
+ \nolinkurl{-saddle_prefactor.csv} (delivered under \nolinkurl{data/}
+ without the prefix; the CSV files have CRLF line endings, as delivered);
+\item \nolinkurl{data/06-growing-shifts-requirements.txt} (delivered as
+ \nolinkurl{requirements.txt}; it states the unpinned ranges
+ \texttt{numpy>=1.24}, \texttt{scipy>=1.10}, \texttt{matplotlib>=3.7});
+\item \nolinkurl{06-growing-shifts-SOURCES.md},
+ \nolinkurl{06-growing-shifts-PROOF_AUDIT.md} and
+ \nolinkurl{06-growing-shifts-BUILD_CHECK.md} (the last describes the
+ delivered 21-page PDF, not this report);
+\item \nolinkurl{figures/06-growing-shifts-determinant_crossover.pdf} and
+ \nolinkurl{figures/06-growing-shifts-free_energy.pdf}, Figures~\ref{gs:fig:crossover}
+ and~\ref{gs:fig:freeenergy}.
+\end{itemize}}
+\noindent All but the two figures are byte-identical to the delivery.  The
+delivered figure PDFs embedded their DejaVu Sans text as Type~3 fonts, which
+the rest of this report does not use; the shipped figures were regenerated
+for this merge by the delivered \nolinkurl{code/make_figures.py}, unchanged,
+on a copy of the delivery with Matplotlib~3.10.8 (the version recorded in
+the delivered figures), NumPy~2.3.5 and SciPy~1.17.0 and a local
+\nolinkurl{matplotlibrc} setting \texttt{pdf.fonttype: 42}, so that they
+embed TrueType fonts.  They plot the same curves but are not byte-identical
+to the deliveries.  The manuscript, its PDF, its delivery README, its
+delivered figures and its checksum list are not shipped; they survive in the
+arrival commit (the checksum list was verified at placement and retired).
+
+The manuscript contributes, in the order printed here: the repository
+question and what is classical (Section~\ref{gs:sec:context}); the
+normalization, the concentration index $\beta$ and the main asymptotic
+picture (Section~\ref{gs:sec:normalization}); an exact Jacobi reduction,
+the normalized coefficients and an exact invisibility criterion valid for
+every growth of $m$ (Section~\ref{gs:sec:jacobi}); positive inverse-zero
+weights and a Riccati recurrence for all their moments
+(Section~\ref{gs:sec:weights}); a uniform Catalan majorant and the bound
+$W\le8\beta$ on the largest inverse zero (Section~\ref{gs:sec:majorant});
+the first (Gaussian) critical scale with explicit error bounds
+(Section~\ref{gs:sec:gaussian}); the size-biased inverse-zero law
+(Section~\ref{gs:sec:spectral}); the all-orders hierarchy of critical
+scales (Section~\ref{gs:sec:hierarchy}); the algebraic free energy and a
+nonlinear central limit theorem (Section~\ref{gs:sec:freeenergy}); the
+nominal-Poisson transition (Section~\ref{gs:sec:poisson}); the saddle
+prefactor in proportional growth (Section~\ref{gs:sec:saddle}); boundary
+regimes and the physical sizes of the perturbation
+(Section~\ref{gs:sec:boundaries}); its checks
+(Section~\ref{gs:sec:checks}); proof dependencies and limitations
+(Section~\ref{gs:sec:scope}); ten research directions
+(Section~\ref{gs:sec:future}); a conclusion; a formula sheet
+(Section~\ref{gs:app:formulas}); and its reproduction instructions
+(Section~\ref{gs:app:reproduction}).  Every result, proof, remark,
+limitation and question of the manuscript is printed.  Where it re-derives
+something Parts~I--V already prove, the overlap is marked
+(Section~\ref{gs:sec:merge}).
+
+The manuscript's own abstract reads:
+\begin{quote}\small
+Consider the shifted Catalan Hankel determinant
+$D_N^{(m)}(a,1)=\det(aC_{i+j+m}+C_{i+j+m+1})_{0\le i,j<N}$.
+The repository's fixed-shift formulas do not give uniform asymptotics when
+$m$ grows with $N$. We develop such a theory for a single moving linear
+factor, allowing \emph{arbitrary relative growth} of $N$ and $m$.
+An exact normalization reduces the determinant to a polynomial $\Rgs(\tau)$
+whose negative zeros define positive weights of total mass one. An explicit
+quadratic index $\beta$ controls these weights, and an elementary Riccati
+argument proves that their maximum is at most $8\beta$.
+
+A size-biased inverse-zero measure converges to a shifted and scaled
+Marchenko--Pastur law; its moments are binomial transforms of the Catalan
+numbers. This single law determines an infinite hierarchy of renormalized
+limits at $\tau\asymp\beta^{-(r-1)/r}$. In particular, the approximation
+$\Rgs(\tau)\sim e^\tau$ breaks down at $\beta^{-1/2}$, whereas the
+determinant's coefficient distribution separates from $\Pois(\tau)$ at
+$\beta^{-2/3}$.  At $\tau\asymp\beta^{-1}$, the hierarchy resums to an
+explicit algebraic free-energy law, valid also when $m/N$ tends to zero or
+infinity.  A separate saddle calculation supplies a uniform leading
+prefactor when $m/N$ remains in a compact subset of $(0,\infty)$.
+
+All principal claims have written proofs. Exact-arithmetic audits and
+floating-point diagnostics accompany the article. The underlying Jacobi,
+Christoffel, and Poisson-approximation machinery is classical; the claimed
+advance is relative to the inspected repository questions. Worldwide
+priority is not established, and no Lean formalization is claimed.
+\end{quote}
+Its title page carried this scope line:
+\begin{quote}\small
+\textbf{Scope.} One moving linear factor; nonnegative real perturbations for
+probability and sharp-order statements; complex compact limits where stated.
+No claim is made about arbitrary growing-degree multipliers.
+\end{quote}
+
+\begin{center}
+\fcolorbox{muted}{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+\textbf{Status (manuscript~02).}
+This is an unrefereed, AI-assisted manuscript with conventional written
+proofs, not a Lean or Rocq formalization and not an interval-certified
+computation.  It treats one additional linear factor $x+a$ beside a
+growing endpoint power $x^m$, with $a/b\ge0$ for its probabilistic and
+sharp-order statements, and complex limits only where stated.  Classical
+ingredients are credited, not presented as new: the Catalan moment measure,
+the one-factor Christoffel identity (Krattenthaler~\cite{Krattenthaler2023};
+re-derived in the present normalization), the finite Jacobi hypergeometric
+representation (DLMF~\cite{DLMF}), large-parameter Jacobi-zero asymptotics
+(Dette--Studden~\cite{DetteStudden1994}, context only), the Barbour--Hall
+Bernoulli-sum Poisson bound~\cite{BarbourHall1984}, the only Poisson
+approximation estimate used, and mod-Poisson and higher-order Chen--Stein
+approximation (M\'eliot--Nikeghbali--Visentin~%
+\cite{MeliotNikeghbaliVisentin2022}, context only).  The fixed-$m$
+${}_0F_1$ limit is a standard special-function phenomenon, not claimed as
+new, and the coefficient formula \eqref{gs:eq:repository-coeff} is Part~I's.
+The claimed contribution relative to the inspected reports is the
+integrated calculation: the exact normalization and concentration index,
+the uniform inverse-zero bound, the size-biased Catalan law in every
+relative-growth regime, the all-orders hierarchy, the distinct determinant
+and nominal-Poisson thresholds, and the algebraic resummation with a
+proportional-growth prefactor.  Equivalent formulations may exist in the
+orthogonal-polynomial literature; the bounded literature check does not
+settle first-discovery priority, and requested PDF fetches of the
+Krattenthaler and Dette--Studden papers did not succeed (only their
+abstracts were read).  Not claimed: several moving factors or arbitrary
+growing-degree multipliers; both endpoint exponents growing; negative
+perturbations, across which the positive-axis statements need not hold; an
+extreme-zero theorem (the constant~$8$ is not claimed sharp); uniformity in
+the hierarchy order~$q$; a saddle prefactor uniform as $m/N$ or $t$
+approaches $0$ or~$\infty$; exhaustive inspection of the repository.  The
+recorded assertions (270 direct determinant comparisons, 420 moment
+parameter pairs with 5,040 moment equalities and 5,040 majorant checks,
+60 limiting-recurrence checks, 16 floating-point Jacobi-root parameter
+pairs) are finite audits, and the CSV tables are floating-point
+diagnostics, not outward-rounded certificates.  No proof assistant was run,
+nothing in Part~VI is formalized, and its placement beside a Lean project
+confers no formal status.  (Sources: the manuscript, its delivery README,
+and its source and proof audits, \nolinkurl{06-growing-shifts-SOURCES.md}
+and \nolinkurl{06-growing-shifts-PROOF_AUDIT.md}.)}}
+\end{center}
+
+\subsection{Reading conventions}\label{gs:sec:reading}
+Inside Sections~\ref{gs:sec:context}--\ref{gs:app:reproduction}, ``this
+article'' and ``here'' mean manuscript~02 as printed in Part~VI; ``the
+repository'', ``the inspected reports'' and ``the combined source
+manuscript'' mean Parts~I--IV at the pin \texttt{1085b506d}.  ``The
+package'' and ``the delivered archive'' mean the delivered archive, whose
+files are shipped under the prefixed names listed in
+Section~\ref{gs:sec:source}.  The manuscript's two appendices are printed
+as Sections~\ref{gs:app:formulas} and~\ref{gs:app:reproduction}, so that
+Part~I's appendices keep their letters.  Its Sections~1--16 are
+Sections~\ref{gs:sec:context}--\ref{gs:sec:conclusion}, so a manuscript
+number $n.j$ of a section, theorem, proposition, lemma, corollary,
+definition, remark or equation is printed as $(n+81).j$ (for example, its
+Theorem~2.1 is Theorem~\ref{gs:thm:overview} and its Theorem~7.2 is
+Theorem~\ref{gs:thm:spectral}), and its Appendices~A and~B are
+Sections~\ref{gs:app:formulas} and~\ref{gs:app:reproduction}; its two
+figures are Figures~\ref{gs:fig:crossover} and~\ref{gs:fig:freeenergy}.
+The shipped \nolinkurl{06-growing-shifts-PROOF_AUDIT.md} and
+\nolinkurl{06-growing-shifts-SOURCES.md} use the manuscript's numbers.  The
+manuscript cites Krattenthaler's Ramanujan Journal paper (with
+arXiv:2101.04225) and DLMF equation~18.5.7; they are Part~I's
+references~\cite{Krattenthaler2023} and~\cite{DLMF}.  Bracketed paragraphs
+beginning ``Merge note'' are this merge's, not the manuscript's.
+
+\subsection{Notation of Part~VI}\label{gs:sec:notation}
+Part~VI keeps the manuscript's symbols.  Within
+Sections~\ref{gs:sec:context}--\ref{gs:app:reproduction} every symbol has its
+Part~VI meaning, except in merge notes and where a sentence names Part~I,
+II, III, IV or~V or cites one of their equations.  The determinants are
+Part~I's: $D_N^{(m)}(a,b)$ and $H_N^{(m)}$ are Part~I's \eqref{eq:D} and
+\eqref{eq:Hproduct}, $a$ and $b$ are Part~I's parameters, and the
+manuscript works at $b=1$ except in Section~\ref{gs:sec:physical}, where it
+restores $b>0$ (there $a$ is replaced by $a/b$).  In Part~IV's terms,
+$D_N^{(m)}(a,b)=b^NH_N(x^m(x+\varepsilon))$ with $\varepsilon=a/b$: a cluster
+of $m+1$ roots at the endpoint~$0$, $m$ of them fixed there and one
+displaced outward when $\varepsilon>0$.  Table~\ref{gs:tab:notation} lists
+the symbols that a reader of Parts~I--V is likely to misread.  No printed
+symbol was renamed, but two macros were: the manuscript's calligraphic
+$\mathcal R$ for the normalized determinant \eqref{gs:eq:Rdef} is typed
+\verb|\Rgs| in the source (it prints the same $\Rgs$), so that no bare
+\verb|\R| stands beside Part~II's $\Rzero$; and the manuscript's expectation
+$\mathbb E$ is typed \verb|\Egs|,
+because the report's \verb|\E| is Part~II's sans-serif shift $\E$.  No
+normalization changed.  Five readings need particular care: $\beta$ is the
+concentration index \eqref{gs:eq:beta-theta}, not a Jacobi endpoint
+exponent (which is $\frac12$ here) nor Part~I's $\beta_j^\pm$; $c=v/(NB)$ is
+not Part~I's coefficient $c_{N,m,k}$ nor the base $c$ of Parts~II, III
+and~V; $\nu_{N,m}$ and $\nu_\theta$ are probability measures, not Part~IV's
+and Part~V's centred size $\nu$; $b$ is Part~I's parameter in
+Section~\ref{gs:sec:physical} but $(N+m+1)/N$ in
+Section~\ref{gs:sec:saddle} (a clash inside the manuscript); and $t$ is
+$\beta\tau$ in Sections~\ref{gs:sec:normalization}
+and~\ref{gs:sec:freeenergy} but $\tau/N$ in Section~\ref{gs:sec:saddle}
+(also inside the manuscript).
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright}p{0.19\textwidth}>{\raggedright}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\caption{Symbols and notions of Part~VI.  The last column gives the
+meaning of the same letter in Part~I, II, III, IV or~V, or the tempting
+false reading.}\label{gs:tab:notation}\\
+\toprule
+Symbol or notion & Meaning in Part~VI & Not to be confused with\\
+\midrule
+\endfirsthead
+\toprule
+Symbol or notion & Meaning in Part~VI & Not to be confused with\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$v$, $B$, $c$, $\mu$
+ & $m+\frac12$, $N+m+1$, $v/(NB)$ and the scalar $NB/(4v)$
+   \eqref{gs:eq:params}; $a=\tau/\mu$
+ & Part~IV's coordinates $v_j$; Part~III's rectangular product
+   $B_{a,b}(N)$; Part~I's $c_{N,m,k}$ and the base $c$ of Parts~II, III, V;
+   Part~I's measure $\mu_m$ and the Catalan measure $\mu$ of Parts~II, IV, V.\\
+$\Rgs(\tau)=\Rgs_{N,m}(\tau)$
+ & the normalized determinant \eqref{gs:eq:Rdef}, a polynomial of degree
+   $N$ in $\tau$
+ & Part~II's maximal order $\Rzero$; Part~III's order $R(t,c)$; Part~IV's
+   ratio $R_N$ and hyperbolic generator $\mathcal R$; Part~I's
+   polynomials $R_n(y)$.\\
+$\tau$, $s$, $u$, $t$
+ & the normalized perturbation; the scaled variables $\tau\sqrt\beta$,
+   $\tau\beta^{(q-1)/q}$ and $\beta\tau$ (but $t=\tau/N$ in
+   Section~\ref{gs:sec:saddle})
+ & Part~IV's kernel variable $t$ and Part~V's collision coordinate $\tau$;
+   Part~II's number $s$ of interior roots; Part~V's coordinates $u_i$;
+   Parts~III and~V's multiplicity $t$.\\
+$\beta$, $\theta_{N,m}$, $\theta$, $\gamma$
+ & the concentration index and the shape \eqref{gs:eq:beta-theta}, its
+   limit, and $1-\theta$
+ & Part~I's $\beta_j^\pm$; the Jacobi exponents $m-\frac12$, $\frac12$;
+   Part~V's base angle $\theta$; Part~II's leading coefficient $\gamma$.\\
+$x_j$, $w_j$, $W$, $S_r$
+ & the zeros of $p_N^{(m)}$, the inverse-zero weights $1/(\mu x_j)$, their
+   maximum and power sums \eqref{gs:eq:weights}
+ & Part~V's spectral base $w$ and profiles $S_{d,k}$; Part~IV's
+   $S(t,y)$; Part~III's $w=N+t/2$.\\
+$L=\Rgs'/\Rgs$, $L_\theta$, $M(z)$
+ & the logarithmic derivative, its limit \eqref{gs:eq:Fprime}, the limiting
+   moment series \eqref{gs:eq:Mquadratic}
+ & Part~III's $L=\ord(z^2)$; Part~V's $L(h;\bu,w)$; Part~I's minors
+   $M_{m,\ell}$; Part~II's Christoffel matrix $M_N$.\\
+$\omega$, $Y$, $\MP$, $C(z)$
+ & the Catalan measure \eqref{gs:eq:measure} (Part~I's $\mu_0$), a
+   random variable with that law, its name, the Catalan generating function
+ & Part~IV's $Y=\sum_iy_i$; Part~IV's kernel $C(t,y)$.\\
+$\nu_{N,m}$, $\nu_\theta$, $d_r(\theta)$, $D_r$
+ & the size-biased inverse-zero measure \eqref{gs:eq:nu}, its limit
+   \eqref{gs:eq:limit-nu}, the limiting moments \eqref{gs:eq:dr}, and
+   $S_r/\beta^{r-1}$
+ & Part~IV's and Part~V's centred size $\nu$; Part~I's $d=\binom m2$;
+   Part~V's $d$; Part~I's $D_N^{(m)}$.\\
+$\calF_\theta$, $Q_\theta$, $V_\theta$
+ & the free energy \eqref{gs:eq:F-integral}, the limiting mean and variance
+   of Corollary~\ref{gs:cor:nonlinear-CLT}
+ & Part~I's generating function $F_m(t;a,b)$; Part~IV's profiles
+   $F_t^\pm$; Part~III's quadratic factors $Q_a$.\\
+$K_\tau$, $p_j$, $\lambda$, $\delta$
+ & the coefficient distribution, a sum of Bernoulli variables with
+   parameters $p_j$ \eqref{gs:eq:pgf}; its mean and $\tau-\lambda$
+ & Part~I's $K=(m-1)^2$; Part~IV's kernels $K^\pm$; the orthogonal
+   polynomials $p_n$ (and $p_N^{(m)}$ in Section~\ref{gs:sec:jacobi});
+   Part~II's rates $\lambda_k$; Part~IV's partitions $\lambda$.\\
+$\Phi$, $N(\cdot,1)$, $\sigma$
+ & the standard normal distribution function; a normal law; a limit
+   parameter in $[0,\infty]$
+ & Part~V's profiles $\Phi_t$; the determinant size $N$; Part~III's
+   subset sums $\sigma(S)$.\\
+$r$, $b$, $q$, $\ell$, $h(x)$, $f$, $\mathcal A$
+ & in Section~\ref{gs:sec:saddle}: $(m+\frac12)/N$, $(N+m+1)/N$, the
+   saddle point, an auxiliary in \eqref{gs:eq:q-stable}, $-f''$, the rate
+   \eqref{gs:eq:f}, the prefactor \eqref{gs:eq:prefactor}
+ & the moment index $r$ elsewhere in Part~VI; Part~I's parameter $b$;
+   Part~I's $q(t)$ and Part~II's multiplier $q$; the multiplicity $\ell$ of
+   the root~$4$ (Parts~II, IV); Part~I's $h_m$ \eqref{eq:h}, Part~IV's and
+   Part~V's $h=1/\nu$; Part~IV's constant $\mathcal A_{m,\ell}$.\\
+$\rho$, $b_\rho$, $b_*$, $T_k$, $A_{N,m}(k)$
+ & the limit of $m/N$; $\lim N\beta$; an auxiliary; the $k$th term of
+   $\Rgs$; its normalized coefficient \eqref{gs:eq:coefficients}
+ & Part~IV's $\rho=\binom m2+\binom\ell2$; Part~IV's $A_j$; Part~V's
+   $A_t(\theta)$.\\
+$\TV$, $\Pois$, $\Law$, $\Egs$, $\PP$, $\Var$
+ & total variation (half the $\ell^1$ distance), a Poisson law, the law of
+   a random variable, expectation, probability, variance
+ & the shift $\E$ of Part~II.\\
+\end{longtable}
+\endgroup
+
+\subsection{What Part~VI answers, and what stays open}\label{gs:sec:answers}
+Part~I's status paragraph (Section~\ref{sec:asymptotics}) restricts its
+estimates to fixed $m,a,b$, ``not claimed to be uniform \dots\ when $m$
+grows with $N$'', and its Section~\ref{sec:status} names joint limits with
+growing $m$ as requiring uniform asymptotics; its dated notes of batches~39
+and~53 there left them open.  Part~IV treats $a\to0$ at fixed~$m$
+(Theorem~\ref{tec:thm:scale} and Section~\ref{tec:sec:answers}) and
+repeats that ``joint limits with $m$ growing with $N$ remain open'', and its
+research question ``Multiplicities growing with determinant size''
+(Section~\ref{gs:x:tecq4}) asks for a regime $m=m_N$, $\ell=\ell_N$ in which
+the factorized leading profile or the first correction remains uniform.
+Part~VI answers the growing-$m$ question for the one-factor family with real
+$a/b\ge0$, at every relative growth of $N$ and $m$: the ratio
+$D_N^{(m)}(a,b)/D_N^{(m)}(0,b)$ tends to $1$ exactly when
+$\tau=(a/b)NB/(4v)\to0$ (Corollary~\ref{gs:cor:invisibility}); when
+$N,m\to\infty$ its logarithm is governed by $\beta$, with the critical
+scales $\beta^{-1/2}$, $\beta^{-2/3}$ and $\beta^{-1}$
+(Theorem~\ref{gs:thm:overview}), the size-biased inverse-zero law
+(Theorem~\ref{gs:thm:spectral}), every fixed level of the hierarchy
+(Theorem~\ref{gs:thm:hierarchy}), the algebraic free energy
+(Theorem~\ref{gs:thm:freeenergy}) and, in proportional growth, a uniform
+prefactor (Theorem~\ref{gs:thm:prefactor}).  In Part~IV's terms this is
+$\ell=0$ and the cluster $x^m(x+\varepsilon)$, $\varepsilon=a/b\ge0$, with
+one displaced root.  The manuscript does not cite Part~IV's
+Section~\ref{gs:x:tecq4}; the identification is this merge's.
+
+\emph{Not answered.}  Part~IV's Section~\ref{gs:x:tecq4} stays open for
+several displaced roots, for $\ell>0$, and for the first correction in the
+sense of Part~IV's Theorem~\ref{tec:thm:main}; a single approximation
+uniform for $1\le m\le N$ bridging the fixed-$m$ and growing-$m$ regimes is
+Part~VI's own question (Section~\ref{gs:x:bridge}).  Part~VI's
+Section~\ref{gs:x:several} poses several moving factors, and its
+Section~\ref{gs:x:both}, both endpoint exponents growing, is related to
+Part~IV's question ``Other Jacobi endpoint exponents'' but not the same.
+Coalescing roots and $a/b<0$ (Part~I's other caveats) are not treated.  A
+combinatorial interpretation of Part~I's $c_{N,m,k}$ and a product formula
+for its minors $M_{m,\ell}(N)$ remain open; Part~VI's
+Section~\ref{gs:x:combinatorial} asks for a combinatorial coefficient model
+in the same spirit.  Part~V's ``Not claimed'' (growing degree, or zero
+indices growing with $N$) concerns interior roots and is neither answered
+nor contradicted.
+
+\emph{Consistency with Parts~I and~IV} (observations of this merge).
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \eqref{gs:eq:repository-coeff} is Part~I's \eqref{eq:coeff} at
+ $b=1$, as the manuscript says: \eqref{gs:eq:coefficients} is the
+ statement $A_{N,m}(k)\mu^k/k!=\binom Nk(B)_k/(4^k(v)_k)
+ =c_{N,m,k}/H_N^{(m+1)}$.
+\item For fixed $m$, Corollary~\ref{gs:cor:invisibility} reduces to
+ Part~IV's threshold: $\tau=\varepsilon N(N+m+1)/(4m+2)\to0$ exactly when
+ $N^2\varepsilon\to0$ (Theorem~\ref{tec:thm:scale} with $\ell=0$ and $m+1$
+ roots at~$0$).  If $N^2\varepsilon\to y$, then $v\tau\to y/4$ and
+ \eqref{gs:eq:fixed-m} gives the limit ${}_0F_1(;m+\frac12;y/4)$, which
+ must therefore be Part~IV's profile ratio \eqref{tec:eq:finiteprofile} at
+ the coordinates $(0,\ldots,0,y)$.  By hand for $m=0$ and $m=1$, Part~IV's
+ kernel quotient \eqref{tec:eq:Km} gives $\cosh\sqrt y$ and
+ $\sinh\sqrt y/\sqrt y$, which are ${}_0F_1(;\frac12;y/4)$ and
+ ${}_0F_1(;\frac32;y/4)$.  For $m\to\infty$ with $\tau$ bounded, the limit
+ is $e^\tau$ instead (Section~\ref{gs:sec:onlyone}), with the corrections
+ of Theorem~\ref{gs:thm:hierarchy}.
+\item The table of Section~\ref{gs:sec:twothresholds} is a rounded copy of
+ the shipped \nolinkurl{data/06-growing-shifts-critical_scales.csv}
+ (checked for this merge).
+\end{enumerate}
+
+\subsection{Where the merge had to choose}\label{gs:sec:merge}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \emph{Placement.}  Part~VI is printed after Part~V and before Part~I's
+ appendices, so that no section, equation, theorem, figure or table number
+ of Parts~I--V moves (checked against the \texttt{.aux} file of a build of
+ the committed text).  Its sections continue the numbering
+ (Sections~\ref{gs:sec:intro} to~\ref{gs:app:reproduction}), with the
+ concordance of Section~\ref{gs:sec:reading}.  The manuscript's
+ \verb|\clearpage| before its Appendix~B was dropped.
+\item \emph{Labels.}  Every label of Part~VI carries the prefix
+ \texttt{gs:}; without it two of the manuscript's labels,
+ \texttt{eq:measure} and \texttt{eq:h}, would have collided with Part~I's
+ bare labels.  Labels were added to the manuscript's conclusion, its two
+ appendices, its second figure, four of its subsections and its ten
+ research subsections, and to Part~IV's Section~\ref{gs:x:tecq4} so that it
+ can be cited; no existing label was changed.
+\item \emph{Overlaps with Parts~I--V.}  The manuscript re-derives, without
+ assuming the report correct, the Catalan measure, the one-factor
+ Christoffel identity, the Jacobi hypergeometric representation and Part~I's
+ coefficient formula, which it credits (merge note after
+ \eqref{gs:eq:repository-coeff}).  Printed with a pointer and kept.
+ Everything else has no counterpart in Parts~I--V, all of which keep the
+ multiplier degree and the endpoint multiplicities fixed.  No statement of
+ Parts~I--V was changed.
+\item \emph{Bibliography.}  The manuscript's Krattenthaler and DLMF
+ references are \cite{Krattenthaler2023} and~\cite{DLMF}; its
+ Dette--Studden, Barbour--Hall and M\'eliot--Nikeghbali--Visentin references
+ are added to the common bibliography as \cite{DetteStudden1994},
+ \cite{BarbourHall1984} and~\cite{MeliotNikeghbaliVisentin2022}.  Its two
+ references to the pinned repository report and to its README and
+ ``continuation source notes'' are replaced by Parts~I--IV and the pin
+ recorded in Section~\ref{gs:sec:source}; the two sentences that cited them
+ now read ``(Parts~I and~IV above, and this report's README at the pin)''
+ and ``(Part~I, Theorem~\ref{thm:coeff})''.  The first entry described
+ the pinned article's ``Part~I, explicit coefficients and the
+ fixed-parameter scope of its asymptotics; Part~I's growing-shift agenda;
+ Part~IV's fixed multiplicity limitations''; the second said that those
+ files ``distinguish existing fixed-multiplicity endpoint and nonendpoint
+ work from the growing-shift question''.  Both pointed to
+ \nolinkurl{SOURCES.md}, shipped as
+ \nolinkurl{06-growing-shifts-SOURCES.md}.
+\item \emph{File names and figures.}  Merge notes in
+ Sections~\ref{gs:sec:checks} and~\ref{gs:app:reproduction} give the shipped
+ names beside the delivered ones.  The manuscript's reproduction commands
+ are printed as delivered but must not be run in place here: the program's
+ default output directory is the report's shared \nolinkurl{data/}, the
+ figure script imports the program by its delivered name, and the delivered
+ Makefile acts on Part~I's verifier and on this report's
+ \nolinkurl{article.tex}; a recipe on a scratch copy follows them.  The two
+ figures are the regenerated ones (Section~\ref{gs:sec:source}), included
+ from \nolinkurl{figures/}; the \texttt{graphicx} package was added to the
+ preamble for them.
+\item \emph{Front matter.}  The manuscript's title page, abstract, scope
+ line and contents are replaced by Section~\ref{gs:sec:source}, which prints
+ the abstract, the scope line and the status.
+\item \emph{Notation and macros.}  The manuscript's symbols are kept, with
+ the scoping convention and Table~\ref{gs:tab:notation} of
+ Section~\ref{gs:sec:notation}.  Its \verb|\R| ($\mathcal R$) is typed
+ \verb|\Rgs| and its \verb|\E| ($\mathbb E$) \verb|\Egs|; both print as in
+ the manuscript.  Its \verb|\dd| is \verb|\,\mathrm d|, the report's is
+ \verb|\mathrm d|, so every \verb|\dd| of Part~VI is printed \verb|\,\dd|,
+ with the manuscript's spacing.  Its macros \verb|\PP|, \verb|\Pois|,
+ \verb|\Var|, \verb|\TV|, \verb|\MP|, \verb|\Law| and \verb|\calF| were
+ added to the preamble with the manuscript's definitions; its \verb|\RR| and
+ \verb|\CC| are the report's, with the same definitions; its unused
+ \verb|\NN| (the report's \verb|\NN| is $\NN$), \verb|\supp|, \verb|\Cat|
+ and \verb|\onehalf| were dropped.  No mathematical text of the manuscript
+ was changed.
+\end{enumerate}
+
+\section{The repository question and the contribution}
+\label{gs:sec:context}
+
+The relevant ProveIt project is \emph{Shifted Catalan Hankel Polynomials},
+inside the Catalan-and-ballot Hankel-determinant reports. Its Part I gives
+an exact coefficient formula and sharp recurrences for
+$x^m(a+bx)$, but explicitly restricts its asymptotic estimates to fixed
+$m,a,b$. Its research agenda asks for joint limits with growing $m$.
+The later endpoint-confluence part fixes its endpoint multiplicities and
+explicitly does not make its constants uniform in them
+(Parts~I and~IV above, and this report's README at the pin). The snapshot
+inspected here is
+\begin{center}\small\ttfamily
+1085b506d65e207a05b7e9c861bb1fe88432fe38.
+\end{center}
+The combined source manuscript has blob
+\texttt{b23831b8f20efab08342b11bb4939809d0a8047e}.
+
+We address the following precise version of the growing-shift question:
+\begin{quote}
+How does $D_N^{(m)}(a,1)/D_N^{(m)}(0,1)$ behave when $N,m\to\infty$
+with no restriction on their ratio, and how far can its simplest
+exponential approximation be trusted?
+\end{quote}
+The determinant also defines a natural probability distribution by
+normalizing its nonnegative coefficients at $a>0$. We ask the corresponding
+question for that distribution, rather than assuming that accuracy of the
+normalizing constant and accuracy of the probability law have the same
+threshold.
+
+The answer is organized by an exact parameter $\beta$, not by $N$ alone.
+The three most visible scales are
+\begin{equation}\label{gs:eq:three-scales}
+ \beta^{-1/2},\qquad \beta^{-2/3},\qquad \beta^{-1}.
+\end{equation}
+The first is a relative-error threshold for the determinant. The second is
+a \emph{mean-displacement threshold} for comparison with the nominal law
+$\Pois(\tau)$; a Poisson law with the corrected mean remains accurate much
+longer. The third is a genuinely nonlinear regime for the logarithm of the
+determinant. Between the first and third lies a full hierarchy of exponents
+$(r-1)/r$.
+
+\subsection{What is classical and what is being added}\label{gs:sec:classical}
+
+The Christoffel determinant reduction is classical; a modern detailed
+account is Krattenthaler \cite{Krattenthaler2023}. Jacobi hypergeometric formulas
+are recorded in DLMF \cite{DLMF}. Large-parameter zero asymptotics for Jacobi
+polynomials already have an extensive literature; Dette--Studden
+\cite{DetteStudden1994} is particularly relevant to regimes in which parameters
+outgrow the degree. Bernoulli sums and higher-order Poisson corrections
+belong to the established Chen--Stein and mod-Poisson frameworks
+\cite{BarbourHall1984,MeliotNikeghbaliVisentin2022}. None of these broad mechanisms is claimed as new.
+
+The addition relative to the inspected reports is the following integrated
+calculation: the exact normalization and concentration index; a uniform
+inverse-zero bound; the explicit size-biased Catalan law in every relative
+growth regime; the associated all-orders critical hierarchy; the distinct
+sharp determinant and nominal-Poisson thresholds; and an algebraic resummation
+with a proportional-growth prefactor. Equivalent formulations may exist in
+the orthogonal-polynomial literature. The bounded literature check conducted
+for this article does not settle first-discovery priority.
+
+\section{Normalization and a map of the main results}
+\label{gs:sec:normalization}
+
+Let
+\begin{equation}
+ C_k=\frac{1}{k+1}\binom{2k}{k},\qquad
+ H_N^{(m)}=\det(C_{i+j+m})_{0\le i,j<N},
+\end{equation}
+and
+\begin{equation}
+ D_N^{(m)}(a,b)=\det(aC_{i+j+m}+bC_{i+j+m+1})_{0\le i,j<N}.
+\end{equation}
+Throughout the article, $N\ge1$ and $m\ge0$ are integers. Set
+\begin{equation}\label{gs:eq:params}
+ v=m+\frac12,\qquad B=N+m+1,\qquad
+ c=\frac{v}{NB},\qquad \mu=\frac{NB}{4v}=\frac1{4c},
+\end{equation}
+and define
+\begin{equation}\label{gs:eq:Rdef}
+ \Rgs_{N,m}(\tau)=\frac{D_N^{(m)}(\tau/\mu,1)}{H_N^{(m+1)}}.
+\end{equation}
+Thus the original perturbation is $a=\tau/\mu$, not $a=\tau$.
+The concentration and shape parameters are
+\begin{equation}\label{gs:eq:beta-theta}
+ \boxed{\quad
+ \beta=\frac{1+c(v+3/2)}{v+1},\qquad
+ \theta_{N,m}=\frac{1}{(v+1)\beta}.
+ \quad}
+\end{equation}
+In particular, $0<\theta_{N,m}<1$.
+
+\begin{theorem}[Main asymptotic picture]\label{gs:thm:overview}
+Suppose $N,m\to\infty$. Then $\beta\to0$ and the following hold.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=8mm]
+\item For $\tau\ge0$,
+$\Rgs(\tau)/e^\tau\to1$ if and only if $\beta\tau^2\to0$.
+If $\tau\sqrt\beta\to s\in[0,\infty)$, then
+$\Rgs(\tau)e^{-\tau}\to e^{-s^2/2}$.
+If $\tau\sqrt\beta\to\infty$, this ratio tends to zero.
+\item Define $K_\tau$ by
+$\PP(K_\tau=k)=[z^k]\Rgs(z)\,\tau^k/\Rgs(\tau)$.
+If $\beta\tau\to0$ and $\beta\tau^{3/2}\to\sigma\in[0,\infty]$, then
+\begin{equation}\label{gs:eq:TV-main}
+ \TV\bigl(\Law(K_\tau),\Pois(\tau)\bigr)
+ \longrightarrow 2\Phi(\sigma/2)-1,
+\end{equation}
+with the right side interpreted as $1$ at $\sigma=\infty$.
+\item If $\theta_{N,m}\to\theta\in[0,1]$, then, for every $t\ge0$,
+\begin{equation}\label{gs:eq:free-overview}
+ \beta\log\Rgs(t/\beta)\longrightarrow\calF_\theta(t).
+\end{equation}
+The convergence is uniform on compact real $t$-intervals. The derivative
+$L_\theta=\calF'_\theta$ is the positive solution of
+\begin{equation}\label{gs:eq:algebraic-overview}
+ \theta tL_\theta(t)^2+L_\theta(t)
+       =\frac1{1+(1-\theta)t},\qquad \calF_\theta(0)=0.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+The proof is distributed across Sections~\ref{gs:sec:weights}--\ref{gs:sec:poisson}.
+The more informative result is the inverse-zero law in
+Theorem~\ref{gs:thm:spectral}, which also yields every intermediate critical
+scale in Theorem~\ref{gs:thm:hierarchy}.
+
+\section{An exact Jacobi reduction, with normalization checked}
+\label{gs:sec:jacobi}
+
+The Catalan numbers are the moments of
+\begin{equation}\label{gs:eq:measure}
+ \,\dd\omega(x)=\frac1{2\pi}\sqrt{\frac{4-x}{x}}\,
+             \mathbf1_{(0,4)}(x)\,\dd x.
+\end{equation}
+Indeed, $x=4u$ reduces the $k$th moment to a beta integral and gives
+$4^k\Gamma(k+1/2)/(\sqrt\pi\Gamma(k+2))=C_k$.
+Consequently, the Hankel matrix for $H_N^{(m)}$ is the Gram matrix of
+$1,x,\ldots,x^{N-1}$ for $x^m\,\dd\omega(x)$. It is positive definite.
+
+Let $p_N^{(m)}$ be the monic degree-$N$ orthogonal polynomial for this
+positive measure. The one-factor Christoffel identity gives
+\begin{equation}\label{gs:eq:christoffel}
+ D_N^{(m)}(a,1)=(-1)^N H_N^{(m)}p_N^{(m)}(-a).
+\end{equation}
+For completeness, form the usual moment determinant with first $N$ rows
+$(C_{i+j+m})_{j=0}^N$ and last row $(1,y,\ldots,y^N)$. Dividing by
+$H_N^{(m)}$ gives a monic polynomial orthogonal to degrees below $N$.
+Equivalently, integrating $\prod_{j=1}^N(y-x_j)$ against the squared
+Vandermonde Gram integral gives that same polynomial. Substituting $y=-a$
+proves \eqref{gs:eq:christoffel}, including its sign. This is the standard
+identity, rederived only to fix conventions \cite{Krattenthaler2023}.
+
+Under $y=1-x/2$, the weight is proportional to
+$(1-y)^{m-1/2}(1+y)^{1/2}$ on $(-1,1)$. Thus the quotient of endpoint
+values is a Jacobi quotient. The finite hypergeometric representation
+\cite[18.5.7]{DLMF} yields
+\begin{equation}\label{gs:eq:hypergeom}
+ \frac{D_N^{(m)}(a,1)}{H_N^{(m+1)}}
+ ={}_2F_1\!\left(\begin{matrix}-N,B\\v\end{matrix};-a/4\right).
+\end{equation}
+All normalizing factors cancel because the quotient equals one at $a=0$.
+
+\begin{proposition}[Exact normalized coefficients]\label{gs:prop:coefficients}
+One has
+\begin{equation}\label{gs:eq:coefficients}
+ \Rgs(\tau)=\sum_{k=0}^N A_{N,m}(k)\frac{\tau^k}{k!},\qquad
+ A_{N,m}(k)=\prod_{j=0}^{k-1}
+       \frac{(1-j/N)(1+j/B)}{1+j/v}.
+\end{equation}
+Every $A(k)$ is positive for $0\le k\le N$, and $A(0)=A(1)=1$.
+Moreover $A(k)\le1$.
+\end{proposition}
+\begin{proof}
+Expand \eqref{gs:eq:hypergeom} and use $a=4c\tau$. For $0\le j<N$,
+\[
+ (1-j/N)(1+j/B)
+ =1-j(1/N-1/B)-j^2/(NB)\le1,
+\]
+where $B>N$. The denominator is at least one.
+\end{proof}
+
+The unnormalized coefficient formula is therefore
+\begin{equation}\label{gs:eq:repository-coeff}
+ D_N^{(m)}(a,1)=H_N^{(m+1)}
+ \sum_{k=0}^N\binom Nk\frac{(B)_k}{4^k(v)_k}a^k.
+\end{equation}
+This is the repository's existing coefficient theorem, not a new
+coefficient formula (Part~I, Theorem~\ref{thm:coeff}). It is useful here
+because it is exact for every $N,m$ and remains meaningful when fixed-$m$
+asymptotics do not.
+
+\noindent[Merge note: \eqref{gs:eq:repository-coeff} is Part~I's
+\eqref{eq:coeff} at $b=1$, since $B=N+m+1$ and $v=m+\frac12$; the
+normalization \eqref{gs:eq:Rdef} divides by Part~I's $c_{N,m,0}=H_N^{(m+1)}$.
+The measure $\omega$ of \eqref{gs:eq:measure} is Part~I's $\mu_0$
+\eqref{eq:measure}, and $x^m\,\dd\omega(x)=\dd\mu_m(x)$; the monic polynomial
+$p_N^{(m)}$ is Part~I's \eqref{eq:Jacobi}, whose value at $x=-a$ gives
+\eqref{gs:eq:hypergeom}; and \eqref{gs:eq:christoffel} is the one-factor
+Christoffel identity for $\mu_m$, of which Part~I's
+Lemma~\ref{lem:Christoffel} (for $\mu_0$ and several factors) and its
+successors in Parts~II, IV and~V are relatives.  The manuscript re-derives
+all three without assuming Part~I.]
+
+\begin{corollary}[An exact invisibility criterion]\label{gs:cor:invisibility}
+For every $N,m$ and $\tau\ge0$,
+\begin{equation}\label{gs:eq:invisible}
+ 1+\tau\le\Rgs(\tau)\le e^\tau.
+\end{equation}
+Along any parameter sequence with $a\ge0$,
+\begin{equation}
+ \frac{D_N^{(m)}(a,1)}{H_N^{(m+1)}}\longrightarrow1
+ \quad\Longleftrightarrow\quad
+ \frac{aN(N+m+1)}{4(m+1/2)}\longrightarrow0.
+\end{equation}
+No condition that $m$ be fixed or tend to infinity is needed.
+\end{corollary}
+\begin{proof}
+Use the constant and linear coefficients for the lower bound and
+$A(k)\le1$ for the upper bound. Apply the squeeze theorem in one direction
+and $\Rgs\ge1+\tau$ in the other.
+\end{proof}
+
+\section{Inverse-zero weights and the exact concentration index}
+\label{gs:sec:weights}
+
+\subsection{Positive weights from orthogonality}
+A monic orthogonal polynomial of degree $N$ for a positive measure on
+$(0,4)$ has $N$ simple zeros in that interval. One elementary proof counts
+its sign changes there. If it had fewer than $N$, multiply it by the
+polynomial whose roots are precisely the sign-changing zeros. The product
+would have constant nonzero sign almost everywhere, contradicting
+orthogonality to that polynomial of degree less than $N$.
+The degree bound then forces every zero to be simple and internal.
+
+Write these zeros as $x_1,\ldots,x_N$, and put
+\begin{equation}\label{gs:eq:weights}
+ w_j=\frac1{\mu x_j}>0,\qquad
+ S_r=\sum_{j=1}^N w_j^r,\qquad W=\max_j w_j.
+\end{equation}
+Equations~\eqref{gs:eq:christoffel} and \eqref{gs:eq:Rdef} imply
+\begin{equation}\label{gs:eq:product}
+ \Rgs(\tau)=\prod_{j=1}^N(1+\tau w_j),\qquad S_1=1.
+\end{equation}
+In particular, $W\le1$. The weights describe a deterministic zero
+configuration; they are not random eigenvalues.
+
+\subsection{Riccati recurrence}
+The hypergeometric differential equation transforms into
+\begin{equation}\label{gs:eq:ODE}
+ \tau(1+c\tau)\Rgs''+
+ [v+(v+3/2)c\tau]\Rgs'-v\Rgs=0.
+\end{equation}
+Set $L=\Rgs'/\Rgs$. Near the origin,
+\begin{equation}\label{gs:eq:logderivative}
+ L(\tau)=\sum_{k\ge0}(-1)^kS_{k+1}\tau^k.
+\end{equation}
+Substitution in \eqref{gs:eq:ODE} gives the following identity.
+
+\begin{proposition}[All inverse-zero moments]\label{gs:prop:moment-recurrence}
+For every $k\ge1$,
+\begin{align}\label{gs:eq:moment-recurrence}
+ (v+k)S_{k+1}
+ &=\sum_{i=1}^kS_iS_{k+1-i}
+   +c(k+v+1/2)S_k
+   -c\sum_{i=1}^{k-1}S_iS_{k-i},
+ &S_1&=1.
+\end{align}
+In particular,
+\begin{equation}\label{gs:eq:S2S3}
+ S_2=\beta,\qquad
+ S_3=\frac{2\beta+c(v+5/2)\beta-c}{v+2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The coefficient of $\tau^k$ in
+$\tau(1+c\tau)(L'+L^2)+[v+(v+3/2)c\tau]L-v$
+is zero. Multiply that coefficient by $(-1)^{k-1}$ and collect the
+$S_{k+1}$ terms. The derivative contributions combine to $v+k$;
+the coefficient multiplying $cS_k$ is $k-1+v+3/2$.
+This gives \eqref{gs:eq:moment-recurrence}. The cases $k=1,2$ give
+\eqref{gs:eq:S2S3}.
+\end{proof}
+
+This recurrence is rational and requires no zero computation. Computing
+$S_1,\ldots,S_r$ costs $O(r^2)$ rational arithmetic operations; this is
+an arithmetic-operation count, not a bit-complexity claim.
+
+\begin{lemma}[When the concentration index vanishes]\label{gs:lem:beta-small}
+One has
+\begin{equation}\label{gs:eq:beta-bounds}
+ \max\left\{\frac1N,\frac1{v+1}\right\}
+ \le\beta\le\frac1{v+1}+\frac4{3N}.
+\end{equation}
+Consequently, $\beta\to0$ if and only if $N\to\infty$ and $m\to\infty$.
+If both tend to infinity, then
+\begin{equation}\label{gs:eq:beta-asymp}
+ \beta\sim\frac1N+\frac1{m+1/2}-\frac1{N+m+1}.
+\end{equation}
+If $m/N\to\rho\in[0,\infty]$, then
+\begin{equation}\label{gs:eq:theta-rho}
+ \theta_{N,m}\longrightarrow
+ \theta(\rho)=\frac{1+\rho}{1+\rho+\rho^2},
+\end{equation}
+with $\theta(0)=1$ and $\theta(\infty)=0$.
+\end{lemma}
+\begin{proof}
+Cauchy--Schwarz and $S_1=1$ give $S_2\ge1/N$. The exact formula for
+$\beta$ gives the other lower bound. Since $c<1/N$ and
+$(v+3/2)/(v+1)\le4/3$ for $v\ge1/2$, the upper bound follows.
+For \eqref{gs:eq:beta-asymp}, put
+$b_*=1/N+1/v-1/B$. Direct algebra gives
+\[
+ \beta=\frac{vb_*+c}{v+1},\qquad
+ b_*-c=\frac1v+\frac1{2NB}.
+\]
+Thus $(b_*-\beta)/b_*\to0$. Finally
+$\theta_{N,m}=[1+v(v+3/2)/(NB)]^{-1}$, which gives the asserted limits.
+\end{proof}
+
+\section{A uniform bound on the largest inverse zero}
+\label{gs:sec:majorant}
+
+Control of $S_2$ alone is not sufficient for the sharp critical limits:
+one weight of order $\sqrt\beta$ could survive on the first critical scale.
+The next theorem excludes that possibility uniformly, even when $m/N$
+has no limit.
+
+\begin{theorem}[Uniform inverse-zero majorant]\label{gs:thm:majorant}
+For every integer $r\ge1$,
+\begin{equation}\label{gs:eq:catalan-majorant}
+ S_r\le C_{r-1}(2\beta)^{r-1}.
+\end{equation}
+Consequently,
+\begin{equation}\label{gs:eq:Wbound}
+ \boxed{\quad W\le\min\{1,8\beta\}.\quad}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Because $c<1/N\le\beta$, $1/(v+k)\le1/(v+1)\le\beta$, and
+\[
+ \frac{c(k+v+1/2)}{v+k}\le2\beta,
+\]
+we may discard the negative last term of
+\eqref{gs:eq:moment-recurrence} and obtain
+\begin{equation}\label{gs:eq:majorant-rec}
+ S_{k+1}\le\beta\sum_{i=1}^kS_iS_{k+1-i}+2\beta S_k.
+\end{equation}
+The bounds for $r=1,2$ follow from $S_1=1$ and $S_2=\beta$.
+Suppose the bounds hold through $r=k$, where $k\ge2$.
+Using the Catalan convolution gives
+\[
+ \sum_{i=1}^kS_iS_{k+1-i}
+ \le(2\beta)^{k-1}\sum_{i=1}^k C_{i-1}C_{k-i}
+ =(2\beta)^{k-1}C_k.
+\]
+Also $C_k\ge2C_{k-1}$ for $k\ge2$. Equation~\eqref{gs:eq:majorant-rec}
+is therefore at most $C_k(2\beta)^k$, completing the induction.
+Finally $W^r\le S_r$ and $C_{r-1}^{1/r}\to4$. Taking $r$th roots
+and passing to the limit proves $W\le8\beta$.
+\end{proof}
+
+The constant eight is a transparent bound, not a claim of optimality.
+The limiting measure below suggests the much more precise edge
+$W/\beta\to1+3\theta$, but weak convergence alone does not exclude
+outliers. We leave that strengthening explicitly open here.
+
+\section{The first critical scale and exact error control}
+\label{gs:sec:gaussian}
+
+\begin{theorem}[Finite-parameter logarithmic bounds]\label{gs:thm:logbounds}
+For every $\tau\ge0$,
+\begin{align}\label{gs:eq:logbounds}
+ \tau-\frac{\beta\tau^2}{2}
+ &\le\log\Rgs(\tau)
+ \le\tau-\frac{\beta\tau^2}{2(1+W\tau)},\\
+ 0\le\log\Rgs(\tau)-\tau+\frac{\beta\tau^2}{2}
+ &\le\frac{S_3\tau^3}{3}
+ \le\frac83\beta^2\tau^3.\label{gs:eq:third-error}
+\end{align}
+For $8\beta|z|<1$, with the logarithm normalized by $\log\Rgs(0)=0$,
+\begin{equation}\label{gs:eq:complex-error}
+ \left|\log\Rgs(z)-z+\frac{\beta z^2}{2}\right|
+ \le\frac{8\beta^2|z|^3}{3(1-8\beta|z|)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $x\ge0$,
+\[
+ \frac{x^2}{2(1+x)}\le x-\log(1+x)\le\frac{x^2}{2},
+\]
+by integrating $u/(1+u)$ from zero to $x$. Also
+$0\le\log(1+x)-x+x^2/2\le x^3/3$.
+Sum these inequalities at $x=\tau w_j$, using $S_2=\beta$ and
+$S_3\le WS_2\le8\beta^2$.
+For complex $z$, expand every $\log(1+zw_j)$ in its convergent Taylor
+series. Since $S_r\le\beta W^{r-2}$ for $r\ge2$, the tail from $r=3$
+is bounded by a geometric series. The disk is zero-free because
+$|z|W<1$.
+\end{proof}
+
+\begin{corollary}[Sharp Gaussian relative correction]\label{gs:cor:gaussian}
+As $N,m\to\infty$,
+\begin{equation}\label{gs:eq:gaussian-limit}
+ e^{-z/\sqrt\beta}\Rgs(z/\sqrt\beta)
+ \longrightarrow e^{-z^2/2}
+\end{equation}
+locally uniformly for $z\in\CC$. On the nonnegative real axis,
+$\Rgs(\tau)/e^\tau\to1$ exactly when $\tau\sqrt\beta\to0$, and it
+tends to zero when $\tau\sqrt\beta\to\infty$.
+\end{corollary}
+\begin{proof}
+For bounded $z$, the right side of \eqref{gs:eq:complex-error} after scaling
+is $O(\sqrt\beta)$, proving \eqref{gs:eq:gaussian-limit}.
+The ratio $e^{-\tau}\Rgs(\tau)$ decreases with $\tau\ge0$, since its
+logarithmic derivative is
+\[
+ -\sum_j\frac{\tau w_j^2}{1+\tau w_j}<0\qquad(\tau>0).
+\]
+The bounded-scale limit and monotonicity show necessity of the
+little-$o$ condition and give the limit zero beyond every fixed critical
+multiple. Sufficiency also follows directly from \eqref{gs:eq:logbounds}.
+\end{proof}
+
+\begin{figure}[tb]
+\centering\includegraphics[width=.91\linewidth]{figures/06-growing-shifts-determinant_crossover.pdf}
+\caption{The first critical scale, with $N=m$. The horizontal variable is
+$s=\tau\sqrt\beta$. The dashed curve is the proved limit, not a fitted curve.
+Finite-size curves are floating-point diagnostics.}
+\label{gs:fig:crossover}
+\end{figure}
+
+\section{A size-biased inverse-zero law}
+\label{gs:sec:spectral}
+
+\begin{definition}
+The normalized inverse-zero measure is
+\begin{equation}\label{gs:eq:nu}
+ \nu_{N,m}=\sum_{j=1}^Nw_j\delta_{w_j/\beta}.
+\end{equation}
+It is a probability measure, because $S_1=1$.
+\end{definition}
+
+The weighting by $w_j$ is essential: this is not the uniform empirical
+measure $N^{-1}\sum\delta_{w_j/\beta}$. Its $(r-1)$st moment is
+$S_r/\beta^{r-1}$, so the exact recurrence directly determines its limit.
+
+Let $Y$ have the Marchenko--Pastur law of parameter one, defined here by
+\begin{equation}\label{gs:eq:MP}
+ \PP(Y\in\,\dd y)=\frac1{2\pi}\sqrt{\frac{4-y}{y}}
+       \mathbf1_{(0,4)}(y)\,\dd y.
+\end{equation}
+This is numerically the Catalan moment measure \eqref{gs:eq:measure}; the
+name only identifies the standard law. Its moments are
+$\Egs Y^j=C_j$ by the same beta-integral computation.
+For $0\le\theta\le1$, put
+\begin{equation}\label{gs:eq:limit-nu}
+ \nu_\theta=\Law(1-\theta+\theta Y).
+\end{equation}
+Thus $\nu_0=\delta_1$, while $\nu_1=\MP$.
+
+\begin{theorem}[The shifted Catalan law]\label{gs:thm:spectral}
+If $N,m\to\infty$ and $\theta_{N,m}\to\theta$, then
+\begin{equation}\label{gs:eq:weak}
+ \nu_{N,m}\Longrightarrow\nu_\theta.
+\end{equation}
+More explicitly, for each fixed integer $r\ge1$,
+\begin{equation}\label{gs:eq:dr}
+ \frac{S_r}{\beta^{r-1}}\longrightarrow d_r(\theta),\qquad
+ d_r(\theta)=\sum_{j=0}^{r-1}\binom{r-1}{j}
+                 C_j\theta^j(1-\theta)^{r-1-j}.
+\end{equation}
+All measures $\nu_{N,m}$ are supported in $[0,8]$.
+\end{theorem}
+\begin{proof}
+Write $D_r=S_r/\beta^{r-1}$. The majorant theorem bounds every fixed
+$D_r$ uniformly. From \eqref{gs:eq:beta-theta},
+\begin{equation}\label{gs:eq:limit-parameters}
+ \frac1{v\beta}\to\theta,\qquad
+ \frac c\beta\to1-\theta.
+\end{equation}
+Indeed the first differs from $\theta_{N,m}$ by a factor $(v+1)/v$,
+and the second differs from $1-\theta_{N,m}$ by a factor
+$(v+1)/(v+3/2)$. Divide \eqref{gs:eq:moment-recurrence} by
+$(v+k)\beta^k$. Induction on $k$ yields limits satisfying, with
+$\gamma=1-\theta$,
+\begin{equation}\label{gs:eq:limit-recurrence}
+ d_{k+1}=\theta\sum_{i=1}^kd_i d_{k+1-i}
+       +\gamma d_k
+       -\theta\gamma\sum_{i=1}^{k-1}d_i d_{k-i},\qquad d_1=1.
+\end{equation}
+This induction works unchanged at $\theta=0$ and $\theta=1$.
+
+Let $M(z)=\sum_{k\ge1}d_kz^{k-1}$. Multiplication of
+\eqref{gs:eq:limit-recurrence} by $z^k$ and summation gives
+\begin{equation}\label{gs:eq:Mquadratic}
+ M(z)=\frac1{1-\gamma z}+\theta zM(z)^2.
+\end{equation}
+If $C(z)=\sum C_jz^j$ is the Catalan generating function, the unique
+formal solution with constant term one is
+\begin{equation}\label{gs:eq:Msolution}
+ M(z)=\frac1{1-\gamma z}
+          C\!\left(\frac{\theta z}{1-\gamma z}\right).
+\end{equation}
+Expanding the denominator gives exactly \eqref{gs:eq:dr}; equivalently,
+these are the moments of $\gamma+\theta Y$.
+Finally $W/\beta\le8$ makes the measures uniformly compactly supported.
+Polynomials approximate continuous functions on $[0,8]$, so convergence
+of all moments implies the asserted weak convergence.
+\end{proof}
+
+The first coefficients, displayed without a change of normalization, are
+\begin{align}\label{gs:eq:first-dr}
+ d_1&=1,&d_2&=1,&d_3&=1+\theta^2,\\
+ d_4&=1+3\theta^2+\theta^3,&
+ d_5&=1+6\theta^2+4\theta^3+3\theta^4.\nonumber
+\end{align}
+This identifies the same quadratic index as universal at second order,
+while the aspect ratio first becomes visible in the cubic correction.
+
+\begin{remark}[What weak convergence does not say]
+For $\theta>0$, the support of $\nu_\theta$ is
+$[1-\theta,1+3\theta]$. The theorem gives convergence of weighted mass
+and of fixed moments. It does not prove convergence of the largest atom's
+location, a rate uniform in $r$, or an asymptotic for an individual Jacobi
+zero. Those are stronger statements.
+\end{remark}
+
+\section{An all-orders hierarchy of critical scales}
+\label{gs:sec:hierarchy}
+
+The product representation makes the relation with asymptotic series
+especially transparent:
+\begin{equation}\label{gs:eq:logseries}
+ \log\Rgs(z)=\sum_{r\ge1}\frac{(-1)^{r+1}}r S_rz^r,
+ \qquad |z|<1/W.
+\end{equation}
+The coefficient $S_r$ is of order $\beta^{r-1}$ for fixed $r$.
+Consequently, its first order-one contribution occurs at
+$z\asymp\beta^{-(r-1)/r}$.
+
+\begin{theorem}[Every fixed correction level]\label{gs:thm:hierarchy}
+Assume the hypotheses of Theorem~\ref{gs:thm:spectral}. Fix an integer $q\ge2$
+and put $z_\beta=u\beta^{-(q-1)/q}$. Then
+\begin{equation}\label{gs:eq:hierarchy}
+ \Rgs(z_\beta)
+ \exp\!\left\{-\sum_{r=1}^{q-1}
+       \frac{(-1)^{r+1}}rS_rz_\beta^r\right\}
+ \longrightarrow
+ \exp\!\left\{\frac{(-1)^{q+1}}q d_q(\theta)u^q\right\}
+\end{equation}
+locally uniformly for $u\in\CC$.
+\end{theorem}
+\begin{proof}
+For $W|z|<1$, the tail beyond degree $q$ satisfies
+\begin{equation}\label{gs:eq:q-tail}
+ \left|\log\Rgs(z)-\sum_{r=1}^q
+        \frac{(-1)^{r+1}}rS_rz^r\right|
+ \le\frac{\beta W^{q-1}|z|^{q+1}}
+           {(q+1)(1-W|z|)}.
+\end{equation}
+Use $S_r\le\beta W^{r-2}$ and sum the geometric majorant.
+At $z=z_\beta$, $W|z|=O(\beta^{1/q})$ and the bound is
+$O(\beta^{1/q})$ on compact $u$-sets. The remaining degree-$q$ term
+converges by \eqref{gs:eq:dr}. Exponentiation proves the statement.
+\end{proof}
+
+For $q=2$ this is the Gaussian correction. For $q=3$,
+\begin{equation}\label{gs:eq:cubic-limit}
+ \Rgs(u\beta^{-2/3})
+ \exp\{-u\beta^{-2/3}+u^2\beta^{-1/3}/2\}
+ \longrightarrow \exp\{(1+\theta^2)u^3/3\}.
+\end{equation}
+For $q=4$, the limiting fourth term is
+$\exp\{-(1+3\theta^2+\theta^3)u^4/4\}$ after subtracting the first
+three \emph{exact} terms.
+
+\begin{remark}[A necessary precision rule]
+The lower-order $S_r$ in \eqref{gs:eq:hierarchy} cannot in general be replaced
+by $\beta^{r-1}d_r(\theta)$ without an additional rate hypothesis.
+Those lower-order contributions diverge on the $q$th scale. An $o(1)$
+relative error in a coefficient can then become an order-one or unbounded
+error in the exponent. The theorem deliberately keeps the finite-parameter
+moments exact. It asserts fixed-$q$ limits, not a result with $q\to\infty$.
+\end{remark}
+
+\section{Resumming the hierarchy: the full nonlinear scale}
+\label{gs:sec:freeenergy}
+
+Define for $t\ge0$
+\begin{equation}\label{gs:eq:F-integral}
+ \calF_\theta(t)=\int\frac{\log(1+tx)}x\,\dd\nu_\theta(x),
+\end{equation}
+where the integrand at $x=0$ is defined as $t$.
+
+\begin{theorem}[Uniform nonlinear logarithmic limit]\label{gs:thm:freeenergy}
+Under the hypotheses of Theorem~\ref{gs:thm:spectral},
+\begin{equation}\label{gs:eq:F-limit}
+ \beta\log\Rgs(t/\beta)\longrightarrow\calF_\theta(t)
+\end{equation}
+uniformly on compact subsets of $[0,\infty)$, together with every fixed
+number of derivatives in $t$. Its derivative is
+\begin{equation}\label{gs:eq:Fprime}
+ L_\theta(t)=
+ \frac{2}{\bigl(1+(1-\theta)t\bigr)
+ \left(1+\sqrt{1+\dfrac{4\theta t}{1+(1-\theta)t}}\right)}.
+\end{equation}
+The formula includes $t=0$ and $\theta=0$ without singularities.
+\end{theorem}
+\begin{proof}
+The exact finite-parameter identity is
+\begin{equation}\label{gs:eq:F-exact}
+ \beta\log\Rgs(t/\beta)
+ =\int\frac{\log(1+tx)}x\,\dd\nu_{N,m}(x).
+\end{equation}
+On $[0,8]$ the integrand, continued at $x=0$, and all its $t$-derivatives
+are continuous and uniformly bounded for $t$ in a fixed nonnegative
+compact interval. Weak convergence and compactness give the claimed
+uniform limits, including derivatives.
+
+Differentiating \eqref{gs:eq:F-integral} gives
+$L_\theta(t)=\int(1+tx)^{-1}\,\dd\nu_\theta(x)=M(-t)$ near zero.
+Equation~\eqref{gs:eq:Mquadratic} therefore becomes
+\eqref{gs:eq:algebraic-overview}. Its positive solution is
+\eqref{gs:eq:Fprime}; the identity extends to all $t\ge0$, either by the
+integral representation or by analytic continuation along that ray.
+\end{proof}
+
+At the two extreme aspect ratios the integral is elementary:
+\begin{align}\label{gs:eq:extreme-F}
+ \calF_0(t)&=\log(1+t),\\
+ \calF_1(t)&=\sqrt{1+4t}-1-
+       \log\!\left(\frac{1+\sqrt{1+4t}}2\right).
+\end{align}
+The Taylor series begins
+\begin{equation}\label{gs:eq:Fseries}
+ \calF_\theta(t)=t-\frac{t^2}{2}
+       +\frac{1+\theta^2}{3}t^3
+       -\frac{1+3\theta^2+\theta^3}{4}t^4+\cdots.
+\end{equation}
+It is convergent at least for $|t|<(1+3\theta)^{-1}$, with the convention
+that the radius at $\theta=0$ is one. Thus the hierarchy is not merely a
+list of unrelated corrections: its limiting coefficients belong to one
+analytic function.
+
+\begin{figure}[tb]
+\centering\includegraphics[width=.91\linewidth]{figures/06-growing-shifts-free_energy.pdf}
+\caption{The limiting logarithm at the full scale. The middle curve has
+$m/N\to1$, hence $\theta=2/3$. The endpoints correspond to $m/N\to\infty$
+and $m/N\to0$, always with both $m,N\to\infty$. This is a smooth crossover,
+not a claim of a singular phase transition at finite positive $t$.}
+\label{gs:fig:freeenergy}
+\end{figure}
+
+\subsection{Mean and variance on the nonlinear scale}
+Let $K_\tau$ be the coefficient distribution from
+Theorem~\ref{gs:thm:overview}. Its probability generating function is
+\begin{equation}\label{gs:eq:pgf}
+ \Egs z^{K_\tau}=\frac{\Rgs(\tau z)}{\Rgs(\tau)}
+ =\prod_{j=1}^N\left(1-p_j+p_jz\right),\qquad
+ p_j=\frac{\tau w_j}{1+\tau w_j}.
+\end{equation}
+Hence $K_\tau$ is a sum of independent Bernoulli variables with these
+parameters. In particular,
+\begin{equation}\label{gs:eq:mean-var-exact}
+ \Egs K_\tau=\tau\frac{\Rgs'(\tau)}{\Rgs(\tau)},\qquad
+ \Var K_\tau=\tau\frac{\,\dd}{\,\dd\tau}\Egs K_\tau.
+\end{equation}
+
+\begin{corollary}[Nonlinear coefficient fluctuations]\label{gs:cor:nonlinear-CLT}
+For fixed $t>0$, under the hypotheses of Theorem~\ref{gs:thm:freeenergy},
+\begin{align}
+ \beta\Egs K_{t/\beta}&\longrightarrow Q_\theta(t):=tL_\theta(t),\\
+ \beta\Var K_{t/\beta}&\longrightarrow
+ V_\theta(t):=t\int\frac1{(1+tx)^2}\,\dd\nu_\theta(x)>0.
+\end{align}
+Moreover
+\begin{equation}
+ \frac{K_{t/\beta}-\Egs K_{t/\beta}}
+      {\sqrt{\Var K_{t/\beta}}}\Longrightarrow N(0,1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The limits follow from \eqref{gs:eq:F-exact} by differentiation or directly
+from the Bernoulli sums. The limiting variance is positive; thus the
+unscaled variance diverges. For independent centered Bernoulli summands,
+the sum of third absolute moments is at most their total variance.
+After division by the variance to the power $3/2$, this tends to zero.
+The usual characteristic-function proof of the Lyapunov central limit
+theorem applies: the quadratic term tends to $-u^2/2$ and the total
+third-order remainder tends to zero.
+\end{proof}
+
+Only exact centering is used here. Replacing the mean by
+$Q_\theta(t)/\beta$ requires an error estimate stronger than the weak
+convergence in Theorem~\ref{gs:thm:spectral}.
+
+\section{The second critical scale: displacement of the nominal Poisson law}
+\label{gs:sec:poisson}
+
+Write $\lambda=\Egs K_\tau$. From \eqref{gs:eq:pgf},
+\begin{equation}\label{gs:eq:lambda-delta}
+ \lambda=\tau\sum_j\frac{w_j}{1+\tau w_j},\qquad
+ \delta:=\tau-\lambda
+ =\tau^2\sum_j\frac{w_j^2}{1+\tau w_j}.
+\end{equation}
+Thus
+\begin{equation}\label{gs:eq:delta-bounds}
+ \frac{\beta\tau^2}{1+W\tau}\le\delta\le\beta\tau^2,
+ \qquad \lambda\ge\frac{\tau}{1+W\tau}.
+\end{equation}
+The shift $\delta$ becomes visible against a Poisson standard deviation
+$\sqrt\tau$ when $\beta\tau^{3/2}$ becomes order one.
+
+We use the standard Bernoulli-sum Poisson bound
+\cite{BarbourHall1984}:
+\begin{equation}\label{gs:eq:BH}
+ \TV\left(\Law\!\left(\sum_j\mathrm{Bern}(p_j)\right),\Pois(\lambda)\right)
+ \le\frac{1-e^{-\lambda}}{\lambda}\sum_jp_j^2,
+ \qquad\lambda=\sum_jp_j.
+\end{equation}
+The convention for $\TV$ is one half the $\ell^1$ distance.
+This external classical inequality is the only Poisson approximation
+estimate used below; its provenance is not absorbed into the new claims.
+
+\begin{theorem}[Quantitative corrected-mean approximation]\label{gs:thm:corrected-Pois}
+For $\tau>0$,
+\begin{equation}\label{gs:eq:corrected-bound}
+ \TV(\Law(K_\tau),\Pois(\lambda))
+ \le\beta\tau(1+8\beta\tau).
+\end{equation}
+Also
+\begin{equation}\label{gs:eq:nominal-bound}
+ \TV(\Law(K_\tau),\Pois(\tau))
+ \le\beta\tau(1+8\beta\tau)+\beta\tau^{3/2}.
+\end{equation}
+Bounds exceeding one may of course be replaced by one.
+\end{theorem}
+\begin{proof}
+One has $\sum p_j^2\le\tau^2\beta$. Apply \eqref{gs:eq:BH}, then
+$\lambda\ge\tau/(1+W\tau)$ and $W\le8\beta$.
+For two Poisson laws, their Hellinger affinity equals
+$\exp[-(\sqrt\lambda-\sqrt\tau)^2/2]$. Cauchy--Schwarz gives
+\[
+ \TV(\Pois(\lambda),\Pois(\tau))
+ \le\sqrt{1-e^{-(\sqrt\lambda-\sqrt\tau)^2}}
+ \le|\sqrt\lambda-\sqrt\tau|
+ \le\frac\delta{\sqrt\tau}.
+\]
+Use $\delta\le\beta\tau^2$ and the triangle inequality.
+\end{proof}
+
+\begin{theorem}[Exact transition profile]\label{gs:thm:TV-transition}
+Let $N,m\to\infty$, $\tau\ge0$, and $\beta\tau\to0$.
+If $\beta\tau^{3/2}\to\sigma\in[0,\infty]$, then
+\eqref{gs:eq:TV-main} holds. If additionally $\tau\to\infty$ and
+$\sigma<\infty$, then
+\begin{equation}\label{gs:eq:shifted-normal}
+ \frac{K_\tau-\tau}{\sqrt\tau}\Longrightarrow N(-\sigma,1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \eqref{gs:eq:corrected-bound}, $K_\tau$ is asymptotically indistinguishable
+in total variation from $\Pois(\lambda)$. Equations~\eqref{gs:eq:delta-bounds}
+give $\lambda/\tau\to1$ and
+$\delta/\sqrt\tau\sim\beta\tau^{3/2}$ whenever the latter is nonzero.
+If $\sigma=0$, \eqref{gs:eq:nominal-bound} already proves the result.
+
+For $0<\sigma<\infty$, necessarily $\tau\to\infty$.
+The likelihood ratio of $\Pois(\lambda)$ to $\Pois(\tau)$ is
+$e^\delta(\lambda/\tau)^k$, decreasing in $k$. Its crossing point is
+\[
+ k_*=\frac{\delta}{\log(\tau/\lambda)}
+     =\tau-\frac\delta2+O(\delta^2/\tau).
+\]
+The total variation distance is the difference of the two probabilities
+of $k\le\lfloor k_*\rfloor$. The Poisson central limit theorem gives
+limits $\Phi(\sigma/2)$ and $\Phi(-\sigma/2)$, respectively, proving
+\eqref{gs:eq:TV-main}. The same theorem, $\lambda/\tau\to1$, and
+$\delta/\sqrt\tau\to\sigma$ give \eqref{gs:eq:shifted-normal}.
+
+If $\sigma=\infty$, the two means are separated by much more than
+$\sqrt\tau$. At the midpoint of the two means, Chebyshev's inequality
+shows that the corresponding Poisson probabilities tend to one and zero.
+Their total variation distance tends to one; the corrected-mean error
+still tends to zero. This completes every case.
+\end{proof}
+
+\begin{remark}[Do not conflate the two thresholds]
+At $\tau=s\beta^{-1/2}$ the determinant has a nontrivial factor
+$e^{-s^2/2}$, yet the nominal Poisson error tends to zero.
+At $\tau=u\beta^{-2/3}$, that nominal error tends to
+$2\Phi(u^{3/2}/2)-1$, but the corrected law $\Pois(\lambda)$ is still
+accurate. The second threshold is not a failure of all Poisson
+approximation. Higher-order Bernoulli corrections are part of the broader
+mod-Poisson literature \cite{MeliotNikeghbaliVisentin2022}; the point here is their exact scale
+and constants for this determinant family.
+\end{remark}
+
+\section{A sharp prefactor in proportional growth}
+\label{gs:sec:saddle}
+
+The inverse-zero method controls the scaled logarithm for every aspect
+ratio. When $m/N$ stays bounded away from zero and infinity, the exact
+coefficient formula yields a stronger multiplicative asymptotic.
+This section gives a second route to the nonlinear regime.
+
+Set
+\begin{equation}\label{gs:eq:saddle-params}
+ r=\frac{m+1/2}{N},\qquad b=\frac{N+m+1}{N},\qquad \tau=Nt.
+\end{equation}
+Here $b=1+r+1/(2N)$; retaining this finite-$N$ difference matters for the
+prefactor. For $0<x<1$, define
+\begin{align}\label{gs:eq:f}
+ f(x;r,b,t)
+ &=x\log(t/x)-(1-x)\log(1-x)\nonumber\\
+ &\quad +(b+x)\log(1+x/b)-(r+x)\log(1+x/r),
+\end{align}
+continued continuously at the endpoints. Its second derivative is
+\begin{equation}\label{gs:eq:h}
+ -f''(x)=h(x):=\frac1x+\frac1{1-x}
+                    +\frac1{r+x}-\frac1{b+x}>0.
+\end{equation}
+The derivative tends to $+\infty$ at zero and $-\infty$ at one.
+There is therefore a unique maximum $q\in(0,1)$, characterized by
+\begin{equation}\label{gs:eq:q}
+ tr(1-q)(b+q)=qb(r+q).
+\end{equation}
+It is the positive root of a quadratic. A cancellation-resistant formula is
+\begin{equation}\label{gs:eq:q-stable}
+ q=\frac{2rtb}{\ell+\sqrt{\ell^2+4(rt+b)rtb}},\qquad
+ \ell=br-rt(1-b).
+\end{equation}
+Finally define
+\begin{equation}\label{gs:eq:prefactor}
+ \mathcal A(r,b,t)=
+ \sqrt{\frac{b(r+q)}{q(1-q)r(b+q)h(q)}}.
+\end{equation}
+
+\begin{theorem}[Uniform leading prefactor]\label{gs:thm:prefactor}
+Let $m/N$ and $t$ range over fixed compact subsets of $(0,\infty)$.
+Then, uniformly over these parameters,
+\begin{equation}\label{gs:eq:prefactor-thm}
+ \Rgs_{N,m}(Nt)=\mathcal A(r,b,t)
+       \exp\{Nf(q;r,b,t)\}\bigl(1+O(N^{-1})\bigr).
+\end{equation}
+For the coefficient distribution at $\tau=Nt$,
+\begin{equation}\label{gs:eq:saddleCLT}
+ \frac{K_{Nt}-Nq}{\sqrt{N/h(q)}}\Longrightarrow N(0,1),
+\end{equation}
+uniformly on such compact parameter sets.
+\end{theorem}
+\begin{proof}
+Let $T_k=A(k)(Nt)^k/k!$, with $x=k/N$.
+The exact gamma-function expression for $T_k$ is
+\begin{equation}\label{gs:eq:Tk}
+ T_k=\frac{(Nt)^k}{k!}\,
+ \frac{N!}{(N-k)!N^k}\,
+ \frac{\Gamma(Nb+k)}{\Gamma(Nb)(Nb)^k}\,
+ \frac{\Gamma(Nr)(Nr)^k}{\Gamma(Nr+k)}.
+\end{equation}
+For $x$ in any compact subinterval of $(0,1)$, Stirling's formula, including
+its square-root factors, gives uniformly
+\begin{equation}\label{gs:eq:Tk-Stirling}
+ T_k=\frac1{\sqrt{2\pi N}}
+ \sqrt{\frac{b(r+x)}{x(1-x)r(b+x)}}
+ e^{Nf(x;r,b,t)}\bigl(1+O(N^{-1})\bigr).
+\end{equation}
+The factorial ratio contributes $(1-x)^{-1/2}$; the two rising-factorial
+ratios contribute $(b/(b+x))^{1/2}$ and $((r+x)/r)^{1/2}$.
+These factors account for all terms in \eqref{gs:eq:prefactor}.
+
+On the stated compact parameter sets, $q$ stays uniformly inside $(0,1)$,
+and $h(q)$ is bounded above and below by positive constants. Strict
+concavity gives a uniform exponential gap outside any fixed neighborhood
+of $q$. Endpoint versions of the rough Stirling bounds, with $O(\log N)$
+in the logarithm, show that the sum of the terms outside that neighborhood
+is exponentially smaller than $e^{Nf(q)}$.
+
+Inside it, put $k=Nq+y\sqrt N$ and Taylor-expand $f$ and the smooth
+amplitude in \eqref{gs:eq:Tk-Stirling}. The leading exponential is
+$e^{-h(q)y^2/2}$. Terms of order $N^{-1/2}$ are odd polynomials in $y$
+times that Gaussian, and their integrals vanish. Gaussian tails permit
+termwise summation after truncation at $|y|\le N^{1/12}$; the omitted tails
+are exponentially small in a positive power of $N$. The Gaussian sums on
+a mesh of width $N^{-1/2}$ differ from their integrals by exponentially
+small errors, uniformly in the fractional part of $Nq$ (for example, by
+the Fourier series of a periodized Gaussian). Thus the relative error is
+$O(N^{-1})$, not merely $O(N^{-1/2})$.
+
+The leading sum multiplies \eqref{gs:eq:Tk-Stirling} at $x=q$ by
+$\sqrt{2\pi N/h(q)}$. This is \eqref{gs:eq:prefactor-thm}.
+Normalizing the same local expansion, with the exponentially small tails,
+proves \eqref{gs:eq:saddleCLT}.
+\end{proof}
+
+\subsection{The limiting saddle and the coefficient rate function}
+If $m/N\to\rho\in(0,\infty)$, then $r\to\rho$, $b\to1+\rho$,
+and \eqref{gs:eq:q} simplifies to
+\begin{equation}\label{gs:eq:q-rho}
+ q(q+\rho)=\frac{\rho(1+\rho)t}{1+\rho+\rho t}.
+\end{equation}
+Writing $f_{\rho,t}(x)=f(x;\rho,1+\rho,t)$, we obtain
+\begin{equation}\label{gs:eq:free-saddle}
+ \frac1N\log\Rgs(Nt)\longrightarrow f_{\rho,t}(q).
+\end{equation}
+For any integers $k_N$ with $k_N/N\to x\in[0,1]$,
+\begin{equation}\label{gs:eq:mass-rate}
+ \frac1N\log\PP(K_{Nt}=k_N)
+ \longrightarrow f_{\rho,t}(x)-f_{\rho,t}(q).
+\end{equation}
+The endpoint cases follow directly from \eqref{gs:eq:Tk} using the continuous
+extension of $f$; the interior cases use \eqref{gs:eq:Tk-Stirling}.
+Thus the nonnegative function $f_{\rho,t}(q)-f_{\rho,t}(x)$ is the
+pointwise coefficient rate function.
+
+There is an exact consistency check between the two nonlinear descriptions.
+Put
+\begin{equation}
+ b_\rho=\frac{1+\rho+\rho^2}{\rho(1+\rho)},\qquad
+ \theta=\frac{1+\rho}{1+\rho+\rho^2}.
+\end{equation}
+Then $N\beta\to b_\rho$, and the two proven limits imply
+\begin{equation}\label{gs:eq:consistency}
+ b_\rho f_{\rho,t}(q)=\calF_\theta(b_\rho t).
+\end{equation}
+It can also be checked by differentiating both sides, using
+\eqref{gs:eq:q-rho} and \eqref{gs:eq:algebraic-overview}, and matching the value
+zero at $t=0$.
+
+\section{Boundary regimes and the meaning in the original variables}
+\label{gs:sec:boundaries}
+
+\subsection{What happens when only one parameter grows?}\label{gs:sec:onlyone}
+The requirement $N,m\to\infty$ is genuine, not a convenience.
+From \eqref{gs:eq:coefficients}, dominated coefficient convergence gives
+locally uniformly in $\tau\in\CC$:
+\begin{align}\label{gs:eq:fixed-m}
+ \Rgs_{N,m}(\tau)&\longrightarrow
+ {}_0F_1(;m+1/2;(m+1/2)\tau)
+ &&\text{if $m$ is fixed and $N\to\infty$},\\
+ \Rgs_{N,m}(\tau)&\longrightarrow(1+\tau/N)^N
+ &&\text{if $N$ is fixed and $m\to\infty$}.\label{gs:eq:fixed-N}
+\end{align}
+In the first line, each finite coefficient tends to $v^k/(v)_k$;
+in the second it tends to $N^{\underline k}/N^k$ and the series is finite.
+The bound $|A(k)\tau^k/k!|\le|\tau|^k/k!$ supplies domination.
+The fixed-$m$ function is a standard hypergeometric/Bessel limit; no novelty
+is claimed for that special-function phenomenon.
+
+If $N,m\to\infty$, the same argument gives $\Rgs(\tau)\to e^\tau$
+locally uniformly. Conversely, convergence to $e^\tau$ locally uniformly
+forces $S_2=\beta\to0$ by comparing second derivatives at zero, hence
+forces both parameters to diverge. Even convergence at a single fixed
+positive $\tau$ is enough: the upper bound in \eqref{gs:eq:logbounds}, using
+$W\le1$, forces $\beta\to0$.
+
+\subsection{Physical sizes of the perturbation}\label{gs:sec:physical}
+Remember $a=\tau/\mu$. For $1\ll m\ll N$,
+$\mu\sim N^2/(4m)$ and $\beta\sim1/m$; for $m\gg N\gg1$,
+$\mu\sim N/4$ and $\beta\sim1/N$.
+The following table records \emph{orders of magnitude}; constants depend
+on the aspect ratio in the proportional regime.
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Regime & First $O(1)$ response & Relative exponential threshold
+ & Nominal Poisson threshold\\
+\midrule
+$1\ll m\ll N$ & $m/N^2$ & $m^{3/2}/N^2$ & $m^{5/3}/N^2$\\
+$m\asymp N\to\infty$ & $N^{-1}$ & $N^{-1/2}$ & $N^{-1/3}$\\
+$m\gg N\gg1$ & $N^{-1}$ & $N^{-1/2}$ & $N^{-1/3}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The full nonlinear scale has $a\asymp m^2/N^2$ in the first regime and
+$a\asymp1$ in the other two. The usual fixed-multiplicity $N^{-2}$ scale
+therefore does not remain the correct first-response scale when the
+multiplicity grows. Corollary~\ref{gs:cor:invisibility} gives the exact
+criterion, without relying on this table.
+
+For $b>0$, factor $b$ from every row:
+\begin{equation}
+ D_N^{(m)}(a,b)=b^N D_N^{(m)}(a/b,1).
+\end{equation}
+All conclusions translate by replacing $a$ with $a/b$. The probabilistic
+statements require $a/b\ge0$; complex versions retain only the analytically
+stated conclusions, not positivity or ordering assertions.
+
+\section{Reproducible checks and computational methods}
+\label{gs:sec:checks}
+
+The package includes \texttt{code/verify.py}. Its exact layer uses rational
+arithmetic and its numerical layer uses NumPy and SciPy. The latter does
+not perform outward rounding and is \emph{not} an interval certificate.
+The all-parameter results rest on the proofs above, not on the size of the
+finite test grid.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{.63\linewidth}r@{}}
+\toprule
+Executed audit & Count\\
+\midrule
+Direct rational Hankel determinants versus the coefficient formula
+($1\le N\le6$, $0\le m\le8$, five rational $a$ values) & 270\\
+Parameter pairs comparing logarithmic-series extraction with the
+Riccati recurrence, through moment 12 & 420\\
+Individual exact moment equalities within those pairs & 5,040\\
+Individual exact Catalan-majorant inequalities on the same grid & 5,040\\
+Limiting-moment recurrence checks at five rational shapes,
+through twelve recurrence steps & 60\\
+Floating-point Jacobi-root parameter pairs & 16\\
+\bottomrule
+\end{tabular}
+\end{center}
+The 5,040 moment equalities are components of the 420 parameter-pair checks,
+not 5,040 additional independently selected parameter pairs.
+All assertions passed in the delivered run. The environment and detailed
+counts are recorded in \texttt{data/verification\_summary.json}.
+
+\noindent[Merge note: in this report the program is shipped as
+\nolinkurl{code/06-growing-shifts-verify.py} and the summary as
+\nolinkurl{data/06-growing-shifts-verification_summary.json}; see
+Section~\ref{gs:sec:source}.]
+
+For positive $\tau$, stable numerical evaluation uses the term ratio
+\begin{equation}\label{gs:eq:numeric-ratio}
+ \frac{T_{k+1}}{T_k}
+ =\frac{\tau}{k+1}
+   \frac{(1-k/N)(1+k/B)}{1+k/v}.
+\end{equation}
+The program accumulates logarithms of this ratio, applies log-sum-exp, and
+then normalizes the terms. No ill-conditioned Hankel determinant or
+approximate zero is needed for those tables. The exact moment recurrence
+is used separately, so its checks are independent of floating-point
+Jacobi-root finding.
+
+\subsection{Two thresholds on a common sequence}\label{gs:sec:twothresholds}
+For $N=m$, the following values use the exact $\beta$ in
+\eqref{gs:eq:beta-theta}. The determinant column has $\tau=\beta^{-1/2}$;
+the last column has $\tau=\beta^{-2/3}$.
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$N=m$ & $\beta$ & $e^{-\tau}\Rgs(\tau)$ &
+$\TV(\Law(K_\tau),\Pois(\tau))$\\
+\midrule
+64    & $2.3139313\cdot10^{-2}$ & 0.64422016 & 0.31341650\\
+256   & $5.8404126\cdot10^{-3}$ & 0.62704465 & 0.33303790\\
+1024  & $1.4636534\cdot10^{-3}$ & 0.61723707 & 0.34952143\\
+4096  & $3.6613646\cdot10^{-4}$ & 0.61200022 & 0.36109809\\
+16384 & $9.1548078\cdot10^{-5}$ & 0.60929502 & 0.36871668\\
+\midrule
+Limit & 0 & $e^{-1/2}=0.60653066$ & $2\Phi(1/2)-1=0.38292492$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The nominal-Poisson convergence is visibly slower. The finite values are
+not advertised as close enough to establish the limit numerically;
+Theorem~\ref{gs:thm:TV-transition} proves it independently.
+
+The files \texttt{spectral\_moments.csv}, \texttt{free\_energy.csv}, and
+\texttt{saddle\_prefactor.csv} give additional checks of the Catalan moment
+profile, the algebraic free energy, and the multiplicative saddle formula.
+For the last, the program records both the relative error and $N$ times
+that error, rather than only a visually agreeable plot.
+
+\noindent[Merge note: the table of Section~\ref{gs:sec:twothresholds} is a
+rounded copy of the columns \texttt{beta}, \texttt{det\_ratio} and
+\texttt{tv} of the shipped file
+\nolinkurl{data/06-growing-shifts-critical_scales.csv}, and the three files
+named here are shipped under \nolinkurl{data/} with the same prefix.  All four are floating-point diagnostics.]
+
+\section{Proof dependencies and limitations}
+\label{gs:sec:scope}
+
+The dependency structure is short enough to audit explicitly:
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.44\linewidth}
+ >{\raggedright\arraybackslash}p{.48\linewidth}@{}}
+\toprule
+Result & Required ingredients\\
+\midrule
+Exact normalized polynomial & Catalan beta integral; one-factor
+Christoffel identity; Jacobi finite series\\
+Moment recurrence and $W\le8\beta$ & Hypergeometric ODE; coefficient
+comparison; Catalan convolution\\
+Inverse-zero limit law & Moment recurrence; compact moment convergence\\
+Critical hierarchy and free energy & Product representation;
+logarithmic Taylor bounds; inverse-zero law\\
+Nominal-Poisson transition & Bernoulli factorization; classical
+bound \eqref{gs:eq:BH}; elementary Poisson comparison\\
+Proportional-growth prefactor & Exact coefficients; uniform Stirling
+bounds; one-dimensional discrete Laplace expansion\\
+\bottomrule
+\end{tabular}
+\end{center}
+No unrefereed asymptotic assertion from another repository article is
+needed as an unproved premise. The already-known coefficient identity is
+rederived in the needed normalization. The exact numerical tests are
+consistent with every result, but they do not replace any analytic step.
+
+There are several important boundaries. The general theorems concern
+one extra factor $x+a$ with a growing fixed-endpoint power $x^m$.
+They do not settle moving clusters of growing cardinality, simultaneous
+arbitrary shifts at both endpoints, or arbitrary polynomial multipliers.
+The sharp-order and probability results are for $\tau\ge0$. Negative
+perturbations can meet zeros, so analogous ratio criteria need not hold.
+The critical hierarchy fixes its order $q$ before taking limits.
+The saddle prefactor is uniform only when the aspect ratio and $t$ stay
+in positive compact sets; it is not asserted uniform as those compact
+sets approach zero or infinity.
+
+Finally, this is an AI-assisted, unrefereed manuscript. No formal
+verification in Lean or Rocq has been performed. The repository was
+read, not modified. The literature audit establishes relevant precedents,
+not worldwide novelty of each corollary.
+
+\section{Further research questions}
+\label{gs:sec:future}
+
+\subsection{A sharp extreme-zero theorem}\label{gs:x:edge}
+Does $W/\beta\to1+3\theta$ hold under exactly the hypotheses of
+Theorem~\ref{gs:thm:spectral}, including the extreme ratios $\theta=0,1$?
+An affirmative answer would replace the coarse constant eight by the
+correct asymptotic edge. A proof needs an outlier-exclusion argument, not
+just fixed-moment convergence. Quantitative Jacobi zero bounds or
+recurrence-matrix comparisons are natural routes.
+
+\subsection{Finite-size corrections to the inverse-zero measure}\label{gs:x:finite}
+The exact Riccati recurrence gives every fixed moment with rational
+coefficients in $N,m$. Determine a signed-measure or resolvent expansion
+around $\nu_{\theta_{N,m}}$, retaining separate $N^{-1}$ and $m^{-1}$
+effects. This would produce a multiplicative correction to
+Theorem~\ref{gs:thm:freeenergy} beyond the proportional-growth case and give
+rates for exact centering in the nonlinear central limit theorem.
+
+\subsection{A uniform bridge from fixed to growing multiplicity}\label{gs:x:bridge}
+The fixed-$m$ limit is ${}_0F_1(;v;v\tau)$, whereas growing $m$ gives the
+hierarchy above. Construct a single two-parameter approximation with a
+remainder uniform for $1\le m\le N$, not merely an iterated limit.
+The exact coefficient product suggests a route, but uniform control near
+its large-parameter transition requires more than dominated convergence.
+
+\subsection{Several moving factors and their interactions}\label{gs:x:several}
+For fixed $s\ge2$, study
+$H_N(x^m\prod_{j=1}^s(x+a_j))/H_N(x^{m+s})$ as $N,m\to\infty$.
+The one-factor theory does not imply a product of one-factor answers:
+Christoffel determinants can contain mixed corrections. Determine the
+first interaction term and whether a matrix-valued counterpart of
+$\nu_\theta$ governs the joint hierarchy. Then let $s$ grow as well.
+
+\subsection{Both endpoint exponents growing}\label{gs:x:both}
+Replace the weight by $x^m(4-x)^\ell\,\dd\omega(x)$ with $m,\ell\to\infty$.
+Its Jacobi differential equation still provides a rational Riccati
+recurrence, but the shape space now has more than one parameter.
+Identify the corresponding normalized inverse-zero law and the sharp
+small-perturbation scales without assuming $m,\ell\asymp N$.
+
+\subsection{Complex perturbations at the first zero edge}\label{gs:x:complex}
+The current complex limits stay far inside a shrinking zero-free disk in
+the original perturbation variable. Near the full negative scale,
+$1+tx$ can vanish on the limiting support. Determine the local Airy or
+Bessel regimes, the zero spacing, and the analytic continuation of the
+free energy there. Positive-axis estimates cannot simply be continued
+through a zero.
+
+\subsection{Growing truncation order}\label{gs:x:order}
+Theorem~\ref{gs:thm:hierarchy} fixes $q$. Determine the largest $q=q(N,m)$
+for which exact moment subtraction remains uniformly useful, and compare
+it with direct evaluation of the algebraic limit. This asks for moment
+asymptotics uniform in the order, a problem not solved by the current
+fixed-order induction.
+
+\subsection{A direct combinatorial coefficient model}\label{gs:x:combinatorial}
+The Bernoulli representation uses generally algebraic Jacobi zeros.
+Find a combinatorial model for the normalized coefficients in which the
+shape parameter and the mean displacement are visible without those
+zeros. A positive integer interpretation of the repository's coefficient
+triangle would be especially useful for this purpose.
+
+\subsection{Certified numerical evaluation}\label{gs:x:certified}
+Turn \eqref{gs:eq:numeric-ratio} into an interval algorithm with rigorous
+finite tail bounds, and combine it with rational moment subtraction.
+The delivered program is a diagnostic implementation, not that certified
+algorithm. An efficient certificate should avoid forming large Hankel
+matrices and should report bit complexity, not only operation counts.
+
+\subsection{A staged formalization}\label{gs:x:formal}
+A practical Lean project could first formalize the finite hypergeometric
+polynomial, its ODE as a coefficient identity, and the rational recurrence.
+The next stage is the positive-root factorization and the Catalan
+majorant. The logarithmic estimates and the compact moment limit can
+then be separated from the external Poisson theorem. This is a proposed
+formalization architecture, not a claim that the necessary code has
+already been written or checked.
+
+\section{Conclusion}\label{gs:sec:conclusion}
+
+The growing-shift question has a useful answer in a variable not visible
+in fixed-$m$ recurrence formulas: the exact second inverse-zero moment
+$\beta$. It identifies when both size parameters are genuinely large,
+controls the largest inverse zero uniformly, and sets the critical scales.
+The corresponding size-biased zero measure converges to a shifted
+Catalan-moment law, which supplies every fixed-order logarithmic correction
+and an algebraic resummation at the nonlinear scale.
+
+The main distinction is operational as well as mathematical. A determinant
+can already differ from its exponential approximation by a fixed factor
+while its coefficient law is still close to the nominal Poisson law.
+Later, the nominal mean becomes detectably wrong while a corrected-mean
+Poisson approximation remains valid. Only at the full scale does the
+algebraic nonlinear law replace the perturbative description.
+These statements resolve the specified growing-shift continuation of the
+repository problem, while leaving the stronger multi-factor, edge,
+quantitative, and formalization questions explicitly open.
+
+\section{A compact formula sheet}\label{gs:app:formulas}
+
+This section is Appendix~A of the manuscript.
+
+\begin{align*}
+ v&=m+\tfrac12,& B&=N+m+1,&c&=\frac v{NB},&\mu&=\frac{NB}{4v},\\
+ \Rgs(\tau)&={}_2F_1(-N,B;v;-c\tau),&
+ \beta&=\frac{1+c(v+3/2)}{v+1},&
+ \theta&=\frac1{(v+1)\beta}.
+\end{align*}
+The moments start with $S_1=1$, $S_2=\beta$ and satisfy
+\eqref{gs:eq:moment-recurrence}. If $S_r\sim\beta^{r-1}d_r(\theta)$,
+then
+\[
+ d_r(\theta)=\Egs(1-\theta+\theta Y)^{r-1},\qquad Y\sim\MP.
+\]
+The three central comparisons are
+\begin{align*}
+ \tau=s\beta^{-1/2}:\quad&
+ e^{-\tau}\Rgs(\tau)\to e^{-s^2/2},\\
+ \tau=u\beta^{-2/3}:\quad&
+ \TV(\Law(K_\tau),\Pois(\tau))\to2\Phi(u^{3/2}/2)-1,\\
+ \tau=t\beta^{-1}:\quad&
+ \beta\log\Rgs(\tau)\to\calF_\theta(t).
+\end{align*}
+For positive real $\tau$, the first finite correction has the explicit
+error certificate
+\[
+ 0\le\log\Rgs(\tau)-\tau+\tfrac12\beta\tau^2
+ \le\tfrac83\beta^2\tau^3.
+\]
+This is a proved analytic bound. Floating-point evaluation of its entries
+still needs outward rounding before it becomes a numerical interval
+certificate.
+
+\section{Reproduction instructions}\label{gs:app:reproduction}
+
+This section is Appendix~B of the manuscript.
+
+The delivered archive has one top-level directory,
+\texttt{Catalan\_Growing\_Shifts}. From that directory, run
+\begin{verbatim}
+python code/verify.py --output data
+python code/make_figures.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The exact audit uses only the Python standard library. The full script
+also imports NumPy and SciPy for diagnostics; figure generation uses
+Matplotlib. The delivered run used Python 3.13.5, NumPy 2.3.5 and SciPy
+1.17.0. These are recorded environment versions, not a requirement to
+install those exact releases. No external data download is needed.
+
+\noindent[Merge note: in this report the delivered files are shipped as
+listed in Section~\ref{gs:sec:source}, and the commands above must
+\emph{not} be run in this directory.  Here \nolinkurl{code/verify.py} is
+Part~I's verifier, and \texttt{--output data} would write into the
+report's shared \nolinkurl{data/}; the shipped
+\nolinkurl{code/06-growing-shifts-make_figures.py} does
+\texttt{from verify import \dots}, which here would find Part~I's verifier
+and fail, and it writes unprefixed figure files into the
+\nolinkurl{figures/} directory beside its own \nolinkurl{code/} directory,
+here the report's; the delivered Makefile, shipped as
+\nolinkurl{code/06-growing-shifts-Makefile}, runs the same commands and
+\texttt{pdflatex} on this report's \nolinkurl{article.tex} in place.  The
+program's CSV writer ends rows with CRLF on every system, which is why the
+four shipped CSV files are CRLF; its JSON output has CRLF line endings on
+Windows only.  Restore the delivered layout in a scratch copy instead (a
+POSIX shell, from the report directory):]
+\begin{lstlisting}
+W=/path/to/scratch/growing-shifts
+mkdir -p "$W/code" "$W/recorded" "$W/out"
+for f in verify make_figures; do
+  cp "code/06-growing-shifts-$f.py" "$W/code/$f.py"; done
+for f in data/06-growing-shifts-*; do
+  cp "$f" "$W/recorded/${f#data/06-growing-shifts-}"; done
+cd "$W" && uv run --no-project --with numpy==2.3.5 --with scipy==1.17.0 \
+  python code/verify.py --output out   # compare $W/out with $W/recorded
+printf 'pdf.fonttype: 42\n' > matplotlibrc   # TrueType, not Type 3, fonts
+uv run --no-project --with matplotlib==3.10.8 --with numpy==2.3.5 \
+  --with scipy==1.17.0 python code/make_figures.py   # writes $W/figures
+\end{lstlisting}
+\noindent[Run this way on 29 September 2026 with Python~3.13.5, NumPy~2.3.5
+and SciPy~1.17.0, the program passed every assertion in a few seconds and
+recorded the counts of Section~\ref{gs:sec:checks};
+\nolinkurl{free_energy.csv} was byte-identical to the recorded file, the
+other three CSV files differed only in the last digits of floating-point
+entries (at most $9.3\cdot10^{-10}$, in the cancellation-limited column
+\texttt{n\_times\_error} of \nolinkurl{saddle_prefactor.csv}), and
+\nolinkurl{verification_summary.json} was identical after removal of
+carriage returns.  The figure step reproduced the two shipped figures
+except for the creation date in their metadata.  The
+manuscript's appendix lists two \texttt{pdflatex} runs; its delivered
+README and Makefile list three.]
+
+%% End of Part VI.
+
 \clearpage
 \appendix
 \section{The precise correction to the printed conjecture}\label{app:barry}
@@ -9261,13 +11175,37 @@ Cited in Part~V: the oscillatory Jacobi determinant, its parity phenomena
 and its large-frequency analysis are prior literature, not novelty claims
 there.
 
+\bibitem{DetteStudden1994}
+H.~Dette and W.~J.~Studden,
+\emph{Some new asymptotic properties for the zeros of Jacobi, Laguerre and
+Hermite polynomials}, arXiv:math/9406224 (1994).
+\url{https://arxiv.org/abs/math/9406224}.
+Cited in Part~VI for the established large-parameter zero-asymptotic
+context; no unverified specialized theorem from this paper is invoked.
+
+\bibitem{BarbourHall1984}
+A.~D.~Barbour and P.~Hall,
+\emph{On the rate of Poisson convergence},
+Mathematical Proceedings of the Cambridge Philosophical Society
+\textbf{95} (1984), 473--480.
+\url{https://doi.org/10.1017/S0305004100061806}.
+Cited in Part~VI for the Bernoulli-sum Poisson bound \eqref{gs:eq:BH}.
+
+\bibitem{MeliotNikeghbaliVisentin2022}
+P.-L.~M\'eliot, A.~Nikeghbali, and G.~Visentin,
+\emph{Mod-Poisson approximation schemes and higher-order Chen--Stein
+inequalities}, arXiv:2210.13818 (2022).
+\url{https://arxiv.org/abs/2210.13818}.
+Cited in Part~VI as prior context for higher-order Bernoulli-sum
+approximation, not as a novelty claim for that general mechanism.
+
 \end{thebibliography}
 \noindent\small\textit{Online sources checked on 19 September 2026
 (Part~I) and 28 September 2026 (Part~II); Part~III's manuscript is dated
 29 September 2026, and its source notes do not date its checks; Part~IV's
 manuscript and its source notes are dated 29 September 2026, the day it
-consulted DLMF; Part~V's manuscript and its source audit are dated
-29 September 2026 (the audit gives the Pacific date).
+consulted DLMF; Part~V's and Part~VI's manuscripts and source audits are
+dated 29 September 2026 (both audits give the Pacific date).
 All theorem numbering in the body refers to the present manuscript,
 unless a source is explicitly named.}
 \end{document}

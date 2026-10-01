@@ -94,7 +94,10 @@ def poly_multiply(a: list[F], b: list[F]) -> list[F]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("verification.json"))
+    # ed. (2026-09-29): default output rerun/verification.json beside this
+    # script, so a plain run no longer overwrites the recorded file.
+    parser.add_argument("--output", type=Path,
+                        default=Path(__file__).resolve().parent / "rerun" / "verification.json")
     parser.add_argument("--levels", type=int, default=12,
                         help="largest directly checked dyadic level (0 to 16)")
     args = parser.parse_args()
@@ -220,7 +223,9 @@ def main() -> None:
         "scope": "Finite algebraic checks only. Infinite-dimensional spectra and sharp asymptotic theorems are proved in article.tex, not certified by finite sampling."
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    # ed. (2026-09-29): LF line endings on every platform.
+    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8",
+                           newline="\n")
     print(json.dumps({k: v for k, v in result.items() if k != "energy_data"}, indent=2))
 
 

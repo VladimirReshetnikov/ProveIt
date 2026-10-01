@@ -1,6 +1,6 @@
 # Term counts in the derivatives of power towers
 
-**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4**
+**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4, and a second route to deficit 3**
 
 **What this report is.** One article covering three OEIS sequences that ask the
 same question about three different functions:
@@ -20,7 +20,8 @@ transition recurrence it obeys, and the reduction of "count the terms" to
 "count the nonvanishing coefficients". That is Part 1 (Section 1). Parts 2, 3
 and 4 are the three investigations; Section 5 compares them. A fourth
 manuscript, on A290268 only, was written into the end of Part 3 on
-29 September 2026 as Sections 3.14–3.26.
+29 September 2026 as Sections 3.14–3.26, and a fifth, also on A290268 only,
+after it on 30 September 2026 as Sections 3.27–3.34.
 
 **Status.** AI-assisted research notes. Unrefereed. Nothing in this report is
 formalized; see "Relation to the Lean development" below for what the nearby
@@ -34,6 +35,7 @@ Lean development does and does not prove.
 | 01 | Cardinals-era delivery | `A290268_partial_results.zip` (15-page article) | not recorded | as above | Part 3, Sections 3.1–3.13 |
 | 01 | Cardinals-era delivery | `A281434_exact_algorithm_and_cubic_growth.zip` (17-page article) | not recorded | as above | Part 4 (Section 4) |
 | 02 | batch 42, manuscript 06 | `ProveIt_A290268_Finite_Certificates.zip` (*From Infinite Nonvanishing to Finite Certificates: Bulk positivity, fixed-depth finiteness, and a four-depth solution for OEIS A290268*, 22-page PDF, dated 29 September 2026) | `afb2d1227` | `3609d0473` | Part 3, Sections 3.14–3.26 |
+| 03 | batch 70, manuscript 03 | `ProveIt_A290268_Depth3_Article.zip` (*Depth Three Is Complete for OEIS A290268: A beta–sine transform, centered moment polynomials, and exact nonvanishing*, 17-page PDF, dated 30 September 2026) | `a02ab3567` | `51c6943bf` | Part 3, Sections 3.27–3.34 |
 
 The first three rows are the original merge; `MERGE_EDITS.md` records every
 edit made to them, and all fifty of their theorems, lemmas, propositions,
@@ -56,6 +58,42 @@ section, theorem or equation number moved (checked against the `.aux` of a
 build of the previous text: 0 of 217 labels changed number); the manuscript's
 letters are kept, with a dictionary; three editorial remarks (3.31, 3.42,
 3.46) are marked as additions of the intake.
+
+Source 03 (batch 70, manuscript 03) is also printed in full: every theorem,
+proposition, lemma, corollary, definition, remark, table and research
+question, with its proofs, its proof-boundary and warning boxes and its audit
+table. **Its main theorem — at depth `d = 3` the only zeros of
+`gamma(k,3,M)` are `M = k+13`, `k` odd — is the `d = 3` case of Theorem 3.23,
+which Source 02 had already put in this report; it is printed as a second
+proof (Theorem 3.59).** The manuscript says depth three was "the stated open
+core" at its pin `a02ab3567` and that its theorem is new there. That is
+mistaken: the pin descends from `0e6632abf`, the commit that wrote Source 02
+into this report, and the note it cites (`Oeis/A290268/README.md`) already
+says so in its dated correction; the manuscript read only that note's older
+line "Open core: D >= 3". The sentences are kept verbatim (abstract, summary
+box, novelty paragraph, conclusion, audit table) with editorial corrections,
+and its question "Depth four" is marked as answered by Theorem 3.23. Its
+reduction, parameter derivative, beta–sine transform, centred recurrence,
+vertical-root corollary and bulk lemma re-derive Proposition 3.24,
+equation (3.58), Proposition 3.30, equation (3.61), Corollary 3.27 and
+Theorem 3.21 (all Source 02's), and are marked as second routes. New relative to this report:
+the harmonic factorization at the root `x = 7`, the sign law of the harmonic
+quantity `E_q` (Lemma 3.54: negative exactly for `1 <= q <= 37`), which
+*proves* the `q = 37/38` sign change that Section 3.20 recorded only as an
+observation of the certificate data; the propagation recurrence in `k` and
+its finite certificate (Proposition 3.55); the eventual signs of Corollary
+3.57; the sign phase diagram of the log-free diagonal; and the interlacing
+clause of Corollary 3.53. Editorial Remark 3.61 compares the two proofs:
+their finite anchors partly coincide (`H_{3,14,6} = 720^2 F_14(6)`,
+`H_{3,0,38} = 720*38!*E_38`), and the manuscript's sign table reproduces
+every `d = 3` row of `data/02-depth-certificates-sign_thresholds.csv`. Its
+manuscript, README, PDF and `SHA256SUMS.txt` (5/5 verified at placement) are
+not shipped; the archive survives in the history of `1b3960d8a`. Where the
+write had to choose: the addition follows Source 02 at the end of Part 3, so
+that no existing number moved (checked against the `.aux` of a build of the
+previous text: 0 of 302 numbered labels changed); the manuscript's letters
+are renamed where they collide (Table 5, below); the dictionary (3.89),
+Remark 3.61 and the editorial notes are additions of the intake.
 
 ## Status of each headline question — read this first
 
@@ -83,7 +121,9 @@ question is only how many.
   there are no further zeros on the first **four** logarithmic-deficit
   diagonals (deficits 1 and 2 in Part 3 as first written; deficits 3 and 4 in
   Sections 3.14–3.26, by an effective infinite-to-finite reduction plus exact
-  finite certificates); and `Lambda(n) <= a(n) <= U(n)` with
+  finite certificates; deficit 3 again in Sections 3.27–3.34, by a second
+  route — a harmonic sign law and positivity propagation — with its own exact
+  finite certificate); and `Lambda(n) <= a(n) <= U(n)` with
   `Lambda(n) = (3n^2+10n+8)/8` for even `n` and `(3n^2+12n+1)/8` for odd `n`,
   so `a(n) = Theta(n^2)`. The addition improves the lower bound (Corollary
   3.45, Remark 3.46) to `(3n^2+26n-72)/8` for even `n >= 8` and
@@ -110,7 +150,12 @@ decide every `n` only because a proved reduction (Proposition 3.41) shows the
 finite rectangles to be exhaustive; the rectangles themselves reach only
 derivative order `n <= 359`, inside the range `n <= 3000` that Part 3's
 modular certificate already covers. What that certificate does not supply is
-the six seed *signs* the reduction needs.
+the six seed *signs* the reduction needs. The same holds for the second route
+of Sections 3.27–3.34: its exact rational check (Proposition 3.55; the
+36 values `q` in `{1..5} ∪ {7..37}` with `0 <= k <= 14`, plus the centre
+`q = 6`) decides every `n` only because the proved recurrence (3.107) and the
+harmonic sign law (Lemma 3.54) make it exhaustive; its larger boxes are
+diagnostics.
 
 ## What is not claimed
 
@@ -124,6 +169,13 @@ the six seed *signs* the reduction needs.
 - No priority: manuscript 06's literature and repository checks are "not a
   comprehensive historical-priority search"; Meixner–Pollaczek theory and the
   reflection, covariance and Chebyshev-system arguments are classical.
+- No novelty for the depth-3 theorem of Sections 3.27–3.34: it is Theorem
+  3.23 at `d = 3`, and only its proof is new. Its manuscript's claims that
+  depth 3 was open at its pin and that "depths `D >= 4` remain open" are
+  stale and corrected in the text (the open depths are `d >= 5`). Its other
+  non-claims are kept: "not a claim that the full A290268 conjecture has been
+  proved"; the Python certificate "is not a kernel-checked theorem"; no
+  "exhaustive priority over inaccessible or unpublished work"; no peer review.
 - No Lean or Rocq verification, no referee, no independent human review.
 
 ## A warning about notation
@@ -148,6 +200,18 @@ worse risk than declaring the clash. Three collisions matter more than the rest:
   `B_d(r) -> calB_d(r)`, `B(N) -> beta(N)`, `L -> tau`, `h_d(N) -> chi_d(N)`,
   `m -> nu_d` and `rho`, `F_{d,k} -> calF_{d,k}`, series variable `z -> xi`;
   no normalization changed).
+- **Sections 3.27–3.34 keep those depth coordinates** and rename manuscript
+  03's colliding letters (Table 5 of the article, with false readings): its
+  `n -> N` (derivative order) and its `N -> r` (`= M - k`; its `N` is *not*
+  the derivative order); `R_{N,k} -> calQ_k^(r)` (the same polynomial as
+  Source 02's) and `Q_{N,k}(x) -> calQ_k^(r)(x - (r+1)/2)`; its kernel
+  `K_D -> R_d` (Source 02's kernel; *not* the constant `K_d`); `L -> tau`;
+  `P_M -> calP_M`, `H_{M,k} -> calH_{M,k}` (*not* the integer `H_{d,k,q}`),
+  `S_N -> Omega_r`, `S_{N,k} -> calT_{r,k}`, `I_k -> calI_k`; harmonic
+  numbers `H_q -> upright H_q`; `E_q, F_k(q), U_{q,k}, V_k` in sans-serif;
+  `z -> lambda_q`, `a -> alpha_q` or `2d+1` or `theta`, `B -> |E_q|`. The
+  two tail values are related by `H_{3,k,q} = 720 (-1)^q q! F_k(q)` (3.89).
+  No normalization changed.
 
 §1.5 of the article gives the three canonical monomials side by side, and is
 explicit that many other letters (`u`, `v`, `t`, `q`, `U`, `Z`, `E`, `Δ`) are
@@ -158,16 +222,18 @@ sequence in each part.
 
 Labels carry a per-part prefix: `fw:` (Part 1), `xx:` (Part 2), `xxb:`
 (Part 3), `xxc:` (Part 4), `syn:` (Section 5). The batch-42 addition uses the
-sub-prefix **`xxb:dc:`** (85 labels). The article has 304 `\label`s (219
-before the addition); none was renamed or removed. No label here has a Lean
-mapping.
+sub-prefix **`xxb:dc:`** (85 labels) and the batch-70 addition the sub-prefix
+**`xxb:d3:`** (57 labels: the manuscript's 47, prefixed, and 10 of the
+intake's). The article has 361 `\label`s (219 before the batch-42 addition,
+304 before the batch-70 one); none was renamed or removed. No label here has
+a Lean mapping.
 
 ## Files
 
 ```
 README.md                                         this guide
 article.tex                                       the article (pdfLaTeX, internal bibliography)
-article.pdf                                       the compiled article, 80 pages (A4)
+article.pdf                                       the compiled article, 99 pages (A4)
 MERGE_EDITS.md                                    every edit made to the three original texts in the merge
 A293239_oeis_notes.txt                            statement of the x^x recurrence-range correction
 A290268_result_status.json                        Part 3's machine-readable status, as delivered (stale; see below)
@@ -184,9 +250,11 @@ code/run_experiments.py                           A281434 (Part 4) algorithm, te
 code/02-depth-certificates-verify.py              manuscript 06: full exact verifier (writes nothing unless --write-data)
 code/02-depth-certificates-minimal_verify.py      manuscript 06: standalone verifier printed in Section 3.25.2
 code/02-depth-certificates-Makefile               manuscript 06's delivered Makefile (do not use; see below)
+code/03-depth-three-verify_depth3.py              batch-70 manuscript 03: exact depth-3 verifier (writes depth3_certificate.txt beside itself)
 data/02-depth-certificates-finite_certificate.csv all 16,034 rectangle cells: sign, reduced sign, residues mod 1009, 1013 (CRLF)
 data/02-depth-certificates-sign_thresholds.csv    observed sign transitions per tested row (CRLF)
 data/02-depth-certificates-verification.json      executed-check summary and exact seed integers
+data/03-depth-three-depth3_certificate.txt        batch-70 manuscript 03: recorded verifier output (anchors, sign table, digest)
 data/b281434.txt, data/b352697.txt, data/benchmarks.csv, data/counts.csv,
 data/python_report.json, data/selected_holes.json, data/test_results.txt,
 data/zeros.csv, data/environment.json             A281434 and A293239 outputs
@@ -201,7 +269,7 @@ data/p1000000009_{counts.csv,run.log,summary.txt,watches.csv,zeros.csv}
                                                   A290268 modular runs, one set per modulus
 ```
 
-That is all 58 files in the directory.
+That is all 60 files in the directory.
 
 ## Building
 
@@ -212,7 +280,9 @@ That is all 58 files in the directory.
 The committed PDF was built with `latexmk` (pdfTeX, MiKTeX): 0 errors, 0
 undefined references or citations, 0 multiply-defined labels, 0 duplicate
 destinations, 0 LaTeX warnings; one overfull box (8.4 pt, in the Section 5
-comparison table), present before the addition as well.
+comparison table) and five hyperref "Token not allowed in a PDF string"
+notices (superscripts in section titles), all present before both additions
+as well.
 
 ## Verifying
 
@@ -256,6 +326,24 @@ rewrites `data/python_report.json` — and its `data` target does the same with
 `--write-data`; its `all`/`clean` targets run `latexmk` on the merged
 `article.tex`.
 
+**Second route to depth 3 (Sections 3.27–3.34).** Python 3, standard library
+only (`fractions.Fraction`). **Work on a copy** of this directory and do not
+pass `-O` (its checks are `assert` statements):
+
+    py code/03-depth-three-verify_depth3.py
+
+It prints the certificate and writes it, under the unprefixed name
+`depth3_certificate.txt`, into the directory that contains the script — on a
+copy of the shipped layout that is `code/depth3_certificate.txt`, beside the
+program, not the shipped `data/03-depth-three-depth3_certificate.txt`. It
+writes LF line endings on every platform. On the intake copy it exited with
+status 0 in about 12 s, and its output was byte-identical to the shipped
+certificate. The intake also checked the dictionary
+`H_{3,k,q} = 720 (-1)^q q! F_k(q)` against Source 02's integers for
+`0 <= k <= 14`, `0 <= q < 60`, and that the manuscript's sign table
+reproduces every `d = 3` row of `data/02-depth-certificates-sign_thresholds.csv`
+(Remark 3.61); those checks used scratch scripts that are not shipped.
+
 ## What the modular verifiers do and do not do
 
 Both compiled verifiers are exact. A nonzero residue certifies a nonzero
@@ -287,8 +375,14 @@ same `(j, k)` coordinates, and proves:
   `A290268.Hole` named in the declaration's docstring does not exist.
 
 Theorem 3.23 (deficits 1–4) would discharge the nonvanishing inclusion only on
-cells of depth at most four; the `Main` theorems stay conditional. None of this
-report's theorems is formalized.
+cells of depth at most four; the `Main` theorems stay conditional. Manuscript
+03 (Sections 3.27–3.34) also cites only `A290268.Main` and reads its theorems
+as conditional; its Theorem 3.59 covers depth 3 only, already covered by
+Theorem 3.23. The six modules of its formalization blueprint (Section 3.33.2:
+`A290268.SeriesReduction`, `.FallingFactorial`, `.CenteredMoments`,
+`.DepthThreeHarmonic`, `.DepthThreeCertificate`, `.DepthThree`) are proposals
+and do not exist; the library defines no `gamma`, and its `coeff` has type
+`ℕ → ℤ → ℤ → ℤ`. None of this report's theorems is formalized.
 
 ## Relation to neighbouring material
 
@@ -296,6 +390,9 @@ report's theorems is formalized.
   note manuscript 06 continued. It still calls the general-`k` bulk open and
   lists three Lean modules (`A290268.Hole`, `.DepthOne`, `.Series`) that never
   existed; both are stale with respect to this report. It is not edited here.
+  Its line "Open core: `D >= 3` negative region" is also stale (its own dated
+  correction says deficits 3 and 4 are closed here); it is the line that led
+  batch-70 manuscript 03 to call depth 3 open.
 - `Combinatorics/ExpressionEnumeration/PowerTowers/` (power-tower *value*
   counts) is unrelated.
 
@@ -316,6 +413,22 @@ report's theorems is formalized.
   know this report; the article corrects this in Section 3.25.3.
 - In Part 3's own reproduction listing (Section 3.12) the build commands still
   name the original `A290268_partial_results.tex`; the file is `article.tex`.
+- `code/03-depth-three-verify_depth3.py` (byte-identical to the delivered
+  `verify_depth3.py`) records the manuscript's pin `a02ab3567` as
+  `REPO_COMMIT`, writes the unprefixed `depth3_certificate.txt` beside itself
+  (see "Verifying"), and the manuscript gives its usage as
+  `python3 verify_depth3.py`. A code comment in it says the last range of each
+  sign row is replaced by an infinity marker; the output does not do so — the
+  rows end at `q = 38` (for example `35-38:-`), and their behaviour beyond 38
+  is the analytic part of the proof, not the computation.
+- `data/03-depth-three-depth3_certificate.txt` heads its theorem line
+  "Verified theorem: gamma(k,3,M)=0 ... iff M=k+13 and k is odd". The program
+  checks the finite strip, the anchors and the diagnostic boxes; the
+  all-`k`, all-`M` statement rests on the proof in Sections 3.30–3.31, not on
+  the run. Its pin line is the manuscript's pin.
+- The manuscript's own file table lists its `.tex`, `.pdf` and `README.md`,
+  which are not shipped; the article replaces that table with the shipped
+  file list (Section 3.34.2).
 
 ## Provenance
 
@@ -328,5 +441,13 @@ into Sections 3.14–3.26 on 29 September 2026, with dated notes pointing
 forward from the abstract, the reading guide, §1.5, Part 3's status box,
 Theorem 3.1, Section 3.7.4, the precise missing step (Section 3.10), Part 3's
 conclusion and Section 5.
+
+Manuscript 03 of batch 70 arrived in `1b3960d8a`, was placed as an addition
+in `51c6943bf` (staged files prefixed `03-depth-three-`, byte-identical to
+the delivery; manuscript, README, PDF and `SHA256SUMS.txt` not staged), and
+was written into Sections 3.27–3.34 on 30 September 2026, with dated notes
+pointing forward from the abstract, the reading guide, §1.5, Part 3's status
+box, Section 3.7.4, the sign-change observation of Section 3.20 and
+Questions 3 and 7 of Section 3.24.
 
 These are AI-assisted drafts. None is refereed or machine-checked.

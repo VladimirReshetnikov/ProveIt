@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and eleven independent mathematical research packages, unpacked
+One hundred and fifteen independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and eleven reports, names the problem each one attacks
+numbers all one hundred and fifteen reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -27,9 +27,10 @@ records what each report claims rather than verifying it.
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity | 7 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
-| [`jacobian-conjecture/`](jacobian-conjecture) — fibers of Keller maps: Gao's five-dimensional map, arithmetic fibers and weighted rigidity of the three-variable counterexample | 3 |
+| [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| **Total** | **111** |
+| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting | 3 |
+| **Total** | **115** |
 
 ## Later deliveries
 
@@ -106,6 +107,112 @@ and block-locality for signed matching-support stability (Part VI); and the
 transversal matroid of a preorder, which determines it up to isomorphism
 (Part VII) — and the shifted Catalan Hankel polynomials gained Part V,
 collision-uniform expansions for roots meeting away from the endpoints.
+Batch 56 extended two: Cigler's Hankel polynomials gained a proof of the
+report's experimental rectangular-Schur formula, with exact minimal
+recurrences and a corrected reciprocity sign in Cigler's Conjecture 18
+(Cigler's Conjecture 16 parity report, Part II), and the open-query
+membership games gained exact filter-profile invariants for spaces with a
+finite nonempty derived set, answering Part II's attainment question there
+(Part III).  Batch 57 extended three: joint limits with a growing shift and a
+Catalan (Marchenko–Pastur) inverse-zero law (shifted Catalan Hankel
+polynomials, Part VI), a four-test radical-solvability criterion for
+irreducible sextics that needs no separating parameter (sextic
+block-resolvent separators, Part II), and exact alphabet-size criteria for
+concavity of product Tsallis entropy (two-coin counterexamples, Part III).
+Batch 58 extended one: the integral Hasse failures of the three-variable
+Keller map are Zariski dense in every plane `C = c ≠ 0` and absent from
+`C = 0`, with a complete local criterion for completely split fibers and the
+count `~ κ(c) T^{2/3}` in square boxes (arithmetic local–global fibers,
+Part II).  Batch 59 brought nothing to this collection.  Batch 60 opened the
+category [`hilbert-tenth-problem/`](hilbert-tenth-problem) with two reports
+merged from nine manuscripts continuing the Lean project
+`Computability/HilbertTenthProblem`, and batch 61 added a seventh manuscript
+on FIFO queues and tag systems to the first of them:
+[`canonical-diophantine-certificates`](hilbert-tenth-problem/canonical-diophantine-certificates)
+(seven manuscripts: polynomials whose natural zeros are in bijection with
+bounded executions or their trace classes, for guarded translations, Petri
+nets, counter schedules, polynomial trajectories, memory logs, queues and tag
+systems and rewriting) and
+[`probabilistic-quantum-and-continuous-computation`](hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation)
+(three: output laws and normalization budgets of probabilistic programs,
+undecidable quantum mortality in dimension four, and a continuous
+three-outcome trichotomy).  Batch 62 added four Parts to the first of these
+(dynamic heaps and fresh names; order-free self-assembly and a sharp degree
+threshold for orthant-nonnegative polynomials; priority pumping; conservative
+reaction networks with one shared fallback: Parts X–XIII), three Parts from
+eight manuscripts to the second (quartic probability landscapes and
+reversible equilibria; exact rational and cyclotomic gates; strict and 2-adic
+contractions and exact-precision neural networks: Parts V–VII), and opened a
+third, [`liveness-beyond-halting`](hilbert-tenth-problem/liveness-beyond-halting)
+(two manuscripts: progress deadlines, hyperimmune-free schedules and the
+recurrence hierarchy up to Σ¹₁).  Batch 63 added a third manuscript to
+[`liveness-beyond-halting`](hilbert-tenth-problem/liveness-beyond-halting)
+(an incoming-edge quadratic transition law and planar stack dynamics), a
+Part XIV to
+[`canonical-diophantine-certificates`](hilbert-tenth-problem/canonical-diophantine-certificates)
+(history-free routing certificates and a rank-function bottleneck), and a
+Part VIII to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(marked-tree stability).  Batch 64 added a Part IX to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(two-flow bijections and lattice-point sampling), a Part III to
+[`arithmetic-local-global-fibers`](jacobian-conjecture/arithmetic-local-global-fibers)
+(nonsplit fibers and a `T log T` law), a Part XIV to
+[`slice-regularity-and-fueter-inversion`](quaternionic-analysis/slice-regularity-and-fueter-inversion)
+(global Fueter inversion beyond finite connectivity), a Part VIII to
+[`probabilistic-quantum-and-continuous-computation`](hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation)
+(rational tubes for polynomial flows) and a Part V to
+[`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
+(critical moments of the largest jump); its sixth manuscript went to the
+Fabius drafts tree.  Batch 65 added a Part IV to
+[`open-query-membership-games`](ordinals-and-order-types/games-on-ordinals/open-query-membership-games)
+(closure-word duality for fixed colorings); its other four manuscripts went
+to the Fabius drafts tree and the Transseries tree.  Batch 66 added Parts II
+and III to
+[`constrained-crossover-closure`](automata-and-formal-languages/constrained-crossover-closure)
+(PSPACE-complete finite stabilization for NFA input; decidable regularity of
+the full closure), a Part III to
+[`cigler-conjecture-16-parity`](hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity)
+(cyclotomic pole collapse), a Part III to
+[`insertion-degree-spectra`](automata-and-formal-languages/insertion-degree-spectra)
+(sharp isolation thresholds) and a Part X to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(rare stable markings on random trees); its remaining manuscript went to the
+Fabius drafts tree.  Batch 67 added Parts V and VI to
+[`dfao-reversal-coloring-obstruction`](automata-and-formal-languages/dfao-reversal-coloring-obstruction)
+(a near-linear threshold with theta limits; minimal recurrences and a
+nineteen-output cancellation) and a Part II to
+[`domination-root-minus-four-order-30`](graph-theory/domination-root-minus-four-order-30)
+(cycle budgets for integer domination roots); its remaining manuscript went
+to the Fabius drafts tree.  Batch 68 added a Part V to
+[`open-query-membership-games`](ordinals-and-order-types/games-on-ordinals/open-query-membership-games)
+(universal word profiles at every finite height), a Part XI to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(Hall bottlenecks for normalization by the matching number) and a Part VI to
+[`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
+(a staircase of polynomial rarity below half size); its other three
+manuscripts went to the Fabius drafts tree.  Batch 69 brought nothing to
+this collection.  Batch 70 opened a fourth Jacobian-conjecture report,
+[`keller-map-dynamical-degrees`](jacobian-conjecture/keller-map-dynamical-degrees)
+(degree growth, shear spectra and arithmetic escape under iteration of the
+three-variable counterexample), and added a Part IV to
+[`cigler-conjecture-16-parity`](hankel-determinants/catalan-and-ballot/cigler-conjecture-16-parity)
+(Cigler's Conjecture 17, proved in sign-corrected form), a second proof of
+the depth-three classification to
+[`power-tower-derivative-term-counts`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts)
+(with a harmonic sign law), a Part III to
+[`sextic-block-resolvent-separators`](galois-theory-and-radicals/sextic-block-resolvent-separators)
+(the zero-parameter matching test) and a Part XII to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(rank-three ultra-log-concavity of matching supports); its sixth
+manuscript went to the Fabius drafts tree.  Batch 71 added a Part IV to
+[`constrained-crossover-closure`](automata-and-formal-languages/constrained-crossover-closure)
+(quadratic finite rank for NFAs), a Part XIII to
+[`preorder-root-polytopes`](enumerative-combinatorics/preorder-root-polytopes)
+(weighted rank three by leaf compression) and a Part VII to
+[`adjacency-bounded-132-avoiders`](enumerative-combinatorics/adjacency-bounded-132-avoiders)
+(the exact half-size crossover); its fourth manuscript went to the Fabius
+drafts tree.
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

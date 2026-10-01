@@ -1279,6 +1279,20 @@ blocks destroy. A proof or counterexample must compare one law directly
 to $\mu_0$, not merely compare two laws that separately approach it;
 \cref{rem:pointwise} explains why the present argument is insufficient.
 \end{question}
+% ed. (2026-09-29): answered at the dyadic reference by a later package.
+\begin{ednote}
+The later repository article
+\path{inverse-and-sampling/Anchored_Dyadic_Recovery_Uniform_Spectrum/} (filed
+2026-09-29, unreviewed) answers this question negatively on the class $\K$
+of \cref{def:K}, and also on $\A_L$ for $L>1$: the anchored modulus
+$\sup\{d_\infty(a,a^0):a\in\K,\ \TV(\mu_a,\mu_0)\le\eps\}$ has the exact
+scale $\exp[-\Theta(\sqrt{\log(1/\eps)})]$, and so does its analogue for
+the Kolmogorov distance. So no positive H\"older exponent is possible, yet
+the anchored modulus is eventually smaller than every negative power of
+$\log(1/\eps)$, in particular than the lower bound
+\eqref{eq:modulus-lower} for the pairwise modulus. Its leading constant is
+bracketed, not determined.
+\end{ednote}
 
 \begin{question}[Exact support endpoints together with quantitative instability]
 Construct explicit exponentially close pairs that retain
@@ -1300,6 +1314,16 @@ identifiability by successive largest-power limits suggests an approach,
 but converting it into certified finite-noise bounds requires controlling
 every deflation error.
 \end{question}
+% ed. (2026-09-29): answered at the dyadic reference by a later package.
+\begin{ednote}
+At the dyadic reference only, the later article
+\path{inverse-and-sampling/Anchored_Dyadic_Recovery_Uniform_Spectrum/} shows that
+separation does not restore a power law: for every fixed $q\in(1/2,1)$ the
+anchored modulus on $\{a\in\K:a_{j+1}\le qa_j\ \text{for all}\ j\}$ still
+has the scale $\exp[-\Theta(\sqrt{\log(1/\eps)})]$. (The dyadic spectrum
+itself needs $q\ge1/2$.) The pairwise modulus on separated classes and the
+boundary case $q=1/2$ remain open.
+\end{ednote}
 
 \begin{question}[Fixed leading factors versus the complete sequence]
 For fixed $r$, find sharp rates for the loss
@@ -1309,6 +1333,17 @@ rank growing with $n$, so it does not settle that finite-prefix question.
 It is important to distinguish a separated finite-dimensional parameter
 from an unknown infinite tail that can imitate its cumulants.
 \end{question}
+% ed. (2026-09-29): answered at the dyadic reference by a later package.
+\begin{ednote}
+Answered at the dyadic reference by the later article
+\path{inverse-and-sampling/Anchored_Dyadic_Recovery_Uniform_Spectrum/}: for every $L\ge1$
+and every fixed $r$, the prefix $(a_1,\dots,a_r)$ is locally
+Lipschitz-stable at $a^0$ in Kolmogorov distance (hence in total variation)
+over $\A_L$, with no assumption on the tail beyond the $\ell^1$ bound, and
+the Lipschitz constant $C_{L,r}$ satisfies
+$\log C_{L,r}\le(\log2)r^2+O_L(r+1)$. The optimal growth in $r$, and
+prefix rates away from the dyadic reference, are not determined there.
+\end{ednote}
 
 \begin{question}[Matching statistical upper bounds]
 Construct a regularized estimator with a proved risk bound over a
@@ -1318,6 +1353,16 @@ a characteristic-function estimator with low-frequency regularization
 may be more natural. Any proposed upper rate must account for both
 moment cancellation and the number of unresolved small factors.
 \end{question}
+% ed. (2026-09-29): an anchored testing version is given by a later package.
+\begin{ednote}
+The later article
+\path{inverse-and-sampling/Anchored_Dyadic_Recovery_Uniform_Spectrum/} gives only an
+anchored version: testing $a=a^0$ against alternatives with
+$d_\infty(a,a^0)\ge\delta$ in the geometrically separated subclasses of
+$\K$ needs $\exp[\Theta(\log^2(1/\delta))]$ samples, and honest confidence
+sets over $\A_L$ contract at $a^0$. A global estimator with a proved risk
+bound over an infinite-factor class, as asked here, remains open.
+\end{ednote}
 
 \begin{question}[Gaussian components and square-summable spectra]
 Extend the quantitative question to the larger generalized-uniform and

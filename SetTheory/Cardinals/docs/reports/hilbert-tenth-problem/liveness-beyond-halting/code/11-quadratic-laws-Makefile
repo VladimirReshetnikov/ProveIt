@@ -1,0 +1,16 @@
+PYTHON ?= python3
+LATEX ?= pdflatex
+
+.PHONY: all pdf test clean
+all: test pdf
+
+pdf:
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+test:
+	$(PYTHON) code/verify.py
+
+clean:
+	rm -f article.aux article.log article.out article.toc

@@ -32,6 +32,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Q}{\mathbb Q}
@@ -152,6 +154,31 @@ priority investigation. Some retrieved sources were available only through
 primary-source abstracts and metadata. Accordingly, the results are presented
 as a proved research extension relative to the specified repository target,
 not as a certified first occurrence of every specialization in the literature.
+% ed. (2026-09-29): uncited overlap with Part I of the Thue--Morse frontier
+% deductions and with the predecessor; uncited Lean theorems.
+\begin{ednote}
+Several ingredients of \cref{sec:cutoff,sec:energies} are already in the
+repository, which this article does not cite. Part~I of the volume
+\path{thue-morse/Thue_Morse_Frontier_Deductions/} of the Fabius
+research-frontier drafts tree (filed 2026-09-05) proves, for the same Riesz product and the same
+sequences, the cutoff identity \eqref{eq:cutoff} together with
+$a_k=B_k(-2)$, the tail formula of \cref{cor:tail-formula}, the energy
+recurrences and closed forms of
+\cref{lem:energy-recurrences,prop:closed-energies} (with a trapezoidal
+endpoint weight), the exponents $s_0,s_1$, the unweighted ($\beta=0$) case
+of \cref{thm:dual-thresholds}, and remainder rates in $H^{-s}$; it credits
+the growth rate $1+\sqrt{17}$ to Zaks, Pikovsky and Kurths. The operator
+form of \eqref{eq:cutoff} is the finite-mode reduction of the predecessor
+\cite{repo-spectral}, whose sequences $\eta,\alpha$ are the present
+$\eta,a$ and whose quartic spectrum is \eqref{eq:A22-char}. New here are
+the logarithmic refinement, the two-sided remainder laws, the critical
+scalar/operator separation and the spectral classification of
+\cref{sec:framework,sec:L2,sec:sobolev-proof,sec:sine}. The
+eigen-identities \eqref{eq:primal-eigenfunctions} are machine-checked in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RMSTransferEigenfunctions.lean}
+and the recursion for $\eta$ in \path{ThueMorseAutocorrelationLimit.lean}
+of the same directory.
+\end{ednote}
 
 \subsection{The principal dyadic conclusion}
 Let
@@ -256,11 +283,13 @@ A coefficient outside $[-D,D]$ is understood to be zero. This matrix is
 exactly the restriction of $\Lop_{b,w}$ to $F_d$.
 
 The hypothesis used in the general result is
-\begin{equation}
+% ed. (2026-09-29): equation* for the tagged display; the numbered environment
+% gave hyperref a duplicate destination equation.2.5.
+\begin{equation*}
  h\in C(\T),\quad \min_\T h>0,\quad \rho>0,\qquad
  \Lop_{b,|w|^2}h=\rho h.
  \tag{P}\label{eq:P}
-\end{equation}
+\end{equation*}
 It is important that $h$ be strictly positive, not merely nonnegative.
 A zero of $h$ would invalidate the bounded similarity used below.
 We prove \eqref{eq:P} for all masks $\sin^{2m}(\pi x)$ in \cref{sec:sine}.
@@ -1436,10 +1465,14 @@ The frequency checks reach $|k|=4096$; the band tests cover
 $b=2,\ldots,8$ and $m=1,\ldots,6$. These finite ranges are computational
 scope statements, not substitutes for quantifiers in the theorems.
 
+% ed. (2026-09-29): the default output is now rerun/verification.json, so the
+% command below no longer overwrites the recorded verification.json.
 Run, from the extracted directory,
 \begin{verbatim}
-python verify.py --output verification.json
+python verify.py
 \end{verbatim}
+which writes \texttt{rerun/verification.json}; the recorded run is
+\texttt{verification.json}.
 The output file includes the exact energy data, arithmetic type, Python
 version, and check counts. Explicit exceptions enforce the checks even
 if Python assertions are disabled. No numerical eigensolver, floating-point
@@ -1579,6 +1612,17 @@ specific to the present proof. Their replacements must account for the
 relevant Banach norms and cannot be obtained by merely replacing $s$ with
 an integer differentiability index in the final formula.
 \end{question}
+% ed. (2026-09-29): context from the repository's rewrite of the synthesis.
+\begin{ednote}
+The repository's separately supplied rewrite
+\path{rvachev_up_fourier_decay/Rvachev_Up_Fourier_Decay-2/} imports the
+Ruelle--Perron--Frobenius theorem on $C^\alpha[0,1]$, $0<\alpha\le1$, for
+this operator: there the leading eigenvalue $1/2$ is simple with a spectral
+gap for every such $\alpha$. This does not conflict with
+\cref{thm:dyadic-spectrum}, where $1/2$ is not isolated for $s\le s_0$: the
+two statements concern different norms, $L^2$-based Sobolev norms here and
+sup-norm H\"older norms there. The question above remains open.
+\end{ednote}
 
 \begin{question}[A proof-producing computational interface]
 Construct a verified procedure that takes an integer dilation and a rational

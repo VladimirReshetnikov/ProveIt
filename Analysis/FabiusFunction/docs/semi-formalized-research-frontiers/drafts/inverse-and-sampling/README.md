@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has twelve live navigation targets:
+This theme has fourteen live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -16,6 +16,9 @@ This theme has twelve live navigation targets:
   — an archival arrival of 2026-09-29 on the information frontier's
   Bayesian prefix operator, prefix Rényi information and
   corrected-prefix rate-distortion questions; unreviewed.
+- [`Quadratic_Renyi_Growth_Geometric_Convolution_Channels/`](Quadratic_Renyi_Growth_Geometric_Convolution_Channels/)
+  — an archival arrival of 2026-09-30 on the growth of prefix Rényi
+  information above the critical order 2; unreviewed.
 - [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
   — an archival arrival of 2026-09-28 on the stability of recovering the
   uniform-factor spectrum from the law; unreviewed.
@@ -39,6 +42,9 @@ This theme has twelve live navigation targets:
   — an archival arrival of 2026-09-29 on recovering the whole
   uniform-factor spectrum, or a fixed prefix of it, at the dyadic
   reference law; unreviewed.
+- [`Lacunarity_Boundary_Geometric_Uniform_Spectra/`](Lacunarity_Boundary_Geometric_Uniform_Spectra/)
+  — an archival arrival of 2026-09-30 on the exact separation boundary
+  `a_{j+1} ≤ a_j/2` of the anchored dyadic recovery problem; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -196,7 +202,7 @@ conjecture as open, and no Lean statement exists.
 holds *Beyond Polynomial Diagonals: Nuclear Bayesian Operators, Exact
 Null Modes, and a Rényi Phase Transition for Fabius–Rvachev Laws*,
 filed on 2026-09-29 by a quick archival intake (21-page A4 PDF,
-912-line source, an exact SymPy check program with high-precision
+939-line source, an exact SymPy check program with high-precision
 eigenvalue diagnostics).  It studies the conditional expectation `C_m`
 of the information frontier above: `C_m` is in every Schatten class
 with an infinite-dimensional kernel of explicit null modes, its
@@ -206,8 +212,24 @@ badly conditioned, every finite-order Rényi information of the prefix
 channel is finite with an exact critical order 2 in the large-depth
 excess, and at the prefix's own distortion no postprocessing of the
 prefix is rate-distortion optimal.  A closed-form spectrum and the
-rate-distortion expansion remain open.  Unreviewed; its numerics are
-diagnostics; no Lean statement.
+rate-distortion expansion remain open.  Its growth question above the
+critical order is taken up by
+`Quadratic_Renyi_Growth_Geometric_Convolution_Channels/` below.
+Unreviewed; its numerics are diagnostics; no Lean statement.
+
+[`Quadratic_Renyi_Growth_Geometric_Convolution_Channels/`](Quadratic_Renyi_Growth_Geometric_Convolution_Channels/)
+holds *Quadratic Rényi Growth: A Universal Linear Correction and
+Endpoint Selection in Geometric Convolution Channels*, filed on
+2026-09-30 by a quick archival intake and amended editorially the same
+day (its README lists the amendments; 20-page A4 PDF, 1,421-line
+source, an exact check program with optional floating-point
+quadrature).  It answers the article above's question on growth above
+the critical Rényi order: for fixed `α > 2` the prefix information is
+`(α−2)L m²/2 + B(α)m + O(log² m)` with an explicit universal `B(α)`,
+both coefficients scale by `max(θ_0, θ_1)` for Beta innovations, and
+the Rényi-tilted law concentrates at the heavier endpoint with explicit
+radial and allocation large deviations.  The critical crossover
+`α = 2 + u/m` stays open.  Unreviewed; no Lean statement.
 
 [`Recovering_Uniform_Factors_Fabius_Rvachev/`](Recovering_Uniform_Factors_Fabius_Rvachev/)
 holds *Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
@@ -300,7 +322,7 @@ law's.  Unreviewed; its numerics are diagnostics; no Lean statement.
 
 [`Anchored_Dyadic_Recovery_Uniform_Spectrum/`](Anchored_Dyadic_Recovery_Uniform_Spectrum/)
 holds *Anchored Recovery of the Dyadic Uniform Spectrum*, filed on
-2026-09-29 by a quick archival intake (22-page A4 PDF, 1,622-line
+2026-09-29 by a quick archival intake (23-page A4 PDF, 1,682-line
 source, an exact check program with mpmath diagnostics).  It takes up
 the pointwise questions the uniform-factor recovery article above
 leaves open: comparing a law directly with the Rvachev law, the
@@ -312,6 +334,19 @@ leading factors is recovered at Lipschitz rate with an arbitrary
 summable tail.  Testing the dyadic law against `δ`-separated
 alternatives needs `exp[Θ(log²(1/δ))]` samples.  The pairwise modulus
 remains open.  Unreviewed; no Lean statement.
+
+[`Lacunarity_Boundary_Geometric_Uniform_Spectra/`](Lacunarity_Boundary_Geometric_Uniform_Spectra/)
+holds *The Lacunarity Boundary: Two-Moment Rigidity and Sharp Recovery of
+Geometric Uniform Spectra*, filed on 2026-09-30 by a quick archival
+intake (22-page A4 PDF, 1,557-line source, a standard-library exact check
+program).  It answers the anchored article's question "The sharp
+separation boundary ρ=1/2": under `a_{j+1} ≤ a_j/2` with variance `1/9`,
+`sup_j |a_j − 2^{−j}|² ≤ (75/4)(19/675 − E X⁴)`, so the whole spectrum is
+recovered at the sharp rate `Θ(√ε)` — Hölder exponent `1/2`, against the
+stretched-exponential modulus under any slack — with matching smooth
+witnesses, prefix constants `Θ(2^r)`, testing complexity `Θ(δ^{−4})`,
+and support rigidity at the boundary.  The pairwise modulus and the
+small-slack crossover remain open.  Unreviewed; no Lean statement.
 
 ## Formalization notes
 

@@ -124,3 +124,39 @@ no new Lean/Rocq proof objects were supplied or built. The Python programs,
 interpreter, and standard analytic inputs have not been formally verified
 as part of this package. Priority for every generalization in the broader
 literature is not asserted. No repository files were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+In the editorial pass after batch 57 of the repository-level
+`docs/incoming/` drop zone (see `docs/incoming/README.md`), a later package
+of this tree was found to answer two of its research questions on the
+Sobolev scale. The article gains reciprocal notes; its mathematical text is
+unchanged.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style.
+- `article.tex`: after Question 12.2 ("Spectra at finite smoothness"), a
+  note records that `../Sobolev_Spectral_Disks_Rvachev_Thue_Morse/` (filed
+  2026-09-29, unreviewed) answers the Sobolev part: on the periodic spaces
+  `H^(s,beta)` the spectrum of the quadratic operator is the closed disk of
+  radius `2^(-s) sqrt(1+sqrt 17)/4` (all essential) together with `1/2` and
+  `-1/4`, isolated exactly for `s > s_0 = (1/2) log_2((1+sqrt 17)/4)`
+  (about 0.1785) and `s > s_0 + 1` respectively, so `-1/4` is not isolated on
+  `L^2` or `H^1`; the same holds on `H^r(0,1)` for integer `r`. Hoelder, `C^r`
+  and weighted endpoint spaces are not treated there.
+- `article.tex`: after Question 12.9 ("Arithmetic and regularity of the
+  correction functional"), a note records that `alpha(k) = B_k(-2)` (Stern
+  polynomials at `-2`) and that the functional is continuous on `H^s` of the
+  circle exactly for `s > s_0 + 1`, both already in Part I of
+  `../../thue-morse/Thue_Morse_Frontier_Deductions/` (filed 2026-09-05, not
+  cited here), and that the later Sobolev package adds the logarithmic
+  endpoint: on `H^(s_0+1,beta)` it is continuous exactly when `beta > 1/2`.
+  Both notes are marked `% ed.`.
+- `article.pdf`: rebuilt with `latexmk -pdf -interaction=nonstopmode
+  -halt-on-error article.tex` (MiKTeX 26.2 pdfTeX 1.40.29): 23 pages, as delivered,
+  508,202 bytes; no error, undefined reference, duplicate destination
+  or overfull box; no Type 3 font; the pages carrying the notes were
+  rendered and inspected.
+- `CHECKSUMS.sha256`, listed under "Contents", was verified (15/15) and
+  retired when the package was filed (batch 38 of `docs/incoming/`); the
+  delivered archive remains in the repository history.

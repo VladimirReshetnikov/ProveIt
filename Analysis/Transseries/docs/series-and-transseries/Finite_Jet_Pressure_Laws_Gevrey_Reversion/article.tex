@@ -1,0 +1,1706 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Finite-Jet Pressure Laws for Gevrey Reversion and Condensation},
+ pdfauthor={ChatGPT; prepared for Vladimir Reshetnikov}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\crefname{lemma}{lemma}{lemmas}\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{proposition}{propositions}\Crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{corollary}{corollaries}\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{definition}{definitions}\Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}\Crefname{example}{Example}{Examples}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite-jet pressure laws}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\inv}{^{\langle-1\rangle}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\coef}[2]{[#1]\,#2}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\rise}[2]{(#1)_{#2}}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Law}{Law}
+\DeclareMathOperator{\Rea}{Re}
+\numberwithin{equation}{section}
+\newcommand{\snapshot}{\texttt{a4268e78\,ebd0f6bf\,71ba609c\,07f4b341\,5748f532}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{10mm}
+{\color{MidnightBlue}\Large ProveIt research continuation\par}
+\vspace{11mm}
+{\Huge\bfseries Finite-Jet Pressure Laws\par}
+\vspace{3mm}
+{\huge\bfseries for Gevrey Reversion\par and Condensation\par}
+\vspace{9mm}
+{\Large Complete multiplicative asymptotics,\par explicit critical constants, and Poisson centering\par}
+\vspace{11mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large ChatGPT\par}
+{30 September 2026\par}
+\vspace{9mm}
+\begin{abstract}
+The ProveIt research corpus leaves a precise gap in its sharp
+fixed-coefficient-ball analysis of formal reversion: at Gevrey orders
+$0<s<1/2$, the leading logarithmic amplification is known, but a
+multiplicative equivalent is not supplied. We close that gap for the
+stated factorial weights and, more generally, for positive weights with
+an eventually shifted-factorial tail and an arbitrary finite head.
+The logarithm of the normalized extremal inverse coefficient is a finite
+sum $\sum_{ks\le1}p_k n^{1-ks}+o(1)$, with an explicit coefficient
+extraction formula for every $p_k$. Thus every positive order, including
+all reciprocal-integer transition points, has a complete multiplicative
+equivalent.
+
+A parameter $\theta\ge-1$ puts the reversion extremum ($\theta=1$) and
+superexponentially weighted plane trees ($\theta=-1$) into one theorem.
+The proof reduces an exact Lagrange sum to finitely many small-part
+sizes and evaluates it by a Poisson change of measure. It gives a
+finite-head universality law, all critical windows
+$s=1/r+t/\log n$, and explicit all-order centering parameters for the
+asymptotically independent small-part counts. Exact algebraic checks and
+non-certified numerical diagnostics accompany the proofs.
+\end{abstract}
+\vfill
+\small
+\textbf{Status.} Conventional mathematical proofs, not Lean-verified or
+peer-reviewed. The identified repository gap is resolved under the
+hypotheses stated here; no claim of worldwide publication priority or
+resolution of an unrelated longstanding conjecture is made.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{The research target and its boundaries}\label{sec:target}
+
+\subsection{A specific missing asymptotic, not another type theorem}
+For a formal power series $f(z)=z+O(z^2)$, let $f\inv$ denote its
+compositional inverse. Consider the fixed coefficient ball
+\begin{equation}
+ \mathcal B_{s,A,C}
+ =\left\{z+\sum_{n\ge2}f_nz^n:
+       |f_n|\le C A^{n-1}((n-1)!)^s\right\},
+ \qquad s,A,C>0.
+ \label{eq:basicball}
+\end{equation}
+Preservation of an $n$th-root coefficient type under inversion does not
+specify the amplification at these exact constants $A$ and $C$.
+Subexponential factors disappear under $n$th roots, but can still
+become arbitrarily large.
+
+The inspected ProveIt package \emph{Sharp Subexponential Reversion}
+\cite{subexp} identifies a single extremizer for \eqref{eq:basicball} and
+proves its sharp leading logarithm. It gives multiplicative equivalents
+above order $1/2$ and at $1/2$, but explicitly leaves the corresponding
+answer below $1/2$ open within that article. This is the target of the
+present work. The earlier exact weighted-type theorem \cite{weighted}
+is not claimed as a new contribution here.
+
+The repository snapshot used for the inspection is
+\begin{center}\snapshot.\end{center}
+The relevant directories lie under
+\begin{quote}\small\ttfamily
+Analysis/Transseries/docs/series-and-transseries/.
+\end{quote}
+The package names in the bibliography, source headings, and this
+snapshot are more durable locators than mutable source line numbers.
+The source review was targeted: the relevant READMEs, the predecessor's
+extremal and localization arguments, and searches for overlapping
+reversion results were inspected. This was not an audit of the entire
+repository.
+% ed. (2026-09-30): neighbouring packages of the same directory that the article does not cite
+\begin{ednote}
+Four packages beside the predecessor bear on this article and are not cited
+in it. The exact-type article \cite{ed:exacttype} asks for the optimal
+subexponential overhead of reversion for a specified weight profile (its
+question ``Optimal subexponential overhead''; an editorial note there records
+the factorial-weight answer of \cite{subexp}). For weights equal to
+$D_*\Gamma(j+\nu+1)^s$ from some index on, with an arbitrary positive finite
+head, not necessarily log-convex, \cref{thm:main} determines the extremal
+cost in this article's normalization by $Cw_{n-1}$; for general weight
+profiles the question stays open. The exponential-feedback articles
+\cite{ed:finitecore,ed:microcond,ed:poissonlayers} use the same mechanism,
+Poisson small-part counts after a change of measure with a finite-core
+universality threshold, for a different kernel; \cite{ed:finitecore} also
+cites \cite{jjs} and distinguishes its kernel from their product-weight
+model. The predecessor \cite{subexp} now carries editorial notes at its
+statement of the gap below one half and at its two questions answered here
+(\cref{thm:main,thm:windows}).
+\end{ednote}
+
+\subsection{What is proved here}
+The principal theorem supplies, for every fixed $s>0$, a finite list of
+explicit constants that determines the extremal inverse coefficient up
+to a relative error tending to zero. For example, the previously
+uncovered order $s=1/3$ has the formula
+\begin{align}
+ \log R_n={}&Cn^{2/3}
+ +\left(2^{1/3}C+\frac23C^2\right)n^{1/3}\notag\\
+ &+6^{1/3}C+\frac53\,2^{1/3}C^2+\frac79C^3+o(1),
+ \label{eq:introthird}
+\end{align}
+where $R_n$ is the supremum of the normalized inverse coefficient over
+\eqref{eq:basicball}. The formula has an actual constant term: omitting
+it would give an incorrect multiplicative equivalent.
+
+There are three additional consequences. First, only the initial
+$\lfloor1/s\rfloor$ weights affect the normalized multiplicative
+asymptotic. Second, every reciprocal integer $1/r$ has an explicitly
+resolved $1/\log n$ transition window. Third, the same finite implicit
+equation computes all centering corrections needed for Gaussian limits
+of the accompanying small-part counts. A one-parameter family makes
+these statements apply to both extremal reversion and weighted trees.
+
+\subsection{Published precedents and novelty qualifications}
+Formal Lagrange inversion is classical; we use its coefficient form as
+presented, for example, by Gessel \cite{gessel}. Factorially divergent
+coefficient algebras and their composition and inversion rules have
+substantial antecedents, including Borinsky \cite{borinsky}.
+
+For superexponential tree weights, Janson, Jonsson and Stef\'ansson
+\cite{jjs} already prove condensation, Gaussian and critical Poisson
+limits, and total-variation approximation by independent Poisson
+variables. Their Remark~2.8 gives the first two exponent terms and
+points toward higher corrections. Those probabilistic phenomena are
+not discoveries of this article. Our contribution is the explicit
+all-order pressure and centering formula, its reversion application,
+and the finite-head and transition-window consequences proved below.
+
+The principal proofs are self-contained after formal Lagrange inversion
+and elementary facts about factorials and Poisson variables. In
+particular, no unreviewed asymptotic theorem from the repository is
+needed as a black-box input. The literature check is not an exhaustive
+priority search; the manuscript should receive independent mathematical
+review before its conclusions are treated as established results.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{p{.32\textwidth}p{.61\textwidth}}
+\toprule
+Statement & Scope and status\\
+\midrule
+Exact extremizer & Known in the predecessor; short proof included.\\
+All-order exponent coefficients & Explicit formula and proof for every fixed $s>0$.\\
+Complete multiplicative equivalent & Proved for eventually shifted-factorial tails and arbitrary positive finite heads.\\
+All reciprocal critical windows & Proved, uniformly on bounded window parameters.\\
+Poisson small-part law & Generalized and given explicit centers; the tree phenomenon has published precedents.\\
+Numerical evidence & Finite exact algebra checks plus floating-point diagnostics; not an asymptotic proof.\\
+Beyond the theorem's hypotheses & General oscillatory tails, cancellation, and the joint limit $s\downarrow0$ remain separate questions.\\
+\bottomrule
+\end{tabular}
+\caption{Claim and dependency ledger.}
+\end{table}
+
+\section{The main theorem}\label{sec:main}
+
+\subsection{Weights and the interpolation family}
+\begin{definition}[Eventually shifted-factorial weights]\label[definition]{def:weights}
+Fix $s>0$. A positive sequence $(w_j)_{j\ge1}$ is admissible here if
+there exist $D_*>0$, $\nu\ge0$, and an integer $j_0\ge1$ such that
+\begin{equation}
+ w_j=D_*\,\Gamma(j+\nu+1)^s\qquad(j\ge j_0).
+ \label{eq:tail}
+\end{equation}
+The finitely many weights $w_1,\ldots,w_{j_0-1}$ may be arbitrary
+positive numbers. In particular, log-convexity of the entire sequence is
+not required.
+\end{definition}
+
+The weights in the predecessor are the special cases
+\begin{equation}
+ w_j=\left(\frac{\Gamma(j+\nu+1)}{\Gamma(\nu+2)}\right)^s,
+ \qquad \nu\in\{0,1\}.
+ \label{eq:repoweights}
+\end{equation}
+They satisfy $w_1=1$. The shift $\nu=0$ gives $w_j=(j!)^s$;
+$\nu=1$ gives $w_j=((j+1)!/2)^s$.
+
+Fix $C>0$ and $\theta\ge-1$. All the following definitions involving
+an infinite series are formal. Put
+\begin{equation}
+ W(z)=\sum_{j\ge1}w_jz^j,
+ \qquad
+ F_\theta(z)=
+ \begin{cases}
+ z(1-\theta CW(z))^{1/\theta},&\theta\ne0,\\
+ z\exp(-CW(z)),&\theta=0,
+ \end{cases}
+ \label{eq:Ftheta}
+\end{equation}
+and define
+\begin{equation}
+ G_\theta=F_\theta\inv,
+ \qquad R_n^{(\theta)}=
+ \frac{[z^n]G_\theta(z)}{Cw_{n-1}},\qquad n\ge2.
+ \label{eq:Rtheta}
+\end{equation}
+The linear coefficient of $F_\theta$ is $1$, so the inverse exists
+uniquely in $\R[[z]]$. We shall prove that $R_n^{(\theta)}>0$.
+The restriction $\theta\ge-1$ is a positivity condition on finite
+Lagrange coefficients, not an analyticity assumption on $W$.
+
+At $\theta=1$, $F_1=z-C\sum_{j\ge1}w_jz^{j+1}$ is the extremal
+negative series. At $\theta=-1$, $G_{-1}$ satisfies
+\begin{equation}
+ G_{-1}(z)=z\bigl(1+CW(G_{-1}(z))\bigr),
+ \label{eq:treeeq}
+\end{equation}
+the formal equation for plane rooted trees with leaf weight $1$ and
+weight $Cw_j$ for a vertex of outdegree $j\ge1$.
+
+\subsection{A finite polynomial determines the answer}
+Choose an integer $J\ge1$ such that
+\begin{equation}
+ (J+1)s>1.
+ \label{eq:J}
+\end{equation}
+Define the finite polynomial and its rational transform
+\begin{equation}
+ a_j=Cw_j,\qquad
+ A(t)=\sum_{j=1}^J a_jt^j,
+ \qquad B(t)=\frac{tA'(t)}{1-\theta A(t)}.
+ \label{eq:AB}
+\end{equation}
+Unlike $W$, these expressions are analytic near the origin.
+For any real $a$, let
+\begin{equation}
+ \Psi_a(u)=\int_0^u(1-v)^{-a}\,dv
+ =\sum_{r\ge1}\frac{\rise{a}{r-1}}{r!}u^r,
+ \label{eq:Psi}
+\end{equation}
+where the rising factorial of length zero is $1$. Thus
+$\Psi_1(u)=-\log(1-u)$; for $a\ne1$,
+$\Psi_a(u)=((1-u)^{1-a}-1)/(a-1)$.
+
+\begin{theorem}[Finite-jet pressure law]\label{thm:main}
+Under \cref{def:weights}, fix $C>0$, $\theta\ge-1$, and $J$ satisfying
+\eqref{eq:J}. Define
+\begin{equation}
+ p_k=\frac1k[t^k]\,\Psi_{ks}(B(t)),\qquad 1\le k\le J.
+ \label{eq:pk}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\displaystyle
+ \log R_n^{(\theta)}=\sum_{k=1}^Jp_kn^{1-ks}+o(1).}
+ \label{eq:mainlog}
+\end{equation}
+Equivalently,
+\begin{equation}
+ R_n^{(\theta)}=
+ \exp\left\{\sum_{k=1}^Jp_kn^{1-ks}\right\}(1+o(1)).
+ \label{eq:mainmult}
+\end{equation}
+For a fixed $s$, terms with $ks>1$ may be omitted. The coefficient $p_k$
+depends only on $s,\theta,a_1,\ldots,a_k$, not on the rest of the
+weight sequence or the chosen truncation order $J\ge k$.
+\end{theorem}
+
+In particular, when $0<s\le1$, taking $J=\lfloor1/s\rfloor$ supplies
+exactly the terms that do not tend to zero. For $s>1$, taking $J=1$
+shows $R_n^{(\theta)}\to1$. At $s=1$ the limit is $\exp(Cw_1)$,
+independent of $\theta$.
+
+Here and throughout, a complete multiplicative equivalent means a
+formula with relative error $o(1)$. It does not mean that every vanishing
+correction after that relative error has been calculated.
+
+\begin{theorem}[Finite analytic pressure]\label{thm:pressure}
+With the same hypotheses, let $y=y(x)$ be the unique analytic germ
+with $y(0)=0$ satisfying
+\begin{equation}
+ y=x(1-B(y))^{-s}.
+ \label{eq:y}
+\end{equation}
+Set $d(x)=B(y(x))$ and
+\begin{equation}
+ P(x)=L_\theta(A(y(x)))
+       +s\bigl(\log(1-d(x))+d(x)\bigr),
+ \label{eq:pressure}
+\end{equation}
+where
+\begin{equation}
+ L_\theta(v)=
+ \begin{cases}
+ -\theta^{-1}\log(1-\theta v),&\theta\ne0,\\
+ v,&\theta=0.
+ \end{cases}
+ \label{eq:Ltheta}
+\end{equation}
+For sufficiently large $n$, this real germ is defined at $x=n^{-s}$,
+and
+\begin{equation}
+ R_n^{(\theta)}=\exp\{nP(n^{-s})\}(1+o(1)),
+ \qquad xP'(x)=d(x).
+ \label{eq:resummed}
+\end{equation}
+Its Taylor coefficients through order $J$ are precisely \eqref{eq:pk}.
+\end{theorem}
+
+The pressure in \eqref{eq:pressure} uses a \emph{finite} polynomial.
+There is no substitution of a positive real number into the divergent
+series $W$. This distinction is necessary: replacing $A$ by $CW$ in an
+analytic saddle equation would not be justified.
+
+\subsection{Uniformity needed later}
+The conclusions of \cref{thm:main,thm:pressure} hold uniformly when
+$s,C$, and $\theta$ vary in compact subsets of
+$(0,\infty)$, $(0,\infty)$, and $[-1,\infty)$, respectively, provided
+one fixed $J$ has $(J+1)s_{\min}>1$ and the tail description is uniform.
+For example, one may fix $j_0$ and $\nu$, let $D_*$ and the finitely many
+exceptional weights be positive continuous functions of the parameters,
+and bound them above and away from zero on those compact sets.
+This version includes \eqref{eq:repoweights} with varying $s$.
+The proof below identifies the uniform estimates explicitly.
+
+\section{Exact Lagrange coefficients and the extremum}\label{sec:exact}
+
+\subsection{The positive finite sum}
+Let $m=n-1$, and write
+\begin{equation}
+ P_w(m,k)=\sum_{\substack{j_1+\cdots+j_k=m\\j_i\ge1}}
+                   \prod_{i=1}^k w_{j_i}.
+ \label{eq:Pw}
+\end{equation}
+This is a finite sum over ordered positive compositions of $m$.
+
+\begin{proposition}[Exact coefficient formula]\label[proposition]{prop:lagrange}
+For $n\ge2$,
+\begin{equation}
+ R_n^{(\theta)}=
+ \frac1{nCw_m}\sum_{k=1}^m
+ \frac{\prod_{r=0}^{k-1}(n+\theta r)}{k!}\,C^kP_w(m,k).
+ \label{eq:exactR}
+\end{equation}
+Every summand is positive and the $k=1$ summand equals $1$.
+\end{proposition}
+\begin{proof}
+Formal Lagrange inversion \cite{gessel} gives
+\[
+ [z^n]G_\theta=
+ \frac1n[t^{n-1}](1-\theta CW(t))^{-n/\theta}
+\]
+for $\theta\ne0$, with $\exp(nCW(t))$ at $\theta=0$.
+The coefficient of $(CW)^k$ is
+$\prod_{r=0}^{k-1}(n+\theta r)/k!$, including the continuous
+$\theta=0$ interpretation. Since $k\le n-1$ and $\theta\ge-1$,
+all factors are strictly positive. Expansion of $W^k$ gives
+\eqref{eq:exactR}; its first term is $1$ after normalization.
+\end{proof}
+
+No convergence is used in this argument. A coefficient of degree $m$
+in a power of $W$ depends on only $w_1,\ldots,w_m$.
+
+\begin{proposition}[Simultaneous extremality]\label[proposition]{prop:extreme}
+For arbitrary positive weights and $A_0,C>0$, let
+\[
+ \mathcal B(A_0,C;w)=
+ \left\{z+\sum_{j\ge1}f_{j+1}z^{j+1}:\
+       |f_{j+1}|\le C A_0^jw_j\right\}.
+\]
+The single series
+\begin{equation}
+ F_*(z)=z-C\sum_{j\ge1}A_0^jw_jz^{j+1}
+ \label{eq:extremizer}
+\end{equation}
+attains
+\begin{equation}
+ \sup_{f\in\mathcal B(A_0,C;w)}
+ \frac{|[z^n]f\inv|}{CA_0^{n-1}w_{n-1}}
+ =R_n^{(1)}
+ \label{eq:extremalR}
+\end{equation}
+for every $n\ge2$ simultaneously.
+\end{proposition}
+\begin{proof}
+For $f=z(1+H)$, Lagrange inversion expresses the inverse coefficient as
+$\frac1n[z^{n-1}](1+H)^{-n}$.
+The coefficients of $(1-u)^{-n}$ are nonnegative. Taking absolute
+values and majorizing each coefficient of $H$ by $CA_0^jw_j$
+therefore gives the coefficient of $F_*\inv$.
+For $F_*$ every contribution has the same positive sign, so equality
+holds. Finally, replacing $z$ by $A_0z$ contributes the common factor
+$A_0^{n-1}$. This proves both the extremum and its independence of
+$A_0$ after normalization.
+\end{proof}
+
+This proposition is an exact statement about a coefficient ball, not
+about the inverse of an arbitrary positive or signed series. The
+asymptotic conclusions about this supremum do not assert that every
+member of the ball attains it asymptotically.
+
+\section{Localization at one large part}\label{sec:localization}
+
+The first reduction is from all compositions to those with a unique
+part near $m=n-1$. The argument also records why a fixed finite head
+of the weights does not obstruct the analysis.
+
+\begin{lemma}[Convolution bound]\label[lemma]{lem:convolution}
+Under \cref{def:weights}, there is a constant $K\ge1$ such that
+\begin{equation}
+ \sum_{j=1}^{m-1}w_jw_{m-j}\le K w_{m-1}\quad(m\ge2),
+ \qquad
+ P_w(m,k)\le K^{k-1}w_{m-k+1}.
+ \label{eq:conv}
+\end{equation}
+\end{lemma}
+\begin{proof}
+There are constants $c_1,c_2>0$ such that, for every $j\ge1$,
+\begin{equation}
+ c_1(j!)^s(j+1)^{s\nu}\le w_j
+ \le c_2(j!)^s(j+1)^{s\nu}.
+ \label{eq:gammacomparison}
+\end{equation}
+This follows from the gamma quotient asymptotic and adjustment of
+finitely many constants; for integer $\nu$ it follows directly from a
+finite product.
+
+For large $m$, and $1\le j\le m/2$, both $m-j$ and $m-1$ are in the
+exact tail. Their quotient is
+\[
+ \frac{w_{m-j}}{w_{m-1}}
+ =\left(\prod_{r=1}^{j-1}(m-j+\nu+r)\right)^{-s}
+ \le j^{-s(j-1)}.
+\]
+Consequently
+\[
+ \frac{w_jw_{m-j}}{w_{m-1}}
+ \le c_2(j!)^s(j+1)^{s\nu}j^{-s(j-1)}.
+\]
+Stirling's upper bound makes the right side at most a constant times
+$j^{s\nu+3s/2}\ee^{-sj}$. This is summable. Reflection about $m/2$
+and an increase of $K$ for the remaining finitely many $m$ prove the
+first assertion.
+
+For the second, induct on $k$. Splitting off the first part and using
+the induction hypothesis gives
+\[
+ P_w(m,k)\le K^{k-2}
+ \sum_{j=1}^{m-k+1}w_jw_{m-k+2-j}
+ \le K^{k-1}w_{m-k+1}.
+\]
+The case $k=1$ is an equality.
+\end{proof}
+
+Let $T_{n,k}$ be the $k$th summand in \eqref{eq:exactR}.
+The elementary estimate
+$\prod_{r=0}^{k-1}(n+\theta r)\le(c_\theta n)^k$,
+where $c_\theta=1+\max(\theta,0)$, combines with
+\cref{lem:convolution} to give constants $c,D>0$ such that
+\begin{equation}
+ T_{n,k}\le c\frac{(D n^{1-s})^{k-1}}{k!}
+ \qquad(1\le k\le n/2)
+ \label{eq:lengthtail}
+\end{equation}
+for large $n$. Indeed, the quotient $w_{n-k}/w_{n-1}$ consists of
+$k-1$ inverse $s$th powers of factors at least $n/2$.
+For $k>n/2$, monotonicity in the exact tail, with a fixed adjustment for
+the finite head, gives
+\begin{equation}
+ \sum_{k>n/2}T_{n,k}
+ \le \exp\{-\tfrac{s}{2}n\log n+O(n)\}.
+ \label{eq:longlength}
+\end{equation}
+To check the entropy factor in this last bound, note that
+$(c_\theta n)^k/k!$ is $\exp(O(n))$ when $k>n/2$;
+$C^{k-1}K^{k-1}$ has the same bound. The remaining weight quotient has
+logarithm at most $-\frac{s}{2}n\log n+O(n)$.
+
+\begin{lemma}[One-large-part localization]\label[lemma]{lem:localization}
+Choose real exponents satisfying
+\begin{equation}
+ \max(1-s,0)<\kappa<\alpha<1,
+ \qquad h=\lfloor n^\alpha\rfloor.
+ \label{eq:cutoff}
+\end{equation}
+For large $n$, the total contribution to \eqref{eq:exactR} from
+compositions with no part at least $m-h$ is $o(1)$.
+More precisely, it is bounded by a sum of terms of the forms
+$\exp(-c n^\alpha\log n)$ and
+$\exp(-c' n^\kappa\log n)$, with positive constants.
+\end{lemma}
+\begin{proof}
+First restrict the number of parts to $k\le t=\lfloor n^\kappa\rfloor$.
+Since $h<m/2$ eventually, concentration of a factorial product under
+an upper bound $m-h$ gives
+\begin{equation}
+ \prod_{i=1}^k j_i!\le(m-h)!h!.
+ \label{eq:cap}
+\end{equation}
+One proof permits zero parts and moves a unit from a smaller positive
+part to a larger part that is below the cap. Such a move does not
+decrease the factorial product. At a maximum at most two parts are
+nonzero, and they have sizes $m-h$ and $h$.
+
+By \eqref{eq:gammacomparison}, the normalized weight product is at most
+\[
+ c_1^{-1}c_2^k\binom{m}{h}^{-s}
+       \prod_{i=1}^k(j_i+1)^{s\nu}
+ \le c_1^{-1}c_2^k\binom{m}{h}^{-s}(1+m/k)^{s\nu k}.
+\]
+We have discarded a denominator $(m+1)^{s\nu}\ge1$.
+There are $\binom{m-1}{k-1}$ positive compositions of length $k$.
+The logarithms of this count, of the Lagrange factor, and of all fixed
+constants together are $O(k\log(\ee n/k)+\log n)$.
+The total for $k\le t$ is thus bounded by
+\begin{equation}
+ \exp\left\{-s\log\binom{m}{h}
+       +O\left(t\log\frac{\ee n}{t}+\log n\right)\right\}.
+ \label{eq:capentropy}
+\end{equation}
+Here
+$\log\binom{m}{h}=(1-\alpha+o(1))n^\alpha\log n$,
+which dominates the positive error because $\alpha>\kappa$.
+
+For $k>t$, use \eqref{eq:lengthtail} and \eqref{eq:longlength}.
+The ratio $t/n^{1-s}$ tends to infinity. The inequality
+$k!\ge(k/\ee)^k$, followed by a geometric tail estimate, gives
+\[
+ \sum_{t<k\le n/2}T_{n,k}
+ \le\exp\left\{-t\log\frac{t}{\ee D n^{1-s}}+O(\log n)\right\}.
+\]
+Its exponent is a negative constant multiple of
+$n^\kappa\log n$. These bounds prove the claim.
+\end{proof}
+
+The error in this lemma is \emph{absolute} in the normalized quantity
+$R_n^{(\theta)}$. Since $R_n^{(\theta)}\ge1$, an absolute $o(1)$ is
+also harmless for a multiplicative equivalent. In the next reduction,
+where sums can be exponentially large on a sublinear scale, a relative
+estimate will be needed instead.
+
+\section{The exact cloud and the finite-size cutoff}\label{sec:cloud}
+
+\subsection{Grouping the small parts}
+In a localized composition the part of size at least $m-h$ is unique.
+Call it the large part and write its size as $m-d$. If $m_j$ counts the
+remaining parts of size $j$, then
+\begin{equation}
+ \ell=\sum_{j\ge1}m_j,\qquad d=\sum_{j\ge1}jm_j\le h.
+ \label{eq:ellandd}
+\end{equation}
+There are $(\ell+1)!/\prod_jm_j!$ ordered compositions with this
+multiplicity vector. Multiplication by the $k=\ell+1$ Lagrange factor
+in \eqref{eq:exactR} cancels both that factorial and the first factor
+$n$. We obtain the exact formula
+\begin{equation}
+ R_{n,\mathrm{loc}}^{(\theta)}(h)=
+ \sum_{\substack{m_1,m_2,\ldots\ge0\\\sum jm_j\le h}}
+ \frac{\prod_{r=1}^{\ell}(n+\theta r)}{\prod_jm_j!}
+ \frac{w_{m-d}}{w_m}\prod_{j\ge1}a_j^{m_j}.
+ \label{eq:cloudexact}
+\end{equation}
+The all-zero multiplicity vector contributes $1$. In this section
+$a_j=Cw_j$ is defined for all $j\ge1$, not only $j\le J$.
+
+\begin{lemma}[Only finitely many small sizes matter]\label[lemma]{lem:finitecut}
+Let $S_{n,J}(h)$ denote the sum in \eqref{eq:cloudexact} restricted to
+$m_j=0$ for all $j>J$. Under \eqref{eq:J} and \eqref{eq:cutoff},
+\begin{equation}
+ R_n^{(\theta)}=S_{n,J}(h)(1+o(1)).
+ \label{eq:finitecut}
+\end{equation}
+\end{lemma}
+\begin{proof}
+All summands are nonnegative. Compare a summand with one obtained by
+adding a part of size $j$ while retaining $d+j\le h$. The ratio is at
+most
+\begin{equation}
+ \frac{\lambda_j^+}{m_j+1},\qquad
+ \lambda_j^+=(n+\theta_+h)a_j(n+\nu-h)^{-sj},
+ \qquad\theta_+=\max(\theta,0).
+ \label{eq:insertion}
+\end{equation}
+For the first factor use $n+\theta(\ell+1)\le n+\theta_+h$.
+For the large-part quotient, all relevant indices are eventually in
+the exact tail and each of the $j$ denominator factors is at least
+$n+\nu-h$. This proves \eqref{eq:insertion}.
+
+For $j$ in the exact tail and $j<h$, successive intensities have ratio
+\[
+ \frac{\lambda_{j+1}^+}{\lambda_j^+}
+ =\left(\frac{j+\nu+1}{n+\nu-h}\right)^s=o(1)
+\]
+uniformly in that range. At the finitely many exceptional indices the
+same conclusion follows from a fixed weight quotient times $O(n^{-s})$.
+Hence
+\begin{equation}
+ \sum_{j=J+1}^h\lambda_j^+
+ =O\bigl(n^{1-(J+1)s}\bigr)=o(1).
+ \label{eq:insertionsmall}
+\end{equation}
+
+Delete every part of size greater than $J$ from a cloud. Its remaining
+low-size cloud is still admissible. Reinsert the deleted parts in a
+fixed order and apply \eqref{eq:insertion} repeatedly. Summing their
+multiplicities bounds the ratio to the original low-size summand by
+$\prod_{j>J}\sum_{r\ge0}(\lambda_j^+)^r/r!$.
+Extending the sum beyond the original size cutoff only increases it.
+Thus
+\[
+ S_{n,J}(h)\le R_{n,\mathrm{loc}}^{(\theta)}(h)
+ \le S_{n,J}(h)\exp\left(\sum_{j>J}\lambda_j^+\right)
+ =S_{n,J}(h)(1+o(1)).
+\]
+Finally, \cref{lem:localization} adds only $o(1)$, and
+$S_{n,J}(h)\ge1$. This proves \eqref{eq:finitecut}.
+\end{proof}
+
+This is the source of finite-jet universality. A size $j$ has a
+natural intensity of order $n^{1-js}$. Once this tends to zero, the
+total effect of all such omitted sizes is multiplicatively negligible.
+The proof justifies this intuition without evaluating the divergent
+weight generating function.
+
+\section{The interaction and its Poisson evaluation}\label{sec:poissonproof}
+
+\subsection{An exact product becomes a smooth local interaction}
+For $u$ near zero define
+\begin{equation}
+ E_\theta(u)=
+ \begin{cases}
+ \bigl((1+\theta u)\log(1+\theta u)-\theta u\bigr)/\theta,
+    &\theta\ne0,\\
+ 0,&\theta=0,
+ \end{cases}
+ \label{eq:Etheta}
+\end{equation}
+and, for $v$ near zero, define
+\begin{equation}
+ b(v)=(1-v)\log(1-v)+v,
+ \qquad \mathcal H(u,v)=E_\theta(u)+sb(v).
+ \label{eq:interaction}
+\end{equation}
+Its derivatives are
+\begin{align}
+ \mathcal H_u(u,v)&=\log(1+\theta u),&
+ \mathcal H_v(u,v)&=-s\log(1-v),\label{eq:gradH}\\
+ \mathcal H_{uu}(u,v)&=\frac{\theta}{1+\theta u},&
+ \mathcal H_{vv}(u,v)&=\frac{s}{1-v},&
+ \mathcal H_{uv}&=0.\label{eq:hessianH}
+\end{align}
+The Hessian need not be positive: the tree endpoint has $\theta=-1$.
+Only boundedness of the Hessian near the origin is used.
+
+\begin{lemma}[Uniform product approximation]\label[lemma]{lem:product}
+Uniformly for integer $0\le\ell\le d\le h=o(n)$,
+\begin{equation}
+ \prod_{r=1}^\ell(n+\theta r)\frac{w_{n-1-d}}{w_{n-1}}
+ =n^{\ell-sd}
+ \exp\left\{n\mathcal H(\ell/n,d/n)+O(h/n)\right\}.
+ \label{eq:productapprox}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The exact tail identity gives
+\[
+ \frac{w_{n-1-d}}{w_{n-1}}
+ =\prod_{r=1}^d(n+\nu-r)^{-s}.
+\]
+After removing $n^{\ell-sd}$, the logarithm of the left side in
+\eqref{eq:productapprox} is
+\[
+ \sum_{r=1}^\ell\log(1+\theta r/n)
+ -s\sum_{r=1}^d\log(1+(\nu-r)/n).
+\]
+The first sum is its corresponding integral plus $O(\ell/n)$.
+Replacing $1+(\nu-r)/n$ by $1-r/n$ changes the second by $O(d/n)$,
+and its sum-to-integral error is also $O(d/n)$.
+The integrals are $nE_\theta(\ell/n)$ and $nsb(d/n)$.
+All derivatives involved are uniformly bounded because $h/n\to0$.
+\end{proof}
+
+Set $x=n^{-s}$. By \cref{lem:product},
+\begin{equation}
+ S_{n,J}(h)=(1+o(1))\!
+ \sum_{\substack{m_1,\ldots,m_J\ge0\\d=\sum jm_j\le h}}
+ \prod_{j=1}^J\frac{(na_jx^j)^{m_j}}{m_j!}
+       \exp\{n\mathcal H(\ell/n,d/n)\}.
+ \label{eq:interactionsum}
+\end{equation}
+The relative error is uniform over every summand. This is a
+finite-dimensional sum, even though the original weight series is
+divergent.
+
+\subsection{A small saddle, defined without global maximization}
+The implicit function theorem applied to
+$y-x(1-B(y))^{-s}$ gives the unique analytic germ in \eqref{eq:y}.
+For sufficiently small positive $x$, $y>0$, $1-\theta A(y)>0$, and
+$1-B(y)>0$. Define
+\begin{equation}
+ \beta_j(x)=\frac{a_jy(x)^j}{1-\theta A(y(x))},
+ \quad u_*(x)=\sum_{j=1}^J\beta_j(x),
+ \quad v_*(x)=\sum_{j=1}^Jj\beta_j(x).
+ \label{eq:betas}
+\end{equation}
+Then
+\begin{equation}
+ u_* =\frac{A(y)}{1-\theta A(y)},\qquad
+ v_*=B(y),\qquad
+ 1+\theta u_*=(1-\theta A(y))^{-1}.
+ \label{eq:uv}
+\end{equation}
+Equation \eqref{eq:y} is equivalent to the stationary identities
+\begin{equation}
+ \log\frac{\beta_j}{a_jx^j}
+ =\mathcal H_u(u_*,v_*)+j\mathcal H_v(u_*,v_*),
+ \qquad1\le j\le J.
+ \label{eq:stationarity}
+\end{equation}
+We have $\beta_j=a_jx^j(1+O(x))$ and $u_*,v_*=O(x)$.
+No assertion that this stationary point is a global maximum is needed.
+The next lemma evaluates its neighborhood and bounds the entire
+remaining cutoff region at the same time.
+
+\subsection{A cutoff exponential-integrability lemma}
+\begin{lemma}[Poisson tilt remainder]\label[lemma]{lem:Poissontilt}
+Fix $J$. Let $N_1,\ldots,N_J$ be independent Poisson variables with
+means $\mu_j\ge0$, let
+\[
+ L=\sum_jN_j,\quad D=\sum_jjN_j,\quad
+ v=\sum_j\mu_j,
+\]
+and suppose $v=o(n)$, $h=o(n)$, $h\to\infty$, and $v/h\to0$.
+Write
+\[
+ U=\max(|L-\E L|,|D-\E D|).
+\]
+For every fixed $K_0>0$,
+\begin{equation}
+ \E\left[(\exp(K_0U^2/n)-1)\ind_{D\le h}\right]=o(1),
+ \qquad \PP(D>h)=o(1).
+ \label{eq:Poissonexp}
+\end{equation}
+Consequently, if a random remainder $\mathcal E_n$ on $\{D\le h\}$
+satisfies $|\mathcal E_n|\le K_0U^2/n$, then
+\begin{equation}
+ \E[\exp(\mathcal E_n)\ind_{D\le h}]=1+o(1),
+ \qquad
+ \E\left|\exp(\mathcal E_n)\ind_{D\le h}-1\right|=o(1).
+ \label{eq:L1tilt}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a centered weighted Poisson sum
+$X=\sum c_j(N_j-\mu_j)$ with $0\le c_j\le J$, its cumulant generating
+function is
+\[
+ \log\E\ee^{tX}=\sum_j\mu_j(\ee^{tc_j}-1-tc_j).
+\]
+For $|t|\le1/(2J)$, Taylor's inequality bounds this by a constant
+multiple of $v t^2$. Applying Chernoff's bound with
+$t$ proportional to $u/(v+u)$, truncated to that interval, gives
+constants depending only on $J$ such that
+\begin{equation}
+ \PP(U>u)\le4\exp\left\{-c\frac{u^2}{v+u}\right\}
+ \quad(u>0).
+ \label{eq:Bernstein}
+\end{equation}
+When $v=0$ the variables vanish and the conclusion is immediate; one
+may otherwise replace $v$ by $v+1$ in this bound.
+
+On $D\le h$, both $L\le D$ and $\E D\le Jv=o(h)$ imply $U\le2h$
+for all sufficiently large $n$. Tail integration therefore bounds the
+first expectation in \eqref{eq:Poissonexp} by
+\begin{equation}
+ \int_0^{2h}\frac{2K_0u}{n}\ee^{K_0u^2/n}\PP(U>u)\,du.
+ \label{eq:tailintegral}
+\end{equation}
+Because $(v+1+h)/n\to0$, the positive exponent in this integral is
+at most half the magnitude of the negative exponent in
+\eqref{eq:Bernstein}, uniformly for $0\le u\le2h$.
+On $u\le v+1$ the resulting integral is $O((v+1)/n)$ by a Gaussian
+integral. On $u>v+1$ it is $O(1/n)$ after using an exponential tail
+$\exp(-c'u)$. Both tend to zero.
+
+Markov's inequality gives $\PP(D>h)\le Jv/h=o(1)$.
+Finally, $|\ee^z-1|\le\ee^{|z|}-1$ for real $z$.
+Combining these facts yields \eqref{eq:L1tilt}.
+\end{proof}
+
+\begin{remark}[Why the cutoff is retained]
+One must not replace the truncated expectation by
+$\E\exp(cN^2/n)$ for a nontrivial Poisson variable $N$ and $c>0$;
+that expectation is infinite. The condition $D\le h=o(n)$ is part of
+the proof, not a dispensable convenience. \Cref{lem:Poissontilt} controls
+the whole required region without making that invalid extension.
+\end{remark}
+
+\subsection{Evaluation by exponential change of measure}
+Take independent Poisson variables with means
+\begin{equation}
+ \mu_{j,n}=n\beta_j(n^{-s}),\qquad1\le j\le J.
+ \label{eq:means}
+\end{equation}
+Their total mean is $O(n^{1-s})$, or tends to zero when $s>1$.
+In either case it is $o(h)$ for the cutoff chosen in
+\eqref{eq:cutoff}.
+
+Use \eqref{eq:stationarity} to change the factorial weights in
+\eqref{eq:interactionsum} from means $na_jx^j$ to means $n\beta_j$.
+If $L=\sum N_j$ and $D=\sum jN_j$, the result is
+\begin{equation}
+ S_{n,J}(h)=(1+o(1))\exp\{n\widetilde P(x)\}
+     \E[\exp(\mathcal E_n)\ind_{D\le h}],
+ \label{eq:tiltexact}
+\end{equation}
+where
+\begin{align}
+ \widetilde P(x)
+ &=u_*+\mathcal H(u_*,v_*)
+   -u_*\mathcal H_u(u_*,v_*)-v_*\mathcal H_v(u_*,v_*),
+ \label{eq:Pvariational}\\
+ \mathcal E_n
+ &=n\bigl[\mathcal H(L/n,D/n)-\mathcal H(u_*,v_*)\notag\\
+ &\hspace{17mm}
+ -\mathcal H_u(u_*,v_*)(L/n-u_*)
+ -\mathcal H_v(u_*,v_*)(D/n-v_*)\bigr].
+ \label{eq:Eremainder}
+\end{align}
+The Hessian in \eqref{eq:hessianH} is bounded on all line segments
+involved when $D\le h$. Taylor's theorem gives
+\begin{equation}
+ |\mathcal E_n|\le\frac{K_0}{n}
+ \bigl((L-nu_*)^2+(D-nv_*)^2\bigr).
+ \label{eq:remainderbound}
+\end{equation}
+Thus \cref{lem:Poissontilt} makes the expectation in
+\eqref{eq:tiltexact} equal to $1+o(1)$.
+
+Substituting \eqref{eq:uv} and \eqref{eq:gradH} into
+\eqref{eq:Pvariational} simplifies it to
+\[
+ \widetilde P(x)=
+ -\theta^{-1}\log(1-\theta A(y))
+ +s\bigl(\log(1-B(y))+B(y)\bigr)
+\]
+for $\theta\ne0$, with the stated continuous limit at zero. This is
+exactly $P(x)$ in \eqref{eq:pressure}. Together with
+\cref{lem:finitecut}, we have proved the multiplicative pressure
+formula in \cref{thm:pressure}.
+
+\section{Extracting the pressure coefficients}\label{sec:extraction}
+
+\subsection{The envelope identity}
+For positive $x$ and positive $\beta=(\beta_1,\ldots,\beta_J)$ near
+the small stationary point, introduce
+\begin{equation}
+ \mathcal V(\beta,x)=
+ \sum_{j=1}^J\beta_j
+       \left(1+\log\frac{a_jx^j}{\beta_j}\right)
+ +\mathcal H\left(\sum_j\beta_j,\sum_jj\beta_j\right).
+ \label{eq:variational}
+\end{equation}
+Its partial derivatives with respect to $\beta_j$ vanish at
+\eqref{eq:betas}, precisely by \eqref{eq:stationarity}.
+At that point its value is $P(x)$, by \eqref{eq:Pvariational}.
+Differentiating the composite function therefore gives
+\begin{equation}
+ xP'(x)=\sum_{j=1}^Jj\beta_j(x)=B(y(x)).
+ \label{eq:envelope}
+\end{equation}
+This differentiation is performed first for $x>0$; both sides are
+analytic at zero and hence the identity also holds as an identity of
+power series. It uses stationarity, not a global variational principle.
+
+\subsection{Lagrange inversion a second time}
+Apply formal Lagrange inversion to $y=x(1-B(y))^{-s}$ and the
+function $B$. For $k\ge1$,
+\begin{equation}
+ [x^k]B(y(x))
+ =\frac1k[t^{k-1}]B'(t)(1-B(t))^{-ks}.
+ \label{eq:LagrangeB}
+\end{equation}
+Since $\Psi_{ks}'(u)=(1-u)^{-ks}$, equations
+\eqref{eq:envelope} and \eqref{eq:LagrangeB} imply
+\begin{align}
+ [x^k]P(x)
+ &=\frac1{k^2}[t^{k-1}]\frac{d}{dt}\Psi_{ks}(B(t))\notag\\
+ &=\frac1k[t^k]\Psi_{ks}(B(t)).
+ \label{eq:pkproof}
+\end{align}
+This proves \eqref{eq:pk}. A coefficient of degree $k$ uses only
+$a_1,\ldots,a_k$, proving the finite-jet assertion.
+
+Finally, analyticity gives
+\[
+ nP(n^{-s})=\sum_{k=1}^Jp_kn^{1-ks}
+                 +O\bigl(n^{1-(J+1)s}\bigr).
+\]
+The remainder tends to zero by \eqref{eq:J}. This completes the proofs
+of \cref{thm:main,thm:pressure}.
+
+\subsection{Why the uniform version follows}
+On a compact positive $s$-interval, choose once and for all
+\[
+ \max(1-s_{\min},0)<\kappa<\alpha<1.
+\]
+The summable majorant in \cref{lem:convolution}, the tail constants,
+and the insertion estimates are uniform under the stated bounds on the
+finite head and tail. The strict inequality $(J+1)s_{\min}>1$ supplies
+a common positive decay exponent for \eqref{eq:insertionsmall}.
+The implicit function theorem supplies a common neighborhood of zero
+because $J$ is fixed and the finite coefficients range over a compact
+set. The Hessian bounds and the Poisson tail constants are also
+uniform. Finally, Taylor's theorem for $P$ has a common remainder
+constant on a smaller common neighborhood. These observations prove
+the uniformity statement following \cref{thm:pressure}.
+
+\section{Explicit coefficients and every critical point}\label{sec:coefficients}
+
+\subsection{The first four universal polynomials}
+Expanding \eqref{eq:pk} gives
+\begin{align}
+ p_1={}&a_1,\label{eq:p1}\\
+ p_2={}&a_2+\frac{s+\theta}{2}a_1^2,\label{eq:p2}\\
+ p_3={}&a_3+(2s+\theta)a_1a_2
+ +\left(\frac{s^2}{2}+s\theta+\frac{s}{6}
+                  +\frac{\theta^2}{3}\right)a_1^3,\label{eq:p3}\\
+ p_4={}&a_4+(3s+\theta)a_1a_3
+       +\left(2s+\frac\theta2\right)a_2^2\notag\\
+ &+(4s^2+5s\theta+s+\theta^2)a_1^2a_2\notag\\
+ &+\left(\frac{2s^3}{3}+2s^2\theta+\frac{s^2}{2}
+       +\frac{3s\theta^2}{2}+\frac{s\theta}{2}
+       +\frac{s}{12}+\frac{\theta^3}{4}\right)a_1^4.
+ \label{eq:p4}
+\end{align}
+These polynomials are valid for the whole interpolation family. In
+particular, the terms independent of $\theta$ in the higher
+coefficients must not be dropped when passing between its endpoints.
+The accompanying exact checker verifies these displayed formulas
+against the coefficient-extraction formula.
+
+For the reversion case $\theta=1$, they simplify to
+\begin{align}
+ p_2={}&a_2+\frac{1+s}{2}a_1^2,\label{eq:revp2}\\
+ p_3={}&a_3+(1+2s)a_1a_2
+       +\frac{3s^2+7s+2}{6}a_1^3,\label{eq:revp3}\\
+ p_4={}&a_4+(1+3s)a_1a_3
+       +\left(\frac12+2s\right)a_2^2
+       +(4s^2+6s+1)a_1^2a_2\notag\\
+ &+\left(\frac{2s^3}{3}+\frac{5s^2}{2}
+                         +\frac{25s}{12}+\frac14\right)a_1^4.
+ \label{eq:revp4}
+\end{align}
+
+\subsection{Reciprocal-integer constants}
+\begin{corollary}[Closed critical coefficient]\label[corollary]{cor:critical}
+At $s=1/r$, the coefficient of the constant term $n^{1-rs}$ is
+\begin{equation}
+ \boxed{\displaystyle
+ p_r=\frac1r[t^r]\log
+ \frac{1-\theta A(t)}{1-\theta A(t)-tA'(t)}.}
+ \label{eq:criticalcoefficient}
+\end{equation}
+Its coefficient of the monomial $a_1^r$ is
+\begin{equation}
+ [a_1^r]p_r=\frac{(\theta+1)^r-\theta^r}{r^2}.
+ \label{eq:purecritical}
+\end{equation}
+\end{corollary}
+\begin{proof}
+At $rs=1$, $\Psi_{rs}(u)=-\log(1-u)$. Substitution of
+$B=tA'/(1-\theta A)$ into \eqref{eq:pk} proves
+\eqref{eq:criticalcoefficient}. To extract the pure $a_1^r$ coefficient,
+set $A(t)=a_1t$ and expand
+\[
+ \frac1r\left(\log(1-\theta a_1t)
+       -\log(1-(\theta+1)a_1t)\right).
+\]
+The coefficient of $t^r$ is \eqref{eq:purecritical}.
+\end{proof}
+
+At the reversion endpoint this coefficient is $(2^r-1)/r^2$.
+At the tree endpoint it is $(-1)^{r+1}/r^2$.
+The latter alternating sign does not contradict positivity of
+$R_n^{(-1)}$: coefficients in the logarithm of a positive asymptotic
+quantity need not be positive.
+
+\subsection{The missing orders one third and one quarter}
+\begin{example}[Order one third]\label[example]{ex:third}
+Take $\theta=1$, $w_j=(j!)^{1/3}$, and arbitrary $C>0$.
+Then $a_1=C$, $a_2=2^{1/3}C$, and $a_3=6^{1/3}C$.
+\Cref{thm:main} gives exactly \eqref{eq:introthird}. Equivalently,
+\begin{align}
+ \sup_{f\in\mathcal B_{1/3,A,C}}|[z^n]f\inv|
+ ={}&CA^{n-1}((n-1)!)^{1/3}\notag\\
+ &\times\exp\left\{Cn^{2/3}
+       +\left(2^{1/3}C+\frac23C^2\right)n^{1/3}\right\}\notag\\
+ &\times\exp\left\{6^{1/3}C+\frac53\,2^{1/3}C^2
+                        +\frac79C^3\right\}(1+o(1)).
+ \label{eq:thirdextreme}
+\end{align}
+This is a sharp supremum, attained at every degree by the same series.
+\end{example}
+
+\begin{example}[Order one quarter]\label[example]{ex:quarter}
+For $\theta=1$, $w_j=(j!)^{1/4}$, and $a_j=C(j!)^{1/4}$,
+\begin{align}
+ \log R_n^{(1)}={}&a_1n^{3/4}
+ +\left(a_2+\frac58a_1^2\right)n^{1/2}\notag\\
+ &+\left(a_3+\frac32a_1a_2+\frac{21}{32}a_1^3\right)n^{1/4}\notag\\
+ &+a_4+\frac74a_1a_3+a_2^2
+             +\frac{11}{4}a_1^2a_2+\frac{15}{16}a_1^4+o(1).
+ \label{eq:quarter}
+\end{align}
+The lower-order exponent terms cannot be recovered from the leading
+law $\log R_n\sim Cn^{3/4}$. Each is required for a relative-error
+asymptotic.
+\end{example}
+
+\subsection{Recovery of the predecessor's regimes}
+For $1/2<s<1$, only $p_1n^{1-s}$ survives. With $w_1=1$,
+\[
+ R_n^{(1)}=\exp(Cn^{1-s})(1+o(1)).
+\]
+At $s=1/2$, \eqref{eq:repoweights} gives
+$a_2=C\sqrt{\nu+2}$, so
+\begin{equation}
+ R_n^{(1)}=
+ \exp\left\{C\sqrt n+C\sqrt{\nu+2}+\frac34C^2\right\}(1+o(1)).
+ \label{eq:half}
+\end{equation}
+These agree with the predecessor \cite{subexp}; they are consistency
+checks, not newly claimed special cases. The new finite formula
+continues below that boundary without introducing a new argument for
+each interval $1/(r+1)<s\le1/r$.
+
+For the alternative coefficient ball
+$|f_n|\le B_0 A^{n-1}(n!)^s$, use $\nu=1$ in
+\eqref{eq:repoweights} and set $C=2^sB_0$.
+This conversion changes the constants, even though the $n$th-root
+Gevrey type is unchanged.
+
+\section{Critical windows and finite-head universality}\label{sec:universality}
+
+\subsection{Every transition on its natural scale}
+\begin{theorem}[All reciprocal critical windows]\label{thm:windows}
+Fix a positive integer $r$, $\theta\ge-1$, and a family of admissible
+weights and positive constants satisfying the uniform hypotheses of
+\cref{sec:main} in a neighborhood of $s=1/r$. Write
+$p_k(s)$ for the corresponding pressure coefficients, including the
+$s$-dependence of the finite weights. For
+\begin{equation}
+ s_n=\frac1r+\frac{t}{\log n},
+ \label{eq:window}
+\end{equation}
+uniformly for $t$ in every bounded real interval,
+\begin{equation}
+ \log R_n^{(\theta)}(s_n)
+ -\sum_{k=1}^{r-1}p_k(s_n)n^{1-ks_n}
+ \longrightarrow p_r(1/r)\ee^{-rt}.
+ \label{eq:windowlimit}
+\end{equation}
+Thus the ratio obtained by removing the lower-order exponential terms
+converges to $\exp(p_r(1/r)\ee^{-rt})$.
+\end{theorem}
+\begin{proof}
+Choose a small fixed neighborhood of $1/r$ on which
+$(r+1)s>1$, and use the uniform theorem with $J=r$.
+After the indicated subtraction, the expression is
+$p_r(s_n)n^{1-rs_n}+o(1)$. The power is exactly $\ee^{-rt}$,
+and continuity gives $p_r(s_n)\to p_r(1/r)$ uniformly for bounded $t$.
+\end{proof}
+
+\begin{remark}[The lower-order coefficients must move]
+In \eqref{eq:windowlimit}, replacing $p_k(s_n)$ by $p_k(1/r)$ for
+$k<r$ is generally wrong. An $O(1/\log n)$ coefficient error multiplied
+by $n^{1-k/r}$ need not vanish. The formula retains the actual moving
+coefficients and therefore resolves the constant-scale transition
+without hiding a larger error.
+\end{remark}
+
+At $r=1$ and $w_1=1$, \eqref{eq:windowlimit} becomes
+$R_n\to\exp(C\ee^{-t})$. At $r=2$, after removing
+$Cn^{1-s_n}$, the reversion limit is
+$\exp((C\sqrt{\nu+2}+3C^2/4)\ee^{-2t})$.
+For every larger $r$, \eqref{eq:criticalcoefficient} computes the
+corresponding constant by a finite polynomial calculation.
+% ed. (2026-09-30): the theorem answers a second question of the predecessor, which the article does not say
+\begin{ednote}
+\Cref{thm:windows} also answers the predecessor's question ``Uniform
+transitions at the lower thresholds'' \cite{subexp}, which asks for
+analogues of its crossover at $s=1$ around $s=1/r$, $r\ge2$, in the
+variables $(s-1/r)\log n$ after all larger contributions are subtracted,
+with a uniform remainder and a normalization under which a finite limiting
+profile appears. Here the profile is $\exp(p_r(1/r)\ee^{-rt})$ after the
+moving lower terms are removed, and the remainder is $o(1)$ uniformly for
+bounded $t$, though not effective. The article does not claim this
+question; its $r=1$ case is the predecessor's crossover.
+\end{ednote}
+
+\subsection{The precise number of weights that survive}
+\begin{theorem}[Finite-head universality]\label{thm:universality}
+Fix $s>0$, $C>0$, and $\theta\ge-1$. Let $w$ and $\widetilde w$ be
+two admissible weight sequences with the same exponent $s$, but
+possibly different tail scales, shifts, and finite heads. Set
+$K=\lfloor1/s\rfloor$.
+If
+\begin{equation}
+ w_j=\widetilde w_j\qquad(1\le j\le K),
+ \label{eq:headagree}
+\end{equation}
+then their individually normalized inverse coefficients satisfy
+\begin{equation}
+ \frac{R_n^{(\theta)}(w)}{R_n^{(\theta)}(\widetilde w)}\longrightarrow1.
+ \label{eq:universalratio}
+\end{equation}
+For $s>1$, the condition is empty and the conclusion still holds.
+\end{theorem}
+\begin{proof}
+For $s\le1$, apply \cref{thm:main} with $J=K$. Every surviving
+coefficient is a polynomial in the same initial weights, so the two
+logarithms differ by $o(1)$. Exponentiation gives
+\eqref{eq:universalratio}. For $s>1$, both normalized sequences tend
+to $1$.
+\end{proof}
+
+The individual normalization is important. The theorem compares
+$[z^n]G_\theta/(Cw_{n-1})$ with its counterpart for $\widetilde w$;
+it does not claim equality of the unnormalized inverse coefficients.
+Changing the factorial shift can produce a power of $n$ in the ratio
+of the baseline weights.
+
+\begin{proposition}[Sharp sensitivity to the first changed weight]
+\label[proposition]{prop:sensitivity}
+Suppose $w_j=\widetilde w_j$ for $j<r$ and
+$w_r\ne\widetilde w_r$. Let $\Delta=C(w_r-\widetilde w_r)$.
+If $rs<1$, then
+\begin{equation}
+ \log\frac{R_n^{(\theta)}(w)}{R_n^{(\theta)}(\widetilde w)}
+ =\Delta n^{1-rs}+o(n^{1-rs}).
+ \label{eq:sensitivity}
+\end{equation}
+If $rs=1$, that ratio tends to $\ee^\Delta$.
+If $r>1/s$, it tends to $1$.
+\end{proposition}
+\begin{proof}
+Formula \eqref{eq:pk} has the triangular form
+\begin{equation}
+ p_k=a_k+\text{a polynomial in }a_1,\ldots,a_{k-1}.
+ \label{eq:triangular}
+\end{equation}
+Indeed, the $a_k t^k$ term can enter only through the linear term
+of $\Psi$ and the leading denominator term in $B$, giving
+$ka_k/k=a_k$. Thus the first pressure difference is $\Delta$ at
+index $r$. Later powers of $n$ are strictly smaller. Apply the main
+theorem and distinguish the three cases.
+\end{proof}
+
+\begin{example}[Tail changes invisible after normalization]
+For a fixed $s=1/3$, keep $w_1,w_2,w_3$ fixed and replace all sufficiently
+large weights by any $D_*\Gamma(j+\nu+1)^{1/3}$, with arbitrary
+positive intervening finite values. The normalized reversion ratio to
+the original sequence tends to $1$. Changing only $w_3$ by $\delta$
+instead multiplies the limiting ratio by $\exp(C\delta)$.
+This separates a genuinely observable head change from an invisible
+tail change at the chosen normalization.
+\end{example}
+
+\section{Explicit Poisson centers for the small parts}\label{sec:distribution}
+
+\subsection{The probability model attached to the finite sum}
+Assign to each ordered composition $(j_1,\ldots,j_k)$ of $m=n-1$
+probability proportional to its positive contribution in
+\eqref{eq:exactR}. Normalization by $R_n^{(\theta)}$ makes this a
+probability distribution. When there is a unique part at least $m-h$,
+remove it and let $M_{j,n}$ count the remaining parts of size $j$.
+On the exceptional event, define all these counts to be zero; the
+choice on that event has no effect on the limits below.
+
+At $\theta=-1$, grouping outdegrees in the Lagrange formula for
+\eqref{eq:treeeq} gives exactly the same distribution of the nonzero
+outdegree counts. Thus the statement can also be read as a theorem
+about degree counts in a weighted plane tree. One can verify the identification by inserting an independent marking
+variable for each outdegree into the root equation before applying
+Lagrange inversion. No assertion about the location of the large vertex
+is needed.
+
+\begin{theorem}[An explicit product-Poisson approximation]
+\label{thm:Poissonlaw}
+Under the hypotheses of \cref{thm:main}, with $J$ fixed as there,
+let $Y_{j,n}$ be independent Poisson variables with means
+\begin{equation}
+ \mu_{j,n}=n\frac{a_jy(n^{-s})^j}{1-\theta A(y(n^{-s}))},
+ \qquad1\le j\le J.
+ \label{eq:explicitcenters}
+\end{equation}
+Then
+\begin{equation}
+ \TV\left(\Law((M_{j,n})_{j=1}^J),
+                \bigotimes_{j=1}^J\Pois(\mu_{j,n})\right)\to0.
+ \label{eq:TV}
+\end{equation}
+With probability tending to one, every part other than the unique
+large part has size at most $\lfloor1/s\rfloor$. If $s>1$, there are
+no other parts with probability tending to one.
+\end{theorem}
+\begin{proof}
+\Cref{lem:localization,lem:finitecut} show that the exceptional
+configurations and those containing a small part of size greater than
+$J$ have total relative mass $o(1)$.
+On the remaining multiplicity vectors, \cref{lem:product} changes the
+unnormalized mass by a uniform factor $1+o(1)$.
+The exact Poisson change of measure in \eqref{eq:tiltexact} gives the
+Radon--Nikodym factor proportional to
+$\exp(\mathcal E_n)\ind_{D\le h}$ relative to the product-Poisson law.
+By \eqref{eq:L1tilt}, this factor tends to $1$ in $L^1$, and its
+normalizing constant tends to $1$. This proves \eqref{eq:TV}.
+
+If $js>1$, then $\mu_{j,n}\sim a_jn^{1-js}\to0$.
+Together with the finite-size cutoff this removes all sizes greater
+than $\lfloor1/s\rfloor$. When $s>1$ even the first mean tends to
+zero, so the cloud is empty with probability tending to one.
+\end{proof}
+
+\subsection{Gaussian and critical Poisson limits}
+For $js<1$, the means diverge, and the ordinary Poisson central limit
+theorem plus \eqref{eq:TV} gives
+\begin{equation}
+ \frac{M_{j,n}-\mu_{j,n}}{\sqrt{\mu_{j,n}}}
+       \ \xrightarrow{\ d\ }\ \mathcal N(0,1).
+ \label{eq:CLT}
+\end{equation}
+For $js=1$,
+\begin{equation}
+ M_{j,n}\ \xrightarrow{\ d\ }\ \Pois(a_j).
+ \label{eq:criticalPoisson}
+\end{equation}
+All these limits hold jointly with independent components. These are
+statements about distributions. Total-variation convergence by itself
+does not assert convergence of unbounded moments; we call
+$\mu_{j,n}$ \emph{centering parameters}, without silently identifying
+them with the exact expectations of $M_{j,n}$.
+
+\subsection{All centering corrections by finite arithmetic}
+Expanding the small solution of \eqref{eq:y} gives
+\begin{equation}
+ y=x+sa_1x^2+O(x^3).
+\end{equation}
+Consequently
+\begin{equation}
+ \mu_{j,n}=a_jn^{1-js}
+ \left(1+(\theta+js)a_1n^{-s}+O(n^{-2s})\right).
+ \label{eq:firstcenter}
+\end{equation}
+For small $s$, the correction in this formula may itself exceed the
+Gaussian standard deviation, so leading-order centering can fail.
+The finite implicit equation supplies every further coefficient.
+More explicitly, if
+\begin{equation}
+ \beta_j(x)=\sum_{k\ge j}b_{j,k}x^k,
+\end{equation}
+then Lagrange inversion gives
+\begin{equation}
+ b_{j,k}=\frac1k[t^{k-1}]
+ \frac{d}{dt}\left(\frac{a_jt^j}{1-\theta A(t)}\right)
+            (1-B(t))^{-sk}.
+ \label{eq:centeringcoefficients}
+\end{equation}
+This is again a finite coefficient calculation for every selected $k$.
+
+\begin{corollary}[How many centering terms suffice]\label[corollary]{cor:centering}
+Suppose $js<1$. If an integer $M\ge j$ satisfies
+\begin{equation}
+ (2M+2-j)s>1,
+ \label{eq:centerdepth}
+\end{equation}
+then replacing $\mu_{j,n}$ in the numerator of \eqref{eq:CLT} by
+\begin{equation}
+ \widehat\mu_{j,n}=\sum_{k=j}^M b_{j,k}n^{1-ks}
+ \label{eq:finitecenter}
+\end{equation}
+does not change the limiting standard normal law.
+\end{corollary}
+\begin{proof}
+The omitted tail is $O(n^{1-(M+1)s})$.
+The standard deviation is asymptotic to
+$\sqrt{a_j}\,n^{(1-js)/2}$. Condition \eqref{eq:centerdepth} says
+exactly that the former order is smaller than the latter.
+\end{proof}
+
+The $j=1$, $M=1$ condition is $3s>1$; the next correction permits
+$5s>1$. Thus the hierarchy of increasingly necessary centering terms
+has its own thresholds. Formula \eqref{eq:centeringcoefficients}
+replaces separate ad hoc calculations at each such threshold.
+
+\section{The weighted-tree specialization}\label{sec:trees}
+
+Give every plane rooted tree $T$ weight
+\begin{equation}
+ \operatorname{wt}(T)=\prod_{v\in T}q_{\deg^+(v)},
+ \qquad q_0=1,\quad q_j=Cw_j\ (j\ge1),
+\end{equation}
+and let $Z_n$ be the sum of weights over trees with $n$ vertices.
+The standard root decomposition proves formally that
+$T(z)=\sum_{n\ge1}Z_nz^n$ satisfies \eqref{eq:treeeq}.
+Hence $Z_n=[z^n]G_{-1}$, and the main theorem proves
+\begin{equation}
+ Z_n=Cw_{n-1}\exp\left\{\sum_{k=1}^J
+                 p_k(s,-1;\mathbf a)n^{1-ks}\right\}(1+o(1)).
+ \label{eq:treeasymptotic}
+\end{equation}
+
+With $C=1$ and $w_j=(j!)^s$, the first two exponent terms are
+\begin{equation}
+ n^{1-s}+\left(2^s-\frac{1-s}{2}\right)n^{1-2s}.
+ \label{eq:treefirsttwo}
+\end{equation}
+This agrees with the published correction in \cite[Remark~2.8]{jjs}.
+The explicit formula \eqref{eq:pk} continues it to every required order.
+For instance, at $s=1/3$ it yields
+\begin{align}
+ \log\frac{Z_n}{((n-1)!)^{1/3}}
+ ={}&n^{2/3}+\left(2^{1/3}-\frac13\right)n^{1/3}\notag\\
+ &+6^{1/3}-\frac13\,2^{1/3}+\frac19+o(1).
+ \label{eq:treethird}
+\end{align}
+The corresponding extremal reversion constant in
+\eqref{eq:introthird} has different interaction terms. The
+interpolation parameter explains both without equating them.
+
+Likewise, \eqref{eq:firstcenter} becomes
+\[
+ \mu_{j,n}=j!^s n^{1-js}
+       \left(1-(1-js)n^{-s}+O(n^{-2s})\right),
+\]
+consistent with the known first centering correction
+\cite[Theorem~2.6]{jjs}. The new coefficient formula
+\eqref{eq:centeringcoefficients} specifies as many further terms as
+\eqref{eq:centerdepth} requires. The tree conclusions concern degree
+counts and normalization; additional geometric information about branch
+shapes or the location of the large vertex is not asserted here.
+
+\section{Computation, reproducibility, and interpretation}\label{sec:computation}
+
+\subsection{A coefficient recurrence without enumerating compositions}
+For a fixed target degree $n$, define
+\begin{equation}
+ H_n(z)=(1-\theta CW(z))^{-n/\theta}
+        =\sum_{k\ge0}B_{n,k}z^k,
+ \label{eq:Hn}
+\end{equation}
+with the exponential interpretation at $\theta=0$.
+Formal differentiation gives
+$(1-\theta CW)H_n'=nCW'H_n$. Therefore
+\begin{equation}
+ B_{n,0}=1,\qquad
+ kB_{n,k}=C\sum_{j=1}^k
+       \bigl(nj+\theta(k-j)\bigr)w_jB_{n,k-j},
+ \label{eq:recurrence}
+\end{equation}
+and
+\begin{equation}
+ R_n^{(\theta)}=\frac{B_{n,n-1}}{nCw_{n-1}}.
+ \label{eq:recurrenceR}
+\end{equation}
+For $k\le n-1$ and $\theta\ge-1$, every multiplier in
+\eqref{eq:recurrence} is positive. A single coefficient can be
+computed in $O(n^2)$ arithmetic operations and $O(n)$ stored numbers.
+This is an arithmetic-operation count, not a bit-complexity estimate:
+exact integer and rational entries can become large.
+
+For rational $s$, $\theta$, and finite $a_j$, formula \eqref{eq:pk}
+produces exact rational pressure coefficients whenever the $a_j$
+are rational. Factorial weights at nonintegral $s$ need not themselves
+be rational; the exact tests deliberately use rational finite inputs
+to check the universal algebra, and do not relabel floating-point
+factorial powers as exact values.
+
+\subsection{What the supplied checks actually verify}
+The standard-library script \path{code/verify.py} records 1,066 scalar
+checks. It verifies both inverse compositions through degree $18$ in
+12 parameter cases, compares ordered-composition sums with grouped
+cloud sums, and checks the pressure formula independently through
+degree $7$ in 20 rational cases. It also tests the displayed first four
+polynomials, the critical pure-$a_1$ formula in 50 cases through
+$r=10$, and all 256 sign patterns in a degree-nine extremal box.
+
+The second script, \path{code/diagnostics.py}, computes normalized
+coefficients by a log-scaled version of \eqref{eq:recurrence}. Its
+45 recorded rows use $s\in\{1/2,2/5,1/3,1/4,1/5\}$,
+$\theta\in\{-1,0,1\}$, and $n\in\{100,1000,10000\}$, with
+$C=1$, $\nu=0$. Fifteen degree-$70$ values are independently recomputed
+at 80 decimal digits. The largest absolute discrepancy between those
+logarithms and the ordinary floating-point computation was below
+$6.4\times10^{-14}$.
+
+These comparisons test implementations and finite identities. They
+are not interval certificates, a proof of the limits, or evidence that
+an asymptotic regime has started at a particular finite degree. The
+analytic proofs, rather than the numerical fit, support the theorems.
+
+\subsection{Visible preasymptotic behavior}
+Let $S_n=\sum_{k=1}^{\lfloor1/s\rfloor}p_kn^{1-ks}$ for the
+reversion endpoint. The following table uses $C=1$, $\nu=0$.
+The last column uses the analytic pressure from the same finite
+polynomial $A$. A dash means that the diagnostic routine did not locate
+the small positive real branch at that finite argument; the theorem
+only guarantees that branch for all sufficiently large $n$.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$s$ & $n$ & $\log R_n$ & $\log R_n-S_n$
+ & $\log R_n-nP(n^{-s})$\\
+\midrule
+$1/3$ & 100 & 56.504158 & 21.322616 & \textemdash\\
+$1/3$ & 1,000 & 126.387080 & 2.426436 & 0.721743\\
+$1/3$ & 10,000 & 511.209609 & 0.848884 & 0.239161\\
+$1/4$ & 100 & 83.728129 & 10.723605 & \textemdash\\
+$1/4$ & 1,000 & 342.874419 & 74.579330 & 56.517991\\
+$1/4$ & 10,000 & 1237.289700 & 5.243241 & 0.738160\\
+\bottomrule
+\end{tabular}
+\caption{Non-certified logarithmic diagnostics. A residual need not be
+monotone and need not be small at the displayed degrees.}
+\label{tab:diagnostics}
+\end{table}
+
+The order-one-quarter residual grows sharply between $n=100$ and
+$n=1000$ before decreasing. In particular, it would be misleading to
+infer the constant term from a low-degree numerical fit. Even at
+$n=10000$, a logarithmic error $5.24$ corresponds to a large relative
+coefficient error. The resummed pressure often reduces that error in
+these examples, but no universal finite-degree superiority theorem is
+claimed.
+
+\subsection{Reproduction and formalization boundary}
+From the package directory, the exact checks require only Python's
+standard library:
+\begin{verbatim}
+python code/verify.py
+\end{verbatim}
+The optional diagnostic run additionally requires NumPy, SciPy, and
+mpmath:
+\begin{verbatim}
+python code/diagnostics.py --max-n 10000
+\end{verbatim}
+The default scripts reproduce the recorded output paths; use their
+\texttt{--output} option for a separate destination. For the exact
+checker this option is a JSON file path; for diagnostics it is a
+directory. The manuscript is standalone and does not require generated
+table files to compile:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+
+A future proof-assistant implementation has a useful division of labor.
+The exact Lagrange sum, grouping identity, pressure-coefficient formula,
+and finite coefficient computations form an algebraic layer. The
+localization bounds, cutoff insertion lemma, Poisson tail control, and
+uniform asymptotic statements form a separate analytic layer. The
+present package supplies no Lean source and makes no kernel-verification
+claim about either layer.
+
+\section{Further research questions}\label{sec:future}
+
+\subsection{Effective relative-error bounds}
+The proofs establish $o(1)$, not a sharp computable onset. Derive an
+explicit error bound for
+$R_n^{(\theta)}\exp(-nP(n^{-s}))-1$ in terms of $s$, the finite head,
+and the tail parameters. A useful answer would separate the discarded
+size tail, the Euler-sum correction, and the quadratic Poisson tilt.
+The diagnostics show why an effective result would matter in practice.
+
+\subsection{The first vanishing corrections}
+The present pressure gives every nonvanishing term in $\log R_n$.
+Determine the next terms, including the shift $\nu$, the one-step
+Euler corrections, and the determinant or cumulant corrections from
+the Poisson tilt. The natural scales include both powers of $n^{-s}$
+and ordinary inverse powers of $n$, with coincidences at rational $s$.
+A uniform calculus should handle these resonances without duplicating
+terms.
+
+\subsection{The joint small-order limit}
+Here $s$ is fixed away from zero in every uniform statement.
+When $s=s_n\downarrow0$, the required number of small sizes diverges.
+Identify the crossover between finite-dimensional condensation and a
+regime with an unbounded collection of active sizes. Simply taking
+$J=\lfloor1/s_n\rfloor$ in the present proof is not justified because
+its constants and analytic neighborhoods depend on $J$.
+
+\subsection{Beyond an exact factorial tail}
+Replace \eqref{eq:tail} by a local-quotient hypothesis such as
+$w_{n-1}/w_n=n^{-s}(1+\varepsilon_n)$. What quantitative control of
+$\varepsilon_n$ over windows of length $O(n^{1-s})$ preserves the same
+pressure? A pointwise ratio limit alone may hide accumulated corrections.
+Regularly varying modifications and oscillatory perturbations should
+be distinguished rather than treated by a single informal heuristic.
+
+\subsection{Vanishing head weights and lattice restrictions}
+Allow some $w_j$ to be zero, with smallest positive index $r_0>1$.
+The first cloud scale then changes from $n^{1-s}$ to
+$n^{1-r_0s}$. Determine the exact analogue of the pressure theorem,
+including congruence restrictions and possible zero inverse
+coefficients. This would extend the present strictly positive class
+without assuming that missing sizes can be ignored harmlessly.
+
+\subsection{Signs and cancellation beyond the extremum}
+For a general signed or complex coefficient series, the positive
+Lagrange model no longer represents the inverse coefficient in absolute
+value. Find structural noncancellation conditions under which a
+finite-jet equivalent remains valid. Conversely, classify finite-head
+changes that can suppress an entire leading exponential scale.
+The coefficient-ball supremum proved here does not answer this question.
+
+\subsection{Several variables and operator coefficients}
+Extend the fixed-radius, fixed-prefactor extremal problem to formal
+maps of several variables or to operator-valued coefficients.
+Type-level stability is weaker than the multiplicative control sought
+here. A useful theorem would identify which finite tensors replace the
+scalar head $a_1,\ldots,a_K$ and whether a finite-dimensional pressure
+still captures all surviving subexponential terms.
+
+\subsection{The positivity boundary in the interpolation parameter}
+For $\theta<-1$, the factors in \eqref{eq:exactR} can change sign.
+Determine whether a modified theorem survives in a restricted parameter
+range, whether new cancellation transitions arise, and which algebraic
+parts of \eqref{eq:pk} retain an asymptotic interpretation. Formal
+coefficient identities alone do not settle that analytic issue.
+
+\subsection{Quantitative probability and geometric information}
+Obtain rates in \eqref{eq:TV}, moderate deviations for the total cloud
+size, and sufficiently strong tail control to compare actual moments
+with the explicit centering parameters. At the tree endpoint, connect
+the pressure derivatives to geometric observables such as branch
+profiles. These questions go beyond the count distribution proved here.
+
+\subsection{Certified computation and proof-assistant integration}
+Develop a certified interval solver for the small branch of
+\eqref{eq:y}, with a proof that the chosen branch is the analytic germ
+required by the theorem. Formalize the finite-jet extraction and the
+cutoff Poisson lemma, then connect them to an independently verified
+Lagrange inversion library. A complete implementation should report
+separately algebraic exactness, analytic error bounds, and machine
+verification.
+
+\section{Conclusion}
+A fixed Gevrey coefficient ball contains more asymptotic information
+than its coefficient type. The missing information is finite but grows
+as the order decreases: at order $s$, the initial
+$\lfloor1/s\rfloor$ weights and their interactions determine every
+nonvanishing exponent term. The formula
+\[
+ p_k=\frac1k[t^k]\Psi_{ks}\!\left(\frac{tA'(t)}{1-\theta A(t)}\right)
+\]
+computes those terms directly, and the finite analytic pressure
+packages them into a single local equation.
+
+This supplies a full multiplicative answer to the predecessor's
+unresolved $0<s<1/2$ extremal-reversion problem, while also giving
+explicit critical windows and centering formulas in the weighted-tree
+specialization. The decisive steps are the relative finite-size
+cutoff and the cutoff-preserving Poisson tilt. Neither requires the
+divergent generating function to acquire an analytic meaning.
+
+\begin{thebibliography}{9}
+\small\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{repo}
+Vladimir Reshetnikov,
+\emph{ProveIt}, mathematical formalizations and research corpus.
+Snapshot \snapshot, inspected 30 September 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a4268e78ebd0f6bf71ba609c07f4b3415748f532}{Pinned repository snapshot}.
+
+\bibitem{subexp}
+\emph{Sharp Subexponential Reversion: Exact extremal cost, a Gevrey
+transition, and composition of two divergent series}.
+Research article prepared for Vladimir Reshetnikov, 29 September 2026,
+with repository editorial amendments.
+ProveIt package
+\path{Sharp_Subexponential_Cost_Gevrey_Reversion/}, under
+\path{Analysis/Transseries/docs/series-and-transseries/}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a4268e78ebd0f6bf71ba609c07f4b3415748f532/Analysis/Transseries/docs/series-and-transseries/Sharp_Subexponential_Cost_Gevrey_Reversion/article.tex}{Pinned article source}.
+The README and the extremal, localization, and multiplicative-asymptotic
+sections were consulted.
+
+\bibitem{weighted}
+\emph{Sharp Weighted Type Under Formal Reversion: Zero-loss inversion,
+exact Borel radii, and non-D-finiteness in countable exponential feedback}.
+Research article prepared for Vladimir Reshetnikov, 29 September 2026,
+with repository editorial amendments.
+ProveIt package \path{Sharp_Weighted_Type_Formal_Reversion/},
+under the same series-and-transseries directory.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a4268e78ebd0f6bf71ba609c07f4b3415748f532/Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/README.md}{Pinned package description}.
+
+% ed. (2026-09-30): four entries for the uncited neighbouring packages (keys prefixed ed:)
+\bibitem{ed:exacttype}
+\emph{Exact Type Beyond Log-Convexity: A complete reversion criterion,
+sharp distortion, and dimension-free nonlinear calculus}.
+ProveIt package \path{Exact_Weighted_Type_Beyond_Log_Convexity/},
+under the same series-and-transseries directory (cited by the editors).
+
+\bibitem{ed:finitecore}
+\emph{Finite-Core Universality and Sharp Large Order for Countable
+Exponential-Feedback Transseries}.
+ProveIt package \path{Finite_Core_Universality_Exponential_Feedback/},
+under the same directory (cited by the editors).
+
+\bibitem{ed:microcond}
+\emph{Microscopic Condensation in Exponential-Feedback Transseries}.
+ProveIt package \path{Microscopic_Condensation_Exponential_Feedback/},
+under the same directory (cited by the editors).
+
+\bibitem{ed:poissonlayers}
+\emph{Poisson Layers at the Finite-Core Boundary of Exponential-Feedback
+Transseries}.
+ProveIt package \path{Poisson_Layers_Finite_Core_Boundary/},
+under the same directory (cited by the editors).
+
+\bibitem{gessel}
+Ira M. Gessel,
+\emph{Lagrange Inversion},
+arXiv:1609.05988, 2016.
+\href{https://arxiv.org/abs/1609.05988}{Article and formal coefficient formulas}.
+
+\bibitem{jjs}
+Svante Janson, Thordur Jonsson, and Sigurdur \"Orn Stef\'ansson,
+\emph{Random trees with superexponential branching weights},
+Journal of Physics A: Mathematical and Theoretical
+\textbf{44} (2011), 485002.
+\href{https://doi.org/10.1088/1751-8113/44/48/485002}{doi:10.1088/1751-8113/44/48/485002}.
+\href{https://arxiv.org/abs/1104.2810}{arXiv:1104.2810};
+Theorems 2.5--2.6 and Remarks 2.7--2.8 in the inspected version.
+
+\bibitem{borinsky}
+Michael Borinsky,
+\emph{Generating asymptotics for factorially divergent sequences},
+Electronic Journal of Combinatorics \textbf{25}(4) (2018), Paper P4.1.
+\href{https://doi.org/10.37236/5999}{doi:10.37236/5999}.
+\href{https://arxiv.org/abs/1603.01236}{arXiv:1603.01236}.
+\end{thebibliography}
+\end{document}

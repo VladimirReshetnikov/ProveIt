@@ -2,9 +2,10 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are fifty unmerged
-arrivals of 2026-09-29, each filed whole with its PDF, then amended
-editorially (see "Arrivals of 2026-09-29" below).
+2026-09-04 (see the end of this file). Beside them are fifty-one unmerged
+arrivals, fifty of 2026-09-29 and one of 2026-09-30, each filed whole
+with its PDF and then amended editorially (see
+"Arrivals of 2026-09-29 and 2026-09-30" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -261,11 +262,12 @@ natural follow-up.  Note for future filing: on Windows a directory named
 deleted `combinatorial_transseries_and_inverses/`, which is why the
 companion's directory omits the "And".
 
-## Arrivals of 2026-09-29 (unmerged)
+## Arrivals of 2026-09-29 and 2026-09-30 (unmerged)
 
-Fifty research packages arrived through the repository drop zone
-`docs/incoming/` on 2026-09-29, in nine deliveries (its batches 45 to 53;
-the eighth came in four drop-zone commits).
+Fifty-one research packages arrived through the repository drop zone
+`docs/incoming/`: fifty on 2026-09-29, in nine deliveries (its batches 45
+to 53; the eighth came in four drop-zone commits), and one on 2026-09-30,
+in a tenth (batch 65).
 Each is filed whole, with its PDF, verification program and recorded
 outputs, in a directory named after the document. None has been reviewed
 claim by claim, and none is merged into either volume; merging is deferred.
@@ -275,7 +277,7 @@ and cite the volumes under
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/`;
 the passages they cite are unchanged here apart from that path. The
 gamma-core and residue-obstruction articles, and all articles of the third
-to ninth deliveries, cite the current paths. No article of the first two
+to tenth deliveries, cite the current paths. No article of the first two
 deliveries saw the others in the repository; where one continues another,
 it read it from Vladimir's library, as noted below. The seven articles of
 the third delivery were written after the first delivery was filed. Six
@@ -346,6 +348,20 @@ work: it answers the endpoint half of a question of the research-report
 collection's *Shifted Catalan Hankel Polynomials* (uniform endpoint limits
 of Catalan Hankel determinants) and becomes that report's Part IV, under
 `SetTheory/Cardinals/docs/reports/hankel-determinants/catalan-and-ballot/shifted-catalan-hankel-polynomials/`.
+The tenth delivery brought five archives. Its transseries article, the
+finite-jet article, was written against the revision that brought the
+archives of the drop zone's batch 63, whose tree has all nine earlier
+deliveries amended; it continues the subexponential-cost article and does
+not cite Vladimir's library, the exact-type article or the condensation
+articles of the regularity unit. The other four archives are not
+transseries work. Three continue the Fabius frontier drafts under
+`Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/`
+(the growth of prefix Rényi information above the critical order, the
+natural boundary of the q-Fabius transform, and conditioned extremes of
+uniform random series), and one, on closure-word duality for open-query
+games, becomes Part IV of the research-report collection's
+*Open-Query Membership Games*, under
+`SetTheory/Cardinals/docs/reports/ordinals-and-order-types/games-on-ordinals/open-query-membership-games/`.
 
 All fifty-two packages of the nine deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
@@ -373,6 +389,9 @@ resonance-block packages); the critical-line article needed no note. The
 ninth delivery was amended in the same way after it was filed, and notes
 recording it were added to two earlier packages (the exact-degree and
 residue-obstruction packages).
+The tenth delivery was amended in the same way on 2026-09-30, and notes
+recording it were added to one earlier package (the subexponential-cost
+package).
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -731,7 +750,7 @@ limits and Lean formalization are not claimed.
 [`Sharp_Subexponential_Cost_Gevrey_Reversion/`](Sharp_Subexponential_Cost_Gevrey_Reversion/)
 holds *Sharp Subexponential Reversion: exact extremal cost, a Gevrey
 transition, and composition of two divergent series* (23-page A4 PDF,
-1,407-line source, a standard-library exact check program with 5,338
+1,446-line source, a standard-library exact check program with 5,338
 scalar checks, and extended-precision diagnostics labelled as
 uncertified). It answers the weighted-type article's question "Optimal
 subexponential cost of reversion"
@@ -754,6 +773,53 @@ the weighted-type theorem only in its factorial case and says so; the
 local-quotient version for general weights is left open. It was written
 before the exact-type article above was filed, and neither cites the
 other; editorial notes in both now link them.
+
+[`Finite_Jet_Pressure_Laws_Gevrey_Reversion/`](Finite_Jet_Pressure_Laws_Gevrey_Reversion/)
+holds *Finite-Jet Pressure Laws for Gevrey Reversion and Condensation:
+complete multiplicative asymptotics, explicit critical constants, and
+Poisson centering* (24-page A4 PDF, 1,706-line source, a
+standard-library exact check program with 1,066 scalar checks, and
+double-precision diagnostics through degree 10,000 labelled as
+uncertified). It answers the subexponential-cost article's question
+"Complete multiplicative cost below one half"
+(`Sharp_Subexponential_Cost_Gevrey_Reversion/article.tex:1215-1223`),
+the gap that article states at `:138-140`: for positive weights equal to
+`D_* Γ(j+ν+1)^s` from some index on, with an arbitrary positive finite
+head, and the family `F_θ(z) = z(1 − θ C W(z))^{1/θ}` (`θ ≥ −1`;
+`F_0 = z e^{−CW}`), the normalized inverse coefficient satisfies
+`log R_n = Σ_{k ≤ J} p_k n^{1−ks} + o(1)` with `(J+1)s > 1` and
+`p_k = [t^k] Ψ_{ks}(B(t))/k`, where `B = tA′/(1 − θA)`, `A` is the
+weight polynomial through degree `J` and
+`Ψ_a(u) = ∫_0^u (1−v)^{−a} dv`. So every positive order, including every
+reciprocal integer, has a complete multiplicative equivalent; at
+`s = 1/3` it gives the constant `6^{1/3}C + (5/3)2^{1/3}C² + 7C³/9` that
+the question asks for, and at `s ≥ 1/2` it recovers that article's
+formulas. `θ = 1` is that article's coefficient-ball extremum and
+`θ = −1` the partition function of superexponentially weighted plane
+trees. It also proves a finite-jet universality law (only
+`w_1, …, w_{⌊1/s⌋}` matter), every critical window `s = 1/r + t/log n`,
+which answers that article's question "Uniform transitions at the lower
+thresholds" (`:1236-1241`) although the article does not say so, and
+the approximation of the small-part counts by independent Poisson
+variables with explicit centering corrections of every order. The
+Poisson approximation, the leading centering and the first two terms of
+the tree expansion are credited to Janson, Jonsson and Stefansson
+(2011), whose weights `((n−1)!)^α` are the case `θ = −1`, `C = 1`,
+`ν = 0`; the all-order formulas are the article's. It re-proves the
+subexponential-cost article's extremality and exact Lagrange sum for
+every `θ` and says so. Only eventually exact shifted-factorial tails
+with positive weights are treated, uniformly on compact positive-order
+sets but not as `s → 0`, and the `o(1)` is not effective. It was
+written after the exact-type article was filed and amended, but does
+not cite it; for eventually factorial weights it extends that article's
+question "Optimal subexponential overhead"
+(`Exact_Weighted_Type_Beyond_Log_Convexity/article.tex:1918-1928`) to an
+arbitrary positive head. Editorial notes now record these relations: in
+this article, its uncited neighbours (the exact-type article and the
+finite-core, microscopic-condensation and Poisson-layer articles, which
+use its Poisson small-part mechanism for another kernel) and the second
+answered question; in the subexponential-cost article, the gap and both
+questions.
 
 [`Logarithmic_Critical_Endpoint_Lambert_Charts/`](Logarithmic_Critical_Endpoint_Lambert_Charts/)
 holds *The Logarithmic Critical Endpoint: Convergent Lambert Charts,
@@ -1166,7 +1232,7 @@ natural-boundaries and inverse articles above. It does not classify
 individual Borel rays, and its recorded run output is a second copy of
 its verification record.
 
-These twenty-four articles and the regularity article study one kernel,
+These twenty-five articles and the regularity article study one kernel,
 `U = Σ c_j q^j exp(λ_j U)`, in complementary regimes, and form one unit for
 the deferred merge; the regularity article is its host, and the critical
 Hahn article also joins the moving fold. Six pairs and one triple
@@ -1194,13 +1260,18 @@ the logarithmic-endpoint article, which covers more of the critical Hahn
 article's questions, is the natural base, the marginal article's
 certificate and budget sections enter beside it, and the confluent and
 stable–Gaussian articles supply, independently, the crossover through `α = 2` (the second one order further in a bounded
-window, the first at any rate). The exact-type and subexponential-cost
-articles do not study the kernel; they join the unit through the
-weighted-type article, whose kernel-independent reversion theorem the
-first extends from log-convex to arbitrary weights and the second sharpens
-below the type for factorial weights. In a merge they form one reversion
-chapter with it, the exact-type criterion as the base and the composition
-law stated once, in general. For eventually exact `j²` the
+window, the first at any rate). The exact-type, subexponential-cost and
+finite-jet articles do not study the kernel; they join the unit through the weighted-type article, whose
+kernel-independent reversion theorem the first extends from log-convex to
+arbitrary weights, the second sharpens below the type for factorial
+weights, and the third completes to a multiplicative equivalent at every
+positive order for eventually factorial weights. In a merge they form one
+reversion chapter with it, the exact-type criterion as the base, the
+composition law stated once, in general, and the finite-jet pressure law
+as the subexponential cost. The finite-jet article's Poisson small-part
+counts are the reversion counterpart of the condensation mechanism of
+the finite-core, microscopic-condensation and Poisson-layer articles, in
+a different kernel. For eventually exact `j²` the
 microscopic-condensation article's coefficient theorem is the finite-core
 article's, and the quadratic-inverse, signed-inversion and
 signed-condensation articles are three independent claimed proofs of that
@@ -1228,7 +1299,11 @@ article's `b_n`, which is asymptotic to its `d_n` and to the
 uniform-coefficient article's `B`; its `Z` is the other articles' Landau
 variable plus `1 − γ`; the exact-type article's `S_n` (an envelope) and
 `N_n` (the weight) are the subexponential-cost article's composition sum
-and Poisson variables, the two crossover articles write `α = 2 − ε`, and
+and Poisson variables,
+the finite-jet article's `S_n` is a third sum (the finite-jet table sum),
+its `A` both the ball radius and the weight polynomial `A(t)`, and its
+`a_j = C w_j` are weights, not the subexponential-cost article's forward
+coefficients `a_{j+1}`, the two crossover articles write `α = 2 − ε`, and
 the inverse exponent is `(d − μ)/a`, `−b` or `(b − β)/a`), so a notation
 dictionary must come first.
 
@@ -1870,8 +1945,8 @@ the seventh, it is the `SHA256SUMS` of the lower-endpoint package; the
 moment-determinacy package had none. From the eighth, they are the
 `SHA256SUMS` of the exact-type and path-sensitive packages and the
 `SHA256SUMS.txt` of the Hahn–Dulac package; the other five had none. From
-the ninth, it is the `SHA256SUMS.txt` of the triangular package. The
-READMEs of the
+the ninth, it is the `SHA256SUMS.txt` of the triangular package. The tenth
+delivery's package had none. The READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
 fourth-delivery and five fifth-delivery packages that had one, now record
@@ -1907,6 +1982,9 @@ checks. The triangular README now records the retirement of its ledger,
 and the digests of its own source and PDF in `notes/validation.json` were
 recomputed for the amended source and the rebuilt PDF; they match the
 filed files.
+The finite-jet package's `data/build_validation.json` carries digests of
+its source and PDF; they were recomputed for the amended source and the
+rebuilt PDF and match the filed files.
 
 Fifty-eight CSV tables written with CRLF line endings were normalized to LF
 on filing: the reversion package's `numeric_checks.csv`, the regularity
@@ -1937,6 +2015,10 @@ eighth delivery has no other carriage return, and since its editorial pass
 all its programs write LF on every platform. The ninth
 delivery has no carriage return in any file, and its program writes LF
 line endings on every platform.
+The tenth delivery has no carriage return in any file either, and since
+its editorial pass its two programs write LF on every platform (as
+delivered, their JSON and TeX outputs used the platform's line endings,
+CRLF on Windows; the diagnostics CSV was always LF).
 
 The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`
@@ -1956,7 +2038,7 @@ of the seventh delivery adds a twelfth, `data/run.log`, the recorded output
 of the run that wrote its `data/` files (with `--output data`, as its
 README now says; the documented command writes under `build/`), likewise
 added past the rule. The eighth delivery has no `.log` file. Nor has the
-ninth.
+ninth. Nor has the tenth.
 
 No `build.sh` reruns a verification program in place any more. Those of the
 arithmetic, resonance-block, non-Archimedean reversion and Stokes-transport
@@ -2018,5 +2100,15 @@ default (`--output-dir`) and refuses `verification/` itself unless given
 recorded files byte for byte; `rerun/` is not ignored, so delete it
 afterwards. Its `build.sh` runs pdfLaTeX under the
 ignored `build/` and copies the PDF over the filed one.
+The finite-jet programs write into `data/rerun/` by default
+(`--output`); only an explicit `--output` into `data/` overwrites
+`data/verification.json` or `data/diagnostics.csv`,
+`data/numeric_validation.json` and `data/numerical_table.tex` (the
+article does not input the table; it embeds a copy), as the delivered
+defaults did; `data/rerun/` is not ignored, so delete it afterwards. Its
+diagnostics use double precision, not an extended `long double`, and run
+on Windows; a rerun of the amended programs reproduced
+`data/verification.json` and `data/numerical_table.tex` byte for byte and
+the other recorded values to a relative difference below `10^{−12}`.
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

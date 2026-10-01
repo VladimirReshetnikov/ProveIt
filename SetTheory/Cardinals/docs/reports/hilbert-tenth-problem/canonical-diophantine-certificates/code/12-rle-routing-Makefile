@@ -1,0 +1,19 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: all pdf test clean
+
+all: test pdf
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+test:
+	$(PYTHON) verify_certificates.py --output test_results.json
+	$(PYTHON) compile_quartic.py --output example_quartic.json
+	$(PYTHON) compile_quartic.py --variable-lengths --output parametric_quartic.json
+
+clean:
+	rm -f article.aux article.log article.out article.toc

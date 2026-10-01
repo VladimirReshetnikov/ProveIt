@@ -26,6 +26,10 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
 \DeclareMathOperator{\TV}{TV}
 \DeclareMathOperator{\Law}{Law}
 \DeclareMathOperator{\Var}{Var}
@@ -1338,11 +1342,14 @@ numerical operation.
 
 \subsection{How to reproduce the package}
 
+% ed. (2026-09-29): the program now writes to data-rerun/ by default, so a
+% plain run no longer overwrites the recorded files in data/.
 Run \texttt{python code/verify.py} from the package root, or invoke the
-script by its absolute path from another directory. It regenerates
-\nolinkurl{data/verification.json}, \nolinkurl{data/verification.txt},
-\nolinkurl{data/analytic_bounds.csv}, and
-\nolinkurl{data/rouche_thresholds.csv}. The exact checks use only the Python
+script by its absolute path from another directory. It writes
+\nolinkurl{verification.json}, \nolinkurl{verification.txt},
+\nolinkurl{analytic_bounds.csv}, and \nolinkurl{rouche_thresholds.csv}
+to \nolinkurl{data-rerun/}, or to the directory given by
+\texttt{-{}-output-dir}; the recorded copies are in \nolinkurl{data/}. The exact checks use only the Python
 standard library; the diagnostic portion needs \texttt{mpmath}.
 The TeX source contains the displayed tables directly, so rebuilding the
 article does not require Python. Two passes of \texttt{pdflatex article.tex}
@@ -1425,6 +1432,25 @@ global minimax problem.\\
 \bottomrule
 \end{tabular}
 \end{center}
+% ed. (2026-09-29): Lean crosswalk; the article does not cite these theorems.
+\begin{ednote}
+Lean crosswalk, not cited by the article. The zero multiplicity
+$c_m=1+v_2(m)$ of \eqref{eq:multiplicity} is the machine-checked theorem
+\path{Fabius.analyticOrderAt_rvachevFourierProduct_int} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/IntegerZeroAnalyticOrder.lean}.
+That $1+v_2(m)\ge r+1$ exactly when $2^r\mid m$, the divisor count behind
+\cref{lem:periods}, is
+\path{Fabius.dyadicZeroMultiplicity_ge_succ_iff_pow_two_dvd} in
+\path{DyadicZeroMultiplicity.lean} of the same directory. The derivative
+norms \eqref{eq:exact-derivative-norm} are
+\path{Fabius.isGreatest_abs_iteratedDeriv_rvachevUp}
+(\path{GlobalBounds.lean}), and the variance $1/9$ is
+\path{Fabius.integral_sq_mul_rvachev_eq_one_ninth}
+(\path{DyadicSpecializations.lean}). Exact identifiability of dyadic
+exponent sequences from zero orders, a noise-free counterpart of the
+divisor inversion, is proved in \path{GeneralizedRvachevIdentifiability.lean}.
+No quantitative statement of this article is formalized.
+\end{ednote}
 
 The adjacent inverse-and-sampling README was also inspected. It lists the
 finite-factor, Gaussian-confounding, and flat-boundary recovery articles as
@@ -1493,6 +1519,27 @@ power sums. The case $\rho<1/2$ does not contain the dyadic reference at all,
 so it is a different anchored problem rather than a strengthening of the
 same one.
 \end{question}
+% ed. (2026-09-30): answered at the dyadic reference by a later package
+\begin{ednotelater}
+Answered by \path{../Lacunarity_Boundary_Geometric_Uniform_Spectra/}
+(batch~68 of the repository's \path{docs/incoming/}), written against this
+article and in its normalization ($U_j$ uniform on $[-1,1]$, variance
+$1/9$, so $\sum_ja_j^2=1/3$). If $a_{j+1}\le a_j/2$ for every $j$, then
+\[
+ \sup_j|a_j-2^{-j}|^2\le\tfrac{75}{4}\bigl(\tfrac{19}{675}-\E X_a^4\bigr),
+\]
+and the fourth-moment deficit vanishes only at $a^0$. Hence the anchored
+modulus at $\rho=1/2$ is $\Theta(\sqrt\eps)$, a power law, in total
+variation and in Kolmogorov distance, with matching deleted-factor
+witnesses in $\K$ whose ratios are at most $1/2$; the
+stretched-exponential scale of \cref{thm:main} does not persist at the
+boundary. At $\rho=1/2$ it also answers the next question negatively
+(there $\sum_ja_j\le1$, with equality only at $a^0$, so no witness with
+$\sum_jb_j=1$ exists), and the question on prefix constants inside its
+critical cone only (local Lipschitz constants $\Theta(2^r)$). The pairwise
+modulus, the exact-support question with slack, and the prefix constants
+on $\A_L$ remain open.
+\end{ednotelater}
 
 \begin{question}[Exact support together with exact variance]
 Can the lower witnesses be chosen with $\sum_jb_j=1$ exactly, while
@@ -1530,6 +1577,19 @@ support is used decisively to turn Kolmogorov error into entire-transform
 error on contours. Which tail or exponential-moment hypothesis can replace
 it, and which parameter metric sees escaped Gaussian variance correctly?
 \end{question}
+% ed. (2026-09-29): the predecessor's corresponding question is answered, for
+% the Gaussian variance, by a package filed after this article's snapshot.
+\begin{ednote}
+The predecessor's corresponding question, ``Gaussian components and
+square-summable spectra'', is answered for the Gaussian-variance functional
+by the repository article
+\path{inverse-and-sampling/Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/}
+(filed 2026-09-29, after the snapshot this article read; unreviewed), in a
+model with a known smooth compactly supported background: without a tail
+restriction the exact minimax risk for the variance is $V/2$ at every
+sample size. Quantitative recovery of the scales themselves in that space,
+anchored or pairwise, is not treated there.
+\end{ednote}
 
 \begin{question}[Validated inversion and proof-carrying certificates]
 Build a finite-prefix solver that outputs both candidate lengths and

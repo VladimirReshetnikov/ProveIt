@@ -129,7 +129,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   still states both conjectures; no Lean statement.
 - [`Sharp_Conditioning_Laws_Fabius_Lacunary_Series/`](Sharp_Conditioning_Laws_Fabius_Lacunary_Series/),
   *Sharp Conditioning Laws for Fabius and Lacunary Random Series*
-  (23-page US Letter PDF, 1,655-line source, a NumPy/SciPy check and
+  (23-page US Letter PDF, 1,676-line source, a NumPy/SciPy check and
   Monte Carlo program), filed on 2026-09-28 by a quick archival intake from
   the repository-level `docs/incoming/` drop zone.  It describes the whole
   random-series configuration conditioned on a small sum `S ≤ x`, for every
@@ -141,11 +141,15 @@ of an existing draft; semantic consolidation is deferred to the post-
   phase-dependent boundary layer for geometric weights.  The finite-i.i.d.
   phenomenon is credited to Diaconis–Freedman.  It complements the scalar
   endpoint asymptotics of `docs/ASYMPTOTIC_COMPLETION_AUDIT.md` and the
-  rotating endpoint laws above.  Unreviewed; its numerics are not
+  rotating endpoint laws above.  Its Question 7 is answered in its
+  qualitative part by the extremes article below (an editorial note of
+  2026-09-30 says so).  Unreviewed; its numerics are not
   certificates; no Lean statement.
 - [`Sharp_Conditioning_Laws_Uniform_Random_Series/`](Sharp_Conditioning_Laws_Uniform_Random_Series/),
   *Sharp Conditioning Laws for Uniform Random Series* (26-page A4 PDF,
-  1,782-line source, a SymPy/SciPy check and Monte Carlo program), filed on
+  1,811-line source with an editorial note of 2026-09-30 at `q:critical`
+  naming the two critical-complements articles below, a SymPy/SciPy check
+  and Monte Carlo program), filed on
   2026-09-29 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone.  It proves the variance-fraction threshold of
   the lacunary article above for **every** positive summable weight
@@ -158,6 +162,77 @@ of an existing draft; semantic consolidation is deferred to the post-
   filed and does not cite it; the two are to be compared, and possibly
   merged, after review.  Unreviewed; its numerics are not certificates; no
   Lean statement.
+- [`Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/`](Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/),
+  *Poisson Extremes and Gaussian Bridges under Small-Sum Conditioning*
+  (21-page A4 PDF, 1,593-line source, a SymPy/SciPy diagnostic program),
+  filed on 2026-09-30 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  In the setting and
+  notation of the lacunary article above, it proves that the conditioned
+  extremes form a marked Poisson process jointly independent of the
+  Brownian bridge and the exponential slack, for every uniformly
+  lacunary weight sequence (the qualitative part of that article's
+  Question 7; rates stay open), and for weights `j^{−p}` an
+  incomplete-gamma law for the maximum with all fixed-order
+  inverse-logarithmic corrections, located on the index scale
+  `N/(log N)^{1/p}`.  It credits the polynomial variance clocks to the
+  uniform-series article above.  Unreviewed; its numerics are not
+  certificates; no Lean statement.
+- [`Critical_Complements_Fabius_Conditioning/`](Critical_Complements_Fabius_Conditioning/),
+  *Critical Complements in Fabius Conditioning* (25-page A4 PDF,
+  1,704-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone and amended editorially the same day (its
+  README lists the amendments).  In the setting of the uniform-series
+  article above, for geometric weights (the Fabius law at `q = 1/2`) and a
+  fixed number `r` of unobserved early coordinates, it replaces the
+  Gaussian profile by an explicit boundary kernel: the overlap
+  `1 − TV` equals `(Λ_n + r log Λ_n + log K − log r! + 1 + o(1))/√(2πn)`,
+  with an all-orders inverse-logarithmic expansion; every fixed positive
+  Rényi order has an explicit entropy constant, order zero tends to
+  `log 2`, and a universal normal-tail profile connects them on the scale
+  `α√n`; for `r = 0` the flat Fabius endpoint appears in the residual
+  (logarithm `∼ −√(log(1/q) log n)`).  It answers the bounded-complement
+  part of that article's `q:critical`; a growing number of hidden early
+  coordinates stays open (growing boundary-adjacent complements are
+  treated in the bullet below).  Unreviewed; its numerics are not certificates; no Lean
+  statement.
+- [`Critical_Complements_Sharp_Information_Loss/`](Critical_Complements_Sharp_Information_Loss/),
+  *Critical Complements in Fabius Conditioning: Sharp information loss,
+  geometric phase constants, and a logarithmic crossover* (25-page A4
+  PDF, 1,682-line source, a NumPy/SciPy diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone and amended editorially the same day (its
+  README lists the amendments); an independently written second answer to
+  the uniform-series article's `q:critical`, under the same title as the
+  bullet above.  It observes a prefix and hides the last `m` bulk
+  coordinates with the tail: for fixed `m` the overlap is
+  `(½ log(2πn) + 1 + K_m + o(1))/√(2πn)` with an explicit phase constant
+  and an exact compact boundary correction, and relative entropy is
+  known to order `1/n`; for every `m = o(n)` a Lambert-W formula gives
+  the leading overlap, which changes regime at `m ≍ log n`, and relative
+  entropy is `½ log(n/m) − ½ + o(1)`.  With only the tail hidden it
+  agrees with the article above; for other complements the two treat
+  different coordinates and complement each other.  Unreviewed; its
+  numerics are not certificates; no Lean statement.
+- [`Second_Order_Critical_Complements_Fabius_Conditioning/`](Second_Order_Critical_Complements_Fabius_Conditioning/),
+  *Second Order Critical Complements in Fabius Conditioning* (9-page A4
+  PDF, 685-line source, an mpmath diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It continues the two bullets above in
+  the window where the number `m` of hidden bulk coordinates is
+  comparable with `log n`, for both of their masks (the last `m` hidden,
+  as in the second bullet, and the first `m` hidden, as in the first
+  bullet's fixed-`r` setting).  It expands the overlap through the
+  constant term, where the geometric phase reappears, and the next
+  `1/m` term, uniformly in that window, with the `log log n` and
+  rounding corrections made explicit; and it proves that hiding the
+  earliest coordinates leaves eventually more overlap than hiding the
+  latest.  This answers the second article's question on second-order
+  crossover terms and the logarithmic slice of the first article's
+  growing-complement question; thinner and thicker complements stay
+  open.  Unreviewed; its numerics are not certificates; no Lean
+  statement.
 - [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
   Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy

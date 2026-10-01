@@ -26,6 +26,8 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\R}{\mathbb R}\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
 \newcommand{\T}{\mathbb T}\newcommand{\C}{\mathbb C}
 \newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
@@ -39,6 +41,8 @@
 \hypersetup{pdftitle={Rigidity and Quantitative Limits of Phase Averaging in Fabius--Rvachev Quadrature},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Signed phase filters, exact quadrature, arithmetic rigidity and superconvergence}}
 
 \begin{document}
+% ed. (2026-09-30): no page anchor on the title page (it duplicated page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{12mm}
 \noindent{\large\scshape Analysis / Approximation / Harmonic analysis}\par
@@ -86,6 +90,8 @@ theorems have not been independently peer reviewed or checked in Lean.
 \noindent\small Repository baseline: ProveIt, commit\par
 \noindent\small\snapshot.
 \end{titlepage}
+% ed. (2026-09-30): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 
 \tableofcontents
 \newpage
@@ -1335,6 +1341,27 @@ nearby integer zeros and rational approximation of $M$?
 The leading-jet identity suggests a local power law near any fixed
 resonance. A uniform theorem over families with growing $K$ would also
 need control of which resonance supplies the minimum.
+
+% ed. (2026-09-30): the fixed-K question is answered by a later draft of this
+% directory; uniformity in K and the constants stay open.
+\begin{ednote}
+For fixed $K$ this question is answered by Theorem \texttt{thm:resonance}
+of the later unreviewed draft \path{Approximate_Phase_Rigidity/} of this
+directory (2026-09-30), for the optimal error itself and not only for the
+bound \eqref{eq:irrational-quant}. Near a reduced rational $a/b$, the
+infimum of $E_{M,r}(\nu)$ over mass-one filters with at most $K$ atoms,
+positive, real signed or complex, with nodes and weights allowed to depend
+on $M$, is of exact order
+$|M-a/b|^{\max\{0,\,v_2(a)+1+\lfloor\log_2(K/b)\rfloor-r\}}$ for $K\ge b$,
+and stays bounded away from zero for $K<b$. The exponent is the largest zero
+multiplicity of $H$ at the frequencies $na/b$, $1\le n\le K$, minus $r$; for
+$r=0$ the same multiplicity gives the vanishing order of the minimum in
+\eqref{eq:irrational-quant}. An explicit regular polygon attains the order.
+The constants and the neighbourhood depend on $a/b$, $K$ and $r$; their
+uniformity as $K$ grows, and the optimal leading constants, remain open
+there. That draft does not compute the under-budget infimum of the preceding
+question at the rational mesh itself.
+\end{ednote}
 
 \begin{question}[Several dimensions and correlated phases]
 For a product of Rvachev kernels, classify phase measures giving uniform

@@ -1,0 +1,12 @@
+.PHONY: pdf verify count clean
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+verify:
+	python code/verify.py
+	python code/symbolic.py
+	python code/classify.py 0 4 2
+count:
+	python code/count.py
+clean:
+	latexmk -c article.tex
+	find code -type d -name __pycache__ -prune -exec rm -rf {} +

@@ -1,0 +1,1793 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxmath}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+ pdftitle={Exact Dynamics of a Three-Dimensional Keller Map},
+ pdfauthor={ChatGPT; prepared for Vladimir Reshetnikov},
+ pdfsubject={Degree growth, Newton faces, shear spectra, and arithmetic escape}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\K}{\mathbb K}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\A}{\mathbb A}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\dd}{\operatorname{deg}}
+\newcommand{\Newt}{\operatorname{Newt}}
+\newcommand{\init}{\operatorname{in}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\lc}{\operatorname{lc}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\calU}{\mathcal U}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\calH}{\mathcal H}
+\DeclareMathOperator{\charac}{char}
+\newcommand{\wtag}{\textup{[write]}}% text added when the report was written into ProveIt
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact dynamics of a Keller map}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtcolorbox{resultbox}{colback=MidnightBlue!4,colframe=MidnightBlue!55,
+ boxrule=0.5pt,arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{12mm}
+{\sffamily\large PROVEIT \; / \; RESEARCH CONTINUATION\par}
+\vspace{15mm}
+{\Huge\bfseries Exact Dynamics of a\\[3mm] Three-Dimensional\\[3mm] Keller Map\par}
+\vspace{9mm}
+{\Large Degree growth, Newton faces, shear spectra,\\[2mm]
+and arithmetic escape\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\normalsize AI-assisted research draft \;\textbullet\; 30 September 2026\par}
+\vspace{12mm}
+\begin{resultbox}
+The first dynamical degree of the repository's explicit map is
+\[
+\boxed{\lambda_1=3+\sqrt{10}}.
+\]
+Its iterate degrees satisfy an exact second-order recurrence. Polynomial
+source shears give an unbounded, explicitly computed spectrum while
+preserving the generic degree three and the Keller condition.
+\end{resultbox}
+\vfill
+\noindent\textbf{Status.} Complete mathematical arguments and exact companion
+checks are supplied. The new results have not been peer reviewed or
+formalized in Lean or Rocq. The original map, its determinant, its
+collisions, and the source-shear construction are credited to prior work.
+An exhaustive priority claim is not made.\par
+\vspace{5mm}
+\noindent\textbf{Repository snapshot.}\quad
+\texttt{a866ff9a2cdb9c5f436bb1d82ea5dca59dfee38d}\par
+\noindent\small Commit timestamp: 1 October 2026, 00:16 UTC
+(30 September in America/Los\_Angeles).\par
+\vspace{3mm}
+\noindent\small\wtag{} Written into ProveIt's research-report collection
+(category \texttt{jacobian-conjecture}) from batch~70, manuscript~06, a
+single manuscript; provenance and editorial changes are in
+Appendix~\ref{kmd:app:provenance}. None of its new results is formalized.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+We study the iterates of the explicit three-dimensional polynomial map
+in ProveIt's Jacobian-conjecture development. We prove that their degrees
+are $1,7,43,265,\ldots$, satisfy $d_{n+2}=6d_{n+1}+d_n$, and have first
+dynamical degree $3+\sqrt{10}$. This establishes the value suggested in
+Liam Giannini's publicly available July 2026 record description; it is
+not a claim about the contents of an inaccessible full manuscript or
+about global priority. The proof gives considerably more than a limit:
+all positive weighted degrees are explicit, the upper Newton geometry
+has just two vertices per coordinate, and every initial form on the
+intervening wall is a monomial times a power of $xz+3y$.
+
+For every nonzero polynomial $h$ of degree $m$, the source shear
+$T_h(x,y,z)=(x,y,z+y^2h(xy))$ produces a map $F_h=F\circ T_h$ with
+\[
+\lambda_1(F_h)=\frac{2m+7+\sqrt{4m^2+32m+61}}2.
+\]
+Thus one tame left--right equivalence class contains Keller maps of
+fixed generic degree three and unbounded first dynamical degree. We
+also determine the different degree laws in characteristic three.
+Finally, a monomial-dominance theorem constructs a forward-invariant
+complex escape region with a precise logarithmic asymptotic. For
+integral coefficients it yields a Zariski-dense set of integral initial
+points whose arithmetic degree equals the first dynamical degree.
+The package contains thirteen groups of exact checks, a source and
+claim ledger, a formalization roadmap, and ten further research
+questions.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The question, the baseline, and the contributions}\label{kmd:sec:intro}
+
+\subsection{A concrete dynamical question}
+A polynomial map can have three quite different kinds of degree. Its
+\emph{ordinary degree} is the largest total degree of a component. Its
+\emph{generic degree} is the degree of the induced extension of rational
+function fields; in characteristic zero it counts the points of a
+generic fiber. Its \emph{first dynamical degree} measures exponential
+growth of ordinary degrees under iteration. The present article
+separates these quantities and computes the third one exactly for a
+specific family whose first two are already understood.
+
+Throughout the characteristic-zero parts, $\K$ is a field of
+characteristic zero. Put
+\begin{align}
+ u&=1+xy,& H&=u^2z+y^2(1+3u),\label{kmd:eq:compact1}\\
+ F(x,y,z)&=(P,Q,R)=\bigl(uH,\ y+3xH,\ x(5-3u-x^2z)\bigr).
+ \label{kmd:eq:F}
+\end{align}
+This is precisely the map used in the repository's
+\texttt{Algebra/JacobianConjecture} project, not a rescaled or permuted
+version. The repository supplies Lean and Rocq proofs of its constant
+Jacobian determinant $-2$ and an explicit collision \cite{repo}.
+Gao's Theorem 3.3 discusses the same map and its generic degree three
+\cite{gao}. We rederive the elementary algebraic facts needed here,
+rather than treating every neighboring research report as an axiom.
+
+\noindent\wtag{} \emph{Notation against the rest of ProveIt.} The
+polynomial written $H$ in \eqref{kmd:eq:compact1} is the one the
+\texttt{Algebra/JacobianConjecture} project and the sibling reports
+\cite{weighted,arithmetic} write $h=u^2z+y^2(1+3u)$. In this article
+$h$ is reserved for the \emph{shear polynomial} $h(t)$ of
+\eqref{kmd:eq:shear-def}, as in the source shears $T_h$ of \cite{weighted};
+$H$ never denotes a shear, and $h$ never denotes the component factor.
+The inverse parameter $\tau=y+1/x$ of \cref{kmd:prop:generic} is the
+variable that \cite{arithmetic} writes $t$, a root of the same cubic
+\eqref{kmd:eq:cubic}; it is not the shear invariant $xy$, which the project's research notes
+and \cite{weighted} write $t$. The letter $L$ is used locally three
+times, each defined where it occurs: the field $\K(P,Q,R)$ in the proof
+of \cref{kmd:prop:generic}, the linear form $xz+3y$ of \eqref{kmd:eq:B0}, and a
+vector of logarithms in \cref{kmd:sec:escape}.
+The map \eqref{kmd:eq:F} is the Lean definition \texttt{counterexample}
+(\nolinkurl{Algebra/JacobianConjecture/Lean/JacobianConjecture/Counterexample.lean}),
+term for term. Its determinant is the Lean theorem
+\texttt{jacobianDet\_counterexample}, over every commutative ring, and
+the collision \eqref{kmd:eq:collision} is \texttt{collision}, assembled from
+\texttt{collision}$_0$\texttt{\_value} and
+\texttt{collision}$_1$\texttt{\_value}; the Rocq counterparts in
+\texttt{Coq/Counterexample.v} are \texttt{jacobian\_det\_is\_minus\_two}
+and \texttt{integral\_collision\_0\_value},
+\texttt{integral\_collision\_1\_value}. These are the only statements of
+this article that ProveIt has formalized.
+
+Giannini's Zenodo version 1.1 record, dated 20 July 2026, lists the
+first six positive-iterate degrees
+\[
+7,43,265,1633,10063,62011,
+\]
+and suggests $3+\sqrt{10}$ as the dynamical degree \cite{giannini}. A finite sequence
+alone does not prove that assertion: cancellation might occur later.
+The central question is whether one can control the leading terms for
+\emph{every} iterate. We answer that question affirmatively and make the
+control uniform in positive weights and polynomial source shears.
+
+\subsection{Main conclusions}
+Write $F^n=F\circ\cdots\circ F$ ($n$ factors), $F^0=\Id$, and
+$d_n=\dd(F^n)$. For a dominant polynomial map $G$, define
+\begin{equation}
+ \lambda_1(G)=\lim_{n\to\infty}\dd(G^n)^{1/n}.
+ \label{kmd:eq:lambda-def}
+\end{equation}
+The usual existence follows by applying subadditivity to
+$\log\dd(G^n)$; our formulas prove existence directly in every case
+studied below.
+
+\begin{theorem}[Main degree statements]\label{kmd:thm:main}
+Over any field of characteristic different from three, the map
+\eqref{kmd:eq:F} has
+\begin{equation}
+ d_0=1,\qquad d_1=7,\qquad d_{n+2}=6d_{n+1}+d_n,
+ \qquad \lambda_1(F)=3+\sqrt{10}.
+ \label{kmd:eq:main-base}
+\end{equation}
+Let $0\ne h\in\K[t]$, $m=\dd h\ge0$, and set
+\begin{equation}
+ T_h(x,y,z)=(x,y,z+y^2h(xy)),\qquad F_h=F\circ T_h.
+ \label{kmd:eq:shear-def}
+\end{equation}
+For $e_n=\dd(F_h^n)$ one has
+\begin{align}
+ e_0&=1,&e_1&=2m+8,\nonumber\\
+ e_{n+2}&=(2m+7)e_{n+1}+(m+3)e_n,&
+ \lambda_1(F_h)&=\frac{2m+7+\sqrt{4m^2+32m+61}}2.
+ \label{kmd:eq:main-shear}
+\end{align}
+In characteristic different from two these maps have determinant $-2$
+and separable generic degree three. In characteristic two the degree
+formulas still hold, but the Keller condition does not.
+\end{theorem}
+
+The proof is distributed across \cref{kmd:sec:algebra,kmd:sec:weighted,kmd:sec:shear}.
+No numerical extrapolation enters it. Two further conclusions make the
+calculation more than a single recurrence: \cref{kmd:sec:newton} computes the
+upper Newton geometry of every iterate, and \cref{kmd:sec:escape} turns the
+same matrices into an analytic escape theorem and an arithmetic-degree
+statement for a Zariski-dense set of initial points.
+
+\subsection{What is inherited and what is established here}
+The distinction matters because the repository contains both
+kernel-checked mathematics and unrefereed research reports. The
+classification report \cite{weighted} already constructs the shears
+\eqref{kmd:eq:shear-def}, describes a much larger normalized weighted
+class, and gives its ordinary-degree spectrum. The arithmetic report
+\cite{arithmetic} already uses a cubic inverse parameter. We do not
+claim those constructions, the original counterexample, or its
+generic degree as new.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.29\textwidth}p{0.62\textwidth}@{}}
+\toprule
+Object or assertion & Role in this article\\
+\midrule
+$F$, determinant, collision & Known baseline; rechecked and credited.\\
+$T_h$ and weighted classification & Known family; no new classification claimed.\\
+$3+\sqrt{10}$ & Previously suggested value; an all-iterate proof is given.\\
+Weighted degrees and wall forms & Exact theorems proved here for every iterate.\\
+Shear spectrum and characteristic three & Uniform formulas proved here.\\
+Escape asymptotics and arithmetic points & Proved here under explicit spectral hypotheses.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+``Proved here'' describes the contents of this article, not an assertion
+that no prior author has obtained the result. The public record
+underlying the numerical prediction was accessible; its linked PDF
+was not successfully retrieved. Consequently, we neither assign a
+conjecture number to that manuscript nor assert that the prediction
+remained unproved in all literature. The source ledger in
+\cref{kmd:app:sources} records this boundary explicitly.
+
+\section{Algebraic baseline and generic degree}\label{kmd:sec:algebra}
+
+\subsection{Expansion and a localized Jacobian computation}
+The full expansion is
+\begin{align}
+ P={}&z+3xyz+3x^2y^2z+x^3y^3z+4y^2+7xy^3+3x^2y^4,
+ \label{kmd:eq:P}\\
+ Q={}&y+3xz+6x^2yz+3x^3y^2z+12xy^2+9x^2y^3,
+ \label{kmd:eq:Q}\\
+ R={}&2x-3x^2y-x^3z.\label{kmd:eq:R}
+\end{align}
+These formulas will provide a finite support certificate for all later
+degree arguments.
+
+\begin{proposition}[Known identities, rederived]\label{kmd:prop:baseline}
+As an identity over $\Z[x,y,z]$, $\det J_F=-2$. Moreover,
+\begin{equation}
+ F(-1,1,5)=F(0,-2,-16)=(0,-2,0).
+ \label{kmd:eq:collision}
+\end{equation}
+Thus over a field of characteristic different from two, $F$ is a
+noninjective Keller map.
+\end{proposition}
+\begin{proof}
+The collision is direct substitution. For the determinant, work first
+in $\Q(x,y,z)$ and use the intermediate coordinates $(x,u,H)$ from
+\eqref{kmd:eq:compact1}. Their Jacobian determinant is $xu^2$. In these
+coordinates the target is
+\begin{equation}
+ \left(uH,\ \frac{u-1}{x}+3xH,
+ \frac{x(u+1-x^2H)}{u^2}\right).
+ \label{kmd:eq:localized-map}
+\end{equation}
+Indeed,
+\[
+ u^2(5-3u)+(u-1)^2(1+3u)=u+1.
+\]
+Differentiating \eqref{kmd:eq:localized-map} with respect to $(x,u,H)$
+gives determinant $-2/(xu^2)$. Multiplication by $xu^2$ proves the
+claim in the rational function field, hence in the polynomial ring.
+Since both sides have integral coefficients, it is an identity over
+$\Z$ and specializes to every characteristic. The two source points
+in \eqref{kmd:eq:collision} remain distinct over every field, since their
+first coordinates differ by one.
+\end{proof}
+
+\subsection{The cubic parameter and what it does not measure}
+The next calculation is included to make the comparison between first
+and generic degree self-contained. The inverse parameter is the one
+used in \cite{arithmetic}; it is not the invariant $xy$ occurring in
+the shear.
+
+\begin{proposition}[Generic degree]\label{kmd:prop:generic}
+If $\charac\K\ne2$, then $F$ is dominant and
+\[
+ [\K(x,y,z):\K(P,Q,R)]=3,
+\]
+with separable extension. Every $F_h$ has the same property, and its
+$n$th iterate has function-field degree $3^n$.
+\end{proposition}
+\begin{proof}
+Put $\tau=y+1/x$, and for formal target coordinates $(A,B,C)$ write
+\begin{equation}
+ g_{A,B,C}(T)=CT^3-2T^2+BT-2A.
+ \label{kmd:eq:cubic}
+\end{equation}
+Expansion using \eqref{kmd:eq:P}--\eqref{kmd:eq:R} proves
+\begin{equation}
+ g_{P,Q,R}(\tau)=0,\qquad g'_{P,Q,R}(\tau)=2/x.
+ \label{kmd:eq:cubic-identities}
+\end{equation}
+The second identity supplies the rational reconstruction
+\begin{equation}
+ x=\frac2{g'(\tau)},\qquad y=\tau-\frac1x,
+ \qquad z=\frac{2-3xy-C/x}{x^2}.
+ \label{kmd:eq:reconstruct}
+\end{equation}
+Here and below identities involving $1/x$ are identities of rational
+function fields, not claims about every special fiber.
+
+Let $L=\K(P,Q,R)$. Equations \eqref{kmd:eq:cubic-identities} and
+\eqref{kmd:eq:reconstruct} show $\K(x,y,z)=L(\tau)$ and $[L(\tau):L]\le3$.
+Thus $\operatorname{trdeg}_\K L=3$, so $P,Q,R$ are algebraically
+independent and $F$ is dominant. The polynomial \eqref{kmd:eq:cubic} is
+irreducible in $\K[A,B,C,T]$: it is linear in $A$ with invertible
+coefficient $-2$, and its quotient ring is $\K[B,C,T]$. As a polynomial
+in $T$ it is primitive over $\K[A,B,C]$, since its $T^2$ coefficient
+is the unit $-2$. Gauss's lemma makes it irreducible over
+$\K(A,B,C)$. Its derivative does not vanish at $\tau$ by
+\eqref{kmd:eq:cubic-identities}; hence the extension is separable of degree
+three.
+
+The inverse of $T_h$ is $T_{-h}$. Composition with this polynomial
+automorphism preserves generic degree and separability. Finally, the
+pullback by a dominant map identifies each successive pair in the
+function-field tower with the first pair, so the tower law gives
+$3^n$.
+\end{proof}
+
+\begin{remark}
+Over characteristic zero the top dynamical degree is therefore three.
+It must not be substituted for $\lambda_1=3+\sqrt{10}$. Nor does the
+number of points of a particular exceptional fiber determine either
+of these quantities. This article does not compute the second
+dynamical degree.
+\end{remark}
+
+\noindent\wtag{} Within ProveIt, the cubic \eqref{kmd:eq:cubic} and the
+identities \eqref{kmd:eq:cubic-identities} are the inverse cubic and the
+derivative identity $g'(t)=2/x$ of \cite{arithmetic}, where they are
+credited in turn to earlier external work; generic degree three of $F$
+is Gao's \cite{gao}. \Cref{kmd:prop:generic} is therefore a second route
+to a known statement for $F$; what it adds is the passage to the shears
+$F_h$ and to the iterates.
+
+\subsection{The exceptional algebra in characteristic two}
+Although characteristic two is not a Keller case, it is useful to
+separate its algebraic degeneration from the different dynamical
+degeneration at three.
+
+\begin{proposition}\label{kmd:prop:char2}
+In characteristic two the map $F$ is dominant of purely inseparable
+function-field degree two. Its total-degree growth remains
+\eqref{kmd:eq:main-base}.
+\end{proposition}
+\begin{proof}
+The degree assertion is proved in \cref{kmd:sec:weighted}; its leading
+coefficients remain nonzero in characteristic two. For dominance and
+the field extension, write $A=P,B=Q,C=R$ and $\tau=y+1/x$. Reduction
+of the polynomial identities gives
+\[
+ B=C\tau^2,\qquad A=\tau(B+\tau+1/x).
+\]
+Consequently
+\[
+ \frac1x=\frac A\tau+B+\tau,\qquad
+ y=\tau+\frac1x,\qquad z=\frac{C+x^2y}{x^3}.
+\]
+It follows that $\K(x,y,z)=\K(A,C,\tau)$. These three generators
+are algebraically independent because the left side has transcendence
+degree three. The subfield $\K(A,C,C\tau^2)$ is rational of the same
+transcendence degree, and $B/C$ is not a square in $\K(A,B,C)$, as
+its valuation at the prime $B$ is one. Thus adjoining $\tau$ is a
+purely inseparable quadratic extension. The determinant is zero by
+\cref{kmd:prop:baseline}; no Keller conclusion is intended.
+\end{proof}
+
+\section{Every positive weighted degree and the exact recurrence}
+\label{kmd:sec:weighted}
+
+\subsection{A composition lemma that rules out cancellation}
+For $w=(a,b,c)\in\R_{>0}^3$ and a nonzero polynomial
+$f=\sum_\alpha f_\alpha x^{\alpha_1}y^{\alpha_2}z^{\alpha_3}$, define
+\[
+ \dd_w f=\max_{f_\alpha\ne0}\alpha\cdot w,
+ \qquad
+ \init_w f=\sum_{\alpha\cdot w=\dd_w f}f_\alpha X^\alpha.
+\]
+These definitions allow arbitrary positive real weights, not just
+integers. Products of nonzero polynomials satisfy
+$\dd_w(fg)=\dd_w f+\dd_w g$: the product of their initial forms is
+nonzero in the polynomial ring over a field.
+
+\begin{lemma}[Unique outer leading monomial]\label{kmd:lem:composition}
+Let $G=(G_1,G_2,G_3)$ have nonzero polynomial components, with weighted
+degree vector $d=(\dd_wG_1,\dd_wG_2,\dd_wG_3)$. Suppose a polynomial
+$H_i$ has exactly one monomial $c_iX^{\alpha_i}$ of maximal
+$d$-weight. Then
+\begin{align*}
+ \dd_w H_i(G)&=\alpha_i\cdot d,\\
+ \init_w H_i(G)&=c_i\prod_{j=1}^3(\init_wG_j)^{\alpha_{ij}}.
+\end{align*}
+In particular, there is no requirement that the initial forms of the
+$G_j$ themselves be monomials.
+\end{lemma}
+\begin{proof}
+The displayed product is nonzero and has the asserted weight. Every
+other outer monomial has strictly smaller $d$-weight, hence after
+substitution strictly smaller $w$-degree. It cannot cancel any term
+of the displayed product.
+\end{proof}
+
+The uniqueness requirement concerns the \emph{outer} polynomial.
+This distinction is the reason the argument below also works on the
+wall where each initial component of $F$ has two terms.
+
+\subsection{Two matrices and a one-step invariant cone}
+Set
+\begin{equation}
+ M=\begin{pmatrix}3&3&1\\3&2&1\\3&0&1\end{pmatrix},\qquad
+ N=\begin{pmatrix}2&4&0\\2&3&0\\2&1&0\end{pmatrix},\qquad
+ \one=\begin{pmatrix}1\\1\\1\end{pmatrix}.
+ \label{kmd:eq:MN}
+\end{equation}
+The rows of $M$ give the exponents of
+$(x^3y^3z,3x^3y^2z,-x^3z)$; those of $N$ give the exponents of
+$(3x^2y^4,9x^2y^3,-3x^2y)$. Assume throughout this section that
+$\charac\K\ne3$, so these six coefficients are nonzero.
+
+\begin{lemma}[Support and cone certificate]\label{kmd:lem:cone}
+For $w=(a,b,c)>0$ write $\delta(w)=a-b+c$. Then
+\begin{equation}
+ T(w):=\begin{pmatrix}\dd_wP\\\dd_wQ\\\dd_wR\end{pmatrix}
+ =Nw+\max\{\delta(w),0\}\one.
+ \label{kmd:eq:tropical}
+\end{equation}
+If $\delta(w)>0$, the maximal monomial in each component is the one
+encoded by $M$; if $\delta(w)<0$, it is the one encoded by $N$.
+In all cases $\delta(T(w))>0$.
+\end{lemma}
+\begin{proof}
+Inspection of \eqref{kmd:eq:P}--\eqref{kmd:eq:R} shows that every exponent
+in the $i$th component is coordinatewise bounded by either the $i$th
+row of $M$ or the $i$th row of $N$. Apart from these two endpoints,
+each such bound is strict in at least one coordinate. Positive
+weights therefore put all other exponents strictly below the larger
+endpoint. The endpoint difference is
+\[
+ M-N=\one\begin{pmatrix}1&-1&1\end{pmatrix},
+\]
+which proves \eqref{kmd:eq:tropical}. Finally,
+\begin{align*}
+ \delta(Mw)&=3a+b+c>0,\\
+ \delta(Nw)&=2a+2b>0.
+\end{align*}
+At $\delta(w)=0$ the two vectors agree, and the conclusion is the same.
+\end{proof}
+
+\begin{theorem}[All positive weighted degrees]\label{kmd:thm:weighted}
+For every $w\in\R_{>0}^3$ and $n\ge1$,
+\begin{equation}
+ D_n(w):=\begin{pmatrix}\dd_w(F^n)_1\\\dd_w(F^n)_2\\\dd_w(F^n)_3\end{pmatrix}
+ =M^{n-1}\bigl(Nw+\max\{a-b+c,0\}\one\bigr).
+ \label{kmd:eq:all-weighted}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The first step is \cref{kmd:lem:cone}. Its degree vector belongs to the
+positive cone $\delta>0$, where each component of the next outer copy
+of $F$ has a unique maximal monomial encoded by $M$. Apply
+\cref{kmd:lem:composition} to obtain $D_{n+1}=MD_n$. The same cone lemma
+keeps every subsequent vector in $\delta>0$, completing the induction.
+\end{proof}
+
+This proof uses only a finite support comparison, two strict linear
+inequalities, and an induction. In particular, it proves that no
+later cancellation can invalidate the observed degree pattern.
+
+\subsection{Ordinary degrees, generating functions, and a closed form}
+For ordinary degree $w=\one$, the initial gap is $1>0$, so
+\begin{equation}
+ D_n(\one)=M^n\one\qquad(n\ge0).
+ \label{kmd:eq:ordinary-matrix}
+\end{equation}
+The resulting vectors begin as follows.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & $\dd(F^n)_1$ & $\dd(F^n)_2$ & $\dd(F^n)_3$\\
+\midrule
+0&1&1&1\\
+1&7&6&4\\
+2&43&37&25\\
+3&265&228&154\\
+4&1633&1405&949\\
+5&10063&8658&5848\\
+6&62011&53353&36037\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first coordinate is the largest for $n\ge1$: the differences
+between the first and second rows of $M$, and between the second
+and third rows, are $(0,1,0)$ and $(0,2,0)$ respectively.
+
+\begin{theorem}[Exact scalar laws]\label{kmd:thm:recurrence}
+Let $d_n=\dd F^n$. Then
+\begin{equation}
+ \sum_{n\ge0}d_nz^n=\frac{1+z}{1-6z-z^2}.
+ \label{kmd:eq:gf}
+\end{equation}
+Writing $s=\sqrt{10}$ and $\lambda_\pm=3\pm s$, one has
+\begin{equation}
+ d_n=\frac{(s+4)\lambda_+^n+(s-4)\lambda_-^n}{2s}.
+ \label{kmd:eq:closed}
+\end{equation}
+In particular $\lambda_1(F)=\lambda_+$.
+\end{theorem}
+\begin{proof}
+Direct calculation gives
+\[
+ \det(tI-M)=t(t^2-6t-1),\qquad
+ \operatorname{im}M=E:=\{(a,b,c):2a-3b+c=0\}.
+\]
+The matrix has rank two. On $E$ it satisfies $M^2=6M+I$; this follows
+either by restriction or from $M(M^2-6M-I)=0$ and the fact that
+$M$ is invertible on its image. Since $\one\in E$, every coordinate
+of $M^n\one$ satisfies the recurrence from its initial index $n=0$.
+For the first coordinate the initial values are $1,7$, giving
+\eqref{kmd:eq:gf} and then \eqref{kmd:eq:closed}. The coefficient of
+$\lambda_+^n$ is positive, $\lambda_+>1$, and $|\lambda_-|<1$, so
+taking $n$th roots proves the limit.
+\end{proof}
+
+For completeness, the other two coordinate generating functions are
+\[
+ \sum_{n\ge0}\dd(F^n)_2z^n=\frac1{1-6z-z^2},\qquad
+ \sum_{n\ge0}\dd(F^n)_3z^n=\frac{1-2z}{1-6z-z^2}.
+\]
+The small negative conjugate $3-\sqrt{10}$ will reappear in the
+transverse contraction governing escape to infinity.
+
+\section{Upper Newton geometry and exact wall forms}\label{kmd:sec:newton}
+
+\subsection{What is computed}
+The Newton polytope of a polynomial is the convex hull of all its
+exponent vectors. Positive weighted degrees see only its upper
+faces. It is useful to encode exactly that information by the
+\emph{downward completion}
+\begin{equation}
+ \mathcal P^\downarrow(f)=\Newt(f)-\R_{\ge0}^3.
+ \label{kmd:eq:downward}
+\end{equation}
+This is not the full Newton polytope. Its support function is finite
+on the nonnegative orthant and agrees there with that of
+$\Newt(f)$. Calling it an upper Newton object refers to its maximal
+faces, even though its completion extends downward.
+
+\begin{theorem}[Two vertices determine the upper geometry]\label{kmd:thm:newton}
+Assume $\charac\K\ne3$. For $n\ge1$ and $i\in\{1,2,3\}$ put
+\begin{equation}
+ v^+_{n,i}=(M^n)_{i,*},\qquad
+ v^-_{n,i}=(M^{n-1}N)_{i,*},\qquad k_n=M^{n-1}\one.
+ \label{kmd:eq:vertices}
+\end{equation}
+Then
+\begin{equation}
+ \mathcal P^\downarrow((F^n)_i)
+ =\conv\{v^+_{n,i},v^-_{n,i}\}-\R_{\ge0}^3,
+ \label{kmd:eq:newton-theorem}
+\end{equation}
+and
+\begin{equation}
+ v^+_{n,i}-v^-_{n,i}=k_{n,i}(1,-1,1).
+ \label{kmd:eq:vertex-diff}
+\end{equation}
+Thus the only wall for strictly positive weights is $a+c=b$,
+independently of the iterate.
+\end{theorem}
+\begin{proof}
+By \cref{kmd:thm:weighted}, the support function for positive weights is
+\[
+ (M^{n-1}Nw)_i+k_{n,i}\max\{a-b+c,0\}
+ =\max\{v^+_{n,i}\cdot w,v^-_{n,i}\cdot w\}.
+\]
+Here $k_{n,i}>0$. Off the wall, successive applications of
+\cref{kmd:lem:composition} show that the initial form is a nonzero
+monomial of exponent $v^+_{n,i}$ or $v^-_{n,i}$ respectively. Both
+endpoints therefore occur in the polynomial. Equality of the
+support functions extends to nonnegative weights by continuity.
+A closed downward-completed convex polyhedron is determined by these
+support values: a separating linear functional with finite upper
+bound must have nonnegative coefficients. This proves
+\eqref{kmd:eq:newton-theorem}. Equation \eqref{kmd:eq:vertex-diff} follows
+by multiplying $M-N=\one(1,-1,1)$ on the left by $M^{n-1}$.
+\end{proof}
+
+An equivalent elementary version of the last separation step is the
+following. If a support exponent lay outside the right side of
+\eqref{kmd:eq:newton-theorem}, a nonnegative weight would strictly
+separate it. Perturbing this weight slightly into the positive
+orthant would preserve strict separation, contradicting
+\cref{kmd:thm:weighted}.
+
+\subsection{The entire initial form on the wall}
+Put
+\begin{equation}
+ L=xz+3y,\qquad
+ B_0=\begin{pmatrix}2&3&0\\2&2&0\\2&0&0\end{pmatrix}.
+ \label{kmd:eq:B0}
+\end{equation}
+The notation $B_0$ is an exponent matrix, not the second target
+coordinate from \eqref{kmd:eq:cubic}. For a positive wall weight
+$a+c=b$, the first initial forms are
+\begin{equation}
+ \init_w F=(x^2y^3L,\ 3x^2y^2L,\ -x^2L).
+ \label{kmd:eq:wall-first}
+\end{equation}
+They need not remain monomials, but their propagation is nevertheless
+exact.
+
+\begin{theorem}[Wall factorization at every iterate]\label{kmd:thm:wall}
+Let $C_1=(1,3,-1)$ and recursively define nonzero coefficients
+\begin{equation}
+ C_{n+1,i}=C_{1,i}\prod_{j=1}^3C_{n,j}^{M_{ij}}.
+ \label{kmd:eq:coefficient-rec}
+\end{equation}
+If $w>0$ and $a+c=b$, then for every $n\ge1$,
+\begin{equation}
+ \init_w(F^n)_i
+ =C_{n,i}\,
+ x^{(M^{n-1}B_0)_{i1}}
+ y^{(M^{n-1}B_0)_{i2}}
+ L^{(M^{n-1}\one)_i}.
+ \label{kmd:eq:wall-all}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The case $n=1$ is \eqref{kmd:eq:wall-first}. After that first step the
+degree vector lies strictly in the plus cone. Therefore the unique
+outer initial monomials have exponents $M_{i,*}$ and coefficients
+$C_{1,i}$. The composition lemma multiplies the exponent matrix by
+$M$, the exponent vector of $L$ by $M$, and the coefficient vector
+according to \eqref{kmd:eq:coefficient-rec}. This is exactly the stated
+induction. The coefficients remain nonzero because $3\ne0$ and the
+coefficient ring is a field.
+\end{proof}
+
+For example, $C_2=(-27,-27,1)$. Formula \eqref{kmd:eq:wall-all} describes
+all cancellation-sensitive leading terms along this wall. In
+positive characteristic some interior binomial coefficients in
+$L^k$ can vanish, but neither endpoint of that power vanishes when
+$3\ne0$. The upper-geometry theorem is therefore unchanged.
+
+\subsection{A robust support class}
+The exact growth is not specific to all sixteen coefficients in
+\eqref{kmd:eq:P}--\eqref{kmd:eq:R}. It survives arbitrary changes below the
+relevant upper faces.
+
+\begin{corollary}[Coefficient robustness]\label{kmd:cor:robust}
+Let $G=(G_1,G_2,G_3)$ be a polynomial tuple over any field. Suppose
+\[
+ \supp(G_i)\subseteq
+ \bigl(\conv\{M_{i,*},N_{i,*}\}-\R_{\ge0}^3\bigr)\cap\N^3
+\]
+and the coefficient of $X^{M_{i,*}}$ is nonzero for every $i$.
+Then the ordinary coordinate-degree vector of $G^n$ is $M^n\one$.
+If $G$ is dominant, $\lambda_1(G)=3+\sqrt{10}$.
+\end{corollary}
+\begin{proof}
+For every positive weight in the plus cone, $M_{i,*}$ is the unique
+maximizer on the specified support region. The ordinary initial
+weight belongs to that cone, and $M$ preserves it. The proof of
+\cref{kmd:thm:weighted} therefore applies without change. Dominance is
+needed only to use the conventional dynamical-degree terminology,
+not for the degree-vector induction.
+\end{proof}
+
+In particular, in characteristic different from three the same law
+holds after independent invertible affine changes in each source
+coordinate and in each target coordinate, with no coordinate mixing
+or permutation. Expanding such a substitution moves exponents only
+downward from existing ones, and the plus vertex retains a nonzero
+coefficient. These source--target modifications need not be
+conjugacies. The result is a support statement, not an assertion that
+first dynamical degree is invariant under arbitrary left--right
+equivalence.
+
+\begin{lemma}[Weighted eigenvector principle]\label{kmd:lem:eigen}
+More generally, suppose a polynomial tuple $G$ has unique
+$v$-leading monomials $c_iX^{A_{i,*}}$, where $v>0$,
+$A\in M_d(\N)$, and $Av=\lambda v$ with $\lambda>1$. Then
+\[
+ \dd_v(G^n)_i=\lambda^n v_i.
+\]
+Its ordinary degree has exponential rate $\lambda$.
+\end{lemma}
+\begin{proof}
+The degree vector after each step is a positive scalar multiple of
+$v$, so the unique outer leading monomials remain unique. Induction
+using \cref{kmd:lem:composition} proves the weighted formula. If
+$v_{\min}=\min_i v_i$ and $v_{\max}=\max_i v_i$, then
+\[
+ v_{\min}\dd f\le\dd_v f\le v_{\max}\dd f
+\]
+for every nonzero polynomial $f$. These fixed multiplicative
+comparison constants disappear on taking $n$th roots.
+\end{proof}
+
+This principle is a general leading-term method. Our contribution is
+the explicit invariant cones, matrices, and consequences for the
+present maps, rather than a claim to have invented weighted degrees.
+
+\section{The complete polynomial-shear spectrum}\label{kmd:sec:shear}
+
+\subsection{Why a shear is dynamically nontrivial}
+The transformation $T_h$ in \eqref{kmd:eq:shear-def} is triangular, with
+Jacobian one and inverse $T_{-h}$. Thus $F_h=F\circ T_h$ is
+left--right equivalent to $F$. It is usually not conjugate to $F$:
+iteration produces
+\[
+ F_h^n=(F\circ T_h)\circ\cdots\circ(F\circ T_h),
+\]
+not $F^n\circ T_h$ and not $T_h^{-1}\circ F^n\circ T_h$.
+This is the distinction that permits unbounded dynamical degrees.
+The repository already uses these shears in its weighted
+classification \cite{weighted}; here they are treated as dynamical
+systems in the fixed displayed coordinates.
+
+Let $0\ne h(t)\in\K[t]$, let $m=\dd h$, and write
+$\eta=\lc(h)$. Substitution in \eqref{kmd:eq:F} gives
+\begin{align}
+ P_h&=P+(1+xy)^3y^2h(xy),\nonumber\\
+ Q_h&=Q+3x(1+xy)^2y^2h(xy),\label{kmd:eq:shear-components}\\
+ R_h&=R-x^3y^2h(xy).\nonumber
+\end{align}
+In characteristic different from three the candidate top monomials
+are
+\begin{equation}
+ \eta x^{m+3}y^{m+5},\qquad
+ 3\eta x^{m+3}y^{m+4},\qquad
+ -\eta x^{m+3}y^{m+2}.
+ \label{kmd:eq:shear-top}
+\end{equation}
+Their exponent matrix is
+\begin{equation}
+ S_m=\begin{pmatrix}
+ m+3&m+5&0\\m+3&m+4&0\\m+3&m+2&0
+ \end{pmatrix}.
+ \label{kmd:eq:S}
+\end{equation}
+
+\begin{lemma}[Shear cone]\label{kmd:lem:shear-cone}
+For positive weights $w=(a,b,c)$ put
+\[
+ \Delta_m(w)=ma+(m+2)b-c.
+\]
+If $\Delta_m(w)>0$, the monomials in \eqref{kmd:eq:shear-top} are the
+unique maximal monomials of the corresponding components. Moreover,
+\begin{equation}
+ \Delta_m(S_mw)=(2m+1)(m+3)a+(2m^2+10m+6)b>0.
+ \label{kmd:eq:shear-gap}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every exponent in the added shear part of a component is
+coordinatewise bounded by the corresponding row of $S_m$. Only the
+highest-degree term of $h$ and the highest power of $xy$ give that
+row. The difference between a row of $S_m$ and the corresponding
+row of $M$ is $(m,m+2,-1)$; the difference from the row of $N$ is
+$(m+1,m+1,0)$. The first difference has positive $w$-weight by
+hypothesis, and the second does so because $w>0$. The support
+certificate for $F$ now proves uniqueness. Direct multiplication
+gives \eqref{kmd:eq:shear-gap}.
+\end{proof}
+
+\begin{theorem}[All-iterate shear degree law]\label{kmd:thm:shears}
+Assume $\charac\K\ne3$ and $h\ne0$ has degree $m\ge0$. For every
+$n\ge0$,
+\begin{equation}
+ \begin{pmatrix}\dd(F_h^n)_1\\\dd(F_h^n)_2\\\dd(F_h^n)_3\end{pmatrix}
+ =S_m^n\one.
+ \label{kmd:eq:shear-vector}
+\end{equation}
+The ordinary degrees satisfy \eqref{kmd:eq:main-shear}, and
+\begin{equation}
+ \sum_{n\ge0}\dd(F_h^n)z^n
+ =\frac{1+z}{1-(2m+7)z-(m+3)z^2}.
+ \label{kmd:eq:shear-gf}
+\end{equation}
+They depend on $h$ only through its degree, not through its other
+coefficients or its nonzero leading coefficient.
+\end{theorem}
+\begin{proof}
+The ordinary initial weight satisfies $\Delta_m(\one)=2m+1>0$.
+Apply \cref{kmd:lem:shear-cone,kmd:lem:composition} inductively to obtain
+\eqref{kmd:eq:shear-vector}. The first coordinate is the largest at
+every positive step, since consecutive row differences are
+$(0,1,0)$ and $(0,2,0)$.
+
+One has
+\[
+ \det(tI-S_m)=t\bigl(t^2-(2m+7)t-(m+3)\bigr).
+\]
+The image is the same plane $E=\{2a-3b+c=0\}$ as before. Its rank
+is two, and on $E$ the matrix satisfies
+$S_m^2=(2m+7)S_m+(m+3)I$. Since $\one\in E$, this gives the
+second-order recurrence from $n=0$. The initial vector is
+$(2m+8,2m+7,2m+5)$, yielding \eqref{kmd:eq:shear-gf}.
+
+The two nonzero eigenvalues are
+\[
+ \lambda_m=\frac{2m+7+\sqrt{4m^2+32m+61}}2,
+ \qquad \mu_m=-\frac{m+3}{\lambda_m}.
+\]
+They satisfy $\lambda_m>m+3$ and $-1<\mu_m<0$. The scalar
+recurrence has a positive coefficient of $\lambda_m^n$, because
+$e_0=1$, $e_1=2m+8>0$, and $\mu_m<0$. Its exponential rate is
+therefore $\lambda_m$.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+Shear & $\dd F_h$ & $\dd F_h^2$ & $\dd F_h^3$ & $\lambda_1(F_h)$\\
+\midrule
+$h=0$ &7&43&265&$3+\sqrt{10}$\\
+$\dd h=0$ &8&59&437&$(7+\sqrt{61})/2$\\
+$\dd h=1$ &10&94&886&$(9+\sqrt{97})/2$\\
+$\dd h=2$ &12&137&1567&$(11+\sqrt{141})/2$\\
+$\dd h=3$ &14&188&2528&$(13+\sqrt{193})/2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The zero polynomial is a separate case, not a polynomial of degree
+zero. In particular, taking a nonzero constant shear coefficient
+arbitrarily close to zero over $\C$ does not preserve the first
+dynamical degree at the limiting zero coefficient.
+
+\noindent\wtag{} The case $n=1$ of \cref{kmd:thm:shears}, the coordinate
+degrees $(2m+8,2m+7,2m+5)$ of $F_h$ (and $(7,6,4)$ for $h=0$), is not
+new: it is Corollary~6.4 (``An exact degree spectrum'') of
+\cite{weighted}, stated there for the normalized maps $F_{a,b}\circ T_h$.
+These differ from $F\circ T_{h'}$ by diagonal scalings of source and
+target that replace $h$ by a nonzero multiple of $h(ct)$, $c\ne0$, so
+the degrees agree. What is new here is the statement for every
+iterate $n\ge2$ and the resulting value of $\lambda_1(F_h)$.
+
+\subsection{Fixed generic degree, unbounded dynamical degree}
+\begin{corollary}\label{kmd:cor:unbounded}
+Over characteristic zero, one tame left--right equivalence class
+contains noninjective Keller maps of separable generic degree three
+whose first dynamical degrees are unbounded. More precisely, the
+subfamily $\{F_h:h\in\K[t]\}$ realizes exactly
+\begin{equation}
+ \{3+\sqrt{10}\}\ \cup\
+ \left\{\frac{2m+7+\sqrt{4m^2+32m+61}}2:m\in\N\right\}.
+ \label{kmd:eq:spectrum}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Triangularity of $T_h$ gives $\det J_{F_h}=-2$; generic degree is
+three by \cref{kmd:prop:generic}. The collision pulls back to
+\begin{align*}
+ F_h(-1,1,5-h(-1))
+ &=F_h(0,-2,-16-4h(0))\\
+ &=(0,-2,0).
+\end{align*}
+These source points are distinct. The spectrum follows from
+\cref{kmd:thm:recurrence,kmd:thm:shears}; its second family is unbounded
+because $\lambda_m>2m+7$.
+\end{proof}
+
+This does not classify dynamical degrees in the full weighted class,
+still less in an entire arbitrary left--right orbit. Diagonal
+coordinate scalings preserve the relevant supports, but permutations
+and coordinate mixing can change the iteration mechanism. The
+precise statement of \cref{kmd:cor:unbounded} is an existence result
+inside one equivalence class and an exact spectrum for the specified
+source-shear subfamily.
+
+\noindent\wtag{} The Keller property and the collision of $F_h$ in the
+proof of \cref{kmd:cor:unbounded} are those of \cite{weighted}, whose
+Theorem~6.3 transports collision points by $T_{-h}$; the new content
+of the corollary is the unbounded spectrum \eqref{kmd:eq:spectrum}.
+
+\section{A complete degree-growth phase change in characteristic three}
+\label{kmd:sec:char3}
+
+All assertions in this section concern iteration in the polynomial
+ring over a field of characteristic three. They do not concern the
+finite set map obtained by evaluating on a finite field and reducing
+polynomial functions modulo $X^q-X$.
+
+\subsection{A simplifying coordinate identity}
+Reduction of the components gives
+\begin{equation}
+ Q=y,\qquad R=-x-x^3z,\qquad P+y^3R=z+y^2.
+ \label{kmd:eq:char3-base}
+\end{equation}
+For the shear family the identities become
+\begin{align}
+ Q_h&=y,\nonumber\\
+ R_h&=-x-x^3z-x^3y^2h(xy),\label{kmd:eq:char3-shear}\\
+ P_h+y^3R_h&=z+y^2(1+h(xy)).\nonumber
+\end{align}
+Thus the second coordinate is fixed under iteration. These exact
+identities replace the matrix $M$, whose second leading coefficient
+has disappeared.
+
+\begin{theorem}[Characteristic-three phase diagram]\label{kmd:thm:char3}
+Let $\charac\K=3$. For $n\ge1$ the coordinate-degree vectors are as
+follows.
+
+\smallskip
+\noindent\textup{(i)} For $h=0$,
+\begin{equation}
+ \bigl(\dd(F^n)_1,\dd(F^n)_2,\dd(F^n)_3\bigr)
+ =\bigl(7\cdot4^{n-1},1,7\cdot4^{n-1}-3\bigr).
+ \label{kmd:eq:char3-zero}
+\end{equation}
+\noindent\textup{(ii)} For nonzero constant $h$,
+\begin{equation}
+ \bigl(\dd(F_h^n)_1,\dd(F_h^n)_2,\dd(F_h^n)_3\bigr)
+ =\bigl(8\cdot4^{n-1},1,8\cdot4^{n-1}-3\bigr).
+ \label{kmd:eq:char3-constant}
+\end{equation}
+\noindent\textup{(iii)} For $\dd h=m\ge1$,
+\begin{equation}
+ \bigl(\dd(F_h^n)_1,\dd(F_h^n)_2,\dd(F_h^n)_3\bigr)
+ =(a_n,1,a_n-3),
+ \label{kmd:eq:char3-vector}
+\end{equation}
+where
+\begin{align}
+ a_1&=2m+8,&a_{n+1}&=(m+3)a_n+m+5,\label{kmd:eq:char3-rec}\\
+ a_n&=\left(2m+8+\frac{m+5}{m+2}\right)(m+3)^{n-1}
+       -\frac{m+5}{m+2}.\label{kmd:eq:char3-closed}
+\end{align}
+Consequently
+\begin{equation}
+ \lambda_1(F_h)=
+ \begin{cases}
+ 4,&h=0\text{ or }\dd h=0,\\
+ m+3,&\dd h=m\ge1.
+ \end{cases}
+ \label{kmd:eq:char3-spectrum}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $h=0$, the first degree vector is $(7,1,4)$. For $h\ne0$ of
+degree $m\ge0$, it is $(2m+8,1,2m+5)$: the top monomials of
+$P_h$ and $R_h$ have coefficients $\eta$ and $-\eta$, which do not
+vanish. Suppose at some positive step the degrees are $(a,1,a-3)$.
+
+In the next third coordinate, the term $-x^3z$ has substituted
+degree $4a-3$. For a nonzero shear the top term
+$-\eta x^{m+3}y^{m+2}$ has substituted degree
+$(m+3)a+m+2$. If $m=0$, the difference in favor of $-x^3z$ is
+$a-5>0$, since $a\ge8$. If $m\ge1$, the difference in favor of
+the shear is
+\[
+ (m-1)a+m+5>0.
+\]
+Each winning term is unique. For $h=0$ only the first comparison is
+needed, and the linear term $-x$ is smaller.
+
+Use the last identity in \eqref{kmd:eq:char3-shear} after substitution.
+The term $-y^3R_h$ has degree three more than the new third
+coordinate. The right-side terms have degrees at most $a-3$ and,
+when $h\ne0$, $ma+m+2$. They are strictly smaller than that new
+first degree. Therefore the new first degree is exactly three more
+than the new third degree. This proves preservation of the shape
+$(a,1,a-3)$.
+
+The winning term gives $a'=4a$ for $h=0$ and for nonzero constant
+$h$, and $a'=(m+3)a+m+5$ for $m\ge1$. The initial values prove
+\eqref{kmd:eq:char3-zero}--\eqref{kmd:eq:char3-rec}. Solving the last
+linear recurrence over the rational numbers yields
+\eqref{kmd:eq:char3-closed}, and taking $n$th roots gives
+\eqref{kmd:eq:char3-spectrum}.
+\end{proof}
+
+The rational fractions in \eqref{kmd:eq:char3-closed} are expressions
+for ordinary integer degree sequences. They are not field elements
+in characteristic three; no inversion of $m+2$ in $\K$ is used.
+For example, when $m=1$ the formula is $a_n=12\cdot4^{n-1}-2$.
+
+\begin{corollary}[Reduction of an integral shear]
+For a fixed $h\in\Z[t]$, reducing modulo three and computing the
+actual polynomial $\bar h\in\mathbb F_3[t]$ determines the degree
+law completely by \cref{kmd:thm:char3}. Its degree can be smaller than
+$\dd h$, and $\bar h$ can be zero. At any prime different from
+three where the leading coefficient survives, \cref{kmd:thm:shears}
+applies with the original degree.
+\end{corollary}
+
+The determinant remains nonzero in characteristic three, and
+\cref{kmd:prop:generic} still gives separable generic degree three.
+Thus the change from $3+\sqrt{10}$ to $4$ is a genuine change in
+iteration complexity, not the loss of dominance or of the Keller
+condition.
+
+\section{Escape at infinity and arithmetic degree}\label{kmd:sec:escape}
+
+The degree matrices also control actual orbits whose coordinate
+magnitudes lie in a suitable logarithmic cone. A leading monomial
+is then not merely largest in a grading: it dominates all other
+terms in absolute value, uniformly in their complex arguments.
+The small nonleading eigenvalues of the matrices make the
+transverse errors contract.
+
+\subsection{A general monomial escape theorem}
+For $z=(z_1,\ldots,z_d)\in(\C^*)^d$ set
+\[
+ \calL(z)=(\log|z_1|,\ldots,\log|z_d|)^\mathsf T.
+\]
+The following theorem is stated in a dimension-independent form so
+that its hypotheses and limitations are visible.
+
+\begin{theorem}[Monomial dominance with contracting transverse spectrum]
+\label{kmd:thm:escape}
+Let $G=(G_1,\ldots,G_d)$ be a complex polynomial tuple. Suppose
+there exist a matrix $A\in M_d(\N)$, a vector $v\in\R_{>0}^d$, a
+number $\lambda>1$, and coefficients $c_i\ne0$ such that:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $Av=\lambda v$, and the unique $v$-leading monomial of $G_i$
+      is $c_iX^{A_{i,*}}$;
+\item $\lambda$ is a simple eigenvalue of $A$, and every other
+      eigenvalue has modulus less than one;
+\item there is a nonnegative left eigenfunctional $\ell$ with
+      $\ell A=\lambda\ell$ and $\ell(v)=1$.
+\end{enumerate}
+Put $b=(\log|c_1|,\ldots,\log|c_d|)^\mathsf T$ and
+\begin{equation}
+ L_*=(I-A)^{-1}b.
+ \label{kmd:eq:Lstar}
+\end{equation}
+Then there is a nonempty forward-invariant open set
+$\calU\subset(\C^*)^d$ containing all points with logarithms
+sufficiently far out in a sufficiently narrow cone around
+$L_*+\R_{>0}v$. There is a continuous positive function
+$\mathcal G:\calU\to\R_{>0}$ such that
+\begin{equation}
+ \mathcal G(Gz)=\lambda\mathcal G(z).
+ \label{kmd:eq:Gfunctional}
+\end{equation}
+If $\rho$ is the maximum modulus of the other eigenvalues (zero
+when there are none), then for any $q$ with $\rho<q<1$ and every $z\in\calU$,
+\begin{equation}
+ \calL(G^n z)=\lambda^n\mathcal G(z)v+L_*+O_z(q^n).
+ \label{kmd:eq:escape-asymptotic}
+\end{equation}
+The error can be taken uniform for $z$ in a fixed compact subset
+of $\calU$.
+\end{theorem}
+
+\begin{proof}
+Since no eigenvalue equals one, $L_*$ is defined. Let
+$V=\ker\ell$. The restriction $A|_V$ has spectral radius $\rho<1$.
+Choose $r_0\in(\rho,1)$ and a norm on $V$ with operator norm at
+most $r_0$. This choice is fixed for the construction of $\calU$.
+Such a norm exists: for example,
+start with any norm and use a convergent weighted sum of
+$\|(A|_V)^j e\|$ with ratio chosen strictly between $\rho$ and
+$r_0$.
+
+Write logarithmic vectors uniquely as
+\begin{equation}
+ L=L_*+tv+e,\qquad t=\ell(L-L_*),\quad e\in V.
+ \label{kmd:eq:log-decomposition}
+\end{equation}
+For each nonleading exponent $\alpha$ of $G_i$ there is a strict
+gap
+\[
+ (A_{i,*}-\alpha)\cdot v>0.
+\]
+There are finitely many such gaps. Hence for sufficiently small
+$\varepsilon>0$, whenever $\|e\|<\varepsilon t$ all the
+expressions
+\[
+ (A_{i,*}-\alpha)\cdot(tv+e)
+\]
+are at least $\kappa_0 t$ for a fixed $\kappa_0>0$. Constants
+from $L_*$ and the coefficients can be absorbed into a common
+bound. Uniformly in the arguments of the $z_j$, the ratio of each
+nonleading term to the leading term is therefore
+$O(e^{-\kappa_0t})$.
+
+Choose $R$ so large that these ratios have sum less than $1/2$ in
+each component when $t>R$. Then no component of $Gz$ vanishes, and
+\begin{equation}
+ \calL(Gz)=A\calL(z)+b+E(z),\qquad
+ \|E(z)\|\le C e^{-\kappa t}
+ \label{kmd:eq:log-error}
+\end{equation}
+for fixed positive $C,\kappa$. This follows from
+$\log|1+r|=O(|r|)$ for $|r|<1/2$; it does not require choosing a
+complex logarithm.
+
+Since $AL_*+b=L_*$, the coordinates of the image in
+\eqref{kmd:eq:log-decomposition} satisfy
+\begin{equation}
+ t'=\lambda t+\ell E(z),\qquad
+ e'=Ae+(I-v\ell)E(z).
+ \label{kmd:eq:te-recurrence}
+\end{equation}
+Fix $1<\sigma<\lambda$. By increasing $R$, the exponential error
+makes $t'\ge\sigma t$ and $\|e'\|<\varepsilon t'$ whenever
+$t>R$ and $\|e\|<\varepsilon t$. Indeed, the linear contribution
+to $\|e'\|$ is at most $r_0\varepsilon t$, whereas
+$\varepsilon t'$ is asymptotic to $\varepsilon\lambda t$;
+the difference is a positive linear margin. Thus the set
+\begin{equation}
+ \calU=\{z\in(\C^*)^d:t(z)>R,\ \|e(z)\|<\varepsilon t(z)\}
+ \label{kmd:eq:escape-cone}
+\end{equation}
+is forward invariant. Shrink $\varepsilon$ as needed to ensure
+that all logarithmic coordinates tend to $+\infty$ with $t$;
+this is possible because $v>0$.
+
+For $z_n=G^nz$, let $t_n=t(z_n)$ and $E_n=E(z_n)$. Then
+$t_n\ge\sigma^nt_0$ and
+$\|E_n\|\le C\exp(-\kappa\sigma^nt_0)$. Define
+\begin{equation}
+ \mathcal G(z)=t_0+\sum_{j=0}^{\infty}
+       \lambda^{-j-1}\ell E_j.
+ \label{kmd:eq:escape-series}
+\end{equation}
+The series converges uniformly on compact subsets of $\calU$.
+It differs from $t_0$ by an exponentially small quantity as
+$t_0\to\infty$, so enlarging $R$ makes it positive. Iterating
+\eqref{kmd:eq:te-recurrence} shows that
+$\lambda^{-n}t_n\to\mathcal G(z)$ and proves
+\eqref{kmd:eq:Gfunctional}. The tail estimate gives
+\[
+ t_n-\lambda^n\mathcal G(z)
+ =O_z\bigl(\exp(-\kappa'\sigma^n)\bigr)
+\]
+for some $\kappa'>0$.
+
+Finally,
+\[
+ e_n=A^ne_0+
+ \sum_{j=0}^{n-1}(A|_V)^{n-1-j}(I-v\ell)E_j.
+\]
+For any specified $q\in(\rho,1)$ choose $r\in(\rho,q)$. The
+finite-dimensional spectral-radius estimate gives
+$\|(A|_V)^n\|\le C_r r^n$ in the fixed norm. Since the forcing
+terms decay faster than every geometric sequence, the displayed sum
+is $O_z(r^n)$, hence $O_z(q^n)$. This argument does not change
+$\calU$. Combining the last two estimates proves \eqref{kmd:eq:escape-asymptotic}, with compact
+uniformity following from the same bounds.
+\end{proof}
+
+\subsection{Application to the baseline and the shears}
+\begin{corollary}[Complex escape for the Keller family]\label{kmd:cor:escape-family}
+Over $\C$, both $F$ and every $F_h$ with $h\ne0$ satisfy
+\cref{kmd:thm:escape}, with exponent matrix $M$ or $S_m$ respectively
+and with the dynamical degrees computed above.
+\end{corollary}
+\begin{proof}
+For $M$ take
+\begin{equation}
+ v=\begin{pmatrix}
+ (2+\sqrt{10})/3\\(7+2\sqrt{10})/9\\1
+ \end{pmatrix}.
+ \label{kmd:eq:base-eigenvector}
+\end{equation}
+It is positive and satisfies $Mv=(3+\sqrt{10})v$.
+The matrix $M^2$ is strictly positive, so its Perron left
+eigenfunctional is positive; alternatively, it can be obtained by
+solving the three linear equations directly. The other eigenvalues
+are $3-\sqrt{10}$ and zero, both of modulus less than one. The
+vector $v$ lies in the plus cone because
+$\lambda\delta(v)=\delta(Mv)=3v_1+v_2+v_3>0$.
+Thus the required leading monomials are exactly those encoded by
+$M$.
+
+For $S_m$, the top-left $2\times2$ block is strictly positive.
+Its Perron eigenvector has positive entries, and the last row
+extends it to a positive right eigenvector of $S_m$. Its left
+Perron eigenfunctional has positive first two entries and zero
+third entry. The remaining eigenvalues are $\mu_m\in(-1,0)$
+and zero. Equation \eqref{kmd:eq:shear-gap}, evaluated on a positive
+eigenvector, shows that $\Delta_m(v)>0$. The unique leading
+monomials are consequently \eqref{kmd:eq:shear-top}. All hypotheses
+of \cref{kmd:thm:escape} hold.
+\end{proof}
+
+For the baseline coefficients $(1,3,-1)$, one obtains the particularly
+simple constant correction
+\begin{equation}
+ L_*=(0,\tfrac12\log3,-\tfrac32\log3)^\mathsf T.
+ \label{kmd:eq:base-Lstar}
+\end{equation}
+Thus, on the escape region, even the subexponential coordinate
+ratios are controlled after subtracting the leading ray. The
+asymptotic is stronger than merely saying that the orbit is
+unbounded.
+
+For $F_h$, set $b_\eta=\log|\eta|$ and $s_3=\log3$. Solving
+$(I-S_m)L_*= (b_\eta,b_\eta+s_3,b_\eta)^\mathsf T$ gives
+\begin{equation}
+ L_*=
+ \frac1{3(m+3)}
+ \begin{pmatrix}
+ -2b_\eta-(m+5)s_3\\
+ (m+2)s_3-b_\eta\\
+ b_\eta-(4m+11)s_3
+ \end{pmatrix}.
+ \label{kmd:eq:shear-Lstar}
+\end{equation}
+Lower coefficients of $h$ influence the escape function and the
+size of a valid region, but not the leading exponential rate or
+this constant logarithmic correction.
+
+\subsection{Arithmetic degree for many integral points}
+For an integral point $p\in\Z^d$, use the logarithmic projective
+height
+\[
+ h([1:p_1:\cdots:p_d])=\log\max\{1,|p_1|,\ldots,|p_d|\}.
+\]
+For an integral polynomial map $G$ and an integral initial point,
+define the arithmetic degree, when the limit exists, by
+\begin{equation}
+ \alpha_G(p)=\lim_{n\to\infty}
+ \max\{1,h([1:G^np])\}^{1/n}.
+ \label{kmd:eq:arithmetic-degree}
+\end{equation}
+It is the \emph{logarithmic} height that appears under the $n$th
+root. Taking an $n$th root of the multiplicative height would be
+a different and generally divergent expression here.
+
+\begin{theorem}[A Zariski-dense set of maximal arithmetic degree]
+\label{kmd:thm:arithmetic}
+Let $G=F$, or $G=F_h$ with $0\ne h\in\Z[t]$. There is a
+Zariski-dense set of integral initial points $p$ for which
+\[
+ \alpha_G(p)=\lambda_1(G).
+\]
+More precisely, every $p\in\calU\cap\Z^3$ in the escape region
+from \cref{kmd:cor:escape-family} has this property. With the same
+normalization of $v$ and $\mathcal G$ as in \cref{kmd:thm:escape},
+\begin{equation}
+ h([1:G^np])
+ =v_1\mathcal G(p)\lambda_1(G)^n+(L_*)_1+O_p(q^n).
+ \label{kmd:eq:height-asymptotic}
+\end{equation}
+\end{theorem}
+\begin{proof}
+All iterates remain integral. For the positive right eigenvectors
+of both matrices, the first coordinate is strictly largest:
+subtracting the first and second eigenvector equations gives
+$\lambda(v_1-v_2)=v_2>0$, and subtracting the second and third
+gives $\lambda(v_2-v_3)=2v_2>0$. By
+\eqref{kmd:eq:escape-asymptotic}, the first logarithmic coordinate
+therefore eventually determines the maximum in the height. This
+proves \eqref{kmd:eq:height-asymptotic}. Its leading coefficient is
+positive, so \eqref{kmd:eq:arithmetic-degree} has limit $\lambda_1(G)$.
+
+It remains to prove that the integral points under consideration
+are Zariski dense, rather than merely infinite. For sufficiently
+small $\eta_0>0$, every sufficiently large $t$ has the logarithmic
+box
+\[
+ L_*+tv+[-\eta_0t,\eta_0t]^3
+\]
+contained in the cone defining $\calU$. This follows from the
+linear decomposition \eqref{kmd:eq:log-decomposition}: the change in
+$t$ and in the transverse part is bounded by a constant times
+$\eta_0t$. Choose $\eta_0$ small enough to respect the cone and
+to keep $v_i-\eta_0>0$.
+
+Exponentiating this box in the positive real octant gives a
+Cartesian box containing arbitrarily many distinct positive
+integers in each coordinate interval. A nonzero polynomial of
+degree at most $D$ in each variable cannot vanish on a Cartesian
+grid with more than $D$ distinct entries in each variable. This
+last assertion follows by induction on the number of variables,
+using the univariate root bound. Hence no nonzero polynomial can
+vanish on all of $\calU\cap\Z^3$, proving Zariski density.
+\end{proof}
+
+\begin{remark}[The precise arithmetic boundary]\label{kmd:rem:arithmetic-boundary}
+A Zariski-dense \emph{set of initial points} is not the same thing
+as a single Zariski-dense orbit. The theorem makes no assertion
+that every orbit starting in $\calU$ is Zariski dense. It also does
+not assert the equality of arithmetic and dynamical degree for
+every rational point with a Zariski-dense orbit. It supplies an
+explicitly characterized escape region and proves the equality
+for all integral points in that region.
+\end{remark}
+
+The construction is nonvacuous at the level of individual points:
+rounding each coordinate of
+$\exp(L_*+tv)$ to the nearest positive integer places the resulting
+point in $\calU$ for all sufficiently large $t$, because the
+relative rounding errors tend to zero. The proof by boxes, rather
+than this single rounded ray, is what establishes Zariski density.
+
+\section{Verification, scope, and a formalization route}\label{kmd:sec:verification}
+
+\subsection{What the companion computation checks}
+The package contains \texttt{code/verify\_results.py}, which was executed
+with Python 3.13.5 and SymPy 1.14.0. All thirteen check groups passed;
+the recorded output is in \texttt{data/verification.json} and
+\texttt{data/verification.txt}. The checks are exact, not floating-point
+fits. Their mathematical role is deliberately limited.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.06\textwidth}p{0.49\textwidth}p{0.34\textwidth}@{}}
+\toprule
+Group & Object checked & Scope\\
+\midrule
+1 & Jacobian and integral collision & Exact polynomial identities\\
+2 & Cubic equation and derivative identity & Rational-function identities\\
+3 & Characteristic-two inverse identities & Exact reduction modulo two\\
+4 & Support bounded by the two endpoints & Complete baseline support\\
+5 & First wall initial forms & Complete baseline support\\
+6 & Matrix polynomial and cone identities & Exact finite identities\\
+7 & Ordinary recurrence and degree vectors & First twelve steps\\
+8 & Weighted compositions over $\mathbb F_{101}$ & Five weights, three steps\\
+9 & Shear characteristic polynomial and gap & Symbolic parameter $m$\\
+10 & Shear compositions over $\mathbb F_{101}$ & Four coefficient lists\\
+11 & Characteristic-three degree laws & Six cases, four steps\\
+12 & Other small characteristics & Primes $2,5,7,11$\\
+13 & Spectral and fixed-point identities & Baseline; sample shear checks\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The composition tests use exact univariate polynomial restrictions
+along monomial curves, not full expansion of every multivariate
+iterate. Such restrictions supply lower-bound certificates when
+they achieve a claimed degree; they can also lose leading terms at
+special curves. The selected tests avoid that loss. The upper
+bounds and the all-iterate statements come from the proofs, not
+from interpolation or from the finite list of tests.
+
+Likewise, the escape theorem is proved analytically. No numerical
+orbit simulation is offered as its proof, and no empirical error
+bound is substituted for the finite-gap and contraction arguments.
+The general shear inequalities are proved for all $m$ in the text;
+checking particular eigenvalues in the script does not replace that
+argument.
+
+\subsection{A short route to machine-checked degree growth}
+The core degree theorem has a relatively small logical footprint.
+It need not depend on the repository's classification results or
+on the theory of complex dynamics. A useful formalization order is
+as follows.
+
+First formalize a support-based weighted degree over multivariate
+polynomials over a field. For the ordinary-degree theorem it is
+enough to use natural-number weights, finite supports, and the
+fact that nonzero products have additive degree. Next prove the
+unique-outer-leading-monomial composition lemma. This is the only
+place where a cancellation concern needs to be resolved at the
+polynomial level.
+
+Then represent $M,N,S_m$ as finite matrices and verify the endpoint
+support inequalities from the explicit component polynomials.
+The invariance of the plus cone and shear cone is elementary
+ordered arithmetic. Induction gives the degree vectors. The
+second-order recurrences can be derived directly from
+$(M^2-6M-I)\one=0$ and the corresponding identity for $S_m$,
+followed by multiplication by matrix powers. This avoids needing
+a general spectral theorem in the first formalization pass.
+
+A second pass can establish the generating functions, closed forms,
+and limits. A third pass can treat arbitrary real weights and
+convex separation for the upper Newton geometry. The escape theorem
+is naturally a separate analytic development involving norms,
+spectral contraction, and uniformly convergent series.
+
+The inspected baseline Lean source includes \texttt{counterexample}
+and \texttt{collision}. Its determinant theorem is
+\texttt{jacobianDet\_counterexample}. None of these supplies the new
+all-iterate statements in this package. No Lean or Rocq executable
+was run for this article, and no uncompiled source is presented as
+a formal proof.
+
+\noindent\wtag{} At the placement commit \texttt{51c6943bf} these
+declarations are unchanged from the pin: \texttt{counterexample},
+\texttt{jacobianDet\_counterexample}, \texttt{collision}$_0$\texttt{\_value},
+\texttt{collision}$_1$\texttt{\_value} and \texttt{collision} stand at
+lines 95, 134, 151, 158 and 165 of \texttt{Counterexample.lean}, with the
+content described above. Nothing in \texttt{Algebra/JacobianConjecture}
+concerns iterates, degrees of compositions or dynamics, so the route
+above starts from nothing formal beyond the map and its baseline
+identities. The placement
+of this report beside that Lean and Rocq development confers no formal
+status on it.
+
+\subsection{Consequences that are not claimed}
+The calculations do not classify unrestricted Keller maps or prove
+minimal ordinary degree in dimension three. They do not establish
+an algebraically stable compactification, determine the second
+dynamical degree, or identify topological entropy with
+$\log\lambda_1$. The local escape function is not asserted to be
+a global Green function or a global canonical height. The
+characteristic-three theorem concerns formal polynomial iteration,
+not cycle statistics on finite sets. The upper Newton description
+does not determine all lower faces or all coefficients.
+
+Finally, the existence of a Zariski-dense collection of integral
+starting points with maximal arithmetic degree does not settle
+arithmetic-degree questions for all Zariski-dense rational orbits.
+These distinctions are part of the theorem statements, not
+post-hoc qualifications to stronger claims.
+
+\section{Further research questions and proposed attacks}\label{kmd:sec:questions}
+
+The following are concrete continuation questions arising from the
+proved results. They are proposed research problems, not claims
+that each is a previously named open problem in the literature.
+
+\subsection{The second dynamical degree}
+Determine $\lambda_2(F)$ and $\lambda_2(F_h)$. We now know
+$\lambda_1$ exactly and, in characteristic zero, $\lambda_3=3$.
+The matrix $M$ controls coordinate polynomial degrees, but it is
+not automatically the action on codimension-two classes. In
+particular, taking an exterior power of $M$ without constructing
+a suitable geometric model would not prove a formula for
+$\lambda_2$. A concrete starting point is to pull back two generic
+hyperplanes, compute their intersection degrees after removing
+components at infinity, and search for an exact recurrence that
+survives saturation.
+
+\subsection{A compactification with stable pullback}
+Construct a projective, toric, or explicitly blown-up model on
+which the relevant divisor pullback iterates functorially. The
+wall $a+c=b$ and the two endpoints in \cref{kmd:thm:newton} provide a
+small amount of combinatorial data from which to start. The
+challenge is to control centers where the map is indeterminate,
+not merely to match the Perron eigenvalue. A successful model
+could explain the recurrence geometrically and support a
+codimension-two calculation.
+
+\subsection{The global escape locus and the complement of the cone}
+Characterize which complex orbits eventually enter $\calU$.
+The proof gives a genuine open escape region but does not claim
+that every unbounded orbit enters it. The baseline tropical map
+has a particularly simple positive-weight chamber structure; the
+actual logarithmic dynamics can nevertheless encounter
+cancellation near $xz+3y=0$. One approach is to stratify this
+cancellation region and derive asymptotic transition laws for its
+successive neighborhoods. A useful first target is an explicit
+orbit that escapes without eventually approaching the Perron ray,
+or a proof that no such orbit exists under a stated nondegeneracy
+condition.
+
+\subsection{Arithmetic degree outside the archimedean cone}
+For rational initial points whose orbits are Zariski dense, decide
+whether the arithmetic degree always exists and equals the value
+computed here. An intermediate task is to construct analogous
+nonarchimedean escape regions and combine their local height
+contributions. Denominators and bad primes must be tracked: the
+integral proof avoids them, and therefore does not already give a
+number-field theorem. A second useful target is an explicit
+classification of exceptional algebraic subvarieties carrying
+smaller arithmetic growth.
+
+\subsection{Invariant subvarieties and periodic points}
+Determine invariant curves and surfaces, and compare periodic
+point counts with degree growth. The rank-two leading matrix and
+its image plane describe leading exponents; they do not by
+themselves supply a rational first integral or an invariant
+hypersurface. Elimination in the ideals generated by $F^n(X)-X$
+for small $n$ may reveal patterns, but multiplicities and
+positive-dimensional components must be separated from isolated
+periodic points. This question would also clarify when points in
+the escape region have Zariski-dense individual orbits.
+
+\subsection{Dynamical variation under left--right transformations}
+The source shears give an exact unbounded spectrum within one
+left--right equivalence class, while the coordinatewise affine
+changes of \cref{kmd:cor:robust} preserve the baseline value. Classify
+what happens under coordinate permutations, triangular changes
+in other directions, and compositions of several shears. A
+practical first experiment is to compute the finite list of
+leading exponent matrices arising from the six coordinate
+permutations, prove invariant cones when they exist, and locate
+cases where several tropical chambers recur. This would identify
+which changes are dynamically harmless and which genuinely
+alter the asymptotic complexity.
+
+\subsection{Beyond the fixed generic-degree-three family}
+The public weighted-lift audit \cite{audit} gives ordinary degree
+profiles for a different family as its generic degree varies.
+Its Proposition 8.3 concerns growth across the family parameter,
+not degrees of iterates. Extend the present no-cancellation method
+to that family and to the higher-dimensional maps in \cite{gao}.
+The target should be a theorem about an explicitly stated support
+class or construction, with a verified dominant cone, rather than
+an extrapolation from a degree profile. This would compare first
+dynamical degree and generic degree across genuinely different
+function-field extensions.
+
+\subsection{All specializations and higher-order cancellation walls}
+Characteristic three is completely controlled here because the
+second coordinate becomes exactly $y$. For more general
+coefficient deformations, determine the strata where a leading
+coefficient vanishes, where two leading terms cancel after
+composition, or where a chamber changes. The wall identity
+\eqref{kmd:eq:wall-all} offers a useful test case: its interior support
+changes in small characteristic even when its endpoints do not.
+A stronger theory would distinguish loss of interior monomials,
+loss of a Newton vertex, and change of exponential degree growth.
+
+\subsection{The full Newton polytope and coefficient arithmetic}
+Compute the complete Newton polytopes of $F^n$, not just their
+downward completions. The wall initial form supplies exact
+binomial data on one exposed face, but lower faces may proliferate
+and encode phenomena invisible to positive weights. One possible
+route is a finite-state recursion for normal cones outside the
+positive orthant, accompanied by valuation data for coefficients.
+A separate arithmetic question is the growth and divisibility of
+the coefficient vector $C_n$ in \eqref{kmd:eq:coefficient-rec}; it is
+controlled multiplicatively by the same matrix and is accessible
+to exact integer methods.
+
+\subsection{A reusable certified leading-term engine}
+Implement a checker that accepts a polynomial tuple, a proposed
+leading exponent matrix, and a rational polyhedral cone, and
+proves strict dominance plus cone invariance. It should return a
+kernel-checked degree recurrence when the matrix admits a small
+annihilating polynomial on the initial degree vector. The
+baseline and shear family are useful regression tests because
+one has a two-chamber first step and the other has an unbounded
+symbolic parameter. Extending the checker to nonmonomial initial
+forms would make \cref{kmd:thm:wall} a test of more than ordinary
+monomial-order reasoning.
+
+\section{Conclusion}
+The degree sequence of the repository's three-dimensional map is
+not merely compatible with $3+\sqrt{10}$: its entire evolution is
+forced by a three-by-three exponent matrix and a strict invariant
+cone. The same proof determines every positive weighted degree
+and every wall initial form. For polynomial source shears it
+gives an exact unbounded spectrum while the generic degree stays
+three. In characteristic three a different exact coordinate
+identity yields a different, completely explicit phase diagram.
+
+The analytic consequence is equally concrete. The Perron ray is
+an attracting direction in logarithmic coordinates for a
+nonempty forward-invariant region, with an exponentially small
+transverse error after the constant correction. This supplies
+maximal arithmetic degree for a Zariski-dense set of integral
+starting points. The remaining global dynamical and arithmetic
+questions are now separated from the leading-term problem, which
+has an exact solution for the displayed family.
+
+\appendix
+\section{Source ledger and priority boundary}\label{kmd:app:sources}
+
+\subsection{Repository snapshot}
+The ProveIt reference snapshot is
+\begin{center}
+\texttt{a866ff9a2cdb9c5f436bb1d82ea5dca59dfee38d}.
+\end{center}
+The main project README, the Jacobian project README, the
+weighted-classification README, and the arithmetic-fibers README
+were read through the GitHub connector. The original Lean
+\texttt{Counterexample.lean} was additionally read at this exact
+commit, including the displayed polynomial tuple, the determinant
+proof, and the integral-collision declarations. The compiled Lean
+and Rocq projects were not rerun.
+
+The classification and arithmetic reports are explicitly marked
+unrefereed in their own status descriptions. Our new proofs need
+only the displayed definition of $F$ and $T_h$; their correctness
+does not depend on the full classification or on the arithmetic
+Hasse-principle results in those reports.
+
+\subsection{External primary materials}
+Gao's arXiv version 2608.00222v1 was reviewed in its HTML
+representation, especially Section 3.4 and Theorem 3.3. Giannini's
+Zenodo landing-page description was accessible and supplied the
+numerical prediction. Retrieval of its linked PDF failed, and the
+linked source repository returned not found through the available
+connector. No claim is made about unseen sections of that PDF.
+
+The external audit \cite{audit} was also inspected, in particular
+Proposition 8.3. Its formula $(5d-3,5d-4,4)$ concerns component
+degrees as the degree $d$ of a construction polynomial varies.
+It is not an iterate recurrence. The retrieved file had content
+blob identifier
+\texttt{a6950580cd582458d1f05ccf259af33e833f9fce}.
+
+Targeted searches for the map together with dynamical-degree and
+degree-growth terminology did not establish whether any
+unreviewed or later source already proves one of the results
+here. Consequently this is an independently derived research
+article, not an exhaustive priority determination. In particular,
+``the suggested value is proved'' is the supported claim;
+``the first proof of a long-standing open conjecture'' is not.
+
+\section{Reproduction and package contents}\label{kmd:app:reproduce}
+
+The article is self-contained LaTeX with an embedded bibliography.
+A standard TeX installation providing \texttt{newtxtext},
+\texttt{newtxmath}, \texttt{tcolorbox}, and the usual mathematics
+packages can build it with two runs of \texttt{pdflatex} (a third
+run is harmless). The companion verification uses SymPy 1.14.0:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python code/verify_results.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+A \texttt{Makefile} provides the equivalent targets. Do not run the
+Python verifier with optimization flags that disable assertions;
+its exact checks intentionally use assertions.
+
+The archive includes the source and compiled PDF, the exact
+verification script and its recorded outputs, a compact degree
+calculator, and the files \texttt{README.md}, \texttt{SOURCES.md},
+\texttt{STATUS.md}, and \texttt{SHA256SUMS}. The source ledger
+identifies inherited facts, the status file states the proof
+boundaries, and the checksums identify the delivered artifacts.
+Font files are not included. Generated TeX auxiliary files and
+page-preview images are not part of the delivery.
+
+\noindent\wtag{} The two paragraphs above describe the delivered
+package. In ProveIt the layout differs, and some of the commands above
+must not be run as printed.
+\begin{itemize}
+\item In ProveIt the requirements file is
+\texttt{data/requirements.txt}, and the Makefile is
+\texttt{code/Makefile}. The Makefile's
+targets name \texttt{code/verify\_results.py} and \texttt{article.tex}
+relative to the package root, so they fail when run from
+\texttt{code/}.
+\item \texttt{code/verify\_results.py} writes its record, by default, to
+\texttt{data/verification.json}: run as printed it overwrites the shipped
+record (on Windows with CRLF line endings). Run it on a copy, or pass
+\texttt{-{}-output} with a path outside the report. Its recorded console
+output \texttt{data/verification.txt} ends with the delivery path
+\nolinkurl{/mnt/data/ProveIt_Keller_Dynamics/data/verification.json}.
+\item The delivered \texttt{README.md}, the compiled PDF and
+\texttt{SHA256SUMS} are not shipped: the README is replaced by the
+report's own, \texttt{article.pdf} is a build of the present text, and
+the checksum manifest was verified (13 of 13 entries) and retired. The
+\texttt{article\_sha256} recorded in \texttt{data/build\_review.json}
+is the hash of the delivered PDF, not of \texttt{article.tex}, and that
+record describes the delivered 23-page build.
+\item \texttt{data/calculator\_checks.json} (930 degree vectors) is
+produced by no shipped script; it is kept as delivered.
+\end{itemize}
+
+\section{Provenance of this report}\label{kmd:app:provenance}
+\wtag{} This report is built from \emph{one} manuscript: manuscript~06
+of batch~70 of ProveIt's incoming reports, the archive
+\texttt{ProveIt\_Keller\_Dynamics} (inner directory of the same name,
+main file \texttt{article.tex}, a 23-page A4 PDF dated 30~September
+2026, PDF metadata author ``ChatGPT; prepared for Vladimir
+Reshetnikov''), pinned to ProveIt commit
+\nolinkurl{a866ff9a2cdb9c5f436bb1d82ea5dca59dfee38d}. The archive
+arrived in commit \texttt{1b3960d8a} and was placed in
+\texttt{51c6943bf} as a new report of the category
+\texttt{jacobian-conjecture}. Between the pin and the placement commit
+nothing under \texttt{Algebra/JacobianConjecture} or under the
+category's other reports changed. Nothing was merged and nothing was
+selected away: every result, proof, example, table, question and
+limitation of the manuscript is printed, and the manuscript contributed
+everything except the text marked \wtag.
+
+The one choice made at placement was where the manuscript goes. It
+studies the map of the formal project and the shears of
+\cite{weighted}, but answers no question that \cite{weighted} or
+\cite{arithmetic} asks, so it became a report of its own rather than a
+Part~III of \cite{weighted}.
+
+The editorial changes are these.
+\begin{enumerate}[label=(\arabic*)]
+\item Every label carries the prefix \texttt{kmd:}. The manuscript's 87
+labels are kept, unchanged after the prefix, and every reference to them
+was updated; one label was added, \texttt{kmd:app:provenance}: 88 in
+all. The manuscript's macros are kept as delivered.
+\item Notes marked \wtag{} were added on the title page, after
+\eqref{kmd:eq:F} (notation against the rest of ProveIt and the formalized
+declarations), after the remark following \cref{kmd:prop:generic} (prior
+sources of the cubic and of generic degree three), after the table
+following \cref{kmd:thm:shears} (the case $n=1$ is Corollary~6.4 of
+\cite{weighted}), after \cref{kmd:cor:unbounded}, at the end of the
+formalization route in \cref{kmd:sec:verification}, and in
+Appendix~\ref{kmd:app:reproduce} (shipped layout).
+\item The title page no longer creates a PDF page anchor, so the
+title page and the first numbered page no longer share one.
+\end{enumerate}
+No mathematical statement, proof or number of the manuscript was
+changed, and the external sources \cite{giannini,gao,audit} were not
+re-checked at the write.
+
+\begin{thebibliography}{9}
+
+\bibitem{repo}
+Vladimir Reshetnikov and contributors.
+\emph{ProveIt: Jacobian-conjecture development}.
+Repository documentation and Lean source at commit
+\texttt{a866ff9a2cdb9c5f436bb1d82ea5dca59dfee38d}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a866ff9a2cdb9c5f436bb1d82ea5dca59dfee38d/Algebra/JacobianConjecture}{Repository directory at the pinned commit}.
+
+\bibitem{weighted}
+ProveIt research-report collection.
+\emph{All-Degree Rigidity of a Weighted Keller Class}, Parts I--II.
+AI-assisted, unrefereed reports dated 24 and 29 September 2026;
+README and status ledger reviewed.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a866ff9a2cdb9c5f436bb1d82ea5dca59dfee38d/SetTheory/Cardinals/docs/reports/jacobian-conjecture/weighted-keller-rigidity}{Repository directory at the pinned commit}.
+
+\bibitem{arithmetic}
+ProveIt research-report collection.
+\emph{Arithmetic local--global fibers}, Parts I--III.
+AI-assisted, unrefereed reports; README and notation ledger reviewed.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a866ff9a2cdb9c5f436bb1d82ea5dca59dfee38d/SetTheory/Cardinals/docs/reports/jacobian-conjecture/arithmetic-local-global-fibers}{Repository directory at the pinned commit}.
+
+\bibitem{giannini}
+Liam Giannini.
+\emph{The Alp\"oge--Fable counterexample to the Jacobian Conjecture:
+verification, geometry, dynamics, and an equivariant program for
+the plane case}.
+Zenodo, version 1.1, 20 July 2026.
+DOI: \href{https://doi.org/10.5281/zenodo.21461572}{10.5281/zenodo.21461572}.
+Public record description reviewed; full PDF not successfully retrieved.
+
+\bibitem{gao}
+Shuhong Gao.
+\emph{Counterexamples to the Jacobian conjecture in dimensions
+greater than two}.
+arXiv:2608.00222v1, 31 July 2026, Section 3.4 and Theorem 3.3.
+\url{https://arxiv.org/html/2608.00222v1}.
+
+\bibitem{audit}
+\texttt{shadybrook/jacobian-counterexample-audit} contributors.
+\emph{An Exact Audit of an Announced Three-Dimensional Keller Map}.
+AI-assisted working note, stated revision 21 July 2026;
+Proposition 8.3 and adjacent discussion reviewed.
+\href{https://github.com/shadybrook/jacobian-counterexample-audit/blob/main/paper/main.md}{Public working-note source}.
+
+\end{thebibliography}
+\end{document}

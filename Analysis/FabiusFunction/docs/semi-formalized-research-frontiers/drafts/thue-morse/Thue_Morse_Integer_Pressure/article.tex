@@ -47,6 +47,8 @@
 \newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (no counter is shifted).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\TT}{\mathbb T}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\CC}{\mathbb C}
@@ -71,6 +73,8 @@
 \newcommand{\eul}[2]{\left\langle\!\begin{matrix}#1\\#2\end{matrix}\!\right\rangle}
 
 \begin{document}
+% ed. (2026-09-30): no page anchors on the title page, which is numbered 1 like the following page (removes a duplicate-destination warning of the delivered source).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \setlength{\parindent}{0pt}
 \thispagestyle{empty}
@@ -118,6 +122,8 @@ Lean-verified theorems. Prior moment-matrix methods are explicitly credited.
 {\small\color{muted} Repository snapshot: \nolinkurl{37e61c1fdec28c6e7ab7ff445043993077b42cbd}.\\
 Package: editable source, compiled PDF, two exact-arithmetic checkers, and their receipts.}
 \end{titlepage}
+% ed. (2026-09-30): page anchors back on after the title page.
+\hypersetup{pageanchor=true}
 \tableofcontents
 \newpage
 
@@ -1445,6 +1451,17 @@ of size $r$, the counting argument becomes $br-s\leq r$. Its possible
 small invariant sets should determine exceptional parameter loci.
 This suggests a classification theorem organized by finite backward
 orbits of the zero set.
+% ed. (2026-09-30): a later package bears on this question
+\begin{ednote}
+\path{../Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/} (batch~68 of
+the repository's \path{docs/incoming/}) computes exactly the pressure of
+products of shifted digital masks whose phases fill complete periodic
+orbits of $x\mapsto bx\bmod1$, with a common exponent on each orbit,
+together with every equilibrium measure and the resulting mixed-moment
+exponents, in every base. Such a product has several zeros, all mapped by $x\mapsto bx$ onto the selected orbits, and its pressure is a maximum of explicit orbit branches; no finite Perron model or spectral simplicity is proved. It bears on this question but does not
+answer it: the phases are fixed, a single mask whose phase has period at
+least two is not covered, and no regularity in the phase is proved.
+\end{ednote}
 
 \subsection{Phase sequences and matrix products}
 \begin{question}

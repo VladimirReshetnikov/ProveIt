@@ -1,0 +1,1033 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,array,longtable}
+\usepackage{xcolor,xurl,hyperref,fancyhdr,enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={The Unit-Circle Barrier for the q-Fabius Transform},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The unit-circle barrier for the \(q\)-Fabius transform}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\mult}{\operatorname{mult}}
+\newcommand{\zR}{\zeta_{\mathrm R}}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\module}[1]{\texttt{\footnotesize\nolinkurl{#1}}}
+\title{\vspace{-10mm}\textbf{The Unit-Circle Barrier\\for the \(q\)-Fabius Transform}\\[5pt]
+\large Natural boundaries, cyclotomic moment poles,\\and exterior meromorphic divisors}
+\author{Research article prepared for Vladimir Reshetnikov\\
+\small Based on the geometric-uniform branch of the ProveIt repository}
+\date{September 30, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For \(|q|<1\), consider the entire transform
+\[
+ A(q,z)=\prod_{j=0}^{\infty}\frac{\exp((1-q)q^jz)-1}{(1-q)q^jz},
+\]
+with every removable factor interpreted continuously. At real \(0<q<1\), this is the moment generating function of a geometrically weighted sum of independent uniform random variables; the case \(q=1/2\) belongs to Fabius--Rvachev theory. We prove that, for \emph{every} fixed complex \(z\ne0\), the unit circle is a natural boundary for \(q\mapsto A(q,z)\), even against meromorphic continuation. The proof combines an explicitly nonvanishing root-of-unity cusp coefficient with quantitative condensation of zeros. The same conclusion holds for finite positive products with arbitrary real dilations.
+
+We also give an all-orders radial expansion at roots of unity, a cyclotomic upper divisor and exact leading-pole formula for every rational moment coefficient, and a complete classification of the poles of the exterior reciprocal transform. The exterior multiplicities are controlled precisely by the least rational power of its parameter. These results separate coefficientwise rational continuation from analytic continuation of the whole transform. Exact algebraic checks and high-precision experiments accompany the proofs. No claim of Lean certification or independently established worldwide priority is made.
+\end{abstract}
+\vspace{3pt}
+\noindent\textbf{Keywords.} Fabius function; geometric uniform law; natural boundary; roots of unity; \(q\)-Pochhammer product; Bernoulli cumulants; meromorphic divisor.
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\section{The research question and the contribution}
+\subsection{What needs to be distinguished}
+A family may have rational Taylor coefficients in a parameter without admitting analytic continuation in that parameter. In the present problem the distinction is particularly sharp. Every coefficient
+\[
+ a_n(q)=[z^n]A(q,z)
+\]
+is a rational function of \(q\), and the same rational functions describe both an interior entire transform and an exterior reciprocal germ. Nevertheless, no nonzero fixed transform argument permits continuation through any point of the unit circle.
+
+The geometric-uniform development in ProveIt already provides the interior product, rational moment normalization, the exterior reciprocal germ, and a reciprocity identity. Its documentation explicitly distinguishes these results from unit-circle analytic continuation and from a global exterior pole-divisor theorem \cite{repo}. This article answers those two mathematical continuation questions directly. It also refines the root-of-unity singularities of the moment coefficients. An absent Lean theorem is not, by itself, an open mathematical problem; the claims here are established by complete conventional proofs rather than by interpreting documentation gaps as evidence of historical novelty.
+
+The repository was inspected at commit \texttt{7747fcfddedeca1a04b6526cdd4836fbfdad1b89}. Appendix~\ref{sec:audit} records the precise scope of that inspection. We do not assume that all documents or incoming archives in this large, changing repository have been exhaustively compared.
+% ed. (2026-09-30): repository manuscripts with partial results that the article does not cite
+\begin{ednote}
+The inspection read the Lean documentation only. Two repository manuscripts
+beside this package (under
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/})
+already contained partial results. Part~IX of the geometric $q$-Fabius
+volume \path{geometric_q_fabius_frontiers/} proves the natural boundary for
+$z$ real or purely imaginary with $0<|z|<\pi/2$ (its
+\texttt{p9:thm:natural-boundary} and \texttt{p9:cor:germ-natural-boundary};
+there $A(q,z)=e^{z/2}\Phi(q,iz/2)$, and the cusp constant $C_L$ of
+Theorem~\ref{thm:cusp} is minus its spectral action at the root, as an
+independent computation on filing confirmed to 16 digits). Theorem~\ref{thm:main}
+generalizes that theorem to every $z\ne0$, and so proves the volume's
+Conjecture~\texttt{p7:conj:natural-boundary} for the centered germ
+$C_q(t)=e^{-t/2}A(q,t)$ for every $t\ne0$, including the range $|t|\ge\pi$
+that its Remark~\texttt{p7:rem:natural-boundary-status} leaves open.
+The $q$-Pochhammer monograph \path{q_pochhammer_q_binomial_monograph/}
+already proves \eqref{eq:pochhammer}, the global meromorphic continuation of
+the exterior transform and its pole set, with ``multiplicities add[ing] when
+listed points coincide'' (its Theorem~\texttt{thm:qF-spectral}); that pole
+set is the one of Theorem~\ref{thm:exterior-poles}, and
+Theorem~\ref{thm:multiplicity} evaluates the multiplicities explicitly.
+Corollary~\ref{cor:denominator} also proves a second conjecture of the
+volume; see the note after it. The volume now carries editorial notes at both
+conjectures.
+\end{ednote}
+
+\subsection{The central theorem}
+Write \(\D=\{q\in\C:|q|<1\}\) and \(\T=\partial\D\). Define
+\begin{equation}\label{eq:def-h}
+ h(w)=\begin{cases}(e^w-1)/w,&w\ne0,\\1,&w=0,\end{cases}
+ \qquad A(q,z)=\prod_{j\ge0}h((1-q)q^jz).
+\end{equation}
+A meromorphic continuation through \(\eta\in\T\) means a meromorphic function on a neighborhood of \(\eta\) agreeing with the original function on its intersection with \(\D\), after shrinking that neighborhood if necessary.
+
+\begin{theorem}[Unit-circle barrier]\label{thm:main}
+For every fixed \(z\in\C\setminus\{0\}\), the function \(q\mapsto A(q,z)\) is holomorphic in \(\D\), and it has no meromorphic continuation through any point of \(\T\). Thus its Taylor series at \(q=0\) has radius of convergence exactly one. At \(z=0\), the function is identically one.
+\end{theorem}
+
+The proof has two complementary mechanisms. At a root of unity \(\xi\ne1\) where \(|(1-\xi)z|<2\pi\), an analytic logarithm grows as a nonzero constant divided by the radial distance parameter. At a boundary point where \(|(1-\eta)z|>2\pi\), infinitely many genuine zeros approach from the disk. Neither mechanism depends on a genericity hypothesis on \(z\). The threshold points omitted by these local arguments form only a finite set and therefore do not leave any continuation arc available.
+
+Three further conclusions accompany the theorem. First, positive finite products of real dilations retain the same barrier. Second, cyclotomic pole orders of moments are governed by \(\lcm(2,\ell)\), not simply by the root order \(\ell\). Third, the exterior transform is globally meromorphic in \(z\), and its entire pole divisor can be computed from elementary divisibility data.
+
+\subsection{Relation to established work}
+Arias de Reyna's accounts of the compactly supported Fabius--Rvachev function and its arithmetic supply the classical background \cite{arias-definition,arias-arithmetic}. The geometric-uniform normalization used here agrees with the repository's moment-product convention \cite{repo}. Bernoulli generating functions, Euler's evaluation of even zeta values, and the hyperbolic sine product are standard identities \cite{dlmf}.
+
+Root-of-unity asymptotics of \(q\)-products, including dilogarithmic leading terms and all-orders expansions, are established tools. Garoufalidis and Zagier give a particularly relevant \(q\)-Pochhammer expansion in their study of Nahm sums \cite[Lemma~2.1]{garoufalidis-zagier}. Duke and Nguyen study natural boundaries and cusp asymptotics for other infinite products of cyclotomic polynomials \cite{duke-nguyen}. We do not present those general methods as new. The specific contribution developed here is their direct, fully proved specialization to the normalized geometric-uniform transform, together with a uniform noncancellation estimate, an all-\(z\) zero-condensation argument, the moment-pole formula, and the exterior collision classification. A focused literature search did not establish the prior publication status of this exact combined theorem; it is not a substitute for a comprehensive priority review.
+
+\section{Product structure and the logarithmic coordinate}
+\subsection{Convergence, zeros, and normalization}
+\begin{proposition}[Joint holomorphy and the functional equation]\label{prop:product}
+The product in \eqref{eq:def-h} converges locally uniformly on \(\D\times\C\). Its limit is jointly holomorphic and satisfies
+\begin{equation}\label{eq:functional}
+ A(q,z)=h((1-q)z)A(q,qz),\qquad A(q,0)=1.
+\end{equation}
+For any \((q,z)\in\D\times\C\), the product vanishes if and only if one of its factors vanishes. Every zero of \(h\) is simple and belongs to \(2\pi i(\Z\setminus\{0\})\).
+\end{proposition}
+\begin{proof}
+The power series \(h(w)=1+w/2+O(w^2)\) holds near zero. On a compact set with \(|q|\le r<1\) and \(|z|\le R\), the arguments satisfy
+\[
+ |(1-q)q^jz|\le(1+r)Rr^j.
+\]
+Consequently the series of absolute deviations of the tail factors from one is uniformly summable. The usual product convergence criterion, or the uniformly convergent sum of logarithms of sufficiently late factors, proves local uniform convergence. Finite products are jointly holomorphic, so their limit is jointly holomorphic. Splitting off the first factor proves \eqref{eq:functional}.
+
+If no factor vanishes, a finite prefix is nonzero and a sufficiently late tail is the exponential of a convergent sum of analytic logarithms; hence the limit is nonzero. Conversely, a zero factor makes every sufficiently long partial product zero. Finally, \(e^w-1\) has the simple zeros \(2\pi i k\), and the division by \(w\) removes just the zero at the origin.
+\end{proof}
+
+For real \(0<q<1\), let \(U_j\) be independent random variables uniformly distributed on \([0,1]\). The series
+\begin{equation}\label{eq:probability}
+ Y_q=(1-q)\sum_{j\ge0}q^jU_j
+\end{equation}
+converges absolutely and belongs to \([0,1]\). Independence gives the transform of every finite prefix, and bounded convergence then yields
+\[
+ A(q,z)=\mathbb E e^{zY_q}.
+\]
+At \(q=1/2\), the distribution function is the usual unit-interval Fabius function in the repository's normalization \cite{repo}. This probabilistic interpretation is not asserted for nonreal \(q\). The complex analytic product itself is the object studied below.
+
+\subsection{The canonical logarithm}
+We use Bernoulli numbers with \(B_1=-1/2\), defined by
+\[
+ \frac{w}{e^w-1}=\sum_{n\ge0}\frac{B_n}{n!}w^n.
+\]
+For positive even \(n\), put
+\begin{equation}\label{eq:cn}
+ c_n=\frac{B_n}{n\,n!}
+     =-\frac{2\zR(n)}{n}\left(\frac{i}{2\pi}\right)^n.
+\end{equation}
+Here \(\zR\) denotes the Riemann zeta function, to distinguish it from roots of unity. The second identity is Euler's even-zeta evaluation \cite[\S25.6]{dlmf}. In particular,
+\begin{equation}\label{eq:c-bound}
+ |c_n|\le\frac{2\zR(2)}{n(2\pi)^n}.
+\end{equation}
+
+\begin{lemma}[Cumulant expansion]\label{lem:log}
+On \(|w|<2\pi\), the logarithm of \(h\) normalized to be zero at the origin is
+\begin{equation}\label{eq:log-h}
+ \log h(w)=\frac w2+\sum_{\substack{n\ge2\\2\mid n}}c_nw^n.
+\end{equation}
+On the region \(|q|<1\), \(|(1-q)z|<2\pi\), the function
+\begin{equation}\label{eq:log-A}
+ \LL(q,z)=\frac z2+
+ \sum_{\substack{n\ge2\\2\mid n}}
+ c_n\frac{(1-q)^nz^n}{1-q^n}
+\end{equation}
+is an analytic logarithm of \(A(q,z)\).
+\end{lemma}
+\begin{proof}
+Logarithmic differentiation of \(h\), followed by the Bernoulli expansion, gives
+\[
+ \frac{h'(w)}{h(w)}=\frac12+
+ \sum_{\substack{n\ge2\\2\mid n}}\frac{B_n}{n!}w^{n-1}.
+\]
+There are no zeros of \(h\) in \(|w|<2\pi\). Integration from zero proves \eqref{eq:log-h}. Substitute \((1-q)q^jz\), sum over \(j\), and use the geometric series. The linear part sums to \(z/2\). Absolute convergence justifies the interchange; locally one may bound the even-degree terms by \eqref{eq:c-bound} and \((1-|q|^n)^{-1}\). Exponentiating recovers the product of Proposition~\ref{prop:product}.
+\end{proof}
+
+The notation \(\LL\) is intentional. It is the logarithm supplied by a convergent series, not necessarily the principal logarithm of the final complex number. This distinction will matter when the leading cusp coefficient is nonreal.
+
+\begin{lemma}[A nonzero radial limit]\label{lem:qone-limit}
+As real \(r\uparrow1\),
+\begin{equation}\label{eq:qone-limit}
+ A(r,z)\longrightarrow e^{z/2}
+\end{equation}
+locally uniformly for \(z\in\C\). In particular, for each fixed \(z\), the function \(A(\cdot,z)\) is not identically zero.
+\end{lemma}
+\begin{proof}
+Set \(\delta=1-r\). For even \(n\ge2\), \(1-r^n\ge\delta\). Thus, on \(|z|\le R\),
+\[
+ \left|\LL(r,z)-z/2\right|
+ \le\sum_{\substack{n\ge2\\2\mid n}}|c_n|R^n\delta^{n-1}
+ =O_R(\delta).
+\]
+For small \(\delta\), the logarithmic series is valid uniformly on that compact set. Exponentiation proves the limit.
+\end{proof}
+
+\subsection{A \texorpdfstring{\(q\)}{q}-Pochhammer representation}
+The classical product for \(\sinh\) gives \cite[\S4.36]{dlmf}
+\[
+ h(w)=e^{w/2}\prod_{m\ge1}\left(1+\frac{w^2}{4\pi^2m^2}\right).
+\]
+Consequently, using \((a;Q)_\infty=\prod_{j\ge0}(1-aQ^j)\),
+\begin{equation}\label{eq:pochhammer}
+ A(q,z)=e^{z/2}\prod_{m\ge1}
+ \left(-\frac{(1-q)^2z^2}{4\pi^2m^2};q^2\right)_\infty.
+\end{equation}
+This identity holds for every \(|q|<1\) and \(z\in\C\). The double product can be rearranged because
+\[
+ \sum_{m\ge1}\sum_{j\ge0}
+ \frac{|1-q|^2|z|^2|q|^{2j}}{4\pi^2m^2}<\infty.
+\]
+Formula~\eqref{eq:pochhammer} connects the problem to established root-of-unity \(q\)-product methods. For the main theorem, however, the logarithmic series permits a short direct proof with an explicit nonzero lower bound.
+
+\section{Root-of-unity cusps and noncancellation}
+\subsection{Extraction of the resonant terms}
+Fix a root of unity \(\xi\ne1\) of order \(\ell\ge2\), and define
+\begin{equation}\label{eq:root-notation}
+ L=\lcm(2,\ell),\qquad q(t)=\xi e^{-t},\qquad
+ w=(1-\xi)z,\qquad w(t)=(1-\xi e^{-t})z.
+\end{equation}
+The integer \(L\) is the first positive even multiple of \(\ell\). It is the smallest degree at which a Bernoulli cumulant resonates at \(\xi\).
+
+\begin{theorem}[The radial cusp coefficient]\label{thm:cusp}
+Suppose \(0<|w|<2\pi\). Then
+\begin{equation}\label{eq:cusp-limit}
+ \lim_{t\downarrow0}t\LL(\xi e^{-t},z)=C_L(w),
+ \qquad
+ C_L(w)=\sum_{k\ge1}\frac{B_{kL}w^{kL}}{(kL)^2(kL)!}.
+\end{equation}
+The series for \(C_L\) is analytic on \(|w|<2\pi\). With
+\(v=(iw/(2\pi))^L\), it has the alternative descriptions
+\begin{align}
+ C_L(w)&=-\frac{2}{L^2}\mathscr D_L(v),\label{eq:dilog-cusp}\\
+ \mathscr D_L(v)&=\sum_{k\ge1}\frac{\zR(kL)}{k^2}v^k
+             =\sum_{m\ge1}\Li_2(v/m^L).\label{eq:dilog-sum}
+\end{align}
+Most importantly,
+\begin{equation}\label{eq:cusp-lower}
+ |C_L(w)|\ge
+ \frac{2\zR(L)}{L^2}
+ \left|\frac{w}{2\pi}\right|^L
+ \left(2-\frac{\pi^2}{6}\right)>0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+In \eqref{eq:log-A}, an even degree \(n\) is resonant precisely when \(\xi^n=1\), equivalently \(L\mid n\). For such a degree,
+\[
+ \frac{t}{1-\xi^ne^{-nt}}=\frac{t}{1-e^{-nt}}\longrightarrow\frac1n.
+\]
+For a nonresonant degree the same quotient tends to zero. We justify summing these limits. Choose \(R<2\pi\) with \(|w(t)|\le R\) for all sufficiently small \(t\). In the resonant case,
+\[
+ \frac{t}{1-e^{-nt}}\le t+\frac1n,
+\]
+because \((e^{nt}-1)^{-1}\le(nt)^{-1}\). In the nonresonant case, the finitely many possibilities for \(\xi^n\ne1\) satisfy
+\[
+ d_\ell:=\min_{\substack{\alpha\in\langle\xi\rangle\\\alpha\ne1}}
+       \min_{0\le x\le1}|1-\alpha x|>0.
+\]
+Thus \(t/|1-\xi^ne^{-nt}|\le t/d_\ell\). Together with \eqref{eq:c-bound}, these estimates supply a summable geometric majorant independent of small \(t\). Dominated convergence gives
+\[
+ \lim_{t\downarrow0}t\LL(q(t),z)
+ =\sum_{\substack{n\ge L\\L\mid n}}\frac{c_nw^n}{n},
+\]
+which is \eqref{eq:cusp-limit}.
+
+Applying \eqref{eq:cn} with \(n=kL\) yields \eqref{eq:dilog-cusp}. The interchange in \eqref{eq:dilog-sum} is absolutely convergent for \(|v|<1\), since the dilogarithm there is defined by \(\Li_2(u)=\sum_{k\ge1}u^k/k^2\).
+
+It remains to rule out cancellation, including cancellation for complex \(w\). Monotonicity of \(\zR(s)\) on \(s>1\) gives
+\begin{align*}
+ |\mathscr D_L(v)-\zR(L)v|
+ &\le\sum_{k\ge2}\frac{\zR(kL)}{k^2}|v|^k\\
+ &\le\zR(L)|v|\sum_{k\ge2}\frac1{k^2}
+ =\zR(L)|v|\left(\frac{\pi^2}{6}-1\right).
+\end{align*}
+The factor in parentheses is strictly less than one. The reverse triangle inequality proves \eqref{eq:cusp-lower}.
+\end{proof}
+
+\begin{remark}[Why the estimate matters]
+Showing that the leading coefficient is not identically zero as a function of \(z\) would establish a result only outside a possible exceptional set of transform arguments. Inequality~\eqref{eq:cusp-lower} proves nonvanishing at every nonzero point of the stated disk. It is this estimate, rather than the formal appearance of a dilogarithm, that removes exceptional small arguments from the natural-boundary theorem.
+\end{remark}
+
+\subsection{Excluding meromorphic continuation}
+\begin{proposition}[The logarithmic obstruction]\label{prop:cusp-obstruction}
+Under the hypotheses of Theorem~\ref{thm:cusp}, \(A(\cdot,z)\) has no meromorphic continuation through \(\xi\).
+\end{proposition}
+\begin{proof}
+Suppose a meromorphic continuation exists. It is not identically zero, by Lemma~\ref{lem:qone-limit} and the identity theorem. Its local form is
+\[
+ A(q,z)=(q-\xi)^m g(q),\qquad m\in\Z,
+\]
+where \(g\) is holomorphic and nonzero in a sufficiently small disk around \(\xi\). Choose a holomorphic logarithm of \(g\) there and a continuous logarithm of \(q(t)-\xi\) for small positive \(t\). Since exponentiation of both sides agrees, continuity on this interval gives a fixed integer \(K\) such that
+\[
+ \LL(q(t),z)=m\log(q(t)-\xi)+\log g(q(t))+2\pi iK.
+\]
+Now \(q(t)-\xi=-\xi t(1+O(t))\), so the right side is \(O(|\log t|)\). Multiplication by \(t\) makes it tend to zero, contrary to \eqref{eq:cusp-limit} and \eqref{eq:cusp-lower}.
+\end{proof}
+
+This proof does not merely compare absolute values. A positive real cusp coefficient leads to rapid growth, a negative real coefficient to rapid decay, and a purely imaginary coefficient to rapid winding. All three behaviors contradict the logarithmic behavior of a meromorphic zero or pole. Nor do we label these boundary points ``isolated essential singularities'': the function is not given on punctured neighborhoods crossing the unit circle, and obstructions are dense.
+
+\section{Condensation of zeros and the global barrier}
+The logarithmic series deliberately avoids zeros of \(h\). To treat all remaining transform arguments, those zeros become the useful feature rather than an inconvenience.
+
+\begin{lemma}[Quantitative zero condensation]\label{lem:zeros}
+Let \(z\ne0\), \(\eta\in\T\setminus\{1\}\), and suppose
+\begin{equation}\label{eq:large-region}
+ |(1-\eta)z|>2\pi.
+\end{equation}
+For every sufficiently large integer \(j\), there is \(q_j\in\D\) such that
+\begin{equation}\label{eq:zero-equation}
+ (1-q_j)q_j^jz=2\pi i,\qquad A(q_j,z)=0,\qquad q_j\longrightarrow\eta.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:zero-distance}
+ 1-|q_j|=
+ \frac{\log\bigl(|(1-\eta)z|/(2\pi)\bigr)}{j}+O(j^{-2}).
+\end{equation}
+The sequence contains infinitely many distinct points.
+\end{lemma}
+\begin{proof}
+Put \(c=2\pi i/z\) and \(\rho=c/(1-\eta)\). By hypothesis, \(0<|\rho|<1\). For each \(j\), choose \(u_j^0\) satisfying
+\[
+ e^{u_j^0}=\rho\eta^{-j},\qquad
+ \Re u_j^0=\log|\rho|<0,\qquad \Im u_j^0\in[-\pi,\pi].
+\]
+These numbers stay in a bounded set. We seek a solution of the form
+\(q_j=\eta e^{u_j/j}\). The desired equation becomes
+\[
+ \eta^je^{u_j}(1-\eta e^{u_j/j})=c,
+\]
+or, equivalently,
+\begin{equation}\label{eq:rouche-function}
+ F_j(u):=e^{u-u_j^0}\frac{1-\eta e^{u/j}}{1-\eta}-1=0.
+\end{equation}
+Uniformly for \(|u-u_j^0|\le1\), the function in \eqref{eq:rouche-function} differs from \(e^{u-u_j^0}-1\) by \(O(1/j)\); the implied constant is independent of \(j\), because the centers are bounded and \(1-\eta\ne0\).
+
+Choose a fixed constant \(K\) sufficiently large. On \(|u-u_j^0|=K/j\), for large \(j\),
+\[
+ |e^{u-u_j^0}-1|\ge\frac{K}{2j}.
+\]
+The preceding perturbation estimate is strictly smaller than this bound when \(K\) is chosen first and then \(j\) is sufficiently large. Rouch\'e's theorem gives exactly one zero in this circle, since \(e^{u-u_j^0}-1\) has exactly one there. Thus
+\[
+ u_j=u_j^0+O(j^{-1}).
+\]
+In particular \(\Re u_j<0\) for all sufficiently large \(j\), so \(|q_j|<1\). Substitution proves the first equation of \eqref{eq:zero-equation}, and the \(j\)-th factor in the product vanishes. Also
+\[
+ q_j=\eta\left(1+\frac{u_j^0}{j}+O(j^{-2})\right),
+\]
+which gives both convergence to \(\eta\) and \eqref{eq:zero-distance}. A fixed point \(q\) with \(|q|<1\) cannot satisfy \((1-q)q^jz=2\pi i\) for infinitely many \(j\), because the left side tends to zero. Hence infinitely many distinct zeros occur.
+\end{proof}
+
+\begin{proposition}[The large-argument obstruction]\label{prop:zero-obstruction}
+At every point satisfying \eqref{eq:large-region}, \(A(\cdot,z)\) has no meromorphic continuation.
+\end{proposition}
+\begin{proof}
+A nonzero meromorphic function on a neighborhood of \(\eta\) has a local factorization \((q-\eta)^m g(q)\), where \(g\) is nonzero. It cannot have infinitely many distinct zeros approaching \(\eta\). Lemma~\ref{lem:zeros} contradicts such a factorization. Identical vanishing is excluded by Lemma~\ref{lem:qone-limit}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix \(z\ne0\). On the unit circle the equation
+\[
+ |(1-\eta)z|=2\pi
+\]
+has at most two solutions: writing \(\eta=e^{i\theta}\), it prescribes \(|\sin(\theta/2)|=\pi/|z|\). Exclude these points and \(1\). Every nonempty open arc of \(\T\) still contains a root of unity \(\xi\) outside this finite set. At that root, either \(0<|(1-\xi)z|<2\pi\), when Proposition~\ref{prop:cusp-obstruction} applies, or \(|(1-\xi)z|>2\pi\), when Proposition~\ref{prop:zero-obstruction} applies. Thus every open boundary arc contains a point forbidding meromorphic continuation.
+
+A continuation through any boundary point would, on a smaller neighborhood, provide continuation through an open arc around it. This is impossible. Holomorphy in \(\D\) was proved in Proposition~\ref{prop:product}. The Taylor radius at the origin is at least one and cannot exceed one. Finally, every factor equals one at \(z=0\).
+\end{proof}
+
+\begin{remark}[What the threshold does and does not leave unresolved]
+The arguments do not provide a detailed radial asymptotic at every threshold point \(|(1-\eta)z|=2\pi\). That is a local asymptotic problem left for further work. It is \emph{not} an exception to the natural-boundary conclusion: neighboring obstruction points already prevent continuation through a threshold point itself.
+\end{remark}
+
+\section{Stability and differential consequences}
+\subsection{Positive finite products of real dilations}
+\begin{theorem}[Stability under finite convolution products]\label{thm:convolution}
+Let \(a_1,\ldots,a_s\in\R\) be not all zero, and let \(m_1,\ldots,m_s\) be positive integers. For every fixed \(z\ne0\),
+\begin{equation}\label{eq:convolution}
+ F(q,z)=\prod_{j=1}^s A(q,a_jz)^{m_j}
+\end{equation}
+has the unit circle as a natural boundary against meromorphic continuation.
+\end{theorem}
+\begin{proof}
+Set \(a_* =\max_j|a_j|>0\). At a root \(\xi\ne1\), use \(w=(1-\xi)z\) and \(L=\lcm(2,\ord\xi)\). Suppose first \(a_*|w|<2\pi\). The radial logarithmic coefficient of \eqref{eq:convolution} is
+\[
+ \sum_{j=1}^s m_j C_L(a_jw).
+\]
+Put \(v=(ia_*w/(2\pi))^L\), \(b_j=(|a_j|/a_*)^L\), and \(S_k=\sum_jm_jb_j^k\). The evenness of \(L\) ensures that the signs of the real \(a_j\) disappear. We have \(0\le b_j\le1\), \(0<S_1\), and \(S_k\le S_1\). Therefore the negative multiple \(-L^2/2\) of the cusp coefficient is
+\[
+ \sum_{k\ge1}\frac{\zR(kL)}{k^2}S_kv^k.
+\]
+Its first term is \(\zR(L)S_1v\), and the modulus of the remaining terms is at most
+\(\zR(L)S_1|v|(\pi^2/6-1)\). It cannot vanish. The logarithmic argument of Proposition~\ref{prop:cusp-obstruction} applies verbatim.
+
+If instead \(a_*|(1-\eta)z|>2\pi\), select a factor with \(|a_j|=a_*\). Lemma~\ref{lem:zeros} supplies its accumulating zeros. They remain zeros of the positive product: all other factors are holomorphic and none can cancel a zero by a pole. The whole product is not identically zero, since its real radial limit at \(q=1\) is
+\[
+ \exp\left(\frac z2\sum_jm_ja_j\right)\ne0.
+\]
+The threshold set is finite, and the open-arc argument from Theorem~\ref{thm:main} finishes the proof.
+\end{proof}
+
+For real \(0<q<1\), these products describe finite sums of independently sampled scaled geometric-uniform variables. The theorem therefore applies to a substantial family of compactly supported convolution laws, including centered or signed real dilations. It does not claim the same result for arbitrary complex dilations or for quotients with negative multiplicities, where cancellation requires a separate analysis.
+
+\subsection{No algebraic or linear differential equation in the parameter}
+\begin{corollary}\label{cor:dfinite}
+For \(z\ne0\), neither \(A(\cdot,z)\) nor a product \eqref{eq:convolution} satisfying Theorem~\ref{thm:convolution} is algebraic over \(\C(q)\). Neither is D-finite over \(\C(q)\): there is no nontrivial identity
+\begin{equation}\label{eq:dfinite}
+ \sum_{r=0}^d P_r(q)\frac{\partial^r F}{\partial q^r}(q,z)=0,
+ \qquad P_r\in\C[q],\quad P_d\ne0.
+\end{equation}
+\end{corollary}
+\begin{proof}
+If \(d=0\), \eqref{eq:dfinite} contradicts the fact that \(F\) is not identically zero. If \(d\ge1\), the local existence and uniqueness theorem for a linear analytic differential equation permits continuation across any point where \(P_d\ne0\). More explicitly, in a small disk avoiding the zeros of \(P_d\), the equivalent first-order system has holomorphic coefficients and transports interior initial data to a holomorphic solution on that disk. There are only finitely many zeros of \(P_d\); an ordinary point must exist on \(\T\), contrary to the natural boundary.
+
+For algebraicity, take an irreducible polynomial relation in \(\C[q,Y]\). In characteristic zero its discriminant in \(Y\) is not identically zero after removing inessential factors. Away from the finitely many zeros of the discriminant and the leading coefficient, its branches are locally holomorphic and an interior branch continues across a neighboring ordinary boundary point. This is again impossible.
+\end{proof}
+
+Non-D-finiteness concerns \emph{linear} differential equations. Differential transcendence, meaning the absence of all polynomial relations among a function and its derivatives, is substantially stronger and is not proved here.
+
+\section{An all-orders radial expansion}
+\subsection{A uniform elementary remainder lemma}
+The leading cusp is sufficient for the natural boundary, but the same series yields all algebraic orders of radial correction with a rigorous remainder. Fix \(\xi\) of order \(\ell\ge2\), and define
+\begin{align}
+ R_\alpha(x)&=\frac1{1-\alpha e^{-x}},\nonumber\\
+ E_\alpha(x)&=R_\alpha(x)-\frac{\mathbf1_{\alpha=1}}x,
+ \qquad e_{\alpha,p}=[x^p]E_\alpha(x),\label{eq:E-alpha}
+\end{align}
+where \(\alpha\) ranges over the finite group generated by \(\xi\). The apparent singularity in \(E_1\) at zero is removable. Each \(E_\alpha\) is analytic near zero and bounded on the positive real axis. Its coefficients are explicit:
+\begin{align}
+ e_{1,0}&=\frac12,
+ & e_{1,2r-1}&=\frac{B_{2r}}{(2r)!}\quad(r\ge1),
+ &e_{1,2r}&=0\quad(r\ge1),\label{eq:e-res}\\
+ e_{\alpha,p}&=\frac{(-1)^p}{p!}
+  \left(\alpha\frac{\dd}{\dd\alpha}\right)^p\frac1{1-\alpha}
+ &&(\alpha\ne1).\label{eq:e-nonres}
+\end{align}
+In \eqref{eq:e-nonres}, the derivative acts on a rational function of an auxiliary variable before it is evaluated at \(\alpha\).
+
+\begin{lemma}\label{lem:global-taylor}
+For every integer \(N\ge0\), there is \(K_{N,\xi}<\infty\) such that for every \(x\ge0\) and every \(\alpha\in\langle\xi\rangle\),
+\begin{equation}\label{eq:global-rem}
+ \left|E_\alpha(x)-\sum_{p=0}^N e_{\alpha,p}x^p\right|
+ \le K_{N,\xi}x^{N+1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For each \(\alpha\), analyticity gives the bound on a sufficiently small interval at zero. Away from zero on a compact interval, divide by \(x^{N+1}\) and use continuity. At infinity, \(E_\alpha\) is bounded and the subtracted polynomial has degree at most \(N\), so the same quotient is bounded. Taking the maximum over finitely many \(\alpha\) gives a common constant. Formulas~\eqref{eq:e-res} and \eqref{eq:e-nonres} follow respectively from the Bernoulli series and repeated differentiation of \((1-\alpha e^{-x})^{-1}\).
+\end{proof}
+
+\subsection{Frozen and moving transform coordinates}
+Define, for \(t>0\) and \(|w|<2\pi\),
+\begin{equation}\label{eq:frozen}
+ \mathcal F_\xi(t,w)=\sum_{\substack{n\ge2\\2\mid n}}
+          c_n w^n R_{\xi^n}(nt),
+\qquad
+ F_{\xi,p}(w)=\sum_{\substack{n\ge2\\2\mid n}}
+          c_nw^n n^p e_{\xi^n,p}.
+\end{equation}
+Each coefficient function \(F_{\xi,p}\) is analytic on \(|w|<2\pi\).
+
+\begin{theorem}[All-orders cusp expansion]\label{thm:allorders}
+For every \(N\ge0\) and \(R<2\pi\), as \(t\downarrow0\),
+\begin{equation}\label{eq:frozen-expansion}
+ \mathcal F_\xi(t,w)
+ =\frac{C_L(w)}t+\sum_{p=0}^N F_{\xi,p}(w)t^p
+       +O_{N,\xi,R}(t^{N+1})
+\end{equation}
+uniformly on \(|w|\le R\), where \(L=\lcm(2,\ell)\). In the original moving coordinate \(w(t)=(1-\xi e^{-t})z\), if \(|(1-\xi)z|<2\pi\), then
+\begin{equation}\label{eq:allorders-moving}
+ \LL(\xi e^{-t},z)=\frac z2+\frac{C_L(w(t))}{t}
+          +\sum_{p=0}^N F_{\xi,p}(w(t))t^p+O(t^{N+1}).
+\end{equation}
+Taylor expansion of the analytic coefficient functions gives an expansion to every prescribed algebraic order in \(t\).
+\end{theorem}
+\begin{proof}
+Substitute \eqref{eq:E-alpha} into \eqref{eq:frozen}. The terms with the subtracted singular part sum exactly to
+\[
+ \sum_{\substack{n\ge L\\L\mid n}}\frac{c_nw^n}{nt}=\frac{C_L(w)}t.
+\]
+Apply Lemma~\ref{lem:global-taylor} at \(x=nt\). The sum of the remainders is bounded by
+\[
+ K_{N,\xi}t^{N+1}
+ \sum_{\substack{n\ge2\\2\mid n}}|c_n|R^n n^{N+1},
+\]
+which is finite by \eqref{eq:c-bound}. This also justifies the coefficient sums and their locally uniform convergence. Formula~\eqref{eq:allorders-moving} follows because \(\LL(\xi e^{-t},z)=z/2+\mathcal F_\xi(t,w(t))\), and \(w(t)\) remains in a smaller closed disk for small \(t\). Analytic Taylor expansion, using one extra order for the term divided by \(t\), completes the proof.
+\end{proof}
+
+\begin{corollary}[The constant correction]\label{cor:constant}
+Under \(0<|(1-\xi)z|<2\pi\), put \(w=(1-\xi)z\). Then
+\begin{align}
+ \LL(\xi e^{-t},z)&=C_L(w)/t+D_\xi(z)+O(t),\label{eq:constant-correction}\\
+ D_\xi(z)&=\frac z2+\xi zC_L'(w)+F_{\xi,0}(w),\label{eq:D}\\
+ F_{\xi,0}(w)&=\frac12\sum_{\substack{n\ge L\\L\mid n}}c_nw^n
+ +\sum_{\substack{n\ge2,\ 2\mid n\\\ell\nmid n}}
+          \frac{c_nw^n}{1-\xi^n}.\label{eq:Fzero}
+\end{align}
+Consequently,
+\begin{equation}\label{eq:relative-cusp}
+ A(\xi e^{-t},z)=\exp\bigl(C_L(w)/t+D_\xi(z)\bigr)(1+O(t)).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The moving coordinate has \(w(t)=w+\xi zt+O(t^2)\). Expand \(C_L(w(t))/t\) to its constant term and use \eqref{eq:e-res}--\eqref{eq:e-nonres} at \(p=0\). Exponentiating the \(O(t)\) remainder gives \eqref{eq:relative-cusp}.
+\end{proof}
+
+The remainder constants may depend on the root of unity and on the distance from \(|w|=2\pi\). This theorem asserts a Poincar\'e asymptotic expansion, not convergence of the infinite correction series, uniformity in unbounded root order, or a summability theorem. Those are separate questions.
+
+\section{The apparently benign point \texorpdfstring{\(q=1\)}{q=1}}
+The singularity at \(q=1\) is not visible in any single rational moment coefficient. It is also not visible as failure of a finite radial asymptotic expansion.
+
+\begin{proposition}[Complete one-sided expansion at one]\label{prop:qone-all}
+For real \(\delta\downarrow0\), \(\LL(1-\delta,z)\) has an asymptotic expansion to every finite order in nonnegative integral powers of \(\delta\), locally uniformly in \(z\). The first terms are
+\begin{equation}\label{eq:qone-expansion}
+\begin{split}
+ \LL(1-\delta,z)={}&\frac z2+\frac{z^2}{48}\delta
+       +\frac{z^2}{96}\delta^2\\
+ &+\left(\frac{z^2}{192}-\frac{z^4}{11520}\right)\delta^3
+       +O(\delta^4).
+\end{split}
+\end{equation}
+Nevertheless, for every \(z\ne0\), \(A(\cdot,z)\) has no meromorphic germ extending it through \(q=1\).
+\end{proposition}
+\begin{proof}
+In \eqref{eq:log-A}, the contribution of degree \(n\) is
+\[
+ c_nz^n\frac{\delta^n}{1-(1-\delta)^n}.
+\]
+For each fixed \(n\), this is analytic at \(\delta=0\) and vanishes to order \(n-1\). To obtain an expansion through \(\delta^J\), retain only the even degrees \(n\le J+1\). The remaining series is bounded uniformly on \(|z|\le R\) by
+\[
+ \sum_{\substack{n\ge J+2\\2\mid n}}
+ |c_n|R^n\delta^{n-1}=O_R(\delta^{J+1}),
+\]
+using \(1-(1-\delta)^n\ge\delta\). Taylor expansion of the finite retained terms proves the assertion. Specifically,
+\[
+ c_2\frac{\delta^2z^2}{2\delta-\delta^2}
+ =\frac{z^2\delta}{24(2-\delta)},\qquad
+ c_4\frac{\delta^4z^4}{1-(1-\delta)^4}
+ =-\frac{z^4}{11520}\delta^3+O(\delta^4),
+\]
+which gives \eqref{eq:qone-expansion}. The failure of continuation at one is Theorem~\ref{thm:main}.
+\end{proof}
+
+No assertion about convergence of the full \(\delta\)-series is needed. An asymptotic expansion along one real ray cannot imply a holomorphic neighborhood in the parameter. Here every neighborhood of one contains other roots of unity at which sufficiently high cumulants resonate. This is the basic mechanism behind the mismatch between finite-order information and the full transform.
+
+\section{Rational moments and their cyclotomic singularities}
+\subsection{Two exact recurrences}
+\begin{proposition}[Coefficient recurrences]\label{prop:recurrences}
+The coefficients \(a_n(q)=[z^n]A(q,z)\) belong to \(\Q(q)\). They are determined by \(a_0=1\) and either of the recurrences
+\begin{align}
+ (1-q^n)a_n(q)
+ &=\sum_{k=1}^n\frac{(1-q)^kq^{n-k}}{(k+1)!}a_{n-k}(q),
+ &&n\ge1,\label{eq:moment-functional}\\
+ n a_n(q)
+ &=\frac12a_{n-1}(q)+
+ \sum_{\substack{2\le j\le n\\2\mid j}}
+ \frac{B_j}{j!}\frac{(1-q)^j}{1-q^j}a_{n-j}(q),
+ &&n\ge1.\label{eq:moment-cumulant}
+\end{align}
+Their specializations at zero and at the removable point one are
+\begin{equation}\label{eq:moment-special}
+ a_n(0)=\frac1{(n+1)!},\qquad
+ a_n(1)=\frac1{2^n n!}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expand \eqref{eq:functional} and use \(h(w)=\sum_{k\ge0}w^k/(k+1)!\). The \(k=0\) term on the right is \(q^na_n\); moving it to the left gives \eqref{eq:moment-functional}, which proves rationality by induction. Logarithmic differentiation with respect to \(z\) in \eqref{eq:log-A} and multiplication by \(A\) gives \eqref{eq:moment-cumulant}. Although derived analytically in a nonempty region, both recurrences are identities of rational functions.
+
+At \(q=0\), the product is \(h(z)\). At \(q=1\), each even cumulant factor \((1-q)^j/(1-q^j)\) is removable and zero. Coefficient extraction from the formal exponential then gives \(e^{z/2}\) coefficientwise, proving \eqref{eq:moment-special} independently of interchanging an infinite parameter limit and a Taylor series.
+\end{proof}
+
+The first coefficients, which also fix all normalizations, are
+\begin{align*}
+ a_0&=1,& a_1&=\frac12,&
+ a_2&=\frac{q+2}{12(q+1)},&a_3&=\frac1{24(q+1)},\\
+ a_4&=-\frac{q^4-2q^3-5q^2-3q-6}{720(q+1)^2(q^2+1)},&&&
+ a_5&=-\frac{q^3-2q^2-2}{1440(q+1)^2(q^2+1)}.
+\end{align*}
+Here \(a_n\) is a Taylor coefficient, not the raw moment: the latter is \(n!a_n\). Confusing those conventions changes every residue formula by a factorial.
+
+\subsection{The exact leading-pole formula}
+For a root \(\xi\) of order \(\ell\ge2\), put \(L=\lcm(2,\ell)\) as before and define
+\begin{equation}\label{eq:Rxi}
+ R_\xi=-\frac{\xi B_L(1-\xi)^L}{L^2L!}.
+\end{equation}
+Since \(B_L\ne0\), \(R_\xi\ne0\).
+
+\begin{theorem}[Leading cyclotomic pole]\label{thm:moment-pole}
+Write \(n=kL+r\), with \(k\ge0\) and \(0\le r<L\). Then \(a_n\) has pole order at most \(k\) at \(\xi\), and
+\begin{equation}\label{eq:leading-pole}
+ \lim_{q\to\xi}(q-\xi)^k a_n(q)
+ =\frac{R_\xi^k}{k!}\,a_r(\xi).
+\end{equation}
+% ed. (2026-09-30): "R_\xi^k/(2k!)" read as (2k)!; the intended value, from a_1=1/2, is R_\xi^k/(2\cdot k!).
+The value \(a_r(\xi)\) is regular. In particular, for every \(k\ge1\), the coefficients \(a_{kL}\) and \(a_{kL+1}\) have pole order exactly \(k\), with respective leading coefficients \(R_\xi^k/k!\) and \(R_\xi^k/(2\,k!)\).
+\end{theorem}
+\begin{proof}
+Write the logarithmic coefficients as
+\[
+ \gamma_j(q)=c_j\frac{(1-q)^j}{1-q^j}\quad(j\ge2\text{ even}),
+ \qquad
+ A(q,z)=\exp\left(z/2+\sum_{j\ge2,\ 2\mid j}\gamma_j(q)z^j\right).
+\]
+Coefficient extraction at a fixed degree uses only finitely many \(\gamma_j\). At \(q=\xi\), each \(\gamma_j\) is regular unless \(\ell\mid j\), in which case it has a simple pole. Because \(j\) is even, the singular degrees are precisely the positive multiples of \(L\). The residue of the first one is
+\[
+ \Res_{q=\xi}\gamma_L(q)
+ =\frac{c_L(1-\xi)^L}{-L\xi^{L-1}}
+ =-\frac{\xi B_L(1-\xi)^L}{L^2L!}=R_\xi.
+\]
+Every singular factor in an exponential coefficient costs at least \(L\) units of \(z\)-degree. A term of degree \(n=kL+r\) can therefore use at most \(k\) such factors, proving the pole bound. To reach order \(k\), all \(k\) singular factors must have degree \(L\): replacing any one by a degree at least \(2L\) would cost at least \((k+1)L>n\). Their contribution is \(\gamma_L(q)^kz^{kL}/k!\). The remaining degree is \(r<L\), so the residual coefficient is exactly the regular coefficient \(a_r(\xi)\). Taking the leading Laurent coefficient proves \eqref{eq:leading-pole}. Finally, \(a_0=1\) and \(a_1=1/2\) give the exact-order assertions.
+\end{proof}
+
+\begin{corollary}[Delayed resonance at odd-order roots]\label{cor:odd-root}
+At a primitive odd-order root of order \(\ell>1\), all \(a_n\) with \(n<2\ell\) are regular, and \(a_{2\ell}\) has a simple pole. At \(q=-1\), every \(a_n\) has pole order exactly \(\lfloor n/2\rfloor\), with order zero meaning regular and nonzero.
+\end{corollary}
+\begin{proof}
+For odd \(\ell\), \(L=2\ell\). For \(\ell=2\), \(L=2\), and every remainder is zero or one, so all cases are covered by the exact part of Theorem~\ref{thm:moment-pole}.
+\end{proof}
+
+\subsection{A sharper denominator than the naive \texorpdfstring{\(q\)}{q}-factorial}
+Let \(\Phi_d\) denote the \(d\)-th cyclotomic polynomial and define
+\begin{equation}\label{eq:Dn}
+ D_n(q)=\prod_{d=2}^n
+ \Phi_d(q)^{\lfloor n/\lcm(2,d)\rfloor},
+ \qquad D_0=D_1=1.
+\end{equation}
+
+\begin{corollary}[Cyclotomic upper divisor]\label{cor:denominator}
+For every \(n\ge0\),
+\begin{equation}\label{eq:denominator-bound}
+ D_n(q)a_n(q)\in\Q[q].
+\end{equation}
+For a fixed \(d\ge2\), write \(n=k\lcm(2,d)+r\), \(0\le r<\lcm(2,d)\). When \(k\ge1\), the exponent \(k\) in \eqref{eq:Dn} is attained if and only if \(a_r(\xi)\ne0\) for a primitive \(d\)-th root \(\xi\). This condition is independent of the choice of primitive root.
+\end{corollary}
+\begin{proof}
+The finite cumulant expression shows that possible finite poles are roots of unity of order at most \(n\); the point one is removable. Theorem~\ref{thm:moment-pole} bounds the pole at every primitive \(d\)-th root by the exponent in \eqref{eq:Dn}. Thus multiplication removes every finite pole of a rational function, leaving a polynomial. Its coefficients remain rational. The exactness criterion is \eqref{eq:leading-pole}. The relevant coefficient is a rational function over \(\Q\), so its evaluations at primitive roots are Galois conjugate. Vanishing at one is equivalent to vanishing at all.
+\end{proof}
+
+The repository's pole-clearing \(q\)-factorial has cyclotomic exponent \(\lfloor n/d\rfloor\) at \(\Phi_d\). Formula~\eqref{eq:Dn} reduces this to \(\lfloor n/(2d)\rfloor\) when \(d\) is odd. This improvement is a consequence of centered odd-cumulant vanishing, even though the original variable has mean \(1/2\).
+
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+Degrees & Upper divisor \(D_n\) \\
+\midrule
+\(2,3\) & \(\Phi_2\) \\
+\(4,5\) & \(\Phi_2^2\Phi_4\) \\
+\(6,7\) & \(\Phi_2^3\Phi_3\Phi_4\Phi_6\) \\
+\(8,9\) & \(\Phi_2^4\Phi_3\Phi_4^2\Phi_6\Phi_8\) \\
+\(10,11\) & \(\Phi_2^5\Phi_3\Phi_4^2\Phi_5\Phi_6\Phi_8\Phi_{10}\) \\
+\(12\) & \(\Phi_2^6\Phi_3^2\Phi_4^3\Phi_5\Phi_6^2\Phi_8\Phi_{10}\Phi_{12}\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The table specifies an upper divisor in all degrees by theorem. Exact computation finds no further cancellation through degree twelve. We do \emph{not} promote that finite observation to a proof that \(D_n\) is always the minimal denominator; the remaining nonvanishing problem is stated in Section~\ref{sec:research}.
+% ed. (2026-09-30): the corollary proves a conjecture of the geometric q-Fabius volume, which the article does not mention
+\begin{ednote}
+Corollary~\ref{cor:denominator} proves
+Conjecture~\texttt{p7:conj:Pn-divisibility} of the geometric $q$-Fabius
+volume \path{../geometric_q_fabius_frontiers/} (``for every $n\ge3$,
+$\prod_{3\le d\le n,\ d\ \mathrm{odd}}[d]_q$ divides $\mathcal P_n(q)$ in
+$\Q[q]$'', checked there through $n=16$), which the article does not
+mention. The volume's moment polynomial is
+$\mathcal P_n=[n]_q!\,a_n$ (machine-checked as
+\path{Fabius.qFactorial_mul_geometricUniformMomentRatFunc}), so
+$\mathcal P_n=([n]_q!/D_n)\cdot(D_na_n)$ with both factors in $\Q[q]$. For
+odd $e\ge3$ the exponent of $\Phi_e$ in $[n]_q!/D_n$ is
+$\lfloor n/e\rfloor-\lfloor n/(2e)\rfloor$, which is the number of odd
+multiples of $e$ up to $n$, that is, the exponent of $\Phi_e$ in
+$\prod_{3\le d\le n,\ d\ \mathrm{odd}}[d]_q$; and that product has no other
+cyclotomic factor. An independent computation on filing (batch~65)
+confirmed the divisibility for $3\le n\le20$.
+\end{ednote}
+
+\section{The exterior transform and its complete divisor}
+\subsection{Global meromorphy, not continuation through the circle}
+For \(|Q|>1\), define
+\begin{equation}\label{eq:exterior}
+ M(Q,z)=\frac1{A(Q^{-1},-z)}.
+\end{equation}
+The denominator is entire in \(z\) and equals one at zero. Thus \eqref{eq:exterior} is more than a germ: it defines a global meromorphic function of \(z\). It has no zeros. As a function of both variables, it is a quotient of holomorphic functions on \(\{|Q|>1\}\times\C\), hence jointly meromorphic.
+
+Near \(z=0\), its logarithm is
+\begin{equation}\label{eq:exterior-log}
+ \log M(Q,z)=\frac z2+
+ \sum_{\substack{n\ge2\\2\mid n}}c_n
+        \frac{(1-Q)^n}{1-Q^n}z^n.
+\end{equation}
+Indeed, for even \(n\),
+\[
+ \frac{(1-Q^{-1})^n}{1-Q^{-n}}
+ =-\frac{(1-Q)^n}{1-Q^n},
+\]
+and the reciprocal in \eqref{eq:exterior} supplies the other minus sign. Therefore
+\begin{equation}\label{eq:exterior-coeff}
+ [z^n]M(Q,z)=a_n(Q)
+\end{equation}
+with exactly the same rational functions as in the disk. This recovers and extends the repository's interior/exterior coefficient comparison \cite{repo}; it does not analytically connect the two domains through their common boundary.
+
+\begin{corollary}\label{cor:outer-nb}
+For each fixed \(z\ne0\), the exterior meromorphic function \(Q\mapsto M(Q,z)\) has no meromorphic continuation through any point of \(|Q|=1\).
+\end{corollary}
+\begin{proof}
+Such a continuation, after replacing \(Q\) by \(q^{-1}\) and taking its reciprocal, would give a meromorphic continuation of \(A(q,-z)\). The reciprocal of a nonzero meromorphic function is meromorphic. The proposed extension cannot be identically zero because it agrees with \eqref{eq:exterior} on an open exterior set. Theorem~\ref{thm:main} gives the contradiction.
+\end{proof}
+
+\subsection{The pole locations}
+\begin{theorem}[Exterior divisor]\label{thm:exterior-poles}
+For every fixed \(|Q|>1\), the poles of \(M(Q,\cdot)\) are exactly
+\begin{equation}\label{eq:poles}
+ p_{j,k}=\frac{2\pi i\,kQ^{j+1}}{Q-1},
+ \qquad j\in\Z_{\ge0},\quad k\in\Z\setminus\{0\}.
+\end{equation}
+Their multiplicities are the numbers of representations by pairs \((j,k)\) in \eqref{eq:poles}. The divisor is locally finite.
+\end{theorem}
+\begin{proof}
+The \(j\)-th factor in the denominator of \eqref{eq:exterior} is
+\[
+ h\bigl(-(1-Q^{-1})Q^{-j}z\bigr).
+\]
+Its zeros give \eqref{eq:poles}, after changing the sign of the nonzero integer index. Each is simple as a zero in \(z\). On a fixed compact \(z\)-set, all sufficiently late factors have small arguments and are nonzero. Their product is nonzero by the logarithmic-tail argument in Proposition~\ref{prop:product}. Thus only finitely many factors contribute locally, and their orders add. Conversely, every displayed factor zero produces a pole of the reciprocal. Since
+\[
+ |p_{j,k}|=\frac{2\pi|k||Q|^{j+1}}{|Q-1|},
+\]
+only finitely many pairs can lie in a fixed bounded region.
+\end{proof}
+
+\subsection{All collisions are controlled by rational powers}
+For a nonzero integer \(k\) and an integer \(b\ge2\), set
+\[
+ \nu_b(k)=\max\{s\ge0:b^s\text{ divides }|k|\},
+ \qquad \nu_1(k)=+\infty.
+\]
+No primality of \(b\) is assumed. Define the rational-power subgroup
+\begin{equation}\label{eq:HQ}
+ H_Q=\{d\in\Z:Q^d\in\Q^{\times}\}\subseteq\Z.
+\end{equation}
+It is either \(\{0\}\) or \(r\Z\) for a unique positive integer \(r\).
+
+\begin{theorem}[Exact pole multiplicities]\label{thm:multiplicity}
+If \(H_Q=\{0\}\), every pole in \eqref{eq:poles} is simple. Otherwise let \(r\) be the least positive integer with \(Q^r\in\Q^{\times}\), and write
+\begin{equation}\label{eq:rational-power}
+ Q^r=\frac ab,\qquad a\in\Z,\quad b\in\Z_{>0},\quad
+ \gcd(|a|,b)=1,\quad |a|>b.
+\end{equation}
+Then, for every representation \(p=p_{j,k}\),
+\begin{equation}\label{eq:multiplicity}
+ \boxed{\displaystyle
+ \mult(p)=1+\nu_{|a|}(k)
+       +\min\left(\left\lfloor\frac jr\right\rfloor,\nu_b(k)\right).}
+\end{equation}
+This formula includes negative rational powers and nonreal parameters.
+\end{theorem}
+\begin{proof}
+Two pairs give the same pole exactly when
+\[
+ kQ^{j+1}=k'Q^{j'+1},\qquad
+ Q^{j'-j}=k/k'\in\Q^{\times}.
+\]
+If \(H_Q=\{0\}\), then \(j'=j\), followed by \(k'=k\), so there are no collisions. In the other case, every possible second representation has
+\[
+ j'=j+rs,\qquad k'=k(b/a)^s,\qquad s\in\Z.
+\]
+For \(s\ge0\), coprimality implies that \(k'\) is integral exactly when \(|a|^s\) divides \(|k|\); hence \(s\le\nu_{|a|}(k)\). For \(s=-u<0\), integrality is equivalent to \(b^u\mid |k|\), while \(j'=j-ru\ge0\) is equivalent to \(u\le\lfloor j/r\rfloor\). Thus the admissible integers are precisely
+\[
+ -\min\left(\left\lfloor\frac jr\right\rfloor,\nu_b(k)\right)
+ \le s\le\nu_{|a|}(k).
+\]
+Counting them proves \eqref{eq:multiplicity}. Signs of \(a\) only change the sign of \(k'\), which is allowed. The magnitude inequality \(|a|>b\) follows from \(|Q|^r>1\), so \(\nu_{|a|}\) is always defined with base at least two.
+\end{proof}
+
+\begin{example}[Integral parameter]
+For \(Q=B\ge2\) an integer, all poles can be represented on the single grid
+\[
+ p_{0,k}=\frac{2\pi i Bk}{B-1}.
+\]
+The multiplicity there is exactly \(1+\nu_B(k)\). In particular, even a composite integral dilation has an elementary divisor law; a prime-adic assumption is unnecessary.
+\end{example}
+
+\begin{example}[A rational noninteger parameter]
+For \(Q=3/2\), the pole represented by \((j,k)=(2,12)\) has multiplicity
+\[
+ 1+\nu_3(12)+\min(2,\nu_2(12))=1+1+2=4.
+\]
+Its four representations are \((0,27),(1,18),(2,12),(3,8)\). The extra term involving the denominator of \(Q\) is indispensable.
+\end{example}
+
+\begin{example}[Algebraic and nonreal parameters]
+For \(Q=\sqrt2\), the least rational power is \(r=2\), with \(a=2,b=1\). The pole represented by \((3,4)\) has multiplicity four, with pairs
+\((1,8),(3,4),(5,2),(7,1)\). For \(Q=i\sqrt2\), the least rational power is again two, but \(a=-2\); the same count holds with the appropriate alternating signs of the integer indices. If no nonzero power of \(Q\) is rational, all pole multiplicities are one.
+\end{example}
+
+The classification is complete for fixed \(Q\). It makes no claim about a uniform enumeration algorithm from an arbitrary symbolic description of a complex number: deciding whether a rational power exists is a separate representation-dependent problem.
+
+\section{Computational checks and reproducibility}
+\subsection{Exact checks}
+The accompanying script \texttt{verify\_results.py} computes the rational coefficients through degree twelve from \eqref{eq:moment-functional}, and checks the independently derived cumulant recurrence \eqref{eq:moment-cumulant}. It also checks both specializations in \eqref{eq:moment-special}.
+
+Root-of-unity checks are performed exactly in \(\Q[q]/(\Phi_\ell(q))\), not by inserting approximate complex roots. To avoid introducing an algebraic symbol for a selected root, the script multiplies by \((1-q^L)^k\) rather than \((q-\xi)^k\). The equivalent residue identity is
+\begin{equation}\label{eq:check-residue}
+ \left.(1-q^L)^ka_n(q)\right|_{q=\xi}
+ =\frac1{k!}\left(\frac{B_L(1-\xi)^L}{L\,L!}\right)^k a_r(\xi).
+\end{equation}
+The computation verifies 46 nontrivial instances of this formula, checks the cyclotomic denominator bound in eleven degrees, and confirms that the reduced monic denominator equals \(D_n\) in those degrees. The latter observation supports, but does not prove, the conjecture below.
+
+The exterior multiplicity formula is independently compared with direct rational collision counts in 1,800 finite cases. These include integral, rational nonintegral, negative rational-power, and higher rational-power data. The count is exact arithmetic with integer fractions.
+
+\subsection{Radial numerical checks}
+The numerical part uses 85-decimal-digit arithmetic. Table~\ref{tab:cusp} records the remainder after removing the singular and constant terms in \eqref{eq:constant-correction}, for \(z=1\) and primitive roots \(\xi=e^{2\pi i/\ell}\). Its decrease is consistent with \(O(t)\). These floating-point calculations are not interval enclosures and are not used in the proofs.
+
+\begin{table}[htbp]\centering
+\caption{Absolute error \(\left|\LL(\xi e^{-t},1)-C_L(1-\xi)/t-D_\xi(1)\right|\).}\label{tab:cusp}
+\begin{tabular}{rrrr}
+\toprule
+\(t\) & \(\ell=2,\ L=2\) & \(\ell=3,\ L=6\) & \(\ell=4,\ L=4\)\\
+\midrule
+0.040 & \(2.854587811\cdot10^{-4}\) & \(3.333334476\cdot10^{-3}\) & \(1.640418300\cdot10^{-3}\)\\
+0.020 & \(1.427340969\cdot10^{-4}\) & \(1.667745679\cdot10^{-3}\) & \(8.204089450\cdot10^{-4}\)\\
+0.010 & \(7.136763686\cdot10^{-5}\) & \(8.340079012\cdot10^{-4}\) & \(4.102294548\cdot10^{-4}\)\\
+0.005 & \(3.568389199\cdot10^{-5}\) & \(4.170208413\cdot10^{-4}\) & \(2.051178504\cdot10^{-4}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For these three roots the cusp coefficients are approximately
+\[
+ \begin{array}{c|r}
+ \ell&C_L(1-e^{2\pi i/\ell})\\\hline
+ 2&0.0820001262995374\\
+ 3&-0.0000248042629445771\\
+ 4&0.000347015776842525
+ \end{array}
+\]
+The negative value at order three is a useful diagnostic: a proof based only on divergence of \(|A|\) would miss this case. The logarithmic obstruction handles exponential decay equally well.
+
+For zero condensation, the script fixes \(z=10\), \(\eta=e^{2\pi i/3}\), and solves \eqref{eq:zero-equation} using the bounded-logarithm initialization from Lemma~\ref{lem:zeros}. Some resulting radii are
+\[
+ \begin{array}{r|c|c}
+ j&|q_j|&|q_j-\eta|\\\hline
+ 20&0.953184531407&0.110815469392\\
+ 40&0.975272173483&0.024728454799\\
+ 80&0.987575924241&0.028726069413\\
+ 160&0.993702049441&0.006297960746\\
+ 320&0.996847035814&0.007248931509
+ \end{array}
+\]
+The angular displacement depends on \(j\) modulo the root order, so the total Euclidean distance need not decrease at every listed step. The proved radial law \eqref{eq:zero-distance} is unaffected. All displayed roots were computed inside the disk, and the numerical equation residuals are below \(10^{-70}\).
+
+\subsection{Scope of the computational evidence}
+The verification receipt is \texttt{verification\_results.json}. The script and the transcript \texttt{verification\_run.txt} are included so that the finite calculations are inspectable and repeatable. The recorded environment is Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0. No network access is required to run the checks once those packages are installed.
+
+The finite tests do not establish universal nonvanishing of every residual moment coefficient, convergence of an asymptotic series, or formal proof correctness. Conversely, the analytic theorems above do not depend on a numerical experiment or an unverified computational pattern. The two forms of evidence are deliberately separated.
+
+\section{Further research questions}\label{sec:research}
+\subsection{Minimal denominators of all moments}
+\begin{conjecture}[No further cyclotomic cancellation]\label{conj:denominator}
+For every \(n\ge0\), the reduced monic denominator of \(a_n\) is exactly \(D_n\) from \eqref{eq:Dn}.
+\end{conjecture}
+By Corollary~\ref{cor:denominator}, the global conjecture is equivalent to the following finite-degree nonvanishing assertion at every primitive \(d\)-th root \(\xi\):
+\[
+ a_r(\xi)\ne0\qquad(0\le r<\lcm(2,d)).
+\]
+The equivalence uses the degree \(n=\lcm(2,d)+r\) for the reverse implication. The cases \(r=0,1\) are already proved, and all denominator tests through degree twelve pass. A proof may require a structural interpretation of these low-degree evaluations in a cyclotomic field. A counterexample would be equally informative: \eqref{eq:leading-pole} would identify the first cancellation and reduce the next task to a lower Laurent coefficient.
+% ed. (2026-09-30): the finite evidence was extended on filing
+\begin{ednote}
+An independent computation on filing (batch~65) found the reduced
+denominator of $a_n$ equal to $D_n$ for every $n\le20$. The conjecture
+remains a conjecture.
+\end{ednote}
+
+\subsection{Uniform cusp asymptotics, Gevrey order, and summation}
+Theorem~\ref{thm:allorders} gives every fixed algebraic order with a finite constant. Determine the optimal growth of those constants with the expansion order and with \(\ell\). This should decide whether the corrections admit a useful Gevrey estimate or Borel-type summation in sectors of the complex \(t\)-plane. The dense parameter boundary does not by itself answer a sectorial summation question. In particular, one should not infer summability merely from the existence of every finite-order expansion.
+
+The lower bound \eqref{eq:cusp-lower} behaves roughly like \((|w|/(2\pi))^L/L^2\). Thus higher-order roots may exhibit extremely small leading cusps before the \(1/t\) factor dominates. A uniform theorem should quantify the transition between a small resonant coefficient and the nonresonant background, rather than hide all root-order dependence inside a big-O constant.
+% ed. (2026-09-30): the endpoint case of this question is answered by a later package
+\begin{ednote}
+The package \path{../Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/}
+(batch~67 of the repository's \path{docs/incoming/}), written against this
+article, answers this question at the endpoint $q\to1$, that is at the root
+$\xi=1$, in a dilation normalization: with $q=e^{-t}$, centred uniform
+digits $U_j$ on $[-\tfrac12,\tfrac12]$ and digit amplitudes $zt\,e^{-jt}$,
+$z$ real and nonzero, it studies
+$F_z(t)=\log\mathbb E\exp\bigl(zt\sum_{j\ge0}e^{-jt}U_j\bigr)$, related to
+the fixed-argument transform by an exact change of variables. The odd
+coefficients $b_j(z)$ of its expansion at $t=0$ have a complete leading
+equivalent with a Lambert-$W$ saddle, and
+$\lim_{j\ \mathrm{odd}}\log j\,(|b_j(z)|/j!)^{1/j}=1/(2\pi)$: the series
+diverges, is Gevrey one of zero type, and is of no smaller Gevrey order.
+Its Borel transform is entire and sums it exactly along the positive ray
+for $0<t<2\pi/|z|$, yet no open Borel sector about that ray carries an
+exponential bound, because no point of $\{i\tau:|z\tau|<2\pi\}$ admits a
+meromorphic continuation. The fixed-argument problem, the roots of unity
+other than $1$ and the growth in $\ell$ asked for above remain open, as
+does Conjecture~\ref{conj:denominator}.
+\end{ednote}
+
+\subsection{The first-zero threshold}
+Classify the local asymptotic forms when \(|(1-\xi)z|=2\pi\). Depending on the argument, the boundary digit factor may meet one of the first zeros \(\pm2\pi i\), or may only meet the convergence circle of the logarithmic expansion. The natural-boundary theorem does not distinguish these cases because it need not. A two-parameter study of \(t\) and the displacement of \(z\) from the threshold should separate actual factor-zero transitions from limitations of a chosen logarithmic coordinate.
+
+\subsection{General digit kernels and exact cancellation}
+Replace \(h\) by an entire function \(g\) with \(g(0)=1\), and study
+\[
+ \prod_{j\ge0}g((1-q)q^jz).
+\]
+Two sufficient mechanisms are now visible: a nonzero resonant average of the Taylor coefficients of \(\log g\), and condensation arising from a nonzero zero of \(g\). A general classification must also accommodate telescoping products, for which formal resonance calculations can cancel. Theorem~\ref{thm:convolution} gives one cancellation-free class, but arbitrary complex dilations and signed quotients remain open targets. A useful result would characterize exactly when the resonant coefficients vanish at all root orders and then determine whether zeros nevertheless force a barrier.
+
+\subsection{Nonlinear differential algebra}
+Corollary~\ref{cor:dfinite} rules out every linear differential equation over \(\C(q)\). Does \(A(q,z)\), for each \(z\ne0\), satisfy any nontrivial algebraic differential equation in \(q\)? A natural boundary alone is not enough to prove differential transcendence. This question requires methods beyond the ordinary-point continuation argument, and its dependence on exceptional fixed values of \(z\) should be stated explicitly.
+
+\subsection{Effective and formally checked boundary certificates}
+Develop an interval-certified implementation of the cusp series and its nonzero lower bound, with precision targets depending on \(L\), \(|w|\), and \(t\). The proof supplies elementary tail majorants; what remains is an efficient implementation that balances tiny cusp coefficients with the truncation error of the full logarithm. For large arguments, an effective version of the Rouch\'e estimates would produce certified parameter zeros approaching a selected boundary point.
+
+A Lean formalization can be divided into independent pieces: joint locally uniform product convergence; the Bernoulli logarithm and its geometric majorants; the finite-root-alphabet remainder lemma; the logarithmic obstruction to meromorphic extension; the Rouch\'e construction; and the cyclotomic residue algebra. The exterior multiplicity classification is particularly suitable as a first target because it uses only zero orders, a cyclic subgroup of \(\Z\), and elementary divisibility.
+
+\section{Conclusion}
+The interior and exterior geometric-uniform transforms have matching rational moment coefficients but fundamentally separate analytic parameter domains. The unit circle is an unavoidable barrier for every nonzero transform argument, not merely for generic arguments or for a small real range. The proof explains why: resonant Bernoulli cumulants give noncancelling exponential cusps before the first digit zero is reached, while actual digit zeros condense on the boundary beyond that range.
+
+The coefficient-level analysis remains useful despite this barrier. It gives a substantially sharper cyclotomic upper divisor, exact leading poles, and a precise residual nonvanishing problem. On the exterior side, global meromorphy in the transform variable is unobstructed, and its poles admit a complete arithmetic multiplicity formula. These distinctions turn a vague continuation question into separate, testable statements about parameter boundaries, moment algebra, and transform-plane divisors.
+
+\clearpage
+\appendix
+\section{Repository audit and proof status}\label{sec:audit}
+The following is a source interface audit, not a claim that the repository has been rebuilt or all of its mathematical documents exhaustively searched. The inspected source is the Fabius-function README at the pinned commit in reference~\cite{repo}; its blob identifier is
+\texttt{\footnotesize 8a19a7c8de8939c4a55ec63fc443ce08d6fe74ce}.
+
+\begin{longtable}{@{}p{0.42\textwidth}p{0.53\textwidth}@{}}
+\toprule
+Repository interface & Relationship to this article\\
+\midrule
+\endhead
+\module{GeometricUniformComplexMomentProduct}
+& Supplies the interior entire product and its moment normalization. Proposition~\ref{prop:product} reproves the needed product facts and explicitly treats joint dependence on \(q,z\).\\[5pt]
+\module{GeometricUniformMomentPolynomial} and \module{GeometricUniformMomentRatFunc}
+& Supply pole-cleared polynomial and rational coefficient models. Section~8 gives a smaller cyclotomic upper divisor and the leading-pole formula.\\[5pt]
+% ed. (2026-09-30): one module, not two (delivered: "\module{GeometricUniformExterior}\newline\module{ComplexMomentGerm}").
+\module{GeometricUniformExteriorComplexMomentGerm}
+& Supplies the exterior reciprocal germ. Theorems~\ref{thm:exterior-poles} and \ref{thm:multiplicity} describe its global meromorphic divisor in \(z\).\\[5pt]
+\module{GeometricUniformMomentReciprocity}
+& Supplies local inner/exterior reciprocity. Theorem~\ref{thm:main} and Corollary~\ref{cor:outer-nb} show why reciprocity must not be read as continuation through the unit circle.\\[5pt]
+\module{ProbabilityRepresentation}
+& Identifies the half-base geometric-uniform distribution function with the Fabius normalization. The complex-parameter proofs do not require this identification.\\
+\bottomrule
+\end{longtable}
+% ed. (2026-09-30): the declarations behind the table, several of them uncited
+\begin{ednote}
+Several statements reproved here are machine-checked in these or neighbouring
+modules (namespace \texttt{Fabius}, under
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}): the locally uniform
+convergence of the product in Proposition~\ref{prop:product} for fixed
+$|q|<1$ (\path{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}),
+not its joint holomorphy; the factorization \eqref{eq:pochhammer}, which is
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf} in
+\path{RvachevPochhammerFactorization.lean} (a module the article does not
+cite) at the argument $i(1-q)z/(2\pi)$, times $e^{z/2}$; the pole-clearing
+identity stating that $[n]_q!\,a_n$ is the repository's moment polynomial
+(\path{qFactorial_mul_geometricUniformMomentRatFunc});
+\eqref{eq:exterior-coeff}
+(\path{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient});
+and the germ reciprocity (\path{geometricUniformComplexMomentGerm_reciprocity}).
+No natural-boundary, pole-order or divisor statement of the article has a
+Lean counterpart.
+\end{ednote}
+
+All theorem proofs in this article are conventional mathematical arguments. No Lean source file was compiled for this package, and no theorem is labeled as machine-certified. The numerical script has a much narrower purpose: it independently verifies finite coefficient identities, collision counts, and selected asymptotic examples. The minimal-denominator assertion beyond those finite cases remains a conjecture.
+
+\section{Package contents and rebuilding}
+The archive contains the self-contained source \texttt{q\_fabius\_boundary.tex}, its compiled PDF, the Python verification script, the JSON verification receipt, a text transcript, and a README with build commands. The bibliography is embedded in the TeX file, so no separate bibliography processor or external figure is needed.
+
+A standard TeX Live installation with the packages used in the preamble can build the document with two successive invocations of
+\begin{quote}\ttfamily\small
+pdflatex -interaction=nonstopmode -halt-on-error q\_fabius\_boundary.tex
+\end{quote}
+The exact and numerical checks run with
+\begin{quote}\ttfamily\small
+python verify\_results.py
+\end{quote}
+The printed package is intended to be readable independently of the code. The proofs, not the stored numerical output, are the basis of the universal conclusions.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt: Fabius function development},
+\texttt{Analysis/FabiusFunction/README.md}, inspected at commit
+\texttt{7747fcfddedeca1a04b6526cdd4836fbfdad1b89}, September 30, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7747fcfddedeca1a04b6526cdd4836fbfdad1b89/Analysis/FabiusFunction/README.md}.
+
+\bibitem{arias-definition}
+Juan Arias de Reyna, \emph{An infinitely differentiable function with compact support: Definition and properties}, English translation of the 1982 article, arXiv:1702.05442, 2017.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{arias-arithmetic}
+Juan Arias de Reyna, \emph{Arithmetic of the Fabius function},
+arXiv:1702.06487, version 3, 2017.
+\url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{dlmf}
+NIST, \emph{Digital Library of Mathematical Functions},
+\S4.36 (hyperbolic infinite products), \S17.2 (\(q\)-products),
+\S24.2 (Bernoulli numbers), and \S25.6 (integer zeta values), accessed September 30, 2026.
+\url{https://dlmf.nist.gov/4.36}; \url{https://dlmf.nist.gov/17.2};
+\url{https://dlmf.nist.gov/24.2}; \url{https://dlmf.nist.gov/25.6}.
+
+\bibitem{garoufalidis-zagier}
+Stavros Garoufalidis and Don Zagier,
+\emph{Asymptotics of Nahm sums at roots of unity},
+Ramanujan Journal \textbf{55} (2021), 219--238.
+\url{https://doi.org/10.1007/s11139-020-00266-x}.
+Preprint: \url{https://arxiv.org/abs/1812.07690}.
+
+\bibitem{duke-nguyen}
+William Duke and Ha Nam Nguyen,
+\emph{Infinite products of cyclotomic polynomials},
+Bulletin of the Australian Mathematical Society \textbf{91} (2015), 400--411.
+\url{https://doi.org/10.1017/S0004972715000039}.
+\end{thebibliography}
+\end{document}
