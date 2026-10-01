@@ -41,19 +41,28 @@ and [bracket-only1046 predecessor](Papers/research-wip/native-stream-queue/gpcp_
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [U9 tag polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_u9_tag_chain.md)
-now gives **450 certificate /524=318M+206A polynomial operations**,
-25 comparisons, 69 positive witnesses and four positive program parameters.
-Its 127-multiplication fixed-exponent schedule improves the
-[528-operation U15 successor](Papers/research-wip/native-stream-queue/neary_woods_universal_tag_chain.md)
-by four operations. The fixed frame coefficient E also bounds the duration.
-The ordinary-input, exact-counter and fixed-production interfaces are proved
-on the U9 simulation slice with its persistent nonempty suffix.
-Huge fixed numerals have exact finite recipes; every use is charged.
-Its total degree is at most 26082961986495105871681692197398140, so
-the 805 construction remains a much lower-degree alternative. The
-[557-operation baseline](Papers/research-wip/native-stream-queue/neary_woods_universal_tag557.md)
-remains reproducible. The separate 75/87 frontier is unchanged.
+The explicit [U9 population polynomial](Papers/research-wip/native-stream-queue/neary_woods_universal_population_projection389.md)
+now gives **324 certificate /389=189M+200A polynomial operations**,
+22 comparisons, 67 positive witnesses and four positive program parameters.
+Its total degree is **at most 2241**. The alternative projecting only the
+output coordinate costs392 operations with68 witnesses and degree at most2206;
+the [395-operation parent](Papers/research-wip/native-stream-queue/neary_woods_universal_population_bound395.md)
+has degree at most2204. These bounds include all program coordinates.
+
+A [population-width recoder](Papers/research-wip/native-stream-queue/native_binary_population_width_recoder.md)
+replaces the enormous fixed-exponent chain with two paid gates, giving the
+[399-operation universal parent](Papers/research-wip/native-stream-queue/neary_woods_universal_population_tag.md).
+A redundant geometry bound and two unconditionally positive computed
+coordinates then give389. The original U9 table, exact counter128n,
+positive program slice and independent selected history are preserved.
+The [counter obstruction](Papers/research-wip/native-stream-queue/clockwise_cts_counter_initialization_obstruction.md)
+shows why the printed simulator's initialization cannot simply be relaxed.
+Huge fixed numerals retain exact finite recipes; every use is charged.
+The [519-operation quotient-chain](Papers/research-wip/native-stream-queue/neary_woods_universal_u9_quotient_chain.md),
+[524-operation original U9](Papers/research-wip/native-stream-queue/neary_woods_universal_u9_tag_chain.md),
+[528-operation U15](Papers/research-wip/native-stream-queue/neary_woods_universal_tag_chain.md) and
+[557-operation baseline](Papers/research-wip/native-stream-queue/neary_woods_universal_tag557.md) remain reproducible.
+The separate75 certificate /87 polynomial frontier is unchanged.
 
 ## Layout
 

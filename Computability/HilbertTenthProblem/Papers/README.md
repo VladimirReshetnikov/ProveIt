@@ -29,9 +29,16 @@ The [native-stream queue WIP handoff](research-wip/native-stream-queue/README.md
 preserves the conditional six/eight-operation stream component, portable
 independent audits, unfinished controller research and archived scratch
 evidence. Its [continuation prompt](research-wip/native-stream-queue/CONTINUATION_PROMPT.md)
-describes the historical76-operation frontier. The later
-[complete half-binomial75 proof](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md) lowers
-the universal bound; the native queue components retain their separate scope.
+records the current75-operation certificate and87-operation polynomial
+frontiers alongside the historical handoff. The
+[complete half-binomial75 proof](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
+supplies the comparison bound; the
+[normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
+supplies the single-polynomial bound. The separate explicit
+[U9/tag construction](research-wip/native-stream-queue/neary_woods_universal_population_projection389.md)
+now costs389 operations, with67 positive witnesses, four positive program
+parameters and degree at most2241. Native queue components retain their
+separate scope.
 
 - Every displayed system, machine table and count of the six articles was
   re-derived by the checkers. The corrections to the printed articles are

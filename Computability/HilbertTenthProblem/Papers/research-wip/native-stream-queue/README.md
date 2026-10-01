@@ -40,19 +40,28 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The explicit [U9 tag polynomial](neary_woods_universal_u9_tag_chain.md)
-now gives **450 certificate /524=318M+206A polynomial operations**,
-25 comparisons, 69 positive witnesses and four positive program parameters.
-Its 127-multiplication fixed-exponent schedule improves the
-[528-operation U15 successor](neary_woods_universal_tag_chain.md)
-by four operations. The fixed frame coefficient E also bounds the duration.
-The ordinary-input, exact-counter and fixed-production interfaces are proved
-on the U9 simulation slice with its persistent nonempty suffix.
-Huge fixed numerals have exact finite recipes; every use is charged.
-Its total degree is at most 26082961986495105871681692197398140, so
-the 805 construction remains a much lower-degree alternative. The
-[557-operation baseline](neary_woods_universal_tag557.md)
-remains reproducible. The separate 75/87 frontier is unchanged.
+The explicit [U9 population polynomial](neary_woods_universal_population_projection389.md)
+now gives **324 certificate /389=189M+200A polynomial operations**,
+22 comparisons, 67 positive witnesses and four positive program parameters.
+Its total degree is **at most 2241**. The alternative projecting only the
+output coordinate costs392 operations with68 witnesses and degree at most2206;
+the [395-operation parent](neary_woods_universal_population_bound395.md)
+has degree at most2204. These bounds include all program coordinates.
+
+A [population-width recoder](native_binary_population_width_recoder.md)
+replaces the enormous fixed-exponent chain with two paid gates, giving the
+[399-operation universal parent](neary_woods_universal_population_tag.md).
+A redundant geometry bound and two unconditionally positive computed
+coordinates then give389. The original U9 table, exact counter128n,
+positive program slice and independent selected history are preserved.
+The [counter obstruction](clockwise_cts_counter_initialization_obstruction.md)
+shows why the printed simulator's initialization cannot simply be relaxed.
+Huge fixed numerals retain exact finite recipes; every use is charged.
+The [519-operation quotient-chain](neary_woods_universal_u9_quotient_chain.md),
+[524-operation original U9](neary_woods_universal_u9_tag_chain.md),
+[528-operation U15](neary_woods_universal_tag_chain.md) and
+[557-operation baseline](neary_woods_universal_tag557.md) remain reproducible.
+The separate75 certificate /87 polynomial frontier is unchanged.
 
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
 retains **75=41M+34A** with **20 positive witnesses and nine equations**.
@@ -1075,6 +1084,14 @@ New research and the completed75-operation construction:
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [Positive-coordinate U9 universal polynomial](neary_woods_universal_population_projection389.md) | **324 certificate /389=189M+200A polynomial**, 22eq,67w,four positive program parameters,degree at most2241. | Exact positive zero-set bijections eliminate supplied J/Ahat; complete polynomial identities hold after restoration. Ahat-only gives392/68w/degree2206; actual original U9 table and exact counter retained. |
+| [Redundant-bound U9 universal polynomial](neary_woods_universal_population_bound395.md) | **324 certificate /395=191M+204A polynomial**, 24eq,69w,four positive program parameters,degree at most2204. | Positive duration implies J>=B before native typing and restores the deleted bound slack. Off-zero restoration may be signed; all forms have exact output identities. |
+| [Population-width U9 universal polynomial](neary_woods_universal_population_tag.md) | **325 certificate /399=192M+207A polynomial**, 25eq,70w,four positive program parameters,degree at most2204. | Two population gates replace127 exponent multiplications; actual original U9 fixed coefficients, complete input/counter/program slice and independent history are retained. |
+| [Population-width bound projection](native_binary_population_width_bound188.md) | Standalone normalized recoder188=93M+95A,39w,14eq,degree at most303. | Retained positive duration makes the private geometry-index bound redundant before typing. Raw and unit forms retain exact positive zero-set bijections. |
+| [Population-width dyadic recoder](native_binary_population_width_recoder.md) | Standalone normalized recoder192=94M+98A,40w,15eq,degree at most303, independent of fixed k>=3. | Q=q+gap and R=(2^k-1)J recover Q=2^(kn), q=2^n and genuine dyadic duration. Fresh native witnesses supply completeness at the changed scale. |
+| [CTS counter initialization obstruction](clockwise_cts_counter_initialization_obstruction.md) | Counter3 on tape01 falsely activates halt; surplus dyadic4/8/16 give malformed then empty trajectories for the literal Q3 CTS table. | Rejects two initialization relaxations of the printed simulator. No false full tag accepting witness, polynomial zero or maximal safe counter classification is claimed. |
+| [Quotient-chain U9 universal polynomial](neary_woods_universal_u9_quotient_chain.md) | **445 certificate /519=313M+206A polynomial**, 25eq, 69w, four program parameters; degree at most 10022392728476764537286933476599420. | Exact control quotient, 14 unreachable copy states and a verified 122-product exponent chain. Actual padded table, coefficients and full arithmetic source are rebuilt. |
+| [Binary clockwise control quotient](binary_clockwise_control_quotient.md) | U9: 1968 original states, 1814 reachable, 1611 quotient; U15: 3089, 2895, 2575. | All-row bisimulation preserves the complete circular tape/head trajectory and halting step. Original physical frames and counters remain valid. |
 | [U9 clockwise/tag metadata](neary_woods_u9_tag_metadata.md) | Actual binaryQ1968, beta1182020, D47946621298704238734708993009920. | Actual table, physical length64n+b, positive ordered data blocks and shared counter. The known singleton-A escape lies outside the proved slice. |
 | [U15 clockwise/tag metadata](neary_woods_u15_tag_metadata.md) | Actual binaryQ3089,beta1854620,D911894954830740789802965708213760,mu(D)160. | Full sparse CTS rows, track counts, physical interior cut, positive frame coefficients and shared counter width. No expanded giant production needed. |
 | [Compressed tag program interface](binary_tag_parameterized_compressed_compiler.md) | Normalized397+mu(D),69w,25eq, degree bound544D+1660; five positive program ports. | Exact fixed numeral recipes; direct duration=bound+gap costs1A. Whole arithmetic source is complete on valid fixed-word program slices. |

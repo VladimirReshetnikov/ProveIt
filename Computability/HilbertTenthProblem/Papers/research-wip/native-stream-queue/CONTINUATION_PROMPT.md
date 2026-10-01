@@ -13,6 +13,12 @@
 > fresh canonical auxiliary witnesses at `m=2cR` prove converse projection.
 > The full compiler contract, both ratio slacks and `F>0` are retained.
 > This is distinct from the unresolved independent-gamma87 candidate.
+>
+> The independently proved explicit U9/tag route now costs
+> **389=189M+200A**,67 positive witnesses,22 comparisons and four positive
+> program parameters, with total degree at most2241:
+> [complete source and positive projections](neary_woods_universal_population_projection389.md).
+> This alternative does not improve the separate75/87 frontier.
 > The [88-operation degree151 construction](complete75_coupled_index_linear88.md)
 > remains a lower-degree alternative. It has the same positive zeros as
 > [positive-root89](complete75_positive_root89.md)
@@ -530,8 +536,9 @@ so the baseline binary chain costs160. The actual polynomial costs
 **557=351M+206A**,69w,25eq,483certificate, five positive program ports;
 raw635/88w and old-unit560/69w remain alternatives. Its degree is at
 most496070855427922989652813345268287100, not claimed exact.
-The prior805 machine route has much smaller degree. The separate
-75/87 frontier is unchanged.
+The prior805 machine route has smaller degree than this historical557
+source. The population-width successor below improves both its operation
+count and its degree bound. The separate75/87 frontier is unchanged.
 
 Every giant coefficient is defined by the fixed sparse table and track
 recipe; production_letter provides exact random access without expanding
@@ -577,12 +584,69 @@ passed, with independently addressed production letters and signed
 whole-DAG identities. The U15 528/557 routes and separate75/87 frontier
 remain unchanged.
 
-Next machine lead: exact graph reachability and output-word bisimulation
-can merge binary-clockwise control states while preserving every tape/head
-trajectory and halting. Adding unreachable copy states can then improve
-the fixed exponent's addition chain. Temporary counts are not complete
-universal bounds: record the actual quotient/padded table, rebuild CTS/tag
-metadata, and review the entire composition before promoting a successor.
+The [binary-control quotient](binary_clockwise_control_quotient.md)
+now proves exact tape/head/halting-step preservation on every nonempty
+binary circle, using every actual retained transition. U9 goes from1968
+to1814 reachable states and1611 quotient classes (64 two-cell rows);
+U15 goes from3089 to2895 and2575 (118 two-cell rows). Their physical
+frames and original counter coefficients remain unchanged.
+
+The [519-operation application](neary_woods_universal_u9_quotient_chain.md)
+adds14 unreachable copying states to the U9 quotient and relocates its
+halt to1625. Rebuilding the complete CTS/tag tables gives
+D18423516044994052458248039479040 with an explicit122-product chain.
+The final polynomial is **519=313M+206A**, 445 certificate,25eq,69w and
+four program parameters; degree at most10022392728476764537286933476599420.
+All3248 padded rows, complete source identities and the positive program
+slice passed independent reviews and fresh replay. No shortest-chain or
+minimum-machine claim is made. The75/87 frontier remains unchanged.
+
+The [population-width recoder](native_binary_population_width_recoder.md)
+removes the fixed exponent-chain cost altogether. For fixed k>=3 set
+Q=q+positive_gap and R=(2^k-1)J, two paid gates. Raw geometry gives
+Q=2^pc(R); repunit disjoint blocks give pc(R)=kn and hence Q=2^(kn).
+The joined second repunit and Q>q recover q=2^n, while the retained
+low-field AND forces n dyadic. Rebuild geometry and AND witnesses at
+the new scale; old native witnesses cannot simply be reused. Standalone
+normalized cost192=94M98A,40w,15eq,degree at most303 is independent of k.
+The [redundant-bound successor](native_binary_population_width_bound188.md)
+uses J=(B-1)v+ell with positive v,ell to give J>=B before typing; this
+restores R-B positively and removes one private addition/comparison/slack,
+yielding188=93M95A,39w,14eq with the same degree bound.
+
+Applying these to the ORIGINAL U9 table (not the padded quotient) gives
+[399 operations](neary_woods_universal_population_tag.md), then
+[395 operations](neary_woods_universal_population_bound395.md).
+The actual D47946621298704238734708993009920, all eleven fixed numeral
+recipes and all four positive program values remain unchanged. The399
+form is192M207A,70w,25eq;395 is191M204A,69w,24eq. Both have total degree
+at most2204. Fresh source/proof reviews and signed full-polynomial
+identities pass; the literal enormous Pell witnesses are not materialized.
+
+The [389-operation successor](neary_woods_universal_population_projection389.md)
+then projects two coordinates AFTER each existing finalizer is compiled:
+J*=(B-1)v+ell>=B and Ahat*=(Q-1)(t-1)+z+1>=2 are positive on every positive
+supplied tuple. The J expression already exists; replacing private
+Ahat+Q with right_side-Q keeps certificate gates unchanged. Remove their
+two comparisons and supplied coordinates, saving2M4A and two witnesses.
+The default is **389=189M200A**,324certificate,22eq,67w and four program
+parameters,degree at most2241. Raw467/86w/degree544 and native-unit
+392/67w/degree1405 remain. Projecting Ahat alone gives392/68w/degree2206;
+keeping neither gives395/69w/degree2204. These are upper bounds, not exact
+degrees. Complete off-zero polynomial identities under restoration and
+positive zero-set bijections hold for all24 interface/form/options.
+The saved `projection_parent` is the old audit interface; restore J/Ahat
+before invoking inherited unit audit helpers on their parent metadata.
+
+The [counter-initialization obstruction](clockwise_cts_counter_initialization_obstruction.md)
+executes the printed Q3 CTS table: counter3 on tape01 falsely activates
+the designated halt though the clockwise machine copies forever;
+dyadic counter4 leaves an invalid three-counter cut, while8/16 similarly
+leave7/15 counters; all then reach an empty trajectory. Two executors and an independently rebuilt
+91-appendant table agree. These examples exclude arbitrary larger or
+larger-dyadic initial counters for the unchanged simulator. They do NOT
+supply full tag false accepting witnesses or false polynomial zeros.
+Keep the exact least-dyadic128n counter and the valid U9 >=6A slice.
 
 The [weakened-bound86 candidate](complete75_weakened_bound86_candidate.md)
 is separately preserved: remove the extra Z from C=q−F−Z−alpha−2dx,
