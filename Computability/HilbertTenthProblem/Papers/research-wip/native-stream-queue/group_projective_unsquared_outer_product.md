@@ -216,8 +216,3 @@ checked 320 signed complete-output/SOS identities across all ten options,
 including the unchanged certificate prefix, acyclic register names and
 identical M/A counts. The receipt's broader degree checks cover 134
 actual DAGs through m=128; its integer-factor grid has 7,029 cases.
-
-Independent proof/source reviews and a fresh default replay passed with
-no findings. Two further independent audits checked 256 and 320 signed
-complete-source assignments, respectively, including the direct product
-formula, unchanged certificate prefix and exact M/A accounting.

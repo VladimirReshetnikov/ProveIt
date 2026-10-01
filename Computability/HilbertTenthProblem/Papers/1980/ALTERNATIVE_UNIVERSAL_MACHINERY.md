@@ -264,6 +264,31 @@ ten-letter table is262/294 with11 equations,46 witnesses and degree3544,
 or295 polynomial operations at degree2904 without mask reuse. Every
 comparison and positivity obligation remains paid;75/88 are unchanged.
 
+The [two computed input fields](../research-wip/native-stream-queue/group_projective_computed_input_fields.md)
+remove two comparisons and witnesses, saving six SOS operations. Their
+positivity follows from the raw outer bounds before any native typing.
+The [computed checksum field](../research-wip/native-stream-queue/group_projective_computed_checksum_field.md)
+then chooses the already normalized positive-checksum branch, saving one
+multiplication and witness. Replacing the auxiliary norm coefficient by
+the [retained strong coefficient](../research-wip/native-stream-queue/group_projective_strong_coefficient.md)
+lowers the six-field degree by eight while its defining strong comparison
+remains paid. The final six-field bounds are C+3 certificate operations,
+10-chi equations,m+28-chi witnesses and C+32-3chi SOS operations, at degree
+(1+chi)(38L+2m+30)+52. The ten-letter example with both options is
+261/287,9 equations,43 witnesses,SOS degree3368; without mask reuse it is
+262/288 at SOS degree2760.
+
+The [unsquared outer product](../research-wip/native-stream-queue/group_projective_unsquared_outer_product.md)
+replaces the SOS by `Punit*(1+SOSouter)-1`, retaining the same positive
+zero set, operation counts and supplied coordinates. Its exact degree
+is(1+chi)(27L+m+15)+46:2376 in the example with both options, or1944
+without mask reuse. Every residual besides the native unit product
+remains in SOSouter; the sum-of-squares alternatives retain degrees3368
+and2760 at the same arithmetic cost. The four-field checksum option remains C+3,
+12-chi equations,m+30-chi witnesses,C+38-3chi SOS operations and degree
+22(1+chi)L+54. These are complete fixed-table formulas; no numerical
+universal matrix alphabet or improvement to75/88 is asserted.
+
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
 an empty true endpoint language acquires full positive zeros at every
@@ -280,6 +305,33 @@ Unrestricted mortality loses that synchronization: two different bridge
 words give a three-reset zero product for every input. Members have
 minimum reset count two, nonmembers three. Its regular language R F*R is
 explicit, but uniform word selection and control are not yet paid.
+
+The [10D affine mortality construction](../research-wip/native-stream-queue/group_affine_guarded_mortality10.md)
+recovers unrestricted mortality with the same two-operation input loader.
+Its one varying matrix has entries0,1,t. Two occurrences load the6D
+quadratic projective column. Four invertible control coordinates count
+input letters and fixed-letter-before-input pairs; a weighted magnitude
+bound makes their nonzero guard dominate every invalid physical scalar.
+A constant rank-one reset then permits arbitrary repetition without losing
+the common zero word. For an inherited s-letter alphabet, s+1 matrices
+are fixed and one varies. The dimension/loader tradeoff is exact; selected
+word and matrix-history arithmetic remain unpaid.
+
+The [native divisibility obstruction](../research-wip/native-stream-queue/native_binary_X_divisibility_obstruction.md)
+shows why X=wq cannot simply be replaced by its positive bound in the
+standalone selector. The resulting55-operation component has a full
+positive solution with q=48, defeating dyadic typing. This example does
+not defeat the joined matrix interface, whose q=16P^L condition excludes
+that scale.
+
+The [zero-offset input modulus obstruction](../research-wip/native-stream-queue/complete75_zero_offset_input_modulus_obstruction.md)
+concerns a different direct-polynomial proposal: replacing Delta by a
+in the input congruence gives an88-operation polynomial of degree135,
+but every positive zero must satisfy2d*x+b=psi_2(v) with v odd. Each
+fixed admissible tuple therefore has only O(log N) projected inputs up
+to N and explicit infinitely many omissions. The necessary condition
+does not claim a converse. It rejects this candidate, while the valid
+a+1 modulus retains its89-operation cost and75/88 remain unchanged.
 
 The [first-norm ratio obstruction](../research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
 rejects a separate apparent87-operation shortcut in the direct universal

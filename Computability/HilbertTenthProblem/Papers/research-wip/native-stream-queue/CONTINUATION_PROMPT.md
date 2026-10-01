@@ -63,6 +63,20 @@
 > with degree and positivity counted. These are reviewed mathematical
 > proofs with exact source audits, not Lean formalizations.
 
+The latest matrix packet is the
+[unsquared outer product](group_projective_unsquared_outer_product.md),
+after the [strong-coefficient successor](group_projective_strong_coefficient.md),
+after [two input-field projections](group_projective_computed_input_fields.md)
+and [checksum-field projection](group_projective_computed_checksum_field.md).
+The illustrative ten-letter example is **261 certificate / 287 polynomial
+operations, nine equations, 43 positive witnesses, exact degree 2376**.
+Its SOS alternative has the same operation count at degree 3368.
+The numerical universal alphabet remains uninstantiated; these do not
+replace the separate 75/88 frontier above. The new
+[ten-dimensional mortality interface](group_affine_guarded_mortality10.md)
+has an affine two-operation input and unrestricted reset words, but no
+uniform Diophantine word/history certificate yet.
+
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
 condition V=1,U=kappa*x+lambda uses the root's already proved power typing.
@@ -387,6 +401,73 @@ its polynomial is295 at degree2904. No numerical universal alphabet is
 instantiated. The unconditional negative-norm exclusions still precede
 all rank and typing arguments, and the full strong equality remains.
 
+The [computed input fields](group_projective_computed_input_fields.md)
+replace F1,F2 by the paid differences padded_A-F3 and padded_B-F3.
+Before any native typing, the retained joint bound and repunit give
+J>=1, P>=B>=64, Z<T2, H>=B*T2 and M>=(B-1)*T2. Both differences
+are positive; restore them before invoking the parent proof. This is
+a positive zero-set graph bijection, removes two equations/witnesses,
+and saves six SOS operations at the same certificate cost and degree.
+
+The [computed checksum field](group_projective_computed_checksum_field.md)
+uses the stronger lower-body bounds Hbody,Mbody<T2 and
+H+M-Z<(2B+1)*T2<P^2*T2=N. Hence
+F0=16(N-H-M+Z)-15>0 before typing. Reuse the three checksum additions
+to compute F0=q-F1-F2-F3-1, replace Q by one, and remove its product
+multiplication and supplied F0 coordinate. For parent Q=-1 zeros,
+first normalize F0,r,bound_beta as above; then erase the field.
+This restriction preserves accepted inputs, not every parent tuple.
+The certificate is C+3. Four fields give12-chi equations,m+30-chi
+witnesses,C+38-3chi SOS,degree22nu L+54. Six fields give10-chi
+equations,m+28-chi witnesses,C+32-3chi SOS,degree nu*(38L+2m+30)+60.
+
+The [strong-coefficient successor](group_projective_strong_coefficient.md)
+then uses the already paid K=Delta(f^2-1) rather than T^2=(ic^2)^2
+in the six-field auxiliary norm. Retain the strong comparison
+delta=T^2-K=0. Its norm changes by-delta*(V^2-y^2), and its product
+residual by-N0*N1*Nk*Nl*delta*(V^2-y^2); all other residuals agree.
+Thus exactly the same positive vectors solve both systems. The new
+norm highest form is a*^2*f^2*c*^2 of degree6nu L+10, four less than
+the parent. Its SOS exact degree is **nu*(38L+2m+30)+52**, eight lower.
+The ten-letter epsilon=chi=1 case is261/287,9 equations,43 witnesses,
+degree3368; epsilon=0 gives262/288,degree2760. Do not apply this degree
+rewrite to the four-field variant: it raises that factor's degree.
+Independent proof/source/default reviews and exact residual audits pass.
+
+The [unsquared outer product](group_projective_unsquared_outer_product.md)
+then keeps the unit product Pi=six_units unsquared. For all remaining
+comparison residuals r_j, form Qouter=1+sum r_j^2 and output
+Pi*Qouter-1. Over integers Qouter>=1; the output vanishes exactly when
+Qouter=Pi=1, equivalently every original comparison holds. This preserves
+the entire integer and positive zero sets without any new sign theorem.
+For e comparisons its final assembly still costs3e-1, with the same
+e multiplications and2e-1 additions as the old SOS.
+
+In the six-field strong-coefficient source, Pi has degree
+nu*(19L+m+15)+26. The unique largest outer residual is T^2-K,
+of degree4nu L+10; the native X bound has degree
+nu*(3L+m+15)+1 and the other residuals have degree at most three.
+Thus Qouter has degree8nu L+20, giving exact final degree
+**nu*(27L+m+15)+46**, at the unchanged C+32-3chi cost.
+The ten-letter example is287/degree2376, or288/degree1944 without
+controller-mask reuse. This new output is a product polynomial, not a
+sum of squares; retain3368/2760 as the valid SOS alternative degrees.
+For epsilon=chi=1 the new degree is110m+616. The four-field analogue
+and earlier coefficient/partition variants remain possible separate
+degree investigations, not part of this six-field packet.
+
+The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
+rejects computing X from r+bound_beta while erasing w and X=wq.
+The apparent55-operation selector /93-operation SOS admits q=48,
+F=(17,5,23,2), r=274433=1+2^12+2^13+2^18. With X=2^(2r+1),
+Y=floor((X+1)^(2r)/X^r) has v2Y=4 and is divisible by3, since
+X=-1 mod3 and Y=binom(2r,r)/2 mod3 with central v3=7.
+Thus Y/q is odd and positive; the standard odd-r Pell map supplies
+all remaining positive coordinates, although q does not divide X.
+This is not a full joined-interface counterexample: q=16P^L imposes
+additional conditions. Any attempt to erase its divisibility must
+prove a substitute using those conditions.
+
 Do not remove the output bound instead of combining it. The
 [exact carry counterexample](group_projective_output_bound_obstruction.md)
 uses fixed macros3..8, whose first block preserves first coordinate1
@@ -407,6 +488,27 @@ kill the two blocks, and every input has a three-reset zero product.
 The minimum is two for members and three for nonmembers. The restriction
 R F*R is regular but its uniform selected-word certificate remains unpaid.
 
+The [ten-dimensional affine mortality interface](group_affine_guarded_mortality10.md)
+repairs unrestricted reset synchronization with one constant rank-one
+reset and one affine varying letter. The 3x3 loader
+T3=[0,0,1;t,1,0;1,t,0] has T3^2 e1=(1,t,t^2); use two copies for
+the six-dimensional Gram test. A four-coordinate invertible control
+tracks (1,n,f,I), where n counts T letters and I counts fixed-before-T
+pairs. Its integer guard G=n-2+3I vanishes exactly on chronological
+TT F*. Weights(1,2,3) per block give |T6|b<=t*b for t>=3; fixed
+lambda_i are weighted row bounds. With D_T=diag(T6,t C_T) and
+D_i=diag(F_i,lambda_i C_F), the scalar equals s+4Rho*G, where
+|s|<=2Rho and Rho>0. Every invalid word is therefore nonzero, even
+for negative G. All non-reset letters are invertible. A constant
+rank-one R=v*u has R^2=-6R; arbitrary reset products vanish exactly
+when one common internal word passes both projective tests.
+The full100-entry varying matrix uses only0,1,t and loads in two
+operations from ordinary x. Fixed alphabet size is s+1, plus the
+one varying letter. No matrix-history compilation cost is claimed.
+Potential next work is a cheaper guard/physical dimension or a paid
+uniform scalar-word history, not an unguarded regular-language tensor
+whose missing transitions would themselves create zero products.
+
 The primary75/88 frontier remains unchanged. An [exact input-translation
 obstruction](complete75_input_bound_absorption_obstruction.md) rejects the
 specific apparent87 shortcut that absorbs2d*x into alpha: x shifts by
@@ -422,6 +524,16 @@ and zplus=1+C*(2^R-2^e)/(q-1), then restores fresh main, strong auxiliary
 and input Pell witnesses. The +1 in zplus is essential for transport
 unit1. This is a proved all-input projection, stronger than its initial
 same-input coordinate-bijection failure. Preserve the upper ratio slack.
+
+The [zero-offset input-modulus obstruction](complete75_zero_offset_input_modulus_obstruction.md)
+rejects another tempting degree shortcut: kappa=u+delta*a instead of
+the paid a+1 modulus. It has88 operations and degree135, but every
+positive zero satisfies u=2d*x+b=psi_2(v) for odd v<R. Main recovery
+and the positive exponent-gap comparison establish v<R before input
+typing; a>2^(R(R+1)/2)/3 then puts psi_2(v) and u below a, so the
+congruence is exact. Every fixed instance has O(log N) inputs up to N
+and misses an explicit infinite family. It cannot represent all positive
+integers. No converse or materialized full parent tuple is claimed.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,

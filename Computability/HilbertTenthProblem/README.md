@@ -147,16 +147,46 @@ universal Diophantine equations by James P. Jones and coauthors:
   same options. The illustrative table reaches **262/294 operations**
   with46 witnesses. Its extra native sign branch restores positive
   witnesses for the same ordinary input; the numerical75/88 bounds remain.
+  Computing the [two input fields](Papers/research-wip/native-stream-queue/group_projective_computed_input_fields.md)
+  and [checksum field](Papers/research-wip/native-stream-queue/group_projective_computed_checksum_field.md)
+  then saves seven polynomial operations and three witnesses. Using the
+  [retained strong coefficient](Papers/research-wip/native-stream-queue/group_projective_strong_coefficient.md)
+  lowers the six-field degree by eight at unchanged cost. The latest bound
+  for the same options is **3m+3h+p+213+f_flow-3min(h,3)** polynomial
+  operations,9 equations,m+27 witnesses and SOS degree156m+872. The illustrative
+  table is **261 certificate / 287 polynomial operations**,43 witnesses,
+  SOS degree3368; without mask reuse it is262/288 at SOS degree2760.
+  The [unsquared outer product](Papers/research-wip/native-stream-queue/group_projective_unsquared_outer_product.md)
+  uses `Punit*(1+SOSouter)-1` with exactly the same positive zeros and
+  operation/witness counts. Its degree is **110m+616** when both options are enabled,
+  giving **2376** in the example, or **1944** without mask reuse. The
+  previous degree3368/2760 polynomials remain SOS alternatives; the
+  four-field variant is unchanged. The universal
+  numerical alphabet is still uninstantiated, so75/88 remain unchanged.
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every
   input with at most three resets. The regular word restriction is explicit;
   its uniform Diophantine control remains unpaid.
+- A [ten-dimensional unrestricted-mortality interface](Papers/research-wip/native-stream-queue/group_affine_guarded_mortality10.md)
+  also loads its single affine input matrix in **2=1M+1A** operations.
+  A weighted growth guard prevents invalid loading words from creating
+  scalar zeros, and a fixed rank-one reset preserves synchronization under
+  arbitrary repetition. All other matrices are fixed. This saves one loader
+  operation relative to6D by increasing dimension; uniform word/history
+  arithmetic is not included.
 - The [first-norm ratio audit](Papers/research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
   rejects an apparent87-operation rewrite: after losing the upper ratio
   slack, an explicit CRT and positive Pell construction supplies zeros for
   every ordinary positive input at every fixed compiled constant tuple.
   The complete numerical bounds remain75/88.
+- The [zero-offset modulus audit](Papers/research-wip/native-stream-queue/complete75_zero_offset_input_modulus_obstruction.md)
+  rejects an88-operation degree135 candidate: modulus a forces
+  2d*x+b=psi_2(v), leaving only O(log N) possible inputs up to N for each
+  fixed compiler tuple. The [native divisibility audit](Papers/research-wip/native-stream-queue/native_binary_X_divisibility_obstruction.md)
+  rejects a standalone55-operation selector at q=48 after dropping
+  q divides X. That scale is excluded by the stronger joined matrix
+  interface; neither result is a general arithmetic lower bound.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree

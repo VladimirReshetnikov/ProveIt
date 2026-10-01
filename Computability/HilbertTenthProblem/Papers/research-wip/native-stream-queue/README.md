@@ -316,7 +316,7 @@ Its extra sign branch restores the same input predicate by subtracting2
 from the native complement field and index, and adding2 to its bound slack.
 The four-bit prefix proves the restored field stays strictly positive.
 
-Including the joint bound, this final coupled certificate costsC+4.
+Including the joint bound, the coupled certificate costsC+4.
 Four computed fields give14-chi equations,m+33-chi witnesses and polynomial
 C+45-3chi, of degree24nu L+54. Six give12-chi equations,m+31-chi witnesses
 and polynomialC+39-3chi, of degree nu(40L+2m+30)+60. The ten-letter
@@ -324,6 +324,38 @@ example with both options reaches **262 certificate operations or294
 polynomial operations,11 equations,46 positive witnesses and degree3544**.
 Disabling controller-mask reuse gives295 polynomial operations at degree2904.
 The universal numerical75/88 bounds remain separate and unchanged.
+
+The packed radix region then makes both
+[native input fields F1,F2](group_projective_computed_input_fields.md)
+positive before any native typing. Computing them removes two equations
+and witnesses at unchanged certificate cost, taking the six-field example
+to262/288 operations with44 witnesses. The
+[computed checksum field F0](group_projective_computed_checksum_field.md)
+selects the checksum-one branch after the proved positive normalization,
+saving another multiplication and witness. Finally the
+[retained strong coefficient](group_projective_strong_coefficient.md)
+uses the already paid Delta(f^2-1) in the auxiliary norm while retaining
+its equality to (ic^2)^2, lowering the six-field polynomial degree by eight.
+
+The six-field certificate costs **C+3**, with **10-chi equations,
+m+28-chi positive witnesses and a C+32-3chi polynomial**. Its sum-of-squares
+form has exact degree **nu(38L+2m+30)+52**. With both options, the ten-letter example is
+**261 certificate / 287 polynomial operations, nine equations, 43 witnesses
+and SOS degree3368**. Without mask reuse it is262/288 at SOS degree2760, with the
+same equation and witness counts.
+
+The [unsquared outer product](group_projective_unsquared_outer_product.md)
+keeps exactly the same positive zeros and all those operation/witness
+counts, using `Punit*(1+SOSouter)-1` instead. Here Punit is the native unit
+product and SOSouter sums the squares of every other retained residual.
+Its exact degree is **nu(27L+m+15)+46**, giving **2376** in the ten-letter
+example with both options, or **1944** without mask reuse. The degree3368
+and2760 forms remain explicit SOS alternatives at the same cost.
+The four-field checksum variant remains
+C+3 certificate operations,12-chi equations,m+30-chi witnesses and a
+C+38-3chi polynomial of degree22nu L+54; the strong-coefficient replacement
+would increase its degree. These are complete fixed-table formulas with
+an abstract universal alphabet, not improvements to the numerical75/88 bounds.
 
 Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
 a fixed six-shear table with an empty genuine endpoint language acquires
@@ -339,6 +371,17 @@ accepts every input: members need two and nonmembers need three. Its
 regular word restriction is explicit but not yet paid in a uniform
 Diophantine certificate.
 
+The [ten-dimensional mortality construction](group_affine_guarded_mortality10.md)
+keeps the **two-operation affine loader** and supports unrestricted
+mortality. One input matrix has entries0,1,t; two occurrences load the
+quadratic projective column. An invertible counting control and weighted
+growth bound make every invalid loading word have a nonzero scalar.
+A fixed rank-one reset therefore preserves the common zero word through
+arbitrarily many resets. There are s+1 fixed matrices and one varying
+matrix for an inherited s-letter alphabet. This trades dimension for
+one loader operation; uniform word selection and history arithmetic remain
+unpaid, and the numerical universal alphabet remains uninstantiated.
+
 The apparent one-gate reduction below88 obtained by absorbing the ordinary
 input width is [provably unsound](complete75_input_bound_absorption_obstruction.md).
 An exact positive-witness input translation makes the modified compiler
@@ -349,6 +392,21 @@ also costs87 arithmetically, but accepts every positive input for every
 fixed compiled constant tuple. A CRT outer construction and full positive
 Pell extension prove this stronger failure. Replacing the upper ratio
 slack by a positive first-Pell-index gap is therefore unsound.
+
+The [zero-offset input modulus audit](complete75_zero_offset_input_modulus_obstruction.md)
+rejects a different88-operation, degree135 candidate. Replacing the input
+modulus Delta by a forces2d*x+b=psi_2(v) with v positive and odd. Every
+fixed admissible instance consequently has only O(log N) accepted inputs
+up to N and explicitly omits infinitely many positive inputs. No converse
+or exact accepted-set classification is claimed; the valid a+1 modulus
+still costs89 operations.
+
+The [native X-divisibility audit](native_binary_X_divisibility_obstruction.md)
+shows that computing X only from its positive bound breaks standalone
+binary typing: the55-operation candidate has a full positive solution at
+q=48. The retained condition q divides X is essential to that selector
+proof. This is not a false-input example for the joined matrix compiler,
+whose additional q=16P^L identity excludes this particular scale.
 
 The [Heisenberg membership audit](heisenberg_two_generator_membership.md)
 gives a uniform four-witness certificate for any two fixed generators in
@@ -378,6 +436,13 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Unsquared outer product](group_projective_unsquared_outer_product.md) | Same six-field C+32-3chi polynomial cost and positive zeros, degree(1+chi)(27L+m+15)+46. Illustrative287/degree2376, or288/degree1944 without mask reuse. | Uses Punit*(1+SOSouter)-1 with every outer residual retained. Four-field variant unchanged; numerical75/88 remain separate. |
+| [Retained strong coefficient](group_projective_strong_coefficient.md) | Six-field C+3 certificate,10-chi equations,m+28-chi witnesses, SOS polynomial C+32-3chi, degree(1+chi)(38L+2m+30)+52. Illustrative261/287,SOS degree3368. | The strong equality remains explicit; same positive zeros. Four-field checksum variant is unchanged. Universal numerical alphabet remains uninstantiated. |
+| [Computed checksum field F0](group_projective_computed_checksum_field.md) | Computes a positive F0 on the normalized checksum-one branch, removing one multiplication and one witness. | Same ordinary-input relation, not erasure on every parent tuple. Four-field polynomial C+38-3chi has degree22(1+chi)L+54. |
+| [Computed native input fields F1,F2](group_projective_computed_input_fields.md) | Two equations and witnesses removed at unchanged certificate cost and degree; six SOS operations saved. | Positivity follows from the raw outer bounds and highest radix region before native typing. |
+| [Affine unrestricted mortality in10D](group_affine_guarded_mortality10.md) | One affine input matrix loaded in2=1M+1A; fixed rank-one reset and unrestricted mortality represent the universal projective predicate. | Weighted control excludes invalid words without zero transitions. Higher dimension than6D; arbitrary word/history arithmetic remains unpaid. |
+| [Zero-offset input modulus obstruction](complete75_zero_offset_input_modulus_obstruction.md) | The rejected88/degree135 source forces2d*x+b=psi_2(v), so each fixed instance has a sparse projection and infinitely many omitted inputs. | Necessary condition only; rules out this precise modulus-a rewrite, not other88-operation degree improvements. |
+| [Native X-divisibility obstruction](native_binary_X_divisibility_obstruction.md) | A full positive q=48 solution disproves the standalone55-operation selector obtained by replacing X=wq with X=r+bound_beta. | Joined q=16P^L excludes this scale; no false accepted input for that stronger compiler is claimed. |
 | [Coupled auxiliary linear unit](group_projective_coupled_linear_unit.md) | With the joint bound: six-field C+4 certificate,12-chi equations,m+31-chi witnesses, polynomial C+39-3chi, degree(1+chi)(40L+2m+30)+60. | Extra native sign branch normalizes positive complement/index/slack coordinates at the same ordinary input; not an identical positive zero set. Illustrative262/294,degree3544. |
 | [Index unit](group_projective_index_unit.md) | One further SOS addition saved with the same positive witness tuples as the merged-first parent. | Strong-rank recovery uses weak signed-checksum bounds before typing; both ratio slacks and X>r remain. |
 | [Joint bound and first-root composition](group_projective_joint_first_norm.md) | Merged six-field certificate C+1,14-chi equations,m+31-chi witnesses, polynomial C+42-3chi, degree(1+chi)(38L+4m+60)+48. | C is the padded-program cost above; L=m+18 or2m+10. Ten-letter example259/297; universal numerical table remains uninstantiated. |
