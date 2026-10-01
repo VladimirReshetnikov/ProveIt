@@ -179,6 +179,19 @@ universal Diophantine equations by James P. Jones and coauthors:
   options remain286/degree1211 and287/degree995 with44 witnesses, or
   four-field293/degree802 with46 witnesses. The universal numerical
   alphabet is still uninstantiated, so75/88 remain unchanged.
+  The [shared history right-hand sides](Papers/research-wip/native-stream-queue/group_projective_shared_history_rhs.md)
+  save one multiplication with the full polynomial unchanged, making the
+  shifted-X example256/279 at degree4298. The
+  [strong-unit successor](Papers/research-wip/native-stream-queue/group_projective_strong_unit_product.md)
+  then preserves the integer zero set and polynomial cost while absorbing
+  the strong comparison. Its generic certificate costsC+1, with8-chi
+  equations,m+27-chi witnesses and aC+24-3chi polynomial of degree
+  nu(36L+7m+105)+44; idle-only supplied-P tables have degree two lower.
+  The example is **259/279 operations,7 equations,42 witnesses,degree3502**.
+  Without mask reuse it is280/degree2926; supplied P gives282/degree1773
+  with mask reuse or283/degree1485 without it. Shared lower-degree parent
+  choices remain285/degree1211 and286/degree995 with44 witnesses, or
+  four-field292/degree802 with46 witnesses.
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every
@@ -199,8 +212,15 @@ universal Diophantine equations by James P. Jones and coauthors:
   Under the compatible subgroup and input congruence, its unrestricted
   mortality predicate reduces exactly to the paid uniform four-history
   compiler. The packet imports the257/283 factored-index example, and the
-  shifted-quotient theorem further gives280 by composition. This is an
-  existence reduction, not verification of an arbitrary supplied mortality word.
+  shifted-quotient theorem gives280 by composition; the later shared-history
+  and strong-unit results give279 at degree3502 under the same equivalence.
+  This is an existence reduction, not verification of an arbitrary supplied
+  mortality word.
+  The [exact-series rank obstruction](Papers/research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
+  proves physical rank6 and guarded rank9 for the actual universal fibre
+  subgroup. This forbids fewer linear coordinates for those identical
+  scalar values, including merging physical and guard states. It does
+  not forbid another zero-equivalent construction or lower arithmetic cost.
 - The [first-norm ratio audit](Papers/research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
   rejects an apparent87-operation rewrite: after losing the upper ratio
   slack, an explicit CRT and positive Pell construction supplies zeros for
@@ -220,6 +240,14 @@ universal Diophantine equations by James P. Jones and coauthors:
   expose the proof gap; R=11 is outside the full compiler range R>=3q+1,
   q>=16. This neither proves nor refutes the full87 candidate and supplies
   no full counterexample. The established numerical bounds remain75/88.
+  The [exact period criterion](Papers/research-wip/native-stream-queue/complete75_independent_gamma87_period.md)
+  now characterizes both input-Pell parity branches on each fixed genuine
+  history. From a parent zero at x0, transfer to x is equivalent to a
+  positive shifted width witness and g dividing2d*(x-x0), where
+  g=gcd(2Delta,ord_H(2)), Delta=(a+2)^2-1 and H=4a+3.
+  A ternary-index class forces6 to divide g.
+  This conditional history theorem supplies no full false-input instance
+  and leaves87 unresolved; computing the order is not a free circuit step.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree

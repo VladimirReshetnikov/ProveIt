@@ -64,15 +64,17 @@
 > proofs with exact source audits, not Lean formalizations.
 
 The latest matrix packet is the
-[shifted X quotient](group_projective_shifted_X_quotient.md), after the
-[factored native index](group_projective_factored_native_index.md).
-The illustrative ten-letter example is **257 certificate / 280 polynomial
-operations, eight equations, 42 positive witnesses, exact degree 4298**.
-Other switch choices give281/degree3594,283/degree2171 and284/degree1819.
-The factored-index parent retains286/degree1211 and287/degree995 with44
-witnesses; its four-field no-mask/supplied-P option gives293/degree802
-with46 witnesses. These are operation/degree tradeoffs, not an optimality
-claim. Earlier same-cost SOS alternatives remain reproducible.
+[strong-unit product](group_projective_strong_unit_product.md), after the
+[shared history right-hand sides](group_projective_shared_history_rhs.md).
+The illustrative ten-letter example is **259 certificate / 279 polynomial
+operations, seven equations, 42 positive witnesses, exact degree 3502**.
+Other switch choices give 280/degree2926, 282/degree1773 and 283/degree1485.
+The shared-history parent has the smaller certificate cost 256, with eight
+equations and the same 279 polynomial operations at degree4298.
+Its unshifted six-field choices retain 285/degree1211 and 286/degree995
+with44 witnesses; its four-field no-mask/supplied-P option gives
+292/degree802 with46 witnesses. These are operation/degree tradeoffs,
+not an optimality claim. Earlier alternatives remain reproducible.
 The numerical universal alphabet remains uninstantiated; these do not
 replace the separate 75/88 frontier above. The new
 [nine-dimensional mortality interface](group_affine_guarded_mortality9.md)
@@ -499,6 +501,54 @@ The ten-letter switch table (mask,computedP) is (1,1):280/4298/42w,
 All source/default/proof reviews passed. Do not delete q|X or assume
 the unstrengthened native bound follows without a replacement proof.
 
+The [shared history right-hand sides](group_projective_shared_history_rhs.md)
+remove one multiplication from every factored four-field, six-field and
+shifted-X option. The exact identity is
+
+    D*P-(D-1+u)=((D-1)*P-D)+(P+1)-u.
+
+Reuse the paid even right-hand side and controller lane_factor0=P+1,
+delete private d0 and VP, and replace the odd right-hand side with two
+additions/subtractions. The source audits every deleted consumer.
+Every retained register, residual and complete polynomial is identical
+over arbitrary integers. Certificate cost is C-2; polynomial costs are
+C+33-3chi (four), C+27-3chi (six) and C+24-3chi (shifted), with all
+preceding degrees and witnesses unchanged. Thirty ledgers, 1,920 complete
+source identities and independent proof/source/default reviews pass.
+
+The [strong-unit successor](group_projective_strong_unit_product.md)
+then lowers the shifted-X degree at the same final M/A count. For arbitrary
+integers A,T,f, the value N=1+T²-(A²-1)(f²-1) is never3 modulo4, hence
+never-1. With delta=T²-Delta(f²-1), replace the strong comparison and
+W=1 by W*(1+delta)=1. Integer factorization restores both old equations
+before any native positivity argument. The certificate adds 1M+2A and
+loses one comparison, exactly offsetting 1M+2A in the finalizer.
+It costs C+1 with8-chi equations and m+27-chi positive witnesses;
+its final polynomial still costs C+24-3chi.
+
+Write Q=nuL,A0=nu(4L+m+15). The merged unit has exact degree
+7A0+8Q+38. For computed P, the degree-three history parts are
+-B*D*(J+ell_i); the mandatory idle edge makes J+ell_i nonzero. For
+supplied P with a nonempty macro table, they are -B*D*ell_i and some
+ell_i is nonzero. Thus the new exact polynomial degree is
+nu(36L+7m+105)+44. The idle-only supplied-P case has maximum outer
+degree two and final degree lower by two. The illustrative switch table
+(mask,computedP) is (1,1):279/3502/42w, (0,1):280/2926/42w,
+(1,0):282/1773/43w, (0,0):283/1485/43w. This same local rewrite raises
+the unshifted six-field degree, so that variant is preserved separately.
+All exact unit/outer degree audits and source/default reviews passed.
+
+One unimplemented local lead remains in the illustrative ten-letter
+controller: ports1 and2 each sum two edge hats and then subtract1.
+Their history difference cancels those two offsets. In the physical
+selector pack, replacing both ports by their raw sums adds P+1, so the
+existing repunit subtraction could instead use R8+(P+1). This appears
+to replace two private subtractions with one addition. Before counting
+any saving, audit all consumers and complete polynomial identities;
+the published279 count does not include this proposal. A general
+version would need to account for the actual port-arity polynomial,
+not assume the illustrative multiplicities for the universal alphabet.
+
 The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
 rejects computing X from r+bound_beta while erasing w and X=wq.
 The apparent55-operation selector /93-operation SOS admits q=48,
@@ -578,10 +628,29 @@ a=bt and determinant one give b(td-c)=1, while b=1 mod4 selects +1. Thus mortali
 existence projects exactly onto the paid paired-vector endpoint compiler.
 The note imports the current factored-index257/283 example after explicit
 macro reflection; the shifted-X successor also applies by equivalence.
+The shared-history and strong-unit successors therefore give the latest
+279-operation polynomial at degree3502 for the same existence predicate.
 There is no extra guard-history charge for this existence predicate,
 but this does not verify an arbitrary supplied mortality word. Compatible
 input congruences, subgroup hypotheses and the padded-program margin
 remain explicit. Independent source/proof/default reviews passed.
+
+The [exact scalar-rank obstruction](group_guarded_mortality_rank_obstruction.md)
+proves ranks six for the paired-square series and nine for the complete
+current guarded scalar on the actual abstract universal fibre subgroup.
+Opposite unipotents give elementary irreducibility of the three-dimensional
+symmetric-square action. The nontrivial normal presentation kernel N
+isolates both physical blocks. For the guarded series, commutators from
+[N,Gamma] kill the commuting fixed control action, so those six directions
+remain independent of the three control directions. Reachable and
+observable forward spans are invariant under rational inverse lifts by
+finite-dimensional injectivity, without adding inverse stream letters.
+Exact Hankel ranks rule out any smaller linear realization of these
+identical scalar functions, including mixing physical and guard states.
+They do not rule out a different scalar with the same zeros, a different
+guard, or a nonlinear certificate; there is no global mortality-dimension
+or Diophantine arithmetic lower bound. Twelve finite rank6/rank9 fixtures
+and the diagonal rank3/rank6 boundary support the abstract proof.
 
 The primary75/88 frontier remains unchanged. An [exact input-translation
 obstruction](complete75_input_bound_absorption_obstruction.md) rejects the
@@ -626,6 +695,40 @@ NOT a full compiler zero: R=11 violates q>=16,R>=3q+1. The actual
 packed-mask, transport and positive width constraints are the next
 obligation. Do not call87 established or refuted without closing that
 full interface. The packet's component proof and default replay pass.
+
+The [exact period successor](complete75_independent_gamma87_period.md)
+now characterizes input extensions on a fixed genuine outer/main history.
+Let O=ord_H(2), g=gcd(2Delta,O). Genuine parameters have a divisible by6,
+Delta odd, A even and H divisible by3. The retained width gives -q<W<q
+while a>q, so the computed input root mu is positive before its Pell
+classification. For arbitrary signed W outside that domain, mu>0 must
+be stated separately; negative-root Pell solutions are not covered.
+
+An extension exists exactly when W modulo H is a power2^j and
+j=u or A*u modulo g. CRT gives arbitrarily large positive indices
+v=u modulo2Delta (odd branch) or v=A*u modulo2Delta (even branch),
+and v=j modulo O. Both input quotients become positive. Modulo3 of W
+selects one parity branch; an odd-power marker W=2^u0 uses only odd v.
+Starting from a parent88 zero at x0, keep all outer/main quantities
+fixed by alpha_new=alpha_old+2d(x0-x)>0, and set the independent main
+sigma to the parent's rho+sigma. Only input delta,rho remain to choose.
+This complete fixed-history transfer exists iff g divides 2d(x-x0).
+The literal source audits every x/alpha/delta/rho consumer and all seven
+unchanged factors. It is still not a false-input example: an actual
+rejected x and accepted history satisfying period and width are missing.
+
+The actual half-binomial formula gives a=6 mod9 iff r0=(R-1)/2 is
+0 modulo3 and has only0/1 ternary digits; otherwise a=0 mod9. The proof
+uses the alternating central-binomial identity and digitwise expansion
+over the field of three elements. The first class forces 6|g, hence
+3|d(x-x0). More precisely h=min(v3(Delta),v3(H)-1) is2 for a=6 mod27,
+1 for a=15 or24 mod27, and0 for a=0,9,18 mod27. Thus 3^h|d(x-x0)
+is the exact local compatibility condition at the three-power part of H;
+orders at other primes can impose more restrictions. A numerical R=491515,
+q=32 meets the native range and digit condition but is not a full history.
+Conditionally, if a genuine H=3p with p prime, p-1 is a period with
+gcd(2Delta,p-1)=6, so 3|d(x-x0) is sufficient. No genuine complete
+history with that factorization is supplied. Full87 remains unresolved.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,

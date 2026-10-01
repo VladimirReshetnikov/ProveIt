@@ -310,6 +310,30 @@ with9 equations and43 witnesses in both cases. The factored parent keeps
 four-field option includes293/degree802 with46 witnesses. These are
 parameterized compiler results;75/88 remain the numerical universal bounds.
 
+The [shared history right-hand sides](../research-wip/native-stream-queue/group_projective_shared_history_rhs.md)
+reuse the paid P+1 register to save one multiplication in all three
+factored/shifted variants. Their full polynomials, comparisons, witnesses
+and degrees are unchanged. All certificates now costC-2. The four-field
+SOS costsC+33-3chi, the unshifted six-field product costsC+27-3chi,
+and the shifted-X product costsC+24-3chi. Its default example becomes
+256/279,8 equations,42 witnesses,degree4298. Lower-degree shared parent
+options include285/degree1211 and286/degree995 with44 witnesses, and
+four-field292/degree802 with46 witnesses.
+
+The [strong-unit product](../research-wip/native-stream-queue/group_projective_strong_unit_product.md)
+then absorbs the retained strong residual into the native product at
+unchanged final cost. The factor1+T^2-Delta(f^2-1) is never -1 modulo
+four on any integer assignment, so the complete integer zero set is
+preserved before using the native positive proof. Its certificate costs
+C+1, with8-chi equations,m+27-chi positive witnesses and aC+24-3chi
+polynomial. Its degree is(1+chi)(36L+7m+105)+44, except for idle-only
+supplied-P tables, where it is two lower. The default ten-letter result
+is259/279,7 equations,42 witnesses,degree3502. The other polynomial
+choices are280/degree2926 without mask reuse,282/degree1773 with mask
+reuse and supplied P, and283/degree1485 with neither option. This local
+degree improvement is specific to shifted X; unshifted absorption would
+increase degree. Numerical75/88 are still unchanged.
+
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
 an empty true endpoint language acquires full positive zeros at every
@@ -349,9 +373,23 @@ Separately, the ambient modulo-four subgroup and compatible input
 congruence turn both projective zeros into the exact paired endpoint e2.
 Thus unbounded mortality existence projects to the existing uniform
 four-history certificate, explicitly importing the257/283 factored-index
-illustration. The shifted quotient composes to give280. This does not
-certify an arbitrary supplied mortality word or its individual reset
+illustration. The shifted quotient composes to give280; the later
+shared-history/strong-unit theorems
+give279 at degree3502 under the same equivalence. None of these certifies
+an arbitrary supplied mortality word or its individual reset
 positions, and no numerical universal alphabet is materialized.
+
+The [rank obstruction](../research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
+proves exact linear rank6 for the physical paired-square scalar and
+rank9 for the complete guarded scalar on the actual universal subgroup.
+Opposite unipotents give irreducibility; its nontrivial normal kernel
+isolates the physical blocks, while lifted commutators cancel the
+commuting fixed control action. Both reachable and observable spans
+are full. This rules out coordinate compression preserving the identical
+scalar series, including a merger of guard and physical coordinates.
+It leaves different zero-equivalent functions, nonlinear certificates
+and other mortality constructions open, and gives no arithmetic lower
+bound or obstruction to the existing four-history existence reduction.
 
 The [native divisibility obstruction](../research-wip/native-stream-queue/native_binary_X_divisibility_obstruction.md)
 shows why X=wq cannot simply be replaced by its positive bound in the
@@ -387,6 +425,21 @@ show how input-Pell aliases can occur without that bound. But the full
 compiler requires R>=3q+1 with q>=16; the component is therefore not a
 full87 zero or a rejected-input counterexample. Neither universality
 nor failure of the complete87 relaxation is established.
+
+The [exact period successor](../research-wip/native-stream-queue/complete75_independent_gamma87_period.md)
+characterizes all positive input extensions of a fixed genuine outer/main
+history. With A=a+2, Delta=A^2-1, H=4a+3, O=ord_H(2) and
+g=gcd(2Delta,O), W must be a power of2 modulo H with logarithm
+j=u or A*u modulo g. These are the odd and even input-Pell branches.
+For a parent88 marker W=2^u0 the even branch is excluded; preserving
+that history at a new x requires exactly alpha+2d*(x0-x)>0 for the
+width witness and g dividing2d*(x-x0). This is an exact conditional
+source extension, not a free order/discrete-log arithmetic primitive.
+The genuine half-binomial parameters also satisfy a=6 modulo9 exactly
+when r0=(R-1)/2 is divisible3 and has no ternary digit2; that class
+forces6 to divide g and restricts which input residues can share the
+history. No actual full false-input instance is supplied, and the87
+relaxation remains unresolved.
 
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators

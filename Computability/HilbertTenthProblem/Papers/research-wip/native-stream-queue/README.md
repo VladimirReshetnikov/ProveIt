@@ -367,7 +367,7 @@ table becomes257/283 at degree2376, or258/284 at degree1944 without mask reuse.
 The [shifted native quotient](group_projective_shifted_X_quotient.md)
 uses the paid factor S in r=(q-1)S to set X=q(w+S). Thus X-r=qw+S>0
 without a separate bound witness. Its positive zero sets correspond
-bijectively to the parent, retaining q divides X. The current six-field
+bijectively to the parent, retaining q divides X. That six-field variant's
 bounds are **C-1 certificate operations,9-chi equations,m+27-chi positive
 witnesses and C+25-3chi product operations**, of exact degree
 **nu(44L+9m+135)+44**. The ten-letter illustration has:
@@ -384,6 +384,30 @@ degree1211 or287 at degree995, each with44 positive witnesses. Its
 four-field option includes293 operations at degree802 with46 witnesses.
 These complete fixed-table bounds still use an uninstantiated universal
 numerical alphabet; the separate75/88 bounds are unchanged.
+
+The [shared history right-hand sides](group_projective_shared_history_rhs.md)
+save one more multiplication by reusing the controller's paid P+1.
+Every surviving register, residual and final polynomial is identical.
+All three variants now costC-2 as certificates: the four-field SOS costs
+C+33-3chi, the unshifted six-field product costsC+27-3chi, and the
+shifted-X product costsC+24-3chi. Their respective parent equations,
+witnesses and degrees are unchanged. The shifted-X default becomes
+**256/279 operations,8 equations,42 witnesses,degree4298**. The lower-degree
+parent choices become285/degree1211 and286/degree995 with44 witnesses,
+or four-field292/degree802 with46 witnesses.
+
+The [strong-unit product](group_projective_strong_unit_product.md)
+keeps that polynomial cost while reducing the shifted-X degree. The
+new factor 1+T^2-Delta(f^2-1) cannot be -1 modulo four, so absorbing
+the strong comparison preserves the complete integer zero set. Its
+certificate costs **C+1**, with **8-chi equations,m+27-chi positive
+witnesses and C+24-3chi polynomial operations**. Its degree is
+**nu(36L+7m+105)+44**, except for an idle-only table with supplied P,
+where it is two lower. The ten-letter default is **259/279 operations,
+7 equations,42 witnesses,degree3502**. Without mask reuse the polynomial
+costs280 at degree2926; supplied P gives282/degree1773 with mask reuse
+or283/degree1485 without it. This degree improvement applies to the
+shifted-X variant; its analogous unshifted rewrite would raise degree.
 
 Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
 a fixed six-shear table with an empty genuine endpoint language acquires
@@ -419,9 +443,20 @@ polynomial costs8s+5. Letter selection and all intermediate states are paid.
 For the compatible subgroup and input congruence, unrestricted mortality
 is also exactly the existence predicate of the four-history compiler.
 The packet imports the named257/283 factored-index illustration; composing
-with the shifted-quotient theorem gives the280-operation illustration.
+with the shifted-quotient theorem gives the280-operation illustration,
+and the shared-history/strong-unit successors give279 at degree3502
+under the same existence equivalence.
 This uniform existence reduction does not certify a separately supplied
 arbitrary mortality word or fix its duration and reset positions.
+
+The [exact-series rank obstruction](group_guarded_mortality_rank_obstruction.md)
+shows that the physical paired-square scalar has linear rank6 and the
+full guarded scalar has rank9 on the actual abstract universal subgroup.
+Thus neither physical-coordinate compression nor mixing the guard into
+fewer coordinates can preserve those scalar values on every word.
+Different zero-equivalent scalars, guards, nonlinear certificates and
+global mortality-dimension or arithmetic lower bounds are outside the
+result. It does not limit the existing four-history existence reduction.
 
 The apparent one-gate reduction below88 obtained by absorbing the ordinary
 input width is [provably unsound](complete75_input_bound_absorption_obstruction.md).
@@ -450,6 +485,21 @@ A conditional CRT alias and a positive main component at R=11 expose
 that missing argument. R=11 lies outside the full compiler range
 R>=3q+1 with q>=16. No full87 false input or reverse proof is known;
 the packet neither proves nor refutes the complete relaxation.
+
+The [exact input-period criterion](complete75_independent_gamma87_period.md)
+sharpens that unresolved question on a fixed genuine outer/main history.
+Set A=a+2, Delta=A^2-1, H=4a+3, O=ord_H(2), and g=gcd(2Delta,O).
+The remaining positive input component exists exactly when W is a power
+of2 modulo H whose logarithm j satisfies j=u or A*u modulo g; this
+includes both Pell-index parities. Starting from a parent88 zero at x0,
+its odd-power marker selects the odd branch. The history transfers to
+x precisely when the width witness alpha+2d*(x0-x) stays positive and
+g divides2d*(x-x0). No discrete-log or order computation is claimed free
+in an arithmetic certificate.
+For genuine r0=(R-1)/2 divisible3 with no ternary digit2, the theorem
+gives a=6 modulo9 and6 divides g, excluding some cross-residue transfers.
+It supplies neither a full false-input witness nor a proof of87 universality;
+the exact period and width conditions still need analysis on actual histories.
 
 The [native X-divisibility audit](native_binary_X_divisibility_obstruction.md)
 shows that computing X only from its positive bound breaks standalone
@@ -486,6 +536,10 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Strong-unit product](group_projective_strong_unit_product.md) | Shifted-X certificate C+1,8-chi equations,m+27-chi witnesses, polynomial C+24-3chi, degree(1+chi)(36L+7m+105)+44. Default259/279,7 equations,42 witnesses,degree3502. | Idle-only supplied-P degree is two lower. Same integer zero set; unshifted absorption would increase degree. Numerical75/88 remain separate. |
+| [Shared history right-hand sides](group_projective_shared_history_rhs.md) | Saves1M in all three factored/shifted variants with the entire polynomial unchanged. Shifted-X default256/279,8 equations,42 witnesses,degree4298. | Parent witness, comparison and degree ledgers persist; lower-degree choices also save one operation. |
+| [Exact guarded-scalar rank](group_guarded_mortality_rank_obstruction.md) | Physical scalar rank6 and full guarded scalar rank9 for the actual universal fibre subgroup. | Obstructs exact linear realization compression only; no lower bound for zero-equivalent constructions or Diophantine arithmetic. |
+| [Independent-quotient input periods](complete75_independent_gamma87_period.md) | Exact positive input-extension criterion on a fixed genuine history; parent-marker transfers require positive shifted width and gcd(2Delta,ord_H(2)) dividing2d*(x-x0). | Includes both parity branches and a genuine ternary-index exclusion class. No full false-input witness or resolution of87 universality. |
 | [Shifted native quotient](group_projective_shifted_X_quotient.md) | Six-field C-1 certificate,9-chi equations,m+27-chi witnesses, product C+25-3chi, degree(1+chi)(44L+9m+135)+44. Illustrative257/280,8 equations,42 witnesses,degree4298. | Positive bijection retains q divides X. Supplied-P and factored-parent options trade more gates for lower degree; numerical75/88 remain separate. |
 | [Factored native index](group_projective_factored_native_index.md) | Four additions removed by an exact polynomial identity. Six-field C-1 certificate and C+28-3chi polynomial; illustrative257/283,degree2376. | Every residual, witness and positive zero is unchanged. Four-field option also saves four additions. |
 | [Nine-dimensional mortality and selected durations](group_affine_guarded_mortality9.md) | Guard dimension drops to3 with loader2. Fixed selected duration n>=2 has polynomial(16n-8)s+24n-20,6n-3 positive witnesses,degree at most2s. | Uniform existence projects to the named paid four-history compiler under the subgroup/input congruence. A separately supplied arbitrary mortality word is not certified by that projection. |
