@@ -1,0 +1,283 @@
+{
+  "status": "PASS",
+  "scope": "Exact group-completion and raw word-loader obstructions; no Diophantine or universal operation bound.",
+  "arithmetic_operation_bound": null,
+  "primary": {
+    "url": "https://arxiv.org/pdf/2401.11757",
+    "locations": [
+      "translated original \u00a71(1)-(2)",
+      "translated original \u00a73(11)",
+      "translated original \u00a76 Lemma4/Theorem1",
+      "translated original \u00a77 Lemma9/Theorem2/Corollary1"
+    ],
+    "dependency": "Uniform word reduction is imported; universal group completions are independently proved here."
+  },
+  "presentations": {
+    "C1": {
+      "generators": "abcde",
+      "relations": [
+        [
+          "ac",
+          "ca"
+        ],
+        [
+          "ad",
+          "da"
+        ],
+        [
+          "bc",
+          "cb"
+        ],
+        [
+          "bd",
+          "db"
+        ],
+        [
+          "eca",
+          "ce"
+        ],
+        [
+          "edb",
+          "de"
+        ],
+        [
+          "cca",
+          "ccae"
+        ]
+      ],
+      "defining_letter_occurrences": 33
+    },
+    "C2": {
+      "generators": "abcde",
+      "relations": [
+        [
+          "ac",
+          "ca"
+        ],
+        [
+          "ad",
+          "da"
+        ],
+        [
+          "bc",
+          "cb"
+        ],
+        [
+          "bd",
+          "db"
+        ],
+        [
+          "eca",
+          "ce"
+        ],
+        [
+          "edb",
+          "de"
+        ],
+        [
+          "cdca",
+          "cdcae"
+        ],
+        [
+          "caaa",
+          "aaa"
+        ],
+        [
+          "daaa",
+          "aaa"
+        ]
+      ],
+      "defining_letter_occurrences": 49
+    }
+  },
+  "completion_certificates": {
+    "C1": {
+      "steps": [
+        {
+          "eliminate": "e",
+          "pivot_relator": 6,
+          "before": [
+            3,
+            3,
+            1,
+            -5,
+            -1,
+            -3,
+            -3
+          ],
+          "conjugator": [
+            3,
+            3,
+            1
+          ],
+          "cyclic_pivot": [
+            -5
+          ]
+        },
+        {
+          "eliminate": "a",
+          "pivot_relator": 4,
+          "before": [
+            3,
+            1,
+            -3
+          ],
+          "conjugator": [
+            3
+          ],
+          "cyclic_pivot": [
+            1
+          ]
+        },
+        {
+          "eliminate": "b",
+          "pivot_relator": 5,
+          "before": [
+            4,
+            2,
+            -4
+          ],
+          "conjugator": [
+            4
+          ],
+          "cyclic_pivot": [
+            2
+          ]
+        }
+      ],
+      "free_generators": "cd",
+      "remaining_relators": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    "C2": {
+      "steps": [
+        {
+          "eliminate": "e",
+          "pivot_relator": 6,
+          "before": [
+            3,
+            4,
+            3,
+            1,
+            -5,
+            -1,
+            -3,
+            -4,
+            -3
+          ],
+          "conjugator": [
+            3,
+            4,
+            3,
+            1
+          ],
+          "cyclic_pivot": [
+            -5
+          ]
+        },
+        {
+          "eliminate": "a",
+          "pivot_relator": 4,
+          "before": [
+            3,
+            1,
+            -3
+          ],
+          "conjugator": [
+            3
+          ],
+          "cyclic_pivot": [
+            1
+          ]
+        },
+        {
+          "eliminate": "b",
+          "pivot_relator": 5,
+          "before": [
+            4,
+            2,
+            -4
+          ],
+          "conjugator": [
+            4
+          ],
+          "cyclic_pivot": [
+            2
+          ]
+        },
+        {
+          "eliminate": "c",
+          "pivot_relator": 7,
+          "before": [
+            3
+          ],
+          "conjugator": [],
+          "cyclic_pivot": [
+            3
+          ]
+        },
+        {
+          "eliminate": "d",
+          "pivot_relator": 8,
+          "before": [
+            4
+          ],
+          "conjugator": [],
+          "cyclic_pivot": [
+            4
+          ]
+        }
+      ],
+      "free_generators": "",
+      "remaining_relators": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    }
+  },
+  "checks": {
+    "C1_S3_assignments": 7776,
+    "C1_S3_solutions": 36,
+    "C2_S3_assignments": 7776,
+    "C2_S3_solutions": 1,
+    "isolated_word_checks": 10,
+    "literal_C2_accepted_words": 511,
+    "literal_C2_derivation_steps": 3586,
+    "group_input_code_and_exact_size_checks": 288,
+    "signed_word_quotient_normalizations": 11111
+  },
+  "exact_code_examples": [
+    {
+      "x": 1,
+      "program_word": "cdcdcddcddddcdcdddcdddddcdcddddcddcdcdddddcdddcdc",
+      "query_word": "cdcdcddcddddcdcdddcdddddcdcddddcddcdcdddddcdddcdcaabbbbbabbabbbabbabbbbbabbbbabbbabbbbaa",
+      "target": "aaa",
+      "query_length": 88,
+      "encoded_integer_bits": 263
+    },
+    {
+      "x": 2,
+      "program_word": "cdcdcddcddddcdcdddcdddddcdcddddcddcdcdddddcdddcdc",
+      "query_word": "cdcdcddcddddcdcdddcdddddcdcddddcddcdcdddddcdddcdcaabbbbbabbbbbabbabbbabbbabbabbbbbabbbbbabbbbabbbabbbabbbbaa",
+      "target": "aaa",
+      "query_length": 108,
+      "encoded_integer_bits": 323
+    }
+  ],
+  "loader_length": "|S|+20*x+19 for the chosen distinguished-generator code",
+  "source_sha256": "83aa17ef324df825b2611007f2b0124d0aa5eeb9eb4306dde302ab9aa366ea95"
+}
