@@ -74,21 +74,29 @@ now give **88=47M+41A**, with **19 positive witnesses** and exact degree
 recovers the full Pell kernel at R-2, where the compiler masks give a
 population-count upper bound one below the kernel's required minimum.
 The new and preceding89 polynomials have identical positive solution sets
-under the full fixed compiler contract. The89/148 result remains a
-separate cost/degree tradeoff;75 is still the comparison bound.
+under the full fixed compiler contract;75 is still the comparison bound.
 The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
 retain the strong comparison separately and give **91 operations at
 exact degree130** and **93 at degree90**, with the same19 positive witnesses.
-The latter supersedes93/118. The current displayed choices are:
+The latter supersedes93/118. The [linear input modulus](complete75_linear_input_modulus89.md)
+replaces the discriminant modulus by a+1, giving **89=47M+42A at degree135**.
+Its positive coordinate map restores the earlier discriminant quotient
+after the main kernel and transport bounds have been recovered.
+The [resulting degree tradeoffs](complete75_linear_input_degree_tradeoffs.md)
+add six undominated points. The current displayed choices are:
 
 | Polynomial operations | Exact degree | Positive witnesses |
 |---:|---:|---:|
 |88|151|19|
-|89|148|19|
+|89|135|19|
+|90|132|19|
 |91|130|19|
-|92|122|19|
+|92|114|19|
 |93|90|19|
-|94|84|19|
+|94|80|19|
+|95|72|19|
+|96|62|19|
+|97|56|19|
 
 This table records established constructions, not a global optimality claim.
 
@@ -158,8 +166,7 @@ a finitely generated subgroup of SL(4,Z), along one fixed quadratic curve
 in ordinary input. Its [faithful matrix loader](group_unipotent_input_loaders.md)
 costs **5=2M+3A** with nonnegative literal numerals and no witnesses.
 The proof uses an explicitly cited effective finite-presentation embedding;
-no universal presentation has been materialized. Certifying an arbitrary
-selected product of the fixed subgroup matrices remains unpaid. A fixed
+no universal presentation has been materialized. A fixed
 universal subgroup can serve all programs using a folded affine
 prefix and a swapped free basis, for **6=2M+4A** total program/input loading. The
 [affine-input obstruction](group_affine_input_obstruction.md) proves that
@@ -172,13 +179,28 @@ entries to four bounded registers. Its ordinary-input boundary costs
 **10=4M+6A**; the conditional packed interface costs **43=15M+28A** with
 20 positive history fields. That43-operation ledger excludes digit typing,
 eight selected-source products, regular macro control and power geometry.
-The [binary masked-selection packet](native_binary_masked_selection65.md)
-now pays all eight products together in **118=55M+63A**, conditional on
-those digit and cell-geometry hypotheses. The four-register margin permits
-one aggregate output bound, giving24 positive auxiliaries and17 equations.
-Its complete bitwise-AND primitive costs64, or65 with a specified binary
-length scale. History typing, selector typing, mutual exclusion, control
-and common-duration geometry still need a full arithmetic implementation.
+The [canonical-history successor](group_four_register_canonical_history47.md)
+pays one aggregate history bound and uses B=8q^2. Its **47=15M+32A**
+source recovers every canonical digit by a first-disagreement induction,
+removing separate state-range predicates.
+The [refined binary selection](native_binary_masked_selection63.md)
+pays all eight products in **117=55M+62A**, or **119=57M+62A** with a
+prescribed binary scale. The exclusive prescribed batch has23 positive
+auxiliaries and17 equations. Its complete AND primitive costs63 or64.
+The [regular macro controller](group_regular_macro_controller.md) pays
+Boolean edge choices, adjacency and all physical selectors; the
+[linked geometry47](group_linked_binary_geometry47.md) proves q=2^t
+from the population of the cell repunit and separately typed dyadic P.
+
+The [complete matrix compiler](group_complete_matrix_compiler.md) composes
+these actual sources. For a fixed macro table with m=2^h edges and p
+selector additions, it costs **7m+3h+p+273** operations, with60 equations
+and m+87 positive witnesses. Its single polynomial costs **7m+3h+p+452**
+and has exact degree **max(112,12m+16)**. Ordinary input and every typing,
+selection, control and duration obligation are paid. Applied to the fixed
+universal subgroup, this is a complete alternative universal construction;
+the universal alphabet has not been instantiated numerically and these
+parameterized counts do not improve the75/88 numerical frontiers.
 
 The [Heisenberg membership audit](heisenberg_two_generator_membership.md)
 gives a uniform four-witness certificate for any two fixed generators in
@@ -208,10 +230,17 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
-| [Coupled index/linear universal polynomial](complete75_coupled_index_linear88.md) | **88=47M+41A**, 19 positive witnesses and exact degree151. One shared expression saves a subtraction; a compiler-mask population contradiction excludes the extra sign. | Positive zero-set equivalence uses the full compiled mask contract. The75 comparison bound and89/148 tradeoff remain separate. |
+| [Linear input modulus](complete75_linear_input_modulus89.md) | **89=47M+42A**,19 positive witnesses, exact degree135; a+1 replaces the discriminant modulus. | The input index is recovered after the main kernel and transport; the old positive quotient is then restored. |
+| [Linear-modulus degree tradeoffs](complete75_linear_input_degree_tradeoffs.md) | **90/132,92/114,94/80,95/72,96/62,97/56**, all with19 positive witnesses. | Exact partition bounds apply only to the five stated literal families. |
+| [Complete matrix compiler](group_complete_matrix_compiler.md) | **7m+3h+p+273** comparison operations; one polynomial costs **7m+3h+p+452**, degree **max(112,12m+16)**; m+87 positive witnesses. | Complete for every fixed macro table. The universal subgroup theorem supplies a fixed alphabet, but no numerical universal table or smaller75/88 bound is claimed. |
+| [Linked binary geometry47](group_linked_binary_geometry47.md) | **47=26M+21A**,13 equations and19 auxiliaries; recovers q=2^popcount(J). | Shares paid B=8q^2. Dyadic P and the controller repunit then prove q=2^t,P=B^t; standalone B computation costs two more products. |
+| [Regular macro controller](group_regular_macro_controller.md) | **7m+3h+p+60**,25 equations,m+22 auxiliaries; pays edge typing, ordered adjacency and physical selectors. | Its component theorem assumes dyadic B,P; the complete compiler supplies them independently. |
+| [Canonical matrix history47](group_four_register_canonical_history47.md) | **47=15M+32A**,21 history fields, five equations; one global bound recovers every history digit. | Selected products, regular control and geometry are supplied by the complete compiler. |
+| [Binary AND and selected-source successor63](native_binary_masked_selection63.md) | AND63/64; eight selections117/119. Exclusive prescribed batch119 uses23 auxiliaries and17 equations. | Canonical zero digits are allowed. The exclusive completeness bound is proved from the actual small history digits and mutual exclusion. |
+| [Coupled index/linear universal polynomial](complete75_coupled_index_linear88.md) | **88=47M+41A**, 19 positive witnesses and exact degree151. One shared expression saves a subtraction; a compiler-mask population contradiction excludes the extra sign. | Positive zero-set equivalence uses the full compiled mask contract. The75 comparison bound and89/135 tradeoff remain separate. |
 | [Coupled-unit degree tradeoffs](complete75_coupled88_degree_tradeoffs.md) | **91/degree130** and **93/degree90**, each with19 positive witnesses and identical positive zeros to coupled88. | Exact partition bounds concern the seven fixed factors with the full strong equation retained separately. The compiler-specific sign proof is inherited intact. |
-| [Four-register matrix history](group_four_register_history.md) | Arbitrary-length paired-SL2 products need only four bounded signed registers. Paid ordinary-input boundary10 and conditional history interface43. | The20 positive history fields exclude power geometry. The43 ledger excludes the separate118-operation selected-source certificate; history typing, control and shared-duration geometry remain unpaid. |
-| [Binary AND and shared selected-source products](native_binary_masked_selection65.md) | Complete bitwise AND in64 operations, or65 with a specified binary length; conditional eight-field selection in118. The four-register specialization uses24 positive auxiliaries and17 equations. | The batch assumes dyadic cell geometry, typed histories and Boolean selectors. Its single-bound specialization also needs mutual exclusion and the half-radix digit margin. No complete universal bound follows. |
+| [Four-register matrix history](group_four_register_history.md) | Arbitrary-length paired-SL2 products need only four bounded signed registers. Paid ordinary-input boundary10 and conditional history interface43. | Historical conditional source; canonical history47 and the complete compiler now pay its external predicates. |
+| [Binary AND and shared selected-source products](native_binary_masked_selection65.md) | Earlier AND64/65 and selection118 schedules, with a checksum-defined unrestricted scale. | Superseded by selector63's shared-sum schedule; prescribed length and unrestricted scale retain distinct contracts. |
 | [Two-generator Heisenberg membership](heisenberg_two_generator_membership.md) | Uniform four-positive-witness graph18r+10 or polynomial27r+12 of degree at most4; decidability for the entire two-generator family. | Three-letter pair/triangle relaxations fail, with an explicit strict-interior family. The cited universal construction compiles an existing Diophantine equation. |
 | [Positive-root degree tradeoffs](complete75_positive_root_degree_tradeoffs.md) | **94/degree84**, **93/degree118**, and **92/degree122**, each with19 positive witnesses. Full positive bijections retain the strong and linear auxiliary equations. | Exact partition bounds concern only the stated factor family. The94/84 result saves two operations at degree84; the subsequent88-operation bound uses a different coupled factor. |
 | [Affine subgroup-input obstruction](group_affine_input_obstruction.md) | Two independent affine SL2 blocks can yield only empty, singleton or arithmetic-progression subgroup membership sets. The quadratic degree of the universal paired-SL2 curve is sharp. | No operation lower bound; an explicit SL3 affine curve accepts exactly{1,2}, excluding an extension to general SL3/SL4 curves. |

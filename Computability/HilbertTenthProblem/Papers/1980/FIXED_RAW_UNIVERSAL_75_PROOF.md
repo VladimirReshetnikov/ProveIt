@@ -55,8 +55,11 @@ excluded by the full compiler's low mask bits and population identity;
 it has the same positive zero set as the89 source under that contract.
 Its [grouped variants](../research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
 retain the strong comparison and give91/degree130 and93/degree90, with
-identical positive zeros. The89/148,92/122 and94/84 tradeoffs and this
-note's75 comparison bound remain distinct.
+identical positive zeros. The [linear input modulus](../research-wip/native-stream-queue/complete75_linear_input_modulus89.md)
+now gives89=47M+42A at exact degree135, through a positive coordinate
+map restoring the discriminant quotient. Its [degree tradeoffs](../research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
+add90/132,92/114,94/80,95/72,96/62 and97/56, all with19 positive witnesses.
+The88 polynomial bound and this note's75 comparison bound remain distinct.
 The source and full compiler proof below retain their original30-coordinate
 presentation.
 

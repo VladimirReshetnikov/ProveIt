@@ -1,5 +1,11 @@
 # Four evolving registers for the fixed matrix-word substrate
 
+The [canonical-history successor47](group_four_register_canonical_history47.md)
+now recovers state digits from one paid global bound, and the
+[complete matrix compiler](group_complete_matrix_compiler.md) supplies
+the remaining selection, control and duration certificates. The43-operation
+interface below is preserved as their conditional proof dependency.
+
 A word of arbitrary length in the fixed `SL2(Z) x SL2(Z)` subgroup
 alphabet can be checked by following **four signed integer registers**,
 two per block. Eight evolving matrix entries are unnecessary. The

@@ -80,24 +80,28 @@ universal Diophantine equations by James P. Jones and coauthors:
   Its [grouped variants](Papers/research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
   give **91 operations at degree130** and **93 at degree90**, retaining the
   full strong equation and the same positive zero set. The93/90 option
-  supersedes93/118;92/122 and94/84 remain distinct.
-  The75 comparison bound,88 polynomial bound and89/148 tradeoff are distinct.
+  supersedes93/118. The [linear input modulus](Papers/research-wip/native-stream-queue/complete75_linear_input_modulus89.md)
+  gives **89=47M+42A at degree135**, with a proved positive coordinate map
+  to the discriminant-modulus construction. Its [degree tradeoffs](Papers/research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
+  give **90/132,92/114,94/80,95/72,96/62 and97/56**; all retain19 positive
+  witnesses. The75 comparison bound and88 polynomial bound remain distinct.
   These optimized results are not yet Lean formalized.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
   finitely generated SL(4,Z) subgroup, with a fixed quadratic ordinary-input
   curve costing five scalar operations. One fixed universal subgroup serves
   all programs with a six-operation program/input loader. The group embedding
-  theorem is cited explicitly; a uniform Diophantine certificate for arbitrary
-  selected matrix products remains open. This is a substrate result, not a smaller
-  complete universal equation. The [four-register history interface](Papers/research-wip/native-stream-queue/group_four_register_history.md)
-  reduces the evolving matrix data from eight entries to four bounded
-  registers, with a paid10-operation input boundary and conditional43-operation
-  aggregate. A separate [masked-selection certificate](Papers/research-wip/native-stream-queue/native_binary_masked_selection65.md)
-  pays all eight selected-source products in118 operations under explicit
-  digit and geometry hypotheses. Its AND primitive costs64, or65 with a
-  specified binary length. History and selector typing, control and shared
-  duration remain unpaid; these component counts are not universal bounds.
+  theorem is cited explicitly. The [complete matrix compiler](Papers/research-wip/native-stream-queue/group_complete_matrix_compiler.md)
+  now pays every history, selection, control and duration predicate. It
+  composes canonical history47, prescribed selected-source119, a regular
+  macro controller and a47-operation repunit-population geometry kernel.
+  For m=2^h fixed controller edges and p selector additions, its certificate
+  costs **7m+3h+p+273**, with60 equations and m+87 positive witnesses.
+  One polynomial costs **7m+3h+p+452**, of exact degree **max(112,12m+16)**.
+  This is complete for a fixed macro table and yields an alternative
+  universal construction through the fixed subgroup theorem. The universal
+  alphabet has not been numerically instantiated; the75/88 numerical
+  frontiers are unchanged.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree

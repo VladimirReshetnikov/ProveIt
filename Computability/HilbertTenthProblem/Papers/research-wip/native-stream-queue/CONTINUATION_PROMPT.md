@@ -10,8 +10,8 @@
 > The current single-polynomial frontier is **88=47M+41A**, with19 positive
 > witnesses and exact degree151: see [the coupled-unit proof](complete75_coupled_index_linear88.md).
 > It has the same positive zeros as [positive-root89](complete75_positive_root89.md)
-> under the full compiler mask contract. The89/degree148 option remains a
-> distinct tradeoff. The positive-root coordinate gives a bijection with the
+> under the full compiler mask contract. The [linear input modulus](complete75_linear_input_modulus89.md)
+> gives89/degree135, superseding89/148. The positive-root coordinate gives a bijection with the
 > [reversed auxiliary degree160 source](complete75_reversed_auxiliary89.md).
 > It builds on the [bounded projection99](complete75_bounded_projection_elimination99.md),
 > [norm product91](complete75_norm_product91.md), and
@@ -19,8 +19,10 @@
 > auxiliary signs and the original positive quotient in a specific order;
 > do not assume intermediate computed coordinates are positive off the zero set.
 > The [positive-root partitions](complete75_positive_root_degree_tradeoffs.md)
-> give94/degree84 and92/degree122. The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
-> add91/degree130 and93/degree90, superseding93/118. All retain19 positive
+> give the earlier94/degree84 and92/degree122. The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
+> add91/degree130 and93/degree90, superseding93/118. The new
+> [linear-modulus partitions](complete75_linear_input_degree_tradeoffs.md)
+> add90/132,92/114,94/80,95/72,96/62 and97/56. All retain19 positive
 > witnesses. Preserve the paid strong equation and both ratio slacks;
 > the coupled linear unit is recovered by the complete sign proof.
 > The comparison bound75 and
@@ -97,6 +99,20 @@ gives93/90. Their sums of squares preserve the same positive zeros.
 Exhaustive partitions of these factors give no further displayed tradeoff;
 this is a scope restriction, not an optimality theorem for other circuits.
 
+The [linear-modulus successor](complete75_linear_input_modulus89.md) adds
+one gate to coupled88 and replaces kappa=u+delta*Delta by
+kappa=u+delta*(a+1), reducing the input norm degree from42 to26.
+The coupled sign proof uses that norm only to exclude its negative unit
+modulo4. After the main kernel and transport bounds are restored, recover
+the positive input Pell index v<R and use psi_A(v)=v modulo a+1 to obtain
+v=u. The odd-index congruence then reconstructs the old positive delta.
+The exact coordinate map is delta_new=(a+3)delta_old; it preserves all
+positive solutions. The new seven-factor weights are(14,22,26,28,9,5,9),
+with79 paid definitions. The degree-tradeoff packet enumerates five fixed
+partition families and proves each displayed exact degree; its scope is
+not an arithmetic lower bound. Preserve the complete strong comparison
+when moving it outside the unit product.
+
 The [group-commutator route](group_commutator_universal_substrate.md) is now
 proved as a universal computational substrate. For an r.e. positive set S,
 `G_S=<a,b | [b^-n*a*b^n,a]=1 for n in S>` recognizes exactly S via the
@@ -118,8 +134,8 @@ The fixed quadratic target consists of two copies of
 `[[1+12x,12],[-12x^2,1-12x]]`, with **5=2M+3A** paid scalar operations,
 no witnesses, and nonnegative literal numerals. Elementary proofs cover
 freeness; a6-operation alternative handles arbitrary ranks with the same
-named matrices. The major next task is a positive Diophantine certificate
-for a variable-length selected product of the fixed subgroup generators.
+named matrices. The complete matrix compiler below now supplies a positive
+Diophantine certificate for their variable-length selected products.
 One fixed subgroup/finite matrix alphabet can serve every program:
 choose U={2^p*(2x+1):x in S_p}, then precompute kappa=2^(p+1),lambda=2^p.
 Use the swapped free basis a=[[1,1],[0,1]], b=[[1,0],[12,1]] and
@@ -138,24 +154,54 @@ block on (q,1), q=2^t. The length-t shear bound and determinant one recover
 the whole target matrix from that vector; no input-height bound is needed.
 Shift by D=q^2 for positive fields. The paid boundary costs10, and the
 conditional four-lane packed interface costs43 with20 positive history
-fields, excluding q and P. The [masked-selection packet](native_binary_masked_selection65.md)
-now certifies the eight digitwise products in118 operations through one
-bitwise-AND kernel, conditional on dyadic cell geometry and typed inputs.
-The actual one-hot-or-idle controller and digit margin X<B/2 let one
-positive bound replace eight lane bounds:24 auxiliaries,17 equations.
-The margin is needed for completeness of that specialization. The complete
-AND primitive costs64, or65 with an exact binary length parameter. Keep
-its existential kernel scale separate from the physical duration.
-Selector/range typing, mutual exclusion, regular macro control and common-
-duration geometry q=2^t, P=(4q^2)^t still need arithmetic certificates.
-A precise next local refinement remains unimplemented: in the unrestricted
-64/118 variants, define the kernel q by its existing four-addition
-checksum F0+F1+F2+F3+1. Move those gates before the q-dependent packing
-and remove the checksum comparison and supplied q. All four fields are
-positive, including computed F3, so this preserves positivity and should
-save one auxiliary witness and one equation at unchanged arithmetic cost.
-Audit the reordered DAG and residual mapping before updating the current
-receipts, which still use the explicit positive q witness.
+fields, excluding q and P. The [canonical-history successor47](group_four_register_canonical_history47.md)
+changes B to8q^2 and pays sum_i H_i+beta=P. Every H_i then has canonical
+digits in[0,B). A simultaneous first-disagreement induction recovers the
+actual small digits from the recurrence; no separate digit-range predicate
+is required. Its21 positive history fields exclude q and P.
+
+The [selected-source successor63](native_binary_masked_selection63.md)
+implements the checksum-defined scale and shares the F1+F3 port with it.
+The unrestricted AND costs63, prescribed AND64, and eight-product batches
+117/119. The exclusive prescribed119 has23 auxiliaries and17 equations.
+Soundness allows canonical history digits to be zero; its positive global
+bound needs the actual small digits and mutual exclusion for completeness.
+Do not confuse any selector kernel scale with the physical height q.
+
+The [regular macro controller](group_regular_macro_controller.md) pays
+one Boolean edge per cell, ordered state adjacency and eight selectors in
+7m+3h+p+60 operations,25 equations,m+22 auxiliaries. Here m=2^h is the
+padded edge count and p the literal output-sum cost. It assumes dyadic B,P;
+P dyadic and the repunit alone do not type B. Computed F1 is positive only
+after the paid edge checksum, which must precede the binary theorem.
+
+The [geometry47](group_linked_binary_geometry47.md) uses the unchanged
+binary43 core with r=J, s odd, X>J and J>B, sharing B=8q^2. It proves
+q=2^popcount(J) before any repunit or selector semantics. Its pre-power
+bootstrap is J>=9, X>J,Y>=3, followed by Y>=X^J from the lower Pell ratio.
+Only then use the small-error estimate to recover X and the central
+binomial valuation. The proof includes every positive converse coordinate;
+standalone computation of B costs two extra products.
+
+The [complete compiler](group_complete_matrix_compiler.md) combines all
+four actual DAGs at7m+3h+p+273 operations,60 equations,m+87 witnesses.
+The single polynomial costs7m+3h+p+452 and has exact degree
+max(112,12m+16). Its soundness order avoids circular typing:
+geometry makes q and B dyadic; prescribed selection independently types P;
+the repunit gives P=B^t,J with popcount(J)=t, hence q=2^t; controller
+types the path and selectors; the selection and canonical-history theorems
+then recover the actual trace and target matrices. Completeness pads with
+hub idle steps until t>=2 and B>m. The three Pell cores have separate
+namespaces, and B,J,H,Shat,Zhat,q,P are explicitly shared.
+
+This closes the full fixed-table matrix-membership representation. A fixed
+universal alphabet is supplied by the effective group theorem, but has not
+been numerically materialized. Do not infer a smaller numerical universal
+bound from the parameterized formula. Next cost targets include removing
+generic zero/one coefficient work from the actual controller DAG, sharing
+or replacing its typing kernels, and a smaller complete computational
+substrate. Any proposed sharing must preserve the independent positivity
+and geometry proof order. The comparison/polynomial targets remain75/88.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,

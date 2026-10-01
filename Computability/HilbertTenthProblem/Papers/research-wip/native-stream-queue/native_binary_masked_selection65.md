@@ -1,5 +1,11 @@
 # Complete binary AND64/65 and eight selected fields in118/120
 
+The [shared-input successor63](native_binary_masked_selection63.md) saves
+one addition in each schedule, giving AND63/64 and selected-source117/119.
+The [complete matrix compiler](group_complete_matrix_compiler.md) uses
+its prescribed exclusive119 variant with all external predicates paid.
+The schedules and proof below remain the parent construction.
+
 The existing binary selector kernel gives an exact bitwise-AND relation
 in **65=33M+32A**, with **22 strictly positive auxiliary witnesses** and
 **16 equations**. A four-bit prefix admits zero inputs, zero output,

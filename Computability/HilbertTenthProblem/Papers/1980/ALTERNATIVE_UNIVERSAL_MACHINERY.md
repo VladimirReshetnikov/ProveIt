@@ -54,9 +54,14 @@ Sharing k-hE saves one subtraction. Its extra negative-sign branch would
 satisfy the complete half-binomial kernel at R-2, but the repeated masks
 make its population one bit too small. Its [grouped variants](../research-wip/native-stream-queue/complete75_coupled88_degree_tradeoffs.md)
 give **91/degree130** and **93/degree90**, retaining the full strong
-comparison separately. The latter supersedes93/118. The displayed choices
-are now88/151,89/148,91/130,92/122,93/90 and94/84, all with19 positive
-witnesses; no global optimality claim follows from this list.
+comparison separately. The latter supersedes93/118. The
+[linear input modulus](../research-wip/native-stream-queue/complete75_linear_input_modulus89.md)
+gives **89=47M+42A at degree135**. Recovering the main kernel first permits
+the smaller modulus a+1 and restores the old positive quotient exactly.
+Its [degree tradeoffs](../research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
+extend the displayed choices to **88/151,89/135,90/132,91/130,92/114,93/90,
+94/80,95/72,96/62 and97/56**, all with19 positive witnesses. No global
+optimality claim follows from this list.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
 symbolic and executable audits, not Lean formalizations or publication claims.
@@ -118,8 +123,7 @@ preserves named free letters, and a conjugated fibre-product subgroup
 allows a repeated two-block target. Its
 [faithful matrix loader](../research-wip/native-stream-queue/group_unipotent_input_loaders.md)
 costs **5=2M+3A**, with no witnesses and nonnegative literal numerals.
-The finite-presentation theorem is an explicit external dependency;
-certification of an arbitrary selected product remains unpaid. This does
+The finite-presentation theorem is an explicit external dependency. This does
 not bypass the stack-guard obstruction by falsely identifying stack maps
 with a group: it constructs a different universal group directly.
 A folded affine program prefix and swapped free basis give one fixed
@@ -136,14 +140,24 @@ to four bounded registers. Its paid ordinary-input boundary costs10;
 a conditional packed interface costs43 with20 positive history fields.
 That ledger excludes typing, eight digitwise selected-source products,
 regular macro control and two power relations with the same duration.
-The [masked-selection component](../research-wip/native-stream-queue/native_binary_masked_selection65.md)
-now supplies all eight products together in118 operations, under explicit
-dyadic cell geometry and history/selector digit semantics. Its four-register
-specialization needs24 positive auxiliaries and17 equations; the shared
-bound uses mutual exclusion and digits below half the cell radix.
-The underlying complete bitwise AND costs64, or65 with an exact binary
-length scale. Typing, control and physical-duration geometry remain open;
-this supplies no smaller complete universal equation.
+The [canonical-history successor](../research-wip/native-stream-queue/group_four_register_canonical_history47.md)
+adds a single paid word bound and recovers all state digits in47 operations.
+The [selected-source successor](../research-wip/native-stream-queue/native_binary_masked_selection63.md)
+supplies eight products in117 operations, or119 with a specified binary
+scale; its standalone AND costs63 or64. A [regular macro controller](../research-wip/native-stream-queue/group_regular_macro_controller.md)
+pays all edge choices, ordered flow and physical selectors. The
+[repunit-population geometry](../research-wip/native-stream-queue/group_linked_binary_geometry47.md)
+links q=2^t and P=(8q^2)^t in47 further operations, sharing the paid B.
+
+Their [complete source composition](../research-wip/native-stream-queue/group_complete_matrix_compiler.md)
+has **7m+3h+p+273** operations,60 equations and m+87 positive witnesses,
+for m=2^h fixed macro edges and p selector additions. The literal single
+polynomial costs **7m+3h+p+452**, degree **max(112,12m+16)**. Its proof
+orders the independent power typing before controller and history decoding,
+and includes a full positive converse for every accepted ordinary input.
+The fixed universal subgroup theorem makes this an alternative complete
+universal compiler. The universal alphabet remains uninstantiated, and
+this parameterized bound does not improve the numerical75/88 frontier.
 
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators
