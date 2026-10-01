@@ -14,14 +14,18 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
 The established arithmetic bounds remain **75 operations for a complete
-certificate and 88 for one universal polynomial**. The latest complete
+certificate and 87 for one universal polynomial**. The
+[normalized strong-witness construction](Papers/research-wip/native-stream-queue/complete75_normalized_strong87.md)
+costs **48M+39A**, with19 positive witnesses and exact degree203. The
+88-operation degree151 polynomial remains a lower-degree alternative.
+The latest complete
 [fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
 has an illustrative **228-operation certificate / 245-operation polynomial
 (104M+141A)**, six equations, 36 positive witnesses and degree3504.
 Its numerical universal alphabet is not instantiated. Mortality now has
 [a 4D quadratic loader costing3](Papers/research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
-the separate87-operation candidate
+the separate independent-gamma87 candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The separate [bracket-anchored GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
 pays ordinary input and arbitrary selected tile histories. Its29-tile
@@ -31,7 +35,7 @@ Its distinct explicit Neary–Woods universal table has96 physical tiles
 and a paid ordinary-input bridge: **1046=423M+623A** polynomial operations,
 162 positive witnesses, three positive program parameters and degree199806.
 Supplying the initial history value gives1049 operations at degree7276. These alternative
-universal bounds are larger than75/88; the matrix alphabet remains abstract.
+universal bounds are larger than75/87; the matrix alphabet remains abstract.
 
 ## Layout
 
@@ -93,7 +97,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   give **94 operations at degree84**, **93 at degree118**, and **92 at degree122**.
   In particular the degree84 option improves its preceding96-operation bound.
   The [coupled index/linear product](Papers/research-wip/native-stream-queue/complete75_coupled_index_linear88.md)
-  now gives **88=47M+41A**, with **19 positive witnesses** and exact degree151.
+  gives **88=47M+41A**, with **19 positive witnesses** and exact degree151.
   Sharing k-hE removes one subtraction; the compiler masks exclude the
   remaining negative sign through a population-count contradiction.
   Its positive zero set equals the89 source's under the full compiler contract.
@@ -106,7 +110,13 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   give **90/132,92/114,94/80,95/72,96/62 and97/56**; all retain19 positive
   witnesses. The [positive auxiliary-gap coordinate](Papers/research-wip/native-stream-queue/complete75_auxiliary_gap_degree_tradeoffs.md)
   further gives **90/131,91/128,98/54 and99/52** with the same witness count.
-  The75 comparison bound and88 polynomial bound remain distinct.
+  The [normalized strong witness](Papers/research-wip/native-stream-queue/complete75_normalized_strong87.md)
+  lowers the universal polynomial to **87=48M+39A**, with19 positive
+  witnesses and exact degree203. A sign-safe Pell norm restores the full
+  parent equation through `i_old=Delta*i`; rebuilding five canonical
+  auxiliaries proves converse input projection. All packed positivity,
+  both ratio slacks and the ordinary-input contract remain unchanged.
+  The75 comparison bound and87 polynomial bound remain distinct.
   These optimized results are not yet Lean formalized.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
@@ -122,7 +132,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   One polynomial costs **7m+3h+p+452**, of exact degree **max(112,12m+16)**.
   This is complete for a fixed macro table and yields an alternative
   universal construction through the fixed subgroup theorem. The universal
-  alphabet has not been numerically instantiated; the75/88 numerical
+  alphabet has not been numerically instantiated; the75/87 numerical
   frontiers are unchanged.
   Its [computed-port successor](Papers/research-wip/native-stream-queue/group_computed_selector_ports.md)
   combines one shared typing kernel, sparse state flow and common powers,
@@ -166,7 +176,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   operations,11 equations,m+30 witnesses and degree164m+920 for those
   same options. The illustrative table reaches **262/294 operations**
   with46 witnesses. Its extra native sign branch restores positive
-  witnesses for the same ordinary input; the numerical75/88 bounds remain.
+  witnesses for the same ordinary input; the numerical75/87 bounds remain.
   Computing the [two input fields](Papers/research-wip/native-stream-queue/group_projective_computed_input_fields.md)
   and [checksum field](Papers/research-wip/native-stream-queue/group_projective_computed_checksum_field.md)
   then saves seven polynomial operations and three witnesses. Using the
@@ -198,7 +208,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   mask reuse or284/degree1819 without it. Lower-degree factored-parent
   options remain286/degree1211 and287/degree995 with44 witnesses, or
   four-field293/degree802 with46 witnesses. The universal numerical
-  alphabet is still uninstantiated, so75/88 remain unchanged.
+  alphabet is still uninstantiated, so75/87 remain unchanged.
   The [shared history right-hand sides](Papers/research-wip/native-stream-queue/group_projective_shared_history_rhs.md)
   save one multiplication with the full polynomial unchanged, making the
   shifted-X example256/279 at degree4298. The
@@ -220,7 +230,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   ten-letter table. Without mask reuse the polynomial costs277 at
   degree2928; retaining P gives279/degree1774 with mask reuse or
   280/degree1486 without it, both with7 equations and43 witnesses.
-  These are complete fixed-table bounds; the75/88 numerical bounds persist.
+  These are complete fixed-table bounds; the75/87 numerical bounds persist.
   The subsequent [frozen idle padding](Papers/research-wip/native-stream-queue/group_projective_frozen_idle_padding.md)
   fixes duplicate idle hats to1 while retaining the full m-lane mask and
   scale. The example saves4M+8A and5 witnesses, reaching **247/264
@@ -242,7 +252,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   delta>=1. Both savings apply equally to certificate and polynomial
   costs. There are7-chi equations andn+27-chi witnesses, where chi records
   computed P. Empty tables keep the padding-only parent. Degrees and
-  the original m-based geometry are unchanged;75/88 remain separate.
+  the original m-based geometry are unchanged;75/87 remain separate.
 
   [Reindexing the actual edge lanes](Papers/research-wip/native-stream-queue/group_projective_reindexed_edge_geometry.md)
   saves1M on the factored branch, giving the intermediate260 polynomial.
@@ -268,7 +278,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   252/1211 or253/995 with38 witnesses, and the four-field no-mask
   choice gives259/802 with40 witnesses. Generic tables retain audited
   fallbacks; these numerical examples do not instantiate the universal
-  alphabet or improve the separate75/88 bounds.
+  alphabet or improve the separate75/87 bounds.
 
   The latest [label-aligned lane planner](Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
   compares at most six storage injections within the same m, paying all
@@ -377,7 +387,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   degree1048. With selected raw-history cost H, the default unit formula
   is H+220+mu(k), with s+g+59 witnesses. The ordinary input and optional
   three-operation program loader remain paid; these numerical examples
-  do not change the universal75/88 frontier.
+  do not change the universal75/87 frontier.
 
   The [state-free-copy successor](Papers/research-wip/native-stream-queue/gpcp_state_free_copies.md)
   keeps the alphabet, symbol codes, all rewrite rules and input boundary,
@@ -410,7 +420,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   28 comparisons,163 witnesses and degree9100. Earlier all-state-copy
   slope and per-tile variants remain1153/178w and2278/399w. This is a
   numerical alternative universal construction, not an improvement to
-  the separate75/88 frontier or an instantiation of the matrix alphabet.
+  the separate75/87 frontier or an instantiation of the matrix alphabet.
 
   The [prefix-code successor](Papers/research-wip/native-stream-queue/neary_woods_prefix_universal.md)
   preserves those97 physical tiles but replaces fixed-width symbol digits
@@ -497,7 +507,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   rejects an apparent87-operation rewrite: after losing the upper ratio
   slack, an explicit CRT and positive Pell construction supplies zeros for
   every ordinary positive input at every fixed compiled constant tuple.
-  The complete numerical bounds remain75/88.
+  The complete numerical bounds remain75/87.
 - The [zero-offset modulus audit](Papers/research-wip/native-stream-queue/complete75_zero_offset_input_modulus_obstruction.md)
   rejects an88-operation degree135 candidate: modulus a forces
   2d*x+b=psi_2(v), leaving only O(log N) possible inputs up to N for each
@@ -512,15 +522,15 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   zeros at every ordinary input for every fixed actual compiler, retaining
   both ratio constraints, the strong auxiliary square and the input norm.
   This refutes that specific projection; the independent-gamma87 candidate
-  below remains unresolved and the proved88 bound is unchanged.
+  below remains unresolved and the normalized-strong87 bound is separate.
 
 - The [independent-quotient87 candidate](Papers/research-wip/native-stream-queue/complete75_independent_gamma87_alias.md)
   remains **unresolved**. Deleting gamma=rho+sigma gives a literal87-operation,
   degree151 relaxation containing all parent zeros, but the input-index bound
   v<R is lost. A conditional alias and positive main component at R=11
   expose the proof gap; R=11 is outside the full compiler range R>=3q+1,
-  q>=16. This neither proves nor refutes the full87 candidate and supplies
-  no full counterexample. The established numerical bounds remain75/88.
+  q>=16. This neither proves nor refutes the full independent-gamma87 candidate and supplies
+  no full counterexample. The established numerical bounds remain75/87.
   The [exact period criterion](Papers/research-wip/native-stream-queue/complete75_independent_gamma87_period.md)
   now characterizes both input-Pell parity branches on each fixed genuine
   history. From a parent zero at x0, transfer to x is equivalent to a
@@ -528,14 +538,14 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   g=gcd(2Delta,ord_H(2)), Delta=(a+2)^2-1 and H=4a+3.
   A ternary-index class forces6 to divide g.
   This conditional history theorem supplies no full false-input instance
-  and leaves87 unresolved; computing the order is not a free circuit step.
+  and leaves independent-gamma87 unresolved; computing the order is not a free circuit step.
   The [compiler and order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md)
   restrict the ternary class to odd history length, an even window count
   and an even tile alphabet in the actual layout. A Lucas digit algorithm
   certifies lower divisors of g from proper factors of H, while size
   bounds exclude some prime-power contributions. These are necessary
   restrictions; the exact examples are packing fixtures, not full false
-  inputs, and87 remains unresolved.
+  inputs, and independent-gamma87 remains unresolved.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree

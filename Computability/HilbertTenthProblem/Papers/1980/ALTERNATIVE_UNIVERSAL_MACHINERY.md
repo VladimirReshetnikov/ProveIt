@@ -1,7 +1,10 @@
 # Alternative universal machinery: an arithmetic research program
 
-The leading numerical bounds are **75 certificate / 88 polynomial
-operations**. The latest complete
+The leading numerical bounds are **75 certificate / 87 polynomial
+operations**. The [normalized strong witness](../research-wip/native-stream-queue/complete75_normalized_strong87.md)
+gives **87=48M+39A**,19 positive witnesses and exact degree203. The
+88-operation degree151 construction remains a lower-degree alternative.
+The latest complete
 [fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
 gives an illustrative **228/245 operations, 6 equations, 36 witnesses,
 degree3504**, with polynomial split104M+141A; it does not instantiate a
@@ -20,7 +23,7 @@ Its distinct explicit Neary–Woods table instead gives a numerical universal
 polynomial with a paid ordinary-input bridge: **1046=423M+623A** operations,
 162 positive witnesses, three positive program parameters and degree199806.
 Supplying its initial history value gives1049 at degree7276. This is a complete alternative
-above75/88; the separate matrix alphabet remains abstract.
+above75/87; the separate matrix alphabet remains abstract.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
@@ -70,7 +73,7 @@ give **94/degree84**, **93/degree118**, and **92/degree122**. The first
 saves two operations at degree84. All retain19 positive witnesses, the
 strong auxiliary comparison and the exact linear comparison.
 The [coupled index/linear product](../research-wip/native-stream-queue/complete75_coupled_index_linear88.md)
-now gives **88=47M+41A at degree151**, with the same19 positive witnesses
+gives **88=47M+41A at degree151**, with the same19 positive witnesses
 and identical positive solution sets under the full compiler mask contract.
 Sharing k-hE saves one subtraction. Its extra negative-sign branch would
 satisfy the complete half-binomial kernel at R-2, but the repeated masks
@@ -84,7 +87,14 @@ Its [degree tradeoffs](../research-wip/native-stream-queue/complete75_linear_inp
 extend the displayed choices. The [positive auxiliary gap](../research-wip/native-stream-queue/complete75_auxiliary_gap_degree_tradeoffs.md)
 adds one reconstruction gate and lowers the auxiliary norm degree to24,
 with a full positive bijection proved after strong-rank recovery.
-The current choices are **88/151,89/135,90/131,91/128,92/114,93/90,
+The [normalized strong witness](../research-wip/native-stream-queue/complete75_normalized_strong87.md)
+then removes one operation by supplying a positive normalized `i`, computing
+`t=i*c^2` and `Q=Delta*t^2`, and using `f^2-Q` with auxiliary coefficient `Delta*Q`.
+Its norm cannot be negative one modulo4. At a zero, the positive embedding
+`i_old=Delta*i` restores every parent factor. Fresh canonical witnesses at
+`m=2cR` prove the converse using `c^2 | psi_A(2cR)`; no arbitrary-tuple
+bijection is claimed. All compiler/input/ratio bounds remain intact.
+The current choices are **87/203,88/151,89/135,90/131,91/128,92/114,93/90,
 94/80,95/72,96/62,97/56,98/54 and99/52**, all with19 positive witnesses. No global
 optimality claim follows from this list.
 The comparison-based certificate count and single-polynomial evaluation
@@ -182,7 +192,7 @@ orders the independent power typing before controller and history decoding,
 and includes a full positive converse for every accepted ordinary input.
 The fixed universal subgroup theorem makes this an alternative complete
 universal compiler. The universal alphabet remains uninstantiated, and
-this parameterized bound does not improve the numerical75/88 frontier.
+this parameterized bound does not improve the numerical75/87 frontier.
 
 The [shared typing kernel](../research-wip/native-stream-queue/group_shared_typing_matrix_compiler.md)
 combines control and all eight selected-source tests, proving the low-mask
@@ -220,7 +230,7 @@ then gives20 equations,m+34 witnesses and aC+59 polynomial of exact
 degree24m+444. A22-equation,m+36-witness alternative costsC+65 at
 degree12m+232. These are complete constructions for the fixed abstract
 universal alphabet, with every input, control and history condition paid;
-they do not instantiate its numerical table or improve75/88.
+they do not instantiate its numerical table or improve75/87.
 
 The [shifted boundary](../research-wip/native-stream-queue/group_projective_shifted_boundary.md)
 reflects the alphabet and uses origin D-1, saving1A. The
@@ -284,7 +294,7 @@ degree24(1+chi)L+54; six give12-chi equations,m+31-chi witnesses,
 C+39-3chi operations and degree(1+chi)(40L+2m+30)+60. The illustrative
 ten-letter table is262/294 with11 equations,46 witnesses and degree3544,
 or295 polynomial operations at degree2904 without mask reuse. Every
-comparison and positivity obligation remains paid;75/88 are unchanged.
+comparison and positivity obligation remains paid;75/87 are unchanged.
 
 The [two computed input fields](../research-wip/native-stream-queue/group_projective_computed_input_fields.md)
 remove two comparisons and witnesses, saving six SOS operations. Their
@@ -309,7 +319,7 @@ remains in SOSouter; the sum-of-squares alternatives retain degrees3368
 and2760 at the same arithmetic cost. The four-field checksum option remains C+3,
 12-chi equations,m+30-chi witnesses,C+38-3chi SOS operations and degree
 22(1+chi)L+54. These are complete fixed-table formulas; no numerical
-universal matrix alphabet or improvement to75/88 is asserted.
+universal matrix alphabet or improvement to75/87 is asserted.
 
 The [factored native index](../research-wip/native-stream-queue/group_projective_factored_native_index.md)
 saves four additions by an exact polynomial identity, without changing
@@ -330,7 +340,7 @@ no mask reuse gives258/281 at degree3594. Leaving P supplied gives
 with9 equations and43 witnesses in both cases. The factored parent keeps
 286/degree1211 and287/degree995 choices with44 witnesses, and its
 four-field option includes293/degree802 with46 witnesses. These are
-parameterized compiler results;75/88 remain the numerical universal bounds.
+parameterized compiler results;75/87 remain the numerical universal bounds.
 
 The [shared history right-hand sides](../research-wip/native-stream-queue/group_projective_shared_history_rhs.md)
 reuse the paid P+1 register to save one multiplication in all three
@@ -354,7 +364,7 @@ is259/279,7 equations,42 witnesses,degree3502. The other polynomial
 choices are280/degree2926 without mask reuse,282/degree1773 with mask
 reuse and supplied P, and283/degree1485 with neither option. This local
 degree improvement is specific to shifted X; unshifted absorption would
-increase degree. Numerical75/88 are still unchanged.
+increase degree. Numerical75/87 are still unchanged.
 
 The [port-bias rewrite](../research-wip/native-stream-queue/group_projective_port_bias_folding.md)
 folds equal opposite-port offsets into one paid packing bias. Let s be
@@ -380,7 +390,7 @@ The ten-letter table has s=theta=1:
 |No|No|260 / 280|7 / 43|1486|
 
 The first polynomial uses117M+159A. These illustrative fixed-table
-counts leave the numerical75/88 frontier unchanged. The lower-degree
+counts leave the numerical75/87 frontier unchanged. The lower-degree
 unshifted supplied-P choices now cost283/degree1211 or284/degree995
 with44 witnesses; the four-field no-mask supplied-P choice costs
 290/degree802 with46 witnesses. Previous packets remain reproducible.
@@ -419,7 +429,7 @@ Every output is an exact parent specialization, while equivalence of
 ordinary-input projections uses the separate path and positive-extension
 proof. The m-based exponents and exact parent degrees persist. Empty
 macro tables retain the padding-only parent. These are complete
-fixed-table improvements, not a smaller numerical75/88 universal bound.
+fixed-table improvements, not a smaller numerical75/87 universal bound.
 
 The [reindexed geometry](../research-wip/native-stream-queue/group_projective_reindexed_edge_geometry.md)
 places actual edge e in controller lane e-1. On the factored branch it
@@ -456,7 +466,7 @@ The ten-letter strong-unit choices give polynomial/degree pairs246/3502,
 choices give252/1211 or253/995 with38 witnesses; the four-field no-mask
 choice gives259/802 with40 witnesses. These are complete fixed-table
 tradeoffs, while the numerical universal alphabet remains uninstantiated
-and the75/88 bounds remain unchanged.
+and the75/87 bounds remain unchanged.
 
 The latest [label-aligned lane planner](../research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
 tries at most six storage injections within the existing m lanes and
@@ -551,7 +561,7 @@ A paid three-operation program loader supplies a single fixed universal
 interpreter, or two operations when its program numeral is fixed.
 This closes both ordinary-input and unbounded-history interfaces. That
 generic packet did not instantiate its universal table numerically; the
-explicit construction below closes this gap. The75/88 bounds are unchanged.
+explicit construction below closes this gap. The75/87 bounds are unchanged.
 
 The [complete norm-unit composition](../research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
 then saves75 polynomial operations and19 positive witnesses from the
@@ -606,7 +616,7 @@ computed-endpoint unit formula remains H+143+mu(k) certificate and
 H+220+mu(k) polynomial operations, now with s+g+59 witnesses. Supplied
 endpoints add one witness/comparison and three polynomial operations.
 The paid program loaders and the complete fixed-interpreter theorem
-remain available; numerical universal75/88 improvements remain separate.
+remain available; numerical universal75/87 improvements remain separate.
 
 The [state-free-copy compiler](../research-wip/native-stream-queue/gpcp_state_free_copies.md)
 then removes copies of control states while keeping all original symbols,
@@ -647,7 +657,7 @@ witness gives1075,28 comparisons,163 witnesses and degree9100. The earlier
 all-state-copy slope source remains1153 with178 witnesses; the old
 per-tile source remains2278 with399 witnesses. Thus the GPCP route now
 has a concrete numerical universal instance with all input and history
-interfaces paid. These alternative bounds are larger than75/88 and do
+interfaces paid. These alternative bounds are larger than75/87 and do
 not materialize the separate group-based matrix alphabet.
 
 The [binary prefix-code successor](../research-wip/native-stream-queue/neary_woods_prefix_universal.md)
@@ -667,7 +677,7 @@ The supplied-initial-value option gives1060=430M+630A,28 comparisons,
 164 witnesses and degree7332. The fixed codeword assignment is compiler
 data, not an uncharged runtime choice. The three positive program
 parameters and valid-configuration slice theorem remain. The1072 source
-is retained as a one-fewer-witness alternative; neither changes75/88.
+is retained as a one-fewer-witness alternative; neither changes75/87.
 
 The latest [bracket-anchored successor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
 removes the fresh separator copy tile and its symbols in the initial and
@@ -758,7 +768,7 @@ This changes the scalar series, so the old exact-series rank bounds do
 not obstruct it. The packet's stable279 endpoint import remains unchanged;
 the latest245 compiler composes through the same existence equivalence. Neither
 is a certificate for a separately supplied arbitrary6D word or its reset
-positions, and no numerical universal alphabet or smaller75/88 bound is
+positions, and no numerical universal alphabet or smaller75/87 bound is
 claimed.
 
 The [4D quadratic-reset construction](../research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
@@ -811,7 +821,7 @@ but every positive zero must satisfy2d*x+b=psi_2(v) with v odd. Each
 fixed admissible tuple therefore has only O(log N) projected inputs up
 to N and explicit infinitely many omissions. The necessary condition
 does not claim a converse. It rejects this candidate, while the valid
-a+1 modulus retains its89-operation cost and75/88 remain unchanged.
+a+1 modulus retains its89-operation cost and75/87 remain unchanged.
 
 The [first-norm ratio obstruction](../research-wip/native-stream-queue/complete75_first_norm_ratio_obstruction.md)
 rejects a separate apparent87-operation shortcut in the direct universal
@@ -820,7 +830,7 @@ gap leaves only c>kY. For every fixed compiled constant tuple, an explicit
 CRT outer construction extends through all positive Pell witnesses at
 every positive input. The relaxed source therefore represents all positive
 integers. This rejects that rewrite, not other potential87-operation
-equations;75 and88 remain the established numerical bounds.
+equations;75 and87 are the established numerical bounds.
 
 The [positive-transport projection obstruction](../research-wip/native-stream-queue/complete75_positive_transport_projection_obstruction.md)
 rejects another exact87=47M+40A shortcut. It supplies C>0 instead of F>0,
@@ -839,8 +849,8 @@ forward map from88. The missing dominance inequality previously proved
 v<R. A conditional CRT lemma and a positive main/first component at R=11
 show how input-Pell aliases can occur without that bound. But the full
 compiler requires R>=3q+1 with q>=16; the component is therefore not a
-full87 zero or a rejected-input counterexample. Neither universality
-nor failure of the complete87 relaxation is established.
+full independent-gamma87 zero or a rejected-input counterexample. Neither universality
+nor failure of the complete independent-gamma87 relaxation is established.
 
 The [exact period successor](../research-wip/native-stream-queue/complete75_independent_gamma87_period.md)
 characterizes all positive input extensions of a fixed genuine outer/main
@@ -854,8 +864,8 @@ source extension, not a free order/discrete-log arithmetic primitive.
 The genuine half-binomial parameters also satisfy a=6 modulo9 exactly
 when r0=(R-1)/2 is divisible3 and has no ternary digit2; that class
 forces6 to divide g and restricts which input residues can share the
-history. No actual full false-input instance is supplied, and the87
-relaxation remains unresolved.
+history. No actual full false-input instance is supplied, and the
+independent-gamma87 relaxation remains unresolved.
 
 The [compiler/order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md)
 now use the actual sparse masks, including the source's MF+B-1 offset.
@@ -868,7 +878,7 @@ without materializing the enormous Pell integers. Certified local orders
 give squarefree lower divisors of g; parity and cofactor bounds exclude
 some large prime powers. The algorithmic field-operation bounds are not
 free arithmetic gates. The large examples satisfy packing only, and no
-actual rejected-input history or full resolution of87 is supplied.
+actual rejected-input history or full resolution of independent-gamma87 is supplied.
 
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators

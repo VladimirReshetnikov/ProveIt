@@ -7,9 +7,15 @@
 > [signed projection](complete75_signed_projection_elimination101.md) retains75
 > with20 positive witnesses and nine equations.
 >
-> The current single-polynomial frontier is **88=47M+41A**, with19 positive
-> witnesses and exact degree151: see [the coupled-unit proof](complete75_coupled_index_linear88.md).
-> It has the same positive zeros as [positive-root89](complete75_positive_root89.md)
+> The current single-polynomial frontier is **87=48M+39A**, with19 positive
+> witnesses and exact degree203: see [the normalized strong-witness proof](complete75_normalized_strong87.md).
+> Its sign-safe norm and positive map `i_old=Delta*i` restore coupled88;
+> fresh canonical auxiliary witnesses at `m=2cR` prove converse projection.
+> The full compiler contract, both ratio slacks and `F>0` are retained.
+> This is distinct from the unresolved independent-gamma87 candidate.
+> The [88-operation degree151 construction](complete75_coupled_index_linear88.md)
+> remains a lower-degree alternative. It has the same positive zeros as
+> [positive-root89](complete75_positive_root89.md)
 > under the full compiler mask contract. The [linear input modulus](complete75_linear_input_modulus89.md)
 > gives89/degree135, superseding89/148. The positive-root coordinate gives a bijection with the
 > [reversed auxiliary degree160 source](complete75_reversed_auxiliary89.md).
@@ -28,7 +34,7 @@
 > witnesses. Preserve the paid strong equation and both ratio slacks;
 > the coupled linear unit is recovered by the complete sign proof.
 > The comparison bound75 and
-> polynomial bound88 are separate measures.
+> polynomial bound87 are separate measures.
 >
 > The README indexes the four-row queue simulator, binaryFIFO58 and
 > ternaryFIFO66, row-local controller obstruction, residue-affine pumping,
@@ -59,7 +65,7 @@
 > Variable leaf selection, synchronized control and arbitrary duration
 > remain unpaid.
 >
-> Next targets are below75 comparisons or below88 polynomial operations,
+> Next targets are below75 comparisons or below87 polynomial operations,
 > with degree and positivity counted. These are reviewed mathematical
 > proofs with exact source audits, not Lean formalizations.
 
@@ -90,7 +96,7 @@ aliases its entire controller pack to the physical selector pack, giving
 210 certificate / 227 polynomial operations, six equations,34 witnesses,
 and degree2240. It is not the ten-letter comparison table.
 The numerical universal alphabet remains uninstantiated; these do not
-replace the separate75/88 frontier above. The new
+replace the separate75/87 frontier above. The new
 [five-dimensional mortality interface](group_affine_bipartite_mortality5.md)
 has an affine two-operation input and unrestricted words. Factoring the
 weighted reset into alternating blocks removes the loading guard and
@@ -173,7 +179,7 @@ the complete effective fixed-table universality interface. That generic
 packet did not instantiate its numerical universal interpreter/table;
 its sample918 is not a numerical universal bound. The explicit-table
 successor below now closes this gap for the GPCP route. The matrix
-alphabet remains uninstantiated and75/88 is unchanged.
+alphabet remains uninstantiated and75/87 is unchanged.
 Full positive extensions are component theorems; executable outer
 fixtures deliberately leave astronomical native Pell witnesses unbuilt.
 
@@ -227,7 +233,7 @@ certificate /1072=445M+627A polynomial operations**,27 comparisons,
 162 positive witnesses and degree485982. Keeping the initial history
 value supplied gives1075,28 comparisons,163 witnesses and degree9100.
 All-copy slope and old per-tile sources remain1153/178w and2278/399w.
-These are complete numerical alternatives, larger than the75/88 frontier.
+These are complete numerical alternatives, larger than the75/87 frontier.
 
 The explicit degree proof uses v=k+2 and nu=k+3 for computed initial value
 (nu=2 if supplied), since two framing coefficients are now free program
@@ -303,21 +309,21 @@ All eight factors equal1 with all19 new witnesses positive, for every
 positive input, while restored F is negative. Thus positive F's packed
 width bound must be replaced if this projection is revisited. This does
 not resolve the distinct independent-gamma87 candidate or prove a general
-lower bound. The75/88 frontier remains unchanged.
+lower bound. The75/87 frontier remains unchanged.
 
-Next concrete TM lead: the current right-move rules enumerate the next
-tape symbol in q a c -> b p c. A context-free rule q a -> b p may replace
-them if a shared repair p ] -> p _ ] supplies the right-edge blank for
-each relevant target state. Prove the pending-head intermediate semantics
-and that repair is forced before an ordinary transition, then recompile
-the actual sparse table and paid input. Do not assume the old row-by-row
-TM equivalence for these additional intermediate configurations. The
-bracket-anchoring theorem may then apply to the new genuine rewrite path.
-This lead is not yet a saved construction or numerical bound.
+The [sparse oriented TM rules](sparse_tm_rewriting.md) now prove the
+pending-head semantics: before-oriented right targets and after-oriented
+left targets use local moves, with one shared boundary repair per relevant
+nonaccepting state. The repair is forced, and accepting pending states
+clean up to the same terminal. The complete run theorem and deterministic
+helper passed independent review. A before-oriented start preserves the
+paid input prefix. Arithmetic compilation must still rebuild the actual
+table, geometry and native witnesses; symbolic rule savings alone are
+not arithmetic bounds.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary
-input, or reduce the best88 source while preserving its positive packed
+input, or reduce the best87 source while preserving its positive packed
 width and both ratios. Straight digit-Horner and simple subset-sum schedules
 tried on the current tables did not improve their paid costs; this bounded
 observation is not an obstruction. Preserve chronology, independent
@@ -493,7 +499,7 @@ C=3m+3h+p+222+f_flow-3min(h,3), with39 equations andm+59 witnesses.
 Its polynomial costsC+116 and has exact degree12m+112. This trades degree
 against the original separate-kernel compiler. A fixed universal alphabet
 is supplied by the effective group theorem but has not been numerically
-materialized. Do not infer a numerical universal bound below75/88.
+materialized. Do not infer a numerical universal bound below75/87.
 
 The [Gram scalar-zero/mortality route](group_gram_zero_mortality.md) is a
 new endpoint alternative. The symmetric-square action on two Gram triples
@@ -985,7 +991,7 @@ astronomical Pell solutions. Iterating r times costs130r with34r equations,
 50r-1 witnesses and a232r-1 polynomial still of degree40; block width is4^r.
 It pays one uniform injective word code, not a complete fixed-program PCP
 interface. A polynomial-only loader is impossible: values at2^n would
-force f(x)=x^4, but spread4(3)=17. The ordinary75/88 frontier is unchanged.
+force f(x)=x^4, but spread4(3)=17. The ordinary75/87 frontier is unchanged.
 
 The [radix-four129 implementation](native_binary_input_dilation129.md)
 replaces q2=q*q,Q=q2*q2,B=8Q by Q=q*q,B=Q+Q. Its complete result is
@@ -1054,7 +1060,7 @@ N1,N2 -> N1,1+N1−N2 using the exclusion of residue3 modulo4. Its direct
 schedule adds2A. The shared-root difference costs5M+9A including its
 unit shift, versus5M+6A for retaining the norm block, so there is no
 new saving or packet. Independent-gamma87 remains unresolved, and the
-complete75/88 bounds are unchanged.
+complete75/87 bounds are unchanged.
 
 The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
 rejects computing X from r+bound_beta while erasing w and X=wq.
@@ -1243,7 +1249,7 @@ Separate arbitrary supplied-word certification remains unpaid. Exact
 all-word proofs, source/default checks and independent rational channel
 and repeated-reset reviews passed.
 
-The primary75/88 frontier remains unchanged. An [exact input-translation
+The primary75/87 frontier remains unchanged. An [exact input-translation
 obstruction](complete75_input_bound_absorption_obstruction.md) rejects the
 specific apparent87 shortcut that absorbs2d*x into alpha: x shifts by
 M/gcd(2d,M), delta drops by2d/gcd(2d,M), and all eight units are invariant.
@@ -1284,7 +1290,7 @@ rho>gamma. A fresh R=11 half-binomial main/ratio/strong component has
 verified period 12288046457816218188 and gcd 6, admitting u=9,j=3. It is
 NOT a full compiler zero: R=11 violates q>=16,R>=3q+1. The actual
 packed-mask, transport and positive width constraints are the next
-obligation. Do not call87 established or refuted without closing that
+obligation. Do not call this independent-gamma87 candidate established or refuted without closing that
 full interface. The packet's component proof and default replay pass.
 
 The [exact period successor](complete75_independent_gamma87_period.md)
@@ -1319,7 +1325,7 @@ orders at other primes can impose more restrictions. A numerical R=491515,
 q=32 meets the native range and digit condition but is not a full history.
 Conditionally, if a genuine H=3p with p prime, p-1 is a period with
 gcd(2Delta,p-1)=6, so 3|d(x-x0) is sufficient. No genuine complete
-history with that factorization is supplied. Full87 remains unresolved.
+history with that factorization is supplied. Full independent-gamma87 soundness remains unresolved.
 
 The [compiler/order filters](complete75_gamma87_compiler_order_filters.md)
 now use the actual sparse layout rather than arbitrary mask constants.
