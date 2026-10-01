@@ -4,9 +4,14 @@
 Run: python verify_results.py
 Requires Python 3.10+, sympy, mpmath. No network access is used.
 These finite checks supplement, and do not replace, the proofs in the article.
+ed. (2026-09-30): the results go to rerun/verification_results.json unless
+--output is given (the recorded verification_results.json is not overwritten
+by default), and the JSON file is written with LF line endings on every
+platform.
 """
 from __future__ import annotations
 
+import argparse
 from fractions import Fraction
 from math import factorial, gcd, lcm
 from pathlib import Path
@@ -198,6 +203,13 @@ def numeric_checks() -> dict:
 
 
 def main() -> None:
+    # ed. (2026-09-30): output option; the default leaves the recorded file untouched.
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path,
+                        default=ROOT/'rerun'/'verification_results.json',
+                        help='JSON output file (default: rerun/verification_results.json; '
+                             'pass verification_results.json to overwrite the recorded file)')
+    args = parser.parse_args()
     result = {'environment': {'python':platform.python_version(),
                               'sympy':sp.__version__, 'mpmath':mp.__version__}}
     print('Checking exact moment algebra...', flush=True)
@@ -207,9 +219,11 @@ def main() -> None:
     print('Checking numerical cusp asymptotics and zero condensation...', flush=True)
     result['numerics'] = numeric_checks()
     result['status'] = 'PASS'
-    (ROOT/'verification_results.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-09-30): configurable path; newline='\n' so the JSON is LF on Windows too.
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(result,indent=2)+'\n', newline='\n')
     print(json.dumps({k:v for k,v in result.items() if k != 'numerics'}, indent=2))
-    print('PASS: full numerical results saved to verification_results.json')
+    print(f'PASS: full numerical results saved to {args.output.name}')
 
 if __name__ == '__main__':
     main()

@@ -51,7 +51,10 @@ zero coefficients in its inverse.
 ## Boundaries
 
 For 0 < s < 1/2 the optimal leading logarithmic cost is proved, not a complete
-multiplicative equivalent. The composition theorem is for factorial powers,
+multiplicative equivalent. (Editorial, 2026-09-30: the complete equivalent at
+every positive order, including the constant at s = 1/3, and the lower
+transition windows are supplied by
+`../Finite_Jet_Pressure_Laws_Gevrey_Reversion/`; see the amendments below.) The composition theorem is for factorial powers,
 not all superexponential weights. No feedback-specific inverse equivalent,
 Borel summability theorem, or analytic realization theorem is claimed.
 
@@ -138,7 +141,7 @@ following changes were made on 2026-09-29; everything else is as delivered.
     type-level part is there; the fixed-ball problem stays open).
   Two hygiene fixes, also marked: the title page no longer creates a PDF
   page anchor (removing the delivered build's duplicate destination
-  `page.1`), and the title of Section 5 uses `	exorpdfstring` (removing two
+  `page.1`), and the title of Section 5 uses `\texorpdfstring` (removing two
   hyperref warnings). No label was renamed or removed.
 - `article.pdf`: rebuilt from the amended source with `latexmk -pdf`
   (23 pages; the delivered PDF had 22; no errors, undefined references,
@@ -147,12 +150,10 @@ following changes were made on 2026-09-29; everything else is as delivered.
 - `data/build_validation.json`: `pdf_pages` recomputed; an
   `editorial_rebuild` field says so; its other fields describe the
   delivered build.
-- `code/verify.py`: both CSV writers pass `lineterminator='
-'` (the csv
+- `code/verify.py`: both CSV writers pass `lineterminator='\n'` (the csv
   default is CRLF on every platform, which is why the delivered
   `data/recorded/*.csv` had CRLF line endings) and the JSON writer
-  `newline='
-'`; the default `--order` is now 45, the order of the recorded
+  `newline='\n'`; the default `--order` is now 45, the order of the recorded
   run and of every documented command (it was 40).
 - `code/render_tables.py`: writes LF on every platform, and its default
   `--output` is `data/rerun` instead of `data`, so a bare run no longer
@@ -174,3 +175,41 @@ following changes were made on 2026-09-29; everything else is as delivered.
   `high_precision_cross_checks`) removed. `py code/render_tables.py`
   reproduced both `data/*_table.tex` files byte for byte. The documented
   commands use bare `python`; on Windows use `py`.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batch 65 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-30)`. The byline is kept as delivered, as before.
+
+- `article.tex`: a second unnumbered environment "Editorial note (ProveIt,
+  2026-09-30)" (`ednotelater`) is defined in the preamble. Three notes
+  record the later package `../Finite_Jet_Pressure_Laws_Gevrey_Reversion/`
+  (batch 65, written against this article as amended):
+  - in Section 1.2, after the statement that a complete multiplicative
+    equivalent remains open for `0 < s < 1/2`: its Theorem `thm:main` gives
+    `log R_n = sum_{k<=J} p_k n^(1-ks) + o(1)` for `(J+1)s > 1`, with an
+    explicit coefficient formula, for these weights and for eventually
+    shifted-factorial weights with an arbitrary positive finite head; it
+    recovers `eq:multmain` and `eq:halfmain`; its `o(1)` is not effective
+    and not uniform as `s -> 0`;
+  - at the question "Complete multiplicative cost below one half":
+    answered for every `0 < s < 1/2`; at `s = 1/3` the constant is
+    `6^(1/3) C + (5/3) 2^(1/3) C^2 + 7 C^3/9`;
+  - at the question "Uniform transitions at the lower thresholds": answered
+    by its Theorem `thm:windows` (which does not claim the question):
+    for `s_n = 1/r + t/log n`, after the moving lower terms are subtracted,
+    `log R_n -> p_r(1/r) e^(-rt)` uniformly for bounded `t`; its `r = 1`
+    case is `eq:crossover`; the remainder is not effective.
+  No label was renamed or removed.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf`
+  (MiKTeX pdfTeX 1.40.29): 23 pages, as after the first pass, with no
+  error, undefined reference, multiply defined label, duplicate destination,
+  or overfull box; every font is embedded and none is Type 3. The pages
+  carrying the notes were rendered and inspected.
+- `data/build_validation.json`: its `editorial_rebuild` field gains a
+  sentence on this rebuild.
+- `README.md`: the pointer under "Boundaries", this section, and three
+  repaired code spans in the 2026-09-29 section, whose backslashes had been
+  lost on writing: `\texorpdfstring` (it held a tab character),
+  `lineterminator='\n'` and `newline='\n'` (each held a line break).

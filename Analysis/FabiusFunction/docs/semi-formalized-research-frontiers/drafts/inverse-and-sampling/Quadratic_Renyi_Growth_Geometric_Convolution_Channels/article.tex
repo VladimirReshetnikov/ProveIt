@@ -31,8 +31,9 @@
 \newaliascnt{corollary}{theorem}
 \newtheorem{corollary}[corollary]{Corollary}
 \aliascntresetthe{corollary}
-\crefname{corollary}{corollary}{corollarys}
-\Crefname{corollary}{Corollary}{Corollarys}
+% ed. (2026-09-30): plural names corrected (delivered: "corollarys", "Corollarys").
+\crefname{corollary}{corollary}{corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
 \theoremstyle{definition}\newaliascnt{definition}{theorem}
 \newtheorem{definition}[definition]{Definition}
 \aliascntresetthe{definition}
@@ -48,6 +49,8 @@
 \aliascntresetthe{remark}
 \crefname{remark}{remark}{remarks}
 \Crefname{remark}{Remark}{Remarks}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\E}{\mathbb E}\newcommand{\Prb}{\mathbb P}
 \newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
 \newcommand{\dd}{\,\mathrm d}
@@ -359,6 +362,21 @@ Flatness alone proves divergence for $\alpha>2$, but says nothing about its
 speed. In particular, replacing the moving conditional expectation by its
 pointwise limit in \eqref{eq:conditional-M} would give an infinite integral
 and discard the finite-depth regularization that determines the answer.
+% ed. (2026-09-30): the two predecessor theorems reproved here, by label, and the agreement of constants
+\begin{ednote}
+The predecessor results reproved in \cref{prop:subcritical,prop:finiteness}
+are Theorem~\texttt{thm:renyi-phase} (the limit for $1<\alpha\le2$ and
+divergence for $\alpha>2$) and Theorem~\texttt{thm:all-renyi} (finiteness
+of every finite order at every finite depth) of
+\path{../Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/article.tex}.
+For uniform innovations these are second proofs of the same statements
+(finiteness here by the saddle bound, there by a root-Lipschitz lemma);
+the beta extension is new. The limits agree under $X_{\mathrm{old}}=2X-1$:
+the product $\int f^\alpha\cdot\int f^{2-\alpha}$ is unchanged by the affine
+map, and at $\alpha=2$ the predecessor's second integral is $2$, the length
+of $[-1,1]$, where it is $1$ here. That article now carries a reciprocal
+note at its question ``Growth above the critical R\'enyi order''.
+\end{ednote}
 
 \section{Endpoint geometry from positive simplex integrals}
 \label{sec:geometry}
@@ -800,7 +818,8 @@ $\theta_*Lab/2$, which exceeds the middle coefficient
 $\theta_*Lb/2$ by $\theta_*Lb^2/2>0$.
 Hence the middle contribution is relatively exponentially small at speed
 $m^2$. Taking the logarithm of the sum of the two endpoint terms selects
-the larger $\theta_e$; when they are equal, summing them changes the logarithm
+% ed. (2026-09-30): "the larger $\theta_e$" read "the endpoint with the larger exponent"; $\theta_e$ is defined only in Section 6.
+the endpoint with the larger exponent $\theta_0$ or $\theta_1$; when they are equal, summing them changes the logarithm
 only by $\log2$. Finally divide \eqref{eq:endpoint-J} by $a$.
 This proves \cref{thm:beta-main}, and \cref{thm:uniform} is its
 $\theta_0=\theta_1=1$ case.
@@ -1120,6 +1139,20 @@ This is a convenient verification identity, not a claim to a new
 arithmetic theory of dyadic Fabius values; that theory is classical
 \cite{arias}. The script checks $f(1/2)=2$, $f(1/4)=1$, $f(1/8)=5/36$,
 and 24 independent dyadic refinement equalities.
+% ed. (2026-09-30): uncited Lean counterparts of the dyadic values (names checked in Analysis/FabiusFunction/Lean)
+\begin{ednote}
+At $q=1/2$ these values are machine-checked in ProveIt's Lean development
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/}), which the article
+does not cite. There $f(x)=2\,\mathrm{up}(2x-1)$
+(\path{Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}),
+equivalently $f(x)=2F(2x)$ on $[0,1/2]$ for the Fabius distribution
+function $F$; the exact dyadic values of $F$ are computed by a verified
+evaluator (\path{Fabius.fabiusDyadicValue_cast}), for instance
+$F(1/4)=5/72$ and $F(3/4)=67/72$ (\path{Fabius.fabiusReal_quarter},
+\path{Fabius.fabiusReal_three_quarters}), giving $f(1/8)=5/36$ and
+$f(3/8)=67/36$; and $f(1/2)=2$ is \path{Fabius.deriv_fabiusReal_half}.
+No R\'enyi statement of the article has a Lean counterpart.
+\end{ednote}
 
 \subsection{A tail evaluator with an analytic truncation bound}
 For a non-dyadic $x\in(0,1/2]$, choose $n$ and put $k=2^nx$,
@@ -1253,6 +1286,13 @@ both beta parameters are proportional to $m$, and the allocation approaches
 an endpoint. A uniform analysis must match the ordinary bulk contribution,
 the final-cell contribution, and the allocation boundary layer.
 \end{problem}
+% ed. (2026-09-30): the same question is open in the predecessor
+\begin{ednote}
+This is the predecessor's question ``Critical crossover'' (the scaling
+$\alpha=2+u/m$), in
+\path{../Nuclear_Bayesian_Operators_Fabius_Rvachev_Laws/article.tex};
+it remains open there and here.
+\end{ednote}
 
 \begin{problem}[Fluctuations beyond large deviations]
 Find the limiting distribution of the centered radial variable and of

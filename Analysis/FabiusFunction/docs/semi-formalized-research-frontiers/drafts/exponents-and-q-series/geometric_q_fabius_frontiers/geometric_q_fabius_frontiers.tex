@@ -16596,6 +16596,23 @@ primitive odd roots of unity --- must be controlled; the cancellation-order
 calculus of the two-nome partition function below is a candidate mechanism.
 \end{conjecture}
 
+% ed. (2026-09-30): the conjecture is proved by a later arrival beside this volume (batch 65 of docs/incoming)
+\begin{statusbox}{Editorial note (ProveIt, 2026-09-30)}
+This conjecture is proved by Corollary~\texttt{cor:denominator} of the
+archival arrival \path{../Unit_Circle_Barrier_q_Fabius_Transform/}
+(batch~65 of the repository drop zone; unreviewed, with no Lean proof),
+which does not mention it.  That corollary gives $D_n a_n\in\RationalNumbers[q]$
+for $D_n=\prod_{2\le d\le n}\Phi_d^{\Floor{n/\operatorname{lcm}(2,d)}}$, with
+the same $a_n=m_n/n!$ as here.  By \eqref{p7:eq:Pn-def},
+$\mathcal P_n=[n]_q!\,a_n=([n]_q!/D_n)\,(D_na_n)$, and for odd $e\ge3$ the
+exponent of $\Phi_e$ in the polynomial $[n]_q!/D_n$ is
+$\Floor{n/e}-\Floor{n/(2e)}=\Floor{(\Floor{n/e}+1)/2}$, the exponent in the
+displayed product; so the divisibility holds for every $n\ge3$.  The
+repeated cyclotomic jets are controlled by that article's exact
+leading-pole formula (its Theorem~\texttt{thm:moment-pole}).  An independent
+computation on filing confirmed the divisibility for $3\le n\le20$.
+\end{statusbox}
+
 \begin{statusbox}{Post-snapshot Lean status: Exact equation and theorem}
 The source-only module \path{GeometricUniformMomentPolynomial.lean} has one
 public definition, \lean{geometricUniformMomentPolynomial}, and exactly eight
@@ -17343,6 +17360,26 @@ every radius.
 What remains open is the range $|t|\ge\pi$, where the dilogarithm arguments
 leave the unit disc and cancellation between spectral terms is possible.
 \end{remark}
+
+% ed. (2026-09-30): the open range is settled by a later arrival beside this volume (batch 65 of docs/incoming)
+\begin{statusbox}{Editorial note (ProveIt, 2026-09-30)}
+The remaining range is settled, for every complex $t\ne0$, by the archival
+arrival \path{../Unit_Circle_Barrier_q_Fabius_Transform/} (batch~65 of the
+repository drop zone; unreviewed, with no Lean proof).  Its
+Theorem~\texttt{thm:main} proves that for every fixed $z\ne0$ the unit
+circle is a natural boundary of $q\mapsto\prod_{j\ge0}E\bigl((1-q)q^jz\bigr)$,
+which is $M_q(z)$ of \eqref{p7:eq:Mq-inside}, even against meromorphic
+continuation; since $C_q(t)=\EulerE^{-t/2}M_q(t)$, \cref{p7:conj:natural-boundary}
+holds for every $t\ne0$, with no genericity hypothesis and no exceptional
+frequency.  At a root of unity $\xi$ with $0<|(1-\xi)t|<2\pi$ the radial
+logarithm has a nonvanishing cusp coefficient, bounded below for all
+complex arguments; where $|(1-\xi)t|>2\pi$, zeros condense on the circle.
+\Cref{p9:thm:natural-boundary} is the real and imaginary special case: the
+cusp coefficient there is $-\mathscr A_\omega$, as an independent
+computation on filing confirmed to 16 digits.  This also answers, for the
+scalar product, Part~IX's problem ``Generic natural boundary and action-zero
+control''.  The arrival does not cite this volume.
+\end{statusbox}
 
 \begin{problem}[Reciprocal orthogonal polynomials]
 Determine the Jacobi coefficients $\beta_n^{(r)}$ of the Laplace dual law

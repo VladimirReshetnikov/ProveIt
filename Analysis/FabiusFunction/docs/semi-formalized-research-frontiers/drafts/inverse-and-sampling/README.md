@@ -199,7 +199,7 @@ conjecture as open, and no Lean statement exists.
 holds *Beyond Polynomial Diagonals: Nuclear Bayesian Operators, Exact
 Null Modes, and a Rényi Phase Transition for Fabius–Rvachev Laws*,
 filed on 2026-09-29 by a quick archival intake (21-page A4 PDF,
-912-line source, an exact SymPy check program with high-precision
+939-line source, an exact SymPy check program with high-precision
 eigenvalue diagnostics).  It studies the conditional expectation `C_m`
 of the information frontier above: `C_m` is in every Schatten class
 with an infinite-dimensional kernel of explicit null modes, its
@@ -217,7 +217,8 @@ Unreviewed; its numerics are diagnostics; no Lean statement.
 [`Quadratic_Renyi_Growth_Geometric_Convolution_Channels/`](Quadratic_Renyi_Growth_Geometric_Convolution_Channels/)
 holds *Quadratic Rényi Growth: A Universal Linear Correction and
 Endpoint Selection in Geometric Convolution Channels*, filed on
-2026-09-30 by a quick archival intake (19-page A4 PDF, 1,381-line
+2026-09-30 by a quick archival intake and amended editorially the same
+day (its README lists the amendments; 20-page A4 PDF, 1,421-line
 source, an exact check program with optional floating-point
 quadrature).  It answers the article above's question on growth above
 the critical Rényi order: for fixed `α > 2` the prefix information is

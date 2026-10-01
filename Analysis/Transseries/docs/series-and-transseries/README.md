@@ -4,7 +4,7 @@ This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
 2026-09-04 (see the end of this file). Beside them are fifty-one unmerged
 arrivals, fifty of 2026-09-29 and one of 2026-09-30, each filed whole
-with its PDF; the fifty of 2026-09-29 were then amended editorially (see
+with its PDF and then amended editorially (see
 "Arrivals of 2026-09-29 and 2026-09-30" below).
 
 The transseries Lean inventory and zero-gap result are computed by
@@ -389,8 +389,9 @@ resonance-block packages); the critical-line article needed no note. The
 ninth delivery was amended in the same way after it was filed, and notes
 recording it were added to two earlier packages (the exact-degree and
 residue-obstruction packages).
-The package of the tenth delivery is filed as delivered and has not yet
-been amended; its paragraph below cites the delivered files.
+The tenth delivery was amended in the same way on 2026-09-30, and notes
+recording it were added to one earlier package (the subexponential-cost
+package).
 
 [`Support_Controlled_Reversion_One_Exponential/`](Support_Controlled_Reversion_One_Exponential/)
 holds *Support-Controlled Reversion and the Exact One-Exponential
@@ -749,7 +750,7 @@ limits and Lean formalization are not claimed.
 [`Sharp_Subexponential_Cost_Gevrey_Reversion/`](Sharp_Subexponential_Cost_Gevrey_Reversion/)
 holds *Sharp Subexponential Reversion: exact extremal cost, a Gevrey
 transition, and composition of two divergent series* (23-page A4 PDF,
-1,407-line source, a standard-library exact check program with 5,338
+1,446-line source, a standard-library exact check program with 5,338
 scalar checks, and extended-precision diagnostics labelled as
 uncertified). It answers the weighted-type article's question "Optimal
 subexponential cost of reversion"
@@ -776,13 +777,13 @@ other; editorial notes in both now link them.
 [`Finite_Jet_Pressure_Laws_Gevrey_Reversion/`](Finite_Jet_Pressure_Laws_Gevrey_Reversion/)
 holds *Finite-Jet Pressure Laws for Gevrey Reversion and Condensation:
 complete multiplicative asymptotics, explicit critical constants, and
-Poisson centering* (23-page A4 PDF, 1,649-line source, a
+Poisson centering* (24-page A4 PDF, 1,706-line source, a
 standard-library exact check program with 1,066 scalar checks, and
 double-precision diagnostics through degree 10,000 labelled as
 uncertified). It answers the subexponential-cost article's question
 "Complete multiplicative cost below one half"
-(`Sharp_Subexponential_Cost_Gevrey_Reversion/article.tex:1196-1204`),
-the gap that article states at `:136-138`: for positive weights equal to
+(`Sharp_Subexponential_Cost_Gevrey_Reversion/article.tex:1215-1223`),
+the gap that article states at `:138-140`: for positive weights equal to
 `D_* Γ(j+ν+1)^s` from some index on, with an arbitrary positive finite
 head, and the family `F_θ(z) = z(1 − θ C W(z))^{1/θ}` (`θ ≥ −1`;
 `F_0 = z e^{−CW}`), the normalized inverse coefficient satisfies
@@ -798,7 +799,7 @@ formulas. `θ = 1` is that article's coefficient-ball extremum and
 trees. It also proves a finite-jet universality law (only
 `w_1, …, w_{⌊1/s⌋}` matter), every critical window `s = 1/r + t/log n`,
 which answers that article's question "Uniform transitions at the lower
-thresholds" (`:1206-1211`) although the article does not say so, and
+thresholds" (`:1236-1241`) although the article does not say so, and
 the approximation of the small-part counts by independent Poisson
 variables with explicit centering corrections of every order. The
 Poisson approximation, the leading centering and the first two terms of
@@ -813,7 +814,12 @@ written after the exact-type article was filed and amended, but does
 not cite it; for eventually factorial weights it extends that article's
 question "Optimal subexponential overhead"
 (`Exact_Weighted_Type_Beyond_Log_Convexity/article.tex:1918-1928`) to an
-arbitrary positive head.
+arbitrary positive head. Editorial notes now record these relations: in
+this article, its uncited neighbours (the exact-type article and the
+finite-core, microscopic-condensation and Poisson-layer articles, which
+use its Poisson small-part mechanism for another kernel) and the second
+answered question; in the subexponential-cost article, the gap and both
+questions.
 
 [`Logarithmic_Critical_Endpoint_Lambert_Charts/`](Logarithmic_Critical_Endpoint_Lambert_Charts/)
 holds *The Logarithmic Critical Endpoint: Convergent Lambert Charts,
@@ -1977,8 +1983,8 @@ and the digests of its own source and PDF in `notes/validation.json` were
 recomputed for the amended source and the rebuilt PDF; they match the
 filed files.
 The finite-jet package's `data/build_validation.json` carries digests of
-its delivered source and PDF; they match the filed files, and any
-rebuild makes them stale.
+its source and PDF; they were recomputed for the amended source and the
+rebuilt PDF and match the filed files.
 
 Fifty-eight CSV tables written with CRLF line endings were normalized to LF
 on filing: the reversion package's `numeric_checks.csv`, the regularity
@@ -2009,10 +2015,10 @@ eighth delivery has no other carriage return, and since its editorial pass
 all its programs write LF on every platform. The ninth
 delivery has no carriage return in any file, and its program writes LF
 line endings on every platform.
-The tenth delivery has no carriage return in any file either, but its
-two programs, as delivered, write their JSON and TeX outputs with the
-platform's line endings (CRLF on Windows); only the diagnostics CSV is
-always LF.
+The tenth delivery has no carriage return in any file either, and since
+its editorial pass its two programs write LF on every platform (as
+delivered, their JSON and TeX outputs used the platform's line endings,
+CRLF on Windows; the diagnostics CSV was always LF).
 
 The inverse-harmonic package's `verification/run.log` and
 `verification/certification.log` are byte-identical to its `results.json`
@@ -2094,13 +2100,15 @@ default (`--output-dir`) and refuses `verification/` itself unless given
 recorded files byte for byte; `rerun/` is not ignored, so delete it
 afterwards. Its `build.sh` runs pdfLaTeX under the
 ignored `build/` and copies the PDF over the filed one.
-The finite-jet programs are as delivered and overwrite recorded outputs by
-default: `code/verify.py` writes `data/verification.json`, and
-`code/diagnostics.py` rewrites `data/diagnostics.csv`,
+The finite-jet programs write into `data/rerun/` by default
+(`--output`); only an explicit `--output` into `data/` overwrites
+`data/verification.json` or `data/diagnostics.csv`,
 `data/numeric_validation.json` and `data/numerical_table.tex` (the
-article does not input the table; it embeds a copy), so run them on a
-copy or pass `--output`. Its diagnostics use double precision, not an
-extended `long double`, and run on Windows; a rerun reproduced the
-recorded values to a relative difference below `10^{−12}`.
+article does not input the table; it embeds a copy), as the delivered
+defaults did; `data/rerun/` is not ignored, so delete it afterwards. Its
+diagnostics use double precision, not an extended `long double`, and run
+on Windows; a rerun of the amended programs reproduced
+`data/verification.json` and `data/numerical_table.tex` byte for byte and
+the other recorded values to a relative difference below `10^{−12}`.
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.

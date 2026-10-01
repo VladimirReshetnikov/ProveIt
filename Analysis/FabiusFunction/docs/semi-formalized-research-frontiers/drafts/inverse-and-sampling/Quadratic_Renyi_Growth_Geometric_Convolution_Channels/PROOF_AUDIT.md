@@ -86,6 +86,12 @@ LaTeX warnings, or overfull boxes on the final pass. All pages were rendered
 with Poppler and visually inspected. The article and its generated table can
 be rebuilt without rerunning Python. Package hashes are in `SHA256SUMS`.
 
+*Amendment (ProveIt, 2026-09-30):* the delivered checksum ledger `SHA256SUMS`
+(11 entries) was verified in full on filing (batch 65) and not kept; the
+delivered archive remains in the repository history (see
+`docs/incoming/README.md`, batch 65 row). The PDF was later rebuilt with
+editorial notes (see the README's "Editorial amendments").
+
 ## Limits not silently promoted to theorems
 
 No result is asserted uniformly as alpha decreases to two, q increases to one,

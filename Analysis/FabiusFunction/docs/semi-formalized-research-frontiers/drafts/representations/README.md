@@ -129,7 +129,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   still states both conjectures; no Lean statement.
 - [`Sharp_Conditioning_Laws_Fabius_Lacunary_Series/`](Sharp_Conditioning_Laws_Fabius_Lacunary_Series/),
   *Sharp Conditioning Laws for Fabius and Lacunary Random Series*
-  (23-page US Letter PDF, 1,655-line source, a NumPy/SciPy check and
+  (23-page US Letter PDF, 1,676-line source, a NumPy/SciPy check and
   Monte Carlo program), filed on 2026-09-28 by a quick archival intake from
   the repository-level `docs/incoming/` drop zone.  It describes the whole
   random-series configuration conditioned on a small sum `S ≤ x`, for every
@@ -141,7 +141,9 @@ of an existing draft; semantic consolidation is deferred to the post-
   phase-dependent boundary layer for geometric weights.  The finite-i.i.d.
   phenomenon is credited to Diaconis–Freedman.  It complements the scalar
   endpoint asymptotics of `docs/ASYMPTOTIC_COMPLETION_AUDIT.md` and the
-  rotating endpoint laws above.  Unreviewed; its numerics are not
+  rotating endpoint laws above.  Its Question 7 is answered in its
+  qualitative part by the extremes article below (an editorial note of
+  2026-09-30 says so).  Unreviewed; its numerics are not
   certificates; no Lean statement.
 - [`Sharp_Conditioning_Laws_Uniform_Random_Series/`](Sharp_Conditioning_Laws_Uniform_Random_Series/),
   *Sharp Conditioning Laws for Uniform Random Series* (26-page A4 PDF,
@@ -160,9 +162,10 @@ of an existing draft; semantic consolidation is deferred to the post-
   Lean statement.
 - [`Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/`](Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/),
   *Poisson Extremes and Gaussian Bridges under Small-Sum Conditioning*
-  (21-page A4 PDF, 1,577-line source, a SymPy/SciPy diagnostic program),
+  (21-page A4 PDF, 1,593-line source, a SymPy/SciPy diagnostic program),
   filed on 2026-09-30 by a quick archival intake from the
-  repository-level `docs/incoming/` drop zone.  In the setting and
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  In the setting and
   notation of the lacunary article above, it proves that the conditioned
   extremes form a marked Poisson process jointly independent of the
   Brownian bridge and the exponential slack, for every uniformly

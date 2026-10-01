@@ -27,6 +27,8 @@
 \newtheorem{remark}[theorem]{Remark}
 % ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of the batch-65 editorial pass.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
@@ -136,6 +138,23 @@ For $s\ge1/2$, the statements give a full multiplicative equivalent,
 including the separate constant at the boundary $s=1/2$. For $0<s<1/2$,
 a complete multiplicative equivalent remains open here: further
 subexponential terms cannot in general be discarded.
+% ed. (2026-09-30): the gap below one half is closed by a later package of the same directory
+\begin{ednotelater}
+The later package \path{Finite_Jet_Pressure_Laws_Gevrey_Reversion/}
+(filed in batch~65 of the repository drop zone, written against this
+article as amended; unreviewed, no Lean proof) supplies a complete
+multiplicative equivalent at every positive order. For this article's
+weights, and more generally for positive weights equal to
+$D_*\Gamma(j+\nu+1)^s$ from some index on with an arbitrary positive finite
+head, its Theorem~\texttt{thm:main} gives
+$\log R_n=\sum_{k\le J}p_kn^{1-ks}+o(1)$ whenever $(J+1)s>1$, with an
+explicit coefficient extraction formula for every $p_k$; its $\theta=1$
+case is the extremum of \cref{thm:main} here, and it recovers
+\eqref{eq:multmain} and \eqref{eq:halfmain} as consistency checks. Its
+$o(1)$ is not effective, and it is uniform on compact sets of positive
+orders but not as $s\to0$. See also the notes at the questions in
+Section~\ref{sec:questions}.
+\end{ednotelater}
 
 The maximum law in \cref{thm:composition} settles the factorial-weight
 version of the second question. It does not settle the same problem for
@@ -1202,6 +1221,17 @@ The formula for $s=1/2$ proves that simply summing the small-part
 intensities is insufficient. A useful next theorem would give the
 complete equivalent for $1/3<s<1/2$, with its constant at $s=1/3$.
 No coefficient for that further expansion is asserted here.
+% ed. (2026-09-30): answered by a later package of the same directory
+\begin{ednotelater}
+Answered, for every $0<s<1/2$, by
+\path{Finite_Jet_Pressure_Laws_Gevrey_Reversion/} (Theorem~\texttt{thm:main}
+there; see the note in Section~\ref{sec:target}). At $s=1/3$ it gives
+\[
+ \log R_n=Cn^{2/3}+\Bigl(2^{1/3}C+\tfrac23C^2\Bigr)n^{1/3}
+ +6^{1/3}C+\tfrac53\,2^{1/3}C^2+\tfrac79C^3+o(1),
+\]
+whose constant term is the constant asked for here.
+\end{ednotelater}
 
 \subsection{Uniform transitions at the lower thresholds}
 Construct analogues of \eqref{eq:crossover} around $s=1/r$ for
@@ -1209,6 +1239,15 @@ $r\ge2$. The variables $(s-1/r)\log n$ are natural candidates, but
 one must first subtract all larger contributions. A successful theorem
 should specify both a uniform remainder and the normalization under
 which a finite limiting profile appears.
+% ed. (2026-09-30): answered by a later package, which does not say so
+\begin{ednotelater}
+Answered by Theorem~\texttt{thm:windows} of
+\path{Finite_Jet_Pressure_Laws_Gevrey_Reversion/}, which does not claim this
+question: for $s_n=1/r+t/\log n$, after the moving lower-order terms
+$\sum_{k<r}p_k(s_n)n^{1-ks_n}$ are subtracted, $\log R_n$ tends to
+$p_r(1/r)\ee^{-rt}$, uniformly for bounded $t$; its $r=1$ case is
+\eqref{eq:crossover}. The remainder is $o(1)$, not effective.
+\end{ednotelater}
 
 \subsection{Replacing factorials by a local-quotient theory}
 For a log-convex weight $M$, seek hypotheses under which the critical

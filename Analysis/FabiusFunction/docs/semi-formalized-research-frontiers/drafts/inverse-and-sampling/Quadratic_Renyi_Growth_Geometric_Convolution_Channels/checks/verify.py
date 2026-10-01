@@ -4,6 +4,10 @@
 No theorem-prover certification is claimed. Exact checks use Fraction/SymPy.
 Optional quadrature is floating-point, windowed, and is not a certified value
 of the complete Renyi information.
+ed. (2026-09-30): outputs go to checks/rerun/ unless --output is given (the
+recorded checks/verification.json, checks/quadrature_*.json and the table
+checks/saddle_rows.tex that the article inputs are not overwritten by
+default); every file is written with LF line endings on every platform.
 """
 from __future__ import annotations
 import argparse
@@ -180,7 +184,10 @@ def main() -> None:
     parser.add_argument('--quadrature',type=int,nargs='*',default=[])
     parser.add_argument('--nodes',type=int,default=32)
     parser.add_argument('--dps',type=int,default=100)
-    parser.add_argument('--output',type=Path,default=Path(__file__).parent)
+    # ed. (2026-09-30): the default leaves the recorded files in checks/ untouched.
+    parser.add_argument('--output',type=Path,default=Path(__file__).parent/'rerun',
+                        help='output directory (default: checks/rerun; pass checks '
+                             'to overwrite the recorded files)')
     args=parser.parse_args()
     if args.dps < 50:
         parser.error('--dps must be at least 50')
@@ -190,7 +197,8 @@ def main() -> None:
             'saddle_point_diagnostics':saddle_table(),
             'quadrature':[windowed_endpoint_quadrature(m,args.nodes) for m in args.quadrature]}
     name='verification.json' if not args.quadrature else f'quadrature_{args.nodes}.json'
-    (args.output/name).write_text(json.dumps(report,indent=2)+'\n')
+    # ed. (2026-09-30): newline='\n' so the output is LF on Windows too.
+    (args.output/name).write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     # The retained table is sufficient for a PDF-only rebuild.
     if not args.quadrature:
         rows = []
@@ -198,7 +206,7 @@ def main() -> None:
             values = [format(float(row[key]), '.8f') for key in
                       ('point_rate', 'two_term_prediction', 'residual')]
             rows.append(str(row['m'])+' & '+' & '.join(values)+r' \\')
-        (args.output/'saddle_rows.tex').write_text('\n'.join(rows)+'\n')
+        (args.output/'saddle_rows.tex').write_text('\n'.join(rows)+'\n',newline='\n')
     print(json.dumps(report,indent=2))
 if __name__=='__main__':
     main()

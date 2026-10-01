@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Non-certified numerical diagnostics. Requires numpy, scipy, mpmath.
 All exact algebraic verification is separately in verify.py.
+ed. (2026-09-30): outputs go to data/rerun/ unless --output is given (the
+recorded data/diagnostics.csv, data/numeric_validation.json and
+data/numerical_table.tex are not overwritten by default), and every file is
+written with LF line endings on every platform.
 """
 from __future__ import annotations
 import argparse,csv,json,math
@@ -76,7 +80,9 @@ def mp_logR(n,s,theta,dps=80):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--max-n',type=int,default=10000)
-    p.add_argument('--output',type=Path,default=Path(__file__).resolve().parents[1]/'data')
+    # ed. (2026-09-30): the default leaves the recorded data/ files untouched.
+    p.add_argument('--output',type=Path,default=Path(__file__).resolve().parents[1]/'data'/'rerun',
+                   help='output directory (default: data/rerun; pass data to overwrite the recorded files)')
     args=p.parse_args()
     if args.max_n < 100:
         p.error('--max-n must be at least 100')
@@ -107,7 +113,8 @@ def main():
             error=abs(high-low)
             assert error<2e-11,(s,theta,error)
             cross.append({'s':s,'theta':theta,'n':70,'absolute_log_difference':error})
-    (args.output/'numeric_validation.json').write_text(json.dumps({'status':'passed','certified':False,'cross_checks':cross,'rows':len(rows)},indent=2)+'\n')
+    # ed. (2026-09-30): newline='\n' here and below so the files are LF on Windows too.
+    (args.output/'numeric_validation.json').write_text(json.dumps({'status':'passed','certified':False,'cross_checks':cross,'rows':len(rows)},indent=2)+'\n',newline='\n')
     # A small table for the manuscript.
     chosen=[r for r in rows if r['s'] in (1/3,.25) and r['theta']==1]
     lines=['\\begin{tabular}{rrrrr}','\\toprule','$s$ & $n$ & $\\log R_n$ & $\\log R_n-S_n$ & $\\log R_n-nP(n^{-s})$\\\\','\\midrule']
@@ -116,6 +123,6 @@ def main():
         saddle_text=f"{r['saddle_residual']:.6f}" if math.isfinite(r['saddle_residual']) else r'\textemdash'
         lines.append(f"${sv}$ & {r['n']:,} & {r['log_R']:.6f} & {r['log_residual']:.6f} & {saddle_text}\\\\")
     lines+=['\\bottomrule','\\end{tabular}']
-    (args.output/'numerical_table.tex').write_text('\n'.join(lines)+'\n')
+    (args.output/'numerical_table.tex').write_text('\n'.join(lines)+'\n',newline='\n')
 
 if __name__=='__main__':main()

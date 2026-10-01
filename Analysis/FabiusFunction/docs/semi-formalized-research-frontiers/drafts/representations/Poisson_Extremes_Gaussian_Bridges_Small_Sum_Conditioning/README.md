@@ -22,7 +22,9 @@ The article develops three main results:
    uniformly lacunary weight sequence, including the Fabius weights 2^(-j).
    This addresses the qualitative point-process and independence parts of
    Question 7 in the repository's lacunary-conditioning report. Sharp rates
-   for the complete joint process remain open.
+   for the complete joint process remain open. (Editorial, 2026-09-30: that
+   report, `../Sharp_Conditioning_Laws_Fabius_Lacunary_Series/`, now carries
+   a reciprocal note at its Question 7.)
 
 ## Relationship to the repository
 
@@ -65,12 +67,19 @@ SymPy 1.14.0, and mpmath 1.3.0. It passed six symbolic identities, generated
 numerical stability rerun with a longer exact head, higher tail order,
 and larger Fourier cutoff.
 
-Output files:
+Output files (recorded in `data/`; a run writes them to `data-rerun/`
+unless `--output` is given, and only `--output data` overwrites the recorded
+files; as delivered, the default was `data/` itself, also for `--quick`):
 - `data/maximum_table.csv`: all 12 parameter triples and diagnostic values.
 - `data/verification.json`: symbolic results, versions, constants, and stability.
 
 `--quick` omits N=2048 and the stability rerun. No internet connection,
 GitHub credentials, repository checkout, or random seed is needed.
+
+In this repository, on Windows, `uv run --no-project --with numpy==2.3.5
+--with scipy==1.17.0 --with sympy==1.14.0 --with mpmath==1.3.0 python
+code/verify.py` runs the diagnostics without a virtual environment; bare
+`python` may not resolve, so use `py` or `uv`.
 
 The numerical CDF evaluations are floating-point approximations. The
 independent maximum formula is an exact FINITE PRODUCT mathematically;
@@ -85,3 +94,47 @@ The final article section gives eight directions, including quantitative
 joint-process rates, the first genuine finite-N conditioning correction,
 regularly varying and nonuniform models, transition regimes, multiple
 constraints, random weights, and certified computation/formalization.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batch 65 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-30)`, every change to the program `ed. (2026-09-30)`.
+The addressee line ("prepared for Vladimir Reshetnikov") and the
+running head and title-page label "ProveIt research extension" are kept as
+delivered, as for the other arrivals of the Fabius drafts tree; the package
+is an archival arrival, not a ProveIt release.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-30)" is defined in the preamble (the theorem counter is
+  unchanged). One note, after the numerical constants following
+  Proposition `prop:constants`: the letter dictionary with
+  `../Sharp_Conditioning_Laws_Uniform_Random_Series/`, which the article
+  credits but whose constants it renames. There `M_p` (mean) is `A_p` here
+  and `C_p` (variance) is `B_p` here, its `C_p = (1-1/p) M_p` is
+  `B_p = (1-beta) A_p`, and its variance fraction `alpha_p(b)` is the index
+  clock `F_p(b)`; the `C_p` here (the log-partition constant,
+  `-Gamma(1-beta) zeta(1-beta)`) is a third constant. The mean function,
+  total mean, normalizer and slack letters are also swapped. No label was
+  renamed or removed.
+- `article.pdf`: rebuilt from the amended source by the two `pdflatex`
+  passes of the `Makefile` (MiKTeX pdfTeX 1.40.29): 21 pages as delivered,
+  no error, undefined reference, multiply defined label, duplicate
+  destination, or overfull box; every font is embedded and none is Type 3.
+  The page carrying the note was rendered and inspected.
+- `code/verify.py`: the default `--output` is `data-rerun/` instead of
+  `data/`, so neither a plain run nor `--quick` overwrites the recorded
+  files; the CSV writer passes `lineterminator='\n'` (the `csv` default is
+  CRLF on every platform, which is why the delivered
+  `data/maximum_table.csv` had CRLF line endings; it was normalized to LF on
+  filing, batch 65) and the JSON writer `newline='\n'`. A rerun of the
+  amended program on a copy (2026-09-30, the `uv` command above) wrote LF
+  files with the recorded header and 12 rows; 50 of the table's cells differ
+  from the recorded ones in the last digits (at most 3.6e-13 relative), and
+  in `verification.json` only the stability entry `absolute_cdf_change`
+  differs (6.1e-16 against 5.0e-16); both are floating-point noise of the
+  platform, as the program's status line says.
+- `README.md`: a pointer to the reciprocal note, the output location and the
+  Windows command, and this section.
+- Recorded, not changed: `requirements.txt` stays unpinned as delivered; the
+  pinned command above is the one used for the rerun.

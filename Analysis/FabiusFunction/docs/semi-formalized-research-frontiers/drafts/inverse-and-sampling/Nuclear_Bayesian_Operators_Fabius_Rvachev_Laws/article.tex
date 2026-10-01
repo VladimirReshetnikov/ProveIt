@@ -25,6 +25,8 @@
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
 % ed. (2026-09-29): unnumbered environment for editorial notes.
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of the batch-65 editorial pass.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
 \newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}
 \newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}
@@ -829,6 +831,31 @@ Does the closed span of the exponential-polynomial modes from all zeros of $\phi
 \begin{problem}[Growth above the critical R\'enyi order]
 For fixed $\alpha>2$, determine the sharp growth of $I_\alpha-R_m$. The proof here establishes divergence but no rate. Endpoint saddle-point estimates suggest that the competition between the moving prefix endpoint and the log-normal small-tail scale should matter. A useful first target is to determine whether growth is quadratic in $m$ and to establish matching upper and lower bounds before proposing an all-orders expansion.
 \end{problem}
+% ed. (2026-09-30): answered, for fixed alpha and q, by a later package of the same directory
+\begin{ednotelater}
+Answered for fixed $\alpha>2$ and fixed $q$ by the later package
+\path{inverse-and-sampling/Quadratic_Renyi_Growth_Geometric_Convolution_Channels/}
+(filed in batch~65 of the repository drop zone, written against this
+article unchanged; unreviewed, no Lean statement). Its
+Theorem~\texttt{thm:uniform}, stated for innovations uniform on $[0,1]$
+(the affine change $X\mapsto(X+1)/2$ leaves $I_\alpha$ unchanged), gives
+with $L=\log(1/q)$
+\[
+ I_\alpha(S_{q,m};X_q)-R_m=\frac{(\alpha-2)L}{2}\,m^2+\bigl(B(\alpha)-L\bigr)m
+ +O\bigl((\log(m+1))^2\bigr),
+\]
+where
+\[
+ B(\alpha)=\frac{\alpha(\alpha-2)}{\alpha-1}\log\alpha-(\alpha-1)\log(\alpha-1),
+\]
+so the growth is quadratic with an explicit linear term and no $m\log m$
+term; its Theorem~\texttt{thm:beta-main} multiplies both coefficients by
+$\max\{\theta_0,\theta_1\}$ for Beta$(\theta_0,\theta_1)$ innovations with
+$\theta_0,\theta_1\ge1$. That article also reproves
+\cref{thm:renyi-phase,thm:all-renyi} (its Propositions
+\texttt{prop:subcritical} and \texttt{prop:finiteness}), with the same
+limits. The next question, ``Critical crossover'', remains open there too.
+\end{ednotelater}
 
 \begin{problem}[Critical crossover]
 Study $\alpha=2+u/m$ or other joint scalings as $m\to\infty$. Fixed-order dominated convergence stops exactly at two, whereas each finite-depth function is finite at larger orders. The transition region is therefore a natural place for a uniform asymptotic analysis, potentially involving the endpoint inverse-Fabius expansions already present in the repository.

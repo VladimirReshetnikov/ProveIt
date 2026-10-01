@@ -29,7 +29,7 @@ The operator acts from L2(law X_q) to L2(law S_{q,m}). Those are different weigh
 - Exact collision information as the squared Hilbert–Schmidt norm, and the critical-depth asymptotic constant `log(2 integral f_q^2)`.
 - A complete negative answer to rate-distortion optimality of prefix-only postprocessing at the original prefix's exact squared-error distortion.
 
-The complete positive singular spectrum, the sharp decay constant, the growth rate above the critical Rényi order, and the full rate-distortion expansion are not claimed solved. Eight follow-up research questions appear in Section 12.
+The complete positive singular spectrum, the sharp decay constant, the growth rate above the critical Rényi order, and the full rate-distortion expansion are not claimed solved. Eight follow-up research questions appear in Section 12. (Editorial, 2026-09-30: the growth rate above the critical order is answered, for fixed `alpha > 2` and fixed `q`, by `../Quadratic_Renyi_Growth_Geometric_Convolution_Channels/`; see the note at that question and the amendments below.)
 
 ## Reproduce the calculations
 
@@ -78,4 +78,12 @@ Made in the editorial pass after batch 56 of `docs/incoming/` (see `docs/incomin
 - A rerun of the amended program on a copy (2026-09-29, the command above, Python 3.13.5) reproduced `data/polynomial_bounds.csv`, `data/singular_values.csv`, `data/verification_report.json` and `data/bounds_table.tex` byte for byte, and its standard output equals `data/run_log.txt` (which is captured console output; the program does not write it).
 - `PROOF_AUDIT.md`: a dated amendment under the snapshot hash says that it is a commit and identifies the Library source, as in the article note.
 - `README.md`: the reproduction command and output location, "commit" for "tree snapshot" under "Provenance and verification status", the retired ledger in the file map, and this section.
-- Recorded, not changed: the PDF metadata title (`pdftitle`, "Beyond Polynomial Diagonals: Bayesian Operators for Fabius–Rvachev Laws") is shorter than the printed title; and notation clashes with the information frontier — here `J_q` is a Fisher constant and `V` the variance, there `J_q` is the surprisal and `V_q` the varentropy.
+- Recorded, not changed (2026-09-29): the PDF metadata title (`pdftitle`, "Beyond Polynomial Diagonals: Bayesian Operators for Fabius–Rvachev Laws") is shorter than the printed title; and notation clashes with the information frontier — here `J_q` is a Fisher constant and `V` the variance, there `J_q` is the surprisal and `V_q` the varentropy.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batch 65 of `docs/incoming/` (see `docs/incoming/README.md`); every change to the source is marked `% ed. (2026-09-30)`.
+
+- `article.tex`: a second unnumbered environment "Editorial note (ProveIt, 2026-09-30)" (`ednotelater`) is defined in the preamble. One note, directly after the research question "Growth above the critical Rényi order": it is answered for fixed `alpha > 2` and fixed `q` by `../Quadratic_Renyi_Growth_Geometric_Convolution_Channels/` (batch 65), whose Theorem `thm:uniform` gives `I_alpha - R_m = (alpha-2) L m^2/2 + (B(alpha) - L) m + O(log^2(m+1))` with `L = log(1/q)` and an explicit `B(alpha)`, and whose Theorem `thm:beta-main` extends it to Beta innovations; that article reproves Theorems `thm:renyi-phase` and `thm:all-renyi` with the same limits; "Critical crossover" stays open. No label was renamed or removed.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf` (MiKTeX pdfTeX 1.40.29): 21 pages as before, no error, undefined reference or citation, multiply defined label, duplicate destination, or overfull box; every font is embedded and none is Type 3. The page carrying the note was rendered and inspected.
+- `README.md`: a pointer after the list of results not claimed solved, the dating of the 2026-09-29 "Recorded, not changed" item, and this section.

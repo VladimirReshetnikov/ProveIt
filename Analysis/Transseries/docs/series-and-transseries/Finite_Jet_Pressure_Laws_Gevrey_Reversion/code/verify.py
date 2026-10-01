@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Exact finite checks for the finite-jet pressure article (standard library only).
 These checks do not establish the analytic limit theorems.
+ed. (2026-09-30): the record goes to data/rerun/verification.json unless
+--output is given (the recorded data/verification.json is not overwritten by
+default), and it is written with LF line endings on every platform.
 """
 from __future__ import annotations
 import argparse, itertools, json, math, random
@@ -132,7 +135,10 @@ def localized_grouped(n,h,w,C,theta):
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--output',type=Path,default=Path(__file__).resolve().parents[1]/'data'/'verification.json')
+    # ed. (2026-09-30): the default leaves the recorded data/verification.json untouched.
+    parser.add_argument('--output',type=Path,default=Path(__file__).resolve().parents[1]/'data'/'rerun'/'verification.json',
+                        help='JSON output file (default: data/rerun/verification.json; '
+                             'pass data/verification.json to overwrite the recorded file)')
     args=parser.parse_args()
     checks=0
     # Exact inverse identities for both classical endpoints and interpolation.
@@ -206,7 +212,8 @@ def main():
       'extremizer_sign_patterns':256,'critical_pure_a1_cases':50,
       'scope':'Finite algebraic checks only; no proof-assistant certification or proof of the asymptotic limits.'}
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(record,indent=2)+'\n')
+    # ed. (2026-09-30): newline='\n' so the JSON is LF on Windows too.
+    args.output.write_text(json.dumps(record,indent=2)+'\n',newline='\n')
     print(json.dumps(record,indent=2))
 
 if __name__=='__main__': main()

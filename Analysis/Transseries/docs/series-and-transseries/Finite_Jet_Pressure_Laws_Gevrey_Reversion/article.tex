@@ -32,6 +32,8 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
@@ -137,6 +139,25 @@ The source review was targeted: the relevant READMEs, the predecessor's
 extremal and localization arguments, and searches for overlapping
 reversion results were inspected. This was not an audit of the entire
 repository.
+% ed. (2026-09-30): neighbouring packages of the same directory that the article does not cite
+\begin{ednote}
+Four packages beside the predecessor bear on this article and are not cited
+in it. The exact-type article \cite{ed:exacttype} asks for the optimal
+subexponential overhead of reversion for a specified weight profile (its
+question ``Optimal subexponential overhead''; an editorial note there records
+the factorial-weight answer of \cite{subexp}). For weights equal to
+$D_*\Gamma(j+\nu+1)^s$ from some index on, with an arbitrary positive finite
+head, not necessarily log-convex, \cref{thm:main} determines the extremal
+cost in this article's normalization by $Cw_{n-1}$; for general weight
+profiles the question stays open. The exponential-feedback articles
+\cite{ed:finitecore,ed:microcond,ed:poissonlayers} use the same mechanism,
+Poisson small-part counts after a change of measure with a finite-core
+universality threshold, for a different kernel; \cite{ed:finitecore} also
+cites \cite{jjs} and distinguishes its kernel from their product-weight
+model. The predecessor \cite{subexp} now carries editorial notes at its
+statement of the gap below one half and at its two questions answered here
+(\cref{thm:main,thm:windows}).
+\end{ednote}
 
 \subsection{What is proved here}
 The principal theorem supplies, for every fixed $s>0$, a finite list of
@@ -1126,6 +1147,18 @@ $Cn^{1-s_n}$, the reversion limit is
 $\exp((C\sqrt{\nu+2}+3C^2/4)\ee^{-2t})$.
 For every larger $r$, \eqref{eq:criticalcoefficient} computes the
 corresponding constant by a finite polynomial calculation.
+% ed. (2026-09-30): the theorem answers a second question of the predecessor, which the article does not say
+\begin{ednote}
+\Cref{thm:windows} also answers the predecessor's question ``Uniform
+transitions at the lower thresholds'' \cite{subexp}, which asks for
+analogues of its crossover at $s=1$ around $s=1/r$, $r\ge2$, in the
+variables $(s-1/r)\log n$ after all larger contributions are subtracted,
+with a uniform remainder and a normalization under which a finite limiting
+profile appears. Here the profile is $\exp(p_r(1/r)\ee^{-rt})$ after the
+moving lower terms are removed, and the remainder is $o(1)$ uniformly for
+bounded $t$, though not effective. The article does not claim this
+question; its $r=1$ case is the predecessor's crossover.
+\end{ednote}
 
 \subsection{The precise number of weights that survive}
 \begin{theorem}[Finite-head universality]\label{thm:universality}
@@ -1623,6 +1656,30 @@ with repository editorial amendments.
 ProveIt package \path{Sharp_Weighted_Type_Formal_Reversion/},
 under the same series-and-transseries directory.
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/a4268e78ebd0f6bf71ba609c07f4b3415748f532/Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/README.md}{Pinned package description}.
+
+% ed. (2026-09-30): four entries for the uncited neighbouring packages (keys prefixed ed:)
+\bibitem{ed:exacttype}
+\emph{Exact Type Beyond Log-Convexity: A complete reversion criterion,
+sharp distortion, and dimension-free nonlinear calculus}.
+ProveIt package \path{Exact_Weighted_Type_Beyond_Log_Convexity/},
+under the same series-and-transseries directory (cited by the editors).
+
+\bibitem{ed:finitecore}
+\emph{Finite-Core Universality and Sharp Large Order for Countable
+Exponential-Feedback Transseries}.
+ProveIt package \path{Finite_Core_Universality_Exponential_Feedback/},
+under the same directory (cited by the editors).
+
+\bibitem{ed:microcond}
+\emph{Microscopic Condensation in Exponential-Feedback Transseries}.
+ProveIt package \path{Microscopic_Condensation_Exponential_Feedback/},
+under the same directory (cited by the editors).
+
+\bibitem{ed:poissonlayers}
+\emph{Poisson Layers at the Finite-Core Boundary of Exponential-Feedback
+Transseries}.
+ProveIt package \path{Poisson_Layers_Finite_Core_Boundary/},
+under the same directory (cited by the editors).
 
 \bibitem{gessel}
 Ira M. Gessel,

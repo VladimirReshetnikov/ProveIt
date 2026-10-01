@@ -27,6 +27,8 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{example}[theorem]{Example}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\R}{\mathbb R}
@@ -77,6 +79,32 @@ is a rational function of \(q\), and the same rational functions describe both a
 The geometric-uniform development in ProveIt already provides the interior product, rational moment normalization, the exterior reciprocal germ, and a reciprocity identity. Its documentation explicitly distinguishes these results from unit-circle analytic continuation and from a global exterior pole-divisor theorem \cite{repo}. This article answers those two mathematical continuation questions directly. It also refines the root-of-unity singularities of the moment coefficients. An absent Lean theorem is not, by itself, an open mathematical problem; the claims here are established by complete conventional proofs rather than by interpreting documentation gaps as evidence of historical novelty.
 
 The repository was inspected at commit \texttt{7747fcfddedeca1a04b6526cdd4836fbfdad1b89}. Appendix~\ref{sec:audit} records the precise scope of that inspection. We do not assume that all documents or incoming archives in this large, changing repository have been exhaustively compared.
+% ed. (2026-09-30): repository manuscripts with partial results that the article does not cite
+\begin{ednote}
+The inspection read the Lean documentation only. Two repository manuscripts
+beside this package (under
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/})
+already contained partial results. Part~IX of the geometric $q$-Fabius
+volume \path{geometric_q_fabius_frontiers/} proves the natural boundary for
+$z$ real or purely imaginary with $0<|z|<\pi/2$ (its
+\texttt{p9:thm:natural-boundary} and \texttt{p9:cor:germ-natural-boundary};
+there $A(q,z)=e^{z/2}\Phi(q,iz/2)$, and the cusp constant $C_L$ of
+Theorem~\ref{thm:cusp} is minus its spectral action at the root, as an
+independent computation on filing confirmed to 16 digits). Theorem~\ref{thm:main}
+generalizes that theorem to every $z\ne0$, and so proves the volume's
+Conjecture~\texttt{p7:conj:natural-boundary} for the centered germ
+$C_q(t)=e^{-t/2}A(q,t)$ for every $t\ne0$, including the range $|t|\ge\pi$
+that its Remark~\texttt{p7:rem:natural-boundary-status} leaves open.
+The $q$-Pochhammer monograph \path{q_pochhammer_q_binomial_monograph/}
+already proves \eqref{eq:pochhammer}, the global meromorphic continuation of
+the exterior transform and its pole set, with ``multiplicities add[ing] when
+listed points coincide'' (its Theorem~\texttt{thm:qF-spectral}); that pole
+set is the one of Theorem~\ref{thm:exterior-poles}, and
+Theorem~\ref{thm:multiplicity} evaluates the multiplicities explicitly.
+Corollary~\ref{cor:denominator} also proves a second conjecture of the
+volume; see the note after it. The volume now carries editorial notes at both
+conjectures.
+\end{ednote}
 
 \subsection{The central theorem}
 Write \(\D=\{q\in\C:|q|<1\}\) and \(\T=\partial\D\). Define
@@ -578,7 +606,8 @@ Write \(n=kL+r\), with \(k\ge0\) and \(0\le r<L\). Then \(a_n\) has pole order a
  \lim_{q\to\xi}(q-\xi)^k a_n(q)
  =\frac{R_\xi^k}{k!}\,a_r(\xi).
 \end{equation}
-The value \(a_r(\xi)\) is regular. In particular, for every \(k\ge1\), the coefficients \(a_{kL}\) and \(a_{kL+1}\) have pole order exactly \(k\), with respective leading coefficients \(R_\xi^k/k!\) and \(R_\xi^k/(2k!)\).
+% ed. (2026-09-30): "R_\xi^k/(2k!)" read as (2k)!; the intended value, from a_1=1/2, is R_\xi^k/(2\cdot k!).
+The value \(a_r(\xi)\) is regular. In particular, for every \(k\ge1\), the coefficients \(a_{kL}\) and \(a_{kL+1}\) have pole order exactly \(k\), with respective leading coefficients \(R_\xi^k/k!\) and \(R_\xi^k/(2\,k!)\).
 \end{theorem}
 \begin{proof}
 Write the logarithmic coefficients as
@@ -640,6 +669,24 @@ Degrees & Upper divisor \(D_n\) \\
 \end{center}
 
 The table specifies an upper divisor in all degrees by theorem. Exact computation finds no further cancellation through degree twelve. We do \emph{not} promote that finite observation to a proof that \(D_n\) is always the minimal denominator; the remaining nonvanishing problem is stated in Section~\ref{sec:research}.
+% ed. (2026-09-30): the corollary proves a conjecture of the geometric q-Fabius volume, which the article does not mention
+\begin{ednote}
+Corollary~\ref{cor:denominator} proves
+Conjecture~\texttt{p7:conj:Pn-divisibility} of the geometric $q$-Fabius
+volume \path{../geometric_q_fabius_frontiers/} (``for every $n\ge3$,
+$\prod_{3\le d\le n,\ d\ \mathrm{odd}}[d]_q$ divides $\mathcal P_n(q)$ in
+$\Q[q]$'', checked there through $n=16$), which the article does not
+mention. The volume's moment polynomial is
+$\mathcal P_n=[n]_q!\,a_n$ (machine-checked as
+\path{Fabius.qFactorial_mul_geometricUniformMomentRatFunc}), so
+$\mathcal P_n=([n]_q!/D_n)\cdot(D_na_n)$ with both factors in $\Q[q]$. For
+odd $e\ge3$ the exponent of $\Phi_e$ in $[n]_q!/D_n$ is
+$\lfloor n/e\rfloor-\lfloor n/(2e)\rfloor$, which is the number of odd
+multiples of $e$ up to $n$, that is, the exponent of $\Phi_e$ in
+$\prod_{3\le d\le n,\ d\ \mathrm{odd}}[d]_q$; and that product has no other
+cyclotomic factor. An independent computation on filing (batch~65)
+confirmed the divisibility for $3\le n\le20$.
+\end{ednote}
 
 \section{The exterior transform and its complete divisor}
 \subsection{Global meromorphy, not continuation through the circle}
@@ -830,6 +877,12 @@ By Corollary~\ref{cor:denominator}, the global conjecture is equivalent to the f
  a_r(\xi)\ne0\qquad(0\le r<\lcm(2,d)).
 \]
 The equivalence uses the degree \(n=\lcm(2,d)+r\) for the reverse implication. The cases \(r=0,1\) are already proved, and all denominator tests through degree twelve pass. A proof may require a structural interpretation of these low-degree evaluations in a cyclotomic field. A counterexample would be equally informative: \eqref{eq:leading-pole} would identify the first cancellation and reduce the next task to a lower Laurent coefficient.
+% ed. (2026-09-30): the finite evidence was extended on filing
+\begin{ednote}
+An independent computation on filing (batch~65) found the reduced
+denominator of $a_n$ equal to $D_n$ for every $n\le20$. The conjecture
+remains a conjecture.
+\end{ednote}
 
 \subsection{Uniform cusp asymptotics, Gevrey order, and summation}
 Theorem~\ref{thm:allorders} gives every fixed algebraic order with a finite constant. Determine the optimal growth of those constants with the expansion order and with \(\ell\). This should decide whether the corrections admit a useful Gevrey estimate or Borel-type summation in sectors of the complex \(t\)-plane. The dense parameter boundary does not by itself answer a sectorial summation question. In particular, one should not infer summability merely from the existence of every finite-order expansion.
@@ -874,7 +927,8 @@ Repository interface & Relationship to this article\\
 & Supplies the interior entire product and its moment normalization. Proposition~\ref{prop:product} reproves the needed product facts and explicitly treats joint dependence on \(q,z\).\\[5pt]
 \module{GeometricUniformMomentPolynomial} and \module{GeometricUniformMomentRatFunc}
 & Supply pole-cleared polynomial and rational coefficient models. Section~8 gives a smaller cyclotomic upper divisor and the leading-pole formula.\\[5pt]
-\module{GeometricUniformExterior}\newline\module{ComplexMomentGerm}
+% ed. (2026-09-30): one module, not two (delivered: "\module{GeometricUniformExterior}\newline\module{ComplexMomentGerm}").
+\module{GeometricUniformExteriorComplexMomentGerm}
 & Supplies the exterior reciprocal germ. Theorems~\ref{thm:exterior-poles} and \ref{thm:multiplicity} describe its global meromorphic divisor in \(z\).\\[5pt]
 \module{GeometricUniformMomentReciprocity}
 & Supplies local inner/exterior reciprocity. Theorem~\ref{thm:main} and Corollary~\ref{cor:outer-nb} show why reciprocity must not be read as continuation through the unit circle.\\[5pt]
@@ -882,6 +936,25 @@ Repository interface & Relationship to this article\\
 & Identifies the half-base geometric-uniform distribution function with the Fabius normalization. The complex-parameter proofs do not require this identification.\\
 \bottomrule
 \end{longtable}
+% ed. (2026-09-30): the declarations behind the table, several of them uncited
+\begin{ednote}
+Several statements reproved here are machine-checked in these or neighbouring
+modules (namespace \texttt{Fabius}, under
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}): the locally uniform
+convergence of the product in Proposition~\ref{prop:product} for fixed
+$|q|<1$ (\path{hasProdLocallyUniformly_geometricUniformComplexMomentProduct}),
+not its joint holomorphy; the factorization \eqref{eq:pochhammer}, which is
+\path{geometricSincProduct_eq_tprod_complexQPochhammerInf} in
+\path{RvachevPochhammerFactorization.lean} (a module the article does not
+cite) at the argument $i(1-q)z/(2\pi)$, times $e^{z/2}$; the pole-clearing
+identity stating that $[n]_q!\,a_n$ is the repository's moment polynomial
+(\path{qFactorial_mul_geometricUniformMomentRatFunc});
+\eqref{eq:exterior-coeff}
+(\path{eval_geometricUniformMomentRatFunc_eq_exteriorComplexMomentGerm_taylorCoefficient});
+and the germ reciprocity (\path{geometricUniformComplexMomentGerm_reciprocity}).
+No natural-boundary, pole-order or divisor statement of the article has a
+Lean counterpart.
+\end{ednote}
 
 All theorem proofs in this article are conventional mathematical arguments. No Lean source file was compiled for this package, and no theorem is labeled as machine-certified. The numerical script has a much narrower purpose: it independently verifies finite coefficient identities, collision counts, and selected asymptotic examples. The minimal-denominator assertion beyond those finite cases remains a conjecture.
 

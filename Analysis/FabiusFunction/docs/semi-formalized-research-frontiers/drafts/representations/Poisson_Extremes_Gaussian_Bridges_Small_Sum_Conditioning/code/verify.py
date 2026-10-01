@@ -6,6 +6,9 @@ interval certificates. No Monte Carlo truncation is presented as an exact law.
 The infinite tail in Fourier inversion is evaluated using its convergent
 Bernoulli--Hurwitz-zeta series; changing the tail order, head length, and
 integration cutoff is a numerical stability check, not a rounding-error proof.
+ed. (2026-09-30): results go to data-rerun/ unless --output is given (the
+recorded data/ files are not overwritten by default, not even by --quick),
+and both files are written with LF line endings on every platform.
 """
 from __future__ import annotations
 import argparse
@@ -125,8 +128,11 @@ def symbolic_checks() -> dict[str, bool]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    # ed. (2026-09-30): the default leaves the recorded data/ files untouched.
     parser.add_argument('--output', type=Path,
-                        default=Path(__file__).resolve().parents[1]/'data')
+                        default=Path(__file__).resolve().parents[1]/'data-rerun',
+                        help='output directory (default: data-rerun; pass data to '
+                             'overwrite the recorded files)')
     parser.add_argument('--quick', action='store_true', help='Skip the larger N and stability rerun.')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -169,7 +175,8 @@ def main() -> None:
                      'absolute_mean_change':abs(alt.mean-base['mu']),
                      'absolute_variance_change':abs(alt.var-base['V'])}
     with (args.output/'maximum_table.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(rows[0]))
+        # ed. (2026-09-30): lineterminator='\n' (the csv default is CRLF on every platform).
+        writer=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n')
         writer.writeheader();writer.writerows(rows)
     # Integral constants independently checked against gamma-zeta formula.
     import mpmath as mp
@@ -189,7 +196,8 @@ def main() -> None:
                         'scipy':scipy.__version__,'sympy':sp.__version__,'mpmath':mp.__version__},
             'symbolic_checks':checks,'row_count':len(rows),'stability':stability,
             'constants':constants}
-    (args.output/'verification.json').write_text(json.dumps(report,indent=2)+'\n')
+    # ed. (2026-09-30): newline='\n' so the JSON is LF on Windows too.
+    (args.output/'verification.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps(report,indent=2))
 
 if __name__=='__main__':

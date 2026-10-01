@@ -10,11 +10,14 @@ There are two live document packages and one unmerged archival arrival:
   Fabius–Rvachev system: exponent sequences, sinc products, atomic splines,
   and parameter deformations.
 - [`Unit_Circle_Barrier_q_Fabius_Transform/`](Unit_Circle_Barrier_q_Fabius_Transform/)
-  — an archival arrival of 2026-09-30, filed whole (22-page A4 PDF,
-  939-line source, an exact and high-precision check program): for every
+  — an archival arrival of 2026-09-30, filed whole and amended
+  editorially the same day (24-page A4 PDF, 1,012-line source, an exact
+  and high-precision check program): for every
   fixed nonzero `z` the unit circle is a natural boundary of
   `q ↦ A(q,z)`, which generalizes Part IX's natural-boundary theorem and
-  settles Part VII's generic natural-boundary conjecture; exact leading
+  settles Part VII's generic natural-boundary conjecture (its divisor
+  corollary also proves Part VII's odd q-integer divisor conjecture; the
+  volume carries dated notes at both); exact leading
   cyclotomic poles of the moment coefficients; and the exterior
   transform's pole divisor with multiplicities. Unreviewed; no Lean
   statement.
