@@ -20,6 +20,12 @@
 > at most2311: [coupled native linear units](neary_woods_universal_joint_and_coupled.md).
 > It preserves the accepted outer relation through a conditional positive
 > restoration, not an asserted bijection of all supplied zeros. The
+> [coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md)
+> gives301/degree-at-most1092,302/756 and304/608, all with51 witnesses.
+> The304 option costs257 certificate gates with16 comparisons. The exact
+> subset search concerns four strong treatments and grouped finalizers
+> with both cores indexed/coupled; it optimizes conservative bounds only.
+> The
 > [two-index301 parent](neary_woods_universal_joint_and_arithmetic.md)
 > remains available with260 certificate operations,14 comparisons and
 > degree at most2475.
@@ -800,6 +806,28 @@ not numerical full Pell zeros. Future grouping must retain the distinction:
 all-group-product1 zeros imply the all-product theorem, while completeness
 uses the parent's all-positive-unit extension; exact equality of coupled
 witness zero sets is not automatic.
+
+The [coupled factor-partition successor](neary_woods_universal_joint_and_coupled_partitions.md)
+now implements that distinction. Both indices and both linear units remain;
+each strong equation is independently normalized or retained. A grouped
+zero forces every group product1 and all outer residuals0, hence the
+coupled product theorem applies. Completeness uses the earlier indexed
+parent's canonical all-factor-1 witnesses, with independent five-auxiliary
+rebuilds for any normalized cores. This preserves accepted outer instances,
+not every supplied positive zero of the coupled parent.
+
+An exact least-bit subset recurrence minimizes the maximum group weight
+for each factor subset and group count; enumerating every optional anchor
+subset handles the unsquared finalizer. Greedy partitions supply upper
+bounds only, and all pruning uses certified lower bounds. The complete
+finite-family frontier is297/2311,298/1543,299/1501,300/1132,301/1092,
+302/756,303/730,304/608. The default304=143M+161A normalizes geometry
+only; its four factor groups have degree bounds304,274,275,278, and the
+outer residual bound is206. Its257=127M+130A certificate has16 comparisons
+and51 positive witnesses. The608 floor concerns this propagated-degree
+objective only. All96 ledgers and16 frontier/interface sources are audited,
+including1,024 complete output identities,512 signed, plus exhaustive
+crosschecks of the subset algorithm on24 smaller weighted instances.
 
 The earlier [factor-partition packet](neary_woods_universal_joint_and_partitions.md)
 independently chooses both strong normalizations and both index merges,

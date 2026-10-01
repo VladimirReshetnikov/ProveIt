@@ -38,6 +38,14 @@ contradiction. A remaining negative joint branch restores the parent by
 two private positive-coordinate changes. This preserves the accepted
 outer relation; no bijection of all supplied positive zeros is claimed.
 
+The [coupled factor-partition frontier](../research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled_partitions.md)
+also gives **301=142M+159A / degree at most1092**,
+**302=143M+159A / degree at most756**, and
+**304=143M+161A / degree at most608**, all with51 witnesses.
+The304 option has257 certificate operations and16 comparisons. An exact
+subset search optimizes the stated degree bounds over four strong
+treatments and grouped finalizers; it makes no global optimality claim.
+
 The [two-index301 parent](../research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
 remains available with260 certificate operations,14 comparisons and
 degree at most2475. Its own sign theorem preserves the same positive

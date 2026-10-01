@@ -41,6 +41,11 @@ now gives262 certificate / **297=144M+153A polynomial operations**,
 and degree at most2311. It preserves the accepted outer relation through
 sign recovery and a conditional positive restoration; the supplied
 positive zero sets are not asserted identical. The
+[coupled partition frontier](research-wip/native-stream-queue/neary_woods_universal_joint_and_coupled_partitions.md)
+includes301=142M+159A/degree-at-most1092,302=143M+159A/756 and
+304=143M+161A/608, all with51 witnesses. The304 option has257 certificate
+operations and16 comparisons; the subset search is exhaustive only for
+its stated factor family and propagated degree bounds. The
 [two-index301 parent](research-wip/native-stream-queue/neary_woods_universal_joint_and_arithmetic.md)
 remains available at260 certificate operations,14 comparisons and degree
 at most2475.

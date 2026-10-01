@@ -49,6 +49,14 @@ contradiction. A remaining negative joint branch restores the parent by
 two private positive-coordinate changes. This preserves the accepted
 outer relation; no bijection of all supplied positive zeros is claimed.
 
+The [coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md)
+also gives **301=142M+159A / degree at most1092**,
+**302=143M+159A / degree at most756**, and
+**304=143M+161A / degree at most608**, all with51 witnesses.
+The304 option has257 certificate operations and16 comparisons. An exact
+subset search optimizes the stated degree bounds over four strong
+treatments and grouped finalizers; it makes no global optimality claim.
+
 The [two-index301 parent](neary_woods_universal_joint_and_arithmetic.md)
 remains available with260 certificate operations,14 comparisons and
 degree at most2475. Its own sign theorem preserves the same positive
@@ -1177,6 +1185,7 @@ New research and the completed75-operation construction:
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
 | [Coupled-unit U9 universal polynomial](neary_woods_universal_joint_and_coupled.md) | **262 certificate /297=144M+153A polynomial**,12eq,51w,four positive program parameters,degree at most2311. Ordinary-strong both-core option299/degree1501. | Both linear signs recover before typing; joint population excludes a negative computed geometry index. A remaining negative joint branch restores two private positive coordinates. Same accepted outer relation, no all-tuple bijection. |
+| [Coupled factor-partition frontier](neary_woods_universal_joint_and_coupled_partitions.md) | **304=143M+161A / degree at most608**,257 certificate,16eq,51w; alternatives301/1092 and302/756. | Exact subset optimization over four strong treatments and all grouped finalizers with both cores indexed/coupled. Soundness follows the product theorem; completeness uses canonical all-factor-1 witnesses. Optimizes conservative bounds in this finite family only. |
 | [Two recovered native index units](neary_woods_universal_joint_and_arithmetic.md) | **260 certificate /301=144M+157A polynomial**,14eq,51w,degree at most2475. | Retained ratios and full strong equations force each index factor1 before parent typing. Same positive supplied zeros as303. |
 | [Grouped U9 unit finalizers](neary_woods_universal_joint_and_partitions.md) | Prior family:301/2475,302/1707,303/1522,304/1296,305/1144,307/1110,308/1076; all51w. | Exhaustive1,286,789-partition search only within its stated factor families and conservative degree model. These are retained alternatives, not a partition search on the coupled297 source. |
 | [Packed Wang chronological tape](wang_b_packed_tape.md) | **139 certificate /192=81M+111A polynomial**,18eq,31w,degree at most232. | One AND certifies arbitrary positive duration, row-positive one-hot heads, current reads, Boolean mark choices and tape chronology. Head motion, program/control and TM input coding remain unpaid. |
