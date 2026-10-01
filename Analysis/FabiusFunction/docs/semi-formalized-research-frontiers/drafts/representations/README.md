@@ -184,7 +184,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   certificates; no Lean statement.
 - [`Critical_Complements_Fabius_Conditioning/`](Critical_Complements_Fabius_Conditioning/),
   *Critical Complements in Fabius Conditioning* (26-page A4 PDF,
-  1,748-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
+  1,759-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone and amended editorially the same day and on
   2026-10-01 (its README lists the amendments).  In the setting of the uniform-series
@@ -312,7 +312,8 @@ of an existing draft; semantic consolidation is deferred to the post-
   the same
   order is strict for total variation, for every `q` and `n ≥ 2`; so the
   comparison of the second-order article above holds at every finite
-  `n`, not only eventually (that article now carries a note saying so);
+  `n`, not only eventually (that article and
+  `Critical_Complements_Fabius_Conditioning/` now carry notes saying so);
   it contains the strict corollary of the first bullet.  Unreviewed; no
   Lean statement.
 - [`Proportional_Fabius_Mask_Edgeworth/`](Proportional_Fabius_Mask_Edgeworth/),

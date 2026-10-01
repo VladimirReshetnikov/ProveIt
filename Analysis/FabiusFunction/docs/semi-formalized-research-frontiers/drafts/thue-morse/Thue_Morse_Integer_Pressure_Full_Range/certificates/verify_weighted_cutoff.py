@@ -1,4 +1,18 @@
 """Exact scalar checks for the new weighted-residual pressure cutoff."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from pathlib import Path
 from math import isqrt
@@ -27,6 +41,7 @@ assert 10000<6000*128
 assert beta<F(3,5)
 assert F(31,26)*F(6,7)**128<1
 out=dict(all_checks_passed=True,cutoff_d=d,cutoff_m=d//2,L_upper=str(Lup),atan_lower=str(atlo),beta=str(beta),rho=str(rho),relative_error_below='1/4',source_norm_constants_checked=True)
-Path(__file__).with_name('weighted_cutoff_certificate.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('weighted_cutoff_certificate.json', json.dumps(out,indent=2)+'\n')
 print('Weighted analytic cutoff checks pass: m>=112.')
 print('relative bound at d224',float(bound),'rho',float(rho))

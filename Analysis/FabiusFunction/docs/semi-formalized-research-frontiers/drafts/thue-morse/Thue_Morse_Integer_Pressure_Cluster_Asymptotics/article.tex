@@ -6,6 +6,8 @@
 \setlength{\parskip}{2pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\ev}{\operatorname{ev}}\newcommand{\GG}{\mathcal G}
 \title{Rooted Tree Asymptotics for\\Canonical Thue--Morse Pressure Clusters}
 \author{Research note prepared for Vladimir Reshetnikov with OpenAI}
@@ -66,6 +68,13 @@ Fix an integer $k\ge2$ and a compact interval $I\subset(k,k\sigma_R)$. Uniformly
 For $k=1$ and $I\subset(1,\sigma_R)$, the multiplier is $2+O_I(e^{-c_Id})$ for some $c_I>0$.
 \end{theorem}
 Each fixed canonical contribution therefore has eventual sign $(-1)^{k-1}$ on its stated compact range. The result does not extend to either endpoint or to $k$ growing with $d$. At $N=kd$, for example, the raw selector count is zero and the logarithmic multiplier is absent.
+% ed. (2026-10-01): the case k = 2 contains a proposition of the preceding package
+\begin{ednote}
+For $k=2$, $C_2=-K_2$ with $K_2=FG+F^2/2$ of \path{../Thue_Morse_Integer_Pressure_First_Negative/} (\cite{First}),
+so Theorem~\ref{thm:main} contains its Proposition~3.1 and extends the window of that
+proposition from $(2,2\mu(\arctan(2/5)))$ to $(2,2\sigma_R)$. The first-negative theorem of
+that package is neither restated nor re-proved here.
+\end{ednote}
 
 \section{Exact Lagrange algebra}
 Formal Lagrange inversion applied to $\log(1+\delta)$ gives
@@ -337,7 +346,28 @@ Their rooted labeled tree interpretation and relation to Lagrange inversion are 
 The theorem justifies the finite coefficient replacement for each fixed canonical cluster. It does not assert a uniform Lambert-$W$ approximation to the entire eigenvalue, summation over growing $k$, or alternating signs of the full pressure.
 
 More generally the coefficient argument applies at any certified radius with polynomial fixed-jet bounds and $\nu(R)<1$. The disk restriction is substantive. A later model saddle can lie beyond $|a|=1/2$, and earlier canonical components can contain additional corrections at the same total degree. Studying later full-pressure sign transitions therefore requires further analytic estimates. Neither the present theorem nor the classical rooted-tree constants remove that obstacle.
+% ed. (2026-10-01): Lean counterparts in the repository, not cited by the article
+\begin{ednote}
+Lean counterparts in the repository, not cited here: \eqref{eq:Lagrange} is an instance of the
+Lagrange--B\"urmann formula $n[z^n]H(g)=[w^{n-1}]H'(w)\varphi(w)^n$ for $g=z\varphi(g)$, which
+is formalized over any commutative $\mathbb Q$-algebra as
+\path{Fabius.Lagrange.coeff_subst_derivative} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/LagrangeInversion.lean}; take
+$H(w)=\log(1+w)$ and $\varphi=U(\cdot,a)$ over power series in $a$, where
+$\varphi(0)=H_0(a)$ is a unit because its constant term $H_0(0)=h_0(1/2)$ is positive. That instantiation is not formalized.
+The principal Lambert branch enters the development through the real Cayley tree function
+\path{Fabius.cayleyTree} ($=-W_0(-w)$, in \path{CayleyTreeFunction.lean} in the same
+directory); the Taylor coefficients $(-k)^{k-1}/k!$ of $W$ are not formalized. No statement of
+this article is formalized.
+\end{ednote}
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the twelfth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{First} is \path{../Thue_Morse_Integer_Pressure_First_Negative/}; the copies bundled under \path{inputs/}
+(its PDF, its source and its source archive) were not filed. The repository manuscript enters
+through that package.
+\end{ednote}
 
 \appendix
 \section{The exact branch limit of this envelope}

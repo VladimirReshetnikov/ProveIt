@@ -106,3 +106,44 @@ change to the source is marked `% ed. (2026-09-30)`.
   delivered; the note adds one), with no error, undefined reference,
   multiply defined label, duplicate destination or overfull box; no Type 3
   font. The page carrying the note was rendered and inspected.
+
+## Editorial amendments (ProveIt, 2026-10-01)
+
+In the editorial pass after batch 72 of `docs/incoming/` (see
+`docs/incoming/README.md`), thirteen later packages filed beside this article
+(`../Thue_Morse_Integer_Pressure_*/`; listed in the README of `../`) were found
+to answer its question "The first coefficient after the cancellation". The
+mathematical text is unchanged; every change to the source is marked
+`% ed. (2026-10-01)`.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-10-01)") is defined after `ednote`. After Question 12.2
+  ("The first coefficient after the cancellation") and its discussion, a note
+  records that `../Thue_Morse_Integer_Pressure_First_Positive/` proves
+  `[t^{2m+2}]p_m(t/pi) > 0` for every integer `m >= 2`, along the route the
+  discussion suggests, with the finite formula
+  `sum_{j=1}^{m-1} b_{m,j} R_{m-j} + (2m/3) R_m - m/(m+1) R_{m+1}`, the
+  `b_{m,j}` explicit positive rationals built from Bernoulli numbers (a closed
+  form in that finite sense; no elementary closed form, and the reduced
+  denominators are left open), which overtakes "The executed checks are
+  positive for 2 <= m <= 6"; that every even coefficient strictly between
+  degrees `2m` and `6m` is positive for every `m >= 2`
+  (`../Thue_Morse_Integer_Pressure_Full_Range/`), where `6m` cannot be included
+  in general since `[t^12]p_2(t/pi) = -35360872/93555`; and that the first
+  negative degree `N_m` above `2m` satisfies
+  `N_m = gamma m - log log(2m)/Lambda + O(1)`, `gamma` in
+  `(6.662966, 6.662968)` (`../Thue_Morse_Integer_Pressure_First_Negative/`),
+  certified for `2 <= m <= 128`
+  (`../Thue_Morse_Integer_Pressure_First_Negative_Data/`). The packages
+  confirm this article's results: the first one re-derives the feedback
+  identity behind the cancellation `[c^{2m}]p_m = 0` and reproduces the three
+  coefficients of (8.5)-(8.7). No
+  other question of Section 12 is answered by them; "Quantitative gaps and
+  certified errors" concerns the constants of the moment estimate, which they
+  do not treat.
+- `article.pdf`: rebuilt with `latexmk -pdf -interaction=nonstopmode
+  -halt-on-error article.tex` (MiKTeX pdfTeX 1.40.29), on a copy: 25 pages
+  (as before), 787,321 bytes, with no error, undefined reference, multiply
+  defined label, duplicate destination, overfull or underfull box; no Type 3
+  font. The page carrying the note was rendered and inspected.
+- `README.md`: this section.

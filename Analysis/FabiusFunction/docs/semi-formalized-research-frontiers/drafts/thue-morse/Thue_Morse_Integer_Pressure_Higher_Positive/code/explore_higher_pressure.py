@@ -1,4 +1,18 @@
 """Exact exploratory pressure jets from Fourier eigenvalue recursion."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 import sympy as s
 from pathlib import Path
 import json
@@ -33,4 +47,5 @@ for m in range(2,9):
  rec['post_cancellation_signs']=list(map(int,rec['post_cancellation_signs']))
  rows.append(rec)
  print(m,[(n,str(p[n]),int(s.sign(p[n])))for n in range(2*m+2,len(p),2)],flush=True)
-(ROOT/'higher_pressure_exploration.json').write_text(json.dumps({'status':'Exploratory exact finite computations; no universal assertion','rows':rows},indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('higher_pressure_exploration.json', json.dumps({'status':'Exploratory exact finite computations; no universal assertion','rows':rows},indent=2)+'\n')

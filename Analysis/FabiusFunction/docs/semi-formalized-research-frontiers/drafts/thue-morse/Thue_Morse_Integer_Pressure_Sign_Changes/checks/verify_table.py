@@ -1,5 +1,19 @@
 #!/usr/bin/env python3
 """Check the complete finite table and independently redo pressure conversion."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from pathlib import Path
 import json
@@ -41,6 +55,7 @@ for m,want in zip(range(2,21),EXPECTED):
     if first!=want or first!=data["first_post_cancellation_negative_degree"]:raise ArithmeticError("first negative")
     count+=N+1
 summary={"passed":True,"orders":list(range(2,21)),"pressure_coefficients_recomputed":count,"fourier_orders_in_exact_production":sum(10*m for m in range(2,21)),"first_negative_degrees":EXPECTED}
-(ROOT/"table_validation.json").write_text(json.dumps(summary,indent=2)+"\n")
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('table_validation.json', json.dumps(summary,indent=2)+"\n")
 print(json.dumps(summary))
 

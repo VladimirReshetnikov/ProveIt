@@ -1,4 +1,18 @@
 """Check labeled-unit pairing counts and the differential k! normalization."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from functools import lru_cache
 from itertools import product
 from math import factorial,prod
@@ -40,5 +54,6 @@ for d in range(2,9):
     assert k<=min(q//2,q-max(alpha))
     count+=1
 out={'all_checks_passed':True,'retained_color_profiles':count,'scope':'Finite supplementary check of the labeled-unit proof, d=2..8 and two to four colors'}
-(Path(__file__).resolve().parents[1]/'data/strong_pair_checks.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('strong_pair_checks.json', json.dumps(out,indent=2)+'\n')
 print('All',count,'strong marked-pair profiles pass')

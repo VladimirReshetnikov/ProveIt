@@ -1,4 +1,18 @@
 """Replay every compact outer box and reconstruct its exact partition."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from fractions import Fraction as F
 from pathlib import Path
 import json,hashlib,time
@@ -27,5 +41,6 @@ for j,(box,row)in enumerate(zip(leaves,data['cells']),1):
  maximum=max(maximum,value)
 require(F(999,1000)<F(1999,2000)**2,'eta conversion')
 out=dict(all_cells_passed=True,cells=len(leaves),partition_nodes=nodes,maximum_squared_upper=str(maximum),eta='1999/2000',certificate_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),seconds=time.time()-start)
-(root/'compact_outer_replay.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('compact_outer_replay.json', json.dumps(out,indent=2)+'\n')
 print('Compact outer replay passes',len(leaves),'cells with eta=1999/2000.')

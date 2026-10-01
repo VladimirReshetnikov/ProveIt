@@ -1,4 +1,18 @@
 """Exact response and pressure triangles, with independent phase-jet checks."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from pathlib import Path
 import json
 import sympy as s
@@ -86,6 +100,7 @@ def main():
         count+=m-1
         print('m',m,'exact response and pressure signs pass',flush=True)
     result={'all_checks_passed':True,'exact_response_pairs':count,'exact_pressure_pairs':count,'independent_direct_pressure_pairs':pressure_count,'scope':'Finite regressions; universal proof is the tangent-majorization argument','rows':rows}
-    (DATA/'triangle_checks.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('triangle_checks.json', json.dumps(result,indent=2)+'\n')
     print('PASS:',count,'exact response and pressure pairs;',pressure_count,'independent direct pressure comparisons')
 if __name__=='__main__':main()

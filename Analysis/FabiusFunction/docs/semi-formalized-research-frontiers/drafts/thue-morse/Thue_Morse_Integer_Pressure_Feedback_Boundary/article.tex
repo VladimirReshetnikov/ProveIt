@@ -6,6 +6,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\Z}{\mathbb Z}\newcommand{\ii}{\mathrm i}\newcommand{\ev}{\operatorname{ev}}
 \title{Positivity at the First Feedback Boundary in Thue Morse Pressure}
 \author{Research note prepared for Vladimir Reshetnikov with OpenAI}\date{1 October 2026}
@@ -49,6 +51,16 @@ we have the asymptotic
 \end{equation}
 \end{theorem}
 The constants are defined by convergent products and sums; approximate values are $a_*\approx0.822918569054$, $C\approx4.046860022$, and $\sigma^2\approx0.7041449521$. These decimals are orientation only and are not used in the sign proof. The finite-complement certification is described in Section~\ref{sec:finite}. Combined with the earlier triangle, this proves $H_{m,r},E_{m,r}>0$ for every $1\le r\le m$. The response range is sharp as a universal statement: $H_{2,3}=-488/27<0$.
+% ed. (2026-10-01): the pressure statement is re-proved in the full range; the response statements stay here
+\begin{ednote}
+The pressure statement $E_{m,m}>0$ is re-proved, by a separate large-order bound and separate
+finite certificates, as the case $r=m$ of Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/}
+($E_{m,r}>0$ for every $m\ge2$ and $1\le r<2m$), so it does not depend on the trace archives
+discussed in the note in Section~\ref{sec:finite}. The response statement $H_{m,m}>0$ and the
+asymptotic \eqref{eq:asymptotic} are this note's own; \path{../Thue_Morse_Integer_Pressure_Higher_Positive/} had
+proved the case $m=2$ ($H_{2,2}=536/27$), and \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/} extends the
+asymptotic to every fixed offset $s$ (the case $s=0$ is \eqref{eq:asymptotic}).
+\end{ednote}
 
 \section{The exact boundary regularization}
 Put $d=2m$, $A=V_0$, and $h=F_{0,m}$. The atomic basis is
@@ -305,6 +317,22 @@ an integer bound $U_n\ge S\|v_n-\widetilde v_n/S\|_1$ is propagated by
 The last term bounds the total weighted rounding error. The half-period evaluation has norm one, so its computed value plus or minus $U_{2m}/S$ rigorously encloses $H_{m,m}$. All intermediate vectors and error bounds are saved in compressed replay traces. Independent full rational calculations and full-vector enclosures check selected cases.
 
 All 68 moments $m=2,\ldots,69$ yield strictly positive rational lower endpoints. Their 4,828 response-order enclosures, baseline vectors, propagated errors, final intervals, and available full-rational comparisons were independently checked. This finite verification proves $H_{m,m}>0$ throughout the complement of the analytic range. Equation~\eqref{eq:pressure} then proves $E_{m,m}>0$, completing Theorem~\ref{thm:main}. The exact sources, every per-order vector, and the certificate checker are included; the finite computation is a distinct part of the proof.
+% ed. (2026-10-01): the trace archives were not delivered; what the filed files show
+\begin{ednote}
+As filed, the per-order traces are missing: this package is the source archive of a split
+delivery whose five trace archives (the 68 compressed files
+\path{data/certificates/parity_mNNN.json.trace.gz}; see \path{DELIVERY_README.txt}) were not
+delivered. The trace audit \path{code/check_trace_coverage.py} and the full replay
+\path{code/reproduce_all.py} therefore cannot run on the filed files, and the baseline vectors,
+the 4,828 propagated error bounds and the final vectors cannot be rechecked. What the filed
+files show (checked on filing): the 68 interval records
+\path{data/certificates/parity_mNNN.json} have strictly positive lower endpoints; exact
+rational values of $H_{m,m}$ filed with the package lie inside them for the 35 orders
+$2\le m\le35$ and $m=50$; for $m=68,69$ an independent full-vector enclosure overlaps them;
+for $36\le m\le49$ and $51\le m\le67$ the filed intervals are the only finite evidence for
+$H_{m,m}>0$. The pressure coefficient $E_{m,m}$ is proved again in \path{../Thue_Morse_Integer_Pressure_Full_Range/} (whose own finite intervals were not delivered either), and its positivity for
+$2\le m\le128$ is certified by the filed intervals of \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}.
+\end{ednote}
 
 \section{Later negative coefficients and open directions}
 The response theorem cannot uniformly extend to $r=m+1$. For $m=2$, set $x=a^2$ and write $\Lambda(a)=\lambda_2(a)$. The pressure cubic in \cite{integer}, under $\rho=\Lambda/(1+a^2)^2$ and $\cos2t=(1-x)/(1+x)$, gives
@@ -327,7 +355,21 @@ A separate direct rational phase-eigenvalue recursion locates the first negative
 \end{array}
 \]
 The lower even coefficients are already negative, so the qualification ``above $2m$'' matters. These are exact finite observations, not an all-order law. In particular, neither a limiting ratio nor a rounding formula for the first negative degree is asserted. Whether pressure alone stays positive throughout $1\le r<2m$ remains open here; the finite data are compatible with that extension. Positivity of each individual atomic-basis response coefficient throughout $r\le m$ is also a separate, unproved question.
+% ed. (2026-10-01): pressure positivity below 6m and the first negative degree are settled by later packages
+\begin{ednote}
+Pressure positivity throughout $1\le r<2m$ is proved for every $m\ge2$ in
+\path{../Thue_Morse_Integer_Pressure_Full_Range/}. The table above agrees with the certified first negative degrees
+of \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} ($2\le m\le128$) and \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}
+($2\le m\le20$), and \path{../Thue_Morse_Integer_Pressure_First_Negative/} proves $N_m/m\to\gamma\in(6.662966,6.662968)$,
+with a $\log\log m$ correction and a rounding rule valid away from the even lattice.
+\end{ednote}
 
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the fourth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{integer} is \path{../Thue_Morse_Integer_Pressure/} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical), and \cite{triangle} is
+\path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}.
+\end{ednote}
 \begin{thebibliography}{9}\small
 \bibitem{integer}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript, 28 September 2026. Inspected version: commit \nolinkurl{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, blob \nolinkurl{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.\newline
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.

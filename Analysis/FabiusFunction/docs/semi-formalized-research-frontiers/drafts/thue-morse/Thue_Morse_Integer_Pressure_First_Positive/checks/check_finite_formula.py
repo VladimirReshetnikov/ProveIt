@@ -1,4 +1,18 @@
 """Verify the cotangent eigenbasis formula against independent Fourier jets."""
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# data/rerun/ in the package, with LF line endings (as delivered the program
+# overwrote its recorded result, with CRLF on Windows). Pass --output-dir
+# with the recorded file's directory, on a copy, to regenerate the recorded file.
+def _ed_write(name, text):
+    import argparse
+    from pathlib import Path as _EdPath
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=_EdPath,
+                        default=_EdPath(__file__).resolve().parents[1] / 'data' / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 from pathlib import Path
 import sympy as s
 import json
@@ -26,5 +40,6 @@ combined=((l-2*u)*(u-2)/(1-u)+(l-4*u+4)/2)/(1-l)
 assert s.factor(combined-f(l,u))==0
 assert s.factor(s.diff(f(l,u),u)-(2-l)/((1-l)*(1-u)**2))==0
 out={'all_checks_passed':True,'independent_Fourier_B_matches_m2_to_10':True,'cotangent_convolutions_checked_through_j30':True,'response_multiplier_and_monotonicity_symbolically_verified':True,'rows':rows}
-(ROOT/'finite_formula_checks.json').write_text(json.dumps(out,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('finite_formula_checks.json', json.dumps(out,indent=2)+'\n')
 print('Finite formula verified exactly against Fourier responses for m=2,...,10; all basis coefficients positive through m=30; convolution and response algebra pass.')
