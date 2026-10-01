@@ -15,15 +15,17 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **288=141M+147A**,262 certificate operations,48 positive witnesses,
-> 9 comparisons and four positive program parameters, with degree
-> at most3980: [loader-defined scale](neary_woods_universal_loader_scale288.md).
-> Its positive sound lift is unconditional; completeness uses sufficiently
-> large synchronized leading-zero padding on valid U9 program slices.
-> It is not a bijection on all parent zeros or arbitrary-invalid-program
-> completeness theorem. The transformed low-degree option is
-> 298=141M+157A/degree-at-most608,257 certificate,14eq49w;
-> the fixed48-witness alternative gives295/1344.
+> **285=140M+145A**,262 certificate operations,47 positive witnesses,
+> 8 comparisons and four positive program parameters, with degree
+> at most3980: [positive mask gap](neary_woods_universal_mask_gap285.md).
+> The retained mask-scale equation supplies a positive sound lift;
+> the typed recoder supplies its inverse, giving a positive zero-set
+> bijection with the [loader288 parent](neary_woods_universal_loader_scale288.md).
+> That parent's completeness still uses sufficiently long synchronized
+> padding on valid U9 program slices, not arbitrary invalid parameters.
+> The low-degree option is295=140M+155A/degree-at-most608,
+> 257 certificate,13eq48w; the fixed47-witness alternative is292/1344.
+> Loader288/48w and its298/608/49w alternative remain reproducible.
 > The [positive-scale291 parent](neary_woods_universal_positive_scale291.md)
 > retains262 certificate,10 comparisons,49 witnesses and degree at most3980.
 > Absorbing two native bound comparisons gives an explicit positive
@@ -800,7 +802,26 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The current [loader-scale288 source](neary_woods_universal_loader_scale288.md)
+The current [positive-mask-gap285 source](neary_woods_universal_mask_gap285.md)
+defines K=quotient_hat+fusion_output_slack and deletes the separate
+Ahat+slack=S bound. Certificate cost stays262 while one comparison and
+witness disappear:285=140M+145A,8eq47w,degree at most3980. Before typing,
+mask_scale>Ahat; at zeros mask_scale=S makes the restored old slack
+positive. The full parent recoder then gives quotient_hat<=J<K, proving
+the positive inverse. The identity lift is signed off zeros; its positive
+off-zero extension has the exact retained-scale-residual-square correction.
+No fresh native auxiliaries or additional input padding are needed here.
+The transformed family is285/3980,286/3486,287/3440,288/2322,289/1554,
+290/1508,291/1142,292/1098,293/766,294/734,295/608. First three use47w;
+the others48w. The last costs257 certificate,13eq and140M+155A;
+fixed47w292/1344 instead has257 certificate and12eq. This remains a
+finite cost/degree-bound family, not a three-objective witness optimum.
+All24 sources support both interfaces with768 complete identity lifts,
+384 signed, plus768 corrected-extension outputs;384 positive assignments
+have positive restored coordinates. Another600 typed recoder fixtures
+are component checks, not full positive Pell zeros.
+
+The preceding [loader-scale288 source](neary_woods_universal_loader_scale288.md)
 sets load_r=q+z+b, modulus=(2^D-1)*load_r and Q=modulus+1, replacing
 three already-paid gates and deleting the repunit comparison. It keeps
 262 certificate gates, with9eq48w and288=141M+147A,degree at most3980.
@@ -1046,6 +1067,20 @@ bijection. Normalization instead preserves outer projections via
 fresh f,i,j,o,y; even off-zero root gaps may lift half-integrally.
 Recursive interface guards and actual complete raw embeddings matter.
 
+The [native index/coupled units](native_binary_index_coupled_units.md)
+further give complete AND80=43M+37A,72 certificate,3eq15w,degree at
+most124; motion213=94M+119A,196 certificate,6eq28w,degree at most2020;
+and toggle127=60M+67A,113 certificate,5eq21w,degree at most748.
+The index-only82 intermediate preserves the same positive native zeros.
+Coupling recovers its linear sign before typing; a negative index sign
+restores F0_old=F0-2 and beta_old=beta+2, preserving every outer port.
+This conditional private restoration is not an all-tuple bijection.
+The full strong rank, both ratios, private consumers and padded-port
+hypotheses remain guarded. Applied to the computed-action literal Wang
+example it gives330=147M+183A,310 certificate,7eq36w,degree at most5503.
+The52 ledgers have2,496 complete corrected finalizer identities,1,248
+assignments with624 signed. No universal Wang table is supplied.
+
 The [fixed Wang program compiler](wang_b_packed_program.md) now also pays
 instruction control. K=m+j edge masks partition the same repunit J;
 B=cD with fixed dyadic c>=max(16,K+2) prevents partition carries.
@@ -1078,15 +1113,27 @@ remain available. The same fixed-program chronology, current-read jumps,
 first halt and paid spatial shift are preserved; no universal table or
 TM-to-Wang input map is supplied by this rewrite.
 
-Next Wang work is an actual fixed universal instruction table and its
-paid ordinary-TM input morphism, or a smaller complete control circuit.
-The [2014 primary paper](https://mural.maynoothuniversity.ie/id/eprint/12409/1/Woods_Wang_2014.pdf),
-Theorem 7, printed pp638–640, gives the exact Wang expansion for an already
-non-erasing binary TM and the pair code 0->10, 1->11, with the head on the
-first bit and blank exterior pairs initialized during execution. Its
-Lemma 5, printed p637, gives only an overview of the preceding copying
-simulation; an explicit finite non-erasing table, startup/frame convention
-and state ledger still need construction. The imported
+The [non-erasing TM-to-Wang compiler](wang_b_nonerasing_tm_compiler.md)
+now implements the explicit Theorem7 expansion and pays the ordinary
+binary-input pair map. Any fixed total non-erasing binary TM with h
+nonhalting states gives13h+1 Wang instructions and16h+1 edges. The
+physical pairs are0->10 and1->11 with the head on the first cell;
+finite blank exterior pairs00 become initialized10 on entry. The paid
+radix-four recoder and repunit give y=r+2z,3r=4^n-1, so leading blank
+padding preserves the represented infinite TM tape. A disjoint sum of
+two complete component squares proves the full ordinary-input theorem.
+The example with one nonhalting state costs642=285M+357A,566 certificate,
+25eq83w, degree at most16124; its paired-word Wang child costs454. This example
+is not universal. The source covers32 ledgers and192 complete-output
+identities,96 signed, plus independent physical-machine traces.
+
+Next Wang work is an explicit erasing-to-non-erasing transition compiler
+or a fixed universal non-erasing table with its ordinary-input convention,
+or a smaller complete control circuit. The
+[2014 primary paper](https://mural.maynoothuniversity.ie/id/eprint/12409/1/Woods_Wang_2014.pdf),
+Lemma5, printed p637, gives only a copying overview for that preceding
+step; its now-implemented Theorem7 does not close this earlier interface.
+The imported
 [U15 table](neary_woods_explicit_universal_tm.py) writes c->b at
 u2, u5, u6, u8, u10 and b->c at u3, u14, so neither binary renaming makes it
 non-erasing. Preserve its program-left-of-head, paired-BTS input and pay
@@ -1191,8 +1238,22 @@ X=2^p. Thus q=2^t,w=2^(p-3t),t>=4; uniform bounds leave only40 triples.
 All80 coefficient arrays and integer endpoint certificates exclude both
 strict ratios, giving n<p<=2n-7 for R<0,mu>0. The infinite coarse-bound
 survivor family violates the exact residue and is not a false zero.
-Remaining work concerns odd gaps at least7 or mu<0, preserving the
-actual main root and full compiler relation. The literal86 source and
+The [gap-seven successor](complete75_weakened86_gap_seven.md) now gives
+**n<p<=2n-9** on the same R<0,mu>0 branch. The exact residue and growth
+split gap seven into X=2^p with odd p<=43 (96 triples), or q=16 with
+X=4096,8192,12288. All finite-branch ratios fail certified monotone
+endpoint tests. In the three small-X lanes the odd modulus strengthens
+the p cutoff to p>=133; the actual positive input root forces v=u.
+The exact main-norm congruence3Xc=2(X^2-1) modH then bounds a divisible
+integer strictly between-H andH, forces j=0, and contradicts R<0.
+Both independent full reviews/fresh replays pass, including independent
+closed coefficient and residue audits. These are necessary-domain and
+component checks, not constructed complete candidate zeros.
+Remaining work concerns odd gaps at least9 or mu<0, preserving the
+actual main root and full compiler relation. For a future fixed-gap
+attempt, the low-X input-index and residue bounds may give an effective
+large-p cutoff, leaving finite ratio/residue cases; this is a research
+lead, not a proved larger-gap exclusion. The literal86 source and
 established75/87 bounds do not change.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,

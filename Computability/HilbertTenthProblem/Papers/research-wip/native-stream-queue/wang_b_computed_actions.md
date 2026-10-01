@@ -1,5 +1,12 @@
 # Computed actions give a331-operation fixed Wang program compiler
 
+The [native coupled-unit successor](native_binary_index_coupled_units.md)
+reduces this example's literal-input polynomial to330 operations and
+degree at most5503. A separate [non-erasing TM compiler](wang_b_nonerasing_tm_compiler.md)
+now pays the Theorem7 Wang expansion and binary pair loader, with an
+illustrative642-operation ordinary-input predicate. Neither example
+instantiates a universal instruction table.
+
 The four action hats in the [chronological Wang compiler](wang_b_packed_program.md)
 can be defined from its already-paid instruction-edge selectors. This
 removes four positive witnesses and four comparisons by an exact positive

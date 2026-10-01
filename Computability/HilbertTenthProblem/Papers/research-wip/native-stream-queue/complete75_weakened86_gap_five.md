@@ -1,5 +1,10 @@
 # Exact exclusion of gap five in the negative-index86 branch
 
+The [gap-seven successor](complete75_weakened86_gap_seven.md) further
+proves n<p<=2n-9 on R<0,mu>0, excluding96 power-of-two-X triples and all
+three remaining small-X lanes. Larger odd gaps and mu<0 remain open;
+this adds no universal86 claim.
+
 Every positive zero of the [unchanged86 candidate](complete75_weakened_bound86_candidate.md)
 with **R<0 and mu>0** must satisfy
 

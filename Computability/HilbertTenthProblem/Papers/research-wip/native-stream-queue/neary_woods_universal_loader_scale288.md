@@ -1,5 +1,10 @@
 # Define the loader scale: a288-operation universal U9 polynomial
 
+The [positive-mask-gap successor](neary_woods_universal_mask_gap285.md)
+gives285 operations,47 witnesses and the same degree bound3980 through
+a positive zero-set bijection with this parent; its low-degree option is
+295/608 with48 witnesses. The288 schedules below remain reproducible.
+
 The loader's repunit comparison can be absorbed into the definition of
 the recoder scale. The resulting universal U9 polynomial costs
 **288=141M+147A** operations, with **262=132M+130A** certificate gates,

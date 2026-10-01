@@ -1,5 +1,10 @@
 # Native unit products give prescribed AND83 and complete history components
 
+The [index/coupled-unit successor](native_binary_index_coupled_units.md)
+gives complete AND80/degree-at-most124, motion213/2020 and toggle127/748.
+It retains the full strong contract and restores private coordinates
+conditionally; the earlier83 schedules and proofs below remain available.
+
 The [computed-field AND90](native_binary_computed_fields.md) has an
 **83=43M+40A** polynomial successor, with **15 positive witnesses**, five
 comparisons and69 certificate operations. Its total degree is **at most124**.

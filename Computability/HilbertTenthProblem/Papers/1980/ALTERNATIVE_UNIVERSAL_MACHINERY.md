@@ -29,7 +29,19 @@ and [bracket-only1046 predecessor](../research-wip/native-stream-queue/gpcp_brac
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The latest explicit [loader-scale U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_loader_scale288.md)
+The latest explicit [positive-mask-gap U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_mask_gap285.md)
+gives **262 certificate /285=140M+145A polynomial operations**,
+8 comparisons,47 positive witnesses and four positive program parameters,
+with degree **at most3980**. Defining the mask above the quotient witness
+removes one comparison and witness from the288 parent. The retained
+mask-scale equation makes the restored bound slack positive at zeros;
+the typed recoder proves the inverse mask gap positive. This is a positive
+zero-set bijection with that parent, preserving its valid-program scope.
+The low-degree option gives **295=140M+155A / degree at most608**,
+257 certificate operations,13 comparisons and48 witnesses; keeping47
+witnesses gives292/1344. The separate75/87 frontier is unchanged.
+
+The preceding [loader-scale U9 polynomial](../research-wip/native-stream-queue/neary_woods_universal_loader_scale288.md)
 gives **262 certificate /288=141M+147A polynomial operations**,
 9 comparisons,48 positive witnesses and four positive program parameters,
 with degree **at most3980**. Defining the recoder scale from the paid
@@ -118,15 +130,15 @@ The [packed Wang tape successor](../research-wip/native-stream-queue/wang_b_pack
 chronological reads and optional marks in **139 certificate /192 polynomial
 operations**,18 comparisons,31 witnesses and degree at most232. One AND
 also types every positive one-hot head, the radix and a positive duration.
-Heads remain independently chosen: motion, instruction/control selection
-and the published TM-to-Wang input encoding remain unpaid. No universal
+In that packet heads remain independently chosen: motion, instruction/control
+selection and TM-to-Wang input encoding are not supplied. No universal
 Wang-program bound is claimed.
 
 The [Wang tape-and-motion batch](../research-wip/native-stream-queue/wang_b_packed_motion.md) additionally pays
 left/right/stay heads: **188 certificate /244=100M+144A polynomial**,
 19 comparisons,35 witnesses and degree at most316. Its existential endpoint
 projection is exactly non-erasing tape inclusion with dyadic initial/final
-heads. Finite program control and ordinary TM-input coding remain unpaid.
+heads. That packet does not supply finite program control or TM-input coding.
 
 The [chronological toggle-tape component](../research-wip/native-stream-queue/langton_ant_packed_toggle_tape.md)
 costs **105 certificate /158=66M+92A polynomial**,18 comparisons,28 witnesses
@@ -158,6 +170,15 @@ further gives **AND83/degree-at-most124**,5 comparisons,15 witnesses;
 normalization instead rebuilds five native auxiliaries while preserving
 all outer histories.
 
+The [native index/coupled-unit successor](../research-wip/native-stream-queue/native_binary_index_coupled_units.md)
+gives complete **AND80=43M+37A**,72 certificate operations,3 comparisons,
+15 witnesses and degree **at most124**. The same guarded rewrite gives
+**motion213/degree-at-most2020**,6 comparisons,28 witnesses, and
+**toggle127/748**,5 comparisons,21 witnesses. Index-only82 preserves the
+parent positive zero set; coupling restores two private coordinates on
+a negative index branch and preserves the outer relation. These are
+complete components, with their control and geometry scope unchanged.
+
 The [fixed-program Wang compiler](../research-wip/native-stream-queue/wang_b_packed_program.md) now pays
 chronological instruction selection, current-read jumps, both control
 endpoints and the common duration. Its six-instruction example costs
@@ -165,8 +186,8 @@ endpoints and the common duration. Its six-instruction example costs
 window endpoints. A two-gate literal binary-input loader and paid head
 typing give **352=151M+201A**,13 comparisons,40 witnesses,degree at most5767.
 These are complete fixed-program halting predicates. The example is not
-a universal instruction table, and the TM-to-Wang input morphism remains
-uninstantiated; no new universal operation bound follows.
+a universal instruction table, and that packet does not instantiate a
+TM-to-Wang input morphism; no new universal operation bound follows.
 
 The [computed-action successor](../research-wip/native-stream-queue/wang_b_computed_actions.md)
 defines four action hats from the paid edge sums and folds their bound
@@ -177,6 +198,21 @@ The example now costs **331=146M+185A**,305 certificate operations,
 literal input gives **333=147M+186A**,307 certificate operations,
 9 comparisons,36 witnesses and degree at most5767. No universal table or
 TM-input encoding is added;350/352 remain the reproducible parent counts.
+
+Applying the [native coupled-unit rewrite](../research-wip/native-stream-queue/native_binary_index_coupled_units.md)
+to that computed-action example gives literal-input **330=147M+183A**,
+310 certificate operations,7 comparisons,36 witnesses and degree
+**at most5503**. This is still an illustrative fixed Wang program.
+
+The [non-erasing TM-to-Wang compiler](../research-wip/native-stream-queue/wang_b_nonerasing_tm_compiler.md)
+now pays the explicit Theorem7 instruction expansion and ordinary binary
+input pair map for any fixed total non-erasing binary TM. Its example
+with one nonhalting state gives **642=285M+357A**,566 certificate operations,25 comparisons,
+83 positive witnesses and degree **at most16124**. The pair loader and
+finite blank exterior are part of the complete theorem. No universal
+non-erasing transition table is instantiated; the remaining obstacle is
+an explicit erasing-to-non-erasing compiler or a suitable universal table
+with its input convention. This642 example is not a universal bound.
 
 A separate [positive NOR compiler for finite game graphs](../research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
@@ -238,8 +274,11 @@ now strengthens R<0,mu>0 to n<p<=2n-5: every one of237 remaining
 necessary triples for p=2n-3 fails an exact ratio test. The
 [gap-five successor](../research-wip/native-stream-queue/complete75_weakened86_gap_five.md)
 then gives n<p<=2n-7 by forcing X=2^p and excluding all40 necessary
-triples. Gaps at least7 and mu<0 remain open; no universal improvement
-below87 is claimed.
+triples. The [gap-seven successor](../research-wip/native-stream-queue/complete75_weakened86_gap_seven.md)
+now gives **n<p<=2n-9**: all96 power-of-two-X triples fail the ratios,
+and exact input/main-root residues exclude all three small-X lanes.
+Gaps at least9 and mu<0 remain open; no universal improvement below87
+is claimed.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
