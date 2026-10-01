@@ -165,10 +165,111 @@ def main_index_audit():
                 scope='Exact recurrence/inequality fixtures; not full compiler or candidate zeros.')
 
 
+def global_ratio_audit():
+    """Check both forbidden Pell-index tails with exact recurrences."""
+    endpoints = index_exclusions = duplication = 0
+    for q in (16, 32, 64):
+      for w in (1, 2, 5):
+       for s in (1, 3):
+        X, Y = w*q**3, s*q**3
+        A, P = Y*(X+1)+2, 2*X*Y*Y+1
+        doubled_parameter = 2*A*A-1
+        assert P > A > Y+1 and doubled_parameter > P
+        main = [pell(A, p)[1] for p in range(52)]
+        for n in range(1, 25):
+            k = 2*pell(P, n)[1]
+            lower, upper = k*Y, k*(Y+1)
+            assert main[n] < lower < upper < main[2*n]
+            # This equality is checked from two separately evaluated
+            # Pell recurrences, not used as a replacement for either.
+            assert main[2*n] == 2*A*pell(doubled_parameter, n)[1]
+            duplication += 1
+            endpoints += 1
+            for p in range(1, 2*n+4):
+                if p <= n or p >= 2*n:
+                    assert not lower < main[p] < upper
+                    index_exclusions += 1
+    return dict(exact_ratio_endpoint_cases=endpoints,
+                independent_duplication_recurrence_cases=duplication,
+                forbidden_main_index_cases=index_exclusions,
+                conclusion='At a candidate zero the first/main indices obey n<p<2n, independently of R.',
+                scope='Exact endpoint and exclusion fixtures; the two native norms are not jointly asserted zero.')
+
+
+def strict_wrap_endpoint_audit():
+    """Positive input-root fixtures with genuine main/input Pell values.
+
+    These enforce the main scale, mask, main-root and signed input-root
+    formulas.  They do not assert the first or auxiliary native norms,
+    transport, or the full candidate polynomial is zero.
+    """
+    cases = endpoint_exclusions = input_index_cases = negative_indices = 0
+    for t in (4, 5, 6):
+        q = B = 1 << t
+        M, J, F, C, x, b = q*q-1, 1, 1, 1, 1, 1
+        MC, MF = B-2, 4
+        alpha, u = q-F-C-2*t*x, 2*t*x+b
+        assert alpha > 0 and MC.bit_count()+MF.bit_count() == t
+        K = q*(q-F)*M+(MC+q*(MF+B-1))*J
+        assert 0 < K < q**4
+        for p in (3*t, 3*t+1, 3*t+5, 3*t+10):
+          X = 1 << p
+          assert X % q**3 == 0
+          for s in (1, 2, 5):
+            Y = s*q**3
+            a = Y*(X+1)
+            A, H = a+2, 4*a+3
+            Delta = A*A-1
+            D, c = pell(A, p)
+            c_previous = pell(A, p-1)[1]
+            ep = D-a*c
+            assert D == A*c-c_previous and ep == 2*c-c_previous
+            assert 0 < X < H and (ep-X) % H == 0
+            gamma = (ep-X)//H
+            assert gamma > 3 and c_previous > p
+            for v in (1, 2, u, p-1):
+              assert 0 < v < p
+              mu, kappa = pell(A, v)
+              ev = mu-a*kappa
+              for sigma in (1, 2, 3):
+                rho = gamma-sigma
+                Z = C+rho*H-ev
+                W = C-Z
+                assert min(rho, sigma, Z, mu, kappa) > 0
+                assert D == X+a*c+(rho+sigma)*H
+                assert mu == W+a*kappa+rho*H
+                assert D*D-Delta*c*c == mu*mu-Delta*kappa*kappa == 1
+                assert 2*c-Z == c_previous+X+sigma*H+ev-C
+                assert 2*c-Z > c_previous > p
+                if v == u:
+                    assert kappa > u and (kappa-u) % Delta == 0
+                    input_index_cases += 1
+                R = K-M*Z
+                assert R == (q*(q-F)-Z)*M+(MC+q*(MF+B-1))*J
+                negative_indices += R < 0
+                for shift in (-2, 0, 2):
+                    target = R+shift
+                    assert target+2*M*c > p
+                    assert 2*target < c
+                    for sign in (-1, 1):
+                        assert target != sign*p-2*M*c
+                        endpoint_exclusions += 1
+                cases += 1
+    assert negative_indices == cases
+    return dict(exact_positive_input_root_cases=cases,
+                retained_input_index_congruence_cases=input_index_cases,
+                negative_computed_index_cases=negative_indices,
+                strict_forbidden_wrap_endpoint_checks=endpoint_exclusions,
+                conclusion='For mu>0, p-2*(q^2-1)*c<R+epsilon-lambda<c/2; hence 0<=j<=2*(q^2-1)-1.',
+                scope='Partial exact main/input-root and packing fixtures, not complete candidate zeros.')
+
+
 def verify():
     return dict(status='PASS_SCOPED_WEAKENED86_POSITIVE_INDEX',
                 source=original_factor_audit(), packing=packing_audit(),
                 pell_branches=main_index_audit(),
+                global_ratio=global_ratio_audit(),
+                strict_wrap_endpoint=strict_wrap_endpoint_audit(),
                 proved_region='Every positive candidate zero with computed R>0 has the correct ordinary input.',
                 remaining_region='R<0; R=0 is impossible under the unchanged compiler mask bounds.',
                 scope='The86-operation source is unchanged and remains an unresolved candidate. '

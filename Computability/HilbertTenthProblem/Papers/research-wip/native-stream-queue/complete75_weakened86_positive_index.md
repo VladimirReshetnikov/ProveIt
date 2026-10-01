@@ -200,6 +200,23 @@ argument supplies the congruence
 
 but it cannot identify the representative without an additional bound.
 
+There is also a global restriction involving the first Pell index n.
+The first norm gives k=2*psi_P(n), with P=2XY^2+1 and n>=1.
+The retained ratio definitions give
+
+    kY<c<k(Y+1).
+
+Since X,Y>=q^3>=4096, we have P>A>Y+1 and 2A^2-1>P.
+Monotonicity of psi in its parameter gives psi_A(n)<c. The exact
+duplication identity gives the opposite endpoint bound
+
+    psi_A(2n)=2A*psi_(2A^2-1)(n)
+             >2(Y+1)*psi_P(n)=k(Y+1)>c.
+
+Thus strict monotonicity in the index proves **n<p<2n**, independently
+of R and of the input root's sign. This does not identify either index
+with the computed packed index.
+
 The input norm has mu nonzero. If mu>0, classify kappa=psi_A(v)
 and mu=chi_A(v). Then
 
@@ -209,17 +226,31 @@ Strict increase gives v<p. Also Z=C+rho*H-E_A(v)<E_A(p)<2c;
 the last inequality follows from D<Ac, since c>1. Consequently,
 writing K=q(q-F)(q^2-1)+(MC+q(MF+B-1))J, we have
 
-    0<K<q^4, R=K-(q^2-1)Z,
-    -2(q^2-1)c<R+epsilon-lambda<c/2.
+    0<K<q^4, R=K-(q^2-1)Z.
+
+The lower endpoint can be made strict enough to exclude both signs at
+the largest possible wrap. Put M=q^2-1 and c_-=psi_A(p-1). The Pell
+identity D=Ac-c_- gives E_A(p)=2c-c_-, so
+
+    2c-Z=c_-+X+sigma*H+E_A(v)-C>c_->p.
+
+Here X>C, E_A(v)>0, and c_->p follows from p>=12 and A>=2;
+for example c_->=(2A-1)^(p-2)>p. Since M>=255, K>0 and
+epsilon-lambda>=-2, this gives
+
+    R+epsilon-lambda+2Mc=K+M(2c-Z)+epsilon-lambda>p,
+    p-2Mc<R+epsilon-lambda<c/2.
 
 For the upper bound use c>A^11 and A>q^6, which dominate q^4+2.
 Together with(7), this confines the target to
 
     R+epsilon-lambda=s*p-j*c,
-    s in {1,-1}, 0<=j<=2(q^2-1),                    (8)
+    s in {1,-1}, 0<=j<=2(q^2-1)-1.                  (8)
 
-with j=2(q^2-1) possible only when s=1. This is a finite range of
-possible multiples of c for each q, not a recovery of the intended index.
+Indeed j<0 would give a target at least c-p>c/2, while j>=2M
+would give a target at most p-2Mc. The endpoint j=2M is therefore
+excluded for both signs. This remains a finite range of possible
+multiples of c for each q, not a recovery of the intended index.
 
 If mu<0, put -mu=chi_A(v), kappa=psi_A(v). Then instead
 
@@ -250,6 +281,14 @@ algebraic and partial-interface checks. No complete enormous positive
 Pell zero or false-input zero is materialized. The conditional soundness
 theorem is the proof above, not an inference from the finite fixtures.
 
+The follow-up checks evaluate432 pairs of endpoint recurrences for
+n<p<2n and exclude7,128 tested main indices outside that open interval.
+Separate432 exact main/input Pell fixtures retain the actual mask and
+scale formulas;108 also retain the input index congruence. They give
+2,592 strict wrap endpoint checks, including both signs and all three
+possible values of epsilon-lambda. They do not assert the first/auxiliary
+norms, transport or complete candidate polynomial vanishes.
+
 ```sh
 python3 complete75_weakened86_positive_index.py
 ```
@@ -263,3 +302,11 @@ positive-input-root wrap-bound fixtures. Those are partial algebraic
 fixtures, not complete candidate zeros. All five local links resolve.
 A second independent conceptual review confirms the stated branch
 arguments and leaves the same negative-index gap unresolved.
+
+These reviews concern the original positive-index theorem and its
+earlier non-strict wrap bound. The added global n<p<2n argument,
+strict endpoint exclusion and their new recurrence checks received a
+separate full diff proof/source review and fresh default replay from the
+root reviewer; all passed without findings. The updated author writer
+and fresh default replay also pass, with the literal candidate source
+hash unchanged. These new checks retain the partial-fixture scope above.

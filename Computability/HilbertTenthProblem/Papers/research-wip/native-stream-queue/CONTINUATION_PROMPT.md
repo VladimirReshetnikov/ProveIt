@@ -925,8 +925,11 @@ z_101=zplus-1 and i_101=Delta*i; it need not be an87 tuple.
 
 Only R<0 remains open, equivalently S>q^2, with W=C-Z<0. Globally the
 main Pell index still satisfies p>=12, restoring full strong rank and
-the auxiliary target congruence. When the computed input root mu>0,
-the target is confined to ±p-jc with0<=j<=2(q^2-1); mu<0 has a separate
+the auxiliary target congruence. The first/main ratios also give n<p<2n
+globally. When the computed input root mu>0, the identity
+2c-Z=psi_A(p-1)+X+sigma*H+E_A(v)-C>p excludes both largest-wrap
+signs. The target is confined to ±p-jc with0<=j<=2(q^2-1)-1;
+mu<0 has a separate
 unexcluded expression for Z. These are necessary restrictions, not
 full candidate zeros. The literal86=48M+38A/19w/degree203 circuit is
 unchanged and does not impose R>0. Paying that condition is still an
