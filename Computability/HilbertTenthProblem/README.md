@@ -93,7 +93,11 @@ universal Diophantine equations by James P. Jones and coauthors:
   complete universal equation. The [four-register history interface](Papers/research-wip/native-stream-queue/group_four_register_history.md)
   reduces the evolving matrix data from eight entries to four bounded
   registers, with a paid10-operation input boundary and conditional43-operation
-  aggregate. Digit selection, typing, control and power geometry remain unpaid.
+  aggregate. A separate [masked-selection certificate](Papers/research-wip/native-stream-queue/native_binary_masked_selection65.md)
+  pays all eight selected-source products in118 operations under explicit
+  digit and geometry hypotheses. Its AND primitive costs64, or65 with a
+  specified binary length. History and selector typing, control and shared
+  duration remain unpaid; these component counts are not universal bounds.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree

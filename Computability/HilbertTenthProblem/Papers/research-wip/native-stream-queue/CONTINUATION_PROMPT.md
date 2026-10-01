@@ -138,9 +138,24 @@ block on (q,1), q=2^t. The length-t shear bound and determinant one recover
 the whole target matrix from that vector; no input-height bound is needed.
 Shift by D=q^2 for positive fields. The paid boundary costs10, and the
 conditional four-lane packed interface costs43 with20 positive history
-fields, excluding q and P. Pay the eight digitwise source selections,
-selector/range typing, regular macro control and common-duration geometry
-q=2^t, P=(4q^2)^t before claiming a complete certificate.
+fields, excluding q and P. The [masked-selection packet](native_binary_masked_selection65.md)
+now certifies the eight digitwise products in118 operations through one
+bitwise-AND kernel, conditional on dyadic cell geometry and typed inputs.
+The actual one-hot-or-idle controller and digit margin X<B/2 let one
+positive bound replace eight lane bounds:24 auxiliaries,17 equations.
+The margin is needed for completeness of that specialization. The complete
+AND primitive costs64, or65 with an exact binary length parameter. Keep
+its existential kernel scale separate from the physical duration.
+Selector/range typing, mutual exclusion, regular macro control and common-
+duration geometry q=2^t, P=(4q^2)^t still need arithmetic certificates.
+A precise next local refinement remains unimplemented: in the unrestricted
+64/118 variants, define the kernel q by its existing four-addition
+checksum F0+F1+F2+F3+1. Move those gates before the q-dependent packing
+and remove the checksum comparison and supplied q. All four fields are
+positive, including computed F3, so this preserves positivity and should
+save one auxiliary witness and one equation at unchanged arithmetic cost.
+Audit the reordered DAG and residual mapping before updating the current
+receipts, which still use the explicit positive q witness.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,

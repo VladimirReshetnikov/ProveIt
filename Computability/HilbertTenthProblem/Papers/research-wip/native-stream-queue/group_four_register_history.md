@@ -289,6 +289,14 @@ the input boundary explicitly and reduces the evolving matrix data
 from eight coordinates to four using existing native power geometry.
 It does not solve those remaining controller and typing obligations.
 
+The subsequent [masked-selection packet](native_binary_masked_selection65.md)
+provides a uniform arithmetic certificate for the eight selected-source
+products in118 operations, under the digit and geometry hypotheses above.
+Its single-bound specialization uses the actual mutually exclusive selectors
+and digit margin X<B/2, giving24 positive auxiliaries and17 equations.
+That separate component is not included in43; history/selector typing,
+regular control and the common physical duration still require certificates.
+
 ## 6. Exact checks and scope
 
 Run the [stdlib checker](group_four_register_history.py) without

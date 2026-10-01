@@ -134,8 +134,16 @@ uses the shear-height bound and determinant one to recover each target
 block from its action on (2^t,1). This reduces eight evolving matrix entries
 to four bounded registers. Its paid ordinary-input boundary costs10;
 a conditional packed interface costs43 with20 positive history fields.
-Typing, eight digitwise selected-source products, regular macro control and
-two power relations with the same duration remain unpaid.
+That ledger excludes typing, eight digitwise selected-source products,
+regular macro control and two power relations with the same duration.
+The [masked-selection component](../research-wip/native-stream-queue/native_binary_masked_selection65.md)
+now supplies all eight products together in118 operations, under explicit
+dyadic cell geometry and history/selector digit semantics. Its four-register
+specialization needs24 positive auxiliaries and17 equations; the shared
+bound uses mutual exclusion and digits below half the cell radix.
+The underlying complete bitwise AND costs64, or65 with an exact binary
+length scale. Typing, control and physical-duration geometry remain open;
+this supplies no smaller complete universal equation.
 
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators

@@ -170,9 +170,15 @@ The [four-register matrix history](group_four_register_history.md) uses a
 length-dependent test vector to reduce the two SL2 blocks from eight
 entries to four bounded registers. Its ordinary-input boundary costs
 **10=4M+6A**; the conditional packed interface costs **43=15M+28A** with
-20 positive history fields. Digit typing, eight selected-source products,
-a fixed regular macro controller and shared-duration power geometry remain
-unpaid, so43 is not a complete Diophantine bound.
+20 positive history fields. That43-operation ledger excludes digit typing,
+eight selected-source products, regular macro control and power geometry.
+The [binary masked-selection packet](native_binary_masked_selection65.md)
+now pays all eight products together in **118=55M+63A**, conditional on
+those digit and cell-geometry hypotheses. The four-register margin permits
+one aggregate output bound, giving24 positive auxiliaries and17 equations.
+Its complete bitwise-AND primitive costs64, or65 with a specified binary
+length scale. History typing, selector typing, mutual exclusion, control
+and common-duration geometry still need a full arithmetic implementation.
 
 The [Heisenberg membership audit](heisenberg_two_generator_membership.md)
 gives a uniform four-witness certificate for any two fixed generators in
@@ -204,7 +210,8 @@ New research and the completed75-operation construction:
 |---|---|---|
 | [Coupled index/linear universal polynomial](complete75_coupled_index_linear88.md) | **88=47M+41A**, 19 positive witnesses and exact degree151. One shared expression saves a subtraction; a compiler-mask population contradiction excludes the extra sign. | Positive zero-set equivalence uses the full compiled mask contract. The75 comparison bound and89/148 tradeoff remain separate. |
 | [Coupled-unit degree tradeoffs](complete75_coupled88_degree_tradeoffs.md) | **91/degree130** and **93/degree90**, each with19 positive witnesses and identical positive zeros to coupled88. | Exact partition bounds concern the seven fixed factors with the full strong equation retained separately. The compiler-specific sign proof is inherited intact. |
-| [Four-register matrix history](group_four_register_history.md) | Arbitrary-length paired-SL2 products need only four bounded signed registers. Paid ordinary-input boundary10 and conditional history interface43. | The20 positive history fields exclude power geometry; digit typing, selected-source products and regular macro control are still unpaid. |
+| [Four-register matrix history](group_four_register_history.md) | Arbitrary-length paired-SL2 products need only four bounded signed registers. Paid ordinary-input boundary10 and conditional history interface43. | The20 positive history fields exclude power geometry. The43 ledger excludes the separate118-operation selected-source certificate; history typing, control and shared-duration geometry remain unpaid. |
+| [Binary AND and shared selected-source products](native_binary_masked_selection65.md) | Complete bitwise AND in64 operations, or65 with a specified binary length; conditional eight-field selection in118. The four-register specialization uses24 positive auxiliaries and17 equations. | The batch assumes dyadic cell geometry, typed histories and Boolean selectors. Its single-bound specialization also needs mutual exclusion and the half-radix digit margin. No complete universal bound follows. |
 | [Two-generator Heisenberg membership](heisenberg_two_generator_membership.md) | Uniform four-positive-witness graph18r+10 or polynomial27r+12 of degree at most4; decidability for the entire two-generator family. | Three-letter pair/triangle relaxations fail, with an explicit strict-interior family. The cited universal construction compiles an existing Diophantine equation. |
 | [Positive-root degree tradeoffs](complete75_positive_root_degree_tradeoffs.md) | **94/degree84**, **93/degree118**, and **92/degree122**, each with19 positive witnesses. Full positive bijections retain the strong and linear auxiliary equations. | Exact partition bounds concern only the stated factor family. The94/84 result saves two operations at degree84; the subsequent88-operation bound uses a different coupled factor. |
 | [Affine subgroup-input obstruction](group_affine_input_obstruction.md) | Two independent affine SL2 blocks can yield only empty, singleton or arithmetic-progression subgroup membership sets. The quadratic degree of the universal paired-SL2 curve is sharp. | No operation lower bound; an explicit SL3 affine curve accepts exactly{1,2}, excluding an extension to general SL3/SL4 curves. |
