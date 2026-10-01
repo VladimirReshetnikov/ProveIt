@@ -1,0 +1,15 @@
+PYTHON ?= python
+PDF_TOOL ?= /home/oai/skills/pdfs/scripts/latex_to_pdf.py
+
+.PHONY: all verify pdf clean
+
+all: verify pdf
+
+verify:
+	$(PYTHON) code/verify.py --output data/verification.json
+
+pdf:
+	$(PYTHON) $(PDF_TOOL) article.tex -o article.pdf
+
+clean:
+	rm -rf latex_build_* __pycache__ code/__pycache__

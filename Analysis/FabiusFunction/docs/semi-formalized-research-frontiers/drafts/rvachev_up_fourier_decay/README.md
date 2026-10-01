@@ -1,9 +1,9 @@
 # Rvachev up-function Fourier decay
 
 This group has one canonical synthesis, a separately supplied rewrite awaiting
-reconciliation, and two arrivals: one addressing a gap the synthesis states,
-and one answering that arrival's finite-smoothness question. The canonical
-document is:
+reconciliation, and three arrivals: one addressing a gap the synthesis states,
+and two answering that arrival's finite-smoothness question (on Sobolev and on
+`C^r` spaces). The canonical document is:
 
 - [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
 - [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — retained rendered checkpoint.
@@ -65,6 +65,20 @@ formulas are already in
 [`../thue-morse/Thue_Morse_Frontier_Deductions/`](../thue-morse/Thue_Morse_Frontier_Deductions/),
 Part I, which it does not cite.  Hölder spaces are not treated.
 Unreviewed; no Lean statement.
+
+[`Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/`](Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/)
+holds *Sharp `C^r` Spectral Disks for the Rvachev–Thue–Morse Transfer
+Operator* (16-page A4 PDF, 1,341-line source, a standard-library exact
+check program), filed on 2026-09-30 by a quick archival intake.  It
+answers the integer `C^r` part of the same question: on `C^r` of the
+circle and of `[0,1]` the operator has a whole disk of essential
+spectrum of radius `2^{−r−1}`, every interior point an eigenvalue of
+infinite multiplicity, plus the eigenvalues `1/2` and `−1/4`, which are
+isolated exactly for `r ≥ 1` and `r ≥ 2`; for the sine mask the
+endpoint jets add nothing.  It proves the disk for every smooth dyadic
+Markov weight, and a Calkin lower bound shows the two-resonance
+expansion's rate cannot be improved by any compact correction.
+Noninteger Hölder spaces stay open.  Unreviewed; no Lean statement.
 
 ## Canonical synthesis
 

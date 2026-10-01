@@ -1,0 +1,10 @@
+.PHONY: all pdf verify templates clean
+all: verify templates pdf
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+verify:
+	python3 code/verify.py
+templates:
+	python3 code/export_rank4_templates.py
+clean:
+	latexmk -c article.tex
