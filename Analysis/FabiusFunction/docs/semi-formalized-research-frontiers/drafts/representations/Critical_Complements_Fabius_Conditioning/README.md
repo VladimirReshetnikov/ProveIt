@@ -3,7 +3,8 @@
 **Logarithmic overlap, finite-memory corrections, and the order-zero Rényi crossover**
 
 A 24-page research article prepared for Vladimir Reshetnikov, dated September 30,
-2026 (25 pages with the editorial notes of 2026-09-30). This package extends the fixed-critical-complement regime explicitly posed
+2026 (25 pages with the editorial notes of 2026-09-30, 26 with those of
+2026-10-01). This package extends the fixed-critical-complement regime explicitly posed
 as a research question in ProveIt's *Sharp Conditioning Laws for Uniform Random
 Series*.
 
@@ -139,7 +140,8 @@ Reshetnikov") is kept as delivered.
     `H_r`; there the hidden sum is bounded); "crossover", `K`, `h` and
     `delta` mean different things in the two articles. The growing
     early-coordinate complement (the first question of Section 13) stays
-    open;
+    open (its logarithmic slice was treated later, for the overlap only;
+    see the editorial amendments of 2026-10-01 below);
   - end of Section 2.1: the identification of the `q = 1/2` law with the
     Fabius function is machine-checked as
     `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal` and
@@ -176,3 +178,50 @@ Reshetnikov") is kept as delivered.
 - Recorded, not changed: `provenance.json` describes its pinned reference as
   "not asserted to be a commit ID"; it is a commit of this repository (the
   last write of batch 64).
+
+## Editorial amendments (ProveIt, 2026-10-01)
+
+Made in the editorial pass after batch 71 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-10-01)`. The mathematical text is unchanged.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-10-01)") is defined after `ednote`. Two notes:
+  - after the first question of Section 13, "A uniform mesoscopic
+    complement theory", and its discussion: the later article
+    `../Second_Order_Critical_Complements_Fabius_Conditioning/` (filed 2026-09-30,
+    batch 71, unreviewed) answers the logarithmic slice of that question
+    for the overlap only. Its "early" mask is the block `{r_n+1, ..., n}`
+    observed here (it names the hidden coordinates, not the observed ones),
+    and its tilt is `rho' q^{-(n+1)}`, so `rho = rho'/q`. Uniformly for
+    `c_0 log n <= r_n <= c_1 log n` it proves
+    `O_{n,r_n}/c_n = r_n (y_+ - y_-) + [F] + [B]/r_n + O(r_n^{-2} + r_n^3/n)`,
+    with `y_- < 1 < y_+` the roots of `y - 1 - log y = log(n/r_n)/(2 r_n)`,
+    `F(y) = (log E exp((1 - 1/y) R_rho) + 1)/(1 - 1/y)` and an explicit
+    `B`; its leading term is the Lambert-W crossover that
+    `../Critical_Complements_Sharp_Information_Loss/` proves for the other
+    mask. Since `E exp(R_rho) = K` by (3.2) (`eq:R`), `[F]` tends to
+    `log K + 1`, the `r = 0` constant of (3.4), as `r_n/log n = c` tends
+    to 0, a consistency check outside the theorem's range;
+    `log K = 0.486134172...` of (11.2) (`q = 1/2`, `rho = 1`) was
+    reproduced as `log E exp(R_rho)` to 30 digits. For
+    `r_n/log n -> c in (0, infinity)` this block keeps eventually strictly
+    more overlap than the prefix `{1, ..., n - r_n}`, as it does for fixed
+    `r >= 1` (there the gap grows like `r log Lambda_n`). Thinner and
+    thicker growing complements, uniformity as `c` tends to 0 or infinity,
+    and the information formulas the question asks for remain open;
+  - after the 2026-09-30 note at the end of Section 1.1, which says that
+    the growing early-coordinate complement remains open: a pointer to the
+    note above.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf` (MiKTeX
+  pdfTeX 1.40.29): 26 pages (25 before), 1,010,740 bytes, with no error,
+  undefined reference, multiply defined label, duplicate destination or
+  overfull box (the three underfull boxes of the previous build remain);
+  every font is embedded and none is Type 3. Theorem, section and equation
+  numbers are unchanged, so `CLAIM_STATUS.md` stays correct. The two pages
+  carrying the notes were rendered and inspected.
+- `validation.json`: `pdf_pages`, `pdf_bytes`, `pdf_sha256` and the
+  `article.tex` entry of `effective_tex_input_sha256` were recomputed again
+  for the filed files.
+- `README.md`: the page count, the parenthesis after the 2026-09-30 bullet
+  on the growing early-coordinate complement, and this section.

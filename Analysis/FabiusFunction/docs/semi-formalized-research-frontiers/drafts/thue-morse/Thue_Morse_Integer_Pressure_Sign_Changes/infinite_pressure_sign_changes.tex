@@ -1,0 +1,382 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,booktabs}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Infinite Taylor Sign Changes in Integer Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\T}{\mathbb T}\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}\newcommand{\E}{\mathbb E}
+\newcommand{\Lop}{\mathcal L}
+\title{Infinite Taylor Sign Changes in\\Integer Thue--Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For every fixed integer $m\ge2$, the Taylor series of integer Thue--Morse pressure at the atomic phase has infinitely many strictly positive and infinitely many strictly negative even coefficients.
+Both sign subsequences attain the full exponential coefficient scale.
+In fact, each of the degree classes $0$ and $2$ modulo $4$ separately contains infinitely many coefficients of both signs.
+The proof combines the repository's real-phase simple Perron theorem with an elementary complex matrix bound and the classical theorem of Pringsheim.
+It proves finite complex radius without identifying a discriminant zero with the pressure branch.
+Consequently the first negative coefficient after the cancellation degree exists for every $m$; together with the preceding positive-window theorem it occurs at a finite even degree at least $6m$.
+Exact computations give its location for $2\le m\le20$.
+No sign density or large-$m$ scaling law is asserted.
+\end{abstract}
+
+\section{The sign theorem}
+Use the cosine phase convention of the repository manuscript \cite{Repo}:
+\[
+ g_c(x)=\cos^2\!\pi(x-c),\qquad T(x)=2x\pmod1,\qquad
+ p_m(c)=P(m\log g_c).
+\]
+All logarithms are natural. Set
+\[
+ P_m(t)=p_m(t/\pi)=\sum_{k\ge1}c_{m,k}t^{2k}.
+\]
+The parameter $m$ is a fixed positive integer, while $t$ is the phase variable scaled by $\pi$.
+The source identifies pressure with the logarithm of the positive dominant eigenvalue of a finite Fourier matrix and proves real analyticity at every real phase, including the atomic phase $c=0$.
+We reconstruct the spectral facts needed here in Section~\ref{sec:real}; their attribution remains with \cite{Repo}.
+
+\begin{theorem}\label{thm:sign}
+For every integer $m\ge2$, the Taylor radius $R_m$ of $P_m$ satisfies
+$0<R_m\le4$. There are infinitely many indices $k$ with $c_{m,k}>0$ and infinitely many with $c_{m,k}<0$. Moreover,
+\begin{equation}\label{eq:scale}
+ \limsup_{k\to\infty}\bigl(\max\{c_{m,k},0\}\bigr)^{1/k}
+ =
+ \limsup_{k\to\infty}\bigl(\max\{-c_{m,k},0\}\bigr)^{1/k}
+ =R_m^{-2}.
+\end{equation}
+\end{theorem}
+Thus neither sign eventually disappears, and neither sign is exponentially smaller along all of its indices.
+After zero coefficients are omitted, infinitely many sign changes occur.
+This does not imply consecutive alternation or a density of either sign.
+For $m=1$, pressure is identically zero and the conclusion is false.
+
+The analytic mechanism is classical: a finite-radius nonnegative series has a singularity at its positive radius, by Pringsheim \cite{FS}. The application to this pressure family, rather than that general principle, is the result of this note.
+The argument is independent of finite coefficient sampling.
+
+\section{The finite matrix and the real axis}\label{sec:real}
+Put $I_m=\{1-m,\ldots,m-1\}$ and
+\[
+ a_j=4^{-m}\binom{2m}{m+j},
+\]
+with $a_j=0$ outside $[-m,m]$. On the trigonometric polynomials
+$\mathcal E_m=\operatorname{span}_{\C}\{e^{2\pi i r x}:r\in I_m\}$, the sum transfer operator
+\[
+ (\Lop_{m,c}f)(x)=\sum_{Ty=x}g_c(y)^m f(y)
+\]
+has matrix
+\begin{equation}\label{eq:matrix}
+ A_m(t)_{k,r}=2a_{2k-r}e^{-2i(2k-r)t},\qquad t=\pi c.
+\end{equation}
+Indeed, multiplication by $g_c^m$ gives frequencies of absolute value at most $2m-1$; summing over the two inverse branches removes odd frequencies and halves even frequencies. This proves invariance and \eqref{eq:matrix}.
+
+At $t=0$, every column sums to one. The admissible values of $j=2k-r$ form one parity class, whose binomial mass is $1/2$, and all resulting indices $k$ belong to $I_m$.
+Every nonzero entry has $|2k-r|\le m$. Consequently, for complex $t$,
+\begin{equation}\label{eq:growth}
+ \|A_m(t)\|_1\le e^{2m|\operatorname{Im}t|}.
+\end{equation}
+
+\subsection{The zero-weight Perron argument}
+The following proof is the finite-dimensional argument of \cite[Sections 5--7]{Repo}; it is included to make the treatment of the weight's zero explicit.
+For real $c$, $\Lop_{m,c}$ preserves the closed, pointed, solid, generating cone of nonnegative real trigonometric polynomials.
+The finite-dimensional cone Perron principle supplies a nonzero $h\ge0$ with eigenvalue equal to the spectral radius $\rho$.
+This principle follows, for example, by adding a small strongly positive rank-one map, applying the fixed-point theorem on a normalized cone base, and taking a limit.
+For the inverse branches the two values of $g_c$ are $a$ and $1-a$, so
+\[
+ 2^{1-m}\le \Lop_{m,c}1=a^m+(1-a)^m\le1.
+\]
+The supremum norm upper bound and iteration of the lower bound give
+$2^{1-m}\le\rho\le1$.
+
+\begin{lemma}\label{lem:tree}
+Let $Z\subset\T$ be nonempty and finite. If
+$T^{-1}Z\setminus\{s\}\subseteq Z$, then $Z=\{0\}$ and $s=1/2$.
+\end{lemma}
+\begin{proof}
+Counting gives $2|Z|-1\le|Z|$, hence $|Z|=1$.
+The remaining inverse image must be the same point, hence a fixed point of doubling.
+The only such point is zero, whose other preimage is $1/2$.
+\end{proof}
+
+The weight vanishes only at $s=c+1/2$.
+If $c\ne0\pmod1$, a nonempty zero set of $h$ would be finite and satisfy Lemma~\ref{lem:tree}, a contradiction. Thus $h>0$.
+For an eigenfunction $\Lop f=\lambda f$ with $|\lambda|=\rho$, set
+\[
+ R=\max_x\frac{|f(x)|}{h(x)},\qquad H=R^2h^2-|f|^2.
+\]
+If $f\ne0$, then $R>0$, and $H$ is a nonnegative trigonometric polynomial with a nonempty zero set.
+At a zero, equality holds in
+\[
+ |\lambda f(x)|
+ \le\sum_{Ty=x}g_c(y)^m|f(y)|
+ \le R\sum_{Ty=x}g_c(y)^m h(y)=R\rho h(x).
+\]
+Its zero set therefore propagates to both preimages except $s$.
+Lemma~\ref{lem:tree} forces $H\equiv0$.
+Writing $F=f/h$, equality in the triangle inequality now gives
+\[
+ F(y)=(\lambda/\rho)F(Ty)\quad(y\ne s),
+\]
+and continuity extends this to $s$.
+At zero, $F(0)\ne0$ gives $\lambda=\rho$.
+The dyadic preimages of zero are dense, so $F=F\circ T$ is constant.
+Finally $\rho^{-1}\Lop$ contracts the norm $\max|f|/h$, excluding a nontrivial Jordan block.
+Thus $\rho$ is algebraically simple and is the unique peripheral eigenvalue.
+
+\subsection{The exceptional phase and analytic continuation}
+At $c=0$, let $J$ have law $\Pr(J=j)=a_j$.
+The transpose matrix acts on polynomial evaluations on $I_m$ by
+\[
+ (A_m(0)^{\mathsf T}Q)(r)
+ =\E\!\left[Q\!\left(\frac{r+J}{2}\right)\,\middle|\,J\equiv r\pmod2\right].
+\]
+For every polynomial $U$ of degree less than $2m$,
+$\sum_j(-1)^j a_j U(j)=0$, by the vanishing $2m$th finite difference.
+The relevant conditional binomial moments therefore equal the unconditional moments.
+On the evaluation basis $1,r,\ldots,r^{2m-2}$, the transpose is triangular with diagonal
+\[
+ 1,2^{-1},\ldots,2^{-(2m-2)}.
+\]
+These are distinct, so the dominant eigenvalue one is simple at the exceptional phase too.
+
+The implicit-function theorem for the characteristic polynomial now gives a positive real-analytic dominant eigenvalue at every real phase.
+The local branches agree on overlaps by uniqueness.
+Its logarithm is therefore real-analytic on the whole real line.
+Reflection and periodicity give
+$P_m(-t)=P_m(t)$ and $P_m(t+\pi)=P_m(t)$.
+
+For completeness, evaluation at zero is a left eigenfunctional at the atomic eigenvalue one. It pairs nontrivially with its right eigenvector: otherwise that eigenvector would lie in the range of $A_m(0)-I$, creating a Jordan chain.
+Thus the local analytic eigenfunction can be normalized by $h_{m,c}(0)=1$.
+Evaluating its transfer equation at zero yields the source's delayed-feedback identity
+\[
+ \rho_m(c)=\cos^{2m}(\pi c)+\sin^{2m}(\pi c)\,h_{m,c}(1/2).
+\]
+For $m\ge2$ this proves
+\begin{equation}\label{eq:nonconstant}
+ P_m(t)=-m t^2+O(t^4).
+\end{equation}
+In particular the pressure germ is nonconstant.
+
+\section{A finite complex radius and equal sign scales}
+We first give a direct quantitative radius argument.
+For every circle $|t|=r$ strictly inside the Taylor disk, the characteristic identity
+\[
+ \det\bigl(e^{P_m(t)}I-A_m(t)\bigr)=0
+\]
+holds by analytic continuation from zero. Equation~\eqref{eq:growth} gives
+$\operatorname{Re}P_m(t)\le2mr$ on that circle.
+Write $u(\theta)=\operatorname{Re}P_m(re^{i\theta})$ and $M=2mr$.
+The mean of $u$ is $P_m(0)=0$. By the second Fourier coefficient and \eqref{eq:nonconstant},
+\[
+ -mr^2=2\frac1{2\pi}\int_0^{2\pi}u(\theta)e^{-2i\theta}\,d\theta
+ =-2\frac1{2\pi}\int_0^{2\pi}(M-u(\theta))e^{-2i\theta}\,d\theta .
+\]
+As $M-u\ge0$, it follows that $mr^2\le2M=4mr$, hence $r\le4$.
+Taking the supremum proves $0<R_m\le4$.
+
+Equivalently, an entire pressure would satisfy
+$\operatorname{Re}P_m(t)\le2m|t|$.
+For an entire function $F(t)=\sum a_jt^j$ with $\operatorname{Re}F(t)\le C+L|t|$, the same harmonic Fourier estimate gives
+\[
+ |a_j|r^j\le2(C+Lr-\operatorname{Re}F(0)).
+\]
+Letting $r\to\infty$ makes $F$ affine.
+An even such function is constant, contradicting \eqref{eq:nonconstant}.
+Neither argument assumes that a chosen discriminant zero belongs to the pressure branch.
+
+Now put
+\[
+ Q_m(z)=\sum_{k\ge1}c_{m,k}z^k,\qquad r_m=R_m^2.
+\]
+This series has finite positive radius $r_m$.
+For each $x>0$, the positive real square root and the real-axis Perron logarithm give a local analytic function $P_m(\sqrt z)$.
+These functions agree as they are continued along the positive axis.
+At $x=r_m$, its local version agrees with the Taylor germ on a real interval $(r_m-\varepsilon,r_m)$ and hence, by the identity theorem, on their complex overlap.
+Thus $Q_m$ continues analytically through its positive radius.
+
+If the coefficients were eventually nonnegative, subtraction of a finite polynomial would give a nonnegative-coefficient series with radius $r_m$ and no singularity at $r_m$, contrary to Pringsheim's theorem \cite[Theorem IV.3(ii)]{FS}.
+Applying the same argument to $-Q_m$ excludes eventual nonpositivity.
+This proves both infinite-sign conclusions.
+
+For the stronger statement define
+\[
+ Q_+(z)=\sum_{k\ge1}\max\{c_{m,k},0\}z^k,\qquad
+ Q_-(z)=\sum_{k\ge1}\max\{-c_{m,k},0\}z^k.
+\]
+Their radii $r_+,r_-$ are at least $r_m$, and
+$\min(r_+,r_-)=r_m$ by Cauchy--Hadamard.
+If $r_+=r_m<r_-$, then $Q_+=Q_m+Q_-$ would continue through $r_m$, contradicting Pringsheim for $Q_+$.
+The reverse inequality is equally impossible.
+Therefore $r_+=r_-=r_m$, proving \eqref{eq:scale}.
+
+\section{Both signs in each even degree class modulo four}
+For real $y$, all nonzero entries of $A_m(iy)$ are strictly positive.
+Its diagonal is positive, and there are positive entries between each pair of adjacent Fourier indices in both directions.
+Indeed, for output $k=r\pm1$, the binomial index corresponds to $2k-r=r\pm2$, which remains in $[-m,m]$ whenever both adjacent indices belong to $I_m$.
+The matrix is therefore irreducible and aperiodic, hence primitive.
+Its Perron eigenvalue is positive and algebraically simple for every $y$.
+Starting from the eigenvalue one at $y=0$, this supplies the analytic continuation of $e^{P_m(iy)}$ along the imaginary axis.
+Its real logarithm gives a continuation of $P_m(iy)$ there.
+It follows that $Q_m(z)$ is analytic at every negative real $z$ as well as every positive real $z$.
+In particular, every nearest singularity of $Q_m$ is nonreal.
+
+Define the two filtered series
+\[
+ E_m(w)=\sum_{j\ge1}c_{m,2j}w^j,\qquad
+ O_m(w)=\sum_{j\ge0}c_{m,2j+1}w^j.
+\]
+They are the coefficients in pressure degrees $4j$ and $4j+2$, respectively.
+\begin{theorem}\label{thm:filters}
+Both $E_m$ and $O_m$ have finite positive Taylor radii.
+Each has infinitely many strictly positive and infinitely many strictly negative coefficients.
+Within each filtered series, its positive and negative parts have the same radius as that filtered series.
+\end{theorem}
+\begin{proof}
+Let $D(t)=\operatorname{diag}_{k\in I_m}(e^{2ikt})$.
+The matrix factorization and centered index set give
+\[
+ A_m(t)=D(-2t)A_m(0)D(t),\qquad
+ \det A_m(t)=\det A_m(0)=2^{-(2m-2)(2m-1)/2}\ne0.
+\]
+Thus $A_m(t)^{-1}$ is entire and of exponential type: its adjugate entries are finite sums of products of exponential entries, and its denominator is a nonzero constant.
+
+As germs at zero,
+\[
+ S_m(t):=P_m(t)+P_m(it)=2E_m(t^4),\qquad
+ B_m(t):=P_m(t)-P_m(it)=2t^2O_m(t^4).
+\]
+The exponential of $S_m$ is an eigenvalue of $A_m(t)\otimes A_m(it)$.
+The exponential of $B_m$ is an eigenvalue of $A_m(t)\otimes A_m(it)^{-1}$.
+Both tensor matrices are entire and have norm at most $C_m e^{L_m|t|}$ for suitable fixed constants.
+If $E_m$ were entire, then $S_m$ would be entire and its characteristic identity would extend globally.
+Hence $\operatorname{Re}S_m(t)\le\log C_m+L_m|t|$, forcing $S_m$ affine by the harmonic estimate above, and constant by evenness.
+The same argument applies to $B_m$ if $O_m$ were entire.
+
+Neither germ is constant.
+The difference has $[t^2]B_m=-2m$.
+For $m\ge3$, delayed feedback begins in degree at least six, so
+$[t^4]S_m=-m/3$ from $2m\log\cos t$.
+For $m=2$, the cubic calculation in Section~\ref{sec:finite} gives
+$[t^8]S_2=2\cdot6836/189\ne0$.
+Thus both filtered radii are finite and positive.
+
+For positive $w$, choose the positive fourth root $t=w^{1/4}$.
+The real and imaginary Perron continuations just proved make both
+$S_m(t)/2$ and $B_m(t)/(2t^2)$ analytic locally in $w$.
+They glue to the corresponding filtered germs along the positive axis.
+Pringsheim and the positive/negative decomposition used for Theorem~\ref{thm:sign} therefore apply separately to each filter.
+\end{proof}
+The two filtered radii need not be identified with each other by this argument.
+If they are $r_E,r_O$, the precise relation to the original radius is
+$\min(r_E,r_O)=R_m^4$.
+No assertion about the frequency or spacing of these sign changes is required.
+
+\section{First negative degrees: existence and exact finite values}\label{sec:finite}
+The source proves $c_{m,m}=0$.
+The preceding positive-window theorem \cite{Window} proves
+$c_{m,k}>0$ whenever $m<k<3m$.
+Theorem~\ref{thm:sign} therefore has the following consequence.
+\begin{corollary}
+For every integer $m\ge2$, the first post-cancellation negative degree
+\[
+ N_m=\min\{2k:k>m,\ c_{m,k}<0\}
+\]
+exists, is finite, and satisfies $N_m\ge6m$.
+\end{corollary}
+
+The source's rational Fourier recursion, with the full formal logarithm retained, gives the following exact finite values.
+\begin{center}
+\begin{tabular}{c|rrrrrrrrrr}
+$m$&2&3&4&5&6&7&8&9&10&11\\
+\hline
+$N_m$&12&18&24&32&38&44&52&58&64&72
+\end{tabular}
+
+\smallskip
+\begin{tabular}{c|rrrrrrrrr}
+$m$&12&13&14&15&16&17&18&19&20\\
+\hline
+$N_m$&78&84&92&98&104&110&118&124&130
+\end{tabular}
+\end{center}
+Every intervening coefficient is computed exactly, so each entry is a first negative degree, rather than only an upper bound.
+The table does not establish a limit for $N_m/m$.
+
+Here is the finite algorithm's normalization.
+With $a=\tan t$, the row-polynomial gauge of the normalized phase matrix is
+\[
+ \operatorname{diag}_k\!\bigl((1-ia)^{m+k}(1+ia)^{m-k}\bigr)A_m(0).
+\]
+If its eigenvalue is $\lambda(a)$ near one, then
+\[
+ P_m(t)=2m\log\cos t+\log\lambda(\tan t).
+\]
+The checker solves its normalized eigenvector recursion over the rationals after the substitution $b=ia$ and verifies the original Fourier equation at every order.
+Writing $\lambda(a)=1+\sum_{j\ge1}v_j a^{2j}$, it computes the full logarithm
+$\log\lambda(a)=\sum_{j\ge1}q_j a^{2j}$ from
+\begin{equation}\label{eq:log}
+ q_j=v_j-\sum_{i=1}^{j-1}\frac{i}{j}q_i v_{j-i}.
+\end{equation}
+All feedback orders are included.
+The tangent substitution is computed from $\tan'=1+\tan^2$.
+Each case is checked through degree $10m$, beyond its displayed first negative degree.
+
+As an independent comparison, a second program constructs the characteristic polynomial of the original phase matrix for $2\le m\le6$, solves its simple root at one directly as a series in $t^2$, and takes its logarithm.
+All $105$ coefficients through the same respective degrees agree exactly.
+For $m=2$, the characteristic equation is
+\[
+ \mu^3-(\cos2t+3/4)\mu^2+(5\cos2t/8+1/4)\mu-1/8=0,
+ \qquad \mu(0)=1,
+\]
+and the first negative coefficient after cancellation is
+\[
+ [t^{12}]P_2(t)=-\frac{35360872}{93555}.
+\]
+The finite arithmetic supports the table; the infinite-sign theorem does not depend on it.
+
+\section{Attribution, scope and reproducibility}
+The real-phase Perron theorem, the finite Fourier matrix, the atomic spectrum and the cancellation are inputs from the repository manuscript \cite{Repo}.
+The treatment of the weight's zero in Section~\ref{sec:real} reproduces its finite-dimensional argument.
+Gohlke, Kesseb\"ohmer and Schindler \cite[Theorem 2.7]{GKS} establish the order-two real-phase regularity in the primary literature.
+The complex harmonic estimate and Pringsheim's theorem are classical tools.
+The result here is their application to all integer pressures, together with the equal exponential scales of the two signs.
+The inspected source does not state this sign conclusion.
+A targeted literature search found no earlier statement, but this is not an exhaustive priority claim.
+
+The proof does not locate $R_m$, select a dominant algebraic branch point, give a density of signs, or determine the asymptotic location of $N_m$ as $m$ grows.
+A real discriminant zero can involve two other eigenvalues and need not limit the pressure Taylor series.
+The first-negative table should not be used as a substitute for that branch analysis.
+
+The source bundle contains this editable manuscript, a build script, the exact rational checker and data for $m=2,\ldots,20$, the independent characteristic-polynomial checker, validation records and source hashes.
+The proof has been checked by direct derivation and exact arithmetic; it is not externally refereed or formally verified.
+
+\begin{thebibliography}{9}
+\bibitem{Repo}
+\emph{Integer Pressure and a Missing Taylor Coefficient: Analytic phase dependence and the sixth-moment optimum for generalized Thue--Morse products}.
+ProveIt research manuscript, 28 September 2026; inspected 1 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Pinned repository source}.
+Git blob \texttt{1444c01b4b30020f727172f0ee0060cab644f444}.
+
+\bibitem{FS}
+P.~Flajolet and R.~Sedgewick,
+\emph{Analytic Combinatorics}, Chapter IV lecture-note draft,
+Theorem IV.3(ii), printed page 15.
+\url{https://algo.inria.fr/flajolet/Teach/fascII.pdf}.
+See also the book, Cambridge University Press, 2009.
+
+\bibitem{GKS}
+P.~Gohlke, M.~Kesseb\"ohmer and T.~I.~Schindler,
+\emph{Generalized Thue--Morse measures: spectral and fractal analysis},
+arXiv:2509.22109v1, 2025.
+\url{https://arxiv.org/abs/2509.22109}.
+
+\bibitem{Window}
+\emph{The Full Pressure Positivity Range at Every Integer Order}.
+Companion research report prepared for Vladimir Reshetnikov with OpenAI,
+1 October 2026; delivered as report 63.
+It proves positivity at every even degree strictly between $2m$ and $6m$ for every integer $m\ge2$.
+\end{thebibliography}
+\end{document}

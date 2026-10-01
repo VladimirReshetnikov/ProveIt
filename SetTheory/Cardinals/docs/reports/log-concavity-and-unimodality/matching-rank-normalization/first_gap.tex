@@ -1,0 +1,25 @@
+\section{Exact equality in the first Newton gap}\label{sec:firstgap}
+The following gives a useful structural interpretation of non-strictness. Its ingredient is the classical Motzkin--Straus bound \cite{MS}; we include the short argument in the form needed here.
+
+\begin{theorem}
+For a positive weighted bipartite graph of matching rank $r\ge2$,
+\[
+ (r-1)a_1^2-2ra_2=0
+\]
+if and only if every nontrivial connected component is a star and their weighted edge totals are all equal. In that case $p_G(t)=(1+Et)^r$ for their common edge total $E$; otherwise the first gap is strict.
+\end{theorem}
+\begin{proof}
+Form the compatibility graph $K$ whose vertices are the edges of $G$, with two vertices adjacent when the corresponding edges are disjoint. Give an edge $xy$ weight $w_{xy}=u_xv_y$. Put $S=\sum w_e=a_1$ and
+\[
+ m_2=\sum_{\{e,f\}\in E(K)}w_ew_f.
+\]
+The clique number of $K$ is $r$, and $m_2\ge a_2$ because $m_2$ counts two-edge matchings rather than endpoint supports.
+
+For completeness, the Motzkin--Straus bound is
+\[
+ m_2\le\frac{r-1}{2r}S^2.
+\]
+To see it, merge the weights of two nonadjacent vertices onto whichever has the larger weighted neighbor sum. This preserves $S$ and does not decrease $m_2$. Continue until the positive support is a clique of size at most $r$, where the bound follows from Cauchy--Schwarz.
+
+Equality in the asserted first gap forces equality in both preceding bounds. Since the original compatibility weights are all positive, they give an interior maximum of $m_2$ on the simplex of fixed sum. If $K$ were not complete multipartite, it would contain an induced edge $ik$ and a vertex $j$ nonadjacent to both. The sum-preserving direction $e_i-2e_j+e_k$ has strictly positive second derivative for $m_2$, contradicting a local maximum. Hence $K$ is complete multipartite. Its complement, the line graph of $G$, is a disjoint union of cliques. In a bipartite graph a nontrivial connected component whose edges are pairwise intersecting is a star. There are exactly $r$ such components. The compatibility bound is then equality precisely when the total weights in the $r$ parts are equal. Conversely, for stars support and matching counts coincide and the polynomial is the stated product.
+\end{proof}

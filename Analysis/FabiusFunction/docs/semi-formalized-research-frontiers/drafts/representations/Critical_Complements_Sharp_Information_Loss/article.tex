@@ -29,6 +29,8 @@
 \newtheorem{remark}[theorem]{Remark}
 % ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a second unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
 \newcommand{\E}{\mathbb E}
@@ -191,6 +193,13 @@ and~\ref{thm:entropy} is not treated there; a growing early-coordinate
 complement (one of the masks of the first question of
 Section~\ref{sec:questions}) is open in both.
 \end{ednote}
+% ed. (2026-10-01): the logarithmic slice of the early-coordinate complement is now treated (batch 71).
+\begin{ednotelater}
+The logarithmic slice $m\asymp\log n$ of that early-coordinate complement
+is now treated, for the overlap only, by a later article; see the note
+after the question ``Second-order crossover terms'' in
+Section~\ref{sec:questions}.
+\end{ednotelater}
 
 Our inspection is pinned to \snap. The relevant predecessor paths and
 precise comparison are recorded in the bibliography and the package's
@@ -1434,6 +1443,45 @@ $(0,\infty)$, and exhibit the reappearance of the geometric phase.
 The leading theorem gives the correct starting points for both
 likelihood crossings.
 \end{question}
+% ed. (2026-10-01): this question is answered in the compact critical window by a later package (batch 71).
+\begin{ednotelater}
+A later article, \emph{Second Order Critical Complements in Fabius
+Conditioning}, filed as
+\path{../Second_Order_Critical_Complements_Fabius_Conditioning/}
+(batch~71 of the repository's \path{docs/incoming/}; unreviewed), answers
+this question in the compact window. It uses the tilt
+\eqref{eq:tilt} for every $\rho>0$, and its ``late'' mask is the prefix
+$B_{n,m}$ observed here (its ``early'' and ``late'' name the hidden
+coordinates). Uniformly for $c_0\log n\le m\le c_1\log n$, with
+$y_\pm=y_\pm(z_{n,m})$ as in \eqref{eq:roots}, it proves
+\[
+\frac{\ov_{n,m}}{\eps_n}=m(y_+-y_-)+[F]_{y_-}^{y_+}
+ +\frac1m[B]_{y_-}^{y_+}+O\Bigl(\frac1{m^2}+\frac{m^3}{n}\Bigr),
+\qquad F(y)=\frac{\log\HH(1-1/y)+1}{1-1/y},
+\]
+with $\HH$ the limit of \eqref{eq:Hdef} and an explicit coefficient $B$
+built from $\HH$ and its first two derivatives. The leading term is that
+of \eqref{eq:unified}; the geometric phase reappears at constant order
+through $\log\HH(1-1/y_\pm)$, and the remaining part $1/(1-1/y)$ of $F$
+comes from the two exterior tails of the clipped density. With
+$\ell=\log n$, $c_n=m/\ell$, $Y_\pm=y_\pm(1/(2c_n))$ and
+$D(c_n)=1/(1-1/Y_+)-1/(1-1/Y_-)$, it also separates $\log(n/m)$ from
+$\log n$:
+$\ov_{n,m}/\eps_n=\ell\,C(c_n)-\frac12D(c_n)\log(c_n\ell)
++[F]_{Y_-}^{Y_+}+O((\log\ell)^2/\ell)$, with $C$ of \eqref{eq:critical};
+and for $m=c\ell+\beta_n$ with fixed $c$ and bounded $\beta_n$ the
+rounding of $m$ contributes $\beta_nC'(c)+o(1)$, an oscillating bounded
+term when $m=\lfloor c\log n\rfloor$. The same article treats the mask
+that hides the first $m$ bulk coordinates (that of
+\path{../Critical_Complements_Fabius_Conditioning/}, there for fixed
+$r=m$), with $\HH$ replaced by $\E e^{sR_0}$: the leading term is the same,
+and for $m/\log n\to c\in(0,\infty)$ the prefix observed here keeps
+eventually strictly less overlap. This bears on the first question of
+this section. Thinner and thicker growing complements
+($m/\log n\to0$ or $\infty$), uniformity as $c\downarrow0$ or
+$c\to\infty$, and entropy are not treated there. Its numerical checks (\texttt{mpmath}, 70 digits) are
+not certificates.
+\end{ednotelater}
 
 \begin{question}[A sharp asymptotic for the compact deficit]
 Determine the asymptotics of $\Delta_m(a)$ as $a\downarrow0$ from the

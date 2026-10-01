@@ -1,0 +1,259 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=26mm]{geometry}
+\usepackage{lmodern,microtype,booktabs}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={An Explicit Finite-Ratio Noncancellation Region for OEIS A290268},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\title{An Explicit Finite-Ratio Noncancellation Region\\for OEIS A290268}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We determine a regular saddle branch for the A290268 coefficient model when logarithmic degree and depth grow at a fixed ratio. Its exact parametrization is $\kappa=\sin t/t-2\cos t-2$, and the fixed-offset phase angle is $(\pi-t)/2$. The branch ends at a curvature-zero fold with $\kappa_c\approx0.0281461$. This proves eventual noncancellation at every algebraic limiting ratio below $\kappa_c$, for each fixed central offset, and uniformly throughout compact regular-ratio intervals for the first eight offset strips. A certified rational subinterval gives the concrete band $0\le k\le d/36$ there. For larger offsets, possible zeros of the leading phase lie on explicit transcendental limiting rays. A vanishing asymptotic phase is not a zero of an integer coefficient. We prove the spectral limit, branch geometry, saddle localization, and shifted phase, leaving the full support conjecture open.
+\end{abstract}
+
+\section{Coefficient model and the explicit region}
+For integers $d\ge1$ and $k,q\ge0$, put $r=2d+q+1$ and $M=k+r$. The integer model from~\cite[Section 3.15]{source} is
+\begin{equation}\label{fr:H}
+ H_{d,k,q}=\frac{M!}{d!}[w^M](2+w)^k(1+w)^{2d}\log^d(1+w).
+\end{equation}
+Define
+\begin{equation}\label{fr:G}
+ G_0(c,r)=1,\quad G_1(c,r)=c,\qquad
+ G_{j+1}(c,r)=cG_j(c,r)+j(j+r)G_{j-1}(c,r).
+\end{equation}
+The source's centered factorization is
+\begin{equation}\label{fr:factor}
+ H_{d,k,q}=[u^d]\fall{2d+u}{r}\,G_k(2u+2d-q,r).
+\end{equation}
+These are the centered Meixner--Pollaczek polynomials $Q_j^{(r)}(c/2)$; the classical generating-function normalization is recorded in~\cite{dlmf}. The source proves the reflection zeros $q=2d$, $k+d$ even. Its full conjecture asserts that no other zeros occur.
+
+In the derivative expansion of $x^{x^2}$, with coefficient $c_N(j,k)$ of $x^j(\log x)^k$ after division by $x^{x^2}$, the exact bridge is
+\[
+ N=2k+2d+1+q,\qquad j=-q-1,\qquad
+ c_N(j,k)=\binom Nk H_{d,k,q}.
+\]
+Consequently every nonvanishing result below proves the presence of its corresponding derivative term.
+
+Fix an integer $b$ and set
+\begin{gather*}
+ q=2d+b,\quad R=4d+b+1,\quad m=\min(2d,q),\quad s=|b|,\quad
+ P_d(u)=\fall{2d+u}{4d+b+1},\\
+ \sigma=\begin{cases}1,&b\le0,\\-1,&b>0,\end{cases}
+ \qquad \varepsilon=(d-k-1)\bmod2,\qquad
+ h=\frac{d-k-1-\varepsilon}{2}.
+\end{gather*}
+All statements concern sufficiently large $d$, so that $q\ge0$.
+
+The explicit region uses
+\begin{equation}\label{fr:Kintro}
+ K(t)=\frac{\sin t}{t}-2\cos t-2,
+ \qquad F(t)=(2t^2-1)\sin t+t\cos t.
+\end{equation}
+Let $t_0$ be the nonzero solution of $\tan(t_0/2)=2t_0$ in $(0,\pi)$, and let $t_c$ be the unique zero of $F$ in $(t_0,\pi)$. We prove below that $K$ increases strictly from zero to
+\[
+ \kappa_c=K(t_c),\qquad
+ t_0\le t<t_c.
+\]
+Thus each $0\le\kappa<\kappa_c$ has a unique inverse $t=t(\kappa)$ on this branch. Put
+\begin{equation}\label{fr:phaseintro}
+ y(\kappa)=t(\kappa)^{-2},\qquad
+ \psi(\kappa)=\frac{\pi-t(\kappa)}2.
+\end{equation}
+For orientation only, $\kappa_c\approx0.0281461097171$.
+
+\begin{theorem}[An explicit finite-ratio region]\label{fr:main}
+The following conclusions hold.
+\begin{enumerate}
+\item If $k/d\to\kappa$ for an algebraic real number $0\le\kappa<\kappa_c$, then for every fixed integer $b$, $H_{d,k,2d+b}$ is nonzero for all sufficiently large $d$, except for the exact reflection holes $b=0$, $k+d$ even.
+\item If $I\subset[0,\kappa_c)$ is compact, then for all sufficiently large $d$, the same nonvanishing holds simultaneously for every integer $k$ with $k/d\in I$ and every integer $|b|\le8$. In particular, this holds throughout $0\le k\le d/36$.
+\item For any other fixed $b$, a uniform parity-dependent phase law holds on every such compact interval. Its possible vanishing phases occur only at the explicit ratios
+\[
+ \kappa=K\bigl((1-p/s)\pi\bigr),\qquad s=|b|>0,
+\]
+whose arguments lie in $[t_0,t_c)$, with $p$ odd for $\varepsilon=0$ and $p$ even for $\varepsilon=1$. These ratios are transcendental. The phase law alone makes no claim of exact cancellation on those rays.
+\end{enumerate}
+\end{theorem}
+
+No explicit depth threshold is asserted. The offset $b$ is fixed, and the curvature-zero endpoint $\kappa_c$ is excluded. The proof gives the full phase and its positive amplitude, not merely the stated nonvanishing corollaries.
+
+\input{spectral_sections.tex}
+
+\section{The fixed shift and the two-arc phase}\label{fr:phasesec}
+We use the positive saddle coefficient $C_h=[v^h]D(v)$ obtained above. The finite-$d$ saddle satisfies $\rho/d^2\to y(\kappa)$ uniformly for $k/d$ in each compact regular-ratio interval. Write $w=\sqrt y$ and $a=w/2$.
+
+\begin{lemma}[The fixed recurrence shift]\label{fr:shiftlemma}
+On the upper Gaussian arc $u\approx i\sqrt\rho$, uniformly on compact regular-ratio intervals,
+\begin{equation}\label{fr:shiftphase}
+ \frac{G_k(2u-b,R)}{G_k(2u,R)}
+ \longrightarrow \exp\left(\frac{ib}{2}\mathcal J(\kappa,y)\right),
+ \qquad
+ \mathcal J(\kappa,y)=\int_0^\kappa\frac{dt}{\sqrt{y-t(t+4)}}.
+\end{equation}
+The lower-arc limit is its complex conjugate. The ratio is uniformly bounded on the entire circle $|u|=\sqrt\rho$.
+\end{lemma}
+\begin{proof}
+The roots of $G_k(c,R)$ are $i\lambda$, where $\lambda$ runs over the real Jacobi spectrum. The contour stays a positive multiple of $d$ away from all these roots. Hence, on the upper arc,
+\begin{align*}
+ \log\frac{G_k(2u-b,R)}{G_k(2u,R)}
+ &=-b\sum_\lambda\frac1{2u-i\lambda}+O(k/d^2)\\
+ &=ib\sum_\lambda\frac1{2\sqrt\rho-\lambda}+o(1).
+\end{align*}
+The second line is uniform on a shrinking Gaussian arc, because its angular variation is $o(1)$. The limiting root measure gives
+\[
+ \sum_\lambda\frac1{2\sqrt\rho-\lambda}
+ \longrightarrow
+ \int_0^\kappa\frac{dt}{\sqrt{4y-4t(t+4)}}
+ =\frac12\mathcal J(\kappa,y).
+\]
+This proves~\eqref{fr:shiftphase}. Real coefficients give the conjugate lower limit. On the whole circle, the root-product estimate is
+\[
+ \left|\frac{G_k(2u-b,R)}{G_k(2u,R)}\right|
+ \le\exp\left(\frac{k|b|}{2\sqrt\rho-\max|\lambda|}\right)=O_b(1).
+\]
+Empty maxima are zero. The estimate also covers $k=0$, when the ratio is one.
+\end{proof}
+
+Pairing the falling-factorial roots gives
+\begin{equation}\label{fr:paired}
+ P_d(u)=(-1)^q(2d)!q!\,u A(-u^2)
+ \prod_{j=1}^s\left(1+\frac{\sigma u}{m+j}\right).
+\end{equation}
+At the upper arc, the finite extra product tends to
+\[
+ (1+\sigma ia)^s=(1+a^2)^{s/2}\exp(-ib\arctan a).
+\]
+Combining this with Lemma~\ref{fr:shiftlemma}, the total upper-arc factor is
+\begin{equation}\label{fr:upperfactor}
+ Z=(1+a^2)^{s/2}e^{-ib\psi},\qquad
+ \psi=\arctan a-\frac12\mathcal J(\kappa,y).
+\end{equation}
+The lower-arc factor is $\overline Z$. The saddle equation simplifies the angle exactly:
+\begin{equation}\label{fr:psiexact}
+ 2w\arctan(2/w)+w\mathcal J=1
+ \quad\Longrightarrow\quad
+ \psi=\frac\pi2-\frac1{2w}=\frac{\pi-t}2.
+\end{equation}
+
+\begin{theorem}[Uniform finite-ratio phase]\label{fr:phasethm}
+Fix $b\in\mathbb Z$ and a compact $I\subset[0,\kappa_c)$. Put $\kappa_d=k/d$ and define $y=y(\kappa_d)$, $a=\sqrt y/2$, and $\psi=\psi(\kappa_d)$. With the signed normalization
+\begin{equation}\label{fr:N}
+ \mathcal N_{d,k}
+ =2^k(-1)^{q+h}\sigma^\varepsilon(2d)!q!\,C_hm^{-\varepsilon},
+\end{equation}
+one has, uniformly over all integers $k$ with $\kappa_d\in I$,
+\begin{equation}\label{fr:phasefull}
+ \frac{H_{d,k,2d+b}}{\mathcal N_{d,k}}
+ =\begin{cases}
+ (1+a^2)^{s/2}\cos(s\psi)+o(1),&\varepsilon=0,\\
+ (1+a^2)^{s/2}\sin(s\psi)/a+o(1),&\varepsilon=1.
+ \end{cases}
+\end{equation}
+Here $C_h>0$ for all sufficiently large $d$. When $b=0$, $\varepsilon=1$, the coefficient is exactly zero.
+\end{theorem}
+\begin{proof}
+The centered root product and~\eqref{fr:paired} express the integrand as the real prefactor $2^k(-1)^q(2d)!q!$ times
+\[
+ u^{k+1}D(-u^2)
+ \prod_{j=1}^s\left(1+\frac{\sigma u}{m+j}\right)
+ \frac{G_k(2u-b,R)}{G_k(2u,R)}.
+\]
+The exact angular estimate for $D$ gives two Gaussian arcs near $u=\pm i\sqrt\rho$. The other factors are uniformly bounded on the full contour, so all remaining arcs contribute an exponentially small amount relative to the positive saddle scale.
+
+In the Cauchy integral, the residual radius and parity factor is $u^{k+1-d}=u^{-2h-\varepsilon}$. On the two arcs its phases are respectively $(-1)^hi^{-\varepsilon}$ and $(-1)^h(-i)^{-\varepsilon}$. Each arc contributes half the positive saddle coefficient. Their sum therefore gives $\operatorname{Re}Z$ for $\varepsilon=0$, and $\operatorname{Im}Z$ for $\varepsilon=1$, multiplied by
+\[
+ 2^k(-1)^{q+h}(2d)!q!\,C_h\rho^{-\varepsilon/2}.
+\]
+For $\varepsilon=0$, this gives the cosine in~\eqref{fr:phasefull}. For $\varepsilon=1$, $\operatorname{Im}Z=-(1+a^2)^{s/2}\sin(b\psi)$, and division by $\sigma$ changes this to $(1+a^2)^{s/2}\sin(s\psi)$ for $b\ne0$. Also $m/\sqrt\rho\to1/a$ uniformly, giving the stated factor $1/a$. If $b=0$, the odd-parity term is zero by the exact reflection identity.
+
+The integral of the absolute value of the Cauchy integrand is bounded by a constant times
+\[
+ 2^k(2d)!q!\,D(\rho)\rho^{-h-\varepsilon/2}/\sqrt d
+ =O_b(|\mathcal N_{d,k}|).
+\]
+Consequently the uniform $o(1)$ errors in the arc factors are relative errors on the required coefficient scale. This remains valid if the amplitude is exponentially small, and completes the uniform argument.
+\end{proof}
+
+\section{Arithmetic ratios, uniform strips, and exceptional rays}
+\begin{corollary}[Algebraic limiting ratios]\label{fr:algebraic}
+If $0\le\kappa<\kappa_c$ is algebraic, then $\psi(\kappa)/\pi$ is irrational. For each fixed $b$, every sequence $k/d\to\kappa$ therefore has eventual nonvanishing apart from the reflection holes.
+\end{corollary}
+\begin{proof}
+If $\psi/\pi$ were rational, then $t=\pi-2\psi$ would be a nonzero rational multiple of $\pi$. Both $\sin t$ and $\cos t$ would be algebraic, and the branch equation gives
+\[
+ [\kappa+2\cos t+2]t=\sin t.
+\]
+Since $0<t<\pi$, its right side is nonzero. The bracket is nonzero and algebraic, so $t$ would be algebraic, contradicting transcendence of $\pi$. Thus no applicable sine or cosine phase in~\eqref{fr:phasefull} vanishes. Continuity and the phase theorem prove eventual nonvanishing.
+\end{proof}
+
+\begin{corollary}[The first eight offsets]\label{fr:eight}
+For every compact $I\subset[0,\kappa_c)$, the nonvanishing conclusion holds uniformly for $k/d\in I$ and $|b|\le8$, apart from reflection holes. In particular, for each $0<\kappa_1<\kappa_c$, this is a full eventual band $0\le k\le\kappa_1d$ in those offsets. Lemma~\ref{fr:rationalband} permits the explicit choice $\kappa_1=1/36$.
+\end{corollary}
+\begin{proof}
+The effective angle decreases from $\psi(0)=\arctan a_0$ to a positive endpoint, where $a_0\arctan(1/a_0)=1/4$. The estimate $a_0<3/16$ follows from
+\[
+ \arctan(16/3)>\pi/2-3/16>4/3,
+\]
+using $\pi>31/10$. Monotonicity of $a\arctan(1/a)$ then proves the claim. Hence
+\[
+ 0<\psi\le\arctan a_0<a_0<3/16<\pi/16.
+\]
+For $1\le s\le8$, both $\sin(s\psi)$ and $\cos(s\psi)$ are positive on the branch and have positive minima on each compact ratio interval. The phase theorem gives uniform nonvanishing. There are only finitely many offsets to combine, and $b=0$ is handled by the exact parity distinction.
+\end{proof}
+
+For a general fixed $s=|b|>0$, the possible phase zeros are exactly
+\begin{equation}\label{fr:exceptional}
+ t=(1-p/s)\pi\in[t_0,t_c),\qquad
+ \begin{cases}p\text{ odd},&\varepsilon=0,\\p\text{ even},&\varepsilon=1.\end{cases}
+\end{equation}
+This is a finite set. Every corresponding $\kappa=K(t)$ is transcendental by the proof of Corollary~\ref{fr:algebraic}. Away from these ratios, the phase theorem gives uniform nonvanishing on compact sets. At an exceptional ratio, it gives a zero leading phase, not an exact zero of $H$.
+
+\begin{proposition}[The first phase crossing]\label{fr:nine}
+For $s=9$ and $\varepsilon=0$, the point $t_9=8\pi/9$ lies strictly between $t_0$ and $t_c$. It is the first offset admitting a phase crossing within the regular branch.
+\end{proposition}
+\begin{proof}
+Put $\delta=\pi/9$ and $x=\delta/2$. Since $\pi<22/7$,
+\[
+ \frac{65}{2}x^2<\frac{7865}{7938}<1.
+\]
+Therefore
+\[
+ \tan x<\frac{x}{1-x^2/2}<\frac1{32x}.
+\]
+This is equivalent to $K(8\pi/9)>0$. Also $\tan\delta>\delta$ and $\pi>3$ imply
+\begin{align*}
+ F(8\pi/9)
+ &=\cos\delta\bigl[(128\delta^2-1)\tan\delta-8\delta\bigr]\\
+ &>\cos\delta\,\delta(128\delta^2-9)>0.
+\end{align*}
+Since $t_9\in(3\pi/4,\pi)$, strict decrease of $F$ gives $t_9<t_c$. On this interval $K$ increases, so $K(t_9)>0=K(t_0)$ gives $t_9>t_0$. At that point $\psi=\pi/18$, and $\cos(9\psi)=0$. Corollary~\ref{fr:eight} excludes all smaller nonzero offsets.
+\end{proof}
+
+For orientation, the first exceptional ratio is
+\[
+ \kappa_9=K(8\pi/9)\approx0.00186218357819.
+\]
+This decimal is not used in the certification. No claim of an exact coefficient zero is made at $\kappa_9$ or any other phase-crossing ratio.
+
+\section{Scope, prior inputs, and reproducibility}
+The root-distribution limit is a special case of the classical varying-recurrence theory of Kuijlaars and Van Assche~\cite{kuijlaars}; the proof here derives its required instance directly from trace moments. The Meixner--Pollaczek identification and the coefficient bridge come from the cited source. The explicit saddle parametrization, shifted phase, arithmetic-ratio consequence, and stated uniform offset region are the conclusions established here for this coefficient model. No broader priority claim is made.
+
+The branch ends when its curvature vanishes while the contour still lies strictly outside the recurrence-root support. The present Gaussian argument does not cover that endpoint, later branches, growing offsets, or the exact coefficients on exceptional limiting rays. The full A290268 noncancellation conjecture remains open.
+
+The proofs received independent mathematical review in both directions, including the spectral and phase components. They have not been formally verified in Lean or externally refereed. The supplied numerical script checks finite Jacobi spectra and limiting transforms for orientation; it is not a certificate of any infinite theorem. All displayed decimal values are likewise illustrative, while the branch definitions and the first-crossing certification are exact.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{source}V. Reshetnikov, \emph{ProveIt, Term counts in the derivatives of power towers}, Part 3. Inspected commit \texttt{ca81647a9f679e96d49ffdbc54b0c0ab13d10a36}.\\
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/ca81647a9f679e96d49ffdbc54b0c0ab13d10a36/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts/article.tex}
+\bibitem{dlmf}NIST Digital Library of Mathematical Functions, \emph{Meixner--Pollaczek generating function}, Eq.~18.23.7.\\\url{https://dlmf.nist.gov/18.23.E7}
+\bibitem{kuijlaars}A. B. J. Kuijlaars and W. Van Assche, \emph{The asymptotic zero distribution of orthogonal polynomials with varying recurrence coefficients}, Journal of Approximation Theory (1999), Theorems 1.4 and 1.10. DOI: \href{https://doi.org/10.1006/jath.1999.3316}{10.1006/jath.1999.3316}.\\\url{https://wis.kuleuven.be/analyse/members/walter/varrec.pdf}
+\end{thebibliography}
+\end{document}

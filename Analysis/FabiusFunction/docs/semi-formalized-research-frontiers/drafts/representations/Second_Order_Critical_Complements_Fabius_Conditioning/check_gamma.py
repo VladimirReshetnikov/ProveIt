@@ -3,9 +3,24 @@
 Compare the derived expansion to exact clipped Gamma densities.
 Run: python check_gamma.py
 Requires mpmath. Writes gamma_checks.csv in the current directory.
+ed. (2026-10-01): it now writes <output-dir>/gamma_checks.csv, by default
+rerun/gamma_checks.csv beside this program, with LF line endings; pass
+--output-dir . from this directory to regenerate the recorded file.
 """
+import argparse
 import csv
+from pathlib import Path
 import mpmath as mp
+
+# ed. (2026-10-01): output directory option (the recorded gamma_checks.csv was
+# overwritten in the current directory on every run, with CRLF line endings).
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--output-dir", type=Path,
+                    default=Path(__file__).resolve().parent / "rerun",
+                    help="directory receiving gamma_checks.csv (default: rerun/ beside this program)")
+args = parser.parse_args()
+args.output_dir.mkdir(parents=True, exist_ok=True)
+output = args.output_dir / "gamma_checks.csv"
 
 mp.mp.dps = 70
 
@@ -81,8 +96,9 @@ for extra in (0, 1):
                 "m2_inverse_error": mp.nstr(m * m * (exact - through_inverse), 20),
             })
 
-with open("gamma_checks.csv", "w", newline="") as file:
-    writer = csv.DictWriter(file, fieldnames=rows[0])
+# ed. (2026-10-01): written to the --output-dir file, with LF rows (the csv default is CRLF).
+with open(output, "w", newline="") as file:
+    writer = csv.DictWriter(file, fieldnames=rows[0], lineterminator="\n")
     writer.writeheader()
     writer.writerows(rows)
 
@@ -91,4 +107,5 @@ for extra in (0, 1):
         group = [r for r in rows if r["extra_gamma_shape"] == extra and mp.mpf(r["z"]) == mp.mpf(z)]
         print("extra=", extra, "z=", z, "m^2 residuals:",
               [(r["m"], r["m2_inverse_error"]) for r in group])
-print("Wrote 40 high-precision diagnostic cases to gamma_checks.csv")
+# ed. (2026-10-01): names the file actually written.
+print("Wrote 40 high-precision diagnostic cases to", output)

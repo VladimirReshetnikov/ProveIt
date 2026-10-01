@@ -1,0 +1,62 @@
+\section{The full rank compression matroid lift}\label{sec:fulllift}
+We prove Theorem~\ref{thm:main}. First suppose $Q>0$. The same construction includes $q=0$, with no original $B$ slots. Form a transversal matroid matched into the $q+2$ slots
+\[
+ B\sqcup\{e_1,e_2\}.
+\]
+Its elements and allowed slots are as follows:
+\begin{itemize}
+\item a private element $\bar b$ for each $b\in B$, allowed only in slot $b$;
+\item an element for each $l\in L$, allowed in its original neighborhood in $B$;
+\item two augmented core elements $\widehat A_i$, allowed in $S_i\cup\{e_i\}$;
+\item two plane elements $P_1,P_2$, allowed only in $e_1,e_2$, respectively;
+\item one common element $Z_j$ for each common right-exterior vertex, allowed in both $e_1,e_2$.
+\end{itemize}
+The rank is $q+2$, since all private $B$ elements together with $P_1,P_2$ form a basis. Every basis is counted once, regardless of how many injections into the slots it admits. We call $P_1,P_2,Z_j$ the plane elements, as they use only the two additional slots.
+
+Give the private $B$ variables the values $s/v_b$, and the exterior-left variables $tu_l$. Keep core variables $X,Y$, and specialize the plane variables to
+\begin{equation}\label{eq:planeweights}
+ P_1:\frac{bs}{Q},\qquad P_2:\frac{as}{Q},\qquad
+ Z_j:\frac{r_js}{Q}.
+\end{equation}
+Multiply this basis specialization by $Q\prod_{b\in B}v_b$. It is Lorentzian by the matroid and nonnegative-substitution theorems.
+
+We now compute it exactly. Put
+\[
+ f_h=s^qf(t/s),\quad G_i=s^{q-1}g_i(t/s),\quad
+ G_U=s^{q-1}g_U(t/s),\quad H_h=s^{q-2}h(t/s),
+\]
+where $G_i=G_U=0$ is defined directly for $q=0$, and $H_h=0$ is defined directly for $q<2$; the displayed homogenizing formulas are used only for nonnegative exponents. Classify a basis by the number $k$ of core elements and $\ell$ of plane elements. Other elements use only the $q$ original slots, so $k+\ell\ge2$ and $0\le k,\ell\le2$. There are six cases.
+\begin{enumerate}
+\item $(k,\ell)=(0,2)$. Any pair of distinct plane elements can fill the two extra slots, and the other $q$ elements fill the $B$ slots. The sum of plane-pair activities is
+\[
+ \frac{s^2}{Q^2}\left(ab+(a+b)c+\sum_{i<j}r_ir_j\right)=\frac{s^2}{Q}.
+\]
+After the exterior factor $Q$, the contribution is $s^2f_h$.
+\item $(k,\ell)=(1,1)$. With core $\widehat A_1$, the plane element must be able to occupy $e_2$, hence is $P_2$ or a $Z_j$. Its total activity is $(a+c)s/Q$. The remaining $q$ elements fill the $B$ slots, giving $Xs(a+c)f_h$. With $\widehat A_2$, the contribution is $Ys(b+c)f_h$.
+\item $(k,\ell)=(1,2)$. The plane pair fills both extra slots, forcing the core element into $B$. The remaining support uses row $S_i$ and $q-1$ ordinary elements, with profile $G_i$. The contribution is $Xs^2G_1+Ys^2G_2$.
+\item $(k,\ell)=(2,0)$. The two core elements occupy their dedicated extra slots. The other $q$ elements fill $B$, contributing $QXYf_h$.
+\item $(k,\ell)=(2,1)$. The element $P_1$ occupies $e_1$, forcing $\widehat A_2$ into $e_2$ and $\widehat A_1$ into $B$; hence its profile is $G_1$ and its activity coefficient is $b$. Similarly $P_2$ gives $G_2$ with coefficient $a$. A common $Z_j$ can occupy either extra slot, so feasibility holds exactly when either core row completes the remaining $B$-slot support. This is the union profile $G_U$, counted once even if both alternatives work. Thus the contribution is $XYs(bG_1+aG_2+cG_U)$.
+\item $(k,\ell)=(2,2)$. The two plane elements fill the extra slots, forcing both core elements into $B$ together with $q-2$ other elements. The contribution is $XYs^2H_h$; this case is absent for $q<2$.
+\end{enumerate}
+Consequently the constructed Lorentzian polynomial is
+\begin{align}\label{eq:fulllift}
+ \mathcal L(s,t,X,Y)={}&s^2f_h+sX\big[(a+c)f_h+sG_1\big]
+ +sY\big[(b+c)f_h+sG_2\big]\notag\\
+ &+XY\big[Qf_h+s(bG_1+aG_2+cG_U)+s^2H_h\big].
+\end{align}
+Set $X=xt$ and $Y=yt$. Equation~\eqref{eq:union} identifies \eqref{eq:fulllift} with $s^{q+2}p_G(t/s)$, proving the bivariate assertion for $Q>0$. More generally, keep each exterior-left element variable as its own $z_l$ rather than $tu_l$, and set $X=z_{A_1}$, $Y=z_{A_2}$. The same six basis cases give exactly the homogeneous left marginal in Theorem~\ref{thm:main}. Every plane and private variable remains a nonnegative multiple of $s$, so this full marginal is Lorentzian. No analogous opposite-marginal assertion is inferred when $q>2$.
+
+The six cases are disjoint classes of matroid bases. In particular the union case does not count injections or matching allocations. The construction also has a generic matrix representation obtained by giving each allowed slot incidence its own indeterminate. Its six block-determinant expansions provide a second interpretation of the same identity, including dependent or zero original core-row vectors.
+
+If $Q=0$, add a singleton right vertex at each $A_i$ with activity $\varepsilon>0$. The perturbed graph still has a displayed $2+q$ cover, its $Q$ is positive, and its coefficients converge to those of the original graph as $\varepsilon\downarrow0$. Closedness gives the result. Other zero activities are handled by continuity at fixed order $q+2$; private reciprocals are used only before taking the positive-activity limit.
+
+\begin{corollary}\label{cor:coverobstruction}
+Any failure of weighted rank-normalized ultra-log-concavity must have every minimum vertex cover meet both shores in at least three vertices.
+\end{corollary}
+\begin{proof}
+A pure or singleton-side minimum cover is covered by Lemma~\ref{lem:singleton}; a cover meeting one shore in exactly two vertices is covered by Theorem~\ref{thm:main}.
+\end{proof}
+
+\begin{remark}
+The new rank-$(q+2)$ transversal matroid is used through its Lorentzian basis polynomial. The theorem asserts neither real-rootedness of $p_G$ nor stability of the original complemented-row polynomial. The support identity, and not the values of nonzero determinants, determines all coefficients.
+\end{remark}

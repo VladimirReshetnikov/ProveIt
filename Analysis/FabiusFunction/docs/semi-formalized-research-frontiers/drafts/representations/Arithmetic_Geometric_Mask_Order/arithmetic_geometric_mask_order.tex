@@ -1,0 +1,172 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Arithmetic Classification of Geometric Observation Masks},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\title{Arithmetic Classification of Geometric Observation Masks}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We classify universal comparison of arbitrary finite or countable observation masks for every geometric ratio $0<q<1$. Nontrivial comparisons beyond discarding observations occur only when a positive integer power of $q^{-1}$ is an integer. If $d$ is the least such power, the exact order is prefix-count dominance separately in the residue classes modulo $d$; deterministic residue maps realize every allowed comparison. Outside this countable exceptional set of ratios, universal dominance is exactly mask inclusion. For any fixed comparison not arising from inclusion, its admissible ratios form a locally finite subset of $(0,1)$. The theorem permits overlapping masks, unequal cardinalities, arbitrary randomized kernels combining observations, and arbitrary independent additive noise.
+\end{abstract}
+
+\section{The experiment and the integer-power distances}
+Fix $q\in(0,1)$, $c>0$, and $\beta\in\R$. Let $I$ be a finite initial segment of $\N$ or all of $\N$. Under $Q$, the independent coordinates $X_i$ have caps and densities
+\[
+ a_i=cq^i,
+ \qquad q_{\beta,a_i}(x)=\frac{e^{-\beta x}}{Z_\beta(a_i)}\ind_{(0,a_i)}(x),
+ \qquad Z_\beta(a)=\int_0^ae^{-\beta x}\dd x.
+\]
+Let $Z$ be arbitrary independent real noise, and put $T=\sum_{i\in I}X_i+Z$. The noise may be zero. For every nonnegative Borel $w$ with $0<\E_Qw(T)<\infty$, let $P_w$ have density $w(T)/\E_Qw(T)$ relative to $Q$.
+
+A mask $E\subseteq I$ observes $V_E=(X_i)_{i\in E}$. Masks may overlap, be empty or countably infinite, and have different cardinalities. We write $E\succeq_q L$ when one Borel Markov kernel from $V_E$ to $V_L$ works under every $P_w$. This is the universal Blackwell order of these experiments. The same kernel must work throughout the weight family; it does not observe $T$ or $Z$.
+
+For the observed sum $U_E=\sum_{i\in E}X_i$, set $\mu_E=\Law_Q(U_E)$. The general mask theorem \cite{Masks} gives
+\begin{equation}\label{eq:conv}
+ E\succeq_q L\quad\Longleftrightarrow\quad
+ \mu_E=\mu_L*\nu\text{ for some probability measure }\nu.
+\end{equation}
+The factor is compactly supported. The theorem also shows that requiring one kernel for all positive-probability lower thresholds $T\le t$ is equivalent to requiring every weight. Its proof reduces each vector experiment to its sum, then identifies an independent difference from compact-transform identities; arbitrary noise cancels through its characteristic function near zero. We use this criterion for necessity and verify the realizing maps directly below.
+
+Define
+\begin{equation}\label{eq:H}
+ H_q=\{k\ge1:q^{-k}\in\N\}.
+\end{equation}
+
+\begin{lemma}\label{lem:arithmetic}
+Either $H_q$ is empty or $H_q=d\N$ for its least element $d$. In the second case $M=q^{-d}$ is an integer at least two.
+\end{lemma}
+\begin{proof}
+If $a,b\in H_q$ and $g=\gcd(a,b)$, B\'ezout's identity gives
+\[
+ q^{-g}=(q^{-a})^u(q^{-b})^v\in\mathbb Q_{>0}
+\]
+for suitable integers $u,v$. A positive integer power of this rational number is an integer; its reduced denominator must therefore be one. Hence $g\in H_q$. If $d$ is the least positive element, $\gcd(d,k)\in H_q$ forces $d\mid k$ for every $k\in H_q$. Conversely every positive multiple of $d$ belongs. Since $q<1$, its integer power $M$ is at least two.
+\end{proof}
+
+\section{The complete classification}
+\begin{theorem}\label{thm:main}
+For the model above, the following classifications hold.
+\begin{enumerate}
+ \item If $H_q=\varnothing$, then $E\succeq_q L$ if and only if $L\subseteq E$.
+ \item If $H_q=d\N$, then $E\succeq_q L$ if and only if, for every $j\in I$,
+ \begin{equation}\label{eq:counts}
+ \bigl|\{i\in E:i\le j,\ i\equiv j\pmod d\}\bigr|
+ \ge
+ \bigl|\{i\in L:i\le j,\ i\equiv j\pmod d\}\bigr|.
+ \end{equation}
+\end{enumerate}
+In case 2, pair the $r$th target index $\ell$ in each residue class with the $r$th source index $e$ in that class. Condition~\eqref{eq:counts} ensures $e\le\ell$. A realizing map takes $X_e\bmod a_\ell$ for that target and discards unmatched source coordinates. In unit coordinates $U_i=X_i/a_i$, it is
+\begin{equation}\label{eq:unitmap}
+ U_e\longmapsto\{M^{(\ell-e)/d}U_e\},
+ \qquad M=q^{-d},
+\end{equation}
+independent of $c$ and $\beta$. Case 1 is realized by coordinate projection.
+\end{theorem}
+
+\subsection{Zero multiplicities give necessity}
+The coordinate transform is the entire function
+\[
+ F_i(z)=\frac{e^{(z-\beta)a_i}-1}{(z-\beta)Z_\beta(a_i)},
+\]
+with its removable value at $z=\beta$. At
+\[
+ z_j=\beta+\frac{2\pi\ii}{a_j},
+\]
+it vanishes precisely when $i\le j$ and $q^{-(j-i)}$ is an integer, including the ratio one at $i=j$. Each such zero is simple. For $i>j$ the cap ratio lies strictly between zero and one and cannot give a zero.
+
+For an infinite mask, the sum transform $F_E$ is the locally uniformly convergent product of coordinate transforms. Indeed, on every compact disk,
+\begin{equation}\label{eq:tail}
+ |F_i(z)-1|\le |z|a_i e^{|z|a_i},
+ \qquad \sum_i a_i<\infty.
+\end{equation}
+The product agrees with the sum transform by uniform convergence of the coordinate sums. Near a fixed $z_j$, sufficiently late factors lie uniformly within distance $1/2$ of one. Their analytic logarithms converge uniformly by \eqref{eq:tail}; hence their product is nonzero. The finitely many other nonvanishing factors are also nonzero on a small neighborhood. Consequently the multiplicity of $F_E$ at $z_j$ is exactly the finite number of vanishing coordinate factors.
+
+Under dominance, \eqref{eq:conv} gives $F_E=F_LF_\nu$ with $F_\nu$ entire. Thus the source zero multiplicity is at least the target multiplicity. If $H_q$ is empty, those multiplicities are simply $\ind_{\{j\in E\}}$ and $\ind_{\{j\in L\}}$, proving $L\subseteq E$. If $H_q=d\N$, Lemma~\ref{lem:arithmetic} identifies them with the residue-class prefix counts in \eqref{eq:counts}. This proves necessity for arbitrary randomized kernels combining the entire source observation.
+
+\subsection{Independent residues give sufficiency}
+Suppose \eqref{eq:counts} holds. By the $r$th target index in any residue class there are at least $r$ source indices in that class. The pairing stated in the theorem therefore uses distinct source indices and covers every target. For each pair $e\to\ell$,
+\[
+ \frac{a_e}{a_\ell}=M^{(\ell-e)/d}\in\N,
+ \qquad X_e=a_\ell J_e+R_\ell,
+ \qquad R_\ell=X_e\bmod a_\ell.
+\]
+Factoring the density on the residue cells shows that $R_\ell$ has the target coordinate law and is independent of $J_e$. Independence of source coordinates implies independence of the entire residue vector from all digits and unmatched source coordinates. In the countable case this follows on finite cylinder sets.
+
+The nonnegative sum
+\[
+ D=\sum_{e\to\ell}a_\ell J_e+
+   \sum_{e\in E\text{ unmatched}}X_e
+\]
+converges and is bounded by $\sum_{e\in E}a_e$. It satisfies
+\[
+ U_E=\sum_{\ell\in L}R_\ell+D,
+ \qquad D\text{ independent of }R_L,
+ \qquad \Law_Q(R_L)=\Law_Q(V_L).
+\]
+Thus $\mu_E=\mu_L*\Law(D)$, proving dominance by \eqref{eq:conv}.
+
+The stated deterministic map itself works. The total-law identity and compact-transform cancellation give
+\[
+ \mu_{L^c}=\Law(D)*\mu_{E^c}.
+\]
+Since the source complement is independent of the source vector, $D+U_{E^c}$ is independent of $R_L$ and has the target-complement law. Adding the independent noise shows that the joint laws of $(T,R_L)$ and $(T,V_L)$ agree. Multiplying this identity by any $w(T)$ proves the required pushforward under every reweighting. This argument permits overlap and infinitely many observations without an infinite sequence of swaps. It is a distributional identity, not a pathwise identification of target coordinates in the original sample. If $H_q$ is empty and $L\subseteq E$, projection proves sufficiency. Theorem~\ref{thm:main} follows.
+
+\section{Exceptional ratios and isolated comparisons}
+\begin{corollary}\label{cor:exceptional}
+The ratios with $H_q\ne\varnothing$ are exactly
+\begin{equation}\label{eq:exceptional}
+ \mathcal Q=\{M^{-1/d}:M\ge2,\ d\ge1\text{ integers}\}.
+\end{equation}
+This set is countable and dense in $(0,1)$. Outside it, universal dominance is exactly inclusion. Among rational ratios, its elements are precisely the reciprocal integers; every transcendental ratio lies outside it.
+\end{corollary}
+\begin{proof}
+The set identity is the definition of an integer inverse power. If $q=p/s$ in lowest terms with $p>1$, no power $(s/p)^k$ is integral. A ratio in \eqref{eq:exceptional} is algebraic, excluding transcendental $q$. For density, fix $\alpha>0$ and choose integers $M_d$ nearest to $e^{\alpha d}$. Then $M_d^{-1/d}\to e^{-\alpha}$, and $M_d\ge2$ eventually.
+\end{proof}
+
+The least $d$ must be used: $q=4^{-1/2}=1/2$ has $d=1$, whereas $q=1/\sqrt2$ has $d=2$. In the latter case the order separates into odd and even chains. For instance, source mask $\{1,2\}$ dominates target mask $\{2,3\}$ by retaining index 2 and taking the residue of index 1 modulo the cap at index 3. This is a classwise pairing, not the globally sorted pairing across both classes.
+
+\begin{corollary}[Local finiteness]\label{cor:local}
+Fix masks with $L\not\subseteq E$. The set of ratios $q\in(0,1)$ for which $E\succeq_q L$ is locally finite. Thus only inclusion comparisons can persist throughout a nonempty open interval of ratios.
+\end{corollary}
+\begin{proof}
+Choose $j\in L\setminus E$. At $z_j$, the target transform vanishes. Necessity forces a source zero, which must come from an index $i\in E$ with $i<j$. Hence every admissible ratio belongs to
+\begin{equation}\label{eq:fixedfamily}
+ \bigcup_{\substack{i\in E\\i<j}}
+ \{M^{-1/(j-i)}:M\ge2\text{ an integer}\}.
+\end{equation}
+There are finitely many source indices below $j$. On any compact subinterval $[a,b]\subset(0,1)$, each corresponding integer satisfies $b^{-(j-i)}\le M\le a^{-(j-i)}$, so only finitely many are possible. A locally finite set contains no open interval. Inclusion works for every $q$ by projection.
+\end{proof}
+
+If $j=1$, the union in \eqref{eq:fixedfamily} is empty. For $j\ge2$, it also gives the bound $q\le2^{-1/(j-1)}$. In particular the admissible ratios of a fixed non-inclusion comparison can accumulate only at zero, never at one.
+
+\begin{corollary}[Antisymmetry]
+For any fixed $q\in(0,1)$, universal equivalence in both directions holds if and only if $E=L$.
+\end{corollary}
+\begin{proof}
+Outside $\mathcal Q$, use mutual inclusion. Inside it, two-way dominance makes every classwise prefix count equal. Successive differences within each residue class recover mask membership, so the masks coincide.
+\end{proof}
+
+\section{Scope and source context}
+Universal comparison requires one kernel for every total-sum weight or lower threshold. It does not preclude a comparison for one fixed conditioning rule or a specified pair of hypotheses when the ratio is nonexceptional. Distinct comparable masks may give equal divergence values for particular weights, including $w=1$.
+
+The preceding mask report \cite{Masks} established the convolution criterion and reciprocal-integer case. This note gives the complete arithmetic consequence for all geometric ratios. The repository's arbitrary-mask question \cite{Repository} also asks about finer fixed-conditioning behavior; those asymptotic questions remain distinct from the universal order.
+
+Blackwell comparison and convolution methods have classical antecedents \cite{Blackwell,Torgersen}. The proofs here make no general priority claim. They are ordinary mathematical arguments, not formalized or externally refereed results.
+
+\begin{thebibliography}{9}\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{Masks} \emph{Universal Comparison of Fabius Observation Masks}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{universal\_fabius\_mask\_criterion.tex}, Theorems 1.1 and 2.1.
+\bibitem{Blackwell} D. Blackwell, \emph{Equivalent comparisons of experiments}, Annals of Mathematical Statistics \textbf{24} (1953), 265--272. \href{https://doi.org/10.1214/aoms/1177729032}{doi:10.1214/aoms/1177729032}.
+\bibitem{Torgersen} E. N. Torgersen, \emph{Comparison of translation experiments}, Annals of Mathematical Statistics \textbf{43} (1972), 1383--1399. \href{https://doi.org/10.1214/aoms/1177692372}{doi:10.1214/aoms/1177692372}.
+\bibitem{Repository} V. Reshetnikov, ProveIt, \emph{Critical Complements in Fabius Conditioning}, source at commit \texttt{7421a4ca60fd}, rechecked 1 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7421a4ca60fdf125411edf412f825aac54278b37/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Sharp_Information_Loss/article.tex}{Pinned source on GitHub}. Full identifiers are included in the package.
+\end{thebibliography}
+\end{document}

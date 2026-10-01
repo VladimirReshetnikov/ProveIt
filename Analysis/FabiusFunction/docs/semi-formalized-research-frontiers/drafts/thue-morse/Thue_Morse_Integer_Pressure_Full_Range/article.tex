@@ -1,0 +1,616 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage[margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={The Full Pressure Positivity Range at Every Integer Order},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\ev}{\operatorname{ev}}\newcommand{\Z}{\mathbb Z}\newcommand{\C}{\mathbb C}
+\title{The Full Pressure Positivity Range at Every Integer Order}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For every integer $m\ge2$, every even Taylor coefficient of integer Thue--Morse pressure at a degree strictly between $2m$ and $6m$ is positive. A weighted complex Green estimate, retaining the weight in a repaired inverse-branch residual, proves the whole range analytically for $m\ge112$. Directed integer enclosures complete the remaining $110$ orders, certifying all $12320$ required coefficients. The finite calculation uses an explicit Eulerian spectral inverse, rigorously propagated error radii, and an independent Fourier residual verification. The upper endpoint is sharp for a universal statement: the degree-$12$ coefficient at $m=2$ is negative.
+\end{abstract}
+\paragraph{Status.} This is unrefereed ordinary mathematics with rigorous finite arithmetic certificates, not a Lean formalization. No priority claim is made. The source package supplies the proof, reproducible programs, exact scalar certificates, pressure intervals, and per-order state hashes.
+
+\section{Statement and local transfer model}
+Put $d=2m$ and define
+\[
+ (V_af)(x)=\sum_{2y=x\bmod1}(\cos\pi y+a\sin\pi y)^d f(y).
+\]
+The invariant Fourier space has modes $1-m,\ldots,m-1$. At $a=0$, its normalized positive fixed vector is
+\[
+ h_0(x)=\sin^d(\pi x)\sum_{n\in\Z}(\pi(x+n))^{-d},\qquad h_0(0)=1.
+\]
+The atomic eigenvalues are $1,2^{-1},\ldots,2^{-(d-2)}$; the principal parts of the periodized poles give the corresponding eigenbasis. The local analytic eigenfunction $h_a$, normalized by $h_a(0)=1$, and its eigenvalue $\lambda(a)$ satisfy
+\begin{equation}\label{eq:feedback}
+ \lambda(a)=1+a^d h_a(1/2),\qquad
+ p_m(t/\pi)=d\log\cos t+\log\lambda(\tan t).
+\end{equation}
+These are the normalizations of the repository manuscript \cite{integer}. Write
+\[
+ H_{m,r}=[a^{2r}]h_a(1/2),\qquad
+ E_{m,r}=[t^{2m+2r}]p_m(t/\pi).
+\]
+\begin{theorem}\label{thm:main}
+For every integer $m\ge2$ and every integer $1\le r<2m$,
+\[
+ E_{m,r}>0.
+\]
+Equivalently, every even pressure coefficient at degree $N$ with $2m<N<6m$ is strictly positive.
+\end{theorem}
+The coefficient at degree $2m$ is the known cancellation coefficient and is not included. The preceding positive-triangle theorem gives $H_{m,r},E_{m,r}>0$ for $1\le r<m$ \cite{triangle}; the first feedback boundary was treated separately in \cite{boundary}. The analytic argument below covers the whole second-cluster interval for $m\ge112$; the exact finite proof covers $2\le m\le111$. The case $m=1$ is excluded because its pressure is identically zero.
+
+Set $\ev f=f(1/2)$, $R_m=\ev h_0$, $Pf=f(0)h_0$, and $Q=I-P$. On the subspace of functions vanishing at zero put
+\[
+ \mathcal B_a=QV_aQ,\quad q_a=QV_ah_0,\quad
+ F(a)=R_m+\ev(I-\mathcal B_a)^{-1}q_a,\quad
+ G(a)=\ev(I-\mathcal B_a)^{-2}q_a.
+\]
+These initially define analytic germs. Reflection makes $F,G$ even, and $G(0)=0$. If $\delta=\lambda-1$, the projected eigenvalue equation gives
+\[
+ \delta=a^d\{R_m+\ev(I-\mathcal B_a+\delta)^{-1}q_a\}.
+\]
+Expanding once in $\delta$ yields the exact formal identities
+\begin{align}
+ \delta&=a^dF-a^{2d}FG+O(a^{3d}),\notag\\
+ \log\lambda&=a^dF-a^{2d}K+O(a^{3d}),\qquad K=FG+F^2/2.\label{eq:clusters}
+\end{align}
+Thus all pressure coefficients below degree $3d$ are determined by
+\begin{equation}\label{eq:pressure}
+ d\log\cos t+\tan^d t\,F(\tan t)-\tan^{2d}t\,K(\tan t).
+\end{equation}
+In particular $[a^q]F>0$ for even $0\le q<d$, by the positive triangle, and $[a^d]F=H_{m,m}$.
+
+\section{A uniform bound for the quadratic cluster}
+Define
+\[
+ c=2/\pi,\qquad b_j=\tan(\pi/2^{j+1}),\qquad
+ B(a)=\prod_{j\ge1}(1+ab_j),\qquad g(a)=caB(a).
+\]
+The product $B$ is entire. We use the dyadic tangent comparison proved in \cite{triangle}: for odd $n\ge1$, the decreasing rearrangement of
+\[
+ x_j(n)=|\tan(n\pi/2^{j+1})|/n
+\]
+is weakly log-majorized by $(b_j)$. It follows that
+\begin{equation}\label{eq:majorization}
+ [a^q]\prod_j(1+ax_j(n))^d\le M_q,\qquad M_q=[a^q]B(a)^d.
+\end{equation}
+For finite sequences, the implication follows because elementary symmetric functions of exponentials are symmetric increasing convex functions of the log coordinates; finite-prefix limits give the summable-sequence version. The earlier report contains the dyadic sine-product proof of the comparison itself and is included with the present sources.
+
+\begin{lemma}\label{lem:quadratic}
+For even $N$ with $2d\le N<3d$,
+\[
+ \left|[t^N]\tan^{2d}t\,K(\tan t)\right|
+ \le C_K(d)[t^N]g(\tan t)^{2d},\qquad
+ C_K(d)=\frac{25}{2}\log_2d+\frac{385}{8}.
+\]
+\end{lemma}
+\begin{proof}
+The constant coefficient is separate: $G(0)=0$ and
+$F(0)=2c^d\sum_{n\ge1\text{ odd}}n^{-d}<(5/2)c^d$.
+In the following argument take $1\le q\le d-2$.
+For a coefficient of degree $q<d$, every positive-degree insertion in $V_a$ vanishes at zero, so the $Q$ projections in the insertion expansion can be omitted. Unfolding the periodization of $h_0$ gives
+\[
+ [a^q]F=\sum_{w\in\Z+1/2}(\pi w)^{-d}
+ [a^q]\prod_{j\ge1}(1+a\tan(\pi w/2^j))^d.
+\]
+For $G$, each monomial has the additional weight equal to its deepest occupied factor index. Indeed, if $F_L=\ev V_a^Lh_0$, then coefficientwise below degree $d$,
+\[
+ G=\sum_{L\ge0}(F-F_L).
+\]
+A monomial first appearing at depth $J$ is counted exactly $J$ times.
+
+For a nonnegative sequence $x$, mark one chosen unit beyond depth $J$. Its degree-$q$ contribution is at most
+\[
+ d\Bigl(\sum_{j>J}x_j\Bigr)M_{q-1}.
+\]
+There are $d$ labeled copies of $b_1=1$, so adding one unused such copy gives
+\[
+ M_q\ge\frac{d-q+1}{q}M_{q-1}.
+\]
+For $q\le d-2$, the marked tail is consequently at most
+$\min(1,d^2\sum_{j>J}x_j)M_q$. For $J\ge\lceil\log_2n\rceil$,
+\[
+ \sum_{j>J}x_j(n)\le\pi2^{-J}.
+\]
+Summing the depth indicators bounds the depth-weighted coefficient by
+\[
+ (\log_2n+2\log_2d+6)M_q.
+\]
+Pair $w=\pm n/2$ and use
+\[
+ \sum_{n\ge1\text{ odd}}n^{q-d}\le\pi^2/8<5/4,\qquad
+ \sum_{n\ge1\text{ odd}}(\log_2n)n^{q-d}<3/2.
+\]
+The latter follows by comparison with $\sum_{n\ge2}(\log_2n)/n^2$ and $\log2>2/3$. We obtain
+\[
+ |[a^q]F|\le\tfrac52c^dM_q,\qquad
+ |[a^q]G|\le(5\log_2d+18)c^dM_q,\quad 0\le q\le d-2.
+\]
+These absolute bounds also justify the sums and interchanges above. Convolution bounds $FG$ by $((25/2)\log_2d+45)c^{2d}B^{2d}$ and $F^2/2$ by $(25/8)c^{2d}B^{2d}$ in the required coefficients. Nonnegative tangent coefficients complete the proof.
+\end{proof}
+
+\section{A compact bound for signed branch products}
+Let
+\[
+ \mathcal H_a(x)=\prod_{j\ge1}\bigl(\cos(\pi x/2^j)+a\sin(\pi x/2^j)\bigr).
+\]
+This product converges locally uniformly in $(a,x)\in\C^2$. It satisfies
+\begin{equation}\label{eq:productidentity}
+ \mathcal H_a(x)=W_a(x/2)\mathcal H_a(x/2),\quad
+ W_a(x)=\cos\pi x+a\sin\pi x,\quad
+ \mathcal H_a(\pm1/2)=cB(\pm a).
+\end{equation}
+Fix $R=2/5$, put $h(t)=\mathcal H_R(t)$, and write $w=49/100$.
+\begin{lemma}\label{lem:outer}
+If $|a|\le R$ and $x$ is real with $1\le|x|\le2$, then
+\[
+ |\mathcal H_a(x)|<w h(\operatorname{dist}(x,\Z)).
+\]
+\end{lemma}
+\begin{proof}
+Reflection handles negative $x$, and maximum modulus reduces $a$ to $Re^{i\theta}$. Keep the first two factors together:
+\[
+ P_x(a)=A+Da+Ca^2,\quad
+ A=\cos\tfrac{\pi x}{2}\cos\tfrac{\pi x}{4},\quad
+ D=\sin\tfrac{3\pi x}{4},\quad
+ C=\sin\tfrac{\pi x}{2}\sin\tfrac{\pi x}{4}.
+\]
+For $1\le x\le2$, $A\le0$ and $C\ge0$. With $z=\cos\theta$,
+\begin{equation}\label{eq:quadraticmodulus}
+ |P_x(Re^{i\theta})|^2=(A-CR^2)^2+D^2R^2
+       +2DR(A+CR^2)z+4ACR^2z^2.
+\end{equation}
+For $j\ge3$, bound the remaining factor by
+$\cos(\pi x/2^j)+R\sin(\pi x/2^j)$. After factor fourteen the tail is at most
+$(1-R\pi x/2^{14})^{-1}$: use $\cos u+R\sin u\le1+Ru$ and
+$\prod(1+t_j)\le(1-\sum t_j)^{-1}$.
+
+The denominator is bounded below by the first fourteen factors of $h(t)$, and also by one. The latter fact is proved just below independently of this lemma. Omitted factors are at least one, since their angles are below $R/2$ and $\cos u+R\sin u\ge1$ there.
+
+The exact verifier divides $[1,2]$ into $1024$ equal cells and $[-1,1]$ into $512$ equal cells. Directed integer intervals, Machin's formula and Taylor remainders enclose every trigonometric endpoint in~\eqref{eq:quadraticmodulus}, the product tail, and the positive denominator. The squared normalized upper bound over all $524288$ cells is
+\[
+ \frac{11946953814319143572194828153371}
+      {50000000000000000000000000000000}<\frac{2401}{10000}.
+\]
+The exact certificate proves the uniform inequality; no floating-point sign decision is used.
+\end{proof}
+
+\section{A weighted complex Green estimate}
+Write $h(x)=\mathcal H_R(x)$, $L=h(1/2)=cB(R)$, and $\ell=\log h$ on $[0,1/2]$. The interval certificates establish
+\begin{gather}
+ 0<\ell'(1/4)<2/5,\quad \ell'(3/8)<0,\quad
+ \ell'(1/2)>-1/2,\label{eq:scalar1}\\
+ h(1/4)<5/4,\qquad 1<L<49/40<5/4.\label{eq:scalar2}
+\end{gather}
+Every factor of $h$ is positive, and
+\[
+ \ell''(x)=-\sum_{j\ge1}\frac{(\pi/2^j)^2(1+R^2)}
+ {\bigl(\cos(\pi x/2^j)+R\sin(\pi x/2^j)\bigr)^2}<0.
+\]
+Thus $h\ge1$ by the endpoint chord. The tangent at $1/4$, together with $e^{1/10}<10/9$, gives $h<7/5=: \Lambda$.
+
+For $x\in[0,1/2]$ put $c_x=\cos(\pi x/2)$, $s_x=\sin(\pi x/2)$, $y=(1-x)/2$, and
+\[
+ p(x)=\frac{c_x-Rs_x}{c_x+Rs_x},\qquad
+ b_-(x)=\frac{(s_x+Rc_x)h(y)}{h(x)},\qquad
+ b_+(x)=\frac{|s_x-Rc_x|h(y)}{h(x)}.
+\]
+We need the following bounds:
+\begin{equation}\label{eq:scalarbranches}
+ \begin{aligned}
+ b_-&\le1&& (0\le x\le1/2),& b_-&<91/100&&(x\le2/5),\\
+ b_+&<1/2&&(0\le x\le1/2),& p&<14/25&&(x\ge2/5).
+ \end{aligned}
+\end{equation}
+Here are analytic reductions of these bounds to the scalar certificates. The logarithmic derivative of $b_-$ is
+\[
+ \frac{\pi}{2}\frac{c_x-Rs_x}{s_x+Rc_x}
+       -\frac12\ell'(y)-\ell'(x).
+\]
+On $[0,1/4]$ the first term exceeds $3/2$, while $\ell'(y)<0$ and $\ell'(x)<13/10$. On $[1/4,1/2]$ it is at least $3\pi/14>3/5$, and both relevant derivatives are below $2/5$. Hence $b_-$ increases to $b_-(1/2)=1$; its value at $2/5$ is certified below $91/100$. The function $p$ decreases and its value at $2/5$ is below $14/25$. The logarithmic derivative of $b_+$ is negative before $s_x=Rc_x$ and positive afterwards: bounds are $-\pi/(2R)+3/4<0$ and $7\pi/6-(3/2)(13/10)>0$. Its endpoint values are $RL<1/2$ and $3/7$, proving the remaining statement.
+
+\begin{theorem}\label{thm:green}
+For even $d\ge128$ and $|a|\le R$, the operator $T_a=QV_a$ is a strict contraction in an explicit equivalent $C^1$ norm on
+\[
+ X=\{f\in C^1(\mathbb R/\mathbb Z):f(0)=0\}.
+\]
+Its norm is below $4/5$. Consequently the frozen response has no pole in this disk, and for $s\in X$,
+\begin{equation}\label{eq:green}
+ |\ev(I-T_a)^{-1}s|\le5L^d\|s'\|_\infty.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $t(x)=\operatorname{dist}(x,\Z)$ and define
+\[
+ N_0(f)=\sup_{x\notin\Z}\frac{|f(x)|}{t(x)h(t(x))^d},\qquad
+ N_1(f)=\sup_x\frac{|f'(x)|}{h(t(x))^d}.
+\]
+These are finite, and every positive weighted sum $N_0+\eta N_1$ is equivalent to the $C^1$ norm on $X$, for fixed $d$. For nonnegative $A_0,A_1$, the common-phase expression
+\[
+ A_0|c_x+as_x|^d+A_1|s_x-ac_x|^d
+\]
+attains its maximum on $|a|\le R$ at $a=R$ or $a=-R$. On the boundary it is a sum of convex functions of $\cos\arg a$, because $d/2\ge1$. For fixed $\Re a$, moving to the boundary increases both squared moduli. This observation is essential: separate branchwise maxima would lose the estimate.
+
+By reflection it suffices to consider $0\le x\le1/2$. Also
+\[
+ T_af=V_af-a^df(1/2)h_0,\qquad
+ \|h_0\|_\infty\le1,\quad \|h_0'\|_\infty\le\pi d.
+\]
+The first bound follows from $d\ge2$, $|\sin(\pi x)/(\pi(x+n))|\le1$, and the identity $\sum_n(\sin(\pi x)/(\pi(x+n)))^2=1$. The second follows from the trigonometric Bernstein inequality. The identity $h(x)=(c_x+Rs_x)h(x/2)$ cancels the principal branch weight.
+
+For $x\ge1/10$, the two branch bounds in $N_0$ are, at the two extreme phases,
+\[
+ \tfrac12+\frac{1-x}{2x}b_+(x)^d,\qquad
+ \tfrac12p(x)^d+\frac{1-x}{2x}b_-(x)^d.
+\]
+The projection costs at most $2^{-d}/(2x)$. The resulting bounds are
+\[
+ \begin{cases}
+ 1/2+(9/2)(91/100)^d+5\,2^{-d},&1/10\le x\le2/5,\\
+ 3/4+(1/2)(14/25)^d+2\,2^{-d},&2/5\le x\le1/2.
+ \end{cases}
+\]
+
+Near zero retain the rank-one cancellation. Put
+\[
+ u_a(x)=W_a((x+1)/2)^d f((x+1)/2).
+\]
+The secondary projected term is
+$u_a(x)-u_a(0)+a^df(1/2)(1-h_0(x))$. On $0\le x\le1/10$,
+\[
+ |W_a((x+1)/2)|<39/70,\qquad
+ |\partial_xW_a((x+1)/2)|\le7\pi/10.
+\]
+Since $(39/70)\Lambda=39/50<4/5$, the mean-value bound gives
+\[
+ \frac{|u_a(x)-u_a(0)|}{x}
+ \le\frac{11d}{4}(4/5)^dN_0(f)+\frac12(4/5)^dN_1(f).
+\]
+The $h_0$ correction costs at most $(11d/7)2^{-d}N_0(f)$, and the principal branch costs $N_0(f)/2$. Combining the intervals yields
+\begin{equation}\label{eq:norm0}
+ N_0(T_af)\le\alpha_dN_0(f)+\varepsilon_dN_1(f),\quad
+ \begin{cases}
+ \alpha_d=\frac34+(5d+8)(4/5)^d+\frac92(91/100)^d,\\
+ \varepsilon_d=\frac12(4/5)^d.
+ \end{cases}
+\end{equation}
+
+For $N_1$, derivatives landing on $f$ cost at most
+$\beta_dN_1(f)$, with $\beta_d=1/2+(1/2)(91/100)^d$, by the same common-phase estimate. For derivatives landing on a weight, each individual normalized branch base is at most one, so
+\[
+ \frac{|W_a(y)|^{d-1}h(t(y))^d}{h(t(x))^d}\le\Lambda.
+\]
+The two weight derivatives cost at most $(77/25)dN_0(f)$, and the projection derivative at most $(11/7)d2^{-d}N_0(f)$. Therefore
+\begin{equation}\label{eq:norm1}
+ N_1(T_af)\le5dN_0(f)+\beta_dN_1(f).
+\end{equation}
+Set $\eta_d=(9/10)^d/d$ and $\|f\|_d=N_0(f)+\eta_dN_1(f)$. The two norm rows are bounded by
+\[
+ \alpha_d+5(9/10)^d,\qquad
+ \beta_d+\frac d2(8/9)^d.
+\]
+Exact rational checks at $d=128$, and the decreasing successive ratios thereafter, put both below $4/5$. Thus the Neumann inverse has norm at most five. Since $h\ge1$, $\|s\|_d\le2\|s'\|_\infty$; evaluation costs $L^d/2$. This proves~\eqref{eq:green}.
+
+The operator family is polynomial in $a$ on this fixed Banach space. The strict uniform contraction extends its analytic inverse to a neighborhood of the closed disk. Its restriction to the invariant Fourier subspace agrees with the original frozen germ by uniqueness, proving the pole statement.
+\end{proof}
+
+\section{The weighted nearest-pair residual}
+Put $g=RL$; here $g$ denotes this positive number, whereas $g(a)=caB(a)$ remains the scalar generating function. The exact constants below give $R<g<w$.
+\begin{theorem}\label{thm:disk}
+For even $d\ge128$ and $|a|\le2/5$,
+\begin{equation}\label{eq:disk}
+ \left|F(a)-c^d\bigl(B(a)^d+B(-a)^d\bigr)\right|
+ \le31000d^2(wL)^d<26000d^2(7/10)^d.
+\end{equation}
+\end{theorem}
+\begin{proof}
+On $[0,1]$ put $\phi(x)=\mathcal H_a(x)^d+\mathcal H_a(x-1)^d$. The product identity and even $d$ give
+\begin{equation}\label{eq:residual}
+ V_a\phi-\phi=\mathcal H_a(x-2)^d+\mathcal H_a(x+1)^d=:\mathcal R_a(x).
+\end{equation}
+On $|x|\le2$, $|a|\le R$, one has $|\mathcal H_a'(x)|<120$. Indeed a product of any subset of factors is at most $e^{R\pi|x|}<e^3<27$; summing the differentiated-factor bounds $\pi(1+R)2^{-j}$ proves this estimate.
+
+The endpoint values of $\phi$ differ from one by at most $g^d$. Its common main endpoint derivative is $d\pi a$; each excess derivative is at most $120d g^{d-1}<300d g^d$. Let $C_a$ be the cubic Hermite interpolant matching the two excess values and two excess derivatives. Then $\psi=\phi-C_a$ is periodic $C^1$, $\psi(0)=1$, both endpoint derivatives equal $d\pi a$, and
+\[
+ \|C_a\|_\infty,\ \|C_a'\|_\infty\le610d g^d.
+\]
+This specifies the Hermite convention used in every bound.
+
+Set $f_F=h_0+(I-T_a)^{-1}QV_ah_0$ and $e=f_F-\psi$. The exact equation is
+\[
+ (I-T_a)e=s,\qquad
+ s=\mathcal R_a-(V_aC_a-C_a)-a^d\psi(1/2)h_0.
+\]
+Here $e,s\in X$ and $s(0)=0$. Periodicity follows because the first two terms equal $V_a\psi-\psi$.
+
+Retain the Green weight in the source. Lemma~\ref{lem:outer} and $h\ge1$ give
+$N_1(\mathcal R_a)<500d w^d$. Each individual branch in the Green proof satisfies
+\[
+ |W_a(y)|\frac{h(t(y))}{h(t(x))}\le1.
+\]
+Since $h\ge1$, both $|W_a(y)|^d/h(t(x))^d$ and
+$|W_a(y)|^{d-1}/h(t(x))^d$ are at most one. Thus the unweighted Hermite repair incurs no exponential transfer loss. With $J=\sqrt{1+R^2}<27/25$ and $\pi J<17/5$,
+\[
+ N_1(V_aC_a)\le\pi Jd\|C_a\|_\infty+\|C_a'\|_\infty
+ <2700d^2w^d,\qquad N_1(C_a)\le610d w^d.
+\]
+Also $|\psi(1/2)|\le2L^d+610d g^d$. The rank-one source derivative is bounded by
+$7d w^d+2000d^2w^d$. Adding the four terms gives
+\[
+ N_1(s)\le6000d^2w^d.
+\]
+For $t\le1/4$, the function $h$ increases, by strict concavity of $\log h$ and $\ell'(1/4)>0$. Integrating from the nearest integer gives the same bound for $N_0(s)$ in that region. For $t\ge1/4$, the direct weighted amplitudes of the four source terms are bounded respectively by
+\[
+ 2w^d,\quad1220d w^d,\quad610d w^d,\quad(2+610d)w^d.
+\]
+Division by $t\ge1/4$ gives at most $10000d w^d\le6000d^2w^d$. Hence
+$\|s\|_d\le12000d^2w^d$. The inverse has norm at most five, and evaluation costs $L^d/2$. Adding $|C_a(1/2)|$ proves the first bound in~\eqref{eq:disk}.
+
+The rational scalar check gives $L<243/200$, so $wL<3/5$. Since
+$(31/26)(6/7)^{128}<1$, the second bound in~\eqref{eq:disk} follows for every $d\ge128$. No finite Fourier assumption is imposed on the repaired functions: the $C^1$ Green theorem justifies their use.
+\end{proof}
+
+\section{Log-concavity and a coefficient lower bound}
+\begin{lemma}\label{lem:entropy}
+If a positive log-concave integer law $(p_j)_{j\ge0}$ has integer mean $s$ and finite exponential moment, then
+\[
+ p_s\ge\frac1{\sqrt{2\pi e(\operatorname{Var}X+1/12)}}.
+\]
+\end{lemma}
+\begin{proof}
+The piecewise-linear interpolation of $\log p_j$ is concave. Jensen gives $\log p_s\ge\sum_jp_j\log p_j=-H(X)$. If $U$ is independent uniform on $[-1/2,1/2]$, its jittered density satisfies $h(X+U)=H(X)$ and has variance $\operatorname{Var}X+1/12$. The nonnegativity of relative entropy against the Gaussian with this mean and variance gives
+$H(X)\le\frac12\log(2\pi e(\operatorname{Var}X+1/12))$. This inequality also follows directly by integrating $f\log(f/g)\ge f-g$ over the support of $f$. Exponential moments justify all integrals and Jensen's expectation.
+\end{proof}
+
+\begin{lemma}\label{lem:tangent}
+The coefficients of
+\[
+ T(x)=\left(\frac{\tan\sqrt{x}}{\sqrt{x}}\right)^2
+\]
+are positive and log-concave. For integers $k\ge1$ and $0\le s\le k/2$,
+\begin{equation}\label{eq:tangentlower}
+ [x^s]T(x)^k\ge\frac{4^s}{5\sqrt{k}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $R_j=2c^{2j}Z(2j)$, where $Z(u)=\sum_{n\ge1\text{ odd}}n^{-u}$. Differentiating tangent gives $[x^n]T=(2n+3)R_{n+2}$. For $u\ge4$,
+\[
+ Z(u)-1\le3^{-u}+\frac12\int_3^\infty v^{-u}\,dv<2\cdot3^{-u}.
+\]
+For $n\ge1$, put $z=3^{-2n-2}$. Then
+\[
+ \frac{R_{n+1}R_{n+3}}{R_{n+2}^2}
+ \le(1+2z)^2\le1+5z
+ <1+\frac4{(2n+1)(2n+5)}
+ =\frac{(2n+3)^2}{(2n+1)(2n+5)}.
+\]
+The strict inequality holds at $n=1$ and propagates because
+$(2n+3)(2n+7)<9(2n+1)(2n+5)$. This proves coefficient log-concavity. Convolution preserves it: the Toeplitz matrix of a nonnegative log-concave sequence without internal zeros has nonnegative two-by-two minors, and matrix multiplication plus the two-by-two Cauchy--Binet identity proves closure. Finite coefficient limits handle infinite sequences.
+
+For $s>0$, choose the positive tilt $x=t^2$ for which the law with PGF $T(xz)^k/T(x)^k$ has mean $s$. Its mean and variance per factor are
+\[
+ \mu(t)=\frac{t}{\sin t\cos t}-1,\qquad
+ v(t)=\frac{t}{\sin2t}-\frac{2t^2\cos2t}{\sin^22t}.
+\]
+Since $\mu(t)=s/k\le1/2$ and $\mu(\pi/4)=\pi/2-1>1/2$, the tilt lies below $\pi/4$. Hence $v(t)\le t/\sin2t=(\mu(t)+1)/2\le3/4$. Lemma~\ref{lem:entropy}, with $\pi<22/7$ and $e<3$, gives mass at the integer mean at least $1/(5\sqrt{k})$.
+
+Put
+\[
+ \Psi(\gamma)=\inf_{0<t<\pi/2}\{2\log\tan t-\gamma\log t\}.
+\]
+This is concave, $\Psi(2)=0$, and $\Psi(3)>\log2$. For the last fact, the positive Taylor lower bound $\tan t\ge t+t^3/3+2t^5/15$ and the exact inequality
+\[
+ (15+5t^2+2t^4)^2-450t>0\quad(t>0)
+\]
+imply $\tan^2t>2t^3$ on $0<t<\pi/2$. The polynomial inequality is verified by the supplied exact Sturm sequence, which has no positive root. Concavity gives $\Psi(\gamma)\ge(\gamma-2)\log2$ for $2\le\gamma\le3$. The tilted normalization at $\gamma=2+2s/k$ is therefore at least $4^s$. This proves~\eqref{eq:tangentlower}; $s=0$ is immediate.
+\end{proof}
+
+Let $a_*>0$ be defined by $a_*B'(a_*)/B(a_*)=1$, and $C_*=B(a_*)/a_*$. Positive coefficients and summable $b_j$ give uniqueness. The rational half-angle checks show
+\begin{equation}\label{eq:constants}
+ 0.822<a_*<0.823,\quad C_*>101/25,\quad
+ cC_*>\alpha:=707/275,\quad \arctan(2/5)>19/50.
+\end{equation}
+The law with PGF $B(a_*z)^d/B(a_*)^d$ is an infinite Poisson-binomial law, with mean $d$ and variance below $d$. Its coefficients are log-concave by finite Bernoulli convolutions and limits. Lemma~\ref{lem:entropy} gives
+\[
+ [a^d]B(a)^d\ge C_*^d/(5\sqrt d).
+\]
+Cauchy's estimate in~\eqref{eq:disk} therefore yields
+\[
+ H_{m,m}=[a^d]F\ge\frac{2\alpha^d}{5\sqrt d}
+                   -26000d^2(7/4)^d
+ >\frac{\alpha^d}{4\sqrt d},\qquad d\ge128.
+\]
+The final comparison follows from the exact base-case and decreasing-ratio checks for
+\[
+ 26000d^3\bigl((7/4)/\alpha\bigr)^d<3/20,\qquad d\ge128.
+\]
+
+\smallskip
+\section{The full explicit pressure comparison}
+Let $N=2d+2s$, $0\le s\le d/2-1$, and retain the single positive term
+\[
+ P_{d,s}=H_{m,m}[t^N]\tan^{2d}t
+        >\frac{\alpha^d4^s}{20d},
+\]
+by Lemma~\ref{lem:tangent} and the diagonal bound. All frozen coefficients through raw degree $d$ are positive. The reflected nearest pair in~\eqref{eq:disk} has nonnegative even coefficients, so only its error can contribute a harmful higher frozen coefficient.
+
+Write $t_R=\arctan R$. The exact scalar checks give
+\[
+ L<243/200,\qquad t_R>761/2000,\qquad
+ \beta=w(243/200)=11907/20000.
+\]
+For raw degree $q>d$, Cauchy's error bound in~\eqref{eq:disk} is
+$31000d^2\beta^dR^{-q}$. Nonnegative tangent coefficients give
+$[t^N]\tan^{d+q}t\le R^{d+q}t_R^{-N}$. There are at most $d$ relevant indices, so the complete harmful frozen tail is at most
+$31000d^3(R\beta)^d t_R^{-N}$. This is a finite coefficient sum, not an evaluation of a geometric series at its pole.
+
+Lemma~\ref{lem:quadratic} bounds the quadratic subtraction by
+$C_K(d)g(R)^{2d}t_R^{-N}$. For $d\ge128$, $C_K(d)\le d^2$, and
+$g(R)^2<(R\beta)$ because $RL<w$. Thus the two errors together are at most
+\begin{equation}\label{eq:errors}
+ 31001d^3(R\beta)^d t_R^{-N}.
+\end{equation}
+Relative to $P_{d,s}$, this is bounded by
+\begin{equation}\label{eq:finalratio}
+ 620020d^4\rho_w^d,\qquad
+ \rho_w=\frac{R\beta}{2\alpha(761/2000)^3}<1.
+\end{equation}
+Indeed the exponential comparison increases with $\gamma=N/d$ because $2(761/2000)<1$, so using $\gamma=3$ enlarges it. Exact rational arithmetic gives
+\[
+ 620020\cdot224^4\rho_w^{224}<1/4,\qquad
+ \rho_w(225/224)^4<1.
+\]
+Consequently~\eqref{eq:finalratio} is below $1/4$ for every $d\ge224$.
+
+Finally, $d\log\cos t$ has coefficient $-mR_{N/2}/(N/2)$ at even degree $N$, where $0<R_j\le1$. Its magnitude is at most one. The positive term exceeds four: $\alpha>2$ and $2^{128}>4\cdot20\cdot128$ suffice. Equations~\eqref{eq:pressure} and~\eqref{eq:errors} now give strict positivity for $2d\le N<3d$. The positive triangle covers $d<N<2d$. Since $d=2m$, this proves Theorem~\ref{thm:main} for every $m\ge112$.
+
+\section{Exact completion of the finite orders}
+The analytic proof leaves $2\le m\le111$. We give the finite proof specification, including the conversion to the pressure normalization. All rounding below is directed integer rounding; no floating-point approximation is used to decide a sign.
+
+\subsection{A polynomial gauge and an integer spectral inverse}
+Let $D=2^{d-1}$ and define the atomic Fourier matrix
+\[
+ A_{k\ell}=D^{-1}\binom d{m+2k-\ell},\qquad 1-m\le k,\ell\le m-1,
+\]
+where a binomial coefficient outside $[0,d]$ is zero. With $\mathcal D(t)=\operatorname{diag}(e^{2ikt})$, direct expansion gives
+\[
+ V_a=(1+a^2)^m\mathcal D(-2t)A\mathcal D(t),\qquad a=\tan t.
+\]
+Conjugating by $\mathcal D(t)$ therefore gives a similar polynomial matrix
+\[
+ M_a=(1+a^2)^m\mathcal D(-t)A,
+ \qquad (M_a)_{k\ell}=(1-ia)^{m+k}(1+ia)^{m-k}A_{k\ell}.
+\]
+It has exactly the same normalized eigenvalue $\lambda(a)$ as in~\eqref{eq:feedback}. Put $b=ia$. Then
+\[
+ M_a=\sum_{j=0}^d b^j\operatorname{diag}(K_j(k))A,
+ \quad K_0=1,\ K_1=-2k,\quad
+ (j+1)K_{j+1}=-2kK_j-(d-j+1)K_{j-1}.
+\]
+Each division in this recurrence is exact. Also $|K_j(k)|\le\binom dj$.
+
+The matrix $A$ is column-stochastic. Normalize the Fourier eigenvector by the sum of its coordinates, writing $h(b)=\sum h_n b^n$, $\lambda(b)=\sum\ell_n b^n$, with $\sum h_0=1$ and $\sum h_n=0$ for $n>0$. This gauge normalization changes no eigenvalue. The initial vector is the Eulerian distribution of order $v=d-1$.
+
+Here is a convenient exact inverse. Let $\mathcal A_p(z)$ denote the Eulerian polynomial of order $p$, and let $E_r$ be the coefficient vector of
+\[
+ (1-z)^r\mathcal A_{v-r}(z),\qquad 0\le r\le v-1.
+\]
+Define the integer dual matrix
+\[
+ S_{ri}=[u^{v-r}]\prod_{h=-i}^{v-1-i}(u+h),\qquad 0\le i\le v-1.
+\]
+Then $SE=v!I$ and $AE_r=2^{-r}E_r$. For the first identity, the coefficient polynomial of $P(z)/(1-z)^{v+1}$ is
+$\sum_i p_i\binom{v+k-i}{v}$; at $u=k+1$, the Eulerian generating identity sends $E_r$ to $u^{v-r}$. This proves the stated dual transform. The spectral identity also follows from the atomic eigenbasis, and both identities are checked by integer multiplication for every computed $m$.
+
+Let $Qv=v-(\sum v)h_0$ and $\mathcal T=(I-A)^{-1}Q$. Thus
+\[
+ \mathcal T=\frac1{v!}E\operatorname{diag}\!\left(0,\frac2{2-1},\ldots,
+ \frac{2^{v-1}}{2^{v-1}-1}\right)S.
+\]
+Reflection gives $h_n(-k)=(-1)^n h_n(k)$. The even and odd parity blocks have dimensions $m$ and $m-1$; the induced full Fourier $\ell^1$ norm has weights $1,2,\ldots,2$ in the even block and weights $2$ in the odd block. Using the least common multiple of $2^r-1$ in each block makes the inverse an integer matrix divided by one integer. Its exact norm $\alpha_\pm$ is the maximum weighted absolute column sum, divided by that column's input weight. The program checks these rational norms without estimation.
+
+\subsection{Directed enclosure of every response order}
+Fix the integer grid $\mathcal S=2^{256}(v!)^5$. At each order store integers $u_n,E_n,\widehat\ell_n,e_n$ satisfying
+\[
+ \|\mathcal S h_n-u_n\|_1\le E_n,\qquad
+ |\mathcal S\ell_n-\widehat\ell_n|\le e_n.
+\]
+The initial vector is exact. Odd scalar coefficients vanish by reflection; all scalar coefficients at $0<n<d$ vanish by~\eqref{eq:feedback}. These structural zeros and their radii are imposed exactly. Every $u_n$ has exact parity and exact zero normalization for $n>0$.
+
+Put $B_0=DA$ and cache $B_0u_n$. The positive-insertion numerator and its error bound are
+\[
+ r_n=\sum_{j=1}^{\min(n,d)}\operatorname{diag}(K_j)B_0u_{n-j},
+ \qquad E_b=\sum_{j=1}^{\min(n,d)}\binom dj E_{n-j}.
+\]
+The bound follows from $\|A\|_1=1$ and $|K_j|\le\binom dj$. At a nonstructural scalar order, use
+\[
+ \widehat\ell_n=\left\lfloor\frac{\sum r_n}{D}\right\rfloor,
+ \qquad e_n=E_b+1.
+\]
+The exact projected recursion is
+\[
+ h_n=\mathcal T\left(b_n-\sum_{j=1}^{n-1}\ell_jh_{n-j}\right),
+ \qquad b_n=\sum_{j=1}^{\min(n,d)}\operatorname{diag}(K_j)Ah_{n-j}.
+\]
+The term $\ell_nh_0$ is killed by $Q$. If $U_h=\|u_h\|_1$, the scaled right-side error is at most
+\[
+ E_{\rm rhs}=E_b+\left\lceil\frac1{\mathcal S}
+ \sum_{j=1}^{n-1}\bigl(|\widehat\ell_j|E_{n-j}+e_jU_{n-j}+e_jE_{n-j}\bigr)\right\rceil.
+\]
+Apply the exact integer inverse to the approximate right side
+\[
+ \frac{z_n}{D\mathcal S},\qquad
+ z_n=\mathcal S r_n-D\sum_{j=1}^{n-1}\widehat\ell_j u_{n-j},
+\]
+and round each positive-frequency coordinate downward. At even orders set the zero-frequency coordinate to minus twice the sum of those coordinates. The full rounding cost is below $4(m-1)$ at even orders and $2(m-1)$ at odd orders. Consequently the valid new radius is
+\[
+ E_n=\lceil\alpha_\pm E_{\rm rhs}\rceil+
+ \begin{cases}4(m-1),&n\text{ even},\\2(m-1),&n\text{ odd}.\end{cases}
+\]
+The two integer inequalities defining each floor are checked. Induction proves the entire enclosure, independently of how large its integers become.
+
+\subsection{Exact pressure intervals and independent residuals}
+Return from $b$ to $a$: put $v_j=(-1)^j\widehat\ell_{2j}$ and $e'_j=e_{2j}$. Below degree $3d$ the logarithm is exactly its linear term minus one half its square. Its degree-$2j$ coefficient is enclosed by $(C_j\pm R_j)/(2\mathcal S^2)$, where
+\begin{align*}
+ C_j&=2\mathcal S v_j-\sum_i v_iv_{j-i},\\
+ R_j&=2\mathcal S e'_j+
+ \sum_i\bigl(|v_i|e'_{j-i}+|v_{j-i}|e'_i+e'_ie'_{j-i}\bigr).
+\end{align*}
+Only $i,j-i\ge m$ contribute. Define the nonnegative integers
+\[
+ T_{kj}=(2k)![t^{2k}]\tan^{2j}t,\qquad T_{00}=1.
+\]
+Twice differentiating gives
+\[
+ T_{k+1,j}=2j(2j-1)T_{k,j-1}+8j^2T_{kj}+2j(2j+1)T_{k,j+1}.
+\]
+For $k\ge2$, the cosine term is $-2mT_{k-1,1}/(2k)!$. Hence the exact pressure interval is
+\begin{equation}\label{eq:finiteinterval}
+ \frac{\displaystyle\sum_j C_jT_{kj}-4m\mathcal S^2T_{k-1,1}
+       \ \pm\displaystyle\sum_jR_jT_{kj}}
+      {2\mathcal S^2(2k)!}.
+\end{equation}
+Every requested lower numerator must be strictly positive. A nonpositive lower endpoint would be inconclusive and require more precision; it would not certify a negative coefficient.
+
+An independent verifier avoids the producer's transformed solution. Given each stored vector, it recomputes its projected Fourier defect
+\[
+ \Delta_n=(I-A)u_n-Q\frac{z_n}{D\mathcal S}.
+\]
+Fresh radii are propagated with
+$E_n^*=\lceil\alpha_\pm(E_{\rm rhs}^*+\|\Delta_n\|_1)\rceil$,
+using fresh incoming scalar and vector error radii. Indeed $\mathcal T(I-A)u_n=u_n$ on the exactly normalized subspace. This is an a posteriori proof of the stored vectors that does not rely on their claimed production radii or inverse evaluation. The second verifier also generates tangent by the differential equation $y'=1+y^2$ and ordinary derivative-jet products, independently of the second-derivative recurrence above.
+
+\begin{proposition}\label{prop:finite}
+For every integer $2\le m\le111$, every coefficient in Theorem~\ref{thm:main} is strictly positive.
+\end{proposition}
+\begin{proof}
+The supplied finite certificates execute the preceding integer proof for each of the $110$ orders. The degree lists are exactly $2m,2m+2,\ldots,6m-2$, with zero contained at $2m$ and strictly positive lower endpoints at all $12320$ required degrees. There are $37070$ nonconstant response orders. Every case succeeds at grid precision $256$; no adaptive retry is needed. The programs verify the spectral identities, rounding conditions, normalizations, pressure conversion and exact coverage. The independent residual computation checks every stored state and recomputes the coefficient enclosures. Reproduction instructions and complete per-order hashes accompany the pressure data.
+\end{proof}
+Together with the analytic argument for $m\ge112$, this proves Theorem~\ref{thm:main}.
+
+\section{Sharp endpoint, reproducibility and open questions}
+At $m=2$, the pressure eigenvalue $\mu(t)$ near one satisfies
+\[
+ \mu^3-(\cos2t+3/4)\mu^2+(5\cos2t/8+1/4)\mu-1/8=0.
+\]
+This follows directly by taking the determinant of the three-mode phase matrix. Its root is simple at $t=0$. Exact rational series recursion gives
+\[
+ [t^{12}]p_2(t/\pi)=-\frac{35360872}{93555}<0.
+\]
+Thus the universal positive interval cannot include its first excluded even degree $6m$. This does not say that the coefficient at $6m$ is negative for every $m$.
+
+The source bundle includes the complete scalar interval checker, Green and entropy constants, the weighted cutoff, the integer finite producer and independent residual verifier, and the earlier positive-triangle proof used as an explicit input. Pressure intervals are split into small archives. Full state traces can be regenerated deterministically from the producer; their per-order hashes identify every state without requiring multi-gigabyte attachments. Hashes serve provenance, while the arithmetic replays establish the mathematics. Fully reduced exact calculations at selected orders supply additional independent comparisons.
+
+The stronger raw-coefficient inequality $[a^{d+2s}]F+2[a^{2s}]FG\ge0$ for $0\le s<m$ remains open. Finite-iterate positivity, termwise return-depth positivity and positivity in the atomic-coordinate cone have exact counterexamples and are not proof premises. The location of the first negative coefficient beyond the proved interval, and any proportional asymptotic law for that location, are separate questions.
+
+\begin{thebibliography}{9}\small
+\bibitem{integer}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript, inspected commit \nolinkurl{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, blob \nolinkurl{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.
+\bibitem{triangle}\emph{The Full Positive Triangle in Integer Thue Morse Pressure}. Research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. The dyadic tangent comparison and positivity for $1\le r<m$. Included unchanged in the source bundle.
+\bibitem{boundary}\emph{Positivity at the First Feedback Boundary in Thue Morse Pressure}. Separate research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. The earlier all-order degree-$4m$ result; the large-order diagonal lower bound used here is proved anew.
+\end{thebibliography}
+\end{document}

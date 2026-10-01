@@ -1,0 +1,272 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Higher Positive Coefficients in Integer Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}\newcommand{\E}{\mathcal E}
+\newcommand{\Lop}{\mathcal L}\newcommand{\ii}{\mathrm i}
+\title{Higher Positive Coefficients in Integer Thue Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We prove that the coefficient immediately following the first positive post-cancellation coefficient in integer Thue--Morse pressure is also positive at every integer order $m\ge2$. More generally, the coefficient of degree $2m+2r$ is positive whenever $m\ge3r$. The proof bounds higher derivatives of the normalized transfer eigenfunction by a summable inverse-branch series and isolates the two nearest half-integer branches. Exact rational calculations handle the few small orders outside the uniform bound. A negative degree-twelve coefficient at $m=2$ shows that positivity does not persist at all subsequent degrees. This is a separate companion to the first-coefficient report.
+\end{abstract}
+
+\paragraph{Status and scope.}
+The results are proved in ordinary mathematics and supported by exact finite certificates. This is an unrefereed research note, not a Lean formalization. The scope is integer pressure and its local Taylor coefficients. No uniform analytic remainder in a joint limit of phase and moment order, minimum sign-change degree in general, or worldwide priority claim is made.
+
+\section{Notation and results}
+For $T(x)=2x\pmod1$, let $p_m(c)$ be the pressure of
+$m\log\cos^2\!\pi(x-c)$ in the sum-over-preimages convention of \cite{integer}. The transfer operator is
+\[
+ (\Lop_{m,c}f)(x)=\sum_{Ty=x}\cos^{2m}\!\pi(y-c)f(y).
+\]
+Near $c=0$, it has a simple analytic eigenvalue $\rho_m(c)=\exp p_m(c)$ and eigenfunction $h_{m,c}$ normalized by $h_{m,c}(0)=1$. Put
+\[
+ t=\pi c,\qquad a=\tan t,\qquad h_a=h_{m,\arctan(a)/\pi},
+\]
+and define
+\[
+ R_m=\frac{2(2^{2m}-1)\zeta(2m)}{\pi^{2m}},\qquad
+ H_{m,r}=[a^{2r}]h_a(1/2),\qquad
+ E_{m,r}=[t^{2m+2r}]p_m(t/\pi).
+\]
+Thus $H_{m,0}=R_m$. Write $B_m=H_{m,1}$ and $D_m=H_{m,2}$.
+The degree-$2m$ pressure coefficient vanishes \cite{integer}, and the first-coefficient companion proves $B_m>0$ and $E_{m,1}>0$ for all $m\ge2$ \cite{first}.
+
+\begin{theorem}\label{thm:main}
+For every integer $m\ge2$,
+\[
+ D_m>0,\qquad E_{m,2}>0.
+\]
+More generally, for integers $r\ge1$ and $m\ge3r$,
+\[
+ H_{m,j}>0\quad(1\le j\le r),\qquad E_{m,r}>0.
+\]
+Together with the first-coefficient result, $E_{m,r}>0$ holds for every $m\ge2$ when $r=1$ or $r=2$.
+\end{theorem}
+The last conclusion does not extend to all $m,r$: Section~\ref{sec:negative} proves
+\[
+ E_{2,4}=[t^{12}]p_2(t/\pi)=-\frac{35360872}{93555}<0.
+\]
+
+\section{Higher inverse-branch coefficients}
+Normalize the operator by its fixed-point weight:
+\[
+ (V_af)(x)=\sum_{Ty=x}(\cos\pi y+a\sin\pi y)^{2m}f(y).
+\]
+Its eigenvalue satisfies the exact feedback equation
+\begin{equation}\label{eq:feedback}
+ \lambda_m(a)=1+a^{2m}h_a(1/2),\qquad
+ p_m(t/\pi)=2m\log\cos t+\log\lambda_m(\tan t).
+\end{equation}
+Reflection makes $h_a(1/2)$ even in $a$.
+
+The finite spectral inputs can be read directly on
+$\E_m=\operatorname{span}\{e^{2\pi\ii kx}:1-m\le k\le m-1\}$.
+The operator preserves this space, and its atomic eigenvalues are
+$1,2^{-1},\ldots,2^{-(2m-2)}$ \cite{integer,first}. For example, the eigenfunctions
+\[
+ \sin^{2m}(\pi x)\sum_{n\in\Z}(\pi(x+n))^{-(2m-j)},
+ \qquad 0\le j\le2m-2,
+\]
+have eigenvalues $2^{-j}$ and distinct leading orders at zero. Analytic spectral projection therefore applies on a small complex disk in $a$.
+
+For a half-integer $w$, define $G_{m,r}(w)$ by
+\begin{equation}\label{eq:G}
+ G_{m,r}(w)=[a^{2r}]
+  \prod_{j\ge1}\left(1+a\tan\frac{\pi w}{2^j}\right)^{2m}.
+\end{equation}
+The product converges locally uniformly in $a$ for each fixed $w$, because the tangent series is absolutely summable. No tangent has a pole: a scaled half-integer cannot be a half-integer modulo one.
+
+\begin{lemma}\label{lem:orbit}
+For integers $r\ge1$ and $m\ge r+1$,
+\begin{equation}\label{eq:orbit}
+ H_{m,r}=\sum_{w\in\Z+1/2}(\pi w)^{-2m}G_{m,r}(w),
+\end{equation}
+with absolute convergence. Moreover,
+\begin{equation}\label{eq:bound}
+ H_{m,r}>\frac{2}{\pi^{2m}}
+ \left[
+ 4^m\binom{2m}{2r}
+ -\frac{(20m)^{2r}}{(2r)!}
+      \left(\frac23\right)^{2m-2r-2}
+ \right].
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $F_N(a,x)=V_a^N1(x)$. Evaluation at zero gives
+\[
+ F_{N+1}(a,0)=F_N(a,0)+a^{2m}F_N(a,1/2),
+\]
+so $F_N(a,0)=1+O(a^{2m})$. Since $2r<2m$, division by $F_N(a,0)$ does not change its coefficient of degree $2r$ at $x=1/2$. The normalized iterates converge uniformly analytically to $h_a$ on a sufficiently small complex disk. Indeed, the leading projection of $1$ is nonzero at zero and the other eigenvalues are uniformly smaller in modulus. Cauchy's formula yields
+\[
+ H_{m,r}=\lim_{N\to\infty}[a^{2r}]F_N(a,1/2).
+\]
+Represent the inverse branches by
+$W_N=\{w\in\Z+1/2:|w|<2^{N-1}\}$. The cosine product telescopes, giving the exact finite identity
+\begin{align}\label{eq:finite}
+ [a^{2r}]F_N(a,1/2)
+ =\sum_{w\in W_N}&\left(2^N\sin\frac{\pi w}{2^N}\right)^{-2m}\notag\\[-2mm]
+ &\cdot[a^{2r}]\prod_{j=1}^N
+       \left(1+a\tan\frac{\pi w}{2^j}\right)^{2m}.
+\end{align}
+For every half-integer $w$, the elementary dyadic bound from \cite{first} is
+\begin{equation}\label{eq:tanbound}
+ \sum_{j\ge1}\left|\tan\frac{\pi w}{2^j}\right|<10|w|.
+\end{equation}
+For completeness, take $w>0$ and $J=\lceil\log_2(2w)\rceil$. For $j\le J$, distance from a tangent pole gives $|\tan(\pi w/2^j)|<2^{j+1}/\pi$. For $j\ge J+1$, the argument is at most $\pi/4$, so convexity gives $|\tan(\pi w/2^j)|\le4w/2^j$. Summing yields a bound below $(16/\pi+4)w<10w$.
+
+The absolute degree-$2r$ coefficient of the finite product is bounded by the elementary symmetric sum of $2m$ copies of every tangent magnitude, hence by
+\[
+ \frac{1}{(2r)!}
+ \left(2m\sum_{j\ge1}\left|\tan\frac{\pi w}{2^j}\right|\right)^{2r}
+ <\frac{(20m|w|)^{2r}}{(2r)!}.
+\]
+On $W_N$, the unperturbed factor in \eqref{eq:finite} is at most $(2|w|)^{-2m}$. Thus the absolute summand is bounded by $O_{m,r}(|w|^{2r-2m})$, summable for $m\ge r+1$. Dominated convergence proves \eqref{eq:orbit}.
+
+At $w=1/2$ all tangent terms are positive, and the first is $1$. Choosing $2r$ of its $2m$ copies gives $G_{m,r}(1/2)\ge\binom{2m}{2r}$; the even coefficient at $w=-1/2$ is equal. For every other branch use the absolute bound. Strict convexity gives
+\[
+ \sum_{k\ge1}(k+1/2)^{-2}<\int_1^\infty x^{-2}\,dx=1,
+\]
+and therefore
+\[
+ \sum_{k\ge1}(k+1/2)^{-(2m-2r)}
+ <\left(\frac23\right)^{2m-2r-2}.
+\]
+Combining the two nearest branches with the remaining absolute tail proves \eqref{eq:bound}.
+\end{proof}
+
+\section{The fourth response and the next pressure coefficient}
+At $r=2$, the bracket in \eqref{eq:bound} is
+\[
+ U_m=4^m\binom{2m}{4}
+       -\frac{(20m)^4}{24}\left(\frac23\right)^{2m-6}.
+\]
+Its value at $m=6$ is $34263040/27>0$. The first term increases with $m$, while the ratio of successive second terms is at most
+\[
+ \left(\frac76\right)^4\frac49=\frac{2401}{2916}<1
+ \qquad(m\ge6).
+\]
+Thus $D_m>0$ for every $m\ge6$. The remaining exact response values are
+\begin{equation}\label{eq:Dsmall}
+ D_2=\frac{536}{27},\quad
+ D_3=\frac{16454}{315},\quad
+ D_4=\frac{136433288}{1845585},\quad
+ D_5=\frac{54583453322}{703167885}.
+\end{equation}
+An exact finite-matrix certificate for these rational values is described in Section~\ref{sec:exact}. In particular, the inverse-branch derivative argument is not applied at $(m,r)=(2,2)$, where its summability hypothesis fails.
+
+Expanding \eqref{eq:feedback} gives, for $m\ge3$,
+\begin{equation}\label{eq:E2}
+ E_{m,2}=D_m+\frac{2m+2}{3}B_m
+ +\frac{m(10m+7)}{45}R_m-\frac{m}{m+2}R_{m+2}.
+\end{equation}
+The relative degree-four coefficient of $\tan^{2m}t$ is $m(10m+7)/45$, and the logarithm's square starts at degree $4m>2m+4$. Since
+\[
+ R_{m+2}\le\left(\frac4{\pi^2}\right)^2R_m,
+\]
+the last two terms of \eqref{eq:E2} have positive sum. Indeed, their bracket is at least
+\[
+ mR_m\left(\frac{10m+7}{45}
+                  -\frac{16}{(m+2)\pi^4}\right)>0.
+\]
+Together with $B_m,D_m>0$, this proves $E_{m,2}>0$ for $m\ge3$. For $m=2$, \eqref{eq:E2} has the additional logarithmic correction $-R_2^2/2$ and gives
+\[
+ E_{2,2}=\frac{6836}{189}>0.
+\]
+
+\section{A uniform region of positive coefficients}
+\begin{proposition}\label{prop:cone}
+For $r\ge3$ and $m\ge3r$, the bracket in \eqref{eq:bound} is strictly positive.
+\end{proposition}
+\begin{proof}
+The ratio of its positive term to its subtracted term is
+\[
+ \frac{4^m(2m)_{2r}}{(20m)^{2r}}
+           \left(\frac32\right)^{2m-2r-2},
+\]
+where $(2m)_{2r}$ is a falling factorial. For $m\ge3r$,
+\[
+ (2m)_{2r}\ge(2m)^{2r}\left(1-\frac rm\right)^{2r}
+           \ge(2m)^{2r}\left(\frac23\right)^{2r}.
+\]
+The ratio is consequently at least
+\[
+ \frac49\,9^m\left(\frac4{2025}\right)^r
+ \ge\frac49\left(\frac{36}{25}\right)^r>1.
+\]
+The last inequality holds at $r=3$, when its value is $20736/15625>1$, and then increases with $r$.
+\end{proof}
+
+If $m\ge3r$, Proposition~\ref{prop:cone}, the fourth-response result, and $B_m>0$ imply $H_{m,j}>0$ for every $1\le j\le r$. Because $r<m$, the logarithm's square in \eqref{eq:feedback} starts beyond degree $2m+2r$. Hence
+\begin{equation}\label{eq:pressuregeneral}
+ E_{m,r}=\sum_{j=0}^r H_{m,j}
+       [t^{2m+2r}]\tan^{2m+2j}t
+       -\frac{m}{m+r}R_{m+r}.
+\end{equation}
+All tangent coefficients in the sum are nonnegative. The $j=0$ term alone dominates the negative term: since $\tan t/t=1+t^2/3+\cdots$ has positive coefficients,
+\begin{align*}
+ [t^{2r}](\tan t/t)^{2m}
+ &\ge\frac{\binom{2m}{r}}{3^r}
+ \ge\left(\frac{2m}{3r}\right)^r\ge2^r,\\
+ \frac{m}{m+r}\frac{R_{m+r}}{R_m}
+ &\le\frac{m}{m+r}\left(\frac4{\pi^2}\right)^r<1.
+\end{align*}
+The binomial bound follows by multiplying $(2m-j)/(r-j)\ge2m/r$ for $0\le j<r$. Positivity of the tangent coefficients also follows directly from $(\tan t)'=1+\tan^2t$. This proves the remaining conclusions of Theorem~\ref{thm:main}.
+
+\section{Exact finite certificates}\label{sec:exact}
+The small response values use the Fourier basis with indices $1-m,\ldots,m-1$. If $j=2k-\ell$, the corresponding entry of $V_a$ is
+\begin{equation}\label{eq:matrix}
+ 2\,4^{-m}\binom{2m}{m+j}
+        (1-\ii a)^{m+j}(1+\ii a)^{m-j},
+\end{equation}
+with value zero when $|j|>m$. Write $V_a=\sum_n\ii^n M_na^n$, $h_a=\sum_n\ii^n v_na^n$, and $\lambda(a)=\sum_n\ii^n\ell_na^n$. The $M_n$ are rational matrices, explicitly
+\[
+ (M_n)_{k,\ell}=(M_0)_{k,\ell}
+ \sum_{q=0}^n(-1)^q\binom{m+j}{q}\binom{m-j}{n-q}.
+\]
+Normalize $\boldsymbol1^Tv_0=1$ and $\boldsymbol1^Tv_n=0$ for $n>0$. Given earlier coefficients, put
+\[
+ b_n=\sum_{q=1}^nM_qv_{n-q},\qquad \ell_n=\boldsymbol1^Tb_n,
+\]
+and solve
+\begin{equation}\label{eq:recursion}
+ (I-M_0)v_n=b_n-\sum_{q=1}^n\ell_qv_{n-q},
+ \qquad\boldsymbol1^Tv_n=0.
+\end{equation}
+Evaluation at $x=1/2$ means summing Fourier coefficients with signs $(-1)^k$. Thus $D_m=\sum_k(-1)^k(v_4)_k$. The exact checker verifies every residual and produces \eqref{eq:Dsmall}. It also compares the resulting $E_{m,2}$ values with an independent direct pressure recursion through $m=8$; additional response values through $m=12$ are supplied as regression checks.
+
+\section{A negative later coefficient}\label{sec:negative}
+The source gives the order-two characteristic polynomial
+\[
+ \chi_2(\lambda,C)=\lambda^3-(3/4+C)\lambda^2
+                         +(1/4+5C/8)\lambda-1/8,
+ \qquad C=\cos2t.
+\]
+Its atomic branch has $\lambda(0)=1$ and $\partial_\lambda\chi_2(1,1)=3/8\ne0$. Direct rational series substitution gives
+\begin{align*}
+ p_2(t/\pi)={}&-2t^2+\frac{376}{45}t^6
+ +\frac{6836}{189}t^8+\frac{105448}{2025}t^{10}\\
+ &-\frac{35360872}{93555}t^{12}+O(t^{14}).
+\end{align*}
+The verifier substitutes the exponential of this series into $\chi_2$, together with the cosine series, and checks an identically zero residual through degree twelve. The simple-root derivative makes those Taylor coefficients unique. In particular $E_{2,4}<0$, so no claim of positivity at every subsequent even degree is possible.
+
+\section{Provenance and remaining questions}
+The source manuscript \cite{integer} proves the missing coefficient and asks about the first following coefficient. The separate companion \cite{first} proves positivity at that first degree. This note extends the argument to the next degree and to the stated uniform region; it does not revise the earlier artifacts. The bounded exact calculations in the package are not substitutes for the general estimates.
+
+The region $m\ge3r$ is sufficient, not asserted optimal. The signs outside it, the first negative degree at each fixed moment order, and the possibility of a sharper uniform boundary remain open here. A coefficient estimate does not supply a uniform radius of phase analyticity as $m$ varies.
+
+\begin{thebibliography}{9}\small
+\bibitem{integer}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript, 28 September 2026, current version inspected 1 October 2026. Source commit \nolinkurl{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, blob \nolinkurl{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.
+\bibitem{first}\emph{The First Positive Coefficient in Integer Thue Morse Pressure}. Research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Separate companion with finite Bernoulli and inverse-branch proofs, independently checked exact calculations, and an explicit large-order expansion.
+\end{thebibliography}
+\end{document}

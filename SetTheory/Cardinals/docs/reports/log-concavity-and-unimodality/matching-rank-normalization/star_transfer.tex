@@ -1,0 +1,93 @@
+\section{Lorentzian transfer across a star core}\label{sec:stars}
+\begin{theorem}[Star-core transfer]\label{thm:stars}
+For a displayed $2+q$ cover with matching-rank-at-most-one core, both root orientations admit direct Lorentzian transfer proofs of $\ULC_{q+2}$.
+\end{theorem}
+This is now a special case of Theorem~\ref{thm:main}. We retain the independent proofs because the transfer operators and their interlacing certificates are useful beyond the full-lift construction.
+\subsection{A support-exact vertex-sum identity}
+Suppose $G_1,G_2$ intersect in just one vertex $v$ of activity $u$, and write
+\[
+ p_1=A(t)+utB(t),\qquad p_2=C(t)+utD(t).
+\]
+Then
+\begin{equation}\label{eq:vertices}
+ p_{G_1\cup G_2}=AC+ut(BC+AD).
+\end{equation}
+If $v$ is absent, each component has balanced selected shores. If $v$ is selected, exactly one component uses it, and that component is determined by its selected-vertex imbalance away from $v$: its opposite shore has one extra selected vertex. Thus the two root-using terms cannot count the same endpoint support, even if that support has several perfect matchings.
+
+\subsection{Stars centered on the two-vertex shore}
+Suppose every core edge is incident with $v=A_1$. Let $G_1$ have shores $L\cup\{v\}$ and $B$, and let $G_2$ have shores $\{v,A_2\}$ and $R$. Their intersection is just $v$. The right-complement basis construction for $G_1$ gives a Lorentzian polynomial
+\[
+ F(s,t,z)=A_h(s,t)+zB_h(s,t),
+ \quad A_h=s^qA(t/s),\quad B_h=s^{q-1}B(t/s).
+\]
+Here $z$ is the root element variable; setting $z=ut$ gives the degree-$q$ homogenization of $p_1$.
+
+For $G_2$, write $C=1+dt$, $D=e+ft$. If $A_2$ has activity $y$, and the exterior class sums are $a,b,c$ with common second moment $\delta$, then
+\[
+ d=y(b+c),\quad e=a+c,\quad f=y(ab+ac+bc+\delta),
+ \qquad de-f=y(c^2-\delta)\ge0.
+\]
+The homogeneous quadratic
+\[
+ K(s,t,z)=s^2+dst+esz+ftz
+\]
+is Lorentzian. Its Hessian is
+\[
+ \begin{pmatrix}2&d&e\\d&0&f\\e&f&0\end{pmatrix},
+ \qquad \det=2f(de-f)\ge0.
+\]
+For $f>0$, its $t,z$ principal submatrix has one positive and one negative eigenvalue; the determinant and eigenvalue interlacing exclude two positive eigenvalues of the full Hessian. For $f=0$, $K=s(s+dt+ez)$ is a product of nonnegative linear forms.
+
+The product $FK$ is Lorentzian. Retain only its terms of degree at most one in $z$, then set $z=ut$. The output is
+\[
+ A_h(s^2+dst)+ut\big[B_h(s^2+dst)+A_h(es+ft)\big],
+\]
+which is the degree-$(q+2)$ homogenization of \eqref{eq:vertices}. Partial truncation preserves Lorentzian polynomials: polarize $s,t$, take the full multiaffine part (only powers $z^2$ are then removed), and identify the polarized variables again. Thus the output is Lorentzian and $p_G$ is $\ULC_{q+2}$.
+
+\subsection{Stars centered on the opposite shore}
+Suppose every core edge is incident with $v=B_1$. Let $G_1=G[L,B]$ and let $G_2$ have shores $A$ and $R\cup\{v\}$. For $G_1$, the private-root variable now gives
+\[
+ F(s,t,z)=zA_h+tB_h,
+ \qquad A_h=s^{q-1}A(t/s),\quad B_h=s^{q-1}B(t/s).
+\]
+The other private variables are $s/v_b$, the left variables are $tu_l$, and the basis polynomial is multiplied by $\prod_{b\ne v}v_b$. Hence $F$ is Lorentzian and $uF(s,t,s/u)=s^qp_1(t/s)$.
+
+For $G_2$ put $C_h=s^2+c_1st+c_2t^2$ and $D_h=es+ft$. Give its two left vertices fixed activities $\alpha,\beta$; these are constants, distinct from the private-root indeterminate $z$. With exterior class sums $a,b,c$ and second moment $\delta$,
+\[
+ c_1=\alpha(a+c)+\beta(b+c),\qquad c_2=\alpha\beta(ab+ac+bc+\delta),
+\]
+so
+\[
+ c_1^2-4c_2=[\alpha(a+c)-\beta(b+c)]^2+4\alpha\beta(c^2-\delta)\ge0.
+\]
+The rooted interlacing inequality is
+\begin{equation}\label{eq:rootinterlace}
+ c_1ef-f^2-c_2e^2\ge0.
+\end{equation}
+If $v$ is adjacent only to the first left vertex, $e=\alpha$, $f=\alpha\beta(b+c)$ and the expression is $\alpha^3\beta(c^2-\delta)$. The other singleton case gives $\alpha\beta^3(c^2-\delta)$. If $v$ is adjacent to both, $e=\alpha+\beta$, $f=\alpha\beta(a+b+c)$ and it is exactly
+\[
+ \alpha\beta\left[
+ \left(a\alpha-b\beta+\tfrac c2(\alpha-\beta)\right)^2
+ +\left(\tfrac{3c^2}{4}-\delta\right)(\alpha+\beta)^2\right]\ge0.
+\]
+An isolated root has $e=f=0$.
+
+Factor $C_h=(s+\lambda_1t)(s+\lambda_2t)$, with $0\le\lambda_1\le\lambda_2$. If $e>0$, \eqref{eq:rootinterlace} gives $\lambda_1\le f/e\le\lambda_2$. Therefore
+\[
+ h(s,t)=\frac{stD_h}{C_h}
+\]
+is a nonnegative linear combination of $st/(s+\lambda_i t)$ with positive total coefficient. Each such fraction maps $\HH^2$ into $\HH$, since its reciprocal is $1/t+\lambda_i/s$, of strictly negative imaginary part. Repeated $\lambda_i$ give the same conclusion directly.
+
+Consider the homogeneous degree-two operator
+\[
+ \mathcal T(P)=C_hP+stD_h\partial_zP.
+\]
+It preserves real stability. At upper-half-plane values, a stable nonzero $P$ has $\operatorname{Im}(\partial_zP/P)\le0$, by its univariate factorization in $z$. A zero of $\mathcal T(P)$ with $D_h\ne0$ would require this quotient to equal $-1/h$, which has strictly positive imaginary part. If $D_h=0$, stable multiplication suffices.
+
+The operator also preserves nonnegative coefficients. Restrict it to any finite coordinatewise degree box containing $F$; its output lies in a larger degree box. Br\"and\'en--Huh's Theorem 3.4 applies, so $\mathcal T(F)$ is Lorentzian. Finally
+\[
+ u\mathcal T(F)|_{z=s/u}=sA_hC_h+utB_hC_h+ustA_hD_h
+\]
+is precisely the degree-$(q+2)$ homogenization of \eqref{eq:vertices}. This proves the column-star case.
+
+Every nonempty bipartite graph of matching rank one has all its edges incident with a common vertex. The two orientations therefore exhaust such cores. An empty core gives a product of $\ULC_q$ and $\ULC_2$ polynomials, which is $\ULC_{q+2}$ by Lorentzian product closure. Theorem~\ref{thm:stars} follows.
