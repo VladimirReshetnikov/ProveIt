@@ -1,5 +1,11 @@
 # A paid universal register-machine history in one counter word
 
+**Successor:** the [literal U21 counter-unit compiler](korec_packed_counter_units.md)
+costs411=147M+264A with50 positive witnesses and degree at most42589.
+It preserves the one-program-parameter ordinary-input convention through
+a proved table contraction and fresh positive extension. This note retains
+the original U22/453 source, theorem and historical comparison.
+
 The [builder](korec_packed_counter_compiler.py) compiles a finite increment /
 conditional-decrement register program into a fixed-arity integer polynomial.
 Its default is an explicit 22-instruction strongly universal machine, with

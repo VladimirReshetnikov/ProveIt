@@ -40,7 +40,27 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The latest explicit [history-unit U9 polynomial](neary_woods_universal_history_units260.md)
+The latest explicit [offset-shifted U9 polynomial](neary_woods_universal_offset258.md)
+gives **257 certificate /258=133M+125A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most3861**. Its fixed offset parameter represents E−1;
+the same ordinary inputs are accepted on the corresponding valid program
+slices. The affine parent map is not an all-tuple positive bijection.
+The [259 lower-unit predecessor](neary_woods_universal_lower_unit259.md)
+retains the old program recipes and the same positive coordinates on
+valid slices, excluding a negative transport unit by the encoded input's
+forbidden suffix. Mapped258 schedules give269/608 with44 witnesses and
+266/1344 with43; these selected schedules are not an exhaustive search.
+
+The separate [all-factor history-unit search](neary_woods_universal_history_unit_partitions.md)
+keeps the older E parameter meaning and searches32 bases: all sixteen
+strong/scale choices, with lower transport retained or absorbed. Its
+finite propagated-degree frontier includes259/3861 with43 witnesses,
+266/1106,267/1060,268/738 and270/608 with44. Regrouping preserves positive
+zeros within each fixed valid-program base. The claimed optima concern
+this finite family and propagated bounds, not exact degree or all circuits.
+
+The preceding explicit [history-unit U9 polynomial](neary_woods_universal_history_units260.md)
 gives **255 certificate /260=134M+126A polynomial operations**,
 2 comparisons,43 positive witnesses, four positive program parameters
 and degree **at most3866**. Absorbing the upper history transport and
@@ -92,7 +112,17 @@ with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
 
-The independent [packed-register compiler](korec_packed_counter_compiler.md)
+The independent [U21 counter-unit compiler](korec_packed_counter_units.md)
+gives **410 certificate /411=147M+264A polynomial operations**, one
+comparison,50 positive witnesses and degree **at most42589**. Its literal
+strongly universal table uses one positive program parameter and ordinary
+positive input directly. Shared register-based control codes, computed
+truth fields and three sign-proved chronological units preserve the full
+positive halting converse. The final polynomial is a nine-factor product
+minus1; an SOS alternative costs412. This is a complete independent
+universal route, above258 and the established75/87 bounds.
+
+The preceding independent [packed-register compiler](korec_packed_counter_compiler.md)
 instantiates the actual strongly universal U22 machine at
 **436 certificate /453=138M+315A polynomial operations**,6 comparisons,
 54 positive witnesses and degree **at most43897**. It has one positive
@@ -102,6 +132,15 @@ lanes and one counter-transport equation pay increment, decrement and
 zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
+
+The [packed residue-affine history compiler](residue_affine_packed_history.md)
+pays a fixed-arity, unbounded-duration orbit relation for each fixed
+positive residue-affine map. Its shortcut-Collatz example costs
+**134=64M+70A**,21 positive witnesses, five comparisons and degree
+**at most748**; allowing a zero-step orbit costs two more operations.
+This does not assert Collatz universality or convergence. The related
+prime-encoded counter substrate still needs its separate paid ordinary-input
+exponent loader before any numerical universal claim.
 
 The [paid queue sentinel fold](queue_causality_sentinel_fold.md)
 gives fixed-horizon cyclic-tag certificates with at most14T-2 operations
@@ -1506,6 +1545,11 @@ New research and the completed75-operation construction:
 | [Explicit U15 universal tag polynomial](neary_woods_universal_tag557.md) | **483 certificate /557=351M+206A polynomial**,25eq,69w,five positive program parameters; degree at most496070855427922989652813345268287100. | Fixed binary table and production, effective ordinary-input slices, exact counter and complete positive native converse. Huge fixed numerals have exact recipes;75/87 unchanged. |
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
+| [U21 counter chronology units](korec_packed_counter_units.md) | **410 certificate /411=147M+264A**,1eq50w,one positive program parameter plus raw x,degree at most42589; SOS412/85178. | Literal strongly universal21-instruction table; shared control codes, positive computed truth fields and three signed transport/range factors with complete positive converse. |
+| [Shifted U9 program offset](neary_woods_universal_offset258.md) | **257 certificate /258=133M+125A**,1eq43w,four positive program parameters,degree at most3861; mapped269/608/44w and266/1344/43w. | E'=E−1 changes valid program recipes; accepted ordinary inputs preserved, not an all-tuple positive bijection. Selected mapped family only. |
+| [U9 lower-history unit](neary_woods_universal_lower_unit259.md) | **258 certificate /259=133M+126A**,1eq43w,four positive program parameters,degree at most3861. | Same supplied coordinates and positive zeros on valid program/input slices; negative lower sign contradicts the actual sentinel suffix. |
+| [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
+| [Packed residue-affine finite orbits](residue_affine_packed_history.md) | Shortcut Collatz134=64M+70A,21w5eq,degree at most748; empty-orbit option+2. | Generic fixed-map orbit iff with direct starting/target integers and paid unbounded chronology. Collatz is not claimed universal; prime-coded input loading remains separate. |
 | [Packed-register universal U22 compiler](korec_packed_counter_compiler.md) | **436 certificate /453=138M+315A**,6eq54w,one positive program parameter plus raw ordinary x,degree at most43897; raw484/61w/7024. | Actual strongly universal table; one chronological counter word pays all eight registers, branch tests and complete instruction/control transport. Independent universal route, above260/75/87. |
 | [Positive history units in U9](neary_woods_universal_history_units260.md) | **255 certificate /260=134M+126A**,2eq43w,four program parameters,degree at most3866; mapped270/608 with44w,fixed43w267/1344. | Complete positive-zero bijection beta_parent=beta_new+1; native signs restored before upper low-digit and global unit signs. Placement within selected partitions only; explicit off-zero corrections. |
 | [Positive mask unit in U9](neary_woods_universal_mask_unit263.md) | **252 certificate /263=134M+129A**,4eq43w,four program parameters,degree at most3857. Mapped273/608 with44w; fixed43w270/1344. | Both mask signs preserve the pretyping margins; local native dyadic typing excludes -1 modulo a Mersenne number. Identical complete positive zero sets on the same supplied coordinates; explicit off-zero corrections. Placement within selected partitions only. |
@@ -1660,7 +1704,7 @@ New research and the completed75-operation construction:
 | [Odd binary-controller orbits](binary_odd_controller_orbit.md) | Exact guarded fixed-width duration cutoff from a scalar orbit and multiplicative order; a uniform transient estimate. For any a, the boundary c=-b,a/b<1 has effectively bounded width. | No11, the original endpoint and all positive fields are retained. General unbounded-width decidability or universality is not established. |
 | [Nonabsorbing cone and read-only controllers](binary_nonabsorbing_cone_and_read_only.md) | Outside an explicit coefficient cone, width and input are bounded. Every read-only specialization a=0 is decidable by proved width and duration cutoffs, including even coefficients and nonzero endpoints. | The no11 guard is retained. General a!=0 coefficients inside the cone remain open except separately classified cases. |
 | [Fixed idle word](binary_fixed_idle_controller.md) | The nonabsorbing a=b,c=-b boundary specializes to **57=30M+27A**,25 positive witnesses and17 equations. Its exact language is translated powers of two plus a computable finite exception set. | This regular-language component cannot be universal; its continuation uses full bit-flip cycles, not free zero padding. |
-| [Factored residue-affine counter steps](residue_affine_factored_counter_step.md) | Generic scalar graph **4b+3**, shortcut-Collatz graph7, and exact counter-program graph **10B+8** in the number of instruction branches, with paid zero/decrement guards. Explicit nonunit maps escape the prior pumping hypotheses. | The universal simulation uses a stated prime-power input code. Ordinary-input loading and finite iteration remain unpaid; the executable counter fixture is nonuniversal. |
+| [Factored residue-affine counter steps](residue_affine_factored_counter_step.md) | Generic scalar graph **4b+3**, shortcut-Collatz graph7, and exact counter-program graph **10B+8** in the number of instruction branches, with paid zero/decrement guards. Explicit nonunit maps escape the prior pumping hypotheses. | The universal simulation uses a stated prime-power input code. The [packed orbit successor](residue_affine_packed_history.md) now pays finite iteration; ordinary-input prime-power loading remains separate, and the executable counter fixture is nonuniversal. |
 | [Factored two-stack read selectors](two_stack_factored_selector_step.md) | Exact scalar step **8B+18**, eight positive witnesses and seven equations for a full B=9K table. One step as a polynomial costs8B+38. The affine ordinary-input loader still costs two operations. | Fixed-t unrolling costs2+t(8B+18), with10t-2 witnesses; one polynomial costs(8B+39)t+1. Uniform variable-duration history remains unpaid. |
 | [Typed histories and linear stack encodings](two_stack_polycyclic_history_obstruction.md) | Exact synchronized two-Dyck-word contract; direct inverse-group products lose mismatch guards. Sharp depth-H linear dimensionN=2^(H+1)-1, with a paid2N positive basis loader and fixed-word polynomialN(3t+2)+5. | Dimension and word length are source constants. This does not exclude auxiliary-word group constructions or nonlinear encodings, or provide existential action selection. |
 | [Singleton domains and binary empty tests](typed_prefix_singleton_merge31.md) | Exact local merge **31=13M+18A**, four positive auxiliary witnesses and ten equations; one polynomial costs60. Typed roots admit ordinary-input-to-empty endpoints with a two-operation affine loader. | Input descriptors must be typed. Fixed-tree and fixed-flag ledgers are complete, but variable branch selection, shared control and uniform tree geometry remain unpaid. |

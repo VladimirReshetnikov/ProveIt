@@ -14,7 +14,29 @@
 > The full compiler contract, both ratio slacks and `F>0` are retained.
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
-> The latest complete explicit U9/tag source costs
+> The latest complete explicit U9/tag source is
+> **258=133M+125A**,257 certificate operations,1 comparison,43 positive
+> witnesses and four positive program parameters, degree at most3861:
+> [shifted program offset](neary_woods_universal_offset258.md). The new
+> parameter E'=E−1 remains a positive bound on the actual fixed frame.
+> Its affine map preserves polynomial values but can leave the positive
+> domain off zero; soundness and positive completeness are proved on
+> corresponding valid program slices. Mapped selected schedules give
+> 269/608/44w and266/1344/43w, not an exhaustive new partition frontier.
+> The [259 lower-unit parent](neary_woods_universal_lower_unit259.md)
+> retains old program recipes and the same positive zero coordinates on
+> valid slices. Its negative lower unit would create a forbidden internal
+> zero run in V0−2; only then does the remaining global sign follow.
+>
+> A separate [all-factor32-base search](neary_woods_universal_history_unit_partitions.md)
+> retains the older E semantics. It permits every factor partition and
+> anchor across sixteen native bases and both lower-transport treatments.
+> Its finite propagated-objective frontier includes259/3861/43w,
+> 266/1106,267/1060,268/738 and270/608 with44w. Fixed43w reaches267/1344.
+> These are exact finite-objective optima, not exact-degree lower bounds.
+> Do not silently combine the new E' interface with this separate search.
+>
+> The preceding complete explicit U9/tag source costs
 > **260=134M+126A**,255 certificate operations,43 positive witnesses,
 > 2 comparisons and four positive program parameters, with degree
 > at most3866: [positive history units](neary_woods_universal_history_units260.md).
@@ -42,7 +64,20 @@
 > not the possibility of a different86-operation universal construction.
 > Established75/87 and the separate independent-gamma87 status are unchanged.
 >
-> An independent [packed-register route](korec_packed_counter_compiler.md)
+> The independent [U21 counter-unit route](korec_packed_counter_units.md)
+> gives **411=147M+264A**,410 certificate operations,1 comparison,
+> 50 positive witnesses and degree at most42589. One positive program
+> parameter and ordinary x retain the actual strongly universal input.
+> The literal21-instruction table replaces one decrement/restore by a
+> pure test. Register-based codes share paid action forms; weak range
+> margins make three computed truth fields positive before typing.
+> Local native rank and shifted population restore its index sign before
+> low-D digits force both chronological transport units positive. The
+> range sign follows last. Canonical positive native extensions prove
+> completeness; no off-zero positive graph bijection is claimed.
+> The single product-minus-one finalizer costs411; its SOS costs412.
+>
+> The preceding independent [packed-register route](korec_packed_counter_compiler.md)
 > instantiates the actual strongly universal U22 machine:
 > **453=138M+315A**,436 certificate operations,6 comparisons,54 positive
 > witnesses and degree at most43897. One positive program parameter and
@@ -151,8 +186,15 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > gives exact guarded duration cutoffs at each fixed width. Other cases
 > inside the cone remain open; nonzero terminal states forbid free padding.
 > The [factored counter map](residue_affine_factored_counter_step.md) escapes
-> unit-slope pumping and pays10B+8 scalar guards, but its prime-power input
-> loading and history remain unpaid.
+> unit-slope pumping and pays10B+8 scalar guards. Its
+> [packed residue-affine history](residue_affine_packed_history.md) now pays
+> arbitrary finite iteration with fixed arity: shortcut Collatz gives
+> 134=64M+70A,21w5eq,degree at most748; zero duration costs two more gates.
+> Starting and target integers are direct ports. This is no Collatz
+> universality/convergence claim; the prime-coded universal substrate's
+> ordinary-input exponent loader remains unpaid. A concrete next task is
+> to compose that loader with an actual fixed universal residue table,
+> while counting all residue selectors and fixed coefficients.
 >
 > The [two-stack substrate](two_stack_affine_input_step.md) has a two-operation
 > ordinary-input prefix. [Factored selectors](two_stack_factored_selector_step.md)
