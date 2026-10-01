@@ -59,6 +59,10 @@ identical positive zeros. The [linear input modulus](../research-wip/native-stre
 now gives89=47M+42A at exact degree135, through a positive coordinate
 map restoring the discriminant quotient. Its [degree tradeoffs](../research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
 add90/132,92/114,94/80,95/72,96/62 and97/56, all with19 positive witnesses.
+The [positive auxiliary gap](../research-wip/native-stream-queue/complete75_auxiliary_gap_degree_tradeoffs.md)
+further gives90/131,91/128,98/54 and99/52. It reconstructs y=V+e in one
+addition and proves the inverse gap positive at every parent zero, after
+the strong-rank bound has restored V>1.
 The88 polynomial bound and this note's75 comparison bound remain distinct.
 The source and full compiler proof below retain their original30-coordinate
 presentation.

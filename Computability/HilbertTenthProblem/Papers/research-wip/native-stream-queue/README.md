@@ -83,20 +83,25 @@ replaces the discriminant modulus by a+1, giving **89=47M+42A at degree135**.
 Its positive coordinate map restores the earlier discriminant quotient
 after the main kernel and transport bounds have been recovered.
 The [resulting degree tradeoffs](complete75_linear_input_degree_tradeoffs.md)
-add six undominated points. The current displayed choices are:
+add six points. The [positive auxiliary gap](complete75_auxiliary_gap_degree_tradeoffs.md)
+replaces y by V+e after proving e>0 on all parent zeros. One added
+addition lowers that norm's degree from28 to24, giving90/131,91/128,
+98/54 and99/52. The current displayed choices are:
 
 | Polynomial operations | Exact degree | Positive witnesses |
 |---:|---:|---:|
 |88|151|19|
 |89|135|19|
-|90|132|19|
-|91|130|19|
+|90|131|19|
+|91|128|19|
 |92|114|19|
 |93|90|19|
 |94|80|19|
 |95|72|19|
 |96|62|19|
 |97|56|19|
+|98|54|19|
+|99|52|19|
 
 This table records established constructions, not a global optimality claim.
 
@@ -202,6 +207,33 @@ universal subgroup, this is a complete alternative universal construction;
 the universal alphabet has not been instantiated numerically and these
 parameterized counts do not improve the75/88 numerical frontiers.
 
+The [shared typing kernel](group_shared_typing_matrix_compiler.md) removes
+50 certificate gates by joining controller and selected-history lanes.
+Scalar checksum and port bounds exclude carries before Boolean typing.
+[Sparse flow](group_sparse_macro_flow.md) then reuses internal state
+weights and paid checksum sums. Their [combined source](group_shared_sparse_matrix_compiler.md)
+also shares repeated geometric registers. Finally, [computed selector ports](group_computed_selector_ports.md)
+remove eight positive witnesses and eight equations through an exact
+positive graph substitution. The current certificate cost is
+
+    C=3m+3h+p+222+f_flow-3min(h,3),
+
+with **39 equations** and **m+59 positive witnesses**. Here f_flow is the
+literal sparse-flow cost, at most twice the total macro-code length.
+The single polynomial costs **C+116**, of exact degree **12m+112**.
+This is an operation/degree tradeoff with the parent. On the recorded
+ten-letter example, costs fall from401/580 to296/412; that example is
+not a universal alphabet.
+
+A separate [Gram scalar-zero and mortality route](group_gram_zero_mortality.md)
+lifts the fixed universal subgroup to seven dimensions. A positive quartic
+input column costs12 operations; a nonnegative rank-one input matrix
+costs **13=5M+8A**, with all other generators fixed. The scalar test is
+exact because the underlying free group has no torsion. A fixed shear
+word has a positive certificate costing4t+17 and a degree-eight polynomial
+costing10t+19. Variable words, control and uniform packing remain unpaid
+for this alternative, so these are not complete universal operation bounds.
+
 The [Heisenberg membership audit](heisenberg_two_generator_membership.md)
 gives a uniform four-witness certificate for any two fixed generators in
 H^r: **18r+10** graph operations, or **27r+12** for one degree-at-most-four
@@ -230,6 +262,12 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Positive auxiliary-gap degree tradeoffs](complete75_auxiliary_gap_degree_tradeoffs.md) | **90/131,91/128,98/54,99/52**,19 positive witnesses. | The strong rank argument restores V>1 before using the computed positive auxiliary ordinate. |
+| [Computed selector ports](group_computed_selector_ports.md) | Complete cost C=3m+3h+p+222+f_flow-3min(h,3),39 equations,m+59 witnesses; SOS C+116,degree12m+112. | Universal alphabet remains numerically uninstantiated. Port positivity follows directly from positive edge hats. |
+| [Shared typing and sparse flow](group_shared_sparse_matrix_compiler.md) | Identical47 residuals and polynomial to the shared-typing parent, with sparse state weights and3min(h,3) common-register savings. | Its positive supplied ports are eliminated by the next successor. |
+| [Shared controller/selection kernel](group_shared_typing_matrix_compiler.md) | Saves50 certificate gates,89 SOS gates and20 witnesses by using one joint AND. | The low-mask bound must precede the upper-region decoding; this raises the polynomial degree. |
+| [Sparse macro flow](group_sparse_macro_flow.md) | Flow costs at most2L; every residual and the complete parent polynomial are unchanged. | Specializes to the validated hub-path structure, with explicit empty/singleton cases. |
+| [Gram scalar zero and mortality](group_gram_zero_mortality.md) | Fixed7D universal alphabet with scalar loader12 or one nonnegative input matrix at13; fixed-word polynomial degree8. | Uniform word selection and histories remain unpaid. The torsion-free macro group is essential. |
 | [Linear input modulus](complete75_linear_input_modulus89.md) | **89=47M+42A**,19 positive witnesses, exact degree135; a+1 replaces the discriminant modulus. | The input index is recovered after the main kernel and transport; the old positive quotient is then restored. |
 | [Linear-modulus degree tradeoffs](complete75_linear_input_degree_tradeoffs.md) | **90/132,92/114,94/80,95/72,96/62,97/56**, all with19 positive witnesses. | Exact partition bounds apply only to the five stated literal families. |
 | [Complete matrix compiler](group_complete_matrix_compiler.md) | **7m+3h+p+273** comparison operations; one polynomial costs **7m+3h+p+452**, degree **max(112,12m+16)**; m+87 positive witnesses. | Complete for every fixed macro table. The universal subgroup theorem supplies a fixed alphabet, but no numerical universal table or smaller75/88 bound is claimed. |

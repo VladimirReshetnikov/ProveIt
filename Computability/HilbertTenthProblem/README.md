@@ -84,7 +84,9 @@ universal Diophantine equations by James P. Jones and coauthors:
   gives **89=47M+42A at degree135**, with a proved positive coordinate map
   to the discriminant-modulus construction. Its [degree tradeoffs](Papers/research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
   give **90/132,92/114,94/80,95/72,96/62 and97/56**; all retain19 positive
-  witnesses. The75 comparison bound and88 polynomial bound remain distinct.
+  witnesses. The [positive auxiliary-gap coordinate](Papers/research-wip/native-stream-queue/complete75_auxiliary_gap_degree_tradeoffs.md)
+  further gives **90/131,91/128,98/54 and99/52** with the same witness count.
+  The75 comparison bound and88 polynomial bound remain distinct.
   These optimized results are not yet Lean formalized.
 - A [group-commutator substrate](Papers/research-wip/native-stream-queue/group_commutator_universal_substrate.md)
   represents every computably enumerable positive set by membership in a
@@ -102,6 +104,17 @@ universal Diophantine equations by James P. Jones and coauthors:
   universal construction through the fixed subgroup theorem. The universal
   alphabet has not been numerically instantiated; the75/88 numerical
   frontiers are unchanged.
+  Its [computed-port successor](Papers/research-wip/native-stream-queue/group_computed_selector_ports.md)
+  combines one shared typing kernel, sparse state flow and common powers,
+  then eliminates the eight positive selector coordinates. Its certificate
+  costs **C=3m+3h+p+222+f_flow-3min(h,3)**, with39 equations and m+59
+  positive witnesses, where f_flow is at most twice the total macro length.
+  The polynomial costs **C+116**, of exact degree **12m+112**.
+- A [seven-dimensional Gram/mortality interface](Papers/research-wip/native-stream-queue/group_gram_zero_mortality.md)
+  represents universal membership by a scalar zero using a12-operation
+  positive input column, or by mortality with one nonnegative input matrix
+  loaded in **13=5M+8A**. All other generators are fixed. A fixed-word
+  polynomial has degree8; a uniform selected-word certificate remains open.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree

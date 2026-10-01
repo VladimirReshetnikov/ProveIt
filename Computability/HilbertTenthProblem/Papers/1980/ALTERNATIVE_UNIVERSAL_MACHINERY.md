@@ -59,8 +59,11 @@ comparison separately. The latter supersedes93/118. The
 gives **89=47M+42A at degree135**. Recovering the main kernel first permits
 the smaller modulus a+1 and restores the old positive quotient exactly.
 Its [degree tradeoffs](../research-wip/native-stream-queue/complete75_linear_input_degree_tradeoffs.md)
-extend the displayed choices to **88/151,89/135,90/132,91/130,92/114,93/90,
-94/80,95/72,96/62 and97/56**, all with19 positive witnesses. No global
+extend the displayed choices. The [positive auxiliary gap](../research-wip/native-stream-queue/complete75_auxiliary_gap_degree_tradeoffs.md)
+adds one reconstruction gate and lowers the auxiliary norm degree to24,
+with a full positive bijection proved after strong-rank recovery.
+The current choices are **88/151,89/135,90/131,91/128,92/114,93/90,
+94/80,95/72,96/62,97/56,98/54 and99/52**, all with19 positive witnesses. No global
 optimality claim follows from this list.
 The comparison-based certificate count and single-polynomial evaluation
 count are separate measures. These are mathematical results with focused
@@ -158,6 +161,29 @@ and includes a full positive converse for every accepted ordinary input.
 The fixed universal subgroup theorem makes this an alternative complete
 universal compiler. The universal alphabet remains uninstantiated, and
 this parameterized bound does not improve the numerical75/88 frontier.
+
+The [shared typing kernel](../research-wip/native-stream-queue/group_shared_typing_matrix_compiler.md)
+combines control and all eight selected-source tests, proving the low-mask
+bound before Boolean decoding. [Sparse macro flow](../research-wip/native-stream-queue/group_sparse_macro_flow.md)
+shares weighted internal edges and already-paid checksum sums. Their
+[combined source](../research-wip/native-stream-queue/group_shared_sparse_matrix_compiler.md)
+also merges identical geometric registers. The [computed-port successor](../research-wip/native-stream-queue/group_computed_selector_ports.md)
+then removes eight positive selector witnesses and comparisons. Its complete
+cost is **C=3m+3h+p+222+f_flow-3min(h,3)**, with39 equations,m+59 witnesses,
+and f_flow at most twice the total macro-code length. Its polynomial costs
+**C+116**, exact degree **12m+112**. These counts include every arithmetic
+predicate; the universal fixed table itself remains numerically unspecified.
+
+The [Gram scalar-zero alternative](../research-wip/native-stream-queue/group_gram_zero_mortality.md)
+lifts the same universal subgroup to seven dimensions. Torsion-free integral
+blocks make a squared-Frobenius scalar test exact, with a12-operation positive
+quartic input column. A rank-one sentinel converts it to unrestricted
+mortality; after one fixed conjugation, its nonnegative input matrix costs
+**13=5M+8A** and all other matrices remain fixed. A fixed signed-shear word
+has a positive4t+17 certificate and a10t+19 polynomial of exact degree8.
+Uniform word choice and packing are still unpaid for this alternative.
+The packet also gives explicit torsion and nonnegative-support obstructions
+to dropping the fixed macro group or removing all signed generators.
 
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators

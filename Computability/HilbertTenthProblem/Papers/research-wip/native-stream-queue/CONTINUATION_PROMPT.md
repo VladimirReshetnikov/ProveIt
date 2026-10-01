@@ -22,7 +22,9 @@
 > give the earlier94/degree84 and92/degree122. The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
 > add91/degree130 and93/degree90, superseding93/118. The new
 > [linear-modulus partitions](complete75_linear_input_degree_tradeoffs.md)
-> add90/132,92/114,94/80,95/72,96/62 and97/56. All retain19 positive
+> add90/132,92/114,94/80,95/72,96/62 and97/56. The
+> [positive auxiliary gap](complete75_auxiliary_gap_degree_tradeoffs.md)
+> further gives90/131,91/128,98/54 and99/52. All retain19 positive
 > witnesses. Preserve the paid strong equation and both ratio slacks;
 > the coupled linear unit is recovered by the complete sign proof.
 > The comparison bound75 and
@@ -113,6 +115,18 @@ partition families and proves each displayed exact degree; its scope is
 not an arithmetic lower bound. Preserve the complete strong comparison
 when moving it outside the unit product.
 
+The [auxiliary-gap successor](complete75_auxiliary_gap_degree_tradeoffs.md)
+replaces supplied y by e=y-V, reconstructing y=V+e with one addition.
+Computed y can be signed away from zeros. First exclude negative norm
+units by the retained first-norm descent and modulo4 arguments (the
+auxiliary norm exclusion does not need y positive). Then use
+main/first/strong norms and weak transport/index bounds to obtain
+f>2c and V=of-c>c>1. Only then invoke the old positive-y theorem.
+Its inverse gap is positive because (K-1)(y²-V²)=V²-1>0. The auxiliary
+norm degree drops28 to24; four new points are90/131,91/128,98/54,99/52.
+The five-family partition search is exhaustive only within its stated
+factor schedules, not a global lower bound.
+
 The [group-commutator route](group_commutator_universal_substrate.md) is now
 proved as a universal computational substrate. For an r.e. positive set S,
 `G_S=<a,b | [b^-n*a*b^n,a]=1 for n in S>` recognizes exactly S via the
@@ -194,14 +208,46 @@ then recover the actual trace and target matrices. Completeness pads with
 hub idle steps until t>=2 and B>m. The three Pell cores have separate
 namespaces, and B,J,H,Shat,Zhat,q,P are explicitly shared.
 
-This closes the full fixed-table matrix-membership representation. A fixed
-universal alphabet is supplied by the effective group theorem, but has not
-been numerically materialized. Do not infer a smaller numerical universal
-bound from the parameterized formula. Next cost targets include removing
-generic zero/one coefficient work from the actual controller DAG, sharing
-or replacing its typing kernels, and a smaller complete computational
-substrate. Any proposed sharing must preserve the independent positivity
-and geometry proof order. The comparison/polynomial targets remain75/88.
+The [shared-typing successor](group_shared_typing_matrix_compiler.md) replaces
+the controller's57-gate kernel with upper lanes in the selected-source AND.
+It adds7 gates, removes13 equations and20 witnesses, and costs50 fewer
+certificate operations. Before decoding the joined regions, scalar edge
+checksum and port equations give0<=S_i<=J, hence (B-1)S_i<=P-1 and Mb<P^8.
+That pretyping bound is essential; without it a low mask carry can fake the
+upper subset test. The retained AND scale is16P^(m+8), independent of the
+height q. Its positive core is reconstructed afresh, not copied from an
+incompatible old scale.
+
+[Sparse macro flow](group_sparse_macro_flow.md) groups the paid checksum
+sum and shares internal-edge state weights. Its exact table-dependent cost
+f_flow is at most twice total macro length. The [combined source](group_shared_sparse_matrix_compiler.md)
+also shares3min(h,3) literal powers/repunits/B-1 gates. Every residual
+remains identical to the shared-typing parent. Finally, [computed selector
+ports](group_computed_selector_ports.md) substitute the eight positive port
+definitions and remove their supplied witnesses and comparisons. Positivity
+is unconditional from positive edge hats; a stable topological reorder
+puts the existing port gates before their history/AND consumers.
+
+The current complete comparison count is
+C=3m+3h+p+222+f_flow-3min(h,3), with39 equations andm+59 witnesses.
+Its polynomial costsC+116 and has exact degree12m+112. This trades degree
+against the original separate-kernel compiler. A fixed universal alphabet
+is supplied by the effective group theorem but has not been numerically
+materialized. Do not infer a numerical universal bound below75/88.
+
+The [Gram scalar-zero/mortality route](group_gram_zero_mortality.md) is a
+new endpoint alternative. The symmetric-square action on two Gram triples
+and one constant coordinate gives a fixed7D alphabet; torsion-free Γ is
+essential to turning the minimum Frobenius norm into exact matrix equality.
+Its positive quartic input column costs12. The rank-one sentinel can repeat
+freely; a fixed conjugation gives a nonnegative single-column input matrix
+at13=5M8A. Other fixed generators remain signed, as finite Boolean support
+closure would make an entirely nonnegative fixed-alphabet problem decidable.
+A fixed-word positive certificate costs4t+17; its polynomial costs10t+19
+at exact degree8. Its variable word, macro control and uniform history are
+still unpaid. Preserve this distinction from the completed four-register
+compiler. Next targets are cheaper complete kernels or computational
+substrates, with ordinary input and all typing obligations accounted for.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,
