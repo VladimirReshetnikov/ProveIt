@@ -48,6 +48,11 @@
 \newcommand{\bpC}[2]{\mathcal C_{#1,#2}}
 \newcommand{\bpW}[2]{\mathcal W_{#1,#2}}
 \newcommand{\bpE}{\mathcal E}
+% Part III (batch 66): admissible and special targets (manuscript macro
+% \Spec renamed; \Cset, \Wset, \word, \shuf, \supp map to \bpC, \bpW,
+% \bpgap, \sh and the existing \supp).
+\newcommand{\Adm}[1]{\mathcal A_m(#1)}
+\newcommand{\bpSpecial}[1]{\mathcal S_m(#1)}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
  breaklines=true,frame=single,rulecolor=\color{black!25},xleftmargin=0.5em,xrightmargin=0.5em}
 
@@ -70,6 +75,7 @@ The five-letter exceptional word has the smallest possible length for any gap wi
 \noindent\textbf{Scope and status.} The statements proved below address the indicated no-gap questions, not the surrounding undecidability results. The unrestricted singleton conjecture is not settled here. The proofs have not been checked in a proof assistant or independently peer reviewed.
 [Added 29 September 2026, batch 41: Part~II (Section~\ref{ids:bp:sec:intro} onwards) realizes every finite spectrum containing~$1$ over the binary alphabet $\{a,b\}$ with one inserted unary word. It does not settle the singleton conjecture either, and it is not formalized.]
 [Added 29 September 2026, batch 44: one of those surrounding decision problems is answered in the sibling report \texttt{constrained-crossover-closure} of this collection category. Hughes asks for the complexity of deciding $L\otimes_{\mathrm c}L=L$ for context-free~$L$, where $\otimes_{\mathrm c}$ is constrained (equal-length, equal-cut) one-point crossover \cite[Section~4, pp.~3--4]{Hughes2026}; that report proves the problem co-r.e.-complete over a three-letter alphabet. It concerns crossover, not insertion: it uses nothing proved here, proves nothing about insertion degrees, and leaves the singleton conjecture open. It is unrefereed and not formalized.]
+[Added 30 September 2026, batch 66: Part~III (Section~\ref{ids:si:sec:scope} onwards) determines exactly when the single inserted word $a^m$ and a finite binary target language can fill a fixed-letter-count class with exactly one output of degree~$m$ and all others of degree~$1$; the least output lengths for $m=3,4,5$ are $14$, $21$ and~$27$. It does not settle the singleton conjecture, and it is not formalized.]
 
 \newpage
 \tableofcontents
@@ -746,6 +752,13 @@ for $m=3,4,5$; proof-assistant verification or independent peer review.\\
 \bottomrule
 \end{tabular}
 \end{center}
+[Added 30 September 2026, batch 66: two entries of the last row are settled
+or narrowed in Part~III. The exact optimal lengths for $m=3,4,5$ are $14$,
+$21$ and~$27$ (Theorem~\ref{ids:si:thm:length}). The optimal target-language
+cardinality is determined only for $m=3$ at the shortest length, where it is
+$37$ (Theorem~\ref{ids:si:thm:degree3}). Part~III is unrefereed and not
+formalized either.]
+
 
 \noindent\textbf{Status (manuscript 01).} The new theorems are unrefereed
 research claims with written proofs, not Lean-verified results. Nothing in
@@ -1489,6 +1502,13 @@ construction. It also permits arbitrary numbers of separator letters in the
 lower bound. For $m\geq6$, any equality case necessarily has $g=m$ and
 $T=m^2-m+1$, since both inequalities $N\geq gm\geq m^2$ must be equalities.
 No classification of the target languages at equality is claimed.
+[Added 30 September 2026, batch 66: Part~III classifies the equality cases,
+for every $m\geq3$ at the least length: the centers
+(Theorems~\ref{ids:si:thm:classification} and~\ref{ids:si:thm:extremal}),
+the mandatory targets (Theorem~\ref{ids:si:thm:mandatory}) and, by a finite
+covering criterion, all realizing target languages
+(Corollary~\ref{ids:si:cor:languages}). The covering problem is solved
+completely only for $m=3$ (Theorem~\ref{ids:si:thm:degree3}).]
 
 \section{A fully explicit fourteen-symbol gap}
 \label{ids:bp:sec:example}
@@ -1835,6 +1855,12 @@ is optimal, but optimality of the target counts in
 targets are needed to erase all intermediate degrees below a surviving degree
 $m$? A lower bound must account for overlaps between the sets of outputs a
 single target makes cheaper.
+[Added 30 September 2026, batch 66: Part~III answers a restricted case. For
+one isolated degree~$m$ in the full-coverage class, at the shortest length for
+$m=3$, the minimum is $|B|=37$ (Theorem~\ref{ids:si:thm:degree3}), and
+Corollary~\ref{ids:si:cor:targetlower} gives a general counting lower bound.
+The question stays open otherwise; Question~\ref{ids:si:q:target} continues
+it.]
 \end{question}
 
 \begin{question}[Small isolated full-coverage witnesses]
@@ -1844,6 +1870,11 @@ $m=3,4,5$. The proved lower bounds are $9,16,25$, while this construction
 gives upper bounds $14,21,27$. Varying the number of gaps, rather than only
 the center within $g=m$ gaps, may matter. No optimality of the small examples
 is asserted here.
+[Added 30 September 2026, batch 66: answered in Part~III. The minima are
+$14$, $21$ and~$27$, the upper bounds above
+(Theorem~\ref{ids:si:thm:length}). More gaps never help: the least length
+with $g$ gaps, \eqref{ids:si:eq:fixedgaplength}, increases strictly
+with~$g$.]
 \end{question}
 
 \begin{question}[Classification at the sharp bound]
@@ -1852,6 +1883,17 @@ For $m\geq6$, classify the pairs attaining $N=m^2$. The lower-bound proof
 forces $g=m$ and $T=m^2-m+1$, but does not force the center shape
 \eqref{ids:bp:eq:optimal-center}. Which vectors permit one isolated degree-$m$
 output? Which target words are mandatory in every realizing language?
+[Added 30 September 2026, batch 66: answered in Part~III, for every
+$m\geq3$, as far as the centers and the mandatory targets go. The centers at
+the least length are exactly the positive $m$-tuples of total $T_m$
+satisfying \eqref{ids:si:eq:extremalcriterion}
+(Theorem~\ref{ids:si:thm:extremal}; for $m=6$ there are $19$ permutation
+orbits, one of them that of \eqref{ids:bp:eq:optimal-center}), and the
+mandatory targets are classified by Theorem~\ref{ids:si:thm:mandatory}. The
+realizing languages are characterized by
+Corollary~\ref{ids:si:cor:languages} but determined completely only for
+$m=3$ (Theorem~\ref{ids:si:thm:degree3}); for $m\geq4$ the least language
+remains open (Question~\ref{ids:si:q:target}).]
 \end{question}
 
 \begin{question}[Optimal packing for many exceptions]
@@ -2029,6 +2071,1623 @@ last paragraph after Corollary~\ref{ids:bp:cor:classification}, and the dated
 pointers in Part~I were added in the merge.
 \end{enumerate}
 
+%% ====================================================================
+%% Batch-66 addition (manuscript 04, "Sharp Isolation Thresholds for
+%% Binary Insertion"). All labels of Part III carry the prefix ids:si:
+%% (insertion-degree spectra, sharp isolation).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part III.\quad Sharp isolation thresholds for binary insertion}
+\addcontentsline{toc}{part}{Part III.\texorpdfstring{\quad}{ } Sharp isolation thresholds for binary insertion}
+
+\noindent\emph{Part~III was added on 30 September 2026 in batch~66 of
+ProveIt's incoming-report intake, from one manuscript written against
+Parts~I and~II as printed above. It answers Part~II's
+Question~\ref{ids:bp:q:small} completely: the minimum lengths of an isolated
+full-coverage witness are $14$, $21$ and $27$ for $m=3,4,5$, the upper bounds
+Part~II gave. It answers Question~\ref{ids:bp:q:classification} for the
+centers and the mandatory targets, for every $m\geq3$, and classifies the
+realizing target languages completely for $m=3$. Parts~I and~II are unchanged
+except for dated pointers to this addition.
+Section~\ref{ids:si:sec:scope} records the provenance and fixes the notation
+of the addition.}
+
+\section{Provenance, conventions and the answer}\label{ids:si:sec:scope}
+
+\subsection{One manuscript, one addition}\label{ids:si:sec:source}
+
+Part~III is batch-66 manuscript~04, \emph{Sharp Isolation Thresholds for
+Binary Insertion: Exact parameter ranges, extremal centers, mandatory
+targets, and a complete degree-three classification}, an AI-assisted research
+manuscript dated 30 September 2026 (21 US-letter pages as delivered). Its title
+page reads ``Research manuscript prepared with ChatGPT for Vladimir
+Reshetnikov'' under the kicker ``ProveIt research continuation''; that
+wording is recorded here as provenance only. It arrived as the archive
+\texttt{ProveIt\_Sharp\_Insertion\_Isolation.zip} (inner directory of the same
+name) in ProveIt commit \texttt{9ad899cbe} and was placed in
+\texttt{4fee1cd07}. It was written against ProveIt commit \texttt{176e31c5c}
+(in full \nolinkurl{176e31c5c7ee369edf51edd815463dc029e3faed}), at which this
+report's \texttt{article.tex} had the Git blob \texttt{7f5a958e} (in full
+\nolinkurl{7f5a958e7ac6d6df902d4efa40cfefa813bb20db}) and its README the blob
+\texttt{bca8c085}. Both blobs are unchanged at the placement commit, so every
+statement the manuscript makes about ``the repository report'' refers to
+Parts~I and~II as printed above. Its ``Theorem~12.3'', ``Section~16'' and
+``Questions 21.1, 21.3, 21.4 and~21.6'' are
+Theorem~\ref{ids:bp:thm:length-main}, Section~\ref{ids:bp:sec:sharp} and
+Questions~\ref{ids:bp:q:singleton}, \ref{ids:bp:q:small},
+\ref{ids:bp:q:classification} and~\ref{ids:bp:q:coverage}, and are cited so
+below. The manuscript records that no repository file was changed in
+preparing it. Its code, data and audit files are shipped beside the files of
+Parts~I and~II with the prefix \nolinkurl{03-sharp-isolation-}; its
+manuscript, delivery README and PDF are not shipped and survive in the arrival
+commit.
+
+The manuscript contributes, in the order printed here: its answer and its
+statement of scope (this section); the gap representation and isolated centers
+(Section~\ref{ids:si:sec:geometry}); the largest admissible target language
+(Section~\ref{ids:si:sec:maximal}); the volume obstruction
+(Section~\ref{ids:si:sec:volume}); a complete criterion for an exceptional
+center (Section~\ref{ids:si:sec:classification}); all feasible parameters and
+the minimum lengths (Section~\ref{ids:si:sec:threshold}); all extremal centers
+and their count (Section~\ref{ids:si:sec:extremal}); the boundary family
+(Section~\ref{ids:si:sec:boundary}); mandatory targets
+(Section~\ref{ids:si:sec:mandatory}); the complete degree-three classification
+(Section~\ref{ids:si:sec:degree3}); residue classes and a counting bound
+(Section~\ref{ids:si:sec:residues}); its executed checks
+(Section~\ref{ids:si:sec:verification}); its proof audit and formalization
+boundary (Section~\ref{ids:si:sec:audit}); ten research questions
+(Section~\ref{ids:si:sec:questions}); and its conclusion
+(Section~\ref{ids:si:sec:conclusion}). Every result, proof, example, remark,
+table, limitation and question of the manuscript is printed. What it repeats
+from Parts~I and~II is printed once and cited
+(Section~\ref{ids:si:sec:imported}). The introductory note above,
+Sections~\ref{ids:si:sec:notation}, \ref{ids:si:sec:imported}
+and~\ref{ids:si:sec:package}, and the dated pointers in Parts~I and~II were
+added in the merge.
+
+\subsection{The question of Part~II}\label{ids:si:sec:question}
+
+Part~II's Theorem~\ref{ids:bp:thm:length-main} proves a lower bound $m^2$ on
+the length of an isolated degree-$m$ output in a full binary
+fixed-letter-count class, and constructs equality for every $m\geq6$.
+Question~\ref{ids:bp:q:small} explicitly leaves open the exact minima for
+$m=3,4,5$: the displayed lower bounds are $9,16,25$, and the available
+constructions have lengths $14,21,27$. Question~\ref{ids:bp:q:classification}
+asks which centers attain the sharp bound and which target words must occur
+in every realizing language.
+
+Part~III answers those questions in a precise sense. It determines all
+feasible centers and all feasible numerical parameters, not only the shortest
+examples. At the shortest length it gives an exact criterion for every center,
+an explicit test for every mandatory target, and a finite covering
+characterization of every realizing target language. For $m=3$ that covering
+problem is solved completely, including the number of languages and their
+exact cardinality distribution. The general minimum number of target words is
+not claimed to be solved.
+
+\subsection{The answer in brief}\label{ids:si:sec:brief}
+
+Fix the inserted word $a^m$ and require its shuffle with a finite binary
+language to fill a whole fixed-letter-count class, with exactly one output of
+insertion degree $m$ and every other output of degree one. Part~III gives a
+necessary and sufficient criterion for an arbitrary exceptional gap vector,
+including a boundary family outside Part~II's strict escape criterion. It then
+determines every feasible parameter triple. Write $g$ for the number of
+$a$-gaps, including the two end gaps, and $T$ for the total number of $a$'s in
+an output. Thus the output contains $g-1$ letters $b$ and has length
+$N=T+g-1$. Define
+\begin{equation}\label{ids:si:eq:tau}
+ \tau_m=\begin{cases}12,&m=3,\\5m-2,&m\geq4.\end{cases}
+\end{equation}
+Sections~\ref{ids:si:sec:threshold}--\ref{ids:si:sec:degree3} prove the
+following statements.
+\begin{quote}
+For $m\geq3$, a full-coverage isolated degree-$m$ realization with parameters
+$(g,T)$ exists exactly when
+\[
+ g\geq m,\qquad T\geq\max\{g(m-1)+1,\tau_m\}.
+\]
+Consequently the shortest possible length is
+\[
+ L_m=\begin{cases}
+ 3,&m=2,\\14,&m=3,\\21,&m=4,\\27,&m=5,\\m^2,&m\geq6.
+ \end{cases}
+\]
+For $m=3$ and $N=L_3$, there are exactly $19\,683$ target languages.
+Their minimum size is $37$, attained by exactly $512$ languages.
+\end{quote}
+This settles the three small cases that Part~II explicitly left open, while
+recovering its large-$m$ bound. Part~III also classifies all extremal centers,
+counts them by a finite binomial formula, and characterizes every mandatory
+target. At degree three, all shortest realizations reduce to 28 mandatory
+targets and nine disjoint two-element choices: there are $3^9$ languages, of
+which $2^9$ have minimum size 37. The proofs are self-contained apart from
+what is printed once in Part~II; exact finite checks and reproducible code
+accompany them.
+
+\subsection{Why a new criterion is needed}\label{ids:si:sec:why}
+Part~II's construction protects an exceptional vector $\mathbf v$ by
+discarding all targets below it except a selected special target. A
+sufficient escape condition then makes every other output obtainable in one
+piece. A sufficient condition alone cannot rule out shorter examples built
+from other centers, other target languages, or more gaps. The decisive step
+here is to replace that sufficient condition by a necessary and sufficient
+one.
+
+There are two simplifications. First, there is a unique largest set of
+admissible targets preserving the exceptional degree. Any realization can be
+enlarged to that set. Second, a nonexceptional output with at least two
+eligible deletion coordinates always has a safe predecessor. The entire
+obstruction therefore lies in outputs with exactly one eligible coordinate.
+Their deficits are governed by coordinatewise lower bounds, which can be
+analyzed exactly.
+
+\subsection{Attribution and limits}\label{ids:si:sec:attribution}
+The insertion convention follows Hughes \cite[Sections~2 and~11]{Hughes2026},
+as in Parts~I and~II. His unary-source singleton interval theorem concerns one
+target word; allowing a target language introduces a minimization over
+different targets. The present argument does not resolve his conjecture for
+two arbitrary singleton words. The gap representation and the volume lower
+bound of Part~II are restated below for completeness and explicitly credited
+to Part~II. The new content is the exact obstruction analysis and its
+consequences, not the elementary observation that words can be represented by
+their run lengths.
+
+The source search was targeted: the cited primary preprint, the pinned report
+and its questions, and searches on 30 September 2026 for the relevant
+insertion-degree terminology. No source found in that bounded check supplied
+the classification proved here. This is not an exhaustive priority search.
+
+\subsection{Status of the claims}\label{ids:si:sec:status}
+
+\noindent\textbf{Status (manuscript 04).} These are written mathematical
+proofs in an unrefereed research manuscript, not Lean- or Rocq-certified
+theorems. The novelty claim is a specified advance over Part~II as pinned, not
+a guarantee of historical priority. Full coverage, a unary inserted word, and
+a unique exception of maximum degree are essential hypotheses. Part~III does
+not solve the unrestricted both-singleton conjecture, the general minimum
+target cardinality, or the shortest-witness problem without full coverage; its
+minimum target size $37$ is proved at the shortest degree-three output length
+only. Nothing in Part~III, as in Parts~I and~II, is formalized in any proof
+assistant, and no theorem inherits formal status from the Lean and Rocq
+developments beside which this collection sits. The finite computations of
+Section~\ref{ids:si:sec:verification} are exact checks of stated ranges,
+and samples where so labelled, not substitutes for the proofs.
+
+\subsection{Notation of Part~III}\label{ids:si:sec:notation}
+
+The symbols of Parts~I and~II keep their meanings. The manuscript's insertion,
+shuffle, degree and spectrum agree with Part~I's, orientation included, and
+its gap vectors, fixed-letter-count classes and target sets with Part~II's;
+Part~III uses Part~II's symbols for them. Where a symbol of the manuscript
+clashes with one of Parts~I or~II, Part~III renames it;
+Table~\ref{ids:si:tab:notation} lists the new symbols, the renamings, and the
+tempting false readings. No normalization was changed. Equations of Part~III
+continue the report's single equation sequence, and theorem-like items and
+tables are numbered as in the rest of the report, so every number differs from
+the delivered PDF.
+
+\begin{table}[htbp]
+\centering\small\renewcommand{\arraystretch}{1.15}
+\caption{Symbols of Part~III. ``Renamed'' gives the manuscript's own symbol.
+The last column prints the tempting false reading.}
+\label{ids:si:tab:notation}
+\begin{tabular}{>{\raggedright}p{.21\linewidth}>{\raggedright}p{.39\linewidth}>{\raggedright\arraybackslash}p{.32\linewidth}}
+\toprule
+Symbol & Meaning in Part~III & Not to be confused with\\
+\midrule
+$\ins{k}{A}{B}$ (renamed from $I_k(A,B)$) & Part~I's $k$-insertion
+ \eqref{eq:insertion} & ---\\
+$\bpC{T}{g}$, $\bpW{T}{g}$, $\bpgap{\mathbf c}$ (renamed from
+ $\mathcal C(T,g)$, $\mathcal W(T,g)$, $\omega(\mathbf c)$) & Part~II's
+ weak compositions, binary fixed-letter-count class and gap-vector word
+ & Part~I's typewriter words $\word{w}$\\
+$\bpE$, $B_{\bpE}$, $d_{\bpE}(\mathbf c)$ (renamed from $E$, $B_E$,
+ $d_E$) & a set of target gap vectors (as in Part~II), its target language,
+ and the degree of $\bpgap{\mathbf c}$ against it & Part~I's $E$, the bad
+ adjacent pairs of \eqref{eq:regex}\\
+eligible; $P_m(\mathbf c)$ & $c_j\geq m$; the one-piece predecessors
+ \eqref{ids:si:eq:pred} & Part~I's grammar nonterminals $P_j$; the pairs
+ $\mathcal P_i$ of Section~\ref{ids:si:sec:degree3}\\
+$P^{\mathrm{adm}}_m(\mathbf c)$ (renamed from $Q(\mathbf c)$) & the
+ admissible predecessors of Section~\ref{ids:si:sec:mandatory} & $Q=|\Sigma|$
+ and $Q_{w,k}$ of Part~I\\
+$\Adm{\mathbf v}$, $\bpSpecial{\mathbf v}$ & admissible and special targets,
+ \eqref{ids:si:eq:special}--\eqref{ids:si:eq:admissible} & the spectrum
+ $\spec{A}{B}$; the inserted language $A$\\
+$h_i$, $H$ & excess heights and their sum, \eqref{ids:si:eq:heights} &
+ Part~II's counts $h_{m,g,r}$ and polynomial $H_m(z)$\\
+$\hat h$ (renamed from $M$) & the maximum height & Part~I's $M$ in its search
+ encoding; Part~II's $\mu$; the mandatory set $\mathcal M$\\
+$\rho_j$ (renamed from $H_j$) & $H-h_j$: \emph{the same quantity} as Part~II's
+ escape sum $\rho_j(\mathbf v)$ & ---\\
+$\tau_m$, $T_{m,g}$, $T_m$ & the mass threshold \eqref{ids:si:eq:tau}, the
+ least feasible total with $g$ gaps \eqref{ids:si:eq:triples}, the total at
+ the shortest length \eqref{ids:si:eq:Tstar} & the letter count $T$\\
+$L_m$, $L_{m,g}$ & minimum output lengths & a language\\
+$e_m$ & number of ordered extremal centers \eqref{ids:si:eq:center-count} &
+ the unit vectors $\mathbf e_j$\\
+$\operatorname{Comp}(n,r,b)$ (renamed from $C(n,r,b)$) & bounded positive
+ compositions \eqref{ids:si:eq:boundedcomp} & $\bpC{T}{g}$\\
+$\operatorname{Hi}(\boldsymbol\beta)$ (renamed from $K(\boldsymbol\beta)$) &
+ the high coordinates $\{i:\beta_i\geq m\}$ of a target & Part~I's degree
+ bound $K$; Part~II's $\kappa_m$\\
+$\nu$ (renamed from $K$) & quotient total of a residue class,
+ Proposition~\ref{ids:si:prop:residues} & ---\\
+$k$ & number of high coordinates (Lemma~\ref{ids:si:lem:mass}) & the
+ insertion bound $k$ of $\ins{k}{A}{B}$\\
+$\mathcal A$, $\mathcal M$, $\mathcal P_1,\ldots,\mathcal P_9$ & at $m=3$:
+ $\Adm{\mathbf v}$ for $\mathbf v=(4,4,4)$, the mandatory targets, the nine
+ pairs & the inserted
+ language $A$; $P_m(\mathbf c)$\\
+$L_m=m^2$ ($m\geq6$) & minimum length in the full-coverage class & \emph{not}
+ a lower bound for every word of degree $m$: that bound is $2m-1$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Material printed once}\label{ids:si:sec:imported}
+
+The manuscript restates, for completeness, several things already printed in
+Parts~I and~II. The definitions of insertion, shuffle and degree are Part~I's
+(Section~\ref{sec:definitions}); they are recalled in
+Section~\ref{ids:si:sec:geometry} with the manuscript's indexing. Its gap-degree
+lemma (Lemma~\ref{ids:si:lem:gap}) is Part~II's
+Lemma~\ref{ids:bp:lem:gap} with Corollary~\ref{ids:bp:cor:gap-language}; its
+statement is kept and its proof, the same argument, is printed once, in
+Part~II. Its volume bound (Proposition~\ref{ids:si:prop:volume}) is Part~II's
+Proposition~\ref{ids:bp:prop:lower} plus a support bound; the manuscript's
+proof is kept because it reaches $g\geq m$ by a different route. Its minimum
+length $m^2$ for $m\geq6$ is Part~II's Theorem~\ref{ids:bp:thm:length-main},
+as the manuscript says. The maximal degree-three target set
+\eqref{ids:si:eq:A3} is the target set of Part~II's worked example
+\eqref{ids:bp:eq:worked}, and Part~II's optimal center
+\eqref{ids:bp:eq:optimal-center} is one of the extremal centers classified in
+Theorem~\ref{ids:si:thm:extremal}. The manuscript's bibliography entry for
+the pinned report is replaced by these internal references, and its entry for
+Hughes's preprint by Part~I's (the same version, v1).
+
+\section{Insertion and finite gap geometry}\label{ids:si:sec:geometry}
+
+\subsection{Conventions}
+For languages $A,B$ over a finite alphabet and $k\geq1$, recall Part~I's
+definition \eqref{eq:insertion}, here with the target factors indexed
+from~$1$:
+\begin{equation}\label{ids:si:eq:insertion}
+ \ins{k}{A}{B}=\{x_1y_1x_2y_2\cdots x_ky_kx_{k+1}:
+ y_1\cdots y_k\in A,\ x_1\cdots x_{k+1}\in B\}.
+\end{equation}
+Empty factors are allowed. The inserted source is $A$, not $B$.
+The shuffle $A\sh B$ is the union of these sets. For a shuffle output
+$w$, its insertion degree $d_{A,B}(w)$ is the least $k$ for which
+$w\in\ins{k}{A}{B}$. Equivalently, it is the minimum number of runs of
+inserted-source positions among all masks producing $w$
+(Lemma~\ref{lem:runs}).
+
+Throughout the principal theorems, $A=\{a^m\}$, the alphabet is exactly
+$\{a,b\}$, and $m\geq3$. The small case $m=2$ is treated separately.
+For $T\geq0$ and $g\geq1$, let, as in Part~II
+(Section~\ref{ids:bp:sec:main}),
+\[
+ \bpC{T}{g}=\{(c_1,\ldots,c_g)\in\Nzero^g:\textstyle\sum_i c_i=T\}.
+\]
+The word associated to $\mathbf c\in\bpC{T}{g}$ is
+\begin{equation}\label{ids:si:eq:word}
+ \bpgap{\mathbf c}=a^{c_1}ba^{c_2}b\cdots ba^{c_g}.
+\end{equation}
+This includes zero-length gaps and therefore consecutive $b$'s and words
+beginning or ending with $b$. The correspondence is a bijection onto the
+fixed-letter-count class
+$\bpW{T}{g}$, which has cardinality $\binom{T+g-1}{g-1}$.
+A target language of the required counts has the form
+\[
+ B_{\bpE}=\{\bpgap{\boldsymbol\beta}:\boldsymbol\beta\in \bpE\},\qquad \bpE\subseteq\bpC{T-m}{g}.
+\]
+This restriction on target counts is forced by full coverage with no extra
+outputs: inserting $a^m$ adds exactly $m$ copies of $a$ and leaves the number
+of $b$'s unchanged. Coordinatewise comparison is denoted by $\boldsymbol\beta\leq\mathbf c$.
+We abbreviate $d_{\bpE}(\mathbf c)=d_{\{a^m\},B_{\bpE}}(\bpgap{\mathbf c})$.
+
+\begin{lemma}[Gap degree; Part~II background]\label{ids:si:lem:gap}
+For a fixed target $\boldsymbol\beta$, an output $\mathbf c$ is obtainable by inserting
+$a^m$ exactly when $\boldsymbol\beta\leq\mathbf c$ and $\sum_i(c_i-\beta_i)=m$.
+When these conditions hold,
+\begin{equation}\label{ids:si:eq:gapdegree}
+ d_{\{a^m\},\{\bpgap{\boldsymbol\beta}\}}(\bpgap{\mathbf c})
+   =|\supp(\mathbf c-\boldsymbol\beta)|.
+\end{equation}
+Thus, for a target set $\bpE$,
+\begin{equation}\label{ids:si:eq:mindegree}
+ d_{\bpE}(\mathbf c)=\min_{\substack{\boldsymbol\beta\in \bpE\\\boldsymbol\beta\leq\mathbf c}}
+             |\supp(\mathbf c-\boldsymbol\beta)|,
+\end{equation}
+where an empty minimum means that $\bpgap{\mathbf c}$ is not a shuffle output.
+\end{lemma}
+\begin{proof}
+This is Lemma~\ref{ids:bp:lem:gap} with
+Corollary~\ref{ids:bp:cor:gap-language}, whose proofs are printed once, in
+Part~II. The manuscript reproves them by the same argument: all $b$'s come
+from the target, a $b$ separates each receiving gap from every other, and
+putting the new letters of each receiving gap consecutively attains the
+bound. Like Part~II's proof, it concerns the minimum over masks, not
+uniqueness of a position mask.
+\end{proof}
+
+A coordinate $j$ of $\mathbf c$ is \emph{eligible} when $c_j\geq m$.
+Its one-piece predecessor is $\mathbf c-m\mathbf e_j$. Define
+\begin{equation}\label{ids:si:eq:pred}
+ P_m(\mathbf c)=\{\mathbf c-m\mathbf e_j:c_j\geq m\}.
+\end{equation}
+By Lemma~\ref{ids:si:lem:gap}, $d_{\bpE}(\mathbf c)=1$ exactly when
+$P_m(\mathbf c)\cap \bpE$ is nonempty; this is Part~II's
+criterion~\eqref{ids:bp:eq:one-run}.
+
+\begin{definition}[Isolated maximum-degree center]\label{ids:si:def:center}
+A vector $\mathbf v\in\bpC{T}{g}$ is \emph{feasible at inserted length $m$}
+when some $\bpE\subseteq\bpC{T-m}{g}$ satisfies
+\begin{equation}\label{ids:si:eq:isolation}
+ \{a^m\}\sh B_{\bpE}=\bpW{T}{g},\qquad
+ d_{\bpE}(\mathbf v)=m,\qquad d_{\bpE}(\mathbf c)=1\quad(\mathbf c\ne\mathbf v).
+\end{equation}
+Such an $\bpE$ is a realizing target set. The word $\bpgap{\mathbf v}$ is the
+unique exceptional output.
+\end{definition}
+The requirement is stronger than having spectrum $\{1,m\}$: it includes
+full coverage and multiplicity one for the high degree. Those two
+requirements are used in the lower bounds.
+
+\section{The largest admissible target language}\label{ids:si:sec:maximal}
+
+\begin{definition}[Admissible and special targets]
+For $\mathbf v\in\bpC{T}{g}$, set
+\begin{align}
+ \bpSpecial{\mathbf v}&=\{\mathbf v-\mathbf 1_S:S\subseteq\supp(\mathbf v),\ |S|=m\},\label{ids:si:eq:special}\\
+ \Adm{\mathbf v}&=\{\boldsymbol\beta\in\bpC{T-m}{g}:\boldsymbol\beta\not\leq\mathbf v\}
+               \ \cup\ \bpSpecial{\mathbf v}.\label{ids:si:eq:admissible}
+\end{align}
+Here $\mathbf 1_S$ is the $0$--$1$ indicator vector of $S$.
+Targets in the first set of \eqref{ids:si:eq:admissible} are called safe.
+\end{definition}
+
+\begin{lemma}[Maximal admissible language]\label{ids:si:lem:maximal}
+Suppose $\mathbf v$ is feasible. Then $|\supp(\mathbf v)|\geq m$, every realizing set
+$\bpE$ is contained in $\Adm{\mathbf v}$, and $\bpE\cap\bpSpecial{\mathbf v}\ne\varnothing$.
+Conversely, if the special set is nonempty, then $\Adm{\mathbf v}$ gives degree
+$m$ to $\mathbf v$. Consequently $\mathbf v$ is feasible if and only if
+\begin{equation}\label{ids:si:eq:canonicalcoverage}
+ |\supp(\mathbf v)|\geq m\quad\hbox{and}\quad
+ P_m(\mathbf c)\cap\Adm{\mathbf v}\ne\varnothing
+       \quad\text{for every }\mathbf c\in\bpC{T}{g}\setminus\{\mathbf v\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $\boldsymbol\beta\leq\mathbf v$ is a realizing target, the deficit $\mathbf v-\boldsymbol\beta$ has total
+$m$. It has support $m$ precisely when its $m$ positive coordinates are all
+one. Any other deficit has support less than $m$ and would lower the
+exceptional degree. Thus every accepted target below $\mathbf v$ must be special,
+and at least one must exist. All targets not below $\mathbf v$ are harmless to
+its degree. This proves the containment, and also shows that enlarging a
+realization to $\Adm{\mathbf v}$ preserves the exceptional degree while retaining
+every one-piece representation. The reverse implication follows directly
+from Lemma~\ref{ids:si:lem:gap}.
+\end{proof}
+
+\begin{corollary}[Exact characterization of realizing languages]
+\label{ids:si:cor:languages}
+For any feasible center, a target set $\bpE$ realizes it exactly when
+\begin{equation}\label{ids:si:eq:alllanguages}
+ \bpE\subseteq\Adm{\mathbf v},\qquad \bpE\cap\bpSpecial{\mathbf v}\ne\varnothing,
+ \qquad \bpE\cap P_m(\mathbf c)\ne\varnothing\quad(\mathbf c\ne\mathbf v).
+\end{equation}
+In particular, when $g=m$, every coordinate of a feasible center is positive
+and its unique special target is
+\begin{equation}\label{ids:si:eq:unique-special}
+ \boldsymbol\beta_* = \mathbf v-\mathbf 1.
+\end{equation}
+\end{corollary}
+This reduction loses no target languages: it is not an assumption that a
+realization has the particular safe-plus-one form used in Part~II's
+construction (Theorem~\ref{ids:bp:thm:geometric}). It also makes explicit why enlarging the language is useful
+for existence but not for minimizing its cardinality.
+
+\section{The unavoidable volume obstruction}\label{ids:si:sec:volume}
+
+The next proposition is the lower-bound argument of Part~II
+(Section~\ref{ids:bp:sec:sharp}: Lemma~\ref{ids:bp:lem:capped} and
+Proposition~\ref{ids:bp:prop:lower}), included with its boundary case because
+the strict inequality is needed later. Its bounds on $g$, $T$ and $N$ are
+Proposition~\ref{ids:bp:prop:lower}; the support bound is added here.
+
+\begin{proposition}[Support and volume bounds]\label{ids:si:prop:volume}
+If $m\geq3$ and $\mathbf v\in\bpC{T}{g}$ is feasible, then
+\begin{equation}\label{ids:si:eq:volume}
+ g\geq m,\qquad |\supp(\mathbf v)|\geq m,\qquad T>g(m-1).
+\end{equation}
+In particular $N=T+g-1\geq gm\geq m^2$.
+\end{proposition}
+The manuscript's proof follows Part~II's proof of
+Proposition~\ref{ids:bp:prop:lower}, but obtains $g\geq m$ from the support
+bound; it is kept as a second route.
+\begin{proof}[Second proof (manuscript~04)]
+The support assertion follows from Lemma~\ref{ids:si:lem:maximal}; it implies $g\geq m$
+and $T\geq m$. A vector whose coordinates are all at most $m-1$ has no
+one-piece predecessor, so full coverage makes it an exceptional output.
+If $0<T<g(m-1)$, there are at least two such vectors. For example, fill
+coordinates successively to $m-1$ and then use any remainder. At an interior
+total the resulting vector is not constant, so a permutation gives a
+second vector of the same total. This contradicts uniqueness.
+
+If $T=g(m-1)$, the capped vector is uniquely
+$\mathbf v_*=(m-1,\ldots,m-1)$, so it must be the exceptional center. Its neighbor
+\[
+ \mathbf c=(m,m-2,m-1,\ldots,m-1)
+\]
+is distinct and has only its first coordinate eligible. Its unique
+one-piece predecessor
+\[
+ \boldsymbol\beta=(0,m-2,m-1,\ldots,m-1)
+\]
+must therefore be accepted. But $\mathbf v_*-\boldsymbol\beta=(m-1,1,0,\ldots,0)$ has support
+$2<m$, a contradiction. Hence the total must be strictly greater than the
+cap, proving \eqref{ids:si:eq:volume} and the length inequalities.
+\end{proof}
+
+The same neighbor has support two when $m=2$, so it does not contradict a
+degree-two exception. This explains, rather than hides, the restriction
+$m\geq3$ in the principal classification.
+
+\section{A complete criterion for an exceptional center}\label{ids:si:sec:classification}
+
+\subsection{Statement}
+For a vector $\mathbf v$ define its excess heights above the ineligible cap by
+\begin{equation}\label{ids:si:eq:heights}
+ h_i=\bppos{v_i-m+1},\qquad H=\sum_i h_i,\qquad \hat h=\max_i h_i,
+ \qquad \rho_j=H-h_j.
+\end{equation}
+A coordinate is called high if $h_i>0$, equivalently $v_i\geq m$.
+The sum $\rho_j=\sum_{i\ne j}h_i$ is Part~II's escape sum
+$\rho_j(\mathbf v)$ of \eqref{ids:bp:eq:escape-hypotheses}; the manuscript
+writes it $H_j$, and its maximum height $\hat h$ is the manuscript's $M$.
+
+\begin{theorem}[Complete center classification]\label{ids:si:thm:classification}
+Let $m\geq3$, $g\geq1$, and $\mathbf v\in\bpC{T}{g}$. Then $\mathbf v$ is feasible
+if and only if $|\supp(\mathbf v)|\geq m$, $T>g(m-1)$, and one of the following
+mutually exclusive conditions holds:
+\begin{align}
+ &H-\hat h\geq m+1; &&\text{the strict case,}\label{ids:si:eq:strict}\\
+ &H-\hat h=m\text{ and, after removing one maximum }h_j=\hat h,
+       \text{ all remaining }h_i\leq1;
+       &&\text{the boundary case.}\label{ids:si:eq:boundary}
+\end{align}
+In the boundary case the positive height multiset is exactly
+\begin{equation}\label{ids:si:eq:boundarymultiset}
+ \{\hat h,\underbrace{1,\ldots,1}_{m\text{ copies}}\},\qquad \hat h\geq1.
+\end{equation}
+Equivalently, in place of \eqref{ids:si:eq:strict}--\eqref{ids:si:eq:boundary}, one may
+require for every coordinate $j$ that
+\begin{equation}\label{ids:si:eq:localcriterion}
+ \rho_j>m\quad\hbox{or}\quad
+ \bigl(\rho_j=m\text{ and }h_i\leq1\text{ for every }i\ne j\bigr).
+\end{equation}
+Whenever the criterion holds, the maximal target set $\Adm{\mathbf v}$ realizes
+$\mathbf v$.
+\end{theorem}
+Part~II's escape lemma (Lemma~\ref{ids:bp:lem:escape}, whose hypothesis
+$\rho_j(\mathbf v)>m$ for all $j$ says $H-\hat h\geq m+1$) gives the strict
+case as a sufficient condition.
+The necessity statement, the exact boundary alternative, and the reduction
+to arbitrary target languages are the additional content here.
+
+\subsection{Reduction to a unique eligible coordinate}
+\begin{lemma}[At most one unsafe predecessor]\label{ids:si:lem:onebad}
+For $\mathbf c\ne\mathbf v$ of the same total, at most one member of $P_m(\mathbf c)$ is
+coordinatewise below $\mathbf v$. In particular, if $\mathbf c$ has at least two
+eligible coordinates, it has a safe one-piece predecessor.
+\end{lemma}
+\begin{proof}
+Because $\mathbf c$ and $\mathbf v$ have equal totals and are distinct, some coordinate
+$i$ satisfies $c_i>v_i$. If $\mathbf c-m\mathbf e_j\leq\mathbf v$, every excess coordinate
+must equal $j$, since all other coordinates are unchanged. Thus two distinct
+deletion coordinates cannot both yield predecessors below $\mathbf v$. For the
+last statement, choose an eligible coordinate different from an excess
+coordinate. The excess survives that deletion.
+\end{proof}
+
+The volume inequality supplies at least one eligible coordinate for every
+output. The only possible failure is therefore a vector $\mathbf c\ne\mathbf v$ with
+one eligible coordinate $j$, whose sole predecessor $\boldsymbol\beta$ is forbidden.
+Writing $\boldsymbol\delta=\mathbf v-\boldsymbol\beta$, this failure has the exact description
+\begin{equation}\label{ids:si:eq:deficitpolytope}
+ \begin{gathered}
+ 0\leq\boldsymbol\delta\leq\mathbf v,\qquad \sum_i\delta_i=m,\qquad
+ \delta_i\geq h_i\quad(i\ne j),\\
+ \boldsymbol\delta\ne m\mathbf e_j,\qquad \boldsymbol\delta\notin\{0,1\}^g.
+ \end{gathered}
+\end{equation}
+Indeed, $\mathbf c=\mathbf v-\boldsymbol\delta+m\mathbf e_j$, its non-$j$ coordinates are below $m$
+exactly when the displayed lower bounds hold, and $\mathbf c\ne\mathbf v$ exactly
+when $\boldsymbol\delta\ne m\mathbf e_j$. The final condition says that the predecessor is
+not special. Conversely, any deficit satisfying
+\eqref{ids:si:eq:deficitpolytope} constructs a nonexceptional output with a unique
+forbidden predecessor. Thus it is an explicit impossibility certificate.
+
+\subsection{Necessity of the local inequalities}
+\begin{lemma}[At least two high coordinates]\label{ids:si:lem:twohigh}
+A feasible center for $m\geq3$ has at least two high coordinates.
+\end{lemma}
+\begin{proof}
+There is at least one by the volume bound. If $j$ were the only one, choose
+a different positive coordinate $i$, which exists because the support has
+size at least $m$. Set $\boldsymbol\delta=(m-1)\mathbf e_j+\mathbf e_i$. It is bounded by $\mathbf v$,
+has total $m$, and is not binary. Every non-$j$ coordinate of $\mathbf v$ is at
+most $m-1$, so \eqref{ids:si:eq:deficitpolytope} holds. This contradicts feasibility.
+\end{proof}
+
+\begin{lemma}[Exact unique-predecessor obstruction]\label{ids:si:lem:local}
+Assume $m\geq3$, $T>g(m-1)$, support size at least $m$, and at least two
+high coordinates. There is no obstruction \eqref{ids:si:eq:deficitpolytope} at
+coordinate $j$ exactly when the local condition
+\eqref{ids:si:eq:localcriterion} holds at $j$.
+\end{lemma}
+\begin{proof}
+At least one high coordinate lies outside $j$. Thus every deficit satisfying
+the outside lower bounds has a positive outside entry and cannot equal
+$m\mathbf e_j$.
+
+If $\rho_j>m$, the lower bounds alone exceed the required deficit total, so no
+such deficit exists. If $\rho_j=m$, the only possible deficit has
+$\delta_j=0$ and $\delta_i=h_i$ for $i\ne j$. It is binary exactly when
+all those outside heights are at most one. This proves the assertion at
+and above the boundary.
+
+Suppose $\rho_j<m$. Begin with the vector having outside entries $h_i$ and
+entry zero at $j$. If an outside height is at least two, the initial vector
+already has a nonbinary entry. Otherwise choose an outside high coordinate
+$i$; its height is one and its capacity $v_i$ is at least $m\geq3$.
+Increase that entry from one to two. In both cases the current sum is at
+most $m$, all entries are within their capacities, the outside lower bounds
+hold, and a nonbinary entry has been created. Complete the vector to total
+$m$ by adding units without exceeding $\mathbf v$. This is possible because the
+sum of all capacities is $T\geq m$: whenever the current sum is below $m$,
+not all capacities have been filled. The nonbinary entry remains, and
+\eqref{ids:si:eq:deficitpolytope} follows. Thus $\rho_j<m$ always creates an obstruction.
+\end{proof}
+
+\subsection{Proof of the classification theorem}
+\begin{proof}[Proof of Theorem~\ref{ids:si:thm:classification}]
+Necessity of the support and volume bounds is Proposition~\ref{ids:si:prop:volume}.
+Necessity of at least two high coordinates is Lemma~\ref{ids:si:lem:twohigh}.
+Using Lemmas~\ref{ids:si:lem:maximal}, \ref{ids:si:lem:onebad} and~\ref{ids:si:lem:local}, feasibility is now equivalent
+to the local inequalities \eqref{ids:si:eq:localcriterion}.
+
+Their minimum left side is $H-\hat h$. If $H-\hat h>m$, every local inequality is
+strict. If $H-\hat h<m$, the inequality fails at a maximum coordinate. If
+$H-\hat h=m$, applying the local condition at a maximum coordinate forces every
+outside height to be zero or one, with exactly $m$ ones. Conversely, suppose
+that pattern holds. For a coordinate of height less than $\hat h$, its outside
+sum is strictly greater than $m$. At any maximum coordinate the outside
+heights are all at most one: if $\hat h>1$ the maximum is unique, and if $\hat h=1$
+every positive height is one. Thus the local inequalities hold everywhere.
+
+For sufficiency, the two alternatives themselves supply at least two high
+coordinates. Each nonexceptional output has an eligible coordinate by the
+volume bound. If it has at least two, Lemma~\ref{ids:si:lem:onebad} supplies a safe
+predecessor. If it has only one and that predecessor lies below $\mathbf v$, the
+local condition forces a binary deficit, so that predecessor is special
+and admissible. The special set is nonempty by the support assumption.
+Therefore Lemma~\ref{ids:si:lem:maximal} proves that $\Adm{\mathbf v}$ realizes the center.
+\end{proof}
+
+\subsection{An effective criterion and negative certificates}
+Computing the support size, $T$, $H$, $\hat h$, and the condition outside a
+maximum takes $O(g)$ arithmetic operations and comparisons. This is an
+operation count on integer inputs, not an assertion of constant bit cost
+for arbitrary-size integers. It avoids enumerating
+$\binom{T+g-1}{g-1}$ outputs or all target languages.
+
+If the support or volume test fails, the proof gives a support obstruction
+or two capped outputs, with the explicit boundary neighbor at equality.
+If those tests pass but the height test fails, the proof of
+Lemma~\ref{ids:si:lem:twohigh} or Lemma~\ref{ids:si:lem:local} constructs a deficit and hence an
+output with a unique forbidden predecessor. A checker can validate that
+negative certificate by additions, inequalities, and support counting.
+The accompanying code includes both the linear classifier and independent
+finite obstruction enumerators.
+
+\section{All feasible numerical parameters}\label{ids:si:sec:threshold}
+
+\subsection{A total-mass obstruction beyond the volume bound}
+The volume bound grows with $g$, but does not explain the three small
+exceptions to $m^2$. A second lower bound comes from the number of high
+coordinates and the excess mass they must carry.
+
+\begin{lemma}[Minimum total mass]\label{ids:si:lem:mass}
+Every feasible center at inserted length $m\geq3$ satisfies
+\begin{equation}\label{ids:si:eq:mass}
+ T\geq\tau_m,
+\end{equation}
+with $\tau_m$ as in \eqref{ids:si:eq:tau}.
+\end{lemma}
+\begin{proof}
+Consider first the boundary case. Its $m+1$ positive heights require at
+least $m+1$ coordinates of $\mathbf v$ to be at least $m$. Hence
+$T\geq m(m+1)$. For $m=3$ this equals $\tau_3=12$; for $m\geq4$ it is
+strictly greater than $5m-2$, since
+$m(m+1)-(5m-2)=(m-2)^2-2>0$.
+
+In the strict case let $k$ be the number of high coordinates. Then $k\geq2$,
+$H-\hat h\geq m+1$, and $H\leq k\hat h$. Therefore
+\begin{equation}\label{ids:si:eq:Hbound}
+ \hat h\geq\left\lceil\frac{m+1}{k-1}\right\rceil,\qquad
+ H\geq m+1+\left\lceil\frac{m+1}{k-1}\right\rceil.
+\end{equation}
+The high coordinates contribute $k(m-1)+H$ to $T$. If $k<m$, at least
+$m-k$ additional coordinates must be positive to provide support size $m$.
+Thus
+\begin{equation}\label{ids:si:eq:Tboundk}
+ T\geq k(m-1)+H+(m-k)_+.
+\end{equation}
+If $k>m$, the simpler estimate $T\geq km\geq m(m+1)$ suffices.
+For $2\leq k\leq m$, combine \eqref{ids:si:eq:Hbound} and \eqref{ids:si:eq:Tboundk} to get
+\begin{equation}\label{ids:si:eq:fk}
+ T\geq 2m+1+f_m(k),\qquad
+ f_m(k)=k(m-2)+\left\lceil\frac{m+1}{k-1}\right\rceil.
+\end{equation}
+When $m=3$, the possibilities are $f_3(2)=6$ and $f_3(3)=5$, giving
+$T\geq12$. For $m\geq4$, $f_m(2)=3m-3$. At $k=3$,
+\[
+ f_m(3)=3m-6+\left\lceil\frac{m+1}{2}\right\rceil\geq3m-3,
+\]
+with equality exactly for $m=4,5$. For $4\leq k\leq m$ the ceiling is at
+least two, and therefore
+\[
+ f_m(k)\geq4(m-2)+2=4m-6>3m-3.
+\]
+Consequently $T\geq2m+1+3m-3=5m-2$ for $m\geq4$.
+\end{proof}
+
+\subsection{Sharp threshold with a prescribed number of gaps}
+\begin{theorem}[Exact parameter triples]\label{ids:si:thm:triples}
+Let $m\geq3$, $g\geq1$, and $T\geq0$. There is a feasible center in
+$\bpC{T}{g}$ if and only if
+\begin{equation}\label{ids:si:eq:triples}
+ g\geq m,\qquad T\geq T_{m,g}:=\max\{g(m-1)+1,\tau_m\}.
+\end{equation}
+For every permitted triple there is an explicit realization with exactly
+$m$ positive center coordinates and hence a unique special target.
+\end{theorem}
+\begin{proof}
+Necessity is Proposition~\ref{ids:si:prop:volume} and Lemma~\ref{ids:si:lem:mass}. For sufficiency start with a vector
+having $g$ coordinates:
+\begin{equation}\label{ids:si:eq:basecenters}
+ \mathbf v^{(0)}=\begin{cases}
+ (4,4,4,0,\ldots,0),&m=3,\\
+ (2m,2m,\underbrace{1,\ldots,1}_{m-2},0,\ldots,0),&m\geq4.
+ \end{cases}
+\end{equation}
+Its total is $\tau_m$ and its support size is $m$. For $m=3$ the positive
+heights are $(2,2,2)$, so $H-\hat h=4=m+1$. For $m\geq4$ they are
+$(m+1,m+1)$, again with $H-\hat h=m+1$.
+Add $T-\tau_m\geq0$ to the first coordinate. That coordinate was already
+one of the maxima, so its height and the total height increase by the
+same amount; $H-\hat h$ stays $m+1$. The support remains $m$, and the requested
+bound on $T$ makes the volume inequality strict. The strict branch of
+Theorem~\ref{ids:si:thm:classification} applies. Use the target language
+$\Adm{\mathbf v}$, whose only special target subtracts one at each positive
+coordinate of $\mathbf v$.
+\end{proof}
+
+For fixed $m$ and $g\geq m$, the shortest output length is therefore
+\begin{equation}\label{ids:si:eq:fixedgaplength}
+ L_{m,g}=T_{m,g}+g-1=\max\{gm,\tau_m+g-1\}.
+\end{equation}
+This formula resolves the possibility, raised in
+Question~\ref{ids:bp:q:small},
+that increasing the number of gaps might shorten a small witness. Both
+terms are strictly increasing in $g$, so it cannot.
+
+\begin{theorem}[Exact minimum length]\label{ids:si:thm:length}
+Among all full-coverage isolated degree-$m$ realizations with inserted word
+$a^m$, the minimum output length is
+\begin{equation}\label{ids:si:eq:length}
+ L_m=\begin{cases}
+ 3,&m=2,\\
+ 14,&m=3,\\
+ 21,&m=4,\\
+ 27,&m=5,\\
+ m^2,&m\geq6.
+ \end{cases}
+\end{equation}
+For every $m\geq3$, a shortest realization necessarily has $g=m$.
+\end{theorem}
+\begin{proof}
+For $m\geq3$, minimize \eqref{ids:si:eq:fixedgaplength} over $g\geq m$. Strict
+monotonicity forces $g=m$, giving
+\[
+ L_m=\max\{m^2,\tau_m+m-1\}.
+\]
+The displayed small values follow directly. For $m\geq6$, the second term
+is $6m-3$, and $m^2\geq6m-3$ because $m^2-6m+3$ is positive at $m=6$
+and increases thereafter. The construction in Theorem~\ref{ids:si:thm:triples} attains
+these values.
+
+For $m=2$, any degree-two mask needs two inserted letters separated by a
+target letter, so its length is at least three. The language
+$A=\{aa\}$, $B=\{b\}$ has outputs $aab,aba,baa$, with respective degrees
+$1,2,1$. It fills $\bpW{2}{2}$ and attains the bound.
+\end{proof}
+The $m\geq6$ value was already proved in Part~II
+(Theorem~\ref{ids:bp:thm:length-main}). The new
+length assertions are optimality of the three small examples and the
+complete fixed-gap formula, supported by the stronger necessity theorem.
+
+\section{All extremal centers and their enumeration}\label{ids:si:sec:extremal}
+
+\subsection{Classification at the shortest length}
+Let
+\begin{equation}\label{ids:si:eq:Tstar}
+ T_m=L_m-m+1\qquad(m\geq3).
+\end{equation}
+
+\begin{theorem}[Extremal center classification]\label{ids:si:thm:extremal}
+The centers of shortest realizations are exactly the positive integer
+$m$-tuples $\mathbf v$ with total $T_m$ satisfying
+\begin{equation}\label{ids:si:eq:extremalcriterion}
+ \sum_{i=1}^{m}(v_i-m+1)_+
+       -\max_{1\leq i\leq m}(v_i-m+1)_+\geq m+1.
+\end{equation}
+Up to coordinate permutation, the small cases are precisely
+\begin{equation}\label{ids:si:eq:smallcenters}
+\begin{array}{c|l}
+ m & \text{center types}\\ \hline
+ 3 &(4,4,4),\\
+ 4 &(8,8,1,1),\quad(6,6,5,1),\\
+ 5 &(10,10,1,1,1),\quad(7,7,7,1,1).
+\end{array}
+\end{equation}
+For $m\geq6$, the criterion together with
+$\sum_i v_i=m^2-m+1$ is a complete parametric classification; it is not
+restricted to Part~II's two-large-coordinate family
+\eqref{ids:bp:eq:optimal-center}.
+\end{theorem}
+\begin{proof}
+A shortest realization has $g=m$ by Theorem~\ref{ids:si:thm:length}. Its support must
+therefore be all coordinates. The boundary branch requires at least $m+1$
+high coordinates and is impossible. The full criterion reduces exactly to
+\eqref{ids:si:eq:extremalcriterion}; the volume bound is satisfied by $T_m$.
+
+For $m=3$, equality $T=12$ in the mass argument forces $k=3$, $H=6$,
+$\hat h=2$, so all three heights are two and the center is $(4,4,4)$.
+For $m=4$, equality $T=18$ permits only $k=2$ or $k=3$. In the first case
+all low positive coordinates equal one, $H=10$, and $\hat h=5$, giving high
+heights $(5,5)$ and center $(8,8,1,1)$. In the second case the low coordinate
+is one, $H=8$, and $\hat h=3$; the positive heights must be $(3,3,2)$, giving
+$(6,6,5,1)$.
+
+For $m=5$ and $T=23$, the analogous $k=2$ case has heights $(6,6)$ and three
+low ones, giving $(10,10,1,1,1)$. The $k=3$ case has $H=9$, $\hat h=3$, so the
+heights are $(3,3,3)$ and the low coordinates are both one. This gives
+$(7,7,7,1,1)$. The strict inequalities for all other $k$ in
+Lemma~\ref{ids:si:lem:mass} exclude further types.
+\end{proof}
+
+Coordinate permutation changes the order of gaps and in general changes
+the binary word. It preserves feasibility, so a list ``up to permutation''
+is an orbit list, not a count of words. In particular the two types at
+$m=4$ yield $6+12=18$ distinct centers, and those at $m=5$ yield
+$10+10=20$.
+
+\subsection{A finite formula for the number of centers}
+Let $\operatorname{Comp}(n,r,b)$ count positive compositions of $n$ into $r$ ordered parts,
+each at most $b$. Set $\operatorname{Comp}(n,0,b)=1$ if $n=0$ and zero otherwise. For $r>0$
+set it to zero if $n<r$, $b<1$, or $n>rb$. In all other cases,
+\begin{equation}\label{ids:si:eq:boundedcomp}
+ \operatorname{Comp}(n,r,b)=\sum_{j=0}^{\min\{r,\lfloor(n-r)/b\rfloor\}}
+       (-1)^j\binom rj\binom{n-jb-1}{r-1}.
+\end{equation}
+This follows by subtracting one from each coordinate and applying
+inclusion--exclusion to the coordinates exceeding the resulting cap $b-1$.
+
+\begin{theorem}[Exact extremal-center count]\label{ids:si:thm:count}
+For $m\geq3$, let $e_m$ be the number of distinct ordered gap vectors of
+shortest realizations. Then
+\begin{equation}\label{ids:si:eq:center-count}
+ e_m=\sum_{k=2}^{m}\binom mk\sum_{H=k}^{T_m}
+ \operatorname{Comp}(H,k,H-m-1)\,
+ \operatorname{Comp}\bigl(T_m-k(m-1)-H,m-k,m-1\bigr).
+\end{equation}
+This counts centers, not target languages, source masks, or permutation
+orbits.
+\end{theorem}
+\begin{proof}
+Choose the $k$ high positions in $\binom mk$ ways. Their positive heights
+sum to $H$. The strict condition $H-\hat h\geq m+1$ is exactly the condition
+that each such height is at most $H-m-1$, giving the first composition
+factor. The corresponding center coordinates contribute $k(m-1)+H$.
+Every remaining center coordinate lies in $\{1,\ldots,m-1\}$ and their
+sum is $T_m-k(m-1)-H$, giving the second factor. Every extremal center has
+one unique choice of these data. The zero conventions discard all
+impossible parameter values.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Exact ordered-center counts from \eqref{ids:si:eq:center-count}.
+Orbit enumeration independently checks the formula through $m=7$.}
+\label{ids:si:tab:counts}
+\begin{tabular}{rrrr}
+\toprule
+$m$ & $L_m$ & $e_m$ & permutation orbits, when enumerated\\
+\midrule
+3&14&1&1\\
+4&21&18&2\\
+5&27&20&2\\
+6&36&2\,220&19\\
+7&49&677\,985&660\\
+8&64&79\,327\,528&---\\
+9&81&6\,759\,129\,996&---\\
+10&100&520\,406\,950\,830&---\\
+11&121&39\,849\,098\,160\,190&---\\
+12&144&3\,174\,502\,201\,343\,220&---\\
+\bottomrule
+\end{tabular}
+\end{table}
+For example, $m=6$ already has 19 unordered types, rather than one. The
+shipped file \nolinkurl{data/03-sharp-isolation-extremal_orbits_m3_m6.json}
+records all of them, together with the small-case lists. The first
+few include $(1,1,1,1,12,15)$, $(1,1,1,1,13,14)$,
+$(1,1,1,6,11,11)$, and $(1,1,1,9,9,10)$.
+The count formula is a theorem; the displayed integers are exact evaluations
+of it, not floating-point estimates.
+
+\section{The boundary family and its sharp cost}\label{ids:si:sec:boundary}
+
+The extra branch in Theorem~\ref{ids:si:thm:classification} is not an empty exception.
+It captures centers for which some unique-predecessor deficits are forced
+to be binary and are therefore harmless.
+
+\begin{proposition}[Shortest non-strict centers]\label{ids:si:prop:boundary}
+A feasible center outside the strict branch has
+\begin{equation}\label{ids:si:eq:boundarycost}
+ g\geq m+1,\qquad T\geq m(m+1),\qquad N\geq m^2+2m.
+\end{equation}
+These bounds are simultaneously attained by
+\begin{equation}\label{ids:si:eq:balancedboundary}
+ g=m+1,\qquad \mathbf v=(m,m,\ldots,m).
+\end{equation}
+Its $m+1$ special targets are obtained by subtracting one from all but one
+coordinate.
+\end{proposition}
+\begin{proof}
+The boundary multiset \eqref{ids:si:eq:boundarymultiset} has $m+1$ positive
+heights, so there are at least $m+1$ high coordinates and each contributes
+at least $m$ to the total. This proves the first two inequalities and hence
+the length bound. For \eqref{ids:si:eq:balancedboundary}, every height is one,
+$H-\hat h=m$, the support is $m+1$, and
+$T=m(m+1)>(m+1)(m-1)$. The boundary branch applies. The description of the
+special targets is \eqref{ids:si:eq:special}.
+\end{proof}
+
+For $m=3$ this gives center $(3,3,3,3)$ at total $12$ and length $15$.
+The output $(6,2,2,2)$ has only one eligible coordinate. Its sole
+predecessor $(3,2,2,2)$ is below the center, so it is not safe; nevertheless
+its deficit $(0,1,1,1)$ is binary and the predecessor is special. This is
+exactly why demanding strict escape would reject a valid center.
+
+The boundary examples do not improve the global optimum. They instead
+show that a proof of necessity based on Part~II's strict escape condition
+alone would be false. Their sharp cost \eqref{ids:si:eq:boundarycost} explains why they
+do not appear in the shortest-center classification.
+
+\section{Mandatory targets in every realizing language}\label{ids:si:sec:mandatory}
+
+\subsection{The exact covering criterion}
+For a feasible center write
+\[
+ P^{\mathrm{adm}}_m(\mathbf c)=P_m(\mathbf c)\cap\Adm{\mathbf v}\qquad(\mathbf c\ne\mathbf v).
+\]
+Every $P^{\mathrm{adm}}_m(\mathbf c)$ is nonempty. A target is \emph{mandatory} if it belongs to
+every realizing target set for that center. The following elementary
+covering observation is useful because the ambient maximal language is
+already known explicitly.
+
+\begin{proposition}[Mandatory targets, general form]\label{ids:si:prop:mandatorygeneral}
+A target $\boldsymbol\beta\in\Adm{\mathbf v}$ is mandatory if and only if either
+$\bpSpecial{\mathbf v}=\{\boldsymbol\beta\}$ or $P^{\mathrm{adm}}_m(\mathbf c)=\{\boldsymbol\beta\}$ for some $\mathbf c\ne\mathbf v$.
+\end{proposition}
+\begin{proof}
+A singleton special set or singleton predecessor constraint forces its
+only member by Corollary~\ref{ids:si:cor:languages}. Conversely, remove $\boldsymbol\beta$ from
+$\Adm{\mathbf v}$. If neither singleton condition holds, at least one special
+target remains and every nonexceptional output retains an admissible
+predecessor. Thus the reduced language still realizes the center, proving
+that $\boldsymbol\beta$ was not mandatory.
+\end{proof}
+The proposition concerns removal of one target at a time. Several individually
+optional targets may not be simultaneously removable: they may be the
+only alternatives for a common output.
+
+\subsection{A closed test at the sharp length}
+For a target $\boldsymbol\beta$ set
+\[
+ \operatorname{Hi}(\boldsymbol\beta)=\{i:\beta_i\geq m\}.
+\]
+At any extremal center $g=m$ and the special target is
+$\boldsymbol\beta_*=\mathbf v-\mathbf 1$.
+
+\begin{theorem}[Explicit mandatory-target classification]\label{ids:si:thm:mandatory}
+Let $m\geq3$, $g=m$, and let $\mathbf v$ be any feasible center, not necessarily
+of minimum total. For $\boldsymbol\beta\in\Adm{\mathbf v}$, it is mandatory exactly in the
+following cases:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em,itemsep=2pt]
+\item $\boldsymbol\beta=\boldsymbol\beta_*$;
+\item $|\operatorname{Hi}(\boldsymbol\beta)|\leq1$;
+\item $\operatorname{Hi}(\boldsymbol\beta)=\{p,q\}$ and at least one of
+$\boldsymbol\beta+m\mathbf e_p-m\mathbf e_q$ or $\boldsymbol\beta+m\mathbf e_q-m\mathbf e_p$ is forbidden,
+that is, is not in $\Adm{\mathbf v}$.
+\end{enumerate}
+In case \textup{(iii)} the shifted vectors are nonnegative automatically.
+A shifted vector is forbidden precisely when it lies below $\mathbf v$ and is
+not equal to $\boldsymbol\beta_*$. Apart from $\boldsymbol\beta_*$, no admissible target with at least
+three coordinates in $\operatorname{Hi}(\boldsymbol\beta)$ is mandatory.
+\end{theorem}
+\begin{proof}
+The center has a unique special target, proving case (i). Every one-piece
+output of an admissible target has the form
+$\mathbf c=\boldsymbol\beta+m\mathbf e_j$ and is different from $\mathbf v$, since otherwise the center
+would have an admissible one-piece representation. Its eligible coordinates
+are exactly $\{j\}\cup \operatorname{Hi}(\boldsymbol\beta)$.
+
+If $\operatorname{Hi}(\boldsymbol\beta)$ is empty, any choice of $j$ gives $\boldsymbol\beta$ as the unique
+predecessor. If it has one member, choose that member as $j$. This proves
+case (ii).
+
+If $\operatorname{Hi}(\boldsymbol\beta)=\{p,q\}$, taking $j=p$ gives exactly two predecessors,
+$\boldsymbol\beta$ and $\boldsymbol\beta+m\mathbf e_p-m\mathbf e_q$. Thus $\boldsymbol\beta$ is the unique admissible
+predecessor precisely when the second is forbidden. Taking $j=q$ gives
+the other transfer. Any different $j$ creates at least three eligible
+coordinates. By Lemma~\ref{ids:si:lem:onebad}, at most one predecessor is below the
+center and therefore at most one is forbidden. So at least two are
+admissible, and no singleton constraint arises. This proves (iii).
+
+Finally, if $|\operatorname{Hi}(\boldsymbol\beta)|\geq3$, every one-piece output of $\boldsymbol\beta$ has at least
+three predecessors and again at least two are admissible. Unless $\boldsymbol\beta$ is
+the unique special target, Proposition~\ref{ids:si:prop:mandatorygeneral} makes it optional.
+The description of forbidden shifts follows from the unique special target
+and \eqref{ids:si:eq:admissible}.
+\end{proof}
+
+This supplies an explicit answer to the mandatory-word part of
+Question~\ref{ids:bp:q:classification}. It does not equate the mandatory set with an entire realizing
+language. Additional choices may be necessary to hit predecessor sets of
+size two or more.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Maximal and mandatory target counts for the small extremal centers.
+The maximal counts are not asserted to be minima.}
+\label{ids:si:tab:mandatory}
+\begin{tabular}{clrr}
+\toprule
+$m$ & center type & $|\Adm{\mathbf v}|$ & mandatory targets\\
+\midrule
+3&$(4,4,4)$&46&28\\
+4&$(8,8,1,1)$&665&263\\
+4&$(6,6,5,1)$&656&257\\
+5&$(10,10,1,1,1)$&7\,280&3\,080\\
+5&$(7,7,7,1,1)$&7\,255&3\,066\\
+\bottomrule
+\end{tabular}
+\end{table}
+These finite counts were obtained from the explicit theorem and checked
+independently by enumerating every admissible-predecessor set. The next
+section solves the remaining choices completely in the first row.
+
+\section{Complete classification at degree three}\label{ids:si:sec:degree3}
+
+At the shortest length for $m=3$, the center is uniquely
+$\mathbf v=(4,4,4)$, the total is $12$, and target gap vectors have total $9$.
+The largest target set is
+\begin{equation}\label{ids:si:eq:A3}
+ \mathcal A=\{\boldsymbol\beta\in\bpC{9}{3}:\max_i\beta_i\geq5\}
+                  \cup\{(3,3,3)\}.
+\end{equation}
+It has size $46$, agreeing with Part~II's full construction: it is the
+target set of the worked example \eqref{ids:bp:eq:worked}
+(Theorem~\ref{ids:bp:thm:example}). Here we
+determine exactly which subsets realize the center.
+
+For a tuple $u$, write $\operatorname{Perm}(u)$ for the set of its distinct
+coordinate permutations. Define
+\begin{equation}\label{ids:si:eq:mandatory3}
+ \begin{split}
+ \mathcal M={}&\{(3,3,3)\}\ \cup\ \operatorname{Perm}(0,0,9)
+ \ \cup\ \operatorname{Perm}(0,1,8)\ \cup\ \operatorname{Perm}(0,2,7)\\
+ &\cup\ \operatorname{Perm}(1,1,7)\ \cup\ \operatorname{Perm}(1,2,6)
+ \ \cup\ \operatorname{Perm}(2,2,5).
+ \end{split}
+\end{equation}
+The six permutation sets in the second part have respective sizes
+$3,6,6,3,6,3$, so $|\mathcal M|=28$.
+
+The remaining 18 targets divide into nine pairs. Three pairs come from
+outputs in $\operatorname{Perm}(0,6,6)$: the two nonzero coordinates allow
+the choices $(0,3,6)$ and $(0,6,3)$ in their respective positions. Six pairs
+come from outputs $\mathbf c\in\operatorname{Perm}(3,4,5)$: delete three from
+the coordinate equal to three or from the coordinate equal to four. For
+example, the output $(3,4,5)$ gives the pair
+\begin{equation}\label{ids:si:eq:samplepair}
+ \{(0,4,5),(3,1,5)\}.
+\end{equation}
+Let $\mathcal P_1,\ldots,\mathcal P_9$ denote these nine two-element sets.
+
+\begin{theorem}[Every shortest degree-three language]\label{ids:si:thm:degree3}
+The nine pairs are pairwise disjoint and partition
+$\mathcal A\setminus\mathcal M$. A target set $\bpE\subseteq\bpC{9}{3}$
+realizes the unique center $(4,4,4)$ if and only if
+\begin{equation}\label{ids:si:eq:degree3languages}
+ \bpE=\mathcal M\ \cup\ \bpE_1\ \cup\cdots\cup\ \bpE_9,
+ \qquad \varnothing\ne \bpE_i\subseteq\mathcal P_i.
+\end{equation}
+Consequently there are exactly $3^9=19\,683$ shortest-length target
+languages. Their size-generating polynomial is
+\begin{equation}\label{ids:si:eq:languagepoly}
+ \sum_{\bpE\text{ realizing}} z^{|\bpE|}
+     =z^{28}(2z+z^2)^9=z^{37}(2+z)^9.
+\end{equation}
+The smallest cardinality is $37$, attained by exactly $2^9=512$ languages.
+More generally, for $0\leq j\leq9$, exactly
+$\binom9j2^{9-j}$ languages have size $37+j$.
+\end{theorem}
+
+\begin{proof}
+The nondecreasing target types in \eqref{ids:si:eq:A3} are
+\[
+\begin{gathered}
+ (0,0,9),\ (0,1,8),\ (0,2,7),\ (0,3,6),\ (0,4,5),\ (1,1,7),\\
+ (1,2,6),\ (1,3,5),\ (2,2,5),\ (3,3,3).
+\end{gathered}
+\]
+To see that the list is complete, put $x\leq y\leq z$, $x+y+z=9$,
+and $z\geq5$. If $x=0$, then $0\leq y\leq4$; if $x=1$, then
+$1\leq y\leq3$; if $x=2$, only $y=2$ is possible; and $x\geq3$ is
+impossible with $z\geq5$. Add the exceptional target $(3,3,3)$ separately.
+
+Every target in $\mathcal M$ is mandatory. The special target is forced by
+the center; each other listed target has at most one coordinate at least
+three, so Theorem~\ref{ids:si:thm:mandatory} applies. The other targets are precisely
+\[
+ \operatorname{Perm}(0,3,6)\ \cup\
+ \operatorname{Perm}(0,4,5)\ \cup\
+ \operatorname{Perm}(1,3,5),
+\]
+each of size six. The first six split into the three pairs associated to
+$\operatorname{Perm}(0,6,6)$. Each target of type $(0,4,5)$ has a unique
+paired target of type $(1,3,5)$: increase the zero to three and decrease
+the coordinate four to one. This is a bijection, producing the other six
+pairs. Hence all nine pairs are disjoint and cover the optional targets.
+
+For an output of type $(0,6,6)$, the two displayed predecessors are its only
+one-piece predecessors, and both are admissible. For type $(3,4,5)$, the
+third predecessor, obtained by deleting from the five, has type $(2,3,4)$.
+It lies below the center and is not $(3,3,3)$, so it is forbidden. Thus in
+each of these nine outputs a realizing language must choose a member of
+the associated pair.
+
+It remains to prove that these constraints suffice for all other outputs.
+Table~\ref{ids:si:tab:degree3outputs} lists every nondecreasing output triple of total
+12. For each type other than $(0,6,6)$, $(3,4,5)$, and the center, it gives
+a predecessor in $\mathcal M$. Coordinate permutation preserves both the
+mandatory set and the predecessor relation, so the table covers every
+ordered output. The list is exhaustive by taking its smallest coordinate
+successively equal to $0,1,2,3,4$. The center has its mandatory special
+target. Therefore Corollary~\ref{ids:si:cor:languages} proves sufficiency.
+
+There are three nonempty subsets of each pair, independently, so the number
+of languages is $3^9$. Each pair contributes $2z+z^2$ to its cardinality
+polynomial, while the mandatory set contributes $z^{28}$. Expanding gives
+\eqref{ids:si:eq:languagepoly} and the remaining assertions.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Exhaustive degree-three output audit up to coordinate permutation.
+An ordinary listed predecessor belongs to $\mathcal M$.}
+\label{ids:si:tab:degree3outputs}
+\begin{tabular}{cl@{\qquad}cl}
+\toprule
+Output & mandatory predecessor or remaining constraint & Output & predecessor\\
+\midrule
+$(0,0,12)$ & $(0,0,9)$ & $(1,3,8)$ & $(1,0,8)$\\
+$(0,1,11)$ & $(0,1,8)$ & $(1,4,7)$ & $(1,1,7)$\\
+$(0,2,10)$ & $(0,2,7)$ & $(1,5,6)$ & $(1,2,6)$\\
+$(0,3,9)$ & $(0,0,9)$ & $(2,2,8)$ & $(2,2,5)$\\
+$(0,4,8)$ & $(0,1,8)$ & $(2,3,7)$ & $(2,0,7)$\\
+$(0,5,7)$ & $(0,2,7)$ & $(2,4,6)$ & $(2,1,6)$\\
+$(0,6,6)$ & choose $(0,3,6)$ or $(0,6,3)$ & $(2,5,5)$ & $(2,2,5)$\\
+$(1,1,10)$ & $(1,1,7)$ & $(3,3,6)$ & $(3,3,3)$\\
+$(1,2,9)$ & $(1,2,6)$ & $(3,4,5)$ & pair \eqref{ids:si:eq:samplepair}\\
+ & & $(4,4,4)$ & center; degree three\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{An explicit 37-target realization}
+No large word listing is needed to specify a minimum language. Take the
+28 targets in \eqref{ids:si:eq:mandatory3} and the lexicographically smaller gap
+vector from each of the nine pairs. The selected additional vectors are
+\begin{equation}\label{ids:si:eq:selectednine}
+\begin{gathered}
+ (0,3,6),\ (0,4,5),\ (0,5,4),\ (1,3,5),\ (1,5,3),\\
+ (3,0,6),\ (3,6,0),\ (5,0,4),\ (5,1,3).
+\end{gathered}
+\end{equation}
+Together these specify $\bpE$ and hence the binary language $B_{\bpE}$ via
+\eqref{ids:si:eq:word}. Its shuffle has 91 distinct outputs. Ninety have degree
+one, and the sole degree-three output is $a^4ba^4ba^4$.
+All 37 actual target words are listed in
+\nolinkurl{data/03-sharp-isolation-minimal_degree3_targets.csv}. Independent
+position-mask enumeration checked this example without using the gap-degree
+formula: 13\,468 masks produce exactly the stated 91 words and degrees.
+
+\subsection{What the cardinality result does and does not optimize}
+The minimum $37$ is over all target languages at the globally shortest
+output length for $m=3$. This is stronger than optimizing a chosen safe
+construction, because Theorem~\ref{ids:si:thm:extremal} first forces the unique center and
+Lemma~\ref{ids:si:lem:maximal} includes every possible realizing target language.
+It is not a theorem that $37$ is the minimum target count if longer output
+lengths or incomplete fixed-letter-count coverage are permitted. Those
+are different optimization problems.
+
+\section{Residue classes and the remaining covering problem}\label{ids:si:sec:residues}
+
+The language characterization \eqref{ids:si:eq:alllanguages} gives a finite
+optimization problem once a center is fixed. There is additional structure:
+one-piece insertion adds $m$ to one coordinate, so all one-piece constraints
+preserve the entire coordinatewise residue vector modulo $m$.
+
+\begin{proposition}[Residue decomposition]\label{ids:si:prop:residues}
+Fix a feasible center $\mathbf v\in\bpC{T}{g}$. For
+$\mathbf r\in\{0,\ldots,m-1\}^g$ with
+\[
+ \nu=\frac{T-\sum_i r_i}{m}\in\Nzero,
+\]
+outputs in residue class $\mathbf r$ are exactly
+$\mathbf c=\mathbf r+m\mathbf z$ with $\mathbf z\in\bpC{\nu}{g}$.
+Targets in that residue class are
+$\boldsymbol\beta=\mathbf r+m\mathbf y$ with $\mathbf y\in\bpC{\nu-1}{g}$.
+Their one-piece relation is
+\begin{equation}\label{ids:si:eq:residueedges}
+ \mathbf y\longmapsto\{\mathbf y+\mathbf e_j:1\leq j\leq g\}.
+\end{equation}
+After deleting forbidden targets and omitting the exceptional output from
+the degree-one requirements, the covering constraints split into independent
+problems for the residue classes. When $g=m$, the sole special target is
+forced in its class and minimum target cardinalities add over classes.
+\end{proposition}
+\begin{proof}
+Each nonnegative coordinate has a unique residue in $\{0,\ldots,m-1\}$.
+Taking sums proves the displayed total constraints. Adding $m\mathbf e_j$ to a
+target adds $\mathbf e_j$ to its quotient vector and leaves its residues unchanged.
+Thus no predecessor constraint can involve targets in two residue classes.
+When there is one special target, its required inclusion is a local
+constraint in just one class, so both feasible choices and the cardinality
+objective separate across classes.
+\end{proof}
+If $g>m$ and several special targets exist, the ordinary one-piece constraints
+still separate. The requirement that at least one special target be accepted
+can couple the choices of residue classes, so the final additive conclusion
+must not be applied unchanged in that case.
+
+At the shortest lengths with $m\geq3$, one has $\nu\leq m-1$ for every
+nonempty residue class when $m\geq6$, since
+$T_m=m^2-m+1$ and $\nu\leq\lfloor T_m/m\rfloor=m-1$.
+The analogous bounds are $\nu\leq4$ for $m=3,4,5$.
+Thus the decomposition replaces one large fixed-count class by many small
+simplex-layer incidence problems. The bounds do not imply a polynomial-time
+algorithm in $m$: the number of residue classes and quotient vectors may
+still be large.
+
+\begin{corollary}[A general counting lower bound for targets]\label{ids:si:cor:targetlower}
+Every realizing target set satisfies
+\begin{equation}\label{ids:si:eq:targetlower}
+ |\bpE|\geq\max\left\{
+ \left\lceil\frac{\binom{T+g-1}{g-1}-1}{g}\right\rceil,
+ \text{number of mandatory targets}\right\}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+There are $\binom{T+g-1}{g-1}-1$ nonexceptional outputs, each requiring a
+one-piece representation. Each target has exactly $g$ distinct one-piece
+outputs, obtained by adding $m$ in one of its coordinates. The union bound
+gives the first inequality; mandatory inclusion gives the second.
+\end{proof}
+For the degree-three shortest problem, these elementary bounds give only
+$30$ and $28$, whereas the disjoint-pair obstruction raises the exact answer
+to $37$. This illustrates the importance of overlap constraints.
+
+\section{Reproducible exact checks}\label{ids:si:sec:verification}
+
+\subsection{What was run}
+The manuscript was delivered with a standard-library Python implementation,
+shipped here as \nolinkurl{code/03-sharp-isolation-isolation.py} and
+\nolinkurl{code/03-sharp-isolation-verify.py}. Its universal
+claims rest on the proofs above, not on numerical extrapolation. The finite
+audits deliberately compare different representations of the same objects.
+The execution completed with status \texttt{PASS}; exact ranges and counts
+are recorded in \nolinkurl{data/03-sharp-isolation-verification.json}
+(delivered as \texttt{data/verification.json}).
+
+\begin{table}[htbp]
+\centering\small
+\caption{Executed verification suites. Samples and exhaustive ranges are
+kept distinct.}
+\label{ids:si:tab:verification}
+\begin{tabular}{@{}p{.30\linewidth}p{.63\linewidth}@{}}
+\toprule
+Suite & Scope and recorded outcome\\
+\midrule
+Literal source masks & All 508 pairs with $m=1,2,3,4$ and binary target
+length $0$--$6$; 30\,464 masks and 8\,344 distinct-word queries agree with
+the gap formula.\\[2mm]
+Complete center-orbit range & All 1\,907 nondecreasing center vectors with
+$m=3,4,5$, $g=1,2,3,4$, and $m\leq T\leq16$; direct output search agrees
+with the classification. There are 69\,343 inspected outputs, with failed
+cases stopping at their first counterexample.\\[2mm]
+Independent deficit search & 588 centers with $m=3$--$6$ and
+$g=m,m+1,m+2$: 40 seeded random and 9 prescribed centers per parameter pair;
+191\,114 deficit queries agree with the scalar criterion.\\[2mm]
+Complete explicit examples & Every output of all five small extremal types
+and the boundary centers for $m=3,4,5$; the largest checked example has
+324\,632 outputs.\\[2mm]
+Center counting & Formula versus independent permutation-orbit enumeration
+for $m=3$--$7$; bounded-composition inclusion--exclusion versus direct
+coordinate enumeration; formula values recorded through $m=12$.\\[2mm]
+Mandatory targets & Explicit transfer test versus singleton-predecessor
+constraints for every target of the five small extremal types.\\[2mm]
+Degree-three languages & All $3^9=19\,683$ matching choices checked;
+one 37-target example also checked by 13\,468 literal masks.\\[2mm]
+Parameter construction & Every $m=3$--$60$, $g=m$ through $m+30$, and total
+increments $0,1,m,m^2$ above the threshold: 7\,192 constructed triples.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The center-orbit enumeration is sufficient for its stated finite range
+because all tests are invariant under coordinate permutation. It is not an
+enumeration of every target-language subset. The larger-dimension deficit
+suite uses a fixed random seed, 20260930, and is explicitly a sample.
+The parameter-construction suite checks the formulas at finitely many
+inputs, while Theorem~\ref{ids:si:thm:triples} proves them for all inputs.
+
+\subsection{Files and execution}
+The manuscript was delivered with its standalone article, its compiled PDF,
+source and proof audits, and the following computational files, shipped in
+this report under the prefixed names given here (the delivered name is the
+part after the prefix; Section~\ref{ids:si:sec:package} maps every file):
+\begin{quote}\small
+\nolinkurl{code/03-sharp-isolation-isolation.py}: definitions, classifier, maximal target generator,
+independent output and deficit checks, counting formulas, mandatory-target
+test, and literal mask enumeration.\\
+\nolinkurl{code/03-sharp-isolation-verify.py}: complete audit driver and data exporter.\\
+\nolinkurl{data/03-sharp-isolation-extremal_center_counts.csv}: the exact count table.\\
+\nolinkurl{data/03-sharp-isolation-extremal_orbits_m3_m6.json}: all extremal orbits through degree six.\\
+\nolinkurl{data/03-sharp-isolation-complete_examples.csv}: full finite-coverage example receipts.\\
+\nolinkurl{data/03-sharp-isolation-degree3_pair_constraints.json}: the nine explicit pairs.\\
+\nolinkurl{data/03-sharp-isolation-minimal_degree3_targets.csv}: a minimum 37-word target language.\\
+\nolinkurl{data/03-sharp-isolation-verification.json}: ranges, counts, and executed status.\\
+\nolinkurl{data/03-sharp-isolation-verification_run.txt}: the corresponding console output.
+\end{quote}
+The manuscript's instruction for rerunning without overwriting the shipped
+receipt was to pass \texttt{--output-dir} to its verifier. In this report
+that is not enough on its own: the shipped verifier imports its companion
+module under the delivered name \texttt{isolation}, and its default output
+directory is this report's \texttt{data/}, where it would overwrite Part~I's
+\texttt{data/verification.json}. Section~\ref{ids:si:sec:rerun} gives a
+recipe that runs on a copy. No theorem prover, numerical optimizer, SMT solver, external package, or
+network connection is needed for the checks. Python 3.10 or later is
+required. The code uses exact integers; the sampled suite is reproducible.
+The delivered \texttt{Makefile}, shipped as
+\nolinkurl{code/03-sharp-isolation-Makefile}, compiles the delivered article
+with pdfLaTeX and runs the verification into a separate local directory; it
+uses the delivered layout and is not meant to be run from this report
+(Section~\ref{ids:si:sec:rerun}).
+
+\section{Proof audit and formalization boundary}\label{ids:si:sec:audit}
+
+\subsection{Dependencies}
+The proof structure is short enough to audit without trusting a computer
+algebra system. The gap formula gives the maximal admissible target set.
+Support and capped compositions give the volume obstruction. The
+unique-predecessor deficit analysis gives the complete center criterion.
+An integer optimization over the number of high coordinates gives the
+mass bound, and explicit padded centers attain every numerical threshold.
+Mandatory targets come from singleton covering constraints and the fact
+that at most one predecessor can be unsafe. The degree-three language
+classification then uses a complete list of 19 unordered output types.
+
+No result about real-rooted polynomials, semilinear sets, decidability of
+context-free languages, or proof-assistant soundness enters these arguments.
+The cited preprint and Parts~I--II fix the problem and the comparison point;
+every needed mathematical ingredient is proved here or, where printed once, in
+Part~II.
+
+\subsection{Potential failure modes checked explicitly}
+The following distinctions are essential.
+
+\paragraph{Degree is minimized over targets and masks.}
+A target word may admit many insertion masks. The gap lemma proves the
+minimum for that target, and only then minimizes across the language.
+No uniqueness of a mask is assumed.
+
+\paragraph{Full coverage is used in both lower bounds.}
+A short-gap word with no eligible coordinate must still be an output. That
+is the source of the volume obstruction. Without coverage, omitting such
+words can evade the argument.
+
+\paragraph{The total inequality is strict.}
+The capped boundary is excluded by a concrete neighbor of support two.
+A large excess-height sum alone cannot replace the volume test.
+
+\paragraph{The strict escape criterion is not necessary by itself.}
+The balanced boundary family is a counterexample. The classification retains
+the exact squarefree-deficit alternative rather than silently discarding it.
+
+\paragraph{The length minimum is over all numbers of gaps.}
+The parameter theorem and the strictly increasing fixed-gap length formula
+rule out smaller witnesses with extra gaps. The small-case proof is not a
+search restricted to $g=m$.
+
+\paragraph{Counts refer to different objects.}
+The values $e_m$ count ordered center vectors. The values $3^9$ and $2^9$
+count distinct target languages for the sole shortest degree-three center.
+Neither is a count of source masks or an identification modulo word reversal.
+
+\paragraph{Maximal does not mean minimum.}
+The canonical language $\Adm{\mathbf v}$ is the largest admissible one. Its
+cardinality is a useful audit, not an optimality claim. Only the degree-three
+shortest case has its target minimum solved here.
+
+\subsection{A realistic formalization route}
+The mathematical statements are finite and combinatorial. A prospective
+formalization can use functions from a finite index type to natural numbers,
+finite sums, coordinate comparison, and support cardinality. The main
+interfaces would be the gap-word encoding, a literal insertion-mask relation,
+and the theorem identifying minimum runs with support. The remaining
+classification can then be stated entirely on finite vectors.
+
+A small independently checked development could first formalize the
+capacity-completion lemma used in Lemma~\ref{ids:si:lem:local}: a bounded nonnegative
+vector can be raised to any intermediate total up to the sum of its
+capacities. It could next formalize the maximal-language reduction and the
+local obstruction equivalence. The arithmetic minimization in
+Lemma~\ref{ids:si:lem:mass} and the degree-three table are separate, bounded obligations.
+A reflected checker for explicit centers would be useful, but proving its
+soundness must precede treating its output as a proof certificate.
+
+No Lean or Rocq code is included as though it had been checked. No theorem
+in this manuscript inherits formal status from unrelated developments in
+ProveIt. The accompanying Python audits are executable checks, not
+proof-assistant verification.
+
+\section{Further research questions and topics}\label{ids:si:sec:questions}
+
+The questions below distinguish remaining problems of Part~II from new
+problems suggested by this classification. Unless a source is named, they
+are proposed directions, not claims that an exhaustive literature survey
+has established their global open status.
+
+\begin{question}[Minimum target size at higher degrees]\label{ids:si:q:target}
+For each extremal center with $m\geq4$, determine the minimum number of
+targets and the number of minimum languages. The explicit mandatory-target
+test and residue decomposition reduce this to a concrete finite covering
+problem. Already the two center types at $m=4$ have different mandatory
+counts, so minimizing center length does not identify the best target size.
+A useful first goal is a rigorous certificate for both $m=4$ types.
+This continues Question~\ref{ids:bp:q:target}.
+\end{question}
+
+\begin{question}[Trading length against target count]\label{ids:si:q:pareto}
+For fixed $m$, determine the Pareto frontier of output length and target
+cardinality under full coverage and one exception. In particular, can a
+longer degree-three construction use fewer than 37 targets? The theorem
+here fixes the shortest length; it does not exclude such a tradeoff.
+\end{question}
+
+\begin{question}[Asymptotic density of extremal centers]\label{ids:si:q:density}
+Determine the asymptotic growth of $e_m$ and its ratio to
+$\binom{T_m-1}{m-1}$, the number of all positive center vectors of total
+$T_m$. The finite sum \eqref{ids:si:eq:center-count} gives an exact starting point.
+A probabilistic analysis of the excess mass outside the largest coordinate
+may expose whether feasible centers are typical or rare at the critical total.
+\end{question}
+
+\begin{question}[Several exceptional words without separation]\label{ids:si:q:several}
+Classify two or more exceptional vectors whose forbidden-predecessor
+neighborhoods overlap. Part~II's separated-center construction
+(Theorem~\ref{ids:bp:thm:geometric}) is sufficient,
+but for several centers the fact that at most one predecessor lies below a
+\emph{fixed} center no longer bounds the total number forbidden by all
+centers. A sharp two-center criterion would be the next structural step.
+This continues Question~\ref{ids:bp:q:packing}.
+\end{question}
+
+\begin{question}[An isolated degree below the inserted length]\label{ids:si:q:lower}
+Keep the inserted word $a^m$, but require the unique exception to have degree
+$r$ with $2\leq r<m$. Admissible deficits then have support at least $r$,
+and at least one accepted deficit must have support exactly $r$. The binary
+simplicity of a total-$m$ support-$m$ deficit is lost. Determine the analogue
+of the height classification and the exact threshold in $(m,r,g,T)$.
+\end{question}
+
+\begin{question}[Removing full coverage; restates Question~\ref{ids:bp:q:coverage}]\label{ids:si:q:coverage}
+Determine the shortest binary realizations of spectrum $\{1,m\}$ with
+$A=\{a^m\}$ when the shuffle may omit words of the fixed-count class.
+This is Part~II's Question~\ref{ids:bp:q:coverage}. The quadratic lower bound in the
+full-coverage problem does not apply. A successful construction would have
+to omit low-eligibility outputs while controlling all outputs actually
+created by its targets.
+\end{question}
+
+\begin{question}[Mandatory targets versus sufficient cores]\label{ids:si:q:cores}
+Which centers have a mandatory target set that already realizes the center?
+When it does not, can the remaining predecessor hypergraph be characterized
+as a matching, a graph of bounded width, or another tractable family? The
+nine-edge matching at degree three suggests seeking structural explanations
+for exact target-count polynomials rather than relying only on optimization.
+\end{question}
+
+\begin{question}[Beyond one unary inserted word; restates Question~\ref{ids:bp:q:singleton}]\label{ids:si:q:singleton}
+The unrestricted both-singleton insertion-degree conjecture is Hughes's
+Conjecture~2 \cite[Section~11]{Hughes2026} and Part~II's
+Question~\ref{ids:bp:q:singleton}. A first extension beyond the
+present gap model is an inserted word $a^pb^q$. Its $b$'s no longer all
+come from the target, so the skeleton is not fixed. Identify a replacement
+for the gap minimum that retains enough structure to address that case.
+No conclusion about this conjecture follows from the present classification.
+\end{question}
+
+\begin{question}[Weighted and constrained gaps]\label{ids:si:q:weighted}
+Assign a positive cost to each receiving gap, or allow insertion only in a
+specified family of gaps. The target degree becomes a weighted support
+minimum. Determine which weight systems admit a maximal-language reduction
+with an equally simple obstruction test, and which turn the local completion
+problem into a genuinely difficult optimization. This overlaps the weighted
+extension in Question~\ref{ids:bp:q:formal}.
+\end{question}
+
+\begin{question}[A formally checked classification theorem]\label{ids:si:q:formal}
+Formalize the complete center criterion and the exact parameter threshold,
+then connect the vector model to literal word insertion. The explicit
+negative certificates and the complete degree-three table offer small
+independent checking targets. An end-to-end result should establish the
+language semantics, not merely verify the numerical height inequality.
+It overlaps the Lean programme sketched in Question~\ref{ids:bp:q:formal}.
+\end{question}
+
+\section{Conclusion of Part~III}\label{ids:si:sec:conclusion}
+Part~II's binary-profile construction becomes an exact extremal theory
+once the largest admissible target language is identified and
+unique-predecessor outputs are analyzed without a strictness shortcut. This yields
+all feasible parameter triples, proves optimality of lengths $14,21,27$,
+classifies every sharp-bound center, and supplies an explicit mandatory-target
+test. At degree three the residual constraints are a disjoint matching,
+leading to the exact minimum 37 and the full language-count polynomial.
+
+These are concrete answers to Part~II's small-witness and
+classification questions (Questions~\ref{ids:bp:q:small}
+and~\ref{ids:bp:q:classification}). Their scope is deliberately specific. The
+remaining target-covering problems, multiple exceptions, non-unary sources,
+and loss of full coverage require additional arguments rather than an
+extrapolation of the present theorem.
+
+
+\section{Package contents, rebuilding and the choices of the merge}
+\label{ids:si:sec:package}
+
+\subsection{Shipped files}\label{ids:si:sec:files}
+Manuscript~04 was delivered with its source \texttt{article.tex}, its compiled
+PDF, a delivery README, \texttt{PROOF\_AUDIT.md}, \texttt{SOURCE\_AUDIT.md}, a
+\texttt{Makefile}, two Python files in \texttt{code/} and nine data files in
+\texttt{data/}; there was no checksum file. The report ships, beside the files
+of Parts~I and~II:
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}>{\raggedright}p{.60\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}@{}}
+\toprule
+Shipped path & Delivered as\\
+\midrule
+\nolinkurl{code/03-sharp-isolation-isolation.py} & \texttt{code/isolation.py}\\
+\nolinkurl{code/03-sharp-isolation-verify.py} & \texttt{code/verify.py}\\
+\nolinkurl{code/03-sharp-isolation-Makefile} & \texttt{Makefile}\\
+\nolinkurl{data/03-sharp-isolation-verification.json} & \texttt{data/verification.json}\\
+\nolinkurl{data/03-sharp-isolation-verification_run.txt} & \texttt{data/verification\_run.txt}\\
+\nolinkurl{data/03-sharp-isolation-extremal_center_counts.csv} & \texttt{data/extremal\_center\_counts.csv}\\
+\nolinkurl{data/03-sharp-isolation-extremal_orbits_m3_m6.json} & \texttt{data/extremal\_orbits\_m3\_m6.json}\\
+\nolinkurl{data/03-sharp-isolation-complete_examples.csv} & \texttt{data/complete\_examples.csv}\\
+\nolinkurl{data/03-sharp-isolation-degree3_pair_constraints.json} & \texttt{data/degree3\_pair\_constraints.json}\\
+\nolinkurl{data/03-sharp-isolation-minimal_degree3_targets.csv} & \texttt{data/minimal\_degree3\_targets.csv}\\
+\nolinkurl{data/03-sharp-isolation-provenance.json} & \texttt{data/provenance.json}\\
+\nolinkurl{data/03-sharp-isolation-build_status.json} & \texttt{data/build\_status.json}\\
+\nolinkurl{03-sharp-isolation-PROOF_AUDIT.md} & \texttt{PROOF\_AUDIT.md}\\
+\nolinkurl{03-sharp-isolation-SOURCE_AUDIT.md} & \texttt{SOURCE\_AUDIT.md}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The delivered article, PDF and README are printed or replaced by this report
+and its README. The shipped files are byte-identical to the delivered ones;
+the three CSV files keep their delivered CRLF line endings.
+
+\subsection{Rebuilding and rerunning}\label{ids:si:sec:rerun}
+The article is rebuilt from the report directory with
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The Part~III verifier needs Python 3.10 or later and only its standard
+library. \emph{It cannot be run in place.} It imports its companion module
+under the delivered name \texttt{isolation}, which the prefixed file does not
+provide, and its default output directory is the \texttt{data/} directory next
+to its own \texttt{code/} directory: in this report that would overwrite
+Part~I's \texttt{data/verification.json} and add unprefixed files. Run it on a
+copy with the delivered names and an explicit output directory, for example
+\begin{lstlisting}
+mkdir -p <scratch>/code
+cp code/03-sharp-isolation-isolation.py <scratch>/code/isolation.py
+cp code/03-sharp-isolation-verify.py    <scratch>/code/verify.py
+cd <scratch>
+python code/verify.py --output-dir audit-output
+\end{lstlisting}
+and compare \texttt{audit-output/} with the shipped
+\nolinkurl{data/03-sharp-isolation-*} files. The verifier rewrites
+\texttt{verification.json}, the two other JSON files and the three CSV files;
+it prints, but does not write, the console record, and it does not regenerate
+\texttt{provenance.json} or \texttt{build\_status.json}. On Windows the JSON
+files are written with CRLF line endings.
+
+[Added in the merge: the suite was run this way on a copy on 30 September 2026
+with Python 3.14.4, during the batch-66 placement checks. It passed in about
+seven seconds; its three CSV files were byte-identical to the shipped ones,
+its two other JSON files equal apart from line endings, and its
+\texttt{verification.json} equal to the shipped one apart from line endings
+and the field \texttt{python} (3.14.4 instead of 3.13.5).]
+
+The shipped \nolinkurl{code/03-sharp-isolation-Makefile} still uses the
+delivered layout: its \texttt{verify} target runs \texttt{code/verify.py},
+which in this report is Part~I's verifier, and its \texttt{pdf} target runs
+pdfLaTeX on the merged \texttt{article.tex} into \texttt{build/}. It is shipped
+as delivered and should not be used from the report directory.
+
+\subsection{Where the merge had to choose}\label{ids:si:sec:choices}
+\begin{enumerate}[nosep]
+\item Placement: the manuscript answers questions of Part~II, so it became
+Part~III of this report rather than a separate report. It is printed after
+Part~II and before Part~I's appendices, which contain no numbered items, so
+no number of Part~I or Part~II moved.
+\item What the manuscript repeats from Parts~I and~II is printed once
+(Section~\ref{ids:si:sec:imported}). The gap-degree lemma keeps its statement
+and points to Part~II for the proof; the volume proposition keeps the
+manuscript's proof, marked as such, because its route to $g\geq m$ differs.
+\item Seven symbols were renamed where they clash with Parts~I and~II, and the
+manuscript's $\mathcal C(T,g)$, $\mathcal W(T,g)$ and $I_k(A,B)$ are printed
+with the report's $\bpC{T}{g}$, $\bpW{T}{g}$ and $\ins{k}{A}{B}$
+(Table~\ref{ids:si:tab:notation}); no normalization changed.
+\item The manuscript's title page, abstract, two boxed statements and
+Section~1 became Sections~\ref{ids:si:sec:source}--\ref{ids:si:sec:status};
+the boxes are printed as plain text. Its title-page wording naming the
+assistant and the addressee is recorded in Section~\ref{ids:si:sec:source}
+only.
+\item The manuscript's references to the pinned report by number (Theorem~12.3,
+Section~16, Questions 21.1, 21.3, 21.4, 21.6) became internal references, and
+its ten unlabelled questions received labels and pointers to the Part~II
+questions they restate or continue
+(Questions~\ref{ids:si:q:target}--\ref{ids:si:q:formal}).
+\item Its file names and rerun instructions were replaced by the shipped names
+and the copy-based recipe of Section~\ref{ids:si:sec:rerun}.
+\item The introductory note of Part~III,
+Sections~\ref{ids:si:sec:notation} and~\ref{ids:si:sec:imported}, this
+section, and the dated pointers in Parts~I and~II were added in the merge.
+\end{enumerate}
+
 \appendix
 \section{The binary finite certificate}\label{app:binary}
 
@@ -2046,6 +3705,7 @@ These tables certify the missing degree as follows. A language-level degree-thre
 
 The archive contains the complete \LaTeX\ source, the compiled PDF, the included table sources, the exact Python verifier, a portable search-instance generator, an SMT-LIB file, the verified degree tables, and a machine-readable verification report. The small examples and all input constants are embedded in the verifier, so no external data downloads are necessary.
 [Added 29 September 2026, batch 41: this appendix describes Part~I's files. Part~II's files carry the prefix \texttt{02-binary-profiles-}; Section~\ref{ids:bp:sec:package} lists them and explains how to rerun their verifier without overwriting Part~I's \texttt{data/verification.json}.]
+[Added 30 September 2026, batch 66: Part~III's files carry the prefix \texttt{03-sharp-isolation-}; Section~\ref{ids:si:sec:package} lists them and explains how to rerun their verifier on a copy.]
 
 From the archive's root directory, verification is:
 \begin{lstlisting}
