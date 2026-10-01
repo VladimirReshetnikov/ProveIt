@@ -15,12 +15,13 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 The established arithmetic bounds remain **75 operations for a complete
 certificate and 88 for one universal polynomial**. The latest complete
-[fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_shared_flow_target.md)
-has an illustrative **259-operation certificate / 276-operation polynomial
-(117M+159A)**, six equations, 42 positive witnesses and degree3504.
-Its numerical universal alphabet is not instantiated. The new
-[six-dimensional mortality interface](Papers/research-wip/native-stream-queue/group_affine_cone_mortality6.md)
-uses a two-operation affine loader; the separate87-operation candidate
+[fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_idle_free_paths.md)
+has an illustrative **244-operation certificate / 261-operation polynomial
+(113M+148A)**, six equations, 36 positive witnesses and degree3504.
+Its numerical universal alphabet is not instantiated. Mortality now has
+[a 4D quadratic loader costing3](Papers/research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
+and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
+the separate87-operation candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 
 ## Layout
@@ -211,6 +212,28 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   degree2928; retaining P gives279/degree1774 with mask reuse or
   280/degree1486 without it, both with7 equations and43 witnesses.
   These are complete fixed-table bounds; the75/88 numerical bounds persist.
+  The subsequent [frozen idle padding](Papers/research-wip/native-stream-queue/group_projective_frozen_idle_padding.md)
+  fixes duplicate idle hats to1 while retaining the full m-lane mask and
+  scale. The example saves4M+8A and5 witnesses, reaching **247/264
+  operations,6 equations,37 witnesses,degree3504**. The
+  [idle-free successor](Papers/research-wip/native-stream-queue/group_projective_idle_free_paths.md)
+  also removes edge0: every accepting path has a nonempty macro word after
+  erasing idles. Fresh positive histories preserve the ordinary-input
+  relation, while literal outputs are exact parent specializations.
+
+  | Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+  |---|---|---:|---:|---:|---:|
+  |Yes|Yes|244 / 261|113 / 148|6 / 36|3504|
+  |No|Yes|245 / 262|114 / 148|6 / 36|2928|
+  |Yes|No|244 / 264|114 / 150|7 / 37|1774|
+  |No|No|245 / 265|115 / 150|7 / 37|1486|
+
+  For n>=1 actual macro edges and k=m-n-1 duplicate idle lanes, the
+  padding saving Delta is at least2k; removing edge0 saves another
+  delta>=1. Both savings apply equally to certificate and polynomial
+  costs. There are7-chi equations andn+27-chi witnesses, where chi records
+  computed P. Empty tables keep the padding-only parent. Degrees and
+  the original m-based geometry are unchanged;75/88 remain separate.
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every
@@ -233,7 +256,8 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   compiler. The packet imports the257/283 factored-index example, and the
   shifted-quotient theorem gives280 by composition; the later shared-history
   and strong-unit results give279 at degree3502; the subsequent shared-flow
-  composition gives276 at degree3504 under the same existence equivalence.
+  composition gave276 at degree3504. Removing all idle selectors now
+  gives261 at degree3504 under the same existence equivalence.
   This is an existence reduction, not verification of an arbitrary supplied
   mortality word.
   The [seven-dimensional weighted adapter](Papers/research-wip/native-stream-queue/group_affine_weighted_mortality7.md)
@@ -245,6 +269,17 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   fixed reset satisfies R^2=-6R. These changes preserve the endpoint
   existence predicate, not the old scalar values or an arbitrary supplied
   mortality word certificate.
+  The [4D weighted reset](Papers/research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
+  places the correctly loaded vectors into one varying rank-one reset.
+  It has a **3=2M+1A quadratic loader** and supports unrestricted mortality;
+  whole-space scalar factors prevent independent block erasure. The
+  [5D alternating-block adapter](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md)
+  factors that reset into affine off-diagonal blocks, giving a
+  **2=1M+1A affine loader** with a rank-two varying matrix. Its arbitrary-word
+  parity formula proves unrestricted mortality despite that singularity.
+  Both packets retain their named279-operation endpoint imports. The
+  latest261 compiler composes through the same existence theorem; none
+  certifies an arbitrary independently supplied mortality word.
   The [exact-series rank obstruction](Papers/research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
   proves physical rank6 and guarded rank9 for the actual universal fibre
   subgroup. This forbids fewer linear coordinates for those identical

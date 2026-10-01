@@ -64,27 +64,29 @@
 > proofs with exact source audits, not Lean formalizations.
 
 The latest matrix packet is the
-[shared flow target](group_projective_shared_flow_target.md), composing
-[paired port-bias folding](group_projective_port_bias_folding.md) and the
-[joint-bound unit](group_projective_joint_bound_unit.md).
-The illustrative ten-letter example is **259 certificate / 276 polynomial
-operations (117M+159A), six equations, 42 positive witnesses, exact degree3504**.
-Other joint-bound switch choices give277/degree2928 with42 witnesses,
-279/degree1774 and280/degree1486 with43 witnesses. Keeping the strong-unit
-comparison arrangement gives277/3502,278/2926,280/1773 and281/1485.
+[idle-free path compiler](group_projective_idle_free_paths.md), after
+[freezing padded idles](group_projective_frozen_idle_padding.md) in the
+[shared-flow source](group_projective_shared_flow_target.md).
+The illustrative ten-letter example is **244 certificate / 261 polynomial
+operations (113M+148A), six equations, 36 positive witnesses, exact degree3504**.
+Other joint-bound switch choices give262/degree2928 with36 witnesses,
+264/degree1774 and265/degree1486 with37 witnesses. Keeping the strong-unit
+comparison arrangement gives262/3502,263/2926,265/1773 and266/1485.
 The shifted parent without either unit merge has the smaller certificate
-cost254, with eight equations and277 polynomial operations at degree4298.
-Its unshifted six-field choices retain283/degree1211 and284/degree995
-with44 witnesses; its four-field no-mask/supplied-P option gives
-290/degree802 with46 witnesses. These are operation/degree tradeoffs,
+cost239, with eight equations and262 polynomial operations at degree4298.
+Its unshifted six-field choices retain268/degree1211 and269/degree995
+with38 witnesses; its four-field no-mask/supplied-P option gives
+275/degree802 with40 witnesses. These are operation/degree tradeoffs,
 not an optimality claim. Earlier alternatives remain reproducible.
 The numerical universal alphabet remains uninstantiated; these do not
 replace the separate75/88 frontier above. The new
-[six-dimensional mortality interface](group_affine_cone_mortality6.md)
-has an affine two-operation input and unrestricted reset words. An
-asymmetric scalar replaces paired squares, and a two-dimensional cone
-guard recognizes exactly the loading language. Its uniform existence
-predicate is the same paid paired-vector endpoint. Certification of a
+[five-dimensional mortality interface](group_affine_bipartite_mortality5.md)
+has an affine two-operation input and unrestricted words. Factoring the
+weighted reset into alternating blocks removes the loading guard and
+handles its singular rank-two input letter directly. The
+[four-dimensional variant](group_weighted_reset_mortality4.md) has a
+quadratic three-operation input. Their uniform existence predicate is
+the same paid paired-vector endpoint. Certification of a
 separately supplied arbitrary mortality word remains distinct; the
 [9D packet](group_affine_guarded_mortality9.md) retains its paid selected-word
 circuit for each fixed duration.
@@ -602,6 +604,53 @@ reviews and independent signed source identities passed for all three
 rewrites. A generic additional flow-unit merge currently ties cost and
 raises degree; do not count an unproved saving from it.
 
+The [frozen-padding rewrite](group_projective_frozen_idle_padding.md)
+then specializes every duplicate hub idle hat to one. Write
+a=1+sum macro lengths and k=m-a. The canonical edge0 remains free;
+the k padded lanes are zero, while the original m-lane origin mask and
+all m-based scale powers remain paid and unchanged. The grouped checksum
+saves k additions. Two audited pack plans either trim to a live lanes
+and subtract R_a, or start from the frozen-tail repunit R_k and retain
+the old R_m subtraction. With existing dyadic powers and repunits,
+R_(2^j+r)=R_(2^j)+P^(2^j)*R_r costs every nontrivial gate; R_1=1 is a copy.
+Its extra counts are A_R(n)=popcount(n)-1 and
+M_R(n)=A_R(n)-[n>1 and n odd]. Choosing the cheaper plan saves at least
+2k operations and removes k positive witnesses. The default k=5 saves
+4M+8A, giving247/264,6 equations,37 witnesses,degree3504.
+
+This is exact parent-polynomial specialization, not a bijection with
+every parent tuple. Completeness relabels each padded idle to edge0 and
+rebuilds the native AND extension for the changed controller word.
+The physical trajectory and scalar geometry can stay fixed. Its degree
+proof specializes frozen leading weights to zero and keeps the live
+repunit leading form nonzero. All five compiler variants are covered.
+
+The [idle-free successor](group_projective_idle_free_paths.md) also fixes
+edge0's hat to one whenever the macro table is nonempty. Delete all hub
+idle positions in a genuine accepting path. The result cannot be empty,
+because (1,u,1,u) differs from the required endpoint. Choose a fresh
+large dyadic height and rebuild histories at the shorter positive
+duration before invoking the full native converse. No prescribed
+duration is required. This proves the same existential ordinary-input
+predicate, with no same-tuple claim. The empty table keeps its parent.
+
+Let n=a-1 be the non-idle edge count. The checksum becomes
+J=sum_(e=1)^n Ehat_e-n, saving one addition and one witness. Compare
+the specialized parent pack with the paid factorization
+Hc=P*(sum_(e=1)^n Ehat_e P^(e-1)-R_n). The fallback guarantees a saving
+delta>=1 even near powers of two; for n=10 the factored plan saves
+two more packing additions, so delta=3. With Delta the padding saving,
+the joint ledger is C+3-s-theta-Delta-delta certificate gates,
+C+23-3chi-s-theta-Delta-delta polynomial gates,7-chi comparisons and
+n+27-chi witnesses. All original scale exponents and exact degrees stay.
+Without a free idle variable, at least one history highest form still
+survives: at positive leading weights sum_i(J+d_i)>=3J>0 because each
+edge contributes to only one signed physical port. Do not assume that
+all four survive separately. Four genuine shorter endpoint fixtures
+verify all outer constraints and joined AND; their huge native Pell
+coordinates remain covered by the theorem. Author/default and independent
+proof/source reviews passed, including direct signed specializations.
+
 The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
 rejects computing X from r+bound_beta while erasing w and X=wq.
 The apparent55-operation selector /93-operation SOS admits q=48,
@@ -683,7 +732,8 @@ The note imports the current factored-index257/283 example after explicit
 macro reflection; the shifted-X successor also applies by equivalence.
 The shared-history and strong-unit successors give the named
 279-operation polynomial at degree3502 for the same existence predicate;
-the port, joint-bound and shared-flow successors now give276/degree3504.
+the port, joint-bound and shared-flow successors give276/degree3504,
+and the idle specializations now give261/degree3504.
 There is no extra guard-history charge for this existence predicate,
 but this does not verify an arbitrary supplied mortality word. Compatible
 input congruences, subgroup hypotheses and the padded-program margin
@@ -745,10 +795,48 @@ can have scalar zero. This proves only a minimal dimension for that
 guard model, not for arbitrary mortality constructions. Both physical
 and guard scalar series changed, so the old6/9 exact-series lower bounds
 are respected. The cone packet keeps the stable named279 endpoint
-import; composing the latest equivalent compiler gives276/3504 for its
+import; composing the latest equivalent compiler gives261/3504 for its
 illustrative table. Finite fixtures, all-word proofs and independent
 source/default reviews pass; the universal numerical alphabet and a
 certificate of a separately supplied arbitrary word remain uninstantiated.
+
+The [weighted rank-one reset](group_weighted_reset_mortality4.md) now
+gives4D unrestricted mortality at a3=2M+1A quadratic input loader.
+Let C=diag(-1,1,-1,1), D_i=C diag(P_i,lambda_i Q_i) C,
+z=(1,t,t,t^2), u=(1,0,1,0), and R=z*u. Every scalar u Dword z is
+-(a+t*Lambda*b), so it vanishes exactly when both paired tests do.
+All fixed letters are invertible and R^2=(1+t)R. Any product with
+multiple resets factors through whole-space bridge scalars; one-block
+witnesses cannot kill different blocks independently. Its16 entries
+use only0,1,t,t^2. This improves the older6D quadratic-loader3 route.
+
+The sharp separation lemma is |(-p+tq)|<=t||P||_infinity for SL2(Z)
+and t>1, with equality only for the two order-four signed rotations.
+Thus it is strict on every torsion-free subgroup, even if p=0.
+The universal corollary still retains its particular subgroup and input
+contract; no arbitrary torsion-free group is asserted universal.
+
+The [bipartite linearization](group_affine_bipartite_mortality5.md)
+instead sets z_t=(1,t,1,t), u_t=(1,0,t,0) and
+T=[0_4,z_t;u_t,0], with fixed lifted letters E_i=diag(D_i,1).
+This5D nonnegative input matrix has rank2, all entries0,1,t, and a
+2=1M+1A affine loader. Each bridge scalar u_t Dword z_t is the same
+full paired test. For k input letters, the exact core alternates between
+diagonal and off-diagonal blocks multiplied by the odd/even products
+of its bridge scalars. Both parity products must vanish for mortality;
+in particular some full bridge must vanish. Conversely T M T M T=sT
+duplicates any zero bridge s and gives a mortal word with three input
+occurrences. Arbitrary fixed exterior words are invertible. Empty
+bridges have s=1+t, so input-only powers stay nonzero. Neither one nor
+two occurrences can give zero, even with an accepting bridge.
+
+This proves unrestricted5D affine2 mortality without a guard or a free
+regular-language constraint. It complements4D quadratic3; neither is a
+global minimum claim. Both packets retain the named279 endpoint import,
+and the latest261 compiler composes through their existence equivalence.
+Separate arbitrary supplied-word certification remains unpaid. Exact
+all-word proofs, source/default checks and independent rational channel
+and repeated-reset reviews passed.
 
 The primary75/88 frontier remains unchanged. An [exact input-translation
 obstruction](complete75_input_bound_absorption_obstruction.md) rejects the

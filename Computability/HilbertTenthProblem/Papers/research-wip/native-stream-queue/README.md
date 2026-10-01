@@ -14,12 +14,13 @@ Three independent full integration reviews passed; this is a mathematical
 proof with symbolic and finite checks, not a Lean formalization.
 
 The separate universal polynomial bound is **88 operations**. The latest
-[complete fixed-table matrix compiler](group_projective_shared_flow_target.md)
-has an illustrative **259-operation certificate / 276-operation polynomial
-(117M+159A), 6 equations, 42 positive witnesses and degree3504**. The
-numerical universal alphabet remains uninstantiated. The new
-[6D affine mortality interface](group_affine_cone_mortality6.md) has a
-two-operation input loader; the independent-gamma87 candidate remains
+[complete fixed-table matrix compiler](group_projective_idle_free_paths.md)
+has an illustrative **244-operation certificate / 261-operation polynomial
+(113M+148A), 6 equations, 36 positive witnesses and degree3504**. The
+numerical universal alphabet remains uninstantiated. Mortality now has
+[a 4D quadratic-loader3 interface](group_weighted_reset_mortality4.md) and
+[a 5D affine-loader2 interface](group_affine_bipartite_mortality5.md);
+the independent-gamma87 candidate remains
 unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
 
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
@@ -449,6 +450,41 @@ or284/degree995 with44 witnesses; the four-field no-mask supplied-P
 choice gives290/degree802 with46 witnesses. These are fixed-table
 tradeoffs, not numerical improvements to75/88.
 
+The [frozen-padding successor](group_projective_frozen_idle_padding.md)
+fixes redundant hub-idle hats to one. It retains all m-lane masks and
+scales, and chooses between two paid repunit/packing plans. For k padded
+idle lanes the saving is at least2k operations and exactly k witnesses.
+The ten-letter table saves4M+8A and5 witnesses, giving **247/264
+operations,6 equations,37 witnesses,degree3504**.
+
+The [idle-free successor](group_projective_idle_free_paths.md) removes
+the canonical idle hat too when the macro list is nonempty. An accepting
+path cannot become empty after idle deletion because its initial and
+terminal first coordinates differ. Fresh shorter histories and positive
+native witnesses restore completeness. A specialized-parent packing
+fallback guarantees another saving delta>=1; the default factored
+non-idle pack saves three additions in total:
+
+| Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|---:|
+|Yes|Yes|244 / 261|113 / 148|6 / 36|3504|
+|No|Yes|245 / 262|114 / 148|6 / 36|2928|
+|Yes|No|244 / 264|114 / 150|7 / 37|1774|
+|No|No|245 / 265|115 / 150|7 / 37|1486|
+
+For n>=1 actual macro edges, put k=m-n-1 and let Delta>=2k be the
+padding-only saving. Keeping the original C,s,theta and m-based powers,
+
+    certificate C+3-s-theta-Delta-delta,
+    polynomial C+23-3chi-s-theta-Delta-delta,
+    equations7-chi, positive witnesses n+27-chi.
+
+The complete outputs are exact parent specializations on arbitrary
+integer assignments. Equality of accepted positive ordinary inputs uses
+path normalization and a new positive native extension, not a bijection
+with every old witness tuple. Exact degrees persist; empty tables keep
+the padding-only parent. The numerical75/88 bounds remain unchanged.
+
 Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
 a fixed six-shear table with an empty genuine endpoint language acquires
 positive solutions at every input. Noncanonical individual output lanes
@@ -485,8 +521,8 @@ is also exactly the existence predicate of the four-history compiler.
 The packet imports the named257/283 factored-index illustration; composing
 with the shifted-quotient theorem gives the280-operation illustration,
 and the shared-history/strong-unit successors give279 at degree3502.
-The joint-bound/shared-flow composition now gives276 at degree3504 under
-the same existence equivalence.
+The joint-bound/shared-flow composition gave276; the latest idle-free
+compiler gives261 at degree3504 under the same existence equivalence.
 This uniform existence reduction does not certify a separately supplied
 arbitrary mortality word or fix its duration and reset positions.
 
@@ -504,10 +540,31 @@ exactly the universal endpoint query. The scalar values differ from the
 older rank-nine series, so that rank bound does not apply.
 
 The6D packet keeps its named279-operation endpoint import stable. The
-276 compiler also composes with its existence theorem; this transfers a
+latest261 compiler also composes with its existence theorem; this transfers a
 paid endpoint predicate, not a certificate for an arbitrary supplied6D
 word, duration or reset placement. No mortality-dimension minimum or
 smaller numerical75/88 bound is asserted.
+
+The [4D weighted rank-one reset](group_weighted_reset_mortality4.md)
+loads the positive quadratic column `(1,t,t,t^2)` in **3=2M+1A** and
+needs no loading guard. Every bridge scalar tests both paired endpoints,
+so arbitrary reset counts and exterior words preserve unrestricted
+mortality. This is distinct from the earlier controlled two-block4D
+reset, whose unrestricted language was trivial.
+
+The [5D alternating-block successor](group_affine_bipartite_mortality5.md)
+factors the varying reset through `z_t=(1,t,1,t)` and `u_t=(1,0,t,0)`.
+The matrix `T=[0,z_t;u_t,0]` is nonnegative, affine and rank2, with a
+**2=1M+1A** loader. Exact odd/even bridge-product formulas handle all
+words despite its singularity. One accepted bridge yields `T M T M T=0`;
+input-only powers stay nonzero because `T^3=(1+t)T`.
+
+Both packets retain their named279-operation endpoint imports. The261
+compiler composes with the same existence predicate, without changing
+those imports or claiming a paid certificate for a separately supplied
+arbitrary mortality word. Matrix dimension and loader cost are separate
+from the full Diophantine ledger; no global minimum or numerical75/88
+improvement follows.
 
 The [exact-series rank obstruction](group_guarded_mortality_rank_obstruction.md)
 shows that the physical paired-square scalar has linear rank6 and the
@@ -607,6 +664,10 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Idle-free macro paths](group_projective_idle_free_paths.md) | Every nonempty table can remove edge0 after frozen padding. Default244 certificate / 261=113M+148A polynomial,6 equations,36 witnesses,degree3504. | Exact parent specialization; same input projection needs fresh shorter histories and native witnesses. Full m-lane geometry remains; empty tables keep the parent. |
+| [Frozen duplicate idle lanes](group_projective_frozen_idle_padding.md) | Saves at least2k operations and k witnesses for k redundant idle lanes. Default247 certificate / 264=113M+151A polynomial,6 equations,37 witnesses,degree3504. | Both repunit/packing plans are paid; completeness relabels idles to edge0 and rebuilds the native extension. Numerical75/88 unchanged. |
+| [4D weighted-reset mortality](group_weighted_reset_mortality4.md) | Unrestricted mortality with one rank-one nonnegative quadratic input matrix loaded in3=2M+1A. | Whole-space bridge scalars prevent independent block erasure. Stable279 endpoint import; latest261 composes only for existence. |
+| [5D affine alternating-block mortality](group_affine_bipartite_mortality5.md) | Unrestricted mortality with one rank-two nonnegative affine input matrix loaded in2=1M+1A. | Arbitrary-word parity formulas handle singular input letters. No free word restriction, minimality claim or separate supplied-word certificate. |
 | [Shared flow target](group_projective_shared_flow_target.md) | Saves1A whenever a macro has length at least3, with every retained residual and output polynomial identical. Joint default259 certificate / 276=117M+159A polynomial,6 equations,42 witnesses,degree3504. | Complete fixed-table theorem; numerical universal alphabet remains uninstantiated and75/88 unchanged. |
 | [Joint-bound unit](group_projective_joint_bound_unit.md) | One further polynomial addition saved: default260/277,6 equations,42 witnesses,degree3504 before shared-flow composition. | Native sign/population proof restores the scalar bound on the same positive coordinate vector. |
 | [Port-bias folding](group_projective_port_bias_folding.md) | Exact polynomial rewrite saves1A for the ten-letter table and7 operations when all8 port arities equal c>=2. | Table-dependent saving; no alphabet padding or universal arity assumption. |

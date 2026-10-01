@@ -2,12 +2,13 @@
 
 The leading numerical bounds are **75 certificate / 88 polynomial
 operations**. The latest complete
-[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_shared_flow_target.md)
-gives an illustrative **259/276 operations, 6 equations, 42 witnesses,
-degree3504**, with polynomial split117M+159A; it does not instantiate a
-numerical universal alphabet. The new
-[6D affine mortality interface](../research-wip/native-stream-queue/group_affine_cone_mortality6.md)
-loads its one varying matrix in two operations. The independent-gamma87
+[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_idle_free_paths.md)
+gives an illustrative **244/261 operations, 6 equations, 36 witnesses,
+degree3504**, with polynomial split113M+148A; it does not instantiate a
+numerical universal alphabet. Mortality now has a
+[4D quadratic-loader3 interface](../research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
+and a [5D affine-loader2 interface](../research-wip/native-stream-queue/group_affine_bipartite_mortality5.md).
+The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
@@ -375,6 +376,42 @@ unshifted supplied-P choices now cost283/degree1211 or284/degree995
 with44 witnesses; the four-field no-mask supplied-P choice costs
 290/degree802 with46 witnesses. Previous packets remain reproducible.
 
+The [frozen-padding compiler](../research-wip/native-stream-queue/group_projective_frozen_idle_padding.md)
+fixes the duplicate hub-idle hats to one, keeping their actual selectors
+zero inside the existing m-lane origin mask. With a=1+sum macro lengths
+and k=m-a, two paid packing plans save at least2k operations and k
+witnesses. The ten-letter example saves4M+8A, reaching247/264 operations,
+6 equations,37 witnesses and the same degree3504.
+
+The [idle-free successor](../research-wip/native-stream-queue/group_projective_idle_free_paths.md)
+also fixes the canonical idle hat to one for every nonempty macro table.
+Any accepting path remains a nonempty concatenation of macros after idle
+steps are erased; its shorter histories and positive native witnesses
+can be rebuilt at a fresh height and duration. A specialized-parent
+packing fallback guarantees at least one further operation saved. The
+ten-letter factored pack saves two more, yielding the current table:
+
+| Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|---:|
+|Yes|Yes|244 / 261|113 / 148|6 / 36|3504|
+|No|Yes|245 / 262|114 / 148|6 / 36|2928|
+|Yes|No|244 / 264|114 / 150|7 / 37|1774|
+|No|No|245 / 265|115 / 150|7 / 37|1486|
+
+For n>=1 actual macro edges, let k=m-n-1, Delta be the audited padding
+saving and delta the further idle0 saving. Then Delta>=2k,delta>=1, and
+with the preceding C,s,theta notation the exact costs are
+
+    certificate C+3-s-theta-Delta-delta,
+    polynomial C+23-3chi-s-theta-Delta-delta,
+    equations7-chi, positive witnesses n+27-chi.
+
+Every output is an exact parent specialization, while equivalence of
+ordinary-input projections uses the separate path and positive-extension
+proof. The m-based exponents and exact parent degrees persist. Empty
+macro tables retain the padding-only parent. These are complete
+fixed-table improvements, not a smaller numerical75/88 universal bound.
+
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
 an empty true endpoint language acquires full positive zeros at every
@@ -416,8 +453,9 @@ Thus unbounded mortality existence projects to the existing uniform
 four-history certificate, explicitly importing the257/283 factored-index
 illustration. The shifted quotient composes to give280; the later
 shared-history/strong-unit theorems
-give279 at degree3502; the later joint-unit/shared-flow composition gives
-276 at degree3504 under the same existence equivalence. None certifies
+give279 at degree3502; the joint-unit/shared-flow composition gave276,
+and the latest idle-free compiler gives261 at degree3504 under the same
+existence equivalence. None certifies
 an arbitrary supplied mortality word or its individual reset
 positions, and no numerical universal alphabet is materialized.
 
@@ -437,10 +475,34 @@ endpoint query, with one affine varying matrix ands+1 fixed matrices.
 
 This changes the scalar series, so the old exact-series rank bounds do
 not obstruct it. The packet's stable279 endpoint import remains unchanged;
-the276 compiler composes through the same existence equivalence. Neither
+the latest261 compiler composes through the same existence equivalence. Neither
 is a certificate for a separately supplied arbitrary6D word or its reset
 positions, and no numerical universal alphabet or smaller75/88 bound is
 claimed.
+
+The [4D quadratic-reset construction](../research-wip/native-stream-queue/group_weighted_reset_mortality4.md)
+removes the guard entirely. Its varying nonnegative rank-one reset is
+`R_t=(1,t,t,t^2)^T(1,0,1,0)`, loaded in3=2M+1A operations. Strict
+weighted separation makes each whole-space bridge scalar a simultaneous
+paired-endpoint test. Since every fixed letter is invertible, arbitrary
+reset counts and exterior words cannot create a false zero. This is
+unrestricted mortality, unlike the older controlled two-block4D reset.
+
+The [5D affine successor](../research-wip/native-stream-queue/group_affine_bipartite_mortality5.md)
+uses `z_t=(1,t,1,t)^T`, `u_t=(1,0,t,0)` and the rank-two input matrix
+`T=[0,z_t;u_t,0]`. Its entries are0,1,t, so all25 entries load in
+2=1M+1A. Alternating-block identities characterize arbitrary products
+by odd and even bridge-scalar factors. Every zero bridge is already a
+full paired witness, and repeating one such bridge gives `T M T M T=0`.
+The singular input creates no input-only false zero, since
+`T^3=(1+t)T`. No guard or free word restriction is used.
+
+These4D quadratic3 and5D affine2 results are dimension/input-cost
+tradeoffs, not new uniform Diophantine operation savings or minimality
+claims. Their stable named279 endpoint imports are unchanged; the261
+compiler composes independently with their existence predicates. An
+arbitrary supplied4D or5D word, its duration and its input/reset positions
+still require a separate paid selected-history interface.
 
 The [rank obstruction](../research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
 proves exact linear rank6 for the physical paired-square scalar and
