@@ -1,5 +1,17 @@
 # Alternative universal machinery: an arithmetic research program
 
+The leading numerical bounds are **75 certificate / 88 polynomial
+operations**. The latest complete
+[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_shared_flow_target.md)
+gives an illustrative **259/276 operations, 6 equations, 42 witnesses,
+degree3504**, with polynomial split117M+159A; it does not instantiate a
+numerical universal alphabet. The new
+[6D affine mortality interface](../research-wip/native-stream-queue/group_affine_cone_mortality6.md)
+loads its one varying matrix in two operations. The independent-gamma87
+candidate is still unresolved, with new
+[compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
+The historical stages below retain their original scope and counts.
+
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
 strong auxiliary square and saves the old doubled-index addition. The
@@ -334,6 +346,35 @@ reuse and supplied P, and283/degree1485 with neither option. This local
 degree improvement is specific to shifted X; unshifted absorption would
 increase degree. Numerical75/88 are still unchanged.
 
+The [port-bias rewrite](../research-wip/native-stream-queue/group_projective_port_bias_folding.md)
+folds equal opposite-port offsets into one paid packing bias. Let s be
+its table-dependent saving, and let theta=1 when a macro has length at
+least three, otherwise0. The
+[joint-bound unit](../research-wip/native-stream-queue/group_projective_joint_bound_unit.md)
+absorbs the scalar joint bound after a native sign and population proof.
+The [shared flow target](../research-wip/native-stream-queue/group_projective_shared_flow_target.md)
+then reuses the edge checksum, saving theta additions with the complete
+polynomial unchanged. With the preceding C notation, their composition
+costs **C+3-s-theta** as a certificate or **C+23-3chi-s-theta** as one
+polynomial, with7-chi equations andm+27-chi positive witnesses.
+The joint-unit degree is **nu(36L+7m+106)+38+2d_outer**, where d_outer=3
+unless the table is idle-only and P is supplied, in which case it is2.
+
+The ten-letter table has s=theta=1:
+
+| Mask reuse | Computed P | Certificate / polynomial | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|
+|Yes|Yes|259 / 276|6 / 42|3504|
+|No|Yes|260 / 277|6 / 42|2928|
+|Yes|No|259 / 279|7 / 43|1774|
+|No|No|260 / 280|7 / 43|1486|
+
+The first polynomial uses117M+159A. These illustrative fixed-table
+counts leave the numerical75/88 frontier unchanged. The lower-degree
+unshifted supplied-P choices now cost283/degree1211 or284/degree995
+with44 witnesses; the four-field no-mask supplied-P choice costs
+290/degree802 with46 witnesses. Previous packets remain reproducible.
+
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
 an empty true endpoint language acquires full positive zeros at every
@@ -375,9 +416,31 @@ Thus unbounded mortality existence projects to the existing uniform
 four-history certificate, explicitly importing the257/283 factored-index
 illustration. The shifted quotient composes to give280; the later
 shared-history/strong-unit theorems
-give279 at degree3502 under the same equivalence. None of these certifies
+give279 at degree3502; the later joint-unit/shared-flow composition gives
+276 at degree3504 under the same existence equivalence. None certifies
 an arbitrary supplied mortality word or its individual reset
 positions, and no numerical universal alphabet is materialized.
+
+The [7D weighted adapter](../research-wip/native-stream-queue/group_affine_weighted_mortality7.md)
+reduces the physical scalar from six to four coordinates. For the fixed
+subgroup, a strict norm bound prevents cancellation in a signed weighted
+sum of the two projective coordinates. Whole-run bounds, including the
+boundary t=3, let the affine input loader remain two operations.
+The [6D cone successor](../research-wip/native-stream-queue/group_affine_cone_mortality6.md)
+then replaces its guard by
+`CT=[[1,1],[0,1]], CF=[[1,0],[2,1]]`, start(-2,1) and row(1,0).
+Its exact zero language is `TTF*`: an early fixed letter enters a strict
+negative cone, while an extra input letter enters a strict positive cone.
+The6D input matrix has determinant t^3, and the fixed rank-one reset
+satisfies R^2=-6R. Unrestricted mortality is exactly the universal paired
+endpoint query, with one affine varying matrix ands+1 fixed matrices.
+
+This changes the scalar series, so the old exact-series rank bounds do
+not obstruct it. The packet's stable279 endpoint import remains unchanged;
+the276 compiler composes through the same existence equivalence. Neither
+is a certificate for a separately supplied arbitrary6D word or its reset
+positions, and no numerical universal alphabet or smaller75/88 bound is
+claimed.
 
 The [rank obstruction](../research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
 proves exact linear rank6 for the physical paired-square scalar and
@@ -440,6 +503,19 @@ when r0=(R-1)/2 is divisible3 and has no ternary digit2; that class
 forces6 to divide g and restricts which input residues can share the
 history. No actual full false-input instance is supplied, and the87
 relaxation remains unresolved.
+
+The [compiler/order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md)
+now use the actual sparse masks, including the source's MF+B-1 offset.
+They restrict a=6 modulo9 to odd history length N, even window-selector
+count k and even tile alphabet a_T, still requiring the ternary-digit
+test. The local3 obstruction vanishes in other layout cases, but proper
+prime factors of H can still contribute3 to the full period gcd.
+A Lucas upper-tail digit algorithm computes a modulo fixed odd primes
+without materializing the enormous Pell integers. Certified local orders
+give squarefree lower divisors of g; parity and cofactor bounds exclude
+some large prime powers. The algorithmic field-operation bounds are not
+free arithmetic gates. The large examples satisfy packing only, and no
+actual rejected-input history or full resolution of87 is supplied.
 
 The [Heisenberg packet](../research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
 gives a uniform four-positive-witness certificate for two fixed generators

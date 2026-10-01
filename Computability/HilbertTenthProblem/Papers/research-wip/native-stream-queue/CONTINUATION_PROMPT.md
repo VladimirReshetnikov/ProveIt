@@ -64,24 +64,30 @@
 > proofs with exact source audits, not Lean formalizations.
 
 The latest matrix packet is the
-[strong-unit product](group_projective_strong_unit_product.md), after the
-[shared history right-hand sides](group_projective_shared_history_rhs.md).
-The illustrative ten-letter example is **259 certificate / 279 polynomial
-operations, seven equations, 42 positive witnesses, exact degree 3502**.
-Other switch choices give 280/degree2926, 282/degree1773 and 283/degree1485.
-The shared-history parent has the smaller certificate cost 256, with eight
-equations and the same 279 polynomial operations at degree4298.
-Its unshifted six-field choices retain 285/degree1211 and 286/degree995
+[shared flow target](group_projective_shared_flow_target.md), composing
+[paired port-bias folding](group_projective_port_bias_folding.md) and the
+[joint-bound unit](group_projective_joint_bound_unit.md).
+The illustrative ten-letter example is **259 certificate / 276 polynomial
+operations (117M+159A), six equations, 42 positive witnesses, exact degree3504**.
+Other joint-bound switch choices give277/degree2928 with42 witnesses,
+279/degree1774 and280/degree1486 with43 witnesses. Keeping the strong-unit
+comparison arrangement gives277/3502,278/2926,280/1773 and281/1485.
+The shifted parent without either unit merge has the smaller certificate
+cost254, with eight equations and277 polynomial operations at degree4298.
+Its unshifted six-field choices retain283/degree1211 and284/degree995
 with44 witnesses; its four-field no-mask/supplied-P option gives
-292/degree802 with46 witnesses. These are operation/degree tradeoffs,
+290/degree802 with46 witnesses. These are operation/degree tradeoffs,
 not an optimality claim. Earlier alternatives remain reproducible.
 The numerical universal alphabet remains uninstantiated; these do not
-replace the separate 75/88 frontier above. The new
-[nine-dimensional mortality interface](group_affine_guarded_mortality9.md)
-has an affine two-operation input, unrestricted reset words, a paid
-selected-word circuit for each fixed duration, and an exact uniform
-existence reduction to the named paired-vector compiler. Certification
-of a separately supplied arbitrary mortality word remains distinct.
+replace the separate75/88 frontier above. The new
+[six-dimensional mortality interface](group_affine_cone_mortality6.md)
+has an affine two-operation input and unrestricted reset words. An
+asymmetric scalar replaces paired squares, and a two-dimensional cone
+guard recognizes exactly the loading language. Its uniform existence
+predicate is the same paid paired-vector endpoint. Certification of a
+separately supplied arbitrary mortality word remains distinct; the
+[9D packet](group_affine_guarded_mortality9.md) retains its paid selected-word
+circuit for each fixed duration.
 
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
@@ -538,16 +544,63 @@ degree two and final degree lower by two. The illustrative switch table
 the unshifted six-field degree, so that variant is preserved separately.
 All exact unit/outer degree audits and source/default reviews passed.
 
-One unimplemented local lead remains in the illustrative ten-letter
-controller: ports1 and2 each sum two edge hats and then subtract1.
-Their history difference cancels those two offsets. In the physical
-selector pack, replacing both ports by their raw sums adds P+1, so the
-existing repunit subtraction could instead use R8+(P+1). This appears
-to replace two private subtractions with one addition. Before counting
-any saving, audit all consumers and complete polynomial identities;
-the published279 count does not include this proposal. A general
-version would need to account for the actual port-arity polynomial,
-not assume the illustrative multiplicities for the universal alphabet.
+The [paired port-bias rewrite](group_projective_port_bias_folding.md)
+implements and generalizes the former local lead. Select opposite ports
+with equal arity c>=2, remove their two private subtractions of c-1,
+and replace R8 by the paid packing bias K=R8+sum_i delta_i P^i.
+History differences cancel each paired offset. A finite expression
+planner chooses among at most16 pair subsets using existing radix
+registers, literal coefficient products and sums; the unchanged source
+is always a fallback. It audits every deleted consumer and every changed
+packing register. All retained residuals and the complete polynomial
+are identical over arbitrary integers. The ten-letter example pays
+one addition for R8+(P+1), saving one operation. Uniform arity c>=2
+on all eight ports gives K=c*R8 and saves seven operations; this is a
+different table, not artificial padding of the illustrative alphabet.
+Write s for the achieved saving and subtract it from each preceding
+certificate and polynomial cost. Neither the planner nor its finite
+fixtures establish a global arithmetic lower bound.
+
+The [joint-bound unit](group_projective_joint_bound_unit.md) next removes
+one comparison at a net saving of one polynomial operation. Write
+G=sum H_i+sum Zhat_i+beta and L_bound=G-P. Replace G=P+1 and U=1 by U*L_bound=1,
+where U is the strong-unit product. This adds1M+1A, loses one comparison,
+and raises the exact degree by nu. Positivity is essential to soundness.
+At a new zero L_bound=U=+/-1; replacing beta by beta+1-L_bound temporarily restores
+the old bound and all pretyping field/range estimates. The independent
+coupled rank proof recovers the auxiliary unit as+1 without using U=1.
+If Nk=-1, restore only the raw native kernel at r'=r-2. It gives
+popcount(r')=log2(q), whereas the original four fields sum to q-1 and
+r=1 mod16, forcing popcount(r-2)>=log2(q)+2. Thus Nk=U=L_bound=1 and the
+original bound holds on the same positive vector. Do not apply the full
+old field-selector theorem at r': its checksum is different. The source
+audits that beta has no other consumer. This is positive zero-set
+equivalence, not arbitrary signed zero-set equivalence.
+
+The joint-bound ledger before flow reuse is C+3-s in the certificate,
+7-chi equations, m+27-chi witnesses, and C+23-3chi-s polynomial gates.
+Its exact degree is nu*(36L+7m+106)+38+2d_outer, where d_outer=3 except
+for the idle-only supplied-P case d_outer=2. The ten-letter example is
+260/277 at degree3504 before the following flow saving.
+
+The [shared sparse-flow target](group_projective_shared_flow_target.md)
+uses the paid partial edge checksum I+Fraw, with I the sum of internal
+edge hats and Fraw the sum of first-edge hats. First target weights
+are 1=c1<c2<...<cb. Rewrite their weighted sum as
+Fraw+sum_(j>=2)(cj-1)*Ehat_j, then replace the old target
+shared+I+F by shared+(I+Fraw)+sum excess. Exactly one addition disappears
+whenever an internal edge exists, equivalently some macro has length>=3.
+If c2=2 the old source already used the shifted weights, preserving the
+coefficient-one alias; otherwise both old and new products have paid
+coefficients>=2. All fixed multiplication costs are unchanged.
+Every retained residual and full polynomial is identical on all integers.
+Write theta=1 for this case and0 otherwise, and subtract theta from
+every certificate/polynomial cost above; degrees and witnesses stay fixed.
+Keep the original p and f_flow in C rather than double-counting savings.
+Default s=theta=1 gives the276-operation result. Proof/source/default
+reviews and independent signed source identities passed for all three
+rewrites. A generic additional flow-unit merge currently ties cost and
+raises degree; do not count an unproved saving from it.
 
 The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
 rejects computing X from r+bound_beta while erasing w and X=wq.
@@ -628,8 +681,9 @@ a=bt and determinant one give b(td-c)=1, while b=1 mod4 selects +1. Thus mortali
 existence projects exactly onto the paid paired-vector endpoint compiler.
 The note imports the current factored-index257/283 example after explicit
 macro reflection; the shifted-X successor also applies by equivalence.
-The shared-history and strong-unit successors therefore give the latest
-279-operation polynomial at degree3502 for the same existence predicate.
+The shared-history and strong-unit successors give the named
+279-operation polynomial at degree3502 for the same existence predicate;
+the port, joint-bound and shared-flow successors now give276/degree3504.
 There is no extra guard-history charge for this existence predicate,
 but this does not verify an arbitrary supplied mortality word. Compatible
 input congruences, subgroup hypotheses and the padded-program margin
@@ -651,6 +705,50 @@ They do not rule out a different scalar with the same zeros, a different
 guard, or a nonlinear certificate; there is no global mortality-dimension
 or Diophantine arithmetic lower bound. Twelve finite rank6/rank9 fixtures
 and the diagonal rank3/rank6 boundary support the abstract proof.
+
+The [weighted 7D successor](group_affine_weighted_mortality7.md) changes
+the physical scalar instead of trying to realize those exact squares
+in a smaller space. Precompute lambda_i=||P_i||_infinity and encode
+F_i=diag(P_i,lambda_i Q_i). Two copies of the affine input block
+T4=diag([0,-1;1,t],[0,-1;t,t]) send z4=(1,0,1,0) to (v,tv), v=(-1,t).
+For a valid word its scalar is a+t*Lambda*b. The first-row entry p of
+P_word is1 modulo4 and nonzero, so
+|a|<=|p|+t|q|<t||P_word||<=t*Lambda. Integer b then forces a=b=0.
+The subgroup condition is essential; a rotation paired with-I supplies
+an explicit false cancellation if it is erased.
+
+Whole-run estimates are ||T4^k||<=2t^k and ||T4^k*z4||<=t^k for t>=3.
+They use exact power recurrences and B_3^6=-27I at the boundary.
+Precompute mu_i=2||F_i|| and set rho=t^(number of T)*product mu_i.
+Charge each noninitial T-run's factor2 to its preceding fixed letter;
+then every physical word scalar has absolute value at most2rho.
+Do not substitute the false one-letter bound ||T4||<=t. Adding the
+old three-coordinate guard scaled by t and mu_i, with output factor4,
+gives7D and an affine two-operation loader.
+
+The [cone guard](group_affine_cone_mortality6.md) reduces this to6D.
+Use CT=[1,1;0,1], CF=[1,0;2,1], start(-2,1), row(1,0).
+Two T letters reach(0,1), fixed byF. An F before the second T enters
+the strict negative quadrant; an extra T afterTTF* enters the strict
+positive quadrant. Both quadrants are invariant. Thus its scalar g
+vanishes exactly onTTF*, for all finite words. The full letters are
+diag(T4,tCT) and diag(F_i,mu_i CF), and their scalar is physical+4rho*g.
+Invalid orders cannot cancel. All non-reset letters are invertible,
+input determinant is t^3, and the rank-one reset has square-6 times
+itself. Arbitrary mortality products vanish exactly when an interior
+segment supplies one common paired zero; no reset or one reset cannot
+vanish. The36-entry input template uses only0,-1,1,t and costs1M+1A.
+
+The new guard has a nonzero2x2 Hankel minor. In a one-dimensional linear
+guard with all letters invertible and nonzero empty scalar, no word
+can have scalar zero. This proves only a minimal dimension for that
+guard model, not for arbitrary mortality constructions. Both physical
+and guard scalar series changed, so the old6/9 exact-series lower bounds
+are respected. The cone packet keeps the stable named279 endpoint
+import; composing the latest equivalent compiler gives276/3504 for its
+illustrative table. Finite fixtures, all-word proofs and independent
+source/default reviews pass; the universal numerical alphabet and a
+certificate of a separately supplied arbitrary word remain uninstantiated.
 
 The primary75/88 frontier remains unchanged. An [exact input-translation
 obstruction](complete75_input_bound_absorption_obstruction.md) rejects the
@@ -729,6 +827,39 @@ q=32 meets the native range and digit condition but is not a full history.
 Conditionally, if a genuine H=3p with p prime, p-1 is a period with
 gcd(2Delta,p-1)=6, so 3|d(x-x0) is sufficient. No genuine complete
 history with that factorization is supplied. Full87 remains unresolved.
+
+The [compiler/order filters](complete75_gamma87_compiler_order_filters.md)
+now use the actual sparse layout rather than arbitrary mask constants.
+Its fixed MF=2 modulo3. MC is2 when the selector count k is odd,1 when
+k and tile-alphabet size are both even, and0 when k is even and the
+alphabet size is odd. Since B=2^d=-1 modulo3 and
+R=(q^2-Z-qF)(q^2-1)+(MC+q*(MF+B-1))*J, R=0 modulo3 for even N and
+R=MC modulo3 for odd N. Retain the source's MF+B-1 offset. The local
+a=6 modulo9 class therefore requires odd N and even k and alphabet
+size, as well as its ternary digit condition. Other actual compiler
+classes have local exponent h=0; this does not exclude3 from the full g.
+
+A Lucas digit comparison computes the upper binomial tail defining a
+modulo any fixed odd prime p, with O(p log R) field work on an explicitly
+given binary R. If ell divides H and an odd prime p divides both the
+verified order of2 modulo ell and Delta, then p divides g. Such tests
+certify a squarefree divisor L of g without constructing X,Y,H; because
+the actual d is a power of5, L/gcd(L,10) divides every allowed ordinary
+input difference. A packing-only example has a59-bit R and certifies
+102|g via103|H and17|Delta. Another shows a nonlocal factor3 when h=0.
+Neither supplies the compiler, transport, marker or width witnesses.
+
+Conversely, if m=p^e with p>=5 divides g, then gcd(H,Delta) divides9
+forces a prime ell|H with ell=1 modulo m. Write H=ell*n, where n is odd
+and divisible3. For m=1 modulo3, ell>=4m+1; for m=2, ell>=2m+1.
+If m|a+1 the corresponding n bounds are4m-1 and2m-1; if m|a+3,
+n>=6m-9. Violating the resulting product bound excludes m from g.
+These are necessary filters, not a uniform small bound on g or a full
+alias. The next substantive87 task is an actual parent history and a
+rejected input satisfying both positive width and the complete period
+criterion, or a theorem excluding all such transfers. Further mask-only
+fixtures do not close that interface. All new proof/source/default
+reviews and independent modular-tail/order checks passed.
 
 The [Heisenberg audit](heisenberg_two_generator_membership.md) proves a
 uniform four-witness representation for any two fixed H^r generators,

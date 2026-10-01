@@ -13,6 +13,15 @@ source has30 strictly positive witnesses and19 equations. See the
 Three independent full integration reviews passed; this is a mathematical
 proof with symbolic and finite checks, not a Lean formalization.
 
+The separate universal polynomial bound is **88 operations**. The latest
+[complete fixed-table matrix compiler](group_projective_shared_flow_target.md)
+has an illustrative **259-operation certificate / 276-operation polynomial
+(117M+159A), 6 equations, 42 positive witnesses and degree3504**. The
+numerical universal alphabet remains uninstantiated. The new
+[6D affine mortality interface](group_affine_cone_mortality6.md) has a
+two-operation input loader; the independent-gamma87 candidate remains
+unresolved under its [compiler/order filters](complete75_gamma87_compiler_order_filters.md).
+
 The [signed-projection refinement](complete75_signed_projection_elimination101.md)
 retains **75=41M+34A** with **20 positive witnesses and nine equations**.
 Its single polynomial costs **101=50M+51A** and has exact degree **84**,
@@ -409,6 +418,37 @@ costs280 at degree2926; supplied P gives282/degree1773 with mask reuse
 or283/degree1485 without it. This degree improvement applies to the
 shifted-X variant; its analogous unshifted rewrite would raise degree.
 
+The [port-bias folding](group_projective_port_bias_folding.md) saves
+arithmetic when opposite physical ports have equal arity, without changing
+any complete output polynomial. The
+[joint-bound unit](group_projective_joint_bound_unit.md) then absorbs the
+scalar bound at a net saving of one addition. A native sign/population
+argument restores that bound on the same positive coordinates.
+The [shared flow target](group_projective_shared_flow_target.md) reuses
+an existing checksum sum and saves one further addition whenever some
+macro has length at least three. Its complete polynomial is unchanged.
+
+Write s for the actual port-bias saving and theta for that length
+indicator. With the preceding C notation, the joint composition has
+**C+3-s-theta certificate operations,7-chi equations,m+27-chi witnesses,
+and C+23-3chi-s-theta polynomial operations**. Its degree is
+**nu(36L+7m+106)+38+2d_outer**, where d_outer=3 except for idle-only
+supplied-P tables, where it is2. For the ten-letter table, s=theta=1:
+
+| Mask reuse | Computed P | Certificate / polynomial | Equations / witnesses | Degree |
+|---|---|---:|---:|---:|
+|Yes|Yes|259 / 276|6 / 42|3504|
+|No|Yes|260 / 277|6 / 42|2928|
+|Yes|No|259 / 279|7 / 43|1774|
+|No|No|260 / 280|7 / 43|1486|
+
+The default polynomial uses **117M+159A**. Keeping the strong-unit parent
+instead gives polynomial277/degree3502,278/2926,280/1773 or281/1485
+in the same row order. Unshifted supplied-P choices give283/degree1211
+or284/degree995 with44 witnesses; the four-field no-mask supplied-P
+choice gives290/degree802 with46 witnesses. These are fixed-table
+tradeoffs, not numerical improvements to75/88.
+
 Deleting the output bound outright is [unsound](group_projective_output_bound_obstruction.md):
 a fixed six-shear table with an empty genuine endpoint language acquires
 positive solutions at every input. Noncanonical individual output lanes
@@ -444,10 +484,30 @@ For the compatible subgroup and input congruence, unrestricted mortality
 is also exactly the existence predicate of the four-history compiler.
 The packet imports the named257/283 factored-index illustration; composing
 with the shifted-quotient theorem gives the280-operation illustration,
-and the shared-history/strong-unit successors give279 at degree3502
-under the same existence equivalence.
+and the shared-history/strong-unit successors give279 at degree3502.
+The joint-bound/shared-flow composition now gives276 at degree3504 under
+the same existence equivalence.
 This uniform existence reduction does not certify a separately supplied
 arbitrary mortality word or fix its duration and reset positions.
+
+The [7D weighted mortality construction](group_affine_weighted_mortality7.md)
+uses four physical coordinates and a strict bound on a signed weighted
+sum to preserve the paired zero. Whole-run estimates keep the affine
+loader at **2=1M+1A** despite a false one-letter norm shortcut.
+The [6D cone successor](group_affine_cone_mortality6.md) uses a new
+invertible two-coordinate guard with the same zero language `TTF*`:
+`CT=[[1,1],[0,1]], CF=[[1,0],[2,1]]`, start(-2,1), row(1,0).
+Its input determinant is t^3; its constant rank-one reset satisfies
+R^2=-6R. It has one affine input matrix ands+1 fixed matrices for an
+inherited signed paired alphabet of size s. Unrestricted mortality is
+exactly the universal endpoint query. The scalar values differ from the
+older rank-nine series, so that rank bound does not apply.
+
+The6D packet keeps its named279-operation endpoint import stable. The
+276 compiler also composes with its existence theorem; this transfers a
+paid endpoint predicate, not a certificate for an arbitrary supplied6D
+word, duration or reset placement. No mortality-dimension minimum or
+smaller numerical75/88 bound is asserted.
 
 The [exact-series rank obstruction](group_guarded_mortality_rank_obstruction.md)
 shows that the physical paired-square scalar has linear rank6 and the
@@ -501,6 +561,17 @@ gives a=6 modulo9 and6 divides g, excluding some cross-residue transfers.
 It supplies neither a full false-input witness nor a proof of87 universality;
 the exact period and width conditions still need analysis on actual histories.
 
+The [compiler and order filters](complete75_gamma87_compiler_order_filters.md)
+now restrict that ternary class to odd history length, even window count
+and even tile alphabet in the actual first-dummy sparse layout. The
+MF+B-1 source offset is retained. A Lucas upper-tail digit algorithm
+computes a modulo fixed odd primes and certifies squarefree lower
+divisors of g from proper factors of H. Local3 information alone can
+miss contributions from other prime-factor orders. Complementary parity
+and cofactor bounds exclude some large prime powers. These are necessary
+filters, not sufficient input aliases; all explicit large examples are
+packing-only fixtures, and the87 candidate remains unresolved.
+
 The [native X-divisibility audit](native_binary_X_divisibility_obstruction.md)
 shows that computing X only from its positive bound breaks standalone
 binary typing: the55-operation candidate has a full positive solution at
@@ -536,6 +607,12 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Shared flow target](group_projective_shared_flow_target.md) | Saves1A whenever a macro has length at least3, with every retained residual and output polynomial identical. Joint default259 certificate / 276=117M+159A polynomial,6 equations,42 witnesses,degree3504. | Complete fixed-table theorem; numerical universal alphabet remains uninstantiated and75/88 unchanged. |
+| [Joint-bound unit](group_projective_joint_bound_unit.md) | One further polynomial addition saved: default260/277,6 equations,42 witnesses,degree3504 before shared-flow composition. | Native sign/population proof restores the scalar bound on the same positive coordinate vector. |
+| [Port-bias folding](group_projective_port_bias_folding.md) | Exact polynomial rewrite saves1A for the ten-letter table and7 operations when all8 port arities equal c>=2. | Table-dependent saving; no alphabet padding or universal arity assumption. |
+| [6D cone mortality](group_affine_cone_mortality6.md) | Invertible2D guard recognizes exactly TTF*, giving unrestricted6D mortality with a2-operation affine loader, input determinant t^3 and reset square -6R. | Changed scalar avoids the old rank obstruction. Uniform existence imports the paid endpoint; an arbitrary supplied-word certificate remains separate. |
+| [7D weighted mortality](group_affine_weighted_mortality7.md) | Four physical coordinates use strict signed separation; a3D guard gives unrestricted mortality with affine loader2. | Whole-run bounds are required; abstract universal alphabet and compatible subgroup/input constants remain explicit. |
+| [Compiler/order filters for87](complete75_gamma87_compiler_order_filters.md) | Genuine layout residues narrow the ternary class; Lucas modular tails certify lower divisors of the full period gcd, and cofactor bounds exclude some prime powers. | Necessary filters only. Large examples satisfy packing, not full histories;87 is unresolved. |
 | [Strong-unit product](group_projective_strong_unit_product.md) | Shifted-X certificate C+1,8-chi equations,m+27-chi witnesses, polynomial C+24-3chi, degree(1+chi)(36L+7m+105)+44. Default259/279,7 equations,42 witnesses,degree3502. | Idle-only supplied-P degree is two lower. Same integer zero set; unshifted absorption would increase degree. Numerical75/88 remain separate. |
 | [Shared history right-hand sides](group_projective_shared_history_rhs.md) | Saves1M in all three factored/shifted variants with the entire polynomial unchanged. Shifted-X default256/279,8 equations,42 witnesses,degree4298. | Parent witness, comparison and degree ledgers persist; lower-degree choices also save one operation. |
 | [Exact guarded-scalar rank](group_guarded_mortality_rank_obstruction.md) | Physical scalar rank6 and full guarded scalar rank9 for the actual universal fibre subgroup. | Obstructs exact linear realization compression only; no lower bound for zero-equivalent constructions or Diophantine arithmetic. |

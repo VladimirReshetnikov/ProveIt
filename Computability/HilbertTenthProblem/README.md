@@ -13,6 +13,16 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1982 | J. P. Jones | Universal Diophantine Equation | *J. Symbolic Logic* 47, 549–571 | XeLaTeX |
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
+The established arithmetic bounds remain **75 operations for a complete
+certificate and 88 for one universal polynomial**. The latest complete
+[fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_shared_flow_target.md)
+has an illustrative **259-operation certificate / 276-operation polynomial
+(117M+159A)**, six equations, 42 positive witnesses and degree3504.
+Its numerical universal alphabet is not instantiated. The new
+[six-dimensional mortality interface](Papers/research-wip/native-stream-queue/group_affine_cone_mortality6.md)
+uses a two-operation affine loader; the separate87-operation candidate
+remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
+
 ## Layout
 
 - [`Papers/`](Papers/README.md): the corrected editions
@@ -192,6 +202,15 @@ universal Diophantine equations by James P. Jones and coauthors:
   with mask reuse or283/degree1485 without it. Shared lower-degree parent
   choices remain285/degree1211 and286/degree995 with44 witnesses, or
   four-field292/degree802 with46 witnesses.
+  The [port-bias folding](Papers/research-wip/native-stream-queue/group_projective_port_bias_folding.md),
+  [joint-bound unit](Papers/research-wip/native-stream-queue/group_projective_joint_bound_unit.md)
+  and [shared flow target](Papers/research-wip/native-stream-queue/group_projective_shared_flow_target.md)
+  compose to give **259/276 operations, 6 equations, 42 witnesses,
+  degree3504**, with polynomial split **117M+159A**, for the illustrative
+  ten-letter table. Without mask reuse the polynomial costs277 at
+  degree2928; retaining P gives279/degree1774 with mask reuse or
+  280/degree1486 without it, both with7 equations and43 witnesses.
+  These are complete fixed-table bounds; the75/88 numerical bounds persist.
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
   represent universal membership, but unrestricted mortality accepts every
@@ -213,9 +232,19 @@ universal Diophantine equations by James P. Jones and coauthors:
   mortality predicate reduces exactly to the paid uniform four-history
   compiler. The packet imports the257/283 factored-index example, and the
   shifted-quotient theorem gives280 by composition; the later shared-history
-  and strong-unit results give279 at degree3502 under the same equivalence.
+  and strong-unit results give279 at degree3502; the subsequent shared-flow
+  composition gives276 at degree3504 under the same existence equivalence.
   This is an existence reduction, not verification of an arbitrary supplied
   mortality word.
+  The [seven-dimensional weighted adapter](Papers/research-wip/native-stream-queue/group_affine_weighted_mortality7.md)
+  replaces the physical square scalar by a strictly separated signed sum.
+  The [six-dimensional cone adapter](Papers/research-wip/native-stream-queue/group_affine_cone_mortality6.md)
+  further replaces its three-coordinate guard by a two-coordinate guard
+  with exact zero language `TTF*`. Both retain the **2=1M+1A affine loader**
+  and unrestricted mortality. The6D input determinant is t^3 and its
+  fixed reset satisfies R^2=-6R. These changes preserve the endpoint
+  existence predicate, not the old scalar values or an arbitrary supplied
+  mortality word certificate.
   The [exact-series rank obstruction](Papers/research-wip/native-stream-queue/group_guarded_mortality_rank_obstruction.md)
   proves physical rank6 and guarded rank9 for the actual universal fibre
   subgroup. This forbids fewer linear coordinates for those identical
@@ -248,6 +277,13 @@ universal Diophantine equations by James P. Jones and coauthors:
   A ternary-index class forces6 to divide g.
   This conditional history theorem supplies no full false-input instance
   and leaves87 unresolved; computing the order is not a free circuit step.
+  The [compiler and order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md)
+  restrict the ternary class to odd history length, an even window count
+  and an even tile alphabet in the actual layout. A Lucas digit algorithm
+  certifies lower divisors of g from proper factors of H, while size
+  bounds exclude some prime-power contributions. These are necessary
+  restrictions; the exact examples are packing fixtures, not full false
+  inputs, and87 remains unresolved.
 - The [Heisenberg audit](Papers/research-wip/native-stream-queue/heisenberg_two_generator_membership.md)
   gives a uniform four-positive-witness certificate for two fixed generators
   in H^r, at18r+10 graph operations or27r+12 polynomial operations and degree
