@@ -212,10 +212,3 @@ replays passed. A separate matrix implementation also verified192
 torsion-free cyclic word/bridge cases and64 dense four-reset zero
 products with nonempty exterior words. These tests supplement the
 sharp inequality and unrestricted factorization proofs above.
-
-Two independent full proof/source reviews and fresh default replays passed
-without findings. They checked the sharp separation lemma, full reset
-factorization, fixed-alphabet scope and literal loader. Additional
-independent matrix arithmetic checked192 torsion-free cyclic first-block
-word/bridge identities and64 dense four-reset zeros with nonempty
-exterior words.
