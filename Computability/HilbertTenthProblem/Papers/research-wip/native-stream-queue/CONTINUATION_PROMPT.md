@@ -64,8 +64,14 @@
 > proofs with exact source audits, not Lean formalizations.
 
 The latest matrix packet is the
-[reindexed shared-pack compiler](group_projective_reindexed_shared_pack.md).
-It composes [zero-based lanes](group_projective_reindexed_edge_geometry.md)
+[label-aligned lane planner](group_projective_label_aligned_lanes.md),
+which retains the [reindexed shared-pack compiler](group_projective_reindexed_shared_pack.md)
+as an explicit fallback. Its fixed-m candidate injections never reorder
+physical actions or enlarge the masks/scales. The scrambled eight-letter
+macro improves242 to227 operations; an unbalanced twelve-edge table
+improves273 to270, and reversed repeated sixteen-edge labels improve294
+to281. These are distinct tables, not reductions of the default below.
+The default composes [zero-based lanes](group_projective_reindexed_edge_geometry.md)
 with [physical-selector reuse](group_projective_shared_selector_pack.md),
 after the idle-free and frozen-padding reductions.
 The illustrative ten-letter example is **228 certificate / 245 polynomial
@@ -96,14 +102,25 @@ separately supplied arbitrary mortality word remains distinct; the
 [9D packet](group_affine_guarded_mortality9.md) retains its paid selected-word
 circuit for each fixed duration.
 
-The [complete binary recoder130](native_binary_input_dilation130.md)
-proves the exact positive relation z=sum bit_j(x)*16^j. It costs
-130=67M+63A with49 positive witnesses and34 equations; its full
-sum-of-squares polynomial costs231=101M+130A and has degree40.
-Both native kernels, exponent synchronization, mask and remainder bounds
-are paid. This supplies a word-code primitive for PCP-style directions;
-a fixed-program input convention, tile selection and uniform history
-remain uncomposed. No witness-free polynomial loader can implement it.
+The complete input recoders now include
+[radix four129](native_binary_input_dilation129.md) and
+[radix sixteen130](native_binary_input_dilation130.md). They represent
+different functions, sum bit_j(x)*4^j andsum bit_j(x)*16^j. Both have49
+positive witnesses,34 equations and degree40; their SOS costs are230
+and231. All native typing, synchronized geometry, masks and bounds are
+paid. The smaller radix uses a directly proved weaker raw-kernel bound,
+not the radix16 B0 witness transport.
+
+The [fixed-program GPCP input bridge](gpcp_fixed_program_input_bridge.md)
+now pays the ordinary-integer input and terminal boundary: at block
+width4 it has136=70M+66A gates,50 positive witnesses and36 equations,
+with243-operation degree40 SOS. For a larger fixed alphabet its exact
+width-dependent ledger is explicit. It compiles a fixed Turing machine
+through nonempty rewriting rules and a fresh-delimiter word equation;
+all program tiles stay input-independent. The unbounded common tile
+selection and matrix histories still need an arithmetic certificate.
+This is not a complete universal GPCP Diophantine equation or a change
+to75/88.
 
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
@@ -706,6 +723,38 @@ Author/default and independent proof/source checks pass for both stages;
 composition has190 ledgers,4560 complete identities including1520 signed,
 and480 further independent signed output checks. Earlier receipts pass.
 
+The [label-aligned lane planner](group_projective_label_aligned_lanes.md)
+chooses among at most six fixed-m injections plus the current compiler.
+Layered candidates use p_e=ell_e-phase+8*occurrence, for phase zero or
+min(ell) and forward/reverse physical IDs; overflow goes into unused
+lanes. Contiguous-label candidates also rearrange storage only. Every
+candidate gets a paid sparse-Horner hatted pack and constant mask, then
+the existing shared-selector planner. Actual source counts include all
+new powers, sums and corrections. Ties retain the current source. Total
+cost cannot increase, though M and A separately may.
+
+Only Hc changes in the scalar interface. The old m,h,L, origin mask, q,
+physical ports, edge IDs, state flow and coordinate lists remain.
+Positive checksum fields satisfy E_e<=J<P and Hc<=J R_m<P^m under any
+injection, so pretyping, unit recovery and the native subset theorem
+apply. Boolean fields then recover the same chronological radix-B path.
+Completeness repacks that path and rebuilds native witnesses at the same
+scale but a changed encoded index. It does not retain the native tuple.
+The controller contribution is 8nu degrees below the unchanged range
+history term in packed Z, preserving native and outer highest forms.
+
+Scrambled distinct eight-label single and split macros both improve
+225/242 to210/227, with98M+129A,6 equations,34 witnesses and degree2240,
+without reordering actions. An unbalanced twelve-edge example improves
+273 to270; reversed repeated sixteen-edge labels improve294 to281.
+Both retain degree3504. The ten-letter default remains245 by fallback.
+Source evidence includes210 ledgers,3,360 changed-interface complete
+outputs (840 signed), four exact factor/outer degree audits and four
+genuine outer-path/AND fixtures. The helper maps original IDs to actual
+lanes. Overriding an optimized old Hc=S alias would incorrectly change
+physical S, so interface checks replay the unshared reindexed parent
+before assigning the new Hc.
+
 The [binary dilation132 proof](native_binary_input_dilation132.md)
 introduces positive q,P,J,K,Ahat and two bound slacks plus a shifted
 quotient. Put Q=q^4, B=8Q, S=qP and require
@@ -737,26 +786,74 @@ It pays one uniform injective word code, not a complete fixed-program PCP
 interface. A polynomial-only loader is impossible: values at2^n would
 force f(x)=x^4, but spread4(3)=17. The ordinary75/88 frontier is unchanged.
 
-Useful next targets: prove and cost a fixed-program PCP composition using
-this paid recoder, or explore physical-label-aligned lane permutations.
-A permutation may reduce offset groups without changing chronological
-flow, but arbitrary internal macro actions cannot be reordered. Sparse
-lane placement can enlarge m and the native degree; every mask, lane
-coefficient, scale, source gate and positive converse must be audited.
-No unimplemented permutation saving is included above. A separate
-proof-only follow-up suggests raw geometry47 may use just J>=9 and J>q
-instead of its original B=8q² bootstrap. The ratio, rank and converse
-proofs were re-read for these hypotheses, but no revised source packet
-has been implemented. In the recoder, x+input_slack=q already forces
-q>=2; choosing Q=q² and B=Q+Q would give J>B>=8, hence J>=9. The same
-synchronization and folding would represent the different radix-four
-relation sum bit_j(x)*4^j, with prospective129=65M+64A, SOS230 and degree40.
-This needs a standalone weaker-bootstrap proof plus literal source,
-receipts and independent review. It cannot use the B0 transport above,
-which requires B>=8q². Do not claim129 established or confuse radix four
-with the proved radix16 relation. The bounded88
-factor/norm/parity search in this checkpoint found no further proved
-operation reduction; independent-gamma87 remains unresolved.
+The [radix-four129 implementation](native_binary_input_dilation129.md)
+replaces q2=q*q,Q=q2*q2,B=8Q by Q=q*q,B=Q+Q. Its complete result is
+129=65M+64A,49 witnesses and34 equations; SOS230=99M+131A, degree40.
+This changes the graph to spread2(x), not an identical polynomial.
+The raw47 proof is revisited directly: J>=9,J>q,X>J and odd s>=3 supply
+the rank, signed-index, parity, representative and ratio/population
+arguments. The paid input bound x+slack=q gives q>=2, and J>B=2q² gives
+J>=9 and J>q. No B0 transport is used: the smallest geometry q4,B32,J33
+has slack−95 at the old B0=128. Its partial Pell fixture verifies ten
+actual comparisons; the three huge strong-auxiliary comparisons are
+explicitly left to the complete parametric converse.
+
+Native synchronization gives P=B^n,q=2^n,n>=2. Diagonal exponents
+(2n+2)j fold modulo2^(2n)−1 to2j. The shifted quotient handles x=1, and
+all-ones inputs satisfy the non-strict upper bound. Author, root and
+independent proof/source/default checks pass. Iteration has129r gates,
+34r equations,50r−1 witnesses and231r−1 SOS degree40, with block width
+2^r. The direct130 radix16 primitive is cheaper than two such stages.
+
+The [fixed-program GPCP bridge](gpcp_fixed_program_input_bridge.md)
+generalizes the radix16 source to any fixed k>=4 using Q=q^k and
+B=2^(k−1)Q. Binary powering costs mu(k)=floor(log2 k)+popcount(k)−1;
+the complete recoder costs128+mu(k), with49 witnesses and34 equations.
+The original B0 positive witness transport applies because B>=8q².
+Geometry synchronizes q=2^n,P=B^n,J=R_n(B),n>=2; diagonal exponents
+k(n+1)j fold to spread_k(x). The certified Q=2^(kn) is retained with z.
+
+For fixed nonempty prefix p and suffix s, the padded n-bit word b_n(x)
+obeys enc_R(p b_n(x) s)=R^|s|[enc_R(p)Q+z]+val_R(s), where R=2^k.
+This costs2M+2A without a length oracle. A fixed machine ignores leading
+zeros and recognizes the chosen r.e. set on ordinary x. Its explicit
+finite rewriting rules preserve configurations before acceptance;
+accepting cleanup erases tape to fixed v=LqaR. All rules have nonempty
+sides and contain no delimiter #. Copy tiles and fixed rule tiles give
+sigma(w)#v=u_n(x)#tau(w). Forward steps telescope; the converse splits
+at # into a chain of derivations. For zero steps choose copy(u), not
+an empty tile word. Injective fixed-width coding is applied after this
+symbol proof; it need not be comma-free. All tiles are independent of x.
+
+Initial matrix accumulators are (1,Vinitial,1), with framing prefix Lq0
+and suffix R#. Each fixed tile appends to both accumulators in base R.
+The terminal comparison R^|#v| Ufinal+val_R(#v)=Vfinal costs1M+1A.
+The boundary parameters are x,Vinitial,Ufinal,Vfinal, and z becomes one
+of50 positive witnesses. The total is134+mu(k), split68+mu(k) M and66 A,
+with36 equations. Its SOS costs241+mu(k), split104+mu(k) M and137 A,
+and has exact degree2max(20,k+1). Thus k4 gives136/243 with degree40;
+a larger universal alphabet must use its actual k. Independent review
+passed, including genuine padded odd-input runs, actual rewrite/tile
+words and dense matrix products, widths crossing degree20, and direct
+machine-step checks. Native Pell extensions remain parametric.
+
+No unbounded selected-word Diophantine relation is paid here. These
+positive triangular matrices have varying slopes and generally nonunit
+determinants, so importing the SL2 history compiler would be invalid.
+The fixed program and ordinary input boundary are now established;
+common tile selection and uniform histories remain open.
+
+Useful next targets are those selected histories, or combining native
+positivity/unit identities across the two recoder kernels to reduce
+SOS conversion. A fixed program's actual width must be counted before
+claiming a numerical universal bound. Further lane candidates may save
+operations, but the fixed-m fallback and fresh native converse remain
+required. The bounded88 search found an exact norm-unit replacement
+N1,N2 -> N1,1+N1−N2 using the exclusion of residue3 modulo4. Its direct
+schedule adds2A. The shared-root difference costs5M+9A including its
+unit shift, versus5M+6A for retaining the norm block, so there is no
+new saving or packet. Independent-gamma87 remains unresolved, and the
+complete75/88 bounds are unchanged.
 
 The [standalone X-divisibility obstruction](native_binary_X_divisibility_obstruction.md)
 rejects computing X from r+bound_beta while erasing w and X=wq.

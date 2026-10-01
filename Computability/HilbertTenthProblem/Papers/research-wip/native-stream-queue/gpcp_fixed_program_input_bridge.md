@@ -186,8 +186,9 @@ the injective coding to the complete word equation.
 
 ## 5. Exact affine matrix and scalar boundary interface
 
-After this fixed coding, a tile (a_i,b_i) acts on positive sentinel
-accumulators by
+Regard each fixed k-bit block as one radix-R digit. Lengths in this
+section count these blocks, not their individual binary bits. A tile
+(a_i,b_i) acts on positive sentinel accumulators by
 
     M_i=[ R^|a_i|     0        val_R(a_i) ]
         [    0     R^|b_i|    val_R(b_i) ]

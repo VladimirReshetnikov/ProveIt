@@ -15,7 +15,7 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 The established arithmetic bounds remain **75 operations for a complete
 certificate and 88 for one universal polynomial**. The latest complete
-[fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
+[fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
 has an illustrative **228-operation certificate / 245-operation polynomial
 (104M+141A)**, six equations, 36 positive witnesses and degree3504.
 Its numerical universal alphabet is not instantiated. Mortality now has
@@ -243,7 +243,7 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   witnesses. Separately, [shared selector packing](Papers/research-wip/native-stream-queue/group_projective_shared_selector_pack.md)
   reaches246 by an exact polynomial identity. Their
   [combined source](Papers/research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
-  is now the latest fixed-table compiler:
+  gives this ten-letter table, retained by the later lane planner:
 
   | Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
   |---|---|---:|---:|---:|---:|
@@ -261,13 +261,40 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   fallbacks; these numerical examples do not instantiate the universal
   alphabet or improve the separate75/88 bounds.
 
+  The latest [label-aligned lane planner](Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
+  compares at most six storage injections within the same m, paying all
+  packing gates and retaining the preceding source when none is cheaper.
+  Physical edge IDs, action order, state flow and scales are unchanged;
+  fresh native witnesses prove the ordinary-input equivalence. The default
+  ten-letter count remains245/degree3504. A nonaligned eight-letter table
+  improves242 to227, with6 equations,34 witnesses and degree2240; an
+  unbalanced twelve-letter table improves273 to270, and a reversed
+  sixteen-letter table improves294 to281, both at degree3504. These
+  comparisons use distinct fixed tables, not a universal numerical alphabet.
+
 - The [complete binary input recoder](Papers/research-wip/native-stream-queue/native_binary_input_dilation130.md)
   represents `z=sum bit_j(x)*16^j` in **130=67M+63A** operations,
   with49 positive witnesses and34 equations. Its polynomial costs
   **231=101M+130A**, with exact degree40. Two inlined shifted inputs
   preserve the complete132 parent's polynomial identically. All typing,
-  synchronization and bounds are paid; this is a word-code primitive,
-  with a full PCP program/history certificate still uncomposed.
+  synchronization and bounds are paid. The separate
+  [radix4 recoder](Papers/research-wip/native-stream-queue/native_binary_input_dilation129.md)
+  costs129=65M+64A, with the same49 witnesses and34 equations; its
+  polynomial costs230=99M+131A at degree40. It uses Q=q^2,B=2Q and
+  proves the weaker raw-kernel hypotheses J>=9,J>q directly from paid
+  bounds. It changes the represented function to `sum bit_j(x)*4^j`,
+  so it does not replace the radix16 relation or share its polynomial.
+
+- The [fixed-program GPCP input bridge](Papers/research-wip/native-stream-queue/gpcp_fixed_program_input_bridge.md)
+  pays the framed ordinary-input and terminal boundaries. For a fixed
+  k-bit alphabet, k>=4, its certificate costs134+mu(k) and its polynomial
+  costs241+mu(k), where mu(k)=floor(log2 k)+popcount(k)-1. It has50
+  positive witnesses,36 equations and exact degree2 max(20,k+1); k=4
+  gives136/243 operations. Fixed rewrite tiles with nonempty sides, a fresh
+  delimiter and the zero-step case establish the program convention.
+  The unbounded common tile word and selected histories remain unpaid;
+  the existing SL2 history compiler cannot simply be imported. The
+  separate numerical75/88 bounds are unchanged.
 
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
@@ -292,7 +319,8 @@ remains unresolved under the [compiler/order filters](Papers/research-wip/native
   shifted-quotient theorem gives280 by composition; the later shared-history
   and strong-unit results give279 at degree3502; the subsequent shared-flow
   composition gave276 and the idle-free stage gave261. The reindexed/shared
-  successor now gives245 at degree3504 under the same existence equivalence.
+  successor gives245 at degree3504, retained by the lane planner under
+  the same existence equivalence.
   This is an existence reduction, not verification of an arbitrary supplied
   mortality word.
   The [seven-dimensional weighted adapter](Papers/research-wip/native-stream-queue/group_affine_weighted_mortality7.md)

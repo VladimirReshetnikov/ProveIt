@@ -2,7 +2,7 @@
 
 The leading numerical bounds are **75 certificate / 88 polynomial
 operations**. The latest complete
-[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
+[fixed-table matrix compiler](../research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
 gives an illustrative **228/245 operations, 6 equations, 36 witnesses,
 degree3504**, with polynomial split104M+141A; it does not instantiate a
 numerical universal alphabet. Mortality now has a
@@ -425,7 +425,7 @@ The [shared-selector rewrite](../research-wip/native-stream-queue/group_projecti
 instead preserves the full polynomial on arbitrary integer assignments,
 reaching the intermediate246 count. Its
 [composition with reindexed geometry](../research-wip/native-stream-queue/group_projective_reindexed_shared_pack.md)
-gives the current ten-letter table:
+gives the following ten-letter table, retained by the later lane planner:
 
 | Mask reuse | Computed P | Certificate / polynomial | Polynomial M / A | Equations / witnesses | Degree |
 |---|---|---:|---:|---:|---:|
@@ -449,13 +449,44 @@ choice gives259/802 with40 witnesses. These are complete fixed-table
 tradeoffs, while the numerical universal alphabet remains uninstantiated
 and the75/88 bounds remain unchanged.
 
+The latest [label-aligned lane planner](../research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
+tries at most six storage injections within the existing m lanes and
+retains the preceding compiler whenever none is cheaper. Every packing
+operation is paid. Only packed positions change: physical edge IDs,
+action order, state flow, masks and scales remain fixed. Its positive
+proof rebuilds native witnesses, and its degree proof uses the unchanged
+dominant history region. The default ten-letter source remains245 at
+degree3504. A nonaligned eight-letter table improves242 to227, with6
+equations,34 witnesses and degree2240; an unbalanced twelve-letter table
+improves273 to270, and a reversed sixteen-letter table improves294 to281,
+both at degree3504. These are distinct-table examples, not numerical
+instances of the universal alphabet.
+
 A separate [complete input recoder](../research-wip/native-stream-queue/native_binary_input_dilation130.md)
 represents `z=sum bit_j(x)*16^j` in **130=67M+63A** operations,
 with49 positive witnesses and34 equations. Its single polynomial costs
 **231=101M+130A** and has exact degree40. Inlining two shifted inputs
 preserves the complete132 parent's entire polynomial, with all native
-typing, exponent synchronization, masks and bounds still paid. It is a
-word-code primitive; the full PCP program/history remains uncomposed.
+typing, exponent synchronization, masks and bounds still paid. A separate
+[radix4 recoder](../research-wip/native-stream-queue/native_binary_input_dilation129.md)
+costs129=65M+64A with the same49 witnesses and34 equations; its polynomial
+costs230=99M+131A and has degree40. It uses Q=q^2,B=2Q, obtaining
+J>=9,J>q directly before raw-kernel decoding. The older transport to
+B0=8q^2 is not used. It represents `sum bit_j(x)*4^j`, so the function
+and polynomial differ from the130 radix16 relation.
+
+The [fixed-program GPCP bridge](../research-wip/native-stream-queue/gpcp_fixed_program_input_bridge.md)
+now pays the framed ordinary-input and terminal boundary. For a fixed
+k-bit alphabet with k>=4, let mu(k)=floor(log2 k)+popcount(k)-1. The
+complete scalar boundary costs134+mu(k), with50 positive witnesses and36
+equations; its polynomial costs241+mu(k) and has exact degree
+2 max(20,k+1). At k=4 the counts are136=70M+66A and243=106M+137A.
+A fixed machine compiles to rewrite tiles with nonempty sides, with a fresh
+delimiter and an explicit zero-step construction proving the word equation.
+Thus program and padded ordinary-input conventions are supplied. The
+unbounded common tile selection and weighted matrix histories remain
+unpaid. These affine tile matrices generally have nonunit determinants,
+so the SL2 history compiler does not transfer directly;75/88 is unchanged.
 
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
@@ -499,8 +530,9 @@ four-history certificate, explicitly importing the257/283 factored-index
 illustration. The shifted quotient composes to give280; the later
 shared-history/strong-unit theorems
 give279 at degree3502; the joint-unit/shared-flow composition gave276,
-the idle-free stage gave261; the latest reindexed/shared compiler gives245
-at degree3504 under the same existence equivalence. None certifies
+the idle-free stage gave261; the reindexed/shared compiler gives245,
+retained by the latest lane planner at degree3504 under the same
+existence equivalence. None certifies
 an arbitrary supplied mortality word or its individual reset
 positions, and no numerical universal alphabet is materialized.
 
