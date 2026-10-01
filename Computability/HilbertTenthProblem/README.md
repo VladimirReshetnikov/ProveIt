@@ -23,16 +23,14 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate87-operation candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
-The separate [complete slope-class GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
-pays ordinary input and arbitrary selected tile histories. Its 34-tile
-odd-integer example costs **526 certificate / 603=259M+344A polynomial
-operations**, with26 equations,98 positive witnesses and degree6202.
-That example does not instantiate the effective universal interpreter table.
-The [explicit Neary–Woods construction](Papers/research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
-now supplies a concrete universal table and paid ordinary-input bridge:
-**1072=445M+627A** polynomial operations,162 positive witnesses, three
-positive program parameters and degree485982. Supplying the initial
-history value gives1075 operations at degree9100. These alternative
+The separate [bracket-anchored GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+pays ordinary input and arbitrary selected tile histories. Its29-tile
+odd-integer example costs **502 certificate /579=249M+330A polynomial
+operations**, with26 equations,93 positive witnesses and degree5502.
+Its distinct explicit Neary–Woods universal table has96 physical tiles
+and a paid ordinary-input bridge: **1046=423M+623A** polynomial operations,
+162 positive witnesses, three positive program parameters and degree199806.
+Supplying the initial history value gives1049 operations at degree7276. These alternative
 universal bounds are larger than75/88; the matrix alphabet remains abstract.
 
 ## Layout
@@ -367,7 +365,7 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   remains a degree alternative. The regrouped product contains nine
   sign-safe norms and one checksum; the second checksum stays explicit.
 
-  The latest [slope-class composition](Papers/research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+  The [slope-class composition](Papers/research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
   compares every paid baseline pair after transport factoring, retaining
   both per-tile layouts as fallbacks. The table and chronological tile
   word remain fixed, and new packing scales receive fresh positive native
@@ -380,6 +378,17 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   is H+220+mu(k), with s+g+59 witnesses. The ordinary input and optional
   three-operation program loader remain paid; these numerical examples
   do not change the universal75/88 frontier.
+
+  The [state-free-copy successor](Papers/research-wip/native-stream-queue/gpcp_state_free_copies.md)
+  keeps the alphabet, symbol codes, all rewrite rules and input boundary,
+  but copies only tape symbols and delimiters. Every genuine rule consumes
+  the unique state, so its copied contexts contain no state; completeness
+  rebuilds the selection from a nonempty accepting derivation. The converse
+  is immediate from inclusion in the old tile table. The theorem concerns
+  well-formed starts with distinct initial and accepting states, retaining
+  the same leading-zero convention. The odd example becomes30 tiles,
+  510/587 operations,94 witnesses and degree5642. Its supplied-value
+  alternative is590/degree2384; the raw alternatives are662/2356 and665/952.
 
 - The [explicit Neary–Woods U15,2 compiler](Papers/research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
   instantiates Table16's29 instructions over two tape symbols. Its21-symbol
@@ -402,6 +411,35 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   slope and per-tile variants remain1153/178w and2278/399w. This is a
   numerical alternative universal construction, not an improvement to
   the separate75/88 frontier or an instantiation of the matrix alphabet.
+
+  The [prefix-code successor](Papers/research-wip/native-stream-queue/neary_woods_prefix_universal.md)
+  preserves those97 physical tiles but replaces fixed-width symbol digits
+  by an injective binary prefix code. The two tape symbols have length2,
+  states length5, and delimiters/accepting state length7. Consequently the
+  same32-symbol input blocks use recoder width64. All boundary constants,
+  tile affine maps and packing/native witnesses are rebuilt and paid.
+  With six exceptional slope products, N=107 and H=823, its default has
+  **977 certificate /1057=429M+628A polynomial operations**,27 comparisons,
+  163 witnesses and degree201682. A supplied initial value gives1060,
+  28 comparisons,164 witnesses and degree7332. The three positive program
+  parameters and valid-slice universality theorem remain; this is a new
+  coding of the same universal machine, not a polynomial identity between
+  the two numeric encodings. The1072/162-witness source remains an alternative.
+
+  The latest [bracket-anchored history](Papers/research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+  also removes the separator copy and separator symbols in the endpoints.
+  A valid configuration's closing bracket cuts the upper tile word at a
+  tile boundary. Its unique state forces exactly one rewrite tile in that
+  row; cancellation then recovers the next configuration. This proves
+  chronological history recovery without a fresh separator, on the stated
+  valid-configuration domain. The universal table becomes96 tiles with
+  H=812,g=6,N=106: **966 certificate /1046=423M+623A polynomial operations**,
+  27 comparisons,162 witnesses and degree199806. Its supplied-value option
+  gives1049,28 comparisons,163 witnesses and degree7276. The odd example
+  separately becomes29 tiles and502/579 operations,93 witnesses,degree5502;
+  its supplied-value alternative costs582 at degree2328. The same ordinary
+  input, positive parameter slices and fresh native-extension requirements
+  remain. The state-free587 and prefix1057 packets are retained predecessors.
 
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets
@@ -467,6 +505,15 @@ universal bounds are larger than75/88; the matrix alphabet remains abstract.
   rejects a standalone55-operation selector at q=48 after dropping
   q divides X. That scale is excluded by the stronger joined matrix
   interface; neither result is a general arithmetic lower bound.
+- The [positive-transport projection obstruction](Papers/research-wip/native-stream-queue/complete75_positive_transport_projection_obstruction.md)
+  rejects a different exact87=47M+40A rewrite. Supplying the positive
+  transport value C instead of positive F saves one addition but loses
+  the condition F>0. A complete parametric construction then gives positive
+  zeros at every ordinary input for every fixed actual compiler, retaining
+  both ratio constraints, the strong auxiliary square and the input norm.
+  This refutes that specific projection; the independent-gamma87 candidate
+  below remains unresolved and the proved88 bound is unchanged.
+
 - The [independent-quotient87 candidate](Papers/research-wip/native-stream-queue/complete75_independent_gamma87_alias.md)
   remains **unresolved**. Deleting gamma=rho+sigma gives a literal87-operation,
   degree151 relaxation containing all parent zeros, but the input-index bound

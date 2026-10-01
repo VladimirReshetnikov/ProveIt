@@ -12,16 +12,14 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
-The separate [complete slope-class GPCP route](../research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+The separate [bracket-anchored GPCP route](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
 pays ordinary integer input and arbitrary common tile histories. Its
-34-tile odd-integer example costs **526 certificate /603=259M+344A
-polynomial operations**,26 equations,98 witnesses and degree6202.
-That example does not instantiate the effective universal interpreter table.
-The [explicit Neary–Woods construction](../research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
-now gives a numerical universal table with a paid ordinary-input bridge:
-**1072=445M+627A** polynomial operations,162 positive witnesses, three
-positive program parameters and degree485982. Supplying its initial
-history value gives1075 at degree9100. This is a complete alternative
+29-tile odd-integer example costs **502 certificate /579=249M+330A
+polynomial operations**,26 equations,93 witnesses and degree5502.
+Its distinct explicit Neary–Woods table instead gives a numerical universal
+polynomial with a paid ordinary-input bridge: **1046=423M+623A** operations,
+162 positive witnesses, three positive program parameters and degree199806.
+Supplying its initial history value gives1049 at degree7276. This is a complete alternative
 above75/88; the separate matrix alphabet remains abstract.
 
 **Current complete certificate: 75=41M+34A operations.** The
@@ -591,7 +589,7 @@ the true selected affine update, with a paid carry margin. The34-tile
 table now needs five products instead of68, and its unfactored unit
 history drops728 to447 operations,59 witnesses and degree2522.
 
-The latest [complete slope-class composition](../research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+The [complete slope-class composition](../research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
 scores every actual baseline pair after transport factoring and retains
 both per-tile layouts as fallbacks. All choices preserve the fixed table
 and ordinary-input predicate, using fresh native witnesses at their own
@@ -609,6 +607,19 @@ H+220+mu(k) polynomial operations, now with s+g+59 witnesses. Supplied
 endpoints add one witness/comparison and three polynomial operations.
 The paid program loaders and the complete fixed-interpreter theorem
 remain available; numerical universal75/88 improvements remain separate.
+
+The [state-free-copy compiler](../research-wip/native-stream-queue/gpcp_state_free_copies.md)
+then removes copies of control states while keeping all original symbols,
+codes, rewrite rules, input framing and loader gates. Every genuine rule
+consumes the unique state, so its copied contexts use only tape symbols
+and brackets. Rebuilding a nonempty accepting derivation proves
+completeness; inclusion in the old tile table proves soundness. Equivalence
+is asserted for well-formed starts with distinct initial/accepting states
+and the original leading-zero convention, not arbitrary boundary tuples.
+For the same odd recognizer,30 tiles give **510 certificate /587=254M+333A
+polynomial operations**,26 comparisons,94 witnesses and degree5642.
+The supplied endpoint gives590/2384; raw computed/supplied sources give
+662/2356 and665/952. These are decidable examples, not universal counts.
 
 The [explicit Neary–Woods U15,2 construction](../research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
 now instantiates a different universal fixed table. Published
@@ -638,6 +649,48 @@ per-tile source remains2278 with399 witnesses. Thus the GPCP route now
 has a concrete numerical universal instance with all input and history
 interfaces paid. These alternative bounds are larger than75/88 and do
 not materialize the separate group-based matrix alphabet.
+
+The [binary prefix-code successor](../research-wip/native-stream-queue/neary_woods_prefix_universal.md)
+keeps the same97 physical tiles and universal simulation. Tape symbols
+receive two-bit codes, control states five-bit codes, and the three
+delimiters plus accepting state seven-bit codes. Prefix-free decoding and
+sentinel integers preserve concatenated word equality, even though the
+symbol widths differ. The existing32-symbol bit blocks now have width64;
+the recoder, repunit, framing, terminal constants and tile affine maps are
+all rebuilt at their paid costs. Different native scales receive fresh
+positive witnesses; the old and new numeric polynomials are not identical.
+
+The selected raw history has H=823,g=6,N=107. Its complete source has
+**977=402M+575A certificate operations**,27 comparisons and a
+**1057=429M+628A** universal polynomial,163 positive witnesses and degree201682.
+The supplied-initial-value option gives1060=430M+630A,28 comparisons,
+164 witnesses and degree7332. The fixed codeword assignment is compiler
+data, not an uncharged runtime choice. The three positive program
+parameters and valid-configuration slice theorem remain. The1072 source
+is retained as a one-fewer-witness alternative; neither changes75/88.
+
+The latest [bracket-anchored successor](../research-wip/native-stream-queue/gpcp_bracket_anchored_history.md)
+removes the fresh separator copy tile and its symbols in the initial and
+terminal framing. The proof uses the actual configuration brackets: the
+upper word cannot end partway through the first configuration, since the
+appended target would introduce an interior opening bracket. Its closing
+bracket cuts at a tile boundary; the unique state forces exactly one
+rewrite tile in that prefix. Cancelling the initial configuration exposes
+the next row, and induction recovers the full chronological derivation.
+Completeness concatenates the genuine rewrite rows without separators.
+This is a theorem for the valid bracketed configurations, not a deletion
+from an unrestricted rewriting-to-GPCP reduction.
+
+The universal table becomes **96 tiles, four copies plus92 rules**, with
+H=812,g=6,N=106. It gives **966=396M+570A certificate operations** and
+**1046=423M+623A polynomial operations**,27 comparisons,162 witnesses and
+degree199806. Supplying the initial value gives1049,28 comparisons,
+163 witnesses and degree7276. The ordinary input still uses the paid
+width64 recoder and three positive program parameters; the suffix now
+ends in the nonzero closing-bracket code. The odd recognizer separately
+gives29 tiles,502/579=249M+330A,26 comparisons,93 witnesses and degree5502;
+its supplied-value version costs582 at degree2328. Both improvements
+rebuild the native history witnesses and preserve the earlier scope.
 
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with
@@ -768,6 +821,16 @@ CRT outer construction extends through all positive Pell witnesses at
 every positive input. The relaxed source therefore represents all positive
 integers. This rejects that rewrite, not other potential87-operation
 equations;75 and88 remain the established numerical bounds.
+
+The [positive-transport projection obstruction](../research-wip/native-stream-queue/complete75_positive_transport_projection_obstruction.md)
+rejects another exact87=47M+40A shortcut. It supplies C>0 instead of F>0,
+reverses the paid transport chain and saves one addition. The restored
+F can be negative. A fixed-scale CRT and population construction, followed
+by a fresh full positive Pell extension, makes the modified polynomial
+zero at every positive input for every actual fixed compiler. Both ratio
+slacks, the exact strong auxiliary square, input norm and all other factors
+remain. This is a full-input obstruction to that specific projection,
+not a kernel-only counterexample or a resolution of other87 candidates.
 
 The [independent main/input quotient relaxation](../research-wip/native-stream-queue/complete75_independent_gamma87_alias.md)
 has a different, **unresolved** status. Deleting gamma=rho+sigma gives

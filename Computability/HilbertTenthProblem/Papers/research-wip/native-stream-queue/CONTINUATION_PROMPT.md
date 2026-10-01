@@ -239,13 +239,89 @@ imports only the valid clockwise-TM slices with both boundary markers.
 Finite transition, framing and cleanup audits supplement the parametric
 proofs, without constructing full native Pell witnesses numerically.
 
-Next useful PCP work is to generalize the state-copy deletion to the
-ordinary fixed-machine compiler, factor offset coefficients using their
-digit structure beyond equality of whole coefficients, or lower the paid
-mixed-width input cost/degree. Preserve original tile chronology,
-independent input/history duration, positive domain and supplied-endpoint
-tradeoffs. Bounded additional searches on the88-operation source found
-no verified saving; this is not an obstruction or a minimality claim.
+The [general state-free-copy compiler](gpcp_state_free_copies.md) now
+implements that deletion for any compatible fixed TM. It retains the full
+alphabet/codes, all rules, paid input boundary and loaders; only copy tiles
+for states disappear. Completeness rebuilds the tile word from a genuine
+nonempty derivation; soundness uses the subset embedding. Its ordinary
+odd example drops34 to30 tiles, with **510 certificate /587=254M+333A
+polynomial operations**,26 comparisons,94 witnesses and degree5642.
+Supplied Vi gives590/95w/2384; raw alternatives give662/113w/2356 and
+665/114w/952. Preserve valid-start scope and all leading-zero conventions.
+
+The [prefix-coded universal successor](neary_woods_prefix_universal.md)
+keeps97 physical U15 tiles but uses a fixed injective binary code: tape
+symbols length2, ordinary states length5, brackets/separator/halt length7.
+Its32-symbol input blocks therefore use the paid recoder at width64,
+not160. Equality of complete binary tile words uniquely decodes to the
+same physical GPCP equation, even if delimiter bit patterns occur inside
+concatenations. Prefix-code injectivity, rather than bit-pattern freshness,
+is the argument. The codeword permutation is literal compiler data;
+a bounded search selected it without an optimality claim.
+
+The selected history has g=6,N=107,H=823. The full universal source gives
+**977=402M+575A certificate /1057=429M+628A polynomial operations**,
+27 comparisons,163 positive witnesses and degree201682. Supplied Vi
+gives1060/164w/7332. Three positive program parameters and every leading
+physical zero block remain. Comparisons retain ordered and unequal-length
+codes; shorter blocks can cost more by creating additional slope classes.
+The complete unit and degree proofs are unchanged after recompiling the
+actual input/body/history interfaces with fresh positive native witnesses.
+
+The latest [bracket-anchored history](gpcp_bracket_anchored_history.md)
+removes the fresh separator entirely. With state-free copy tiles and
+actual TM rules, all tile sides are nonempty, brackets occur only at their
+appropriate ends, and each rule consumes exactly one state. For valid
+configurations u,v, the equation sigma(w)v=u tau(w) encodes a derivation.
+If a nonempty top word ends inside u, v introduces a second opening
+bracket there, a contradiction. Otherwise u's closing bracket cuts at an
+actual tile boundary, and the unique state gives exactly one rewrite in
+that prefix. Cancel u and induct on the strictly shorter remaining tile
+word. Distinct initial/accepting states exclude the empty/reflexive case.
+This is a new scoped word theorem, not unrestricted delimiter deletion.
+
+The U15 table now has96 tiles, four copies plus92 rules, g=6,N=106 and
+H=812. Its suffix is A_right A_left ] and its terminal is [halt], both
+without #. All terminal constants and positive program parameters are
+recomputed. The complete universal bound is **966=396M+570A certificate /
+1046=423M+623A polynomial operations**,27 comparisons,162 witnesses and
+degree199806. Supplied Vi gives1049/163w/28eq/degree7276. The same
+ordinary odd example becomes29 tiles, H=357,N=38 and **502 certificate /
+579=249M+330A polynomial operations**,26eq,93w,degree5502; supplied Vi
+gives582/94w/2328. The old prefix1057 and state-free587 packets remain
+reproducible. All sources, proofs and fresh receipt replays passed review.
+
+There is also a verified scoped rejection of a literal87 projection:
+[positive transport C in place of positive F](complete75_positive_transport_projection_obstruction.md).
+Reversing the C=q-F-Z-alpha-2dx chain saves one gate but loses F>0.
+For every actual fixed compiler, a CRT period makes the exponent residue
+constant while alpha moves R through an arithmetic progression. Binary
+complementation makes its population arbitrarily large. At fresh
+X=2^R and half-binomial Y, a converse-only growth proof supplies both
+ratio slacks, the full strong tuple and positive input-index split.
+All eight factors equal1 with all19 new witnesses positive, for every
+positive input, while restored F is negative. Thus positive F's packed
+width bound must be replaced if this projection is revisited. This does
+not resolve the distinct independent-gamma87 candidate or prove a general
+lower bound. The75/88 frontier remains unchanged.
+
+Next concrete TM lead: the current right-move rules enumerate the next
+tape symbol in q a c -> b p c. A context-free rule q a -> b p may replace
+them if a shared repair p ] -> p _ ] supplies the right-edge blank for
+each relevant target state. Prove the pending-head intermediate semantics
+and that repair is forced before an ordinary transition, then recompile
+the actual sparse table and paid input. Do not assume the old row-by-row
+TM equivalence for these additional intermediate configurations. The
+bracket-anchoring theorem may then apply to the new genuine rewrite path.
+This lead is not yet a saved construction or numerical bound.
+
+Other useful work: optimize symbol-code assignments or joint offset forms,
+try smaller cyclic/queue rewriting substrates with fully paid ordinary
+input, or reduce the best88 source while preserving its positive packed
+width and both ratios. Straight digit-Horner and simple subset-sum schedules
+tried on the current tables did not improve their paid costs; this bounded
+observation is not an obstruction. Preserve chronology, independent
+input/history duration, positive domains and supplied-endpoint tradeoffs.
 
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
