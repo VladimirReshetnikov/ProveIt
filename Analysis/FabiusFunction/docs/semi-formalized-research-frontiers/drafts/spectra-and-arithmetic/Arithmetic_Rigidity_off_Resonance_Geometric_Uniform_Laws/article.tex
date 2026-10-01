@@ -1,0 +1,852 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,tabularx,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Arithmetic Rigidity off Resonance: Exact convolution factors of geometric-uniform laws},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Fabius-type laws, Fourier zeros, prime-adic matching, and Wasserstein separation}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Arithmetic rigidity off resonance}
+\fancyhead[R]{\small ProveIt research manuscript}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N_0}
+\newcommand{\Np}{\mathbb N_{>0}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Un}{\mathcal U}
+\newcommand{\NR}{\mathcal N}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\TV}{\operatorname{TV}}
+\DeclareMathOperator{\ord}{ord}
+\numberwithin{equation}{section}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.4in}
+{\large\scshape ProveIt research series\par}
+\vspace{0.7in}
+{\Huge\bfseries Arithmetic Rigidity\\[0.15em] off Resonance\par}
+\vspace{0.35in}
+{\LARGE Exact convolution factors of\\ geometric-uniform laws\par}
+\vspace{0.45in}
+{\large Prepared for Vladimir Reshetnikov\\30 September 2026\par}
+\vspace{0.55in}
+\begin{abstract}
+Let $\mu_q$ be the law of $\sum_{k\ge0}q^kU_k$, where the $U_k$ are independent uniforms on $[-1/2,1/2]$. We classify every finite or countable convolution of centered uniform laws that divides $\mu_q$ when no positive power of $q$ is rational. More generally, for any summable family of pairwise rationally incommensurable source widths, divisibility is equivalent to assigning each proposed uniform to a distinct source coordinate and refining that coordinate by an integer. In this setting, cancellation of all Fourier zeros is sufficient for positivity of the quotient.
+
+For geometric factors, this yields the exact parameterization $c=q^a/n$, $\rho=q^m/d$ and reduces simultaneous divisibility to disjointness of arithmetic progressions. We also treat $q=p^{-e/h}$, with $p$ prime and $\gcd(e,h)=1$: the classification separates into $h$ rationality classes, each governed by a prime-adic Hall inequality. A finite-orbit criterion classifies individual geometric factors in this resonant case.
+
+A double-zero obstruction is made quantitative in Wasserstein distance. An explicit family shows that exact factorability can disappear under arbitrarily small parameter changes, even as the distance to the factorable class tends to zero. We distinguish these extensions from earlier repository results, give all analytic and arithmetic proofs, and supply a standard-library verifier with 156,227 executed exact finite checks.
+\end{abstract}
+\vfill
+\noindent\textbf{Status.} AI-assisted, proof-bearing research manuscript; not peer reviewed or checked in a proof assistant. The novelty claims are relative to the specifically inspected sources, not a certified worldwide priority claim. The classification concerns uniform-series factors, not all probability convolution factors.
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{The question and the contribution boundary}\label{sec:intro}
+The Fabius--Rvachev program in ProveIt studies smooth compactly supported laws, their entire Fourier transforms, exact arithmetic, and their convolution decompositions. The classical dyadic law belongs to the family
+\begin{equation}\label{eq:source}
+ X_q=\sum_{k=0}^{\infty}q^kU_k,\qquad
+ \mu_q=\Law(X_q),\qquad 0<q<1,
+\end{equation}
+where all $U_k$ are independent and uniform on $[-1/2,1/2]$. The basic Fabius function and its arithmetic are treated in the primary sources \cite{arias-definition,arias-arithmetic}. The proofs below do not assume unverified analytic claims from repository manuscripts.
+
+Two recent repository reports substantially clarify convolution divisibility for arithmetic source scales. The divisibility-ladder report \cite{repo-ladders} treats nested integer denominators, including geometric integer-base targets. The simultaneous-divisor report \cite{repo-hall} proves a prime-adic Hall criterion and its prime-power extension, as well as a composite-base obstruction. Neither inspected report supplies the off-resonance classification proved here. The precise source scope is important: their rejection of irrational \emph{factor} ratios for an integer-base \emph{target} does not address irrational target ratios.
+
+The question we pursue is therefore:
+\begin{quote}
+When is a prescribed finite or countable sum of independent uniform variables an independent summand of a geometric-uniform random variable with a non-integer arithmetic scale?
+\end{quote}
+A necessary condition is the containment of Fourier zero divisors. For general compactly supported laws, such containment need not make the quotient a characteristic function. The useful phenomenon here is that irrational separation can make this necessary condition sufficient, through a rigid coordinate assignment.
+
+\subsection{What is proved}
+For a summable family $s=(s_k)$ of positive widths, call it \emph{rationally separated} if $s_k/s_l\notin\Q$ whenever $k\ne l$. The main theorem, \cref{thm:separated}, classifies all uniform-series divisors of such a source. Applied to $s_k=q^k$, it covers every
+\begin{equation}\label{eq:NR}
+ q\in\NR:=\{q\in(0,1):q^m\notin\Q\text{ for every }m\in\Np\}.
+\end{equation}
+The complement of $\NR$ is countable. Thus the theorem covers a full-measure, comeager set of parameters, while still leaving arithmetically meaningful exceptional parameters.
+
+The geometric-stream theorem and its simultaneous form, \cref{thm:geometric,thm:streams}, convert analytic divisibility into exact arithmetic. The resonant channel theorem, \cref{thm:channels}, covers a different parameter family: $q=p^{-e/h}$. Its $h=1$ ingredient is the previously identified repository Hall theorem, reproved here; the $h$-channel reduction and the finite geometric orbit criterion are the extensions. Finally, \cref{thm:metric,thm:perturbation} turn the zero-multiplicity obstruction into a quantitative separation statement and a parameter-instability example.
+
+\subsection{What is not claimed}
+There is no assertion that every convolution factor of $\mu_q$ is a uniform-series law. There is no complete classification at parameters whose least rational power has numerator greater than one, nor at all composite reciprocal returns. General multisection identities and the singular golden-ratio Bernoulli convolution used later are classical mechanisms, not new discoveries. The previously established $h=1$ prime-power Hall theorem is not relabeled as a new result.
+
+The repository inspection was focused, not exhaustive. We inspected the two relevant report READMEs, their recorded theorem summaries and editorial overlap notes, the main Fabius README, and the beginning of the formal dyadic multisection file. We did not audit the entire repository, compile its Lean development, or inspect every incoming archive. The reference snapshot is commit
+\begin{center}\small\texttt{ffddaa8b9c89e7bf027e1442cc6216bb010906d0}.\end{center}
+Full paths, blob identifiers, and inspection limits are supplied in \texttt{SOURCES.md}.
+
+\section{Conventions and the analytic foundation}\label{sec:foundation}
+\subsection{Widths, dilations, and convolution factors}
+We write $\Un_a=\Law(aU)$ for $a>0$. Thus $a$ is the \emph{length} of the support interval, not its halfwidth. For a probability measure $\sigma$ and $c>0$, $D_c\sigma$ denotes its image under $x\mapsto cx$. We write
+\[
+ \sigma\preceq\mu\quad\Longleftrightarrow\quad
+ \mu=\sigma*\nu\text{ for some probability measure }\nu.
+\]
+The remainder $\nu$ is not assumed in advance to have a density, to be symmetric, or to belong to a particular parametric family.
+
+For positive summable widths $(a_j)_{j\in J}$, where $J$ is finite or countable, define
+\[
+ \Un(a)=\Law\left(\sum_{j\in J}a_jU_j\right).
+\]
+All these sums converge absolutely for every choice of the coordinates. The empty family gives $\delta_0$. Throughout, different summands in a displayed probabilistic decomposition are independent.
+
+Our Fourier convention is
+\[
+ \widehat\sigma(t)=\int_{\R}e^{2\pi itx}\,d\sigma(x),
+ \qquad \sinc w=\begin{cases}\sin w/w,&w\ne0,\\1,&w=0.\end{cases}
+\]
+In particular,
+\begin{equation}\label{eq:phi}
+ \Phi_q(z)=\widehat\mu_q(z)
+ =\prod_{k\ge0}\sinc(\pi q^kz).
+\end{equation}
+The support of $\mu_q$ is $[-1/(2(1-q)),1/(2(1-q))]$. In this normalization $\mu_{1/2}$ is the Rvachev up-law on $[-1,1]$. The simultaneous-divisor report \cite{repo-hall} instead uses uniform variables on $[-1,1]$, so its random variable is twice ours. Keeping this factor of two explicit prevents incorrect Fourier-zero and support comparisons.
+
+\begin{lemma}[Entire products and their exact zeros]\label{lem:zeros}
+Let $(s_k)$ be a finite or countable summable family of positive real numbers. Then
+\[
+ P_s(z)=\prod_k\sinc(\pi s_kz)
+\]
+converges uniformly on compact subsets of $\C$ and is the entire Fourier transform of $\Un(s)$. Its only zeros are
+\[
+ z=m/s_k,\qquad k\text{ a source index},\quad m\in\Z\setminus\{0\}.
+\]
+At such a point the multiplicity equals the number of source indices $k$ for which $s_kz$ is a nonzero integer. This number is finite.
+\end{lemma}
+\begin{proof}
+For $z$ in a fixed compact set, the Taylor expansion at zero gives
+$|\sinc(\pi s_kz)-1|\le C s_k^2$ for all sufficiently large $k$. Summability of $(s_k)$ implies summability of $(s_k^2)$, so the product converges normally. The random series is bounded by $S/2$, where $S=\sum s_k$, and its partial sums converge uniformly in the sample point. Dominated convergence, also for complex $z$ on compact sets, identifies the product with its Fourier transform.
+
+At any fixed $z\ne0$, only finitely many indices satisfy $s_k|z|\ge1$; hence only finitely many individual factors vanish there. After removing these factors, the remaining product is nonzero: its tail has a convergent logarithm because its factors are nonzero and their deviations from one are summable. Each individual sinc zero is simple. This proves the zero list and the multiplicity statement.
+\end{proof}
+
+\begin{lemma}[The zero-divisor test]\label{lem:zero-test}
+For positive summable families $a$ and $s$, if $\Un(a)\preceq\Un(s)$, every zero of $P_a$ has at most its multiplicity in $P_s$. Equivalently, $P_s/P_a$ extends to an entire function.
+\end{lemma}
+\begin{proof}
+A convolution factorization gives $P_s(t)=P_a(t)\widehat\nu(t)$ for real $t$, with $|\widehat\nu(t)|\le1$. If a real zero had higher order in $P_a$, the quotient would become unbounded as $t$ approached that zero along the real axis. This is impossible. By \cref{lem:zeros}, all zeros of the denominator are real. Their multiplicity domination therefore removes every possible pole of the meromorphic quotient. The converse between zero domination and entire extension is the same local analytic argument, without a positivity assertion.
+\end{proof}
+
+\begin{lemma}[Integer digit refinement]\label{lem:digits}
+For $n\in\Np$, let $D_n$ be uniform on the $n$ points
+\begin{equation}\label{eq:digits}
+ \left\{\frac{2r-n+1}{2n}:0\le r<n\right\}.
+\end{equation}
+Then, with independent terms,
+\begin{equation}\label{eq:refinement}
+ U\ \stackrel{d}{=}\ \frac{U'}{n}+D_n.
+\end{equation}
+In particular, $D_1=0$ and $|D_n|\le(1-1/n)/2$.
+\end{lemma}
+\begin{proof}
+Conditioning on the digit $r$, the right-hand side is uniform on
+$[-1/2+r/n,-1/2+(r+1)/n]$. These intervals partition $[-1/2,1/2]$ up to their endpoints. Equal mixing of their normalized uniform laws is the normalized uniform law on the whole interval.
+\end{proof}
+
+\begin{lemma}[Uniqueness of a remainder]\label{lem:unique}
+If $\Un(a)*\nu=\Un(a)*\nu'$, then $\nu=\nu'$.
+\end{lemma}
+\begin{proof}
+Away from the discrete real zero set of $P_a$, cancellation gives $\widehat\nu=\widehat\nu'$. Continuity extends this equality to the zero set. Uniqueness of Fourier transforms of finite measures gives the assertion.
+\end{proof}
+
+\section{Rationally separated source coordinates}\label{sec:separated}
+\begin{theorem}[Exact coordinate-refinement classification]\label{thm:separated}
+Let $(s_k)_{k\in I}$ be positive and summable, where $I$ is finite or countable, and assume
+\begin{equation}\label{eq:separation}
+ s_k/s_l\notin\Q\quad(k\ne l).
+\end{equation}
+For a finite or countable summable positive family $(a_j)_{j\in J}$, the following are equivalent:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $\Un(a)\preceq\Un(s)$;
+\item $P_s/P_a$ extends to an entire function;
+\item there are an injection $\kappa:J\to I$ and integers $n_j\in\Np$ such that
+\begin{equation}\label{eq:assignment}
+ a_j=s_{\kappa(j)}/n_j\quad\text{for all }j.
+\end{equation}
+\end{enumerate}
+The representation of each individual width is unique. The remainder in (i) is unique and is explicitly the law of
+\begin{equation}\label{eq:remainder}
+ R=\sum_{k\notin\kappa(J)}s_kU_k+
+   \sum_{j\in J}s_{\kappa(j)}D_{n_j}.
+\end{equation}
+Moreover, every family specified by (iii) is automatically summable, even when summability is not assumed separately.
+\end{theorem}
+\begin{proof}
+The implication (i)$\Rightarrow$(ii) is \cref{lem:zero-test}. Suppose (ii). For each $j$, $1/a_j$ is a zero of the denominator. Thus there are $k\in I$ and $n\in\Np$ with $1/a_j=n/s_k$, or $a_j=s_k/n$. If $s_k/n=s_l/m$, then $s_k/s_l=n/m\in\Q$, so $k=l$ and then $n=m$. This gives uniqueness.
+
+Suppose two different proposed factors use the same source coordinate: $a_i=s_k/n_i$ and $a_j=s_k/n_j$. At
+\[
+ z=\lcm(n_i,n_j)/s_k
+\]
+both corresponding denominator factors vanish. Hence the denominator has a zero of order at least two. By \eqref{eq:separation}, no other source coordinate can vanish at this point: such a zero would make $s_l/s_k$ rational. The source zero is simple. This contradicts (ii), proving injectivity.
+
+Conversely, assume (iii). Refine source coordinate $k=\kappa(j)$ using \cref{lem:digits}. The selected uniform piece has width $s_k/n_j=a_j$ and the remaining digit has width at most $s_k/2$ in absolute value. Coordinates not selected are retained unchanged. Both displayed sums in \eqref{eq:remainder} converge absolutely, as do the extracted uniform pieces. Each finite collection of split coordinates has the same joint source law as the original independent coordinates. Passing to the uniformly convergent sums gives
+$\Un(s)=\Un(a)*\Law(R)$. This proves (i), and \cref{lem:unique} proves uniqueness of the remainder.
+
+Finally $a_j\le s_{\kappa(j)}$ and $\kappa$ is injective, so $\sum_j a_j\le\sum_k s_k<\infty$.
+\end{proof}
+
+\begin{corollary}[Support endpoints and variance]\label{cor:support}
+For the remainder in \cref{thm:separated}, put $S=\sum_ks_k$ and $A=\sum_ja_j$. Then
+\[
+ \supp\Law(R)\subseteq[-(S-A)/2,(S-A)/2],
+\]
+and both endpoints belong to the support. Also
+\[
+ \operatorname{Var}(R)=\frac1{12}\left(\sum_ks_k^2-\sum_ja_j^2\right).
+\]
+The support need not be the entire displayed interval.
+\end{corollary}
+\begin{proof}
+A used coordinate contributes maximal absolute value $(s_k-a_j)/2$, and an unused coordinate contributes $s_k/2$. Summing gives the claimed bound. For any neighborhood of the upper endpoint, first choose a finite head whose remaining deterministic support radius is sufficiently small, and then put each head coordinate sufficiently near its own upper endpoint. This event has positive probability. The lower endpoint follows by symmetry. Variances add for independent centered square-integrable variables; the identity also follows by subtracting the extracted variance from the source variance.
+\end{proof}
+
+\begin{remark}[Why positivity follows here]
+The entire quotient in (ii) has not been declared positive definite by an abstract analytic criterion. Positivity is supplied by the independently constructed random variable \eqref{eq:remainder}. Irrational separation prevents two proposed uniforms from drawing on the same simple-zero family, leaving exactly the integer interval refinements that have an elementary probabilistic realization.
+\end{remark}
+
+\section{Generic geometric targets}\label{sec:generic}
+\begin{proposition}[Size of the nonresonant parameter set]\label{prop:full}
+The set $\NR$ is a dense $G_\delta$ of full Lebesgue measure in $(0,1)$. Its complement is also dense and is countable. Every transcendental $q\in(0,1)$ belongs to $\NR$. The algebraic number $q=(\sqrt5-1)/2$ belongs to $\NR$ as well.
+\end{proposition}
+\begin{proof}
+The complement is contained in, and in fact equals,
+$\bigcup_{m\ge1}\{r^{1/m}:r\in\Q\cap(0,1)\}$. This is countable and contains all rational parameters, so is dense. A countable set has measure zero and is meager, yielding the first assertions. A number whose positive integer power is rational is algebraic. For the last assertion, the conjugate of $q$ is $-(1+\sqrt5)/2$, whose absolute value is greater than one. A rational positive power of $q$ would equal the same power of its conjugate, contradicting their different absolute values.
+\end{proof}
+
+\begin{corollary}[All uniform-series divisors off resonance]\label{cor:generic}
+Let $q\in\NR$. Then
+\begin{equation}\label{eq:generic}
+ \Un(a)\preceq\mu_q
+ \quad\Longleftrightarrow\quad
+ a_j=\frac{q^{k_j}}{n_j},\quad k_j\in\N,\ n_j\in\Np,
+ \quad k_i\ne k_j\ (i\ne j).
+\end{equation}
+These conditions are also equivalent to entire extension of $\Phi_q/P_a$.
+\end{corollary}
+\begin{proof}
+For distinct $k,l$, the ratio $q^{k-l}$ is irrational by \eqref{eq:NR}. Apply \cref{thm:separated}.
+\end{proof}
+
+\begin{corollary}[Rational-width exclusion]\label{cor:rational}
+For $q\in\NR$, a rational-width uniform divisor has width $1/n$ for some $n\in\Np$. No convolution of two positive rational-width uniform laws divides $\mu_q$.
+\end{corollary}
+\begin{proof}
+If $q^k/n$ is rational, then $k=0$. Two such factors would use the same source coordinate, contrary to \cref{cor:generic}.
+\end{proof}
+
+\begin{example}[Disjoint zero classes, not small total width]
+The two factors $\Un_{q/100}$ and $\Un_{q^2/100}$ can be removed together. The two factors $\Un_{q/100}$ and $\Un_{q/101}$ cannot, however small $q$ is. Their widths and variances are not the obstruction; they require two zeros from one simple-zero family. This illustrates why a support or variance inequality alone cannot be a complete test.
+\end{example}
+
+\begin{proposition}[Same-ratio scaling for every parameter]\label{prop:same}
+For every $0<q<1$ and $c>0$,
+\begin{equation}\label{eq:same}
+ D_c\mu_q\preceq\mu_q
+ \quad\Longleftrightarrow\quad
+ c=q^a/n\text{ for some }a\in\N,\ n\in\Np.
+\end{equation}
+At resonant parameters, this representation need not be unique.
+\end{proposition}
+\begin{proof}
+The denominator has a zero at $1/c$, so \cref{lem:zero-test,lem:zeros} force $1/c=n/q^a$. Conversely, leave source coordinates $0,\ldots,a-1$ untouched and apply the refinement $U=U'/n+D_n$ to every coordinate $a,a+1,\ldots$. The extracted uniform series has law $D_{q^a/n}\mu_q$.
+\end{proof}
+
+\section{Geometric factors and arithmetic progression packing}\label{sec:streams}
+\begin{theorem}[A single geometric factor off resonance]\label{thm:geometric}
+Let $q\in\NR$, $0<\rho<1$, and $c>0$. Then
+\begin{equation}\label{eq:geometric}
+ D_c\mu_\rho\preceq\mu_q
+ \quad\Longleftrightarrow\quad
+ c=\frac{q^a}{n},\qquad \rho=\frac{q^m}{d}
+\end{equation}
+for $a\in\N$, $m\in\Np$, and $n,d\in\Np$. All four parameters are unique. The extracted coordinate levels are exactly $a+m\N$, and the successive refinement integers are $nd^j$.
+\end{theorem}
+\begin{proof}
+Assume divisibility. Applying \cref{cor:generic} to the widths $c\rho^j$ gives unique integers $k_j\ge0$ and $n_j\ge1$ with
+\[
+ c\rho^j=q^{k_j}/n_j,
+\]
+where all $k_j$ are distinct. From $j=0,1$, set $a=k_0$, $n=n_0$, $m=k_1-k_0\in\Z$, and $d=n_1/n_0\in\Q_{>0}$. Then $c=q^a/n$ and $\rho=q^m/d$. Comparing the general $j$ term gives
+\[
+ q^{k_j-a-mj}=n_j/(nd^j)\in\Q.
+\]
+Nonresonance implies $k_j=a+mj$ and $n_j=nd^j$. Since the $k_j$ are nonnegative for every $j$, $m\ge0$; distinctness excludes $m=0$. If $d=u/v$ in lowest terms, integrality of $nu^j/v^j$ for every $j$ forces $v^j\mid n$ for every $j$, hence $v=1$. Thus $d\in\Np$.
+
+Conversely, the widths in \eqref{eq:geometric} have representations
+$c\rho^j=q^{a+mj}/(nd^j)$ with distinct levels. Apply \cref{cor:generic}. Uniqueness follows because equality between two candidate expressions for $c$ or $\rho$ makes a power of $q$ rational.
+\end{proof}
+
+\begin{theorem}[Simultaneous geometric factors]\label{thm:streams}
+Let $q\in\NR$. A finite or countable family of geometric laws $D_{c_i}\mu_{\rho_i}$ can be removed simultaneously from $\mu_q$ exactly when each has the parameterization
+\[
+ c_i=q^{a_i}/n_i,\qquad \rho_i=q^{m_i}/d_i
+\]
+from \cref{thm:geometric} and the progressions $a_i+m_i\N$ are pairwise disjoint. Equivalently, for every $i\ne j$,
+\begin{equation}\label{eq:CRT}
+ \gcd(m_i,m_j)\nmid(a_i-a_j).
+\end{equation}
+The successful conditions imply convergence of the entire extracted family.
+\end{theorem}
+\begin{proof}
+A joint factorization makes each individual stream a divisor by putting every other extracted stream into its remainder. Alternatively apply \cref{cor:generic} directly to the family of all widths. \Cref{thm:geometric} identifies the unique levels for each stream. Distinctness across streams is precisely progression disjointness. The usual linear Diophantine equation
+$a_i+m_i u=a_j+m_j v$ has an integer solution exactly when the gcd divides the difference. Any integer solution can be shifted by a common period to make both $u$ and $v$ nonnegative. This proves \eqref{eq:CRT}.
+
+Conversely, pairwise disjointness assigns every extracted width to a distinct source coordinate, proving divisibility by \cref{thm:separated}. It also gives
+$\sum_{i,j}c_i\rho_i^j\le\sum_{k\ge0}q^k$, so the countable convolution is well defined without an extra convergence hypothesis on successful data.
+\end{proof}
+
+\begin{corollary}[Capacity and eventual saturation]\label{cor:density}
+For any successful family, $\sum_i1/m_i\le1$. For a finite successful family, equality holds exactly when the union of its progressions contains every sufficiently large integer. The inequality by itself is not sufficient for divisibility.
+\end{corollary}
+\begin{proof}
+Any finite subfamily is disjoint and has asymptotic density $\sum1/m_i\le1$. Taking the supremum over finite subfamilies proves the countable assertion. In the finite case, beyond the largest start, membership is periodic with period the least common multiple of the strides. Density one is then equivalent to covering every residue in that period. Finally, strides $2$ and $3$ always meet because their gcd is one, while their density sum is only $5/6$.
+\end{proof}
+
+\begin{example}[Multisection and a genuine converse]
+For every $0<q<1$ and $m\ge1$, separating the coordinates into their residue classes gives the elementary identity
+\begin{equation}\label{eq:multisection}
+ \mu_q=\mathop{*}_{r=0}^{m-1}D_{q^r}\mu_{q^m}.
+\end{equation}
+This is not claimed as a new identity. The repository has a formal fixed dyadic two-section theorem in its normalized $[0,1]$ convention \cite{repo-multisection}. The additional content of \cref{thm:streams} is a converse for all nonresonant $q$: every geometric factor must follow an arithmetic progression of source coordinates, possibly with integer refinements along it, and arbitrary collections must obey the exact gcd test.
+\end{example}
+
+\section{Prime-power resonance: independent rationality classes}\label{sec:resonance}
+Fix a prime $p$ and relatively prime positive integers $e,h$, and set
+\begin{equation}\label{eq:resonance}
+ q=p^{-e/h},\qquad B=p^e.
+\end{equation}
+Then $h$ is the least positive integer with $q^h\in\Q$. Indeed, $p^{-em/h}$ is rational exactly when $h\mid m$. Splitting the source coordinates by their residues modulo $h$ gives
+\begin{equation}\label{eq:channels}
+ \mu_q=\mathop{*}_{r=0}^{h-1}D_{q^r}\mu_{1/B}.
+\end{equation}
+The Fourier zeros belonging to different factors in \eqref{eq:channels} cannot intersect: any intersection would make $q^{r-s}$ rational for distinct $r,s\in\{0,\ldots,h-1\}$.
+
+\subsection{The inherited one-channel theorem, with a proof}
+We first give the exact prime-power statement that is already present in the simultaneous-divisor report \cite{repo-hall}. Its inclusion here supplies a self-contained proof of the channel extension, not a new priority claim.
+
+\begin{lemma}[Prime-power Hall criterion]\label{lem:hall}
+For a finite or countable family of positive integers $(n_j)$, the uniforms of widths $1/n_j$ divide $\mu_{1/p^e}$ simultaneously exactly when
+\begin{equation}\label{eq:hall}
+ \#\{j: \lfloor v_p(n_j)/e\rfloor\le K\}\le K+1
+ \qquad(K\in\N).
+\end{equation}
+For a summable input family this is also equivalent to entire extension of the Fourier quotient. A family satisfying \eqref{eq:hall} is automatically summable. More generally, every uniform divisor of this source has reciprocal-integer width.
+\end{lemma}
+\begin{proof}
+All zeros of the source are nonzero integers, since its individual zeros are $mp^{ek}$. The first zero of any proposed uniform therefore forces its width to be reciprocal to a positive integer.
+
+Put $d_j=\lfloor v_p(n_j)/e\rfloor$. If \eqref{eq:hall} fails at $K$, select $K+2$ denominators with $d_j\le K$ and let $L$ be their least common multiple. The denominator Fourier transform has a zero at $L$ of order at least $K+2$. But
+\[
+ \ord_L\Phi_{1/p^e}=\lfloor v_p(L)/e\rfloor+1\le K+1,
+\]
+since $v_p(L)$ is the largest valuation among the selected denominators. This violates the zero-divisor test. The argument also proves that entire extension forces \eqref{eq:hall}.
+
+For sufficiency, sort the deadlines $d_j$ in nondecreasing order, breaking finite ties arbitrarily. Condition \eqref{eq:hall} says there are only finitely many deadlines below any bound, so this sorting is a genuine enumeration even for an infinite family. If the factor in position $i\in\N$ has denominator $n$, its deadline is at least $i$; otherwise at least $i+1$ deadlines would be at most $i-1$. Hence $p^{ei}\mid n$. Assign this factor to source coordinate $i$, whose width is $p^{-ei}$, and refine that source coordinate by the integer $n/p^{ei}$. The extracted width is $1/n$.
+
+The assignments are distinct. Applying the interval refinement identity at all selected coordinates, and retaining unused coordinates, gives a positive remainder by an absolutely convergent random series. The inequality $1/n\le p^{-ei}$ on position $i$ proves automatic summability. It also proves that the Fourier quotient of a successful family is entire, either directly from the remainder's compact support or from the zero-divisor test.
+\end{proof}
+
+\subsection{The channel classification}
+\begin{theorem}[Prime-power rational return]\label{thm:channels}
+Let $q$ be as in \eqref{eq:resonance}. A finite or countable summable family of uniforms of widths $(a_j)$ divides $\mu_q$ simultaneously if and only if every width has a representation
+\begin{equation}\label{eq:channel-rep}
+ a_j=q^{r_j}/n_j,\qquad 0\le r_j<h,\quad n_j\in\Np,
+\end{equation}
+and, separately for each residue $r$,
+\begin{equation}\label{eq:channel-hall}
+ \#\{j:r_j=r,\ \lfloor v_p(n_j)/e\rfloor\le K\}
+ \le K+1\qquad(K\in\N).
+\end{equation}
+The representations \eqref{eq:channel-rep} are unique. These conditions are also equivalent to entire extension of the Fourier quotient. They imply summability of the family even if this was not given in advance.
+
+An explicit remainder is obtained as follows. Sort the denominators in each residue class by their deadlines. The factor of rank $i$ in residue $r$ is assigned to original source coordinate $r+hi$ and uses refinement integer $n_j/p^{ei}$.
+\end{theorem}
+\begin{proof}
+The first zero of a proposed factor gives $a_j=q^k/n$ for some $k\ge0$ and $n\ge1$. Write $k=r+hi$, $0\le r<h$. Then $a_j=q^r/(p^{ei}n)$, giving \eqref{eq:channel-rep}. Equality between two such representations forces a rational value of $q^{r-s}$, and therefore $r=s$, followed by equality of denominators.
+
+Every zero of a factor in residue $r$ lies in $q^{-r}\Q^\times$. A source zero belonging to residue $s$ can lie in this same class only when $r=s$. Thus zero multiplicity comparisons are entirely separate in the $h$ classes. After replacing the frequency variable by $q^rz$, the comparison in residue $r$ is precisely the one-channel comparison in \cref{lem:hall}. It yields \eqref{eq:channel-hall}, both from probability divisibility and from entire extension.
+
+Conversely, sort each class as in \cref{lem:hall}. At rank $i$, $p^{ei}\mid n_j$, and
+\[
+ \frac{q^{r+hi}}{n_j/p^{ei}}=\frac{q^r}{n_j}.
+\]
+The displayed construction therefore refines distinct original coordinates into exactly the desired factors and a remainder. Absolute convergence and uniqueness follow as in \cref{thm:separated,lem:unique}. Finally, the total extracted width is bounded by the sum of all original source widths because every assignment uses a distinct coordinate.
+\end{proof}
+
+\begin{example}[A cube-root return with two different outcomes]\label{ex:cuberoot}
+Take $q=2^{-2/3}$, so $h=3$ and the rational return is $q^3=1/4$. The rational factors $1/2$ and $1/3$ both have residue zero and deadline zero. They violate \eqref{eq:channel-hall} at $K=0$, and cannot be removed together. Replacing $1/2$ by $1/4$ gives deadlines $1$ and $0$, so the pair is allowed. Assign $1/3$ to source coordinate $0$ with refinement integer $3$, and $1/4$ to source coordinate $3$ with refinement integer $1$.
+
+This distinction is not visible by rounding $q$ or by checking only total widths. The relevant quantity is the integer exponent in the rational return $q^h$.
+\end{example}
+
+\begin{remark}[A unifying interpretation]
+Off resonance, every source coordinate is its own rationality class and has capacity one. At a prime-power rational return, coordinates with the same residue merge into one rationality class, and that class has a nested deadline structure. The analytic input is unchanged: the difference is entirely in which sinc zeros can coincide.
+\end{remark}
+
+\section{Geometric factors at prime-power resonance}\label{sec:orbits}
+A geometric stream may visit several of the $h$ rationality classes before returning. This produces factors not covered by the off-resonance form $\rho=q^m/d$ with positive integer $m,d$.
+
+\begin{theorem}[Finite-orbit geometric classification]\label{thm:orbit}
+Let $q=p^{-e/h}$ as in \eqref{eq:resonance}, and let $c>0$, $0<\rho<1$. Then $D_c\mu_\rho\preceq\mu_q$ if and only if the following conditions hold:
+\begin{enumerate}[label=(\roman*),nosep]
+\item The least positive integer $\ell$ for which $\rho^\ell\in\Q$ exists and divides $h$.
+\item For $0\le j<\ell$, the first $\ell$ widths have representations
+\begin{equation}\label{eq:orbit-first}
+ c\rho^j=q^{r_j}/n_j,
+ \quad 0\le r_j<h,\quad n_j\in\Np,
+\end{equation}
+with distinct residues $r_j$.
+\item One has $\rho^\ell=1/D$ for an integer $D$ divisible by $p^e$.
+\end{enumerate}
+When these conditions hold, the $k$th return of the term in class $r_j$ can be assigned to source coordinate $r_j+hk$, with refinement integer $n_jD^k/p^{ek}$.
+\end{theorem}
+\begin{proof}
+Assume divisibility. The first two factors have the unique representations from \cref{thm:channels}. Their ratio belongs to $q^\Z\Q_{>0}$, so $\rho^h\in\Q$. The set
+\[
+ H_\rho=\{t\in\Z:\rho^t\in\Q\}
+\]
+is a subgroup of $\Z$ containing $h$. Its positive generator $\ell$ therefore divides $h$. Two factor widths lie in the same rationality class exactly when their ratio is rational, which happens exactly when their indices differ by a multiple of $\ell$. The first $\ell$ residues are consequently distinct, proving (i) and (ii).
+
+Write $\rho^\ell=A/D$ in lowest terms, with $0<A<D$. For every $k\ge0$, uniqueness of the representation in a fixed residue gives the denominator of $c\rho^{j+k\ell}$ as
+\[
+ n_jD^k/A^k.
+\]
+This must be an integer for every $k$. Coprimality forces $A^k\mid n_j$ for every $k$, hence $A=1$. Put $g=v_p(D)$. The denominators in residue $r_j$ are exactly $n_jD^k$, whose deadlines are
+\[
+ d_k=\left\lfloor\frac{v_p(n_j)+kg}{e}\right\rfloor.
+\]
+These form a nondecreasing sequence. If $g<e$, then $d_k<k$ for all sufficiently large $k$, contradicting the one-channel Hall condition. Therefore $g\ge e$, which is (iii).
+
+Conversely, assume (i)--(iii). In class $r_j$, the factors are $q^{r_j}/(n_jD^k)$. Since $p^{ek}\mid n_jD^k$, their deadlines satisfy $d_k\ge k$. Thus the Hall condition holds in that class. Different initial residues do not interfere. \Cref{thm:channels} proves the factorization, and its explicit assignment is the one stated.
+\end{proof}
+
+\begin{example}[A fifth-root factor beyond the generic formula]\label{ex:fifth}
+Let
+\[
+ q=2^{-3/5},\qquad \rho=2^{-4/5},\qquad c=1/2.
+\]
+Here $h=5$, $B=8$, $\ell=5$, and $\rho^5=1/16$. The five initial pairs $(r_j,n_j)$ are
+\begin{center}
+\begin{tabular}{c|rrrrr}
+$j$ & $0$ & $1$ & $2$ & $3$ & $4$\\\hline
+$r_j$ & $0$ & $3$ & $1$ & $4$ & $2$\\
+$n_j$ & $2$ & $1$ & $4$ & $2$ & $8$
+\end{tabular}
+\end{center}
+They satisfy \cref{thm:orbit}; hence $D_{1/2}\mu_{2^{-4/5}}\preceq\mu_{2^{-3/5}}$.
+
+Nevertheless, $\rho=q^m/d$ is impossible with $m,d\in\Np$. Such an equality would imply $d=2^{(4-3m)/5}$. A positive integral value requires $4-3m$ to be a nonnegative multiple of five. The congruence gives $m\equiv3\pmod5$, whose smallest positive solution already gives exponent $-1$ and $d=1/2$. Larger solutions only decrease $d$.
+\end{example}
+
+\begin{remark}[Algorithmic scope]
+The theorem is a finite test once the exact algebraic parameter presentation and its rational-power certificate are given. It is not an algorithm on arbitrary real-number oracles. In particular, a floating-point approximation cannot certify an identity such as $q^h=p^{-e}$, or the universal nonresonance condition defining $\NR$.
+\end{remark}
+
+\section{A quantitative obstruction in Wasserstein distance}\label{sec:metric}
+A failed factorization is more informative when it gives a lower bound on approximation error. Let $W_1$ be the usual one-Wasserstein distance, defined as the infimum of $\E|Y-Z|$ over couplings of two probability laws with finite first moment. For any such laws,
+\begin{equation}\label{eq:Wchar}
+ |\widehat\alpha(t)-\widehat\beta(t)|\le2\pi|t|W_1(\alpha,\beta).
+\end{equation}
+Indeed, $|e^{2\pi itx}-e^{2\pi ity}|\le2\pi|t||x-y|$ and one takes the infimum over couplings.
+
+\begin{theorem}[Explicit separation from a double-zero factor]\label{thm:metric}
+Fix $q\in\NR$ and $N,M\in\Np$, and put
+\[
+ \sigma=\Un_{1/N}*\Un_{1/M},\qquad T=\lcm(N,M).
+\]
+Define the strictly positive number and the two auxiliary constants
+\begin{align}
+ D_q&=\frac1T\prod_{k=1}^{\infty}|\sinc(\pi Tq^k)|,\label{eq:D}\\
+ A_q&=\frac{\pi^2}{6(1-q^2)}+\frac{\pi^2}{4NM},
+ & h_q&=\frac{D_q}{2A_q}.\label{eq:Ah}
+\end{align}
+Then every probability measure $\nu$ with finite first moment satisfies
+\begin{equation}\label{eq:metric-bound}
+ W_1(\mu_q,\sigma*\nu)
+ \ \ge\ \frac{D_q^2}{8\pi A_q(T+h_q)}>0.
+\end{equation}
+The same conclusion holds for any $q\in(0,1)$ satisfying $Tq^k\notin\Z$ for every $k\ge1$, even without full nonresonance.
+\end{theorem}
+\begin{proof}
+The first source factor $\sinc(\pi t)$ has a simple zero at $t=T$ with derivative $(-1)^T/T$. All other source factors are nonzero there under the stated assumption. Consequently
+\[
+ |\Phi_q'(T)|=D_q>0.
+\]
+Strict positivity of the infinite product follows from the same nonvanishing-product argument as \cref{lem:zeros}.
+
+The source is centered and has variance
+\[
+ \E X_q^2=\frac1{12(1-q^2)}.
+\]
+Differentiating the characteristic function under the integral gives the global bound
+\[
+ |\Phi_q''(t)|\le(2\pi)^2\E X_q^2
+ =\frac{\pi^2}{3(1-q^2)}.
+\]
+Taylor's theorem, or its integral remainder form, therefore yields for $h>0$
+\begin{equation}\label{eq:source-linear}
+ |\Phi_q(T+h)|\ge D_qh-\frac{\pi^2h^2}{6(1-q^2)}.
+\end{equation}
+
+The transform of a uniform of width $a$ has derivative bounded by
+$2\pi\E|aU|=\pi a/2$. Both factors of $\widehat\sigma$ vanish at $T$, because $T/N$ and $T/M$ are integers. Integrating the derivative bounds from $T$ gives
+\[
+ |\widehat\sigma(T+h)|\le\frac{\pi^2h^2}{4NM}.
+\]
+Since $|\widehat\nu|\le1$, the triangle inequality and \eqref{eq:source-linear} imply
+\[
+ |\Phi_q(T+h)-\widehat\sigma(T+h)\widehat\nu(T+h)|
+ \ge D_qh-A_qh^2.
+\]
+Set $h=h_q=D_q/(2A_q)$. The right-hand side is $D_q^2/(4A_q)$. Dividing by $2\pi(T+h_q)$ using \eqref{eq:Wchar} proves \eqref{eq:metric-bound}.
+\end{proof}
+
+\begin{remark}[What the estimate does and does not certify]
+The proof uses a simple source zero versus a double prescribed factor zero. It does not differentiate the unknown remainder. The lower bound is explicit as a positive convergent product, but may be very small and is not claimed to have an optimal exponent near resonance. Validated numerical lower bounds for that product require control of a finite head and an analytic tail; ordinary floating-point multiplication alone is not a proof of positivity.
+\end{remark}
+
+\section{Exact factorability can vanish under small perturbations}\label{sec:perturbation}
+\begin{theorem}[An explicit resonant/nonresonant transition]\label{thm:perturbation}
+Let $\sigma=\Un_{1/2}*\Un_{1/3}$ and
+\[
+ \Delta(q)=\inf_{\nu\in\mathcal P_1(\R)}W_1(\mu_q,\sigma*\nu),
+\]
+where $\mathcal P_1(\R)$ denotes probability laws with finite first moment. Then
+\begin{equation}\label{eq:transition}
+ \Delta(1/2)=0,\qquad \Delta(q)>0\quad(q\in\NR),
+\end{equation}
+and for every $q\in(0,1)$,
+\begin{equation}\label{eq:transition-upper}
+ 0\le\Delta(q)\le\frac{|q-1/2|}{2(1-q)}.
+\end{equation}
+In particular, along the explicit nonresonant sequence
+$q_j=1/2+\sqrt2/j$, $j\ge4$, exact factorization fails but its optimal approximation error tends to zero.
+\end{theorem}
+\begin{proof}
+At $q=1/2$, assign the width $1/2$ factor to source coordinate $1$. Split source coordinate $0$ as $U=U'/3+D_3$, and retain the source tail starting at coordinate $2$. Thus
+\begin{equation}\label{eq:dyadic-example}
+ \mu_{1/2}=\sigma*\Law(D_3+X'_{1/2}/4),
+\end{equation}
+with independent terms. This proves $\Delta(1/2)=0$. For $q\in\NR$, \cref{thm:metric} with $N=2$, $M=3$ gives a strictly positive lower bound uniform over $\nu$.
+
+For arbitrary $q,r\in(0,1)$, couple $X_q$ and $X_r$ by the same uniforms. Since $\E|U|=1/4$ and all $q^k-r^k$ have the same sign,
+\begin{align}
+ W_1(\mu_q,\mu_r)
+ &\le\frac14\sum_{k\ge0}|q^k-r^k|\\
+ &=\frac{|q-r|}{4(1-q)(1-r)}.\label{eq:coupling}
+\end{align}
+Use the fixed remainder in \eqref{eq:dyadic-example} and set $r=1/2$ to obtain \eqref{eq:transition-upper}.
+
+For $j\ge4$, both conjugates $1/2\pm\sqrt2/j$ are positive, unequal, and less than one. If a positive power of $q_j$ were rational, its conjugate would have to equal that same rational number. Different positive bases have different positive integer powers, a contradiction. Thus $q_j\in\NR$, proving the final assertion.
+\end{proof}
+
+\begin{corollary}[The distance varies continuously]\label{cor:distance-continuity}
+The function $\Delta$ is locally Lipschitz on $(0,1)$ and satisfies
+\[
+ |\Delta(q)-\Delta(r)|\le\frac{|q-r|}{4(1-q)(1-r)}.
+\]
+\end{corollary}
+\begin{proof}
+Distance to any fixed nonempty subset in a metric space is a one-Lipschitz function of the point. Apply this fact to the subset $\{\sigma*\nu:\nu\in\mathcal P_1(\R)\}$ and use \eqref{eq:coupling}.
+\end{proof}
+The discontinuity here is in the yes/no property of \emph{exact} factorability, not in the distance function. In particular, no uniform positive separation survives as the nonresonant parameters approach the displayed resonance. This distinction matters when interpreting numerical evidence for a putative factorization.
+
+\section{Regularity of remainders: a sharp conceptual warning}\label{sec:regularity}
+The arithmetic criteria decide whether a remainder is a probability measure. They do not force that remainder to have a smooth density. This section separates a sufficient smoothing condition from a classical singular example.
+
+\begin{proposition}[Infinitely many untouched uniforms smooth the remainder]\label{prop:smooth}
+If the remainder constructed in \cref{thm:separated} has infinitely many unused source coordinates, then it has a compactly supported $C^\infty$ density. Every source $\mu_q$, $0<q<1$, itself has a compactly supported $C^\infty$ density.
+\end{proposition}
+\begin{proof}
+Fix an integer $r\ge0$ and select any $r+2$ unused source coordinates of positive widths $b_1,\ldots,b_{r+2}$. Their characteristic functions satisfy
+\[
+ |\sinc(\pi b_i t)|\le\min\{1,1/(\pi b_i|t|)\}.
+\]
+The remainder of the convolution is a probability measure, so its characteristic function has modulus at most one. Consequently the full remainder transform is bounded by $C_r|t|^{-(r+2)}$ for $|t|\ge1$. It follows that $|t|^r\widehat\nu(t)$ is integrable. Fourier inversion and differentiation under the integral give a $C^r$ density. Since $r$ was arbitrary, the density is $C^\infty$. Compact support follows from the absolutely convergent bounded random series. Apply the same proof to any $r+2$ coordinates of the source to obtain the second assertion.
+\end{proof}
+
+\begin{example}[Smooth source and smooth factor, singular remainder]\label{ex:singular}
+At every $q\in(0,1)$, refine each source coordinate by $n=2$. Since $D_2$ takes values $\pm1/4$, one gets
+\begin{equation}\label{eq:bernoulli}
+ \mu_q=D_{1/2}\mu_q*\beta_q,\qquad
+ \beta_q=\Law\left(\frac14\sum_{k\ge0}q^k\varepsilon_k\right),
+\end{equation}
+where the $\varepsilon_k$ are independent unbiased signs. Thus the remainder is a scaled symmetric Bernoulli convolution. At $q=(\sqrt5-1)/2$, it is singular continuous, although both source and extracted factor have $C^\infty$ densities and $q$ is nonresonant.
+
+The singularity mechanism is classical, going back to Erd\H{o}s \cite{erdos}. The role of this example here is to delimit our new factorization theorems, not to claim a new Bernoulli-convolution result. The modern theory of exceptional singular parameters is much stronger; for example, Shmerkin \cite{shmerkin} proves that the exceptional parameter set in $(1/2,1)$ has Hausdorff dimension zero. We do not use that theorem in any proof.
+\end{example}
+
+For completeness, the particular golden-ratio assertion has the following direct proof. Set $q=(\sqrt5-1)/2$ and $\varphi=1/q$. The conjugate relation implies
+\[
+ \varphi^j+(-q)^j\in\Z\quad(j\in\N),
+\]
+as is also seen from the integer recurrence with characteristic polynomial $x^2-x-1$. Therefore
+$|\cos(\pi\varphi^j)|=|\cos(\pi q^j)|$ for $j\ge1$. The product
+\[
+ P=\prod_{j\ge1}|\cos(\pi q^j)|
+\]
+is positive: no factor vanishes because no positive power of $q$ is rational, and its tail deviations from one are bounded by a constant times $q^{2j}$. At frequencies $t_n=2\varphi^n$, \eqref{eq:bernoulli} gives
+\[
+ |\widehat\beta_q(t_n)|
+ =\left(\prod_{j=1}^{n}|\cos(\pi q^j)|\right)
+   \left(\prod_{j=1}^{\infty}|\cos(\pi q^j)|\right)
+ \longrightarrow P^2>0.
+\]
+The Riemann--Lebesgue lemma therefore excludes absolute continuity.
+
+To see that the whole measure is singular, rather than merely having a singular component, let $S_\pm(x)=qx\pm1/4$ and
+$T\eta=((S_+)_*\eta+(S_-)_*\eta)/2$. The measure $\beta_q$ is a fixed point of $T$, and $T$ contracts $W_1$ by a factor at most $q$, so its probability fixed point with bounded support is unique. Affine invertible maps preserve both absolute continuity and singularity relative to Lebesgue measure. The two parts of the Lebesgue decomposition of $\beta_q$ are therefore separately fixed by $T$. If its absolutely continuous part had positive mass, its normalization would be a probability fixed point and hence equal to $\beta_q$, contradicting the Fourier calculation. The measure is singular.
+
+Finally it has no atoms. If an atom exists, the largest atom mass $M>0$ is attained; the set of atoms of mass $M$ is finite. The fixed-point equation forces both inverse images under $S_+$ and $S_-$ of every maximal atom to have mass $M$. By symmetry select the largest such atom position $x\ge0$. Its inverse image $(x+1/4)/q$ is strictly larger than $x$ and again has mass $M$, a contradiction. This completes the singular-continuous assertion without using a general pure-type theorem.
+
+\section{Why the remaining resonances are genuinely different}\label{sec:limits}
+It would be incorrect to extend the entire-quotient criterion to all geometric parameters merely because it works in \cref{thm:separated,thm:channels}. The repository already supplies a reciprocal-composite obstruction \cite{repo-hall}. We reproduce the short calculation, in our normalization, to make the boundary explicit.
+
+\begin{proposition}[The inherited base-six obstruction]\label{prop:base6}
+For $q=1/6$, the quotient
+\[
+ \frac{\Phi_{1/6}(t)}{\sinc(\pi t/2)\sinc(\pi t/3)}
+\]
+extends to an entire function but is not the characteristic function of a probability measure. Thus $\Un_{1/2}*\Un_{1/3}\npreceq\mu_{1/6}$.
+\end{proposition}
+\begin{proof}
+The source relation gives
+$\Phi_{1/6}(t)=\sinc(\pi t)\sinc(\pi t/6)\Phi_{1/6}(t/36)$. Put $x=\pi t/6$. The elementary identity
+\[
+ \frac{\sin(6x)\sin x}{\sin(3x)\sin(2x)}
+ =\frac{\cos(3x)}{\cos x}=2\cos(2x)-1
+\]
+initially holds away from the removable zeros and yields the entire identity
+\begin{equation}\label{eq:base6}
+ \frac{\Phi_{1/6}(t)}{\sinc(\pi t/2)\sinc(\pi t/3)}
+ =\bigl(2\cos(\pi t/3)-1\bigr)\Phi_{1/6}(t/36).
+\end{equation}
+The right-hand side is the Fourier transform of the signed measure
+\[
+ (\delta_{1/6}+\delta_{-1/6}-\delta_0)*D_{1/36}\mu_{1/6}.
+\]
+The probability measure $D_{1/36}\mu_{1/6}$ is supported on $[-1/60,1/60]$. Its two translates by $\pm1/6$ have disjoint supports from this central interval, so the displayed signed measure gives that interval mass $-1$. It is not positive. If the quotient were the transform of a probability, uniqueness of Fourier transforms of finite signed measures would identify that probability with this nonpositive measure, a contradiction.
+\end{proof}
+
+The exact reason that the proof of \cref{lem:hall} does not generalize is that $v_p(\lcm(n_1,\ldots,n_s))$ is the maximum of the individual valuations in a \emph{single} prime coordinate. With two primes, different denominators can contribute complementary valuation directions to their least common multiple. A simple scalar deadline no longer captures the zero multiplicities or the availability of a positive refinement.
+
+A second boundary is a least rational return $q^h=A/B$ with $A>1$. Even within one rationality class, source scales no longer form the reciprocal prime-power ladder used above. Cancellation conditions must then account for both numerator and denominator growth. Neither the base-six calculation nor our channel theorem resolves that problem.
+
+\section{Exact certificates and the verification record}\label{sec:verification}
+The companion program \texttt{code/verify.py} is executable Python using only the standard library. All tests use integers or \texttt{fractions.Fraction}; none uses numerical approximations to $q$. The output \texttt{results/verification.json} records a successful run with the following counts.
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Test family & Cases passed\\
+\midrule
+Nonresonant finite width families & 10,626\\
+Two-progression CRT comparisons & 6,561\\
+Three-stream families & 91,881\\
+Prime-power finite Hall families & 43,605\\
+Colored resonant families & 1,820\\
+Resonant geometric orbit cases & 1,128\\
+Exact digit moment identities & 600\\
+Invalid-input checks & 6\\
+\midrule
+Total & 156,227\\
+\bottomrule
+\end{tabular}
+\end{center}
+The checks have different levels of independence. The CRT routine is compared with literal enumeration through a full common period. The Hall routine is compared with exponential backtracking over possible source slots on small inputs. Digit splitting is checked by exact moments through degree $14$ for $1\le n\le40$. The nonresonant routine checks the encoded distinct-level condition and verifies its explicit common-zero rejection witness; it does not independently establish the analytic reduction to that condition.
+
+\subsection{What a certificate contains}
+For nonresonant inputs, a positive certificate is a list of distinct source levels and integer refinement counts. A negative certificate identifies two factors using one level and the least common multiple giving their common Fourier zero.
+
+For a resonant input, the program groups widths by residue, computes deadlines, and sorts them. A positive certificate records the source level $r+hi$ and the exact digit count $n/p^{ei}$. A negative certificate records a prefix violating Hall, the least common multiple of its denominators, the source zero order, and a larger guaranteed factor zero order. These are exact arithmetic witnesses, not heuristic classifications.
+
+For geometric streams, a rejection certificate records the first common source coordinate together with the two stream indices that reach it. An accepted finite family records the sum of progression densities as an exact rational number. That density is supplementary information; acceptance is determined by the pairwise CRT tests, not by a density comparison.
+
+\subsection{Execution and trust boundary}
+From the package directory, run
+\begin{verbatim}
+python3 code/verify.py --output results/verification.rerun.json
+\end{verbatim}
+The script raises an exception on failure. The default output filename is a rerun file rather than the delivered verification record. Input validation rejects nonpositive integer parameters, invalid prime bases, nonreduced $e/h$, and out-of-range residues.
+
+The 156,227 cases are finite implementation checks. They do not prove the normal convergence of entire products, the infinite matching arguments, Fourier uniqueness, the Wasserstein bounds, or any theorem about all real parameters. Those obligations are discharged by the written proofs. No Lean, Rocq, interval-arithmetic, or independently refereed verification of this manuscript is claimed.
+
+\section{Formalization plan and dependency audit}\label{sec:formalization}
+The principal proofs separate naturally into a reusable analytic layer and small exact arithmetic layers. A future formalization should retain that separation instead of embedding the mathematics into a monolithic computational certificate.
+
+\paragraph{Analytic layer.}
+The required definitions are uniform laws, bounded independent random series, convolution, dilation, and their characteristic functions. The critical library lemma identifies every zero and its order in a normally convergent sinc product. The forward implication from a convolution factorization uses only boundedness of a characteristic function on the real axis, so it should not unnecessarily assume an analytic remainder.
+
+\paragraph{Refinement layer.}
+Prove the finite interval partition identity \eqref{eq:refinement}, then a countable independent coordinate splitting theorem. This second theorem must track measurable reindexing and independence, not merely equality of formal products. The existing dyadic two-section file \cite{repo-multisection} is a relevant model for the independence obligation, but it is not a formal proof of the general assertions here.
+
+\paragraph{Arithmetic layer.}
+The separated-coordinate argument needs only rational-ratio exclusion, least common multiples, and injectivity. The resonant layer adds valuations, sorting of finite deadline multisets, and a countable enumeration lemma under locally finite deadline bounds. The stream layer is a Chinese-remainder theorem with explicit nonnegative solutions.
+
+\paragraph{Quantitative layer.}
+The metric theorem needs the first two characteristic derivatives, the variance of the geometric sum, a second-order remainder bound, and the coupling inequality \eqref{eq:Wchar}. Importantly, the unknown remainder needs no derivatives; this avoids a false smoothness precondition.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Result & Essential obligations\\
+\midrule
+\Cref{thm:separated} & Exact product zero set; simple zero classes; independent integer refinements; countable convergence.\\
+\Cref{thm:geometric,thm:streams} & Uniqueness of $q^k/n$; integrality of $nd^j$ for all $j$; CRT with nonnegative solutions.\\
+\Cref{thm:channels,thm:orbit} & Minimal rational power; disjoint rationality classes; Hall deadlines; rational return integrality and valuation growth.\\
+\Cref{thm:metric,thm:perturbation} & Positive derivative product; global second derivative bound; double-zero estimate; shared-coordinate coupling.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The package's \texttt{PROOF\_AUDIT.md} gives a concise review checklist and explicitly separates inherited results, new extensions, finite regression checks, and unproved future projects.
+
+\section{Further research questions}\label{sec:questions}
+The following questions are proposals arising from the precise boundary of the results. They are not all claimed to be previously named open problems in the literature.
+
+\begin{question}[Rational returns with nontrivial numerator]
+For $q$ with least rational power $q^h=A/B$, $1<A<B$ and $\gcd(A,B)=1$, classify uniform-series divisors in each rationality class. Can the opposing numerator and denominator valuation drifts be organized into a finite-state or eventually periodic matching criterion for geometric input streams?
+\end{question}
+The first milestone should be a two-prime example with a fully proved positive construction or an explicit signed-residual obstruction. Any criterion based only on zero cancellation must first survive \cref{prop:base6}.
+
+\begin{question}[Composite reciprocal returns]
+For $q^h=1/B$ with $B$ divisible by at least two primes, characterize exactly which entire Fourier quotients are positive definite. Is there a useful additional finite condition beyond zero-multiplicity domination for a finite family of uniforms?
+\end{question}
+A possible route is to exploit a common integer grid for a sufficiently long finite prefix, obtain a finite Laurent-polynomial quotient, and control the untouched tail. Negative coefficients are decisive only when their translates cannot be masked by overlap of the tail support; the base-six example succeeds because those supports are disjoint.
+
+\begin{question}[Arbitrary probability factors]
+For $q\in\NR$, classify convolution factors of $\mu_q$ that are not assumed to be uniform-series laws. Does rational separation impose any useful canonical decomposition on all compactly supported factors, or can zero subsets within one sinc family interact in substantially more flexible ways?
+\end{question}
+The present first-zero argument starts with a whole uniform zero lattice. Arbitrary factors need not carry such a lattice, so the main theorem does not already answer this broader question.
+
+\begin{question}[Sharp distance to a resonance]
+Determine the asymptotic order of $\Delta(q)$ from \cref{thm:perturbation} as $q\to1/2$ along a specified nonresonant family. Is the shared-coordinate upper bound of first order sharp, or can the remainder be adjusted to cancel the leading perturbation?
+\end{question}
+The lower bound in \cref{thm:metric} is deliberately robust rather than optimal. Several formerly coincident source zeros can split at different orders, so an exact asymptotic requires more than inserting $q$ into a single derivative product.
+
+\begin{question}[Stable finite-band inverse problems]
+If a measured transform approximately equals a prescribed uniform product times a characteristic function on $[-T,T]$, what quantitative lower bounds on rational separation are needed to recover source-coordinate assignments reliably? Formulate a theorem in which measurement tolerance, frequency range, and Diophantine separation all appear explicitly.
+\end{question}
+Exact irrationality alone gives no uniform numerical margin. A useful theorem should distinguish an algebraic identity certificate from a high-precision but inconclusive numerical approximation.
+
+\begin{question}[Regularity after near-complete extraction]
+Classify regularity of the explicit remainder when only finitely many uniform coordinates remain. Which nonstationary digit schedules force absolute continuity, and which lead to singular measures? Can arithmetic information from the divisor certificate yield effective Sobolev or H\"older estimates?
+\end{question}
+The Bernoulli example shows that smoothness of both the source and the extracted law is insufficient. A general result must use the digit law and the geometry of the remaining scales, not just the smoothness of the known factors.
+
+\begin{question}[Optimization of simultaneous streams]
+For finitely many allowable starts and strides, maximize the number, total variance, or total width of a simultaneously removable subfamily under the exact CRT exclusion condition. Determine the complexity and useful parameterized algorithms for this structured conflict graph.
+\end{question}
+The arithmetic theorem supplies exact compatibility, while the optimization objective supplies new combinatorics. Density is a necessary capacity bound but is not a replacement for compatibility.
+
+\begin{question}[Recognizing parameter certificates]
+For algebraic $q,c,\rho$ specified by minimal polynomials and isolating intervals, design an exact procedure that decides whether they satisfy the nonresonant or prime-power-return classifications, including the rational-power subgroup computations and the extraction of the integer parameters.
+\end{question}
+This should distinguish computability in an exact algebraic representation from procedures on real oracles. The existing companion code begins after such parameter certificates are provided.
+
+\begin{question}[A reusable formal convolution-divisor library]
+Formalize the separated-width theorem and the prime-power channel theorem over actual probability measures, with a checker that consumes finite positive or negative arithmetic certificates and produces a theorem in the proof assistant. Extend the framework to countable stream families with explicit summability certificates.
+\end{question}
+The minimum successful endpoint is not a theorem about polynomial identities alone: it must connect the checker to independence, the infinite random-series law, and probability positivity of the constructed remainder.
+
+\section{Conclusion}
+For rationally separated source scales, all uniform-series convolution divisors admit a unique coordinatewise arithmetic description. The same theorem covers almost every geometric parameter and produces a rigid classification of geometric streams by arithmetic progressions. Prime-power rational returns replace isolated source coordinates by finitely many rationality classes, each with a nested Hall criterion; geometric factors in that setting are governed by a finite residue orbit and a divisibility condition on its return.
+
+The analytic, arithmetic, and quantitative conclusions reinforce one another. Zero multiplicities identify the only possible assignments, interval refinement constructs the positive remainder, and derivative estimates separate forbidden factors from the entire factorable class in Wasserstein distance. The explicit transition near $q=1/2$ shows why numerical closeness must not be confused with exact divisibility.
+
+The contribution is a set of precisely scoped classification and separation theorems, not a claim to have settled all convolution decomposition problems for Fabius-type laws. The unresolved resonant and arbitrary-factor cases provide substantive next steps rather than hidden assumptions in the present proofs.
+
+\appendix
+\section{Constructive arithmetic details}\label{app:algorithms}
+\subsection{Computing the first progression collision}
+To intersect $a+m\N$ and $b+n\N$, set $g=\gcd(m,n)$. There is no intersection when $g\nmid b-a$. Otherwise solve
+\[
+ (m/g)u\equiv(b-a)/g\pmod{n/g}.
+\]
+Since $m/g$ and $n/g$ are coprime, a modular inverse gives a least residue $u_0$. Put $x_0=a+mu_0$ and $L=\lcm(m,n)$. Increase $x_0$ by the least nonnegative multiple of $L$ that makes it at least $\max(a,b)$. The result is the smallest common point of the two one-sided progressions. Both term indices are then nonnegative integers. This is the routine used by the companion program, including the modulus-one case.
+
+\subsection{A finite resonant rejection witness}
+After sorting one residue class by deadlines, suppose position $i$ has deadline $d_i<i$. Take the prefix through that position and put $L=\lcm(n_0,\ldots,n_i)$. At frequency $z=L/q^r$, the proposed factors have total zero order at least $i+1$, whereas the source has order
+\[
+ \lfloor v_p(L)/e\rfloor+1=d_i+1\le i.
+\]
+No source factor in a different residue class can vanish at this frequency. This gives an exact finite witness even if the original family is infinite.
+
+\subsection{Complexity with certified input forms}
+For a finite nonresonant family, duplicate level detection is linear expected time with a hash table, apart from the bit complexity of constructing an optional least-common-multiple rejection witness. For a finite resonant family, compute valuations, sort within channels, and scan once. For $s$ geometric streams, the direct implementation uses $\binom{s}{2}$ gcd/CRT checks. These counts are operation counts on exact integer data; the bit lengths of denominators, exponents, and modular inverses matter for bit complexity.
+
+\section{A compact theorem-status ledger}\label{app:status}
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Statement & Status in this manuscript\\
+\midrule
+Sinc-product representation, integer interval refinement, multisection & Standard mechanisms, proved or explained; not novelty claims.\\
+Prime-power Hall lemma with $h=1$ & Prior repository theorem \cite{repo-hall}; reproved as an input.\\
+Rationally separated uniform-series classification & Main extension, with a complete written proof.\\
+Nonresonant geometric-stream and CRT classification & Consequences developed here, with complete proofs.\\
+Prime-power $h$-channel and finite-orbit classification & Extensions developed here; the single-channel ingredient is explicitly credited.\\
+Explicit Wasserstein obstruction and perturbation example & Quantitative results proved here; no optimal-rate claim.\\
+Golden-ratio singular remainder & Classical Bernoulli phenomenon \cite{erdos}, included as a limitation and proved in the chosen normalization.\\
+Base-six entire nonpositive quotient & Prior repository counterexample \cite{repo-hall}, reproduced with a normalization check.\\
+156,227 exact checks & Executed finite regression tests, not formal proofs of the analytic theorems.\\
+Research questions 1--9 & Proposed future projects; no solution claimed.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\clearpage
+\phantomsection\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{arias-definition}
+J. Arias de Reyna, \emph{An infinitely differentiable function with compact support: Definition and properties}, arXiv:1702.05442 (2017).\newline
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{arias-arithmetic}
+J. Arias de Reyna, \emph{Arithmetic of the Fabius function}, arXiv:1702.06487, version 3.\newline
+\url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{repo-ladders}
+ProveIt research corpus, \emph{Arithmetic Convolution Factors of Fabius-Type Laws: Exact divisibility, fractal remainders, and classification barriers}, report dated 28 September 2026, with editorial amendments dated 29 September 2026. Repository README and recorded theorem summaries inspected. Exact repository path and blob identifier in \texttt{SOURCES.md}.
+
+\bibitem{repo-hall}
+ProveIt research corpus, \emph{Simultaneous Convolution Divisors of Fabius-Type Laws: A prime-adic Hall criterion, finite certificates, linear rigidity, and a sharp regularity transition}, report dated 29 September 2026. Repository README and recorded theorem summaries inspected. Exact repository path and blob identifier in \texttt{SOURCES.md}.
+
+\bibitem{repo-multisection}
+ProveIt, \texttt{GeometricUniformMultisection.lean}, lines 1--130 inspected, in \nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/}. Fixed normalized dyadic two-section development. Exact snapshot and file identifier in \texttt{SOURCES.md}.
+
+\bibitem{erdos}
+P. Erd\H{o}s, \emph{On a family of symmetric Bernoulli convolutions}, American Journal of Mathematics \textbf{61} (1939), 974--976. DOI: \href{https://doi.org/10.2307/2371641}{10.2307/2371641}. The specific golden-ratio argument used here is proved in \cref{sec:regularity}; publisher full text was not retrieved.
+
+\bibitem{shmerkin}
+P. Shmerkin, \emph{On the exceptional set for absolute continuity of Bernoulli convolutions}, Geometric and Functional Analysis \textbf{24} (2014), 946--958; arXiv:1303.3992. Used only for context, not as a proof dependency.\newline
+\url{https://arxiv.org/abs/1303.3992}.
+\end{thebibliography}
+\end{document}
