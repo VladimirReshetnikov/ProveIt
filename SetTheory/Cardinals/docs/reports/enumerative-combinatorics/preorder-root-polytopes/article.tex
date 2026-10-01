@@ -33,7 +33,8 @@
     Part VIII: marked-tree stability, arbitrary apex neighbourhoods, enumeration and repair;
     Part IX: two-flow bijections, full-coordinate sampling of demand vectors and preorder lattice points;
     Part X: rare stable markings on random trees, sparse transitions and annealed--quenched separation;
-    Part XI: Hall bottlenecks and the limits of rank normalization}}
+    Part XI: Hall bottlenecks and the limits of rank normalization;
+    Part XII: rank-three matching supports, exact kernels and a bimatroid obstruction}}
 \titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
 \titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
 \pagestyle{fancy}
@@ -139,6 +140,9 @@
 \newcommand{\cst}{c_*}
 % Part XI (batch 68): macros of source 13
 \newcommand{\ULC}{\operatorname{ULC}}
+% Part XII (batch 70): macros of source 14
+\newcommand{\GammaD}{\Gamma_D}
+\newcommand{\poly}{\operatorname{poly}}
 
 \begin{document}
 \thispagestyle{empty}
@@ -173,6 +177,9 @@ random trees --- sparse transitions and annealed--quenched separation}\par
 \vspace{3pt}
 {\normalsize\color{Ink} With Part~XI (added 30 September 2026): Hall bottlenecks and the
 limits of rank normalization}\par
+\vspace{3pt}
+{\normalsize\color{Ink} With Part~XII (added 30 September 2026): matching supports through
+rank three --- rank normalization, exact kernels and a bimatroid obstruction}\par
 \vspace{9pt}
 {\color{Muted}Research manuscript prepared for Vladimir Reshetnikov\\
 20 September 2026}
@@ -294,6 +301,19 @@ holds for every positively weighted graph, with a defect identity and its
 equality cases, and the support polynomial can be computed exactly in time
 $2^{\nu(H)^2+O(\nu(H))}$ times a polynomial. The unit-weight and one-shore
 versions remain open.
+
+\emph{Addition of 30 September 2026 (batch 70).} Part~XII, from a further
+manuscript, settles the unit-weight version for small matching number:
+for every bipartite graph with $\nu(H)\le3$, whatever its shore sizes,
+the support numbers divided by $\binom{\nu(H)}k$ are log-concave, by a
+sum-of-squares identity in four neighbourhood populations; the same holds
+for a connected family of matching number four and for disjoint unions.
+A positive $9\times9$ integer matrix of rank three shows that the
+normalization by actual rank fails for representable bimatroids.
+Neighbourhood-type kernels count disjoint supports exactly, and sample
+them exactly, in time $2^{O(d^2)}$ times a polynomial, $d$ the degree; for
+a finite preorder they give every gamma coefficient, and the first
+rank-normalized gamma inequality holds for every finite preorder.
 \end{abstract}
 \begin{tcolorbox}[colback=Pale,colframe=Accent,boxrule=0.5pt,arc=1mm,
   left=9pt,right=9pt,top=7pt,bottom=7pt]
@@ -328,6 +348,9 @@ Section~\ref{rts:sec:answers}.]
 [Added 30 September 2026, batch 68: Part~XI answers the positively
 weighted version of Part~V's question on normalization by the matching
 number negatively; see Section~\ref{hb:sec:answers}.]
+[Added 30 September 2026, batch 70: Part~XII answers its unit-weight
+version affirmatively for matching number at most three; see
+Section~\ref{mr:sec:answers}.]
 \end{tcolorbox}
 % Part III (batch 42): the page break that stood here was removed; the
 % longer abstract pushes this box to page 2, where the contents now follow it.
@@ -366,6 +389,10 @@ Part~IX and precedes the appendices of Part~I.
 Part~XI (Sections~\ref{hb:sec:prov}--\ref{hb:app:provenance}), added
 on 30 September 2026, treats normalization by the matching number; it
 follows Part~X and precedes the appendices of Part~I.
+Part~XII (Sections~\ref{mr:sec:prov}--\ref{mr:app:ledger}), added
+on 30 September 2026, treats unit-weight normalization through rank three
+and exact support kernels; it follows Part~XI and precedes the appendices
+of Part~I.
 \end{tcolorbox}
 \newpage
 \phantomsection\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{ } A reflexive root-polytope model}
@@ -6940,6 +6967,13 @@ is log-concave with no internal zeros (Part~V,
 Corollary~\ref{lor:cor:gammaULC}). For arbitrary preorders Part~V proves only
 that $h_\tau$ is ultra-log-concave; log-concavity of $\Gamma_\tau$ remains
 open.]
+[Added 30 September 2026, batch 70: the first index is answered for every
+finite preorder: $\gamma_1^2\ge\frac{2d}{d-1}\gamma_2$, $d=\deg\Gamma_\tau$,
+with the equality cases, so every gamma polynomial of degree at most two is
+log-concave (Part~XII, Corollary~\ref{mr:cor:preorderfirst}); in height two
+the normalization improves to $\binom{\nu}k$ for matching number at most
+three (Corollary~\ref{mr:cor:heighttwo}). Log-concavity of $\Gamma_\tau$ in
+general remains open (Research question~\ref{mr:q:gamma}).]
 
 \begin{question}[Extremal profiles with prescribed structure]
 Determine the maximal and minimal $\gamma_k$ when block sizes, quotient
@@ -6970,6 +7004,11 @@ polynomial (Theorem~\ref{hb:thm:FPT}), hence, through
 Theorem~\ref{htwo:thm:main}, $h_{P_G}$ in height two with the matching
 number of the comparability graph as parameter. The widths named here
 are a different parameter; the question remains open for them.]
+[Added 30 September 2026, batch 70: Part~XII extends this
+parameterization to every finite preorder: every $\gamma_k(\tau)$, every
+coefficient of $h_\tau$ and $|\Qt\cap\Z^n|$ in time $2^{O(d^2)}$ times a
+polynomial, $d=\nu(\Comp(\tau))$ (Corollary~\ref{mr:cor:preorderalgorithm}).
+The widths named here remain open.]
 
 \begin{question}[A geometric interpretation of the gamma coefficients]
 The signed-vector formula counts balanced points of the cube
@@ -7050,6 +7089,10 @@ classes remain open.]
 graphs of bounded matching number, by Part~XI's cover-type formula
 (Theorems~\ref{hb:thm:algorithmformula} and~\ref{hb:thm:FPT}), which
 groups vertices by their neighbourhoods in a minimum cover.]
+[Added 30 September 2026, batch 70: for every finite preorder, a
+specified $\gamma_k$ is computable in time $2^{O(d^2)}$ times a polynomial,
+$d=\nu(\Comp(\tau))$, by Part~XII's directed kernel
+(Corollary~\ref{mr:cor:preorderalgorithm}).]
 
 \begin{question}[Local changes of the relation; manuscript~01]
 Find effective formulas for the gamma increment when one adds a relation
@@ -8736,6 +8779,10 @@ inequality for $\Gamma_\tau$.
 equation~\eqref{lor:sp:eq:heighttwo} and remarks that it identifies the
 height-two $\gamma$-polynomial with $p_H$, but does not state
 Corollary~\ref{lor:cor:gammaULC}; source~09 remarks the same identity.]
+[Added 30 September 2026, batch 70: Part~XII replaces $\binom{\min(m,n)}k$
+by $\binom{\nu(H)}k$, $\nu(H)=\deg\Gamma_{P_H}$, when $\nu(H)\le3$, for its
+rank-four family and for disjoint unions of these
+(Corollary~\ref{mr:cor:heighttwo}).]
 
 \section{Palindromic cores: an exact structural classification}
 \label{lor:sp:sec:pal}
@@ -10315,6 +10362,18 @@ questions~\ref{hb:q:unit} and~\ref{hb:q:oneshore}); no smallest
 counterexample is determined (Research question~\ref{hb:q:rank}). The
 division example of the preceding paragraph has an instance inside the
 class: Corollary~\ref{hb:cor:division}.]
+[Added 30 September 2026, batch 70: the unit-weight version, open after
+batch~68, is answered affirmatively for $\nu(H)\le3$: Part~XII's
+Theorem~\ref{mr:thm:rankthree} proves the replacement for every bipartite
+graph of matching number at most three, whatever its shore sizes, by a
+sum-of-squares identity; Theorem~\ref{mr:thm:family} and
+Corollary~\ref{mr:cor:components} add a connected family of matching
+number four and disjoint unions. Its first inequality holds at every
+matching number (Theorem~\ref{mr:thm:first}). The unit-weight version
+remains open from $\nu(H)=4$ on (Research questions~\ref{mr:q:rankfour}
+and~\ref{mr:q:allrank}), the weighted version at $\nu(H)\in\{3,4,5\}$
+(Research questions~\ref{mr:q:weighted} and~\ref{hb:q:rank}), and the
+one-shore version.]
 
 \begin{question}[Equality, rigidity, and sharper covariance bounds; sources~06 and~07]\label{lor:q:equality}
 Characterize equality at a single ultra-log-concavity index under positive
@@ -10372,6 +10431,10 @@ provides a useful correctness target for faster implementations.
 cost is governed by the matching number and by the neighbourhood types of
 the vertices outside a minimum cover (Theorems~\ref{hb:thm:algorithmformula}
 and~\ref{hb:thm:FPT}); approximation is not treated there.]
+[Added 30 September 2026, batch 70: Part~XII's directed kernel extends
+exact counting, and exact sampling, to the disjoint-support enumerators of
+arbitrary relations, parameterized by their degree
+(Theorem~\ref{mr:thm:dkernel}, Proposition~\ref{mr:prop:activities}).]
 
 \begin{question}[Algorithmic use of the preorder quotient]
 Exploit equivalence classes and the quotient poset to accelerate the independence
@@ -10435,6 +10498,9 @@ ordinary $h$-inequalities do not settle this question.
 A productive approach would identify a homogeneous completion of the
 \emph{disjoint} transport-support polynomial, rather than reusing the
 completion for all doubled support pairs.
+[Added 30 September 2026, batch 70: Part~XII proves the first
+inequality $\gamma_1^2\ge\frac{2d}{d-1}\gamma_2$, $d=\deg\Gamma_\tau$, for
+every finite preorder (Corollary~\ref{mr:cor:preorderfirst}).]
 
 
 \noindent\emph{Repeat Research questions~\ref{gam:q:bijection}
@@ -14140,6 +14206,11 @@ ultra-log-concavity statement? The ordinary $h$-coefficient theorem does
 not answer this: the transformation between $h$ and $\gamma$ is not a
 nonnegative linear substitution on the matroid variables. Height two is a
 controlled starting case because its gamma polynomial is $p_G$.
+[Added 30 September 2026, batch 70: normalization by the actual degree
+$d=\deg\Gamma_\tau$ is valid at the first index for every finite preorder
+and therefore in degree at most two, and in height two for matching
+number at most three (Part~XII, Corollaries~\ref{mr:cor:preorderfirst}
+and~\ref{mr:cor:heighttwo}); the general question remains open.]
 
 
 \noindent\emph{Repeats Research question~\ref{gam:q:bijection}} (a
@@ -20094,7 +20165,9 @@ positive direction the first rank-normalized inequality holds for every
 positively weighted graph, with a defect identity and its equality cases,
 and the support polynomial is computed exactly by an algorithm
 parameterized by the matching number. The unit-weight and one-shore
-versions of the question remain open. Parts~I--X are unchanged except for
+versions of the question remain open. [Added 30 September 2026,
+batch 70: Part~XII settles the unit-weight version for matching number at
+most three; see Section~\ref{mr:sec:answers}.] Parts~I--X are unchanged except for
 dated pointers. Section~\ref{hb:sec:prov} records the provenance, fixes
 the notation and states what is answered.}
 
@@ -20302,6 +20375,11 @@ graph satisfies the first one (Theorem~\ref{hb:thm:firstidentity}).
 content, since the graph of Part~V's Section~\ref{lor:sec:preorders}
 contains its diagonal perfect matching, so $\nu(H_\tau)=n$ is the shore
 size and Corollary~\ref{lor:cor:preorderintro} is unaffected.]
+[Added 30 September 2026, batch 70: the unit-weight version is settled
+affirmatively for matching number at most three, and for a connected
+family of matching number four, by Part~XII
+(Section~\ref{mr:sec:answers}); it remains open from matching number
+four on.]
 \item \textbf{Part~V's division caveat} (after Theorem~\ref{lor:thm:CLC} and
 after Research question~\ref{lor:q:first}) gains an instance inside the
 class: Corollary~\ref{hb:cor:division} is a Lorentzian polynomial of the
@@ -21573,6 +21651,13 @@ absence of external fields in an essential way.
 [Merge note: this is the unit-weight half of Part~V's Research
 question~\ref{lor:q:first}; the batch-55 search recorded after that
 question found no unit-weight counterexample in its finite families.]
+[Added 30 September 2026, batch 70: answered in part. Part~XII's
+Theorem~\ref{mr:thm:rankthree} shows that every unit-weight support
+polynomial with $r\le3$ is $\ULC_r$, and Theorem~\ref{mr:thm:family} and
+Corollary~\ref{mr:cor:components} add a connected family of rank four and
+disjoint unions; a counterexample, if any, has $r\ge4$. Whether one
+exists stays open (Research questions~\ref{mr:q:rankfour}
+and~\ref{mr:q:allrank}).]
 
 \begin{question}[One-shore external fields]\label{hb:q:oneshore}
 Does $\ULC_r$ hold when $u_x=1$ for every left vertex and the right weights
@@ -21584,6 +21669,9 @@ one activity to one. A general positive theorem here would sharply
 separate one-shore support weighting from two-shore weighting.
 [Merge note: with Research question~\ref{hb:q:unit}, this is what remains
 open of the weighted version of Research question~\ref{lor:q:first}.]
+[Added 30 September 2026, batch 70: not addressed by Part~XII, whose
+rank-three theorem is the unit-weight case $v_y=1$ only. Its ``one-shore
+case'' is a minimum cover inside one shore, a different notion.]
 
 \begin{question}[First possible weighted rank]\label{hb:q:rank}
 Do all positively weighted support polynomials of matching ranks three,
@@ -21595,6 +21683,9 @@ cover-type structures, derive symbolic coefficient inequalities, and look
 for positive-coefficient or sum-of-squares certificates after reducing
 symmetries. Numerical sampling alone would be a poor substitute for these
 certificates because the known rank-six threshold can be large.
+[Added 30 September 2026, batch 70: at unit weights rank three is
+settled by Part~XII; its Research question~\ref{mr:q:weighted} asks the
+weighted rank-three case of this question.]
 
 \begin{question}[A universal rank-only order]\label{hb:q:order}
 Does there exist a finite function $\mathcal D(r)$ such that all positively
@@ -21853,6 +21944,2035 @@ blob, the inspected line ranges and the two primary references, with
 \nolinkurl{data/13-hall-bottlenecks-requirements.txt}
 (\texttt{sympy==1.14.0}).]
 % End of Part XI (batch 68).
+
+\phantomsection\part*{Part XII.\quad Matching supports through rank three: rank normalization, exact kernels and a bimatroid obstruction}
+\addcontentsline{toc}{part}{Part XII.\texorpdfstring{\quad}{ } Rank-three matching supports and exact kernels}
+
+\noindent\emph{Part~XII was added on 30 September 2026 in batch~70 of
+ProveIt's incoming-report intake, from one manuscript. It answers Part~V's
+Research question~\ref{lor:q:first} (``Normalization by the matching
+number'') affirmatively for unit weights and matching number at most three:
+for every bipartite graph $G$ with $\nu(G)\le3$, whatever the sizes of its
+shores, $s_k(G)/\binom{\nu(G)}k$ is log-concave, by a sum-of-squares
+identity in four neighbourhood populations. The same holds for a connected
+family of matching number four with unbounded shores and for disjoint
+unions of these graphs. Part~XI answered the version with positive weights
+on both shores negatively; Part~XII leaves the unit-weight question open
+from matching number four on and the weighted one open at matching number
+three. It proves the first rank-normalized inequality for weighted directed
+disjoint supports, with the unweighted equality cases, shows by a positive
+$9\times9$ integer matrix of rank three that the normalization by actual
+rank fails for representable bimatroids, counts supports exactly by
+neighbourhood-type kernels parameterized by the matching number or the
+gamma degree, and transfers the first inequality and the counting to the
+gamma polynomial of every finite preorder. Parts~I--XI are unchanged
+except for dated pointers. Section~\ref{mr:sec:prov} records the
+provenance, fixes the notation and states what is answered.}
+
+\section{Provenance, conventions and what Part~XII answers}
+\label{mr:sec:prov}
+
+\subsection{The manuscript}
+\label{mr:sec:source}
+Part~XII is printed from batch-70 manuscript~05, called \emph{source~14}
+here after its file prefix: \emph{Rank-Three Ultra-Log-Concavity and Exact
+Kernels for Matching Supports: Sharp first inequalities, a rank-sensitive
+sum-of-squares proof, a bimatroid obstruction, and preorder gamma
+applications}, dated 30 September 2026, 24 A4 pages as delivered. Its
+title page reads ``Prepared for Vladimir Reshetnikov with ChatGPT'' under
+the kicker ``Combinatorics / Exact counting / Preorder polytopes'', its PDF
+metadata give the author as ``Research manuscript prepared with ChatGPT for
+Vladimir Reshetnikov'', and its delivery README says ``Research manuscript
+prepared for Vladimir Reshetnikov''; that byline is recorded here and not
+reprinted. Its archive \nolinkurl{ProveIt_Matching_Rank_Research.zip}
+(inner directory of the same name, main file \nolinkurl{article.tex})
+arrived in ProveIt commit \texttt{1b3960d8a} and was placed in
+\texttt{51c6943bf}. It is pinned to commit
+\texttt{ffddaa8b9c89e7bf027e1442cc6216bb010906d0}, with this report's
+\texttt{article.tex} as blob
+\texttt{ba1cc4a6c99abd5ff808\allowbreak aae97df75efe434833e9}: Parts~I--IX
+exactly as printed (the blob of the pins of sources~12 and~13). It did not
+see Part~X, which is unrelated, or Part~XI, which answers the weighted
+version of the same question. Its four programs and its \texttt{Makefile}
+are shipped in \nolinkurl{code/}, its three records in \nolinkurl{data/},
+and its \texttt{PROOF\_STATUS.md} and \texttt{SOURCES.md} at the root of
+the report, all with the prefix \texttt{14-matching-rank-}. Its
+\texttt{SHA256SUMS.txt} was verified (13 of 13) at placement and retired.
+The manuscript, delivery README and PDF are not shipped; they survive in
+the arrival commit.
+
+Source~14 continues Parts~IV, V and~IX. It takes the smaller-shore
+inequality (R\"ohrle--Ulirsch's Theorem~A; Part~V's
+Theorem~\ref{lor:thm:main}) as a published input, uses Part~IV's
+disjoint-support model of the gamma vector and the support-counting bridge
+of Parts~II, IV and~V, and composes its sampler with Part~IX's two-flow
+bijection without implementing the composition. Its target is the
+question its pinned README lists as Research question~37, which is Part~V's
+Research question~\ref{lor:q:first}.
+
+\begin{tcolorbox}[colback=white,colframe=Pale,arc=1mm]
+\small\textbf{Abstract of source~14 (as delivered).}
+Let $s_k(G)$ count pairs of $k$-element vertex sets on opposite shores of a
+bipartite graph that admit a perfect matching. The published
+ultra-log-concavity theorem normalizes these numbers by the smaller shore.
+The ProveIt repository asks whether that normalization can be replaced by
+the maximum matching size $r$. We prove the proposed strengthening for
+\emph{every graph with $r\le3$}, including graphs with arbitrarily large
+shores. The new mixed-cover step is an explicit sum-of-squares identity in
+four neighborhood populations and two Boolean core-edge variables.
+We also establish the sharp first rank-normalized inequality at every
+rank, with a complete unweighted equality classification.
+
+An explicit $9\times9$ positive integer matrix of rank three shows that
+this strengthening cannot hold for all representable bimatroids: its
+regular-minor counts are $(1,81,1296,7056)$. We give the exact criterion for
+the corresponding rectangular dense rank-three family. Thus the graph
+question requires structure beyond abstract representability.
+
+For computation we construct finite neighborhood-type kernels which count
+supports, rather than matchings, in $2^{O(r^2)}\poly(L)$ time. A directed
+version computes disjoint support enumerators in
+$2^{O(d^2)}\poly(L)$, where $d$ is their degree. The formulas permit exact
+sampling, binary-encoded clone populations, and rigorous polynomial
+certification of one-parameter families. A connected rank-four family
+with unbounded shore sizes is treated completely. The repository's
+preorder support bridge transfers these results to gamma polynomials,
+including exact fixed-degree counting and a conditional composition with
+its existing lattice-point bijection. Full proofs, executable exact
+certificates, a dependency audit, and a research agenda are supplied.
+\end{tcolorbox}
+\noindent The abstract is reproduced as delivered. Its $L$ in $\poly(L)$
+is the input length, printed $\ell$ below; its $r$ is the matching
+number $\nu(G)$, as everywhere in Part~XII.
+
+\begin{statusbox}
+\small\textbf{Scope (source~14, as delivered).} This is a research draft, not an independently refereed or
+Lean-certified result. It settles the matching-rank question through rank
+three, not in general. General preorder gamma log-concavity is not claimed.
+Historical priority for the proposed extensions has not been exhaustively
+established. Classical inputs and inherited repository results are identified
+at their points of use.
+\end{statusbox}
+
+\begin{statusbox}
+\small\textbf{Priority and prior work (merge).}
+The smaller-shore inequality is not new: it is Theorem~A of R\"ohrle and
+Ulirsch~\cite{RU} for the relation bimatroid of their Example~2.4, and
+Part~V's Theorem~\ref{lor:thm:main}; source~14 uses it, for a minimum
+cover inside one shore, as a published input. The Motzkin--Straus
+inequality~\cite{MS} (Lemma~\ref{mr:lem:MS}, with a compression proof),
+K\H{o}nig's matching--cover equality, the Cauchy--Binet formula, the
+Vandermonde minors and Liggett's convolution theorem~\cite{Liggett,Gurvits}
+are classical and credited. Already in this report: the degree of the
+gamma polynomial (Part~IV's Theorem~\ref{gam:thm:deficiency}; source~14's
+Lemma~\ref{mr:lem:degree} extends the statement and its proof to every
+loopless relation), overlap cancellation and the gamma formula (Part~IV's
+Corollary~\ref{gam:cor:cancel} and Theorem~\ref{gam:thm:main}, which
+source~14 says it repeats), the support-counting bridge (Parts~II, IV, V
+and~IX), the first rank-normalized inequality and its equality cases for
+positively weighted bipartite graphs, the case $\nu(H)\le2$, and the
+cover-type counting formula with its $2^{\nu^2+O(\nu)}$ bound (Part~XI's
+Theorem~\ref{hb:thm:firstidentity}, Corollaries~\ref{hb:cor:equality}
+and~\ref{hb:cor:smallrank}, Theorems~\ref{hb:thm:algorithmformula}
+and~\ref{hb:thm:FPT}, which source~14 did not see and reaches by other
+or equivalent routes; merge notes at each place). New relative to
+Parts~I--XI: the rank-three theorem and its certificate
+(Section~\ref{mr:sec:rankthree}), the first inequality for directed
+relations with nonnegative activities and its directed equality cases
+(Section~\ref{mr:sec:first}), the bimatroid obstruction
+(Section~\ref{mr:sec:matrix}), the directed kernel, exact sampling and
+clone certification (Sections~\ref{mr:sec:dkernel}
+and~\ref{mr:sec:clones}), the rank-four family
+(Section~\ref{mr:sec:family}) and the preorder consequences
+(Corollaries~\ref{mr:cor:preorderfirst}, \ref{mr:cor:heighttwo}
+and~\ref{mr:cor:preorderalgorithm}). Source~14's source check was focused,
+not an exhaustive priority search; no worldwide priority is claimed for
+any result of Part~XII.
+\end{statusbox}
+
+\subsection{Notation of Part~XII}
+\label{mr:sec:notation}
+Part~XII uses Part~II's perfectly matchable set polynomial $p_G$, Part~IV's
+gamma polynomial $\Gamma_\tau$ with coefficients $\gamma_k$, its
+comparability graph $\Comp(\tau)$ and the report's $\nu$ for the maximum
+matching size. Table~\ref{mr:tab:notation} lists what Part~XII adds or uses
+differently. \textbf{Two symbols are renamed:} source~14 writes $L$ both
+for the left shore and for the input length in $\poly(L)$; the input
+length is printed $\ell$ (the delivered abstract above keeps $L$). It
+writes $Q_\tau$ for the preorder polytope; it is printed with the report's
+$\Qt$. No normalization was changed.
+
+\begin{table}[tbp]
+\centering\footnotesize
+\caption{Symbols of Part~XII. The last column prints the tempting false
+reading.}
+\label{mr:tab:notation}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright}p{.2\textwidth}>{\raggedright}p{.38\textwidth}Y@{}}
+\toprule
+Symbol & Meaning in Part~XII & Not to be confused with\\
+\midrule
+$G=(L\sqcup R,E)$, $s_k(G)$, $p_G$ & a bipartite graph with left and right
+ shores $L$, $R$; its support counts and support polynomial (each support
+ once) & Part~V's and Part~XI's $H=(X,Y;E)$ and $a_k(H)$ (the same
+ numbers); Part~II's comparability graph $G$; Part~XI's outer blocks
+ $L,R$.\\
+$r=\nu(G)$, $s=\min(|L|,|R|)$ & the matching number, \emph{always};
+ the smaller shore & Part~V's $r=\min(m,n)$ in Theorem~\ref{lor:thm:main};
+ its homogenizing variable $s$; Part~XI's core size $s$. Also $s_k$, the
+ coefficients.\\
+rank-ULC, $\ULC(r)$ & log-concavity after division by $\binom dk$, $d$ the
+ actual degree; ultra-log-concavity of order $r$ & Part~XI's $\ULC_D$
+ (the same notion, written with a subscript); Part~V's order
+ $\min(m,n)$.\\
+$D$, $U(D)$, $A\match_DB$ & a loopless directed relation, its underlying
+ simple graph, a bijection $A\to B$ along arcs ($A\cap B=\varnothing$) &
+ Part~XI's ULC order $D$; Part~V's donor sets $U$; Part~IV's $\match_\tau$
+ (the same arrow, overlap allowed there).\\
+$\GammaD$, $g_k(D)$, $d$ & the disjoint-support polynomial, its
+ coefficients and its degree $d=\nu(U(D))$ & Part~IV's $\Gamma_\tau$,
+ $\gamma_k$ (the case $D=D_\tau$); source~07's $d$ (smaller shore) in
+ Part~V.\\
+$\boldsymbol u,\boldsymbol v$; $u_v$, $v_v$ & tail and head activities
+ (nonnegative); $v$ is also a vertex & Part~XI's vertex weights $u_x,v_y$
+ (positive).\\
+$\mathcal D_k(p;d)$ & the integral gap of~\eqref{mr:eq:gap} & Part~V's
+ demand set $\cD_H$; the gap polynomial $D(M)$ of
+ Theorem~\ref{mr:thm:onedecide}.\\
+$H$ in Section~\ref{mr:sec:first} and~\ref{mr:sec:preorders} & the
+ arc-disjointness graph; the common part $I\cap J$ & the report's
+ bipartite graph $H$.\\
+$x,y,z,w$, $\alpha,\beta$, $A,B,C,e$ & populations and core-edge
+ indicators of the mixed cover, and the polynomials
+ \eqref{mr:eq:ABC1}--\eqref{mr:eq:ABC2} & the disjoint sets $A,B$ of
+ Sections~\ref{mr:sec:definitions} and~\ref{mr:sec:preorders}; the cover
+ $C$ of Section~\ref{mr:sec:bkernel}; Part~XI's binomial numbers
+ $A,B,C$.\\
+``one-shore case'' & a minimum cover inside one shore
+ (Section~\ref{mr:sec:rankthree}) & Part~XI's one-shore \emph{weights}
+ (Research question~\ref{hb:q:oneshore}).\\
+$M$, $R_k(M)$ & the matrix~\eqref{mr:eq:matrix} and its regular-minor
+ counts; in Section~\ref{mr:sec:clones}, $M$ is the clone multiplier &
+ Part~XI's $M=|E|$; Part~VIII's arms $R_i$.\\
+$C=C_L\sqcup C_R$, $a,b,c$, $n_S,m_T$, $q_S,p_T$, $W$, $\chi$ & a cover,
+ its sizes, type populations, quotas, multiplicities, feasibility & core
+ vertices $a,b_1,b_2$ of Section~\ref{mr:sec:rankthree}; Part~XI's cover
+ parts $C_X,C_Y$ of sizes $p,q$.\\
+$F_T(X,Y)$, $N_T$, $W_T$ & a type's truncated activity polynomial,
+ population and multiplicity & Part~V's support polynomial $F_H$ and
+ shores $X,Y$.\\
+$G_N$, $q_N$, $N$ & the rank-four family, its half, the block size &
+ the populations $N_T$; Part~II's comparability graph $G$.\\
+$\Qt$, $V$, $D_\tau$, $\ell$ & the preorder polytope (source~14's
+ $Q_\tau$), its ground set, the off-diagonal relation, the input length &
+ Part~I's $E=[n]$; Part~I's equation~\eqref{eq:Q} (the same polytope).\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What Part~XII answers}
+\label{mr:sec:answers}
+Status after Part~XII, as of 30 September 2026:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Part~V's Research question~\ref{lor:q:first} is answered
+affirmatively in its unit-weight version for matching number at most
+three}, and for every graph $G_N$ of Section~\ref{mr:sec:family} and every
+disjoint union of such graphs (Theorems~\ref{mr:thm:rankthree}
+and~\ref{mr:thm:family}, Corollary~\ref{mr:cor:components}): there
+$\binom{\nu(G)}k$ replaces $\binom{\min(m,n)}k$. Together with Part~XI the
+status is: with positive weights on both shores the replacement fails
+in general (Part~XI, already at matching number six), and it holds for
+matching number at most two (Part~XI's Corollary~\ref{hb:cor:smallrank});
+at unit weights it holds for matching number at most three and in the
+classes named, and its first inequality holds at every matching number,
+with or without weights (Theorem~\ref{mr:thm:first}, Part~XI's
+Theorem~\ref{hb:thm:firstidentity}). Open: unit weights from matching
+number four on (Research questions~\ref{mr:q:rankfour}
+and~\ref{mr:q:allrank}), weights at matching numbers three to five
+(Research question~\ref{mr:q:weighted} and Part~XI's
+Research question~\ref{hb:q:rank}), and weights on one shore (Part~XI's
+Research question~\ref{hb:q:oneshore}, not addressed here).
+\item \textbf{Part~XI's Research question~\ref{hb:q:unit} is answered in
+part:} a unit-weight counterexample, if one exists, has matching number at
+least four and is not one of the graphs $G_N$ or a disjoint union of graphs
+from these classes. Its smallest possible matching number is open.
+\item \textbf{Part~IV's Research question~\ref{lor:hq:shape}} (log-concave
+gamma polynomials) \textbf{gains its first index for every finite
+preorder}: $\gamma_1^2\ge\frac{2d}{d-1}\gamma_2$ with $d=\deg\Gamma_\tau$,
+with the equality cases (Corollary~\ref{mr:cor:preorderfirst}). Hence
+every gamma polynomial of degree at most two is log-concave, indeed
+ultra-log-concave of its own degree. For posets of height at most two
+whose comparability graph has matching number at most three, or is one of
+the graphs $G_N$ or a disjoint union of these, the normalization of Part~V's
+Corollary~\ref{lor:cor:gammaULC} improves from $\binom{\min(m,n)}k$ to
+$\binom{\nu(G)}k$ (Corollary~\ref{mr:cor:heighttwo}). Log-concavity of
+$\Gamma_\tau$ in general, and from degree three on outside height two,
+stays open (Research question~\ref{mr:q:gamma}); so do the
+``Gamma log-concavity beyond height two'' paragraphs of sources~06 and~09.
+\item \textbf{Part~IV's Research questions~\ref{lor:hq:param}
+and~\ref{lor:hq:countcx}, and Part~V's Research
+question~\ref{hb:hq:algorithms}, gain a class for every finite
+preorder.} Corollary~\ref{mr:cor:preorderalgorithm} computes every
+$\gamma_k(\tau)$, every coefficient of $h_\tau$ and $|\Qt\cap\Z^n|$ exactly
+in time $2^{O(d^2)}$ times a polynomial, $d=\nu(\Comp(\tau))$, extending
+the height-two parameterization Part~XI obtained. The widths and
+treewidths those questions name are a different parameter and remain
+open; the $\#\mathrm P$-hardness of Part~V concerns unrestricted
+matching numbers.
+\item \textbf{Exact sampling.} Section~\ref{mr:sec:dkernel} samples
+disjoint supports, and hence (with Part~IX's bijection) would sample the
+lattice points of $\Qt$, with exactly uniform law in fixed-parameter time,
+where Part~IX's Corollary~\ref{tf:cor:preordersampler} is polynomial-time
+and almost uniform. The lattice-point composition is specified, not
+implemented (Research question~\ref{mr:q:sampler}).
+\item \textbf{No other numbered research question of Parts~I--XI is
+answered.} The bimatroid obstruction (Theorem~\ref{mr:thm:matrix})
+concerns representable bimatroids whose linear rank is below the matching
+number of their pattern; it is consistent with every statement of
+Parts~V and~XI and refutes none.
+\end{itemize}
+Part~XII refutes no statement of Parts~I--XI, and nothing is retracted.
+Part~XI's sentences that the unit-weight version ``remains open'' were true
+when written and are re-scoped by dated pointers, not changed. Part~V
+gains dated pointers after Research question~\ref{lor:q:first}, after
+Corollary~\ref{lor:cor:gammaULC}, after source~06's paragraph on gamma
+log-concavity and after Research question~\ref{hb:hq:algorithms}; Part~IV
+after Research questions~\ref{lor:hq:shape}, \ref{lor:hq:param}
+and~\ref{lor:hq:countcx}; Part~VII after source~09's paragraph on gamma
+log-concavity; Part~XI in its front matter, in
+Section~\ref{hb:sec:answers} and after Research
+questions~\ref{hb:q:unit}--\ref{hb:q:rank}; the title block, the abstract,
+the scope box and the reading route gain dated sentences.
+
+\subsection{Where the merge had to choose}
+\label{mr:sec:merge}
+\begin{itemize}[leftmargin=1.4em]
+\item \emph{Order.} Source~14's order of sections is kept: its
+Section~$k$ is Section~$k+187$ here. Its two appendices are printed as
+ordinary sections at the end of Part~XII (Sections~\ref{mr:app:checklist}
+and~\ref{mr:app:ledger}), so that Part~I's appendices keep their letters.
+\item \emph{Duplicates.} Source~14's Lemma~\ref{mr:lem:degree}, its
+matching--cover argument, Lemma~\ref{mr:lem:cancellation} and
+display~\eqref{mr:eq:gammabridge} restate Part~IV's and Part~XI's results;
+its Theorem~\ref{mr:thm:bkernel} is the unit-weight case of Part~XI's
+cover-type formula; its first inequality and bipartite equality case
+overlap Part~XI's. All are kept with their text and labels, because
+Part~XII cites them and because source~14's routes differ or extend the
+statements (directed relations, the population-input model), with merge
+notes naming the earlier statements. The cancellation proof is the
+argument already printed as the second proof of Part~IV's
+Corollary~\ref{gam:cor:cancel}; it is kept, as source~14 says, for
+transparency.
+\item \emph{Self-citation.} Source~14's reference ``repo'' (this report
+at the pin, Parts~IV--V and~IX) became references to the statements of
+Parts~II, IV, V and~IX, and the reference was dropped from the
+bibliography; its bibliographic data are recorded in
+Section~\ref{mr:app:ledger}.
+\item \emph{Research questions.} Source~14's nine questions, unlabelled
+and numbered by their own counter as delivered, continue the report's
+numbering as Research questions~\ref{mr:q:rankfour}--\ref{mr:q:bimatroid}
+with new labels. Research question~\ref{mr:q:allrank} restates the
+unit-weight half of Research question~\ref{lor:q:first} and Part~XI's
+Research question~\ref{hb:q:unit}; it is numbered, with a merge note,
+because it asks for a structural proof. The unlabelled corollary after
+Theorem~\ref{mr:thm:matrix} gained a label.
+\item \emph{File names.} Source~14's programs and records keep their
+delivered base names behind the prefix \texttt{14-matching-rank-}; its
+\texttt{Makefile} is shipped in \nolinkurl{code/}, its two notes at the
+report's root. The merge note in Section~\ref{mr:sec:verification} gives
+the shipped names; its commands and code example are printed with
+delivery names.
+\item \emph{Cross-references.} Source~14 uses plain \verb|\ref| and
+\verb|\eqref|, as this report does; nothing was converted.
+\item \emph{Macros, labels and layout.} Its preamble is dropped; its
+fonts (newpx, as here), geometry, running heads and theorem setup give
+way to the report's. Its \verb|\R|, \verb|\supp|, \verb|\rank|,
+\verb|\match| and \verb|\ind| are the report's; its \verb|\N| and
+\verb|\Q| are unused in its text and are dropped; its \verb|\ULC|
+(\verb|\mathrm|) is printed with Part~XI's \verb|\ULC|
+(\verb|\operatorname|), the same upright letters; \verb|\GammaD| and
+\verb|\poly| were added to the preamble. Its 70 labels carry the prefix
+\texttt{mr:} (``matching rank''; one of them, \texttt{eq:Q}, equals a bare
+Part~I label); this section's headings and notation table, the corollary
+above, the nine questions, the conclusion and the two former appendices
+gained labels. Its abstract and status box are printed in this section;
+its title page, table of contents and running head are dropped.
+\item \emph{Bibliography.} Of its eight references, three are already in
+the report: \cite{RU} (source~14 also uses its Example~2.3; the entry now
+says so), \cite{AC} and \cite{DK}. Its Ohsugi--Tsuchiya reference is a
+paper not yet cited here (\cite{OTPQ}); \cite{MS}, \cite{Liggett}
+and~\cite{Gurvits} are new; ``repo'' was dropped.
+\end{itemize}
+
+\section{The research target and the contribution}
+\label{mr:sec:target}
+
+This article develops one of the explicit unresolved questions in the
+preorder-root-polytope branch of ProveIt, rather than re-proving its existing
+gamma-positivity or ambient ultra-log-concavity results. The source snapshot
+is commit
+\begin{center}\small\ttfamily
+ffddaa8b9c89e7bf027e1442cc6216bb010906d0.
+\end{center}
+The relevant report is \emph{A Reflexive Root-Polytope Model for Preorder
+$h$-Polynomials}, Parts IV--V and IX. Its README explicitly
+leaves normalization by matching number open, under Research question 37.
+This article uses that numbered question as a repository-local target;
+it does not attribute that exact formulation to an external published
+conjecture.
+[Merge note: the relevant report is this one; source~14 cites it as a
+repository reference (``Vladimir Reshetnikov and AI-assisted
+contributors'', Parts IV--V and IX, at the snapshot above), and the
+citation is dropped here. Research question~37 is Part~V's Research
+question~\ref{lor:q:first}, with the same number today. At the pin this
+report's \texttt{article.tex} was Parts~I--IX exactly as printed
+(Section~\ref{mr:app:ledger}); source~14 did not see Part~X or Part~XI.
+``ProveIt'', ``the repository'' and ``the inspected report'' in Part~XII
+mean Parts~I--IX of this report at the pin.]
+
+\subsection{The difference between ambient size and actual rank}
+
+For a finite simple bipartite graph $G=(L\sqcup R,E)$, define
+\begin{equation}\label{mr:eq:support}
+\begin{aligned}
+s_k(G)&=\#\{(I,J): I\subseteq L,\ J\subseteq R,\ |I|=|J|=k,\\
+&\hspace{5em}G[I\sqcup J]\text{ has a perfect matching}\},\\
+p_G(t)&=\sum_{k\ge0}s_k(G)t^k.
+\end{aligned}
+\end{equation}
+A support admitting several perfect matchings contributes \emph{one}.
+This is the perfectly matchable set polynomial in the bipartite setting
+\cite{DK,OTPQ}. Set $r=\nu(G)=\deg p_G$ and $s=\min(|L|,|R|)$.
+R\"ohrle--Ulirsch's theorem for bimatroids, applied to a relation, gives
+log-concavity of $s_k/\binom{s}{k}$ \cite[Theorem A and Example 2.4]{RU}.
+[Merge note: this is Part~V's Theorem~\ref{lor:thm:main}, with the same
+normalization, read through Part~V's bridge~\eqref{lor:eq:FHmatching},
+which gives $a_k(G)=s_k(G)$; $p_G$ is Part~II's perfectly matchable set
+polynomial $p_G$ and Part~V's $p_H$ for $H=G$.]
+The question here is whether
+\begin{equation}\label{mr:eq:rankulc}
+\left(\frac{s_k}{\binom r k}\right)^2\ge
+\frac{s_{k-1}}{\binom r{k-1}}\frac{s_{k+1}}{\binom r{k+1}}
+\qquad(1\le k<r).
+\end{equation}
+When $r<s$, this is genuinely stronger. The right-hand multiplier in the
+unnormalized inequality is
+\[
+\frac{(k+1)(r-k+1)}{k(r-k)},
+\]
+which decreases as $r$ increases. Removing isolated vertices can reduce
+$s$, but it need not reduce it to $r$; the families below have no such
+shortcut.
+
+\subsection{Results proved here}
+
+Theorem~\ref{mr:thm:rankthree} proves \eqref{mr:eq:rankulc} for $r\le3$.
+Its essential step covers an arbitrary minimum vertex cover split as one
+vertex on one shore and two on the other. Both shores can then be
+arbitrarily large. Theorem~\ref{mr:thm:first} proves its first inequality at
+every rank, also for weighted directed disjoint supports. Its unweighted
+equality cases are classified in Theorem~\ref{mr:thm:equality}.
+
+Theorem~\ref{mr:thm:matrix} exhibits a rank-three matrix for which the analogous
+rank-normalized minor inequality fails. This does not contradict the graph
+theorem or the published ambient theorem; Section~\ref{mr:sec:matrix} explains
+exactly why. Theorems~\ref{mr:thm:bkernel} and \ref{mr:thm:dkernel} give explicit
+counting kernels. Theorem~\ref{mr:thm:family} settles all inequalities for a
+connected infinite family of rank four. Section~\ref{mr:sec:clones} turns any
+fixed one-parameter clone family into an exact univariate sign problem.
+
+The novelty claim is deliberately local and qualified: the rank-three
+mixed-cover certificate, its rank-sensitive formulation, the explicit
+obstruction, and the particular kernel applications extend the inspected
+repository. They are not asserted to be the first possible parameterized
+algorithms for these counting problems, nor are classical extremal or
+convolution theorems claimed as new.
+
+\section{Disjoint directed supports and useful conventions}
+\label{mr:sec:definitions}
+
+A loopless directed relation $D$ on a finite set $V$ is a subset of
+$\{(u,v):u,v\in V,\ u\ne v\}$. Both orientations of an edge are allowed.
+For disjoint subsets $A,B\subseteq V$, write $A\match_D B$ when there is
+a bijection $f:A\to B$ with $(a,f(a))\in D$ for every $a\in A$.
+Define
+\begin{equation}\label{mr:eq:gammaD}
+\GammaD(t)=\sum_{k\ge0}g_k(D)t^k,
+\qquad
+ g_k(D)=\#\{(A,B):A\cap B=\varnothing,\ |A|=|B|=k,\ A\match_D B\}.
+\end{equation}
+The underlying undirected graph $U(D)$ has edge $\{u,v\}$ whenever at
+least one of $(u,v),(v,u)$ belongs to $D$. There are no parallel
+undirected edges, even if both arcs are present.
+
+\begin{lemma}\label{mr:lem:degree}
+The degree $d$ of $\GammaD$ equals $\nu(U(D))$. Every coefficient
+$g_0,g_1,\ldots,g_d$ is positive, and $g_0=1$.
+\end{lemma}
+\begin{proof}
+A directed matching between disjoint sets yields an undirected matching
+of the same size. Conversely, choose an orientation present in $D$ for
+each edge of an undirected matching. Because its edges are vertex-disjoint,
+the selected tails and heads are disjoint and give a support pair.
+Submatchings establish positivity at all smaller sizes. The empty pair is
+unique.
+\end{proof}
+[Merge note: for the off-diagonal relation of a preorder this is Part~IV's
+Theorem~\ref{gam:thm:deficiency} ($\deg\Gamma_\tau=\nu(\Comp(\tau))$,
+with positivity of $\gamma_0,\ldots,\gamma_\nu$), proved there by the same
+argument; source~14's form holds for every loopless relation.]
+
+A bipartite graph becomes such a relation by orienting every edge from
+$L$ to $R$. Then $\GammaD=p_G$. General relations are useful because the
+preorder gamma model has disjoint supports on a \emph{single} underlying
+set, not on two unrelated copies of that set.
+
+For nonnegative activities $u_v,v_v$, define the weighted coefficient
+\begin{equation}\label{mr:eq:weighted}
+g_k(D;\boldsymbol u,\boldsymbol v)=
+\sum_{\substack{A\cap B=\varnothing,\ |A|=|B|=k\\ A\match_D B}}
+\prod_{a\in A}u_a\prod_{b\in B}v_b.
+\end{equation}
+The repetition of the letter $v$ as a vertex subscript and an activity
+family causes no ambiguity in products. Activities weight supports, not
+individual matching realizations. Unless activities are displayed,
+coefficients are unweighted.
+
+We call a polynomial with positive coefficients through degree $d$
+\emph{rank-ULC} when its coefficients divided by $\binom d k$ are
+log-concave. [Merge note: this is Part~XI's $\ULC_d$ with $d$ the actual
+degree; for a support polynomial $d=\nu(G)$, so rank-ULC is Part~XI's
+$\ULC_{\nu(H)}$.] The assertion is vacuous in degrees zero and one. A
+convenient integral gap is
+\begin{equation}\label{mr:eq:gap}
+\mathcal D_k(p;d)=k(d-k)p_k^2-(k+1)(d-k+1)p_{k-1}p_{k+1}.
+\end{equation}
+Thus rank-ULC is equivalent to $\mathcal D_k\ge0$ for all internal $k$.
+Trailing zeros must be removed before interpreting $d$ as the degree.
+
+\section{The first inequality at every matching rank}
+\label{mr:sec:first}
+
+The first inequality admits a short extremal argument. We provide the
+underlying classical lemma and its equality analysis so that the reduction
+can be checked without accepting an unproved graph assertion.
+
+\begin{lemma}[Motzkin--Straus bound and the uniform equality case]
+\label{mr:lem:MS}
+Let $H$ be a finite simple graph with clique number $d\ge1$. For
+nonnegative vertex weights $w_i$,
+\begin{equation}\label{mr:eq:MS}
+\sum_{\{i,j\}\in E(H)}w_iw_j\le
+\frac{d-1}{2d}\left(\sum_iw_i\right)^2.
+\end{equation}
+If every weight is one, equality holds exactly when $H$ is a complete
+$d$-partite graph whose parts have equal size.
+\end{lemma}
+\begin{proof}
+The weighted inequality is the classical Motzkin--Straus theorem
+\cite{MS}; here is its elementary compression proof. Normalize the total
+weight to one. Whenever nonadjacent vertices $i,j$ have positive weights,
+the objective is affine in the division of their fixed combined weight.
+Move that entire weight to whichever vertex has the larger weighted
+neighbor sum. The objective does not decrease and the positive support
+shrinks. Repeating yields a clique of size $q\le d$. There the objective
+is $(1-\sum_iw_i^2)/2\le(1-1/q)/2\le(1-1/d)/2$.
+
+For completeness, suppose uniform positive weights attain equality.
+After normalization they form an interior global maximizer on the
+simplex. Let $M$ be the adjacency matrix. Its quadratic form must be
+nonpositive on the tangent space $\sum_i z_i=0$. If $i,j$ are nonadjacent,
+$z=e_i-e_j$ has $z^TMz=0$. Negative semidefiniteness on that tangent space
+implies $z^TMy=0$ for every tangent vector $y$: otherwise one sign of a
+sufficiently small perturbation $z+\varepsilon y$ has positive quadratic
+form. Hence row $i$ minus row $j$ of $M$ is constant. Its entries at $i$
+and $j$ are both zero, so the rows are identical.
+
+Nonadjacency is therefore an equivalence relation on distinct vertices,
+and $H$ is complete multipartite. Its number of parts is its clique
+number $d$. The first-order condition at the uniform interior maximizer
+says that all degrees are equal, so the parts are equal. Conversely, a
+complete graph with $d$ equal independent parts has exactly
+$(d-1)|V(H)|^2/(2d)$ edges and attains equality.
+\end{proof}
+
+\begin{theorem}[Sharp first rank inequality]\label{mr:thm:first}
+For a directed relation $D$ with $d=\nu(U(D))\ge2$ and nonnegative
+activities,
+\begin{equation}\label{mr:eq:first}
+ g_1(D;\boldsymbol u,\boldsymbol v)^2\ge
+ \frac{2d}{d-1}\,g_2(D;\boldsymbol u,\boldsymbol v).
+\end{equation}
+In particular, $s_1(G)^2\ge 2r\,s_2(G)/(r-1)$ for every bipartite graph
+of matching number $r\ge2$.
+\end{theorem}
+\begin{proof}
+Form a graph $H$ whose vertices are the directed arcs of $D$. Two arcs
+are adjacent when their endpoint sets are disjoint. A clique is exactly
+a collection of vertex-disjoint arcs, so its maximum size is $d$.
+Give arc $(a,b)$ weight $u_av_b$. The sum of these weights is $g_1$.
+
+Every size-two support has at least one realizing pair of disjoint arcs.
+Every realization has the same weight, namely the product of the
+activities of its tails and heads. Consequently $g_2$ is at most the
+weighted number of edges of $H$. Applying Lemma~\ref{mr:lem:MS} proves the
+claim. Notice the direction of the comparison: counting matchings gives
+an \emph{upper} bound on the number of supports.
+\end{proof}
+[Merge note: for a bipartite graph with positive weights on both shores,
+the inequality~\eqref{mr:eq:first} is Part~XI's
+inequality~\eqref{hb:eq:firstineq}, which Part~XI derives from its exact
+defect identity (Theorem~\ref{hb:thm:firstidentity}); source~14 did not
+see Part~XI. The two proofs are different routes: Part~XI decomposes the
+slack over a minimum vertex cover, source~14 bounds the support count by
+the arc-disjointness graph and applies Motzkin--Straus. Source~14's form
+extends the inequality to directed relations and to activities that may
+vanish; it gives no defect identity.]
+
+\begin{theorem}[Unweighted equality classification]\label{mr:thm:equality}
+Let $d\ge2$. Equality in \eqref{mr:eq:first} for unweighted directed supports
+holds if and only if every nontrivial connected component of $U(D)$ is
+a star or a triangle, and all these components contain the same number
+$q$ of directed arcs. In that case there are $d$ such components and
+\begin{equation}\label{mr:eq:equalitypoly}
+\GammaD(t)=(1+qt)^d.
+\end{equation}
+For bipartite graphs, the triangles are excluded: equality holds exactly
+for a disjoint union of $r$ stars with equally many edges, together with
+arbitrary isolated vertices.
+\end{theorem}
+\begin{proof}
+Equality forces equality in the uniform instance of
+Lemma~\ref{mr:lem:MS}. The arc-disjointness graph is therefore complete
+$d$-partite with equal part size $q$. Arcs in a part pairwise share an
+endpoint; arcs in different parts have disjoint endpoint sets. If two
+underlying edges are joined by a chain of incident edges, their arcs
+must lie in the same part. Thus each nontrivial component of $U(D)$
+consists of a pairwise-intersecting family of two-element sets.
+
+Such a family is a star or a triangle. Indeed, if all edges share a
+vertex, it is a star. Otherwise take $\{a,b\}$ and $\{a,c\}$ and an edge
+not containing $a$. That edge must be $\{b,c\}$, and every further edge
+meeting all three is one of the three triangle edges. Equal part sizes
+are exactly equal directed-arc counts in the components.
+
+Conversely, a star or triangle has matching number one. A size-one
+support specifies its directed arc uniquely. Across distinct components
+choices are independent, and each matching uses at most one arc from
+each component. Thus there is no matching multiplicity to collapse and
+the polynomial is \eqref{mr:eq:equalitypoly}. Its first inequality is an
+equality. Bipartite graphs contain no triangles.
+\end{proof}
+
+The classification is for unweighted equality only. No weighted equality
+classification is needed below. It also explains why normalization by
+the actual matching number is natural: equal disjoint stars make the
+rank-normalized sequence constant, so the bound cannot be strengthened
+uniformly.
+[Merge note: the bipartite clause is the unit-weight case of Part~XI's
+Corollary~\ref{hb:cor:equality}, which classifies equality for positive
+weights on both shores (disjoint unions of $\nu(H)$ stars with equal
+edge-weight sums). The classification for directed relations, with
+triangle components, is source~14's.]
+
+\section{Complete rank-normalized ultra-log-concavity through rank three}
+\label{mr:sec:rankthree}
+
+\begin{theorem}\label{mr:thm:rankthree}
+Every finite bipartite graph with maximum matching size $r\le3$ has a
+rank-ULC matching-support polynomial. Equivalently,
+\eqref{mr:eq:rankulc} holds for all its internal indices, regardless of the
+sizes of its shores.
+\end{theorem}
+
+For $r\le1$ there is nothing to prove. For $r=2$, the only inequality is
+Theorem~\ref{mr:thm:first}. [Merge note: ranks at most two, with
+positive weights, are also Part~XI's Corollary~\ref{hb:cor:smallrank}.]
+For $r=3$, that theorem gives
+$s_1^2\ge3s_2$, leaving
+\begin{equation}\label{mr:eq:rankthreegoal}
+s_2^2\ge3s_1s_3.
+\end{equation}
+We prove it by reducing to a mixed three-vertex cover.
+
+\subsection{Why a three-vertex cover is available}
+
+We use the matching--cover equality for bipartite graphs. Here is the
+standard constructive argument in the form needed here. Starting with a
+maximum matching, follow alternating paths from unmatched left vertices:
+unmatched edges left-to-right, matched edges right-to-left. Let $Z_L,Z_R$
+be the reached sets. Then
+\[
+(L\setminus Z_L)\cup Z_R
+\]
+is a vertex cover. An uncovered edge would continue the alternating
+search, except possibly a matched edge; in the latter case its reached
+left endpoint was reached through its matched right endpoint as well.
+There is no reached unmatched right endpoint, since that would be an
+augmenting path. Every matched edge has exactly one endpoint in the
+displayed cover and no unmatched vertex belongs to it. Hence the cover
+has $r$ vertices. Every cover has at least $r$ vertices, since it must
+meet each edge of a maximum matching.
+[Merge note: this is K\H{o}nig's theorem with the alternating-path proof
+that Part~XI prints as Lemma~\ref{hb:lem:konig}; source~14's wording is
+kept.]
+
+Choose a cover of size three. If it lies entirely on one shore, every
+vertex outside it on that shore is isolated. After deleting isolates,
+the smaller shore has size three because a matching of size three exists.
+The published ambient normalization theorem now gives
+\eqref{mr:eq:rankthreegoal} directly \cite[Theorem A]{RU}. This is the sole
+non-elementary input in the rank-three proof.
+[Merge note: in this report the published theorem is Part~V's
+Theorem~\ref{lor:thm:main} with $\min(m,n)=3$. This ``one-shore case''
+(a minimum cover inside one shore) is not Part~XI's one-shore question
+(Research question~\ref{hb:q:oneshore}, positive weights on one shore);
+Part~XII uses unit weights throughout its rank-three theorem.]
+
+In the remaining case, interchange the shores as necessary to write the
+cover as
+\[
+C=\{a\}\sqcup\{b_1,b_2\},\qquad a\in L,\quad b_1,b_2\in R.
+\]
+There are no edges between vertices outside $C$.
+
+\subsection{Four populations and the support-collapse correction}
+
+Apart from isolated vertices, partition $L\setminus\{a\}$ into
+$x$ vertices adjacent only to $b_1$, $y$ adjacent only to $b_2$, and $z$
+adjacent to both. Every nonisolated vertex of $R\setminus\{b_1,b_2\}$
+is adjacent only to $a$; let their number be $w$. Let
+$\alpha,\beta\in\{0,1\}$ indicate the edges $ab_1,ab_2$, respectively.
+Put
+\begin{align}
+A&=x+y+2z, &
+B&=xy+xz+yz+\binom z2,\label{mr:eq:ABC1}\\
+e&=\alpha+\beta, &
+C&=\alpha(y+z)+\beta(x+z)-\alpha\beta z.
+\label{mr:eq:ABC2}
+\end{align}
+The last subtraction is essential: when both core edges exist and an
+outside left vertex sees both $b_1,b_2$, the same support admits two
+matchings, but must be counted once.
+
+\begin{lemma}[Exact mixed-cover coefficients]\label{mr:lem:mixed}
+With this notation,
+\begin{equation}\label{mr:eq:mixedcoeff}
+p_G(t)=1+(w+A+e)t+(wA+B+C)t^2+wBt^3.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The coefficient of $t$ counts edges. There are $A$ edges from outside
+left vertices to $b_1,b_2$, $w$ edges from $a$ to outside right vertices,
+and $e$ core edges.
+
+For size-two supports without a core edge, either one chooses a support
+from each of these two exterior pieces, giving $wA$, or one saturates
+$b_1,b_2$ by two outside left vertices, giving $B$. In the latter count,
+possible unordered type pairs are $xy,xz,yz$, and two distinct common
+neighbors, counted by $\binom z2$ rather than $2\binom z2$.
+
+The remaining size-two supports use $a,b_1,b_2$ and one outside left
+vertex. A core edge $ab_1$ permits the $y+z$ neighbors of $b_2$, and
+$ab_2$ permits the $x+z$ neighbors of $b_1$. Their common supports,
+when both edges exist, are the $z$ common neighbors. This gives $C$.
+A support with two selected vertices on each shore has no other form.
+
+A matching of size three must use all three cover vertices and cannot
+use a core edge, since such an edge consumes two of those vertices.
+Choose a neighbor of $a$ in $w$ ways and a support saturating $b_1,b_2$
+in $B$ ways. This gives $wB$.
+\end{proof}
+
+\subsection{A certificate valid for all population sizes}
+
+\begin{proposition}[Rank-three certificate]\label{mr:prop:sos}
+For the coefficients in \eqref{mr:eq:mixedcoeff},
+\begin{align}
+s_2^2-3s_1s_3
+={}&\left(\frac{Aw}{2}-(B+C)\right)^2
+ +\frac34(A^2-4B)w^2
+ +3(AC-eB)w.\label{mr:eq:sos}
+\end{align}
+All three terms are nonnegative. More explicitly,
+\begin{align}
+A^2-4B&=(x-y)^2+2z(z+1),\label{mr:eq:sosA}\\
+AC-eB
+={}&\alpha(1-\beta)\left(y^2+2yz+\frac{3z^2+z}{2}\right)\notag\\
+&+\beta(1-\alpha)\left(x^2+2xz+\frac{3z^2+z}{2}\right)\notag\\
+&+\alpha\beta\left(x^2+y^2+xz+yz+z^2+z\right).
+\label{mr:eq:sosC}
+\end{align}
+\end{proposition}
+\begin{proof}
+Substituting \eqref{mr:eq:mixedcoeff} gives the quadratic in $w$
+\[
+(A^2-3B)w^2+(-AB+2AC-3eB)w+(B+C)^2.
+\]
+Expanding the right-hand side of \eqref{mr:eq:sos} gives exactly the same
+quadratic. Equations \eqref{mr:eq:sosA} and \eqref{mr:eq:sosC} follow by
+multiplying out \eqref{mr:eq:ABC1}--\eqref{mr:eq:ABC2}. Every factor displayed in
+\eqref{mr:eq:sosA}--\eqref{mr:eq:sosC} is nonnegative for nonnegative integer
+populations and Boolean $\alpha,\beta$. This proves the claim.
+\end{proof}
+
+Combining this certificate with the cover reduction and the first
+inequality proves Theorem~\ref{mr:thm:rankthree}. Its quantifier is over all
+finite bipartite graphs of matching number at most three, not merely over
+a finite list of small graphs.
+
+\begin{corollary}[Equality in the mixed-cover step]\label{mr:cor:mixed-equal}
+Suppose the displayed mixed-cover graph has matching number three.
+Equality in \eqref{mr:eq:rankthreegoal} holds exactly when
+\[
+ z=0,\qquad \alpha=\beta=0,\qquad x=y=w>0.
+\]
+The nontrivial components are then three equal stars.
+\end{corollary}
+\begin{proof}
+Rank three means $wB>0$. Equality in \eqref{mr:eq:sos} forces
+$A^2-4B=0$, hence $x=y$ and $z=0$. Since $B=x^2>0$, one has $x>0$.
+Equation \eqref{mr:eq:sosC} then forces $\alpha=\beta=0$. Finally the square
+in \eqref{mr:eq:sos} is $x^2(w-x)^2$. The converse follows immediately.
+\end{proof}
+
+This corollary does not claim a new equality classification for the
+one-shore case of the imported ambient theorem. The global equality
+classification for the \emph{first} inequality was already proved in
+Theorem~\ref{mr:thm:equality}.
+
+\section{Why arbitrary representable bimatroids are different}
+\label{mr:sec:matrix}
+
+For a matrix $M$, let $R_k(M)$ count its nonsingular $k\times k$
+submatrices, with $R_0=1$. These sets of row--column pairs constitute a
+representable bimatroid \cite[Example 2.3]{RU}. Matching-support bimatroids
+are representable by putting independent indeterminates on their edges,
+but specializing a matrix can create linear dependencies without deleting
+any edges. The actual linear rank can consequently be far below the
+matching number of its nonzero pattern.
+
+\begin{theorem}[An explicit rank-three obstruction]\label{mr:thm:matrix}
+Let $m,n\ge3$ and
+\begin{equation}\label{mr:eq:matrix}
+M_{ij}=1+ij+i^2j^2\qquad(1\le i\le m,\ 1\le j\le n).
+\end{equation}
+Then $\rank M=3$, every square minor of order at most three is positive,
+and
+\[
+R_k(M)=\binom mk\binom nk\quad(0\le k\le3),\qquad R_k(M)=0\quad(k>3).
+\]
+This sequence is rank-ULC if and only if
+\begin{equation}\label{mr:eq:matrixcriterion}
+3(m-1)(n-1)\ge4(m-2)(n-2).
+\end{equation}
+In particular the $9\times9$ matrix has coefficient vector
+$(1,81,1296,7056)$ and
+\begin{equation}\label{mr:eq:matrixdefect}
+1296^2-3\cdot81\cdot7056=-34992<0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Factor $M=UV$, where the $i$th row of $U$ is $(1,i,i^2)$ and the $j$th
+column of $V$ is $(1,j,j^2)^T$. Thus the rank is at most three.
+For increasing positive $a<b$, the $2\times2$ minors obtained from
+exponent pairs $(0,1),(0,2),(1,2)$ are, respectively,
+\[
+ b-a,\qquad b^2-a^2,\qquad ab(b-a),
+\]
+all positive. Every $3\times3$ minor of a three-column Vandermonde matrix
+is a positive product of pairwise differences. Cauchy--Binet therefore
+expresses each minor of $M$ of order one or two as a sum of positive
+products, and each order-three minor as one positive product. The rank
+is exactly three and all larger minors vanish. The stated counts follow.
+
+The first rank-three inequality is
+$m^2n^2\ge3\binom m2\binom n2$, which always holds: after cancellation,
+$4mn\ge3(m-1)(n-1)$. The second inequality is
+\[
+\left(\binom m2\binom n2\right)^2
+\ge3mn\binom m3\binom n3.
+\]
+Cancelling positive factors gives exactly \eqref{mr:eq:matrixcriterion}.
+Substitution of $m=n=9$ gives \eqref{mr:eq:matrixdefect}.
+\end{proof}
+
+\begin{corollary}\label{mr:cor:square}
+In this square dense rank-three family, rank-ULC holds for
+$3\le m=n\le8$ and fails for every $m=n\ge9$.
+\end{corollary}
+\begin{proof}
+Writing $m=n=q$, criterion \eqref{mr:eq:matrixcriterion} becomes
+$q^2-10q+13\le0$. Its upper root is $5+2\sqrt3$, strictly between eight
+and nine.
+\end{proof}
+
+The nonzero pattern of \eqref{mr:eq:matrix} is $K_{m,n}$, whose matching
+number is $\min(m,n)$, not three. Consequently this example is not a
+counterexample to the repository's graph question. It instead rules out
+one proposed route: no theorem asserting actual-rank ULC for \emph{all}
+representable bimatroids can prove that question. The obstruction already
+occurs with positive integer entries and completely nonvanishing small
+minors; it is not a numerical cancellation artifact in the experiment.
+
+\section{An explicit finite kernel for bipartite supports}
+\label{mr:sec:bkernel}
+
+The mixed-cover calculation generalizes to a finite table for every
+fixed matching rank. The important point is not merely that large graphs
+can have small covers. One must retain population multiplicities while
+\emph{discarding matching multiplicities}. Counting ordinary matchings
+on a compressed graph would solve a different problem.
+
+\subsection{The cover and its exterior types}
+
+Fix a vertex cover
+\[
+C=C_L\sqcup C_R,\qquad C_L\subseteq L,\quad C_R\subseteq R,
+\qquad |C_L|=a,\quad |C_R|=b.
+\]
+Let $c=a+b$. Outside the cover there are no edges. Every nonisolated
+vertex of $L\setminus C_L$ therefore has a nonempty neighborhood
+$S\subseteq C_R$. Write $n_S$ for the number of vertices of this type.
+Similarly, $m_T$ counts vertices of $R\setminus C_R$ with nonempty
+neighborhood $T\subseteq C_L$. The core consists of the $ab$ possible
+edges between $C_L$ and $C_R$.
+
+A support is described by selected core sets $I\subseteq C_L$,
+$J\subseteq C_R$, exterior-left quotas $q_S$, and exterior-right quotas
+$p_T$. Define
+\begin{equation}\label{mr:eq:kernelweight}
+W(\boldsymbol q,\boldsymbol p)=
+\prod_{\varnothing\ne S\subseteq C_R}\binom{n_S}{q_S}
+\prod_{\varnothing\ne T\subseteq C_L}\binom{m_T}{p_T}.
+\end{equation}
+Use the convention $\binom Nq=0$ for $q>N$. Matchability of the selected
+support depends only on the core selections and these quotas. Any two
+labelled supports with the same data are related by permutations within
+neighborhood classes.
+
+To test a macrostate, replace each quota by that many distinct formal
+vertices of the appropriate type. Let
+$\chi(I,J,\boldsymbol q,\boldsymbol p)\in\{0,1\}$ indicate whether the
+resulting bipartite graph has a perfect matching. It is zero unless its
+two shores have equal size.
+
+\begin{theorem}[Population kernel]\label{mr:thm:bkernel}
+For a graph with the displayed cover,
+\begin{align}
+p_G(t)=\sum_{I\subseteq C_L}\sum_{J\subseteq C_R}
+\sum_{\substack{\boldsymbol q\ge0\\ \sum q_S\le b}}
+\sum_{\substack{\boldsymbol p\ge0\\ \sum p_T\le a}}
+&\chi(I,J,\boldsymbol q,\boldsymbol p)
+W(\boldsymbol q,\boldsymbol p)
+ t^{|I|+\sum q_S}.
+\label{mr:eq:bkernel}
+\end{align}
+The feasibility table depends on the core and the types, but not on any
+population size. It has at most
+\begin{equation}\label{mr:eq:bkernelbound}
+2^{a+b}\binom{2^b-1+b}{b}\binom{2^a-1+a}{a}
+=2^{a^2+b^2+O(c\log(c+1))}
+\end{equation}
+candidate states. Each nonzero state needs a perfect-matching decision
+on at most $2c$ vertices. With a minimum bipartite cover, this gives exact
+coefficient counting in $2^{O(r^2)}\poly(\ell)$ bit operations, where $\ell$ is
+the input length and $r=\nu(G)$.
+\end{theorem}
+\begin{proof}
+In a perfect matching, every selected exterior left vertex needs a
+distinct selected vertex of $C_R$. Hence $\sum q_S\le|J|\le b$.
+Similarly $\sum p_T\le|I|\le a$. Every feasible support appears in the
+sum with its unique core selections and unique quotas. For a feasible
+macrostate its labelled realizations are exactly the independent subset
+choices in \eqref{mr:eq:kernelweight}; all have the same support size and
+all are matchable. The indicator is Boolean, so several matching
+realizations do not create several contributions.
+
+There are $2^b-1$ left types and $2^a-1$ right types. The number of
+nonnegative vectors of length $T$ with total at most $q$ is
+$\binom{T+q}{q}$, giving \eqref{mr:eq:bkernelbound}. Any matching has at most
+$c$ edges because the cover meets every edge. Thus a feasible support
+contains at most $2c$ vertices. A standard bipartite matching algorithm
+can decide feasibility on this small graph in polynomial time in $c$.
+Even the transparent exponential backtracking used by the reference
+implementation costs only $2^{O(c\log(c+1))}$ and is absorbed by the
+stated bound.
+
+A minimum cover of size $r$ is obtained by the constructive matching
+argument in Section~\ref{mr:sec:rankthree}. Preprocessing the explicit graph
+is polynomial in $\ell$. The binomial coefficients have lower arguments at
+most $c$, and their products have bit length polynomial in $\ell$ times a
+function of $c$. Exact integer arithmetic therefore has the claimed
+parameterized bit complexity.
+\end{proof}
+
+\subsection{What is retained and what is compressed}
+
+There are two distinct input models. For an explicitly listed graph,
+all vertices and edges must first be read. For a \emph{population input},
+one supplies the cover, the core, and the integers $n_S,m_T$ in binary.
+The same formula then counts graphs with enormous numbers of labelled
+vertices without constructing them. For fixed $a,b$, the arithmetic cost
+is polynomial in the bit lengths of those population integers.
+
+This is not an assertion that the support count is unchanged when one
+literally deletes all but a few representatives of each type. Such a
+deletion generally changes the answer drastically. Only the feasibility
+table is finite; binomial factors retain the exact number of ways to
+choose actual vertices.
+
+The method also makes no generic polynomial-time counting claim.
+When $r$ grows with the input, the dependence $2^{O(r^2)}$ can be very
+large. The contribution is an explicit formula and a rank-parameterized
+exact algorithm, not a replacement for the repository's general
+approximate-counting machinery.
+
+[Merge note: the repository's approximate-counting machinery is Part~V's
+(Theorems~\ref{lor:thm:FPRASpartition} and~\ref{lor:thm:coefficients}).
+Theorem~\ref{mr:thm:bkernel} is the unit-weight case of Part~XI's
+cover-type formula (Theorem~\ref{hb:thm:algorithmformula}), which source~14
+did not see: Part~XI also groups the vertices outside a minimum cover by
+their neighbourhoods in it, enumerates multiplicity profiles bounded by the
+cover sizes, and tests each compressed graph for a perfect matching; its
+elementary symmetric functions of the weights become the binomial
+coefficients of~\eqref{mr:eq:kernelweight} at unit weights. The two
+parameterized bounds, $2^{O(r^2)}\poly(\ell)$ here and
+$2^{r^2+O(r)}\operatorname{poly}(N+M)$ in Theorem~\ref{hb:thm:FPT}, are
+the same kind of statement; Part~XI's is the sharper and also covers
+positive rational weights. Source~14's new contributions in this section
+are the explicit population-input model (binary-encoded type counts) and
+the reuse of the table in Sections~\ref{mr:sec:dkernel}
+and~\ref{mr:sec:clones}.]
+
+\section{Directed kernels, vertex activities, and exact sampling}
+\label{mr:sec:dkernel}
+
+The directed setting requires a stronger state description: the same
+vertex may be unused, a tail, or a head, but it cannot be both a tail and
+a head. Counting on two unrelated copies of $V$ would lose this condition.
+
+\subsection{A cover of at most twice the gamma-support degree}
+
+Let $D$ be any loopless directed relation, and let $d=\deg\GammaD$.
+Take a greedy maximal matching in $U(D)$ and let $C$ be its endpoints.
+It is a vertex cover, since an edge with both endpoints outside $C$
+could be added to the matching. If $c=|C|$, then
+\begin{equation}\label{mr:eq:cover2d}
+c\le2d.
+\end{equation}
+This construction does not require computing a maximum matching.
+
+For an outside vertex $v$, its type is the ordered pair
+\[
+T(v)=\bigl(N_D^-(v)\cap C,\ N_D^+(v)\cap C\bigr).
+\]
+There are at most $4^c$ types, including the isolated type, which can be
+discarded for support counting. If $D$ is the strict order relation of
+a poset, each core vertex can be an incoming neighbor, an outgoing
+neighbor, or neither, so $3^c$ types suffice. Preorders with equivalence
+classes may need the fourth possibility.
+
+A macrostate assigns each core vertex one of the three states
+$0,A,B$. For each exterior type $T$ of population $N_T$, choose $p_T$
+vertices for $A$ and $q_T$ different vertices for $B$. Its unweighted
+multiplicity is
+\begin{equation}\label{mr:eq:multinomial}
+W_T(p_T,q_T)=\binom{N_T}{p_T}\binom{N_T-p_T}{q_T}.
+\end{equation}
+A selected exterior vertex must be matched to a selected core vertex,
+so every feasible macrostate satisfies
+\begin{equation}\label{mr:eq:outsidebound}
+\sum_T(p_T+q_T)\le c.
+\end{equation}
+On a support of size $k$ on each side, the stronger bound is
+$\sum_T(p_T+q_T)\le k$.
+
+\begin{theorem}[Exact directed-support kernel]\label{mr:thm:dkernel}
+Sum over the three-state core assignments and exterior quotas satisfying
+\eqref{mr:eq:outsidebound}. Test each macrostate for a directed perfect
+matching from its selected tails to its selected heads, with all selected
+vertices distinct. The sum of
+\[
+\ind_{\mathrm{feasible}}\prod_TW_T(p_T,q_T)t^{|A|}
+\]
+is exactly $\GammaD(t)$. There are at most
+\begin{equation}\label{mr:eq:dkernelbound}
+3^c\binom{2(4^c-1)+c}{c}=2^{O(c^2)}
+\end{equation}
+macrostates before feasibility filtering, and each uses at most $2c$
+vertices. Thus all coefficients can be counted exactly in
+$2^{O(d^2)}\poly(\ell)$ bit operations.
+\end{theorem}
+\begin{proof}
+There are no edges between exterior vertices. A directed matching on
+selected distinct vertices therefore pairs each selected exterior vertex
+with a different selected core vertex, proving \eqref{mr:eq:outsidebound}.
+The core states and exterior quotas of a labelled support are unique.
+Permutations within each exterior type preserve all arcs to the core,
+so feasibility depends only on that macrostate.
+
+For a feasible macrostate, choose its tails in each type and then its
+heads from the remaining vertices. Equation~\eqref{mr:eq:multinomial} counts
+these choices exactly. Every support is counted once and no matching
+multiplicity appears. There are at most $2(4^c-1)$ quota coordinates;
+stars-and-bars gives \eqref{mr:eq:dkernelbound}. A feasible matching has at
+most $c$ edges. The complexity now follows from \eqref{mr:eq:cover2d},
+small-instance matching tests, and exact arithmetic on the multiplicities.
+\end{proof}
+
+\subsection{Nonuniform activities without expanding all subsets}
+
+For each exterior type $T$, form the truncated polynomial
+\begin{equation}\label{mr:eq:typeactivity}
+F_T(X,Y)=\prod_{v\in T}(1+u_vX+v_vY),
+\end{equation}
+retaining only terms of total degree at most $c$. Replace
+$W_T(p,q)$ in the kernel by $[X^pY^q]F_T(X,Y)$ and multiply by the
+activities of selected core vertices.
+
+\begin{proposition}\label{mr:prop:activities}
+This substitution gives the weighted coefficients
+\eqref{mr:eq:weighted} exactly. For explicit nonnegative rational activities,
+the coefficients and a corresponding exact sampler remain computable in
+$2^{O(d^2)}\poly(\ell)$ bit operations.
+\end{proposition}
+\begin{proof}
+In a factor of \eqref{mr:eq:typeactivity}, choose $1$ when the vertex is
+unused, $u_vX$ when it is a tail, and $v_vY$ when it is a head. There is
+no term permitting simultaneous tail and head selection. Thus its
+coefficient is exactly the total weight of disjoint subsets with the
+specified quotas. Multiplication over types and core selections is the
+required support weight.
+
+Each truncated polynomial has $O(c^2)$ coefficients and can be computed
+by sequential multiplication in $O(|T|c^2)$ rational arithmetic
+operations. Intermediate numerator and denominator lengths are polynomial
+in the total input bit length times a function of $c$. The same finite
+feasibility table is used. Conditional decisions within a type can be
+made by suffix-product coefficient tables, as described next.
+\end{proof}
+
+\subsection{Sampling supports rather than sampling their realizations}
+
+For unweighted uniform sampling, first select a feasible macrostate with
+probability proportional to its integer multiplicity. Within each type,
+choose $p_T$ tails uniformly and then $q_T$ heads uniformly from the
+remaining vertices. A particular support has probability
+\[
+\frac{\prod_TW_T(p_T,q_T)}{\sum_{\text{feasible states}}\prod_TW_T}
+\prod_T\frac{1}{W_T(p_T,q_T)}
+=\frac1{\GammaD(1)}.
+\]
+Conditioning the first choice on a specified degree $k$ yields probability
+$1/g_k$ on the size-$k$ supports. No rejection step or mixing-time
+argument is involved.
+
+For rational activities, let the current remaining quota in a type be
+$(p,q)$. At vertex $v$, the three conditional branch weights are
+\[
+[X^pY^q]F_{\mathrm{suffix}},\quad
+u_v[X^{p-1}Y^q]F_{\mathrm{suffix}},\quad
+v_v[X^pY^{q-1}]F_{\mathrm{suffix}},
+\]
+These correspond to unused, tail, and head. Their sum is the current
+coefficient of \eqref{mr:eq:typeactivity}. Repeated exact rational choices
+therefore realize the desired conditional weighted distribution.
+
+\begin{remark}
+The shipped prototype implements the unweighted counter and exact
+uniform sampler. The nonuniform-activity algorithm is proved and specified
+here but is not packaged as a production weighted-sampling interface.
+The implementation uses an ordinary pseudorandom generator for drawing
+integers; exactness refers to the discrete sampling law under uniform
+random bits, not to cryptographic randomness.
+\end{remark}
+
+The distinction from sampling ordinary matchings is important. If a
+support has two realizing matchings, a uniform matching sampler gives it
+twice the probability of a support with one realization. The Boolean
+feasibility table removes precisely this bias.
+[Merge note: the shipped prototype is
+\nolinkurl{code/14-matching-rank-support_kernels.py}. The samplers of
+Part~V and Part~IX (Theorems~\ref{lor:thm:FPRASpartition}
+and~\ref{tf:thm:sampler}) run in time polynomial in the input for every
+matching number, and their output law is within a prescribed total
+variation distance of the target; the sampler here has exactly the target
+law but costs $2^{O(d^2)}\poly(\ell)$. The two kinds of guarantee are not
+comparable, and neither replaces the other.]
+
+\section{Clone families and finite polynomial certification}
+\label{mr:sec:clones}
+
+Neighborhood types turn infinite graph families into explicit polynomial
+families. This section records both the useful positive conclusion and
+its limitations.
+
+\begin{theorem}[Polynomial dependence on clone populations]
+\label{mr:thm:clonepoly}
+For a fixed bipartite or directed kernel, every support coefficient is
+a rational polynomial in the exterior population variables. The degree
+of the $k$th coefficient is at most $k$. In the bipartite case it is a
+nonnegative integer combination of products of binomial polynomials.
+In the directed case it is a nonnegative integer combination of products
+of the multinomial polynomials \eqref{mr:eq:multinomial}.
+\end{theorem}
+\begin{proof}
+The kernel formulas are finite sums. A factor $\binom{N}{q}$ has degree
+$q$, and $\binom Np\binom{N-p}q$ has degree $p+q$. In any selected
+size-$k$ matching, each exterior vertex lies on an edge meeting the
+cover; no edge has two exterior endpoints. Thus there are at most $k$
+selected exterior vertices. Every summand has total degree at most $k$.
+Its coefficient before the population factor is a Boolean feasibility
+indicator, or an integer multiplicity obtained by aggregating core
+selections, and is nonnegative.
+\end{proof}
+
+Nonnegative coefficients in this binomial basis do \emph{not} mean that
+all coefficients in the ordinary monomial basis are nonnegative.
+For example $\binom N2=(N^2-N)/2$. Nor does the kernel formula alone make
+Newton gaps nonnegative. Subtracting products of adjacent coefficients
+can introduce negative coefficients in either basis.
+
+\subsection{One parameter, an eventual rank, and an exact decision}
+
+Fix nonnegative base populations $n_T$ and replace every exterior
+population by $Mn_T$, where $M$ ranges over positive integers. Keep the
+cover and its core fixed. For directed relations, cloning means making
+independent vertices with identical in- and out-neighborhoods to the
+cover. This operation is always a relation operation. For a non-antisymmetric
+preorder it need not preserve transitivity; preorder applications require
+that extra condition. The height-two posets in the next section satisfy it.
+
+\begin{lemma}[Rank stabilization]\label{mr:lem:stabilization}
+If the fixed cover has $c$ vertices, the matching rank of a clone family
+is constant for all $M\ge c$.
+\end{lemma}
+\begin{proof}
+No matching has more than $c$ edges. From any type, it uses at most $c$
+vertices. Consequently the existence of a matching of any size is
+unchanged if every population larger than $c$ is truncated to $c$.
+For $M\ge c$, every type with positive base population has at least
+$c$ vertices, whereas every zero type remains absent. The truncated
+graph is then fixed. This is a statement about rank only, not support
+counts.
+\end{proof}
+
+\begin{theorem}[Exact all-parameter certification in one variable]
+\label{mr:thm:onedecide}
+For a specified one-parameter clone family, whether rank-ULC holds for
+every positive integer $M$ is decidable using exact rational polynomial
+arithmetic. Beyond $M\ge c$, each relevant Newton gap is a polynomial
+in $M$ of degree at most $2k$ at index $k$.
+\end{theorem}
+\begin{proof}
+Check the finitely many $1\le M<c$ directly, using their actual ranks.
+For $M\ge c$, Lemma~\ref{mr:lem:stabilization} supplies a constant rank $r$.
+Theorem~\ref{mr:thm:clonepoly} shows that both $s_k(M)^2$ and
+$s_{k-1}(M)s_{k+1}(M)$ have degree at most $2k$. Thus
+\eqref{mr:eq:gap} is a computable rational polynomial $D(M)$.
+
+There is an elementary finite sign algorithm. If $D$ is identically
+zero, it passes. A nonzero constant has an immediate sign. For a
+nonconstant polynomial, write $D(M)=a_qM^q+\cdots+a_0$ with $a_q\ne0$.
+A negative leading coefficient gives an eventual counterexample.
+For a positive leading coefficient, set
+\[
+R=2+\left\lceil\frac{\sum_{i<q}|a_i|}{a_q}\right\rceil.
+\]
+For $M\ge R$, use $M^i\le M^{q-1}$ to obtain
+\[
+D(M)\ge M^{q-1}\left(a_qM-\sum_{i<q}|a_i|\right)>0.
+\]
+It remains to check the integers from $c$ to $R-1$. Apply this to the
+finitely many gaps. All arithmetic is rational or integral.
+\end{proof}
+
+The elementary bound may be large; exact real-root isolation can be
+used instead to identify sign intervals efficiently. The theorem claims
+decidability for each specified one-parameter family, not a polynomial-time
+algorithm in the coefficient bit length for the crude bound above.
+It does not give a uniform finite test for all kernels or for arbitrary
+independent population variables. The rank-three sum-of-squares identity
+is stronger in a different direction: it settles four independent
+population parameters simultaneously.
+
+\section{A connected rank-four family with arbitrarily large shores}
+\label{mr:sec:family}
+
+Here is an application beyond the rank-three theorem. Start with two
+left core vertices $a_1,a_2$ and two right core vertices $b_1,b_2$, with
+all four core edges. On the left add $N$ vertices of each of the three
+types $\{b_1\}$, $\{b_2\}$, $\{b_1,b_2\}$. On the right add $N$ vertices
+of each of the types $\{a_1\}$, $\{a_2\}$, $\{a_1,a_2\}$. There are no
+other edges. Denote the resulting graph by $G_N$, where $N\ge1$.
+
+Both shores have $3N+2$ vertices and the graph is connected. The four
+core vertices are a cover, and the four singleton-type populations give
+a matching of size four. Thus $\nu(G_N)=4$, independently of $N$.
+
+\begin{theorem}\label{mr:thm:family}
+The matching-support polynomial of $G_N$ is
+\begin{align}
+p_{G_N}(t)={}&1+(8N+4)t+(23N^2+11N+1)t^2\notag\\
+ &+(28N^3+5N^2)t^3+\frac{N^2(7N-1)^2}{4}t^4.
+\label{mr:eq:family}
+\end{align}
+It is strictly rank-ULC at all three internal indices for every $N\ge1$.
+\end{theorem}
+\begin{proof}
+First remove the four core edges. The graph splits into two isomorphic
+pieces. Each has two core vertices, $N$ private neighbors at each, and
+$N$ common neighbors. Its support polynomial is
+\[
+q_N(t)=1+4Nt+Bt^2,\qquad
+B=3N^2+\binom N2=\frac{7N^2-N}{2}.
+\]
+The support polynomial of the disjoint union is $q_N(t)^2$.
+
+Restoring core edges adds four size-one supports. For size two, new
+supports with three core vertices have one outside vertex: there are
+four choices of the missing core vertex and $3N$ choices of the exterior
+vertex on the necessary shore, giving $12N$. The support consisting of
+all four core vertices contributes one more. No other size-two support
+requires a core edge.
+
+For size three, a new support must contain all four core vertices and
+one exterior vertex from each shore. Every such pair is feasible: match
+the exterior vertices to appropriate core neighbors and use a core edge
+between the two remaining core vertices. This gives $(3N)^2=9N^2$ new
+supports. A size-three support with only three core vertices cannot use
+a core edge, since a matching of size three would then need at least
+four distinct core endpoints. There are no size-three supports with
+fewer core vertices.
+
+Finally, a matching of size four cannot use a core edge at all, since
+only four cover vertices are available. Thus
+\[
+p_{G_N}(t)=q_N(t)^2+4t+(12N+1)t^2+9N^2t^3,
+\]
+which expands to \eqref{mr:eq:family}.
+
+Let $s_k$ be its coefficients and use \eqref{mr:eq:gap} with $r=4$.
+Direct expansion gives
+\begin{align}
+\mathcal D_1&=8(N^2+13N+5),\label{mr:eq:gapfamily1}\\
+\mathcal D_2&=4(25N^4+164N^3+122N^2+22N+1),\label{mr:eq:gapfamily2}\\
+\mathcal D_3&=N^2(98N^4+406N^3+239N^2+6N-2).
+\label{mr:eq:gapfamily3}
+\end{align}
+The first two are positive. Writing $X=N-1\ge0$, the last parenthesis is
+\[
+98X^4+798X^3+2045X^2+2094X+747,
+\]
+which is positive as well. This proves all three inequalities for every
+positive integer $N$.
+\end{proof}
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$N$ & $s_0$ & $s_1$ & $s_2$ & $s_3$ & $s_4$\\
+\midrule
+1 & 1 & 12 & 35 & 33 & 9\\
+2 & 1 & 20 & 115 & 244 & 169\\
+3 & 1 & 28 & 241 & 801 & 900\\
+10 & 1 & 84 & 2411 & 28500 & 119025\\
+100 & 1 & 804 & 231101 & 28050000 & 1221502500\\
+\bottomrule
+\end{tabular}
+\end{center}
+The table illustrates the formula; it is not the proof of its positivity.
+The exact kernel can evaluate it for binary-encoded $N$ without expanding
+its $6N+4$ vertices.
+
+\subsection{Closure under disjoint unions}
+
+For disjoint graphs $G,H$, supports split uniquely by components, so
+$p_{G\sqcup H}=p_Gp_H$ and matching numbers add. Liggett's convolution
+theorem states that convolution of a $\ULC(r)$ sequence and a
+$\ULC(s)$ sequence is $\ULC(r+s)$ \cite{Liggett,Gurvits}. Consequently:
+
+\begin{corollary}\label{mr:cor:components}
+A disjoint union of bipartite graphs, each having matching number at most
+three or belonging to the family $G_N$, has a rank-ULC matching-support
+polynomial. The total matching number can be arbitrarily large.
+\end{corollary}
+
+Only the component classes are new applications here; convolution closure
+itself is a classical input. Neither this corollary nor the rank-four
+family proves the assertion for all connected graphs of rank four.
+
+\section{Consequences for preorder gamma polynomials}
+\label{mr:sec:preorders}
+
+Let $\tau$ be a preorder on a set $V$ of size $n$. The polytope of
+Athanasiadis--Chapoton is
+\begin{equation}\label{mr:eq:Q}
+\Qt=\{x\in\R_{\ge0}^{V}:\ \sum_{v\in I}x_v\le|I|
+                         \text{ for every order ideal }I\},
+\end{equation}
+and its support-counting polynomial is
+\begin{equation}\label{mr:eq:hdef}
+h_\tau(t)=\sum_{x\in \Qt\cap\mathbb Z^V}t^{|\supp x|}.
+\end{equation}
+These are their definitions \cite{AC}. The polynomial \eqref{mr:eq:hdef}
+is not being identified with the Ehrhart $h^*$-polynomial of $\Qt$.
+Confusing the two would change the question.
+[Merge note: these are Part~I's equations~\eqref{eq:Q} and~\eqref{eq:h},
+on a ground set $V$ in place of Part~I's $E=[n]$; source~14 writes
+$Q_\tau$ for the polytope, printed here with the report's $\Qt$.]
+
+We use the following bridge from Parts IV--V of the inspected ProveIt
+report:
+\begin{equation}\label{mr:eq:importbridge}
+h_\tau(t)=\sum_{\substack{I,J\subseteq V\\ |I|=|J|,\ I\match_\tau J}}
+t^{|I|}.
+\end{equation}
+Here $I$ and $J$ are allowed to overlap, and reflexive arrows are allowed.
+The report relates this identity to the published bipartite support and
+root-polytope counting results. We take \eqref{mr:eq:importbridge} as an
+\emph{imported mathematical input} for the geometric applications, not as
+a result independently re-proved in this article. The graph theorems and
+both kernels do not depend on it.
+[Merge note: in this report the bridge is Part~V's
+Lemma~\ref{lor:lem:preorderreduction} read through Part~V's
+Proposition~\ref{lor:prop:bridge}, applied to the doubled graph $H_\tau$
+(diagonal edges included); Part~IV's
+Lemma~\ref{gam:lem:count} and Part~II's Lemma~\ref{htwo:lem:count} derive
+it from the published root-polytope theorems, and Part~IX's
+Corollary~\ref{tf:cor:count} is the report's proof without Ehrhart
+theory. Source~14's pin contains all of these. As everywhere in the
+report, it is proved in ordinary mathematics, not formalized.]
+
+\subsection{Cancellation and the inherited gamma model}
+
+\begin{lemma}[Overlap cancellation]\label{mr:lem:cancellation}
+For a reflexive transitive relation, let
+$A=I\setminus J$, $B=J\setminus I$, and $H=I\cap J$. Then
+\[
+ I\match_\tau J\quad\Longleftrightarrow\quad A\match_\tau B.
+\]
+\end{lemma}
+\begin{proof}
+Given a matching bijection $I\to J$, view its arrows as a directed graph
+on $I\cup J$. Each vertex of $A$ has indegree zero and outdegree one,
+each vertex of $B$ has indegree one and outdegree zero, and each vertex
+of $H$ has indegree and outdegree one. Its components are directed paths
+from $A$ to $B$ and cycles contained in $H$. Compose the arrows along
+each path, using transitivity, to obtain a bijection $A\to B$.
+Conversely extend a bijection $A\to B$ by the identity on $H$, using
+reflexivity.
+\end{proof}
+[Merge note: this is Part~IV's Corollary~\ref{gam:cor:cancel}
+(manuscripts~06 and~01), and source~14's proof is the path-decomposition
+argument printed there as its second proof (manuscript~01); source~14
+says below that it repeats the proof for transparency. Both are kept
+because Part~XII's sampler cites this statement.]
+
+Writing $D_\tau$ for the off-diagonal relation of $\tau$, cancellation
+and \eqref{mr:eq:importbridge} give the already established repository
+identity
+\begin{equation}\label{mr:eq:gammabridge}
+h_\tau(t)=\sum_{k=0}^{d}g_k(D_\tau)t^k(1+t)^{n-2k}
+=(1+t)^n\Gamma_{D_\tau}\!\left(\frac{t}{(1+t)^2}\right).
+\end{equation}
+Indeed, after choosing a disjoint matchable pair $(A,B)$ of size $k$,
+choose any $H\subseteq V\setminus(A\cup B)$. Summing
+$t^{k+|H|}$ gives $t^k(1+t)^{n-2k}$. Thus the gamma coefficients of
+$h_\tau$ are precisely $g_k(D_\tau)$, and their degree is the matching
+number of the undirected comparability graph.
+[Merge note: \eqref{mr:eq:gammabridge} is Part~IV's
+Theorem~\ref{gam:thm:main}, with $g_k(D_\tau)=|\Tset_k(\tau)|=\gamma_k(\tau)$
+and $\Gamma_{D_\tau}=\Gamma_\tau$; the degree statement is Part~IV's
+Theorem~\ref{gam:thm:deficiency}.]
+
+We repeat the cancellation proof to make the dependency transparent,
+not to claim a new proof of gamma-positivity. It was already part of the
+repository before the present work.
+
+\subsection{New rank-sensitive consequences}
+
+\begin{corollary}\label{mr:cor:preorderfirst}
+Assuming the bridge \eqref{mr:eq:importbridge}, every finite preorder with
+gamma degree $d\ge2$ satisfies
+\begin{equation}\label{mr:eq:gammafirst}
+\gamma_1^2\ge\frac{2d}{d-1}\gamma_2.
+\end{equation}
+Equality holds exactly when the nontrivial connected components of its
+undirected comparability graph are stars or triangles with equal numbers
+$q$ of off-diagonal ordered comparable pairs. Then
+\[
+\Gamma_\tau(t)=(1+qt)^d,\qquad
+h_\tau(t)=(1+t)^{n-2d}\bigl((1+t)^2+qt\bigr)^d.
+\]
+In particular all preorder gamma polynomials of degree at most two are
+rank-ULC.
+\end{corollary}
+\begin{proof}
+Apply Theorems~\ref{mr:thm:first} and \ref{mr:thm:equality} to $D_\tau$, and
+then use \eqref{mr:eq:gammabridge}. Degree zero and one are vacuous, and
+degree two has only the first inequality.
+\end{proof}
+
+The component description is deliberately phrased as a condition on an
+\emph{existing preorder}. Not every arbitrary orientation of a star or
+triangle is transitive. For example, a poset star with a directed
+length-two path would also require the edge between its endpoints.
+For preorders, opposite arcs inside an equivalence class are counted
+separately in $q$.
+[Merge note: Corollary~\ref{mr:cor:preorderfirst} concerns the gamma
+polynomial $\Gamma_\tau$, whose degree is $\nu(\Comp(\tau))$, not
+$h_\tau$. Part~XI's observation that Research
+question~\ref{lor:q:first} has no content for preorders concerns $h_\tau$,
+whose doubled graph $H_\tau$ has matching number $n$
+(Section~\ref{hb:sec:answers}); the two statements do not conflict. The
+corollary answers the first index of Part~IV's Research
+question~\ref{lor:hq:shape} for every preorder, and the whole question in
+gamma degree at most two (Section~\ref{mr:sec:answers}).]
+
+For a height-at-most-two \emph{poset}, orient each nontrivial comparison
+from its lower element to its upper element. Every vertex with an
+outgoing comparison is minimal, and every vertex with an incoming
+comparison is maximal. The relation is therefore a bipartite graph on
+disjoint sets of vertices; isolated elements are irrelevant to gamma
+coefficients.
+
+\begin{corollary}\label{mr:cor:heighttwo}
+Assuming \eqref{mr:eq:importbridge}, the gamma polynomial of every
+height-at-most-two poset whose comparability graph has matching number
+at most three is rank-ULC. The same conclusion holds for the height-two
+posets associated with $G_N$, and for disjoint unions of these classes.
+\end{corollary}
+\begin{proof}
+For these posets, $\Gamma_\tau=p_G$ for the associated bipartite graph.
+Apply Theorem~\ref{mr:thm:rankthree}, Theorem~\ref{mr:thm:family}, and
+Corollary~\ref{mr:cor:components}.
+\end{proof}
+
+[Merge note: for a poset $P_G$ of height at most two,
+$\Gamma_{P_G}=p_G$ is Part~II's Theorem~\ref{htwo:thm:main} (Part~V's
+equation~\eqref{lor:eq:heighttwo}). Part~V's
+Corollary~\ref{lor:cor:gammaULC} normalizes by $\binom{\min(m,n)}k$;
+Corollary~\ref{mr:cor:heighttwo} replaces this by $\binom{\nu(G)}k$,
+$\nu(G)=\deg\Gamma_{P_G}$, for the classes named.]
+
+This does not prove degree-three gamma log-concavity for arbitrary
+higher-height preorders. Their directed disjoint-support enumerators
+cannot automatically be replaced by bipartite support enumerators on
+two independent copies of their vertex sets.
+
+\subsection{Exact counting at fixed gamma degree}
+
+\begin{corollary}\label{mr:cor:preorderalgorithm}
+Given a finite preorder explicitly, its gamma coefficients can be
+computed in $2^{O(d^2)}\poly(\ell)$ bit operations, where $d$ is the gamma
+ degree, using \eqref{mr:eq:gammabridge}. The same bound, with polynomial
+output overhead in $n$, gives every coefficient of $h_\tau$ and
+\begin{equation}\label{mr:eq:latticecount}
+\#(\Qt\cap\mathbb Z^V)=\sum_{k=0}^d\gamma_k2^{n-2k}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use the directed kernel on all off-diagonal comparisons. Expand
+\eqref{mr:eq:gammabridge}; explicitly,
+\[
+[t^j]h_\tau(t)=\sum_{k=0}^d\gamma_k\binom{n-2k}{j-k},
+\]
+with out-of-range binomial coefficients zero. There are $n+1$ outputs,
+so the expansion requires polynomial overhead. Evaluation at $t=1$
+gives \eqref{mr:eq:latticecount}.
+\end{proof}
+
+A Hasse diagram is not the same input as the complete comparison
+relation. When only a finite poset's Hasse diagram is supplied, first
+compute its transitive closure; this takes polynomial time and does not
+change the parameterized bound. For a succinct symbolic input, the cost
+of producing the relevant relation must be accounted for separately.
+[Merge note: \eqref{mr:eq:latticecount} is Part~IV's
+equation~\eqref{gam:eq:main} at $t=1$. Without a parameter, computing
+$|\Qt\cap\Z^n|$ or a specified $\gamma_k$ is $\#\mathrm P$-hard already in
+height two (Part~V, Theorem~\ref{lor:sp:thm:preorderhard} and
+Corollary~\ref{lor:cor:gammahard}); Corollary~\ref{mr:cor:preorderalgorithm}
+is fixed-parameter in $\nu(\Comp(\tau))$, so the two are consistent. In
+height two Part~XI's Theorem~\ref{hb:thm:FPT} with Part~II's
+Theorem~\ref{htwo:thm:main} already gives the same parameterization;
+the corollary extends it to every finite preorder. It bears on Part~IV's
+Research questions~\ref{lor:hq:param} and~\ref{lor:hq:countcx}
+(Section~\ref{mr:sec:answers}).]
+
+\subsection{Composition with the existing full-coordinate bijection}
+
+Part IX of the repository report supplies a polynomial-time bijection
+between appropriate bipartite support pairs and actual demand/lattice
+points, constructed using two minimum-cost transportation flows.
+We do not re-prove or reimplement that bijection. The new
+kernel gives the following exact-sampling consequence \emph{when composed
+with that imported bijection}.
+
+Choose a disjoint support macrostate of degree $k$ with weight equal to
+its multiplicity times $2^{n-2k}$. Choose its actual disjoint pair
+$(A,B)$ uniformly, then choose a uniformly random subset
+$H\subseteq V\setminus(A\cup B)$. Put $I=A\cup H$ and $J=B\cup H$.
+By Lemma~\ref{mr:lem:cancellation}, these are precisely the admissible
+unrestricted support pairs. A particular pair has probability
+\[
+\frac{\gamma_k2^{n-2k}}{h_\tau(1)}\cdot
+\frac1{\gamma_k}\cdot\frac1{2^{n-2k}}
+=\frac1{h_\tau(1)}.
+\]
+Applying a bijection to this uniform law gives a uniform lattice point.
+The kernel work is fixed-parameter in $d$, and the additional subset
+selection and imported flow computation are polynomial in the explicit
+input size.
+
+This is an algorithmic composition result, not a claim that a new
+pointwise bijection has been discovered here. The supplied executable
+samples support pairs only; the full-coordinate composition remains a
+specified integration with the repository's Part IX implementation and
+its proof obligations.
+[Merge note: Part~IX's bijection is Theorem~\ref{tf:thm:main}, applied to
+preorders through Proposition~\ref{tf:prop:preorder}; its implementation is
+\nolinkurl{code/11-two-flow-transport_bijection.py}. Part~IX's own
+lattice-point sampler (Corollary~\ref{tf:cor:preordersampler}) is
+polynomial-time and almost uniform; the composition here would be exactly
+uniform and fixed-parameter in the gamma degree. It is specified, not
+implemented, in this report too (Research question~\ref{mr:q:sampler}).]
+
+\section{Exact verification and implementation audit}
+\label{mr:sec:verification}
+
+The accompanying programs use Python's standard library only. Counts
+are integers; symbolic polynomial coefficients are exact fractions.
+No floating-point number is used in a mathematical assertion. The
+elapsed-time field in the log is informational and has no logical role.
+
+\subsection{Independent representations}
+
+The bipartite reference enumerator extends matchings one left vertex at
+a time and stores a \emph{set} of covered-shore pairs. The kernel instead
+uses a minimum vertex cover, neighborhood populations, binomial weights,
+and small Boolean matching tests. Agreement compares different counting
+representations, not the same formula evaluated twice.
+
+The directed reference enumerator assigns each labelled vertex one of
+three states and checks all bijections between equally sized tail and
+head sets. The directed kernel instead groups exterior vertices by
+neighborhood type and counts their disjoint selections by multinomial
+coefficients. Tests also check the equality classification independently
+from the underlying connected components.
+
+For preorder geometry, a separate routine constructs all order ideals
+and directly enumerates the nonnegative integer vectors of total at most
+four. It tests the original inequalities \eqref{mr:eq:Q}, records support
+sizes, and compares the result to the gamma transform. This is an
+independent finite check on the bridge's normalization, not an all-size
+proof of the bridge.
+
+The symbolic checker implements addition and multiplication of rational
+multivariate polynomials as exponent dictionaries. It verifies the three
+rank-three identities exactly, including all population variables, and
+compares all four core configurations with the symbolic kernel formula.
+It also derives the rank-four family's polynomial from its kernel and
+checks each gap identity in Sections~\ref{mr:sec:rankthree} and
+\ref{mr:sec:family}.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{.42\textwidth}Y@{}}
+\toprule
+Check & Actual completed run\\
+\midrule
+All labelled bipartite $3\times4$ graphs & 4096 kernel/reference comparisons and rank-ULC tests.\\
+All labelled bipartite $4\times4$ graphs & 65536 independent support enumerations and rank-ULC tests, including 3648 rank-three graphs without isolated vertices. Rank-four cases are finite evidence only.\\
+All loopless directed relations on four vertices & 4096 kernel/reference comparisons; first inequality and equality-shape checks when the degree is two.\\
+Preorders inside the directed test & 355 reflexive transitive relations after loops are restored.\\
+Direct preorder-polytope enumeration & 24850 candidate vectors; 12310 feasible points in total, across those 355 preorders; all gamma-transform comparisons agree.\\
+Mixed rank-three population formulas & 5184 specializations, populations $0,\ldots,5$ and all four core choices.\\
+Formal polynomial certificates & Three rank-three identities, four symbolic mixed-cover formulas, one symbolic rank-four family formula, and three gap identities.\\
+Integer matrix obstruction & All 1296 order-two minors and all 7056 order-three minors positive; defect $-34992$.\\
+Exact sampler validity & 400 generated support pairs, including conditioning at degrees zero, one, and two.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+All assertions in the supplied run passed. These tests do not certify
+historical novelty, do not establish the unrestricted rank conjecture,
+and are not proof-assistant verification. The sampler tests check
+validity of generated supports; uniformity is proved by the probability
+calculation, not inferred from a frequency histogram.
+
+\subsection{Files and commands}
+
+The main implementation is \nolinkurl{code/support_kernels.py}.
+The exact symbolic checker is \nolinkurl{code/certificates.py};
+\nolinkurl{code/verify.py} runs the full audit and writes
+\nolinkurl{data/verification.json}. The companion log is
+\nolinkurl{data/verification.log}. A set of 24 rank-four kernel templates is
+included as \nolinkurl{data/rank4_templates.json} and can be regenerated by
+\nolinkurl{code/export_rank4_templates.py}.
+
+Run from the package root:
+\begin{lstlisting}
+python code/verify.py
+python code/export_rank4_templates.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+No external image files are required. The TeX source uses standard
+TeX Live packages, including \texttt{newpxtext}, \texttt{newpxmath},
+\texttt{tcolorbox}, and \texttt{hyperref}. No font files are distributed.
+
+\noindent\begin{minipage}{\textwidth}
+A minimal example, with the \texttt{code} directory on the Python path:
+\begin{lstlisting}
+import support_kernels as sk
+from random import Random
+# Two perfect matchings, but one size-2 support.
+assert sk.bipartite_counts([0b11, 0b11], 2) == [1, 4, 1]
+# Complete 2-by-2 core; all six type populations equal 10.
+assert sk.bipartite_population_counts(2, 2, 15, [10]*3, [10]*3) == [
+    1, 84, 2411, 28500, 119025
+]
+arcs = {(0, 2), (0, 3), (1, 3)}
+print(sk.relation_counts(4, arcs))
+print(sk.sample_relation_support(4, arcs, Random(1), k=1))
+\end{lstlisting}
+\end{minipage}
+
+The prototype deliberately favors reviewability over memory-optimal
+engineering. Tables can be cached, and the table-size estimates are
+parameter bounds, not a promise that all moderately large parameter
+values are practical. Arbitrary-precision integer output can itself be
+large, and its bit length is included in the complexity discussion.
+
+{\raggedright [Merge note: the paragraphs above use delivery names. In this report every
+file of source~14 carries the prefix \texttt{14-matching-rank-}: the four
+programs \texttt{support\_\allowbreak kernels.py},
+\texttt{certificates.py}, \texttt{verify.py} and
+\texttt{export\_\allowbreak rank4\_\allowbreak templates.py} and the
+delivered \texttt{Makefile} are in \nolinkurl{code/}, and the records
+\texttt{verification.json}, \texttt{verification.log} and
+\texttt{rank4\_\allowbreak templates.json} in \nolinkurl{data/}. The programs import
+one another by their delivery names (\texttt{support\_kernels},
+\texttt{certificates}), which a hyphenated file name cannot provide, and the
+verifier and the template exporter overwrite
+\texttt{data/verification.json} and \texttt{data/rank4\_templates.json}
+relative to the parent of their own directory; the \texttt{Makefile}'s
+\texttt{python3 code/verify.py}, run from this report's root, would run
+Part~I's \nolinkurl{code/verify.py}. Run them only on a copy restored to the
+delivered layout, as the report's README describes; this report is built
+with \texttt{latexmk} from its own root. The shipped \texttt{.log} is
+byte-identical to the shipped JSON record: it is the captured standard
+output of the verifier, which prints the record it writes. The recorded run
+used Python~3.13.5 (the delivery README asks for Python~3.10 or later).]\par}
+
+\section{Proof dependencies, limitations, and formalization}
+\label{mr:sec:audit}
+
+\subsection{Dependency boundaries}
+
+The main logical structure is:
+\begin{align*}
+&\text{arc-disjointness graph + elementary extremal lemma}
+ \Longrightarrow \text{sharp first inequality};\\
+&\text{bipartite cover equality + mixed-cover coefficient count}
+ \Longrightarrow \text{rank-three SOS case};\\
+&\text{that case + published one-shore ambient theorem}
+ \Longrightarrow \text{all bipartite graphs of rank }\le3;\\
+&\text{Vandermonde factorization + Cauchy--Binet}
+ \Longrightarrow \text{representable-bimatroid obstruction};\\
+&\text{cover types + Boolean matching feasibility}
+ \Longrightarrow \text{exact kernels and sampling};\\
+&\text{kernel results + imported preorder bridge}
+ \Longrightarrow \text{gamma and lattice-count consequences}.
+\end{align*}
+The one-shore ambient theorem is a published input, not an unrefereed
+repository hypothesis. The full-coordinate sampling composition has the
+additional dependency on the repository's two-flow bijection. Liggett's
+convolution theorem is used only for the disjoint-union extension.
+
+\subsection{What has and has not been resolved}
+
+The repository-local matching-number normalization question is resolved
+for every bipartite graph of rank at most three and for the stated
+rank-four family and disjoint-union closure. Its first inequality is
+resolved at all ranks, including a weighted directed version and a sharp
+unweighted equality description. A universal version for arbitrary
+representable bimatroids is disproved by an exact explicit example.
+
+The question for arbitrary connected bipartite graphs of rank four or
+higher remains open in this article. [Merge note: and in this report.
+Part~XI's counterexamples carry positive weights on both shores and say
+nothing about unit weights (Section~\ref{mr:sec:answers}).] General preorder gamma log-concavity,
+unimodality of all gamma vectors, real-rootedness, and flag-polytopal
+realization are not proved. The rank-three theorem is not asserted for
+arbitrary nonuniform activities. No classification of equality in every
+higher coefficient inequality is supplied.
+
+No exhaustive literature-priority audit or independent referee review
+has been completed. The classical Motzkin--Straus inequality, matching--cover
+equality, Cauchy--Binet formula, ambient bimatroid ULC, and convolution
+closure are credited rather than presented as new. The explicit kernels
+are proved directly; the manuscript does not claim that fixed-parameter
+tractability could not already follow by a more general logical or
+structural method.
+
+\subsection{A realistic formalization sequence}
+
+A small trusted starting point is the polynomial identity
+\eqref{mr:eq:sos}. Over a rational polynomial ring it requires only exact
+normalization; its sign corollary uses nonnegative variables and Boolean
+core indicators. It should be formalized independently of graph theory
+first, together with \eqref{mr:eq:sosA} and \eqref{mr:eq:sosC}.
+
+Next formalize the finite support sets as pairs of finite subsets with
+an existential matching bijection. Prove invariance under permutations
+inside a neighborhood type. This is the central correctness lemma for
+the kernels. The quota formulas then become finite disjoint-union
+cardinality arguments using binomial and multinomial coefficients.
+
+The rank-three graph proof additionally needs the constructive
+matching--cover theorem and either a formal ambient bimatroid theorem or
+a separate proof of the three-vertex-one-shore case. The latter is a
+useful focused formalization target: it avoids importing the entire
+Lorentzian-polynomial development into the first formal artifact.
+
+Finally add the preorder bridge as a separately tracked dependency.
+Finite symbolic certificates and successful Python assertions are not
+substitutes for this dependency. No Lean source or successful Lean
+compilation is claimed in the present package.
+[Merge note: nothing of Part~XII is formalized in this report or elsewhere
+in ProveIt. Compare Part~V's Research question~\ref{lor:q:last} and
+Part~XI's Research question~\ref{hb:q:formal}.]
+
+\section{Further research questions and concrete next targets}
+\label{mr:sec:questions}
+
+\begin{question}[Finish rank four]\label{mr:q:rankfour}
+Do all bipartite graphs with $\nu(G)=4$ satisfy the two remaining
+rank-normalized inequalities at indices two and three?
+\end{question}
+There is now a precise finite-template reduction. Up to exchanging
+shores, a minimum four-vertex cover is split $0+4$, $1+3$, or $2+2$.
+The $0+4$ case is the published ambient theorem. The $1+3$ case has eight
+core masks and eight exterior population variables; the $2+2$ case has
+sixteen core masks and six population variables. The first inequality
+is already settled. Thus 24 fixed support-polynomial templates, with
+two Newton gaps each, suffice. Their second and third gaps have degrees
+at most four and six, respectively. The supplied JSON tables make these
+48 integer-domain positivity problems explicit. Lower-rank
+specializations cause no obstruction, since the already proved lower-rank
+inequalities imply the weaker order-four normalization after zero-padding.
+[Merge note: the 24 templates are shipped as
+\nolinkurl{data/14-matching-rank-rank4_templates.json}; its own note says
+they are exact support formulas, not positivity certificates. With
+Research question~\ref{mr:q:allrank} this is what remains open of the
+unit-weight version of Part~V's Research question~\ref{lor:q:first} and
+of Part~XI's Research question~\ref{hb:q:unit} at matching number four.]
+
+\begin{question}[A structural all-rank proof]\label{mr:q:allrank}
+Is $s_k(G)/\binom{\nu(G)}k$ log-concave for every bipartite graph?
+\end{question}
+The matrix obstruction shows that a proof cannot use only abstract
+representability. A promising target is a property of generic matrices
+with prescribed zero pattern, or an exchange law reflecting the existence
+of a matching cover of size exactly $\nu(G)$. One should explain why the
+mixed-cover correction terms in rank three are positive rather than
+simply invoking the ambient theorem with a smaller parameter.
+[Merge note: this is the unit-weight half of Part~V's Research
+question~\ref{lor:q:first}, and the first half of Part~XI's Research
+question~\ref{hb:q:unit}. It is numbered again because it asks for a
+structural proof; Part~XII shows that a counterexample, if any, has
+matching number at least four and is neither a graph $G_N$ nor a disjoint
+union of graphs of matching number at most three and graphs $G_N$.]
+
+\begin{question}[Weighted rank three]\label{mr:q:weighted}
+Does the rank-three theorem extend to arbitrary nonnegative activities
+on both shores?
+\end{question}
+The first inequality already does. The second requires a replacement for
+the four integer populations by first and second elementary symmetric
+functions of type activities. Vertices with common neighborhoods cannot
+be treated as a single weight without retaining these higher moments.
+Deriving a weighted analogue of the subtraction $\alpha\beta z$ is a
+concrete next step.
+[Merge note: this is the matching-number-three case of Part~XI's
+Research question~\ref{hb:q:rank}, which asks the same for ranks three,
+four and five with positive weights on both shores. Part~XI's elementary
+symmetric functions of the weights in each neighbourhood type
+(Section~\ref{hb:sec:algorithm}) are the replacement named here.
+The weighted counterexamples that Part~XI exhibits have matching number
+six or more; at matching numbers three to five the weighted version is
+open there as here.]
+
+\begin{question}[Higher-height gamma inequalities]\label{mr:q:gamma}
+Are gamma coefficients of every finite preorder log-concave, or even
+rank-ULC with their actual degree?
+\end{question}
+The first inequality and all degree-at-most-two cases are settled here.
+A first unproved target is degree three for directed transitive relations
+whose underlying comparability graph is not bipartite. The directed
+kernel gives a cover of size at most six, with transitivity restricting
+which type patterns can occur. Those restrictions should be used before
+attempting a general polynomial positivity search.
+[Merge note: this restates Part~IV's Research question~\ref{lor:hq:shape}
+and the ``Gamma log-concavity beyond height two'' paragraphs of sources~06
+and~09 (Sections~\ref{lor:sec:oldquestions}
+and~\ref{mat:sec:oldquestions}), with the actual degree
+$\nu(\Comp(\tau))$ as the proposed normalization.]
+
+\begin{question}[Sharper parameter dependence]\label{mr:q:param}
+Can the $2^{O(d^2)}$ directed kernel be replaced by
+$2^{O(d\log d)}\poly(\ell)$ or $2^{O(d)}\poly(\ell)$?
+\end{question}
+The present exponent arises from selecting up to $c$ exterior vertices
+among exponentially many types. A dynamic program on residual Hall
+constraints, or a representative-family construction which preserves
+support counts without preserving all matchings, might avoid enumerating
+all type-quota patterns. A lower bound would need a counting reduction
+that respects the matching-degree parameter.
+[Merge note: compare Part~XI's Research question~\ref{hb:q:algorithm}
+(singly exponential dependence for the bipartite cover-type count), and
+Part~IV's Research questions~\ref{lor:hq:param}
+and~\ref{lor:hq:countcx}.]
+
+\begin{question}[Useful multivariate certificates]\label{mr:q:certificates}
+Which classes of Newton-gap polynomials from the kernels admit short
+sum-of-squares or nonnegative binomial-basis certificates?
+\end{question}
+The one-variable decision theorem does not solve general integer-domain
+positivity. Rank three suggests certificates with squares of linear or
+quadratic expressions plus nonnegative type-interaction terms. Negative
+monomial coefficients alone are not evidence of a counterexample; the
+square $(x-y)^2$ is the simplest warning.
+
+\begin{question}[An exact full-lattice sampler in the repository]\label{mr:q:sampler}
+Can the kernel sampler, Boolean overlap expansion, and Part IX's two-flow
+bijection be integrated and independently tested as one exact sampler?
+\end{question}
+The proof of the composition is already given above. Implementation
+should preserve support size through both bijections, expose the chosen
+core/type state as a certificate, and test forward--inverse identities
+against original lattice inequalities. This is an integration project,
+not a new existence claim for the two-flow bijection.
+[Merge note: Part~IX's implementation is
+\nolinkurl{code/11-two-flow-transport_bijection.py}; compare Part~IX's
+Research question~\ref{tf:q:formal} on a certified implementation.]
+
+\begin{question}[Equality and stability away from extremizers]\label{mr:q:stability}
+What quantitative deficit in the first inequality forces a support
+relation to be close to a union of equal stars or triangles?
+\end{question}
+The proof identifies two sources of deficit: the extremal deficit of
+the arc-disjointness graph, and the multiplicity loss from several
+matchings realizing one support. A useful stability theorem must control
+both. A bound stated only for ordinary matching counts would miss the
+second mechanism.
+[Merge note: for bipartite graphs with positive weights Part~XI's defect
+identity~\eqref{hb:eq:defectidentity} gives a quantitative form (after
+Corollary~\ref{hb:cor:smallrank}): a small first-index defect forces nearly
+equal star-class weights and small overlap and support multiplicity, the
+two mechanisms named here. A graph-edit statement, and the directed
+version with triangles, remain open.]
+
+\begin{question}[The precise bimatroid boundary]\label{mr:q:bimatroid}
+Which representable bimatroids satisfy actual-rank ULC despite the dense
+rank-three obstruction?
+\end{question}
+The rectangular criterion \eqref{mr:eq:matrixcriterion} gives a complete
+answer for one full-small-minor family. The next natural task is a
+structural characterization separating generic zero-pattern realizations
+from special low-rank factorizations. This question is different from the
+already proved ambient ULC theorem and should retain that distinction.
+
+\section{Conclusion}
+\label{mr:sec:conclusion}
+
+The distinction between a matching and its vertex support drives both
+the proof and the algorithm. It produces the correction term in the
+rank-three formula, dictates Boolean rather than multiplicity-valued
+kernel entries, and explains why direct matching samplers are biased for
+this problem. With that distinction enforced, a short sum-of-squares
+identity resolves the actual-rank normalization through rank three.
+
+The matrix obstruction supplies a complementary negative result: actual
+linear rank cannot replace the ambient dimension for arbitrary
+representable bimatroids. Exact cover kernels then offer a systematic
+route beyond rank three, while already delivering fixed-degree counting
+and sampling for directed support models and their preorder gamma
+applications. The remaining questions are concrete: 24 rank-four
+polynomial templates, a weighted rank-three identity, and the additional
+transitivity structure in higher-height gamma enumerators.
+
+\needspace{7\baselineskip}
+\section{Review checklist for the central arguments}
+\label{mr:app:checklist}
+\noindent\emph{(Source~14's Appendix~A.)}
+
+The rank-three proof can be audited in the following order. First check
+that a minimum cover has three vertices, and separate the one-shore
+case from the mixed case. Next verify the coefficient $B$: two common
+neighbors contribute one support, not two. Then verify $C$: with both
+core edges and a common neighbor, the duplicate support must be
+subtracted exactly once. Check the identity \eqref{mr:eq:sos} by expansion,
+and its two positivity identities \eqref{mr:eq:sosA}--\eqref{mr:eq:sosC}.
+Finally confirm the rank-normalization constants: at rank three the two
+inequalities are $s_1^2\ge3s_2$ and $s_2^2\ge3s_1s_3$.
+
+For the kernel, confirm that selected exterior vertices must use distinct
+core partners. Check that feasibility is invariant under type
+permutations and that multiplicities count labelled support subsets,
+not matching bijections. For the directed kernel, tails and heads in the
+same type must be selected disjointly, giving
+$\binom Np\binom{N-p}q$, not $\binom Np\binom Nq$.
+
+For the matrix example, verify the factorization $M=UV$, the positivity
+of every two- and three-column Vandermonde minor involved, and the exact
+integer defect. Keep linear rank three separate from the matching number
+of the all-nonzero pattern. For the preorder applications, track the
+imported support bridge independently of these graph and algebra proofs.
+
+\needspace{7\baselineskip}
+\section{Source and novelty ledger}
+\label{mr:app:ledger}
+\noindent\emph{(Source~14's Appendix~B.)}
+
+The repository was inspected through its README, relevant status files,
+and selected TeX ranges at the pinned commit. The source TeX blob for the
+main report at that snapshot is
+\begin{center}\small\ttfamily ba1cc4a6c99abd5ff808aae97df75efe434833e9.\end{center}
+The report's Part V already gives ambient ULC and general approximate
+counting; Part IV already gives the gamma support expansion; Part IX
+already gives the two-flow pointwise bridge. None of those are claimed
+as discoveries of this article.
+[Merge note: the pinned commit is
+\texttt{ffddaa8b9c89e7bf027e1442cc6216bb010906d0}
+(Section~\ref{mr:sec:target}). The blob is this report's
+\texttt{article.tex} exactly as it stood after Part~IX was written, the
+same blob as the pins of sources~12 and~13: Parts~I--IX, without Part~X
+or Part~XI. Source~14's bibliography entry for this report names the
+files it read, \texttt{README.md}, \texttt{article.tex} and
+\texttt{05-gamma-positivity-PROOF\_STATUS.md}, and links the pinned
+report directory on GitHub; it records no line ranges. The README's
+Research question~37 is Part~V's Research question~\ref{lor:q:first};
+``Part V'', ``Part IV'' and ``Part IX'' are this report's Parts~V, IV
+and~IX, whose text has changed since the pin only by dated pointers and
+one label added to a previously unlabelled question.]
+
+External verification used primary research records: the
+R\"ohrle--Ulirsch article and its arXiv v3 text, the
+Athanasiadis--Chapoton preprint, the original Motzkin--Straus publication
+record, perfectly matchable set papers, and the finite-order convolution
+theorem. The publisher confirms the R\"ohrle--Ulirsch volume, pages, and
+2025 online publication date. The particular rank-three certificate and
+kernel extensions were not identified in those inspected sources, but
+this is not an exhaustive priority guarantee.
+
+The headline results are therefore offered as fully argued research
+claims with reproducible certificates, suitable for independent review.
+No claim of community acceptance, formal proof-assistant certification,
+or a general breakthrough beyond the explicitly proved scope is made.
+% End of Part XII (batch 70).
 
 \appendix
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
@@ -22128,7 +24248,7 @@ F. R\"ohrle and M. Ulirsch,
 published online 14 August 2025. doi:10.1007/s00026-025-00780-z;
 \arxiv{2402.15317} (v1 23 February 2024, v3 6 August 2025).
 Theorem~A, Proposition~2.2, Example~2.4 and Theorem~E are used as
-identified in the text.
+identified in the text; Part~XII also uses Example~2.3.
 
 \bibitem{BH}
 P. Br\"and\'en and J. Huh,
@@ -22231,6 +24351,33 @@ D. Aldous, \emph{The continuum random tree III},
 \url{https://doi.org/10.1214/aop/1176989404}.
 Cited as context for a proposed further question, not as an unproved
 normalization input to the present theorems.
+
+% Part XII (batch 70): references of source 14 new to this report
+\bibitem{OTPQ}
+H. Ohsugi and A. Tsuchiya,
+\emph{PQ-type adjacency polytopes of join graphs},
+\arxiv{2103.15045}, 2021; doi:10.1007/s00454-022-00447-z.
+Used in Part~XII for terminology and the distinction between matching and
+support polynomials, not as a premise of the kernel proofs.
+
+\bibitem{MS}
+T.~S. Motzkin and E.~G. Straus,
+\emph{Maxima for graphs and a new proof of a theorem of Tur\'an},
+\emph{Canadian Journal of Mathematics} \textbf{17} (1965), 533--540.
+doi:10.4153/CJM-1965-053-6.
+
+\bibitem{Liggett}
+T.~M. Liggett,
+\emph{Ultra logconcave sequences and negative dependence},
+\emph{Journal of Combinatorial Theory, Series~A} \textbf{79} (1997),
+315--325.
+
+\bibitem{Gurvits}
+L. Gurvits,
+\emph{A short, based on the mixed volume, proof of Liggett's theorem on
+the convolution of ultra-logconcave sequences},
+\arxiv{0804.1181}, 2008. Theorem~1.1 states the finite-order convolution
+normalization used in Part~XII.
 
 \end{thebibliography}
 \end{document}
