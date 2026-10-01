@@ -66,7 +66,8 @@ def rewrite(old):
     selector='selection__Sbatch';word='controller__edge_word'
     # The coordinate names remain physical edge IDs even when later packets
     # reindex their controller lanes. Default parent uses positions1,...,n.
-    positions=old.get('controller_edge_positions',{e:e for e in range(1,n+1)})
+    positions=old.get('packed_edge_exponents',
+                      old.get('controller_edge_positions',{e:e for e in range(1,n+1)}))
     positions={int(e):v for e,v in positions.items()}
     assert set(positions)==set(range(1,n+1)) and len(set(positions.values()))==n
     assert min(positions.values())>=0
@@ -84,7 +85,7 @@ def rewrite(old):
     private={name for name in rows if name.startswith(('controller__edge_pack_',
         'frozen_idle_pack_','frozen_idle_R','idle_free_pack_','idle_free_R'))}
     private.update(name for name in ('idle_free_inner_word',) if name in rows)
-    assert private and word in rows
+    assert word in rows
     assert all({user for user,_,a,b in old['source'] if name in (a,b)}<=private|{word} for name in private)
     assert not any(name in pair for name in private for pair in old['comparisons'])
     removed=private|{word}
@@ -169,18 +170,29 @@ def rewrite(old):
                                     coefficient_exponents=[first,second]))
         output=emit('*',polynomial(monomial(base)),total)
         # Reuse the designated output register without a paid copy gate.
-        assert added and added[-1][0]==output
-        last=added[-1];added[-1]=(word,*last[1:])
+        aliases={}
+        if added and added[-1][0]==output:
+            last=added[-1];added[-1]=(word,*last[1:])
+        else:
+            # A zero-based aligned pack is already exactly Sbatch. Rename
+            # its defining gate and all consumers, charging no copy gate.
+            assert not added and output in {row[0] for row in available}
+            assert not any(output in pair for pair in old['comparisons'])
+            aliases[output]=word
         counts=Counter('M' if op=='*' else 'A' for _,op,_,_ in added)
-        return dict(anchor=anchor,base=base,source=added,operations=len(added),
-                    M=counts['M'],A=counts['A'],corrections=corrections)
+        plan=dict(anchor=anchor,base=base,source=added,operations=len(added),
+                  M=counts['M'],A=counts['A'],corrections=corrections)
+        if aliases:plan['aliases']=aliases
+        return plan
 
     for anchor in anchors:plans.append(make_plan(anchor))
     chosen=min(plans,key=lambda plan:(plan['operations'],plan['M'],plan['anchor']))
     if chosen['operations']>=len(removed):
         return dict(old,shared_selector_pack=True,shared_selector_saving=dict(M=0,A=0,operations=0),
                     shared_selector_plan='parent fallback',shared_selector_candidates=plans)
-    source=available+chosen['source']
+    aliases=chosen.get('aliases',{})
+    source=[tuple(aliases.get(v,v) if isinstance(v,str) else v for v in row)
+            for row in available]+chosen['source']
     source=parent.parent.parent.ports.shared.factored.index.parent.sort_source(source,{'x',*old['auxiliaries']})
     assert linear_audit(source,word,P,variables)==controller_expected
     counts=Counter('M' if op=='*' else 'A' for _,op,_,_ in source)

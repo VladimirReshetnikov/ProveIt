@@ -183,3 +183,8 @@ Independent review checked the proof and default receipt, then replayed
 all five compiler families. The reviewed endpoint is the unreindexed
 parent above; composition with a zero-based lane geometry needs explicit
 register-alias handling when the two packs coincide.
+
+The later [reindexed composition](group_projective_reindexed_shared_pack.md)
+implements this alias handling, including the one-edge empty private
+fragment, and reads the explicit `packed_edge_exponents` metadata. The
+unreindexed receipt and the 246-operation endpoint here are unchanged.
