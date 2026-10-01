@@ -108,6 +108,21 @@
 \newcommand{\ac}{\alpha_{\mathrm{ac}}}
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\sq}{\mathbin{\sqcup}}
+% [Added 30 September 2026, batch 65] Notes added when Part IV was written
+% in.  Like writenote and writenotec, they use no counter.
+\newenvironment{writenoted}[1][]{\par\smallskip\begingroup\small\sloppy
+ \noindent\textbf{[Added 30 September 2026, batch~65]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+% Part IV (batch 65): the manuscript's macros.  Its one-argument \cl (an
+% overline) clashes with Part I's \cl and is set as \cwcl; its \rk (rho)
+% clashes with Part I's \rk and is written \rho; its \depth is set as
+% Part II's \depth, its \Adm and \wordlen as Part II's \W and \len; its \Sig
+% and \Bas are \cwSig and \cwBas (Part III's \B is a Boolean algebra); its
+% unused height macro and its pin macro \repo are dropped; \N, \eps, \ceil,
+% \red and \scs are shared.
+\newcommand{\cwcl}[1]{\overline{#1}}
+\newcommand{\cwSig}{\mathcal S}
+\newcommand{\cwBas}{\mathcal B^{\mathrm{bas}}}
 \newtcolorbox{resultbox}{colback=Pale,colframe=Teal,boxrule=0.5pt,
  arc=1mm,left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
@@ -155,7 +170,12 @@ a polynomial/NP-complete dichotomy between two and three labels.\par
 Part~III, added on 29 September 2026 (batch~56), computes the $q$-label
 invariant exactly on every Hausdorff space with a finite nonempty derived set,
 through local filter capacities: three free-ultrafilter points need two
-questions at three labels, three convergent sequences three.\par}
+questions at three labels, three convergent sequences three.\par
+\smallskip
+Part~IV, added on 30 September 2026 (batch~65), characterizes the admissible
+layer words of every fixed coloring of every topological space by the reduced
+words surviving iterated color closures, classifies finite-depth behaviors,
+and gives the optimal height of a representative and an exact product law.\par}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
@@ -215,6 +235,21 @@ questions at three labels while three convergent sequences need three,
 although rank and derivative sizes agree; for sums of $t$ ultrafilter spaces
 every alphabet-dependent threshold is computed by an exact directed extremal
 calculation.
+
+\emph{Addition of 30 September 2026 (batch 65).} Part~IV, from a further
+manuscript, drops the separation and finiteness hypotheses for a fixed
+coloring. A word is admissible exactly when it contains, as subsequences, all
+reduced words $v$ whose nested color closure $F_v$ is nonempty, and a rejected
+word of length $m$ is refuted by such a $v$ of length at most $m$. At finite
+depth these words form a finite downset that the admissible words determine,
+and every nonempty finite downset arises, from finite posets and from compact
+countable metrizable spaces; this classifies finite-depth behaviors. The
+length of the longest such word is the least Cantor--Bendixson height of a
+Hausdorff representative, the formula $q_c+\tau(G_c)$ holds whenever the second
+derivative is empty, finite-poset obstructions need at most $mq(q-1)^{m-1}$
+points, and independent products satisfy
+$\rho(X\times Y)=\rho(X)+\rho(Y)-1$. Two colorings of one compact space that
+agree on every word of length at most three need three and four questions.
 \end{abstract}
 
 \setcounter{tocdepth}{1}
@@ -2774,6 +2809,25 @@ attains the bound with $s=\min(q,t)$, where $t=\lvert X'\rvert$
 remain open (\cref{fp:q:next-level,fp:q:compact-height,fp:q:infinite}).
 \end{writenotec}
 
+\begin{writenoted}[Second half answered for fixed colorings on every space]
+Part~IV answers the second half of this question for every fixed coloring of
+every topological space, with no separation axiom. The relevant profile is
+the closure signature, the reduced words $v$ whose nested color closure $F_v$
+is nonempty: a word is admissible exactly when it contains all of them as
+subsequences, and a rejected word of length $m$ is refuted by one of length
+at most $m$ (\cref{cw:thm:duality}). At finite depth the admissible words
+determine the signature (\cref{cw:thm:recovery}), and finite-depth colored
+spaces are classified, up to equality of admissible words, by nonempty
+finite downsets of reduced words (\cref{cw:thm:classification}). On a
+Hausdorff space with $X''=\varnothing$, whatever the size of $X'$,
+$\layers(X,c)=q_c+\tau(G_c)$ (\cref{cw:thm:rankone}), extending Part~III's
+formula. The signature is a global invariant of the coloring, built from
+nested closures, not a list of local capacities. The first half, which
+spaces attain $(q-1)h+s$, and more generally which signatures the colorings of
+a given space can have, is not answered by Part~IV and stays open for $q\ge3$ beyond
+Part~III's class (\cref{cw:q:fixed-space,fp:q:compact-height}).
+\end{writenoted}
+
 \begin{question}[Small sharp synchronization families]
 What is the smallest number of reduced words of length at most $m$ whose common
 supersequence length is $(q-1)m+1$? What is the smallest number needed merely
@@ -2791,6 +2845,16 @@ $(m+1)q^m$ be improved, and which colored posets are minimal obstructions?
 \end{question}
 The proof supplies explicit chains per candidate word but does not share their
 vertices efficiently. Critical SCS families are a natural first test class.
+
+\begin{writenoted}[Bound improved for finite posets]
+For finite posets Part~IV lowers the bound $(m+1)q^m$ of
+\cref{fo:thm:obstruction} to $mq(q-1)^{m-1}$ (\cref{cw:cor:obstruction}): a
+rejected word of length $m$ has a detected counterword of length at most $m$
+(\cref{cw:thm:duality}), and only the $q(q-1)^{m-1}$ reduced candidates need
+witnesses. At $q=3$, $m=2$ this is $12$ points instead of $27$. The bound is
+not claimed optimal; the least $B(q,m)$ remains open, and Part~IV asks it
+again as \cref{cw:q:obstruction}.
+\end{writenoted}
 
 \begin{question}[Width and cover-graph parameters]
 For three colors, can the ideal-state algorithm be improved from an
@@ -2820,6 +2884,16 @@ word? Which sharing operations on descriptions preserve the profile exactly?
 The current construction is exact but can duplicate exponentially many chains.
 A compositional representation of shared suborders would connect the topology
 more directly to symbolic verification and succinct optimization.
+
+\begin{writenoted}[Bears on this question]
+Part~IV realizes every finite-depth word profile, of any space, by a finite
+sum of towers, one for each maximal word of its closure signature, of height
+at most its rank $\rho$; that height is the least Cantor--Bendixson height of
+any Hausdorff representative (\cref{cw:thm:classification,cw:thm:minheight}).
+The number of towers can be as large as $q(q-1)^{\rho-1}$
+(\cref{cw:prop:basisbound}), and no polynomial-size description is claimed;
+\cref{cw:q:representatives} asks for minimal representatives.
+\end{writenoted}
 
 \begin{question}[Expected query cost and nonuniform costs]
 When points have a probability distribution, or queries have different costs,
@@ -4363,6 +4437,17 @@ profiles, rather than independent color cells. Merely attaching a scalar
 capacity to each point is unlikely to record all such interactions; a proof
 or a counterexample would sharply delimit this extension.
 
+\begin{writenoted}[Bears on this question]
+For a fixed coloring of a Hausdorff space with $X'''=\varnothing$, the
+closure-signature words of length at most three are complete data for
+admissibility (\cref{cw:lem:derivative,cw:thm:duality}), and
+\cref{cw:prop:hierarchy} at $r=3$ gives two three-colorings of one compact
+space with $X'''=\varnothing$ that agree on every word of length at most two
+but need $7$ and $5$ layers, so the words of length three cannot be dropped.
+Part~IV gives no capacity or local-star form of these data, and does not
+treat the worst case over colorings; the question stays open.
+\end{writenoted}
+
 \begin{question}[Compact and first-countable finite-height spaces]\label{fp:q:compact-height}
 Does the repository bound \((q-1)h+s\) attain its full layer value under
 natural compactness or first-countability hypotheses at every finite height?
@@ -4398,6 +4483,17 @@ invariant?
 The finite proof uses pairwise disjoint neighborhoods chosen for finitely
 many nonisolated points. Replacing ``finite'' by ``infinite'' without a
 separation argument would be invalid.
+
+\begin{writenoted}[Second half answered for fixed colorings when $X''=\varnothing$]
+Part~IV, which does not cite this question, answers its second half for every
+fixed coloring of a Hausdorff space whose derived set is discrete, that is,
+$X''=\varnothing$: then $\layers(X,c)=q_c+\tau(G_c)$, where $G_c$ has
+an arc $a\to b$ exactly when some point of color $a$ lies in the closure of
+the color class of $b$ (\cref{cw:thm:rankone}). No filter-component
+decomposition, compactness or first countability is used. Which spaces admit
+a useful decomposition, and the worst case $\sm_q$ over colorings of such
+spaces, are not addressed.
+\end{writenoted}
 
 \begin{question}[Expected query cost]\label{fp:q:expected}
 For a probability distribution on the hidden point, characterize the minimum
@@ -4465,6 +4561,1820 @@ Cantor--Bendixson classification does not extend unchanged to finite output
 alphabets. Higher derivative levels, infinite derived sets, and general
 cost models remain distinct problems.
 
+
+%% ====================================================================
+%% Batch-65 addition (manuscript 05, "Closure-Word Duality for
+%% Open-Query Games").  Every label of Part IV carries the prefix cw:
+%% (closure words).  The labels of Parts I-III are unchanged.
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part IV.\quad Closure-word duality}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Closure-word duality: universal finite models, optimal topological compression, finite-budget certificates and an exact product law}
+
+\noindent\emph{Sections~1--13 and Appendices~A and~B form Part~I (19 September
+2026); Sections~14--28 and Appendix~C form Part~II (batch~52); Sections~29--42
+and Appendix~D form Part~III (batch~56). They are unchanged except for dated
+pointers, marked \textup{[Added 29 September 2026, batch~52]},
+\textup{[Added 29 September 2026, batch~56]} or \textup{[Added 30 September
+2026, batch~65]}. Part~IV was added on 30 September 2026 in batch~65 of
+ProveIt's incoming-report intake, from one manuscript written against the
+pinned state of Parts~I--III. For every fixed coloring of every topological
+space it characterizes the admissible layer words by the reduced words that
+survive iterated color closures. This answers the fixed-coloring half of
+Part~II's \cref{fo:q:invariants} on every space, extends Part~III's
+feedback-vertex formula to every Hausdorff space with empty second derivative,
+and improves Part~II's finite obstruction bound (\cref{cw:sec:crosswalk}).}
+
+\section{Provenance, conventions and the relation to Parts~I--III}
+\label{cw:sec:provenance}
+
+\subsection{One manuscript, one addition}
+\label{cw:sec:source}
+Part~IV is batch-65 manuscript~05, \emph{Closure-Word Duality for Open-Query
+Games: Universal finite models, optimal topological compression, finite-budget
+certificates, and an exact product law}, an AI-assisted research manuscript
+``prepared for Vladimir Reshetnikov'' and dated 30 September 2026 (25 pages,
+US Letter, as delivered). It arrived as the archive
+\path{ProveIt_Closure_Word_Duality.zip} (inner directory
+\path{ProveIt_Closure_Word_Duality/}, main file \path{article.tex}) in ProveIt
+commit \texttt{529a082b9} and was placed in \texttt{3fd85006b}. It was written
+against ProveIt commit \texttt{a4268e78e} (in full
+\texttt{a4268e78ebd0f6bf71ba609c07f4b3415748f532}), which is later than
+Part~III's write (\texttt{f8a20bcb1}). At that commit this report's
+\texttt{article.tex} had the Git blob \texttt{d1e50fd006} (Parts~I--III,
+including the notes of batches~52 and~56), which the manuscript records, and
+its \texttt{README.md} the blob \texttt{465cb1e062}; both blobs are unchanged
+at the placement commit. Every statement the manuscript makes about ``the
+repository report'' therefore refers to Parts~I--III as printed above: its
+``Part II, Theorem 16.2 and Proposition 16.3'' are \cref{fo:thm:normal} and
+\cref{fo:prop:closure}, its ``Research question 1 in Part II'' is
+\cref{fo:q:invariants}, and its ``Part II, Research question 3'' is Part~II's
+Research question~3 (\cref{fo:sec:questions}). Its source audit says that the
+README and the article's line ranges 500--640, 1150--1360, 1480--1690,
+2100--2340, 2640--2800 and 3780--3970 at that revision were read through the
+connected GitHub tool.
+
+The manuscript cites that state of the report as its reference
+\texttt{[Repo]}: ``ProveIt research collection, \emph{Open-query games on
+ordinal spaces}, Parts I--III, 19 and 29 September 2026, AI-assisted research
+report. Pinned repository commit
+\texttt{a4268e78ebd0f6bf71ba609c07f4b3415748f532}. Article:
+\path{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/games-on-ordinals/open-query-membership-games/article.tex}.
+Pinned source on GitHub. Accessed 30 September 2026. The supplied source audit
+gives the exact inspected ranges and identifies which results are reused.''
+This is not the entry \cite{Repo} of Part~II, which is Part~I at an earlier
+commit. Inside this report the reference is internal, so its two citations
+are replaced by cross-references (see below).
+
+Its code and data are shipped beside those of Parts~I--III, and their names
+carry the prefix \path{04-closure-words-}; Part~I's unprefixed files count
+as~01, Part~II's as~02 and Part~III's as~03. They are
+\begin{itemize}
+\item \path{code/04-closure-words-verify.py}, the verifier;
+\item \path{code/04-closure-words-Makefile}, its delivered Makefile;
+\item \path{data/04-closure-words-verification.json}, the recorded run;
+\item \path{data/04-closure-words-validation.json}, the delivered build and
+package record;
+\item \path{04-closure-words-SOURCES.md}, the source audit, in the report root.
+\end{itemize}
+The manuscript, its PDF and its delivery README are not
+shipped and survive in the arrival commit; the archive had no checksum
+ledger. The report README lists every file and every name the delivered files
+still use.
+
+The manuscript contributes, in the order printed here: its statement of the
+problem, of the repository frontier and of its contribution
+(\cref{cw:sec:introduction}); the tree--layer normal form and greedy
+elimination, reproved (\cref{cw:sec:normal}); the closure signature and its
+operator calculus (\cref{cw:sec:signature}); closure-word duality with short
+failure certificates (\cref{cw:sec:duality}); the finite-rank criterion, size
+bounds and the rank bounds on arbitrary spaces (\cref{cw:sec:rank}); recovery
+of the signature from the admissible words (\cref{cw:sec:recovery}); finite and
+compact realizations and the classification of finite-depth behaviors
+(\cref{cw:sec:realization}); the optimal Hausdorff realization height and the
+feedback-vertex formula when $X''=\varnothing$ (\cref{cw:sec:height});
+finite-budget replicas and the improved obstruction bound
+(\cref{cw:sec:budget}); the product signature and rank law
+(\cref{cw:sec:products}); two colorings of one compact space separated only by
+words of length four, and a hierarchy of such examples
+(\cref{cw:sec:example}); algorithms and the effective boundary
+(\cref{cw:sec:algorithms}); its finite checks (\cref{cw:sec:verification});
+nine research questions (\cref{cw:sec:questions}); a conclusion; a proof
+dependency and claim audit (Appendix~\ref{cw:app:audit}); and small worked
+certificates (Appendix~\ref{cw:app:certificates}). Every result, proof,
+example, remark, limitation and question of the manuscript is printed.
+
+\paragraph{Where the merge had to choose.}
+\begin{itemize}
+\item \emph{Front matter and numbering.} The manuscript's title block,
+abstract and status paragraph are printed in \cref{cw:sec:abstract}; its
+table of contents is dropped. Its Sections~1--15 are Sections~44--58 here, and
+its Appendices~A and~B are Appendices~\ref{cw:app:audit}
+and~\ref{cw:app:certificates}, after the appendices of Parts~I--III, with
+``(Part~IV)'' added to their titles. Its theorems and equations keep their
+positions within each section: its Theorem~$n.k$ is Theorem~$(n+43).k$ here
+and its equation~$(n.k)$ is~$(n+43.k)$. Its Research questions~1--9 are
+Research questions~20--28 here, because the counter continues after
+Part~III's nineteen.
+\item \emph{Duplicated material.} The manuscript reproves, and credits, what
+it takes from Parts~II and~III, so that its argument does not depend on an
+unformalized external lemma; the proofs are printed in full. The normal form
+\cref{cw:thm:normal} is \cref{thm:normal,fo:thm:normal,fp:thm:normal}; the
+greedy elimination \cref{cw:prop:elimination} is \cref{fo:prop:closure}; the
+universal constant \cref{cw:lem:universal} is \eqref{fo:eq:universal-all};
+the tower lemma \cref{cw:lem:tower} contains \cref{fo:lem:towers,fo:thm:compact};
+the admissible-word half of \cref{cw:prop:sums} is \cref{fo:prop:sum-profile};
+and the feedback-set argument in the proof of \cref{cw:thm:rankone} is that of
+\cref{fp:lem:word-fvs}. The checks are collected in \cref{cw:sec:crosswalk}.
+\item \emph{Renamed macros and symbols.} The manuscript's one-argument
+closure macro \verb|\cl| (an overline) clashes with Part~I's \verb|\cl|
+($\cl$, no argument); its seventeen uses are set with a new \verb|\cwcl|, and
+the printed overline is unchanged. Its \verb|\rk| clashes with Part~I's
+$\rk$ and is written $\rho$, as it printed. Its \verb|\depth|, printed
+$\operatorname{depth}$, is set with Part~II's $\depth$; its admissible-word
+set $\mathcal W$ is Part~II's $\W$, its word length Part~II's $\len{\cdot}$,
+and its italic layer count $L(X,c)$ is printed as Part~II's $\layers(X,c)$
+(the same number). Its signature $\mathcal S$ is set with \verb|\cwSig|,
+printed unchanged as $\cwSig$. Its basis $\mathcal B(X,c)$ is printed
+$\cwBas(X,c)$, because Part~III's $\B$ is a Boolean algebra. Its tower $K_k$
+is printed $\Tw_k$, as in Part~II (\cref{fo:sec:notation}), since Part~I's
+$K_k$ is a different space. Its unused height macro and its macro for the
+pinned commit are dropped. No normalization is changed. The notation table is
+\cref{cw:sec:notation}.
+\item \emph{The reference \texttt{[Repo]}.} Its two uses are replaced by
+``(printed above)'' in \cref{cw:sec:introduction} and by
+\cref{fo:thm:normal,fo:prop:closure} after \cref{cw:prop:elimination}; the
+entry itself is quoted above. The phrase ``Research question 1 in Part II''
+is printed as a cross-reference to \cref{fo:q:invariants}, with the same
+words.
+\item \emph{Bibliography.} The manuscript's entries for Chiozini, Csern\'ak
+and Soukup \cite{CCS}, Lagoutte and Tavenas \cite{LT} and Selivanov
+\cite{Selivanov} are the works already cited by Parts~I--III, and are merged
+with those entries; its annotations are added to them.
+\item \emph{Shipped names.} The source-audit file, the verifier, the recorded
+output and the rerun command in \cref{cw:sec:introduction,cw:sec:verification}
+are printed with the shipped names and an explicit output path; the note in
+\cref{cw:sec:verification} quotes the delivered text. The rewritten text
+promises no file that is not shipped.
+\item \emph{Notes.} Four dated notes are added inside Part~IV: on the scope
+of ``in full generality'' (\cref{cw:sec:introduction}), on Part~I's product
+law (\cref{cw:sec:products}), on shipped names (\cref{cw:sec:verification})
+and on the relation of the research questions to those of Parts~II and~III
+(\cref{cw:sec:questions}). In Parts~II and~III, notes pointing to Part~IV
+follow \cref{fo:q:invariants} and Part~II's Research questions~3 and~6, and
+\cref{fp:q:next-level,fp:q:infinite}; the title page and the abstract gain a
+paragraph each, and the entry \cite{CCS} a dated sentence on its two titles.
+\end{itemize}
+
+\begin{resultbox}
+\textbf{Status (manuscript 05).} Part~IV is an AI-assisted, unrefereed
+research manuscript. Its new claims are ordinary mathematical theorems proved
+in it, not Lean- or Rocq-checked results; it ships executable finite checks
+but no proof-assistant files, and nothing in it is formalized in ProveIt. It
+credits as prior material the tree--layer normal form, greedy elimination,
+the chain interpretation, the compact word construction and the
+universal-word constant of Parts~II and~III, and claims as its contribution
+their extension through closure-word duality and its consequences. ``New
+here'' means new relative to the inspected report, not certified historical
+priority; its literature checks were targeted, not exhaustive. It does not
+claim to settle the uniform-coloring or transfinite questions of the cited
+literature: it does not determine which signatures the colorings of a
+prescribed space can have, so the attainability half of
+\cref{fo:q:invariants} stays open. It does not identify word equivalence with
+Wadge equivalence or with any partition hierarchy, and does not claim the
+shortest-common-supersequence problem or its three-letter hardness
+\cite{LT}. Its algorithms are relative to stated closure and emptiness
+operations, not polynomial-time algorithms for arbitrary topological input;
+its product law concerns the specified pair coloring, not the supremum over
+colorings of a product; its obstruction bound is an upper bound, not claimed
+optimal. The finite checks test finite instances only; every infinite-space
+statement rests on the written proofs, and the recorded run time of
+4.282~seconds is specific to the delivering environment.
+\end{resultbox}
+
+\subsection{The manuscript's title block and abstract}
+\label{cw:sec:abstract}
+\begin{quote}\small
+\textbf{Closure-Word Duality for Open-Query Games. Universal finite models,
+optimal topological compression, finite-budget certificates, and an exact
+product law.} ProveIt research series. AI-assisted research manuscript
+prepared for Vladimir Reshetnikov, 30 September 2026.
+
+A hidden point of a topological space is to be assigned one of finitely many
+known labels, using adaptive questions about open sets. We associate to the
+labeling a language of reduced words detected by iterated color closures.
+We prove, without separation assumptions, that a proposed layer word is
+admissible exactly when it contains every detected word as a subsequence.
+Moreover, failure of an $m$-letter proposal has a detected counterword of
+length at most $m$. This converts every finite-budget problem, on an arbitrary
+space, into a finite shortest-common-supersequence problem.
+
+For finite-depth games the detected language is a finite downset, uniquely
+recoverable from the entire admissibility profile. Every such downset is
+realized both by a finite union of colored chains and by a compact countable
+metrizable space. Its longest word has length equal to the least possible
+Cantor--Bendixson height of a Hausdorff realization. We obtain an exact
+feedback-vertex-set formula when the second derivative is empty, including
+spaces with infinitely many nonisolated points; an improved finite-poset
+obstruction bound; and the product law
+$\rho(X\times Y,c\times e)=\rho(X,c)+\rho(Y,e)-1$.
+A pair of three-colorings of the same compact space agree on all patterns
+of length at most three and on every derivative's color cardinalities, yet
+need respectively three and four queries. Full proofs, an explicit algorithm,
+a research agenda, and independent exhaustive finite checks accompany the
+article.
+
+\textbf{Status and scope.}
+The new claims are ordinary mathematical theorems proved in this manuscript,
+not Lean- or Rocq-checked results. The repository's tree--layer normal form,
+greedy elimination test, chain interpretation, compact word construction,
+and universal-word constant are credited as prior material. The contribution
+is their extension through closure-word duality and its consequences.
+Historical priority has not been independently certified. This is not a claim
+to settle all uniform-coloring or transfinite questions in the cited
+literature.
+\end{quote}
+
+\subsection{Notation of Part~IV}
+\label{cw:sec:notation}
+Part~IV fixes a nonempty space $X$, with no separation axiom unless stated, a
+finite alphabet $\Sigma$ of $q$ letters and a coloring $c:X\to\Sigma$, as
+Part~II does; $A_a=c^{-1}(a)$. Several letters are used differently in
+Part~IV and in Parts~I--III. Where a false reading is tempting, the table
+prints it beside the true one.
+\begin{center}\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.14\linewidth}>{\raggedright\arraybackslash}p{0.45\linewidth}>{\raggedright\arraybackslash}p{0.33\linewidth}@{}}
+\toprule
+Symbol & Part~IV & Parts~I--III\\
+\midrule
+\endhead
+$\cwSig(X,c)$, $\rho(X,c)$ & The closure signature, the nonempty reduced
+words $v$ with $F_v\ne\varnothing$, and its rank, the supremum of their
+lengths (\cref{cw:sec:signature}). On a finite poset $\cwSig(P,c)=\C(P,c)$
+(\cref{cw:lem:poset}). & Part~II: $\C(P,c)$ the reduced chain words of a
+poset; $h_c$ in \cref{fo:cor:height} is $\rho(P,c)$.\\
+$T_a$, $R_a$, $F_v$ & $T_a(F)=\cwcl{A_a\cap F}$, the color closure;
+$R_a(F)=\cwcl{F\setminus A_a}$; $F_v$ the nested closure along $v$.
+\emph{False:} $T_a$ is Part~II's automaton transition; $F_v$ is a layer or a
+filter. & Part~II: $T_a(I)$, a transition on order ideals
+\eqref{fo:eq:ideal-transition}; Part~I: $F_i$ closed layers; Part~III: $\F$ a
+filter, $T(q,r)$ an arc count.\\
+$\cwcl{B}$ & The closure of $B$ (the manuscript's one-argument \verb|\cl|). &
+Part~I: $\cl$; Part~II: $\cl_X$.\\
+$A_a$ & The color class $c^{-1}(a)$. & Part~I: $A$ the target; Part~II:
+$\A_{q,m}(S)$ a word family, $A$ a mask.\\
+$\W$, $\layers$, $\depth$ & Admissible words, least layer count, least
+worst-case depth: the manuscript's $\mathcal W$, $L$ and
+$\operatorname{depth}$. & Part~II's $\W$, $\layers$, $\depth$ (same
+notions); Part~I's $L(A,X)$.\\
+$\cwBas(X,c)$, $B$ & The maximal antichain of a finite signature (the
+manuscript's $\mathcal B$); $B$ also a finite antichain or basis in
+\cref{cw:thm:finitemodel,cw:thm:classification} and \cref{cw:sec:algorithms}.
+\emph{False:} Part~III's $\B$. & Part~III: $\B=\PP(D)/\I_\F$ a Boolean
+algebra; $B_i$, $B$ sets of colors.\\
+$B(q,m)$, $B_*(q,m)$ & $B(q,m)$ the least obstruction size, as in Part~II's
+Research question~3; $B_*(q,m)=mq(q-1)^{m-1}$ the bound
+\eqref{cw:eq:budgetsize}. & Part~II: the bound $(m+1)q^m$
+(\cref{fo:thm:obstruction}).\\
+$\Tw_k$, $\Tw_b$ & The tower of height $k$ (the manuscript's $K_k$), and the
+tower colored by a rank word $b$, reduced or not. Its new point has
+neighborhoods containing all but finitely many copies, so it is Part~II's
+$\Tw_k$. \emph{Not} Part~I's $K_k$. & Part~I: $K_k=[0,\omega^{2^k-1}]$;
+Part~II: $\Tw_m$, $c_w$.\\
+height, $h$ & The Cantor--Bendixson height, the least $k$ with
+$X^{(k)}=\varnothing$; it is $h+1$ for the last derivative rank $h$. The
+space $Z$ of height four has $h=3$. \emph{False:} ``height'' $=h$. & $h$ the
+last derivative rank; Appendix~B: the height is $h+1$.\\
+$D$, $D_m$ & A finite downset of reduced words; $D_m$ the signature
+truncated at length $m$; in the proof of \cref{cw:thm:rankone}, a topological
+ordering. \emph{Not} the depth $\depth$. & Part~I: $D_j$; Part~II: $\depth$;
+Part~III: $D_i$, $D$ isolated parts.\\
+$U(q,r)$, $U_i$, $U_j$ & $U(q,r)=(q-1)r+1$, Part~II's
+$\scs(\A_{q,r})$ \eqref{fo:eq:universal-all}; blocks $U_i$ in
+\cref{cw:lem:separator}; open suffixes $U_j$ \eqref{cw:eq:questions}. &
+Part~II: $U_j$ open suffixes.\\
+$N(q,r)$ & The number of nonempty reduced words of length at most $r$. &
+Part~I: $N_0,N_1$; Part~II: $N$ an input length.\\
+$G_c$, $q_c$, $\tau$ & As in Part~III: arcs $a\to b$ for
+$A_a\cap\cwcl{A_b}\ne\varnothing$; for a finite derived set this is
+Part~III's digraph. $G_t$ is the elimination chain, as in Part~II. &
+Part~III: $G_c$, $q_c$, $\tau$; Part~II: $G_t$.\\
+$r$, $s$, $e$, $\Gamma$ & $r$ a rank; in \cref{cw:thm:product}, $r,s$ the
+factor ranks and $e:Y\to\Gamma$ the second coloring. \emph{False:} $s$ is a
+number of colors. & Part~II: $s$ colors on $X^{(h)}$; Part~III: $r$ a bound
+on $\ac$, $s$ a remainder.\\
+$t$, $\ell_i$ & The number and the lengths of basis words in
+\cref{cw:sec:algorithms}. & Part~III: $t=\lvert X'\rvert$, $\ell(G)$.\\
+$Z$, $c_{\rm hard}$, $c_{\rm soft}$ & The sum of 24 towers of
+\cref{cw:thm:separationexample} and its two colorings. & Part~III: $Z$ the
+clopen discrete part.\\
+$\eps$, $\preceq$ & The empty word; the subsequence relation. & Part~II
+writes $\subseq$ for the same relation.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Parts~I--III inside Part~IV}
+\label{cw:sec:crosswalk}
+The following checks were made when Part~IV was added; they are consequences
+of the four parts' proofs, not new theorems.
+\begin{enumerate}
+\item \emph{Normal form and elimination.} \Cref{cw:thm:normal} and
+\cref{cw:prop:elimination} are \cref{fo:thm:normal} and
+\cref{fo:prop:closure}; the chain \eqref{cw:eq:elimination} is
+\eqref{fo:eq:closure}, and at $q=2$ both are Part~I's \cref{thm:normal}.
+\item \emph{Posets.} On a finite poset, \cref{cw:lem:poset} identifies the
+signature with Part~II's reduced chain words $\C(P,c)$, so
+\cref{cw:thm:duality} there is \cref{fo:thm:chains}, and
+\eqref{cw:eq:rankbounds} is \eqref{fo:eq:height-bound} with $h_c=\rho(P,c)$.
+Part~IV extends both to every topological space, and adds the truncation to
+constraints of length at most $\len{w}$.
+\item \emph{Finite height.} On a Hausdorff space of last derivative rank $h$,
+\cref{cw:lem:derivative} gives $\rho\le h+1$, so \eqref{cw:eq:rankbounds}
+gives $\layers\le(q-1)(h+1)+1=(q-1)h+q$. This is weaker than Part~II's
+sharp \cref{fo:thm:CB}, $(q-1)h+s$ with $s\le q$, as the manuscript says after
+\cref{cw:cor:rankbounds}.
+\item \emph{Rank one.} For a Hausdorff space with a finite nonempty derived
+set, the arcs \eqref{cw:eq:arc} are those of Part~III's $G_c$ (a point $p_i$
+of color $a$ in the closure of $A_b$), so \eqref{cw:eq:graphformula} is
+Part~III's \cref{fp:thm:fixed}. \Cref{cw:thm:rankone} assumes only
+$X''=\varnothing$: the derived set may be infinite, and no compactness,
+first countability or filter decomposition is used. It concerns a fixed
+coloring; Part~III's capacity results on $\sm_q$ are not extended.
+\item \emph{Obstructions.} For finite posets \cref{cw:cor:obstruction}
+improves the bound $(m+1)q^m$ of \cref{fo:thm:obstruction} to
+$mq(q-1)^{m-1}$; for example $12$ instead of $27$ points at $q=3$, $m=2$.
+\Cref{fo:thm:obstruction} is stated for every poset,
+\cref{cw:cor:obstruction} for finite ones.
+\item \emph{Products.} The rank law \eqref{cw:eq:productrank} is the
+coloring analogue of Part~I's \cref{lem:product}; see the note after
+\cref{cw:thm:product}. The binary phenomenon of Appendix~\ref{cw:app:certificates}
+(chains $01$ and $10$) is the finite-poset form of the clash of orientations behind Part~I's counterexample (\cref{sec:small}).
+\item \emph{Separations.} \Cref{cw:thm:separationexample} and Part~III's
+\eqref{fp:eq:separation} separate different things: Part~III compares two
+spaces through $\sm_3$; Part~IV compares two colorings of one space whose
+signatures agree up to length three. Neither contradicts the other, and no
+statement of Parts~I--III is refuted or retracted.
+\item \emph{Independent checks.} A script written at intake and rerun at this
+write (not shipped) enumerated all 389 labelled topologies on at most four
+points and their three-colorings and reproduced the counts of
+\cref{cw:sec:verification} (29,577 colorings, 21,639 with a finite tree, 109
+distinct finite signatures). It compared duality and the short-certificate
+test with a brute-force search for layerings, which checks suffix openness
+directly and does not use elimination, on every coloring with at most three
+points and a random 2\% of those with four (73,452 comparisons in the rerun,
+69,612 at intake; all agree). It confirmed $U(q,r)=(q-1)r+1$ by exact
+shortest-supersequence search for $(q,r)=(2,3),(2,5),(3,2),(3,3),(3,4),(4,2),(4,3)$;
+the layer counts $9$ and $7$ and the basis sizes $24$ and $12$ of
+\cref{cw:thm:separationexample}; the product signature and the rank law on
+300 random pairs of two-colored preorders with at most three points; and
+$\layers=q+\tau(G)$ on all 4,165 loopless digraphs on at most four labelled
+vertices. The worked certificates of Appendix~\ref{cw:app:certificates} were
+checked by hand.
+\end{enumerate}
+
+\section{The problem, the repository frontier, and the contribution}
+\label{cw:sec:introduction}
+
+Suppose a point $x$ of a known space $X$ is hidden. One may ask whether $x$
+belongs to any chosen open subset of $X$, and later questions may depend on
+earlier answers. The objective is not necessarily to identify $x$: it is to
+output its known color $c(x)$ in a finite alphabet $\Sigma$.
+The central issue is how topology constrains the order in which colors can
+be separated. Ordinary cardinalities of color classes do not capture that
+constraint.
+
+Chiozini, Csern\'ak and Soukup study a broader, transfinite cut-and-choose
+framework and associated point-separating and set-membership invariants
+\cite{CCS}. Their arXiv record was checked at version 3, dated 29 May 2026.
+We work only with finite worst-case budgets and with a specified coloring.
+These restrictions are substantive: a supremum over all colorings and a
+transfinite game need additional arguments.
+
+\subsection{The inspected baseline}
+
+The direct baseline is the ProveIt report \emph{Open-query games on ordinal
+spaces}, Parts I--III (printed above), at commit
+\begin{center}\small\texttt{a4268e78ebd0f6bf71ba609c07f4b3415748f532}.\end{center}
+Its article is the Git blob
+\texttt{d1e50fd006a8ba1fe645b41b4fb37ee35f7043fe}.
+Part II identifies open-query trees with ordered monochromatic layers,
+represents finite colored posets by chain-word constraints, and realizes
+individual words on compact convergent towers. Part III treats spaces with
+finite nonempty derived set by local filters and a directed graph on colors.
+
+\Cref{fo:q:invariants} in Part~II asks for exact invariants beyond convergent
+towers and for a characterization through accumulating word profiles.
+Its Part III annotation explicitly leaves higher finite heights and infinite
+derived sets beyond the finite-derived-set treatment. The present work
+answers the \emph{fixed-coloring profile} part in full generality. It does not
+determine which profiles can be produced by all colorings of each prescribed
+space. That remaining realizability problem includes the uniform local-capacity
+question raised in the same research program.
+
+\begin{writenoted}[Scope: ``in full generality'']
+The phrase refers to the second half of \cref{fo:q:invariants}, for one
+coloring at a time: on every space, the admissible words of a fixed
+coloring are characterized by its closure signature
+(\cref{cw:thm:duality,cw:thm:recovery,cw:thm:classification}). The first
+half, attainability of $(q-1)h+s$ over all colorings of a given space,
+stays open beyond Part~III's class, as the next sentence says; the
+question is therefore answered in part, and the note after
+\cref{fo:q:invariants} records the new scope.
+\end{writenoted}
+
+The comparison is targeted. We inspected the report's definitions, normal-form
+and elimination arguments, synchronization and complexity discussion,
+research questions, and finite-derived-set results. We did not audit every
+mathematical assertion in ProveIt. The supplied source audit, shipped here as
+\path{04-closure-words-SOURCES.md}, records
+paths, the pin, and the inspected ranges.
+
+\subsection{A map of the results}
+
+For a closed set $F\subseteq X$ and color $a$, put
+\[
+ T_a(F)=\cwcl{F\cap c^{-1}(a)}.
+\]
+For a word $v=v_1\cdots v_k$, let
+$F_v=T_{v_1}\cdots T_{v_k}(X)$, with operators acting from right to left.
+The \emph{closure signature} consists of the nonempty reduced words $v$ for
+which $F_v\ne\varnothing$. Reduced means that adjacent letters are different;
+letters may recur later.
+
+The main results, with the precise hypotheses given below, are these.
+\begin{enumerate}
+\item \textbf{Universal duality and short certificates.}
+A word $w$ is admissible exactly when every word of the closure signature is
+a subsequence of $w$. If $w$ has $m\ge1$ letters, only signature words of
+length at most $m$ need be tested (\cref{cw:thm:duality}).
+\item \textbf{Complete finite-depth classification.}
+Finite-depth games, identified when they admit exactly the same words, are
+classified by nonempty finite downsets of reduced words. Their unique maximal
+antichains give exact finite SCS instances. They have finite-poset and compact
+countable metrizable realizations; the maximum signature length is the
+optimal Hausdorff realization height (\cref{cw:thm:classification,cw:thm:minheight}).
+\item \textbf{Consequences beyond the previous local graph model.}
+The graph formula extends to every Hausdorff space with $X''=\varnothing$.
+Finite budgets have uniformly bounded finite replicas and improved actual
+subposet obstructions. Independent products have additive signature rank,
+minus one. Higher-order closures cannot be replaced by pairwise or triple
+summaries (\cref{cw:thm:rankone,cw:thm:budgetmodel,cw:thm:product,cw:thm:separationexample}).
+\end{enumerate}
+
+The finite-topology checks compare independent minimax optimization with the
+word and closure calculations. They include all labeled topologies on at most
+four points and all their three-colorings. They are tests of finite instances,
+not a substitute for any infinite-space proof.
+
+\subsection{Novelty boundary and related frameworks}
+
+The repository already supplies the normal form and the single-word closure
+elimination test used in \cref{cw:sec:normal}. Those are not claimed as new here.
+Neither is the SCS problem or its hardness for reduced words over three
+letters: the latter is established by Lagoutte and Tavenas \cite{LT}.
+Selivanov's work on difference and fine hierarchies of finite partitions
+provides a broader descriptive-set-theoretic context \cite{Selivanov}.
+We do not identify our equivalence relation with Wadge equivalence or claim
+that existing partition hierarchies were previously unavailable.
+
+The demonstrated extension is an explicit, all-space duality for the entire
+admissibility language, its finite-budget truncation, a recovery theorem,
+optimal-height realization, and the stated consequences. These are the
+mathematical claims to assess. A literature-wide priority determination would
+require a more extensive comparison than the source review performed here.
+
+\section{Open-query trees and ordered layers}
+\label{cw:sec:normal}
+
+Throughout, $X$ is nonempty and $\Sigma$ is a finite nonempty alphabet.
+The coloring $c:X\to\Sigma$ need not be continuous or surjective. Unless
+otherwise specified, there is no separation assumption.
+Write $A_a=c^{-1}(a)$, and let $q=|\Sigma|$. Unused colors may be discarded
+when improving a numerical bound.
+
+\begin{definition}[Admissibility]
+For $m\ge1$, a word $w=w_1\cdots w_m$ is \emph{admissible} for $(X,c)$ if
+there exists $\lambda:X\to\{1,\ldots,m\}$ such that
+\begin{equation}\label{cw:eq:layering}
+ c(x)=w_{\lambda(x)},\qquad
+ \{x:\lambda(x)\ge j\}\text{ is open for every }j.
+\end{equation}
+Empty fibers are allowed. Let $\W(X,c)$ be the set of admissible words and
+\[
+ \layers(X,c)=\min\{\len{w}:w\in\W(X,c)\},
+\]
+with value $\infty$ when the set is empty. Let $\depth(X,c)$ be the minimum
+worst-case depth of a correct finite binary open-query tree, or $\infty$.
+\end{definition}
+
+Inserting empty layers preserves admissibility. Adjacent layers of the same
+color can be merged, because the suffix sets at the surviving boundaries
+remain open. Thus a shortest admissible word has no equal adjacent letters.
+We use $v\preceq w$ for the ordinary scattered-subsequence relation.
+
+\begin{theorem}[Tree--layer normal form; repository baseline]
+\label{cw:thm:normal}
+The minimum number of nonempty leaves of a correct finite open-query tree is
+$\layers(X,c)$. If finite, then
+\begin{equation}\label{cw:eq:depth}
+ \depth(X,c)=\ceil{\log_2 \layers(X,c)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Order a tree's leaves recursively, with the no-subtree before the yes-subtree.
+Every suffix of its leaf cells is open. To see this, use induction in the
+current possible-point subspace. If the current query is $U$, a suffix wholly
+in the yes-subtree is $U\cap V$ for a relatively open $V$. A suffix meeting
+the no-subtree contains all of the yes-subtree and is
+\[
+ U\cup((X\setminus U)\cap V)=U\cup V.
+\]
+The subspace version of the same identity proves the induction. Remove empty
+leaves. Correctness makes each remaining cell monochromatic, so its position
+is a layering. Conversely, a layering with $m$ nonempty fibers permits balanced
+binary search of its index using the open suffixes in \eqref{cw:eq:layering}.
+This gives $m$ leaves and depth at most $\ceil{\log_2m}$.
+A depth-$d$ binary tree has at most $2^d$ leaves, which proves the converse
+inequality and the formula.
+\end{proof}
+
+\begin{proposition}[Greedy elimination; repository baseline]
+\label{cw:prop:elimination}
+For closed $F$ put $R_a(F)=\cwcl{F\setminus A_a}$. Given
+$w=w_1\cdots w_m$, define
+\begin{equation}\label{cw:eq:elimination}
+ G_0=X,\qquad G_{t+1}=R_{w_{m-t}}(G_t)\quad(0\le t<m).
+\end{equation}
+Then $w\in\W(X,c)$ if and only if $G_m=\varnothing$.
+\end{proposition}
+\begin{proof}
+Suppose $\lambda$ is a layering for $w$. Its prefixes
+$H_t=\{\lambda\le m-t\}$ are closed. Induction gives $G_t\subseteq H_t$:
+a point of $H_t$ with color different from $w_{m-t}$ must belong to
+$H_{t+1}$, and closure preserves containment in this closed set.
+Thus $G_m\subseteq H_m=\varnothing$.
+
+Conversely, the $G_t$ decrease and are closed. If $G_m=\varnothing$, give
+$G_t\setminus G_{t+1}$ the index $m-t$. Such a point has color $w_{m-t}$,
+since $G_t\setminus A_{w_{m-t}}\subseteq G_{t+1}$. The index-$\ge j$ suffix
+is $X\setminus G_{m-j+1}$, which is open. These layers partition $X$ and
+prove admissibility.
+\end{proof}
+
+Both statements are reproduced to make the new argument independent of an
+unformalized external lemma. Their prior appearance is Part II,
+\cref{fo:thm:normal,fo:prop:closure} of the pinned report.
+
+\section{The closure signature}
+\label{cw:sec:signature}
+
+\begin{definition}[Color closures and detected words]
+For a closed $F\subseteq X$, define
+\begin{equation}\label{cw:eq:colorclosure}
+ T_a(F)=\cwcl{A_a\cap F},\qquad
+ F_{a_1\cdots a_k}=T_{a_1}\bigl(T_{a_2}(\cdots T_{a_k}(X)\cdots)\bigr),
+ \qquad F_{\eps}=X.
+\end{equation}
+Let $\red(v)$ be obtained from $v$ by replacing each nonempty constant run
+by one letter. The \emph{closure signature} is
+\begin{equation}\label{cw:eq:signature}
+ \cwSig(X,c)=\{v\ne\eps:v=\red(v),\ F_v\ne\varnothing\}.
+\end{equation}
+Its rank is
+\[
+ \rho(X,c)=\sup\{\len{v}:v\in\cwSig(X,c)\}\in\N\cup\{\infty\}.
+\]
+Since $X\ne\varnothing$, its signature is nonempty and its rank is at least one.
+\end{definition}
+
+The expression $F_{abc}$ records a genuinely nested condition:
+\[
+ F_{abc}=\cwcl{A_a\cap\cwcl{A_b\cap\cwcl{A_c}}}.
+\]
+It is not the intersection of the three individual color closures. A point
+need not witness all stages by a chain of actual specialization comparisons;
+in Hausdorff spaces nontrivial stages arise from accumulation instead.
+
+\begin{lemma}[Operator calculus]\label{cw:lem:operators}
+On the lattice of closed subsets, each $T_a$ is monotone, contractive,
+idempotent, and preserves finite unions. Consequently
+\begin{equation}\label{cw:eq:reductiondownset}
+ F_v=F_{\red(v)},\qquad v\preceq u\Longrightarrow F_u\subseteq F_v.
+\end{equation}
+The signature is a downset among nonempty reduced words ordered by subsequence.
+\end{lemma}
+\begin{proof}
+Monotonicity follows from monotonicity of intersection and closure.
+Since $F$ is closed, $T_a(F)\subseteq F$. Also
+$A_a\cap F\subseteq A_a\cap T_a(F)$, whereas $T_a(F)\subseteq F$ gives the
+reverse containment after taking the corresponding closures. Hence
+$T_a(T_a(F))=T_a(F)$. Finite-union preservation follows from
+$\cwcl{B\cup C}=\cwcl B\cup\cwcl C$.
+
+Idempotence removes repeated adjacent operators. Deleting an operator from
+a composition can only enlarge its value: the deleted operator is
+contractive and all operators outside it are monotone. Iterating deletions
+proves the second assertion of \eqref{cw:eq:reductiondownset}, and hence the
+downset property.
+\end{proof}
+
+\begin{remark}[Why reduction is essential]
+If $a$ occurs as a color, then $F_{a^k}=F_a\ne\varnothing$ for every $k$.
+Counting unreduced word lengths would therefore make every rank infinite.
+The reduction removes this artificial repetition, while retaining meaningful
+patterns such as $aba$.
+\end{remark}
+
+\begin{lemma}[Reduction and subsequences]\label{cw:lem:stutter}
+For a reduced word $v$ and an arbitrary word $w$,
+\[
+ v\preceq w\quad\Longleftrightarrow\quad v\preceq\red(w).
+\]
+\end{lemma}
+\begin{proof}
+One implication follows because $\red(w)\preceq w$. For the other, the
+positions used by an embedding of a reduced word cannot use two letters
+from a single constant run: between two equal letters of $v$ a different
+letter must occur. Map each used run to its single representative.
+\end{proof}
+
+\section{Closure-word duality and short failure certificates}
+\label{cw:sec:duality}
+
+The topological step is finite distributivity; the combinatorial step is a
+precise relation between subsequence failure and coordinatewise avoidance.
+We prove the latter first.
+
+\begin{lemma}[Diagonal avoidance]\label{cw:lem:diagonal}
+Let $w,b\in\Sigma^m$, with $m\ge1$, and assume $b_i\ne w_i$ for every $i$.
+Then $\red(b)\not\preceq w$.
+Conversely, if a nonempty reduced word $v$ is not a subsequence of $w$, there
+exists such a $b$ with $\red(b)\preceq v$ and
+$\len{\red(b)}\le m$.
+\end{lemma}
+\begin{proof}
+For the first direction put $v=\red(b)$, and let $j_i$ be the index of the
+constant run of $b$ containing position $i$. Let $p_i$ be the length of the
+prefix of $v$ matched greedily while scanning $w_1\cdots w_i$.
+We claim $p_i<j_i$. At the first position, $w_1\ne b_1=v_1$, so $p_1=0$.
+If a new run starts at $i$, then $j_i=j_{i-1}+1$ and $p_i\le p_{i-1}+1<j_i$.
+If the run does not change, reaching $j_i$ at step $i$ would require
+$w_i=v_{j_i}=b_i$, which is excluded. This proves the claim. At $i=m$,
+$p_m<\len v$, so greedy matching fails, equivalently $v\not\preceq w$.
+
+For the converse, greedily match the given $v$ in $w$, and let $p_i$ be the
+matched prefix length \emph{after} scanning position $i$. Since matching
+never finishes, set $b_i=v_{p_i+1}$. If there was no advance at position $i$,
+the definition of greedy matching gives $b_i\ne w_i$. If there was an
+advance, then $w_i=v_{p_i}$ and $b_i=v_{p_i+1}\ne v_{p_i}$ because $v$ is
+reduced. The indices $p_i+1$ are nondecreasing and increase only by one.
+Thus $\red(b)$ is a contiguous segment of $v$, in particular a subsequence,
+and has at most $m$ letters.
+\end{proof}
+
+\begin{theorem}[Universal closure-word duality]\label{cw:thm:duality}
+For every topological space and finite coloring as above, and every word
+$w$ of length $m\ge1$, the following are equivalent:
+\begin{align}
+ &w\in\W(X,c);\label{cw:eq:dual1}\\
+ &v\preceq w\quad\text{for every }v\in\cwSig(X,c);\label{cw:eq:dual2}\\
+ &v\preceq w\quad\text{for every }v\in\cwSig(X,c)
+       \text{ with }\len v\le m.\label{cw:eq:dual3}
+\end{align}
+In particular, each rejected $m$-letter word has a rejected constraint
+$v\in\cwSig(X,c)$ of length at most $m$.
+\end{theorem}
+\begin{proof}
+Since the color classes form a finite partition,
+\[
+ R_a(F)=\cwcl{\bigcup_{b\ne a}(F\cap A_b)}
+       =\bigcup_{b\ne a}T_b(F).
+\]
+All $T_b$ preserve finite unions. Therefore the final residual in
+\eqref{cw:eq:elimination} expands as
+\begin{equation}\label{cw:eq:expansion}
+ G_m=R_{w_1}\cdots R_{w_m}(X)
+     =\bigcup_{\substack{b\in\Sigma^m\\ b_i\ne w_i\ (1\le i\le m)}}F_b.
+\end{equation}
+An empty index set means an empty union, including the one-color case.
+
+If $w$ is rejected, \cref{cw:prop:elimination} says $G_m\ne\varnothing$.
+Some term $F_b$ in \eqref{cw:eq:expansion} is nonempty. By
+\cref{cw:lem:operators}, $\red(b)\in\cwSig(X,c)$; by
+\cref{cw:lem:diagonal}, it is not a subsequence of $w$, and its length is at
+most $m$. Thus \eqref{cw:eq:dual3} implies \eqref{cw:eq:dual1}.
+
+Conversely, suppose some $v\in\cwSig(X,c)$ is not a subsequence of $w$.
+The converse of \cref{cw:lem:diagonal} gives an indexed word $b$ in
+\eqref{cw:eq:expansion} with $\red(b)\preceq v$. Then
+\[
+ \varnothing\ne F_v\subseteq F_{\red(b)}=F_b\subseteq G_m.
+\]
+So $w$ is rejected. This proves \eqref{cw:eq:dual1}$\Rightarrow$\eqref{cw:eq:dual2}.
+The remaining implication \eqref{cw:eq:dual2}$\Rightarrow$\eqref{cw:eq:dual3} is
+immediate.
+\end{proof}
+
+\begin{remark}[A nontrivial truncation]
+The assertion that length-$m$ candidates need only length-$\le m$ constraints
+is stronger than the observation that a finite-depth game has finitely many
+constraints. It applies even when the signature is unbounded and no finite
+strategy exists. A constraint longer than $m$ cannot be embedded into $w$;
+the theorem shows that its effect is already witnessed by some shorter
+\emph{occurring} constraint. This is a topological consequence of the
+operator calculus and the avoidance lemma, not an arbitrary property of
+all infinite languages.
+\end{remark}
+
+\section{Finite depth, finite antichains, and sharp bounds}
+\label{cw:sec:rank}
+
+\begin{theorem}[Finite rank criterion]\label{cw:thm:finiterank}
+The following are equivalent: $\depth(X,c)<\infty$, $\layers(X,c)<\infty$,
+and $\rho(X,c)<\infty$. If their rank is $r$, the signature is finite, and
+its unique set $\cwBas(X,c)$ of subsequence-maximal words satisfies
+\begin{equation}\label{cw:eq:scs}
+ \layers(X,c)=\scs\bigl(\cwBas(X,c)\bigr),\qquad
+ \depth(X,c)=\ceil{\log_2\scs\bigl(\cwBas(X,c)\bigr)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+If an admissible word has length $m$, duality implies that every signature
+word has length at most $m$, hence the rank is finite. Conversely, a bounded
+language over a finite alphabet is finite. Concatenating all its words gives
+a common supersequence, hence an admissible word by duality. A finite downset
+is generated by its unique maximal antichain; its common supersequences are
+exactly those of that antichain. Now apply \cref{cw:thm:normal}.
+\end{proof}
+
+\begin{proposition}[Uniform size bounds]\label{cw:prop:basisbound}
+For $q\ge2$ and finite rank $r$, put
+\[
+ N(q,r)=q\sum_{j=0}^{r-1}(q-1)^j.
+\]
+Then
+\begin{equation}\label{cw:eq:basisbound}
+ |\cwSig|\le N(q,r),\qquad
+ |\cwBas|\le q(q-1)^{r-1},\qquad
+ \sum_{v\in\cwBas}\len v\le rq(q-1)^{r-1}.
+\end{equation}
+In particular, at fixed $q,r$ there are at most $2^{N(q,r)}$ different
+finite-depth admissibility profiles of rank at most $r$.
+\end{proposition}
+\begin{proof}
+There are $q(q-1)^{k-1}$ reduced words of length $k$. This proves the first
+bound. Extend each member of the antichain to a reduced word of length $r$
+by appending letters different from the preceding letter. Choose any fixed
+deterministic extension rule. Two equal extensions would make one of their
+original words a prefix of the other, contradicting the antichain property.
+Thus extension is injective, proving the second bound and then the third.
+The final claim simply counts subsets of the finite pool of possible words;
+not all those subsets are signatures of rank at most $r$.
+\end{proof}
+
+\begin{lemma}[Universal reduced words; repository constant]
+\label{cw:lem:universal}
+For $q\ge2,r\ge1$, the shortest common supersequence of \emph{all} reduced
+$q$-letter-alphabet words of length $r$ has length
+\begin{equation}\label{cw:eq:universal}
+ U(q,r)=(q-1)r+1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the prefix of length $U(q,r)$ of the periodic word
+$012\cdots(q-1)012\cdots$. A greedy first match uses at most $q$ positions;
+each subsequent, different letter costs at most $q-1$ positions. The last
+match is therefore at most $q+(r-1)(q-1)=U(q,r)$.
+
+For the lower bound, in any proposed universal word select a color whose
+first occurrence is latest. If a color is absent the word already fails;
+otherwise that occurrence has position at least $q$. Subsequently select,
+among the $q-1$ different next colors, one whose next occurrence is latest.
+If one is absent beyond the current position the word fails again; otherwise
+the position increases by at least $q-1$. This recursively chooses a reduced
+$r$-letter word whose greedy last match occurs no earlier than $U(q,r)$.
+Greedy matching is earliest possible, so the lower bound follows.
+\end{proof}
+
+\begin{corollary}[Rank controls queries]\label{cw:cor:rankbounds}
+For $q\ge2$ and finite rank $r$,
+\begin{equation}\label{cw:eq:rankbounds}
+ r\le \layers(X,c)\le(q-1)r+1.
+\end{equation}
+The upper bound is attained by a finite union of chains, and by a compact
+countable metrizable colored space. For one active color, $r=\layers=1$ and
+$\depth=0$.
+\end{corollary}
+\begin{proof}
+A longest constraint gives the lower bound. Every reduced word of length at
+most $r$ extends to one of length $r$ when $q\ge2$, so \cref{cw:lem:universal}
+and duality prove the upper bound. The realization results of
+\cref{cw:sec:realization} realize the downset of all reduced words of length
+at most $r$, for which \cref{cw:lem:universal} is sharp.
+\end{proof}
+
+The constant in \eqref{cw:eq:universal} is already proved in Part II of the
+repository report. Here it becomes a bound for the closure rank of arbitrary
+spaces. It should not be confused with the sharper repository bound involving
+the number of colors on the last nonempty derivative of a finite-height
+Hausdorff space.
+
+\section{Recovering the signature from admissibility}
+\label{cw:sec:recovery}
+
+Duality says that the signature determines all admissible words. A converse
+is needed if the signature rank is to measure an intrinsic property of the
+game, rather than an artifact of its particular topological presentation.
+The following elementary separator provides that converse at finite depth.
+
+\begin{lemma}[A supersequence avoiding one forbidden word]
+\label{cw:lem:separator}
+Let $\cwBas$ be a finite family of reduced words, and let $v=a_1\cdots a_k$
+be a nonempty reduced word. If $v\not\preceq b$ for every $b\in\cwBas$,
+there exists a reduced word $w$ such that
+\begin{equation}\label{cw:eq:separator}
+ b\preceq w\ (b\in\cwBas),\qquad v\not\preceq w,\qquad
+ \len w\le\sum_{b\in\cwBas}\len b+k-1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Greedily match $v$ in each $b$. Since matching fails, it yields a decomposition
+\[
+ b=u_1a_1u_2a_2\cdots u_j a_j u_{j+1},\qquad j<k,
+\]
+where $u_i$ contains no occurrence of $a_i$. Fill the remaining stages with
+empty words. For each stage $i$, concatenate the $u_i$ blocks of all family
+members in a fixed order, obtaining $U_i$. It still contains no $a_i$.
+Set
+\[
+ w^*=U_1a_1U_2a_2\cdots U_{k-1}a_{k-1}U_k.
+\]
+Every $b$ embeds into $w^*$ using its stage blocks and the displayed letters.
+Greedy matching of $v$ into $w^*$ matches exactly the displayed first $k-1$
+letters, because $U_i$ contains no $a_i$, and then stops. Hence $v$ is avoided.
+There are at most $\sum_b\len b$ letters in the blocks and $k-1$
+displayed letters. Reduce $w^*$; by \cref{cw:lem:stutter} this preserves every
+reduced input constraint, still avoids $v$, and cannot increase length.
+\end{proof}
+
+\begin{theorem}[Observational completeness at finite depth]
+\label{cw:thm:recovery}
+If $\depth(X,c)<\infty$, then
+\begin{equation}\label{cw:eq:recover}
+ \cwSig(X,c)=\{v\ne\eps:v=\red(v),\ v\preceq w
+               \text{ for every }w\in\W(X,c)\}.
+\end{equation}
+Thus two finite-depth colored spaces over the same alphabet have identical
+admissibility languages if and only if they have identical closure signatures.
+\end{theorem}
+\begin{proof}
+One inclusion is duality. If a reduced $v$ is absent from the signature, it
+is not a subsequence of any maximal signature word: the signature is a
+downset. Apply \cref{cw:lem:separator} to its finite maximal basis. The resulting
+$w$ contains every basis word, so is admissible by duality, but avoids $v$.
+This proves the other inclusion. The equivalence follows immediately.
+\end{proof}
+
+\begin{definition}[Word equivalence]
+Colored spaces over a fixed alphabet are \emph{word-equivalent} if their
+admissibility languages agree. We use this term only for this explicitly
+defined relation, not for homeomorphism, continuous reducibility, or equality
+of a single optimal-depth number.
+\end{definition}
+
+A scalar optimum loses information even when finite: different antichains
+can have the same SCS length. The entire admissibility language retains the
+signature. By contrast, when no finite strategy exists, the admissibility
+language is empty, and \eqref{cw:eq:recover} must not be used. For example,
+an indiscrete two-color component together with an isolated third-color point
+and a three-color indiscrete space both have empty admissibility languages,
+but their closure signatures differ.
+
+\section{Finite and compact realizations: a complete classification}
+\label{cw:sec:realization}
+
+\subsection{Finite posets and actual chains}
+
+Give a finite poset its upper-set topology. The closure of a subset is its
+downward closure. We orient a chain from its least to its greatest point.
+
+\begin{lemma}[Occurrences in finite posets]\label{cw:lem:poset}
+For a finite colored poset $P$ and word $v=v_1\cdots v_k$,
+\[
+ F_v=\{x:\exists x\le x_1\le\cdots\le x_k,
+                     \ c(x_i)=v_i\text{ for all }i\}.
+\]
+For reduced $v$, its occurrence is equivalent to a strict chain whose color
+word is $v$. In particular, the signature of a chain colored by a reduced
+word $b$ is exactly the set of nonempty reduced subsequences of $b$.
+\end{lemma}
+\begin{proof}
+Induct on the word length, using that $T_a(F)$ is the downward closure of
+the $a$-colored points of $F$. Adjacent different colors exclude equality
+between adjacent witnesses, so a reduced word gives a strict chain.
+The final assertion specializes the witness description to a linearly
+ordered set.
+\end{proof}
+
+\begin{proposition}[Sums]\label{cw:prop:sums}
+For any nonempty family of nonempty colored spaces over the same alphabet,
+\begin{equation}\label{cw:eq:sums}
+ \cwSig\left(\bigsqcup_i X_i,\bigsqcup_i c_i\right)=\bigcup_i\cwSig(X_i,c_i),
+ \qquad
+ \W\left(\bigsqcup_i X_i,\bigsqcup_i c_i\right)=\bigcap_i\W(X_i,c_i).
+\end{equation}
+Their signature rank is the supremum of the component ranks, in
+$\N\cup\{\infty\}$.
+\end{proposition}
+\begin{proof}
+Closure in a topological sum is componentwise, so every $F_v$ restricts to
+the corresponding $F_v$ on each component. Nonemptiness is therefore
+existential over components. This proves the signature assertion; the word
+assertion follows from duality, or by gluing layerings for a common word.
+\end{proof}
+
+The intersection statement is already in Part II of the repository. The
+signature description makes its compatibility information into a finite
+antichain calculation whenever the component ranks have a common finite bound.
+
+\begin{theorem}[Finite models]\label{cw:thm:finitemodel}
+Let $D$ be a nonempty finite downset of nonempty reduced words, and let
+$B$ be its maximal antichain. The disjoint union of the chains colored by
+the words $b\in B$ has signature exactly $D$. Every finite-depth colored
+space is therefore word-equivalent to a finite union of chains. At alphabet
+size $q\ge2$ and rank $r$, it needs at most
+\begin{equation}\label{cw:eq:finitevertices}
+ rq(q-1)^{r-1}
+\end{equation}
+vertices by this construction.
+\end{theorem}
+\begin{proof}
+The chain signatures are the principal downsets generated by the words of
+$B$, by \cref{cw:lem:poset}. Their union is $D$, by \cref{cw:prop:sums}.
+Apply this to the finite signature of a finite-depth game and use duality.
+The vertex count is $\sum_{b\in B}\len b$, bounded in
+\cref{cw:prop:basisbound}.
+\end{proof}
+
+The model need not be a subspace or a continuous image of the original
+space. Its defining guarantee is preservation of all admissible words.
+This distinction is indispensable for Hausdorff source spaces, as discussed
+in \cref{cw:sec:budget}.
+
+\subsection{Compact convergent towers}
+
+Here is a self-contained version of the compact word realization already
+used in Part II of the repository. We include nonreduced rank words, which
+will be useful for the comparison example.
+
+Let $\Tw_1$ be a singleton. Recursively, form $\Tw_{k+1}$ from countably many
+pairwise disjoint clopen copies of $\Tw_k$ and a new point $p$. Neighborhoods
+of $p$ contain all but finitely many entire copies; inside each copy use its
+own topology. For a word $b=b_1\cdots b_k$, color the root of $\Tw_k$ by $b_1$
+and each lower copy recursively by the tail $b_2\cdots b_k$. Call this
+colored space $\Tw_b$.
+
+\begin{lemma}[Topology and word profile of a tower]\label{cw:lem:tower}
+The space $\Tw_k$ is compact, countable, metrizable and Hausdorff. It has
+Cantor--Bendixson height $k$, with a singleton $(k-1)$st derivative.
+For every nonempty rank word $b$, reduced or not,
+\begin{equation}\label{cw:eq:towerprofile}
+ w\in\W(\Tw_b)\quad\Longleftrightarrow\quad \red(b)\preceq w.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Countability and Hausdorff separation follow inductively. For compactness,
+an open cover has a member containing the root and all but finitely many
+copies; compactness of those finitely many remaining copies gives a finite
+subcover. An explicit metric can be constructed inductively with diameter
+at most one. Number the copies by $n\ge1$, set the distance from their
+points to the root to $2^{-n}$, the distance between different copies $n,m$
+to $2^{-n}+2^{-m}$, and scale the old metric within copy $n$ by $2^{-n}$.
+This is a metric and induces exactly the stated topology.
+
+Taking derivatives inside clopen copies commutes with restriction. Until
+their last nonempty derivatives disappear, infinitely many copies still
+meet every neighborhood of the new root. Induction therefore gives the
+root alone at derivative $k-1$ and the empty set at derivative $k$.
+
+For \eqref{cw:eq:towerprofile}, induction on $k$ suffices. The singleton case
+asks exactly that its color occur in $w$. Let the root color be $a=b_1$.
+If a layering assigns the root position $i$, then $w_i=a$ and its open
+suffix $\{\lambda\ge i\}$ contains an entire lower copy. The restriction to
+that copy is a layering over the suffix $w_i\cdots w_m$. By induction,
+$\red(b_2\cdots b_k)$ embeds there. If its first letter differs from $a$,
+its first match is strictly after $i$, so prepend the root's match at $i$.
+If its first letter equals $a$, no extra letter is needed for $\red(b)$.
+This proves necessity.
+
+For sufficiency, take an embedding of $\red(b)$ into $w$. Give consecutive
+levels with the same color the same embedded position. The root has the
+smallest used position; within each lower copy use the inductively supplied
+layering. A suffix containing the root is the whole space, and every other
+suffix is a union of open suffixes within clopen copies. This proves
+admissibility.
+\end{proof}
+
+\begin{theorem}[Classification and compact representatives]
+\label{cw:thm:classification}
+For a fixed finite alphabet, word-equivalence classes of nonempty finite-depth
+colored spaces are in bijection with nonempty finite downsets of nonempty
+reduced words. The signature gives the bijection. Every class has both a
+finite-poset representative and a compact countable metrizable representative.
+For a class of rank $r$, the latter can be chosen as a finite sum of towers
+of heights at most $r$.
+\end{theorem}
+\begin{proof}
+A finite-depth game has a finite downset signature by \cref{cw:thm:finiterank}.
+The signature distinguishes its word-equivalence class by
+\cref{cw:thm:recovery}. Every finite downset is realized by \cref{cw:thm:finitemodel}.
+For its maximal antichain $B$, take the finite disjoint union of the spaces
+$\Tw_b$, $b\in B$. By \cref{cw:lem:tower}, its admissibility language consists
+exactly of common supersequences of $B$. It is therefore word-equivalent
+to the finite model. It has finite depth, so \cref{cw:thm:recovery} also gives
+its signature exactly, not merely its optimum. Compactness, countability
+and metrizability survive a finite disjoint union.
+\end{proof}
+
+The single-word construction is inherited. What turns it into a universal
+classification is the new fact that \emph{every} finite-depth topological
+game has a bounded, complete word signature.
+
+\section{Derivative bounds and optimal topological compression}
+\label{cw:sec:height}
+
+For a Hausdorff space $X$, write $X^{(0)}=X$ and
+$X^{(j+1)}=(X^{(j)})'$, where the prime denotes the set of nonisolated
+points in the subspace. The finite Cantor--Bendixson height is the least
+positive $k$ with $X^{(k)}=\varnothing$, when such a $k$ exists.
+Thus a nonempty discrete space has height one.
+
+\begin{lemma}[One derivative per color change]\label{cw:lem:derivative}
+For a reduced word $v$ of length $k$ on a Hausdorff colored space,
+\begin{equation}\label{cw:eq:derivative}
+ F_v\subseteq X^{(k-1)}.
+\end{equation}
+Consequently, a space of finite height $h+1$ has $\rho(X,c)\le h+1$
+for every finite coloring.
+\end{lemma}
+\begin{proof}
+We use the elementary fact that an isolated point of $\cwcl B$ belongs to $B$:
+an open set meeting $\cwcl B$ only in that point must meet $B$.
+For $k=1$, \eqref{cw:eq:derivative} is immediate.
+Write $v=au$ where $u$ starts with $b\ne a$. The set
+$F_u=\cwcl{A_b\cap F_{\text{tail}(u)}}$ is closed, and every isolated point
+of $F_u$ has color $b$. Therefore
+\[
+ A_a\cap F_u\subseteq(F_u)'.
+\]
+Derived sets of closed subspaces of a Hausdorff space are closed in the
+ambient space. Taking closures and using induction and monotonicity of
+formation of derived sets gives
+\[
+ F_v=T_a(F_u)\subseteq(F_u)'
+       \subseteq\bigl(X^{(k-2)}\bigr)'=X^{(k-1)}.
+\]
+If the height is $h+1$, words of length $h+2$ cannot occur, nor can longer
+ones, by the downset property.
+\end{proof}
+
+\begin{theorem}[Optimal Hausdorff realization height]\label{cw:thm:minheight}
+Let $(X,c)$ be any nonempty finite-depth colored space of rank $r$; the
+original space need not be Hausdorff. Among its word-equivalent Hausdorff
+representatives of finite Cantor--Bendixson height, the least height is
+exactly $r$. The minimum is attained by a compact countable metrizable
+space.
+\end{theorem}
+\begin{proof}
+A word-equivalent representative has finite depth and the same signature,
+hence the same rank $r$, by \cref{cw:thm:recovery}. If its height is $k$, then
+\cref{cw:lem:derivative} gives $r\le k$. The tower union of
+\cref{cw:thm:classification} has height equal to the largest basis-word length,
+which is $r$. This attains the lower bound.
+\end{proof}
+
+This height is a property of the full finite-query behavior, not of the
+underlying uncolored space. A highly complicated or nonscattered space with
+a simple continuous coloring may have rank one and a discrete representative.
+Conversely, the same fixed space may carry word-inequivalent colorings of
+different signature ranks.
+
+\subsection{The exact formula when the second derivative is empty}
+
+Part III of the repository gives a graph formula under a finite-derived-set
+hypothesis. Duality removes that finiteness condition for each specified
+coloring.
+
+\begin{theorem}[Rank-one topology, with arbitrary derived-set cardinality]
+\label{cw:thm:rankone}
+Suppose $X$ is Hausdorff and $X''=\varnothing$. Let $q_c$ be the number of
+colors actually used. Form the loopless directed graph $G_c$ on those colors
+with arc $a\to b$ for $a\ne b$ exactly when
+\begin{equation}\label{cw:eq:arc}
+ A_a\cap\cwcl{A_b}\ne\varnothing.
+\end{equation}
+Let $\tau(G_c)$ be its minimum directed feedback vertex number: the least
+number of vertices whose deletion leaves an acyclic digraph. Then
+\begin{equation}\label{cw:eq:graphformula}
+ \layers(X,c)=q_c+\tau(G_c),\qquad
+ \depth(X,c)=\ceil{\log_2(q_c+\tau(G_c))}.
+\end{equation}
+No compactness, first-countability, or finiteness of $X'$ is assumed.
+\end{theorem}
+\begin{proof}
+By \cref{cw:lem:derivative}, only words of length one or two can occur.
+Singleton words are exactly the active colors. A reduced pair $ab$ occurs
+exactly when \eqref{cw:eq:arc} holds, since
+$F_{ab}=\cwcl{A_a\cap\cwcl{A_b}}$ is nonempty exactly when its preclosure set is.
+By duality, $\layers$ is the SCS length of these singleton and arc constraints.
+
+Let $w$ be any common supersequence and let $R$ be the colors occurring at
+least twice. The colors outside $R$ occur once; their positions give a linear
+order in which every arc between them must point forward. Thus $G_c-R$ is
+acyclic, $|R|\ge\tau(G_c)$, and
+$\len w\ge q_c+|R|\ge q_c+\tau(G_c)$.
+
+For the reverse bound take a minimum feedback set $R$, list its colors in
+any order, and let $D$ be a topological ordering of the remaining vertices.
+The word $RDR$ contains every arc: arcs within $D$ use that ordering, arcs
+starting in $R$ use its first copy, arcs ending in $R$ its last copy, and
+arcs within $R$ use the first and last copies. Every active color occurs.
+The length is $q_c+|R|$, as required. Apply \cref{cw:thm:normal} for depth.
+\end{proof}
+
+The SCS--feedback-vertex argument is the same finite mechanism as in Part III;
+its extension to arbitrary $X'$ is justified by the all-space signature
+and derivative theorems. For height at least three, the directed graph is
+generally insufficient: length-three and higher closure constraints carry
+additional information.
+
+\section{Finite-budget replicas and improved actual obstructions}
+\label{cw:sec:budget}
+
+The finite-rank hypothesis can be dropped when only bounded budgets are to
+be preserved. This also sharpens the repository's finite-poset obstruction
+bound, which was $(m+1)q^m$ in Part II, Research question 3 and its preceding
+obstruction discussion.
+
+\begin{theorem}[Uniform finite-budget models]\label{cw:thm:budgetmodel}
+Let $(X,c)$ be an arbitrary nonempty colored space, with $q\ge2$, and let
+$m\ge1$. There is a finite colored poset $P_m$, with at most
+\begin{equation}\label{cw:eq:budgetsize}
+ B_*(q,m)=mq(q-1)^{m-1}
+\end{equation}
+points, such that
+\begin{equation}\label{cw:eq:budgetequivalence}
+ w\in\W(P_m)\quad\Longleftrightarrow\quad w\in\W(X,c)
+ \qquad(1\le\len w\le m).
+\end{equation}
+There is also a compact countable metrizable representative of this bounded
+word behavior with height at most $m$. These models preserve every query
+budget $d$ satisfying $2^d\le m$.
+\end{theorem}
+\begin{proof}
+Truncate the signature to the finite downset
+$D_m=\{v\in\cwSig(X,c):\len v\le m\}$, and take its maximal antichain.
+Realize $D_m$ by \cref{cw:thm:finitemodel,cw:thm:classification}. The antichain
+bound in \cref{cw:prop:basisbound}, with parameter $m$, proves
+\eqref{cw:eq:budgetsize}; the compact model uses towers of height at most $m$.
+
+For a candidate of length $k\le m$, duality with its short-certificate
+clause says that admissibility on $X$ is determined by $\cwSig_{\le k}$.
+Those words belong to $D_m$. Equivalently, $w$ contains all of $D_m$ exactly
+when it is admissible on $X$: the forward implication uses the short test,
+and the reverse follows from full duality. This proves
+\eqref{cw:eq:budgetequivalence}. Finally, a depth-$d$ game exists exactly when
+some admissible word has length at most $2^d$, by \cref{cw:thm:normal}.
+\end{proof}
+
+\begin{corollary}[Actual finite subposet obstructions]\label{cw:cor:obstruction}
+If a finite $q$-colored poset $P$ has $\layers(P,c)>m\ge1$, with $q\ge2$,
+there is an induced subposet $Q\subseteq P$ of at most
+$mq(q-1)^{m-1}$ vertices with $\layers(Q,c|_Q)>m$.
+\end{corollary}
+\begin{proof}
+For every reduced candidate word $w$ of length $m$, choose a signature word
+$v_w$ of length at most $m$ not embedded in $w$, using \cref{cw:thm:duality}.
+By \cref{cw:lem:poset}, select a chain in $P$ colored by $v_w$. Let $Q$ be
+the induced subposet on the union of all selected chains. There are
+$q(q-1)^{m-1}$ candidates, so the asserted size bound holds. Each selected
+chain remains a chain in $Q$, and therefore still excludes its candidate.
+
+If $Q$ admitted a word of length at most $m$, first reduce it and then
+append different successive letters until its length is $m$. Insertion of
+empty layers would preserve admissibility, producing one of the excluded
+reduced candidates. This contradiction proves the claim.
+\end{proof}
+
+\begin{remark}[Why a Hausdorff subspace version would be false]
+A finite subspace of a Hausdorff space is discrete. Its restricted coloring
+has an admissible word listing each active color once, hence at most $q$
+layers. A Hausdorff game needing more than $q$ layers cannot have that
+behavior witnessed by a finite subspace with the induced topology.
+The finite-budget replica is an abstract colored poset, not such a subspace.
+Its infinite compact counterpart preserves accumulation instead.
+\end{remark}
+
+The new bound is an upper bound, not a claim of optimality. Its improvement
+over the previous $(m+1)q^m$ is due to two changes: a failed length-$m$
+candidate now has a constraint of length at most $m$, and it is enough to
+enumerate reduced candidates rather than all words.
+
+\section{Products and an additive rank law}
+\label{cw:sec:products}
+
+For colorings $c:X\to\Sigma$ and $e:Y\to\Gamma$, the product coloring is
+\[
+ (c\times e)(x,y)=(c(x),e(y))\in\Sigma\times\Gamma.
+\]
+This section concerns this specified pair coloring. It does not concern the
+supremum over arbitrary colorings of the product space.
+For a pair word $v$, write $\pi_Xv$ and $\pi_Yv$ for its coordinate words;
+they need not be reduced even when $v$ is.
+
+\begin{theorem}[Exact product signature and rank]\label{cw:thm:product}
+For every pair of nonempty colored topological spaces and every nonempty
+reduced word $v$ over $\Sigma\times\Gamma$,
+\begin{equation}\label{cw:eq:productsignature}
+ v\in\cwSig(X\times Y,c\times e)
+ \quad\Longleftrightarrow\quad
+ \red(\pi_Xv)\in\cwSig(X,c)\ \text{and}\
+ \red(\pi_Yv)\in\cwSig(Y,e).
+\end{equation}
+If the factor ranks are finite, then
+\begin{equation}\label{cw:eq:productrank}
+ \boxed{\ \rho(X\times Y,c\times e)=\rho(X,c)+\rho(Y,e)-1.\ }
+\end{equation}
+If at least one factor rank is infinite, the product rank is infinite.
+\end{theorem}
+\begin{proof}
+The closure of a rectangle in a product topology is the rectangle of its
+closures. For closed $F\subseteq X$, $H\subseteq Y$, and colors $(a,b)$,
+\[
+ T^{X\times Y}_{(a,b)}(F\times H)
+ =\cwcl{(A_a\cap F)\times(e^{-1}(b)\cap H)}
+ =T^X_a(F)\times T^Y_b(H).
+\]
+Induction on word length gives the stronger set identity
+\begin{equation}\label{cw:eq:rectangle}
+ F^{X\times Y}_v=F^X_{\pi_Xv}\times F^Y_{\pi_Yv}.
+\end{equation}
+Nonemptiness and \cref{cw:lem:operators} prove \eqref{cw:eq:productsignature}.
+
+Let the finite factor ranks be $r,s$. A reduced pair word of length $k$
+has $k-1$ transitions, each changing at least one coordinate. The two
+coordinate words have respectively at most $r-1$ and $s-1$ changes when
+the pair word occurs. Therefore
+$k-1\le(r-1)+(s-1)$, proving the upper bound $k\le r+s-1$.
+
+Choose occurring reduced factor words $a_1\cdots a_r$ and
+$b_1\cdots b_s$. Follow a lattice path from $(1,1)$ to $(r,s)$, advancing
+one coordinate at a time, and record the color pairs $(a_i,b_j)$ along
+it. There are $r+s-1$ recorded positions. Adjacent pairs differ because
+the changed factor word is reduced; the reduced coordinate projections
+are exactly the two chosen words. By \eqref{cw:eq:productsignature} this
+pair word occurs, proving the lower bound.
+
+If one rank is unbounded, take arbitrarily long occurring words in that
+factor and pair them with any one active color of the other. The same
+identity gives unbounded product rank.
+\end{proof}
+
+\begin{corollary}[Quantitative product consequences]\label{cw:cor:productbounds}
+For finite-depth factors,
+\begin{align}
+ \max\{\layers(X,c),\layers(Y,e)\}
+ &\le \layers(X\times Y,c\times e)\le \layers(X,c)\layers(Y,e),\label{cw:eq:productlayers}\\
+ \max\{\depth(X,c),\depth(Y,e)\}
+ &\le\depth(X\times Y,c\times e)
+ \le\depth(X,c)+\depth(Y,e).\label{cw:eq:productdepth}
+\end{align}
+The least finite Hausdorff realization height of the product game's word
+profile is $r+s-1$. More generally, for $n$ finite-rank factors it is
+\begin{equation}\label{cw:eq:nproduct}
+ 1+\sum_{i=1}^n(r_i-1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Fixing one coordinate restricts a product query tree to a factor, because
+slices of open sets are open. Pruning empty leaves and projecting output
+labels gives the lower bounds for leaves and depth. For the upper bounds,
+run one optimal factor tree and then, at each leaf, run the other factor
+tree. Coordinate inverse images of open sets are open, the depths add,
+and the leaf counts multiply. The height statement follows from
+\cref{cw:thm:product,cw:thm:minheight}; iterate the rank formula for $n$ factors.
+\end{proof}
+
+The rank formula is exact even when the two layer optima provide only rough
+bounds on the product optimum. One can compute the exact product antichain
+from \eqref{cw:eq:productsignature} by enumerating reduced pair words through
+length $r+s-1$, testing their two projections, and retaining maximal words.
+This is a finite algorithm; no assertion of polynomial output size is made.
+
+Together with \cref{cw:prop:sums}, these results give a concrete algebra of
+finite-depth behaviors. Sums take unions of downsets, equivalently intersections
+of admissibility languages. Independent products take the reduced-word
+languages whose coordinate projections belong to the factor signatures.
+The relevant product operation is asynchronous interleaving of color changes,
+not mere concatenation of the factor words.
+
+\begin{writenoted}[Part~I's product law]
+The rank law \eqref{cw:eq:productrank} is the coloring analogue of
+Part~I's \cref{lem:product}, which the manuscript does not cite: for
+Hausdorff spaces of last derivative ranks $h$ and $k$, that is, of
+heights $h+1$ and $k+1$ in the convention of \cref{cw:sec:height}, the
+product has last rank $h+k$, height $(h+1)+(k+1)-1$. By
+\cref{cw:thm:minheight}, \eqref{cw:eq:productrank} says the same of the
+least heights of Hausdorff representatives of the word profiles.
+\end{writenoted}
+
+\section{Higher-order information is indispensable}
+\label{cw:sec:example}
+
+The finite-derived-set theory makes pairwise accumulation graphs natural.
+One might hope to extend it using derivative ranks, derivative cardinalities,
+and a bounded number of local word statistics. The following construction
+shows that progressively longer nested closures can change the exact query
+budget while all shorter occurrence tests remain unchanged.
+
+\begin{theorem}[Same space, same triple data, different query depth]
+\label{cw:thm:separationexample}
+There is a compact countable metrizable Hausdorff space $Z$ of
+Cantor--Bendixson height four with two three-colorings $c_{\rm hard}$ and
+$c_{\rm soft}$ such that:
+\begin{enumerate}[label=(\roman*)]
+\item Their closure signatures agree on every reduced word of length at most
+three.
+\item For each derivative index $j$ and color $a$, the sets
+$Z^{(j)}\cap c_{\rm hard}^{-1}(a)$ and
+$Z^{(j)}\cap c_{\rm soft}^{-1}(a)$ have the same cardinality.
+\item Nevertheless,
+\begin{equation}\label{cw:eq:examplevalues}
+ \layers(Z,c_{\rm hard})=9,\quad \depth(Z,c_{\rm hard})=4;
+ \qquad
+ \layers(Z,c_{\rm soft})=7,\quad \depth(Z,c_{\rm soft})=3.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let $\Sigma=\{0,1,2\}$. There are $3\cdot2^3=24$ reduced words
+$a_1a_2a_3a_4$ of length four. Let $Z$ be the disjoint union of 24 copies
+of $\Tw_4$, one indexed by each of these words.
+
+On the component indexed by $a_1a_2a_3a_4$, use that same rank word for
+$c_{\rm hard}$. Its component signature is the reduced-subsequence downset
+of that word, by \cref{cw:lem:tower,cw:thm:recovery}. The total signature is
+therefore all reduced words of length at most four.
+
+On the same component, use the rank word $a_1a_1a_2a_3$ for
+$c_{\rm soft}$. Its reduction is $a_1a_2a_3$. Every reduced three-letter
+word appears as such a prefix, so the total soft signature is exactly all
+reduced words of length at most three. This proves (i). By
+\cref{cw:lem:universal}, their SCS lengths are respectively $2\cdot4+1=9$
+and $2\cdot3+1=7$, giving (iii) by \cref{cw:thm:normal}.
+
+Both colorings are defined on the identical underlying space. At derivative
+three there are 24 roots, eight of each color for each coloring. At each
+of derivatives zero, one and two, every color occurs countably infinitely
+many times in both colorings: for the hard coloring the relevant level
+colors range over the three possibilities as components vary; for the soft
+coloring even the next-to-root level already repeats each component's root
+color infinitely often. All spaces concerned are countable. Derivative four
+and later are empty. Thus the exact common table is
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Derivative & Color 0 & Color 1 & Color 2\\
+\midrule
+$Z^{(0)},Z^{(1)},Z^{(2)}$ & $\aleph_0$ & $\aleph_0$ & $\aleph_0$\\
+$Z^{(3)}$ & 8 & 8 & 8\\
+$Z^{(j)}$, $j\ge4$ & 0 & 0 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+This proves (ii).
+\end{proof}
+
+The two optimal master words may be taken as $012012012$ and $0120120$.
+These are nine and seven layers, respectively; they are not nine and seven
+questions. Balanced suffix search gives the four- and three-question trees.
+The comparison preserves Boolean occurrence/nonoccurrence of short patterns,
+not the actual subsets $F_v\subseteq Z$ or all possible local data. It should
+not be read as an assertion that every conceivable local invariant fails.
+
+\begin{proposition}[An unbounded hierarchy of missing information]
+\label{cw:prop:hierarchy}
+For every $r\ge2$, a common compact countable metrizable space of height $r$
+has two three-colorings with signatures consisting respectively of all
+reduced words of lengths at most $r$ and at most $r-1$.
+Their layer counts are $2r+1$ and $2r-1$.
+For $r=2^{d-1}$, $d\ge2$, their query depths are respectively $d+1$ and $d$,
+although all occurrence tests of length at most $r-1$ agree.
+\end{proposition}
+\begin{proof}
+Repeat the preceding construction on copies of $\Tw_r$ indexed by all reduced
+$r$-letter words. Use the hard rank word $a_1\cdots a_r$ and the soft rank
+word $a_1a_1a_2\cdots a_{r-1}$. Their reduced component words are all
+length-$r$ words and all length-$(r-1)$ words, respectively. Apply the tower
+profile, sum law and universal-word formula. If $r=2^{d-1}$, the two lengths
+are $2^d+1$ and $2^d-1$, which straddle the power-of-two query threshold.
+\end{proof}
+
+Thus no fixed truncation order captures all finite-depth colored spaces.
+The positive truncation theorem is necessarily tied to the proposed word
+budget, and the graph formula is confined to the appropriate derivative
+or signature-rank regime.
+
+\section{Algorithms, certificates, and the effective boundary}
+\label{cw:sec:algorithms}
+
+The mathematical reduction separates two tasks: discovering a topological
+signature, and solving the resulting finite word problem. Only the second
+is automatically effective from a finite list of words. This distinction
+prevents a hidden assumption that arbitrary topological closure or emptiness
+is computable.
+
+\subsection{Extracting a bounded signature}
+
+Given operations for closure, intersection with each $A_a$, and deciding
+emptiness of the resulting closed sets, one can compute all $F_v$ for
+reduced words of length at most $m$ recursively. There are at most
+$N(q,m)=q\sum_{j=0}^{m-1}(q-1)^j$ such words. Store a word precisely when
+its computed closed set is nonempty, then remove words that are proper
+subsequences of other stored words. The result is the maximal antichain of
+the truncated signature.
+
+This is an algorithm \emph{relative to the stated operations}. An arbitrary
+topological presentation need not supply them effectively. For a finite
+poset, closure is downward reachability and the test is finite and explicit.
+For a space of known Hausdorff height $h+1$, the derivative bound supplies the
+complete cutoff $m=h+1$. For a general finite-depth space, one needs a rank
+bound or some independent termination argument; finite depth alone is not
+being offered as an effective stopping certificate from unspecified input.
+
+\subsection{Exact SCS by progress-state search}
+
+Let the finite basis be $B=\{b^{(1)},\ldots,b^{(t)}\}$, with lengths
+$\ell_1,\ldots,\ell_t$. A state
+\[
+ s=(s_1,\ldots,s_t),\qquad 0\le s_i\le\ell_i,
+\]
+records how many letters of each word have been matched greedily.
+Appending a letter $a$ updates all coordinates simultaneously:
+\begin{equation}\label{cw:eq:transition}
+ s_i\longmapsto s_i+
+ \mathbf 1\{s_i<\ell_i\text{ and }b^{(i)}_{s_i+1}=a\}.
+\end{equation}
+Start at the zero state. Breadth-first search reaches the terminal state
+$(\ell_1,\ldots,\ell_t)$ along a shortest master word. A predecessor map
+reconstructs it. There are at most
+\begin{equation}\label{cw:eq:states}
+ \prod_{i=1}^t(\ell_i+1)
+\end{equation}
+states and $q$ outgoing transitions per state; straightforward transition
+calculation takes $O(t)$ time. Thus an explicit worst-case bound is
+$O(qt\prod_i(\ell_i+1))$, with comparable finite storage after accounting
+for the stored state vectors.
+
+For fixed alphabet size and signature rank, \cref{cw:prop:basisbound} bounds
+this state space solely in terms of those two parameters. This is a
+parameter-bound combinatorial algorithm \emph{after} obtaining the signature;
+it is not a polynomial-time algorithm for arbitrary topological input.
+In particular, it does not contradict the established three-letter SCS
+hardness \cite{LT} or its repository applications.
+
+\subsection{From a word to actual open questions}
+
+Once an admissible word $w$ has been found, compute its elimination chain
+$G_0\supseteq\cdots\supseteq G_m=\varnothing$.
+The proof of \cref{cw:prop:elimination} gives explicit layers and suffixes:
+\begin{equation}\label{cw:eq:questions}
+ \lambda^{-1}(i)=G_{m-i}\setminus G_{m-i+1},\qquad
+ U_j=X\setminus G_{m-j+1}.
+\end{equation}
+Binary search in these suffixes is a concrete optimal-depth strategy when
+$w$ is shortest. The generator of the word may be untrusted: an independent
+checker can verify its subsequence certificates against a known complete
+basis, or check the elimination chain directly.
+
+A failed proposed word has a particularly small semantic certificate:
+a reduced $v$ with $\len v\le\len w$, $F_v\ne\varnothing$, and
+$v\not\preceq w$. The combinatorial part is easy to verify. The topological
+nonemptiness still requires valid evidence in the presentation at hand.
+On a finite poset, a colored chain supplies it. On a Hausdorff accumulation
+space, a list of finitely many isolated sample points generally does not.
+
+\subsection{What would be formalized}
+
+The proof naturally divides into three interfaces. First, finite words,
+run reduction, greedy subsequences, diagonal avoidance, and the separator
+construction are purely combinatorial. Second, the lattice of closed sets
+supplies monotone contractive idempotent operators and finite unions; this
+proves expansion and duality. Third, Hausdorff derivatives and compact tower
+constructions establish the topological realization theorems.
+
+A Lean development can keep search untrusted and verify certificates against
+these interfaces. The finite-budget theorem can be stated with integer bounds
+$m\le2^d$ instead of real logarithms. The present package supplies executable
+finite checks but no Lean proof files and no assertion that these interfaces
+have been kernel-checked.
+
+\section{Independent verification and reproducibility}
+\label{cw:sec:verification}
+
+The program \path{code/04-closure-words-verify.py} uses only the Python
+standard library. The recorded results are in
+\path{data/04-closure-words-verification.json}.
+They come from an actual completed run under Python 3.13.5. Assertions are verification conditions,
+so the program explicitly refuses execution with optimization flag
+\texttt{-O}.
+
+\subsection{Exhaustive finite topologies}
+
+Every finite topology is the upper-set topology of its specialization
+preorder. The program enumerates all reflexive transitive relations on each
+labeled set of size at most four, including non-$T_0$ spaces, and all
+three-colorings. For each one it calculates open sets and closure directly
+from the relation.
+
+Two independent computations are then compared. The first is minimax over
+all open questions, with no use of closure words or subsequences. For a
+nonempty current state $S$, it uses
+\[
+ d(S)=\begin{cases}
+ 0,&S\text{ monochromatic},\\
+ 1+\min_U\max\{d(S\cap U),d(S\setminus U)\},&\text{otherwise},
+ \end{cases}
+\]
+where only nontrivial open splits are allowed and the minimum over no splits
+is infinite. It separately minimizes leaf count by adding the two branch
+leaf counts. The second computation builds the closure signature, extracts
+its antichain, and performs progress-state SCS search.
+
+A finite preorder has a finite tree for a given coloring precisely when the
+color is constant on each topological indistinguishability class. If a class
+contains two colors, those colors give arbitrarily long alternating detected
+words and cannot be separated by open sets. Otherwise the coloring descends
+to the finite quotient poset, whose chains have at most $n$ points. This
+justifies the program's finite-signature cutoff at $n$, with a check at
+$n+1$ for the excluded case.
+
+The enumerated counts are:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Points & Labeled topologies & Three-colorings & Finite-tree colorings\\
+\midrule
+1 & 1 & 3 & 3\\
+2 & 4 & 36 & 30\\
+3 & 29 & 783 & 597\\
+4 & 355 & 28,755 & 21,009\\
+\midrule
+Total & 389 & 29,577 & 21,639\\
+\bottomrule
+\end{tabular}
+\end{center}
+These count labeled topologies, not homeomorphism classes. Every topology
+on at most four points is covered, with possible isomorphic repetitions.
+
+For every coloring, the program also tests every candidate word of lengths
+one through the number of points, including nonreduced candidates. It
+compares greedy closed-set elimination, the full signature constraint test,
+and the short-certificate test. The recorded totals are
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Recorded count\\
+\midrule
+Candidate-word admissibility comparisons & 3,481,578\\
+Rejected candidates with short failure certificates & 2,847,462\\
+Distinct finite signatures encountered & 109\\
+Constructed separating-word tests & 7,296\\
+\bottomrule
+\end{tabular}
+\end{center}
+All comparisons and assertions passed.
+
+\subsection{Product, graph, and extremal checks}
+
+For all 16 finite-depth two-colorings of labeled topologies on one or two
+points, the program checks all 256 ordered products. It constructs the
+product preorder independently and compares the actual nested closed sets
+with the rectangular identity \eqref{cw:eq:rectangle}. The record contains
+9,856 such set-identity tests; all passed, as did the rank and product
+leaf/depth bounds.
+
+It separately enumerates all 4,165 loopless digraphs on labeled vertex sets
+of sizes one through four. A subset-based acyclicity calculation obtains
+$\tau(G)$, and progress-state SCS independently obtains the optimum for
+singleton and arc constraints. All tests agree with $\layers=q+\tau(G)$.
+These are graph checks, not a finite sampling of arbitrary infinite
+rank-one spaces.
+
+For the universal-word constant, the verified parameter ranges are
+$q=2$, $1\le r\le8$; $q=3$, $1\le r\le6$; and $q=4$,
+$1\le r\le3$. Each cyclic upper-bound word is checked against every
+length-$r$ reduced word. Every reduced word one letter shorter than the
+claimed optimum is independently rejected by some constraint.
+The 24 hard and 24 soft rank-word assignments in
+\cref{cw:thm:separationexample} are recorded explicitly; their reduced maximal
+bases have sizes 24 and 12.
+
+\subsection{Reproduction and limits of the evidence}
+
+From this report's directory, run
+\begin{lstlisting}
+python3 code/04-closure-words-verify.py --output <scratch>/rerun.json
+\end{lstlisting}
+where \texttt{<scratch>} is a directory outside the report.
+This keeps the delivered verification record unchanged. The default
+\texttt{--max-n 4 --q 3} regenerates all counts quoted above.
+The measured complete run took 4.282 seconds in the execution environment;
+this is not a portable performance guarantee. The elapsed field is expected
+to vary between runs.
+
+To compile the article, run \texttt{make pdf}; it invokes \texttt{pdflatex}
+three times, without an external bibliography processor. The article does
+not require executing the verifier, retrieving web content, or using an
+external graphics file.
+
+The checks establish the stated finite computational comparisons only.
+Universal validity, compactness, Hausdorff derivative descent, and the
+infinite-space counterexamples rest on the written proofs. The tests do not
+establish historical novelty, publication acceptance, or formal verification.
+
+\begin{writenoted}[Shipped names]
+The delivered text reads ``The program \texttt{code/verify.py}'', ``The
+recorded results are in \texttt{results/verification.json}'' and ``From
+the package root, run \texttt{python3 code/verify.py -{}-output
+results/rerun.json}''; here \path{code/verify.py} is Part~I's verifier,
+so the command above uses the shipped name. Without \texttt{-{}-output}
+the shipped verifier writes \path{results/verification.json} beside
+\path{code/}, that is, a new \path{results/} directory in this report;
+the recorded file is \path{data/04-closure-words-verification.json}, and
+the digests in \path{data/04-closure-words-validation.json} describe the
+delivered manuscript, PDF and verifier, not this merged report. The
+verifier writes its JSON with the platform's line endings (CRLF on
+Windows); the recorded file is LF. A rerun on a copy (30~September 2026,
+Python~3.14.4, 29.8~seconds on a loaded machine) reproduced the recorded
+JSON after CRLF~$\to$~LF except the fields \texttt{python} and
+\texttt{elapsed\_seconds}. The delivered Makefile, shipped as
+\path{code/04-closure-words-Makefile}, is written for the delivery's
+layout and should not be used here: run from this directory, its
+\texttt{verify} target would call Part~I's \path{code/verify.py}, which
+takes \texttt{-{}-output} as a directory and would create
+\path{results/rerun.json/} holding Part~I's output files; its
+\texttt{pdf} target would build this article in place, and its
+\texttt{clean} target would delete this report's auxiliary files. This
+merged report is built as in \cref{sec:checks}; the report README gives
+the rerun commands.
+\end{writenoted}
+
+\section{Further research questions and proposed directions}
+\label{cw:sec:questions}
+
+The following questions are proposed continuations. Except for their explicit
+connections to the pinned repository, they are not being labeled as previously
+published open problems without a separate literature check.
+
+\begin{writenoted}[Relation to the questions of Parts~II and~III]
+Seven of the nine questions below continue questions already printed
+in this report; they are kept, with their own discussion.
+\Cref{cw:q:fixed-space} is the remaining half of \cref{fo:q:invariants}
+and contains \cref{fp:q:compact-height}; \cref{cw:q:obstruction} is
+Part~II's Research question~3 with the improved bound of
+\cref{cw:cor:obstruction}; \cref{cw:q:representatives} refines Part~II's
+Research questions~2 and~6; \cref{cw:q:effective} generalizes
+\cref{fp:q:effective}; \cref{cw:q:transfinite} is Part~II's Research
+question~8; \cref{cw:q:expected} combines Part~II's Research
+questions~7 and~9 with \cref{fp:q:expected}; and \cref{cw:q:formal}
+is Part~II's Research question~10. \Cref{cw:q:products,cw:q:hierarchies}
+are new.
+\end{writenoted}
+
+\begin{question}[Which signatures can a fixed space realize?]\label{cw:q:fixed-space}
+For a prescribed Hausdorff space $X$ of finite height and fixed alphabet,
+characterize
+\[
+ \{\cwSig(X,c):c:X\to\Sigma\}.
+\]
+In particular, find local necessary and sufficient conditions for attaining
+maximal layer counts at heights at least three.
+\end{question}
+The present paper classifies a coloring once its signature is known, and
+realizes every finite signature on \emph{some} compact space. It does not
+classify all colorings on an independently fixed space. The repository's
+finite-derived-set capacity theorem is a model for the desired next step.
+Nested partition capacities or compatibility of locally attainable suffix
+signatures are plausible ingredients, but their exact axioms remain to be
+established.
+
+\begin{question}[Optimal obstruction size]\label{cw:q:obstruction}
+Determine the least $B(q,m)$ such that every finite colored poset failing an
+$m$-layer budget has an induced subposet obstruction of at most $B(q,m)$
+vertices. How far can $mq(q-1)^{m-1}$ be reduced? Which antichains force
+many distinct witness chains, and when can their vertices be shared?
+\end{question}
+The proof gives explicit witnesses but makes no attempt to reuse points
+between them. Even understanding extremal critical families of reduced
+supersequence constraints would improve this bound.
+
+\begin{question}[Minimal representatives]\label{cw:q:representatives}
+Given a finite reduced-word downset, determine the minimum number of vertices
+in a finite-poset representative, and the minimum number of top-rank points
+in a compact representative of optimal height.
+\end{question}
+The optimal height is settled here, but the disjoint-chain and disjoint-tower
+constructions need not optimize other resources. Sharing compatible branches
+may save many points or components without changing the signature. The exact
+conditions under which sharing introduces unwanted words need a separate
+analysis.
+
+\begin{question}[Exact layer complexity of products]\label{cw:q:products}
+Express or efficiently bound the SCS length of the product signature from
+its two maximal antichains. When is the multiplicative upper bound
+$\layers_{X\times Y}\le\layers_X\layers_Y$ attained, and when can it be substantially improved?
+\end{question}
+The rank law and full signature formula are exact, but shortest master words
+must synchronize many possible interleavings. A classification for small
+ranks or bounded antichain width would provide concrete test cases.
+
+\begin{question}[Effective topological presentations]\label{cw:q:effective}
+For which computable presentations can truncated signatures be extracted
+with explicit complexity bounds? Which closure and nonemptiness certificates
+can be checked rather than trusted?
+\end{question}
+Finite posets provide one complete answer. Rank-word towers provide another
+finitely presented class. Extending to symbolic descriptions of scattered
+spaces requires a precise input language and computational meaning of
+closure; otherwise an apparent algorithm can hide a noncomputable oracle.
+
+\begin{question}[Comparison with partition hierarchies]\label{cw:q:hierarchies}
+How does finite-depth word equivalence compare with the difference and fine
+hierarchies of finite partitions, and with continuous reducibility of those
+partitions? Which implications or strict separations hold on common classes
+of spaces?
+\end{question}
+Selivanov's framework \cite{Selivanov} is an appropriate starting point.
+The present invariant forgets the locations and multiplicities of closure
+witnesses, retaining only which finite patterns occur. Any proposed
+identification must respect that loss of information.
+
+\begin{question}[Beyond finite worst-case depth]\label{cw:q:transfinite}
+What additional structure on the unbounded signature, or on the sets $F_v$
+themselves, controls transfinite open-query games or pointwise finite
+strategies with no common finite bound?
+\end{question}
+When the signature rank is unbounded, the finite admissibility language is
+empty. It then cannot distinguish different transfinite behaviors. A
+well-founded rank on suitable closure trees might be relevant, but no ordinal
+logarithm of the finite layer formula is justified by this paper.
+
+\begin{question}[Expected depth and restricted questions]\label{cw:q:expected}
+For a probability measure on $X$, what data beyond the signature determine
+minimum expected query depth? Which parts of duality survive when queries
+must come from a fixed basis or another restricted family of open sets?
+\end{question}
+The normal-form proof uses arbitrary finite unions and intersections of
+available open sets. A restricted query class may fail that closure property.
+Expected-depth optimization also depends on the masses of admissible layers,
+which the Boolean occurrence signature deliberately discards.
+
+\begin{question}[A small trusted formal core]\label{cw:q:formal}
+Can the operator expansion, diagonal-avoidance lemma, and finite-budget model
+theorem be formalized as a compact reusable library, with the topological
+results supplied by separate instances?
+\end{question}
+A successful implementation should make the trusted boundary explicit:
+search produces finite certificates, verified word and closed-set lemmas
+connect them to semantics, and infinite topology is handled by actual proofs,
+not by finite testing alone.
+
+\section{Conclusion}
+\label{cw:sec:conclusion}
+
+The key invariant is neither a scalar depth nor a graph of pairwise
+accumulations. It is the downset of reduced words surviving iterated color
+closures. The finite-union expansion of greedy elimination makes this
+language dual to admissible layer words on every topological space. A second,
+purely combinatorial separator recovers the language from the full finite
+admissibility profile.
+
+This gives an exact classification of finite-depth behavior and a bounded
+finite model for each finite budget, even when the original space has no
+finite-depth solution. In the Hausdorff setting, longest detected words
+measure the least possible representative height. At the first nontrivial
+height, the result removes a finite-derived-set restriction from the graph
+formula; at higher heights, explicit compact examples show why longer
+patterns are essential. For independent products, the same operators give
+an exact additive rank law.
+
+The outstanding uniform problem is now more sharply separated from these
+settled statements: determine the signatures realizable by colorings of a
+\emph{fixed} space. That problem, rather than re-solving the game separately
+for each coloring, is a concrete next target for the repository's research
+program.
 
 \appendix
 \section{Why countable compact Hausdorff spaces are scattered}\label{app:compact}
@@ -4646,6 +6556,89 @@ target would delete this report's auxiliary files. It should not be used here; t
 commands.
 \end{writenotec}
 
+\section{Proof dependency and claim audit (Part~IV)}
+\label{cw:app:audit}
+
+The following table distinguishes new arguments in this manuscript from
+previously available ingredients. ``New here'' describes the contribution
+relative to the inspected baseline, not a certified historical priority claim.
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}
+>{\raggedright\arraybackslash}p{0.31\textwidth}
+>{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+Statement & Dependency & Status and boundary\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Dependency & Status and boundary\\
+\midrule
+\endhead
+Tree--layer equivalence and greedy elimination & Elementary topology and binary trees & Repository baseline; fully reproved in \cref{cw:sec:normal}.\\[4pt]
+Closure-word duality, including length-$m$ counterwords & Finite-union operator expansion; diagonal avoidance & New here; arbitrary topology and finite alphabet.\\[4pt]
+Finite-rank/SCS reduction & Duality and finiteness of bounded word sets & New all-space reduction; finite-poset SCS interpretation was already in the repository.\\[4pt]
+Recovery from admissibility & Greedy forbidden-word separator & New here; requires nonempty finite admissibility language.\\[4pt]
+Compact single-word towers & Recursive compactness and suffix neighborhoods & Repository construction; reproved and extended to nonreduced rank words.\\[4pt]
+Universal finite-depth classification & Duality, recovery, finite and compact word models & New here; no claim of homeomorphism or continuous equivalence.\\[4pt]
+Optimal Hausdorff height & Derivative descent and recovery; tower realization & New here; height is exactly maximum detected reduced-word length.\\[4pt]
+Graph formula for $X''=\varnothing$ & Derivative bound; SCS of arcs & Removes the finite-derived-set restriction for fixed colorings. The finite graph optimization is inherited.\\[4pt]
+Finite-budget replicas and induced subposet bound & Short counterwords; reduced candidate enumeration & New here; actual induced-subspace conclusion only for finite posets.\\[4pt]
+Product rank formula & Rectangular closure identity & New here; applies to independent pair colorings, not arbitrary colorings of a product.\\[4pt]
+Matched-space hierarchy examples & Tower rank words and universal reduced-word constant & New examples; shorter pattern occurrence data agree, not all local structures.\\[4pt]
+Universal reduced-word constant & Cyclic word and greedy adversary & Repository baseline; not a new extremal-word claim.\\[4pt]
+Computational checks & Exhaustive finite enumeration and standard-library code & Executed finite tests; no proof-assistant or infinite-space verification claim.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+No theorem of this manuscript assumes an unproved conjecture. The SCS hardness
+result is cited only to delimit algorithmic claims; the main proofs do not
+depend on it. The descriptive-set-theoretic source provides context and an
+explicit further-comparison question, not an imported theorem used without
+proof. All nonfinite conclusions are supported by the arguments in the text.
+
+\section{Small worked certificates (Part~IV)}
+\label{cw:app:certificates}
+
+\subsection{A failed word and the short obstruction it generates}
+
+Take a three-color signature containing all reduced words of length at most
+three, and propose $w=0120$. The coordinatewise-avoiding word $b=1201$
+satisfies $b_i\ne w_i$, but is longer than any signature word here and need
+not occur. Instead use $v=210$, which does occur and is not embedded in $w$.
+Greedy matching of $v$ in the four positions of $w$ matches prefix lengths
+$0,0,1,1$. The converse construction of \cref{cw:lem:diagonal} yields
+\[
+ b=(2,2,1,1),\qquad \red(b)=21.
+\]
+This is an occurring obstruction of length two: $21\not\preceq0120$.
+It contributes a nonempty term $F_{2211}=F_{21}$ to the residual expansion.
+The example illustrates that the certificate obtained by the theorem can be
+shorter than the originally noticed failed constraint.
+
+\subsection{The need to preserve all admissible words}
+
+Consider a chain with color word $01$ and another with color word $10$.
+Both have two layers and one query, but their signatures differ. The first
+admits $01$ and the second does not. Their union has maximal antichain
+$\{01,10\}$, shortest master word $010$ or $101$, and two queries.
+Thus equal component optima do not imply compatibility of optimum words.
+This binary phenomenon is already in the repository; the signature theorem
+explains it within the same language as arbitrary spaces.
+
+\subsection{A product-rank witness}
+
+Take occurring factor words $010$ and $12$. An asynchronous path gives the
+pair word
+\[
+ (0,1),\ (1,1),\ (0,1),\ (0,2).
+\]
+Its coordinate reductions are $010$ and $12$, so it occurs in the product.
+It has length $3+2-1=4$. The corresponding closed set is exactly
+$F^X_{010}\times F^Y_{12}$, by \eqref{cw:eq:rectangle}. No relation between
+particular witness points in the two factors is required.
+
 \begin{thebibliography}{9}
 \small
 \setlength{\itemsep}{0.35em}
@@ -4663,7 +6656,13 @@ Accessed 19 September 2026. Part~II's manuscript used the version-specific
 HTML text \url{https://arxiv.org/html/2510.05754v3}, retrieved 29 September
 2026, for the game context and the topological-sum question. Part~III's
 manuscript cites it under the shorter title, as arXiv:2510.05754v3, revised
-29 May 2026, for the broader cut-and-choose setting only.
+29 May 2026, for the broader cut-and-choose setting only. Part~IV's
+manuscript cites it under the same title (v3, 29 May 2026; first submitted 7
+October 2025; doi:10.48550/arXiv.2510.05754) for the transfinite
+cut-and-choose framework and its point-separating and set-membership
+invariants, from the abstract metadata and the HTML. [Added 30 September
+2026, batch~65: both titles belong to v3; the abstract page carries the
+shorter one, the v3 HTML full text the longer.]
 
 \bibitem{BGKS}
 C\'elia Borlido, Mai Gehrke, Andreas Krebs, and Howard Straubing,
@@ -4700,7 +6699,10 @@ identical consecutive letters}. arXiv:1309.0422v2, 2015. In particular,
 Corollary~6 and the discussion of typed fusions in the introduction.
 \url{https://arxiv.org/abs/1309.0422}.
 Part~III's manuscript cites the arXiv record (2013) as background for
-supersequences only; its hardness input is \cite{GMM}.
+supersequences only; its hardness input is \cite{GMM}. Part~IV's manuscript
+cites v2 (8 January 2015; first submitted 2 September 2013) for the hardness
+of shortest common supersequence for reduced words over three letters, as
+related work and complexity context, not as a dependency of its proofs.
 
 \bibitem{AGJS}
 Saeed Akbari, Amir Hossein Ghodrati, Afrouz Jabalameli, and Morteza Saghafian.
@@ -4730,6 +6732,9 @@ Victor Selivanov.
 \emph{Towards a Descriptive Theory of $cb_0$-Spaces}.
 arXiv:1406.3942, 2014.
 \url{https://arxiv.org/abs/1406.3942}.
+Part~IV's manuscript (16 June 2014) consulted the indexed arXiv abstract for
+the scope of finite-partition, difference and fine hierarchies; it asserts no
+detailed equivalence with its word equivalence.
 
 \end{thebibliography}
 \end{document}
