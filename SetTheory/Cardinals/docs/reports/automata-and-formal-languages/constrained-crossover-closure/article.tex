@@ -12,6 +12,7 @@
 \usepackage{listings}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
+\usetikzlibrary{automata}% [write, batch 71] for the figure of Part IV
 \usepackage{hyperref}
 \usepackage{bookmark}
 \usepackage{shuffle}% [write]
@@ -77,6 +78,12 @@
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\supp}{\operatorname{supp}}
 \newcommand{\row}{\operatorname{row}}
+% [write, batch 71] marks text added when Part IV was written in (see its
+% opening section); \waddsevone prints a dated note. Macros of Part IV.
+\newcommand{\wsevone}{\textup{[write, batch~71]}}
+\newcommand{\waddsevone}[1]{\textup{[}Added 1 October 2026, batch~71: #1\textup{]}}
+\newcommand{\runs}{\operatorname{runs}}
+\newcommand{\Lgate}[1]{L^{\mathrm{gate}}_{#1}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
  breaklines=true,frame=single,rulecolor=\color{black!20},
  xleftmargin=4pt,xrightmargin=4pt}
@@ -1538,6 +1545,9 @@ and~\ref{ccc:cl:app:package} list them. Both of their verifiers also write
 and Part~III's verifier and Part~II's example program import sibling modules
 under their delivered names, so they are rerun only on copies, as the README
 describes.}
+\waddsevone{Part~IV's files carry the prefix
+\texttt{04-quadratic-finite-rank-} (Section~\ref{ccc:qr:sec:checks}); its
+checker prints its record to standard output and writes no file.}
 
 \subsection{What was not verified or claimed}
 
@@ -1763,6 +1773,9 @@ bound replacing the generic limitedness bound, and the full closure of a
 context-free seed has a decidable regularity problem, while sparse one-marker
 seeds can lose context-freeness after a single generation. Both are equally
 unrefereed and unformalized.}
+\waddsevone{Part~IV shows that Part~II's quadratic rank bound has the right
+order for NFAs: some $s$-state NFA has finite maximal rank $(s-3)^2$. It is
+equally unrefereed and unformalized.}
 
 %% =====================================================================
 %% [write] Batch-66 addition 02: manuscript 01 of batch 66, "Finite
@@ -1855,6 +1868,9 @@ draft, not a Lean or Rocq development. The NFA complexity question is settled
 here; the exact DFA complexity and the optimal rank bound are not. Priority is
 not asserted: the literature audit is targeted, and the claimed extension is
 measured against a pinned repository revision.
+\waddsevone{the order of the optimal rank bound has since been settled for
+NFAs in Part~IV: it is quadratic (Theorem~\ref{ccc:qr:thm:main}); its
+constant, and the order for DFAs, are not.}
 
 \subsection{Notation beside Part~I and Part~III}\label{ccc:ps:sec:notation}
 
@@ -2857,6 +2873,13 @@ $s$-state automata has order $\Theta(\log s)$, even over two letters.
 This does \emph{not} prove that the quadratic rank bound is optimal.
 The presently proved lower and upper orders for maximal finite rank are
 linear and quadratic, respectively.
+\waddsevone{Part~IV raises the lower order to quadratic for NFAs:
+Theorem~\ref{ccc:qr:thm:main} gives an $s$-state NFA with finite maximal
+rank $(s-3)^2$, so the quadratic rank bound has the optimal order (its
+constant is open), and the parallel index of order $\Theta(\log s)$ is
+$2\log_2s+O(1)$ (Section~\ref{ccc:qr:sec:upper}). The family $L_m$ above has
+a complete DFA; for DFAs the lower order in this report stays linear
+(Question~\ref{ccc:qr:q:dfa}).}
 
 \subsection{A regular language with a repairable boundary}
 
@@ -3105,6 +3128,15 @@ making many boundary positions require genuinely separate aligned
 fragments. A long transient alone is not such a proof. Conversely, a
 linear upper bound would need a way to compress boundary fragments that
 is absent from the singleton argument.
+\waddsevone{Answered as to order, for NFAs, in Part~IV:
+$(s-3)^2\le F(s)\le(2s+5)^2$ for $s\ge4$, so $F(s)=\Theta(s^2)$
+(Theorem~\ref{ccc:qr:thm:main}). The construction takes the route sketched
+above: a long unary length transient (a two-cycle length gate) together
+with two monochromatic components, which make every change of letter at a
+missing length a boundary between separate fragments. The upper bound is the
+one above. The leading constant and the exact $F(s)$ stay open
+(Question~\ref{ccc:qr:q:constant}), and so does the order for DFAs
+(Question~\ref{ccc:qr:q:dfa}).}
 
 \begin{question}[Exact residue-wise rank slope]\label{ccc:ps:q:slope}
 On a bad residue, does $M_L(n)/n$ always have a limit, perhaps after
@@ -3176,6 +3208,8 @@ The development proposed in the next section gives small independent
 milestones. Formalizing the full PSPACE lower bound includes the published
 all-initial/all-final universality reduction, not merely the two-state
 union construction used here.
+\waddsevone{Part~IV's Question~\ref{ccc:qr:q:formal} asks the same for its
+lower-bound construction.}
 
 \section{A formalization and implementation roadmap}\label{ccc:ps:sec:formal}
 
@@ -3250,6 +3284,9 @@ instance has rank at most $(2s+5)^2$. The logarithmic order of the parallel
 generation bound is sharp. The exact DFA complexity, optimal rank order,
 and precise slopes of bad residues remain substantive next problems,
 rather than being hidden inside an unspecified generic limitedness bound.
+\waddsevone{The optimal rank order is now known for NFAs: it is quadratic
+(Part~IV, Theorem~\ref{ccc:qr:thm:main}); its constant and the DFA case
+remain.}
 
 \section{Proof and edge-case audit}\label{ccc:ps:app:audit}
 
@@ -4964,6 +5001,724 @@ endings, and the five example analyses, written with \texttt{-{}-output},
 reproduced the shipped \texttt{.result.json} files byte for byte apart from
 CRLF line endings.
 
+%% =====================================================================
+%% [write] Batch-71 addition 04: manuscript 01 of batch 71, "Quadratic
+%% Finite Rank for Constrained Crossover". Every label of this Part
+%% carries the prefix ccc:qr: (quadratic rank).
+%% =====================================================================
+\clearpage
+\phantomsection\part*{Part IV.\quad Quadratic finite rank for constrained crossover}
+\addcontentsline{toc}{part}{Part IV.\texorpdfstring{\quad}{ } Quadratic finite rank for constrained crossover}
+
+\noindent\emph{\wsevone\ Part~IV was added on 1 October 2026 in batch~71 of
+ProveIt's incoming-report intake, from one manuscript written against
+Parts~I--III as printed above. It answers Part~II's
+Question~\ref{ccc:ps:q:rank} as to order: the largest finite aligned-fragment
+rank $F(s)$ of a binary language recognized by an $s$-state NFA is quadratic,
+$(s-3)^2\le F(s)\le(2s+5)^2$ for $s\ge4$. Only the lower bound is new; it
+replaces Part~II's linear lower bound $\lfloor(s-3)/2\rfloor$, and the upper
+bound is Part~II's (Corollary~\ref{ccc:ps:cor:cutoff}), imported, not
+reproved. The leading constant, the exact $F(s)$ and the order for DFAs stay
+open. Section~\ref{ccc:qr:sec:provenance} records the provenance and fixes
+the notation of the addition.}
+
+\section{\texorpdfstring{\wsevone\ }{}Provenance and notation of Part~IV}
+\label{ccc:qr:sec:provenance}
+
+\subsection{One manuscript, one addition}\label{ccc:qr:sec:source}
+
+Part~IV is batch-71 manuscript~01, \emph{Quadratic Finite Rank for
+Constrained Crossover}, dated 1 October 2026 (8 US-letter pages as
+delivered). It is an AI-assisted research note: its title page and PDF
+metadata read ``Research note prepared with OpenAI for Vladimir
+Reshetnikov'', a wording that differs from the ``prepared with ChatGPT'' of
+Parts~I--III and is quoted here and in the report's README only. It arrived
+as the archive \texttt{quadratic-finite-rank-package.zip} (inner directory
+\texttt{quadratic-finite-rank}) in ProveIt commit \texttt{aee32ad45} and was
+placed in commit \texttt{427bca743}. It was written against ProveIt commit
+\texttt{1bd730779} (in full
+\nolinkurl{1bd730779e8bc44c8976dcd9f38cad86a0d21c26}), which postdates the
+write of Parts~II and~III (commit \texttt{202aafd08}); at the pin this
+report's \texttt{article.tex} had the Git blob \texttt{ff492c83}, unchanged
+at the placement commit, so ``the pinned report'' and its ``Part~II'' in the
+manuscript are this report and its Part~II as printed above. The
+manuscript cites its pin through a link to lines 3092--3110 of that
+\texttt{article.tex}; Question~\ref{ccc:ps:q:rank} occupies lines 3092--3107,
+and the last two lines of the range already begin
+Question~\ref{ccc:ps:q:slope}.
+
+Its checker, its recorded output and its build script are shipped beside the
+files of Parts~I--III with the prefix \nolinkurl{04-quadratic-finite-rank-};
+its manuscript, delivery README and PDF are not shipped and survive in the
+arrival commit, and its checksum list \texttt{SHA256SUMS} (6 files, all
+verified at placement) was retired by the repository's policy.
+Section~\ref{ccc:qr:sec:checks} and the report's README list the shipped
+names. The package contained no audit or provenance notes; the delivery
+README's pin, attribution and non-claims are recorded in this section.
+
+Every result, proof, example, figure, table, limitation and question of the
+manuscript is printed here, in its order. Its title page and abstract became
+this section; its Sections~1--8 are
+Sections~\ref{ccc:qr:sec:intro}--\ref{ccc:qr:sec:checks} (manuscript
+Section~$n$ is Section~$n+46$; its main theorem is
+Theorem~\ref{ccc:qr:thm:main}); it has no appendix. Its four unnumbered
+research questions became Questions~\ref{ccc:qr:q:constant}--\ref{ccc:qr:q:formal}.
+Text marked \wsevone{} was added when the manuscript was written into this
+report. No theorem was strengthened or weakened.
+
+\paragraph{What Part~IV adds, and what it repeats.}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \emph{Answered:} Part~II's Question~\ref{ccc:ps:q:rank} (``Is $F(s)$
+ linear, quadratic, or of an intermediate order?''), as to order, for NFAs:
+ Theorem~\ref{ccc:qr:thm:main} gives $(s-3)^2\le F(s)$ for $s\ge4$. The
+ previous lower bound, $\lfloor(s-3)/2\rfloor$ for $s\ge5$, came from
+ Part~II's complete-DFA family (Theorem~\ref{ccc:ps:thm:lower-family}); the
+ construction follows the route Part~II's comment on that question
+ anticipated, a long unary transient combined with components that force
+ genuinely separate fragments. The leading constant and the exact $F(s)$ are
+ not determined (Question~\ref{ccc:qr:q:constant}).
+\item \emph{Imported:} the upper bound $F(s)\le(2s+5)^2$ is Part~II's
+ (Theorem~\ref{ccc:ps:thm:main}(2) and Corollary~\ref{ccc:ps:cor:cutoff});
+ Section~\ref{ccc:qr:sec:upper} only identifies its inputs.
+\item \emph{Sharpened:} Part~II showed the largest finite parallel
+ stabilization index to be of order $\Theta(\log s)$ (comment after
+ Theorem~\ref{ccc:ps:thm:lower-family}); Part~IV gives $2\log_2s+O(1)$, and
+ order $\Theta(s^2)$ for the frozen-source index, where Part~II had a linear
+ lower and a quadratic upper bound.
+\item \emph{New:} the length gate and its last gap
+ (Section~\ref{ccc:qr:sec:gate}), the exact rank law of the gate language
+ (Lemma~\ref{ccc:qr:lem:rank}), the transfer principle
+ (Remark~\ref{ccc:qr:rem:transfer}), the exact depths and slice counts of the
+ family (Corollary~\ref{ccc:qr:cor:depth}; compare the binomial slice counts of
+ Part~III's Corollary~\ref{ccc:cl:cor:counts}), and the
+ one-initial-state bound $(s-4)^2\le F_{\mathrm{one}}(s)$. Part~II's remark
+ before Theorem~\ref{ccc:ps:thm:main} that a single-initial-state convention
+ gives the same results concerns complexity, not $F$.
+\item \emph{Not affected:} the lower bound is for NFAs only. For complete DFAs
+ the best lower bound in this report is still Part~II's linear one, and the
+ order is open (Question~\ref{ccc:qr:q:dfa}). Part~II's
+ Question~\ref{ccc:ps:q:dfa} on the decision complexity for DFA input, Part~I's
+ questions and Part~III's questions are untouched.
+\item \emph{Restated:} Proposition~\ref{ccc:qr:prop:clocks} is Part~I's rank
+ calculus (Theorems~\ref{ccc:thm:contraction}, \ref{ccc:thm:generation}
+ and~\ref{ccc:thm:frozen}, Corollary~\ref{ccc:cor:stages}) in the form of
+ Part~II's Proposition~\ref{ccc:ps:prop:rank-clock} and
+ Corollary~\ref{ccc:ps:cor:bounded}. It is printed as a marked restatement,
+ with the manuscript's proof as one more route.
+\item \emph{Credited:} Lemma~\ref{ccc:qr:lem:gap} is Sylvester's
+ two-generator Frobenius formula shifted by $m$; the manuscript proves it
+ directly without naming it, and a \wsevone{} note after its proof gives the
+ credit.
+\end{itemize}
+
+\subsection{The manuscript's summary and status}\label{ccc:qr:sec:abstract}
+
+\emph{Abstract, as delivered (``the ProveIt report'' is this report, and
+the question it answers is Part~II's Question~\ref{ccc:ps:q:rank}).} The
+optimal finite aligned-fragment rank of an $s$-state binary NFA has quadratic
+order. We construct, for every $s\ge4$, an $\eps$-free NFA with $s$ states,
+several initial states, universal coordinate hull, and exact maximal rank
+$(s-3)^2$. Together with the existing upper bound in the ProveIt report, this
+gives
+\[
+(s-3)^2\le F(s)\le(2s+5)^2,
+\qquad F(s)=\Theta(s^2).
+\]
+The construction couples a classical two-cycle unary length gate with two
+monochromatic components. At every missing gate length, admissible fragments
+are exactly the constant intervals. A direct arithmetic proof identifies the
+last missing length and an alternating word attains it as rank. The least
+parallel and frozen-source stabilization indices are respectively
+$\lceil\log_2 (s-3)^2\rceil$ and $(s-3)^2-1$. This answers Question~24.2 at
+the pinned repository revision. The upper bound and the fragment-clock
+framework are credited inputs; no global priority or formal
+proof-assistant verification is claimed.
+
+\emph{Status, as delivered.} The manuscript has no separate status box; its
+abstract ends with the disclaimer above, and its Sections~\ref{ccc:qr:sec:scope}
+and~\ref{ccc:qr:sec:checks} state its limitations. Its delivery README adds:
+the finite tests do not prove the all-$m$ theorem, exhaust all bounded-state
+NFAs, establish the inherited upper bound, or establish global novelty; the
+note is not a Lean or other proof-assistant formalization; the claimed
+contribution is the explicit quadratic state-count lower family and the
+resulting resolution of the pinned repository's asymptotic question; the
+package makes no claim of first discovery in the worldwide literature and
+does not settle sharp constants, the exact $F(s)$, or the analogous DFA
+extremal problem.
+
+\subsection{Notation beside Parts~I--III}\label{ccc:qr:sec:notation}
+
+Part~IV uses Part~I's operation $\cut$, crossover map $T(L)=L\cut L$,
+parallel iterates $\gen Lk$, aligned-fragment rank $\rank_L$ and coordinate
+hull $\rec(L)$ (Definitions~\ref{ccc:def:crossover}, \ref{ccc:def:hull}
+and~\ref{ccc:def:rank}), Part~II's frozen-source iterates
+$Y_{k+1}=Y_k\cut L$ (the same sets as Part~I's $L\cut Y_k$), Part~II's
+supremum rank $R(L)$ (Corollary~\ref{ccc:ps:cor:bounded}) and its extremal
+function $F(s)$ (Question~\ref{ccc:ps:q:rank}), and Part~II's convention: an
+NFA is $\eps$-free, may have several initial states and need not be
+complete. Positions are zero based, as in Parts~II and~III. One symbol was
+renamed when the manuscript was written in: its gate language $L_m$ is
+printed as $\Lgate m$, because Part~II's $L_m$ is the one-$1$ family of
+Theorem~\ref{ccc:ps:thm:lower-family}, whose bound Part~IV improves. No
+normalization changed. The parameter $m$ is \emph{not} renamed, and it is
+the symbol most easily misread: here $s=m+2$, whereas Part~II's constants
+\eqref{ccc:ps:eq:universal-constants} have $m=s+2$, and the index $m$ of
+Part~II's family $L_m$ is its rank.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.39\textwidth}>{\raggedright\arraybackslash}p{.36\textwidth}@{}}
+\toprule
+\textbf{In Part~IV} & \textbf{Meaning in Part~IV} & \textbf{Not to be confused with}\\
+\midrule
+$m$ & size of the length gate; the automaton has $s=m+2$ states, so $m=s-2$ & Part~II's $m=s+2$ in \eqref{ccc:ps:eq:universal-constants}; the index $m$ of Part~II's family $L_m$ (rank $m$)\\[3pt]
+$q_0,\ldots,q_{m-1}$; $z$, $o$; $u$ & gate states; the two monochromatic states; the added source of the one-initial-state variant & Part~I's seed parameter $q$ of $S_q$\\[3pt]
+$S_m=\langle m,m-1\rangle$ & numerical semigroup generated by $m$ and $m-1$ & Part~I's seed family $S_q$; Part~II's $S_{n,i}$, $S_{r,a}$; Part~III's $S_i$\\[3pt]
+$H_m$ & set of gate lengths $\{0\}\cup(m+S_m)$, a set of integers & the coordinate hull, which Part~II's manuscript wrote $\mathcal H(L)$ and this report prints $\rec(L)$\\[3pt]
+$g_m=(m-1)^2$ & largest integer outside $H_m$ & the Frobenius number of $S_m$, which is $g_m-m$ (note after Lemma~\ref{ccc:qr:lem:gap})\\[3pt]
+$\Lgate m$ & the gate language \eqref{ccc:qr:eq:language}, written $L_m$ in the manuscript & Part~II's one-$1$ family $L_m$ (Theorem~\ref{ccc:ps:thm:lower-family}); Part~III's $L^{\mathrm{fam}}_k$ and $L_R$\\[3pt]
+$\runs(w)$ & number of maximal constant runs of $w$ & Part~III's marker count $k_R(n)$, which counts ones\\[3pt]
+$R(L)$, $F(s)$ & Part~II's supremum rank and its maximum over $s$-state NFAs & Part~I's $R_L(n)$ (one slice); Part~III's mask $R\subseteq\N^2$\\[3pt]
+$d_\parallel(L)$, $d_{\mathrm{frozen}}(L)$ & least stabilization indices of one language & Part~I's depth $d_L(w)$ of one word; Part~III's $d_\parallel(R)$, $d_{\mathrm{frozen}}(R)$ are the same notion for $L_R$\\[3pt]
+$D_\parallel(s)$, $D_{\mathrm{frozen}}(s)$ & largest finite stabilization indices over $s$-state NFAs & Part~II's $D_L(n)$, the largest depth on one slice of one language\\[3pt]
+$F_{\mathrm{one}}(s)$ & $F(s)$ under a single-initial-state convention & $F(s)$ itself, which allows several initial states\\[3pt]
+$T_s$, $B_s$ & Part~II's constants, the same values & the operator $T(L)$; Part~I's $B_K$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The manuscript's macros for $\N$, $\eps$, $\rec$, $\rank$ and $\lceil\log_2\cdot\rceil$
+are the report's; its $\cut$ differs only by an outer \verb|\mathbin|, which
+changes no spacing; its $\runs$ was added. Its \texttt{lmodern} and
+\texttt{amssymb} packages are not loaded (the report keeps Part~I's newtx
+fonts); the TikZ library \texttt{automata} was added for the figure of
+Section~\ref{ccc:qr:sec:example}.
+
+\section{The question and the result}\label{ccc:qr:sec:intro}
+
+\wsevone\ ``The report'' and ``the pinned report'' of this Part are this
+report; ``Part~II'' is Part~II above. The manuscript's citation of the pinned
+report is replaced by internal references.
+
+The report \emph{Aligned Fragments and Constrained Crossover} in the ProveIt
+repository asks whether the largest finite aligned-fragment rank realizable
+by an NFA with at most $s$ states is linear, quadratic, or intermediate in
+$s$ (Part~II, Question~\ref{ccc:ps:q:rank}). Its stated bounds leave a
+linear-to-quadratic gap. The lower bound below closes that gap by converting
+a long unary transient into many genuinely separate aligned fragments.
+
+We use the report's convention: an NFA is $\eps$-free, can have several
+initial states, and need not have a transition for every state and letter.
+Throughout, $\Sigma=\{0,1\}$ and $\N=\{0,1,2,\ldots\}$. The state count
+includes all components of the automaton.
+
+\begin{theorem}[Quadratic finite rank]\label{ccc:qr:thm:main}
+For every $s\ge4$ there is an $s$-state NFA recognizing a language $L$ with
+$\rec(L)=\Sigma^*$ and
+\[
+R(L)=(s-3)^2<\infty.
+\]
+Consequently, if $F(s)$ is the largest finite $R(L)$ among binary languages
+recognized by NFAs with at most $s$ states, then
+\[
+(s-3)^2\le F(s)\le(2s+5)^2\qquad(s\ge4).
+\]
+In particular, $F(s)=\Theta(s^2)$.
+\end{theorem}
+
+The construction and its exact rank are proved here. The inequality
+$F(s)\le(2s+5)^2$ is inherited from Part~II of the pinned report;
+Section~\ref{ccc:qr:sec:upper} identifies its quantitative input. The rank
+and generation formulas recalled next are existing background. They are
+included with proofs to make the lower-bound argument self-contained.
+
+\section{Aligned fragments and generation depth}\label{ccc:qr:sec:rank}
+
+\wsevone\ This section restates Part~I's Definitions~\ref{ccc:def:crossover},
+\ref{ccc:def:hull} and~\ref{ccc:def:rank} and Part~II's
+Corollary~\ref{ccc:ps:cor:bounded} in Part~II's zero-based form; it defines
+nothing new. Proposition~\ref{ccc:qr:prop:clocks} is stated once, in Part~I
+(Theorems~\ref{ccc:thm:contraction}, \ref{ccc:thm:generation}
+and~\ref{ccc:thm:frozen}, Corollary~\ref{ccc:cor:stages}), and restated in
+Part~II (Proposition~\ref{ccc:ps:prop:rank-clock},
+Corollary~\ref{ccc:ps:cor:bounded}); Part~III reproves its hull formula
+(Lemma~\ref{ccc:cl:lem:hull}). The manuscript's proof below is one more
+route.
+
+For equal-length words $x,y\in\Sigma^n$ and a boundary $0\le i\le n$, aligned
+one-point crossover produces $x[0:i]y[i:n]$ or $y[0:i]x[i:n]$. We index
+positions from zero and use half-open intervals. For languages $A,B$, let
+$A\cut B$ be all these outputs, with both parents of the same length.
+Endpoint cuts are permitted. Put
+\[
+\gen L0=L,\quad \gen L{k+1}=\gen Lk\cut\gen Lk,
+\qquad
+Y_0=L,\quad Y_{k+1}=Y_k\cut L.
+\]
+These are, respectively, the parallel and frozen-source iterations.
+
+For a nonempty word $w$ of length $n$, an interval $[i,j)$ is
+\emph{admissible} if a seed $v\in L\cap\Sigma^n$ agrees with $w$ on that
+interval. The rank $\rank_L(w)$ is the minimum number of nonempty admissible
+intervals partitioning $[0,n)$, or infinity if no partition exists. Set
+$\rank_L(\eps)=1$ if $\eps\in L$, and infinity otherwise. Crucially, each
+seed has the same total length as $w$, and its fragment occurs at the same
+coordinates.
+
+The coordinate hull consists of the words of finite rank. Equivalently, for
+$n\ge1$,
+\[
+\rec(L)\cap\Sigma^n
+=\prod_{i=0}^{n-1}\{a\in\Sigma:\exists v\in L\cap\Sigma^n,\ v_i=a\},
+\]
+and $\rec(L)\cap\{\eps\}=L\cap\{\eps\}$. Define
+\[
+R(L)=\sup\bigl(\{1\}\cup\{\rank_L(w):w\in\rec(L)\}\bigr).
+\]
+
+\begin{proposition}[The established fragment clocks; Parts~I and~II, restated]\label{ccc:qr:prop:clocks}
+For every language $L$ and every $k\ge0$,
+\[
+\gen Lk=\{w:\rank_L(w)\le2^k\},
+\qquad
+Y_k=\{w:\rank_L(w)\le k+1\}.
+\]
+Both unions over $k$ equal $\rec(L)$. If $R(L)<\infty$, the least
+stabilization indices are $\clog{R(L)}$ and $R(L)-1$, respectively.
+\end{proposition}
+\begin{proof}[Another proof (batch-71 manuscript~01)]
+Write $T(L)=L\cut L$. A fragment inherited from one word of $T(L)$ intersects
+at most two seed-parent pieces. Intersecting a partition with these crossover
+boundaries gives
+\[
+\rank_L(w)\le2\rank_{T(L)}(w).
+\]
+Conversely, pair consecutive pieces in a shortest seed-fragment partition. A
+crossover of their two seed witnesses at their common boundary supplies the
+whole paired interval. A final unpaired interval is still admissible because
+$L\subseteq T(L)$. Hence, with infinity interpreted in the usual way,
+\[
+\rank_{T(L)}(w)=\left\lceil\frac{\rank_L(w)}2\right\rceil.
+\]
+Iteration proves the parallel formula, since rank at most one is seed
+membership.
+
+A frozen-source crossover retains a prefix or suffix of an existing partition
+and adds at most one seed fragment. It therefore increases the rank bound by
+at most one. Conversely, for a partition into $d$ seed fragments, choose its
+seed witnesses $v_1,\ldots,v_d$ in order. Start from $v_1$ and cross with each
+successive witness at the corresponding partition boundary, preserving the
+prefix already assembled. This constructs the target in $Y_{d-1}$. Endpoint
+cuts allow padding to later generations.
+
+A finite-rank word is eventually generated by either formula. Conversely,
+singleton intervals witness finite rank exactly for words of the hull. If
+$R(L)<\infty$, this integer supremum is a maximum unless the hull is empty,
+which is already covered by the adjoined value one. The threshold formulas
+give the asserted indices. An equality between adjacent iterates cannot occur
+earlier: applying the same operator would preserve that equality forever and
+prevent reaching the full hull.
+\end{proof}
+
+\section{A length gate with a quadratic last gap}\label{ccc:qr:sec:gate}
+
+Fix $m\ge2$. On vertices $q_0,\ldots,q_{m-1}$ put the edges
+\[
+q_i\longrightarrow q_{i+1}\quad(0\le i<m-1),
+\qquad
+q_{m-1}\longrightarrow q_0,
+\qquad
+q_{m-1}\longrightarrow q_1.
+\]
+Label every edge by both $0$ and $1$, and make $q_0$ initial and final. The
+graph is the classical Wielandt digraph: an $m$-cycle and an $(m-1)$-cycle
+sharing a path. Its use here requires no general theorem on primitive matrix
+exponents. The graph is classical \cite{Wielandt,Neufeld}; the relevant
+return lengths are computed directly.
+
+Let
+\[
+S_m=\langle m,m-1\rangle
+=\{am+b(m-1):a,b\in\N\},
+\qquad
+H_m=\{0\}\cup(m+S_m).
+\]
+
+\begin{lemma}[Exact return lengths]\label{ccc:qr:lem:returns}
+The positive lengths of closed walks from $q_0$ to itself are exactly
+$m+S_m$. Consequently, the gate accepts precisely the words whose lengths
+belong to $H_m$.
+\end{lemma}
+\begin{proof}
+A positive first-return walk must traverse $q_0,q_1,\ldots,q_{m-1}$ and
+eventually take the edge to $q_0$. Before returning, it may traverse the
+cycle through $q_1,\ldots,q_{m-1}$ any number $b$ of times. Its length is
+therefore $m+b(m-1)$. Any positive closed walk is a concatenation of $a\ge1$
+such first-return walks, so its length is $am+b(m-1)$ with $b\ge0$.
+Conversely, every such expression is realized by $a$ first-return walks,
+placing all $b$ shorter cycles in the first walk. These lengths are exactly
+$m+S_m$. The empty walk gives length zero. Since each edge has both labels,
+every binary word of a realizable length labels an accepting walk, and no
+word of another length does.
+\end{proof}
+
+\begin{lemma}[The last gap]\label{ccc:qr:lem:gap}
+For every $m\ge2$, the largest nonnegative integer outside $H_m$ is
+\[
+g_m=(m-1)^2.
+\]
+\end{lemma}
+\begin{proof}
+Suppose $g_m=m+xm+y(m-1)$ with $x,y\in\N$. Modulo $m-1$, this implies
+$x\equiv m-2\pmod{m-1}$, hence $x\ge m-2$. It follows that
+\[
+m+xm\ge m(m-1)>(m-1)^2=g_m,
+\]
+a contradiction. The same argument is valid when $m=2$: the modulus is one
+and the conclusion is $x\ge0$.
+
+Conversely, let $N\ge g_m+1$. Divide $N-m$ by $m-1$:
+\[
+N-m=q(m-1)+r,\qquad 0\le r\le m-2.
+\]
+Because $N-m\ge(m-1)(m-2)$, we have $q\ge m-2\ge r$. Therefore
+\[
+N=m+r m+(q-r)(m-1)\in m+S_m.
+\]
+Thus $g_m$ is absent and every larger integer is present.
+\end{proof}
+
+\wsevone\ \emph{Credit.} Lemma~\ref{ccc:qr:lem:gap} is the classical
+two-generator case of the Frobenius coin problem, shifted by $m$. For
+coprime positive integers $a,b$ the largest integer not in $\langle a,b\rangle$
+is $ab-a-b$, a result due to Sylvester~\cite{Sylvester}
+(see~\cite{RamirezAlfonsin} for the history). With $a=m$ and $b=m-1$ the
+largest integer outside $S_m$ is $m(m-1)-m-(m-1)=m^2-3m+1$ (which is $-1$
+for $m=2$, where $S_2=\N$), and a positive $n$ lies outside $H_m$ exactly
+when $n-m\notin S_m$; hence $g_m=m+m^2-3m+1=(m-1)^2$. The manuscript does
+not name this source; its direct proof above is kept. The finite check of
+Section~\ref{ccc:qr:sec:checks} and an independent semigroup computation for
+$2\le m\le300$ made during the intake of this manuscript agree with the
+formula.
+
+\section{Turning missing lengths into rank}\label{ccc:qr:sec:construction}
+
+Add two states $z,o$, each both initial and final, to the gate. State $z$ has
+only a $0$-loop, state $o$ only a $1$-loop, and there are no edges between
+these states and the gate. The initial and final sets are both
+$\{q_0,z,o\}$. The resulting automaton has exactly $s=m+2$ states and
+recognizes
+\begin{equation}\label{ccc:qr:eq:language}
+\Lgate m=\{w\in\Sigma^*:|w|\in H_m\}\cup0^*\cup1^*.
+\end{equation}
+This is an $\eps$-free NFA. In particular, its length-$n$ slice is
+\begin{equation}\label{ccc:qr:eq:slice}
+\Lgate m\cap\Sigma^n=
+\begin{cases}
+\Sigma^n,&n\in H_m,\\
+\{0^n,1^n\},&n\notin H_m.
+\end{cases}
+\end{equation}
+The two monochromatic components are essential to the proof: they supply
+every coordinate at a missing length while forbidding nonconstant fragments
+there.
+
+\begin{lemma}[Exact word rank]\label{ccc:qr:lem:rank}
+The hull of $\Lgate m$ is $\Sigma^*$. For every nonempty binary word $w$ of
+length $n$,
+\[
+\rank_{\Lgate m}(w)=
+\begin{cases}
+1,&n\in H_m,\\
+\runs(w),&n\notin H_m,
+\end{cases}
+\]
+where $\runs(w)=1+|\{i:1\le i<n,\ w_{i-1}\ne w_i\}|$ is the number of
+maximal constant runs. Also $\rank_{\Lgate m}(\eps)=1$.
+\end{lemma}
+\begin{proof}
+The words $0^n$ and $1^n$ supply both letters at every position of every
+positive length. The empty word is a seed. Thus the hull is universal. If
+$n\in H_m$, the target itself is a seed, so its rank is one. If
+$n\notin H_m$, the only seeds of length $n$ are the two constant words. An
+interval is admissible exactly when it is constant. Every change of letter
+forces a boundary between fragments, and the maximal constant runs
+themselves form an admissible partition. This proves both inequalities for
+the rank formula.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{ccc:qr:thm:main}]
+By Lemma~\ref{ccc:qr:lem:gap}, all lengths exceeding $g_m$ belong to $H_m$
+and have rank one. For $1\le n\le g_m$, singleton fragments bound every rank
+by $n\le g_m$. At the missing length $g_m$, an alternating word has exactly
+$g_m$ runs, so Lemma~\ref{ccc:qr:lem:rank} gives rank $g_m$. Thus
+\[
+R(\Lgate m)=g_m=(m-1)^2=(s-3)^2.
+\]
+This also includes $m=2$, for which $g_m=1$ and $\Lgate m=\Sigma^*$. The
+lower bound for $F(s)$ follows. The inherited upper bound, detailed in
+Section~\ref{ccc:qr:sec:upper}, completes the two-sided inequality and the
+quadratic-order conclusion.
+\end{proof}
+
+\begin{remark}[A general transfer principle]\label{ccc:qr:rem:transfer}
+The same argument works for any cofinite set of lengths $H$ containing zero.
+For $L=\{w:|w|\in H\}\cup0^*\cup1^*$, rank equals one on full slices and run
+count on missing slices. If $g$ is the largest missing positive length, then
+$R(L)=\max(1,g)$; if no length is missing, $R(L)=1$. Thus compact cofinite
+unary length gates give lower bounds on crossover rank after adding only two
+states.
+\end{remark}
+
+\begin{corollary}[Exact depths and counting]\label{ccc:qr:cor:depth}
+The least parallel and frozen-source stabilization indices of $\Lgate m$ are
+\[
+d_\parallel(\Lgate m)=\clog{(m-1)^2},
+\qquad
+d_{\rm frozen}(\Lgate m)=(m-1)^2-1.
+\]
+For a missing positive length $n\notin H_m$,
+\begin{align*}
+|{(\Lgate m)}^{[k]}\cap\Sigma^n|
+ &=2\sum_{j=0}^{\min(2^k-1,n-1)}\binom{n-1}{j},\\
+|Y_k\cap\Sigma^n|
+ &=2\sum_{j=0}^{\min(k,n-1)}\binom{n-1}{j}.
+\end{align*}
+At lengths in $H_m$, both counts are $2^n$ at every generation.
+\end{corollary}
+\begin{proof}
+Use Proposition~\ref{ccc:qr:prop:clocks} and the exact maximal rank. A
+binary word with $j+1$ runs is determined by its first letter and the $j$
+change positions chosen from the $n-1$ interior boundaries.
+\end{proof}
+
+\wsevone\ Here $Y_k$ are the frozen-source iterates of the seed $\Lgate m$.
+
+\section{A six state example}\label{ccc:qr:sec:example}
+
+Take $m=4$, so $s=6$. The gate length set is
+\[
+H_4=\{0\}\cup\bigl(4+\langle4,3\rangle\bigr)
+=\{0,4,7,8,10,11,12,\ldots\}.
+\]
+Its missing lengths are $1,2,3,5,6,9$; the last is $9=(4-1)^2$. The
+automaton below makes the state count and both monochromatic components
+explicit.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth,shorten >=1pt,node distance=18mm,on grid,auto,
+ every state/.style={minimum size=7mm},every edge/.style={draw,->}]
+\node[state,initial,accepting] (q0) {$q_0$};
+\node[state,right=of q0] (q1) {$q_1$};
+\node[state,right=of q1] (q2) {$q_2$};
+\node[state,right=of q2] (q3) {$q_3$};
+\path (q0) edge node {$0,1$} (q1)
+(q1) edge node {$0,1$} (q2)
+(q2) edge node {$0,1$} (q3)
+(q3) edge[bend left=42] node[below] {$0,1$} (q0)
+(q3) edge[bend right=42] node[above] {$0,1$} (q1);
+\node[state,initial,accepting,below=23mm of q1] (z) {$z$};
+\node[state,initial,accepting,right=25mm of z] (o) {$o$};
+\path (z) edge[loop below] node {$0$} (z)
+(o) edge[loop below] node {$1$} (o);
+\end{tikzpicture}
+\end{center}
+
+At length nine the only seeds are $0^9$ and $1^9$. The alternating word
+$010101010$ has rank nine, forcing four parallel generations or eight
+frozen-source generations. Every word of length at least ten is already a
+seed. The complete length-nine counts are:
+\begin{center}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+Generation $k$ &0&1&2&3&4&5&6&7&8\\
+\midrule
+Parallel &2&18&186&510&512&512&512&512&512\\
+Frozen-source &2&18&74&186&326&438&494&510&512\\
+\bottomrule
+\end{tabular}
+\end{center}
+The gap between $510$ and $512$ in the penultimate applicable generation
+consists of the two fully alternating words.
+
+\section{The inherited upper bound and its consequences}\label{ccc:qr:sec:upper}
+
+Part~II of the pinned report proves that an $s$-state NFA with finite maximal
+rank satisfies
+\begin{equation}\label{ccc:qr:eq:upper}
+R(L)\le B_s=(2s+5)^2.
+\end{equation}
+The source uses exact-length forward and backward reachability sets and
+obtains a common eventual-periodicity threshold
+\[
+T_s=2(s+2)^2+2(s+2).
+\]
+Its periodic-interior criterion gives $R(L)\le2T_s+1=B_s$. The quadratic
+unary threshold comes from To's corrected arithmetic-progression theorem
+\cite[Section~3]{To}, after adding a source and a sink to normalize the unary
+NFA. The source's relevant statements are its main theorem in Part~II, the
+lemma headed \emph{A common quadratic transient}, the theorem headed
+\emph{Interior universality criterion}, and the corollary headed
+\emph{Uniform finite horizon}. This note imports that upper-bound result
+rather than presenting its proof as a new contribution.
+
+\wsevone\ These are Theorem~\ref{ccc:ps:thm:main},
+Lemma~\ref{ccc:ps:lem:quadratic-period}, Theorem~\ref{ccc:ps:thm:criterion}
+and Corollary~\ref{ccc:ps:cor:cutoff}; the constants are those of
+\eqref{ccc:ps:eq:universal-constants}, where Part~II's $m=s+2$ is not
+Part~IV's gate size.
+
+For fixed $s$ there are only finitely many labelled NFAs up to the stated
+state bound and convention. Hence the maximum defining $F(s)$ exists. Let
+$D_\parallel(s)$ and $D_{\rm frozen}(s)$ be the largest finite stabilization
+indices under the same convention. Proposition~\ref{ccc:qr:prop:clocks} gives
+\[
+D_\parallel(s)=\clog{F(s)},\qquad D_{\rm frozen}(s)=F(s)-1.
+\]
+Therefore Theorem~\ref{ccc:qr:thm:main} sharpens the quantitative description
+to
+\[
+D_\parallel(s)=2\log_2 s+O(1),
+\qquad
+D_{\rm frozen}(s)=\Theta(s^2).
+\]
+The leading coefficient two in the logarithmic formula follows from the
+two-sided quadratic rank bounds, including the ceiling error of less than
+one.
+
+\wsevone\ This sharpens Part~II's comment after
+Theorem~\ref{ccc:ps:thm:lower-family}, which gave the order $\Theta(\log s)$
+for $D_\parallel(s)$.
+
+\paragraph{One initial state.}
+If the NFA convention requires a single initial state, add a fresh accepting
+source $u$ to the constructed automaton. For $a\in\Sigma$, define its
+$a$-successors to be the union of the $a$-successors of the three former
+initial states; make only $u$ initial and leave all old transitions and final
+states unchanged. Every nonempty word is accepted exactly when it was before,
+and accepting $u$ preserves the empty word. This $\eps$-free conversion adds
+one state. Thus the one-initial-state version satisfies
+\[
+(s-4)^2\le F_{\rm one}(s)\le(2s+5)^2\qquad(s\ge5),
+\]
+and also has quadratic order.
+
+\section{Attribution and remaining questions}\label{ccc:qr:sec:scope}
+
+This result resolves an explicit asymptotic question in the inspected
+repository. It does not identify an exact extremal formula. In particular,
+the gap between leading constants one and four remains: the result gives
+$\liminf F(s)/s^2\ge1$ and $\limsup F(s)/s^2\le4$, without proving either a
+limit or a sharp constant.
+
+The equal-length fragment framework and its crossover interpretation are not
+claimed as new. They are developed in the ProveIt report. Closely related
+represented-interval and one-point-crossover closure machinery appears
+earlier in Manzoni, Vanneschi, and Mauri \cite[Definition~5.2, Theorem~5.3,
+and Section~5.1]{Manzoni}; that paper treats finite populations and
+logarithmic generation growth. The two-cycle graph is classical
+\cite{Wielandt,Neufeld}. The specific contribution here is the
+automaton-state lower-bound construction: its two monochromatic components
+turn the gate's last absent length into exact maximal fragment rank. No
+exhaustive priority search has been completed.
+
+Several concrete questions remain.
+\wsevone\ The manuscript lists them as an unnumbered enumeration; they are
+printed as numbered questions, in the same order and words; their bracketed
+titles were added.
+
+\begin{question}[Leading constant]\label{ccc:qr:q:constant}
+What is the best leading constant, or the exact function $F(s)$?
+\end{question}
+
+\begin{question}[Order for DFAs]\label{ccc:qr:q:dfa}
+What is the optimal finite-rank order for binary DFAs? The construction here
+is genuinely nondeterministic: the gate has two outgoing destinations on
+either letter, and the language uses a union of components. No equally small
+DFA is established by this argument.
+\end{question}
+\wsevone\ For complete binary DFAs with at most $s$ states the bounds in this
+report are $\lfloor(s-3)/2\rfloor$ (Part~II's
+Theorem~\ref{ccc:ps:thm:lower-family}, whose language $L_m$ has rank $m$ and
+a complete DFA with at most $2m+3$ states, $m$ being that family's index)
+and $(2s+5)^2$ (every DFA is an NFA).
+
+\begin{question}[Tightness of the transfer principle]\label{ccc:qr:q:transfer}
+How tightly can a general cofinite unary automaton's last missing length
+control finite crossover rank through the transfer principle in
+Remark~\ref{ccc:qr:rem:transfer}?
+\end{question}
+
+\begin{question}[Formalization]\label{ccc:qr:q:formal}
+Can the lower construction and the report's upper-bound prerequisites be
+formalized in a proof assistant? This note includes no Lean theorem or
+machine-checked universal proof.
+\end{question}
+\wsevone\ This extends Part~II's Question~\ref{ccc:ps:q:formal} to Part~IV's
+construction; no statement of this report is formalized.
+
+The report's separate question about the exact decision complexity for DFA
+input also remains unaffected.
+\wsevone\ That is Part~II's Question~\ref{ccc:ps:q:dfa}.
+
+\section{Reproducible finite checks}\label{ccc:qr:sec:checks}
+
+The accompanying \texttt{check.py} uses only the Python standard library. It
+constructs the transition relation, directly simulates the gate,
+independently enumerates small seed slices, and compares literal fragment
+partitions with the exact-length path criterion. The saved
+\texttt{verification.json} records a successful run with:
+\begin{itemize}
+\item $147{,}677$ gate-length comparisons for $2\le m\le60$ and $0\le n\le2m^2$;
+\item $8{,}184$ literal rank computations on every binary word with $2\le m\le9$ and $0\le n\le9$;
+\item $8{,}222$ independent path-based rank computations, including alternating witnesses at the last missing length and the next length for $2\le m\le20$.
+\end{itemize}
+For the last family, the maximum tested witness rank is $361$. The path
+criterion tests a fragment $w[i:j]$ by reaching its start in exactly $i$
+steps, following its fixed labels, and reaching a final state in exactly
+$n-j$ additional steps. It therefore enforces both alignment and total-length
+matching.
+
+These checks are finite implementation and consistency tests. They do not
+establish the all-$m$ theorem, exhaust all $s$-state NFAs, prove the
+inherited upper bound, determine exact $F(s)$, or verify global novelty. The
+mathematical proof is in
+Sections~\ref{ccc:qr:sec:gate}--\ref{ccc:qr:sec:construction}. Run
+\texttt{python3 check.py} with assertions enabled; do not use Python's
+\texttt{-O} option. The source file compiles with \texttt{pdflatex}; two
+passes resolve internal references.
+
+\wsevone\ \emph{Shipped layout.} The paragraphs above describe the delivered
+package. In this report its files are shipped, byte-identical, as follows;
+the manuscript and its PDF are printed or replaced by this report, the
+delivery README by the report's README, and the checksum list
+\texttt{SHA256SUMS} was verified and retired.
+\begin{center}\footnotesize
+\begin{tabular}{@{}P{.62\textwidth}P{.32\textwidth}@{}}
+\toprule
+\textbf{Shipped path} & \textbf{Delivered as}\\
+\midrule
+\nolinkurl{code/04-quadratic-finite-rank-check.py} & \texttt{check.py}\\
+\nolinkurl{data/04-quadratic-finite-rank-verification.json} & \texttt{verification.json}\\
+\nolinkurl{code/04-quadratic-finite-rank-build.sh} & \texttt{build.sh}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The checker prints its record to standard output and writes no file, so it
+may be run from anywhere, provided its output is not redirected onto the
+shipped record:
+\begin{lstlisting}
+py code/04-quadratic-finite-rank-check.py > <scratch>/verification-new.json
+\end{lstlisting}
+(\texttt{python3} elsewhere; never with \texttt{-O}). When this Part was
+written the rerun, with Python 3.14.4, took about three seconds and printed
+exactly the bytes of the shipped record; a shell that writes CRLF line
+endings on Windows makes the comparison hold only after normalizing them. The
+build script changes to its own directory and runs \texttt{pdflatex} twice on
+\texttt{quadratic-finite-rank.tex}, the delivered standalone manuscript,
+which is printed here as Part~IV and is not shipped; it must not be run in
+\texttt{code/}. The ``source file'' of the last paragraph above is that
+manuscript; this report is built as its README describes.
+
 % [write, batch 66] the appendices belong to Part I.
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices to Part I}
@@ -4973,6 +5728,7 @@ CRLF line endings.
 \wadd{Appendices~\ref{ccc:app:universality}--\ref{ccc:app:provenance}
 belong to Part~I and are printed after Parts~II and~III so that no letter or
 number of Part~I moved.}
+\waddsevone{Part~IV is printed before them too.}
 
 For completeness, here is the standard route to the co-r.e.-completeness used
 in Section~\ref{ccc:sec:undecidable}. The foundational undecidable problem is Post
@@ -5135,6 +5891,34 @@ Sections~\ref{ccc:sec:verification}--\ref{ccc:sec:questions}, in its
 conclusion, on the title page, and here; no existing label, theorem, section,
 equation or question number of Part~I changed.
 
+\paragraph{\waddsevone{A fourth manuscript.}} On 1 October 2026 batch-71
+manuscript~01, \emph{Quadratic Finite Rank for Constrained Crossover}
+(archive \texttt{quadratic-finite-rank-package.zip}), written against
+Parts~I--III at ProveIt commit \texttt{1bd730779}, which arrived in commit
+\texttt{aee32ad45} and was placed in commit \texttt{427bca743}, became
+Part~IV. The report is now built from four manuscripts;
+Section~\ref{ccc:qr:sec:source} gives this one's provenance and what it
+contributed. The choices made were these. Part~IV answers Part~II's
+Question~\ref{ccc:ps:q:rank} and imports Part~II's upper bound; it was kept
+as a Part of its own, not merged into Part~II, because its construction is
+new and shares no proof with Part~II. Its restatement of the rank calculus
+is printed as a marked restatement with its proof as one more route
+(Proposition~\ref{ccc:qr:prop:clocks}); its last-gap lemma received a
+credit to Sylvester's two-generator Frobenius formula; its gate language was
+renamed $\Lgate m$, because Part~II's $L_m$ is another family; its four
+unnumbered questions received numbers and labels; every label received the
+prefix \texttt{ccc:qr:}; its bibliography entry for the pinned report was
+replaced by internal references, its To entry identified with \cite{To},
+and two entries (Sylvester, Ram\'irez Alfons\'in) were added for the credit.
+Dated notes were added in Part~I's
+Section~\ref{ccc:sec:verification}, its conclusion and
+Appendix~\ref{ccc:app:universality}, in Part~II's delivered status, after
+Theorem~\ref{ccc:ps:thm:lower-family}, after
+Questions~\ref{ccc:ps:q:rank} and~\ref{ccc:ps:q:formal}, in Part~II's
+conclusion, and here (the title page, already full, received none); no
+existing label, theorem, section, equation or
+question number changed.
+
 \begin{thebibliography}{99}
 \small\raggedright\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}
 \bibitem{Hughes}
@@ -5267,5 +6051,39 @@ J. Barkley Rosser and Lowell Schoenfeld.
 Approximate formulas for some functions of prime numbers.
 \emph{Illinois Journal of Mathematics} \textbf{6}(1) (1962), 64--94.
 \href{https://doi.org/10.1215/ijm/1255631807}{doi:10.1215/ijm/1255631807}.
+
+% [write, batch 71] entries cited by Part IV. Its entry for this report was
+% replaced by internal references; its To entry is \cite{To} above; the
+% last two entries support the write's credit after Lemma ccc:qr:lem:gap.
+\bibitem{Manzoni}
+Luca Manzoni, Leonardo Vanneschi, and Giancarlo Mauri.
+\emph{A distance between populations for one-point crossover in genetic algorithms}.
+\emph{Theoretical Computer Science} 429 (2012), 213--221.
+DOI: \nolinkurl{10.1016/j.tcs.2011.12.041}.
+Author-repository full text:
+\url{https://run.unl.pt/server/api/core/bitstreams/1639e177-ebcc-4aa6-baf2-ab9778007dd2/content}.
+
+\bibitem{Wielandt}
+Helmut Wielandt.
+\emph{Unzerlegbare, nicht negative Matrizen}.
+\emph{Mathematische Zeitschrift} 52 (1950), 642--648.
+DOI: \nolinkurl{10.1007/BF02230720}.
+
+\bibitem{Neufeld}
+Stewart W. Neufeld.
+\emph{A diameter bound on the exponent of a primitive directed graph}.
+\emph{Linear Algebra and its Applications} 245 (1996), 27--47.
+DOI: \nolinkurl{10.1016/0024-3795(94)00203-7}.
+
+\bibitem{Sylvester}
+J. J. Sylvester.
+\emph{Mathematical questions with their solutions}.
+\emph{Educational Times} 41 (1884), 21.
+
+\bibitem{RamirezAlfonsin}
+Jorge L. Ram\'irez Alfons\'in.
+\emph{The Diophantine Frobenius Problem}.
+Oxford Lecture Series in Mathematics and its Applications 30,
+Oxford University Press, 2005.
 \end{thebibliography}
 \end{document}
