@@ -12,9 +12,17 @@ The independent-gamma87
 candidate is still unresolved, with new
 [compiler and order filters](../research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
 The historical stages below retain their original scope and counts.
-The separate [complete fixed-program GPCP route](../research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
-now pays ordinary integer input and arbitrary common tile histories;
-its effective universal interpreter table is not numerically instantiated.
+The separate [complete slope-class GPCP route](../research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+pays ordinary integer input and arbitrary common tile histories. Its
+34-tile odd-integer example costs **526 certificate /603=259M+344A
+polynomial operations**,26 equations,98 witnesses and degree6202.
+That example does not instantiate the effective universal interpreter table.
+The [explicit Neary–Woods construction](../research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
+now gives a numerical universal table with a paid ordinary-input bridge:
+**1072=445M+627A** polynomial operations,162 positive witnesses, three
+positive program parameters and degree485982. Supplying its initial
+history value gives1075 at degree9100. This is a complete alternative
+above75/88; the separate matrix alphabet remains abstract.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
@@ -543,8 +551,9 @@ odd-integer example gives832/993 operations,422M+571A,180 witnesses
 and degree8416; its supplied-endpoint version gives996/degree3376.
 A paid three-operation program loader supplies a single fixed universal
 interpreter, or two operations when its program numeral is fixed.
-This closes both ordinary-input and unbounded-history interfaces;
-the universal table remains uninstantiated numerically and75/88 is unchanged.
+This closes both ordinary-input and unbounded-history interfaces. That
+generic packet did not instantiate its universal table numerically; the
+explicit construction below closes this gap. The75/88 bounds are unchanged.
 
 The [complete norm-unit composition](../research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
 then saves75 polynomial operations and19 positive witnesses from the
@@ -562,6 +571,73 @@ The source recomputes degrees after every projection and loader,
 including the large-width case where the recoder strong norm dominates.
 This is a complete alternative universal compiler with an effective
 fixed interpreter; the displayed small table remains a decidable example.
+
+The [factored transport pass](../research-wip/native-stream-queue/pcp_affine_factored_transports.md)
+then shares repeated coefficients and common offset forms by exact
+polynomial identities on arbitrary integer assignments. Every retained
+residual and the complete polynomial stay unchanged. The34-tile history
+saves104 gates, from696 to592, and the complete unit polynomial falls
+918 to814=317M+497A at unchanged degree19782 and161 witnesses.
+
+The [slope-class history](../research-wip/native-stream-queue/pcp_affine_slope_class_history.md)
+changes the paid packing geometry: original tile selectors remain, but
+selected-history products are supplied only for nonbaseline slope
+classes. For du upper and dv lower slopes, g=du+dv-2 and N=s+g+4.
+The raw and unit versions have19/10 comparisons and s+g+26/s+g+20
+witnesses; their H+56/H+32 polynomials have exact degrees24N+16 and
+58N+28. Pretyping class bounds come from sums of original nonnegative
+selectors. After one-hot recovery, the signed baseline correction is
+the true selected affine update, with a paid carry margin. The34-tile
+table now needs five products instead of68, and its unfactored unit
+history drops728 to447 operations,59 witnesses and degree2522.
+
+The latest [complete slope-class composition](../research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+scores every actual baseline pair after transport factoring and retains
+both per-tile layouts as fallbacks. All choices preserve the fixed table
+and ordinary-input predicate, using fresh native witnesses at their own
+scales. On the same example, the selected raw history costs381 and the
+full unit source costs **526 certificate /603=259M+344A polynomial
+operations**,26 equations,98 witnesses and degree6202. With the initial
+endpoint supplied it costs606,27 equations,99 witnesses and degree2608.
+The raw alternatives are678/degree2596 and681/degree1048, with117 and118
+witnesses respectively. These improve the preceding814/918/993 stages
+without identifying any of the example tables as universal.
+
+For selected grouped raw-history cost H and width-chain cost mu(k), the
+computed-endpoint unit formula remains H+143+mu(k) certificate and
+H+220+mu(k) polynomial operations, now with s+g+59 witnesses. Supplied
+endpoints add one witness/comparison and three polynomial operations.
+The paid program loaders and the complete fixed-interpreter theorem
+remain available; numerical universal75/88 improvements remain separate.
+
+The [explicit Neary–Woods U15,2 construction](../research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
+now instantiates a different universal fixed table. Published
+Table16 has29 instructions over two tape symbols. Its rewriting alphabet
+has21 symbols and width5. Every valid configuration has one state symbol,
+consumed by its transition or cleanup rule; the copied contexts therefore
+need no state-copy tiles. This leaves **97 fixed tiles: five copies and92
+rules**, with g=5 exceptional slope products, N=106 and raw-history cost836.
+Deleting state copies is justified on valid program configurations, not
+on arbitrary malformed parameter tuples.
+
+The ordinary-input bridge uses an actual pair-input convention in the
+represented machine. The two input bits become equal32-symbol blocks;
+the recoder width is consequently160, distinct from tilewidth5. A paid
+positive block repunit and bit-block morphism preserve every leading
+zero block. Three positive program parameters describe an encoded prefix,
+suffix scale and suffix value. For each r.e. positive-integer set the
+effective simulation produces a valid fixed triple, giving a slice of
+one fixed polynomial. The parameters are not existential witnesses.
+
+The default costs **992=418M+574A certificate operations**,27 comparisons,
+and **1072=445M+627A polynomial operations**, with162 positive witnesses
+and exact degree485982. Retaining the initial history value as a positive
+witness gives1075,28 comparisons,163 witnesses and degree9100. The earlier
+all-state-copy slope source remains1153 with178 witnesses; the old
+per-tile source remains2278 with399 witnesses. Thus the GPCP route now
+has a concrete numerical universal instance with all input and history
+interfaces paid. These alternative bounds are larger than75/88 and do
+not materialize the separate group-based matrix alphabet.
 
 The [output-bound obstruction](../research-wip/native-stream-queue/group_projective_output_bound_obstruction.md)
 shows why outright deletion is different: a fixed six-shear table with

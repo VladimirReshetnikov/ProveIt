@@ -23,9 +23,17 @@ Its numerical universal alphabet is not instantiated. Mortality now has
 and [a 5D affine loader costing2](Papers/research-wip/native-stream-queue/group_affine_bipartite_mortality5.md);
 the separate87-operation candidate
 remains unresolved under the [compiler/order filters](Papers/research-wip/native-stream-queue/complete75_gamma87_compiler_order_filters.md).
-The separate [complete fixed-program GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
-now pays both ordinary input and arbitrary selected tile histories; its
-fixed universal interpreter table is effective but not numerically instantiated.
+The separate [complete slope-class GPCP compiler](Papers/research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+pays ordinary input and arbitrary selected tile histories. Its 34-tile
+odd-integer example costs **526 certificate / 603=259M+344A polynomial
+operations**, with26 equations,98 positive witnesses and degree6202.
+That example does not instantiate the effective universal interpreter table.
+The [explicit Neary–Woods construction](Papers/research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
+now supplies a concrete universal table and paid ordinary-input bridge:
+**1072=445M+627A** polynomial operations,162 positive witnesses, three
+positive program parameters and degree485982. Supplying the initial
+history value gives1075 operations at degree9100. These alternative
+universal bounds are larger than75/88; the matrix alphabet remains abstract.
 
 ## Layout
 
@@ -325,6 +333,21 @@ fixed universal interpreter table is effective but not numerically instantiated.
   gives164/193,90M+103A,29 witnesses and degree956; the alternate layout
   gives166/195 at degree782. The raw history remains a lower-degree option.
 
+  [Factored transports](Papers/research-wip/native-stream-queue/pcp_affine_factored_transports.md)
+  share repeated coefficients and common offset forms by exact integer
+  polynomial identities. The 34-tile example saves104 operations in its
+  history, reducing the preceding complete unit polynomial918 to814 at
+  unchanged degree19782. Separately, the
+  [slope-class history](Papers/research-wip/native-stream-queue/pcp_affine_slope_class_history.md)
+  retains all original tile selectors but supplies products only for
+  nonbaseline slope classes. With g exceptional classes across the two
+  coordinates, its scale is N=s+g+4. The raw and unit sources have
+  s+g+26 and s+g+20 witnesses, with the same19/10 comparisons and
+  H+56/H+32 polynomial formulas. Signed slope differences are recovered
+  as the true selected affine updates before the carry bound is used.
+  The 34-tile table needs five products instead of68; its unfactored
+  unit history falls728 to447 operations, with59 witnesses and degree2522.
+
 - The [complete GPCP composition](Papers/research-wip/native-stream-queue/gpcp_complete_fixed_program.md)
   combines the original boundary and raw history with disjoint packing
   parameters. Its default costs H+134+mu(k) certificate and
@@ -333,7 +356,8 @@ fixed universal interpreter table is effective but not numerically instantiated.
   180 witnesses and degree8416; retaining the initial endpoint gives
   996 at degree3376. These are decidable example counts. A paid
   three-operation program loader supplies one fixed universal interpreter
-  interface, but no numerical universal table is instantiated;75/88 is unchanged.
+  interface; that generic packet did not instantiate its universal table.
+  The explicit construction below closes that separate numerical gap.
 
   The [complete norm-unit composition](Papers/research-wip/native-stream-queue/gpcp_complete_fixed_program_units.md)
   saves75 polynomial operations and19 witnesses. Its same illustrative
@@ -342,6 +366,42 @@ fixed universal interpreter table is effective but not numerically instantiated.
   endpoint supplied gives921,162 witnesses and degree8040; raw993/8416
   remains a degree alternative. The regrouped product contains nine
   sign-safe norms and one checksum; the second checksum stays explicit.
+
+  The latest [slope-class composition](Papers/research-wip/native-stream-queue/gpcp_slope_class_compiler.md)
+  compares every paid baseline pair after transport factoring, retaining
+  both per-tile layouts as fallbacks. The table and chronological tile
+  word remain fixed, and new packing scales receive fresh positive native
+  witnesses. For the same34-tile example, the selected history costs381;
+  the full unit compiler gives **526 certificate /603=259M+344A polynomial
+  operations**,26 comparisons,98 witnesses and degree6202. Keeping the
+  initial endpoint supplied gives606,27 comparisons,99 witnesses and
+  degree2608. The raw alternatives cost678 at degree2596 or681 at
+  degree1048. With selected raw-history cost H, the default unit formula
+  is H+220+mu(k), with s+g+59 witnesses. The ordinary input and optional
+  three-operation program loader remain paid; these numerical examples
+  do not change the universal75/88 frontier.
+
+- The [explicit Neary–Woods U15,2 compiler](Papers/research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md)
+  instantiates Table16's29 instructions over two tape symbols. Its21-symbol
+  rewriting alphabet uses width5. Removing state copy tiles is complete
+  on valid program configurations, leaving **97 fixed tiles: five copies
+  and92 rules**. Slope classes give five products, exponentN=106 and
+  selected raw-history cost836. Equal32-symbol blocks encode each input
+  bit, so the separately paid recoder uses width160, not width5.
+  A positive block repunit and the fixed two-block morphism pay the
+  ordinary-input conversion, including leading zero blocks.
+
+  The resulting single polynomial has **992 certificate /1072=445M+627A
+  polynomial operations**,27 comparisons,162 positive existential
+  witnesses and degree485982. Three further positive values are program
+  parameters: an encoded prefix, suffix scale and suffix value. Each
+  r.e. positive-integer language has an effectively constructed valid
+  parameter triple; arbitrary triples are not asserted to encode a machine
+  configuration. Keeping the initial history value supplied gives1075,
+  28 comparisons,163 witnesses and degree9100. Earlier all-state-copy
+  slope and per-tile variants remain1153/178w and2278/399w. This is a
+  numerical alternative universal construction, not an improvement to
+  the separate75/88 frontier or an instantiation of the matrix alphabet.
 
 - A [four-dimensional reset interface](Papers/research-wip/native-stream-queue/group_two_reset_mortality4.md)
   loads its affine input matrix in two operations. Exactly two resets

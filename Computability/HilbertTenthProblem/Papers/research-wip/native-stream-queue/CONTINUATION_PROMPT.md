@@ -169,18 +169,83 @@ account for cancellation of the leading a^2*c^2 terms in each main norm.
 A fixed universal interpreter can decode N=code*(2x+1), costing3 paid
 operations; selecting code=2^p represents program p on ordinary x.
 For a fixed program numeral the loader costs2 operations. This closes
-the complete effective fixed-table universality interface. An explicit
-numerical universal interpreter/table remains uninstantiated, so the
-sample918 is not a new numerical universal bound and75/88 is unchanged.
+the complete effective fixed-table universality interface. That generic
+packet did not instantiate its numerical universal interpreter/table;
+its sample918 is not a numerical universal bound. The explicit-table
+successor below now closes this gap for the GPCP route. The matrix
+alphabet remains uninstantiated and75/88 is unchanged.
 Full positive extensions are component theorems; executable outer
 fixtures deliberately leave astronomical native Pell witnesses unbuilt.
 
-Next useful PCP work is to reduce the fixed affine transport and selection
-costs on actual rewrite tables, or instantiate and cost a small universal
-table. Repeated copy-tile slopes may admit paid grouped linear forms;
-using a default affine slope plus exceptional selected outputs requires
-a fresh complete mask and carry proof. Preserve both physical layouts,
-independent input/history duration, positive domain and degree tradeoffs.
+The [factored affine transports](pcp_affine_factored_transports.md) now
+share equal coefficients and common subforms through exact all-integer
+identities. Within each unchanged physical layout they preserve the
+complete residual vector and polynomial. Actual paid candidate costs,
+including fixed-numeral multiplications, choose the schedule. The same
+34-tile example saves104 history operations, reducing918 to814 without
+changing degree19782. The native64 instructions remain opaque roots.
+
+The [slope-class history](pcp_affine_slope_class_history.md) instead changes
+the packing geometry. Original tile selectors still type one common word,
+but selected products are supplied only for exceptional slope classes
+relative to two paid baseline choices. If g is the total number of these
+classes, N=s+g+4; raw and unit witness counts are s+g+26 and s+g+20.
+Signed slope differences become the true nonnegative affine output before
+the carry proof is used. The proof includes g=0 and independently chosen
+upper/lower partitions. The34-tile example has g=5, replacing68 products;
+its unfactored unit history costs447, with59 witnesses and degree2522.
+
+The [complete slope-class compiler](gpcp_slope_class_compiler.md) compares
+every baseline pair after factoring, with both old per-tile layouts as
+fallbacks. It gives the same34-tile ordinary-input example **526
+certificate /603=259M+344A polynomial operations**,26 comparisons,
+98 positive witnesses and degree6202. The supplied initial value gives
+606/99w/degree2608; raw alternatives give678/degree2596 and681/degree1048.
+The selected raw history costs381. The default generic unit formula is
+H+220+ell(k), with s+g+59 witnesses. New geometries need fresh native
+witnesses; there is no polynomial-identity claim between geometries.
+
+The [explicit Neary--Woods universal table](neary_woods_explicit_universal_tm.md)
+instantiates U15,2's29 instructions over two tape symbols, with a checked
+primary-source transcription and the published clockwise-TM simulation.
+Its full21-symbol grammar uses width5. In valid configurations every rule
+consumes the unique state, so only tape and delimiter copies are needed:
+five copies plus92 rewrite rules give97 fixed tiles. The proof excludes
+the irrelevant zero-step start=halt case and concerns valid program slices,
+not arbitrary malformed parameters. Five exceptional slope products give
+N=106 and selected raw history cost836.
+
+An equal-length pair encoding uses32 physical tape symbols per input bit,
+so the paid ordinary-input recoder has width160, not5. A positive block
+repunit and a fixed two-block morphism preserve every leading zero block.
+Three positive program parameters describe prefix code, suffix scale and
+suffix value; they are fixed per r.e. language, not existential witnesses.
+Their framing expression is positive even before any comparisons. One
+fixed polynomial therefore represents every r.e. positive-integer set on
+an effective fixed parameter slice. Its full ledger is **992=418M+574A
+certificate /1072=445M+627A polynomial operations**,27 comparisons,
+162 positive witnesses and degree485982. Keeping the initial history
+value supplied gives1075,28 comparisons,163 witnesses and degree9100.
+All-copy slope and old per-tile sources remain1153/178w and2278/399w.
+These are complete numerical alternatives, larger than the75/88 frontier.
+
+The explicit degree proof uses v=k+2 and nu=k+3 for computed initial value
+(nu=2 if supplied), since two framing coefficients are now free program
+parameters. It verifies the defining rows and strict leading-degree
+inequalities for all three main-norm cancellations. Do not apply the
+older generic nu=k+1 formula. The primary paper's halting-symbol typo and
+the U9,3 singleton-A escape boundary are recorded explicitly; universality
+imports only the valid clockwise-TM slices with both boundary markers.
+Finite transition, framing and cleanup audits supplement the parametric
+proofs, without constructing full native Pell witnesses numerically.
+
+Next useful PCP work is to generalize the state-copy deletion to the
+ordinary fixed-machine compiler, factor offset coefficients using their
+digit structure beyond equality of whole coefficients, or lower the paid
+mixed-width input cost/degree. Preserve original tile chronology,
+independent input/history duration, positive domain and supplied-endpoint
+tradeoffs. Bounded additional searches on the88-operation source found
+no verified saving; this is not an obstruction or a minimality claim.
 
 The previous cone/singleton proposal is now implemented and proved in
 merge31: positive flags avoid their two explicit decodings. Its root
