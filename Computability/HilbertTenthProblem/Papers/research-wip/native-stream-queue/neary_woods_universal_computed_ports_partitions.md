@@ -1,5 +1,13 @@
 # Exact regrouping with the factored joined ports
 
+The further [positive-mask-unit successor](neary_woods_universal_mask_unit263.md)
+maps selected shared-history schedules to263/degree-at-most3857 with43
+witnesses and273/608 with44; the fixed43 family reaches270/1344.
+It searches the new factor's placement within each inherited partition,
+not all partitions of the enlarged factor set. Complete positive zero
+sets agree with the corresponding265 parent; historical bounds below
+are unchanged.
+
 The [shared-expression successor](neary_woods_universal_shared_history265.md)
 removes2M+2A from every schedule by exact integer identities. It gives
 265/degree-at-most3853 with43 witnesses and275/608 with44 witnesses;

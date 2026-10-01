@@ -15,19 +15,27 @@
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
 > The latest complete explicit U9/tag source costs
-> **265=134M+131A**,251 certificate operations,43 positive witnesses,
-> 5 comparisons and four positive program parameters, with degree
-> at most3853: [shared history expressions](neary_woods_universal_shared_history265.md).
-> Exact reuse of a paid cubic, selector prefix and radix decrement saves
-> 2M+2A from the [factored269 parent](neary_woods_universal_factored_ports269.md).
-> Whole-polynomial values agree on every integer assignment, with the
-> same supplied positive domain. The sixteen-base grouped frontier shifts
-> uniformly to275/degree-at-most608 with44 witnesses; the fixed43-witness
-> alternative is272/1344. The [partition theorem](neary_woods_universal_computed_ports_partitions.md)
-> optimizes its stated finite propagated-degree objective. The bound608
-> is not a lower bound on exact degree or all circuits.
-> Within each fixed specialized base regrouping preserves positive zeros;
-> across bases completeness retains the inherited valid program slices.
+> **263=134M+129A**,252 certificate operations,43 positive witnesses,
+> 4 comparisons and four positive program parameters, with degree
+> at most3857: [positive mask unit](neary_woods_universal_mask_unit263.md).
+> The new factor S-(2B-1)K replaces the second repunit comparison.
+> Both signs preserve the untyped port bounds; local native restoration
+> makes B and S dyadic before a Mersenne residue excludes the negative sign.
+> The complete positive zero set is identical on the same supplied tuple;
+> off-zero polynomial values have explicit correction identities.
+> Mapped selected schedules reach273/608 with44 witnesses, or270/1344
+> with43. Only the new factor's placement within each selected partition
+> is optimized; this is not a fresh exhaustive enlarged-factor search.
+> The [shared-history265 parent](neary_woods_universal_shared_history265.md)
+> retains251 certificate operations,5eq43w and degree at most3853.
+> Its exact reuse saves2M+2A from [factored269](neary_woods_universal_factored_ports269.md),
+> with whole-polynomial values unchanged on every integer assignment.
+> That sixteen-base grouped frontier reaches275/608 with44 witnesses,
+> or272/1344 with43; its [partition theorem](neary_woods_universal_computed_ports_partitions.md)
+> concerns a finite propagated-degree objective. The bound608 is not
+> a lower bound on exact degree or all circuits. Within each fixed base
+> regrouping preserves positive zeros; across bases the accepted relation
+> retains the inherited valid program slices.
 > Historical269/3853 through279/608 and mapped275/3853 through285/608
 > remain reproducible, as does computed275 with its unchanged coordinates.
 > The [duration-floor282 predecessor](neary_woods_universal_duration_floor282.md)
@@ -812,7 +820,34 @@ checksum is1. The same positive supplied tuples therefore give
 ordinary-strong version gives303/degree-at-most1665; single-index
 choices and both program-bound interfaces remain available.
 
-The current [shared-history265 source](neary_woods_universal_shared_history265.md)
+The current [positive-mask-unit263 source](neary_woods_universal_mask_unit263.md)
+replaces mask_scale=(2B-1)K+1=S by Nmask=S-(2B-1)K in one existing
+unit group. The new certificate adds1M and loses one comparison, for
+a net2A polynomial saving:252 certificate/263=134M+129A,4eq43w,
+four program parameters,degree at most3857. Both signs Nmask=+/-1
+still give BK<S and K+1<=S, preserving the computed truth-field margins.
+The local coupled joint core restores the raw population theorem at
+r or r-2 independently of the geometry index sign. Thus the joined
+scale16BS*p^11 is dyadic before choosing the mask sign. With B=2^b,
+S=2^e,b>=2, Nmask=-1 would give2^e=-1 mod(2^(b+1)-1), impossible.
+Nmask=1 restores the entire frozen265 parent on the same supplied tuple.
+Both group finalizers have exact all-integer output corrections; no
+unconditional off-zero equality is claimed.
+
+Its mapped cost/degree list is263/3857,264/3441,265/3395,266/2277,
+267/1509,268/1463,269/1100,270/1054,271/734,272/706,273/608.
+The first three use43 witnesses; subsequent points use44. The fixed43
+family ends270/1344 and the fixed45 family276/608. For each selected
+parent schedule every possible group insertion is checked; regrouping
+all enlarged factor sets has not been searched. The receipt includes
+124 ledgers,1,248 corrected-output identities (624 signed),38 actual
+outer-margin fixtures (19 negative masks),4,935 Mersenne residues and
+eight rejected incompatible callers. Root and independent full reviews
+and fresh replays pass. Independent extra360 complete corrections
+(180 signed) and32 actual outer fixtures (16 negative masks) pass;
+these outer fixtures are not full native Pell zeros.
+
+The preceding [shared-history265 source](neary_woods_universal_shared_history265.md)
 reuses P^3 in the four-term repunit, S0+P*S1 in the controller word,
 and B-1 in 2B-1. The exact local identities remove2M+2A from every
 optimized269-parent schedule without changing any supplied coordinate,
@@ -828,6 +863,33 @@ use44. The fixed43-witness frontier is265/3853,266/3437,267/3391,
 finite propagated-objective optimization; it is not a new lower bound
 on all arithmetic circuits. The receipt checks2,464 ledgers and6,048
 whole-output/register identities, including3,024 signed assignments.
+
+The [periodic routing outcome compiler](routing_balance_outcome_compiler.md)
+now pays a fixed-arity relation for termination and the exact sink vector,
+independent of firing duration. For fixed nonempty destination lists,
+n active vertices,s sinks,m blocks and e nonself blocks, positive lengths
+and load/output hats are parameters;3n+m positive witnesses and3n+s
+residuals suffice. A first-incomplete-block chart uses qhat,positionhat,
+positive unused suffix and one-hot selector hats. Prefix flow is
+length*running_quotient-selector*suffix; self-flows cancel from balance.
+The complete quartic costs at most4m+5e+11n+3s-1 operations.
+The default two-router topology attains67=21M+46A,11w8eq, versus
+166=48M+118A,28w24eq for the literal canonical-height comparison.
+
+Least action bounds the genuine odometer U by every balanced candidate u.
+Monotone prefix ranks make its candidate sink vector at least the genuine
+one, while conservation gives equal total mass; hence all sink coordinates
+are exact even with artificial circulations. Exact odometers and finite or
+unique witness fibers are deliberately not retained. Explicit finite
+periods are uniformly decidable by finite-state repetition, so these
+small counts are not a universal polynomial. The imported report's
+one-router universal construction computes stack ranks by bounded
+universal simulation; being pointwise eventually constant does not give
+an effective finite periodic description. Replacing the paid prefix-flow
+chart by a complete arithmetic graph for that algorithmic rank remains
+the concrete universal-interface obligation. Author/root/independent
+proof and fresh replay pass; independent audits cover512 whole outputs
+(256 signed) and2,041 balanced candidates,826 with inexact odometers.
 
 The [queue sentinel-fold packet](queue_causality_sentinel_fold.md) pays a
 new fixed-horizon schedule for imported canonical-certificate report07.
@@ -1435,9 +1497,10 @@ domains fail exact monotone endpoint tests:2,826 coefficient-sign
 certificates,2,276 distinct arrays and2,720 Horner endpoint checks.
 General-cutoff fixtures include gaps13,21,51,101, but claim only the
 proved finite reduction at those gaps, not their exclusion. Remaining
-work concerns odd gaps at least13 or mu<0 while retaining the actual
-main root, full strong norm and both ratios. The literal86 source and
-established75/87 bounds do not change.
+positive-mu work concerns odd gaps at least13 while retaining the actual
+main root, full strong norm and both ratios. The negative-input results
+below separate the power branch from the low-X full family. The literal86
+source and established75/87 bounds do not change.
 
 The [negative-input residue theorem](complete75_weakened86_negative_input_residues.md)
 now classifies the input norm/discriminant, retained first-index equation
@@ -1470,17 +1533,77 @@ computed main-root equation and transport sign nu, restrict the CRT test
 to those allowed target signs and lambda=epsilon*nu. A passing class now
 extends to a full positive candidate zero with R<0,mu<0, and every such
 extension gives a passing class. This is a conditional iff, not a search
-or bound over the fixed outer data. No actual passing outer tuple or
-false-input zero has been supplied. The rejected ratio tuple still has
-no classes. Canonical auxiliary examples are full auxiliary blocks only.
+or bound over the fixed outer data. That packet alone supplies no passing
+outer tuple; its canonical auxiliary examples are auxiliary blocks only.
+The full-negative-family successor below now supplies actual complete
+scalar-data zeros. The earlier rejected ratio tuple still has no classes.
 The default modular period search raises after10,000 steps unless a
 valid return period is supplied; reaching that cap is not an exclusion.
 The mathematical finite criterion has no corresponding cutoff.
-Next work may search or exclude validated outer data under this criterion;
-transport must remain imposed, and an actual passing extension would
-still need its represented input checked before calling it false-input.
-Positive-mu gaps at least13 and the unbounded negative-mu outer-data
-problem remain open; universal soundness of86 is unresolved.
+
+The [negative-input power-branch theorem](complete75_weakened86_negative_power_gap.md)
+now gives n<p<=2n-19 under R<0,mu<0,X=2^p. Reducing the input Pell index
+modulo2p and the actual target congruence gives a wrap0<=j<=3(q^2-1).
+Three nonzero multiples of H=4a+3 imply Y<2(q^2-1)X^2. For each fixed
+odd gap g this gives3p^2-19gp<12g+6, hence finitely many necessary
+(q,p,w,Y); it does not bound g. Exact coefficient signs and exact
+integer boundary evaluations exclude2,475 domains for gaps1 through17, apart from
+the familiar q16,p21,n15,X2^21,Y8192 ratio survivor, which the20,160
+all-mask cases already reject. The input Pell index remains unbounded;
+this theorem does not apply to X<2^p.
+
+The [infinite outer family](complete75_weakened86_infinite_outer_family.md)
+shows why first/main ratios plus transport cannot supply a uniform
+negative-input gap bound. For every fixed d>=4 set q=2^d,Y=q^3,
+X=2^e with e the least odd integer at least3d, and x1,F2,
+alpha=q-2-2d,zplus1, so C=0 and the actual transport factor is-1.
+An odd main-index progression pays the root congruence. Distinct
+quadratic fields make the logarithmic ratio irrational; its rotation
+hits a strict-ratio interval infinitely often with unbounded odd gap.
+The concrete p321629343237,n214421015143 tuple is rigorously certified
+by directed integer intervals without materializing c's8,362,419,590,553
+bits. This outer packet alone does not satisfy all retained congruences.
+
+The [full negative-input family](complete75_weakened86_full_negative_family.md)
+then supplies infinitely many complete19-coordinate positive zeros of
+the unchanged86 polynomial at x1 for scalarB16,d4,b1,MC6,MF12 and every
+positive DC,DR. Its fixed data are q16,X8192,Y4096,F2,alpha6,zplus1,
+C0,K57558 and input Pell indexv9, giving mu=-chi_A(9).
+Choose epsilon=-1,lambda=+1 and target sign omega=-1; transport is-1.
+An exact main progression
+
+    p=1316212416417369613+2514909272844107199283200*t
+
+has p=1mod4 and makes
+
+    rho=(K-2+p+46c-255*(chi_A(9)+a*psi_A(9)))/(255H)
+
+a positive integer below gamma. Then R=-p-46c+2 and the auxiliary
+target is-p modulo c. Prescribing n=13587 mod16777216 pays the
+first-index equation. Irrational rotation modulo16777216 still gives
+infinitely many ratio hits, so the full family has unbounded odd gaps.
+
+The concrete indices
+
+    p=3572130746085641437869936970845936422413,
+    n=2381436634762533967520279822849047278867
+
+satisfy every modular condition and both strict ratios by directed
+integer certificates. The deterministic auxiliary recipe uses
+m=2cp,ell=p+2m; all five reconstructed coordinates are positive integers.
+The eight literal factors are(1,1,1,1,-1,-1,1,1), giving a complete
+positive zero, not merely a ratio or subsystem fixture. The giant tuple
+is specified exactly by Pell formulas, not printed or materialized.
+
+These scalar constants satisfy the mask contract, but no actual universal
+program with these constants is instantiated and x1 is not shown outside
+its represented language. The next semantic task is to realize suitable
+scalar data by an actual program/input slice, or prove the additional
+program constraints exclude the family. Blanket exclusion of all negative
+R or all negative mu is no longer possible under the scalar contract alone.
+Positive-mu gaps at least13 and actual-program soundness of86 remain
+unresolved; no improved universal bound or false-membership claim follows.
+The separate75/87 results remain unchanged.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary
