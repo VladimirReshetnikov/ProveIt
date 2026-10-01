@@ -4,6 +4,20 @@ from pathlib import Path
 import json
 import sympy as sp
 
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def main():
     eta, z, c, vH, vO = sp.symbols('eta z c vH vO', nonzero=True)
@@ -43,7 +57,8 @@ def main():
               'full_tv_coefficient_residual':'0','variance_fraction_residual':'0',
               'moving_crossing_coefficient_divided_by_phi_c':str(boundary),
               'scope':'Coefficient algebra only; uniform analytic errors are proved in the manuscript.'}
-    Path(__file__).with_name('tv_coefficient_symbolic.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('tv_coefficient_symbolic.json', json.dumps(result,indent=2)+'\n')
     print(json.dumps(result,sort_keys=True))
 
 

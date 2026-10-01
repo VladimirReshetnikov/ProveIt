@@ -183,3 +183,35 @@ Made in the editorial pass after batches 69 and 70 of `docs/incoming/` (see
   overfull or underfull box; no Type 3 font. The page carrying the note was
   rendered and inspected.
 - `README.md`: this section.
+
+## Editorial amendments (ProveIt, 2026-10-01)
+
+Made in the editorial pass after batch 72 of `docs/incoming/`; every change
+to the source is marked `% ed. (2026-10-01)`. The mathematical text is
+unchanged.
+
+- `article.tex`: a third unnumbered environment `ednotethird` ("Editorial
+  note (ProveIt, 2026-10-01)") is defined after `ednotelater`. One note,
+  after the discussion of Theorem 6.2 (`thm:base6`): its finite part
+  reappears in two later unreviewed notes filed in `../../representations/`
+  (batch 72), which do not cite this article. With `h = 1/3`, the two largest
+  source uniforms here have lengths `6h` and `h` and the targets `3h` and `2h`.
+  `../../representations/Universal_Fabius_Mask_Criterion/` (end of its Section
+  4) shows that, under any common tilt, the sum law of uniforms of lengths
+  `h` and `6h` is not divisible by that of uniforms of lengths `2h` and `3h`,
+  although `[6]_u/([2]_u [3]_u) = 1 - u + u^2` is a polynomial; its signed
+  factor `delta_0 - delta_h + delta_{2h}` is, up to translation,
+  `delta_{-1/3} + delta_{1/3} - delta_0` without the tail `tau`. Theorem 5.1
+  of `../../representations/Uniform_Smoothing_Mask_Stabilization/` shows that
+  nine further uniforms of length `h` make it a probability measure and eight
+  do not; the tail `tau` (support length `1/15 < h`) does not. The
+  prefix-count theorems of the first note and of
+  `../../representations/Arithmetic_Geometric_Mask_Order/` use the method of
+  Theorem 3.2 (`thm:hall`) for sub-masks of one geometric family, where a
+  composite base causes no obstruction.
+- `article.pdf`: rebuilt from the amended source with the three `pdflatex`
+  passes that `build.sh` runs (MiKTeX 26.2, pdfTeX 1.40.29): 24 pages, as
+  before, 536,629 bytes; no error, undefined reference or citation,
+  duplicate destination, overfull or underfull box; no Type 3 font. The page
+  carrying the note was rendered and inspected.
+- `README.md`: this section.

@@ -7,6 +7,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
 \newcommand{\Law}{\operatorname{Law}}\newcommand{\TV}{\operatorname{TV}}
 \newcommand{\ind}{\mathbf1}\newcommand{\dd}{\,\mathrm d}
@@ -215,6 +217,19 @@ All $f$-divergences have the corresponding opposite information-loss order. Comm
 \begin{proof}
 Pair the $r$th source index $r$ with the target $m+r$. Its source cap is larger by the factor $q^{-m}>1$. Apply Theorem~\ref{thm:main} to the bounded log-concave weight $e^{T_n}\ind_{\{T_n\le\mu_n\}}$. Common observations are handled by adjoining the same indices to both masks and retaining an admissible cap matching.
 \end{proof}
+% ed. (2026-10-01): made strict by the next note; proved before for q = 1/M (same series)
+\begin{ednote}
+The next note of the series, \path{../Strict_Fabius_Conditioning_Order/},
+makes inequality~\eqref{eq:fabiusorder} strict for total variation (its
+Corollary~4.2: $\operatorname{Overlap}^{\rm late}_{n,m}<
+\operatorname{Overlap}^{\rm early}_{n,m}$ for the same $q$, $\rho$, $n$ and
+$m$, also with common observations) and recalls Lemma~\ref{lem:rectangle} in
+its Section~2. For $q=1/M$, inequality~\eqref{eq:fabiusorder} had been proved
+by \path{../Exact_Fabius_Mask_Order/} (its equation~(12)) with one residue
+kernel valid for every total-sum reweighting. The comparison of
+\cite{SecondOrder} that the corollary strengthens from ``eventually'' to every
+finite parameter is its Corollary~3.3.
+\end{ednote}
 
 \section{Scope and verification}
 The kernel in Theorem~\ref{thm:main} may depend on $w$. There is generally no single kernel valid for every log-concave weight: lower-threshold indicators are themselves log-concave, and one kernel for every threshold already determines the entire sum-reweighting experiment. The arithmetic obstructions proved in \cite{Arithmetic} therefore remain valid. The present theorem settles a different comparison, the binary pair for each fixed log-concave weight.
@@ -224,6 +239,16 @@ Arbitrary additive noise is not included without a further hypothesis. The proof
 The source's arbitrary-mask question \cite{Repository} concerns sharper cap-profile-dependent crossover behavior. The finite-parameter order \eqref{eq:fabiusorder} complements those asymptotic questions. It strengthens the comparison of the two specified masks beyond the eventual critical-window comparison in \cite{SecondOrder}, while using their exact observed-versus-hidden convention.
 
 The package contains exact rational checks of the rectangle inequality for piecewise-constant sign profiles, together with reproducible finite-product numerical checks. These support the formulas and orientation; the proofs above establish the continuous and countable statements. Pr\'ekopa marginalization, Brunn--Minkowski, convex order, and martingale coupling are classical inputs. The report makes no worldwide priority claim and is an ordinary mathematical proof, not a formalized or externally refereed result.
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the sixth of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The companion \cite{SecondOrder}, source
+\texttt{Second\_Order\_Fabius\_Crossover.tex}, is filed as \path{../Second_Order_Critical_Complements_Fabius_Conditioning/}
+(batch~71, filed 2026-09-30, before the commit inspected here);
+\cite{Arithmetic}, source \texttt{arithmetic\_geometric\_mask\_order.tex}, is
+\path{../Arithmetic_Geometric_Mask_Order/}; and \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}.
+\end{ednote}
 
 \begin{thebibliography}{9}\small\raggedright
 \setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}

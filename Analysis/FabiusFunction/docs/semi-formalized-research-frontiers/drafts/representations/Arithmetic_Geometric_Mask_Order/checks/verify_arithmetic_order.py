@@ -11,6 +11,20 @@ from math import gcd
 from pathlib import Path
 import json
 
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def valuations(n):
     exponents = []
@@ -98,7 +112,8 @@ def main():
                 residue_prefix_vs_matching_pairs=pairs,dominant_pairs=dominant,
                 nonexceptional_rational_pairs=rational_cases,canonical_periods=examples,
                 scope='Finite arithmetic regression. The countable-transform and universal-kernel statements are proved analytically.')
-    Path(__file__).with_name('arithmetic_order_results.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('arithmetic_order_results.json', json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ('canonical_periods','scope')},sort_keys=True))
 
 

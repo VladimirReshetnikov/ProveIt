@@ -235,9 +235,11 @@ def regression_checks(gamma_cases: list, one_cap_cases: list) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    # ed. (2026-10-01): the default is rerun/numerical_results.json beside this
+    # program (as delivered it overwrote the recorded checks/numerical_results.json).
     parser.add_argument(
         "--output", type=Path,
-        default=Path(__file__).resolve().with_name("numerical_results.json"),
+        default=Path(__file__).resolve().parent / "rerun" / "numerical_results.json",
         help="Destination for detailed machine-readable results.",
     )
     args = parser.parse_args()
@@ -266,7 +268,8 @@ def main() -> int:
         "regression_checks": checks,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")
+    # ed. (2026-10-01): LF line endings on every platform (write_text gave CRLF on Windows).
+    args.output.write_bytes((json.dumps(result, indent=2, allow_nan=False) + "\n").encode("utf-8"))
     print(f"Wrote {args.output}")
     print(f"Regression checks: {sum(c['passed'] for c in checks['cases'])}/{len(checks['cases'])} passed")
     for family, cases in (("Gamma", gamma_cases), ("one-cap", one_cap_cases)):

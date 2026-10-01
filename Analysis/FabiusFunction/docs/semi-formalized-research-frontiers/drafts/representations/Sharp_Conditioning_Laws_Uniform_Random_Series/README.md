@@ -3,7 +3,7 @@
 **Variance thresholds, boundary phases, Brownian bridges, and rare-event sampling**
 
 A 26-page research article prepared for Vladimir Reshetnikov, dated
-28 September 2026. The paper develops conditional configuration results
+28 September 2026 (27 pages with the editorial notes of 2026-10-01). The paper develops conditional configuration results
 connected to the Fabius–Rvachev endpoint program in ProveIt.
 
 ## Main result
@@ -124,3 +124,42 @@ Made in the editorial pass after batches 66 to 68 of `docs/incoming/` (see
   recomputed for the filed PDF; its other fields describe the delivered
   build.
 - `README.md`: this section.
+
+## Editorial amendments (ProveIt, 2026-10-01)
+
+Made in the editorial pass after batch 72 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-10-01)`. The mathematical text is unchanged.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-10-01)") is defined after `ednote`. Two notes, on the
+  later unreviewed note `../Proportional_Fabius_Mask_Edgeworth/` (batch 72):
+  - after Question 13.1 (`q:rates`) and its discussion: for geometric weights
+    and hidden bulk fractions in a fixed `[delta, 1 - delta]` it gives, uniformly
+    over masks, an `O(n^{-1/2})` Gaussian approximation of the observed block
+    sum in total variation under both laws, an `O(n^{-1/2})` `L^1(Q_t)` bound
+    between the block likelihood ratio and the Gaussian likelihood ratio
+    normalized by bulk counts, and total variation to `O(n^{-3/2})` after its
+    `1/n` term; complement fractions tending to zero and general weights are
+    not treated;
+  - after Question 13.3 (`q:edgeworth`) and its discussion: it answers the
+    question at order `1/n` for geometric weights in that regime; it
+    re-derives `eq:block-ratio` as an exact slack identity, expands the
+    observed-sum densities under both laws to order `1/n` with `L^1`
+    remainder `O(n^{-3/2})`, and obtains
+    `TV(P_{t,I}, Q_{t,I}) = Delta(alpha_t) + U(1 - alpha_t)/V + O(V^{-3/2})`,
+    `U(eta) = phi(c) c (2c^4 - c^2 - 3 eta (1 - eta))/(18 eta^2)`,
+    `c = sqrt(-eta log eta/(1 - eta))`; no joint expansion with the slack
+    `D_t`, no higher order and no general weights.
+  The 2026-09-30 note's last sentence ("General weights and `q:edgeworth` are
+  not treated") concerns the two critical-complement packages and stays
+  true.
+- `article.pdf`: rebuilt from the amended source with `latexmk -pdf` (MiKTeX
+  pdfTeX 1.40.29): 27 pages (26 before), 897,935 bytes, with no error,
+  undefined reference, multiply defined label, duplicate destination or
+  overfull box, and the delivered table-cell underfull warning only; every
+  font is embedded and none is Type 3. The pages carrying the notes were
+  rendered and inspected. `validation.json`'s `pdf_pages` and `pdf_sha256`
+  were recomputed for the filed PDF; its other fields describe the delivered
+  build.
+- `README.md`: the page count at the top and this section.

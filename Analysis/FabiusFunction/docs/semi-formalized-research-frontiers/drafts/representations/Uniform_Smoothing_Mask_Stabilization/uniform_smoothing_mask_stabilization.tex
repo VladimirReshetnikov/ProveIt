@@ -7,6 +7,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
 \newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
 \newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
@@ -246,12 +248,41 @@ For comparison, the first nonnegative half-step coefficient certificate occurs a
  (1,11,54,154,276,308,187,33,33,187,308,276,154,54,11,1).
 \]
 This proves a sufficient bound through \eqref{eq:halfsplit}; the spline certificate improves it to the optimal order nine.
+% ed. (2026-10-01): the equal-cardinality case is the preceding note's theorem; the base-six quotient of two uncited repository articles
+\begin{ednote}
+At $r=0$, Theorem~\ref{thm:fixed} is Theorem~3.1 of the preceding note of the
+series \cite{Masks}, as stated after it, and
+criterion~\eqref{eq:maskcriterion} is that note's Theorem~1.1, whose proof is
+recalled in Section~1. The quotient $1-u+u^2$ of Theorem~\ref{thm:nine} is the
+base-six obstruction of two repository articles that neither note cites:
+Theorem~\texttt{thm:base6} of
+\path{../../spectra-and-arithmetic/Simultaneous_Convolution_Divisors_Fabius_Type_Laws/}
+(uniforms on $[-1/2,1/2]$ and $[-1/3,1/3]$ do not jointly divide the law of
+$\sum_{k\ge0}6^{-k}U_k$, $U_k$ uniform on $[-1,1]$) and
+Proposition~\texttt{prop:base6} of
+\path{../../spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/}.
+There the two largest source uniforms have lengths $6h$ and $h$ ($h=1/3$,
+respectively $1/6$) and the targets $3h$ and $2h$, and the signed factor is
+$\delta_{-h}-\delta_0+\delta_h$, the measure $\eta_P$ above scaled by $h$ and
+centred, convolved with the law of the remaining geometric tail. That tail is
+supported on an interval shorter than $h$ and leaves a negative mass at the
+centre, whereas by Theorem~\ref{thm:nine} nine independent uniforms of
+length~$h$ remove it and eight do not.
+\end{ednote}
 
 \clearpage
 \section{Attribution and interpretation}
 The eventual coefficient-positivity mechanism is P\'olya's theorem. Powers and Reznick \cite{PowersReznick,Corners} give primary accounts and quantitative refinements. Handelman \cite{Handelman}, introduction pages 2--3, discusses eventual positivity of finite signed lattice measures under convolution powers and traces the discrete theory to earlier work. These are substantial antecedents; the present note makes no broad priority claim for eventual positivity.
 
 The use here is the half-unit decomposition \eqref{eq:halfsplit}, the resulting exact stabilization criterion for commensurate observation masks, and the explicit minimal-order spline certificate. The fixed-order result extends the preceding mask report \cite{Masks} to unequal cardinalities. All conclusions concern one kernel valid throughout the total-sum weight or threshold family. They do not assert that every individual two-hypothesis comparison has the same obstruction. The proofs are ordinary mathematical arguments, not formalized or externally refereed results.
+% ed. (2026-10-01): series map: the notes of the series and the companion cited here
+\begin{ednote}
+This note is the fourth of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The preceding report \cite{Masks}, source
+\texttt{universal\_fabius\_mask\_criterion.tex}, is filed as
+\path{../Universal_Fabius_Mask_Criterion/}; the ProveIt source question pinned
+there is that of \path{../Critical_Complements_Sharp_Information_Loss/}.
+\end{ednote}
 
 \begin{thebibliography}{9}\small\raggedright
 \setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}

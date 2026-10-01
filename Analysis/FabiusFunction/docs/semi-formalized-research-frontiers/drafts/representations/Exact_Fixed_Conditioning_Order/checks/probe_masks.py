@@ -3,6 +3,20 @@ import json, math
 import numpy as np
 from scipy.optimize import minimize_scalar, brentq
 from probe_singletons import mean, SumUniform
+
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
 nodes,weights=np.polynomial.legendre.leggauss(16)
 
 def evaluate_uniform(obj,x,power):
@@ -62,7 +76,8 @@ def main():
             closest.append(record)
         if len(bad)>=10:break
     out=dict(cases=count,countercandidates=bad,smallest_gaps=sorted(closest,key=lambda x:x['gap'])[:10])
-    Path(__file__).with_name('mask_probe.json').write_text(json.dumps(out,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('mask_probe.json', json.dumps(out,indent=2)+'\n')
     print('DONE',count,'countercandidates',len(bad),flush=True)
 
 if __name__=='__main__':main()

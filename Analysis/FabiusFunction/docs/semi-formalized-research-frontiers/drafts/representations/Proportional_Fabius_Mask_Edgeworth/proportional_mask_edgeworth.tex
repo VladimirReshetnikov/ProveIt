@@ -7,6 +7,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\TV}{\operatorname{TV}}
 \newcommand{\Var}{\operatorname{Var}}\newcommand{\Law}{\operatorname{Law}}\newcommand{\KL}{\operatorname{KL}}
 \newcommand{\ind}{\mathbf1}\newcommand{\dd}{\,\mathrm d}\newcommand{\ph}{\varphi}
@@ -20,6 +22,23 @@ The repository already proves a Gaussian variance-fraction limit for arbitrary o
 
 \section{Source question, model, and result}
 \emph{Sharp Conditioning Laws for Uniform Random Series} already proves the Gaussian binary limit, its total-variation profile, and its forward relative-entropy limit for arbitrary deterministic masks and general positive summable weights \cite{Repository}. Its questions \texttt{q:rates} and \texttt{q:edgeworth} ask for uniform errors and phase-sensitive conditional expansions. The contribution here is the explicit correction and uniform remainder in the geometric proportional regime. Exponential tilting, Gibbs conditioning, and Edgeworth methods are classical; see, for example, \cite{DZ}. No general new Edgeworth principle or worldwide priority claim is made.
+% ed. (2026-10-01): scope of the answers to the source's two questions, and the dictionary to its notation
+\begin{ednote}
+The source \cite{Repository} is filed beside this note as
+\path{../Sharp_Conditioning_Laws_Uniform_Random_Series/}. Its question
+\texttt{q:edgeworth} is answered here at order $1/n$, for geometric weights
+and hidden bulk fractions in a fixed interval $[\delta,1-\delta]$; its
+question \texttt{q:rates} only in part: it asks for bounds uniform for
+observed variance fractions $\alpha_t\le1-\varepsilon_t$ with
+$\varepsilon_t\downarrow0$, whereas the rates here ($O(n^{-1/2})$ for the
+Gaussian approximation in Section~6, $O(n^{-3/2})$ for total variation after
+its $1/n$ term) hold for a fixed $\delta$. In that article's notation ($V=V_T$,
+and $\alpha_t=1-\xi$ the observed variance fraction) the leading term
+$\mathcal V(\xi)$ of \eqref{eq:varianceform} is its profile $\Delta(\alpha_t)$,
+and the exact likelihood \eqref{eq:slack} below is its block likelihood
+ratio, its equation~(6.1), whose denominator is the normalization $J(t)$ of
+its Theorem~5.1.
+\end{ednote}
 
 Fix $q\in(0,1)$ and $\rho>0$. Under $Q_n$, let the coordinates be independent with densities
 \begin{equation}\label{eq:coordinates}
@@ -297,6 +316,20 @@ $\eta$ & Predicted $\mathcal U(\eta)$ & $n(\TV-\mathcal V)$ at $n=10000$\\\midru
 These are numerical regression checks, not certified enclosures or substitutes for the uniform proof. Additional one-cap calculations test nonzero variance defects and exact mean centering.
 
 The constants in the theorem are finite uniform bounds, not numerically optimized error constants. Fractions approaching zero or one require a different analysis; the present result does not replace the critical-complement expansions. Higher profile cumulants and further terms remain possible continuations. The theorem answers a specified repository question in this geometric regime. It is an ordinary mathematical proof, not formal verification or an externally refereed result.
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the eighth and last of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The companion \cite{Critical}, source
+\texttt{Second\_Order\_Fabius\_Crossover.tex}, is the second-order article,
+filed as \path{../Second_Order_Critical_Complements_Fabius_Conditioning/} (batch~71, filed 2026-09-30); the signed
+measures $\nu_a$ and the product bound in \eqref{eq:weighted} are its
+equations~(5.1) and~(5.2), and they appear earlier as equation~(4.1) and
+Lemma~4.1 of its source \path{../Critical_Complements_Sharp_Information_Loss/}. The companion \cite{Strict},
+source \texttt{strict\_fabius\_conditioning\_order.tex}, is
+\path{../Strict_Fabius_Conditioning_Order/}; Corollary~\ref{cor:canonical}
+quantifies, for $\delta n\le h\le(1-\delta)n$, the strict order of its
+Corollary~4.2, which holds for every $n\ge2$ and $1\le m<n$.
+\end{ednote}
 
 \begin{thebibliography}{9}\small\raggedright
 \setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}

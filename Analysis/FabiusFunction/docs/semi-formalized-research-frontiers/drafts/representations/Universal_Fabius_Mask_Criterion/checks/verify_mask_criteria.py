@@ -12,6 +12,20 @@ from math import comb
 from pathlib import Path
 import json
 
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def trim(p):
     p = list(p)
@@ -156,7 +170,8 @@ def main():
     result = dict(status='passed', arithmetic='exact rational and integer',
                   geometric=test_geometric(), overlap=test_overlap(), gaussian=test_gaussian(),
                   scope='Finite regression checks. Countable-mask and arbitrary-noise statements are proved analytically.')
-    Path(__file__).with_name('mask_criteria_results.json').write_text(json.dumps(result, indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('mask_criteria_results.json', json.dumps(result, indent=2)+'\n')
     print(json.dumps(result, sort_keys=True))
 
 

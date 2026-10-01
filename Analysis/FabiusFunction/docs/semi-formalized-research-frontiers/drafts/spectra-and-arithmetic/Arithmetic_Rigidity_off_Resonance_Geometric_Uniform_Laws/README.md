@@ -169,3 +169,48 @@ kept as delivered.
   console's line endings.
 - `README.md`: the file list (page count, build record, retired ledger), the
   note under the verification command, and this section.
+
+### Editorial amendments (ProveIt, 2026-10-01)
+
+Made in the editorial pass after batch 72 of `docs/incoming/`; every change
+to the source is marked `% ed. (2026-10-01)`. The mathematical text is
+unchanged.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-10-01)") is defined after `ednote`. Two notes, on two
+  later unreviewed notes filed in `../../representations/` (batch 72), which
+  do not cite this article (nor it them):
+  - after Theorem 3.1 (`thm:separated`) and its remark:
+    `../../representations/Arithmetic_Geometric_Mask_Order/` compares
+    observation masks of independent uniforms of lengths `c q^i` under a
+    common tilt by one kernel valid for every total-sum reweighting, which by
+    Theorem 1.1 of `../../representations/Universal_Fabius_Mask_Criterion/`
+    is convolution divisibility of the observed sums; for `q` in the
+    nonresonant set `N`, Theorem 3.1 here forces every target length `c q^j`
+    to be `c q^i / n` with distinct `i`, hence `i = j`, `n = 1`, and the order
+    is mask inclusion, case 1 of that note's Theorem 2.1. That note proves
+    it by the same zero-multiplicity argument, also for ratios with a
+    rational but no integer power of `1/q`, and orders the masks for
+    `q = M^{-1/d}` by prefix counts in the residue classes modulo `d`, a
+    sub-mask analogue of the rationality classes of Theorem 6.2
+    (`thm:channels`);
+  - after the question "Composite reciprocal returns" and its discussion:
+    for finite sources the finite step of the suggested route is carried out
+    there. For uniforms of lengths `a_i h` over `b_j h`, divisibility under a
+    common tilt is decided by `P(u) = prod [a_i]_u / prod [b_j]_u`: with
+    equally many uniforms, `P` must be a polynomial with nonnegative
+    coefficients (Theorem 3.1 of the second note); with `r` more source
+    uniforms, `P` must be a polynomial whose coefficient measure at spacing
+    `h`, convolved with `r` uniforms of length `h`, is nonnegative (Theorem
+    1.1 of `../../representations/Uniform_Smoothing_Mask_Stabilization/`). For
+    the lengths of Proposition 11.1 (`prop:base6`, `h = 1/6`) the quotient is
+    `1 - u + u^2`, and nine further uniforms of length `h` make the factor a
+    probability measure, eight do not (Theorem 5.1 there), whereas the tail
+    `D_{1/36} mu_{1/6}` (support length `1/30`) leaves the negative central
+    mass. The infinite tail of `mu_q` is not treated there.
+- `article.pdf`: rebuilt from the amended source with three `pdflatex` passes
+  (MiKTeX 26.2, pdfTeX 1.40.29): 25 pages, as before, 540,279 bytes, US
+  Letter, with no error, undefined reference, multiply defined label,
+  duplicate destination, overfull or underfull box; every font embedded, no
+  Type 3 font. The pages carrying the notes were rendered and inspected.
+- `README.md`: this section.

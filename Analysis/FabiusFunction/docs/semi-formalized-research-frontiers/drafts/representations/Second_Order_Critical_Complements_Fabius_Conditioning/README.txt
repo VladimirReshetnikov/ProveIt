@@ -97,3 +97,28 @@ OpenAI") are kept as delivered.
   "Diagnostics" above).
 - README.txt: the four unlisted files under "Contents", the parentheses
   under "Ordinary TeX build" and "Diagnostics", and this section.
+
+A second editorial pass the same day, after batch 72 of docs/incoming/,
+added:
+- Second_Order_Fabius_Crossover.tex: a third note, after the proof of
+  Corollary 3.3 (cor:comparison): the strict order of the two masks holds at
+  every finite parameter, not only eventually. The later note
+  ../Strict_Fabius_Conditioning_Order/ (batch 72, unreviewed) proves
+  O^late_{n,m} < O^early_{n,m} for every q in (0,1), rho > 0, n >= 2 and
+  1 <= m < n (its Corollary 4.2), in the same model with the same masks and
+  superscripts; the nonstrict order for every f-divergence is Corollary 4.1
+  of ../Exact_Fixed_Conditioning_Order/, and for q = 1/M
+  ../Exact_Fabius_Mask_Order/ realizes it by one residue map valid for every
+  total-sum reweighting. The limit (3.12) is not affected. For
+  delta n <= m <= (1 - delta) n, Corollary 5.2 of
+  ../Proportional_Fabius_Mask_Edgeworth/ gives
+  O^early - O^late = phi(c) c D(q, rho)/m + O(n^{-3/2}), with
+  D(q, rho) = sum_{r>=1} a_r^2 e^{a_r}/(e^{a_r} - 1)^2. These notes bear on
+  the third question of Section 7 only in part.
+- Second_Order_Fabius_Crossover.pdf: rebuilt again (three pdflatex passes,
+  MiKTeX 26.2, pdfTeX 1.40.29): 10 A4 pages, as before, 567,183 bytes;
+  all 16 fonts embedded, none Type 3; the final log has no error, overfull
+  or underfull box, undefined or multiply defined reference, duplicate
+  destination, or rerun request. The page carrying the note was rendered and
+  inspected.
+- README.txt: this paragraph.

@@ -29,6 +29,8 @@
 \newtheorem{remark}[theorem]{Remark}
 % ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a second unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\N}{\mathbb N_0}
 \newcommand{\Np}{\mathbb N_{>0}}
 \newcommand{\Q}{\mathbb Q}
@@ -252,6 +254,29 @@ A used coordinate contributes maximal absolute value $(s_k-a_j)/2$, and an unuse
 \begin{remark}[Why positivity follows here]
 The entire quotient in (ii) has not been declared positive definite by an abstract analytic criterion. Positivity is supplied by the independently constructed random variable \eqref{eq:remainder}. Irrational separation prevents two proposed uniforms from drawing on the same simple-zero family, leaving exactly the integer interval refinements that have an elementary probabilistic realization.
 \end{remark}
+% ed. (2026-10-01): a later note in another group proves a special case without citing this article (batch 72)
+\begin{ednotelater}
+A later unreviewed note filed in another group of the repository's Fabius
+drafts tree, \path{../../representations/Arithmetic_Geometric_Mask_Order/}
+(batch~72 of the repository's \path{docs/incoming/}, 2026-10-01), proves a special case of
+\cref{thm:separated}; neither article cites the other. It compares observation
+masks $E,L$ of independent uniform coordinates of lengths $cq^i$, under a
+common exponential tilt, by one Markov kernel valid for every reweighting of
+the total; by Theorem~1.1 of
+\path{../../representations/Universal_Fabius_Mask_Criterion/} this holds
+exactly when the law of the observed sum over $L$ is a convolution factor of
+that over $E$. For $q\in\NR$ the source lengths are rationally separated, and
+\cref{thm:separated} gives divisibility exactly when every target length
+$cq^j$ equals $cq^{\kappa(j)}/n_j$ with $\kappa$ injective, which forces
+$\kappa(j)=j$ and $n_j=1$: the order is mask inclusion, case~1 of that note's
+Theorem~2.1. (Translation does not affect divisibility, and a common
+exponential tilt carries a factorization to one of the tilted laws and back.)
+That note proves this by the zero-multiplicity argument used here, also for
+ratios with a rational but no integer power of $1/q$, and for $q=M^{-1/d}$,
+$d$ least, it orders the masks by prefix counts in the residue classes
+modulo~$d$, a sub-mask analogue of the rationality classes of
+\cref{thm:channels}.
+\end{ednotelater}
 
 \section{Generic geometric targets}\label{sec:generic}
 \begin{proposition}[Size of the nonresonant parameter set]\label{prop:full}
@@ -788,6 +813,29 @@ The first milestone should be a two-prime example with a fully proved positive c
 For $q^h=1/B$ with $B$ divisible by at least two primes, characterize exactly which entire Fourier quotients are positive definite. Is there a useful additional finite condition beyond zero-multiplicity domination for a finite family of uniforms?
 \end{question}
 A possible route is to exploit a common integer grid for a sufficiently long finite prefix, obtain a finite Laurent-polynomial quotient, and control the untouched tail. Negative coefficients are decisive only when their translates cannot be masked by overlap of the tail support; the base-six example succeeds because those supports are disjoint.
+% ed. (2026-10-01): the finite step of this route for finite sources, in two later notes (batch 72)
+\begin{ednotelater}
+For finite sources the finite step of this route has since been carried
+out, without citing this article, in two later unreviewed notes filed in
+\path{../../representations/} (batch~72 of the repository's \path{docs/incoming/}, 2026-10-01). For
+independent uniforms of lengths $a_ih$ (source) and $b_jh$ (target) with
+positive integers $a_i,b_j$, under a common tilt, divisibility of the source
+sum law by the target sum law is decided by
+$P(u)=\prod_i[a_i]_u/\prod_j[b_j]_u$, $[a]_u=1+u+\dots+u^{a-1}$: with equally
+many source and target uniforms it holds exactly when $P$ is a polynomial with
+nonnegative coefficients (Theorem~3.1 of
+\path{../../representations/Universal_Fabius_Mask_Criterion/}); with $r$ more
+source uniforms, exactly when $P$ is a polynomial and the measure with the
+coefficients of $P$ at spacing $h$, convolved with $r$ uniforms of length $h$,
+is nonnegative (Theorem~1.1 of
+\path{../../representations/Uniform_Smoothing_Mask_Stabilization/}). For the
+lengths $h$, $6h$ over $2h$, $3h$ of \cref{prop:base6} ($h=1/6$) the quotient
+is $1-u+u^2$; nine further uniforms of length $h$ make the factor a
+probability measure and eight do not (Theorem~5.1 of the second note), whereas
+the remaining tail $D_{1/36}\mu_{1/6}$, of support length $1/30$, leaves the
+negative central mass. The infinite tail of $\mu_q$, which this question is
+about, is not treated there.
+\end{ednotelater}
 
 \begin{question}[Arbitrary probability factors]
 For $q\in\NR$, classify convolution factors of $\mu_q$ that are not assumed to be uniform-series laws. Does rational separation impose any useful canonical decomposition on all compactly supported factors, or can zero subsets within one sinc family interact in substantially more flexible ways?

@@ -7,6 +7,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}
 \newcommand{\TV}{\operatorname{TV}}\newcommand{\ind}{\mathbf1}\newcommand{\dd}{\,\mathrm d}
 \title{Strict Conditioning Order for Fabius Observation Masks}
@@ -192,11 +194,34 @@ The strict inequality remains valid after adding any common observation mask out
 \begin{proof}
 Match source index $r$ to target $m+r$. Every source cap exceeds its target by the factor $q^{-m}>1$. Apply Corollary~\ref{cor:masks}; overlap is one minus total variation.
 \end{proof}
+% ed. (2026-10-01): the corollary subsumes an earlier one of the series and the eventual comparison of batch 71
+\begin{ednote}
+Corollary~\ref{cor:fabius} contains Corollary~4.1 of
+\path{../Exact_Fabius_Mask_Order/} (strict for $q=1/M$, $1\le\rho<M$ and
+$n\ge3$), proved there by digit forcing, and it makes the comparison of
+\path{../Second_Order_Critical_Complements_Fabius_Conditioning/} (its
+Corollary~3.3: the same model, masks and superscripts, strict for all
+sufficiently large $n$ when $m/\log n\to c\in(0,\infty)$) hold at every
+$n\ge2$ and $1\le m<n$; the limit of the normalized difference proved there is
+not affected. For $\delta n\le m\le(1-\delta)n$ the difference is quantified
+by Corollary~5.2 of \path{../Proportional_Fabius_Mask_Edgeworth/}:
+$\operatorname{Overlap}^{\rm early}_{n,m}-\operatorname{Overlap}^{\rm
+late}_{n,m}=\varphi(c)c\,\mathcal D(q,\rho)/m+O(n^{-3/2})$, with $\varphi$ the
+standard normal density and $c=c(m/n)$, $\mathcal D(q,\rho)>0$ explicit there.
+\end{ednote}
 
 \section{Scope and verification}
 The theorem concerns a fixed lower-threshold conditioning compared with a fixed common tilt. It does not assert a single Markov kernel valid for all total-sum weights. The arithmetic obstructions to that stronger universal comparison remain separate. Arbitrary added noise and arbitrary log-concave weights are not covered by the strict application theorem; the normalized pair lemma has its own explicit hypotheses.
 
 The package includes exact rational checks of the levelwise strictness criterion, the generic zero-gap counterexample, and a normalized affine-profile family with gap $|\kappa|(a-b)/8$. These are regression checks; the proof handles all parameters, infinite sums, and common observations. Classical log-concavity results are credited above. The note makes no worldwide priority claim and is neither formally verified nor externally refereed. It strengthens the finite-parameter nonstrict comparison in \cite{Nonstrict}, without changing that companion's scope or the source's asymptotic cap-profile questions \cite{Repository}.
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the seventh of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The preceding report \cite{Nonstrict}, source
+\texttt{exact\_fixed\_conditioning\_order.tex}, is filed as
+\path{../Exact_Fixed_Conditioning_Order/}, and \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}.
+\end{ednote}
 
 \begin{thebibliography}{9}\small\raggedright
 \setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}

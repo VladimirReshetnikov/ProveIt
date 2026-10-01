@@ -8,6 +8,8 @@
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{question}{Question}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
 \newcommand{\TV}{\operatorname{TV}}\newcommand{\KL}{\operatorname{KL}}
 \newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
@@ -208,6 +210,28 @@ Proposition~\ref{prop:strict} applies with $s_0=\mu_n$.
 \end{proof}
 
 The strict corollary makes no assertion at $n=2$, where the non-strict comparison still holds; at $n=1$ there is no nontrivial pair of these masks.
+% ed. (2026-10-01): both Fabius statements of this section were extended to every ratio by later notes of the series
+\begin{ednote}
+Both statements of this section were extended to every geometric ratio by
+later notes of the series (listed in the note at the end of this article).
+For the binary pair $(P_n,Q_n)$, inequality~\eqref{eq:finiteorder} holds for
+every $q\in(0,1)$, $\rho>0$, $n\ge2$ and $1\le m<n$, for all $f$-divergences,
+by Corollary~4.1 of \path{../Exact_Fixed_Conditioning_Order/}. Its kernel may
+depend on the conditioning, whereas the residue map here works for every
+total-sum reweighting at once; for other ratios such a common kernel exists
+only under the arithmetic conditions of Theorem~2.1 of
+\path{../Arithmetic_Geometric_Mask_Order/}. Corollary~\ref{cor:finite-strict}
+is contained in Corollary~4.2 of \path{../Strict_Fabius_Conditioning_Order/}:
+$\mathcal O^{\rm late}_{n,m}<\mathcal O^{\rm early}_{n,m}$ for every $0<q<1$,
+$\rho>0$, $n\ge2$ and $1\le m<n$, also with common observations, in the same
+convention (the superscripts name the hidden blocks). That covers $n=2$ and
+the phases outside $[1,M)$, and it makes the strict ordering of the earlier
+expansion \cite{second}, called eventual above, hold at every finite $n$. That
+corollary concerns total variation only; Proposition~\ref{prop:strict},
+through which Corollary~\ref{cor:finite-strict} is proved, also gives a strict
+decrease of every strictly convex divergence of finite value in its phase
+cell.
+\end{ednote}
 
 \section{Exact conditioning at every interior sum}\label{sec:exact}
 A regular conditional law can be altered at a null conditioning value. We therefore specify the canonical version before asserting an all-value result.
@@ -271,6 +295,35 @@ For small-sum conditioning, when is total-variation contraction strict outside P
 \begin{question}
 Can the deterministic ordering be combined with complement cumulant asymptotics to obtain quantitative differences for noncomparable masks? Exact comparison and sharp rate classification are distinct tasks.
 \end{question}
+% ed. (2026-10-01): series map: the later notes of the series and the companions cited here
+\begin{ednote}
+This note is the first of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The later notes cite this one by its source file
+\texttt{exact\_fabius\_mask\_order.tex}. The ``separate companion research
+note'' \cite{second}, source \texttt{Second\_Order\_Fabius\_Crossover.tex},
+is filed as \path{../Second_Order_Critical_Complements_Fabius_Conditioning/} (batch~71, filed 2026-09-30, before the
+commit inspected here), and \cite{critical} is \path{../Critical_Complements_Sharp_Information_Loss/}.
+Later notes re-prove the sufficiency of Theorem~\ref{thm:masks} in other
+forms: Section~3 of the second reproduces Lemma~\ref{lem:swap} for one
+coordinate, and for geometric caps the residue maps follow from the
+independent residue vectors in the proofs of Theorem~2.1 of the third
+($q=1/M$) and Theorem~2.1 of the fifth (every $q$ with an integer power of
+$1/q$), which also prove that no kernel valid for all weights exists outside
+their prefix-count conditions. Theorem~\ref{thm:masks} for divisible caps that
+are not geometric, and Theorem~\ref{thm:exact}, are not re-proved there. The
+three questions above are answered in part. For one observed coordinate, no
+cap pair without integer divisibility admits a comparison valid for all
+total-sum weights (Theorem~1.1 of the second note), while for masks Gaussian
+polynomials give such comparisons, for example caps $(5,6,7)$ over $(1,2,3)$
+(Section~4 of the third). For threshold conditioning of the uniform product,
+the contraction under one cap exchange $a>b$ is strict in total variation
+unless $\beta=0$ and the conditioning is vacuous (Theorem~1.1 of the
+seventh). For hidden bulk fractions $\eta$ in a fixed compact subinterval of
+$(0,1)$, two hidden masks $H_1,H_2$ of equal size differ in overlap by
+$\varphi(c)c\{\operatorname{Var}S_{H_1}-\operatorname{Var}S_{H_2}\}/(\eta n)
++O(n^{-3/2})$, with $\varphi$ the standard normal density and $c=c(\eta)$
+explicit (Corollary~5.1 of the eighth).
+\end{ednote}
 
 \begin{thebibliography}{9}\small
 \bibitem{st} F. W. Steutel and J. G. F. Thiemann, \emph{On the independence of integer and fractional parts}, Memorandum COSOR 87-29, Eindhoven University of Technology, 1987.\newline\url{https://pure.tue.nl/ws/files/1660926/338442.pdf}
