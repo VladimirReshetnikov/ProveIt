@@ -231,7 +231,44 @@
 > not the possibility of a different86-operation universal construction.
 > Established75/87 and the separate independent-gamma87 status are unchanged.
 >
-> The latest [combined-range U21 compiler](korec_packed_zero_range397.md)
+> The latest [selector-pair U21 compiler](korec_packed_selector_sharing378.md)
+> gives **377 certificate /378=141M+237A operations**, one comparison,
+> 50 positive witnesses, one fixed program parameter and degree at most21549.
+> The [preceding shared-selector380](korec_packed_selector_sharing380.md)
+> saves17 additions by reusing five paid disjoint sums; two further paid
+> selector pairs save two more. Both are exact whole-polynomial identities
+> on the same supplied integer coordinates. The distinct two-program
+> interface gives377=142M+235A, degree at most40706.
+> The [complete shifted factor frontier](korec_packed_selector_reuse_partitions.md)
+> reaches **386/7704 with50 witnesses** or **389/3896 with51**; corresponding
+> two-program endpoints are385/14552 and388/7352. Every plan of the
+> [preceding four-base family](korec_packed_factor_partitions.md) loses2A
+> with unchanged degree dictionaries. These are exact finite propagated
+> minima, not exact degrees or unrestricted lower bounds. Within one fixed
+> base grouping preserves supplied positive zeros; across strong/scale
+> bases the accepted outer relation is preserved by explicit scale maps
+> and canonical private strong extensions.
+>
+> The [literal Tseytin word-table audit](tseytin_group_completion_obstruction.md)
+> records a genuine five-generator, nine-relation fixed-target universal
+> semigroup and its effective primary word reduction. Its universal group
+> is trivial: every direct invertible-matrix interpretation loses the language,
+> including the false equality b=aaa. The raw base-eight commutator query has
+> length |S|+20x+19 and needs more than a fixed auxiliary-free arithmetic
+> loader. A paid compressed/existential loader and unbounded rewrite history
+> remain open; no universal operation count is claimed for this substrate.
+>
+> The [independent gamma-period audit](complete75_independent_gamma87_local_filters.md)
+> reimplements the already established Lucas filter with three comparison
+> states and checks coarse prime-power caps. The earlier compiler/order
+> packet has stronger parity/mod3 bounds. The audit's additional main-kernel
+> fixture R=753407,q=32 certifies a=6 modulo7 and a=31 modulo127. On any actual
+> history with these residues,7 divides the period gcd and five-power-width
+> aliases must respect x=x0 modulo7.
+> This is not an actual compiled history or a full false-input zero; the
+> independent-gamma87 candidate remains unresolved and the75/87 bounds hold.
+>
+> The preceding [combined-range U21 compiler](korec_packed_zero_range397.md)
 > gives **396 certificate /397=141M+256A operations**, one comparison,
 > 50 positive witnesses, one fixed program parameter and degree at most21549.
 > The two-program radix interface gives **396=142M+254A**, degree at most40706.

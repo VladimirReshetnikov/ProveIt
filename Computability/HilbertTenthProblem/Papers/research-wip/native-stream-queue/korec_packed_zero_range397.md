@@ -1,5 +1,10 @@
 # One range mask also checks zero branches:397 U21 operations
 
+> Successor: [exact selector reuse](korec_packed_selector_sharing378.md) saves
+> another19 additions, reaching378/377 operations in the two interfaces.
+> [Four-base partitions](korec_packed_selector_reuse_partitions.md) provide the
+> corresponding operation/degree tradeoffs.
+
 The [literal compiler](korec_packed_zero_range397.py) gives **397=141M+256A**
 operations with one fixed positive program parameter, ordinary positive input,
 50 positive witnesses and degree at most21549. Its two-program radix interface

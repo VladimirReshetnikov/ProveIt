@@ -1,5 +1,10 @@
 # Counter factor partitions trade380/21549 for391/3896
 
+> Successor: [two exact selector reuses](korec_packed_selector_reuse_partitions.md)
+> shift every plan down by2A with unchanged degrees and witnesses. Its
+> one-program endpoints are378/21549,386/7704 with50 witnesses, and389/3896
+> with51. The original source and receipt below remain reproducible.
+
 The [literal compiler](korec_packed_factor_partitions.py) expands the
 [selector-sharing380 construction](korec_packed_selector_sharing380.md)
 into four complete native bases and optimizes every disjoint factor

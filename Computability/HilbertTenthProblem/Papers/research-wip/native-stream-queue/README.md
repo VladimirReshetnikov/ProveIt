@@ -243,7 +243,44 @@ with44 witnesses; the fixed43-witness family reaches272/1344. These
 remain optima only for the stated finite propagated-degree objective.
 The established75/87 frontier is unchanged.
 
-The latest [combined-range U21 compiler](korec_packed_zero_range397.md)
+The latest [selector-pair U21 compiler](korec_packed_selector_sharing378.md)
+gives **377 certificate /378=141M+237A operations**, one comparison,
+50 positive witnesses, one fixed program parameter and degree at most21549.
+The [preceding shared-selector380](korec_packed_selector_sharing380.md)
+saves17 additions by reusing five paid disjoint sums; two further paid
+selector pairs save two more. Both are exact whole-polynomial identities
+on the same supplied integer coordinates. The distinct two-program
+interface gives377=142M+235A, degree at most40706.
+The [complete shifted factor frontier](korec_packed_selector_reuse_partitions.md)
+reaches **386/7704 with50 witnesses** or **389/3896 with51**; corresponding
+two-program endpoints are385/14552 and388/7352. Every plan of the
+[preceding four-base family](korec_packed_factor_partitions.md) loses2A
+with unchanged degree dictionaries. These are exact finite propagated
+minima, not exact degrees or unrestricted lower bounds. Within one fixed
+base grouping preserves supplied positive zeros; across strong/scale
+bases the accepted outer relation is preserved by explicit scale maps
+and canonical private strong extensions.
+
+The [literal Tseytin word-table audit](tseytin_group_completion_obstruction.md)
+records a genuine five-generator, nine-relation fixed-target universal
+semigroup and its effective primary word reduction. Its universal group
+is trivial: every direct invertible-matrix interpretation loses the language,
+including the false equality b=aaa. The raw base-eight commutator query has
+length |S|+20x+19 and needs more than a fixed auxiliary-free arithmetic
+loader. A paid compressed/existential loader and unbounded rewrite history
+remain open; no universal operation count is claimed for this substrate.
+
+The [independent gamma-period audit](complete75_independent_gamma87_local_filters.md)
+reimplements the already established Lucas filter with three comparison
+states and checks coarse prime-power caps. The earlier compiler/order
+packet has stronger parity/mod3 bounds. The audit's additional main-kernel
+fixture R=753407,q=32 certifies a=6 modulo7 and a=31 modulo127. On any actual
+history with these residues,7 divides the period gcd and five-power-width
+aliases must respect x=x0 modulo7.
+This is not an actual compiled history or a full false-input zero; the
+independent-gamma87 candidate remains unresolved and the75/87 bounds hold.
+
+The preceding [combined-range U21 compiler](korec_packed_zero_range397.md)
 gives **396 certificate /397=141M+256A operations**, one comparison,
 50 positive witnesses, one fixed program parameter and degree at most21549.
 The two-program radix interface gives **396=142M+254A**, degree at most40706.
@@ -1763,6 +1800,12 @@ New research and the completed75-operation construction:
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
 | [Actual positive-complement86 collapse](complete75_positive_complement86_all_input_collapse.md) | The specific86-operation candidate accepts every positive input on every actual modified compiler slice. | Full19-positive-coordinate existence proof and exact rejecting-program corollary; Dirichlet/CRT/rotation plus complete normalized lift. No giant zero materialized;75/87 unchanged. |
+| [Two more paid U21 selector pairs](korec_packed_selector_sharing378.md) | **378=141M+237A**,50w,one program,degree at most21549; two-program377/40706. | Two exact1A prefix replacements retain complete integer polynomials, supplied coordinates and degree dictionaries. |
+| [Shifted U21 factor frontier](korec_packed_selector_reuse_partitions.md) | **386/7704 with50w or389/3896 with51w**; two-program385/14552 or388/7352. | All68 parent group-count winners lose2A; unchanged weights transport exact finite optima and attained floors. |
+| [Exact U21 selector reuse](korec_packed_selector_sharing380.md) | **380=141M+239A**,50w,one program,degree at most21549; two-program379/40706. | Five paid disjoint control sums save17 additions with identical whole polynomials and supplied positive zero sets. |
+| [Complete U21 factor partitions](korec_packed_factor_partitions.md) | **388/7704 with50w or391/3896 with51w**; two-program387/14552 or390/7352. | Four complete strong/scale bases per interface, exact finite partitions/anchors and attained propagated floors. Same-base supplied zeros; cross-base accepted-input equivalence. |
+| [Literal Tseytin word-table obstruction](tseytin_group_completion_obstruction.md) | Numerical five-generator/nine-relation universal word substrate; exact effective primary query map. | Universal group is trivial, so direct invertible-matrix substitution loses the language. Raw positional loader is exponential; no paid universal arithmetic count. |
+| [Independent gamma-period audit and7 fixture](complete75_independent_gamma87_local_filters.md) | Three-state reimplementation of the prior Lucas filter; R753407/q32 certifies a7-local order divisor. | Earlier parity/mod3 caps are stronger. Fixture meets main-kernel prerequisites only; no actual history/full false zero; independent-gamma87 remains unresolved. |
 | [Combined U21 range/zero mask](korec_packed_zero_range397.md) | **397=141M+256A**,1eq50w,one program,degree at most21549; two-program396/40706. | Narrow the global bound to the zero-cleared mask before native typing, specialize A=Z+4, and use paid B*P^35. Accepted-input equivalence with fresh native witnesses. |
 | [Minimal U21 time radix](korec_packed_minimal_radix405.md) | One-program405/36165; two-program404/68314; both50w. | B=D^8 deletes one M; paid S supplies X=q(S+beta). Direct chronology and fresh extension; bound-only triangular map applies at the new B. |
 | [Exact U21 port factorization](korec_packed_factored_ports406.md) | One-program406; two-program405; four additions saved. | Complete polynomial identity on identical integer coordinates; same degree dictionaries and supplied positive zeros. |

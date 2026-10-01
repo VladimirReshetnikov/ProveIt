@@ -1,5 +1,10 @@
 # An ordinary-input universal substrate from group commutators
 
+> Concrete substrate check: the [literal Tseytin table](tseytin_group_completion_obstruction.md)
+> gives a universal word reduction but has trivial universal group. A direct
+> invertible-matrix interpretation therefore fails; paid rewrite histories
+> and compressed/existential word loaders remain separate open routes.
+
 For every computably enumerable set `S` of positive integers, one can
 compute a finite list of integer matrices generating a subgroup of
 `SL(4,Z)` whose membership problem, along a fixed quadratic matrix curve

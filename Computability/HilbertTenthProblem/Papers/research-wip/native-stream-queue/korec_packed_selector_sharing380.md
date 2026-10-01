@@ -1,5 +1,10 @@
 # Paid control sums reduce the U21 compiler to380 operations
 
+> Successors: [two further paid pairs](korec_packed_selector_sharing378.md)
+> reduce the count to378. The [shifted factor family](korec_packed_selector_reuse_partitions.md)
+> reaches386/7704 with50 witnesses or389/3896 with51. Its degree minima
+> concern the stated finite propagated objective.
+
 The [literal successor](korec_packed_selector_sharing380.py) saves **17
 additions** from the [zero-range397 compiler](korec_packed_zero_range397.md).
 Its default is **380=141M+239A**, with379 certificate operations, one
