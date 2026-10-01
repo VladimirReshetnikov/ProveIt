@@ -18,6 +18,10 @@ proves p odd globally and, on the remaining R<0,mu>0 branch, excludes
 p=2n-1 and requires n<p<=2n-3; zero wrap requires E<3p. These further
 necessary conditions still leave the86 candidate unresolved.
 
+The later [gap-three exclusion](complete75_weakened86_gap_three.md)
+strengthens the same R<0,mu>0 branch to n<p<=2n-5. It does not settle
+larger odd gaps or mu<0; the source and theorem below are unchanged.
+
 ## 1. Definitions and signs available at any candidate zero
 
 Retain every fixed compiler hypothesis of

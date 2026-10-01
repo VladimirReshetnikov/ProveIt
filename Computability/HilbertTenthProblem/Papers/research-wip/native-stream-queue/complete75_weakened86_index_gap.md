@@ -19,6 +19,11 @@ source hash. Its **86=48M+38A**,19 positive supplied coordinates and exact
 degree203 are unchanged. No comparison, predicate or arithmetic gate is
 added to that source. The established75/87 bounds remain unchanged.
 
+The [gap-three successor](complete75_weakened86_gap_three.md) further
+excludes p=2n-3 by an exact finite certificate, strengthening this branch
+to n<p<=2n-5. Larger odd gaps and mu<0 remain unresolved; this note's
+proof and source are unchanged.
+
 ## 1. The inherited positive-domain facts
 
 Assume a positive zero under the fixed compiler contract of the

@@ -978,14 +978,46 @@ universality theorem uses periodic infinite hardware plus a finite input
 perturbation. Its loading, planar motion/turns and acceptance are absent;
 finite physical-ant fixtures do not pay them or establish a universal count.
 
-A concrete next task, **not implemented or counted as a current result**, is
-adapting291's positive scale parametrization to standalone prescribed AND64:
-replace X=q*w with X=q*(r+beta), reuse the bound gate, and remove w and
-the size comparison. The intended inverse uses the raw native conclusion
-X=2^(2r+1) and X/q>r. A full generic rewrite/domain audit is still needed;
-only then could the possible three-operation polynomial saving be applied
-to the frozen244 Wang or158 toggle source. Unit and definition projections
-are further proposals, not included savings.
+The [generic positive-scale rewrite](native_binary_positive_scale.md) is
+now complete: X=q(r+b) reuses the bound gate and removes w and its
+comparison. The forward lift is w_old=r+b,
+beta_old=q(r+b)-r>0; at every parent zero, X=2^(2r+1) and
+q=2^popcount(r) imply b=X/q-r>0. Callers must prove q>=1 before
+equations and a complete legitimate parent AND embedding; row guards
+alone do not establish those semantic hypotheses. Standalone AND costs
+64 certificate /108=48M+60A,15eq21w,degree at most28.
+The [motion successor](wang_b_packed_motion_positive_scale.md) costs
+188 certificate /241=99M+142A,18eq34w,degree at most316;
+the [toggle successor](langton_ant_packed_toggle_positive_scale.md) costs
+105 certificate /155=65M+90A,17eq27w,degree at most124. These are
+positive zero-set bijections with the frozen parents above, including
+all supplied outer histories; their endpoint and missing-control scopes
+are unchanged.
+
+The [computed-field successor](native_binary_computed_fields.md) replaces
+supplied a,c,d,k,r,s by their already-paid positive defining registers.
+The dependency order s,k,r,X,Y,a,c,d proves positivity before equations;
+all gates remain charged. Its exact integer graph identity and positive
+inverse preserve full zero sets, and compose with the prior scale map.
+Six fields after scale give AND90=42M+48A,9eq15w,exact degree44;
+motion223=93M+130A,12eq28w,degree at most696; and
+toggle137=59M+78A,11eq21w,degree at most256. Certificates stay64,188,105.
+The four-field choice a,d,k,s gives96/28,229/316 and143/124 respectively,
+with17,30,23 witnesses. All128 standalone subset/scale schedules have
+exact degree witnesses; their restricted operation/degree frontier is
+90/44,93/40,96/28. Component degrees remain conservative bounds.
+Checks include2,816 complete identities,1,408 signed, and128 genuine
+outer transfers/416 rows with native placeholders, not full Pell zeros.
+Independent manual graph formulas add640 full source/output identities,
+320 signed, over all128 standalone choices and eight component schedules.
+
+Next arithmetic work is to audit generic first-norm, unit-product and
+coupled-index rewrites after these graph substitutions. Do not import
+untyped sign or rank assumptions from a different kernel. No operation
+savings from those unimplemented finalizers are claimed. Finite-program
+control, branches and ordinary input remain separate computational
+obligations for Wang; planar turns, periodic hardware and input loading
+remain obligations for the ant component.
 
 The [finite lattice-game NOR compiler](lattice_game_positive_nor.md) is a
 separate exact degree-four family. At each nonterminal use positive
@@ -1055,9 +1087,20 @@ wrapped target as omega*p-j*c,0<=j<=2M-1. ModuloY,
 j*psi_2(p)+2n-omega*p-lambda=0. Its positive size gives
 Y<=(2M-1)*psi_2(p)+3p-1. Ratio growth contradicts this if p=2n-1;
 hence n<p<=2n-3. At zero wrap omega=-1 and E divides2n+p-lambda<3p,
-so E<3p. Other odd gaps and the mu<0 branch remain unexcluded. The512
-modular fixtures,1,950 growth cases and90 incompatible-interval checks
-are partial audits, not full candidate zeros. No universal86 bound follows.
+so E<3p. Its512 modular fixtures,1,950 growth cases and90 interval checks
+are partial audits, not full candidate zeros.
+
+The [gap-three successor](complete75_weakened86_gap_three.md) further
+excludes p=2n-3, giving n<p<=2n-5 on R<0,mu>0. The retained computed
+main-root bound X<=2^p is essential. Necessary growth first bounds
+16<=q<=315 and13<=p<=141, p odd; the actual compiler relation leaves
+36 possible q values. Intersecting exact bounds leaves87 nonempty(q,p)
+pairs and237 triples(q,p,w). The474 ratio coefficient arrays have the
+required signs after division by Y^p; certified integer endpoints
+exclude every positive scale Y=sq^3. This is exhaustive on the proved
+necessary gap-three domain, not evidence for candidate zeros. A ratio-only
+regression violates X<=2^p and is explicitly excluded. Larger odd gaps
+and mu<0 remain unresolved; the86 source and established75/87 do not change.
 
 Other useful work: optimize symbol-code assignments or joint offset forms,
 try smaller cyclic/queue rewriting substrates with fully paid ordinary

@@ -110,6 +110,21 @@ all free-head endpoint pairs are realizable. Ant turns/motion, its periodic
 hardware background, the input perturbation and acceptance remain outside
 the component. These paid histories do not establish universal bounds.
 
+The [positive native-scale coordinate](research-wip/native-stream-queue/native_binary_positive_scale.md)
+gives prescribed AND **64 certificate /108 polynomial**,15 comparisons,
+21 witnesses and degree at most28. Its positive zero-set bijection gives
+[Wang motion241](research-wip/native-stream-queue/wang_b_packed_motion_positive_scale.md)
+with18 comparisons,34 witnesses and degree at most316, and
+[toggle155](research-wip/native-stream-queue/langton_ant_packed_toggle_positive_scale.md)
+with17 comparisons,27 witnesses and degree at most124; certificates stay188
+and105. Computing [six already-paid native fields](research-wip/native-stream-queue/native_binary_computed_fields.md)
+further gives **AND90/degree44**,9 comparisons,15 witnesses;
+**motion223/degree-at-most696**,12 comparisons,28 witnesses; and
+**toggle137/degree-at-most256**,11 comparisons,21 witnesses. Computing
+four fields instead gives AND96/28, motion229/316 and toggle143/124.
+All are complete component polynomials with the same endpoint relations;
+no controller, ant geometry or ordinary-input interface is added.
+
 The [finite-game positive NOR compiler](research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes on every fixed acyclic option graph with
 one bilinear row per nonterminal. Its degree-at-most-four family grows
@@ -129,9 +144,11 @@ The [positive-index86 theorem](research-wip/native-stream-queue/complete75_weake
 proves the unresolved86 candidate sound whenever its computed R>0,
 without assuming alpha>Z. R=0 is impossible; the negative-R branch
 remains unresolved. The [index-gap restrictions](research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
-prove the main Pell index p odd globally; when R<0 and mu>0 they give
-n<p<=2n-3, with E<3p in the zero-wrap case. These are necessary conditions,
-not a universal86 theorem; the established75/87 bounds are unchanged.
+prove the main Pell index p odd globally, with E<3p at zero wrap on
+R<0,mu>0. The [gap-three exclusion](research-wip/native-stream-queue/complete75_weakened86_gap_three.md)
+strengthens R<0,mu>0 to n<p<=2n-5 by excluding all237 necessary triples
+at p=2n-3. Larger odd gaps and mu<0 remain unresolved; this is not a
+universal86 theorem and the established75/87 bounds are unchanged.
 Native queue components retain their separate scope.
 
 - Every displayed system, machine table and count of the six articles was

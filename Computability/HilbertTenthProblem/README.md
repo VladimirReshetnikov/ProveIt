@@ -143,6 +143,21 @@ all free-head endpoint pairs are realizable. Ant turns/motion, its periodic
 hardware background, the input perturbation and acceptance remain outside
 the component. These paid histories do not establish universal bounds.
 
+The [positive native-scale coordinate](Papers/research-wip/native-stream-queue/native_binary_positive_scale.md)
+gives prescribed AND **64 certificate /108 polynomial**,15 comparisons,
+21 witnesses and degree at most28. Its positive zero-set bijection gives
+[Wang motion241](Papers/research-wip/native-stream-queue/wang_b_packed_motion_positive_scale.md)
+with18 comparisons,34 witnesses and degree at most316, and
+[toggle155](Papers/research-wip/native-stream-queue/langton_ant_packed_toggle_positive_scale.md)
+with17 comparisons,27 witnesses and degree at most124; certificates stay188
+and105. Computing [six already-paid native fields](Papers/research-wip/native-stream-queue/native_binary_computed_fields.md)
+further gives **AND90/degree44**,9 comparisons,15 witnesses;
+**motion223/degree-at-most696**,12 comparisons,28 witnesses; and
+**toggle137/degree-at-most256**,11 comparisons,21 witnesses. Computing
+four fields instead gives AND96/28, motion229/316 and toggle143/124.
+All are complete component polynomials with the same endpoint relations;
+no controller, ant geometry or ordinary-input interface is added.
+
 A separate [positive NOR compiler for finite game graphs](Papers/research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
 For a fixed acyclic graph with N vertices,h nonterminals and E edges,
@@ -278,9 +293,11 @@ retains its full strong equation.
   [positive-index theorem](Papers/research-wip/native-stream-queue/complete75_weakened86_positive_index.md)
   proves soundness whenever computed R>0, without alpha>Z. R=0 is
   impossible; R<0 remains unresolved. The [index-gap theorem](Papers/research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
-  makes p odd globally and, for R<0 with mu>0, gives n<p<=2n-3;
-  zero wrap requires E<3p. These necessary conditions do not establish
-  a universal86 bound. These optimized results are not yet Lean formalized.
+  makes p odd globally; R<0,mu>0 at zero wrap requires E<3p. The
+  [gap-three exclusion](Papers/research-wip/native-stream-queue/complete75_weakened86_gap_three.md)
+  strengthens R<0,mu>0 to n<p<=2n-5 by excluding all237 remaining
+  necessary triples for p=2n-3. Larger odd gaps and mu<0 remain unresolved;
+  no universal86 bound follows. These results are not yet Lean formalized.
 - The [normalized sparse TM compiler](Papers/research-wip/native-stream-queue/gpcp_normalized_strong_compiler.md)
   gives a second complete universal route at **805 operations**,125 positive
   witnesses and degree205092. Fixed orientations and shared forced edge

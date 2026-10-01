@@ -123,6 +123,21 @@ all free-head endpoint pairs are realizable. Ant turns/motion, its periodic
 hardware background, the input perturbation and acceptance remain outside
 the component. These paid histories do not establish universal bounds.
 
+The [positive native-scale coordinate](../research-wip/native-stream-queue/native_binary_positive_scale.md)
+gives prescribed AND **64 certificate /108 polynomial**,15 comparisons,
+21 witnesses and degree at most28. Its positive zero-set bijection gives
+[Wang motion241](../research-wip/native-stream-queue/wang_b_packed_motion_positive_scale.md)
+with18 comparisons,34 witnesses and degree at most316, and
+[toggle155](../research-wip/native-stream-queue/langton_ant_packed_toggle_positive_scale.md)
+with17 comparisons,27 witnesses and degree at most124; certificates stay188
+and105. Computing [six already-paid native fields](../research-wip/native-stream-queue/native_binary_computed_fields.md)
+further gives **AND90/degree44**,9 comparisons,15 witnesses;
+**motion223/degree-at-most696**,12 comparisons,28 witnesses; and
+**toggle137/degree-at-most256**,11 comparisons,21 witnesses. Computing
+four fields instead gives AND96/28, motion229/316 and toggle143/124.
+All are complete component polynomials with the same endpoint relations;
+no controller, ant geometry or ordinary-input interface is added.
+
 A separate [positive NOR compiler for finite game graphs](../research-wip/native-stream-queue/lattice_game_positive_nor.md)
 forces exact Boolean outcomes using one bilinear row per nonterminal.
 For a fixed acyclic graph with N vertices,h nonterminals and E edges,
@@ -177,9 +192,11 @@ proves soundness for every zero with computed R>0, even when alpha<=Z,
 by restoring the weaker101 interface. R=0 is impossible. The remaining
 negative-R region is unresolved; outer fixtures there are not full
 polynomial zeros. The [index-gap theorem](../research-wip/native-stream-queue/complete75_weakened86_index_gap.md)
-proves p odd globally, and R<0 with mu>0 requires n<p<=2n-3.
-Zero wrap additionally requires E<3p. Other gaps and the mu<0 branch
-remain open; no universal improvement below87 is claimed.
+proves p odd globally; R<0,mu>0 at zero wrap requires E<3p. The
+[gap-three exclusion](../research-wip/native-stream-queue/complete75_weakened86_gap_three.md)
+now strengthens R<0,mu>0 to n<p<=2n-5: every one of237 remaining
+necessary triples for p=2n-3 fails an exact ratio test. Larger odd gaps
+and mu<0 remain open; no universal improvement below87 is claimed.
 
 **Current complete certificate: 75=41M+34A operations.** The
 [complete half-binomial proof](FIXED_RAW_UNIVERSAL_75_PROOF.md) retains the
