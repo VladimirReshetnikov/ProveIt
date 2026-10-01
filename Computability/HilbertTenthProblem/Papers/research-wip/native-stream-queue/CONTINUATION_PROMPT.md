@@ -14,7 +14,27 @@
 > The full compiler contract, both ratio slacks and `F>0` are retained.
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
-> The latest complete explicit U9/tag source is
+> The latest explicit [dominated-endpoint U9 polynomial](neary_woods_universal_height256.md)
+> gives **255 certificate /256=133M+123A polynomial operations**,
+> one comparison,43 positive witnesses, four positive program parameters
+> and degree **at most1384**. The computed terminal endpoint already exceeds
+> the upper endpoint, so one height addition is redundant. Direct soundness
+> and a positive forward map preserve accepted inputs on valid shifted
+> program slices; the inverse affine slack map need not remain positive.
+> The entire preceding finite partition family shifts down by one operation,
+> reaching **268 operations, degree at most212, with44 witnesses**, or264/456 with43.
+> This preserves the inherited propagated-bound scope, not an all-circuit
+> optimum. The E'=E−1 recipe and paid ordinary-input interface are unchanged.
+>
+> The uniformly shifted operation/degree-bound frontier is256/1384,
+> 258/1242,259/1196,260/858,261/606,262/560,263/458,264/412,265/306,
+> 266/276,267/230 and268/212. The first four use43 witnesses and the rest44;
+> fixed43 ends264/456 and fixed45 ends271/212. Source guards reconstruct
+> the canonical parent and private endpoint sums. At a parent zero set
+> eta_new=eta_parent+Ufinal; direct soundness uses the individual endpoint
+> bounds, not a positive inverse assumption.
+>
+> The preceding complete explicit U9/tag source is
 > **257=133M+124A**,256 certificate operations,1 comparison,43 positive
 > witnesses and four positive program parameters, degree at most1384:
 > [positive history scale](neary_woods_universal_history_scale257.md).
@@ -25,7 +45,7 @@
 > program/input slices, with beta_new>=17. It is not an arbitrary-point
 > polynomial identity. The E'=E−1 offset recipe and raw input are unchanged.
 >
-> The [new all-factor history-scale search](neary_woods_universal_history_scale_partitions.md)
+> The [preceding all-factor history-scale search](neary_woods_universal_history_scale_partitions.md)
 > covers all sixteen strong/scale bases and every factor partition/anchor.
 > Its finite operation/degree-bound frontier is257/1384,259/1242,260/1196,
 > 261/858,262/606,263/560,264/458,265/412,266/306,267/276,268/230,269/212.
@@ -58,7 +78,7 @@
 > retains E' but uses the older history-scale definition. Its sixteen-base
 > frontier gives265/1112,266/1066,267/742 and268/712 with44 witnesses,
 > ending269/608; fixed43 witnesses end266/1344. This historical family is
-> distinct from both the new257 scale search and the older-E family below.
+> distinct from both the257 scale search and the older-E family below.
 >
 > A separate [all-factor32-base search](neary_woods_universal_history_unit_partitions.md)
 > retains the older E semantics. It permits every factor partition and
@@ -84,6 +104,22 @@
 > The [mask-unit263 parent](neary_woods_universal_mask_unit263.md) retains
 > 252 certificate gates,4eq43w and degree at most3857; its selected
 > degree608 option costs273 with44 witnesses.
+>
+> A different [multiplicative-gamma86 shortcut](complete75_multiplicative_gamma86_obstruction.md)
+> replaces gamma=rho+sigma by rho*sigma and costs86=48M+38A with19 witnesses.
+> Its valid compiler slices are **EMPTY**, including accepted inputs: a
+> Pell projection-polynomial divisibility obstruction rules out every
+> positive zero. This rejects this specific shortcut, separately from the
+> weakened-bound86 all-input collapse and the unresolved independent-gamma87
+> route; the established75/87 constructions are unchanged.
+>
+> The [fixed-modulus count obstruction](complete75_fixed_modulus_count_obstruction.md)
+> also rules out a guarded input-bridge replacement: if x is read only
+> through alpha+a*x and m*(t−1)+c*x with fixed positive a,m,c, acceptance is
+> closed under downward shifts by m/gcd(m,c) while the input stays positive. Each slice is
+> ultimately periodic, so it cannot represent the powers of two. This
+> assumes the stated port guard and fixed modulus; it does not apply to the
+> sparse compiler's paid variable radix and strict prefix-growth bounds.
 >
 > The specific [weakened-bound86 proposal](complete75_weakened_bound86_candidate.md)
 > is **REFUTED** by the [all-input collapse](complete75_weakened86_all_input_collapse.md)
@@ -224,8 +260,20 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > 134=64M+70A,21w5eq,degree at most748; zero duration costs two more gates.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
-> The [sparse prime-payload successor](residue_affine_sparse_universal.md)
-> now completes the universal route at **674=249M+425A**,651 certificate
+> The [factored prime/action successor](residue_affine_sparse_factored.md)
+> reduces the sparse prime-payload construction to **528 certificate /
+> 551=193M+358A polynomial operations**,8 comparisons,67 positive witnesses
+> and degree **at most10052**. Seven prime selections and two action
+> selections replace23 coefficient-pair selections; a shared remainder
+> correction removes both weighted offset forms. The one fixed program
+> parameter E=3^e, raw positive x, actual U21 table and paid growth/count
+> prefix are retained. Positive converse and fresh native extensions are
+> proved; this is not an arbitrary-point identity with674. It saves123
+> operations and14 witnesses in that route, while remaining above256,
+> Korec411 and the established75/87 frontier.
+>
+> The [sparse prime-payload predecessor](residue_affine_sparse_universal.md)
+> completes the universal route at **674=249M+425A**,651 certificate
 > operations,8 comparisons,81 positive witnesses and degree at most10416.
 > It has one fixed program parameter E=3^e and ordinary positive x.
 > The actual U21 body's34 branches plus two prefix edges give36 branches
@@ -236,8 +284,11 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > standalone exponent predicate. Acceptance targets the fixed halting
 > control class with a positive existential payload. Raw705/88w has degree
 > at most1564. This independent route is above257,411 and75/87.
-> Further work can reduce sparse lane/branch arithmetic while preserving
-> the paid prefix and chronological converse; no better bound is presumed.
+> Further work can reduce the551 source's remaining selector/control
+> arithmetic or prove safe transport units while preserving the paid
+> prefix and complete positive converse. The fixed-modulus count shortcut
+> above does not transfer this loader to complete75's fixed cell radix;
+> the multiplicative-gamma86 shortcut must not be promoted again.
 >
 > The [two-stack substrate](two_stack_affine_input_step.md) has a two-operation
 > ordinary-input prefix. [Factored selectors](two_stack_factored_selector_step.md)
