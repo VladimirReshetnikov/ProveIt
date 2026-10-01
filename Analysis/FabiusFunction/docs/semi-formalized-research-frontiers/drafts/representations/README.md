@@ -193,6 +193,23 @@ of an existing draft; semantic consolidation is deferred to the post-
   part of that article's `q:critical`; the slowly growing complement
   stays open.  Unreviewed; its numerics are not certificates; no Lean
   statement.
+- [`Critical_Complements_Sharp_Information_Loss/`](Critical_Complements_Sharp_Information_Loss/),
+  *Critical Complements in Fabius Conditioning: Sharp information loss,
+  geometric phase constants, and a logarithmic crossover* (24-page A4
+  PDF, 1,623-line source, a NumPy/SciPy diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone; an independently written second answer to
+  the uniform-series article's `q:critical`, under the same title as the
+  bullet above.  It observes a prefix and hides the last `m` bulk
+  coordinates with the tail: for fixed `m` the overlap is
+  `(½ log(2πn) + 1 + K_m + o(1))/√(2πn)` with an explicit phase constant
+  and an exact compact boundary correction, and relative entropy is
+  known to order `1/n`; for every `m = o(n)` a Lambert-W formula gives
+  the leading overlap, which changes regime at `m ≍ log n`, and relative
+  entropy is `½ log(n/m) − ½ + o(1)`.  With only the tail hidden it
+  agrees with the article above; for other complements the two treat
+  different coordinates and complement each other.  Unreviewed; its
+  numerics are not certificates; no Lean statement.
 - [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
   Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy

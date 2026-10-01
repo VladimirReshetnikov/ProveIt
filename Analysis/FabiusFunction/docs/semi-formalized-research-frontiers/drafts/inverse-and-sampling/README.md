@@ -1,6 +1,6 @@
 # Inverse and sampling
 
-This theme has thirteen live navigation targets:
+This theme has fourteen live navigation targets:
 
 - [`Inverse_Fabius_Analyticity_Asymptotics_and_Computability/`](Inverse_Fabius_Analyticity_Asymptotics_and_Computability/)
   — the canonical inverse-Fabius synthesis;
@@ -42,6 +42,9 @@ This theme has thirteen live navigation targets:
   — an archival arrival of 2026-09-29 on recovering the whole
   uniform-factor spectrum, or a fixed prefix of it, at the dyadic
   reference law; unreviewed.
+- [`Lacunarity_Boundary_Geometric_Uniform_Spectra/`](Lacunarity_Boundary_Geometric_Uniform_Spectra/)
+  — an archival arrival of 2026-09-30 on the exact separation boundary
+  `a_{j+1} ≤ a_j/2` of the anchored dyadic recovery problem; unreviewed.
 
 ## Canonical inverse synthesis
 
@@ -331,6 +334,19 @@ leading factors is recovered at Lipschitz rate with an arbitrary
 summable tail.  Testing the dyadic law against `δ`-separated
 alternatives needs `exp[Θ(log²(1/δ))]` samples.  The pairwise modulus
 remains open.  Unreviewed; no Lean statement.
+
+[`Lacunarity_Boundary_Geometric_Uniform_Spectra/`](Lacunarity_Boundary_Geometric_Uniform_Spectra/)
+holds *The Lacunarity Boundary: Two-Moment Rigidity and Sharp Recovery of
+Geometric Uniform Spectra*, filed on 2026-09-30 by a quick archival
+intake (22-page A4 PDF, 1,531-line source, a standard-library exact check
+program).  It answers the anchored article's question "The sharp
+separation boundary ρ=1/2": under `a_{j+1} ≤ a_j/2` with variance `1/9`,
+`sup_j |a_j − 2^{−j}|² ≤ (75/4)(19/675 − E X⁴)`, so the whole spectrum is
+recovered at the sharp rate `Θ(√ε)` — Hölder exponent `1/2`, against the
+stretched-exponential modulus under any slack — with matching smooth
+witnesses, prefix constants `Θ(2^r)`, testing complexity `Θ(δ^{−4})`,
+and support rigidity at the boundary.  The pairwise modulus and the
+small-slack crossover remain open.  Unreviewed; no Lean statement.
 
 ## Formalization notes
 

@@ -145,6 +145,25 @@ explicit mixture.  The left boundary layer, a sharp next term and
 unbounded detuning are not settled.  Unreviewed; its numerics are
 diagnostics, not certificates; no Lean statement.
 
+## Periodic anchors and mixed moments (arrival, 2026-09-30)
+
+[`Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/`](Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/)
+holds *Periodic Anchors and Exact Mixed-Moment Phase Diagrams* (21-page
+A4 PDF, 1,463-line source, an exact-arithmetic and diagnostic check
+program), filed on 2026-09-30 by a quick archival intake.  It multiplies
+several phase-shifted digital masks before taking a moment: when the
+phases fill complete periodic orbits of `x ↦ bx` with a common exponent
+per orbit, the pressure is exactly
+`−D log b + max{P_b(v), max_i(Q_i(v) + a_i log b)}` with every
+equilibrium measure classified, giving explicit mixed-moment exponents
+and phase diagrams for a squared shifted background, residue-class
+amplitudes without a background (exactly `3N−2, 4N−2, 4N+4` for the orbit
+`{1/7, 2/7, 4/7}`), explicit polyhedral pressure realizations and an
+expanding-map extension.  With one anchor at `0` it reproduces the
+atomic values of the pressure articles above; phase regularity is not
+treated.  Unreviewed; its numerics are diagnostics, not certificates; no
+Lean statement.
+
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total
 complex form at every level: the sinc and negative-Laplace block equalities
