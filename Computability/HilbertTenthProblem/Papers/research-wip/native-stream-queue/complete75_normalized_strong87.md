@@ -1,5 +1,10 @@
 # A normalized strong auxiliary witness gives 87 operations
 
+> Another rejected shortcut, [reusing H as the input modulus](complete75_input_modulus_register_obstruction.md),
+> keeps87 operations and formally lowers degree to187 but leaves every
+> valid compiler slice empty. Its scoped modulo-eight tests for eight
+> other paid moduli do not change the established theorem below.
+
 > Rejected shortcut: [multiplying the two quotient witnesses](complete75_multiplicative_gamma86_obstruction.md)
 > produces a distinct86-operation source with no positive zeros on any valid
 > compiler slice. The established87 theorem below is unchanged; this does not

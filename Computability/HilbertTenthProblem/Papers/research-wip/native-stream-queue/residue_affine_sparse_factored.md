@@ -1,5 +1,10 @@
 # Factoring prime and action masks in the sparse universal compiler
 
+> The [dominated-bound successor](residue_affine_sparse_bound540.md) gives540
+> operations with the same67 witnesses and degree bound10052. The subsequent
+> [positive computed scale](residue_affine_sparse_scale538.md) gives538/degree-at-most5091.
+> Both retain the actual U21, ordinary input and paid chronology below.
+
 The [complete literal source](residue_affine_sparse_factored.py) lowers the
 [674-operation prime-payload compiler](residue_affine_sparse_universal.md)
 to **551 = 193M + 358A**, with **67 positive witnesses**, **8 comparisons**
