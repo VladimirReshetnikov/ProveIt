@@ -1,0 +1,2304 @@
+{
+  "status": "PASS_GROUP_PROJECTIVE_PRODUCT_RADIX_SCALE",
+  "default_ledger": {
+    "certificate": {
+      "operations": 227,
+      "multiplications": 97,
+      "additions_subtractions": 130,
+      "equations": 6,
+      "witnesses": 36
+    },
+    "polynomial": {
+      "operations": 244,
+      "multiplications": 103,
+      "additions_subtractions": 141,
+      "output": "joint_outer_output",
+      "degree_upper_bound": 3396,
+      "unit_degree_bound": 3390,
+      "factor_degree_bounds": {
+        "first_unit": 472,
+        "selection__R15": 860,
+        "selection__P17": 500,
+        "index_unit": 389,
+        "linear_unit": 389,
+        "strong_unit": 778,
+        "joint_bound_unit": 2
+      },
+      "maximum_outer_residual_degree": 3,
+      "exact_degree_claimed": false
+    }
+  },
+  "source": [
+    [
+      "history__input_product",
+      "*",
+      24,
+      "x"
+    ],
+    [
+      "history__u",
+      "+",
+      "history__input_product",
+      13
+    ],
+    [
+      "D",
+      "+",
+      "history__u",
+      "height_slack"
+    ],
+    [
+      "history__c0",
+      "-",
+      "D",
+      1
+    ],
+    [
+      "B",
+      "*",
+      16,
+      "D"
+    ],
+    [
+      "history__dZ0",
+      "-",
+      "Zhat0",
+      "Zhat1"
+    ],
+    [
+      "history__dZ1",
+      "-",
+      "Zhat2",
+      "Zhat3"
+    ],
+    [
+      "history__dS1",
+      "-",
+      "controller__edge_hat3",
+      "controller__edge_hat4"
+    ],
+    [
+      "history__DdS1",
+      "*",
+      "history__c0",
+      "history__dS1"
+    ],
+    [
+      "history__delta1",
+      "-",
+      "history__dZ1",
+      "history__DdS1"
+    ],
+    [
+      "history__next1",
+      "+",
+      "H1",
+      "history__delta1"
+    ],
+    [
+      "history__left1",
+      "*",
+      "B",
+      "history__next1"
+    ],
+    [
+      "history__dZ2",
+      "-",
+      "Zhat4",
+      "Zhat5"
+    ],
+    [
+      "history__dS2",
+      "-",
+      "controller__edge_hat5",
+      "controller__edge_hat6"
+    ],
+    [
+      "history__DdS2",
+      "*",
+      "history__c0",
+      "history__dS2"
+    ],
+    [
+      "history__delta2",
+      "-",
+      "history__dZ2",
+      "history__DdS2"
+    ],
+    [
+      "history__next2",
+      "+",
+      "H2",
+      "history__delta2"
+    ],
+    [
+      "history__left2",
+      "*",
+      "B",
+      "history__next2"
+    ],
+    [
+      "history__dZ3",
+      "-",
+      "Zhat6",
+      "Zhat7"
+    ],
+    [
+      "history__dS3",
+      "-",
+      "controller__edge_hat7",
+      "controller__edge_hat8"
+    ],
+    [
+      "history__DdS3",
+      "*",
+      "history__c0",
+      "history__dS3"
+    ],
+    [
+      "history__delta3",
+      "-",
+      "history__dZ3",
+      "history__DdS3"
+    ],
+    [
+      "history__next3",
+      "+",
+      "H3",
+      "history__delta3"
+    ],
+    [
+      "history__left3",
+      "*",
+      "B",
+      "history__next3"
+    ],
+    [
+      "history__history_sum01",
+      "+",
+      "H0",
+      "H1"
+    ],
+    [
+      "history__history_sum012",
+      "+",
+      "history__history_sum01",
+      "H2"
+    ],
+    [
+      "history__history_sum",
+      "+",
+      "history__history_sum012",
+      "H3"
+    ],
+    [
+      "controller__cell_minus1",
+      "-",
+      "B",
+      1
+    ],
+    [
+      "controller__flow_raw_internal1",
+      "+",
+      "controller__edge_hat2",
+      "controller__edge_hat3"
+    ],
+    [
+      "controller__flow_raw_internal2",
+      "+",
+      "controller__flow_raw_internal1",
+      "controller__edge_hat4"
+    ],
+    [
+      "controller__flow_raw_internal3",
+      "+",
+      "controller__flow_raw_internal2",
+      "controller__edge_hat5"
+    ],
+    [
+      "controller__flow_raw_internal4",
+      "+",
+      "controller__flow_raw_internal3",
+      "controller__edge_hat6"
+    ],
+    [
+      "controller__flow_raw_internal5",
+      "+",
+      "controller__flow_raw_internal4",
+      "controller__edge_hat7"
+    ],
+    [
+      "controller__flow_raw_internal6",
+      "+",
+      "controller__flow_raw_internal5",
+      "controller__edge_hat8"
+    ],
+    [
+      "controller__flow_raw_internal7",
+      "+",
+      "controller__flow_raw_internal6",
+      "controller__edge_hat9"
+    ],
+    [
+      "controller__flow_checksum1",
+      "+",
+      "controller__flow_raw_internal7",
+      "controller__edge_hat1"
+    ],
+    [
+      "controller__flow_checksum2",
+      "+",
+      "controller__flow_checksum1",
+      "controller__edge_hat10"
+    ],
+    [
+      "computed_J",
+      "-",
+      "controller__flow_checksum2",
+      10
+    ],
+    [
+      "controller__geometry_product",
+      "*",
+      "controller__cell_minus1",
+      "computed_J"
+    ],
+    [
+      "controller__geometry_power",
+      "+",
+      "controller__geometry_product",
+      1
+    ],
+    [
+      "history__UP",
+      "*",
+      "history__c0",
+      "controller__geometry_power"
+    ],
+    [
+      "history__right_even",
+      "-",
+      "history__UP",
+      "D"
+    ],
+    [
+      "history__right0",
+      "+",
+      "H0",
+      "history__right_even"
+    ],
+    [
+      "history__right2",
+      "+",
+      "H2",
+      "history__right_even"
+    ],
+    [
+      "controller__lane_power1",
+      "*",
+      "controller__geometry_power",
+      "controller__geometry_power"
+    ],
+    [
+      "controller__lane_power2",
+      "*",
+      "controller__lane_power1",
+      "controller__lane_power1"
+    ],
+    [
+      "controller__lane_power3",
+      "*",
+      "controller__lane_power2",
+      "controller__lane_power2"
+    ],
+    [
+      "controller__lane_factor0",
+      "+",
+      "controller__geometry_power",
+      1
+    ],
+    [
+      "history__shared_odd_base",
+      "+",
+      "history__right_even",
+      "controller__lane_factor0"
+    ],
+    [
+      "history__right_odd",
+      "-",
+      "history__shared_odd_base",
+      "history__u"
+    ],
+    [
+      "history__right1",
+      "+",
+      "H1",
+      "history__right_odd"
+    ],
+    [
+      "history__right3",
+      "+",
+      "H3",
+      "history__right_odd"
+    ],
+    [
+      "controller__lane_factor1",
+      "+",
+      "controller__lane_power1",
+      1
+    ],
+    [
+      "controller__lane_factor2",
+      "+",
+      "controller__lane_power2",
+      1
+    ],
+    [
+      "controller__lane_factor3",
+      "+",
+      "controller__lane_power3",
+      1
+    ],
+    [
+      "controller__lane_repunit1",
+      "*",
+      "controller__lane_factor0",
+      "controller__lane_factor1"
+    ],
+    [
+      "controller__lane_repunit2",
+      "*",
+      "controller__lane_repunit1",
+      "controller__lane_factor2"
+    ],
+    [
+      "controller__lane_repunit3",
+      "*",
+      "controller__lane_repunit2",
+      "controller__lane_factor3"
+    ],
+    [
+      "controller__origin_mask",
+      "*",
+      "computed_J",
+      "controller__lane_repunit3"
+    ],
+    [
+      "selection__ht0",
+      "*",
+      "controller__lane_power1",
+      "H2"
+    ],
+    [
+      "selection__ht1",
+      "+",
+      "H3",
+      "selection__ht0"
+    ],
+    [
+      "selection__ht2",
+      "*",
+      "controller__lane_power1",
+      "selection__ht1"
+    ],
+    [
+      "selection__ht3",
+      "+",
+      "H0",
+      "selection__ht2"
+    ],
+    [
+      "selection__ht4",
+      "*",
+      "controller__lane_power1",
+      "selection__ht3"
+    ],
+    [
+      "selection__ht5",
+      "+",
+      "H1",
+      "selection__ht4"
+    ],
+    [
+      "selection__Hbatch",
+      "*",
+      "controller__lane_factor0",
+      "selection__ht5"
+    ],
+    [
+      "selection__Spack_mult6",
+      "*",
+      "controller__geometry_power",
+      "controller__edge_hat8"
+    ],
+    [
+      "selection__Spack_sum6",
+      "+",
+      "controller__edge_hat7",
+      "selection__Spack_mult6"
+    ],
+    [
+      "selection__Spack_mult5",
+      "*",
+      "controller__geometry_power",
+      "selection__Spack_sum6"
+    ],
+    [
+      "selection__Spack_sum5",
+      "+",
+      "controller__edge_hat6",
+      "selection__Spack_mult5"
+    ],
+    [
+      "selection__Spack_mult4",
+      "*",
+      "controller__geometry_power",
+      "selection__Spack_sum5"
+    ],
+    [
+      "selection__Spack_sum4",
+      "+",
+      "controller__edge_hat5",
+      "selection__Spack_mult4"
+    ],
+    [
+      "selection__Spack_mult3",
+      "*",
+      "controller__geometry_power",
+      "selection__Spack_sum4"
+    ],
+    [
+      "selection__Spack_sum3",
+      "+",
+      "controller__edge_hat4",
+      "selection__Spack_mult3"
+    ],
+    [
+      "selection__Spack_mult2",
+      "*",
+      "controller__geometry_power",
+      "selection__Spack_sum3"
+    ],
+    [
+      "selection__Spack_sum2",
+      "+",
+      "controller__edge_hat3",
+      "selection__Spack_mult2"
+    ],
+    [
+      "selection__Spack_mult1",
+      "*",
+      "controller__geometry_power",
+      "selection__Spack_sum2"
+    ],
+    [
+      "selection__Zpack_mult6",
+      "*",
+      "controller__geometry_power",
+      "Zhat7"
+    ],
+    [
+      "selection__Zpack_sum6",
+      "+",
+      "Zhat6",
+      "selection__Zpack_mult6"
+    ],
+    [
+      "selection__Zpack_mult5",
+      "*",
+      "controller__geometry_power",
+      "selection__Zpack_sum6"
+    ],
+    [
+      "selection__Zpack_sum5",
+      "+",
+      "Zhat5",
+      "selection__Zpack_mult5"
+    ],
+    [
+      "selection__Zpack_mult4",
+      "*",
+      "controller__geometry_power",
+      "selection__Zpack_sum5"
+    ],
+    [
+      "selection__Zpack_sum4",
+      "+",
+      "Zhat4",
+      "selection__Zpack_mult4"
+    ],
+    [
+      "selection__Zpack_mult3",
+      "*",
+      "controller__geometry_power",
+      "selection__Zpack_sum4"
+    ],
+    [
+      "selection__Zpack_sum3",
+      "+",
+      "Zhat3",
+      "selection__Zpack_mult3"
+    ],
+    [
+      "selection__Zpack_mult2",
+      "*",
+      "controller__geometry_power",
+      "selection__Zpack_sum3"
+    ],
+    [
+      "selection__Zpack_sum2",
+      "+",
+      "Zhat2",
+      "selection__Zpack_mult2"
+    ],
+    [
+      "selection__Zpack_mult1",
+      "*",
+      "controller__geometry_power",
+      "selection__Zpack_sum2"
+    ],
+    [
+      "selection__Zpack_sum1",
+      "+",
+      "Zhat1",
+      "selection__Zpack_mult1"
+    ],
+    [
+      "selection__Zpack_mult0",
+      "*",
+      "controller__geometry_power",
+      "selection__Zpack_sum1"
+    ],
+    [
+      "selection__Zpack_sum0",
+      "+",
+      "Zhat0",
+      "selection__Zpack_mult0"
+    ],
+    [
+      "selection__Zbatch",
+      "-",
+      "selection__Zpack_sum0",
+      "controller__lane_repunit2"
+    ],
+    [
+      "selection__Zsum1",
+      "+",
+      "Zhat0",
+      "Zhat1"
+    ],
+    [
+      "selection__Zsum2",
+      "+",
+      "selection__Zsum1",
+      "Zhat2"
+    ],
+    [
+      "selection__Zsum3",
+      "+",
+      "selection__Zsum2",
+      "Zhat3"
+    ],
+    [
+      "selection__Zsum4",
+      "+",
+      "selection__Zsum3",
+      "Zhat4"
+    ],
+    [
+      "selection__Zsum5",
+      "+",
+      "selection__Zsum4",
+      "Zhat5"
+    ],
+    [
+      "selection__Zsum6",
+      "+",
+      "selection__Zsum5",
+      "Zhat6"
+    ],
+    [
+      "selection__Zsum7",
+      "+",
+      "selection__Zsum6",
+      "Zhat7"
+    ],
+    [
+      "history__history_bounded",
+      "+",
+      "history__history_sum",
+      "selection__Zsum7"
+    ],
+    [
+      "selection__Zglobal",
+      "+",
+      "history__history_bounded",
+      "selection__bound_global"
+    ],
+    [
+      "joint_Pm",
+      "*",
+      "controller__lane_power3",
+      "controller__lane_power3"
+    ],
+    [
+      "joint_scale",
+      "*",
+      "controller__lane_power3",
+      "joint_Pm"
+    ],
+    [
+      "joint_mask_shift",
+      "*",
+      "controller__lane_power3",
+      "controller__origin_mask"
+    ],
+    [
+      "selection__bs_even",
+      "*",
+      2,
+      "selection__odd_half"
+    ],
+    [
+      "selection__bs_odd",
+      "+",
+      "selection__bs_even",
+      1
+    ],
+    [
+      "selection__R10b",
+      "+",
+      "selection__eta",
+      "selection__zeta"
+    ],
+    [
+      "selection__L16",
+      "*",
+      "selection__f",
+      "selection__f"
+    ],
+    [
+      "selection__f_square_minus_one",
+      "-",
+      "selection__L16",
+      1
+    ],
+    [
+      "selection__of",
+      "*",
+      "selection__o",
+      "selection__f"
+    ],
+    [
+      "selection__aux_y2",
+      "*",
+      "selection__y_aux",
+      "selection__y_aux"
+    ],
+    [
+      "controller__flow_internal_product4",
+      "*",
+      2,
+      "controller__edge_hat4"
+    ],
+    [
+      "controller__flow_internal_product5",
+      "*",
+      3,
+      "controller__edge_hat5"
+    ],
+    [
+      "controller__flow_internal_product6",
+      "*",
+      4,
+      "controller__edge_hat6"
+    ],
+    [
+      "controller__flow_internal_product7",
+      "*",
+      5,
+      "controller__edge_hat7"
+    ],
+    [
+      "controller__flow_internal_product8",
+      "*",
+      6,
+      "controller__edge_hat8"
+    ],
+    [
+      "controller__flow_internal_product9",
+      "*",
+      7,
+      "controller__edge_hat9"
+    ],
+    [
+      "controller__flow_weighted_internal1",
+      "+",
+      "controller__flow_raw_internal7",
+      "controller__edge_hat3"
+    ],
+    [
+      "controller__flow_weighted_internal2",
+      "+",
+      "controller__flow_weighted_internal1",
+      "controller__flow_internal_product4"
+    ],
+    [
+      "controller__flow_weighted_internal3",
+      "+",
+      "controller__flow_weighted_internal2",
+      "controller__flow_internal_product5"
+    ],
+    [
+      "controller__flow_weighted_internal4",
+      "+",
+      "controller__flow_weighted_internal3",
+      "controller__flow_internal_product6"
+    ],
+    [
+      "controller__flow_weighted_internal5",
+      "+",
+      "controller__flow_weighted_internal4",
+      "controller__flow_internal_product7"
+    ],
+    [
+      "controller__flow_weighted_internal6",
+      "+",
+      "controller__flow_weighted_internal5",
+      "controller__flow_internal_product8"
+    ],
+    [
+      "controller__flow_weighted_internal7",
+      "+",
+      "controller__flow_weighted_internal6",
+      "controller__flow_internal_product9"
+    ],
+    [
+      "controller__flow_last_product10",
+      "*",
+      9,
+      "controller__edge_hat10"
+    ],
+    [
+      "controller__flow_shared",
+      "-",
+      "controller__flow_weighted_internal7",
+      45
+    ],
+    [
+      "controller__flow_left",
+      "+",
+      "controller__flow_shared",
+      "controller__flow_last_product10"
+    ],
+    [
+      "controller__port1_sum1",
+      "+",
+      "controller__edge_hat1",
+      "controller__edge_hat9"
+    ],
+    [
+      "controller__port2_sum1",
+      "+",
+      "controller__edge_hat2",
+      "controller__edge_hat10"
+    ],
+    [
+      "history__dS0",
+      "-",
+      "controller__port1_sum1",
+      "controller__port2_sum1"
+    ],
+    [
+      "history__DdS0",
+      "*",
+      "history__c0",
+      "history__dS0"
+    ],
+    [
+      "history__delta0",
+      "-",
+      "history__dZ0",
+      "history__DdS0"
+    ],
+    [
+      "history__next0",
+      "+",
+      "H0",
+      "history__delta0"
+    ],
+    [
+      "history__left0",
+      "*",
+      "B",
+      "history__next0"
+    ],
+    [
+      "selection__Spack_sum1",
+      "+",
+      "controller__port2_sum1",
+      "selection__Spack_mult1"
+    ],
+    [
+      "selection__Spack_mult0",
+      "*",
+      "controller__geometry_power",
+      "selection__Spack_sum1"
+    ],
+    [
+      "selection__Spack_sum0",
+      "+",
+      "controller__port1_sum1",
+      "selection__Spack_mult0"
+    ],
+    [
+      "range_cell",
+      "+",
+      "D",
+      "history__c0"
+    ],
+    [
+      "range_mask8",
+      "*",
+      "range_cell",
+      "controller__origin_mask"
+    ],
+    [
+      "range_body_scale",
+      "*",
+      "joint_scale",
+      "joint_Pm"
+    ],
+    [
+      "range_history_shift",
+      "*",
+      "joint_scale",
+      "selection__Hbatch"
+    ],
+    [
+      "range_mask_shift",
+      "*",
+      "joint_scale",
+      "range_mask8"
+    ],
+    [
+      "range_Bshift",
+      "*",
+      "range_body_scale",
+      "B"
+    ],
+    [
+      "range_Bminus_shift",
+      "*",
+      "range_body_scale",
+      2
+    ],
+    [
+      "selection__q",
+      "*",
+      32,
+      "range_Bshift"
+    ],
+    [
+      "selection__sn2",
+      "*",
+      "selection__bs_odd",
+      "selection__q"
+    ],
+    [
+      "selection__ksn2",
+      "*",
+      "selection__R10b",
+      "selection__sn2"
+    ],
+    [
+      "selection__R10a",
+      "+",
+      "selection__ksn2",
+      "selection__eta"
+    ],
+    [
+      "selection__c2",
+      "*",
+      "selection__R10a",
+      "selection__R10a"
+    ],
+    [
+      "selection__ic2",
+      "*",
+      "selection__i",
+      "selection__c2"
+    ],
+    [
+      "selection__ic22",
+      "*",
+      "selection__ic2",
+      "selection__ic2"
+    ],
+    [
+      "selection__aux_u_rhs",
+      "-",
+      "selection__of",
+      "selection__R10a"
+    ],
+    [
+      "selection__jc",
+      "*",
+      "selection__j",
+      "selection__R10a"
+    ],
+    [
+      "selection__H2",
+      "*",
+      "selection__aux_u_rhs",
+      "selection__aux_u_rhs"
+    ],
+    [
+      "selection__aux_square_gap",
+      "-",
+      "selection__H2",
+      "selection__aux_y2"
+    ],
+    [
+      "selection__L17",
+      "*",
+      "selection__ic22",
+      "selection__aux_square_gap"
+    ],
+    [
+      "selection__P17",
+      "+",
+      "selection__L17",
+      "selection__aux_y2"
+    ],
+    [
+      "first_gap_square",
+      "*",
+      "selection__tau_gap",
+      "selection__tau_gap"
+    ],
+    [
+      "first_signed_gap",
+      "-",
+      "selection__tau_gap",
+      "selection__R10b"
+    ],
+    [
+      "linear_difference",
+      "-",
+      "selection__aux_u_rhs",
+      "selection__jc"
+    ],
+    [
+      "packed_q_minus",
+      "-",
+      "selection__q",
+      1
+    ],
+    [
+      "packed_q_plus",
+      "+",
+      "selection__q",
+      1
+    ],
+    [
+      "port_bias_gate0",
+      "+",
+      "controller__lane_factor0",
+      "controller__lane_repunit2"
+    ],
+    [
+      "selection__Sbatch",
+      "-",
+      "selection__Spack_sum0",
+      "port_bias_gate0"
+    ],
+    [
+      "selection__Mbatch",
+      "*",
+      "controller__cell_minus1",
+      "selection__Sbatch"
+    ],
+    [
+      "joint_M",
+      "+",
+      "selection__Mbatch",
+      "joint_mask_shift"
+    ],
+    [
+      "range_Mbody",
+      "+",
+      "joint_M",
+      "range_mask_shift"
+    ],
+    [
+      "range_M",
+      "+",
+      "range_Mbody",
+      "range_Bminus_shift"
+    ],
+    [
+      "selection__scaled_B",
+      "*",
+      16,
+      "range_M"
+    ],
+    [
+      "selection__padded_B",
+      "+",
+      "selection__scaled_B",
+      10
+    ],
+    [
+      "joint_bound_unit",
+      "-",
+      "selection__Zglobal",
+      "controller__geometry_power"
+    ],
+    [
+      "controller__flow_target",
+      "+",
+      "controller__flow_shared",
+      "controller__flow_checksum1"
+    ],
+    [
+      "controller__flow_right",
+      "*",
+      "B",
+      "controller__flow_target"
+    ],
+    [
+      "shared_selector_gate0",
+      "*",
+      "controller__geometry_power",
+      "controller__edge_hat10"
+    ],
+    [
+      "shared_selector_gate1",
+      "+",
+      "controller__edge_hat9",
+      "shared_selector_gate0"
+    ],
+    [
+      "shared_selector_gate2",
+      "-",
+      "shared_selector_gate1",
+      "controller__lane_factor0"
+    ],
+    [
+      "shared_selector_gate3",
+      "+",
+      -1,
+      "controller__lane_power3"
+    ],
+    [
+      "shared_selector_gate4",
+      "*",
+      "shared_selector_gate3",
+      "shared_selector_gate2"
+    ],
+    [
+      "controller__edge_word",
+      "+",
+      "selection__Sbatch",
+      "shared_selector_gate4"
+    ],
+    [
+      "joint_edge_shift",
+      "*",
+      "controller__lane_power3",
+      "controller__edge_word"
+    ],
+    [
+      "joint_H",
+      "+",
+      "selection__Hbatch",
+      "joint_edge_shift"
+    ],
+    [
+      "joint_Z",
+      "+",
+      "selection__Zbatch",
+      "joint_edge_shift"
+    ],
+    [
+      "range_Hbody",
+      "+",
+      "joint_H",
+      "range_history_shift"
+    ],
+    [
+      "range_Z",
+      "+",
+      "joint_Z",
+      "range_history_shift"
+    ],
+    [
+      "selection__scaled_Z",
+      "*",
+      16,
+      "range_Z"
+    ],
+    [
+      "selection__F3",
+      "+",
+      "selection__scaled_Z",
+      8
+    ],
+    [
+      "range_H",
+      "+",
+      "range_Hbody",
+      "range_Bshift"
+    ],
+    [
+      "selection__scaled_A",
+      "*",
+      16,
+      "range_H"
+    ],
+    [
+      "selection__padded_A",
+      "+",
+      "selection__scaled_A",
+      13
+    ],
+    [
+      "packed_z_product",
+      "*",
+      "packed_q_minus",
+      "selection__F3"
+    ],
+    [
+      "packed_middle_sum",
+      "+",
+      "selection__padded_B",
+      "packed_z_product"
+    ],
+    [
+      "packed_middle_product",
+      "*",
+      "packed_q_plus",
+      "packed_middle_sum"
+    ],
+    [
+      "packed_top_sum",
+      "+",
+      "selection__padded_A",
+      "packed_middle_product"
+    ],
+    [
+      "selection__bs_packed",
+      "*",
+      "packed_q_minus",
+      "packed_top_sum"
+    ],
+    [
+      "shifted_native_quotient",
+      "+",
+      "selection__w",
+      "packed_top_sum"
+    ],
+    [
+      "selection__wn2",
+      "*",
+      "shifted_native_quotient",
+      "selection__q"
+    ],
+    [
+      "selection__UM",
+      "*",
+      "selection__wn2",
+      "selection__sn2"
+    ],
+    [
+      "selection__R12",
+      "+",
+      "selection__UM",
+      "selection__sn2"
+    ],
+    [
+      "selection__a4",
+      "*",
+      4,
+      "selection__R12"
+    ],
+    [
+      "selection__a4m5",
+      "+",
+      "selection__a4",
+      3
+    ],
+    [
+      "selection__gam",
+      "*",
+      "selection__ga",
+      "selection__a4m5"
+    ],
+    [
+      "selection__a_square",
+      "*",
+      "selection__R12",
+      "selection__R12"
+    ],
+    [
+      "selection__A",
+      "+",
+      "selection__a_square",
+      "selection__a4m5"
+    ],
+    [
+      "selection__R16",
+      "*",
+      "selection__A",
+      "selection__f_square_minus_one"
+    ],
+    [
+      "selection__cam2",
+      "*",
+      "selection__R10a",
+      "selection__R12"
+    ],
+    [
+      "selection__Ac2",
+      "*",
+      "selection__A",
+      "selection__c2"
+    ],
+    [
+      "selection__hpm1",
+      "*",
+      "selection__h",
+      "selection__UM"
+    ],
+    [
+      "selection__R11",
+      "-",
+      "selection__R10b",
+      "selection__hpm1"
+    ],
+    [
+      "selection__D1",
+      "+",
+      "selection__wn2",
+      "selection__cam2"
+    ],
+    [
+      "selection__R14",
+      "+",
+      "selection__D1",
+      "selection__gam"
+    ],
+    [
+      "selection__L15",
+      "*",
+      "selection__R14",
+      "selection__R14"
+    ],
+    [
+      "selection__R15",
+      "-",
+      "selection__L15",
+      "selection__Ac2"
+    ],
+    [
+      "unit_pair",
+      "*",
+      "selection__R15",
+      "selection__P17"
+    ],
+    [
+      "first_root_base",
+      "*",
+      "selection__UM",
+      "selection__ksn2"
+    ],
+    [
+      "first_cross",
+      "*",
+      "first_root_base",
+      "first_signed_gap"
+    ],
+    [
+      "first_four_cross",
+      "*",
+      4,
+      "first_cross"
+    ],
+    [
+      "first_unit",
+      "+",
+      "first_gap_square",
+      "first_four_cross"
+    ],
+    [
+      "four_units",
+      "*",
+      "unit_pair",
+      "first_unit"
+    ],
+    [
+      "twice_index_difference",
+      "+",
+      "selection__R11",
+      "selection__R11"
+    ],
+    [
+      "linear_unit",
+      "+",
+      "linear_difference",
+      "twice_index_difference"
+    ],
+    [
+      "index_unit",
+      "-",
+      "selection__R11",
+      "selection__bs_packed"
+    ],
+    [
+      "five_units",
+      "*",
+      "four_units",
+      "index_unit"
+    ],
+    [
+      "six_units",
+      "*",
+      "five_units",
+      "linear_unit"
+    ],
+    [
+      "strong_unit_difference",
+      "-",
+      "selection__ic22",
+      "selection__R16"
+    ],
+    [
+      "strong_unit",
+      "+",
+      "strong_unit_difference",
+      1
+    ],
+    [
+      "seven_units",
+      "*",
+      "six_units",
+      "strong_unit"
+    ],
+    [
+      "eight_units",
+      "*",
+      "seven_units",
+      "joint_bound_unit"
+    ],
+    [
+      "joint_outer_residual0",
+      "-",
+      "history__left0",
+      "history__right0"
+    ],
+    [
+      "joint_outer_square0",
+      "*",
+      "joint_outer_residual0",
+      "joint_outer_residual0"
+    ],
+    [
+      "joint_outer_residual1",
+      "-",
+      "history__left1",
+      "history__right1"
+    ],
+    [
+      "joint_outer_square1",
+      "*",
+      "joint_outer_residual1",
+      "joint_outer_residual1"
+    ],
+    [
+      "joint_outer_residual2",
+      "-",
+      "history__left2",
+      "history__right2"
+    ],
+    [
+      "joint_outer_square2",
+      "*",
+      "joint_outer_residual2",
+      "joint_outer_residual2"
+    ],
+    [
+      "joint_outer_residual3",
+      "-",
+      "history__left3",
+      "history__right3"
+    ],
+    [
+      "joint_outer_square3",
+      "*",
+      "joint_outer_residual3",
+      "joint_outer_residual3"
+    ],
+    [
+      "joint_outer_residual5",
+      "-",
+      "controller__flow_left",
+      "controller__flow_right"
+    ],
+    [
+      "joint_outer_square5",
+      "*",
+      "joint_outer_residual5",
+      "joint_outer_residual5"
+    ],
+    [
+      "joint_outer_sum1",
+      "+",
+      "joint_outer_square0",
+      "joint_outer_square1"
+    ],
+    [
+      "joint_outer_sum2",
+      "+",
+      "joint_outer_sum1",
+      "joint_outer_square2"
+    ],
+    [
+      "joint_outer_sum3",
+      "+",
+      "joint_outer_sum2",
+      "joint_outer_square3"
+    ],
+    [
+      "joint_outer_sum4",
+      "+",
+      "joint_outer_sum3",
+      "joint_outer_square5"
+    ],
+    [
+      "joint_outer_positive",
+      "+",
+      "joint_outer_sum4",
+      1
+    ],
+    [
+      "joint_outer_product",
+      "*",
+      "eight_units",
+      "joint_outer_positive"
+    ],
+    [
+      "joint_outer_output",
+      "-",
+      "joint_outer_product",
+      1
+    ]
+  ],
+  "output": "joint_outer_output",
+  "source_sha256": "f98af4d4c85e17e67952582e23dfba58eae2a47869efe455301f2cfa7124b07f",
+  "ledgers": [
+    {
+      "codes": [
+        [
+          1
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 189,
+          "multiplications": 86,
+          "additions_subtractions": 103,
+          "equations": 7,
+          "witnesses": 28
+        },
+        "polynomial": {
+          "operations": 209,
+          "multiplications": 93,
+          "additions_subtractions": 116,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 848,
+          "unit_degree_bound": 842,
+          "factor_degree_bounds": {
+            "first_unit": 117,
+            "selection__R15": 212,
+            "selection__P17": 128,
+            "index_unit": 96,
+            "linear_unit": 96,
+            "strong_unit": 192,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 189,
+          "multiplications": 86,
+          "additions_subtractions": 103,
+          "equations": 6,
+          "witnesses": 27
+        },
+        "polynomial": {
+          "operations": 206,
+          "multiplications": 92,
+          "additions_subtractions": 114,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1616,
+          "unit_degree_bound": 1610,
+          "factor_degree_bounds": {
+            "first_unit": 224,
+            "selection__R15": 408,
+            "selection__P17": 236,
+            "index_unit": 185,
+            "linear_unit": 185,
+            "strong_unit": 370,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 197,
+          "multiplications": 87,
+          "additions_subtractions": 110,
+          "equations": 7,
+          "witnesses": 31
+        },
+        "polynomial": {
+          "operations": 217,
+          "multiplications": 94,
+          "additions_subtractions": 123,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 934,
+          "unit_degree_bound": 928,
+          "factor_degree_bounds": {
+            "first_unit": 129,
+            "selection__R15": 234,
+            "selection__P17": 140,
+            "index_unit": 106,
+            "linear_unit": 106,
+            "strong_unit": 212,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 197,
+          "multiplications": 87,
+          "additions_subtractions": 110,
+          "equations": 6,
+          "witnesses": 30
+        },
+        "polynomial": {
+          "operations": 214,
+          "multiplications": 93,
+          "additions_subtractions": 121,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1788,
+          "unit_degree_bound": 1782,
+          "factor_degree_bounds": {
+            "first_unit": 248,
+            "selection__R15": 452,
+            "selection__P17": 260,
+            "index_unit": 205,
+            "linear_unit": 205,
+            "strong_unit": 410,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          8,
+          6,
+          4,
+          2,
+          7,
+          5,
+          3,
+          1
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 210,
+          "multiplications": 92,
+          "additions_subtractions": 118,
+          "equations": 7,
+          "witnesses": 35
+        },
+        "polynomial": {
+          "operations": 230,
+          "multiplications": 99,
+          "additions_subtractions": 131,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1106,
+          "unit_degree_bound": 1100,
+          "factor_degree_bounds": {
+            "first_unit": 153,
+            "selection__R15": 278,
+            "selection__P17": 164,
+            "index_unit": 126,
+            "linear_unit": 126,
+            "strong_unit": 252,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          8,
+          6,
+          4,
+          2,
+          7,
+          5,
+          3,
+          1
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 210,
+          "multiplications": 92,
+          "additions_subtractions": 118,
+          "equations": 6,
+          "witnesses": 34
+        },
+        "polynomial": {
+          "operations": 227,
+          "multiplications": 98,
+          "additions_subtractions": 129,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 2132,
+          "unit_degree_bound": 2126,
+          "factor_degree_bounds": {
+            "first_unit": 296,
+            "selection__R15": 540,
+            "selection__P17": 308,
+            "index_unit": 245,
+            "linear_unit": 245,
+            "strong_unit": 490,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          8,
+          6,
+          4,
+          2,
+          7,
+          5,
+          3,
+          1
+        ]
+      ],
+      "controller_mask": true,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 209,
+          "multiplications": 91,
+          "additions_subtractions": 118,
+          "equations": 7,
+          "witnesses": 35
+        },
+        "polynomial": {
+          "operations": 229,
+          "multiplications": 98,
+          "additions_subtractions": 131,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1106,
+          "unit_degree_bound": 1100,
+          "factor_degree_bounds": {
+            "first_unit": 153,
+            "selection__R15": 278,
+            "selection__P17": 164,
+            "index_unit": 126,
+            "linear_unit": 126,
+            "strong_unit": 252,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          8,
+          6,
+          4,
+          2,
+          7,
+          5,
+          3,
+          1
+        ]
+      ],
+      "controller_mask": true,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 209,
+          "multiplications": 91,
+          "additions_subtractions": 118,
+          "equations": 6,
+          "witnesses": 34
+        },
+        "polynomial": {
+          "operations": 226,
+          "multiplications": 97,
+          "additions_subtractions": 129,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 2132,
+          "unit_degree_bound": 2126,
+          "factor_degree_bounds": {
+            "first_unit": 296,
+            "selection__R15": 540,
+            "selection__P17": 308,
+            "index_unit": 245,
+            "linear_unit": 245,
+            "strong_unit": 490,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 228,
+          "multiplications": 98,
+          "additions_subtractions": 130,
+          "equations": 7,
+          "witnesses": 37
+        },
+        "polynomial": {
+          "operations": 248,
+          "multiplications": 105,
+          "additions_subtractions": 143,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1450,
+          "unit_degree_bound": 1444,
+          "factor_degree_bounds": {
+            "first_unit": 201,
+            "selection__R15": 366,
+            "selection__P17": 212,
+            "index_unit": 166,
+            "linear_unit": 166,
+            "strong_unit": 332,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 228,
+          "multiplications": 98,
+          "additions_subtractions": 130,
+          "equations": 6,
+          "witnesses": 36
+        },
+        "polynomial": {
+          "operations": 245,
+          "multiplications": 104,
+          "additions_subtractions": 141,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 2820,
+          "unit_degree_bound": 2814,
+          "factor_degree_bounds": {
+            "first_unit": 392,
+            "selection__R15": 716,
+            "selection__P17": 404,
+            "index_unit": 325,
+            "linear_unit": 325,
+            "strong_unit": 650,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2
+        ]
+      ],
+      "controller_mask": true,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 227,
+          "multiplications": 97,
+          "additions_subtractions": 130,
+          "equations": 7,
+          "witnesses": 37
+        },
+        "polynomial": {
+          "operations": 247,
+          "multiplications": 104,
+          "additions_subtractions": 143,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1738,
+          "unit_degree_bound": 1732,
+          "factor_degree_bounds": {
+            "first_unit": 241,
+            "selection__R15": 438,
+            "selection__P17": 260,
+            "index_unit": 198,
+            "linear_unit": 198,
+            "strong_unit": 396,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2
+        ]
+      ],
+      "controller_mask": true,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 227,
+          "multiplications": 97,
+          "additions_subtractions": 130,
+          "equations": 6,
+          "witnesses": 36
+        },
+        "polynomial": {
+          "operations": 244,
+          "multiplications": 103,
+          "additions_subtractions": 141,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 3396,
+          "unit_degree_bound": 3390,
+          "factor_degree_bounds": {
+            "first_unit": 472,
+            "selection__R15": 860,
+            "selection__P17": 500,
+            "index_unit": 389,
+            "linear_unit": 389,
+            "strong_unit": 778,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 264,
+          "multiplications": 111,
+          "additions_subtractions": 153,
+          "equations": 7,
+          "witnesses": 43
+        },
+        "polynomial": {
+          "operations": 284,
+          "multiplications": 118,
+          "additions_subtractions": 166,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1450,
+          "unit_degree_bound": 1444,
+          "factor_degree_bounds": {
+            "first_unit": 201,
+            "selection__R15": 366,
+            "selection__P17": 212,
+            "index_unit": 166,
+            "linear_unit": 166,
+            "strong_unit": 332,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "controller_mask": false,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 264,
+          "multiplications": 111,
+          "additions_subtractions": 153,
+          "equations": 6,
+          "witnesses": 42
+        },
+        "polynomial": {
+          "operations": 281,
+          "multiplications": 117,
+          "additions_subtractions": 164,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 2820,
+          "unit_degree_bound": 2814,
+          "factor_degree_bounds": {
+            "first_unit": 392,
+            "selection__R15": 716,
+            "selection__P17": 404,
+            "index_unit": 325,
+            "linear_unit": 325,
+            "strong_unit": 650,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "controller_mask": true,
+      "compute_length": false,
+      "ledger": {
+        "certificate": {
+          "operations": 263,
+          "multiplications": 110,
+          "additions_subtractions": 153,
+          "equations": 7,
+          "witnesses": 43
+        },
+        "polynomial": {
+          "operations": 283,
+          "multiplications": 117,
+          "additions_subtractions": 166,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 1738,
+          "unit_degree_bound": 1732,
+          "factor_degree_bounds": {
+            "first_unit": 241,
+            "selection__R15": 438,
+            "selection__P17": 260,
+            "index_unit": 198,
+            "linear_unit": 198,
+            "strong_unit": 396,
+            "joint_bound_unit": 1
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    },
+    {
+      "codes": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "controller_mask": true,
+      "compute_length": true,
+      "ledger": {
+        "certificate": {
+          "operations": 263,
+          "multiplications": 110,
+          "additions_subtractions": 153,
+          "equations": 6,
+          "witnesses": 42
+        },
+        "polynomial": {
+          "operations": 280,
+          "multiplications": 116,
+          "additions_subtractions": 164,
+          "output": "joint_outer_output",
+          "degree_upper_bound": 3396,
+          "unit_degree_bound": 3390,
+          "factor_degree_bounds": {
+            "first_unit": 472,
+            "selection__R15": 860,
+            "selection__P17": 500,
+            "index_unit": 389,
+            "linear_unit": 389,
+            "strong_unit": 778,
+            "joint_bound_unit": 2
+          },
+          "maximum_outer_residual_degree": 3,
+          "exact_degree_claimed": false
+        }
+      },
+      "checks": {
+        "complete_changed_interface_register_residual_output_identities": 24,
+        "signed_assignments": 12
+      }
+    }
+  ],
+  "scalar_bounds": {
+    "positive_pretyping_block_margins": 1024,
+    "nondyadic_block_contexts": 1022,
+    "dyadic_top_block_AND_identities": 624
+  },
+  "paths": {
+    "genuine_signed_shear_outer_histories": 12,
+    "chronological_rows": 1752
+  },
+  "guards": {
+    "rejected_callers": 5
+  },
+  "scope": "Complete fixed-table ordinary-input equivalence with fresh native witnesses; the numerical universal subgroup alphabet is not instantiated, and244 is illustrative."
+}
