@@ -1,6 +1,6 @@
 # Term counts in the derivatives of power towers
 
-**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4, and a second route to deficit 3**
+**One framework and three sequences: OEIS A293239 (`x^x`), A290268 (`x^(x^2)`), A281434 (`x^(x^x)`), with depth certificates for A290268 at logarithmic deficits 3 and 4, a second route to deficit 3, and Lehmer–Comtet nonvanishing on prime-multiple offsets for A293239**
 
 **What this report is.** One article covering three OEIS sequences that ask the
 same question about three different functions:
@@ -21,7 +21,9 @@ transition recurrence it obeys, and the reduction of "count the terms" to
 and 4 are the three investigations; Section 5 compares them. A fourth
 manuscript, on A290268 only, was written into the end of Part 3 on
 29 September 2026 as Sections 3.14–3.26, and a fifth, also on A290268 only,
-after it on 30 September 2026 as Sections 3.27–3.34.
+after it on 30 September 2026 as Sections 3.27–3.34. Three more, on the
+Lehmer–Comtet triangle behind A293239, were written into the end of Part 2 on
+1 October 2026 as Sections 2.11–2.15.
 
 **Status.** AI-assisted research notes. Unrefereed. Nothing in this report is
 formalized; see "Relation to the Lean development" below for what the nearby
@@ -36,6 +38,9 @@ Lean development does and does not prove.
 | 01 | Cardinals-era delivery | `A281434_exact_algorithm_and_cubic_growth.zip` (17-page article) | not recorded | as above | Part 4 (Section 4) |
 | 02 | batch 42, manuscript 06 | `ProveIt_A290268_Finite_Certificates.zip` (*From Infinite Nonvanishing to Finite Certificates: Bulk positivity, fixed-depth finiteness, and a four-depth solution for OEIS A290268*, 22-page PDF, dated 29 September 2026) | `afb2d1227` | `3609d0473` | Part 3, Sections 3.14–3.26 |
 | 03 | batch 70, manuscript 03 | `ProveIt_A290268_Depth3_Article.zip` (*Depth Three Is Complete for OEIS A290268: A beta–sine transform, centered moment polynomials, and exact nonvanishing*, 17-page PDF, dated 30 September 2026) | `a02ab3567` | `51c6943bf` | Part 3, Sections 3.27–3.34 |
+| 04 | batch 72A, manuscript 09 | `ProveIt_Lehmer_Comtet_Stirling_Residues_and_Candidate_Lists.zip` (*Stirling Residues and Finite Candidate Lists: Arithmetic restrictions on Lehmer–Comtet zeros*, 6-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 2, Section 2.13 |
+| 05 | batch 72A, manuscript 12 | `ProveIt_Lehmer_Comtet_Prime_Multiple_Nonvanishing.zip` (*Complete Nonvanishing on Prime-Multiple Offsets: Lehmer–Comtet coefficients and derivatives of x^x*, 6-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 2, Section 2.12 |
+| 06 | batch 72A, manuscript 17 | `ProveIt_Lehmer_Comtet_Uniform_Padic_Nonvanishing.zip` (*Uniform p-adic Nonvanishing: Two valuation families for Lehmer–Comtet coefficients*, 4-page PDF, dated 1 October 2026) | `ca81647a9` | `d292c6765` | Part 2, Section 2.14 |
 
 The first three rows are the original merge; `MERGE_EDITS.md` records every
 edit made to them, and all fifty of their theorems, lemmas, propositions,
@@ -95,6 +100,44 @@ previous text: 0 of 302 numbered labels changed); the manuscript's letters
 are renamed where they collide (Table 5, below); the dictionary (3.89),
 Remark 3.61 and the editorial notes are additions of the intake.
 
+Sources 04–06 (batch 72A, manuscripts 09, 12 and 17) are printed in full at
+the end of Part 2, in the order 12, 09, 17 (09 builds on 12): every theorem,
+lemma, corollary and proof, and every non-claim. All three pin `ca81647a9`,
+this report's text at the time, and cite it as "Part I" (they mean Part 2).
+They attack Conjecture 2.9 (the complete zero list of the Lehmer–Comtet
+triangle) one offset at a time and **leave it open**. New relative to this
+report: Theorem 2.19 (every offset `mu(p-1)`, `p > mu` prime, is zero-free
+under two explicit conditions, which hold for `p >= max(4 mu, 1 + 3^(4 mu - 7))`)
+and its Corollaries 2.20–2.22 (offsets `2(p-1)` and `4(p-1)` for every prime,
+`3(p-1)` for odd primes); the universal positivity cone `T_d(Y) > 0` for
+`Y >= 4d` (Corollary 2.25); the Stirling residue, root displacements and
+candidate list of 09 (Theorems 2.30, 2.32, 2.33), offset `5(p-1)` for odd
+primes (Corollary 2.35), offset `(p-1)^2` reduced to one candidate (Corollary
+2.36), offset `p^2-1` reduced to `1 <= Y <= p-1` (Theorem 2.38) together with
+12's explanation why a fixed `p`-power sieve cannot do that alone (Theorem
+2.28); and 17's exact valuations on divisibility progressions and on the odd
+offsets `(p-1)mu + 1` (Theorems 2.39, 2.40). Re-derivations of this report's
+results are printed once and credited: 17's Theorem 2.39 at `mu = 1` is the
+valuation of Theorem 2.12 (a second route, by Davis's multinomial count); 12
+re-uses (2.28) and restates the offset-8 certificate of Theorem 2.14 (its
+`F(Y)` is `R_8(Y+8)`, same scalar `1/1393459200`, checked at the intake); its
+Lemma 2.27 at `j = 1, 2` is Proposition 2.15's columns 1–2; (2.50) is
+Proposition 2.4 with (2.22). Three lemmas of 09 that re-prove 12's (the cone,
+the ordinary congruence, the prime-square congruence) are recorded as Remarks
+2.29, 2.31, 2.37, without reprinting the same proofs. Where the write had to
+choose: the addition follows Part 2's last subsection, so that no existing
+number moved (checked against the `.aux` of a build of the previous text: 0 of
+359 numbered labels changed); the notation table is numbered 2.A and the
+article-wide table counter is restored after it and after the file table, so
+that no later table number moves; the manuscripts' offset `r` and multiplier
+`m` are renamed `d` and `mu` (Table 2.A, below); Remarks 2.26, 2.34 and 2.42,
+the notation subsection and the editorial notes are additions of the intake.
+Remark 2.34 records an unstated second route: 09's candidate list re-proves
+Corollary 2.21 for `p >= 5` and Corollary 2.22 for `p >= 7`, `p != 11`. Not
+shipped: the three manuscripts, READMEs and PDFs, 09's embedded byte-identical
+copy of archive 12 and its PDF, and three copies of a generic `build_local.sh`;
+the archives survive in the history of `1512ef835`.
+
 ## Status of each headline question — read this first
 
 **None of the three headline questions is fully settled here, and this report
@@ -114,6 +157,15 @@ question is only how many.
   the true value is 35). For the proposed sequence `q` the recurrence holds for
   every `n >= 14` and fails at `n = 13`; asserting the corrected range for the
   actual derivative count remains conditional on the principal conjecture.
+  The missing statement — no zeros of the triangle beyond `b(8,5)` and the
+  symmetry family — was proved in Part 2 on the offsets `d <= 16`, on every
+  offset `d = p-1` (`p` prime) and on the columns 1–3. Sections 2.11–2.15
+  (1 October 2026) add infinitely many settled offsets: every `mu(p-1)` with
+  `p > mu` under explicit conditions, in full for `2(p-1)` and `4(p-1)` (every
+  prime) and `3(p-1)`, `5(p-1)` (odd primes); one candidate left on `(p-1)^2`,
+  only columns `1..p-1` on `p^2-1` (`p >= 5`); exact `p`-adic valuations on
+  divisibility progressions; and the cone `T_d(Y) > 0` for `Y >= 4d`. The
+  complete classification, and with it the closed formula, stays open.
 
 - **A290268 (`x^(x^2)`): the OEIS conjecture is NOT proved.** What is proved:
   the conjectured expression `U(n)` is an *upper* bound; every predicted
@@ -176,6 +228,17 @@ diagnostics.
   non-claims are kept: "not a claim that the full A290268 conjecture has been
   proved"; the Python certificate "is not a kernel-checked theorem"; no
   "exhaustive priority over inaccessible or unpublished work"; no peer review.
+- For A293239 (Sections 2.11–2.15): not the complete zero classification of
+  the Lehmer–Comtet triangle, hence not the closed formula; the candidates
+  left on the offsets `(p-1)^2` and `p^2-1` are "necessary possibilities, not
+  a claimed zero list", and no assertion is made that the single `(p-1)^2`
+  candidate vanishes; 12 asserts no real-rootedness of the polynomials `T_d`;
+  17 does not assert its valuation equality when a competing term has more
+  than `p^e` factors, and its restricted formula fails without its hypotheses
+  (`T_9(9) = 2021/268800`), which is not a new zero. All three disclaim
+  exhaustive literature priority, formal verification and refereeing; the
+  READMEs of 12 and 17 mention an "independent review" that this report
+  cannot confirm.
 - No Lean or Rocq verification, no referee, no independent human review.
 
 ## A warning about notation
@@ -212,6 +275,17 @@ worse risk than declaring the clash. Three collisions matter more than the rest:
   `z -> lambda_q`, `a -> alpha_q` or `2d+1` or `theta`, `B -> |E_q|`. The
   two tail values are related by `H_{3,k,q} = 720 (-1)^q q! F_k(q)` (3.89).
   No normalization changed.
+- **Sections 2.11–2.15 rename the offset and the multiplier.** Their sources
+  write the offset polynomial `T_r(Y)` with `r` the **offset** — Part 2's
+  `r` is the *column* of `b(m,r)` — and call a multiplier `m` — Part 2's
+  *row*. They are printed with Part 2's offset `d` (`T_d(Y)`, `d = m - r`) and
+  the multiplier `mu`; Table 2.A of the article gives the full dictionary with
+  the false readings (also `M -> m`, harmonic numbers in sans-serif, the
+  falling factorial `P_M -> F_m`, the log-derivative `Phi_P(b) -> Psi_P(xi)`,
+  and local letters such as `U -> omega`, `D -> calV`, `L -> Lambda`,
+  `q -> nu`, `E_j -> bold e_j`). 09's unsigned Stirling numbers `c(mu,j)` are
+  `(-1)^(mu-j) s(mu,j)` in terms of Part 2's signed `s(m,l)`. No normalization
+  changed.
 
 §1.5 of the article gives the three canonical monomials side by side, and is
 explicit that many other letters (`u`, `v`, `t`, `q`, `U`, `Z`, `E`, `Δ`) are
@@ -224,16 +298,24 @@ Labels carry a per-part prefix: `fw:` (Part 1), `xx:` (Part 2), `xxb:`
 (Part 3), `xxc:` (Part 4), `syn:` (Section 5). The batch-42 addition uses the
 sub-prefix **`xxb:dc:`** (85 labels) and the batch-70 addition the sub-prefix
 **`xxb:d3:`** (57 labels: the manuscript's 47, prefixed, and 10 of the
-intake's). The article has 361 `\label`s (219 before the batch-42 addition,
-304 before the batch-70 one); none was renamed or removed. No label here has
-a Lean mapping.
+intake's). The batch-72A Part 2 addition (Sections 2.11–2.15) uses the
+sub-prefixes **`xx:pm:`** (21 labels, manuscript 12), **`xx:st:`** (15,
+manuscript 09), **`xx:pn:`** (14, manuscript 17) and **`xx:lc:`** (8, the
+intake's): 58 in all. They are the manuscripts' own labels with the prefix
+(all 19 of 12's, 14 of 09's, 13 of 17's), four subsection labels and the
+intake's eight; the four manuscript labels not carried (`st:H`, `st:b`,
+`pn:H`, `pn:b`) label 09's and 17's repetitions of 12's definitions, which
+are printed once. The article has 419
+`\label`s (219 before the batch-42 addition, 304 before the batch-70 one, 361
+before the batch-72A ones); none was renamed or removed. No label here has a
+Lean mapping.
 
 ## Files
 
 ```
 README.md                                         this guide
 article.tex                                       the article (pdfLaTeX, internal bibliography)
-article.pdf                                       the compiled article, 99 pages (A4)
+article.pdf                                       the compiled article, 120 pages (A4)
 MERGE_EDITS.md                                    every edit made to the three original texts in the merge
 A293239_oeis_notes.txt                            statement of the x^x recurrence-range correction
 A290268_result_status.json                        Part 3's machine-readable status, as delivered (stale; see below)
@@ -251,10 +333,37 @@ code/02-depth-certificates-verify.py              manuscript 06: full exact veri
 code/02-depth-certificates-minimal_verify.py      manuscript 06: standalone verifier printed in Section 3.25.2
 code/02-depth-certificates-Makefile               manuscript 06's delivered Makefile (do not use; see below)
 code/03-depth-three-verify_depth3.py              batch-70 manuscript 03: exact depth-3 verifier (writes depth3_certificate.txt beside itself)
+code/04-stirling-residues-verify_stirling.py      batch-72A manuscript 09: Stirling residues, triangle congruences, root displacements
+code/04-stirling-residues-verify_prime_square_lifts.py
+                                                  09: roots modulo p^3 at offset p^2-1, p = 3, 5, 7, 11
+code/04-stirling-residues-verify_square_candidates.py
+                                                  09: exact values at the one (p-1)^2 candidate, seven primes
+code/04-stirling-residues-replay_falling_products.py
+                                                  09: independent integer falling-product replay (run with -O)
+code/05-prime-multiple-verify.py                  batch-72A manuscript 12: exact checks of Section 2.12
+code/05-prime-multiple-replay_convolution.py      12: independent convolution and finite-difference replay
+code/06-padic-valuations-verify_padic.py          batch-72A manuscript 17: integer-triangle check of both valuation families
+code/06-padic-valuations-check_rational_powers.py 17: direct rational power recurrence (prints its JSON, writes nothing)
+code/06-padic-valuations-replay_padic_powers.py   17: integer-scaled convolution replay
+code/07-count-bounds-verify_counts.py             batch-72A manuscript 68 (count bounds; placed, to be written into Part 3)
+code/08-depths-five-six-verify_depth5.py,
+code/08-depths-five-six-independent_pascal_depth5.py,
+code/08-depths-five-six-independent_pascal_depth6.py,
+code/08-depths-five-six-verify_depth6_columns.cpp batch-72A manuscript 70 (depths five and six; placed, to be written into Part 3)
 data/02-depth-certificates-finite_certificate.csv all 16,034 rectangle cells: sign, reduced sign, residues mod 1009, 1013 (CRLF)
 data/02-depth-certificates-sign_thresholds.csv    observed sign transitions per tested row (CRLF)
 data/02-depth-certificates-verification.json      executed-check summary and exact seed integers
 data/03-depth-three-depth3_certificate.txt        batch-70 manuscript 03: recorded verifier output (anchors, sign table, digest)
+data/04-stirling-residues-{stirling_checks,prime_square_lifts,square_candidates,replay_falling_products}.json
+                                                  09: recorded outputs of the four programs above
+data/05-prime-multiple-{checks,replay_convolution}.json
+                                                  12: recorded outputs of its two programs
+data/06-padic-valuations-{padic_checks,rational_power_checks,replay_padic_powers}.json
+                                                  17: recorded outputs of its three programs
+data/07-count-bounds-{verification.txt,requirements.txt}
+                                                  68: recorded output; its SymPy pin (sympy==1.14.0)
+data/08-depths-five-six-{depth5_certificate,depth6_column_certificate,independent_pascal_depth5,independent_pascal_depth6}.json
+                                                  70: recorded outputs of its four programs
 data/b281434.txt, data/b352697.txt, data/benchmarks.csv, data/counts.csv,
 data/python_report.json, data/selected_holes.json, data/test_results.txt,
 data/zeros.csv, data/environment.json             A281434 and A293239 outputs
@@ -269,7 +378,7 @@ data/p1000000009_{counts.csv,run.log,summary.txt,watches.csv,zeros.csv}
                                                   A290268 modular runs, one set per modulus
 ```
 
-That is all 60 files in the directory.
+That is all 89 files in the directory.
 
 ## Building
 
@@ -281,8 +390,8 @@ The committed PDF was built with `latexmk` (pdfTeX, MiKTeX): 0 errors, 0
 undefined references or citations, 0 multiply-defined labels, 0 duplicate
 destinations, 0 LaTeX warnings; one overfull box (8.4 pt, in the Section 5
 comparison table) and five hyperref "Token not allowed in a PDF string"
-notices (superscripts in section titles), all present before both additions
-as well.
+notices (superscripts in section titles), all present before the later
+additions as well.
 
 ## Verifying
 
@@ -344,6 +453,34 @@ certificate. The intake also checked the dictionary
 reproduces every `d = 3` row of `data/02-depth-certificates-sign_thresholds.csv`
 (Remark 3.61); those checks used scratch scripts that are not shipped.
 
+**Lehmer–Comtet additions (Sections 2.11–2.15).** Python 3, standard library
+only (`fractions.Fraction`). Every program except one writes its JSON
+**beside itself**, under its delivery name (`checks.json`,
+`stirling_checks.json`, `prime_square_lifts.json`, `square_candidates.json`,
+`padic_checks.json`), or, for the three replays, under its own shipped name
+with `.json` (for example `code/05-prime-multiple-replay_convolution.json`).
+None of them touches `data/`, but **work on a copy** of this directory so that
+`code/` stays clean:
+
+    py code/05-prime-multiple-verify.py
+    py code/05-prime-multiple-replay_convolution.py
+    py code/04-stirling-residues-verify_stirling.py
+    py code/04-stirling-residues-verify_prime_square_lifts.py
+    py code/04-stirling-residues-verify_square_candidates.py
+    py -O code/04-stirling-residues-replay_falling_products.py
+    py code/06-padic-valuations-verify_padic.py
+    py code/06-padic-valuations-check_rational_powers.py        # prints its JSON, writes nothing
+    py code/06-padic-valuations-replay_padic_powers.py
+
+Compare each output with the matching `data/04-…`, `data/05-…` or
+`data/06-…` file, ignoring line endings (a Windows Python may write CRLF; the
+shipped files are LF). At the intake all nine were run under their shipped
+names on a copy: each exited with status 0 in under 10 s, and every output
+equalled the shipped file; the standard output of `check_rational_powers.py`
+equals `data/06-padic-valuations-rational_power_checks.json`. The replay of 09
+is meant to be run with `-O`: its README runs it so, and the manuscript says
+it "passes with Python assertions disabled".
+
 ## What the modular verifiers do and do not do
 
 Both compiled verifiers are exact. A nonzero residue certifies a nonzero
@@ -383,6 +520,10 @@ Theorem 3.23. The six modules of its formalization blueprint (Section 3.33.2:
 `.DepthThreeHarmonic`, `.DepthThreeCertificate`, `.DepthThree`) are proposals
 and do not exist; the library defines no `gamma`, and its `coeff` has type
 `ℕ → ℤ → ℤ → ℤ`. None of this report's theorems is formalized.
+
+For Part 2 and its Sections 2.11–2.15 there is no neighbouring formal
+development at all: no Lean or Rocq file in the repository mentions the
+Lehmer–Comtet numbers, A008296 or A293239.
 
 ## Relation to neighbouring material
 
@@ -429,6 +570,18 @@ and do not exist; the library defines no `gamma`, and its `coeff` has type
 - The manuscript's own file table lists its `.tex`, `.pdf` and `README.md`,
   which are not shipped; the article replaces that table with the shipped
   file list (Section 3.34.2).
+- Sources 04–06 (Sections 2.11–2.15): the shipped programs, byte-identical to
+  the delivery, write under their delivery names beside themselves (see
+  "Verifying"); the replays of 09, 12 and 17 use `with_suffix('.json')`, so on
+  the shipped layout they write `code/<prefixed name>.json`, not the
+  `data/` file. The JSON files keep the manuscripts' letters (`r` = offset `d`,
+  `m` = multiplier `mu`); the field `primitive_r8` of
+  `data/05-prime-multiple-replay_convolution.json` holds the coefficients of
+  `F(Y) = R_8(Y+8)`, not of Part 2's `R_8(X)`. The delivery READMEs (not
+  shipped) give `python <name>.py` commands and list files that are not
+  shipped (`article.pdf`, `article.tex`, `build_local.sh`, 09's companion PDF
+  and zip). The manuscripts' bibliography entries call this report "Part I";
+  the article re-targets them to Part 2.
 
 ## Provenance
 
@@ -449,5 +602,16 @@ was written into Sections 3.27–3.34 on 30 September 2026, with dated notes
 pointing forward from the abstract, the reading guide, §1.5, Part 3's status
 box, Section 3.7.4, the sign-change observation of Section 3.20 and
 Questions 3 and 7 of Section 3.24.
+
+Manuscripts 12, 09 and 17 of batch 72A arrived in `1512ef835` (with seventeen
+others of their cluster), were placed as additions 05, 04 and 06 in
+`d292c6765` (staged files prefixed `05-prime-multiple-`,
+`04-stirling-residues-` and `06-padic-valuations-`, byte-identical to the
+delivery; manuscripts, READMEs, PDFs, 09's embedded copy of 12 and the
+`build_local.sh` wrappers not staged), and were written into Sections
+2.11–2.15 on 1 October 2026, with dated notes pointing forward from the
+abstract, the reading guide, §1.5, Part 2's "What remains" (Section 2.10)
+and Section 5.1. All three are pinned to `ca81647a9`; all carry the line
+"Research note prepared for Vladimir Reshetnikov with OpenAI".
 
 These are AI-assisted drafts. None is refereed or machine-checked.

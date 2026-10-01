@@ -111,7 +111,13 @@ term count is reduced exactly to the zeros of the first-kind Lehmer--Comtet
 triangle A008296, giving $a(n)=1+\binom{n+1}{2}-Z(n)$ and $a(n)=\Theta(n^2)$,
 but the principal closed formula needs a nonvanishing statement that is isolated
 and left open; separately, the recurrence printed in the entry with the range
-$n>6$ is \emph{disproved} at $n=8$.  For $x^{x^2}$ the conjectured expression is
+$n>6$ is \emph{disproved} at $n=8$.  Later additions at the end of that part
+(Section~\ref{xx:lc:sec:intro}) prove the nonvanishing statement on further
+infinite families of offsets of the triangle --- every offset $\mu(p-1)$ for
+primes $p>\mu$ under explicit conditions, and every prime $p$ for $\mu=2,4$,
+every odd one for $\mu=3,5$ --- and
+give exact $p$-adic valuations on divisibility progressions; the zero
+classification itself stays open.  For $x^{x^2}$ the conjectured expression is
 proved to be an upper bound, every predicted cancellation is explained, and
 $a(n)=\Theta(n^2)$ is established, but the conjectured leading constant is not;
 a later addition to that part (Section~\ref{xxb:dc:sec:intro}) proves the
@@ -166,6 +172,13 @@ has been dropped, weakened or strengthened in the merge.
  own; those sections are now instances of Part~\ref{fw:sec} rather than
  independent developments, and are flagged as such where they begin.
 \item \textbf{Part~\ref{syn:sec}} compares the three.
+\item \textbf{Sections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance}}, at
+ the end of Part~\ref{xx:part}, were added on 1 October 2026 from three later
+ manuscripts on the Lehmer--Comtet triangle.  They prove nonvanishing on
+ further infinite families of offsets and exact $p$-adic valuations, and leave
+ Conjecture~\ref{xx:conj:zeros} open.  They follow the part they extend, so
+ that no number elsewhere in the article moved, and they rename their sources'
+ letters by Table~\ref{xx:lc:tab:notation}.
 \item \textbf{Sections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance}}, at
  the end of Part~\ref{xxb:part}, were added on 29 September 2026 from a later
  manuscript on A290268, which closes that part's missing step at logarithmic
@@ -575,6 +588,16 @@ dictionary with the false readings.  The second later addition,
 Sections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}, uses the same
 coordinates and renames its source's letters by
 Table~\ref{xxb:d3:tab:notation}.
+
+\noindent
+A fourth warning concerns the later
+Sections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} at the end of
+Part~\ref{xx:part}.  Their sources call the offset of the Lehmer--Comtet
+triangle $r$ --- which is Part~\ref{xx:part}'s \emph{column} --- and call a
+multiplier $m$ --- which is Part~\ref{xx:part}'s \emph{row}.  They are printed
+with the offset $d$ of Section~\ref{xx:sec:diagonals} and the multiplier $\mu$;
+Table~\ref{xx:lc:tab:notation} gives the full dictionary with the false
+readings.
 
 \noindent
 Beyond these, the letters $u$, $v$, $t$, $q$, $U$, $Z$, $E$ and $\Delta$ all
@@ -1477,6 +1500,26 @@ modular nonvanishing certificates would also suffice, but the fact that
 such certificates work for $d\le16$ does not establish that they work for
 all $d$.
 
+\emph{Update (1 October 2026, batch 72A).}  The later
+Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} add infinitely
+many settled offsets to the list above: every offset $d=\mu(p-1)$ with
+$p>\mu$ prime under the conditions of Theorem~\ref{xx:pm:main}, in particular
+for all $p\ge\max\{4\mu,1+3^{4\mu-7}\}$; all offsets $2(p-1)$ and $4(p-1)$, and
+$3(p-1)$ and $5(p-1)$ for odd $p$ (Corollaries~\ref{xx:pm:twice},
+\ref{xx:pm:triple}, \ref{xx:pm:four} and~\ref{xx:st:five}).  On those offsets
+the only zeros are the structural ones in column zero.  The offset $(p-1)^2$ is
+reduced to the single candidate $m=2p^2-p-1$ (that is, $Y=p^2+p-2$;
+Corollary~\ref{xx:st:squares}) and the offset $p^2-1$ to the columns $1\le
+r\le p-1$ for $p\ge5$ (Theorem~\ref{xx:st:prime-square-reduction}); exact
+$p$-adic valuations exclude zeros on divisibility progressions of the column
+(Theorems~\ref{xx:pn:principal} and~\ref{xx:pn:shifted}).  On the route of the
+previous paragraph, Theorem~\ref{xx:pm:square} shows that at the offsets
+$p^2-1$ no sieve modulo a fixed power $p^e$ of that same prime can work by
+itself (it says nothing about other moduli), and the
+positivity cone of Corollary~\ref{xx:pm:positive} confines every zero on
+offset $d$ to the rows $m<5d$.  Conjecture~\ref{xx:conj:zeros} is still
+open.
+
 For the asymptotic conjecture alone, an exclusion of every additional zero
 is unnecessary: by \eqref{xx:eq:asympeq}, it suffices to bound their cumulative
 number by $o(n^2)$. The present root-counting argument proves quadratic
@@ -1491,6 +1534,1365 @@ nonvanishing theorems, and extensive reproducible verification. A complete
 all-order proof of that formula is \emph{not} supplied: the missing converse
 in Conjecture~\ref{xx:conj:zeros} is left explicit rather than being replaced
 by an inference from numerical agreement.
+
+% ---------------------------------------------------------------------------
+% Batch 72A, manuscripts 12, 09 and 17 (additions 05, 04 and 06 of this
+% report), written into this part on 1 October 2026.  Labels carry the
+% prefixes xx:pm: (manuscript 12), xx:st: (manuscript 09), xx:pn: (manuscript
+% 17) and xx:lc: (text of the intake).  The subsections are appended after the
+% last subsection of Part 2, so that no existing section, theorem or equation
+% number moves.
+% ---------------------------------------------------------------------------
+
+\subsection{Lehmer--Comtet zeros on composite offsets: three later additions}\label{xx:lc:sec:intro}
+
+\begin{quote}\small
+\textbf{What this addition is.}
+Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} were written
+into this part on 1 October 2026 from three later manuscripts on the
+first-kind Lehmer--Comtet triangle, all dated 1 October 2026 and all pinned to
+this report's text at commit \texttt{ca81647a9}:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item manuscript~12, \emph{Complete Nonvanishing on Prime-Multiple Offsets}
+ (Subsection~\ref{xx:pm:sec});
+\item manuscript~09, \emph{Stirling Residues and Finite Candidate Lists}
+ (Subsection~\ref{xx:st:sec}), written after manuscript~12 and building on it;
+\item manuscript~17, \emph{Uniform $p$-adic Nonvanishing}
+ (Subsection~\ref{xx:pn:sec}).
+\end{itemize}
+The numbers are those of batch~72A; provenance is in
+Subsection~\ref{xx:lc:sec:provenance}.  The three manuscripts attack
+Conjecture~\ref{xx:conj:zeros} along the route of
+Subsection~\ref{xx:sec:diagonals} --- one fixed offset $d=m-r$ at a time ---
+and extend Theorem~\ref{xx:thm:prime} from the offsets $d=p-1$ to composite
+offsets.  \textbf{Conjecture~\ref{xx:conj:zeros} remains open, and with it the
+principal closed formula $a(n)=q(n)$}; each of the three manuscripts says so.
+
+\smallskip
+\textbf{What is new relative to this part.}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item Every offset $d=\mu(p-1)$ with $p>\mu$ prime is zero-free under two
+ explicit conditions, which hold for every prime
+ $p\ge\max\{4\mu,1+3^{4\mu-7}\}$ (Theorem~\ref{xx:pm:main}).  The offsets
+ $2(p-1)$ and $4(p-1)$ are zero-free for every prime~$p$, and $3(p-1)$ and
+ $5(p-1)$ for every odd prime (Corollaries~\ref{xx:pm:twice},
+ \ref{xx:pm:four}, \ref{xx:pm:triple} and~\ref{xx:st:five}).
+\item The universal positivity cone: $T_d(Y)>0$ whenever $Y\ge4d$
+ (Corollary~\ref{xx:pm:positive}), so every zero on offset $d$ lies in a row
+ $m<5d$.
+\item An exact Stirling residue for the small columns of the offset
+ $\mu(p-1)$, the $p$-adic displacement of the roots, and a complete list of
+ candidate zeros for every such offset
+ (Theorems~\ref{xx:st:residue}, \ref{xx:st:shift} and~\ref{xx:st:candidates}).
+\item The offset $(p-1)^2$ is reduced to the single candidate $Y=p^2+p-2$
+ (Corollary~\ref{xx:st:squares}), and the offset $p^2-1$ to $1\le Y\le p-1$
+ for $p\ge5$ (Theorem~\ref{xx:st:prime-square-reduction}).  It is also explained
+ why a sieve with a fixed modulus cannot by itself do better at $p^2-1$
+ (Theorem~\ref{xx:pm:square}).
+\item Exact $p$-adic valuations on divisibility progressions of $Y$: for the
+ offsets $(p-1)\mu$, including $\mu\ge p$, and for the odd offsets
+ $(p-1)\mu+1$ (Theorems~\ref{xx:pn:principal} and~\ref{xx:pn:shifted}).
+\end{itemize}
+
+\smallskip
+\textbf{What is not new.}  Some statements re-derive results printed above in
+this part, or in a sibling manuscript.  Each is printed once and the earlier
+result is credited:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item Theorem~\ref{xx:pn:principal} at $\mu=1$ is the valuation
+ $v_p(T_{p-1}(Y))=v_p(Y)-1$ in the proof of Theorem~\ref{xx:thm:prime}, proved
+ by a different method (a minimal-valuation multinomial count after Davis).
+ Manuscript~17 says so.  It is a second route to that case.
+\item The congruence $pT_{p-1}(Y)/Y\equiv1$ that manuscript~12 recalls in
+ proving Corollary~\ref{xx:pm:twice} is \eqref{xx:eq:punit}.
+\item The offset-eight certificate displayed in the same proof is the row
+ $d=8$, $p=11$ of Theorem~\ref{xx:thm:16}.  The manuscript's polynomial $F(Y)$
+ is $R_8(Y+8)$ of \eqref{xx:eq:Rd}, with the same scalar
+ $c_8=1/1393459200$; the intake checked this against
+ \texttt{data/diagonal\_certificates.json}.
+\item The cases $j=1,2$ of Lemma~\ref{xx:pm:small} re-derive the columns $r=1,2$
+ of Proposition~\ref{xx:prop:firstcolumns}.
+\item The derivative identity \eqref{xx:pm:derivative} is
+ Proposition~\ref{xx:prop:falling} combined with \eqref{xx:eq:diag}.
+\item Manuscript~09 re-proves three lemmas of manuscript~12: the positivity cone,
+ the ordinary congruence and the prime-square congruence.  They are printed
+ once, as manuscript~12's.  Manuscript~09's versions are recorded in
+ Remarks~\ref{xx:st:cone}, \ref{xx:st:ordinary}
+ and~\ref{xx:st:prime-square-base}.
+\item Manuscript~09's candidate list also gives a second route, not stated
+ there, to Corollary~\ref{xx:pm:triple} for $p\ge5$ and to
+ Corollary~\ref{xx:pm:four} for $p\ge7$, $p\ne11$
+ (Remark~\ref{xx:lc:rem:second-route}).
+\item For $p>\mu$, Theorem~\ref{xx:pn:principal} follows from the congruence in
+ Lemma~\ref{xx:pm:localization} (Remark~\ref{xx:lc:rem:pm-pn}).  Manuscript~17
+ is new for $\mu\ge p$ and on the shifted offsets.
+\end{itemize}
+\end{quote}
+
+\subsubsection{Notation of the additions}\label{xx:lc:sec:notation}
+
+The three manuscripts write the offset polynomial of
+Subsection~\ref{xx:sec:diagonals} as $T_r(Y)$, with $r$ the offset.  In this
+part $r$ is the \emph{column} of $b(m,r)$, and the offset is $d=m-r$; the
+manuscripts also call a multiplier $m$, which is this part's \emph{row}.  The
+additions are therefore printed with the letters of
+Table~\ref{xx:lc:tab:notation}.  The first three rows are where a reader will
+go wrong.  No normalization was changed.
+
+% The table counter runs through the whole article, so this table is numbered
+% 2.A and the counter is restored afterwards: no later table number moves.
+\begingroup
+\renewcommand{\thetable}{\thesection.A}%
+\renewcommand{\theHtable}{xx.lc.\thesection.A}%
+\begin{table}[!htbp]
+\centering\small
+\caption{Letters of Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance}
+against manuscripts~12, 09 and~17 and against the rest of Part~\ref{xx:part}.
+No normalization was changed.}\label{xx:lc:tab:notation}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth}
+ >{\raggedright\arraybackslash}p{0.16\textwidth}
+ >{\raggedright\arraybackslash}p{0.34\textwidth}
+ >{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\toprule
+Here & Manuscripts & Meaning & Tempting false reading\\
+\midrule
+$d$ & $r$ (all three); $n$ (in 12's and 09's prime-square proofs, 17's proofs) & offset $m-Y$; $T_d(Y)=\coef{z}{d}H(z)^Y$ as in \eqref{xx:eq:H} &
+ \textbf{false:} the column $r$ of $b(m,r)$\\
+$\mu$ & $m$ & multiplier: $d=\mu(p-1)$, or $d=\mu(p-1)+1$ &
+ \textbf{false:} the row $m$ of $b(m,r)$\\
+$m$ & $M$ & row: $m=Y+d$, or $m=\mu(p-1)+j$ in 09 & \textbf{false:} the multiplier\\
+\midrule
+$Y$ & $Y$ & column, $b(Y+d,Y)$; the $r$ of $b(m,r)$ & ---\\
+$j$ & $j$ (12, 09) & a small column value $Y=j<\mu$ &
+ the exponent $j$ of $\log x$ in \eqref{xx:eq:monomials}\\
+$H(z)$, $h_j$ & $\mathcal H(z)$ (12, 09), $H(z)$ (17); $h_j$, $h_n$ &
+ $\Phi(z)/z$ and its coefficients, \eqref{xx:eq:H} & the harmonic $H_t$\\
+$\mathsf H_n$ & $\mathsf H_n$ & harmonic number $\sum_{i\le n}1/i$, the $H_t$ of \eqref{xx:eq:col2} & the series $H(z)$\\
+$F_m(x)$ & $P_M(x)$ & falling factorial $\prod_{h=0}^{m-1}(x-h)$ &
+ the canonical polynomial $P_n$\\
+$\Psi_P(\xi)$ & $\Phi_P(b)$ (12), $\Phi(b)$ (09) & $P'(\xi)/P(\xi)$ at a real point $\xi$ above the roots &
+ $\Phi(z)=(1+z)\log(1+z)$; the coefficient $b(m,r)$\\
+$c(\mu,j)$ & $c(m,j)$ (09) & unsigned Stirling number of the first kind,
+ $c(\mu,j)=(-1)^{\mu-j}s(\mu,j)$ & the signed $s(m,\ell)$ of \eqref{xx:eq:stirling}; the scalar $c_d$ of \eqref{xx:eq:Rd}\\
+$\omega$ & $U$ & total multiplicity (12) or total weight (12, \S\,\ref{xx:pm:sec:square}) of bad indices & the bound $\U(n)$ of Part~\ref{xxb:part}\\
+$\mathcal V$ & $D$ & total denominator valuation of a term & $D(z)$ of Subsection~\ref{xx:sec:gf}\\
+$\Lambda$, $\nu$ & $L$, $q$ (12) & $\mathsf H_{d-1}-\mathsf H_j$, and $j-1$ & $L=\log x$; the proposed count $q(n)$\\
+$\Theta$, $\gamma_s$, $\beta_t$, $\mathcal R$, $\chi$ & $Q$, $c_s$, $b_t$, $E$, $x$ (12) &
+ local objects of the proof of Lemma~\ref{xx:pm:small} & $Q(z)$, $c_d$, $b(m,r)$, $E(n)$, $x$\\
+$\sigma$ & $c$ (12), $s$ (09) & the ratio $Y/d$ & ---\\
+$w_i$ & $x_i$ (12) & local variables in the proof of Lemma~\ref{xx:pm:barrier} & the variable $x$ of $x^x$\\
+$\kappa$ & $k$ (12) & order of a derivative in Lemma~\ref{xx:pm:barrier} & the exponent $k$ of $x^{-1}$\\
+$\lambda$, $\eta$, $g_0$ & $L$, $s$, $n_0$ (09) & $\sum\ell_i$, $\sum\varepsilon_i$, the good index & $L=\log x$; $s(m,\ell)$; the order $n$\\
+$\mathbf e_j$ & $E_j$ (17) & unit vector at position $j$ & the defect $E(n)$\\
+$n$, $j$ & $N$, $k$ (12, 09, 17) & derivative order, exponent of $\log x$ & ---\\
+\bottomrule
+\end{tabular}
+\end{table}
+\endgroup
+\addtocounter{table}{-1}
+
+Three further conventions.  The falling factorial $(Y)_{\underline\ell}$ of the
+manuscripts (17 writes $(Y)_\ell$) is $\fall Y\ell$ here, as in the rest of the
+article.  The manuscripts' ``factor defect $r$'' and ``log degree $k$'' of a
+derivative monomial are this part's exponents $d$ and $j$ in $x^{x-d}(\log
+x)^j$.  And all three cite this report as ``Part~I'' of the pinned source:
+they mean Part~\ref{xx:part}, Section~2 of this article.  Their bibliography
+entry for that source is replaced below by references into this part, and
+manuscript~09's entry for its ``preceding companion'' by references to
+Subsection~\ref{xx:pm:sec}.
+
+The relation between the two Stirling conventions is
+$x^{\overline\mu}=x(x+1)\cdots(x+\mu-1)=\sum_jc(\mu,j)x^j$ and
+$F_\mu(y)=\fall y\mu=\sum_\ell s(\mu,\ell)y^\ell$, so that
+$c(\mu,j)=(-1)^{\mu-j}s(\mu,j)$.  The two uses do not overlap:
+\eqref{xx:eq:stirling} is an exact formula for $b(m,r)$, while $c(\mu,j)$ below
+is a residue modulo~$p$.
+
+% ---------------------------------------------------------------------------
+\subsection{Complete nonvanishing on prime-multiple offsets (manuscript 12)}\label{xx:pm:sec}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 12.}\itshape
+We prove that every positive-column entry on offset $2(p-1)$ of the
+Lehmer--Comtet triangle is nonzero, for every prime $p$, and likewise on offset
+$4(p-1)$ for every prime and $3(p-1)$ for every odd prime. More generally, for
+every fixed positive multiplier $\mu$, the entire offset $\mu(p-1)$ is
+zero-free for all sufficiently large primes $p$, with an explicit
+harmonic-number condition and a fully integer sufficient threshold. A
+denominator argument confines every possible positive integer root to a small
+exponent or a residue class beyond $p^2$. A classical derivative-root barrier
+proves the universal positivity cone $Y\ge4d$ and excludes the latter region;
+an elementary harmonic-product estimate excludes the former. We also explain a
+limitation of a fixed finite-modulus sieve at prime-square offsets. The
+complete integer-zero conjecture remains open.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  Printed in the letters of
+Table~\ref{xx:lc:tab:notation}: the manuscript's multiplier $m$ is $\mu$ and its
+offset $r$ is $d$.
+\end{quote}
+
+\subsubsection{The coefficients and the main theorem}
+
+Write
+\begin{equation}\label{xx:pm:H}
+ H(z)=\frac{(1+z)\log(1+z)}z
+ =1+\sum_{j\ge1}h_jz^j,\qquad
+ h_j=\frac{(-1)^{j-1}}{j(j+1)},\qquad T_d(Y)=\coef{z}{d}H(z)^Y,
+\end{equation}
+which is \eqref{xx:eq:H}.  For every fixed $d\ge1$, $T_d\in\Q[Y]$ has degree
+$d$ and the factor $Y$ (Lemma~\ref{xx:lem:diagdegree}).  The Lehmer--Comtet
+coefficients are
+\begin{equation}\label{xx:pm:b}
+ b(m,Y)=\frac{m!}{Y!}\coef{z}{m}\bigl((1+z)\log(1+z)\bigr)^Y
+ =\frac{m!}{Y!}T_{m-Y}(Y),\quad 1\le Y\le m,
+\end{equation}
+which is \eqref{xx:eq:diag}.  In particular, $T_d(Y)\ne0$ for all positive
+integers $Y$ is exactly nonvanishing of the entire offset $m-Y=d$.  These
+coefficients enter the derivative expansion \eqref{xx:eq:expansion}.
+Throughout, $\mathsf H_n=\sum_{i=1}^n1/i$, with $\mathsf H_0=0$, denotes a
+harmonic number.
+
+\begin{theorem}\label{xx:pm:main}
+Let $\mu\ge2$ be an integer, let $p>\mu$ be prime, and set $d=\mu(p-1)$. If
+\begin{align}
+ p^2+1&\ge 4d,\label{xx:pm:A}\\
+ \mathsf H_{d-1}-\mathsf H_{\mu-1}&\ge4(\mu-2),\label{xx:pm:B}
+\end{align}
+then $T_d(Y)\ne0$ for every positive integer $Y$.
+
+For each fixed $\mu$, both conditions hold for all sufficiently large $p$. The
+explicit integer condition
+\begin{equation}\label{xx:pm:threshold}
+ p\ge\max\{4\mu,\ 1+3^{4\mu-7}\}
+\end{equation}
+is sufficient.
+\end{theorem}
+
+\begin{corollary}\label{xx:pm:twice}
+For every prime $p$ and every positive integer $Y$,
+\[
+ T_{2(p-1)}(Y)\ne0.
+\]
+Equivalently, $b(m,m-2p+2)\ne0$ for every $m\ge2p-1$.
+\end{corollary}
+
+\begin{corollary}\label{xx:pm:triple}
+For every odd prime $p$ and every positive integer $Y$,
+\[
+ T_{3(p-1)}(Y)\ne0.
+\]
+The exclusion of $p=2$ is necessary: $T_3(2)=T_3(5)=0$.
+\end{corollary}
+
+\begin{corollary}\label{xx:pm:four}
+For every prime $p$ and every positive integer $Y$,
+\[
+ T_{4(p-1)}(Y)\ne0.
+\]
+\end{corollary}
+
+For derivatives of $x^x$, the monomial $x^{x-d}(\log x)^j$ of $f^{(n)}$ ---
+offset $d$, logarithmic degree $j$ --- has coefficient $\binom nm b(m,Y)$ with
+$m=n-j$ and $Y=n-d-j$ (Theorem~\ref{xx:thm:expansion}).  On every covered
+offset, the only physical cancellation is therefore the structural boundary
+$Y=0$, or $j=n-d$; all cells with $Y>0$ are nonzero. The covered offsets are
+even, so this conclusion does not remove the known odd-offset reflection
+family.
+
+The inspected repository proves the prime-offset case $d=p-1$
+(Theorem~\ref{xx:thm:prime}) and completely checks offsets through $16$
+(Theorem~\ref{xx:thm:16}).  Corollaries~\ref{xx:pm:twice}--\ref{xx:pm:four}
+and Theorem~\ref{xx:pm:main} extend those source-relative conclusions to
+complete infinite families, including offsets whose successor is composite. No
+claim of exhaustive literature priority is intended.
+
+\subsubsection{Arithmetic localization to two or more digits}
+
+Let $\Z_{(p)}$ be the rationals with denominator coprime to $p$. Polynomial
+congruences in this subsection are over that ring.
+
+\begin{lemma}\label{xx:pm:localization}
+Suppose $p>\mu\ge2$ and $d=\mu(p-1)$. Then $G(Y)=p^\mu T_d(Y)$ and $G(Y)/Y$ lie
+in $\Z_{(p)}[Y]$, and
+\begin{equation}\label{xx:pm:congruence}
+ G(Y)\equiv\frac{\fall Y\mu}{\mu!}\pmod p.
+\end{equation}
+For $1\le j\le \mu-1$,
+\begin{equation}\label{xx:pm:smallvalues}
+ v_p(G(j))\ge \mu-j+1.
+\end{equation}
+Every positive integer zero of $T_d$ therefore satisfies
+\begin{equation}\label{xx:pm:digits}
+ Y\equiv j\pmod{p^{\mu-j+1}}\quad\text{for some }1\le j\le \mu-1.
+\end{equation}
+In particular, it either lies in $\{1,\ldots,\mu-1\}$ or is at least $p^2+1$.
+\end{lemma}
+\begin{proof}
+The falling-factorial expansion is
+\begin{equation}\label{xx:pm:partition}
+ T_d(Y)=\sum_{\sum ji_j=d}\fall Y\ell\prod_{j\ge1}\frac{h_j^{i_j}}{i_j!},
+ \qquad \ell=\sum i_j.
+\end{equation}
+Since $d<p^2-1$, each $h_j$ occurring here has valuation $0$ or $-1$. Call an
+index bad when its valuation is $-1$, and let $\omega$ be the total multiplicity
+of bad indices. Every bad index is at least $p-1$, so $\omega\le \mu$. Equality
+forces the unique partition $i_{p-1}=\mu$; its total denominator valuation is
+$\mu$, because $\mu!$ is a unit.
+
+If $\omega<\mu$, every bad-index multiplicity is less than $p$. The total
+multiplicity of good indices is at most $(\mu-\omega)(p-1)$. Since all
+multiplicities are below $p^2$, their factorial valuations sum to at most
+\[
+ \left\lfloor\frac{(\mu-\omega)(p-1)}p\right\rfloor=\mu-\omega-1.
+\]
+Thus every nondistinguished term in~\eqref{xx:pm:partition} has denominator
+valuation at most $\mu-1$. Only $i_{p-1}=\mu$ survives after multiplication by
+$p^\mu$ and reduction. Since $ph_{p-1}\equiv1\pmod p$, this
+proves~\eqref{xx:pm:congruence}. Every falling factorial has a factor $Y$, so
+division by that exact factor also preserves $p$-integrality.
+
+To prove~\eqref{xx:pm:smallvalues}, expand $H^j$ as a product of $j$ series. A
+term could have denominator valuation $j$ only if all $j$ chosen indices were
+positive and bad. Each such index is $0$ or $-1$ modulo $p$. Their sum cannot
+equal $d\equiv-\mu\pmod p$, since $j<\mu<p$. Hence the denominator valuation is
+at most $j-1$.
+
+The reduction of $G/Y$ has simple roots precisely $1,\ldots,\mu-1$ modulo $p$.
+An integer zero must first lie in one of these classes. At its representative
+$j$, $G'(j)$ is a unit. In the Taylor expansion at $j$, if
+$1\le v_p(Y-j)<\mu-j+1$, the linear term has strictly smaller valuation than
+the constant term and all higher terms. It cannot cancel.
+This proves~\eqref{xx:pm:digits} and the asserted localization.
+\end{proof}
+
+The denominator comparison uses the classical multinomial method also appearing
+in Davis's analysis of powers of $\log(1+z)/z$~\cite{xx-davis}; here the
+additional factor $1+z$ produces the denominators $j(j+1)$.
+
+\subsubsection{A derivative-root barrier excludes large exponents}
+
+We reproduce the needed classical barrier estimate. A primary source is
+Ravichandran's Theorem~1.4, attributed there to Marcus~\cite{xx-ravichandran}.
+
+\begin{lemma}\label{xx:pm:barrier}
+Let $P$ have only real roots, let $\xi>\max\operatorname{root}P$, and put
+$\Psi_P(\xi)=P'(\xi)/P(\xi)$. For $0\le\kappa<\deg P$,
+\[
+ \max\operatorname{root}P^{(\kappa)}<\xi-\frac{\kappa}{\Psi_P(\xi)}.
+\]
+\end{lemma}
+\begin{proof}
+Put $\delta=1/\Psi_P(\xi)$. For degree at least two, let
+$u_i=\delta/(\xi-\lambda_i)$, where the $\lambda_i$ are the roots with
+multiplicity. Then $0<u_i<1$ and $\sum u_i=1$, so $\xi-\delta$ remains above
+every root of $P$. With
+\[
+ w_i=\frac{u_i}{1-u_i},\qquad A=\sum w_i,\qquad B=\sum w_i^2,
+\]
+logarithmic differentiation gives
+\[
+ \Psi_{P'}(\xi-\delta)=\delta^{-1}(A-B/A).
+\]
+Regard the $u_i$ as probability weights. Then
+\[
+ \mathbb E[w]=A-1,\quad \mathbb E[1+w]=A,\quad
+ \mathbb E[w(1+w)]=B,
+\]
+so $B-A(A-1)=\operatorname{Var}(w)\ge0$. Hence $\Psi_{P'}(\xi-\delta)\le1/\delta$.
+A smaller displacement gives the same upper bound by monotonicity of the
+logarithmic derivative above the roots. Iterate using this fixed $\delta$; every
+shifted point stays strictly above the corresponding derivative's roots.
+\end{proof}
+
+\begin{corollary}[A universal positivity cone]\label{xx:pm:positive}
+For positive integers $Y,d$, if $Y\ge4d$, then $T_d(Y)>0$. Consequently every
+positive integer zero satisfies $Y<4d$.
+\end{corollary}
+\begin{proof}
+Set $m=Y+d$ and $F_m(x)=\prod_{h=0}^{m-1}(x-h)$. Differentiating
+$(1+z)^x=\sum_{m\ge0}F_m(x)z^m/m!$ exactly $Y$ times in $x$ and setting $x=Y$
+gives
+\begin{equation}\label{xx:pm:derivative}
+ T_d(Y)=\frac{F_m^{(Y)}(Y)}{m!}.
+\end{equation}
+Choose $\xi=m+d=Y+2d$. Its barrier is
+\[
+ \Psi_{F_m}(\xi)=\mathsf H_{Y+2d}-\mathsf H_d
+ <\int_d^{Y+2d}\frac{dt}{t}=\log\frac{Y+2d}{d}.
+\]
+Write $\sigma=Y/d\ge4$. The function $\sigma-2\log(\sigma+2)$ increases for
+$\sigma\ge4$ and is positive there, since $\log6<2$. Thus
+$Y>2d\Psi_{F_m}(\xi)$. Lemma~\ref{xx:pm:barrier} yields
+$\max\operatorname{root}F_m^{(Y)}<\xi-Y/\Psi_{F_m}(\xi)<Y$.
+The derivative has positive leading coefficient, so its value at $Y$ is
+strictly positive.
+\end{proof}
+
+\emph{Editorial note.}  Identity~\eqref{xx:pm:derivative} is
+Proposition~\ref{xx:prop:falling} combined with \eqref{xx:eq:diag}, derived
+there by the same differentiation of the binomial series.
+
+Condition~\eqref{xx:pm:A} therefore excludes every possible zero with
+$Y\ge p^2+1$. This uses real-rootedness only of the falling-factorial
+polynomial $F_m$, not of $T_d$ as a polynomial in $Y$.
+
+\begin{remark}[Editorial: the cone and the asymptotic sign boundary]\label{xx:lc:rem:cone}
+In the ratio $\rho=m/Y$ of row to column, the cone of
+Corollary~\ref{xx:pm:positive} is $\rho\le5/4$, and it holds on every offset,
+bounded ones included.  Manuscript~31 of the same batch, placed in the new
+sibling report \texttt{power-tower-exponent-supports}, proves positivity of
+$b(m,Y)$ eventually on compact ranges of $\rho$ inside $(1,\rho_*)$,
+$\rho_*\approx1.29843$, without an effective threshold.  Neither statement
+implies the other.  The cone is valid but not sharp: in an exact scan of all
+rows $m\le200$ at the intake, no entry in the cone is nonpositive, and the
+smallest ratio $m/Y$ of a nonpositive entry is $196/148\approx1.324$.
+\end{remark}
+
+\subsubsection{Small exponents and completion of the proof}
+
+\begin{lemma}\label{xx:pm:small}
+Let $d,j\ge1$, put $\nu=j-1$ and $\Lambda=\mathsf H_{d-1}-\mathsf H_j$. If $j=1$,
+then $T_d(j)\ne0$. If $\nu\ge1$ and $\Lambda\ge4\nu$, then $T_d(j)\ne0$, with
+sign $(-1)^{d+j}$.
+\end{lemma}
+\begin{proof}
+The case $j=1$ follows from $T_d(1)=h_d\ne0$. Otherwise
+\[
+ F_{d+j}(j+u)=(-1)^{d-1}j!(d-1)!\,u\Theta(u),\qquad
+ \Theta(u)=\prod_{h=1}^j(1+u/h)\prod_{h=1}^{d-1}(1-u/h).
+\]
+Its logarithm is $-\Lambda u+\sum_{s\ge2}\gamma_su^s$, with $|\gamma_s|\le2$.
+Let $\beta_t=\coef{u}{t}\exp(2u^2/(1-u))$. Coefficientwise majorization gives
+\[
+ \coef{u}{\nu}\Theta(u)=\frac{(-\Lambda)^\nu}{\nu!}+\mathcal R,\qquad
+ \frac{|\mathcal R|}{\Lambda^\nu/\nu!}\le\sum_{t=2}^\nu \beta_t\left(\frac
+ \nu\Lambda\right)^t.
+\]
+For $\chi=\nu/\Lambda\le1/4$, the right side is at most
+$\exp(2\chi^2/(1-\chi))-1\le e^{1/6}-1<1$.
+Thus $\coef{u}{\nu}\Theta$ has sign $(-1)^\nu$. The derivative
+identity~\eqref{xx:pm:derivative} proves the assertion.
+\end{proof}
+
+\emph{Editorial note.}  At $j=1$ and $j=2$ the lemma re-derives, on every
+offset, the column formulas of Proposition~\ref{xx:prop:firstcolumns}:
+$T_d(1)=h_d$ is $b(m,1)=(-1)^m(m-2)!$, and the sign of
+$\coef{u}{1}\Theta=-(\mathsf H_{d-1}-\mathsf H_2)$ is that of
+$2H_{m-3}-3$ in \eqref{xx:eq:col2}.  For larger $j$ it has no counterpart in
+this part: every fixed column $Y=j$ has $T_d(j)\ne0$ as soon as
+$\mathsf H_{d-1}-\mathsf H_j\ge4(j-1)$, so each column has only finitely many
+possible zeros, below an explicit offset (an observation of the intake, not
+stated in the manuscript).
+
+\begin{proof}[Proof of Theorem~\ref{xx:pm:main}]
+Arithmetic localization leaves only $1\le Y\le\mu-1$ and $Y\ge p^2+1$. The
+latter is excluded by~\eqref{xx:pm:A} and Corollary~\ref{xx:pm:positive}. For
+$1\le j\le\mu-1$, condition~\eqref{xx:pm:B} gives
+\[
+ \mathsf H_{d-1}-\mathsf H_j\ge4(\mu-2)\ge4(j-1),
+\]
+so Lemma~\ref{xx:pm:small} excludes all remaining exponents.
+
+For the explicit threshold, $p\ge4\mu$ gives $p^2+1>4\mu(p-1)$,
+proving~\eqref{xx:pm:A}. Also
+\[
+ \mathsf H_{d-1}-\mathsf H_{\mu-1}>\log d-1-\log(\mu-1)>\log(p-1)-1.
+\]
+If $p-1\ge3^{4\mu-7}$, then $\log3>1$ makes this greater than $4(\mu-2)$.
+Thus~\eqref{xx:pm:B} holds as well.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{xx:pm:twice}]
+Take $\mu=2$. Condition~\eqref{xx:pm:B} holds for every $p>2$, and
+$p^2+1\ge8(p-1)$ for every $p\ge7$. Theorem~\ref{xx:pm:main} handles those
+primes.
+
+The cases $p=2,3$ have offsets $2,4$, already prime offsets for the primes
+$3,5$. For completeness, that known theorem follows from
+$pT_{p-1}(Y)/Y\equiv1\pmod p$: only the one-part contribution $h_{p-1}$ survives
+after division by $Y$ and multiplication by $p$.  (Editorial: this is
+\eqref{xx:eq:punit} in the proof of Theorem~\ref{xx:thm:prime}.)
+
+For $p=5$, a primitive numerator of $T_8(Y)/Y$ is
+\begin{align*}
+ F(Y)={}&135Y^7-8820Y^6+229950Y^5-3075240Y^4\\
+ &+22538215Y^3-89214420Y^2+172998164Y-122821584.
+\end{align*}
+Its values modulo $11$ at $Y=0,\ldots,10$ are
+$5,9,6,2,2,5,5,4,10,4,3$, all nonzero. This restates one of the source's
+small-offset certificates solely to close the uniform all-prime assertion.
+Finally $Y=1$ is always explicitly nonzero by~\eqref{xx:pm:H}.
+\end{proof}
+
+\emph{Editorial note.}  The source certificate restated here is the row $d=8$
+of Theorem~\ref{xx:thm:16}: $F(Y)=R_8(Y+8)$, with $R_8$ the primitive residual
+of \eqref{xx:eq:Rd} recorded in
+\texttt{data/\allowbreak diagonal\_\allowbreak certificates.json}, and
+$T_8(Y)=c_8\,Y\,R_8(Y+8)$ with $c_8=1/1393459200$.  The residues listed above
+are those of $R_8$ at $X=8,\ldots,18$, the same eleven classes as the residues
+recorded for $X=0,\ldots,10$.  The intake checked the identity
+$F(Y)=R_8(Y+8)$ coefficient by coefficient.
+
+\begin{proof}[Proof of Corollary~\ref{xx:pm:triple}]
+Take $\mu=3$. If $p\ge11$, then $p^2+1\ge12(p-1)=4d$. The small sector in
+Lemma~\ref{xx:pm:localization} contains only $j=1,2$. For $j=2$, the
+coefficient in Lemma~\ref{xx:pm:small} is exactly $-(\mathsf H_{d-1}-\mathsf
+H_2)$, which is nonzero for $d>3$. Thus the stronger condition~\eqref{xx:pm:B}
+is unnecessary here. The remaining odd primes $3,5,7$ give offsets $6,12,18$,
+whose successors $7,13,19$ are prime. The known prime-offset theorem covers
+these cases.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{xx:pm:four}]
+Take $\mu=4$. If $p\ge17$, then $p^2+1\ge16(p-1)=4d$ and $d\ge64$. The cases
+$j=1,2$ are as above. For $j=3$, the relevant coefficient is
+\[
+ \coef{u}{2}\Theta(u)=\Lambda^2/2+\gamma_2,\qquad
+ \Lambda=\mathsf H_{d-1}-\mathsf H_3,\qquad |\gamma_2|<2.
+\]
+Here
+$\Lambda\ge\mathsf H_{63}-\mathsf H_3>\int_4^{64}dt/t=\log16>2$,
+so this coefficient is strictly positive. Arithmetic localization and the
+positivity cone exclude all other $Y$.
+
+The remaining primes $2,3,5,7,11,13$ give offsets $4,8,16,24,40,48$. They are
+covered respectively by the prime-offset theorem at $5$, the displayed
+offset-eight certificate, the prime-offset theorem at $17$,
+Corollary~\ref{xx:pm:twice} at $13$, the prime-offset theorem at $41$, and
+Corollary~\ref{xx:pm:triple} at $17$. This completes the proof.
+\end{proof}
+
+\subsubsection{Why prime-square offsets need additional input}\label{xx:pm:sec:square}
+
+The following obstruction concerns a fixed finite-modulus sieve, not every
+possible $p$-adic argument.
+\begin{theorem}\label{xx:pm:square}
+For every prime $p$, put $d=p^2-1$. Then
+\[
+ J_p(Y)=p^{p+2}\frac{T_d(Y)}Y\in\Z_{(p)}[Y],\qquad
+ J_p(Y)\equiv-(Y^p-Y)\pmod p.
+\]
+Consequently $J_p$ has exactly $p$ simple roots in $\Z_p$, one in each residue
+class modulo $p$.
+\end{theorem}
+\begin{proof}
+In~\eqref{xx:pm:partition}, let $v_j=v_p(j(j+1))$, $\omega=\sum i_jv_j$ and
+$\mathcal V=\omega+\sum v_p(i_j!)$. We use
+\[
+ j\ge(p-1)v_j,\qquad j\ge1+(p-2)v_j,
+\]
+with equality in the first only at $j=p-1$. For $v_j>0$, these follow from
+$j\ge p^{v_j}-1$; the case $v_j=0$ is immediate. Set $\mu=p+1$. Then
+$\omega\le\mu$, and equality forces $i_{p-1}=\mu$, whose denominator valuation
+is $p+2$.
+
+For every other partition put $\delta=\mu-\omega\ge1$. The second inequality
+gives $\ell\le p+1+(p-2)\delta$. Since each multiplicity is below $p^2$,
+\[
+ \sum v_p(i_j!)\le\lfloor\ell/p\rfloor
+ \le\delta+1-\left\lceil\frac{2\delta-1}p\right\rceil\le\delta.
+\]
+Thus $\mathcal V\le p+1$ for all nondistinguished terms. Only the distinguished
+term survives after scaling by $p^{p+2}$. Wilson's congruence gives its
+coefficient $-1$ modulo $p$ (also for $p=2$). Dividing by the exact factor $Y$
+leaves $\prod_{j=1}^p(Y-j)=Y^p-Y$ modulo $p$.
+
+The derivative of the reduced polynomial is $1$. Each residue class is a root
+modulo $p$ and has exactly one lift at every higher power, since the linearized
+congruence determines the next digit uniquely. These compatible residues are
+exactly the asserted simple roots in $\Z_p$.
+\end{proof}
+
+Thus every fixed modulus $p^e$ retains positive integer candidates in all $p$
+compatible classes. This does not exclude a more refined argument showing that
+the particular $p$-adic roots are not ordinary integers. For odd $p$, the
+offset is even and has no known reflection factor to remove. The complete
+prime-power-offset classification remains open.
+
+\emph{Editorial note.}  Theorem~\ref{xx:st:prime-square-reduction} below
+(manuscript~09) is such a refined argument for $p\ge5$: it locates the
+$p$-adic roots to three digits and, with the cone, reduces the offset $p^2-1$
+to $1\le Y\le p-1$.  The classification of that offset stays open.
+
+\subsubsection{Verification and source scope}
+
+The accompanying standard-library checker
+(\texttt{code/05-prime-\allowbreak multiple-\allowbreak verify.py}) constructs
+$T_d$ exactly through degree $72$, verifies the coefficient congruences and
+$64$ stronger lift inequalities, and compares $3{,}132$ coefficients against an
+independent integer-triangle recurrence. It checks $14{,}000$ instances of the
+three complete prime families, $15{,}880$ positivity-cone instances, $29{,}456$
+localization instances through triangle row $400$, the prime-square congruence
+for $p=2,3,5,7$, the full offset-eight identity and its modular certificate,
+and the main conditions for $(\mu,p)=(2,11),(3,83),(3,89),(4,3001)$. A second
+exact convolution replay
+(\texttt{code/05-prime-\allowbreak multiple-\allowbreak replay\_convolution.py})
+independently checks $1{,}320$ double-family instances, $3{,}000$ localization
+instances, $56$ lifts and $1{,}176$ derivative-bridge identities;
+finite-difference interpolation also recovers the offset-eight certificate.
+These finite replays support reproducibility; the preceding proofs establish
+the infinite statements.
+
+The relevant default-branch source was rechecked on 1 October 2026 and still
+had blob \texttt{7344f3aa4dc9344fb8648326e74e0d4bcc33eada}, matching the pinned
+source (this report at commit \texttt{ca81647a9}). It already contains the
+prime-offset theorem and the finite offset-$16$ classification. The global
+exact zero list remains unsettled. No real-rootedness assertion about all $T_d$
+is used or proved here.
+
+% ---------------------------------------------------------------------------
+\subsection{Stirling residues and finite candidate lists (manuscript 09)}\label{xx:st:sec}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 09.}\itshape
+We identify a scaled block of the Lehmer--Comtet triangle modulo a prime with
+an ordinary unsigned Stirling row. The formula determines the first nontrivial
+digits of the associated $p$-adic roots. Combined with a derivative-root bound,
+it confines every positive integer zero on offset $\mu(p-1)$, for $p>\mu$, to
+an explicit set of small exponents and at most one larger integer. It proves
+complete nonvanishing on offset $5(p-1)$ for every odd prime. Two different
+square families have particularly short remaining lists: offset $(p-1)^2$ has
+at most one candidate for odd primes, while offset $p^2-1$ has candidates only
+in $1,\ldots,p-1$ for $p\ge5$. These are necessary conditions, not assertions
+that the listed candidates are zeros. The global exact zero classification
+remains open.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  Printed in the letters of
+Table~\ref{xx:lc:tab:notation}.  The manuscript's ``preceding companion'' is
+manuscript~12, printed in Subsection~\ref{xx:pm:sec}; manuscript~09 was
+delivered with an unchanged copy of it, which is not shipped a second time.
+\end{quote}
+
+\subsubsection{Coefficients, scope, and the root bound}
+
+The manuscript defines $H(z)$, $h_j$, $T_d(Y)$ and $b(Y+d,Y)$ as in
+\eqref{xx:pm:H} and \eqref{xx:pm:b}, and notes that $T_d$ has the structural
+factor $Y$.  Write $c(\mu,j)$ for the unsigned Stirling number of the first
+kind, defined by
+\[
+ X(X+1)\cdots(X+\mu-1)=\sum_{j=1}^\mu c(\mu,j)X^j.
+\]
+All congruences of rational numbers or polynomials are over $\Z_{(p)}$, the
+rationals with denominator coprime to $p$.
+
+\begin{remark}[Manuscript 09's restatement of the cone]\label{xx:st:cone}
+The manuscript opens with the positivity bound of
+Corollary~\ref{xx:pm:positive} --- for integers $d,Y\ge1$, $Y\ge4d$ implies
+$T_d(Y)>0$ --- taken from manuscript~12 ``with its brief derivation included''.
+That derivation is the proof of Corollary~\ref{xx:pm:positive} in condensed
+form: it applies the classical barrier \cite[Theorem~1.4]{xx-ravichandran} to
+$F_m^{(Y)}$, $m=Y+d$, with $\Psi(\xi)=\sum_{h=0}^{m-1}1/(\xi-h)$ at
+$\xi=Y+2d$, bounds $\Psi(\xi)=\mathsf H_{Y+2d}-\mathsf H_d<\log((Y+2d)/d)$,
+and uses $\sigma>2\log(\sigma+2)$ for $\sigma=Y/d\ge4$.  It is the same
+argument, quoting the barrier rather than proving it, and is not printed a
+second time.
+\end{remark}
+
+This note concerns positive $Y$. In derivatives of $x^x$, the offset $d$ and
+log degree $j$ of a monomial $x^{x-d}(\log x)^j$ satisfy $Y=n-d-j$; the
+structural line $Y=0$, or $j=n-d$, remains a cancellation line. The inspected
+source gives the prime-offset theorem and fixed-offset certificates through
+$16$ (Theorems~\ref{xx:thm:prime} and~\ref{xx:thm:16}). The preceding companion
+(Subsection~\ref{xx:pm:sec}) proves complete families with multipliers $2,3,4$
+and a general sufficiently-large-prime theorem. Here the additional input is an
+exact Stirling residue and its root displacement. The partition method belongs
+to the classical $p$-adic Bernoulli/Stirling
+framework~\cite{xx-davis,xx-adelberg}; the results below are proved directly,
+without an exhaustive priority claim.
+
+\subsubsection{The Stirling residue}
+
+\begin{theorem}\label{xx:st:residue}
+Let $p>\mu\ge2$ be prime and integer, respectively, and let $1\le j<\mu$. For
+$d=\mu(p-1)$,
+\begin{equation}\label{xx:st:mainresidue}
+ p^{j-1}T_d(j)\equiv
+ -\frac{(j!)^2(\mu-j-1)!}{\mu!(\mu-1)!}\,c(\mu,j)\pmod p.
+\end{equation}
+The left side is $p$-integral. If $p\nmid c(\mu,j)$, then
+$v_p(T_d(j))=1-j$, in particular $T_d(j)\ne0$.
+Equivalently, the triangle entries satisfy
+\begin{equation}\label{xx:st:triangleresidue}
+ \frac{b(\mu(p-1)+j,j)}{p^{\mu-j}}
+ \equiv(-1)^j\frac{j!}{\mu!}c(\mu,j)\pmod p.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $d<p^2-1$, each nonconstant coefficient $h_i$ with $i\le d$ has valuation
+$0$ or $-1$. Call an index bad in the latter case. In an ordered-product
+expansion of $H^j$, all $j$ indices cannot be bad: their residues are $0$ or
+$-1$ modulo $p$, whereas their sum is $d\equiv-\mu$, and $j<\mu<p$. Hence
+$p^{j-1}T_d(j)$ is integral at $p$.
+
+Only terms with exactly $j-1$ bad indices survive. The remaining index is
+positive and good; a constant there would again make the residue sum
+impossible. Choose its position in $j$ ways, and write the bad indices as
+\[
+ \ell_i p-\varepsilon_i,\quad \ell_i\ge1,\quad \varepsilon_i\in\{0,1\},\qquad
+ \lambda=\sum\ell_i,\quad \eta=\sum\varepsilon_i.
+\]
+The good index is $g_0=(\mu-\lambda)p-\mu+\eta$, positive exactly when
+$\lambda\le\mu-1$. Both $g_0$ and $g_0+1$ are units, since
+$\eta\le j-1\le\mu-2$. Because $p$ is odd,
+\[
+ ph_{\ell_i p-\varepsilon_i}\equiv\frac{(-1)^{\ell_i+1}}{\ell_i},\qquad
+ h_{g_0}\equiv\frac{(-1)^{\eta-\lambda-1}}{(\mu-\eta)(\mu-\eta-1)}\pmod p.
+\]
+The product sign is $(-1)^{\eta+j-2}$, independently of $\lambda$. Therefore
+the surviving residue is
+\begin{equation}\label{xx:st:AB}
+ j(-1)^{j-2} A_{\mu,j} B_{\mu,j},
+\end{equation}
+where
+\begin{align*}
+ A_{\mu,j}&=\sum_{\substack{\ell_1,\ldots,\ell_{j-1}\ge1\\\ell_1+\cdots+\ell_{j-1}\le \mu-1}}
+ \frac1{\ell_1\cdots\ell_{j-1}},\\
+ B_{\mu,j}&=\sum_{\eta=0}^{j-1}\frac{(-1)^\eta\binom{j-1}\eta}{(\mu-\eta)(\mu-\eta-1)}.
+\end{align*}
+For $j=1$, the empty tuple gives $A_{\mu,1}=1$.
+The standard logarithmic generating function for unsigned Stirling numbers
+gives
+\[
+ A_{\mu,j}=\coef{t}{\mu-1}\frac{(-\log(1-t))^{j-1}}{1-t}
+ =\frac{(j-1)!}{(\mu-1)!}c(\mu,j).
+\]
+A finite binomial sum and a beta integral give
+\begin{align*}
+ B_{\mu,j}
+ &=\int_0^1x^{\mu-2}(1-x)(1-x^{-1})^{j-1}\,dx\\
+ &=(-1)^{j-1}\frac{(\mu-j-1)!j!}{\mu!}.
+\end{align*}
+The integral converges because $j<\mu$. Substitution into~\eqref{xx:st:AB}
+proves~\eqref{xx:st:mainresidue}, including the sign.
+
+Finally put $m=\mu(p-1)+j$. Then $v_p(m!)=\mu-1$. Splitting into $p$-blocks and
+applying Wilson's congruence gives
+\[
+ \frac{m!}{p^{\mu-1}}\equiv
+ (-1)^{j+1}\frac{(\mu-1)!}{(\mu-j-1)!}\pmod p.
+\]
+Combining this with~\eqref{xx:pm:b} proves~\eqref{xx:st:triangleresidue}.
+\end{proof}
+
+\subsubsection{Root displacements and the complete candidate list}
+
+\begin{remark}[Manuscript 09's ordinary congruence]\label{xx:st:ordinary}
+The manuscript's Lemma~3.1 is the congruence half of
+Lemma~\ref{xx:pm:localization}: for $p>\mu\ge2$ and $d=\mu(p-1)$,
+$G(Y)=p^\mu T_d(Y)\in\Z_{(p)}[Y]$, $G(Y)\equiv\fall Y\mu/\mu!\pmod p$, and $G/Y$
+is also $p$-integral.  Its proof, which the manuscript calls ``the next
+elementary denominator observation'', is a condensed version of the first two
+paragraphs of the proof of Lemma~\ref{xx:pm:localization} (at most $\mu$ bad
+factors, equality only at $i_{p-1}=\mu$, factorial valuations of the other
+terms at most $\mu-\omega-1$) and is not printed a second time.
+\end{remark}
+
+\begin{theorem}\label{xx:st:shift}
+For every $j=1,\ldots,\mu-1$, the polynomial $G/Y$ has one simple root
+$\rho_j\in\Z_p$ in class $j$, and
+\begin{equation}\label{xx:st:shiftformula}
+ \rho_j\equiv j+
+ (-1)^{\mu-1-j}\frac{j!c(\mu,j)}{(\mu-1)!}\,p^{\mu-j+1}
+ \pmod{p^{\mu-j+2}}.
+\end{equation}
+There are no other roots in $\Z_p$.
+\end{theorem}
+\begin{proof}
+Congruence~\eqref{xx:pm:congruence} gives precisely the simple residue roots
+$1,\ldots,\mu-1$, each with a unique lift at every successive power of $p$. Its
+derivative before division by $Y$ is
+\[
+ G'(j)\equiv\frac{j!(-1)^{\mu-1-j}(\mu-1-j)!}{\mu!}\pmod p.
+\]
+Theorem~\ref{xx:st:residue} determines $G(j)/p^{\mu-j+1}$ modulo $p$. Taylor
+expansion at $j$ therefore gives~\eqref{xx:st:shiftformula}. The quadratic
+remainder has valuation at least $2(\mu-j+1)\ge\mu-j+2$. The formula remains
+valid if $p\mid c(\mu,j)$; it then asserts an additional zero digit.
+\end{proof}
+
+\begin{theorem}[Finite candidate list]\label{xx:st:candidates}
+Let $p>\mu\ge2$, $d=\mu(p-1)$, and let $C_p\in\{1,\ldots,p-1\}$ be the least
+nonnegative residue of $\binom\mu2$ modulo $p$. Every positive integer zero of
+$T_d$ belongs to
+\begin{equation}\label{xx:st:list}
+ \{j:1\le j<\mu,\ p\mid c(\mu,j)\}
+ \ \cup\ \{\mu-1+C_pp^2\},
+\end{equation}
+where the last candidate may be omitted when it is at least $4d$.
+\end{theorem}
+\begin{proof}
+Corollary~\ref{xx:pm:positive} confines zeros to $0<Y<4d$. Since $\mu\le p-1$
+and $p\ge3$,
+\[
+ p^3>4(p-1)^2\ge4\mu(p-1)=4d.
+\]
+For $j\le\mu-2$, formula~\eqref{xx:st:shiftformula} fixes the root at $j$
+modulo at least $p^3$. Its only possible positive integer representative below
+$4d$ is $j$ itself, excluded by Theorem~\ref{xx:st:residue} unless
+$p\mid c(\mu,j)$.
+
+For $j=\mu-1$, the displacement simplifies to
+\[
+ \rho_{\mu-1}\equiv \mu-1+\binom\mu2p^2\pmod{p^3}.
+\]
+Here $p\nmid\binom\mu2$, since $p>\mu$. There is at most one representative in
+$0<Y<4d$, namely the last candidate in~\eqref{xx:st:list}. The small
+representative $\mu-1$ is not a root, again by Theorem~\ref{xx:st:residue}.
+\end{proof}
+
+Thus a sufficient complete-offset criterion is: no entry $c(\mu,j)$,
+$1\le j<\mu$, is divisible by $p$, and $\mu-1+C_pp^2\ge4\mu(p-1)$. The
+candidates in~\eqref{xx:st:list} are necessary possibilities, not a claimed zero
+list.
+
+\begin{remark}[Editorial: a second route to Corollaries~\ref{xx:pm:triple} and~\ref{xx:pm:four}]\label{xx:lc:rem:second-route}
+Manuscript~09 does not say so, but its criterion re-proves most of manuscript~12's
+small-multiplier corollaries without the harmonic condition~\eqref{xx:pm:B}.
+For $\mu=3$, the row is $c(3,1)=2$, $c(3,2)=3$, prime to every $p\ge5$, and
+$C_p=3$; the candidate $2+3p^2$ exceeds $12(p-1)$ for every $p$, so
+Theorem~\ref{xx:st:candidates} gives Corollary~\ref{xx:pm:triple} for every
+$p\ge5$.  For $\mu=4$, the row is $6,11,6$ and $C_p=6\bmod p$: at $p=5$ the
+candidate $3+25=28$ lies below $4d=64$ and survives; at $p=11$ the entry
+$c(4,2)=11$ leaves the candidate $Y=2$; for $p=7$ and every $p\ge13$ the list is
+empty, so the criterion gives Corollary~\ref{xx:pm:four} for $p\ge7$, $p\ne11$.
+For $\mu=2$ the candidate $1+p^2$ is at least $8(p-1)$ exactly when $p\ge7$,
+which is condition~\eqref{xx:pm:A}.  The exceptional primes are covered, in
+manuscript~12, by the prime-offset theorem and the offset-eight certificate.
+\end{remark}
+
+\subsubsection{Two consequences of the Stirling row}
+
+\begin{corollary}\label{xx:st:five}
+For every odd prime $p$ and every positive integer $Y$,
+\[
+ T_{5(p-1)}(Y)\ne0.
+\]
+\end{corollary}
+\begin{proof}
+The unsigned Stirling row for $\mu=5$, omitting its last entry $1$, is
+$24,50,35,10$. Its only prime divisor above $5$ is $7$. For every prime
+$p\ge11$, the small set in~\eqref{xx:st:list} is empty, $C_p=10$, and
+$4+10p^2>20(p-1)$. Theorem~\ref{xx:st:candidates} applies.
+The primes $3,5,7$ give offsets $10,20,30$, covered respectively by the
+prime-offset theorem at $11$, the double family at $11$
+(Corollary~\ref{xx:pm:twice}), and the prime-offset theorem at $31$. The prime
+$2$ is correctly excluded: offset $5$ has its known reflection zero at $Y=4$.
+\end{proof}
+
+\emph{Editorial note.}  The reflection zero at offset $5$, $Y=4$ is
+$b(9,4)=0$, the case $h=2$ of Proposition~\ref{xx:prop:symmetry}.
+
+\begin{corollary}\label{xx:st:squares}
+For every odd prime $p$,
+\[
+ T_{(p-1)^2}(Y)=0,\quad Y\in\Z_{>0}
+ \quad\Longrightarrow\quad Y=p^2+p-2.
+\]
+No assertion is made that this one remaining value vanishes.
+\end{corollary}
+\begin{proof}
+Take $\mu=p-1$. Over $\mathbb F_p$,
+\[
+ \sum_{j=1}^{p-1}c(p-1,j)X^j
+ =X(X+1)\cdots(X+p-2)
+ =\frac{X^p-X}{X-1}=X+\cdots+X^{p-1}.
+\]
+Thus every relevant Stirling entry is a unit and
+$C_p=\binom{p-1}2\bmod p=1$. Theorem~\ref{xx:st:candidates} leaves only
+$p-2+p^2$.
+\end{proof}
+
+\subsubsection{A different square family: offset \texorpdfstring{$p^2-1$}{p squared minus one}}
+
+This subsection concerns $p^2-1$, not the offset $(p-1)^2$ in
+Corollary~\ref{xx:st:squares}.
+
+\begin{remark}[Manuscript 09's prime-square lemma]\label{xx:st:prime-square-base}
+The manuscript's Lemma~5.1 is the congruence of Theorem~\ref{xx:pm:square}: for
+any prime $p$ and $d=p^2-1$, $J(Y)=p^{p+2}T_d(Y)/Y\in\Z_{(p)}[Y]$ and
+$J(Y)\equiv-(Y^p-Y)\pmod p$; its $J$ is $J_p$.  The manuscript says so
+(``This is the prime-square denominator lemma from'' the companion) and repeats
+the estimates of the proof of Theorem~\ref{xx:pm:square} --- the two
+inequalities for $j$ in terms of $v_j=v_p(j(j+1))$, the bound $\omega\le p+1$
+with equality only at $i_{p-1}=p+1$, and $\sum v_p(i_j!)\le\delta$ for the other
+terms --- which are not printed a second time.
+\end{remark}
+
+\begin{theorem}\label{xx:st:prime-square-reduction}
+For every prime $p\ge5$,
+\[
+ T_{p^2-1}(Y)=0,\quad Y\in\Z_{>0}
+ \quad\Longrightarrow\quad 1\le Y\le p-1.
+\]
+\end{theorem}
+\begin{proof}
+Put $d=p^2-1$.  Theorem~\ref{xx:pm:square} gives one simple $p$-adic root in
+each residue class. For $1\le a\le p-1$, expand $H^a$ directly. Every index at
+most $d=p^2-1$ has denominator valuation at most one, except $d$ itself, whose
+valuation is two. If that index occurs, all other chosen indices are zero.
+Hence
+\[
+ v_p(T_d(a))\ge-\max(a,2),\qquad
+ v_p(J_p(a))\ge p+2-\max(a,2)\ge3.
+\]
+The corresponding root is therefore $a$ modulo $p^3$.
+
+To determine the zero-residue branch, expand $H^p$. Every degree-$d$ term has a
+multinomial coefficient divisible by $p$: a pure $p$th-power term would require
+$pi=d$, which is impossible. A term containing index $d$ has valuation $-1$,
+greater than $1-p$. Otherwise all bad indices have valuation $-1$. Terms with at
+most $p-1$ bad factors have valuation at least $2-p$.
+
+If all $p$ factors are bad, their minimum total degree is $p(p-1)$, leaving
+increment $p-1$. A bad index greater than $p$ is at least $2p-1$, already
+requiring increment $p$. Thus the unique all-bad pattern has one index $p-1$ and
+$p-1$ indices $p$. Its contribution is $p h_{p-1}h_p^{p-1}$, so
+\[
+ p^{p-1}T_d(p)\equiv1\pmod p,\qquad
+ J_p(p)\equiv p^2\pmod{p^3}.
+\]
+Since $J_p'(p)\equiv1$, the zero-residue branch equals $p-p^2$ modulo $p^3$.
+
+By Corollary~\ref{xx:pm:positive}, every positive integer zero has
+$Y<4(p^2-1)$. For $p\ge5$, both $p^3$ and $p^3-p^2+p$ exceed this bound. The
+only possible representatives of the identified branches in that interval are
+$1,\ldots,p-1$.
+\end{proof}
+
+The remaining small-column assertions are not proved here. In particular, the
+existence of $p$-adic roots is fully compatible with the absence of ordinary
+integer roots; the archimedean bound is essential to both square-family
+reductions.
+
+\subsubsection{Verification and remaining scope}
+
+The standard-library checker
+(\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_stirling.py})
+independently expands rational powers of $H$ and verifies $134$ instances each
+of the Stirling residue, the scaled triangle congruence, and the
+derivative/root-displacement formula, covering multipliers through $8$ and
+coefficient degrees through $144$. Separate exact computations lift the
+prime-square roots for $p=3,5,7,11$ and check the single-candidate values for
+$(p-1)^2$ at $p=3,5,7,11,13,17,19$. Those finitely many values are nonzero; they
+do not establish a general nonvanishing theorem for the remaining candidate. A
+separate integer falling-product replay verifies $162$ instances each of the two
+residues, derivatives and first displacements, all prime-square branches through
+$p=19$, and the seven stated single candidates. It uses finite $p$-steps for
+derivatives and passes with Python assertions disabled.
+
+The repository comparison is relative to the pinned source, whose relevant
+default-branch blob was unchanged at the check on 1 October 2026. Our bounded
+literature review found the classical partition, higher-order Bernoulli, and
+Stirling valuation framework~\cite{xx-davis,xx-adelberg}; the formulas in this
+note are proved directly for the Lehmer--Comtet specialization. No worldwide
+priority claim, complete global zero list, or formal proof-assistant
+verification is asserted.
+
+% ---------------------------------------------------------------------------
+\subsection{Uniform \texorpdfstring{$p$}{p}-adic valuations (manuscript 17)}\label{xx:pn:sec}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 17.}\itshape
+We give exact valuations for two infinite families of coefficients of
+$((1+z)\log(1+z)/z)^Y$. The first extends the inspected source's prime-offset
+theorem to offsets $(p-1)\mu$ when $\mu\le p^{v_p(Y)}$. A second treats offsets
+$(p-1)\mu+1$ for odd $p$ under an explicit nonresonance condition. The proof
+adapts Davis's minimal-valuation multinomial method directly to the different
+coefficient denominators $j(j+1)$, including a lower bound that handles
+competitors with many factors. The resulting criteria exclude new infinite
+families of possible Lehmer--Comtet zeros; the complete zero classification
+remains open.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  Printed in the letters of
+Table~\ref{xx:lc:tab:notation}: the manuscript's $m$ is $\mu$, its offset $r$
+(and $n$ in its proofs) is $d$.
+\end{quote}
+
+\subsubsection{The coefficient and its derivative interpretation}
+
+The manuscript writes $H(z)$, $h_j$ and $T_d(Y)$ as in~\eqref{xx:pm:H}.
+Throughout this subsection $Y$ is a \emph{positive integer}; the structural case
+$Y=0$ is excluded. We write $v_p$ for the valuation on nonzero rational numbers,
+so negative values are allowed.
+
+The first-kind Lehmer--Comtet numbers satisfy
+$b(Y+d,Y)=\frac{(Y+d)!}{Y!}T_d(Y)$, which is~\eqref{xx:pm:b}.  They determine
+the expanded derivative coefficients of $x^x$: at total derivative order
+$n\ge m=Y+d$, the monomial
+\[
+ x^{x-d}(\log x)^{n-m}
+\]
+has coefficient $\binom nm b(m,Y)$. Thus nonvanishing of a fixed $b(m,Y)$
+proves nonvanishing on its entire persistent derivative line. These identities
+are proved in the inspected source (Theorem~\ref{xx:thm:expansion} and
+Lemma~\ref{xx:lem:diagdegree}) and belong to the classical Lehmer--Comtet
+framework.
+
+\begin{theorem}[Principal progression]\label{xx:pn:principal}
+Let $p$ be prime, $\mu\ge1$ and $e=v_p(Y)$. If $\mu\le p^e$, then
+\begin{equation}\label{xx:pn:mainval}
+ v_p\bigl(T_{(p-1)\mu}(Y)\bigr)=e-v_p(\mu)-\mu.
+\end{equation}
+In particular the coefficient is nonzero.
+\end{theorem}
+
+\begin{theorem}[Shifted progression]\label{xx:pn:shifted}
+Let $p$ be an odd prime, $\mu\ge1$ and $e=v_p(Y)$. If
+\begin{equation}\label{xx:pn:conditions}
+ \mu<p^e,\qquad p\nmid (p-1)\mu+1,
+\end{equation}
+then
+\begin{equation}\label{xx:pn:shiftval}
+ v_p\bigl(T_{(p-1)\mu+1}(Y)\bigr)=e-\mu.
+\end{equation}
+The second condition in~\eqref{xx:pn:conditions} is equivalently
+$\mu\not\equiv1\pmod p$.
+\end{theorem}
+
+Davis~\cite[Theorem 1.1]{xx-davis} proves the valuation analogous
+to~\eqref{xx:pn:mainval} for powers of $\log(1+z)/z$. Multiplication by
+$(1+z)^Y$ cannot simply be ignored. We instead prove both claims directly
+from~\eqref{xx:pm:H}, adapting the same minimal-multinomial mechanism. The
+$\mu=1$ case of Theorem~\ref{xx:pn:principal} is exactly the source's
+prime-offset valuation.
+
+\emph{Editorial note.}  That valuation is $v_p(T_{p-1}(Y))=v_p(Y)-1$, in the
+proof of Theorem~\ref{xx:thm:prime}.  The proof below is a second route to it:
+the one in this part reduces $pT_{p-1}(Y)/Y$ modulo $p$
+(\eqref{xx:eq:punit}), the one below compares the valuations of all terms of
+the multinomial expansion.
+
+\subsubsection{Two elementary valuation bounds}
+
+For a multiplicity vector $I=(i_1,\ldots,i_d)$ with
+\[
+ \sum_jji_j=d,\qquad \ell=\sum_ji_j,
+\]
+the corresponding term in the multinomial expansion of $T_d(Y)$ is
+\begin{equation}\label{xx:pn:term}
+ C_I=\frac{\fall Y\ell}{\prod_ji_j!}\prod_jh_j^{i_j},
+ \qquad \fall Y\ell=Y(Y-1)\cdots(Y-\ell+1).
+\end{equation}
+Terms with $\ell>Y$ are zero and may be omitted.
+
+\begin{lemma}\label{xx:pn:falling}
+If $1\le\ell\le Y$ and $\ell<p^{e+1}$, where $e=v_p(Y)$, then
+\begin{equation}\label{xx:pn:fallingbound}
+ v_p(\fall Y\ell)\ge e+v_p((\ell-1)!).
+\end{equation}
+There is equality when $\ell\le p^e$.
+\end{lemma}
+\begin{proof}
+For $1\le s<\ell<p^{e+1}$, one has $v_p(s)\le e$. If $v_p(s)<e$, then
+$v_p(Y-s)=v_p(s)$. If $v_p(s)=e$, both $Y$ and $s$ are divisible by $p^e$,
+giving $v_p(Y-s)\ge v_p(s)$. Sum these inequalities over $s$ and include the
+factor $Y$. When $\ell\le p^e$, every $s<\ell$ has valuation below $e$, so all
+comparisons are equalities.
+\end{proof}
+
+In particular, we do \emph{not} assert the equality when a competing term has
+more than $p^e$ factors; such competitors can occur for $p>2$.
+
+The integer identity
+\begin{equation}\label{xx:pn:integer}
+ \frac{d(\ell-1)!}{\prod_ji_j!}
+ =\sum_{j:i_j>0}j\,
+ \frac{(\ell-1)!}{(i_j-1)!\prod_{h\ne j}i_h!}
+ \in\Z_{>0}
+\end{equation}
+gives
+\begin{equation}\label{xx:pn:multibound}
+ v_p((\ell-1)!)-\sum_jv_p(i_j!)\ge-v_p(d).
+\end{equation}
+Every summand on the right of~\eqref{xx:pn:integer} is an integer multiple of a
+multinomial coefficient. Combining~\eqref{xx:pn:term},
+Lemma~\ref{xx:pn:falling} and~\eqref{xx:pn:multibound}, whenever
+$\ell<p^{e+1}$ we obtain
+\begin{equation}\label{xx:pn:master}
+ v_p(C_I)\ge e-v_p(d)-\sum_ji_jv_p(j(j+1)).
+\end{equation}
+
+Because consecutive integers are coprime, $v=v_p(j(j+1))\ge1$ forces
+$j\ge p^v-1\ge v(p-1)$. Equality occurs only for $v=1$ and $j=p-1$. Thus
+\begin{equation}\label{xx:pn:cost}
+ v_p(j(j+1))\le\frac{j}{p-1},
+ \quad\text{with equality exactly at }j=p-1.
+\end{equation}
+The case $v=0$ is strictly below $j/(p-1)$ since $j\ge1$.
+
+\subsubsection{The principal progression}
+
+\begin{proof}[Proof of Theorem~\ref{xx:pn:principal}]
+Set $d=(p-1)\mu$. Every nonzero term has
+\[
+ \ell\le d\le(p-1)p^e<p^{e+1},
+\]
+so~\eqref{xx:pn:master} applies. Inequality~\eqref{xx:pn:cost} gives
+\[
+ \sum_ji_jv_p(j(j+1))\le\mu,
+\]
+with equality only for $I=\mu\mathbf e_{p-1}$, where $\mathbf e_j$ has a one at
+position $j$. Every other vector has this integer sum at most $\mu-1$. Since
+$v_p(d)=v_p(\mu)$, its term has valuation at least
+\[
+ e-v_p(\mu)-\mu+1.
+\]
+The distinguished term is $\binom Y\mu h_{p-1}^\mu$. It is nonzero because
+$\mu\le p^e\le Y$. The equality part of Lemma~\ref{xx:pn:falling} gives
+\[
+ v_p\binom Y\mu=e-v_p(\mu),\qquad v_p(h_{p-1})=-1.
+\]
+Thus its valuation is $e-v_p(\mu)-\mu$, uniquely smaller than all competitors. A
+sum with a unique least valuation has that valuation,
+proving~\eqref{xx:pn:mainval}.
+\end{proof}
+
+\begin{remark}[Editorial: manuscripts 12 and 17 on a common range]\label{xx:lc:rem:pm-pn}
+For $p>\mu\ge2$ the hypothesis $\mu\le p^e$ of Theorem~\ref{xx:pn:principal}
+says $p\mid Y$.  On that range the theorem also follows from the proof of
+Lemma~\ref{xx:pm:localization}: $G/Y$ is $p$-integral and congruent to
+$(Y-1)\cdots(Y-\mu+1)/\mu!$, which at $Y\equiv0$ is the unit
+$(-1)^{\mu-1}/\mu$; so $v_p(G(Y))=v_p(Y)$ and $v_p(T_d(Y))=e-\mu$, which is
+\eqref{xx:pn:mainval} since $v_p(\mu)=0$.  Manuscript~12 states only that the
+zeros lie in the classes $1\le j\le\mu-1$, not the valuation.  Conversely, its
+complete-offset theorems are not implied by manuscript~17, which needs $p\mid Y$
+there.  Manuscript~17 is new relative to manuscript~12 and to this part for
+$\mu\ge p$ (for instance every offset at $p=2$ or $3$) and on the shifted, odd
+offsets of Theorem~\ref{xx:pn:shifted}.  The three manuscripts share the
+``bad index'' multinomial count after Davis; \eqref{xx:pn:master} is its
+cleanest general form.
+\end{remark}
+
+\subsubsection{One step above the progression}
+
+\begin{proof}[Proof of Theorem~\ref{xx:pn:shifted}]
+Set $d=(p-1)\mu+1$. The strict bound $\mu<p^e$ again gives $d<p^{e+1}$, and
+$p\nmid d$ removes the term $v_p(d)$ in~\eqref{xx:pn:master}. The
+denominator-valuation sum is an integer at most $\mu$. If it is at most
+$\mu-1$, the corresponding term has valuation at least $e-\mu+1$.
+
+Otherwise its value is $\mu$, and hence
+\[
+ \sum_ji_j\bigl(j-(p-1)v_p(j(j+1))\bigr)=1.
+\]
+For odd $p$, the only indices whose parenthesized value is zero or one are
+$j=p-1$ (value zero), and $j=1,p$ (value one). Indeed, valuation at least two
+would require
+\[
+ j\ge p^v-1>v(p-1)+1\qquad(v\ge2,p\ge3).
+\]
+Therefore only the two vectors
+\[
+ \mu\mathbf e_{p-1}+\mathbf e_1,\qquad (\mu-1)\mathbf e_{p-1}+\mathbf e_p
+\]
+remain. Put $A=h_{p-1}$, $B=h_p$. Their combined contribution is exactly
+\begin{equation}\label{xx:pn:pair}
+ \frac{\fall Y\mu}{(\mu-1)!}A^{\mu-1}
+       \left(B+\frac{Y-\mu}{2\mu}A\right).
+\end{equation}
+The entire prefactor outside the brackets has valuation $e-\mu+1$. Since
+$\mu<p^e$, one has $v_p(\mu)<e$, and so $(Y-\mu)/\mu\equiv-1\pmod p$.
+Moreover~\eqref{xx:pm:H} gives $pA\equiv pB\equiv1\pmod p$. Multiplying the
+bracket in~\eqref{xx:pn:pair} by $p$ gives
+\[
+ 1-\frac12=\frac12\not\equiv0\pmod p.
+\]
+Thus the bracket has valuation $-1$, and the pair has valuation $e-\mu$,
+strictly below every other term. This proves~\eqref{xx:pn:shiftval}.
+\end{proof}
+
+The conditions have real content. Allowing $\mu=p^e$ in the shifted theorem
+would include the symmetry zeros: for example $p=3,\mu=3,Y=6$ gives
+$T_7(6)=0$. Dropping $p\nmid d$ can also invalidate the valuation formula:
+$p=3,\mu=4,Y=9$ gives
+\[
+ T_9(9)=\frac{2021}{268800},\qquad v_3(T_9(9))=-1,
+\]
+whereas $e-\mu=-2$. This is a failure of the unrestricted valuation formula, not
+a new coefficient zero.
+
+\emph{Editorial note.}  $T_7(6)=0$ is the symmetry zero $b(13,6)=0$, the case
+$h=3$ of Proposition~\ref{xx:prop:symmetry}.
+
+\subsubsection{New infinite regions and the remaining obstruction}
+
+By~\eqref{xx:pm:b}, either theorem gives the valuation of $b(Y+d,Y)$ by adding
+$v_p((Y+d)!)-v_p(Y!)$. Here are four infinite divisibility progressions beyond
+the source's completed offsets $d\le16$; each listed $d+1$ is composite.
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$d$&$p$&condition on $Y$&$v_p(T_d(Y))$\\\hline
+17&2&$32\mid Y$&$v_2(Y)-17$\\
+17&3&$9\mid Y$&$v_3(Y)-8$\\
+20&3&$27\mid Y$&$v_3(Y)-10$\\
+21&5&$25\mid Y$&$v_5(Y)-5$
+\end{tabular}
+\end{center}
+For their first positive $Y$, the respective valuations of $b(Y+d,Y)$ are
+$3,0,1,1$. The supplied exact output records the corresponding integers.
+
+Every hypothetical additional integer zero must avoid all divisibility
+progressions covered by the two theorems. In particular, taking $p=2$ in
+Theorem~\ref{xx:pn:principal} gives the necessary restriction
+\[
+ T_d(Y)=0\quad\Longrightarrow\quad 2^{v_2(Y)}<d.
+\]
+The criteria do not exclude every pair $(d,Y)$, and they do not prove the
+conjectured complete zero list consisting of the symmetry family and $b(8,5)$.
+
+\subsubsection{Verification and positioning}
+
+An integer-triangle verifier
+(\texttt{code/06-padic-\allowbreak valuations-\allowbreak verify\_padic.py})
+checks both valuation formulas through row $m=360$, for the eleven primes
+through $31$: 7,749 principal and 2,299 shifted instances pass. A separate
+direct rational power-series recurrence checks 3,073 principal and 437 shifted
+instances for $1\le Y\le120$, $d\le60$. A third checker, using direct
+integer-scaled convolution, passes 2,421 principal and 463 shifted cases,
+including 1,352 principal boundary cases $\mu=p^e$, and 5,500 denominator
+checks. These independent finite checks supplement the infinite proof and are
+included with their exact outputs.
+
+The source comparison is with the pinned ProveIt manuscript, this report at
+commit \texttt{ca81647a9}; its current default-branch file was checked again on
+1 October 2026 and still contains the prime-offset theorem and fixed-offset
+certificates through 16. Davis's paper~\cite{xx-davis} supplies the classical
+valuation method for a related log series. The contribution here is its direct
+adaptation to~\eqref{xx:pm:H}, the two-term shifted calculation, and the
+resulting exact nonvanishing families for this coefficient array. No
+exhaustive priority claim is made. A complete integer-root classification, and
+hence the exact A293239 term-count formula, remain open. The proof is not a
+proof-assistant formalization or externally refereed publication.
+
+% ---------------------------------------------------------------------------
+\subsection{Lehmer--Comtet additions: provenance, files and formal status}\label{xx:lc:sec:provenance}
+
+\subsubsection{Provenance}
+
+Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} were built from
+\textbf{three} manuscripts of batch~72A, which arrived in commit
+\texttt{1512ef835} and were placed in this report by commit
+\texttt{d292c6765}, as its additions~05, 04 and~06.  All three are dated
+1 October 2026, carry the line ``Research note prepared for Vladimir
+Reshetnikov with OpenAI'', and are pinned to ProveIt commit
+\texttt{ca81647a9f679e96\allowbreak d49ffdbc54b0c0ab\allowbreak 13d10a36},
+whose text of this article (blob \texttt{7344f3aa4dc9}) they cite.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item Manuscript~12 (addition~05), \emph{Complete Nonvanishing on
+ Prime-Multiple Offsets: Lehmer--Comtet coefficients and derivatives of $x^x$},
+ 6-page PDF, archive
+ \texttt{ProveIt\_\allowbreak Lehmer\_\allowbreak Comtet\_\allowbreak Prime\_\allowbreak Multiple\_\allowbreak Nonvanishing.zip}.
+ Its six sections form
+ Subsection~\ref{xx:pm:sec}.  It contributes Theorem~\ref{xx:pm:main}, its
+ three corollaries, the localization, barrier, cone and small-exponent lemmas,
+ and Theorem~\ref{xx:pm:square}.
+\item Manuscript~09 (addition~04), \emph{Stirling Residues and Finite
+ Candidate Lists: Arithmetic restrictions on Lehmer--Comtet zeros}, 6-page PDF,
+ archive
+ \texttt{ProveIt\_\allowbreak Lehmer\_\allowbreak Comtet\_\allowbreak Stirling\_\allowbreak Residues\_\allowbreak and\_\allowbreak Candidate\_\allowbreak Lists.zip}.
+ Its six sections form
+ Subsection~\ref{xx:st:sec}.  It contributes the Stirling residue, the root
+ displacements, the candidate list, Corollaries~\ref{xx:st:five}
+ and~\ref{xx:st:squares}, and Theorem~\ref{xx:st:prime-square-reduction}.
+\item Manuscript~17 (addition~06), \emph{Uniform $p$-adic Nonvanishing: Two
+ valuation families for Lehmer--Comtet coefficients}, 4-page PDF, archive
+ \texttt{ProveIt\_\allowbreak Lehmer\_\allowbreak Comtet\_\allowbreak Uniform\_\allowbreak Padic\_\allowbreak Nonvanishing.zip}.  Its six sections form
+ Subsection~\ref{xx:pn:sec}.  It contributes Theorems~\ref{xx:pn:principal}
+ and~\ref{xx:pn:shifted} and their valuation lemmas.
+\end{itemize}
+Every theorem, lemma and corollary of the three manuscripts is printed, with
+its proof and with every non-claim and limitation the manuscripts state; none
+was weakened or strengthened.  The one exception to printing in full is
+recorded in the second item below.  The editorial choices were these.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item The additions are placed as subsections at the end of
+ Part~\ref{xx:part}, so that no existing section, theorem or equation number
+ moves; the order is 12, 09, 17, because 09 builds on 12.
+\item Three lemmas that manuscript~09 re-proves from manuscript~12 are printed
+ once, as manuscript~12's; 09's statements and its condensed proofs are
+ recorded in Remarks~\ref{xx:st:cone}, \ref{xx:st:ordinary}
+ and~\ref{xx:st:prime-square-base}.  The three manuscripts' identical
+ definitions of $H$, $T_d$ and $b(Y+d,Y)$ are printed once,
+ as~\eqref{xx:pm:H} and~\eqref{xx:pm:b}.
+\item Results of this part that the manuscripts re-derive are credited where
+ they occur (the list in Subsection~\ref{xx:lc:sec:intro}); the restated
+ offset-eight certificate is kept, with a note identifying it as $R_8(Y+8)$.
+\item The letters are changed as in Table~\ref{xx:lc:tab:notation}, with no
+ change of normalization.  The manuscripts' citations of ``ProveIt, Part~I''
+ are re-targeted to this part, manuscript~09's citations of its companion to
+ Subsection~\ref{xx:pm:sec}, and their file names to the shipped names.  The
+ references of Davis, Ravichandran and Adelberg--Lengyel are merged into the
+ bibliography.
+\item Remarks~\ref{xx:lc:rem:cone}, \ref{xx:lc:rem:second-route}
+ and~\ref{xx:lc:rem:pm-pn}, the notation subsection and the editorial notes are
+ additions of the intake, not of the manuscripts.
+\end{itemize}
+Not shipped: the three manuscripts' sources, PDFs and \texttt{README.md}
+files; manuscript~09's embedded copy of manuscript~12
+(\texttt{prime\_\allowbreak multiple\_\allowbreak companion\_\allowbreak source.zip},
+byte-identical to archive~12, and \texttt{prime\_\allowbreak multiple\_\allowbreak companion.pdf},
+byte-identical to 12's PDF); and the three copies of the generic TeX wrapper
+\texttt{build\_\allowbreak local.sh}.  The archives survive in the history of
+commit \texttt{1512ef835}.  The READMEs add no mathematical claim beyond the
+manuscripts; those of manuscripts~12 and~17 say that the proofs received
+``independent review'', which this report cannot confirm.
+
+\subsubsection{Files}
+
+The manuscripts' code and data are shipped byte-identical to the delivery,
+with the prefixes \texttt{04-stirling-\allowbreak residues-}~(09),
+\texttt{05-prime-\allowbreak multiple-}~(12) and
+\texttt{06-padic-\allowbreak valuations-}~(17).  All programs use only the
+Python standard library.
+% longtable steps the article-wide table counter; restore it afterwards so
+% that no later table number moves.
+\begingroup
+\renewcommand{\theHtable}{xx.lc.files}%
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.50\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Shipped path (delivery name) & Purpose\\
+\midrule
+\endhead
+\texttt{code/05-prime-\allowbreak multiple-\allowbreak verify.py} (\texttt{verify.py}) & Exact checks of Subsection~\ref{xx:pm:sec}; writes \texttt{checks.json} beside itself.\\
+\texttt{data/05-prime-\allowbreak multiple-\allowbreak checks.json} (\texttt{checks.json}) & Its recorded output.\\
+\texttt{code/05-prime-\allowbreak multiple-\allowbreak replay\_convolution.py} (\texttt{replay\_\allowbreak convolution.py}) & Independent convolution replay; writes a \texttt{.json} of its own name beside itself.\\
+\texttt{data/05-prime-\allowbreak multiple-\allowbreak replay\_convolution.json} (\texttt{replay\_\allowbreak convolution.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_stirling.py} (\texttt{verify\_\allowbreak stirling.py}) & Stirling residues, triangle congruences, root displacements; writes \texttt{stirling\_\allowbreak checks.json} beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak stirling\_checks.json} (\texttt{stirling\_\allowbreak checks.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_prime\_square\_lifts.py} (\texttt{verify\_\allowbreak prime\_\allowbreak square\_\allowbreak lifts.py}) & Roots modulo $p^3$ at offset $p^2-1$, $p=3,5,7,11$; writes \texttt{prime\_\allowbreak square\_\allowbreak lifts.json} beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak prime\_square\_lifts.json} (\texttt{prime\_\allowbreak square\_\allowbreak lifts.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_square\_candidates.py} (\texttt{verify\_\allowbreak square\_\allowbreak candidates.py}) & Exact values at the one $(p-1)^2$ candidate, seven primes; writes \texttt{square\_\allowbreak candidates.json} beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak square\_candidates.json} (\texttt{square\_\allowbreak candidates.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak replay\_falling\_products.py} (\texttt{replay\_\allowbreak falling\_\allowbreak products.py}) & Independent integer falling-product replay (run with \texttt{-O}); writes a \texttt{.json} of its own name beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak replay\_falling\_products.json} (\texttt{replay\_\allowbreak falling\_\allowbreak products.json}) & Its recorded output.\\
+\texttt{code/06-padic-\allowbreak valuations-\allowbreak verify\_padic.py} (\texttt{verify\_\allowbreak padic.py}) & Integer-triangle check of both valuation families through row $360$; writes \texttt{padic\_\allowbreak checks.json} beside itself.\\
+\texttt{data/06-padic-\allowbreak valuations-\allowbreak padic\_checks.json} (\texttt{padic\_\allowbreak checks.json}) & Its recorded output.\\
+\texttt{code/06-padic-\allowbreak valuations-\allowbreak check\_rational\_powers.py} (\texttt{check\_\allowbreak rational\_\allowbreak powers.py}) & Direct rational power recurrence; prints its JSON to standard output and writes nothing.\\
+\texttt{data/06-padic-\allowbreak valuations-\allowbreak rational\_power\_checks.json} (\texttt{rational\_\allowbreak power\_\allowbreak checks.json}) & Its recorded output.\\
+\texttt{code/06-padic-\allowbreak valuations-\allowbreak replay\_padic\_powers.py} (\texttt{replay\_\allowbreak padic\_\allowbreak powers.py}) & Integer-scaled convolution replay with boundary and denominator checks; writes a \texttt{.json} of its own name beside itself.\\
+\texttt{data/06-padic-\allowbreak valuations-\allowbreak replay\_padic\_powers.json} (\texttt{replay\_\allowbreak padic\_\allowbreak powers.json}) & Its recorded output.\\
+\bottomrule
+\end{longtable}
+\endgroup
+\addtocounter{table}{-1}
+The JSON files keep the manuscripts' letters: their \texttt{r} is the offset
+$d$ and their \texttt{m} the multiplier $\mu$, and the field
+\texttt{primitive\_r8} of the convolution replay holds the coefficients of
+$F(Y)=R_8(Y+8)$, not of $R_8(X)$.  At the intake every program was run under
+its shipped name on a copy of this directory and exited with status~0; every
+output equalled the shipped file, up to line endings (a Windows Python may
+write CRLF).  The programs write beside themselves, never into
+\texttt{data/}; the README gives the commands.
+
+\subsubsection{Formal status}\label{xx:lc:sec:formal}
+
+Nothing in this addition is formalized, and its placement in this report
+confers no formal status.  No Lean or Rocq file in the repository mentions the
+Lehmer--Comtet numbers, OEIS A008296 or OEIS A293239.  The manuscripts claim no formal
+verification, no referee and no exhaustive priority.
 
 \clearpage
 \section{\texorpdfstring{$x^{x^2}$}{x^(x^2)}: OEIS A290268}\label{xxb:part}
@@ -6374,6 +7776,14 @@ even $n\ge8$ and $(3n^2+28n-111)/8$ for odd $n\ge17$
 settled, and Conjecture~\ref{xxb:conj:support} is still needed, now only on
 deficits $m\ge5$.
 
+\emph{Update (1 October 2026, batch 72A).}  For $x^x$, the later
+Sections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} add to the settled
+column complete nonvanishing on every offset $\mu(p-1)$ of the Lehmer--Comtet
+triangle for primes $p>\mu$ under explicit conditions (for every prime when
+$\mu=2,4$, every odd prime when $\mu=3,5$), finite candidate lists for the
+offsets $(p-1)^2$ and $p^2-1$, and exact $p$-adic valuations on divisibility
+progressions.  Conjecture~\ref{xx:conj:zeros} is still needed.
+
 \subsection{Why the orders differ}\label{syn:orders}
 
 The growth orders line up with the number of variables in the frame, and
@@ -6616,6 +8026,31 @@ NIST Digital Library of Mathematical Functions,
 \S5.12, especially Eq.~5.12.1, Euler's beta integral.
 Accessed September 20, 2026.
 \url{https://dlmf.nist.gov/5.12.E1}.
+
+% Cited by the batch-72A Part 2 addition (Sections xx:lc:*, xx:pm:*, xx:st:*,
+% xx:pn:*).  The manuscripts' entry for the pinned source is replaced by
+% references into Part 2, and manuscript 09's entry for its companion by
+% references to manuscript 12's subsection.
+\bibitem{xx-davis}
+D.~M. Davis,
+\emph{Coefficients in powers of the log series},
+Integers \textbf{11} (2011), A16; preprint arXiv:1001.3068 (2010),
+Theorem 1.1 and Section 3.
+\url{https://arxiv.org/abs/1001.3068}.
+
+\bibitem{xx-ravichandran}
+M.~Ravichandran,
+\emph{Principal submatrices, restricted invertibility and a quantitative
+Gauss--Lucas theorem},
+International Mathematics Research Notices \textbf{2020} (15), 4809--4832.
+Theorem 1.4 in arXiv version 2, attributed there to Marcus.
+\url{https://arxiv.org/abs/1609.04187}.
+
+\bibitem{xx-adelberg}
+A.~Adelberg and T.~Lengyel,
+\emph{New results on the $p$-adic valuation of Stirling numbers},
+Integers \textbf{22} (2022), A82.
+\url{https://math.colgate.edu/~integers/w82/w82.pdf}.
 
 % Cited by the batch-42 addition (Sections xxb:dc:*); manuscript 06's OEIS
 % entry is merged into oeis290268 above.
