@@ -86,6 +86,12 @@
 \newcommand{\cjBL}{\mathrm{BL}}
 \newcommand{\cjLeb}{\mathrm{Leb}}
 \newcommand{\cjsha}{\texttt{cb1646dc442724f8e298cf259195b6c308367d80}}
+% Part VI (batch 68): the manuscript's \Prob and \Cgen are Part III's \ljP and
+% Part I's \Cat; its \coef, \pos and \pin under report-local names; its
+% \Av, \N, \R are the report's; its unused \asympc is dropped.
+\newcommand{\prcoef}[2]{[#1^{#2}]}
+\newcommand{\prpos}[1]{(#1)_+}
+\newcommand{\prsha}{\texttt{ffddaa8b9c89e7bf027e1442cc6216bb010906d0}}
 \allowdisplaybreaks[2]
 \setlength{\parindent}{1.1em}
 \setlength{\parskip}{.25em}
@@ -157,6 +163,11 @@ $\mathbb E(n-M_n)\sim3\sqrt{n/\pi}$.
 \emph{Addition of 30 September 2026 (batch 64).} Part~V shows that
 $\mathbb E\sqrt{n-M_n}-(3/(2\sqrt\pi))\log n$ converges to an explicit
 constant and finds the first correction to every moment of order $p<1/2$.
+
+\emph{Addition of 30 September 2026 (batch 68).} Part~VI proves
+$\mathbb P(M_n\le\lfloor\theta n\rfloor)=\Theta(n^{-\lfloor1/\theta\rfloor/2})$
+for every fixed $0<\theta<1$; at $m=n/2$ the order is $n^{-1}$ and it changes
+on the scale $\sqrt n$.
 \end{abstract}
 \begin{resultbox}
 \textbf{Scope and attribution.}
@@ -2518,6 +2529,10 @@ $a_n^{(\lfloor\theta n\rfloor)}/C_n\sim\frac{3(2\theta-1)}
 $0<\theta\le1/2$ it proves only $o(n^{-1/2})$ and polynomial lower bounds
 (\cref{mj:thm:lower}). The interpolation with the fixed-$m$ regime stays
 open.]
+[Added 30 September 2026, batch 68: Part~VI proves the matching order
+$a_n^{(\lfloor\theta n\rfloor)}/C_n=\Theta(n^{-\lfloor1/\theta\rfloor/2})$ for
+every fixed $0<\theta<1$ (\cref{pr:thm:staircase}); no equivalent below half
+size is proved, and the interpolation with the fixed-$m$ regime stays open.]
 
 \subsection{Renewal comparisons for other constrained tree classes}
 The reset identity \cref{crem:lem:reset} is not specifically Catalan. It
@@ -4757,6 +4772,12 @@ $o(n^{-1/2})$ and polynomial lower bounds are proved
 the exact total-variation constant of Part~III's
 \cref{lj:cor:sharp-tv}; and any interpolation with the fixed-$m$ regime of
 Parts~I and~II. Part~IV refutes nothing in Parts~I--III.
+[Added 30 September 2026, batch 68: Part~VI proves the order below half
+size, $\Theta(n^{-\lfloor1/\theta\rfloor/2})$ for every fixed
+$0<\theta\le1/2$, and at $m=n/2$ the order $\Theta(n^{-1})$ with
+order-crossover scale $\sqrt n$ (\cref{pr:thm:staircase,pr:cor:half});
+equivalents below half size and a limiting transition function at $m=n/2$
+stay open.]
 
 \section{The questions and the main results}
 \label{mj:sec:introduction}
@@ -5022,6 +5043,9 @@ lattice masses, or the optimal scale below the half-size cutoff. [Added 30 Septe
 2026, batch 64: Part~V proves the constant term (\cref{cjm:thm:critical}).] The
 positive bulk equivalent concerns adjacency bounds $m/n\in(1/2,1)$; the
 smaller-bound bulk regime and the critical window at $m=n/2$ remain open.
+[Added 30 September 2026, batch 68: Part~VI proves the optimal polynomial
+order below the half-size cutoff and the order and order-crossover scale at
+$m=n/2$ (\cref{pr:thm:staircase,pr:cor:half}), but no equivalent there.]
 Nor does this work resolve the fixed-$m$ component-ordering problem of
 Mayama--Akita.
 
@@ -6028,6 +6052,11 @@ smaller probability scale or a separate transition window, not an absence of
 bounded permutations on the other side: a shrinking neighbourhood of $1/2$ may
 interact with a smaller finite-size scale that the first-order theorem does
 not determine. (Both manuscripts; the two readings are theirs.)
+[Added 30 September 2026, batch 68: Part~VI determines both at the level of
+orders: $\ljP(M_n\le\lfloor n/2\rfloor)=\Theta(n^{-1})$, and
+$\ljP(M_n\le m)\asymp n^{-1}+(2m-n)_+n^{-3/2}$ uniformly near $m=n/2$, so
+the order changes on the scale $\sqrt n$ (\cref{pr:cor:half}); no limiting
+transition function is proved.]
 
 \subsection{Three equally weighted endpoint channels}
 Fix $0<u<1/2$ and condition on $D_n>un$. The split integral $I(u)$ of
@@ -6498,6 +6527,11 @@ between those bounds are not proved here. For nonreciprocal $\theta$, the
 smallest admissible $r$ is $\lceil1/\theta\rceil-1$; at a reciprocal endpoint
 the strict condition requires a larger $r$. (For $\theta>1/2$, $r=1$ gives
 the order $n^{-1/2}$ of \eqref{mj:eq:bulk-ratio}; the merge's remark.)
+[Added 30 September 2026, batch 68: Part~VI proves matching upper bounds.
+The smallest admissible $r$ is $\lfloor1/\theta\rfloor$ in every case, and
+with it \eqref{mj:eq:many-block-lower} gives the exact polynomial order
+(\cref{pr:thm:staircase}); for $1/3<\theta\le1/2$ that order is $n^{-1}$.
+The profile, that is an equivalent, is still not proved.]
 
 \section{Exact checks, exact data and sampling}
 \label{mj:sec:checks}
@@ -6825,6 +6859,12 @@ changes of behaviour, but no hierarchy of exponents or constants is
 established by manuscript~11. An analysis must retain the last-entry
 constraints through all large pieces rather than multiply independent split
 probabilities.
+[Added 30 September 2026, batch 68: the exponent part is answered in
+Part~VI: $\ljP(M_n\le\lfloor\theta n\rfloor)=\Theta(n^{-\lfloor1/\theta\rfloor/2})$
+for every fixed $0<\theta<1$, so for nonreciprocal $\theta$ the exponent is
+$r/2$ with $r$ as above, while at $\theta=1/q$ it is $q/2$
+(\cref{pr:thm:staircase}). The existence and value of $\Omega_r(\theta)$, and
+an equivalent for $0<\theta<1/2$, stay open (\cref{pr:sec:q-amplitudes}).]
 
 \subsection{Reciprocal thresholds and the critical window at \texorpdfstring{$m=n/2$}{m = n/2}}
 \label{cjm:sec:mj-half}
@@ -6839,6 +6879,14 @@ boundary strips, negligible at a fixed bulk fraction, may become part of the
 main term here. Rounding effects, parity and the terminal maximum's unit cost
 must be retained at a lattice scale rather than replaced by a continuum
 approximation too early.
+[Added 30 September 2026, batch 68: answered at the level of orders in
+Part~VI. $\ljP(M_n\le\lfloor n/2\rfloor)=\Theta(n^{-1})$, and uniformly near
+$m/n=1/2$, $\ljP(M_n\le m)\asymp n^{-1}+(2m-n)_+n^{-3/2}$, so the order
+changes on the scale $s_n\asymp\sqrt n$ (\cref{pr:cor:half}). Every
+$\theta=1/q$ marks a distinct polynomial transition: the exponent jumps from
+$(q-1)/2$ to $q/2$, the endpoint belonging to the rarer phase, across the
+scale $n^{1-1/(2(q-1))}$ (\cref{pr:thm:staircase,pr:cor:scales}). The
+limiting transition function stays open (\cref{pr:sec:q-crossover}).]
 
 \subsection{A uniform relative boundary-to-bulk approximation}
 \emph{Manuscript~11.} Find a formula with relative error tending to zero in a
@@ -6942,6 +6990,7 @@ second large split may describe how the infinite limiting expectation is
 truncated at finite $n$.
 
 \subsection{A uniform bridge to shrinking adjacency fractions}
+\label{pr:sec:mj-bridge}
 \emph{Manuscript~10.} The current result fixes $\theta>1/2$, while the
 fixed-$m$ spectral program fixes $m$ before letting $n$ grow. Determine
 regimes with $m\to\infty$, $m/n\to0$. The lower-bound hierarchy suggests that
@@ -7045,7 +7094,8 @@ Deficit-size-biased uniform law (10) & A change of variable in the limiting
  weighted density; not the unweighted permutation law.\\
 Sub-half-size regimes (10, 11) & Constructive polynomial lower bounds only
  (10), $o(n^{-1/2})$ (both); matching upper bounds and equivalents remain
- open.\\
+ open. [Matching upper bounds, hence exact orders: Part~VI, added
+ 30 September 2026; equivalents still open.]\\
 Computations (both) & Exact integer finite tests and exact symbolic checks
  (11); explicitly labelled Monte Carlo illustrations (10); rounded displays of
  exact counts (11). No asymptotic claim rests on computation.\\
@@ -7055,7 +7105,9 @@ Novelty, review and formal status & New relative to the inspected report's
  proof-assistant verification.\\
 Local limit, critical window, smaller-bound bulk, centered half-moment, exact
  TV constant & Open. [Centered half-moment: answered in
- Part~V, added 30 September 2026.]\\
+ Part~V, added 30 September 2026.] [Critical window and smaller-bound bulk:
+ orders and order-crossover scales in Part~VI, added 30 September 2026;
+ limiting functions open.]\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -7069,7 +7121,9 @@ conditional rare event has an explicit two-block geometry and a universal
 outer-word law. The entire linear-bound problem is not claimed solved,
 because smaller bounds are only shown to have lower-order probability, with
 polynomial lower bounds (manuscript~11's summary, extended by manuscript~10's
-lower bounds).
+lower bounds). [Added 30 September 2026, batch 68: Part~VI proves matching
+upper bounds, so the smaller bounds have exact polynomial orders
+(\cref{pr:thm:staircase}); their equivalents remain open.]
 
 \subsection{Conclusion}
 \emph{Manuscript~10.} The main obstruction in passing from a boundary law to
@@ -8837,7 +8891,8 @@ outside the permutation problem.
 Several stronger assertions would exceed the proof. There is no new local
 limit for individual lattice masses, no exact leading constant in the
 original total-variation error, and no description of the adjacency-bound
-transition at $m=n/2$. The coefficient function $\mathfrak m(p)$ is
+transition at $m=n/2$ [added 30 September 2026, batch 68: Part~VI describes
+it at the level of orders, \cref{pr:cor:half}]. The coefficient function $\mathfrak m(p)$ is
 analytically continued below $1/2$, but the moment theorem is not extended
 to $p\le0$ on that basis. A continuation of a coefficient formula does not
 by itself continue an asymptotic theorem.
@@ -8889,6 +8944,7 @@ questions \cref{cjm:sec:mj-local} and \cref{cjm:sec:mj-tv}, asked there
 by both of its manuscripts.)
 
 \subsection{The half-size threshold}
+\label{pr:sec:cjm-half}
 The leading bulk profile vanishes at $u=1/2$, corresponding to adjacency
 bound $m=n/2$. What scale and limiting function describe the transition
 there? The endpoint expansion in \eqref{cjm:eq:bulk-profile} is linear from
@@ -8896,6 +8952,11 @@ below, but gives no order on or beyond the threshold. A refined terminal
 split analysis, retaining lattice offsets and two-large-block events,
 seems more suitable than the present integrated method. (This is Part~IV's
 question \cref{cjm:sec:mj-half}.)
+[Added 30 September 2026, batch 68: Part~VI answers the scale. The order on
+the threshold is $n^{-1}$, the order changes on the scale $\sqrt n$, and
+$\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\asymp n^{-1}(1+t_+)$ for bounded $t$
+(\cref{pr:cor:half}); the limiting function stays open
+(\cref{pr:sec:q-crossover}).]
 
 \subsection{Wider moving-exponent windows}
 Can \eqref{cjm:eq:crossover} be made uniform for
@@ -8927,6 +8988,7 @@ question \cref{cjm:sec:mj-geometric}, which conditions on a macroscopic
 deficit instead.)
 
 \subsection{Other Catalan models and other tail exponents}
+\label{pr:sec:cjm-other}
 The abstract theorem permits arbitrary $\alpha>0$. Which statistics on
 Catalan trees, other pattern classes, or conditioned branching structures
 satisfy its three hypotheses? The crucial target is a uniform
@@ -8952,6 +9014,7 @@ simpler special-function expression. No elementary closed form, rationality
 or transcendence claim is suggested by the present decimal computation.
 
 \subsection{Formalization in the repository}
+\label{pr:sec:cjm-formal}
 A manageable first Lean target is the abstract theorem for real exponents
 on a fixed compact interval, followed by the critical half-moment and the
 bounded-Lipschitz estimate. The proof uses tail integration, dominated
@@ -9253,6 +9316,1808 @@ report or external paper is redistributed.
 \end{itemize}
 
 
+%% ====================================================================
+%% Part VI (batch 68): manuscript 05 of batch 68, "A Staircase of
+%% Polynomial Rarity". All labels of Part VI carry the prefix pr:
+%% (polynomial rarity).
+%% ====================================================================
+\clearpage
+\phantomsection\part*{Part VI.\quad A staircase of polynomial rarity}
+\addcontentsline{toc}{part}{Part VI.\texorpdfstring{\quad}{ } A staircase of polynomial rarity}
+
+\noindent\emph{Part~VI was added on 30 September 2026 in batch~68 of
+ProveIt's incoming-report intake, from one manuscript written against the
+state of Parts~I--V printed above. Part~IV found the first-order profile of
+$\ljP(M_n\le\lfloor\theta n\rfloor)$ for $1/2<\theta<1$; below half size it
+proved only $o(n^{-1/2})$ and polynomial lower bounds
+(\cref{mj:thm:profile,mj:thm:lower}). It asked for the hierarchy below half
+size (\cref{mj:sec:q-hierarchy}) and for the order and the window at
+$m=n/2$ (\cref{cjm:sec:mj-half}), and Part~V asked the second question again
+(\cref{pr:sec:cjm-half}). Part~VI answers the exponent part of the first and
+the order-level part of the second: the probability has the exact polynomial
+order $n^{-\lfloor1/\theta\rfloor/2}$ for every fixed $0<\theta<1$, and the
+order changes at every reciprocal threshold $1/q$ across an explicit
+order-crossover scale. Its proofs use no asymptotic theorem of Parts~I--V.}
+
+\section{Provenance, conventions and the answer}
+\label{pr:sec:intro}
+
+\subsection{One manuscript, one addition}
+\label{pr:sec:source}
+Part~VI is built from one AI-assisted research manuscript,
+\emph{manuscript~05} of batch~68, \emph{A Staircase of Polynomial Rarity:
+Bulk exponents and reciprocal-threshold crossover scales for
+adjacency-bounded $132$-avoiding permutations}, dated September 30, 2026
+(25 pages, US Letter, as delivered). It arrived as the archive
+\texttt{ProveIt\_Polynomial\_Rarity.zip} (inner directory
+\texttt{ProveIt\_Polynomial\_Rarity/}, main file \texttt{article.tex}) in
+ProveIt commit \texttt{a866ff9a2}, and was placed in commit
+\texttt{29e52fcdf}. It was written against ProveIt commit
+\begin{center}\small\prsha,\end{center}
+at which this report's \texttt{README.md}, \path{code/model.py} and
+\path{code/05-macroscopic-deficits-model.py} had the blobs
+\texttt{a40d20342f}, \texttt{aee5528c72} and \texttt{f0248e0d61}, the ones
+the manuscript records; the manuscript did not read this report's
+\texttt{article.tex}, whose blob at the pin was \texttt{0b7cb2f2e6}. All four
+files were unchanged at the placement commit, so every statement the
+manuscript makes about this report refers to Parts~I--V as printed above.
+Its code, data, figures and source ledger are shipped beside the earlier
+parts' files with the prefix \path{07-polynomial-rarity-}, continuing the
+report's local sequence after Part~V's \path{06-critical-moments-}. Its
+manuscript, README and PDF are not shipped and survive in the arrival
+commit; its checksum ledger was verified at placement (15 of 15 files) and
+retired. Its two figure PDFs were regenerated in the write phase
+(\cref{pr:sec:merge}).
+
+The manuscript contributes, in the order printed here: the complete
+fixed-fraction polynomial-order staircase, reciprocal endpoints included
+(\cref{pr:thm:staircase}); a uniform two-term comparison near every
+reciprocal threshold (\cref{pr:thm:cross}), with its order-crossover scales
+(\cref{pr:cor:scales}), in particular at half size (\cref{pr:cor:half}), and
+a continuum of logarithmic exponents in shrinking neighbourhoods
+(\cref{pr:cor:powerapproach}); a local theorem for truncated subcritical
+renewal sequences for every power-tail index $0<\alpha<1$
+(\cref{pr:thm:renewal}) with its two lemmas, and a renewal-sandwich transfer
+principle (\cref{pr:prop:universality}); the two counting envelopes it
+transfers through, which are Part~I's, reproved in the normalization it needs
+(\cref{pr:sec:envelopes}); a discussion of robustness and limitations; exact
+finite checks through $n=128$; ten research questions; a derivation of the
+endpoint recurrence of its checks; and a proof audit. Every result, proof,
+example, remark, limitation and question of the manuscript is printed.
+
+\begin{resultbox}
+\textbf{Status (manuscript 05 of batch 68).} The theorems of Part~VI have
+written mathematical proofs. They are not Lean- or Rocq-verified, have not
+been independently refereed, and no literature priority is claimed. Unlike
+Part~V, Part~VI uses no asymptotic theorem of Parts~I--V as an input: it
+needs only the maximum decomposition, an explicitly verified injection
+(both Part~I's, reproved here), elementary power-sum bounds and Catalan
+asymptotics. Its conclusions are matching two-sided \emph{orders}, not
+asymptotic equivalents: no amplitude, endpoint constant, limiting crossover
+function or conditioned-permutation geometry is determined. The finite data
+and the figures are regression checks and illustrations, not evidence for
+the asymptotic statements.
+\end{resultbox}
+
+\subsection{The questions of Parts~IV and~V, and what answers them}
+\label{pr:sec:answer}
+For fixed $1/2<\theta<1$, Part~IV proves the equivalent
+\eqref{mj:eq:bulk-ratio},
+$\ljP(M_n\le\lfloor\theta n\rfloor)\sim
+\frac{3(2\theta-1)}{\sqrt{\pi\theta(1-\theta)}}\,n^{-1/2}$. For
+$0<\theta\le1/2$ it proves only $o(n^{-1/2})$ (\cref{mj:thm:profile}) and
+the lower bound $c\,n^{-r/2}$ whenever $(r+1)\theta>1$
+(\cref{mj:thm:lower}). Its question \cref{mj:sec:q-hierarchy} asks whether,
+for nonreciprocal $\theta$ and $r=\lceil1/\theta\rceil-1$, there is a positive
+$\Omega_r(\theta)$ with $\ljP(M_n\le\theta n)\sim\Omega_r(\theta)n^{-r/2}$;
+its question \cref{cjm:sec:mj-half} asks for the order of $\ljP(M_n\le n/2)$,
+for the transition when $M_n\le n/2+s_n$, and whether the thresholds
+$\theta=1/r$ mark distinct polynomial transitions. Part~V repeats the
+half-size question (\cref{pr:sec:cjm-half}), and the README's list of what
+Part~IV does not claim names the hierarchy and the order and window at
+$m=n/2$; that list is the manuscript's starting point.
+
+Part~VI answers these questions at the level of orders:
+\begin{itemize}
+\item \emph{The exponents.} For every fixed $0<\theta<1$,
+ $\ljP(M_n\le\lfloor\theta n\rfloor)=\Theta(n^{-\lfloor1/\theta\rfloor/2})$
+ (\cref{pr:thm:staircase}). This answers the exponent part of
+ \cref{mj:sec:q-hierarchy}; the existence and value of $\Omega_r(\theta)$
+ stay open (\cref{pr:sec:q-amplitudes}). The lower bounds are Part~IV's
+ \cref{mj:thm:lower}, obtained again by a different route; the matching
+ upper bounds are new. For $\theta>1/2$ the theorem gives only
+ $\Theta(n^{-1/2})$, which is weaker than \eqref{mj:eq:bulk-ratio}.
+\item \emph{The half-size threshold.} $\ljP(M_n\le\lfloor n/2\rfloor)=\Theta(n^{-1})$;
+ the order-crossover scale is $\sqrt n$, and
+ $\ljP(M_n\le\lfloor n/2+t\sqrt n\rfloor)\asymp n^{-1}(1+t_+)$ uniformly for
+ bounded $t$ (\cref{pr:cor:half}). A limiting transition function is not
+ proved (\cref{pr:sec:q-crossover}).
+\item \emph{Every reciprocal threshold.} Each $\theta=1/q$, $q\ge2$, is a
+ jump of the logarithmic exponent from $(q-1)/2$ to $q/2$, the endpoint
+ belonging to the rarer phase, and the order changes across the scale
+ $n^{1-1/(2(q-1))}$ above $n/q$ (\cref{pr:thm:cross,pr:cor:scales}).
+\end{itemize}
+
+Two indexings of the exponent meet here. Part~VI writes
+$r=\lfloor1/\theta\rfloor$, Part~IV's question $r=\lceil1/\theta\rceil-1$.
+They agree whenever $1/\theta$ is not an integer. At $\theta=1/q$ the first
+is $q$ and the second $q-1$: Part~IV states its question for nonreciprocal
+$\theta$ only, and the endpoint exponent is $q/2$, not $(q-1)/2$. In
+\cref{mj:thm:lower} the condition $(r+1)\theta>1$ admits exactly the
+integers $r\ge\lfloor1/\theta\rfloor$, so its best bound is the staircase
+order in every case, at a reciprocal endpoint as well (as the remark after
+\cref{mj:thm:lower} says).
+
+\subsection{Independence and inherited status}
+\label{pr:sec:inherited}
+The manuscript read this report's README, Part~I's \path{code/model.py}
+and Part~IV's \path{code/05-macroscopic-deficits-model.py}
+(\cref{pr:sec:provenance}). The README's status statement calls the
+earlier parts AI-assisted and unrefereed, and the manuscript therefore
+avoids treating their unverified asymptotic assertions as axioms. Its proof
+needs only the direct maximum decomposition, a directly verified injection,
+elementary power-sum bounds, and Catalan asymptotics. It uses neither
+\eqref{mj:eq:bulk-ratio} nor any other asymptotic theorem of Parts~I--V.
+The elementary upper majorant and the skew-block lower construction are
+Part~I's (\cref{prop:upper}, and \cref{prop:lower} at $d=1$); the manuscript
+reproves precisely the versions it needs. Part~VI's theorems therefore do not
+inherit the status of Parts~III--V, in contrast with Part~V's application.
+
+The delivered code tests finite counting identities, not infinite
+assertions. It contains no claimed Lean or Rocq formalization. Neither
+finite agreement nor an attractive plot is offered as a substitute for the
+proofs in \cref{pr:sec:renewal,pr:sec:application}.
+
+\subsection{Relation to public work}
+Nadler~\cite{Nadler} initiated the adjacency-constrained enumeration and
+identified the restriction on the position of the maximum. Mayama and
+Akita~\cite{MayamaAkita} developed the two-sided endpoint-state recurrence,
+rational generating functions for fixed $m$, and the corresponding spectral
+growth theory. The question of Part~VI is different: both $m$ and $n$ grow,
+with $m$ a substantial fraction of $n$. The main advance is a complete
+polynomial-order phase diagram, including all reciprocal boundaries, rather
+than a new fixed-$m$ enumeration; a uniform two-term comparison near each
+boundary explains how the exponent changes. The analytic contribution is the
+local truncated-renewal comparison and its application to the two envelopes.
+
+No claim of exhaustive literature priority is made. The mechanism belongs to
+the established family of ``fewest big jumps'' ideas. Kerriou and
+M\"orters~\cite{pr:KerriouMorters} prove a different, precise
+large-deviation theorem for a growing number of truncated heavy-tailed
+summands. The setting here is a subcritical renewal sum, with an exact
+lattice target, a power-tail index below one, and estimates that remain
+valid at the reciprocal threshold itself. The necessary result is proved from
+first principles. The literature check (30 September 2026) used the arXiv
+records of \cite{Nadler,MayamaAkita} and the record and an author-hosted PDF
+of \cite{pr:KerriouMorters}, with targeted searches; it was not an exhaustive
+priority search (\cref{pr:sec:provenance}). Accordingly, ``new'' in the
+contribution ledger (\cref{pr:tab:ledger}) means proved here beyond the
+explicit scope of Parts~I--V, not certified absent from all other
+literature.
+
+\begin{table}[htbp]
+\centering\small
+\caption{What Part~VI takes from Parts~I--V, and what it adds.}
+\label{pr:tab:ledger}
+\begin{tabular}{>{\raggedright}p{.43\linewidth}>{\raggedright\arraybackslash}p{.49\linewidth}}
+\toprule
+In Parts~I--V & Proved in Part~VI\\
+\midrule
+Maximum decomposition and the Catalan majorant (Part~I, \cref{prop:upper}) & Reproved; also $\overline A_m\preceqc\Cat$\\
+Injective skew blocks (Part~I, \cref{prop:lower}, $d=1$) & Reproved; both envelopes normalized as subcritical renewal kernels\\
+Polynomial lower bounds below half size (Part~IV, \cref{mj:thm:lower}) & Matching upper bounds for every $0<\theta<1$, reciprocal endpoints included\\
+First-order profile for $\theta>1/2$ (Part~IV, \cref{mj:thm:profile}) & Only the order $n^{-1/2}$; weaker, and not used\\
+Hierarchy and half-size window asked (Parts~IV, V) & Uniform two-term comparison at every $1/q$; order-crossover scales\\
+--- & Local truncated-renewal theorem for $0<\alpha<1$; a transfer principle\\
+Exact endpoint recurrence (Parts~I, IV, V) & Independent finite checks through $n=128$; no formalization\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Notation of Part~VI}
+\label{pr:sec:notation}
+The symbols $a_n^{(m)}$, $C_n$, $\Cat$, $\Av_n(132)$, $M_n$, the generating
+function $A_m(x)=\sum_{n\ge0}a_n^{(m)}x^n$ of Part~I, the Catalan polynomial
+$K_m(x)=\sum_{k=1}^mC_{k-1}x^k$ of Part~II (with Part~I's majorant
+$R_m=x+K_m$ of \eqref{eq:R}), Part~I's block polynomial $K_{m,1}$
+\eqref{eq:K1}, Part~IV's fixed fraction $\theta$ and conjectured amplitude
+$\Omega_r(\theta)$, and the endpoint counts $T^{(m)}_{u,v}(n)$,
+$\mathcal N_n(u)$, $c_{k,u}$ and $N_{n,f}$ of Parts~III--V keep their
+meanings. Several of the manuscript's letters are used in Parts~I--V for
+other objects. Part~VI fixes one name for each notion
+(\cref{pr:tab:notation}). In particular:
+\begin{itemize}
+\item $p_n(m)=\ljP(M_n\le m)$ is a probability; it is not a moment exponent
+ $p$ as in Parts~III--V, which occurs in Part~VI only in the moment bound
+ \eqref{pr:eq:momentbound};
+\item the two envelopes are $\underline A_m\preceqc A_m\preceqc\overline A_m$
+ (the manuscript's $L_m$ and $B_m$): $\overline A_m=1+x/(1-R_m)$ is Part~I's
+ majorant \eqref{eq:upper}, and $\underline A_m=(1-K_{m,1})^{-1}$ is
+ Part~I's block lower bound \eqref{eq:root-sandwich} at $d=1$; the
+ manuscript's $H_{m-1}(x)$ is Part~I's $K_{m,1}(x)$. The tempting false
+ reading of the manuscript's $B_1$ is Part~V's endpoint constant $B_1$ or
+ Part~I's mass $B_d$ at $d=1$;
+\item the ratio interval is $\theta_-\le m/n\le\theta_+$ (the manuscript's
+ $a\le m/n\le b$), since $a_n^{(m)}$ counts avoiders and $a$, $b$ are block
+ sizes in Parts~IV and~V;
+\item the order function is $\mathcal O_q(n,m)$ (the manuscript's $F_q$),
+ since $F^{(m)}_{p,q}$ are Part~I's endpoint series; the order-crossover
+ scale is $\mathfrak w_q(n)$ (the manuscript's $w_q$), since $w_k$ are
+ renewal weights;
+\item the renewal kernels and weights $W$, $w_k$ keep the manuscript's
+ letters; their total masses are $\bar w$, $\bar w_\pm$ (the manuscript's
+ $\rho$, $\rho_\pm$), since $\rho=-\Psi'$ is Part~IV's deficit density; the
+ resolvents are $Z$ (the manuscript's $R$), since $R_m$ is Part~I's
+ majorant polynomial;
+\item the conjectural endpoint constants, slopes and limiting crossover
+ functions are $\mathfrak K_q$, $\mathfrak L_q$, $\mathfrak H_q(t)$ (the
+ manuscript's $K_q$, $L_q$, $H_q$), since $K_m$, $K_{m,d}$, $L_m$ and $H$
+ are polynomials, a logarithm and a series of Parts~I--III.
+\end{itemize}
+
+\begin{table}[htbp]
+\centering\small
+\caption{Symbols of Part~VI. ``Source'' gives manuscript~05's symbol; the
+last column prints the tempting false reading.}
+\label{pr:tab:notation}
+\begin{tabular}{>{\raggedright}p{.19\linewidth}>{\raggedright}p{.29\linewidth}>{\raggedright}p{.12\linewidth}>{\raggedright\arraybackslash}p{.28\linewidth}}
+\toprule
+Symbol & Meaning in Part~VI & Source & Not to be confused with\\
+\midrule
+$p_n(m)$ & $\ljP(M_n\le m)=a_n^{(m)}/C_n$ & $p_n(m)$ & a moment exponent $p$.\\
+$\theta$; $r=\lfloor1/\theta\rfloor$ & fixed fraction $m/n$; staircase index & $\theta$; $r$ &
+ Part~IV's $r=\lceil1/\theta\rceil-1$ (equal unless $1/\theta\in\mathbb Z$);
+ Part~III's square root $r$; Part~V's exponent $\theta$.\\
+$q$ & reciprocal index of the threshold $1/q$ & $q$ & Part~III's
+ $q=(1-\sqrt{1-z})/2$; Part~I's root $q_m$ and threshold $q$.\\
+$\theta_-$, $\theta_+$ & ends of a fixed ratio interval & $a$, $b$ & the counts
+ $a_n^{(m)}$; block sizes $a,b$.\\
+$\mathcal O_q(n,m)$ & order function of \cref{pr:thm:cross} & $F_q(n,m)$ &
+ Part~I's series $F^{(m)}_{p,q}$; Part~III's first entry $F$.\\
+$\mathfrak w_q(n)$ & order-crossover scale $n^{1-1/(2(q-1))}$ & $w_q(n)$ &
+ the renewal weights $w_k$.\\
+$\overline A_m$, $\underline A_m$ & upper and lower envelopes of $A_m$ &
+ $B_m$, $L_m$ & Part~V's $B_0,B_1$; Part~I's $B_d$, $L_m$.\\
+$K_{m,1}$ & lower block polynomial & $H_{m-1}$ & Part~III's series $H$;
+ Part~V's $\mathcal H$.\\
+$\mathfrak B_k$ & set of lower blocks of size $k$ & $\mathcal B_k$ &
+ Part~II's $\Bformal_N$.\\
+$w_k^\pm$, $W^\pm_M$; $w_k$, $W_m$ & renewal weights and kernels & same &
+ Part~I's endpoint matrix $W_m(x)$; Part~I's weights $b_k$.\\
+$\bar w_\pm$, $\bar w$ & total kernel masses & $\rho_\pm$, $\rho$ &
+ Part~IV's density $\rho=-\Psi'$.\\
+$Z^\pm_M$, $Z_m$, $Z$ & renewal resolvents $(1-W)^{-1}$ & $R^\pm_M$, $R_m$,
+ $R$ & Part~I's majorant $R_m=x+K_m$; Part~IV's $Z_n(f)$.\\
+$u_M^\pm(n)$, $u_m(n)$ & renewal coefficients & same & Part~IV's
+ threshold fraction $u$.\\
+$\alpha$ & power-tail index, $0<\alpha<1$ & $\alpha$ & Part~I's growth
+ constants $\alpha_m$ (it is Part~V's abstract tail exponent).\\
+$\eta_q(\beta)$, $\beta$ & exponent of \cref{pr:cor:powerapproach} &
+ $\eta_q(\beta)$, $\beta$ & Part~V's measure $\eta_n$; Part~II's
+ $\beta_m$.\\
+$\lambda_\star$, $\tilde a^{(m)}_n$ & growth base and counts of
+ \cref{pr:prop:universality} & $\Lambda$, $b^{(m)}_n$ & Part~II's
+ $\Lambda=\frac12\log m$; Part~I's $b_k$.\\
+$\mathfrak K_q$, $\mathfrak L_q$, $\mathfrak H_q(t)$ & conjectural endpoint
+ constant, slope, crossover function & $K_q$, $L_q$, $H_q$ & Part~II's $K_m$;
+ Part~I's $K_{m,d}$, $L_m$; Part~III's $H$; Part~IV's $\mathfrak k$.\\
+$N_{n,n-d}$, $\mathcal N_n(u)$, $T^{\mathrm{free}}_{u,v}(n)$,
+ $T^{(m)}_{u,v}(n)$, $c_{k,u}$ & the counts of \cref{pr:app:dp} &
+ $f(n,d)$, $h(n,u)$, $T_{\mathrm{free}}$, $T$, $c(k,u)$ & Parts~IV and~V's
+ names for the same counts.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+No normalization changed: every renamed symbol denotes exactly the
+manuscript's quantity. Probability is written $\ljP$ as in Parts~III--V,
+the Catalan generating function $\Cat$ as in Part~I. Throughout Part~VI,
+\[
+ f_n\asymp g_n
+ \quad\Longleftrightarrow\quad
+ 0<c\le f_n/g_n\le C<\infty
+ \quad\hbox{for all sufficiently large }n,
+\]
+and $\Theta$ has the same meaning. The constants may depend on fixed
+parameters stated in the theorem, but not on varying $n$ or $m$. This
+notation does \emph{not} mean that the ratio converges; in particular, the
+scale functions printed here are not numerical approximations to
+probabilities. The letters $S$, $T$, $V$, $J$, $L$, $A$, $h$, $\ell$,
+$\gamma$, $\delta$, $\varepsilon$, $\lambda_n$, $\Delta$, $d_i$, $r_s$, $s$,
+$e$, $f$, $c_w$, $C_w$ and $k_0$ are local to \cref{pr:sec:renewal} and to
+single proofs, and are declared where used; in particular $S_n(z)$,
+$T_n(z)$ and $V_{n,m}(z)$ are not Part~V's survival functions, Part~III's
+cost $T$ or Part~I's component $V_m$. Equations, tables and figures are
+numbered consecutively with those of Parts~I--V.
+
+\section{Main results}
+\label{pr:sec:main}
+
+\subsection{Objects and probabilities}
+A permutation $\pi=(\pi_1,\ldots,\pi_n)$ avoids $132$ when no indices
+$i<j<k$ satisfy $\pi_i<\pi_k<\pi_j$. Write $\Av_n(132)$ for this class and
+\begin{equation}
+ C_n=\frac{1}{n+1}\binom{2n}{n},\qquad
+ M(\pi)=\max_{1\le i<n}|\pi_{i+1}-\pi_i|,
+ \qquad
+ a_n^{(m)}=\#\{\pi\in\Av_n(132):M(\pi)\le m\}.
+ \label{pr:eq:objects}
+\end{equation}
+For $n\le1$ the maximum of the empty set of jumps is defined to be zero. A
+uniformly chosen avoider has largest jump $M_n$, so
+\begin{equation}
+ p_n(m):=\ljP(M_n\le m)=\frac{a_n^{(m)}}{C_n}.
+ \label{pr:eq:prob}
+\end{equation}
+The Catalan enumeration is recalled in \cref{pr:sec:envelopes}.
+
+\subsection{The staircase and the reciprocal thresholds}
+\begin{theorem}[Complete polynomial-order staircase]\label{pr:thm:staircase}
+For every fixed real $0<\theta<1$, put $r=\lfloor1/\theta\rfloor$. Then
+\begin{equation}
+ p_n(\lfloor\theta n\rfloor)=\Theta_\theta(n^{-r/2}),
+ \qquad
+ a_n^{(\lfloor\theta n\rfloor)}
+ =\Theta_\theta\!\left(4^n n^{-(r+3)/2}\right).
+ \label{pr:eq:staircase}
+\end{equation}
+Consequently
+\begin{equation}
+ \lim_{n\to\infty}\frac{-\log p_n(\lfloor\theta n\rfloor)}{\log n}
+ =\frac12\left\lfloor\frac1\theta\right\rfloor.
+ \label{pr:eq:lograte}
+\end{equation}
+The constants are uniform on compact subintervals of each open phase. At
+every reciprocal endpoint $\theta=1/q$, $q\ge2$, the exponent is $q/2$, not
+$(q-1)/2$.
+\end{theorem}
+
+\begin{theorem}[Uniform reciprocal-threshold comparison]\label{pr:thm:cross}
+Fix an integer $q\ge2$ and real constants $\theta_-,\theta_+$ satisfying
+\begin{equation}
+ \frac1{q+1}<\theta_-<\frac1q<\theta_+<\frac1{q-1}.
+ \label{pr:eq:ab}
+\end{equation}
+There exist $c,C>0$ and $N$ such that for every integer $n\ge N$ and every
+integer $m$ with $\theta_-\le m/n\le\theta_+$,
+\begin{equation}
+ c\,\mathcal O_q(n,m)\le p_n(m)\le C\,\mathcal O_q(n,m),
+ \qquad
+ \mathcal O_q(n,m):=n^{-q/2}
+       +n^{-3(q-1)/2}\prpos{qm-n}^{q-1}.
+ \label{pr:eq:cross}
+\end{equation}
+The constants depend only on $q,\theta_-,\theta_+$.
+\end{theorem}
+
+The first term is the rarity of a configuration with $q+1$ macroscopic
+pieces. The second is the contribution that becomes available when $q$
+almost-maximal pieces can accommodate the total size. This explanation
+concerns the counting envelopes; it is not yet a theorem identifying the
+typical pieces of the conditioned permutation.
+
+\begin{corollary}[The order-crossover scales]\label{pr:cor:scales}
+Define
+\begin{equation}
+ \mathfrak w_q(n):=n^{1-1/(2(q-1))}.
+ \label{pr:eq:window}
+\end{equation}
+Under the assumptions of \cref{pr:thm:cross},
+\begin{equation}
+ p_n(m)\asymp n^{-q/2}
+ \left[1+\left(\frac{\prpos{qm-n}}{\mathfrak w_q(n)}\right)^{q-1}\right].
+ \label{pr:eq:crossfactored}
+\end{equation}
+In particular, $m=\lfloor n/q\rfloor+O(\mathfrak w_q(n))$ gives
+$p_n(m)=\Theta(n^{-q/2})$. If $s_n=m-n/q>0$,
+$s_n/\mathfrak w_q(n)\to\infty$, and $s_n=o(n)$, then
+\begin{equation}
+ p_n(m)\asymp n^{-3(q-1)/2}s_n^{q-1}.
+ \label{pr:eq:outsidewindow}
+\end{equation}
+On the lower side of the reciprocal threshold, throughout any fixed
+neighbourhood allowed by \eqref{pr:eq:ab}, the order remains $n^{-q/2}$.
+\end{corollary}
+
+\begin{corollary}[The first unresolved threshold]\label{pr:cor:half}
+Uniformly for $m/n$ in a fixed sufficiently small neighbourhood of $1/2$,
+\begin{equation}
+ p_n(m)\asymp \frac1n+\frac{\prpos{2m-n}}{n^{3/2}}.
+ \label{pr:eq:half}
+\end{equation}
+Thus
+\[
+ p_n(\lfloor n/2\rfloor)=\Theta(n^{-1}),\qquad
+ p_n(\lfloor n/2+t\sqrt n\rfloor)\asymp n^{-1}(1+t_+)
+\]
+uniformly for $t$ in any fixed bounded interval. There is no assertion here
+that $n\,p_n(\lfloor n/2+t\sqrt n\rfloor)$ has a limit.
+\end{corollary}
+
+(The title is the manuscript's: $m=n/2$ is the first threshold that
+Parts~IV and~V left unresolved.)
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Fixed adjacency fraction & Probability order & Count order \\
+\midrule
+$1/2<\theta<1$ & $n^{-1/2}$ & $4^n n^{-2}$ \\
+$1/3<\theta\le1/2$ & $n^{-1}$ & $4^n n^{-5/2}$ \\
+$1/4<\theta\le1/3$ & $n^{-3/2}$ & $4^n n^{-3}$ \\
+$1/5<\theta\le1/4$ & $n^{-2}$ & $4^n n^{-7/2}$ \\
+$1/(r+1)<\theta\le1/r$ & $n^{-r/2}$ & $4^n n^{-(r+3)/2}$ \\
+\bottomrule
+\end{tabular}
+\caption{All entries mean $\Theta$ for fixed $\theta$. The right-closed
+endpoint convention is essential. The first row is weaker than Part~IV's
+equivalent \eqref{mj:eq:bulk-ratio}; the remaining orders are the new
+conclusion.}\label{pr:tab:phases}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.91\textwidth]{figures/07-polynomial-rarity-phase_exponents.pdf}
+\caption{The proven logarithmic rarity exponent $\lfloor1/\theta\rfloor/2$
+of \eqref{pr:eq:lograte}. At a reciprocal discontinuity the value is the
+higher of the two neighbouring levels, as specified exactly in
+\cref{pr:tab:phases}. This is a graph of the theorem, not a fit to
+data.}\label{pr:fig:staircase}
+\end{figure}
+
+\section{Two elementary counting envelopes}
+\label{pr:sec:envelopes}
+This section reproves, in the form Part~VI needs, Part~I's scalar majorant
+(\cref{prop:upper}) and the $d=1$ case of its injective block lower bound
+(\cref{prop:lower}); the manuscript's proofs follow Part~I's arguments and
+are kept because its normalization and checks are built on them.
+
+\subsection{Maximum decomposition and Catalan enumeration}
+If the maximum $n$ occurs at position $k$ in a $132$-avoiding permutation,
+then every entry to its left is larger than every entry to its right.
+Indeed, a left entry smaller than a right entry, together with $n$, would be
+a $132$ pattern. Conversely, choosing any avoiding left block and any
+avoiding right block, with all left values above all right values, produces
+an avoider (Part~I's maximum decomposition, \cref{sec:endpoints}). Hence
+\begin{equation}
+ C_0=1,\qquad C_n=\sum_{k=1}^n C_{k-1}C_{n-k}.
+ \label{pr:eq:catalanrec}
+\end{equation}
+The generating function $\Cat(x)=\sum_{n\ge0}C_nx^n$ therefore satisfies
+\begin{equation}
+ \Cat(x)=1+x\Cat(x)^2
+ =\frac{1-\sqrt{1-4x}}{2x}.
+ \label{pr:eq:catgf}
+\end{equation}
+The binomial expansion gives the formula in \eqref{pr:eq:objects}.
+Stirling's formula gives
+\begin{equation}
+ C_n\sim\frac{4^n}{\sqrt\pi\,n^{3/2}},
+ \qquad
+ c_{\rm Cat}(n+1)^{-3/2}\le4^{-n}C_n\le C_{\rm Cat}(n+1)^{-3/2}
+ \label{pr:eq:catasymp}
+\end{equation}
+for some absolute positive constants $c_{\rm Cat},C_{\rm Cat}$ and all
+$n\ge0$.
+
+If $k<n$, the right block has size $n-k$ and values $1,\ldots,n-k$. The jump
+immediately after the maximum is at least $k$. Thus an adjacency-bounded
+avoider has its maximum either at the end or in one of the first $m$
+positions. This is the structural observation of Nadler~\cite{Nadler},
+reproduced here because it is the only input needed for the upper envelope.
+
+\subsection{The valid scalar upper majorant}
+With $K_m(x)=\sum_{k=1}^mC_{k-1}x^k$, let
+\begin{equation}
+ \overline A_m(x):=1+\frac{x}{1-x-K_m(x)}=1+\frac{x}{1-R_m(x)},
+ \label{pr:eq:KandB}
+\end{equation}
+where $R_m=x+K_m$ is Part~I's \eqref{eq:R}. For formal series, $F\preceqc G$
+means coefficientwise inequality.
+
+\begin{lemma}[Upper envelope]\label{pr:lem:upper}
+For every $m\ge1$,
+\begin{equation}
+ A_m(x)=\sum_{n\ge0}a_n^{(m)}x^n\preceqc\overline A_m(x).
+ \label{pr:eq:upper}
+\end{equation}
+Moreover $\overline A_m\preceqc\Cat$.
+\end{lemma}
+The first assertion is Part~I's \eqref{eq:upper}.
+\begin{proof}[The manuscript's proof]
+For $n\ge2$, deleting a final maximum leaves an adjacency-bounded avoider of
+size $n-1$. If the maximum is at position $k<n$, its left block can be chosen
+in at most $C_{k-1}$ ways and its right block in at most $a_{n-k}^{(m)}$
+ways. We ignore the endpoint compatibility conditions, which can only
+increase the count. Consequently
+\begin{equation}
+ a_n^{(m)}\le a_{n-1}^{(m)}+
+ \sum_{k=1}^{\min(m,n-1)}C_{k-1}a_{n-k}^{(m)}.
+ \label{pr:eq:upperrec}
+\end{equation}
+The sequence with initial values $b_0=b_1=1$ and equality in this
+recurrence has generating function $\overline A_m$. Induction proves the
+first assertion.
+
+For the second assertion, increase $m$ to infinity coefficientwise. Since
+$K_\infty=x\Cat(x)$, the identity $\Cat=1+x\Cat^2$ implies
+\[
+ \frac1{1-x-x\Cat(x)}=\Cat(x)^2,
+ \qquad \overline A_\infty(x)=1+x\Cat(x)^2=\Cat(x).
+\]
+All intermediate series have nonnegative coefficients.
+\end{proof}
+
+\begin{remark}[A tempting but invalid shortcut]\label{pr:rem:falsemajorant}
+The upper bound is \emph{not} $A_m\preceqc(1-K_m)^{-1}$. At $m=2$, the latter
+series has coefficient $3$ at $x^3$, whereas $a_3^{(2)}=C_3=5$. The extra $x$
+in the denominator of \eqref{pr:eq:KandB} accounts for a final maximum.
+Part~II explicitly warns against confusing its stronger spectral comparison
+with a coefficientwise upper bound (\cref{crem:rem:not-quotient}, with the
+same counterexample in \cref{crem:sec:m2}).
+\end{remark}
+
+\subsection{An injective skew-block lower envelope}
+For a permutation $\sigma$ of size $u$ and $\tau$ of size $v$, their skew sum
+is
+\[
+ \sigma\ominus\tau=(\sigma_1+v,\ldots,\sigma_u+v,\tau_1,\ldots,\tau_v).
+\]
+Skew sums preserve $132$-avoidance: a triple spanning distinct blocks cannot
+have its first entry smaller than a later entry from a lower-valued block.
+
+For each $k\ge1$, use the following blocks:
+\begin{equation}
+ \mathfrak B_1=\{(1)\},\qquad
+ \mathfrak B_k=\{(k-1,\sigma_1,\ldots,\sigma_{k-2},k):
+               \sigma\in\Av_{k-2}(132)\}\quad(k\ge2).
+ \label{pr:eq:blocks}
+\end{equation}
+Every such block avoids $132$, starts either at its maximum ($k=1$) or one
+below its maximum ($k\ge2$), and ends at its maximum. There are $C_{k-2}$
+blocks of size $k\ge2$. These are Part~I's admissible blocks with $d=1$.
+
+\begin{lemma}[Lower envelope]\label{pr:lem:lower}
+For $m\ge2$, define
+\begin{equation}
+ K_{m,1}(x)=x+\sum_{k=2}^{m-1}C_{k-2}x^k,
+ \qquad
+ \underline A_m(x):=\frac1{1-K_{m,1}(x)}.
+ \label{pr:eq:lowergf}
+\end{equation}
+Then $\underline A_m\preceqc A_m$.
+\end{lemma}
+This is Part~I's \eqref{eq:root-sandwich} at $d=1$, with $K_{m,1}$ as in
+\eqref{eq:K1}.
+\begin{proof}[The manuscript's proof]
+Take any finite ordered list of blocks from \eqref{pr:eq:blocks}, each of
+size at most $m-1$, and form their skew sum. A jump within a block is at
+most its size minus one. If a block of size $k$ is followed by a block whose
+first deficiency is $d\in\{0,1\}$, the jump across their boundary is
+$k+d\le m$. Thus the resulting permutation has all jumps at most $m$ and
+avoids $132$.
+
+It remains to prove injectivity. A nonempty block ending at its maximum
+cannot be split as a nontrivial skew sum, because in such a split every value
+in the first part would have to exceed the final maximum. Each block is
+therefore skew-indecomposable. Every permutation has a unique decomposition
+into skew-indecomposable blocks: the possible cut positions are exactly those
+$t$ for which all first $t$ values exceed all later values, and cutting at
+all these positions gives the unique decomposition. Our block list is
+recovered by those cuts, and each internal $\sigma$ is recovered by deleting
+the first and last entries. The sequence construction has generating
+function $\underline A_m$.
+\end{proof}
+
+This is precisely the simplest, first-deficiency-one specialization of
+Part~I's skew-block lower construction (\cref{prop:lower}; the function
+\texttt{block\_counts} of \path{code/model.py}). Its role here is important:
+one need not approximate the whole class accurately in order to recover its
+polynomial exponents. A small, explicit subclass suffices when it has the
+correct power tail.
+
+\subsection{Normalizing at the Catalan radius}
+Replace $x$ by $z/4$. The upper renewal kernel is
+\begin{equation}
+ W_m^+(z)=\sum_{k=1}^m w_k^+z^k,
+ \qquad
+ w_1^+=\frac12,\qquad
+ w_k^+=4^{-k}C_{k-1}\quad(k\ge2).
+ \label{pr:eq:weightsplus}
+\end{equation}
+The doubled coefficient at $k=1$ is the sum of the append term and the $k=1$
+term of $K_m$, as in Part~I's $R_m$, whose coefficient of $x$ is two
+(\eqref{eq:R}).
+Its total mass is
+\begin{equation}
+ \bar w_+:=\sum_{k\ge1}w_k^+=\frac14+\frac14\Cat(1/4)=\frac34.
+ \label{pr:eq:massplus}
+\end{equation}
+The lower kernel is
+\begin{equation}
+ W_{m-1}^-(z)=\sum_{k=1}^{m-1}w_k^-z^k,
+ \qquad w_1^-=\frac14,\qquad
+ w_k^-=4^{-k}C_{k-2}\quad(k\ge2),
+ \label{pr:eq:weightsminus}
+\end{equation}
+with total mass
+\begin{equation}
+ \bar w_-:=\sum_{k\ge1}w_k^-=\frac14+\frac1{16}\Cat(1/4)=\frac38,
+ \label{pr:eq:massminus}
+\end{equation}
+which is Part~I's $B_d$ \eqref{eq:Bd} at $d=1$. Both kernels are strictly
+subcritical and have power tails
+\begin{equation}
+ w_k^+\sim\frac{1}{4\sqrt\pi}k^{-3/2},\qquad
+ w_k^-\sim\frac{1}{16\sqrt\pi}k^{-3/2}
+ \label{pr:eq:twotails}
+\end{equation}
+(the second is Part~I's \eqref{eq:cd-tail} at $d=1$). Write
+\[
+ Z_M^\pm(z)=\frac1{1-W_M^\pm(z)},\qquad
+ u_M^\pm(n)=\prcoef zn Z_M^\pm(z).
+\]
+For $n\ge1$, the exact coefficientwise sandwich is
+\begin{equation}
+ u_{m-1}^-(n)\le4^{-n}a_n^{(m)}
+ \le\frac14u_m^+(n-1).
+ \label{pr:eq:normalizedsandwich}
+\end{equation}
+The finite shifts $m-1$ and $n-1$ must be retained until the final
+comparison. Dropping them before checking the reciprocal boundary would
+obscure the endpoint issue.
+
+\section{A local theorem for truncated subcritical renewals}
+\label{pr:sec:renewal}
+
+\subsection{Abstract hypotheses and theorem}
+Let $0<\alpha<1$ and let $(w_k)_{k\ge1}$ be a nonnegative sequence
+satisfying
+\begin{equation}
+ \bar w:=\sum_{k\ge1}w_k<1,\qquad
+ w_k\le C_w k^{-1-\alpha}\ (k\ge1),\qquad
+ w_k\ge c_w k^{-1-\alpha}\ (k\ge k_0),
+ \label{pr:eq:generalassump}
+\end{equation}
+where $C_w,c_w>0$ and $k_0\ge1$ are fixed. Put
+\begin{equation}
+ W_m(z)=\sum_{k=1}^m w_kz^k,\quad
+ Z_m(z)=\frac1{1-W_m(z)},\quad
+ u_m(n)=\prcoef zn Z_m(z).
+ \label{pr:eq:renewaldef}
+\end{equation}
+These coefficients count weighted ordered compositions whose parts are at
+most $m$. One can also view them as a geometric-sum model, with an
+appropriate normalizing factor; no probabilistic normalization is needed
+below.
+
+\begin{theorem}[Uniform local truncated-renewal estimate]\label{pr:thm:renewal}
+Assume \eqref{pr:eq:generalassump}. Fix $q\ge2$ and
+\begin{equation}
+ \frac1{q+1}<\theta_-<\theta_+<\frac1{q-1}.
+ \label{pr:eq:abrenewal}
+\end{equation}
+The interval need not straddle $1/q$. Uniformly for integer $m,n$ with $n$
+sufficiently large and $\theta_-\le m/n\le\theta_+$,
+\begin{equation}
+ u_m(n)\asymp
+ n^{-1-(q+1)\alpha}
+ +n^{-q(1+\alpha)}\prpos{qm-n}^{q-1}.
+ \label{pr:eq:renewalmain}
+\end{equation}
+The constants depend only on $\alpha$, the kernel in
+\eqref{pr:eq:generalassump}, and $q,\theta_-,\theta_+$.
+\end{theorem}
+
+The theorem uses only upper and lower power bounds, not a precise tail
+equivalent or regular variation with a limiting constant. It therefore
+determines orders robustly, but cannot by itself identify exact amplitudes.
+
+\subsection{A uniform local tail bound for unrestricted renewals}
+Let $W(z)=\sum_{k\ge1}w_kz^k$ and $Z(z)=(1-W(z))^{-1}$.
+
+\begin{lemma}[Local subcritical convolution bound]\label{pr:lem:local}
+For every fixed integer $h\ge1$, there is $C_h<\infty$ such that
+\begin{equation}
+ \prcoef zs Z(z)^h\le C_h(s+1)^{-1-\alpha}\qquad(s\ge0).
+ \label{pr:eq:localtail}
+\end{equation}
+The same bound holds for $(1-S(z))^{-h}$ whenever $S$ is a coefficientwise
+subseries of $W$. Also
+\begin{equation}
+ \sum_{s=0}^n s^p\prcoef zs(1-S(z))^{-h}
+ \le C_{h,p}n^{p-\alpha}\qquad(p>\alpha,
+ \ n\ge1).
+ \label{pr:eq:momentbound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $s\ge1$ and $\ell\ge1$, every ordered composition $k_1+\cdots+k_\ell=s$
+has an index $i$ with $k_i\ge s/\ell$. Designate one such index; allowing all
+possibilities only overcounts. Once the other $\ell-1$ parts are fixed, $k_i$
+is determined. Its weight is at most $C_w\ell^{1+\alpha}s^{-1-\alpha}$.
+Summing the other weights without the sum constraint gives at most
+$\bar w^{\ell-1}$. Hence
+\begin{equation}
+ \prcoef zs W(z)^\ell
+ \le C_w\ell^{2+\alpha}\bar w^{\ell-1}s^{-1-\alpha}.
+ \label{pr:eq:ellbound}
+\end{equation}
+Now expand
+\[
+ Z(z)^h=\sum_{\ell\ge0}\binom{\ell+h-1}{h-1}W(z)^\ell.
+\]
+The sum of the bounds \eqref{pr:eq:ellbound} converges, because $\bar w<1$
+and the remaining factors grow polynomially in $\ell$. The coefficient at
+$s=0$ is one. This proves \eqref{pr:eq:localtail}. Coefficientwise
+domination proves the assertion for $S$. Finally, sum $s^{p-1-\alpha}$ over
+$1\le s\le n$; this is $O(n^{p-\alpha})$ because $p>\alpha$.
+\end{proof}
+
+\subsection{Suppressing a macroscopic sum made only of small parts}
+For a fixed small $\varepsilon>0$, put
+\begin{equation}
+ S_n(z)=\sum_{k\le\lfloor\varepsilon n\rfloor}w_kz^k,
+ \qquad T_n(z)=(1-S_n(z))^{-1}.
+ \label{pr:eq:smallkernel}
+\end{equation}
+
+\begin{lemma}[Arbitrarily strong polynomial suppression]\label{pr:lem:small}
+Given $c>0$, $A>0$ and a fixed integer $h\ge1$, one can choose
+$\varepsilon>0$ so that, for all sufficiently large $n$,
+\begin{equation}
+ \prcoef zs T_n(z)^h\le C n^{-A}\qquad(s\ge cn).
+ \label{pr:eq:smallsuppress}
+\end{equation}
+The same $\varepsilon$ works for any prescribed finite set of values of
+$h$.
+\end{lemma}
+\begin{proof}
+Choose $L>A/c$ and then $\varepsilon>0$ so small that $L\varepsilon<\alpha$.
+Set $\lambda_n=L\log n/n$. Since $e^t-1\le te^t$ for $t\ge0$,
+\begin{align*}
+ S_n(e^{\lambda_n})-S_n(1)
+ &\le\lambda_n e^{\lambda_n\varepsilon n}
+        \sum_{k\le\varepsilon n}k w_k\\
+ &\le C\frac{\log n}{n}\,n^{L\varepsilon}
+                  n^{1-\alpha}
+ =O\!\left((\log n)n^{L\varepsilon-\alpha}\right)=o(1).
+\end{align*}
+Here $\sum_{k\le N}k w_k=O(N^{1-\alpha})$ follows directly from
+\eqref{pr:eq:generalassump}. Because $S_n(1)\le\bar w<1$, for large $n$ we
+have
+\[
+ T_n(e^{\lambda_n})\le\frac{2}{1-\bar w}.
+\]
+All coefficients are nonnegative, so
+\[
+ \prcoef zs T_n(z)^h
+ \le e^{-\lambda_ns}T_n(e^{\lambda_n})^h
+ \le \left(\frac{2}{1-\bar w}\right)^h n^{-Lc}
+ \le Cn^{-A}
+\]
+for $s\ge cn$. Only the final constant depends on $h$.
+\end{proof}
+
+The cutoff is a fixed fraction $\varepsilon n$, not $n/\log n$. That
+distinction prevents artificial logarithmic losses. The parameter
+$\varepsilon$ can depend on the desired power $A$, but remains fixed while
+$n$ tends to infinity.
+
+\subsection{Proof of the upper estimate}
+\begin{proof}[Upper bound in \cref{pr:thm:renewal}]
+Set $\gamma=1-(q-1)\theta_+>0$. Choose $A>1+(q+1)\alpha$. Apply
+\cref{pr:lem:small} with $c=\gamma$ and choose $\varepsilon<\theta_-/2$
+sufficiently small for the resulting estimate. Decompose
+\[
+ W_m=S_n+V_{n,m},\qquad
+ V_{n,m}(z)=\sum_{\lfloor\varepsilon n\rfloor<k\le m}w_kz^k.
+\]
+Abbreviate these series by $S,V$ and put $T=(1-S)^{-1}$. The exact formal
+identity
+\begin{equation}
+ Z_m(z)=\sum_{j\ge0}V(z)^jT(z)^{j+1}
+ \label{pr:eq:markedexpansion}
+\end{equation}
+marks the $j$ large parts and the $j+1$ intervening sequences of small
+parts. Because every part counted by $V$ exceeds $\varepsilon n$, only
+$j\le J:=\lceil1/\varepsilon\rceil$ can contribute to the coefficient of
+$z^n$. Thus the number of cases is fixed independently of $n$.
+
+\paragraph{Fewer than $q$ large parts.}
+For $j\le q-1$, the total size supplied by the large parts is at most
+$jm\le(q-1)\theta_+n$. The small-part sequences must therefore supply at
+least $\gamma n$. By \cref{pr:lem:small}, every relevant coefficient of
+$T^{j+1}$ is $O(n^{-A})$. Convolving with $V^j$ and using
+$V(1)^j\le\bar w^j$ gives
+\begin{equation}
+ \prcoef zn V^jT^{j+1}=O(n^{-A})
+ =O(n^{-1-(q+1)\alpha}).
+ \label{pr:eq:fewlarge}
+\end{equation}
+This argument includes $j=0$.
+
+\paragraph{At least $q+1$ large parts.}
+For each fixed $j\ge q+1$, an individual large-part weight is
+$O(n^{-1-\alpha})$. For a specified sum $n-s$, the number of ordered
+$j$-tuples is $O(n^{j-1})$. Hence
+\[
+ \prcoef z{n-s} V(z)^j=O(n^{-1-j\alpha})
+\]
+uniformly in $s$. Since $T(1)^{j+1}\le(1-\bar w)^{-j-1}$,
+\begin{equation}
+ \prcoef zn V^jT^{j+1}=O(n^{-1-j\alpha})
+ =O(n^{-1-(q+1)\alpha}).
+ \label{pr:eq:manylarge}
+\end{equation}
+There are at most $J$ such terms.
+
+\paragraph{Exactly $q$ large parts.}
+Put $\Delta=qm-n$. If the small-part sequences have total size $s$, write the
+$q$ large parts as $k_i=m-d_i$. Their deficits satisfy
+\[
+ d_i\ge0,\qquad d_1+\cdots+d_q=\Delta+s.
+\]
+Ignoring upper bounds on the $d_i$ gives at most
+\[
+ \binom{\Delta+s+q-1}{q-1}
+ \le C(\Delta_++s+1)^{q-1}
+\]
+choices when $\Delta+s\ge0$, and no choices otherwise. Every large-part
+product is $O(n^{-q(1+\alpha)})$. Writing $r_s=\prcoef zs T^{q+1}$, we obtain
+\begin{align}
+ \prcoef zn V^qT^{q+1}
+ &\le Cn^{-q(1+\alpha)}
+       \sum_{s=0}^n(\Delta_++s+1)^{q-1}r_s\notag\\
+ &\le Cn^{-q(1+\alpha)}
+       \left((\Delta_++1)^{q-1}+n^{q-1-\alpha}\right).
+ \label{pr:eq:criticalupper}
+\end{align}
+The last step uses $\sum r_s\le(1-\bar w)^{-q-1}$, the elementary bound
+$(x+y)^{q-1}\le C_q(x^{q-1}+y^{q-1})$, and \cref{pr:lem:local} with
+$p=q-1>\alpha$.
+
+The second term in \eqref{pr:eq:criticalupper} is exactly of order
+$n^{-1-(q+1)\alpha}$. The harmless constant in $(\Delta_++1)^{q-1}$ is
+absorbed by that term because
+\[
+ q(1+\alpha)-\bigl(1+(q+1)\alpha\bigr)=q-1-\alpha>0.
+\]
+Combining the three cases proves the upper half of \eqref{pr:eq:renewalmain}.
+\end{proof}
+
+\subsection{Proof of the lower estimate}
+\begin{proof}[Lower bound in \cref{pr:thm:renewal}]
+All terms of $Z_m=\sum_{j\ge0}W_m^j$ are nonnegative, so it suffices to
+exhibit two families of compositions.
+
+\paragraph{The background family with $q+1$ macroscopic parts.}
+Because $\theta_->1/(q+1)$, choose a fixed $\delta>0$ so small that
+\[
+ \frac1{q+1}-q\delta>0,
+ \qquad \frac1{q+1}+q\delta<\theta_-.
+\]
+Choose the first $q$ parts independently in integer intervals of width
+proportional to $n$ about $n/(q+1)$, with deviation at most $\delta n$. Let
+the final part make the sum equal to $n$. Every part then lies between fixed
+positive multiples of $n$ and is at most $m$. There are at least $c n^q$
+choices for sufficiently large $n$. The lower tail bound in
+\eqref{pr:eq:generalassump} gives a weight of at least
+$c n^{-(q+1)(1+\alpha)}$ for each choice. Consequently
+\begin{equation}
+ u_m(n)\ge c n^{-1-(q+1)\alpha}.
+ \label{pr:eq:backgroundlower}
+\end{equation}
+
+\paragraph{The near-cap family with $q$ macroscopic parts.}
+Suppose $\Delta=qm-n\ge0$. Every weak composition
+\[
+ d_1+\cdots+d_q=\Delta,\qquad d_i\ge0
+\]
+gives $k_i=m-d_i$ with total size $n$. Moreover
+\[
+ k_i\ge m-\Delta=n-(q-1)m\ge\gamma n>0,
+ \qquad k_i\le m.
+\]
+Thus all these choices are admissible, all parts are macroscopic, and there
+are exactly $\binom{\Delta+q-1}{q-1}$ of them. Each weight is at least
+$c n^{-q(1+\alpha)}$, so
+\begin{equation}
+ u_m(n)\ge c n^{-q(1+\alpha)}(\Delta+1)^{q-1}
+ \quad(\Delta\ge0).
+ \label{pr:eq:caplower}
+\end{equation}
+When $\Delta<0$, the second term requested in \eqref{pr:eq:renewalmain} is
+zero. The two lower families belong to different powers of $W_m$ and may be
+added; alternatively, the maximum of their lower bounds controls half their
+sum. Together with \eqref{pr:eq:backgroundlower}, this proves the theorem.
+\end{proof}
+
+(Here $\gamma=1-(q-1)\theta_+$ as in the proof of the upper bound.)
+
+\subsection{Why the reciprocal endpoint changes the exponent}
+Away from a boundary, $q$ macroscopic parts have $q-1$ free size
+coordinates. Their local weighted count is
+\[
+ n^{q-1}\bigl(n^{-1-\alpha}\bigr)^q=n^{-1-q\alpha}.
+\]
+At $n=qm$, those $q$ parts cannot vary macroscopically: they would all have
+to sit at the cap. Allowing a small-part remainder of size $s$ restores only
+$s^{q-1}$ choices. The unrestricted renewal coefficients obey the upper
+bound $O(s^{-1-\alpha})$, so the relevant truncated moment is
+$O(n^{q-1-\alpha})$. This bounds the contribution by
+$O(n^{-1-(q+1)\alpha})$, an order that is actually attained by the separate
+lower family with $q+1$ genuinely macroscopic parts.
+
+The crossover occurs when
+\[
+ n^{-q(1+\alpha)}\Delta^{q-1}
+ \quad\hbox{and}\quad n^{-1-(q+1)\alpha}
+\]
+have the same order, equivalently
+\begin{equation}
+ \Delta\asymp n^{1-\alpha/(q-1)}.
+ \label{pr:eq:generalwindow}
+\end{equation}
+This algebra is not the proof of the estimate; it is an interpretation of the
+proved uniform bounds. The inequalities $q-1>\alpha$ and $\bar w<1$ are
+exactly the two points that make the argument work without an extra
+logarithm or a critical-renewal correction.
+
+\section{Transferring the theorem to permutations}
+\label{pr:sec:application}
+
+\subsection{Finite shifts do not alter the order function}
+The lower and upper envelopes in \eqref{pr:eq:normalizedsandwich} have
+slightly different cutoffs and coefficient indices. We first remove that
+bookkeeping issue.
+
+\begin{lemma}[Bounded-shift stability]\label{pr:lem:shift}
+Fix $q\ge2$ and a positive bounded interval of ratios $m/n$. For any fixed
+integers $e,f$, the two expressions
+\[
+ \mathcal O_q(n,m),\qquad \mathcal O_q(n+e,m+f)
+\]
+are comparable by constants independent of $n,m$, whenever $n$ is
+sufficiently large. The same is true of the renewal order expression in
+\eqref{pr:eq:renewalmain}, for $0<\alpha<1$.
+\end{lemma}
+\begin{proof}
+The powers of $n$ change only by bounded factors. The excess $qm-n$ changes
+by the fixed amount $qf-e$. For every fixed $p\ge1$ and fixed real $c$,
+\[
+ (x+c)_+^p\le C_{p,c}(x_+^p+1),\qquad
+ x_+^p\le C_{p,c}((x+c)_+^p+1).
+\]
+For $\mathcal O_q$, the extra constant is multiplied by $n^{-3(q-1)/2}$,
+which is at most a constant times $n^{-q/2}$ because $q\ge2$. In the renewal
+expression, it is absorbed because $q-1-\alpha>0$, as in the proof of
+\cref{pr:thm:renewal}.
+\end{proof}
+
+\subsection{Proof of the uniform permutation estimate}
+\begin{proof}[Proof of \cref{pr:thm:cross}]
+By \eqref{pr:eq:twotails}, both normalized kernels satisfy
+\eqref{pr:eq:generalassump} with $\alpha=1/2$. Their masses are $3/4$ and
+$3/8$, strictly below one. Apply \cref{pr:thm:renewal} to $u^-_{m-1}(n)$ and
+$u^+_m(n-1)$, using slightly enlarged fixed ratio intervals if necessary to
+accommodate the shifts. The resulting common order, after
+\cref{pr:lem:shift}, is
+\begin{equation}
+ 4^{-n}a_n^{(m)}\asymp
+ n^{-(q+3)/2}+n^{-3q/2}\prpos{qm-n}^{q-1}.
+ \label{pr:eq:countsnormalized}
+\end{equation}
+The lower inequality follows from the lower envelope, and the upper
+inequality from the upper envelope. Finally divide by
+$4^{-n}C_n\asymp n^{-3/2}$ from \eqref{pr:eq:catasymp}. This gives exactly
+\eqref{pr:eq:cross}.
+\end{proof}
+
+\subsection{Proof of the staircase and its endpoints}
+\begin{proof}[Proof of \cref{pr:thm:staircase}]
+First suppose $1/2<\theta<1$. Use \cref{pr:thm:cross} with $q=2$ and a ratio
+interval containing both $1/2$ and $\theta$. For $m=\lfloor\theta n\rfloor$,
+the positive excess $2m-n$ is of order $n$. The second term in
+\eqref{pr:eq:cross} is therefore of order $n^{-1/2}$ and dominates $n^{-1}$.
+
+Now suppose $0<\theta\le1/2$ and put $r=\lfloor1/\theta\rfloor\ge2$. Then
+\[
+ \frac1{r+1}<\theta\le\frac1r.
+\]
+Choose $\theta_-<\theta$ and $\theta_+>1/r$ satisfying \eqref{pr:eq:ab} with
+$q=r$. If $m=\lfloor\theta n\rfloor$, then $rm-n\le0$. The second term of
+\eqref{pr:eq:cross} vanishes, leaving the order $n^{-r/2}$. This also handles
+$\theta=1/r$ without a limiting argument.
+
+The count statement follows from Catalan asymptotics. Taking logarithms gives
+\eqref{pr:eq:lograte}, since the logarithms of the two comparison constants
+are $O(1)$. The same choices of $\theta_\pm$ work for $\theta$ in a fixed
+compact subinterval of a phase, proving the asserted uniformity.
+\end{proof}
+
+\begin{proof}[Proof of \cref{pr:cor:scales,pr:cor:half}]
+Factoring $n^{-q/2}$ from \eqref{pr:eq:cross} leaves
+\[
+ 1+n^{-(2q-3)/2}\prpos{qm-n}^{q-1}.
+\]
+The exponent identity
+\[
+ (q-1)\left(1-\frac1{2(q-1)}\right)=\frac{2q-3}{2}
+\]
+gives \eqref{pr:eq:crossfactored}. All stated regimes follow by comparing the
+bracketed terms. For $q=2$, the excess is $2m-n$ and the scale is $\sqrt n$,
+proving \cref{pr:cor:half}. Integer rounding changes the excess by only
+$O(1)$ and is covered by \cref{pr:lem:shift}.
+\end{proof}
+
+\subsection{A continuum of logarithmic exponents inside a shrinking neighbourhood}
+\begin{corollary}[Power-scale approach from above]\label{pr:cor:powerapproach}
+Fix $q\ge2$, $c>0$, and $0<\beta<1$. Set
+\[
+ m_n=\left\lfloor\frac nq+c n^\beta\right\rfloor.
+\]
+Then
+\begin{equation}
+ p_n(m_n)=\Theta\!\left(n^{-\eta_q(\beta)}\right),\qquad
+ \eta_q(\beta)=\min\left\{\frac q2,
+                     (q-1)\left(\frac32-\beta\right)\right\}.
+ \label{pr:eq:powerapproach}
+\end{equation}
+With $m_n=\lfloor n/q-c n^\beta\rfloor$, the order is always $n^{-q/2}$.
+\end{corollary}
+\begin{proof}
+The ratio $m_n/n$ tends to $1/q$, and $qm_n-n=qc n^\beta+O(1)$ in the first
+case. Substitute into \eqref{pr:eq:cross}. The sum of two positive powers of
+$n$ has the order of the larger term, which gives the minimum exponent. In
+the second case the excess is eventually negative.
+\end{proof}
+
+For example, $m=n/2+n^{3/4}+O(1)$ gives rarity $\Theta(n^{-3/4})$, while
+$m=n/3+n^{7/8}+O(1)$ gives $\Theta(n^{-5/4})$. These are genuine
+intermediate logarithmic exponents, even though the fixed-fraction diagram is
+a staircase.
+
+\subsection{The exact sense of ``window''}
+A window often means that a rescaled probability converges to a nonconstant
+function of the scaled parameter. That convergence is not proved here. Here
+the phrase \emph{order-crossover scale} has the following precise meaning:
+below a positive excess of order $\mathfrak w_q(n)$ the first term controls
+the order, and above it the second term eventually dominates by an unbounded
+factor. The uniform comparison \eqref{pr:eq:crossfactored} proves this
+statement directly. (Part~IV's question \cref{cjm:sec:mj-half} asks for a
+window in the stronger sense as well; that part stays open.)
+
+Likewise \eqref{pr:eq:lograte} is a pointwise logarithmic rarity law, not a
+full large-deviation principle asserted without qualification. At a
+reciprocal boundary the pointwise cumulative exponent jumps, and ordinary
+large-deviation terminology would require care with lower semicontinuous
+rate functions and the distinction between open and closed events.
+
+\section{Interpretation, robustness, and limitations}
+\label{pr:sec:interpretation}
+
+\subsection{Why a coarse sandwich recovers an exact exponent}
+The masses $3/8$ and $3/4$ and the tail constants in \eqref{pr:eq:twotails}
+differ substantially. Consequently the envelopes cannot be expected to agree
+to first relative order. Nevertheless, both are subcritical and both assign a
+macroscopic piece of size $k$ a normalized weight of order $k^{-3/2}$. The
+deficit simplex has the same dimension in both models. Those three
+properties determine the powers of $n$, while the details discarded by the
+upper bound and restricted by the lower construction affect constants.
+
+This is why the method reaches the entire lower-fraction hierarchy without
+resolving the complicated endpoint-state eigenvectors. It is also why the
+proof stops at a two-sided comparison rather than silently promoting it to
+an equivalent.
+
+\subsection{A general transfer principle}
+The same argument applies outside this permutation problem.
+
+\begin{proposition}[Renewal-sandwich universality]\label{pr:prop:universality}
+Suppose a nonnegative counting sequence $\tilde a_n^{(m)}$ is normalized by
+$\lambda_\star^{-n}$, and its normalized coefficients lie between two
+truncated renewal sequences satisfying \eqref{pr:eq:generalassump} with the
+same $0<\alpha<1$, up to fixed shifts of $m,n$ and positive constant factors.
+Suppose the unrestricted normalization satisfies
+\[
+ \lambda_\star^{-n}\tilde a_n\asymp n^{-1-\alpha}.
+\]
+Then, uniformly near each fixed reciprocal threshold $m/n=1/q$, $q\ge2$,
+\begin{equation}
+ \frac{\tilde a_n^{(m)}}{\tilde a_n}\asymp
+ n^{-q\alpha}
+ +n^{-(q-1)(1+\alpha)}\prpos{qm-n}^{q-1}.
+ \label{pr:eq:universalprob}
+\end{equation}
+The associated order-crossover scale is $n^{1-\alpha/(q-1)}$.
+\end{proposition}
+\begin{proof}
+Apply \cref{pr:thm:renewal} to both bounds, use the bounded-shift argument,
+and divide by $n^{-1-\alpha}$. Equating the two terms gives the scale.
+\end{proof}
+
+The hypotheses are substantive. A generic Catalan class does not
+automatically admit the required upper and lower cutoff encodings. The
+proposition isolates exactly what must be proved before importing the phase
+diagram into another class.
+
+\subsection{Finite changes, subcriticality, and the tail-index restriction}
+Changing finitely many kernel weights does not change the theorem's powers
+as long as the total mass stays below one and the two-sided tail bounds
+remain valid. More generally, the proof tolerates bounded multiplicative
+changes of all sufficiently large weights. This robustness is built into
+\eqref{pr:eq:generalassump}.
+
+Subcriticality cannot simply be removed. For example,
+\[
+ W(z)=1-\sqrt{1-z}
+\]
+has nonnegative coefficients of order $k^{-3/2}$ and total mass one, but
+$(1-W(z))^{-1}=(1-z)^{-1/2}$ has coefficients of order $n^{-1/2}$, not
+$n^{-3/2}$. Thus \cref{pr:lem:local}, the basic input to the proof, fails at
+criticality.
+
+The condition $\alpha<1$ ensures $q-1>\alpha$ at every $q\ge2$. At
+$\alpha=1$ and $q=2$ the truncated moment used in \eqref{pr:eq:criticalupper}
+becomes logarithmic. The exact endpoint theorem in that regime requires a
+separate statement. It is not justified by replacing $\alpha$ by one in the
+displayed formulas.
+
+\subsection{Comparison with the known upper-half profile}
+When $q=2$ and $\theta>1/2$ is fixed, \cref{pr:thm:staircase} gives
+$\Theta(n^{-1/2})$, consistent with but weaker than Part~IV's
+\eqref{mj:eq:bulk-ratio}. Near $\theta=1/2$ from above, that previously
+reported prefactor has the expansion
+\[
+ \frac{3(2\theta-1)}{\sqrt{\pi\theta(1-\theta)}}
+ =\frac{12}{\sqrt\pi}\left(\theta-\frac12\right)
+   +O\!\left((\theta-\tfrac12)^3\right)
+\]
+(this is Part~IV's \eqref{mj:eq:half-edge} with $u=1-\theta$). Substituting
+$\theta-1/2=s/n$ heuristically suggests the order $s n^{-3/2}$. The present
+proof establishes that order uniformly once $s\gg\sqrt n$, without assuming
+that the fixed-$\theta$ equivalent can be extrapolated into a shrinking
+interval. It also proves the missing $n^{-1}$ background at and below the
+threshold.
+
+\subsection{Scope of the advance}
+\label{pr:sec:scope}
+The results resolve the exponent part of Part~IV's proposed hierarchy
+(\cref{mj:sec:q-hierarchy}) and the polynomial order and order-crossover
+scale at $n/2$ (\cref{cjm:sec:mj-half,pr:sec:cjm-half}). They extend the
+same analysis to every $n/q$. They do not establish the proposed functions
+$\Omega_r(\theta)$, do not determine the exact constants at reciprocal
+endpoints, and do not prove a limiting distribution for the macroscopic
+block sizes in the actual conditioned permutation. They also leave the
+fixed-$m$ component-ordering problem untouched.
+
+The constants in the proofs depend on the fixed integer $q$. No uniformity
+is claimed as $q\to\infty$, equivalently as the adjacency fraction tends to
+zero. The theorem therefore does not yet connect the linear-bound regime to
+fixed $m$ or to an arbitrary mesoscopic sequence $m=o(n)$.
+
+\section{Exact checks and reproducibility}
+\label{pr:sec:checks}
+
+\subsection{What the program checks}
+The delivered standard-library Python program
+\path{code/07-polynomial-rarity-verify.py} performs several independent
+finite checks. First, for $n\le7$, it compares a direct $132$-pattern
+predicate on all permutations with the recursive Catalan generator. Second,
+it compares 54 endpoint-recurrence counts with exhaustive avoider counts for
+$n\le9$. Third, it generates 13,431 lower-construction objects across 60
+parameter pairs, checking avoidance, the jump bound, absence of duplicate
+outputs, and agreement with the lower generating function. Fourth, it checks
+\[
+ [x^n]\underline A_m\le a_n^{(m)}\le[x^n]\overline A_m\le C_n
+\]
+for 276 pairs with $2\le m\le n\le24$. Finally it reproduces the
+counterexample to the invalid upper shortcut in
+\cref{pr:rem:falsemajorant}.
+
+All those assertions passed in the delivered run. The finite checks test the
+implementation and the combinatorial interfaces. They do not certify
+\cref{pr:thm:renewal} or any asymptotic statement; those rest on the proofs
+above.
+
+\subsection{Illustrative exact counts}
+The program also computes exact integer counts for 20 fixed-fraction samples
+through $n=128$ and 18 crossover samples. The CSV files retain the integers,
+so every displayed probability can be reconstructed as an exact rational
+number. The decimals below are rounded and are not interval certificates.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ & $\theta=3/5$ & $\theta=1/2$ & $\theta=2/5$ & $\theta=1/3$ & $\theta=1/4$\\
+\midrule
+32 & 1.287330 & 4.131442 & 1.135882 & 2.317767 & 2.862041\\
+64 & 1.173974 & 4.629846 & 1.210151 & 3.094373 & 2.714275\\
+96 & 1.107349 & 4.868996 & 1.196177 & 3.419091 & 2.535235\\
+128 & 1.061964 & 5.016273 & 1.169257 & 2.937328 & 2.391952\\
+\bottomrule
+\end{tabular}
+\caption{The scaled quantity $n^{\lfloor1/\theta\rfloor/2}p_n(\lfloor\theta
+n\rfloor)$, from exact counts. Neither monotonicity nor convergence of these
+columns is asserted. In particular, a small table cannot distinguish a
+genuine limit from bounded nonconvergence.}\label{pr:tab:numerics}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.93\textwidth]{figures/07-polynomial-rarity-finite_counts.pdf}
+\caption{The same exact finite data for four lower-fraction or threshold
+cases. The theorem proves boundedness above and away from zero for large
+$n$; this plot does not prove it and does not estimate limiting constants.
+(The axis label writes $\Pr$ for $\ljP$.)}\label{pr:fig:numerics}
+\end{figure}
+
+\subsection{A concrete lower-construction example}
+For $m=5$, take the size-four block $(3,2,1,4)$ and the size-three block
+$(2,1,3)$. Their skew sum is
+\[
+ (6,5,4,7,2,1,3).
+\]
+Its largest jump is the boundary jump $7-2=5$. Each block ends at its
+maximum and starts one below it, exactly as required in
+\cref{pr:lem:lower}. The skew-indecomposable cuts recover the two chosen
+blocks. This tiny example exhibits the encoding used to obtain the lower
+bound at every scale.
+
+\subsection{Rebuilding and rerunning}
+\label{pr:sec:reproduce}
+Part~VI's files are
+\begin{lstlisting}
+code/07-polynomial-rarity-model.py     Exact counters, envelopes, lower-
+                                       construction generator, order proxy
+code/07-polynomial-rarity-verify.py    Finite tests and exact-count data
+                                       (standard library)
+code/07-polynomial-rarity-figures.py   The two figures of this part
+                                       (NumPy, Matplotlib)
+code/07-polynomial-rarity-Makefile     The manuscript's convenience targets
+data/07-polynomial-rarity-*            The two exact-count CSV files and
+                                       the recorded run log
+figures/07-polynomial-rarity-*         The two figures (PDF and PNG)
+07-polynomial-rarity-SOURCES.md        Pinned source files, literature
+                                       ledger and status
+\end{lstlisting}
+The programs are shipped byte-identical to the delivery and still use the
+delivered names: \path{verify.py} imports \texttt{model}, which in this
+directory would load Part~I's different \path{code/model.py}, and writes
+\path{data/phase_counts.csv}, \path{data/crossover_counts.csv} and
+\path{data/verification_log.txt}; \path{figures.py} reads
+\path{data/phase_counts.csv} and writes unprefixed files in
+\path{figures/}; the Makefile builds an \texttt{article.tex} beside itself.
+The report's README gives a recipe that restores the delivered layout in a
+scratch copy; there, the manuscript's instructions apply,
+\begin{verbatim}
+python code/verify.py
+python code/figures.py
+\end{verbatim}
+and rerunning overwrites only the copy's recorded outputs. The exact checks
+require only Python's standard library (Python 3.10 or later); regenerating
+the figures additionally requires NumPy and Matplotlib. The endpoint
+recurrence used in the counting program is explained in \cref{pr:app:dp}.
+The source ledger \path{07-polynomial-rarity-SOURCES.md} identifies the
+exact repository files inspected; on the identifier returned by its initial
+tree query it is mistaken (\cref{pr:sec:provenance}). The retained figures
+make Python unnecessary for rebuilding the article.
+
+\section{Further research questions and proposed approaches}
+\label{pr:sec:research}
+The order theorem separates several previously entangled questions. The
+following agenda is ordered roughly from the closest analytic refinement to
+more structural extensions. None of the questions in this section is
+asserted to have been solved here. Several refine questions of Parts~IV
+and~V; each says which.
+
+\subsection{Exact amplitudes inside the lower phases}
+\label{pr:sec:q-amplitudes}
+For fixed $r\ge2$ and $1/(r+1)<\theta<1/r$, does there exist a positive
+function $\Omega_r(\theta)$ such that
+\begin{equation}
+ p_n(\lfloor\theta n\rfloor)\sim\Omega_r(\theta)n^{-r/2}?
+ \label{pr:eq:amplitudequestion}
+\end{equation}
+\Cref{pr:thm:staircase} proves that the normalized sequence is bounded above
+and away from zero, but that is not convergence. The two renewal envelopes
+have different masses and different tail constants, so squeezing between
+them cannot identify $\Omega_r$. A promising next step is an exact
+decomposition into a finite macroscopic skeleton decorated by microscopic
+avoiding blocks. One would need both unique encoding and a summable bound on
+all decorations before interchanging a scaling limit with the sum over
+skeletons. The known upper-half formula \eqref{mj:eq:bulk-ratio} is a useful
+compatibility test, not a license to extrapolate. (This is the amplitude
+half of Part~IV's \cref{mj:sec:q-hierarchy}, whose exponent half
+\cref{pr:thm:staircase} answers.)
+
+\subsection{Constants at the reciprocal endpoints}
+\label{pr:sec:q-endpoints}
+For each $q\ge2$, determine whether
+\[
+ \mathfrak K_q:=\lim_{n\to\infty}n^{q/2}p_n(\lfloor n/q\rfloor)
+\]
+exists and compute it. The theorem gives $0<\liminf\le\limsup<\infty$. It
+does not exclude residue-class oscillations caused by the lattice. An exact
+skeleton expansion should first establish whether changing $qm-n$ by a
+bounded integer changes the normalized limit. The bounded-shift lemma
+(\cref{pr:lem:shift}) proves only comparability, so an eventual proof must
+genuinely sharpen that step.
+
+\subsection{Limiting crossover functions}
+\label{pr:sec:q-crossover}
+A stronger version of \cref{pr:thm:cross} would establish, locally uniformly
+in real $t$,
+\begin{equation}
+ n^{q/2}p_n\!\left(\left\lfloor\frac nq+t\,\mathfrak w_q(n)\right\rfloor\right)
+ \longrightarrow \mathfrak H_q(t).
+ \label{pr:eq:Hquestion}
+\end{equation}
+The current estimates predict only $\mathfrak H_q(t)\asymp1+t_+^{q-1}$,
+assuming such a limit exists. A particularly simple candidate is
+\[
+ \mathfrak H_q(t)=\mathfrak K_q+\mathfrak L_q t_+^{q-1},\qquad
+ \mathfrak K_q,\mathfrak L_q>0.
+\]
+This is a proposed hypothesis, not a conclusion of the proof. It reflects
+the two mechanisms in the renewal estimate: a background family and a newly
+available near-cap simplex. The actual permutation decorations could require
+a more complicated formula. For $q=2$, matching this candidate to
+\eqref{mj:eq:bulk-ratio} would suggest $\mathfrak L_2=12/\sqrt\pi$, but only
+after proving a suitable uniform overlap regime. Fixed-$\theta$ asymptotics
+alone do not determine that slope. (For $q=2$ this is the transition
+function asked for in Part~IV's \cref{cjm:sec:mj-half} and Part~V's
+\cref{pr:sec:cjm-half}.)
+
+\subsection{The geometry of a conditioned permutation}
+\label{pr:sec:q-geometry}
+What does a uniform avoider conditioned on $M_n\le m$ look like when $m/n$
+lies in a lower phase? The proof marks large parts in two auxiliary renewal
+encodings, not in a canonical decomposition of every valid permutation. It
+therefore does not prove that the conditioned permutation has a prescribed
+number of macroscopic blocks. A useful objective is a canonical skeleton map
+for the actual class, followed by a limit theorem for its ordered size
+vector. One should distinguish the number of macroscopic blocks, their
+values, their positions, and the location of the largest jump. The
+reciprocal transition might then become a geometric degeneration of a
+simplex of allowed block sizes. (Part~IV's \cref{mj:thm:conditional} gives
+the two-block geometry for $\theta>1/2$, and its question
+\cref{cjm:sec:mj-geometric} asks for the whole permutation there.)
+
+\subsection{Uniform relative errors and matching of scales}
+\label{pr:sec:q-uniform}
+Can \eqref{pr:eq:amplitudequestion} be made uniform as $\theta$ approaches a
+reciprocal boundary, with an error that overlaps the scale in
+\eqref{pr:eq:Hquestion}? This requires more than adding a little-$o$ term to
+the present bounds. The small-part suppression lemma deliberately chooses a
+very small fixed cutoff and does not optimize the resulting constants. A
+sharper method would track the cutoff through a dominated-convergence
+argument and isolate the contribution of intermediate-sized parts. A
+successful theorem should also specify the effect of rounding $m$ and give a
+genuinely relative, rather than merely additive, error.
+
+\subsection{Growing reciprocal index and the spectral regime}
+\label{pr:sec:q-growing}
+The theorem treats fixed $q$, so it does not apply uniformly when
+$m/n\to0$. A next scale is $q=q(n)\to\infty$ slowly, or equivalently an
+adjacency bound tending to infinity but sublinear in $n$. Which growth rates
+of $q$ preserve a few-macroscopic-pieces description? When does a saddle
+point or the fixed-$m$ spectral radius become the correct language? The
+constants hidden in the proof depend strongly on $q$, on the available ratio
+interval, and on the chosen small-part cutoff. Keeping those dependencies
+explicit is a prerequisite for connecting the present theorem with the
+report's fixed-bound growth-constant theory (Parts~I and~II). (This is
+Part~IV's question \cref{pr:sec:mj-bridge}, and Part~III's
+\cref{lj:sec:q-reconnect} from the other end.)
+
+\subsection{Effective bounds and improved lower subclasses}
+\label{pr:sec:q-effective}
+The existence proof can, in principle, be made effective after supplying
+explicit Catalan bounds and explicit choices of $A,L,\varepsilon,\delta$.
+Such constants would probably be far from sharp. It would be useful to
+produce certified, practical inequalities for $p_n(m)$ over finite ranges.
+The lower construction used here fixes the first deficiency at at most one.
+Allowing a bounded but larger deficiency enlarges the subclass, while still
+admitting exact block counts (Part~I's $K_{m,d}$, \eqref{eq:K}). How much can
+the constants improve before the cutoff loss starts to compete with the
+crossover scale? This is an optimization problem about rigorous
+inequalities, distinct from proving an exact asymptotic amplitude.
+
+\subsection{Other pattern classes and cutoff models}
+\label{pr:sec:q-classes}
+\Cref{pr:prop:universality} supplies a reusable criterion, but not an
+automatic result for every Catalan class. For another permutation class,
+tree family, or weighted composition model, identify a genuine
+cutoff-respecting injection and a coefficientwise upper encoding with the
+same tail index. Merely having unrestricted growth $\lambda_\star^n n^{-3/2}$
+is not sufficient. The central question is whether the local statistic being
+bounded can be translated into a cap on every part with only bounded shifts.
+Establishing that translation would turn the present analytic theorem into a
+phase-diagram theorem for another concrete model. (Compare Part~V's
+\cref{pr:sec:cjm-other}.)
+
+\subsection{Other tail indices and critical renewal mass}
+\label{pr:sec:q-tails}
+Two adjacent analytic problems are especially natural. At $\alpha=1$, the
+moment at the first reciprocal threshold is borderline and may introduce
+logarithmic factors. At $\bar w=1$, the renewal sequence is critical and the
+local tail lemma used here fails. Determine the correct two-term estimates in
+those regimes, including their endpoint orders and crossover scales. The two
+changes should initially be studied separately: altering the tail index
+affects moment integrability, whereas altering the total mass changes the
+number of microscopic parts. There is no reason for a single formal
+substitution to handle both.
+
+\subsection{A staged formalization plan}
+\label{pr:sec:q-formal}
+A feasible formalization should separate three interfaces. The finite
+combinatorial layer consists of maximum decomposition, skew sums, unique
+skew-indecomposable factorization, and the injection behind
+$\underline A_m$. The formal-series layer consists of nonnegative
+coefficientwise inequalities and the identity \eqref{pr:eq:markedexpansion}.
+The analytic layer consists of the geometric-polynomial summation in
+\cref{pr:lem:local}, the exponential tilt in \cref{pr:lem:small}, and the
+explicit composition bounds in \cref{pr:thm:renewal}. Only after those layers
+are connected should an audit assert the main asymptotic theorem. The
+endpoint dynamic program and its test cases would be useful executable
+specifications, but they are not substitutes for any of these proof
+obligations. (Parts~IV and~V propose formalization targets in
+\cref{cjm:sec:mj-formal,pr:sec:cjm-formal}; no Lean or Rocq declaration for
+any part of this report exists.)
+
+\section{Conclusion}
+\label{pr:sec:conclusion}
+The lower-fraction regime has a simple logarithmic structure: each time the
+adjacency fraction crosses a reciprocal threshold from above, the rarity
+gains another factor $n^{-1/2}$. At the threshold itself the rarer exponent
+already applies. The transition from the threshold background to the
+neighbouring larger probability occurs at a fractional-power scale that
+depends on the reciprocal index.
+
+The proof is economical in its dependence on previous work. It does not
+require the full endpoint-state spectrum, a conjectured exact asymptotic
+profile, or any unverified assertion elsewhere in the report. Two elementary
+encodings place the counting sequence between subcritical renewal
+coefficients with the same tail exponent. A local composition argument then
+transfers a robust phase diagram through that sandwich. What remains
+difficult is no longer identifying the powers: it is recovering the exact
+amplitudes and the structure of the conditioned objects.
+
+\section{The exact endpoint recurrence used in the checks}
+\label{pr:app:dp}
+This section was the manuscript's Appendix~A. It explains the implemented
+dynamic program. The recurrence is due to Mayama--Akita~\cite{MayamaAkita}
+and is Part~I's \cref{prop:endpoint}, in the coefficient form Part~IV prints
+as \eqref{mj:eq:DP}, with Part~IV's shortcut \eqref{mj:eq:unrestrictedDP};
+Part~V derives it again in \cref{cjm:app:recurrence}. The delivered
+implementation is a separately packaged adaptation of Part~IV's counter
+\path{code/05-macroscopic-deficits-model.py}. The manuscript's derivation is
+kept here, in Parts~IV and~V's notation (\cref{pr:tab:notation}), because its
+checks were built on it; its first-entry argument differs from those of
+Parts~I, III and~V. No correctness claim for the main asymptotic theorem is
+delegated to this program.
+
+\subsection{First-entry counts}
+For a permutation of size $n$, call $n-\pi_1$ its first deficiency. For
+$0\le d<n$, the number of unrestricted avoiders with first deficiency exactly
+$d$ is
+\begin{equation}
+ N_{n,n-d}=\frac{d+1}{n}\binom{2n-d-2}{n-1},
+ \label{pr:eq:firstentry}
+\end{equation}
+Part~III's \eqref{lj:eq:first-count} with first entry $f=n-d$. Here is a
+direct derivation. Fix the first entry $f=n-d$. The $d$ entries larger than
+$f$ must occur in increasing order: a decreasing pair of them together with
+the first entry would form $132$. These $d$ entries divide the remaining
+$f-1$ smaller entries into $d+1$ gaps. All entries in an earlier gap must
+exceed those in a later gap, since otherwise the separating larger entry
+completes a $132$ pattern. Conversely, these conditions, with an avoiding
+permutation inside each gap, are sufficient. Thus
+\[
+ N_{n,n-d}=[x^{n-d-1}]\Cat(x)^{d+1}.
+\]
+The generalized Catalan coefficient identity
+\[
+ [x^r]\Cat(x)^k=\frac{k}{2r+k}\binom{2r+k}{r}
+ \qquad(k\ge1,\ r\ge0)
+\]
+follows from $Y=x(1+Y)^2$, $Y=\Cat-1$, by formal coefficient inversion (or by
+the standard ballot decomposition); here $r$ and $k$ are local indices.
+Substitution of $r=n-d-1$, $k=d+1$ and cancellation of factorials gives
+\eqref{pr:eq:firstentry}. This also proves its integrality.
+
+Write
+\begin{equation}
+ \mathcal N_n(u)=\sum_{d=0}^{\min(u,n-1)} N_{n,n-d}\qquad(n\ge1,\ u\ge0),
+ \label{pr:eq:hdef}
+\end{equation}
+with $\mathcal N_n(u)=0$ for $u<0$, and $\mathcal N_0(u)=1$ for $u\ge0$ (Part~V's
+\eqref{cjm:eq:h-count}). The implementation precomputes these cumulative
+counts using integers and checks $\mathcal N_n(n-1)=C_n$ for every row it
+constructs.
+
+\subsection{Unrestricted two-endpoint counts}
+Let $T^{\mathrm{free}}_{u,v}(n)$ count unrestricted avoiders with first
+deficiency at most $u$ and last deficiency at most $v$, where $u,v\ge0$. For
+$n\ge2$,
+\begin{equation}
+ T^{\mathrm{free}}_{u,v}(n)=\mathcal N_{n-1}(u-1)
+ +\sum_{j=1}^{\min(v,n-1)}C_{n-j-1}\mathcal N_j(u).
+ \label{pr:eq:freeendpoints}
+\end{equation}
+(This is Part~IV's shortcut \eqref{mj:eq:unrestrictedDP}, which holds for
+$T^{(m)}_{u,v}(n)$ when $n\le m+1$.) To prove this, first consider a final
+maximum. Removing it leaves an arbitrary avoider of size $n-1$, whose first
+deficiency is one less than the original one. This gives the first term.
+
+Otherwise let the final value be $n-j$, with $j\ge1$. Every larger value must
+occur before every smaller value: a smaller value followed by a larger one
+and then by $n-j$ would be a $132$ pattern. Hence the permutation consists of
+an avoiding block of the $j$ larger values, an avoiding block of the $n-j-1$
+smaller values, and the last entry. The first deficiency is the first
+deficiency of the larger block; the last deficiency is $j$. The factors in
+the sum follow. When $n=1$, the unrestricted count is one for all
+nonnegative thresholds.
+
+\subsection{The adjacency-restricted recurrence}
+Fix $m$. Let $T^{(m)}_{u,v}(n)$ count the size-$n$ avoiders with jump bound
+$m$ and first and last deficiencies at most $u,v$. Negative thresholds give
+zero; $T^{(m)}_{u,v}(1)=1$ for nonnegative thresholds. Thresholds larger
+than $n-1$ can be clipped to $n-1$.
+
+For $n\ge2$ the exact recurrence is
+\begin{equation}
+ T^{(m)}_{u,v}(n)=T^{(m)}_{u-1,m-1}(n-1)
+ +\sum_{k=1}^{\min(m,n-1)}c_{k,u}\,T^{(m)}_{m-k,v-k}(n-k),
+ \label{pr:eq:exactdp}
+\end{equation}
+for $u,v\ge0$, where
+\begin{equation}
+ c_{1,u}=1,\qquad c_{k,u}=\mathcal N_{k-1}(u-1)\quad(k\ge2);
+ \label{pr:eq:coeffdp}
+\end{equation}
+this is \eqref{mj:eq:DP}. The first term places the maximum at the end. The
+last jump is one plus the last deficiency in the shorter permutation, so
+that deficiency must be at most $m-1$. The first deficiency drops by one when
+the maximum is removed.
+
+For a maximum at position $k<n$, its left block has size $k-1$, and
+$k\le m$. All internal jumps and the jump from the left block to the maximum
+are automatically at most $m$. The first-deficiency restriction on that block
+is $u-1$, giving $c_{k,u}$. The first deficiency of the right block must be at
+most $m-k$, because the jump after the maximum is $k$ plus that deficiency.
+The original last deficiency is $k$ plus the right block's last deficiency.
+These are exactly the two thresholds in the summand. The case $k=1$ has an
+empty left block and original first deficiency zero.
+
+If $n\le m+1$, the adjacency restriction is vacuous, and
+\eqref{pr:eq:freeendpoints} provides a useful shortcut. The desired count is
+\[
+ a_n^{(m)}=T^{(m)}_{n-1,n-1}(n).
+\]
+The recursion always reduces $n$, so memoization terminates. All operations
+are sums, products, and exact integer divisions in \eqref{pr:eq:firstentry};
+no floating-point number affects a count.
+
+\section{Proof audit and reproducibility boundary}
+\label{pr:app:audit}
+This section was the manuscript's Appendix~B.
+
+\subsection{Dependency chain}
+The logical chain of the main result is
+\[
+ \begin{gathered}
+ \text{maximum decomposition and explicit skew-block injection}\\
+ \Downarrow\\
+ \text{coefficientwise upper and lower renewal envelopes}\\
+ \Downarrow\\
+ \text{local subcritical tail bound and small-part suppression}\\
+ \Downarrow\\
+ \text{uniform local truncated-renewal theorem}\\
+ \Downarrow\\
+ \text{bounded-shift transfer and Catalan normalization}\\
+ \Downarrow\\
+ \text{staircase exponents and order-crossover scales}.
+ \end{gathered}
+\]
+The endpoint dynamic program is not on this chain. It independently tests
+the finite combinatorial interfaces and generates the illustrations.
+
+\subsection{Quantifiers that must not be weakened}
+The constants in \cref{pr:thm:renewal} are uniform over all integer $m$ in
+one fixed ratio interval. That uniformity, not a collection of fixed-$\theta$
+estimates, is what permits the crossover conclusions. The cutoff
+$\varepsilon$ is chosen after the desired suppression exponent and then held
+fixed as $n$ grows. Consequently the number of macroscopic-part cases is
+finite and does not introduce a hidden power of $\log n$.
+
+The lower power bound on $w_k$ is needed for every sufficiently large integer
+$k$, not just along a subsequence. This ensures that every composition in
+the lower families has positive weight and prevents an unexamined
+lattice-periodicity obstruction. The shifts of the cutoff and coefficient
+index in \eqref{pr:eq:normalizedsandwich} are checked explicitly. Finally,
+$q$ is fixed throughout the theorem; letting it grow would require new
+estimates.
+
+\subsection{What the delivered tests establish}
+The checks establish exact equalities or inequalities only for the listed
+finite ranges. They provide evidence that the endpoint recurrence, block
+generator, and coefficient recursions have been implemented consistently.
+They do not establish eventual bounds, uniform asymptotics, the existence of
+limits, independent peer review, or a machine-checked proof. The manuscript
+was prepared with AI assistance and should be subjected to independent
+mathematical review before any stronger status is assigned.
+
+The delivery contained the \LaTeX{} source, compiled PDF, vector figures,
+plotting source, exact-count CSV files, verification program and its run log,
+source ledger, and a SHA-256 manifest; the source, the PDF and the manifest
+are not shipped (\cref{pr:sec:source}). A rebuild does not require network
+access once the usual \LaTeX{} packages are installed. Regenerating the
+figures additionally requires NumPy and Matplotlib; rerunning the exact
+checks does not.
+
+\section{Repository pin, literature scope and merge}
+\label{pr:sec:provenance}
+
+\subsection{Manuscript~05's pin and literature scope}
+The manuscript's source ledger, shipped as
+\path{07-polynomial-rarity-SOURCES.md}, records the inspection date
+30 September 2026, the ProveIt commit
+\begin{center}\small\prsha\end{center}
+(commit time 2026-09-30T23:38:21Z, root tree \texttt{cb9c68b025}), and the
+report directory
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/\\
+enumerative-combinatorics/\\
+adjacency-bounded-132-avoiders/.
+\end{quote}
+It read three files there, with the Git blobs
+\begin{center}\small
+\begin{tabular}{ll}
+\texttt{README.md} & \texttt{a40d20342fcaf1a97c18ea0064b9c0c9bd9d694e}\\
+\path{code/model.py} & \texttt{aee5528c72552036b5e630bd49afe2715f440da4}\\
+\path{code/05-macroscopic-deficits-model.py} & \texttt{f0248e0d6181200257e2949c1a8fa8f9fecf5617}
+\end{tabular}
+\end{center}
+The README was read to identify the report's results, status and unresolved
+regimes: its list of what is not claimed leaves the lower-half equivalents
+and hierarchy and the order and window at $n/2$ open, it records the
+upper-half profile used here only for comparison, and its status statement
+describes the parts as AI-assisted and unrefereed, without Lean or Rocq
+formalization. Part~I's model supplies the endpoint recurrence, the majorant
+counts and the first-deficiency skew-block construction (its
+\texttt{majorant\_counts} and \texttt{block\_counts}), from which the two
+envelopes are rederived and are not claimed as new. Part~IV's counter
+supplies the exact endpoint recursion and unrestricted shortcut that the
+delivered \texttt{EndpointCounter} adapts. The manuscript did not read or
+independently audit the whole report (then about 140 pages), does not use its
+asymptotic theorems, and makes no claim that all incoming, unmerged or
+simultaneous reports were checked for duplication.
+
+The ledger also says that an initial tree query on the moving main branch
+returned the identifier \texttt{f4457a1d19701d32e8f324240c497653d235b53e},
+that this is a root-tree identifier and ``NOT a commit identifier'', that the
+initial file reads used it, and that the three blobs were then confirmed at
+the pin. The middle claim is mistaken: in this repository
+\texttt{f4457a1d1} is a commit (the arrival commit of batch~67, committed
+16:35:42 on 30 September 2026, Pacific time, with root tree
+\texttt{32b9d20237}). The error does not affect the mathematics or the pin:
+the three blobs are the same at \texttt{f4457a1d1}, at the pin and at the
+placement commit. The ledger is shipped byte-identical, and the README
+records the discrepancy.
+
+The primary arXiv records of \cite{Nadler,MayamaAkita} were checked for the
+definition, the maximum-position restriction, the original fixed-bound
+problem and the endpoint-state method; the exact recurrence was read from
+Parts~I and~IV's implementations and rederived in \cref{pr:app:dp}. The
+record and an author-hosted PDF of \cite{pr:KerriouMorters} were inspected,
+including the theorem assumptions; it is related context, not an invoked
+theorem, and the fewest-big-jumps mechanism is not claimed as new. Targeted
+searches covered adjacency-constrained $132$-avoiders, macroscopic bounded
+adjacent jumps, and truncated heavy-tail and fewest-big-jumps asymptotics;
+they were not an exhaustive priority search. The plotted and tabulated
+decimals are rounded, not certified intervals. Exact amplitudes, limiting
+crossover functions, conditioned-permutation geometry and uniformity as $q$
+grows are left as research questions, and independent mathematical review
+and formal verification remain outstanding.
+
+\subsection{Where the merge had to choose}
+\label{pr:sec:merge}
+\begin{itemize}
+\item \emph{Placement.} Part~VI follows Part~V and precedes Part~I's
+ appendices, which contain no numbered equations, tables or figures; no
+ number of Parts~I--V changed. The manuscript's Appendices~A and~B are
+ printed as \cref{pr:app:dp,pr:app:audit}; its ``Commands and files''
+ subsection is replaced by \cref{pr:sec:reproduce}. Its title page and
+ abstract are replaced by the opening note of Part~VI, the status box of
+ \cref{pr:sec:source} and a paragraph of the report's abstract; every claim
+ of its abstract is stated in \cref{pr:sec:main}. The delivery's title-page,
+ running-head and metadata wording naming the manuscript's addressee is not
+ printed; the manuscript is described here only as AI-assisted.
+\item \emph{Introduction.} The manuscript's Section~1 describes this report
+ from outside, by README. Its definitions are \cref{pr:sec:main}'s first
+ subsection; its account of the gap, its trust boundary and its literature
+ paragraph are rewritten as \cref{pr:sec:answer,pr:sec:inherited} and the
+ subsection on public work, citing Parts~I--V by label; its asymptotic
+ convention is in \cref{pr:sec:notation}. Its display of the upper-half
+ equivalent is Part~IV's \eqref{mj:eq:bulk-ratio} and is cited, not
+ reprinted (the one manuscript label not kept); its citations of the
+ repository's README, \path{code/model.py} and
+ \path{code/05-macroscopic-deficits-model.py} are replaced by references to
+ Parts~I, II and~IV.
+\item \emph{Duplicates with Parts~I, II, IV and~V.} The two envelope lemmas
+ are Part~I's \cref{prop:upper} and \cref{prop:lower} at $d=1$ (plus
+ $\overline A_m\preceqc\Cat$); the manuscript's proofs, which follow Part~I's,
+ are kept and marked because its renewal normalization and its checks are
+ built on them. \Cref{pr:rem:falsemajorant} is Part~II's warning with its
+ counterexample. The lower bounds of \cref{pr:thm:staircase} are Part~IV's
+ \cref{mj:thm:lower}, credited; the new content is the matching upper bounds
+ and the endpoints. The endpoint recurrence of \cref{pr:app:dp} is Part~I's,
+ as printed by Parts~IV and~V; its derivation is kept, marked. The masses
+ and tails of \eqref{pr:eq:massminus} and \eqref{pr:eq:twotails} agree with
+ Part~I's \eqref{eq:Bd} and \eqref{eq:cd-tail} at $d=1$; this identification
+ is the merge's.
+\item \emph{What Part~VI sharpens.} \Cref{pr:thm:staircase} supplies the
+ upper bounds missing beside \cref{mj:thm:lower}, and for $0<\theta\le1/2$
+ improves \cref{mj:thm:profile}'s $o(n^{-1/2})$ to an exact order. It is
+ weaker than \cref{mj:thm:profile} for $\theta>1/2$, which it does not use.
+ Nothing in Parts~I--V is refuted.
+\item \emph{Notation.} Every rename is listed in \cref{pr:tab:notation}:
+ $F_q\to\mathcal O_q$, $a,b\to\theta_-,\theta_+$, $w_q\to\mathfrak w_q$,
+ $B_m\to\overline A_m$, $L_m\to\underline A_m$, $H_{m-1}\to K_{m,1}$,
+ $\mathcal B_k\to\mathfrak B_k$, $\rho,\rho_\pm\to\bar w,\bar w_\pm$,
+ $R,R_m,R^\pm_M\to Z,Z_m,Z^\pm_M$, $\Lambda\to\lambda_\star$,
+ $b^{(m)}_n\to\tilde a^{(m)}_n$, $K_q,L_q,H_q\to\mathfrak K_q,\mathfrak
+ L_q,\mathfrak H_q$, $C(x)\to\Cat(x)$, $f(n,d)\to N_{n,n-d}$,
+ $h(n,u)\to\mathcal N_n(u)$, $T_{\mathrm{free}}(n,u,v)\to
+ T^{\mathrm{free}}_{u,v}(n)$, $T(n,u,v)\to T^{(m)}_{u,v}(n)$,
+ $c(k,u)\to c_{k,u}$; the manuscript's $\mathbb P$ is Part~III's $\ljP$.
+ No normalization changed. The manuscript's $r=\lfloor1/\theta\rfloor$ is kept,
+ with its relation to Part~IV's $r$ stated in \cref{pr:sec:answer}.
+\item \emph{Labels.} The manuscript's labels are kept with the prefix
+ \texttt{pr:}, except \texttt{eq:prior} (above); unprefixed, its
+ \texttt{eq:upper} and \texttt{lem:shift} would collide with Part~I's. The
+ merge added labels to new
+ headings and tables of Part~VI, to the ten research questions, and to four
+ unlabelled question headings of Parts~IV and~V
+ (\cref{pr:sec:mj-bridge,pr:sec:cjm-half,pr:sec:cjm-other,pr:sec:cjm-formal})
+ so that Part~VI can cite them.
+\item \emph{Research questions.} All ten are printed. Three refine questions
+ of Parts~IV and~V (amplitudes, crossover functions, growing reciprocal
+ index) and three bear on others (geometry, other classes, formalization);
+ they keep the manuscript's text with a pointer. Part~IV's
+ \cref{mj:sec:q-hierarchy,cjm:sec:mj-half} and Part~V's
+ \cref{pr:sec:cjm-half} carry dated notes that Part~VI answers them at the
+ level of orders.
+\item \emph{The merge's own text.} The opening note,
+ \cref{pr:sec:source,pr:sec:answer}, most of \cref{pr:sec:inherited}, the
+ notation subsection and tables, the sentences attributing results to
+ Parts~I, II and~IV, the parenthesized pointers in the research questions,
+ this section's first subsection (condensed from
+ \path{07-polynomial-rarity-SOURCES.md}) and this list are the merge's.
+\item \emph{Reproduction and figures.} The manuscript's package listing and
+ commands are replaced by the shipped names and the copy recipe
+ (\cref{pr:sec:reproduce} and the README). The two figure PDFs were
+ regenerated in the write phase by the delivered \path{figures.py}, run
+ unchanged on a copy of the delivered layout with Matplotlib~3.10.8,
+ NumPy~2.3.5 and \texttt{pdf.fonttype}~42, so that they embed TrueType rather
+ than Type~3 fonts; they plot the shipped data. Their axis labels keep the
+ manuscript's $\Pr$; the caption of \cref{pr:fig:numerics} says so.
+\item \emph{Stale sentences elsewhere.} The abstract gained a paragraph;
+ Part~II's research direction on joint growth, Part~IV's scope list
+ (\cref{mj:sec:scope}), its scope paragraph on what neither manuscript
+ claims, its edge at one half (\cref{mj:sec:edges}), the remark after
+ \cref{mj:thm:lower}, its questions \cref{mj:sec:q-hierarchy} and
+ \cref{cjm:sec:mj-half}, its scope table and its ``What is resolved'',
+ Part~V's scope (\cref{cjm:sec:scope}) and its half-size question, and
+ Part~I's \cref{app:reproduction}, carry dated pointers to Part~VI; their
+ original wording is kept.
+\end{itemize}
+
+
 \clearpage
 \phantomsection\addcontentsline{toc}{part}{Appendices of Part I}
 \appendix
@@ -9312,7 +11177,9 @@ Added 29 September 2026, batch 52: Part~IV's carry the prefixes
 \path{04-macroscopic-jump-} and \path{05-macroscopic-deficits-} and are
 listed in \cref{mj:sec:reproduce}.
 Added 30 September 2026, batch 64: Part~V's carry the prefix
-\path{06-critical-moments-} and are listed in \cref{cjm:sec:reproduce}.]
+\path{06-critical-moments-} and are listed in \cref{cjm:sec:reproduce}.
+Added 30 September 2026, batch 68: Part~VI's carry the prefix
+\path{07-polynomial-rarity-} and are listed in \cref{pr:sec:reproduce}.]
 
 The primary reproducibility command needs no third-party Python packages:
 \begin{lstlisting}
@@ -9411,5 +11278,12 @@ P. Flajolet and A. Odlyzko, \emph{Singularity analysis of generating
 functions}, SIAM Journal on Discrete Mathematics \textbf{3}(2) (1990),
 216--240. DOI: 10.1137/0403019. Manuscript~02 records that it did not inspect
 the PDF of this paper (\path{03-largest-jump-SOURCES.md}).
+
+\bibitem{pr:KerriouMorters}
+C. Kerriou and P. M\"orters, \emph{The fewest-big-jumps principle and an
+application to random graphs}, Bernoulli \textbf{31}(3) (2025), 2525--2543.
+DOI: \href{https://doi.org/10.3150/24-BEJ1816}{10.3150/24-BEJ1816}. Preprint:
+\url{https://arxiv.org/abs/2206.14627}. Cited in Part~VI as related context
+only; no theorem of it is used.
 \end{thebibliography}
 \end{document}
