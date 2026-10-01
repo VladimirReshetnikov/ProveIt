@@ -6,6 +6,10 @@ Run:
 python check_proportional_tv.py --output numerical_results.json
 ```
 
+(Editorial amendment, 2026-10-01: run from this directory, this command
+overwrites the recorded `numerical_results.json`; run it on a copy, or omit
+`--output` to write `rerun/numerical_results.json`, with LF line endings.)
+
 Dependencies: Python 3, NumPy, and SciPy. The result JSON records the versions used.
 
 The script evaluates two exactly specified finite-dimensional distribution families:

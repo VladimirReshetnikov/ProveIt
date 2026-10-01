@@ -3,7 +3,7 @@
 **Sharp information loss, geometric phase constants, and a logarithmic crossover**
 
 A 24-page research manuscript prepared for Vladimir Reshetnikov, dated
-30 September 2026 (25 pages with the editorial notes of 2026-09-30). The complete article is `article.pdf`; its editable
+30 September 2026 (25 pages with the editorial notes of 2026-09-30, 26 with those of 2026-10-01). The complete article is `article.pdf`; its editable
 LaTeX source is `article.tex`.
 
 ## Research result
@@ -218,3 +218,33 @@ Made in the editorial pass after batch 71 of `docs/incoming/` (see
   `tex_sha256` were recomputed again for the filed files.
 - `README.md`: the parenthesis after the 2026-09-30 bullet on the growing
   early-coordinate complement, and this section.
+
+A second editorial pass the same day, after batch 72 of `docs/incoming/`,
+added:
+
+- `article.tex`: a third `ednotelater` note, after the question "Arbitrary
+  observation masks" (Section 10): eight later unreviewed notes, written in
+  one series against this article and filed beside it, answer parts of it,
+  but not the sharp crossover through a complement cumulant function. For one
+  kernel valid for every total-sum reweighting, mask order is convolution
+  divisibility of the observed sums (`../Universal_Fabius_Mask_Criterion/`),
+  for these geometric caps mask inclusion unless some power of `1/q` is an
+  integer and otherwise classwise prefix counts
+  (`../Arithmetic_Geometric_Mask_Order/`); for the conditioning here, a
+  cap-dominating injection orders the information in every `f`-divergence
+  (`../Exact_Fixed_Conditioning_Order/`) and, for masks of equal size, total
+  variation strictly unless the cap multisets agree
+  (`../Strict_Fabius_Conditioning_Order/`), so the prefix `B_{n,m}` has
+  strictly less overlap than `{m+1, ..., n}` for every `rho > 0`, `n >= 2`
+  and `1 <= m < n`; and `../Proportional_Fabius_Mask_Edgeworth/` expands total
+  variation through order `1/n`, uniformly over masks, for hidden bulk
+  fractions in a fixed compact subinterval of `(0, 1)`.
+- `article.pdf`: rebuilt again with `latexmk -pdf` (MiKTeX pdfTeX 1.40.29):
+  26 pages (25 before), 465,862 bytes, with no error, undefined
+  reference, multiply defined label, duplicate destination, overfull or
+  underfull box; every font is embedded and none is Type 3. Theorem, section
+  and equation numbers are unchanged. The page carrying the note was rendered
+  and inspected.
+- `validation.json`: `pdf_pages`, `pdf_bytes`, `pdf_sha256` and `tex_sha256`
+  recomputed for the filed files.
+- `README.md`: the page count at the top and this paragraph.

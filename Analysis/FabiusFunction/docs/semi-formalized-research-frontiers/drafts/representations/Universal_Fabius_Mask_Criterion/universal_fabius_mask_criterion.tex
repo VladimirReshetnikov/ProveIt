@@ -7,6 +7,8 @@
 \setlength{\parskip}{3pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
 \newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
 \newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
@@ -198,6 +200,17 @@ Finally, \eqref{eq:prefix} forces at least $r$ source indices by the $r$th targe
 \end{proof}
 
 For the Fabius convention $a_i=t_nq^i$, $q=1/M$, the map in unit coordinates is $u_{e_r}\mapsto\{M^{\ell_r-e_r}u_{e_r}\}$. The earlier sufficient comparison \cite{Modulo} is therefore optimal for this full family of experiments, even when arbitrary randomized pooling of observations is allowed.
+% ed. (2026-10-01): the theorem is the case d = 1 of a later note's classification (same series)
+\begin{ednote}
+Theorem~\ref{thm:geometric} is the case $d=1$, $q=1/M$, of Theorem~2.1 of a
+later note of the series, \path{../Arithmetic_Geometric_Mask_Order/}, which
+classifies the universal order for every ratio $0<q<1$ (mask inclusion unless
+some power of $1/q$ is an integer, otherwise prefix counts in each residue
+class modulo the least such power $d$) with the same tail
+bound~\eqref{eq:tailbound}, zero-multiplicity argument and independent residue
+vector. Read as one series, that theorem is the primary statement of the
+order, and this one its reciprocal-integer case.
+\end{ednote}
 
 \section{An exact polynomial test for commensurate caps}
 The following different specialization gives comparisons beyond separately divisible coordinate pairs. It assumes finite masks of the same cardinality.
@@ -271,6 +284,26 @@ In the opposite direction, source caps $(1,6)$ and target caps $(2,3)$ give
  P(u)=\frac{[6]_u}{[2]_u[3]_u}=u^2-u+1.
 \]
 The denominator divides the numerator, so the zero-multiplicity obstruction disappears. The unique signed factor has a negative mass at $h$ in the scaled version, and no universal kernel exists for any real common tilt. Transform-zero inclusion is therefore weaker than probability convolution divisibility.
+% ed. (2026-10-01): the coefficient test is extended, and the obstruction cured, by the next note; the same quotient in two uncited repository articles
+\begin{ednote}
+Theorem~\ref{thm:poly} is the equal-cardinality case of Theorem~1.1 of the
+next note of the series, \path{../Uniform_Smoothing_Mask_Stabilization/},
+which allows unequal cardinalities. That note also shows that this obstruction
+disappears after smoothing: the source $(h,6h)$ together with nine further
+caps $h$ dominates the target $(2h,3h)$, and with eight it does not (its
+Theorem~5.1). The same signed quotient appears in two repository articles that
+this note does not cite: Theorem~\texttt{thm:base6} of
+\path{../../spectra-and-arithmetic/Simultaneous_Convolution_Divisors_Fabius_Type_Laws/}
+($\mathrm{Unif}_{1/2}*\mathrm{Unif}_{1/3}$ does not divide $\mu_6$, with
+$\mathrm{Unif}_a$ uniform on $[-a,a]$) and Proposition~\texttt{prop:base6} of
+\path{../../spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/},
+which reproduces it in another normalization. There the two largest source
+uniforms have lengths $6h$ and $h$ and the targets $3h$ and $2h$ ($h=1/3$,
+respectively $1/6$), the centred factor $\delta_{-h}-\delta_0+\delta_h$ is
+that of the quotient above up to translation, and the rest of the source is a
+geometric tail supported on an interval shorter than $h$, which leaves a
+negative mass at the centre.
+\end{ednote}
 
 \section{Scope and attribution}
 The relevant repository question concerns arbitrary observation masks in Fabius conditioning \cite{Repository}. Theorem~\ref{thm:general} supplies a convolution criterion for all masks in the stated independent bounded-coordinate model. Theorem~\ref{thm:geometric} completely resolves that universal order for reciprocal-integer geometric caps. Theorem~\ref{thm:poly} gives an exact finite algebraic criterion under its equal-cardinality and commensurability assumptions.
@@ -278,6 +311,32 @@ The relevant repository question concerns arbitrary observation masks in Fabius 
 These are comparisons for one kernel required to work under the entire weight or threshold family. They do not decide every prescribed two-hypothesis comparison or the sharp asymptotics of overlap for a particular conditioning rule. The earlier companions \cite{Modulo,Classification} treated the sufficient residue construction and the sharp individual-coordinate classification. The present proofs include the steps needed for overlapping and infinite masks.
 
 Blackwell comparison and convolution criteria have substantial antecedents \cite{Blackwell,Torgersen}; exponential digit independence is classical \cite{Steutel}, as are the Gaussian polynomial identities \cite{DLMF}. The note gives self-contained proofs in the stated sum-reweighted setting, with no general priority claim. These are ordinary mathematical proofs, not formalized or externally refereed results.
+% ed. (2026-10-01): the matching method is that of an uncited repository article
+\begin{ednote}
+The two halves of the proof of Theorem~\ref{thm:geometric}, zero
+multiplicities at the target's transform zeros for necessity and digit
+splitting of matched source coordinates for sufficiency, are those of the
+prime-adic Hall criterion, Theorem~\texttt{thm:hall} of
+\path{../../spectra-and-arithmetic/Simultaneous_Convolution_Divisors_Fabius_Type_Laws/},
+which this note does not cite. The statements differ: that theorem classifies
+arbitrary families of uniforms dividing the whole geometric law for a prime
+base, this one the sub-masks of one geometric family for every integer
+$M\ge2$. Composite $M$ causes no obstruction here because the targets are
+coordinates of the same family, whereas the base-six obstruction recalled in
+the note at the end of Section~4 concerns target widths outside the family.
+\end{ednote}
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the third of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The earlier companions \cite{Modulo} and \cite{Classification}, sources
+\texttt{exact\_fabius\_mask\_order.tex} and
+\texttt{universal\_garbling\_classification.tex}, are filed as
+\path{../Exact_Fabius_Mask_Order/} and
+\path{../Universal_Garbling_Classification/}, and \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}. Theorem~\ref{thm:general} contains Proposition~4.1 of
+the second note as its case of two one-coordinate masks, and Sections~1.1
+and~1.2 re-prove that note's Lemmas~2.1 and~2.2.
+\end{ednote}
 
 \begin{thebibliography}{9}\small\raggedright
 \setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}

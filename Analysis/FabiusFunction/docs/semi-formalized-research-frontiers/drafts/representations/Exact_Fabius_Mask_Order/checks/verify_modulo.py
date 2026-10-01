@@ -6,6 +6,20 @@ from itertools import product,combinations
 from collections import defaultdict
 from pathlib import Path
 import json
+
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
 caps=(8,4,2,1); grid=F(1,2); counts=tuple(int(F(a)/grid)for a in caps)
 states=list(product(*(range(n)for n in counts)))
 maxdegree=sum(n-1 for n in counts)
@@ -75,5 +89,6 @@ for i,j in combinations(range(4),2):
   assert marginal(P,C+(i,),C+(j,))==marginal(P,C+(j,))
   common+=1
 result={'status':'passed','scope':'exact finite-grid regression, not a replacement for the continuous proof','caps':caps,'grid':str(grid),'states':len(states),'pointwise_involution_checks':pointwise,'ordered_mask_pairs':len(pairs),'joint_pushforward_divergence_checks':comparisons,'strict_tv_comparisons_observed':strict_tv,'periodic_equality_checks':periodic_equalities,'supported_exact_total_mask_checks':conditioned,'common_observation_checks':common,'tilted_mean':str(mu)}
-Path(__file__).with_name('verification.json').write_text(json.dumps(result,indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('verification.json', json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))

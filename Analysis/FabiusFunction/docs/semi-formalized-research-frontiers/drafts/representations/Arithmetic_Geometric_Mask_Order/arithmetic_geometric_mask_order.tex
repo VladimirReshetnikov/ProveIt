@@ -7,6 +7,8 @@
 \setlength{\parskip}{2pt}
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
 \newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
 \newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
@@ -159,8 +161,43 @@ Outside $\mathcal Q$, use mutual inclusion. Inside it, two-way dominance makes e
 Universal comparison requires one kernel for every total-sum weight or lower threshold. It does not preclude a comparison for one fixed conditioning rule or a specified pair of hypotheses when the ratio is nonexceptional. Distinct comparable masks may give equal divergence values for particular weights, including $w=1$.
 
 The preceding mask report \cite{Masks} established the convolution criterion and reciprocal-integer case. This note gives the complete arithmetic consequence for all geometric ratios. The repository's arbitrary-mask question \cite{Repository} also asks about finer fixed-conditioning behavior; those asymptotic questions remain distinct from the universal order.
+% ed. (2026-10-01): case 1 also follows from an uncited repository theorem (batch 69)
+\begin{ednote}
+For ratios $q$ no positive power of which is rational, case~1 of
+Theorem~\ref{thm:main} also follows from Theorem~\texttt{thm:separated} of the
+repository article
+\path{../../spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/}
+(filed 2026-09-30, batch~69 of \path{docs/incoming/}; unreviewed), which this
+note does not cite. The caps $cq^i$, $i\in E$, are then pairwise rationally
+incommensurable, and that theorem says that a sum of independent uniforms of
+widths $a_j$ divides their sum exactly when $a_j=cq^{\kappa(j)}/n_j$ for an
+injection $\kappa$ into $E$ and integers $n_j\ge1$; for $a_j=cq^j$, $j\in L$,
+this forces $\kappa(j)=j$ and $n_j=1$, that is, $L\subseteq E$. It is stated
+for centred uniforms without tilt, but translation does not affect
+divisibility, and a common exponential tilt carries a factorization
+$\mu_E=\mu_L*\nu$ to one of the tilted laws and back. The present note adds
+the ratios with a rational but no integer power of $1/q$, such as $q=2/3$. Its
+exceptional set $\mathcal Q$ is the part of the countable dense set of ratios
+with a rational power (that article's Proposition~\texttt{prop:full}) on which
+some power of $1/q$ is an integer, and the residue classes of case~2 are a
+sub-mask analogue of the rationality classes in that article's
+Theorem~\texttt{thm:channels} ($q=p^{-e/h}$, $p$ prime), which classifies all
+uniform divisors of the whole series.
+\end{ednote}
 
 Blackwell comparison and convolution methods have classical antecedents \cite{Blackwell,Torgersen}. The proofs here make no general priority claim. They are ordinary mathematical arguments, not formalized or externally refereed results.
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the fifth of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The preceding report \cite{Masks}, source
+\texttt{universal\_fabius\_mask\_criterion.tex}, is filed as
+\path{../Universal_Fabius_Mask_Criterion/}, and \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}. At $d=1$, Theorem~\ref{thm:main} is Theorem~2.1 of
+\cite{Masks}, re-proved here with the same tail bound and zero-multiplicity
+argument; read as one series, Theorem~\ref{thm:main} is the primary statement
+of the universal order. Its residue maps contain those of the first note,
+\path{../Exact_Fabius_Mask_Order/}, for geometric caps.
+\end{ednote}
 
 \begin{thebibliography}{9}\small\raggedright
 \setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}

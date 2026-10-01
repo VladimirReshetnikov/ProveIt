@@ -4,6 +4,20 @@ from fractions import Fraction as F
 from pathlib import Path
 import json
 
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def phi(h, u, v):
     return max(0, min(h, u, v, u + v - h))
@@ -62,7 +76,8 @@ def main():
                   generic_counterexample={'a':3,'b':2,'cell_values':[-1,0,0,0,1],
                                           'signed_rectangle_integral':'0','J_a':'1/2','J_b':'1/2'},
                   scope='Finite regression checks; the manuscript proves every stated parameter case.')
-    Path(__file__).with_name('strictness_exact.json').write_text(json.dumps(result, indent=2) + '\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('strictness_exact.json', json.dumps(result, indent=2) + '\n')
     print(json.dumps(result, sort_keys=True))
 
 

@@ -146,10 +146,11 @@ of an existing draft; semantic consolidation is deferred to the post-
   2026-09-30 says so).  Unreviewed; its numerics are not
   certificates; no Lean statement.
 - [`Sharp_Conditioning_Laws_Uniform_Random_Series/`](Sharp_Conditioning_Laws_Uniform_Random_Series/),
-  *Sharp Conditioning Laws for Uniform Random Series* (26-page A4 PDF,
-  1,811-line source with an editorial note of 2026-09-30 at `q:critical`
-  naming the two critical-complements articles below, a SymPy/SciPy check
-  and Monte Carlo program), filed on
+  *Sharp Conditioning Laws for Uniform Random Series* (27-page A4 PDF,
+  1,850-line source with an editorial note of 2026-09-30 at `q:critical`
+  naming the two critical-complements articles below and notes of
+  2026-10-01 at `q:rates` and `q:edgeworth` naming the proportional-mask
+  note below, a SymPy/SciPy check and Monte Carlo program), filed on
   2026-09-29 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone.  It proves the variance-fraction threshold of
   the lacunary article above for **every** positive summable weight
@@ -160,8 +161,11 @@ of an existing draft; semantic consolidation is deferred to the post-
   law, a Brownian bridge with independent exponential slack, and an exact
   lazy rejection sampler.  It was written before the lacunary article was
   filed and does not cite it; the two are to be compared, and possibly
-  merged, after review.  Unreviewed; its numerics are not certificates; no
-  Lean statement.
+  merged, after review.  For geometric weights and a hidden fraction in a
+  fixed compact subinterval of `(0, 1)`, its `q:edgeworth` is answered at
+  order `1/n`, and its `q:rates` for that fixed fraction only, by
+  `Proportional_Fabius_Mask_Edgeworth/` below.  Unreviewed; its numerics
+  are not certificates; no Lean statement.
 - [`Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/`](Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/),
   *Poisson Extremes and Gaussian Bridges under Small-Sum Conditioning*
   (21-page A4 PDF, 1,593-line source, a SymPy/SciPy diagnostic program),
@@ -193,16 +197,19 @@ of an existing draft; semantic consolidation is deferred to the post-
   `log 2`, and a universal normal-tail profile connects them on the scale
   `α√n`; for `r = 0` the flat Fabius endpoint appears in the residual
   (logarithm `∼ −√(log(1/q) log n)`).  It answers the bounded-complement
-  part of that article's `q:critical`.  For a growing number of hidden
-  early coordinates only the logarithmic slice `r ≍ log n` is treated,
+  part of that article's `q:critical`.  For a growing number
+  `r = o(n)` of hidden early coordinates (the range of its question; for
+  `r` proportional to `n` the total variation is now known to order
+  `1/n`, by `Proportional_Fabius_Mask_Edgeworth/` below) only the
+  logarithmic slice `r ≍ log n` is treated,
   for the overlap and not the information (in the second bullet below);
   the rest stays open (growing boundary-adjacent complements are treated
   in the bullet below).  Unreviewed; its numerics are not certificates; no Lean
   statement.
 - [`Critical_Complements_Sharp_Information_Loss/`](Critical_Complements_Sharp_Information_Loss/),
   *Critical Complements in Fabius Conditioning: Sharp information loss,
-  geometric phase constants, and a logarithmic crossover* (25-page A4
-  PDF, 1,730-line source, a NumPy/SciPy diagnostic program), filed on
+  geometric phase constants, and a logarithmic crossover* (26-page A4
+  PDF, 1,756-line source, a NumPy/SciPy diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone and amended editorially the same day and on
   2026-10-01 (its README lists the amendments); an independently written second answer to
@@ -216,11 +223,13 @@ of an existing draft; semantic consolidation is deferred to the post-
   entropy is `½ log(n/m) − ½ + o(1)`.  With only the tail hidden it
   agrees with the article above; for other complements the two treat
   different coordinates and complement each other.  Its question on
-  second-order crossover terms is answered in the bullet below.  Unreviewed; its
+  second-order crossover terms is answered in the bullet below, and its
+  question on arbitrary observation masks in part by the eight notes from
+  `Exact_Fabius_Mask_Order/` on (a note of 2026-10-01 says which part).  Unreviewed; its
   numerics are not certificates; no Lean statement.
 - [`Second_Order_Critical_Complements_Fabius_Conditioning/`](Second_Order_Critical_Complements_Fabius_Conditioning/),
   *Second Order Critical Complements in Fabius Conditioning* (10-page A4
-  PDF, 731-line source, an mpmath diagnostic program), filed on
+  PDF, 754-line source, an mpmath diagnostic program), filed on
   2026-09-30 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone and amended editorially on 2026-10-01 (its
   `README.txt` lists the amendments).  It continues the two bullets above in
@@ -232,70 +241,88 @@ of an existing draft; semantic consolidation is deferred to the post-
   `1/m` term, uniformly in that window, with the `log log n` and
   rounding corrections made explicit; and it proves that hiding the
   earliest coordinates leaves eventually more overlap than hiding the
-  latest.  This answers the second article's question on second-order
+  latest (in fact at every finite `n ≥ 2`, by
+  `Strict_Fabius_Conditioning_Order/` below, as a note of 2026-10-01
+  records).  This answers the second article's question on second-order
   crossover terms and the logarithmic slice of the first article's
   growing-complement question; thinner and thicker complements stay
   open.  Unreviewed; its numerics are not certificates; no Lean
   statement.
 - [`Exact_Fabius_Mask_Order/`](Exact_Fabius_Mask_Order/), *Exact
-  Observation Order for Fabius Conditioning* (7-page A4 PDF, 282-line
+  Observation Order for Fabius Conditioning* (8-page A4 PDF, 335-line
   source, exact rational checkers), filed on 2026-10-01 by a quick
-  archival intake from the repository-level `docs/incoming/` drop zone,
-  the first of eight notes of one series (this and the seven bullets
-  below, in the order written).  When observed caps divide later ones,
+  archival intake from the repository-level `docs/incoming/` drop zone and
+  amended editorially the same day (its `README.txt` lists the
+  amendments), the first of eight notes of one series (this and the seven
+  bullets below, in the order written; each of the eight now carries a
+  series map, and every amendment of the eight is listed in its README).  When observed caps divide later ones,
   taking residues turns an earlier observation mask into a later one
   under every reweighting of the total at once; so for `q = 1/M` the two
-  masks of the bullets above are ordered at every finite `n`.
+  masks of the bullets above are ordered at every finite `n` (for every
+  `q`, and strictly, by the sixth and seventh bullets below).
   Unreviewed; no Lean statement.
 - [`Universal_Garbling_Classification/`](Universal_Garbling_Classification/),
-  *Universal Garblings of Tilted Uniform Observations* (5-page A4 PDF,
-  212-line source, an exact checker), filed the same day: the converse
+  *Universal Garblings of Tilted Uniform Observations* (6-page A4 PDF,
+  237-line source, an exact checker), filed and amended the same
+  day: the converse
   for one coordinate — one kernel works for all reweightings exactly for
-  equal tilts and an integer cap ratio, and then it is the residue map.
-  Unreviewed; no Lean statement.
+  equal tilts and an integer cap ratio, and then it is the residue map;
+  its convolution criterion is the one-coordinate case of the next
+  bullet's.  Unreviewed; no Lean statement.
 - [`Universal_Fabius_Mask_Criterion/`](Universal_Fabius_Mask_Criterion/),
-  *Universal Comparison of Fabius Observation Masks* (7-page A4 PDF,
-  293-line source, an exact checker), filed the same day: universal mask
+  *Universal Comparison of Fabius Observation Masks* (8-page A4 PDF,
+  352-line source, an exact checker), filed and amended the same
+  day: universal mask
   order is convolution divisibility of the observed sums; prefix counts
   for `q = 1/M`; a coefficient test for commensurate caps.  Its
   arithmetic shares the matching method and the base-six obstruction of
   `../spectra-and-arithmetic/Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`,
-  which it does not cite.  Unreviewed; no Lean statement.
+  which it does not cite (editorial notes on both sides now record it);
+  its coefficient test is a special case of the next bullet's theorem, and
+  its prefix-count theorem of the one after.  Unreviewed; no Lean
+  statement.
 - [`Uniform_Smoothing_Mask_Stabilization/`](Uniform_Smoothing_Mask_Stabilization/),
   *Uniform Smoothing and Commensurate Observation Masks* (7-page A4 PDF,
-  263-line source, an exact certificate checker), filed the same day:
+  294-line source, an exact certificate checker), filed and amended
+  the same day:
   unequal numbers of commensurate observations, eventual positivity
   under uniform smoothing (Pólya), and exactly nine extra observations
   for the obstruction of the bullet above.  Unreviewed; no Lean
   statement.
 - [`Arithmetic_Geometric_Mask_Order/`](Arithmetic_Geometric_Mask_Order/),
-  *Arithmetic Classification of Geometric Observation Masks* (4-page A4
-  PDF, 172-line source, an exact checker), filed the same day: the
+  *Arithmetic Classification of Geometric Observation Masks* (5-page A4
+  PDF, 209-line source, an exact checker), filed and amended the same day:
+  the
   universal mask order for every ratio `q` (inclusion only, unless a
   power of `1/q` is an integer).  For ratios with no rational power this
   follows from batch 69's
   `../spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/`,
-  which it does not cite.  Unreviewed; no Lean statement.
+  which it does not cite (editorial notes on both sides now record it).
+  Unreviewed; no Lean statement.
 - [`Exact_Fixed_Conditioning_Order/`](Exact_Fixed_Conditioning_Order/),
   *Exact Conditioning Order for Fabius Observation Masks* (6-page A4 PDF,
-  236-line source, an exact checker and NumPy probes), filed the same
-  day: for one fixed log-concave weight, larger observed caps carry more
+  261-line source, an exact checker and NumPy probes), filed and
+  amended the same day: for one fixed log-concave weight, larger observed caps carry more
   information (convex order), so the two masks of the bullets above are
   ordered at every finite `n` for every `q`.  Unreviewed; no Lean
   statement.
 - [`Strict_Fabius_Conditioning_Order/`](Strict_Fabius_Conditioning_Order/),
-  *Strict Conditioning Order for Fabius Observation Masks* (5-page A4
-  PDF, 208-line source, an exact checker), filed the same day: the same
+  *Strict Conditioning Order for Fabius Observation Masks* (6-page A4
+  PDF, 233-line source, an exact checker), filed and amended the same day:
+  the same
   order is strict for total variation, for every `q` and `n ≥ 2`; so the
   comparison of the second-order article above holds at every finite
-  `n`, not only eventually.  Unreviewed; no Lean statement.
+  `n`, not only eventually (that article now carries a note saying so);
+  it contains the strict corollary of the first bullet.  Unreviewed; no
+  Lean statement.
 - [`Proportional_Fabius_Mask_Edgeworth/`](Proportional_Fabius_Mask_Edgeworth/),
-  *A Uniform Second-Order Profile for Proportional Fabius Masks* (7-page
-  A4 PDF, 308-line source, SymPy and NumPy/SciPy checks), filed the same
-  day: for masks hiding a fixed fraction of the bulk, the total
+  *A Uniform Second-Order Profile for Proportional Fabius Masks* (8-page
+  A4 PDF, 341-line source, SymPy and NumPy/SciPy checks), filed and amended
+  the same day: for masks hiding a fixed fraction of the bulk, the total
   variation through order `1/n`, uniformly in the mask; this answers the
-  uniform-series article's Edgeworth question in that regime and
-  quantifies the order of the two masks.  Unreviewed; its numerics are
+  uniform-series article's Edgeworth question in that regime (its
+  `q:rates` only for a fixed fraction) and quantifies the order of the
+  two masks.  Unreviewed; its numerics are
   not certificates; no Lean statement.
 - [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
   *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic

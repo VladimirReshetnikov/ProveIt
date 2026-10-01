@@ -1,6 +1,20 @@
 from pathlib import Path
 import json
 import numpy as np
+
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
 rng=np.random.default_rng(10323)
 def positive_integral(a,b,knots,values):
     anti=np.concatenate(([0.],np.cumsum(np.diff(knots)*values)))
@@ -28,5 +42,6 @@ for trial in range(50000):
     if ra<rb-1e-8:
         record=dict(a=a,b=b,knots=knots.tolist(),g=values.tolist(),positive_range=[l,u],source_positive_area=ra,target_positive_area=rb,gap=ra-rb)
         bad.append(record);print('COUNTER',json.dumps(record),flush=True);break
-Path(__file__).with_name('sign_pattern_unbalanced_probe.json').write_text(json.dumps(dict(cases=trial+1,counterexamples=bad),indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('sign_pattern_unbalanced_probe.json', json.dumps(dict(cases=trial+1,counterexamples=bad),indent=2)+'\n')
 print('DONE',trial+1,len(bad))

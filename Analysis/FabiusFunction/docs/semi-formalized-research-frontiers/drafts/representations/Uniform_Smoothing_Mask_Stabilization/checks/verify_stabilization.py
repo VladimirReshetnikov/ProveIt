@@ -10,6 +10,20 @@ from math import comb, factorial
 from pathlib import Path
 import json
 
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 
 def mul(a, b):
     c = [F(0)]*(len(a)+len(b)-1)
@@ -142,7 +156,8 @@ def main():
                   sharp_example=check_sharp_example(),polya=check_falling_identity(),
                   cyclotomic=check_divisor_criterion(),
                   proof_scope='The general stabilization theorem is analytic; finite checks certify the displayed example and algebraic identities.')
-    Path(__file__).with_name('stabilization_certificates.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-10-01): written by _ed_write (see above).
+    _ed_write('stabilization_certificates.json', json.dumps(result,indent=2)+'\n')
     print(json.dumps(dict(status=result['status'],order8=result['sharp_example']['order8_center'],
                          least_smoothing_order=9,half_step_order=11,
                          falling_factorial_identities=result['polya']['coefficient_identities'],

@@ -50,6 +50,8 @@
 \aliascntresetthe{remark}
 % ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (no counter is shifted).
 \newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a second unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
 \newcommand{\E}{\mathbb E}
@@ -1505,6 +1507,21 @@ next target is a bound expressed in the complement variance and
 its third and fourth cumulants. This would make the threshold
 usable as a certified finite-precision rule, rather than solely
 an asymptotic classification.
+% ed. (2026-10-01): rates for a fixed complement fraction and geometric weights in a later note (batch 72)
+\begin{ednotelater}
+For geometric weights and a fixed positive complement fraction, a later
+unreviewed note, \path{../Proportional_Fabius_Mask_Edgeworth/}
+(batch~72 of the repository's \path{docs/incoming/}, 2026-10-01), gives such rates when the hidden
+bulk fraction of the mask stays in a fixed interval $[\delta,1-\delta]$,
+uniformly over all masks (with $t=\rho q^{-(n+1)}$ and $n$ the bulk size): the
+observed block sum is within $O(n^{-1/2})$ of its Gaussian limit in total
+variation under both laws; the block likelihood ratio differs from the
+Gaussian likelihood ratio, normalized by the bulk counts instead of $V$ and
+$V_J$, by $O(n^{-1/2})$ in $L^1(\Qt)$; and total variation is known to
+$O(n^{-3/2})$ after its $1/n$ term (see the note after \cref{q:edgeworth}).
+Complement fractions tending to zero ($\varepsilon_t\downarrow0$) and general
+weights are not treated there.
+\end{ednotelater}
 
 \begin{question}[The critical complement]\label{q:critical}
 What replaces the Gaussian profile when $V_J$ stays bounded,
@@ -1553,6 +1570,28 @@ This would connect the present configuration-level results directly
 to the existing exact-phase endpoint machinery. Uniform remainder
 control in the selected block sum, not just formal Gaussian
 integration, is the principal analytic obligation.
+% ed. (2026-10-01): answered at order 1/n for geometric weights in the proportional regime by a later note (batch 72)
+\begin{ednotelater}
+The later note \path{../Proportional_Fabius_Mask_Edgeworth/} (see the note
+after \cref{q:rates}) answers this question at order $1/n$ for geometric
+weights, when the hidden bulk fraction stays in a fixed interval
+$[\delta,1-\delta]$. It re-derives \cref{eq:block-ratio} as an exact slack
+identity, expands the densities of the observed block sum under both laws
+through order $1/n$ with $L^1$ remainder $O(n^{-3/2})$, uniformly over masks,
+by a signed Gamma convolution, and obtains
+\[
+ \TV(P_{t,I},Q_{t,I})=\Delta(\alpha_t)+\frac{\mathcal U(1-\alpha_t)}{V}
+ +O(V^{-3/2}),
+\]
+\[
+ \mathcal U(\eta)=\frac{\phiN(c)\,c\,(2c^4-c^2-3\eta(1-\eta))}{18\eta^2},
+ \qquad c=\sqrt{\frac{-\eta\log\eta}{1-\eta}},
+\]
+so that at this order the geometric phase and the mask enter only through
+$\alpha_t$ and $V$. The slack variable enters only through that identity; no
+joint expansion with $D_t$, no higher order and no general weights are treated
+there.
+\end{ednotelater}
 
 \subsection{Generality and structural extensions}
 \begin{question}[Quantitative shape-based local limits]\label{q:shape}

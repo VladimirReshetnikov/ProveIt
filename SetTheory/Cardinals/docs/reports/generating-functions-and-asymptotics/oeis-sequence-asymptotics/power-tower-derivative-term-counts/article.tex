@@ -111,13 +111,23 @@ term count is reduced exactly to the zeros of the first-kind Lehmer--Comtet
 triangle A008296, giving $a(n)=1+\binom{n+1}{2}-Z(n)$ and $a(n)=\Theta(n^2)$,
 but the principal closed formula needs a nonvanishing statement that is isolated
 and left open; separately, the recurrence printed in the entry with the range
-$n>6$ is \emph{disproved} at $n=8$.  For $x^{x^2}$ the conjectured expression is
+$n>6$ is \emph{disproved} at $n=8$.  Later additions at the end of that part
+(Section~\ref{xx:lc:sec:intro}) prove the nonvanishing statement on further
+infinite families of offsets of the triangle --- every offset $\mu(p-1)$ for
+primes $p>\mu$ under explicit conditions, and every prime $p$ for $\mu=2,4$,
+every odd one for $\mu=3,5$ --- and
+give exact $p$-adic valuations on divisibility progressions; the zero
+classification itself stays open.  For $x^{x^2}$ the conjectured expression is
 proved to be an upper bound, every predicted cancellation is explained, and
 $a(n)=\Theta(n^2)$ is established, but the conjectured leading constant is not;
 a later addition to that part (Section~\ref{xxb:dc:sec:intro}) proves the
 missing nonvanishing statement at logarithmic deficits three and four, leaving
 deficits five and above open; a second later addition
-(Section~\ref{xxb:d3:sec:intro}) re-proves deficit three by another route.
+(Section~\ref{xxb:d3:sec:intro}) re-proves deficit three by another route; a
+third (Section~\ref{xxb:d56:sec:intro}) proves deficits five and six, so that
+deficits seven and above are now open, reduces every fixed deficit to a
+finite rectangle of singly exponential size, and derives an explicit lower
+bound $3n^2/8+(n/2)\log n-(n/2)\log\log n-5n/4$ for $n\ge e^{10}$.
 For $x^{x^x}$ two explicit polynomial bounds give $a(n)=\Theta(n^3)$
 unconditionally, while the sharper equivalent $a(n)\sim\tfrac23n^3$ is not
 proved --- and there, unlike the other two, the obstruction is not a
@@ -166,6 +176,13 @@ has been dropped, weakened or strengthened in the merge.
  own; those sections are now instances of Part~\ref{fw:sec} rather than
  independent developments, and are flagged as such where they begin.
 \item \textbf{Part~\ref{syn:sec}} compares the three.
+\item \textbf{Sections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance}}, at
+ the end of Part~\ref{xx:part}, were added on 1 October 2026 from three later
+ manuscripts on the Lehmer--Comtet triangle.  They prove nonvanishing on
+ further infinite families of offsets and exact $p$-adic valuations, and leave
+ Conjecture~\ref{xx:conj:zeros} open.  They follow the part they extend, so
+ that no number elsewhere in the article moved, and they rename their sources'
+ letters by Table~\ref{xx:lc:tab:notation}.
 \item \textbf{Sections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance}}, at
  the end of Part~\ref{xxb:part}, were added on 29 September 2026 from a later
  manuscript on A290268, which closes that part's missing step at logarithmic
@@ -177,6 +194,12 @@ has been dropped, weakened or strengthened in the merge.
  that gives a second proof at logarithmic deficit three, through a harmonic
  sign law; they use the same depth coordinates, with the further renamings of
  Table~\ref{xxb:d3:tab:notation}.
+\item \textbf{Sections~\ref{xxb:d56:sec:intro}--\ref{xxb:d56:sec:provenance}},
+ after those, were added on 1 October 2026 from two manuscripts on A290268:
+ one proves logarithmic deficits five and six and gives singly exponential
+ cutoffs at every deficit, the other derives explicit pointwise and
+ summatory bounds on the term count.  They use the same depth coordinates,
+ with the renamings of Table~\ref{xxb:d56:tab:notation}.
 \end{itemize}
 
 The parts keep the notation of their sources, which is not uniform across them.
@@ -574,7 +597,21 @@ is the logarithmic deficit.  Table~\ref{xxb:dc:tab:notation} gives the full
 dictionary with the false readings.  The second later addition,
 Sections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}, uses the same
 coordinates and renames its source's letters by
-Table~\ref{xxb:d3:tab:notation}.
+Table~\ref{xxb:d3:tab:notation}; so does the third,
+Sections~\ref{xxb:d56:sec:intro}--\ref{xxb:d56:sec:provenance}, by
+Table~\ref{xxb:d56:tab:notation}, where in particular the cutoffs
+$\widehat Q_d,\widehat K_d$ are \emph{not} the constants $Q_d,K_d$ of the first
+addition.
+
+\noindent
+A fourth warning concerns the later
+Sections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} at the end of
+Part~\ref{xx:part}.  Their sources call the offset of the Lehmer--Comtet
+triangle $r$ --- which is Part~\ref{xx:part}'s \emph{column} --- and call a
+multiplier $m$ --- which is Part~\ref{xx:part}'s \emph{row}.  They are printed
+with the offset $d$ of Section~\ref{xx:sec:diagonals} and the multiplier $\mu$;
+Table~\ref{xx:lc:tab:notation} gives the full dictionary with the false
+readings.
 
 \noindent
 Beyond these, the letters $u$, $v$, $t$, $q$, $U$, $Z$, $E$ and $\Delta$ all
@@ -1477,6 +1514,26 @@ modular nonvanishing certificates would also suffice, but the fact that
 such certificates work for $d\le16$ does not establish that they work for
 all $d$.
 
+\emph{Update (1 October 2026, batch 72A).}  The later
+Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} add infinitely
+many settled offsets to the list above: every offset $d=\mu(p-1)$ with
+$p>\mu$ prime under the conditions of Theorem~\ref{xx:pm:main}, in particular
+for all $p\ge\max\{4\mu,1+3^{4\mu-7}\}$; all offsets $2(p-1)$ and $4(p-1)$, and
+$3(p-1)$ and $5(p-1)$ for odd $p$ (Corollaries~\ref{xx:pm:twice},
+\ref{xx:pm:triple}, \ref{xx:pm:four} and~\ref{xx:st:five}).  On those offsets
+the only zeros are the structural ones in column zero.  The offset $(p-1)^2$ is
+reduced to the single candidate $m=2p^2-p-1$ (that is, $Y=p^2+p-2$;
+Corollary~\ref{xx:st:squares}) and the offset $p^2-1$ to the columns $1\le
+r\le p-1$ for $p\ge5$ (Theorem~\ref{xx:st:prime-square-reduction}); exact
+$p$-adic valuations exclude zeros on divisibility progressions of the column
+(Theorems~\ref{xx:pn:principal} and~\ref{xx:pn:shifted}).  On the route of the
+previous paragraph, Theorem~\ref{xx:pm:square} shows that at the offsets
+$p^2-1$ no sieve modulo a fixed power $p^e$ of that same prime can work by
+itself (it says nothing about other moduli), and the
+positivity cone of Corollary~\ref{xx:pm:positive} confines every zero on
+offset $d$ to the rows $m<5d$.  Conjecture~\ref{xx:conj:zeros} is still
+open.
+
 For the asymptotic conjecture alone, an exclusion of every additional zero
 is unnecessary: by \eqref{xx:eq:asympeq}, it suffices to bound their cumulative
 number by $o(n^2)$. The present root-counting argument proves quadratic
@@ -1491,6 +1548,1365 @@ nonvanishing theorems, and extensive reproducible verification. A complete
 all-order proof of that formula is \emph{not} supplied: the missing converse
 in Conjecture~\ref{xx:conj:zeros} is left explicit rather than being replaced
 by an inference from numerical agreement.
+
+% ---------------------------------------------------------------------------
+% Batch 72A, manuscripts 12, 09 and 17 (additions 05, 04 and 06 of this
+% report), written into this part on 1 October 2026.  Labels carry the
+% prefixes xx:pm: (manuscript 12), xx:st: (manuscript 09), xx:pn: (manuscript
+% 17) and xx:lc: (text of the intake).  The subsections are appended after the
+% last subsection of Part 2, so that no existing section, theorem or equation
+% number moves.
+% ---------------------------------------------------------------------------
+
+\subsection{Lehmer--Comtet zeros on composite offsets: three later additions}\label{xx:lc:sec:intro}
+
+\begin{quote}\small
+\textbf{What this addition is.}
+Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} were written
+into this part on 1 October 2026 from three later manuscripts on the
+first-kind Lehmer--Comtet triangle, all dated 1 October 2026 and all pinned to
+this report's text at commit \texttt{ca81647a9}:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item manuscript~12, \emph{Complete Nonvanishing on Prime-Multiple Offsets}
+ (Subsection~\ref{xx:pm:sec});
+\item manuscript~09, \emph{Stirling Residues and Finite Candidate Lists}
+ (Subsection~\ref{xx:st:sec}), written after manuscript~12 and building on it;
+\item manuscript~17, \emph{Uniform $p$-adic Nonvanishing}
+ (Subsection~\ref{xx:pn:sec}).
+\end{itemize}
+The numbers are those of batch~72A; provenance is in
+Subsection~\ref{xx:lc:sec:provenance}.  The three manuscripts attack
+Conjecture~\ref{xx:conj:zeros} along the route of
+Subsection~\ref{xx:sec:diagonals} --- one fixed offset $d=m-r$ at a time ---
+and extend Theorem~\ref{xx:thm:prime} from the offsets $d=p-1$ to composite
+offsets.  \textbf{Conjecture~\ref{xx:conj:zeros} remains open, and with it the
+principal closed formula $a(n)=q(n)$}; each of the three manuscripts says so.
+
+\smallskip
+\textbf{What is new relative to this part.}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item Every offset $d=\mu(p-1)$ with $p>\mu$ prime is zero-free under two
+ explicit conditions, which hold for every prime
+ $p\ge\max\{4\mu,1+3^{4\mu-7}\}$ (Theorem~\ref{xx:pm:main}).  The offsets
+ $2(p-1)$ and $4(p-1)$ are zero-free for every prime~$p$, and $3(p-1)$ and
+ $5(p-1)$ for every odd prime (Corollaries~\ref{xx:pm:twice},
+ \ref{xx:pm:four}, \ref{xx:pm:triple} and~\ref{xx:st:five}).
+\item The universal positivity cone: $T_d(Y)>0$ whenever $Y\ge4d$
+ (Corollary~\ref{xx:pm:positive}), so every zero on offset $d$ lies in a row
+ $m<5d$.
+\item An exact Stirling residue for the small columns of the offset
+ $\mu(p-1)$, the $p$-adic displacement of the roots, and a complete list of
+ candidate zeros for every such offset
+ (Theorems~\ref{xx:st:residue}, \ref{xx:st:shift} and~\ref{xx:st:candidates}).
+\item The offset $(p-1)^2$ is reduced to the single candidate $Y=p^2+p-2$
+ (Corollary~\ref{xx:st:squares}), and the offset $p^2-1$ to $1\le Y\le p-1$
+ for $p\ge5$ (Theorem~\ref{xx:st:prime-square-reduction}).  It is also explained
+ why a sieve with a fixed modulus cannot by itself do better at $p^2-1$
+ (Theorem~\ref{xx:pm:square}).
+\item Exact $p$-adic valuations on divisibility progressions of $Y$: for the
+ offsets $(p-1)\mu$, including $\mu\ge p$, and for the odd offsets
+ $(p-1)\mu+1$ (Theorems~\ref{xx:pn:principal} and~\ref{xx:pn:shifted}).
+\end{itemize}
+
+\smallskip
+\textbf{What is not new.}  Some statements re-derive results printed above in
+this part, or in a sibling manuscript.  Each is printed once and the earlier
+result is credited:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item Theorem~\ref{xx:pn:principal} at $\mu=1$ is the valuation
+ $v_p(T_{p-1}(Y))=v_p(Y)-1$ in the proof of Theorem~\ref{xx:thm:prime}, proved
+ by a different method (a minimal-valuation multinomial count after Davis).
+ Manuscript~17 says so.  It is a second route to that case.
+\item The congruence $pT_{p-1}(Y)/Y\equiv1$ that manuscript~12 recalls in
+ proving Corollary~\ref{xx:pm:twice} is \eqref{xx:eq:punit}.
+\item The offset-eight certificate displayed in the same proof is the row
+ $d=8$, $p=11$ of Theorem~\ref{xx:thm:16}.  The manuscript's polynomial $F(Y)$
+ is $R_8(Y+8)$ of \eqref{xx:eq:Rd}, with the same scalar
+ $c_8=1/1393459200$; the intake checked this against
+ \texttt{data/diagonal\_certificates.json}.
+\item The cases $j=1,2$ of Lemma~\ref{xx:pm:small} re-derive the columns $r=1,2$
+ of Proposition~\ref{xx:prop:firstcolumns}.
+\item The derivative identity \eqref{xx:pm:derivative} is
+ Proposition~\ref{xx:prop:falling} combined with \eqref{xx:eq:diag}.
+\item Manuscript~09 re-proves three lemmas of manuscript~12: the positivity cone,
+ the ordinary congruence and the prime-square congruence.  They are printed
+ once, as manuscript~12's.  Manuscript~09's versions are recorded in
+ Remarks~\ref{xx:st:cone}, \ref{xx:st:ordinary}
+ and~\ref{xx:st:prime-square-base}.
+\item Manuscript~09's candidate list also gives a second route, not stated
+ there, to Corollary~\ref{xx:pm:triple} for $p\ge5$ and to
+ Corollary~\ref{xx:pm:four} for $p\ge7$, $p\ne11$
+ (Remark~\ref{xx:lc:rem:second-route}).
+\item For $p>\mu$, Theorem~\ref{xx:pn:principal} follows from the congruence in
+ Lemma~\ref{xx:pm:localization} (Remark~\ref{xx:lc:rem:pm-pn}).  Manuscript~17
+ is new for $\mu\ge p$ and on the shifted offsets.
+\end{itemize}
+\end{quote}
+
+\subsubsection{Notation of the additions}\label{xx:lc:sec:notation}
+
+The three manuscripts write the offset polynomial of
+Subsection~\ref{xx:sec:diagonals} as $T_r(Y)$, with $r$ the offset.  In this
+part $r$ is the \emph{column} of $b(m,r)$, and the offset is $d=m-r$; the
+manuscripts also call a multiplier $m$, which is this part's \emph{row}.  The
+additions are therefore printed with the letters of
+Table~\ref{xx:lc:tab:notation}.  The first three rows are where a reader will
+go wrong.  No normalization was changed.
+
+% The table counter runs through the whole article, so this table is numbered
+% 2.A and the counter is restored afterwards: no later table number moves.
+\begingroup
+\renewcommand{\thetable}{\thesection.A}%
+\renewcommand{\theHtable}{xx.lc.\thesection.A}%
+\begin{table}[!htbp]
+\centering\small
+\caption{Letters of Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance}
+against manuscripts~12, 09 and~17 and against the rest of Part~\ref{xx:part}.
+No normalization was changed.}\label{xx:lc:tab:notation}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth}
+ >{\raggedright\arraybackslash}p{0.16\textwidth}
+ >{\raggedright\arraybackslash}p{0.34\textwidth}
+ >{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\toprule
+Here & Manuscripts & Meaning & Tempting false reading\\
+\midrule
+$d$ & $r$ (all three); $n$ (in 12's and 09's prime-square proofs, 17's proofs) & offset $m-Y$; $T_d(Y)=\coef{z}{d}H(z)^Y$ as in \eqref{xx:eq:H} &
+ \textbf{false:} the column $r$ of $b(m,r)$\\
+$\mu$ & $m$ & multiplier: $d=\mu(p-1)$, or $d=\mu(p-1)+1$ &
+ \textbf{false:} the row $m$ of $b(m,r)$\\
+$m$ & $M$ & row: $m=Y+d$, or $m=\mu(p-1)+j$ in 09 & \textbf{false:} the multiplier\\
+\midrule
+$Y$ & $Y$ & column, $b(Y+d,Y)$; the $r$ of $b(m,r)$ & ---\\
+$j$ & $j$ (12, 09) & a small column value $Y=j<\mu$ &
+ the exponent $j$ of $\log x$ in \eqref{xx:eq:monomials}\\
+$H(z)$, $h_j$ & $\mathcal H(z)$ (12, 09), $H(z)$ (17); $h_j$, $h_n$ &
+ $\Phi(z)/z$ and its coefficients, \eqref{xx:eq:H} & the harmonic $H_t$\\
+$\mathsf H_n$ & $\mathsf H_n$ & harmonic number $\sum_{i\le n}1/i$, the $H_t$ of \eqref{xx:eq:col2} & the series $H(z)$\\
+$F_m(x)$ & $P_M(x)$ & falling factorial $\prod_{h=0}^{m-1}(x-h)$ &
+ the canonical polynomial $P_n$\\
+$\Psi_P(\xi)$ & $\Phi_P(b)$ (12), $\Phi(b)$ (09) & $P'(\xi)/P(\xi)$ at a real point $\xi$ above the roots &
+ $\Phi(z)=(1+z)\log(1+z)$; the coefficient $b(m,r)$\\
+$c(\mu,j)$ & $c(m,j)$ (09) & unsigned Stirling number of the first kind,
+ $c(\mu,j)=(-1)^{\mu-j}s(\mu,j)$ & the signed $s(m,\ell)$ of \eqref{xx:eq:stirling}; the scalar $c_d$ of \eqref{xx:eq:Rd}\\
+$\omega$ & $U$ & total multiplicity (12) or total weight (12, \S\,\ref{xx:pm:sec:square}) of bad indices & the bound $\U(n)$ of Part~\ref{xxb:part}\\
+$\mathcal V$ & $D$ & total denominator valuation of a term & $D(z)$ of Subsection~\ref{xx:sec:gf}\\
+$\Lambda$, $\nu$ & $L$, $q$ (12) & $\mathsf H_{d-1}-\mathsf H_j$, and $j-1$ & $L=\log x$; the proposed count $q(n)$\\
+$\Theta$, $\gamma_s$, $\beta_t$, $\mathcal R$, $\chi$ & $Q$, $c_s$, $b_t$, $E$, $x$ (12) &
+ local objects of the proof of Lemma~\ref{xx:pm:small} & $Q(z)$, $c_d$, $b(m,r)$, $E(n)$, $x$\\
+$\sigma$ & $c$ (12), $s$ (09) & the ratio $Y/d$ & ---\\
+$w_i$ & $x_i$ (12) & local variables in the proof of Lemma~\ref{xx:pm:barrier} & the variable $x$ of $x^x$\\
+$\kappa$ & $k$ (12) & order of a derivative in Lemma~\ref{xx:pm:barrier} & the exponent $k$ of $x^{-1}$\\
+$\lambda$, $\eta$, $g_0$ & $L$, $s$, $n_0$ (09) & $\sum\ell_i$, $\sum\varepsilon_i$, the good index & $L=\log x$; $s(m,\ell)$; the order $n$\\
+$\mathbf e_j$ & $E_j$ (17) & unit vector at position $j$ & the defect $E(n)$\\
+$n$, $j$ & $N$, $k$ (12, 09, 17) & derivative order, exponent of $\log x$ & ---\\
+\bottomrule
+\end{tabular}
+\end{table}
+\endgroup
+\addtocounter{table}{-1}
+
+Three further conventions.  The falling factorial $(Y)_{\underline\ell}$ of the
+manuscripts (17 writes $(Y)_\ell$) is $\fall Y\ell$ here, as in the rest of the
+article.  The manuscripts' ``factor defect $r$'' and ``log degree $k$'' of a
+derivative monomial are this part's exponents $d$ and $j$ in $x^{x-d}(\log
+x)^j$.  And all three cite this report as ``Part~I'' of the pinned source:
+they mean Part~\ref{xx:part}, Section~2 of this article.  Their bibliography
+entry for that source is replaced below by references into this part, and
+manuscript~09's entry for its ``preceding companion'' by references to
+Subsection~\ref{xx:pm:sec}.
+
+The relation between the two Stirling conventions is
+$x^{\overline\mu}=x(x+1)\cdots(x+\mu-1)=\sum_jc(\mu,j)x^j$ and
+$F_\mu(y)=\fall y\mu=\sum_\ell s(\mu,\ell)y^\ell$, so that
+$c(\mu,j)=(-1)^{\mu-j}s(\mu,j)$.  The two uses do not overlap:
+\eqref{xx:eq:stirling} is an exact formula for $b(m,r)$, while $c(\mu,j)$ below
+is a residue modulo~$p$.
+
+% ---------------------------------------------------------------------------
+\subsection{Complete nonvanishing on prime-multiple offsets (manuscript 12)}\label{xx:pm:sec}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 12.}\itshape
+We prove that every positive-column entry on offset $2(p-1)$ of the
+Lehmer--Comtet triangle is nonzero, for every prime $p$, and likewise on offset
+$4(p-1)$ for every prime and $3(p-1)$ for every odd prime. More generally, for
+every fixed positive multiplier $\mu$, the entire offset $\mu(p-1)$ is
+zero-free for all sufficiently large primes $p$, with an explicit
+harmonic-number condition and a fully integer sufficient threshold. A
+denominator argument confines every possible positive integer root to a small
+exponent or a residue class beyond $p^2$. A classical derivative-root barrier
+proves the universal positivity cone $Y\ge4d$ and excludes the latter region;
+an elementary harmonic-product estimate excludes the former. We also explain a
+limitation of a fixed finite-modulus sieve at prime-square offsets. The
+complete integer-zero conjecture remains open.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  Printed in the letters of
+Table~\ref{xx:lc:tab:notation}: the manuscript's multiplier $m$ is $\mu$ and its
+offset $r$ is $d$.
+\end{quote}
+
+\subsubsection{The coefficients and the main theorem}
+
+Write
+\begin{equation}\label{xx:pm:H}
+ H(z)=\frac{(1+z)\log(1+z)}z
+ =1+\sum_{j\ge1}h_jz^j,\qquad
+ h_j=\frac{(-1)^{j-1}}{j(j+1)},\qquad T_d(Y)=\coef{z}{d}H(z)^Y,
+\end{equation}
+which is \eqref{xx:eq:H}.  For every fixed $d\ge1$, $T_d\in\Q[Y]$ has degree
+$d$ and the factor $Y$ (Lemma~\ref{xx:lem:diagdegree}).  The Lehmer--Comtet
+coefficients are
+\begin{equation}\label{xx:pm:b}
+ b(m,Y)=\frac{m!}{Y!}\coef{z}{m}\bigl((1+z)\log(1+z)\bigr)^Y
+ =\frac{m!}{Y!}T_{m-Y}(Y),\quad 1\le Y\le m,
+\end{equation}
+which is \eqref{xx:eq:diag}.  In particular, $T_d(Y)\ne0$ for all positive
+integers $Y$ is exactly nonvanishing of the entire offset $m-Y=d$.  These
+coefficients enter the derivative expansion \eqref{xx:eq:expansion}.
+Throughout, $\mathsf H_n=\sum_{i=1}^n1/i$, with $\mathsf H_0=0$, denotes a
+harmonic number.
+
+\begin{theorem}\label{xx:pm:main}
+Let $\mu\ge2$ be an integer, let $p>\mu$ be prime, and set $d=\mu(p-1)$. If
+\begin{align}
+ p^2+1&\ge 4d,\label{xx:pm:A}\\
+ \mathsf H_{d-1}-\mathsf H_{\mu-1}&\ge4(\mu-2),\label{xx:pm:B}
+\end{align}
+then $T_d(Y)\ne0$ for every positive integer $Y$.
+
+For each fixed $\mu$, both conditions hold for all sufficiently large $p$. The
+explicit integer condition
+\begin{equation}\label{xx:pm:threshold}
+ p\ge\max\{4\mu,\ 1+3^{4\mu-7}\}
+\end{equation}
+is sufficient.
+\end{theorem}
+
+\begin{corollary}\label{xx:pm:twice}
+For every prime $p$ and every positive integer $Y$,
+\[
+ T_{2(p-1)}(Y)\ne0.
+\]
+Equivalently, $b(m,m-2p+2)\ne0$ for every $m\ge2p-1$.
+\end{corollary}
+
+\begin{corollary}\label{xx:pm:triple}
+For every odd prime $p$ and every positive integer $Y$,
+\[
+ T_{3(p-1)}(Y)\ne0.
+\]
+The exclusion of $p=2$ is necessary: $T_3(2)=T_3(5)=0$.
+\end{corollary}
+
+\begin{corollary}\label{xx:pm:four}
+For every prime $p$ and every positive integer $Y$,
+\[
+ T_{4(p-1)}(Y)\ne0.
+\]
+\end{corollary}
+
+For derivatives of $x^x$, the monomial $x^{x-d}(\log x)^j$ of $f^{(n)}$ ---
+offset $d$, logarithmic degree $j$ --- has coefficient $\binom nm b(m,Y)$ with
+$m=n-j$ and $Y=n-d-j$ (Theorem~\ref{xx:thm:expansion}).  On every covered
+offset, the only physical cancellation is therefore the structural boundary
+$Y=0$, or $j=n-d$; all cells with $Y>0$ are nonzero. The covered offsets are
+even, so this conclusion does not remove the known odd-offset reflection
+family.
+
+The inspected repository proves the prime-offset case $d=p-1$
+(Theorem~\ref{xx:thm:prime}) and completely checks offsets through $16$
+(Theorem~\ref{xx:thm:16}).  Corollaries~\ref{xx:pm:twice}--\ref{xx:pm:four}
+and Theorem~\ref{xx:pm:main} extend those source-relative conclusions to
+complete infinite families, including offsets whose successor is composite. No
+claim of exhaustive literature priority is intended.
+
+\subsubsection{Arithmetic localization to two or more digits}
+
+Let $\Z_{(p)}$ be the rationals with denominator coprime to $p$. Polynomial
+congruences in this subsection are over that ring.
+
+\begin{lemma}\label{xx:pm:localization}
+Suppose $p>\mu\ge2$ and $d=\mu(p-1)$. Then $G(Y)=p^\mu T_d(Y)$ and $G(Y)/Y$ lie
+in $\Z_{(p)}[Y]$, and
+\begin{equation}\label{xx:pm:congruence}
+ G(Y)\equiv\frac{\fall Y\mu}{\mu!}\pmod p.
+\end{equation}
+For $1\le j\le \mu-1$,
+\begin{equation}\label{xx:pm:smallvalues}
+ v_p(G(j))\ge \mu-j+1.
+\end{equation}
+Every positive integer zero of $T_d$ therefore satisfies
+\begin{equation}\label{xx:pm:digits}
+ Y\equiv j\pmod{p^{\mu-j+1}}\quad\text{for some }1\le j\le \mu-1.
+\end{equation}
+In particular, it either lies in $\{1,\ldots,\mu-1\}$ or is at least $p^2+1$.
+\end{lemma}
+\begin{proof}
+The falling-factorial expansion is
+\begin{equation}\label{xx:pm:partition}
+ T_d(Y)=\sum_{\sum ji_j=d}\fall Y\ell\prod_{j\ge1}\frac{h_j^{i_j}}{i_j!},
+ \qquad \ell=\sum i_j.
+\end{equation}
+Since $d<p^2-1$, each $h_j$ occurring here has valuation $0$ or $-1$. Call an
+index bad when its valuation is $-1$, and let $\omega$ be the total multiplicity
+of bad indices. Every bad index is at least $p-1$, so $\omega\le \mu$. Equality
+forces the unique partition $i_{p-1}=\mu$; its total denominator valuation is
+$\mu$, because $\mu!$ is a unit.
+
+If $\omega<\mu$, every bad-index multiplicity is less than $p$. The total
+multiplicity of good indices is at most $(\mu-\omega)(p-1)$. Since all
+multiplicities are below $p^2$, their factorial valuations sum to at most
+\[
+ \left\lfloor\frac{(\mu-\omega)(p-1)}p\right\rfloor=\mu-\omega-1.
+\]
+Thus every nondistinguished term in~\eqref{xx:pm:partition} has denominator
+valuation at most $\mu-1$. Only $i_{p-1}=\mu$ survives after multiplication by
+$p^\mu$ and reduction. Since $ph_{p-1}\equiv1\pmod p$, this
+proves~\eqref{xx:pm:congruence}. Every falling factorial has a factor $Y$, so
+division by that exact factor also preserves $p$-integrality.
+
+To prove~\eqref{xx:pm:smallvalues}, expand $H^j$ as a product of $j$ series. A
+term could have denominator valuation $j$ only if all $j$ chosen indices were
+positive and bad. Each such index is $0$ or $-1$ modulo $p$. Their sum cannot
+equal $d\equiv-\mu\pmod p$, since $j<\mu<p$. Hence the denominator valuation is
+at most $j-1$.
+
+The reduction of $G/Y$ has simple roots precisely $1,\ldots,\mu-1$ modulo $p$.
+An integer zero must first lie in one of these classes. At its representative
+$j$, $G'(j)$ is a unit. In the Taylor expansion at $j$, if
+$1\le v_p(Y-j)<\mu-j+1$, the linear term has strictly smaller valuation than
+the constant term and all higher terms. It cannot cancel.
+This proves~\eqref{xx:pm:digits} and the asserted localization.
+\end{proof}
+
+The denominator comparison uses the classical multinomial method also appearing
+in Davis's analysis of powers of $\log(1+z)/z$~\cite{xx-davis}; here the
+additional factor $1+z$ produces the denominators $j(j+1)$.
+
+\subsubsection{A derivative-root barrier excludes large exponents}
+
+We reproduce the needed classical barrier estimate. A primary source is
+Ravichandran's Theorem~1.4, attributed there to Marcus~\cite{xx-ravichandran}.
+
+\begin{lemma}\label{xx:pm:barrier}
+Let $P$ have only real roots, let $\xi>\max\operatorname{root}P$, and put
+$\Psi_P(\xi)=P'(\xi)/P(\xi)$. For $0\le\kappa<\deg P$,
+\[
+ \max\operatorname{root}P^{(\kappa)}<\xi-\frac{\kappa}{\Psi_P(\xi)}.
+\]
+\end{lemma}
+\begin{proof}
+Put $\delta=1/\Psi_P(\xi)$. For degree at least two, let
+$u_i=\delta/(\xi-\lambda_i)$, where the $\lambda_i$ are the roots with
+multiplicity. Then $0<u_i<1$ and $\sum u_i=1$, so $\xi-\delta$ remains above
+every root of $P$. With
+\[
+ w_i=\frac{u_i}{1-u_i},\qquad A=\sum w_i,\qquad B=\sum w_i^2,
+\]
+logarithmic differentiation gives
+\[
+ \Psi_{P'}(\xi-\delta)=\delta^{-1}(A-B/A).
+\]
+Regard the $u_i$ as probability weights. Then
+\[
+ \mathbb E[w]=A-1,\quad \mathbb E[1+w]=A,\quad
+ \mathbb E[w(1+w)]=B,
+\]
+so $B-A(A-1)=\operatorname{Var}(w)\ge0$. Hence $\Psi_{P'}(\xi-\delta)\le1/\delta$.
+A smaller displacement gives the same upper bound by monotonicity of the
+logarithmic derivative above the roots. Iterate using this fixed $\delta$; every
+shifted point stays strictly above the corresponding derivative's roots.
+\end{proof}
+
+\begin{corollary}[A universal positivity cone]\label{xx:pm:positive}
+For positive integers $Y,d$, if $Y\ge4d$, then $T_d(Y)>0$. Consequently every
+positive integer zero satisfies $Y<4d$.
+\end{corollary}
+\begin{proof}
+Set $m=Y+d$ and $F_m(x)=\prod_{h=0}^{m-1}(x-h)$. Differentiating
+$(1+z)^x=\sum_{m\ge0}F_m(x)z^m/m!$ exactly $Y$ times in $x$ and setting $x=Y$
+gives
+\begin{equation}\label{xx:pm:derivative}
+ T_d(Y)=\frac{F_m^{(Y)}(Y)}{m!}.
+\end{equation}
+Choose $\xi=m+d=Y+2d$. Its barrier is
+\[
+ \Psi_{F_m}(\xi)=\mathsf H_{Y+2d}-\mathsf H_d
+ <\int_d^{Y+2d}\frac{dt}{t}=\log\frac{Y+2d}{d}.
+\]
+Write $\sigma=Y/d\ge4$. The function $\sigma-2\log(\sigma+2)$ increases for
+$\sigma\ge4$ and is positive there, since $\log6<2$. Thus
+$Y>2d\Psi_{F_m}(\xi)$. Lemma~\ref{xx:pm:barrier} yields
+$\max\operatorname{root}F_m^{(Y)}<\xi-Y/\Psi_{F_m}(\xi)<Y$.
+The derivative has positive leading coefficient, so its value at $Y$ is
+strictly positive.
+\end{proof}
+
+\emph{Editorial note.}  Identity~\eqref{xx:pm:derivative} is
+Proposition~\ref{xx:prop:falling} combined with \eqref{xx:eq:diag}, derived
+there by the same differentiation of the binomial series.
+
+Condition~\eqref{xx:pm:A} therefore excludes every possible zero with
+$Y\ge p^2+1$. This uses real-rootedness only of the falling-factorial
+polynomial $F_m$, not of $T_d$ as a polynomial in $Y$.
+
+\begin{remark}[Editorial: the cone and the asymptotic sign boundary]\label{xx:lc:rem:cone}
+In the ratio $\rho=m/Y$ of row to column, the cone of
+Corollary~\ref{xx:pm:positive} is $\rho\le5/4$, and it holds on every offset,
+bounded ones included.  Manuscript~31 of the same batch, placed in the new
+sibling report \texttt{power-tower-exponent-supports}, proves positivity of
+$b(m,Y)$ eventually on compact ranges of $\rho$ inside $(1,\rho_*)$,
+$\rho_*\approx1.29843$, without an effective threshold.  Neither statement
+implies the other.  The cone is valid but not sharp: in an exact scan of all
+rows $m\le200$ at the intake, no entry in the cone is nonpositive, and the
+smallest ratio $m/Y$ of a nonpositive entry is $196/148\approx1.324$.
+\end{remark}
+
+\subsubsection{Small exponents and completion of the proof}
+
+\begin{lemma}\label{xx:pm:small}
+Let $d,j\ge1$, put $\nu=j-1$ and $\Lambda=\mathsf H_{d-1}-\mathsf H_j$. If $j=1$,
+then $T_d(j)\ne0$. If $\nu\ge1$ and $\Lambda\ge4\nu$, then $T_d(j)\ne0$, with
+sign $(-1)^{d+j}$.
+\end{lemma}
+\begin{proof}
+The case $j=1$ follows from $T_d(1)=h_d\ne0$. Otherwise
+\[
+ F_{d+j}(j+u)=(-1)^{d-1}j!(d-1)!\,u\Theta(u),\qquad
+ \Theta(u)=\prod_{h=1}^j(1+u/h)\prod_{h=1}^{d-1}(1-u/h).
+\]
+Its logarithm is $-\Lambda u+\sum_{s\ge2}\gamma_su^s$, with $|\gamma_s|\le2$.
+Let $\beta_t=\coef{u}{t}\exp(2u^2/(1-u))$. Coefficientwise majorization gives
+\[
+ \coef{u}{\nu}\Theta(u)=\frac{(-\Lambda)^\nu}{\nu!}+\mathcal R,\qquad
+ \frac{|\mathcal R|}{\Lambda^\nu/\nu!}\le\sum_{t=2}^\nu \beta_t\left(\frac
+ \nu\Lambda\right)^t.
+\]
+For $\chi=\nu/\Lambda\le1/4$, the right side is at most
+$\exp(2\chi^2/(1-\chi))-1\le e^{1/6}-1<1$.
+Thus $\coef{u}{\nu}\Theta$ has sign $(-1)^\nu$. The derivative
+identity~\eqref{xx:pm:derivative} proves the assertion.
+\end{proof}
+
+\emph{Editorial note.}  At $j=1$ and $j=2$ the lemma re-derives, on every
+offset, the column formulas of Proposition~\ref{xx:prop:firstcolumns}:
+$T_d(1)=h_d$ is $b(m,1)=(-1)^m(m-2)!$, and the sign of
+$\coef{u}{1}\Theta=-(\mathsf H_{d-1}-\mathsf H_2)$ is that of
+$2H_{m-3}-3$ in \eqref{xx:eq:col2}.  For larger $j$ it has no counterpart in
+this part: every fixed column $Y=j$ has $T_d(j)\ne0$ as soon as
+$\mathsf H_{d-1}-\mathsf H_j\ge4(j-1)$, so each column has only finitely many
+possible zeros, below an explicit offset (an observation of the intake, not
+stated in the manuscript).
+
+\begin{proof}[Proof of Theorem~\ref{xx:pm:main}]
+Arithmetic localization leaves only $1\le Y\le\mu-1$ and $Y\ge p^2+1$. The
+latter is excluded by~\eqref{xx:pm:A} and Corollary~\ref{xx:pm:positive}. For
+$1\le j\le\mu-1$, condition~\eqref{xx:pm:B} gives
+\[
+ \mathsf H_{d-1}-\mathsf H_j\ge4(\mu-2)\ge4(j-1),
+\]
+so Lemma~\ref{xx:pm:small} excludes all remaining exponents.
+
+For the explicit threshold, $p\ge4\mu$ gives $p^2+1>4\mu(p-1)$,
+proving~\eqref{xx:pm:A}. Also
+\[
+ \mathsf H_{d-1}-\mathsf H_{\mu-1}>\log d-1-\log(\mu-1)>\log(p-1)-1.
+\]
+If $p-1\ge3^{4\mu-7}$, then $\log3>1$ makes this greater than $4(\mu-2)$.
+Thus~\eqref{xx:pm:B} holds as well.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{xx:pm:twice}]
+Take $\mu=2$. Condition~\eqref{xx:pm:B} holds for every $p>2$, and
+$p^2+1\ge8(p-1)$ for every $p\ge7$. Theorem~\ref{xx:pm:main} handles those
+primes.
+
+The cases $p=2,3$ have offsets $2,4$, already prime offsets for the primes
+$3,5$. For completeness, that known theorem follows from
+$pT_{p-1}(Y)/Y\equiv1\pmod p$: only the one-part contribution $h_{p-1}$ survives
+after division by $Y$ and multiplication by $p$.  (Editorial: this is
+\eqref{xx:eq:punit} in the proof of Theorem~\ref{xx:thm:prime}.)
+
+For $p=5$, a primitive numerator of $T_8(Y)/Y$ is
+\begin{align*}
+ F(Y)={}&135Y^7-8820Y^6+229950Y^5-3075240Y^4\\
+ &+22538215Y^3-89214420Y^2+172998164Y-122821584.
+\end{align*}
+Its values modulo $11$ at $Y=0,\ldots,10$ are
+$5,9,6,2,2,5,5,4,10,4,3$, all nonzero. This restates one of the source's
+small-offset certificates solely to close the uniform all-prime assertion.
+Finally $Y=1$ is always explicitly nonzero by~\eqref{xx:pm:H}.
+\end{proof}
+
+\emph{Editorial note.}  The source certificate restated here is the row $d=8$
+of Theorem~\ref{xx:thm:16}: $F(Y)=R_8(Y+8)$, with $R_8$ the primitive residual
+of \eqref{xx:eq:Rd} recorded in
+\texttt{data/\allowbreak diagonal\_\allowbreak certificates.json}, and
+$T_8(Y)=c_8\,Y\,R_8(Y+8)$ with $c_8=1/1393459200$.  The residues listed above
+are those of $R_8$ at $X=8,\ldots,18$, the same eleven classes as the residues
+recorded for $X=0,\ldots,10$.  The intake checked the identity
+$F(Y)=R_8(Y+8)$ coefficient by coefficient.
+
+\begin{proof}[Proof of Corollary~\ref{xx:pm:triple}]
+Take $\mu=3$. If $p\ge11$, then $p^2+1\ge12(p-1)=4d$. The small sector in
+Lemma~\ref{xx:pm:localization} contains only $j=1,2$. For $j=2$, the
+coefficient in Lemma~\ref{xx:pm:small} is exactly $-(\mathsf H_{d-1}-\mathsf
+H_2)$, which is nonzero for $d>3$. Thus the stronger condition~\eqref{xx:pm:B}
+is unnecessary here. The remaining odd primes $3,5,7$ give offsets $6,12,18$,
+whose successors $7,13,19$ are prime. The known prime-offset theorem covers
+these cases.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{xx:pm:four}]
+Take $\mu=4$. If $p\ge17$, then $p^2+1\ge16(p-1)=4d$ and $d\ge64$. The cases
+$j=1,2$ are as above. For $j=3$, the relevant coefficient is
+\[
+ \coef{u}{2}\Theta(u)=\Lambda^2/2+\gamma_2,\qquad
+ \Lambda=\mathsf H_{d-1}-\mathsf H_3,\qquad |\gamma_2|<2.
+\]
+Here
+$\Lambda\ge\mathsf H_{63}-\mathsf H_3>\int_4^{64}dt/t=\log16>2$,
+so this coefficient is strictly positive. Arithmetic localization and the
+positivity cone exclude all other $Y$.
+
+The remaining primes $2,3,5,7,11,13$ give offsets $4,8,16,24,40,48$. They are
+covered respectively by the prime-offset theorem at $5$, the displayed
+offset-eight certificate, the prime-offset theorem at $17$,
+Corollary~\ref{xx:pm:twice} at $13$, the prime-offset theorem at $41$, and
+Corollary~\ref{xx:pm:triple} at $17$. This completes the proof.
+\end{proof}
+
+\subsubsection{Why prime-square offsets need additional input}\label{xx:pm:sec:square}
+
+The following obstruction concerns a fixed finite-modulus sieve, not every
+possible $p$-adic argument.
+\begin{theorem}\label{xx:pm:square}
+For every prime $p$, put $d=p^2-1$. Then
+\[
+ J_p(Y)=p^{p+2}\frac{T_d(Y)}Y\in\Z_{(p)}[Y],\qquad
+ J_p(Y)\equiv-(Y^p-Y)\pmod p.
+\]
+Consequently $J_p$ has exactly $p$ simple roots in $\Z_p$, one in each residue
+class modulo $p$.
+\end{theorem}
+\begin{proof}
+In~\eqref{xx:pm:partition}, let $v_j=v_p(j(j+1))$, $\omega=\sum i_jv_j$ and
+$\mathcal V=\omega+\sum v_p(i_j!)$. We use
+\[
+ j\ge(p-1)v_j,\qquad j\ge1+(p-2)v_j,
+\]
+with equality in the first only at $j=p-1$. For $v_j>0$, these follow from
+$j\ge p^{v_j}-1$; the case $v_j=0$ is immediate. Set $\mu=p+1$. Then
+$\omega\le\mu$, and equality forces $i_{p-1}=\mu$, whose denominator valuation
+is $p+2$.
+
+For every other partition put $\delta=\mu-\omega\ge1$. The second inequality
+gives $\ell\le p+1+(p-2)\delta$. Since each multiplicity is below $p^2$,
+\[
+ \sum v_p(i_j!)\le\lfloor\ell/p\rfloor
+ \le\delta+1-\left\lceil\frac{2\delta-1}p\right\rceil\le\delta.
+\]
+Thus $\mathcal V\le p+1$ for all nondistinguished terms. Only the distinguished
+term survives after scaling by $p^{p+2}$. Wilson's congruence gives its
+coefficient $-1$ modulo $p$ (also for $p=2$). Dividing by the exact factor $Y$
+leaves $\prod_{j=1}^p(Y-j)=Y^p-Y$ modulo $p$.
+
+The derivative of the reduced polynomial is $1$. Each residue class is a root
+modulo $p$ and has exactly one lift at every higher power, since the linearized
+congruence determines the next digit uniquely. These compatible residues are
+exactly the asserted simple roots in $\Z_p$.
+\end{proof}
+
+Thus every fixed modulus $p^e$ retains positive integer candidates in all $p$
+compatible classes. This does not exclude a more refined argument showing that
+the particular $p$-adic roots are not ordinary integers. For odd $p$, the
+offset is even and has no known reflection factor to remove. The complete
+prime-power-offset classification remains open.
+
+\emph{Editorial note.}  Theorem~\ref{xx:st:prime-square-reduction} below
+(manuscript~09) is such a refined argument for $p\ge5$: it locates the
+$p$-adic roots to three digits and, with the cone, reduces the offset $p^2-1$
+to $1\le Y\le p-1$.  The classification of that offset stays open.
+
+\subsubsection{Verification and source scope}
+
+The accompanying standard-library checker
+(\texttt{code/05-prime-\allowbreak multiple-\allowbreak verify.py}) constructs
+$T_d$ exactly through degree $72$, verifies the coefficient congruences and
+$64$ stronger lift inequalities, and compares $3{,}132$ coefficients against an
+independent integer-triangle recurrence. It checks $14{,}000$ instances of the
+three complete prime families, $15{,}880$ positivity-cone instances, $29{,}456$
+localization instances through triangle row $400$, the prime-square congruence
+for $p=2,3,5,7$, the full offset-eight identity and its modular certificate,
+and the main conditions for $(\mu,p)=(2,11),(3,83),(3,89),(4,3001)$. A second
+exact convolution replay
+(\texttt{code/05-prime-\allowbreak multiple-\allowbreak replay\_convolution.py})
+independently checks $1{,}320$ double-family instances, $3{,}000$ localization
+instances, $56$ lifts and $1{,}176$ derivative-bridge identities;
+finite-difference interpolation also recovers the offset-eight certificate.
+These finite replays support reproducibility; the preceding proofs establish
+the infinite statements.
+
+The relevant default-branch source was rechecked on 1 October 2026 and still
+had blob \texttt{7344f3aa4dc9344fb8648326e74e0d4bcc33eada}, matching the pinned
+source (this report at commit \texttt{ca81647a9}). It already contains the
+prime-offset theorem and the finite offset-$16$ classification. The global
+exact zero list remains unsettled. No real-rootedness assertion about all $T_d$
+is used or proved here.
+
+% ---------------------------------------------------------------------------
+\subsection{Stirling residues and finite candidate lists (manuscript 09)}\label{xx:st:sec}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 09.}\itshape
+We identify a scaled block of the Lehmer--Comtet triangle modulo a prime with
+an ordinary unsigned Stirling row. The formula determines the first nontrivial
+digits of the associated $p$-adic roots. Combined with a derivative-root bound,
+it confines every positive integer zero on offset $\mu(p-1)$, for $p>\mu$, to
+an explicit set of small exponents and at most one larger integer. It proves
+complete nonvanishing on offset $5(p-1)$ for every odd prime. Two different
+square families have particularly short remaining lists: offset $(p-1)^2$ has
+at most one candidate for odd primes, while offset $p^2-1$ has candidates only
+in $1,\ldots,p-1$ for $p\ge5$. These are necessary conditions, not assertions
+that the listed candidates are zeros. The global exact zero classification
+remains open.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  Printed in the letters of
+Table~\ref{xx:lc:tab:notation}.  The manuscript's ``preceding companion'' is
+manuscript~12, printed in Subsection~\ref{xx:pm:sec}; manuscript~09 was
+delivered with an unchanged copy of it, which is not shipped a second time.
+\end{quote}
+
+\subsubsection{Coefficients, scope, and the root bound}
+
+The manuscript defines $H(z)$, $h_j$, $T_d(Y)$ and $b(Y+d,Y)$ as in
+\eqref{xx:pm:H} and \eqref{xx:pm:b}, and notes that $T_d$ has the structural
+factor $Y$.  Write $c(\mu,j)$ for the unsigned Stirling number of the first
+kind, defined by
+\[
+ X(X+1)\cdots(X+\mu-1)=\sum_{j=1}^\mu c(\mu,j)X^j.
+\]
+All congruences of rational numbers or polynomials are over $\Z_{(p)}$, the
+rationals with denominator coprime to $p$.
+
+\begin{remark}[Manuscript 09's restatement of the cone]\label{xx:st:cone}
+The manuscript opens with the positivity bound of
+Corollary~\ref{xx:pm:positive} --- for integers $d,Y\ge1$, $Y\ge4d$ implies
+$T_d(Y)>0$ --- taken from manuscript~12 ``with its brief derivation included''.
+That derivation is the proof of Corollary~\ref{xx:pm:positive} in condensed
+form: it applies the classical barrier \cite[Theorem~1.4]{xx-ravichandran} to
+$F_m^{(Y)}$, $m=Y+d$, with $\Psi(\xi)=\sum_{h=0}^{m-1}1/(\xi-h)$ at
+$\xi=Y+2d$, bounds $\Psi(\xi)=\mathsf H_{Y+2d}-\mathsf H_d<\log((Y+2d)/d)$,
+and uses $\sigma>2\log(\sigma+2)$ for $\sigma=Y/d\ge4$.  It is the same
+argument, quoting the barrier rather than proving it, and is not printed a
+second time.
+\end{remark}
+
+This note concerns positive $Y$. In derivatives of $x^x$, the offset $d$ and
+log degree $j$ of a monomial $x^{x-d}(\log x)^j$ satisfy $Y=n-d-j$; the
+structural line $Y=0$, or $j=n-d$, remains a cancellation line. The inspected
+source gives the prime-offset theorem and fixed-offset certificates through
+$16$ (Theorems~\ref{xx:thm:prime} and~\ref{xx:thm:16}). The preceding companion
+(Subsection~\ref{xx:pm:sec}) proves complete families with multipliers $2,3,4$
+and a general sufficiently-large-prime theorem. Here the additional input is an
+exact Stirling residue and its root displacement. The partition method belongs
+to the classical $p$-adic Bernoulli/Stirling
+framework~\cite{xx-davis,xx-adelberg}; the results below are proved directly,
+without an exhaustive priority claim.
+
+\subsubsection{The Stirling residue}
+
+\begin{theorem}\label{xx:st:residue}
+Let $p>\mu\ge2$ be prime and integer, respectively, and let $1\le j<\mu$. For
+$d=\mu(p-1)$,
+\begin{equation}\label{xx:st:mainresidue}
+ p^{j-1}T_d(j)\equiv
+ -\frac{(j!)^2(\mu-j-1)!}{\mu!(\mu-1)!}\,c(\mu,j)\pmod p.
+\end{equation}
+The left side is $p$-integral. If $p\nmid c(\mu,j)$, then
+$v_p(T_d(j))=1-j$, in particular $T_d(j)\ne0$.
+Equivalently, the triangle entries satisfy
+\begin{equation}\label{xx:st:triangleresidue}
+ \frac{b(\mu(p-1)+j,j)}{p^{\mu-j}}
+ \equiv(-1)^j\frac{j!}{\mu!}c(\mu,j)\pmod p.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $d<p^2-1$, each nonconstant coefficient $h_i$ with $i\le d$ has valuation
+$0$ or $-1$. Call an index bad in the latter case. In an ordered-product
+expansion of $H^j$, all $j$ indices cannot be bad: their residues are $0$ or
+$-1$ modulo $p$, whereas their sum is $d\equiv-\mu$, and $j<\mu<p$. Hence
+$p^{j-1}T_d(j)$ is integral at $p$.
+
+Only terms with exactly $j-1$ bad indices survive. The remaining index is
+positive and good; a constant there would again make the residue sum
+impossible. Choose its position in $j$ ways, and write the bad indices as
+\[
+ \ell_i p-\varepsilon_i,\quad \ell_i\ge1,\quad \varepsilon_i\in\{0,1\},\qquad
+ \lambda=\sum\ell_i,\quad \eta=\sum\varepsilon_i.
+\]
+The good index is $g_0=(\mu-\lambda)p-\mu+\eta$, positive exactly when
+$\lambda\le\mu-1$. Both $g_0$ and $g_0+1$ are units, since
+$\eta\le j-1\le\mu-2$. Because $p$ is odd,
+\[
+ ph_{\ell_i p-\varepsilon_i}\equiv\frac{(-1)^{\ell_i+1}}{\ell_i},\qquad
+ h_{g_0}\equiv\frac{(-1)^{\eta-\lambda-1}}{(\mu-\eta)(\mu-\eta-1)}\pmod p.
+\]
+The product sign is $(-1)^{\eta+j-2}$, independently of $\lambda$. Therefore
+the surviving residue is
+\begin{equation}\label{xx:st:AB}
+ j(-1)^{j-2} A_{\mu,j} B_{\mu,j},
+\end{equation}
+where
+\begin{align*}
+ A_{\mu,j}&=\sum_{\substack{\ell_1,\ldots,\ell_{j-1}\ge1\\\ell_1+\cdots+\ell_{j-1}\le \mu-1}}
+ \frac1{\ell_1\cdots\ell_{j-1}},\\
+ B_{\mu,j}&=\sum_{\eta=0}^{j-1}\frac{(-1)^\eta\binom{j-1}\eta}{(\mu-\eta)(\mu-\eta-1)}.
+\end{align*}
+For $j=1$, the empty tuple gives $A_{\mu,1}=1$.
+The standard logarithmic generating function for unsigned Stirling numbers
+gives
+\[
+ A_{\mu,j}=\coef{t}{\mu-1}\frac{(-\log(1-t))^{j-1}}{1-t}
+ =\frac{(j-1)!}{(\mu-1)!}c(\mu,j).
+\]
+A finite binomial sum and a beta integral give
+\begin{align*}
+ B_{\mu,j}
+ &=\int_0^1x^{\mu-2}(1-x)(1-x^{-1})^{j-1}\,dx\\
+ &=(-1)^{j-1}\frac{(\mu-j-1)!j!}{\mu!}.
+\end{align*}
+The integral converges because $j<\mu$. Substitution into~\eqref{xx:st:AB}
+proves~\eqref{xx:st:mainresidue}, including the sign.
+
+Finally put $m=\mu(p-1)+j$. Then $v_p(m!)=\mu-1$. Splitting into $p$-blocks and
+applying Wilson's congruence gives
+\[
+ \frac{m!}{p^{\mu-1}}\equiv
+ (-1)^{j+1}\frac{(\mu-1)!}{(\mu-j-1)!}\pmod p.
+\]
+Combining this with~\eqref{xx:pm:b} proves~\eqref{xx:st:triangleresidue}.
+\end{proof}
+
+\subsubsection{Root displacements and the complete candidate list}
+
+\begin{remark}[Manuscript 09's ordinary congruence]\label{xx:st:ordinary}
+The manuscript's Lemma~3.1 is the congruence half of
+Lemma~\ref{xx:pm:localization}: for $p>\mu\ge2$ and $d=\mu(p-1)$,
+$G(Y)=p^\mu T_d(Y)\in\Z_{(p)}[Y]$, $G(Y)\equiv\fall Y\mu/\mu!\pmod p$, and $G/Y$
+is also $p$-integral.  Its proof, which the manuscript calls ``the next
+elementary denominator observation'', is a condensed version of the first two
+paragraphs of the proof of Lemma~\ref{xx:pm:localization} (at most $\mu$ bad
+factors, equality only at $i_{p-1}=\mu$, factorial valuations of the other
+terms at most $\mu-\omega-1$) and is not printed a second time.
+\end{remark}
+
+\begin{theorem}\label{xx:st:shift}
+For every $j=1,\ldots,\mu-1$, the polynomial $G/Y$ has one simple root
+$\rho_j\in\Z_p$ in class $j$, and
+\begin{equation}\label{xx:st:shiftformula}
+ \rho_j\equiv j+
+ (-1)^{\mu-1-j}\frac{j!c(\mu,j)}{(\mu-1)!}\,p^{\mu-j+1}
+ \pmod{p^{\mu-j+2}}.
+\end{equation}
+There are no other roots in $\Z_p$.
+\end{theorem}
+\begin{proof}
+Congruence~\eqref{xx:pm:congruence} gives precisely the simple residue roots
+$1,\ldots,\mu-1$, each with a unique lift at every successive power of $p$. Its
+derivative before division by $Y$ is
+\[
+ G'(j)\equiv\frac{j!(-1)^{\mu-1-j}(\mu-1-j)!}{\mu!}\pmod p.
+\]
+Theorem~\ref{xx:st:residue} determines $G(j)/p^{\mu-j+1}$ modulo $p$. Taylor
+expansion at $j$ therefore gives~\eqref{xx:st:shiftformula}. The quadratic
+remainder has valuation at least $2(\mu-j+1)\ge\mu-j+2$. The formula remains
+valid if $p\mid c(\mu,j)$; it then asserts an additional zero digit.
+\end{proof}
+
+\begin{theorem}[Finite candidate list]\label{xx:st:candidates}
+Let $p>\mu\ge2$, $d=\mu(p-1)$, and let $C_p\in\{1,\ldots,p-1\}$ be the least
+nonnegative residue of $\binom\mu2$ modulo $p$. Every positive integer zero of
+$T_d$ belongs to
+\begin{equation}\label{xx:st:list}
+ \{j:1\le j<\mu,\ p\mid c(\mu,j)\}
+ \ \cup\ \{\mu-1+C_pp^2\},
+\end{equation}
+where the last candidate may be omitted when it is at least $4d$.
+\end{theorem}
+\begin{proof}
+Corollary~\ref{xx:pm:positive} confines zeros to $0<Y<4d$. Since $\mu\le p-1$
+and $p\ge3$,
+\[
+ p^3>4(p-1)^2\ge4\mu(p-1)=4d.
+\]
+For $j\le\mu-2$, formula~\eqref{xx:st:shiftformula} fixes the root at $j$
+modulo at least $p^3$. Its only possible positive integer representative below
+$4d$ is $j$ itself, excluded by Theorem~\ref{xx:st:residue} unless
+$p\mid c(\mu,j)$.
+
+For $j=\mu-1$, the displacement simplifies to
+\[
+ \rho_{\mu-1}\equiv \mu-1+\binom\mu2p^2\pmod{p^3}.
+\]
+Here $p\nmid\binom\mu2$, since $p>\mu$. There is at most one representative in
+$0<Y<4d$, namely the last candidate in~\eqref{xx:st:list}. The small
+representative $\mu-1$ is not a root, again by Theorem~\ref{xx:st:residue}.
+\end{proof}
+
+Thus a sufficient complete-offset criterion is: no entry $c(\mu,j)$,
+$1\le j<\mu$, is divisible by $p$, and $\mu-1+C_pp^2\ge4\mu(p-1)$. The
+candidates in~\eqref{xx:st:list} are necessary possibilities, not a claimed zero
+list.
+
+\begin{remark}[Editorial: a second route to Corollaries~\ref{xx:pm:triple} and~\ref{xx:pm:four}]\label{xx:lc:rem:second-route}
+Manuscript~09 does not say so, but its criterion re-proves most of manuscript~12's
+small-multiplier corollaries without the harmonic condition~\eqref{xx:pm:B}.
+For $\mu=3$, the row is $c(3,1)=2$, $c(3,2)=3$, prime to every $p\ge5$, and
+$C_p=3$; the candidate $2+3p^2$ exceeds $12(p-1)$ for every $p$, so
+Theorem~\ref{xx:st:candidates} gives Corollary~\ref{xx:pm:triple} for every
+$p\ge5$.  For $\mu=4$, the row is $6,11,6$ and $C_p=6\bmod p$: at $p=5$ the
+candidate $3+25=28$ lies below $4d=64$ and survives; at $p=11$ the entry
+$c(4,2)=11$ leaves the candidate $Y=2$; for $p=7$ and every $p\ge13$ the list is
+empty, so the criterion gives Corollary~\ref{xx:pm:four} for $p\ge7$, $p\ne11$.
+For $\mu=2$ the candidate $1+p^2$ is at least $8(p-1)$ exactly when $p\ge7$,
+which is condition~\eqref{xx:pm:A}.  The exceptional primes are covered, in
+manuscript~12, by the prime-offset theorem and the offset-eight certificate.
+\end{remark}
+
+\subsubsection{Two consequences of the Stirling row}
+
+\begin{corollary}\label{xx:st:five}
+For every odd prime $p$ and every positive integer $Y$,
+\[
+ T_{5(p-1)}(Y)\ne0.
+\]
+\end{corollary}
+\begin{proof}
+The unsigned Stirling row for $\mu=5$, omitting its last entry $1$, is
+$24,50,35,10$. Its only prime divisor above $5$ is $7$. For every prime
+$p\ge11$, the small set in~\eqref{xx:st:list} is empty, $C_p=10$, and
+$4+10p^2>20(p-1)$. Theorem~\ref{xx:st:candidates} applies.
+The primes $3,5,7$ give offsets $10,20,30$, covered respectively by the
+prime-offset theorem at $11$, the double family at $11$
+(Corollary~\ref{xx:pm:twice}), and the prime-offset theorem at $31$. The prime
+$2$ is correctly excluded: offset $5$ has its known reflection zero at $Y=4$.
+\end{proof}
+
+\emph{Editorial note.}  The reflection zero at offset $5$, $Y=4$ is
+$b(9,4)=0$, the case $h=2$ of Proposition~\ref{xx:prop:symmetry}.
+
+\begin{corollary}\label{xx:st:squares}
+For every odd prime $p$,
+\[
+ T_{(p-1)^2}(Y)=0,\quad Y\in\Z_{>0}
+ \quad\Longrightarrow\quad Y=p^2+p-2.
+\]
+No assertion is made that this one remaining value vanishes.
+\end{corollary}
+\begin{proof}
+Take $\mu=p-1$. Over $\mathbb F_p$,
+\[
+ \sum_{j=1}^{p-1}c(p-1,j)X^j
+ =X(X+1)\cdots(X+p-2)
+ =\frac{X^p-X}{X-1}=X+\cdots+X^{p-1}.
+\]
+Thus every relevant Stirling entry is a unit and
+$C_p=\binom{p-1}2\bmod p=1$. Theorem~\ref{xx:st:candidates} leaves only
+$p-2+p^2$.
+\end{proof}
+
+\subsubsection{A different square family: offset \texorpdfstring{$p^2-1$}{p squared minus one}}
+
+This subsection concerns $p^2-1$, not the offset $(p-1)^2$ in
+Corollary~\ref{xx:st:squares}.
+
+\begin{remark}[Manuscript 09's prime-square lemma]\label{xx:st:prime-square-base}
+The manuscript's Lemma~5.1 is the congruence of Theorem~\ref{xx:pm:square}: for
+any prime $p$ and $d=p^2-1$, $J(Y)=p^{p+2}T_d(Y)/Y\in\Z_{(p)}[Y]$ and
+$J(Y)\equiv-(Y^p-Y)\pmod p$; its $J$ is $J_p$.  The manuscript says so
+(``This is the prime-square denominator lemma from'' the companion) and repeats
+the estimates of the proof of Theorem~\ref{xx:pm:square} --- the two
+inequalities for $j$ in terms of $v_j=v_p(j(j+1))$, the bound $\omega\le p+1$
+with equality only at $i_{p-1}=p+1$, and $\sum v_p(i_j!)\le\delta$ for the other
+terms --- which are not printed a second time.
+\end{remark}
+
+\begin{theorem}\label{xx:st:prime-square-reduction}
+For every prime $p\ge5$,
+\[
+ T_{p^2-1}(Y)=0,\quad Y\in\Z_{>0}
+ \quad\Longrightarrow\quad 1\le Y\le p-1.
+\]
+\end{theorem}
+\begin{proof}
+Put $d=p^2-1$.  Theorem~\ref{xx:pm:square} gives one simple $p$-adic root in
+each residue class. For $1\le a\le p-1$, expand $H^a$ directly. Every index at
+most $d=p^2-1$ has denominator valuation at most one, except $d$ itself, whose
+valuation is two. If that index occurs, all other chosen indices are zero.
+Hence
+\[
+ v_p(T_d(a))\ge-\max(a,2),\qquad
+ v_p(J_p(a))\ge p+2-\max(a,2)\ge3.
+\]
+The corresponding root is therefore $a$ modulo $p^3$.
+
+To determine the zero-residue branch, expand $H^p$. Every degree-$d$ term has a
+multinomial coefficient divisible by $p$: a pure $p$th-power term would require
+$pi=d$, which is impossible. A term containing index $d$ has valuation $-1$,
+greater than $1-p$. Otherwise all bad indices have valuation $-1$. Terms with at
+most $p-1$ bad factors have valuation at least $2-p$.
+
+If all $p$ factors are bad, their minimum total degree is $p(p-1)$, leaving
+increment $p-1$. A bad index greater than $p$ is at least $2p-1$, already
+requiring increment $p$. Thus the unique all-bad pattern has one index $p-1$ and
+$p-1$ indices $p$. Its contribution is $p h_{p-1}h_p^{p-1}$, so
+\[
+ p^{p-1}T_d(p)\equiv1\pmod p,\qquad
+ J_p(p)\equiv p^2\pmod{p^3}.
+\]
+Since $J_p'(p)\equiv1$, the zero-residue branch equals $p-p^2$ modulo $p^3$.
+
+By Corollary~\ref{xx:pm:positive}, every positive integer zero has
+$Y<4(p^2-1)$. For $p\ge5$, both $p^3$ and $p^3-p^2+p$ exceed this bound. The
+only possible representatives of the identified branches in that interval are
+$1,\ldots,p-1$.
+\end{proof}
+
+The remaining small-column assertions are not proved here. In particular, the
+existence of $p$-adic roots is fully compatible with the absence of ordinary
+integer roots; the archimedean bound is essential to both square-family
+reductions.
+
+\subsubsection{Verification and remaining scope}
+
+The standard-library checker
+(\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_stirling.py})
+independently expands rational powers of $H$ and verifies $134$ instances each
+of the Stirling residue, the scaled triangle congruence, and the
+derivative/root-displacement formula, covering multipliers through $8$ and
+coefficient degrees through $144$. Separate exact computations lift the
+prime-square roots for $p=3,5,7,11$ and check the single-candidate values for
+$(p-1)^2$ at $p=3,5,7,11,13,17,19$. Those finitely many values are nonzero; they
+do not establish a general nonvanishing theorem for the remaining candidate. A
+separate integer falling-product replay verifies $162$ instances each of the two
+residues, derivatives and first displacements, all prime-square branches through
+$p=19$, and the seven stated single candidates. It uses finite $p$-steps for
+derivatives and passes with Python assertions disabled.
+
+The repository comparison is relative to the pinned source, whose relevant
+default-branch blob was unchanged at the check on 1 October 2026. Our bounded
+literature review found the classical partition, higher-order Bernoulli, and
+Stirling valuation framework~\cite{xx-davis,xx-adelberg}; the formulas in this
+note are proved directly for the Lehmer--Comtet specialization. No worldwide
+priority claim, complete global zero list, or formal proof-assistant
+verification is asserted.
+
+% ---------------------------------------------------------------------------
+\subsection{Uniform \texorpdfstring{$p$}{p}-adic valuations (manuscript 17)}\label{xx:pn:sec}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 17.}\itshape
+We give exact valuations for two infinite families of coefficients of
+$((1+z)\log(1+z)/z)^Y$. The first extends the inspected source's prime-offset
+theorem to offsets $(p-1)\mu$ when $\mu\le p^{v_p(Y)}$. A second treats offsets
+$(p-1)\mu+1$ for odd $p$ under an explicit nonresonance condition. The proof
+adapts Davis's minimal-valuation multinomial method directly to the different
+coefficient denominators $j(j+1)$, including a lower bound that handles
+competitors with many factors. The resulting criteria exclude new infinite
+families of possible Lehmer--Comtet zeros; the complete zero classification
+remains open.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  Printed in the letters of
+Table~\ref{xx:lc:tab:notation}: the manuscript's $m$ is $\mu$, its offset $r$
+(and $n$ in its proofs) is $d$.
+\end{quote}
+
+\subsubsection{The coefficient and its derivative interpretation}
+
+The manuscript writes $H(z)$, $h_j$ and $T_d(Y)$ as in~\eqref{xx:pm:H}.
+Throughout this subsection $Y$ is a \emph{positive integer}; the structural case
+$Y=0$ is excluded. We write $v_p$ for the valuation on nonzero rational numbers,
+so negative values are allowed.
+
+The first-kind Lehmer--Comtet numbers satisfy
+$b(Y+d,Y)=\frac{(Y+d)!}{Y!}T_d(Y)$, which is~\eqref{xx:pm:b}.  They determine
+the expanded derivative coefficients of $x^x$: at total derivative order
+$n\ge m=Y+d$, the monomial
+\[
+ x^{x-d}(\log x)^{n-m}
+\]
+has coefficient $\binom nm b(m,Y)$. Thus nonvanishing of a fixed $b(m,Y)$
+proves nonvanishing on its entire persistent derivative line. These identities
+are proved in the inspected source (Theorem~\ref{xx:thm:expansion} and
+Lemma~\ref{xx:lem:diagdegree}) and belong to the classical Lehmer--Comtet
+framework.
+
+\begin{theorem}[Principal progression]\label{xx:pn:principal}
+Let $p$ be prime, $\mu\ge1$ and $e=v_p(Y)$. If $\mu\le p^e$, then
+\begin{equation}\label{xx:pn:mainval}
+ v_p\bigl(T_{(p-1)\mu}(Y)\bigr)=e-v_p(\mu)-\mu.
+\end{equation}
+In particular the coefficient is nonzero.
+\end{theorem}
+
+\begin{theorem}[Shifted progression]\label{xx:pn:shifted}
+Let $p$ be an odd prime, $\mu\ge1$ and $e=v_p(Y)$. If
+\begin{equation}\label{xx:pn:conditions}
+ \mu<p^e,\qquad p\nmid (p-1)\mu+1,
+\end{equation}
+then
+\begin{equation}\label{xx:pn:shiftval}
+ v_p\bigl(T_{(p-1)\mu+1}(Y)\bigr)=e-\mu.
+\end{equation}
+The second condition in~\eqref{xx:pn:conditions} is equivalently
+$\mu\not\equiv1\pmod p$.
+\end{theorem}
+
+Davis~\cite[Theorem 1.1]{xx-davis} proves the valuation analogous
+to~\eqref{xx:pn:mainval} for powers of $\log(1+z)/z$. Multiplication by
+$(1+z)^Y$ cannot simply be ignored. We instead prove both claims directly
+from~\eqref{xx:pm:H}, adapting the same minimal-multinomial mechanism. The
+$\mu=1$ case of Theorem~\ref{xx:pn:principal} is exactly the source's
+prime-offset valuation.
+
+\emph{Editorial note.}  That valuation is $v_p(T_{p-1}(Y))=v_p(Y)-1$, in the
+proof of Theorem~\ref{xx:thm:prime}.  The proof below is a second route to it:
+the one in this part reduces $pT_{p-1}(Y)/Y$ modulo $p$
+(\eqref{xx:eq:punit}), the one below compares the valuations of all terms of
+the multinomial expansion.
+
+\subsubsection{Two elementary valuation bounds}
+
+For a multiplicity vector $I=(i_1,\ldots,i_d)$ with
+\[
+ \sum_jji_j=d,\qquad \ell=\sum_ji_j,
+\]
+the corresponding term in the multinomial expansion of $T_d(Y)$ is
+\begin{equation}\label{xx:pn:term}
+ C_I=\frac{\fall Y\ell}{\prod_ji_j!}\prod_jh_j^{i_j},
+ \qquad \fall Y\ell=Y(Y-1)\cdots(Y-\ell+1).
+\end{equation}
+Terms with $\ell>Y$ are zero and may be omitted.
+
+\begin{lemma}\label{xx:pn:falling}
+If $1\le\ell\le Y$ and $\ell<p^{e+1}$, where $e=v_p(Y)$, then
+\begin{equation}\label{xx:pn:fallingbound}
+ v_p(\fall Y\ell)\ge e+v_p((\ell-1)!).
+\end{equation}
+There is equality when $\ell\le p^e$.
+\end{lemma}
+\begin{proof}
+For $1\le s<\ell<p^{e+1}$, one has $v_p(s)\le e$. If $v_p(s)<e$, then
+$v_p(Y-s)=v_p(s)$. If $v_p(s)=e$, both $Y$ and $s$ are divisible by $p^e$,
+giving $v_p(Y-s)\ge v_p(s)$. Sum these inequalities over $s$ and include the
+factor $Y$. When $\ell\le p^e$, every $s<\ell$ has valuation below $e$, so all
+comparisons are equalities.
+\end{proof}
+
+In particular, we do \emph{not} assert the equality when a competing term has
+more than $p^e$ factors; such competitors can occur for $p>2$.
+
+The integer identity
+\begin{equation}\label{xx:pn:integer}
+ \frac{d(\ell-1)!}{\prod_ji_j!}
+ =\sum_{j:i_j>0}j\,
+ \frac{(\ell-1)!}{(i_j-1)!\prod_{h\ne j}i_h!}
+ \in\Z_{>0}
+\end{equation}
+gives
+\begin{equation}\label{xx:pn:multibound}
+ v_p((\ell-1)!)-\sum_jv_p(i_j!)\ge-v_p(d).
+\end{equation}
+Every summand on the right of~\eqref{xx:pn:integer} is an integer multiple of a
+multinomial coefficient. Combining~\eqref{xx:pn:term},
+Lemma~\ref{xx:pn:falling} and~\eqref{xx:pn:multibound}, whenever
+$\ell<p^{e+1}$ we obtain
+\begin{equation}\label{xx:pn:master}
+ v_p(C_I)\ge e-v_p(d)-\sum_ji_jv_p(j(j+1)).
+\end{equation}
+
+Because consecutive integers are coprime, $v=v_p(j(j+1))\ge1$ forces
+$j\ge p^v-1\ge v(p-1)$. Equality occurs only for $v=1$ and $j=p-1$. Thus
+\begin{equation}\label{xx:pn:cost}
+ v_p(j(j+1))\le\frac{j}{p-1},
+ \quad\text{with equality exactly at }j=p-1.
+\end{equation}
+The case $v=0$ is strictly below $j/(p-1)$ since $j\ge1$.
+
+\subsubsection{The principal progression}
+
+\begin{proof}[Proof of Theorem~\ref{xx:pn:principal}]
+Set $d=(p-1)\mu$. Every nonzero term has
+\[
+ \ell\le d\le(p-1)p^e<p^{e+1},
+\]
+so~\eqref{xx:pn:master} applies. Inequality~\eqref{xx:pn:cost} gives
+\[
+ \sum_ji_jv_p(j(j+1))\le\mu,
+\]
+with equality only for $I=\mu\mathbf e_{p-1}$, where $\mathbf e_j$ has a one at
+position $j$. Every other vector has this integer sum at most $\mu-1$. Since
+$v_p(d)=v_p(\mu)$, its term has valuation at least
+\[
+ e-v_p(\mu)-\mu+1.
+\]
+The distinguished term is $\binom Y\mu h_{p-1}^\mu$. It is nonzero because
+$\mu\le p^e\le Y$. The equality part of Lemma~\ref{xx:pn:falling} gives
+\[
+ v_p\binom Y\mu=e-v_p(\mu),\qquad v_p(h_{p-1})=-1.
+\]
+Thus its valuation is $e-v_p(\mu)-\mu$, uniquely smaller than all competitors. A
+sum with a unique least valuation has that valuation,
+proving~\eqref{xx:pn:mainval}.
+\end{proof}
+
+\begin{remark}[Editorial: manuscripts 12 and 17 on a common range]\label{xx:lc:rem:pm-pn}
+For $p>\mu\ge2$ the hypothesis $\mu\le p^e$ of Theorem~\ref{xx:pn:principal}
+says $p\mid Y$.  On that range the theorem also follows from the proof of
+Lemma~\ref{xx:pm:localization}: $G/Y$ is $p$-integral and congruent to
+$(Y-1)\cdots(Y-\mu+1)/\mu!$, which at $Y\equiv0$ is the unit
+$(-1)^{\mu-1}/\mu$; so $v_p(G(Y))=v_p(Y)$ and $v_p(T_d(Y))=e-\mu$, which is
+\eqref{xx:pn:mainval} since $v_p(\mu)=0$.  Manuscript~12 states only that the
+zeros lie in the classes $1\le j\le\mu-1$, not the valuation.  Conversely, its
+complete-offset theorems are not implied by manuscript~17, which needs $p\mid Y$
+there.  Manuscript~17 is new relative to manuscript~12 and to this part for
+$\mu\ge p$ (for instance every offset at $p=2$ or $3$) and on the shifted, odd
+offsets of Theorem~\ref{xx:pn:shifted}.  The three manuscripts share the
+``bad index'' multinomial count after Davis; \eqref{xx:pn:master} is its
+cleanest general form.
+\end{remark}
+
+\subsubsection{One step above the progression}
+
+\begin{proof}[Proof of Theorem~\ref{xx:pn:shifted}]
+Set $d=(p-1)\mu+1$. The strict bound $\mu<p^e$ again gives $d<p^{e+1}$, and
+$p\nmid d$ removes the term $v_p(d)$ in~\eqref{xx:pn:master}. The
+denominator-valuation sum is an integer at most $\mu$. If it is at most
+$\mu-1$, the corresponding term has valuation at least $e-\mu+1$.
+
+Otherwise its value is $\mu$, and hence
+\[
+ \sum_ji_j\bigl(j-(p-1)v_p(j(j+1))\bigr)=1.
+\]
+For odd $p$, the only indices whose parenthesized value is zero or one are
+$j=p-1$ (value zero), and $j=1,p$ (value one). Indeed, valuation at least two
+would require
+\[
+ j\ge p^v-1>v(p-1)+1\qquad(v\ge2,p\ge3).
+\]
+Therefore only the two vectors
+\[
+ \mu\mathbf e_{p-1}+\mathbf e_1,\qquad (\mu-1)\mathbf e_{p-1}+\mathbf e_p
+\]
+remain. Put $A=h_{p-1}$, $B=h_p$. Their combined contribution is exactly
+\begin{equation}\label{xx:pn:pair}
+ \frac{\fall Y\mu}{(\mu-1)!}A^{\mu-1}
+       \left(B+\frac{Y-\mu}{2\mu}A\right).
+\end{equation}
+The entire prefactor outside the brackets has valuation $e-\mu+1$. Since
+$\mu<p^e$, one has $v_p(\mu)<e$, and so $(Y-\mu)/\mu\equiv-1\pmod p$.
+Moreover~\eqref{xx:pm:H} gives $pA\equiv pB\equiv1\pmod p$. Multiplying the
+bracket in~\eqref{xx:pn:pair} by $p$ gives
+\[
+ 1-\frac12=\frac12\not\equiv0\pmod p.
+\]
+Thus the bracket has valuation $-1$, and the pair has valuation $e-\mu$,
+strictly below every other term. This proves~\eqref{xx:pn:shiftval}.
+\end{proof}
+
+The conditions have real content. Allowing $\mu=p^e$ in the shifted theorem
+would include the symmetry zeros: for example $p=3,\mu=3,Y=6$ gives
+$T_7(6)=0$. Dropping $p\nmid d$ can also invalidate the valuation formula:
+$p=3,\mu=4,Y=9$ gives
+\[
+ T_9(9)=\frac{2021}{268800},\qquad v_3(T_9(9))=-1,
+\]
+whereas $e-\mu=-2$. This is a failure of the unrestricted valuation formula, not
+a new coefficient zero.
+
+\emph{Editorial note.}  $T_7(6)=0$ is the symmetry zero $b(13,6)=0$, the case
+$h=3$ of Proposition~\ref{xx:prop:symmetry}.
+
+\subsubsection{New infinite regions and the remaining obstruction}
+
+By~\eqref{xx:pm:b}, either theorem gives the valuation of $b(Y+d,Y)$ by adding
+$v_p((Y+d)!)-v_p(Y!)$. Here are four infinite divisibility progressions beyond
+the source's completed offsets $d\le16$; each listed $d+1$ is composite.
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$d$&$p$&condition on $Y$&$v_p(T_d(Y))$\\\hline
+17&2&$32\mid Y$&$v_2(Y)-17$\\
+17&3&$9\mid Y$&$v_3(Y)-8$\\
+20&3&$27\mid Y$&$v_3(Y)-10$\\
+21&5&$25\mid Y$&$v_5(Y)-5$
+\end{tabular}
+\end{center}
+For their first positive $Y$, the respective valuations of $b(Y+d,Y)$ are
+$3,0,1,1$. The supplied exact output records the corresponding integers.
+
+Every hypothetical additional integer zero must avoid all divisibility
+progressions covered by the two theorems. In particular, taking $p=2$ in
+Theorem~\ref{xx:pn:principal} gives the necessary restriction
+\[
+ T_d(Y)=0\quad\Longrightarrow\quad 2^{v_2(Y)}<d.
+\]
+The criteria do not exclude every pair $(d,Y)$, and they do not prove the
+conjectured complete zero list consisting of the symmetry family and $b(8,5)$.
+
+\subsubsection{Verification and positioning}
+
+An integer-triangle verifier
+(\texttt{code/06-padic-\allowbreak valuations-\allowbreak verify\_padic.py})
+checks both valuation formulas through row $m=360$, for the eleven primes
+through $31$: 7,749 principal and 2,299 shifted instances pass. A separate
+direct rational power-series recurrence checks 3,073 principal and 437 shifted
+instances for $1\le Y\le120$, $d\le60$. A third checker, using direct
+integer-scaled convolution, passes 2,421 principal and 463 shifted cases,
+including 1,352 principal boundary cases $\mu=p^e$, and 5,500 denominator
+checks. These independent finite checks supplement the infinite proof and are
+included with their exact outputs.
+
+The source comparison is with the pinned ProveIt manuscript, this report at
+commit \texttt{ca81647a9}; its current default-branch file was checked again on
+1 October 2026 and still contains the prime-offset theorem and fixed-offset
+certificates through 16. Davis's paper~\cite{xx-davis} supplies the classical
+valuation method for a related log series. The contribution here is its direct
+adaptation to~\eqref{xx:pm:H}, the two-term shifted calculation, and the
+resulting exact nonvanishing families for this coefficient array. No
+exhaustive priority claim is made. A complete integer-root classification, and
+hence the exact A293239 term-count formula, remain open. The proof is not a
+proof-assistant formalization or externally refereed publication.
+
+% ---------------------------------------------------------------------------
+\subsection{Lehmer--Comtet additions: provenance, files and formal status}\label{xx:lc:sec:provenance}
+
+\subsubsection{Provenance}
+
+Subsections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} were built from
+\textbf{three} manuscripts of batch~72A, which arrived in commit
+\texttt{1512ef835} and were placed in this report by commit
+\texttt{d292c6765}, as its additions~05, 04 and~06.  All three are dated
+1 October 2026, carry the line ``Research note prepared for Vladimir
+Reshetnikov with OpenAI'', and are pinned to ProveIt commit
+\texttt{ca81647a9f679e96\allowbreak d49ffdbc54b0c0ab\allowbreak 13d10a36},
+whose text of this article (blob \texttt{7344f3aa4dc9}) they cite.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item Manuscript~12 (addition~05), \emph{Complete Nonvanishing on
+ Prime-Multiple Offsets: Lehmer--Comtet coefficients and derivatives of $x^x$},
+ 6-page PDF, archive
+ \texttt{ProveIt\_\allowbreak Lehmer\_\allowbreak Comtet\_\allowbreak Prime\_\allowbreak Multiple\_\allowbreak Nonvanishing.zip}.
+ Its six sections form
+ Subsection~\ref{xx:pm:sec}.  It contributes Theorem~\ref{xx:pm:main}, its
+ three corollaries, the localization, barrier, cone and small-exponent lemmas,
+ and Theorem~\ref{xx:pm:square}.
+\item Manuscript~09 (addition~04), \emph{Stirling Residues and Finite
+ Candidate Lists: Arithmetic restrictions on Lehmer--Comtet zeros}, 6-page PDF,
+ archive
+ \texttt{ProveIt\_\allowbreak Lehmer\_\allowbreak Comtet\_\allowbreak Stirling\_\allowbreak Residues\_\allowbreak and\_\allowbreak Candidate\_\allowbreak Lists.zip}.
+ Its six sections form
+ Subsection~\ref{xx:st:sec}.  It contributes the Stirling residue, the root
+ displacements, the candidate list, Corollaries~\ref{xx:st:five}
+ and~\ref{xx:st:squares}, and Theorem~\ref{xx:st:prime-square-reduction}.
+\item Manuscript~17 (addition~06), \emph{Uniform $p$-adic Nonvanishing: Two
+ valuation families for Lehmer--Comtet coefficients}, 4-page PDF, archive
+ \texttt{ProveIt\_\allowbreak Lehmer\_\allowbreak Comtet\_\allowbreak Uniform\_\allowbreak Padic\_\allowbreak Nonvanishing.zip}.  Its six sections form
+ Subsection~\ref{xx:pn:sec}.  It contributes Theorems~\ref{xx:pn:principal}
+ and~\ref{xx:pn:shifted} and their valuation lemmas.
+\end{itemize}
+Every theorem, lemma and corollary of the three manuscripts is printed, with
+its proof and with every non-claim and limitation the manuscripts state; none
+was weakened or strengthened.  The one exception to printing in full is
+recorded in the second item below.  The editorial choices were these.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item The additions are placed as subsections at the end of
+ Part~\ref{xx:part}, so that no existing section, theorem or equation number
+ moves; the order is 12, 09, 17, because 09 builds on 12.
+\item Three lemmas that manuscript~09 re-proves from manuscript~12 are printed
+ once, as manuscript~12's; 09's statements and its condensed proofs are
+ recorded in Remarks~\ref{xx:st:cone}, \ref{xx:st:ordinary}
+ and~\ref{xx:st:prime-square-base}.  The three manuscripts' identical
+ definitions of $H$, $T_d$ and $b(Y+d,Y)$ are printed once,
+ as~\eqref{xx:pm:H} and~\eqref{xx:pm:b}.
+\item Results of this part that the manuscripts re-derive are credited where
+ they occur (the list in Subsection~\ref{xx:lc:sec:intro}); the restated
+ offset-eight certificate is kept, with a note identifying it as $R_8(Y+8)$.
+\item The letters are changed as in Table~\ref{xx:lc:tab:notation}, with no
+ change of normalization.  The manuscripts' citations of ``ProveIt, Part~I''
+ are re-targeted to this part, manuscript~09's citations of its companion to
+ Subsection~\ref{xx:pm:sec}, and their file names to the shipped names.  The
+ references of Davis, Ravichandran and Adelberg--Lengyel are merged into the
+ bibliography.
+\item Remarks~\ref{xx:lc:rem:cone}, \ref{xx:lc:rem:second-route}
+ and~\ref{xx:lc:rem:pm-pn}, the notation subsection and the editorial notes are
+ additions of the intake, not of the manuscripts.
+\end{itemize}
+Not shipped: the three manuscripts' sources, PDFs and \texttt{README.md}
+files; manuscript~09's embedded copy of manuscript~12
+(\texttt{prime\_\allowbreak multiple\_\allowbreak companion\_\allowbreak source.zip},
+byte-identical to archive~12, and \texttt{prime\_\allowbreak multiple\_\allowbreak companion.pdf},
+byte-identical to 12's PDF); and the three copies of the generic TeX wrapper
+\texttt{build\_\allowbreak local.sh}.  The archives survive in the history of
+commit \texttt{1512ef835}.  The READMEs add no mathematical claim beyond the
+manuscripts; those of manuscripts~12 and~17 say that the proofs received
+``independent review'', which this report cannot confirm.
+
+\subsubsection{Files}
+
+The manuscripts' code and data are shipped byte-identical to the delivery,
+with the prefixes \texttt{04-stirling-\allowbreak residues-}~(09),
+\texttt{05-prime-\allowbreak multiple-}~(12) and
+\texttt{06-padic-\allowbreak valuations-}~(17).  All programs use only the
+Python standard library.
+% longtable steps the article-wide table counter; restore it afterwards so
+% that no later table number moves.
+\begingroup
+\renewcommand{\theHtable}{xx.lc.files}%
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.50\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Shipped path (delivery name) & Purpose\\
+\midrule
+\endhead
+\texttt{code/05-prime-\allowbreak multiple-\allowbreak verify.py} (\texttt{verify.py}) & Exact checks of Subsection~\ref{xx:pm:sec}; writes \texttt{checks.json} beside itself.\\
+\texttt{data/05-prime-\allowbreak multiple-\allowbreak checks.json} (\texttt{checks.json}) & Its recorded output.\\
+\texttt{code/05-prime-\allowbreak multiple-\allowbreak replay\_convolution.py} (\texttt{replay\_\allowbreak convolution.py}) & Independent convolution replay; writes a \texttt{.json} of its own name beside itself.\\
+\texttt{data/05-prime-\allowbreak multiple-\allowbreak replay\_convolution.json} (\texttt{replay\_\allowbreak convolution.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_stirling.py} (\texttt{verify\_\allowbreak stirling.py}) & Stirling residues, triangle congruences, root displacements; writes \texttt{stirling\_\allowbreak checks.json} beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak stirling\_checks.json} (\texttt{stirling\_\allowbreak checks.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_prime\_square\_lifts.py} (\texttt{verify\_\allowbreak prime\_\allowbreak square\_\allowbreak lifts.py}) & Roots modulo $p^3$ at offset $p^2-1$, $p=3,5,7,11$; writes \texttt{prime\_\allowbreak square\_\allowbreak lifts.json} beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak prime\_square\_lifts.json} (\texttt{prime\_\allowbreak square\_\allowbreak lifts.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak verify\_square\_candidates.py} (\texttt{verify\_\allowbreak square\_\allowbreak candidates.py}) & Exact values at the one $(p-1)^2$ candidate, seven primes; writes \texttt{square\_\allowbreak candidates.json} beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak square\_candidates.json} (\texttt{square\_\allowbreak candidates.json}) & Its recorded output.\\
+\texttt{code/04-stirling-\allowbreak residues-\allowbreak replay\_falling\_products.py} (\texttt{replay\_\allowbreak falling\_\allowbreak products.py}) & Independent integer falling-product replay (run with \texttt{-O}); writes a \texttt{.json} of its own name beside itself.\\
+\texttt{data/04-stirling-\allowbreak residues-\allowbreak replay\_falling\_products.json} (\texttt{replay\_\allowbreak falling\_\allowbreak products.json}) & Its recorded output.\\
+\texttt{code/06-padic-\allowbreak valuations-\allowbreak verify\_padic.py} (\texttt{verify\_\allowbreak padic.py}) & Integer-triangle check of both valuation families through row $360$; writes \texttt{padic\_\allowbreak checks.json} beside itself.\\
+\texttt{data/06-padic-\allowbreak valuations-\allowbreak padic\_checks.json} (\texttt{padic\_\allowbreak checks.json}) & Its recorded output.\\
+\texttt{code/06-padic-\allowbreak valuations-\allowbreak check\_rational\_powers.py} (\texttt{check\_\allowbreak rational\_\allowbreak powers.py}) & Direct rational power recurrence; prints its JSON to standard output and writes nothing.\\
+\texttt{data/06-padic-\allowbreak valuations-\allowbreak rational\_power\_checks.json} (\texttt{rational\_\allowbreak power\_\allowbreak checks.json}) & Its recorded output.\\
+\texttt{code/06-padic-\allowbreak valuations-\allowbreak replay\_padic\_powers.py} (\texttt{replay\_\allowbreak padic\_\allowbreak powers.py}) & Integer-scaled convolution replay with boundary and denominator checks; writes a \texttt{.json} of its own name beside itself.\\
+\texttt{data/06-padic-\allowbreak valuations-\allowbreak replay\_padic\_powers.json} (\texttt{replay\_\allowbreak padic\_\allowbreak powers.json}) & Its recorded output.\\
+\bottomrule
+\end{longtable}
+\endgroup
+\addtocounter{table}{-1}
+The JSON files keep the manuscripts' letters: their \texttt{r} is the offset
+$d$ and their \texttt{m} the multiplier $\mu$, and the field
+\texttt{primitive\_r8} of the convolution replay holds the coefficients of
+$F(Y)=R_8(Y+8)$, not of $R_8(X)$.  At the intake every program was run under
+its shipped name on a copy of this directory and exited with status~0; every
+output equalled the shipped file, up to line endings (a Windows Python may
+write CRLF).  The programs write beside themselves, never into
+\texttt{data/}; the README gives the commands.
+
+\subsubsection{Formal status}\label{xx:lc:sec:formal}
+
+Nothing in this addition is formalized, and its placement in this report
+confers no formal status.  No Lean or Rocq file in the repository mentions the
+Lehmer--Comtet numbers, OEIS A008296 or OEIS A293239.  The manuscripts claim no formal
+verification, no referee and no exhaustive priority.
 
 \clearpage
 \section{\texorpdfstring{$x^{x^2}$}{x^(x^2)}: OEIS A290268}\label{xxb:part}
@@ -1525,6 +2941,18 @@ first addition, print a further manuscript whose main theorem is the case
 $m=3$ of that addition's depth theorem, proved by a second route: a harmonic
 sign law and positivity propagation in the logarithm exponent.  The open
 region is unchanged.
+
+\smallskip
+\textbf{Third later addition (1 October 2026).}
+Sections~\ref{xxb:d56:sec:intro}--\ref{xxb:d56:sec:provenance}, after the
+second, print two further manuscripts.  The first closes the missing step at
+deficits $m=5,6$ (Theorem~\ref{xxb:d56:thm:main}), so the open region is now
+$m\ge7$, $n\ge2k+2$, and replaces the tower-type cutoffs of the first addition
+by $\lceil(2m+1)e^m\rceil$ (Theorem~\ref{xxb:d56:thm:general}).  The second
+improves the lower bound to $3n^2/8+(n/2)\log n-(n/2)\log\log n-5n/4$ for
+$n\ge e^{10}$ (Theorem~\ref{xxb:cb:thm:pointwise}) and bounds the summatory
+count (Theorem~\ref{xxb:cb:thm:sum}); the leading constant of the explicit
+lower bound is still $3/8$.
 
 \medskip
 \textbf{Abstract of the original report.}\itshape
@@ -1603,6 +3031,13 @@ $(3n^2+28n-111)/8$ for odd $n\ge17$ (Remark~\ref{xxb:dc:rem:improve}), a
 linear-term gain of $2n-10$, respectively $2n-14$; the leading constant $3/8$
 is unchanged.  Theorem~\ref{xxb:thm:main-bounds} stands as stated.
 
+\emph{Update (1 October 2026, batch 72A).}  Corollary~\ref{xxb:d56:cor:count}
+adds the classified depths five and six, a further linear gain, and
+Theorem~\ref{xxb:cb:thm:pointwise} gives
+$a(n)\ge3n^2/8+(n/2)\log n-(n/2)\log\log n-5n/4$ for every $n\ge e^{10}$; the
+leading constant of every explicit lower bound is still $3/8$.
+Theorem~\ref{xxb:cb:thm:sum} bounds the cumulative count,
+$\sum_{n\le X}a(n)\ge11X^3/72+5X^2/6-O(X)$.
 
 \subsection{A canonical polynomial expansion}\label{xxb:sec:canonical}
 Set $z=x^2$ and $L=\log x$. Define polynomials $P_n\in\Z[z,L]$ by
@@ -2138,6 +3573,12 @@ changes exactly once in the tail (Lemma~\ref{xxb:d3:lem:E-sign}), and a
 propagation recurrence in the logarithm exponent finishes the proof with a
 different finite certificate.
 
+\emph{Update (1 October 2026, batch 72A).}  At $m=5$ and $m=6$, where the
+residual polynomial $\Pi_m$ is quadratic and no longer monotone, it has been
+overcome by exact lower bounds on the mean of $\tau^2$ and two larger finite
+certificates (Theorem~\ref{xxb:d56:thm:main}).  The obstruction as stated
+remains for $m\ge7$.
+
 \subsection{Generating functions and equivalent formulas for the upper bound}
 \label{xxb:sec:gf}
 All identities in this section are proved identities for $\U(n)$.
@@ -2358,6 +3799,18 @@ away from the reflection zeros; the full conjecture remains open.  At every
 fixed $m\ge3$ the region is also reduced to finitely many cells by
 Theorem~\ref{xxb:dc:thm:finite}, but with bounds too large to compute.
 
+\emph{Update (1 October 2026, batch 72A).}  For $m=5$ and $m=6$ the converse
+is now proved as well (Theorem~\ref{xxb:d56:thm:main}).  The region still
+unproved is
+\[
+ m=k-j\ge7,\qquad n\ge2k+2,
+\]
+away from the reflection zeros, and the full conjecture remains open.  The
+finite reduction at every fixed $m\ge3$ now has cutoffs
+$\lceil(2m+1)e^m\rceil$ and twice that (Theorem~\ref{xxb:d56:thm:general}), a
+rectangle of $2\lceil(2m+1)e^m\rceil^2$ cells --- still large: about
+$5.4\cdot10^8$ cells at $m=7$.
+
 \begin{theorem}[Exact reduction of the OEIS conjecture]\label{xxb:thm:equivalence}
 The equality $a(n)=\U(n)$ for every $n\ge0$ is equivalent to
 Conjecture~\ref{xxb:conj:support}. It is also equivalent to proving the
@@ -2399,7 +3852,8 @@ reflection case is transparent because the series then becomes even;
 the remaining finite-difference cancellations are the essential issue.
 Equation~\eqref{xxb:eq:gap-transform} is an equivalent residual lemma, not an
 additional theorem claimed by this article.  (Since the update above it is
-needed only for $m\ge5$.)
+needed only for $m\ge5$; since 1 October 2026, Theorem~\ref{xxb:d56:thm:main},
+only for $m\ge7$.)
 
 \subsection{Conclusion}
 The proposed formula has a rigorous structural explanation. The obvious
@@ -2419,7 +3873,8 @@ The global equality is not proved here: its remaining obligation is the
 nonvanishing statement in \eqref{xxb:eq:gap-region}, not any of the counting
 or generating-function manipulations.  (Update, 29 September 2026: that
 statement is now proved at deficits $m=3,4$, Theorem~\ref{xxb:dc:thm:four};
-it remains open for $m\ge5$.)
+it remains open for $m\ge5$.  Update, 1 October 2026: also at $m=5,6$,
+Theorem~\ref{xxb:d56:thm:main}; it remains open for $m\ge7$.)
 
 \subsection{Reproducing the computations}\label{xxb:app:reproduce}
 The archive needs Python 3.10 or later and a C++17 compiler for the
@@ -2497,6 +3952,9 @@ at logarithmic deficits three and four, for every $n$, the only vanishing
 coefficients are the reflection zeros of
 Theorem~\ref{xxb:thm:reflection-zeros}.  The unproved region is now
 $m\ge5$, $n\ge2k+2$.  The full A290268 conjecture is \emph{not} proved.
+(\emph{Update, 1 October 2026:} deficits five and six are closed in
+Subsection~\ref{xxb:d56:sec:intro}ff., Theorem~\ref{xxb:d56:thm:main}; the
+unproved region is $m\ge7$, $n\ge2k+2$.)
 
 \smallskip
 \textbf{Written without this part.}  The manuscript was prepared against the
@@ -3721,6 +5179,10 @@ $(3\rho^2+13\rho-18)/2$.  It agrees with the conjectured value at $N=8,10$ and i
 cell there has depth five.  These examples illustrate the precise
 boundary of the argument; they are not evidence that depth five fails.
 No asymptotic equivalence $a(N)\sim N^2/2$ is deduced here.
+(\emph{Update, 1 October 2026:} depth five is now classified,
+Theorem~\ref{xxb:d56:thm:main}, and the cell at $N=12$ is nonzero;
+Corollary~\ref{xxb:d56:cor:count} adds depths five and six to this bound,
+and Theorem~\ref{xxb:cb:thm:pointwise} lets the number of depths grow with $N$.)
 
 \begin{remark}[How much this improves $\Lambda$; editorial]\label{xxb:dc:rem:improve}
 Since $\beta=\Lambda$, the gain of \eqref{xxb:dc:eq:lower} over
@@ -3774,6 +5236,16 @@ Proposition~\ref{xxb:prop:finite} already certifies nonvanishing of every
 depth-five and depth-six cell with $n\le3000$; what is missing is the
 reduction, and the seed signs it will require.)
 
+\emph{Update (1 October 2026, batch 72A): answered.}  Manuscript~70 carries out
+exactly this programme (Subsections~\ref{xxb:d56:sec:five}
+and~\ref{xxb:d56:sec:six}).  The cutoffs are $(R,Q)=(410,839)$ at depth five and
+$(1571,3048)$ at depth six.  They are certified by exact lower bounds on the
+mean of $\tau^2$ (Lemmas~\ref{xxb:d56:lem:seeds} and~\ref{xxb:d56:lem:seeds6})
+--- moment seeds rather than sign seeds, since $\Pi_5$ and $\Pi_6$ are not
+monotone.  The rectangles of $343{,}151$ and $4{,}785{,}360$ cells are settled
+by two recurrences each, and Theorem~\ref{xxb:d56:thm:main} classifies both
+depths.
+
 \subsubsection{Sharpening the fixed-depth reduction}
 \textbf{Question 2.}  How small can uniform fixed-depth cutoffs be made as
 functions of $d$?  The constants in \eqref{xxb:dc:eq:constants} are
@@ -3781,6 +5253,14 @@ intentionally wasteful.  The largest residual root is $\pi^2\cot^2(\pi/d)$, of
 order $d^2$, so endpoint concentration on a logarithmic scale is a natural
 quantity to analyze.  This observation does not yet prove an optimal
 cutoff growth rate.
+
+\emph{Update (1 October 2026, batch 72A): answered, not optimally.}
+Theorem~\ref{xxb:d56:thm:general} takes exactly this route --- the largest
+residual root, below $d^2$, and beta logarithmic moments --- and gives the
+cutoffs $\widehat Q_d=\lceil(2d+1)e^d\rceil$, $\widehat K_d=2\widehat Q_d$, a
+rectangle of $O(d^2e^{2d})$ cells in place of the tower-type constants
+\eqref{xxb:dc:eq:constants}.  No optimality is claimed; the practical cutoffs
+at $d=3,\ldots,6$ are far smaller.
 
 \textbf{Question 3.}  Can lower bounds involving the first few moments of
 $\tau^2$, or positivity in an orthogonal-polynomial basis adapted to
@@ -3792,6 +5272,13 @@ Subsections~\ref{xxb:d3:sec:harmonic}--\ref{xxb:d3:sec:tail} gives an
 explained cutoff, the exact sign change of $\mathsf E_q$ between $q=37$ and
 $q=38$, and a different small certificate; it bears on Questions~2 and~3
 without answering them for general $d$.)
+(\emph{Update, 1 October 2026:} answered in part.
+Proposition~\ref{xxb:d56:prop:general} replaces the affine minorant at every
+depth by the sharp distribution-free first-moment criterion
+$\mathbb E\tau^2>\varrho_d$; at $d=5,6$ its thresholds are those of the
+convexity criteria \eqref{xxb:dc:eq:nextcriteria}.  Positivity in an orthogonal-polynomial basis is
+not attempted, and the certificates obtained this way are not small at large
+$d$.)
 
 \subsubsection{The remaining full conjecture}
 \textbf{Question 4.}  Prove that every fixed-depth rectangle has only the
@@ -3800,7 +5287,8 @@ counterexample.  The present results show where additional zeros must be
 searched for at each depth, but they do not supply an induction in $d$.
 The polynomial $\Pi_d$ acquires additional oscillations, which must be
 addressed rather than ignored.  (This is Conjecture~\ref{xxb:conj:support}
-restricted to $m\ge5$.)
+restricted to $m\ge5$; \emph{update, 1 October 2026:} since
+Theorem~\ref{xxb:d56:thm:main}, restricted to $m\ge7$.)
 
 \textbf{Question 5.}  Can the real-zero bound \eqref{xxb:dc:eq:J} be combined
 with arithmetic separation to exclude integer zeros uniformly?  The Mellin
@@ -3861,7 +5349,8 @@ first proves that it is exhaustive for those two infinite-parameter
 strata.  It is not extrapolation from a finite sample.  The full counting
 formula remains a separate target at depths five and higher, with the
 remaining questions and the precise proof boundary now substantially
-narrowed.
+narrowed.  (\emph{Update, 1 October 2026:} depths five and six are settled by
+Theorem~\ref{xxb:d56:thm:main}; the target is now depths seven and higher.)
 
 \subsubsection{A compact standalone finite verifier}\label{xxb:dc:sec:verifier}
 The following standalone version verifies the two exact rectangles and six seed
@@ -4030,7 +5519,9 @@ development confers no formal status.  The Lean development
  does not exist in the repository.
 \item Theorem~\ref{xxb:dc:thm:four} would discharge the nonvanishing inclusion
  only on cells of depth at most four; depths $d\ge5$ remain, so the
- \texttt{Main.lean} theorems stay conditional.
+ \texttt{Main.lean} theorems stay conditional.  (Update, 1 October 2026:
+ with Theorem~\ref{xxb:d56:thm:main}, on paper, depths at most six; depths
+ $d\ge7$ remain.)
 \item The only unconditional statement about the sequence itself is
  \texttt{Table.a\_\allowbreak values\_\allowbreak le\_\allowbreak 53}, $a(n)$ equal to the closed form for
  $n\le53$, a \texttt{native\_decide} certificate.
@@ -4056,6 +5547,8 @@ Theorem~\ref{xxb:dc:thm:four}}, which the batch-42 addition had already proved
 in this part; it is printed here as a \emph{second proof} of that case.  Nothing
 in it changes the proof boundary of this part: the unproved region is still
 $m\ge5$, $n\ge2k+2$, and the full A290268 conjecture is \emph{not} proved.
+(\emph{Update, 1 October 2026:} since
+Subsections~\ref{xxb:d56:sec:intro}ff., the unproved region is $m\ge7$.)
 
 \smallskip
 \textbf{A correction to the manuscript.}  The manuscript says, in its
@@ -4164,7 +5657,8 @@ $R_{N,k}$ is $\mathcal Q_k^{(r)}$ (Table~\ref{xxb:d3:tab:notation}).
 (ii) ``$D\ge3$ is the stated open core'', ``the first open depth'' and
 ``depths $D\ge4$ remain open'' are stale at the pin: depths three and four
 were settled by Theorem~\ref{xxb:dc:thm:four}, and the open depths are
-$d\ge5$.  (iii) Of the ``three new ingredients'', the first two are not new
+$d\ge5$ (since 1 October 2026, $d\ge7$: Theorem~\ref{xxb:d56:thm:main}).
+(iii) Of the ``three new ingredients'', the first two are not new
 relative to this part (the bullets above); the third, the harmonic phase
 transition with its propagation in $k$, is.
 \end{quote}
@@ -4993,6 +6487,8 @@ $d\geq4$ (or a global argument that treats all depths simultaneously).
 \emph{Editorial note.}  In this report the depth-four theorem is
 Theorem~\ref{xxb:dc:thm:four}; what is still needed is every $d\ge5$, the
 region $m\ge5$, $n\ge2k+2$ of Section~\ref{xxb:sec:remaining}.
+(\emph{Update, 1 October 2026:} depths five and six are
+Theorem~\ref{xxb:d56:thm:main}; what is still needed is every $d\ge7$.)
 
 \subsection{Second route to depth three: certificate, formalization blueprint and research questions}\label{xxb:d3:sec:certificate}
 
@@ -5151,7 +6647,12 @@ $K_d,Q_d$ as functions of $d$, beyond which every entry at depth $d$ is
 nonzero except the holes, are Theorem~\ref{xxb:dc:thm:finite}
 \eqref{xxb:dc:eq:constants}.  Small or sharp bounds, for this route or that
 one, remain open; they are Questions~2 and~3 of
-Subsection~\ref{xxb:dc:sec:future}.
+Subsection~\ref{xxb:dc:sec:future}.  (\emph{Update, 1 October 2026:}
+Theorem~\ref{xxb:d56:thm:general} makes both bounds singly exponential,
+$\widehat Q_d=\lceil(2d+1)e^d\rceil$ for the strip in $q$ and
+$\widehat K_d=2\widehat Q_d$ for the degree in $k$; at $d=3$ these are $141$
+and $282$, against the strip $1\le q\le37$ and anchor degree $14$ here.  Sharp
+bounds remain open.)
 
 \begin{question}[Classical identification]
 Identify $\mathcal Q_k^{(r)}$ precisely within the continuous Hahn or related
@@ -5207,6 +6708,18 @@ function of $1,\frac12,\ldots,\frac1{2d},-1,-\frac12,\ldots,-\frac1q$.
 Determine the number and location of its sign transitions as $q\to\infty$.
 The $d=3$ transition $37\to38$ is the first nontrivial case.
 \end{question}
+
+\emph{Editorial note (1 October 2026, batch 72A).}  This bears on the
+question without answering it.  At every $d\ge3$, up to the explicit factor
+in \eqref{xxb:dc:eq:sign-rule}, the sign of the $k=0$ tail is that of the
+reduced expectation $\mathcal E_{d,0,q}[\Pi_d(\tau^2)]$, and
+Theorem~\ref{xxb:d56:thm:general} shows that this expectation is positive for
+all $q\ge\lceil(2d+1)e^d\rceil$: every sign transition lies below that bound.
+The Mellin interpolant $\mathcal F_{d,0}$ has at most $d-1$ real zeros
+(Theorem~\ref{xxb:dc:thm:zero-count}).  At
+$d=3$ the tail-moment formula of Remark~\ref{xxb:d56:rem:d3} reproduces
+$2\mathsf E_q$ and the transition $37\to38$ exactly.  The precise number and
+location of the transitions at $d\ge4$ remain open.
 
 \begin{question}[Global A290268]
 Can the depthwise results be assembled into a single support theorem without
@@ -5384,6 +6897,1320 @@ Theorem~\ref{xxb:d3:thm:main} would discharge the nonvanishing inclusion only
 on cells of depth three, which Theorem~\ref{xxb:dc:thm:four} already covers on
 paper; the \texttt{Main} theorems stay conditional.  The six modules of
 Section~\ref{xxb:d3:sec:formalization} are proposals and do not exist.
+
+% ---------------------------------------------------------------------------
+% Batch 72A, manuscripts 70 and 68 (additions 08 and 07 of this report),
+% written into this part on 1 October 2026.  Labels carry the prefixes
+% xxb:d56: (manuscript 70 and the intake's text on it) and xxb:cb:
+% (manuscript 68).  The subsections are appended after the batch-70
+% addition, so that no existing section, theorem or equation number moves.
+% ---------------------------------------------------------------------------
+
+\subsection{Depths five and six, and count bounds}\label{xxb:d56:sec:intro}
+
+\begin{quote}\small
+\textbf{What this addition is.}
+Subsections~\ref{xxb:d56:sec:intro}--\ref{xxb:d56:sec:provenance} were
+written into this part on 1 October 2026 from two later manuscripts of
+batch~72A, both dated 1 October 2026 and both pinned to this report's text at
+commit \texttt{ca81647a9}:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item manuscript~70, \emph{Depths Five and Six Nonvanishing for OEIS A290268}
+ (Subsections~\ref{xxb:d56:sec:theorem}--\ref{xxb:d56:sec:general});
+\item manuscript~68, \emph{Pointwise and Summatory Bounds for OEIS A290268}
+ (Subsection~\ref{xxb:cb:sec}), written after manuscript~70; its pointwise
+ bound uses 70's Theorem~7.2, which is Theorem~\ref{xxb:d56:thm:general}
+ here.
+\end{itemize}
+Provenance is in Subsection~\ref{xxb:d56:sec:provenance}.  They continue the
+depth coordinates of Subsections~\ref{xxb:dc:sec:intro}--\ref{xxb:dc:sec:provenance}
+and answer two of the research questions of
+Subsection~\ref{xxb:dc:sec:future}.  \textbf{The full A290268 conjecture is
+still not proved}, and neither is the leading constant $\tfrac12$ of
+$a(N)$ in this report.
+
+\smallskip
+\textbf{What is new relative to this part.}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item \emph{Depths five and six are classified}
+ (Theorem~\ref{xxb:d56:thm:main}): at $d=5,6$ the only zeros are the symmetry
+ holes $M=k+4d+1$, $k+d$ even.  This answers Question~1 of
+ Subsection~\ref{xxb:dc:sec:future}.  The proof follows the route that
+ question proposes: exact moment seeds for the quadratic criteria
+ \eqref{xxb:dc:eq:nextcriteria}, and two finite rectangles of $343{,}151$ and
+ $4{,}785{,}360$ cells.  The open region of
+ Conjecture~\ref{xxb:conj:support} is therefore now $m\ge7$, $n\ge2k+2$.
+\item \emph{Singly exponential fixed-depth cutoffs}
+ (Theorem~\ref{xxb:d56:thm:general}): at every depth $d\ge3$, the cutoffs
+ $\widehat Q_d=\lceil(2d+1)e^d\rceil$ and $\widehat K_d=2\widehat Q_d$
+ replace the tower-type constants \eqref{xxb:dc:eq:constants} of
+ Theorem~\ref{xxb:dc:thm:finite}.  This answers Question~2, without a claim of
+ optimality.
+\item \emph{The largest-root affine minorant}
+ (Proposition~\ref{xxb:d56:prop:general}) replaces
+ Lemma~\ref{xxb:dc:lem:minorant} at every depth, sharply among distribution-free
+ criteria.  This answers Question~3 in part: it is a first-moment criterion,
+ not positivity in an orthogonal-polynomial basis.
+\item \emph{An explicit pointwise bound} (Theorem~\ref{xxb:cb:thm:pointwise}):
+ $a(N)\ge3N^2/8+(N/2)\log N-(N/2)\log\log N-5N/4$ for every $N\ge e^{10}$.
+ This is the first explicit bound with a gain of order $N\log N$ over the
+ bulk; the leading constant of every explicit bound is still $\tfrac38$.
+\item \emph{An exact summatory bound} (Theorem~\ref{xxb:cb:thm:sum}),
+ $\sum_{N\le X}a(N)\ge11X^3/72+5X^2/6-O(X)$ for every $X$, with average
+ constant $\tfrac{11}{24}$ (Corollary~\ref{xxb:cb:cor:average}).  The constant
+ $\tfrac{11}{72}$ is all that the row budget of
+ Theorem~\ref{xxb:dc:thm:zero-count} can give
+ (Proposition~\ref{xxb:cb:prop:sharpness}).  This quantifies the last
+ sentence of Question~6.
+\end{itemize}
+
+\smallskip
+\textbf{What is not new.}  The manuscripts re-derive several results printed
+above.  Each is printed once and credited:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item manuscript~70's Lemma~2.1 (Lemma~\ref{xxb:d56:lem:bulk}) is
+ Theorems~\ref{xxb:dc:thm:bulk} and~\ref{xxb:dc:thm:holes}, with the same
+ proofs; its branch-cut formula \eqref{xxb:d56:eq:cut} is
+ Proposition~\ref{xxb:dc:prop:integral}, which it credits; its
+ factorization and recurrence are Proposition~\ref{xxb:dc:prop:factor}, which
+ it credits;
+\item its comparison Lemma~\ref{xxb:d56:lem:compare} is
+ Proposition~\ref{xxb:dc:prop:base} at $d=5$, with the proofs of
+ Lemmas~\ref{xxb:dc:lem:covariance} and~\ref{xxb:dc:lem:ratios};
+\item its two finite recurrences are \eqref{xxb:dc:eq:Vrec}
+ and~\eqref{xxb:dc:eq:Hpascal}, and its Lemma~\ref{xxb:d56:lem:jensen} is the
+ criterion \eqref{xxb:dc:eq:nextcriteria}, which it credits;
+\item its Corollary~\ref{xxb:d56:cor:count} extends
+ Corollary~\ref{xxb:dc:cor:lower} by two depths, and manuscript~68's
+ Proposition~\ref{xxb:cb:prop:depthcount} at the depth cap $\bar d=4$ is that
+ corollary;
+\item manuscript~68's row budget is Theorem~\ref{xxb:dc:thm:zero-count}, which
+ it credits.
+\end{itemize}
+
+\smallskip
+\textbf{A link the manuscript does not make.}  Manuscript~70 does not cite the
+second route to depth three
+(Subsections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}).  Yet its
+tail-moment formula \eqref{xxb:d56:eq:tail-moment}, taken at $d=3$, is exactly
+the harmonic quantity $\mathsf E_q$ of \eqref{xxb:d3:eq:E-def}, and it
+reproduces the cutoff $q\ge38$ of that route and of
+Proposition~\ref{xxb:dc:prop:smallcert}.  Its parameter integral in the proof
+of Lemma~\ref{xxb:d56:lem:seeds} is the beta--sine transform
+\eqref{xxb:d3:eq:H-beta-sine}.  Remark~\ref{xxb:d56:rem:d3} records both.
+
+\smallskip
+\textbf{Notation.}  The depth coordinates of
+Table~\ref{xxb:dc:tab:notation} apply unchanged, with the batch-42 names for
+the objects batch~42 already named.  Several letters of the manuscripts name
+\emph{different numbers} from the same letters above, and are renamed by
+Table~\ref{xxb:d56:tab:notation}.
+\end{quote}
+
+\subsubsection{Notation: depths five and six, and count bounds}\label{xxb:d56:sec:notation}
+
+The manuscripts use the depth coordinates of
+Table~\ref{xxb:dc:tab:notation}: $k$ is the exponent of $\log x$, $d$ the
+depth, $M=N-k$, $q=M-k-2d-1$, and $H_{d,k,q}$ is the integer
+\eqref{xxb:dc:eq:q}.  The letters $\varphi$, $\gamma$, $R_d$, $\Pi_d$,
+$h_d$, $\nu_d$, $\tau$, $s$, $y$, $p=2d$, $\delta=q-p$, $S_\delta$,
+$D_\delta$, $\mu_{d,r}$, $V_k(u)$, $J(d,k)$, $\chi_d(N)$ and $\beta(N)$ mean what
+they mean in Subsections~\ref{xxb:dc:sec:models}--\ref{xxb:dc:sec:counts}.
+The practical cutoffs at a fixed depth are written $(R,Q)$, as in
+Proposition~\ref{xxb:dc:prop:smallcert}.  Everything else that collides is
+renamed as in Table~\ref{xxb:d56:tab:notation}, with no change of
+normalization.  The first three rows are where a reader will go wrong.
+
+% The table counter runs through the whole article, so this table is numbered
+% 3.A and the counter is restored afterwards: no later table number moves.
+\begingroup
+\renewcommand{\thetable}{\thesection.A}%
+\renewcommand{\theHtable}{xxb.d56.\thesection.A}%
+\begin{table}[!htbp]
+\centering\small
+\caption{Letters of
+Subsections~\ref{xxb:d56:sec:intro}--\ref{xxb:d56:sec:provenance} against
+manuscripts~70 and~68 and against the rest of Part~\ref{xxb:part}.  No
+normalization was changed.}\label{xxb:d56:tab:notation}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.15\textwidth}
+ >{\raggedright\arraybackslash}p{0.15\textwidth}
+ >{\raggedright\arraybackslash}p{0.33\textwidth}
+ >{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+Here & Manuscript & Meaning & Tempting false reading\\
+\midrule
+$\widehat Q_d$, $\widehat K_d$ & $Q_d$, $K_d$ (70, 68) & cutoffs $\lceil(2d+1)e^d\rceil$ and $2\widehat Q_d$ of Theorem~\ref{xxb:d56:thm:general} &
+ \textbf{false:} the constants $Q_d$, $K_d$ of \eqref{xxb:dc:eq:constants}\\
+$\widehat C_d$ & $C_d$ (70) & $\prod_{\ell\ge2}(\varrho_d-\omega_\ell)$ &
+ \textbf{false:} the constant $C_d$ of \eqref{xxb:dc:eq:constants}\\
+$\varrho_d$, $\omega_\ell$ & $r_d$, $\beta_\ell$ (70) & largest root and roots $\pi^2\cot^2(\ell\pi/d)$ of $\Pi_d$ &
+ \textbf{false:} $r=M-k$; the bulk count $\beta(N)$\\
+\midrule
+$\mathcal Q_k^{(r)}$, $\mathcal A_{M,k}$ & $Q_k^{(r)}$, $A_{M,k}$ & as in Subsection~\ref{xxb:dc:sec:models} &
+ $Q_{n,j}$ of Section~\ref{xxb:sec:formulas}; $A(t)$ of \eqref{xxb:eq:AB}\\
+$\mathcal B_5(r)$, $\mathcal B_6(r)$ & $B(r)$, $B_6(R)$ & base moments \eqref{xxb:dc:eq:base-moment} & $B(w)$ of \eqref{xxb:eq:AB}\\
+$\mathcal E_{5,k,q}$ & $E_{k,q}$ & expectation under the folded measure & $E_d$ of \eqref{xxb:dc:eq:constants}; $\mathsf E_q$\\
+$\mathrm H_j$, $\mathrm H_j^{(2)}$ & $\mathsf H_j$, $\mathsf H_j^{(2)}$ & harmonic numbers, as in Subsection~\ref{xxb:d3:sec:harmonic} & the integer $H_{d,k,q}$\\
+$\Pi_5(\zeta)$, $\Pi_6(\zeta)$ & $\Pi(z)$, $\Pi_6(z)$ & residual polynomials \eqref{xxb:dc:eq:Pd} & $z=x^2$\\
+$b_5(t)$ & $b(t)$ & $(ty)^{10}$, the base factor $b_d$ at $d=5$ & ---\\
+$\Lambda_4(N)$ & $L_4(N)$ & the right side of \eqref{xxb:dc:eq:lower} & $\Lambda(n)$ of \eqref{xxb:eq:bounds}, which is $\beta(N)$\\
+$\Xi$ & $U$ & $1-s^2$ in the proof of Theorem~\ref{xxb:d56:thm:general} & the bound $\U(n)$\\
+$\vartheta$, $\mathrm c$, $\mathcal G$ & $x$, $c$, $G$ (70) & $\pi/d$, $\cot\vartheta$, $\prod_{\ell\ge2}(\zeta-\omega_\ell)$ & the variable $x$; $c_N(j,k)$\\
+$\varepsilon$ & $z$ (70, \S1) & a Taylor increment & $z=x^2$\\
+$\ell$ & $j$ (70, product index) & index of a linear factor & the exponent $j$ of $x$\\
+\midrule
+$\bar d$ & $D$ (68) & depth cap & the difference $D_\delta(t)$\\
+$\mathfrak L$ & $L$ (68) & $\log N$ & $L=\log x$; the old name of $\tau$\\
+$\mathcal N(t)$ & $F(t)$ (68) & $\sum_{i,l\ge0}(t-4i-6l)_+$ & $\mathcal F_{d,k}$; the falling factorial $F_n$\\
+$\overline\beta(X)$ & $B(X)$ (68) & $\sum_{N\le X}\beta(N)$ & $B(w)$; $\mathcal B_d(r)$\\
+$\mathcal S(X)$ & $S(X)$ (68) & guaranteed tail count & $S_\delta(t)$\\
+$\Sigma_a(X)$ & $A(X)$ (68) & $\sum_{N=1}^Xa(N)$ & $A(t)$ of \eqref{xxb:eq:AB}\\
+$\ell_{d,k}$ & $L_{d,k}$ (68) & $(X-2k-2d-1)_+$ & ---\\
+$\iota(d,k)$ & $h(d,k)$ (68) & $\mathbf 1\{k+d\text{ even}\}$ & $h_d(\tau)$; $\chi_d(N)$\\
+$i$, $l$; $\xi$ & $r$, $s$; $z$ (68) & summation indices; generating variable & $r=M-k$, $s=2t-1$; $z=x^2$\\
+\bottomrule
+\end{tabular}
+\end{table}
+\endgroup
+\addtocounter{table}{-1}
+
+% ---------------------------------------------------------------------------
+\subsection{Depths five and six: the theorem and the known regions}\label{xxb:d56:sec:theorem}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 70.}\itshape
+We complete logarithmic deficits five and six in the coefficient array for
+repeated derivatives of $x^{x^2}$. At either depth, every zero is forced by
+the known reflection symmetry. The inspected ProveIt report proves depths one
+through four and explicitly proposes Jensen criteria for the next two. We
+implement that proposal with certified moment cutoffs: $(R,Q)=(410,839)$ at
+depth five and $(1571,3048)$ at depth six. Two independent recurrences
+certify the resulting rectangles, containing 343151 and 4785360 cells. We
+also replace the report's very large general fixed-depth bounds by explicit
+cutoffs of size $O(de^d)$, using a global affine minorant determined by the
+largest residual root and beta harmonic moments. This settles two specified
+source questions at the stated scope; the full OEIS term-count conjecture
+remains open in this report.
+\upshape\par
+\smallskip
+\emph{Editorial note.}  ``The inspected ProveIt report'' is this report at
+commit \texttt{ca81647a9}; ``the two specified source questions'' are
+Questions~1 and~2 of Subsection~\ref{xxb:dc:sec:future}.
+\end{quote}
+
+\paragraph{Proof status.}
+This is an ordinary computer-assisted mathematical proof with explicit
+analytic reductions and exact finite certificates. It is not formally verified
+in Lean and has not been externally refereed. Novelty is assessed relative to
+the inspected repository source, not by an exhaustive historical-priority
+claim.
+
+\subsubsection{The precise theorem and the derivative interpretation}
+
+Put, as in \eqref{xxb:dc:eq:gamma},
+\[
+ \varphi(w)=(1+w)^2\log(1+w),\qquad
+ \gamma(k,d,M)=[w^M](2+w)^k\varphi(w)^d.
+\]
+All indices are integers. The logarithm is expanded as a formal power series
+at zero.
+
+\begin{theorem}[Complete depths five and six classification]\label{xxb:d56:thm:main}
+For $d\in\{5,6\}$, every $k\ge0$, and every $M\ge d$,
+\[
+ \gamma(k,d,M)=0
+ \quad\Longleftrightarrow\quad M=k+4d+1\ \text{and}\ k+d\text{ is even}.
+\]
+For $0\le M<d$, the coefficient is zero for the separate structural reason
+that $\varphi$ has order one at the origin.
+\end{theorem}
+
+To connect this statement with OEIS A290268, write
+\[
+ \frac{d^N}{dx^N}x^{x^2}
+ =x^{x^2}\sum_{j\in\Z}\sum_{k\ge0}c_N(j,k)x^j(\log x)^k.
+\]
+Taylor expansion of $(x+\varepsilon)^{(x+\varepsilon)^2}$ gives the exact depth
+bridge
+\begin{equation}\label{xxb:d56:eq:bridge}
+ d=\frac{N+j}{2}-k,\qquad M=N-k,\qquad
+ c_N(j,k)=\frac{N!}{k!d!}\gamma(k,d,M).
+\end{equation}
+For example, substitute $w=\varepsilon/x$ into
+\[
+ x^{-x^2}(x+\varepsilon)^{(x+\varepsilon)^2}
+ =\exp((2x\varepsilon+\varepsilon^2)\log x)\exp(x^2\varphi(\varepsilon/x))
+\]
+and extract logarithmic degree $k$, depth $d$, and $\varepsilon^N$.
+Thus the theorem completes both strata at every derivative order. At depth five
+the nonstructural zeros are $j=-11$, $N=2k+21$, $k$ odd; at depth six they are
+$j=-13$, $N=2k+25$, $k$ even.
+
+\emph{Editorial note.}  \eqref{xxb:d56:eq:bridge} is
+Proposition~\ref{xxb:dc:prop:bridge}, and the sketch above is its proof.  In
+this part's letters the holes are: $m=5$, $j$ odd, $n=2j+21$; and $m=6$, $j$
+even, $n=2j+25$ --- in both cases $k=j+m$ even and $n=4k-2j+1$, the reflection
+family of Theorem~\ref{xxb:thm:reflection-zeros}.
+
+This report, Theorem~\ref{xxb:dc:thm:four} and its status summary, completes
+$1\le d\le4$. It also proves a terminating fixed-depth reduction with
+deliberately enormous bounds (Theorem~\ref{xxb:dc:thm:finite}), and a modular
+count certificate through $N=3000$ (Proposition~\ref{xxb:prop:finite}).
+Question~1 of its Section~3.24 (Subsection~\ref{xxb:dc:sec:future}) already
+supplies the Jensen criteria used below and asks for certified practical
+cutoffs and the remaining finite tests. The new contributions are those
+cutoffs, their exact moment seeds, and the resulting all-order
+classifications. Depth five's rectangle lies within the earlier $N\le3000$
+certificate; depth six's extends to $N=6198$. The separate general cutoff
+answers its Question~2 with a nonoptimal singly-exponential bound. The live
+OEIS entry~\cite{oeis290268} still labels the full term-count formula
+conjectural.
+
+\subsubsection{Exact polynomial models and the known regions}
+
+Define, as in Subsection~\ref{xxb:dc:sec:models},
+\[
+ \mathcal A_{M,k}(s)=[w^M](2+w)^k(1+w)^s.
+\]
+Then $\gamma(k,d,M)=\partial_s^d\mathcal A_{M,k}(2d)$, which is
+\eqref{xxb:dc:eq:param}. For $r=M-k\ge0$, the centered factorization from
+Subsection~\ref{xxb:dc:sec:models} is
+\begin{equation}\label{xxb:d56:eq:factor}
+ M!\mathcal A_{M,k}(s)=\fall{s}{r}\mathcal Q_k^{(r)}\left(s-\frac{r-1}{2}\right),
+\end{equation}
+where
+\begin{equation}\label{xxb:d56:eq:Qrec}
+ \mathcal Q_0^{(r)}=1,\quad \mathcal Q_1^{(r)}=2y,\quad
+ \mathcal Q_{k+1}^{(r)}(y)=2y\mathcal Q_k^{(r)}(y)+k(k+r)\mathcal Q_{k-1}^{(r)}(y).
+\end{equation}
+For completeness, its exponential generating function is
+\[
+ \sum_{k\ge0}\frac{\mathcal Q_k^{(r)}(y)}{k!}\xi^k
+ =(1-\xi^2)^{-(r+1)/2}\exp(2y\operatorname{arctanh}\xi).
+\]
+Expanding $(2+w)^k$ in $\mathcal A$, factoring out $\fall{s}{r}$ and making the
+coefficient substitution $t=\xi/(1-\xi)$ gives this generating function
+and~\eqref{xxb:d56:eq:factor}. Differentiating it proves~\eqref{xxb:d56:eq:Qrec}.
+In particular $\mathcal Q_k^{(r)}$ has nonnegative coefficients and parity $k$.
+
+\emph{Editorial note.}  \eqref{xxb:d56:eq:factor}, \eqref{xxb:d56:eq:Qrec}
+and the generating function are \eqref{xxb:dc:eq:factor},
+\eqref{xxb:dc:eq:Qrec} and \eqref{xxb:dc:eq:Qgf}
+(Proposition~\ref{xxb:dc:prop:factor}); the manuscript's sketch is the proof
+given there.  The manuscript cites the classical Meixner--Pollaczek generating
+function \cite[Eq.~18.23.7]{xxbdc-dlmf} for this family, as a specialization
+whose needed identities it proves directly; that is \eqref{xxb:dc:eq:MP}.
+
+These identities give two previously established regions, recalled with their
+proofs to fix the boundary of the new work.
+\begin{lemma}[Bulk and symmetry]\label{xxb:d56:lem:bulk}
+For $d\ge1$, one has $\gamma(k,d,M)>0$ when $d\le M\le k+2d+1$. Also
+\[
+ \gamma(k,d,k+4d+1)=0\quad\text{if }k+d\text{ is even}.
+\]
+\end{lemma}
+\emph{Proof.}  This is Theorem~\ref{xxb:dc:thm:bulk} together with
+Theorem~\ref{xxb:dc:thm:holes}.  The manuscript recalls their proofs in
+condensed form --- the centered factorization at $s=2d+u$ with the Pascal
+induction \eqref{xxb:dc:eq:pascalgamma} for $M<k$, and the odd falling
+factorial $u\prod_{\ell=1}^{2d}(u^2-\ell^2)$ at $r=4d+1$ --- and they are not
+printed a second time.\hfill$\square$
+
+The remaining depth-five region is indexed by
+\[
+ q=M-k-11\ge0,\qquad
+ H_{5,k,q}=\frac{(k+11+q)!}{5!}\gamma(k,5,k+11+q).
+\]
+The integer $H_{5,k,q}$ is the coefficient of $u^5$ in
+\begin{equation}\label{xxb:d56:eq:jet}
+ V_k(u)=\fall{(10+u)}{11+q}
+ \mathcal Q_k^{(11+q)}\left(u+\frac{10-q}{2}\right).
+\end{equation}
+The known symmetry zeros are $q=10$, $k$ odd. The line $q=0$ overlaps the
+positive bulk.  (This is \eqref{xxb:dc:eq:Hjet} at $d=5$.)
+
+% ---------------------------------------------------------------------------
+\subsection{Depths five and six: the depth-five moment certificates}\label{xxb:d56:sec:five}
+
+\subsubsection{A positive measure and a quadratic moment test}
+
+For $d\ge1$, put $R_d(v)=\operatorname{Im}(v+i\pi)^d/\pi$, as in
+\eqref{xxb:dc:eq:Rd}. For $M=k+2d+1+q$, $q\ge0$, the branch-cut coefficient
+formula is
+\begin{equation}\label{xxb:d56:eq:cut}
+ \gamma(k,d,M)=(-1)^{M+1}\int_0^1
+ t^q(1-t)^{2d}(2t-1)^k
+ R_d\left(\log\frac{1-t}{t}\right)dt.
+\end{equation}
+This is Proposition~\ref{xxb:dc:prop:integral} of this report. To derive it,
+deform the Cauchy coefficient contour to the negative cut of
+$(1+w)^{2d}\log^d(1+w)$. Its jump is $2\pi iR_d(\log(x-1))$ at $w=-x$, $x>1$.
+The substitution $t=1/x$ gives~\eqref{xxb:d56:eq:cut}. The small endpoint
+circle tends to zero as $\varepsilon^{2d+1}\log^d\varepsilon$, and the large
+circle tends to zero because $M>k+2d$.
+
+For the rest of the proof take $d=5$, and on $1/2<t<1$ put
+\[
+ y=1-t,\quad s=2t-1,\quad \tau=\log(t/y),\quad
+ b_5(t)=(ty)^{10},\quad\delta=q-10.
+\]
+The residual polynomial is
+\begin{equation}\label{xxb:d56:eq:Pi}
+ \Pi_5(\zeta)=\zeta^2-2\pi^2\zeta+\pi^4/5,\qquad R_5(-\tau)=5\Pi_5(\tau^2),
+\end{equation}
+as in \eqref{xxb:dc:eq:Pinitial} and \eqref{xxb:dc:eq:Rfactor}.
+Reflecting the lower half of~\eqref{xxb:d56:eq:cut}, the integral becomes, up
+to a fixed nonzero signed factor,
+\[
+ \int_{1/2}^1b_5(t)s^k\Pi_5(\tau^2)
+ \bigl(t^\delta+(-1)^k y^\delta\bigr)dt.
+\]
+For even $k$ normalize the positive density $b_5s^kS_\delta$, where
+$S_\delta=t^\delta+y^\delta$. For odd $k$ and $q\ne10$ normalize
+$b_5s^k|D_\delta|$, where $D_\delta=t^\delta-y^\delta$. Call the resulting
+expectation $\mathcal E_{5,k,q}$. The omitted factor has a nonzero sign, so
+\begin{equation}\label{xxb:d56:eq:signcriterion}
+ \mathcal E_{5,k,q}[\Pi_5(\tau^2)]>0\quad\Longrightarrow\quad H_{5,k,q}\ne0
+\end{equation}
+outside the symmetry holes.  (This is the folding \eqref{xxb:dc:eq:fold} and
+the sign rule \eqref{xxb:dc:eq:sign-rule} at $d=5$.)
+
+\begin{lemma}[Mean threshold nineteen]\label{xxb:d56:lem:jensen}
+If $Z\ge0$ has a finite second moment and $\mathbb E Z\ge19$, then
+$\mathbb E\Pi_5(Z)>0$.
+\end{lemma}
+\begin{proof}
+The larger root of $\Pi_5$ is $\pi^2(1+2/\sqrt5)<19$, using $\pi<22/7$, hence
+$\pi^2<10$, and $2/\sqrt5<9/10$. Since $\Pi_5$ is convex,
+$\mathbb E\Pi_5(Z)\ge\Pi_5(\mathbb E Z)>0$.
+\end{proof}
+This is the stronger quadratic criterion proposed in the source report
+(\eqref{xxb:dc:eq:nextcriteria}), rather than a new use of Jensen's
+inequality. Unlike the earlier affine residuals, $\Pi_5$ is not increasing
+everywhere; the remaining task is to certify practical lower bounds on the
+mean of $Z=\tau^2$.
+
+\subsubsection{Two exact moment certificates cover the infinite tails}
+
+Let $\mu_{5,r}$ be the probability measure proportional to $b_5s^r\,dt$ on
+$(1/2,1)$, and write $\mathcal B_5(r)=\mathbb E_{\mu_{5,r}}\tau^2$, as in
+\eqref{xxb:dc:eq:base-moment}.
+
+\begin{lemma}[Likelihood ratio comparisons]\label{xxb:d56:lem:compare}
+For nonhole integer parameters,
+\[
+ \mathcal E_{5,k,q}\tau^2\ge
+ \begin{cases}\mathcal B_5(k),&k\text{ even},\\\mathcal B_5(k+1),&k\text{ odd}.
+ \end{cases}
+\]
+The function $\mathcal B_5(r)$ is nondecreasing. Within each parity class,
+increasing $k$ by two increases every increasing moment of $\tau$. Increasing
+$q$ by one has the same property for $q\ge11$.
+\end{lemma}
+\emph{Proof.}  This is Proposition~\ref{xxb:dc:prop:base} at $d=5$.  The
+manuscript repeats its proof: the covariance inequality of
+Lemma~\ref{xxb:dc:lem:covariance}, the monotone ratios of
+Lemma~\ref{xxb:dc:lem:ratios} with the same formulas \eqref{xxb:dc:eq:ratios}
+and the same logarithmic derivative, the reflection
+$S_{-a}=(ty)^{-a}S_a$, $|D_{-a}|=(ty)^{-a}D_a$ for negative indices, and the
+factor $s^2$ for $k\mapsto k+2$.  It is not printed a second
+time.\hfill$\square$
+
+\begin{lemma}[The two finite moment checks]\label{xxb:d56:lem:seeds}
+One has $\mathcal B_5(410)>19$ and $\mathcal E_{5,0,839}\tau^2>19$.
+\end{lemma}
+\begin{proof}
+For the first claim set $q=10$ and define $V_R$ by~\eqref{xxb:d56:eq:jet}.
+For even $R$, the parameter form of the same branch-cut identity gives
+\[
+ V_R(u)=(R+21)!\frac{\sin\pi u}{\pi}
+ \int_0^1(t(1-t))^{10}(2t-1)^R e^{-u\tau}\,dt.
+\]
+The integral is even in $u$ by reflection. Comparing the coefficients of $u$
+and $u^3$ yields
+\begin{equation}\label{xxb:d56:eq:center-moment}
+ \mathcal B_5(R)=\frac{\pi^2}{3}+2\frac{[u^3]V_R}{[u]V_R}.
+\end{equation}
+The exact integer recurrence~\eqref{xxb:d56:eq:Qrec}, truncated after degree
+three, verifies
+\[
+ [u]V_{410}>0,\qquad [u^3]V_{410}>8[u]V_{410}.
+\]
+Since $\pi>3$, equation~\eqref{xxb:d56:eq:center-moment} gives
+$\mathcal B_5(410)>19$.
+
+For the second claim the reflected sum density is equivalent, for the
+symmetric function $\tau^2$, to a beta density proportional to
+$t^{839}(1-t)^{10}$ on $(0,1)$. Write $\mathrm H_j=\sum_{i=1}^j1/i$ and
+$\mathrm H_j^{(2)}=\sum_{i=1}^j1/i^2$. Differentiating the beta integral gives
+\begin{equation}\label{xxb:d56:eq:tail-moment}
+ \mathcal E_{5,0,q}\tau^2=(\mathrm H_q-\mathrm H_{10})^2+\frac{\pi^2}{3}
+ -\mathrm H_q^{(2)}-\mathrm H_{10}^{(2)}.
+\end{equation}
+An exact rational summation verifies
+\[
+ (\mathrm H_{839}-\mathrm H_{10})^2
+ -\mathrm H_{839}^{(2)}-\mathrm H_{10}^{(2)}>16.
+\]
+Again $\pi>3$ completes the claim. Both finite arithmetic checks are
+reproduced in the accompanying certificate; their values are approximately
+$[u^3]V_{410}/[u]V_{410}=8.01181969$ and $16.00012307$, but these decimal
+approximations are not used to decide either sign.
+\end{proof}
+
+\begin{remark}[Editorial: the tail seed at depth three]\label{xxb:d56:rem:d3}
+The computation behind \eqref{xxb:d56:eq:tail-moment} works at every odd
+depth: there $k=0$ is a sum case and $h_d=1$, so the $k=0$ measure is exactly
+the symmetrized beta law $(q+1,2d+1)$, and
+$\mathcal E_{d,0,q}\tau^2=(\mathrm H_q-\mathrm H_{2d})^2+\pi^2/3
+-\mathrm H_q^{(2)}-\mathrm H_{2d}^{(2)}$.  At $d=3$ the residual polynomial
+$\Pi_3(\zeta)=\zeta-\pi^2/3$ is affine, so
+\[
+ \mathcal E_{3,0,q}[\Pi_3(\tau^2)]
+ =(\mathrm H_q-\mathrm H_6)^2-\mathrm H_q^{(2)}-\mathrm H_6^{(2)}
+ =2\mathsf E_q,
+\]
+the harmonic quantity \eqref{xxb:d3:eq:E-def} of the second route to depth
+three.  Its sign law (Lemma~\ref{xxb:d3:lem:E-sign}: negative for
+$1\le q\le37$, positive from $q=38$) is therefore the $d=3$ instance of this
+tail seed, and the first-moment test of
+Proposition~\ref{xxb:d56:prop:general} at $d=3$, whose threshold is
+$\varrho_3=\pi^2/3$, gives exactly the cutoff $q\ge38$ --- the $Q=38$ of
+Proposition~\ref{xxb:dc:prop:smallcert}.  Likewise the parameter integral in
+the proof of Lemma~\ref{xxb:d56:lem:seeds} is the beta--sine transform
+\eqref{xxb:d3:eq:H-beta-sine} at $x=11+u$, $r=21$ (the shift $x=s+1$ of
+Table~\ref{xxb:d3:tab:notation}), that is, at the hole column $q=2d$.  The
+manuscript cites neither; the intake checked the sign change of
+$(\mathrm H_q-\mathrm H_6)^2-\mathrm H_q^{(2)}-\mathrm H_6^{(2)}$ between
+$q=37$ and $q=38$ in exact arithmetic, and that $839$ and $3048$ are the least
+$q$ for which the two depth-five and depth-six rational checks hold.
+\end{remark}
+
+\begin{proposition}[Practical depth five reduction]\label{xxb:d56:prop:reduction}
+Every nonhole entry with $k\ge409$ or $q\ge839$ is nonzero.
+\end{proposition}
+\begin{proof}
+If $k\ge409$, even parity forces $k\ge410$, while odd parity gives
+$k+1\ge410$. Lemmas~\ref{xxb:d56:lem:compare} and~\ref{xxb:d56:lem:seeds}
+imply $\mathcal E_{5,k,q}\tau^2>19$.
+For $q=839$, the odd-parity minimum $k=1$ also has a moment at least that of
+the sum measure with $k=0$: its density ratio is
+\[
+ s\frac{D_{829}}{S_{829}}=s\tanh(829\tau/2),
+\]
+a positive increasing function. Thus both parity minima exceed $19$. Increase
+$k$ by two and $q$ by one using Lemma~\ref{xxb:d56:lem:compare}.
+Lemma~\ref{xxb:d56:lem:jensen} and~\eqref{xxb:d56:eq:signcriterion} finish
+both cases.
+\end{proof}
+
+\subsubsection{The finite rectangle and completion of the proof}
+
+It remains to check
+\[
+ 0\le k\le408,\qquad0\le q\le838.
+\]
+There are $409\cdot839=343151$ cells. Their largest derivative order is
+$N=2k+11+q=1665$. The two exact computations are:
+\begin{enumerate}[leftmargin=1.8em,itemsep=2pt]
+\item The integer jets~\eqref{xxb:d56:eq:jet} satisfy, in $\Z[u]/(u^6)$,
+\begin{align*}
+ V_0&=\prod_{\ell=0}^{10+q}(10-\ell+u),\\
+ V_1&=(2u+10-q)V_0,\\
+ V_{k+1}&=(2u+10-q)V_k+k(k+11+q)V_{k-1}.
+\end{align*}
+The coefficient $[u^5]V_k$ is computed as an exact integer and tested for
+zero.
+\item Independently, multiplication by $(2+w)$ gives the Pascal recurrence
+\[
+ H_{5,k+1,q}=2H_{5,k,q+1}+(k+12+q)H_{5,k,q}.
+\]
+Start with the independently computed $k=0$ falling-factorial row through
+$q=1246$, then shorten it at each step. Residues modulo $1009$ and $1013$
+certify every nonhole except two; modulus $1019$ certifies those remaining
+two. A nonzero residue proves integer nonvanishing. The symmetry zeros are
+proved analytically, rather than inferred from zero residues.
+\end{enumerate}
+Both computations find exactly 204 zeros, namely
+$(k,q)=(1,10),(3,10),\ldots,(407,10)$, and no other zero. The integer
+computation reaches coefficients of at most 11042 bits. It uses only Python's
+standard library and runs in a few seconds in the research environment.
+
+\emph{Editorial note.}  The two recurrences are \eqref{xxb:dc:eq:Vrec} and
+\eqref{xxb:dc:eq:Hpascal} at $d=5$.  In the intake's two runs the integer
+computation took between 5 and 45 seconds.  The depth-five rectangle lies inside the range
+$N\le3000$ of Proposition~\ref{xxb:prop:finite}, so, as in
+Remark~\ref{xxb:dc:rem:inside}, its nonvanishing half re-confirms cells
+already certified; what that proposition does not supply are the moment seeds
+of Lemma~\ref{xxb:d56:lem:seeds}, which make a finite rectangle decide every
+$N$.
+
+The finite result, Proposition~\ref{xxb:d56:prop:reduction}, the bulk
+positivity of Lemma~\ref{xxb:d56:lem:bulk}, and the structural vanishing for
+$M<5$ prove the depth-five case of Theorem~\ref{xxb:d56:thm:main}. The
+certificates decide only the stated finite obligations; the analytic reduction
+is essential to the all-order conclusion.
+
+\begin{corollary}[A new contribution to the lower term count]\label{xxb:d56:cor:count}
+Let $a(N)$ count the nonzero derivative terms, and let $\Lambda_4(N)$ be the
+source report's lower bound obtained from the bulk and depths one through four,
+the right side of \eqref{xxb:dc:eq:lower}. The two new depth classifications
+give
+\[
+ a(N)\ge\Lambda_4(N)+\sum_{d=5}^{6}\left[\max(0,\lfloor N/2\rfloor-d)
+ -\mathbf1\{N\ge4d+1,\ N\equiv2d+1\pmod4\}\right].
+\]
+\end{corollary}
+\begin{proof}
+At depth $d$, outside the positive bulk, $N=2k+2d+1+q$ with $q\ge1$ gives
+$\max(0,\lfloor N/2\rfloor-d)$ cells. The sole possible hole has $q=2d$ and
+$k+d$ even, exactly the displayed indicator. Depth six is proved in the next
+subsection.
+\end{proof}
+The gain is linear in $N$. The leading lower-bound constant remains $3/8$, and
+the conjectured leading constant $1/2$ is not proved.
+
+\emph{Editorial notes.}  (i) The indicator is $\chi_d(N)$ of
+\eqref{xxb:dc:eq:hd}, and the corollary is
+Proposition~\ref{xxb:cb:prop:depthcount} with depth cap $\bar d=6$, valid there
+for every $N$ because depths five and six are now classified.  For even
+$N\ge12$ and odd $N\ge25$ it adds $N-11$, respectively $N-15$, to the bounds of
+Remark~\ref{xxb:dc:rem:improve}.  At $N=12$ the one cell left unresolved in the
+example after Corollary~\ref{xxb:dc:cor:lower} has depth five; it is now
+nonzero, and the bound equals $\U(12)=85$.
+(ii) ``The leading lower-bound constant remains $3/8$'' is true of every
+\emph{explicit} lower bound, including Theorem~\ref{xxb:cb:thm:pointwise}
+below.  It is stale as a statement about the asymptotics: manuscript~34 of the
+same batch, placed in the new sibling report
+\texttt{power-tower-exponent-supports}, proves $a(N)=N^2/2+o(N^2)$, without
+an effective threshold.  That proof is not part of this report.
+
+% ---------------------------------------------------------------------------
+\subsection{Depths five and six: the depth-six completion}\label{xxb:d56:sec:six}
+
+For $d=6$, the negative-region parameter is $q=M-k-13\ge0$, and the residual
+polynomial is
+\[
+ \Pi_6(\zeta)=\zeta^2-\frac{10}{3}\pi^2\zeta+\pi^4
+ =(\zeta-\pi^2/3)(\zeta-3\pi^2).
+\]
+Jensen's inequality, as already proposed in the source
+(\eqref{xxb:dc:eq:nextcriteria}), gives positive reduced expectation whenever
+$\mathbb E\tau^2\ge30$, since $3\pi^2<30$.
+
+On the half interval the base density is now $(t(1-t))^{12}\tau s^r$. Sum
+measures occur for odd $k$ and difference measures for even $k$; their symmetry
+holes are $q=12$, $k$ even. The same likelihood-ratio proof gives comparison
+with base exponent $k$ in a sum case and $k+1$ in a difference case.
+
+\begin{lemma}[Depth six moment seeds]\label{xxb:d56:lem:seeds6}
+The base moment at $R=1571$ exceeds $30$, and at $Q=3048$ both minimum parity
+measures have moment exceeding $30$.
+\end{lemma}
+\begin{proof}
+At the center $q=12$ define
+\[
+ V_R(u)=\fall{(12+u)}{25}\mathcal Q_R^{(25)}(u).
+\]
+For odd $R$, the parameter branch-cut integral has an odd integral factor and
+an overall minus sign. Expanding the integral and $\sin\pi u$ gives
+\[
+ [u^2]V_R=(R+25)!\int_0^1\tau s^R(t(1-t))^{12}dt,
+\]
+\[
+ [u^4]V_R=\frac{(R+25)!}{6}\int_0^1
+ (\tau^3-\pi^2\tau)s^R(t(1-t))^{12}dt.
+\]
+Therefore the $\tau$-weighted base moment is
+\[
+ \mathcal B_6(R)=\pi^2+6\frac{[u^4]V_R}{[u^2]V_R}.
+\]
+Exact fourth-degree jets verify that $[u^2]V_{1571}>0$ and
+$2[u^4]V_{1571}>7[u^2]V_{1571}$. Since $\pi^2>9$, this proves
+$\mathcal B_6(1571)>30$.
+
+At $q=3048$, the unweighted symmetrized beta measure with parameters
+$(q+1,13)$ has moment
+\[
+ (\mathrm H_q-\mathrm H_{12})^2+\pi^2/3
+ -\mathrm H_q^{(2)}-\mathrm H_{12}^{(2)}.
+\]
+Exact rational summation verifies that its rational part exceeds $27$. Both
+minimum parity measures dominate this comparison measure: their density ratios
+are $\tau s$ for the sum case $k=1$, and $\tau\tanh((q-12)\tau/2)$ for the
+difference case $k=0$. These are increasing positive functions. This proves
+both claims.
+\end{proof}
+
+It follows exactly as in Proposition~\ref{xxb:d56:prop:reduction} that all
+nonhole entries with $k\ge1570$ or $q\ge3048$ are nonzero. The remaining
+rectangle is
+\[
+ 0\le k\le1569,\qquad0\le q\le3047.
+\]
+It contains 4785360 cells, with maximum derivative order $N=2k+13+q=6198$.
+There are exactly 785 symmetry holes, namely $q=12$ with even $k$.
+
+Two independently implemented recurrences certify every nonhole by a nonzero
+residue modulo at least one of $1000003$ and $1000033$. The centered recurrence
+uses jets through degree six. The independent Pascal recurrence is
+\[
+ H_{6,k+1,q}=2H_{6,k,q+1}+(k+14+q)H_{6,k,q},
+\]
+initialized from the falling-factorial $k=0$ row through $q=4616$. Both
+computations find precisely the 785 prescribed holes and certify all 4784575
+nonholes. Together with bulk positivity and the structural zeros this proves
+the depth-six case of Theorem~\ref{xxb:d56:thm:main}. The exact moment seeds
+are also recomputed independently in the Pascal verifier.
+
+\emph{Editorial notes.}  (i) The cells with $N\le3000$ of this rectangle are
+already nonzero by Proposition~\ref{xxb:prop:finite}; the cells with
+$3000<N\le6198$ are certified here for the first time.  (ii) The program
+\texttt{code/08-depths-\allowbreak five-\allowbreak six-\allowbreak independent\_pascal\_depth6.py}
+says in its docstring that it uses the centered recurrence ``only for its
+separate moment seed''; so the central seed is recomputed by the same
+recurrence as in the main certificate, and the independence of the two
+computations concerns the rectangle.  Both depth-six computations work modulo
+the two primes; a nonzero residue proves nonvanishing.
+
+% ---------------------------------------------------------------------------
+\subsection{Depths five and six: exponential cutoffs at every depth}\label{xxb:d56:sec:general}
+
+\subsubsection{A sharp mean criterion}
+
+The general residual polynomial \eqref{xxb:dc:eq:Pd} is
+\[
+ \Pi_d(\zeta)=\prod_{\ell=1}^{\nu_d}(\zeta-\omega_\ell),\qquad
+ \nu_d=\left\lfloor\frac{d-1}{2}\right\rfloor,\qquad
+ \omega_\ell=\pi^2\cot^2\frac{\ell\pi}{d}.
+\]
+It is the monic factor in
+$R_d(-\tau)=(-1)^{d-1}d\,h_d(\tau)\Pi_d(\tau^2)$, where $h_d=1$ for odd $d$ and
+$h_d=\tau$ for even $d$ (\eqref{xxb:dc:eq:Rfactor}). The root ordering is
+$\omega_1>\cdots>\omega_{\nu_d}>0$.
+
+\begin{proposition}[Global affine minorant at the largest root]\label{xxb:d56:prop:general}
+For $d\ge3$, put $\varrho_d=\omega_1$ and
+$\widehat C_d=\prod_{\ell=2}^{\nu_d}(\varrho_d-\omega_\ell)>0$, with empty
+product one. Then, for every $\zeta\ge0$,
+\begin{equation}\label{xxb:d56:eq:minorant}
+ \Pi_d(\zeta)\ge\widehat C_d(\zeta-\varrho_d).
+\end{equation}
+Consequently, for any nonnegative random variable $Z$ with the required finite
+moments, $\mathbb E Z>\varrho_d$ implies $\mathbb E\Pi_d(Z)>0$.
+\end{proposition}
+\begin{proof}
+For $d=3,4$ the polynomial is linear and the assertion is equality. For
+$d\ge5$, let $\vartheta=\pi/d$ and $\mathrm c=\cot\vartheta>1$. The
+double-angle identity gives
+\[
+ \frac{\varrho_d}{\omega_2}=\frac{\cot^2\vartheta}{\cot^2(2\vartheta)}
+ =\frac{4\mathrm c^4}{(\mathrm c^2-1)^2}>4.
+\]
+Every other root is therefore less than $\varrho_d/4$. Put
+$\mathcal G(\zeta)=\prod_{\ell=2}^{\nu_d}(\zeta-\omega_\ell)$. For
+$0\le\zeta\le\varrho_d$, each factor obeys
+$|\zeta-\omega_\ell|\le\varrho_d-\omega_\ell$, so
+$\mathcal G(\zeta)\le|\mathcal G(\zeta)|\le\mathcal G(\varrho_d)=\widehat C_d$.
+Multiplication by the nonpositive number $\zeta-\varrho_d$ reverses that
+inequality. For $\zeta\ge\varrho_d$, every factor is positive and at least its
+value at $\varrho_d$, so $\mathcal G(\zeta)\ge\widehat C_d$. The two cases
+prove~\eqref{xxb:d56:eq:minorant}; taking expectations proves the final
+assertion.
+\end{proof}
+The threshold is sharp as a uniform implication of the form
+$\mathbb E Z>c\Rightarrow\mathbb E\Pi_d(Z)>0$ for arbitrary nonnegative
+distributions. If $c<\varrho_d$, a point mass at $\varrho_d$ already
+contradicts strict positivity; a point mass sufficiently close to $\varrho_d$
+from below has negative polynomial value. This is not a claim that the
+coefficient distributions attain the worst case.
+
+\emph{Editorial note.}  The proposition replaces the crude minorant
+$\Pi_d(\zeta)\ge\zeta/2-C_d$ of Lemma~\ref{xxb:dc:lem:minorant}.  At $d=5,6$
+its threshold $\varrho_d$ is the largest root used in
+\eqref{xxb:dc:eq:nextcriteria}; at $d=3,4$ it is the root $\pi^2/3$, resp.\
+$\pi^2$, of the affine $\Pi_d$.
+
+\subsubsection{Singly exponential fixed-depth cutoffs}
+
+\begin{theorem}[Singly exponential fixed depth cutoffs]\label{xxb:d56:thm:general}
+For every $d\ge3$, take
+\[
+ \widehat Q_d=\left\lceil(2d+1)e^d\right\rceil,\qquad \widehat K_d=2\widehat Q_d.
+\]
+For $k,q\ge0$ with $k\ge\widehat K_d$ or $q\ge\widehat Q_d$, the coefficient
+$\gamma(k,d,k+2d+1+q)$ is nonzero unless $q=2d$ and $k+d$ is even. Thus the
+fixed-depth classification reduces to $0\le k<\widehat K_d$,
+$0\le q<\widehat Q_d$, a rectangle of $2\widehat Q_d^2=O(d^2e^{2d})$ cells.
+
+The fully integer choices
+\[
+ \widehat Q_d=(2d+1)3^d,\qquad \widehat K_d=2(2d+1)3^d
+\]
+also suffice, with exactly $2(2d+1)^2 9^d$ cells.
+\end{theorem}
+\begin{proof}
+Put $p=2d$ and write $Q=\widehat Q_d$. The general folded base density is
+$(t(1-t))^p h_d(\tau)s^r$, with $s=2t-1$. The increasing factor $h_d$ can be
+omitted for a lower bound on the mean of $\tau^2$.
+
+For $k\ge\widehat K_d$, the same base comparison as
+Lemma~\ref{xxb:d56:lem:compare} reduces to a base exponent at least
+$\widehat K_d-1=2Q-1$. Decrease to that odd exponent and remove $h_d$. Under
+the resulting density, $\Xi=1-s^2$ has beta distribution with parameters
+$(p+1,Q)$. Since
+\[
+ \tau=-\log\Xi+2\log(1+s)\ge-\log\Xi,
+\]
+Jensen's inequality and the beta logarithmic moment give
+\[
+ \mathbb E\tau^2\ge(\mathrm H_{p+Q}-\mathrm H_p)^2
+ >\log^2\frac{p+Q+1}{p+1}
+ =\log^2\left(1+\frac{Q}{p+1}\right)>d^2.
+\]
+Here $Q\ge(p+1)e^d$, and the strict harmonic inequality follows by integrating
+$1/x$ over $[p+1,p+Q+1]$.
+
+For $q\ge Q>p$, compare the folded density with the unweighted symmetrized
+beta distribution $(q+1,p+1)$. The ratio is $h_ds^k$ in a sum case and
+$h_ds^k\tanh((q-p)\tau/2)$ in a difference case; each is increasing. The
+comparison moment equals
+\[
+ (\mathrm H_q-\mathrm H_p)^2+\pi^2/3
+ -\mathrm H_q^{(2)}-\mathrm H_p^{(2)}
+ >(\mathrm H_q-\mathrm H_p)^2
+ >\log^2\frac{q+1}{p+1}>d^2.
+\]
+The first strict inequality follows because both finite second-order harmonic
+sums are less than $\pi^2/6$.
+
+Finally, $\varrho_d=\pi^2\cot^2(\pi/d)<d^2$, since $\tan x>x$ for
+$0<x<\pi/2$. Proposition~\ref{xxb:d56:prop:general} gives positive residual
+expectation, hence nonvanishing outside the symmetry holes. Since $e<3$, the
+displayed integer choices also satisfy the hypotheses. The bound $e<3$ follows
+directly from the exponential series and $n!\ge2^{n-1}$ for $n\ge2$, with
+strict inequality for some terms.
+\end{proof}
+The rectangle size is a number of arithmetic obligations, not a
+bit-complexity estimate or a claim of optimality. This improves the source's
+general cutoffs in response to Question~2 of its Section~3.24. The global
+affine minorant also extends its largest-root mean criterion to every depth,
+addressing the moment-bound direction of Question~3. The more economical
+cutoffs $410,839$ and $1571,3048$ give the explicit classifications at depths
+five and six.
+
+\emph{Editorial note.}  For comparison: $\widehat Q_d=141$, $492$, $1633$,
+$5245$ for $d=3,\ldots,6$, against the practical tail cutoffs $38$, $185$,
+$839$, $3048$ of Proposition~\ref{xxb:dc:prop:smallcert} and
+Lemmas~\ref{xxb:d56:lem:seeds}--\ref{xxb:d56:lem:seeds6}; the constants
+\eqref{xxb:dc:eq:constants} of Theorem~\ref{xxb:dc:thm:finite} are of
+tower type.  Theorem~\ref{xxb:d56:thm:general} also bears on the question
+``Critical-strip bounds'' of the second route to depth three
+(Subsection~\ref{xxb:d3:sec:certificate}): it gives explicit, singly
+exponential bounds on the region a finite certificate must cover at every
+depth, though not the conceptual control that question asks for.
+
+The contribution is the certified completion of the source's proposed
+depth-five/six program and the new general cutoff improvement. The source's
+quadratic Jensen criteria and the classical centered-polynomial framework are
+credited rather than rediscovered. The full OEIS conjecture, the finite
+nonvanishing obligations at depths $d\ge7$, and formal verification remain
+separate tasks. A bounded literature check found no further primary result
+resolving these exact strata; no exhaustive priority claim is made.
+
+% ---------------------------------------------------------------------------
+\subsection{Pointwise and summatory count bounds (manuscript 68)}\label{xxb:cb:sec}
+
+\begin{quote}\small
+\textbf{Abstract of manuscript 68.}\itshape
+Let $a(N)$ count the terms in the fully expanded $N$th derivative of
+$x^{x^2}$. We derive two consequences of proved coefficient nonvanishing
+bounds. The exponential fixed-depth cutoff gives the pointwise refinement
+$a(N)\ge3N^2/8+(N/2)\log N-(N/2)\log\log N-5N/4$ for every integer
+$N\ge e^{10}$. Separately, the existing parity-sensitive bound on zeros in a
+fixed row yields an exact summatory inequality and
+$\sum_{N=0}^X a(N)\ge11X^3/72+5X^2/6-O(X)$.
+Consequently the lower limit of the average of $a(N)/N^2$ is at least
+$11/24$. The latter is an average statement, not a pointwise bound of
+$11N^2/24$. Neither result proves the conjectured equivalent
+$a(N)\sim N^2/2$.
+\upshape
+\end{quote}
+
+\paragraph{Status.}
+The arguments are ordinary mathematical proofs, independently checked, and not
+formal Lean proofs or externally refereed results. The source-relative
+contributions are the growing-depth count and the summatory consequences,
+rather than the previously proved row zero bound. The accompanying exact
+arithmetic script checks the finite counting identities; no unexplored
+coefficient rectangle is assumed nonzero.
+
+\subsubsection{The coefficient facts used}
+
+Write
+\[
+ \frac{d^N}{dx^N}x^{x^2}
+ =x^{x^2}\sum_{j\in\Z}\sum_{k\ge0}c_N(j,k)x^j(\log x)^k,
+ \qquad a(N)=\#\{(j,k):c_N(j,k)\ne0\}.
+\]
+The exact depth coordinates are
+\[
+ d=(N+j)/2-k,\qquad M=N-k,\qquad
+ \gamma(k,d,M)=[w^M](2+w)^k\bigl((1+w)^2\log(1+w)\bigr)^d.
+\]
+Taylor expansion gives $c_N(j,k)=N!\gamma(k,d,M)/(k!d!)$.
+The source report proves a positive bulk of size
+\begin{equation}\label{xxb:cb:eq:bulk}
+ \beta(N)=
+ \begin{cases}
+ (3N^2+10N+8)/8,&N\text{ even},\\
+ (3N^2+12N+1)/8,&N\text{ odd}.
+ \end{cases}
+\end{equation}
+Every candidate cell outside this bulk is uniquely described by
+\begin{equation}\label{xxb:cb:eq:tail}
+ d\ge1,\quad k\ge0,\quad q\ge1,\qquad N=2k+2d+1+q.
+\end{equation}
+Its coefficient is a positive scalar times
+$H_{d,k,q}=(k+2d+1+q)!\gamma(k,d,k+2d+1+q)/d!$.
+The mandatory symmetry zeros are precisely $q=2d$ with $k+d$ even. Other zeros
+have not been ruled out at every depth.
+
+\emph{Editorial note.}  The bridge is Proposition~\ref{xxb:dc:prop:bridge};
+\eqref{xxb:cb:eq:bulk} is \eqref{xxb:dc:eq:B}, the lower bound $\Lambda(n)$ of
+Theorem~\ref{xxb:thm:main-bounds}.
+
+Two proved inputs will be used in distinct ways.
+\begin{enumerate}[leftmargin=1.8em,itemsep=2pt]
+\item The companion cutoff theorem (Theorem~\ref{xxb:d56:thm:general},
+ manuscript~70's Theorem~7.2) shows that, for $d\ge3$, every nonhole cell is
+ nonzero when $k\ge2\widehat Q_d$ or $q\ge\widehat Q_d$, where
+\begin{equation}\label{xxb:cb:eq:Q}
+ \widehat Q_d=\left\lceil(2d+1)e^d\right\rceil.
+\end{equation}
+Depths one and two are already classified for all parameters in the source;
+the companion extends the all-order classification through depth six.
+\item The source's Mellin zero-count theorem bounds the number of zeros over all
+real $q>-1$ in a fixed $(d,k)$ row by
+\begin{equation}\label{xxb:cb:eq:J}
+ J(d,k)=
+ \begin{cases}
+ d-1,&k\text{ even},\\
+ d,&k\text{ odd and }d\text{ odd},\\
+ d-2,&k\text{ odd and }d\text{ even}.
+ \end{cases}
+\end{equation}
+In particular it bounds the number of integer tail cancellations, including the
+symmetry hole when present.
+\end{enumerate}
+The first input follows from a largest-root affine minorant for the folded
+residual polynomial and beta logarithmic moments. The second follows by
+counting sign changes of the integral kernel and applying the Chebyshev
+property of distinct real powers. They are separate statements: a per-row zero
+budget cannot be read as a pointwise classification along a derivative-order
+diagonal.
+
+\emph{Editorial notes.}  (i) ``Depths one and two are already classified
+\ldots{} in the source'' understates this report: depths one to four are
+classified here (Theorem~\ref{xxb:dc:thm:four}), and manuscript~70 adds five
+and six.  The argument below uses the classified depths only through
+Proposition~\ref{xxb:cb:prop:depthcount}, where any classified depth may be
+counted.  (ii) \eqref{xxb:cb:eq:J} is \eqref{xxb:dc:eq:J} of
+Theorem~\ref{xxb:dc:thm:zero-count}, quoted exactly.
+
+\subsubsection{A growing-depth pointwise bound}
+
+At a fixed derivative order, the general cutoff proves more than any fixed
+finite list of classified depths.
+
+\begin{proposition}[Exact depth count]\label{xxb:cb:prop:depthcount}
+Let $\bar d\ge3$ be an integer. If
+\begin{equation}\label{xxb:cb:eq:orderthreshold}
+ N\ge5\widehat Q_{\bar d}+2\bar d-1,
+\end{equation}
+then
+\begin{equation}\label{xxb:cb:eq:depthcount}
+ a(N)\ge\beta(N)+\sum_{d=1}^{\bar d}
+ \left[\max(0,\lfloor N/2\rfloor-d)-\chi_d(N)\right],
+\end{equation}
+where
+\[
+ \chi_d(N)=\mathbf1\{N\ge4d+1,\ N\equiv2d+1\pmod4\}.
+\]
+\end{proposition}
+\begin{proof}
+Any cell inside the unverified rectangle has $k\le2\widehat Q_d-1$ and
+$q\le\widehat Q_d-1$, and therefore, by~\eqref{xxb:cb:eq:tail},
+\[
+ N\le2(2\widehat Q_d-1)+2d+1+(\widehat Q_d-1)=5\widehat Q_d+2d-2.
+\]
+The right side increases with $d$. Under~\eqref{xxb:cb:eq:orderthreshold},
+every cell of every depth $3\le d\le\bar d$ lies outside its rectangle and is
+nonzero except for its possible symmetry hole. Depths one and two are covered
+by their existing classifications.
+
+For a fixed depth, equation~\eqref{xxb:cb:eq:tail} gives exactly
+$\max(0,\lfloor N/2\rfloor-d)$ possible $k$ values. The unique possible hole
+has $N=2k+4d+1$ and $k+d$ even, equivalent to the displayed indicator. The
+depths are disjoint and are outside the counted bulk. This
+proves~\eqref{xxb:cb:eq:depthcount}.
+\end{proof}
+
+\emph{Editorial note.}  $\chi_d(N)$ is \eqref{xxb:dc:eq:hd}.  With
+$\bar d=4$ and no threshold, \eqref{xxb:cb:eq:depthcount} is
+Corollary~\ref{xxb:dc:cor:lower}; with $\bar d=6$ and no threshold it is
+Corollary~\ref{xxb:d56:cor:count}.  Since depths $d\le6$ are classified, the
+threshold \eqref{xxb:cb:eq:orderthreshold} is needed only for $\bar d\ge7$.
+
+\begin{theorem}[A pointwise logarithmic gain]\label{xxb:cb:thm:pointwise}
+For every integer $N\ge e^{10}$,
+\begin{equation}\label{xxb:cb:eq:pointwise}
+ a(N)\ge\frac{3N^2}{8}+\frac N2\log N
+ -\frac N2\log\log N-\frac{5N}{4}.
+\end{equation}
+In particular, the improvement over the source's quadratic bulk is of order
+$N\log N$, while its leading pointwise constant remains $3/8$.
+\end{theorem}
+\begin{proof}
+Put $\mathfrak L=\log N$ and $\bar d=\lfloor\mathfrak L-\log\mathfrak L-3\rfloor$.
+Then $\bar d\ge4$, $\bar d\le\mathfrak L$, and
+$e^{\bar d}\le N/(e^3\mathfrak L)$. Since $e^3>20$ and $\mathfrak L\ge10$,
+\[
+ \widehat Q_{\bar d}\le(2\bar d+1)e^{\bar d}+1<\frac{21N}{200}+1.
+\]
+It follows that
+\[
+ 5\widehat Q_{\bar d}+2\bar d-1<\frac{21N}{40}+2\mathfrak L+4<N.
+\]
+The last inequality follows, for example, by differentiating
+$19e^{\mathfrak L}/40-2\mathfrak L-4$ on $\mathfrak L\ge10$.
+Proposition~\ref{xxb:cb:prop:depthcount} applies.
+Using $\chi_d\le1$ and $\lfloor N/2\rfloor\ge N/2-1/2$ gives
+\[
+ a(N)\ge\beta(N)+\frac{N\bar d}{2}-\frac{\bar d^2}{2}-2\bar d.
+\]
+Now $\bar d\ge\mathfrak L-\log\mathfrak L-4$ and
+$\mathfrak L^2+4\mathfrak L\le e^{\mathfrak L}=N$ for $\mathfrak L\ge10$, so
+\[
+ a(N)\ge\beta(N)+\frac N2(\mathfrak L-\log\mathfrak L)-\frac{5N}{2}.
+\]
+Finally~\eqref{xxb:cb:eq:bulk} gives $\beta(N)\ge3N^2/8+5N/4$,
+proving~\eqref{xxb:cb:eq:pointwise}.
+\end{proof}
+This proof does not declare any previously unchecked rectangle nonzero.
+Instead, at the particular order $N$, a growing number of complete depth
+diagonals avoid those rectangles altogether.
+
+\begin{remark}[Editorial: where the bound comes from, and its threshold]\label{xxb:cb:rem:threshold}
+The gain of order $N\log N$ genuinely needs Theorem~\ref{xxb:d56:thm:general}:
+with the tower-type constants \eqref{xxb:dc:eq:constants} of
+Theorem~\ref{xxb:dc:thm:finite} the admissible depth cap $\bar d$ grows far more
+slowly than $\log N$.  For moderate $N$ less is needed.  An exact count at
+the intake (a scratch computation, not shipped) found that the right side of
+\eqref{xxb:dc:eq:lower} (depths up to four) is at least the bound
+\eqref{xxb:cb:eq:pointwise} for every $3\le N\le92653$, and the right side of
+Corollary~\ref{xxb:d56:cor:count} (depths up to six) for every $3\le
+N\le814895$; and that the right side of \eqref{xxb:cb:eq:depthcount}, with the
+largest $\bar d$ admitted by \eqref{xxb:cb:eq:orderthreshold} or $\bar d=6$,
+is at least \eqref{xxb:cb:eq:pointwise} for every $3\le N\le3\cdot10^6$.  The
+threshold $e^{10}\approx22026$ of the theorem is therefore conservative; the
+theorem is stated here with it, as the manuscript proves it.  (For $N\le3000$,
+$a(N)=\U(N)$ is known in any case, by Proposition~\ref{xxb:prop:finite}.)  The
+manuscript's own choice of $\bar d$ becomes admissible, $\bar d\ge3$ with
+\eqref{xxb:cb:eq:orderthreshold}, from $N=3265$, but its estimates use
+$\mathfrak L\ge10$.
+\end{remark}
+
+\subsubsection{An exact summatory bound from the row budgets}
+
+Let $x_+=\max(x,0)$ and define the finite sum
+\begin{equation}\label{xxb:cb:eq:F}
+ \mathcal N(t)=\sum_{i,l\ge0}(t-4i-6l)_+.
+\end{equation}
+For integer $t\le0$ it is zero. Put $\overline\beta(X)=\sum_{N=0}^X\beta(N)$.
+
+\begin{theorem}[Exact summatory inequality]\label{xxb:cb:thm:sum}
+For every integer $X\ge0$,
+\begin{equation}\label{xxb:cb:eq:sumexact}
+ \sum_{N=0}^Xa(N)\ge\overline\beta(X)+\mathcal N(X-3)+2\mathcal N(X-6)+\mathcal N(X-7).
+\end{equation}
+Consequently
+\begin{equation}\label{xxb:cb:eq:sumasymp}
+ \sum_{N=0}^Xa(N)\ge\frac{11X^3}{72}+\frac{5X^2}{6}-O(X).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For fixed $d,k$, the orders $N\le X$ offer
+$\ell_{d,k}=(X-2k-2d-1)_+$ integer tail values $q\ge1$. The row
+budget~\eqref{xxb:cb:eq:J} proves at least $(\ell_{d,k}-J(d,k))_+$ nonzero
+coefficients. Thus the guaranteed tail contribution is
+\[
+ \mathcal S(X)=\sum_{d\ge1,k\ge0}(X-2k-2d-1-J(d,k))_+.
+\]
+Split $k$ into $2i,2i+1$ and $d$ into $2l+1,2l+2$. The four summands become, in
+order,
+\[
+ (X-3-4i-6l)_+,\quad (X-6-4i-6l)_+,\quad
+ (X-6-4i-6l)_+,\quad (X-7-4i-6l)_+.
+\]
+This is exactly the right-side tail in~\eqref{xxb:cb:eq:sumexact}. No extra
+hole subtraction is appropriate: $J(d,k)$ already bounds all zeros in the row.
+
+The generating function of this finite count is
+\begin{equation}\label{xxb:cb:eq:GF}
+ \sum_{X\ge0}\mathcal S(X)\xi^X
+ =\frac{\xi^4+2\xi^7+\xi^8}{(1-\xi)^2(1-\xi^4)(1-\xi^6)}.
+\end{equation}
+Its expansion at $\xi=1$ begins
+\[
+ \frac{1}{6(1-\xi)^4}-\frac{5}{12(1-\xi)^3}
+ +O((1-\xi)^{-2}),
+\]
+while all other poles have order at most two. Partial fractions therefore give
+$\mathcal S(X)=X^3/36-X^2/24+O(X)$.
+Direct summation of~\eqref{xxb:cb:eq:bulk} gives
+\[
+ \overline\beta(X)=
+ \begin{cases}
+ X^3/8+7X^2/8+5X/4+1,&X\text{ even},\\
+ X^3/8+7X^2/8+11X/8+5/8,&X\text{ odd}.
+ \end{cases}
+\]
+Adding these expressions proves~\eqref{xxb:cb:eq:sumasymp}.
+\end{proof}
+The row-length cap is important. Subtracting the full budget $d$ from every
+short terminal row would lose valid information. An equivalent coarser
+calculation caps possible cancellations by
+\[
+ \sum_{d,k}\min\{d,(X-2k-2d-1)_+\}
+ =\sum_{j=1}^{\lfloor(X-1)/3\rfloor}
+ \binom{\lfloor(X-1-3j)/2\rfloor+2}{2}
+ =\frac{X^3}{72}+O(X).
+\]
+Subtracting this from the full candidate total $X^3/6+O(X^2)$ gives the same
+cubic constant $11/72$; keeping the parity-sensitive budget also gives the
+sharper quadratic term in~\eqref{xxb:cb:eq:sumasymp}.
+
+\begin{corollary}[Normalized average and upper limit]\label{xxb:cb:cor:average}
+One has
+\[
+ \liminf_{X\to\infty}\frac1X\sum_{N=1}^X\frac{a(N)}{N^2}
+ \ge\frac{11}{24},\qquad
+ \limsup_{N\to\infty}\frac{a(N)}{N^2}\ge\frac{11}{24}.
+\]
+\end{corollary}
+\begin{proof}
+Write $\Sigma_a(X)=\sum_{N=1}^Xa(N)$. Summation by parts gives
+\[
+ \sum_{N=1}^X\frac{a(N)}{N^2}
+ =\frac{\Sigma_a(X)}{X^2}
+ +\sum_{n=1}^{X-1}\Sigma_a(n)\left(\frac1{n^2}-\frac1{(n+1)^2}\right).
+\]
+All weights are positive. Theorem~\ref{xxb:cb:thm:sum} implies
+$\Sigma_a(n)\ge(11/72)n^3-O(n^2)$. Substituting this bound, and using
+$n^3(1/n^2-1/(n+1)^2)=2+O(1/n)$, yields
+\[
+ \sum_{N=1}^X\frac{a(N)}{N^2}\ge\frac{11X}{24}-O(\log X).
+\]
+The first conclusion follows; the second is an immediate consequence of an
+average lower bound.
+\end{proof}
+In particular,~\eqref{xxb:cb:eq:sumasymp} is not being interpreted as a
+pointwise inequality with leading constant $11/24$. The conjectured leading
+constant $1/2$ is still not established. The source's upper bound continues to
+imply $\limsup a(N)/N^2\le1/2$.
+
+\emph{Editorial note.}  The upper bound is Theorem~\ref{xxb:thm:upper}.  The
+last sentence of Question~6 of Subsection~\ref{xxb:dc:sec:future} says that
+the fixed-row bound alone does not bound the total number of extra zeros after
+summing over the triangle; Theorem~\ref{xxb:cb:thm:sum} computes what it does
+give, a summatory constant $\tfrac{11}{72}$ against the conjectured
+$\tfrac16$, and Proposition~\ref{xxb:cb:prop:sharpness} shows that this is the
+limit of that information.  As for Corollary~\ref{xxb:cb:cor:average}: an
+ineffective proof of $a(N)\sim N^2/2$, which would imply it, is in the sibling
+report named in Corollary~\ref{xxb:d56:cor:count}, note~(ii); it is not part
+of this report.
+
+\subsubsection{Scope of sharpness from integer information}
+
+The cubic constant above is optimal for a deliberately narrow collection of
+integer support constraints. This observation is not a sharpness claim about
+the actual derivative coefficients or their analytic identities.
+
+\begin{proposition}[An abstract support pattern]\label{xxb:cb:prop:sharpness}
+If one retains only bulk positivity, the integer row
+budgets~\eqref{xxb:cb:eq:J}, the prescribed symmetry holes, the completed
+depths through six, and the cutoff exclusions~\eqref{xxb:cb:eq:Q}, those facts
+alone cannot improve the summatory leading constant $11/72$.
+\end{proposition}
+\begin{proof}
+Retain every bulk cell and remove every prescribed symmetry hole. Put
+$\iota(d,k)=\mathbf1\{k+d\text{ is even}\}$. For $d\ge7$ and
+$k<2\widehat Q_d$, additionally remove the cells
+\[
+ q=1,\ldots,J(d,k)-\iota(d,k),
+\]
+and retain all other cells. The added zeros have $q\le d<\widehat Q_d$, and
+are disjoint from the symmetry hole $q=2d$. Their total in each row is at most
+$J(d,k)$. Thus this abstract pattern respects exactly the stated constraints.
+
+For comparison, the baseline pattern removing $1\le q\le d$ has, at order $N$,
+the number of lattice points with $d\ge1,k\ge0$ satisfying $2k+2d\le N-2$,
+minus the number satisfying $2k+3d\le N-2$. These counts are respectively
+$N^2/8+O(N)$ and $N^2/12+O(N)$, leaving $N^2/24+O(N)$ removed cells.
+
+Replacing $d$ by $J-\iota$ changes only a bounded number of possible $q$ values
+per depth, hence $O(N)$ cells at an order. The mandatory holes also contribute
+$O(N)$. Restoring the finitely many completed depths changes $O(1)$ cells.
+Finally, restoring cells with $k\ge2\widehat Q_d$ affects only $d=O(\log N)$,
+and hence $O((\log N)^2)$ cells. Since the nonstructural candidate count is
+$N^2/2+O(N)$, the resulting abstract support has
+\[
+ a_{\rm model}(N)=\frac{11N^2}{24}+O(N),\qquad
+ \sum_{N\le X}a_{\rm model}(N)=\frac{11X^3}{72}+O(X^2).
+\]
+This proves the information-boundary claim. The pattern is not asserted to
+arise from any function or to obey the actual coefficient recurrence or Mellin
+identities.
+\end{proof}
+
+\emph{Editorial note.}  This subsection is the manuscript's file
+\texttt{sharpness.tex}, which its main source loads with
+\texttt{\textbackslash IfFileExists} as a section of its own; the
+proposition is unnumbered there and the label is the intake's.
+
+\subsubsection{Verification and relation to the source}
+
+The counting argument uses no large new coefficient computation. The supplied
+script checks direct row-budget sums, the four parity classes, the exact prefix
+bulk count, and the quasipolynomial generated by~\eqref{xxb:cb:eq:GF} for
+$X\le180$, and verifies its rational generating-function identity
+symbolically. These checks complement the explicit bijective/parity proofs; no
+finite test is extrapolated to all $N$.
+
+The inspected source (this report at commit \texttt{ca81647a9}) states the
+fixed-row zero budget and pointwise quadratic lower bounds, but not these
+growing-depth or summatory consequences. The pointwise result uses the
+companion's new exponential cutoffs; the summatory result follows already from
+the source's row theorem by retaining the finite row-length restriction. No
+claim is made to exhaustive literature priority.
+
+\emph{Editorial note.}  The growing-depth idea is
+Corollary~\ref{xxb:dc:cor:lower} with a fixed cap $\bar d=4$; what is new is
+letting $\bar d$ grow with $N$, which Theorem~\ref{xxb:d56:thm:general}
+makes possible.
+
+% ---------------------------------------------------------------------------
+\subsection{Depths five and six and count bounds: provenance, files and formal status}\label{xxb:d56:sec:provenance}
+
+\subsubsection{Provenance}
+
+Subsections~\ref{xxb:d56:sec:intro}--\ref{xxb:d56:sec:provenance} were built
+from \textbf{two} manuscripts of batch~72A, which arrived in commit
+\texttt{1512ef835} and were placed in this report by commit
+\texttt{d292c6765}, as its additions~08 and~07.  Both are dated 1 October 2026,
+carry the line ``Research note prepared for Vladimir Reshetnikov with OpenAI'',
+and are pinned to ProveIt commit
+\texttt{ca81647a9f679e96\allowbreak d49ffdbc54b0c0ab\allowbreak 13d10a36}.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item Manuscript~70 (addition~08), \emph{Depths Five and Six Nonvanishing for
+ OEIS A290268}, 9-page PDF, archive
+ \texttt{ProveIt\_\allowbreak A290268\_\allowbreak Depths\_\allowbreak Five\_\allowbreak Six.zip}.
+ Its Sections~1--2 form Subsection~\ref{xxb:d56:sec:theorem}, 3--5
+ Subsection~\ref{xxb:d56:sec:five}, 6 Subsection~\ref{xxb:d56:sec:six}, 7
+ Subsection~\ref{xxb:d56:sec:general}.  It contributes
+ Theorem~\ref{xxb:d56:thm:main}, the moment seeds, the depth-five reduction,
+ Corollary~\ref{xxb:d56:cor:count}, Proposition~\ref{xxb:d56:prop:general} and
+ Theorem~\ref{xxb:d56:thm:general}.
+\item Manuscript~68 (addition~07), \emph{Pointwise and Summatory Bounds for
+ OEIS A290268}, 6-page PDF, archive
+ \texttt{ProveIt\_\allowbreak A290268\_\allowbreak Count\_\allowbreak Bounds.zip},
+ with its input file \texttt{sharpness.tex}.  Its four sections and that input
+ form Subsection~\ref{xxb:cb:sec}.  It contributes
+ Proposition~\ref{xxb:cb:prop:depthcount}, Theorems~\ref{xxb:cb:thm:pointwise}
+ and~\ref{xxb:cb:thm:sum}, Corollary~\ref{xxb:cb:cor:average} and
+ Proposition~\ref{xxb:cb:prop:sharpness}.
+\end{itemize}
+Every theorem, proposition, lemma and corollary of the two manuscripts is
+printed, with every non-claim and limitation they state; none was weakened or
+strengthened.  The editorial choices were these.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item The additions are placed as subsections at the end of
+ Part~\ref{xxb:part}, after the batch-70 addition, so that no existing
+ section, theorem or equation number moves; 70 comes before 68, which uses it.
+\item Manuscript~70's Lemma~2.1 and Lemma~4.1 are restatements of results of
+ this part (Theorems~\ref{xxb:dc:thm:bulk}, \ref{xxb:dc:thm:holes} and
+ Proposition~\ref{xxb:dc:prop:base}) with the same proofs; their statements
+ are printed and their proofs are cited, not reprinted.  Its other restated
+ formulas (bridge, factorization, branch cut, residual polynomials, folding,
+ recurrences) are printed where the manuscript prints them, each with a
+ reference to the result it restates.
+\item The letters are changed as in Table~\ref{xxb:d56:tab:notation}, with no
+ change of normalization; the binding change is that manuscript~70's
+ $C_d$, $K_d$, $Q_d$ and manuscript~68's $K_d$, $Q_d$ are printed
+ $\widehat C_d$, $\widehat K_d$, $\widehat Q_d$, because the same letters
+ already name the different constants \eqref{xxb:dc:eq:constants}.  The
+ manuscripts' citations of the pinned source are re-targeted to this part,
+ manuscript~68's citation of ``the companion'' (its bibliography names the
+ archive) to Theorem~\ref{xxb:d56:thm:general}, and both OEIS entries and
+ 70's DLMF entry to this article's bibliography.
+\item Manuscript~68's \texttt{sharpness.tex} is printed as the subsubsection
+ ``Scope of sharpness from integer information''.
+\item Remarks~\ref{xxb:d56:rem:d3} and~\ref{xxb:cb:rem:threshold}, the notation
+ subsection and table, and the editorial notes are additions of the intake,
+ not of the manuscripts.
+\end{itemize}
+Not shipped: the two manuscripts' sources and PDFs, 68's
+\texttt{sharpness.tex}, their \texttt{README.md} files, and the two copies of
+the generic TeX wrapper \texttt{build\_\allowbreak local.sh}.  The archives
+survive in the history of commit \texttt{1512ef835}.  The READMEs add no
+mathematical claim; both say that the proofs had an ``independent''
+mathematical check or review, which this report cannot confirm.
+
+\subsubsection{Files}
+
+The manuscripts' code and data are shipped byte-identical to the delivery,
+with the prefixes \texttt{08-depths-\allowbreak five-\allowbreak six-}~(70) and
+\texttt{07-count-\allowbreak bounds-}~(68).
+% longtable steps the article-wide table counter; restore it afterwards so
+% that no later table number moves.
+\begingroup
+\renewcommand{\theHtable}{xxb.d56.files}%
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.50\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Shipped path (delivery name) & Purpose\\
+\midrule
+\endhead
+\texttt{code/08-depths-\allowbreak five-\allowbreak six-\allowbreak verify\_depth5.py} (\texttt{verify\_\allowbreak depth5.py}) & Depth-five rectangle and seeds by the centered recurrence over exact integers; writes \texttt{depth5\_\allowbreak certificate.json} beside itself.\\
+\texttt{data/08-depths-\allowbreak five-\allowbreak six-\allowbreak depth5\_certificate.json} (\texttt{depth5\_\allowbreak certificate.json}) & Its recorded output, with a digest, the exact seed ratio and a wall-clock field \texttt{elapsed\_seconds}.\\
+\texttt{code/08-depths-\allowbreak five-\allowbreak six-\allowbreak independent\_pascal\_depth5.py} (\texttt{independent\_\allowbreak pascal\_\allowbreak depth5.py}) & Depth-five rectangle by the Pascal recurrence modulo 1009, 1013, 1019, and both seeds; writes \texttt{independent\_\allowbreak pascal\_\allowbreak depth5.json} beside itself.\\
+\texttt{data/08-depths-\allowbreak five-\allowbreak six-\allowbreak independent\_pascal\_depth5.json} (\texttt{independent\_\allowbreak pascal\_\allowbreak depth5.json}) & Its recorded output.\\
+\texttt{code/08-depths-\allowbreak five-\allowbreak six-\allowbreak verify\_depth6\_columns.cpp} (\texttt{verify\_\allowbreak depth6\_\allowbreak columns.cpp}) & Depth-six rectangle by the centered recurrence modulo 1000003 and 1000033 (C++17); prints its JSON to standard output.\\
+\texttt{data/08-depths-\allowbreak five-\allowbreak six-\allowbreak depth6\_column\_certificate.json} (\texttt{depth6\_\allowbreak column\_\allowbreak certificate.json}) & Its recorded output.\\
+\texttt{code/08-depths-\allowbreak five-\allowbreak six-\allowbreak independent\_pascal\_depth6.py} (\texttt{independent\_\allowbreak pascal\_\allowbreak depth6.py}) & Depth-six rectangle by the Pascal recurrence modulo the same two primes, and both seeds; writes \texttt{independent\_\allowbreak pascal\_\allowbreak depth6.json} beside itself.\\
+\texttt{data/08-depths-\allowbreak five-\allowbreak six-\allowbreak independent\_pascal\_depth6.json} (\texttt{independent\_\allowbreak pascal\_\allowbreak depth6.json}) & Its recorded output.\\
+\texttt{code/07-count-\allowbreak bounds-\allowbreak verify\_counts.py} (\texttt{verify\_\allowbreak counts.py}) & Exact count checks of Subsection~\ref{xxb:cb:sec} for $X\le180$ and the generating-function identity (SymPy); prints three \texttt{PASS} lines and writes nothing.\\
+\texttt{data/07-count-\allowbreak bounds-\allowbreak verification.txt} (\texttt{verification.txt}) & Its recorded output.\\
+\texttt{data/07-count-\allowbreak bounds-\allowbreak requirements.txt} (\texttt{requirements.txt}) & Its dependency, \texttt{sympy==1.14.0}.\\
+\bottomrule
+\end{longtable}
+\endgroup
+\addtocounter{table}{-1}
+The commands are in the README.  The JSON files and programs keep the
+manuscripts' letters (\texttt{R}, \texttt{Q} for the practical cutoffs,
+\texttt{D} for the depth).
+
+\subsubsection{Formal status}\label{xxb:d56:sec:formal}
+
+Nothing in this addition is formalized, and its placement beside a Lean
+development confers no formal status.  The Lean library \texttt{A290268}
+(\texttt{Combinatorics/\allowbreak DerivativeExpansions/\allowbreak A290268/\allowbreak Lean})
+relates to it as described in Section~\ref{xxb:dc:sec:formal}.  Neither
+manuscript cites or relies on it.  Theorem~\ref{xxb:d56:thm:main} would
+discharge the nonvanishing inclusion of that library's support
+characterization on cells of depth five and six, on paper only; the theorems
+of \texttt{A290268.Main} stay conditional, and the library defines no
+$\gamma$.
 
 \clearpage
 \section{\texorpdfstring{$x^{x^x}$}{x^(x^x)}: OEIS A281434}\label{xxc:part}
@@ -6374,6 +9201,20 @@ even $n\ge8$ and $(3n^2+28n-111)/8$ for odd $n\ge17$
 settled, and Conjecture~\ref{xxb:conj:support} is still needed, now only on
 deficits $m\ge5$.
 
+\emph{Update (1 October 2026, batch 72A).}  For $x^x$, the later
+Sections~\ref{xx:lc:sec:intro}--\ref{xx:lc:sec:provenance} add to the settled
+column complete nonvanishing on every offset $\mu(p-1)$ of the Lehmer--Comtet
+triangle for primes $p>\mu$ under explicit conditions (for every prime when
+$\mu=2,4$, every odd prime when $\mu=3,5$), finite candidate lists for the
+offsets $(p-1)^2$ and $p^2-1$, and exact $p$-adic valuations on divisibility
+progressions.  Conjecture~\ref{xx:conj:zeros} is still needed.  For
+$x^{x^2}$, Sections~\ref{xxb:d56:sec:intro}--\ref{xxb:d56:sec:provenance} add
+the complete zero classification on the fifth and sixth deficit diagonals and
+the explicit lower bound $3n^2/8+(n/2)\log n-(n/2)\log\log n-5n/4$ for
+$n\ge e^{10}$ (Theorem~\ref{xxb:cb:thm:pointwise}); the leading constant of
+every explicit lower bound is still $3/8$, and
+Conjecture~\ref{xxb:conj:support} is now needed only on deficits $m\ge7$.
+
 \subsection{Why the orders differ}\label{syn:orders}
 
 The growth orders line up with the number of variables in the frame, and
@@ -6500,6 +9341,8 @@ this article can settle, and it does not claim to.
  the statement is exactly equivalent to the OEIS conjecture, so nothing weaker
  will do.  Since the later addition to that part it is proved on deficits
  $m\le4$ (Theorem~\ref{xxb:dc:thm:four}); what remains is $m\ge5$.
+ (\emph{Update, 1 October 2026:} also on $m=5,6$,
+ Theorem~\ref{xxb:d56:thm:main}; what remains is $m\ge7$.)
 \item \textbf{$x^{x^x}$ (Part~\ref{xxc:part}).}  A uniform bound
  $\Delta(n)=o(n^3)$ would give the equivalent $a(n)\sim\tfrac23n^3$; the
  stronger $\Delta(n)=O(n)$, conjectured not in A281434 itself but in the
@@ -6616,6 +9459,31 @@ NIST Digital Library of Mathematical Functions,
 \S5.12, especially Eq.~5.12.1, Euler's beta integral.
 Accessed September 20, 2026.
 \url{https://dlmf.nist.gov/5.12.E1}.
+
+% Cited by the batch-72A Part 2 addition (Sections xx:lc:*, xx:pm:*, xx:st:*,
+% xx:pn:*).  The manuscripts' entry for the pinned source is replaced by
+% references into Part 2, and manuscript 09's entry for its companion by
+% references to manuscript 12's subsection.
+\bibitem{xx-davis}
+D.~M. Davis,
+\emph{Coefficients in powers of the log series},
+Integers \textbf{11} (2011), A16; preprint arXiv:1001.3068 (2010),
+Theorem 1.1 and Section 3.
+\url{https://arxiv.org/abs/1001.3068}.
+
+\bibitem{xx-ravichandran}
+M.~Ravichandran,
+\emph{Principal submatrices, restricted invertibility and a quantitative
+Gauss--Lucas theorem},
+International Mathematics Research Notices \textbf{2020} (15), 4809--4832.
+Theorem 1.4 in arXiv version 2, attributed there to Marcus.
+\url{https://arxiv.org/abs/1609.04187}.
+
+\bibitem{xx-adelberg}
+A.~Adelberg and T.~Lengyel,
+\emph{New results on the $p$-adic valuation of Stirling numbers},
+Integers \textbf{22} (2022), A82.
+\url{https://math.colgate.edu/~integers/w82/w82.pdf}.
 
 % Cited by the batch-42 addition (Sections xxb:dc:*); manuscript 06's OEIS
 % entry is merged into oeis290268 above.

@@ -9,6 +9,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
 \newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
 \newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
@@ -181,6 +183,20 @@ The second equality swaps the independent identical variables $V,Y'$ while prese
 \end{proof}
 
 The factor $\nu$ is unique as well: its transform near zero is $F_X/F_Y$, and in the necessity construction it is compactly supported. For the tilted uniform classification it is the discrete law on $\{0,b,\ldots,(M-1)b\}$ with weights proportional to $e^{-\beta bj}$. The summand $V$ is then determined by $X$ modulo $b$.
+% ed. (2026-10-01): the proposition is a special case of the next note's mask criterion (same series)
+\begin{ednote}
+Proposition~\ref{prop:convolution} is the case of two one-coordinate masks of
+Theorem~1.1 of the next note of the series,
+\path{../Universal_Fabius_Mask_Criterion/}, which proves the same criterion,
+by the same transform argument, for arbitrary finite or countable masks of
+bounded independent coordinates, overlapping or of different sizes;
+Lemmas~\ref{lem:thresholds} and~\ref{lem:noise} reappear there in
+Sections~1.1 and~1.2. Read as one series, that theorem is the primary
+statement and this proposition a special case. Corollary~\ref{cor:fabius} is
+extended from single observations to masks by Theorem~2.1 of that note
+($q=1/M$, prefix counts) and by Theorem~2.1 of
+\path{../Arithmetic_Geometric_Mask_Order/} (every $q$).
+\end{ednote}
 
 \section{Consequences for Fabius observations and scope}
 Consider a finite or countably infinite independent family of common-tilt coordinates with positive caps $(a_i)$ satisfying $\sum_i a_i<\infty$. The sum of all coordinates other than two fixed coordinates is a bounded independent $Z$.
@@ -199,6 +215,15 @@ A non-reciprocal-integer ratio may still allow selected distances: $q=1/\sqrt2$ 
 
 \paragraph{Source and attribution.}
 The relevant ProveIt source is the arbitrary-observation-mask question in \cite{Repository}. The earlier companion \cite{Modulo} established the residue-swap sufficiency. The present note supplies the exact converse, kernel uniqueness, and the noise and threshold reductions. Blackwell comparison, exponential digit independence, and comparisons of weighted experiments have established prior literature \cite{Blackwell,Steutel,Bayarri}. Convolution criteria for comparison of translation experiments are classical; Torgersen \cite{Torgersen} explicitly traces antecedents to Boll and Strassen. Proposition~\ref{prop:convolution} is proved here for the stated compact sum-reweighted experiments; no general priority claim is made. The arguments are ordinary mathematical proofs, not formalized proofs or externally refereed results.
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the second of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The earlier companion \cite{Modulo}, source
+\texttt{exact\_fabius\_mask\_order.tex}, is filed as
+\path{../Exact_Fabius_Mask_Order/}; the sufficiency proof in Section~3
+reproduces its residue swap (its Lemma~2.1). The source \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}.
+\end{ednote}
 
 \begin{thebibliography}{9}\small\raggedright
 \setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}

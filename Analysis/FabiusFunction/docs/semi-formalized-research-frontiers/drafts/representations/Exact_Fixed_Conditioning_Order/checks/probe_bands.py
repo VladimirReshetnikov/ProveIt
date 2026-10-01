@@ -5,6 +5,20 @@ from scipy.optimize import minimize_scalar,brentq
 from probe_singletons import SumUniform
 from probe_masks import evaluate_uniform,nodes,weights
 
+# ed. (2026-10-01): results are written to <output-dir>/<name>, by default
+# rerun/ beside this program, with LF line endings (as delivered the program
+# overwrote its recorded result beside itself, with CRLF on Windows). Pass
+# --output-dir with this program's own directory, on a copy, to regenerate
+# the recorded file.
+def _ed_write(name, text):
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('--output-dir', type=Path,
+                        default=Path(__file__).resolve().parent / 'rerun')
+    out = parser.parse_known_args()[0].output_dir
+    out.mkdir(parents=True, exist_ok=True)
+    (out / name).write_bytes(text.encode('utf-8'))
+
 def tv_band(caps,mask,lower,upper):
     chosen=[caps[i] for i in mask];hidden=[a for i,a in enumerate(caps) if i not in mask]
     obs=SumUniform(chosen);rest=SumUniform(hidden);total=SumUniform(caps)
@@ -41,5 +55,6 @@ for n in range(2,8):
             bad.append(r);print('COUNTERCANDIDATE',json.dumps(r),flush=True)
             if len(bad)>=5:break
     if len(bad)>=5:break
-Path(__file__).with_name('bands_probe.json').write_text(json.dumps(dict(cases=count,countercandidates=bad),indent=2)+'\n')
+# ed. (2026-10-01): written by _ed_write (see above).
+_ed_write('bands_probe.json', json.dumps(dict(cases=count,countercandidates=bad),indent=2)+'\n')
 print('DONE',count,'countercandidates',len(bad))

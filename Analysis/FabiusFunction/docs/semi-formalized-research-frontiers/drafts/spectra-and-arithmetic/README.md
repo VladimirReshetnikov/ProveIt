@@ -258,7 +258,7 @@ Unreviewed; no Lean statement.
 Archival arrival of 2026-09-29:
 [`Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`](Simultaneous_Convolution_Divisors_Fabius_Type_Laws/),
 *Simultaneous Convolution Divisors of Fabius-Type Laws* (24-page A4 PDF,
-1,646-line source, an exact standard-library certificate program), filed
+1,671-line source, an exact standard-library certificate program), filed
 by a quick archival intake from the repository-level `docs/incoming/`
 drop zone.  It decides which families of uniform laws can be removed
 *together* from the prime-base law `X_p = Σ p^{−k}U_k`: exactly the
@@ -271,16 +271,20 @@ shows that zero cancellation does not imply positivity for composite
 bases.  Its one-stream cases are theorems of the two reports above, and
 it recovers the reciprocal-integer report's single-copy theorem; it does
 not cite the arithmetic-factor report, whose question "Beyond
-divisibility ladders" it answers for prime-power geometric targets.
-Unreviewed; no Lean statement.
+divisibility ladders" it answers for prime-power geometric targets.  The
+finite part of its base-six quotient (caps `h`, `6h` over `2h`, `3h`,
+quotient `1 − u + u²`) reappears, uncited, in two observation-mask notes
+of `../representations/` (batch 72), which show that nine further
+uniforms of length `h` make it positive; an editorial note of 2026-10-01
+records this.  Unreviewed; no Lean statement.
 
 Archival arrival of 2026-09-30:
 [`Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/`](Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/),
-*Arithmetic Rigidity off Resonance* (25-page US Letter PDF, 901-line
+*Arithmetic Rigidity off Resonance* (25-page US Letter PDF, 949-line
 source, an exact standard-library certificate program), filed by a
 quick archival intake from the repository-level `docs/incoming/` drop
-zone and amended editorially the same day (its README lists the
-amendments).  It takes the convolution-factor problem of the two articles
+zone and amended editorially the same day and on 2026-10-01 (its README
+lists the amendments).  It takes the convolution-factor problem of the two articles
 above off integer ratios: when the source widths are pairwise
 rationally incommensurable, a family of uniforms divides the law
 exactly when its Fourier quotient is entire, exactly when each uniform
@@ -298,8 +302,14 @@ the mechanism of its Wasserstein bound (editorial notes now record both,
 with reciprocal notes in the arithmetic-factor, simultaneous and
 reciprocal-integer articles); it adds
 a Wasserstein separation bound and a family near `q = 1/2` on which
-exact factorability fails while the distance to it tends to zero.
-Unreviewed; no Lean statement.
+exact factorability fails while the distance to it tends to zero.  For
+observation masks of one geometric family its separated-width theorem is
+re-proved, uncited, by
+`../representations/Arithmetic_Geometric_Mask_Order/` (mask inclusion
+when no power of `q` is rational), and two other notes of that series
+carry out the finite Laurent-polynomial step of its question "Composite
+reciprocal returns" for finite sources; editorial notes of 2026-10-01
+record both.  Unreviewed; no Lean statement.
 
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),
 *Total Positivity and Cartwright Geometry in the Fabius--Rvachev Dyadic Sinc
