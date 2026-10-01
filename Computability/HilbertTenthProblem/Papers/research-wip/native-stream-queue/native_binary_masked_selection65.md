@@ -6,7 +6,7 @@ in **65=33M+32A**, with **22 strictly positive auxiliary witnesses** and
 empty unpadded words and arbitrary truth-pattern omissions. The component
 also proves its own binary length power. If the length bound is not a
 relation argument, **64=32M+32A** defines unrestricted bitwise AND with
-23 positive auxiliaries and16 equations.
+22 positive auxiliaries and15 equations.
 
 One kernel can check all eight selected-source fields of the
 [four-register matrix interface](group_four_register_history.md) together.
@@ -14,9 +14,9 @@ This batch costs **120=57M+63A**. The general batch uses30 positive
 auxiliaries and24 equations. Under the actual four-register digit margin
 and mutually exclusive selection, a variant uses only **23 positive
 auxiliaries and17 equations**, at the same120 operations. Using the
-unrestricted AND component instead gives **118=55M+63A**, with31/24
-auxiliaries/equations in the general version and **24 positive auxiliaries,
-17 equations** in the version for the four-register interface. These118
+unrestricted AND component instead gives **118=55M+63A**, with30/23
+auxiliaries/equations in the general version and **23 positive auxiliaries,
+16 equations** in the version for the four-register interface. These118
 versions retain the dyadic cell geometry as an external hypothesis.
 
 The AND predicate is a complete arithmetic component. Its interpretation
@@ -107,23 +107,42 @@ This is a comparison-system count; no sum of squares is included.
 
 ### The unrestricted64 version
 
-Delete only `q=16*P` from (2), remove P from the relation parameters, and
-instead supply q as one additional positive existential coordinate.
-Every other gate and all16 comparisons remain. This gives the exact
-projection on positive Hhat,Mhat,Zhat
+Delete `q=16*P` from (2) and remove P from the relation parameters.
+The four existing checksum additions now compute the scale itself:
 
-    Zhat-1 = (Hhat-1) AND (Mhat-1),                    (4a)
+    bs_sum01=F0+F1;
+    bs_sum012=bs_sum01+F2;
+    bs_Q=bs_sum012+F3;
+    q=bs_Q+1.                                        (4a)
 
-with **64=32M+32A**,23 positive auxiliaries and16 equations. To see that
-the padding proof still applies, the selector checksum and positive
-F0,F1,F2 with F3>=8 imply q>=12; the kernel makes q a power of two, hence
-q>=16. Thus q=16P for some power of two P, as a conclusion of the
-proof rather than a source gate. The same soundness argument gives
-(4a). Conversely, for any nonnegative H,M, choose a power of two P
-larger than both, set q=16P, and use the preceding positive converse.
-The bound may depend on the witnesses; it is no longer a parameter of
-the relation. This is a complete unrestricted AND component, not a
-claim that power typing itself was free.
+Evaluate these after F3 and before every q-dependent packing or kernel
+gate. The old checksum register bs_q is renamed q; its comparison
+`bs_q=q` is deleted. This gives the exact projection on positive
+Hhat,Mhat,Zhat
+
+    Zhat-1 = (Hhat-1) AND (Mhat-1),                    (4b)
+
+with **64=32M+32A**,22 positive auxiliaries and15 equations. No new
+arithmetic is required: the four additions were already in selector56.
+All other gates and comparisons retain their original formulas.
+
+The positive domain is valid before any equation. The three supplied
+fields F0,F1,F2 are positive and computed F3>=8, so (4a) gives q>=12.
+The selector theorem then makes q a power of two, hence q>=16. Thus
+q=16P for some power of two P as a conclusion of the proof. The earlier
+padding argument gives (4b). Conversely, for any nonnegative H,M,
+choose a power of two P larger than both and form the padded truth
+classes at q=16P. Their checksum is exactly that q, so (4a) computes it.
+The same complete positive Pell extension supplies every auxiliary.
+
+This refinement also gives a bijection with the previous unrestricted64
+source that supplied q. At every old positive zero its checksum equation
+forces q to equal (4a); erase that coordinate. Conversely, every new
+positive tuple reconstructs a positive old q by (4a). The deleted
+checksum residual is identically zero and every remaining old residual
+after this substitution is the new residual. Thus the two maps are
+inverse on the full positive solution sets, including noncanonical Pell
+witnesses. The bounded65 source and its positive domains are unchanged.
 
 ## 3. A binary mask selects a whole cell
 
@@ -266,9 +285,13 @@ retain exactly their original domain conventions.
 
 Replace the bounded AND65 by the unrestricted AND64 from Section2.
 In the actual batch schedule this deletes `q=16*P8` and the now-unused
-instruction `P8=P4*P4`. Supply positive q as an additional kernel
-auxiliary. Every other instruction and all24 comparisons remain. The
-literal cost is **118=55M+63A**, with31 positive auxiliaries.
+instruction `P8=P4*P4`. Compute q by the four existing checksum additions (4a), moved before
+q-dependent packing, and delete the checksum comparison. Every other
+instruction and comparison remains. The literal cost is **118=55M+63A**,
+with30 positive auxiliaries and23 equations. The same positive erasure/
+reconstruction bijection as Section2 applies to its former supplied q:
+computed F3=16Zb+8>=8 makes the reconstructed q positive on every
+positive tuple, before using any equation.
 
 Its exact scalar projection is `Zb=Hb AND Mb` together with (8).
 It no longer proves that P is a power of two, nor bounds Hb,Mb by P^8.
@@ -317,8 +340,8 @@ component incorrectly. The mutual exclusion and digit margin themselves
 are not proved by this new equation.
 
 The same replacement applies to the118-operation version: use (15)
-instead of its eight bounds. This gives **118=55M+63A**,24 positive
-auxiliaries and17 equations. Its scalar projection includes the stronger
+instead of its eight bounds. This gives **118=55M+63A**,23 positive
+auxiliaries and16 equations. Its scalar projection includes the stronger
 bound `sum_i Z_i<=P-8`. The exact selected-source interpretation and
 full positive converse follow under (10),(14), by precisely the preceding
 soundness and margin arguments. All six64/65 and118/120 schedules are
@@ -357,8 +380,8 @@ radix examples check two hypotheses that cannot be silently removed.
 These are finite exact audits. The unbounded converse follows from the
 proved selector56 extension and the mathematical arguments above.
 
-Independent root full proof/source/default review passed for all six
-variants. A separate final review of AND64/65 passed with1,024 independent
+Before the checksum refinement, independent root full proof/source/default
+review passed for all six original variants. A separate final review of AND64/65 passed with1,024 independent
 complete residual identities and37,449 candidate-triple projection checks,
 of which exactly1,365 were the required AND tuples. Another independent
 full proof/source/default review of all six variants passed with6,144
@@ -368,3 +391,49 @@ fixtures also verified the exclusive-selection identity and positive global
 bound. All reviewers accepted the strict-digit carry counterexample and
 the explicitly retained geometry/typing hypotheses. No findings were
 reported; these finite audits supplement the parametric proofs above.
+
+
+## 8. Checksum refinement and exact polynomial compilation
+
+The unrestricted sources now define q by (4a), removing one supplied
+coordinate and one equation while retaining their arithmetic counts.
+The source checker compares all three prescribed-scale circuits and their
+comparison lists against frozen hashes; AND65 and both120 variants are
+unchanged. For each unrestricted source it independently maps all surviving
+selector residuals, including the auxiliary-norm correction, back to their
+original indices. The omitted checksum residual is identically zero.
+Another768 positive supplied assignments compare every register and every
+surviving residual against the previous source after reconstructing q.
+These are polynomial/source checks; the positive zero-set bijection is
+the argument in Section2.
+
+For completeness, literal sums of squares now have these costs:
+
+| Unrestricted relation | Comparisons | M | A | Polynomial operations | Exact degree |
+|---|---:|---:|---:|---:|---:|
+| AND64 |15|47|61|108|28|
+| General batch118 |23|78|108|186|112|
+| Exclusive batch118 |16|71|94|165|112|
+
+Each E-equation system pays E residual subtractions, E squarings and
+E-1 additions. The checker constructs those actual schedules and verifies
+their full polynomial values and degrees on weighted, offset polynomial
+inputs. The first Pell-norm residual has degree14 for AND64 and56 for
+either batch; all other residuals have lower degree. Its highest form is
+`w^2*s^4*k^2*q_top^6`, where the scale's highest part is
+
+    q_top=F0+F1+F2+16Zhat             for AND64,
+    q_top=16Zhat_7*P^7               for either batch.
+
+These are nonzero polynomials in the supplied coordinates. Their squared
+highest forms prove the exact degrees28 and112, independently of the
+finite checks. The supplied domains and the conditional history/selector
+interpretation are unchanged by sum-of-squares compilation. These are
+component polynomial costs, not complete universal polynomial bounds.
+
+The checksum refinement passed independent root proof/source review and
+a separate full proof/source/default review. The latter checked1,536
+positive substitutions against every surviving original residual, the
+positive reconstructed q, all new ledgers, prescribed-scale hashes, and
+the unique highest form giving SOS degrees28/112. The author's final
+default replay passed as well. No findings were reported.

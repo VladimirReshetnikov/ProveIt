@@ -494,7 +494,24 @@
         "padded_B"
       ]
     ],
-    "original_selector_residuals_with_auxiliary_correction": true
+    "original_selector_residuals_with_auxiliary_correction": true,
+    "retained_original_selector_residual_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "checksum_residual_identically_zero": false
   },
   "conditional_batch120": {
     "operations": 120,
@@ -1378,7 +1395,24 @@
         "J2"
       ]
     ],
-    "original_selector_residuals_with_auxiliary_correction": true
+    "original_selector_residuals_with_auxiliary_correction": true,
+    "retained_original_selector_residual_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "checksum_residual_identically_zero": false
   },
   "exclusive_batch120": {
     "operations": 120,
@@ -2227,13 +2261,30 @@
         "J2"
       ]
     ],
-    "original_selector_residuals_with_auxiliary_correction": true
+    "original_selector_residuals_with_auxiliary_correction": true,
+    "retained_original_selector_residual_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "checksum_residual_identically_zero": false
   },
   "complete_unbounded_and64": {
     "operations": 64,
     "multiplications": 32,
     "additions_subtractions": 32,
-    "equations": 16,
+    "equations": 15,
     "positive_parameters": [
       "Hhat",
       "Mhat",
@@ -2261,10 +2312,9 @@
       "ga",
       "y_aux",
       "odd_half",
-      "bound_beta",
-      "q"
+      "bound_beta"
     ],
-    "auxiliary_count": 23,
+    "auxiliary_count": 22,
     "source": [
       [
         "scaled_A",
@@ -2303,6 +2353,30 @@
         8
       ],
       [
+        "bs_sum01",
+        "+",
+        "F0",
+        "F1"
+      ],
+      [
+        "bs_sum012",
+        "+",
+        "bs_sum01",
+        "F2"
+      ],
+      [
+        "bs_Q",
+        "+",
+        "bs_sum012",
+        "F3"
+      ],
+      [
+        "q",
+        "+",
+        "bs_Q",
+        1
+      ],
+      [
         "bs_p0",
         "*",
         "q",
@@ -2337,30 +2411,6 @@
         "+",
         "F0",
         "bs_p4"
-      ],
-      [
-        "bs_sum01",
-        "+",
-        "F0",
-        "F1"
-      ],
-      [
-        "bs_sum012",
-        "+",
-        "bs_sum01",
-        "F2"
-      ],
-      [
-        "bs_Q",
-        "+",
-        "bs_sum012",
-        "F3"
-      ],
-      [
-        "bs_q",
-        "+",
-        "bs_Q",
-        1
       ],
       [
         "bs_even",
@@ -2657,10 +2707,6 @@
         "bs_packed"
       ],
       [
-        "bs_q",
-        "q"
-      ],
-      [
         "s",
         "bs_odd"
       ],
@@ -2717,13 +2763,29 @@
         "padded_B"
       ]
     ],
-    "original_selector_residuals_with_auxiliary_correction": true
+    "original_selector_residuals_with_auxiliary_correction": true,
+    "retained_original_selector_residual_indices": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "checksum_residual_identically_zero": true
   },
   "conditional_unbounded_batch118": {
     "operations": 118,
     "multiplications": 55,
     "additions_subtractions": 63,
-    "equations": 24,
+    "equations": 23,
     "positive_parameters": [
       "P",
       "B",
@@ -2778,10 +2840,9 @@
       "bound4",
       "bound5",
       "bound6",
-      "bound7",
-      "q"
+      "bound7"
     ],
-    "auxiliary_count": 31,
+    "auxiliary_count": 30,
     "source": [
       [
         "P2",
@@ -3144,6 +3205,30 @@
         8
       ],
       [
+        "bs_sum01",
+        "+",
+        "F0",
+        "F1"
+      ],
+      [
+        "bs_sum012",
+        "+",
+        "bs_sum01",
+        "F2"
+      ],
+      [
+        "bs_Q",
+        "+",
+        "bs_sum012",
+        "F3"
+      ],
+      [
+        "q",
+        "+",
+        "bs_Q",
+        1
+      ],
+      [
         "bs_p0",
         "*",
         "q",
@@ -3178,30 +3263,6 @@
         "+",
         "F0",
         "bs_p4"
-      ],
-      [
-        "bs_sum01",
-        "+",
-        "F0",
-        "F1"
-      ],
-      [
-        "bs_sum012",
-        "+",
-        "bs_sum01",
-        "F2"
-      ],
-      [
-        "bs_Q",
-        "+",
-        "bs_sum012",
-        "F3"
-      ],
-      [
-        "bs_q",
-        "+",
-        "bs_Q",
-        1
       ],
       [
         "bs_even",
@@ -3498,10 +3559,6 @@
         "bs_packed"
       ],
       [
-        "bs_q",
-        "q"
-      ],
-      [
         "s",
         "bs_odd"
       ],
@@ -3590,13 +3647,29 @@
         "J2"
       ]
     ],
-    "original_selector_residuals_with_auxiliary_correction": true
+    "original_selector_residuals_with_auxiliary_correction": true,
+    "retained_original_selector_residual_indices": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "checksum_residual_identically_zero": true
   },
   "exclusive_unbounded_batch118": {
     "operations": 118,
     "multiplications": 55,
     "additions_subtractions": 63,
-    "equations": 17,
+    "equations": 16,
     "positive_parameters": [
       "P",
       "B",
@@ -3644,10 +3717,9 @@
       "y_aux",
       "odd_half",
       "bound_beta",
-      "bound_global",
-      "q"
+      "bound_global"
     ],
-    "auxiliary_count": 24,
+    "auxiliary_count": 23,
     "source": [
       [
         "P2",
@@ -4010,6 +4082,30 @@
         8
       ],
       [
+        "bs_sum01",
+        "+",
+        "F0",
+        "F1"
+      ],
+      [
+        "bs_sum012",
+        "+",
+        "bs_sum01",
+        "F2"
+      ],
+      [
+        "bs_Q",
+        "+",
+        "bs_sum012",
+        "F3"
+      ],
+      [
+        "q",
+        "+",
+        "bs_Q",
+        1
+      ],
+      [
         "bs_p0",
         "*",
         "q",
@@ -4044,30 +4140,6 @@
         "+",
         "F0",
         "bs_p4"
-      ],
-      [
-        "bs_sum01",
-        "+",
-        "F0",
-        "F1"
-      ],
-      [
-        "bs_sum012",
-        "+",
-        "bs_sum01",
-        "F2"
-      ],
-      [
-        "bs_Q",
-        "+",
-        "bs_sum012",
-        "F3"
-      ],
-      [
-        "bs_q",
-        "+",
-        "bs_Q",
-        1
       ],
       [
         "bs_even",
@@ -4364,10 +4436,6 @@
         "bs_packed"
       ],
       [
-        "bs_q",
-        "q"
-      ],
-      [
         "s",
         "bs_odd"
       ],
@@ -4428,7 +4496,23 @@
         "J2"
       ]
     ],
-    "original_selector_residuals_with_auxiliary_correction": true
+    "original_selector_residuals_with_auxiliary_correction": true,
+    "retained_original_selector_residual_indices": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "checksum_residual_identically_zero": true
   },
   "primitive": {
     "all_inputs_through_binary_length7": 21845,
@@ -4488,5 +4572,74 @@
     "completeness_margin": "sum selected fields < P/2; bound_global=P-sum(Z_i)-7>0",
     "scope": "Requires mutually exclusive selectors and history digits strictly below B/2; unlike the general batch"
   },
+  "checksum_elimination": {
+    "prescribed_scale_sources_unchanged_sha256": {
+      "65": "1feba8565264ec93712bcf438c50e748c14f1de9d20f5ac7993ff44bd83ed25c",
+      "120_general": "40317c44d3d647e9c13ede1a41863a497761421eaa541948ff65870e502e8e8f",
+      "120_exclusive": "a11a46f867d40ed3523529cdd87111f92f1ec2222b5809f9c330eb791ea7be37"
+    },
+    "positive_reconstruction_fixtures": [
+      {
+        "batch": false,
+        "exclusive": false,
+        "full_residual_map_cases": 256,
+        "reconstructed_scale": "q=F0+F1+F2+F3+1",
+        "minimum_positive_scale": 12
+      },
+      {
+        "batch": true,
+        "exclusive": false,
+        "full_residual_map_cases": 256,
+        "reconstructed_scale": "q=F0+F1+F2+F3+1",
+        "minimum_positive_scale": 12
+      },
+      {
+        "batch": true,
+        "exclusive": true,
+        "full_residual_map_cases": 256,
+        "reconstructed_scale": "q=F0+F1+F2+F3+1",
+        "minimum_positive_scale": 12
+      }
+    ],
+    "proof": "Erasing q and restoring this positive checksum are inverse on the full positive zero sets."
+  },
+  "unrestricted_sum_of_squares": [
+    {
+      "batch": false,
+      "exclusive": false,
+      "operations": 108,
+      "multiplications": 47,
+      "additions_subtractions": 61,
+      "equations": 15,
+      "exact_degree": 28,
+      "weighted_leading_coefficient": "203971779462337250790998016",
+      "output": "sos_sum14",
+      "compilation": "One paid subtraction and square per residual, then a binary sum."
+    },
+    {
+      "batch": true,
+      "exclusive": false,
+      "operations": 186,
+      "multiplications": 78,
+      "additions_subtractions": 108,
+      "equations": 23,
+      "exact_degree": 112,
+      "weighted_leading_coefficient": "149587343098087735296",
+      "output": "sos_sum22",
+      "compilation": "One paid subtraction and square per residual, then a binary sum."
+    },
+    {
+      "batch": true,
+      "exclusive": true,
+      "operations": 165,
+      "multiplications": 71,
+      "additions_subtractions": 94,
+      "equations": 16,
+      "exact_degree": 112,
+      "weighted_leading_coefficient": "149587343098087735296",
+      "output": "sos_sum15",
+      "compilation": "One paid subtraction and square per residual, then a binary sum."
+    }
+  ],
   "limits": "Complete AND65 has a parametric positive Pell converse inherited from selector56. Batch120 certifies all eight digitwise selected-source fields only under the explicitly stated dyadic cell geometry and history/Boolean-selector semantics. Neither is a complete universal computation certificate."
 }
