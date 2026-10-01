@@ -40,6 +40,8 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{conjecture}[theorem]{Conjecture}
+% Batch 70, manuscript 03: its research questions (end of Part 3 only).
+\newtheorem{question}[theorem]{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \theoremstyle{plain}
@@ -114,7 +116,8 @@ proved to be an upper bound, every predicted cancellation is explained, and
 $a(n)=\Theta(n^2)$ is established, but the conjectured leading constant is not;
 a later addition to that part (Section~\ref{xxb:dc:sec:intro}) proves the
 missing nonvanishing statement at logarithmic deficits three and four, leaving
-deficits five and above open.
+deficits five and above open; a second later addition
+(Section~\ref{xxb:d3:sec:intro}) re-proves deficit three by another route.
 For $x^{x^x}$ two explicit polynomial bounds give $a(n)=\Theta(n^3)$
 unconditionally, while the sharper equivalent $a(n)\sim\tfrac23n^3$ is not
 proved --- and there, unlike the other two, the obstruction is not a
@@ -169,6 +172,11 @@ has been dropped, weakened or strengthened in the merge.
  deficits three and four.  They follow the part they extend, so that no number
  elsewhere in the article moved, and they use their own coordinates
  (Table~\ref{xxb:dc:tab:notation}).
+\item \textbf{Sections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}},
+ after those, were added on 30 September 2026 from a manuscript on A290268
+ that gives a second proof at logarithmic deficit three, through a harmonic
+ sign law; they use the same depth coordinates, with the further renamings of
+ Table~\ref{xxb:d3:tab:notation}.
 \end{itemize}
 
 The parts keep the notation of their sources, which is not uniform across them.
@@ -563,7 +571,10 @@ Part~\ref{xxb:part}: they use the depth coordinates of their source and of the
 Lean development, in which \textbf{$k$ is the exponent of $\log x$} and $j$ the
 exponent of $x$ --- the reverse of the rest of that part --- and in which $d$
 is the logarithmic deficit.  Table~\ref{xxb:dc:tab:notation} gives the full
-dictionary with the false readings.
+dictionary with the false readings.  The second later addition,
+Sections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}, uses the same
+coordinates and renames its source's letters by
+Table~\ref{xxb:d3:tab:notation}.
 
 \noindent
 Beyond these, the letters $u$, $v$, $t$, $q$, $U$, $Z$, $E$ and $\Delta$ all
@@ -1507,6 +1518,14 @@ $\Lambda(n)$ below.  They use depth coordinates in which the roles of $j$ and $k
 differ from this part's (Table~\ref{xxb:dc:tab:notation}).  The text of the
 original report is unchanged; dated notes like this one point forward.
 
+\smallskip
+\textbf{Second later addition (30 September 2026).}
+Sections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}, after the
+first addition, print a further manuscript whose main theorem is the case
+$m=3$ of that addition's depth theorem, proved by a second route: a harmonic
+sign law and positivity propagation in the logarithm exponent.  The open
+region is unchanged.
+
 \medskip
 \textbf{Abstract of the original report.}\itshape
 Let $a(n)$ be the number of nonzero monomials in the fully collected $n$th
@@ -2111,6 +2130,13 @@ deficit as $R_m/m!$ (Remark~\ref{xxb:dc:rem:beta}), its sign change is
 controlled by monotone likelihood-ratio comparisons, and a finite certificate
 finishes the proof (Theorem~\ref{xxb:dc:thm:four}).  The obstruction as stated
 remains for $m\ge5$.
+
+\emph{Update (30 September 2026).}  At $m=3$ it has been overcome a second
+time (Theorem~\ref{xxb:d3:thm:main}): factoring the root of the falling
+factorial at the evaluation point leaves a harmonic quantity whose sign
+changes exactly once in the tail (Lemma~\ref{xxb:d3:lem:E-sign}), and a
+propagation recurrence in the logarithm exponent finishes the proof with a
+different finite certificate.
 
 \subsection{Generating functions and equivalent formulas for the upper bound}
 \label{xxb:sec:gf}
@@ -3406,6 +3432,11 @@ and positive for all $q\ge38$.  These sign changes explain why a naive
 one-sign induction can fail without producing an integer zero.  The exact
 finite sign data are shipped as
 \texttt{data/02-depth-\allowbreak certificates-\allowbreak sign\_thresholds.csv}.
+\emph{Update (30 September 2026):} the sign of the $d=3$, $k=0$ row is that
+of the harmonic quantity $\mathsf E_q$, so this observation is now proved
+(Lemma~\ref{xxb:d3:lem:E-sign}); the second route of
+Subsection~\ref{xxb:d3:sec:tail} reproduces every $d=3$ row of that file
+(Remark~\ref{xxb:d3:rem:compare}).
 
 \subsection{Depth coordinates: the integer certificates and independent checks}\label{xxb:dc:sec:certificates}
 
@@ -3756,6 +3787,11 @@ $\tau^2$, or positivity in an orthogonal-polynomial basis adapted to
 $\mu_{d,r}$, replace the affine minorant for all depths?  The target is a
 small finite certificate rather than an enormous merely terminating
 algorithm.
+(\emph{Update, 30 September 2026:} at $d=3$ the second route of
+Subsections~\ref{xxb:d3:sec:harmonic}--\ref{xxb:d3:sec:tail} gives an
+explained cutoff, the exact sign change of $\mathsf E_q$ between $q=37$ and
+$q=38$, and a different small certificate; it bears on Questions~2 and~3
+without answering them for general $d$.)
 
 \subsubsection{The remaining full conjecture}
 \textbf{Question 4.}  Prove that every fixed-depth rectangle has only the
@@ -3787,7 +3823,9 @@ nonzero checker.  The branch-cut and likelihood-ratio proofs are a
 separate analytic layer.  Keeping these layers explicit would avoid
 confusing a verified finite table with a verified infinite theorem.
 (Section~\ref{xxb:dc:sec:formal} lists what that development has and which
-of its hypotheses these results would discharge.)
+of its hypotheses these results would discharge.  \emph{Update, 30 September
+2026:} a module-by-module algebraic blueprint for depth three is
+Section~\ref{xxb:d3:sec:formalization}; none of its modules exists.)
 
 \textbf{Question 8.}  Extend the method to derivative expansions of
 $x^{x^r}$ for integer $r\ge3$, or to other exponential-logarithmic
@@ -3997,6 +4035,1355 @@ development confers no formal status.  The Lean development
  \texttt{Table.a\_\allowbreak values\_\allowbreak le\_\allowbreak 53}, $a(n)$ equal to the closed form for
  $n\le53$, a \texttt{native\_decide} certificate.
 \end{itemize}
+
+% ---------------------------------------------------------------------------
+% Batch 70, manuscript 03 (ProveIt_A290268_Depth3_Article), written into this
+% part on 30 September 2026.  Every label below carries the prefix xxb:d3:.
+% The subsections are appended after the batch-42 addition, so that no
+% existing section, theorem or equation number moves.
+% ---------------------------------------------------------------------------
+
+\subsection{A second route to depth three}\label{xxb:d3:sec:intro}
+
+\begin{quote}\small
+\textbf{What this addition is.}  Subsections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}
+were written into this part on 30 September 2026 from a later manuscript,
+\emph{Depth Three Is Complete for OEIS A290268: A beta--sine transform,
+centered moment polynomials, and exact nonvanishing} (batch~70,
+manuscript~03; provenance in Section~\ref{xxb:d3:sec:provenance}).  Its main
+theorem (Theorem~\ref{xxb:d3:thm:main}) is \textbf{the case $d=3$ of
+Theorem~\ref{xxb:dc:thm:four}}, which the batch-42 addition had already proved
+in this part; it is printed here as a \emph{second proof} of that case.  Nothing
+in it changes the proof boundary of this part: the unproved region is still
+$m\ge5$, $n\ge2k+2$, and the full A290268 conjecture is \emph{not} proved.
+
+\smallskip
+\textbf{A correction to the manuscript.}  The manuscript says, in its
+abstract, its main-contribution box, its novelty paragraph, its conclusion and
+its source audit, that depth three was ``the stated open core'' of the
+problem at its pinned commit \texttt{a02ab3567} and that its theorem is new
+relative to that commit.  \textbf{That is mistaken.}  The pin descends from
+commit \texttt{0e6632abf}, which wrote Theorem~\ref{xxb:dc:thm:four} (depths
+one to four, every $k$ and $M$) into this report on 29 September 2026; and
+the note the manuscript cites, \texttt{Oeis/A290268/README.md}, already says
+at the pin, in its dated correction, that this report's batch-42 addition
+``closes logarithmic deficits 3 and 4 for every \texttt{n}''.  The manuscript
+read only that note's older line ``Open core: \texttt{D >= 3}''.  Its
+sentences are printed below as the manuscript wrote them, each followed by an
+editorial note; none of its mathematics depends on them.
+
+\smallskip
+\textbf{What is new relative to this part.}  Several results of the manuscript
+re-derive results printed above, by different proofs; they are printed once
+more, marked as second routes, with the earlier result credited:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item its main theorem and lattice corollary
+ (Theorem~\ref{xxb:d3:thm:main}, Corollary~\ref{xxb:d3:cor:lattice}) are
+ Theorem~\ref{xxb:dc:thm:four} at $d=3$ and the depth-three holes of
+ Subsection~\ref{xxb:dc:sec:four};
+\item its exact reduction and parameter derivative
+ (Proposition~\ref{xxb:d3:prop:exact-reduction},
+ Lemma~\ref{xxb:d3:lem:parameter-derivative}) are
+ Proposition~\ref{xxb:dc:prop:bridge} and \eqref{xxb:dc:eq:param};
+\item its beta--sine transform (Theorem~\ref{xxb:d3:thm:beta-sine}) is the
+ branch-cut formula of Proposition~\ref{xxb:dc:prop:integral}, obtained, as in
+ Remark~\ref{xxb:dc:rem:beta}, from the beta-integral mechanism of
+ Lemma~\ref{xxb:lem:beta};
+\item its centred recurrence and vertical-line roots
+ (Theorem~\ref{xxb:d3:thm:R-recurrence},
+ Corollary~\ref{xxb:d3:cor:vertical-roots}) are \eqref{xxb:dc:eq:Qrec} and
+ Corollary~\ref{xxb:dc:cor:imaginary}, proved here by an integration by parts
+ and a Favard argument;
+\item its bulk positivity (Lemma~\ref{xxb:d3:lem:bulk-positive}) is
+ Theorem~\ref{xxb:dc:thm:bulk} at $d=3$, hence a case of
+ Theorem~\ref{xxb:thm:positive}.
+\end{itemize}
+New relative to this part are the harmonic factorization at the root $x=7$
+(Subsection~\ref{xxb:d3:sec:harmonic}); the sign law of the harmonic quantity
+$\mathsf E_q$ (Lemma~\ref{xxb:d3:lem:E-sign}), which \emph{proves} the
+$q=37/38$ sign change that Subsection~\ref{xxb:dc:sec:four} recorded only as
+an observation of the certificate data; the propagation recurrence
+\eqref{xxb:d3:eq:U-recurrence} in $k$ and the finite certificate it needs
+(Proposition~\ref{xxb:d3:prop:finite-certificate}), a different finite set
+from the batch-42 rectangle; the eventual signs of
+Corollary~\ref{xxb:d3:cor:stable-signs} for every $q$; the sign phase diagram
+of the log-free diagonal; the beta representation of the uncentred quotient
+(Lemma~\ref{xxb:d3:lem:beta-Q}); and the interlacing clause of
+Corollary~\ref{xxb:d3:cor:vertical-roots}.  Remark~\ref{xxb:d3:rem:compare}
+compares the two proofs and shows that their finite anchors partly coincide.
+
+\smallskip
+\textbf{Notation.}  These subsections use the depth coordinates of
+Table~\ref{xxb:dc:tab:notation} --- \textbf{$k$ is the exponent of $\log x$},
+$j$ the exponent of $x$, $d$ the depth --- and the batch-42 names for the
+objects batch~42 already named.  The manuscript's own letters clash with
+both, so many are renamed; Table~\ref{xxb:d3:tab:notation} lists every
+renaming and is binding from here to the end of the part.
+
+\medskip
+\textbf{Abstract of manuscript 03.}\itshape
+OEIS A290268 counts the terms in the fully expanded $n$th derivative of
+$x^{x^2}$.  The ProveIt reduction expresses every coefficient through
+$\gamma(k,D,M)=[w^M](2+w)^k\bigl((1+w)^2\log(1+w)\bigr)^D$,
+and identifies the remaining support conjecture with a nonvanishing problem
+for these rational numbers.  At the pinned repository snapshot, depths
+$D=1,2$ are solved in the accompanying research notes, whereas $D\geq3$ is
+the stated open core.
+
+This article proves the complete zero classification at the first open depth:
+for every $k\geq0$ and $M\geq3$,
+\[
+  \gamma(k,3,M)=0
+  \quad\Longleftrightarrow\quad
+  M=k+13\ \text{and}\ k\ \text{is odd}.
+\]
+Thus every depth-three coefficient is nonzero except for the symmetry-forced
+holes already predicted by the global conjecture.
+
+The proof has three new ingredients.  First, a general beta--sine transform
+represents the tail coefficients at every depth by a single logit moment with
+an explicit kernel
+$K_D(L)=\bigl((L+i\pi)^D-(L-i\pi)^D\bigr)/(2i\pi)$.
+Second, a family of centered beta-moment polynomials satisfies the positive
+three-term recurrence
+$R_{N,k+1}(y)=2yR_{N,k}(y)+k(N+k)R_{N,k-1}(y)$.
+Third, at $D=3$ the problem reduces to a signed harmonic quantity whose only
+phase transition occurs between $q=37$ and $q=38$.  Positivity propagation
+then reduces the remaining proof to a finite exact certificate over
+$\Q$.  The supplied standard-library Python verifier uses
+\texttt{fractions.Fraction}; no floating-point assertion enters the proof.
+
+This is a theorem relative to the definitions in the pinned ProveIt snapshot,
+not a claim that the full A290268 conjecture has been proved: depths $D\geq4$
+remain open.  No independent peer review or Lean formalization is claimed.
+\upshape\par
+\smallskip
+\emph{Editorial notes.}  (i) The abstract is printed in the manuscript's
+letters; below, $D$ is $d$, $n$ is $N$, $K_D$ is $R_d$, $L$ is $\tau$, and
+$R_{N,k}$ is $\mathcal Q_k^{(r)}$ (Table~\ref{xxb:d3:tab:notation}).
+(ii) ``$D\ge3$ is the stated open core'', ``the first open depth'' and
+``depths $D\ge4$ remain open'' are stale at the pin: depths three and four
+were settled by Theorem~\ref{xxb:dc:thm:four}, and the open depths are
+$d\ge5$.  (iii) Of the ``three new ingredients'', the first two are not new
+relative to this part (the bullets above); the third, the harmonic phase
+transition with its propagation in $k$, is.
+\end{quote}
+
+\begin{quote}\small
+\textbf{Main contribution (the manuscript's summary box).}
+The first previously open depth in the ProveIt support program is completely
+settled.  In the original coefficient lattice, if
+$d=(N+j)/2-k=3$ and $N\geq k+3$, then
+\[
+ c_N(j,k)=0
+ \quad\Longleftrightarrow\quad
+ j=-7,\quad k\ \text{odd},\quad N=2k+13.
+\]
+Every other depth-three lattice point is nonzero.
+
+\smallskip
+\emph{Editorial note.}  ``First previously open depth'' is mistaken (see
+above): this is the depth-three content of Theorem~\ref{xxb:dc:thm:four},
+whose holes Subsection~\ref{xxb:dc:sec:four} lists as $q=6$, $k$ odd;
+$j=-7$, $N=2k+13$.  In the letters of the rest of this part: $m=3$, $j$ odd,
+$n=2j+13$.
+\end{quote}
+
+\subsubsection{Notation: the second route}\label{xxb:d3:sec:notation}
+
+The manuscript writes the same lattice $x^{x^2+j}(\log x)^k$ as the batch-42
+addition, with the same $j$, $k$, $M$, $q$ and $\gamma$, so the dictionary of
+Table~\ref{xxb:dc:tab:notation} applies unchanged.  Its other letters collide
+with letters already in use in this part or in the batch-42 subsections, and
+are renamed as in Table~\ref{xxb:d3:tab:notation}, with no change of
+normalization.  The first four rows are where a reader will go wrong.
+
+\begin{table}[ht]
+\centering\small
+\caption{Letters of Subsections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance}
+against manuscript~03 and against the rest of Part~\ref{xxb:part}.  No
+normalization was changed.}\label{xxb:d3:tab:notation}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}
+ >{\raggedright\arraybackslash}p{0.11\textwidth}
+ >{\raggedright\arraybackslash}p{0.33\textwidth}
+ >{\raggedright\arraybackslash}p{0.31\textwidth}@{}}
+\toprule
+Here & Manuscript & Meaning & Tempting false reading\\
+\midrule
+$N$ & $n$ & derivative order & \textbf{false:} the manuscript's $N$, which is $r$ here\\
+$r$ & $N$ & $M-k$ (as in Subsection~\ref{xxb:dc:sec:models}) & \textbf{false:} $r$ in $n=2r$ of Part~\ref{xxb:part}\\
+$\mathcal Q_k^{(r)}(y)$ & $R_{N,k}(y)$ & centred polynomial of Definition~\ref{xxb:dc:def:Q} &
+ \textbf{false:} the kernel $R_d$ of \eqref{xxb:dc:eq:Rd}\\
+$R_d(\tau)$ & $K_D(L)$ & kernel $\operatorname{Im}(\tau+i\pi)^d/\pi$, \eqref{xxb:dc:eq:Rd} &
+ \textbf{false:} the constant $K_d$ of \eqref{xxb:dc:eq:constants}\\
+\midrule
+$d$ & $D$ & depth $(N+j)/2-k$ & $d=n-2k-1$ of \eqref{xxb:eq:d}\\
+$\tau$ & $L$ & $\log\bigl(t/(1-t)\bigr)$ & $L=\log x$ of Part~\ref{xxb:part}\\
+$\mathcal P_M(x)$ & $P_M(x)$ & $\prod_{\ell=1}^{M}(x-\ell)=\fall{(x-1)}{M}$ &
+ the canonical $P_n$; the residual $\Pi_d$\\
+$\mathcal H_{M,k}(x)$ & $H_{M,k}(x)$ & $\sum_\ell\binom k\ell\mathcal P_M(x+\ell)=M!\,\mathcal A_{M,k}(x-1)$ &
+ the integer $H_{d,k,q}$ of \eqref{xxb:dc:eq:q}\\
+$\widetilde{\mathcal Q}_{r,k}(x)$ & $Q_{N,k}(x)$ & $\mathcal Q_k^{(r)}\bigl(x-\tfrac{r+1}2\bigr)$, uncentred &
+ $Q_{n,j}$ of Section~\ref{xxb:sec:formulas}; the constant $Q_d$\\
+$\mathcal T_{r,k}(s)$ & $S_{N,k}(s)$ & $i^{-k}\mathcal Q_k^{(r)}(is)$ & $S_\delta(t)$ of Subsection~\ref{xxb:dc:sec:integral}\\
+$\Omega_r(x)$ & $S_N(x)$ & $\mathcal P_r(x)/(x-7)$ & $S_\delta(t)$\\
+$\mathcal I_k(x)$ & $I_k(x)$ & beta moment & $I_{m,j,d}(\varepsilon)$ of \eqref{xxb:eq:I}\\
+$\mathrm H_q,\ \mathrm H_q^{(2)}$ & $H_q,\ H_q^{(2)}$ & harmonic numbers $\sum_{\ell\le q}\ell^{-1}$, $\sum_{\ell\le q}\ell^{-2}$ &
+ $H_{d,k,q}$; $H(u)$ of \eqref{xxb:eq:H}\\
+$\mathsf E_q$ & $E_q$ & signed harmonic quantity \eqref{xxb:d3:eq:E-def} &
+ the constant $E_d$; the expectation $\mathcal E_{d,k,q}$\\
+$\mathsf F_k(q)$ & $F_k(q)$ & normalized depth-three tail value \eqref{xxb:d3:eq:F-def} &
+ the Mellin transform $\mathcal F_{d,k}$; the falling factorial $F_n$\\
+$\mathsf U_{q,k}$ & $U_{q,k}$, $U_k$ & positivity functional \eqref{xxb:d3:eq:U-general} & the upper bound $\U(n)$\\
+$\mathsf V_k$ & $V_k$ & $2\mathsf F_k(6)$ & $V_k(u)$ of \eqref{xxb:dc:eq:Vrec}\\
+$\lambda_q$ & $z$ & $|q-6|/2$ & $z=x^2$ of Part~\ref{xxb:part}\\
+$\alpha_q$ & $a$ (tail) & $|\mathrm H_q-\mathrm H_6|$ & the term count $a(n)$\\
+$\varepsilon$ & $z$ (kernel) & a local variable near $0$ & ---\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Further changes, also without change of normalization: the manuscript's
+$\phi$ is $\varphi$ of \eqref{xxb:dc:eq:gamma}; its centre $c_N=(N+1)/2$ is
+written $(r+1)/2$, because $c_N(j,k)$ is the coefficient; its evaluation point
+$a=2D+1$ is written $2d+1$ (it is $7$ at depth three); its $B=-E_q$ is written
+$|\mathsf E_q|$; summation and product indices written $r$ in the manuscript
+are $\ell$; the hole index $r$ of its lattice corollary is $\ell$; the
+index $m$ of its count formula is $\rho$, as in \eqref{xxb:dc:eq:countconj};
+and its indeterminate $a$ in Lemma~\ref{xxb:d3:lem:parameter-derivative} is
+$\theta$.  The
+manuscript's falling factorial $P_M$ is the batch-42 $\fall{s}{M}$ at $s=x-1$,
+and $\mathcal H_{M,k}(x)=M!\,\mathcal A_{M,k}(x-1)$, so the manuscript's
+$x$ is the batch-42 $s$ plus one: the evaluation point $x=2d+1$ is $s=2d$ of
+\eqref{xxb:dc:eq:param}.  By Proposition~\ref{xxb:dc:prop:factor} the
+manuscript's quotient polynomial $Q_{N,k}$ is the centred polynomial
+$\mathcal Q_k^{(r)}$ translated by $(r+1)/2$, and its $R_{N,k}$ \emph{is}
+$\mathcal Q_k^{(r)}$; that is why both are printed with the batch-42 letter.
+Its kernel $K_D$ and the batch-42 $R_d$ are the same polynomial, since
+$\bigl((\tau+i\pi)^d-(\tau-i\pi)^d\bigr)/(2i\pi)=\operatorname{Im}(\tau+i\pi)^d/\pi$
+for real $\tau$.  Finally, the two tail values are related by
+\begin{equation}\label{xxb:d3:eq:dictionary}
+ H_{3,k,q}=720\,(-1)^q\,q!\;\mathsf F_k(q),
+\end{equation}
+which follows from \eqref{xxb:dc:eq:q} and \eqref{xxb:d3:eq:gamma-F} below and
+was checked at the intake in exact arithmetic for $0\le k\le14$, $0\le q<60$.
+In particular $\sgn H_{3,k,q}=(-1)^q\sgn\mathsf F_k(q)$.
+
+\subsubsection{Problem, status and scope (manuscript Section~1)}\label{xxb:d3:sec:scope}
+
+\paragraph{The sequence and its support conjecture.}
+Let
+\[
+  \left(\frac{d}{dx}\right)^N x^{x^2}
+  =\sum_{j,k}c_N(j,k)x^{x^2+j}(\log x)^k.
+\]
+OEIS A290268 is $a(N)=\#\{(j,k):c_N(j,k)\neq0\}$.  The public OEIS entry still
+labels as conjectural the generating function
+\[
+ \sum_{N\geq0}a(N)z^N
+ =\frac{1+z+2z^2+2z^3+2z^4+2z^5+2z^6+z^7+2z^8+z^9}
+ {(1-z)(1-z^2)(1-z^8)},
+\]
+equivalently $a(2\rho)=2\rho^2+2\rho+1$,
+$a(2\rho-1)=2\rho^2-\lfloor \rho/4\rfloor$ \eqref{xxb:dc:eq:countconj}.
+(Here $z$ is a generating-function variable, local to this display.)  The
+entry records $54$ terms, through $N=53$; the manuscript inspected it on
+30 September 2026 \cite{oeis290268}.
+
+The pinned ProveIt notes reduce the conjecture to an exact support statement.
+They describe a depth statistic $d$ and a coefficient $\gamma(k,d,M)$, prove
+or outline the symmetry-forced holes, record complete arguments at depths
+$d=1,2$, and identify $d\geq3$ as the open nonvanishing core
+\cite{xxbd3-notes}.  The Lean module \texttt{A290268.Main} makes the final
+logical boundary explicit: the closed form follows as soon as the coefficient
+support is identified with the conjectured finite set \cite{xxbd3-main}.
+
+\emph{Editorial note.}  The notes do say ``Open core: \texttt{D >= 3}'' at the
+pin, in their section on solved strata; the same file's dated correction
+(``Correction (29 September 2026)'') says that this report's batch-42 addition
+closes deficits three and four for every $n$.  The reading of
+\texttt{A290268.Main} is correct: its three theorems are conditional on the
+support characterization (Section~\ref{xxb:dc:sec:formal}).
+
+\paragraph{What is proved here.}
+The present report resolves the entire $d=3$ stratum.  It does not infer the
+result from a numerical scan.  The infinite ranges in both $k$ and $M$ are
+proved using recurrences and positivity.  A finite exact computation is used
+only for a compact critical strip where a signed kernel prevents a direct
+one-sign argument.
+
+\begin{quote}\small
+\textbf{Proof boundary (the manuscript's status box).}
+The analytic and algebraic reductions are proved in the text.  One finite
+lemma checks exact rational signs for
+$q\in\{1,\ldots,5\}\cup\{7,\ldots,37\}$, $0\leq k\leq14$,
+together with the centre $q=6$.  The included verifier reproduces that lemma
+from integer polynomial recurrences and rational harmonic numbers.  Large
+additional boxes are checked only as cross-validation and are not needed for
+the theorem.
+\end{quote}
+
+\paragraph{Novelty discipline.}
+The result is new relative to repository commit \texttt{a02ab356}: the
+pinned A290268 status document explicitly calls $d\geq3$ open
+\cite{xxbd3-notes}.  The OEIS entry also continues to call the global
+formula conjectural \cite{oeis290268}.  A targeted search found no later
+public proof of this depth-three stratum.  This statement is deliberately
+narrow: the report has not undergone independent refereeing, and it does not
+claim exhaustive priority over inaccessible or unpublished work.
+
+\emph{Editorial note.}  The first sentence is mistaken: at
+\texttt{a02ab356} the repository already contained
+Theorem~\ref{xxb:dc:thm:four}, whose $d=3$ case is the manuscript's theorem,
+and the cited document's own correction points to it.  The theorem is
+therefore \emph{not} new relative to the pin; its proof is a second, different
+route.  The remaining sentences --- the OEIS status, the narrow search, no
+refereeing, no exhaustive priority --- stand.
+
+\subsection{Second route to depth three: the coefficient model and a falling-factorial transform}\label{xxb:d3:sec:model}
+
+Set $\varphi(w)=(1+w)^2\log(1+w)$.  The Taylor identity
+\[
+ \sum_{N\geq0}\frac{\xi^N}{N!}
+ \left(\frac{d}{dx}\right)^N x^{x^2}
+ =(x+\xi)^{(x+\xi)^2}
+\]
+becomes, after dividing by $x^{x^2}$ and putting $w=\xi/x$,
+\[
+ x^{-x^2}(x+\xi)^{(x+\xi)^2}
+ =\exp\!\bigl(x^2w(2+w)\log x\bigr)
+   \exp\!\bigl(x^2\varphi(w)\bigr).
+\]
+This identity is valid formally in $w$ over a coefficient ring containing
+$x,x^{-1},\log x$; no analytic choice of logarithm is needed for coefficient
+extraction.
+
+\begin{definition}[Depth and reduced coefficient]
+For integers $N\geq0$, $k\geq0$, and an exponent shift $j$ of the correct
+parity, define $d=(N+j)/2-k$ and $M=N-k$, and, for $d,M\geq0$,
+$\gamma(k,d,M)=[w^M](2+w)^k\varphi(w)^d$.
+\end{definition}
+
+\begin{proposition}[Exact reduction; second route to Proposition~\ref{xxb:dc:prop:bridge}]
+\label{xxb:d3:prop:exact-reduction}
+Whenever $d=(N+j)/2-k$ and $M=N-k$ are nonnegative integers,
+\[
+  c_N(j,k)=\frac{N!}{k!\,d!}\,\gamma(k,d,M).
+\]
+\end{proposition}
+
+\begin{proof}
+Choose the $k$th term from the first exponential and the $d$th term from the
+second.  Their product is
+\[
+ \frac{x^{2k+2d}w^k(2+w)^k\varphi(w)^d(\log x)^k}{k!\,d!}.
+\]
+Extracting $w^N=\xi^N/x^N$ yields the power $x^{2k+2d-N}=x^j$ and the
+coefficient $[w^{N-k}](2+w)^k\varphi(w)^d$.  Multiplication by $N!$ gives the
+claim.
+\end{proof}
+
+(The proof is the one printed for Proposition~\ref{xxb:dc:prop:bridge},
+itself the Taylor-expansion proof of Proposition~\ref{xxb:prop:egf}.)  The
+global support conjecture can therefore be stated entirely in terms of
+$\gamma$.  For $d\geq1$, the predicted zeros are exactly
+$M=k+4d+1$, $k+d\equiv0\pmod2$; at $d=3$ this becomes $M=k+13$, $k$ odd.
+
+\subsubsection{A falling-factorial transform}\label{xxb:d3:sec:falling}
+
+Define $\mathcal P_M(x)=\prod_{\ell=1}^{M}(x-\ell)$, with $\mathcal P_0(x)=1$.
+The following elementary identity is the algebraic entrance to the proof.
+
+\begin{lemma}[Coefficient as a parameter derivative]
+\label{xxb:d3:lem:parameter-derivative}
+For $M,d\geq0$ and an indeterminate $\theta$,
+\[
+ M!\,[w^M](1+w)^{\theta}\log^d(1+w)=\mathcal P_M^{(d)}(\theta+1).
+\]
+\end{lemma}
+
+\begin{proof}
+Since $[w^M](1+w)^{\theta}=\binom{\theta}{M}=\mathcal P_M(\theta+1)/M!$,
+differentiate $d$ times with respect to $\theta$.
+\end{proof}
+
+(The manuscript's indeterminate is $a$; it is $\theta$ here because $a$ is the
+term count.  With $\theta=s$ this is \eqref{xxb:dc:eq:param}.)  Because
+$2+w=1+(1+w)$, $(2+w)^k=\sum_{\ell=0}^{k}\binom k\ell(1+w)^\ell$.  Taking
+$\theta=2d+\ell$ in Lemma~\ref{xxb:d3:lem:parameter-derivative} gives
+\begin{equation}
+ \label{xxb:d3:eq:gamma-H}
+ M!\,\gamma(k,d,M)
+ =\sum_{\ell=0}^{k}\binom k\ell \mathcal P_M^{(d)}(2d+1+\ell).
+\end{equation}
+Introduce $\mathcal H_{M,k}(x)=\sum_{\ell=0}^{k}\binom k\ell\mathcal P_M(x+\ell)$.
+Then
+\begin{equation}
+ \label{xxb:d3:eq:H-derivative}
+ M!\,\gamma(k,d,M)=\mathcal H_{M,k}^{(d)}(2d+1).
+\end{equation}
+
+Suppose now that $r=M-k\geq0$.  Every summand $\mathcal P_M(x+\ell)$ is
+divisible by $\mathcal P_r(x)$, and direct cancellation gives
+\begin{equation}
+ \label{xxb:d3:eq:H-factorization}
+ \mathcal H_{M,k}(x)=\mathcal P_r(x)\,\widetilde{\mathcal Q}_{r,k}(x),
+\end{equation}
+where
+\begin{equation}
+ \label{xxb:d3:eq:Q-sum}
+ \widetilde{\mathcal Q}_{r,k}(x)=\sum_{\ell=0}^{k}\binom k\ell
+ \rise{x}{\ell}\,\rise{(x-M+\ell)}{k-\ell}.
+\end{equation}
+Here $\rise{x}{\ell}=x(x+1)\cdots(x+\ell-1)$.  (This is the factorization
+\eqref{xxb:dc:eq:factor} at $s=x-1$, reached by direct cancellation instead of
+the formal residue substitution; so $\widetilde{\mathcal Q}_{r,k}(x)
+=\mathcal Q_k^{(r)}\bigl(x-\frac{r+1}2\bigr)$.)
+
+\subsection{Second route to depth three: the beta--sine transform and centred moments}\label{xxb:d3:sec:beta-sine}
+
+The quotient polynomial has a useful integral representation.
+
+\begin{lemma}[Beta representation]
+\label{xxb:d3:lem:beta-Q}
+Let $r\geq0$, $k\geq0$, $M=r+k$, and $0<\Re x<r+1$.  Then
+\[
+ \widetilde{\mathcal Q}_{r,k}(x)
+ =\frac{M!}{\Gamma(x)\Gamma(r-x+1)}
+ \int_0^1t^{x-1}(1-t)^{r-x}(2t-1)^k\,dt.
+\]
+\end{lemma}
+
+\begin{proof}
+Expand
+$(2t-1)^k=(t-(1-t))^k=\sum_{\ell=0}^{k}(-1)^{k-\ell}\binom k\ell t^\ell(1-t)^{k-\ell}$.
+Termwise beta integration gives $\mathrm B(x+\ell,M-x-\ell+1)$.  After
+multiplication by $M!/[\Gamma(x)\Gamma(r-x+1)]$, the first gamma ratio is
+$\rise{x}{\ell}$, while the second, together with $(-1)^{k-\ell}$, is
+$\rise{(x-M+\ell)}{k-\ell}$.  The sum is exactly \eqref{xxb:d3:eq:Q-sum}.
+\end{proof}
+
+Using $\mathcal P_r(x)=\Gamma(x)/\Gamma(x-r)$ and Euler's reflection formula
+yields
+\begin{equation}
+ \label{xxb:d3:eq:H-beta-sine}
+ \mathcal H_{M,k}(x)
+ =(-1)^r\frac{M!\sin(\pi x)}{\pi}
+ \int_0^1t^{x-1}(1-t)^{r-x}(2t-1)^k\,dt.
+\end{equation}
+(This is the mechanism of Lemma~\ref{xxb:lem:beta}, applied to
+$\mathcal H_{M,k}$ rather than to the finite difference of that lemma.)
+
+Define the kernel polynomial
+\begin{equation}
+ \label{xxb:d3:eq:KD}
+ R_d(\tau)=\left.\frac{d^d}{d\varepsilon^d}
+ \left(\frac{\sin(\pi \varepsilon)}{\pi}e^{\tau \varepsilon}\right)\right|_{\varepsilon=0}
+ =\frac{(\tau+i\pi)^d-(\tau-i\pi)^d}{2i\pi}.
+\end{equation}
+Equivalently,
+$R_d(\tau)=\sum_{\mu\geq0}(-1)^\mu\binom d{2\mu+1}\pi^{2\mu}\tau^{d-2\mu-1}$.
+(This is the polynomial $R_d$ of \eqref{xxb:dc:eq:Rd}, the manuscript's $K_D$;
+the summation index is $\mu$ because $m$ is the deficit.)
+
+\begin{theorem}[Beta--sine transform; second route to Proposition~\ref{xxb:dc:prop:integral}]
+\label{xxb:d3:thm:beta-sine}
+Let $d,k,M\geq0$, set $r=M-k$, and assume $r\geq 2d+1$.  Then
+\begin{equation}
+ \label{xxb:d3:eq:beta-sine-final}
+ \gamma(k,d,M)=(-1)^{r+2d+1}
+ \int_0^1 t^{2d}(1-t)^{r-2d-1}(2t-1)^k
+ R_d\!\left(\log\frac{t}{1-t}\right)dt.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Differentiate \eqref{xxb:d3:eq:H-beta-sine} $d$ times at the integer
+$x=2d+1$ and use \eqref{xxb:d3:eq:H-derivative}.  Near $2d+1$, write
+$x=2d+1+\varepsilon$ and
+\[
+ t^{x-1}(1-t)^{r-x}
+ =t^{2d}(1-t)^{r-2d-1}
+ \exp\!\left(\varepsilon\log\frac{t}{1-t}\right).
+\]
+Also $\sin(\pi(2d+1+\varepsilon))=(-1)^{2d+1}\sin(\pi \varepsilon)$.  The
+derivative in $\varepsilon$ is exactly $(-1)^{2d+1}R_d(\tau)$, giving
+\eqref{xxb:d3:eq:beta-sine-final}.
+\end{proof}
+
+Here $r-2d-1=q$, so the sign is $(-1)^q$, and the substitution
+$t\mapsto1-t$ turns \eqref{xxb:d3:eq:beta-sine-final} into
+\eqref{xxb:dc:eq:cut}; the batch-42 proof deforms a Cauchy contour onto the
+branch cut, this one differentiates a beta integral.  The first kernels are
+\[
+ R_1(\tau)=1,
+ \qquad R_2(\tau)=2\tau,
+ \qquad R_3(\tau)=3\tau^2-\pi^2,
+ \qquad R_4(\tau)=4\tau^3-4\pi^2\tau.
+\]
+Thus the transform recovers the one-sign depth-one integral and the
+antisymmetric logarithmic depth-two integral described in the ProveIt notes.
+At depth three the kernel is even but changes sign, explaining why the previous
+pointwise positivity strategy stops precisely there.  (This is the obstruction
+\eqref{xxb:eq:m3-kernel} of Section~\ref{xxb:sec:small-m}, whose kernel is
+$R_3/3!$.)
+
+\subsubsection{Centred beta-moment polynomials}\label{xxb:d3:sec:centered}
+
+Fix $r\geq1$.  The manuscript writes the centred quotient
+$\widetilde{\mathcal Q}_{r,k}\bigl(\frac{r+1}2+y\bigr)$ as a new polynomial
+$R_{N,k}(y)$; by \eqref{xxb:dc:eq:factor} it is $\mathcal Q_k^{(r)}(y)$,
+and it is printed so.  These polynomials contain the decisive extra
+structure.
+
+\begin{theorem}[Positive three-term recurrence; second proof of \eqref{xxb:dc:eq:Qrec}]
+\label{xxb:d3:thm:R-recurrence}
+For every $r\geq1$, $\mathcal Q_0^{(r)}(y)=1$, $\mathcal Q_1^{(r)}(y)=2y$, and for
+$k\geq1$
+\begin{equation}
+ \label{xxb:d3:eq:R-recurrence}
+ \mathcal Q_{k+1}^{(r)}(y)=2y\,\mathcal Q_k^{(r)}(y)+k(r+k)\,\mathcal Q_{k-1}^{(r)}(y).
+\end{equation}
+Consequently $\mathcal Q_k^{(r)}$ has parity $k$, and every nonzero coefficient
+in the basis $y^{k},y^{k-2},\ldots$ is a positive integer.
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal I_k(x)=\int_0^1t^{x-1}(1-t)^{r-x}(2t-1)^k\,dt$.
+Integrate the derivative of $t^x(1-t)^{r-x+1}(2t-1)^k$.  The boundary terms
+vanish in the beta strip.  With $y=x-(r+1)/2$, the resulting identity is
+\[
+ (r+k+1)\,\mathcal I_{k+1}=2y\,\mathcal I_k+k\,\mathcal I_{k-1}.
+\]
+Multiplying by the factorial prefactor in Lemma~\ref{xxb:d3:lem:beta-Q}
+gives \eqref{xxb:d3:eq:R-recurrence}.  The parity and coefficient positivity
+follow by induction.
+\end{proof}
+
+(The batch-42 proof of \eqref{xxb:dc:eq:Qrec} compares coefficients in a
+first-order differential equation for the generating function
+\eqref{xxb:dc:eq:Qgf}.  The integer and positivity clauses sharpen that
+proposition's ``nonnegative coefficients'' only in wording: the recurrence has
+integer coefficients.)
+
+\begin{corollary}[Vertical-line roots; second route to Corollary~\ref{xxb:dc:cor:imaginary}]
+\label{xxb:d3:cor:vertical-roots}
+Every zero of $\widetilde{\mathcal Q}_{r,k}$ lies on the vertical line
+$\Re x=(r+1)/2$.  The zeros are simple, and consecutive degrees interlace
+after rotation to the real axis.
+\end{corollary}
+
+\begin{proof}
+Put $\mathcal T_{r,k}(s)=i^{-k}\mathcal Q_k^{(r)}(is)$.  After monic
+normalization, \eqref{xxb:d3:eq:R-recurrence} becomes a Favard recurrence with
+positive subdiagonal coefficient $k(r+k)/4$.  Hence $\mathcal T_{r,k}$ has
+simple real zeros with the standard interlacing property.  Rotating back gives
+the claim.
+\end{proof}
+
+This root geometry is not required for the finite certificate, but it explains
+why the centred recurrence is so stable and suggests a classical
+orthogonal-polynomial interpretation worth developing further.  (The monic
+polynomials of the proof are the $p_k$ of the proof of
+Corollary~\ref{xxb:dc:cor:imaginary}, which reaches simplicity and the
+imaginary axis through a tridiagonal matrix; the interlacing clause is new to
+this part.  The classical interpretation is \eqref{xxb:dc:eq:MP}.)
+
+\subsection{Second route to depth three: the harmonic phase transition}\label{xxb:d3:sec:harmonic}
+
+Set $d=3$.  In the tail range write
+$M=k+q+7$, $q\geq0$, $r=M-k=q+7$.
+The evaluation point in \eqref{xxb:d3:eq:H-derivative} is $x=7$, which is a
+root of $\mathcal P_r$.  Factor $\mathcal P_r(x)=(x-7)\Omega_r(x)$.
+At $x=7$,
+\begin{align}
+ \Omega_r(7)&=(-1)^q\,6!\,q!,\label{xxb:d3:eq:S-value}\\
+ \frac{\Omega_r'(7)}{\Omega_r(7)}&=\mathrm H_6-\mathrm H_q=:u_q,\label{xxb:d3:eq:S-log1}\\
+ \frac{\Omega_r''(7)}{\Omega_r(7)}
+ &=(\mathrm H_6-\mathrm H_q)^2-\mathrm H_6^{(2)}-\mathrm H_q^{(2)}=:2\mathsf E_q.\label{xxb:d3:eq:S-log2}
+\end{align}
+Here $\mathrm H_q=\sum_{\ell=1}^{q}1/\ell$,
+$\mathrm H_q^{(2)}=\sum_{\ell=1}^{q}1/\ell^2$, $\mathrm H_0=\mathrm H_0^{(2)}=0$.
+Thus
+\begin{equation}
+ \label{xxb:d3:eq:E-def}
+ \mathsf E_q=\frac{(\mathrm H_q-\mathrm H_6)^2-\mathrm H_q^{(2)}-\mathrm H_6^{(2)}}{2}.
+\end{equation}
+
+Let $y_q=7-\frac{r+1}{2}=\frac{6-q}{2}$.  Using
+$\mathcal H_{M,k}=\mathcal P_r\widetilde{\mathcal Q}_{r,k}
+=(x-7)\Omega_r\widetilde{\mathcal Q}_{r,k}$, one has
+$\mathcal H_{M,k}'''(7)=3(\Omega_r\widetilde{\mathcal Q}_{r,k})''(7)$.
+Define, with $r=q+7$ and $\mathcal Q=\mathcal Q_k^{(r)}$,
+\begin{equation}
+ \label{xxb:d3:eq:F-def}
+ \mathsf F_k(q)=\frac12\left(
+ \mathcal Q''(y_q)+2u_q\mathcal Q'(y_q)+2\mathsf E_q\mathcal Q(y_q)
+ \right).
+\end{equation}
+Then \eqref{xxb:d3:eq:S-value} gives the exact normalization
+\begin{equation}
+ \label{xxb:d3:eq:gamma-F}
+ \boxed{
+ \gamma(k,3,k+q+7)
+ =\frac{4320(-1)^qq!}{(k+q+7)!}\,\mathsf F_k(q).}
+\end{equation}
+(With \eqref{xxb:dc:eq:q} this is the dictionary \eqref{xxb:d3:eq:dictionary},
+$H_{3,k,q}=720(-1)^qq!\,\mathsf F_k(q)$.)
+
+\subsubsection{The signed harmonic quantity}
+
+The $\mathsf E_q$ sequence has a remarkably simple first difference.
+
+\begin{lemma}[Unique harmonic phase transition]
+\label{xxb:d3:lem:E-sign}
+For $q\geq0$,
+\begin{equation}
+ \label{xxb:d3:eq:E-diff}
+ \mathsf E_{q+1}-\mathsf E_q=\frac{\mathrm H_q-\mathrm H_6}{q+1}.
+\end{equation}
+Moreover,
+$\mathsf E_0>0$, $\mathsf E_q<0$ for $1\leq q\leq37$, and $\mathsf E_q>0$ for
+$q\geq38$.
+\end{lemma}
+
+\begin{proof}
+Substitute $\mathrm H_{q+1}=\mathrm H_q+1/(q+1)$ and
+$\mathrm H_{q+1}^{(2)}=\mathrm H_q^{(2)}+1/(q+1)^2$ in
+\eqref{xxb:d3:eq:E-def}; the square and second-order increments cancel to give
+\eqref{xxb:d3:eq:E-diff}.
+
+Hence $\mathsf E_q$ strictly decreases through $q=6$, has
+$\mathsf E_6=\mathsf E_7$, and strictly increases thereafter.  It remains only
+to locate the two crossings.  Exact arithmetic gives
+\[
+ \mathsf E_0=\frac{203}{90}>0,
+ \qquad \mathsf E_1=-\frac7{36}<0,
+\]
+\[
+ \mathsf E_{37}=-\frac{43927248584204635973}
+ {2111705758564129728000}<0,
+ \qquad
+ \mathsf E_{38}=\frac{31458788673623539948663}
+ {1243794691794272409792000}>0.
+\]
+Monotonicity supplies all intervening and subsequent signs.
+\end{proof}
+
+For $k=0$, \eqref{xxb:d3:eq:gamma-F} and $\mathsf F_0(q)=\mathsf E_q$ already
+prove an infinite new nonvanishing diagonal.  More importantly, the same
+phase transition controls all $k$ through the recurrence of
+Theorem~\ref{xxb:d3:thm:R-recurrence}.
+
+\emph{Editorial note.}  The $k=0$ diagonal is not new as a nonvanishing
+statement: it is the $k=0$ row of Theorem~\ref{xxb:dc:thm:four} at $d=3$, and
+the formula behind it is the $D=3$ case of the elementary-symmetric formula in
+the notes (\eqref{xxb:d3:eq:gamma-k0} below).  What the lemma adds is the exact
+sign law.  Through \eqref{xxb:d3:eq:dictionary} and the sign rule
+\eqref{xxb:dc:eq:sign-rule}, the reduced expectation of the $d=3$, $k=0$ row has
+the sign of $\mathsf E_q$; so the lemma \emph{proves} the observation of
+Subsection~\ref{xxb:dc:sec:four} that this expectation ``is positive at $q=0$,
+negative for $1\le q\le37$, and positive for all $q\ge38$'', which the
+batch-42 addition read off its certificate data.
+
+\subsection{Second route to depth three: the complete tail and the full classification}\label{xxb:d3:sec:tail}
+
+\subsubsection{Automatic positivity outside the critical strip}
+
+For $q<6$, put $\lambda_q=\frac{6-q}{2}>0$ and $\alpha_q=\mathrm H_6-\mathrm H_q>0$.
+For $q>6$, put $\lambda_q=\frac{q-6}{2}>0$ and $\alpha_q=\mathrm H_q-\mathrm H_6>0$.
+By parity of $\mathcal Q_k^{(r)}$, after removing the factor $(-1)^k$ when
+$q>6$, the relevant expression is
+\begin{equation}
+ \label{xxb:d3:eq:U-general}
+ \mathsf U_{q,k}=\mathcal Q''(\lambda_q)+2\alpha_q\mathcal Q'(\lambda_q)
+ +2\mathsf E_q\mathcal Q(\lambda_q),
+ \qquad \mathcal Q=\mathcal Q_k^{(q+7)}.
+\end{equation}
+More precisely,
+\begin{equation}
+ \label{xxb:d3:eq:F-U}
+ 2\mathsf F_k(q)=
+ \begin{cases}
+ \mathsf U_{q,k},&q<6,\\
+ (-1)^k\mathsf U_{q,k},&q>6.
+ \end{cases}
+\end{equation}
+Since $\mathcal Q_k^{(r)}$ has positive coefficients,
+$\mathcal Q_k^{(r)}(\lambda)>0$ and its derivatives are nonnegative for
+$\lambda>0$.  Therefore Lemma~\ref{xxb:d3:lem:E-sign} immediately gives
+$\mathsf U_{0,k}>0$ and $\mathsf U_{q,k}>0$ for $q\geq38$, for every $k$.
+
+\subsubsection{Positivity propagation in the finite strip}
+
+For $q\in\mathcal C:=\{1,\ldots,5\}\cup\{7,\ldots,37\}$, $\mathsf E_q<0$, and
+with $r=q+7$ fixed the functional reads
+$\mathsf U_k:=\mathsf U_{q,k}=\mathcal Q_k''(\lambda_q)+2\alpha_q\mathcal Q_k'(\lambda_q)
+-2|\mathsf E_q|\,\mathcal Q_k(\lambda_q)$, where $\mathcal Q_k=\mathcal Q_k^{(r)}$
+(the manuscript's $U_k$, with $B=|\mathsf E_q|$).  Applying this differential
+operator to \eqref{xxb:d3:eq:R-recurrence} gives
+\begin{equation}
+ \label{xxb:d3:eq:U-recurrence}
+ \mathsf U_{k+1}=2\lambda_q\mathsf U_k+k(r+k)\mathsf U_{k-1}
+ +4\bigl(\mathcal Q_k'(\lambda_q)+\alpha_q\mathcal Q_k(\lambda_q)\bigr).
+\end{equation}
+The final term is strictly positive.  Consequently, once two consecutive
+$\mathsf U_k$ are positive, every later $\mathsf U_k$ is positive.
+
+The only remaining work is therefore finite.
+
+\begin{proposition}[Exact critical-strip certificate]
+\label{xxb:d3:prop:finite-certificate}
+For every $q\in\mathcal C$:
+\begin{enumerate}[label=(\arabic*),nosep]
+  \item $\mathsf U_{q,k}\neq0$ for $0\leq k\leq14$;
+  \item $\mathsf U_{q,13}>0$ and $\mathsf U_{q,14}>0$.
+\end{enumerate}
+At $q=6$, $\mathsf F_k(6)=0$ for odd $k$, while $\mathsf F_k(6)\neq0$ for even
+$0\leq k\leq14$, and $\mathsf F_{14}(6)>0$.
+\end{proposition}
+
+\begin{proof}
+This is the finite exact component of the proof.  Starting from
+$\mathcal Q_0=1$, $\mathcal Q_1=2y$, the verifier constructs every
+$\mathcal Q_k^{(r)}$ by \eqref{xxb:d3:eq:R-recurrence} with integer
+coefficients.  It evaluates \eqref{xxb:d3:eq:U-general} at the half-integer
+$\lambda_q=|q-6|/2$ using \texttt{fractions.Fraction}; harmonic numbers are
+also exact fractions.  The compressed sign results are displayed in
+Table~\ref{xxb:d3:tab:F-signs}.  The supplied file
+\texttt{code/03-depth-\allowbreak three-\allowbreak verify\_depth3.py}
+(delivered as \texttt{verify\_\allowbreak depth3.py}) performs all assertions
+independently of any computer algebra system.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Exact signs of $\mathsf F_k(q)$.  Intervals contain integers;
+``$\geq r_0$'' means all $q\geq r_0$.  Rows $k=13,14$ are the induction
+anchors.}
+\label{xxb:d3:tab:F-signs}
+\begin{tabular}{@{}c>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}@{}}
+\toprule
+$k$ & $\mathsf F_k(q)>0$ & $\mathsf F_k(q)<0$ & $\mathsf F_k(q)=0$\\
+\midrule
+0  & $q=0$; $q\geq38$ & $1\leq q\leq37$ & --\\
+1  & $0\leq q\leq1$; $7\leq q\leq34$ & $2\leq q\leq5$; $q\geq35$ & $q=6$\\
+2  & $0\leq q\leq1$; $q\geq33$ & $2\leq q\leq32$ & --\\
+3  & $0\leq q\leq2$; $7\leq q\leq29$ & $3\leq q\leq5$; $q\geq30$ & $q=6$\\
+4  & $0\leq q\leq2$; $q\geq28$ & $3\leq q\leq27$ & --\\
+5  & $0\leq q\leq3$; $7\leq q\leq24$ & $4\leq q\leq5$; $q\geq25$ & $q=6$\\
+6  & $0\leq q\leq3$; $q\geq23$ & $4\leq q\leq22$ & --\\
+7  & $0\leq q\leq3$; $7\leq q\leq20$ & $4\leq q\leq5$; $q\geq21$ & $q=6$\\
+8  & $0\leq q\leq4$; $q\geq18$ & $5\leq q\leq17$ & --\\
+9  & $0\leq q\leq4$; $7\leq q\leq15$ & $q=5$; $q\geq16$ & $q=6$\\
+10 & $0\leq q\leq4$; $q\geq13$ & $5\leq q\leq12$ & --\\
+11 & $0\leq q\leq5$; $7\leq q\leq10$ & $q\geq11$ & $q=6$\\
+12 & $0\leq q\leq5$; $q\geq9$ & $6\leq q\leq8$ & --\\
+13 & $0\leq q\leq5$ & $q\geq7$ & $q=6$\\
+14 & all $q\geq0$ & -- & --\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+(The manuscript writes the threshold in the caption as $r$; it is $r_0$ here
+because $r=M-k$.  The verifier prints these signs for $0\le q\le38$; the rows'
+behaviour for $q\ge38$ is the analytic statement $\mathsf U_{q,k}>0$ above,
+through \eqref{xxb:d3:eq:F-U}.)
+
+\subsubsection{The centre \texorpdfstring{$q=6$}{q=6}}
+
+When $q=6$, the evaluation point is $y=0$, and $u_6=0$.  By parity,
+$\mathcal Q_k^{(13)}(0)=\mathcal Q_k^{(13)\prime\prime}(0)=0$ for odd $k$,
+hence $\mathsf F_k(6)=0$.  For even $k$, set
+$\mathsf V_k=\mathcal Q_k^{(13)\prime\prime}(0)+2\mathsf E_6\mathcal Q_k^{(13)}(0)=2\mathsf F_k(6)$.
+At $\lambda=\alpha=0$, \eqref{xxb:d3:eq:U-recurrence} reduces, for odd $k$, to
+\[
+ \mathsf V_{k+1}=k(13+k)\mathsf V_{k-1}+4\mathcal Q_k^{(13)\prime}(0).
+\]
+The derivative term is positive.  The finite certificate gives
+$\mathsf V_{14}>0$, so every even $\mathsf V_k$ with $k\geq14$ is positive.
+The even cases below $14$ are nonzero by the same certificate.  Thus the
+centre has exactly the odd-$k$ zeros.
+
+\begin{theorem}[Complete depth-three tail]
+\label{xxb:d3:thm:tail}
+For all $k,q\geq0$,
+\[
+ \gamma(k,3,k+q+7)=0
+ \quad\Longleftrightarrow\quad
+ q=6\ \text{and}\ k\ \text{is odd}.
+\]
+Equivalently, in the tail $M\geq k+7$,
+$\gamma(k,3,M)=0$ if and only if $M=k+13$ and $k$ is odd.
+\end{theorem}
+
+\begin{proof}
+For $q=0$ and $q\geq38$, positivity follows directly from
+Lemma~\ref{xxb:d3:lem:E-sign} and \eqref{xxb:d3:eq:F-U}.  For $q\in\mathcal C$,
+the two positive anchors in Proposition~\ref{xxb:d3:prop:finite-certificate}
+and recurrence \eqref{xxb:d3:eq:U-recurrence} imply $\mathsf U_{q,k}>0$ for
+all $k\geq13$; the smaller $k$ are nonzero by the finite certificate.  The
+centre $q=6$ was handled above.  Finally use \eqref{xxb:d3:eq:gamma-F}, whose
+prefactor never vanishes.
+\end{proof}
+
+\begin{corollary}[Stable tail signs]
+\label{xxb:d3:cor:stable-signs}
+For even $k\geq14$, $\mathsf F_k(q)>0$ for every $q\geq0$.  For odd $k\geq13$,
+$\mathsf F_k(q)>0$ for $q<6$, $\mathsf F_k(6)=0$, and $\mathsf F_k(q)<0$ for
+$q>6$.
+\end{corollary}
+
+\subsubsection{Bulk positivity and the full depth-three theorem}\label{xxb:d3:sec:bulk}
+
+It remains to treat $3\leq M\leq k+6$.  Multiplication by $2+w$ gives the
+Pascal-type recurrence
+\begin{equation}
+ \label{xxb:d3:eq:gamma-k-recurrence}
+ \gamma(k+1,3,M)=2\gamma(k,3,M)+\gamma(k,3,M-1),
+\end{equation}
+the case $d=3$ of \eqref{xxb:dc:eq:pascalgamma}.
+For $k=0$ and $3\leq M\leq6$, $M!\,\gamma(0,3,M)=\mathcal P_M'''(7)>0$,
+because every factor $7-\ell$ is positive and the product-rule expansion of
+the third derivative has positive summands.  (This is the ``$k=0$ bulk'' of
+the notes \cite{xxbd3-notes}.)  The tail anchor $\gamma(k,3,k+7)>0$ for every
+$k$ follows from $q=0$ in Theorem~\ref{xxb:d3:thm:tail} together with
+$\mathsf F_k(0)>0$.
+
+\begin{lemma}[Bulk positivity; second route to Theorem~\ref{xxb:dc:thm:bulk} at $d=3$]
+\label{xxb:d3:lem:bulk-positive}
+For every $k\geq0$ and $3\leq M\leq k+6$, $\gamma(k,3,M)>0$.
+\end{lemma}
+
+\begin{proof}
+Induct on $k$.  The case $k=0$ was just proved.  Suppose the claim holds for
+$k$.  For $3\leq M\leq k+6$, both terms on the right of
+\eqref{xxb:d3:eq:gamma-k-recurrence} are nonnegative and the first is
+positive.  At the new endpoint $M=k+7$, the two terms are
+$2\gamma(k,3,k+7)>0$ and $\gamma(k,3,k+6)>0$.  This proves the range
+$3\leq M\leq(k+1)+6$.
+\end{proof}
+
+\begin{theorem}[Complete depth-three zero classification; second proof of Theorem~\ref{xxb:dc:thm:four} at $d=3$]
+\label{xxb:d3:thm:main}
+For every $k\geq0$ and $M\geq3$,
+\begin{equation}
+ \label{xxb:d3:eq:main-zero}
+ \boxed{
+ \gamma(k,3,M)=0
+ \quad\Longleftrightarrow\quad
+ M=k+13\ \text{and}\ k\ \text{is odd}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The bulk $M\leq k+6$ is strictly positive by
+Lemma~\ref{xxb:d3:lem:bulk-positive}.  The complementary range $M\geq k+7$ is
+Theorem~\ref{xxb:d3:thm:tail}.
+\end{proof}
+
+\begin{corollary}[Depth three in the original coefficient lattice]
+\label{xxb:d3:cor:lattice}
+Let $N,k$ be nonnegative integers with $N\geq k+3$, and put $j=2k+6-N$, so
+that $(N+j)/2-k=3$.  Then
+\[
+ c_N(j,k)=0
+ \quad\Longleftrightarrow\quad
+ N=2k+13\ \text{and}\ k\ \text{is odd}.
+\]
+In the zero case $j=-7$.  Thus the depth-three holes are exactly
+$c_{4\ell+15}(-7,2\ell+1)=0$, $\ell\geq0$.
+Every other depth-three coefficient is nonzero.
+\end{corollary}
+
+\begin{proof}
+Apply Proposition~\ref{xxb:d3:prop:exact-reduction} and
+Theorem~\ref{xxb:d3:thm:main} with $M=N-k$.  The positive factor $N!/(k!\,3!)$
+does not affect vanishing.  The equation $N-k=k+13$ is $N=2k+13$, and
+substituting into $j=2k+6-N$ gives $j=-7$.
+\end{proof}
+
+This is exactly the hole predicted by the repository's global support model at
+$d=3$: the hole line is $M=k+4d+1$, and the parity condition $k+d$ even is
+$k$ odd.
+
+\begin{remark}[The two proofs of depth three compared; editorial]\label{xxb:d3:rem:compare}
+Theorem~\ref{xxb:d3:thm:main} and the case $d=3$ of
+Theorem~\ref{xxb:dc:thm:four} share the factorization
+\eqref{xxb:dc:eq:factor} and the recurrence \eqref{xxb:dc:eq:Qrec}, and differ
+in how they control the tail.  Batch~42 folds the branch-cut integral onto
+the half interval, compares likelihood ratios against a symmetric base, and
+needs three seed signs and the rectangle $0\le k\le12$, $0\le q\le37$ (494
+integer cells, Proposition~\ref{xxb:dc:prop:smallcert} with $(R,Q)=(14,38)$).
+Manuscript~03 factors the root $x=7$ out of $\mathcal P_r$, reads the tail
+sign off the harmonic quantity $\mathsf E_q$, and propagates positivity in
+$k$ by \eqref{xxb:d3:eq:U-recurrence}; it needs exact rational values for
+the 36 values of $q$ in the strip $\mathcal C$ with $0\le k\le14$, plus the
+centre $q=6$ (Proposition~\ref{xxb:d3:prop:finite-certificate}).
+The finite anchors partly coincide.  By \eqref{xxb:d3:eq:dictionary}, the
+batch-42 central seed $H_{3,14,6}=9707604961443840000>0$ is
+$720^2\,\mathsf F_{14}(6)$ with $\mathsf F_{14}(6)=18726089817600$, the
+manuscript's centre anchor $\mathsf V_{14}>0$; the batch-42 sum-tail seed
+$H_{3,0,38}>0$ is $720\cdot38!\,\mathsf E_{38}>0$, the manuscript's harmonic
+anchor; and the batch-42 difference-tail seed $H_{3,1,38}<0$ is
+$\mathsf F_1(38)<0$, which in the manuscript is automatic from
+$\mathsf E_{38}>0$.  The two finite computations also agree where they
+overlap: through \eqref{xxb:d3:eq:dictionary} and the sign rule
+\eqref{xxb:dc:eq:sign-rule}, the rows $0\le k\le12$ of
+Table~\ref{xxb:d3:tab:F-signs} reproduce every $d=3$ row of
+\texttt{data/02-depth-\allowbreak certificates-\allowbreak sign\_thresholds.csv}
+(checked at the intake).  Neither proof is formalized.
+\end{remark}
+
+\subsection{Second route to depth three: further exact consequences}\label{xxb:d3:sec:consequences}
+
+\subsubsection{A closed harmonic formula for the log-free diagonal}
+
+For $k=0$ and $M=q+7$, the reciprocal multiset at the root $x=7$ is
+$1,\frac12,\ldots,\frac16,-1,-\frac12,\ldots,-\frac1q$.
+Its second elementary symmetric function is $\mathsf E_q$.  Therefore
+\begin{equation}
+ \label{xxb:d3:eq:gamma-k0}
+ \gamma(0,3,q+7)
+ =\frac{4320(-1)^qq!}{(q+7)!}\mathsf E_q.
+\end{equation}
+In the original derivative expansion, for $N\geq7$,
+\begin{equation}
+ \label{xxb:d3:eq:c-logfree}
+ c_N(6-N,0)
+ =360(-1)^{N-7}(N-7)!
+ \left((\mathrm H_{N-7}-\mathrm H_6)^2-\mathrm H_{N-7}^{(2)}-\mathrm H_6^{(2)}\right).
+\end{equation}
+The sign changes of $\mathsf E_q$ yield an exact phase diagram:
+$\gamma(0,3,M)>0$ for $3\leq M\leq7$;
+$\sgn\gamma(0,3,M)=(-1)^M$ for $8\leq M\leq44$;
+$\sgn\gamma(0,3,M)=(-1)^{M+1}$ for $M\geq45$.
+The two consecutive positive values at $M=44,45$ mark the phase reversal.
+
+(Formula \eqref{xxb:d3:eq:gamma-k0} is the case $D=3$ of the formula
+\[
+ \gamma(0,D,M)\,\frac{M!}{D!}=(-1)^q(2D)!\,q!\;
+ e_{D-1}\Bigl(1,\ldots,\frac1{2D},-1,\ldots,-\frac1q\Bigr),\qquad q=M-2D-1,
+\]
+of the notes \cite{xxbd3-notes}; the phase diagram is new.  The intake
+rechecked \eqref{xxb:d3:eq:gamma-k0} for $q\le123$ and the phase diagram for
+$M\le130$ in exact arithmetic.)
+
+\subsubsection{A structural explanation of the holes}
+
+At $q=6$, the centre of the vertical root line in
+Corollary~\ref{xxb:d3:cor:vertical-roots} is exactly the evaluation point
+$x=7$.  The polynomial $\mathcal Q_k^{(13)}$ has parity $k$, while the
+depth-three differential functional at the centre uses only even derivatives.
+It therefore annihilates precisely the odd degrees.  The symmetry-forced hole
+is not an accidental cancellation of large rational numbers; it is the parity
+centre of the beta-moment family.  (This is the parity argument of
+Theorem~\ref{xxb:dc:thm:holes} at $d=3$, and so the odd-falling-factorial
+symmetry of Section~\ref{syn:share}.)
+
+\subsubsection{What this does and does not imply for A290268}
+
+The theorem proves the conjectured support description on the entire
+$d=3$ layer.  It does not yet determine all of $a(N)$, because a coefficient
+of the $N$th derivative may have depth as large as $N$.  To prove the OEIS
+formula, one still needs the corresponding nonvanishing theorem for every
+$d\geq4$ (or a global argument that treats all depths simultaneously).
+
+\emph{Editorial note.}  In this report the depth-four theorem is
+Theorem~\ref{xxb:dc:thm:four}; what is still needed is every $d\ge5$, the
+region $m\ge5$, $n\ge2k+2$ of Section~\ref{xxb:sec:remaining}.
+
+\subsection{Second route to depth three: certificate, formalization blueprint and research questions}\label{xxb:d3:sec:certificate}
+
+\subsubsection{Exact certificate and reproducibility}\label{xxb:d3:sec:audit}
+
+The manuscript's artifact package contained its source and PDF, the
+verifier \texttt{verify\_\allowbreak depth3.py}, the recorded output
+\texttt{depth3\_\allowbreak certificate.txt}, and a README.  Of these, this report ships
+the verifier and its recorded output, byte-identical to the delivery, as
+\texttt{code/03-depth-\allowbreak three-\allowbreak verify\_depth3.py} and
+\texttt{data/03-depth-\allowbreak three-\allowbreak depth3\_certificate.txt}
+(Section~\ref{xxb:d3:sec:provenance}).
+
+The verifier uses no third-party package.  Its proof-critical path is:
+\begin{enumerate}[nosep]
+  \item construct $\mathcal Q_k^{(r)}$ by the integer recurrence
+    \eqref{xxb:d3:eq:R-recurrence};
+  \item compute $\mathrm H_q,\mathrm H_q^{(2)},\mathsf E_q$ with \texttt{Fraction};
+  \item evaluate $\mathsf F_k(q)$ and $\mathsf U_{q,k}$ exactly in the finite strip;
+  \item assert the signs and induction anchors in
+    Proposition~\ref{xxb:d3:prop:finite-certificate}.
+\end{enumerate}
+As independent checks, the script also verifies the normalized $\mathsf F$
+recurrence on $0\leq k\leq60$, $0\leq q\leq1000$; extracts
+$[w^M](2+w)^k\varphi(w)^3$ directly for $0\leq k\leq24$, $3\leq M\leq180$; and
+confirms agreement with \eqref{xxb:d3:eq:gamma-F} and the complete zero
+classification throughout that box.  These large-box checks are diagnostic
+rather than logical substitutes for the infinite proof.
+
+The recorded certificate-body digest is
+\begin{center}
+\small\ttfamily
+2e284dcc4a8cb79925716f96401b49b0\allowbreak a5f3c523437bdab8399b1ee7133bded9.
+\end{center}
+A successful run exits with status $0$ and rewrites the certificate
+deterministically.  The manuscript's rerun command is
+\texttt{python3 verify\_depth3.py}; with the shipped name it is
+\begin{lstlisting}
+py code/03-depth-three-verify_depth3.py
+\end{lstlisting}
+run on a copy of the report directory: the program writes
+\texttt{depth3\_\allowbreak certificate.txt}, under that unprefixed name, into the
+directory that contains it, here \texttt{code/}.  Its checks are Python
+\texttt{assert} statements, so it must not be run with \texttt{python -O}.
+At the intake it was rerun on a copy: exit status $0$, and the rewritten
+certificate is byte-identical to the shipped
+\texttt{data/03-depth-\allowbreak three-\allowbreak depth3\_certificate.txt}.
+
+\begin{quote}\small
+\textbf{No hidden trust upgrade (the manuscript's warning box).}
+The exact Python certificate is substantially stronger than a floating-point
+scan, but it is not a kernel-checked theorem.  The mathematical reduction to a
+finite sign problem must still be reviewed, and a future ProveIt integration
+should formalize both the recurrence and the finite checker in Lean or Rocq.
+\end{quote}
+
+\subsubsection{Formalization blueprint for ProveIt}\label{xxb:d3:sec:formalization}
+
+The proof was designed to split cleanly along formalization boundaries.
+The manuscript suggests the following module structure.
+\begin{enumerate}[nosep]
+  \item \texttt{A290268.SeriesReduction}: formalize
+  Proposition~\ref{xxb:d3:prop:exact-reduction} in formal power series and
+  connect it to the existing lattice recurrence.
+  \item \texttt{A290268.FallingFactorial}: define $\mathcal P_M$, prove
+  Lemma~\ref{xxb:d3:lem:parameter-derivative}, and derive
+  \eqref{xxb:d3:eq:H-derivative}.
+  \item \texttt{A290268.CenteredMoments}: define $\widetilde{\mathcal Q}_{r,k}$
+  algebraically by \eqref{xxb:d3:eq:Q-sum} and prove
+  \eqref{xxb:d3:eq:R-recurrence} without analytic integration, by polynomial
+  identities or coefficient induction.
+  \item \texttt{A290268.DepthThreeHarmonic}: formalize $\mathsf E_q$,
+  \eqref{xxb:d3:eq:E-diff}, and the four exact anchor inequalities in
+  Lemma~\ref{xxb:d3:lem:E-sign}.
+  \item \texttt{A290268.DepthThreeCertificate}: reflect the finite sign table
+  into a Boolean checker and discharge it with \texttt{native\_decide} or a
+  kernel-reduced rational computation, according to the project's trust
+  policy.
+  \item \texttt{A290268.DepthThree}: combine positivity propagation, centre
+  parity, bulk induction, and Theorem~\ref{xxb:d3:thm:main}.
+\end{enumerate}
+A natural public endpoint is schematically
+\begin{lstlisting}
+theorem gamma_depth_three_eq_zero_iff
+    (k M : Nat) (hM : 3 <= M) :
+    gamma k 3 M = 0 <-> M = k + 13 /\ Odd k
+\end{lstlisting}
+followed by a bridge to the existing coefficient array:
+\begin{lstlisting}
+theorem coeff_depth_three_ne_zero_unless_hole
+    (n k : Nat) (h : k + 3 <= n) :
+    coeff n (2*k + 6 - n) k = 0 <->
+      n = 2*k + 13 /\ Odd k
+\end{lstlisting}
+The actual types will need to respect the repository's integer exponent index
+and natural log-degree conventions.
+
+\paragraph{Avoiding analytic overhead.}
+The beta--sine transform is conceptually useful but not necessary for the Lean
+proof of depth three.  The formal path can remain algebraic:
+$\gamma\to\mathcal P_M^{(3)}\to\mathcal P_r\widetilde{\mathcal Q}_{r,k}
+\to\mathcal Q_k^{(r)}\text{ recurrence}\to\mathsf E_q,\mathsf U_{q,k}$.
+This avoids formal integration, gamma functions, and complex analysis.  The
+integral theorem can be formalized separately as a reusable analytic layer.
+
+\emph{Editorial note.}  None of the six modules exists; the manuscript
+proposes them and does not claim them.  The library \texttt{A290268} has the
+modules \texttt{Core}, \texttt{ClosedForm}, \texttt{Count},
+\texttt{Structural}, \texttt{Table} and \texttt{Main}
+(Section~\ref{xxb:d3:sec:formal}); it defines no \texttt{gamma}, and its
+\texttt{coeff} has type $\N\to\Z\to\Z\to\Z$, so the sketched
+\texttt{coeff n (2*k + 6 - n) k} needs the integer index the last sentence
+asks for.  The same algebraic interface is Question~7 of
+Subsection~\ref{xxb:dc:sec:future}.
+
+\subsubsection{Further research questions}\label{xxb:d3:sec:further}
+
+The proof suggests a focused continuation program.  The manuscript's nine
+questions are printed as it states them; the editorial notes after seven of
+them record what this report already contains.
+
+\begin{question}[Depth four]\label{xxb:d3:q:depth-four}
+Can the same centred-polynomial method classify all zeros at $d=4$?  The
+beta--sine kernel is $R_4(\tau)=4\tau^3-4\pi^2\tau$,
+and the root reduction involves a third-order differential functional on
+$\mathcal Q_k^{(r)}$.  The main challenge is to find a finite-dimensional
+positivity cone stable under the recurrence.
+\end{question}
+
+\emph{Editorial note: already answered as a classification.}  All zeros at
+$d=4$ are classified by Theorem~\ref{xxb:dc:thm:four} (only $q=8$, $k$ even;
+$j=-9$, $N=2k+17$), which was in this report at the manuscript's pin.  What the
+question still asks is only methodological: whether the centred-polynomial
+route of this addition also proves depth four, perhaps with a smaller finite
+certificate than the 15,540 cells of the batch-42 rectangle.
+
+\begin{question}[Uniform depth induction]
+For general $d$, evaluation at the root $x=2d+1$ produces an order-$(d-1)$
+differential functional of $\widetilde{\mathcal Q}_{r,k}$.  Is there a uniform
+matrix recurrence whose invariant cone proves that only the parity-centre holes
+occur?
+\end{question}
+
+\emph{Editorial note.}  This is a proposed route to Question~4 of
+Subsection~\ref{xxb:dc:sec:future}, which is open.
+
+\begin{question}[Critical-strip bounds]
+At $d=3$, positivity becomes automatic outside the finite harmonic strip
+$1\leq q\leq37$, and two consecutive $k$-anchors propagate all larger degrees.
+Can one bound the analogous strip and anchor degree explicitly as functions of
+$d$?
+\end{question}
+
+\emph{Editorial note: partly answered.}  Explicit (deliberately crude) bounds
+$K_d,Q_d$ as functions of $d$, beyond which every entry at depth $d$ is
+nonzero except the holes, are Theorem~\ref{xxb:dc:thm:finite}
+\eqref{xxb:dc:eq:constants}.  Small or sharp bounds, for this route or that
+one, remain open; they are Questions~2 and~3 of
+Subsection~\ref{xxb:dc:sec:future}.
+
+\begin{question}[Classical identification]
+Identify $\mathcal Q_k^{(r)}$ precisely within the continuous Hahn or related
+orthogonal-polynomial schemes, including its measure after the rotation
+$y\mapsto iy$.  Can known connection coefficients or total-positivity theorems
+replace the finite certificate?
+\end{question}
+
+\emph{Editorial note: the identification is answered.}  By
+\eqref{xxb:dc:eq:MP}, $\mathcal Q_k^{(r)}(y)=k!\,i^kP_k^{((r+1)/2)}(-iy;\pi/2)$,
+a Meixner--Pollaczek polynomial (a member of the Hahn class of the DLMF
+\cite{xxbdc-dlmf}), so its orthogonality measure after the rotation is the
+classical Meixner--Pollaczek weight with $\lambda=(r+1)/2$, $\phi=\pi/2$.  The
+second sentence, replacing the certificate, remains open.
+
+\begin{question}[Eliminate the finite certificate]
+Find a human inequality proving the signs in Table~\ref{xxb:d3:tab:F-signs},
+perhaps from bounds on the logarithmic derivatives of the rotated orthogonal
+polynomials.  This would make Theorem~\ref{xxb:d3:thm:main} entirely symbolic.
+\end{question}
+
+\begin{question}[General hole theorem in the proof assistant]
+The repository notes give a clean $w=e^u-1$ parity argument for
+$M=k+4d+1$.  Formalizing that argument would make the structural inclusion of
+the conjectured support unconditional at every depth, leaving only
+nonvanishing.
+\end{question}
+
+\emph{Editorial note.}  On paper the hole theorem is proved three times in
+this report and the notes: Theorem~\ref{xxb:thm:reflection-zeros},
+Theorem~\ref{xxb:dc:thm:holes}, and the $w=e^u-1$ argument of the notes.  The
+formal side is open: the hypothesis \texttt{hhole} of
+\texttt{Structural.mem\_\allowbreak S\_\allowbreak of\_\allowbreak coeff\_\allowbreak ne\_\allowbreak zero}
+is exactly this statement, and the module \texttt{A290268.Hole} its docstring
+names does not exist (Section~\ref{xxb:dc:sec:formal}).
+
+\begin{question}[Neighbouring derivative families]
+The notes report a sporadic zero in the analogous $x^x$ family.  Which
+functions $x^{x^m}$ have only symmetry-forced holes, and for which $m$ do
+sporadic cancellations occur?  The beta--sine transform has a plausible
+$m$-parameter generalization.
+\end{question}
+
+\emph{Editorial note.}  The sporadic $x^x$ zero is
+$b(8,5)=0$, \eqref{xx:eq:exception}, proved in Part~\ref{xx:part}; for
+$x^{x^x}$ additional zeros provably exist (Part~\ref{xxc:part}).  The question
+for $x^{x^m}$, $m\ge3$, is Question~8 of Subsection~\ref{xxb:dc:sec:future}
+(there written $x^{x^r}$); it is open.
+
+\begin{question}[Asymptotic harmonic phases]
+For $k=0$ and general $d$, the tail is governed by an elementary symmetric
+function of $1,\frac12,\ldots,\frac1{2d},-1,-\frac12,\ldots,-\frac1q$.
+Determine the number and location of its sign transitions as $q\to\infty$.
+The $d=3$ transition $37\to38$ is the first nontrivial case.
+\end{question}
+
+\begin{question}[Global A290268]
+Can the depthwise results be assembled into a single support theorem without
+proving each $d$ separately?  A successful uniform argument would immediately
+establish the OEIS generating function through the existing ProveIt counting
+reduction.
+\end{question}
+
+\emph{Editorial note.}  This is Questions~4 and~6 of
+Subsection~\ref{xxb:dc:sec:future}; the counting reduction is
+Theorem~\ref{xxb:thm:equivalence} on paper and
+\texttt{Main.a\_\allowbreak eq\_\allowbreak closedForm\_\allowbreak of\_\allowbreak support\_\allowbreak all}
+in Lean.
+
+\subsubsection{Conclusion of manuscript 03}
+
+The A290268 support problem admits more structure than a raw coefficient scan
+reveals.  Parameter differentiation converts coefficient extraction into a
+falling-factorial derivative.  Factoring the common roots exposes centred
+beta-moment polynomials with a positive three-term recurrence.  At depth three,
+the remaining signed information collapses to one harmonic phase sequence and
+a recurrence-stable positivity functional.  These ingredients prove the full
+zero classification $\gamma(k,3,M)=0\iff M=k+13$ and $k$ odd,
+settling the first open depth in the pinned ProveIt program.
+
+The result is both mathematically substantive and formalization-friendly.  Its
+only finite component is explicit, exact, small, and independently
+reproducible.  The next decisive test is depth four: success there would show
+whether the invariant-cone mechanism is a one-depth phenomenon or the start of
+a uniform proof of the full OEIS conjecture.
+
+\emph{Editorial note.}  ``Settling the first open depth'' is mistaken: depth
+three was settled at the pin by Theorem~\ref{xxb:dc:thm:four}, and this is a
+second proof.  ``The next decisive test is depth four'' is a test of the
+\emph{method} (Question~\ref{xxb:d3:q:depth-four} and its note); depth four
+itself is settled, and the first open depth is $d=5$.
+
+\subsubsection{Core verifier logic (manuscript Appendix~A)}
+
+The complete verifier is shipped with this report.  The following excerpt
+shows the proof-critical recurrences; all quantities are exact fractions.
+\begin{lstlisting}[language=Python]
+def E(q):
+    a = H(q) - H(6)
+    return (a*a - H(q, 2) - H(6, 2)) / 2
+
+def centered_polynomials(N, max_k):
+    R = [[1], [0, 2]]                 # 1, 2*y
+    for k in range(1, max_k):
+        R.append(2*y_times(R[k]) + k*(N+k)*R[k-1])
+    return R
+
+def F_from_polynomial(k, q):
+    N = q + 7
+    y = Fraction(6-q, 2)
+    u = H(6) - H(q)
+    R = centered_polynomials(N, k)[k]
+    return (R2(y) + 2*u*R1(y) + 2*E(q)*R0(y)) / 2
+\end{lstlisting}
+The actual source implements the polynomial operations explicitly and asserts
+all signs, recurrence identities, tail zeros, bulk positivity checks, and
+direct coefficient comparisons.  (The excerpt keeps the manuscript's letters:
+\texttt{N} is $r$, \texttt{R} is $\mathcal Q^{(r)}$, \texttt{H} the harmonic
+numbers, and \texttt{y\_times}, \texttt{R0}, \texttt{R1}, \texttt{R2} stand
+for operations the full program spells out.)
+
+\subsubsection{Source and proof audit (manuscript Appendix~B)}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.74\textwidth}@{}}
+\toprule
+Item & Audit statement\\
+\midrule
+\endhead
+Repository pin & All repository-status claims were checked against commit
+\texttt{a02ab3567fef2579\allowbreak 3b27a68248b58a7b\allowbreak 69694342}.
+\emph{Editorial: the claim that depth three was open at that commit was not;
+see Subsection~\ref{xxb:d3:sec:intro}.}\\
+OEIS status & The public A290268 page was inspected on 30 September 2026; it
+still labels the generating function and closed form conjectural.\\
+New theorem & Theorem~\ref{xxb:d3:thm:main} is proved in this article and is
+not claimed to exist in the pinned repository.
+\emph{Editorial: it did exist there, as the case $d=3$ of
+Theorem~\ref{xxb:dc:thm:four}; the proof printed here is a second route.}\\
+Analytic assumptions & The main depth-three proof can be read algebraically.
+The beta integral is used to discover and explain the centred recurrence, but
+the recurrence itself is a polynomial identity.\\
+Finite computation & Only Proposition~\ref{xxb:d3:prop:finite-certificate} is
+computer-checked.  It uses exact rational arithmetic and is accompanied by
+source and recorded output.\\
+Cross-checks & Larger exact boxes and direct series extraction are
+diagnostics, not premises of the infinite theorem.\\
+Formal verification & No Lean/Rocq proof is claimed.  A module-by-module
+formalization plan is given in Section~\ref{xxb:d3:sec:formalization}.\\
+Peer review & None claimed.  The article should be treated as a detailed
+research proof requiring independent mathematical review.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Second route to depth three: provenance, files and formal status}\label{xxb:d3:sec:provenance}
+
+\subsubsection{Provenance}
+Subsections~\ref{xxb:d3:sec:intro}--\ref{xxb:d3:sec:provenance} were built from
+\textbf{one} manuscript: batch~70, manuscript~03, archive
+\texttt{ProveIt\_\allowbreak A290268\_\allowbreak Depth3\_\allowbreak Article.zip} (\emph{Depth Three Is Complete
+for OEIS A290268}, 17-page PDF, dated 30 September 2026), pinned to ProveIt
+commit \texttt{a02ab3567fef2579\allowbreak 3b27a68248b58a7b\allowbreak 69694342}, which arrived in
+commit \texttt{1b3960d8a} and was placed in this report by commit
+\texttt{51c6943bf}.  Its Section~1 and summary box form
+Subsection~\ref{xxb:d3:sec:intro}; its Sections~2--3 are
+Subsection~\ref{xxb:d3:sec:model}, 4--5 are
+Subsection~\ref{xxb:d3:sec:beta-sine}, 6 is
+Subsection~\ref{xxb:d3:sec:harmonic}, 7--8 are
+Subsection~\ref{xxb:d3:sec:tail}, 9 is
+Subsection~\ref{xxb:d3:sec:consequences}; its Sections~10--13 and its two
+appendices form Subsection~\ref{xxb:d3:sec:certificate}.  Every theorem,
+proposition, lemma, corollary, definition, remark, table and research question
+of the manuscript is printed, with its proof, and every non-claim and
+limitation it states; none was weakened or strengthened.  The editorial
+choices were these.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt]
+\item It is placed as subsections at the end of Part~\ref{xxb:part}, after the
+ batch-42 addition, so that no existing section, theorem or equation number
+ moves.
+\item Its main theorem, reduction, parameter derivative, beta--sine transform,
+ recurrence, root corollary and bulk lemma are marked as second routes to
+ results already printed in this part.  Its claims that depth three was open
+ at its pin and that its theorem is new there are kept verbatim and corrected
+ by editorial notes, as is its statement that depth four remains open; its
+ question ``Depth four'' is marked as answered by
+ Theorem~\ref{xxb:dc:thm:four}; six others carry notes relating them to
+ this report, two of them (critical-strip bounds, classical identification)
+ re-scoped as partly answered.
+\item Its letters are renamed as in Table~\ref{xxb:d3:tab:notation}, with no
+ change of normalization; its coloured boxes are printed as quoted paragraphs;
+ its file table is replaced by the shipped file list; its rerun command is
+ rewritten to the shipped name; its OEIS citation is merged with this part's.
+ Its bibliography also lists \v{S}tampach's paper on Bernoulli polynomials of
+ the second kind, which its text never cites; it is the
+ batch-42 reference \cite{xxbdc-stampach}.
+\item The dictionary \eqref{xxb:d3:eq:dictionary},
+ Remark~\ref{xxb:d3:rem:compare}, the editorial notes and the parenthetical
+ translations are additions of the intake, not of the manuscript.
+\end{itemize}
+Not shipped: the manuscript's source and PDF,
+\texttt{proveit\_\allowbreak a290268\_\allowbreak depth3.tex} and
+\texttt{proveit\_\allowbreak a290268\_\allowbreak depth3.pdf}; its
+\texttt{README.md}; and its checksum list \texttt{SHA256SUMS.txt} (verified at
+placement, 5 of 5 entries).  The archive
+itself survives in the history of commit \texttt{1b3960d8a}.
+
+\subsubsection{Files}
+The manuscript's code and data are shipped with the prefix
+\texttt{03-depth-\allowbreak three-\allowbreak }, byte-identical to the delivery:
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.50\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Shipped path (delivery name) & Purpose\\
+\midrule
+\endhead
+\texttt{code/03-depth-\allowbreak three-\allowbreak verify\_depth3.py} (\texttt{verify\_\allowbreak depth3.py}) & Exact standard-library verifier of Proposition~\ref{xxb:d3:prop:finite-certificate} and the cross-checks of Section~\ref{xxb:d3:sec:audit}; writes \texttt{depth3\_\allowbreak certificate.txt} beside itself.\\
+\texttt{data/03-depth-\allowbreak three-\allowbreak depth3\_certificate.txt} (\texttt{depth3\_\allowbreak certificate.txt}) & Its recorded output: the anchors, the sign table for $0\le q\le38$, and the certificate-body digest.\\
+\bottomrule
+\end{longtable}
+
+\subsubsection{Formal status}\label{xxb:d3:sec:formal}
+Nothing in this addition is formalized, and its placement beside a Lean
+development confers no formal status.  The Lean library \texttt{A290268}
+(\texttt{Combinatorics/\allowbreak DerivativeExpansions/\allowbreak A290268/\allowbreak Lean})
+relates to it exactly as described in Section~\ref{xxb:dc:sec:formal}.  The
+manuscript cites only \texttt{A290268.Main}, whose theorems
+\texttt{a\_\allowbreak eq\_\allowbreak closedForm\_\allowbreak of\_\allowbreak support},
+\texttt{a\_\allowbreak eq\_\allowbreak closedForm\_\allowbreak of\_\allowbreak two\_\allowbreak sided} and
+\texttt{a\_\allowbreak eq\_\allowbreak closedForm\_\allowbreak of\_\allowbreak support\_\allowbreak all}
+are conditional on the support characterization; it reads them correctly.
+Theorem~\ref{xxb:d3:thm:main} would discharge the nonvanishing inclusion only
+on cells of depth three, which Theorem~\ref{xxb:dc:thm:four} already covers on
+paper; the \texttt{Main} theorems stay conditional.  The six modules of
+Section~\ref{xxb:d3:sec:formalization} are proposals and do not exist.
 
 \clearpage
 \section{\texorpdfstring{$x^{x^x}$}{x^(x^x)}: OEIS A281434}\label{xxc:part}
@@ -5257,6 +6644,22 @@ F.~\v{S}tampach,
 second kind}, Journal of Approximation Theory \textbf{262} (2021),
 article 105517. Preprint arXiv:2011.13808 (2020).
 \url{https://arxiv.org/abs/2011.13808}.
+
+% Cited by the batch-70 addition (Sections xxb:d3:*); manuscript 03's OEIS
+% entry is merged into oeis290268 and its Stampach entry is xxbdc-stampach.
+\bibitem{xxbd3-notes}
+V.~Reshetnikov, \emph{A290268: number of terms in the expanded $n$-th
+derivative of $x^{x^2}$}, ProveIt repository, file
+\texttt{Oeis/A290268/README.md}, commit
+\texttt{a02ab3567fef25793b27a68248b58a7b69694342}, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/a02ab3567fef25793b27a68248b58a7b69694342/Oeis/A290268/README.md}.
+
+\bibitem{xxbd3-main}
+V.~Reshetnikov, \emph{A290268: reduction of the conjecture to the support
+characterization}, ProveIt repository, file
+\texttt{Combinatorics/DerivativeExpansions/A290268/Lean/A290268/Main.lean},
+same commit, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/a02ab3567fef25793b27a68248b58a7b69694342/Combinatorics/DerivativeExpansions/A290268/Lean/A290268/Main.lean}.
 \end{thebibliography}
 
 \end{document}
