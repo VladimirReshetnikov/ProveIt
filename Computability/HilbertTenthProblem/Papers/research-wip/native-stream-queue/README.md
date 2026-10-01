@@ -40,7 +40,22 @@ and [bracket-only1046 predecessor](gpcp_bracket_anchored_history.md)
 remain reproducible. These are alternative universal bounds above75/87;
 the matrix alphabet remains abstract.
 
-The latest explicit [terminal-bound U9 polynomial](neary_woods_universal_terminal_bound255.md)
+The latest explicit [language-bound U9 polynomial](neary_woods_universal_initial_bound254.md)
+gives **253 certificate /254=133M+121A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most1379**. The supplied height is used directly. Native
+typing first recovers the initial residue; the bounded zero runs of the
+actual valid input word then exclude radix wraparound. The inverse parent
+height gap is at least2 at valid zeros, giving a positive-zero bijection
+on those slices. The paid ordinary-input loader and duration floor remain
+unchanged. The [new exact finite partition search](neary_woods_universal_initial_bound_partitions.md)
+checks every factor partition and allowed anchor in all sixteen inherited
+bases. Six operation counts gain smaller degree bounds, including
+**258/854**, **262/408** and **265/228**. Endpoints remain **266/212 with44
+witnesses**, or **262/456 with43**. The degree212 floor applies only to
+this propagated-bound objective; it is not a global circuit lower bound.
+
+The preceding explicit [terminal-bound U9 polynomial](neary_woods_universal_terminal_bound255.md)
 gives **254 certificate /255=133M+122A polynomial operations**,
 one comparison,43 positive witnesses, four positive program parameters
 and degree **at most1384**. Only the initial word remains in the paid
@@ -210,7 +225,26 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The latest [terminal-bound sparse compiler](residue_affine_sparse_terminal537.md)
+The latest single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
+gives **485 certificate /505=177M+328A polynomial operations**,
+seven comparisons,67 positive witnesses and degree **at most5091**.
+Injective state codes reuse paid prime/action selector sums and two partial
+sums in the target expression, saving32 gates across the complete control
+transport. After unchanged native typing, coded digit equality is exactly
+the original state chronology. The complete supplied positive zero set
+agrees with537, including arbitrary positive program/input parameters;
+the fixed recipe E=3^e retains universality on ordinary positive x.
+
+A separate [program-radix tradeoff](residue_affine_sparse_program_radix504.md)
+uses **two fixed program parameters** E,C and gives **484 certificate
+/504=177M+327A polynomial operations**, seven comparisons,67 witnesses
+and uniform degree **at most5160**. Fix dyadic C>=64 with C>E=3^e;
+then h=x+eta and B=Ch remove one addition. The same C works for every
+ordinary input of that program. Direct soundness and completeness include
+h=2 and a positive packed slack; the supplied positive zero sets are not
+claimed identical. The505 option above retains its one-parameter interface.
+
+The preceding [terminal-bound sparse compiler](residue_affine_sparse_terminal537.md)
 gives **517 certificate /537=193M+344A polynomial operations**,
 seven comparisons,67 positive witnesses and degree **at most5091**.
 It removes the final payload F from the height: h=E+x+eta. Native typing
@@ -1681,6 +1715,8 @@ New research and the completed75-operation construction:
 | [Fixed-chain U15 universal successor](neary_woods_universal_tag_chain.md) | **454 certificate /528=322M+206A polynomial**,25eq,69w,four positive program parameters; same degree upper bound. | Exact131-multiplication exponent schedule saves29M; the existing frame coefficient E supplies the duration bound. Same fixed tables and valid program slices. |
 | [Explicit U9 universal tag polynomial](neary_woods_universal_u9_tag_chain.md) | **450 certificate /524=318M+206A polynomial**, 25eq, 69w, four positive program parameters; degree at most 26082961986495105871681692197398140. | Reviewed original input cut, persistent nonempty suffix, exact counter128n and 127-multiplication exponent schedule. The four frame coefficients provide effective universal slices. |
 | [U21 counter chronology units](korec_packed_counter_units.md) | **410 certificate /411=147M+264A**,1eq50w,one positive program parameter plus raw x,degree at most42589; SOS412/85178. | Literal strongly universal21-instruction table; shared control codes, positive computed truth fields and three signed transport/range factors with complete positive converse. |
+| [Reoptimized U9 initial-bound partitions](neary_woods_universal_initial_bound_partitions.md) | **254/1379/43w to266/212/44w**; improved258/854,261/454,262/408,263/302,264/272,265/228. Fixed43 ends262/456. | Exact finite objective across sixteen bases, every disjoint factor partition and optional anchor;480 literal ledgers across both bound interfaces. Propagated degree bounds only, not a global circuit optimum. |
+| [Recovered U9 initial bound](neary_woods_universal_initial_bound254.md) | **253 certificate /254=133M+121A**,1eq43w,four program parameters,degree at most1379; mapped266/212/44w and262/456/43w. | Native typing and the actual input language exclude radix wraparound; a triangular coordinate map gives a positive-zero bijection on valid slices. Historical mapped schedules; the linked partition packet above reoptimizes the finite family. |
 | [Derived U9 terminal bounds](neary_woods_universal_terminal_bound255.md) | **254 certificate /255=133M+122A**,1eq43w,four positive program parameters,degree at most1384; inherited frontier267/212/44w, fixed43w263/456. | Typed updates and chronological transports force terminal digits below the radix. Initial-only height, direct valid-slice soundness and positive completeness; no positive inverse claim. |
 | [Dominated U9 endpoint height](neary_woods_universal_height256.md) | **255 certificate /256=133M+123A**,1eq43w,four positive program parameters,degree at most1384; inherited frontier268/212/44w, fixed43w264/456. | Terminal endpoint domination deletes one height addition. Direct soundness and positive completeness on valid shifted slices; exact integer affine identity, without a positive inverse claim. |
 | [Positive U9 history scale](neary_woods_universal_history_scale257.md) | **256 certificate /257=133M+124A**,1eq43w,four positive program parameters,degree at most1384. | History scale becomes the positive global sum; native typing precedes the repunit sign proof. beta_new=beta_parent+1 is a positive-zero bijection on valid program/input slices; no arbitrary-point identity. |
@@ -1689,6 +1725,8 @@ New research and the completed75-operation construction:
 | [Shifted U9 program offset](neary_woods_universal_offset258.md) | **257 certificate /258=133M+125A**,1eq43w,four positive program parameters,degree at most3861; mapped269/608/44w and266/1344/43w. | E'=E−1 changes valid program recipes; accepted ordinary inputs preserved, not an all-tuple positive bijection. Selected mapped family only. |
 | [U9 lower-history unit](neary_woods_universal_lower_unit259.md) | **258 certificate /259=133M+126A**,1eq43w,four positive program parameters,degree at most3861. | Same supplied coordinates and positive zeros on valid program/input slices; negative lower sign contradicts the actual sentinel suffix. |
 | [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
+| [Fixed sparse program radix](residue_affine_sparse_program_radix504.md) | **484 certificate /504=177M+327A**,7eq67w, two fixed program parameters E,C plus raw x,uniform degree at most5160. | C dyadic>=64 and C>E=3^e permits h=x+eta, B=Ch. One C serves all inputs; direct soundness/completeness includes h=2. A parameter tradeoff, not an identical supplied-zero-set rewrite. |
+| [Paid sparse control codes](residue_affine_sparse_control_codes.md) | **485 certificate /505=177M+328A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Reuse paid selector sums and prefixes in injective current/target codes. Complete control cost106→74; identical positive zeros with537 after unchanged typing and exact chronology. |
 | [Derived sparse terminal bound](residue_affine_sparse_terminal537.md) | **517 certificate /537=193M+344A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Initial-only height h=E+x+eta; typed payload transport derives F below the radix. Positive parent extension and direct soundness preserve the universal relation; inverse height gap may be nonpositive. |
 | [Positive computed sparse scale](residue_affine_sparse_scale538.md) | **518 certificate /538=193M+345A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Local native power recovery precedes the Mersenne repunit sign proof. Identical positive zeros with540; actual U21 and paid input/control/payload chronology. |
 | [Dominated sparse bounds](residue_affine_sparse_bound540.md) | **517 certificate /540=193M+347A**,8eq67w,degree at most10052. | Eleven additions removed using nonnegative domination and the retained remainder equation before typing. Same-form positive-zero slack bijection with551; inverse may be nonpositive off zero. |

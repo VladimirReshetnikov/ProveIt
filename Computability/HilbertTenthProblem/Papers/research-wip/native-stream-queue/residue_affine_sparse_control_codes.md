@@ -1,5 +1,10 @@
 # Reusing paid selector sums gives the sparse compiler505 operations
 
+> The [two-program-parameter variant](residue_affine_sparse_program_radix504.md)
+> gives504 operations and uniform degree at most5160 by supplying a fixed
+> dyadic program radix multiplier. This505 construction retains one fixed
+> program parameter and degree at most5091; the interfaces are distinct.
+
 The [literal source](residue_affine_sparse_control_codes.py) replaces the
 control-state encoding in the [537-operation compiler](residue_affine_sparse_terminal537.md).
 Its default complete polynomial costs **505=177M+328A**, with **67 positive

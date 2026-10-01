@@ -1,5 +1,10 @@
 # Recovering the initial radix bound gives254 operations
 
+> The [complete finite repartitioning](neary_woods_universal_initial_bound_partitions.md)
+> improves six degree points, including258/854 and262/408, while retaining
+> the254/1379 minimum-cost and266/212 endpoints. The mapped schedules
+> recorded here remain correct; the new packet searches all sixteen bases.
+
 The [literal source](neary_woods_universal_initial_bound254.py) removes the
 last height addition from the [255-operation compiler](neary_woods_universal_terminal_bound255.md).
 It gives **254=133M+121A**, with **43 positive witnesses**, four positive

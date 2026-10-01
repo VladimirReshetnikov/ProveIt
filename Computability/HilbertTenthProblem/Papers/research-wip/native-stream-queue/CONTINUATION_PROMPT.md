@@ -14,7 +14,29 @@
 > The full compiler contract, both ratio slacks and `F>0` are retained.
 > This is distinct from the unresolved independent-gamma87 candidate.
 >
-> The latest explicit [terminal-bound U9 polynomial](neary_woods_universal_terminal_bound255.md)
+> The latest explicit [language-bound U9 polynomial](neary_woods_universal_initial_bound254.md)
+> gives **253 certificate /254=133M+121A polynomial operations**,
+> one comparison,43 positive witnesses, four positive program parameters
+> and degree **at most1379**. The supplied height is used directly. Native
+> typing first recovers the initial residue; the bounded zero runs of the
+> actual valid input word then exclude radix wraparound. The inverse parent
+> height gap is at least2 at valid zeros, giving a positive-zero bijection
+> on those slices. The paid ordinary-input loader and duration floor remain
+> unchanged. The [new exact finite partition search](neary_woods_universal_initial_bound_partitions.md)
+> checks every factor partition and allowed anchor in all sixteen inherited
+> bases. Six operation counts gain smaller degree bounds, including
+> **258/854**, **262/408** and **265/228**. Endpoints remain **266/212 with44
+> witnesses**, or **262/456 with43**. The degree212 floor applies only to
+> this propagated-bound objective; it is not a global circuit lower bound.
+>
+> The reoptimized finite frontier is254/1379,256/1237,257/1191,258/854,
+> 259/601,260/555,261/454,262/408,263/302,264/272,265/228 and266/212.
+> The first four use43 witnesses and the remainder44. Fixed43 additionally
+> contains259/808,260/610 and262/456; fixed45 ends269/212. The original254
+> note's mapped schedules remain historical; use the new partition packet
+> for the complete finite search with the changed factor weights.
+>
+> The preceding explicit [terminal-bound U9 polynomial](neary_woods_universal_terminal_bound255.md)
 > gives **254 certificate /255=133M+122A polynomial operations**,
 > one comparison,43 positive witnesses, four positive program parameters
 > and degree **at most1384**. Only the initial word remains in the paid
@@ -291,7 +313,26 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
 >
-> The latest [terminal-bound sparse compiler](residue_affine_sparse_terminal537.md)
+> The latest single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
+> gives **485 certificate /505=177M+328A polynomial operations**,
+> seven comparisons,67 positive witnesses and degree **at most5091**.
+> Injective state codes reuse paid prime/action selector sums and two partial
+> sums in the target expression, saving32 gates across the complete control
+> transport. After unchanged native typing, coded digit equality is exactly
+> the original state chronology. The complete supplied positive zero set
+> agrees with537, including arbitrary positive program/input parameters;
+> the fixed recipe E=3^e retains universality on ordinary positive x.
+>
+> A separate [program-radix tradeoff](residue_affine_sparse_program_radix504.md)
+> uses **two fixed program parameters** E,C and gives **484 certificate
+> /504=177M+327A polynomial operations**, seven comparisons,67 witnesses
+> and uniform degree **at most5160**. Fix dyadic C>=64 with C>E=3^e;
+> then h=x+eta and B=Ch remove one addition. The same C works for every
+> ordinary input of that program. Direct soundness and completeness include
+> h=2 and a positive packed slack; the supplied positive zero sets are not
+> claimed identical. The505 option above retains its one-parameter interface.
+>
+> The preceding [terminal-bound sparse compiler](residue_affine_sparse_terminal537.md)
 > gives **517 certificate /537=193M+344A polynomial operations**,
 > seven comparisons,67 positive witnesses and degree **at most5091**.
 > It removes the final payload F from the height: h=E+x+eta. Native typing
@@ -358,15 +399,16 @@ established87/degree203 theorem, weakened86 and independent-gamma87.
 > powers-of-two program accepting2, this transfers a complete accepted
 > extension to the nonpower B+1; the retained height bound blocks the alias.
 >
-> A concrete unimplemented next lead is to reuse already paid prime and
-> action selector groups in an injective instruction-code assignment,
-> adding corrections only for repeated register/operation pairs. Targets
-> must use the same codes, the loader must remain0 and halt positive, and
-> the radix multiplier must exceed every code. Charge all resulting fixed
-> coefficients and preserve prefix contiguity, control and zero tests;
-> no further saving is established. The fixed-modulus count shortcut does
-> not transfer this loader to complete75's fixed cell radix, and neither
-> the multiplicative-gamma86 nor H-input-modulus shortcut may be promoted.
+> The paid-control-code lead is now implemented in505, including literal
+> costs for both current and target sums. Further code changes must preserve
+> injectivity, fixed radix bounds and the complete zero set after typing;
+> no optimality over code plans is claimed. The finite partitions after254
+> have now been reoptimized against their emitted degree dictionaries.
+> The504 variant requires an extra fixed dyadic program parameter; it does
+> not justify dropping E from the height in the one-parameter505 interface.
+> The fixed-modulus count shortcut does not transfer this loader to
+> complete75's fixed cell radix, and neither the multiplicative-gamma86
+> nor H-input-modulus shortcut may be promoted.
 >
 > The [two-stack substrate](two_stack_affine_input_step.md) has a two-operation
 > ordinary-input prefix. [Factored selectors](two_stack_factored_selector_step.md)

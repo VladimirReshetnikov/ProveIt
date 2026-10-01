@@ -36,7 +36,22 @@ supplies the comparison bound; the
 [normalized strong87 proof](research-wip/native-stream-queue/complete75_normalized_strong87.md)
 supplies the single-polynomial bound.
 
-The latest explicit [terminal-bound U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_terminal_bound255.md)
+The latest explicit [language-bound U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_initial_bound254.md)
+gives **253 certificate /254=133M+121A polynomial operations**,
+one comparison,43 positive witnesses, four positive program parameters
+and degree **at most1379**. The supplied height is used directly. Native
+typing first recovers the initial residue; the bounded zero runs of the
+actual valid input word then exclude radix wraparound. The inverse parent
+height gap is at least2 at valid zeros, giving a positive-zero bijection
+on those slices. The paid ordinary-input loader and duration floor remain
+unchanged. The [new exact finite partition search](research-wip/native-stream-queue/neary_woods_universal_initial_bound_partitions.md)
+checks every factor partition and allowed anchor in all sixteen inherited
+bases. Six operation counts gain smaller degree bounds, including
+**258/854**, **262/408** and **265/228**. Endpoints remain **266/212 with44
+witnesses**, or **262/456 with43**. The degree212 floor applies only to
+this propagated-bound objective; it is not a global circuit lower bound.
+
+The preceding explicit [terminal-bound U9 polynomial](research-wip/native-stream-queue/neary_woods_universal_terminal_bound255.md)
 gives **254 certificate /255=133M+122A polynomial operations**,
 one comparison,43 positive witnesses, four positive program parameters
 and degree **at most1384**. Only the initial word remains in the paid
@@ -206,7 +221,26 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The latest [terminal-bound sparse compiler](research-wip/native-stream-queue/residue_affine_sparse_terminal537.md)
+The latest single-program-parameter [coded sparse compiler](research-wip/native-stream-queue/residue_affine_sparse_control_codes.md)
+gives **485 certificate /505=177M+328A polynomial operations**,
+seven comparisons,67 positive witnesses and degree **at most5091**.
+Injective state codes reuse paid prime/action selector sums and two partial
+sums in the target expression, saving32 gates across the complete control
+transport. After unchanged native typing, coded digit equality is exactly
+the original state chronology. The complete supplied positive zero set
+agrees with537, including arbitrary positive program/input parameters;
+the fixed recipe E=3^e retains universality on ordinary positive x.
+
+A separate [program-radix tradeoff](research-wip/native-stream-queue/residue_affine_sparse_program_radix504.md)
+uses **two fixed program parameters** E,C and gives **484 certificate
+/504=177M+327A polynomial operations**, seven comparisons,67 witnesses
+and uniform degree **at most5160**. Fix dyadic C>=64 with C>E=3^e;
+then h=x+eta and B=Ch remove one addition. The same C works for every
+ordinary input of that program. Direct soundness and completeness include
+h=2 and a positive packed slack; the supplied positive zero sets are not
+claimed identical. The505 option above retains its one-parameter interface.
+
+The preceding [terminal-bound sparse compiler](research-wip/native-stream-queue/residue_affine_sparse_terminal537.md)
 gives **517 certificate /537=193M+344A polynomial operations**,
 seven comparisons,67 positive witnesses and degree **at most5091**.
 It removes the final payload F from the height: h=E+x+eta. Native typing
